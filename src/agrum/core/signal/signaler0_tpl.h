@@ -48,8 +48,8 @@ namespace gum {
     }
 
     template < class TargetClass >
-    Connector0< TargetClass >::Connector0(const Connector0< TargetClass >* src)
-        : IConnector0(src) {
+    Connector0< TargetClass >::Connector0(const Connector0< TargetClass >* src) :
+        IConnector0(src) {
       GUM_CONS_CPY(Connector0);
     }
 
@@ -78,6 +78,6 @@ namespace gum {
       return __target;
     }
 
-  }  // namespace __sig__
+  }   // namespace __sig__
 
-}  // namespace gum
+}   // namespace gum

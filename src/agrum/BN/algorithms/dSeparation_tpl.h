@@ -31,12 +31,12 @@ namespace gum {
   // update a set of potentials, keeping only those d-connected with
   // query variables given evidence
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  void
-  dSeparation::relevantPotentials(const IBayesNet< GUM_SCALAR >&     bn,
-                                  const NodeSet&                     query,
-                                  const NodeSet&                     hardEvidence,
-                                  const NodeSet&                     softEvidence,
-                                  Set< const TABLE< GUM_SCALAR >* >& potentials) {
+  void dSeparation::relevantPotentials(
+    const IBayesNet< GUM_SCALAR >&     bn,
+    const NodeSet&                     query,
+    const NodeSet&                     hardEvidence,
+    const NodeSet&                     softEvidence,
+    Set< const TABLE< GUM_SCALAR >* >& potentials) {
     const DAG& dag = bn.dag();
 
     // mark the set of ancestors of the evidence
@@ -99,14 +99,10 @@ namespace gum {
       bool already_visited;
       if (direction) {
         already_visited = visited_from_child.exists(node);
-        if (!already_visited) {
-          visited_from_child.insert(node);
-        }
+        if (!already_visited) { visited_from_child.insert(node); }
       } else {
         already_visited = visited_from_parent.exists(node);
-        if (!already_visited) {
-          visited_from_parent.insert(node);
-        }
+        if (!already_visited) { visited_from_parent.insert(node); }
       }
 
       // if the node belongs to the query, update __node2potentials: remove all
@@ -119,9 +115,7 @@ namespace gum {
             const NodeId id = bn.nodeId(*var);
             if (id != node) {
               node2potentials[id].erase(pot);
-              if (node2potentials[id].empty()) {
-                node2potentials.erase(id);
-              }
+              if (node2potentials[id].empty()) { node2potentials.erase(id); }
             }
           }
         }
@@ -138,7 +132,7 @@ namespace gum {
         const bool is_hard_evidence = hardEvidence.exists(node);
 
         // bounce the ball toward the neighbors
-        if (direction && !is_hard_evidence) {  // visit from a child
+        if (direction && !is_hard_evidence) {   // visit from a child
           // visit the parents
           for (const auto par : dag.parents(node)) {
             nodes_to_visit.insert(std::pair< NodeId, bool >(par, true));
@@ -148,7 +142,7 @@ namespace gum {
           for (const auto chi : dag.children(node)) {
             nodes_to_visit.insert(std::pair< NodeId, bool >(chi, false));
           }
-        } else {  // visit from a parent
+        } else {   // visit from a parent
           if (!hardEvidence.exists(node)) {
             // visit the children
             for (const auto chi : dag.children(node)) {

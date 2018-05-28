@@ -55,11 +55,11 @@ namespace gum {
 
     class GreaterPairOn2nd {
       public:
-      bool
-      operator()(const std::pair< std::tuple< Idx, Idx, Idx, std::vector< Idx > >*,
-                                  double >& e1,
-                 const std::pair< std::tuple< Idx, Idx, Idx, std::vector< Idx > >*,
-                                  double >& e2) const;
+      bool operator()(
+        const std::pair< std::tuple< Idx, Idx, Idx, std::vector< Idx > >*,
+                         double >& e1,
+        const std::pair< std::tuple< Idx, Idx, Idx, std::vector< Idx > >*,
+                         double >& e2) const;
     };
 
     class GreaterAbsPairOn2nd {
@@ -199,8 +199,8 @@ namespace gum {
        * @param _rank the heap of ranks of the algorithm
        */
       void _initiation(
-        CorrectedMutualInformation<>& I,
-        MixedGraph&                   graph,
+        CorrectedMutualInformation<>&                           I,
+        MixedGraph&                                             graph,
         HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set,
         Heap<
           std::pair< std::tuple< Idx, Idx, Idx, std::vector< Idx > >*, double >,
@@ -219,8 +219,8 @@ namespace gum {
        * @param _rank the heap of ranks of the algorithm
        */
       void _iteration(
-        CorrectedMutualInformation<>& I,
-        MixedGraph&                   graph,
+        CorrectedMutualInformation<>&                           I,
+        MixedGraph&                                             graph,
         HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set,
         Heap<
           std::pair< std::tuple< Idx, Idx, Idx, std::vector< Idx > >*, double >,
@@ -234,8 +234,8 @@ namespace gum {
        * the previous phase
        */
       void _orientation_3off2(
-        CorrectedMutualInformation<>& I,
-        MixedGraph&                   graph,
+        CorrectedMutualInformation<>&                                 I,
+        MixedGraph&                                                   graph,
         const HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set);
 
       /// Modified version of the orientation phase that tries to propagate
@@ -247,8 +247,8 @@ namespace gum {
        * the previous phase
        */
       void _orientation_latents(
-        CorrectedMutualInformation<>& I,
-        MixedGraph&                   graph,
+        CorrectedMutualInformation<>&                                 I,
+        MixedGraph&                                                   graph,
         const HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set);
 
       /// Orientation phase from the MIIC algorithm, returns a mixed graph that
@@ -260,8 +260,8 @@ namespace gum {
        * the previous phase
        */
       void _orientation_miic(
-        CorrectedMutualInformation<>& I,
-        MixedGraph&                   graph,
+        CorrectedMutualInformation<>&                                 I,
+        MixedGraph&                                                   graph,
         const HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set);
       /// @}
 
@@ -291,10 +291,10 @@ namespace gum {
        *@param sep_set hashtable storing the separation sets for pairs of variables
        */
       std::vector< std::pair< std::tuple< Idx, Idx, Idx >*, double > >
-      _getUnshieldedTriples(
-        const MixedGraph&             graph,
-        CorrectedMutualInformation<>& I,
-        const HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set);
+        _getUnshieldedTriples(
+          const MixedGraph&                                             graph,
+          CorrectedMutualInformation<>&                                 I,
+          const HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set);
 
       /// gets the list of unshielded triples in the graph in decreasing value of
       ///|I'(x, y, z|{ui})|, prepares the orientation matrix for MIIC
@@ -305,11 +305,11 @@ namespace gum {
        */
       std::vector<
         std::tuple< std::tuple< Idx, Idx, Idx >*, double, double, double > >
-      _getUnshieldedTriplesMIIC(
-        const MixedGraph&             graph,
-        CorrectedMutualInformation<>& I,
-        const HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set,
-        HashTable< std::pair< Idx, Idx >, char >&                     marks);
+        _getUnshieldedTriplesMIIC(
+          const MixedGraph&                                             graph,
+          CorrectedMutualInformation<>&                                 I,
+          const HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set,
+          HashTable< std::pair< Idx, Idx >, char >&                     marks);
 
       /// Gets the orientation probabilities like MIIC for the orientation phase
       /*@param graph graph in which to find the triples
@@ -317,11 +317,11 @@ namespace gum {
        */
       std::vector<
         std::tuple< std::tuple< Idx, Idx, Idx >*, double, double, double > >
-      _updateProbaTriples(
-        const MixedGraph& graph,
-        std::vector<
-          std::tuple< std::tuple< Idx, Idx, Idx >*, double, double, double > >
-          proba_triples);
+        _updateProbaTriples(
+          const MixedGraph& graph,
+          std::vector<
+            std::tuple< std::tuple< Idx, Idx, Idx >*, double, double, double > >
+            proba_triples);
 
       /// Propagates the orientation from a node to its neighbours
       /*@param dag graph in which to which to propagate arcs

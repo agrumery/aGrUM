@@ -26,8 +26,8 @@
 #include <agrum/multidim/implementations/multiDimInterface.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/multidim/implementations/multiDimInterface_inl.h>
-#endif  // GUM_NOINLINE
+#  include <agrum/multidim/implementations/multiDimInterface_inl.h>
+#endif   // GUM_NOINLINE
 
 namespace gum {
 

@@ -35,28 +35,23 @@ namespace gum {
   // default constructor
   INLINE DAGCycleDetector::Change::Change(ChangeType type,
                                           NodeId     tail,
-                                          NodeId     head) noexcept
-      : __type{type}
-      , __tail{tail}
-      , __head{head} {
+                                          NodeId     head) noexcept :
+      __type{type},
+      __tail{tail}, __head{head} {
     GUM_CONSTRUCTOR(DAGCycleDetector::Change);
   }
 
   // copy constructor
   INLINE
-  DAGCycleDetector::Change::Change(const DAGCycleDetector::Change& from) noexcept
-      : __type{from.__type}
-      , __tail{from.__tail}
-      , __head{from.__head} {
+  DAGCycleDetector::Change::Change(const DAGCycleDetector::Change& from) noexcept :
+      __type{from.__type}, __tail{from.__tail}, __head{from.__head} {
     GUM_CONS_CPY(DAGCycleDetector::Change);
   }
 
   // move constructor
   INLINE
-  DAGCycleDetector::Change::Change(DAGCycleDetector::Change&& from) noexcept
-      : __type{from.__type}
-      , __tail{from.__tail}
-      , __head{from.__head} {
+  DAGCycleDetector::Change::Change(DAGCycleDetector::Change&& from) noexcept :
+      __type{from.__type}, __tail{from.__tail}, __head{from.__head} {
     GUM_CONS_MOV(DAGCycleDetector::Change);
   }
 
@@ -67,7 +62,7 @@ namespace gum {
 
   // copy operator
   INLINE DAGCycleDetector::Change& DAGCycleDetector::Change::
-  operator=(const DAGCycleDetector::Change& from) noexcept {
+                                   operator=(const DAGCycleDetector::Change& from) noexcept {
     __type = from.__type;
     __tail = from.__tail;
     __head = from.__head;
@@ -76,7 +71,7 @@ namespace gum {
 
   // move operator
   INLINE DAGCycleDetector::Change& DAGCycleDetector::Change::
-  operator=(DAGCycleDetector::Change&& from) noexcept {
+                                   operator=(DAGCycleDetector::Change&& from) noexcept {
     __type = from.__type;
     __tail = from.__tail;
     __head = from.__head;
@@ -102,24 +97,24 @@ namespace gum {
    */
 
   /// default constructor
-  INLINE DAGCycleDetector::ArcAdd::ArcAdd(NodeId tail, NodeId head) noexcept
-      : DAGCycleDetector::Change(
-          DAGCycleDetector::ChangeType::ARC_ADDITION, tail, head) {
+  INLINE DAGCycleDetector::ArcAdd::ArcAdd(NodeId tail, NodeId head) noexcept :
+      DAGCycleDetector::Change(
+        DAGCycleDetector::ChangeType::ARC_ADDITION, tail, head) {
     GUM_CONSTRUCTOR(DAGCycleDetector::ArcAdd);
   }
 
   /// copy constructor
   INLINE
-  DAGCycleDetector::ArcAdd::ArcAdd(const DAGCycleDetector::ArcAdd& from) noexcept
-      : DAGCycleDetector::Change(from.type(), from.tail(), from.head()) {
+  DAGCycleDetector::ArcAdd::ArcAdd(const DAGCycleDetector::ArcAdd& from) noexcept :
+      DAGCycleDetector::Change(from.type(), from.tail(), from.head()) {
     GUM_CONS_CPY(DAGCycleDetector::ArcAdd);
   }
 
   /// move constructor
   INLINE
-  DAGCycleDetector::ArcAdd::ArcAdd(DAGCycleDetector::ArcAdd&& from) noexcept
-      : DAGCycleDetector::Change(
-          std::move(from.type()), std::move(from.tail()), std::move(from.head())) {
+  DAGCycleDetector::ArcAdd::ArcAdd(DAGCycleDetector::ArcAdd&& from) noexcept :
+      DAGCycleDetector::Change(
+        std::move(from.type()), std::move(from.tail()), std::move(from.head())) {
     GUM_CONS_MOV(DAGCycleDetector::ArcAdd);
   }
 
@@ -130,14 +125,14 @@ namespace gum {
 
   /// copy operator
   INLINE DAGCycleDetector::ArcAdd& DAGCycleDetector::ArcAdd::
-  operator=(const DAGCycleDetector::ArcAdd& from) noexcept {
+                                   operator=(const DAGCycleDetector::ArcAdd& from) noexcept {
     DAGCycleDetector::Change::operator=(from);
     return *this;
   }
 
   /// move operator
   INLINE DAGCycleDetector::ArcAdd& DAGCycleDetector::ArcAdd::
-  operator=(DAGCycleDetector::ArcAdd&& from) noexcept {
+                                   operator=(DAGCycleDetector::ArcAdd&& from) noexcept {
     DAGCycleDetector::Change::operator=(std::move(from));
     return *this;
   }
@@ -149,24 +144,24 @@ namespace gum {
    */
 
   /// default constructor
-  INLINE DAGCycleDetector::ArcDel::ArcDel(NodeId tail, NodeId head) noexcept
-      : DAGCycleDetector::Change(
-          DAGCycleDetector::ChangeType::ARC_DELETION, tail, head) {
+  INLINE DAGCycleDetector::ArcDel::ArcDel(NodeId tail, NodeId head) noexcept :
+      DAGCycleDetector::Change(
+        DAGCycleDetector::ChangeType::ARC_DELETION, tail, head) {
     GUM_CONSTRUCTOR(DAGCycleDetector::ArcDel);
   }
 
   /// copy constructor
   INLINE
-  DAGCycleDetector::ArcDel::ArcDel(const DAGCycleDetector::ArcDel& from) noexcept
-      : DAGCycleDetector::Change(from.type(), from.tail(), from.head()) {
+  DAGCycleDetector::ArcDel::ArcDel(const DAGCycleDetector::ArcDel& from) noexcept :
+      DAGCycleDetector::Change(from.type(), from.tail(), from.head()) {
     GUM_CONS_CPY(DAGCycleDetector::ArcDel);
   }
 
   /// move constructor
   INLINE
-  DAGCycleDetector::ArcDel::ArcDel(DAGCycleDetector::ArcDel&& from) noexcept
-      : DAGCycleDetector::Change(
-          std::move(from.type()), std::move(from.tail()), std::move(from.head())) {
+  DAGCycleDetector::ArcDel::ArcDel(DAGCycleDetector::ArcDel&& from) noexcept :
+      DAGCycleDetector::Change(
+        std::move(from.type()), std::move(from.tail()), std::move(from.head())) {
     GUM_CONS_MOV(DAGCycleDetector::ArcDel);
   }
 
@@ -177,14 +172,14 @@ namespace gum {
 
   /// copy operator
   INLINE DAGCycleDetector::ArcDel& DAGCycleDetector::ArcDel::
-  operator=(const DAGCycleDetector::ArcDel& from) noexcept {
+                                   operator=(const DAGCycleDetector::ArcDel& from) noexcept {
     DAGCycleDetector::Change::operator=(from);
     return *this;
   }
 
   /// move operator
   INLINE DAGCycleDetector::ArcDel& DAGCycleDetector::ArcDel::
-  operator=(DAGCycleDetector::ArcDel&& from) noexcept {
+                                   operator=(DAGCycleDetector::ArcDel&& from) noexcept {
     DAGCycleDetector::Change::operator=(std::move(from));
     return *this;
   }
@@ -197,24 +192,24 @@ namespace gum {
 
   /// default constructor
   INLINE DAGCycleDetector::ArcReverse::ArcReverse(NodeId tail,
-                                                  NodeId head) noexcept
-      : DAGCycleDetector::Change(
-          DAGCycleDetector::ChangeType::ARC_REVERSAL, tail, head) {
+                                                  NodeId head) noexcept :
+      DAGCycleDetector::Change(
+        DAGCycleDetector::ChangeType::ARC_REVERSAL, tail, head) {
     GUM_CONSTRUCTOR(DAGCycleDetector::ArcReverse);
   }
 
   /// copy constructor
   INLINE DAGCycleDetector::ArcReverse::ArcReverse(
-    const DAGCycleDetector::ArcReverse& from) noexcept
-      : DAGCycleDetector::Change(from.type(), from.tail(), from.head()) {
+    const DAGCycleDetector::ArcReverse& from) noexcept :
+      DAGCycleDetector::Change(from.type(), from.tail(), from.head()) {
     GUM_CONS_CPY(DAGCycleDetector::ArcReverse);
   }
 
   /// move constructor
   INLINE DAGCycleDetector::ArcReverse::ArcReverse(
-    DAGCycleDetector::ArcReverse&& from) noexcept
-      : DAGCycleDetector::Change(
-          std::move(from.type()), std::move(from.tail()), std::move(from.head())) {
+    DAGCycleDetector::ArcReverse&& from) noexcept :
+      DAGCycleDetector::Change(
+        std::move(from.type()), std::move(from.tail()), std::move(from.head())) {
     GUM_CONS_MOV(DAGCycleDetector::ArcReverse);
   }
 
@@ -225,14 +220,14 @@ namespace gum {
 
   /// copy operator
   INLINE DAGCycleDetector::ArcReverse& DAGCycleDetector::ArcReverse::
-  operator=(const DAGCycleDetector::ArcReverse& from) noexcept {
+                                       operator=(const DAGCycleDetector::ArcReverse& from) noexcept {
     DAGCycleDetector::Change::operator=(from);
     return *this;
   }
 
   /// move operator
   INLINE DAGCycleDetector::ArcReverse& DAGCycleDetector::ArcReverse::
-  operator=(DAGCycleDetector::ArcReverse&& from) noexcept {
+                                       operator=(DAGCycleDetector::ArcReverse&& from) noexcept {
     DAGCycleDetector::Change::operator=(std::move(from));
     return *this;
   }
@@ -249,18 +244,16 @@ namespace gum {
   }
 
   /// copy constructor
-  INLINE DAGCycleDetector::DAGCycleDetector(const DAGCycleDetector& from)
-      : __dag(from.__dag)
-      , __ancestors(from.__ancestors)
-      , __descendants(from.__descendants) {
+  INLINE DAGCycleDetector::DAGCycleDetector(const DAGCycleDetector& from) :
+      __dag(from.__dag), __ancestors(from.__ancestors),
+      __descendants(from.__descendants) {
     GUM_CONS_CPY(DAGCycleDetector);
   }
 
   /// move constructor
-  INLINE DAGCycleDetector::DAGCycleDetector(DAGCycleDetector&& from)
-      : __dag(std::move(from.__dag))
-      , __ancestors(std::move(from.__ancestors))
-      , __descendants(std::move(from.__descendants)) {
+  INLINE DAGCycleDetector::DAGCycleDetector(DAGCycleDetector&& from) :
+      __dag(std::move(from.__dag)), __ancestors(std::move(from.__ancestors)),
+      __descendants(std::move(from.__descendants)) {
     GUM_CONS_MOV(DAGCycleDetector);
   }
 
@@ -271,7 +264,7 @@ namespace gum {
 
   /// copy operator
   INLINE DAGCycleDetector& DAGCycleDetector::
-  operator=(const DAGCycleDetector& from) {
+                           operator=(const DAGCycleDetector& from) {
     if (this != &from) {
       __dag = from.__dag;
       __ancestors = from.__ancestors;
@@ -334,9 +327,7 @@ namespace gum {
         Size& weight = nodeset[iter.key()];
         weight -= iter.val() * multiplier;
 
-        if (!weight) {
-          nodeset.erase(iter.key());
-        }
+        if (!weight) { nodeset.erase(iter.key()); }
       }
     }
   }
@@ -369,7 +360,7 @@ namespace gum {
 
   /// check the equality between two DAGCycleDetectors
   INLINE bool DAGCycleDetector::operator==(const DAGCycleDetector& from) const {
-    return (  //( __dagmodel == from.__dagmodel ) &&
+    return (   //( __dagmodel == from.__dagmodel ) &&
       (__ancestors == from.__ancestors) && (__descendants == from.__descendants));
   }
 

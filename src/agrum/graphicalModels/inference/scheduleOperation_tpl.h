@@ -20,7 +20,7 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/agrum.h>
+#  include <agrum/agrum.h>
 
 namespace gum {
 
@@ -33,9 +33,8 @@ namespace gum {
 
   /// default constructor
   template < typename GUM_SCALAR >
-  ScheduleOperation< GUM_SCALAR >::ScheduleOperation(Type t)
-      : __type(t)
-      , __id(__newId()) {
+  ScheduleOperation< GUM_SCALAR >::ScheduleOperation(Type t) :
+      __type(t), __id(__newId()) {
     // for debugging purposes
     GUM_CONSTRUCTOR(ScheduleOperation);
   }
@@ -43,9 +42,9 @@ namespace gum {
   /// copy constructor
   template < typename GUM_SCALAR >
   ScheduleOperation< GUM_SCALAR >::ScheduleOperation(
-    const ScheduleOperation< GUM_SCALAR >& from)
-      : __type(from.__type)
-      , __id(from.__id) {
+    const ScheduleOperation< GUM_SCALAR >& from) :
+      __type(from.__type),
+      __id(from.__id) {
     // for debugging purposes
     GUM_CONSTRUCTOR(ScheduleOperation);
   }
@@ -60,7 +59,7 @@ namespace gum {
   /// copy operator
   template < typename GUM_SCALAR >
   INLINE ScheduleOperation< GUM_SCALAR >& ScheduleOperation< GUM_SCALAR >::
-  operator=(const ScheduleOperation< GUM_SCALAR >& from) {
+                                          operator=(const ScheduleOperation< GUM_SCALAR >& from) {
     __type = from.__type;
     __id = from.__id;
     return *this;
@@ -69,7 +68,7 @@ namespace gum {
   /// returns the name of the operation
   template < typename GUM_SCALAR >
   INLINE typename ScheduleOperation< GUM_SCALAR >::Type
-  ScheduleOperation< GUM_SCALAR >::type() const {
+    ScheduleOperation< GUM_SCALAR >::type() const {
     return __type;
   }
 

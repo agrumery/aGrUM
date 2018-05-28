@@ -39,13 +39,14 @@
 typedef __int64          int64_t;
 typedef unsigned __int64 uint64_t;
 #else
-#include <stdint.h>
+#  include <stdint.h>
 #endif
 
 namespace gum {
 
   /**
-   * @class Rational rational.h <agrum/core/math/rational.h>
+   * @class Rational
+   * @headerfile rational.h <agrum/core/math/rational.h>
    * @brief Class template used to approximate decimal numbers by rationals.
    * @ingroup math_group
    *
@@ -133,7 +134,7 @@ namespace gum {
     /// @}
   };
 
-}  // end of gum namespace
+}   // namespace gum
 
 
 extern template class gum::Rational< float >;
@@ -144,4 +145,4 @@ extern template class gum::Rational< long double >;
 // Always include template implementation in header file
 #include <agrum/core/math/rational_tpl.h>
 
-#endif  // GUM_RATIONAL_H
+#endif   // GUM_RATIONAL_H

@@ -41,14 +41,15 @@ namespace gum {
 
   template < typename Val, class Cmp, class Node >
   class BinSearchTreeIterator;
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
   // ===========================================================================
   // ===                      GENERIC BINARY SEARCH TREE                     ===
   // ===========================================================================
 
   /**
-   * @class BinSearchTree binSearchTree.h <agrum/core/binSearchTree.h>
+   * @class BinSearchTree
+   * @headerfile binSearchTree.h <agrum/core/binSearchTree.h>
    * @brief A generic binary search tree.
    * @ingroup basicstruct_group
    *
@@ -107,7 +108,7 @@ namespace gum {
      * @return Returns this gum::BinSearchTree.
      */
     BinSearchTree< Val, Cmp, Node >&
-    operator=(const BinSearchTree< Val, Cmp, Node >& from);
+      operator=(const BinSearchTree< Val, Cmp, Node >& from);
 
     /// @}
     // ============================================================================
@@ -431,7 +432,8 @@ namespace gum {
   // ===========================================================================
 
   /**
-   * @class BinSearchTreeIterator binSearchTree.h <agrum/core/binSearchTree.h>
+   * @class BinSearchTreeIterator
+   * @headerfile binSearchTree.h <agrum/core/binSearchTree.h>
    * @brief A Generic binary search tree.
    * @ingroup basicstruct_group
    *
@@ -475,7 +477,7 @@ namespace gum {
      * @return Returns this gum::BinSearchTreeIterator.
      */
     BinSearchTreeIterator< Val, Cmp, Node >&
-    operator=(const BinSearchTreeIterator< Val, Cmp, Node >& from);
+      operator=(const BinSearchTreeIterator< Val, Cmp, Node >& from);
 
     /**
      * @brief Returns the value pointed to by the iterator.
@@ -624,8 +626,8 @@ namespace gum {
      * @param add_to_iterator_list Add this iterator to the iterator list.
      */
     void _initialize(const BinSearchTree< Val, Cmp, Node >* tree,
-                     const Node* current_node,
-                     bool        add_to_iterator_list);
+                     const Node*                            current_node,
+                     bool                                   add_to_iterator_list);
 
     /**
      * @brief a method to detach the current iterator from its tree's
@@ -643,4 +645,4 @@ extern template class gum::BinSearchTree< int >;
 // always include the template implementations
 #include <agrum/core/binSearchTree_tpl.h>
 
-#endif  // GUM_BIN_SEARCH_TREE_H
+#endif   // GUM_BIN_SEARCH_TREE_H

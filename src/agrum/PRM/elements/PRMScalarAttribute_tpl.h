@@ -38,10 +38,10 @@ namespace gum {
     PRMScalarAttribute< GUM_SCALAR >::PRMScalarAttribute(
       const std::string&                    name,
       const PRMType< GUM_SCALAR >&          type,
-      MultiDimImplementation< GUM_SCALAR >* impl)
-        : PRMAttribute< GUM_SCALAR >(name)
-        , __type(new PRMType< GUM_SCALAR >(type))
-        , __cpf(new Potential< GUM_SCALAR >(impl)) {
+      MultiDimImplementation< GUM_SCALAR >* impl) :
+        PRMAttribute< GUM_SCALAR >(name),
+        __type(new PRMType< GUM_SCALAR >(type)),
+        __cpf(new Potential< GUM_SCALAR >(impl)) {
       GUM_CONSTRUCTOR(PRMScalarAttribute);
       __cpf->add(__type->variable());
 
@@ -51,10 +51,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     PRMScalarAttribute< GUM_SCALAR >::PRMScalarAttribute(
-      const PRMScalarAttribute< GUM_SCALAR >& source)
-        : PRMAttribute< GUM_SCALAR >(source)
-        , __type(0)
-        , __cpf(0) {
+      const PRMScalarAttribute< GUM_SCALAR >& source) :
+        PRMAttribute< GUM_SCALAR >(source),
+        __type(0), __cpf(0) {
       GUM_CONS_CPY(PRMScalarAttribute);
       GUM_ERROR(FatalError,
                 "Illegal call to the copy constructor of gum::ScalarAttribute");
@@ -62,7 +61,6 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     PRMScalarAttribute< GUM_SCALAR >::~PRMScalarAttribute() {
-
       GUM_DESTRUCTOR(PRMScalarAttribute);
       delete __cpf;
       delete __type;
@@ -96,7 +94,6 @@ namespace gum {
     void PRMScalarAttribute< GUM_SCALAR >::copyCpf(
       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
       const PRMAttribute< GUM_SCALAR >& source) {
-
       delete __cpf;
       __cpf = new Potential< GUM_SCALAR >();
 
@@ -118,14 +115,14 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     PRMScalarAttribute< GUM_SCALAR >& PRMScalarAttribute< GUM_SCALAR >::
-    operator=(const PRMScalarAttribute< GUM_SCALAR >& from) {
+                                      operator=(const PRMScalarAttribute< GUM_SCALAR >& from) {
       GUM_ERROR(FatalError,
                 "Illegal call to the copy operator of gum::ScalarAttribute");
     }
 
     template < typename GUM_SCALAR >
     INLINE typename PRMClassElement< GUM_SCALAR >::ClassElementType
-    PRMScalarAttribute< GUM_SCALAR >::elt_type() const {
+      PRMScalarAttribute< GUM_SCALAR >::elt_type() const {
       return this->prm_attribute;
     }
 
@@ -170,7 +167,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     PRMAttribute< GUM_SCALAR >*
-    PRMScalarAttribute< GUM_SCALAR >::getCastDescendant() const {
+      PRMScalarAttribute< GUM_SCALAR >::getCastDescendant() const {
       PRMScalarAttribute< GUM_SCALAR >* cast = 0;
 
       try {
@@ -234,9 +231,9 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    void
-    PRMScalarAttribute< GUM_SCALAR >::swap(const PRMType< GUM_SCALAR >& old_type,
-                                           const PRMType< GUM_SCALAR >& new_type) {
+    void PRMScalarAttribute< GUM_SCALAR >::swap(
+      const PRMType< GUM_SCALAR >& old_type,
+      const PRMType< GUM_SCALAR >& new_type) {
       if (&(old_type) == __type) {
         GUM_ERROR(OperationNotAllowed, "Cannot replace attribute own type");
       }
@@ -282,7 +279,6 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void PRMScalarAttribute< GUM_SCALAR >::_type(PRMType< GUM_SCALAR >* t) {
-
       if (__type->variable().domainSize() != t->variable().domainSize()) {
         GUM_ERROR(OperationNotAllowed,
                   "Cannot replace types with difference domain size");

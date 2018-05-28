@@ -105,7 +105,9 @@ namespace gum {
    */
   /* ===========================================================================
    */
-  class DiGraph : public virtual NodeGraphPart, public ArcGraphPart {
+  class DiGraph
+      : public virtual NodeGraphPart
+      , public ArcGraphPart {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -206,7 +208,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/graphs/diGraph_inl.h>
-#endif  // GUM_NOINLINE
+#  include <agrum/graphs/diGraph_inl.h>
+#endif   // GUM_NOINLINE
 
 #endif /* GUM_DIGRAPH_H */

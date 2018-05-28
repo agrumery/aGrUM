@@ -37,7 +37,8 @@
 
 namespace gum {
   /**
-   * @class FixedAllocator fixedAllocator.h <agrum/core/fixedAllocator.h>
+   * @class FixedAllocator
+   * @headerfile fixedAllocator.h <agrum/core/fixedAllocator.h>
    *
    * @brief Allocates objects of one given size
    *
@@ -75,7 +76,6 @@ namespace gum {
      */
     // clang-format on
     struct __Chunk {
-
       // ============================================================================
       /// Initializes a Chunk object
       // ============================================================================
@@ -187,10 +187,10 @@ namespace gum {
     __Chunks::iterator __deallocChunk;
   };
 
-}  // namespace gum
+}   // namespace gum
 
 #ifndef GUM_NO_INLINE
-#include <agrum/core/smallobjectallocator/fixedAllocator_inl.h>
+#  include <agrum/core/smallobjectallocator/fixedAllocator_inl.h>
 #endif
 
-#endif  // FIXEDALLOCATOR_H
+#endif   // FIXEDALLOCATOR_H

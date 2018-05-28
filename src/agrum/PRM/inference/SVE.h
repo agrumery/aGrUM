@@ -52,7 +52,8 @@ namespace gum {
   namespace prm {
 
     /**
-     * @class SVE SVE.h <agrum/PRM/SVE.h>
+     * @class SVE
+     * @headerfile SVE.h <agrum/PRM/SVE.h>
      * @brief This class is an implementation of the Structured Variable
      *Elimination
      *        algorithm on PRM<GUM_SCALAR>.
@@ -154,13 +155,13 @@ namespace gum {
         Set< const PRMInstance< GUM_SCALAR >* >&  ignore,
         Set< const PRMInstance< GUM_SCALAR >* >&  eliminated);
 
-      void
-      __eliminateNodesUpward(const PRMInstance< GUM_SCALAR >*          i,
-                             BucketSet&                                pool,
-                             BucketSet&                                trash,
-                             List< const PRMInstance< GUM_SCALAR >* >& elim_list,
-                             Set< const PRMInstance< GUM_SCALAR >* >&  ignore,
-                             Set< const PRMInstance< GUM_SCALAR >* >&  eliminated);
+      void __eliminateNodesUpward(
+        const PRMInstance< GUM_SCALAR >*          i,
+        BucketSet&                                pool,
+        BucketSet&                                trash,
+        List< const PRMInstance< GUM_SCALAR >* >& elim_list,
+        Set< const PRMInstance< GUM_SCALAR >* >&  ignore,
+        Set< const PRMInstance< GUM_SCALAR >* >&  eliminated);
 
       void __eliminateNodesWithEvidence(const PRMInstance< GUM_SCALAR >* i,
                                         BucketSet&                       pool,
@@ -201,10 +202,10 @@ namespace gum {
       std::vector< NodeId >& __getElimOrder(const PRMClass< GUM_SCALAR >& c);
 
       Potential< GUM_SCALAR >*
-      __getAggPotential(const PRMInstance< GUM_SCALAR >*  i,
-                        const PRMAggregate< GUM_SCALAR >* agg);
+        __getAggPotential(const PRMInstance< GUM_SCALAR >*  i,
+                          const PRMAggregate< GUM_SCALAR >* agg);
 
-      void __initLiftedNodes(const PRMClass< GUM_SCALAR >& c);
+      void        __initLiftedNodes(const PRMClass< GUM_SCALAR >& c);
       std::string __trim(const std::string& s);
 
       /// @}

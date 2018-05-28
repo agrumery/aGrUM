@@ -106,10 +106,10 @@ namespace gum {
     UndiGraphListener& operator=(const UndiGraphListener& d);
   };
 
-}  // namespace gum
+}   // namespace gum
 
 #ifndef GUM_NO_INLINE
-#include <agrum/graphs/parts/listeners/undiGraphListener_inl.h>
-#endif  // GUM_NOINLINE
+#  include <agrum/graphs/parts/listeners/undiGraphListener_inl.h>
+#endif   // GUM_NOINLINE
 
-#endif  // GUM_UNDIGRAPH_LISTENER_H
+#endif   // GUM_UNDIGRAPH_LISTENER_H

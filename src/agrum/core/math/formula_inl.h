@@ -144,7 +144,7 @@ namespace gum {
   /// Args are backwards !
   INLINE
   double
-  FormulaPart::__operator_eval(const std::vector< FormulaPart >& args) const {
+    FormulaPart::__operator_eval(const std::vector< FormulaPart >& args) const {
     switch (character) {
       case '+': {
         return args[1].number + args[0].number;
@@ -177,7 +177,7 @@ namespace gum {
   /// Args are backwards !
   INLINE
   double
-  FormulaPart::__function_eval(const std::vector< FormulaPart >& args) const {
+    FormulaPart::__function_eval(const std::vector< FormulaPart >& args) const {
     switch (function) {
       case FormulaPart::token_function::exp: {
         return std::exp(args[0].number);
@@ -234,9 +234,8 @@ namespace gum {
 
   INLINE
   bool Formula::__popOperator(FormulaPart o) {
-
-    if (__stack.empty() ||
-        __stack.top().type != FormulaPart::token_type::OPERATOR) {
+    if (__stack.empty()
+        || __stack.top().type != FormulaPart::token_type::OPERATOR) {
       return false;
     }
 
@@ -253,13 +252,10 @@ namespace gum {
 
   INLINE
   void Formula::__push_operator(char o) {
-
     if (__isUnaryOperator(o)) {
-
       __push_unaryOperator(o);
 
     } else {
-
       FormulaPart t(FormulaPart::token_type::OPERATOR, o);
       __push_operator(t);
     }
@@ -268,7 +264,6 @@ namespace gum {
   INLINE
   bool Formula::__isUnaryOperator(char o) {
     switch (__last_token.type) {
-
       case FormulaPart::token_type::OPERATOR:
       case FormulaPart::token_type::NIL:
       case FormulaPart::token_type::ARG_SEP: {
@@ -285,7 +280,6 @@ namespace gum {
 
   INLINE
   void Formula::__push_unaryOperator(char o) {
-
     // Only unary operator is the negative sign -
     FormulaPart t(FormulaPart::token_type::OPERATOR, '_');
     __push_operator(t);
@@ -293,7 +287,6 @@ namespace gum {
 
   INLINE
   void Formula::__push_operator(FormulaPart t) {
-
     while (__popOperator(t)) {
       __push_output(__stack.top());
       __stack.pop();
@@ -304,33 +297,28 @@ namespace gum {
 
   INLINE
   void Formula::__push_leftParenthesis() {
-
     FormulaPart t(FormulaPart::token_type::PARENTHESIS, '(');
     __push_stack(t);
   }
 
   INLINE
   void Formula::__push_rightParenthesis() {
-
     while ((!__stack.empty()) && (__stack.top().character != '(')) {
       __push_output(__stack.top());
       __stack.pop();
     }
 
     if (__stack.empty()) {
-
       GUM_ERROR(OperationNotAllowed, "expecting '('");
 
     } else if (__stack.top().character != '(') {
-
       GUM_ERROR(OperationNotAllowed, "expecting '('");
     }
 
     __stack.pop();
 
-    if ((!__stack.empty()) &&
-        __stack.top().type == FormulaPart::token_type::FUNCTION) {
-
+    if ((!__stack.empty())
+        && __stack.top().type == FormulaPart::token_type::FUNCTION) {
       __push_output(__stack.top());
       __stack.pop();
     }
@@ -339,11 +327,8 @@ namespace gum {
 
   INLINE
   void Formula::__finalize() {
-
     while (!__stack.empty()) {
-
       if (__stack.top().character == '(') {
-
         GUM_ERROR(OperationNotAllowed, "expecting ')'");
       }
 
@@ -354,9 +339,8 @@ namespace gum {
 
   INLINE
   void
-  Formula::__reduceOperatorOrFunction(FormulaPart                item,
-                                      std::stack< FormulaPart >& stack) const {
-
+    Formula::__reduceOperatorOrFunction(FormulaPart                item,
+                                        std::stack< FormulaPart >& stack) const {
     std::vector< FormulaPart > args;
 
     if (stack.size() < item.argc()) {
@@ -364,7 +348,6 @@ namespace gum {
     }
 
     while (item.argc() > args.size()) {
-
       args.push_back(stack.top());
       stack.pop();
     }
@@ -386,39 +369,32 @@ namespace gum {
 
   INLINE
   void Formula::__push_function(const std::string& func) {
-
     if (func == "exp") {
-
       FormulaPart t(FormulaPart::token_type::FUNCTION,
                     FormulaPart::token_function::exp);
       __push_stack(t);
 
     } else if (func == "log") {
-
       FormulaPart t(FormulaPart::token_type::FUNCTION,
                     FormulaPart::token_function::log);
       __push_stack(t);
 
     } else if (func == "ln") {
-
       FormulaPart t(FormulaPart::token_type::FUNCTION,
                     FormulaPart::token_function::ln);
       __push_stack(t);
 
     } else if (func == "pow") {
-
       FormulaPart t(FormulaPart::token_type::FUNCTION,
                     FormulaPart::token_function::pow);
       __push_stack(t);
 
     } else if (func == "sqrt") {
-
       FormulaPart t(FormulaPart::token_type::FUNCTION,
                     FormulaPart::token_function::sqrt);
       __push_stack(t);
 
     } else {
-
       GUM_ERROR(OperationNotAllowed, "unknown function");
     }
   }
@@ -447,13 +423,10 @@ namespace gum {
 
   INLINE
   void Formula::__push_variable(const std::string& var) {
-
     if (__variables.exists(var)) {
-
       __push_number(__variables[var]);
 
     } else {
-
       GUM_ERROR(OperationNotAllowed, "unknonw variable");
     }
   }
@@ -461,17 +434,13 @@ namespace gum {
   INLINE
   void Formula::__push_identifier(const std::string& ident) {
     try {
-
       __push_function(ident);
 
     } catch (OperationNotAllowed&) {
-
       try {
-
         __push_variable(ident);
 
       } catch (OperationNotAllowed&) {
-
         GUM_ERROR(OperationNotAllowed, "unknown identifier");
       }
     }
@@ -515,4 +484,4 @@ namespace gum {
     return os;
   }
 
-}  // namespace gum
+}   // namespace gum

@@ -44,7 +44,8 @@ namespace gum {
     /* ===                       INDEP TEST G2 CLASS                         === */
     /* ========================================================================= */
     /**
-     * @class IndepTestG2 indepTestG2.h <agrum/learning/scores_and_tests/indepTestG2.h>
+* @class IndepTestG2
+* @headerfile indepTestG2.h <agrum/learning/scores_and_tests/indepTestG2.h>
      * @brief the class for computing G2 independence test scores
      * @ingroup learning_group
      *

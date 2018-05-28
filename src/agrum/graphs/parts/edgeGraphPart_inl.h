@@ -45,9 +45,7 @@ namespace gum {
   }
 
   INLINE void EdgeGraphPart::__checkNeighbours(const NodeId id) const {
-    if (!__neighbours.exists(id)) {
-      __neighbours.insert(id, new NodeSet);
-    }
+    if (!__neighbours.exists(id)) { __neighbours.insert(id, new NodeSet); }
   }
 
   INLINE void EdgeGraphPart::addEdge(const NodeId first, const NodeId second) {
@@ -84,7 +82,7 @@ namespace gum {
       const NodeSet& set = neighbours(id);
 
       for (auto iter = set.beginSafe(); iter != set.endSafe();
-           ++iter) {  // safe iterator needed here
+           ++iter) {   // safe iterator needed here
         // warning: use this erase so that you actually use the virtualized
         // edge removal function
         eraseEdge(Edge(*iter, id));
@@ -97,7 +95,7 @@ namespace gum {
       const NodeSet& set = neighbours(id);
 
       for (auto iter = set.beginSafe(); iter != set.endSafe();
-           ++iter) {  // safe iterator needed here
+           ++iter) {   // safe iterator needed here
         EdgeGraphPart::eraseEdge(Edge(*iter, id));
       }
     }

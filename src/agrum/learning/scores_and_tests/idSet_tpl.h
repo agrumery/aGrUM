@@ -25,7 +25,7 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <tuple>
+#  include <tuple>
 
 namespace gum {
 
@@ -58,26 +58,25 @@ namespace gum {
     template < typename Alloc >
     template < typename OtherAlloc >
     INLINE IdSet< Alloc >::IdSet(const std::vector< Idx, OtherAlloc >& ids,
-                                 Size sz)
-        : __ids(ids)
-        , __size(sz) {
+                                 Size                                  sz) :
+        __ids(ids),
+        __size(sz) {
       GUM_CONSTRUCTOR(IdSet);
       std::sort(__ids.begin(), __ids.end());
     }
 
     /// copy constructor
     template < typename Alloc >
-    INLINE IdSet< Alloc >::IdSet(const IdSet< Alloc >& from)
-        : __ids(from.__ids)
-        , __size(from.__size) {
+    INLINE IdSet< Alloc >::IdSet(const IdSet< Alloc >& from) :
+        __ids(from.__ids), __size(from.__size) {
       GUM_CONS_CPY(IdSet);
     }
 
     /// generalized copy constructor
     template < typename Alloc >
     template < typename OtherAlloc >
-    INLINE IdSet< Alloc >::IdSet(const IdSet< OtherAlloc >& from)
-        : __size(from.__size) {
+    INLINE IdSet< Alloc >::IdSet(const IdSet< OtherAlloc >& from) :
+        __size(from.__size) {
       __ids.reserve(from.__ids.size());
 
       for (auto id : from.__ids) {
@@ -89,9 +88,8 @@ namespace gum {
 
     /// move constructor
     template < typename Alloc >
-    INLINE IdSet< Alloc >::IdSet(IdSet< Alloc >&& from)
-        : __ids(std::move(from.__ids))
-        , __size(from.__size) {
+    INLINE IdSet< Alloc >::IdSet(IdSet< Alloc >&& from) :
+        __ids(std::move(from.__ids)), __size(from.__size) {
       GUM_CONS_MOV(IdSet);
     }
 
@@ -116,7 +114,7 @@ namespace gum {
     template < typename Alloc >
     template < typename OtherAlloc >
     INLINE IdSet< Alloc >& IdSet< Alloc >::
-    operator=(const IdSet< OtherAlloc >& from) {
+                           operator=(const IdSet< OtherAlloc >& from) {
       __ids.clear();
 
       for (auto id : from.__ids) {
@@ -281,8 +279,8 @@ namespace gum {
   // the hash function for idSets
   template < typename Alloc >
   Size HashFunc< learning::IdSet< Alloc > >::
-  operator()(const learning::IdSet< Alloc >& key) const {
-    Size h = 0;
+       operator()(const learning::IdSet< Alloc >& key) const {
+    Size                             h = 0;
     const std::vector< Idx, Alloc >& vect = key.ids();
 
     for (Idx i = 0; i < Size(vect.size()); ++i)
@@ -294,9 +292,9 @@ namespace gum {
   /// the hash function for pairs (idSet,Idx)
   template < typename Alloc >
   Size HashFunc< std::pair< learning::IdSet< Alloc >, Idx > >::
-  operator()(const std::pair< learning::IdSet< Alloc >, Idx >& key) const {
-    Size h = 0;
-    Idx  i;
+       operator()(const std::pair< learning::IdSet< Alloc >, Idx >& key) const {
+    Size                             h = 0;
+    Idx                              i;
     const std::vector< Idx, Alloc >& vect = key.first.ids();
 
     for (i = 0; i < Size(vect.size()); ++i)
@@ -310,9 +308,9 @@ namespace gum {
   /// the hash function for pairs (idSet,Idx)
   template < typename Alloc >
   Size HashFunc< std::tuple< learning::IdSet< Alloc >, Idx, Idx > >::
-  operator()(const std::tuple< learning::IdSet< Alloc >, Idx, Idx >& key) const {
-    Size h = 0;
-    Size i;
+       operator()(const std::tuple< learning::IdSet< Alloc >, Idx, Idx >& key) const {
+    Size                             h = 0;
+    Size                             i;
     const std::vector< Idx, Alloc >& vect = std::get< 0 >(key).ids();
 
     for (i = 0; i < vect.size(); ++i)
@@ -327,10 +325,10 @@ namespace gum {
   /// the hash function for tuples (idSet,Idx,Idx,Idx)
   template < typename Alloc >
   Size HashFunc< std::tuple< learning::IdSet< Alloc >, Idx, Idx, Idx > >::
-  operator()(
-    const std::tuple< learning::IdSet< Alloc >, Idx, Idx, Idx >& key) const {
-    Size h = 0;
-    Size i;
+       operator()(
+      const std::tuple< learning::IdSet< Alloc >, Idx, Idx, Idx >& key) const {
+    Size                             h = 0;
+    Size                             i;
     const std::vector< Idx, Alloc >& vect = std::get< 0 >(key).ids();
 
     for (i = 0; i < vect.size(); ++i)

@@ -80,7 +80,6 @@ namespace gum {
              typename Alloc,
              bool Gen >
   class PriorityQueueImplementation {
-
     /// All gum::PriorityQueue are friends with themselves.
     friend class PriorityQueue< Val, Priority, Cmp, Alloc >;
 
@@ -496,7 +495,6 @@ namespace gum {
    */
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   class PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true > {
-
     /// All gum::PriorityQueue are friends with themselves.
     friend class PriorityQueue< Val, Priority, Cmp, Alloc >;
 
@@ -890,7 +888,8 @@ namespace gum {
   // ===                           PRIORITY QUEUES                           ===
   // ===========================================================================
   /**
-   * @class PriorityQueue priorityQueue.h <agrum/core/priorityQueue.h>
+   * @class PriorityQueue
+   * @headerfile priorityQueue.h <agrum/core/priorityQueue.h>
    * @brief A priorityQueue is a heap in which each element has a mutable
    * priority
    * @ingroup basicstruct_group
@@ -956,11 +955,11 @@ namespace gum {
              typename Cmp = std::less< Priority >,
              typename Alloc = std::allocator< Val > >
   class PriorityQueue
-    : public PriorityQueueImplementation< Val,
-                                          Priority,
-                                          Cmp,
-                                          Alloc,
-                                          std::is_scalar< Val >::value > {
+      : public PriorityQueueImplementation< Val,
+                                            Priority,
+                                            Cmp,
+                                            Alloc,
+                                            std::is_scalar< Val >::value > {
     public:
     /// Types for STL compliance.
     /// @{
@@ -1050,7 +1049,7 @@ namespace gum {
      * @return Returns this gum::PriorityQueue.
      */
     PriorityQueue< Val, Priority, Cmp, Alloc >&
-    operator=(const PriorityQueue< Val, Priority, Cmp, Alloc >& from);
+      operator=(const PriorityQueue< Val, Priority, Cmp, Alloc >& from);
 
     /**
      * @brief Generalized opy operator.
@@ -1065,7 +1064,7 @@ namespace gum {
      */
     template < typename OtherAlloc >
     PriorityQueue< Val, Priority, Cmp, Alloc >&
-    operator=(const PriorityQueue< Val, Priority, Cmp, OtherAlloc >& from);
+      operator=(const PriorityQueue< Val, Priority, Cmp, OtherAlloc >& from);
 
     /**
      * @brief Move operator.
@@ -1073,7 +1072,7 @@ namespace gum {
      * @return Returns this gum::PriorityQueue.
      */
     PriorityQueue< Val, Priority, Cmp, Alloc >&
-    operator=(PriorityQueue< Val, Priority, Cmp, Alloc >&& from);
+      operator=(PriorityQueue< Val, Priority, Cmp, Alloc >&& from);
 
     /// @}
   };

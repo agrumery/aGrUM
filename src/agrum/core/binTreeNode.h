@@ -38,7 +38,8 @@ namespace gum {
   // ===========================================================================
 
   /**
-   * @class BinTreeNode binTreeNode.h <agrum/core/binTreeNode.h>
+   * @class BinTreeNode
+   * @headerfile binTreeNode.h <agrum/core/binTreeNode.h>
    * @brief Nodes of a binary trees.
    * @ingroup basicstruct_group
    *
@@ -333,4 +334,4 @@ extern template class gum::BinTreeNode< int >;
 // always include the implementation of the templates
 #include <agrum/core/binTreeNode_tpl.h>
 
-#endif  // GUM_BIN_TREE_NODE_H
+#endif   // GUM_BIN_TREE_NODE_H

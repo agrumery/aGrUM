@@ -394,7 +394,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/graphs/algorithms/simplicialSet_inl.h>
+#  include <agrum/graphs/algorithms/simplicialSet_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_SIMPLICIAL_SET_H */

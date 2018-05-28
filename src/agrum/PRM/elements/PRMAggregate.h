@@ -36,7 +36,8 @@ namespace gum {
   namespace prm {
 
     /**
-     * @class gum::PRMAggregate aggregate.h <agrum/PRM/elements/aggregate.h>
+     * @class gum::PRMAggregate
+     * @headerfile aggregate.h <agrum/PRM/elements/aggregate.h>
      * @brief Defines an aggregate in a PRM.
      *
      * An PRMAggregate is defined by its type, and by the slot chain on which it
@@ -151,7 +152,7 @@ namespace gum {
 
       /// See gum::PRMClassElement::elt_type().
       virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType
-      elt_type() const;
+        elt_type() const;
 
       /// Returns the aggregate of *this.
       AggregateType agg_type() const;
@@ -265,7 +266,7 @@ namespace gum {
     extern template class PRMAggregate< double >;
 
   } /* namespace prm */
-}  // namespace gum
+}   // namespace gum
 
 #include <agrum/PRM/elements/PRMAggregate_tpl.h>
 

@@ -24,8 +24,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   UAIReader< GUM_SCALAR >::UAIReader(BayesNet< GUM_SCALAR >* bn,
-                                     const std::string&      filename)
-      : BNReader< GUM_SCALAR >(bn, filename) {
+                                     const std::string&      filename) :
+      BNReader< GUM_SCALAR >(bn, filename) {
     GUM_CONSTRUCTOR(UAIReader);
     __bn = bn;
     __streamName = filename;
@@ -36,9 +36,7 @@ namespace gum {
     try {
       __scanner = new UAI::Scanner(__streamName.c_str());
       __parser = new UAI::Parser(__scanner);
-    } catch (IOError& e) {
-      __ioerror = true;
-    }
+    } catch (IOError& e) { __ioerror = true; }
   }
 
   template < typename GUM_SCALAR >
@@ -55,9 +53,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE UAI::Scanner& UAIReader< GUM_SCALAR >::scanner() {
-    if (__ioerror) {
-      GUM_ERROR(gum::IOError, "No such file " + streamName());
-    }
+    if (__ioerror) { GUM_ERROR(gum::IOError, "No such file " + streamName()); }
 
     return *__scanner;
   }
@@ -80,9 +76,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Size UAIReader< GUM_SCALAR >::proceed() {
-    if (__ioerror) {
-      GUM_ERROR(gum::IOError, "No such file " + streamName());
-    }
+    if (__ioerror) { GUM_ERROR(gum::IOError, "No such file " + streamName()); }
 
     if (!__parseDone) {
       try {
@@ -236,7 +230,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void
-  UAIReader< GUM_SCALAR >::showElegantErrorsAndWarnings(std::ostream& o) {
+    UAIReader< GUM_SCALAR >::showElegantErrorsAndWarnings(std::ostream& o) {
     if (__parseDone)
       __parser->errors().elegantErrorsAndWarnings(o);
     else {
@@ -281,16 +275,16 @@ namespace gum {
   }
   template < typename GUM_SCALAR >
   INLINE void
-  UAIReader< GUM_SCALAR >::__addError(Idx lig, Idx col, const std::string& s) {
+    UAIReader< GUM_SCALAR >::__addError(Idx lig, Idx col, const std::string& s) {
     __parser->errors().addError(s, __streamName, lig, col);
   }
   template < typename GUM_SCALAR >
   INLINE void
-  UAIReader< GUM_SCALAR >::__addWarning(Idx lig, Idx col, const std::string& s) {
+    UAIReader< GUM_SCALAR >::__addWarning(Idx lig, Idx col, const std::string& s) {
     __parser->errors().addWarning(s, __streamName, lig, col);
   }
 
   // @}
-}  // namespace
+}   // namespace gum
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS

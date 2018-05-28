@@ -43,7 +43,8 @@ namespace gum {
   namespace prm {
 
     /**
-     * @class PRMSystem system.h <agrum/PRM/system.h>
+     * @class PRMSystem
+     * @headerfile system.h <agrum/PRM/system.h>
      * @brief A PRMSystem is a container of PRMInstance and describe a
      * relational
      *        skeleton.
@@ -145,7 +146,7 @@ namespace gum {
       /// Returns the sequence of all instances of the given type
       /// @throw NotFound Raised if there is instantiation of type.
       const Set< PRMInstance< GUM_SCALAR >* >&
-      get(const PRMClass< GUM_SCALAR >& type) const;
+        get(const PRMClass< GUM_SCALAR >& type) const;
 
       /// Add an PRMInstance to this system.
       /// @throw DuplicateElement Raised if an PRMInstance with the same name
@@ -161,17 +162,17 @@ namespace gum {
       /// Returns the sequence of instances of a given array.
       /// @throw NotFound Raised if no array matches name.
       const Sequence< PRMInstance< GUM_SCALAR >* >&
-      getArray(const std::string& name) const;
+        getArray(const std::string& name) const;
 
       /// Returns the type of the given array.
       /// @throw NotFound Raised if no array matches name.
       PRMClassElementContainer< GUM_SCALAR >&
-      getArrayType(const std::string& name);
+        getArrayType(const std::string& name);
 
       /// Returns the type of the given array.
       /// @throw NotFound Raised if no array matches name.
       const PRMClassElementContainer< GUM_SCALAR >&
-      getArrayType(const std::string& name) const;
+        getArrayType(const std::string& name) const;
 
       /// @brief Add an PRMInstance to an array in this system.
       /// If the array doesn't exists it is created.
@@ -347,4 +348,4 @@ namespace gum {
 
 #include <agrum/PRM/elements/PRMSystem_tpl.h>
 
-#endif  // GUM_SYSTEM_H
+#endif   // GUM_SYSTEM_H

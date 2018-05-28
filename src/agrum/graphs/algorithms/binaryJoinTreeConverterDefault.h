@@ -80,7 +80,7 @@ namespace gum {
 
     /// forbid copy operator
     BinaryJoinTreeConverterDefault&
-    operator=(const BinaryJoinTreeConverterDefault&);
+      operator=(const BinaryJoinTreeConverterDefault&);
 
     /** @brief a function used to mark the nodes belonging to a given
      * connected component */

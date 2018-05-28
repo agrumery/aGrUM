@@ -108,18 +108,18 @@ namespace gum {
      * @warning If del_vars is precisely equal to the variables of table, the
      * result is an empty table. */
     virtual ScheduleMultiDim< GUM_SCALAR >
-    project(const ScheduleMultiDim< GUM_SCALAR >& table,
-            const Set< const DiscreteVariable* >& del_vars,
-            Schedule< GUM_SCALAR >&               schedule) = 0;
+      project(const ScheduleMultiDim< GUM_SCALAR >& table,
+              const Set< const DiscreteVariable* >& del_vars,
+              Schedule< GUM_SCALAR >&               schedule) = 0;
     ScheduleMultiDim< GUM_SCALAR >
-    project(const MultiDimImplementation< GUM_SCALAR >& table,
-            const Set< const DiscreteVariable* >&       del_vars,
-            Schedule< GUM_SCALAR >&                     schedule);
+      project(const MultiDimImplementation< GUM_SCALAR >& table,
+              const Set< const DiscreteVariable* >&       del_vars,
+              Schedule< GUM_SCALAR >&                     schedule);
     template < template < typename > class TABLE >
     ScheduleMultiDim< GUM_SCALAR >
-    project(const TABLE< GUM_SCALAR >&            table,
-            const Set< const DiscreteVariable* >& del_vars,
-            Schedule< GUM_SCALAR >&               schedule);
+      project(const TABLE< GUM_SCALAR >&            table,
+              const Set< const DiscreteVariable* >& del_vars,
+              Schedule< GUM_SCALAR >&               schedule);
 
     /// changes the function used for projecting tables
     virtual void setProjectFunction(MultiDimImplementation< GUM_SCALAR >* (*proj)(
@@ -136,9 +136,9 @@ namespace gum {
     virtual float nbOperations(const ScheduleMultiDim< GUM_SCALAR >& table,
                                const Set< const DiscreteVariable* >& del_vars,
                                const Schedule< GUM_SCALAR >&         schedule) = 0;
-    float nbOperations(const MultiDimImplementation< GUM_SCALAR >& table,
-                       const Set< const DiscreteVariable* >&       del_vars,
-                       const Schedule< GUM_SCALAR >&               schedule);
+    float         nbOperations(const MultiDimImplementation< GUM_SCALAR >& table,
+                               const Set< const DiscreteVariable* >&       del_vars,
+                               const Schedule< GUM_SCALAR >&               schedule);
     template < template < typename > class TABLE >
     float nbOperations(const TABLE< GUM_SCALAR >&            set,
                        const Set< const DiscreteVariable* >& del_vars,
@@ -154,25 +154,25 @@ namespace gum {
      * by
      * the resulting table ) */
     virtual std::pair< long, long >
-    memoryUsage(const ScheduleMultiDim< GUM_SCALAR >& table,
-                const Set< const DiscreteVariable* >& del_vars,
-                const Schedule< GUM_SCALAR >&         schedule) = 0;
+      memoryUsage(const ScheduleMultiDim< GUM_SCALAR >& table,
+                  const Set< const DiscreteVariable* >& del_vars,
+                  const Schedule< GUM_SCALAR >&         schedule) = 0;
     std::pair< long, long >
-    memoryUsage(const MultiDimImplementation< GUM_SCALAR >& table,
-                const Set< const DiscreteVariable* >&       del_vars,
-                const Schedule< GUM_SCALAR >&               schedule);
+      memoryUsage(const MultiDimImplementation< GUM_SCALAR >& table,
+                  const Set< const DiscreteVariable* >&       del_vars,
+                  const Schedule< GUM_SCALAR >&               schedule);
     template < template < typename > class TABLE >
     std::pair< long, long >
-    memoryUsage(const TABLE< GUM_SCALAR >&            table,
-                const Set< const DiscreteVariable* >& del_vars,
-                const Schedule< GUM_SCALAR >&         schedule);
+      memoryUsage(const TABLE< GUM_SCALAR >&            table,
+                  const Set< const DiscreteVariable* >& del_vars,
+                  const Schedule< GUM_SCALAR >&         schedule);
 
     /// @}
 
     private:
     /// to be coherent with combinations, forbid copy operators
     ScheduleProjection< GUM_SCALAR >&
-    operator=(const ScheduleProjection< GUM_SCALAR >&);
+      operator=(const ScheduleProjection< GUM_SCALAR >&);
   };
 
 } /* namespace gum */

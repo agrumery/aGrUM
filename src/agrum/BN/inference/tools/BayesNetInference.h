@@ -48,8 +48,8 @@ namespace gum {
    * because the constant is important and need be computed.
    */
   enum class FindBarrenNodesType {
-    FIND_NO_BARREN_NODES,  // do not try to find barren nodes
-    FIND_BARREN_NODES      // use a bottom-up algorithm to detect barren nodes
+    FIND_NO_BARREN_NODES,   // do not try to find barren nodes
+    FIND_BARREN_NODES       // use a bottom-up algorithm to detect barren nodes
   };
 
 
@@ -361,7 +361,7 @@ namespace gum {
      * @throw FatalError if pot=[0,0,...,0]
      */
     virtual void
-    addSetOfEvidence(const Set< const Potential< GUM_SCALAR >* >& potset) final;
+      addSetOfEvidence(const Set< const Potential< GUM_SCALAR >* >& potset) final;
 
     /// adds a new list of evidence
     /**
@@ -372,8 +372,8 @@ namespace gum {
      * evidence
      * @throw FatalError if pot=[0,0,...,0]
      */
-    virtual void
-    addListOfEvidence(const List< const Potential< GUM_SCALAR >* >& potlist) final;
+    virtual void addListOfEvidence(
+      const List< const Potential< GUM_SCALAR >* >& potlist) final;
 
     /// change the value of an already existing hard evidence
     /**
@@ -619,10 +619,10 @@ namespace gum {
   };
 
 
-}  // namespace gum
+}   // namespace gum
 
 
 #include <agrum/BN/inference/tools/BayesNetInference_tpl.h>
 
 
-#endif  // GUM_BAYES_NET_INFERENCE_H
+#endif   // GUM_BAYES_NET_INFERENCE_H

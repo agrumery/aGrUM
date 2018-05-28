@@ -26,20 +26,19 @@
 #include <agrum/graphs/parts/arcGraphPart.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/parts/arcGraphPart_inl.h>
-#endif  // GUM_NOINLINE
+#  include <agrum/graphs/parts/arcGraphPart_inl.h>
+#endif   // GUM_NOINLINE
 #include "agrum/graphs/graphElements.h"
 
 namespace gum {
 
   ///////////////////// ArcGraphPart
-  ArcGraphPart::ArcGraphPart(Size arcs_size, bool arcs_resize_policy)
-      : __arcs(arcs_size, arcs_resize_policy) {
+  ArcGraphPart::ArcGraphPart(Size arcs_size, bool arcs_resize_policy) :
+      __arcs(arcs_size, arcs_resize_policy) {
     GUM_CONSTRUCTOR(ArcGraphPart);
   }
 
-  ArcGraphPart::ArcGraphPart(const ArcGraphPart& s)
-      : __arcs(s.__arcs) {
+  ArcGraphPart::ArcGraphPart(const ArcGraphPart& s) : __arcs(s.__arcs) {
     GUM_CONS_CPY(ArcGraphPart);
 
     // copy the sets of parents
@@ -169,8 +168,8 @@ namespace gum {
       // check the parents
 
       for (const auto new_one : parents(current)) {
-        if (mark.exists(new_one))  // if this node is already marked, do not
-          continue;                // check it again
+        if (mark.exists(new_one))   // if this node is already marked, do not
+          continue;                 // check it again
 
         mark.insert(new_one, current);
 
@@ -193,7 +192,7 @@ namespace gum {
   }
 
   const std::vector< NodeId >
-  ArcGraphPart::directedUnorientedPath(const NodeId n1, const NodeId n2) const {
+    ArcGraphPart::directedUnorientedPath(const NodeId n1, const NodeId n2) const {
     // not recursive version => use a FIFO for simulating the recursion
     List< NodeId > nodeFIFO;
     nodeFIFO.pushBack(n2);
@@ -210,7 +209,7 @@ namespace gum {
 
       // check the parents
       for (const auto new_one : parents(current)) {
-        if (mark.exists(new_one))  // the node has already been visited
+        if (mark.exists(new_one))   // the node has already been visited
           continue;
 
         mark.insert(new_one, current);
@@ -231,8 +230,7 @@ namespace gum {
 
       // check the children
       for (const auto new_one : children(current)) {
-
-        if (mark.exists(new_one))  // the node has already been visited
+        if (mark.exists(new_one))   // the node has already been visited
           continue;
 
         mark.insert(new_one, current);

@@ -127,8 +127,10 @@ namespace gum {
       /** If the score does not exist, nothing is done. In particular, no
        * exception is raised */
       template < typename Alloc >
-      void
-      erase(Idx var1, Idx var2, Idx var3, const IdSet< Alloc >& conditioning_set);
+      void erase(Idx                   var1,
+                 Idx                   var2,
+                 Idx                   var3,
+                 const IdSet< Alloc >& conditioning_set);
 
       /// indicates whether a given score exists
       bool exists(Idx                       var1,
@@ -159,7 +161,7 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/scores_and_tests/cache43ptInfo_inl.h>
+#  include <agrum/learning/scores_and_tests/cache43ptInfo_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_CACHE_4_3_PT_INFO_H */

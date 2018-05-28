@@ -31,18 +31,12 @@ namespace gum {
   // Default constructor.
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE
-  MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::MultiDimFunctionGraph(
-    bool isReduced)
-      : MultiDimImplementation< GUM_SCALAR >()
-      , __name("MultiDimFunctionGraph")
-      , __tableName("NO NAME")
-      , __model(500, true)
-      , __manager(nullptr)
-      , __root(0)
-      , __internalNodeMap(500, true, false)
-      , __var2NodeIdMap(500, true, false)
-      , __isReduced(isReduced) {
-
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::MultiDimFunctionGraph(
+      bool isReduced) :
+      MultiDimImplementation< GUM_SCALAR >(),
+      __name("MultiDimFunctionGraph"), __tableName("NO NAME"), __model(500, true),
+      __manager(nullptr), __root(0), __internalNodeMap(500, true, false),
+      __var2NodeIdMap(500, true, false), __isReduced(isReduced) {
     GUM_CONSTRUCTOR(MultiDimFunctionGraph);
     __manager = nullptr;
     // Pop up a first node so that id 0 is unavailable
@@ -52,18 +46,12 @@ namespace gum {
   // Copy constructor.
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE
-  MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::MultiDimFunctionGraph(
-    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >& from)
-      : MultiDimImplementation< GUM_SCALAR >()
-      , __name("MultiDimFunctionGraph")
-      , __tableName("No NAME")
-      , __model(500, true)
-      , __manager(nullptr)
-      , __root(0)
-      , __internalNodeMap(500, true, false)
-      , __var2NodeIdMap(500, true, false)
-      , __isReduced(from.isReducedAndOrdered()) {
-
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::MultiDimFunctionGraph(
+      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >& from) :
+      MultiDimImplementation< GUM_SCALAR >(),
+      __name("MultiDimFunctionGraph"), __tableName("No NAME"), __model(500, true),
+      __manager(nullptr), __root(0), __internalNodeMap(500, true, false),
+      __var2NodeIdMap(500, true, false), __isReduced(from.isReducedAndOrdered()) {
     GUM_CONS_CPY(MultiDimFunctionGraph);
     copy(from);
   }
@@ -71,8 +59,8 @@ namespace gum {
   // Copy Operator.
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >&
-         MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::
-  operator=(const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >& from) {
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::operator=(
+      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >& from) {
     copy(from);
     return *this;
   }
@@ -146,7 +134,6 @@ namespace gum {
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE void MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::add(
     const DiscreteVariable& v) {
-
     if (!this->variablesSequence().exists(&v))
       MultiDimImplementation< GUM_SCALAR >::add(v);
 
@@ -172,47 +159,47 @@ namespace gum {
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE Size
          MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::realSize() const {
-    return __internalNodeMap.size();  // + __valueMap.size();
+    return __internalNodeMap.size();   // + __valueMap.size();
   }
 
 
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE void
-  MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::changeNotification(
-    const Instantiation&          i,
-    const DiscreteVariable* const var,
-    Idx                           oldval,
-    Idx                           newval) {}
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::changeNotification(
+      const Instantiation&          i,
+      const DiscreteVariable* const var,
+      Idx                           oldval,
+      Idx                           newval) {}
 
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE void
-  MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::setFirstNotification(
-    const Instantiation& i) {}
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::setFirstNotification(
+      const Instantiation& i) {}
 
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE void
-  MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::setLastNotification(
-    const Instantiation& i) {}
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::setLastNotification(
+      const Instantiation& i) {}
 
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE void
-  MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::setIncNotification(
-    const Instantiation& i) {}
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::setIncNotification(
+      const Instantiation& i) {}
 
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE void
-  MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::setDecNotification(
-    const Instantiation& i) {}
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::setDecNotification(
+      const Instantiation& i) {}
 
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE void
-  MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::setChangeNotification(
-    const Instantiation& i) {}
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::setChangeNotification(
+      const Instantiation& i) {}
 
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE const std::string
                MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::toString(
-    const Instantiation* i) const {
+      const Instantiation* i) const {
     std::stringstream sBuff;
     sBuff << (*i) << " = " << this->get(*i);
     return sBuff.str();
@@ -237,7 +224,6 @@ namespace gum {
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE void MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::copy(
     const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >& src) {
-
     if (this->__isReduced != src.isReducedAndOrdered())
       GUM_ERROR(OperationNotAllowed,
                 "Cannot copy a Reduced and Ordered "
@@ -253,7 +239,7 @@ namespace gum {
          ++varIter)
       this->add(**varIter);
 
-    std::vector< NodeId > lifo;
+    std::vector< NodeId >       lifo;
     Bijection< NodeId, NodeId > src2dest;
 
     if (src.isTerminalNode(src.root()))
@@ -298,11 +284,10 @@ namespace gum {
   // Copies src diagrams structure into this diagrams.
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE void
-  MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::copyAndReassign(
-    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >& src,
-    const Bijection< const DiscreteVariable*, const DiscreteVariable* >&
-      reassign) {
-
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::copyAndReassign(
+      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >& src,
+      const Bijection< const DiscreteVariable*, const DiscreteVariable* >&
+        reassign) {
     if (this->__isReduced != src.isReducedAndOrdered())
       GUM_ERROR(OperationNotAllowed,
                 "Cannot copy a Reduced and Ordered "
@@ -322,13 +307,11 @@ namespace gum {
                          << reassign.second(*varIter)->name()
                          << " have different domain sizes ("
                          << (*varIter)->domainSize()
-                         << "!="
-                         << reassign.second(*varIter)->domainSize()
-                         << ")")
+                         << "!=" << reassign.second(*varIter)->domainSize() << ")")
       this->add(*(reassign.second(*varIter)));
     }
 
-    std::vector< NodeId > lifo;
+    std::vector< NodeId >       lifo;
     Bijection< NodeId, NodeId > src2dest;
 
     if (src.isTerminalNode(src.root())) {
@@ -372,12 +355,10 @@ namespace gum {
 
   // Copies src diagrams and multiply every value by the given scalar.
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
-  INLINE void
-  MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::copyAndMultiplyByScalar(
-    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >& src,
-    GUM_SCALAR gamma) {
-
-
+  INLINE void MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::
+    copyAndMultiplyByScalar(
+      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >& src,
+      GUM_SCALAR                                                     gamma) {
     if (this->__isReduced != src.isReducedAndOrdered())
       GUM_ERROR(OperationNotAllowed,
                 "Cannot copy a Reduced and Ordered "
@@ -393,7 +374,7 @@ namespace gum {
          ++varIter)
       this->add(**varIter);
 
-    std::vector< NodeId > lifo;
+    std::vector< NodeId >       lifo;
     HashTable< NodeId, NodeId > src2dest;
 
     if (src.isTerminalNode(src.root()))
@@ -448,7 +429,6 @@ namespace gum {
            __internalNodeMap.begin();
          nodeIter != __internalNodeMap.end();
          ++nodeIter) {
-
       delete nodeIter.val();
     }
     __internalNodeMap.clear();
@@ -474,8 +454,7 @@ namespace gum {
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE std::string
          MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::toDot(
-    bool withBackArcs) const {
-
+      bool withBackArcs) const {
     std::stringstream output;
     std::stringstream terminalStream;
     std::stringstream nonTerminalStream;
@@ -583,16 +562,16 @@ namespace gum {
   // Indicates if given node is terminal or not
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE bool
-  MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::isTerminalNode(
-    const NodeId& node) const {
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::isTerminalNode(
+      const NodeId& node) const {
     return this->existsTerminalNodeWithId(node);
   }
 
   // Indicates if given node is terminal or not
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE bool
-  MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::isInternalNode(
-    const NodeId& node) const {
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::isInternalNode(
+      const NodeId& node) const {
     return this->__internalNodeMap.exists(node);
   }
 
@@ -600,7 +579,7 @@ namespace gum {
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE const GUM_SCALAR&
                MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::nodeValue(
-    NodeId n) const {
+      NodeId n) const {
     if (!isTerminalNode(n))
       GUM_ERROR(InvalidArgument,
                 "Id " << n << " is not bound to any terminal node")
@@ -610,7 +589,7 @@ namespace gum {
   // Returns internalNode structure associated to that nodeId
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE const InternalNode*
-  MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::node(NodeId n) const {
+               MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::node(NodeId n) const {
     if (!isInternalNode(n))
       GUM_ERROR(InvalidArgument,
                 "Id " << n << " is not bound to any terminal node")
@@ -621,7 +600,7 @@ namespace gum {
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE const LinkedList< NodeId >*
                MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::varNodeListe(
-    const DiscreteVariable* var) const {
+      const DiscreteVariable* var) const {
     if (!this->variablesSequence().exists(var))
       GUM_ERROR(InvalidArgument,
                 "Var " << var->name()
@@ -639,16 +618,16 @@ namespace gum {
   // Sets the name of the table represented by this structure.
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE void
-  MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::setTableName(
-    const std::string& name) {
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::setTableName(
+      const std::string& name) {
     __tableName = name;
   }
 
   // Returns true if this MultiDimFunctionGraph is reduced and Ordered.
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE bool
-  MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::isReducedAndOrdered()
-    const {
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::isReducedAndOrdered()
+      const {
     return __isReduced;
   }
 
@@ -656,7 +635,7 @@ namespace gum {
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
          MultiDimFunctionGraph< GUM_SCALAR,
-                         TerminalNodePolicy >::getReducedAndOrderedInstance() {
+                                TerminalNodePolicy >::getReducedAndOrderedInstance() {
     return new MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >();
   }
 
@@ -694,4 +673,4 @@ namespace gum {
     return this->terminalNodeValue(currentNodeId);
   }
 
-}  // gum
+}   // namespace gum

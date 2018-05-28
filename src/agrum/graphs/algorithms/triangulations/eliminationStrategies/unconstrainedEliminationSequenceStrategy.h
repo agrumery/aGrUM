@@ -55,7 +55,7 @@ namespace gum {
    *
    */
   class UnconstrainedEliminationSequenceStrategy
-    : public EliminationSequenceStrategy {
+      : public EliminationSequenceStrategy {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

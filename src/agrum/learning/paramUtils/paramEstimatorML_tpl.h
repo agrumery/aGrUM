@@ -32,12 +32,13 @@ namespace gum {
     template < typename IdSetAlloc, typename CountAlloc >
     template < typename RowFilter >
     INLINE ParamEstimatorML< IdSetAlloc, CountAlloc >::ParamEstimatorML(
-      const RowFilter&           filter,
-      const std::vector< Size >& var_modalities,
-      Apriori< IdSetAlloc, CountAlloc >&                    apriori,
-      const ScoreInternalApriori< IdSetAlloc, CountAlloc >& score_internal_apriori)
-        : ParamEstimator< IdSetAlloc, CountAlloc >(
-            filter, var_modalities, apriori, score_internal_apriori) {
+      const RowFilter&                   filter,
+      const std::vector< Size >&         var_modalities,
+      Apriori< IdSetAlloc, CountAlloc >& apriori,
+      const ScoreInternalApriori< IdSetAlloc, CountAlloc >&
+        score_internal_apriori) :
+        ParamEstimator< IdSetAlloc, CountAlloc >(
+          filter, var_modalities, apriori, score_internal_apriori) {
       // for debugging purposes
       GUM_CONSTRUCTOR(ParamEstimatorML);
     }
@@ -45,8 +46,8 @@ namespace gum {
     /// copy constructor
     template < typename IdSetAlloc, typename CountAlloc >
     ParamEstimatorML< IdSetAlloc, CountAlloc >::ParamEstimatorML(
-      const ParamEstimatorML< IdSetAlloc, CountAlloc >& from)
-        : ParamEstimator< IdSetAlloc, CountAlloc >(from) {
+      const ParamEstimatorML< IdSetAlloc, CountAlloc >& from) :
+        ParamEstimator< IdSetAlloc, CountAlloc >(from) {
       // for debugging purposes
       GUM_CONS_CPY(ParamEstimatorML);
     }
@@ -54,8 +55,8 @@ namespace gum {
     /// move constructor
     template < typename IdSetAlloc, typename CountAlloc >
     ParamEstimatorML< IdSetAlloc, CountAlloc >::ParamEstimatorML(
-      ParamEstimatorML< IdSetAlloc, CountAlloc >&& from)
-        : ParamEstimator< IdSetAlloc, CountAlloc >(std::move(from)) {
+      ParamEstimatorML< IdSetAlloc, CountAlloc >&& from) :
+        ParamEstimator< IdSetAlloc, CountAlloc >(std::move(from)) {
       // for debugging purposes
       GUM_CONS_MOV(ParamEstimatorML);
     }
@@ -63,7 +64,7 @@ namespace gum {
     /// virtual copy factory
     template < typename IdSetAlloc, typename CountAlloc >
     ParamEstimatorML< IdSetAlloc, CountAlloc >*
-    ParamEstimatorML< IdSetAlloc, CountAlloc >::copyFactory() const {
+      ParamEstimatorML< IdSetAlloc, CountAlloc >::copyFactory() const {
       return new ParamEstimatorML< IdSetAlloc, CountAlloc >(*this);
     }
 
@@ -77,7 +78,7 @@ namespace gum {
     /// returns the CPT's parameters corresponding to a given nodeset
     template < typename IdSetAlloc, typename CountAlloc >
     const std::vector< double, CountAlloc >&
-    ParamEstimatorML< IdSetAlloc, CountAlloc >::parameters(Idx nodeset_index) {
+      ParamEstimatorML< IdSetAlloc, CountAlloc >::parameters(Idx nodeset_index) {
       // if all_counts is already normalized, just return it
       if (this->_is_normalized[nodeset_index]) {
         return this->_getAllCounts(nodeset_index);

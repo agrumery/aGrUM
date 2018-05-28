@@ -79,60 +79,43 @@ namespace gum {
     }
   }
 
-  FormulaPart::FormulaPart()
-      : type(token_type::NIL)
-      , number(NAN)
-      , character('\0')
-      , function(nil) {
+  FormulaPart::FormulaPart() :
+      type(token_type::NIL), number(NAN), character('\0'), function(nil) {
     GUM_CONSTRUCTOR(FormulaPart);
   }
 
-  FormulaPart::FormulaPart(token_type t, double n)
-      : type(t)
-      , number(n)
-      , character('\0')
-      , function(nil) {
+  FormulaPart::FormulaPart(token_type t, double n) :
+      type(t), number(n), character('\0'), function(nil) {
     GUM_CONSTRUCTOR(FormulaPart);
   }
 
-  FormulaPart::FormulaPart(token_type t, char c)
-      : type(t)
-      , number(NAN)
-      , character(c)
-      , function(nil) {
+  FormulaPart::FormulaPart(token_type t, char c) :
+      type(t), number(NAN), character(c), function(nil) {
     GUM_CONSTRUCTOR(FormulaPart);
   }
 
-  FormulaPart::FormulaPart(token_type t, token_function func)
-      : type(t)
-      , number(NAN)
-      , character('\0')
-      , function(func) {
+  FormulaPart::FormulaPart(token_type t, token_function func) :
+      type(t), number(NAN), character('\0'), function(func) {
     GUM_CONSTRUCTOR(FormulaPart);
   }
 
-  FormulaPart::FormulaPart(const FormulaPart& source)
-      : type(source.type)
-      , number(source.number)
-      , character(source.character)
-      , function(source.function) {
+  FormulaPart::FormulaPart(const FormulaPart& source) :
+      type(source.type), number(source.number), character(source.character),
+      function(source.function) {
     GUM_CONS_CPY(FormulaPart);
   }
 
-  FormulaPart::FormulaPart(FormulaPart&& source)
-      : type(std::move(source.type))
-      , number(std::move(source.number))
-      , character(std::move(source.character))
-      , function(std::move(source.function)) {
+  FormulaPart::FormulaPart(FormulaPart&& source) :
+      type(std::move(source.type)), number(std::move(source.number)),
+      character(std::move(source.character)),
+      function(std::move(source.function)) {
     GUM_CONS_MOV(FormulaPart);
   }
 
   FormulaPart::~FormulaPart() { GUM_DESTRUCTOR(FormulaPart); }
 
   FormulaPart& FormulaPart::operator=(const FormulaPart& source) {
-    if (this == &source) {
-      return *this;
-    }
+    if (this == &source) { return *this; }
 
     type = source.type;
     number = source.number;
@@ -143,9 +126,7 @@ namespace gum {
   }
 
   FormulaPart& FormulaPart::operator=(FormulaPart&& source) {
-    if (this == &source) {
-      return *this;
-    }
+    if (this == &source) { return *this; }
 
     type = std::move(source.type);
     number = std::move(source.number);
@@ -197,101 +178,86 @@ namespace gum {
     __parser->formula(this);
   }
 
-  Formula::Formula(short s)
-      : __formula(std::to_string(s))
-      , __last_token(FormulaPart()) {
+  Formula::Formula(short s) :
+      __formula(std::to_string(s)), __last_token(FormulaPart()) {
     GUM_CONSTRUCTOR(Formula);
     __initialise();
   }
 
-  Formula::Formula(unsigned short us)
-      : __formula(std::to_string(us))
-      , __last_token(FormulaPart()) {
+  Formula::Formula(unsigned short us) :
+      __formula(std::to_string(us)), __last_token(FormulaPart()) {
     GUM_CONSTRUCTOR(Formula);
     __initialise();
   }
 
-  Formula::Formula(int i)
-      : __formula(std::to_string(i))
-      , __last_token(FormulaPart()) {
+  Formula::Formula(int i) :
+      __formula(std::to_string(i)), __last_token(FormulaPart()) {
     GUM_CONSTRUCTOR(Formula);
     __initialise();
   }
 
-  Formula::Formula(unsigned int ui)
-      : __formula(std::to_string(ui))
-      , __last_token(FormulaPart()) {
+  Formula::Formula(unsigned int ui) :
+      __formula(std::to_string(ui)), __last_token(FormulaPart()) {
     GUM_CONSTRUCTOR(Formula);
     __initialise();
   }
 
-  Formula::Formula(long l)
-      : __formula(std::to_string(l))
-      , __last_token(FormulaPart()) {
+  Formula::Formula(long l) :
+      __formula(std::to_string(l)), __last_token(FormulaPart()) {
     GUM_CONSTRUCTOR(Formula);
     __initialise();
   }
 
-  Formula::Formula(unsigned long ul)
-      : __formula(std::to_string(ul))
-      , __last_token(FormulaPart()) {
+  Formula::Formula(unsigned long ul) :
+      __formula(std::to_string(ul)), __last_token(FormulaPart()) {
     GUM_CONSTRUCTOR(Formula);
     __initialise();
   }
 
-  Formula::Formula(long long l)
-      : __formula(std::to_string(l))
-      , __last_token(FormulaPart()) {
+  Formula::Formula(long long l) :
+      __formula(std::to_string(l)), __last_token(FormulaPart()) {
     GUM_CONSTRUCTOR(Formula);
     __initialise();
   }
 
-  Formula::Formula(unsigned long long ul)
-      : __formula(std::to_string(ul))
-      , __last_token(FormulaPart()) {
+  Formula::Formula(unsigned long long ul) :
+      __formula(std::to_string(ul)), __last_token(FormulaPart()) {
     GUM_CONSTRUCTOR(Formula);
     __initialise();
   }
 
-  Formula::Formula(float f)
-      : __formula(std::to_string(f))
-      , __last_token(FormulaPart()) {
+  Formula::Formula(float f) :
+      __formula(std::to_string(f)), __last_token(FormulaPart()) {
     GUM_CONSTRUCTOR(Formula);
     __initialise();
   }
 
-  Formula::Formula(double d)
-      : __formula(std::to_string(d))
-      , __last_token(FormulaPart()) {
+  Formula::Formula(double d) :
+      __formula(std::to_string(d)), __last_token(FormulaPart()) {
     GUM_CONSTRUCTOR(Formula);
     __initialise();
   }
 
-  Formula::Formula(const std::string& f)
-      : __formula(f)
-      , __last_token(FormulaPart()) {
+  Formula::Formula(const std::string& f) :
+      __formula(f), __last_token(FormulaPart()) {
     GUM_CONSTRUCTOR(Formula);
 
     __initialise();
   }
 
-  Formula::Formula(const Formula& source)
-      : __formula(source.__formula)
-      , __last_token(source.__last_token)
-      , __output(source.__output)
-      , __stack(source.__stack) {
+  Formula::Formula(const Formula& source) :
+      __formula(source.__formula), __last_token(source.__last_token),
+      __output(source.__output), __stack(source.__stack) {
     GUM_CONS_CPY(Formula);
 
     __initialise();
   }
 
-  Formula::Formula(Formula&& source)
-      : __formula(std::move(source.__formula))
-      , __scanner(std::move(source.__scanner))
-      , __parser(std::move(source.__parser))
-      , __last_token(std::move(source.__last_token))
-      , __output(std::move(source.__output))
-      , __stack(std::move(source.__stack)) {
+  Formula::Formula(Formula&& source) :
+      __formula(std::move(source.__formula)),
+      __scanner(std::move(source.__scanner)), __parser(std::move(source.__parser)),
+      __last_token(std::move(source.__last_token)),
+      __output(std::move(source.__output)), __stack(std::move(source.__stack)) {
     GUM_CONS_CPY(Formula);
 
     __parser->formula(this);
@@ -300,9 +266,7 @@ namespace gum {
   Formula::~Formula() { GUM_DESTRUCTOR(Formula); }
 
   Formula& Formula::operator=(const Formula& source) {
-    if (this == &source) {
-      return *this;
-    }
+    if (this == &source) { return *this; }
 
     __formula = source.__formula;
     __last_token = source.__last_token;
@@ -315,9 +279,7 @@ namespace gum {
   }
 
   Formula& Formula::operator=(Formula&& source) {
-    if (this == &source) {
-      return *this;
-    }
+    if (this == &source) { return *this; }
 
     __formula = std::move(source.__formula);
     __scanner = std::move(source.__scanner);
@@ -331,17 +293,12 @@ namespace gum {
   }
 
   double Formula::result() const {
-
     __parser->Parse();
 
     std::stack< FormulaPart > stack;
-    if (__output.empty()) {
-      GUM_ERROR(OperationNotAllowed, "no output found");
-    }
+    if (__output.empty()) { GUM_ERROR(OperationNotAllowed, "no output found"); }
 
     for (auto item : __output) {
-
-
       switch (item.type) {
         case FormulaPart::token_type::NUMBER: {
           stack.push(item);
@@ -362,18 +319,16 @@ namespace gum {
     }
 
     if (stack.size() != 1) {
-
       GUM_ERROR(OperationNotAllowed, "too many inputs");
 
     } else if (stack.top().type != FormulaPart::token_type::NUMBER) {
-
       GUM_ERROR(OperationNotAllowed, "too many inputs");
     }
     return stack.top().number;
   }
 
-}  // namespace gum
+}   // namespace gum
 
 #ifdef GUM_NO_INLINE
-#include <agrum/core/math/formula_inl.h>
-#endif  // GUM_NO_INLINE
+#  include <agrum/core/math/formula_inl.h>
+#endif   // GUM_NO_INLINE

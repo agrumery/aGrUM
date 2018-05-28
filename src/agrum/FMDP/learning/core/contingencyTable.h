@@ -53,7 +53,6 @@ namespace gum {
 
   template < typename GUM_SCALAR_A, typename GUM_SCALAR_B >
   class ContingencyTable {
-
     public:
     // ##########################################################################
     /// @name Constructor & destructor.
@@ -156,7 +155,7 @@ namespace gum {
     /// @}
 
     ContingencyTable< GUM_SCALAR_A, GUM_SCALAR_B >&
-    operator+=(const ContingencyTable< GUM_SCALAR_A, GUM_SCALAR_B >& src);
+      operator+=(const ContingencyTable< GUM_SCALAR_A, GUM_SCALAR_B >& src);
 
     std::string toString() const {
       std::stringstream ss;
@@ -177,11 +176,11 @@ namespace gum {
      * a efficient contingency table, you're welcome
      */
     HashTable< std::pair< GUM_SCALAR_A, GUM_SCALAR_B >, Idx > __jointTable;
-    HashTable< GUM_SCALAR_A, Idx > __attrAMarginalTable;
-    HashTable< GUM_SCALAR_B, Idx > __attrBMarginalTable;
+    HashTable< GUM_SCALAR_A, Idx >                            __attrAMarginalTable;
+    HashTable< GUM_SCALAR_B, Idx >                            __attrBMarginalTable;
   };
 
 } /* namespace gum */
 
 #include <agrum/FMDP/learning/core/contingencyTable_tpl.h>
-#endif  // GUM_CONTINGENCY_TABLE_H
+#endif   // GUM_CONTINGENCY_TABLE_H

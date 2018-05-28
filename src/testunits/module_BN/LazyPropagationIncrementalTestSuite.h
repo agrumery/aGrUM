@@ -1,23 +1,23 @@
 
 /***************************************************************************
-*   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 
 #include <cxxtest/testsuite_utils.h>
@@ -58,15 +58,15 @@ namespace gum_tests {
     public:
     // the function used to combine two tables
     static gum::Potential< double >*
-    LPIncrmultiPotential(const gum::Potential< double >& t1,
-                         const gum::Potential< double >& t2) {
+      LPIncrmultiPotential(const gum::Potential< double >& t1,
+                           const gum::Potential< double >& t2) {
       return new gum::Potential< double >(t1 * t2);
     }
 
     // the function used to combine two tables
-    static gum::Potential< double >*
-    LPIncrprojPotential(const gum::Potential< double >&                 t1,
-                        const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+    static gum::Potential< double >* LPIncrprojPotential(
+      const gum::Potential< double >&                 t1,
+      const gum::Set< const gum::DiscreteVariable* >& del_vars) {
       return new gum::Potential< double >(t1.margSumOut(del_vars));
     }
 
@@ -123,18 +123,18 @@ namespace gum_tests {
 
       bn->cpt(BN_node_index[0]).fillWith({0.2, 0.8});
       bn->cpt(BN_node_index[1]).fillWith({0.3, 0.4, 0.3, 0.1, 0.3, 0.6});
-      bn->cpt(BN_node_index[2]).fillWith({0.1, 0.9,    // 1
-                                          0.2, 0.8,    // 2
-                                          0.3, 0.7,    // 3
-                                          0.4, 0.6,    // 4
-                                          0.5, 0.5,    // 5
-                                          0.6, 0.4,    // 6
-                                          0.7, 0.3,    // 7
-                                          0.8, 0.2,    // 8
-                                          0.9, 0.1,    // 9
-                                          0.8, 0.2,    // 10
-                                          0.7, 0.3,    // 11
-                                          0.6, 0.4});  // 12
+      bn->cpt(BN_node_index[2]).fillWith({0.1, 0.9,     // 1
+                                          0.2, 0.8,     // 2
+                                          0.3, 0.7,     // 3
+                                          0.4, 0.6,     // 4
+                                          0.5, 0.5,     // 5
+                                          0.6, 0.4,     // 6
+                                          0.7, 0.3,     // 7
+                                          0.8, 0.2,     // 8
+                                          0.9, 0.1,     // 9
+                                          0.8, 0.2,     // 10
+                                          0.7, 0.3,     // 11
+                                          0.6, 0.4});   // 12
       bn->cpt(BN_node_index[3]).fillWith({0.3, 0.2, 0.5, 0.7, 0.1, 0.2});
       bn->cpt(BN_node_index[4]).fillWith({0.4, 0.6, 0.9, 0.1});
       bn->cpt(BN_node_index[5])
@@ -179,8 +179,8 @@ namespace gum_tests {
 
     // ============================================================================
     gum::Potential< double >*
-    posterior_joint(const gum::Potential< double >*             joint,
-                    gum::Set< const gum::Potential< double >* > evidence) {
+      posterior_joint(const gum::Potential< double >*             joint,
+                      gum::Set< const gum::Potential< double >* > evidence) {
       evidence.insert(joint);
       gum::Potential< double >* joint_pot = combination->combine(evidence);
 
@@ -254,8 +254,8 @@ namespace gum_tests {
     void test_prior_with_targets() {
       gum::LazyPropagation< double > inf(bn);
       inf.eraseAllTargets();
-      inf.addTarget(0);  // A
-      inf.addTarget(2);  // C
+      inf.addTarget(0);   // A
+      inf.addTarget(2);   // C
 
       TS_ASSERT_THROWS_NOTHING(inf.makeInference());
 
@@ -276,8 +276,8 @@ namespace gum_tests {
     void test_prior_with_targets_evidence() {
       gum::LazyPropagation< double > inf(bn);
       inf.eraseAllTargets();
-      inf.addTarget(0);  // A
-      inf.addTarget(5);  // F
+      inf.addTarget(0);   // A
+      inf.addTarget(5);   // F
 
       __Potential ev1(create_evidence(1, {0, 0, 1}));
       inf.addEvidence(1, 2);
@@ -306,8 +306,8 @@ namespace gum_tests {
     void test_prior_with_targets_outside_evidence() {
       gum::LazyPropagation< double > inf(bn);
       inf.eraseAllTargets();
-      inf.addTarget(0);  // A
-      inf.addTarget(3);  // D
+      inf.addTarget(0);   // A
+      inf.addTarget(3);   // D
 
       __Potential ev0(create_evidence(0, {0.3, 0.7}));
       inf.addEvidence(*ev0);
@@ -339,8 +339,8 @@ namespace gum_tests {
     void test_prior_with_targets_evidence_values_changed() {
       gum::LazyPropagation< double > inf(bn);
       inf.eraseAllTargets();
-      inf.addTarget(0);  // A
-      inf.addTarget(3);  // D
+      inf.addTarget(0);   // A
+      inf.addTarget(3);   // D
 
       __Potential ev0(create_evidence(0, {0.3, 0.7}));
       inf.addEvidence(*ev0);
@@ -486,8 +486,8 @@ namespace gum_tests {
     void test_prior_with_targets_hard_evidence_values_changed() {
       gum::LazyPropagation< double > inf(bn);
       inf.eraseAllTargets();
-      inf.addTarget(0);  // A
-      inf.addTarget(3);  // D
+      inf.addTarget(0);   // A
+      inf.addTarget(3);   // D
 
       __Potential ev0(create_evidence(0, {0.3, 0.7}));
       inf.addEvidence(*ev0);
@@ -631,8 +631,8 @@ namespace gum_tests {
     void test_prior_with_targets_evidence_changed() {
       gum::LazyPropagation< double > inf(bn);
       inf.eraseAllTargets();
-      inf.addTarget(0);  // A
-      inf.addTarget(3);  // D
+      inf.addTarget(0);   // A
+      inf.addTarget(3);   // D
 
       __Potential ev0(create_evidence(0, {0.3, 1.7}));
       inf.addEvidence(*ev0);
@@ -715,4 +715,4 @@ namespace gum_tests {
 
     void testEnd() { theEnd(); }
   };
-}
+}   // namespace gum_tests

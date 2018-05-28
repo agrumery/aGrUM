@@ -1,23 +1,23 @@
 
 /***************************************************************************
-*   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 
 #include <sstream>
@@ -34,14 +34,14 @@
 namespace gum_tests {
 
   static gum::MultiDimImplementation< float >*
-  schedule_proj_mysum(const gum::MultiDimImplementation< float >&     t,
-                      const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+    schedule_proj_mysum(const gum::MultiDimImplementation< float >&     t,
+                        const gum::Set< const gum::DiscreteVariable* >& del_vars) {
     return projectSumMultiDimArray(&t, del_vars);
   }
 
   static gum::MultiDimImplementation< float >*
-  schedule_proj_mymin(const gum::MultiDimImplementation< float >&     t,
-                      const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+    schedule_proj_mymin(const gum::MultiDimImplementation< float >&     t,
+                        const gum::Set< const gum::DiscreteVariable* >& del_vars) {
     return projectMinMultiDimArray(&t, del_vars);
   }
 
@@ -86,7 +86,7 @@ namespace gum_tests {
 
       while (!available.empty()) {
         for (gum::NodeSet::const_iterator_safe iter =
-               available.beginSafe();  // safe iterator needed here
+               available.beginSafe();   // safe iterator needed here
              iter != available.endSafe();
              ++iter) {
           schedule.execute(*iter);
@@ -108,7 +108,7 @@ namespace gum_tests {
 
       while (!available.empty()) {
         for (gum::NodeSet::const_iterator_safe iter =
-               available.beginSafe();  // safe iterator needed here
+               available.beginSafe();   // safe iterator needed here
              iter != available.endSafe();
              ++iter) {
           schedule.execute(*iter);
@@ -124,7 +124,7 @@ namespace gum_tests {
 
       while (!available.empty()) {
         for (gum::NodeSet::const_iterator_safe iter =
-               available.beginSafe();  // safe iterator needed here
+               available.beginSafe();   // safe iterator needed here
              iter != available.endSafe();
              ++iter) {
           schedule.execute(*iter);
@@ -141,7 +141,7 @@ namespace gum_tests {
 
       while (!available.empty()) {
         for (gum::NodeSet::const_iterator_safe iter =
-               available.beginSafe();  // safe iterator needed here
+               available.beginSafe();   // safe iterator needed here
              iter != available.endSafe();
              ++iter) {
           schedule.execute(*iter);
@@ -158,7 +158,7 @@ namespace gum_tests {
 
       while (!available.empty()) {
         for (gum::NodeSet::const_iterator_safe iter =
-               available.beginSafe();  // safe iterator needed here
+               available.beginSafe();   // safe iterator needed here
              iter != available.endSafe();
              ++iter) {
           schedule.execute(*iter);

@@ -66,4 +66,4 @@ namespace gum {
     }
 
   } /* namespace prm */
-}
+}   // namespace gum

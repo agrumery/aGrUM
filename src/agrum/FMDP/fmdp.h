@@ -52,7 +52,6 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   class FMDP {
-
     template < typename GUM_SCALAR_O >
     using VarTransitionTable =
       HashTable< const DiscreteVariable*,
@@ -156,10 +155,10 @@ namespace gum {
      * @throw DuplicateElement if variable already has a transition for this
      * action
      */
-    void
-    addTransitionForAction(Idx                                         actionId,
-                           const DiscreteVariable*                     var,
-                           const MultiDimImplementation< GUM_SCALAR >* transition);
+    void addTransitionForAction(
+      Idx                                         actionId,
+      const DiscreteVariable*                     var,
+      const MultiDimImplementation< GUM_SCALAR >* transition);
 
     /**
      * Adds a default variable transition
@@ -176,7 +175,7 @@ namespace gum {
      * given action
      */
     const MultiDimImplementation< GUM_SCALAR >*
-    transition(Idx actionId, const DiscreteVariable* v) const;
+      transition(Idx actionId, const DiscreteVariable* v) const;
 
     /// @}
 
@@ -245,8 +244,8 @@ namespace gum {
     const std::string& actionName(Idx actionId) const;
 
     /**
-      * Returns action id
-      */
+     * Returns action id
+     */
     Idx actionId(const std::string&) const;
 
     /**
@@ -302,4 +301,4 @@ namespace gum {
 
 #include <agrum/FMDP/fmdp_tpl.h>
 
-#endif  // GUM_FACTORED_MARKOV_DECISION_PROCESS_H
+#endif   // GUM_FACTORED_MARKOV_DECISION_PROCESS_H

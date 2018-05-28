@@ -121,4 +121,4 @@ namespace gum {
 
 #include <agrum/PRM/o3prm/O3prmBNWriter_tpl.h>
 
-#endif  // GUM_O3PRMBNWRITER_H
+#endif   // GUM_O3PRMBNWRITER_H

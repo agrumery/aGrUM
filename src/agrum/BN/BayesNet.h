@@ -43,7 +43,8 @@ namespace gum {
   class BayesNetFactory;
 
   /**
-   * @class BayesNet BayesNet.h <agrum/BN/BayesNet.h>
+   * @class BayesNet
+   * @headerfile BayesNet.h <agrum/BN/BayesNet.h>
    * @brief Class representing a Bayesian Network.
    * @ingroup bn_group
    *
@@ -73,7 +74,6 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   class BayesNet : public IBayesNet< GUM_SCALAR > {
-
     friend class BayesNetFactory< GUM_SCALAR >;
 
     public:
@@ -179,7 +179,7 @@ namespace gum {
     NodeId add(const DiscreteVariable& var);
 
     /**
-    * @brief Shortcut for add(gum::LabelizedVariable(name,name,nbrmod))
+     * @brief Shortcut for add(gum::LabelizedVariable(name,name,nbrmod))
      *
      * Add a gum::LabelizedVariable to the gum::BayesNet
      *
@@ -315,15 +315,15 @@ namespace gum {
     }
 
     /**
-  * @brief Changes a variable's label in the gum::BayesNet.
-  *
-  * This will change the gum::LabelizedVariable names in the gum::BayesNet.
-  *
-  * @throws DuplicateLabel Raised if new_label is already used in this
-  *                        gum::LabelizedVariable.
-  * @throws NotFound Raised if no variable matches id or if the variable is not a
-  * LabelizedVariable
-  */
+     * @brief Changes a variable's label in the gum::BayesNet.
+     *
+     * This will change the gum::LabelizedVariable names in the gum::BayesNet.
+     *
+     * @throws DuplicateLabel Raised if new_label is already used in this
+     *                        gum::LabelizedVariable.
+     * @throws NotFound Raised if no variable matches id or if the variable is not
+     * a LabelizedVariable
+     */
     void changeVariableLabel(NodeId             id,
                              const std::string& old_label,
                              const std::string& new_label);
@@ -494,8 +494,9 @@ namespace gum {
      *
      * @{
      */
-    NodeId
-    addNoisyOR(const DiscreteVariable& var, GUM_SCALAR external_weight, NodeId id);
+    NodeId addNoisyOR(const DiscreteVariable& var,
+                      GUM_SCALAR              external_weight,
+                      NodeId                  id);
     NodeId addNoisyORNet(const DiscreteVariable& var,
                          GUM_SCALAR              external_weight,
                          NodeId                  id);
@@ -539,7 +540,7 @@ namespace gum {
      * @return the id of the added variable.
      */
     NodeId
-    addLogit(const DiscreteVariable& var, GUM_SCALAR external_weight, NodeId id);
+      addLogit(const DiscreteVariable& var, GUM_SCALAR external_weight, NodeId id);
 
     /**
      * Add a variable, its associate node and a Logit implementation. The id of

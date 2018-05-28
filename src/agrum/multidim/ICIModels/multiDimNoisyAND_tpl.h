@@ -32,9 +32,9 @@ namespace gum {
   // Default constructor
   template < typename GUM_SCALAR >
   INLINE
-  MultiDimNoisyAND< GUM_SCALAR >::MultiDimNoisyAND(GUM_SCALAR external_weight,
-                                                   GUM_SCALAR default_weight)
-      : MultiDimICIModel< GUM_SCALAR >(external_weight, default_weight) {
+    MultiDimNoisyAND< GUM_SCALAR >::MultiDimNoisyAND(GUM_SCALAR external_weight,
+                                                     GUM_SCALAR default_weight) :
+      MultiDimICIModel< GUM_SCALAR >(external_weight, default_weight) {
     if (external_weight == 0) {
       GUM_ERROR(InvalidArgument, "external weight can not be null for a NoisyAND");
     }
@@ -45,8 +45,8 @@ namespace gum {
   // Default constructor
   template < typename GUM_SCALAR >
   INLINE MultiDimNoisyAND< GUM_SCALAR >::MultiDimNoisyAND(
-    const MultiDimNoisyAND< GUM_SCALAR >& from)
-      : MultiDimICIModel< GUM_SCALAR >(from) {
+    const MultiDimNoisyAND< GUM_SCALAR >& from) :
+      MultiDimICIModel< GUM_SCALAR >(from) {
     GUM_CONS_CPY(MultiDimNoisyAND);
   }
 
@@ -54,8 +54,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE MultiDimNoisyAND< GUM_SCALAR >::MultiDimNoisyAND(
     const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-    const MultiDimNoisyAND< GUM_SCALAR >& from)
-      : MultiDimICIModel< GUM_SCALAR >(bij, from) {
+    const MultiDimNoisyAND< GUM_SCALAR >&                                from) :
+      MultiDimICIModel< GUM_SCALAR >(bij, from) {
     GUM_CONSTRUCTOR(MultiDimNoisyAND);
   }
 

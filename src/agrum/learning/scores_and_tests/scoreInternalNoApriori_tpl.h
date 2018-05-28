@@ -31,25 +31,25 @@ namespace gum {
     /// default constructor
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE
-    ScoreInternalNoApriori< IdSetAlloc, CountAlloc >::ScoreInternalNoApriori() {
+      ScoreInternalNoApriori< IdSetAlloc, CountAlloc >::ScoreInternalNoApriori() {
       GUM_CONSTRUCTOR(ScoreInternalNoApriori);
     }
 
     /// copy constructor
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE
-    ScoreInternalNoApriori< IdSetAlloc, CountAlloc >::ScoreInternalNoApriori(
-      const ScoreInternalNoApriori< IdSetAlloc, CountAlloc >& from)
-        : ScoreInternalApriori< IdSetAlloc, CountAlloc >(from) {
+      ScoreInternalNoApriori< IdSetAlloc, CountAlloc >::ScoreInternalNoApriori(
+        const ScoreInternalNoApriori< IdSetAlloc, CountAlloc >& from) :
+        ScoreInternalApriori< IdSetAlloc, CountAlloc >(from) {
       GUM_CONS_CPY(ScoreInternalNoApriori);
     }
 
     /// move constructor
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE
-    ScoreInternalNoApriori< IdSetAlloc, CountAlloc >::ScoreInternalNoApriori(
-      ScoreInternalNoApriori< IdSetAlloc, CountAlloc >&& from)
-        : ScoreInternalApriori< IdSetAlloc, CountAlloc >(std::move(from)) {
+      ScoreInternalNoApriori< IdSetAlloc, CountAlloc >::ScoreInternalNoApriori(
+        ScoreInternalNoApriori< IdSetAlloc, CountAlloc >&& from) :
+        ScoreInternalApriori< IdSetAlloc, CountAlloc >(std::move(from)) {
       GUM_CONS_MOV(ScoreInternalNoApriori);
     }
 
@@ -70,18 +70,18 @@ namespace gum {
     /// insert the internal score apriori into a set of countings
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE void
-    ScoreInternalNoApriori< IdSetAlloc, CountAlloc >::insertScoreApriori(
-      const std::vector< Size >& modalities,
-      std::vector< std::vector< double, CountAlloc > >& counts,
-      const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >&
-        target_nodesets,
-      const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >&
-        conditioning_nodesets) {}
+      ScoreInternalNoApriori< IdSetAlloc, CountAlloc >::insertScoreApriori(
+        const std::vector< Size >&                        modalities,
+        std::vector< std::vector< double, CountAlloc > >& counts,
+        const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >&
+          target_nodesets,
+        const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >&
+          conditioning_nodesets) {}
 
     /// indicates whether the apriori is potentially informative
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE bool
-    ScoreInternalNoApriori< IdSetAlloc, CountAlloc >::isInformative() const {
+      ScoreInternalNoApriori< IdSetAlloc, CountAlloc >::isInformative() const {
       return false;
     }
 

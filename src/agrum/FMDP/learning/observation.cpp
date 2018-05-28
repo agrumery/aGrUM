@@ -32,4 +32,4 @@ namespace gum {
     status << std::endl;
     return status.str();
   }
-}  // end of namespace gum
+}   // end of namespace gum

@@ -60,11 +60,11 @@ namespace gum {
                typename PARAM_ESTIMATOR,
                typename CELL_TRANSLATORS >
     BayesNet< GUM_SCALAR >
-    DAG2BNLearner::createBN(PARAM_ESTIMATOR&                  estimator,
-                            const DAG&                        dag,
-                            const std::vector< std::string >& names,
-                            const std::vector< Size >&        modal,
-                            const CELL_TRANSLATORS&           translators) {
+      DAG2BNLearner::createBN(PARAM_ESTIMATOR&                  estimator,
+                              const DAG&                        dag,
+                              const std::vector< std::string >& names,
+                              const std::vector< Size >&        modal,
+                              const CELL_TRANSLATORS&           translators) {
       BayesNet< GUM_SCALAR > bn;
 
       // create a bn with dummy parameters corresponding to the dag
@@ -83,7 +83,8 @@ namespace gum {
         }
         */
 
-        bn.add(dynamic_cast<const DiscreteVariable&> (translators.variable(id)), id);
+        bn.add(dynamic_cast< const DiscreteVariable& >(translators.variable(id)),
+               id);
       }
 
       // add the arcs

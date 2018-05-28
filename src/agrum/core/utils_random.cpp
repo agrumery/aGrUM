@@ -29,8 +29,8 @@
 #include <agrum/core/utils_misc.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/core/utils_random_inl.h>
-#endif  // GUM_NO_INLINE
+#  include <agrum/core/utils_random_inl.h>
+#endif   // GUM_NO_INLINE
 
 namespace gum {
 

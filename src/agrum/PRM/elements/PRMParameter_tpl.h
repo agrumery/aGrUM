@@ -30,26 +30,24 @@ namespace gum {
     template < typename GUM_SCALAR >
     PRMParameter< GUM_SCALAR >::PRMParameter(const std::string& name,
                                              ParameterType      type,
-                                             GUM_SCALAR         value)
-        : PRMClassElement< GUM_SCALAR >(name)
-        , __type(type)
-        , __value(value) {
+                                             GUM_SCALAR         value) :
+        PRMClassElement< GUM_SCALAR >(name),
+        __type(type), __value(value) {
       GUM_CONSTRUCTOR(PRMParameter);
       this->_safeName = name;
     }
 
     template < typename GUM_SCALAR >
     PRMParameter< GUM_SCALAR >::PRMParameter(
-      const PRMParameter< GUM_SCALAR >& source)
-        : PRMClassElement< GUM_SCALAR >(source.name())
-        , __type(source.valueType())
-        , __value(source.value()) {
+      const PRMParameter< GUM_SCALAR >& source) :
+        PRMClassElement< GUM_SCALAR >(source.name()),
+        __type(source.valueType()), __value(source.value()) {
       GUM_ERROR(OperationNotAllowed, "cannot copy Paramter<GUM_SCALAR");
     }
 
     template < typename GUM_SCALAR >
     PRMParameter< GUM_SCALAR >& PRMParameter< GUM_SCALAR >::
-    operator=(const PRMParameter< GUM_SCALAR >& from) {
+                                operator=(const PRMParameter< GUM_SCALAR >& from) {
       GUM_ERROR(OperationNotAllowed, "cannot copy Paramter<GUM_SCALAR");
     }
 
@@ -60,7 +58,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     typename PRMClassElement< GUM_SCALAR >::ClassElementType
-    PRMParameter< GUM_SCALAR >::elt_type() const {
+      PRMParameter< GUM_SCALAR >::elt_type() const {
       return PRMClassElement< GUM_SCALAR >::ClassElementType::prm_parameter;
     }
 
@@ -76,7 +74,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     typename PRMParameter< GUM_SCALAR >::ParameterType
-    PRMParameter< GUM_SCALAR >::valueType() const {
+      PRMParameter< GUM_SCALAR >::valueType() const {
       return __type;
     }
 
@@ -114,9 +112,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     PRMAttribute< GUM_SCALAR >*
-    PRMParameter< GUM_SCALAR >::getCastDescendant() const {
+      PRMParameter< GUM_SCALAR >::getCastDescendant() const {
       GUM_ERROR(OperationNotAllowed, "Parameters can have cast descendants");
     }
 
   } /* namespace prm */
-}  // namespace gum
+}   // namespace gum

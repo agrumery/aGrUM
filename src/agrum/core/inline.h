@@ -38,19 +38,19 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#ifndef GUM_NO_INLINE
+#  ifndef GUM_NO_INLINE
 
-#define INLINE inline
+#    define INLINE inline
 
 // ENFORCED_INLINE is a stronger version of the inline, using __forceinline on
 // MSVC, but it still doesn't use GCC's always_inline. This is useful in
 // (common) situations where MSVC needs forceinline but GCC is still doing fine
 // with just inline.  (from eigen library)
-#if (defined _MSC_VER) || (defined __INTEL_COMPILER)
-#define ENFORCED_INLINE __forceinline
-#else
-#define ENFORCED_INLINE inline
-#endif
+#    if (defined _MSC_VER) || (defined __INTEL_COMPILER)
+#      define ENFORCED_INLINE __forceinline
+#    else
+#      define ENFORCED_INLINE inline
+#    endif
 
 // ALWAYS_INLINE is the strongest, it has the effect of making the function
 // inline and adding every possible attribute to maximize inlining. This should
@@ -61,25 +61,25 @@
 // compilation error:
 //   Eval.h:91: sorry, unimplemented: inlining failed in call to '...' :
 //   function body not available (from eigen library)
-#if GNUC_AT_LEAST(4, 0)
-#define ALWAYS_INLINE __attribute__((always_inline)) inline
-#else
-#define ALWAYS_INLINE ENFORCED_INLINE
-#endif
+#    if GNUC_AT_LEAST(4, 0)
+#      define ALWAYS_INLINE __attribute__((always_inline)) inline
+#    else
+#      define ALWAYS_INLINE ENFORCED_INLINE
+#    endif
 
-#if (defined __GNUC__)
-#define NO_INLINE __attribute__((noinline))
-#elif (defined _MSC_VER)
-#define NEVER_INLINE __declspec(noinline)
-#else
-#define NEVER_INLINE
-#endif
-#else  // GUM_NO_INLINE
-#define INLINE
-#define STRONG_INLINE
-#define ALWAYS_INLINE
-#define NEVER_INLINE
-#endif /* GUM_NO_INLINE */
+#    if (defined __GNUC__)
+#      define NO_INLINE __attribute__((noinline))
+#    elif (defined _MSC_VER)
+#      define NEVER_INLINE __declspec(noinline)
+#    else
+#      define NEVER_INLINE
+#    endif
+#  else   // GUM_NO_INLINE
+#    define INLINE
+#    define STRONG_INLINE
+#    define ALWAYS_INLINE
+#    define NEVER_INLINE
+#  endif /* GUM_NO_INLINE */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 

@@ -45,7 +45,6 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   class ITestPolicy {
-
     public:
     // ############################################################################
     /// @name Constructor/Destructor
@@ -55,9 +54,7 @@ namespace gum {
     // ============================================================================
     ///
     // ============================================================================
-    ITestPolicy()
-        : __isModified(false)
-        , __nbObs(0) {
+    ITestPolicy() : __isModified(false), __nbObs(0) {
       GUM_CONSTRUCTOR(ITestPolicy)
     }
 
@@ -172,6 +169,6 @@ namespace gum {
     Idx __nbObs;
   };
 
-}  // End of namespace gum
+}   // End of namespace gum
 
 #endif /* GUM_MULTI_DIM_FUNCTION_GRAPH_INTERFACE_TEST_POLICY_H */

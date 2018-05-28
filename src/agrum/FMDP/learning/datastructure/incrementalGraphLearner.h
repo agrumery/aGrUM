@@ -61,7 +61,6 @@ namespace gum {
    */
   template < TESTNAME AttributeSelection, bool isScalar = false >
   class IncrementalGraphLearner : public IVisitableGraphLearner {
-
     typedef typename ValueSelect< isScalar, double, Idx >::type ValueType;
 
     public:
@@ -241,9 +240,9 @@ namespace gum {
      */
     // ==========================================================================
     virtual NodeId
-    _insertInternalNode(NodeDatabase< AttributeSelection, isScalar >* nDB,
-                        const DiscreteVariable* boundVar,
-                        NodeId*                 sonsMap);
+      _insertInternalNode(NodeDatabase< AttributeSelection, isScalar >* nDB,
+                          const DiscreteVariable*                       boundVar,
+                          NodeId*                                       sonsMap);
 
     // ==========================================================================
     /**
@@ -255,9 +254,9 @@ namespace gum {
      */
     // ==========================================================================
     virtual NodeId
-    _insertLeafNode(NodeDatabase< AttributeSelection, isScalar >* nDB,
-                    const DiscreteVariable*    boundVar,
-                    Set< const Observation* >* obsSet);
+      _insertLeafNode(NodeDatabase< AttributeSelection, isScalar >* nDB,
+                      const DiscreteVariable*                       boundVar,
+                      Set< const Observation* >*                    obsSet);
 
     // ==========================================================================
     /**
@@ -415,4 +414,4 @@ namespace gum {
 
 #include <agrum/FMDP/learning/datastructure/incrementalGraphLearner_tpl.h>
 
-#endif  // GUM_INCREMENTAL_GRAPH_LEARNER_H
+#endif   // GUM_INCREMENTAL_GRAPH_LEARNER_H

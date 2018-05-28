@@ -31,12 +31,13 @@
 #include <agrum/agrum.h>
 
 #ifndef GUM_NAME_GENERATOR_H
-#define GUM_NAME_GENERATOR_H
+#  define GUM_NAME_GENERATOR_H
 namespace gum {
   namespace prm {
 
     /**
-     * @class NameGenerator PRMGenerator.h <agrum/PRM/generator/PRMGenerator.h>
+     * @class NameGenerator
+     * @headerfile PRMGenerator.h <agrum/PRM/generator/PRMGenerator.h>
      * @brief This is a name generator for classes, types, systems, instances
      *and
      *        class elements.
@@ -80,8 +81,8 @@ namespace gum {
   } /* namespace prm */
 } /* namespace gum */
 
-#ifndef GUM_NO_INLINE
-#include <agrum/PRM/generator/nameGenerator_inl.h>
-#endif
+#  ifndef GUM_NO_INLINE
+#    include <agrum/PRM/generator/nameGenerator_inl.h>
+#  endif
 
 #endif /* GUM_NAME_GENERATOR_H */

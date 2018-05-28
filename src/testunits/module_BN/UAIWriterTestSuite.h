@@ -92,9 +92,7 @@ namespace gum_tests {
       try {
         writer.write(file, *bn);
         TS_ASSERT(false);
-      } catch (gum::IOError&) {
-        TS_ASSERT(true);
-      }
+      } catch (gum::IOError&) { TS_ASSERT(true); }
     }
 
     private:
@@ -142,10 +140,10 @@ namespace gum_tests {
         const double t[24] = {0.3, 0.6, 0.1, 0.5, 0.5, 0.0, 0.5, 0.5,
                               0.0, 1.0, 0.0, 0.0, 0.4, 0.6, 0.0, 0.5,
                               0.5, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0};
-        int                         n = 24;
+        int          n = 24;
         const std::vector< double > v(t, t + n);
         p5.fillWith(v);
       }
     }
   };
-}
+}   // namespace gum_tests

@@ -73,7 +73,7 @@ namespace gum {
      */
     MultiDimNoisyAND(
       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-      const MultiDimNoisyAND< GUM_SCALAR >& from);
+      const MultiDimNoisyAND< GUM_SCALAR >&                                from);
 
     /**
      * Destructor.

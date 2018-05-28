@@ -32,14 +32,14 @@ namespace gum {
     INLINE Cache4Score::Cache4Score() { GUM_CONSTRUCTOR(Cache4Score); }
 
     /// copy constructor
-    INLINE Cache4Score::Cache4Score(const Cache4Score& from)
-        : __scores(from.__scores) {
+    INLINE Cache4Score::Cache4Score(const Cache4Score& from) :
+        __scores(from.__scores) {
       GUM_CONS_CPY(Cache4Score);
     }
 
     /// move constructor
-    INLINE Cache4Score::Cache4Score(Cache4Score&& from)
-        : __scores(std::move(from.__scores)) {
+    INLINE Cache4Score::Cache4Score(Cache4Score&& from) :
+        __scores(std::move(from.__scores)) {
       GUM_CONS_MOV(Cache4Score);
     }
 
@@ -48,17 +48,13 @@ namespace gum {
 
     /// copy operator
     INLINE Cache4Score& Cache4Score::operator=(const Cache4Score& from) {
-      if (&from != this) {
-        __scores = from.__scores;
-      }
+      if (&from != this) { __scores = from.__scores; }
       return *this;
     }
 
     /// move operator
     INLINE Cache4Score& Cache4Score::operator=(Cache4Score&& from) {
-      if (&from != this) {
-        __scores = std::move(from.__scores);
-      }
+      if (&from != this) { __scores = std::move(from.__scores); }
       return *this;
     }
 
@@ -72,8 +68,9 @@ namespace gum {
 
     /// insert a new score into the cache
     template < typename Alloc >
-    INLINE void
-    Cache4Score::insert(Idx var, IdSet< Alloc >& conditioning_set, double score) {
+    INLINE void Cache4Score::insert(Idx             var,
+                                    IdSet< Alloc >& conditioning_set,
+                                    double          score) {
       __scores.insert(std::pair< IdSet<>, Idx >(IdSet<>(conditioning_set), var),
                       std::move(score));
     }

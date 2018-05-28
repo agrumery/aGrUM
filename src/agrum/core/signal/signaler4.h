@@ -43,4 +43,4 @@
 #define SIGNALER_PATRON_ACCEPTED
 #include <agrum/core/signal/signaler_with_args.pattern.h>
 
-#endif  // GUM_SIGNALER4_H
+#endif   // GUM_SIGNALER4_H

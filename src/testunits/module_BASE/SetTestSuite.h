@@ -1,23 +1,23 @@
 
 /***************************************************************************
-*   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 
 #include <iostream>
@@ -183,28 +183,28 @@ namespace gum_tests {
       fill(set);
 
       gum::Set< int, MyAlloc< int > >::iterator iter1 = set.begin();
-      gum::SetIterator< int > iter2 = set.begin();
+      gum::SetIterator< int >                   iter2 = set.begin();
       TS_ASSERT(iter1 == iter2);
       TS_ASSERT(*iter1 == 3);
       TS_ASSERT(iter1 != set.end());
       TS_ASSERT(iter2 != set.end());
 
       gum::Set< int, MyAlloc< int > >::iterator iter3 = set.begin();
-      gum::SetIterator< int > iter4 = set.begin();
+      gum::SetIterator< int >                   iter4 = set.begin();
       TS_ASSERT(iter3 == iter4);
       TS_ASSERT(*iter3 == 3);
       TS_ASSERT(iter3 != set.end());
       TS_ASSERT(iter4 != set.end());
 
       gum::Set< int, MyAlloc< int > >::const_iterator iter5 = set.cbegin();
-      gum::SetConstIterator< int > iter6 = set.cbegin();
+      gum::SetConstIterator< int >                    iter6 = set.cbegin();
       TS_ASSERT(iter5 == iter6);
       TS_ASSERT(*iter5 == 3);
       TS_ASSERT(iter5 != set.end());
       TS_ASSERT(iter6 != set.end());
 
       gum::Set< int, MyAlloc< int > >::const_iterator iter7 = set.cbegin();
-      gum::SetConstIterator< int > iter8 = set.cbegin();
+      gum::SetConstIterator< int >                    iter8 = set.cbegin();
       TS_ASSERT(iter7 == iter8);
       TS_ASSERT(*iter8 == 3);
       TS_ASSERT(iter7 != set.cend());
@@ -216,7 +216,7 @@ namespace gum_tests {
       fill(set);
       TS_ASSERT_EQUALS(set.size(), (gum::Size)6);
 
-      auto iter = set.beginSafe();  // safe iterator needed here
+      auto iter = set.beginSafe();   // safe iterator needed here
       TS_GUM_ASSERT_THROWS_NOTHING(set.erase(iter));
       TS_ASSERT_EQUALS(set.size(), (gum::Size)5);
 
@@ -236,7 +236,7 @@ namespace gum_tests {
       gum::Set< int, MyAlloc< int > > set2;
       fill(set2);
       TS_ASSERT(set2.size() == 6);
-      iter = set2.beginSafe();  // safe iterator needed here
+      iter = set2.beginSafe();   // safe iterator needed here
       TS_GUM_ASSERT_THROWS_NOTHING(set2.erase(iter));
       TS_ASSERT(set2.size() == 5);
     }
@@ -623,9 +623,7 @@ namespace gum_tests {
       gum::Set< int > inter;
 
       for (int i = 1; i < 7; i++) {
-        if (set.contains(i)) {
-          inter.insert(i);
-        }
+        if (set.contains(i)) { inter.insert(i); }
       }
 
       return inter;
@@ -637,9 +635,7 @@ namespace gum_tests {
       gum::Set< int > unionSet;
 
       for (int i = 1; i < 7; i++) {
-        if (set.contains(i)) {
-          unionSet.insert(i);
-        }
+        if (set.contains(i)) { unionSet.insert(i); }
       }
 
       return unionSet;
@@ -653,4 +649,4 @@ namespace gum_tests {
 
     static std::string mappingTestFunc_3(std::string s) { return s + ".42"; }
   };
-}
+}   // namespace gum_tests

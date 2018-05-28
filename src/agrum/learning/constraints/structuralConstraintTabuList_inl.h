@@ -58,23 +58,26 @@ namespace gum {
 
     /// checks whether the constraints enable to add arc (x,y)
     INLINE bool
-    StructuralConstraintTabuList::checkArcAdditionAlone(NodeId x, NodeId y) const {
-      return !_TabuList__changes.existsFirst(ArcDeletion(x, y)) &&
-             !_TabuList__changes.existsFirst(ArcAddition(x, y));
+      StructuralConstraintTabuList::checkArcAdditionAlone(NodeId x,
+                                                          NodeId y) const {
+      return !_TabuList__changes.existsFirst(ArcDeletion(x, y))
+             && !_TabuList__changes.existsFirst(ArcAddition(x, y));
     }
 
     /// checks whether the constraints enable to remove arc (x,y)
     INLINE bool
-    StructuralConstraintTabuList::checkArcDeletionAlone(NodeId x, NodeId y) const {
-      return !_TabuList__changes.existsFirst(ArcAddition(x, y)) &&
-             !_TabuList__changes.existsFirst(ArcDeletion(x, y));
+      StructuralConstraintTabuList::checkArcDeletionAlone(NodeId x,
+                                                          NodeId y) const {
+      return !_TabuList__changes.existsFirst(ArcAddition(x, y))
+             && !_TabuList__changes.existsFirst(ArcDeletion(x, y));
     }
 
     /// checks whether the constraints enable to reverse arc (x,y)
     INLINE bool
-    StructuralConstraintTabuList::checkArcReversalAlone(NodeId x, NodeId y) const {
-      return !_TabuList__changes.existsFirst(ArcReversal(y, x)) &&
-             !_TabuList__changes.existsFirst(ArcReversal(x, y));
+      StructuralConstraintTabuList::checkArcReversalAlone(NodeId x,
+                                                          NodeId y) const {
+      return !_TabuList__changes.existsFirst(ArcReversal(y, x))
+             && !_TabuList__changes.existsFirst(ArcReversal(x, y));
     }
 
     /// checks whether the constraints enable to add an arc
@@ -117,7 +120,7 @@ namespace gum {
 
     /// notify the constraint of a modification of the graph
     INLINE void
-    StructuralConstraintTabuList::modifyGraphAlone(const ArcAddition& change) {
+      StructuralConstraintTabuList::modifyGraphAlone(const ArcAddition& change) {
       _TabuList__changes.eraseSecond(_TabuList__offset);
       ++_TabuList__offset;
       _TabuList__changes.insert(
@@ -126,7 +129,7 @@ namespace gum {
 
     /// notify the constraint of a modification of the graph
     INLINE void
-    StructuralConstraintTabuList::modifyGraphAlone(const ArcDeletion& change) {
+      StructuralConstraintTabuList::modifyGraphAlone(const ArcDeletion& change) {
       _TabuList__changes.eraseSecond(_TabuList__offset);
       ++_TabuList__offset;
       _TabuList__changes.insert(
@@ -135,7 +138,7 @@ namespace gum {
 
     /// notify the constraint of a modification of the graph
     INLINE void
-    StructuralConstraintTabuList::modifyGraphAlone(const ArcReversal& change) {
+      StructuralConstraintTabuList::modifyGraphAlone(const ArcReversal& change) {
       _TabuList__changes.eraseSecond(_TabuList__offset);
       ++_TabuList__offset;
       _TabuList__changes.insert(
@@ -144,7 +147,7 @@ namespace gum {
 
     /// notify the constraint of a modification of the graph
     INLINE void
-    StructuralConstraintTabuList::modifyGraphAlone(const GraphChange& change) {
+      StructuralConstraintTabuList::modifyGraphAlone(const GraphChange& change) {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION:
           modifyGraphAlone(static_cast< const ArcAddition& >(change));
@@ -165,15 +168,15 @@ namespace gum {
     }
 
     /// indicates whether a change will always violate the constraint
-    INLINE bool
-    StructuralConstraintTabuList::isAlwaysInvalidAlone(const GraphChange&) const {
+    INLINE bool StructuralConstraintTabuList::isAlwaysInvalidAlone(
+      const GraphChange&) const {
       return false;
     }
 
 // include all the methods applicable to the whole class hierarchy
-#define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintTabuList
-#include <agrum/learning/constraints/structuralConstraintPatternRootInline.h>
-#undef GUM_CONSTRAINT_CLASS_NAME
+#  define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintTabuList
+#  include <agrum/learning/constraints/structuralConstraintPatternRootInline.h>
+#  undef GUM_CONSTRAINT_CLASS_NAME
 
   } /* namespace learning */
 

@@ -37,7 +37,8 @@
 namespace gum {
   namespace prm {
     /**
-     * @class PRMInference PRMInference.h <agrum/PRM/PRMInference.h>
+     * @class PRMInference
+     * @headerfile PRMInference.h <agrum/PRM/PRMInference.h>
      * @brief This abstract class is used as base class for all inference class
      *        on PRM<GUM_SCALAR>.
      *

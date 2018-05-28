@@ -31,9 +31,7 @@ namespace gum {
   //@beforeMerging is this really faster ?
   // Specialized pow function with integers (faster implementation).
   INLINE unsigned long intPow(unsigned long base, unsigned long exponent) {
-    if (exponent == 0) {
-      return 1UL;
-    }
+    if (exponent == 0) { return 1UL; }
 
     unsigned long out = base;
 
@@ -69,4 +67,4 @@ namespace gum {
     }
   }
 
-}  // end of gum namespace
+}   // namespace gum

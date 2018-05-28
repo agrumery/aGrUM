@@ -109,7 +109,7 @@ namespace gum {
        * variables already exists */
       template < typename Alloc >
       void
-      insert(Idx var1, Idx var2, IdSet< Alloc >& conditioning_set, double score);
+        insert(Idx var1, Idx var2, IdSet< Alloc >& conditioning_set, double score);
 
       /// removes a score (if it exists)
       /** If the score does not exist, nothing is done. In particular, no
@@ -145,7 +145,7 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/scores_and_tests/cache4IndepTest_inl.h>
+#  include <agrum/learning/scores_and_tests/cache4IndepTest_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_CACHE_4_INDEP_TEST_H */

@@ -54,7 +54,6 @@ namespace gum {
    *
    */
   class ProgressListener : public Listener {
-
     public:
     /**
      * @brief Class constructor.
@@ -74,7 +73,7 @@ namespace gum {
      * @param time The time.
      */
     virtual void
-    whenProgress(const void* src, const Size step, const double time) = 0;
+      whenProgress(const void* src, const Size step, const double time) = 0;
 
     /**
      * @brief When it stops.
@@ -98,5 +97,5 @@ namespace gum {
     /// The scheme configuration.
     ProgressNotifier& __notif;
   };
-}
-#endif  // AGRUM_PROGRESSNOTIFICATION_H
+}   // namespace gum
+#endif   // AGRUM_PROGRESSNOTIFICATION_H

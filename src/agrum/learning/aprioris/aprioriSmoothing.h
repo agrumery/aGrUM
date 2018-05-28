@@ -85,7 +85,7 @@ namespace gum {
 
       /// prevent copy operator
       AprioriSmoothing< IdSetAlloc, CountAlloc >&
-      operator=(const AprioriSmoothing< IdSetAlloc, CountAlloc >&) = delete;
+        operator=(const AprioriSmoothing< IdSetAlloc, CountAlloc >&) = delete;
     };
 
   } /* namespace learning */

@@ -17,14 +17,14 @@
  * Avoiding windows.h makes it simpler to use windows sockets in conjunction
  * with dirent.h.
  */
-#if !defined(_68K_) && !defined(_MPPC_) && !defined(_X86_) && !defined(_IA64_) && \
-  !defined(_AMD64_) && defined(_M_IX86)
-#define _X86_
-#endif
-#if !defined(_68K_) && !defined(_MPPC_) && !defined(_X86_) && !defined(_IA64_) && \
-  !defined(_AMD64_) && defined(_M_AMD64)
-#define _AMD64_
-#endif
+#  if !defined(_68K_) && !defined(_MPPC_) && !defined(_X86_) && !defined(_IA64_) \
+    && !defined(_AMD64_) && defined(_M_IX86)
+#    define _X86_
+#  endif
+#  if !defined(_68K_) && !defined(_MPPC_) && !defined(_X86_) && !defined(_IA64_) \
+    && !defined(_AMD64_) && defined(_M_AMD64)
+#    define _AMD64_
+#  endif
 
 // clang-format off
 // clang-format may change headers order. We do not want it here.
@@ -42,145 +42,145 @@
 // clang-format on
 
 /* Indicates that d_type field is available in dirent structure */
-#define _DIRENT_HAVE_D_TYPE
+#  define _DIRENT_HAVE_D_TYPE
 
 /* Indicates that d_namlen field is available in dirent structure */
-#define _DIRENT_HAVE_D_NAMLEN
+#  define _DIRENT_HAVE_D_NAMLEN
 
 /* Entries missing from MSVC 6.0 */
-#if !defined(FILE_ATTRIBUTE_DEVICE)
-#define FILE_ATTRIBUTE_DEVICE 0x40
-#endif
+#  if !defined(FILE_ATTRIBUTE_DEVICE)
+#    define FILE_ATTRIBUTE_DEVICE 0x40
+#  endif
 
 /* File type and permission flags for stat(), general mask */
-#if !defined(S_IFMT)
-#define S_IFMT _S_IFMT
-#endif
+#  if !defined(S_IFMT)
+#    define S_IFMT _S_IFMT
+#  endif
 
 /* Directory bit */
-#if !defined(S_IFDIR)
-#define S_IFDIR _S_IFDIR
-#endif
+#  if !defined(S_IFDIR)
+#    define S_IFDIR _S_IFDIR
+#  endif
 
 /* Character device bit */
-#if !defined(S_IFCHR)
-#define S_IFCHR _S_IFCHR
-#endif
+#  if !defined(S_IFCHR)
+#    define S_IFCHR _S_IFCHR
+#  endif
 
 /* Pipe bit */
-#if !defined(S_IFFIFO)
-#define S_IFFIFO _S_IFFIFO
-#endif
+#  if !defined(S_IFFIFO)
+#    define S_IFFIFO _S_IFFIFO
+#  endif
 
 /* Regular file bit */
-#if !defined(S_IFREG)
-#define S_IFREG _S_IFREG
-#endif
+#  if !defined(S_IFREG)
+#    define S_IFREG _S_IFREG
+#  endif
 
 /* Read permission */
-#if !defined(S_IREAD)
-#define S_IREAD _S_IREAD
-#endif
+#  if !defined(S_IREAD)
+#    define S_IREAD _S_IREAD
+#  endif
 
 /* Write permission */
-#if !defined(S_IWRITE)
-#define S_IWRITE _S_IWRITE
-#endif
+#  if !defined(S_IWRITE)
+#    define S_IWRITE _S_IWRITE
+#  endif
 
 /* Execute permission */
-#if !defined(S_IEXEC)
-#define S_IEXEC _S_IEXEC
-#endif
+#  if !defined(S_IEXEC)
+#    define S_IEXEC _S_IEXEC
+#  endif
 
 /* Pipe */
-#if !defined(S_IFIFO)
-#define S_IFIFO _S_IFIFO
-#endif
+#  if !defined(S_IFIFO)
+#    define S_IFIFO _S_IFIFO
+#  endif
 
 /* Block device */
-#if !defined(S_IFBLK)
-#define S_IFBLK 0
-#endif
+#  if !defined(S_IFBLK)
+#    define S_IFBLK 0
+#  endif
 
 /* Link */
-#if !defined(S_IFLNK)
-#define S_IFLNK 0
-#endif
+#  if !defined(S_IFLNK)
+#    define S_IFLNK 0
+#  endif
 
 /* Socket */
-#if !defined(S_IFSOCK)
-#define S_IFSOCK 0
-#endif
+#  if !defined(S_IFSOCK)
+#    define S_IFSOCK 0
+#  endif
 
 /* Read user permission */
-#if !defined(S_IRUSR)
-#define S_IRUSR S_IREAD
-#endif
+#  if !defined(S_IRUSR)
+#    define S_IRUSR S_IREAD
+#  endif
 
 /* Write user permission */
-#if !defined(S_IWUSR)
-#define S_IWUSR S_IWRITE
-#endif
+#  if !defined(S_IWUSR)
+#    define S_IWUSR S_IWRITE
+#  endif
 
 /* Execute user permission */
-#if !defined(S_IXUSR)
-#define S_IXUSR 0
-#endif
+#  if !defined(S_IXUSR)
+#    define S_IXUSR 0
+#  endif
 
 /* Read group permission */
-#if !defined(S_IRGRP)
-#define S_IRGRP 0
-#endif
+#  if !defined(S_IRGRP)
+#    define S_IRGRP 0
+#  endif
 
 /* Write group permission */
-#if !defined(S_IWGRP)
-#define S_IWGRP 0
-#endif
+#  if !defined(S_IWGRP)
+#    define S_IWGRP 0
+#  endif
 
 /* Execute group permission */
-#if !defined(S_IXGRP)
-#define S_IXGRP 0
-#endif
+#  if !defined(S_IXGRP)
+#    define S_IXGRP 0
+#  endif
 
 /* Read others permission */
-#if !defined(S_IROTH)
-#define S_IROTH 0
-#endif
+#  if !defined(S_IROTH)
+#    define S_IROTH 0
+#  endif
 
 /* Write others permission */
-#if !defined(S_IWOTH)
-#define S_IWOTH 0
-#endif
+#  if !defined(S_IWOTH)
+#    define S_IWOTH 0
+#  endif
 
 /* Execute others permission */
-#if !defined(S_IXOTH)
-#define S_IXOTH 0
-#endif
+#  if !defined(S_IXOTH)
+#    define S_IXOTH 0
+#  endif
 
 /* Maximum length of file name */
-#if !defined(PATH_MAX)
-#define PATH_MAX MAX_PATH
-#endif
-#if !defined(FILENAME_MAX)
-#define FILENAME_MAX MAX_PATH
-#endif
-#if !defined(NAME_MAX)
-#define NAME_MAX FILENAME_MAX
-#endif
+#  if !defined(PATH_MAX)
+#    define PATH_MAX MAX_PATH
+#  endif
+#  if !defined(FILENAME_MAX)
+#    define FILENAME_MAX MAX_PATH
+#  endif
+#  if !defined(NAME_MAX)
+#    define NAME_MAX FILENAME_MAX
+#  endif
 
 /* File type flags for d_type */
-#define DT_UNKNOWN 0
-#define DT_REG S_IFREG
-#define DT_DIR S_IFDIR
-#define DT_FIFO S_IFIFO
-#define DT_SOCK S_IFSOCK
-#define DT_CHR S_IFCHR
-#define DT_BLK S_IFBLK
-#define DT_LNK S_IFLNK
+#  define DT_UNKNOWN 0
+#  define DT_REG S_IFREG
+#  define DT_DIR S_IFDIR
+#  define DT_FIFO S_IFIFO
+#  define DT_SOCK S_IFSOCK
+#  define DT_CHR S_IFCHR
+#  define DT_BLK S_IFBLK
+#  define DT_LNK S_IFLNK
 
 /* Macros for converting between st_mode and d_type */
-#define IFTODT(mode) ((mode)&S_IFMT)
-#define DTTOIF(type) (type)
+#  define IFTODT(mode) ((mode)&S_IFMT)
+#  define DTTOIF(type) (type)
 
 /*
  * File type macros.  Note that block devices, sockets and links cannot be
@@ -188,38 +188,38 @@
  * only defined for compatibility.  These macros should always return false
  * on Windows.
  */
-#if !defined(S_ISFIFO)
-#define S_ISFIFO(mode) (((mode)&S_IFMT) == S_IFIFO)
-#endif
-#if !defined(S_ISDIR)
-#define S_ISDIR(mode) (((mode)&S_IFMT) == S_IFDIR)
-#endif
-#if !defined(S_ISREG)
-#define S_ISREG(mode) (((mode)&S_IFMT) == S_IFREG)
-#endif
-#if !defined(S_ISLNK)
-#define S_ISLNK(mode) (((mode)&S_IFMT) == S_IFLNK)
-#endif
-#if !defined(S_ISSOCK)
-#define S_ISSOCK(mode) (((mode)&S_IFMT) == S_IFSOCK)
-#endif
-#if !defined(S_ISCHR)
-#define S_ISCHR(mode) (((mode)&S_IFMT) == S_IFCHR)
-#endif
-#if !defined(S_ISBLK)
-#define S_ISBLK(mode) (((mode)&S_IFMT) == S_IFBLK)
-#endif
+#  if !defined(S_ISFIFO)
+#    define S_ISFIFO(mode) (((mode)&S_IFMT) == S_IFIFO)
+#  endif
+#  if !defined(S_ISDIR)
+#    define S_ISDIR(mode) (((mode)&S_IFMT) == S_IFDIR)
+#  endif
+#  if !defined(S_ISREG)
+#    define S_ISREG(mode) (((mode)&S_IFMT) == S_IFREG)
+#  endif
+#  if !defined(S_ISLNK)
+#    define S_ISLNK(mode) (((mode)&S_IFMT) == S_IFLNK)
+#  endif
+#  if !defined(S_ISSOCK)
+#    define S_ISSOCK(mode) (((mode)&S_IFMT) == S_IFSOCK)
+#  endif
+#  if !defined(S_ISCHR)
+#    define S_ISCHR(mode) (((mode)&S_IFMT) == S_IFCHR)
+#  endif
+#  if !defined(S_ISBLK)
+#    define S_ISBLK(mode) (((mode)&S_IFMT) == S_IFBLK)
+#  endif
 
 /* Return the exact length of d_namlen without zero terminator */
-#define _D_EXACT_NAMLEN(p) ((p)->d_namlen)
+#  define _D_EXACT_NAMLEN(p) ((p)->d_namlen)
 
 /* Return number of bytes needed to store d_namlen */
-#define _D_ALLOC_NAMLEN(p) (PATH_MAX)
+#  define _D_ALLOC_NAMLEN(p) (PATH_MAX)
 
 
-#ifdef __cplusplus
+#  ifdef __cplusplus
 extern "C" {
-#endif
+#  endif
 
 
 /* Wide-character version */
@@ -259,19 +259,19 @@ struct _WDIR {
 };
 typedef struct _WDIR _WDIR;
 
-static _WDIR* _wopendir(const wchar_t* dirname);
+static _WDIR*           _wopendir(const wchar_t* dirname);
 static struct _wdirent* _wreaddir(_WDIR* dirp);
-static int _wclosedir(_WDIR* dirp);
-static void _wrewinddir(_WDIR* dirp);
+static int              _wclosedir(_WDIR* dirp);
+static void             _wrewinddir(_WDIR* dirp);
 
 
 /* For compatibility with Symbian */
-#define wdirent _wdirent
-#define WDIR _WDIR
-#define wopendir _wopendir
-#define wreaddir _wreaddir
-#define wclosedir _wclosedir
-#define wrewinddir _wrewinddir
+#  define wdirent _wdirent
+#  define WDIR _WDIR
+#  define wopendir _wopendir
+#  define wreaddir _wreaddir
+#  define wclosedir _wclosedir
+#  define wrewinddir _wrewinddir
 
 
 /* Multi-byte character versions */
@@ -299,10 +299,10 @@ struct DIR {
 };
 typedef struct DIR DIR;
 
-static DIR* opendir(const char* dirname);
+static DIR*           opendir(const char* dirname);
 static struct dirent* readdir(DIR* dirp);
-static int closedir(DIR* dirp);
-static void rewinddir(DIR* dirp);
+static int            closedir(DIR* dirp);
+static void           rewinddir(DIR* dirp);
 
 
 /* Internal utility functions */
@@ -354,7 +354,6 @@ static _WDIR* _wopendir(const wchar_t* dirname) {
     /* Allocate room for absolute directory name and search pattern */
     dirp->patt = (wchar_t*)malloc(sizeof(wchar_t) * n + 16);
     if (dirp->patt) {
-
       /*
        * Convert relative directory name to an absolute one.  This
        * allows rewinddir() to function correctly even when current
@@ -467,7 +466,6 @@ static struct _wdirent* _wreaddir(_WDIR* dirp) {
     entp->d_reclen = sizeof(struct _wdirent);
 
   } else {
-
     /* Last directory entry read */
     entp = NULL;
   }
@@ -483,7 +481,6 @@ static struct _wdirent* _wreaddir(_WDIR* dirp) {
 static int _wclosedir(_WDIR* dirp) {
   int ok;
   if (dirp) {
-
     /* Release search handle */
     if (dirp->handle != INVALID_HANDLE_VALUE) {
       FindClose(dirp->handle);
@@ -515,9 +512,7 @@ static int _wclosedir(_WDIR* dirp) {
 static void _wrewinddir(_WDIR* dirp) {
   if (dirp) {
     /* Release existing search handle */
-    if (dirp->handle != INVALID_HANDLE_VALUE) {
-      FindClose(dirp->handle);
-    }
+    if (dirp->handle != INVALID_HANDLE_VALUE) { FindClose(dirp->handle); }
 
     /* Open new search handle */
     dirent_first(dirp);
@@ -531,13 +526,11 @@ static WIN32_FIND_DATAW* dirent_first(_WDIR* dirp) {
   /* Open directory and retrieve the first entry */
   dirp->handle = FindFirstFileW(dirp->patt, &dirp->data);
   if (dirp->handle != INVALID_HANDLE_VALUE) {
-
     /* a directory entry is now waiting in memory */
     datap = &dirp->data;
     dirp->cached = 1;
 
   } else {
-
     /* Failed to re-open directory: no directory entry in memory */
     dirp->cached = 0;
     datap = NULL;
@@ -551,13 +544,11 @@ static WIN32_FIND_DATAW* dirent_next(_WDIR* dirp) {
 
   /* Get next directory entry */
   if (dirp->cached != 0) {
-
     /* A valid directory entry already in memory */
     p = &dirp->data;
     dirp->cached = 0;
 
   } else if (dirp->handle != INVALID_HANDLE_VALUE) {
-
     /* Get the next directory entry from stream */
     if (FindNextFileW(dirp->handle, &dirp->data) != FALSE) {
       /* Got a file */
@@ -570,7 +561,6 @@ static WIN32_FIND_DATAW* dirent_next(_WDIR* dirp) {
     }
 
   } else {
-
     /* End of directory stream reached */
     p = NULL;
   }
@@ -600,7 +590,6 @@ static DIR* opendir(const char* dirname) {
     /* Convert directory name to wide-character string */
     error = dirent_mbstowcs_s(&n, wname, PATH_MAX, dirname, PATH_MAX);
     if (!error) {
-
       /* Open directory stream using wide-character name */
       dirp->wdirp = _wopendir(wname);
       if (dirp->wdirp) {
@@ -730,7 +719,6 @@ static struct dirent* readdir(DIR* dirp) {
 static int closedir(DIR* dirp) {
   int ok;
   if (dirp) {
-
     /* Close wide-character directory stream */
     ok = _wclosedir(dirp->wdirp);
     dirp->wdirp = NULL;
@@ -739,7 +727,6 @@ static int closedir(DIR* dirp) {
     free(dirp);
 
   } else {
-
     /* Invalid directory stream */
     dirent_set_errno(EBADF);
     ok = /*failure*/ -1;
@@ -763,12 +750,12 @@ static int dirent_mbstowcs_s(size_t*     pReturnValue,
                              size_t      count) {
   int error;
 
-#if defined(_MSC_VER) && _MSC_VER >= 1400
+#  if defined(_MSC_VER) && _MSC_VER >= 1400
 
   /* Microsoft Visual Studio 2005 or later */
   error = mbstowcs_s(pReturnValue, wcstr, sizeInWords, mbstr, count);
 
-#else
+#  else
 
   /* Older Visual Studio or non-Microsoft compiler */
   size_t n;
@@ -776,30 +763,24 @@ static int dirent_mbstowcs_s(size_t*     pReturnValue,
   /* Convert to wide-character string (or count characters) */
   n = mbstowcs(wcstr, mbstr, sizeInWords);
   if (!wcstr || n < count) {
-
     /* Zero-terminate output buffer */
     if (wcstr && sizeInWords) {
-      if (n >= sizeInWords) {
-        n = sizeInWords - 1;
-      }
+      if (n >= sizeInWords) { n = sizeInWords - 1; }
       wcstr[n] = 0;
     }
 
     /* Length of resuting multi-byte string WITH zero terminator */
-    if (pReturnValue) {
-      *pReturnValue = n + 1;
-    }
+    if (pReturnValue) { *pReturnValue = n + 1; }
 
     /* Success */
     error = 0;
 
   } else {
-
     /* Could not convert string */
     error = 1;
   }
 
-#endif
+#  endif
 
   return error;
 }
@@ -812,12 +793,12 @@ static int dirent_wcstombs_s(size_t*        pReturnValue,
                              size_t         count) {
   int error;
 
-#if defined(_MSC_VER) && _MSC_VER >= 1400
+#  if defined(_MSC_VER) && _MSC_VER >= 1400
 
   /* Microsoft Visual Studio 2005 or later */
   error = wcstombs_s(pReturnValue, mbstr, sizeInBytes, wcstr, count);
 
-#else
+#  else
 
   /* Older Visual Studio or non-Microsoft compiler */
   size_t n;
@@ -825,53 +806,47 @@ static int dirent_wcstombs_s(size_t*        pReturnValue,
   /* Convert to multi-byte string (or count the number of bytes needed) */
   n = wcstombs(mbstr, wcstr, sizeInBytes);
   if (!mbstr || n < count) {
-
     /* Zero-terminate output buffer */
     if (mbstr && sizeInBytes) {
-      if (n >= sizeInBytes) {
-        n = sizeInBytes - 1;
-      }
+      if (n >= sizeInBytes) { n = sizeInBytes - 1; }
       mbstr[n] = '\0';
     }
 
     /* Lenght of resulting multi-bytes string WITH zero-terminator */
-    if (pReturnValue) {
-      *pReturnValue = n + 1;
-    }
+    if (pReturnValue) { *pReturnValue = n + 1; }
 
     /* Success */
     error = 0;
 
   } else {
-
     /* Cannot convert string */
     error = 1;
   }
 
-#endif
+#  endif
 
   return error;
 }
 
 /* Set errno variable */
 static void dirent_set_errno(int error) {
-#if defined(_MSC_VER) && _MSC_VER >= 1400
+#  if defined(_MSC_VER) && _MSC_VER >= 1400
 
   /* Microsoft Visual Studio 2005 and later */
   _set_errno(error);
 
-#else
+#  else
 
   /* Non-Microsoft compiler or older Microsoft compiler */
   errno = error;
 
-#endif
+#  endif
 }
 
 
-#ifdef __cplusplus
+#  ifdef __cplusplus
 }
-#endif
+#  endif
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 

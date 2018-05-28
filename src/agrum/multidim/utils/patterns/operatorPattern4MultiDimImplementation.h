@@ -34,12 +34,12 @@
 
 namespace gum {
 
-#ifdef GUM_MULTI_DIM_OPERATOR_NAME
+#  ifdef GUM_MULTI_DIM_OPERATOR_NAME
   template < typename T >
   MultiDimImplementation< T >*
-  GUM_MULTI_DIM_OPERATOR_NAME(const MultiDimImplementation< T >& impl1,
-                              const MultiDimImplementation< T >& impl2) {
-#endif
+    GUM_MULTI_DIM_OPERATOR_NAME(const MultiDimImplementation< T >& impl1,
+                                const MultiDimImplementation< T >& impl2) {
+#  endif
 
     typename OperatorRegister4MultiDim< T >::OperatorPtr func;
     bool                                                 swapped_names = false;
@@ -51,7 +51,7 @@ namespace gum {
         GUM_MULTI_DIM_OPERATOR_FUNC_NAME, impl1.name(), impl2.name());
     } catch (NotFound&) {
 
-#ifdef GUM_MULTI_DIM_SYMMETRIC_OPERATOR
+#  ifdef GUM_MULTI_DIM_SYMMETRIC_OPERATOR
 
       try {
         // the function could not be found but, as additions are symmetric, it
@@ -63,15 +63,15 @@ namespace gum {
           GUM_MULTI_DIM_OPERATOR_FUNC_NAME, impl2.name(), impl1.name());
         swapped_names = true;
       } catch (NotFound&) {
-#endif /* GUM_MULTI_DIM_SYMMETRIC_OPERATOR */
+#  endif /* GUM_MULTI_DIM_SYMMETRIC_OPERATOR */
 
         func = OperatorRegister4MultiDim< T >::Register().get(
           GUM_MULTI_DIM_OPERATOR_FUNC_NAME, impl1.basename(), impl2.basename());
 
-#ifdef GUM_MULTI_DIM_SYMMETRIC_OPERATOR
+#  ifdef GUM_MULTI_DIM_SYMMETRIC_OPERATOR
       }
 
-#endif /* GUM_MULTI_DIM_SYMMETRIC_OPERATOR */
+#  endif /* GUM_MULTI_DIM_SYMMETRIC_OPERATOR */
     }
 
     // perform the addition
@@ -80,5 +80,5 @@ namespace gum {
     else
       return func(&impl1, &impl2);
   }
-}
-#endif /* GUM_OPERATOR_PATTERN_ALLOWED */
+}   // namespace gum
+#endif   /* GUM_OPERATOR_PATTERN_ALLOWED */

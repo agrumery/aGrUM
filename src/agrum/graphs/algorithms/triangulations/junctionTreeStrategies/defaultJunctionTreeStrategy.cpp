@@ -40,22 +40,22 @@ namespace gum {
 
   // copy constructor
   DefaultJunctionTreeStrategy::DefaultJunctionTreeStrategy(
-    const DefaultJunctionTreeStrategy& from)
-      : JunctionTreeStrategy(from)
-      , __has_junction_tree(from.__has_junction_tree)
-      , __junction_tree(from.__junction_tree)
-      , __node_2_junction_clique(from.__node_2_junction_clique) {
+    const DefaultJunctionTreeStrategy& from) :
+      JunctionTreeStrategy(from),
+      __has_junction_tree(from.__has_junction_tree),
+      __junction_tree(from.__junction_tree),
+      __node_2_junction_clique(from.__node_2_junction_clique) {
     // for debugging purposes
     GUM_CONS_CPY(DefaultJunctionTreeStrategy);
   }
 
   // move constructor
   DefaultJunctionTreeStrategy::DefaultJunctionTreeStrategy(
-    DefaultJunctionTreeStrategy&& from)
-      : JunctionTreeStrategy(std::move(from))
-      , __has_junction_tree(from.__has_junction_tree)
-      , __junction_tree(std::move(from.__junction_tree))
-      , __node_2_junction_clique(std::move(from.__node_2_junction_clique)) {
+    DefaultJunctionTreeStrategy&& from) :
+      JunctionTreeStrategy(std::move(from)),
+      __has_junction_tree(from.__has_junction_tree),
+      __junction_tree(std::move(from.__junction_tree)),
+      __node_2_junction_clique(std::move(from.__node_2_junction_clique)) {
     // for debugging purposes
     GUM_CONS_MOV(DefaultJunctionTreeStrategy);
   }
@@ -73,7 +73,7 @@ namespace gum {
 
   // virtual copy constructor
   DefaultJunctionTreeStrategy*
-  DefaultJunctionTreeStrategy::copyFactory(StaticTriangulation* tr) const {
+    DefaultJunctionTreeStrategy::copyFactory(StaticTriangulation* tr) const {
     if (tr == nullptr) {
       return new DefaultJunctionTreeStrategy(*this);
     } else {
@@ -85,12 +85,12 @@ namespace gum {
       //    triangulated. In this case, no need to recompute anything
       // 2/ they point toward different graphs. Then, we must indicate that
       //    the new strategy has not computed anything yet
-      if ((_triangulation != nullptr) &&
-          (tr->originalGraph() == _triangulation->originalGraph())) {
-        auto new_strategy = new DefaultJunctionTreeStrategy(*this);  // case 1/
+      if ((_triangulation != nullptr)
+          && (tr->originalGraph() == _triangulation->originalGraph())) {
+        auto new_strategy = new DefaultJunctionTreeStrategy(*this);   // case 1/
         new_strategy->_triangulation = tr;
         return new_strategy;
-      } else {  // case 2/
+      } else {   // case 2/
         auto new_strategy = new DefaultJunctionTreeStrategy;
         new_strategy->setTriangulation(tr);
         return new_strategy;
@@ -182,8 +182,8 @@ namespace gum {
         NodeId C_j = C_i;
 
         for (const auto C_jj : __junction_tree.neighbours(C_i))
-          if ((C_i > C_jj) && !mark[Edge(C_jj, C_i)] &&
-              (__junction_tree.clique(C_jj).size() == card_C_i_plus_1)) {
+          if ((C_i > C_jj) && !mark[Edge(C_jj, C_i)]
+              && (__junction_tree.clique(C_jj).size() == card_C_i_plus_1)) {
             // ok, here we found a parent such that |C_jj| = [C_i| + 1
             C_j = C_jj;
             __junction_tree.eraseEdge(Edge(C_j, C_i));

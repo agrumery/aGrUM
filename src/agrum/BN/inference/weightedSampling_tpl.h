@@ -34,8 +34,8 @@ namespace gum {
   /// Default constructor
   template < typename GUM_SCALAR >
   WeightedSampling< GUM_SCALAR >::WeightedSampling(
-    const IBayesNet< GUM_SCALAR >* bn)
-      : SamplingInference< GUM_SCALAR >(bn) {
+    const IBayesNet< GUM_SCALAR >* bn) :
+      SamplingInference< GUM_SCALAR >(bn) {
     GUM_CONSTRUCTOR(WeightedSampling);
   }
 
@@ -43,7 +43,6 @@ namespace gum {
   /// Destructor
   template < typename GUM_SCALAR >
   WeightedSampling< GUM_SCALAR >::~WeightedSampling() {
-
     GUM_DESTRUCTOR(WeightedSampling);
   }
 
@@ -85,4 +84,4 @@ namespace gum {
     } while (wrongValue);
     return prev;
   }
-}
+}   // namespace gum

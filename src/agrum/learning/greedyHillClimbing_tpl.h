@@ -63,8 +63,8 @@ namespace gum {
             // perform the change
             switch (change.type()) {
               case GraphChangeType::ARC_ADDITION:
-                if (!impacted_queues[change.node2()] &&
-                    selector.isChangeValid(change)) {
+                if (!impacted_queues[change.node2()]
+                    && selector.isChangeValid(change)) {
                   delta_score += selector.bestScore(i);
                   dag.addArc(change.node1(), change.node2());
                   impacted_queues[change.node2()] = true;
@@ -75,8 +75,8 @@ namespace gum {
                 break;
 
               case GraphChangeType::ARC_DELETION:
-                if (!impacted_queues[change.node2()] &&
-                    selector.isChangeValid(change)) {
+                if (!impacted_queues[change.node2()]
+                    && selector.isChangeValid(change)) {
                   delta_score += selector.bestScore(i);
                   dag.eraseArc(Arc(change.node1(), change.node2()));
                   impacted_queues[change.node2()] = true;
@@ -87,9 +87,9 @@ namespace gum {
                 break;
 
               case GraphChangeType::ARC_REVERSAL:
-                if ((!impacted_queues[change.node1()]) &&
-                    (!impacted_queues[change.node2()]) &&
-                    selector.isChangeValid(change)) {
+                if ((!impacted_queues[change.node1()])
+                    && (!impacted_queues[change.node2()])
+                    && selector.isChangeValid(change)) {
                   delta_score += selector.bestScore(i);
                   dag.eraseArc(Arc(change.node1(), change.node2()));
                   dag.addArc(change.node2(), change.node1());
@@ -120,9 +120,9 @@ namespace gum {
 
       } while (nb_changes_applied && continueApproximationScheme(delta_score));
 
-      stopApproximationScheme();  // just to be sure of the approximationScheme
-                                  // has
-                                  // been notified of the end of looop
+      stopApproximationScheme();   // just to be sure of the approximationScheme
+                                   // has
+                                   // been notified of the end of looop
 
       return dag;
     }
@@ -133,12 +133,12 @@ namespace gum {
                typename PARAM_ESTIMATOR,
                typename CELL_TRANSLATORS >
     BayesNet< GUM_SCALAR >
-    GreedyHillClimbing::learnBN(GRAPH_CHANGES_SELECTOR&           selector,
-                                PARAM_ESTIMATOR&                  estimator,
-                                const std::vector< std::string >& names,
-                                const std::vector< Idx >&         modal,
-                                const CELL_TRANSLATORS&           translator,
-                                DAG                               initial_dag) {
+      GreedyHillClimbing::learnBN(GRAPH_CHANGES_SELECTOR&           selector,
+                                  PARAM_ESTIMATOR&                  estimator,
+                                  const std::vector< std::string >& names,
+                                  const std::vector< Idx >&         modal,
+                                  const CELL_TRANSLATORS&           translator,
+                                  DAG                               initial_dag) {
       return DAG2BNLearner::
         createBN< GUM_SCALAR, PARAM_ESTIMATOR, CELL_TRANSLATORS >(
           estimator,

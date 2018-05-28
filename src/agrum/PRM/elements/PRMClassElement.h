@@ -42,7 +42,8 @@ namespace gum {
     class PRMAttribute;
 
     /**
-     * @class PRMClassElement classElement.h <agrum/PRM/classElement.h>
+     * @class PRMClassElement
+     * @headerfile classElement.h <agrum/PRM/classElement.h>
      * @brief Abstract class representing an element of PRM class.
      *
      * All class elements are nodes in the class's DAG and a unique name in
@@ -96,23 +97,17 @@ namespace gum {
 
       static std::string enum2str(ClassElementType type) {
         switch (type) {
-          case prm_attribute:
-            return "prm_attribute";
+          case prm_attribute: return "prm_attribute";
 
-          case prm_aggregate:
-            return "prm_aggregate";
+          case prm_aggregate: return "prm_aggregate";
 
-          case prm_refslot:
-            return "prm_refslot";
+          case prm_refslot: return "prm_refslot";
 
-          case prm_slotchain:
-            return "prm_slotchain";
+          case prm_slotchain: return "prm_slotchain";
 
-          case prm_parameter:
-            return "prm_parameter";
+          case prm_parameter: return "prm_parameter";
 
-          default:
-            return "unknown";
+          default: return "unknown";
         }
       }
 
@@ -268,7 +263,7 @@ namespace gum {
     extern template class PRMClassElement< double >;
 
   } /* namespace prm */
-}  // namespace gum
+}   // namespace gum
 
 #include <agrum/PRM/elements/PRMClassElement_tpl.h>
 

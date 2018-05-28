@@ -36,27 +36,27 @@
 #include <agrum/agrum.h>
 
 #ifdef HAVE_UNISTD_H
-#include <unistd.h>
+#  include <unistd.h>
 #else
-#include <agrum/core/mvsc/unistd.h>
+#  include <agrum/core/mvsc/unistd.h>
 #endif
 
 #ifdef HAVE_DIRENT_H
-#include <dirent.h>
+#  include <dirent.h>
 #else
-#include <agrum/core/mvsc/dirent.h>
+#  include <agrum/core/mvsc/dirent.h>
 #endif
 
 
 namespace gum {
 
   /**
-   * @class Directory utils_dir.h <agrum/core/utils_dir.h>
+   * @class Directory
+   * @headerfile utils_dir.h <agrum/core/utils_dir.h>
    * @brief Cross-platform directory utility.
    * @ingroup utilities_group
    */
   class Directory {
-
     public:
     /**
      * &brief Return true if \a directory is a valid directory, false
@@ -133,8 +133,8 @@ namespace gum {
     /// A pointer towards the Directory stream
     mutable DIR* m_dirPtr;
 
-  };  // END CLASS DIRECTORY
+  };   // END CLASS DIRECTORY
 
-}  // END NAMESPACE GUM
+}   // namespace gum
 
-#endif  // GUM_DIR_UTILS_H
+#endif   // GUM_DIR_UTILS_H

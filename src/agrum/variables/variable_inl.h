@@ -30,18 +30,16 @@ namespace gum {
 
   /// constructor
 
-  INLINE Variable::Variable(const std::string& aName, const std::string& aDesc)
-      : __name(aName)
-      , __description(aDesc) {
+  INLINE Variable::Variable(const std::string& aName, const std::string& aDesc) :
+      __name(aName), __description(aDesc) {
     // for debugging purposes
     GUM_CONSTRUCTOR(Variable);
   }
 
   /// copy constructor
 
-  INLINE Variable::Variable(const Variable& aRV)
-      : __name(aRV.__name)
-      , __description(aRV.__description) {
+  INLINE Variable::Variable(const Variable& aRV) :
+      __name(aRV.__name), __description(aRV.__description) {
     // for debugging purposes
     GUM_CONS_CPY(Variable);
   }
@@ -94,4 +92,4 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS

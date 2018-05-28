@@ -26,7 +26,7 @@
 #ifndef GUM_GAMMA_LOG2_H
 #define GUM_GAMMA_LOG2_H
 
-#define _USE_MATH_DEFINES  // for Visual C++
+#define _USE_MATH_DEFINES   // for Visual C++
 #include <cmath>
 
 #include <limits>
@@ -38,7 +38,8 @@
 namespace gum {
 
   /**
-   * @class GammaLog2 gammaLog2.h <agrum/core/math/gammaLog2.h>
+   * @class GammaLog2
+   * @headerfile gammaLog2.h <agrum/core/math/gammaLog2.h>
    * @brief The class for computing Log2 (Gamma(x))
    * @ingroup math_group
    */
@@ -123,7 +124,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/core/math/gammaLog2_inl.h>
-#endif  // GUM_NO_INLINE
+#  include <agrum/core/math/gammaLog2_inl.h>
+#endif   // GUM_NO_INLINE
 
 #endif /* GUM_GAMMA_LOG2_H */

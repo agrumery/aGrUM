@@ -33,39 +33,40 @@ namespace gum {
     template < typename IdSetAlloc, typename CountAlloc >
     template < typename RowFilter >
     INLINE ParamEstimator< IdSetAlloc, CountAlloc >::ParamEstimator(
-      const RowFilter&           filter,
-      const std::vector< Size >& var_modalities,
-      Apriori< IdSetAlloc, CountAlloc >&                    apriori,
-      const ScoreInternalApriori< IdSetAlloc, CountAlloc >& score_internal_apriori)
-        : Counter< IdSetAlloc, CountAlloc >(filter, var_modalities)
-        , _apriori(&apriori)
-        , _score_internal_apriori(score_internal_apriori.copyFactory()) {
+      const RowFilter&                   filter,
+      const std::vector< Size >&         var_modalities,
+      Apriori< IdSetAlloc, CountAlloc >& apriori,
+      const ScoreInternalApriori< IdSetAlloc, CountAlloc >&
+        score_internal_apriori) :
+        Counter< IdSetAlloc, CountAlloc >(filter, var_modalities),
+        _apriori(&apriori),
+        _score_internal_apriori(score_internal_apriori.copyFactory()) {
       GUM_CONSTRUCTOR(ParamEstimator);
     }
 
     /// copy constructor
     template < typename IdSetAlloc, typename CountAlloc >
     ParamEstimator< IdSetAlloc, CountAlloc >::ParamEstimator(
-      const ParamEstimator< IdSetAlloc, CountAlloc >& from)
-        : Counter< IdSetAlloc, CountAlloc >(from)
-        , _apriori(from._apriori)
-        , _score_internal_apriori(from._score_internal_apriori->copyFactory())
-        , _is_normalized(from._is_normalized)
-        , __apriori_computed(from.__apriori_computed)
-        , __score_apriori_inserted(from.__score_apriori_inserted) {
+      const ParamEstimator< IdSetAlloc, CountAlloc >& from) :
+        Counter< IdSetAlloc, CountAlloc >(from),
+        _apriori(from._apriori),
+        _score_internal_apriori(from._score_internal_apriori->copyFactory()),
+        _is_normalized(from._is_normalized),
+        __apriori_computed(from.__apriori_computed),
+        __score_apriori_inserted(from.__score_apriori_inserted) {
       GUM_CONS_CPY(ParamEstimator);
     }
 
     /// move constructor
     template < typename IdSetAlloc, typename CountAlloc >
     ParamEstimator< IdSetAlloc, CountAlloc >::ParamEstimator(
-      ParamEstimator< IdSetAlloc, CountAlloc >&& from)
-        : Counter< IdSetAlloc, CountAlloc >(std::move(from))
-        , _apriori(std::move(from._apriori))
-        , _score_internal_apriori(std::move(from._score_internal_apriori))
-        , _is_normalized(std::move(from._is_normalized))
-        , __apriori_computed(std::move(from.__apriori_computed))
-        , __score_apriori_inserted(std::move(from.__score_apriori_inserted)) {
+      ParamEstimator< IdSetAlloc, CountAlloc >&& from) :
+        Counter< IdSetAlloc, CountAlloc >(std::move(from)),
+        _apriori(std::move(from._apriori)),
+        _score_internal_apriori(std::move(from._score_internal_apriori)),
+        _is_normalized(std::move(from._is_normalized)),
+        __apriori_computed(std::move(from.__apriori_computed)),
+        __score_apriori_inserted(std::move(from.__score_apriori_inserted)) {
       from._score_internal_apriori = nullptr;
       GUM_CONS_MOV(ParamEstimator);
     }
@@ -114,14 +115,14 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE void ParamEstimator< IdSetAlloc, CountAlloc >::setParameters(
       Idx nodeset_index, Potential< GUM_SCALAR >& pot) {
-      const auto& nc = parameters(nodeset_index);  // normalized_counts
+      const auto& nc = parameters(nodeset_index);   // normalized_counts
       pot.fillWith(std::vector< GUM_SCALAR >(nc.begin(), nc.end()));
     }
 
     /// returns the apriori vector for a given (conditioned) target set
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE const std::vector< double, CountAlloc >&
-    ParamEstimator< IdSetAlloc, CountAlloc >::_getAllApriori(Idx index) {
+                 ParamEstimator< IdSetAlloc, CountAlloc >::_getAllApriori(Idx index) {
       if (!__apriori_computed) {
         _apriori->setParameters(this->_modalities,
                                 Counter< IdSetAlloc, CountAlloc >::_getCounts(),
@@ -137,7 +138,8 @@ namespace gum {
     /// returns the apriori vector for a conditioning set
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE const std::vector< double, CountAlloc >&
-    ParamEstimator< IdSetAlloc, CountAlloc >::_getConditioningApriori(Idx index) {
+                 ParamEstimator< IdSetAlloc, CountAlloc >::_getConditioningApriori(
+        Idx index) {
       if (!__apriori_computed) {
         _apriori->setParameters(this->_modalities,
                                 Counter< IdSetAlloc, CountAlloc >::_getCounts(),
@@ -168,8 +170,8 @@ namespace gum {
     /// sets the range of records taken into account by the counter
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE void
-    ParamEstimator< IdSetAlloc, CountAlloc >::setRange(Size min_range,
-                                                       Size max_range) {
+      ParamEstimator< IdSetAlloc, CountAlloc >::setRange(Size min_range,
+                                                         Size max_range) {
       Counter< IdSetAlloc, CountAlloc >::setRange(min_range, max_range);
     }
 

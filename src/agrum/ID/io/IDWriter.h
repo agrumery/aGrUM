@@ -83,4 +83,4 @@ namespace gum {
 
 #include "IDWriter_tpl.h"
 
-#endif  // GUM_ID_WRITER_H
+#endif   // GUM_ID_WRITER_H

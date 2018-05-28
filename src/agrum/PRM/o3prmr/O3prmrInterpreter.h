@@ -29,12 +29,12 @@
 #define SKOORINTERPRETER_H
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-#include <agrum/PRM/inference/PRMInference.h>
-#include <agrum/PRM/o3prm/O3prmReader.h>
-#include <agrum/PRM/o3prmr/O3prmrContext.h>
+#  include <agrum/PRM/inference/PRMInference.h>
+#  include <agrum/PRM/o3prm/O3prmReader.h>
+#  include <agrum/PRM/o3prmr/O3prmrContext.h>
 
-#include <agrum/core/errorsContainer.h>
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#  include <agrum/core/errorsContainer.h>
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
 
@@ -66,7 +66,6 @@ namespace gum {
        * O3prmr use the @<double@> version of the O3PRM templatized ecosystem
        */
       class O3prmrInterpreter {
-
         public:
         /// This constructor create an empty context.
         O3prmrInterpreter();
@@ -97,14 +96,14 @@ namespace gum {
 
         /// Getter and setter for the context.
         O3prmrContext< double >* getContext() const;
-        void setContext(O3prmrContext< double >* context);
+        void                     setContext(O3prmrContext< double >* context);
 
         /// Root paths to search from there packages.
         /// Default are working dir, request file dir if any
         /// and one is calculate from package if any.
         std::vector< std::string > getPaths() const;
-        void addPath(std::string path);
-        void clearPaths();
+        void                       addPath(std::string path);
+        void                       clearPaths();
 
         /// syntax mode don't process anything, just check syntax. Default is
         /// false.
@@ -154,8 +153,8 @@ namespace gum {
         std::string findInstanceName(std::string&                         s,
                                      const gum::prm::PRMSystem< double >& sys);
         std::string
-        findAttributeName(const std::string&                     s,
-                          const gum::prm::PRMInstance< double >& instance);
+                                   findAttributeName(const std::string&                     s,
+                                                     const gum::prm::PRMInstance< double >& instance);
         const PRMSystem< double >& system(std::string& ident);
         void generateInfEngine(const gum::prm::PRMSystem< double >& sys);
 
@@ -169,9 +168,9 @@ namespace gum {
         std::vector< std::string >              m_paths;
         gum::BayesNet< double >*                m_bn;
         // Don't delete this, the m_inf_map will do it
-        gum::prm::PRMInference< double >* m_inf;
+        gum::prm::PRMInference< double >*                                m_inf;
         HashTable< const PRMSystem< double >*, PRMInference< double >* > m_inf_map;
-        std::string                m_engine;
+        std::string                                                      m_engine;
         std::string                m_bn_engine;
         std::vector< QueryResult > m_results;
         gum::ErrorsContainer       m_errors;
@@ -183,10 +182,10 @@ namespace gum {
         //// We need this when using grounded inference
         // gum::BayesNetInference<gum::prm::prm_float>* bn;
 
-      };  // class O3prmrInterpreter
+      };   // class O3prmrInterpreter
 
-    }  // namespace o3prmr
-  }    // namespace prm
-}  // namespace gum
+    }   // namespace o3prmr
+  }     // namespace prm
+}   // namespace gum
 
-#endif  // GUM_SKOORINTERPRETER_H
+#endif   // GUM_SKOORINTERPRETER_H

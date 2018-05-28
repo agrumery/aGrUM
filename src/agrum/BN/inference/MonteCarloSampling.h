@@ -33,22 +33,21 @@
 namespace gum {
 
   /**
-      * @class MonteCarloInference monteCarloInference.h
-      *<agrum/BN/inference/monteCarloInference.h>
-      * @brief class for making Monte Carlo sampling inference in bayesian
-    *networks.
-      * @ingroup bn_approximation
-      *
-      * This class overrides pure function declared in the inherited class
-    *ApproximateInference.
-      * It defines the way Monte Carlo sampling draws a sample.
-      *
-      */
+   * @class MonteCarloInference monteCarloInference.h
+   *<agrum/BN/inference/monteCarloInference.h>
+   * @brief class for making Monte Carlo sampling inference in bayesian
+   *networks.
+   * @ingroup bn_approximation
+   *
+   * This class overrides pure function declared in the inherited class
+   *ApproximateInference.
+   * It defines the way Monte Carlo sampling draws a sample.
+   *
+   */
 
 
   template < typename GUM_SCALAR >
   class MonteCarloSampling : public SamplingInference< GUM_SCALAR > {
-
     public:
     /**
      * Default constructor
@@ -66,23 +65,23 @@ namespace gum {
 
     /// draws a sample according to classic Monte Carlo sampling
     /**
-    * @param w the weight of sample being generated
-    * @param prev the previous sample generated
-    * @param bn the bayesian network containing the evidence
-    * @param hardEvNodes hard evidence nodes
-    * @param hardEv hard evidences values
-    *
-    * Generates a new sample using forward sampling, rejecting
-    * samples not consistent with evidence
-    *
-    */
+     * @param w the weight of sample being generated
+     * @param prev the previous sample generated
+     * @param bn the bayesian network containing the evidence
+     * @param hardEvNodes hard evidence nodes
+     * @param hardEv hard evidences values
+     *
+     * Generates a new sample using forward sampling, rejecting
+     * samples not consistent with evidence
+     *
+     */
     Instantiation _draw(float* w, Instantiation prev) override;
   };
 
   extern template class MonteCarloSampling< float >;
 
   extern template class MonteCarloSampling< double >;
-}
+}   // namespace gum
 
 #include <agrum/BN/inference/MonteCarloSampling_tpl.h>
 

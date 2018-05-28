@@ -40,7 +40,7 @@ namespace gum {
 
   // indicates if a new partial ordering is needed
   INLINE bool
-  PartialOrderedEliminationSequenceStrategy::isPartialOrderNeeded() const
+    PartialOrderedEliminationSequenceStrategy::isPartialOrderNeeded() const
     noexcept {
     return _partial_order_needed;
   }

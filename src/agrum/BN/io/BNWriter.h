@@ -41,7 +41,8 @@ namespace gum {
   /* ===                              WRITTERS === */
   /* =========================================================================*/
   /**
-   * @class BNWriter BNWriter.h <agrum/BN/io/BNWriter.h>
+   * @class BNWriter
+   * @headerfile BNWriter.h <agrum/BN/io/BNWriter.h>
    * @brief Pure virtual class for writting a BN to a file.
    * @ingroup bn_io
    *
@@ -91,4 +92,4 @@ namespace gum {
 
 #include <agrum/BN/io/BNWriter_tpl.h>
 
-#endif  // GUM_BN_WRITER_H
+#endif   // GUM_BN_WRITER_H

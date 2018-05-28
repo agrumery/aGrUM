@@ -40,8 +40,8 @@ namespace gum {
     GUM_DESTRUCTOR(IApproximationSchemeConfiguration);
   }
 
-}  // namespace gum
+}   // namespace gum
 
 #ifdef GUM_NO_INLINE
-#include <agrum/core/approximations/IApproximationSchemeConfiguration_inl.h>
+#  include <agrum/core/approximations/IApproximationSchemeConfiguration_inl.h>
 #endif

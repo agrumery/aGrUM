@@ -45,7 +45,6 @@ namespace gum {
    */
   // clang-format on
   class O4DGContext {
-
     public:
     // ============================================================================
     /// @name Constructors, Destructors.
@@ -132,10 +131,10 @@ namespace gum {
     static const double __logPrime[];
     static const Idx    __nbLogPrime, __offsetv, __offset1, __offset2;
   };
-}
+}   // namespace gum
 
 #ifndef GUM_NO_INLINE
-#include <agrum/multidim/utils/FunctionGraphUtilities/operators/o4DGContext_inl.h>
+#  include <agrum/multidim/utils/FunctionGraphUtilities/operators/o4DGContext_inl.h>
 #endif /* GUM_NO_INLINE */
 
-#endif  // O4DGCONTEXT_H
+#endif   // O4DGCONTEXT_H

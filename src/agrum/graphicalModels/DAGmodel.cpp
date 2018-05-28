@@ -21,20 +21,16 @@
 #include <agrum/graphicalModels/DAGmodel.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphicalModels/DAGmodel_inl.h>
+#  include <agrum/graphicalModels/DAGmodel_inl.h>
 #endif /* GUM_NO_INLINE */
 
 namespace gum {
-  DAGmodel::DAGmodel()
-      : __mutableMoralGraph(nullptr)
-      , __propertiesMap(nullptr) {
+  DAGmodel::DAGmodel() : __mutableMoralGraph(nullptr), __propertiesMap(nullptr) {
     GUM_CONSTRUCTOR(DAGmodel);
   }
 
-  DAGmodel::DAGmodel(const DAGmodel& from)
-      : _dag(from._dag)
-      , __mutableMoralGraph(nullptr)
-      , __propertiesMap(nullptr) {
+  DAGmodel::DAGmodel(const DAGmodel& from) :
+      _dag(from._dag), __mutableMoralGraph(nullptr), __propertiesMap(nullptr) {
     GUM_CONS_CPY(DAGmodel);
 
     if (from.__propertiesMap) {
@@ -47,13 +43,9 @@ namespace gum {
     GUM_DESTRUCTOR(DAGmodel);
     // Removing previous properties
 
-    if (__propertiesMap) {
-      delete __propertiesMap;
-    }
+    if (__propertiesMap) { delete __propertiesMap; }
 
-    if (__mutableMoralGraph) {
-      delete __mutableMoralGraph;
-    }
+    if (__mutableMoralGraph) { delete __mutableMoralGraph; }
   }
 
   void DAGmodel::__moralGraph() const {
@@ -104,8 +96,8 @@ namespace gum {
   }
 
   const UndiGraph& DAGmodel::moralGraph(bool clear) const {
-    if (clear ||
-        (__mutableMoralGraph == nullptr)) {  // we have to call _moralGraph
+    if (clear
+        || (__mutableMoralGraph == nullptr)) {   // we have to call _moralGraph
       if (__mutableMoralGraph == nullptr) {
         __mutableMoralGraph = new UndiGraph();
       } else {
@@ -133,9 +125,7 @@ namespace gum {
     for (const auto& nid : nodes()) {
       try {
         other.idFromName(variable(nid).name());
-      } catch (NotFound) {
-        return false;
-      }
+      } catch (NotFound) { return false; }
     }
 
     for (const auto& arc : arcs()) {
@@ -146,4 +136,4 @@ namespace gum {
 
     return true;
   }
-}
+}   // namespace gum

@@ -58,14 +58,14 @@ namespace gum {
       class SearchStrategy;
 
       /**
-       * @class DFSTree DFSTree.h <agrum/PRM/gspan/DFSTree.h>
+       * @class DFSTree
+       * @headerfile DFSTree.h <agrum/PRM/gspan/DFSTree.h>
        *
        * A DFSTree is used by gspan to sort lexicographically patterns
        * discovered in an interface graph.
        */
       template < typename GUM_SCALAR >
       class DFSTree : private DiGraph {
-
         public:
         // =========================================================================
         /// @name Constructor and destructor.
@@ -237,9 +237,10 @@ namespace gum {
         /// strategy getter
         const SearchStrategy< GUM_SCALAR >& strategy() const;
 
-        /// @class NeighborDegreeSort DFSTree.h <agrum/PRM/gspan/DFSTree.h>
-        /// @brief This is used to generate the max_indep_set of a Pattern.
-
+        /** @class NeighborDegreeSort
+         * @headerfile DFSTree.h <agrum/PRM/gspan/DFSTree.h>
+         * @brief This is used to generate the max_indep_set of a Pattern.
+         */
         struct NeighborDegreeSort {
           /// Constructor
           explicit NeighborDegreeSort(UndiGraph& graph);

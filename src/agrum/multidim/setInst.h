@@ -45,7 +45,8 @@ namespace gum {
   // ===                            GUM_SetInst                             ===
   // ==========================================================================
   /**
-   * @class SetInst setInst.h <agrum/multidim/SetInst.h>
+   * @class SetInst
+   * @headerfile setInst.h <agrum/multidim/SetInst.h>
    * @ingroup multidim_group
    *
    * @brief Class for assigning/browsing values to tuples of discrete variables.
@@ -829,8 +830,8 @@ namespace gum {
      */
     static void assign_values(
       Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-      const SetInst& i,
-      SetInst&       j);
+      const SetInst&                                                 i,
+      SetInst&                                                       j);
 
     /// @}
 
@@ -939,7 +940,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/multidim/setInst_inl.h>
+#  include <agrum/multidim/setInst_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_SetInst_H */

@@ -48,7 +48,6 @@ namespace gum {
    *
    */
   class MultiDimFunctionGraphGenerator {
-
     public:
     // =========================================================================
     /// @name Constructors / Destructors
@@ -94,5 +93,5 @@ namespace gum {
     /// The seed for random numbers
     static Idx __genSeed;
   };
-} /* end of namespace */
+}   // namespace gum
 #endif /* GUM_MULTI_DIM_FUNCTION_GRAPH_GENERATOR_H */

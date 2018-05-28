@@ -36,7 +36,8 @@
 
 namespace gum {
   /**
-   * @class BayesNetFragment BayesNetFragment.h <agrum/BN/BayesNetFragment.h>
+   * @class BayesNetFragment
+   * @headerfile BayesNetFragment.h <agrum/BN/BayesNetFragment.h>
    * @brief Portion of a BN identified by the list of nodes and a BayesNet.
    * @ingroup bn_group
    *
@@ -66,8 +67,9 @@ namespace gum {
    * defined.
    */
   template < typename GUM_SCALAR >
-  class BayesNetFragment : public IBayesNet< GUM_SCALAR >,
-                           public gum::DiGraphListener {
+  class BayesNetFragment
+      : public IBayesNet< GUM_SCALAR >
+      , public gum::DiGraphListener {
     private:
     /// The referred BayesNet
     const IBayesNet< GUM_SCALAR >& __bn;
@@ -106,43 +108,43 @@ namespace gum {
      * @param from the id of tail of the new arc inserted into the graph
      * @param to the id of head of the new arc inserted into the graph */
     virtual void
-    whenArcAdded(const void* src, NodeId from, NodeId to) noexcept override;
+      whenArcAdded(const void* src, NodeId from, NodeId to) noexcept override;
 
     /// the action to take when an arc has just been removed from the graph
     /** @param src the object that sent the signal
      * @param from the id of tail of the arc removed from the graph
      * @param to the id of head of the arc removed from the graph */
     virtual void
-    whenArcDeleted(const void* src, NodeId from, NodeId to) noexcept override;
+      whenArcDeleted(const void* src, NodeId from, NodeId to) noexcept override;
     /// @}
 
     /// @name IBayesNet interface
     /// @{
 
     /**
-    * Returns the CPT of a variable.
-    *
-    * @throw NotFound If no variable's id matches varId.
-    */
+     * Returns the CPT of a variable.
+     *
+     * @throw NotFound If no variable's id matches varId.
+     */
     virtual const Potential< GUM_SCALAR >& cpt(NodeId varId) const override;
 
     /**
-    * Returns a constant reference to the VariableNodeMap of this BN
-    */
+     * Returns a constant reference to the VariableNodeMap of this BN
+     */
     virtual const VariableNodeMap& variableNodeMap() const override;
 
     /**
-    * Returns a constant reference over a variabe given it's node id.
-    *
-    * @throw NotFound If no variable's id matches varId.
-    */
+     * Returns a constant reference over a variabe given it's node id.
+     *
+     * @throw NotFound If no variable's id matches varId.
+     */
     virtual const DiscreteVariable& variable(NodeId id) const override;
 
     /**
-    * Return id node from discrete var pointer.
-    *
-    * @throw NotFound If no variable matches var.
-    */
+     * Return id node from discrete var pointer.
+     *
+     * @throw NotFound If no variable matches var.
+     */
     virtual NodeId nodeId(const DiscreteVariable& var) const override;
 
     /**
@@ -158,7 +160,7 @@ namespace gum {
      * @throw NotFound if no such name exists in the graph.
      */
     virtual const DiscreteVariable&
-    variableFromName(const std::string& name) const override;
+      variableFromName(const std::string& name) const override;
 
     /**
      * creates a dot representing the whole referred BN hilighting the fragment.
@@ -276,8 +278,8 @@ namespace gum {
   extern template class BayesNetFragment< float >;
   extern template class BayesNetFragment< double >;
 
-}  // namespace gum
+}   // namespace gum
 
 #include <agrum/BN/BayesNetFragment_tpl.h>
 
-#endif  // GUM_BAYES_NET_FRAGMENT_H
+#endif   // GUM_BAYES_NET_FRAGMENT_H

@@ -1,23 +1,23 @@
 
 /***************************************************************************
-*   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 
 #include <string.h>
@@ -196,9 +196,7 @@ namespace gum {
         GUM_ERROR(OutOfBounds,
                   "LRSWrapper< GUM_SCALAR >::fillH : modality is "
                   "greater or equal than cardinality : "
-                    << modal
-                    << " >= "
-                    << __card);
+                    << modal << " >= " << __card);
 
       __input[modal * 2][0] = -min;
       __input[modal * 2][modal + 1] = 1;
@@ -227,9 +225,7 @@ namespace gum {
         GUM_ERROR(OutOfBounds,
                   "LRSWrapper< GUM_SCALAR >::fillMatrix : size is "
                   "different than cardinality : "
-                    << (matrix[0].size() - 1)
-                    << " != "
-                    << __card);
+                    << (matrix[0].size() - 1) << " != " << __card);
 
       __input = matrix;
 
@@ -252,8 +248,7 @@ namespace gum {
       if (__insertedVertices.size() == __vertices)
         GUM_ERROR(OutOfBounds,
                   "LRSWrapper< GUM_SCALAR >::fillV : input is already full with "
-                    << __vertices
-                    << " vertices.");
+                    << __vertices << " vertices.");
 
       bool eq = true;
 
@@ -326,13 +321,12 @@ namespace gum {
       do {
         for (decltype(__dic->d) col = 0, end = __dic->d; col <= end; col++)
           if (lrs_getsolution(__dic, __dat, __lrsOutput, col)) {
-
             // iszero macro could be used here for the test on right
-            if (__dat->hull ||
-                ((((__lrsOutput[0])[0] == 2 || (__lrsOutput[0])[0] == -2) &&
-                  (__lrsOutput[0])[1] == 0)
-                   ? 1L
-                   : 0L)) {
+            if (__dat->hull
+                || ((((__lrsOutput[0])[0] == 2 || (__lrsOutput[0])[0] == -2)
+                     && (__lrsOutput[0])[1] == 0)
+                      ? 1L
+                      : 0L)) {
               // __coutOn();
               /*for ( decltype(Q->n) i = 0; i < Q->n; i++ )
                 pmp ("", output[i]);*/
@@ -510,7 +504,6 @@ namespace gum {
       lrs_mp                  Din,
       std::vector< int64_t >& Num,
       std::vector< int64_t >& Den) const {
-
       int64_t Nsize = (Nin[0] > 0) ? Nin[0] : -Nin[0];
       int64_t Dsize = (Din[0] > 0) ? Din[0] : -Din[0];
 
@@ -568,8 +561,8 @@ namespace gum {
     void LRSWrapper< GUM_SCALAR >::__fill() const {
       int64_t cols = int64_t(__input[0].size());
 
-      int64_t* num = new int64_t[cols];  // ISO C++ forbids variable length array,
-                                         // we need to do this instead
+      int64_t* num = new int64_t[cols];   // ISO C++ forbids variable length array,
+                                          // we need to do this instead
       int64_t* den = new int64_t[cols];
 
       int64_t rows = int64_t(__input.size());
@@ -592,7 +585,7 @@ namespace gum {
                     row + 1,
                     num,
                     den,
-                    1L);  // do NOT forget this + 1 on row
+                    1L);   // do NOT forget this + 1 on row
       }
 
       delete[] num;
@@ -729,13 +722,13 @@ namespace gum {
       fflush(stdout);
 #ifdef _MSC_VER
       freopen("NUL", "w", stdout);
-#else   // _MSC_VER
+#else    // _MSC_VER
       __oldCout = dup(1);
 
       int new_cout = open("/dev/null", O_WRONLY);
       dup2(new_cout, 1);
       close(new_cout);
-#endif  // _MSC_VER
+#endif   // _MSC_VER
     }
 
     template < typename GUM_SCALAR >
@@ -743,11 +736,11 @@ namespace gum {
       fflush(stdout);
 #ifdef _MSC_VER
       freopen("CON", "w", stdout);
-#else   // _MSC_VER
+#else    // _MSC_VER
       dup2(__oldCout, 1);
       close(__oldCout);
-#endif  // _MSC_VER
+#endif   // _MSC_VER
     }
 
-  }  // end of credal namespace
-}  // end of gum namespace
+  }   // namespace credal
+}   // namespace gum

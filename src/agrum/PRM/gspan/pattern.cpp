@@ -27,16 +27,14 @@
 #include <agrum/PRM/gspan/pattern.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/PRM/gspan/pattern_inl.h>
-#endif  // GUM_NO_INLINE
+#  include <agrum/PRM/gspan/pattern_inl.h>
+#endif   // GUM_NO_INLINE
 
 namespace gum {
   namespace prm {
     namespace gspan {
 
-      Pattern::Pattern(const Pattern& source)
-          : DiGraph()
-          , __last(0) {
+      Pattern::Pattern(const Pattern& source) : DiGraph(), __last(0) {
         GUM_CONS_CPY(Pattern);
         NodeProperty< NodeId > node_map;
 
@@ -62,9 +60,7 @@ namespace gum {
             if (edge_code < *(code().codes.front())) {
               return false;
             } else if (edge_code == (*code().codes.front())) {
-              if (__expandCodeIsMinimal(node, next)) {
-                return false;
-              }
+              if (__expandCodeIsMinimal(node, next)) { return false; }
             }
           }
 
@@ -76,9 +72,7 @@ namespace gum {
             if (edge_code < *(code().codes.front())) {
               return false;
             } else if (edge_code == (*code().codes.front())) {
-              if (__expandCodeIsMinimal(node, next)) {
-                return false;
-              }
+              if (__expandCodeIsMinimal(node, next)) { return false; }
             }
           }
         }
@@ -101,15 +95,13 @@ namespace gum {
 
       bool Pattern::__expandCodeIsMinimal(NodeId u, NodeId v) {
         Bijection< NodeId, NodeId > node_map;
-        Pattern p;
+        Pattern                     p;
         node_map.insert(u, p.addNodeWithLabel(label(u)));
         node_map.insert(v, p.addNodeWithLabel(label(v)));
 
         try {
           p.addArc(1, 2, label(u, v));
-        } catch (NotFound&) {
-          p.addArc(1, 2, label(v, u));
-        }
+        } catch (NotFound&) { p.addArc(1, 2, label(v, u)); }
 
         for (const auto nei : children(u))
           if (nei != v)
@@ -130,16 +122,16 @@ namespace gum {
         return false;
       }
 
-      bool Pattern::__rec(Pattern& p,
+      bool Pattern::__rec(Pattern&                     p,
                           Bijection< NodeId, NodeId >& node_map,
-                          NodeId u,
-                          NodeId v) {
+                          NodeId                       u,
+                          NodeId                       v) {
         if (node_map.existsFirst(v)) {
           if (node_map.second(u) < node_map.second(v)) {
             // Invalid forward edge
             return false;
-          } else if ((p.existsArc(node_map.second(u), node_map.second(v))) ||
-                     (p.existsArc(node_map.second(v), node_map.second(u)))) {
+          } else if ((p.existsArc(node_map.second(u), node_map.second(v)))
+                     || (p.existsArc(node_map.second(v), node_map.second(u)))) {
             // Duplicate arc !
             return false;
           }
@@ -152,9 +144,7 @@ namespace gum {
 
         try {
           data = &(label(u, v));
-        } catch (NotFound&) {
-          data = &(label(v, u));
-        }
+        } catch (NotFound&) { data = &(label(v, u)); }
 
         // Adding arc
         try {
@@ -193,12 +183,12 @@ namespace gum {
         return false;
       }
 
-      bool Pattern::__not_rec(Pattern& p,
+      bool Pattern::__not_rec(Pattern&                     p,
                               Bijection< NodeId, NodeId >& node_map,
-                              NodeId a_u,
-                              NodeId a_v) {
+                              NodeId                       a_u,
+                              NodeId                       a_v) {
         std::vector< std::pair< NodeId, NodeId > > stack;
-        std::vector< size_t > rec_call;
+        std::vector< size_t >                      rec_call;
         stack.push_back(std::make_pair(a_u, a_v));
         NodeId u = 0;
         NodeId v = 0;
@@ -216,8 +206,9 @@ namespace gum {
               if (node_map.second(u) < node_map.second(v)) {
                 // Invalid forward edge
                 go = false;
-              } else if ((p.existsArc(node_map.second(u), node_map.second(v))) ||
-                         (p.existsArc(node_map.second(v), node_map.second(u)))) {
+              } else if ((p.existsArc(node_map.second(u), node_map.second(v)))
+                         || (p.existsArc(node_map.second(v),
+                                         node_map.second(u)))) {
                 // Duplicate arc !
                 go = false;
               }
@@ -231,9 +222,7 @@ namespace gum {
 
               try {
                 data = &(label(u, v));
-              } catch (NotFound&) {
-                data = &(label(v, u));
-              }
+              } catch (NotFound&) { data = &(label(v, u)); }
 
               // Adding arc
               try {

@@ -28,14 +28,13 @@
 namespace gum {
   namespace prm {
     INLINE
-    NameGenerator::NameGenerator()
-        : __counters(3, 1) {
+    NameGenerator::NameGenerator() : __counters(3, 1) {
       GUM_CONSTRUCTOR(NameGenerator);
     }
 
     INLINE
-    NameGenerator::NameGenerator(const NameGenerator& source)
-        : __counters(source.__counters) {
+    NameGenerator::NameGenerator(const NameGenerator& source) :
+        __counters(source.__counters) {
       GUM_CONS_CPY(NameGenerator);
     }
 

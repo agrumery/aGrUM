@@ -41,16 +41,13 @@ namespace gum {
   /*
    * Default constructor.
    */
-  FMDPSimulator::FMDPSimulator(const FMDP< double >* fmdp)
-      : AbstractSimulator()
-      , __fmdp(const_cast< FMDP< double >* >(fmdp))
-      , __loaded(false) {
-    GUM_CONSTRUCTOR(FMDPSimulator)
-  }
+  FMDPSimulator::FMDPSimulator(const FMDP< double >* fmdp) :
+      AbstractSimulator(), __fmdp(const_cast< FMDP< double >* >(fmdp)),
+      __loaded(false){GUM_CONSTRUCTOR(FMDPSimulator)}
 
-  FMDPSimulator::FMDPSimulator(const std::string& ressource)
-      : AbstractSimulator()
-      , __loaded(true) {
+      FMDPSimulator::FMDPSimulator(const std::string& ressource) :
+      AbstractSimulator(),
+      __loaded(true) {
     GUM_CONSTRUCTOR(FMDPSimulator)
 
     __fmdp = new FMDP< double >(true);
@@ -73,11 +70,9 @@ namespace gum {
   // ===========================================================================
 
   void FMDPSimulator::perform(Idx actionId) {
-
     Instantiation newState;
     for (auto varIter = this->beginVariables(); varIter != this->endVariables();
          ++varIter) {
-
       newState.add(**varIter);
       Instantiation transit(_currentState);
       transit.add(*(this->primeVar(*varIter)));
@@ -97,4 +92,4 @@ namespace gum {
   }
 
 
-}  // End of namespace gum
+}   // End of namespace gum

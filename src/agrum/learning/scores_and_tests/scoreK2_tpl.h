@@ -25,8 +25,8 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <cmath>
-#include <sstream>
+#  include <cmath>
+#  include <sstream>
 
 namespace gum {
 
@@ -36,13 +36,13 @@ namespace gum {
     template < typename IdSetAlloc, typename CountAlloc >
     template < typename RowFilter >
     INLINE ScoreK2< IdSetAlloc, CountAlloc >::ScoreK2(
-      const RowFilter&           filter,
-      const std::vector< Size >& var_modalities,
+      const RowFilter&                   filter,
+      const std::vector< Size >&         var_modalities,
       Apriori< IdSetAlloc, CountAlloc >& apriori,
-      Size min_range,
-      Size max_range)
-        : Score< IdSetAlloc, CountAlloc >(
-            filter, var_modalities, apriori, min_range, max_range) {
+      Size                               min_range,
+      Size                               max_range) :
+        Score< IdSetAlloc, CountAlloc >(
+          filter, var_modalities, apriori, min_range, max_range) {
       // for debugging purposes
       GUM_CONSTRUCTOR(ScoreK2);
     }
@@ -50,27 +50,27 @@ namespace gum {
     /// copy constructor
     template < typename IdSetAlloc, typename CountAlloc >
     ScoreK2< IdSetAlloc, CountAlloc >::ScoreK2(
-      const ScoreK2< IdSetAlloc, CountAlloc >& from)
-        : Score< IdSetAlloc, CountAlloc >(from)
-        , __gammalog2(from.__gammalog2)
-        , __internal_apriori(from.__internal_apriori) {
+      const ScoreK2< IdSetAlloc, CountAlloc >& from) :
+        Score< IdSetAlloc, CountAlloc >(from),
+        __gammalog2(from.__gammalog2),
+        __internal_apriori(from.__internal_apriori) {
       GUM_CONS_CPY(ScoreK2);
     }
 
     /// move constructor
     template < typename IdSetAlloc, typename CountAlloc >
     ScoreK2< IdSetAlloc, CountAlloc >::ScoreK2(
-      ScoreK2< IdSetAlloc, CountAlloc >&& from)
-        : Score< IdSetAlloc, CountAlloc >(std::move(from))
-        , __gammalog2(std::move(from.__gammalog2))
-        , __internal_apriori(std::move(from.__internal_apriori)) {
+      ScoreK2< IdSetAlloc, CountAlloc >&& from) :
+        Score< IdSetAlloc, CountAlloc >(std::move(from)),
+        __gammalog2(std::move(from.__gammalog2)),
+        __internal_apriori(std::move(from.__internal_apriori)) {
       GUM_CONS_MOV(ScoreK2);
     }
 
     /// virtual copy factory
     template < typename IdSetAlloc, typename CountAlloc >
     ScoreK2< IdSetAlloc, CountAlloc >*
-    ScoreK2< IdSetAlloc, CountAlloc >::copyFactory() const {
+      ScoreK2< IdSetAlloc, CountAlloc >::copyFactory() const {
       return new ScoreK2< IdSetAlloc, CountAlloc >(*this);
     }
 
@@ -86,9 +86,7 @@ namespace gum {
     bool ScoreK2< IdSetAlloc, CountAlloc >::isAprioriCompatible(
       const std::string& apriori_type, double weight) {
       // check that the apriori is compatible with the score
-      if (apriori_type == AprioriNoAprioriType::type) {
-        return true;
-      }
+      if (apriori_type == AprioriNoAprioriType::type) { return true; }
 
       if (weight == 0) {
         GUM_ERROR(PossiblyIncompatibleScoreApriori,
@@ -97,8 +95,8 @@ namespace gum {
       }
 
       // known incompatible aprioris
-      if ((apriori_type == AprioriDirichletType::type) ||
-          (apriori_type == AprioriSmoothingType::type)) {
+      if ((apriori_type == AprioriDirichletType::type)
+          || (apriori_type == AprioriSmoothingType::type)) {
         GUM_ERROR(IncompatibleScoreApriori,
                   "The K2 score already contains a different 'implicit' apriori."
                   " Therefore, the learning will probably be meaningless.");
@@ -175,12 +173,12 @@ namespace gum {
 
           const double r_i = double(modalities[all_nodes.back()]);
           for (Idx j = 0; j < conditioning_modal; ++j) {
-            score += __gammalog2(N_prime_ij[j] + r_i) -
-                     __gammalog2(N_ij[j] + N_prime_ij[j] + r_i);
+            score += __gammalog2(N_prime_ij[j] + r_i)
+                     - __gammalog2(N_ij[j] + N_prime_ij[j] + r_i);
           }
           for (Idx k = 0; k < targets_modal; ++k) {
-            score += __gammalog2(N_ijk[k] + N_prime_ijk[k] + 1) -
-                     __gammalog2(N_prime_ijk[k] + 1);
+            score += __gammalog2(N_ijk[k] + N_prime_ijk[k] + 1)
+                     - __gammalog2(N_prime_ijk[k] + 1);
           }
         } else {
           // the K2 score can be computed as follows:
@@ -224,8 +222,8 @@ namespace gum {
           double       N = 0;
           double       N_prime = 0;
           for (Idx k = 0; k < targets_modal; ++k) {
-            score += __gammalog2(N_ijk[k] + N_prime_ijk[k] + 1) -
-                     __gammalog2(N_prime_ijk[k] + 1);
+            score += __gammalog2(N_ijk[k] + N_prime_ijk[k] + 1)
+                     - __gammalog2(N_prime_ijk[k] + 1);
             N += N_ijk[k];
             N_prime += N_prime_ijk[k];
           }

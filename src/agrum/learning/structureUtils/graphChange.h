@@ -485,9 +485,9 @@ namespace gum {
     public:
     /// computes the hashed value of a key
     Size operator()(const learning::GraphChange& key) const {
-      return (((unsigned long)key.node1() * HashFuncConst::gold +
-               (unsigned long)key.node2() * HashFuncConst::pi) >>
-              _right_shift);
+      return (((unsigned long)key.node1() * HashFuncConst::gold
+               + (unsigned long)key.node2() * HashFuncConst::pi)
+              >> _right_shift);
     }
   };
 
@@ -497,9 +497,9 @@ namespace gum {
     public:
     /// computes the hashed value of a key
     Size operator()(const learning::ArcAddition& key) const {
-      return (((unsigned long)key.node1() * HashFuncConst::gold +
-               (unsigned long)key.node2() * HashFuncConst::pi) >>
-              _right_shift);
+      return (((unsigned long)key.node1() * HashFuncConst::gold
+               + (unsigned long)key.node2() * HashFuncConst::pi)
+              >> _right_shift);
     }
   };
 
@@ -509,9 +509,9 @@ namespace gum {
     public:
     /// computes the hashed value of a key
     Size operator()(const learning::ArcDeletion& key) const {
-      return (((unsigned long)key.node1() * HashFuncConst::gold +
-               (unsigned long)key.node2() * HashFuncConst::pi) >>
-              _right_shift);
+      return (((unsigned long)key.node1() * HashFuncConst::gold
+               + (unsigned long)key.node2() * HashFuncConst::pi)
+              >> _right_shift);
     }
   };
 
@@ -521,9 +521,9 @@ namespace gum {
     public:
     /// computes the hashed value of a key
     Size operator()(const learning::ArcReversal& key) const {
-      return (((unsigned long)key.node1() * HashFuncConst::gold +
-               (unsigned long)key.node2() * HashFuncConst::pi) >>
-              _right_shift);
+      return (((unsigned long)key.node1() * HashFuncConst::gold
+               + (unsigned long)key.node2() * HashFuncConst::pi)
+              >> _right_shift);
     }
   };
 
@@ -533,9 +533,9 @@ namespace gum {
     public:
     /// computes the hashed value of a key
     Size operator()(const learning::EdgeAddition& key) const {
-      return (((unsigned long)key.node1() * HashFuncConst::gold +
-               (unsigned long)key.node2() * HashFuncConst::pi) >>
-              _right_shift);
+      return (((unsigned long)key.node1() * HashFuncConst::gold
+               + (unsigned long)key.node2() * HashFuncConst::pi)
+              >> _right_shift);
     }
   };
 
@@ -545,16 +545,16 @@ namespace gum {
     public:
     /// computes the hashed value of a key
     Size operator()(const learning::EdgeDeletion& key) const {
-      return (((unsigned long)key.node1() * HashFuncConst::gold +
-               (unsigned long)key.node2() * HashFuncConst::pi) >>
-              _right_shift);
+      return (((unsigned long)key.node1() * HashFuncConst::gold
+               + (unsigned long)key.node2() * HashFuncConst::pi)
+              >> _right_shift);
     }
   };
 
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/structureUtils/graphChange_inl.h>
-#endif  // GUM_NOINLINE
+#  include <agrum/learning/structureUtils/graphChange_inl.h>
+#endif   // GUM_NOINLINE
 
 #endif /* GUM_LEARNING_GRAPH_CHANGE_H */

@@ -80,7 +80,7 @@ namespace gum {
      */
     MultiDimICIModel(
       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-      const MultiDimICIModel< GUM_SCALAR >& from);
+      const MultiDimICIModel< GUM_SCALAR >&                                from);
 
     /**
      * Destructor.
@@ -127,7 +127,7 @@ namespace gum {
      * size than this MultiDimContainer.
      **/
     virtual void
-    copyFrom(const MultiDimContainer< GUM_SCALAR >& src) const override;
+      copyFrom(const MultiDimContainer< GUM_SCALAR >& src) const override;
 
     /**
      * @return the real number of parameters used for this table. This function

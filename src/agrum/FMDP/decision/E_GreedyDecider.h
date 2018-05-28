@@ -51,7 +51,6 @@ namespace gum {
    *
    */
   class E_GreedyDecider : public IDecisionStrategy {
-
     // ###################################################################
     /// @name Constructor & destructor.
     // ###################################################################
@@ -97,5 +96,5 @@ namespace gum {
     StatesChecker __statecpt;
     double        __sss;
   };
-}
-#endif  // GUM_E_GREEDY_DECIDER_H
+}   // namespace gum
+#endif   // GUM_E_GREEDY_DECIDER_H

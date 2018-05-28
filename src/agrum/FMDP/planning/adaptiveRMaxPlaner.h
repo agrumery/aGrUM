@@ -47,10 +47,9 @@ namespace gum {
    * process
    *
    */
-  class AdaptiveRMaxPlaner : public StructuredPlaner< double >,
-                             public IDecisionStrategy {
-
-
+  class AdaptiveRMaxPlaner
+      : public StructuredPlaner< double >
+      , public IDecisionStrategy {
     // ###################################################################
     /// @name
     // ###################################################################
@@ -60,10 +59,10 @@ namespace gum {
     ///
     // ==========================================================================
     static AdaptiveRMaxPlaner*
-    ReducedAndOrderedInstance(const ILearningStrategy* learner,
-                              double                   discountFactor = 0.9,
-                              double                   epsilon = 0.00001,
-                              bool                     verbose = true) {
+      ReducedAndOrderedInstance(const ILearningStrategy* learner,
+                                double                   discountFactor = 0.9,
+                                double                   epsilon = 0.00001,
+                                bool                     verbose = true) {
       return new AdaptiveRMaxPlaner(new MDDOperatorStrategy< double >(),
                                     discountFactor,
                                     epsilon,
@@ -180,12 +179,12 @@ namespace gum {
                                                NodeId currentNodeId,
                                                MultiDimFunctionGraph< double >*,
                                                MultiDimFunctionGraph< double >*);
-    void __clearTables();
+    void                        __clearTables();
 
     private:
     HashTable< Idx, MultiDimFunctionGraph< double >* > __actionsRMaxTable;
     HashTable< Idx, MultiDimFunctionGraph< double >* > __actionsBoolTable;
-    const ILearningStrategy* __fmdpLearner;
+    const ILearningStrategy*                           __fmdpLearner;
 
     double __rThreshold;
     double __rmax;
@@ -214,4 +213,4 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif  // GUM_ADAPTIVE_RMAX_PLANER_H
+#endif   // GUM_ADAPTIVE_RMAX_PLANER_H

@@ -35,7 +35,8 @@
 namespace gum {
 
   /**
-   * @class Regress regress.h <agrum/multidim/patterns/regress.h>
+   * @class Regress
+   * @headerfile regress.h <agrum/multidim/patterns/regress.h>
    * @brief Class used to perform Function Graph Operations in the FMDP
    * Framework
    * @ingroup multidim_group
@@ -56,9 +57,9 @@ namespace gum {
     Regress(
       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* vfunction,
       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* probDist,
-      const Set< const DiscreteVariable* >* primedVars,
-      const DiscreteVariable*               targetVar,
-      const GUM_SCALAR                      neutral);
+      const Set< const DiscreteVariable* >*                          primedVars,
+      const DiscreteVariable*                                        targetVar,
+      const GUM_SCALAR                                               neutral);
 
     /// Default destructor.
     ~Regress();
@@ -132,8 +133,8 @@ namespace gum {
 
   extern template class Regress< double, std::multiplies, std::plus >;
 
-}  // namespace gum
+}   // namespace gum
 
 #include <agrum/multidim/utils/FunctionGraphUtilities/operators/regress_tpl.h>
 
-#endif  // GUM_REGRESS_H
+#endif   // GUM_REGRESS_H

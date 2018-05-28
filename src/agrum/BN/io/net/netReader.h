@@ -28,17 +28,18 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // including coco-generated PARSER and SCANNER
-#undef COCO_PARSER_H__
-#undef COCO_SCANNER_H__
-#include <agrum/BN/io/net/cocoR/Parser.h>
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#  undef COCO_PARSER_H__
+#  undef COCO_SCANNER_H__
+#  include <agrum/BN/io/net/cocoR/Parser.h>
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
   /* =========================================================================*/
   /* ===                               READERS === */
   /* =========================================================================*/
   /**
-   * @class NetReader netReader.h <agrum/BN/io/net/netReader.h>
+   * @class NetReader
+   * @headerfile netReader.h <agrum/BN/io/net/netReader.h>
    * @ingroup bn_io
    * @brief Pure virtual class for reading a BN from a file.
    *
@@ -47,16 +48,15 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   class NetReader : public BNReader< GUM_SCALAR > {
-
     public:
     /**
      * Constructor
-    * A reader is defined for reading a defined file. Hence the 2 args of the
-    * constructor.
-    * Note that the BN has to be built outside the reader. There is no
-    * delegation to
-    * create/destroy
-    * the BN from inside the reader.
+     * A reader is defined for reading a defined file. Hence the 2 args of the
+     * constructor.
+     * Note that the BN has to be built outside the reader. There is no
+     * delegation to
+     * create/destroy
+     * the BN from inside the reader.
      */
     NetReader(BayesNet< GUM_SCALAR >* bn, const std::string& filename);
 
@@ -134,4 +134,4 @@ namespace gum {
 
 #include "netReader_tpl.h"
 
-#endif  // NETREADER_H
+#endif   // NETREADER_H

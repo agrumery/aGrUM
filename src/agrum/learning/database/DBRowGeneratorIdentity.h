@@ -69,13 +69,12 @@ namespace gum {
      * }
      * @endcode
      */
-    template <template<typename> class ALLOC = std::allocator>
-    class DBRowGeneratorIdentity : public DBRowGenerator<ALLOC> {
-    public:
-
+    template < template < typename > class ALLOC = std::allocator >
+    class DBRowGeneratorIdentity : public DBRowGenerator< ALLOC > {
+      public:
       /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC<DBTranslatedValue>;
-      
+      using allocator_type = ALLOC< DBTranslatedValue >;
+
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -84,36 +83,36 @@ namespace gum {
 
       /// default constructor
       DBRowGeneratorIdentity(
-        const std::vector<DBTranslatedValueType,
-                          ALLOC<DBTranslatedValueType>> column_types,
-        const allocator_type& alloc  = allocator_type () );
+        const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > >
+                              column_types,
+        const allocator_type& alloc = allocator_type());
 
       /// copy constructor
-      DBRowGeneratorIdentity( const DBRowGeneratorIdentity<ALLOC>& from );
+      DBRowGeneratorIdentity(const DBRowGeneratorIdentity< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      DBRowGeneratorIdentity( const DBRowGeneratorIdentity<ALLOC>& from,
-                              const allocator_type& alloc );
+      DBRowGeneratorIdentity(const DBRowGeneratorIdentity< ALLOC >& from,
+                             const allocator_type&                  alloc);
 
       /// move constructor
-      DBRowGeneratorIdentity( DBRowGeneratorIdentity<ALLOC>&& from );
+      DBRowGeneratorIdentity(DBRowGeneratorIdentity< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      DBRowGeneratorIdentity( DBRowGeneratorIdentity<ALLOC>&& from,
-                              const allocator_type& alloc );
+      DBRowGeneratorIdentity(DBRowGeneratorIdentity< ALLOC >&& from,
+                             const allocator_type&             alloc);
 
       /// virtual copy constructor
-      virtual DBRowGeneratorIdentity<ALLOC>* clone () const;
+      virtual DBRowGeneratorIdentity< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual DBRowGeneratorIdentity<ALLOC>*
-      clone ( const allocator_type& alloc ) const; 
+      virtual DBRowGeneratorIdentity< ALLOC >*
+        clone(const allocator_type& alloc) const;
 
       /// destructor
       ~DBRowGeneratorIdentity();
 
       /// @}
-      
+
 
       // ##########################################################################
       /// @name Operators
@@ -122,15 +121,15 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBRowGeneratorIdentity<ALLOC>&
-      operator=( const DBRowGeneratorIdentity<ALLOC>& from );
+      DBRowGeneratorIdentity< ALLOC >&
+        operator=(const DBRowGeneratorIdentity< ALLOC >& from);
 
       /// move operator
-      DBRowGeneratorIdentity<ALLOC>&
-      operator=( DBRowGeneratorIdentity<ALLOC>&& from );
+      DBRowGeneratorIdentity< ALLOC >&
+        operator=(DBRowGeneratorIdentity< ALLOC >&& from);
 
       /// @}
-      
+
 
       // ##########################################################################
       /// @name Accessors / Modifiers
@@ -139,27 +138,24 @@ namespace gum {
       /// @{
 
       /// generates one ouput DBRow for each DBRow passed to method setInputRow
-      virtual const DBRow<DBTranslatedValue,ALLOC>& generate() final;
+      virtual const DBRow< DBTranslatedValue, ALLOC >& generate() final;
 
       /// @}
 
-      
-    protected:
 
+      protected:
       /// computes the rows it will provide as output
       virtual std::size_t
-      _computeRows( const DBRow<DBTranslatedValue,ALLOC>& row ) final;
+        _computeRows(const DBRow< DBTranslatedValue, ALLOC >& row) final;
 
-  
+
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-    
-    private:
-      
-      /// the row used as input to generate the output DBRows
-      const DBRow<DBTranslatedValue,ALLOC>* __input_row { nullptr };
-     
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
+      private:
+      /// the row used as input to generate the output DBRows
+      const DBRow< DBTranslatedValue, ALLOC >* __input_row{nullptr};
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 
   } /* namespace learning */

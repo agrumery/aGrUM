@@ -141,7 +141,7 @@ namespace gum {
        * countings of (conditioning_ids, var2, var1) [in this order] and
        * (conditioning_ids, var2) [in this order] respectively. */
       Idx
-      addNodeSet(Idx var1, Idx var2, const std::vector< Idx >& conditioning_ids);
+        addNodeSet(Idx var1, Idx var2, const std::vector< Idx >& conditioning_ids);
 
       /// add a target conditioned by other variables to be counted
       /** @param var1 represents the index of the target variable in the
@@ -180,7 +180,7 @@ namespace gum {
        * this order] and (conditioning_ids, vars.second) [in this order]
        * respectively. */
       Idx addNodeSet(const std::pair< Idx, Idx >& vars,
-                     const std::vector< Idx >& conditioning_ids);
+                     const std::vector< Idx >&    conditioning_ids);
 
       /// add a target conditioned by other variables to be counted
       /** @param vars represents the index of the target variable (first) in the
@@ -199,7 +199,7 @@ namespace gum {
        * this order] and (conditioning_ids, vars.second) [in this order]
        * respectively. */
       Idx addNodeSet(const std::pair< Idx, Idx >& vars,
-                     std::vector< Idx >&& conditioning_ids);
+                     std::vector< Idx >&&         conditioning_ids);
 
       /// clears all the data structures from memory
       void clear();
@@ -295,7 +295,7 @@ namespace gum {
 
       /// prevent copy operator
       IndependenceTest&
-      operator=(const IndependenceTest< IdSetAlloc, CountAlloc >&) = delete;
+        operator=(const IndependenceTest< IdSetAlloc, CountAlloc >&) = delete;
     };
 
   } /* namespace learning */

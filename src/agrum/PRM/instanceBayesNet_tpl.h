@@ -24,14 +24,14 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/PRM/instanceBayesNet.h>  // to ease IDE parser
+#include <agrum/PRM/instanceBayesNet.h>   // to ease IDE parser
 
 namespace gum {
   namespace prm {
 
     template < typename GUM_SCALAR >
     void
-    InstanceBayesNet< GUM_SCALAR >::__init(const PRMInstance< GUM_SCALAR >& i) {
+      InstanceBayesNet< GUM_SCALAR >::__init(const PRMInstance< GUM_SCALAR >& i) {
       for (const auto node : i.type().containerDag().nodes()) {
         try {
           // Adding the attribute
@@ -54,19 +54,18 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE InstanceBayesNet< GUM_SCALAR >::InstanceBayesNet(
-      const PRMInstance< GUM_SCALAR >& i)
-        : IBayesNet< GUM_SCALAR >()
-        , __inst(&i) {
+      const PRMInstance< GUM_SCALAR >& i) :
+        IBayesNet< GUM_SCALAR >(),
+        __inst(&i) {
       GUM_CONSTRUCTOR(InstanceBayesNet);
       __init(i);
     }
 
     template < typename GUM_SCALAR >
-    INLINE
-    InstanceBayesNet< GUM_SCALAR >::InstanceBayesNet(const InstanceBayesNet& from)
-        : IBayesNet< GUM_SCALAR >(from)
-        , __varNodeMap(from.__varNodeMap)
-        , __inst(from.__inst) {
+    INLINE InstanceBayesNet< GUM_SCALAR >::InstanceBayesNet(
+      const InstanceBayesNet& from) :
+        IBayesNet< GUM_SCALAR >(from),
+        __varNodeMap(from.__varNodeMap), __inst(from.__inst) {
       GUM_CONS_CPY(InstanceBayesNet);
     }
 
@@ -77,7 +76,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE InstanceBayesNet< GUM_SCALAR >& InstanceBayesNet< GUM_SCALAR >::
-    operator=(const InstanceBayesNet& from) {
+                                           operator=(const InstanceBayesNet& from) {
       if (this != &from) {
         IBayesNet< GUM_SCALAR >::operator=(from);
 
@@ -89,7 +88,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const Potential< GUM_SCALAR >&
-    InstanceBayesNet< GUM_SCALAR >::cpt(NodeId varId) const {
+                 InstanceBayesNet< GUM_SCALAR >::cpt(NodeId varId) const {
       return __get(varId).cpf();
     }
 
@@ -101,38 +100,38 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const DiscreteVariable&
-    InstanceBayesNet< GUM_SCALAR >::variable(NodeId id) const {
+                 InstanceBayesNet< GUM_SCALAR >::variable(NodeId id) const {
       return __get(id).type().variable();
     }
 
     template < typename GUM_SCALAR >
     INLINE NodeId
-    InstanceBayesNet< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
+           InstanceBayesNet< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
       return __varNodeMap[&var]->id();
     }
 
     template < typename GUM_SCALAR >
     INLINE NodeId
-    InstanceBayesNet< GUM_SCALAR >::idFromName(const std::string& name) const {
+           InstanceBayesNet< GUM_SCALAR >::idFromName(const std::string& name) const {
       return __get(name).id();
     }
 
     template < typename GUM_SCALAR >
     INLINE const DiscreteVariable&
                  InstanceBayesNet< GUM_SCALAR >::variableFromName(
-      const std::string& name) const {
+        const std::string& name) const {
       return __get(name).type().variable();
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
-    InstanceBayesNet< GUM_SCALAR >::__get(NodeId id) const {
+                 InstanceBayesNet< GUM_SCALAR >::__get(NodeId id) const {
       return __inst->get(id);
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
-    InstanceBayesNet< GUM_SCALAR >::__get(const std::string& name) const {
+                 InstanceBayesNet< GUM_SCALAR >::__get(const std::string& name) const {
       try {
         return __inst->get(name);
       } catch (NotFound&) {

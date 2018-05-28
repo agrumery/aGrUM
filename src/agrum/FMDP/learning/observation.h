@@ -38,7 +38,8 @@
 namespace gum {
 
   /**
-   * @class Observation observation.h <agrum/FMDP/learning/observation.h>
+   * @class Observation
+   * @headerfile observation.h <agrum/FMDP/learning/observation.h>
    * @brief
    * @ingroup fmdp_group
    *
@@ -47,7 +48,6 @@ namespace gum {
    */
 
   class Observation {
-
     public:
     // ==========================================================================
     /// @name Constructor & destructor.
@@ -134,7 +134,7 @@ namespace gum {
     /// variables in this observation
     // ###################################################################
     HashTableConstIteratorSafe< const DiscreteVariable*, Idx >
-    cbeginVariablesSafe() const {
+      cbeginVariablesSafe() const {
       return __varInst.cbeginSafe();
     }
 
@@ -143,7 +143,7 @@ namespace gum {
     /// variables in this observation
     // ###################################################################
     HashTableConstIteratorSafe< const DiscreteVariable*, Idx >
-    cendVariablesSafe() const {
+      cendVariablesSafe() const {
       return __varInst.cendSafe();
     }
 
@@ -161,4 +161,4 @@ namespace gum {
 } /* namespace gum */
 
 
-#endif  // GUM_OBSERVATION_H
+#endif   // GUM_OBSERVATION_H

@@ -37,4 +37,4 @@ namespace gum {
 
   template <>
   const double MultiDimFunctionGraph< double >::defaultValue = 0.0;
-}  // namespace gum
+}   // namespace gum

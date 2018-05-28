@@ -105,9 +105,7 @@ namespace gum_tests {
           inf = new gum::ShaferShenoyInference< float >(bn));
         TS_GUM_ASSERT_THROWS_NOTHING(inf->makeInference());
 
-        if (inf != 0) {
-          TS_GUM_ASSERT_THROWS_NOTHING(delete inf);
-        }
+        if (inf != 0) { TS_GUM_ASSERT_THROWS_NOTHING(delete inf); }
       } catch (gum::Exception& e) {
         TS_ASSERT(false);
         std::cerr << std::endl << e.errorContent() << std::endl;
@@ -588,7 +586,7 @@ namespace gum_tests {
                       // node2 = tuberculos_or_cancer?, then node =
                       // tuberculosis?
                       TS_ASSERT((inst2_index == 1) && (inst_index == 0));
-                    } else {  // node2 = lung_cancer? & node =
+                    } else {   // node2 = lung_cancer? & node =
                       // tuberculos_or_cancer?
                       TS_ASSERT((inst2_index == 0) && (inst_index == 1));
                     }
@@ -616,8 +614,8 @@ namespace gum_tests {
 
 
       gum::ShaferShenoyInference< double > ie_0(&bn);
-      ie_0.addTarget(0);       // visit_to_asia
-      ie_0.addEvidence(1, 0);  // tuberculosis
+      ie_0.addTarget(0);        // visit_to_asia
+      ie_0.addEvidence(1, 0);   // tuberculosis
       ie_0.makeInference();
       gum::Potential< double > p_0 = ie_0.posterior(0);
 
@@ -653,8 +651,8 @@ namespace gum_tests {
 
 
       gum::ShaferShenoyInference< double > ie_0(&bn);
-      ie_0.addTarget(0);       // visit_to_asia
-      ie_0.addEvidence(1, 0);  // tuberculosis
+      ie_0.addTarget(0);        // visit_to_asia
+      ie_0.addEvidence(1, 0);   // tuberculosis
       ie_0.makeInference();
       gum::Potential< double > p_0 = ie_0.posterior(0);
 
@@ -695,11 +693,11 @@ namespace gum_tests {
       auto res =
         ie_all.evidenceImpact(gum::NodeId(0), std::vector< gum::NodeId >{1, 2});
 
-      TS_ASSERT_EQUALS(res.nbrDim(), gum::Size(2));  // 2 indep 0 given 1
+      TS_ASSERT_EQUALS(res.nbrDim(), gum::Size(2));   // 2 indep 0 given 1
 
       gum::ShaferShenoyInference< double > ie_0(&bn);
-      ie_0.addTarget(0);       // visit_to_asia
-      ie_0.addEvidence(1, 0);  // tuberculosis
+      ie_0.addTarget(0);        // visit_to_asia
+      ie_0.addEvidence(1, 0);   // tuberculosis
       ie_0.makeInference();
       gum::Potential< double > p_0 = ie_0.posterior(0);
 
@@ -740,11 +738,11 @@ namespace gum_tests {
       auto res = ie_all.evidenceImpact("visit_to_Asia?",
                                        {"tuberculosis?", "tuberculos_or_cancer?"});
 
-      TS_ASSERT_EQUALS(res.nbrDim(), gum::Size(2));  // 2 indep 0 given 1
+      TS_ASSERT_EQUALS(res.nbrDim(), gum::Size(2));   // 2 indep 0 given 1
 
       gum::ShaferShenoyInference< double > ie_0(&bn);
-      ie_0.addTarget(0);       // visit_to_asia
-      ie_0.addEvidence(1, 0);  // tuberculosis
+      ie_0.addTarget(0);        // visit_to_asia
+      ie_0.addEvidence(1, 0);   // tuberculosis
       ie_0.makeInference();
       gum::Potential< double > p_0 = ie_0.posterior(0);
 
@@ -779,7 +777,7 @@ namespace gum_tests {
       gum::Potential< double >             res;
       TS_GUM_ASSERT_THROWS_NOTHING(
         res = ie.evidenceImpact("E", {"A", "B", "C", "D", "F"}));
-      TS_ASSERT_EQUALS(res.nbrDim(), gum::Size(4));  // MarkovBlanket(E)=(A,D,C)
+      TS_ASSERT_EQUALS(res.nbrDim(), gum::Size(4));   // MarkovBlanket(E)=(A,D,C)
     }
     void testJointWithHardEvidence() {
       /*
@@ -816,7 +814,7 @@ namespace gum_tests {
       bn.cpt(i1).fillWith({0.2f, 0.8f});
       bn.cpt(i2).fillWith({0.3f, 0.7f});
       bn.cpt(i3).fillWith({0.1f, 0.9f, 0.9f, 0.1f});
-      bn.cpt(i4).fillWith(  // clang-format off
+      bn.cpt(i4).fillWith(   // clang-format off
               {0.4f, 0.6f,
                0.5f, 0.5f,
                0.5f, 0.5f,
@@ -830,7 +828,7 @@ namespace gum_tests {
                0.4f, 0.6f, 0.0f,
                0.5f, 0.5f, 0.0f,
                0.5f, 0.5f, 0.0f,
-               0.0f, 0.0f, 1.0f} );  // clang-format on
+               0.0f, 0.0f, 1.0f} );   // clang-format on
     }
 
     // Uncomment this to have some outputs.
@@ -842,4 +840,4 @@ namespace gum_tests {
       // std::cerr << std::endl;
     }
   };
-}
+}   // namespace gum_tests

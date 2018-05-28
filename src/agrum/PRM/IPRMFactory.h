@@ -64,18 +64,18 @@ namespace gum {
       // PRMType<GUM_SCALAR>& retrieveType ( const std::string& name )=0;
       // PRMType<GUM_SCALAR>& retrieveCommonType ( const
       // std::vector<PRMClassElement<GUM_SCALAR>*>& elts )=0;
-      virtual void pushPackage(const std::string& name) = 0;
+      virtual void        pushPackage(const std::string& name) = 0;
       virtual std::string popPackage() = 0;
-      virtual void addImport(const std::string& name) = 0;
-      virtual void startDiscreteType(const std::string& name,
-                                     std::string        super = "") = 0;
+      virtual void        addImport(const std::string& name) = 0;
+      virtual void        startDiscreteType(const std::string& name,
+                                            std::string        super = "") = 0;
       virtual void addLabel(const std::string& l, std::string extends = "") = 0;
       virtual void endDiscreteType() = 0;
       virtual void startDiscretizedType(const std::string& name) = 0;
       virtual void addTick(double tick) = 0;
       virtual void endDiscretizedType() = 0;
       virtual void
-      addRangeType(const std::string& name, long minVal, long maxVal) = 0;
+                   addRangeType(const std::string& name, long minVal, long maxVal) = 0;
       virtual void startClass(const std::string&        c,
                               const std::string&        extends = "",
                               const Set< std::string >* implements = nullptr,
@@ -124,11 +124,11 @@ namespace gum {
       virtual void endSystem() = 0;
       virtual void addInstance(const std::string& type,
                                const std::string& name) = 0;
-      virtual void addInstance(const std::string& type,
-                               const std::string& name,
+      virtual void addInstance(const std::string&                      type,
+                               const std::string&                      name,
                                const HashTable< std::string, double >& params) = 0;
       virtual void
-      addArray(const std::string& type, const std::string& name, Size size) = 0;
+                   addArray(const std::string& type, const std::string& name, Size size) = 0;
       virtual void incArray(const std::string& l_i, const std::string& r_i) = 0;
       virtual void setReferenceSlot(const std::string& left_instance,
                                     const std::string& left_reference,

@@ -42,7 +42,6 @@ namespace gum_tests {
   class DBInitializerFromSQLTestSuite : public CxxTest::TestSuite {
     public:
     void test_init1() {
-
 #ifdef _ODBC
       try {
         const std::string dataSource = "PostgreSQL";
@@ -143,8 +142,7 @@ namespace gum_tests {
         for (std::size_t i = 0; i <= 6; ++i) {
           try {
             database3.insertTranslator(translator_lab, i);
-          } catch (gum::OperationNotAllowed&) {
-          }
+          } catch (gum::OperationNotAllowed&) {}
         }
         database3.insertTranslator(translator_cont, 7);
 
@@ -249,23 +247,21 @@ namespace gum_tests {
         // no database. see e.what()
         std::cout << "[PostgreSQL error]";
       }
-#endif  // _ODBC
+#endif   // _ODBC
     }
 
 
-
-   void test_init_sqlite () {
-
+    void test_init_sqlite() {
 #ifdef _ODBC
       const std::string driver_name = "SQLite3";
-#ifdef _WIN32
+#  ifdef _WIN32
       driver_name += " ODBC Driver";
-#endif // _WIN32
-      
+#  endif   // _WIN32
+
       try {
         const std::string connection_string =
-          "Driver=" + driver_name + ";Database=" +
-          GET_RESSOURCES_PATH("asia.sqlite") + ";";
+          "Driver=" + driver_name
+          + ";Database=" + GET_RESSOURCES_PATH("asia.sqlite") + ";";
         const std::string query = "select * from asia";
 
         // the database contains the following rows:
@@ -281,8 +277,8 @@ namespace gum_tests {
         // TRUE  TRUE  FALSE TRUE TRUE "true"  "toto titi"  2.45
         // TRUE  TRUE  TRUE  TRUE TRUE "true"  "toto titi"  4
 
-        gum::learning::DBInitializerFromSQL<>
-          initializer(connection_string, query );
+        gum::learning::DBInitializerFromSQL<> initializer(connection_string,
+                                                          query);
 
         const auto&       var_names = initializer.variableNames();
         const std::size_t nb_vars = var_names.size();
@@ -316,13 +312,12 @@ namespace gum_tests {
         TS_ASSERT(xrow12[5].discr_val == std::size_t(1));
         TS_ASSERT(xrow12[6].discr_val == std::size_t(0));
         TS_ASSERT(xrow12[7].cont_val == 4.0f);
-     } catch (nanodbc::database_error& e) {
+      } catch (nanodbc::database_error& e) {
         // no database. see e.what()
         std::cout << "[SQLite error]";
       }
-#endif  // _ODBC
-   }
-    
+#endif   // _ODBC
+    }
   };
 
 } /* namespace gum_tests */

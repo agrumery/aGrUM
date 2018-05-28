@@ -52,7 +52,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   class MarginalTargetedInference
-    : public virtual BayesNetInference< GUM_SCALAR > {
+      : public virtual BayesNetInference< GUM_SCALAR > {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -196,15 +196,15 @@ namespace gum {
                                            const std::vector< NodeId >& evs);
 
     /**
-    * Create a gum::Potential for P(target|evs) (for all instanciation of target
-    * and evs)
-    *
-    * @warning If some evs are d-separated, they are not included in the Potential
-    *
-    * @param target  the nodeId of the target variable
-    * @param evs the nodeId of the observed variable
-    * @return a Potential
-    */
+     * Create a gum::Potential for P(target|evs) (for all instanciation of target
+     * and evs)
+     *
+     * @warning If some evs are d-separated, they are not included in the Potential
+     *
+     * @param target  the nodeId of the target variable
+     * @param evs the nodeId of the observed variable
+     * @return a Potential
+     */
     Potential< GUM_SCALAR > evidenceImpact(const std::string& target,
                                            const std::vector< std::string >& evs);
 
@@ -250,10 +250,10 @@ namespace gum {
   };
 
 
-}  // namespace gum
+}   // namespace gum
 
 
 #include <agrum/BN/inference/tools/marginalTargetedInference_tpl.h>
 
 
-#endif  // GUM_BAYES_NET_MARGINAL_TARGETED_INFERENCE_H
+#endif   // GUM_BAYES_NET_MARGINAL_TARGETED_INFERENCE_H

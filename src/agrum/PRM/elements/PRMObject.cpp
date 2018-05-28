@@ -28,8 +28,8 @@
 #include <agrum/PRM/elements/PRMObject.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/PRM/elements/PRMObject_inl.h>
-#endif  // GUM_NO_INLINE
+#  include <agrum/PRM/elements/PRMObject_inl.h>
+#endif   // GUM_NO_INLINE
 
 namespace gum {
   namespace prm {
@@ -37,22 +37,19 @@ namespace gum {
     // Constructor.
     // @param type The type of this object.
     // ==========================================================================
-    PRMObject::PRMObject(const std::string& name)
-        : __name(name) {
+    PRMObject::PRMObject(const std::string& name) : __name(name) {
       GUM_CONSTRUCTOR(PRMObject);
     }
     // ==========================================================================
     // Copy constructor.
     // ==========================================================================
-    PRMObject::PRMObject(const PRMObject& source)
-        : __name(source.__name) {
+    PRMObject::PRMObject(const PRMObject& source) : __name(source.__name) {
       GUM_CONS_CPY(PRMObject);
     }
     // ==========================================================================
     // Move constructor.
     // ==========================================================================
-    PRMObject::PRMObject(PRMObject&& source)
-        : __name(std::move(source.__name)) {
+    PRMObject::PRMObject(PRMObject&& source) : __name(std::move(source.__name)) {
       GUM_CONS_CPY(PRMObject);
     }
     // ==========================================================================

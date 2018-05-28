@@ -29,62 +29,50 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 /// include the inlined functions if necessary
-#ifdef GUM_NO_INLINE
-#include <agrum/core/errorsContainer_inl.h>
-#endif /* GUM_NO_INLINE */
+#  ifdef GUM_NO_INLINE
+#    include <agrum/core/errorsContainer_inl.h>
+#  endif /* GUM_NO_INLINE */
 
 namespace gum {
 
-  ParseError::ParseError(bool is_error, const std::string& msg, Idx line)
-      : is_error(is_error)
-      , line(line)
-      , column(0)
-      , msg(msg)
-      , filename("")
-      , code("") {}
+  ParseError::ParseError(bool is_error, const std::string& msg, Idx line) :
+      is_error(is_error), line(line), column(0), msg(msg), filename(""), code("") {
+  }
 
   ParseError::ParseError(bool               is_error,
                          const std::string& msg,
                          const std::string& filename,
                          Idx                line,
-                         Idx                col)
-      : is_error(is_error)
-      , line(line)
-      , column(col)
-      , msg(msg)
-      , filename(filename)
-      , code("") {}
+                         Idx                col) :
+      is_error(is_error),
+      line(line), column(col), msg(msg), filename(filename), code("") {}
 
   ParseError::ParseError(bool               is_error,
                          const std::string& msg,
                          const std::string& filename,
                          const std::string& code,
                          Idx                line,
-                         Idx                col)
-      : is_error(is_error)
-      , line(line)
-      , column(col)
-      , msg(msg)
-      , filename(filename)
-      , code(code) {}
+                         Idx                col) :
+      is_error(is_error),
+      line(line), column(col), msg(msg), filename(filename), code(code) {}
 
   ParseError::ParseError(const ParseError& err) {
     is_error = err.is_error;
     line = err.line;
-    column = err.column;  // default 0
+    column = err.column;   // default 0
     msg = err.msg;
-    filename = err.filename;  // default ""
-    code = err.code;          // default ""
+    filename = err.filename;   // default ""
+    code = err.code;           // default ""
   }
 
   ParseError ParseError::operator=(const ParseError& err) {
     if (this != &err) {
       is_error = err.is_error;
       line = err.line;
-      column = err.column;  // default 0
+      column = err.column;   // default 0
       msg = err.msg;
-      filename = err.filename;  // default ""
-      code = err.code;          // default ""
+      filename = err.filename;   // default ""
+      code = err.code;           // default ""
     }
 
     return *this;
@@ -125,7 +113,7 @@ namespace gum {
 
   ParseError ErrorsContainer::error(Idx i) const {
     if (count() > i)
-      return errors[i];  // May throw an error if i >= count().
+      return errors[i];   // May throw an error if i >= count().
     else {
       GUM_ERROR(OutOfBounds, "Index out of bound.");
     }
@@ -216,6 +204,6 @@ namespace gum {
     }
   }
 
-}  // namespace gum
+}   // namespace gum
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS

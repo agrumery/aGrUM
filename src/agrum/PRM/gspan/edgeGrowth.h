@@ -51,7 +51,8 @@ namespace gum {
       class DFSTree;
 
       /**
-       * @class EdgeGrowth DFSTree.h <agrum/PRM/DFSTree.h>
+       * @class EdgeGrowth
+       * @headerfile DFSTree.h <agrum/PRM/DFSTree.h>
        * This class is used to define an edge growth of a pattern
        * in this DFSTree.
        */

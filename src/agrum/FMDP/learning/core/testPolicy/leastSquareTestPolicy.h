@@ -47,7 +47,6 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   class LeastSquareTestPolicy : public ITestPolicy< GUM_SCALAR > {
-
     public:
     // ############################################################################
     /// @name Constructor/Destrcutor
@@ -57,10 +56,8 @@ namespace gum {
     // ============================================================================
     /// Constructor
     // ============================================================================
-    LeastSquareTestPolicy()
-        : ITestPolicy< GUM_SCALAR >()
-        , __sumO(0.0)
-        , __score(0) {
+    LeastSquareTestPolicy() :
+        ITestPolicy< GUM_SCALAR >(), __sumO(0.0), __score(0) {
       GUM_CONSTRUCTOR(LeastSquareTestPolicy)
     }
 
@@ -181,7 +178,7 @@ namespace gum {
     double __score;
   };
 
-}  // End of namespace gum
+}   // End of namespace gum
 
 #include <agrum/FMDP/learning/core/testPolicy/leastSquareTestPolicy_tpl.h>
 

@@ -51,7 +51,8 @@
 namespace gum {
 
   /**
-   * @class SDYNA sdyna.h <agrum/FMDP/SDyna/sdyna.h>
+   * @class SDYNA
+   * @headerfile sdyna.h <agrum/FMDP/SDyna/sdyna.h>
    * @brief
    * @ingroup fmdp_group
    *
@@ -60,7 +61,6 @@ namespace gum {
    *
    */
   class SDYNA {
-
     // ###################################################################
     /// @name
     // ###################################################################
@@ -444,4 +444,4 @@ namespace gum {
 } /* namespace gum */
 
 
-#endif  // GUM_SDYNA_H
+#endif   // GUM_SDYNA_H

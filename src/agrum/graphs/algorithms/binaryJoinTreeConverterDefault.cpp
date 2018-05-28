@@ -166,7 +166,7 @@ namespace gum {
 
       // substitute cliques[pair.first] by the result
       cliques[ti] = new_node;
-      is_cliques_relevant[tj] = false;  // now tj is no more a neighbor of clique
+      is_cliques_relevant[tj] = false;   // now tj is no more a neighbor of clique
 
       // remove all the pairs involving tj in the priority queue
 
@@ -238,10 +238,10 @@ namespace gum {
   }
 
   /// computes the binary join tree
-  CliqueGraph
-  BinaryJoinTreeConverterDefault::convert(const CliqueGraph&          JT,
-                                          const NodeProperty< Size >& domain_sizes,
-                                          const NodeSet& specified_roots) {
+  CliqueGraph BinaryJoinTreeConverterDefault::convert(
+    const CliqueGraph&          JT,
+    const NodeProperty< Size >& domain_sizes,
+    const NodeSet&              specified_roots) {
     // first, we copy the current clique graph. By default, this is what we
     // will return
     CliqueGraph binJT = JT;

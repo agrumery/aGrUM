@@ -34,10 +34,10 @@ namespace gum {
     template < typename GUM_SCALAR >
     PRMSlotChain< GUM_SCALAR >::PRMSlotChain(
       const std::string&                                name,
-      const Sequence< PRMClassElement< GUM_SCALAR >* >& chain)
-        : PRMClassElement< GUM_SCALAR >(name)
-        , __chain(new Sequence< PRMClassElement< GUM_SCALAR >* >(chain))
-        , __isMultiple(false) {
+      const Sequence< PRMClassElement< GUM_SCALAR >* >& chain) :
+        PRMClassElement< GUM_SCALAR >(name),
+        __chain(new Sequence< PRMClassElement< GUM_SCALAR >* >(chain)),
+        __isMultiple(false) {
       GUM_CONSTRUCTOR(PRMSlotChain);
 
       if (__chain->size() < 2) {
@@ -46,21 +46,21 @@ namespace gum {
       }
 
       for (Size i = 0; i < __chain->size() - 1; ++i) {
-        if (__chain->atPos(i)->elt_type() !=
-            PRMClassElement< GUM_SCALAR >::prm_refslot) {
+        if (__chain->atPos(i)->elt_type()
+            != PRMClassElement< GUM_SCALAR >::prm_refslot) {
           GUM_ERROR(WrongClassElement, "illegal ClassElement in chain");
         } else {
           __isMultiple =
-            __isMultiple ||
-            static_cast< PRMReferenceSlot< GUM_SCALAR >* >(__chain->atPos(i))
-              ->isArray();
+            __isMultiple
+            || static_cast< PRMReferenceSlot< GUM_SCALAR >* >(__chain->atPos(i))
+                 ->isArray();
         }
       }
 
       __copyLastElt();
 
-      this->_safeName = PRMObject::LEFT_CAST() + lastElt().type().name() +
-                        PRMObject::RIGHT_CAST() + name;
+      this->_safeName = PRMObject::LEFT_CAST() + lastElt().type().name()
+                        + PRMObject::RIGHT_CAST() + name;
       this->lastElt().type().variable().setName(name);
     }
 
@@ -68,8 +68,8 @@ namespace gum {
     // happened)
     template < typename GUM_SCALAR >
     PRMSlotChain< GUM_SCALAR >::PRMSlotChain(
-      Sequence< PRMClassElement< GUM_SCALAR >* >* chain, const std::string& name)
-        : PRMSlotChain(name, *chain) {
+      Sequence< PRMClassElement< GUM_SCALAR >* >* chain, const std::string& name) :
+        PRMSlotChain(name, *chain) {
       // No need to
       // GUM_CONSTRUCTOR(PRMSlotChain);
 
@@ -106,10 +106,7 @@ namespace gum {
 
           Bijection< const DiscreteVariable*, const DiscreteVariable* > bij;
           for (auto var : old_attr->cpf().variablesSequence()) {
-            if (var != &(old_attr->type().variable())) {
-
-              bij.insert(var, var);
-            }
+            if (var != &(old_attr->type().variable())) { bij.insert(var, var); }
           }
 
           new_elt = old_attr->copy(bij);
@@ -143,24 +140,24 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     PRMSlotChain< GUM_SCALAR >::PRMSlotChain(
-      const PRMSlotChain< GUM_SCALAR >& source)
-        : PRMClassElement< GUM_SCALAR >(source.name())
-        , __chain(new Sequence< PRMClassElement< GUM_SCALAR >* >(source.chain()))
-        , __isMultiple(source.isMultiple()) {
+      const PRMSlotChain< GUM_SCALAR >& source) :
+        PRMClassElement< GUM_SCALAR >(source.name()),
+        __chain(new Sequence< PRMClassElement< GUM_SCALAR >* >(source.chain())),
+        __isMultiple(source.isMultiple()) {
       GUM_CONS_CPY(PRMSlotChain);
       __copyLastElt();
     }
 
     template < typename GUM_SCALAR >
     PRMSlotChain< GUM_SCALAR >& PRMSlotChain< GUM_SCALAR >::
-    operator=(const PRMSlotChain< GUM_SCALAR >& source) {
+                                operator=(const PRMSlotChain< GUM_SCALAR >& source) {
       GUM_ERROR(FatalError,
                 "Illegal call to gum::SlotChain<GUM_SCALAR> copy constructor.");
     }
 
     template < typename GUM_SCALAR >
     INLINE typename PRMClassElement< GUM_SCALAR >::ClassElementType
-    PRMSlotChain< GUM_SCALAR >::elt_type() const {
+      PRMSlotChain< GUM_SCALAR >::elt_type() const {
       return this->prm_slotchain;
     }
 

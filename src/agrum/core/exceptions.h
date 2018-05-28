@@ -36,58 +36,56 @@
 #define GUM_ERROR_IN_EXPR(type, msg) throw(type(msg))
 
 #ifdef SWIG
-#define GUM_ERROR(type, msg)         \
-  {                                  \
-    std::ostringstream __error__str; \
-    __error__str << msg;             \
-    throw(type(__error__str.str())); \
-  }
-#define GUM_SHOWERROR(e)                                                      \
-  {                                                                           \
-    std::cout << std::endl                                                    \
-              << (e).errorType() << " : " << (e).errorContent() << std::endl; \
-  }
+#  define GUM_ERROR(type, msg)         \
+    {                                  \
+      std::ostringstream __error__str; \
+      __error__str << msg;             \
+      throw(type(__error__str.str())); \
+    }
+#  define GUM_SHOWERROR(e)                                                      \
+    {                                                                           \
+      std::cout << std::endl                                                    \
+                << (e).errorType() << " : " << (e).errorContent() << std::endl; \
+    }
 #else
-#ifdef NDEBUG
-#define GUM_ERROR(type, msg)                                    \
-  {                                                             \
-    std::ostringstream __error__str;                            \
-    __error__str << __FILE__ << ":" << __LINE__ << ": " << msg; \
-    throw(type(__error__str.str()));                            \
-  }
-#define GUM_SHOWERROR(e)                                               \
-  {                                                                    \
-    std::cout << std::endl                                             \
-              << __FILE__ << ":" << __LINE__ << " " << (e).errorType() \
-              << " from " << std::endl                                 \
-              << (e).errorContent() << std::endl;                      \
-  }
-#else
-#define GUM_ERROR(type, msg)                                                    \
-  {                                                                             \
-    std::ostringstream __error__str;                                            \
-    __error__str << msg;                                                        \
-    throw(type(                                                                 \
-      gum::__createMsg(__FILE__, __FUNCTION__, __LINE__, __error__str.str()))); \
-  }
-#define GUM_SHOWERROR(e)                                               \
-  {                                                                    \
-    std::cout << std::endl                                             \
-              << __FILE__ << ":" << __LINE__ << " " << (e).errorType() \
-              << " from " << std::endl                                 \
-              << (e).errorContent() << std::endl;                      \
-    std::cout << (e).errorCallStack() << std::endl;                    \
-  }
-#endif  // NDEBUG
-#endif  // SWIG
+#  ifdef NDEBUG
+#    define GUM_ERROR(type, msg)                                    \
+      {                                                             \
+        std::ostringstream __error__str;                            \
+        __error__str << __FILE__ << ":" << __LINE__ << ": " << msg; \
+        throw(type(__error__str.str()));                            \
+      }
+#    define GUM_SHOWERROR(e)                                               \
+      {                                                                    \
+        std::cout << std::endl                                             \
+                  << __FILE__ << ":" << __LINE__ << " " << (e).errorType() \
+                  << " from " << std::endl                                 \
+                  << (e).errorContent() << std::endl;                      \
+      }
+#  else
+#    define GUM_ERROR(type, msg)                                   \
+      {                                                            \
+        std::ostringstream __error__str;                           \
+        __error__str << msg;                                       \
+        throw(type(gum::__createMsg(                               \
+          __FILE__, __FUNCTION__, __LINE__, __error__str.str()))); \
+      }
+#    define GUM_SHOWERROR(e)                                               \
+      {                                                                    \
+        std::cout << std::endl                                             \
+                  << __FILE__ << ":" << __LINE__ << " " << (e).errorType() \
+                  << " from " << std::endl                                 \
+                  << (e).errorContent() << std::endl;                      \
+        std::cout << (e).errorCallStack() << std::endl;                    \
+      }
+#  endif   // NDEBUG
+#endif     // SWIG
 
-#define GUM_MAKE_ERROR(TYPE, SUPERCLASS, MSG)       \
-  class TYPE : public SUPERCLASS {                  \
-    public:                                         \
-    TYPE(std::string aMsg, std::string aType = MSG) \
-        : SUPERCLASS(aMsg, aType){};                \
-    TYPE(const TYPE& src)                           \
-        : SUPERCLASS(src){};                        \
+#define GUM_MAKE_ERROR(TYPE, SUPERCLASS, MSG)                                    \
+  class TYPE : public SUPERCLASS {                                               \
+    public:                                                                      \
+    TYPE(std::string aMsg, std::string aType = MSG) : SUPERCLASS(aMsg, aType){}; \
+    TYPE(const TYPE& src) : SUPERCLASS(src){};                                   \
   };
 
 #define GUM_SYNTAX_ERROR(msg, line, column)                    \
@@ -103,7 +101,6 @@ namespace gum {
    * @brief Base class for all aGrUM's exceptions.
    */
   class Exception {
-
     protected:
     std::string _msg;
     std::string _type;
@@ -468,7 +465,8 @@ namespace gum {
 
 
   /**
-   * @class gum::SyntaxError exceptions.h <agrum/core/exceptions.h>
+   * @class gum::SyntaxError
+   * @headerfile exceptions.h <agrum/core/exceptions.h>
    * @extends gum::IOError
    * Special exception for syntax errors in files.
    */
@@ -481,7 +479,7 @@ namespace gum {
    */
   class NotImplementedYet;
 
-  
+
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
   const std::string __createMsg(const std::string& filename,
                                 const std::string& function,
@@ -555,17 +553,16 @@ namespace gum {
     SyntaxError(const std::string& aMsg,
                 Size               nol,
                 Size               noc,
-                std::string        aType = "Syntax Error")
-        : IOError(aMsg, aType)
-        , _noLine(nol)
-        , _noCol(noc){
+                std::string        aType = "Syntax Error") :
+        IOError(aMsg, aType),
+        _noLine(nol), _noCol(noc){
 
-          };
+                      };
 
     Size col() const { return _noCol; };
     Size line() const { return _noLine; };
   };
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 } /* namespace gum */
 
 #endif /* GUM_EXCEPTIONS_H */

@@ -26,7 +26,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // to ease parsing by IDE
-#include <agrum/graphs/parts/nodeGraphPart.h>
+#  include <agrum/graphs/parts/nodeGraphPart.h>
 
 namespace gum {
 
@@ -64,4 +64,4 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS

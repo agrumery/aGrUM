@@ -37,10 +37,8 @@ namespace gum_tests {
     std::string __mess;
 
     public:
-    aSimpleBNLeanerListener(gum::IApproximationSchemeConfiguration& sch)
-        : gum::ApproximationSchemeListener(sch)
-        , __nbr(0)
-        , __mess(""){};
+    aSimpleBNLeanerListener(gum::IApproximationSchemeConfiguration& sch) :
+        gum::ApproximationSchemeListener(sch), __nbr(0), __mess(""){};
     void whenProgress(const void*     buffer,
                       const gum::Size a,
                       const double    b,
@@ -93,9 +91,7 @@ namespace gum_tests {
       try {
         gum::BayesNet< double > bn = learner.learnBN();
         TS_ASSERT(bn.dag().arcs().size() == 9);
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e);
-      }
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
     void test_asia_3off2() {
@@ -137,9 +133,7 @@ namespace gum_tests {
         TS_ASSERT(mg.existsArc(7, 5));
         std::vector< gum::Arc > latents = learner.latentVariables();
         TS_ASSERT_EQUALS(latents.size(), gum::Size(2));
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e);
-      }
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
     // WARNING: this test is commented on purpouse: you need a running database
@@ -207,9 +201,8 @@ namespace gum_tests {
       modals[2].insert("bigbigbig");
       modals[2].insert("false");
 
-      gum::learning::BNLearner< double >
-        learner(GET_RESSOURCES_PATH("asia3.csv") );
-      //learner(GET_RESSOURCES_PATH("asia3.csv"), modals);
+      gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("asia3.csv"));
+      // learner(GET_RESSOURCES_PATH("asia3.csv"), modals);
 
       learner.useGreedyHillClimbing();
       learner.setMaxIndegree(10);
@@ -250,9 +243,7 @@ namespace gum_tests {
         TS_ASSERT(bn.variable(0).label(0) == "big");
         TS_ASSERT(bn.variable(0).label(1) == "false");
         TS_ASSERT(bn.variable(0).label(2) == "true");
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e);
-      }
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
     void xtest_asia_with_user_modalities_string_min() {
@@ -269,9 +260,8 @@ namespace gum_tests {
       modals[2].insert("bigbigbig");
       modals[2].insert("false");
 
-      gum::learning::BNLearner< double > learner(
-        GET_RESSOURCES_PATH("asia3.csv") );
-      //GET_RESSOURCES_PATH("asia3.csv"), modals, true);
+      gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("asia3.csv"));
+      // GET_RESSOURCES_PATH("asia3.csv"), modals, true);
 
       learner.useGreedyHillClimbing();
       learner.setMaxIndegree(10);
@@ -311,9 +301,7 @@ namespace gum_tests {
         TS_ASSERT(bn.variable(2).domainSize() == 2);
         TS_ASSERT(bn.variable(0).label(0) == "false");
         TS_ASSERT(bn.variable(0).label(1) == "true");
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e);
-      }
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
     void xtest_asia_with_user_modalities_string_incorrect() {
@@ -334,12 +322,10 @@ namespace gum_tests {
 
       try {
         gum::learning::BNLearner< double > learner(
-          GET_RESSOURCES_PATH("asia3.csv") );
-        //GET_RESSOURCES_PATH("asia3.csv"), modals);
+          GET_RESSOURCES_PATH("asia3.csv"));
+        // GET_RESSOURCES_PATH("asia3.csv"), modals);
         learner.useAprioriSmoothing();
-      } catch (gum::UnknownLabelInDatabase&) {
-        except = true;
-      }
+      } catch (gum::UnknownLabelInDatabase&) { except = true; }
 
       TS_ASSERT(except);
     }
@@ -358,9 +344,8 @@ namespace gum_tests {
       modals[2].insert("bigbigbig");
       modals[2].insert("0");
 
-      gum::learning::BNLearner< double >
-        learner(GET_RESSOURCES_PATH("asia.csv"));
-      //learner(GET_RESSOURCES_PATH("asia.csv"), modals);
+      gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("asia.csv"));
+      // learner(GET_RESSOURCES_PATH("asia.csv"), modals);
       learner.useGreedyHillClimbing();
       learner.setMaxIndegree(10);
       learner.useScoreLog2Likelihood();
@@ -400,9 +385,7 @@ namespace gum_tests {
         TS_ASSERT(bn.variable(0).label(0) == "0");
         TS_ASSERT(bn.variable(0).label(1) == "1");
         TS_ASSERT(bn.variable(0).label(2) == "big");
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e);
-      }
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
     void xtest_asia_with_user_modalities_numbers_incorrect() {
@@ -422,13 +405,11 @@ namespace gum_tests {
       bool except = false;
 
       try {
-        gum::learning::BNLearner< double >
-          learner(GET_RESSOURCES_PATH("asia.csv"));
-        //learner(GET_RESSOURCES_PATH("asia.csv"), modals);
+        gum::learning::BNLearner< double > learner(
+          GET_RESSOURCES_PATH("asia.csv"));
+        // learner(GET_RESSOURCES_PATH("asia.csv"), modals);
         learner.useAprioriSmoothing();
-      } catch (gum::UnknownLabelInDatabase&) {
-        except = true;
-      }
+      } catch (gum::UnknownLabelInDatabase&) { except = true; }
 
       TS_ASSERT(except);
     }
@@ -456,9 +437,7 @@ namespace gum_tests {
       try {
         gum::BayesNet< double > bn = learner.learnParameters(dag);
         TS_ASSERT(bn.dim() == 25);
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e);
-      }
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
     void test_asia_param_from_bn() {
@@ -470,9 +449,7 @@ namespace gum_tests {
       try {
         gum::BayesNet< double > bn2 = learner.learnParameters(bn);
         TS_ASSERT(bn2.dag().arcs().size() == bn.dag().arcs().size());
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e);
-      }
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
     void test_asia_param_float() {
@@ -498,9 +475,7 @@ namespace gum_tests {
       try {
         gum::BayesNet< float > bn = learner.learnParameters(dag);
         TS_ASSERT(bn.dim() == 25);
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e);
-      }
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
     void test_asia_param_from_bn_float() {
@@ -512,9 +487,7 @@ namespace gum_tests {
       try {
         gum::BayesNet< float > bn2 = learner.learnParameters(bn);
         TS_ASSERT(bn2.dag().arcs().size() == bn.dag().arcs().size());
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e);
-      }
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
     void test_asia_param_bn() {
@@ -566,9 +539,7 @@ namespace gum_tests {
                            bn2.variable(node2).toString());
         }
 
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e);
-      }
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
     void test_asia_param_bn_with_not_matching_variable() {
@@ -596,17 +567,18 @@ namespace gum_tests {
       bn.add(d);
       bn.add(p);
 
-      TS_ASSERT_THROWS(gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("asia3.csv"), bn),gum::MissingVariableInDatabase);
-                       
+      TS_ASSERT_THROWS(gum::learning::BNLearner< double > learner(
+                         GET_RESSOURCES_PATH("asia3.csv"), bn),
+                       gum::MissingVariableInDatabase);
 
-      
-      //learner.useScoreLog2Likelihood();
-      //learner.useAprioriSmoothing();
 
-      //TS_ASSERT_THROWS(gum::BayesNet< double > bn2 = learner.learnParameters(bn),
+      // learner.useScoreLog2Likelihood();
+      // learner.useAprioriSmoothing();
+
+      // TS_ASSERT_THROWS(gum::BayesNet< double > bn2 =
+      // learner.learnParameters(bn),
       //                 gum::MissingVariableInDatabase);
-
-      }
+    }
 
     void test_asia_param_bn_with_subset_of_variables_in_base() {
 #define createBoolVar(s) \
@@ -630,7 +602,7 @@ namespace gum_tests {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("asia3.csv"),
                                                  bn);
 
-     
+
       learner.useScoreLog2Likelihood();
       learner.useAprioriSmoothing();
 
@@ -709,9 +681,9 @@ namespace gum_tests {
         learner.useLocalSearchWithTabuList();
 
         gum::BayesNet< double > bn = learner.learnBN();
-        //std::cout << bn.dag () << std::endl;
+        // std::cout << bn.dag () << std::endl;
 
-        TS_ASSERT_DELTA(listen.getNbr(), gum::Size(15), 1);  // 75 ?
+        TS_ASSERT_DELTA(listen.getNbr(), gum::Size(15), 1);   // 75 ?
         TS_ASSERT_EQUALS(listen.getMess(), "stopped on request");
         TS_ASSERT_EQUALS(learner.messageApproximationScheme(),
                          "stopped on request");
@@ -727,7 +699,7 @@ namespace gum_tests {
 
         gum::BayesNet< double > bn = learner.learnBN();
 
-        TS_ASSERT_DELTA(listen.getNbr(), gum::Size(3), 1);  // 2?
+        TS_ASSERT_DELTA(listen.getNbr(), gum::Size(3), 1);   // 2?
         TS_ASSERT_EQUALS(listen.getMess(), "stopped on request");
         TS_ASSERT_EQUALS(learner.messageApproximationScheme(),
                          "stopped on request");
@@ -786,9 +758,7 @@ namespace gum_tests {
           learner.useScoreLog2Likelihood();
           learner.useAprioriSmoothing(1.0);
           learn2 = learner.learnParameters(dbn);
-        } catch (gum::Exception& e) {
-          GUM_SHOWERROR(e);
-        }
+        } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
       }
       gum::BayesNet< double > learn3;
       {
@@ -814,10 +784,10 @@ namespace gum_tests {
 
       for (I1.setFirst(), I2.setFirst(), I3.setFirst(); !I1.end();
            I1.inc(), I2.inc(), I3.inc()) {
-        TS_ASSERT_EQUALS(I1.toString(), I2.toString());  // same modalities orders
-        TS_ASSERT_EQUALS(I1.toString(), I3.toString());  // same modalities orders
-        TS_ASSERT_EQUALS(p1[I1], p2[I2]);                // same probabilities
-        TS_ASSERT_EQUALS(p1[I1], p3[I3]);                // same probabilities
+        TS_ASSERT_EQUALS(I1.toString(), I2.toString());   // same modalities orders
+        TS_ASSERT_EQUALS(I1.toString(), I3.toString());   // same modalities orders
+        TS_ASSERT_EQUALS(p1[I1], p2[I2]);                 // same probabilities
+        TS_ASSERT_EQUALS(p1[I1], p3[I3]);                 // same probabilities
       }
     }
 
@@ -825,18 +795,14 @@ namespace gum_tests {
     void test_asia_with_missing_values() {
       int nb = 0;
       try {
-        gum::learning::BNLearner< double >
-          learner(GET_RESSOURCES_PATH("asia3-faulty.csv"),
-                  std::vector<std::string>{"BEURK"});
+        gum::learning::BNLearner< double > learner(
+          GET_RESSOURCES_PATH("asia3-faulty.csv"),
+          std::vector< std::string >{"BEURK"});
         learner.useK2(std::vector< gum::NodeId >{1, 5, 2, 6, 0, 3, 4, 7});
-      }
-      catch (gum::MissingValueInDatabase& e) {
-        nb = 1;
-      }
+      } catch (gum::MissingValueInDatabase& e) { nb = 1; }
 
-      TS_ASSERT ( nb == 1 );
+      TS_ASSERT(nb == 1);
     }
-    
   };
 
 } /* namespace gum_tests */

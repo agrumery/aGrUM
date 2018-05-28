@@ -31,19 +31,19 @@
 namespace gum {
 
   /**
-     * @class DSLWriter DSLWriter.h <agrum/BN/io/DSL/DSLWriter.h>
-     * @ingroup bn_io
-     * @brief Writes a IBayesNet in the DSL format.
-     *
-     * This class servers to write the content of a Bayesian Network in
-     * the DSL format. See
-     * http://www.cs.cmu.edu/~fgcozman/Research/InterchangeFormat/Old/xmlDSL02.html
-     * for information on this format.
-     *
-  */
+   * @class DSLWriter
+   * @headerfile DSLWriter.h <agrum/BN/io/DSL/DSLWriter.h>
+   * @ingroup bn_io
+   * @brief Writes a IBayesNet in the DSL format.
+   *
+   * This class servers to write the content of a Bayesian Network in
+   * the DSL format. See
+   * http://www.cs.cmu.edu/~fgcozman/Research/InterchangeFormat/Old/xmlDSL02.html
+   * for information on this format.
+   *
+   */
   template < typename GUM_SCALAR >
   class DSLWriter : public BNWriter< GUM_SCALAR > {
-
     public:
     // ==========================================================================
     /// @name Constructor & destructor
@@ -51,34 +51,34 @@ namespace gum {
     /// @{
 
     /**
-    * Default constructor.
-    */
+     * Default constructor.
+     */
     DSLWriter();
 
     /**
-    * Destructor.
-    */
+     * Destructor.
+     */
     ~DSLWriter() final;
 
     /// @}
 
     /**
-    * Writes a Bayesian Network in the output stream using the DSL format.
-    *
-    * @param output The output stream.
-    * @param bn The Bayesian Network writen in output.
-    * @throws IOError Raised if and I/O error occurs.
-    */
+     * Writes a Bayesian Network in the output stream using the DSL format.
+     *
+     * @param output The output stream.
+     * @param bn The Bayesian Network writen in output.
+     * @throws IOError Raised if and I/O error occurs.
+     */
     void write(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) final;
 
     /**
-    * Writes a Bayesian Network in the referenced file using the DSL format.
-    * If the files doesn't exists, it is created.
-    *
-    * @param filePath The path to the file used to write the Bayesian Network.
-    * @param bn The Bayesian Network writed in the file.
-    * @throws IOError Raised if and I/O error occurs.
-    */
+     * Writes a Bayesian Network in the referenced file using the DSL format.
+     * If the files doesn't exists, it is created.
+     *
+     * @param filePath The path to the file used to write the Bayesian Network.
+     * @param bn The Bayesian Network writed in the file.
+     * @throws IOError Raised if and I/O error occurs.
+     */
     void write(const std::string&             filePath,
                const IBayesNet< GUM_SCALAR >& bn) final;
 
@@ -96,4 +96,4 @@ namespace gum {
 
 #include "DSLWriter_tpl.h"
 
-#endif  // DSLWRITER_H
+#endif   // DSLWRITER_H

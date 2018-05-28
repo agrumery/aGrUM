@@ -101,4 +101,4 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(edges3.size(), 9U);
     }
   };
-}
+}   // namespace gum_tests

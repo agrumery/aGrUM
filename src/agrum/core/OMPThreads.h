@@ -28,7 +28,7 @@
 #define GUM_OPEM_MP_THREADS_H
 
 #ifdef _OPENMP
-#include <omp.h>
+#  include <omp.h>
 #endif
 
 namespace gum {
@@ -132,11 +132,11 @@ namespace gum {
    * @return \c True if dynamic adjustment is enabled, \c False otherwise.
    */
   bool getDynamicThreadsNumber();
-}
+}   // namespace gum
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/core/OMPThreads_inl.h>
+#  include <agrum/core/OMPThreads_inl.h>
 #endif /* GUM_NO_INLINE */
 
-#endif  // GUM_OPEM_MP_THREADS_H
+#endif   // GUM_OPEM_MP_THREADS_H

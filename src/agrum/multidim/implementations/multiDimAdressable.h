@@ -89,17 +89,17 @@ namespace gum {
     // =======================================================================
     /// @{
     /**
-    * @brief In order to insure the dereference for decorators, we need to
-    * virtualize the access to master pointer.
-    * @return Returns the master of this MultiDimAdressable.
-    */
+     * @brief In order to insure the dereference for decorators, we need to
+     * virtualize the access to master pointer.
+     * @return Returns the master of this MultiDimAdressable.
+     */
     virtual MultiDimAdressable& getMasterRef() = 0;
 
     /**
      * @brief In order to insure the dereference for decorators, we need to
      * virtualize the access to master pointer.
      * @return Returns the master of this MultiDimAdressable.
-    */
+     */
     virtual const MultiDimAdressable& getMasterRef() const = 0;
 
     /**
@@ -171,7 +171,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/multidim/implementations/multiDimAdressable_inl.h>
+#  include <agrum/multidim/implementations/multiDimAdressable_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_MULTIDIM_ADRESSABLE_H */

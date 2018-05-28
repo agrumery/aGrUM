@@ -309,7 +309,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/graphs/cliqueGraph_inl.h>
-#endif  // GUM_NOINLINE
+#  include <agrum/graphs/cliqueGraph_inl.h>
+#endif   // GUM_NOINLINE
 
 #endif /* GUM_CLIQUE_GRAPH_H */

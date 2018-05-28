@@ -35,13 +35,13 @@ namespace gum {
   /// the hash function for tuple (unsigned int, unsigned int,unsigned int)
   template <>
   class HashFunc< std::tuple< unsigned int, unsigned int, unsigned int > >
-    : public HashFuncBase<
-        std::tuple< unsigned int, unsigned int, unsigned int > > {
+      : public HashFuncBase<
+          std::tuple< unsigned int, unsigned int, unsigned int > > {
     public:
     /// computes the hashed value of a key
     Size operator()(
       const std::tuple< unsigned int, unsigned int, unsigned int >& key) const;
   };
-}
+}   // namespace gum
 
 #endif

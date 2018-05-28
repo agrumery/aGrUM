@@ -62,8 +62,8 @@ namespace gum {
      * @ingroup learning_group
      */
     class StructuralConstraintSliceOrder
-      : protected virtual StructuralConstraintSetStatic<
-          StructuralConstraintDiGraph > {
+        : protected virtual StructuralConstraintSetStatic<
+            StructuralConstraintDiGraph > {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -99,11 +99,11 @@ namespace gum {
 
       /// copy operator
       StructuralConstraintSliceOrder&
-      operator=(const StructuralConstraintSliceOrder& from);
+        operator=(const StructuralConstraintSliceOrder& from);
 
       /// move operator
       StructuralConstraintSliceOrder&
-      operator=(StructuralConstraintSliceOrder&& from);
+        operator=(StructuralConstraintSliceOrder&& from);
 
       /// @}
 
@@ -215,16 +215,16 @@ namespace gum {
        * does not and is not a backward-time arc. */
       bool checkModificationAlone(const GraphChange& change) const;
 
-/// @}
+      /// @}
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // include the set of methods that enable the structural constraint to
 // be standalone, i.e., that it needs not be included into a
 // StructuralConstraintSetStatic to be used by learning algorithms
-#define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintSliceOrder
-#include <agrum/learning/constraints/structuralConstraintPatternHeader.h>
-#undef GUM_CONSTRAINT_CLASS_NAME
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#  define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintSliceOrder
+#  include <agrum/learning/constraints/structuralConstraintPatternHeader.h>
+#  undef GUM_CONSTRAINT_CLASS_NAME
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
       protected:
       /// slices to which belong the nodes
@@ -237,7 +237,7 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/constraints/structuralConstraintSliceOrder_inl.h>
+#  include <agrum/learning/constraints/structuralConstraintSliceOrder_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_STRUCTURAL_CONSTRAINT_SLICE_ORDER_H */

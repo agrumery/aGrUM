@@ -77,7 +77,6 @@ namespace gum_tests {
     }
 
     void testGenerationBNFloat() {
-
       gum::MaxParentsMCBayesNetGenerator< float > gen(30, 70, 5, 4, 30, 40, 50);
       gum::BayesNet< float >* bn = new gum::BayesNet< float >();
       TS_GUM_ASSERT_THROWS_NOTHING(gen.generateBN(*bn));
@@ -86,7 +85,6 @@ namespace gum_tests {
     }
 
     void testGenerationBNDouble() {
-
       gum::MaxParentsMCBayesNetGenerator< double > gen(30, 70, 5, 4, 30, 40, 50);
       gum::BayesNet< double >* bn = new gum::BayesNet< double >();
       TS_GUM_ASSERT_THROWS_NOTHING(gen.generateBN(*bn));
@@ -95,7 +93,6 @@ namespace gum_tests {
     }
 
     void testGenerationfromBNFloat() {
-
       gum::MaxParentsMCBayesNetGenerator< float > gen(30, 70, 10, 4, 30, 40, 50);
       gum::BayesNet< float >* bn = new gum::BayesNet< float >();
       gen.generateBN(*bn);
@@ -106,7 +103,6 @@ namespace gum_tests {
     }
 
     void testGenerationfromBNDouble() {
-
       gum::MaxParentsMCBayesNetGenerator< double > gen(30, 70, 5, 4, 30, 40, 50);
       gum::BayesNet< double >* bn = new gum::BayesNet< double >();
       gen.generateBN(*bn);
@@ -117,7 +113,6 @@ namespace gum_tests {
     }
 
     void testDisturbBNFloatCPT() {
-
       gum::MaxParentsMCBayesNetGenerator< float > gen(30, 70, 4, 30, 40, 50);
       gum::BayesNet< float >* bn = new gum::BayesNet< float >();
       gen.generateBN(*bn);
@@ -127,7 +122,6 @@ namespace gum_tests {
     }
 
     void testGenerationBNDoubleCPT() {
-
       gum::MaxParentsMCBayesNetGenerator< double > gen(30, 70, 3, 4, 30, 40, 50);
       gum::BayesNet< double >* bn = new gum::BayesNet< double >();
       gen.generateBN(*bn);
@@ -137,7 +131,6 @@ namespace gum_tests {
     }
 
     void testInferenceFloat() {
-
       gum::MaxParentsMCBayesNetGenerator< float > gen(30, 70, 8, 4, 30, 40, 50);
       gum::BayesNet< float >* bn = new gum::BayesNet< float >();
       gen.generateBN(*bn);
@@ -149,7 +142,6 @@ namespace gum_tests {
     }
 
     void testInferenceDouble() {
-
       gum::MaxParentsMCBayesNetGenerator< double > gen(30, 70, 8, 4, 30, 40, 50);
       gum::BayesNet< double >* bn = new gum::BayesNet< double >();
       gen.generateBN(*bn);
@@ -160,4 +152,4 @@ namespace gum_tests {
       if (bn != 0) delete bn;
     }
   };
-}
+}   // namespace gum_tests

@@ -36,7 +36,8 @@ namespace gum {
   namespace prm {
 
     /**
-     * @class PRMGenerator PRMGenerator.h <agrum/PRM/generator/PRMGenerator.h>
+     * @class PRMGenerator
+     * @headerfile PRMGenerator.h <agrum/PRM/generator/PRMGenerator.h>
      * @brief This class is the base class to all PRM generators.
      *
      * @ingroup prm_group

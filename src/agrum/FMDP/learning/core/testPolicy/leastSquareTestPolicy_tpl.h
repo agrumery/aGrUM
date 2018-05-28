@@ -154,4 +154,4 @@ namespace gum {
     }
   }
 
-}  // End of namespace gum
+}   // End of namespace gum

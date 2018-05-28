@@ -31,12 +31,10 @@ namespace gum {
 
   /// Default constructor
   SpanningForestPrim::SpanningForestPrim(const UndiGraph*             graph,
-                                         const EdgeProperty< float >* cost)
-      : SpanningForest()
-      , __graph(*graph)
-      , __costTable(*cost)
-      , __spanning_tree_cost(0)
-      , __require_computation(true) {
+                                         const EdgeProperty< float >* cost) :
+      SpanningForest(),
+      __graph(*graph), __costTable(*cost), __spanning_tree_cost(0),
+      __require_computation(true) {
     if (!graph || !cost) {
       GUM_ERROR(GraphError, "invalid null graph or edge cost pointer");
     }
@@ -46,14 +44,12 @@ namespace gum {
   }
 
   // copy constructor
-  SpanningForestPrim::SpanningForestPrim(const SpanningForestPrim& from)
-      : SpanningForest()
-      , __graph(from.__graph)
-      , __costTable(from.__costTable)
-      , __edgesToExplore(from.__edgesToExplore)
-      , __spanning_tree(from.__spanning_tree)
-      , __spanning_tree_cost(from.__spanning_tree_cost)
-      , __require_computation(from.__require_computation) {
+  SpanningForestPrim::SpanningForestPrim(const SpanningForestPrim& from) :
+      SpanningForest(), __graph(from.__graph), __costTable(from.__costTable),
+      __edgesToExplore(from.__edgesToExplore),
+      __spanning_tree(from.__spanning_tree),
+      __spanning_tree_cost(from.__spanning_tree_cost),
+      __require_computation(from.__require_computation) {
     // for debugging purposes
     GUM_CONS_CPY(SpanningForestPrim);
   }
@@ -89,9 +85,7 @@ namespace gum {
   void SpanningForestPrim::__compute() {
     // compute a spanning tree in every connected component
     for (const auto node : __graph.nodes()) {
-      if (!__spanning_tree.existsNode(node)) {
-        __computeInAComponent(node);
-      }
+      if (!__spanning_tree.existsNode(node)) { __computeInAComponent(node); }
     }
 
     // indicate that everything was computed

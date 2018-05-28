@@ -237,10 +237,9 @@ namespace gum {
     /// default constructor
     template < typename IdSetAlloc, typename CountAlloc >
     template < typename RowFilter >
-    INLINE
-    KNML< IdSetAlloc, CountAlloc >::KNML(const RowFilter& filter,
-                                         const std::vector< Size >& var_modalities)
-        : IndependenceTest< IdSetAlloc, CountAlloc >(filter, var_modalities) {
+    INLINE KNML< IdSetAlloc, CountAlloc >::KNML(
+      const RowFilter& filter, const std::vector< Size >& var_modalities) :
+        IndependenceTest< IdSetAlloc, CountAlloc >(filter, var_modalities) {
       // for debugging purposes
       GUM_CONSTRUCTOR(KNML);
     }
@@ -287,30 +286,30 @@ namespace gum {
 
         double score = 0.0;
 
-        for ( auto n_zx : Nzx )
+        for (auto n_zx : Nzx)
           score += std::log(this->_C(Y_size, n_zx));
-        for ( auto n_zy : Nzy )
+        for (auto n_zy : Nzy)
           score += std::log(this->_C(X_size, n_zy));
-        for ( auto n_z : Nz ) {
+        for (auto n_z : Nz) {
           score -= std::log(this->_C(X_size, n_z));
           score -= std::log(this->_C(Y_size, n_z));
         }
-        
-        
-         /*
-        for (Idx z = 0, beg_zx = 0, beg_zy = 0; z < Z_size;
-             ++z, beg_zx += X_size, beg_zy += Y_size) {
-          double sumX = 0.0, sumY = 0.0;
-          for (Idx x = 0, zx = beg_zx; x < X_size; ++x, ++zx) {
-            sumX += std::log(this->_C(Y_size, Nzx[zx]));
-          }
-          score += sumX - std::log(this->_C(Y_size, Nz[z]));
-          for (Idx y = 0, zy = beg_zy; y < Y_size; ++y, ++zy) {
-            sumY += std::log(this->_C(X_size, Nzy[zy]));
-          }
-          score += sumY - std::log(this->_C(X_size, Nz[z]));
-        }
-         */
+
+
+        /*
+       for (Idx z = 0, beg_zx = 0, beg_zy = 0; z < Z_size;
+            ++z, beg_zx += X_size, beg_zy += Y_size) {
+         double sumX = 0.0, sumY = 0.0;
+         for (Idx x = 0, zx = beg_zx; x < X_size; ++x, ++zx) {
+           sumX += std::log(this->_C(Y_size, Nzx[zx]));
+         }
+         score += sumX - std::log(this->_C(Y_size, Nz[z]));
+         for (Idx y = 0, zy = beg_zy; y < Y_size; ++y, ++zy) {
+           sumY += std::log(this->_C(X_size, Nzy[zy]));
+         }
+         score += sumY - std::log(this->_C(X_size, Nz[z]));
+       }
+        */
 
         score *= 0.5;
         // shall we put the score into the cache?
@@ -362,24 +361,19 @@ namespace gum {
 
     template < typename IdSetAlloc, typename CountAlloc >
     double KNML< IdSetAlloc, CountAlloc >::_C(Size r, Size n) {
-      if (n == 0 || r == 1) {
-        return 1.0;
-      }
+      if (n == 0 || r == 1) { return 1.0; }
       if (r == 2) {
         if (n > 1000) {
           if (__use_cache_C) {
             try {
               double val = __cache_C.score(std::vector< Idx >{r, n});
               return val;
-            } catch (const NotFound&) {
-            }
+            } catch (const NotFound&) {}
           }
-          const double val =
-            std::sqrt(n * M_PI / 2) * std::exp(std::sqrt(8 / (9 * n * M_PI)) +
-                                               (3 * M_PI - 16) / (36 * n * M_PI));
-          if (__use_cache_C) {
-            _insertIntoCCache(r, n, val);
-          }
+          const double val = std::sqrt(n * M_PI / 2)
+                             * std::exp(std::sqrt(8 / (9 * n * M_PI))
+                                        + (3 * M_PI - 16) / (36 * n * M_PI));
+          if (__use_cache_C) { _insertIntoCCache(r, n, val); }
           return val;
         } else {
           return this->__Cvec[n - 1];
@@ -389,20 +383,17 @@ namespace gum {
         try {
           double val = __cache_C.score(std::vector< Idx >{r, n});
           return val;
-        } catch (const NotFound&) {
-        }
+        } catch (const NotFound&) {}
       }
       double val = _C(r - 1, n) + n / (r - 2) * _C(r - 2, n);
-      if (__use_cache_C) {
-        _insertIntoCCache(r, n, val);
-      }
+      if (__use_cache_C) { _insertIntoCCache(r, n, val); }
       return val;
     }
 
     /// inserts a new score into the cache for C
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE void
-    KNML< IdSetAlloc, CountAlloc >::_insertIntoCCache(Size r, Size n, double c) {
+      KNML< IdSetAlloc, CountAlloc >::_insertIntoCCache(Size r, Size n, double c) {
       __cache_C.insert(std::vector< Idx >{r, n}, c);
     }
 

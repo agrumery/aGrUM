@@ -1,23 +1,23 @@
 
 /***************************************************************************
-*   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 
 #include "LpInterface.h"
@@ -26,18 +26,12 @@ namespace gum {
   namespace credal {
     namespace lp {
       /**
-      * class LpCol
-      */
+       * class LpCol
+       */
 
-      LpCol::LpCol(unsigned int id)
-          : __id(id) {
-        GUM_CONSTRUCTOR(LpCol);
-      }
+      LpCol::LpCol(unsigned int id) : __id(id) { GUM_CONSTRUCTOR(LpCol); }
 
-      LpCol::LpCol(const LpCol& col)
-          : __id(col.__id) {
-        GUM_CONS_CPY(LpCol);
-      }
+      LpCol::LpCol(const LpCol& col) : __id(col.__id) { GUM_CONS_CPY(LpCol); }
 
       LpCol::~LpCol() { GUM_DESTRUCTOR(LpCol); }
 
@@ -61,12 +55,12 @@ namespace gum {
       }
 
       std::string LpCol::toString() const { return "V" + std::to_string(__id); }
-    }  // end of lp
+    }   // namespace lp
 
-  }  // end of credal
+  }   // namespace credal
 
   INLINE Size HashFunc< credal::lp::LpCol >::
-  operator()(const credal::lp::LpCol& key) const {
+              operator()(const credal::lp::LpCol& key) const {
     return (((Size)key.id()) * gum::HashFuncConst::gold) & _hash_mask;
   }
 
@@ -74,48 +68,35 @@ namespace gum {
     namespace lp {
 
       /**
-      * class LpExpr
-      */
+       * class LpExpr
+       */
 
-      LpExpr::LpExpr()
-          : __ileft(false)
-          , __imiddle(false)
-          , __iright(false)
-          , __lValue(0.)
-          , __mValue(0.)
-          , __rValue(0.)
-          , __lCoeffs(new HashTable< LpCol, double >())
-          , __mCoeffs(new HashTable< LpCol, double >())
-          , __rCoeffs(new HashTable< LpCol, double >()) {
+      LpExpr::LpExpr() :
+          __ileft(false), __imiddle(false), __iright(false), __lValue(0.),
+          __mValue(0.), __rValue(0.), __lCoeffs(new HashTable< LpCol, double >()),
+          __mCoeffs(new HashTable< LpCol, double >()),
+          __rCoeffs(new HashTable< LpCol, double >()) {
         GUM_CONSTRUCTOR(LpExpr);
       }
 
-      LpExpr::LpExpr(const LpExpr& expr)
-          : __ileft(expr.__ileft)
-          , __imiddle(expr.__imiddle)
-          , __iright(expr.__iright)
-          , __lValue(expr.__lValue)
-          , __mValue(expr.__mValue)
-          , __rValue(expr.__rValue)
-          , __lCoeffs(new HashTable< LpCol, double >(*expr.__lCoeffs))
-          , __mCoeffs(new HashTable< LpCol, double >(*expr.__mCoeffs))
-          , __rCoeffs(new HashTable< LpCol, double >(*expr.__rCoeffs)) {
+      LpExpr::LpExpr(const LpExpr& expr) :
+          __ileft(expr.__ileft), __imiddle(expr.__imiddle),
+          __iright(expr.__iright), __lValue(expr.__lValue),
+          __mValue(expr.__mValue), __rValue(expr.__rValue),
+          __lCoeffs(new HashTable< LpCol, double >(*expr.__lCoeffs)),
+          __mCoeffs(new HashTable< LpCol, double >(*expr.__mCoeffs)),
+          __rCoeffs(new HashTable< LpCol, double >(*expr.__rCoeffs)) {
         GUM_CONS_CPY(LpExpr);
       }
 
       LpExpr::LpExpr(const LpExpr& expr,
                      bool          copyLeft,
                      bool          copyMiddle,
-                     bool          copyRight)
-          : __ileft(false)
-          , __imiddle(false)
-          , __iright(false)
-          , __lValue(0.)
-          , __mValue(0.)
-          , __rValue(0.)
-          , __lCoeffs(nullptr)
-          , __mCoeffs(nullptr)
-          , __rCoeffs(nullptr) {
+                     bool          copyRight) :
+          __ileft(false),
+          __imiddle(false), __iright(false), __lValue(0.), __mValue(0.),
+          __rValue(0.), __lCoeffs(nullptr), __mCoeffs(nullptr),
+          __rCoeffs(nullptr) {
         if (copyLeft) {
           __lCoeffs = new HashTable< LpCol, double >(*expr.__lCoeffs);
           __lValue = expr.__lValue;
@@ -140,16 +121,12 @@ namespace gum {
         GUM_CONS_CPY(LpExpr);
       }
 
-      LpExpr::LpExpr(LpExpr&& expr)
-          : __ileft(expr.__ileft)
-          , __imiddle(expr.__imiddle)
-          , __iright(expr.__iright)
-          , __lValue(expr.__lValue)
-          , __mValue(expr.__mValue)
-          , __rValue(expr.__rValue)
-          , __lCoeffs(expr.__lCoeffs)
-          , __mCoeffs(expr.__mCoeffs)
-          , __rCoeffs(expr.__rCoeffs) {
+      LpExpr::LpExpr(LpExpr&& expr) :
+          __ileft(expr.__ileft), __imiddle(expr.__imiddle),
+          __iright(expr.__iright), __lValue(expr.__lValue),
+          __mValue(expr.__mValue), __rValue(expr.__rValue),
+          __lCoeffs(expr.__lCoeffs), __mCoeffs(expr.__mCoeffs),
+          __rCoeffs(expr.__rCoeffs) {
         expr.__lCoeffs = nullptr;
         expr.__mCoeffs = nullptr;
         expr.__rCoeffs = nullptr;
@@ -157,16 +134,14 @@ namespace gum {
         GUM_CONS_CPY(LpExpr);
       }
 
-      LpExpr::LpExpr(LpExpr&& expr, bool copyLeft, bool copyMiddle, bool copyRight)
-          : __ileft(false)
-          , __imiddle(false)
-          , __iright(false)
-          , __lValue(0.)
-          , __mValue(0.)
-          , __rValue(0.)
-          , __lCoeffs(nullptr)
-          , __mCoeffs(nullptr)
-          , __rCoeffs(nullptr) {
+      LpExpr::LpExpr(LpExpr&& expr,
+                     bool     copyLeft,
+                     bool     copyMiddle,
+                     bool     copyRight) :
+          __ileft(false),
+          __imiddle(false), __iright(false), __lValue(0.), __mValue(0.),
+          __rValue(0.), __lCoeffs(nullptr), __mCoeffs(nullptr),
+          __rCoeffs(nullptr) {
         if (copyLeft) {
           swap(__lCoeffs, expr.__lCoeffs);
           __lValue = expr.__lValue;
@@ -397,21 +372,18 @@ namespace gum {
         /// left and middle side
         if (!from.__ileft && !from.__iright) {
           if (!__ileft) {
-
             *__lCoeffs = *from.__mCoeffs;
             __lValue = from.__mValue;
             __ileft = true;
 
             return;
           } else if (!__imiddle) {
-
             *__mCoeffs = *from.__mCoeffs;
             __mValue = from.__mValue;
             __imiddle = true;
 
             return;
           } else if (!__iright) {
-
             *__rCoeffs = *from.__mCoeffs;
             __rValue = from.__mValue;
             __iright = true;
@@ -426,7 +398,6 @@ namespace gum {
         /// side
         else if (from.__ileft && !from.__iright) {
           if (!__ileft) {
-
             *__lCoeffs = *from.__lCoeffs;
             __lValue = from.__lValue;
             __ileft = true;
@@ -497,7 +468,6 @@ namespace gum {
 
             return;
           } else if (!__iright) {
-
             ///* __rCoeffs = * from.__mCoeffs;
             swap(__rCoeffs, from.__mCoeffs);
             __rValue = from.__mValue;
@@ -525,7 +495,6 @@ namespace gum {
 
             return;
           } else if (!__imiddle && !__iright) {
-
             ///* __mCoeffs = * from.__lCoeffs;
             swap(__mCoeffs, from.__lCoeffs);
             __mValue = from.__lValue;
@@ -622,11 +591,11 @@ namespace gum {
       }
 
       /**
-      * class LpRow
-      */
+       * class LpRow
+       */
 
-      LpRow::LpRow(const LpExpr& expr, const std::vector< LpCol >& cols)
-          : __coeffs(nullptr) {
+      LpRow::LpRow(const LpExpr& expr, const std::vector< LpCol >& cols) :
+          __coeffs(nullptr) {
         // we write 0 <= Ax + b from Ex + f <= Cx + d
         if (expr.__ileft && !expr.__iright) {
           __coeffs = new HashTable< LpCol, double >(*expr.__mCoeffs);
@@ -663,15 +632,16 @@ namespace gum {
 
         if (__coeffs->size() == 0)
           GUM_ERROR(OperationNotAllowed,
-                    "expr : " << expr.toString() << "is not a valid inequality; "
-                                                    "no variable in inequality, "
-                                                    "only constants");
+                    "expr : " << expr.toString()
+                              << "is not a valid inequality; "
+                                 "no variable in inequality, "
+                                 "only constants");
 
         GUM_CONSTRUCTOR(LpRow);
       }
 
-      LpRow::LpRow(LpExpr&& expr, const std::vector< LpCol >& cols)
-          : __coeffs(nullptr) {
+      LpRow::LpRow(LpExpr&& expr, const std::vector< LpCol >& cols) :
+          __coeffs(nullptr) {
         /// we write 0 <= Ax + b from Ex + f <= Cx + d
         if (expr.__ileft && !expr.__iright) {
           swap(__coeffs, expr.__mCoeffs);
@@ -706,22 +676,21 @@ namespace gum {
 
         if (__coeffs->size() == 0)
           GUM_ERROR(OperationNotAllowed,
-                    "expr : " << expr.toString() << "is not a valid inequality; "
-                                                    "no variable in inequality, "
-                                                    "only constants");
+                    "expr : " << expr.toString()
+                              << "is not a valid inequality; "
+                                 "no variable in inequality, "
+                                 "only constants");
 
         GUM_CONSTRUCTOR(LpRow);
       }
 
-      LpRow::LpRow(const LpRow& row)
-          : __cste(row.__cste)
-          , __coeffs(new HashTable< LpCol, double >(*row.__coeffs)) {
+      LpRow::LpRow(const LpRow& row) :
+          __cste(row.__cste),
+          __coeffs(new HashTable< LpCol, double >(*row.__coeffs)) {
         GUM_CONS_CPY(LpRow);
       }
 
-      LpRow::LpRow(LpRow&& row)
-          : __cste(row.__cste)
-          , __coeffs(row.__coeffs) {
+      LpRow::LpRow(LpRow&& row) : __cste(row.__cste), __coeffs(row.__coeffs) {
         row.__coeffs = nullptr;
 
         GUM_CONS_CPY(LpRow);
@@ -779,8 +748,8 @@ namespace gum {
       }
 
       /**
-      * class LpInterface
-      */
+       * class LpInterface
+       */
       template < typename GUM_SCALAR >
       LpInterface< GUM_SCALAR >::LpInterface() {
         __positivity = false;
@@ -789,10 +758,10 @@ namespace gum {
       }
 
       template < typename GUM_SCALAR >
-      LpInterface< GUM_SCALAR >::LpInterface(const LpInterface< GUM_SCALAR >& from)
-          : __cols(from.__cols)
-          , __positivity(from.__positivity)
-          , __sumIsOne(from.__sumIsOne) {
+      LpInterface< GUM_SCALAR >::LpInterface(
+        const LpInterface< GUM_SCALAR >& from) :
+          __cols(from.__cols),
+          __positivity(from.__positivity), __sumIsOne(from.__sumIsOne) {
         __rows.resize(from.__rows.size());
 
         for (unsigned int i = 0, end = from.__rows.size(); i < end; i++)
@@ -802,9 +771,8 @@ namespace gum {
       }
 
       template < typename GUM_SCALAR >
-      LpInterface< GUM_SCALAR >::LpInterface(LpInterface< GUM_SCALAR >&& from)
-          : __positivity(from.__positivity)
-          , __sumIsOne(from.__sumIsOne) {
+      LpInterface< GUM_SCALAR >::LpInterface(LpInterface< GUM_SCALAR >&& from) :
+          __positivity(from.__positivity), __sumIsOne(from.__sumIsOne) {
         __rows.swap(from.__rows);
         __cols.swap(from.__cols);
         GUM_CONS_CPY(LpInterface);
@@ -820,7 +788,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       LpInterface< GUM_SCALAR >& LpInterface< GUM_SCALAR >::
-      operator=(const LpInterface< GUM_SCALAR >& from) {
+                                 operator=(const LpInterface< GUM_SCALAR >& from) {
         /// faster than clear (), delete only rows
         for (const auto& row : __rows)
           delete row;
@@ -842,7 +810,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       LpInterface< GUM_SCALAR >& LpInterface< GUM_SCALAR >::
-      operator=(LpInterface< GUM_SCALAR >&& from) {
+                                 operator=(LpInterface< GUM_SCALAR >&& from) {
         __rows.swap(from.__rows);
         __cols.swap(from.__cols);
 
@@ -869,13 +837,12 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       std::vector< LpCol >
-      LpInterface< GUM_SCALAR >::addCols(const unsigned int& cols) {
+        LpInterface< GUM_SCALAR >::addCols(const unsigned int& cols) {
         if (cols < 1)
           GUM_ERROR(OperationNotAllowed,
                     "LpInterface::addCols ( cols ) : cols "
                     "needs must be equal or greater than 1 : "
-                      << cols
-                      << " < 1");
+                      << cols << " < 1");
 
         for (unsigned int i = 0; i < cols; i++) {
           __cols.push_back(LpCol((unsigned int)__cols.size()));
@@ -889,8 +856,7 @@ namespace gum {
         if (!expr.__ileft && !expr.__iright)
           GUM_ERROR(OperationNotAllowed,
                     "addRow ( const LpExpr & expr ) : expr : "
-                      << expr.toString()
-                      << "is not an inequality.");
+                      << expr.toString() << "is not an inequality.");
 
         if ((expr.__ileft && !expr.__iright) || (!expr.__ileft && expr.__iright)) {
           __rows.push_back(new LpRow(expr, __cols));
@@ -900,10 +866,10 @@ namespace gum {
 
           __rows.push_back(
             new LpRow(std::move(lexpr),
-                      __cols));  /// lexpr not used anymore, use move constructor
+                      __cols));   /// lexpr not used anymore, use move constructor
           __rows.push_back(
             new LpRow(std::move(rexpr),
-                      __cols));  /// rexpr not used anymore, use move constructor
+                      __cols));   /// rexpr not used anymore, use move constructor
         }
       }
 
@@ -912,8 +878,7 @@ namespace gum {
         if (!expr.__ileft && !expr.__iright)
           GUM_ERROR(OperationNotAllowed,
                     "addRow ( const LpExpr & expr ) : expr : "
-                      << expr.toString()
-                      << "is not an inequality.");
+                      << expr.toString() << "is not an inequality.");
 
         if ((expr.__ileft && !expr.__iright) || (!expr.__ileft && expr.__iright)) {
           __rows.push_back(new LpRow(std::move(expr), __cols));
@@ -931,10 +896,10 @@ namespace gum {
 
           __rows.push_back(
             new LpRow(std::move(lexpr),
-                      __cols));  /// lexpr not used anymore, use move constructor
+                      __cols));   /// lexpr not used anymore, use move constructor
           __rows.push_back(
             new LpRow(std::move(rexpr),
-                      __cols));  /// rexpr not used anymore, use move constructor
+                      __cols));   /// rexpr not used anymore, use move constructor
         }
       }
 
@@ -1046,9 +1011,9 @@ namespace gum {
           delete row;
 
         __rows.clear();
-        __rows.shrink_to_fit();  /// to really clear content memory, otherwise
-                                 /// we have
-                                 /// to wait for (*this) destruction ???
+        __rows.shrink_to_fit();   /// to really clear content memory, otherwise
+                                  /// we have
+                                  /// to wait for (*this) destruction ???
         /// checked with sizeof( __rows ) + sizeof( LpRow ) * __rows.capacity()
 
         __cols.clear();
@@ -1264,8 +1229,8 @@ namespace gum {
       LpExpr operator<=(T1&& lhs, LpCol&& rhs) {
         return LpExpr::lessThan(std::forward< T1 >(lhs), std::move(rhs));
       }
-    }  // namespace lp
+    }   // namespace lp
 
-  }  // namespace cn
+  }   // namespace credal
 
-}  // namespace gum
+}   // namespace gum

@@ -76,7 +76,7 @@ namespace gum {
      * @brief copy operator
      */
     MultiDimDecorator< GUM_SCALAR >&
-    operator=(const MultiDimDecorator& from) noexcept;
+      operator=(const MultiDimDecorator& from) noexcept;
 
     /**
      * @brief Class move constructor
@@ -199,8 +199,8 @@ namespace gum {
      * @param base the initial value
      */
     virtual GUM_SCALAR
-    reduce(std::function< GUM_SCALAR(GUM_SCALAR, GUM_SCALAR) > f,
-           GUM_SCALAR base) const final;
+      reduce(std::function< GUM_SCALAR(GUM_SCALAR, GUM_SCALAR) > f,
+             GUM_SCALAR                                          base) const final;
 
     virtual MultiDimDecorator< GUM_SCALAR >* newFactory() const = 0;
 

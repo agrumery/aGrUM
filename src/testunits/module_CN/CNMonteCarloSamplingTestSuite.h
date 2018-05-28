@@ -51,10 +51,8 @@ namespace gum_tests {
 
     protected:
     public:
-    CNMonteCarloSamplingListener(gum::ApproximationScheme& aS)
-        : gum::ApproximationSchemeListener(aS)
-        , __nbr(0)
-        , __msg(""){};
+    CNMonteCarloSamplingListener(gum::ApproximationScheme& aS) :
+        gum::ApproximationSchemeListener(aS), __nbr(0), __msg(""){};
 
     void whenProgress(const void*     buffer,
                       const gum::Size a,
@@ -68,7 +66,7 @@ namespace gum_tests {
     int nbr() { return __nbr; }
 
     std::string& msg() { return __msg; }
-  };  // end of : class mcSamplingListener
+  };   // end of : class mcSamplingListener
 
   ////////////////////////////////////////////////////////////////
   class CNMonteCarloSamplingInferenceTestSuite : public CxxTest::TestSuite {
@@ -79,7 +77,6 @@ namespace gum_tests {
 
     // not dynamic (2U network - fast)
     void initCNet() {
-
 #ifdef _OPENMP
       GUM_DEBUG_ONLY(gum::setNumberOfThreads(1);)
 #endif
@@ -135,7 +132,7 @@ namespace gum_tests {
 
       // evidence from map
       std::map< std::string, std::vector< double > > eviMap;
-      std::vector< double > evi0(2, 0);
+      std::vector< double >                          evi0(2, 0);
       evi0[0] = 1;
       std::vector< double > evi1(2, 0);
       evi1[1] = 1;
@@ -154,7 +151,7 @@ namespace gum_tests {
       // mcs.storeBNOpt ( true );
 
       std::map< std::string, std::vector< double > > modals;
-      std::vector< double > binaryModal(2, 0);
+      std::vector< double >                          binaryModal(2, 0);
       binaryModal[1] = 1;
 
 
@@ -196,11 +193,10 @@ namespace gum_tests {
       clearCNet();
 
 
-    }  // end of : testCNMonteCarloSamplingInference (2U network)
+    }   // end of : testCNMonteCarloSamplingInference (2U network)
 
     // dynamic (dynaCheese) - strong indep
     void testCNMonteCarloSamplingInferenceDStrong() {
-
       initDCNet();
 
       typedef std::vector< double > exp;
@@ -255,7 +251,7 @@ namespace gum_tests {
 
       clearCNet();
 
-    }  // end of : testCNMonteCarloSamplingInferenceDStrong
+    }   // end of : testCNMonteCarloSamplingInferenceDStrong
 
     // dynamic (dynaCheese) - repetitive indep
     void testCNMonteCarloSamplingInferenceDRep() {
@@ -310,7 +306,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(mcs.eraseAllEvidence(););
 
       clearCNet();
-    }  // end of : testCNMonteCarloSamplingInferenceDRep (dynamic - dynacheese)
+    }   // end of : testCNMonteCarloSamplingInferenceDRep (dynamic - dynacheese)
 
     // with dynamic network
     void testCNMonteCarloSamplingListener() {
@@ -340,8 +336,8 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(mcs.eraseAllEvidence(););
 
       clearCNet();
-    }  // end of : testCNMonteCarloSamplingListener
+    }   // end of : testCNMonteCarloSamplingListener
 
-  };  // end of : class CNMonteCarloSamplingInferenceTestSuite
+  };   // end of : class CNMonteCarloSamplingInferenceTestSuite
 
-}  // end of : namespace gum_tests
+}   // namespace gum_tests

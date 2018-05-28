@@ -21,7 +21,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // to ease parsing in IDE
-#include <agrum/BN/io/net/netWriter.h>
+#  include <agrum/BN/io/net/netWriter.h>
 
 namespace gum {
   /* =========================================================================*/
@@ -63,9 +63,7 @@ namespace gum {
 
     output.flush();
 
-    if (output.fail()) {
-      GUM_ERROR(IOError, "Writting in the ostream failed.");
-    }
+    if (output.fail()) { GUM_ERROR(IOError, "Writting in the ostream failed."); }
   }
 
   // Writes a Bayesian Network in the referenced file using the BN format.
@@ -97,17 +95,15 @@ namespace gum {
     output.flush();
     output.close();
 
-    if (output.fail()) {
-      GUM_ERROR(IOError, "Writting in the ostream failed.");
-    }
+    if (output.fail()) { GUM_ERROR(IOError, "Writting in the ostream failed."); }
   }
 
   // Returns a bloc defining a variable's CPT in the BN format.
   template < typename GUM_SCALAR >
   INLINE std::string
-  NetWriter< GUM_SCALAR >::__variableCPT(const Potential< GUM_SCALAR >& cpt) {
+         NetWriter< GUM_SCALAR >::__variableCPT(const Potential< GUM_SCALAR >& cpt) {
     std::stringstream str;
-    std::string       tab = "   ";  // poor tabulation
+    std::string       tab = "   ";   // poor tabulation
 
     Instantiation inst(cpt);
     if (cpt.nbrDim() == 1) {
@@ -119,7 +115,7 @@ namespace gum {
       }
 
       str << ");";
-    } else {  // cpt.domainSize() > 1
+    } else {   // cpt.domainSize() > 1
       const Sequence< const DiscreteVariable* >& varsSeq = cpt.variablesSequence();
 
       Instantiation conds;
@@ -146,8 +142,8 @@ namespace gum {
 
         comment = tab + "% ";
         for (Idx i = 0; i < conds.nbrDim(); i++) {
-          comment += conds.variable(i).name() + "=" +
-                     conds.variable(i).label(conds.val(i)) + tab;
+          comment += conds.variable(i).name() + "="
+                     + conds.variable(i).label(conds.val(i)) + tab;
         }
 
         ++conds;
@@ -162,7 +158,7 @@ namespace gum {
             str << ")";
             if (conds.val(i) != 0) break;
           }
-          str << comment << "\n" ;
+          str << comment << "\n";
         }
       }
     }
@@ -173,9 +169,9 @@ namespace gum {
   // Returns the header of the BN file.
   template < typename GUM_SCALAR >
   INLINE std::string
-  NetWriter< GUM_SCALAR >::__header(const IBayesNet< GUM_SCALAR >& bn) {
+         NetWriter< GUM_SCALAR >::__header(const IBayesNet< GUM_SCALAR >& bn) {
     std::stringstream str;
-    std::string       tab = "   ";  // poor tabulation
+    std::string       tab = "   ";   // poor tabulation
     str << std::endl << "net {" << std::endl;
     str << "  name = " << bn.propertyWithDefault("name", "unnamedBN") << ";"
         << std::endl;
@@ -188,9 +184,9 @@ namespace gum {
   // Returns a bloc defining a variable in the BN format.
   template < typename GUM_SCALAR >
   INLINE std::string
-  NetWriter< GUM_SCALAR >::__variableBloc(const DiscreteVariable& var) {
+         NetWriter< GUM_SCALAR >::__variableBloc(const DiscreteVariable& var) {
     std::stringstream str;
-    std::string       tab = "   ";  // poor tabulation
+    std::string       tab = "   ";   // poor tabulation
     str << "node " << var.name() << " {" << std::endl;
     str << tab << "states = (";
 
@@ -208,4 +204,4 @@ namespace gum {
   }
 } /* namespace gum */
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS

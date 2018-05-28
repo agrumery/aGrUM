@@ -44,8 +44,7 @@ namespace gum {
   INLINE unsigned int __hashTableLog2(const Size& nb) {
     unsigned int i = 0;
 
-    for (Size nbb = nb; nbb > 1UL; ++i, nbb >>= 1) {
-    };
+    for (Size nbb = nb; nbb > 1UL; ++i, nbb >>= 1) {};
 
     return ((1UL << i) < nb ? i + 1U : i);
   }
@@ -73,7 +72,7 @@ namespace gum {
   /// returns a hashed key for hash tables the keys of which are represented
   /// by strings
   INLINE Size HashFunc< std::pair< std::string, std::string > >::
-  operator()(const std::pair< std::string, std::string >& key) const {
+              operator()(const std::pair< std::string, std::string >& key) const {
     Size h = 0;
 
     const std::string& s1 = key.first;
@@ -110,7 +109,7 @@ namespace gum {
   /// returns a hashed key for hash tables the keys of which are represented
   /// by vectors of Idx
   INLINE Size HashFunc< std::vector< Idx > >::
-  operator()(const std::vector< Idx >& key) const {
+              operator()(const std::vector< Idx >& key) const {
     Size h = 0;
     Size siz = Size(key.size());
     for (Size i = 0; i < siz; ++i)

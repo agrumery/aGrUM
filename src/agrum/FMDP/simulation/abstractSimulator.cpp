@@ -40,12 +40,14 @@ namespace gum {
   /*
    * Default constructor.
    */
-  AbstractSimulator::AbstractSimulator() { GUM_CONSTRUCTOR(AbstractSimulator) }
+  AbstractSimulator::AbstractSimulator(){GUM_CONSTRUCTOR(AbstractSimulator)}
 
   /*
    * Default destructor.
    */
-  AbstractSimulator::~AbstractSimulator() { GUM_DESTRUCTOR(AbstractSimulator) }
+  AbstractSimulator::~AbstractSimulator() {
+    GUM_DESTRUCTOR(AbstractSimulator)
+  }
 
 
   // ===========================================================================
@@ -66,15 +68,14 @@ namespace gum {
          ++varIter) {
       retState.add(**varIter);
       retState.chgVal(*varIter,
-                      (Idx)(((double)std::rand() / (double)RAND_MAX) *
-                            (double)(*varIter)->domainSize()));
+                      (Idx)(((double)std::rand() / (double)RAND_MAX)
+                            * (double)(*varIter)->domainSize()));
     }
     return retState;
   }
 
   ///
   bool AbstractSimulator::hasReachEnd() {
-
     if (_endState.empty()) return false;
 
     for (auto varIter = _endState.variablesSequence().beginSafe();
@@ -85,4 +86,4 @@ namespace gum {
   }
 
 
-}  // End of namespace gum
+}   // End of namespace gum

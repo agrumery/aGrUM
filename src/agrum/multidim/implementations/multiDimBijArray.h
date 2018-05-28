@@ -104,7 +104,7 @@ namespace gum {
      * structure.
      */
     MultiDimBijArray< GUM_SCALAR >&
-    operator=(const MultiDimBijArray< GUM_SCALAR >& from);
+      operator=(const MultiDimBijArray< GUM_SCALAR >& from);
 
     /**
      * @warning This will raise an exception: read only structure.
@@ -187,8 +187,8 @@ namespace gum {
   extern template class MultiDimBijArray< float >;
   extern template class MultiDimBijArray< double >;
 
-}  // namespace gum
+}   // namespace gum
 
 #include <agrum/multidim/implementations/multiDimBijArray_tpl.h>
 
-#endif  // GUM_MULTIDIMBIJARRAY_H
+#endif   // GUM_MULTIDIMBIJARRAY_H

@@ -26,20 +26,20 @@
 #include <agrum/BN/algorithms/barrenNodesFinder.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/BN/algorithms/barrenNodesFinder_inl.h>
-#endif  // GUM_NO_INLINE
+#  include <agrum/BN/algorithms/barrenNodesFinder_inl.h>
+#endif   // GUM_NO_INLINE
 
 namespace gum {
 
   /// returns the set of barren nodes in the messages sent in a junction tree
   ArcProperty< NodeSet >
-  BarrenNodesFinder::barrenNodes(const CliqueGraph& junction_tree) {
+    BarrenNodesFinder::barrenNodes(const CliqueGraph& junction_tree) {
     // assign a mark to all the nodes
     // and mark all the observed nodes and their ancestors as non-barren
     NodeProperty< Size > mark(__dag->size());
     {
       for (const auto node : *__dag)
-        mark.insert(node, 0);  // for the moment, 0 = possibly barren
+        mark.insert(node, 0);   // for the moment, 0 = possibly barren
 
       // mark all the observed nodes and their ancestors as non barren
       // std::numeric_limits<unsigned int>::max () will be necessarily non
@@ -76,18 +76,14 @@ namespace gum {
       NodeSet non_barren1 = junction_tree.clique(edge.first());
       for (auto iter = non_barren1.beginSafe(); iter != non_barren1.endSafe();
            ++iter) {
-        if (mark[*iter] || separator.exists(*iter)) {
-          non_barren1.erase(iter);
-        }
+        if (mark[*iter] || separator.exists(*iter)) { non_barren1.erase(iter); }
       }
       result.insert(Arc(edge.first(), edge.second()), std::move(non_barren1));
 
       NodeSet non_barren2 = junction_tree.clique(edge.second());
       for (auto iter = non_barren2.beginSafe(); iter != non_barren2.endSafe();
            ++iter) {
-        if (mark[*iter] || separator.exists(*iter)) {
-          non_barren2.erase(iter);
-        }
+        if (mark[*iter] || separator.exists(*iter)) { non_barren2.erase(iter); }
       }
       result.insert(Arc(edge.second(), edge.first()), std::move(non_barren2));
     }
@@ -100,8 +96,8 @@ namespace gum {
       node2arc.insert(node, ArcSet());
     for (const auto& elt : result) {
       const Arc& arc = elt.first;
-      if (!result[arc].empty()) {   // no need to further process cliques
-        const NodeSet& separator =  // with no barren nodes
+      if (!result[arc].empty()) {    // no need to further process cliques
+        const NodeSet& separator =   // with no barren nodes
           junction_tree.separator(Edge(arc.tail(), arc.head()));
 
         for (const auto node : separator) {
@@ -149,7 +145,7 @@ namespace gum {
     {
       List< NodeId > nodes_to_mark;
       for (const auto& elt : node2arc) {
-        if (!elt.second.empty()) {  // only process nodes with assigned arcs
+        if (!elt.second.empty()) {   // only process nodes with assigned arcs
           nodes_to_mark.insert(elt.first);
         }
       }
@@ -157,32 +153,26 @@ namespace gum {
         NodeId node = nodes_to_mark.front();
         nodes_to_mark.popFront();
 
-        if (!mark[node]) {  // mark the node and all its ancestors
+        if (!mark[node]) {   // mark the node and all its ancestors
           mark[node] = 1;
           Size nb_par = 0;
           for (auto par : __dag->parents(node)) {
             Size parent_mark = mark[par];
             if (parent_mark != std::numeric_limits< Size >::max()) {
               ++nb_par;
-              if (parent_mark == 0) {
-                nodes_to_mark.insert(par);
-              }
+              if (parent_mark == 0) { nodes_to_mark.insert(par); }
             }
           }
 
-          if (nb_par == 0) {
-            path_roots.insert(node);
-          }
+          if (nb_par == 0) { path_roots.insert(node); }
         }
       }
     }
 
     // perform step 2/
     DAG sweep_dag = *__dag;
-    for (const auto node : *__dag) {  // keep only nodes marked with 1
-      if (mark[node] != 1) {
-        sweep_dag.eraseNode(node);
-      }
+    for (const auto node : *__dag) {   // keep only nodes marked with 1
+      if (mark[node] != 1) { sweep_dag.eraseNode(node); }
     }
     for (const auto node : sweep_dag) {
       const Size nb_parents = sweep_dag.parents(node).size();
@@ -225,13 +215,11 @@ namespace gum {
           } else {
             auto nb_match = Size(std::min(nb_parents, nb_children) - 1);
             auto iter_par = parents.beginSafe();
-            ++iter_par;  // skip the first parent, whose arc with node will
-                         // remain
+            ++iter_par;   // skip the first parent, whose arc with node will
+                          // remain
             auto iter_child = children.beginSafe();
             for (Idx i = 0; i < nb_match; ++i, ++iter_par, ++iter_child) {
-              if (*iter_child == smallest_child) {
-                ++iter_child;
-              }
+              if (*iter_child == smallest_child) { ++iter_child; }
               sweep_dag.addArc(*iter_par, *iter_child);
               sweep_dag.eraseArc(Arc(*iter_par, node));
               sweep_dag.eraseArc(Arc(node, *iter_child));
@@ -269,9 +257,7 @@ namespace gum {
           if (mark[node] < mark_id) {
             mark[node] = mark_id;
             for (const auto par : __dag->parents(node)) {
-              if (mark[par] < mark_id) {
-                to_mark.insert(par);
-              }
+              if (mark[par] < mark_id) { to_mark.insert(par); }
             }
           }
         }

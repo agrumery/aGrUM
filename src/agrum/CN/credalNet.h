@@ -33,9 +33,9 @@
 #include <vector>
 
 #ifdef HAVE_UNISTD_H
-#include <unistd.h>
+#  include <unistd.h>
 #else
-#include <agrum/core/mvsc/unistd.h>
+#  include <agrum/core/mvsc/unistd.h>
 #endif
 
 //#include <sys/wait.h>
@@ -49,15 +49,15 @@
 #include <string>
 #include <sys/stat.h>
 
-#include <utility>  /// c++11 stuff, like declval ( decltype from prototype without a default constructor )
+#include <utility>   /// c++11 stuff, like declval ( decltype from prototype without a default constructor )
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/BN/io/BIF/BIFWriter.h>
 #include <agrum/core/exceptions.h>
 
-#include <agrum/core/math/pow.h>  // custom pow functions with integers, faster implementation
-#include <agrum/core/math/rational.h>  // custom decimal to rational
+#include <agrum/core/math/pow.h>   // custom pow functions with integers, faster implementation
+#include <agrum/core/math/rational.h>   // custom decimal to rational
 
 #include <agrum/CN/LrsWrapper.h>
 
@@ -68,14 +68,15 @@
 typedef __int64          int64_t;
 typedef unsigned __int64 uint64_t;
 #else
-#include <stdint.h>
+#  include <stdint.h>
 #endif
 
 namespace gum {
   namespace credal {
 
     /**
-     * @class CredalNet credalNet.h <agrum/CN/credalNet.h>
+     * @class CredalNet
+     * @headerfile credalNet.h <agrum/CN/credalNet.h>
      * @brief Class template representing a Credal Network.
      * @ingroup cn_group
      * @tparam GUM_SCALAR A floating type ( float, GUM_SCALAR, long GUM_SCALAR
@@ -177,9 +178,9 @@ namespace gum {
        * Second is the credal set vertice index
        * Third is the vertex
        */
-      void
-      setCPTs(const NodeId&                                                  id,
-              const std::vector< std::vector< std::vector< GUM_SCALAR > > >& cpt);
+      void setCPTs(
+        const NodeId&                                                  id,
+        const std::vector< std::vector< std::vector< GUM_SCALAR > > >& cpt);
 
       /**
        * @brief %Set the vertices of one credal set of a given node ( any
@@ -463,7 +464,7 @@ namespace gum {
        *and
        *\f$ \overline{p}(X = 1 \mid pa(X) = j) \f$.
        */
-      void computeCPTMinMax();  // REDO THIS IN PRIVATE !!!
+      void computeCPTMinMax();   // REDO THIS IN PRIVATE !!!
 
       /// @name Getters and setters
       /// @{
@@ -487,7 +488,7 @@ namespace gum {
        */
       const NodeProperty<
         std::vector< std::vector< std::vector< GUM_SCALAR > > > >&
-      credalNet_currentCpt() const;
+        credalNet_currentCpt() const;
 
       /**
        * @return Returns a constant reference to the ( up-to-date ) CredalNet
@@ -495,7 +496,7 @@ namespace gum {
        */
       const NodeProperty<
         std::vector< std::vector< std::vector< GUM_SCALAR > > > >&
-      credalNet_srcCpt() const;
+        credalNet_srcCpt() const;
 
       /**
        * @param id The constant reference to the choosen NodeId
@@ -575,9 +576,9 @@ namespace gum {
       protected:
       private:
       /** @brief 1e6 by default, used by __fracC as precision. */
-      GUM_SCALAR __precisionC;  // = 1e6;
+      GUM_SCALAR __precisionC;   // = 1e6;
       /** @brief 5 by default, used by __fracC as number of decimals. */
-      GUM_SCALAR __deltaC;  // = 5;
+      GUM_SCALAR __deltaC;   // = 5;
 
       /** @brief The lowest perturbation of the BayesNet provided as input for
        * this
@@ -595,19 +596,19 @@ namespace gum {
       /** @brief Value under which a decimal number is considered to be zero
        * when
        * computing redundant vertices. */
-      GUM_SCALAR __epsRedund;  //= 1e-6;
+      GUM_SCALAR __epsRedund;   //= 1e-6;
 
       /** @brief Value under which a decimal number is considered to be zero
        * when
        * using __farey. */
-      GUM_SCALAR __epsF;  // = 1e-6;
+      GUM_SCALAR __epsF;   // = 1e-6;
       /** @brief Highest possible denominator allowed when using __farey. A
        * value too
        * high may lead to lrs being unable to find vertices. */
-      GUM_SCALAR __denMax;  // = 1e6; // beware LRS
+      GUM_SCALAR __denMax;   // = 1e6; // beware LRS
 
       /** @brief Precision used by __frac. */
-      GUM_SCALAR __precision;  // = 1e6; // beware LRS
+      GUM_SCALAR __precision;   // = 1e6; // beware LRS
 
       /** @brief \c TRUE if this CredalNet is separately and interval specified,
        * \c
@@ -623,7 +624,7 @@ namespace gum {
       BayesNet< GUM_SCALAR > __src_bn_max;
 
       /** @brief Up-to-date BayesNet (used as a DAG). */
-      BayesNet< GUM_SCALAR >* __current_bn;  // = nullptr;
+      BayesNet< GUM_SCALAR >* __current_bn;   // = nullptr;
 
       /** @brief This CredalNet original CPTs. */
       NodeProperty< std::vector< std::vector< std::vector< GUM_SCALAR > > > >
@@ -631,7 +632,7 @@ namespace gum {
 
       /** @brief This CredalNet up-to-date CPTs. */
       NodeProperty< std::vector< std::vector< std::vector< GUM_SCALAR > > > >*
-        __credalNet_current_cpt;  // =  nullptr;
+        __credalNet_current_cpt;   // =  nullptr;
 
       /** @deprecated @brief Corresponding bits of each variable. */
       NodeProperty< std::vector< NodeId > > __var_bits;
@@ -639,7 +640,7 @@ namespace gum {
       /** @brief The NodeType of each node from the ORIGINAL network. */
       NodeProperty< NodeType > __original_nodeType;
       /** @brief The NodeType of each node from the up-to-date network. */
-      NodeProperty< NodeType >* __current_nodeType;  // = nullptr;
+      NodeProperty< NodeType >* __current_nodeType;   // = nullptr;
 
       /** @brief Used by L2U, to know if lower and upper probabilities over the
        * second modality has been stored in order to speed-up the algorithm. */
@@ -735,15 +736,15 @@ namespace gum {
       void __H2Vlrs(const std::vector< std::vector< GUM_SCALAR > >& h_rep,
                     std::vector< std::vector< GUM_SCALAR > >&       v_rep) const;
 
-    };  // CredalNet
+    };   // CredalNet
 
 
     extern template class CredalNet< float >;
     extern template class CredalNet< double >;
 
-  }  // namespace credal
-}  // namespace gum
+  }   // namespace credal
+}   // namespace gum
 
 #include <agrum/CN/credalNet_tpl.h>
 
-#endif  // __CREDAL_NET__H__
+#endif   // __CREDAL_NET__H__

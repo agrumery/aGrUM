@@ -34,12 +34,9 @@ namespace gum {
   GibbsOperator< GUM_SCALAR >::GibbsOperator(const IBayesNet< GUM_SCALAR >& BN,
                                              const NodeProperty< Idx >*     hardEv,
                                              Size                           nbr,
-                                             bool atRandom)
-      : _counting(0)
-      , _sampling_bn(BN)
-      , _hardEv(hardEv)
-      , _nbr(nbr)
-      , _atRandom(atRandom) {
+                                             bool atRandom) :
+      _counting(0),
+      _sampling_bn(BN), _hardEv(hardEv), _nbr(nbr), _atRandom(atRandom) {
     __updateSamplingNodes();
     GUM_CONSTRUCTOR(GibbsOperator);
   }
@@ -116,4 +113,4 @@ namespace gum {
       I->chgVal(_sampling_bn.variable(id), p.draw());
     }
   }
-}
+}   // namespace gum

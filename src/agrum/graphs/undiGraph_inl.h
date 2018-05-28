@@ -30,13 +30,9 @@
 namespace gum {
 
   INLINE void UndiGraph::addEdge(const NodeId first, const NodeId second) {
-    if (!exists(first)) {
-      GUM_ERROR(InvalidNode, "first node");
-    }
+    if (!exists(first)) { GUM_ERROR(InvalidNode, "first node"); }
 
-    if (!exists(second)) {
-      GUM_ERROR(InvalidNode, "second node");
-    }
+    if (!exists(second)) { GUM_ERROR(InvalidNode, "second node"); }
 
     EdgeGraphPart::addEdge(second, first);
   }

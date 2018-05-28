@@ -42,7 +42,7 @@ namespace gum {
      * Translators are used by DatabaseTable instances to transform datasets'
      * strings into DBTranslatedValue instances. The point is that strings are
      * not adequate for fast learning, they need to be preprocessed into a type
-     * that can be analyzed quickly (the so-called DBTranslatedValue type). 
+     * that can be analyzed quickly (the so-called DBTranslatedValue type).
      *
      * A DBTranslator4DiscretizedVariable is a translator that contains and
      * exploits a DiscretizedVariable for translations. Each time a string needs
@@ -114,15 +114,13 @@ namespace gum {
      *
      * @ingroup learning_database
      */
-    template <template<typename> class ALLOC = std::allocator>
-    class DBTranslator4DiscretizedVariable : public DBTranslator<ALLOC> {
+    template < template < typename > class ALLOC = std::allocator >
+    class DBTranslator4DiscretizedVariable : public DBTranslator< ALLOC > {
       public:
-
       /// type for the allocators passed in arguments of methods
-      using allocator_type =
-        typename DBTranslator<ALLOC>::allocator_type;
-      
-      
+      using allocator_type = typename DBTranslator< ALLOC >::allocator_type;
+
+
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -143,13 +141,12 @@ namespace gum {
        * @warning If the variable contained into the translator has a label
        * equal to a missing value symbol, the label will be taken into
        * account in the translation, not the missing value. */
-      template <typename GUM_SCALAR, template<typename> class XALLOC>
-      DBTranslator4DiscretizedVariable (
-          const DiscretizedVariable<GUM_SCALAR>& var,
-          const std::vector<std::string,XALLOC<std::string>>& missing_symbols,
-          std::size_t max_dico_entries =
-          std::numeric_limits<std::size_t>::max(),
-          const allocator_type& alloc = allocator_type () );
+      template < typename GUM_SCALAR, template < typename > class XALLOC >
+      DBTranslator4DiscretizedVariable(
+        const DiscretizedVariable< GUM_SCALAR >&                 var,
+        const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
+        std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
+        const allocator_type& alloc = allocator_type());
 
       /** @brief default constructor with a discretized variable as translator
        * but without missing symbols
@@ -165,44 +162,43 @@ namespace gum {
        * @warning If the variable contained into the translator has a label
        * equal to a missing value symbol, the label will be taken into
        * account in the translation, not the missing value. */
-      template <typename GUM_SCALAR>
-      DBTranslator4DiscretizedVariable (
-          const DiscretizedVariable<GUM_SCALAR>& var,
-          std::size_t max_dico_entries =
-          std::numeric_limits<std::size_t>::max(),
-          const allocator_type& alloc = allocator_type () );
+      template < typename GUM_SCALAR >
+      DBTranslator4DiscretizedVariable(
+        const DiscretizedVariable< GUM_SCALAR >& var,
+        std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
+        const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       DBTranslator4DiscretizedVariable(
-          const DBTranslator4DiscretizedVariable<ALLOC>& from );
+        const DBTranslator4DiscretizedVariable< ALLOC >& from);
 
       /// copy constructor with a given allocator
       DBTranslator4DiscretizedVariable(
-          const DBTranslator4DiscretizedVariable<ALLOC>& from,
-          const allocator_type& alloc );
+        const DBTranslator4DiscretizedVariable< ALLOC >& from,
+        const allocator_type&                            alloc);
 
       /// move constructor
       DBTranslator4DiscretizedVariable(
-          DBTranslator4DiscretizedVariable<ALLOC>&& from );
+        DBTranslator4DiscretizedVariable< ALLOC >&& from);
 
       /// move constructor with a given allocator
       DBTranslator4DiscretizedVariable(
-          DBTranslator4DiscretizedVariable<ALLOC>&& from,
-          const allocator_type& alloc );
+        DBTranslator4DiscretizedVariable< ALLOC >&& from,
+        const allocator_type&                       alloc);
 
       /// virtual copy constructor
-      virtual DBTranslator4DiscretizedVariable<ALLOC>* clone () const;
+      virtual DBTranslator4DiscretizedVariable< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual DBTranslator4DiscretizedVariable<ALLOC>*
-      clone ( const allocator_type& alloc ) const;
+      virtual DBTranslator4DiscretizedVariable< ALLOC >*
+        clone(const allocator_type& alloc) const;
 
       /// destructor
       virtual ~DBTranslator4DiscretizedVariable();
 
       /// @}
 
-      
+
       // ##########################################################################
       /// @name Operators
       // ##########################################################################
@@ -210,15 +206,15 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBTranslator4DiscretizedVariable<ALLOC>&
-      operator=( const DBTranslator4DiscretizedVariable<ALLOC>& from );
-     
+      DBTranslator4DiscretizedVariable< ALLOC >&
+        operator=(const DBTranslator4DiscretizedVariable< ALLOC >& from);
+
       /// move operator
-      DBTranslator4DiscretizedVariable<ALLOC>&
-      operator=( DBTranslator4DiscretizedVariable<ALLOC>&& from );
+      DBTranslator4DiscretizedVariable< ALLOC >&
+        operator=(DBTranslator4DiscretizedVariable< ALLOC >&& from);
 
       /// @}
-      
+
 
       // ##########################################################################
       /// @name Accessors / Modifiers
@@ -245,53 +241,52 @@ namespace gum {
        * found.
        * @throws TypeError is raised if the translation cannot be found and
        * the translator and the string does not correspond to a number. */
-      virtual DBTranslatedValue translate ( const std::string& str ) final;
+      virtual DBTranslatedValue translate(const std::string& str) final;
 
       /// returns the original value for a given translation
       /** @return the string that was translated into a given DBTranslatedValue.
        * @throws UnknownLabelInDatabase is raised if this original value
        * cannot be found */
       virtual std::string
-      translateBack ( const DBTranslatedValue translated_val ) const final;
+        translateBack(const DBTranslatedValue translated_val) const final;
 
       /// returns the number of discretization intervals used for translations
       /** @warning Note that missing values are encoded as
        * std::numeric_limits<>::max () and are not taken into account in the
        * domain sizes. */
-      virtual std::size_t domainSize () const final;
+      virtual std::size_t domainSize() const final;
 
       /// indicates that the translator is never in editable dictionary mode
-      virtual bool hasEditableDictionary () const final;
+      virtual bool hasEditableDictionary() const final;
 
       /// sets/unset the editable dictionary mode
-      virtual void setEditableDictionaryMode ( bool new_mode ) final;
+      virtual void setEditableDictionaryMode(bool new_mode) final;
 
       /// indicates that the translations should never be reordered
-      virtual bool needsReordering () const final;
+      virtual bool needsReordering() const final;
 
       /** @brief returns an empty HashTable to indicate that no reordering
        * is needed. */
-      virtual HashTable<std::size_t,std::size_t,
-                        ALLOC<std::pair<std::size_t,std::size_t>>>
-      reorder () final;
+      virtual HashTable< std::size_t,
+                         std::size_t,
+                         ALLOC< std::pair< std::size_t, std::size_t > > >
+        reorder() final;
 
       /// returns the variable stored into the translator
-      virtual const DiscretizedVariable<float>* variable () const final;
+      virtual const DiscretizedVariable< float >* variable() const final;
 
       /// @}
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-     
-    private:
+
+      private:
       // the DiscretizedVariable assigned to the translator
-      DiscretizedVariable<float> __variable;
+      DiscretizedVariable< float > __variable;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
-
     };
 
-    
 
   } /* namespace learning */
 

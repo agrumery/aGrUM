@@ -34,16 +34,16 @@
 
 namespace gum {
 
-// a specialized function for combining two multiDimArrays
+  // a specialized function for combining two multiDimArrays
 
-#ifdef GUM_MULTI_DIM_OPERATOR_NAME
-#define GUM_MULTI_DIM_OPERATOR_TYPE T
+#  ifdef GUM_MULTI_DIM_OPERATOR_NAME
+#    define GUM_MULTI_DIM_OPERATOR_TYPE T
   template < typename T >
   MultiDimArray< T >* GUM_MULTI_DIM_OPERATOR_NAME(const MultiDimArray< T >* t1,
                                                   const MultiDimArray< T >* t2)
-#endif
+#  endif
 
-// clang-format off
+  // clang-format off
 
 #ifdef GUM_MULTI_DIM_OPERATOR_POINTER_NAME
 #define GUM_MULTI_DIM_OPERATOR_TYPE T *
@@ -91,19 +91,19 @@ namespace gum {
 
   {
 
-#ifdef GUM_MULTI_DIM_OPERATOR_IMPL2ARRAY_NAME
+#  ifdef GUM_MULTI_DIM_OPERATOR_IMPL2ARRAY_NAME
     const MultiDimArray< T >* t1 =
       reinterpret_cast< const MultiDimArray< T >* >(tt1);
     const MultiDimArray< T >* t2 =
       reinterpret_cast< const MultiDimArray< T >* >(tt2);
-#endif
+#  endif
 
-#ifdef GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME
+#  ifdef GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME
     const MultiDimArray< T* >* t1 =
       reinterpret_cast< const MultiDimArray< T* >* >(tt1);
     const MultiDimArray< T* >* t2 =
       reinterpret_cast< const MultiDimArray< T* >* >(tt2);
-#endif
+#  endif
 
     // get the variables of the tables
     const Sequence< const DiscreteVariable* >& t1_vars = t1->variablesSequence();
@@ -346,7 +346,7 @@ namespace gum {
     return result;
   }
 
-#undef GUM_MULTI_DIM_OPERATOR_TYPE
-}
+#  undef GUM_MULTI_DIM_OPERATOR_TYPE
+}   // namespace gum
 
 #endif /* GUM_OPERATOR_PATTERN_ALLOWED */

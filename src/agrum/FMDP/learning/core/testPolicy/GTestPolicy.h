@@ -48,7 +48,6 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   class GTestPolicy : public ITestPolicy< GUM_SCALAR > {
-
     public:
     // ############################################################################
     /// @name Constructor/Destrcutor
@@ -58,10 +57,7 @@ namespace gum {
     // ============================================================================
     /// Constructor
     // ============================================================================
-    GTestPolicy()
-        : ITestPolicy< GUM_SCALAR >()
-        , __conTab()
-        , __GStat(0) {
+    GTestPolicy() : ITestPolicy< GUM_SCALAR >(), __conTab(), __GStat(0) {
       GUM_CONSTRUCTOR(GTestPolicy)
     }
 
@@ -106,8 +102,8 @@ namespace gum {
     /// relevant
     // ============================================================================
     bool isTestRelevant() const {
-      return (this->nbObservation() > 20 &&
-              this->nbObservation() > __conTab.attrASize() * 5);
+      return (this->nbObservation() > 20
+              && this->nbObservation() > __conTab.attrASize() * 5);
     }
 
     // ============================================================================
@@ -169,10 +165,10 @@ namespace gum {
     private:
     /// The contingency table used to keeps records of all observation
     ContingencyTable< Idx, GUM_SCALAR > __conTab;
-    mutable double __GStat;
+    mutable double                      __GStat;
   };
 
-}  // End of namespace gum
+}   // End of namespace gum
 
 #include <agrum/FMDP/learning/core/testPolicy/GTestPolicy_tpl.h>
 

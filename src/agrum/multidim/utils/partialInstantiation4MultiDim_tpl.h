@@ -33,8 +33,8 @@
   namespace gum {                                                         \
     template < typename GUM_SCALAR >                                      \
     MultiDimImplementation< GUM_SCALAR >*                                 \
-    NAME(const MultiDimDecorator< GUM_SCALAR >& table,                    \
-         const HashTable< const DiscreteVariable*, Idx >& inst_vars) {    \
+      NAME(const MultiDimDecorator< GUM_SCALAR >&           table,        \
+           const HashTable< const DiscreteVariable*, Idx >& inst_vars) {  \
       const MultiDimImplementation< GUM_SCALAR >* impl = table.content(); \
       return NAME(*impl, inst_vars);                                      \
     }                                                                     \

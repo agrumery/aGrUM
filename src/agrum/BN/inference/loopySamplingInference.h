@@ -38,26 +38,25 @@
 namespace gum {
 
   /**
-  * @class LoopySamplingInference LoopySamplingInference.h
-  *<agrum/BN/inference/loopySamplingInference.h>
-  * @brief class for making hybrid sampling inference with loopy belief propagation
-  * and an approximation inference method in bayesian networks.
-  * @ingroup bn_approximation
-  *
-  * This class inherits of template class APPROX, which SHOULD be one of the 4
-  * approximate inference methods (MonteCarlo, Weighted, Importance, Gibbs).
-  * It makes the inference with respect to the inherited class' method, after
-  * having initialized the estimators with the posteriors obtained by running
-  * LoopyBeliefPropagation algorithm.
-  *
-  */
+   * @class LoopySamplingInference LoopySamplingInference.h
+   *<agrum/BN/inference/loopySamplingInference.h>
+   * @brief class for making hybrid sampling inference with loopy belief
+   *propagation and an approximation inference method in bayesian networks.
+   * @ingroup bn_approximation
+   *
+   * This class inherits of template class APPROX, which SHOULD be one of the 4
+   * approximate inference methods (MonteCarlo, Weighted, Importance, Gibbs).
+   * It makes the inference with respect to the inherited class' method, after
+   * having initialized the estimators with the posteriors obtained by running
+   * LoopyBeliefPropagation algorithm.
+   *
+   */
 
   template < typename GUM_SCALAR, template < typename > class APPROX >
   class LoopySamplingInference : public APPROX< GUM_SCALAR > {
-
     public:
     /**
-          * Default constructor
+     * Default constructor
      */
     explicit LoopySamplingInference(const IBayesNet< GUM_SCALAR >* bn);
 
@@ -101,7 +100,7 @@ namespace gum {
     LoopySamplingInference< GUM_SCALAR, ImportanceSampling >;
   template < typename GUM_SCALAR >
   using HybridGibbsSampling = LoopySamplingInference< GUM_SCALAR, GibbsSampling >;
-}
+}   // namespace gum
 
 #include <agrum/BN/inference/loopySamplingInference_tpl.h>
 #endif

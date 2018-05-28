@@ -38,7 +38,8 @@
 namespace gum {
 
   /**
-   * @class ParseError errorsContainer.h <agrum/core/errorsContainer.h>
+   * @class ParseError
+   * @headerfile errorsContainer.h <agrum/core/errorsContainer.h>
    * @brief This class is used to represent parsing errors for the different
    * parser implemented in aGrUM.
    * @ingroup basicstruct_group
@@ -130,7 +131,7 @@ namespace gum {
     std::string filename;
 
     /// The code of this gum::ParseError, default is "".
-    mutable std::string code;  // default ""
+    mutable std::string code;   // default ""
 
     /**
      * @brief Return a std::string representation of this gum::ParseError.
@@ -150,12 +151,12 @@ namespace gum {
   };
 
   /**
-   * @class ErrorsContainer errorsContainer.h <agrum/core/errorsContainer.h>
+   * @class ErrorsContainer
+   * @headerfile errorsContainer.h <agrum/core/errorsContainer.h>
    * @brief This class is used contain and manipulate gum::ParseError.
    * @ingroup basicstruct_group
    */
   class ErrorsContainer {
-
     /// The list of gum::ParseError contained in this gum::ErrorsContainer.
     mutable std::vector< ParseError > errors;
 
@@ -290,7 +291,7 @@ namespace gum {
      * @param msg The error's message.
      */
     void
-    Error(const std::wstring& filename, Idx line, Idx col, const wchar_t* msg);
+      Error(const std::wstring& filename, Idx line, Idx col, const wchar_t* msg);
 
     /**
      * @brief For adding warnings.
@@ -300,7 +301,7 @@ namespace gum {
      * @param msg The warning's message.
      */
     void
-    Warning(const std::wstring& filename, Idx line, Idx col, const wchar_t* msg);
+      Warning(const std::wstring& filename, Idx line, Idx col, const wchar_t* msg);
 
     /**
      * @brief For adding exceptions.
@@ -339,13 +340,13 @@ namespace gum {
 
     /// @}
 
-  };  // ErrorsContainer
+  };   // ErrorsContainer
 
-}  // namespace gum
+}   // namespace gum
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/core/errorsContainer_inl.h>
+#  include <agrum/core/errorsContainer_inl.h>
 #endif /* GUM_NO_INLINE */
 
-#endif  // GUM_ERRORS_CONTAINERS_H
+#endif   // GUM_ERRORS_CONTAINERS_H

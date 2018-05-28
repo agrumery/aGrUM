@@ -150,8 +150,8 @@ namespace gum_tests {
       float              sum = (float)0;
 
       for (inst.setFirst(); !inst.end(); inst.inc()) {
-        TS_ASSERT(((*rootPot1F)[inst] >= (float)0) &&
-                  ((*rootPot1F)[inst] <= (float)1));
+        TS_ASSERT(((*rootPot1F)[inst] >= (float)0)
+                  && ((*rootPot1F)[inst] <= (float)1));
         sum += (*rootPot1F)[inst];
       }
 
@@ -167,8 +167,8 @@ namespace gum_tests {
       double             sum = (double)0;
 
       for (inst.setFirst(); !inst.end(); inst.inc()) {
-        TS_ASSERT(((*rootPot1D)[inst] >= (double)0) &&
-                  ((*rootPot1D)[inst] <= (double)1));
+        TS_ASSERT(((*rootPot1D)[inst] >= (double)0)
+                  && ((*rootPot1D)[inst] <= (double)1));
         sum += (*rootPot1D)[inst];
       }
 
@@ -366,4 +366,4 @@ namespace gum_tests {
       }
     }
   };
-}
+}   // namespace gum_tests

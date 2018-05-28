@@ -57,7 +57,8 @@ namespace gum {
 
       // clang_format off
       /**
-       * @class SearchStrategy searchStrategy.h <agrum/PRM/gspan/searchStrategy.h>
+       * @class SearchStrategy
+       * @headerfile searchStrategy.h <agrum/PRM/gspan/searchStrategy.h>
        *
        * This is an abstract class used to tune search strategies in the gspan
        * algorithm. Since GSpan uses a DFS to expand the search tree, this class
@@ -67,7 +68,6 @@ namespace gum {
       // clang_format on
       template < typename GUM_SCALAR >
       class SearchStrategy {
-
         public:
         // =========================================================================
         /// @name Constructor and destructor.
@@ -85,7 +85,7 @@ namespace gum {
 
         /// Copy operator.
         SearchStrategy< GUM_SCALAR >&
-        operator=(const SearchStrategy< GUM_SCALAR >& from);
+          operator=(const SearchStrategy< GUM_SCALAR >& from);
 
         /// @}
         // =========================================================================
@@ -107,11 +107,12 @@ namespace gum {
 
         protected:
         DFSTree< GUM_SCALAR >* _tree;
-        double _computeCost(const Pattern& p);
+        double                 _computeCost(const Pattern& p);
       };
 
       /**
-       * @class FrequenceSearch DFSTree.h <agrum/PRM/gspan/DFSTree.h>
+       * @class FrequenceSearch
+       * @headerfile DFSTree.h <agrum/PRM/gspan/DFSTree.h>
        *
        * This is class is an implementation of a simple serach strategy for the
        *gspan
@@ -120,7 +121,6 @@ namespace gum {
        */
       template < typename GUM_SCALAR >
       class FrequenceSearch : public SearchStrategy< GUM_SCALAR > {
-
         public:
         // =========================================================================
         /// @name Constructor and destructor.
@@ -160,7 +160,8 @@ namespace gum {
       };
 
       /**
-       * @class StrictSearch DFSTree.h <agrum/PRM/gspan/DFSTree.h>
+       * @class StrictSearch
+       * @headerfile DFSTree.h <agrum/PRM/gspan/DFSTree.h>
        *
        * This is class is an implementation of a strict strategy for the GSpan
        * algorithm. This will force early cuts in the DFSTree and should help
@@ -208,7 +209,7 @@ namespace gum {
         Size   __freq;
         double __inner_cost(const Pattern* p);
         double __outer_cost(const Pattern* p);
-        void __compute_costs(const Pattern* p);
+        void   __compute_costs(const Pattern* p);
         HashTable< const Pattern*, std::pair< double, double > > __map;
         /// Private structure to represent data about a pattern.
         struct PData {
@@ -238,16 +239,17 @@ namespace gum {
         std::string __str(const PRMInstance< GUM_SCALAR >*  i,
                           const PRMSlotChain< GUM_SCALAR >& a) const;
         void
-        __buildPatternGraph(typename StrictSearch< GUM_SCALAR >::PData&   data,
-                            Set< Potential< GUM_SCALAR >* >&              pool,
-                            const Sequence< PRMInstance< GUM_SCALAR >* >& match);
+          __buildPatternGraph(typename StrictSearch< GUM_SCALAR >::PData&   data,
+                              Set< Potential< GUM_SCALAR >* >&              pool,
+                              const Sequence< PRMInstance< GUM_SCALAR >* >& match);
         std::pair< Size, Size >
-        __elimination_cost(typename StrictSearch< GUM_SCALAR >::PData& data,
-                           Set< Potential< GUM_SCALAR >* >&            pool);
+          __elimination_cost(typename StrictSearch< GUM_SCALAR >::PData& data,
+                             Set< Potential< GUM_SCALAR >* >&            pool);
       };
 
       /**
-       * @class TreeWidthSearch DFSTree.h <agrum/PRM/gspan/DFSTree.h>
+       * @class TreeWidthSearch
+       * @headerfile DFSTree.h <agrum/PRM/gspan/DFSTree.h>
        *
        * A growth is accepted if and only if the new growth has a tree width
        *less

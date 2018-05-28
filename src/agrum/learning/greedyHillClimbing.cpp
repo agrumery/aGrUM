@@ -39,14 +39,14 @@ namespace gum {
     }
 
     /// copy constructor
-    GreedyHillClimbing::GreedyHillClimbing(const GreedyHillClimbing& from)
-        : ApproximationScheme(from) {
+    GreedyHillClimbing::GreedyHillClimbing(const GreedyHillClimbing& from) :
+        ApproximationScheme(from) {
       GUM_CONS_CPY(GreedyHillClimbing);
     }
 
     /// move constructor
-    GreedyHillClimbing::GreedyHillClimbing(GreedyHillClimbing&& from)
-        : ApproximationScheme(std::move(from)) {
+    GreedyHillClimbing::GreedyHillClimbing(GreedyHillClimbing&& from) :
+        ApproximationScheme(std::move(from)) {
       GUM_CONS_MOV(GreedyHillClimbing);
     }
 
@@ -57,7 +57,7 @@ namespace gum {
 
     /// copy operator
     GreedyHillClimbing& GreedyHillClimbing::
-    operator=(const GreedyHillClimbing& from) {
+                        operator=(const GreedyHillClimbing& from) {
       ApproximationScheme::operator=(from);
       return *this;
     }

@@ -44,7 +44,6 @@ namespace gum {
    * @ingroup fmdp_group
    */
   class StatesChecker {
-
     public:
     // ==========================================================================
     /// @name Constructor & destructor.
@@ -90,4 +89,4 @@ namespace gum {
   };
 } /* namespace gum */
 
-#endif  // GUM_STATES_CHECKER_H
+#endif   // GUM_STATES_CHECKER_H

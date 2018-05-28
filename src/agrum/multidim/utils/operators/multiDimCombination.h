@@ -132,7 +132,7 @@ namespace gum {
      * argument contains less than two elements.
      */
     virtual TABLE< GUM_SCALAR >*
-    combine(const Set< const TABLE< GUM_SCALAR >* >& set) = 0;
+                 combine(const Set< const TABLE< GUM_SCALAR >* >& set) = 0;
     virtual void combine(TABLE< GUM_SCALAR >&                     container,
                          const Set< const TABLE< GUM_SCALAR >* >& set) = 0;
 
@@ -149,7 +149,7 @@ namespace gum {
      * performed to compute the combination.
      */
     virtual float
-    nbOperations(const Set< const TABLE< GUM_SCALAR >* >& set) const = 0;
+                  nbOperations(const Set< const TABLE< GUM_SCALAR >* >& set) const = 0;
     virtual float nbOperations(
       const Set< const Sequence< const DiscreteVariable* >* >& set) const = 0;
 
@@ -166,14 +166,14 @@ namespace gum {
      * by the resulting table ).
      */
     virtual std::pair< long, long >
-    memoryUsage(const Set< const TABLE< GUM_SCALAR >* >& set) const = 0;
+                                    memoryUsage(const Set< const TABLE< GUM_SCALAR >* >& set) const = 0;
     virtual std::pair< long, long > memoryUsage(
       const Set< const Sequence< const DiscreteVariable* >* >& set) const = 0;
 
     private:
     /// forbid copy operators
     MultiDimCombination< GUM_SCALAR, TABLE >&
-    operator=(const MultiDimCombination< GUM_SCALAR, TABLE >&);
+      operator=(const MultiDimCombination< GUM_SCALAR, TABLE >&);
 
     /// @}
   };

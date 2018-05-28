@@ -323,8 +323,8 @@ namespace gum {
     void operator-();
   };
 
-////////////////////////////////////////////////////////////////
-// we need to provide hash functions for some Edge and Arc
+  ////////////////////////////////////////////////////////////////
+  // we need to provide hash functions for some Edge and Arc
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -352,7 +352,7 @@ namespace gum {
     mutable std::pair< NodeId, NodeId > pair;
   };
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
   /** \ingroup graph_group
    * @{
@@ -391,7 +391,7 @@ namespace gum {
 extern template class gum::HashFunc< gum::NodeSet >;
 
 #ifndef GUM_NO_INLINE
-#include <agrum/graphs/graphElements_inl.h>
+#  include <agrum/graphs/graphElements_inl.h>
 #endif /* GUM_NO_INLINE */
 
-#endif  // GUM_GRAPHELEMENTS_H
+#endif   // GUM_GRAPHELEMENTS_H

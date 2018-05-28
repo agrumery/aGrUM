@@ -56,7 +56,8 @@ namespace gum {
   unsigned int __hashTableLog2(const Size& nb);
 
   /**
-   * @class HashFuncConst hashFunc.h <agrum/core/hashFunc.h>
+   * @class HashFuncConst
+   * @headerfile hashFunc.h <agrum/core/hashFunc.h>
    * @ingroup hashfunctions_group
    * @brief Constants for hash functions.
    *
@@ -70,24 +71,25 @@ namespace gum {
    * should adapt X's definition to 32 and 64 bits architectures.
    * */
   struct HashFuncConst {
-#if ULONG_MAX == 4294967295UL  // unsigned long = 32 bits
+#if ULONG_MAX == 4294967295UL   // unsigned long = 32 bits
     static constexpr unsigned long gold = 2654435769UL;
     static constexpr unsigned long pi = 3373259426UL;
     static constexpr unsigned long mask = 4294967295UL;
     static constexpr size_t        offset = 32;
-#else  // unsigned long = 64 bits
+#else   // unsigned long = 64 bits
     static constexpr unsigned long gold = 11400714819323198486UL;
     static constexpr unsigned long pi = 14488038916154245684UL;
     static constexpr unsigned long mask = 18446744073709551615UL;
     static constexpr size_t        offset = 64;
-#endif /* unsigned long = 32 bits */
+#endif  /* unsigned long = 32 bits */
   };
 
   // ===========================================================================
   // ===             BASE CLASS SHARED BY ALL THE HASH FUNCTIONS             ===
   // ===========================================================================
   /**
-   * @class HashFuncBase hashFunc.h <agrum/core/hashFunc.h>
+   * @class HashFuncBase
+   * @headerfile hashFunc.h <agrum/core/hashFunc.h>
    * @brief All hash functions should inherit from this class.
    * @ingroup hashfunctions_group
    *
@@ -197,7 +199,8 @@ namespace gum {
   // ===========================================================================
 
   /**
-   * @class HashFuncSmallKey hashFunc.h <agrum/core/hashFunc.h>
+   * @class HashFuncSmallKey
+   * @headerfile hashFunc.h <agrum/core/hashFunc.h>
    * @brief Generic hash functions for keys smaller than or equal to long
    * integers.
    * @ingroup hashfunctions_group
@@ -240,7 +243,8 @@ namespace gum {
   };
 
   /**
-   * @class HashFuncSmallCastKey hashFunc.h <agrum/core/hashFunc.h>
+   * @class HashFuncSmallCastKey
+   * @headerfile hashFunc.h <agrum/core/hashFunc.h>
    * @brief Generic hash functions for keys castable as unsigned longs and
    * whose size is strictly smaller than that of unsigned longs.
    * @ingroup hashfunctions_group
@@ -298,7 +302,8 @@ namespace gum {
   };
 
   /**
-   * @class HashFuncMediumCastKey hashFunc.h <agrum/core/hashFunc.h>
+   * @class HashFuncMediumCastKey
+   * @headerfile hashFunc.h <agrum/core/hashFunc.h>
    * @brief Generic hash functions for keys castable as unsigned longs and
    * whose size is precisely that of unsigned longs.
    * @ingroup hashfunctions_group
@@ -349,7 +354,8 @@ namespace gum {
   };
 
   /**
-   * @class HashFuncLargeCastKey hashFunc.h <agrum/core/hashFunc.h>
+   * @class HashFuncLargeCastKey
+   * @headerfile hashFunc.h <agrum/core/hashFunc.h>
    * @brief Generic hash functions for keys castable as unsigned longs and
    * whose size is precisely twice that of unsigned longs.
    * @ingroup hashfunctions_group
@@ -400,7 +406,8 @@ namespace gum {
 
 
   /**
-   * @class HashFuncSmallKeyPair hashFunc.h <agrum/core/hashFunc.h>
+   * @class HashFuncSmallKeyPair
+   * @headerfile hashFunc.h <agrum/core/hashFunc.h>
    * @brief Generic hash functions for pairs of, at most, two long integer
    * keys.
    * @ingroup hashfunctions_group
@@ -441,7 +448,8 @@ namespace gum {
   };
 
   /**
-   * @class HashFuncAllCastKeyPair hashFunc.h <agrum/core/hashFunc.h>
+   * @class HashFuncAllCastKeyPair
+   * @headerfile hashFunc.h <agrum/core/hashFunc.h>
    * @brief Generic hash functions for pairs of keys whose sizes are precisely
    * twice that of unsigned longs and which can be cast into unsigned longs.
    * @ingroup hashfunctions_group
@@ -490,13 +498,13 @@ namespace gum {
   };
 
 
-  
   // ===========================================================================
   // ===         GENERAL HASH FUNCTIONS CASTING AND CONDITIONAL TYPES        ===
   // ===========================================================================
 
   /**
-   * @class HashFuncCastKey hashFunc.h <agrum/core/hashFunc.h>
+   * @class HashFuncCastKey
+   * @headerfile hashFunc.h <agrum/core/hashFunc.h>
    * @brief Generic hash functions for keys castable as unsigned longs whose
    * size is either smaller than unsigned long, or equal to that of one or two
    * unsigned longs.
@@ -505,7 +513,6 @@ namespace gum {
    */
   template < typename T >
   struct HashFuncCastKey {
-
     /// The type used by this class.
     using type = typename std::conditional<
       sizeof(T) < sizeof(long),
@@ -517,7 +524,8 @@ namespace gum {
 
 
   /**
-   * @class HashFuncCastKeyPair hashFunc.h <agrum/core/hashFunc.h>
+   * @class HashFuncCastKeyPair
+   * @headerfile hashFunc.h <agrum/core/hashFunc.h>
    * @brief Generic hash functions for keys castable as unsigned longs whose
    * size is either smaller than unsigned long, or equal to that of one or two
    * unsigned longs.
@@ -537,27 +545,27 @@ namespace gum {
   };
 
 
-  
-  template <typename T>
+  template < typename T >
   class dummyHash {};
-  
-  template<typename...>
+
+  template < typename... >
   struct HashFuncConditionalType;
 
-  template<typename HASH_TYPE>
-  struct HashFuncConditionalType<HASH_TYPE> {
+  template < typename HASH_TYPE >
+  struct HashFuncConditionalType< HASH_TYPE > {
     using type = HASH_TYPE;
   };
 
-  template<typename HASH_TYPE, typename TYPE>
-  struct HashFuncConditionalType<HASH_TYPE, TYPE> {
-    using type =
-      typename std::conditional<std::is_same<HASH_TYPE,TYPE>::value,
-                                dummyHash<HASH_TYPE>,HASH_TYPE>::type;
+  template < typename HASH_TYPE, typename TYPE >
+  struct HashFuncConditionalType< HASH_TYPE, TYPE > {
+    using type = typename std::conditional< std::is_same< HASH_TYPE, TYPE >::value,
+                                            dummyHash< HASH_TYPE >,
+                                            HASH_TYPE >::type;
   };
 
   /**
-   * @class HashFuncConditionalType hashFunc.h <agrum/core/hashFunc.h>
+   * @class HashFuncConditionalType
+   * @headerfile hashFunc.h <agrum/core/hashFunc.h>
    * @brief This class enables to safely define hash functions for types
    * that may or may not already has defined hash functions
    * @ingroup hashfunctions_group
@@ -572,19 +580,17 @@ namespace gum {
    * cases, instead of defining directly a HasHunc of <std::size_t>, it is
    * sufficient to define a HashFunc of
    * <HashFuncConditionalType<std::size_t,unsigned int,unsigned long>::type>.
-   * The latter will actually define a HasHunc of <std::size_t> if size_t 
+   * The latter will actually define a HasHunc of <std::size_t> if size_t
    * corresponds neither to an unsigned int nor to an unsigned long, else it
    * will not define the HasHunc of <std::size_t> (which would redefine an
    * already defined HashFunc, hence resulting in a compilation failure). */
-  template<typename HASH_TYPE, typename FIRST_TYPE, typename... OTHER_TYPES>
-  struct HashFuncConditionalType<HASH_TYPE, FIRST_TYPE, OTHER_TYPES...> {
-    using type =
-      typename std::conditional<
-        std::is_same<HASH_TYPE,FIRST_TYPE>::value,
-        dummyHash<HASH_TYPE>,
-        typename HashFuncConditionalType<HASH_TYPE,OTHER_TYPES...>::type>::type;
+  template < typename HASH_TYPE, typename FIRST_TYPE, typename... OTHER_TYPES >
+  struct HashFuncConditionalType< HASH_TYPE, FIRST_TYPE, OTHER_TYPES... > {
+    using type = typename std::conditional<
+      std::is_same< HASH_TYPE, FIRST_TYPE >::value,
+      dummyHash< HASH_TYPE >,
+      typename HashFuncConditionalType< HASH_TYPE, OTHER_TYPES... >::type >::type;
   };
-
 
 
   // ===========================================================================
@@ -592,7 +598,8 @@ namespace gum {
   // ===========================================================================
 
   /**
-   * @class HashFunc hashFunc.h <agrum/core/hashFunc.h>
+   * @class HashFunc
+   * @headerfile hashFunc.h <agrum/core/hashFunc.h>
    * @brief This class should be useless as only its specializations should be
    * used.
    *
@@ -650,10 +657,12 @@ namespace gum {
    * @ingroup hashfunctions_group
    */
   template <>
-  class HashFunc< typename
-                  HashFuncConditionalType<std::size_t,unsigned long,
-                                          unsigned int, long, int>::type> :
-    public HashFuncCastKey< std::size_t >::type {};
+  class HashFunc< typename HashFuncConditionalType< std::size_t,
+                                                    unsigned long,
+                                                    unsigned int,
+                                                    long,
+                                                    int >::type >
+      : public HashFuncCastKey< std::size_t >::type {};
 
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
@@ -686,7 +695,7 @@ namespace gum {
    */
   template <>
   class HashFunc< std::pair< int, int > >
-    : public HashFuncSmallKeyPair< int, int > {};
+      : public HashFuncSmallKeyPair< int, int > {};
 
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
@@ -695,7 +704,7 @@ namespace gum {
    */
   template <>
   class HashFunc< std::pair< unsigned int, unsigned int > >
-    : public HashFuncSmallKeyPair< unsigned int, unsigned int > {};
+      : public HashFuncSmallKeyPair< unsigned int, unsigned int > {};
 
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
@@ -704,7 +713,7 @@ namespace gum {
    */
   template <>
   class HashFunc< std::pair< long, long > >
-    : public HashFuncSmallKeyPair< long, long > {};
+      : public HashFuncSmallKeyPair< long, long > {};
 
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
@@ -713,7 +722,7 @@ namespace gum {
    */
   template <>
   class HashFunc< std::pair< unsigned long, unsigned long > >
-    : public HashFuncSmallKeyPair< unsigned long, unsigned long > {};
+      : public HashFuncSmallKeyPair< unsigned long, unsigned long > {};
 
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
@@ -722,7 +731,7 @@ namespace gum {
    */
   template <>
   class HashFunc< std::pair< float, float > >
-    : public HashFuncCastKeyPair< float, float >::type {};
+      : public HashFuncCastKeyPair< float, float >::type {};
 
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
@@ -731,7 +740,7 @@ namespace gum {
    */
   template <>
   class HashFunc< std::pair< double, double > >
-    : public HashFuncCastKeyPair< float, float >::type {};
+      : public HashFuncCastKeyPair< float, float >::type {};
 
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
@@ -740,7 +749,7 @@ namespace gum {
    */
   template <>
   class HashFunc< std::pair< double, long unsigned int > >
-    : public HashFuncCastKeyPair< double, long unsigned int >::type {};
+      : public HashFuncCastKeyPair< double, long unsigned int >::type {};
 
   /**
    * @author JCM
@@ -752,7 +761,7 @@ namespace gum {
    */
   template <>
   class HashFunc< std::pair< long unsigned int, double > >
-    : public HashFuncCastKeyPair< long unsigned int, double >::type {};
+      : public HashFuncCastKeyPair< long unsigned int, double >::type {};
 
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
@@ -761,7 +770,7 @@ namespace gum {
    */
   template <>
   class HashFunc< std::pair< double, long int > >
-    : public HashFuncCastKeyPair< double, long int >::type {};
+      : public HashFuncCastKeyPair< double, long int >::type {};
 
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
@@ -803,7 +812,7 @@ namespace gum {
    */
   template <>
   class HashFunc< std::pair< std::string, std::string > >
-    : public HashFuncBase< std::pair< std::string, std::string > > {
+      : public HashFuncBase< std::pair< std::string, std::string > > {
     public:
     /**
      * @brief Computes the hashed value of a key.
@@ -820,7 +829,7 @@ namespace gum {
    */
   template <>
   class HashFunc< std::vector< Idx > >
-    : public HashFuncBase< std::vector< Idx > > {
+      : public HashFuncBase< std::vector< Idx > > {
     public:
     /**
      * @brief Computes the hashed value of a key.
@@ -849,7 +858,7 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/core/hashFunc_inl.h>
+#  include <agrum/core/hashFunc_inl.h>
 #endif /* GUM_NO_INLINE */
 
 /// always include the implementation of the templates

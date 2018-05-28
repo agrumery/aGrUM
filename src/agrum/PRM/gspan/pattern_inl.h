@@ -29,11 +29,7 @@ namespace gum {
     namespace gspan {
 
       INLINE
-      Pattern::Pattern()
-          : DiGraph()
-          , __last(0) {
-        GUM_CONSTRUCTOR(Pattern);
-      }
+      Pattern::Pattern() : DiGraph(), __last(0) { GUM_CONSTRUCTOR(Pattern); }
 
       INLINE
       Pattern::~Pattern() { GUM_DESTRUCTOR(Pattern); }
@@ -124,8 +120,8 @@ namespace gum {
         EdgeCode* edge =
           new EdgeCode(i, j, __node_map[i]->id, l.id, __node_map[j]->id);
 
-        if ((code().codes.size() == 0) ||
-            (DFSCode::validNeighbors(code().codes.back(), edge))) {
+        if ((code().codes.size() == 0)
+            || (DFSCode::validNeighbors(code().codes.back(), edge))) {
           DiGraph::addArc(i, j);
           __arc_map.insert(Arc(i, j), std::make_pair(&l, edge));
           code().codes.push_back(edge);
@@ -180,36 +176,28 @@ namespace gum {
       EdgeCode& Pattern::edgeCode(NodeId tail, NodeId head) {
         try {
           return *(__arc_map[Arc(tail, head)].second);
-        } catch (NotFound&) {
-          GUM_ERROR(NotFound, "arc not found in Pattern");
-        }
+        } catch (NotFound&) { GUM_ERROR(NotFound, "arc not found in Pattern"); }
       }
 
       INLINE
       EdgeCode& Pattern::edgeCode(const Arc& arc) {
         try {
           return *(__arc_map[arc].second);
-        } catch (NotFound&) {
-          GUM_ERROR(NotFound, "arc not found in Pattern");
-        }
+        } catch (NotFound&) { GUM_ERROR(NotFound, "arc not found in Pattern"); }
       }
 
       INLINE
       const EdgeCode& Pattern::edgeCode(NodeId tail, NodeId head) const {
         try {
           return *(__arc_map[Arc(tail, head)].second);
-        } catch (NotFound&) {
-          GUM_ERROR(NotFound, "arc not found in Pattern");
-        }
+        } catch (NotFound&) { GUM_ERROR(NotFound, "arc not found in Pattern"); }
       }
 
       INLINE
       const EdgeCode& Pattern::edgeCode(const Arc& arc) const {
         try {
           return *(__arc_map[arc].second);
-        } catch (NotFound&) {
-          GUM_ERROR(NotFound, "arc not found in Pattern");
-        }
+        } catch (NotFound&) { GUM_ERROR(NotFound, "arc not found in Pattern"); }
       }
 
       INLINE

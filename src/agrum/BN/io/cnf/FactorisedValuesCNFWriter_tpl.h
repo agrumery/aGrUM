@@ -21,7 +21,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // to ease parsing in IDE
-#include <agrum/BN/io/cnf/FactorisedValuesCNFWriter.h>
+#  include <agrum/BN/io/cnf/FactorisedValuesCNFWriter.h>
 
 namespace gum {
 
@@ -30,9 +30,8 @@ namespace gum {
   /* =========================================================================*/
   // Default constructor.
   template < typename GUM_SCALAR, template < class > class IApproximationPolicy >
-  INLINE
-  FactorisedValuesCNFWriter< GUM_SCALAR,
-                             IApproximationPolicy >::FactorisedValuesCNFWriter() {
+  INLINE FactorisedValuesCNFWriter< GUM_SCALAR, IApproximationPolicy >::
+    FactorisedValuesCNFWriter() {
     GUM_CONSTRUCTOR(FactorisedValuesCNFWriter);
   }
 
@@ -63,9 +62,9 @@ namespace gum {
     for (auto node : bn.nodes())
       numparam += bn.variable(node).domainSize();
 
-    Idx               clause = 0;
-    std::stringstream clausstr;
-    gum::HashTable< std::string, Idx > vartable;  // key name::label val num;
+    Idx                                clause = 0;
+    std::stringstream                  clausstr;
+    gum::HashTable< std::string, Idx > vartable;   // key name::label val num;
     gum::HashTable< std::string, Idx > protable;
 
     for (auto node : bn.nodes()) {
@@ -86,7 +85,6 @@ namespace gum {
         strinst << "_val=" << this->fromExact(cpt[inst]);
 
         if (!protable.exists(strinst.str())) {
-
           protable.insert(inst.toString(), ++numparam);
           strfile2 << numparam << "::" << strinst.str() << "\n";
         }
@@ -97,7 +95,7 @@ namespace gum {
       std::stringstream str0, str2;
 
       for (Idx i = 0; i < bn.variable(node).domainSize(); i++) {
-        std::stringstream stri;  //= bn.variable(iter).name()+"_"+
+        std::stringstream stri;   //= bn.variable(iter).name()+"_"+
         // bn.variable(iter).label( i ) ;
         stri << bn.variable(node).name() << "_" << bn.variable(node).label(i);
         str0 << vartable[stri.str()] << " ";
@@ -164,9 +162,9 @@ namespace gum {
     for (auto node : bn.nodes())
       numparam += bn.variable(node).domainSize();
 
-    Idx               clause = 0;
-    std::stringstream clausstr;
-    gum::HashTable< std::string, Idx > vartable;  // key name::label val num;
+    Idx                                clause = 0;
+    std::stringstream                  clausstr;
+    gum::HashTable< std::string, Idx > vartable;   // key name::label val num;
     gum::HashTable< std::string, Idx > protable;
 
     for (auto node : bn.nodes()) {
@@ -201,7 +199,7 @@ namespace gum {
       std::stringstream str0, str2;
 
       for (Idx i = 0; i < bn.variable(node).domainSize(); i++) {
-        std::stringstream stri;  //= bn.variable(iter).name()+"_"+
+        std::stringstream stri;   //= bn.variable(iter).name()+"_"+
         // bn.variable(iter).label( i ) ;
         stri << bn.variable(node).name() << "_" << bn.variable(node).label(i);
         str0 << vartable[stri.str()] << " ";
@@ -281,4 +279,4 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS

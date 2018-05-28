@@ -48,4 +48,4 @@ namespace gum {
   INLINE Size MarkovBlanket::size() const { return __mb.size(); }
 
   INLINE const NodeGraphPart& MarkovBlanket::nodes() const { return __mb.nodes(); }
-}  // namespace gum
+}   // namespace gum

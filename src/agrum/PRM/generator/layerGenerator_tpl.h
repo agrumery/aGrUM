@@ -109,7 +109,7 @@ namespace gum {
 
           if (lvl) f.addReferenceSlot(l[lvl - 1].i, l[lvl].r, true);
 
-          DAG dag;
+          DAG                              dag;
           Bijection< std::string, NodeId > names;
           __generateClassDag(lvl, dag, names, l);
 
@@ -168,9 +168,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void LayerGenerator< GUM_SCALAR >::__generateClassDag(
-      Size lvl,
-      DAG& dag,
-      Bijection< std::string, NodeId >& names,
+      Size                                                          lvl,
+      DAG&                                                          dag,
+      Bijection< std::string, NodeId >&                             names,
       std::vector< typename LayerGenerator< GUM_SCALAR >::MyData >& l) {
       float                 density = __layers[lvl].inner_density * RAND_MAX;
       std::vector< NodeId > nodes;
@@ -265,19 +265,16 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE LayerGenerator< GUM_SCALAR >::LayerGenerator()
-        : __layers()
-        , __domain_size(2)
-        , __max_parents(INT_MAX) {
+    INLINE LayerGenerator< GUM_SCALAR >::LayerGenerator() :
+        __layers(), __domain_size(2), __max_parents(INT_MAX) {
       GUM_CONSTRUCTOR(LayerGenerator);
     }
 
     template < typename GUM_SCALAR >
     INLINE LayerGenerator< GUM_SCALAR >::LayerGenerator(
-      const LayerGenerator< GUM_SCALAR >& source)
-        : __layers(source.__layers)
-        , __domain_size(source.__domain_size)
-        , __max_parents(source.__max_parents) {
+      const LayerGenerator< GUM_SCALAR >& source) :
+        __layers(source.__layers),
+        __domain_size(source.__domain_size), __max_parents(source.__max_parents) {
       GUM_CONS_CPY(LayerGenerator);
     }
 
@@ -288,7 +285,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE LayerGenerator< GUM_SCALAR >& LayerGenerator< GUM_SCALAR >::
-    operator=(const LayerGenerator< GUM_SCALAR >& source) {
+                                         operator=(const LayerGenerator< GUM_SCALAR >& source) {
       __layers = source.__layers;
       __domain_size = source.__domain_size;
       __max_parents = source.__max_parents;

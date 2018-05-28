@@ -87,16 +87,16 @@ namespace gum {
 
     /// copy operator
     ContinuousVariable< GUM_SCALAR >&
-    operator=(const ContinuousVariable< GUM_SCALAR >& from);
+      operator=(const ContinuousVariable< GUM_SCALAR >& from);
 
     /// generalized copy operator
     template < typename TX_VAL >
     ContinuousVariable< GUM_SCALAR >&
-    operator=(const ContinuousVariable< TX_VAL >& from);
+      operator=(const ContinuousVariable< TX_VAL >& from);
 
     /// move operator
     ContinuousVariable< GUM_SCALAR >&
-    operator=(ContinuousVariable< GUM_SCALAR >&& from);
+      operator=(ContinuousVariable< GUM_SCALAR >&& from);
 
     /// returns the T_VAL corresponding to a string
     /** @throw OutOfBounds is raised if the value does not belong to the
@@ -186,7 +186,7 @@ namespace gum {
 #include <agrum/variables/continuousVariable_tpl.h>
 
 #ifndef GUM_NO_INLINE
-#include <agrum/variables/continuousVariable_inl.h>
+#  include <agrum/variables/continuousVariable_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_CONTINUOUS_VARIABLE_H */

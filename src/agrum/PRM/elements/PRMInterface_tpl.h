@@ -34,30 +34,26 @@ namespace gum {
   namespace prm {
 
     template < typename GUM_SCALAR >
-    PRMInterface< GUM_SCALAR >::PRMInterface(const std::string& name)
-        : PRMClassElementContainer< GUM_SCALAR >(name)
-        , __superInterface(0) {
+    PRMInterface< GUM_SCALAR >::PRMInterface(const std::string& name) :
+        PRMClassElementContainer< GUM_SCALAR >(name), __superInterface(0) {
       GUM_CONSTRUCTOR(PRMInterface);
     }
 
     template < typename GUM_SCALAR >
     PRMInterface< GUM_SCALAR >::PRMInterface(const std::string&          name,
                                              PRMInterface< GUM_SCALAR >& super,
-                                             bool delayInheritance)
-        : PRMClassElementContainer< GUM_SCALAR >(name)
-        , __superInterface(&super) {
+                                             bool delayInheritance) :
+        PRMClassElementContainer< GUM_SCALAR >(name),
+        __superInterface(&super) {
       GUM_CONSTRUCTOR(PRMInterface);
-      if (!delayInheritance) {
-        __inheritInterface(super);
-      }
+      if (!delayInheritance) { __inheritInterface(super); }
     }
 
     template < typename GUM_SCALAR >
     PRMInterface< GUM_SCALAR >::PRMInterface(
-      const PRMInterface< GUM_SCALAR >& source)
-        : PRMClassElementContainer< GUM_SCALAR >(source.name())
-        , __dag(source.__dag)
-        , __superInterface(source.__superInterface) {
+      const PRMInterface< GUM_SCALAR >& source) :
+        PRMClassElementContainer< GUM_SCALAR >(source.name()),
+        __dag(source.__dag), __superInterface(source.__superInterface) {
       GUM_CONS_CPY(PRMInterface);
       GUM_ERROR(FatalError, "don't copy an interface");
     }
@@ -73,9 +69,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void PRMInterface< GUM_SCALAR >::inheritInterface() {
-      if (__superInterface != nullptr) {
-        __inheritInterface(*__superInterface);
-      }
+      if (__superInterface != nullptr) { __inheritInterface(*__superInterface); }
     }
 
     template < typename GUM_SCALAR >
@@ -282,16 +276,12 @@ namespace gum {
     bool PRMInterface< GUM_SCALAR >::__checkOverloadLegality(
       const PRMClassElement< GUM_SCALAR >* overloaded,
       const PRMClassElement< GUM_SCALAR >* overloader) {
-      if (overloaded->elt_type() != overloader->elt_type()) {
-        return false;
-      }
+      if (overloaded->elt_type() != overloader->elt_type()) { return false; }
 
       if (overloaded->elt_type() == PRMClassElement< GUM_SCALAR >::prm_attribute) {
-        if (!overloader->type().isSubTypeOf(overloaded->type())) {
-          return false;
-        }
-      } else if (overloaded->elt_type() ==
-                 PRMClassElement< GUM_SCALAR >::prm_refslot) {
+        if (!overloader->type().isSubTypeOf(overloaded->type())) { return false; }
+      } else if (overloaded->elt_type()
+                 == PRMClassElement< GUM_SCALAR >::prm_refslot) {
         auto ref_overloader =
           static_cast< const PRMReferenceSlot< GUM_SCALAR >* >(overloader);
         auto ref_overloaded =
@@ -348,25 +338,25 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE typename PRMInterface< GUM_SCALAR >::ClassEltIterator
-    PRMInterface< GUM_SCALAR >::begin() {
+      PRMInterface< GUM_SCALAR >::begin() {
       return __nodeIdMap.begin();
     }
 
     template < typename GUM_SCALAR >
     INLINE const typename PRMInterface< GUM_SCALAR >::ClassEltIterator&
-    PRMInterface< GUM_SCALAR >::end() {
+      PRMInterface< GUM_SCALAR >::end() {
       return __nodeIdMap.end();
     }
 
     template < typename GUM_SCALAR >
     INLINE typename PRMInterface< GUM_SCALAR >::const_ClassEltIterator
-    PRMInterface< GUM_SCALAR >::begin() const {
+      PRMInterface< GUM_SCALAR >::begin() const {
       return __nodeIdMap.begin();
     }
 
     template < typename GUM_SCALAR >
     INLINE const typename PRMInterface< GUM_SCALAR >::const_ClassEltIterator&
-    PRMInterface< GUM_SCALAR >::end() const {
+      PRMInterface< GUM_SCALAR >::end() const {
       return __nodeIdMap.end();
     }
 
@@ -395,7 +385,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void
-    PRMInterface< GUM_SCALAR >::__addImplementation(PRMClass< GUM_SCALAR >* c) {
+      PRMInterface< GUM_SCALAR >::__addImplementation(PRMClass< GUM_SCALAR >* c) {
       __implementations.insert(c);
     }
 
@@ -406,31 +396,31 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMClassElement< GUM_SCALAR >& PRMInterface< GUM_SCALAR >::
-    operator[](NodeId id) {
+                                          operator[](NodeId id) {
       return get(id);
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >& PRMInterface< GUM_SCALAR >::
-    operator[](NodeId id) const {
+                                                operator[](NodeId id) const {
       return get(id);
     }
 
     template < typename GUM_SCALAR >
     INLINE PRMClassElement< GUM_SCALAR >& PRMInterface< GUM_SCALAR >::
-    operator[](const std::string& name) {
+                                          operator[](const std::string& name) {
       return get(name);
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >& PRMInterface< GUM_SCALAR >::
-    operator[](const std::string& name) const {
+                                                operator[](const std::string& name) const {
       return get(name);
     }
 
     template < typename GUM_SCALAR >
     INLINE typename PRMObject::prm_type
-    PRMInterface< GUM_SCALAR >::obj_type() const {
+      PRMInterface< GUM_SCALAR >::obj_type() const {
       return PRMObject::prm_type::PRM_INTERFACE;
     }
 
@@ -446,7 +436,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMClassElement< GUM_SCALAR >&
-    PRMInterface< GUM_SCALAR >::get(NodeId id) {
+           PRMInterface< GUM_SCALAR >::get(NodeId id) {
       try {
         return *(__nodeIdMap[id]);
       } catch (NotFound&) {
@@ -456,7 +446,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
-    PRMInterface< GUM_SCALAR >::get(NodeId id) const {
+                 PRMInterface< GUM_SCALAR >::get(NodeId id) const {
       try {
         return *(__nodeIdMap[id]);
       } catch (NotFound&) {
@@ -466,7 +456,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMClassElement< GUM_SCALAR >&
-    PRMInterface< GUM_SCALAR >::get(const std::string& name) {
+           PRMInterface< GUM_SCALAR >::get(const std::string& name) {
       try {
         return *(__nameMap[name]);
       } catch (NotFound&) {
@@ -476,7 +466,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
-    PRMInterface< GUM_SCALAR >::get(const std::string& name) const {
+                 PRMInterface< GUM_SCALAR >::get(const std::string& name) const {
       try {
         return *(__nameMap[name]);
       } catch (NotFound&) {
@@ -527,11 +517,8 @@ namespace gum {
       const PRMClassElement< GUM_SCALAR >& elt) const {
       try {
         if (!this->_getIOFlag(elt).second) {
-
           for (auto i : __implementations) {
-            if (i->isOutputNode(elt)) {
-              return true;
-            }
+            if (i->isOutputNode(elt)) { return true; }
           }
 
           if (__superInterface && __superInterface->isOutputNode(elt)) {
@@ -541,8 +528,7 @@ namespace gum {
         } else {
           return true;
         }
-      } catch (NotFound&) {
-      }
+      } catch (NotFound&) {}
       return false;
     }
   } /* namespace prm */

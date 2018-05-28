@@ -251,7 +251,7 @@ namespace gum {
        * (conditioning_ids, var2, var1) [in this order] and
        * (conditioning_ids, var2) [in this order] respectively. */
       Idx
-      addNodeSet(Idx var1, Idx var2, const std::vector< Idx >& conditioning_ids);
+        addNodeSet(Idx var1, Idx var2, const std::vector< Idx >& conditioning_ids);
 
       /// add a target conditioned by other variables to be counted
       /** @param var1 represents the index of the target variable in the
@@ -291,7 +291,7 @@ namespace gum {
        * of (conditioning_ids, vars.second, vars.first) [in this order] and
        * (conditioning_ids, vars.second) [in this order] respectively. */
       Idx addNodeSet(const std::pair< Idx, Idx >& vars,
-                     const std::vector< Idx >& conditioning_ids);
+                     const std::vector< Idx >&    conditioning_ids);
 
       /// add a target conditioned by other variables to be counted
       /** @param vars represents the index of the target variable (first) in the
@@ -310,7 +310,7 @@ namespace gum {
        * of (conditioning_ids, vars.second, vars.first) [in this order] and
        * (conditioning_ids, vars.second) [in this order] respectively. */
       Idx addNodeSet(const std::pair< Idx, Idx >& vars,
-                     std::vector< Idx >&& conditioning_ids);
+                     std::vector< Idx >&&         conditioning_ids);
 
       /// @}
 
@@ -401,7 +401,7 @@ namespace gum {
       /** conditioning nodes are always the first ones in the vector and targets
        * are the last ones */
       const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >&
-      _getAllNodes() const noexcept;
+        _getAllNodes() const noexcept;
 
       /// returns the conditioning nodes (nullptr if there are no such nodes)
       const std::vector< Idx, IdSetAlloc >* _getConditioningNodes(Idx index) const
@@ -409,14 +409,14 @@ namespace gum {
 
       /// returns all the sets of conditioning nodes
       const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >&
-      _getConditioningNodes() const noexcept;
+        _getConditioningNodes() const noexcept;
 
       // ##########################################################################
       // ##########################################################################
 
       /// prevent copy operator
       Counter< IdSetAlloc, CountAlloc >&
-      operator=(const Counter< IdSetAlloc, CountAlloc >&) = delete;
+        operator=(const Counter< IdSetAlloc, CountAlloc >&) = delete;
     };
 
   } /* namespace learning */

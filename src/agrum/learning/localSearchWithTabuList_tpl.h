@@ -64,16 +64,16 @@ namespace gum {
         for (Idx j = 0; j < dag.size(); ++j) {
           NodeId i = ordered_queues[j].first;
 
-          if (!selector.empty(i) &&
-              (!nb_changes_applied || (selector.bestScore(i) > 0))) {
+          if (!selector.empty(i)
+              && (!nb_changes_applied || (selector.bestScore(i) > 0))) {
             // pick up the best change
             const GraphChange& change = selector.bestChange(i);
 
             // perform the change
             switch (change.type()) {
               case GraphChangeType::ARC_ADDITION:
-                if (!impacted_queues[change.node2()] &&
-                    selector.isChangeValid(change)) {
+                if (!impacted_queues[change.node2()]
+                    && selector.isChangeValid(change)) {
                   if (selector.bestScore(i) > 0) {
                     ++applied_change_with_positive_score;
                   } else if (current_score > best_score) {
@@ -97,8 +97,8 @@ namespace gum {
                 break;
 
               case GraphChangeType::ARC_DELETION:
-                if (!impacted_queues[change.node2()] &&
-                    selector.isChangeValid(change)) {
+                if (!impacted_queues[change.node2()]
+                    && selector.isChangeValid(change)) {
                   if (selector.bestScore(i) > 0) {
                     ++applied_change_with_positive_score;
                   } else if (current_score > best_score) {
@@ -122,9 +122,9 @@ namespace gum {
                 break;
 
               case GraphChangeType::ARC_REVERSAL:
-                if ((!impacted_queues[change.node1()]) &&
-                    (!impacted_queues[change.node2()]) &&
-                    selector.isChangeValid(change)) {
+                if ((!impacted_queues[change.node1()])
+                    && (!impacted_queues[change.node2()])
+                    && selector.isChangeValid(change)) {
                   if (selector.bestScore(i) > 0) {
                     ++applied_change_with_positive_score;
                   } else if (current_score > best_score) {
@@ -178,12 +178,12 @@ namespace gum {
         }
 
         // std::cout << "current N = " << current_N << std::endl;
-      } while ((current_N <= __MaxNbDecreasing) &&
-               continueApproximationScheme(delta_score));
+      } while ((current_N <= __MaxNbDecreasing)
+               && continueApproximationScheme(delta_score));
 
-      stopApproximationScheme();  // just to be sure of the
-                                  // approximationScheme has
-                                  // been notified of the end of looop
+      stopApproximationScheme();   // just to be sure of the
+                                   // approximationScheme has
+                                   // been notified of the end of looop
 
       if (current_score > best_score) {
         return dag;
@@ -198,12 +198,12 @@ namespace gum {
                typename PARAM_ESTIMATOR,
                typename CELL_TRANSLATORS >
     BayesNet< GUM_SCALAR >
-    LocalSearchWithTabuList::learnBN(GRAPH_CHANGES_SELECTOR&           selector,
-                                     PARAM_ESTIMATOR&                  estimator,
-                                     const std::vector< std::string >& names,
-                                     const std::vector< Size >&        modal,
-                                     const CELL_TRANSLATORS&           translator,
-                                     DAG initial_dag) {
+      LocalSearchWithTabuList::learnBN(GRAPH_CHANGES_SELECTOR&           selector,
+                                       PARAM_ESTIMATOR&                  estimator,
+                                       const std::vector< std::string >& names,
+                                       const std::vector< Size >&        modal,
+                                       const CELL_TRANSLATORS& translator,
+                                       DAG                     initial_dag) {
       return DAG2BNLearner::
         createBN< GUM_SCALAR, PARAM_ESTIMATOR, CELL_TRANSLATORS >(
           estimator,

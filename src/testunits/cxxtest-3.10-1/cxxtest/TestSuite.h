@@ -13,8 +13,8 @@
 #include <cxxtest/ValueTraits.h>
 
 #ifdef _CXXTEST_HAVE_STD
-#include <stdexcept>
-#endif  // _CXXTEST_HAVE_STD
+#  include <stdexcept>
+#endif   // _CXXTEST_HAVE_STD
 
 namespace CxxTest {
   class TestSuite {
@@ -32,7 +32,7 @@ namespace CxxTest {
   void setAbortTestOnFail(bool value = CXXTEST_DEFAULT_ABORT);
 
   unsigned maxDumpSize();
-  void setMaxDumpSize(unsigned value = CXXTEST_MAX_DUMP_SIZE);
+  void     setMaxDumpSize(unsigned value = CXXTEST_MAX_DUMP_SIZE);
 
   void doTrace(const char* file, unsigned line, const char* message);
   void doWarn(const char* file, unsigned line, const char* message);
@@ -217,36 +217,36 @@ namespace CxxTest {
                              const char* message);
 
 #ifdef _CXXTEST_HAVE_EH
-#define _TS_TRY try
-#define _TS_CATCH_TYPE(t, b) catch t b
-#define _TS_CATCH_ABORT(b) _TS_CATCH_TYPE((const CxxTest::AbortTest&), b)
-#define _TS_LAST_CATCH(b) _TS_CATCH_TYPE((...), b)
-#define _TSM_LAST_CATCH(f, l, m) \
-  _TS_LAST_CATCH({ (CxxTest::tracker()).failedTest(f, l, m); })
-#ifdef _CXXTEST_HAVE_STD
-#define ___TSM_CATCH(f, l, m)                        \
-  catch (const std::exception& e) {                  \
-    (CxxTest::tracker()).failedTest(f, l, e.what()); \
-  }                                                  \
-  _TSM_LAST_CATCH(f, l, m)
-#else  // !_CXXTEST_HAVE_STD
-#define ___TSM_CATCH(f, l, m) _TSM_LAST_CATCH(f, l, m)
-#endif  // _CXXTEST_HAVE_STD
-#define __TSM_CATCH(f, l, m)  \
-  _TS_CATCH_ABORT({ throw; }) \
-  ___TSM_CATCH(f, l, m)
-#define __TS_CATCH(f, l) __TSM_CATCH(f, l, "Unhandled exception")
-#define _TS_CATCH __TS_CATCH(__FILE__, __LINE__)
-#else  // !_CXXTEST_HAVE_EH
-#define _TS_TRY
-#define ___TSM_CATCH(f, l, m)
-#define __TSM_CATCH(f, l, m)
-#define __TS_CATCH(f, l)
-#define _TS_CATCH
-#define _TS_CATCH_TYPE(t, b)
-#define _TS_LAST_CATCH(b)
-#define _TS_CATCH_ABORT(b)
-#endif  // _CXXTEST_HAVE_EH
+#  define _TS_TRY try
+#  define _TS_CATCH_TYPE(t, b) catch t b
+#  define _TS_CATCH_ABORT(b) _TS_CATCH_TYPE((const CxxTest::AbortTest&), b)
+#  define _TS_LAST_CATCH(b) _TS_CATCH_TYPE((...), b)
+#  define _TSM_LAST_CATCH(f, l, m) \
+    _TS_LAST_CATCH({ (CxxTest::tracker()).failedTest(f, l, m); })
+#  ifdef _CXXTEST_HAVE_STD
+#    define ___TSM_CATCH(f, l, m)                        \
+      catch (const std::exception& e) {                  \
+        (CxxTest::tracker()).failedTest(f, l, e.what()); \
+      }                                                  \
+      _TSM_LAST_CATCH(f, l, m)
+#  else   // !_CXXTEST_HAVE_STD
+#    define ___TSM_CATCH(f, l, m) _TSM_LAST_CATCH(f, l, m)
+#  endif   // _CXXTEST_HAVE_STD
+#  define __TSM_CATCH(f, l, m)  \
+    _TS_CATCH_ABORT({ throw; }) \
+    ___TSM_CATCH(f, l, m)
+#  define __TS_CATCH(f, l) __TSM_CATCH(f, l, "Unhandled exception")
+#  define _TS_CATCH __TS_CATCH(__FILE__, __LINE__)
+#else   // !_CXXTEST_HAVE_EH
+#  define _TS_TRY
+#  define ___TSM_CATCH(f, l, m)
+#  define __TSM_CATCH(f, l, m)
+#  define __TS_CATCH(f, l)
+#  define _TS_CATCH
+#  define _TS_CATCH_TYPE(t, b)
+#  define _TS_LAST_CATCH(b)
+#  define _TS_CATCH_ABORT(b)
+#endif   // _CXXTEST_HAVE_EH
 
 // TS_TRACE
 #define _TS_TRACE(f, l, e) CxxTest::doTrace((f), (l), TS_AS_STRING(e))
@@ -663,7 +663,7 @@ namespace CxxTest {
   CXXTEST_INTEGRAL(long)
 #ifdef _CXXTEST_LONGLONG
   CXXTEST_INTEGRAL(_CXXTEST_LONGLONG)
-#endif  // _CXXTEST_LONGLONG
+#endif   // _CXXTEST_LONGLONG
 
 #define CXXTEST_SMALL_BIG(CXXTEST_SMALL, CXXTEST_BIG)                 \
   CXXTEST_COMPARISONS(                                                \
@@ -683,7 +683,7 @@ namespace CxxTest {
   CXXTEST_SMALL_BIG(short, _CXXTEST_LONGLONG)
   CXXTEST_SMALL_BIG(int, _CXXTEST_LONGLONG)
   CXXTEST_SMALL_BIG(long, _CXXTEST_LONGLONG)
-#endif  // _CXXTEST_LONGLONG
-}
+#endif   // _CXXTEST_LONGLONG
+}   // namespace CxxTest
 
-#endif  // __cxxtest__TestSuite_h__
+#endif   // __cxxtest__TestSuite_h__

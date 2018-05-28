@@ -79,7 +79,7 @@ namespace gum {
      * @param from The multidimensional matrix we copy into this.
      */
     MultiDimWithOffset< GUM_SCALAR >&
-    operator=(const MultiDimWithOffset< GUM_SCALAR >& from);
+      operator=(const MultiDimWithOffset< GUM_SCALAR >& from);
 
     virtual MultiDimContainer< GUM_SCALAR >* newFactory() const = 0;
 

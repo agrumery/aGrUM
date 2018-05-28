@@ -25,8 +25,8 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <cmath>
-#include <sstream>
+#  include <cmath>
+#  include <sstream>
 
 namespace gum {
 
@@ -36,13 +36,13 @@ namespace gum {
     template < typename IdSetAlloc, typename CountAlloc >
     template < typename RowFilter >
     INLINE ScoreBDeu< IdSetAlloc, CountAlloc >::ScoreBDeu(
-      const RowFilter&           filter,
-      const std::vector< Size >& var_modalities,
+      const RowFilter&                   filter,
+      const std::vector< Size >&         var_modalities,
       Apriori< IdSetAlloc, CountAlloc >& apriori,
-      Size min_range,
-      Size max_range)
-        : Score< IdSetAlloc, CountAlloc >(
-            filter, var_modalities, apriori, min_range, max_range) {
+      Size                               min_range,
+      Size                               max_range) :
+        Score< IdSetAlloc, CountAlloc >(
+          filter, var_modalities, apriori, min_range, max_range) {
       __internal_apriori.setEffectiveSampleSize(__ess);
       // for debugging purposes
       GUM_CONSTRUCTOR(ScoreBDeu);
@@ -51,10 +51,10 @@ namespace gum {
     /// copy constructor
     template < typename IdSetAlloc, typename CountAlloc >
     ScoreBDeu< IdSetAlloc, CountAlloc >::ScoreBDeu(
-      const ScoreBDeu< IdSetAlloc, CountAlloc >& from)
-        : Score< IdSetAlloc, CountAlloc >(from)
-        , __gammalog2(from.__gammalog2)
-        , __internal_apriori(from.__internal_apriori) {
+      const ScoreBDeu< IdSetAlloc, CountAlloc >& from) :
+        Score< IdSetAlloc, CountAlloc >(from),
+        __gammalog2(from.__gammalog2),
+        __internal_apriori(from.__internal_apriori) {
       // for debugging purposes
       GUM_CONS_CPY(ScoreBDeu);
     }
@@ -62,10 +62,10 @@ namespace gum {
     /// move constructor
     template < typename IdSetAlloc, typename CountAlloc >
     ScoreBDeu< IdSetAlloc, CountAlloc >::ScoreBDeu(
-      ScoreBDeu< IdSetAlloc, CountAlloc >&& from)
-        : Score< IdSetAlloc, CountAlloc >(std::move(from))
-        , __gammalog2(std::move(from.__gammalog2))
-        , __internal_apriori(std::move(from.__internal_apriori)) {
+      ScoreBDeu< IdSetAlloc, CountAlloc >&& from) :
+        Score< IdSetAlloc, CountAlloc >(std::move(from)),
+        __gammalog2(std::move(from.__gammalog2)),
+        __internal_apriori(std::move(from.__internal_apriori)) {
       // for debugging purposes
       GUM_CONS_MOV(ScoreBDeu);
     }
@@ -73,7 +73,7 @@ namespace gum {
     /// virtual copy factory
     template < typename IdSetAlloc, typename CountAlloc >
     ScoreBDeu< IdSetAlloc, CountAlloc >*
-    ScoreBDeu< IdSetAlloc, CountAlloc >::copyFactory() const {
+      ScoreBDeu< IdSetAlloc, CountAlloc >::copyFactory() const {
       return new ScoreBDeu< IdSetAlloc, CountAlloc >(*this);
     }
 
@@ -89,9 +89,7 @@ namespace gum {
     bool ScoreBDeu< IdSetAlloc, CountAlloc >::isAprioriCompatible(
       const std::string& apriori_type, double weight) {
       // check that the apriori is compatible with the score
-      if (apriori_type == AprioriNoAprioriType::type) {
-        return true;
-      }
+      if (apriori_type == AprioriNoAprioriType::type) { return true; }
 
       if (weight == 0) {
         GUM_ERROR(PossiblyIncompatibleScoreApriori,
@@ -100,8 +98,8 @@ namespace gum {
       }
 
       // known incompatible aprioris
-      if ((apriori_type == AprioriDirichletType::type) ||
-          (apriori_type == AprioriSmoothingType::type)) {
+      if ((apriori_type == AprioriDirichletType::type)
+          || (apriori_type == AprioriSmoothingType::type)) {
         GUM_ERROR(IncompatibleScoreApriori,
                   "The BDeu score already contains a different 'implicit' aprio"
                   "ri. Therefore, the learning will probably be meaningless.");
@@ -137,7 +135,7 @@ namespace gum {
     /// sets the effective sample size of the internal apriori
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE void
-    ScoreBDeu< IdSetAlloc, CountAlloc >::setEffectiveSampleSize(double ess) {
+      ScoreBDeu< IdSetAlloc, CountAlloc >::setEffectiveSampleSize(double ess) {
       if (ess < 0) {
         GUM_ERROR(OutOfBounds,
                   "The effective sample size of the BDeu's "
@@ -197,12 +195,12 @@ namespace gum {
           const double ess_riqi = ess_qi / modalities[all_nodes.back()];
 
           for (Idx j = 0; j < conditioning_modal; ++j) {
-            score += __gammalog2(N_prime_ij[j] + ess_qi) -
-                     __gammalog2(N_ij[j] + N_prime_ij[j] + ess_qi);
+            score += __gammalog2(N_prime_ij[j] + ess_qi)
+                     - __gammalog2(N_ij[j] + N_prime_ij[j] + ess_qi);
           }
           for (Idx k = 0; k < targets_modal; ++k) {
-            score += __gammalog2(N_ijk[k] + N_prime_ijk[k] + ess_riqi) -
-                     __gammalog2(N_prime_ijk[k] + ess_riqi);
+            score += __gammalog2(N_ijk[k] + N_prime_ijk[k] + ess_riqi)
+                     - __gammalog2(N_prime_ijk[k] + ess_riqi);
           }
         } else {
           // the BDeu score can be computed as follows:
@@ -216,8 +214,8 @@ namespace gum {
           const double ess_qi = __ess / conditioning_modal;
           const double ess_qiri = ess_qi / ri;
 
-          score = conditioning_modal * __gammalog2(ess_qi) -
-                  ri * conditioning_modal * __gammalog2(ess_qiri);
+          score = conditioning_modal * __gammalog2(ess_qi)
+                  - ri * conditioning_modal * __gammalog2(ess_qiri);
 
           for (Idx j = 0; j < conditioning_modal; ++j) {
             score -= __gammalog2(N_ij[j] + ess_qi);
@@ -257,8 +255,8 @@ namespace gum {
           double N = 0;
           double N_prime = 0;
           for (Idx k = 0; k < targets_modal; ++k) {
-            score += __gammalog2(N_ijk[k] + N_prime_ijk[k] + ess_ri) -
-                     __gammalog2(N_prime_ijk[k] + ess_ri);
+            score += __gammalog2(N_ijk[k] + N_prime_ijk[k] + ess_ri)
+                     - __gammalog2(N_prime_ijk[k] + ess_ri);
             N += N_ijk[k];
             N_prime += N_prime_ijk[k];
           }

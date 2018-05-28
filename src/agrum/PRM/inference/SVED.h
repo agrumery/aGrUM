@@ -49,7 +49,8 @@ namespace gum {
   namespace prm {
 
     /**
-     * @class SVED SVED.h <agrum/PRM/SVED.h>
+     * @class SVED
+     * @headerfile SVED.h <agrum/PRM/SVED.h>
      * @brief This class is an implementation of the Structured Value
      *Elimination
      *        algorithm on PRM<GUM_SCALAR>.
@@ -142,20 +143,20 @@ namespace gum {
                             BucketSet&                       pool,
                             BucketSet&                       trash);
 
+      void __eliminateNodesDownward(
+        const PRMInstance< GUM_SCALAR >*          from,
+        const PRMInstance< GUM_SCALAR >*          i,
+        BucketSet&                                pool,
+        BucketSet&                                trash,
+        List< const PRMInstance< GUM_SCALAR >* >& elim_list,
+        Set< const PRMInstance< GUM_SCALAR >* >&  ignore);
+
       void
-      __eliminateNodesDownward(const PRMInstance< GUM_SCALAR >*          from,
-                               const PRMInstance< GUM_SCALAR >*          i,
+        __eliminateNodesUpward(const PRMInstance< GUM_SCALAR >*          i,
                                BucketSet&                                pool,
                                BucketSet&                                trash,
                                List< const PRMInstance< GUM_SCALAR >* >& elim_list,
                                Set< const PRMInstance< GUM_SCALAR >* >&  ignore);
-
-      void
-      __eliminateNodesUpward(const PRMInstance< GUM_SCALAR >*          i,
-                             BucketSet&                                pool,
-                             BucketSet&                                trash,
-                             List< const PRMInstance< GUM_SCALAR >* >& elim_list,
-                             Set< const PRMInstance< GUM_SCALAR >* >&  ignore);
 
       void __eliminateNodesWithEvidence(const PRMInstance< GUM_SCALAR >* i,
                                         BucketSet&                       pool,
@@ -176,8 +177,8 @@ namespace gum {
       std::vector< NodeId >& __getElimOrder(const PRMClass< GUM_SCALAR >& c);
 
       Potential< GUM_SCALAR >*
-      __getAggPotential(const PRMInstance< GUM_SCALAR >*  i,
-                        const PRMAggregate< GUM_SCALAR >* agg);
+        __getAggPotential(const PRMInstance< GUM_SCALAR >*  i,
+                          const PRMAggregate< GUM_SCALAR >* agg);
 
       void __initLiftedNodes(const PRMInstance< GUM_SCALAR >* i, BucketSet& trash);
 

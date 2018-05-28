@@ -43,30 +43,29 @@ namespace gum_tests {
   class ThreeOffTwoTestSuite : public CxxTest::TestSuite {
     public:
     void test_3off2_asia_nocorr() {
-      gum::learning::DBInitializerFromCSV<>
-        initializer ( GET_RESSOURCES_PATH( "asia.csv" ) );
-      const auto& var_names = initializer.variableNames ();
-      const std::size_t nb_vars = var_names.size ();
-      
-      gum::learning::DBTranslatorSet<> translator_set;
+      gum::learning::DBInitializerFromCSV<> initializer(
+        GET_RESSOURCES_PATH("asia.csv"));
+      const auto&       var_names = initializer.variableNames();
+      const std::size_t nb_vars = var_names.size();
+
+      gum::learning::DBTranslatorSet<>                translator_set;
       gum::learning::DBTranslator4LabelizedVariable<> translator;
-      for ( std::size_t i = 0; i < nb_vars; ++i ) {
-        translator_set.insertTranslator ( translator, i );
+      for (std::size_t i = 0; i < nb_vars; ++i) {
+        translator_set.insertTranslator(translator, i);
       }
-      
-      gum::learning::DatabaseTable<> database ( translator_set );
-      database.setVariableNames( initializer.variableNames () );
-      initializer.fillDatabase ( database );
 
-      database.reorder ();
+      gum::learning::DatabaseTable<> database(translator_set);
+      database.setVariableNames(initializer.variableNames());
+      initializer.fillDatabase(database);
 
-      gum::learning::DBRowGeneratorSet<> genset;
-      gum::learning::DBRowGeneratorParser<>
-        parser ( database.handler (), genset );
+      database.reorder();
+
+      gum::learning::DBRowGeneratorSet<>    genset;
+      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
 
       std::vector< gum::Size > modalities;
-      for ( auto dom : database.domainSizes () )
-        modalities.push_back ( dom );
+      for (auto dom : database.domainSizes())
+        modalities.push_back(dom);
 
       gum::learning::CorrectedMutualInformation<> I(parser, modalities);
       I.useNoCorr();
@@ -84,31 +83,29 @@ namespace gum_tests {
       }
       graph = search.learnMixedStructure(I, graph);
       TS_ASSERT_EQUALS(graph.arcs().size(), gum::Size(0));
-
     }
 
     void test_3off2_asia_MDLcorr() {
-      gum::learning::DBInitializerFromCSV<>
-        initializer ( GET_RESSOURCES_PATH( "asia.csv" ) );
-      const auto& var_names = initializer.variableNames ();
-      const std::size_t nb_vars = var_names.size ();
-      
-      gum::learning::DBTranslatorSet<> translator_set;
-      gum::LabelizedVariable var_lab ( "x", "" , 0 );
-      var_lab.addLabel ( "0" );
-      var_lab.addLabel ( "1" );
-      gum::learning::DBTranslator4LabelizedVariable<> translator ( var_lab );
-      for ( std::size_t i = 0; i < nb_vars; ++i ) {
-        translator_set.insertTranslator ( translator, i );
-      }
-      
-      gum::learning::DatabaseTable<> database ( translator_set );
-      database.setVariableNames( initializer.variableNames () );
-      initializer.fillDatabase ( database );
+      gum::learning::DBInitializerFromCSV<> initializer(
+        GET_RESSOURCES_PATH("asia.csv"));
+      const auto&       var_names = initializer.variableNames();
+      const std::size_t nb_vars = var_names.size();
 
-      gum::learning::DBRowGeneratorSet<> genset;
-      gum::learning::DBRowGeneratorParser<>
-        parser ( database.handler (), genset );
+      gum::learning::DBTranslatorSet<> translator_set;
+      gum::LabelizedVariable           var_lab("x", "", 0);
+      var_lab.addLabel("0");
+      var_lab.addLabel("1");
+      gum::learning::DBTranslator4LabelizedVariable<> translator(var_lab);
+      for (std::size_t i = 0; i < nb_vars; ++i) {
+        translator_set.insertTranslator(translator, i);
+      }
+
+      gum::learning::DatabaseTable<> database(translator_set);
+      database.setVariableNames(initializer.variableNames());
+      initializer.fillDatabase(database);
+
+      gum::learning::DBRowGeneratorSet<>    genset;
+      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
@@ -133,27 +130,26 @@ namespace gum_tests {
     }
 
     void test_3off2_asia_NMLcorr() {
-      gum::learning::DBInitializerFromCSV<>
-        initializer ( GET_RESSOURCES_PATH( "asia.csv" ) );
-      const auto& var_names = initializer.variableNames ();
-      const std::size_t nb_vars = var_names.size ();
-      
-      gum::learning::DBTranslatorSet<> translator_set;
-      gum::LabelizedVariable var_lab ( "x", "" , 0 );
-      var_lab.addLabel ( "0" );
-      var_lab.addLabel ( "1" );
-      gum::learning::DBTranslator4LabelizedVariable<> translator ( var_lab );
-      for ( std::size_t i = 0; i < nb_vars; ++i ) {
-        translator_set.insertTranslator ( translator, i );
-      }
-      
-      gum::learning::DatabaseTable<> database ( translator_set );
-      database.setVariableNames( initializer.variableNames () );
-      initializer.fillDatabase ( database );
+      gum::learning::DBInitializerFromCSV<> initializer(
+        GET_RESSOURCES_PATH("asia.csv"));
+      const auto&       var_names = initializer.variableNames();
+      const std::size_t nb_vars = var_names.size();
 
-      gum::learning::DBRowGeneratorSet<> genset;
-      gum::learning::DBRowGeneratorParser<>
-        parser ( database.handler (), genset );
+      gum::learning::DBTranslatorSet<> translator_set;
+      gum::LabelizedVariable           var_lab("x", "", 0);
+      var_lab.addLabel("0");
+      var_lab.addLabel("1");
+      gum::learning::DBTranslator4LabelizedVariable<> translator(var_lab);
+      for (std::size_t i = 0; i < nb_vars; ++i) {
+        translator_set.insertTranslator(translator, i);
+      }
+
+      gum::learning::DatabaseTable<> database(translator_set);
+      database.setVariableNames(initializer.variableNames());
+      initializer.fillDatabase(database);
+
+      gum::learning::DBRowGeneratorSet<>    genset;
+      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
@@ -180,27 +176,26 @@ namespace gum_tests {
     }
 
     void test_3off2_asia_dag() {
-      gum::learning::DBInitializerFromCSV<>
-        initializer ( GET_RESSOURCES_PATH( "asia.csv" ) );
-      const auto& var_names = initializer.variableNames ();
-      const std::size_t nb_vars = var_names.size ();
-      
-      gum::learning::DBTranslatorSet<> translator_set;
-      gum::LabelizedVariable var_lab ( "x", "" , 0 );
-      var_lab.addLabel ( "0" );
-      var_lab.addLabel ( "1" );
-      gum::learning::DBTranslator4LabelizedVariable<> translator ( var_lab );
-      for ( std::size_t i = 0; i < nb_vars; ++i ) {
-        translator_set.insertTranslator ( translator, i );
-      }
-      
-      gum::learning::DatabaseTable<> database ( translator_set );
-      database.setVariableNames( initializer.variableNames () );
-      initializer.fillDatabase ( database );
+      gum::learning::DBInitializerFromCSV<> initializer(
+        GET_RESSOURCES_PATH("asia.csv"));
+      const auto&       var_names = initializer.variableNames();
+      const std::size_t nb_vars = var_names.size();
 
-      gum::learning::DBRowGeneratorSet<> genset;
-      gum::learning::DBRowGeneratorParser<>
-        parser ( database.handler (), genset );
+      gum::learning::DBTranslatorSet<> translator_set;
+      gum::LabelizedVariable           var_lab("x", "", 0);
+      var_lab.addLabel("0");
+      var_lab.addLabel("1");
+      gum::learning::DBTranslator4LabelizedVariable<> translator(var_lab);
+      for (std::size_t i = 0; i < nb_vars; ++i) {
+        translator_set.insertTranslator(translator, i);
+      }
+
+      gum::learning::DatabaseTable<> database(translator_set);
+      database.setVariableNames(initializer.variableNames());
+      initializer.fillDatabase(database);
+
+      gum::learning::DBRowGeneratorSet<>    genset;
+      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
@@ -271,27 +266,26 @@ namespace gum_tests {
     }
 
     void test_3off2_asia_constraints() {
-      gum::learning::DBInitializerFromCSV<>
-        initializer ( GET_RESSOURCES_PATH( "asia.csv" ) );
-      const auto& var_names = initializer.variableNames ();
-      const std::size_t nb_vars = var_names.size ();
-      
-      gum::learning::DBTranslatorSet<> translator_set;
-      gum::LabelizedVariable var_lab ( "x", "" , 0 );
-      var_lab.addLabel ( "0" );
-      var_lab.addLabel ( "1" );
-      gum::learning::DBTranslator4LabelizedVariable<> translator ( var_lab );
-      for ( std::size_t i = 0; i < nb_vars; ++i ) {
-        translator_set.insertTranslator ( translator, i );
-      }
-      
-      gum::learning::DatabaseTable<> database ( translator_set );
-      database.setVariableNames( initializer.variableNames () );
-      initializer.fillDatabase ( database );
+      gum::learning::DBInitializerFromCSV<> initializer(
+        GET_RESSOURCES_PATH("asia.csv"));
+      const auto&       var_names = initializer.variableNames();
+      const std::size_t nb_vars = var_names.size();
 
-      gum::learning::DBRowGeneratorSet<> genset;
-      gum::learning::DBRowGeneratorParser<>
-        parser ( database.handler (), genset );
+      gum::learning::DBTranslatorSet<> translator_set;
+      gum::LabelizedVariable           var_lab("x", "", 0);
+      var_lab.addLabel("0");
+      var_lab.addLabel("1");
+      gum::learning::DBTranslator4LabelizedVariable<> translator(var_lab);
+      for (std::size_t i = 0; i < nb_vars; ++i) {
+        translator_set.insertTranslator(translator, i);
+      }
+
+      gum::learning::DatabaseTable<> database(translator_set);
+      database.setVariableNames(initializer.variableNames());
+      initializer.fillDatabase(database);
+
+      gum::learning::DBRowGeneratorSet<>    genset;
+      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
@@ -326,27 +320,26 @@ namespace gum_tests {
     }
 
     void test_MIIC_asia_NMLcorr() {
-      gum::learning::DBInitializerFromCSV<>
-        initializer ( GET_RESSOURCES_PATH( "asia.csv" ) );
-      const auto& var_names = initializer.variableNames ();
-      const std::size_t nb_vars = var_names.size ();
-      
-      gum::learning::DBTranslatorSet<> translator_set;
-      gum::LabelizedVariable var_lab ( "x", "" , 0 );
-      var_lab.addLabel ( "0" );
-      var_lab.addLabel ( "1" );
-      gum::learning::DBTranslator4LabelizedVariable<> translator ( var_lab );
-      for ( std::size_t i = 0; i < nb_vars; ++i ) {
-        translator_set.insertTranslator ( translator, i );
-      }
-      
-      gum::learning::DatabaseTable<> database ( translator_set );
-      database.setVariableNames( initializer.variableNames () );
-      initializer.fillDatabase ( database );
+      gum::learning::DBInitializerFromCSV<> initializer(
+        GET_RESSOURCES_PATH("asia.csv"));
+      const auto&       var_names = initializer.variableNames();
+      const std::size_t nb_vars = var_names.size();
 
-      gum::learning::DBRowGeneratorSet<> genset;
-      gum::learning::DBRowGeneratorParser<>
-        parser ( database.handler (), genset );
+      gum::learning::DBTranslatorSet<> translator_set;
+      gum::LabelizedVariable           var_lab("x", "", 0);
+      var_lab.addLabel("0");
+      var_lab.addLabel("1");
+      gum::learning::DBTranslator4LabelizedVariable<> translator(var_lab);
+      for (std::size_t i = 0; i < nb_vars; ++i) {
+        translator_set.insertTranslator(translator, i);
+      }
+
+      gum::learning::DatabaseTable<> database(translator_set);
+      database.setVariableNames(initializer.variableNames());
+      initializer.fillDatabase(database);
+
+      gum::learning::DBRowGeneratorSet<>    genset;
+      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
@@ -376,27 +369,26 @@ namespace gum_tests {
     }
 
     void test_MIIC_asia_constraints() {
-      gum::learning::DBInitializerFromCSV<>
-        initializer ( GET_RESSOURCES_PATH( "asia.csv" ) );
-      const auto& var_names = initializer.variableNames ();
-      const std::size_t nb_vars = var_names.size ();
-      
-      gum::learning::DBTranslatorSet<> translator_set;
-      gum::LabelizedVariable var_lab ( "x", "" , 0 );
-      var_lab.addLabel ( "0" );
-      var_lab.addLabel ( "1" );
-      gum::learning::DBTranslator4LabelizedVariable<> translator ( var_lab );
-      for ( std::size_t i = 0; i < nb_vars; ++i ) {
-        translator_set.insertTranslator ( translator, i );
-      }
-      
-      gum::learning::DatabaseTable<> database ( translator_set );
-      database.setVariableNames( initializer.variableNames () );
-      initializer.fillDatabase ( database );
+      gum::learning::DBInitializerFromCSV<> initializer(
+        GET_RESSOURCES_PATH("asia.csv"));
+      const auto&       var_names = initializer.variableNames();
+      const std::size_t nb_vars = var_names.size();
 
-      gum::learning::DBRowGeneratorSet<> genset;
-      gum::learning::DBRowGeneratorParser<>
-        parser ( database.handler (), genset );
+      gum::learning::DBTranslatorSet<> translator_set;
+      gum::LabelizedVariable           var_lab("x", "", 0);
+      var_lab.addLabel("0");
+      var_lab.addLabel("1");
+      gum::learning::DBTranslator4LabelizedVariable<> translator(var_lab);
+      for (std::size_t i = 0; i < nb_vars; ++i) {
+        translator_set.insertTranslator(translator, i);
+      }
+
+      gum::learning::DatabaseTable<> database(translator_set);
+      database.setVariableNames(initializer.variableNames());
+      initializer.fillDatabase(database);
+
+      gum::learning::DBRowGeneratorSet<>    genset;
+      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 

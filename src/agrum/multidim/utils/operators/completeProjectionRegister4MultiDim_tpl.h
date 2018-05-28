@@ -27,9 +27,9 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/agrum.h>
+#  include <agrum/agrum.h>
 
-#include <agrum/multidim/utils/operators/completeProjectionRegister4MultiDim.h>
+#  include <agrum/multidim/utils/operators/completeProjectionRegister4MultiDim.h>
 
 namespace gum {
 
@@ -45,13 +45,13 @@ namespace gum {
 
     if (!__set.exists(projection_name)) {
       theset = __set.insert(projection_name, new CompleteProjectionSet).second;
-#ifndef NDEBUG
+#  ifndef NDEBUG
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the CompleteProjectionRegister4MultiDim
       // will be removed at the end of the program's execution.
       __debug__::__inc_deletion(
         "HashTable", __FILE__, __LINE__, "destructor of", (void*)theset);
-#endif /* NDEBUG */
+#  endif /* NDEBUG */
     } else {
       theset = __set[projection_name];
     }
@@ -84,20 +84,20 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE typename CompleteProjectionRegister4MultiDim<
     GUM_SCALAR >::CompleteProjectionPtr
-  CompleteProjectionRegister4MultiDim< GUM_SCALAR >::get(
-    const std::string& projection_name, const std::string& type_multidim) const {
+    CompleteProjectionRegister4MultiDim< GUM_SCALAR >::get(
+      const std::string& projection_name, const std::string& type_multidim) const {
     CompleteProjectionSet* theset = __set[projection_name];
-    return theset->operator[](type_multidim);
+    return theset->        operator[](type_multidim);
   }
 
   // a named constructor that constructs one and only one Register per data
   // type
   template < typename GUM_SCALAR >
   CompleteProjectionRegister4MultiDim< GUM_SCALAR >&
-  CompleteProjectionRegister4MultiDim< GUM_SCALAR >::Register() {
+    CompleteProjectionRegister4MultiDim< GUM_SCALAR >::Register() {
     static CompleteProjectionRegister4MultiDim container;
 
-#ifndef NDEBUG
+#  ifndef NDEBUG
     static bool first = true;
 
     if (first) {
@@ -109,7 +109,7 @@ namespace gum {
         "HashTable", __FILE__, __LINE__, "destructor of", (void*)&container.__set);
     }
 
-#endif /* NDEBUG */
+#  endif /* NDEBUG */
 
     return container;
   }

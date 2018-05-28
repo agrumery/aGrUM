@@ -77,8 +77,8 @@ namespace gum {
        * @param score_internal_apriori The score internal apriori.
        */
       template < typename RowFilter >
-      ParamEstimatorML(const RowFilter&           filter,
-                       const std::vector< Size >& var_modalities,
+      ParamEstimatorML(const RowFilter&                   filter,
+                       const std::vector< Size >&         var_modalities,
                        Apriori< IdSetAlloc, CountAlloc >& apriori,
                        const ScoreInternalApriori< IdSetAlloc, CountAlloc >&
                          score_internal_apriori =

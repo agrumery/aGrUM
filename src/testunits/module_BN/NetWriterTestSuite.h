@@ -91,9 +91,7 @@ namespace gum_tests {
       try {
         writer.write(file, *bn);
         // TS_ASSERT(false);
-      } catch (gum::IOError&) {
-        TS_ASSERT(true);
-      }
+      } catch (gum::IOError&) { TS_ASSERT(true); }
     }
 
     void test_isreadable() {
@@ -187,4 +185,4 @@ namespace gum_tests {
       }
     }
   };
-}
+}   // namespace gum_tests

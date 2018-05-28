@@ -35,7 +35,8 @@
 namespace gum {
 
   /**
-   * @class LazyDecider lazyDecider.h <agrum/FMDP/SDyna/lazyDecider.h>
+   * @class LazyDecider
+   * @headerfile lazyDecider.h <agrum/FMDP/SDyna/lazyDecider.h>
    * @brief Class to make decision randomly
    * @ingroup fmdp_group
    *
@@ -43,7 +44,6 @@ namespace gum {
    *
    */
   class LazyDecider : public IDecisionStrategy {
-
     // ###################################################################
     /// @name Constructor & destructor.
     // ###################################################################
@@ -69,5 +69,5 @@ namespace gum {
     public:
     void checkState(const Instantiation& newState, Idx actionId) {}
   };
-}
-#endif  // GUM_LAZY_DECIDER_H
+}   // namespace gum
+#endif   // GUM_LAZY_DECIDER_H

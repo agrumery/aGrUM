@@ -46,7 +46,7 @@ namespace gum {
         delete *it;
         target->detachSignal__(this);
 
-        it = _connectors.erase(it);  // it is the next one
+        it = _connectors.erase(it);   // it is the next one
         it = std::find_if(it, _connectors.end(), __find_target(target));
       }
     }
@@ -59,7 +59,7 @@ namespace gum {
       while (it != _connectors.end()) {
         delete *it;
 
-        it = _connectors.erase(it);  // it is the next one
+        it = _connectors.erase(it);   // it is the next one
         it = std::find_if(it, _connectors.end(), __find_target(target));
       }
     }
@@ -80,11 +80,11 @@ namespace gum {
 
     INLINE
     std::function< bool(IConnector0* el) >
-    BasicSignaler0::__find_target(const gum::Listener* l) {
+      BasicSignaler0::__find_target(const gum::Listener* l) {
       return [=](IConnector0* el) -> bool { return el->target() == l; };
     }
 
-  }  // namespace __sig__
+  }   // namespace __sig__
 #endif
 
-}  // namespace gum
+}   // namespace gum

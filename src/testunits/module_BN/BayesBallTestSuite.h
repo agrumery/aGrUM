@@ -59,4 +59,4 @@ namespace gum_tests {
       TS_ASSERT(requisite.size() >= 5);
     }
   };
-}
+}   // namespace gum_tests

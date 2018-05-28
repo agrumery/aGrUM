@@ -29,15 +29,16 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // including coco-generated PARSER and SCANNER
 
-#include <agrum/BN/io/DSL/cocoR/Parser.h>
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#  include <agrum/BN/io/DSL/cocoR/Parser.h>
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
   /* =========================================================================*/
   /* ===                               READERS === */
   /* =========================================================================*/
   /**
-   * @class DSLReader DSLReader.h <agrum/BN/io/DSL/DSLReader.h>
+   * @class DSLReader
+   * @headerfile DSLReader.h <agrum/BN/io/DSL/DSLReader.h>
    * @ingroup bn_io
    * @brief Pure virtual class for reading a BN from a file.
    *
@@ -46,7 +47,6 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   class DSLReader : public BNReader< GUM_SCALAR > {
-
     public:
     /**
      * Constructor
@@ -133,4 +133,4 @@ namespace gum {
 
 #include "DSLReader_tpl.h"
 
-#endif  // DSLREADER_H
+#endif   // DSLREADER_H

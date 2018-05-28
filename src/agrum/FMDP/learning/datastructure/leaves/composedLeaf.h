@@ -43,7 +43,6 @@ namespace gum {
 
 
   class ComposedLeaf : public AbstractLeaf {
-
     public:
     // ==========================================================================
     /// @name Constructor & destructor.
@@ -53,10 +52,8 @@ namespace gum {
     // ###################################################################
     /// Default constructor
     // ###################################################################
-    ComposedLeaf(NodeId leafId, AbstractLeaf* l1, AbstractLeaf* l2)
-        : AbstractLeaf(leafId)
-        , __l1(l1)
-        , __l2(l2) {
+    ComposedLeaf(NodeId leafId, AbstractLeaf* l1, AbstractLeaf* l2) :
+        AbstractLeaf(leafId), __l1(l1), __l2(l2) {
       GUM_CONSTRUCTOR(ComposedLeaf)
     }
 
@@ -89,8 +86,8 @@ namespace gum {
     /// Returns true if abstractleaf has leaf in it
     // ###################################################################
     bool contains(NodeId testedId) const {
-      return AbstractLeaf::contains(testedId) || __l1->contains(testedId) ||
-             __l2->contains(testedId);
+      return AbstractLeaf::contains(testedId) || __l1->contains(testedId)
+             || __l2->contains(testedId);
     }
 
     Idx nbModa() const { return __l1->nbModa(); }
@@ -106,4 +103,4 @@ namespace gum {
 } /* namespace gum */
 
 
-#endif  // GUM_COMPOSED_LEAF_H
+#endif   // GUM_COMPOSED_LEAF_H

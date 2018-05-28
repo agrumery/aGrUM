@@ -33,14 +33,12 @@
 namespace gum_tests {
 
   class SmallObjectAllocatorTestSuite : public CxxTest::TestSuite {
-
     private:
     public:
     // ==============================================================================
     // Test CREATION et DESTRUCTION dun Fixed Allocator
     // ==============================================================================
     void test_Fixed_Allocator_CONST_AND_DEST() {
-
       gum::FixedAllocator* fa = nullptr;
       // Test constructor
       TS_ASSERT_THROWS_NOTHING(
@@ -53,7 +51,6 @@ namespace gum_tests {
     // Test Allocation et Deallocation d'un élément
     // ==============================================================================
     void test_Fixed_Allocator_ALLOC_DEALLOC_1_ELEM() {
-
       gum::FixedAllocator* fa = new gum::FixedAllocator(5 * sizeof(gum::Idx), 50);
       void*                pVoid = nullptr;
       TS_ASSERT_THROWS_NOTHING(pVoid = fa->allocate());
@@ -124,7 +121,6 @@ namespace gum_tests {
     // Test CREATION et DESTRUCTION dun SmallObjectAllocator
     // ==============================================================================
     void test_Small_Object_Allocator_CONST_AND_DEST() {
-
       // Test constructor
       TS_ASSERT_THROWS_NOTHING(gum::SmallObjectAllocator::instance());
 
@@ -148,7 +144,6 @@ namespace gum_tests {
     // Test Allocation et Deallocation d'un élément
     // ==============================================================================
     void test_Small_Object_Allocator_ALLOC_DEALLOC_ELEMS() {
-
       std::vector< void* > vVoid;
       for (std::size_t i = 1; i < 13; ++i)
         TS_ASSERT_THROWS_NOTHING(
@@ -204,4 +199,4 @@ namespace gum_tests {
     //      std::cout << "Temps Alloc/Dealloc SOA: " << vT - soaT << std::endl;
     //    }
   };
-}
+}   // namespace gum_tests

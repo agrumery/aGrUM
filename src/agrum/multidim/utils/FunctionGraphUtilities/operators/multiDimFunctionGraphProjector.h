@@ -60,8 +60,8 @@ namespace gum {
      */
     MultiDimFunctionGraphProjector(
       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* src,
-      const Set< const DiscreteVariable* >& delVars,
-      const GUM_SCALAR                      neutral);
+      const Set< const DiscreteVariable* >&                          delVars,
+      const GUM_SCALAR                                               neutral);
 
     /**
      * @brief Default destructor.
@@ -101,8 +101,8 @@ namespace gum {
 
   extern template class MultiDimFunctionGraphProjector< double, std::plus >;
 
-}  // namespace gum
+}   // namespace gum
 
 #include <agrum/multidim/utils/FunctionGraphUtilities/operators/multiDimFunctionGraphProjector_tpl.h>
 
-#endif  // GUM_MULTI_DIM_FUNCTION_GRAPH_PROJECTOR_H
+#endif   // GUM_MULTI_DIM_FUNCTION_GRAPH_PROJECTOR_H

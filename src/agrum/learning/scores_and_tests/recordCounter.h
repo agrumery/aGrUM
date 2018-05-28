@@ -90,7 +90,7 @@ namespace gum {
 
       /// virtual copy constructor
       virtual RecordCounterThreadBase< IdSetAlloc, CountAlloc >*
-      copyFactory() const = 0;
+        copyFactory() const = 0;
 
       /// destructor
       virtual ~RecordCounterThreadBase();
@@ -162,8 +162,7 @@ namespace gum {
                typename IdSetAlloc = std::allocator< Idx >,
                typename CountAlloc = std::allocator< double > >
     class RecordCounterThread
-      : public RecordCounterThreadBase< IdSetAlloc, CountAlloc > {
-
+        : public RecordCounterThreadBase< IdSetAlloc, CountAlloc > {
       using Base = RecordCounterThreadBase< IdSetAlloc, CountAlloc >;
 
       public:
@@ -178,8 +177,8 @@ namespace gum {
 
       /// copy constructor
       RecordCounterThread(
-        const RecordCounterThread< RowGeneratorParser, IdSetAlloc,
-        CountAlloc >& from);
+        const RecordCounterThread< RowGeneratorParser, IdSetAlloc, CountAlloc >&
+          from);
 
       /// move operator
       RecordCounterThread(
@@ -187,7 +186,7 @@ namespace gum {
 
       /// virtual copy constructor
       virtual RecordCounterThread< RowGeneratorParser, IdSetAlloc, CountAlloc >*
-      copyFactory() const;
+        copyFactory() const;
 
       /// destructor
       virtual ~RecordCounterThread();
@@ -356,10 +355,10 @@ namespace gum {
 
       /// the possible states of a set of ids
       enum SetState {
-        NOT_SUBSET,     // this is a proper nonempty superset
-        STRICT_SUBSET,  // the set is included into another one
-        COPY_SET,       // this set is a copy of another one
-        EMPTY_SET       // the set is empty
+        NOT_SUBSET,      // this is a proper nonempty superset
+        STRICT_SUBSET,   // the set is included into another one
+        COPY_SET,        // this set is a copy of another one
+        EMPTY_SET        // the set is empty
       };
 
       /// a table indicating whether each IdSet is a subset of another idSet

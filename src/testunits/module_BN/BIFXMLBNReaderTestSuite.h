@@ -622,8 +622,8 @@ namespace gum_tests {
       TS_ASSERT(idMap.exists("HYPOVOLEMIA"));
       TS_ASSERT(idMap.exists("LVFAILURE"));
 
-      if (idMap.exists("LVEDVOLUME") && idMap.exists("HYPOVOLEMIA") &&
-          idMap.exists("LVFAILURE")) {
+      if (idMap.exists("LVEDVOLUME") && idMap.exists("HYPOVOLEMIA")
+          && idMap.exists("LVFAILURE")) {
         const gum::DiscreteVariable& lvedvolume =
           net->variable(idMap["LVEDVOLUME"]);
         const gum::DiscreteVariable& hypovolemia =
@@ -695,7 +695,7 @@ namespace gum_tests {
       if (net) delete net;
     }
 
-    void Carpo() {  // Carpo is not correct as a xmlbif file
+    void Carpo() {
       std::string                  file = GET_RESSOURCES_PATH("carpo.bifxml");
       gum::BayesNet< float >*      net = new gum::BayesNet< float >();
       gum::BIFXMLBNReader< float > reader(net, file);
@@ -785,4 +785,4 @@ namespace gum_tests {
       if (net) delete net;
     }
   };
-}
+}   // namespace gum_tests

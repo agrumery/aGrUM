@@ -54,8 +54,7 @@ namespace gum_tests {
     int __nbr;
 
     public:
-    aSimpleListener()
-        : __nbr(0){};
+    aSimpleListener() : __nbr(0){};
     void whenProceeding(const void* buffer, int percent, std::string status) {
       __nbr = percent;
       // std::cout << "Progress : " << percent << "%" << " Status : " << status
@@ -109,9 +108,7 @@ namespace gum_tests {
         GUM_ERROR(gum::IOError, "Writting in the ostream failed.");
       }
 
-      if (net != 0) {
-        TS_ASSERT(!net->empty());
-      }
+      if (net != 0) { TS_ASSERT(!net->empty()); }
 
       delete net;
     }
@@ -380,4 +377,4 @@ namespace gum_tests {
       delete net;
     }
   };
-}
+}   // namespace gum_tests

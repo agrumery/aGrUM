@@ -1,22 +1,22 @@
 /**************************************************************************
-*   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 /**
  * @file
@@ -33,7 +33,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE std::string
-      O3prmReader< GUM_SCALAR >::__clean(std::string text) const {
+             O3prmReader< GUM_SCALAR >::__clean(std::string text) const {
         // This could be way more faster with regex but there are not implemented
         // with gcc-4.8 !
         text = replace(text, "Syntax error", "Error");
@@ -106,7 +106,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE std::string
-      O3prmReader< GUM_SCALAR >::__print(const ParseError& err) const {
+             O3prmReader< GUM_SCALAR >::__print(const ParseError& err) const {
         std::stringstream s;
         s << err.filename << "|" << err.line << " col " << err.column << "| "
           << __clean(err.msg);
@@ -115,7 +115,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE std::string
-      O3prmReader< GUM_SCALAR >::__readStream(std::istream& inputstr) {
+             O3prmReader< GUM_SCALAR >::__readStream(std::istream& inputstr) {
         if (inputstr) {
           inputstr.seekg(0, inputstr.end);
           int length = int(inputstr.tellg());
@@ -136,36 +136,33 @@ namespace gum {
       using o3prm_parser = gum::prm::o3prm::Parser;
 
       template < typename GUM_SCALAR >
-      INLINE O3prmReader< GUM_SCALAR >::O3prmReader()
-          : __prm(new PRM< GUM_SCALAR >())
-          , __o3_prm(std::unique_ptr< O3PRM >(new O3PRM())) {
+      INLINE O3prmReader< GUM_SCALAR >::O3prmReader() :
+          __prm(new PRM< GUM_SCALAR >()),
+          __o3_prm(std::unique_ptr< O3PRM >(new O3PRM())) {
         GUM_CONSTRUCTOR(O3prmReader);
       }
 
       template < typename GUM_SCALAR >
-      INLINE O3prmReader< GUM_SCALAR >::O3prmReader(PRM< GUM_SCALAR >& prm)
-          : __prm(&prm)
-          , __o3_prm(std::unique_ptr< O3PRM >(new O3PRM())) {
+      INLINE O3prmReader< GUM_SCALAR >::O3prmReader(PRM< GUM_SCALAR >& prm) :
+          __prm(&prm), __o3_prm(std::unique_ptr< O3PRM >(new O3PRM())) {
         GUM_CONSTRUCTOR(O3prmReader);
       }
 
       template < typename GUM_SCALAR >
-      INLINE O3prmReader< GUM_SCALAR >::O3prmReader(const O3prmReader& src)
-          : __prm(src.__prm)
-          , __o3_prm(std::unique_ptr< O3PRM >(new O3PRM(*(src.__o3_prm))))
-          , __class_path(src.__class_path)
-          , __imported(src.__imported)
-          , __errors(src.__errors) {
+      INLINE O3prmReader< GUM_SCALAR >::O3prmReader(const O3prmReader& src) :
+          __prm(src.__prm),
+          __o3_prm(std::unique_ptr< O3PRM >(new O3PRM(*(src.__o3_prm)))),
+          __class_path(src.__class_path), __imported(src.__imported),
+          __errors(src.__errors) {
         GUM_CONS_CPY(O3prmReader);
       }
 
       template < typename GUM_SCALAR >
-      INLINE O3prmReader< GUM_SCALAR >::O3prmReader(O3prmReader&& src)
-          : __prm(std::move(src.__prm))
-          , __o3_prm(std::move(src.__o3_prm))
-          , __class_path(std::move(src.__class_path))
-          , __imported(std::move(src.__imported))
-          , __errors(std::move(src.__errors)) {
+      INLINE O3prmReader< GUM_SCALAR >::O3prmReader(O3prmReader&& src) :
+          __prm(std::move(src.__prm)), __o3_prm(std::move(src.__o3_prm)),
+          __class_path(std::move(src.__class_path)),
+          __imported(std::move(src.__imported)),
+          __errors(std::move(src.__errors)) {
         GUM_CONS_CPY(O3prmReader);
       }
 
@@ -176,10 +173,8 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE O3prmReader< GUM_SCALAR >& O3prmReader< GUM_SCALAR >::
-      operator=(const O3prmReader& src) {
-        if (this == &src) {
-          return *this;
-        }
+                                        operator=(const O3prmReader& src) {
+        if (this == &src) { return *this; }
         __prm = src.__prm;
         __o3_prm = std::unique_ptr< O3PRM >(new O3PRM(*(src.__o3_prm)));
         __class_path = src.__class_path;
@@ -190,10 +185,8 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE O3prmReader< GUM_SCALAR >& O3prmReader< GUM_SCALAR >::
-      operator=(O3prmReader&& src) {
-        if (this == &src) {
-          return *this;
-        }
+                                        operator=(O3prmReader&& src) {
+        if (this == &src) { return *this; }
         __prm = std::move(src.__prm);
         __o3_prm = std::move(src.__o3_prm);
         __class_path = std::move(src.__class_path);
@@ -227,9 +220,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       void O3prmReader< GUM_SCALAR >::addClassPath(const std::string& class_path) {
         auto path = class_path;
-        if (path[path.size() - 1] != '/') {
-          path.append("/");
-        }
+        if (path[path.size() - 1] != '/') { path.append("/"); }
         auto dir = Directory(path);
 
         if (!dir.isValid()) {
@@ -266,12 +257,10 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE void
-      O3prmReader< GUM_SCALAR >::showElegantErrors(std::ostream& o) const {
+        O3prmReader< GUM_SCALAR >::showElegantErrors(std::ostream& o) const {
         for (Idx i = 0; i < __errors.count(); ++i) {
           auto err = __errors.error(i);
-          if (err.is_error) {
-            o << __print(err) << std::endl;
-          }
+          if (err.is_error) { o << __print(err) << std::endl; }
         }
       }
 
@@ -286,7 +275,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE void
-      O3prmReader< GUM_SCALAR >::showErrorCounts(std::ostream& o) const {
+        O3prmReader< GUM_SCALAR >::showErrorCounts(std::ostream& o) const {
         __errors.syntheticResults(o);
       }
 
@@ -359,9 +348,9 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE void
-      O3prmReader< GUM_SCALAR >::__parseStream(std::istream&      input,
-                                               const std::string& filename,
-                                               const std::string& module) {
+        O3prmReader< GUM_SCALAR >::__parseStream(std::istream&      input,
+                                                 const std::string& filename,
+                                                 const std::string& module) {
         auto sBuff = __readStream(input);
         auto buffer = std::unique_ptr< unsigned char[] >(
           new unsigned char[sBuff.length() + 1]);
@@ -376,9 +365,8 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE void
-      O3prmReader< GUM_SCALAR >::__parseImport(const O3Import&    i,
-                                               const std::string& module) {
-
+        O3prmReader< GUM_SCALAR >::__parseImport(const O3Import&    i,
+                                                 const std::string& module) {
         if (!__imported.exists(i.import().label())) {
           __imported.insert(i.import().label());
 
@@ -390,12 +378,10 @@ namespace gum {
 
           auto imported = false;
           for (const auto& cp : __class_path) {
-
             auto          file_path = cp + path + ".o3prm";
             std::ifstream file(file_path);
 
             if (file.is_open()) {
-
               __parseStream(file, file_path, i.import().label());
               imported = true;
               break;
@@ -405,7 +391,6 @@ namespace gum {
             std::ifstream file2(file_path);
 
             if (file2.is_open()) {
-
               __parseStream(file2, file_path, module + "." + i.import().label());
               imported = true;
               break;
@@ -426,9 +411,7 @@ namespace gum {
              O3prmReader< GUM_SCALAR >::__copyImports() {
         auto copy = std::vector< const O3Import* >();
         for (const auto& i : __o3_prm->imports()) {
-          if (!__imported.exists(i->import().label())) {
-            copy.push_back(i.get());
-          }
+          if (!__imported.exists(i->import().label())) { copy.push_back(i.get()); }
         }
         return copy;
       }
@@ -437,10 +420,7 @@ namespace gum {
       INLINE void O3prmReader< GUM_SCALAR >::__readStream(std::istream&      input,
                                                           const std::string& file,
                                                           std::string module) {
-
-        if (module.size() > 0 && module.back() != '.') {
-          module.append(".");
-        }
+        if (module.size() > 0 && module.back() != '.') { module.append("."); }
 
         __parseStream(input, file, module);
 
@@ -490,6 +470,6 @@ namespace gum {
           }
         }
       }
-    }
-  }
-}
+    }   // namespace o3prm
+  }     // namespace prm
+}   // namespace gum

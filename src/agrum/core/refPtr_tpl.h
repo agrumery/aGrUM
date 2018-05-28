@@ -30,9 +30,8 @@ namespace gum {
   // default constructor
 
   template < typename Val >
-  INLINE RefPtr< Val >::RefPtr(Val* v)
-      : __val(v)
-      , __refcount(v ? new unsigned int(1U) : 0) {
+  INLINE RefPtr< Val >::RefPtr(Val* v) :
+      __val(v), __refcount(v ? new unsigned int(1U) : 0) {
     // for debugging purposes
     GUM_CONSTRUCTOR(RefPtr);
   }
@@ -40,9 +39,8 @@ namespace gum {
   // copy constructor
 
   template < typename Val >
-  INLINE RefPtr< Val >::RefPtr(const RefPtr< Val >& from)
-      : __val(from.__val)
-      , __refcount(from.__refcount) {
+  INLINE RefPtr< Val >::RefPtr(const RefPtr< Val >& from) :
+      __val(from.__val), __refcount(from.__refcount) {
     // for debugging purposes
     GUM_CONS_CPY(RefPtr);
 
@@ -53,9 +51,8 @@ namespace gum {
 
   template < typename Val >
   template < typename DownVal >
-  INLINE RefPtr< Val >::RefPtr(const RefPtr< DownVal >& from)
-      : __val(from.__val)
-      , __refcount(from.__refcount) {
+  INLINE RefPtr< Val >::RefPtr(const RefPtr< DownVal >& from) :
+      __val(from.__val), __refcount(from.__refcount) {
     // for debugging purposes
     GUM_CONS_CPY(RefPtr);
 
@@ -194,9 +191,7 @@ namespace gum {
 
   template < typename Val >
   INLINE Val& RefPtr< Val >::operator*() {
-    if (!__val) {
-      GUM_ERROR(NullElement, "dereferencing a nullptr pointer");
-    }
+    if (!__val) { GUM_ERROR(NullElement, "dereferencing a nullptr pointer"); }
 
     return *__val;
   }
@@ -205,9 +200,7 @@ namespace gum {
 
   template < typename Val >
   INLINE const Val& RefPtr< Val >::operator*() const {
-    if (!__val) {
-      GUM_ERROR(NullElement, "dereferencing a nullptr pointer");
-    }
+    if (!__val) { GUM_ERROR(NullElement, "dereferencing a nullptr pointer"); }
 
     return *__val;
   }
@@ -216,9 +209,7 @@ namespace gum {
 
   template < typename Val >
   INLINE Val* RefPtr< Val >::operator->() const {
-    if (!__val) {
-      GUM_ERROR(NullElement, "dereferencing a nullptr pointer");
-    }
+    if (!__val) { GUM_ERROR(NullElement, "dereferencing a nullptr pointer"); }
 
     return __val;
   }

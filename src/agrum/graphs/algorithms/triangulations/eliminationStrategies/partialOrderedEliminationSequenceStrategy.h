@@ -50,7 +50,7 @@ namespace gum {
    *
    */
   class PartialOrderedEliminationSequenceStrategy
-    : public EliminationSequenceStrategy {
+      : public EliminationSequenceStrategy {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -183,8 +183,8 @@ namespace gum {
 
 
 #ifndef GUM_NO_INLINE
-#include <agrum/graphs/algorithms/triangulations/eliminationStrategies/partialOrderedEliminationSequenceStrategy_inl.h>
-#endif  // GUM_NOINLINE
+#  include <agrum/graphs/algorithms/triangulations/eliminationStrategies/partialOrderedEliminationSequenceStrategy_inl.h>
+#endif   // GUM_NOINLINE
 
 
 #endif /* GUM_PARTIAL_ORDERED_ELIMINATION_SEQUENCE_STRATEGY_H */

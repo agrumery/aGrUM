@@ -186,7 +186,6 @@ namespace gum_tests {
     }
 
     void testReordering_cpt() {
-
       gum::Instantiation Order;
 
       for (const auto node : bn->topologicalOrder())
@@ -334,7 +333,7 @@ namespace gum_tests {
 
       gum::Instantiation i1(p), i2(p);
       i2.setFirst();
-      ++i2;  // for i2 to be !=i1 in the first iteration
+      ++i2;   // for i2 to be !=i1 in the first iteration
       for (i1.setFirst(); !i1.end(); ++i1) {
         TS_ASSERT_DIFFERS(i1, i2);
         p.fromOffset(i2, p.toOffset(i1));
@@ -343,8 +342,8 @@ namespace gum_tests {
 
       gum::Instantiation j;
       TS_ASSERT_DIFFERS(i1, j);
-      j.inc();                  // j is in overflow
-      TS_ASSERT_EQUALS(i1, j);  // both are in overflow => equals
+      j.inc();                   // j is in overflow
+      TS_ASSERT_EQUALS(i1, j);   // both are in overflow => equals
     }
 
     private:
@@ -353,12 +352,12 @@ namespace gum_tests {
       bn.cpt(i1).fillWith({0.5, 0.5});
       bn.cpt(i2).fillWith({0.3, 0.7});
       bn.cpt(i3).fillWith({0.1, 0.9, 0.9, 0.1});
-      bn.cpt(i4).fillWith(  // clang-format off
+      bn.cpt(i4).fillWith(   // clang-format off
                              {0.4, 0.6,
                               0.5, 0.5,
                               0.5, 0.5,
-                              1.0, 0.0});  // clang-format on
-      bn.cpt(i5).fillWith(  // clang-format off
+                              1.0, 0.0});   // clang-format on
+      bn.cpt(i5).fillWith(   // clang-format off
                              {1.0,0.0,
                               0.0,1.0,
                               0.0,1.0,
@@ -366,7 +365,7 @@ namespace gum_tests {
                               0.0,1.0,
                               0.0,1.0,
                               0.0,1.0,
-                              0.0,1.0});                                     // clang-format on
+                              0.0,1.0});                                      // clang-format on
     }
   };
-}
+}   // namespace gum_tests

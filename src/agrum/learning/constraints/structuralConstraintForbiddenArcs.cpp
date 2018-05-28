@@ -28,7 +28,7 @@
 
 /// include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
-#include <agrum/learning/constraints/structuralConstraintForbiddenArcs_inl.h>
+#  include <agrum/learning/constraints/structuralConstraintForbiddenArcs_inl.h>
 #endif /* GUM_NO_INLINE */
 
 namespace gum {
@@ -49,16 +49,16 @@ namespace gum {
 
     /// copy constructor
     StructuralConstraintForbiddenArcs::StructuralConstraintForbiddenArcs(
-      const StructuralConstraintForbiddenArcs& from)
-        : _ForbiddenArcs__forbidden_arcs(from._ForbiddenArcs__forbidden_arcs) {
+      const StructuralConstraintForbiddenArcs& from) :
+        _ForbiddenArcs__forbidden_arcs(from._ForbiddenArcs__forbidden_arcs) {
       GUM_CONS_CPY(StructuralConstraintForbiddenArcs);
     }
 
     /// move constructor
     StructuralConstraintForbiddenArcs::StructuralConstraintForbiddenArcs(
-      StructuralConstraintForbiddenArcs&& from)
-        : _ForbiddenArcs__forbidden_arcs(
-            std::move(from._ForbiddenArcs__forbidden_arcs)) {
+      StructuralConstraintForbiddenArcs&& from) :
+        _ForbiddenArcs__forbidden_arcs(
+          std::move(from._ForbiddenArcs__forbidden_arcs)) {
       GUM_CONS_MOV(StructuralConstraintForbiddenArcs);
     }
 
@@ -69,7 +69,7 @@ namespace gum {
 
     /// copy operator
     StructuralConstraintForbiddenArcs& StructuralConstraintForbiddenArcs::
-    operator=(const StructuralConstraintForbiddenArcs& from) {
+                                       operator=(const StructuralConstraintForbiddenArcs& from) {
       if (this != &from) {
         _ForbiddenArcs__forbidden_arcs = from._ForbiddenArcs__forbidden_arcs;
       }
@@ -78,7 +78,7 @@ namespace gum {
 
     /// move operator
     StructuralConstraintForbiddenArcs& StructuralConstraintForbiddenArcs::
-    operator=(StructuralConstraintForbiddenArcs&& from) {
+                                       operator=(StructuralConstraintForbiddenArcs&& from) {
       if (this != &from) {
         _ForbiddenArcs__forbidden_arcs =
           std::move(from._ForbiddenArcs__forbidden_arcs);

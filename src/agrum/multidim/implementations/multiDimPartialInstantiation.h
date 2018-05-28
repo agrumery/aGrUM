@@ -84,7 +84,7 @@ namespace gum {
      * @return Returns this MultiDimPartialInstantiation.
      */
     MultiDimPartialInstantiation< GUM_SCALAR, TABLE >&
-    operator=(const MultiDimPartialInstantiation< GUM_SCALAR, TABLE >& src);
+      operator=(const MultiDimPartialInstantiation< GUM_SCALAR, TABLE >& src);
 
     /// @}
     // =========================================================================
@@ -115,8 +115,8 @@ namespace gum {
      * argument.
      */
     TABLE< GUM_SCALAR >*
-    instantiate(const TABLE< GUM_SCALAR >& table,
-                const HashTable< const DiscreteVariable*, Idx >& inst_vars);
+      instantiate(const TABLE< GUM_SCALAR >&                       table,
+                  const HashTable< const DiscreteVariable*, Idx >& inst_vars);
 
     /**
      * @brief Creates and returns the partial instantiation of the table over a
@@ -130,8 +130,8 @@ namespace gum {
      * @param table The table to parially instantiate.
      * @param inst_vars A mapping between variables and their instantiation.
      */
-    void instantiate(TABLE< GUM_SCALAR >&       container,
-                     const TABLE< GUM_SCALAR >& table,
+    void instantiate(TABLE< GUM_SCALAR >&                             container,
+                     const TABLE< GUM_SCALAR >&                       table,
                      const HashTable< const DiscreteVariable*, Idx >& inst_vars);
 
     /// @}

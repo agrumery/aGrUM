@@ -48,7 +48,6 @@ namespace gum {
    *
    */
   class StatisticalLazyDecider : public IDecisionStrategy {
-
     // ###################################################################
     /// @name Constructor & destructor.
     // ###################################################################
@@ -57,9 +56,7 @@ namespace gum {
     // ==========================================================================
     /// Constructor
     // ==========================================================================
-    StatisticalLazyDecider()
-        : __counter()
-        , __initialized(false) {
+    StatisticalLazyDecider() : __counter(), __initialized(false) {
       GUM_CONSTRUCTOR(StatisticalLazyDecider)
     }
 
@@ -88,5 +85,5 @@ namespace gum {
     StatesCounter __counter;
     bool          __initialized;
   };
-}
-#endif  // GUM_STATISTICAL_LAZY_DECIDER_H
+}   // namespace gum
+#endif   // GUM_STATISTICAL_LAZY_DECIDER_H

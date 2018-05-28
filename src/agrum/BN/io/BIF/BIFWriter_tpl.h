@@ -20,10 +20,10 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/agrum.h>
+#  include <agrum/agrum.h>
 
 // to ease parsing in IDE
-#include <agrum/BN/io/BIF/BIFWriter.h>
+#  include <agrum/BN/io/BIF/BIFWriter.h>
 
 namespace gum {
 
@@ -70,9 +70,7 @@ namespace gum {
 
     output.flush();
 
-    if (output.fail()) {
-      GUM_ERROR(IOError, "Writting in the ostream failed.");
-    }
+    if (output.fail()) { GUM_ERROR(IOError, "Writting in the ostream failed."); }
   }
 
   // Writes a Bayesian Network in the referenced file using the BIF format.
@@ -107,17 +105,15 @@ namespace gum {
     output.flush();
     output.close();
 
-    if (output.fail()) {
-      GUM_ERROR(IOError, "Writting in the ostream failed.");
-    }
+    if (output.fail()) { GUM_ERROR(IOError, "Writting in the ostream failed."); }
   }
 
   // Returns a bloc defining a variable's CPT in the BIF format.
   template < typename GUM_SCALAR >
   INLINE std::string
-  BIFWriter< GUM_SCALAR >::__variableCPT(const Potential< GUM_SCALAR >& cpt) {
+         BIFWriter< GUM_SCALAR >::__variableCPT(const Potential< GUM_SCALAR >& cpt) {
     std::stringstream str;
-    std::string       tab = "   ";  // poor tabulation
+    std::string       tab = "   ";   // poor tabulation
 
     if (cpt.nbrDim() == 1) {
       Instantiation inst(cpt);
@@ -131,7 +127,7 @@ namespace gum {
       str << ";" << std::endl << "}" << std::endl;
     } else if (cpt.domainSize() > 1) {
       Instantiation inst(cpt);
-      Instantiation condVars;  // Instantiation on the conditioning variables
+      Instantiation condVars;   // Instantiation on the conditioning variables
       const Sequence< const DiscreteVariable* >& varsSeq = cpt.variablesSequence();
       str << "probability (" << (varsSeq[(Idx)0])->name() << " | ";
 
@@ -166,9 +162,9 @@ namespace gum {
   // Returns the header of the BIF file.
   template < typename GUM_SCALAR >
   INLINE std::string
-  BIFWriter< GUM_SCALAR >::__header(const IBayesNet< GUM_SCALAR >& bn) {
+         BIFWriter< GUM_SCALAR >::__header(const IBayesNet< GUM_SCALAR >& bn) {
     std::stringstream str;
-    std::string       tab = "   ";  // poor tabulation
+    std::string       tab = "   ";   // poor tabulation
     str << "network \"" << bn.propertyWithDefault("name", "unnamedBN") << "\" {"
         << std::endl;
     str << "// written by aGrUM " << GUM_VERSION << std::endl;
@@ -179,9 +175,9 @@ namespace gum {
   // Returns a bloc defining a variable in the BIF format.
   template < typename GUM_SCALAR >
   INLINE std::string
-  BIFWriter< GUM_SCALAR >::__variableBloc(const DiscreteVariable& var) {
+         BIFWriter< GUM_SCALAR >::__variableBloc(const DiscreteVariable& var) {
     std::stringstream str;
-    std::string       tab = "   ";  // poor tabulation
+    std::string       tab = "   ";   // poor tabulation
     str << "variable " << var.name() << " {" << std::endl;
     str << tab << "type discrete[" << var.domainSize() << "] {";
 
@@ -216,4 +212,4 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS

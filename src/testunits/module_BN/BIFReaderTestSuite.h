@@ -199,7 +199,7 @@ namespace gum_tests {
 
     void testRead_file3() {
       std::string             file = GET_RESSOURCES_PATH("BIFReader_file3.bif");
-      auto net = new gum::BayesNet< float >();
+      auto                    net = new gum::BayesNet< float >();
       gum::BIFReader< float > reader(net, file);
 
       int nbrErr = 0;
@@ -662,8 +662,8 @@ namespace gum_tests {
 
       TS_ASSERT(idMap.exists("LVFAILURE"));
 
-      if (idMap.exists("LVEDVOLUME") && idMap.exists("HYPOVOLEMIA") &&
-          idMap.exists("LVFAILURE")) {
+      if (idMap.exists("LVEDVOLUME") && idMap.exists("HYPOVOLEMIA")
+          && idMap.exists("LVFAILURE")) {
         const gum::DiscreteVariable& lvedvolume =
           net->variable(idMap["LVEDVOLUME"]);
 
@@ -926,4 +926,4 @@ namespace gum_tests {
       if (net) delete net;
     }
   };
-}
+}   // namespace gum_tests

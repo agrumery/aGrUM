@@ -48,7 +48,6 @@ namespace gum_tests {
     }
 
     void testNormalisation() {
-
       gum::Potential< double > p(new gum::MultiDimArray< double >());
 
       gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
@@ -75,9 +74,7 @@ namespace gum_tests {
         i.setFirst();
         TS_ASSERT_EQUALS(p[i], 2.0 / (taille * (taille + 1)));
 
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e);
-      }
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
     void testDomainSizeChanges() {
@@ -168,16 +165,16 @@ namespace gum_tests {
       p << a << b;
       p.fillWith({1, 2, 3, 4, 5, 6, 7, 8, 9});
 
-      q << b << c;  // different dims
+      q << b << c;   // different dims
       q.fillWith({1, 2, 3, 4, 5, 6, 7, 8, 9});
 
-      r << a << b;  // same dims, same data
+      r << a << b;   // same dims, same data
       r.fillWith({1, 2, 3, 4, 5, 6, 7, 8, 9});
 
-      t << a << b;  // same dims,different data
+      t << a << b;   // same dims,different data
       t.fillWith({1, 2, 3, 4, 0, 6, 7, 8, 9});
 
-      u << b << a;  // same dims, same data, different order
+      u << b << a;   // same dims, same data, different order
       u.fillWith({1, 4, 7, 2, 5, 8, 3, 6, 9});
 
       TS_ASSERT(p != q);
@@ -432,7 +429,6 @@ namespace gum_tests {
     }
 
     void testReorganizePotential() {
-
       auto a = gum::LabelizedVariable("a", "afoo", 3);
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
       auto c = gum::LabelizedVariable("c", "cfoo", 3);
@@ -507,7 +503,7 @@ namespace gum_tests {
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
 
       gum::Potential< float > p;
-      {  // empty potentials are equal
+      {   // empty potentials are equal
         gum::Potential< float > q;
         TS_ASSERT_EQUALS(p, q);
       }
@@ -515,28 +511,28 @@ namespace gum_tests {
       p.fillWith({1, 2, 3});
       TS_ASSERT_EQUALS(p, p);
 
-      {  // same potential
+      {   // same potential
         gum::Potential< float > q;
         q << a;
         q.fillWith({1, 2, 3});
         TS_ASSERT_EQUALS(p, q);
       }
 
-      {  // difference values
+      {   // difference values
         gum::Potential< float > q;
         q << a;
         q.fillWith({3, 6, 9});
         TS_ASSERT_DIFFERS(p, q);
       }
 
-      {  // same values, different variables
+      {   // same values, different variables
         gum::Potential< float > q;
         q << b;
         q.fillWith({1, 2, 3});
         TS_ASSERT_DIFFERS(p, q);
       }
 
-      {  // different dimensions
+      {   // different dimensions
         gum::Potential< float > q;
         q << b << a;
         q.fillWith(1);
@@ -929,9 +925,7 @@ namespace gum_tests {
         TS_ASSERT_DELTA(s0, int(0.3 * NBRITER), DELTA);
         TS_ASSERT_DELTA(s1, int(0.6 * NBRITER), DELTA);
         TS_ASSERT_DELTA(s2, int(0.1 * NBRITER), DELTA);
-      } catch (const gum::Exception& e) {
-        GUM_SHOWERROR(e);
-      }
+      } catch (const gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
     void testVariableAccessor() {
@@ -977,9 +971,7 @@ namespace gum_tests {
           auto vp = p[Ip];
           auto vpp = pp[Ipp];
           TS_ASSERT_EQUALS(vp, vpp);
-        } catch (gum::Exception& e) {
-          GUM_SHOWERROR(e);
-        }
+        } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
 
       // errors
       gum::Potential< int > bad_p;
@@ -1056,4 +1048,4 @@ namespace gum_tests {
       __testval_for_set(p, 1, p.argmin(), 2);
     }
   };
-}
+}   // namespace gum_tests

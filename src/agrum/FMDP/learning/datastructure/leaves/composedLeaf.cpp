@@ -18,11 +18,11 @@
  * 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. *
  *********************************************************************************/
 /**
-* @file
-* @brief Sources for Composed Leaf class
-*
-* @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
-*/
+ * @file
+ * @brief Sources for Composed Leaf class
+ *
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
+ */
 // =======================================================
 #include <agrum/FMDP/learning/datastructure/leaves/composedLeaf.h>
 // =======================================================
@@ -35,4 +35,4 @@ namespace gum {
        << " - Right : " << __l2->toString() << "}";
     return ss.str();
   }
-}  // end of gum namespace
+}   // namespace gum

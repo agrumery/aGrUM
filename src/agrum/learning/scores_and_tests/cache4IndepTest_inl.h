@@ -24,7 +24,7 @@
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <tuple>
+#  include <tuple>
 
 namespace gum {
 
@@ -34,14 +34,14 @@ namespace gum {
     INLINE Cache4IndepTest::Cache4IndepTest() { GUM_CONSTRUCTOR(Cache4IndepTest); }
 
     /// copy constructor
-    INLINE Cache4IndepTest::Cache4IndepTest(const Cache4IndepTest& from)
-        : __scores(from.__scores) {
+    INLINE Cache4IndepTest::Cache4IndepTest(const Cache4IndepTest& from) :
+        __scores(from.__scores) {
       GUM_CONS_CPY(Cache4IndepTest);
     }
 
     /// move constructor
-    INLINE Cache4IndepTest::Cache4IndepTest(Cache4IndepTest&& from)
-        : __scores(std::move(from.__scores)) {
+    INLINE Cache4IndepTest::Cache4IndepTest(Cache4IndepTest&& from) :
+        __scores(std::move(from.__scores)) {
       GUM_CONS_MOV(Cache4IndepTest);
     }
 
@@ -50,18 +50,14 @@ namespace gum {
 
     /// copy operator
     INLINE Cache4IndepTest& Cache4IndepTest::
-    operator=(const Cache4IndepTest& from) {
-      if (&from != this) {
-        __scores = from.__scores;
-      }
+                            operator=(const Cache4IndepTest& from) {
+      if (&from != this) { __scores = from.__scores; }
       return *this;
     }
 
     /// move operator
     INLINE Cache4IndepTest& Cache4IndepTest::operator=(Cache4IndepTest&& from) {
-      if (&from != this) {
-        __scores = std::move(from.__scores);
-      }
+      if (&from != this) { __scores = std::move(from.__scores); }
       return *this;
     }
 

@@ -42,14 +42,14 @@
 namespace gum {
 
   /**
-   * @class InfluenceDiagram influenceDiagram.h <agrum/ID/influenceDiagram.h>
+   * @class InfluenceDiagram
+   * @headerfile influenceDiagram.h <agrum/ID/influenceDiagram.h>
    * @brief Class representing an Influence Diagram
    * @ingroup InfluenceDiagram_group
    *
    */
   template < typename GUM_SCALAR >
   class InfluenceDiagram : public DAGmodel {
-
     // friend class InfluenceDiagramFactory<GUM_SCALAR>;
 
     public:
@@ -77,7 +77,7 @@ namespace gum {
      * Copy Operator
      */
     InfluenceDiagram< GUM_SCALAR >&
-    operator=(const InfluenceDiagram< GUM_SCALAR >& source);
+      operator=(const InfluenceDiagram< GUM_SCALAR >& source);
 
     /// @}
 
@@ -141,15 +141,15 @@ namespace gum {
     Size decisionNodeSize() const;
 
     /**
-    * Returns a constant reference over a variabe given it's node id.
-    * @throw NotFound If no variable's id matches varId.
-    */
+     * Returns a constant reference over a variabe given it's node id.
+     * @throw NotFound If no variable's id matches varId.
+     */
     virtual const DiscreteVariable& variable(NodeId id) const;
 
     /**
-    * Return id node from discrete var pointer.
-    * @throw NotFound If no variable matches var.
-    */
+     * Return id node from discrete var pointer.
+     * @throw NotFound If no variable matches var.
+     */
     virtual NodeId nodeId(const DiscreteVariable& var) const;
 
     /// Getter by name
@@ -159,7 +159,7 @@ namespace gum {
     /// Getter by name
     /// @throw NotFound if no such name exists in the graph.
     virtual const DiscreteVariable&
-    variableFromName(const std::string& name) const;
+      variableFromName(const std::string& name) const;
 
     /**
      * Add a chance variable, it's associate node and it's CPT. The id of the
@@ -178,19 +178,19 @@ namespace gum {
     NodeId add(const DiscreteVariable& variable, NodeId id = 0);
 
     /**
-    * Add a chance variable, it's associate node and it's CPT. The id of the new
-    * variable is automatically generated.
-    *
-    * The implementation of the Potential is by default a MultiDimArray.
-    *
-    * @param variable The variable added by copy.
-    * @param id The chosen id. If 0, the NodeGraphPart will choose.
-    * @warning give an id (not 0) should be reserved for rare and specific
-    *situations
-    *!!!
-    * @return the id of the added variable.
-    * @throws DuplicateElement if id(<>0) is already used
-    */
+     * Add a chance variable, it's associate node and it's CPT. The id of the new
+     * variable is automatically generated.
+     *
+     * The implementation of the Potential is by default a MultiDimArray.
+     *
+     * @param variable The variable added by copy.
+     * @param id The chosen id. If 0, the NodeGraphPart will choose.
+     * @warning give an id (not 0) should be reserved for rare and specific
+     *situations
+     *!!!
+     * @return the id of the added variable.
+     * @throws DuplicateElement if id(<>0) is already used
+     */
     NodeId addChanceNode(const DiscreteVariable& variable, NodeId id = 0);
 
     /**
@@ -276,9 +276,9 @@ namespace gum {
     void erase(const DiscreteVariable& var);
 
     /** we allow the user to change the name of a variable
-    * @throws DuplicateLabel if this name already exists
-    * @throws NotFound Raised if no nodes matches id.
-    */
+     * @throws DuplicateLabel if this name already exists
+     * @throws NotFound Raised if no nodes matches id.
+     */
     void changeVariableName(NodeId id, const std::string& new_name);
 
     /// @}
@@ -308,13 +308,13 @@ namespace gum {
     void eraseArc(const Arc& arc);
 
     /**
-    * RRemoves an arc in the ID, and update diagram's potential nodes cpt if
-    *necessary.
-    *
-    * If (tail, head) doesn't exist, the nothing happens.
-    * @param head and
-    * @param tail as NodeId
-    */
+     * RRemoves an arc in the ID, and update diagram's potential nodes cpt if
+     *necessary.
+     *
+     * If (tail, head) doesn't exist, the nothing happens.
+     * @param head and
+     * @param tail as NodeId
+     */
     void eraseArc(NodeId tail, NodeId head);
 
     /// @}

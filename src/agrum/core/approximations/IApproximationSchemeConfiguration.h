@@ -235,11 +235,11 @@ namespace gum {
     virtual void enableMaxTime() = 0;
 
     /**
-    * @brief Returns true if stopping criterion on timeout is enabled, false
-    * otherwise.
-    * @return Returns true if stopping criterion on timeout is enabled, false
-    * otherwise.
-    */
+     * @brief Returns true if stopping criterion on timeout is enabled, false
+     * otherwise.
+     * @return Returns true if stopping criterion on timeout is enabled, false
+     * otherwise.
+     */
     virtual bool isEnabledMaxTime() const = 0;
 
     /**
@@ -288,10 +288,10 @@ namespace gum {
      */
     virtual const std::vector< double >& history() const = 0;
   };
-}  // namespace gum
+}   // namespace gum
 
 #ifndef GUM_NO_INLINE
-#include <agrum/core/approximations/IApproximationSchemeConfiguration_inl.h>
+#  include <agrum/core/approximations/IApproximationSchemeConfiguration_inl.h>
 #endif
 
-#endif  // GUM_APPROXIMATION_SCHEME_CONFIGURATION_H
+#endif   // GUM_APPROXIMATION_SCHEME_CONFIGURATION_H

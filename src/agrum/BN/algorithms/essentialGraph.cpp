@@ -27,18 +27,16 @@
 #include <agrum/BN/algorithms/essentialGraph.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/BN/algorithms/essentialGraph_inl.h>
-#endif  // GUM_NOINLINE
+#  include <agrum/BN/algorithms/essentialGraph_inl.h>
+#endif   // GUM_NOINLINE
 
 namespace gum {
-  EssentialGraph::EssentialGraph(const DAGmodel& m)
-      : __dagmodel(&m) {
+  EssentialGraph::EssentialGraph(const DAGmodel& m) : __dagmodel(&m) {
     __buildEssentialGraph();
   }
 
-  EssentialGraph::EssentialGraph(const DAGmodel& m, const MixedGraph& mg)
-      : __dagmodel(&m)
-      , __mg(mg) {}
+  EssentialGraph::EssentialGraph(const DAGmodel& m, const MixedGraph& mg) :
+      __dagmodel(&m), __mg(mg) {}
   EssentialGraph::EssentialGraph(const EssentialGraph& g) {
     __dagmodel = g.__dagmodel;
     __buildEssentialGraph();
@@ -83,16 +81,12 @@ namespace gum {
     //  Steen A. Andersson, David Madigan, and Michael D. Perlman*
 
     // condition (c)
-    if ((__mg.parents(a) - __mg.parents(b)).size() > 0) {
-      return true;
-    }
+    if ((__mg.parents(a) - __mg.parents(b)).size() > 0) { return true; }
 
     NodeSet cs;
     for (const auto& c : __mg.parents(b)) {
       // condition (b) & (c)
-      if (c == a) {
-        continue;
-      }
+      if (c == a) { continue; }
       if (!__mg.existsEdge(c, a)) {
         return true;
       } else {
@@ -107,9 +101,7 @@ namespace gum {
     } else {
       for (const auto& i : cs) {
         ss = ss - __mg.neighbours(i);
-        if (ss.size() < 2) {
-          return false;
-        }
+        if (ss.size() < 2) { return false; }
       }
       return true;
     }
@@ -147,4 +139,4 @@ namespace gum {
 
     return output.str();
   }
-}  // namespace gum
+}   // namespace gum

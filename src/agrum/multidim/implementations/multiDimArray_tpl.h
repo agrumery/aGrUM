@@ -31,8 +31,8 @@ namespace gum {
 
   // Default constructor: creates an empty null dimensional matrix
   template < typename GUM_SCALAR >
-  MultiDimArray< GUM_SCALAR >::MultiDimArray()
-      : MultiDimWithOffset< GUM_SCALAR >() {
+  MultiDimArray< GUM_SCALAR >::MultiDimArray() :
+      MultiDimWithOffset< GUM_SCALAR >() {
     // for debugging purposes
     GUM_CONSTRUCTOR(MultiDimArray);
   }
@@ -40,9 +40,9 @@ namespace gum {
   // copy constructor
   template < typename GUM_SCALAR >
   MultiDimArray< GUM_SCALAR >::MultiDimArray(
-    const MultiDimArray< GUM_SCALAR >& src)
-      : MultiDimWithOffset< GUM_SCALAR >(src)
-      , _values(src._values) {
+    const MultiDimArray< GUM_SCALAR >& src) :
+      MultiDimWithOffset< GUM_SCALAR >(src),
+      _values(src._values) {
     // for debugging purposes
     GUM_CONS_CPY(MultiDimArray);
   }
@@ -83,7 +83,7 @@ namespace gum {
   // data access operator
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR&
-  MultiDimArray< GUM_SCALAR >::_get(const Instantiation& i) const {
+         MultiDimArray< GUM_SCALAR >::_get(const Instantiation& i) const {
     if (i.isMaster(this)) {
       return _values[this->_offsets[&i]];
     } else {
@@ -106,7 +106,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void MultiDimArray< GUM_SCALAR >::erase(const DiscreteVariable& v) {
     Sequence< const DiscreteVariable* > variables = this->variablesSequence();
-    Idx pos = variables.pos(&v);  // throw a NotFound if necessary
+    Idx pos = variables.pos(&v);   // throw a NotFound if necessary
 
     if (variables.size() == 1) {
       if (!this->_isInMultipleChangeMethod()) _values.clear();
@@ -158,7 +158,7 @@ namespace gum {
   // synchronise content after MultipleChanges
   template < typename GUM_SCALAR >
   INLINE void
-  MultiDimArray< GUM_SCALAR >::_commitMultipleChanges(const GUM_SCALAR& x) {
+    MultiDimArray< GUM_SCALAR >::_commitMultipleChanges(const GUM_SCALAR& x) {
     if (MultiDimWithOffset< GUM_SCALAR >::domainSize() != _values.size()) {
       _values.resize(MultiDimWithOffset< GUM_SCALAR >::domainSize(), x);
     }
@@ -180,7 +180,7 @@ namespace gum {
   // returns the element stored in the multidimArray at a given offset
   template < typename GUM_SCALAR >
   INLINE const GUM_SCALAR&
-  MultiDimArray< GUM_SCALAR >::unsafeGet(Idx offset) const {
+               MultiDimArray< GUM_SCALAR >::unsafeGet(Idx offset) const {
     return _values[offset];
   }
 
@@ -193,10 +193,8 @@ namespace gum {
   // returns the element stored in the multidimArray at a given offset
   template < typename GUM_SCALAR >
   INLINE const GUM_SCALAR&
-  MultiDimArray< GUM_SCALAR >::getByOffset(Idx offset) const {
-    if (offset >= _values.size()) {
-      GUM_ERROR(OutOfBounds, "offset too large");
-    }
+               MultiDimArray< GUM_SCALAR >::getByOffset(Idx offset) const {
+    if (offset >= _values.size()) { GUM_ERROR(OutOfBounds, "offset too large"); }
 
     return _values[offset];
   }
@@ -204,9 +202,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void MultiDimArray< GUM_SCALAR >::setByOffset(Idx               offset,
                                                        const GUM_SCALAR& data) {
-    if (offset >= _values.size()) {
-      GUM_ERROR(OutOfBounds, "offset too large");
-    }
+    if (offset >= _values.size()) { GUM_ERROR(OutOfBounds, "offset too large"); }
 
     _values[offset] = data;
   }

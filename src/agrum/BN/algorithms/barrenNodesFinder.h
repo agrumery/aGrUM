@@ -100,8 +100,8 @@ namespace gum {
     /// returns the set of barren potentials in messages sent in a junction tree
     template < typename GUM_SCALAR >
     ArcProperty< Set< const Potential< GUM_SCALAR >* > >
-    barrenPotentials(const CliqueGraph&             junction_tree,
-                     const IBayesNet< GUM_SCALAR >& bn);
+      barrenPotentials(const CliqueGraph&             junction_tree,
+                       const IBayesNet< GUM_SCALAR >& bn);
 
     /// @}
 
@@ -121,8 +121,8 @@ namespace gum {
 
 
 #ifndef GUM_NO_INLINE
-#include <agrum/BN/algorithms/barrenNodesFinder_inl.h>
-#endif  // GUM_NO_INLINE
+#  include <agrum/BN/algorithms/barrenNodesFinder_inl.h>
+#endif   // GUM_NO_INLINE
 
 
 #include <agrum/BN/algorithms/barrenNodesFinder_tpl.h>

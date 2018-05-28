@@ -274,10 +274,10 @@ namespace gum {
     /// @}
   };
 
-}  // End of namespace gum
+}   // End of namespace gum
 
 #ifndef GUM_NO_INLINE
-#include <agrum/multidim/utils/FunctionGraphUtilities/internalNode_inl.h>
+#  include <agrum/multidim/utils/FunctionGraphUtilities/internalNode_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_MULTI_DIM_FUNCTION_GRAPH_INTERNAL_NODE_H */

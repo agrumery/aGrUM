@@ -184,4 +184,4 @@ namespace gum_tests {
       // TS_ASSERT_THROWS( iq = ip, gum::OperationNotAllowed );
     }
   };
-}
+}   // namespace gum_tests

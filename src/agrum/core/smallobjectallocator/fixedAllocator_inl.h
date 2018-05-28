@@ -36,7 +36,6 @@ namespace gum {
   // ============================================================================
   INLINE void FixedAllocator::__Chunk::__init(const std::size_t&   blockSize,
                                               const unsigned char& numBlocks) {
-
     // Chunk memory space allocation. A chunk allocates a memory of blockSize *
     // numBlocks size.
     // The chunk will then give us numBlocks distinct blocks of blockSize from
@@ -89,7 +88,6 @@ namespace gum {
   // ============================================================================
   INLINE void FixedAllocator::__Chunk::__deallocat(void* pDeallocatedBlock,
                                                    const std::size_t& blockSize) {
-
     // first, ensure that deallocated is in this chunk
     assert(pDeallocatedBlock >= __pData);
 
@@ -155,7 +153,6 @@ namespace gum {
   // Allocates a block
   // ============================================================================
   INLINE void* FixedAllocator::allocate() {
-
     if (__chunks.empty() || __allocChunk->__blocksAvailable == 0) {
       // no available memory in this chunk
       // Try to find one with memory available
@@ -185,10 +182,9 @@ namespace gum {
   // Deallocates a block
   // ============================================================================
   INLINE void FixedAllocator::deallocate(void* pDeallocatedBlock) {
-
-    if (__deallocChunk->__pData > pDeallocatedBlock ||
-        pDeallocatedBlock >
-          (__deallocChunk->__pData + (__numBlocks * __blockSize))) {
+    if (__deallocChunk->__pData > pDeallocatedBlock
+        || pDeallocatedBlock
+             > (__deallocChunk->__pData + (__numBlocks * __blockSize))) {
       // If not things get ugly
       // We have to find where the Chunk containing this pointer is
       std::ptrdiff_t offset = 0;
@@ -198,9 +194,9 @@ namespace gum {
         ++offset;
         // First we look for the one going to the end of the vector
         if ((__deallocChunk + offset) < __chunks.end()) {
-          if ((__deallocChunk + offset)->__pData <= pDeallocatedBlock &&
-              pDeallocatedBlock < ((__deallocChunk + offset)->__pData +
-                                   (__numBlocks * __blockSize))) {
+          if ((__deallocChunk + offset)->__pData <= pDeallocatedBlock
+              && pDeallocatedBlock < ((__deallocChunk + offset)->__pData
+                                      + (__numBlocks * __blockSize))) {
             // If pointed chunk contains this pointer, deallocation find the
             // place
             __deallocChunk = (__deallocChunk + offset);
@@ -210,9 +206,9 @@ namespace gum {
 
         // Then we look for the one going to the beginning of the vector
         if ((__deallocChunk - offset) >= __chunks.begin()) {
-          if ((__deallocChunk - offset)->__pData <= pDeallocatedBlock &&
-              pDeallocatedBlock < ((__deallocChunk - offset)->__pData +
-                                   (__numBlocks * __blockSize))) {
+          if ((__deallocChunk - offset)->__pData <= pDeallocatedBlock
+              && pDeallocatedBlock < ((__deallocChunk - offset)->__pData
+                                      + (__numBlocks * __blockSize))) {
             // If pointed chunk contains this pointer, deallocation find the
             // place
             __deallocChunk = (__deallocChunk - offset);
@@ -224,4 +220,4 @@ namespace gum {
     __deallocChunk->__deallocat(pDeallocatedBlock, __blockSize);
   }
 
-}  // namespace gum
+}   // namespace gum

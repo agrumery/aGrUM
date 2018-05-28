@@ -129,9 +129,7 @@ namespace gum_tests {
         gum::Instantiation i(t1);
 
         for (i.setFirst(); !i.end(); ++i) {
-          if (*(t1.get(i)) != *(t2.get(i))) {
-            return false;
-          }
+          if (*(t1.get(i)) != *(t2.get(i))) { return false; }
         }
 
         return true;
@@ -151,9 +149,7 @@ namespace gum_tests {
         gum::Instantiation i(t1);
 
         for (i.setFirst(); !i.end(); ++i) {
-          if (*(t1.get(i)) != *(t2.get(i))) {
-            return false;
-          }
+          if (*(t1.get(i)) != *(t2.get(i))) { return false; }
         }
 
         return true;
@@ -164,23 +160,23 @@ namespace gum_tests {
 
     // the function used to combine two tables
     static gum::Potential< float >*
-    addPotential(const gum::Potential< float >& t1,
-                 const gum::Potential< float >& t2) {
+      addPotential(const gum::Potential< float >& t1,
+                   const gum::Potential< float >& t2) {
       return new gum::Potential< float >(t1 + t2);
     }
 
     // the function used to combine two tables
     static gum::Potential< float >*
-    multPotential(const gum::Potential< float >& t1,
-                  const gum::Potential< float >& t2) {
+      multPotential(const gum::Potential< float >& t1,
+                    const gum::Potential< float >& t2) {
       return new gum::Potential< float >(t1 * t2);
     }
 
     // projection of a table over a set
     gum::MultiDimArray< float >*
-    proj(const gum::MultiDimArray< float >&              table,
-         const gum::Set< const gum::DiscreteVariable* >& del_vars,
-         float                                           neutral_elt) {
+      proj(const gum::MultiDimArray< float >&              table,
+           const gum::Set< const gum::DiscreteVariable* >& del_vars,
+           float                                           neutral_elt) {
       gum::MultiDimArray< float >* result = new gum::MultiDimArray< float >;
       const gum::Sequence< const gum::DiscreteVariable* >& vars =
         table.variablesSequence();
@@ -206,9 +202,9 @@ namespace gum_tests {
 
     // projection of a table over a set
     gum::MultiDimArray< float* >*
-    proj(const gum::MultiDimArray< float* >&             table,
-         const gum::Set< const gum::DiscreteVariable* >& del_vars,
-         float                                           neutral_elt) {
+      proj(const gum::MultiDimArray< float* >&             table,
+           const gum::Set< const gum::DiscreteVariable* >& del_vars,
+           float                                           neutral_elt) {
       gum::MultiDimArray< float* >* result = new gum::MultiDimArray< float* >;
       const gum::Sequence< const gum::DiscreteVariable* >& vars =
         table.variablesSequence();
@@ -239,9 +235,9 @@ namespace gum_tests {
 
     // projection of a table over a set
     gum::Potential< float >*
-    proj(const gum::Potential< float >&                  table,
-         const gum::Set< const gum::DiscreteVariable* >& del_vars,
-         float                                           neutral_elt) {
+      proj(const gum::Potential< float >&                  table,
+           const gum::Set< const gum::DiscreteVariable* >& del_vars,
+           float                                           neutral_elt) {
       gum::Potential< float >* result = new gum::Potential< float >;
       const gum::Sequence< const gum::DiscreteVariable* >& vars =
         table.variablesSequence();
@@ -267,9 +263,9 @@ namespace gum_tests {
 
     // projection of a table over a set
     gum::Potential< float* >*
-    proj(const gum::Potential< float* >&                 table,
-         const gum::Set< const gum::DiscreteVariable* >& del_vars,
-         float                                           neutral_elt) {
+      proj(const gum::Potential< float* >&                 table,
+           const gum::Set< const gum::DiscreteVariable* >& del_vars,
+           float                                           neutral_elt) {
       gum::Potential< float* >* result = new gum::Potential< float* >;
       const gum::Sequence< const gum::DiscreteVariable* >& vars =
         table.variablesSequence();
@@ -907,8 +903,8 @@ namespace gum_tests {
     }
 
     static gum::Potential< float >*
-    myMax(const gum::Potential< float >&                  table,
-          const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+      myMax(const gum::Potential< float >&                  table,
+            const gum::Set< const gum::DiscreteVariable* >& del_vars) {
       return new gum::Potential< float >(table.margMaxOut(del_vars));
     }
 

@@ -26,8 +26,8 @@
 #include <agrum/graphs/parts/listeners/diGraphListener.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/parts/listeners/diGraphListener_inl.h>
-#endif  // GUM_NOINLINE
+#  include <agrum/graphs/parts/listeners/diGraphListener_inl.h>
+#endif   // GUM_NOINLINE
 
 namespace gum {
 
@@ -58,4 +58,4 @@ namespace gum {
 
   DiGraphListener::~DiGraphListener() { GUM_DESTRUCTOR(DiGraphListener); }
 
-}  // namespace gum
+}   // namespace gum

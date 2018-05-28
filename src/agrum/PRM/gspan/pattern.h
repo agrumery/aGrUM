@@ -41,7 +41,8 @@ namespace gum {
       class NeighborIterator;
 
       /**
-       * @class Pattern pattern.h <agrum/PRM/gspan/pattern.h>
+       * @class Pattern
+       * @headerfile pattern.h <agrum/PRM/gspan/pattern.h>
        * This contains all the information we want for a node in a DFSTree.
        *
        * Several rules are used regarding nodes in Pattern::graph.
@@ -67,7 +68,6 @@ namespace gum {
        *
        */
       class Pattern : private DiGraph {
-
         public:
         // =========================================================================
         /// @name Constructor and destructor.
@@ -230,16 +230,16 @@ namespace gum {
         /// @param u A node in this Pattern.
         /// @param v A node in this Pattern.
         /// @return true if the expansion is minimal.
-        bool __rec(Pattern& p,
+        bool __rec(Pattern&                     p,
                    Bijection< NodeId, NodeId >& node_map,
-                   NodeId u,
-                   NodeId v);
+                   NodeId                       u,
+                   NodeId                       v);
 
         /// A non recursive bugged version of __rec.
-        bool __not_rec(Pattern& p,
+        bool __not_rec(Pattern&                     p,
                        Bijection< NodeId, NodeId >& node_map,
-                       NodeId u,
-                       NodeId v);
+                       NodeId                       u,
+                       NodeId                       v);
 
         // to avoid clang++ warnings
         using DiGraph::addNode;
@@ -252,7 +252,7 @@ namespace gum {
   }   /* namespace prm */
 } /* namespace gum */
 #ifndef GUM_NO_INLINE
-#include <agrum/PRM/gspan/pattern_inl.h>
-#endif  // GUM_NO_INLINE
+#  include <agrum/PRM/gspan/pattern_inl.h>
+#endif   // GUM_NO_INLINE
 
 #endif /* GUM_PATTERN_H */

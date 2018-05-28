@@ -34,8 +34,8 @@
 #include <agrum/graphs/algorithms/DAGCycleDetector.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/algorithms/DAGCycleDetector_inl.h>
-#endif  // GUM_NOINLINE
+#  include <agrum/graphs/algorithms/DAGCycleDetector_inl.h>
+#endif   // GUM_NOINLINE
 
 namespace gum {
 
@@ -80,9 +80,7 @@ namespace gum {
         __addWeightedSet(__ancestors[ch], node_ancestors, 1);
         --nb_parents[ch];
 
-        if (!nb_parents[ch]) {
-          roots.insert(ch);
-        }
+        if (!nb_parents[ch]) { roots.insert(ch); }
       }
     }
 
@@ -105,9 +103,7 @@ namespace gum {
         __addWeightedSet(__descendants[pa], node_descendants, 1);
         --nb_children[pa];
 
-        if (!nb_children[pa]) {
-          leaves.insert(pa);
-        }
+        if (!nb_children[pa]) { leaves.insert(pa); }
       }
     }
   }
@@ -159,12 +155,11 @@ namespace gum {
 
           break;
 
-        default:
-          GUM_ERROR(OperationNotAllowed, "undefined change type");
+        default: GUM_ERROR(OperationNotAllowed, "undefined change type");
       }
     }
 
-    for (auto iter = additions.beginSafe();  // safe iterator needed here
+    for (auto iter = additions.beginSafe();   // safe iterator needed here
          iter != additions.endSafe();
          ++iter) {
       if (deletions.exists(iter.key())) {
@@ -276,9 +271,7 @@ namespace gum {
 
       const NodeProperty< Size >& anc_tail = ancestors[tail];
 
-      if (anc_tail.exists(head)) {
-        return true;
-      }
+      if (anc_tail.exists(head)) { return true; }
 
       const NodeProperty< Size >& desc_head = descendants[head];
 

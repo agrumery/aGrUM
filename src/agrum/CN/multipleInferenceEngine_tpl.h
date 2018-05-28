@@ -1,23 +1,23 @@
 
 /***************************************************************************
-*   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 
 #include <agrum/CN/inferenceEngine.h>
@@ -28,8 +28,8 @@ namespace gum {
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::
-      MultipleInferenceEngine(const CredalNet< GUM_SCALAR >& credalNet)
-        : InferenceEngine< GUM_SCALAR >::InferenceEngine(credalNet) {
+      MultipleInferenceEngine(const CredalNet< GUM_SCALAR >& credalNet) :
+        InferenceEngine< GUM_SCALAR >::InferenceEngine(credalNet) {
       GUM_CONSTRUCTOR(MultipleInferenceEngine);
     }
 
@@ -41,10 +41,10 @@ namespace gum {
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     inline void
-    MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::_initThreadsData(
-      const Size& num_threads,
-      const bool  __storeVertices,
-      const bool  __storeBNOpt) {
+      MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::_initThreadsData(
+        const Size& num_threads,
+        const bool  __storeVertices,
+        const bool  __storeBNOpt) {
       _workingSet.clear();
       _workingSet.resize(num_threads, nullptr);
       _workingSetE.clear();
@@ -86,10 +86,10 @@ namespace gum {
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     inline bool
-    MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::_updateThread(
-      const NodeId&                    id,
-      const std::vector< GUM_SCALAR >& vertex,
-      const bool&                      elimRedund) {
+      MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::_updateThread(
+        const NodeId&                    id,
+        const std::vector< GUM_SCALAR >& vertex,
+        const bool&                      elimRedund) {
       int tId = getThreadNumber();
 
       // save E(X) if we don't save vertices
@@ -109,7 +109,7 @@ namespace gum {
 
           if (exp < _l_expectationMin[tId][id]) _l_expectationMin[tId][id] = exp;
         }
-      }  // end of : if modal (map) not empty
+      }   // end of : if modal (map) not empty
 
       bool newOne = false;
       bool added = false;
@@ -149,12 +149,12 @@ namespace gum {
 
             if (_l_optimalNet[tId]->insert(key, true)) result = true;
           }
-        } else if (vertex[mod] == _l_marginalMin[tId][id][mod] ||
-                   vertex[mod] == _l_marginalMax[tId][id][mod]) {
+        } else if (vertex[mod] == _l_marginalMin[tId][id][mod]
+                   || vertex[mod] == _l_marginalMax[tId][id][mod]) {
           newOne = true;
 
-          if (__infE::_storeBNOpt && vertex[mod] == _l_marginalMin[tId][id][mod] &&
-              !__infE::_evidence.exists(id)) {
+          if (__infE::_storeBNOpt && vertex[mod] == _l_marginalMin[tId][id][mod]
+              && !__infE::_evidence.exists(id)) {
             std::vector< Size > key(3);
             key[0] = id;
             key[1] = mod;
@@ -163,8 +163,8 @@ namespace gum {
             if (_l_optimalNet[tId]->insert(key, false)) result = true;
           }
 
-          if (__infE::_storeBNOpt && vertex[mod] == _l_marginalMax[tId][id][mod] &&
-              !__infE::_evidence.exists(id)) {
+          if (__infE::_storeBNOpt && vertex[mod] == _l_marginalMax[tId][id][mod]
+              && !__infE::_evidence.exists(id)) {
             std::vector< Size > key(3);
             key[0] = id;
             key[1] = mod;
@@ -240,9 +240,8 @@ namespace gum {
                     maxItEnd = _l_marginalMax[tId][id].cend();
                jt != jtEnd && minIt != minItEnd && maxIt != maxItEnd;
                ++jt, ++minIt, ++maxIt) {
-            if ((std::fabs(*jt - *minIt) < 1e-6 ||
-                 std::fabs(*jt - *maxIt) < 1e-6) &&
-                std::fabs(*minIt - *maxIt) > 1e-6)
+            if ((std::fabs(*jt - *minIt) < 1e-6 || std::fabs(*jt - *maxIt) < 1e-6)
+                && std::fabs(*minIt - *maxIt) > 1e-6)
               return false;
           }
           return true;
@@ -271,8 +270,8 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
-    inline void
-    MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::_updateMarginals() {
+    inline void MultipleInferenceEngine< GUM_SCALAR,
+                                         BNInferenceEngine >::_updateMarginals() {
 #pragma omp parallel
       {
         int  threadId = getThreadNumber();
@@ -293,17 +292,17 @@ namespace gum {
 
               if (_l_marginalMax[tId][i][j] > this->_marginalMax[i][j])
                 this->_marginalMax[i][j] = _l_marginalMax[tId][i][j];
-            }  // end of : all threads
-          }    // end of : all modalities
-        }      // end of : all variables
-      }        // end of : parallel region
+            }   // end of : all threads
+          }     // end of : all modalities
+        }       // end of : all variables
+      }         // end of : parallel region
     }
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     inline const GUM_SCALAR
-    MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::_computeEpsilon() {
+      MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::_computeEpsilon() {
       GUM_SCALAR eps = 0;
-#pragma omp      parallel
+#pragma omp parallel
       {
         GUM_SCALAR tEps = 0;
         GUM_SCALAR delta;
@@ -330,7 +329,7 @@ namespace gum {
             this->_oldMarginalMin[i][j] = this->_marginalMin[i][j];
             this->_oldMarginalMax[i][j] = this->_marginalMax[i][j];
           }
-        }  // end of : all variables
+        }   // end of : all variables
 
 #pragma omp critical(epsilon_max)
         {
@@ -338,7 +337,7 @@ namespace gum {
           eps = (eps < tEps) ? tEps : eps;
         }
 
-      }  // end of : parallel region
+      }   // end of : parallel region
       return eps;
     }
 
@@ -365,15 +364,15 @@ namespace gum {
 
               if (_l_marginalMax[tId][i][j] > this->_oldMarginalMax[i][j])
                 this->_oldMarginalMax[i][j] = _l_marginalMax[tId][i][j];
-            }  // end of : all threads
-          }    // end of : all modalities
-        }      // end of : all variables
-      }        // end of : parallel region
+            }   // end of : all threads
+          }     // end of : all modalities
+        }       // end of : all variables
+      }         // end of : parallel region
     }
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     void
-    MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::_verticesFusion() {
+      MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::_verticesFusion() {
       // don't create threads if there are no vertices saved
       if (!__infE::_storeVertices) return;
 
@@ -401,10 +400,10 @@ namespace gum {
               // BUT not if vertices are of dimension 2 ! opt check and equality
               // should be enough
               __infE::_updateCredalSets(i, vtx, (vtx.size() > 2) ? true : false);
-            }  // end of : nodeThreadCredalSet
-          }    // end of : all threads
-        }      // end of : all variables
-      }        // end of : parallel region
+            }   // end of : nodeThreadCredalSet
+          }     // end of : all threads
+        }       // end of : all variables
+      }         // end of : parallel region
     }
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
@@ -424,8 +423,8 @@ namespace gum {
 #pragma omp for
 
             for (long i = 0; i < long(nsize);
-                 i++) {  // i needs to be signed (due to omp with visual c++
-                         // 15)
+                 i++) {   // i needs to be signed (due to omp with visual c++
+                          // 15)
               std::string var_name = _workingSet[threadId]->variable(i).name();
               auto        delim = var_name.find_first_of("_");
               var_name = var_name.substr(0, delim);
@@ -447,9 +446,9 @@ namespace gum {
                 if (exp < __infE::_expectationMin[i])
                   __infE::_expectationMin[i] = exp;
               }
-            }  // end of : each variable parallel for
-          }    // end of : if this thread has modals
-        }      // end of parallel region
+            }   // end of : each variable parallel for
+          }     // end of : if this thread has modals
+        }       // end of parallel region
         return;
       }
 
@@ -461,7 +460,7 @@ namespace gum {
           Size nsize = Size(_workingSet[threadId]->size());
 #pragma omp for
           for (long i = 0; i < long(nsize);
-               i++) {  // long instead of Idx due to omp for visual C++15
+               i++) {   // long instead of Idx due to omp for visual C++15
             std::string var_name = _workingSet[threadId]->variable(i).name();
             auto        delim = var_name.find_first_of("_");
             var_name = var_name.substr(0, delim);
@@ -476,10 +475,10 @@ namespace gum {
 
               if (_l_expectationMin[tId][i] < this->_expectationMin[i])
                 this->_expectationMin[i] = _l_expectationMin[tId][i];
-            }  // end of : each thread
-          }    // end of : each variable
-        }      // end of : if modals not empty
-      }        // end of : parallel region
+            }   // end of : each thread
+          }     // end of : each variable
+        }       // end of : if modals not empty
+      }         // end of : parallel region
     }
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
@@ -490,7 +489,6 @@ namespace gum {
 
       // no parallel insert in hash-tables (OptBN)
       for (Idx i = 0; i < nsize; i++) {
-
         // we don't store anything for observed variables
         if (__infE::_evidence.exists(i)) continue;
 
@@ -527,14 +525,14 @@ namespace gum {
                 __infE::_dbnOpt.insert(*tOpts[bn], keymax);
               }
             }
-          }  // end of : all threads
-        }    // end of : all modalities
-      }      // end of : all variables
+          }   // end of : all threads
+        }     // end of : all modalities
+      }       // end of : all variables
     }
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
-    void
-    MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::eraseAllEvidence() {
+    void MultipleInferenceEngine< GUM_SCALAR,
+                                  BNInferenceEngine >::eraseAllEvidence() {
       __infE::eraseAllEvidence();
       Size tsize = Size(_workingSet.size());
 
@@ -574,5 +572,5 @@ namespace gum {
       _l_evidence.clear();
       _l_clusters.clear();
     }
-  }
-}
+  }   // namespace credal
+}   // namespace gum

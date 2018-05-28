@@ -75,9 +75,9 @@ namespace gum {
   template < typename GUM_SCALAR,
              template < typename > class TerminalNodePolicy =
                ExactTerminalNodePolicy >
-  class MultiDimFunctionGraph : public MultiDimImplementation< GUM_SCALAR >,
-                                public TerminalNodePolicy< GUM_SCALAR > {
-
+  class MultiDimFunctionGraph
+      : public MultiDimImplementation< GUM_SCALAR >
+      , public TerminalNodePolicy< GUM_SCALAR > {
     public:
     /// Only for proper initialization of a certain returned value
     const static GUM_SCALAR defaultValue;
@@ -108,8 +108,8 @@ namespace gum {
      * @param from The MultiDimFunctionGraph to copy.
      * @return Returns this MultiDimFunctionGraph.
      */
-    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >&
-    operator=(const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >& from);
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >& operator=(
+      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >& from);
 
     /**
      * @brief Class destructor.
@@ -233,7 +233,7 @@ namespace gum {
      */
     void copyAndMultiplyByScalar(
       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >& src,
-      GUM_SCALAR gamma);
+      GUM_SCALAR                                                     gamma);
 
     /**
      * @brief Clears the function graph
@@ -341,14 +341,14 @@ namespace gum {
      * @return Returns a reduced and ordered instance.
      */
     static MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
-    getReducedAndOrderedInstance();
+      getReducedAndOrderedInstance();
 
     /**
      * @brief Returns an arborescent instance
      * @return Returns an arborescent instance
      */
     static MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
-    getTreeInstance();
+      getTreeInstance();
 
     /// @}
 
@@ -397,8 +397,8 @@ namespace gum {
 
   // extern template class MultiDimFunctionGraph<float>;
   // extern template class MultiDimFunctionGraph<double>;
-}
+}   // namespace gum
 
 #include <agrum/multidim/implementations/multiDimFunctionGraph_tpl.h>
 
-#endif  // GUM_MULTI_DIM_FUNCTION_GRAPH_H
+#endif   // GUM_MULTI_DIM_FUNCTION_GRAPH_H

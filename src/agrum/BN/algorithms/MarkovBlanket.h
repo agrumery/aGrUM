@@ -35,7 +35,8 @@
 namespace gum {
 
   /**
-   * @class MarkovBlanket MarkovBlanket.h <agrum/BN/algorithms/MarokovBlanket.h>
+* @class MarkovBlanket
+* @headerfile MarkovBlanket.h <agrum/BN/algorithms/MarokovBlanket.h>
    * @brief Class building the markov Blanket from a BN and a nodeName.
    * @ingroup bn_group
 
@@ -92,10 +93,10 @@ namespace gum {
     const NodeId    __node;
     ArcSet          __specialArcs;
   };
-}  // namespace gum
+}   // namespace gum
 
 #ifndef GUM_NO_INLINE
-#include <agrum/BN/algorithms/MarkovBlanket_inl.h>
-#endif  // GUM_NOINLINE
+#  include <agrum/BN/algorithms/MarkovBlanket_inl.h>
+#endif   // GUM_NOINLINE
 
-#endif  // GUM_MARKOVBLANKET_H
+#endif   // GUM_MARKOVBLANKET_H

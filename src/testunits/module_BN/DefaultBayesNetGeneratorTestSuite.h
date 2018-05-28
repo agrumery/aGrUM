@@ -137,7 +137,6 @@ namespace gum_tests {
     }
 
     void testGenerationDouble_2() {
-
       // Test for cicuits
       gum::SimpleBayesNetGenerator< double > gen(10, 45);
       gum::BayesNet< double >*               bn = new gum::BayesNet< double >();
@@ -177,4 +176,4 @@ namespace gum_tests {
       if (bn != 0) delete bn;
     }
   };
-}
+}   // namespace gum_tests

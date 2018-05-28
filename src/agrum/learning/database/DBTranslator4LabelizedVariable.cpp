@@ -24,4 +24,3 @@
  */
 
 #include <agrum/learning/database/DBTranslator4LabelizedVariable.h>
-

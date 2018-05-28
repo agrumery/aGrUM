@@ -42,7 +42,8 @@ namespace gum {
   class BayesNetFactory;
 
   /**
-   * @class IBayesNet IBayesNet.h <agrum/BN/IBayesNet.h>
+   * @class IBayesNet
+   * @headerfile IBayesNet.h <agrum/BN/IBayesNet.h>
    * @brief Class representing the minimal interface for Bayesian Network.
    * @ingroup bn_group
    *
@@ -56,7 +57,6 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   class IBayesNet : public DAGmodel {
-
     public:
     // ===========================================================================
     /// @name Constructors / Destructors
@@ -91,29 +91,29 @@ namespace gum {
     /// @{
 
     /**
-    * Returns the CPT of a variable.
-    *
-    * @throw NotFound If no variable's id matches varId.
-    */
+     * Returns the CPT of a variable.
+     *
+     * @throw NotFound If no variable's id matches varId.
+     */
     virtual const Potential< GUM_SCALAR >& cpt(NodeId varId) const = 0;
 
     /**
-    * Returns a constant reference to the VariableNodeMap of thisBN
-    */
+     * Returns a constant reference to the VariableNodeMap of thisBN
+     */
     virtual const VariableNodeMap& variableNodeMap() const = 0;
 
     /**
-    * Returns a constant reference over a variable given it's node id.
-    *
-    * @throw NotFound If no variable's id matches varId.
-    */
+     * Returns a constant reference over a variable given it's node id.
+     *
+     * @throw NotFound If no variable's id matches varId.
+     */
     virtual const DiscreteVariable& variable(NodeId id) const = 0;
 
     /**
-    * Return id node from discrete var pointer.
-    *
-    * @throw NotFound If no variable matches var.
-    */
+     * Return id node from discrete var pointer.
+     *
+     * @throw NotFound If no variable matches var.
+     */
     virtual NodeId nodeId(const DiscreteVariable& var) const = 0;
 
     /**
@@ -129,7 +129,7 @@ namespace gum {
      * @throw NotFound if no such name exists in the graph.
      */
     virtual const DiscreteVariable&
-    variableFromName(const std::string& name) const = 0;
+      variableFromName(const std::string& name) const = 0;
     /// @}
 
     // ===========================================================================

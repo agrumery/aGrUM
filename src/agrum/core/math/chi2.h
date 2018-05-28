@@ -44,7 +44,8 @@ namespace gum {
   // =========================================================================
 
   /**
-   * @class Chi2 chi2.h <agrum/core/math/chi2.h>
+   * @class Chi2
+   * @headerfile chi2.h <agrum/core/math/chi2.h>
    * @brief Represent the chi2 distribution.
    * @ingroup math_group
    *
@@ -87,11 +88,11 @@ namespace gum {
     void setConditioningNodes(const std::vector< Idx >& db_conditioning_ids);
 
     /**
-    * @brief Computes the critical value according to the number of degrees of
-    * freedom.
-    * @param pair A pair of variables ids.
-    * @return Returns the critical values.
-    */
+     * @brief Computes the critical value according to the number of degrees of
+     * freedom.
+     * @param pair A pair of variables ids.
+     * @return Returns the critical values.
+     */
     double criticalValue(const std::pair< Idx, Idx >& pair);
 
     /**
@@ -197,7 +198,7 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/core/math/chi2_inl.h>
+#  include <agrum/core/math/chi2_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_CHI2_H */

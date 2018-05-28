@@ -34,35 +34,34 @@ namespace gum_tests {
   class PartialEntropyTestSuite : public CxxTest::TestSuite {
     public:
     void test_entropy() {
-      gum::learning::DBInitializerFromCSV<>
-        initializer ( GET_RESSOURCES_PATH( "asia.csv" ) );
-      const auto& var_names = initializer.variableNames ();
-      const std::size_t nb_vars = var_names.size ();
-      
-      gum::learning::DBTranslatorSet<> translator_set;
-      gum::learning::DBTranslator4LabelizedVariable<> translator;
-      for ( std::size_t i = 0; i < nb_vars; ++i ) {
-        translator_set.insertTranslator ( translator, i );
-      }
-      
-      gum::learning::DatabaseTable<> database ( translator_set );
-      database.setVariableNames( initializer.variableNames () );
-      initializer.fillDatabase ( database );
+      gum::learning::DBInitializerFromCSV<> initializer(
+        GET_RESSOURCES_PATH("asia.csv"));
+      const auto&       var_names = initializer.variableNames();
+      const std::size_t nb_vars = var_names.size();
 
-      gum::learning::DBRowGeneratorSet<> genset;
-      gum::learning::DBRowGeneratorParser<>
-        parser ( database.handler (), genset );
+      gum::learning::DBTranslatorSet<>                translator_set;
+      gum::learning::DBTranslator4LabelizedVariable<> translator;
+      for (std::size_t i = 0; i < nb_vars; ++i) {
+        translator_set.insertTranslator(translator, i);
+      }
+
+      gum::learning::DatabaseTable<> database(translator_set);
+      database.setVariableNames(initializer.variableNames());
+      initializer.fillDatabase(database);
+
+      gum::learning::DBRowGeneratorSet<>    genset;
+      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
       gum::learning::PartialEntropy<> score(parser, modalities);
       /*
        * H de [3, 4] vaut 0.13457707360460336
-           * H de [4, 0] vaut 0.759802701155244
-           * H de [1, 2, 5, 6] vaut 1.366351889386632
-           * H1 de [3] vaut 0.06850409760350079
-           * H de [0, 1, 4, 6] vaut 1.5920762480353452
-           * H de [0, 1, 4, 6, 7] vaut 1.785332833196645
+       * H de [4, 0] vaut 0.759802701155244
+       * H de [1, 2, 5, 6] vaut 1.366351889386632
+       * H1 de [3] vaut 0.06850409760350079
+       * H de [0, 1, 4, 6] vaut 1.5920762480353452
+       * H de [0, 1, 4, 6, 7] vaut 1.785332833196645
        */
       gum::Idx id1 = score.addNodeSet(3);
       gum::Idx id2 = score.addNodeSet(std::vector< gum::Idx >{1, 2, 5, 6});

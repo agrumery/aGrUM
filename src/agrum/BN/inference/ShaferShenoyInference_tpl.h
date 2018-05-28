@@ -24,15 +24,15 @@
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-#include <agrum/BN/inference/ShaferShenoyInference.h>
+#  include <agrum/BN/inference/ShaferShenoyInference.h>
 
-#include <agrum/BN/algorithms/BayesBall.h>
-#include <agrum/BN/algorithms/barrenNodesFinder.h>
-#include <agrum/BN/algorithms/dSeparation.h>
-#include <agrum/graphs/algorithms/binaryJoinTreeConverterDefault.h>
-#include <agrum/multidim/instantiation.h>
-#include <agrum/multidim/utils/operators/multiDimCombineAndProjectDefault.h>
-#include <agrum/multidim/utils/operators/multiDimProjection.h>
+#  include <agrum/BN/algorithms/BayesBall.h>
+#  include <agrum/BN/algorithms/barrenNodesFinder.h>
+#  include <agrum/BN/algorithms/dSeparation.h>
+#  include <agrum/graphs/algorithms/binaryJoinTreeConverterDefault.h>
+#  include <agrum/multidim/instantiation.h>
+#  include <agrum/multidim/utils/operators/multiDimCombineAndProjectDefault.h>
+#  include <agrum/multidim/utils/operators/multiDimProjection.h>
 
 
 namespace gum {
@@ -41,10 +41,10 @@ namespace gum {
   INLINE ShaferShenoyInference< GUM_SCALAR >::ShaferShenoyInference(
     const IBayesNet< GUM_SCALAR >* BN,
     FindBarrenNodesType            barren_type,
-    bool                           use_binary_join_tree)
-      : JointTargetedInference< GUM_SCALAR >(BN)
-      , EvidenceInference< GUM_SCALAR >(BN)
-      , __use_binary_join_tree(use_binary_join_tree) {
+    bool                           use_binary_join_tree) :
+      JointTargetedInference< GUM_SCALAR >(BN),
+      EvidenceInference< GUM_SCALAR >(BN),
+      __use_binary_join_tree(use_binary_join_tree) {
     // sets the barren nodes finding algorithm
     setFindBarrenNodesType(barren_type);
 
@@ -175,14 +175,12 @@ namespace gum {
       // certainly be updated as well, in particular its step 2.
       switch (type) {
         case FindBarrenNodesType::FIND_BARREN_NODES:
-        case FindBarrenNodesType::FIND_NO_BARREN_NODES:
-          break;
+        case FindBarrenNodesType::FIND_NO_BARREN_NODES: break;
 
         default:
           GUM_ERROR(InvalidArgument,
                     "setFindBarrenNodesType for type "
-                      << (unsigned int)type
-                      << " is not implemented yet");
+                      << (unsigned int)type << " is not implemented yet");
       }
 
       __barren_nodes_type = type;
@@ -196,8 +194,8 @@ namespace gum {
   /// fired when a new evidence is inserted
   template < typename GUM_SCALAR >
   INLINE void
-  ShaferShenoyInference< GUM_SCALAR >::_onEvidenceAdded(NodeId id,
-                                                        bool   isHardEvidence) {
+    ShaferShenoyInference< GUM_SCALAR >::_onEvidenceAdded(NodeId id,
+                                                          bool   isHardEvidence) {
     // if we have a new hard evidence, this modifies the undigraph over which
     // the join tree is created. This is also the case if id is not a node of
     // of the undigraph
@@ -220,8 +218,8 @@ namespace gum {
   /// fired when an evidence is removed
   template < typename GUM_SCALAR >
   INLINE void
-  ShaferShenoyInference< GUM_SCALAR >::_onEvidenceErased(NodeId id,
-                                                         bool   isHardEvidence) {
+    ShaferShenoyInference< GUM_SCALAR >::_onEvidenceErased(NodeId id,
+                                                           bool   isHardEvidence) {
     // if we delete a hard evidence, this modifies the undigraph over which
     // the join tree is created.
     if (isHardEvidence)
@@ -291,25 +289,26 @@ namespace gum {
   /// fired after a new target is inserted
   template < typename GUM_SCALAR >
   INLINE void
-  ShaferShenoyInference< GUM_SCALAR >::_onMarginalTargetAdded(NodeId id) {}
+    ShaferShenoyInference< GUM_SCALAR >::_onMarginalTargetAdded(NodeId id) {}
 
 
   /// fired before a target is removed
   template < typename GUM_SCALAR >
   INLINE void
-  ShaferShenoyInference< GUM_SCALAR >::_onMarginalTargetErased(NodeId id) {}
+    ShaferShenoyInference< GUM_SCALAR >::_onMarginalTargetErased(NodeId id) {}
 
 
   /// fired after a new set target is inserted
   template < typename GUM_SCALAR >
   INLINE void
-  ShaferShenoyInference< GUM_SCALAR >::_onJointTargetAdded(const NodeSet& set) {}
+    ShaferShenoyInference< GUM_SCALAR >::_onJointTargetAdded(const NodeSet& set) {}
 
 
   /// fired before a set target is removed
   template < typename GUM_SCALAR >
   INLINE void
-  ShaferShenoyInference< GUM_SCALAR >::_onJointTargetErased(const NodeSet& set) {}
+    ShaferShenoyInference< GUM_SCALAR >::_onJointTargetErased(const NodeSet& set) {
+  }
 
 
   /// fired after all the nodes of the BN are added as single targets
@@ -373,8 +372,8 @@ namespace gum {
     // if some new evidence have been added on nodes that do not belong
     // to __graph, then we potentially have to reconstruct the join tree
     for (const auto& change : __evidence_changes) {
-      if ((change.second == EvidenceChangeType::EVIDENCE_ADDED) &&
-          !__graph.exists(change.first))
+      if ((change.second == EvidenceChangeType::EVIDENCE_ADDED)
+          && !__graph.exists(change.first))
         return true;
     }
 
@@ -853,8 +852,8 @@ namespace gum {
     // now that we know the cliques whose set of potentials have been changed,
     // we can discard their corresponding Shafer-Shenoy potential
     for (const auto clique : invalidated_cliques) {
-      if (__clique_ss_potential.exists(clique) &&
-          ss_potential_to_deallocate[clique]) {
+      if (__clique_ss_potential.exists(clique)
+          && ss_potential_to_deallocate[clique]) {
         delete __clique_ss_potential[clique];
       }
     }
@@ -867,8 +866,8 @@ namespace gum {
     for (auto iter = __target_posteriors.beginSafe();
          iter != __target_posteriors.endSafe();
          ++iter) {
-      if (__graph.exists(iter.key()) &&
-          (invalidated_cliques.exists(__node_to_clique[iter.key()]))) {
+      if (__graph.exists(iter.key())
+          && (invalidated_cliques.exists(__node_to_clique[iter.key()]))) {
         delete iter.val();
         __target_posteriors.erase(iter);
       }
@@ -1000,20 +999,18 @@ namespace gum {
     for (const auto node : this->targets()) {
       try {
         clique_targets.insert(__node_to_clique[node]);
-      } catch (Exception&) {
-      }
+      } catch (Exception&) {}
     }
     for (const auto& set : this->jointTargets()) {
       try {
         clique_targets.insert(__joint_target_to_clique[set]);
-      } catch (Exception&) {
-      }
+      } catch (Exception&) {}
     }
 
     // put in a vector these cliques and their size
     std::vector< std::pair< NodeId, Size > > possible_roots(clique_targets.size());
-    const auto& bn = this->BN();
-    std::size_t i = 0;
+    const auto&                              bn = this->BN();
+    std::size_t                              i = 0;
     for (const auto clique_id : clique_targets) {
       const auto& clique = __JT->clique(clique_id);
       Size        dom_size = 1;
@@ -1033,7 +1030,7 @@ namespace gum {
               });
 
     // pick up the clique with the smallest size in each connected component
-    NodeProperty< bool > marked = __JT->nodesProperty(false);
+    NodeProperty< bool >                  marked = __JT->nodesProperty(false);
     std::function< void(NodeId, NodeId) > diffuse_marks =
       [&marked, &diffuse_marks, this](NodeId node, NodeId from) {
         if (!marked[node]) {
@@ -1071,30 +1068,28 @@ namespace gum {
   // remove barren variables
   template < typename GUM_SCALAR >
   Set< const Potential< GUM_SCALAR >* >
-  ShaferShenoyInference< GUM_SCALAR >::__removeBarrenVariables(
-    __PotentialSet& pot_list, Set< const DiscreteVariable* >& del_vars) {
+    ShaferShenoyInference< GUM_SCALAR >::__removeBarrenVariables(
+      __PotentialSet& pot_list, Set< const DiscreteVariable* >& del_vars) {
     // remove from del_vars the variables that received some evidence:
     // only those that did not received evidence can be barren variables
     Set< const DiscreteVariable* > the_del_vars = del_vars;
     for (auto iter = the_del_vars.beginSafe(); iter != the_del_vars.endSafe();
          ++iter) {
       NodeId id = this->BN().nodeId(**iter);
-      if (this->hardEvidenceNodes().exists(id) ||
-          this->softEvidenceNodes().exists(id)) {
+      if (this->hardEvidenceNodes().exists(id)
+          || this->softEvidenceNodes().exists(id)) {
         the_del_vars.erase(iter);
       }
     }
 
     // assign to each random variable the set of potentials that contain it
     HashTable< const DiscreteVariable*, __PotentialSet > var2pots;
-    __PotentialSet empty_pot_set;
+    __PotentialSet                                       empty_pot_set;
     for (const auto pot : pot_list) {
       const Sequence< const DiscreteVariable* >& vars = pot->variablesSequence();
       for (const auto var : vars) {
         if (the_del_vars.exists(var)) {
-          if (!var2pots.exists(var)) {
-            var2pots.insert(var, empty_pot_set);
-          }
+          if (!var2pots.exists(var)) { var2pots.insert(var, empty_pot_set); }
           var2pots[var].insert(pot);
         }
       }
@@ -1106,12 +1101,12 @@ namespace gum {
                                    pot2barren_var;
     Set< const DiscreteVariable* > empty_var_set;
     for (auto elt : var2pots) {
-      if (elt.second.size() == 1) {  // here we have a barren variable
+      if (elt.second.size() == 1) {   // here we have a barren variable
         const Potential< GUM_SCALAR >* pot = *(elt.second.begin());
         if (!pot2barren_var.exists(pot)) {
           pot2barren_var.insert(pot, empty_var_set);
         }
-        pot2barren_var[pot].insert(elt.first);  // insert the barren variable
+        pot2barren_var[pot].insert(elt.first);   // insert the barren variable
       }
     }
 
@@ -1119,7 +1114,7 @@ namespace gum {
     // if the potential has only barren variables, simply remove them from the
     // set of potentials, else just project the potential
     MultiDimProjection< GUM_SCALAR, Potential > projector(SSNewprojPotential);
-    __PotentialSet projected_pots;
+    __PotentialSet                              projected_pots;
     for (auto elt : pot2barren_var) {
       // remove the current potential from pot_list as, anyway, we will change
       // it
@@ -1142,10 +1137,10 @@ namespace gum {
   // remove variables del_vars from the list of potentials pot_list
   template < typename GUM_SCALAR >
   Set< const Potential< GUM_SCALAR >* >
-  ShaferShenoyInference< GUM_SCALAR >::__marginalizeOut(
-    Set< const Potential< GUM_SCALAR >* > pot_list,
-    Set< const DiscreteVariable* >&       del_vars,
-    Set< const DiscreteVariable* >&       kept_vars) {
+    ShaferShenoyInference< GUM_SCALAR >::__marginalizeOut(
+      Set< const Potential< GUM_SCALAR >* > pot_list,
+      Set< const DiscreteVariable* >&       del_vars,
+      Set< const DiscreteVariable* >&       kept_vars) {
     // remove the potentials corresponding to barren variables if we want
     // to exploit barren nodes
     __PotentialSet barren_projected_potentials;
@@ -1246,7 +1241,7 @@ namespace gum {
     // produce the message on the separator
     const Arc arc(from_id, to_id);
     if (!new_pot_list.empty()) {
-      if (new_pot_list.size() == 1) {  // there is only one potential
+      if (new_pot_list.size() == 1) {   // there is only one potential
         // in new_pot_list, so this corresponds to our message on
         // the separator
         auto pot = *(new_pot_list.begin());
@@ -1268,9 +1263,7 @@ namespace gum {
 
         // remove the temporary messages created in new_pot_list
         for (const auto pot : new_pot_list) {
-          if (!pot_list.exists(pot)) {
-            delete pot;
-          }
+          if (!pot_list.exists(pot)) { delete pot; }
         }
       }
     }
@@ -1304,7 +1297,7 @@ namespace gum {
   /// returns a fresh potential equal to P(1st arg,evidence)
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >*
-  ShaferShenoyInference< GUM_SCALAR >::_unnormalizedJointPosterior(NodeId id) {
+    ShaferShenoyInference< GUM_SCALAR >::_unnormalizedJointPosterior(NodeId id) {
     const auto& bn = this->BN();
 
     // hard evidence do not belong to the join tree
@@ -1387,11 +1380,9 @@ namespace gum {
   /// returns the posterior of a given variable
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
-  ShaferShenoyInference< GUM_SCALAR >::_posterior(NodeId id) {
+    ShaferShenoyInference< GUM_SCALAR >::_posterior(NodeId id) {
     // check if we have already computed the posterior
-    if (__target_posteriors.exists(id)) {
-      return *(__target_posteriors[id]);
-    }
+    if (__target_posteriors.exists(id)) { return *(__target_posteriors[id]); }
 
     // compute the joint posterior and normalize
     auto joint = _unnormalizedJointPosterior(id);
@@ -1405,8 +1396,8 @@ namespace gum {
   // returns the marginal a posteriori proba of a given node
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >*
-  ShaferShenoyInference< GUM_SCALAR >::_unnormalizedJointPosterior(
-    const NodeSet& set) {
+    ShaferShenoyInference< GUM_SCALAR >::_unnormalizedJointPosterior(
+      const NodeSet& set) {
     // hard evidence do not belong to the join tree, so extract the nodes
     // from targets that are not hard evidence
     NodeSet targets = set, hard_ev_nodes;
@@ -1568,7 +1559,7 @@ namespace gum {
   /// returns the posterior of a given set of variables
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
-  ShaferShenoyInference< GUM_SCALAR >::_jointPosterior(const NodeSet& set) {
+    ShaferShenoyInference< GUM_SCALAR >::_jointPosterior(const NodeSet& set) {
     // check if we have already computed the posterior
     if (__joint_target_posteriors.exists(set)) {
       return *(__joint_target_posteriors[set]);
@@ -1586,8 +1577,8 @@ namespace gum {
   /// returns the posterior of a given set of variables
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
-  ShaferShenoyInference< GUM_SCALAR >::_jointPosterior(
-    const NodeSet& wanted_target, const NodeSet& declared_target) {
+    ShaferShenoyInference< GUM_SCALAR >::_jointPosterior(
+      const NodeSet& wanted_target, const NodeSet& declared_target) {
     // check if we have already computed the posterior of wanted_target
     if (__joint_target_posteriors.exists(wanted_target))
       return *(__joint_target_posteriors[wanted_target]);
@@ -1647,4 +1638,4 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS

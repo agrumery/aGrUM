@@ -31,7 +31,7 @@
 
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/core/approximations/approximationSchemeListener.h>
-#include <cxxtest/AgrumApproximationUtils.h>  // must be last include
+#include <cxxtest/AgrumApproximationUtils.h>   // must be last include
 
 
 #define EPSILON_FOR_GIBBS_SIMPLE_TEST 2e-1
@@ -48,10 +48,8 @@ namespace gum_tests {
     std::string __mess;
 
     public:
-    aSimpleGibbsApproxListener(gum::ApproximationScheme& sch)
-        : gum::ApproximationSchemeListener(sch)
-        , __nbr(0)
-        , __mess(""){};
+    aSimpleGibbsApproxListener(gum::ApproximationScheme& sch) :
+        gum::ApproximationSchemeListener(sch), __nbr(0), __mess(""){};
 
     void whenProgress(const void*     buffer,
                       const gum::Size a,
@@ -65,8 +63,6 @@ namespace gum_tests {
     std::string getMess() { return __mess; }
   };
   class GibbsSamplingTestSuite : public CxxTest::TestSuite {
-
-
     public:
     void testGibbsSimpleBN() {
       auto bn =
@@ -136,7 +132,7 @@ namespace gum_tests {
         TS_ASSERT(false);
       }
 
-    }  //
+    }   //
 
     void testGibbsApproxBinaryTreeWithEvidenceOnLeaf() {
       auto bn = gum::BayesNet< float >::fastPrototype(
@@ -357,7 +353,6 @@ namespace gum_tests {
       TS_ASSERT(nbrErr == 0);
 
       try {
-
         gum::LazyPropagation< float > lazy(&bn);
         lazy.makeInference();
 
@@ -390,9 +385,7 @@ namespace gum_tests {
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_GIBBS);
         inf.makeInference();
-      } catch (gum::Exception e) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception e) { TS_ASSERT(false); }
       TS_ASSERT_EQUALS(agsl.getNbr() * inf.periodSize() + inf.burnIn(),
                        inf.nbrIterations());
       TS_ASSERT_DIFFERS(agsl.getMess(), std::string(""));
@@ -414,7 +407,6 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(bn.idFromName("d")));
 
       } catch (gum::Exception& e) {
-
         GUM_SHOWERROR(e);
         TS_ASSERT(false);
       }
@@ -438,10 +430,9 @@ namespace gum_tests {
         inf.makeInference();
 
       } catch (gum::Exception& e) {
-
         GUM_SHOWERROR(e);
         TS_ASSERT(false);
       }
     }
   };
-}  // namespace gum_tests
+}   // namespace gum_tests

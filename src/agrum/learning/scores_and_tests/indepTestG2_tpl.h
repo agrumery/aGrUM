@@ -33,9 +33,9 @@ namespace gum {
     template < typename IdSetAlloc, typename CountAlloc >
     template < typename RowFilter >
     INLINE IndepTestG2< IdSetAlloc, CountAlloc >::IndepTestG2(
-      const RowFilter& filter, const std::vector< Size >& var_modalities)
-        : IndependenceTest< IdSetAlloc, CountAlloc >(filter, var_modalities)
-        , __chi2(var_modalities) {
+      const RowFilter& filter, const std::vector< Size >& var_modalities) :
+        IndependenceTest< IdSetAlloc, CountAlloc >(filter, var_modalities),
+        __chi2(var_modalities) {
       // for debugging purposes
       GUM_CONSTRUCTOR(IndepTestG2);
     }
@@ -93,9 +93,7 @@ namespace gum {
               const double tmp1 = Nzyx[zyx] * Nz[z];
               if (tmp1 != 0.0) {
                 const double tmp2 = Nzy[zy] * Nzx[zx];
-                if (tmp2 != 0.0) {
-                  score += Nzyx[zyx] * std::log(tmp1 / tmp2);
-                }
+                if (tmp2 != 0.0) { score += Nzyx[zyx] * std::log(tmp1 / tmp2); }
               }
             }
           }
@@ -146,9 +144,7 @@ namespace gum {
           const double tmp_Nx = Nx[x];
           for (Idx y = 0; y < Y_size; ++y, ++yx) {
             const double tmp = tmp_Nx * Ny[y];
-            if (tmp != 0.0) {
-              score += Nyx[yx] * std::log((Nyx[yx] * N) / tmp);
-            }
+            if (tmp != 0.0) { score += Nyx[yx] * std::log((Nyx[yx] * N) / tmp); }
           }
         }
 

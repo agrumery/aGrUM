@@ -43,9 +43,9 @@ namespace gum {
       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* qAction,
       const Bijection<
         const DiscreteVariable*,
-        const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* > pxi)
-      : __vFunc(qAction)
-      , __pxi(pxi) {
+        const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* > pxi) :
+      __vFunc(qAction),
+      __pxi(pxi) {
     GUM_CONSTRUCTOR(TreeRegress);
   }
 
@@ -55,7 +55,6 @@ namespace gum {
              template < typename > class TerminalNodePolicy >
   TreeRegress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::
     ~TreeRegress() {
-
     GUM_DESTRUCTOR(TreeRegress);
   }
 
@@ -66,9 +65,10 @@ namespace gum {
              template < typename > class PROJECTOPERATOR,
              template < typename > class TerminalNodePolicy >
   MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
-  TreeRegress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::
-    compute() {
-
+    TreeRegress< GUM_SCALAR,
+                 COMBINEOPERATOR,
+                 PROJECTOPERATOR,
+                 TerminalNodePolicy >::compute() {
     MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* ret;
     if (__vFunc->isTerminalNode(__vFunc->root())) {
       ret =
@@ -85,20 +85,19 @@ namespace gum {
              template < typename > class PROJECTOPERATOR,
              template < typename > class TerminalNodePolicy >
   MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
-  TreeRegress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::
-    __xPloreVFunc(NodeId currentNodeId) {
-
+    TreeRegress< GUM_SCALAR,
+                 COMBINEOPERATOR,
+                 PROJECTOPERATOR,
+                 TerminalNodePolicy >::__xPloreVFunc(NodeId currentNodeId) {
     const InternalNode* currentNode = __vFunc->node(currentNodeId);
 
     std::vector< MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* >
       varbucket;
 
     for (Idx moda = 0; moda < currentNode->nodeVar()->domainSize(); ++moda) {
-
       MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* vpxi = nullptr;
       __context.insert(currentNode->nodeVar(), moda);
       if (__vFunc->isTerminalNode(currentNode->son(moda))) {
-
         GUM_SCALAR value = __vFunc->nodeValue(currentNode->son(moda));
         if (value) {
           vpxi = MultiDimFunctionGraph< GUM_SCALAR,
@@ -135,4 +134,4 @@ namespace gum {
     return vp;
   }
 
-}  // namespace gum
+}   // namespace gum

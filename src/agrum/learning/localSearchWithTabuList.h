@@ -139,7 +139,7 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/localSearchWithTabuList_inl.h>
+#  include <agrum/learning/localSearchWithTabuList_inl.h>
 #endif /* GUM_NO_INLINE */
 
 /// always include templated methods

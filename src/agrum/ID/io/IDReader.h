@@ -73,4 +73,4 @@ namespace gum {
 
 #include "IDReader_tpl.h"
 
-#endif  // GUM_ID_READER_H
+#endif   // GUM_ID_READER_H

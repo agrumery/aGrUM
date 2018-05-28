@@ -24,7 +24,7 @@
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <tuple>
+#  include <tuple>
 
 namespace gum {
 
@@ -34,14 +34,14 @@ namespace gum {
     INLINE Cache43ptInfo::Cache43ptInfo() { GUM_CONSTRUCTOR(Cache43ptInfo); }
 
     /// copy constructor
-    INLINE Cache43ptInfo::Cache43ptInfo(const Cache43ptInfo& from)
-        : __scores(from.__scores) {
+    INLINE Cache43ptInfo::Cache43ptInfo(const Cache43ptInfo& from) :
+        __scores(from.__scores) {
       GUM_CONS_CPY(Cache43ptInfo);
     }
 
     /// move constructor
-    INLINE Cache43ptInfo::Cache43ptInfo(Cache43ptInfo&& from)
-        : __scores(std::move(from.__scores)) {
+    INLINE Cache43ptInfo::Cache43ptInfo(Cache43ptInfo&& from) :
+        __scores(std::move(from.__scores)) {
       GUM_CONS_MOV(Cache43ptInfo);
     }
 
@@ -50,17 +50,13 @@ namespace gum {
 
     /// copy operator
     INLINE Cache43ptInfo& Cache43ptInfo::operator=(const Cache43ptInfo& from) {
-      if (&from != this) {
-        __scores = from.__scores;
-      }
+      if (&from != this) { __scores = from.__scores; }
       return *this;
     }
 
     /// move operator
     INLINE Cache43ptInfo& Cache43ptInfo::operator=(Cache43ptInfo&& from) {
-      if (&from != this) {
-        __scores = std::move(from.__scores);
-      }
+      if (&from != this) { __scores = std::move(from.__scores); }
       return *this;
     }
 

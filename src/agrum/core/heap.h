@@ -51,7 +51,8 @@ namespace gum {
   // ===========================================================================
 
   /**
-   * @class Heap heap.h <agrum/core/heap.h>
+   * @class Heap
+   * @headerfile heap.h <agrum/core/heap.h>
    * @brief Heap data structure
    * @ingroup basicstruct_group
    * @ingroup heap_group

@@ -101,7 +101,7 @@ namespace gum_tests {
                                1 - 0.0163f,
                                1 - 0.0710f,
                                1 - 0.3765f};
-      int nbr = 9;
+      int   nbr = 9;
 
       for (int l = 0; l < nbr; l++) {
         try {
@@ -110,9 +110,7 @@ namespace gum_tests {
           i.chgVal(angine, angine[witness_angine[l]]);
           i.chgVal(coeur, coeur[witness_coeur[l]]);
           TS_ASSERT_DELTA(witness_proba[l], p[i], 15e-3);
-        } catch (gum::Exception& e) {
-          GUM_SHOWERROR(e);
-        }
+        } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
       }
 
       gum::MultiDimLogit< float > q(p);
@@ -173,7 +171,7 @@ namespace gum_tests {
               0.03229859009138991f,0.9677014099086101f,
               0.013388238662763174f,0.9866117613372368f,
               0.014775487339871773f,0.9852245126601282f,
-              0.006060403829365346f,0.9939395961706347f  // clang-format on
+              0.006060403829365346f,0.9939395961706347f   // clang-format on
       };
 
       int j = 0;
@@ -231,7 +229,7 @@ namespace gum_tests {
       bn.addArc(idOneMoreParent2, idOneMore);
       const gum::Potential< float >& pOneMore = bn.cpt(idOneMore);
       // FILLING PARAMS
-      pOneMore.fillWith(  // clang-format off
+      pOneMore.fillWith(   // clang-format off
                         {0.1f,0.9f,
                          0.8f,0.2f,
                          0.1f,0.9f,

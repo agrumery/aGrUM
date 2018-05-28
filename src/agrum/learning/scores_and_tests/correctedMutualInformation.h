@@ -103,7 +103,7 @@ namespace gum {
 
       /// returns the 2-point mutual information corresponding to a given nodeset
       double score(const std::pair< Idx, Idx >& vars,
-                   const std::vector< Idx >& conditioning_ids);
+                   const std::vector< Idx >&    conditioning_ids);
 
       /// returns the 3-point mutual information corresponding to a given nodeset
       double score(Idx var1, Idx var2, Idx var3);
@@ -119,7 +119,7 @@ namespace gum {
 
       /// returns the 3-point mutual information corresponding to a given nodeset
       double score(const std::tuple< Idx, Idx, Idx >& vars,
-                   const std::vector< Idx >& conditioning_ids);
+                   const std::vector< Idx >&          conditioning_ids);
       /// @}
 
       /// Size of the database
@@ -139,7 +139,7 @@ namespace gum {
       protected:
       /// returns the 2-point mutual information corresponding to a given nodeset
       virtual double
-      _I_score(Idx var1, Idx var2, const std::vector< Idx >& conditioning_ids);
+        _I_score(Idx var1, Idx var2, const std::vector< Idx >& conditioning_ids);
 
       /// returns the 3-point mutual information corresponding to a given nodeset
       virtual double _I_score(Idx                       var1,
@@ -150,7 +150,7 @@ namespace gum {
       /// returns the 2-point corrected mutual information corresponding to a given
       /// nodeset
       virtual double
-      _score(Idx var1, Idx var2, const std::vector< Idx >& conditioning_ids);
+        _score(Idx var1, Idx var2, const std::vector< Idx >& conditioning_ids);
 
       /// returns the 3-point corrected mutual information corresponding to a given
       /// nodeset
@@ -183,8 +183,10 @@ namespace gum {
 
       /// computes the complexity correction for the mutual information
       double _K(Idx var1, Idx var2, const std::vector< Idx >& conditioning_ids);
-      double
-      _K(Idx var1, Idx var2, Idx var3, const std::vector< Idx >& conditioning_ids);
+      double _K(Idx                       var1,
+                Idx                       var2,
+                Idx                       var3,
+                const std::vector< Idx >& conditioning_ids);
 
 
       /// inserts a new score into the cache
@@ -225,7 +227,7 @@ namespace gum {
       /// variables modalities
       std::vector< Size > __modalities;
 
-      const double __threshold { 1e-10 };
+      const double __threshold{1e-10};
     };
 
   } /* namespace learning */

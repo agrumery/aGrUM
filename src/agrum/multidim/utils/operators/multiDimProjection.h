@@ -167,8 +167,8 @@ namespace gum {
      * by the resulting table )
      */
     std::pair< long, long >
-    memoryUsage(const TABLE< GUM_SCALAR >&            table,
-                const Set< const DiscreteVariable* >& del_vars) const;
+      memoryUsage(const TABLE< GUM_SCALAR >&            table,
+                  const Set< const DiscreteVariable* >& del_vars) const;
 
     /**
      * @brief Returns the memory consumption used during the projection.
@@ -183,8 +183,8 @@ namespace gum {
      * by the resulting table )
      */
     std::pair< long, long >
-    memoryUsage(const Sequence< const DiscreteVariable* >& vars,
-                const Set< const DiscreteVariable* >&      del_vars) const;
+      memoryUsage(const Sequence< const DiscreteVariable* >& vars,
+                  const Set< const DiscreteVariable* >&      del_vars) const;
 
     /// @}
 
@@ -196,7 +196,7 @@ namespace gum {
     private:
     /// Forbid copy operators
     MultiDimProjection< GUM_SCALAR, TABLE >&
-    operator=(const MultiDimProjection< GUM_SCALAR, TABLE >&);
+      operator=(const MultiDimProjection< GUM_SCALAR, TABLE >&);
   };
 
 } /* namespace gum */

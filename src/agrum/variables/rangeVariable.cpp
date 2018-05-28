@@ -27,7 +27,7 @@
 #include <agrum/variables/rangeVariable.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/variables/rangeVariable_inl.h>
+#  include <agrum/variables/rangeVariable_inl.h>
 #endif /* GUM_NO_INLINE */
 
 namespace gum {
@@ -38,10 +38,9 @@ namespace gum {
   RangeVariable::RangeVariable(const std::string& aName,
                                const std::string& aDesc,
                                long               minVal,
-                               long               maxVal)
-      : DiscreteVariable(aName, aDesc)
-      , __minBound(minVal)
-      , __maxBound(maxVal) {
+                               long               maxVal) :
+      DiscreteVariable(aName, aDesc),
+      __minBound(minVal), __maxBound(maxVal) {
     GUM_CONSTRUCTOR(RangeVariable);
   }
 
@@ -50,10 +49,9 @@ namespace gum {
   // If aDRV haves any listener, it will not be copied.
   // @param aDRV the variable we copy
   // ==========================================================================
-  RangeVariable::RangeVariable(const RangeVariable& aDRV)
-      : DiscreteVariable(aDRV)
-      , __minBound(aDRV.__minBound)
-      , __maxBound(aDRV.__maxBound) {
+  RangeVariable::RangeVariable(const RangeVariable& aDRV) :
+      DiscreteVariable(aDRV), __minBound(aDRV.__minBound),
+      __maxBound(aDRV.__maxBound) {
     GUM_CONS_CPY(RangeVariable);
   }
 

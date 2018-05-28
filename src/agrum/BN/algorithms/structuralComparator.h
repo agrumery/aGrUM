@@ -42,7 +42,6 @@ namespace gum {
    * @ingroup bn_group
    */
   class StructuralComparator {
-
     public:
     // ##########################################################################
     /// @name Constructors / Destructors

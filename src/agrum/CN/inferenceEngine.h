@@ -43,7 +43,8 @@ namespace gum {
   namespace credal {
 
     /**
-     * @class InferenceEngine inferenceEngine.h <agrum/CN/inferenceEngine.h>
+     * @class InferenceEngine
+     * @headerfile inferenceEngine.h <agrum/CN/inferenceEngine.h>
      * @brief Abstract class template representing a CredalNet inference engine.
      * Used
      * by credal network inference algorithms such as CNLoopyPropagation (inner
@@ -352,7 +353,7 @@ namespace gum {
        * @param evidence The on nodes Property containing likelihoods.
        */
       void
-      insertEvidence(const NodeProperty< std::vector< GUM_SCALAR > >& evidence);
+        insertEvidence(const NodeProperty< std::vector< GUM_SCALAR > >& evidence);
 
       /**
        * Insert query variables states from file.
@@ -399,7 +400,7 @@ namespace gum {
        * @return A constant reference to this variable lower marginals.
        */
       const std::vector< GUM_SCALAR >&
-      marginalMin(const std::string& varName) const;
+        marginalMin(const std::string& varName) const;
 
       /**
        * Get the upper marginals of a given variable name.
@@ -407,7 +408,7 @@ namespace gum {
        * @return A constant reference to this variable upper marginals.
        */
       const std::vector< GUM_SCALAR >&
-      marginalMax(const std::string& varName) const;
+        marginalMax(const std::string& varName) const;
 
       /**
        * Get the lower expectation of a given node id.
@@ -449,7 +450,7 @@ namespace gum {
        * steps.
        */
       const std::vector< GUM_SCALAR >&
-      dynamicExpMin(const std::string& varName) const;
+        dynamicExpMin(const std::string& varName) const;
 
       /**
        * Get the upper dynamic expectation of a given variable prefix (without
@@ -463,7 +464,7 @@ namespace gum {
        * steps.
        */
       const std::vector< GUM_SCALAR >&
-      dynamicExpMax(const std::string& varName) const;
+        dynamicExpMax(const std::string& varName) const;
 
       /**
        * Get the vertice of a given node id.
@@ -471,7 +472,7 @@ namespace gum {
        * @return A constant reference to this node vertice.
        */
       const std::vector< std::vector< GUM_SCALAR > >&
-      vertices(const NodeId id) const;
+        vertices(const NodeId id) const;
 
       /**
        * Saves marginals to file.
@@ -496,9 +497,9 @@ namespace gum {
        * @see _dynamicExpectations
        * Only call this if an algorithm does not call it by itself.
        */
-      void dynamicExpectations();  // if someone forgets the protected call at
-                                   // the end
-                                   // of its own algorithm, the user can call it
+      void dynamicExpectations();   // if someone forgets the protected call at
+                                    // the end
+                                    // of its own algorithm, the user can call it
 
       /**
        * Print all nodes marginals to standart output.
@@ -519,8 +520,8 @@ namespace gum {
 
     extern template class InferenceEngine< float >;
     extern template class InferenceEngine< double >;
-  }
-}  // namespace gum
+  }   // namespace credal
+}   // namespace gum
 
 #include <agrum/CN/inferenceEngine_tpl.h>
 

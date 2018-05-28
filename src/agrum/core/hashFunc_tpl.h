@@ -60,8 +60,8 @@ namespace gum {
 
   template < typename Key >
   INLINE void HashFuncSmallKey< Key >::resize(Size new_size) {
-    static_assert(std::is_integral< Key >::value &&
-                    sizeof(Key) <= sizeof(unsigned long),
+    static_assert(std::is_integral< Key >::value
+                    && sizeof(Key) <= sizeof(unsigned long),
                   "Error: using HashFuncSmallKey for a key which cannot be "
                   "converted (without narrowing) into a long int");
     HashFuncBase< Key >::resize(new_size);
@@ -78,8 +78,8 @@ namespace gum {
   // ===========================================================================
 
   template < typename Key >
-  INLINE HashFuncSmallCastKey< Key >::HashFuncSmallCastKey()
-      : _small_key_mask((1UL << (8 * sizeof(Key))) - 1UL) {
+  INLINE HashFuncSmallCastKey< Key >::HashFuncSmallCastKey() :
+      _small_key_mask((1UL << (8 * sizeof(Key))) - 1UL) {
     static_assert(sizeof(Key) < sizeof(unsigned long),
                   "Error: using HashFuncSmallCastKey for a key whose size "
                   "is longer than or equal to that of long int");
@@ -98,9 +98,8 @@ namespace gum {
 
   template < typename Key >
   INLINE Size HashFuncSmallCastKey< Key >::operator()(const Key& key) const {
-    return (
-      ((*((unsigned long*)(&key)) & _small_key_mask) * HashFuncConst::gold) >>
-      _right_shift);
+    return (((*((unsigned long*)(&key)) & _small_key_mask) * HashFuncConst::gold)
+            >> _right_shift);
   }
 
   // ===========================================================================
@@ -157,25 +156,25 @@ namespace gum {
 
   template < typename Key1, typename Key2 >
   INLINE void HashFuncSmallKeyPair< Key1, Key2 >::resize(Size new_size) {
-    static_assert(std::is_integral< Key1 >::value &&
-                    sizeof(Key1) <= sizeof(unsigned long),
+    static_assert(std::is_integral< Key1 >::value
+                    && sizeof(Key1) <= sizeof(unsigned long),
                   "Error: using HashFuncSmallKeyPair for key1 which cannot be "
                   "converted (without narrowing) into a long int");
-    static_assert(std::is_integral< Key2 >::value &&
-                    sizeof(Key2) <= sizeof(unsigned long),
+    static_assert(std::is_integral< Key2 >::value
+                    && sizeof(Key2) <= sizeof(unsigned long),
                   "Error: using HashFuncSmallKeyPair for key2 which cannot be "
                   "converted (without narrowing) into a long int");
     HashFuncBase< std::pair< Key1, Key2 > >::resize(new_size);
-    _right_shift = HashFuncConst::offset -
-                   HashFuncBase< std::pair< Key1, Key2 > >::_hash_log2_size;
+    _right_shift = HashFuncConst::offset
+                   - HashFuncBase< std::pair< Key1, Key2 > >::_hash_log2_size;
   }
 
   template < typename Key1, typename Key2 >
   INLINE Size HashFuncSmallKeyPair< Key1, Key2 >::
-  operator()(const std::pair< Key1, Key2 >& key) const {
-    return (((unsigned long)key.first * HashFuncConst::gold +
-             (unsigned long)key.second * HashFuncConst::pi) >>
-            _right_shift);
+              operator()(const std::pair< Key1, Key2 >& key) const {
+    return (((unsigned long)key.first * HashFuncConst::gold
+             + (unsigned long)key.second * HashFuncConst::pi)
+            >> _right_shift);
   }
 
   // ===========================================================================
@@ -184,25 +183,25 @@ namespace gum {
 
   template < typename Key1, typename Key2, typename Func1, typename Func2 >
   INLINE void
-  HashFuncAllCastKeyPair< Key1, Key2, Func1, Func2 >::resize(Size new_size) {
+    HashFuncAllCastKeyPair< Key1, Key2, Func1, Func2 >::resize(Size new_size) {
     __func1.resize(new_size);
     __func2.resize(new_size);
     HashFuncBase< std::pair< Key1, Key2 > >::resize(new_size);
-    _right_shift = HashFuncConst::offset -
-                   HashFuncBase< std::pair< Key1, Key2 > >::_hash_log2_size;
+    _right_shift = HashFuncConst::offset
+                   - HashFuncBase< std::pair< Key1, Key2 > >::_hash_log2_size;
   }
 
   template < typename Key1, typename Key2, typename Func1, typename Func2 >
   INLINE Size HashFuncAllCastKeyPair< Key1, Key2, Func1, Func2 >::
-  operator()(const std::pair< Key1, Key2 >& key) const {
-    return (__func1.castToSize(key.first) * HashFuncConst::gold +
-            __func2.castToSize(key.second) * HashFuncConst::pi) >>
-           _right_shift;
+              operator()(const std::pair< Key1, Key2 >& key) const {
+    return (__func1.castToSize(key.first) * HashFuncConst::gold
+            + __func2.castToSize(key.second) * HashFuncConst::pi)
+           >> _right_shift;
   }
 
   template < typename Type >
   INLINE Size HashFunc< RefPtr< Type > >::
-  operator()(const RefPtr< Type >& key) const {
+              operator()(const RefPtr< Type >& key) const {
     static_assert(sizeof(RefPtr< Type >) == sizeof(long),
                   "Error: HashFunc<Type*> assumes that pointers have a size "
                   "equal to a long integer");

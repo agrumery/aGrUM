@@ -1,23 +1,23 @@
 
 /***************************************************************************
-*   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 
 #include <iostream>
@@ -177,7 +177,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(table.size(), (gum::Size)6);
 
       gum::HashTable< int, std::string >::iterator_safe iter =
-        table.beginSafe();  // safe iterator needed here
+        table.beginSafe();   // safe iterator needed here
 
       TS_GUM_ASSERT_THROWS_NOTHING(table.erase(iter));
       TS_ASSERT_EQUALS(table.size(), (gum::Size)5);
@@ -188,7 +188,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(table.erase(iter));
       TS_ASSERT_EQUALS(table.size(), (gum::Size)4);
 
-      iter = table.beginSafe();  // safe iterator needed here
+      iter = table.beginSafe();   // safe iterator needed here
       TS_GUM_ASSERT_THROWS_NOTHING(table.erase(iter));
       TS_ASSERT_EQUALS(table.size(), (gum::Size)3);
 
@@ -367,7 +367,7 @@ namespace gum_tests {
 
     void testGenCopyOperator() {
       gum::HashTable< int, std::string, MyAlloc< std::pair< int, std::string > > >
-        t2;
+                                         t2;
       gum::HashTable< int, std::string > t1, t3;
       fill(t1);
 
@@ -540,7 +540,7 @@ namespace gum_tests {
     }
 
     void test_float_hash() {
-      gum::Size size = 20;
+      gum::Size                             size = 20;
       gum::HashTable< float, unsigned int > t1;
 
       for (unsigned int i = 0; i < size; ++i) {
@@ -561,7 +561,7 @@ namespace gum_tests {
     }
 
     void test_float_pair_hash() {
-      gum::Size size = 20;
+      gum::Size                                                 size = 20;
       gum::HashTable< std::pair< float, float >, unsigned int > t1;
 
       for (unsigned int i = 0; i < size; ++i) {
@@ -584,7 +584,7 @@ namespace gum_tests {
     }
 
     void test_double_hash() {
-      gum::Size size = 20;
+      gum::Size                              size = 20;
       gum::HashTable< double, unsigned int > t1;
 
       for (unsigned int i = 0; i < size; ++i) {
@@ -605,7 +605,7 @@ namespace gum_tests {
     }
 
     void test_double_pair_hash() {
-      gum::Size size = 20;
+      gum::Size                                                   size = 20;
       gum::HashTable< std::pair< double, double >, unsigned int > t1;
 
       for (unsigned int i = 0; i < size; ++i) {
@@ -669,7 +669,7 @@ namespace gum_tests {
         int         k = 0;
 
         for (auto iter = table.cbeginSafe(); iter != table.cendSafe();
-             ++iter) {  // safe iterator needed here
+             ++iter) {   // safe iterator needed here
           s = iter.val();
           k += iter.key();
         }
@@ -679,7 +679,7 @@ namespace gum_tests {
         k = 0;
 
         for (auto iter = table.beginSafe(); iter != table.endSafe();
-             ++iter) {  // safe iterator needed here
+             ++iter) {   // safe iterator needed here
           s = iter.val();
           k += iter.key();
         }
@@ -716,9 +716,9 @@ namespace gum_tests {
         gum::HashTableConstIterator< int, std::string >     iter1 = table.cbegin();
         gum::HashTableIterator< int, std::string >          iter2 = table.begin();
         gum::HashTableConstIteratorSafe< int, std::string > iter3 =
-          table.cbeginSafe();  // safe iterator needed here
+          table.cbeginSafe();   // safe iterator needed here
         gum::HashTableIteratorSafe< int, std::string > iter4 =
-          table.beginSafe();  // safe iterator needed here
+          table.beginSafe();   // safe iterator needed here
 
         // TS_ASSERT ( *iter1 == *iter2 );
         // TS_ASSERT ( *iter3 == *iter4 );
@@ -763,30 +763,26 @@ namespace gum_tests {
     }
 
     gum::HashTable< int, std::string >
-    getIntersection(gum::HashTable< int, bool > table) {
+      getIntersection(gum::HashTable< int, bool > table) {
       gum::HashTable< int, std::string > full;
       fill(full);
       gum::HashTable< int, std::string > inter;
 
       for (int i = 1; i < 7; i++) {
-        if (table.exists(i) && table[i]) {
-          inter.insert(i, full[i]);
-        }
+        if (table.exists(i) && table[i]) { inter.insert(i, full[i]); }
       }
 
       return inter;
     }
 
     gum::HashTable< int, std::string >
-    getUnion(gum::HashTable< int, bool > table) {
+      getUnion(gum::HashTable< int, bool > table) {
       gum::HashTable< int, std::string > full;
       fill(full);
       gum::HashTable< int, std::string > unionTable;
 
       for (int i = 1; i < 7; i++) {
-        if (table.exists(i) && table[i]) {
-          unionTable.insert(i, full[i]);
-        }
+        if (table.exists(i) && table[i]) { unionTable.insert(i, full[i]); }
       }
 
       return unionTable;
@@ -802,4 +798,4 @@ namespace gum_tests {
 
     static int mappingTestFunc_4(std::string s) { return 2; }
   };
-}
+}   // namespace gum_tests

@@ -28,27 +28,28 @@
 
 namespace gum {
 #ifdef _MSC_VER
-#define MCBG MCBayesNetGenerator
-#define IBNG IBayesNetGenerator
+#  define MCBG MCBayesNetGenerator
+#  define IBNG IBayesNetGenerator
 #else
-#define MCBG MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >
-#define IBNG IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >
+#  define MCBG MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >
+#  define IBNG IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >
 #endif
   // Default constructor.
   // Use the SimpleCPTGenerator for generating the BNs CPT.
   template < typename GUM_SCALAR,
              template < typename > class ICPTGenerator,
              template < typename > class ICPTDisturber >
-  INLINE
-  MaxInducedWidthMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
-    MaxInducedWidthMCBayesNetGenerator(Size nbrNodes,
-                                       Size maxArcs,
-                                       Size maxModality,
-                                       Size maxInducedWidth,
-                                       Idx  iteration,
-                                       Idx  p,
-                                       Idx  q)
-      : MCBG(nbrNodes, maxArcs, maxModality, iteration, p, q) {
+  INLINE MaxInducedWidthMCBayesNetGenerator<
+    GUM_SCALAR,
+    ICPTGenerator,
+    ICPTDisturber >::MaxInducedWidthMCBayesNetGenerator(Size nbrNodes,
+                                                        Size maxArcs,
+                                                        Size maxModality,
+                                                        Size maxInducedWidth,
+                                                        Idx  iteration,
+                                                        Idx  p,
+                                                        Idx  q) :
+      MCBG(nbrNodes, maxArcs, maxModality, iteration, p, q) {
     if (maxInducedWidth == 0)
       GUM_ERROR(OperationNotAllowed,
                 "maxInducedWidth must be at least equal "
@@ -61,14 +62,15 @@ namespace gum {
   template < typename GUM_SCALAR,
              template < typename > class ICPTGenerator,
              template < typename > class ICPTDisturber >
-  INLINE
-  MaxInducedWidthMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
+  INLINE MaxInducedWidthMCBayesNetGenerator< GUM_SCALAR,
+                                             ICPTGenerator,
+                                             ICPTDisturber >::
     MaxInducedWidthMCBayesNetGenerator(BayesNet< GUM_SCALAR > bayesNet,
                                        Size                   maxInducedWidth,
                                        Idx                    iteration,
                                        Idx                    p,
-                                       Idx                    q)
-      : MCBG(bayesNet, iteration, p, q) {
+                                       Idx                    q) :
+      MCBG(bayesNet, iteration, p, q) {
     _maxlog10InducedWidth = maxInducedWidth;
     GUM_CONSTRUCTOR(MaxInducedWidthMCBayesNetGenerator);
   }
@@ -121,16 +123,19 @@ namespace gum {
              template < typename > class ICPTGenerator,
              template < typename > class ICPTDisturber >
   INLINE Size
-         MaxInducedWidthMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
-    maxlog10InducedWidth() const {
+         MaxInducedWidthMCBayesNetGenerator< GUM_SCALAR,
+                                             ICPTGenerator,
+                                             ICPTDisturber >::maxlog10InducedWidth()
+      const {
     return _maxlog10InducedWidth;
   }
   template < typename GUM_SCALAR,
              template < typename > class ICPTGenerator,
              template < typename > class ICPTDisturber >
-  INLINE void
-  MaxInducedWidthMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
-    setMaxlog10InducedWidth(Size maxlog10InducedWidth) {
+  INLINE void MaxInducedWidthMCBayesNetGenerator<
+    GUM_SCALAR,
+    ICPTGenerator,
+    ICPTDisturber >::setMaxlog10InducedWidth(Size maxlog10InducedWidth) {
     if (maxlog10InducedWidth == 0)
       GUM_ERROR(OperationNotAllowed,
                 "maxInducedWidth must be at least equal "

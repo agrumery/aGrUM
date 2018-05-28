@@ -26,8 +26,8 @@
 #include <sstream>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/cliqueGraph_inl.h>
-#endif  // GUM_NOINLINE
+#  include <agrum/graphs/cliqueGraph_inl.h>
+#endif   // GUM_NOINLINE
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -49,23 +49,19 @@ namespace gum {
   CliqueGraph::CliqueGraph(Size nodes_size,
                            bool nodes_resize_policy,
                            Size edges_size,
-                           bool edges_resize_policy)
-      : NodeGraphPart(nodes_size, nodes_resize_policy)
-      , UndiGraph(
-          nodes_size, nodes_resize_policy, edges_size, edges_resize_policy) {
+                           bool edges_resize_policy) :
+      NodeGraphPart(nodes_size, nodes_resize_policy),
+      UndiGraph(nodes_size, nodes_resize_policy, edges_size, edges_resize_policy) {
     // for debugging purposes
     GUM_CONSTRUCTOR(CliqueGraph);
   }
 
   /// copy constructor
 
-  CliqueGraph::CliqueGraph(const CliqueGraph& from)
-      : NodeGraphPart(from)
-      ,  // needed because NodeGraphPart is a virtual inherited
-      UndiGraph(from)
-      ,  // class (see C++ FAQ Lite #25.12 for details)
-      __cliques(from.__cliques)
-      , __separators(from.__separators) {
+  CliqueGraph::CliqueGraph(const CliqueGraph& from) :
+      NodeGraphPart(from),   // needed because NodeGraphPart is a virtual inherited
+      UndiGraph(from),       // class (see C++ FAQ Lite #25.12 for details)
+      __cliques(from.__cliques), __separators(from.__separators) {
     // for debugging purposes
     GUM_CONS_CPY(CliqueGraph);
   }
@@ -289,9 +285,7 @@ namespace gum {
     bool              first = true;
 
     for (auto node : clique) {
-      if (!first) {
-        stream << "-";
-      }
+      if (!first) { stream << "-"; }
 
       stream << node;
       first = false;
@@ -328,10 +322,11 @@ namespace gum {
 
     // separator as nodes
     for (auto edge : edges()) {
-      stream << "  \"" << expandSeparator(edge.first(),
-                                          clique(edge.first()),
-                                          edge.second(),
-                                          clique(edge.second()))
+      stream << "  \""
+             << expandSeparator(edge.first(),
+                                clique(edge.first()),
+                                edge.second(),
+                                clique(edge.second()))
              << "\" [label=\"" << expandCliqueContent(separator(edge)) << "\""
              << ",shape=box,fillcolor=\"palegreen\",style=\"filled\",fontsize=8,"
                 "width=0,height=0];"
@@ -343,10 +338,11 @@ namespace gum {
     // edges now as c1--sep--c2
     for (auto edge : edges())
       stream << "  \"" << expandClique(edge.first(), clique(edge.first()))
-             << "\"--\"" << expandSeparator(edge.first(),
-                                            clique(edge.first()),
-                                            edge.second(),
-                                            clique(edge.second()))
+             << "\"--\""
+             << expandSeparator(edge.first(),
+                                clique(edge.first()),
+                                edge.second(),
+                                clique(edge.second()))
              << "\"--\"" << expandClique(edge.second(), clique(edge.second()))
              << "\";" << std::endl;
 

@@ -36,18 +36,18 @@
 #else
 namespace gum {
 
-// a specialized function instantiating some variables of a table and returning
-// the result
+  // a specialized function instantiating some variables of a table and returning
+  // the result
 
-#ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME
-#define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE GUM_SCALAR
+#  ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME
+#    define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE GUM_SCALAR
   template < typename GUM_SCALAR >
   MultiDimImplementation< GUM_SCALAR >* GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME(
-    const MultiDimImplementation< GUM_SCALAR >* table,
+    const MultiDimImplementation< GUM_SCALAR >*      table,
     const HashTable< const DiscreteVariable*, Idx >& inst_vars)
-#endif
+#  endif
 
-// clang-format off
+  // clang-format off
 
 #ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER_NAME
 #define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE GUM_SCALAR *
@@ -69,14 +69,12 @@ namespace gum {
 
     // Compute the offset of the variables. In addition, get the offset in
     // table induced by the instantiation inst_var
-    Idx table_alone_offset = 0;
-    Idx offset = 1;
+    Idx                                       table_alone_offset = 0;
+    Idx                                       offset = 1;
     HashTable< const DiscreteVariable*, Idx > var1offset(table_vars.size());
 
     for (const auto var : table_vars) {
-      if (inst_vars.exists(var)) {
-        table_alone_offset += inst_vars[var] * offset;
-      }
+      if (inst_vars.exists(var)) { table_alone_offset += inst_vars[var] * offset; }
 
       var1offset.insert(var, offset);
       offset *= var->domainSize();
@@ -138,7 +136,7 @@ namespace gum {
 
     result->endMultipleChanges();
 
-#ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
+#  ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
     // fill the matrix with any element
     {
       const Instantiation table_inst(table);
@@ -148,7 +146,7 @@ namespace gum {
         result->unsafeSet(i, new GUM_SCALAR(any_element));
       }
     }
-#endif /* GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER */
+#  endif /* GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER */
 
     // compute the result: it is now sufficient to loop over the variables
     // that were not instantiated. ptable and presult are pointers on the
@@ -164,11 +162,11 @@ namespace gum {
     // presult as both tables need be parsed using only 1-increments
     if (has_before_incr) {
       for (Idx i = 0; i < result_domain_size; ++i) {
-#ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
+#  ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
         **presult = *(table->get(table_inst));
-#else
+#  else
         *presult = table->get(table_inst);
-#endif
+#  endif
 
         // update the offset of result and table
         ++table_inst;
@@ -179,11 +177,11 @@ namespace gum {
       // ones in the variables sequence of table. So, we must perform a more
       // complicated parsing of ptable
       for (Idx j = 0; j < result_domain_size; ++j) {
-#ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
+#  ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
         **presult = *(table->get(table_inst));
-#else
+#  else
         *presult = table->get(table_inst);
-#endif
+#  endif
 
         // update the offset of table for the outer loop
         for (unsigned int k = 0; k < table_and_result_value.size(); ++k) {
@@ -206,11 +204,11 @@ namespace gum {
     return result;
   }
 
-#undef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE
+#  undef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE
 
-#ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
-#undef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
-#endif
+#  ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
+#    undef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
+#  endif
 
 } /* End of namespace gum */
 

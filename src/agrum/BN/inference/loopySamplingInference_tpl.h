@@ -36,23 +36,21 @@ namespace gum {
 
   template < typename GUM_SCALAR, template < typename > class APPROX >
   LoopySamplingInference< GUM_SCALAR, APPROX >::LoopySamplingInference(
-    const IBayesNet< GUM_SCALAR >* BN)
-      : APPROX< GUM_SCALAR >(BN)
-      , _virtualLBPSize(DEFAULT_VIRTUAL_LBP_SIZE) {
+    const IBayesNet< GUM_SCALAR >* BN) :
+      APPROX< GUM_SCALAR >(BN),
+      _virtualLBPSize(DEFAULT_VIRTUAL_LBP_SIZE) {
     GUM_CONSTRUCTOR(LoopySamplingInference);
   }
 
 
   template < typename GUM_SCALAR, template < typename > class APPROX >
   LoopySamplingInference< GUM_SCALAR, APPROX >::~LoopySamplingInference() {
-
     GUM_DESTRUCTOR(LoopySamplingInference);
   }
 
 
   template < typename GUM_SCALAR, template < typename > class APPROX >
   void LoopySamplingInference< GUM_SCALAR, APPROX >::_makeInference() {
-
     LoopyBeliefPropagation< GUM_SCALAR > lbp(&this->BN());
     for (const auto x : this->hardEvidence()) {
       lbp.addEvidence(x.first, x.second);
@@ -65,4 +63,4 @@ namespace gum {
 
     this->_loopApproxInference();
   }
-}
+}   // namespace gum

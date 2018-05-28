@@ -1,29 +1,29 @@
 /***************************************************************************
-*   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 /**
-* @file
-* @brief Template implementation of FMDP/planning/TreeOperatorStrategy.h
-* classes.
-*
-* @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
-*/
+ * @file
+ * @brief Template implementation of FMDP/planning/TreeOperatorStrategy.h
+ * classes.
+ *
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
+ */
 
 // =========================================================================
 #include <algorithm>
@@ -92,7 +92,6 @@ namespace gum {
     Idx                                        actionId,
     const FMDP< GUM_SCALAR >*                  fmdp,
     const Set< const DiscreteVariable* >&      elVarSeq) {
-
     // ******************************************************************************
     // Initialisation :
     // Creating a copy of last Vfunction to deduce from the new Qaction
@@ -110,7 +109,7 @@ namespace gum {
     }
 
     TreeRegress< GUM_SCALAR, std::multiplies, std::plus > tr(
-      Vold, pxi);  //, Vold->variablesSequence(), (GUM_SCALAR) 0.0 );
+      Vold, pxi);   //, Vold->variablesSequence(), (GUM_SCALAR) 0.0 );
     return tr.compute();
   }
 
@@ -119,13 +118,12 @@ namespace gum {
   // ==========================================================================
   template < typename GUM_SCALAR >
   MultiDimFunctionGraph< GUM_SCALAR >*
-  TreeOperatorStrategy< GUM_SCALAR >::maximize(
-    const MultiDimFunctionGraph< GUM_SCALAR >* f1,
-    const MultiDimFunctionGraph< GUM_SCALAR >* f2,
-    Idx                                        del) {
-
+    TreeOperatorStrategy< GUM_SCALAR >::maximize(
+      const MultiDimFunctionGraph< GUM_SCALAR >* f1,
+      const MultiDimFunctionGraph< GUM_SCALAR >* f2,
+      Idx                                        del) {
     TreeOperator< GUM_SCALAR, Maximizes > opi(f1, f2);
-    MultiDimFunctionGraph< GUM_SCALAR >* ret = opi.compute();
+    MultiDimFunctionGraph< GUM_SCALAR >*  ret = opi.compute();
     this->_deleteFunctionGraph(f1, f2, del);
     return ret;
   }
@@ -135,13 +133,12 @@ namespace gum {
   // ==========================================================================
   template < typename GUM_SCALAR >
   MultiDimFunctionGraph< GUM_SCALAR >*
-  TreeOperatorStrategy< GUM_SCALAR >::minimize(
-    const MultiDimFunctionGraph< GUM_SCALAR >* f1,
-    const MultiDimFunctionGraph< GUM_SCALAR >* f2,
-    Idx                                        del) {
-
+    TreeOperatorStrategy< GUM_SCALAR >::minimize(
+      const MultiDimFunctionGraph< GUM_SCALAR >* f1,
+      const MultiDimFunctionGraph< GUM_SCALAR >* f2,
+      Idx                                        del) {
     TreeOperator< GUM_SCALAR, Minimizes > opi(f1, f2);
-    MultiDimFunctionGraph< GUM_SCALAR >* ret = opi.compute();
+    MultiDimFunctionGraph< GUM_SCALAR >*  ret = opi.compute();
     this->_deleteFunctionGraph(f1, f2, del);
     return ret;
   }
@@ -150,12 +147,12 @@ namespace gum {
   // ==========================================================================
   template < typename GUM_SCALAR >
   MultiDimFunctionGraph< GUM_SCALAR >*
-  TreeOperatorStrategy< GUM_SCALAR >::multiply(
-    const MultiDimFunctionGraph< GUM_SCALAR >* f1,
-    const MultiDimFunctionGraph< GUM_SCALAR >* f2,
-    Idx                                        del) {
+    TreeOperatorStrategy< GUM_SCALAR >::multiply(
+      const MultiDimFunctionGraph< GUM_SCALAR >* f1,
+      const MultiDimFunctionGraph< GUM_SCALAR >* f2,
+      Idx                                        del) {
     TreeOperator< GUM_SCALAR, std::multiplies > opi(f1, f2);
-    MultiDimFunctionGraph< GUM_SCALAR >* ret = opi.compute();
+    MultiDimFunctionGraph< GUM_SCALAR >*        ret = opi.compute();
     this->_deleteFunctionGraph(f1, f2, del);
     return ret;
   }
@@ -167,13 +164,12 @@ namespace gum {
   // ==========================================================================
   template < typename GUM_SCALAR >
   MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
-  TreeOperatorStrategy< GUM_SCALAR >::argmaximize(
-    const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
-                                 SetTerminalNodePolicy >* f1,
-    const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
-                                 SetTerminalNodePolicy >* f2,
-    Idx                                                   del) {
-
+    TreeOperatorStrategy< GUM_SCALAR >::argmaximize(
+      const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
+                                   SetTerminalNodePolicy >* f1,
+      const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
+                                   SetTerminalNodePolicy >* f2,
+      Idx                                                   del) {
     TreeOperator< ArgMaxSet< GUM_SCALAR, Idx >,
                   ArgumentMaximisesAction,
                   SetTerminalNodePolicy >
@@ -195,9 +191,8 @@ namespace gum {
     const MultiDimFunctionGraph< GUM_SCALAR >* f1,
     const MultiDimFunctionGraph< GUM_SCALAR >* f2,
     Idx                                        del) {
-
     TreeOperator< GUM_SCALAR, std::plus > opi(f1, f2);
-    MultiDimFunctionGraph< GUM_SCALAR >* ret = opi.compute();
+    MultiDimFunctionGraph< GUM_SCALAR >*  ret = opi.compute();
     this->_deleteFunctionGraph(f1, f2, del);
     return ret;
   }
@@ -210,16 +205,15 @@ namespace gum {
   // ==========================================================================
   template < typename GUM_SCALAR >
   MultiDimFunctionGraph< GUM_SCALAR >*
-  TreeOperatorStrategy< GUM_SCALAR >::subtract(
-    const MultiDimFunctionGraph< GUM_SCALAR >* f1,
-    const MultiDimFunctionGraph< GUM_SCALAR >* f2,
-    Idx                                        del) {
-
+    TreeOperatorStrategy< GUM_SCALAR >::subtract(
+      const MultiDimFunctionGraph< GUM_SCALAR >* f1,
+      const MultiDimFunctionGraph< GUM_SCALAR >* f2,
+      Idx                                        del) {
     TreeOperator< GUM_SCALAR, std::minus > opi(f1, f2);
-    MultiDimFunctionGraph< GUM_SCALAR >* ret = opi.compute();
+    MultiDimFunctionGraph< GUM_SCALAR >*   ret = opi.compute();
     this->_deleteFunctionGraph(f1, f2, del);
     return ret;
   }
 
 
-}  // end of namespace gum
+}   // end of namespace gum

@@ -94,7 +94,7 @@ namespace gum {
 
 
   } /* namespace prm */
-}  // namespace gum
+}   // namespace gum
 
 #include <agrum/PRM/elements/PRMFuncAttribute_tpl.h>
 

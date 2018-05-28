@@ -35,11 +35,11 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <map>
+#  include <map>
 
 namespace gum {
 
-#ifndef NDEBUG
+#  ifndef NDEBUG
 
   namespace __debug__ {
     typedef std::map< std::string, int > DEBUG_MAP;
@@ -74,12 +74,12 @@ namespace gum {
                       long        zeLine,
                       const char* zeMsg,
                       const void* zePtr) {
-#ifdef GUM_DEEP_TRACE_ON
+#    ifdef GUM_DEEP_TRACE_ON
       std::cerr << std::setw(40) << std::setfill(' ') << __getFile(zeFile) << "#"
                 << std::setfill('0') << std::setw(5) << std::dec << zeLine << " : "
                 << zeMsg << " <" << zeKey << "> [" << std::hex << zePtr << "]"
                 << std::dec << std::endl;
-#endif  // TRACE_CONSTRUCTION_ON
+#    endif   // TRACE_CONSTRUCTION_ON
     }
 
     void __inc_creation(const char* zeKey,
@@ -250,10 +250,10 @@ namespace gum {
       __deletion().clear();
     }
 
-  } /* namespace gum::__debug__ */
+  }   // namespace __debug__
 
-#endif  // NDEBUG
+#  endif   // NDEBUG
 
 } /* namespace gum */
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS

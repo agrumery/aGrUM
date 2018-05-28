@@ -1,22 +1,22 @@
 /**************************************************************************
-*   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 /**
  * @file
@@ -37,31 +37,26 @@ namespace gum {
         PRM< GUM_SCALAR >&          prm,
         O3PRM&                      o3_prm,
         O3NameSolver< GUM_SCALAR >& solver,
-        ErrorsContainer&            errors)
-          : __prm(&prm)
-          , __o3_prm(&o3_prm)
-          , __solver(&solver)
-          , __errors(&errors) {
+        ErrorsContainer&            errors) :
+          __prm(&prm),
+          __o3_prm(&o3_prm), __solver(&solver), __errors(&errors) {
         GUM_CONSTRUCTOR(O3InterfaceFactory);
       }
 
       template < typename GUM_SCALAR >
       INLINE O3InterfaceFactory< GUM_SCALAR >::O3InterfaceFactory(
-        const O3InterfaceFactory< GUM_SCALAR >& src)
-          : __prm(src.__prm)
-          , __o3_prm(src.__o3_prm)
-          , __solver(src.__solver)
-          , __errors(src.__errors) {
+        const O3InterfaceFactory< GUM_SCALAR >& src) :
+          __prm(src.__prm),
+          __o3_prm(src.__o3_prm), __solver(src.__solver), __errors(src.__errors) {
         GUM_CONS_CPY(O3InterfaceFactory);
       }
 
       template < typename GUM_SCALAR >
       INLINE O3InterfaceFactory< GUM_SCALAR >::O3InterfaceFactory(
-        O3InterfaceFactory< GUM_SCALAR >&& src)
-          : __prm(std::move(src.__prm))
-          , __o3_prm(std::move(src.__o3_prm))
-          , __solver(std::move(src.__solver))
-          , __errors(std::move(src.__errors)) {
+        O3InterfaceFactory< GUM_SCALAR >&& src) :
+          __prm(std::move(src.__prm)),
+          __o3_prm(std::move(src.__o3_prm)), __solver(std::move(src.__solver)),
+          __errors(std::move(src.__errors)) {
         GUM_CONS_MOV(O3InterfaceFactory);
       }
 
@@ -72,10 +67,8 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE O3InterfaceFactory< GUM_SCALAR >& O3InterfaceFactory< GUM_SCALAR >::
-      operator=(const O3InterfaceFactory< GUM_SCALAR >& src) {
-        if (this == &src) {
-          return *this;
-        }
+                                               operator=(const O3InterfaceFactory< GUM_SCALAR >& src) {
+        if (this == &src) { return *this; }
         __prm = src.__prm;
         __o3_prm = src.__o3_prm;
         __solver = src.__solver;
@@ -85,10 +78,8 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE O3InterfaceFactory< GUM_SCALAR >& O3InterfaceFactory< GUM_SCALAR >::
-      operator=(O3InterfaceFactory< GUM_SCALAR >&& src) {
-        if (this == &src) {
-          return *this;
-        }
+                                               operator=(O3InterfaceFactory< GUM_SCALAR >&& src) {
+        if (this == &src) { return *this; }
         __prm = std::move(src.__prm);
         __o3_prm = std::move(src.__o3_prm);
         __solver = std::move(src.__solver);
@@ -98,14 +89,11 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE void O3InterfaceFactory< GUM_SCALAR >::buildInterfaces() {
-
         PRMFactory< GUM_SCALAR > factory(__prm);
         if (__checkO3Interfaces()) {
-
           __setO3InterfaceCreationOrder();
 
           for (auto i : __o3Interface) {
-
             if (__solver->resolveInterface(i->superLabel())) {
               factory.startInterface(
                 i->name().label(), i->superLabel().label(), true);
@@ -122,13 +110,10 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE bool O3InterfaceFactory< GUM_SCALAR >::__addInterface2Dag() {
-
         // Adding nodes to the type inheritance graph
         for (auto& i : __o3_prm->interfaces()) {
-
           auto id = __dag.addNode();
           try {
-
             __nameMap.insert(i->name().label(), id);
             __interfaceMap.insert(i->name().label(), i.get());
             __nodeMap.insert(id, i.get());
@@ -144,21 +129,15 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE bool O3InterfaceFactory< GUM_SCALAR >::__addArcs2Dag() {
-
         // Adding arcs to the graph inheritance graph
         for (auto& i : __o3_prm->interfaces()) {
-
           if (i->superLabel().label() != "") {
-
-            if (!__solver->resolveInterface(i->superLabel())) {
-              return false;
-            }
+            if (!__solver->resolveInterface(i->superLabel())) { return false; }
 
             auto head = __nameMap[i->superLabel().label()];
             auto tail = __nameMap[i->name().label()];
 
             try {
-
               __dag.addArc(tail, head);
 
             } catch (InvalidDirectedCycle&) {
@@ -174,8 +153,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE void
-      O3InterfaceFactory< GUM_SCALAR >::__setO3InterfaceCreationOrder() {
-
+        O3InterfaceFactory< GUM_SCALAR >::__setO3InterfaceCreationOrder() {
         auto topo_order = __dag.topologicalOrder();
         for (auto id = topo_order.rbegin(); id != topo_order.rend(); --id) {
           __o3Interface.push_back(__nodeMap[*id]);
@@ -184,26 +162,19 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE void O3InterfaceFactory< GUM_SCALAR >::buildElements() {
-
         PRMFactory< GUM_SCALAR > factory(__prm);
 
         for (auto i : __o3Interface) {
-
           __prm->getInterface(i->name().label()).inheritInterface();
 
           factory.continueInterface(i->name().label());
 
           for (auto& elt : i->elements()) {
-
             if (__checkInterfaceElement(*i, elt)) {
-
               try {
-
                 if (__prm->isType(elt.type().label())) {
-
                   factory.addAttribute(elt.type().label(), elt.name().label());
                 } else {
-
                   factory.addReferenceSlot(
                     elt.type().label(), elt.name().label(), elt.isArray());
                 }
@@ -221,10 +192,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE bool O3InterfaceFactory< GUM_SCALAR >::__checkInterfaceElement(
         O3Interface& i, O3InterfaceElement& elt) {
-
-        if (!__solver->resolveClassElement(elt.type())) {
-          return false;
-        }
+        if (!__solver->resolveClassElement(elt.type())) { return false; }
 
         if (__prm->isType(elt.type().label()) && elt.isArray()) {
           O3PRM_INTERFACE_ILLEGAL_ARRAY(elt.name(), *__errors);
@@ -234,14 +202,10 @@ namespace gum {
         const auto& real_i = __prm->getInterface(i.name().label());
 
         if (real_i.exists(elt.name().label())) {
-          if (!__checkOverloadLegality(i, elt)) {
-            return false;
-          }
+          if (!__checkOverloadLegality(i, elt)) { return false; }
         }
 
-        if (!__checkCyclicReference(i, elt)) {
-          return false;
-        }
+        if (!__checkCyclicReference(i, elt)) { return false; }
 
         return true;
       }
@@ -249,7 +213,6 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE bool O3InterfaceFactory< GUM_SCALAR >::__checkOverloadLegality(
         O3Interface& i, O3InterfaceElement& elt) {
-
         const auto& real_i = __prm->getInterface(i.name().label());
         const auto& real_elt = real_i.get(elt.name().label());
 
@@ -266,9 +229,8 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE bool
-      O3InterfaceFactory< GUM_SCALAR >::__checkAttributeOverloadLegality(
-        O3Interface& i, O3InterfaceElement& elt) {
-
+        O3InterfaceFactory< GUM_SCALAR >::__checkAttributeOverloadLegality(
+          O3Interface& i, O3InterfaceElement& elt) {
         const auto& real_i = __prm->getInterface(i.name().label());
         const auto& real_elt = real_i.get(elt.name().label());
 
@@ -290,8 +252,8 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE bool
-      O3InterfaceFactory< GUM_SCALAR >::__checkReferenceOverloadLegality(
-        O3Interface& i, O3InterfaceElement& elt) {
+        O3InterfaceFactory< GUM_SCALAR >::__checkReferenceOverloadLegality(
+          O3Interface& i, O3InterfaceElement& elt) {
         const auto& real_i = __prm->getInterface(i.name().label());
         const auto& real_elt =
           static_cast< const PRMReferenceSlot< GUM_SCALAR >& >(
@@ -323,10 +285,8 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE bool O3InterfaceFactory< GUM_SCALAR >::__checkCyclicReference(
         O3Interface& i, O3InterfaceElement& elt) {
-
-        if (__prm->isInterface(elt.type().label()) ||
-            __prm->isClass(elt.type().label())) {
-
+        if (__prm->isInterface(elt.type().label())
+            || __prm->isClass(elt.type().label())) {
           auto ref_type = (const PRMClassElementContainer< GUM_SCALAR >*)nullptr;
 
           if (__prm->isInterface(elt.type().label())) {
@@ -351,6 +311,6 @@ namespace gum {
         return true;
       }
 
-    }  // o3prm
-  }    // prm
-}  // gum
+    }   // namespace o3prm
+  }     // namespace prm
+}   // namespace gum

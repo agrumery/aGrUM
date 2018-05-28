@@ -25,10 +25,10 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <cctype>
-#include <cstdlib>
+#  include <cctype>
+#  include <cstdlib>
 
-#include <agrum/variables/continuousVariable.h>
+#  include <agrum/variables/continuousVariable.h>
 
 namespace gum {
 
@@ -36,7 +36,7 @@ namespace gum {
   /// returns the GUM_SCALAR corresponding to a string, specialized for floats
   template <>
   INLINE float ContinuousVariable< float >::
-  operator[](const std::string& str) const {
+               operator[](const std::string& str) const {
     float       value;
     std::size_t pos;
     try {
@@ -64,7 +64,7 @@ namespace gum {
   /// returns the GUM_SCALAR corresponding to a string, specialized for doubles
   template <>
   INLINE double ContinuousVariable< double >::
-  operator[](const std::string& str) const {
+                operator[](const std::string& str) const {
     double      value;
     std::size_t pos;
     try {
@@ -90,4 +90,4 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS

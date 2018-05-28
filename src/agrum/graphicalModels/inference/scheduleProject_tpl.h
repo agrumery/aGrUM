@@ -25,8 +25,8 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/agrum.h>
-#include <limits>
+#  include <agrum/agrum.h>
+#  include <limits>
 
 namespace gum {
 
@@ -37,14 +37,11 @@ namespace gum {
     const Set< const DiscreteVariable* >& del_vars,
     MultiDimImplementation< GUM_SCALAR >* (*project)(
       const MultiDimImplementation< GUM_SCALAR >&,
-      const Set< const DiscreteVariable* >&))
-      : ScheduleOperation< GUM_SCALAR >(
-          ScheduleOperation< GUM_SCALAR >::Type::PROJECT_MULTIDIM)
-      , __table(table)
-      , __del_vars(del_vars)
-      , __args(0)
-      , __results(0)
-      , __project(project) {
+      const Set< const DiscreteVariable* >&)) :
+      ScheduleOperation< GUM_SCALAR >(
+        ScheduleOperation< GUM_SCALAR >::Type::PROJECT_MULTIDIM),
+      __table(table), __del_vars(del_vars), __args(0), __results(0),
+      __project(project) {
     // for debugging purposes
     GUM_CONSTRUCTOR(ScheduleProject);
 
@@ -62,14 +59,11 @@ namespace gum {
   /// copy constructor
   template < typename GUM_SCALAR >
   ScheduleProject< GUM_SCALAR >::ScheduleProject(
-    const ScheduleProject< GUM_SCALAR >& f)
-      : ScheduleOperation< GUM_SCALAR >(f)
-      , __table(f.__table)
-      , __del_vars(f.__del_vars)
-      , __result(new ScheduleMultiDim< GUM_SCALAR >(*(f.__result)))
-      , __args(0)
-      , __results(0)
-      , __project(f.__project) {
+    const ScheduleProject< GUM_SCALAR >& f) :
+      ScheduleOperation< GUM_SCALAR >(f),
+      __table(f.__table), __del_vars(f.__del_vars),
+      __result(new ScheduleMultiDim< GUM_SCALAR >(*(f.__result))), __args(0),
+      __results(0), __project(f.__project) {
     // for debugging purposes
     GUM_CONS_CPY(ScheduleProject);
   }
@@ -77,7 +71,7 @@ namespace gum {
   /// virtual copy constructor: creates a clone of the operation
   template < typename GUM_SCALAR >
   ScheduleProject< GUM_SCALAR >*
-  ScheduleProject< GUM_SCALAR >::newFactory() const {
+    ScheduleProject< GUM_SCALAR >::newFactory() const {
     return new ScheduleProject< GUM_SCALAR >(*this);
   }
 
@@ -96,7 +90,7 @@ namespace gum {
   /// copy operator
   template < typename GUM_SCALAR >
   ScheduleProject< GUM_SCALAR >& ScheduleProject< GUM_SCALAR >::
-  operator=(const ScheduleProject< GUM_SCALAR >& from) {
+                                 operator=(const ScheduleProject< GUM_SCALAR >& from) {
     // avoid self assignment
     if (this != &from) {
       ScheduleOperation< GUM_SCALAR >::operator=(from);
@@ -123,25 +117,25 @@ namespace gum {
   /// operator ==
   template < typename GUM_SCALAR >
   bool ScheduleProject< GUM_SCALAR >::
-  operator==(const ScheduleOperation< GUM_SCALAR >& op) const {
+       operator==(const ScheduleOperation< GUM_SCALAR >& op) const {
     if (this->type() != op.type()) return false;
 
     const ScheduleProject< GUM_SCALAR >& real_op =
       static_cast< const ScheduleProject< GUM_SCALAR >& >(op);
-    return ((__table == real_op.__table) && (__del_vars == real_op.__del_vars) &&
-            (__project == real_op.__project));
+    return ((__table == real_op.__table) && (__del_vars == real_op.__del_vars)
+            && (__project == real_op.__project));
   }
 
   /// operator !=
   template < typename GUM_SCALAR >
   bool ScheduleProject< GUM_SCALAR >::
-  operator!=(const ScheduleOperation< GUM_SCALAR >& op) const {
+       operator!=(const ScheduleOperation< GUM_SCALAR >& op) const {
     if (this->type() != op.type()) return true;
 
     const ScheduleProject< GUM_SCALAR >& real_op =
       static_cast< const ScheduleProject< GUM_SCALAR >& >(op);
-    return ((__table != real_op.__table) || (__del_vars != real_op.__del_vars) ||
-            (__project != real_op.__project));
+    return ((__table != real_op.__table) || (__del_vars != real_op.__del_vars)
+            || (__project != real_op.__project));
   }
 
   /// executes the operation
@@ -213,8 +207,8 @@ namespace gum {
   /// displays the content of the operation
   template < typename GUM_SCALAR >
   std::string ScheduleProject< GUM_SCALAR >::toString() const {
-    return __result->toString() + " = project ( " + __table.toString() + " , " +
-           __del_vars.toString() + " )";
+    return __result->toString() + " = project ( " + __table.toString() + " , "
+           + __del_vars.toString() + " )";
   }
 
 } /* namespace gum */

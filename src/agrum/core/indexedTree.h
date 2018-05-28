@@ -38,7 +38,8 @@ namespace gum {
   // =========================================================================
 
   /**
-   * @class IndexedTree indexedTree.h <agrum/core/indexedTree.h>
+   * @class IndexedTree
+   * @headerfile indexedTree.h <agrum/core/indexedTree.h>
    * @brief The class for storing the nodes of the Arborescence
    * @ingroup basicstruct_group
    *

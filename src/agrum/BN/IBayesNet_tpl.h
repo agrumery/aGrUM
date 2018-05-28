@@ -43,30 +43,26 @@ namespace gum {
   //                                  IBayesNet
 
   template < typename GUM_SCALAR >
-  INLINE IBayesNet< GUM_SCALAR >::IBayesNet()
-      : DAGmodel() {
+  INLINE IBayesNet< GUM_SCALAR >::IBayesNet() : DAGmodel() {
     GUM_CONSTRUCTOR(IBayesNet);
   }
 
   template < typename GUM_SCALAR >
-  INLINE IBayesNet< GUM_SCALAR >::IBayesNet(std::string name)
-      : DAGmodel() {
+  INLINE IBayesNet< GUM_SCALAR >::IBayesNet(std::string name) : DAGmodel() {
     GUM_CONSTRUCTOR(IBayesNet);
     this->setProperty("name", name);
   }
 
   template < typename GUM_SCALAR >
-  IBayesNet< GUM_SCALAR >::IBayesNet(const IBayesNet< GUM_SCALAR >& source)
-      : DAGmodel(source) {
+  IBayesNet< GUM_SCALAR >::IBayesNet(const IBayesNet< GUM_SCALAR >& source) :
+      DAGmodel(source) {
     GUM_CONS_CPY(IBayesNet);
   }
 
   template < typename GUM_SCALAR >
   IBayesNet< GUM_SCALAR >& IBayesNet< GUM_SCALAR >::
-  operator=(const IBayesNet< GUM_SCALAR >& source) {
-    if (this != &source) {
-      DAGmodel::operator=(source);
-    }
+                           operator=(const IBayesNet< GUM_SCALAR >& source) {
+    if (this != &source) { DAGmodel::operator=(source); }
 
     return *this;
   }
@@ -97,9 +93,7 @@ namespace gum {
     Size res = 0;
     for (auto node : nodes()) {
       auto v = variable(node).domainSize();
-      if (v > res) {
-        res = v;
-      }
+      if (v > res) { res = v; }
     }
     return res;
   }
@@ -109,9 +103,7 @@ namespace gum {
     GUM_SCALAR res = 1.0;
     for (auto node : nodes()) {
       auto v = cpt(node).min();
-      if (v < res) {
-        res = v;
-      }
+      if (v < res) { res = v; }
     }
     return res;
   }
@@ -121,9 +113,7 @@ namespace gum {
     GUM_SCALAR res = 1.0;
     for (auto node : nodes()) {
       auto v = cpt(node).max();
-      if (v > res) {
-        res = v;
-      }
+      if (v > res) { res = v; }
     }
     return res;
   }
@@ -133,9 +123,7 @@ namespace gum {
     GUM_SCALAR res = 1.0;
     for (auto node : nodes()) {
       auto v = cpt(node).minNonZero();
-      if (v < res) {
-        res = v;
-      }
+      if (v < res) { res = v; }
     }
     return res;
   }
@@ -145,9 +133,7 @@ namespace gum {
     GUM_SCALAR res = 0.0;
     for (auto node : nodes()) {
       auto v = cpt(node).maxNonOne();
-      if (v > res) {
-        res = v;
-      }
+      if (v > res) { res = v; }
     }
     return res;
   }
@@ -191,9 +177,7 @@ namespace gum {
 
     try {
       bn_name = this->property("name");
-    } catch (NotFound&) {
-      bn_name = "no_name";
-    }
+    } catch (NotFound&) { bn_name = "no_name"; }
 
     output << bn_name << "\" {" << std::endl;
     output << "  graph [bgcolor=transparent,label=\"" << bn_name << "\"];"
@@ -230,15 +214,13 @@ namespace gum {
   /// of the vars)
   template < typename GUM_SCALAR >
   GUM_SCALAR
-  IBayesNet< GUM_SCALAR >::jointProbability(const Instantiation& i) const {
+    IBayesNet< GUM_SCALAR >::jointProbability(const Instantiation& i) const {
     auto value = (GUM_SCALAR)1.0;
 
     GUM_SCALAR tmp;
 
     for (auto node : nodes()) {
-      if ((tmp = cpt(node)[i]) == (GUM_SCALAR)0) {
-        return (GUM_SCALAR)0;
-      }
+      if ((tmp = cpt(node)[i]) == (GUM_SCALAR)0) { return (GUM_SCALAR)0; }
 
       value *= tmp;
     }
@@ -251,7 +233,7 @@ namespace gum {
   /// of the vars)
   template < typename GUM_SCALAR >
   GUM_SCALAR
-  IBayesNet< GUM_SCALAR >::log2JointProbability(const Instantiation& i) const {
+    IBayesNet< GUM_SCALAR >::log2JointProbability(const Instantiation& i) const {
     auto value = (GUM_SCALAR)0.0;
 
     GUM_SCALAR tmp;
@@ -269,13 +251,9 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   bool IBayesNet< GUM_SCALAR >::operator==(const IBayesNet& from) const {
-    if (size() != from.size()) {
-      return false;
-    }
+    if (size() != from.size()) { return false; }
 
-    if (sizeArcs() != from.sizeArcs()) {
-      return false;
-    }
+    if (sizeArcs() != from.sizeArcs()) { return false; }
 
     // alignment of variables between the 2 BNs
     Bijection< const DiscreteVariable*, const DiscreteVariable* > alignment;
@@ -293,9 +271,7 @@ namespace gum {
     for (auto node : nodes()) {
       NodeId fromnode = from.idFromName(variable(node).name());
 
-      if (cpt(node).nbrDim() != from.cpt(fromnode).nbrDim()) {
-        return false;
-      }
+      if (cpt(node).nbrDim() != from.cpt(fromnode).nbrDim()) { return false; }
 
       if (cpt(node).domainSize() != from.cpt(fromnode).domainSize()) {
         return false;
@@ -310,8 +286,8 @@ namespace gum {
           j.chgVal(*(alignment.second(p)), i.val(*p));
         }
 
-        if (std::pow(cpt(node).get(i) - from.cpt(fromnode).get(j), (GUM_SCALAR)2) >
-            (GUM_SCALAR)1e-6) {
+        if (std::pow(cpt(node).get(i) - from.cpt(fromnode).get(j), (GUM_SCALAR)2)
+            > (GUM_SCALAR)1e-6) {
           return false;
         }
       }

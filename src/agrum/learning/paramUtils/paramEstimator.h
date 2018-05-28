@@ -81,8 +81,8 @@ namespace gum {
        * @param score_internal_apriori The score internal apriori.
        * */
       template < typename RowFilter >
-      ParamEstimator(const RowFilter&           filter,
-                     const std::vector< Size >& var_modalities,
+      ParamEstimator(const RowFilter&                   filter,
+                     const std::vector< Size >&         var_modalities,
                      Apriori< IdSetAlloc, CountAlloc >& apriori,
                      const ScoreInternalApriori< IdSetAlloc, CountAlloc >&
                        score_internal_apriori);
@@ -150,7 +150,7 @@ namespace gum {
        * first, there are the conditioning nodes (in the order in which they
        * were specified) and, then, the target node. */
       virtual const std::vector< double, CountAlloc >&
-      parameters(Idx nodeset_index) = 0;
+        parameters(Idx nodeset_index) = 0;
 
       /// sets the CPT's parameters corresponding to a given nodeset
       /** The order of the variables in the potential and in the nodeset
@@ -248,7 +248,7 @@ namespace gum {
 
       /// prevent copy operator
       ParamEstimator< IdSetAlloc, CountAlloc >&
-      operator=(const ParamEstimator< IdSetAlloc, CountAlloc >&) = delete;
+        operator=(const ParamEstimator< IdSetAlloc, CountAlloc >&) = delete;
     };
 
   } /* namespace learning */

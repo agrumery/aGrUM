@@ -57,15 +57,12 @@ namespace gum {
                Idx                          observationPhaseLenght,
                Idx                          nbValueIterationStep,
                bool                         actionReward,
-               bool                         verbose)
-      : __learner(learner)
-      , __planer(planer)
-      , __decider(decider)
-      , __observationPhaseLenght(observationPhaseLenght)
-      , __nbValueIterationStep(nbValueIterationStep)
-      , __actionReward(actionReward)
-      , _verbose(verbose) {
-
+               bool                         verbose) :
+      __learner(learner),
+      __planer(planer), __decider(decider),
+      __observationPhaseLenght(observationPhaseLenght),
+      __nbValueIterationStep(nbValueIterationStep), __actionReward(actionReward),
+      _verbose(verbose) {
     GUM_CONSTRUCTOR(SDYNA)
 
     _fmdp = new FMDP< double >();
@@ -77,7 +74,6 @@ namespace gum {
   // Destructor
   // ###################################################################
   SDYNA::~SDYNA() {
-
     delete __decider;
 
     delete __learner;
@@ -239,4 +235,4 @@ namespace gum {
     return description.str();
   }
 
-}  // End of namespace gum
+}   // End of namespace gum

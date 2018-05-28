@@ -90,7 +90,7 @@ namespace gum {
      * @throw UndefinedElement if nodes is not in the targets
      */
     virtual const Potential< GUM_SCALAR >&
-    jointPosterior(const NodeSet& nodes) final;
+      jointPosterior(const NodeSet& nodes) final;
 
     /// Computes and returns the posterior of a node.
     /**
@@ -125,7 +125,7 @@ namespace gum {
      * @throw UndefinedElement if node is not in the set of targets
      */
     virtual const Potential< GUM_SCALAR >&
-    posterior(const std::string& nodeName) final;
+      posterior(const std::string& nodeName) final;
     /// @}
 
 
@@ -183,8 +183,8 @@ namespace gum {
      * @return a Potential
      */
     Potential< GUM_SCALAR >
-    evidenceJointImpact(const std::vector< NodeId >& targets,
-                        const std::vector< NodeId >& evs);
+      evidenceJointImpact(const std::vector< NodeId >& targets,
+                          const std::vector< NodeId >& evs);
 
     /**
      * Create a gum::Potential for P(joint targets|evs) (for all instanciation of
@@ -198,8 +198,8 @@ namespace gum {
      * @return a Potential
      */
     Potential< GUM_SCALAR >
-    evidenceJointImpact(const std::vector< std::string >& targets,
-                        const std::vector< std::string >& evs);
+      evidenceJointImpact(const std::vector< std::string >& targets,
+                          const std::vector< std::string >& evs);
 
     // ############################################################################
     /// @name Information Theory related functions
@@ -259,15 +259,15 @@ namespace gum {
      * @param declared_target the joint target declared by the user that
      * contains set */
     virtual const Potential< GUM_SCALAR >&
-    _jointPosterior(const NodeSet& wanted_target,
-                    const NodeSet& declared_target) = 0;
+      _jointPosterior(const NodeSet& wanted_target,
+                      const NodeSet& declared_target) = 0;
 
     /** @brief returns a fresh unnormalized joint posterior of
      * a given set of variables
      * @param set The set of ids of the variables whose joint posterior is
      * looked for. */
     virtual Potential< GUM_SCALAR >*
-    _unnormalizedJointPosterior(const NodeSet& set) = 0;
+      _unnormalizedJointPosterior(const NodeSet& set) = 0;
 
     /// returns a fresh potential equal to P(argument,evidence)
     virtual Potential< GUM_SCALAR >* _unnormalizedJointPosterior(NodeId id) = 0;
@@ -279,10 +279,10 @@ namespace gum {
   };
 
 
-}  // namespace gum
+}   // namespace gum
 
 
 #include <agrum/BN/inference/tools/jointTargetedInference_tpl.h>
 
 
-#endif  // GUM_BAYES_NET_JOINT_TARGETED_INFERENCE_H
+#endif   // GUM_BAYES_NET_JOINT_TARGETED_INFERENCE_H

@@ -37,12 +37,11 @@ namespace gum {
              template < typename > class COMBINEOPERATOR,
              template < typename > class TerminalNodePolicy >
   INLINE
-  TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::TreeOperator(
-    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt1,
-    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt2)
-      : __dt1(dt1)
-      , __dt2(dt2)
-      , __combine() {
+    TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::TreeOperator(
+      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt1,
+      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt2) :
+      __dt1(dt1),
+      __dt2(dt2), __combine() {
     GUM_CONSTRUCTOR(TreeOperator);
 
     __rd =
@@ -53,14 +52,12 @@ namespace gum {
              template < typename > class COMBINEOPERATOR,
              template < typename > class TerminalNodePolicy >
   INLINE
-  TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::TreeOperator(
-    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt1,
-    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt2,
-    const HashTable< const DiscreteVariable*, Idx >                givenContext)
-      : __dt1(dt1)
-      , __dt2(dt2)
-      , __combine()
-      , __context(givenContext) {
+    TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::TreeOperator(
+      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt1,
+      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt2,
+      const HashTable< const DiscreteVariable*, Idx > givenContext) :
+      __dt1(dt1),
+      __dt2(dt2), __combine(), __context(givenContext) {
     GUM_CONSTRUCTOR(TreeOperator);
 
     __rd =
@@ -72,7 +69,6 @@ namespace gum {
              template < typename > class TerminalNodePolicy >
   INLINE TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::
     ~TreeOperator() {
-
     GUM_DESTRUCTOR(TreeOperator);
   }
 
@@ -83,7 +79,6 @@ namespace gum {
              template < typename > class TerminalNodePolicy >
   INLINE MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
          TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::compute() {
-
     __rd->manager()->setRootNode(__xPloreDT1(__dt1->root()));
 
     return __rd;
@@ -96,8 +91,7 @@ namespace gum {
              template < typename > class TerminalNodePolicy >
   INLINE NodeId
          TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::__xPloreDT1(
-    NodeId currentNodeId) {
-
+      NodeId currentNodeId) {
     if (__dt1->isTerminalNode(currentNodeId)) {
       __curDT1Leaf = currentNodeId;
       return __xPloreDT2(__dt2->root());
@@ -123,8 +117,7 @@ namespace gum {
              template < typename > class TerminalNodePolicy >
   INLINE NodeId
          TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::__xPloreDT2(
-    NodeId currentNodeId) {
-
+      NodeId currentNodeId) {
     if (__dt2->isTerminalNode(currentNodeId))
       return __rd->manager()->addTerminalNode(__combine(
         __dt1->nodeValue(__curDT1Leaf), __dt2->nodeValue(currentNodeId)));
@@ -165,4 +158,4 @@ namespace gum {
     return __rd->manager()->addInternalNode(var, sonsMap);
   }
 
-}  // namespace gum
+}   // namespace gum

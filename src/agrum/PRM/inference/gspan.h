@@ -45,7 +45,8 @@ namespace gum {
   namespace prm {
 
     /**
-     * @class GSpan gspan.h <agrum/PRM/gspan.h>
+     * @class GSpan
+     * @headerfile gspan.h <agrum/PRM/gspan.h>
      *
      * @brief This class discovers pattern in a PRM<GUM_SCALAR>'s
      *PRMSystem<GUM_SCALAR>
@@ -65,7 +66,6 @@ namespace gum {
      */
     template < typename GUM_SCALAR >
     class GSpan {
-
       public:
       // ========================================================================
       /// @name Constructors & destructor.
@@ -276,7 +276,8 @@ namespace gum {
       /// @{
 
       /**
-       * @class LabelSort gspan.h <agrum/PRM/gspan.h>
+       * @class LabelSort
+       * @headerfile gspan.h <agrum/PRM/gspan.h>
        * Private class used to sort LabelData using STL sort algorithms.
        */
       struct LabelSort {
@@ -310,11 +311,11 @@ namespace gum {
       };
 
       /**
-       * @class PatternSort gspan.h <agrum/PRM/gspan.h>
+       * @class PatternSort
+       * @headerfile gspan.h <agrum/PRM/gspan.h>
        * Private class used to sort Pattern using STL sort algorithms.
        */
       struct PatternSort {
-
         /**
          * Default constructor.
          * @param my_gspan A pointer over the GSpan using this class.

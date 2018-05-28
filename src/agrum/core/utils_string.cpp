@@ -36,7 +36,7 @@ namespace gum {
     char _tmpFileName[] = "fileXXXXXX";
     int  fd = mkstemp(_tmpFileName);
     close(fd);
-#else  // mainly Windows
+#else   // mainly Windows
     char _tmpFileName[] = "fileXXXXXX";
     _mktemp_s(_tmpFileName, strlen(_tmpFileName));
 #endif
@@ -92,5 +92,5 @@ std::vector<std::string> split( const std::string& orig,
 } /* namespace gum */
 
 #ifdef GUM_NO_INLINE
-#include <agrum/core/utils_string_inl.h>
-#endif  // GUM_NO_INLINE
+#  include <agrum/core/utils_string_inl.h>
+#endif   // GUM_NO_INLINE

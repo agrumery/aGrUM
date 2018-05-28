@@ -31,8 +31,8 @@ namespace gum {
 
   // Default constructor.
   template < typename GUM_SCALAR >
-  INLINE SimpleCPTGenerator< GUM_SCALAR >::SimpleCPTGenerator()
-      : ICPTGenerator< GUM_SCALAR >() {
+  INLINE SimpleCPTGenerator< GUM_SCALAR >::SimpleCPTGenerator() :
+      ICPTGenerator< GUM_SCALAR >() {
     GUM_CONSTRUCTOR(SimpleCPTGenerator);
   }
 

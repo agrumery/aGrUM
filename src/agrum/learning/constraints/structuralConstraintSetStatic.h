@@ -84,8 +84,8 @@ namespace gum {
     template < typename CONSTRAINT, typename SET1, typename... SETS >
     struct __IsInConstraintSet< CONSTRAINT, __ConstraintSet< SET1, SETS... > > {
       constexpr static bool value =
-        std::is_same< CONSTRAINT, SET1 >::value ||
-        __IsInConstraintSet< CONSTRAINT, __ConstraintSet< SETS... > >::value;
+        std::is_same< CONSTRAINT, SET1 >::value
+        || __IsInConstraintSet< CONSTRAINT, __ConstraintSet< SETS... > >::value;
     };
 
     // ============================================================================
@@ -174,8 +174,8 @@ namespace gum {
     // the class that the user should use, i.e., StructuralConstraintSetStatic
     template < typename CONSTRAINT1, typename... OTHER_CONSTRAINTS >
     class __StructuralConstraintSetStatic
-      : public virtual CONSTRAINT1,
-        public virtual __StructuralConstraintSetStatic< OTHER_CONSTRAINTS... > {
+        : public virtual CONSTRAINT1
+        , public virtual __StructuralConstraintSetStatic< OTHER_CONSTRAINTS... > {
       public:
       /// the type of the first constraint
       using first_constraint = CONSTRAINT1;
@@ -230,8 +230,8 @@ namespace gum {
 
       /// copy operator
       __StructuralConstraintSetStatic< CONSTRAINT1, OTHER_CONSTRAINTS... >&
-      operator=(const __StructuralConstraintSetStatic< CONSTRAINT1,
-                                                       OTHER_CONSTRAINTS... >&);
+        operator=(const __StructuralConstraintSetStatic< CONSTRAINT1,
+                                                         OTHER_CONSTRAINTS... >&);
 
       /// @}
 
@@ -284,7 +284,8 @@ namespace gum {
 
     template < typename CONSTRAINT >
     class __StructuralConstraintSetStatic< CONSTRAINT >
-      : public virtual CONSTRAINT, public virtual __StructuralRoot {
+        : public virtual CONSTRAINT
+        , public virtual __StructuralRoot {
       public:
       /// the type of the first constraint
       using first_constraint = CONSTRAINT;
@@ -337,7 +338,7 @@ namespace gum {
 
       /// copy operator
       __StructuralConstraintSetStatic< CONSTRAINT >&
-      operator=(const __StructuralConstraintSetStatic< CONSTRAINT >&);
+        operator=(const __StructuralConstraintSetStatic< CONSTRAINT >&);
 
       /// @}
 
@@ -419,9 +420,9 @@ namespace gum {
      * distinct constraint, hence avoiding duplicates. */
     template < typename CONSTRAINT1, typename... OTHER_CONSTRAINTS >
     class StructuralConstraintSetStatic
-      : public virtual __StructuralConstraintSetStatic<
-          CONSTRAINT1,
-          OTHER_CONSTRAINTS... >::minConstraints {
+        : public virtual __StructuralConstraintSetStatic<
+            CONSTRAINT1,
+            OTHER_CONSTRAINTS... >::minConstraints {
       public:
       using constraints = typename __StructuralConstraintSetStatic<
         CONSTRAINT1,
@@ -451,8 +452,8 @@ namespace gum {
 
       /// copy operator
       StructuralConstraintSetStatic< CONSTRAINT1, OTHER_CONSTRAINTS... >&
-      operator=(
-        const StructuralConstraintSetStatic< CONSTRAINT1, OTHER_CONSTRAINTS... >&);
+        operator=(const StructuralConstraintSetStatic< CONSTRAINT1,
+                                                       OTHER_CONSTRAINTS... >&);
 
       /// @}
 
@@ -507,8 +508,8 @@ namespace gum {
 
     template < typename CONSTRAINT >
     class StructuralConstraintSetStatic< CONSTRAINT >
-      : public virtual __StructuralConstraintSetStatic<
-          CONSTRAINT >::minConstraints {
+        : public virtual __StructuralConstraintSetStatic<
+            CONSTRAINT >::minConstraints {
       public:
       using constraints =
         typename __StructuralConstraintSetStatic< CONSTRAINT >::minConstraints;
@@ -537,7 +538,7 @@ namespace gum {
 
       /// copy operator
       StructuralConstraintSetStatic< CONSTRAINT >&
-      operator=(const StructuralConstraintSetStatic< CONSTRAINT >&);
+        operator=(const StructuralConstraintSetStatic< CONSTRAINT >&);
 
       /// @}
 

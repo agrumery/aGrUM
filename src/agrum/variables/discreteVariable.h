@@ -56,7 +56,6 @@ namespace gum {
 
   class DiscreteVariable : public Variable {
     public:
-    
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -165,7 +164,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/variables/discreteVariable_inl.h>
+#  include <agrum/variables/discreteVariable_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_DISCRETE_VARIABLE_H */

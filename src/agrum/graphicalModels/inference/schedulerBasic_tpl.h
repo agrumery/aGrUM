@@ -25,15 +25,14 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/agrum.h>
-#include <limits>
+#  include <agrum/agrum.h>
+#  include <limits>
 
 namespace gum {
 
   /// default constructor
   template < typename GUM_SCALAR >
-  SchedulerBasic< GUM_SCALAR >::SchedulerBasic()
-      : Scheduler< GUM_SCALAR >() {
+  SchedulerBasic< GUM_SCALAR >::SchedulerBasic() : Scheduler< GUM_SCALAR >() {
     // for debugging purposes
     GUM_CONSTRUCTOR(SchedulerBasic);
   }
@@ -41,8 +40,8 @@ namespace gum {
   /// copy constructor
   template < typename GUM_SCALAR >
   SchedulerBasic< GUM_SCALAR >::SchedulerBasic(
-    const SchedulerBasic< GUM_SCALAR >& from)
-      : Scheduler< GUM_SCALAR >(from) {
+    const SchedulerBasic< GUM_SCALAR >& from) :
+      Scheduler< GUM_SCALAR >(from) {
     // for debugging purposes
     GUM_CONS_CPY(SchedulerBasic);
   }
@@ -178,9 +177,9 @@ namespace gum {
 
         std::pair< long, long > mem_op = schedule.memoryUsage(id);
 
-        if ((std::numeric_limits< long >::max() - current_memory < mem_op.first) ||
-            (std::numeric_limits< long >::max() - current_memory <
-             mem_op.second)) {
+        if ((std::numeric_limits< long >::max() - current_memory < mem_op.first)
+            || (std::numeric_limits< long >::max() - current_memory
+                < mem_op.second)) {
           GUM_ERROR(OutOfBounds, "memory usage out of long int range");
         }
 
@@ -211,9 +210,8 @@ namespace gum {
   /** @brief returns the memory consumption used during the execution of the
    * k first ScheduleOperations of a given schedule */
   template < typename GUM_SCALAR >
-  std::pair< long, long >
-  SchedulerBasic< GUM_SCALAR >::memoryUsage(const Schedule< GUM_SCALAR >& schedule,
-                                            Size k) const {
+  std::pair< long, long > SchedulerBasic< GUM_SCALAR >::memoryUsage(
+    const Schedule< GUM_SCALAR >& schedule, Size k) const {
     NodeSet available = schedule.availableOperations();
     DAG     dag = schedule.scheduling_dag();
     long    max_memory = 0;
@@ -227,9 +225,9 @@ namespace gum {
 
         std::pair< long, long > mem_op = schedule.memoryUsage(id);
 
-        if ((std::numeric_limits< long >::max() - current_memory < mem_op.first) ||
-            (std::numeric_limits< long >::max() - current_memory <
-             mem_op.second)) {
+        if ((std::numeric_limits< long >::max() - current_memory < mem_op.first)
+            || (std::numeric_limits< long >::max() - current_memory
+                < mem_op.second)) {
           GUM_ERROR(OutOfBounds, "memory usage out of long int range");
         }
 

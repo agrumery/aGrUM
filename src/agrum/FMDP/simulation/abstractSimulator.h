@@ -43,7 +43,6 @@ namespace gum {
    *
    */
   class AbstractSimulator {
-
     public:
     // ===========================================================================
     /// @name Constructors, Destructors.
@@ -131,4 +130,4 @@ namespace gum {
 } /* namespace gum */
 
 
-#endif  // GUM__ABSTRACT_SIMULATOR_H
+#endif   // GUM__ABSTRACT_SIMULATOR_H

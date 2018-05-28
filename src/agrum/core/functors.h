@@ -18,17 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. *
  ********************************************************************************/
 /**
-* @file
-* @brief This files contains several function objects that are not (yet) defined
-*        in the STL
-*
-* Generically, function objects are instances of a class with member function
-* operator() defined.
-* This member function allows the object to be used with the same syntax as a
-* function call.
-*
-* @author Jean-Christophe MAGNAN
-*/
+ * @file
+ * @brief This files contains several function objects that are not (yet) defined
+ *        in the STL
+ *
+ * Generically, function objects are instances of a class with member function
+ * operator() defined.
+ * This member function allows the object to be used with the same syntax as a
+ * function call.
+ *
+ * @author Jean-Christophe MAGNAN
+ */
 
 // =========================================================================
 #ifndef GUM_FUNCTORS_H
@@ -51,7 +51,6 @@ namespace gum {
    */
   template < class GUM_SCALAR >
   struct Maximizes {
-
     // ###########################################################################
     /// @name Operator()
     // ###########################################################################
@@ -77,7 +76,6 @@ namespace gum {
    */
   template < class GUM_SCALAR >
   struct Minimizes {
-
     // ###########################################################################
     /// @name Operator()
     // ###########################################################################
@@ -108,7 +106,6 @@ namespace gum {
 
   template < class GUM_SCALAR >
   struct ArgumentMaximises {
-
     // ###########################################################################
     /// @name Operator()
     // ###########################################################################
@@ -124,6 +121,6 @@ namespace gum {
     typedef GUM_SCALAR second_argument_type;
     typedef GUM_SCALAR result_type;
   };
-} /* End of namespace GUM */
+}   // namespace gum
 
-#endif  // GUM_FUNCTORS_H
+#endif   // GUM_FUNCTORS_H

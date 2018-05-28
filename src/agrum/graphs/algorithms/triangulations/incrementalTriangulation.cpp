@@ -35,8 +35,8 @@
 #include <agrum/graphs/undiGraph.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/algorithms/triangulations/incrementalTriangulation_inl.h>
-#endif  // GUM_NO_INLINE
+#  include <agrum/graphs/algorithms/triangulations/incrementalTriangulation_inl.h>
+#endif   // GUM_NO_INLINE
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -46,9 +46,9 @@ namespace gum {
   IncrementalTriangulation::IncrementalTriangulation(
     const UnconstrainedTriangulation& triang_algo,
     const UndiGraph*                  theGraph,
-    const NodeProperty< Size >*       domsizes)
-      : Triangulation(domsizes)
-      , __triangulation(triang_algo.newFactory()) {
+    const NodeProperty< Size >*       domsizes) :
+      Triangulation(domsizes),
+      __triangulation(triang_algo.newFactory()) {
     // for debugging purposes
     GUM_CONSTRUCTOR(IncrementalTriangulation);
 
@@ -69,8 +69,8 @@ namespace gum {
 
   /// default constructor
   IncrementalTriangulation::IncrementalTriangulation(
-    const UnconstrainedTriangulation& triang_algo)
-      : __triangulation(triang_algo.newFactory()) {
+    const UnconstrainedTriangulation& triang_algo) :
+      __triangulation(triang_algo.newFactory()) {
     // for debugging purposes
     GUM_CONSTRUCTOR(IncrementalTriangulation);
 
@@ -80,22 +80,19 @@ namespace gum {
 
   /// copy operator
   IncrementalTriangulation::IncrementalTriangulation(
-    const IncrementalTriangulation& from)
-      : Triangulation(from)
-      , __graph(from.__graph)
-      , __junction_tree(from.__junction_tree)
-      , __T_mpd(from.__T_mpd)
-      , __mps_of_node(from.__mps_of_node)
-      , __cliques_of_mps(from.__cliques_of_mps)
-      , __mps_of_clique(from.__mps_of_clique)
-      , __mps_affected(from.__mps_affected)
-      , __triangulation(from.__triangulation->newFactory())
-      , __require_update(from.__require_update)
-      , __require_elimination_order(from.__require_elimination_order)
-      , __elimination_order(from.__elimination_order)
-      , __reverse_elimination_order(from.__reverse_elimination_order)
-      , __require_created_JT_cliques(from.__require_created_JT_cliques)
-      , __created_JT_cliques(from.__created_JT_cliques) {
+    const IncrementalTriangulation& from) :
+      Triangulation(from),
+      __graph(from.__graph), __junction_tree(from.__junction_tree),
+      __T_mpd(from.__T_mpd), __mps_of_node(from.__mps_of_node),
+      __cliques_of_mps(from.__cliques_of_mps),
+      __mps_of_clique(from.__mps_of_clique), __mps_affected(from.__mps_affected),
+      __triangulation(from.__triangulation->newFactory()),
+      __require_update(from.__require_update),
+      __require_elimination_order(from.__require_elimination_order),
+      __elimination_order(from.__elimination_order),
+      __reverse_elimination_order(from.__reverse_elimination_order),
+      __require_created_JT_cliques(from.__require_created_JT_cliques),
+      __created_JT_cliques(from.__created_JT_cliques) {
     // for debugging purposes
     GUM_CONS_CPY(IncrementalTriangulation);
 
@@ -123,7 +120,7 @@ namespace gum {
 
   /// copy operator
   IncrementalTriangulation& IncrementalTriangulation::
-  operator=(const IncrementalTriangulation& from) {
+                            operator=(const IncrementalTriangulation& from) {
     // avoid self assignment
     if (this != &from) {
       // for debugging purposes
@@ -267,7 +264,7 @@ namespace gum {
       const NodeSet& neighbours = __graph.neighbours(X);
 
       for (auto neighbour_edge =
-             neighbours.beginSafe();  // safe iterator needed here
+             neighbours.beginSafe();   // safe iterator needed here
            neighbour_edge != neighbours.endSafe();
            ++neighbour_edge) {
         eraseEdge(Edge(*neighbour_edge, X));
@@ -286,7 +283,7 @@ namespace gum {
 
       for (auto it_neighbour = neighbours.beginSafe();
            it_neighbour != neighbours.endSafe();
-           ++it_neighbour) {  // safe iterator needed here
+           ++it_neighbour) {   // safe iterator needed here
         Edge neigh(*it_neighbour, node);
 
         if (__T_mpd.separator(neigh).size() == 0) __T_mpd.eraseEdge(neigh);
@@ -307,7 +304,7 @@ namespace gum {
 
         for (auto it_neighbour = neighbours.beginSafe();
              it_neighbour != neighbours.endSafe();
-             ++it_neighbour) {  // safe iterator needed here
+             ++it_neighbour) {   // safe iterator needed here
           Edge neigh(*it_neighbour, cliques_of_X[i]);
 
           if (__junction_tree.separator(neigh).size() == 0) {
@@ -322,9 +319,7 @@ namespace gum {
                   break;
                 }
 
-            if (!hasCommonEdge) {
-              __junction_tree.eraseEdge(neigh);
-            }
+            if (!hasCommonEdge) { __junction_tree.eraseEdge(neigh); }
           }
         }
       }
@@ -408,8 +403,8 @@ namespace gum {
   /// update)
   void IncrementalTriangulation::addEdge(const NodeId X, const NodeId Y) {
     // check that the edge exist
-    if ((X == Y) || !__graph.existsNode(X) || !__graph.existsNode(Y) ||
-        __graph.existsEdge(Edge(X, Y)))
+    if ((X == Y) || !__graph.existsNode(X) || !__graph.existsNode(Y)
+        || __graph.existsEdge(Edge(X, Y)))
       return;
 
     // add the edge to the graph
@@ -537,7 +532,7 @@ namespace gum {
     // check that the edgs belong to the junction tree
     {
       std::pair< NodeId, NodeId > thePair;
-      EdgeProperty< bool > edgesProp = __graph.edgesProperty(false);
+      EdgeProperty< bool >        edgesProp = __graph.edgesProperty(false);
 
       for (const auto cliq : __junction_tree.nodes()) {
         const NodeSet& clique = __junction_tree.clique(cliq);
@@ -588,7 +583,7 @@ namespace gum {
     // check that the arcs of the graph belong to the MPS tree
     {
       std::pair< NodeId, NodeId > thePair;
-      EdgeProperty< bool > edgesProp = __graph.edgesProperty(false);
+      EdgeProperty< bool >        edgesProp = __graph.edgesProperty(false);
 
       for (const auto cliq : __T_mpd.nodes()) {
         const NodeSet& clique = __T_mpd.clique(cliq);
@@ -723,8 +718,8 @@ namespace gum {
       }
 
       for (const auto node : __graph.nodes()) {
-        if (!__created_JT_cliques.exists(node) ||
-            !__junction_tree.existsNode(__created_JT_cliques[node])) {
+        if (!__created_JT_cliques.exists(node)
+            || !__junction_tree.existsNode(__created_JT_cliques[node])) {
           std::cerr << "check created JT cliques" << std::endl
                     << __created_JT_cliques << std::endl;
           return false;
@@ -738,10 +733,10 @@ namespace gum {
   /// set up a connected subgraph to be triangulated
 
   void IncrementalTriangulation::__setUpConnectedTriangulation(
-    NodeId               Mx,
-    NodeId               Mfrom,
-    UndiGraph&           theGraph,
-    std::vector< Edge >& notAffectedneighbourCliques,
+    NodeId                     Mx,
+    NodeId                     Mfrom,
+    UndiGraph&                 theGraph,
+    std::vector< Edge >&       notAffectedneighbourCliques,
     HashTable< NodeId, bool >& cliques_affected) {
     // mark the clique so that we won't try to update it several times
     cliques_affected[Mx] = false;
@@ -810,8 +805,7 @@ namespace gum {
         for (auto edge : __graph.edges()) {
           try {
             tmp_graph.addEdge(edge.first(), edge.second());
-          } catch (Exception&) {
-          }  // both extremities must be in tmp_graph
+          } catch (Exception&) {}   // both extremities must be in tmp_graph
         }
 
         // remove from the mps_of_node table the affected mps containing the
@@ -823,7 +817,7 @@ namespace gum {
           List< NodeId >& mps = __mps_of_node[node];
 
           for (HashTableConstIteratorSafe< NodeId, bool > iter_mps =
-                 __mps_affected.beginSafe();  // safe iterator needed here
+                 __mps_affected.beginSafe();   // safe iterator needed here
                iter_mps != __mps_affected.endSafe();
                ++iter_mps) {
             if (iter_mps.val()) mps.eraseByVal(iter_mps.key());
@@ -911,8 +905,8 @@ namespace gum {
             // check that the separator created by the new edge is not equal to
             // to_connect. If this is the case, then to_connect is included in
             // not_affected and, hence, should be removed from the graph
-            if (__junction_tree.separator(not_affected, to_connect).size() ==
-                __junction_tree.clique(to_connect).size()) {
+            if (__junction_tree.separator(not_affected, to_connect).size()
+                == __junction_tree.clique(to_connect).size()) {
               __junction_tree.eraseEdge(Edge(not_affected, to_connect));
 
               for (const auto neighbour : __junction_tree.neighbours(to_connect)) {
@@ -948,11 +942,11 @@ namespace gum {
   /// used for computing the junction tree of the maximal prime subgraphs
 
   void IncrementalTriangulation::__computeMaxPrimeMergings(
-    const NodeId node,
-    const NodeId from,
+    const NodeId                                node,
+    const NodeId                                from,
     std::vector< std::pair< NodeId, NodeId > >& merged_cliques,
     HashTable< NodeId, bool >&                  mark,
-    const NodeSet& new_nodes_in_junction_tree) const {
+    const NodeSet&                              new_nodes_in_junction_tree) const {
     mark[node] = true;
 
     // check the separators on all the adjacent edges of Mx
@@ -1049,15 +1043,14 @@ namespace gum {
     // add to the cliques previously created the nodes of the cliques that were
     // merged into them and update the cliques_of_mps
     for (const auto& elt : T_mpd_cliques)
-      if ((elt.first != elt.second) &&
-          (new_nodes_in_junction_tree.contains(elt.second))) {
+      if ((elt.first != elt.second)
+          && (new_nodes_in_junction_tree.contains(elt.second))) {
         const NodeId idMPS = clique2MPS[elt.second];
 
         for (const auto node : __junction_tree.clique(elt.first)) {
           try {
             __T_mpd.addToClique(idMPS, node);
-          } catch (DuplicateElement&) {
-          }
+          } catch (DuplicateElement&) {}
         }
 
         __cliques_of_mps[idMPS].push_back(elt.first);
@@ -1084,9 +1077,7 @@ namespace gum {
           NodeId otherClique = clique2MPS[T_mpd_cliques[othernode]];
 
           // avoid adding the same edge several times
-          if (clique > otherClique) {
-            __T_mpd.addEdge(clique, otherClique);
-          }
+          if (clique > otherClique) { __T_mpd.addEdge(clique, otherClique); }
         } else {
           __T_mpd.addEdge(clique, __mps_of_clique[othernode]);
         }
@@ -1174,7 +1165,7 @@ namespace gum {
    * elimination of the nodes */
 
   const NodeProperty< NodeId >&
-  IncrementalTriangulation::createdJunctionTreeCliques() {
+    IncrementalTriangulation::createdJunctionTreeCliques() {
     // check if we already computed the containing cliques
     if (!__require_created_JT_cliques) return __created_JT_cliques;
 
@@ -1185,9 +1176,7 @@ namespace gum {
 
     __require_created_JT_cliques = false;
 
-    if (__junction_tree.size() == 0) {
-      return __created_JT_cliques;
-    }
+    if (__junction_tree.size() == 0) { return __created_JT_cliques; }
 
     // now we can use a collect algorithm to get the containing cliques
     NodeProperty< bool > examined = __junction_tree.nodesProperty< bool >(false);
@@ -1219,8 +1208,8 @@ namespace gum {
                                           const NodeProperty< Size >* dom_sizes) {
     // check that both the graph and the domain sizes are different from nullptr
     // or else that both are equal to nullptr
-    if (((graph != nullptr) && (dom_sizes == nullptr)) ||
-        ((graph == nullptr) && (dom_sizes != nullptr))) {
+    if (((graph != nullptr) && (dom_sizes == nullptr))
+        || ((graph == nullptr) && (dom_sizes != nullptr))) {
       GUM_ERROR(GraphError,
                 "one of the graph or the set of domain sizes "
                 "is a null pointer.");
@@ -1291,9 +1280,7 @@ namespace gum {
 
     __require_elimination_order = false;
 
-    if (__junction_tree.size() == Size(0)) {
-      return __elimination_order;
-    }
+    if (__junction_tree.size() == Size(0)) { return __elimination_order; }
 
     // now we can use a collect algorithm to get the elimination order
     Idx index = Idx(0);

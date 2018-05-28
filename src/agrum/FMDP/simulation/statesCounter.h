@@ -46,7 +46,6 @@ namespace gum {
    * @ingroup fmdp_group
    */
   class StatesCounter : public IVisitableGraphLearner {
-
     public:
     // ==========================================================================
     /// @name Constructor & destructor.
@@ -133,4 +132,4 @@ namespace gum {
   };
 } /* namespace gum */
 
-#endif  // GUM_STATES_COUNTER_H
+#endif   // GUM_STATES_COUNTER_H

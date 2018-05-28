@@ -55,7 +55,7 @@ namespace gum {
     template < typename IdSetAlloc = std::allocator< Idx >,
                typename CountAlloc = std::allocator< double > >
     class ScoreInternalBDeuApriori
-      : public ScoreInternalApriori< IdSetAlloc, CountAlloc > {
+        : public ScoreInternalApriori< IdSetAlloc, CountAlloc > {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -67,7 +67,7 @@ namespace gum {
 
       /// virtual copy constructor
       virtual ScoreInternalBDeuApriori< IdSetAlloc, CountAlloc >*
-      copyFactory() const final;
+        copyFactory() const final;
 
       /// copy constructor
       ScoreInternalBDeuApriori(
@@ -89,7 +89,7 @@ namespace gum {
 
       /// insert the internal score apriori into a set of countings
       virtual void insertScoreApriori(
-        const std::vector< Size >& modalities,
+        const std::vector< Size >&                        modalities,
         std::vector< std::vector< double, CountAlloc > >& counts,
         const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >&
           target_nodesets,

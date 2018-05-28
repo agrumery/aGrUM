@@ -63,7 +63,6 @@ namespace gum {
     for (auto attrIter = __conTab.attrABeginSafe();
          attrIter != __conTab.attrAEndSafe();
          ++attrIter) {
-
       // Mise en cache de valeur utile
       double semiExpected =
         (double)(attrIter.val()) / (double)this->nbObservation();
@@ -72,7 +71,6 @@ namespace gum {
       for (auto valIter = __conTab.attrBBeginSafe();
            valIter != __conTab.attrBEndSafe();
            ++valIter) {
-
         // Récupération de la valeur en cellule
         double cell = __conTab.joint(attrIter.key(), valIter.key());
         if (cell < 5) continue;
@@ -93,8 +91,9 @@ namespace gum {
     if (this->_isModified()) computeScore();
     //      std::cout << this->toString() << std::endl;
     double score =
-      1 - ChiSquare::probaChi2(
-            __GStat, (__conTab.attrASize() - 1) * (__conTab.attrBSize() - 1));
+      1
+      - ChiSquare::probaChi2(
+          __GStat, (__conTab.attrASize() - 1) * (__conTab.attrBSize() - 1));
     return score;
   }
 
@@ -113,4 +112,4 @@ namespace gum {
     __conTab += src.ct();
   }
 
-}  // End of namespace gum
+}   // End of namespace gum

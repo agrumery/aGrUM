@@ -1,23 +1,23 @@
 
 /***************************************************************************
-*   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
@@ -27,7 +27,6 @@
 namespace gum_tests {
 
   class NodeGraphPartTestSuite : public CxxTest::TestSuite {
-
     public:
     void testConstructor() {
       TS_GUM_ASSERT_THROWS_NOTHING(gum::NodeGraphPart ngp);
@@ -90,7 +89,7 @@ namespace gum_tests {
       ngp.eraseNode(id4);
       __ForTestCopy(ngp);
       TS_ASSERT_EQUALS(ngp.__sizeHoles(),
-                       (gum::Size)0);  // 2 last hole has vanished
+                       (gum::Size)0);   // 2 last hole has vanished
     }
 
     void testInsertionForcee() {
@@ -157,7 +156,7 @@ namespace gum_tests {
       ngp.addNodeWithId(node);
       TS_ASSERT_EQUALS(ngp.bound(), (gum::NodeId)(node + 1));
       TS_ASSERT_EQUALS(ngp.__sizeHoles(), (gum::Size(node)));
-      TS_ASSERT(ngp.nextNodeId() < node);  // we fill one of the holes
+      TS_ASSERT(ngp.nextNodeId() < node);   // we fill one of the holes
       ngp.eraseNode(node);
       TS_ASSERT_EQUALS(ngp.__sizeHoles(), (gum::Size(0)));
       TS_ASSERT_EQUALS(ngp.nextNodeId(), (gum::Size(0)));
@@ -190,13 +189,11 @@ namespace gum_tests {
       }
 
       for (gum::NodeId i = 0; i < 20; ++i) {
-        if (i % 3 == 0) {
-          ngp.eraseNode(i);
-        }
+        if (i % 3 == 0) { ngp.eraseNode(i); }
       }
 
       gum::NodeGraphPartIteratorSafe safe_iter =
-        ngp.beginSafe();  // safe iterator needed here
+        ngp.beginSafe();   // safe iterator needed here
 
       for (gum::NodeGraphPartIterator iter = ngp.begin(); iter != ngp.end();
            ++iter, ++safe_iter) {
@@ -223,7 +220,7 @@ namespace gum_tests {
       gum::Size cpt = 0;
 
       for (gum::NodeGraphPartIteratorSafe iter =
-             nodeset.beginSafe();  // safe iterator needed here
+             nodeset.beginSafe();   // safe iterator needed here
            iter != nodeset.endSafe();
            ++iter) {
         if (cpt == 0) {
@@ -247,8 +244,8 @@ namespace gum_tests {
 
       gum::Size cpt = 0;
 
-      for (gum::NodeGraphPartIteratorSafe
-             iter = nodeset.beginSafe();  // safe iterator needed here
+      for (gum::NodeGraphPartIteratorSafe iter =
+             nodeset.beginSafe();   // safe iterator needed here
            iter != nodeset.endSafe();
            ++iter, ++cpt) {
         TS_GUM_ASSERT_THROWS_NOTHING(nodeset.eraseNode(*iter));
@@ -293,7 +290,7 @@ namespace gum_tests {
       futureIds.addNodeWithId(5);
 
       auto v2 = nodeset2.addNodes(4);
-      futureIds.addNodeWithId(10);  // the 4th added node as 10 for id
+      futureIds.addNodeWithId(10);   // the 4th added node as 10 for id
 
       for (auto n : v2) {
         TS_GUM_ASSERT_THROWS_NOTHING(futureIds.eraseNode(n));
@@ -372,4 +369,4 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(ngp.toString(), ngp3.toString());
     }
   };
-}
+}   // namespace gum_tests

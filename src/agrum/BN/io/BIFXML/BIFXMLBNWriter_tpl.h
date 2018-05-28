@@ -20,7 +20,7 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/BN/io/BIFXML/BIFXMLBNWriter.h>
+#  include <agrum/BN/io/BIFXML/BIFXMLBNWriter.h>
 
 namespace gum {
 
@@ -49,8 +49,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE void
-  BIFXMLBNWriter< GUM_SCALAR >::write(std::ostream&                  output,
-                                      const IBayesNet< GUM_SCALAR >& bn) {
+    BIFXMLBNWriter< GUM_SCALAR >::write(std::ostream&                  output,
+                                        const IBayesNet< GUM_SCALAR >& bn) {
     if (!output.good()) {
       GUM_ERROR(IOError, "Stream states flags are not all unset.");
     }
@@ -73,9 +73,7 @@ namespace gum {
 
     output.flush();
 
-    if (output.fail()) {
-      GUM_ERROR(IOError, "Writting in the ostream failed.");
-    }
+    if (output.fail()) { GUM_ERROR(IOError, "Writting in the ostream failed."); }
   }
 
   /*
@@ -89,17 +87,15 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE void
-  BIFXMLBNWriter< GUM_SCALAR >::write(const std::string&             filePath,
-                                      const IBayesNet< GUM_SCALAR >& bn) {
+    BIFXMLBNWriter< GUM_SCALAR >::write(const std::string&             filePath,
+                                        const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
 
     write(output, bn);
 
     output.close();
 
-    if (output.fail()) {
-      GUM_ERROR(IOError, "Writting in the ostream failed.");
-    }
+    if (output.fail()) { GUM_ERROR(IOError, "Writting in the ostream failed."); }
   }
 
   /*
@@ -107,7 +103,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE std::string
-  BIFXMLBNWriter< GUM_SCALAR >::__heading(const IBayesNet< GUM_SCALAR >& bn) {
+         BIFXMLBNWriter< GUM_SCALAR >::__heading(const IBayesNet< GUM_SCALAR >& bn) {
     std::stringstream str;
 
     // Header for every xml
@@ -153,7 +149,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE std::string
-  BIFXMLBNWriter< GUM_SCALAR >::__variableBloc(const DiscreteVariable& var) {
+         BIFXMLBNWriter< GUM_SCALAR >::__variableBloc(const DiscreteVariable& var) {
     //<VARIABLE TYPE="nature|decision|utility">
     //<NAME>name</NAME>
     //<OUTCOME>outcome1</OUTCOME>
@@ -223,7 +219,7 @@ namespace gum {
       else
         str << " ";
 
-      str << cpt[inst];  //"<!-- "<<inst<<" -->"<<std::endl;
+      str << cpt[inst];   //"<!-- "<<inst<<" -->"<<std::endl;
     }
 
     str << std::endl << "\t</TABLE>" << std::endl;
@@ -249,4 +245,4 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS

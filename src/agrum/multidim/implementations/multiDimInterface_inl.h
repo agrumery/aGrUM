@@ -32,9 +32,7 @@ namespace gum {
   INLINE
   void MultiDimInterface::replace(const DiscreteVariable& x,
                                   const DiscreteVariable& y) {
-    if (!contains(x)) {
-      GUM_ERROR(NotFound, "could not find the variable");
-    }
+    if (!contains(x)) { GUM_ERROR(NotFound, "could not find the variable"); }
 
     if (contains(y)) {
       GUM_ERROR(DuplicateElement, "variable already in MultiDim");

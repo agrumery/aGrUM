@@ -32,15 +32,14 @@ namespace gum {
 
   namespace aggregator {
     template < typename GUM_SCALAR >
-    INLINE Exists< GUM_SCALAR >::Exists(Idx value)
-        : MultiDimAggregator< GUM_SCALAR >()
-        , __value(value) {
+    INLINE Exists< GUM_SCALAR >::Exists(Idx value) :
+        MultiDimAggregator< GUM_SCALAR >(), __value(value) {
       GUM_CONSTRUCTOR(Exists)
     }
 
     template < typename GUM_SCALAR >
-    INLINE Exists< GUM_SCALAR >::Exists(const Exists< GUM_SCALAR >& from)
-        : MultiDimAggregator< GUM_SCALAR >(from) {
+    INLINE Exists< GUM_SCALAR >::Exists(const Exists< GUM_SCALAR >& from) :
+        MultiDimAggregator< GUM_SCALAR >(from) {
       __value = from.__value;
       GUM_CONS_CPY(Exists);
     }
@@ -84,5 +83,5 @@ namespace gum {
       return new Exists< GUM_SCALAR >(__value);
     }
 
-  }  // namespace aggregator
-}  // namespace gum
+  }   // namespace aggregator
+}   // namespace gum

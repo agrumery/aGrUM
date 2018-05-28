@@ -53,11 +53,9 @@ namespace gum {
       // check that the variable does belong to the instantiation and that the
       // new
       // value is possible.
-      Idx varPos = __vars.pos(&v);  // throws NotFound if v doesn't belong to this
+      Idx varPos = __vars.pos(&v);   // throws NotFound if v doesn't belong to this
 
-      if (newVal >= v.domainSize()) {
-        GUM_ERROR(OutOfBounds, "");
-      }
+      if (newVal >= v.domainSize()) { GUM_ERROR(OutOfBounds, ""); }
 
       // if we were in overflow, indicate that we are not anymore
       __overflow = false;
@@ -77,11 +75,9 @@ namespace gum {
       // check that the variable does belong to the instantiation and that the
       // new
       // value is possible.
-      Idx varPos = __vars.pos(v);  // throws NotFound if v doesn't belong to this
+      Idx varPos = __vars.pos(v);   // throws NotFound if v doesn't belong to this
 
-      if (newVal >= v->domainSize()) {
-        GUM_ERROR(OutOfBounds, "");
-      }
+      if (newVal >= v->domainSize()) { GUM_ERROR(OutOfBounds, ""); }
 
       // if we were in overflow, indicate that we are not anymore
       __overflow = false;
@@ -99,13 +95,9 @@ namespace gum {
   INLINE Instantiation& Instantiation::chgVal(Idx varPos, Idx newVal) {
     // check that the variable does belong to the instantiation and that the new
     // value is possible.
-    if (__vals.size() <= varPos) {
-      GUM_ERROR(NotFound, "");
-    }
+    if (__vals.size() <= varPos) { GUM_ERROR(NotFound, ""); }
 
-    if (newVal >= __vars[varPos]->domainSize()) {
-      GUM_ERROR(OutOfBounds, "");
-    }
+    if (newVal >= __vars[varPos]->domainSize()) { GUM_ERROR(OutOfBounds, ""); }
 
     // if we were in overflow, indicate that we are not anymore
     __overflow = false;
@@ -129,9 +121,7 @@ namespace gum {
   // adds a new var to the sequence of vars
   INLINE void Instantiation::add(const DiscreteVariable& v) {
     // if __master : not allowed
-    if (__master) {
-      GUM_ERROR(OperationNotAllowed, "in slave Instantiation");
-    }
+    if (__master) { GUM_ERROR(OperationNotAllowed, "in slave Instantiation"); }
 
     // check if the variable already belongs to the tuple of variables
     // of the Instantiation
@@ -155,9 +145,7 @@ namespace gum {
   // removes a variable from the sequence of vars
   INLINE void Instantiation::erase(const DiscreteVariable& v) {
     // if __master : not allowed
-    if (__master) {
-      GUM_ERROR(OperationNotAllowed, "in slave Instantiation");
-    }
+    if (__master) { GUM_ERROR(OperationNotAllowed, "in slave Instantiation"); }
 
     // check that the variable does actually belong to the Instantiation
     if (!__vars.exists(&v)) {
@@ -170,9 +158,7 @@ namespace gum {
 
   // removes everything
   INLINE void Instantiation::clear() {
-    if (__master) {
-      GUM_ERROR(OperationNotAllowed, "in slave Instantiation");
-    }
+    if (__master) { GUM_ERROR(OperationNotAllowed, "in slave Instantiation"); }
 
     __vars.clear();
     __vals.clear();
@@ -223,7 +209,7 @@ namespace gum {
   }
   // returns the variable with name in the tuple
   INLINE const DiscreteVariable&
-  Instantiation::variable(const std::string& name) const {
+               Instantiation::variable(const std::string& name) const {
     for (const auto& v : __vars) {
       if (v->name() == name) return *v;
     }
@@ -250,9 +236,7 @@ namespace gum {
   // operator ++
   INLINE void Instantiation::inc() {
     Size p = nbrDim();
-    if (p == 0) {
-      __overflow = true;
-    }
+    if (p == 0) { __overflow = true; }
 
     if (__overflow) return;
     p -= 1;
@@ -284,9 +268,7 @@ namespace gum {
   // operator --
   INLINE void Instantiation::dec() {
     Size p = nbrDim();
-    if (p == 0) {
-      __overflow = true;
-    }
+    if (p == 0) { __overflow = true; }
 
     if (__overflow) return;
     p -= 1;
@@ -758,7 +740,7 @@ namespace gum {
   // reordering
   INLINE
   void
-  Instantiation::reorder(const Sequence< const DiscreteVariable* >& original) {
+    Instantiation::reorder(const Sequence< const DiscreteVariable* >& original) {
     if (__master != nullptr) {
       GUM_ERROR(OperationNotAllowed,
                 "Reordering impossible in slave instantiation");
@@ -769,7 +751,7 @@ namespace gum {
 
   INLINE
   void
-  Instantiation::__reorder(const Sequence< const DiscreteVariable* >& original) {
+    Instantiation::__reorder(const Sequence< const DiscreteVariable* >& original) {
     Idx max = original.size();
     Idx position = 0;
     for (Idx i = 0; i < max; ++i) {
@@ -777,8 +759,8 @@ namespace gum {
 
       if (contains(pv)) {
         auto p = pos(*pv);
-        GUM_ASSERT(p >= position);  // this var should not be
-                                    // already placed.
+        GUM_ASSERT(p >= position);   // this var should not be
+                                     // already placed.
         __swap(position, p);
         position++;
       }
@@ -824,10 +806,10 @@ namespace gum {
   /// returns a hashed key for hash tables the keys of which are represented
   /// by vectors of Idx
   INLINE Size HashFunc< Instantiation >::
-  operator()(const Instantiation& key) const {
+              operator()(const Instantiation& key) const {
     Size h = 0;
     for (const auto& k :
-         key.variablesSequence())  // k are unique only by address (not by name)
+         key.variablesSequence())   // k are unique only by address (not by name)
       h += Size(k) * key.val(*k);
 
     return ((h * HashFuncConst::gold) & this->_hash_mask);

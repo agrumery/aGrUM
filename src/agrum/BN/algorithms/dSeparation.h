@@ -108,8 +108,8 @@ namespace gum {
 
 
 #ifndef GUM_NO_INLINE
-#include <agrum/BN/algorithms/dSeparation_inl.h>
-#endif  // GUM_NO_INLINE
+#  include <agrum/BN/algorithms/dSeparation_inl.h>
+#endif   // GUM_NO_INLINE
 
 #include <agrum/BN/algorithms/dSeparation_tpl.h>
 

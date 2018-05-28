@@ -173,8 +173,8 @@ namespace gum {
 
 
 #ifndef GUM_NO_INLINE
-#include <agrum/graphs/algorithms/triangulations/triangulation_inl.h>
-#endif  // GUM_NO_INLINE
+#  include <agrum/graphs/algorithms/triangulations/triangulation_inl.h>
+#endif   // GUM_NO_INLINE
 
 
 #endif /* GUM_TRIANGULATION_H */

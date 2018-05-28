@@ -49,7 +49,8 @@
 namespace gum {
 
   /**
-   * @class CNFWriter CNFWriter.h <agrum/BN/io/cnf/CNFWriter.h>
+   * @class CNFWriter
+   * @headerfile CNFWriter.h <agrum/BN/io/cnf/CNFWriter.h>
    * @ingroup bn_io
    * @brief Writes a IBayesNet in the BN format.
    *
@@ -61,8 +62,9 @@ namespace gum {
    */
   template < typename GUM_SCALAR,
              template < typename > class IApproximationPolicy = ExactPolicy >
-  class CNFWriter : public BNWriter< GUM_SCALAR >,
-                    public IApproximationPolicy< GUM_SCALAR > {
+  class CNFWriter
+      : public BNWriter< GUM_SCALAR >
+      , public IApproximationPolicy< GUM_SCALAR > {
     public:
     // ==========================================================================
     /// @name Constructor & destructor
@@ -114,4 +116,4 @@ namespace gum {
 } /* namespace gum */
 
 #include <agrum/BN/io/cnf/CNFWriter_tpl.h>
-#endif  // GUM_NET_WRITER_H
+#endif   // GUM_NET_WRITER_H

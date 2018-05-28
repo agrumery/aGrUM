@@ -79,7 +79,7 @@ namespace gum {
 
       /// sets the parameters for the apriori
       void setParameters(
-        const std::vector< Size >& modalities,
+        const std::vector< Size >&                        modalities,
         std::vector< std::vector< double, CountAlloc > >& counts,
         const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >&
           target_nodesets,
@@ -141,7 +141,7 @@ namespace gum {
 
       /// prevent copy operator
       Apriori< IdSetAlloc, CountAlloc >&
-      operator=(const Apriori< IdSetAlloc, CountAlloc >&) = delete;
+        operator=(const Apriori< IdSetAlloc, CountAlloc >&) = delete;
     };
 
   } /* namespace learning */

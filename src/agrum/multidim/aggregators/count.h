@@ -80,8 +80,10 @@ namespace gum {
 
       protected:
       virtual Idx _neutralElt() const;
-      virtual Idx
-      _fold(const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration) const;
+      virtual Idx _fold(const DiscreteVariable& v,
+                        Idx                     i1,
+                        Idx                     i2,
+                        bool&                   stop_iteration) const;
 
       private:
       Idx __value;
@@ -92,9 +94,9 @@ namespace gum {
     extern template class Count< double >;
 
 
-  }  // aggregator
-}  // gum
+  }   // namespace aggregator
+}   // namespace gum
 
 #include <agrum/multidim/aggregators/count_tpl.h>
 
-#endif  // GUM_COUNT_AGGREGATOR_H
+#endif   // GUM_COUNT_AGGREGATOR_H

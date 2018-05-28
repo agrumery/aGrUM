@@ -50,4 +50,4 @@ namespace gum {
 
     return v;
   }
-}
+}   // namespace gum

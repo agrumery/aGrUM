@@ -34,12 +34,13 @@
 namespace gum {
 
   template < typename GUM_SCALAR >
-  class ApproximateInference : public MarginalTargetedInference< GUM_SCALAR >,
-                               public ApproximationScheme {
+  class ApproximateInference
+      : public MarginalTargetedInference< GUM_SCALAR >
+      , public ApproximationScheme {
     public:
-    explicit ApproximateInference(const IBayesNet< GUM_SCALAR >* bn)
-        : MarginalTargetedInference< GUM_SCALAR >(bn){};
+    explicit ApproximateInference(const IBayesNet< GUM_SCALAR >* bn) :
+        MarginalTargetedInference< GUM_SCALAR >(bn){};
   };
-}
+}   // namespace gum
 
-#endif  // GUM_APPROXIMATE_INFERENCE_H
+#endif   // GUM_APPROXIMATE_INFERENCE_H

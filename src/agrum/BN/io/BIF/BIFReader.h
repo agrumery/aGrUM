@@ -72,12 +72,13 @@ between 0 and 100
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // including coco-generated PARSER and SCANNER
-#include <agrum/BN/io/BIF/cocoR/Parser.h>
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#  include <agrum/BN/io/BIF/cocoR/Parser.h>
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
   /**
-   * @class BIFReader BIFReader.h <agrum/BN/io/BIF/BIFReader.h>
+* @class BIFReader
+* @headerfile BIFReader.h <agrum/BN/io/BIF/BIFReader.h>
    * @ingroup bn_io
    * @brief Definition of templatized reader of BIF files for Bayesian Networks.
    *
@@ -187,8 +188,8 @@ namespace gum {
   extern template class BIFReader< float >;
   extern template class BIFReader< double >;
 
-}  // namespace gum
+}   // namespace gum
 
 #include <agrum/BN/io/BIF/BIFReader_tpl.h>
 
-#endif  // BIF_READER_H
+#endif   // BIF_READER_H

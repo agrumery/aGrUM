@@ -1,23 +1,23 @@
 
 /***************************************************************************
-*   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 
 #include <agrum/CN/CNLoopyPropagation.h>
@@ -35,8 +35,8 @@ namespace gum {
       if (!res.good()) {
         GUM_ERROR(NotFound,
                   "CNLoopyPropagation<GUM_SCALAR>::saveInference(std::"
-                  "string & path) : could not open file : " +
-                    path_name);
+                  "string & path) : could not open file : "
+                    + path_name);
       }
 
       std::string ext = path.substr(path.size() - 3, path.size());
@@ -48,8 +48,8 @@ namespace gum {
         if (!evi.good()) {
           GUM_ERROR(NotFound,
                     "CNLoopyPropagation<GUM_SCALAR>::saveInference(std::"
-                    "string & path) : could not open file : " +
-                      ext);
+                    "string & path) : could not open file : "
+                      + ext);
         }
 
         while (evi.good()) {
@@ -103,7 +103,7 @@ namespace gum {
             std::cout << "proba ERR (negatif) : pi = inf, l = 0" << std::endl;
           }
 
-          if (lmin == _INF) {  // cas infini
+          if (lmin == _INF) {   // cas infini
             msg_p_min = GUM_SCALAR(1.);
           } else if (min == 0. || lmin == 0.) {
             msg_p_min = GUM_SCALAR(0.);
@@ -116,7 +116,7 @@ namespace gum {
             std::cout << "proba ERR (negatif) : pi = inf, l = 0" << std::endl;
           }
 
-          if (lmax == _INF) {  // cas infini
+          if (lmax == _INF) {   // cas infini
             msg_p_max = GUM_SCALAR(1.);
           } else if (max == 0. || lmax == 0.) {
             msg_p_max = GUM_SCALAR(0.);
@@ -163,7 +163,7 @@ namespace gum {
         } else {
           res << " ]" << std::endl;
         }
-      }  // end of : for each node
+      }   // end of : for each node
 
       res.close();
     }
@@ -179,13 +179,13 @@ namespace gum {
      */
     template < typename GUM_SCALAR >
     void
-    CNLoopyPropagation< GUM_SCALAR >::_compute_ext(GUM_SCALAR& msg_l_min,
-                                                   GUM_SCALAR& msg_l_max,
-                                                   std::vector< GUM_SCALAR >& lx,
-                                                   GUM_SCALAR& num_min,
-                                                   GUM_SCALAR& num_max,
-                                                   GUM_SCALAR& den_min,
-                                                   GUM_SCALAR& den_max) {
+      CNLoopyPropagation< GUM_SCALAR >::_compute_ext(GUM_SCALAR& msg_l_min,
+                                                     GUM_SCALAR& msg_l_max,
+                                                     std::vector< GUM_SCALAR >& lx,
+                                                     GUM_SCALAR& num_min,
+                                                     GUM_SCALAR& num_max,
+                                                     GUM_SCALAR& den_min,
+                                                     GUM_SCALAR& den_max) {
       GUM_SCALAR old_msg_min = msg_l_min;
       GUM_SCALAR old_msg_max = msg_l_max;
 
@@ -251,28 +251,20 @@ namespace gum {
           res_max = res_min;
         }
 
-        if (res_min < 0.) {
-          res_min = 0.;
-        }
+        if (res_min < 0.) { res_min = 0.; }
 
-        if (res_max < 0.) {
-          res_max = 0.;
-        }
+        if (res_max < 0.) { res_max = 0.; }
 
         if (msg_l_min == msg_l_max && msg_l_min == -2.) {
           msg_l_min = res_min;
           msg_l_max = res_max;
         }
 
-        if (res_max > msg_l_max) {
-          msg_l_max = res_max;
-        }
+        if (res_max > msg_l_max) { msg_l_max = res_max; }
 
-        if (res_min < msg_l_min) {
-          msg_l_min = res_min;
-        }
+        if (res_min < msg_l_min) { msg_l_min = res_min; }
 
-      }  // end of : for each lx
+      }   // end of : for each lx
     }
 
     /**
@@ -336,7 +328,7 @@ namespace gum {
           it[i] = combi_msg_p[i].begin();
           ++it[i + 1];
         }
-      }  // end of : marginalisation
+      }   // end of : marginalisation
 
       _compute_ext(msg_l_min, msg_l_max, lx, num_min, num_max, den_min, den_max);
     }
@@ -388,13 +380,9 @@ namespace gum {
         }
       }
 
-      if (min < msg_p_min) {
-        msg_p_min = min;
-      }
+      if (min < msg_p_min) { msg_p_min = min; }
 
-      if (max > msg_p_max) {
-        msg_p_max = max;
-      }
+      if (max > msg_p_max) { msg_p_max = max; }
     }
 
     /**
@@ -416,7 +404,7 @@ namespace gum {
       }
 
       decltype(taille) msgPerm = 1;
-#pragma omp            parallel
+#pragma omp parallel
       {
         GUM_SCALAR msg_pmin = msg_p_min;
         GUM_SCALAR msg_pmax = msg_p_max;
@@ -435,7 +423,7 @@ namespace gum {
         msgPerm *= confs;
 #pragma omp barrier
 #pragma omp \
-  flush  // ( msgPerm ) let the compiler choose what to flush (due to mvsc)
+  flush   // ( msgPerm ) let the compiler choose what to flush (due to mvsc)
 
 #pragma omp for
 
@@ -460,17 +448,13 @@ namespace gum {
 // than during for loop
 #pragma omp critical(msgpminmax)
         {
-#pragma omp flush  //( msg_p_min )
+#pragma omp flush   //( msg_p_min )
           //#pragma omp flush ( msg_p_max )  let the compiler choose what to
           // flush (due to mvsc)
 
-          if (msg_p_min > msg_pmin) {
-            msg_p_min = msg_pmin;
-          }
+          if (msg_p_min > msg_pmin) { msg_p_min = msg_pmin; }
 
-          if (msg_p_max < msg_pmax) {
-            msg_p_max = msg_pmax;
-          }
+          if (msg_p_max < msg_pmax) { msg_p_max = msg_pmax; }
         }
       }
       return;
@@ -508,7 +492,7 @@ namespace gum {
       }
 
       decltype(taille) msgPerm = 1;
-#pragma omp            parallel
+#pragma omp parallel
       {
         GUM_SCALAR                               msg_lmin = msg_l_min;
         GUM_SCALAR                               msg_lmax = msg_l_max;
@@ -568,9 +552,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void CNLoopyPropagation< GUM_SCALAR >::makeInference() {
-      if (_InferenceUpToDate) {
-        return;
-      }
+      if (_InferenceUpToDate) { return; }
 
       _initialize();
 
@@ -581,17 +563,13 @@ namespace gum {
           _makeInferenceNodeToNeighbours();
           break;
 
-        case InferenceType::ordered:
-          _makeInferenceByOrderedArcs();
-          break;
+        case InferenceType::ordered: _makeInferenceByOrderedArcs(); break;
 
-        case InferenceType::randomOrder:
-          _makeInferenceByRandomOrder();
-          break;
+        case InferenceType::randomOrder: _makeInferenceByRandomOrder(); break;
       }
 
       //_updateMarginals();
-      _updateIndicatrices();  // will call _updateMarginals()
+      _updateIndicatrices();   // will call _updateMarginals()
 
       _computeExpectations();
 
@@ -640,8 +618,8 @@ namespace gum {
 
         // accelerer init pour evidences
         if (__infE::_evidence.exists(node)) {
-          if (__infE::_evidence[node][1] != 0. &&
-              __infE::_evidence[node][1] != 1.) {
+          if (__infE::_evidence[node][1] != 0.
+              && __infE::_evidence[node][1] != 1.) {
             GUM_ERROR(OperationNotAllowed,
                       "CNLoopyPropagation can only handle HARD evidences");
           }
@@ -717,18 +695,14 @@ namespace gum {
         GUM_SCALAR msg_p_min = 1.;
         GUM_SCALAR msg_p_max = 0.;
 
-        if (__cn->currentNodeType(node) !=
-            CredalNet< GUM_SCALAR >::NodeType::Indic) {
+        if (__cn->currentNodeType(node)
+            != CredalNet< GUM_SCALAR >::NodeType::Indic) {
           _enum_combi(msgs_p, node, msg_p_min, msg_p_max);
         }
 
-        if (msg_p_min <= (GUM_SCALAR)0.) {
-          msg_p_min = (GUM_SCALAR)0.;
-        }
+        if (msg_p_min <= (GUM_SCALAR)0.) { msg_p_min = (GUM_SCALAR)0.; }
 
-        if (msg_p_max <= (GUM_SCALAR)0.) {
-          msg_p_max = (GUM_SCALAR)0.;
-        }
+        if (msg_p_max <= (GUM_SCALAR)0.) { msg_p_max = (GUM_SCALAR)0.; }
 
         _NodesP_min.set(node, msg_p_min);
         std::vector< GUM_SCALAR > marg(2);
@@ -770,8 +744,8 @@ namespace gum {
       do {
         for (auto node : active_nodes_set) {
           for (auto chil : graphe.children(node)) {
-            if (__cn->currentNodeType(chil) ==
-                CredalNet< GUM_SCALAR >::NodeType::Indic) {
+            if (__cn->currentNodeType(chil)
+                == CredalNet< GUM_SCALAR >::NodeType::Indic) {
               continue;
             }
 
@@ -779,8 +753,8 @@ namespace gum {
           }
 
           for (auto par : graphe.parents(node)) {
-            if (__cn->currentNodeType(node) ==
-                CredalNet< GUM_SCALAR >::NodeType::Indic) {
+            if (__cn->currentNodeType(node)
+                == CredalNet< GUM_SCALAR >::NodeType::Indic) {
               continue;
             }
 
@@ -796,10 +770,10 @@ namespace gum {
         active_nodes_set = next_active_nodes_set;
         next_active_nodes_set.clear();
 
-      } while (__infE::continueApproximationScheme(eps) &&
-               active_nodes_set.size() > 0);
+      } while (__infE::continueApproximationScheme(eps)
+               && active_nodes_set.size() > 0);
 
-      __infE::stopApproximationScheme();  // just to be sure of the
+      __infE::stopApproximationScheme();   // just to be sure of the
       // approximationScheme has been notified of
       // the end of looop
     }
@@ -823,18 +797,16 @@ namespace gum {
         for (Size j = 0, theEnd = nbrArcs / 2; j < theEnd; j++) {
           auto w1 = rand() % nbrArcs, w2 = rand() % nbrArcs;
 
-          if (w1 == w2) {
-            continue;
-          }
+          if (w1 == w2) { continue; }
 
           std::swap(seq[w1], seq[w2]);
         }
 
         for (const auto it : seq) {
-          if (__cn->currentNodeType(it->tail()) ==
-                CredalNet< GUM_SCALAR >::NodeType::Indic ||
-              __cn->currentNodeType(it->head()) ==
-                CredalNet< GUM_SCALAR >::NodeType::Indic) {
+          if (__cn->currentNodeType(it->tail())
+                == CredalNet< GUM_SCALAR >::NodeType::Indic
+              || __cn->currentNodeType(it->head())
+                   == CredalNet< GUM_SCALAR >::NodeType::Indic) {
             continue;
           }
 
@@ -869,10 +841,10 @@ namespace gum {
 
       do {
         for (const auto it : seq) {
-          if (__cn->currentNodeType(it->tail()) ==
-                CredalNet< GUM_SCALAR >::NodeType::Indic ||
-              __cn->currentNodeType(it->head()) ==
-                CredalNet< GUM_SCALAR >::NodeType::Indic) {
+          if (__cn->currentNodeType(it->tail())
+                == CredalNet< GUM_SCALAR >::NodeType::Indic
+              || __cn->currentNodeType(it->head())
+                   == CredalNet< GUM_SCALAR >::NodeType::Indic) {
             continue;
           }
 
@@ -894,17 +866,15 @@ namespace gum {
 
       const auto parents = &__bnet->cpt(Y).variablesSequence();
 
-      if (((children.size() + parents->size() - 1) == 1) &&
-          (!__infE::_evidence.exists(Y))) {
+      if (((children.size() + parents->size() - 1) == 1)
+          && (!__infE::_evidence.exists(Y))) {
         return;
       }
 
       bool update_l = _update_l[Y];
       bool update_p = _update_p[Y];
 
-      if (!update_p && !update_l) {
-        return;
-      }
+      if (!update_p && !update_l) { return; }
 
       _msg_l_sent[Y]->insert(X);
 
@@ -932,9 +902,7 @@ namespace gum {
 
           lmin = lmax;
 
-          if (lmax != lmax && lmin == lmin) {
-            lmax = lmin;
-          }
+          if (lmax != lmax && lmin == lmin) { lmax = lmin; }
 
           if (lmax != lmax && lmin != lmin) {
             std::cout << "no likelihood defined [lmin, lmax] (incompatibles "
@@ -942,13 +910,9 @@ namespace gum {
                       << std::endl;
           }
 
-          if (lmin < 0.) {
-            lmin = 0.;
-          }
+          if (lmin < 0.) { lmin = 0.; }
 
-          if (lmax < 0.) {
-            lmax = 0.;
-          }
+          if (lmax < 0.) { lmax = 0.; }
 
           // no need to update nodeL if evidence since nodeL will never be used
 
@@ -960,9 +924,9 @@ namespace gum {
             _NodesL_max.erase(Y);
           }
 
-        }  // end of : node has children & no evidence
+        }   // end of : node has children & no evidence
 
-      }  // end of : if update_l
+      }   // end of : if update_l
 
       GUM_SCALAR lmin = _NodesL_min[Y];
       GUM_SCALAR lmax;
@@ -980,9 +944,7 @@ namespace gum {
       if (lmin == lmax && lmin == 1.) {
         _ArcsL_min[Arc(X, Y)] = lmin;
 
-        if (_ArcsL_max.exists(Arc(X, Y))) {
-          _ArcsL_max.erase(Arc(X, Y));
-        }
+        if (_ArcsL_max.exists(Arc(X, Y))) { _ArcsL_max.erase(Arc(X, Y)); }
 
         return;
       }
@@ -1031,9 +993,7 @@ namespace gum {
         std::vector< GUM_SCALAR > lx;
         lx.push_back(lmin);
 
-        if (lmin != lmax) {
-          lx.push_back(lmax);
-        }
+        if (lmin != lmax) { lx.push_back(lmax); }
 
         _enum_combi(msgs_p, Y, min, max, lx, pos);
 
@@ -1049,13 +1009,9 @@ namespace gum {
           }
         }
 
-        if (min < 0.) {
-          min = 0.;
-        }
+        if (min < 0.) { min = 0.; }
 
-        if (max < 0.) {
-          max = 0.;
-        }
+        if (max < 0.) { max = 0.; }
 
         bool update = false;
 
@@ -1068,7 +1024,7 @@ namespace gum {
           if (max != _ArcsL_max[Arc(X, Y)]) {
             if (max != min) {
               _ArcsL_max[Arc(X, Y)] = max;
-            } else {  // if ( max == min )
+            } else {   // if ( max == min )
               _ArcsL_max.erase(Arc(X, Y));
             }
 
@@ -1086,7 +1042,7 @@ namespace gum {
           next_active_nodes_set.insert(X);
         }
 
-      }  // end of update_p || update_l
+      }   // end of update_p || update_l
     }
 
     template < typename GUM_SCALAR >
@@ -1096,8 +1052,8 @@ namespace gum {
 
       const auto parents = &__bnet->cpt(X).variablesSequence();
 
-      if (((children.size() + parents->size() - 1) == 1) &&
-          (!__infE::_evidence.exists(X))) {
+      if (((children.size() + parents->size() - 1) == 1)
+          && (!__infE::_evidence.exists(X))) {
         return;
       }
 
@@ -1117,18 +1073,14 @@ namespace gum {
       bool update_l = _update_l[X];
       bool update_p = _update_p[X];
 
-      if (!update_p && !update_l) {
-        return;
-      }
+      if (!update_p && !update_l) { return; }
 
       GUM_SCALAR lmin = 1.;
       GUM_SCALAR lmax = 1.;
 
       // use cbegin if available
       for (auto chil : children) {
-        if (chil == demanding_child) {
-          continue;
-        }
+        if (chil == demanding_child) { continue; }
 
         lmin *= _ArcsL_min[Arc(X, chil)];
 
@@ -1139,13 +1091,9 @@ namespace gum {
         }
       }
 
-      if (lmin != lmin && lmax == lmax) {
-        lmin = lmax;
-      }
+      if (lmin != lmin && lmax == lmax) { lmin = lmax; }
 
-      if (lmax != lmax && lmin == lmin) {
-        lmax = lmin;
-      }
+      if (lmax != lmax && lmin == lmin) { lmax = lmin; }
 
       if (lmax != lmax && lmin != lmin) {
         std::cout << "pas de vraisemblance definie [lmin, lmax] (observations "
@@ -1154,13 +1102,9 @@ namespace gum {
         return;
       }
 
-      if (lmin < 0.) {
-        lmin = 0.;
-      }
+      if (lmin < 0.) { lmin = 0.; }
 
-      if (lmax < 0.) {
-        lmax = 0.;
-      }
+      if (lmax < 0.) { lmax = 0.; }
 
       // refresh PI_part
       GUM_SCALAR min = _INF;
@@ -1194,13 +1138,9 @@ namespace gum {
 
         _enum_combi(msgs_p, X, min, max);
 
-        if (min < 0.) {
-          min = 0.;
-        }
+        if (min < 0.) { min = 0.; }
 
-        if (max < 0.) {
-          max = 0.;
-        }
+        if (max < 0.) { max = 0.; }
 
         if (min == _INF || max == _INF) {
           std::cout << " ERREUR msg P min = max = INF " << std::endl;
@@ -1218,7 +1158,7 @@ namespace gum {
 
         _update_p.set(X, false);
 
-      }  // end of update_p
+      }   // end of update_p
       else {
         min = _NodesP_min[X];
 
@@ -1238,7 +1178,7 @@ namespace gum {
           std::cout << "MESSAGE P ERR (negatif) : pi = inf, l = 0" << std::endl;
         }
 
-        if (lmin == _INF) {  // cas infini
+        if (lmin == _INF) {   // cas infini
           msg_p_min = GUM_SCALAR(1.);
         } else if (min == 0. || lmin == 0.) {
           msg_p_min = 0;
@@ -1251,7 +1191,7 @@ namespace gum {
           std::cout << "MESSAGE P ERR (negatif) : pi = inf, l = 0" << std::endl;
         }
 
-        if (lmax == _INF) {  // cas infini
+        if (lmax == _INF) {   // cas infini
           msg_p_max = GUM_SCALAR(1.);
         } else if (max == 0. || lmax == 0.) {
           msg_p_max = 0;
@@ -1278,13 +1218,9 @@ namespace gum {
           return;
         }
 
-        if (msg_p_min < 0.) {
-          msg_p_min = 0.;
-        }
+        if (msg_p_min < 0.) { msg_p_min = 0.; }
 
-        if (msg_p_max < 0.) {
-          msg_p_max = 0.;
-        }
+        if (msg_p_max < 0.) { msg_p_max = 0.; }
 
         bool update = false;
 
@@ -1297,7 +1233,7 @@ namespace gum {
           if (msg_p_max != _ArcsP_max[Arc(X, demanding_child)]) {
             if (msg_p_max != msg_p_min) {
               _ArcsP_max[Arc(X, demanding_child)] = msg_p_max;
-            } else {  // if ( msg_p_max == msg_p_min )
+            } else {   // if ( msg_p_max == msg_p_min )
               _ArcsP_max.erase(Arc(X, demanding_child));
             }
 
@@ -1315,15 +1251,15 @@ namespace gum {
           next_active_nodes_set.insert(demanding_child);
         }
 
-      }  // end of : update_l || update_p
+      }   // end of : update_l || update_p
     }
 
     template < typename GUM_SCALAR >
     void CNLoopyPropagation< GUM_SCALAR >::_refreshLMsPIs(bool refreshIndic) {
       for (auto node : __bnet->nodes()) {
-        if ((!refreshIndic) &&
-            __cn->currentNodeType(node) ==
-              CredalNet< GUM_SCALAR >::NodeType::Indic) {
+        if ((!refreshIndic)
+            && __cn->currentNodeType(node)
+                 == CredalNet< GUM_SCALAR >::NodeType::Indic) {
           continue;
         }
 
@@ -1346,9 +1282,7 @@ namespace gum {
               }
             }
 
-            if (lmin != lmin && lmax == lmax) {
-              lmin = lmax;
-            }
+            if (lmin != lmin && lmax == lmax) { lmin = lmax; }
 
             lmax = lmin;
 
@@ -1360,13 +1294,9 @@ namespace gum {
               return;
             }
 
-            if (lmin < 0.) {
-              lmin = 0.;
-            }
+            if (lmin < 0.) { lmin = 0.; }
 
-            if (lmax < 0.) {
-              lmax = 0.;
-            }
+            if (lmax < 0.) { lmax = 0.; }
 
             _NodesL_min[node] = lmin;
 
@@ -1377,7 +1307,7 @@ namespace gum {
             }
           }
 
-        }  // end of : update_l
+        }   // end of : update_l
 
         if (_update_p[node]) {
           if ((parents->size() - 1) > 0 && !__infE::_evidence.exists(node)) {
@@ -1412,13 +1342,9 @@ namespace gum {
 
             _enum_combi(msgs_p, node, min, max);
 
-            if (min < 0.) {
-              min = 0.;
-            }
+            if (min < 0.) { min = 0.; }
 
-            if (max < 0.) {
-              max = 0.;
-            }
+            if (max < 0.) { max = 0.; }
 
             _NodesP_min[node] = min;
 
@@ -1430,9 +1356,9 @@ namespace gum {
 
             _update_p[node] = false;
           }
-        }  // end of update_p
+        }   // end of update_p
 
-      }  // end of : for each node
+      }   // end of : for each node
     }
 
     template < typename GUM_SCALAR >
@@ -1520,13 +1446,9 @@ namespace gum {
           return;
         }
 
-        if (msg_p_min < 0.) {
-          msg_p_min = 0.;
-        }
+        if (msg_p_min < 0.) { msg_p_min = 0.; }
 
-        if (msg_p_max < 0.) {
-          msg_p_max = 0.;
-        }
+        if (msg_p_max < 0.) { msg_p_max = 0.; }
 
         __infE::_marginalMin[node][0] = 1 - msg_p_max;
         __infE::_marginalMax[node][0] = 1 - msg_p_min;
@@ -1546,8 +1468,8 @@ namespace gum {
     template < typename GUM_SCALAR >
     void CNLoopyPropagation< GUM_SCALAR >::_updateIndicatrices() {
       for (auto node : __bnet->nodes()) {
-        if (__cn->currentNodeType(node) !=
-            CredalNet< GUM_SCALAR >::NodeType::Indic) {
+        if (__cn->currentNodeType(node)
+            != CredalNet< GUM_SCALAR >::NodeType::Indic) {
           continue;
         }
 
@@ -1562,9 +1484,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void CNLoopyPropagation< GUM_SCALAR >::_computeExpectations() {
-      if (__infE::_modal.empty()) {
-        return;
-      }
+      if (__infE::_modal.empty()) { return; }
 
       std::vector< std::vector< GUM_SCALAR > > vertices(
         2, std::vector< GUM_SCALAR >(2));
@@ -1583,15 +1503,15 @@ namespace gum {
           // but does the user know that ?
           __infE::_updateCredalSets(
             node,
-            vertices[vertex]);  // no redundancy elimination with 2 vertices
+            vertices[vertex]);   // no redundancy elimination with 2 vertices
         }
       }
     }
 
     template < typename GUM_SCALAR >
     CNLoopyPropagation< GUM_SCALAR >::CNLoopyPropagation(
-      const CredalNet< GUM_SCALAR >& cnet)
-        : InferenceEngine< GUM_SCALAR >::InferenceEngine(cnet) {
+      const CredalNet< GUM_SCALAR >& cnet) :
+        InferenceEngine< GUM_SCALAR >::InferenceEngine(cnet) {
       if (!cnet.isSeparatelySpecified()) {
         GUM_ERROR(OperationNotAllowed,
                   "CNLoopyPropagation is only available "
@@ -1647,8 +1567,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     typename CNLoopyPropagation< GUM_SCALAR >::InferenceType
-    CNLoopyPropagation< GUM_SCALAR >::inferenceType() {
+      CNLoopyPropagation< GUM_SCALAR >::inferenceType() {
       return __inferenceType;
     }
-  }
-}  // end of namespace gum
+  }   // namespace credal
+}   // end of namespace gum

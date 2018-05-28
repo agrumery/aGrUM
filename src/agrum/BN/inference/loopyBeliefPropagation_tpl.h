@@ -23,19 +23,19 @@
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <algorithm>
-#include <sstream>
-#include <string>
+#  include <algorithm>
+#  include <sstream>
+#  include <string>
 
-#define LBP_DEFAULT_MAXITER 100
-#define LBP_DEFAULT_EPSILON 1e-8
-#define LBP_DEFAULT_MIN_EPSILON_RATE 1e-10
-#define LBP_DEFAULT_PERIOD_SIZE 1
-#define LBP_DEFAULT_VERBOSITY false
+#  define LBP_DEFAULT_MAXITER 100
+#  define LBP_DEFAULT_EPSILON 1e-8
+#  define LBP_DEFAULT_MIN_EPSILON_RATE 1e-10
+#  define LBP_DEFAULT_PERIOD_SIZE 1
+#  define LBP_DEFAULT_VERBOSITY false
 
 
 // to ease parsing for IDE
-#include <agrum/BN/inference/loopyBeliefPropagation.h>
+#  include <agrum/BN/inference/loopyBeliefPropagation.h>
 
 
 namespace gum {
@@ -43,8 +43,8 @@ namespace gum {
   /// default constructor
   template < typename GUM_SCALAR >
   LoopyBeliefPropagation< GUM_SCALAR >::LoopyBeliefPropagation(
-    const IBayesNet< GUM_SCALAR >* bn)
-      : ApproximateInference< GUM_SCALAR >(bn) {
+    const IBayesNet< GUM_SCALAR >* bn) :
+      ApproximateInference< GUM_SCALAR >(bn) {
     // for debugging purposes
     GUM_CONSTRUCTOR(LoopyBeliefPropagation);
 
@@ -87,7 +87,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-  LoopyBeliefPropagation< GUM_SCALAR >::__computeProdPi(NodeId X) {
+    LoopyBeliefPropagation< GUM_SCALAR >::__computeProdPi(NodeId X) {
     const auto& varX = this->BN().variable(X);
 
     auto piX = this->BN().cpt(X);
@@ -101,14 +101,13 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-  LoopyBeliefPropagation< GUM_SCALAR >::__computeProdPi(NodeId X, NodeId except) {
+    LoopyBeliefPropagation< GUM_SCALAR >::__computeProdPi(NodeId X,
+                                                          NodeId except) {
     const auto& varX = this->BN().variable(X);
     const auto& varExcept = this->BN().variable(except);
     auto        piXexcept = this->BN().cpt(X);
     for (const auto& U : this->BN().parents(X)) {
-      if (U != except) {
-        piXexcept *= __messages[Arc(U, X)];
-      }
+      if (U != except) { piXexcept *= __messages[Arc(U, X)]; }
     }
     piXexcept = piXexcept.margSumIn({&varX, &varExcept});
     return piXexcept;
@@ -117,7 +116,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-  LoopyBeliefPropagation< GUM_SCALAR >::__computeProdLambda(NodeId X) {
+    LoopyBeliefPropagation< GUM_SCALAR >::__computeProdLambda(NodeId X) {
     Potential< GUM_SCALAR > lamX;
     if (this->hasEvidence(X)) {
       lamX = *(this->evidence()[X]);
@@ -134,19 +133,17 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-  LoopyBeliefPropagation< GUM_SCALAR >::__computeProdLambda(NodeId X,
-                                                            NodeId except) {
+    LoopyBeliefPropagation< GUM_SCALAR >::__computeProdLambda(NodeId X,
+                                                              NodeId except) {
     Potential< GUM_SCALAR > lamXexcept;
-    if (this->hasEvidence(X)) {  //
+    if (this->hasEvidence(X)) {   //
       lamXexcept = *this->evidence()[X];
     } else {
       lamXexcept.add(this->BN().variable(X));
       lamXexcept.fill(1);
     }
     for (const auto& Y : this->BN().children(X)) {
-      if (Y != except) {
-        lamXexcept *= __messages[Arc(Y, X)];
-      }
+      if (Y != except) { lamXexcept *= __messages[Arc(Y, X)]; }
     }
 
     return lamXexcept;
@@ -171,7 +168,7 @@ namespace gum {
         ekl = __messages[Arc(X, U)].KL(newLambda);
       } catch (InvalidArgument& e) {
         GUM_ERROR(InvalidArgument, "Not compatible pi during computation");
-      } catch (FatalError& e) {  // 0 misplaced
+      } catch (FatalError& e) {   // 0 misplaced
         ekl = std::numeric_limits< GUM_SCALAR >::infinity();
       }
       if (ekl > KL) {
@@ -190,7 +187,7 @@ namespace gum {
         ekl = __messages[Arc(X, Y)].KL(newPi);
       } catch (InvalidArgument& e) {
         GUM_ERROR(InvalidArgument, "Not compatible pi during computation");
-      } catch (FatalError& e) {  // 0 misplaced
+      } catch (FatalError& e) {   // 0 misplaced
         ekl = std::numeric_limits< GUM_SCALAR >::infinity();
       }
       if (ekl > KL) {
@@ -239,7 +236,7 @@ namespace gum {
   /// Returns the probability of the variable.
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >&
-  LoopyBeliefPropagation< GUM_SCALAR >::_posterior(NodeId id) {
+               LoopyBeliefPropagation< GUM_SCALAR >::_posterior(NodeId id) {
     auto p = __computeProdPi(id) * __computeProdLambda(id);
     p.normalize();
     __posteriors.set(id, p);
@@ -248,4 +245,4 @@ namespace gum {
   }
 } /* namespace gum */
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS

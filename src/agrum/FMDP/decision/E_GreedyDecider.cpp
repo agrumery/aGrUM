@@ -43,7 +43,6 @@ namespace gum {
    */
   // ###################################################################
   E_GreedyDecider::E_GreedyDecider() {
-
     GUM_CONSTRUCTOR(E_GreedyDecider)
 
     __sss = 1.0;
@@ -101,7 +100,6 @@ namespace gum {
    */
   // ###################################################################
   ActionSet E_GreedyDecider::stateOptimalPolicy(const Instantiation& curState) {
-
     double explo = (double)std::rand() / (double)RAND_MAX;
     double temp =
       std::pow((__sss - (double)__statecpt.nbVisitedStates()) / __sss, 3.0);
@@ -126,4 +124,4 @@ namespace gum {
     return _allActions;
   }
 
-}  // End of namespace gum
+}   // End of namespace gum

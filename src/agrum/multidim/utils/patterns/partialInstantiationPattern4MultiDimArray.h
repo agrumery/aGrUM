@@ -37,18 +37,18 @@
 #else
 namespace gum {
 
-// a specialized function instantiating some variables of a table and returning
-// the result
+  // a specialized function instantiating some variables of a table and returning
+  // the result
 
-#ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME
-#define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE GUM_SCALAR
+#  ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME
+#    define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE GUM_SCALAR
   template < typename GUM_SCALAR >
   MultiDimArray< GUM_SCALAR >* GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME(
-    const MultiDimArray< GUM_SCALAR >* table,
+    const MultiDimArray< GUM_SCALAR >*               table,
     const HashTable< const DiscreteVariable*, Idx >& inst_vars)
-#endif
+#  endif
 
-// clang-format off
+  // clang-format off
 
 #ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER_NAME
 #define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE GUM_SCALAR *
@@ -82,23 +82,23 @@ namespace gum {
   // clang-format on
 
   {
-#ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_IMPL2ARRAY_NAME
+#  ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_IMPL2ARRAY_NAME
     const MultiDimArray< GUM_SCALAR >* table =
       reinterpret_cast< const MultiDimArray< GUM_SCALAR >* >(ttable);
-#endif
+#  endif
 
-#ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER_IMPL2ARRAY_NAME
+#  ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER_IMPL2ARRAY_NAME
     const MultiDimArray< GUM_SCALAR* >* table =
       reinterpret_cast< const MultiDimArray< GUM_SCALAR* >* >(ttable);
-#endif
+#  endif
     // get the variables of the uninstantiated table
     const Sequence< const DiscreteVariable* >& table_vars =
       table->variablesSequence();
 
     // Compute the offset of the variables. In addition, get the offset in
     // table induced by the instantiation inst_var
-    Idx table_alone_offset = 0;
-    Idx offset = 1;
+    Idx                                       table_alone_offset = 0;
+    Idx                                       offset = 1;
     HashTable< const DiscreteVariable*, Idx > var1offset(table_vars.size());
 
     for (const auto var : table_vars) {
@@ -164,7 +164,7 @@ namespace gum {
 
     result->endMultipleChanges();
 
-#ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
+#  ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
     // fill the matrix with any element
     {
       const GUM_SCALAR& any_element = *(table->unsafeGet(0));
@@ -173,7 +173,7 @@ namespace gum {
         result->unsafeSet(i, new GUM_SCALAR(any_element));
       }
     }
-#endif /* GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER */
+#  endif /* GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER */
 
     // compute the result: it is now sufficient to loop over the variables that
     // were not instantiated. ptable and presult are pointers on the arrays
@@ -190,11 +190,11 @@ namespace gum {
     // presult as both tables need be parsed using only 1-increments
     if (has_before_incr) {
       for (Idx i = 0; i < result_domain_size; ++i) {
-#ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
+#  ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
         **presult = **ptable;
-#else
+#  else
         *presult = *ptable;
-#endif
+#  endif
 
         // update the offset of result and table
         ++ptable;
@@ -207,11 +207,11 @@ namespace gum {
       Idx table_offset = 0;
 
       for (Idx j = 0; j < result_domain_size; ++j) {
-#ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
+#  ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
         **presult = *(ptable[table_offset]);
-#else
+#  else
         *presult = ptable[table_offset];
-#endif
+#  endif
 
         // update the offset of table
         for (unsigned int k = 0; k < table_and_result_value.size(); ++k) {
@@ -234,11 +234,11 @@ namespace gum {
     return result;
   }
 
-#undef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE
+#  undef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE
 
-#ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
-#undef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
-#endif
+#  ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
+#    undef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
+#  endif
 
 } /* End of namespace gum */
 

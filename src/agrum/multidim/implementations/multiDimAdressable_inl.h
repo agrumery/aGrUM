@@ -34,8 +34,8 @@
 namespace gum {
 
   INLINE
-  MultiDimAdressable::MultiDimAdressable(MultiDimAdressable&& from) noexcept
-      : MultiDimInterface(std::forward< MultiDimInterface >(from)) {
+  MultiDimAdressable::MultiDimAdressable(MultiDimAdressable&& from) noexcept :
+      MultiDimInterface(std::forward< MultiDimInterface >(from)) {
     GUM_CONS_MOV(MultiDimAdressable);
   }
 
@@ -53,13 +53,13 @@ namespace gum {
   }
 
   INLINE MultiDimAdressable& MultiDimAdressable::
-  operator=(const MultiDimAdressable& from) {
+                             operator=(const MultiDimAdressable& from) {
     GUM_OP_CPY(MultiDimAdressable);
     MultiDimInterface::operator=(from);
     return *this;
   }
   INLINE MultiDimAdressable& MultiDimAdressable::
-  operator=(MultiDimAdressable&& from) noexcept {
+                             operator=(MultiDimAdressable&& from) noexcept {
     GUM_OP_MOV(MultiDimAdressable);
     MultiDimInterface::operator=(std::forward< MultiDimInterface >(from));
     return *this;

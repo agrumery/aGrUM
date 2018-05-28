@@ -35,12 +35,12 @@
 #else
 namespace gum {
 
-#ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME
+#  ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME
   template < typename GUM_SCALAR >
   MultiDimImplementation< GUM_SCALAR >* GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME(
-    const MultiDimImplementation< GUM_SCALAR >& ttable,
+    const MultiDimImplementation< GUM_SCALAR >&      ttable,
     const HashTable< const DiscreteVariable*, Idx >& inst_vars) {
-#endif
+#  endif
 
     typename PartialInstantiationRegister4MultiDim<
       GUM_SCALAR >::PartialInstantiationPtr func;

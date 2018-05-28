@@ -28,8 +28,8 @@
 #include <agrum/graphs/algorithms/triangulations/triangulation.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/algorithms/triangulations/triangulation_inl.h>
-#endif  // GUM_NO_INLINE
+#  include <agrum/graphs/algorithms/triangulations/triangulation_inl.h>
+#endif   // GUM_NO_INLINE
 
 namespace gum {
 
@@ -40,8 +40,8 @@ namespace gum {
   }
 
   // constructor with a domain size specified
-  Triangulation::Triangulation(const NodeProperty< Size >* domsizes)
-      : _domain_sizes(domsizes) {
+  Triangulation::Triangulation(const NodeProperty< Size >* domsizes) :
+      _domain_sizes(domsizes) {
     GUM_CONSTRUCTOR(Triangulation);
   }
 
@@ -52,14 +52,14 @@ namespace gum {
   }
 
   // copy constructor
-  Triangulation::Triangulation(const Triangulation& from)
-      : _domain_sizes(from._domain_sizes) {
+  Triangulation::Triangulation(const Triangulation& from) :
+      _domain_sizes(from._domain_sizes) {
     GUM_CONS_CPY(Triangulation);
   }
 
   // move constructor
-  Triangulation::Triangulation(Triangulation&& from)
-      : _domain_sizes(from._domain_sizes) {
+  Triangulation::Triangulation(Triangulation&& from) :
+      _domain_sizes(from._domain_sizes) {
     GUM_CONS_MOV(Triangulation);
   }
 
@@ -67,7 +67,7 @@ namespace gum {
   double Triangulation::maxLog10CliqueDomainSize() {
     double              res = 0.0;
     double              dSize;
-    const JunctionTree& jt = junctionTree();  // here, the fact that we get
+    const JunctionTree& jt = junctionTree();   // here, the fact that we get
     // a junction tree ensures that _domain_sizes is different from nullptr
 
     for (const NodeId cl : jt) {

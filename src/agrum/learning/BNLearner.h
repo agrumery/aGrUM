@@ -53,7 +53,6 @@ namespace gum {
      */
     template < typename GUM_SCALAR >
     class BNLearner : public genericBNLearner {
-
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -65,8 +64,8 @@ namespace gum {
        * read the database file for the score / parameter estimation and var
        * names
        */
-      BNLearner(const std::string& filename,
-                const std::vector<std::string>& missing_symbols = { "?" } );
+      BNLearner(const std::string&                filename,
+                const std::vector< std::string >& missing_symbols = {"?"});
       BNLearner(const DatabaseTable<>& db);
 
       /**
@@ -97,14 +96,14 @@ namespace gum {
                 const NodeProperty< Sequence< std::string > >& modalities );
       */
 
-      
+
       /**
        * Wrapper for BNLearner (filename,modalities,parse_database) using a bn
        * to find those modalities and nodeids.
        **/
       BNLearner(const std::string&                 filename,
                 const gum::BayesNet< GUM_SCALAR >& src,
-                const std::vector<std::string>& missing_symbols = { "?" } );
+                const std::vector< std::string >&  missing_symbols = {"?"});
 
       /// copy constructor
       BNLearner(const BNLearner&);
@@ -172,8 +171,8 @@ namespace gum {
       private:
       /// read the first line of a file to find column names
       NodeProperty< Sequence< std::string > >
-      __labelsFromBN(const std::string&            filename,
-                     const BayesNet< GUM_SCALAR >& src);
+        __labelsFromBN(const std::string&            filename,
+                       const BayesNet< GUM_SCALAR >& src);
     };
 
   } /* namespace learning */

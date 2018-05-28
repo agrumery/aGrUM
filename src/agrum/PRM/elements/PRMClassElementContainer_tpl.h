@@ -39,8 +39,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMClassElementContainer< GUM_SCALAR >::PRMClassElementContainer(
-      const std::string& name)
-        : PRMObject(name) {
+      const std::string& name) :
+        PRMObject(name) {
       GUM_CONSTRUCTOR(PRMClassElementContainer);
     }
 
@@ -52,14 +52,14 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE PRMClassElementContainer< GUM_SCALAR >&
            PRMClassElementContainer< GUM_SCALAR >::
-    operator=(const PRMClassElementContainer< GUM_SCALAR >& source) {
+           operator=(const PRMClassElementContainer< GUM_SCALAR >& source) {
       GUM_ERROR(FatalError, "illegal call to ClassElementContainer copy operator");
     }
 
     template < typename GUM_SCALAR >
     INLINE PRMClassElementContainer< GUM_SCALAR >::PRMClassElementContainer(
-      const PRMClassElementContainer< GUM_SCALAR >& source)
-        : PRMObject(source) {
+      const PRMClassElementContainer< GUM_SCALAR >& source) :
+        PRMObject(source) {
       GUM_CONS_CPY(PRMClassElementContainer);
       GUM_ERROR(FatalError,
                 "illegal call to ClassElementContainer copy constructor");
@@ -70,9 +70,7 @@ namespace gum {
       const PRMClassElement< GUM_SCALAR >& elt) const {
       try {
         return _getIOFlag(elt).first;
-      } catch (NotFound&) {
-        return false;
-      }
+      } catch (NotFound&) { return false; }
     }
 
     template < typename GUM_SCALAR >
@@ -81,13 +79,11 @@ namespace gum {
       if (!exists(elt.safeName())) {
         GUM_ERROR(NotFound,
                   ": <" + elt.safeName() + "> is not in <" + name() + ">");
-      } else if (PRMClassElement< GUM_SCALAR >::isAttribute(elt) ||
-                 PRMClassElement< GUM_SCALAR >::isAggregate(elt)) {
+      } else if (PRMClassElement< GUM_SCALAR >::isAttribute(elt)
+                 || PRMClassElement< GUM_SCALAR >::isAggregate(elt)) {
         try {
           _getIOFlag(elt).first = b;
-        } catch (NotFound&) {
-          _setIOFlag(elt, std::make_pair(b, false));
-        }
+        } catch (NotFound&) { _setIOFlag(elt, std::make_pair(b, false)); }
       } else {
         GUM_ERROR(WrongClassElement,
                   "given id is not an PRMAttribute or an PRMAggregate");
@@ -99,17 +95,13 @@ namespace gum {
       const PRMClassElement< GUM_SCALAR >& elt, bool b) {
       if (!exists(elt.safeName())) {
         GUM_ERROR(NotFound, "<" + elt.safeName() + "> is not in <" + name() + ">");
-      } else if (PRMClassElement< GUM_SCALAR >::isAttribute(elt) ||
-                 PRMClassElement< GUM_SCALAR >::isAggregate(elt)) {
+      } else if (PRMClassElement< GUM_SCALAR >::isAttribute(elt)
+                 || PRMClassElement< GUM_SCALAR >::isAggregate(elt)) {
         try {
           _getIOFlag(elt).second = b;
-        } catch (NotFound&) {
-          _setIOFlag(elt, std::make_pair(false, b));
-        }
+        } catch (NotFound&) { _setIOFlag(elt, std::make_pair(false, b)); }
 
-        if (b) {
-          _updateDescendants(elt);
-        }
+        if (b) { _updateDescendants(elt); }
       } else {
         GUM_ERROR(WrongClassElement,
                   "given ClassElement<GUM_SCALAR> is not an "
@@ -122,9 +114,7 @@ namespace gum {
       const PRMClassElement< GUM_SCALAR >& elt) const {
       try {
         return !(_getIOFlag(elt).first || _getIOFlag(elt).second);
-      } catch (NotFound&) {
-        return true;
-      }
+      } catch (NotFound&) { return true; }
     }
 
     template < typename GUM_SCALAR >
@@ -136,7 +126,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE std::pair< bool, bool >&
            PRMClassElementContainer< GUM_SCALAR >::_getIOFlag(
-      const PRMClassElement< GUM_SCALAR >& elt) {
+        const PRMClassElement< GUM_SCALAR >& elt) {
       try {
         return __IOFlags[elt.safeName()];
       } catch (NotFound&) {
@@ -148,7 +138,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE const std::pair< bool, bool >&
                  PRMClassElementContainer< GUM_SCALAR >::_getIOFlag(
-      const PRMClassElement< GUM_SCALAR >& elt) const {
+        const PRMClassElement< GUM_SCALAR >& elt) const {
       try {
         return __IOFlags[elt.safeName()];
       } catch (NotFound&) {
@@ -160,12 +150,10 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE void PRMClassElementContainer< GUM_SCALAR >::_setIOFlag(
       const PRMClassElement< GUM_SCALAR >& elt,
-      const std::pair< bool, bool >& flags) {
+      const std::pair< bool, bool >&       flags) {
       try {
         __IOFlags[elt.safeName()] = flags;
-      } catch (NotFound&) {
-        __IOFlags.insert(elt.safeName(), flags);
-      }
+      } catch (NotFound&) { __IOFlags.insert(elt.safeName(), flags); }
     }
 
     template < typename GUM_SCALAR >
@@ -174,14 +162,12 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE bool
-    PRMClassElementContainer< GUM_SCALAR >::exists(const std::string& name) const {
+    INLINE bool PRMClassElementContainer< GUM_SCALAR >::exists(
+      const std::string& name) const {
       try {
         get(name);
         return true;
-      } catch (NotFound&) {
-        return false;
-      }
+      } catch (NotFound&) { return false; }
     }
 
     template < typename GUM_SCALAR >
@@ -189,9 +175,7 @@ namespace gum {
       const PRMClassElement< GUM_SCALAR >& elt) const {
       try {
         return &elt == &(get(elt.safeName()));
-      } catch (NotFound&) {
-        return false;
-      }
+      } catch (NotFound&) { return false; }
     }
 
     template < typename GUM_SCALAR >
@@ -205,8 +189,8 @@ namespace gum {
 
 template < typename GUM_SCALAR >
 std::ostream&
-operator<<(std::ostream&                                           output,
-           const gum::prm::PRMClassElementContainer< GUM_SCALAR >& container) {
+  operator<<(std::ostream&                                           output,
+             const gum::prm::PRMClassElementContainer< GUM_SCALAR >& container) {
   std::string tab = "  ";
   output << "digraph \"" << container.name() << "\" {" << std::endl;
 

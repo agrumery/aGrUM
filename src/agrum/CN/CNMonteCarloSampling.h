@@ -58,7 +58,7 @@ namespace gum {
     template < typename GUM_SCALAR,
                class BNInferenceEngine = LazyPropagation< GUM_SCALAR > >
     class CNMonteCarloSampling
-      : public MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine > {
+        : public MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine > {
       private:
       /** To easily acces MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine
        * >
@@ -136,8 +136,8 @@ namespace gum {
                                                 LazyPropagation< double > >;
 
 
-  }  // namespace cn
-}
+  }   // namespace credal
+}   // namespace gum
 
 #include <agrum/CN/CNMonteCarloSampling_tpl.h>
 

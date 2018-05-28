@@ -46,7 +46,6 @@ namespace gum {
    * @endcode
    */
   class ApproximationSchemeListener : public Listener {
-
     public:
     /**
      * @brief Class constructor.
@@ -88,12 +87,12 @@ namespace gum {
      * Copy operator.
      */
     ApproximationSchemeListener&
-    operator=(const ApproximationSchemeListener& other);
+      operator=(const ApproximationSchemeListener& other);
 
     private:
     /// The scheme configuration.
     IApproximationSchemeConfiguration& __sch;
   };
-}
+}   // namespace gum
 
-#endif  // APPROXIMATIONSCHEMELISTENER_H
+#endif   // APPROXIMATIONSCHEMELISTENER_H

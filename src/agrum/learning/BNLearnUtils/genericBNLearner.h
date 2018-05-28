@@ -116,7 +116,7 @@ namespace gum {
         MIIC_THREE_OFF_TWO
       };
 
-      
+
       /// a helper to easily read databases
       class Database {
         public:
@@ -126,8 +126,8 @@ namespace gum {
         /// @{
 
         /// default constructor
-        explicit Database(const std::string& file,
-                          const std::vector<std::string>& missing_symbols );
+        explicit Database(const std::string&                file,
+                          const std::vector< std::string >& missing_symbols);
         explicit Database(const DatabaseTable<>& db);
 
         /// default constructor with defined modalities for some variables
@@ -147,7 +147,7 @@ namespace gum {
                  const NodeProperty< Sequence< std::string > >& modalities,
                  bool check_database = false);
         */
-        
+
         /// default constructor for the aprioris
         /** We must ensure that, when reading the apriori database, if the
          * "apriori" rowFilter says that a given variable has value i
@@ -155,9 +155,9 @@ namespace gum {
          * apriori database is the same as in the score/parameter database
          * read before creating the apriori. This is compulsory to have
          * aprioris that make sense. */
-        Database(const std::string& filename,
-                 Database& score_database,
-                 const std::vector<std::string>& missing_symbols );
+        Database(const std::string&                filename,
+                 Database&                         score_database,
+                 const std::vector< std::string >& missing_symbols);
 
         /// default constructor for the aprioris
         /** We must ensure that, when reading the apriori database, if the
@@ -177,16 +177,16 @@ namespace gum {
          * the second one being False, and the third bein Big.
          */
         template < typename GUM_SCALAR >
-        Database( const std::string&                 filename,
-                  const gum::BayesNet< GUM_SCALAR >& bn,
-                  const std::vector<std::string>& missing_symbols );
-       
+        Database(const std::string&                 filename,
+                 const gum::BayesNet< GUM_SCALAR >& bn,
+                 const std::vector< std::string >&  missing_symbols);
+
         template < typename GUM_SCALAR >
-        Database( const std::string&                 filename,
-                  Database&                          score_database,
-                  const gum::BayesNet< GUM_SCALAR >& bn,
-                  const std::vector<std::string>& missing_symbols );
-       
+        Database(const std::string&                 filename,
+                 Database&                          score_database,
+                 const gum::BayesNet< GUM_SCALAR >& bn,
+                 const std::vector< std::string >&  missing_symbols);
+
         /// copy constructor
         Database(const Database& from);
 
@@ -217,7 +217,7 @@ namespace gum {
         /// @{
 
         /// returns the parser for the database
-        DBRowGeneratorParser<>& parser ();
+        DBRowGeneratorParser<>& parser();
 
         /// returns the modalities of the variables
         std::vector< Size >& modalities() noexcept;
@@ -232,10 +232,10 @@ namespace gum {
         const std::string& nameFromId(NodeId id) const;
 
         /// returns the internal database table
-        const DatabaseTable<>& databaseTable () const;
+        const DatabaseTable<>& databaseTable() const;
 
         /// returns the set of missing symbols taken into account
-        const std::vector<std::string>& missingSymbols () const;
+        const std::vector< std::string >& missingSymbols() const;
 
         /// @}
 
@@ -244,7 +244,7 @@ namespace gum {
         DatabaseTable<> __database;
 
         /// the parser used for reading the database
-        DBRowGeneratorParser<>* __parser { nullptr };
+        DBRowGeneratorParser<>* __parser{nullptr};
 
         /// the modalities of the variables
         std::vector< Size > __modalities;
@@ -262,20 +262,14 @@ namespace gum {
         /// the minimal number of rows to parse (on average) by thread
         Size __min_nb_rows_per_thread{100};
 
-      private:
+        private:
         // returns the set of variables as a BN. This is convenient for
         // the constructors of apriori Databases
         template < typename GUM_SCALAR >
-        BayesNet<GUM_SCALAR> __BNVars () const;
+        BayesNet< GUM_SCALAR > __BNVars() const;
       };
 
 
-
-
-
-
-
-      
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -287,8 +281,8 @@ namespace gum {
        * read the database file for the score / parameter estimation and var
        * names
        */
-      genericBNLearner(const std::string& filename,
-                       const std::vector<std::string>& missing_symbols );
+      genericBNLearner(const std::string&                filename,
+                       const std::vector< std::string >& missing_symbols);
       genericBNLearner(const DatabaseTable<>& db);
 
       /**
@@ -311,10 +305,10 @@ namespace gum {
        * if we find other values in the database, an exception will be raised
        * during learning). */
       template < typename GUM_SCALAR >
-      genericBNLearner(const std::string& filename,
+      genericBNLearner(const std::string&                 filename,
                        const gum::BayesNet< GUM_SCALAR >& src,
-                       const std::vector<std::string>& missing_symbols );
-                       
+                       const std::vector< std::string >&  missing_symbols);
+
       /// copy constructor
       genericBNLearner(const genericBNLearner&);
 
@@ -593,12 +587,12 @@ namespace gum {
 
       /// reads a file and returns a databaseVectInRam
       static DatabaseTable<>
-      __readFile(const std::string& filename,
-                 const std::vector<std::string>& missing_symbols);
+        __readFile(const std::string&                filename,
+                   const std::vector< std::string >& missing_symbols);
 
       /// checks whether the extension of a CSV filename is correct
       static void __checkFileName(const std::string& filename);
-      
+
       /// create the apriori used for learning
       void __createApriori();
 
@@ -655,10 +649,10 @@ namespace gum {
       }
 
       INLINE void
-      distributeProgress(const ApproximationScheme* approximationScheme,
-                         Size                       pourcent,
-                         double                     error,
-                         double                     time) {
+        distributeProgress(const ApproximationScheme* approximationScheme,
+                           Size                       pourcent,
+                           double                     error,
+                           double                     time) {
         setCurrentApproximationScheme(approximationScheme);
 
         if (onProgress.hasListener()) GUM_EMIT3(onProgress, pourcent, error, time);
@@ -913,7 +907,7 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/BNLearnUtils/genericBNLearner_inl.h>
+#  include <agrum/learning/BNLearnUtils/genericBNLearner_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #include <agrum/learning/BNLearnUtils/genericBNLearner_tpl.h>

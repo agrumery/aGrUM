@@ -131,9 +131,7 @@ namespace gum_tests {
         gum::Instantiation i(t1);
 
         for (i.setFirst(); !i.end(); ++i) {
-          if (*(t1.get(i)) != *(t2.get(i))) {
-            return false;
-          }
+          if (*(t1.get(i)) != *(t2.get(i))) { return false; }
         }
 
         return true;
@@ -153,9 +151,7 @@ namespace gum_tests {
         gum::Instantiation i(t1);
 
         for (i.setFirst(); !i.end(); ++i) {
-          if (*(t1.get(i)) != *(t2.get(i))) {
-            return false;
-          }
+          if (*(t1.get(i)) != *(t2.get(i))) { return false; }
         }
 
         return true;
@@ -168,9 +164,8 @@ namespace gum_tests {
     // ==========================================================================
     template < typename T >
     gum::Potential< T >* manual_instantiate(
-      const gum::Potential< T >& t_in,
+      const gum::Potential< T >&                                      t_in,
       const gum::HashTable< const gum::DiscreteVariable*, gum::Idx >& inst_vars) {
-
       // construction of the output table
       gum::Potential< T >* t_out = new gum::Potential< T >;
       gum::Instantiation   partial_inst;
@@ -209,9 +204,8 @@ namespace gum_tests {
     // ==========================================================================
     template < typename T >
     gum::Potential< T* >* manual_instantiate(
-      const gum::Potential< T* >& t_in,
+      const gum::Potential< T* >&                                     t_in,
       const gum::HashTable< const gum::DiscreteVariable*, gum::Idx >& inst_vars) {
-
       // construction of the output table
       gum::Potential< T* >* t_out = new gum::Potential< T* >;
       gum::Instantiation    partial_inst;
@@ -250,9 +244,8 @@ namespace gum_tests {
     // ==========================================================================
     template < typename T >
     gum::MultiDimArray< T >* manual_instantiate(
-      const gum::MultiDimArray< T >& t_in,
+      const gum::MultiDimArray< T >&                                  t_in,
       const gum::HashTable< const gum::DiscreteVariable*, gum::Idx >& inst_vars) {
-
       // construction of the output table
       gum::MultiDimArray< T >* t_out = new gum::MultiDimArray< T >;
       gum::Instantiation       partial_inst;
@@ -291,9 +284,8 @@ namespace gum_tests {
     // ==========================================================================
     template < typename T >
     gum::MultiDimArray< T* >* manual_instantiate(
-      const gum::MultiDimArray< T* >& t_in,
+      const gum::MultiDimArray< T* >&                                 t_in,
       const gum::HashTable< const gum::DiscreteVariable*, gum::Idx >& inst_vars) {
-
       // construction of the output table
       gum::MultiDimArray< T* >* t_out = new gum::MultiDimArray< T* >;
       gum::Instantiation        partial_inst;

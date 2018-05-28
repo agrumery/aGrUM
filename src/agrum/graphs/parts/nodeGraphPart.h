@@ -53,7 +53,6 @@ namespace gum {
    * @brief Unsafe iterator on the node set of a graph.
    */
   class NodeGraphPartIterator {
-
     friend class NodeGraphPart;
 
     public:
@@ -135,8 +134,9 @@ namespace gum {
    * @class NodeGraphPartIteratorSafe
    * @brief Safe iterator on the node set of a graph.
    */
-  class NodeGraphPartIteratorSafe : public NodeGraphPartIterator, public Listener {
-
+  class NodeGraphPartIteratorSafe
+      : public NodeGraphPartIterator
+      , public Listener {
     friend class NodeGraphPart;
 
     public:
@@ -251,7 +251,6 @@ namespace gum {
    */
 
   class NodeGraphPart {
-
     public:
     /// types for STL compliance
     /// @{
@@ -518,9 +517,9 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/graphs/parts/nodeGraphPart_inl.h>
-#endif  // GUM_NOINLINE
+#  include <agrum/graphs/parts/nodeGraphPart_inl.h>
+#endif   // GUM_NOINLINE
 
 #include <agrum/graphs/parts/nodeGraphPart_tpl.h>
 
-#endif  // GUM_NODE_GRAPH_PART_H
+#endif   // GUM_NODE_GRAPH_PART_H

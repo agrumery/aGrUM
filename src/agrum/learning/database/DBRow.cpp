@@ -24,5 +24,3 @@
  */
 
 #include <agrum/learning/database/DBRow.h>
-
-

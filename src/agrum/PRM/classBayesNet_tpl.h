@@ -23,7 +23,7 @@
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
-#include <agrum/PRM/classBayesNet.h>  // to ease IDE parser
+#include <agrum/PRM/classBayesNet.h>   // to ease IDE parser
 #include <agrum/core/inline.h>
 
 namespace gum {
@@ -34,8 +34,8 @@ namespace gum {
       for (const auto node : c.containerDag().nodes()) {
         try {
           // Adding the attribute
-          if (PRMClassElement< GUM_SCALAR >::isAttribute(c.get(node)) ||
-              PRMClassElement< GUM_SCALAR >::isAggregate(c.get(node))) {
+          if (PRMClassElement< GUM_SCALAR >::isAttribute(c.get(node))
+              || PRMClassElement< GUM_SCALAR >::isAggregate(c.get(node))) {
             const PRMClassElement< GUM_SCALAR >& elt = c.get(node);
             this->_dag.addNodeWithId(elt.id());
             this->__varNodeMap.insert(&(elt.type().variable()), &elt);
@@ -56,18 +56,18 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE
-    ClassBayesNet< GUM_SCALAR >::ClassBayesNet(const PRMClass< GUM_SCALAR >& c)
-        : IBayesNet< GUM_SCALAR >()
-        , __class(&c) {
+      ClassBayesNet< GUM_SCALAR >::ClassBayesNet(const PRMClass< GUM_SCALAR >& c) :
+        IBayesNet< GUM_SCALAR >(),
+        __class(&c) {
       GUM_CONSTRUCTOR(ClassBayesNet);
       __init(c);
     }
 
     template < typename GUM_SCALAR >
     INLINE ClassBayesNet< GUM_SCALAR >::ClassBayesNet(
-      const ClassBayesNet< GUM_SCALAR >& from)
-        : IBayesNet< GUM_SCALAR >(from)
-        , __class(from.__class) {
+      const ClassBayesNet< GUM_SCALAR >& from) :
+        IBayesNet< GUM_SCALAR >(from),
+        __class(from.__class) {
       GUM_CONS_CPY(ClassBayesNet);
     }
 
@@ -78,7 +78,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE ClassBayesNet< GUM_SCALAR >& ClassBayesNet< GUM_SCALAR >::
-    operator=(const ClassBayesNet< GUM_SCALAR >& from) {
+                                        operator=(const ClassBayesNet< GUM_SCALAR >& from) {
       if (this != &from) {
         IBayesNet< GUM_SCALAR >::operator=(from);
 
@@ -90,7 +90,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const Potential< GUM_SCALAR >&
-    ClassBayesNet< GUM_SCALAR >::cpt(NodeId varId) const {
+                 ClassBayesNet< GUM_SCALAR >::cpt(NodeId varId) const {
       return __get(varId).cpf();
     }
 
@@ -102,31 +102,31 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const DiscreteVariable&
-    ClassBayesNet< GUM_SCALAR >::variable(NodeId id) const {
+                 ClassBayesNet< GUM_SCALAR >::variable(NodeId id) const {
       return __get(id).type().variable();
     }
 
     template < typename GUM_SCALAR >
     INLINE NodeId
-    ClassBayesNet< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
+           ClassBayesNet< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
       return __varNodeMap[&var]->id();
     }
 
     template < typename GUM_SCALAR >
     INLINE NodeId
-    ClassBayesNet< GUM_SCALAR >::idFromName(const std::string& name) const {
+           ClassBayesNet< GUM_SCALAR >::idFromName(const std::string& name) const {
       return __get(name).id();
     }
 
     template < typename GUM_SCALAR >
-    INLINE const DiscreteVariable&
-    ClassBayesNet< GUM_SCALAR >::variableFromName(const std::string& name) const {
+    INLINE const DiscreteVariable& ClassBayesNet< GUM_SCALAR >::variableFromName(
+      const std::string& name) const {
       return __get(name).type().variable();
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
-    ClassBayesNet< GUM_SCALAR >::__get(NodeId id) const {
+                 ClassBayesNet< GUM_SCALAR >::__get(NodeId id) const {
       if (this->_dag.exists(id)) {
         return __class->get(id);
       } else {
@@ -136,7 +136,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
-    ClassBayesNet< GUM_SCALAR >::__get(const std::string& name) const {
+                 ClassBayesNet< GUM_SCALAR >::__get(const std::string& name) const {
       try {
         return __class->get(name);
       } catch (NotFound&) {

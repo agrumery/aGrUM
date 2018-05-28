@@ -85,9 +85,9 @@ def check_tools(options):
   exe_clangformat = None
   if is_tool("clang-format"):
     exe_clangformat = "clang-format"
-  for version in range(9, 5, -1):
-    if is_tool("clang-format-3.{}".format(version)):
-      exe_clangformat = "clang-format-3.{}".format(version)
+  for version in ['6.0','7.0']:
+    if is_tool("clang-format-{}".format(version)):
+      exe_clangformat = "clang-format-{}".format(version)
       break
 
   exe_msbuild = is_tool("msbuild")

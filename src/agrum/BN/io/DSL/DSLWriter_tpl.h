@@ -26,8 +26,8 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // to ease automatic parser
-#include <agrum/BN/IBayesNet.h>
-#include <agrum/BN/io/DSL/DSLWriter.h>
+#  include <agrum/BN/IBayesNet.h>
+#  include <agrum/BN/io/DSL/DSLWriter.h>
 
 namespace gum {
   /* =========================================================================*/
@@ -71,9 +71,7 @@ namespace gum {
 
     output.flush();
 
-    if (output.fail()) {
-      GUM_ERROR(IOError, "Writting in the ostream failed.");
-    }
+    if (output.fail()) { GUM_ERROR(IOError, "Writting in the ostream failed."); }
   }
 
   /** Writes a Bayesian Network in the referenced file using the DSL format.
@@ -100,8 +98,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   std::string
-  DSLWriter< GUM_SCALAR >::__variableBloc(const IBayesNet< GUM_SCALAR >& bn,
-                                          const DiscreteVariable&        var) {
+    DSLWriter< GUM_SCALAR >::__variableBloc(const IBayesNet< GUM_SCALAR >& bn,
+                                            const DiscreteVariable&        var) {
     NodeId             id;
     std::ostringstream oss;
 
@@ -166,4 +164,4 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS

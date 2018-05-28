@@ -26,8 +26,8 @@
 #include <agrum/graphs/undiGraph.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/undiGraph_inl.h>
-#endif  // GUM_NOINLINE
+#  include <agrum/graphs/undiGraph_inl.h>
+#endif   // GUM_NOINLINE
 #include "graphElements.h"
 #include <cstdio>
 #include <iostream>
@@ -37,15 +37,13 @@ namespace gum {
   UndiGraph::UndiGraph(Size nodes_size,
                        bool nodes_resize_policy,
                        Size edges_size,
-                       bool edges_resize_policy)
-      : NodeGraphPart(nodes_size, nodes_resize_policy)
-      , EdgeGraphPart(edges_size, edges_resize_policy) {
+                       bool edges_resize_policy) :
+      NodeGraphPart(nodes_size, nodes_resize_policy),
+      EdgeGraphPart(edges_size, edges_resize_policy) {
     GUM_CONSTRUCTOR(UndiGraph);
   }
 
-  UndiGraph::UndiGraph(const UndiGraph& g)
-      : NodeGraphPart(g)
-      , EdgeGraphPart(g) {
+  UndiGraph::UndiGraph(const UndiGraph& g) : NodeGraphPart(g), EdgeGraphPart(g) {
     GUM_CONS_CPY(UndiGraph);
   }
 
@@ -53,9 +51,9 @@ namespace gum {
 
   bool UndiGraph::hasUndirectedCycle() const {
     List< std::pair< NodeId, NodeId > > open_nodes;
-    NodeProperty< bool > examined_nodes = nodesProperty(false);
-    std::pair< NodeId, NodeId > thePair;
-    NodeId current, from_current;
+    NodeProperty< bool >                examined_nodes = nodesProperty(false);
+    std::pair< NodeId, NodeId >         thePair;
+    NodeId                              current, from_current;
 
     for (const auto node : nodes()) {
       // check if the node has already been examined (if this is not the case,

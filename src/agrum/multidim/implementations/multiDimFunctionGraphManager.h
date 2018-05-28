@@ -26,12 +26,12 @@
  *
  */
 #ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_MANAGER_H
-#define GUM_MULTI_DIM_FUNCTION_GRAPH_MANAGER_H
+#  define GUM_MULTI_DIM_FUNCTION_GRAPH_MANAGER_H
 
-#include <agrum/agrum.h>
-#include <agrum/graphs/parts/nodeGraphPart.h>
-#include <agrum/multidim/implementations/multiDimFunctionGraph.h>
-#include <agrum/multidim/utils/FunctionGraphUtilities/internalNode.h>
+#  include <agrum/agrum.h>
+#  include <agrum/graphs/parts/nodeGraphPart.h>
+#  include <agrum/multidim/implementations/multiDimFunctionGraph.h>
+#  include <agrum/multidim/utils/FunctionGraphUtilities/internalNode.h>
 
 namespace gum {
 
@@ -84,7 +84,7 @@ namespace gum {
      * See class description for more info.
      */
     friend MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >*
-    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::manager();
+      MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::manager();
 
     /**
      * @brief Default constructor.
@@ -331,12 +331,11 @@ namespace gum {
    */
   template < typename GUM_SCALAR, template < typename > class TerminalNodePolicy >
   class MultiDimFunctionGraphTreeManager
-    : public MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy > {
-
+      : public MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy > {
     /// This friend methods from is the only way to get an instance of a
     /// manager.
     friend MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >*
-    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::manager();
+      MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::manager();
 
     // ========================================================================
     /// @name Constructor and destructor
@@ -386,12 +385,11 @@ namespace gum {
    */
   template < typename GUM_SCALAR, template < typename > class TerminalNodePolicy >
   class MultiDimFunctionGraphROManager
-    : public MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy > {
-
+      : public MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy > {
     /// This friend methods from is the only way to get an instance of a
     /// manager.
     friend MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >*
-    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::manager();
+      MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::manager();
 
     // ========================================================================
     /// @name Constructor and destructor
@@ -416,10 +414,10 @@ namespace gum {
     /// @}
   };
 
-}  // namespace gum
+}   // namespace gum
 
 // ============================================================================
-#include <agrum/multidim/implementations/multiDimFunctionGraphManager_tpl.h>
+#  include <agrum/multidim/implementations/multiDimFunctionGraphManager_tpl.h>
 // ============================================================================
-#endif  // GUM_MULTI_DIM_FUNCTION_GRAPH_MANAGER_H
+#endif   // GUM_MULTI_DIM_FUNCTION_GRAPH_MANAGER_H
 // ============================================================================

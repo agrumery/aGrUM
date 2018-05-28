@@ -249,7 +249,7 @@ namespace gum_tests {
       for (int i = 0; i < 6; i++)
         list.insert(i);
 
-      auto iter = list.beginSafe();  // safe iterator needed here
+      auto iter = list.beginSafe();   // safe iterator needed here
 
       list.erase(iter);
 
@@ -265,31 +265,31 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(list.size(), (gum::Size)4);
 
-      iter = list.endSafe();  // safe iterator needed here
+      iter = list.endSafe();   // safe iterator needed here
 
       list.erase(iter);
 
       TS_ASSERT_EQUALS(list.size(), (gum::Size)4);
 
-      iter = list.rendSafe();  // safe iterator needed here
+      iter = list.rendSafe();   // safe iterator needed here
 
       list.erase(iter);
 
       TS_ASSERT_EQUALS(list.size(), (gum::Size)4);
 
-      iter = list.rbeginSafe();  // safe iterator needed here
+      iter = list.rbeginSafe();   // safe iterator needed here
 
       list.erase(iter);
 
       TS_ASSERT_EQUALS(list.size(), (gum::Size)3);
 
-      iter = list.beginSafe();  // safe iterator needed here
+      iter = list.beginSafe();   // safe iterator needed here
 
       list.erase(++iter);
 
       TS_ASSERT_EQUALS(list.size(), (gum::Size)2);
 
-      iter = list.rbeginSafe();  // safe iterator needed here
+      iter = list.rbeginSafe();   // safe iterator needed here
 
       list.erase(--iter);
 
@@ -298,27 +298,27 @@ namespace gum_tests {
 
     void testIteratorStep() {
       gum::List< int > list{1, 2, 3, 4, 5, 6};
-      auto             iter = list.beginSafe();  // safe iterator needed here
+      auto             iter = list.beginSafe();   // safe iterator needed here
       list.erase(iter);
       TS_ASSERT_EQUALS(list.size(), (gum::Size)5);
 
-      iter = list.rbeginSafe();  // safe iterator needed here
+      iter = list.rbeginSafe();   // safe iterator needed here
       list.erase(iter);
       TS_ASSERT_EQUALS(list.size(), (gum::Size)4);
 
-      auto iter2 = list.cbeginSafe();  // safe iterator needed here
+      auto iter2 = list.cbeginSafe();   // safe iterator needed here
       list.erase(iter2);
       TS_ASSERT_EQUALS(list.size(), (gum::Size)3);
 
-      iter2 = list.crbeginSafe();  // safe iterator needed here
+      iter2 = list.crbeginSafe();   // safe iterator needed here
       list.erase(iter2);
       TS_ASSERT_EQUALS(list.size(), (gum::Size)2);
 
-      iter2 = list.beginSafe();  // safe iterator needed here
+      iter2 = list.beginSafe();   // safe iterator needed here
       list.erase(iter2);
       TS_ASSERT_EQUALS(list.size(), (gum::Size)1);
 
-      iter2 = list.crbeginSafe();  // safe iterator needed here
+      iter2 = list.crbeginSafe();   // safe iterator needed here
       list.erase(iter2);
       TS_ASSERT_EQUALS(list.size(), (gum::Size)0);
     }
@@ -436,31 +436,27 @@ namespace gum_tests {
       TS_ASSERT(MyAllocCount::hasMeroryLeak() == false);
 
       gum::List< int, MyAlloc< int > > xlist{1, 2, 3, 4, 5, 6, 7, 8};
-      gum::ListIterator< int >      iter = xlist.begin();
-      gum::ListIterator< int >      iter1(xlist);
-      gum::ListConstIterator< int > iter2(xlist);
-      gum::ListIterator< int >      iter3(xlist);
-      gum::ListConstIterator< int > iter4(xlist);
+      gum::ListIterator< int >         iter = xlist.begin();
+      gum::ListIterator< int >         iter1(xlist);
+      gum::ListConstIterator< int >    iter2(xlist);
+      gum::ListIterator< int >         iter3(xlist);
+      gum::ListConstIterator< int >    iter4(xlist);
 
       gum::Size i;
 
-      for (i = 0; iter1 != xlist.end(); ++iter1, ++i) {
-      }
+      for (i = 0; iter1 != xlist.end(); ++iter1, ++i) {}
 
       TS_ASSERT_EQUALS(i, xlist.size());
 
-      for (i = 0; iter2 != xlist.cend(); ++iter2, ++i) {
-      }
+      for (i = 0; iter2 != xlist.cend(); ++iter2, ++i) {}
 
       TS_ASSERT_EQUALS(i, xlist.size());
 
-      for (i = 0; iter3 != xlist.end(); ++iter3, ++i) {
-      }
+      for (i = 0; iter3 != xlist.end(); ++iter3, ++i) {}
 
       TS_ASSERT_EQUALS(i, xlist.size());
 
-      for (i = 0; iter4 != xlist.cend(); ++iter4, ++i) {
-      }
+      for (i = 0; iter4 != xlist.cend(); ++iter4, ++i) {}
 
       TS_ASSERT_EQUALS(i, xlist.size());
     }
@@ -486,4 +482,4 @@ namespace gum_tests {
       }
     }
   };
-}
+}   // namespace gum_tests

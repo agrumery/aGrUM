@@ -25,8 +25,8 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <cmath>
-#include <sstream>
+#  include <cmath>
+#  include <sstream>
 
 namespace gum {
 
@@ -36,13 +36,13 @@ namespace gum {
     template < typename IdSetAlloc, typename CountAlloc >
     template < typename RowFilter >
     INLINE ScoreBD< IdSetAlloc, CountAlloc >::ScoreBD(
-      const RowFilter&           filter,
-      const std::vector< Size >& var_modalities,
+      const RowFilter&                   filter,
+      const std::vector< Size >&         var_modalities,
       Apriori< IdSetAlloc, CountAlloc >& apriori,
-      Size min_range,
-      Size max_range)
-        : Score< IdSetAlloc, CountAlloc >(
-            filter, var_modalities, apriori, min_range, max_range) {
+      Size                               min_range,
+      Size                               max_range) :
+        Score< IdSetAlloc, CountAlloc >(
+          filter, var_modalities, apriori, min_range, max_range) {
       // for debugging purposes
       GUM_CONSTRUCTOR(ScoreBD);
     }
@@ -50,10 +50,10 @@ namespace gum {
     /// copy constructor
     template < typename IdSetAlloc, typename CountAlloc >
     ScoreBD< IdSetAlloc, CountAlloc >::ScoreBD(
-      const ScoreBD< IdSetAlloc, CountAlloc >& from)
-        : Score< IdSetAlloc, CountAlloc >(from)
-        , __gammalog2(from.__gammalog2)
-        , __internal_apriori(from.__internal_apriori) {
+      const ScoreBD< IdSetAlloc, CountAlloc >& from) :
+        Score< IdSetAlloc, CountAlloc >(from),
+        __gammalog2(from.__gammalog2),
+        __internal_apriori(from.__internal_apriori) {
       // for debugging purposes
       GUM_CONS_CPY(ScoreBD);
     }
@@ -61,10 +61,10 @@ namespace gum {
     /// move constructor
     template < typename IdSetAlloc, typename CountAlloc >
     ScoreBD< IdSetAlloc, CountAlloc >::ScoreBD(
-      ScoreBD< IdSetAlloc, CountAlloc >&& from)
-        : Score< IdSetAlloc, CountAlloc >(std::move(from))
-        , __gammalog2(std::move(from.__gammalog2))
-        , __internal_apriori(std::move(from.__internal_apriori)) {
+      ScoreBD< IdSetAlloc, CountAlloc >&& from) :
+        Score< IdSetAlloc, CountAlloc >(std::move(from)),
+        __gammalog2(std::move(from.__gammalog2)),
+        __internal_apriori(std::move(from.__internal_apriori)) {
       // for debugging purposes
       GUM_CONS_MOV(ScoreBD);
     }
@@ -72,7 +72,7 @@ namespace gum {
     /// virtual copy factory
     template < typename IdSetAlloc, typename CountAlloc >
     ScoreBD< IdSetAlloc, CountAlloc >*
-    ScoreBD< IdSetAlloc, CountAlloc >::copyFactory() const {
+      ScoreBD< IdSetAlloc, CountAlloc >::copyFactory() const {
       return new ScoreBD< IdSetAlloc, CountAlloc >(*this);
     }
 
@@ -190,9 +190,7 @@ namespace gum {
       }
 
       // shall we put the score into the cache?
-      if (this->_isUsingCache()) {
-        this->_insertIntoCache(nodeset_index, score);
-      }
+      if (this->_isUsingCache()) { this->_insertIntoCache(nodeset_index, score); }
 
       return score;
     }

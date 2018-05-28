@@ -35,7 +35,8 @@
 namespace gum {
 
   /**
-   * @class EssentialGraph essentialGraph.h <agrum/BN/algorithms/essentialGraph.h>
+   * @class EssentialGraph
+   * @headerfile essentialGraph.h <agrum/BN/algorithms/essentialGraph.h>
    * @brief Class building the essential graph from a BN.
    * @ingroup bn_group
    *
@@ -103,10 +104,10 @@ namespace gum {
     const DAGmodel* __dagmodel;
     MixedGraph      __mg;
   };
-}  // namespace gum
+}   // namespace gum
 
 #ifndef GUM_NO_INLINE
-#include <agrum/BN/algorithms/essentialGraph_inl.h>
-#endif  // GUM_NOINLINE
+#  include <agrum/BN/algorithms/essentialGraph_inl.h>
+#endif   // GUM_NOINLINE
 
-#endif  // GUM_ESSENTIALGRAPH_H
+#endif   // GUM_ESSENTIALGRAPH_H

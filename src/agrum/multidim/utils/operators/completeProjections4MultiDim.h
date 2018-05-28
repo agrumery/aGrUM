@@ -87,8 +87,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   GUM_SCALAR
-  projectMaxMultiDimArray(const MultiDimImplementation< GUM_SCALAR >* table,
-                          Instantiation* instantiation = 0);
+    projectMaxMultiDimArray(const MultiDimImplementation< GUM_SCALAR >* table,
+                            Instantiation* instantiation = 0);
 
   /**
    * @brief A specialized function for projecting a multiDimArray using a Max
@@ -113,8 +113,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   GUM_SCALAR*
-  projectMaxMultiDimArray4Pointers(const MultiDimArray< GUM_SCALAR* >* table,
-                                   Instantiation* instantiation = 0);
+    projectMaxMultiDimArray4Pointers(const MultiDimArray< GUM_SCALAR* >* table,
+                                     Instantiation* instantiation = 0);
 
   /**
    * @brief A specialized function for projecting a multiDimArray using a Max
@@ -196,8 +196,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   GUM_SCALAR
-  projectMinMultiDimArray(const MultiDimImplementation< GUM_SCALAR >* table,
-                          Instantiation* instantiation = 0);
+    projectMinMultiDimArray(const MultiDimImplementation< GUM_SCALAR >* table,
+                            Instantiation* instantiation = 0);
 
   /**
    * @brief A specialized function for projecting a multiDimArray using a Min
@@ -222,8 +222,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   GUM_SCALAR*
-  projectMinMultiDimArray4Pointers(const MultiDimArray< GUM_SCALAR* >* table,
-                                   Instantiation* instantiation = 0);
+    projectMinMultiDimArray4Pointers(const MultiDimArray< GUM_SCALAR* >* table,
+                                     Instantiation* instantiation = 0);
 
   /**
    * @brief A specialized function for projecting a multiDimArray using a Min
@@ -307,8 +307,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   GUM_SCALAR
-  projectSumMultiDimArray(const MultiDimImplementation< GUM_SCALAR >* table,
-                          Instantiation* instantiation = 0);
+    projectSumMultiDimArray(const MultiDimImplementation< GUM_SCALAR >* table,
+                            Instantiation* instantiation = 0);
 
   /**
    * @brief a specialized function for projecting a multiDimArray using a Sum
@@ -334,8 +334,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   GUM_SCALAR*
-  projectSumMultiDimArray4Pointers(const MultiDimArray< GUM_SCALAR* >* table,
-                                   Instantiation* instantiation = 0);
+    projectSumMultiDimArray4Pointers(const MultiDimArray< GUM_SCALAR* >* table,
+                                     Instantiation* instantiation = 0);
 
   /**
    * @brief a specialized function for projecting a multiDimArray using a Sum
@@ -418,8 +418,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   GUM_SCALAR
-  projectProductMultiDimArray(const MultiDimImplementation< GUM_SCALAR >* table,
-                              Instantiation* instantiation = 0);
+    projectProductMultiDimArray(const MultiDimImplementation< GUM_SCALAR >* table,
+                                Instantiation* instantiation = 0);
 
   /**
    * @brief a function for projecting a multiDimArray using a Product operator
@@ -444,8 +444,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   GUM_SCALAR*
-  projectProductMultiDimArray4Pointers(const MultiDimArray< GUM_SCALAR* >* table,
-                                       Instantiation* instantiation = 0);
+    projectProductMultiDimArray4Pointers(const MultiDimArray< GUM_SCALAR* >* table,
+                                         Instantiation* instantiation = 0);
 
   /**
    * @brief a function for projecting a multiDimArray using a Product operator

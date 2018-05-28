@@ -42,7 +42,8 @@
 namespace gum {
 
   /**
-   * @class IMDDI imddi.h <agrum/FMDP/planning/FunctionGraph/imddi.h>
+   * @class IMDDI
+   * @headerfile imddi.h <agrum/FMDP/planning/FunctionGraph/imddi.h>
    * @brief
    * @ingroup fmdp_group
    *
@@ -52,7 +53,6 @@ namespace gum {
 
   template < TESTNAME AttributeSelection, bool isScalar = false >
   class IMDDI : public IncrementalGraphLearner< AttributeSelection, isScalar > {
-
     public:
     // ###################################################################
     /// @name Constructor & destructor.
@@ -105,8 +105,8 @@ namespace gum {
 
     protected:
     NodeId _insertLeafNode(NodeDatabase< AttributeSelection, isScalar >* nDB,
-                           const DiscreteVariable*    boundVar,
-                           Set< const Observation* >* sonsMap);
+                           const DiscreteVariable*                       boundVar,
+                           Set< const Observation* >*                    sonsMap);
 
     void _chgNodeBoundVar(NodeId chgedNodeId, const DiscreteVariable* desiredVar);
 
@@ -136,7 +136,7 @@ namespace gum {
     /// If so, the node is updated
     // ==========================================================================
     void
-    __updateNodeSet(Set< NodeId >&, const DiscreteVariable*, VariableSelector&);
+      __updateNodeSet(Set< NodeId >&, const DiscreteVariable*, VariableSelector&);
 
 
     public:
@@ -184,4 +184,4 @@ namespace gum {
 
 #include <agrum/FMDP/learning/datastructure/imddi_tpl.h>
 
-#endif  // GUM_IMDDI_H
+#endif   // GUM_IMDDI_H

@@ -41,7 +41,8 @@ namespace gum {
   namespace credal {
 
     /**
-     * @class VarMod2BNsMap varMod2BNsMap.h <agrum/CN/varMod2BNsMap.h>
+     * @class VarMod2BNsMap
+     * @headerfile varMod2BNsMap.h <agrum/CN/varMod2BNsMap.h>
      * @brief Class used to store optimum IBayesNet during some inference
      * algorithms.
      * @ingroup cn_group
@@ -173,28 +174,28 @@ namespace gum {
       const std::vector< dBN* > getBNOptsFromKey(const std::vector< Size >& key);
 
       /**
-      * Get optimum IBayesNet (s) with structure of the given variable, modality
-      * for
-      * min or max.
-      * @param key The constant reference to the variable, modality, min or max.
-      * @return The vector of not yet constant pointers to the nets.
-      */
+       * Get optimum IBayesNet (s) with structure of the given variable, modality
+       * for
+       * min or max.
+       * @param key The constant reference to the variable, modality, min or max.
+       * @return The vector of not yet constant pointers to the nets.
+       */
       std::vector< std::vector< std::vector< std::vector< bool > > > >
-      getFullBNOptsFromKey(const std::vector< Size >& key);
+        getFullBNOptsFromKey(const std::vector< Size >& key);
 
       /** Get the number of IBayesNet stored. */
       Size getEntrySize() const;
 
       /// @}
 
-    };  // end of OptBN
+    };   // end of OptBN
 
 
     extern template class VarMod2BNsMap< float >;
     extern template class VarMod2BNsMap< double >;
 
-  }  // credal namespace
-}  // gum namespace
+  }   // namespace credal
+}   // namespace gum
 
 #include <agrum/CN/varMod2BNsMap_tpl.h>
 

@@ -1,28 +1,28 @@
 /***************************************************************************
-*   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 /**
-* @file
-* @brief Template implementation of FMDP/FMDP.h classes.
-*
-* @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
-*/
+ * @file
+ * @brief Template implementation of FMDP/FMDP.h classes.
+ *
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
+ */
 
 //======================================================================
 #include <cstdio>
@@ -63,7 +63,6 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   FMDP< GUM_SCALAR >::~FMDP() {
-
     // Action Transition Graph deletion
     for (auto iterA = __actionTransitionTable.beginSafe();
          iterA != __actionTransitionTable.endSafe();
@@ -120,7 +119,6 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   INLINE void FMDP< GUM_SCALAR >::addVariable(const DiscreteVariable* var) {
-
     if (__varSeq.exists(var))
       GUM_ERROR(DuplicateElement,
                 " Variable " << var->name()
@@ -151,7 +149,6 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void FMDP< GUM_SCALAR >::addAction(Idx                actionId,
                                             const std::string& action) {
-
     if (actionId == 0) GUM_ERROR(DuplicateElement, " Action Id 0 is reserved.");
 
     for (BijectionIteratorSafe< Idx, const std::string* > actIter =
@@ -198,7 +195,6 @@ namespace gum {
     Idx                                         actionId,
     const DiscreteVariable*                     var,
     const MultiDimImplementation< GUM_SCALAR >* transition) {
-
     if (!__varSeq.exists(var))
       GUM_ERROR(NotFound,
                 " Variable " << var->name() << " has not been declared before.");
@@ -211,8 +207,7 @@ namespace gum {
     if (__actionTransitionTable[actionId]->exists(var))
       GUM_ERROR(DuplicateElement,
                 " Variable " << var->name()
-                             << " already has a transition table in "
-                             << actionId
+                             << " already has a transition table in " << actionId
                              << " table.");
 
     __actionTransitionTable[actionId]->insert(var, transition);
@@ -225,8 +220,7 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   INLINE const MultiDimImplementation< GUM_SCALAR >*
-  FMDP< GUM_SCALAR >::transition(Idx actionId, const DiscreteVariable* v) const {
-
+               FMDP< GUM_SCALAR >::transition(Idx actionId, const DiscreteVariable* v) const {
     if (!__actionTransitionTable.exists(actionId))
       GUM_ERROR(NotFound,
                 " Action " << actionName(actionId)
@@ -257,7 +251,6 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void FMDP< GUM_SCALAR >::addCostForAction(
     Idx actionId, const MultiDimImplementation< GUM_SCALAR >* cost) {
-
     if (!__actionCostTable.exists(actionId))
       GUM_ERROR(NotFound,
                 " Action " << actionName(actionId)
@@ -277,8 +270,7 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   INLINE const MultiDimImplementation< GUM_SCALAR >*
-  FMDP< GUM_SCALAR >::cost(Idx actionId) const {
-
+               FMDP< GUM_SCALAR >::cost(Idx actionId) const {
     if (!__actionCostTable.exists(actionId))
       GUM_ERROR(NotFound,
                 " Action " << actionName(actionId)
@@ -304,7 +296,6 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void FMDP< GUM_SCALAR >::addRewardForAction(
     Idx actionId, const MultiDimImplementation< GUM_SCALAR >* reward) {
-
     if (!__actionRewardTable.exists(actionId))
       GUM_ERROR(NotFound,
                 " Action " << actionName(actionId)
@@ -325,8 +316,7 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   INLINE const MultiDimImplementation< GUM_SCALAR >*
-  FMDP< GUM_SCALAR >::reward(Idx actionId) const {
-
+               FMDP< GUM_SCALAR >::reward(Idx actionId) const {
     if (!__actionRewardTable.exists(actionId))
       GUM_ERROR(NotFound,
                 " Action " << actionName(actionId)
@@ -350,7 +340,6 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   INLINE const std::string& FMDP< GUM_SCALAR >::actionName(Idx actionId) const {
-
     if (!__actionMap.existsFirst(actionId))
       GUM_ERROR(NotFound, "No action with " << actionId << " as identifiant.");
 
@@ -362,14 +351,11 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   INLINE Idx FMDP< GUM_SCALAR >::actionId(const std::string& action) const {
-
     for (BijectionIterator< Idx, const std::string* > actIter =
            __actionMap.begin();
          actIter != __actionMap.end();
          ++actIter)
-      if (*(actIter.second()) == action) {
-        return actIter.first();
-      }
+      if (*(actIter.second()) == action) { return actIter.first(); }
 
     GUM_ERROR(NotFound, " Action " << action << " has not been declared before.");
   }
@@ -414,4 +400,4 @@ namespace gum {
     if (this->reward()) s += this->reward()->realSize();
     return s;
   }
-}
+}   // namespace gum

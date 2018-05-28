@@ -87,7 +87,7 @@ namespace gum {
 
 
       /// returns the score corresponding to a given nodeset
-      double score(Idx nodeset_index );
+      double score(Idx nodeset_index);
 
       /// sets the range of records taken into account by the counter
       /** @param min_range he number of the first record to be taken into

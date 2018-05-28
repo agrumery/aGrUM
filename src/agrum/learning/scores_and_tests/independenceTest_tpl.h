@@ -25,7 +25,7 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <limits>
+#  include <limits>
 
 namespace gum {
 
@@ -35,8 +35,8 @@ namespace gum {
     template < typename IdSetAlloc, typename CountAlloc >
     template < typename RowFilter >
     INLINE IndependenceTest< IdSetAlloc, CountAlloc >::IndependenceTest(
-      const RowFilter& filter, const std::vector< Size >& var_modalities)
-        : Counter< IdSetAlloc, CountAlloc >(filter, var_modalities) {
+      const RowFilter& filter, const std::vector< Size >& var_modalities) :
+        Counter< IdSetAlloc, CountAlloc >(filter, var_modalities) {
       GUM_CONSTRUCTOR(IndependenceTest);
     }
 
@@ -57,16 +57,15 @@ namespace gum {
           __is_cached_score.push_back(true);
           __cached_score.push_back(score);
           return Counter< IdSetAlloc, CountAlloc >::addEmptyNodeSet();
-        } catch (const NotFound&) {
-        }
+        } catch (const NotFound&) {}
       }
 
       // check if the number of parameters is not too high compared to the
       // size of the database (basically, if there are fewer than an average
       // of 5 observations per parameter in the database, the independence
       // test will be incorrect)
-      if (this->_modalities[var1] * this->_modalities[var2] * 5 >
-          this->_record_counter.DBParsedSize()) {
+      if (this->_modalities[var1] * this->_modalities[var2] * 5
+          > this->_record_counter.DBParsedSize()) {
         __is_cached_score.push_back(true);
         __cached_score.push_back(std::numeric_limits< double >::max());
         return Counter< IdSetAlloc, CountAlloc >::addEmptyNodeSet();
@@ -99,8 +98,7 @@ namespace gum {
           __is_cached_score.push_back(true);
           __cached_score.push_back(score);
           return Counter< IdSetAlloc, CountAlloc >::addEmptyNodeSet();
-        } catch (const NotFound&) {
-        }
+        } catch (const NotFound&) {}
       }
 
       // check if the number of parameters is not too high compared to the
@@ -132,7 +130,7 @@ namespace gum {
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE Idx IndependenceTest< IdSetAlloc, CountAlloc >::addNodeSet(
       const std::pair< Idx, Idx >& vars,
-      const std::vector< Idx >& conditioning_ids) {
+      const std::vector< Idx >&    conditioning_ids) {
       return addNodeSet(vars.first, vars.second, conditioning_ids);
     }
 
@@ -146,8 +144,7 @@ namespace gum {
           __is_cached_score.push_back(true);
           __cached_score.push_back(score);
           return Counter< IdSetAlloc, CountAlloc >::addEmptyNodeSet();
-        } catch (const NotFound&) {
-        }
+        } catch (const NotFound&) {}
       }
 
       // check if the number of parameters is not too high compared to the
@@ -193,18 +190,16 @@ namespace gum {
 
     /// indicates whether a score belongs to the cache
     template < typename IdSetAlloc, typename CountAlloc >
-    INLINE bool
-    IndependenceTest< IdSetAlloc, CountAlloc >::_isInCache(Idx nodeset_index) const
-      noexcept {
-      return ((nodeset_index < __is_cached_score.size()) &&
-              __is_cached_score[nodeset_index]);
+    INLINE bool IndependenceTest< IdSetAlloc, CountAlloc >::_isInCache(
+      Idx nodeset_index) const noexcept {
+      return ((nodeset_index < __is_cached_score.size())
+              && __is_cached_score[nodeset_index]);
     }
 
     /// inserts a new score into the cache
     template < typename IdSetAlloc, typename CountAlloc >
-    INLINE void
-    IndependenceTest< IdSetAlloc, CountAlloc >::_insertIntoCache(Idx nodeset_index,
-                                                                 double score) {
+    INLINE void IndependenceTest< IdSetAlloc, CountAlloc >::_insertIntoCache(
+      Idx nodeset_index, double score) {
       const std::vector< Idx, IdSetAlloc >& all_nodes =
         _getAllNodes(nodeset_index);
       std::vector< Idx, IdSetAlloc > conditioning_nodes =
@@ -217,14 +212,12 @@ namespace gum {
                          all_nodes[all_nodes.size() - 2],
                          conditioning_nodes,
                          score);
-        } catch (const gum::DuplicateElement&) {
-        }
+        } catch (const gum::DuplicateElement&) {}
       } else {
         try {
           __cache.insert(
             all_nodes[0], all_nodes[1], __empty_conditioning_set, score);
-        } catch (const gum::DuplicateElement&) {
-        }
+        } catch (const gum::DuplicateElement&) {}
       }
     }
 
@@ -245,7 +238,7 @@ namespace gum {
     /// turn on/off the use of a cache of the previously computed score
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE void
-    IndependenceTest< IdSetAlloc, CountAlloc >::useCache(bool on_off) noexcept {
+      IndependenceTest< IdSetAlloc, CountAlloc >::useCache(bool on_off) noexcept {
       if (!on_off) clear();
       __use_cache = on_off;
     }

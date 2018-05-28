@@ -36,7 +36,8 @@
 namespace gum {
 
   /**
-   * @class Link link.h <agrum/multidim/FunctionGraphUtilities/link.h>
+   * @class Link
+   * @headerfile link.h <agrum/multidim/FunctionGraphUtilities/link.h>
    * @ingroup multidim_group
    *
    * @brief Link of a chain list allocated using the SmallObjectAllocator
@@ -45,7 +46,6 @@ namespace gum {
    */
   template < typename T >
   class Link {
-
     public:
     // ============================================================================
     /// @name Constructors and Destructors
@@ -119,7 +119,8 @@ namespace gum {
   };
 
   /**
-   * @class LinkedList link.h <agrum/multidim/FunctionGraphUtilities/link.h>
+   * @class LinkedList
+   * @headerfile link.h <agrum/multidim/FunctionGraphUtilities/link.h>
    * @ingroup multidim_group
    *
    * @brief Chain list allocated using the SmallObjectAllocator
@@ -128,7 +129,6 @@ namespace gum {
    */
   template < typename T >
   class LinkedList {
-
     public:
     // ============================================================================
     /// @name Constructors and Destructors
@@ -195,7 +195,7 @@ namespace gum {
 
   extern template class Link< Idx >;
 
-}  // End of namespace gum
+}   // End of namespace gum
 
 #include <agrum/multidim/utils/FunctionGraphUtilities/link_tpl.h>
 

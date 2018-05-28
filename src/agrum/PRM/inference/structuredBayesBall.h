@@ -35,7 +35,7 @@
 #include <agrum/PRM/inference/PRMInference.h>
 
 #ifndef GUM_STRUCTURED_BB_H
-#define GUM_STRUCTURED_BB_H
+#  define GUM_STRUCTURED_BB_H
 namespace gum {
   namespace prm {
 
@@ -72,11 +72,11 @@ namespace gum {
 
       /// Returns the set of requisite nodes w.r.t. d-separation for i.
       const Set< NodeId >&
-      requisiteNodes(const PRMInstance< GUM_SCALAR >* i) const;
+        requisiteNodes(const PRMInstance< GUM_SCALAR >* i) const;
 
       /// Returns the set of requisite nodes w.r.t. d-separation for i.
       const Set< NodeId >&
-      requisiteNodes(const PRMInstance< GUM_SCALAR >& i) const;
+        requisiteNodes(const PRMInstance< GUM_SCALAR >& i) const;
 
       /// Returns the number of occurrence of the given key, which is the number
       /// of PRMInstance<GUM_SCALAR> sharing the same set of requisite nodes.
@@ -119,8 +119,9 @@ namespace gum {
       /// Code alias
       typedef HashTable< const PRMInstance< GUM_SCALAR >*, MarkMap* > InstanceMap;
       /// Code alias
-      std::pair< bool, bool >&
-      __getMark(InstanceMap& marks, const PRMInstance< GUM_SCALAR >* i, NodeId n);
+      std::pair< bool, bool >& __getMark(InstanceMap&                     marks,
+                                         const PRMInstance< GUM_SCALAR >* i,
+                                         NodeId                           n);
       /// Code alias
       const PRMSlotChain< GUM_SCALAR >& __getSC(const PRMInstance< GUM_SCALAR >* i,
                                                 NodeId n);
@@ -172,6 +173,6 @@ namespace gum {
   } /* namespace prm */
 } /* namespace gum */
 
-#include <agrum/PRM/inference/structuredBayesBall_tpl.h>
+#  include <agrum/PRM/inference/structuredBayesBall_tpl.h>
 
 #endif /* GUM_STRUCTURED_BB_H */

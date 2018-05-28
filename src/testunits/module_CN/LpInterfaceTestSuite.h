@@ -21,7 +21,7 @@
 #include <iostream>
 #include <string>
 
-#include <cstdlib>  // rand
+#include <cstdlib>   // rand
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
@@ -43,11 +43,11 @@ namespace gum_tests {
     void testLpCreation() {
       gum::credal::lp::LpInterface< double > pl;
 
-      auto A = pl.addCols(3);  // 3 variables for the lp
+      auto A = pl.addCols(3);   // 3 variables for the lp
       pl.addRow(0.1 <= A[0] <= 0.7);
       pl.addRow(0.1 <= A[1] <= 0.5);
       pl.addRow(0.1 <= A[2] <= 0.6);
     }
-  };  // end of class LpInterfacetTestSuite
+  };   // end of class LpInterfacetTestSuite
 
-}  // end of namespace gum_tests
+}   // end of namespace gum_tests

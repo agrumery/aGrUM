@@ -34,14 +34,14 @@ namespace gum {
     }
 
     /// copy constructor
-    INLINE Cache4PartEntropy::Cache4PartEntropy(const Cache4PartEntropy& from)
-        : __scores(from.__scores) {
+    INLINE Cache4PartEntropy::Cache4PartEntropy(const Cache4PartEntropy& from) :
+        __scores(from.__scores) {
       GUM_CONS_CPY(Cache4PartEntropy);
     }
 
     /// move constructor
-    INLINE Cache4PartEntropy::Cache4PartEntropy(Cache4PartEntropy&& from)
-        : __scores(std::move(from.__scores)) {
+    INLINE Cache4PartEntropy::Cache4PartEntropy(Cache4PartEntropy&& from) :
+        __scores(std::move(from.__scores)) {
       GUM_CONS_MOV(Cache4PartEntropy);
     }
 
@@ -52,19 +52,15 @@ namespace gum {
 
     /// copy operator
     INLINE Cache4PartEntropy& Cache4PartEntropy::
-    operator=(const Cache4PartEntropy& from) {
-      if (&from != this) {
-        __scores = from.__scores;
-      }
+                              operator=(const Cache4PartEntropy& from) {
+      if (&from != this) { __scores = from.__scores; }
       return *this;
     }
 
     /// move operator
     INLINE Cache4PartEntropy& Cache4PartEntropy::
-    operator=(Cache4PartEntropy&& from) {
-      if (&from != this) {
-        __scores = std::move(from.__scores);
-      }
+                              operator=(Cache4PartEntropy&& from) {
+      if (&from != this) { __scores = std::move(from.__scores); }
       return *this;
     }
 

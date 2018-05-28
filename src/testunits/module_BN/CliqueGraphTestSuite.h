@@ -1,23 +1,23 @@
 
 /***************************************************************************
-*   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 
 #include <iostream>
@@ -240,9 +240,7 @@ namespace gum_tests {
 
       try {
         g1.hasRunningIntersection();
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e);
-      }
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
 
       TS_ASSERT(g1.hasRunningIntersection());
 
@@ -544,8 +542,8 @@ namespace gum_tests {
       TS_ASSERT(!(firstClique != A && firstClique != B && firstClique != D));
       TS_ASSERT(!(secondClique != A && secondClique != B && secondClique != D));
       TS_ASSERT(!(thirdClique != A && thirdClique != B && thirdClique != D));
-      TS_ASSERT(firstClique != secondClique && firstClique != thirdClique &&
-                secondClique != thirdClique);
+      TS_ASSERT(firstClique != secondClique && firstClique != thirdClique
+                && secondClique != thirdClique);
     }
 
     void testSetClique_1() {
@@ -563,7 +561,6 @@ namespace gum_tests {
     }
 
     void testSetClique_2() {
-
       gum::CliqueGraph graph;
       fillG3(graph);
 
@@ -628,9 +625,7 @@ namespace gum_tests {
 
       try {
         vec = graph.undirectedPath(1, 4);
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e);
-      }
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
 
       TS_GUM_ASSERT_THROWS_NOTHING(vec = graph.undirectedPath(1, 4));
 
@@ -690,31 +685,31 @@ namespace gum_tests {
     void testRunningIntProp() {
       gum::CliqueGraph g;
 
-      gum::NodeSet n1;  // ABC
+      gum::NodeSet n1;   // ABC
       n1.insert((gum::NodeId)1);
       n1.insert((gum::NodeId)2);
       n1.insert((gum::NodeId)3);
       g.addNode((gum::NodeId)1, n1);
 
-      gum::NodeSet n2;  // BCD
+      gum::NodeSet n2;   // BCD
       n2.insert((gum::NodeId)2);
       n2.insert((gum::NodeId)3);
       n2.insert((gum::NodeId)4);
       g.addNode((gum::NodeId)2, n2);
 
-      gum::NodeSet n3;  // CDE
+      gum::NodeSet n3;   // CDE
       n3.insert((gum::NodeId)3);
       n3.insert((gum::NodeId)4);
       n3.insert((gum::NodeId)5);
       g.addNode((gum::NodeId)3, n3);
 
-      gum::NodeSet n4;  // ADE
+      gum::NodeSet n4;   // ADE
       n4.insert((gum::NodeId)4);
       n4.insert((gum::NodeId)5);
       n4.insert((gum::NodeId)1);
       g.addNode((gum::NodeId)4, n4);
 
-      gum::NodeSet n5;  // ABE
+      gum::NodeSet n5;   // ABE
       n5.insert((gum::NodeId)5);
       n5.insert((gum::NodeId)1);
       n5.insert((gum::NodeId)2);
@@ -729,4 +724,4 @@ namespace gum_tests {
       TS_ASSERT(g.hasRunningIntersection() == true);
     }
   };
-}
+}   // namespace gum_tests

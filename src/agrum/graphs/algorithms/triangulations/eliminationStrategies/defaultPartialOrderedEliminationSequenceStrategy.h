@@ -77,7 +77,7 @@ namespace gum {
    *
    */
   class DefaultPartialOrderedEliminationSequenceStrategy
-    : public PartialOrderedEliminationSequenceStrategy {
+      : public PartialOrderedEliminationSequenceStrategy {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -141,7 +141,7 @@ namespace gum {
      * @warning you must deallocate by yourself the object returned
      * @return an empty clone of the current object with the same type */
     virtual DefaultPartialOrderedEliminationSequenceStrategy*
-    newFactory() const final;
+      newFactory() const final;
 
     /// virtual copy constructor
     /** @warning The newly created elimination sequence strategy points toward
@@ -154,7 +154,7 @@ namespace gum {
      * created strategy is used for a triangulation but not both. This will
      * necessarily be OK in DefaultTriangulations. */
     virtual DefaultPartialOrderedEliminationSequenceStrategy*
-    copyFactory() const final;
+      copyFactory() const final;
 
     /// @}
 

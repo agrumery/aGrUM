@@ -26,8 +26,8 @@
 #include <agrum/graphs/mixedGraph.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/mixedGraph_inl.h>
-#endif  // GUM_NOINLINE
+#  include <agrum/graphs/mixedGraph_inl.h>
+#endif   // GUM_NOINLINE
 
 namespace gum {
 
@@ -36,21 +36,19 @@ namespace gum {
                          Size arcs_size,
                          bool arcs_resize_policy,
                          Size edges_size,
-                         bool edges_resize_policy)
-      :  // Note that we need to initialize the NodeGraphPart by ourselves
+                         bool edges_resize_policy) :
+      // Note that we need to initialize the NodeGraphPart by ourselves
       // because
       // it is a virtual inherited class (see C++ FAQ Lite #25.12 for details)
-      NodeGraphPart(nodes_size, nodes_resize_policy)
-      , UndiGraph(edges_size, edges_resize_policy)
-      , DiGraph(arcs_size, arcs_resize_policy) {
+      NodeGraphPart(nodes_size, nodes_resize_policy),
+      UndiGraph(edges_size, edges_resize_policy),
+      DiGraph(arcs_size, arcs_resize_policy) {
     // for debugging purposes
     GUM_CONSTRUCTOR(MixedGraph);
   }
 
-  MixedGraph::MixedGraph(const MixedGraph& g)
-      : NodeGraphPart(g)
-      , UndiGraph(g)
-      , DiGraph(g) {
+  MixedGraph::MixedGraph(const MixedGraph& g) :
+      NodeGraphPart(g), UndiGraph(g), DiGraph(g) {
     // for debugging purposes
     GUM_CONS_CPY(MixedGraph);
   }
@@ -70,7 +68,7 @@ namespace gum {
   }
 
   const std::vector< NodeId >
-  MixedGraph::mixedOrientedPath(const NodeId n1, const NodeId n2) const {
+    MixedGraph::mixedOrientedPath(const NodeId n1, const NodeId n2) const {
     // not recursive version => use a FIFO for simulating the recursion
     List< NodeId > nodeFIFO;
     nodeFIFO.pushBack(n2);
@@ -87,8 +85,8 @@ namespace gum {
 
       // check the neighbours
       for (const auto new_one : neighbours(current)) {
-        if (mark.exists(new_one))  // if the node has already been visited
-          continue;                // do not check it again
+        if (mark.exists(new_one))   // if the node has already been visited
+          continue;                 // do not check it again
 
         mark.insert(new_one, current);
 
@@ -108,8 +106,8 @@ namespace gum {
 
       // check the parents
       for (const auto new_one : parents(current)) {
-        if (mark.exists(new_one))  // if this node is already marked, do not
-          continue;                // check it again
+        if (mark.exists(new_one))   // if this node is already marked, do not
+          continue;                 // check it again
 
         mark.insert(new_one, current);
 
@@ -132,7 +130,7 @@ namespace gum {
   }
 
   const std::vector< NodeId >
-  MixedGraph::mixedUnorientedPath(const NodeId n1, const NodeId n2) const {
+    MixedGraph::mixedUnorientedPath(const NodeId n1, const NodeId n2) const {
     // not recursive version => use a FIFO for simulating the recursion
     List< NodeId > nodeFIFO;
     nodeFIFO.pushBack(n2);
@@ -149,8 +147,8 @@ namespace gum {
 
       // check the neighbours
       for (const auto new_one : neighbours(current)) {
-        if (mark.exists(new_one))  // if the node has already been visited
-          continue;                // do not check it again
+        if (mark.exists(new_one))   // if the node has already been visited
+          continue;                 // do not check it again
 
         mark.insert(new_one, current);
 
@@ -170,7 +168,7 @@ namespace gum {
 
       // check the parents
       for (const auto new_one : parents(current)) {
-        if (mark.exists(new_one))  // the node has already been visited
+        if (mark.exists(new_one))   // the node has already been visited
           continue;
 
         mark.insert(new_one, current);
@@ -191,7 +189,7 @@ namespace gum {
 
       // check the children
       for (const auto new_one : children(current)) {
-        if (mark.exists(new_one))  // the node has already been visited
+        if (mark.exists(new_one))   // the node has already been visited
           continue;
 
         mark.insert(new_one, current);

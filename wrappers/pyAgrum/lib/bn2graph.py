@@ -219,6 +219,12 @@ def BNinference2dot(bn, size="4",engine=None, evs={}, targets={}, format='png', 
   :param cmap: color map to show the vals
   :return: the desired representation of the inference
   """
+  if vals is None:
+    vals=dict()
+
+  if arcvals is None:
+    arcvals=dict()
+    
   if cmap is None:
     cmap=plt.get_cmap('summer')
 
@@ -241,37 +247,34 @@ def BNinference2dot(bn, size="4",engine=None, evs={}, targets={}, format='png', 
   for nid in bn.nodes():
     name = bn.variable(nid).name()
 
-    if vals is None or name not in vals or nid not in vals:
-      bgcol = "sandybrown" if name in evs or nid in evs else "#FFFFFF"
-      fgcol = "#000000"
-    else:
+    fgcol = "#000000"
+    bgcol = "#F8F8F8"
+    if name in evs or nid in evs:
+      bgcol = "sandybrown" 
+    elif  name in vals or nid in vals:
       bgcol = _proba2bgcolor(vals[name], cmap)
       fgcol = _proba2fgcolor(vals[name], cmap)
     colorattribute = 'fillcolor="{}", fontcolor="{}", color="#000000"'.format(bgcol, fgcol)
 
-    if len(targets) == 0 or name in targets or nid in targets:
+    if len(targets)==0 or name in targets or nid in targets:
       filename = temp_dir + name + "." + format
-      _saveFigProba(ie.posterior(name), filename, format=format)
-      fill = ", " + colorattribute
-      dotstr += ' "{0}" [shape=rectangle,image="{1}",label="" {2}];\n'.format(name, filename, fill)
+      _saveFigProba(ie.posterior(name), filename, format=format)      
+      dotstr += ' "{0}" [shape=rectangle,image="{1}",label="", {2}];\n'.format(name, filename, colorattribute)
     else:
       dotstr += ' "{0}" [{1}]'.format(name, colorattribute)
 
-  if arcvals is not None:
+  if len(arcvals)>0:
     minarcs = min(arcvals.values())
     maxarcs = max(arcvals.values())
 
   for a in bn.arcs():
     (n, j) = a
-    if arcvals is None:
+    if (n, j) in arcvals:
+      pw = 0.1 + 5 * (arcvals[a] - minarcs) / (maxarcs - minarcs)
+      av = arcvals[a]
+    else:
       pw = 1
       av = ""
-    else:
-      if (n, j) in arcvals:
-        pw = 0.1 + 5 * (arcvals[a] - minarcs) / (maxarcs - minarcs)
-        av = arcvals[a]
-      else:
-        pw = 1
 
     dotstr += ' "{0}"->"{1}" [penwidth={2},tooltip="{3}:{4}"];'.format(bn.variable(n).name(), bn.variable(j).name(),
                                                                        pw, a, av)

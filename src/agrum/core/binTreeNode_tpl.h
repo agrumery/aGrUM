@@ -30,10 +30,8 @@
 namespace gum {
 
   template < typename Val >
-  INLINE BinTreeNode< Val >::BinTreeNode(const Val& v)
-      : _val(v)
-      , _parent(0)
-      , _parent_dir(BinTreeDir::NO_PARENT) {
+  INLINE BinTreeNode< Val >::BinTreeNode(const Val& v) :
+      _val(v), _parent(0), _parent_dir(BinTreeDir::NO_PARENT) {
     // for debugging purposes
     GUM_CONSTRUCTOR(BinTreeNode);
 
@@ -43,10 +41,8 @@ namespace gum {
   }
 
   template < typename Val >
-  INLINE BinTreeNode< Val >::BinTreeNode(const BinTreeNode< Val >& from)
-      : _val(from._val)
-      , _parent(0)
-      , _parent_dir(BinTreeDir::NO_PARENT) {
+  INLINE BinTreeNode< Val >::BinTreeNode(const BinTreeNode< Val >& from) :
+      _val(from._val), _parent(0), _parent_dir(BinTreeDir::NO_PARENT) {
     // for debugging purposes
     GUM_CONS_CPY(BinTreeNode);
 
@@ -63,7 +59,7 @@ namespace gum {
     // update the tree accordingly to the removal of this
     if (_parent)
       _parent->_children[static_cast< int >(_parent_dir)] =
-        nullptr;  // parent_dir can not be NO_PARENT (... sure ?)
+        nullptr;   // parent_dir can not be NO_PARENT (... sure ?)
 
     if (_children[0]) {
       _children[0]->_parent = nullptr;
@@ -81,7 +77,7 @@ namespace gum {
 
   template < typename Val >
   INLINE BinTreeNode< Val >& BinTreeNode< Val >::
-  operator=(const BinTreeNode< Val >& from) {
+                             operator=(const BinTreeNode< Val >& from) {
     // avoid self assignment
     if (this != &from) {
       GUM_OP_CPY(BinTreeNode);
@@ -209,7 +205,7 @@ namespace gum {
 
   template < typename Val >
   INLINE BinTreeNode< Val >*
-  BinTreeNode< Val >::insertChild(const Val& val, BinTreeDir child_dir) {
+         BinTreeNode< Val >::insertChild(const Val& val, BinTreeDir child_dir) {
     if (_children[static_cast< int >(child_dir)]) {
       GUM_ERROR(DuplicateElement, "this node has already this child");
     }
@@ -283,6 +279,6 @@ namespace gum {
     return node;
   }
 
-}  // namespace gum
+}   // namespace gum
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS

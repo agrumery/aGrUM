@@ -32,7 +32,7 @@
 
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/core/approximations/approximationSchemeListener.h>
-#include <cxxtest/AgrumApproximationUtils.h>  // must be last include
+#include <cxxtest/AgrumApproximationUtils.h>   // must be last include
 
 #define EPSILON_FOR_HYBRID_SIMPLE_TEST 2e-1
 #define EPSILON_FOR_HYBRID 1e-1
@@ -48,10 +48,8 @@ namespace gum_tests {
     std::string __mess;
 
     public:
-    aSimpleHybridListener(gum::ApproximationScheme& sch)
-        : gum::ApproximationSchemeListener(sch)
-        , __nbr(0)
-        , __mess(""){};
+    aSimpleHybridListener(gum::ApproximationScheme& sch) :
+        gum::ApproximationSchemeListener(sch), __nbr(0), __mess(""){};
 
     void whenProgress(const void*     buffer,
                       const gum::Size a,
@@ -93,13 +91,11 @@ namespace gum_tests {
 
 
     void /*test*/ HybridBinaryTreeWithEvidenceOnRoot() {
-
       auto bn = gum::BayesNet< float >::fastPrototype(
         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       std::string ev = "b";
 
       try {
-
         gum::LazyPropagation< float > lazy(&bn);
         lazy.addEvidence(bn.idFromName(ev), 0);
         lazy.makeInference();
@@ -111,7 +107,6 @@ namespace gum_tests {
         inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_HYBRID_SIMPLE_TEST)
       } catch (gum::Exception& e) {
-
         GUM_SHOWERROR(e);
         TS_ASSERT(false);
       }
@@ -147,7 +142,6 @@ namespace gum_tests {
       std::string ev = "e";
 
       try {
-
         gum::LazyPropagation< float > lazy(&bn);
         lazy.addEvidence(bn.idFromName(ev), 0);
         lazy.makeInference();
@@ -171,7 +165,6 @@ namespace gum_tests {
         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
 
       try {
-
         gum::LazyPropagation< float > lazy(&bn);
         lazy.addEvidence(bn.idFromName("e"), 0);
         lazy.addEvidence(bn.idFromName("b"), 1);
@@ -189,7 +182,6 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_HYBRID_SIMPLE_TEST);
 
       } catch (gum::Exception& e) {
-
         GUM_SHOWERROR(e);
         TS_ASSERT(false);
       }
@@ -201,7 +193,6 @@ namespace gum_tests {
         "a[4]->d[8]->f[3];b->d->g[5];b->e[4]->h;c->e;i[10]->j[3]->h");
 
       try {
-
         gum::LazyPropagation< float > lazy(&bn);
         lazy.addEvidence(bn.idFromName("e"), 0);
         lazy.addEvidence(bn.idFromName("b"), 1);
@@ -219,7 +210,6 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_HYBRID_SIMPLE_TEST);
 
       } catch (gum::Exception& e) {
-
         GUM_SHOWERROR(e);
         TS_ASSERT(false);
       }
@@ -230,7 +220,6 @@ namespace gum_tests {
       auto bn = gum::BayesNet< float >::fastPrototype("a->b->c;a->d->c", 3);
 
       try {
-
         gum::LazyPropagation< float > lazy(&bn);
         lazy.makeInference();
 
@@ -242,13 +231,11 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_HYBRID_SIMPLE_TEST);
 
       } catch (gum::Exception& e) {
-
         GUM_SHOWERROR(e);
         TS_ASSERT(false);
       }
 
       try {
-
         gum::LazyPropagation< float > lazy(&bn);
         lazy.addEvidence(bn.idFromName("a"), 0);
         lazy.makeInference();
@@ -262,13 +249,11 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_HYBRID_SIMPLE_TEST);
 
       } catch (gum::Exception& e) {
-
         GUM_SHOWERROR(e);
         TS_ASSERT(false);
       }
 
       try {
-
         gum::LazyPropagation< float > lazy(&bn);
         lazy.addEvidence(bn.idFromName("d"), 0);
         lazy.makeInference();
@@ -282,7 +267,6 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_HYBRID_SIMPLE_TEST);
 
       } catch (gum::Exception& e) {
-
         GUM_SHOWERROR(e);
         TS_ASSERT(false);
       }
@@ -294,7 +278,6 @@ namespace gum_tests {
         "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;", 3);
 
       try {
-
         gum::LazyPropagation< float > lazy(&bn);
         lazy.makeInference();
 
@@ -306,13 +289,11 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_HYBRID_SIMPLE_TEST);
 
       } catch (gum::Exception& e) {
-
         GUM_SHOWERROR(e);
         TS_ASSERT(false);
       }
 
       try {
-
         gum::LazyPropagation< float > lazy(&bn);
         lazy.addEvidence(bn.idFromName("a"), 0);
         lazy.makeInference();
@@ -326,13 +307,11 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_HYBRID_SIMPLE_TEST);
 
       } catch (gum::Exception& e) {
-
         GUM_SHOWERROR(e);
         TS_ASSERT(false);
       }
 
       try {
-
         gum::LazyPropagation< float > lazy(&bn);
         lazy.addEvidence(bn.idFromName("d"), 0);
         lazy.makeInference();
@@ -353,7 +332,6 @@ namespace gum_tests {
 
 
     void /*test*/ HybridAsia() {
-
       gum::BayesNet< float >  bn;
       gum::BIFReader< float > reader(&bn, GET_RESSOURCES_PATH("asia.bif"));
       int                     nbrErr = 0;
@@ -361,7 +339,6 @@ namespace gum_tests {
       TS_ASSERT(nbrErr == 0);
 
       try {
-
         gum::LazyPropagation< float > lazy(&bn);
         lazy.makeInference();
 
@@ -374,7 +351,6 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_HYBRID_HARD_TEST);
 
       } catch (gum::Exception& e) {
-
         GUM_SHOWERROR(e);
         TS_ASSERT(false);
       }
@@ -382,7 +358,6 @@ namespace gum_tests {
 
 
     void /*test*/ HybridAlarm() {
-
       gum::BayesNet< float >  bn;
       gum::BIFReader< float > reader(&bn, GET_RESSOURCES_PATH("alarm.bif"));
       int                     nbrErr = 0;
@@ -390,7 +365,6 @@ namespace gum_tests {
       TS_ASSERT(nbrErr == 0);
 
       try {
-
         gum::LazyPropagation< float > lazy(&bn);
         lazy.makeInference();
 
@@ -403,7 +377,6 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_HYBRID_HARD_TEST);
 
       } catch (gum::Exception& e) {
-
         GUM_SHOWERROR(e);
         TS_ASSERT(false);
       }
@@ -427,11 +400,10 @@ namespace gum_tests {
         inf.makeInference();
 
       } catch (gum::Exception& e) {
-
         GUM_SHOWERROR(e);
         TS_ASSERT(false);
       }
     }
   };
 
-}  /// gum_tests
+}   // namespace gum_tests

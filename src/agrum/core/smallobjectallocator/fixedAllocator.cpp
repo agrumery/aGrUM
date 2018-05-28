@@ -30,5 +30,5 @@
 // ============================================================================
 
 #ifdef GUM_NO_INLINE
-#include <agrum/core/smallobjectallocator/fixedAllocator_inl.h>
+#  include <agrum/core/smallobjectallocator/fixedAllocator_inl.h>
 #endif

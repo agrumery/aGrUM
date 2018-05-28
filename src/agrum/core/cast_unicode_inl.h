@@ -59,4 +59,4 @@ INLINE std::string narrow(const std::wstring& str) {
   return stm.str();
 }
 
-#endif  // CAST_UNICODE_H
+#endif   // CAST_UNICODE_H

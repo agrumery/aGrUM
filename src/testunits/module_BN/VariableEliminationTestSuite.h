@@ -48,9 +48,9 @@ namespace gum_tests {
 
   class VariableElimination : public CxxTest::TestSuite {
     public:
-    gum::BayesNet< float >*  bn;
-    gum::NodeId              i1, i2, i3, i4, i5;
-    gum::Potential< float > *e_i1, *e_i4;
+    gum::BayesNet< float >* bn;
+    gum::NodeId             i1, i2, i3, i4, i5;
+    gum::Potential< float >*e_i1, *e_i4;
 
     float __epsilon{1e-6f};
 
@@ -293,9 +293,7 @@ namespace gum_tests {
         TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.posterior(node)));
         const gum::Potential< float >* pot_2 = nullptr;
         TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.posterior(node)));
-        if ((*pot_1) != (*pot_2)) {
-          TS_ASSERT(false);
-        }
+        if ((*pot_1) != (*pot_2)) { TS_ASSERT(false); }
       }
     }
 
@@ -606,7 +604,7 @@ namespace gum_tests {
                       // node2 = tuberculos_or_cancer?, then node =
                       // tuberculosis?
                       TS_ASSERT((inst2_index == 1) && (inst_index == 0));
-                    } else {  // node2 = lung_cancer? & node =
+                    } else {   // node2 = lung_cancer? & node =
                       // tuberculos_or_cancer?
                       TS_ASSERT((inst2_index == 0) && (inst_index == 1));
                     }
@@ -634,8 +632,8 @@ namespace gum_tests {
 
 
       gum::VariableElimination< double > ie_0(&bn);
-      ie_0.addTarget(0);       // visit_to_asia
-      ie_0.addEvidence(1, 0);  // tuberculosis
+      ie_0.addTarget(0);        // visit_to_asia
+      ie_0.addEvidence(1, 0);   // tuberculosis
       ie_0.makeInference();
       gum::Potential< double > p_0 = ie_0.posterior(0);
 
@@ -669,8 +667,8 @@ namespace gum_tests {
 
 
       gum::VariableElimination< double > ie_0(&bn);
-      ie_0.addTarget(0);       // visit_to_asia
-      ie_0.addEvidence(1, 0);  // tuberculosis
+      ie_0.addTarget(0);        // visit_to_asia
+      ie_0.addEvidence(1, 0);   // tuberculosis
       ie_0.makeInference();
       gum::Potential< double > p_0 = ie_0.posterior(0);
 
@@ -711,11 +709,11 @@ namespace gum_tests {
       auto res =
         ie_all.evidenceImpact(gum::NodeId(0), std::vector< gum::NodeId >{1, 2});
 
-      TS_ASSERT_EQUALS(res.nbrDim(), gum::Size(2));  // 2 indep 0 given 1
+      TS_ASSERT_EQUALS(res.nbrDim(), gum::Size(2));   // 2 indep 0 given 1
 
       gum::VariableElimination< double > ie_0(&bn);
-      ie_0.addTarget(0);       // visit_to_asia
-      ie_0.addEvidence(1, 0);  // tuberculosis
+      ie_0.addTarget(0);        // visit_to_asia
+      ie_0.addEvidence(1, 0);   // tuberculosis
       ie_0.makeInference();
       gum::Potential< double > p_0 = ie_0.posterior(0);
 
@@ -756,11 +754,11 @@ namespace gum_tests {
       auto res = ie_all.evidenceImpact("visit_to_Asia?",
                                        {"tuberculosis?", "tuberculos_or_cancer?"});
 
-      TS_ASSERT_EQUALS(res.nbrDim(), gum::Size(2));  // 2 indep 0 given 1
+      TS_ASSERT_EQUALS(res.nbrDim(), gum::Size(2));   // 2 indep 0 given 1
 
       gum::VariableElimination< double > ie_0(&bn);
-      ie_0.addTarget(0);       // visit_to_asia
-      ie_0.addEvidence(1, 0);  // tuberculosis
+      ie_0.addTarget(0);        // visit_to_asia
+      ie_0.addEvidence(1, 0);   // tuberculosis
       ie_0.makeInference();
       gum::Potential< double > p_0 = ie_0.posterior(0);
 
@@ -795,7 +793,7 @@ namespace gum_tests {
       gum::Potential< double >           res;
       TS_GUM_ASSERT_THROWS_NOTHING(
         res = ie.evidenceImpact("E", {"A", "B", "C", "D", "F"}));
-      TS_ASSERT_EQUALS(res.nbrDim(), gum::Size(4));  // MarkovBlanket(E)=(A,D,C)
+      TS_ASSERT_EQUALS(res.nbrDim(), gum::Size(4));   // MarkovBlanket(E)=(A,D,C)
     }
     void testJointWithHardEvidence() {
       /*
@@ -837,8 +835,8 @@ namespace gum_tests {
                               0.4f, 0.6f,
                               0.5f, 0.5f,
                               0.5f, 0.5f,
-                              1.0f, 0.0f}  // clang-format on
-                          );
+                              1.0f, 0.0f}   // clang-format on
+      );
       bn.cpt(i5).fillWith(
         {// clang-format off
                 0.3f, 0.6f, 0.1f,

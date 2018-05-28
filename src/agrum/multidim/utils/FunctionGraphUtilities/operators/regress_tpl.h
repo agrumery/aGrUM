@@ -38,19 +38,16 @@ namespace gum {
              template < typename > class PROJECTOPERATOR,
              template < typename > class TerminalNodePolicy >
   INLINE
-  Regress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::
-    Regress(const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* DG1,
-            const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* DG2,
-            const Set< const DiscreteVariable* >* primedVars,
-            const DiscreteVariable*               targetVar,
-            const GUM_SCALAR                      neutral)
-      : __DG1(DG1)
-      , __DG2(DG2)
-      , __neutral(neutral)
-      , __combine()
-      , __project()
-      , __DG1InstantiationNeeded(DG1->realSize(), true, false)
-      , __DG2InstantiationNeeded(DG2->realSize(), true, false) {
+    Regress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::
+      Regress(const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* DG1,
+              const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* DG2,
+              const Set< const DiscreteVariable* >* primedVars,
+              const DiscreteVariable*               targetVar,
+              const GUM_SCALAR                      neutral) :
+      __DG1(DG1),
+      __DG2(DG2), __neutral(neutral), __combine(), __project(),
+      __DG1InstantiationNeeded(DG1->realSize(), true, false),
+      __DG2InstantiationNeeded(DG2->realSize(), true, false) {
     GUM_CONSTRUCTOR(Regress);
     __rd =
       MultiDimFunctionGraph< GUM_SCALAR,
@@ -68,7 +65,6 @@ namespace gum {
   INLINE
     Regress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::
       ~Regress() {
-
     GUM_DESTRUCTOR(Regress);
 
     for (auto instIter = __DG1InstantiationNeeded.beginSafe();
@@ -93,8 +89,7 @@ namespace gum {
              template < typename > class TerminalNodePolicy >
   INLINE MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
          Regress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::
-    compute() {
-
+      compute() {
     __establishVarOrder();
     __findRetrogradeVariables(__DG1, __DG1InstantiationNeeded);
     __findRetrogradeVariables(__DG2, __DG2InstantiationNeeded);
@@ -128,17 +123,15 @@ namespace gum {
              template < typename > class PROJECTOPERATOR,
              template < typename > class TerminalNodePolicy >
   INLINE void
-  Regress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::
-    __establishVarOrder() {
-
+    Regress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::
+      __establishVarOrder() {
     SequenceIteratorSafe< const DiscreteVariable* > fite =
       __DG1->variablesSequence().beginSafe();
     SequenceIteratorSafe< const DiscreteVariable* > site =
       __DG2->variablesSequence().beginSafe();
 
-    while (fite != __DG1->variablesSequence().endSafe() &&
-           site != __DG2->variablesSequence().endSafe()) {
-
+    while (fite != __DG1->variablesSequence().endSafe()
+           && site != __DG2->variablesSequence().endSafe()) {
       // Test : if var from first order is already in final order
       // we move onto the next one
       if (__rd->variablesSequence().exists(*fite)) {
@@ -155,8 +148,8 @@ namespace gum {
 
       // Test : is current var of the first order present in the second order.
       // if not we add it to final order
-      if (!__DG2->variablesSequence().exists(*fite) &&
-          !__primedVars->exists(*fite)) {
+      if (!__DG2->variablesSequence().exists(*fite)
+          && !__primedVars->exists(*fite)) {
         __rd->add(**fite);
         ++fite;
         continue;
@@ -164,8 +157,8 @@ namespace gum {
 
       // Test : is current var of the second order present in the first order.
       // if not we add it to final order
-      if (!__DG1->variablesSequence().exists(*site) &&
-          !__primedVars->exists(*site)) {
+      if (!__DG1->variablesSequence().exists(*site)
+          && !__primedVars->exists(*site)) {
         __rd->add(**site);
         ++site;
         continue;
@@ -215,23 +208,20 @@ namespace gum {
              template < typename > class PROJECTOPERATOR,
              template < typename > class TerminalNodePolicy >
   INLINE void
-  Regress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::
-    __findRetrogradeVariables(
-      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dg,
-      HashTable< NodeId, short int* >&                               dgInstNeed) {
-
+    Regress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::
+      __findRetrogradeVariables(
+        const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dg,
+        HashTable< NodeId, short int* >& dgInstNeed) {
     HashTable< NodeId, short int* > nodesVarDescendant;
-    Size tableSize = Size(__nbVar * sizeof(short int));
+    Size                            tableSize = Size(__nbVar * sizeof(short int));
 
     for (auto varIter = dg->variablesSequence().rbeginSafe();
          varIter != dg->variablesSequence().rendSafe();
          --varIter) {
-
       Idx varPos = __rd->variablesSequence().pos(*varIter);
 
       const Link< NodeId >* nodeIter = dg->varNodeListe(*varIter)->list();
       while (nodeIter != nullptr) {
-
         short int* instantiationNeeded =
           static_cast< short int* >(ALLOCATE(tableSize));
         dgInstNeed.insert(nodeIter->element(), instantiationNeeded);
@@ -263,17 +253,15 @@ namespace gum {
     for (auto varIter = dg->variablesSequence().beginSafe();
          varIter != dg->variablesSequence().endSafe();
          ++varIter) {
-
       const Link< NodeId >* nodeIter = dg->varNodeListe(*varIter)->list();
       while (nodeIter != nullptr) {
-
         for (Idx modality = 0; modality < dg->node(nodeIter->element())->nbSons();
              ++modality) {
           NodeId sonId = dg->node(nodeIter->element())->son(modality);
           if (!dg->isTerminalNode(sonId)) {
             for (Idx varIdx = 0; varIdx < __nbVar; ++varIdx) {
-              if (dgInstNeed[nodeIter->element()][varIdx] &&
-                  nodesVarDescendant[sonId][varIdx]) {
+              if (dgInstNeed[nodeIter->element()][varIdx]
+                  && nodesVarDescendant[sonId][varIdx]) {
                 dgInstNeed[sonId][varIdx] = (short int)1;
               }
             }
@@ -316,15 +304,13 @@ namespace gum {
              template < typename > class TerminalNodePolicy >
   INLINE NodeId
          Regress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::
-    __compute(O4DGContext& currentSituation, Idx lastInstVarPos) {
-
+      __compute(O4DGContext& currentSituation, Idx lastInstVarPos) {
     NodeId newNode = 0;
 
     // If both current nodes are terminal,
     // we only have to compute the resulting value
-    if (__DG1->isTerminalNode(currentSituation.DG1Node()) &&
-        __DG2->isTerminalNode(currentSituation.DG2Node())) {
-
+    if (__DG1->isTerminalNode(currentSituation.DG1Node())
+        && __DG2->isTerminalNode(currentSituation.DG2Node())) {
       // We have to compute new valueand we insert a new node in diagram with
       // this value, ...
       GUM_SCALAR newVal = __neutral;
@@ -385,12 +371,11 @@ namespace gum {
     NodeId leadNodeId = 0;
     Idx    leadVarPos = __rd->variablesSequence().size();
     typedef void (O4DGContext::*SetNodeFunction)(const NodeId&);
-    SetNodeFunction             leadFunction = nullptr;
+    SetNodeFunction leadFunction = nullptr;
 
     bool sameVar = false;
 
     if (!__DG1->isTerminalNode(currentSituation.DG1Node())) {
-
       if (currentSituation.varModality(dg1CurrentVarPos) != 0) {
         // If var associated to current node has already been instanciated, we
         // have to jump it
@@ -415,7 +400,6 @@ namespace gum {
     }
 
     if (!__DG2->isTerminalNode(currentSituation.DG2Node())) {
-
       if (currentSituation.varModality(dg2CurrentVarPos) != 0) {
         // If var associated to current node has already been instanciated, we
         // have to jump it
@@ -433,9 +417,7 @@ namespace gum {
         return newNode;
       }
 
-      if (leadVarPos == dg2CurrentVarPos) {
-        sameVar = true;
-      }
+      if (leadVarPos == dg2CurrentVarPos) { sameVar = true; }
 
       if (leadVarPos > dg2CurrentVarPos) {
         leaddg = __DG2;
@@ -451,15 +433,12 @@ namespace gum {
     // Before exploring nodes, we have to ensure that every anticipated
     // exploration is done
     for (Idx varPos = lastInstVarPos + 1; varPos < leadVarPos; ++varPos) {
-
       if (instNeeded[varPos]) {
-
         const DiscreteVariable* curVar = __rd->variablesSequence().atPos(varPos);
         NodeId*                 sonsIds =
           static_cast< NodeId* >(ALLOCATE(sizeof(NodeId) * curVar->domainSize()));
 
         for (Idx modality = 0; modality < curVar->domainSize(); modality++) {
-
           currentSituation.chgVarModality(varPos, modality + 1);
 
           sonsIds[modality] = __compute(currentSituation, varPos);
@@ -508,8 +487,8 @@ namespace gum {
         return newNode;
       }
     } else {
-      if (__DG1->node(origDG1)->nodeVar() == __targetVar &&
-          __DG2->isTerminalNode(origDG2)) {
+      if (__DG1->node(origDG1)->nodeVar() == __targetVar
+          && __DG2->isTerminalNode(origDG2)) {
         GUM_SCALAR newVal = __neutral;
         for (Idx targetModa = 0; targetModa < __targetVar->domainSize();
              ++targetModa)
@@ -530,7 +509,6 @@ namespace gum {
     // If only one of the current node is terminal,
     // we have to pursue deeper on the other diagram
     if (sameVar) {
-
       // If so - meaning it's the same variable - we have to go
       // down on both
       const InternalNode* dg1Node = __DG1->node(origDG1);
@@ -542,7 +520,6 @@ namespace gum {
         static_cast< NodeId* >(ALLOCATE(sizeof(NodeId) * curVar->domainSize()));
 
       for (Idx modality = 0; modality < curVar->domainSize(); modality++) {
-
         currentSituation.chgVarModality(varPos, modality + 1);
         currentSituation.setDG1Node(dg1Node->son(modality));
         currentSituation.setDG2Node(dg2Node->son(modality));
@@ -563,8 +540,6 @@ namespace gum {
     }
     // ====================================================
     else {
-
-
       const InternalNode* leaddgNode = leaddg->node(leadNodeId);
 
       const DiscreteVariable* curVar = leaddgNode->nodeVar();
@@ -591,4 +566,4 @@ namespace gum {
     }
   }
 
-}  // namespace gum
+}   // namespace gum

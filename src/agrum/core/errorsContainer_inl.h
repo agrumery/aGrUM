@@ -92,4 +92,4 @@ namespace gum {
     o << "Warnings : " << warning_count << std::endl;
   }
 
-}  // namespace gum
+}   // namespace gum

@@ -40,7 +40,8 @@ namespace gum {
   /* ===                               READERS                            === */
   /* =========================================================================*/
   /**
-   * @class BNReader BNReader.h <agrum/BN/io/BNReader.h>
+   * @class BNReader
+   * @headerfile BNReader.h <agrum/BN/io/BNReader.h>
    * @ingroup bn_io
    * @brief Pure virtual class for reading a BN from a file.
    *
@@ -80,4 +81,4 @@ namespace gum {
 
 #include <agrum/BN/io/BNReader_tpl.h>
 
-#endif  // GUM_BN_READER_H
+#endif   // GUM_BN_READER_H

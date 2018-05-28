@@ -32,9 +32,9 @@ namespace gum {
 
   /// default constructor (uses an empty graph)
   DefaultEliminationSequenceStrategy::DefaultEliminationSequenceStrategy(
-    double theRatio, double theThreshold)
-      : __simplicial_ratio(theRatio)
-      , __simplicial_threshold(theThreshold) {
+    double theRatio, double theThreshold) :
+      __simplicial_ratio(theRatio),
+      __simplicial_threshold(theThreshold) {
     // for debugging purposes
     GUM_CONSTRUCTOR(DefaultEliminationSequenceStrategy);
   }
@@ -44,9 +44,9 @@ namespace gum {
     UndiGraph*                  graph,
     const NodeProperty< Size >* domain_sizes,
     double                      ratio,
-    double                      threshold)
-      : __simplicial_ratio(ratio)
-      , __simplicial_threshold(threshold) {
+    double                      threshold) :
+      __simplicial_ratio(ratio),
+      __simplicial_threshold(threshold) {
     setGraph(graph, domain_sizes);
 
     // for debugging purposes
@@ -55,29 +55,31 @@ namespace gum {
 
   /// copy constructor
   DefaultEliminationSequenceStrategy::DefaultEliminationSequenceStrategy(
-    const DefaultEliminationSequenceStrategy& from)
-      : UnconstrainedEliminationSequenceStrategy(from)
-      ,
+    const DefaultEliminationSequenceStrategy& from) :
+      UnconstrainedEliminationSequenceStrategy(from),
       // no need to set __log_weights because the copy of the simplicial set
       // will set it properly
-      __simplicial_set(new SimplicialSet(
-        *from.__simplicial_set, _graph, &_log_domain_sizes, &__log_weights, false))
-      , __simplicial_ratio(from.__simplicial_ratio)
-      , __simplicial_threshold(from.__simplicial_threshold)
-      , __provide_fill_ins(from.__provide_fill_ins) {
+      __simplicial_set(new SimplicialSet(*from.__simplicial_set,
+                                         _graph,
+                                         &_log_domain_sizes,
+                                         &__log_weights,
+                                         false)),
+      __simplicial_ratio(from.__simplicial_ratio),
+      __simplicial_threshold(from.__simplicial_threshold),
+      __provide_fill_ins(from.__provide_fill_ins) {
     // for debugging purposes
     GUM_CONS_CPY(DefaultEliminationSequenceStrategy);
   }
 
   /// move constructor
   DefaultEliminationSequenceStrategy::DefaultEliminationSequenceStrategy(
-    DefaultEliminationSequenceStrategy&& from)
-      : UnconstrainedEliminationSequenceStrategy(std::move(from))
-      , __log_weights(std::move(from.__log_weights))
-      , __simplicial_set(from.__simplicial_set)
-      , __simplicial_ratio(from.__simplicial_ratio)
-      , __simplicial_threshold(from.__simplicial_threshold)
-      , __provide_fill_ins(from.__provide_fill_ins) {
+    DefaultEliminationSequenceStrategy&& from) :
+      UnconstrainedEliminationSequenceStrategy(std::move(from)),
+      __log_weights(std::move(from.__log_weights)),
+      __simplicial_set(from.__simplicial_set),
+      __simplicial_ratio(from.__simplicial_ratio),
+      __simplicial_threshold(from.__simplicial_threshold),
+      __provide_fill_ins(from.__provide_fill_ins) {
     __simplicial_set->replaceLogWeights(&from.__log_weights, &__log_weights);
     from.__simplicial_set = nullptr;
 
@@ -96,14 +98,14 @@ namespace gum {
   /** @brief creates a new elimination sequence of the same type as the current
    * object, but this sequence contains only an empty graph */
   DefaultEliminationSequenceStrategy*
-  DefaultEliminationSequenceStrategy::newFactory() const {
+    DefaultEliminationSequenceStrategy::newFactory() const {
     return new DefaultEliminationSequenceStrategy(__simplicial_ratio,
                                                   __simplicial_threshold);
   }
 
   /// virtual copy constructor
   DefaultEliminationSequenceStrategy*
-  DefaultEliminationSequenceStrategy::copyFactory() const {
+    DefaultEliminationSequenceStrategy::copyFactory() const {
     return new DefaultEliminationSequenceStrategy(*this);
   }
 
@@ -152,9 +154,7 @@ namespace gum {
   /// returns the new node to be eliminated within the triangulation algorithm
   NodeId DefaultEliminationSequenceStrategy::nextNodeToEliminate() {
     // if there is no simplicial set, send an exception
-    if (_graph == nullptr) {
-      GUM_ERROR(NotFound, "the graph is empty");
-    }
+    if (_graph == nullptr) { GUM_ERROR(NotFound, "the graph is empty"); }
 
     // select a node to be eliminated: try simplicial nodes, then almost
     // simplicial nodes, then quasi-simplicial nodes

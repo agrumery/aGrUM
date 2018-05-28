@@ -26,8 +26,8 @@
 #include <agrum/graphs/parts/listeners/mixedGraphListener.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/parts/listeners/mixedGraphListener_inl.h>
-#endif  // GUM_NOINLINE
+#  include <agrum/graphs/parts/listeners/mixedGraphListener_inl.h>
+#endif   // GUM_NOINLINE
 
 namespace gum {
 
@@ -64,4 +64,4 @@ namespace gum {
 
   MixedGraphListener::~MixedGraphListener() { GUM_DESTRUCTOR(MixedGraphListener); }
 
-}  // namespace gum
+}   // namespace gum

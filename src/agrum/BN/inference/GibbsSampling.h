@@ -35,23 +35,23 @@
 namespace gum {
 
   /**
-  * @class GibbsSampling gibbsSampling.h
-  *<agrum/BN/inference/gibbsSampling.h>
-  * @brief class for making Gibbs sampling inference in bayesian networks.
-  * @ingroup bn_approximation
-  *
-  * This class overrides pure function declared in the inherited class
-  *ApproximateInference.
-  * It defines the way Gibbs sampling draws a sample. It also inherits
-  *GibbsOperator
-  * which contains Gibbs sampling methods.
-  *
-  */
+   * @class GibbsSampling gibbsSampling.h
+   *<agrum/BN/inference/gibbsSampling.h>
+   * @brief class for making Gibbs sampling inference in bayesian networks.
+   * @ingroup bn_approximation
+   *
+   * This class overrides pure function declared in the inherited class
+   *ApproximateInference.
+   * It defines the way Gibbs sampling draws a sample. It also inherits
+   *GibbsOperator
+   * which contains Gibbs sampling methods.
+   *
+   */
 
   template < typename GUM_SCALAR >
-  class GibbsSampling : public SamplingInference< GUM_SCALAR >,
-                        public GibbsOperator< GUM_SCALAR > {
-
+  class GibbsSampling
+      : public SamplingInference< GUM_SCALAR >
+      , public GibbsOperator< GUM_SCALAR > {
     public:
     /**
      * Default constructor
@@ -59,8 +59,8 @@ namespace gum {
     explicit GibbsSampling(const IBayesNet< GUM_SCALAR >* bn);
 
     /**
-  * Destructor
-  */
+     * Destructor
+     */
     ~GibbsSampling() override;
 
     /**
@@ -82,37 +82,37 @@ namespace gum {
 
     /// draws a sample given previous one according to Gibbs sampling
     /**
-    * @param w the weight of sample being generated
-    * @param prev the previous sample generated
-    * @param bn the bayesian network containing the evidence
-    * @param hardEvNodes hard evidence nodes
-    * @param hardEv hard evidences values
-    *
-    * Uses the Gibbs sampling method to generate a new sample given the previous
-    * one. The method is implemented in the inherited class GibbsOperator. This
-    * function only makes the call to it. It consists of choosing one node x to
-    * sample, given the instantiation of all other nodes. It requires computing  of
-    * P( x \given instantiation_markovblanket(x)).
-    */
+     * @param w the weight of sample being generated
+     * @param prev the previous sample generated
+     * @param bn the bayesian network containing the evidence
+     * @param hardEvNodes hard evidence nodes
+     * @param hardEv hard evidences values
+     *
+     * Uses the Gibbs sampling method to generate a new sample given the previous
+     * one. The method is implemented in the inherited class GibbsOperator. This
+     * function only makes the call to it. It consists of choosing one node x to
+     * sample, given the instantiation of all other nodes. It requires computing of
+     * P( x \given instantiation_markovblanket(x)).
+     */
     Instantiation _draw(float* w, Instantiation prev) override;
 
     /// draws a Monte Carlo sample
     /**
-    * @param bn the reference bayesian network
-    *
-    * This Monte Carlo sample generates a good starting point for Gibbs sampling,
-    * because it returns
-    * a sample consistent with the evidence, but it differs from the one
-    * implemented in the inherited
-    * class Approximate Inference because it also initializes attributes needed for
-    * Gibbs sampling.
-    */
+     * @param bn the reference bayesian network
+     *
+     * This Monte Carlo sample generates a good starting point for Gibbs sampling,
+     * because it returns
+     * a sample consistent with the evidence, but it differs from the one
+     * implemented in the inherited
+     * class Approximate Inference because it also initializes attributes needed
+     * for Gibbs sampling.
+     */
     Instantiation _monteCarloSample();
   };
 
   extern template class GibbsSampling< float >;
   extern template class GibbsSampling< double >;
-}
+}   // namespace gum
 
 #include <agrum/BN/inference/GibbsSampling_tpl.h>
 #endif

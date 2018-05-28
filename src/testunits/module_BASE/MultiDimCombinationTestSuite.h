@@ -46,15 +46,15 @@ namespace gum_tests {
 
     // the function used to combine two tables
     static gum::Potential< float >*
-    addPotential(const gum::Potential< float >& t1,
-                 const gum::Potential< float >& t2) {
+      addPotential(const gum::Potential< float >& t1,
+                   const gum::Potential< float >& t2) {
       return new gum::Potential< float >(t1 + t2);
     }
 
     // the function used to combine two tables
     static gum::Potential< float >*
-    multPotential(const gum::Potential< float >& t1,
-                  const gum::Potential< float >& t2) {
+      multPotential(const gum::Potential< float >& t1,
+                    const gum::Potential< float >& t2) {
       return new gum::Potential< float >(t1 * t2);
     }
 
@@ -79,7 +79,7 @@ namespace gum_tests {
       randomInitP(t2);
       randomInitP(t3);
 
-      gum::Potential< float > *t4, *t5, *t6;
+      gum::Potential< float >*t4, *t5, *t6;
       t4 = new gum::Potential< float >(t1 + t2);
       t5 = new gum::Potential< float >(t3 + *t4);
 

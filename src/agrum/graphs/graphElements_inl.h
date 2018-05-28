@@ -47,18 +47,15 @@ namespace gum {
 
   /// basic constructor
 
-  INLINE Edge::Edge(NodeId aN1, NodeId aN2)
-      : n1(std::min(aN1, aN2))
-      , n2(std::max(aN1, aN2)) {
+  INLINE Edge::Edge(NodeId aN1, NodeId aN2) :
+      n1(std::min(aN1, aN2)), n2(std::max(aN1, aN2)) {
     // for debugging purposes
     GUM_CONSTRUCTOR(Edge);
   }
 
   /// copy constructor
 
-  INLINE Edge::Edge(const Edge& src)
-      : n1(src.n1)
-      , n2(src.n2) {
+  INLINE Edge::Edge(const Edge& src) : n1(src.n1), n2(src.n2) {
     // for debugging purposes
     GUM_CONS_CPY(Edge);
   }
@@ -125,18 +122,14 @@ namespace gum {
 
   /// basic constructor.
 
-  INLINE Arc::Arc(NodeId tail, NodeId head)
-      : n1(tail)
-      , n2(head) {
+  INLINE Arc::Arc(NodeId tail, NodeId head) : n1(tail), n2(head) {
     // for debugging purposes
     GUM_CONSTRUCTOR(Arc);
   }
 
   /// copy constructor
 
-  INLINE Arc::Arc(const Arc& src)
-      : n1(src.n1)
-      , n2(src.n2) {
+  INLINE Arc::Arc(const Arc& src) : n1(src.n1), n2(src.n2) {
     // for debugging purposes
     GUM_CONS_CPY(Arc);
   }

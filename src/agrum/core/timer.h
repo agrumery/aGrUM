@@ -33,7 +33,8 @@
 namespace gum {
 
   /**
-   * @class Timer timer.h <agrum/core/timer.h>
+   * @class Timer
+   * @headerfile timer.h <agrum/core/timer.h>
    * @brief Class used to compute response times for benchmark purposes
    * @ingroup basicstruct_group
    *
@@ -124,7 +125,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/core/timer_inl.h>
-#endif  // GUM_NO_INLINE
+#  include <agrum/core/timer_inl.h>
+#endif   // GUM_NO_INLINE
 
-#endif  // GUM_TIMER_H
+#endif   // GUM_TIMER_H

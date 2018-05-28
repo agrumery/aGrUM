@@ -36,8 +36,8 @@ namespace gum {
   // ###################################################################
   // Default constructor
   // ###################################################################
-  VariableSelector::VariableSelector(Set< const DiscreteVariable* >& startingSet)
-      : __remainingVars(startingSet) {
+  VariableSelector::VariableSelector(Set< const DiscreteVariable* >& startingSet) :
+      __remainingVars(startingSet) {
     GUM_CONSTRUCTOR(VariableSelector);
     __remainingScores.insert(0.0, 0.0);
     __remainingVarsByScore.insert(
@@ -87,19 +87,18 @@ namespace gum {
   // Select the most relevant variable
   // ###################################################################
   const DiscreteVariable* VariableSelector::select() {
-
     double                          bestScore = __remainingScores.top();
     Set< const DiscreteVariable* >* bestSet = __remainingVarsByScore[bestScore];
     const DiscreteVariable*         bestVar = nullptr;
 
     for (auto varIter = bestSet->beginSafe(); varIter != bestSet->endSafe();
          ++varIter) {
-      if (bestVar == nullptr ||
-          __remainingVarsOtherScore[bestVar] <
-            __remainingVarsOtherScore[*varIter] ||
-          (__remainingVarsOtherScore[bestVar] ==
-             __remainingVarsOtherScore[*varIter] &&
-           bestVar->domainSize() < (*varIter)->domainSize()))
+      if (bestVar == nullptr
+          || __remainingVarsOtherScore[bestVar]
+               < __remainingVarsOtherScore[*varIter]
+          || (__remainingVarsOtherScore[bestVar]
+                == __remainingVarsOtherScore[*varIter]
+              && bestVar->domainSize() < (*varIter)->domainSize()))
         bestVar = *varIter;
     }
     __removeVar(bestVar);
@@ -136,4 +135,4 @@ namespace gum {
       delete varSet;
     }
   }
-}
+}   // namespace gum

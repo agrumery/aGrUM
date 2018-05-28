@@ -18,11 +18,11 @@
  * 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. *
  *********************************************************************************/
 /**
-* @file
-* @brief Templates for fusion context class
-*
-* @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
-*/
+ * @file
+ * @brief Templates for fusion context class
+ *
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
+ */
 // =======================================================
 #include <cmath>
 // =======================================================
@@ -39,8 +39,7 @@ namespace gum {
   // Default constructor.
   // ============================================================================
   template < bool isInitial >
-  FusionContext< isInitial >::FusionContext(AbstractLeaf* leaf)
-      : __leaf(leaf) {
+  FusionContext< isInitial >::FusionContext(AbstractLeaf* leaf) : __leaf(leaf) {
     GUM_CONSTRUCTOR(FusionContext)
   }
 
@@ -69,7 +68,6 @@ namespace gum {
   template < bool isInitial >
   bool FusionContext< isInitial >::__associateLeaf(AbstractLeaf* l,
                                                    Int2Type< false >) {
-
     LeafPair* ptop = __pairsHeap.empty() ? nullptr : __pairsHeap.top();
     ;
     LeafPair* p = new LeafPair(l, __leaf);
@@ -86,7 +84,6 @@ namespace gum {
   template < bool isInitial >
   bool FusionContext< isInitial >::__updateAssociatedLeaf(AbstractLeaf* l,
                                                           Int2Type< false >) {
-
     LeafPair* ptop = __pairsHeap.empty() ? nullptr : __pairsHeap.top();
     ;
     __leaf2Pair[l]->updateLikelyhood();
@@ -100,7 +97,6 @@ namespace gum {
   // ============================================================================
   template < bool isInitial >
   bool FusionContext< isInitial >::__updateAllAssociatedLeaves(Int2Type< false >) {
-
     LeafPair* ptop = __pairsHeap.empty() ? nullptr : __pairsHeap.top();
     ;
     for (HashTableConstIteratorSafe< AbstractLeaf*, LeafPair* > pairIter =
@@ -121,7 +117,6 @@ namespace gum {
   template < bool isInitial >
   bool FusionContext< isInitial >::__deassociateLeaf(AbstractLeaf* l,
                                                      Int2Type< false >) {
-
     LeafPair* ptop = __pairsHeap.empty() ? nullptr : __pairsHeap.top();
     __pairsHeap.erase(__leaf2Pair[l]);
     __leaf2Pair.erase(l);
@@ -141,7 +136,6 @@ namespace gum {
   // ============================================================================
   template < bool isInitial >
   bool FusionContext< isInitial >::addPair(LeafPair* p) {
-
     LeafPair* ptop = __pairsHeap.empty() ? nullptr : __pairsHeap.top();
     __pairsHeap.insert(p, p->likelyhood());
 
@@ -153,7 +147,6 @@ namespace gum {
   // ============================================================================
   template < bool isInitial >
   bool FusionContext< isInitial >::updatePair(LeafPair* p) {
-
     LeafPair* ptop = __pairsHeap.empty() ? nullptr : __pairsHeap.top();
     __pairsHeap.setPriority(p, p->likelyhood());
 
@@ -165,7 +158,6 @@ namespace gum {
   // ============================================================================
   template < bool isInitial >
   bool FusionContext< isInitial >::removePair(LeafPair* p) {
-
     LeafPair* ptop = __pairsHeap.empty() ? nullptr : __pairsHeap.top();
     __pairsHeap.erase(p);
 
@@ -184,8 +176,7 @@ namespace gum {
   // ============================================================================
   template < bool isInitial >
   Set< LeafPair* >
-  FusionContext< isInitial >::__associatedPairs(Int2Type< false >) {
-
+    FusionContext< isInitial >::__associatedPairs(Int2Type< false >) {
     Set< LeafPair* > retBag;
     for (auto pairIter = __leaf2Pair.beginSafe();
          pairIter != __leaf2Pair.endSafe();
@@ -197,8 +188,7 @@ namespace gum {
 
 
   template < bool isInitial >
-  std::string     FusionContext< isInitial >::toString() {
-
+  std::string FusionContext< isInitial >::toString() {
     std::stringstream ss;
     if (__leaf)
       ss << "Associated Leaf : " << __leaf->toString() << std::endl
@@ -215,4 +205,4 @@ namespace gum {
     return ss.str();
   }
 
-}  // end gum namespace
+}   // namespace gum

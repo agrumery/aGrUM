@@ -25,7 +25,7 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <cmath>
+#  include <cmath>
 
 namespace gum {
 
@@ -35,13 +35,13 @@ namespace gum {
     template < typename IdSetAlloc, typename CountAlloc >
     template < typename RowFilter >
     INLINE ScoreLog2Likelihood< IdSetAlloc, CountAlloc >::ScoreLog2Likelihood(
-      const RowFilter&           filter,
-      const std::vector< Size >& var_modalities,
+      const RowFilter&                   filter,
+      const std::vector< Size >&         var_modalities,
       Apriori< IdSetAlloc, CountAlloc >& apriori,
-      Size min_range,
-      Size max_range)
-        : Score< IdSetAlloc, CountAlloc >(
-            filter, var_modalities, apriori, min_range, max_range) {
+      Size                               min_range,
+      Size                               max_range) :
+        Score< IdSetAlloc, CountAlloc >(
+          filter, var_modalities, apriori, min_range, max_range) {
       // for debugging purposes
       GUM_CONSTRUCTOR(ScoreLog2Likelihood);
     }
@@ -49,25 +49,25 @@ namespace gum {
     /// copy constructor
     template < typename IdSetAlloc, typename CountAlloc >
     ScoreLog2Likelihood< IdSetAlloc, CountAlloc >::ScoreLog2Likelihood(
-      const ScoreLog2Likelihood< IdSetAlloc, CountAlloc >& from)
-        : Score< IdSetAlloc, CountAlloc >(from)
-        , __internal_apriori(from.__internal_apriori) {
+      const ScoreLog2Likelihood< IdSetAlloc, CountAlloc >& from) :
+        Score< IdSetAlloc, CountAlloc >(from),
+        __internal_apriori(from.__internal_apriori) {
       GUM_CONS_CPY(ScoreLog2Likelihood);
     }
 
     /// move constructor
     template < typename IdSetAlloc, typename CountAlloc >
     ScoreLog2Likelihood< IdSetAlloc, CountAlloc >::ScoreLog2Likelihood(
-      ScoreLog2Likelihood< IdSetAlloc, CountAlloc >&& from)
-        : Score< IdSetAlloc, CountAlloc >(std::move(from))
-        , __internal_apriori(std::move(from.__internal_apriori)) {
+      ScoreLog2Likelihood< IdSetAlloc, CountAlloc >&& from) :
+        Score< IdSetAlloc, CountAlloc >(std::move(from)),
+        __internal_apriori(std::move(from.__internal_apriori)) {
       GUM_CONS_MOV(ScoreLog2Likelihood);
     }
 
     /// virtual copy factory
     template < typename IdSetAlloc, typename CountAlloc >
     ScoreLog2Likelihood< IdSetAlloc, CountAlloc >*
-    ScoreLog2Likelihood< IdSetAlloc, CountAlloc >::copyFactory() const {
+      ScoreLog2Likelihood< IdSetAlloc, CountAlloc >::copyFactory() const {
       return new ScoreLog2Likelihood< IdSetAlloc, CountAlloc >(*this);
     }
 
@@ -83,9 +83,9 @@ namespace gum {
     bool ScoreLog2Likelihood< IdSetAlloc, CountAlloc >::isAprioriCompatible(
       const std::string& apriori_type, double weight) {
       // check that the apriori is compatible with the score
-      if ((apriori_type == AprioriDirichletType::type) ||
-          (apriori_type == AprioriSmoothingType::type) ||
-          (apriori_type == AprioriNoAprioriType::type)) {
+      if ((apriori_type == AprioriDirichletType::type)
+          || (apriori_type == AprioriSmoothingType::type)
+          || (apriori_type == AprioriNoAprioriType::type)) {
         return true;
       }
 
@@ -106,7 +106,7 @@ namespace gum {
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE bool
-    ScoreLog2Likelihood< IdSetAlloc, CountAlloc >::isAprioriCompatible() const {
+      ScoreLog2Likelihood< IdSetAlloc, CountAlloc >::isAprioriCompatible() const {
       return isAprioriCompatible(*this->_apriori);
     }
 
@@ -121,7 +121,7 @@ namespace gum {
     /// returns the score corresponding to a given nodeset
     template < typename IdSetAlloc, typename CountAlloc >
     double
-    ScoreLog2Likelihood< IdSetAlloc, CountAlloc >::score(Idx nodeset_index) {
+      ScoreLog2Likelihood< IdSetAlloc, CountAlloc >::score(Idx nodeset_index) {
       // if the score has already been computed, get its value
       if (this->_isInCache(nodeset_index)) {
         return this->_cachedScore(nodeset_index);
@@ -157,15 +157,11 @@ namespace gum {
           // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - sum_j=1^q_i N_ij log N_ij
           for (Idx k = 0; k < targets_modal; ++k) {
             const double new_count = N_ijk[k] + N_prime_ijk[k];
-            if (new_count) {
-              score += new_count * std::log(new_count);
-            }
+            if (new_count) { score += new_count * std::log(new_count); }
           }
           for (Idx j = 0; j < conditioning_modal; ++j) {
             const double new_count = N_ij[j] + N_prime_ij[j];
-            if (new_count) {
-              score -= new_count * std::log(new_count);
-            }
+            if (new_count) { score -= new_count * std::log(new_count); }
           }
         } else {
           // compute the score: it remains to compute the log likelihood, i.e.,
@@ -173,14 +169,10 @@ namespace gum {
           // equivalent to:
           // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - sum_j=1^q_i N_ij log N_ij
           for (Idx k = 0; k < targets_modal; ++k) {
-            if (N_ijk[k]) {
-              score += N_ijk[k] * std::log(N_ijk[k]);
-            }
+            if (N_ijk[k]) { score += N_ijk[k] * std::log(N_ijk[k]); }
           }
           for (Idx j = 0; j < conditioning_modal; ++j) {
-            if (N_ij[j]) {
-              score -= N_ij[j] * std::log(N_ij[j]);
-            }
+            if (N_ij[j]) { score -= N_ij[j] * std::log(N_ij[j]); }
           }
         }
 

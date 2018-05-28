@@ -45,7 +45,6 @@ namespace gum {
   // clang-format on
   template < typename GUM_SCALAR >
   class ExactTerminalNodePolicy : public ITerminalNodePolicy< GUM_SCALAR > {
-
     public:
     // ============================================================================
     /// @name Terminal Node Creation and Destruction
@@ -125,6 +124,6 @@ namespace gum {
     mutable BijectionIteratorSafe< NodeId, GUM_SCALAR > __mappy;
   };
 
-}  // End of namespace gum
+}   // End of namespace gum
 
 #endif /* GUM_MULTI_DIM_FUNCTION_GRAPH_EXACT_TERMINAL_NODE_POLICY_H */

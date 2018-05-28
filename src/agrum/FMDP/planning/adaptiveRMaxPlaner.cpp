@@ -1,28 +1,28 @@
 /***************************************************************************
-*   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 /**
-* @file
-* @brief Template implementation of AdaptiveRMaxPlaner classes.
-*
-* @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
-*/
+ * @file
+ * @brief Template implementation of AdaptiveRMaxPlaner classes.
+ *
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
+ */
 
 // =========================================================================
 #include <cmath>
@@ -61,12 +61,9 @@ namespace gum {
                                          double                   discountFactor,
                                          double                   epsilon,
                                          const ILearningStrategy* learner,
-                                         bool                     verbose)
-      : StructuredPlaner(opi, discountFactor, epsilon, verbose)
-      , IDecisionStrategy()
-      , __fmdpLearner(learner)
-      , __initialized(false) {
-
+                                         bool                     verbose) :
+      StructuredPlaner(opi, discountFactor, epsilon, verbose),
+      IDecisionStrategy(), __fmdpLearner(learner), __initialized(false) {
     GUM_CONSTRUCTOR(AdaptiveRMaxPlaner);
   }
 
@@ -74,7 +71,6 @@ namespace gum {
   // Default destructor
   // ===========================================================================
   AdaptiveRMaxPlaner::~AdaptiveRMaxPlaner() {
-
     GUM_DESTRUCTOR(AdaptiveRMaxPlaner);
 
     for (HashTableIteratorSafe< Idx, StatesCounter* > scIter =
@@ -113,7 +109,6 @@ namespace gum {
   // Performs a value iteration
   // ===========================================================================
   void AdaptiveRMaxPlaner::makePlanning(Idx nbStep) {
-
     __makeRMaxFunctionGraphs();
 
     StructuredPlaner::makePlanning(nbStep);
@@ -146,7 +141,6 @@ namespace gum {
   // Performs a single step of value iteration
   // ===========================================================================
   MultiDimFunctionGraph< double >* AdaptiveRMaxPlaner::_valueIteration() {
-
     // *****************************************************************************************
     // Loop reset
     MultiDimFunctionGraph< double >* newVFunction =
@@ -195,7 +189,6 @@ namespace gum {
   // Evals the policy corresponding to the given value function
   // ===========================================================================
   void AdaptiveRMaxPlaner::_evalPolicy() {
-
     // *****************************************************************************************
     // Loop reset
     MultiDimFunctionGraph< double >* newVFunction =
@@ -210,7 +203,6 @@ namespace gum {
     for (auto actionIter = _fmdp->beginActions();
          actionIter != _fmdp->endActions();
          ++actionIter) {
-
       MultiDimFunctionGraph< double >* qAction =
         this->_evalQaction(newVFunction, *actionIter);
 
@@ -241,7 +233,6 @@ namespace gum {
   //
   // ===========================================================================
   void AdaptiveRMaxPlaner::__makeRMaxFunctionGraphs() {
-
     __rThreshold =
       __fmdpLearner->modaMax() * 5 > 30 ? __fmdpLearner->modaMax() * 5 : 30;
     __rmax = __fmdpLearner->rMax() / (1.0 - this->_discountFactor);
@@ -249,14 +240,12 @@ namespace gum {
     for (auto actionIter = this->fmdp()->beginActions();
          actionIter != this->fmdp()->endActions();
          ++actionIter) {
-
       std::vector< MultiDimFunctionGraph< double >* > rmaxs;
       std::vector< MultiDimFunctionGraph< double >* > boolQs;
 
       for (auto varIter = this->fmdp()->beginVariables();
            varIter != this->fmdp()->endVariables();
            ++varIter) {
-
         const IVisitableGraphLearner* visited = __counterTable[*actionIter];
 
         MultiDimFunctionGraph< double >* varRMax =
@@ -314,11 +303,10 @@ namespace gum {
   //
   // ===========================================================================
   std::pair< NodeId, NodeId >
-  AdaptiveRMaxPlaner::__visitLearner(const IVisitableGraphLearner* visited,
-                                     NodeId                        currentNodeId,
-                                     MultiDimFunctionGraph< double >* rmax,
-                                     MultiDimFunctionGraph< double >* boolQ) {
-
+    AdaptiveRMaxPlaner::__visitLearner(const IVisitableGraphLearner* visited,
+                                       NodeId                        currentNodeId,
+                                       MultiDimFunctionGraph< double >* rmax,
+                                       MultiDimFunctionGraph< double >* boolQ) {
     std::pair< NodeId, NodeId > rep;
     if (visited->isTerminal(currentNodeId)) {
       rep.first = rmax->manager()->addTerminalNode(
@@ -352,7 +340,6 @@ namespace gum {
   //
   // ===========================================================================
   void AdaptiveRMaxPlaner::__clearTables() {
-
     for (auto actionIter = this->fmdp()->beginActions();
          actionIter != this->fmdp()->endActions();
          ++actionIter) {
@@ -363,4 +350,4 @@ namespace gum {
     __actionsBoolTable.clear();
   }
 
-}  // end of namespace gum
+}   // end of namespace gum

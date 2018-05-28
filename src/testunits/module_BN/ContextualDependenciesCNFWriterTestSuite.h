@@ -117,9 +117,7 @@ namespace gum_tests {
       try {
         writer.write(file, *bn);
         // TS_ASSERT(false);
-      } catch (gum::IOError&) {
-        TS_ASSERT(true);
-      }
+      } catch (gum::IOError&) { TS_ASSERT(true); }
     }
 
     void testWriter_string_With_Approximation() {
@@ -141,9 +139,7 @@ namespace gum_tests {
       try {
         writer.write(file, *bn);
         // TS_ASSERT(false);
-      } catch (gum::IOError&) {
-        TS_ASSERT(true);
-      }
+      } catch (gum::IOError&) { TS_ASSERT(true); }
     }
 
     private:
@@ -152,12 +148,12 @@ namespace gum_tests {
       bn.cpt(i1).fillWith({0.5, 0.5});
       bn.cpt(i2).fillWith({0.3, 0.7});
       bn.cpt(i3).fillWith({0.1, 0.9, 0.9, 0.1});
-      bn.cpt(i4).fillWith(  // clang-format off
+      bn.cpt(i4).fillWith(   // clang-format off
               {0.4, 0.6,
                0.5, 0.5,
                0.5, 0.5,
-               1.0, 0.0} );  // clang-format on
-      bn.cpt(i5).fillWith(  // clang-format off
+               1.0, 0.0} );   // clang-format on
+      bn.cpt(i5).fillWith(   // clang-format off
               {1.0,0.0,
                0.0,1.0,
                0.0,1.0,
@@ -165,7 +161,7 @@ namespace gum_tests {
                0.0,1.0,
                0.0,1.0,
                0.0,1.0,
-               0.0,1.0} );                                     // clang-format on
+               0.0,1.0} );                                      // clang-format on
     }
   };
-}
+}   // namespace gum_tests

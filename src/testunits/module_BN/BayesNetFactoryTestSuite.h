@@ -1,23 +1,23 @@
 
 /***************************************************************************
-*   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 #include <iostream>
 #include <string>
@@ -226,37 +226,37 @@ namespace gum_tests {
 
       // defining cpt
       std::vector< float > cpt_1;
-      cpt_1.push_back((float)0.2);  // 1 == true
-      cpt_1.push_back((float)0.8);  // 1 == false
+      cpt_1.push_back((float)0.2);   // 1 == true
+      cpt_1.push_back((float)0.8);   // 1 == false
       TS_GUM_ASSERT_THROWS_NOTHING(factory->startRawProbabilityDeclaration("1"));
       TS_GUM_ASSERT_THROWS_NOTHING(factory->rawConditionalTable(cpt_1));
       TS_GUM_ASSERT_THROWS_NOTHING(factory->endRawProbabilityDeclaration());
 
       std::vector< float > cpt_2;
-      cpt_2.push_back((float)0.2);  // 2 == true
-      cpt_2.push_back((float)0.8);  // 2 == false
+      cpt_2.push_back((float)0.2);   // 2 == true
+      cpt_2.push_back((float)0.8);   // 2 == false
       TS_GUM_ASSERT_THROWS_NOTHING(factory->startRawProbabilityDeclaration("2"));
       TS_GUM_ASSERT_THROWS_NOTHING(factory->rawConditionalTable(cpt_2));
       TS_GUM_ASSERT_THROWS_NOTHING(factory->endRawProbabilityDeclaration());
 
       std::vector< float > cpt_3;
-      cpt_3.push_back((float)0.2);  // 3 == true  | 1 == true
-      cpt_3.push_back((float)0.5);  // 3 == true  | 1 == false
-      cpt_3.push_back((float)0.8);  // 3 == false | 1 == true
-      cpt_3.push_back((float)0.5);  // 3 == false | 1 == false
+      cpt_3.push_back((float)0.2);   // 3 == true  | 1 == true
+      cpt_3.push_back((float)0.5);   // 3 == true  | 1 == false
+      cpt_3.push_back((float)0.8);   // 3 == false | 1 == true
+      cpt_3.push_back((float)0.5);   // 3 == false | 1 == false
       TS_GUM_ASSERT_THROWS_NOTHING(factory->startRawProbabilityDeclaration("3"));
       TS_GUM_ASSERT_THROWS_NOTHING(factory->rawConditionalTable(cpt_3));
       TS_GUM_ASSERT_THROWS_NOTHING(factory->endRawProbabilityDeclaration());
 
       std::vector< float > cpt_4;
-      cpt_4.push_back((float)0.2);    // 4 == true  | 1 == true,  2 == true
-      cpt_4.push_back((float)0.5);    // 4 == true  | 1 == true,  2 == false
-      cpt_4.push_back((float)0.65);   // 4 == true  | 1 == false, 2 == true
-      cpt_4.push_back((float)0.001);  // 4 == true  | 1 == false, 2 == false
-      cpt_4.push_back((float)0.8);    // 4 == false | 1 == true,  2 == true
-      cpt_4.push_back((float)0.5);    // 4 == false | 1 == true,  2 == false
-      cpt_4.push_back((float)0.35);   // 4 == false | 1 == false, 2 == true
-      cpt_4.push_back((float)0.999);  // 4 == false | 1 == false, 2 == false
+      cpt_4.push_back((float)0.2);     // 4 == true  | 1 == true,  2 == true
+      cpt_4.push_back((float)0.5);     // 4 == true  | 1 == true,  2 == false
+      cpt_4.push_back((float)0.65);    // 4 == true  | 1 == false, 2 == true
+      cpt_4.push_back((float)0.001);   // 4 == true  | 1 == false, 2 == false
+      cpt_4.push_back((float)0.8);     // 4 == false | 1 == true,  2 == true
+      cpt_4.push_back((float)0.5);     // 4 == false | 1 == true,  2 == false
+      cpt_4.push_back((float)0.35);    // 4 == false | 1 == false, 2 == true
+      cpt_4.push_back((float)0.999);   // 4 == false | 1 == false, 2 == false
       TS_GUM_ASSERT_THROWS_NOTHING(factory->startRawProbabilityDeclaration("4"));
       TS_GUM_ASSERT_THROWS_NOTHING(factory->rawConditionalTable(cpt_4));
       TS_GUM_ASSERT_THROWS_NOTHING(factory->endRawProbabilityDeclaration());
@@ -265,16 +265,16 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(
         factory->startFactorizedProbabilityDeclaration("5"));
       TS_GUM_ASSERT_THROWS_NOTHING(factory->startFactorizedEntry());
-      values_5.push_back((float)0.5);  // 5 == true  | *
-      values_5.push_back((float)0.5);  // 5 == false | *
+      values_5.push_back((float)0.5);   // 5 == true  | *
+      values_5.push_back((float)0.5);   // 5 == false | *
       TS_GUM_ASSERT_THROWS_NOTHING(factory->setVariableValues(values_5));
       values_5.clear();
       TS_GUM_ASSERT_THROWS_NOTHING(factory->endFactorizedEntry());
       TS_GUM_ASSERT_THROWS_NOTHING(factory->startFactorizedEntry());
       TS_GUM_ASSERT_THROWS_NOTHING(factory->setParentModality("2", "true"));
       TS_GUM_ASSERT_THROWS_NOTHING(factory->setParentModality("4", "true"));
-      values_5.push_back((float)1);  // 5 == true  | 2 == true, 4 == true
-      values_5.push_back((float)0);  // 5 == false | 2 == true, 4 == true
+      values_5.push_back((float)1);   // 5 == true  | 2 == true, 4 == true
+      values_5.push_back((float)0);   // 5 == false | 2 == true, 4 == true
       TS_GUM_ASSERT_THROWS_NOTHING(factory->setVariableValues(values_5));
       values_5.clear();
       TS_GUM_ASSERT_THROWS_NOTHING(factory->endFactorizedEntry());
@@ -283,9 +283,9 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(factory->setParentModality("3", "false"));
       TS_GUM_ASSERT_THROWS_NOTHING(factory->setParentModality("4", "true"));
       values_5.push_back(
-        (float)0);  // 5 == true  | 2 == false, 3 == false, 4 == true
+        (float)0);   // 5 == true  | 2 == false, 3 == false, 4 == true
       values_5.push_back(
-        (float)1);  // 5 == false | 2 == false, 3 == false, 4 == true
+        (float)1);   // 5 == false | 2 == false, 3 == false, 4 == true
       TS_GUM_ASSERT_THROWS_NOTHING(factory->setVariableValues(values_5));
       values_5.clear();
       TS_GUM_ASSERT_THROWS_NOTHING(factory->endFactorizedEntry());
@@ -465,4 +465,4 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(delete factory);
     }
   };
-}
+}   // namespace gum_tests

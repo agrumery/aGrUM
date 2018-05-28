@@ -1,28 +1,28 @@
 /***************************************************************************
-*   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 /**
-* @file
-* @brief Template implementation of FMDP/planning/StructuredPlaner.h classes.
-*
-* @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
-*/
+ * @file
+ * @brief Template implementation of FMDP/planning/StructuredPlaner.h classes.
+ *
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
+ */
 
 // =========================================================================
 #include <cmath>
@@ -62,11 +62,9 @@ namespace gum {
     IOperatorStrategy< GUM_SCALAR >* opi,
     GUM_SCALAR                       discountFactor,
     GUM_SCALAR                       epsilon,
-    bool                             verbose)
-      : _discountFactor(discountFactor)
-      , _operator(opi)
-      , _verbose(verbose) {
-
+    bool                             verbose) :
+      _discountFactor(discountFactor),
+      _operator(opi), _verbose(verbose) {
     GUM_CONSTRUCTOR(StructuredPlaner);
 
     __threshold = epsilon;
@@ -79,12 +77,9 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   INLINE StructuredPlaner< GUM_SCALAR >::~StructuredPlaner() {
-
     GUM_DESTRUCTOR(StructuredPlaner);
 
-    if (_vFunction) {
-      delete _vFunction;
-    }
+    if (_vFunction) { delete _vFunction; }
 
     if (_optimalPolicy) delete _optimalPolicy;
 
@@ -105,7 +100,6 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   std::string StructuredPlaner< GUM_SCALAR >::optimalPolicy2String() {
-
     // ************************************************************************
     // Discarding the case where no \pi* have been computed
     if (!_optimalPolicy || _optimalPolicy->root() == 0)
@@ -144,14 +138,12 @@ namespace gum {
     // ************************************************************************
     // Main loop
     while (!fifo.empty()) {
-
       // Node to visit
       NodeId currentNodeId = fifo.front();
       fifo.pop();
 
       // Checking if it is terminal
       if (_optimalPolicy->isTerminalNode(currentNodeId)) {
-
         // Get back the associated ActionSet
         ActionSet ase = _optimalPolicy->nodeValue(currentNodeId);
 
@@ -232,7 +224,6 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   void StructuredPlaner< GUM_SCALAR >::initialize(const FMDP< GUM_SCALAR >* fmdp) {
-
     _fmdp = fmdp;
 
     // Determination of the threshold value
@@ -266,7 +257,6 @@ namespace gum {
     Idx        nbIte = 0;
     GUM_SCALAR gap = __threshold + 1;
     while ((gap > __threshold) && (nbIte < nbStep)) {
-
       ++nbIte;
 
       MultiDimFunctionGraph< GUM_SCALAR >* newVFunction = this->_valueIteration();
@@ -320,8 +310,7 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   MultiDimFunctionGraph< GUM_SCALAR >*
-  StructuredPlaner< GUM_SCALAR >::_valueIteration() {
-
+    StructuredPlaner< GUM_SCALAR >::_valueIteration() {
     // *****************************************************************************************
     // Loop reset
     MultiDimFunctionGraph< GUM_SCALAR >* newVFunction =
@@ -358,9 +347,8 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   MultiDimFunctionGraph< GUM_SCALAR >*
-  StructuredPlaner< GUM_SCALAR >::_evalQaction(
-    const MultiDimFunctionGraph< GUM_SCALAR >* Vold, Idx actionId) {
-
+    StructuredPlaner< GUM_SCALAR >::_evalQaction(
+      const MultiDimFunctionGraph< GUM_SCALAR >* Vold, Idx actionId) {
     // ******************************************************************************
     // Initialisation :
     // Creating a copy of last Vfunction to deduce from the new Qaction
@@ -375,9 +363,8 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   MultiDimFunctionGraph< GUM_SCALAR >*
-  StructuredPlaner< GUM_SCALAR >::_maximiseQactions(
-    std::vector< MultiDimFunctionGraph< GUM_SCALAR >* >& qActionsSet) {
-
+    StructuredPlaner< GUM_SCALAR >::_maximiseQactions(
+      std::vector< MultiDimFunctionGraph< GUM_SCALAR >* >& qActionsSet) {
     MultiDimFunctionGraph< GUM_SCALAR >* newVFunction = qActionsSet.back();
     qActionsSet.pop_back();
 
@@ -396,9 +383,8 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   MultiDimFunctionGraph< GUM_SCALAR >*
-  StructuredPlaner< GUM_SCALAR >::_minimiseFunctions(
-    std::vector< MultiDimFunctionGraph< GUM_SCALAR >* >& qActionsSet) {
-
+    StructuredPlaner< GUM_SCALAR >::_minimiseFunctions(
+      std::vector< MultiDimFunctionGraph< GUM_SCALAR >* >& qActionsSet) {
     MultiDimFunctionGraph< GUM_SCALAR >* newVFunction = qActionsSet.back();
     qActionsSet.pop_back();
 
@@ -418,7 +404,6 @@ namespace gum {
   template < typename GUM_SCALAR >
   MultiDimFunctionGraph< GUM_SCALAR >* StructuredPlaner< GUM_SCALAR >::_addReward(
     MultiDimFunctionGraph< GUM_SCALAR >* Vold, Idx actionId) {
-
     // *****************************************************************************************
     // ... we multiply the result by the discount factor, ...
     MultiDimFunctionGraph< GUM_SCALAR >* newVFunction =
@@ -447,7 +432,6 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   void StructuredPlaner< GUM_SCALAR >::_evalPolicy() {
-
     // *****************************************************************************************
     // Loop reset
     MultiDimFunctionGraph< GUM_SCALAR >* newVFunction =
@@ -462,7 +446,6 @@ namespace gum {
     for (auto actionIter = _fmdp->beginActions();
          actionIter != _fmdp->endActions();
          ++actionIter) {
-
       MultiDimFunctionGraph< GUM_SCALAR >* qAction =
         this->_evalQaction(newVFunction, *actionIter);
 
@@ -493,9 +476,8 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
-  StructuredPlaner< GUM_SCALAR >::_makeArgMax(
-    const MultiDimFunctionGraph< GUM_SCALAR >* qAction, Idx actionId) {
-
+    StructuredPlaner< GUM_SCALAR >::_makeArgMax(
+      const MultiDimFunctionGraph< GUM_SCALAR >* qAction, Idx actionId) {
     MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
       amcpy = _operator->getArgMaxFunctionInstance();
 
@@ -524,9 +506,8 @@ namespace gum {
     Idx                                        actionId,
     const MultiDimFunctionGraph< GUM_SCALAR >* src,
     MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
-      argMaxCpy,
+                                 argMaxCpy,
     HashTable< NodeId, NodeId >& visitedNodes) {
-
     if (visitedNodes.exists(currentNodeId)) return visitedNodes[currentNodeId];
 
     NodeId nody;
@@ -553,10 +534,10 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
-  StructuredPlaner< GUM_SCALAR >::_argmaximiseQactions(
-    std::vector< MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
-                                        SetTerminalNodePolicy >* >& qActionsSet) {
-
+    StructuredPlaner< GUM_SCALAR >::_argmaximiseQactions(
+      std::vector< MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
+                                          SetTerminalNodePolicy >* >&
+        qActionsSet) {
     MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
       newVFunction = qActionsSet.back();
     qActionsSet.pop_back();
@@ -581,7 +562,6 @@ namespace gum {
     const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
                                  SetTerminalNodePolicy >*
       argMaxOptimalValueFunction) {
-
     _optimalPolicy->clear();
 
     // Insertion des nouvelles variables
@@ -604,10 +584,10 @@ namespace gum {
   // ==========================================================================
   template < typename GUM_SCALAR >
   NodeId StructuredPlaner< GUM_SCALAR >::__recurExtractOptPol(
-    NodeId currentNodeId,
+    NodeId                                                currentNodeId,
     const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
                                  SetTerminalNodePolicy >* argMaxOptVFunc,
-    HashTable< NodeId, NodeId >& visitedNodes) {
+    HashTable< NodeId, NodeId >&                          visitedNodes) {
     if (visitedNodes.exists(currentNodeId)) return visitedNodes[currentNodeId];
 
     NodeId nody;
@@ -640,4 +620,4 @@ namespace gum {
   }
 
 
-}  // end of namespace gum
+}   // end of namespace gum

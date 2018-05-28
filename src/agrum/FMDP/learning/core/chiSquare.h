@@ -26,11 +26,11 @@
 
 
 #ifndef GUM_CHI_SQUARE_H
-#define GUM_CHI_SQUARE_H
+#  define GUM_CHI_SQUARE_H
 
-#include <cmath>
+#  include <cmath>
 
-#include <agrum/core/hashTable.h>
+#  include <agrum/core/hashTable.h>
 
 
 namespace gum {
@@ -44,7 +44,6 @@ namespace gum {
    */
 
   class ChiSquare {
-
     public:
     static double probaChi2(double x, Size df);
 
@@ -84,7 +83,7 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif  // GUM_CHI_SQUARE_H
+#endif   // GUM_CHI_SQUARE_H
 
 
 // static HashTable<std::pair<double, unsigned long>, double> __chi2Cache;

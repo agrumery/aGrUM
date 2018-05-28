@@ -26,7 +26,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // to ease parser in IDE
-#include <agrum/graphs/cliqueGraph.h>
+#  include <agrum/graphs/cliqueGraph.h>
 
 namespace gum {
 
@@ -96,7 +96,7 @@ namespace gum {
     // remove the separators
     auto nei = neighbours(id);
     for (auto iter = nei.beginSafe(); iter != nei.endSafe();
-         ++iter)  // safe iterator needed here
+         ++iter)   // safe iterator needed here
       eraseEdge(Edge(*iter, id));
 
     // erase the clique set

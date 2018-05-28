@@ -37,7 +37,8 @@ namespace gum {
   namespace prm {
 
     /**
-     * @class InstanceBayesNet instanceBayesNet.h <agrum/PRM/instanceBayesNet.h>
+     * @class InstanceBayesNet
+     * @headerfile instanceBayesNet.h <agrum/PRM/instanceBayesNet.h>
      * @brief This class decorates an PRMInstance<GUM_SCALAR> as an
      *IBaseBayesNet.
      *
@@ -94,7 +95,7 @@ namespace gum {
 
       /// See gum::IBaseBayesNet::variableFromName().
       virtual const DiscreteVariable&
-      variableFromName(const std::string& name) const;
+        variableFromName(const std::string& name) const;
 
       const NodeProperty< Size >& modalities() const;
 

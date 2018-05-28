@@ -154,4 +154,4 @@ namespace gum {
 
 #include <agrum/ID/io/BIFXML/BIFXMLIDReader_tpl.h>
 
-#endif  // GUM_BIF_XML_ID_READER_H
+#endif   // GUM_BIF_XML_ID_READER_H

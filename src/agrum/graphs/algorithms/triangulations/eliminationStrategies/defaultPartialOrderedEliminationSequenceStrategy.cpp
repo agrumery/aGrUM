@@ -35,9 +35,9 @@ namespace gum {
   /// default constructor (uses an empty graph)
   DefaultPartialOrderedEliminationSequenceStrategy::
     DefaultPartialOrderedEliminationSequenceStrategy(double theRatio,
-                                                     double theThreshold)
-      : __simplicial_ratio(theRatio)
-      , __simplicial_threshold(theThreshold) {
+                                                     double theThreshold) :
+      __simplicial_ratio(theRatio),
+      __simplicial_threshold(theThreshold) {
     // for debugging purposes
     GUM_CONSTRUCTOR(DefaultPartialOrderedEliminationSequenceStrategy);
   }
@@ -49,9 +49,9 @@ namespace gum {
       const NodeProperty< Size >* dom_sizes,
       const List< NodeSet >*      subsets,
       double                      ratio,
-      double                      threshold)
-      : __simplicial_ratio(ratio)
-      , __simplicial_threshold(threshold) {
+      double                      threshold) :
+      __simplicial_ratio(ratio),
+      __simplicial_threshold(threshold) {
     setGraph(graph, dom_sizes);
     setPartialOrder(subsets);
 
@@ -62,16 +62,18 @@ namespace gum {
   /// copy constructor
   DefaultPartialOrderedEliminationSequenceStrategy::
     DefaultPartialOrderedEliminationSequenceStrategy(
-      const DefaultPartialOrderedEliminationSequenceStrategy& from)
-      : PartialOrderedEliminationSequenceStrategy(from)
-      ,
+      const DefaultPartialOrderedEliminationSequenceStrategy& from) :
+      PartialOrderedEliminationSequenceStrategy(from),
       // no need to set __log_weights because the copy of the simplicial set
       // will set it properly
-      __simplicial_set(new SimplicialSet(
-        *from.__simplicial_set, _graph, &_log_domain_sizes, &__log_weights, false))
-      , __simplicial_ratio(from.__simplicial_ratio)
-      , __simplicial_threshold(from.__simplicial_threshold)
-      , __provide_fill_ins(from.__provide_fill_ins) {
+      __simplicial_set(new SimplicialSet(*from.__simplicial_set,
+                                         _graph,
+                                         &_log_domain_sizes,
+                                         &__log_weights,
+                                         false)),
+      __simplicial_ratio(from.__simplicial_ratio),
+      __simplicial_threshold(from.__simplicial_threshold),
+      __provide_fill_ins(from.__provide_fill_ins) {
     // for debugging purposes
     GUM_CONS_CPY(DefaultPartialOrderedEliminationSequenceStrategy);
   }
@@ -79,13 +81,13 @@ namespace gum {
   /// move constructor
   DefaultPartialOrderedEliminationSequenceStrategy::
     DefaultPartialOrderedEliminationSequenceStrategy(
-      DefaultPartialOrderedEliminationSequenceStrategy&& from)
-      : PartialOrderedEliminationSequenceStrategy(std::move(from))
-      , __log_weights(std::move(from.__log_weights))
-      , __simplicial_set(from.__simplicial_set)
-      , __simplicial_ratio(from.__simplicial_ratio)
-      , __simplicial_threshold(from.__simplicial_threshold)
-      , __provide_fill_ins(from.__provide_fill_ins) {
+      DefaultPartialOrderedEliminationSequenceStrategy&& from) :
+      PartialOrderedEliminationSequenceStrategy(std::move(from)),
+      __log_weights(std::move(from.__log_weights)),
+      __simplicial_set(from.__simplicial_set),
+      __simplicial_ratio(from.__simplicial_ratio),
+      __simplicial_threshold(from.__simplicial_threshold),
+      __provide_fill_ins(from.__provide_fill_ins) {
     __simplicial_set->replaceLogWeights(&from.__log_weights, &__log_weights);
     from.__simplicial_set = nullptr;
 
@@ -160,13 +162,10 @@ namespace gum {
           min_score = score;
           best_node = node;
         }
-      } catch (NotFound&) {
-      }
+      } catch (NotFound&) {}
     }
 
-    if (!found) {
-      GUM_ERROR(NotFound, "no possible node to eliminate");
-    }
+    if (!found) { GUM_ERROR(NotFound, "no possible node to eliminate"); }
 
     return best_node;
   }
@@ -181,27 +180,22 @@ namespace gum {
                 "the partial order does not cover all the nodes "
                 "of the graph");
 
-    if (_nodeset.empty()) {
-      GUM_ERROR(NotFound, "no node is admissible");
-    }
+    if (_nodeset.empty()) { GUM_ERROR(NotFound, "no node is admissible"); }
 
     // select a node to be eliminated: try simplicial nodes, then almost
     // simplicial nodes, then quasi-simplicial nodes
     // note that if _graph != nullptr, __simplicial_set has been allocated
     try {
       return __nodeToEliminate(__simplicial_set->allSimplicialNodes());
-    } catch (NotFound&) {
-    }
+    } catch (NotFound&) {}
 
     try {
       return __nodeToEliminate(__simplicial_set->allAlmostSimplicialNodes());
-    } catch (NotFound&) {
-    }
+    } catch (NotFound&) {}
 
     try {
       return __nodeToEliminate(__simplicial_set->allQuasiSimplicialNodes());
-    } catch (NotFound&) {
-    }
+    } catch (NotFound&) {}
 
     // here: select the node through Kjaerulff's heuristic
     auto   iter = _nodeset.cbegin();
@@ -238,7 +232,7 @@ namespace gum {
   /** @brief indicates whether the elimination sequence updates by itself the
    * graph after a node has been eliminated */
   bool
-  DefaultPartialOrderedEliminationSequenceStrategy::providesGraphUpdate() const {
+    DefaultPartialOrderedEliminationSequenceStrategy::providesGraphUpdate() const {
     return true;
   }
 
@@ -258,9 +252,7 @@ namespace gum {
           // go to the next non-empty subset
           for (++_subset_iter; _subset_iter != _subsets->cend(); ++_subset_iter) {
             for (const auto node : *_subset_iter) {
-              if (_graph->existsNode(node)) {
-                _nodeset.insert(node);
-              }
+              if (_graph->existsNode(node)) { _nodeset.insert(node); }
             }
             if (!_nodeset.empty()) break;
           }
@@ -281,14 +273,14 @@ namespace gum {
   /** @brief creates a new elimination sequence of the same type as the current
    * object, but this sequence contains only an empty graph */
   DefaultPartialOrderedEliminationSequenceStrategy*
-  DefaultPartialOrderedEliminationSequenceStrategy::newFactory() const {
+    DefaultPartialOrderedEliminationSequenceStrategy::newFactory() const {
     return new DefaultPartialOrderedEliminationSequenceStrategy(
       __simplicial_ratio, __simplicial_threshold);
   }
 
   /// virtual copy constructor
   DefaultPartialOrderedEliminationSequenceStrategy*
-  DefaultPartialOrderedEliminationSequenceStrategy::copyFactory() const {
+    DefaultPartialOrderedEliminationSequenceStrategy::copyFactory() const {
     return new DefaultPartialOrderedEliminationSequenceStrategy(*this);
   }
 

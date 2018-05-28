@@ -1,23 +1,23 @@
 
 /***************************************************************************
-*   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 
 /*----------------------------------------------------------------------
@@ -52,44 +52,44 @@ Coco/R itself) does not fall under the GNU General Public License.
 #define COCO_R_COMMON_H
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-#include <agrum/agrum.h>
+#  include <agrum/agrum.h>
 
-#include <climits>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <cwchar>
-#include <iostream>
-#include <locale>
-#include <locale>
-#include <sstream>
-#include <string>
+#  include <climits>
+#  include <cstdio>
+#  include <cstdlib>
+#  include <cstring>
+#  include <cwchar>
+#  include <iostream>
+#  include <locale>
+#  include <locale>
+#  include <sstream>
+#  include <string>
 
 // io.h and fcntl are used to ensure binary read from streams on windows
-#if _MSC_VER >= 1300
-#include <fcntl.h>
-#include <io.h>
-#endif
+#  if _MSC_VER >= 1300
+#    include <fcntl.h>
+#    include <io.h>
+#  endif
 
-#if _MSC_VER >= 1400
-#define coco_swprintf swprintf_s
-#elif _MSC_VER >= 1300
-#define coco_swprintf _snwprintf
-#elif defined __MINGW32__
-#define coco_swprintf _snwprintf
-#elif defined __GNUC__
-#define coco_swprintf swprintf
+#  if _MSC_VER >= 1400
+#    define coco_swprintf swprintf_s
+#  elif _MSC_VER >= 1300
+#    define coco_swprintf _snwprintf
+#  elif defined __MINGW32__
+#    define coco_swprintf _snwprintf
+#  elif defined __GNUC__
+#    define coco_swprintf swprintf
 // cocoR genereted files may create unused-variable
-#pragma GCC diagnostic ignored "-Wunused-variable"
-#else
-#error unknown compiler!
-#endif
+#    pragma GCC diagnostic ignored "-Wunused-variable"
+#  else
+#    error unknown compiler!
+#  endif
 
-#define COCO_WCHAR_MAX 65535
-#define MIN_BUFFER_LENGTH 1024
-#define MAX_BUFFER_LENGTH (64 * MIN_BUFFER_LENGTH)
-#define HEAP_BLOCK_SIZE (64 * 1024)
-#define COCO_CPP_NAMESPACE_SEPARATOR L':'
+#  define COCO_WCHAR_MAX 65535
+#  define MIN_BUFFER_LENGTH 1024
+#  define MAX_BUFFER_LENGTH (64 * MIN_BUFFER_LENGTH)
+#  define HEAP_BLOCK_SIZE (64 * 1024)
+#  define COCO_CPP_NAMESPACE_SEPARATOR L':'
 
 
 namespace gum {
@@ -101,23 +101,23 @@ namespace gum {
   wchar_t* coco_string_create_upper(const wchar_t* data);
   wchar_t* coco_string_create_lower(const wchar_t* data);
   wchar_t*
-  coco_string_create_lower(const wchar_t* data, int startIndex, int dataLen);
+           coco_string_create_lower(const wchar_t* data, int startIndex, int dataLen);
   wchar_t* coco_string_create_append(const wchar_t* data1, const wchar_t* data2);
   wchar_t* coco_string_create_append(const wchar_t* data, const wchar_t value);
-  void coco_string_delete(wchar_t*& data);
-  int coco_string_length(const wchar_t* data);
-  bool coco_string_endswith(const wchar_t* data, const wchar_t* value);
-  int coco_string_indexof(const wchar_t* data, const wchar_t value);
-  int coco_string_lastindexof(const wchar_t* data, const wchar_t value);
-  void coco_string_merge(wchar_t*& data, const wchar_t* value);
-  bool coco_string_equal(const wchar_t* data1, const wchar_t* data2);
-  int coco_string_compareto(const wchar_t* data1, const wchar_t* data2);
-  int coco_string_hash(const wchar_t* data);
+  void     coco_string_delete(wchar_t*& data);
+  int      coco_string_length(const wchar_t* data);
+  bool     coco_string_endswith(const wchar_t* data, const wchar_t* value);
+  int      coco_string_indexof(const wchar_t* data, const wchar_t value);
+  int      coco_string_lastindexof(const wchar_t* data, const wchar_t value);
+  void     coco_string_merge(wchar_t*& data, const wchar_t* value);
+  bool     coco_string_equal(const wchar_t* data1, const wchar_t* data2);
+  int      coco_string_compareto(const wchar_t* data1, const wchar_t* data2);
+  int      coco_string_hash(const wchar_t* data);
 
   /// string handling, ascii character
   wchar_t* coco_string_create(const char* value);
-  char* coco_string_create_char(const wchar_t* value);
-  void coco_string_delete(char*& data);
+  char*    coco_string_create_char(const wchar_t* value);
+  void     coco_string_delete(char*& data);
 
   /// CocoR uses unicode, thus use this to cast string in wstring.
   inline std::wstring widen(const std::string& str) {
@@ -139,7 +139,7 @@ namespace gum {
 
     for (size_t i = 0; i < str.size(); ++i)
       stm << ctfacet.narrow(str.at(i),
-                            0);  // std::ctype<char>::_Elem(str[i]), 0 );
+                            0);   // std::ctype<char>::_Elem(str[i]), 0 );
 
     return stm.str();
   }
@@ -159,8 +159,8 @@ namespace gum {
     return res;
   }
 
-}  // namespace gum
+}   // namespace gum
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
-#endif  // COCO_R_COMMON_H
+#endif   // COCO_R_COMMON_H

@@ -76,10 +76,10 @@ namespace gum {
   };
 
 
-}  // namespace gum
+}   // namespace gum
 
 
 #include <agrum/BN/inference/tools/evidenceInference_tpl.h>
 
 
-#endif  // GUM_BAYES_NET_EVIDENCE_INFERENCE_H
+#endif   // GUM_BAYES_NET_EVIDENCE_INFERENCE_H

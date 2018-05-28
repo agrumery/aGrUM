@@ -334,10 +334,9 @@ namespace gum_tests {
         for (++iter2; iter2 != clique.end(); ++iter2) {
           try {
             triang.addEdge(*iter, *iter2);
-          } catch (gum::DuplicateElement&) {
-          }
+          } catch (gum::DuplicateElement&) {}
         }
       }
     }
   };
-}
+}   // namespace gum_tests

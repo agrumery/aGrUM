@@ -35,8 +35,7 @@ namespace gum {
 
     BasicSignaler0::BasicSignaler0() { GUM_CONSTRUCTOR(BasicSignaler0); }
 
-    BasicSignaler0::BasicSignaler0(const BasicSignaler0& s)
-        : ISignaler(s) {
+    BasicSignaler0::BasicSignaler0(const BasicSignaler0& s) : ISignaler(s) {
       GUM_CONS_CPY(BasicSignaler0);
 
       for (const auto el : _connectors) {
@@ -56,12 +55,12 @@ namespace gum {
       _connectors.clear();
     }
 
-  }  // namespace __sig__
+  }   // namespace __sig__
 
-}  // namespace gum
+}   // namespace gum
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 #ifdef GUM_NO_INLINE
-#include <agrum/core/signal/signaler0_inl.h>
-#endif  // GUM_NO_INLINE
+#  include <agrum/core/signal/signaler0_inl.h>
+#endif   // GUM_NO_INLINE

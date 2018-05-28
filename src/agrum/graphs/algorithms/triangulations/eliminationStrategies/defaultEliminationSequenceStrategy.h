@@ -71,7 +71,7 @@ namespace gum {
    *
    */
   class DefaultEliminationSequenceStrategy
-    : public UnconstrainedEliminationSequenceStrategy {
+      : public UnconstrainedEliminationSequenceStrategy {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

@@ -70,7 +70,7 @@ namespace std {
     vp.reserve(x.size());
     for (size_t i = 0; i < x.size(); ++i)
       vp.push_back(&x[i]);
-    sort(vp.begin(), vp.end(), refless);  // O(N log N)
+    sort(vp.begin(), vp.end(), refless);   // O(N log N)
     // if no adjacent pair (vp_n,vp_n+1) has *vp_n == *vp_n+1
     return std::adjacent_find(vp.begin(), vp.end(), refeq) == vp.end();
   }

@@ -21,7 +21,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // to ease parsing in IDE
-#include <agrum/BN/io/cnf/GeneralizedCNFWriter.h>
+#  include <agrum/BN/io/cnf/GeneralizedCNFWriter.h>
 
 namespace gum {
 
@@ -62,9 +62,9 @@ namespace gum {
     for (auto node : bn.nodes())
       numparam += bn.variable(node).domainSize();
 
-    Idx               clause = 0;
-    std::stringstream clausstr;
-    gum::HashTable< std::string, Idx > vartable;  // key name::label val num;
+    Idx                                clause = 0;
+    std::stringstream                  clausstr;
+    gum::HashTable< std::string, Idx > vartable;   // key name::label val num;
     gum::HashTable< std::string, Idx > protable;
 
     for (auto node : bn.nodes()) {
@@ -96,7 +96,7 @@ namespace gum {
       std::stringstream str0, str1, str2, str3;
 
       for (Idx i = 0; i < var.domainSize(); i++) {
-        std::stringstream stri;  //= bn.variable(iter).name()+"_"+
+        std::stringstream stri;   //= bn.variable(iter).name()+"_"+
         // bn.variable(iter).label( i ) ;
         stri << var.name() << "_" << var.label(i);
         str0 << vartable[stri.str()] << " ";
@@ -165,9 +165,9 @@ namespace gum {
     for (auto node : bn.nodes())
       numparam += bn.variable(node).domainSize();
 
-    Idx               clause = 0;
-    std::stringstream clausstr;
-    gum::HashTable< std::string, Idx > vartable;  // key name::label val num;
+    Idx                                clause = 0;
+    std::stringstream                  clausstr;
+    gum::HashTable< std::string, Idx > vartable;   // key name::label val num;
     gum::HashTable< std::string, Idx > protable;
 
     for (auto node : bn.nodes()) {
@@ -199,7 +199,7 @@ namespace gum {
       std::stringstream str0, str1, str2, str3;
 
       for (Idx i = 0; i < var.domainSize(); i++) {
-        std::stringstream stri;  //= bn.variable(iter).name()+"_"+
+        std::stringstream stri;   //= bn.variable(iter).name()+"_"+
         // bn.variable(iter).label( i ) ;
         stri << var.name() << "_" << var.label(i);
         str0 << vartable[stri.str()] << " ";
@@ -281,4 +281,4 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS

@@ -54,7 +54,8 @@ namespace gum {
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
   /**
-   * @class SetIteratorStaticEnd set.h <agrum/core/set.h>
+   * @class SetIteratorStaticEnd
+   * @headerfile set.h <agrum/core/set.h>
    * @brief A class used to create the static iterator used by Sets.
    * @ingroup set_group
    *
@@ -111,7 +112,8 @@ namespace gum {
   // ===========================================================================
 
   /**
-   * @class Set set.h <agrum/core/set.h>
+   * @class Set
+   * @headerfile set.h <agrum/core/set.h>
    * @brief Representation of a set
    * @ingroup basicstruct_group
    * @ingroup set_group
@@ -732,7 +734,7 @@ namespace gum {
       typename NewKey,
       typename NewAlloc = typename Alloc::template rebind< NewKey >::other >
     HashTable< Key, NewKey, NewAlloc > hashMap(const NewKey& val,
-                                               Size size = 0) const;
+                                               Size          size = 0) const;
 
     /**
      * @brief A method to create a List of NewKey from the set.
@@ -771,7 +773,8 @@ namespace gum {
   // ===========================================================================
 
   /**
-   * @class SetIteratorSafe set.h <agrum/core/set.h>
+   * @class SetIteratorSafe
+   * @headerfile set.h <agrum/core/set.h>
    * @brief Safe iterators for the Set class
    * @ingroup set_group
    *
@@ -980,7 +983,8 @@ namespace gum {
   // ===========================================================================
 
   /**
-   * @class SetIterator set.h <agrum/core/set.h>
+   * @class SetIterator
+   * @headerfile set.h <agrum/core/set.h>
    * @brief Unsafe iterators for the Set class.
    * @ingroup set_group
    *
@@ -1192,7 +1196,7 @@ namespace gum {
   /// the hash function for sets of unsigned int
   template < typename Alloc >
   class HashFunc< Set< unsigned int, Alloc > >
-    : public HashFuncBase< Set< unsigned int, Alloc > > {
+      : public HashFuncBase< Set< unsigned int, Alloc > > {
     public:
     /// computes the hashed value of a key
     Size operator()(const Set< unsigned int, Alloc >& key) const;
@@ -1201,7 +1205,7 @@ namespace gum {
   /// the hash function for sets of long
   template < typename Alloc >
   class HashFunc< Set< long, Alloc > >
-    : public HashFuncBase< Set< long, Alloc > > {
+      : public HashFuncBase< Set< long, Alloc > > {
     public:
     /// computes the hashed value of a key
     Size operator()(const Set< long, Alloc >& key) const;
@@ -1210,7 +1214,7 @@ namespace gum {
   /// the hash function for sets of unsigned long
   template < typename Alloc >
   class HashFunc< Set< unsigned long, Alloc > >
-    : public HashFuncBase< Set< unsigned long, Alloc > > {
+      : public HashFuncBase< Set< unsigned long, Alloc > > {
     public:
     /// computes the hashed value of a key
     Size operator()(const Set< unsigned long, Alloc >& key) const;
@@ -1219,7 +1223,7 @@ namespace gum {
   /// the hash function for sets of float
   template < typename Alloc >
   class HashFunc< Set< float, Alloc > >
-    : public HashFuncBase< Set< float, Alloc > > {
+      : public HashFuncBase< Set< float, Alloc > > {
     public:
     /// computes the hashed value of a key
     Size operator()(const Set< float, Alloc >& key) const;
@@ -1232,7 +1236,7 @@ namespace gum {
   /// the hash function for sets of double
   template < typename Alloc >
   class HashFunc< Set< double, Alloc > >
-    : public HashFuncBase< Set< double, Alloc > > {
+      : public HashFuncBase< Set< double, Alloc > > {
     public:
     /// computes the hashed value of a key
     Size operator()(const Set< double, Alloc >& key) const;
@@ -1258,4 +1262,4 @@ extern template class gum::Set< std::string >;
 // always include the implementation of the templates
 #include <agrum/core/set_tpl.h>
 
-#endif  // GUM_SET_H
+#endif   // GUM_SET_H

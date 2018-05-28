@@ -239,4 +239,4 @@ namespace gum_tests {
       }
     }
   };
-}
+}   // namespace gum_tests

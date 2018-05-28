@@ -48,9 +48,8 @@ namespace gum {
       // the generator does something else than just missing values
       OTHER_THINGS_THAN_REMOVE_MISSING_VALUES
     };
-    
 
-    
+
     /** @class DBRowGenerator
      * @headerfile DBRowGenerator.h <agrum/learning/database/DBRowGenerator.h>
      * @ingroup learning_database
@@ -167,7 +166,7 @@ namespace gum {
      *     return generator;
      *   }
      *
-     * 
+     *
      *   /// virtual copy constructor
      *   virtual DuplicateGenerator<ALLOC>* clone () const {
      *     return clone ( this->getAllocator () );
@@ -229,13 +228,12 @@ namespace gum {
      * };
      * @endcode
      */
-    template <template<typename> class ALLOC = std::allocator>
+    template < template < typename > class ALLOC = std::allocator >
     class DBRowGenerator {
       public:
-
       /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC<DBTranslatedValue>;
-      
+      using allocator_type = ALLOC< DBTranslatedValue >;
+
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -246,37 +244,37 @@ namespace gum {
       /** @param column_types indicates for each column whether this is a
        * continuous or a discrete one
        * @param alloc the allocator used by all the methods */
-      DBRowGenerator( const std::vector<DBTranslatedValueType,
-                                        ALLOC<DBTranslatedValueType>> column_types,
-                      const DBRowGeneratorGoal goal,
-                      const allocator_type& alloc = allocator_type () );
+      DBRowGenerator(
+        const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > >
+                                 column_types,
+        const DBRowGeneratorGoal goal,
+        const allocator_type&    alloc = allocator_type());
 
       /// copy constructor
-      DBRowGenerator( const DBRowGenerator<ALLOC>& from );
+      DBRowGenerator(const DBRowGenerator< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      DBRowGenerator( const DBRowGenerator<ALLOC>& from,
-                      const allocator_type& alloc );
-      
+      DBRowGenerator(const DBRowGenerator< ALLOC >& from,
+                     const allocator_type&          alloc);
+
       /// move constructor
-      DBRowGenerator( DBRowGenerator<ALLOC>&& from );
+      DBRowGenerator(DBRowGenerator< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      DBRowGenerator( DBRowGenerator<ALLOC>&& from,
-                      const allocator_type& alloc );
+      DBRowGenerator(DBRowGenerator< ALLOC >&& from, const allocator_type& alloc);
 
       /// virtual copy constructor
-      virtual DBRowGenerator<ALLOC>* clone () const = 0;
-      
+      virtual DBRowGenerator< ALLOC >* clone() const = 0;
+
       /// virtual copy constructor with a given allocator
-      virtual DBRowGenerator<ALLOC>*
-      clone ( const allocator_type& alloc ) const = 0;
+      virtual DBRowGenerator< ALLOC >*
+        clone(const allocator_type& alloc) const = 0;
 
       /// destructor
       virtual ~DBRowGenerator();
 
       /// @}
-      
+
 
       // ##########################################################################
       /// @name Accessors / Modifiers
@@ -291,10 +289,10 @@ namespace gum {
       /// sets the input row from which the generator will create its output rows
       /** @return a Boolean indicating whether, from this input DBRow, the
        * DBRowGenerator is capable of outputing at least one row or not */
-      bool setInputRow( const DBRow<DBTranslatedValue,ALLOC>& row );
+      bool setInputRow(const DBRow< DBTranslatedValue, ALLOC >& row);
 
       /// generate new rows from the input row
-      virtual const DBRow<DBTranslatedValue,ALLOC>& generate() = 0;
+      virtual const DBRow< DBTranslatedValue, ALLOC >& generate() = 0;
 
       /// decrease the number of remaining output rows
       /** When method setInputRow is performed, the DBRowGenerator knows how
@@ -307,7 +305,7 @@ namespace gum {
       /// resets the generator. There are therefore no more ouput row to generate
       virtual void reset();
 
-      /** @brief sets the columns of interest: the output DBRow needs only 
+      /** @brief sets the columns of interest: the output DBRow needs only
        * contain correct values fot these columns
        *
        * This method is useful, e.g., for EM-like algorithms that need to know
@@ -321,10 +319,10 @@ namespace gum {
        * columns 0, 3 and 4 are guaranteed to have correct values (columns are
        * always indexed, starting from 0).
        */
-      virtual void setColumnsOfInterest (
-        const std::vector<std::size_t,ALLOC<std::size_t>>& cols_of_interest );
+      virtual void setColumnsOfInterest(
+        const std::vector< std::size_t, ALLOC< std::size_t > >& cols_of_interest);
 
-      /** @brief sets the columns of interest: the output DBRow needs only 
+      /** @brief sets the columns of interest: the output DBRow needs only
        * contain correct values fot these columns
        *
        * This method is useful, e.g., for EM-like algorithms that need to know
@@ -338,52 +336,50 @@ namespace gum {
        * columns 0, 3 and 4 are guaranteed to have correct values (columns are
        * always indexed, starting from 0).
        */
-      virtual void setColumnsOfInterest (
-        std::vector<std::size_t,ALLOC<std::size_t>>&& cols_of_interest );
+      virtual void setColumnsOfInterest(
+        std::vector< std::size_t, ALLOC< std::size_t > >&& cols_of_interest);
 
       /// returns the current set of columns of interest
-      const std::vector<std::size_t,ALLOC<std::size_t>>&
-      columnsOfInterest () const;
+      const std::vector< std::size_t, ALLOC< std::size_t > >&
+        columnsOfInterest() const;
 
       /// returns the allocator used
-      allocator_type getAllocator () const;
+      allocator_type getAllocator() const;
 
       /// returns the goal of the DBRowGenerator
-      DBRowGeneratorGoal goal () const;
+      DBRowGeneratorGoal goal() const;
 
       /// @}
-      
 
-    protected:
-      
+
+      protected:
       /// the number of output rows still to retrieve through the generate method
-      std::size_t _nb_remaining_output_rows { std::size_t(0) };
+      std::size_t _nb_remaining_output_rows{std::size_t(0)};
 
       /// the types of the columns in the DatabaseTable
       /** This is useful to determine whether we need to use the .discr_val
        * field or the .cont_val field in DBTranslatedValue instances. */
-      std::vector<DBTranslatedValueType,
-                  ALLOC<DBTranslatedValueType>> _column_types;
+      std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > >
+        _column_types;
 
       /// the set of columns of interest
-      std::vector<std::size_t,ALLOC<std::size_t>> _columns_of_interest;
+      std::vector< std::size_t, ALLOC< std::size_t > > _columns_of_interest;
 
       /// the goal of the DBRowGenerator (just remove missing values or not)
-      DBRowGeneratorGoal
-      _goal { DBRowGeneratorGoal::OTHER_THINGS_THAN_REMOVE_MISSING_VALUES };
-    
+      DBRowGeneratorGoal _goal{
+        DBRowGeneratorGoal::OTHER_THINGS_THAN_REMOVE_MISSING_VALUES};
+
 
       /// copy constructor
-      DBRowGenerator<ALLOC>& operator=( const DBRowGenerator<ALLOC>& );
+      DBRowGenerator< ALLOC >& operator=(const DBRowGenerator< ALLOC >&);
 
       /// move constructor
-      DBRowGenerator<ALLOC>& operator=( DBRowGenerator<ALLOC>&& );
+      DBRowGenerator< ALLOC >& operator=(DBRowGenerator< ALLOC >&&);
 
-      /** @brief the method that computes the set of DBRow instances to output 
+      /** @brief the method that computes the set of DBRow instances to output
        * after method setInputRow has been called */
       virtual std::size_t
-      _computeRows( const DBRow<DBTranslatedValue,ALLOC>& row ) = 0;
-
+        _computeRows(const DBRow< DBTranslatedValue, ALLOC >& row) = 0;
     };
 
   } /* namespace learning */

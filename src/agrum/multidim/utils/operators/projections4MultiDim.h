@@ -58,8 +58,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   MultiDimArray< GUM_SCALAR >*
-  projectMaxMultiDimArray(const MultiDimArray< GUM_SCALAR >*    table,
-                          const Set< const DiscreteVariable* >& del_vars);
+    projectMaxMultiDimArray(const MultiDimArray< GUM_SCALAR >*    table,
+                            const Set< const DiscreteVariable* >& del_vars);
 
   /**
    * @brief a specialized function for projecting a multiDimArray using a Max
@@ -80,8 +80,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   MultiDimImplementation< GUM_SCALAR >*
-  projectMaxMultiDimArray(const MultiDimImplementation< GUM_SCALAR >* table,
-                          const Set< const DiscreteVariable* >&       del_vars);
+    projectMaxMultiDimArray(const MultiDimImplementation< GUM_SCALAR >* table,
+                            const Set< const DiscreteVariable* >&       del_vars);
 
   /**
    * @brief a specialized function for projecting a multiDimArray using a Max
@@ -101,9 +101,9 @@ namespace gum {
    * projection.
    */
   template < typename GUM_SCALAR >
-  MultiDimArray< GUM_SCALAR* >*
-  projectMaxMultiDimArray4Pointers(const MultiDimArray< GUM_SCALAR* >*   table,
-                                   const Set< const DiscreteVariable* >& del_vars);
+  MultiDimArray< GUM_SCALAR* >* projectMaxMultiDimArray4Pointers(
+    const MultiDimArray< GUM_SCALAR* >*   table,
+    const Set< const DiscreteVariable* >& del_vars);
 
   /**
    * @brief a specialized function for projecting a multiDimArray using a Max
@@ -152,8 +152,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   MultiDimArray< GUM_SCALAR >*
-  projectMinMultiDimArray(const MultiDimArray< GUM_SCALAR >*    table,
-                          const Set< const DiscreteVariable* >& del_vars);
+    projectMinMultiDimArray(const MultiDimArray< GUM_SCALAR >*    table,
+                            const Set< const DiscreteVariable* >& del_vars);
 
   /**
    * @brief a specialized function for projecting a multiDimArray using a Min
@@ -174,8 +174,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   MultiDimImplementation< GUM_SCALAR >*
-  projectMinMultiDimArray(const MultiDimImplementation< GUM_SCALAR >* table,
-                          const Set< const DiscreteVariable* >&       del_vars);
+    projectMinMultiDimArray(const MultiDimImplementation< GUM_SCALAR >* table,
+                            const Set< const DiscreteVariable* >&       del_vars);
 
   /**
    * @brief a specialized function for projecting a multiDimArray using a Min
@@ -195,9 +195,9 @@ namespace gum {
    * projection.
    */
   template < typename GUM_SCALAR >
-  MultiDimArray< GUM_SCALAR* >*
-  projectMinMultiDimArray4Pointers(const MultiDimArray< GUM_SCALAR* >*   table,
-                                   const Set< const DiscreteVariable* >& del_vars);
+  MultiDimArray< GUM_SCALAR* >* projectMinMultiDimArray4Pointers(
+    const MultiDimArray< GUM_SCALAR* >*   table,
+    const Set< const DiscreteVariable* >& del_vars);
 
   /**
    * @brief a specialized function for projecting a multiDimArray using a Min
@@ -246,8 +246,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   MultiDimArray< GUM_SCALAR >*
-  projectSumMultiDimArray(const MultiDimArray< GUM_SCALAR >*    table,
-                          const Set< const DiscreteVariable* >& del_vars);
+    projectSumMultiDimArray(const MultiDimArray< GUM_SCALAR >*    table,
+                            const Set< const DiscreteVariable* >& del_vars);
 
   /**
    * @brief a specialized function for projecting a multiDimArray using a
@@ -268,8 +268,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   MultiDimImplementation< GUM_SCALAR >*
-  projectSumMultiDimArray(const MultiDimImplementation< GUM_SCALAR >* table,
-                          const Set< const DiscreteVariable* >&       del_vars);
+    projectSumMultiDimArray(const MultiDimImplementation< GUM_SCALAR >* table,
+                            const Set< const DiscreteVariable* >&       del_vars);
 
   /**
    * @brief a specialized function for projecting a multiDimArray using a
@@ -289,9 +289,9 @@ namespace gum {
    * projection.
    */
   template < typename GUM_SCALAR >
-  MultiDimArray< GUM_SCALAR* >*
-  projectSumMultiDimArray4Pointers(const MultiDimArray< GUM_SCALAR* >*   table,
-                                   const Set< const DiscreteVariable* >& del_vars);
+  MultiDimArray< GUM_SCALAR* >* projectSumMultiDimArray4Pointers(
+    const MultiDimArray< GUM_SCALAR* >*   table,
+    const Set< const DiscreteVariable* >& del_vars);
 
   /**
    * @brief a specialized function for projecting a multiDimArray using a
@@ -340,8 +340,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   MultiDimArray< GUM_SCALAR >*
-  projectProductMultiDimArray(const MultiDimArray< GUM_SCALAR >*    table,
-                              const Set< const DiscreteVariable* >& del_vars);
+    projectProductMultiDimArray(const MultiDimArray< GUM_SCALAR >*    table,
+                                const Set< const DiscreteVariable* >& del_vars);
 
   /**
    * @brief a specialized function for projecting a multiDimArray using
@@ -362,8 +362,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   MultiDimImplementation< GUM_SCALAR >*
-  projectProductMultiDimArray(const MultiDimImplementation< GUM_SCALAR >* table,
-                              const Set< const DiscreteVariable* >& del_vars);
+    projectProductMultiDimArray(const MultiDimImplementation< GUM_SCALAR >* table,
+                                const Set< const DiscreteVariable* >& del_vars);
 
   /**
    * @brief a specialized function for projecting a multiDimArray using
@@ -474,9 +474,9 @@ namespace gum {
    * projection.
    */
   template < typename GUM_SCALAR >
-  MultiDimFunctionGraph< GUM_SCALAR >*
-  projectMaxMultiDimFunctionGraph(const MultiDimFunctionGraph< GUM_SCALAR >* table,
-                                  const Set< const DiscreteVariable* >& del_vars);
+  MultiDimFunctionGraph< GUM_SCALAR >* projectMaxMultiDimFunctionGraph(
+    const MultiDimFunctionGraph< GUM_SCALAR >* table,
+    const Set< const DiscreteVariable* >&      del_vars);
 
   /**
    * @brief a specialized function for projecting a multiDimFunctionGraph using
@@ -521,9 +521,9 @@ namespace gum {
    * projection.
    */
   template < typename GUM_SCALAR >
-  MultiDimFunctionGraph< GUM_SCALAR >*
-  projectMinMultiDimFunctionGraph(const MultiDimFunctionGraph< GUM_SCALAR >* table,
-                                  const Set< const DiscreteVariable* >& del_vars);
+  MultiDimFunctionGraph< GUM_SCALAR >* projectMinMultiDimFunctionGraph(
+    const MultiDimFunctionGraph< GUM_SCALAR >* table,
+    const Set< const DiscreteVariable* >&      del_vars);
 
   /**
    * @brief a specialized function for projecting a multiDimFunctionGraph
@@ -568,9 +568,9 @@ namespace gum {
    * projection.
    */
   template < typename GUM_SCALAR >
-  MultiDimFunctionGraph< GUM_SCALAR >*
-  projectSumMultiDimFunctionGraph(const MultiDimFunctionGraph< GUM_SCALAR >* table,
-                                  const Set< const DiscreteVariable* >& del_vars);
+  MultiDimFunctionGraph< GUM_SCALAR >* projectSumMultiDimFunctionGraph(
+    const MultiDimFunctionGraph< GUM_SCALAR >* table,
+    const Set< const DiscreteVariable* >&      del_vars);
 
   /**
    * @brief a specialized function for projecting a multiDimFunctionGraph using
@@ -647,27 +647,27 @@ namespace gum {
   /// The function to be used to project a MultiDimImplementation using a Max
   template < typename GUM_SCALAR >
   MultiDimImplementation< GUM_SCALAR >*
-  projectMax(const MultiDimImplementation< GUM_SCALAR >& table,
-             const Set< const DiscreteVariable* >&       del_vars);
+    projectMax(const MultiDimImplementation< GUM_SCALAR >& table,
+               const Set< const DiscreteVariable* >&       del_vars);
 
   /// The function to be used to project a MultiDimImplementation using a Min
   template < typename GUM_SCALAR >
   MultiDimImplementation< GUM_SCALAR >*
-  projectMin(const MultiDimImplementation< GUM_SCALAR >& table,
-             const Set< const DiscreteVariable* >&       del_vars);
+    projectMin(const MultiDimImplementation< GUM_SCALAR >& table,
+               const Set< const DiscreteVariable* >&       del_vars);
 
   /// The function to be used to project a MultiDimImplementation using a Sum
   template < typename GUM_SCALAR >
   MultiDimImplementation< GUM_SCALAR >*
-  projectSum(const MultiDimImplementation< GUM_SCALAR >& table,
-             const Set< const DiscreteVariable* >&       del_vars);
+    projectSum(const MultiDimImplementation< GUM_SCALAR >& table,
+               const Set< const DiscreteVariable* >&       del_vars);
 
   /// The function to be used to project a MultiDimImplementation using a
   /// Product
   template < typename GUM_SCALAR >
   MultiDimImplementation< GUM_SCALAR >*
-  projectProduct(const MultiDimImplementation< GUM_SCALAR >& table,
-                 const Set< const DiscreteVariable* >&       del_vars);
+    projectProduct(const MultiDimImplementation< GUM_SCALAR >& table,
+                   const Set< const DiscreteVariable* >&       del_vars);
 
 
   // ==========================================================================

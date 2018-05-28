@@ -105,13 +105,12 @@ namespace gum {
      * into the DBRowGeneratorSet, only one while loop is needed to
      * parse all the generated output DBRow instances.
      */
-    template <template<typename> class ALLOC = std::allocator>
+    template < template < typename > class ALLOC = std::allocator >
     class DBRowGeneratorSet {
-    public:
-
+      public:
       /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC<DBTranslatedValue>;
-      
+      using allocator_type = ALLOC< DBTranslatedValue >;
+
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -119,27 +118,27 @@ namespace gum {
       /// @{
 
       /// default constructor
-      DBRowGeneratorSet( const allocator_type& alloc = allocator_type () );
+      DBRowGeneratorSet(const allocator_type& alloc = allocator_type());
 
       /// copy constructor
-      DBRowGeneratorSet(const DBRowGeneratorSet<ALLOC>& from);
+      DBRowGeneratorSet(const DBRowGeneratorSet< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      DBRowGeneratorSet(const DBRowGeneratorSet<ALLOC>& from,
-                        const allocator_type& alloc);
-      
+      DBRowGeneratorSet(const DBRowGeneratorSet< ALLOC >& from,
+                        const allocator_type&             alloc);
+
       /// move constructor
-      DBRowGeneratorSet(DBRowGeneratorSet<ALLOC>&& from);
+      DBRowGeneratorSet(DBRowGeneratorSet< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      DBRowGeneratorSet(DBRowGeneratorSet<ALLOC>&& from,
-                        const allocator_type& alloc);
+      DBRowGeneratorSet(DBRowGeneratorSet< ALLOC >&& from,
+                        const allocator_type&        alloc);
 
       /// virtual copy constructor
-      virtual DBRowGeneratorSet<ALLOC>* clone () const;
-      
+      virtual DBRowGeneratorSet< ALLOC >* clone() const;
+
       /// virtual copy constructor with a given allocator
-      virtual DBRowGeneratorSet<ALLOC>* clone (const allocator_type& alloc) const;
+      virtual DBRowGeneratorSet< ALLOC >* clone(const allocator_type& alloc) const;
 
       /// destructor
       virtual ~DBRowGeneratorSet();
@@ -154,27 +153,26 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBRowGeneratorSet<ALLOC>&
-      operator=(const DBRowGeneratorSet<ALLOC>& from );
+      DBRowGeneratorSet< ALLOC >&
+        operator=(const DBRowGeneratorSet< ALLOC >& from);
 
       /// move operator
-      DBRowGeneratorSet<ALLOC>&
-      operator=(DBRowGeneratorSet<ALLOC>&& from );
+      DBRowGeneratorSet< ALLOC >& operator=(DBRowGeneratorSet< ALLOC >&& from);
 
       /// returns the ith generator
       /** @warning this operator assumes that there are at least i+1 generators.
        * So, it won't check that the ith generator actually exists. If unsure,
        * use method generatorSafe that performs this check. */
-      DBRowGenerator<ALLOC>& operator[](const std::size_t i);
+      DBRowGenerator< ALLOC >& operator[](const std::size_t i);
 
       /// returns the ith generator
       /** @warning this operator assumes that there are at least i+1 generators.
        * So, it won't check that the ith generator actually exists. If unsure,
        * use method generatorSafe that performs this check. */
-      const DBRowGenerator<ALLOC>& operator[](const std::size_t i) const;
+      const DBRowGenerator< ALLOC >& operator[](const std::size_t i) const;
 
       /// @}
-      
+
 
       // ##########################################################################
       /// @name Accessors / Modifiers
@@ -187,23 +185,23 @@ namespace gum {
        * started generating output rows and is currently in a state where the
        * generation is not completed yet (i.e., we still need to call the
        * generate() method to complete it). */
-      template <template<template<typename> class> class Generator>
-      void insertGenerator(const Generator<ALLOC>& generator);
+      template < template < template < typename > class > class Generator >
+      void insertGenerator(const Generator< ALLOC >& generator);
 
       /// inserts a new generator at the ith position of the set
       /** @throw OperationNotAllowed is raised if the generator set has already
        * started generating output rows and is currently in a state where the
        * generation is not completed yet (i.e., we still need to call the
        * generate() method to complete it). */
-       template <template<template<typename> class> class Generator>
-      void insertGenerator(const Generator<ALLOC>& generator,
-                           const std::size_t i );
+      template < template < template < typename > class > class Generator >
+      void insertGenerator(const Generator< ALLOC >& generator,
+                           const std::size_t         i);
 
       /// returns the number of generators
       std::size_t nbGenerators() const noexcept;
 
       /// returns the number of generators (alias for nbGenerators)
-      std::size_t size () const noexcept;
+      std::size_t size() const noexcept;
 
       /** @brief returns true if there are still rows that can be output
        * by the set of generators */
@@ -212,40 +210,18 @@ namespace gum {
       /// sets the input row from which the generators will create new rows
       /** @return true if the set of generators is able to generate output
        * rows from the input row passed in argument */
-      bool setInputRow(const DBRow<DBTranslatedValue,ALLOC>& input_row );
+      bool setInputRow(const DBRow< DBTranslatedValue, ALLOC >& input_row);
 
       /// generates a new output row from the input row
-      const DBRow<DBTranslatedValue,ALLOC>& generate();
+      const DBRow< DBTranslatedValue, ALLOC >& generate();
 
       /// resets all the generators
       void reset();
 
       /// removes all the generators
-      void clear ();
-      
-      /** @brief sets the columns of interest: the output DBRow needs only 
-       * contain correct values fot these columns
-       *
-       * This method is useful, e.g., for EM-like algorithms that need to know
-       * which unobserved variables/values need be filled. In this case, the
-       * DBRowGenerator instances contained in the DBRowGeneratorSet still
-       * output DBRows with the same columns as the DatabaseTable, but only the
-       * columns of these DBRows corresponding to those passed in argument to
-       * Method setColumnsOfInterest are meaningful. For instance, if a
-       * DatabaseTable contains 10 columns and Method setColumnsOfInterest() is
-       * applied with vector<> { 0, 3, 4 }, then the DBRowGenerator instances
-       * contained in the DBRowGeneratorSet will output DBRows with 10 columns,
-       * in which only columns 0, 3 and 4 are guaranteed to have correct values
-       * (columns are always indexed, starting from 0).
-       *
-       * @throw OperationNotAllowed is raised if the generator set has already
-       * started generating output rows and is currently in a state where the
-       * generation is not completed yet (i.e., we still need to call the
-       * generate() method to complete it). */
-      void setColumnsOfInterest (
-        const std::vector<std::size_t,ALLOC<std::size_t>>& cols_of_interest );
+      void clear();
 
-      /** @brief sets the columns of interest: the output DBRow needs only 
+      /** @brief sets the columns of interest: the output DBRow needs only
        * contain correct values fot these columns
        *
        * This method is useful, e.g., for EM-like algorithms that need to know
@@ -264,31 +240,53 @@ namespace gum {
        * started generating output rows and is currently in a state where the
        * generation is not completed yet (i.e., we still need to call the
        * generate() method to complete it). */
-       void setColumnsOfInterest (
-        std::vector<std::size_t,ALLOC<std::size_t>>&& cols_of_interest );
+      void setColumnsOfInterest(
+        const std::vector< std::size_t, ALLOC< std::size_t > >& cols_of_interest);
+
+      /** @brief sets the columns of interest: the output DBRow needs only
+       * contain correct values fot these columns
+       *
+       * This method is useful, e.g., for EM-like algorithms that need to know
+       * which unobserved variables/values need be filled. In this case, the
+       * DBRowGenerator instances contained in the DBRowGeneratorSet still
+       * output DBRows with the same columns as the DatabaseTable, but only the
+       * columns of these DBRows corresponding to those passed in argument to
+       * Method setColumnsOfInterest are meaningful. For instance, if a
+       * DatabaseTable contains 10 columns and Method setColumnsOfInterest() is
+       * applied with vector<> { 0, 3, 4 }, then the DBRowGenerator instances
+       * contained in the DBRowGeneratorSet will output DBRows with 10 columns,
+       * in which only columns 0, 3 and 4 are guaranteed to have correct values
+       * (columns are always indexed, starting from 0).
+       *
+       * @throw OperationNotAllowed is raised if the generator set has already
+       * started generating output rows and is currently in a state where the
+       * generation is not completed yet (i.e., we still need to call the
+       * generate() method to complete it). */
+      void setColumnsOfInterest(
+        std::vector< std::size_t, ALLOC< std::size_t > >&& cols_of_interest);
 
       /// returns the current set of columns of interest
-      const std::vector<std::size_t,ALLOC<std::size_t>>&
-      columnsOfInterest () const;
+      const std::vector< std::size_t, ALLOC< std::size_t > >&
+        columnsOfInterest() const;
 
       /// returns the allocator used
-      allocator_type getAllocator () const;
+      allocator_type getAllocator() const;
 
       /// @}
 
-      
+
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-    
-    private:
+
+      private:
       // the vector of all the generators
-      std::vector<DBRowGenerator<ALLOC>*,
-                  ALLOC<DBRowGenerator<ALLOC>*>> __generators;
+      std::vector< DBRowGenerator< ALLOC >*, ALLOC< DBRowGenerator< ALLOC >* > >
+        __generators;
 
       // the number of generators
-      std::size_t __nb_generators { std::size_t(0) };
+      std::size_t __nb_generators{std::size_t(0)};
 
       // the next output row to return when method generate is called
-      const DBRow<DBTranslatedValue,ALLOC>* __output_row { nullptr };
+      const DBRow< DBTranslatedValue, ALLOC >* __output_row{nullptr};
 
       // the generation of output rows can be viewed as the traversal of a
       // tree: each node of the tree correspond to the input row received by
@@ -309,7 +307,7 @@ namespace gum {
       // discrimination: when its cells equal 0, we need to call setInputDBrow()
       // first, else when they equal 1, we just need to call the generate()
       // method.
-      std::vector<int,ALLOC<int>> __setInputRow_performed;
+      std::vector< int, ALLOC< int > > __setInputRow_performed;
 
 
       /// parse the row generation tree to produce a new row
@@ -318,11 +316,10 @@ namespace gum {
        * we call this method, passing in argument the input_row
        * @param i indicate the generator from which we start the traversal
        */
-      bool __produceNextRow ( const DBRow<DBTranslatedValue,ALLOC>* input_row,
-                              std::size_t i );
-      
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+      bool __produceNextRow(const DBRow< DBTranslatedValue, ALLOC >* input_row,
+                            std::size_t                              i);
 
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 
   } /* namespace learning */

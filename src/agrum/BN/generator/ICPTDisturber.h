@@ -32,7 +32,8 @@
 #include <agrum/multidim/potential.h>
 
 namespace gum {
-  /** @class ICPTDisturber ICPTDisturber.h <agrum/BN/generator/ICPTDisturber.h>
+  /** @class ICPTDisturber
+   * @headerfile ICPTDisturber.h <agrum/BN/generator/ICPTDisturber.h>
    * @brief Abstract class for Modifying Conditional Probability Tables.
    * @ingroup bn_generator
    *
@@ -93,4 +94,4 @@ namespace gum {
 } /* namespace gum */
 
 #include <agrum/BN/generator/ICPTDisturber_tpl.h>
-#endif  // GUM_I_CPT_DISTURBER_H
+#endif   // GUM_I_CPT_DISTURBER_H

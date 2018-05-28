@@ -43,10 +43,11 @@ namespace gum {
   namespace formula {
     class Scanner;
     class Parser;
-  }
+  }   // namespace formula
 
   /**
-   * @class FormulaPart formula.h <agrum/core/math/formula.h>
+   * @class FormulaPart
+   * @headerfile formula.h <agrum/core/math/formula.h>
    * @brief Represents part of a formula.
    * @ingroup math_group
    *
@@ -530,7 +531,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/core/math/formula_inl.h>
-#endif  // GUM_NO_INLINE
+#  include <agrum/core/math/formula_inl.h>
+#endif   // GUM_NO_INLINE
 
 #endif /* GUM_MATH_FORMULA_H */

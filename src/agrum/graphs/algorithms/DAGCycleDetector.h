@@ -102,7 +102,8 @@ namespace gum {
     };
 
     /**
-     * @class ArcAdd DAGCycleDetector.h <agrum/graphs/DAGCycleDetector.h>
+     * @class ArcAdd
+     * @headerfile DAGCycleDetector.h <agrum/graphs/DAGCycleDetector.h>
      * @brief the class to indicate that we wish to add a new arc
      * @ingroup graph_group
      */
@@ -141,7 +142,8 @@ namespace gum {
     };
 
     /**
-     * @class ArcDel DAGCycleDetector.h <agrum/core/DAGCycleDetector.h>
+     * @class ArcDel
+     * @headerfile DAGCycleDetector.h <agrum/core/DAGCycleDetector.h>
      * @brief the class to indicate that we wish to remove an arc
      * @ingroup graph_group
      */
@@ -179,7 +181,8 @@ namespace gum {
       /// @}
     };
 
-    /** @class ArcReverse DAGCycleDetector.h <agrum/graphs/DAGCycleDetector.h>
+    /** @class ArcReverse
+     * @headerfile DAGCycleDetector.h <agrum/graphs/DAGCycleDetector.h>
      * @brief the class to indicate that we wish to reverse an arc
      * @ingroup graph_group
      */
@@ -338,7 +341,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/graphs/algorithms/DAGCycleDetector_inl.h>
-#endif  // GUM_NOINLINE
+#  include <agrum/graphs/algorithms/DAGCycleDetector_inl.h>
+#endif   // GUM_NOINLINE
 
-#endif  // GUM_DAG_CYCLE_DETECTOR_H
+#endif   // GUM_DAG_CYCLE_DETECTOR_H

@@ -118,4 +118,4 @@ namespace gum_tests {
       node1.eraseLink(gum::BinTreeDir::RIGHT_CHILD);
     }
   };
-}
+}   // namespace gum_tests

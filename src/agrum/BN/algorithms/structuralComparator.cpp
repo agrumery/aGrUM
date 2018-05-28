@@ -71,8 +71,8 @@ namespace gum {
       }
     }
     // TN = #possible arcs - #existing arcs
-    __true_none = ref.size() * (ref.size() - 1) - __true_arc - __misoriented_arc -
-                  __wrong_arc_none - __wrong_none_arc;
+    __true_none = ref.size() * (ref.size() - 1) - __true_arc - __misoriented_arc
+                  - __wrong_arc_none - __wrong_none_arc;
   }
 
   void StructuralComparator::compare(const UndiGraph& ref, const UndiGraph& test) {
@@ -106,13 +106,11 @@ namespace gum {
       }
     }
     for (const Edge& edge : test.edges()) {
-      if (!ref.existsEdge(edge)) {
-        ++__wrong_edge_none;
-      }
+      if (!ref.existsEdge(edge)) { ++__wrong_edge_none; }
     }
     // TN = #possible edges - #existing edges
-    __true_none = ref.size() * (ref.size() - 1) / 2 - __true_edge -
-                  __wrong_edge_none - __wrong_none_edge;
+    __true_none = ref.size() * (ref.size() - 1) / 2 - __true_edge
+                  - __wrong_edge_none - __wrong_none_edge;
   }
 
   void StructuralComparator::compare(const MixedGraph& ref,
@@ -152,35 +150,35 @@ namespace gum {
     for (const Edge& edge : ref.edges()) {
       if (test.existsEdge(edge)) {
         ++__true_edge;
-      } else if (test.existsArc(edge.first(), edge.second()) ||
-                 test.existsArc(edge.second(), edge.first())) {
+      } else if (test.existsArc(edge.first(), edge.second())
+                 || test.existsArc(edge.second(), edge.first())) {
         ++__wrong_arc_edge;
       } else {
         ++__wrong_none_edge;
       }
     }
     for (const Arc& arc : test.arcs()) {
-      if (!ref.existsArc(arc) && !ref.existsArc(arc.head(), arc.tail()) &&
-          !ref.existsEdge(arc.tail(), arc.head())) {
+      if (!ref.existsArc(arc) && !ref.existsArc(arc.head(), arc.tail())
+          && !ref.existsEdge(arc.tail(), arc.head())) {
         ++__wrong_arc_none;
       }
     }
     for (const Edge& edge : test.edges()) {
-      if (!ref.existsEdge(edge) && !ref.existsArc(edge.first(), edge.second()) &&
-          !ref.existsArc(edge.second(), edge.first())) {
+      if (!ref.existsEdge(edge) && !ref.existsArc(edge.first(), edge.second())
+          && !ref.existsArc(edge.second(), edge.first())) {
         ++__wrong_edge_none;
       }
     }
     // TN = #possible edges - #existing edges
-    __true_none = ref.size() * (ref.size() - 1) / 2 - __true_edge -
-                  __wrong_edge_none - __wrong_none_edge - __true_arc -
-                  __misoriented_arc - __wrong_arc_none - __wrong_none_arc;
+    __true_none = ref.size() * (ref.size() - 1) / 2 - __true_edge
+                  - __wrong_edge_none - __wrong_none_edge - __true_arc
+                  - __misoriented_arc - __wrong_arc_none - __wrong_none_arc;
   }
 
   double StructuralComparator::precision_skeleton() const {
     double tp, fp, precision;
-    tp = __true_arc + __misoriented_arc + __true_edge + __wrong_edge_arc +
-         __wrong_arc_edge;
+    tp = __true_arc + __misoriented_arc + __true_edge + __wrong_edge_arc
+         + __wrong_arc_edge;
     fp = __wrong_arc_none + __wrong_edge_none;
     precision = tp / (tp + fp);
     return precision;
@@ -188,8 +186,8 @@ namespace gum {
 
   double StructuralComparator::recall_skeleton() const {
     double tp, fn, recall;
-    tp = __true_arc + __misoriented_arc + __true_edge + __wrong_edge_arc +
-         __wrong_arc_edge;
+    tp = __true_arc + __misoriented_arc + __true_edge + __wrong_edge_arc
+         + __wrong_arc_edge;
     fn = __wrong_none_arc + __wrong_none_edge;
     recall = tp / (tp + fn);
     return recall;
@@ -197,8 +195,8 @@ namespace gum {
 
   double StructuralComparator::f_score_skeleton() const {
     double tp, fp, fn, precision, recall, f_score;
-    tp = __true_arc + __misoriented_arc + __true_edge + __wrong_edge_arc +
-         __wrong_arc_edge;
+    tp = __true_arc + __misoriented_arc + __true_edge + __wrong_edge_arc
+         + __wrong_arc_edge;
     fp = __wrong_arc_none + __wrong_edge_none;
     fn = __wrong_none_arc + __wrong_none_edge;
 
@@ -211,8 +209,8 @@ namespace gum {
   double StructuralComparator::precision() const {
     double tp, fp, precision;
     tp = __true_arc + __true_edge;
-    fp = __wrong_edge_arc + __wrong_arc_edge + __wrong_arc_none +
-         __wrong_edge_none + __misoriented_arc;
+    fp = __wrong_edge_arc + __wrong_arc_edge + __wrong_arc_none + __wrong_edge_none
+         + __misoriented_arc;
     precision = tp / (tp + fp);
     return precision;
   }
@@ -228,8 +226,8 @@ namespace gum {
   double StructuralComparator::f_score() const {
     double tp, fp, fn, precision, recall, f_score;
     tp = __true_arc + __true_edge;
-    fp = __wrong_edge_arc + __wrong_arc_edge + __wrong_arc_none +
-         __wrong_edge_none + __misoriented_arc;
+    fp = __wrong_edge_arc + __wrong_arc_edge + __wrong_arc_none + __wrong_edge_none
+         + __misoriented_arc;
     fn = __wrong_none_arc + __wrong_none_edge;
 
     precision = tp / (tp + fp);

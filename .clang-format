@@ -5,34 +5,48 @@
 BasedOnStyle: LLVM
 
 Standard: Cpp11
-ColumnLimit: 83
 
+ColumnLimit: 83
 MaxEmptyLinesToKeep: 2
+KeepEmptyLinesAtTheStartOfBlocks: false
+ReflowComments: true
+CommentPragmas: "\\@headerfile"
+
+IndentPPDirectives: AfterHash
+BreakBeforeBraces: Attach
+AlwaysBreakTemplateDeclarations: true
+BreakBeforeBinaryOperators: NonAssignment
+BreakBeforeInheritanceComma: true
+BreakBeforeTernaryOperators: true
+BreakConstructorInitializersBeforeComma: true
+BreakStringLiterals: true
+BreakConstructorInitializers: AfterColon
+AlwaysBreakBeforeMultilineStrings: false
+AlwaysBreakTemplateDeclarations: true
 
 IndentWidth: 2
 ContinuationIndentWidth: 2
 UseTab: Never
-# for future
-#IndentPPDirectives: AfterHash
-
 AccessModifierOffset: 0
 IndentCaseLabels: true
+IndentWrappedFunctionNames: true
 NamespaceIndentation: All
 
 SpacesBeforeTrailingComments: 2
-
+SpacesInAngles: true
 Cpp11BracedListStyle: true
-BreakBeforeBraces: Attach
 SpacesInParentheses: false
 SpaceInEmptyParentheses: false
+SpacesInSquareBrackets: false
+SpaceAfterCStyleCast: false
+SpacesInCStyleCastParentheses: false
+SpaceAfterTemplateKeyword: true
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeParens: ControlStatements
+SpaceInEmptyParentheses: false
+SpacesBeforeTrailingComments: 3
+SpacesInContainerLiterals: false
 
-AlwaysBreakTemplateDeclarations: true
-BreakBeforeBinaryOperators: NonAssignment
-BreakConstructorInitializersBeforeComma: true
-BreakBeforeBinaryOperators: false
-SpacesInAngles: true
-#clang-format-4.0
-#BreakStringLiterals: true
 
 PointerAlignment: Left
 AlignAfterOpenBracket: Align
@@ -40,8 +54,8 @@ AlignConsecutiveAssignments: false
 AlignOperands: true
 AlignEscapedNewlinesLeft: true
 AlignTrailingComments: true
-#for clang-format-3.9
 AlignConsecutiveDeclarations: true
+AllowAllParametersOfDeclarationOnNextLine: true
 
 BinPackArguments: false
 BinPackParameters: false
@@ -49,6 +63,8 @@ BinPackParameters: false
 AllowShortFunctionsOnASingleLine: All
 AllowShortIfStatementsOnASingleLine: true
 AllowShortLoopsOnASingleLine: false
+AllowShortBlocksOnASingleLine: true
+AllowShortCaseLabelsOnASingleLine: true
 
-#clang-format-4.0
-#SortIncludes: false
+SortIncludes: false
+SortUsingDeclarations: false

@@ -27,7 +27,7 @@
 #include <agrum/core/hashTable.h>
 
 #ifndef NDEBUG
-#include <agrum/core/debug.h>
+#  include <agrum/core/debug.h>
 #endif
 
 namespace gum {
@@ -40,7 +40,7 @@ namespace gum {
     if (first_time) {
       first_time = false;
       __HashTableIterEnd = new HashTableIterator< int, int >;
-#ifndef NDEBUG
+#  ifndef NDEBUG
       __debug__::__dec_creation("HashTableIterator",
                                 "__hash_static_end",
                                 0,
@@ -51,26 +51,26 @@ namespace gum {
                                 0,
                                 "static variable correction",
                                 0);
-#endif
+#  endif
     }
 
     return __HashTableIterEnd;
   }
 
   const HashTableConstIterator< int, int >*
-  HashTableIteratorStaticEnd::constEnd4Statics() {
+    HashTableIteratorStaticEnd::constEnd4Statics() {
     return reinterpret_cast< const HashTableConstIterator< int, int >* >(
       end4Statics());
   }
 
   const HashTableIteratorSafe< int, int >*
-  HashTableIteratorStaticEnd::endSafe4Statics() {
+    HashTableIteratorStaticEnd::endSafe4Statics() {
     static bool first_time = true;
 
     if (first_time) {
       first_time = false;
       __HashTableIterEndSafe = new HashTableIteratorSafe< int, int >;
-#ifndef NDEBUG
+#  ifndef NDEBUG
       __debug__::__dec_creation("HashTableIteratorSafe",
                                 "__hash_static_end",
                                 0,
@@ -81,14 +81,14 @@ namespace gum {
                                 0,
                                 "static variable correction",
                                 0);
-#endif
+#  endif
     }
 
     return __HashTableIterEndSafe;
   }
 
   const HashTableConstIteratorSafe< int, int >*
-  HashTableIteratorStaticEnd::constEndSafe4Statics() {
+    HashTableIteratorStaticEnd::constEndSafe4Statics() {
     return reinterpret_cast< const HashTableConstIteratorSafe< int, int >* >(
       endSafe4Statics());
   }
@@ -101,7 +101,7 @@ namespace gum {
     HashTableIteratorStaticEnd::__HashTableIterEndSafe =
       HashTableIteratorStaticEnd::endSafe4Statics();
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 } /* namespace gum */
 

@@ -30,14 +30,15 @@
 #include <agrum/PRM/gspan/edgeCode.h>
 
 #ifndef GUM_DFS_CODE_H
-#define GUM_DFS_CODE_H
+#  define GUM_DFS_CODE_H
 
 namespace gum {
   namespace prm {
     namespace gspan {
 
       /**
-       * @class DFSCode DFSCode.h <agrum/PRM/gspan/DFSCode.h>
+       * @class DFSCode
+       * @headerfile DFSCode.h <agrum/PRM/gspan/DFSCode.h>
        * @brief Reprensent a Depth First Search coding of a graph.
        *
        * A DFSCode is composed of EdgeCode. Each EdgeCode is either
@@ -47,7 +48,6 @@ namespace gum {
        * DFSCode, so delete DFSCode in a bottom up fashion.
        */
       class DFSCode {
-
         public:
         /**
          * Returns true of e2 is a valid neighbor for e1 (i.e. it respect the
@@ -157,8 +157,8 @@ namespace gum {
   }   /* namespace prm */
 } /* namespace gum */
 
-#ifndef GUM_NO_INLINE
-#include <agrum/PRM/gspan/DFSCode_inl.h>
-#endif  // GUM_NO_INLINE
+#  ifndef GUM_NO_INLINE
+#    include <agrum/PRM/gspan/DFSCode_inl.h>
+#  endif   // GUM_NO_INLINE
 
 #endif /* GUM_DFS_CODE_H */

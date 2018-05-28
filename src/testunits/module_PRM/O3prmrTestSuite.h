@@ -46,15 +46,11 @@ namespace gum_tests {
           si->interpretFile(GET_RESSOURCES_PATH("o3prmr/requests/query1.o3prmr")));
 
         TS_ASSERT_EQUALS(si->errors(), (gum::Size)0);
-        if (si->errors() > 0) {
-          si->showElegantErrorsAndWarnings();
-        }
+        if (si->errors() > 0) { si->showElegantErrorsAndWarnings(); }
         TS_ASSERT_EQUALS(si->warnings(), (gum::Size)0);
 
         delete si;
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
     }
 
     void testParseFile2() {
@@ -71,9 +67,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(si->warnings(), (gum::Size)0);
 
         delete si;
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
     }
 
     // ->
@@ -91,9 +85,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(si->warnings(), (gum::Size)0);
 
         delete si;
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
     }
 
     void testObserve() {
@@ -132,7 +124,8 @@ namespace gum_tests {
 
         for (j.setFirst(); !j.end(); j.inc()) {
           if (c2_equipState.type().variable().label(
-                j.val(c2_equipState.type().variable())) == "Dysfunctional") {
+                j.val(c2_equipState.type().variable()))
+              == "Dysfunctional") {
             TS_ASSERT_EQUALS(p->get(j), 1.0);
           } else {
             TS_ASSERT_EQUALS(p->get(j), 0.0);
@@ -140,9 +133,7 @@ namespace gum_tests {
         }
 
         delete si;
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
     }
 
     void testUnobserve() {
@@ -174,9 +165,7 @@ namespace gum_tests {
           gum::prm::PRMInference< double >::Chain(&c2, &c2.get("can_print"))));
 
         delete si;
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
     }
 
     void testQuery() {
@@ -220,7 +209,8 @@ namespace gum_tests {
 
         for (j.setFirst(); !j.end(); j.inc()) {
           if (c2_equipState.type().variable().label(
-                j.val(c2_equipState.type().variable())) == "Dysfunctional") {
+                j.val(c2_equipState.type().variable()))
+              == "Dysfunctional") {
             TS_ASSERT_EQUALS(p->get(j), 1.0);
           } else {
             TS_ASSERT_EQUALS(p->get(j), 0.0);
@@ -228,9 +218,7 @@ namespace gum_tests {
         }
 
         delete si;
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
     }
 
     void testAsiaBN() {
@@ -248,9 +236,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(asia->attributes().size(), (gum::Size)8);
         TS_ASSERT_EQUALS(asia->containerDag().sizeArcs(), (gum::Size)8);
         delete si;
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
     }
 
     void testAsiaBNGrd() {
@@ -271,9 +257,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(bn->sizeArcs(), (gum::Size)8);
         delete si;
         delete bn;
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
     }
 
     void testAsiaOneFileBNGrd() {
@@ -299,9 +283,7 @@ namespace gum_tests {
           delete bn;
         }
         delete si;
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
     }
 
     // ->
@@ -324,9 +306,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(bn->sizeArcs(), (gum::Size)193);
         delete si;
         delete bn;
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
     }
 
     // ->
@@ -345,9 +325,7 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS(si.results().size(), (gum::Size)1);
 
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
     }
 
     void testADD() {
@@ -367,9 +345,7 @@ namespace gum_tests {
 
         auto result = si.results()[0];
 
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
     }
 
     void testOrAnd() {
@@ -389,9 +365,7 @@ namespace gum_tests {
 
         auto result = si.results()[0];
 
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
     }
 
     void testStudents() {
@@ -409,10 +383,8 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS(si.results().size(), (gum::Size)1);
 
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
     }
   };
 
-}  // namespace gum_tests
+}   // namespace gum_tests

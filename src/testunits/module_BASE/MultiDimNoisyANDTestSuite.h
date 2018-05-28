@@ -110,7 +110,7 @@ namespace gum_tests {
 
       gum::MultiDimNoisyAND< float > p(1.0f);
       p << fever << malaria << flu
-        << cold;  // malaria, flu and cold are causes of fever
+        << cold;   // malaria, flu and cold are causes of fever
       p.causalWeight(cold, 0.4f);
       p.causalWeight(flu, 0.8f);
       p.causalWeight(malaria, 0.9f);
@@ -196,4 +196,4 @@ namespace gum_tests {
       }
     }
   };
-}
+}   // namespace gum_tests

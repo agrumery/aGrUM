@@ -33,17 +33,17 @@ namespace gum {
 
     struct AprioriDirichletType {
       static const std::string type;
-      static bool isOfType(const std::string& t) { return t == type; }
+      static bool              isOfType(const std::string& t) { return t == type; }
     };
 
     struct AprioriSmoothingType {
       static const std::string type;
-      static bool isOfType(const std::string& t) { return t == type; }
+      static bool              isOfType(const std::string& t) { return t == type; }
     };
 
     struct AprioriNoAprioriType {
       static const std::string type;
-      static bool isOfType(const std::string& t) { return t == type; }
+      static bool              isOfType(const std::string& t) { return t == type; }
     };
 
   } /* namespace learning */

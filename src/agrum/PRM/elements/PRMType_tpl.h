@@ -38,11 +38,8 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    PRMType< GUM_SCALAR >::PRMType(const DiscreteVariable& var)
-        : PRMObject(var.name())
-        , __var(var.clone())
-        , __superType(0)
-        , __label_map(0) {
+    PRMType< GUM_SCALAR >::PRMType(const DiscreteVariable& var) :
+        PRMObject(var.name()), __var(var.clone()), __superType(0), __label_map(0) {
       GUM_CONSTRUCTOR(PRMType);
       this->__updateName();
     }
@@ -50,11 +47,10 @@ namespace gum {
     template < typename GUM_SCALAR >
     PRMType< GUM_SCALAR >::PRMType(PRMType< GUM_SCALAR >&    super_type,
                                    const std::vector< Idx >& label_map,
-                                   const DiscreteVariable&   var)
-        : PRMObject(var.name())
-        , __var(var.clone())
-        , __superType(&super_type)
-        , __label_map(new std::vector< Idx >(label_map)) {
+                                   const DiscreteVariable&   var) :
+        PRMObject(var.name()),
+        __var(var.clone()), __superType(&super_type),
+        __label_map(new std::vector< Idx >(label_map)) {
       GUM_CONSTRUCTOR(PRMType);
       this->__updateName();
 
@@ -66,22 +62,18 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    PRMType< GUM_SCALAR >::PRMType(const PRMType< GUM_SCALAR >& from)
-        : PRMObject(from)
-        , __var(from.__var->clone())
-        , __superType(from.__superType)
-        , __label_map(0) {
+    PRMType< GUM_SCALAR >::PRMType(const PRMType< GUM_SCALAR >& from) :
+        PRMObject(from), __var(from.__var->clone()), __superType(from.__superType),
+        __label_map(0) {
       GUM_CONS_CPY(PRMType);
       this->__updateName();
 
-      if (__superType) {
-        __label_map = new std::vector< Idx >(from.label_map());
-      }
+      if (__superType) { __label_map = new std::vector< Idx >(from.label_map()); }
     }
 
     template < typename GUM_SCALAR >
-    PRMType< GUM_SCALAR >::PRMType(PRMType< GUM_SCALAR >&& from)
-        : PRMObject(from) {
+    PRMType< GUM_SCALAR >::PRMType(PRMType< GUM_SCALAR >&& from) :
+        PRMObject(from) {
       GUM_CONS_MOV(PRMType);
       GUM_ERROR(FatalError, "Move constructor must not be used");
     }
@@ -90,9 +82,7 @@ namespace gum {
     PRMType< GUM_SCALAR >::~PRMType() {
       GUM_DESTRUCTOR(PRMType);
       delete __var;
-      if (__label_map) {
-        delete __label_map;
-      }
+      if (__label_map) { delete __label_map; }
     }
 
     template < typename GUM_SCALAR >
@@ -106,8 +96,8 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    bool
-    PRMType< GUM_SCALAR >::isSubTypeOf(const PRMType< GUM_SCALAR >& super) const {
+    bool PRMType< GUM_SCALAR >::isSubTypeOf(
+      const PRMType< GUM_SCALAR >& super) const {
       if ((*this) == super) {
         return true;
       } else if (__superType) {
@@ -119,15 +109,11 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     bool PRMType< GUM_SCALAR >::__isValid() const {
-      if (!__superType) {
-        return __var->domainSize() > 1;
-      }
+      if (!__superType) { return __var->domainSize() > 1; }
 
       if (__label_map->size() == __var->domainSize()) {
         for (size_t i = 0; i < __label_map->size(); ++i) {
-          if (__label_map->at(i) >= (**__superType).domainSize()) {
-            return false;
-          }
+          if (__label_map->at(i) >= (**__superType).domainSize()) { return false; }
         }
 
         return true;
@@ -224,7 +210,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE bool
-    PRMType< GUM_SCALAR >::isSuperTypeOf(const PRMType< GUM_SCALAR >& t) const {
+      PRMType< GUM_SCALAR >::isSuperTypeOf(const PRMType< GUM_SCALAR >& t) const {
       return t.isSubTypeOf(*this);
     }
 

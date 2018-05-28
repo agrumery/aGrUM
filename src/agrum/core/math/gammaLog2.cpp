@@ -27,26 +27,26 @@
 #include <agrum/core/math/gammaLog2.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/core/math/gammaLog2_inl.h>
-#endif  // GUM_NO_INLINE
+#  include <agrum/core/math/gammaLog2_inl.h>
+#endif   // GUM_NO_INLINE
 
 namespace gum {
 
   // @brief Default constructor.
-  GammaLog2::GammaLog2(bool requires_precision)
-      : __requires_precision{requires_precision} {
+  GammaLog2::GammaLog2(bool requires_precision) :
+      __requires_precision{requires_precision} {
     GUM_CONSTRUCTOR(GammaLog2);
   }
 
   // @brief Copy constructor.
-  GammaLog2::GammaLog2(const GammaLog2& from)
-      : __requires_precision{from.__requires_precision} {
+  GammaLog2::GammaLog2(const GammaLog2& from) :
+      __requires_precision{from.__requires_precision} {
     GUM_CONS_CPY(GammaLog2);
   }
 
   // @brief Move constructor.
-  GammaLog2::GammaLog2(GammaLog2&& from)
-      : __requires_precision{from.__requires_precision} {
+  GammaLog2::GammaLog2(GammaLog2&& from) :
+      __requires_precision{from.__requires_precision} {
     GUM_CONS_MOV(GammaLog2);
   }
 

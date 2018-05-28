@@ -44,7 +44,8 @@ namespace gum {
   namespace __sig__ {
 
     /**
-     * @class ISignaler listener.h <agrum/core/signal/listener.h>
+     * @class ISignaler
+     * @headerfile listener.h <agrum/core/signal/listener.h>
      * @brief Minimum specification of signaler in order to be contained in a
      * listener.
      * @ingroup signal_group
@@ -57,12 +58,13 @@ namespace gum {
                                    Listener*       newtarget) = 0;
       virtual bool hasListener() = 0;
     };
-  }  // namespace __sig__
+  }   // namespace __sig__
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
   /**
-   * @class Listener listener.h <agrum/core/signal/listener.h>
+   * @class Listener
+   * @headerfile listener.h <agrum/core/signal/listener.h>
    * @brief Every class who would catch signal from signaler should derive from
    * Listener.
    * @ingroup signal_group
@@ -89,13 +91,13 @@ namespace gum {
     private:
     Senders_list __senders;
   };
-}  // namespace gum
+}   // namespace gum
 
 #define GUM_CONNECT(sender, signal, receiver, target) \
   (sender).signal.attach(&(receiver), &target)
 
 #ifndef GUM_NO_INLINE
-#include <agrum/core/signal/listener_inl.h>
-#endif  // GUM_NO_INLINE
+#  include <agrum/core/signal/listener_inl.h>
+#endif   // GUM_NO_INLINE
 
-#endif  // GUM_LISTENER_H
+#endif   // GUM_LISTENER_H

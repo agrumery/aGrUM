@@ -36,7 +36,8 @@
 namespace gum {
 
   /**
-   * @class TreeRegress treeRegress.h <agrum/multidim/patterns/treeRegress.h>
+   * @class TreeRegress
+   * @headerfile treeRegress.h <agrum/multidim/patterns/treeRegress.h>
    * @ingroup multidim_group
    *
    * @brief Class used to perform Decision Tree Regression in the FMDP Framework
@@ -78,21 +79,21 @@ namespace gum {
     private:
     /// The whatever 1
     MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
-    __xPloreVFunc(NodeId currentNodeId);
+      __xPloreVFunc(NodeId currentNodeId);
 
     /// The function graphs used for the operation
     const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* __vFunc;
     const Bijection<
       const DiscreteVariable*,
       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* >
-      __pxi;
+                                              __pxi;
     HashTable< const DiscreteVariable*, Idx > __context;
   };
 
   extern template class TreeRegress< double, std::multiplies, std::plus >;
 
-}  // namespace gum
+}   // namespace gum
 
 #include <agrum/multidim/utils/FunctionGraphUtilities/operators/treeRegress_tpl.h>
 
-#endif  // GUM_REGRESS_H
+#endif   // GUM_REGRESS_H

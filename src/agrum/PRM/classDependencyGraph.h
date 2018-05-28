@@ -42,7 +42,6 @@ namespace gum {
      */
     template < typename GUM_SCALAR >
     class ClassDependencyGraph {
-
       public:
       /// Association between a class element and it's holding class.
       typedef std::pair< const PRMClassElementContainer< GUM_SCALAR >*,
@@ -109,9 +108,9 @@ namespace gum {
 
       /// Add arcs in __graph.
       void
-      __addArcs(const PRMClassElementContainer< GUM_SCALAR >& c,
-                NodeId                                        node,
-                HashTable< const PRMClassElement< GUM_SCALAR >*, NodeId >& map);
+        __addArcs(const PRMClassElementContainer< GUM_SCALAR >&              c,
+                  NodeId                                                     node,
+                  HashTable< const PRMClassElement< GUM_SCALAR >*, NodeId >& map);
 
       /// The graph itself.
       DAG __graph;

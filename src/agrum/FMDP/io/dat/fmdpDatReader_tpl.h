@@ -27,15 +27,14 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/FMDP/io/dat/fmdpDatReader.h>
+#  include <agrum/FMDP/io/dat/fmdpDatReader.h>
 
 namespace gum {
 
   template < typename GUM_SCALAR >
   FMDPDatReader< GUM_SCALAR >::FMDPDatReader(FMDP< GUM_SCALAR >* fmdp,
-                                             const std::string&  filename)
-      : FMDPReader< GUM_SCALAR >(fmdp, filename) {
-
+                                             const std::string&  filename) :
+      FMDPReader< GUM_SCALAR >(fmdp, filename) {
     GUM_CONSTRUCTOR(FMDPDatReader);
 
     __fmdp = fmdp;
@@ -50,9 +49,7 @@ namespace gum {
       __scanner = new MDPDAT::Scanner(__streamName.c_str());
       __parser = new MDPDAT::Parser(__scanner);
       __parser->setFactory((AbstractFMDPFactory*)__factory);
-    } catch (IOError e) {
-      __ioerror = true;
-    }
+    } catch (IOError e) { __ioerror = true; }
   }
 
   template < typename GUM_SCALAR >
@@ -71,9 +68,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE MDPDAT::Scanner& FMDPDatReader< GUM_SCALAR >::scanner() {
-    if (__ioerror) {
-      GUM_ERROR(gum::IOError, "No such file " + streamName());
-    }
+    if (__ioerror) { GUM_ERROR(gum::IOError, "No such file " + streamName()); }
 
     return *__scanner;
   }
@@ -96,9 +91,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Size FMDPDatReader< GUM_SCALAR >::proceed() {
-    if (__ioerror) {
-      GUM_ERROR(gum::IOError, "No such file " + streamName());
-    }
+    if (__ioerror) { GUM_ERROR(gum::IOError, "No such file " + streamName()); }
 
     if (!__parseDone) {
       try {
@@ -158,7 +151,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void
-  FMDPDatReader< GUM_SCALAR >::showElegantErrorsAndWarnings(std::ostream& o) {
+    FMDPDatReader< GUM_SCALAR >::showElegantErrorsAndWarnings(std::ostream& o) {
     if (__parseDone)
       __parser->errors().elegantErrorsAndWarnings(o);
     else
@@ -184,6 +177,6 @@ namespace gum {
   }
 
   /// @}
-}  // namespace
+}   // namespace gum
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS

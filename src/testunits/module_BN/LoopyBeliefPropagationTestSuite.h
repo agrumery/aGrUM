@@ -47,10 +47,8 @@ namespace gum_tests {
     std::string __mess;
 
     public:
-    aSimpleLBPListener(gum::ApproximationScheme& sch)
-        : gum::ApproximationSchemeListener(sch)
-        , __nbr(0)
-        , __mess(""){};
+    aSimpleLBPListener(gum::ApproximationScheme& sch) :
+        gum::ApproximationSchemeListener(sch), __nbr(0), __mess(""){};
     void whenProgress(const void*     buffer,
                       const gum::Size a,
                       const double    b,
@@ -497,9 +495,7 @@ namespace gum_tests {
       try {
         // Testing the inference
         inf.makeInference();
-      } catch (gum::Exception e) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception e) { TS_ASSERT(false); }
       TS_ASSERT_EQUALS(agsl.getNbr() * inf.periodSize(), inf.nbrIterations());
       TS_ASSERT_DIFFERS(agsl.getMess(), std::string(""));
     }
@@ -571,10 +567,8 @@ namespace gum_tests {
           argstr += "  inf : " + inf.posterior(node).toString() + " \n";
         }
       }
-      if (err > errmax) {
-        GUM_TRACE(argstr);
-      }
+      if (err > errmax) { GUM_TRACE(argstr); }
       TS_ASSERT_LESS_THAN(err, errmax);
     }
   };
-}
+}   // namespace gum_tests

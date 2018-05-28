@@ -31,8 +31,8 @@
 #include <agrum/graphs/algorithms/triangulations/eliminationStrategies/partialOrderedEliminationSequenceStrategy.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/algorithms/triangulations/eliminationStrategies/partialOrderedEliminationSequenceStrategy_inl.h>
-#endif  // GUM_NOINLINE
+#  include <agrum/graphs/algorithms/triangulations/eliminationStrategies/partialOrderedEliminationSequenceStrategy_inl.h>
+#endif   // GUM_NOINLINE
 
 namespace gum {
 
@@ -59,12 +59,10 @@ namespace gum {
   /// copy constructor
   PartialOrderedEliminationSequenceStrategy::
     PartialOrderedEliminationSequenceStrategy(
-      const PartialOrderedEliminationSequenceStrategy& from)
-      : EliminationSequenceStrategy(from)
-      , _subsets(from._subsets)
-      , _subset_iter(from._subset_iter)
-      , _nodeset(from._nodeset)
-      , _partial_order_needed(from._partial_order_needed) {
+      const PartialOrderedEliminationSequenceStrategy& from) :
+      EliminationSequenceStrategy(from),
+      _subsets(from._subsets), _subset_iter(from._subset_iter),
+      _nodeset(from._nodeset), _partial_order_needed(from._partial_order_needed) {
     // for debugging purposes
     GUM_CONS_CPY(PartialOrderedEliminationSequenceStrategy);
   }
@@ -72,12 +70,11 @@ namespace gum {
   /// move constructor
   PartialOrderedEliminationSequenceStrategy::
     PartialOrderedEliminationSequenceStrategy(
-      PartialOrderedEliminationSequenceStrategy&& from)
-      : EliminationSequenceStrategy(std::move(from))
-      , _subsets(from._subsets)
-      , _subset_iter(from._subset_iter)
-      , _nodeset(std::move(from._nodeset))
-      , _partial_order_needed(from._partial_order_needed) {
+      PartialOrderedEliminationSequenceStrategy&& from) :
+      EliminationSequenceStrategy(std::move(from)),
+      _subsets(from._subsets), _subset_iter(from._subset_iter),
+      _nodeset(std::move(from._nodeset)),
+      _partial_order_needed(from._partial_order_needed) {
     from._partial_order_needed = true;
 
     // for debugging purposes
@@ -110,9 +107,7 @@ namespace gum {
     NodeSet nodes_found(_graph->size() / 2);
     for (const auto& nodes : *subsets) {
       for (const auto node : nodes) {
-        if (_graph->existsNode(node)) {
-          nodes_found.insert(node);
-        }
+        if (_graph->existsNode(node)) { nodes_found.insert(node); }
       }
     }
 
@@ -135,9 +130,7 @@ namespace gum {
       for (_subset_iter = _subsets->cbegin(); _subset_iter != _subsets->cend();
            ++_subset_iter) {
         for (const auto node : *_subset_iter) {
-          if (_graph->existsNode(node)) {
-            _nodeset.insert(node);
-          }
+          if (_graph->existsNode(node)) { _nodeset.insert(node); }
         }
         if (!_nodeset.empty()) return true;
       }

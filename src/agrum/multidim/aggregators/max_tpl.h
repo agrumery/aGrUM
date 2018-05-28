@@ -31,14 +31,13 @@ namespace gum {
 
   namespace aggregator {
     template < typename GUM_SCALAR >
-    INLINE Max< GUM_SCALAR >::Max()
-        : MultiDimAggregator< GUM_SCALAR >() {
+    INLINE Max< GUM_SCALAR >::Max() : MultiDimAggregator< GUM_SCALAR >() {
       GUM_CONSTRUCTOR(Max)
     }
 
     template < typename GUM_SCALAR >
-    INLINE Max< GUM_SCALAR >::Max(const Max< GUM_SCALAR >& from)
-        : MultiDimAggregator< GUM_SCALAR >(from) {
+    INLINE Max< GUM_SCALAR >::Max(const Max< GUM_SCALAR >& from) :
+        MultiDimAggregator< GUM_SCALAR >(from) {
       GUM_CONS_CPY(Max);
     }
 
@@ -70,5 +69,5 @@ namespace gum {
       return new Max< GUM_SCALAR >;
     }
 
-  }  // aggregator
-}  // namespace gum
+  }   // namespace aggregator
+}   // namespace gum

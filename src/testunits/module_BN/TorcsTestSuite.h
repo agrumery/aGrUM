@@ -79,9 +79,7 @@ namespace gum_tests {
         gum::Instantiation inst1(*e1);
         inst1.chgVal(bn->variable(idMap[node1]), 4);
         e1->set(inst1, (float)1);
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e);
-      }
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
 
       try {
         (*e2) << bn->variable(idMap[node2]);
@@ -89,9 +87,7 @@ namespace gum_tests {
         gum::Instantiation inst2(*e2);
         inst2.chgVal(bn->variable(idMap[node2]), 4);
         e2->set(inst2, (float)1);
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e);
-      }
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
 
       try {
         (*e3) << bn->variable(idMap[node3]);
@@ -99,17 +95,13 @@ namespace gum_tests {
         gum::Instantiation inst3(*e3);
         inst3.chgVal(bn->variable(idMap[node3]), 4);
         e3->set(inst3, (float)1);
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e);
-      }
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
 
       try {
         evidence->insert(e1);
         evidence->insert(e2);
         evidence->insert(e3);
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e);
-      }
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
     void tearDown() {
@@ -150,4 +142,4 @@ namespace gum_tests {
       // std::cerr << std::endl;
     }
   };
-}
+}   // namespace gum_tests

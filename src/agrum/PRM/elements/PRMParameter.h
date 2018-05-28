@@ -33,7 +33,8 @@ namespace gum {
   namespace prm {
 
     /**
-     * @class PRMParameter parameter.h <agrum/PRM/parameter.h>
+     * @class PRMParameter
+     * @headerfile parameter.h <agrum/PRM/parameter.h>
      * @brief PRMParameter is a member of a Class in a PRM.
      *
      * @see PRM PRMFactory Class PRMClassElement
@@ -69,7 +70,7 @@ namespace gum {
 
       /// See gum::PRMClassElement::elt_type().
       virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType
-      elt_type() const;
+        elt_type() const;
 
       GUM_SCALAR value() const;
 
@@ -126,7 +127,7 @@ namespace gum {
 
 
   } /* namespace prm */
-}  // namespace gum
+}   // namespace gum
 
 #include <agrum/PRM/elements/PRMParameter_tpl.h>
 

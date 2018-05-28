@@ -25,7 +25,7 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/core/set.h>
+#  include <agrum/core/set.h>
 
 namespace gum {
 
@@ -34,29 +34,29 @@ namespace gum {
     /// default constructor
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE
-    RecordCounterThreadBase< IdSetAlloc, CountAlloc >::RecordCounterThreadBase(
-      const std::vector< Size >& var_modalities)
-        : _modalities(&var_modalities) {
+      RecordCounterThreadBase< IdSetAlloc, CountAlloc >::RecordCounterThreadBase(
+        const std::vector< Size >& var_modalities) :
+        _modalities(&var_modalities) {
       GUM_CONSTRUCTOR(RecordCounterThreadBase);
     }
 
     /// copy constructor
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE
-    RecordCounterThreadBase< IdSetAlloc, CountAlloc >::RecordCounterThreadBase(
-      const RecordCounterThreadBase< IdSetAlloc, CountAlloc >& from)
-        : _modalities(from._modalities) {
+      RecordCounterThreadBase< IdSetAlloc, CountAlloc >::RecordCounterThreadBase(
+        const RecordCounterThreadBase< IdSetAlloc, CountAlloc >& from) :
+        _modalities(from._modalities) {
       GUM_CONS_CPY(RecordCounterThreadBase);
     }
 
     /// move operator
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE
-    RecordCounterThreadBase< IdSetAlloc, CountAlloc >::RecordCounterThreadBase(
-      RecordCounterThreadBase< IdSetAlloc, CountAlloc >&& from)
-        : _modalities(from._modalities)
-        , _nodesets(std::move(from._nodesets))
-        , _countings(std::move(from._countings)) {
+      RecordCounterThreadBase< IdSetAlloc, CountAlloc >::RecordCounterThreadBase(
+        RecordCounterThreadBase< IdSetAlloc, CountAlloc >&& from) :
+        _modalities(from._modalities),
+        _nodesets(std::move(from._nodesets)),
+        _countings(std::move(from._countings)) {
       GUM_CONS_MOV(RecordCounterThreadBase);
     }
 
@@ -91,7 +91,7 @@ namespace gum {
     /// remove all the current target nodesets
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE void
-    RecordCounterThreadBase< IdSetAlloc, CountAlloc >::clearNodeSets() noexcept {
+      RecordCounterThreadBase< IdSetAlloc, CountAlloc >::clearNodeSets() noexcept {
       _nodesets.clear();
       _countings.clear();
     }
@@ -100,7 +100,7 @@ namespace gum {
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE const std::vector< double, CountAlloc >&
                  RecordCounterThreadBase< IdSetAlloc, CountAlloc >::getCounts(
-      Idx nodeset_id) const noexcept {
+        Idx nodeset_id) const noexcept {
       return _countings[nodeset_id];
     }
 
@@ -108,38 +108,39 @@ namespace gum {
 
     /// default constructor
     template < typename RowFilter, typename IdSetAlloc, typename CountAlloc >
-    INLINE
-    RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >::RecordCounterThread(
-      const RowFilter& filter, const std::vector< Size >& var_modalities)
-        : Base(var_modalities)
-        , __parser(filter) {
+    INLINE RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >::
+      RecordCounterThread(const RowFilter&           filter,
+                          const std::vector< Size >& var_modalities) :
+        Base(var_modalities),
+        __parser(filter) {
       GUM_CONSTRUCTOR(RecordCounterThread);
     }
 
     /// copy constructor
     template < typename RowFilter, typename IdSetAlloc, typename CountAlloc >
-    INLINE
-    RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >::RecordCounterThread(
-      const RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >& from)
-        : Base(from)
-        , __parser(from.__parser) {
+    INLINE RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >::
+      RecordCounterThread(
+        const RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >& from) :
+        Base(from),
+        __parser(from.__parser) {
       GUM_CONS_CPY(RecordCounterThread);
     }
 
     /// move operator
     template < typename RowFilter, typename IdSetAlloc, typename CountAlloc >
-    INLINE
-    RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >::RecordCounterThread(
-      RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >&& from)
-        : Base(std::move(from))
-        , __parser(std::move(from.__parser)) {
+    INLINE RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >::
+      RecordCounterThread(
+        RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >&& from) :
+        Base(std::move(from)),
+        __parser(std::move(from.__parser)) {
       GUM_CONS_MOV(RecordCounterThread);
     }
 
     /// virtual copy constructor
     template < typename RowFilter, typename IdSetAlloc, typename CountAlloc >
     INLINE RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >*
-           RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >::copyFactory() const {
+           RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >::copyFactory()
+        const {
       return new RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >(*this);
     }
 
@@ -161,7 +162,7 @@ namespace gum {
       try {
         while (__parser.hasRows()) {
           // get the observed filtered rows
-          const DBRow<DBTranslatedValue>& row = __parser.row();
+          const DBRow< DBTranslatedValue >& row = __parser.row();
 
           // fill the counts for the ith nodeset
           for (Idx i = 0; i < size; ++i) {
@@ -177,10 +178,9 @@ namespace gum {
             this->_countings[i][offset] += row.weight();
           }
         }
-      } catch (NotFound&) {
-      }  // this exception is raised by the row filter if the
-         // row generators create no output row from the last
-         // rows of the database
+      } catch (NotFound&) {}   // this exception is raised by the row filter if the
+                               // row generators create no output row from the last
+                               // rows of the database
     }
 
     /// returns the filter used for the countings
@@ -213,11 +213,9 @@ namespace gum {
       const RowFilter&           filter,
       const std::vector< Size >& var_modalities,
       Size                       min_range,
-      Size                       max_range)
-        : __modalities(&var_modalities)
-        , __min_range(min_range)
-        , __max_range(max_range) {
-
+      Size                       max_range) :
+        __modalities(&var_modalities),
+        __min_range(min_range), __max_range(max_range) {
       // create a first recordCounter so that we can store the row filter
       // and apply subsequently virtual copy constructors to create other
       // thread counters
@@ -228,9 +226,7 @@ namespace gum {
 
       // set the range of the counter
       const Size db_size = counter->DBSize();
-      if (__max_range > db_size) {
-        __max_range = db_size;
-      }
+      if (__max_range > db_size) { __max_range = db_size; }
       if (__min_range >= __max_range) {
         GUM_ERROR(OutOfBounds, "min/max database range incorrects");
       }
@@ -241,16 +237,13 @@ namespace gum {
     /// copy constructor
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE RecordCounter< IdSetAlloc, CountAlloc >::RecordCounter(
-      const RecordCounter< IdSetAlloc, CountAlloc >& from)
-        : __modalities(from.__modalities)
-        , __idsets(from.__idsets)
-        , __nodesets(from.__nodesets)
-        , __set_state(from.__set_state)
-        , __countings(from.__countings)
-        , __subset_lattice(from.__subset_lattice)
-        , __nb_thread_counters(from.__nb_thread_counters)
-        , __min_range(from.__min_range)
-        , __max_range(from.__max_range) {
+      const RecordCounter< IdSetAlloc, CountAlloc >& from) :
+        __modalities(from.__modalities),
+        __idsets(from.__idsets), __nodesets(from.__nodesets),
+        __set_state(from.__set_state), __countings(from.__countings),
+        __subset_lattice(from.__subset_lattice),
+        __nb_thread_counters(from.__nb_thread_counters),
+        __min_range(from.__min_range), __max_range(from.__max_range) {
       // create the thread counters
       __thread_counters.reserve(from.__thread_counters.size());
 
@@ -302,20 +295,18 @@ namespace gum {
     /// move constructor
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE RecordCounter< IdSetAlloc, CountAlloc >::RecordCounter(
-      RecordCounter< IdSetAlloc, CountAlloc >&& from)
-        : __modalities(from.__modalities)
-        , __idsets(from.__idsets)
-        , __nodesets(std::move(from.__nodesets))
-        , __var2idsets(std::move(from.__var2idsets))
-        , __set_state(std::move(from.__set_state))
-        , __countings(std::move(from.__countings))
-        , __idset2index(std::move(from.__idset2index))
-        , __set2thread_id(std::move(from.__set2thread_id))
-        , __subset_lattice(std::move(from.__subset_lattice))
-        , __thread_counters(std::move(from.__thread_counters))
-        , __nb_thread_counters(from.__nb_thread_counters)
-        , __min_range(from.__min_range)
-        , __max_range(from.__max_range) {
+      RecordCounter< IdSetAlloc, CountAlloc >&& from) :
+        __modalities(from.__modalities),
+        __idsets(from.__idsets), __nodesets(std::move(from.__nodesets)),
+        __var2idsets(std::move(from.__var2idsets)),
+        __set_state(std::move(from.__set_state)),
+        __countings(std::move(from.__countings)),
+        __idset2index(std::move(from.__idset2index)),
+        __set2thread_id(std::move(from.__set2thread_id)),
+        __subset_lattice(std::move(from.__subset_lattice)),
+        __thread_counters(std::move(from.__thread_counters)),
+        __nb_thread_counters(from.__nb_thread_counters),
+        __min_range(from.__min_range), __max_range(from.__max_range) {
       GUM_CONS_MOV(RecordCounter);
     }
 
@@ -354,7 +345,7 @@ namespace gum {
       }
 
       // for nonempty sets, always add the node to the subset lattice
-      __subset_lattice.addNodeWithId (node);
+      __subset_lattice.addNodeWithId(node);
       IdSet< IdSetAlloc > tmp_idset(ids, set_size);
 
       if (!__idsets.existsFirst(tmp_idset)) {
@@ -411,12 +402,12 @@ namespace gum {
         max_nb_threads = parsed_db_size / max_size_per_thread;
       }
 
-#pragma omp parallel num_threads(int(max_nb_threads))
+#  pragma omp parallel num_threads(int(max_nb_threads))
       {
         // create ThreadCounters if needed
         const Size num_threads = getNumberOfRunningThreads();
 
-#pragma omp single
+#  pragma omp single
         {
           while (__thread_counters.size() < num_threads) {
             __thread_counters.push_back(__thread_counters[0]->copyFactory());
@@ -451,10 +442,10 @@ namespace gum {
           thread_counter.count();
         }
 
-      }  // omp parallel
+      }   // omp parallel
 
 // perform the aggregation of the countings
-#pragma omp parallel num_threads(int(__nb_thread_counters))
+#  pragma omp parallel num_threads(int(__nb_thread_counters))
       {
         const Size this_thread = getThreadNumber();
         auto&      counter = *(__thread_counters[this_thread]);
@@ -466,8 +457,8 @@ namespace gum {
             std::vector< double, CountAlloc >& vect =
               const_cast< std::vector< double, CountAlloc >& >(
                 counter.getCounts(__set2thread_id[i].second));
-            size_per_thread = (Size(vect.size()) + __nb_thread_counters - 1) /
-                              __nb_thread_counters;
+            size_per_thread = (Size(vect.size()) + __nb_thread_counters - 1)
+                              / __nb_thread_counters;
 
             // add to vect the countings of the other threads
             min_range = size_per_thread * this_thread;
@@ -555,7 +546,7 @@ namespace gum {
         // compute the offsets in the correct order
         for (Idx i = 0; i < subset_ids.size(); ++i) {
           Idx modality = __modalities->operator[](subset_ids[i]);
-          Idx j = superset_order[i];
+          Idx                          j = superset_order[i];
           result_domain[j] = modality;
           result_offset[j] = result_domain_size;
           result_domain_size *= modality;
@@ -618,9 +609,7 @@ namespace gum {
       List< NodeId > setFIFO;
 
       for (const auto node : __subset_lattice) {
-        if (__subset_lattice.parents(node).size() == 0) {
-          setFIFO.pushBack(node);
-        }
+        if (__subset_lattice.parents(node).size() == 0) { setFIFO.pushBack(node); }
       }
 
       // perform the countings for the subsets
@@ -672,7 +661,8 @@ namespace gum {
     /// returns the counts performed for a given idSet
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE const std::vector< double, CountAlloc >&
-    RecordCounter< IdSetAlloc, CountAlloc >::getCounts(Idx idset) const noexcept {
+                 RecordCounter< IdSetAlloc, CountAlloc >::getCounts(Idx idset) const
+      noexcept {
       return __countings[idset];
     }
 
@@ -769,14 +759,14 @@ namespace gum {
     /// sets the maximum number of threads used to perform countings
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE void
-    RecordCounter< IdSetAlloc, CountAlloc >::setMaxNbThreads(Size nb) noexcept {
-#if defined(_OPENMP) && defined(NDEBUG)
+      RecordCounter< IdSetAlloc, CountAlloc >::setMaxNbThreads(Size nb) noexcept {
+#  if defined(_OPENMP) && defined(NDEBUG)
       if (nb == 0) nb = getMaxNumberOfThreads();
 
       __max_threads_number = nb;
-#else
+#  else
       __max_threads_number = 1;
-#endif /* _OPENMP && NDEBUG */
+#  endif /* _OPENMP && NDEBUG */
     }
 
     /// returns the counting performed
@@ -798,9 +788,7 @@ namespace gum {
     INLINE void RecordCounter< IdSetAlloc, CountAlloc >::setRange(Size min_range,
                                                                   Size max_range) {
       const Size db_size = __thread_counters[0]->DBSize();
-      if (max_range > db_size) {
-        max_range = db_size;
-      }
+      if (max_range > db_size) { max_range = db_size; }
       if (min_range >= max_range) {
         GUM_ERROR(OutOfBounds, "min/max database range incorrects");
       }

@@ -33,9 +33,8 @@ namespace gum {
   ///  default constructor
   template < typename GUM_SCALAR >
   ImportanceSampling< GUM_SCALAR >::ImportanceSampling(
-    const IBayesNet< GUM_SCALAR >* bn)
-      : SamplingInference< GUM_SCALAR >(bn) {
-
+    const IBayesNet< GUM_SCALAR >* bn) :
+      SamplingInference< GUM_SCALAR >(bn) {
     GUM_CONSTRUCTOR(ImportanceSampling);
   }
 
@@ -43,7 +42,6 @@ namespace gum {
   ///  destructor
   template < typename GUM_SCALAR >
   ImportanceSampling< GUM_SCALAR >::~ImportanceSampling() {
-
     GUM_DESTRUCTOR(ImportanceSampling);
   }
 
@@ -68,9 +66,7 @@ namespace gum {
       }
 
       for (const auto nod : this->BN().topologicalOrder()) {
-        if (!this->hasHardEvidence(nod)) {
-          this->_addVarSample(nod, &prev);
-        }
+        if (!this->hasHardEvidence(nod)) { this->_addVarSample(nod, &prev); }
         auto probaP = this->BN().cpt(nod).get(prev);
         auto probaQ = this->samplingBN().cpt(nod).get(prev);
         if ((probaP == 0) || (probaQ == 0)) {
@@ -105,7 +101,6 @@ namespace gum {
   template < typename GUM_SCALAR >
   void ImportanceSampling< GUM_SCALAR >::_onContextualize(
     BayesNetFragment< GUM_SCALAR >* bn) {
-
     for (const auto ev : this->hardEvidenceNodes()) {
       bn->uninstallCPT(ev);
       bn->installCPT(ev, new Potential< GUM_SCALAR >(*this->evidence()[ev]));
@@ -116,4 +111,4 @@ namespace gum {
     auto minAccepted = this->epsilon() / bn->maxVarDomainSize();
     if (minParam < minAccepted) this->_unsharpenBN(bn, minAccepted);
   }
-}
+}   // namespace gum

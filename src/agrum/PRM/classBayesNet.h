@@ -36,7 +36,8 @@ namespace gum {
 
     // clang-format off
     /**
-     * @class ClassBayesNet classBayesNet.h <agrum/PRM/classBayesNet.h>
+* @class ClassBayesNet
+* @headerfile classBayesNet.h <agrum/PRM/classBayesNet.h>
      * @brief This class decorates a gum::prm::Class<GUM_SCALAR> has an
      *        IBaseBayesNet.
      * @tparam GUM_SCALAR The type of scalar to use.
@@ -70,7 +71,7 @@ namespace gum {
 
       /// Copy operator.
       ClassBayesNet< GUM_SCALAR >&
-      operator=(const ClassBayesNet< GUM_SCALAR >& from);
+        operator=(const ClassBayesNet< GUM_SCALAR >& from);
 
       /// Destructor.
       virtual ~ClassBayesNet< GUM_SCALAR >();
@@ -110,7 +111,7 @@ namespace gum {
 
       /// See gum::IBaseBayesNet::variableFromName().
       virtual const DiscreteVariable&
-      variableFromName(const std::string& name) const;
+        variableFromName(const std::string& name) const;
 
       /// See gum::IBaseBayesNet::modalities().
       const NodeProperty< Size >& modalities() const;

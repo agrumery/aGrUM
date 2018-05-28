@@ -34,21 +34,16 @@ namespace gum {
   }
 
   // Contructor
-  Directory::Directory()
-      : m_dirPtr(nullptr) {
-    GUM_CONSTRUCTOR(Directory);
-  }
+  Directory::Directory() : m_dirPtr(nullptr) { GUM_CONSTRUCTOR(Directory); }
 
   // Contructor
-  Directory::Directory(const std::string& directory)
-      : m_dirName(directory) {
+  Directory::Directory(const std::string& directory) : m_dirName(directory) {
     GUM_CONSTRUCTOR(Directory);
     m_dirPtr = opendir(m_dirName.c_str());
   }
 
   // Contructor
-  Directory::Directory(const Directory& dir)
-      : m_dirName(dir.m_dirName) {
+  Directory::Directory(const Directory& dir) : m_dirName(dir.m_dirName) {
     GUM_CONSTRUCTOR(Directory);
     m_dirPtr = opendir(m_dirName.c_str());
   }
@@ -122,4 +117,4 @@ namespace gum {
     return *this;
   }
 
-}  // END NAMESPACE GUM
+}   // namespace gum

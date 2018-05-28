@@ -44,7 +44,8 @@ namespace gum {
     class PRMAttribute;
 
     /**
-     * @class PRMSlotChain slotChain.h <agrum/PRM/slotChain.h>
+     * @class PRMSlotChain
+     * @headerfile slotChain.h <agrum/PRM/slotChain.h>
      *
      * @brief A PRMSlotChain represents a sequence of
      *gum::prm::PRMClassElement<GUM_SCALAR>
@@ -133,7 +134,7 @@ namespace gum {
 
       /// See gum::PRMClassElement<GUM_SCALAR>::elt_type().
       virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType
-      elt_type() const;
+        elt_type() const;
 
       /// This is similar to the following call: this->lastElt().type()
       virtual PRMType< GUM_SCALAR >& type();
@@ -213,7 +214,7 @@ namespace gum {
 
 
   } /* namespace prm */
-}  // namespace gum
+}   // namespace gum
 
 #include <agrum/PRM/elements/PRMSlotChain_tpl.h>
 

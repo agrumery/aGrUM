@@ -54,7 +54,7 @@ namespace gum {
   template < typename GUM_SCALAR,
              template < typename > class ICPTGenerator = SimpleCPTGenerator >
   class SimpleBayesNetGenerator
-    : public IBayesNetGenerator< GUM_SCALAR, ICPTGenerator > {
+      : public IBayesNetGenerator< GUM_SCALAR, ICPTGenerator > {
     public:
     // ############################################################################
     /// @name Constructors / Destructor
@@ -62,12 +62,12 @@ namespace gum {
     /// @{
 
     /**
-    * Constructor.
-    * Use by default the SimpleCPTGenerator for generating the BNs CPT.
-    * @param nbrNodes The number of nodes imposed on the generator.
-    * @param maxArcs The number of maximum arcs imposed on the generator.
-    * @param maxModality Each DRV has from 2 to maxModality modalities
-    */
+     * Constructor.
+     * Use by default the SimpleCPTGenerator for generating the BNs CPT.
+     * @param nbrNodes The number of nodes imposed on the generator.
+     * @param maxArcs The number of maximum arcs imposed on the generator.
+     * @param maxModality Each DRV has from 2 to maxModality modalities
+     */
     SimpleBayesNetGenerator(Size nbrNodes, Size maxArcs, Size maxModality = 2);
 
     /**
@@ -81,7 +81,7 @@ namespace gum {
     // ############################################################################
     /// @{
     /**
-    * function that generates a bayesian networks.
+     * function that generates a bayesian networks.
      * @param bayesNet Bayesian Network to be completed after initialisation
      * @return null but modify inputed Bayesian Network
      */

@@ -121,7 +121,9 @@ namespace gum {
   /* ===========================================================================
    */
 
-  class MixedGraph : public virtual UndiGraph, public virtual DiGraph {
+  class MixedGraph
+      : public virtual UndiGraph
+      , public virtual DiGraph {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -223,7 +225,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/graphs/mixedGraph_inl.h>
-#endif  // GUM_NOINLINE
+#  include <agrum/graphs/mixedGraph_inl.h>
+#endif   // GUM_NOINLINE
 
 #endif /* GUM_MIXEDGRAPH_H */

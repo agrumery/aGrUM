@@ -1,23 +1,23 @@
 
 /***************************************************************************
-*   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 
 #include <iostream>
@@ -34,7 +34,7 @@
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/core/approximations/approximationSchemeListener.h>
 
-#include <cxxtest/AgrumApproximationUtils.h>  // must be last include
+#include <cxxtest/AgrumApproximationUtils.h>   // must be last include
 
 #define EPSILON_FOR_MONTECARLO_SIMPLE_TEST 15e-2
 #define EPSILON_FOR_MONTECARLO 2e-1
@@ -42,16 +42,13 @@
 namespace gum_tests {
 
   class aSimpleMCListener : public gum::ApproximationSchemeListener {
-
     private:
     int         __nbr;
     std::string __mess;
 
     public:
-    aSimpleMCListener(gum::ApproximationScheme& sch)
-        : gum::ApproximationSchemeListener(sch)
-        , __nbr(0)
-        , __mess(""){};
+    aSimpleMCListener(gum::ApproximationScheme& sch) :
+        gum::ApproximationSchemeListener(sch), __nbr(0), __mess(""){};
     void whenProgress(const void*     buffer,
                       const gum::Size a,
                       const double    b,
@@ -68,7 +65,6 @@ namespace gum_tests {
   };
 
   class MonteCarloSamplingTestSuite : public CxxTest::TestSuite {
-
     public:
     void testMCbasic() {
       auto bn = gum::BayesNet< float >::fastPrototype("a->h->c");
@@ -112,7 +108,6 @@ namespace gum_tests {
     }
 
     void testMCBinaryTreeWithEvidenceOnRoot() {
-
       auto bn = gum::BayesNet< float >::fastPrototype(
         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
@@ -120,7 +115,6 @@ namespace gum_tests {
       std::string ev = "b";
 
       try {
-
         gum::LazyPropagation< float > lazy(&bn);
         lazy.addEvidence(bn.idFromName(ev), 0);
         lazy.makeInference();
@@ -132,7 +126,6 @@ namespace gum_tests {
         inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
       } catch (gum::Exception& e) {
-
         GUM_SHOWERROR(e);
         TS_ASSERT(false);
       }
@@ -170,7 +163,6 @@ namespace gum_tests {
       std::string ev = "e";
 
       try {
-
         gum::LazyPropagation< float > lazy(&bn);
         lazy.addEvidence(bn.idFromName(ev), 0);
         lazy.makeInference();
@@ -195,7 +187,6 @@ namespace gum_tests {
       unsharpen(bn);
 
       try {
-
         gum::LazyPropagation< float > lazy(&bn);
         lazy.addEvidence(bn.idFromName("e"), 0);
         lazy.addEvidence(bn.idFromName("b"), 1);
@@ -213,7 +204,6 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
-
         GUM_SHOWERROR(e);
         TS_ASSERT(false);
       }
@@ -225,7 +215,6 @@ namespace gum_tests {
       unsharpen(bn);
 
       try {
-
         gum::LazyPropagation< float > lazy(&bn);
         lazy.addEvidence(bn.idFromName("e"), 0);
         lazy.addEvidence(bn.idFromName("b"), 1);
@@ -243,7 +232,6 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
-
         GUM_SHOWERROR(e);
         TS_ASSERT(false);
       }
@@ -255,7 +243,6 @@ namespace gum_tests {
       unsharpen(bn);
 
       try {
-
         gum::LazyPropagation< float > lazy(&bn);
         lazy.makeInference();
 
@@ -267,13 +254,11 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
-
         GUM_SHOWERROR(e);
         TS_ASSERT(false);
       }
 
       try {
-
         gum::LazyPropagation< float > lazy(&bn);
         lazy.addEvidence(bn.idFromName("a"), 0);
         lazy.makeInference();
@@ -287,13 +272,11 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
-
         GUM_SHOWERROR(e);
         TS_ASSERT(false);
       }
 
       try {
-
         gum::LazyPropagation< float > lazy(&bn);
         lazy.addEvidence(bn.idFromName("d"), 0);
         lazy.makeInference();
@@ -307,7 +290,6 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
-
         GUM_SHOWERROR(e);
         TS_ASSERT(false);
       }
@@ -319,7 +301,6 @@ namespace gum_tests {
         "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;", 3);
 
       try {
-
         gum::LazyPropagation< float > lazy(&bn);
         lazy.makeInference();
 
@@ -331,13 +312,11 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
-
         GUM_SHOWERROR(e);
         TS_ASSERT(false);
       }
 
       try {
-
         gum::LazyPropagation< float > lazy(&bn);
         lazy.addEvidence(bn.idFromName("a"), 0);
         lazy.makeInference();
@@ -351,13 +330,11 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
-
         GUM_SHOWERROR(e);
         TS_ASSERT(false);
       }
 
       try {
-
         gum::LazyPropagation< float > lazy(&bn);
         lazy.addEvidence(bn.idFromName("d"), 0);
         lazy.makeInference();
@@ -384,7 +361,6 @@ namespace gum_tests {
       TS_ASSERT(nbrErr == 0);
 
       try {
-
         gum::LazyPropagation< float > lazy(&bn);
         lazy.makeInference();
 
@@ -396,7 +372,6 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
-
         GUM_SHOWERROR(e);
         TS_ASSERT(false);
       }
@@ -411,7 +386,6 @@ namespace gum_tests {
       TS_ASSERT(nbrErr == 0);
 
       try {
-
         gum::LazyPropagation< float > lazy(&bn);
         lazy.makeInference();
 
@@ -423,7 +397,6 @@ namespace gum_tests {
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
-
         GUM_SHOWERROR(e);
         TS_ASSERT(false);
       }
@@ -487,10 +460,9 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(bn.idFromName("d")));
 
       } catch (gum::Exception& e) {
-
         GUM_SHOWERROR(e);
         TS_ASSERT(false);
       }
     }
   };
-}
+}   // namespace gum_tests

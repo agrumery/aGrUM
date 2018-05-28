@@ -37,9 +37,9 @@
 #include <sstream>
 
 #ifdef HAVE_DIRENT_H
-#include <dirent.h>
+#  include <dirent.h>
 #else
-#include <agrum/core/mvsc/dirent.h>
+#  include <agrum/core/mvsc/dirent.h>
 #endif
 
 #include <agrum/BN/BayesNet.h>
@@ -155,8 +155,8 @@ namespace gum {
              template < typename > class ICPTGenerator = SimpleCPTGenerator,
              template < typename > class ICPTDisturber = SimpleCPTDisturber >
   class MCBayesNetGenerator
-    : public IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >,
-      public ICPTDisturber< GUM_SCALAR > {
+      : public IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >
+      , public ICPTDisturber< GUM_SCALAR > {
     public:
     // ############################################################################
     /// @name Constructors / Destructor
@@ -187,27 +187,27 @@ namespace gum {
                         Idx  q = 40);
 
     /**
-    * Constructor.
-    * Use by default the SimpleCPTGenerator for generating the BNs CPT
-    * and the SimpleCPTDisturber to tweak the CPT when the dimension of the
-    * table
-    * changes.
-    * @param bayesNet the IBayesNet used as reference to fill the parameters
-    * nbrNodes, maxArcs and maxModality
-    * @param iteration The number of iterations wanted to repeat the algorithm
-    * @param p probability for the change of the state (see \ref probability_p_q
-    * )
-    * @param q probability for the change of the state (see \ref probability_p_q
-    * )
-    */
+     * Constructor.
+     * Use by default the SimpleCPTGenerator for generating the BNs CPT
+     * and the SimpleCPTDisturber to tweak the CPT when the dimension of the
+     * table
+     * changes.
+     * @param bayesNet the IBayesNet used as reference to fill the parameters
+     * nbrNodes, maxArcs and maxModality
+     * @param iteration The number of iterations wanted to repeat the algorithm
+     * @param p probability for the change of the state (see \ref probability_p_q
+     * )
+     * @param q probability for the change of the state (see \ref probability_p_q
+     * )
+     */
     explicit MCBayesNetGenerator(BayesNet< GUM_SCALAR > bayesNet,
                                  Size                   iteration = 5000,
                                  Idx                    p = 30,
                                  Idx                    q = 40);
 
     /**
-    * Destructor.
-    */
+     * Destructor.
+     */
 
     ~MCBayesNetGenerator() override;
 
@@ -225,16 +225,16 @@ namespace gum {
     void generateBN(BayesNet< GUM_SCALAR >& bayesNet) override;
 
     /**
-    * Change randomly the topology of a specific bayesian networks.
-    * @param bayesNetinit IBayesNet to be modify
-    * @param iteration The number of iterations wanted to repeat the algorithm
-    * @return null but modify inputed Bayesian Network
-    * @throws OperationNotAllow if the initial state of the IBayesNet is not
-    * respecting the wanted conditions
-    * if iteration = 0, it is assumed that the number of iteration wanted is the
-    * same
-    * as the one specified in the constructor
-    */
+     * Change randomly the topology of a specific bayesian networks.
+     * @param bayesNetinit IBayesNet to be modify
+     * @param iteration The number of iterations wanted to repeat the algorithm
+     * @return null but modify inputed Bayesian Network
+     * @throws OperationNotAllow if the initial state of the IBayesNet is not
+     * respecting the wanted conditions
+     * if iteration = 0, it is assumed that the number of iteration wanted is the
+     * same
+     * as the one specified in the constructor
+     */
     void disturbBN(BayesNet< GUM_SCALAR >& bayesNetinit, Size iteration = 0);
 
     ///@}
@@ -252,39 +252,39 @@ namespace gum {
      */
     Size iteration() const;
     /**
-    * Return a constant reference to the probabilité p imposed on the Markov
-    * Chain
-    * BayesNetGenerator.
-    */
+     * Return a constant reference to the probabilité p imposed on the Markov
+     * Chain
+     * BayesNetGenerator.
+     */
     Idx p() const;
     /**
-    * Return a constant reference to the probabilité imposed on the Markov Chain
-    * BayesNetGenerator.
-    */
+     * Return a constant reference to the probabilité imposed on the Markov Chain
+     * BayesNetGenerator.
+     */
     Idx q() const;
 
     ///@name Setters
 
     /**
-    * Modifies the value of the number of iterations impose on the
-    * BayesNetGenerator
-    */
+     * Modifies the value of the number of iterations impose on the
+     * BayesNetGenerator
+     */
     void setIteration(Size iteration);
     /**
-    * Modifies the value of the probability p imposed on the BayesNetGenerator
-    */
+     * Modifies the value of the probability p imposed on the BayesNetGenerator
+     */
     void setP(Idx p);
     /**
-    * Modifies the value of the probability q imposed on the BayesNetGenerator
-    */
+     * Modifies the value of the probability q imposed on the BayesNetGenerator
+     */
     void setQ(Idx q);
 
     /// @}
     protected:
-    Size                   _iteration;
-    Idx                    _p, _q;
-    bool                   _disturbing;
-    BayesNet< GUM_SCALAR > _bayesNettemp;
+    Size                                          _iteration;
+    Idx                                           _p, _q;
+    bool                                          _disturbing;
+    BayesNet< GUM_SCALAR >                        _bayesNettemp;
     HashTable< NodeId, Potential< GUM_SCALAR >* > _hashMarginal;
 
     /**
@@ -315,24 +315,24 @@ namespace gum {
     void __eraseArc(NodeId i, NodeId j, bool mustbeconnex = true);
 
     /**
-    * In the case that the graph is a polytree, the function will, according to
-    *the
-    *probability p and q, choose which change of state must occure( AorR or AR
-    *or
-    *jump) then will assert that the imposed constraint are respected and if
-    *not,
-    *will return to the previous topology.
-    **/
+     * In the case that the graph is a polytree, the function will, according to
+     *the
+     *probability p and q, choose which change of state must occure( AorR or AR
+     *or
+     *jump) then will assert that the imposed constraint are respected and if
+     *not,
+     *will return to the previous topology.
+     **/
 
     void __PMMx_poly();
     /**
-    * In the case that the graph is a multiconnected graph, the function will,
-    *according to the probability p and q, choose which change of state must
-    *occure(
-    *AorR or jump) then will assert that the imposed constraint are respected
-    *and if
-    *not, will return to the previous topology.
-    **/
+     * In the case that the graph is a multiconnected graph, the function will,
+     *according to the probability p and q, choose which change of state must
+     *occure(
+     *AorR or jump) then will assert that the imposed constraint are respected
+     *and if
+     *not, will return to the previous topology.
+     **/
     void __PMMx_multi();
     /**
      * In the case that the graph is a polytree, the function will add a ramdom
@@ -358,9 +358,9 @@ namespace gum {
      **/
     void __AorR();
     /**
-    * The function will remove and add a random arc changing the topology of the
-    *graph but asserting its connectivity.
-    **/
+     * The function will remove and add a random arc changing the topology of the
+     *graph but asserting its connectivity.
+     **/
     void __AR();
     /**
      * The boolean function that will assert the respect of the constraint.
@@ -427,4 +427,4 @@ namespace gum {
 } /*namespace gum*/
 
 #include <agrum/BN/generator/MCBayesNetGenerator_tpl.h>
-#endif  // MCBAYESNETGENERATOR
+#endif   // MCBAYESNETGENERATOR

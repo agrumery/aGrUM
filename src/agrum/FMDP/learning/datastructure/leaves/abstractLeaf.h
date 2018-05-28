@@ -48,7 +48,6 @@ namespace gum {
 
 
   class AbstractLeaf {
-
     public:
     // ==========================================================================
     /// @name Constructor & destructor.
@@ -58,8 +57,7 @@ namespace gum {
     // ###################################################################
     /// Default constructor
     // ###################################################################
-    AbstractLeaf(NodeId leafId)
-        : __leafId(leafId) {
+    AbstractLeaf(NodeId leafId) : __leafId(leafId) {
       GUM_CONSTRUCTOR(AbstractLeaf)
     }
 
@@ -105,4 +103,4 @@ namespace gum {
 } /* namespace gum */
 
 
-#endif  // GUM_ABSTRACT_LEAF_H
+#endif   // GUM_ABSTRACT_LEAF_H

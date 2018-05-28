@@ -34,26 +34,25 @@ namespace gum_tests {
   class RecordCounterTestSuite : public CxxTest::TestSuite {
     public:
     void test1() {
-      gum::learning::DBInitializerFromCSV<>
-        initializer ( GET_RESSOURCES_PATH( "asia.csv" ) );
-      const auto& var_names = initializer.variableNames ();
-      const std::size_t nb_vars = var_names.size ();
-      
-      gum::learning::DBTranslatorSet<> translator_set;
+      gum::learning::DBInitializerFromCSV<> initializer(
+        GET_RESSOURCES_PATH("asia.csv"));
+      const auto&       var_names = initializer.variableNames();
+      const std::size_t nb_vars = var_names.size();
+
+      gum::learning::DBTranslatorSet<>                translator_set;
       gum::learning::DBTranslator4LabelizedVariable<> translator;
-      for ( std::size_t i = 0; i < nb_vars; ++i ) {
-        translator_set.insertTranslator ( translator, i );
+      for (std::size_t i = 0; i < nb_vars; ++i) {
+        translator_set.insertTranslator(translator, i);
       }
-      
-      gum::learning::DatabaseTable<> database ( translator_set );
-      database.setVariableNames( initializer.variableNames () );
-      initializer.fillDatabase ( database );
 
-      gum::learning::DBRowGeneratorSet<> genset;
-      gum::learning::DBRowGeneratorParser<>
-        parser ( database.handler (), genset );
+      gum::learning::DatabaseTable<> database(translator_set);
+      database.setVariableNames(initializer.variableNames());
+      initializer.fillDatabase(database);
 
-      std::vector< gum::Size > modalities(8, 2);
+      gum::learning::DBRowGeneratorSet<>    genset;
+      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
+
+      std::vector< gum::Size >       modalities(8, 2);
       gum::learning::RecordCounter<> counter(parser, modalities);
 
       std::vector< gum::Idx > set1{0};
@@ -166,26 +165,25 @@ namespace gum_tests {
 
 
     void test_copy_move() {
-      gum::learning::DBInitializerFromCSV<>
-        initializer ( GET_RESSOURCES_PATH( "asia.csv" ) );
-      const auto& var_names = initializer.variableNames ();
-      const std::size_t nb_vars = var_names.size ();
-      
-      gum::learning::DBTranslatorSet<> translator_set;
+      gum::learning::DBInitializerFromCSV<> initializer(
+        GET_RESSOURCES_PATH("asia.csv"));
+      const auto&       var_names = initializer.variableNames();
+      const std::size_t nb_vars = var_names.size();
+
+      gum::learning::DBTranslatorSet<>                translator_set;
       gum::learning::DBTranslator4LabelizedVariable<> translator;
-      for ( std::size_t i = 0; i < nb_vars; ++i ) {
-        translator_set.insertTranslator ( translator, i );
+      for (std::size_t i = 0; i < nb_vars; ++i) {
+        translator_set.insertTranslator(translator, i);
       }
-      
-      gum::learning::DatabaseTable<> database ( translator_set );
-      database.setVariableNames( initializer.variableNames () );
-      initializer.fillDatabase ( database );
 
-      gum::learning::DBRowGeneratorSet<> genset;
-      gum::learning::DBRowGeneratorParser<>
-        parser ( database.handler (), genset );
+      gum::learning::DatabaseTable<> database(translator_set);
+      database.setVariableNames(initializer.variableNames());
+      initializer.fillDatabase(database);
 
-      std::vector< gum::Size > modalities(8, 2);
+      gum::learning::DBRowGeneratorSet<>    genset;
+      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
+
+      std::vector< gum::Size >       modalities(8, 2);
       gum::learning::RecordCounter<> counter(parser, modalities);
 
       std::vector< gum::Idx > set1{0};
@@ -291,9 +289,9 @@ namespace gum_tests {
         for (gum::Idx j = 0; j < 2; ++j) {
           for (gum::Idx i = 0; i < 2; ++i) {
             index2 = i + j * 2 + k * 4;
-            index1 = i * (gum::Idx(1) << (order[0] - 1)) +
-                     j * (gum::Idx(1) << (order[1] - 1)) +
-                     k * (gum::Idx(1) << (order[2] - 1));
+            index1 = i * (gum::Idx(1) << (order[0] - 1))
+                     + j * (gum::Idx(1) << (order[1] - 1))
+                     + k * (gum::Idx(1) << (order[2] - 1));
             if (v1[index1] != v2[index2]) return false;
           }
         }
@@ -309,8 +307,8 @@ namespace gum_tests {
       for (gum::Idx j = 0; j < 2; ++j) {
         for (gum::Idx i = 0; i < 2; ++i) {
           index2 = i + j * 2;
-          index1 = i * (gum::Idx(1) << (order[0] - 1)) +
-                   j * (gum::Idx(1) << (order[1] - 1));
+          index1 = i * (gum::Idx(1) << (order[0] - 1))
+                   + j * (gum::Idx(1) << (order[1] - 1));
           if (v1[index1] != v2[index2]) return false;
         }
       }

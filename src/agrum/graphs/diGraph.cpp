@@ -26,25 +26,23 @@
 #include <agrum/graphs/diGraph.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/diGraph_inl.h>
-#endif  // GUM_NOINLINE
+#  include <agrum/graphs/diGraph_inl.h>
+#endif   // GUM_NOINLINE
 
 namespace gum {
 
   DiGraph::DiGraph(Size nodes_size,
                    bool nodes_resize_policy,
                    Size arcs_size,
-                   bool arcs_resize_policy)
-      : NodeGraphPart(nodes_size, nodes_resize_policy)
-      , ArcGraphPart(arcs_size, arcs_resize_policy)
-      , __mutableTopologicalOrder(nullptr) {
+                   bool arcs_resize_policy) :
+      NodeGraphPart(nodes_size, nodes_resize_policy),
+      ArcGraphPart(arcs_size, arcs_resize_policy),
+      __mutableTopologicalOrder(nullptr) {
     GUM_CONSTRUCTOR(DiGraph);
   }
 
-  DiGraph::DiGraph(const DiGraph& g)
-      : NodeGraphPart(g)
-      , ArcGraphPart(g)
-      , __mutableTopologicalOrder(nullptr) {
+  DiGraph::DiGraph(const DiGraph& g) :
+      NodeGraphPart(g), ArcGraphPart(g), __mutableTopologicalOrder(nullptr) {
     GUM_CONS_CPY(DiGraph);
     if (g.__mutableTopologicalOrder != nullptr) {
       __mutableTopologicalOrder =
@@ -54,9 +52,7 @@ namespace gum {
 
   DiGraph::~DiGraph() {
     GUM_DESTRUCTOR(DiGraph);
-    if (__mutableTopologicalOrder != nullptr) {
-      delete __mutableTopologicalOrder;
-    }
+    if (__mutableTopologicalOrder != nullptr) { delete __mutableTopologicalOrder; }
   }
 
   const std::string DiGraph::toString() const {
@@ -90,8 +86,9 @@ namespace gum {
   }
 
   const Sequence< NodeId >& DiGraph::topologicalOrder(bool clear) const {
-    if (clear || (__mutableTopologicalOrder ==
-                  nullptr)) {  // we have to call _topologicalOrder
+    if (clear
+        || (__mutableTopologicalOrder
+            == nullptr)) {   // we have to call _topologicalOrder
       if (__mutableTopologicalOrder == nullptr) {
         __mutableTopologicalOrder = new Sequence< NodeId >();
       } else {
@@ -110,9 +107,7 @@ namespace gum {
     auto roots = std::vector< NodeId >();
 
     for (const auto node : dag.nodes()) {
-      if (dag.parents(node).empty()) {
-        roots.push_back(node);
-      }
+      if (dag.parents(node).empty()) { roots.push_back(node); }
     }
 
     while (roots.size()) {
@@ -128,9 +123,7 @@ namespace gum {
         auto child = *(dag.children(back).begin());
         dag.eraseArc(Arc(back, child));
 
-        if (dag.parents(child).empty()) {
-          roots.push_back(child);
-        }
+        if (dag.parents(child).empty()) { roots.push_back(child); }
       }
     }
 

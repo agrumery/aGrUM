@@ -163,7 +163,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/variables/variable_inl.h>
+#  include <agrum/variables/variable_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_VARIABLE_H */

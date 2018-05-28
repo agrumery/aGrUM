@@ -119,8 +119,8 @@ namespace gum {
      * performed
      * before a set of operations */
     void
-    forceAfter(const ScheduleOperation< GUM_SCALAR >&               op_to_force,
-               const Set< const ScheduleOperation< GUM_SCALAR >* >& ops_before);
+         forceAfter(const ScheduleOperation< GUM_SCALAR >&               op_to_force,
+                    const Set< const ScheduleOperation< GUM_SCALAR >* >& ops_before);
     void forceAfter(NodeId op_to_force, const NodeSet& ops_before);
 
     /** @brief adds a constraint indicating that an operation must be performed
@@ -132,8 +132,8 @@ namespace gum {
     /** @brief adds a constraint indicating that an operation must be performed
      * before a set of operations */
     void
-    forceBefore(const ScheduleOperation< GUM_SCALAR >&               op_to_force,
-                const Set< const ScheduleOperation< GUM_SCALAR >* >& ops_after);
+         forceBefore(const ScheduleOperation< GUM_SCALAR >&               op_to_force,
+                     const Set< const ScheduleOperation< GUM_SCALAR >* >& ops_after);
     void forceBefore(NodeId op_to_force, const NodeSet& ops_after);
 
     /// returns a DAG indicating in which order the operations can be performed
@@ -153,11 +153,11 @@ namespace gum {
 
     /// resturns the association between operations anf nodeIds
     const NodeProperty< const ScheduleOperation< GUM_SCALAR >* >&
-    operations() const;
+      operations() const;
 
     /// returns the set of operations involving a given multidim table
     const NodeSet&
-    operationsInvolving(const ScheduleMultiDim< GUM_SCALAR >& table) const;
+                   operationsInvolving(const ScheduleMultiDim< GUM_SCALAR >& table) const;
     const NodeSet& operationsInvolving(MultiDimId table_id) const;
 
     /// returns the set of ScheduleOperations that can be executed at once

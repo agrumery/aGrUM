@@ -143,8 +143,8 @@ namespace gum {
 
   extern template class MultiDimFunctionGraphOperator< double, std::plus >;
 
-}  // namespace gum
+}   // namespace gum
 
 #include <agrum/multidim/utils/FunctionGraphUtilities/operators/multiDimFunctionGraphOperator_tpl.h>
 
-#endif  // GUM_MULTI_DIM_FUNCTION_GRAPH_OPERATOR_H
+#endif   // GUM_MULTI_DIM_FUNCTION_GRAPH_OPERATOR_H

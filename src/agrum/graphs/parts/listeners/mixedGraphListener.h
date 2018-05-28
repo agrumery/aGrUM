@@ -120,10 +120,10 @@ namespace gum {
     MixedGraphListener& operator=(const MixedGraphListener& d);
   };
 
-}  // namespace gum
+}   // namespace gum
 
 #ifndef GUM_NO_INLINE
-#include <agrum/graphs/parts/listeners/mixedGraphListener_inl.h>
-#endif  // GUM_NOINLINE
+#  include <agrum/graphs/parts/listeners/mixedGraphListener_inl.h>
+#endif   // GUM_NOINLINE
 
-#endif  // GUM_MIXEDGRAPH_LISTENER_H
+#endif   // GUM_MIXEDGRAPH_LISTENER_H

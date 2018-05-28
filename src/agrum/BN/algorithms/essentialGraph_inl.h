@@ -59,4 +59,4 @@ namespace gum {
   INLINE const NodeGraphPart& EssentialGraph::nodes() const {
     return __mg.nodes();
   }
-}  // namespace gum
+}   // namespace gum

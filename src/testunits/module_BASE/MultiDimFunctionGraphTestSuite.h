@@ -39,12 +39,9 @@
 namespace gum_tests {
 
   class MultiDimFunctionGraphTestSuite : public CxxTest::TestSuite {
-
     private:
     void __fillFactory(gum::MultiDimFunctionGraph< float >* factory,
                        gum::List< gum::NodeId >*            idList) {
-
-
       factory->add(*Cprimevar);
       factory->add(*Cvar);
       factory->add(*PLvar);
@@ -55,28 +52,28 @@ namespace gum_tests {
       factory->add(*BOvar);
 
 
-      idList->insert(factory->manager()->addInternalNode(Cprimevar));  // 1
+      idList->insert(factory->manager()->addInternalNode(Cprimevar));   // 1
       factory->manager()->setRootNode((*idList)[0]);
-      idList->insert(factory->manager()->addInternalNode(Cvar));    // 2
-      idList->insert(factory->manager()->addInternalNode(PLvar));   // 3
-      idList->insert(factory->manager()->addInternalNode(APUvar));  // 4
-      idList->insert(factory->manager()->addInternalNode(BPUvar));  // 5
-      idList->insert(factory->manager()->addInternalNode(ADRvar));  // 6
-      idList->insert(factory->manager()->addInternalNode(BDRvar));  // 7
-      idList->insert(factory->manager()->addInternalNode(BOvar));   // 8
+      idList->insert(factory->manager()->addInternalNode(Cvar));     // 2
+      idList->insert(factory->manager()->addInternalNode(PLvar));    // 3
+      idList->insert(factory->manager()->addInternalNode(APUvar));   // 4
+      idList->insert(factory->manager()->addInternalNode(BPUvar));   // 5
+      idList->insert(factory->manager()->addInternalNode(ADRvar));   // 6
+      idList->insert(factory->manager()->addInternalNode(BDRvar));   // 7
+      idList->insert(factory->manager()->addInternalNode(BOvar));    // 8
 
-      idList->insert(factory->manager()->addInternalNode(Cvar));    // 9
-      idList->insert(factory->manager()->addInternalNode(PLvar));   // 10
-      idList->insert(factory->manager()->addInternalNode(APUvar));  // 11
-      idList->insert(factory->manager()->addInternalNode(BPUvar));  // 12
-      idList->insert(factory->manager()->addInternalNode(ADRvar));  // 13
-      idList->insert(factory->manager()->addInternalNode(BDRvar));  // 14
-      idList->insert(factory->manager()->addInternalNode(BOvar));   // 15
+      idList->insert(factory->manager()->addInternalNode(Cvar));     // 9
+      idList->insert(factory->manager()->addInternalNode(PLvar));    // 10
+      idList->insert(factory->manager()->addInternalNode(APUvar));   // 11
+      idList->insert(factory->manager()->addInternalNode(BPUvar));   // 12
+      idList->insert(factory->manager()->addInternalNode(ADRvar));   // 13
+      idList->insert(factory->manager()->addInternalNode(BDRvar));   // 14
+      idList->insert(factory->manager()->addInternalNode(BOvar));    // 15
 
-      idList->insert(factory->manager()->addTerminalNode(0));   // 16
-      idList->insert(factory->manager()->addTerminalNode(10));  // 17
-      idList->insert(factory->manager()->addTerminalNode(9));   // 18
-      idList->insert(factory->manager()->addTerminalNode(1));   // 19
+      idList->insert(factory->manager()->addTerminalNode(0));    // 16
+      idList->insert(factory->manager()->addTerminalNode(10));   // 17
+      idList->insert(factory->manager()->addTerminalNode(9));    // 18
+      idList->insert(factory->manager()->addTerminalNode(1));    // 19
 
 
       factory->manager()->setSon((*idList)[0], 1, (*idList)[1]);
@@ -146,7 +143,6 @@ namespace gum_tests {
     /**
      * **********************************************************************************/
     void test_Simple_Creation() {
-
       // *********************************************************************
       // Création of the Function Graph
       // *********************************************************************
@@ -176,7 +172,6 @@ namespace gum_tests {
     /**
      * **********************************************************************************/
     void test_MultiDimFunctionGraph_Diagram_Handlers_Methods() {
-
       // *********************************************************************
       // Création du multidim
       // *********************************************************************
@@ -233,7 +228,6 @@ namespace gum_tests {
     /**
      * **********************************************************************************/
     void test_toDot() {
-
       // *********************************************************************
       // Création du multidim
       // *********************************************************************
@@ -270,7 +264,6 @@ namespace gum_tests {
     /**
      * *******************************************************************************/
     void test_Manager_Graphical_Functions() {
-
       // *********************************************************************
       // Creation of the multidim
       // *********************************************************************
@@ -346,7 +339,6 @@ namespace gum_tests {
     /**
      * **********************************************************************************/
     void test_MultiDimFunctionGraph_Accessors_Modifiers_Methods() {
-
       // *********************************************************************
       // Creation of multidim
       // *********************************************************************
@@ -418,15 +410,10 @@ namespace gum_tests {
             TS_ASSERT_DELTA(functionGraph->get(inst), 1, 0.001);
           }
         } else {
-
           if (inst.val(*PLvar) == 1) {
-
             if (inst.val(*APUvar) == 1) {
-
               if (inst.val(*BPUvar) == 1) {
-
                 if (inst.val(*BOvar) == 1) {
-
                   if (inst.val(*Cprimevar) == 1) {
                     TS_ASSERT_DELTA(functionGraph->get(inst), 9, 0.001);
                   } else {
@@ -434,7 +421,6 @@ namespace gum_tests {
                   }
 
                 } else {
-
                   if (inst.val(*Cprimevar) == 1) {
                     TS_ASSERT_DELTA(functionGraph->get(inst), 0, 0.001);
                   } else {
@@ -442,7 +428,6 @@ namespace gum_tests {
                   }
                 }
               } else {
-
                 if (inst.val(*Cprimevar) == 1) {
                   TS_ASSERT_DELTA(functionGraph->get(inst), 0, 0.001);
                 } else {
@@ -450,13 +435,9 @@ namespace gum_tests {
                 }
               }
             } else {
-
               if (inst.val(*ADRvar) == 1) {
-
                 if (inst.val(*BDRvar) == 1) {
-
                   if (inst.val(*BOvar) == 1) {
-
                     if (inst.val(*Cprimevar) == 1) {
                       TS_ASSERT_DELTA(functionGraph->get(inst), 9, 0.001);
                     } else {
@@ -464,7 +445,6 @@ namespace gum_tests {
                     }
 
                   } else {
-
                     if (inst.val(*Cprimevar) == 1) {
                       TS_ASSERT_DELTA(functionGraph->get(inst), 0, 0.001);
                     } else {
@@ -473,7 +453,6 @@ namespace gum_tests {
                   }
 
                 } else {
-
                   if (inst.val(*Cprimevar) == 1) {
                     TS_ASSERT_DELTA(functionGraph->get(inst), 0, 0.001);
                   } else {
@@ -482,7 +461,6 @@ namespace gum_tests {
                 }
 
               } else {
-
                 if (inst.val(*Cprimevar) == 1) {
                   TS_ASSERT_DELTA(functionGraph->get(inst), 0, 0.001);
                 } else {
@@ -491,13 +469,9 @@ namespace gum_tests {
               }
             }
           } else {
-
             if (inst.val(*ADRvar) == 1) {
-
               if (inst.val(*BDRvar) == 1) {
-
                 if (inst.val(*BOvar) == 1) {
-
                   if (inst.val(*Cprimevar) == 1) {
                     TS_ASSERT_DELTA(functionGraph->get(inst), 9, 0.001);
                   } else {
@@ -505,7 +479,6 @@ namespace gum_tests {
                   }
 
                 } else {
-
                   if (inst.val(*Cprimevar) == 1) {
                     TS_ASSERT_DELTA(functionGraph->get(inst), 0, 0.001);
                   } else {
@@ -514,7 +487,6 @@ namespace gum_tests {
                 }
 
               } else {
-
                 if (inst.val(*Cprimevar) == 1) {
                   TS_ASSERT_DELTA(functionGraph->get(inst), 0, 0.001);
                 } else {
@@ -523,7 +495,6 @@ namespace gum_tests {
               }
 
             } else {
-
               if (inst.val(*Cprimevar) == 1) {
                 TS_ASSERT_DELTA(functionGraph->get(inst), 0, 0.001);
               } else {
@@ -553,8 +524,6 @@ namespace gum_tests {
     /**
      * **********************************************************************************/
     void test_MultiDimFunctionGraph_Implementation_Methods() {
-
-
       // *********************************************************************
       // Creation of the multidim
       // *********************************************************************
@@ -573,7 +542,7 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(functionGraph->domainSize(), (gum::Size)256);
 
-      TS_ASSERT_EQUALS(functionGraph->realSize(), (gum::Size)15);  // 19);
+      TS_ASSERT_EQUALS(functionGraph->realSize(), (gum::Size)15);   // 19);
 
       TS_GUM_ASSERT_THROWS_NOTHING(functionGraph->compressionRate());
 
@@ -609,7 +578,6 @@ namespace gum_tests {
     /**
      * **********************************************************************************/
     void test_MultiDimFunctionGraph_Copy_Methods() {
-
       // *********************************************************************
       // Création du multidim
       // *********************************************************************
@@ -718,7 +686,6 @@ namespace gum_tests {
     /**
      * **********************************************************************************/
     void test_MultiDimFunctionGraph_Various_Methods() {
-
       // *********************************************************************
       // Creation of severals multidims
       // *********************************************************************
@@ -766,7 +733,6 @@ namespace gum_tests {
     /**
      * **********************************************************************************/
     void test_MoveTo() {
-
       // *********************************************************************
       // Creation of the multidim
       // *********************************************************************
@@ -805,9 +771,7 @@ namespace gum_tests {
     }
 
     void est_Generator() {
-
       for (gum::Idx i = 0; i < 100; i++) {
-
         gum::Sequence< const gum::DiscreteVariable* >* varList =
           new gum::Sequence< const gum::DiscreteVariable* >();
 
@@ -852,4 +816,4 @@ namespace gum_tests {
       }
     }
   };
-}
+}   // namespace gum_tests

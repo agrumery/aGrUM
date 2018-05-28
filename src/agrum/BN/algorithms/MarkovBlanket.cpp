@@ -27,18 +27,17 @@
 #include <agrum/BN/algorithms/MarkovBlanket.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/BN/algorithms/MarkovBlanket_inl.h>
-#endif  // GUM_NOINLINE
+#  include <agrum/BN/algorithms/MarkovBlanket_inl.h>
+#endif   // GUM_NOINLINE
 
 namespace gum {
-  MarkovBlanket::MarkovBlanket(const DAGmodel& m, NodeId id)
-      : __model(m)
-      , __node(id) {
+  MarkovBlanket::MarkovBlanket(const DAGmodel& m, NodeId id) :
+      __model(m), __node(id) {
     __buildMarkovBlanket();
   }
 
-  MarkovBlanket::MarkovBlanket(const DAGmodel& m, const std::string& name)
-      : MarkovBlanket(m, m.idFromName(name)) {}
+  MarkovBlanket::MarkovBlanket(const DAGmodel& m, const std::string& name) :
+      MarkovBlanket(m, m.idFromName(name)) {}
 
   MarkovBlanket::~MarkovBlanket() {}
 
@@ -84,9 +83,7 @@ namespace gum {
     for (const auto& nid : nodes()) {
       try {
         other.idFromName(__model.variable(nid).name());
-      } catch (NotFound) {
-        return false;
-      }
+      } catch (NotFound) { return false; }
     }
 
     for (const auto& arc : arcs()) {
@@ -110,19 +107,14 @@ namespace gum {
     std::string tab = "  ";
 
     for (const auto node : __mb.nodes()) {
-
       nodeStream << tab << node << "[label=\"" << __model.variable(node).name()
                  << "\"";
-      if (node == __node) {
-        nodeStream << ", color=red";
-      }
+      if (node == __node) { nodeStream << ", color=red"; }
       nodeStream << "];" << std::endl;
 
       for (const auto chi : __mb.children(node)) {
         arcStream << tab << node << " -> " << chi;
-        if (__specialArcs.exists(Arc(node, chi))) {
-          arcStream << " [color=grey]";
-        }
+        if (__specialArcs.exists(Arc(node, chi))) { arcStream << " [color=grey]"; }
         arcStream << ";" << std::endl;
       }
     }
@@ -133,4 +125,4 @@ namespace gum {
 
     return output.str();
   }
-}  // namespace gum
+}   // namespace gum

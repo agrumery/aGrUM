@@ -32,15 +32,14 @@ namespace gum {
 
   namespace aggregator {
     template < typename GUM_SCALAR >
-    INLINE Forall< GUM_SCALAR >::Forall(Idx value)
-        : MultiDimAggregator< GUM_SCALAR >()
-        , __value(value) {
+    INLINE Forall< GUM_SCALAR >::Forall(Idx value) :
+        MultiDimAggregator< GUM_SCALAR >(), __value(value) {
       GUM_CONSTRUCTOR(Forall)
     }
 
     template < typename GUM_SCALAR >
-    INLINE Forall< GUM_SCALAR >::Forall(const Forall< GUM_SCALAR >& from)
-        : MultiDimAggregator< GUM_SCALAR >(from) {
+    INLINE Forall< GUM_SCALAR >::Forall(const Forall< GUM_SCALAR >& from) :
+        MultiDimAggregator< GUM_SCALAR >(from) {
       __value = from.__value;
       GUM_CONS_CPY(Forall);
     }
@@ -84,5 +83,5 @@ namespace gum {
       return new Forall< GUM_SCALAR >(__value);
     }
 
-  }  // aggregator
-}  // namespace gum
+  }   // namespace aggregator
+}   // namespace gum

@@ -31,6 +31,5 @@
 
 // include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
-#include <agrum/core/thread_inl.h>
+#  include <agrum/core/thread_inl.h>
 #endif /* GUM_NO_INLINE */
-

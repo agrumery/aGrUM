@@ -1,23 +1,23 @@
 
 /***************************************************************************
-*   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 
 #include "CNMonteCarloSampling.h"
@@ -28,9 +28,9 @@ namespace gum {
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::CNMonteCarloSampling(
-      const CredalNet< GUM_SCALAR >& credalNet)
-        : MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::
-            MultipleInferenceEngine(credalNet) {
+      const CredalNet< GUM_SCALAR >& credalNet) :
+        MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::
+          MultipleInferenceEngine(credalNet) {
       __infEs::_repetitiveInd = false;
       //__infEs::_iterStop = 1000;
       __infEs::_storeVertices = false;
@@ -53,7 +53,6 @@ namespace gum {
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::makeInference() {
-
       if (__infEs::_repetitiveInd) {
         try {
           this->_repetitiveInit();
@@ -73,7 +72,7 @@ namespace gum {
       // don't put it after burnIn, it could stop with timeout : we want at
       // least one
       // burnIn and one periodSize
-      GUM_SCALAR eps = 1.;  // to validate testSuite ?
+      GUM_SCALAR eps = 1.;   // to validate testSuite ?
 
       /// auto bsize = this->burnIn();
       auto psize = this->periodSize();
@@ -119,7 +118,6 @@ namespace gum {
       */
 
       if (this->continueApproximationScheme(eps)) {
-
         do {
           eps = 0;
 
@@ -129,31 +127,25 @@ namespace gum {
           for (int iter = 0; iter < int(psize); iter++) {
             __threadInference();
             __threadUpdate();
-          }  // end of : parallel periodSize
+          }   // end of : parallel periodSize
 
           this->updateApproximationScheme(int(psize));
 
-          this->_updateMarginals();  // fusion threads + update margi
+          this->_updateMarginals();   // fusion threads + update margi
 
-          eps = this->_computeEpsilon();  // also updates oldMargi
+          eps = this->_computeEpsilon();   // also updates oldMargi
 
         } while (this->continueApproximationScheme(eps));
       }
 
-      if (!this->_modal.empty()) {
-        this->_expFusion();
-      }
+      if (!this->_modal.empty()) { this->_expFusion(); }
 
-      if (__infEs::_storeBNOpt) {
-        this->_optFusion();
-      }
+      if (__infEs::_storeBNOpt) { this->_optFusion(); }
 
-      if (__infEs::_storeVertices) {
-        this->_verticesFusion();
-      }
+      if (__infEs::_storeVertices) { this->_verticesFusion(); }
 
       if (!this->_modal.empty()) {
-        this->_dynamicExpectations();  // work with any network
+        this->_dynamicExpectations();   // work with any network
       }
 
       /// GUM_TRACE ( this->messageApproximationScheme() );
@@ -161,7 +153,7 @@ namespace gum {
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     inline void
-    CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::__threadUpdate() {
+      CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::__threadUpdate() {
       int tId = getThreadNumber();
       // bool keepSample = false;
 
@@ -184,13 +176,13 @@ namespace gum {
           // approximationScheme, it is "useless" ( and expensive ) to check now
           this->_updateThread(node, vertex, false);
 
-        }  // end of : for all nodes
-      }    // end of : if ( p(e) > 0 )
+        }   // end of : for all nodes
+      }     // end of : if ( p(e) > 0 )
     }
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     inline void
-    CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::__threadInference() {
+      CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::__threadInference() {
       int tId = getThreadNumber();
       __verticesSampling();
 
@@ -207,7 +199,7 @@ namespace gum {
        * VERIFIER d/dt(e(t+1)-e(t))
        */
       this->setEpsilon(0.);
-      this->enableEpsilon();  // to be sure
+      this->enableEpsilon();   // to be sure
 
       this->disableMinEpsilonRate();
       this->disableMaxIter();
@@ -217,8 +209,8 @@ namespace gum {
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     void
-    CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::__mcThreadDataCopy() {
-      int   num_threads;
+      CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::__mcThreadDataCopy() {
+      int num_threads;
 #pragma omp parallel
       {
         int this_thread = getThreadNumber();
@@ -237,7 +229,7 @@ namespace gum {
 
           // if ( __infEs::_storeBNOpt )
           // this->_l_sampledNet.resize ( num_threads );
-        }  // end of : single region
+        }   // end of : single region
 
         // we could put those below in a function in InferenceEngine, but let's
         // keep
@@ -247,7 +239,7 @@ namespace gum {
         // !!! BNInferenceEngine still needs to be initialized here anyway !!!
 
         BayesNet< GUM_SCALAR >* thread_bn = new BayesNet< GUM_SCALAR >();
-#pragma omp                     critical(Init)
+#pragma omp critical(Init)
         {
           // IBayesNet< GUM_SCALAR > * thread_bn = new IBayesNet< GUM_SCALAR
           // >();//(this->_credalNet->current_bn());
@@ -304,7 +296,7 @@ namespace gum {
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     inline void
-    CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::__verticesSampling() {
+      CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::__verticesSampling() {
       int                      this_thread = getThreadNumber();
       IBayesNet< GUM_SCALAR >* working_bn = this->_workingSet[this_thread];
 
@@ -341,7 +333,7 @@ namespace gum {
               var_cpt[pconf * dSize + mod] =
                 (*cpt)[elt.first][pconf][choosen_vertex][mod];
             }
-          }  // end of : pconf
+          }   // end of : pconf
 
           potential->fillWith(var_cpt);
 
@@ -376,7 +368,7 @@ namespace gum {
               var_cpt[pconf * dSize + mod] =
                 (*cpt)[elt.first][pconf][choosen_vertex][mod];
             }
-          }  // end of : pconf
+          }   // end of : pconf
 
           potential->fillWith(var_cpt);
 
@@ -418,7 +410,7 @@ namespace gum {
               var_cpt[pconf * dSize + mod] =
                 (*cpt)[node][pconf][choosen_vertex][mod];
             }
-          }  // end of : pconf
+          }   // end of : pconf
 
           potential->fillWith(var_cpt);
         }
@@ -431,10 +423,8 @@ namespace gum {
 
     template < typename GUM_SCALAR, class BNInferenceEngine >
     inline void
-    CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::__insertEvidence() {
-      if (this->_evidence.size() == 0) {
-        return;
-      }
+      CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::__insertEvidence() {
+      if (this->_evidence.size() == 0) { return; }
 
       int this_thread = getThreadNumber();
 
@@ -471,5 +461,5 @@ namespace gum {
       }
     }
 
-  }  // namespace cn
-}
+  }   // namespace credal
+}   // namespace gum

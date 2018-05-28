@@ -53,7 +53,7 @@ namespace gum {
   template < typename T_TICKS >
   class DiscretizedVariable : public DiscreteVariable {
     private:
-    std::vector< T_TICKS > __ticks;  // Array from 0 to domainSize-2
+    std::vector< T_TICKS > __ticks;   // Array from 0 to domainSize-2
     Size                   __ticks_size;
 
     protected:
@@ -89,17 +89,17 @@ namespace gum {
      **/
 
     /**
-    * Constructor
-    * @param aName the name
-    * @param aDesc the description
-    */
+     * Constructor
+     * @param aName the name
+     * @param aDesc the description
+     */
     DiscretizedVariable(const std::string& aName, const std::string& aDesc);
 
     /**
-    * Constructor
-    * @param aName the name
-    * @param aDesc the description
-    */
+     * Constructor
+     * @param aName the name
+     * @param aDesc the description
+     */
     DiscretizedVariable(const std::string&            aName,
                         const std::string&            aDesc,
                         const std::vector< T_TICKS >& ticks);
@@ -112,7 +112,7 @@ namespace gum {
 
     /**
      * Destructor.
-    */
+     */
     virtual ~DiscretizedVariable();
 
     /// @}
@@ -130,7 +130,7 @@ namespace gum {
      * @return a reference to *this
      **/
     DiscretizedVariable< T_TICKS >&
-    operator=(const DiscretizedVariable< T_TICKS >& aDRV);
+      operator=(const DiscretizedVariable< T_TICKS >& aDRV);
 
     /**
      *
@@ -166,9 +166,9 @@ namespace gum {
     virtual Idx index(const std::string& label) const;
 
     /**
-    *
-    * @return the size of the random discrete variable domain
-    */
+     *
+     * @return the size of the random discrete variable domain
+     */
     virtual Size              domainSize() const;
     virtual const std::string domain() const;
 

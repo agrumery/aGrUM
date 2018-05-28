@@ -65,7 +65,7 @@ namespace gum_tests {
       if (c1 != c2) return false;
 
       //---------- compare two files line by line ------------------//
-      file1.clear();  //  set new value for error control state  //
+      file1.clear();   //  set new value for error control state  //
       file1.seekg(0, std::ios::beg);
       file2.clear();
       file2.seekg(0, std::ios::beg);
@@ -161,9 +161,7 @@ namespace gum_tests {
       try {
         writer.write(file, *bn);
         TS_ASSERT(true);
-      } catch (gum::IOError&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::IOError&) { TS_ASSERT(false); }
 
       TS_ASSERT(__compareFile(file, GET_RESSOURCES_PATH("BIFWriter_Model.txt")))
     }
@@ -174,12 +172,12 @@ namespace gum_tests {
       bn.cpt(i1).fillWith({0.2, 0.8});
       bn.cpt(i2).fillWith({0.3, 0.7});
       bn.cpt(i3).fillWith({0.1, 0.9, 0.9, 0.1});
-      bn.cpt(i4).fillWith(  // clang-format off
+      bn.cpt(i4).fillWith(   // clang-format off
                              {0.4, 0.6,
                               0.5, 0.5,
                               0.5, 0.5,
-                              1.0, 0.0} );  // clang-format on
-      bn.cpt(i5).fillWith(                          // clang-format off
+                              1.0, 0.0} );   // clang-format on
+      bn.cpt(i5).fillWith(                           // clang-format off
                              {0.3, 0.6, 0.1,
                               0.5, 0.5, 0.0,
                               0.5, 0.5, 0.0,
@@ -191,4 +189,4 @@ namespace gum_tests {
       // clang-format on
     }
   };
-}
+}   // namespace gum_tests

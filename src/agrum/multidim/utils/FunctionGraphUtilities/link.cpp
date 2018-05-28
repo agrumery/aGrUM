@@ -31,4 +31,4 @@ namespace gum {
 
   template class Link< Idx >;
 
-}  // namespace gum
+}   // namespace gum

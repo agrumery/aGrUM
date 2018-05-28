@@ -30,11 +30,11 @@
 namespace gum {
   template < typename GUM_SCALAR >
   INLINE std::string
-  O3prmBNReader< GUM_SCALAR >::__getVariableName(const std::string& path,
-                                                 const std::string& type,
-                                                 const std::string& name,
-                                                 const std::string& toRemove) {
-    auto res = path + name;  // path ends up with a "."
+         O3prmBNReader< GUM_SCALAR >::__getVariableName(const std::string& path,
+                                                   const std::string& type,
+                                                   const std::string& name,
+                                                   const std::string& toRemove) {
+    auto res = path + name;   // path ends up with a "."
     if (toRemove != "") {
       if (res.substr(0, toRemove.size()) == toRemove) {
         res = res.substr(toRemove.size());
@@ -45,7 +45,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   std::string
-  O3prmBNReader< GUM_SCALAR >::__getInstanceName(const std::string& classname) {
+    O3prmBNReader< GUM_SCALAR >::__getInstanceName(const std::string& classname) {
     auto res = classname.substr(0, 4);
     std::transform(res.begin(), res.end(), res.begin(), ::tolower);
     return res;
@@ -53,10 +53,10 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   std::string
-  O3prmBNReader< GUM_SCALAR >::__getEntityName(const std::string& filename) {
+    O3prmBNReader< GUM_SCALAR >::__getEntityName(const std::string& filename) {
     auto b = filename.find_last_of("/\\");
     auto e = filename.find_last_of(".") - 1;
-    GUM_ASSERT(e > b);  // we are waiting ../../basename.o3prm
+    GUM_ASSERT(e > b);   // we are waiting ../../basename.o3prm
     return filename.substr(b + 1, e - b);
   }
 
@@ -64,8 +64,8 @@ namespace gum {
   O3prmBNReader< GUM_SCALAR >::O3prmBNReader(BayesNet< GUM_SCALAR >* bn,
                                              const std::string&      filename,
                                              const std::string&      entityName,
-                                             const std::string&      classpath)
-      : BNReader< GUM_SCALAR >(bn, filename) {
+                                             const std::string&      classpath) :
+      BNReader< GUM_SCALAR >(bn, filename) {
     GUM_CONSTRUCTOR(O3prmBNReader);
     __bn = bn;
     __filename = filename;
@@ -84,9 +84,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   Size O3prmBNReader< GUM_SCALAR >::proceed() {
     prm::o3prm::O3prmReader< GUM_SCALAR > reader;
-    if (__classpath != "") {
-      reader.addClassPath(__classpath);
-    }
+    if (__classpath != "") { reader.addClassPath(__classpath); }
     reader.readFile(__filename);
     gum::prm::PRM< GUM_SCALAR >* prm = reader.prm();
     __errors = reader.errorsContainer();
@@ -100,8 +98,8 @@ namespace gum {
         if (prm->isClass(__entityName)) {
           ParseError warn(
             false,
-            "No system '" + __entityName +
-              "' found but class found. Generating unnamed instance.",
+            "No system '" + __entityName
+              + "' found but class found. Generating unnamed instance.",
             __filename,
             0);
           __errors.add(warn);
@@ -111,7 +109,7 @@ namespace gum {
             instanceName, prm->getClass(__entityName));
           s.add(i);
           __generateBN(s);
-          instanceName += ".";  // to be removed in __getVariableName
+          instanceName += ".";   // to be removed in __getVariableName
         } else {
           ParseError err(true,
                          "Neither system nor class '" + __entityName + "'.",
@@ -164,10 +162,10 @@ namespace gum {
 
 
   template < typename GUM_SCALAR >
-  void
-  O3prmBNReader< GUM_SCALAR >::__generateBN(prm::PRMSystem< GUM_SCALAR >& system) {
+  void O3prmBNReader< GUM_SCALAR >::__generateBN(
+    prm::PRMSystem< GUM_SCALAR >& system) {
     system.instantiate();
     BayesNetFactory< GUM_SCALAR > factory(__bn);
     system.groundedBN(factory);
   }
-}  // gum
+}   // namespace gum

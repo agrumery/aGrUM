@@ -94,7 +94,7 @@ namespace gum {
 
       /// copy operator
       StructuralConstraintTabuList&
-      operator=(const StructuralConstraintTabuList& from);
+        operator=(const StructuralConstraintTabuList& from);
 
       /// move operator
       StructuralConstraintTabuList& operator=(StructuralConstraintTabuList&& from);
@@ -190,16 +190,16 @@ namespace gum {
        * does not. */
       bool checkModificationAlone(const ArcReversal& change) const;
 
-/// @}
+      /// @}
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // include the set of methods that enable the structural constraint to
 // be standalone, i.e., that it needs not be included into a
 // StructuralConstraintSetStatic to be used by learning algorithms
-#define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintTabuList
-#include <agrum/learning/constraints/structuralConstraintPatternHeader.h>
-#undef GUM_CONSTRAINT_CLASS_NAME
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#  define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintTabuList
+#  include <agrum/learning/constraints/structuralConstraintPatternHeader.h>
+#  undef GUM_CONSTRAINT_CLASS_NAME
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
       protected:
       /// the tabu list
@@ -215,7 +215,7 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/constraints/structuralConstraintTabuList_inl.h>
+#  include <agrum/learning/constraints/structuralConstraintTabuList_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_STRUCTURAL_TABU_LIST_H */

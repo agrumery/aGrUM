@@ -33,9 +33,9 @@
 
 #include <cmath>
 #ifdef HAVE_UNISTD_H
-#include <unistd.h>
+#  include <unistd.h>
 #else
-#include <agrum/core/mvsc/unistd.h>
+#  include <agrum/core/mvsc/unistd.h>
 #endif
 
 #include <chrono>
@@ -59,20 +59,20 @@ extern "C" {
 /* *** from lrs, we need to know BASE to read multiple precision integers *** */
 #ifdef B32
 /*32 bit machines */
-#define FORMAT "%4.4lu"
-#define MAXD 2147483647L
-#define BASE 10000L
-#define BASE_DIG 4
-#define INTSIZE 8L
-#define BIT "32bit"
+#  define FORMAT "%4.4lu"
+#  define MAXD 2147483647L
+#  define BASE 10000L
+#  define BASE_DIG 4
+#  define INTSIZE 8L
+#  define BIT "32bit"
 #else
 /* 64 bit machines */
-#define MAXD 9223372036854775807L
-#define BASE 1000000000L
-#define FORMAT "%9.9lu"
-#define BASE_DIG 9
-#define INTSIZE 16L
-#define BIT "64bit"
+#  define MAXD 9223372036854775807L
+#  define BASE 1000000000L
+#  define FORMAT "%9.9lu"
+#  define BASE_DIG 9
+#  define INTSIZE 16L
+#  define BIT "64bit"
 #endif
 
 // 64 bits for windows (long is 32 bits)
@@ -80,7 +80,7 @@ extern "C" {
 typedef __int64          int64_t;
 typedef unsigned __int64 uint64_t;
 #else
-#include <stdint.h>
+#  include <stdint.h>
 #endif
 
 /* ************ */
@@ -91,7 +91,8 @@ namespace gum {
   namespace credal {
 
     /**
-     * @class LRSWrapper LrsWrapper.h <agrum/CN/LrsWrapper.h>
+     * @class LRSWrapper
+     * @headerfile LrsWrapper.h <agrum/CN/LrsWrapper.h>
      * @brief Class template acting as a wrapper for Lexicographic Reverse
      * Search by
      * David Avis.
@@ -446,8 +447,8 @@ namespace gum {
       /// @}
     };
 
-  }  // end of credal namespace
-}  // end of gum namespace
+  }   // namespace credal
+}   // namespace gum
 
 #include <agrum/CN/LrsWrapper_tpl.h>
 

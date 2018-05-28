@@ -56,7 +56,7 @@ namespace gum {
   template < typename GUM_SCALAR,
              template < typename > class IApproximationPolicy = ExactPolicy >
   class FactorisedValuesCNFWriter
-    : public CNFWriter< GUM_SCALAR, IApproximationPolicy > {
+      : public CNFWriter< GUM_SCALAR, IApproximationPolicy > {
     public:
     // ==========================================================================
     /// @name Constructor & destructor
@@ -103,4 +103,4 @@ namespace gum {
 } /* namespace gum */
 
 #include <agrum/BN/io/cnf/FactorisedValuesCNFWriter_tpl.h>
-#endif  // GUM_NET_WRITER_H
+#endif   // GUM_NET_WRITER_H

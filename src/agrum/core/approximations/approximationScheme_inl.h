@@ -39,9 +39,7 @@ namespace gum {
   // Given that we approximate f(t), stopping criterion on |f(t+1)-f(t)| If
   // the criterion was disabled it will be enabled
   INLINE void ApproximationScheme::setEpsilon(double eps) {
-    if (eps < 0.) {
-      GUM_ERROR(OutOfLowerBound, "eps should be >=0");
-    }
+    if (eps < 0.) { GUM_ERROR(OutOfLowerBound, "eps should be >=0"); }
 
     _eps = eps;
     _enabled_eps = true;
@@ -64,9 +62,7 @@ namespace gum {
 
   // Given that we approximate f(t), stopping criterion on d/dt(|f(t+1)-f(t)|)
   INLINE void ApproximationScheme::setMinEpsilonRate(double rate) {
-    if (rate < 0) {
-      GUM_ERROR(OutOfLowerBound, "rate should be >=0");
-    }
+    if (rate < 0) { GUM_ERROR(OutOfLowerBound, "rate should be >=0"); }
 
     _min_rate_eps = rate;
     _enabled_min_rate_eps = true;
@@ -95,9 +91,7 @@ namespace gum {
 
   // stopping criterion on number of iterations
   INLINE void ApproximationScheme::setMaxIter(Size max) {
-    if (max < 1) {
-      GUM_ERROR(OutOfLowerBound, "max should be >=1");
-    }
+    if (max < 1) { GUM_ERROR(OutOfLowerBound, "max should be >=1"); }
     _max_iter = max;
     _enabled_max_iter = true;
   }
@@ -120,9 +114,7 @@ namespace gum {
   // stopping criterion on timeout (in seconds)
   // If the criterion was disabled it will be enabled
   INLINE void ApproximationScheme::setMaxTime(double timeout) {
-    if (timeout <= 0.) {
-      GUM_ERROR(OutOfLowerBound, "timeout should be >0.");
-    }
+    if (timeout <= 0.) { GUM_ERROR(OutOfLowerBound, "timeout should be >0."); }
     _max_time = timeout;
     _enabled_max_time = true;
   }
@@ -147,9 +139,7 @@ namespace gum {
 
   // how many samples between 2 stopping isEnableds
   INLINE void ApproximationScheme::setPeriodSize(Size p) {
-    if (p < 1) {
-      GUM_ERROR(OutOfLowerBound, "p should be >=1");
-    }
+    if (p < 1) { GUM_ERROR(OutOfLowerBound, "p should be >=1"); }
 
     _period_size = p;
   }
@@ -203,13 +193,9 @@ namespace gum {
   // @return true if we are at the beginning of a period (compute error is
   // mandatory)
   INLINE bool ApproximationScheme::startOfPeriod() {
-    if (_current_step < _burn_in) {
-      return false;
-    }
+    if (_current_step < _burn_in) { return false; }
 
-    if (_period_size == 1) {
-      return true;
-    }
+    if (_period_size == 1) { return true; }
 
     return ((_current_step - _burn_in) % _period_size == 0);
   }
@@ -248,19 +234,15 @@ namespace gum {
       }
     }
 
-    if (!startOfPeriod()) {
-      return true;
-    }
+    if (!startOfPeriod()) { return true; }
 
     if (_current_state != ApproximationSchemeSTATE::Continue) {
       GUM_ERROR(OperationNotAllowed,
-                "state of the approximation scheme is not correct : " +
-                  messageApproximationScheme());
+                "state of the approximation scheme is not correct : "
+                  + messageApproximationScheme());
     }
 
-    if (verbosity()) {
-      _history.push_back(error);
-    }
+    if (verbosity()) { _history.push_back(error); }
 
     if (_enabled_max_iter) {
       if (_current_step > _max_iter) {
@@ -270,7 +252,7 @@ namespace gum {
     }
 
     _last_epsilon = _current_epsilon;
-    _current_epsilon = error;  // eps rate isEnabled needs it so affectation was
+    _current_epsilon = error;   // eps rate isEnabled needs it so affectation was
     // moved from eps isEnabled below
 
     if (_enabled_eps) {
@@ -314,21 +296,15 @@ namespace gum {
   }
 
   INLINE void
-  ApproximationScheme::_stopScheme(ApproximationSchemeSTATE new_state) {
-    if (new_state == ApproximationSchemeSTATE::Continue) {
-      return;
-    }
+    ApproximationScheme::_stopScheme(ApproximationSchemeSTATE new_state) {
+    if (new_state == ApproximationSchemeSTATE::Continue) { return; }
 
-    if (new_state == ApproximationSchemeSTATE::Undefined) {
-      return;
-    }
+    if (new_state == ApproximationSchemeSTATE::Undefined) { return; }
 
     _current_state = new_state;
     _timer.pause();
 
-    if (onStop.hasListener()) {
-      GUM_EMIT1(onStop, messageApproximationScheme());
-    }
+    if (onStop.hasListener()) { GUM_EMIT1(onStop, messageApproximationScheme()); }
   }
 
-}  // namespace gum
+}   // namespace gum

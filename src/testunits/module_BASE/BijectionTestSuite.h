@@ -258,8 +258,7 @@ namespace gum_tests {
 
       try {
         carre.insert(4, 1);
-      } catch (gum::DuplicateElement&) {
-      }
+      } catch (gum::DuplicateElement&) {}
 
       TS_ASSERT(!carre.existsFirst(4));
     }
@@ -315,8 +314,7 @@ namespace gum_tests {
 
       gum::Size nb = 0;
 
-      for (auto iter = bijection.begin(); iter != bijection.end(); ++iter, ++nb) {
-      }
+      for (auto iter = bijection.begin(); iter != bijection.end(); ++iter, ++nb) {}
 
       TS_ASSERT(nb == 8);
 
@@ -327,16 +325,14 @@ namespace gum_tests {
 
       nb = 0;
 
-      for (; iter1 != iter2; ++iter1, ++nb) {
-      }
+      for (; iter1 != iter2; ++iter1, ++nb) {}
 
       TS_ASSERT(nb == 4);
 
       nb = 0;
       auto iter = iter2;
 
-      for (iter = bijection.begin(); iter != iter2; ++iter, ++nb) {
-      }
+      for (iter = bijection.begin(); iter != iter2; ++iter, ++nb) {}
 
       TS_ASSERT(nb == 4);
 
@@ -364,8 +360,7 @@ namespace gum_tests {
 
       for (gum::Bijection< int, int >::iterator iter = bijection.begin();
            iter != bijection.end();
-           ++iter, ++nb) {
-      }
+           ++iter, ++nb) {}
 
       TS_ASSERT(nb == 8);
 
@@ -376,16 +371,14 @@ namespace gum_tests {
 
       nb = 0;
 
-      for (; iter1 != iter2; ++iter1, ++nb) {
-      }
+      for (; iter1 != iter2; ++iter1, ++nb) {}
 
       TS_ASSERT(nb == 4);
 
       nb = 0;
       gum::Bijection< int, int >::iterator iter = iter2;
 
-      for (iter = bijection.begin(); iter != iter2; ++iter, ++nb) {
-      }
+      for (iter = bijection.begin(); iter != iter2; ++iter, ++nb) {}
 
       TS_ASSERT(nb == 4);
 
@@ -411,8 +404,7 @@ namespace gum_tests {
 
       gum::Size nb = 0;
 
-      for (auto iter = bijection.begin(); iter != bijection.end(); ++iter, ++nb) {
-      }
+      for (auto iter = bijection.begin(); iter != bijection.end(); ++iter, ++nb) {}
 
       TS_ASSERT(nb == 8);
 
@@ -423,16 +415,14 @@ namespace gum_tests {
 
       nb = 0;
 
-      for (; iter1 != iter2; ++iter1, ++nb) {
-      }
+      for (; iter1 != iter2; ++iter1, ++nb) {}
 
       TS_ASSERT(nb == 4);
 
       nb = 0;
       auto iter = iter2;
 
-      for (iter = bijection.begin(); iter != iter2; ++iter, ++nb) {
-      }
+      for (iter = bijection.begin(); iter != iter2; ++iter, ++nb) {}
 
       TS_ASSERT(nb == 4);
 
@@ -459,11 +449,10 @@ namespace gum_tests {
 
       gum::Size nb = 0;
 
-      for (gum::Bijection< std::string, std::string >::iterator
-             iter = bijection.begin();
+      for (gum::Bijection< std::string, std::string >::iterator iter =
+             bijection.begin();
            iter != bijection.end();
-           ++iter, ++nb) {
-      }
+           ++iter, ++nb) {}
 
       TS_ASSERT(nb == 8);
 
@@ -474,16 +463,14 @@ namespace gum_tests {
 
       nb = 0;
 
-      for (; iter1 != iter2; ++iter1, ++nb) {
-      }
+      for (; iter1 != iter2; ++iter1, ++nb) {}
 
       TS_ASSERT(nb == 4);
 
       nb = 0;
       gum::Bijection< std::string, std::string >::iterator iter = iter2;
 
-      for (iter = bijection.begin(); iter != iter2; ++iter, ++nb) {
-      }
+      for (iter = bijection.begin(); iter != iter2; ++iter, ++nb) {}
 
       TS_ASSERT(nb == 4);
 
@@ -563,8 +550,7 @@ namespace gum_tests {
 
       try {
         carre.insert((int*)4, (int*)1);
-      } catch (gum::DuplicateElement&) {
-      }
+      } catch (gum::DuplicateElement&) {}
 
       TS_ASSERT(!carre.existsFirst((int*)4));
     }
@@ -603,8 +589,7 @@ namespace gum_tests {
 
       gum::Size nb = 0;
 
-      for (auto iter = bijection.begin(); iter != bijection.end(); ++iter, ++nb) {
-      }
+      for (auto iter = bijection.begin(); iter != bijection.end(); ++iter, ++nb) {}
 
       TS_ASSERT(nb == 8);
 
@@ -615,16 +600,14 @@ namespace gum_tests {
 
       nb = 0;
 
-      for (; iter1 != iter2; ++iter1, ++nb) {
-      }
+      for (; iter1 != iter2; ++iter1, ++nb) {}
 
       TS_ASSERT(nb == 4);
 
       nb = 0;
       auto iter = iter2;
 
-      for (iter = bijection.begin(); iter != iter2; ++iter, ++nb) {
-      }
+      for (iter = bijection.begin(); iter != iter2; ++iter, ++nb) {}
 
       TS_ASSERT(nb == 4);
 
@@ -648,4 +631,4 @@ namespace gum_tests {
       }
     }
   };
-}
+}   // namespace gum_tests

@@ -33,14 +33,14 @@
 namespace gum {
   template < typename GUM_SCALAR >
   BruteForceKL< GUM_SCALAR >::BruteForceKL(const IBayesNet< GUM_SCALAR >& P,
-                                           const IBayesNet< GUM_SCALAR >& Q)
-      : KL< GUM_SCALAR >(P, Q) {
+                                           const IBayesNet< GUM_SCALAR >& Q) :
+      KL< GUM_SCALAR >(P, Q) {
     GUM_CONSTRUCTOR(BruteForceKL);
   }
 
   template < typename GUM_SCALAR >
-  BruteForceKL< GUM_SCALAR >::BruteForceKL(const KL< GUM_SCALAR >& kl)
-      : KL< GUM_SCALAR >(kl) {
+  BruteForceKL< GUM_SCALAR >::BruteForceKL(const KL< GUM_SCALAR >& kl) :
+      KL< GUM_SCALAR >(kl) {
     GUM_CONSTRUCTOR(BruteForceKL);
   }
 
@@ -93,4 +93,4 @@ namespace gum {
     _bhattacharya = -std::log(_bhattacharya);
   }
 
-}  // namespace gum
+}   // namespace gum

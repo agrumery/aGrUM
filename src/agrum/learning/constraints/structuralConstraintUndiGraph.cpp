@@ -28,7 +28,7 @@
 
 /// include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
-#include <agrum/learning/constraints/structuralConstraintUndiGraph_inl.h>
+#  include <agrum/learning/constraints/structuralConstraintUndiGraph_inl.h>
 #endif /* GUM_NO_INLINE */
 
 namespace gum {
@@ -55,15 +55,15 @@ namespace gum {
 
     /// copy constructor
     StructuralConstraintUndiGraph::StructuralConstraintUndiGraph(
-      const StructuralConstraintUndiGraph& from)
-        : _UndiGraph__graph(from._UndiGraph__graph) {
+      const StructuralConstraintUndiGraph& from) :
+        _UndiGraph__graph(from._UndiGraph__graph) {
       GUM_CONS_CPY(StructuralConstraintUndiGraph);
     }
 
     /// move constructor
     StructuralConstraintUndiGraph::StructuralConstraintUndiGraph(
-      StructuralConstraintUndiGraph&& from)
-        : _UndiGraph__graph(std::move(from._UndiGraph__graph)) {
+      StructuralConstraintUndiGraph&& from) :
+        _UndiGraph__graph(std::move(from._UndiGraph__graph)) {
       GUM_CONS_MOV(StructuralConstraintUndiGraph);
     }
 
@@ -74,19 +74,15 @@ namespace gum {
 
     /// copy operator
     StructuralConstraintUndiGraph& StructuralConstraintUndiGraph::
-    operator=(const StructuralConstraintUndiGraph& from) {
-      if (this != &from) {
-        _UndiGraph__graph = from._UndiGraph__graph;
-      }
+                                   operator=(const StructuralConstraintUndiGraph& from) {
+      if (this != &from) { _UndiGraph__graph = from._UndiGraph__graph; }
       return *this;
     }
 
     /// move operator
     StructuralConstraintUndiGraph& StructuralConstraintUndiGraph::
-    operator=(StructuralConstraintUndiGraph&& from) {
-      if (this != &from) {
-        _UndiGraph__graph = std::move(from._UndiGraph__graph);
-      }
+                                   operator=(StructuralConstraintUndiGraph&& from) {
+      if (this != &from) { _UndiGraph__graph = std::move(from._UndiGraph__graph); }
       return *this;
     }
 

@@ -67,7 +67,7 @@ namespace gum {
      *
      * @ingroup learning_database */
     class DBCell {
-    public:
+      public:
       /// the set of types possibly taken by the last element read
       enum class EltType : unsigned char { REAL, INTEGER, STRING, MISSING };
 
@@ -80,27 +80,27 @@ namespace gum {
       /// default constructor (ontains a missing value)
       DBCell();
 
-      /// constructor for a real number 
-      DBCell( const float nb );
+      /// constructor for a real number
+      DBCell(const float nb);
 
-      /// constructor for an integer number 
-      DBCell( const int nb );
+      /// constructor for an integer number
+      DBCell(const int nb);
 
       /// constructor for a string
-      DBCell( const std::string& str );
+      DBCell(const std::string& str);
 
       /// copy constructor
-      DBCell( const DBCell& from );
+      DBCell(const DBCell& from);
 
       /// move constructor
-      DBCell( DBCell&& from );
+      DBCell(DBCell&& from);
 
       /// destructor
       ~DBCell();
 
       /// @}
 
-      
+
       // ##########################################################################
       /// @name Operators
       // ##########################################################################
@@ -108,29 +108,29 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBCell& operator=( const DBCell& from );
+      DBCell& operator=(const DBCell& from);
 
       /// move operator
-      DBCell& operator=( DBCell&& from );
+      DBCell& operator=(DBCell&& from);
 
       /// assignment operator
-      DBCell& operator=( const float x );
+      DBCell& operator=(const float x);
 
       /// assignment operator
-      DBCell& operator=( const int x );
+      DBCell& operator=(const int x);
 
-      /// assignment operator 
-      DBCell& operator=( const std::string& x );
+      /// assignment operator
+      DBCell& operator=(const std::string& x);
 
       /// test of equality
-      bool operator== ( const DBCell& from ) const;
+      bool operator==(const DBCell& from) const;
 
       /// test of inequality
-      bool operator!= ( const DBCell& from ) const;
-      
+      bool operator!=(const DBCell& from) const;
+
       /// @}
 
-      
+
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
@@ -142,7 +142,7 @@ namespace gum {
 
       /// try to convert the content of the DBCell into another type
       /** @return true if the conversion has been successfully performed. */
-      bool convertType( const EltType newtype );
+      bool convertType(const EltType newtype);
 
       /// returns the DBcell as a real number
       /** @warning if the cell is not of type REAL, the dbcell will not try to
@@ -153,25 +153,25 @@ namespace gum {
       float real() const;
 
       /// sets the content of the DBCell
-      void setReal ( const float x );
-      
+      void setReal(const float x);
+
       /// sets the content of the DBCell from a string
       /** @throw TypeError if the string does not correspond to a real number */
-      void setReal ( const std::string& elt );
+      void setReal(const std::string& elt);
 
       /// returns the DBcell as an integer
       /** @warning if the cell is not of type INTEGER, the dbcell will not try
        * to convert its content into a float, it will raise a TypeError
        * exception.
        * @throw TypeError if the DBCell is not labelled as type INTEGER */
-      int integer () const;
+      int integer() const;
 
       /// sets the content of the DBCell
-      void setInteger( const int x );
-      
+      void setInteger(const int x);
+
       /// sets the content of the DBCell from a string
       /** @throw TypeError if the string does not correspond to an integer */
-      void setInteger ( const std::string& elt );
+      void setInteger(const std::string& elt);
 
       /// returns the DBcell as a string
       /** @warning if the cell is not of type STRING, the dbcell will not try to
@@ -188,17 +188,17 @@ namespace gum {
       int stringIndex() const;
 
       /// sets the content of the DBCell
-      void setString ( const std::string& elt );
+      void setString(const std::string& elt);
 
       /// sets the DBCell as a missing element
-      void setMissingState ();
+      void setMissingState();
 
       /// indicates whether the cell contains a missing value
-      bool isMissing () const;
+      bool isMissing() const;
 
       /// @}
 
-      
+
       // ##########################################################################
       /// @name Public Static Accessors / Modifiers
       // ##########################################################################
@@ -208,81 +208,79 @@ namespace gum {
       /// strings are stored into a static bijection. Get its ith string
       /** @throw UndefinedElement if the index does not correspond to
        * any string */
-      static const std::string& string( const int index );
-     
+      static const std::string& string(const int index);
+
       /// returns the best type to store a given element encoded as a string
       /** @param str the string to convert into a DBCell
        * @param missingVals a vector containing the set of strings that should
        * be interpreted as missing values. Whenever str matches one these strings,
        * the returned EltType represents a missing value. */
-      template <template<typename> class ALLOC = std::allocator>
-      static EltType
-      bestType( const std::string& str,
-                const std::vector<std::string,ALLOC<std::string>>& missingVals );
+      template < template < typename > class ALLOC = std::allocator >
+      static EltType bestType(
+        const std::string&                                      str,
+        const std::vector< std::string, ALLOC< std::string > >& missingVals);
 
       /// returns the DBCell with the best type for an element encoded as a string
       /** @param str the string to convert into a DBCell
        * @param missingVals a vector containing the set of strings that should
        * be interpreted as missing values. Whenever str matches one these strings,
        * the returned DBCell represents a missing value. */
-      template <template<typename> class ALLOC = std::allocator>
-      static DBCell
-      bestDBCell( const std::string& str,
-                  const std::vector<std::string,ALLOC<std::string>>& missingVals );
+      template < template < typename > class ALLOC = std::allocator >
+      static DBCell bestDBCell(
+        const std::string&                                      str,
+        const std::vector< std::string, ALLOC< std::string > >& missingVals);
 
       /// returns the content of the DBCell as a string, whatever its type
       /** @throw UndefinedElement is raised if the DBCell corresponds to a
        * missing value but the set of missing values passed in argument is
        * empty. */
-      template <template<typename> class ALLOC = std::allocator>
-      std::string
-      toString ( const std::vector<std::string,ALLOC<std::string>>& missingVals )
-        const;
+      template < template < typename > class ALLOC = std::allocator >
+      std::string toString(
+        const std::vector< std::string, ALLOC< std::string > >& missingVals) const;
 
       /// determines whether a string corresponds precisely to an integer
-      static bool isInteger ( const std::string& str );
+      static bool isInteger(const std::string& str);
 
       /// determine whether a string corresponds precisely to a real number
-      static bool isReal ( const std::string& str );
+      static bool isReal(const std::string& str);
 
       /// checks whether a string correspond to a missing value
-      template <template<typename> class ALLOC = std::allocator>
-      static bool isMissing ( const std::string& str,
-                              const std::vector<std::string,
-                                                ALLOC<std::string>>& missingVals );
+      template < template < typename > class ALLOC = std::allocator >
+      static bool isMissing(
+        const std::string&                                      str,
+        const std::vector< std::string, ALLOC< std::string > >& missingVals);
 
       /// @}
 
-      
+
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-      
-    private:
+
+      private:
       // the real type of the last element read from the database
-      EltType __type { EltType::MISSING };
+      EltType __type{EltType::MISSING};
 
       // the element read from the database
       union {
-        int   __val_index;   // stores string indices. Basically, it should have
-        int   __val_integer; // been an Idx, but int are shorter than Idx.
+        int   __val_index;     // stores string indices. Basically, it should have
+        int   __val_integer;   // been an Idx, but int are shorter than Idx.
         float __val_real;
       };
 
 
       // determine the longest type of the union. This is used for fast
       // copying/moving DBCells
-      using UnionType = typename
-        std::conditional<sizeof(int) < sizeof(float),float,int>::type;
+      using UnionType =
+        typename std::conditional< sizeof(int) < sizeof(float), float, int >::type;
 
-      
+
       // a bijection assigning to each string index its corresponding string
-      static Bijection<std::string,int>& __strings ();
+      static Bijection< std::string, int >& __strings();
 
-      
+
       // the last index used so far
       static int __string_max_index;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
-      
     };
 
   } /* namespace learning */
@@ -291,7 +289,7 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/database/DBCell_inl.h>
+#  include <agrum/learning/database/DBCell_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #include <agrum/learning/database/DBCell_tpl.h>

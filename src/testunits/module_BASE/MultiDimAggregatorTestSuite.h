@@ -68,22 +68,22 @@ namespace gum_tests {
 
       if (b <= c) {
         if (c <= d) {
-          tmp = c;  // b<=c<=d
+          tmp = c;   // b<=c<=d
         } else {
           if (b <= d) {
-            tmp = d;  // b<=d<c
+            tmp = d;   // b<=d<c
           } else {
-            tmp = b;  // d<b<c
+            tmp = b;   // d<b<c
           }
         }
-      } else {  // b>c
+      } else {   // b>c
         if (c >= d) {
-          tmp = c;  // b>c>=d
-        } else {    // d>b
+          tmp = c;   // b>c>=d
+        } else {     // d>b
           if (b >= d) {
-            tmp = d;  // b>=d>c
+            tmp = d;   // b>=d>c
           } else {
-            tmp = b;  // c<b<d
+            tmp = b;   // c<b<d
           }
         }
       }
@@ -92,7 +92,7 @@ namespace gum_tests {
     }
 
     float
-    __is_median4(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d, gum::Idx e) {
+      __is_median4(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d, gum::Idx e) {
       gum::Idx tmp = 0;
       gum::Idx l1, h1, l2, h2, m1, m2;
       // gum::Idx hh, ll;
@@ -113,7 +113,7 @@ namespace gum_tests {
         h2 = d;
       }
 
-      if (l1 < l2) {  // we do not keep ll : lowest value
+      if (l1 < l2) {   // we do not keep ll : lowest value
         // ll = l1;
         m1 = l2;
       } else {
@@ -121,7 +121,7 @@ namespace gum_tests {
         m1 = l1;
       }
 
-      if (h1 > h2) {  // we do not keep hh : highest value
+      if (h1 > h2) {   // we do not keep hh : highest value
         // hh = h1;
         m2 = h2;
       } else {
@@ -129,7 +129,7 @@ namespace gum_tests {
         m2 = h1;
       }
 
-      if (m1 > m2) {  // (ll,m2,m1,hh)
+      if (m1 > m2) {   // (ll,m2,m1,hh)
         tmp = m2;
         m2 = m1;
         m1 = tmp;
@@ -141,7 +141,7 @@ namespace gum_tests {
     }
 
     float
-    __is_amplitude(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d, gum::Idx e) {
+      __is_amplitude(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d, gum::Idx e) {
       gum::Idx tmp = 0;
       gum::Idx l1, h1, l2, h2;
       // gum::Idx m1, m2;
@@ -163,7 +163,7 @@ namespace gum_tests {
         h2 = d;
       }
 
-      if (l1 < l2) {  // we do not keep median values
+      if (l1 < l2) {   // we do not keep median values
         ll = l1;
         // m1 = l2;
       } else {
@@ -171,7 +171,7 @@ namespace gum_tests {
         // m1 = l1;
       }
 
-      if (h1 > h2) {  // we do not keep median valeus
+      if (h1 > h2) {   // we do not keep median valeus
         hh = h1;
         // m2 = h2;
       } else {
@@ -523,7 +523,7 @@ namespace gum_tests {
     void testMin_ZeroParent() {
       gum::LabelizedVariable a("a", "", 4), b("b", "", 4);
 
-      std::string res0 = "0-0-0-1";  // min of zero value is +infinity
+      std::string res0 = "0-0-0-1";   // min of zero value is +infinity
       std::string res1 = "1-0-0-0-0-1-0-0-0-0-1-0-0-0-0-1";
       gum::aggregator::Min< float > p;
 
@@ -545,7 +545,7 @@ namespace gum_tests {
     void testMax_ZeroParent() {
       gum::LabelizedVariable a("a", "", 4), b("b", "", 4);
 
-      std::string res0 = "1-0-0-0";  // max of zero value is -infinity
+      std::string res0 = "1-0-0-0";   // max of zero value is -infinity
       std::string res1 = "1-0-0-0-0-1-0-0-0-0-1-0-0-0-0-1";
       gum::aggregator::Max< float > p;
 
@@ -630,4 +630,4 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(s, res1);
     }
   };
-}
+}   // namespace gum_tests

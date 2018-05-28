@@ -40,9 +40,9 @@
 
 namespace gum {
 
-// ==============================================================================
-// templates provided by this header
-// ==============================================================================
+  // ==============================================================================
+  // templates provided by this header
+  // ==============================================================================
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -59,13 +59,13 @@ namespace gum {
   template < typename Val, typename Alloc >
   class List;
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
-#ifndef SWIG  // SWIG cannot read these lines
+#ifndef SWIG   // SWIG cannot read these lines
   /// an << operator for List
   template < typename Val, typename Alloc >
   std::ostream& operator<<(std::ostream& stream, const List< Val, Alloc >& list);
-#endif  // SWIG
+#endif   // SWIG
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
   // __list_end is a 'pseudo static' iterator that represents both end and rend
@@ -78,7 +78,7 @@ namespace gum {
   // the weird strict-aliasing rule warning
   extern const void* const __list_end_safe;
   extern const void* const __list_end;
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 
   // ===========================================================================
@@ -86,7 +86,8 @@ namespace gum {
   // ===========================================================================
 
   /**
-   * @class ListBucket list.h <agrum/core/list.h>
+   * @class ListBucket
+   * @headerfile list.h <agrum/core/list.h>
    * @brief Bucket for a chained list.
    * @ingroup list_group
    *
@@ -250,7 +251,8 @@ namespace gum {
   // ===========================================================================
 
   /**
-   * @class List list.h <agrum/core/list.h>
+   * @class List
+   * @headerfile list.h <agrum/core/list.h>
    * @ingroup basicstruct_group
    * @ingroup list_group
    *
@@ -1450,7 +1452,8 @@ namespace gum {
   // ===                      UNSAFE LIST CONST ITERATORS                    ===
   // ===========================================================================
   /**
-   * @class ListConstIterator list.h <agrum/core/list.h>
+   * @class ListConstIterator
+   * @headerfile list.h <agrum/core/list.h>
    * @ingroup list_group
    * @brief Unsafe but fast const iterators for Lists.
    *
@@ -1601,7 +1604,7 @@ namespace gum {
      * @return Returns this gum::ListConstIterator.
      */
     ListConstIterator< Val >&
-    operator=(const ListConstIterator< Val >& src) noexcept;
+      operator=(const ListConstIterator< Val >& src) noexcept;
 
     /**
      * @brief Move operator.
@@ -1728,15 +1731,16 @@ namespace gum {
   /// For STL compliance, a distance operator.
   template < typename Val >
   typename ListConstIterator< Val >::difference_type
-  operator-(const ListConstIterator< Val >& iter1,
-            const ListConstIterator< Val >& iter2);
+    operator-(const ListConstIterator< Val >& iter1,
+              const ListConstIterator< Val >& iter2);
 
   // ===========================================================================
   // ===                         UNSAFE LIST ITERATORS                       ===
   // ===========================================================================
 
   /**
-   * @class ListIterator list.h <agrum/core/list.h>
+   * @class ListIterator
+   * @headerfile list.h <agrum/core/list.h>
    * @ingroup list_group
    * @brief Unsafe but fast iterators for Lists.
    *
@@ -1975,7 +1979,8 @@ namespace gum {
   // ===                          LIST CONST ITERATORS                       ===
   // ===========================================================================
   /**
-   * @class ListConstIteratorSafe list.h <agrum/core/list.h>
+   * @class ListConstIteratorSafe
+   * @headerfile list.h <agrum/core/list.h>
    * @ingroup list_group
    * @brief Safe const iterators for Lists.
    *
@@ -2123,7 +2128,7 @@ namespace gum {
      * @return Returns this gum::ListConstIteratorSafe.
      */
     ListConstIteratorSafe< Val >&
-    operator=(const ListConstIteratorSafe< Val >& src);
+      operator=(const ListConstIteratorSafe< Val >& src);
 
     /**
      * @brief Move operator.
@@ -2274,15 +2279,16 @@ namespace gum {
   /// For STL compliance, a distance operator.
   template < typename Val >
   typename ListConstIteratorSafe< Val >::difference_type
-  operator-(const ListConstIteratorSafe< Val >& iter1,
-            const ListConstIteratorSafe< Val >& iter2);
+    operator-(const ListConstIteratorSafe< Val >& iter1,
+              const ListConstIteratorSafe< Val >& iter2);
 
   // ===========================================================================
   // ===                             LIST ITERATORS                          ===
   // ===========================================================================
 
   /**
-   * @class ListIteratorSafe list.h <agrum/core/list.h>
+   * @class ListIteratorSafe
+   * @headerfile list.h <agrum/core/list.h>
    * @ingroup basicstruct_group
    * @brief Safe iterators for Lists.
    *

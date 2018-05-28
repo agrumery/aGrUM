@@ -60,8 +60,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   class InfluenceDiagramInference
-    : public IInfluenceDiagramInference< GUM_SCALAR > {
-
+      : public IInfluenceDiagramInference< GUM_SCALAR > {
     public:
     // ====================================================================
     /// @name Constructor & destructor
@@ -107,7 +106,7 @@ namespace gum {
 
     /// @see gum::IInfluenceDiagramInference::insertEvidence().
     virtual void
-    insertEvidence(const List< const Potential< GUM_SCALAR >* >& evidenceList);
+      insertEvidence(const List< const Potential< GUM_SCALAR >* >& evidenceList);
 
     /// @see gum::IInfluenceDiagramInference::eraseEvidence().
     virtual void eraseEvidence(const Potential< GUM_SCALAR >* evidence);
@@ -287,15 +286,15 @@ namespace gum {
     /// @return Returns the mapping of evidences on the variables in this
     /// clique.
     const HashTable< const DiscreteVariable*, const Potential< GUM_SCALAR >* >&
-    evidences() const;
+      evidences() const;
 
     /// @return Returns the bucket of this Clique
     const HashTable< const Potential< GUM_SCALAR >*, Instantiation* >&
-    potentialBucket();
+      potentialBucket();
 
     /// @return Returns the bucket of this Clique
     const HashTable< const Potential< GUM_SCALAR >*, Instantiation* >&
-    utilityBucket();
+      utilityBucket();
 
     /// @return returns the elimination sequence for this clique
     const Sequence< NodeId >& cliqueEliminationOrder();
@@ -333,7 +332,7 @@ namespace gum {
     List< const Potential< GUM_SCALAR >* > __removableUtilityList;
   };
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 } /* namespace gum */
 

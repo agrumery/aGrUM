@@ -100,10 +100,10 @@ namespace gum {
        * @param max_range The maximal range.
        */
       template < typename RowFilter >
-      ScoreBDeu(const RowFilter&           filter,
-                const std::vector< Size >& var_modalities,
+      ScoreBDeu(const RowFilter&                   filter,
+                const std::vector< Size >&         var_modalities,
                 Apriori< IdSetAlloc, CountAlloc >& apriori,
-                Size min_range = 0,
+                Size                               min_range = 0,
                 Size max_range = std::numeric_limits< Size >::max());
 
       /// copy constructor
@@ -203,7 +203,7 @@ namespace gum {
        * method isAprioriCompatible (the method needs be updated to take it into
        * account). */
       static bool
-      isAprioriCompatible(const Apriori< IdSetAlloc, CountAlloc >& apriori);
+        isAprioriCompatible(const Apriori< IdSetAlloc, CountAlloc >& apriori);
 
       /// returns the internal apriori of the score
       /** Some scores include an apriori. For instance, the K2 score is a BD
@@ -222,7 +222,7 @@ namespace gum {
        * aprioris are taken into account during structure learning and parameter
        * learning. */
       virtual const ScoreInternalApriori< IdSetAlloc, CountAlloc >&
-      internalApriori() const noexcept final;
+        internalApriori() const noexcept final;
 
       /// sets the effective sample size of the internal apriori
       void setEffectiveSampleSize(double ess);

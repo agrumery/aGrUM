@@ -36,7 +36,6 @@
 namespace gum_tests {
 
   class SDynaTestSuite : public CxxTest::TestSuite {
-
     private:
     void run(gum::AbstractSimulator& sim) {
       // *********************************************************************************************
@@ -60,12 +59,10 @@ namespace gum_tests {
 
       gum::Idx nbObs = 0;
       for (gum::Idx nbRun = 0; nbRun < 10; ++nbRun) {
-
         sim.setInitialStateRandomly();
         TS_GUM_ASSERT_THROWS_NOTHING(sdyna->setCurrentState(sim.currentState()));
         gum::Idx nbDec = 0;
         while (!sim.hasReachEnd() && nbDec < 25) {
-
           nbObs++;
 
           // Normal Iteration Part
@@ -116,7 +113,6 @@ namespace gum_tests {
     // Run the tests on a Taxi instance
     // *******************************************************************************
     void test_Taxi() {
-
       // **************************************************************
       // Chargement du simulateur
       gum::TaxiSimulator sim;
@@ -127,4 +123,4 @@ namespace gum_tests {
       run(sim);
     }
   };
-}
+}   // namespace gum_tests

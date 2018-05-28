@@ -71,7 +71,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       std::string
-      O3prmrContext< GUM_SCALAR >::aliasToImport(const std::string& alias) {
+        O3prmrContext< GUM_SCALAR >::aliasToImport(const std::string& alias) {
         for (Idx i = Size(m_imports.size()); i > 0; i--)
           if (m_imports[i - 1]->alias == alias) return m_imports[i - 1]->value;
 
@@ -103,7 +103,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       std::vector< O3prmrSession< GUM_SCALAR >* >
-      O3prmrContext< GUM_SCALAR >::sessions() const {
+        O3prmrContext< GUM_SCALAR >::sessions() const {
         return m_sessions;
       }
 
@@ -135,7 +135,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       O3prmrContext< GUM_SCALAR >& O3prmrContext< GUM_SCALAR >::
-      operator+=(const O3prmrContext& c) {
+                                   operator+=(const O3prmrContext& c) {
         const std::vector< ImportCommand* >& imports = c.imports();
 
         for (std::vector< ImportCommand* >::const_iterator i = imports.begin();
@@ -270,7 +270,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       O3prmrSession< GUM_SCALAR >& O3prmrSession< GUM_SCALAR >::
-      operator+=(const O3prmrSession< GUM_SCALAR >& c) {
+                                   operator+=(const O3prmrSession< GUM_SCALAR >& c) {
         for (std::vector< O3prmrCommand* >::const_iterator i =
                c.m_commands.begin();
              i < c.m_commands.end();
@@ -282,6 +282,6 @@ namespace gum {
 
       /* ******************************************************************* */
 
-    }  // namespace o3prmr
-  }    // namespace prm
-}  // namespace gum
+    }   // namespace o3prmr
+  }     // namespace prm
+}   // namespace gum

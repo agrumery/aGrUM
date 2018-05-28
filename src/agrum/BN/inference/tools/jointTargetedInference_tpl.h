@@ -30,8 +30,8 @@ namespace gum {
   // Default Constructor
   template < typename GUM_SCALAR >
   JointTargetedInference< GUM_SCALAR >::JointTargetedInference(
-    const IBayesNet< GUM_SCALAR >* bn)
-      : MarginalTargetedInference< GUM_SCALAR >(bn) {
+    const IBayesNet< GUM_SCALAR >* bn) :
+      MarginalTargetedInference< GUM_SCALAR >(bn) {
     // assign a BN if this has not been done before (due to virtual inheritance)
     if (this->__bn == nullptr) {
       BayesNetInference< GUM_SCALAR >::__setBayesNetDuringConstruction(bn);
@@ -63,8 +63,8 @@ namespace gum {
 
   // return true if target is a nodeset target.
   template < typename GUM_SCALAR >
-  INLINE bool
-  JointTargetedInference< GUM_SCALAR >::isJointTarget(const NodeSet& vars) const {
+  INLINE bool JointTargetedInference< GUM_SCALAR >::isJointTarget(
+    const NodeSet& vars) const {
     if (this->__bn == nullptr)
       GUM_ERROR(NullElement,
                 "No Bayes net has been assigned to the "
@@ -144,7 +144,7 @@ namespace gum {
       if (iter->isSubsetOf(joint_target)) eraseJointTarget(*iter);
     }
 
-    this->_setTargetedMode();  // does nothing if already in targeted mode
+    this->_setTargetedMode();   // does nothing if already in targeted mode
     __joint_targets.insert(joint_target);
     _onJointTargetAdded(joint_target);
     this->__setState(
@@ -205,7 +205,7 @@ namespace gum {
   // Compute the posterior of a nodeset.
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
-  JointTargetedInference< GUM_SCALAR >::jointPosterior(const NodeSet& nodes) {
+    JointTargetedInference< GUM_SCALAR >::jointPosterior(const NodeSet& nodes) {
     // try to get the smallest set of targets that contains "nodes"
     NodeSet set;
     bool    found_exact_target = false;
@@ -227,9 +227,7 @@ namespace gum {
                 " no joint target containing " << nodes << "could be found");
     }
 
-    if (!this->isDone()) {
-      this->makeInference();
-    }
+    if (!this->isDone()) { this->makeInference(); }
 
     if (found_exact_target)
       return _jointPosterior(nodes);
@@ -241,7 +239,7 @@ namespace gum {
   // Compute the posterior of a node
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
-  JointTargetedInference< GUM_SCALAR >::posterior(NodeId node) {
+    JointTargetedInference< GUM_SCALAR >::posterior(NodeId node) {
     if (this->isTarget(node))
       return MarginalTargetedInference< GUM_SCALAR >::posterior(node);
     else
@@ -251,7 +249,7 @@ namespace gum {
   // Compute the posterior of a node
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
-  JointTargetedInference< GUM_SCALAR >::posterior(const std::string& nodeName) {
+    JointTargetedInference< GUM_SCALAR >::posterior(const std::string& nodeName) {
     return posterior(this->BN().idFromName(nodeName));
   }
 
@@ -330,9 +328,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-  JointTargetedInference< GUM_SCALAR >::evidenceJointImpact(
-    const std::vector< NodeId >& targets, const std::vector< NodeId >& evs) {
-
+    JointTargetedInference< GUM_SCALAR >::evidenceJointImpact(
+      const std::vector< NodeId >& targets, const std::vector< NodeId >& evs) {
     NodeSet sotargets(Size(targets.size()));
     for (const auto& e : targets)
       sotargets << e;
@@ -374,7 +371,7 @@ namespace gum {
       for (inst.setFirstIn(iTarget); !inst.end(); inst.incIn(iTarget)) {
         res.set(inst, this->jointPosterior(sotargets)[inst]);
       }
-      inst.setFirstIn(iTarget);  // remove inst.end() flag
+      inst.setFirstIn(iTarget);   // remove inst.end() flag
     }
 
     return res;
@@ -382,11 +379,11 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-  JointTargetedInference< GUM_SCALAR >::evidenceJointImpact(
-    const std::vector< std::string >& targets,
-    const std::vector< std::string >& evs) {
+    JointTargetedInference< GUM_SCALAR >::evidenceJointImpact(
+      const std::vector< std::string >& targets,
+      const std::vector< std::string >& evs) {
     const auto& bn = this->BN();
-    auto transf = [&bn](const std::string& s) { return bn.idFromName(s); };
+    auto        transf = [&bn](const std::string& s) { return bn.idFromName(s); };
 
     std::vector< NodeId > targetsId;
     targetsId.reserve(targets.size());

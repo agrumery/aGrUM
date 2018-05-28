@@ -39,7 +39,8 @@ namespace gum {
   // =========================================================================
 
   /**
-   * @class Dirichlet Dirichlet.h <agrum/core/math/Dirichlet.h>
+   * @class Dirichlet
+   * @headerfile Dirichlet.h <agrum/core/math/Dirichlet.h>
    * @brief A class for sampling w.r.t. Dirichlet distributions.
    * @ingroup math_group
    */
@@ -178,7 +179,7 @@ namespace gum {
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/core/math/Dirichlet_inl.h>
+#  include <agrum/core/math/Dirichlet_inl.h>
 #endif /* GUM_NO_INLINE */
 
 // always include templates

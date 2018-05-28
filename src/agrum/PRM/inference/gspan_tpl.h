@@ -97,13 +97,12 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    void
-    GSpan< GUM_SCALAR >::__subgraph_mining(gspan::InterfaceGraph< GUM_SCALAR >& ig,
-                                           gspan::Pattern& pat) {
+    void GSpan< GUM_SCALAR >::__subgraph_mining(
+      gspan::InterfaceGraph< GUM_SCALAR >& ig, gspan::Pattern& pat) {
       std::vector< gspan::Pattern* > stack;
       stack.push_back(&pat);
       // Pointers used in the following while
-      gspan::Pattern* p = nullptr;
+      gspan::Pattern*                                             p = nullptr;
       HashTable< std::string, gspan::EdgeGrowth< GUM_SCALAR >* >* edge_count =
         nullptr;
       gspan::EdgeGrowth< GUM_SCALAR >*        edge_growth = nullptr;
@@ -350,12 +349,11 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE
-    GSpan< GUM_SCALAR >::GSpan(const PRM< GUM_SCALAR >&             prm,
-                               const PRMSystem< GUM_SCALAR >&       sys,
-                               gspan::SearchStrategy< GUM_SCALAR >* strategy)
-        : __graph(new gspan::InterfaceGraph< GUM_SCALAR >(sys))
-        , __tree(*__graph, strategy)
-        , __depth_stop(INT_MAX) {
+      GSpan< GUM_SCALAR >::GSpan(const PRM< GUM_SCALAR >&             prm,
+                                 const PRMSystem< GUM_SCALAR >&       sys,
+                                 gspan::SearchStrategy< GUM_SCALAR >* strategy) :
+        __graph(new gspan::InterfaceGraph< GUM_SCALAR >(sys)),
+        __tree(*__graph, strategy), __depth_stop(INT_MAX) {
       GUM_CONSTRUCTOR(GSpan);
     }
 
@@ -408,13 +406,13 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE typename GSpan< GUM_SCALAR >::MatchedInstances&
-    GSpan< GUM_SCALAR >::matches(const gspan::Pattern& p) {
+      GSpan< GUM_SCALAR >::matches(const gspan::Pattern& p) {
       return *(__matched_instances[const_cast< gspan::Pattern* >(&p)]);
     }
 
     template < typename GUM_SCALAR >
     INLINE const typename GSpan< GUM_SCALAR >::MatchedInstances&
-    GSpan< GUM_SCALAR >::matches(const gspan::Pattern& p) const {
+      GSpan< GUM_SCALAR >::matches(const gspan::Pattern& p) const {
       return *(__matched_instances[const_cast< gspan::Pattern* >(&p)]);
     }
 
@@ -432,23 +430,23 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE bool
-    GSpan< GUM_SCALAR >::__isEdgeEligible(gspan::EdgeData< GUM_SCALAR >* e) {
-      return (__graph->edges(e->l).size() >= 2) &&
-             (__graph->nodes(e->l_u).size() >= 2) &&
-             (__graph->nodes(e->l_v).size() >= 2);
+      GSpan< GUM_SCALAR >::__isEdgeEligible(gspan::EdgeData< GUM_SCALAR >* e) {
+      return (__graph->edges(e->l).size() >= 2)
+             && (__graph->nodes(e->l_u).size() >= 2)
+             && (__graph->nodes(e->l_v).size() >= 2);
     }
 
     // LalbeSort
 
     template < typename GUM_SCALAR >
-    INLINE GSpan< GUM_SCALAR >::LabelSort::LabelSort(GSpan* my_gspan)
-        : gspan(my_gspan) {
+    INLINE GSpan< GUM_SCALAR >::LabelSort::LabelSort(GSpan* my_gspan) :
+        gspan(my_gspan) {
       GUM_CONSTRUCTOR(GSpan< GUM_SCALAR >::LabelSort);
     }
 
     template < typename GUM_SCALAR >
-    INLINE GSpan< GUM_SCALAR >::LabelSort::LabelSort(const LabelSort& source)
-        : gspan(source.gspan) {
+    INLINE GSpan< GUM_SCALAR >::LabelSort::LabelSort(const LabelSort& source) :
+        gspan(source.gspan) {
       GUM_CONS_CPY(GSpan< GUM_SCALAR >::LabelSort);
     }
 
@@ -468,14 +466,15 @@ namespace gum {
     // PatternSort
 
     template < typename GUM_SCALAR >
-    INLINE GSpan< GUM_SCALAR >::PatternSort::PatternSort(GSpan* my_gspan)
-        : gspan(my_gspan) {
+    INLINE GSpan< GUM_SCALAR >::PatternSort::PatternSort(GSpan* my_gspan) :
+        gspan(my_gspan) {
       GUM_CONSTRUCTOR(GSpan< GUM_SCALAR >::PatternSort);
     }
 
     template < typename GUM_SCALAR >
-    INLINE GSpan< GUM_SCALAR >::PatternSort::PatternSort(const PatternSort& source)
-        : gspan(source.gspan) {
+    INLINE
+      GSpan< GUM_SCALAR >::PatternSort::PatternSort(const PatternSort& source) :
+        gspan(source.gspan) {
       GUM_CONS_CPY(GSpan< GUM_SCALAR >::PatternSort);
     }
 

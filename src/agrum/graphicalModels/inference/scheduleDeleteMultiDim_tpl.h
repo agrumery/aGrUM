@@ -25,22 +25,21 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/agrum.h>
-#include <limits>
+#  include <agrum/agrum.h>
+#  include <limits>
 
 // to ease ide parser
-#include <agrum/graphicalModels/inference/scheduleDeleteMultiDim.h>
+#  include <agrum/graphicalModels/inference/scheduleDeleteMultiDim.h>
 
 namespace gum {
 
   /// default constructor
   template < typename GUM_SCALAR >
   ScheduleDeleteMultiDim< GUM_SCALAR >::ScheduleDeleteMultiDim(
-    const ScheduleMultiDim< GUM_SCALAR >& table)
-      : ScheduleOperation< GUM_SCALAR >(
-          ScheduleOperation< GUM_SCALAR >::Type::DELETE_MULTIDIM)
-      , __table(table)
-      , __args(0) {
+    const ScheduleMultiDim< GUM_SCALAR >& table) :
+      ScheduleOperation< GUM_SCALAR >(
+        ScheduleOperation< GUM_SCALAR >::Type::DELETE_MULTIDIM),
+      __table(table), __args(0) {
     // for debugging purposes
     GUM_CONSTRUCTOR(ScheduleDeleteMultiDim);
   }
@@ -48,10 +47,9 @@ namespace gum {
   /// copy constructor
   template < typename GUM_SCALAR >
   ScheduleDeleteMultiDim< GUM_SCALAR >::ScheduleDeleteMultiDim(
-    const ScheduleDeleteMultiDim< GUM_SCALAR >& from)
-      : ScheduleOperation< GUM_SCALAR >(from)
-      , __table(from.__table)
-      , __args(0) {
+    const ScheduleDeleteMultiDim< GUM_SCALAR >& from) :
+      ScheduleOperation< GUM_SCALAR >(from),
+      __table(from.__table), __args(0) {
     // for debugging purposes
     GUM_CONS_CPY(ScheduleDeleteMultiDim);
   }
@@ -59,7 +57,7 @@ namespace gum {
   /// virtual copy constructor: creates a clone of the operation
   template < typename GUM_SCALAR >
   ScheduleDeleteMultiDim< GUM_SCALAR >*
-  ScheduleDeleteMultiDim< GUM_SCALAR >::newFactory() const {
+    ScheduleDeleteMultiDim< GUM_SCALAR >::newFactory() const {
     return new ScheduleDeleteMultiDim< GUM_SCALAR >(*this);
   }
 
@@ -75,7 +73,7 @@ namespace gum {
   /// copy operator
   template < typename GUM_SCALAR >
   ScheduleDeleteMultiDim< GUM_SCALAR >& ScheduleDeleteMultiDim< GUM_SCALAR >::
-  operator=(const ScheduleDeleteMultiDim< GUM_SCALAR >& from) {
+                                        operator=(const ScheduleDeleteMultiDim< GUM_SCALAR >& from) {
     // avoid self assignment
     if (&from != this) {
       ScheduleOperation< GUM_SCALAR >::operator=(from);
@@ -93,7 +91,7 @@ namespace gum {
   /// operator ==
   template < typename GUM_SCALAR >
   bool ScheduleDeleteMultiDim< GUM_SCALAR >::
-  operator==(const ScheduleOperation< GUM_SCALAR >& op) const {
+       operator==(const ScheduleOperation< GUM_SCALAR >& op) const {
     if (this->type() != op.type()) return false;
 
     const ScheduleDeleteMultiDim< GUM_SCALAR >& real_op =
@@ -104,7 +102,7 @@ namespace gum {
   /// operator !=
   template < typename GUM_SCALAR >
   bool ScheduleDeleteMultiDim< GUM_SCALAR >::
-  operator!=(const ScheduleOperation< GUM_SCALAR >& op) const {
+       operator!=(const ScheduleOperation< GUM_SCALAR >& op) const {
     if (this->type() != op.type()) return true;
 
     const ScheduleDeleteMultiDim< GUM_SCALAR >& real_op =
@@ -158,7 +156,7 @@ namespace gum {
   INLINE const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >&
                ScheduleDeleteMultiDim< GUM_SCALAR >::multiDimResults() const {
     static Sequence< const ScheduleMultiDim< GUM_SCALAR >* > empty_seq;
-#ifndef NDEBUG
+#  ifndef NDEBUG
     // for debugging purposes, we should inform the aGrUM's debugger that
     // the static sequence used here will be removed at the end of the
     // program's execution.
@@ -187,7 +185,7 @@ namespace gum {
                                 (void*)&empty_seq);
     }
 
-#endif /* NDEBUG */
+#  endif /* NDEBUG */
     return empty_seq;
   }
 
@@ -197,6 +195,6 @@ namespace gum {
     return "delete ( " + __table.toString() + " )";
   }
 
-} /* namespace */
+}   // namespace gum
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

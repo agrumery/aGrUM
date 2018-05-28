@@ -25,8 +25,8 @@
 #include <agrum/BN/algorithms/BayesBall.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/BN/algorithms/BayesBall_inl.h>
-#endif  // GUM_NO_INLINE
+#  include <agrum/BN/algorithms/BayesBall_inl.h>
+#endif   // GUM_NO_INLINE
 
 namespace gum {
 
@@ -61,28 +61,26 @@ namespace gum {
       if (!marks.exists(node)) marks.insert(node, empty_mark);
 
       // bounce the ball toward the neighbors
-      if (nodes_to_visit.front().second) {  // visit from a child
+      if (nodes_to_visit.front().second) {   // visit from a child
         nodes_to_visit.popFront();
         requisite.insert(node);
 
-        if (hardEvidence.exists(node)) {
-          continue;
-        }
+        if (hardEvidence.exists(node)) { continue; }
 
         if (!marks[node].first) {
-          marks[node].first = true;  // top marked
+          marks[node].first = true;   // top marked
           for (const auto par : dag.parents(node)) {
             nodes_to_visit.insert(std::pair< NodeId, bool >(par, true));
           }
         }
 
         if (!marks[node].second) {
-          marks[node].second = true;  // bottom marked
+          marks[node].second = true;   // bottom marked
           for (const auto chi : dag.children(node)) {
             nodes_to_visit.insert(std::pair< NodeId, bool >(chi, false));
           }
         }
-      } else {  // visit from a parent
+      } else {   // visit from a parent
         nodes_to_visit.popFront();
 
         const bool is_hard_evidence = hardEvidence.exists(node);

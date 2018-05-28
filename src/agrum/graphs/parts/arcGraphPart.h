@@ -77,8 +77,8 @@ namespace gum {
     public:
     typedef ArcSetIterator ArcIterator;
 
-    Signaler2< NodeId, NodeId > onArcAdded;    // onArcAdded(tail,head)
-    Signaler2< NodeId, NodeId > onArcDeleted;  // onArcDeleted(tail,head)
+    Signaler2< NodeId, NodeId > onArcAdded;     // onArcAdded(tail,head)
+    Signaler2< NodeId, NodeId > onArcDeleted;   // onArcDeleted(tail,head)
 
     // ############################################################################
     /// @name Constructors / Destructors
@@ -290,9 +290,9 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/graphs/parts/arcGraphPart_inl.h>
-#endif  // GUM_NOINLINE
+#  include <agrum/graphs/parts/arcGraphPart_inl.h>
+#endif   // GUM_NOINLINE
 
 #include <agrum/graphs/parts/arcGraphPart_tpl.h>
 
-#endif  // GUM_ARC_GRAPH_PART_H
+#endif   // GUM_ARC_GRAPH_PART_H

@@ -29,173 +29,167 @@ namespace gum {
 
   namespace learning {
 
-    
+
     /// returns the allocator used
-    template <template<typename> class ALLOC>
-    INLINE typename IDBInitializer<ALLOC>::allocator_type
-    IDBInitializer<ALLOC>::getAllocator () const {
-      return __var_names.get_allocator ();
+    template < template < typename > class ALLOC >
+    INLINE typename IDBInitializer< ALLOC >::allocator_type
+      IDBInitializer< ALLOC >::getAllocator() const {
+      return __var_names.get_allocator();
     }
 
-    
+
     /// default constructor
-    template <template<typename> class ALLOC>
-    INLINE IDBInitializer<ALLOC>::IDBInitializer
-    ( typename IDBInitializer<ALLOC>::InputType type,
-      const typename IDBInitializer<ALLOC>::allocator_type& alloc )
-      : __var_names ( alloc )
-      , __input_type ( type ) {
-      GUM_CONSTRUCTOR ( IDBInitializer );
+    template < template < typename > class ALLOC >
+    INLINE IDBInitializer< ALLOC >::IDBInitializer(
+      typename IDBInitializer< ALLOC >::InputType             type,
+      const typename IDBInitializer< ALLOC >::allocator_type& alloc) :
+        __var_names(alloc),
+        __input_type(type) {
+      GUM_CONSTRUCTOR(IDBInitializer);
     }
 
-    
+
     /// copy constructor with a given allocator
-    template <template<typename> class ALLOC>
-    INLINE IDBInitializer<ALLOC>::IDBInitializer
-    ( const IDBInitializer<ALLOC>& from,
-      const typename IDBInitializer<ALLOC>::allocator_type& alloc )
-      : __var_names ( from.__var_names, alloc )
-      , __input_type ( from.__input_type ) {
-      GUM_CONS_CPY ( IDBInitializer );
+    template < template < typename > class ALLOC >
+    INLINE IDBInitializer< ALLOC >::IDBInitializer(
+      const IDBInitializer< ALLOC >&                          from,
+      const typename IDBInitializer< ALLOC >::allocator_type& alloc) :
+        __var_names(from.__var_names, alloc),
+        __input_type(from.__input_type) {
+      GUM_CONS_CPY(IDBInitializer);
     }
 
-      
+
     /// copy constructor
-    template <template<typename> class ALLOC>
-    INLINE IDBInitializer<ALLOC>::IDBInitializer
-    ( const IDBInitializer<ALLOC>& from ) 
-      : IDBInitializer ( from, from.getAllocator () ) {}
+    template < template < typename > class ALLOC >
+    INLINE IDBInitializer< ALLOC >::IDBInitializer(
+      const IDBInitializer< ALLOC >& from) :
+        IDBInitializer(from, from.getAllocator()) {}
 
-    
+
     /// move constructor with a given allocator
-    template <template<typename> class ALLOC>
-    INLINE IDBInitializer<ALLOC>::IDBInitializer
-    ( IDBInitializer<ALLOC>&& from,
-      const typename IDBInitializer<ALLOC>::allocator_type& alloc )
-      : __var_names ( std::move ( from.__var_names ), alloc )
-      , __input_type ( from.__input_type ) {
-      GUM_CONS_MOV ( IDBInitializer );
+    template < template < typename > class ALLOC >
+    INLINE IDBInitializer< ALLOC >::IDBInitializer(
+      IDBInitializer< ALLOC >&&                               from,
+      const typename IDBInitializer< ALLOC >::allocator_type& alloc) :
+        __var_names(std::move(from.__var_names), alloc),
+        __input_type(from.__input_type) {
+      GUM_CONS_MOV(IDBInitializer);
     }
 
-      
+
     /// move constructor
-    template <template<typename> class ALLOC>
-    INLINE IDBInitializer<ALLOC>::IDBInitializer
-    ( IDBInitializer<ALLOC>&& from )
-      : IDBInitializer ( std::move ( from ), from.getAllocator () ) {}
+    template < template < typename > class ALLOC >
+    INLINE
+      IDBInitializer< ALLOC >::IDBInitializer(IDBInitializer< ALLOC >&& from) :
+        IDBInitializer(std::move(from), from.getAllocator()) {}
 
 
     /// destructor
-    template <template<typename> class ALLOC>
-    IDBInitializer<ALLOC>::~IDBInitializer () {
-      GUM_DESTRUCTOR ( IDBInitializer );
+    template < template < typename > class ALLOC >
+    IDBInitializer< ALLOC >::~IDBInitializer() {
+      GUM_DESTRUCTOR(IDBInitializer);
     }
-      
-    
+
+
     /// returns the names of the variables in the input database
-    template <template<typename> class ALLOC>
-    const std::vector<std::string,ALLOC<std::string>>&
-    IDBInitializer<ALLOC>::variableNames () {
-      if ( __var_names.empty () )
-        __var_names = this->_variableNames ();
+    template < template < typename > class ALLOC >
+    const std::vector< std::string, ALLOC< std::string > >&
+      IDBInitializer< ALLOC >::variableNames() {
+      if (__var_names.empty()) __var_names = this->_variableNames();
       return __var_names;
     }
 
 
     // copy operator
-    template <template<typename> class ALLOC>
-    IDBInitializer<ALLOC>&
-    IDBInitializer<ALLOC>::operator= ( const IDBInitializer<ALLOC>& from ) {
-      if ( this != &from ) {
+    template < template < typename > class ALLOC >
+    IDBInitializer< ALLOC >& IDBInitializer< ALLOC >::
+                             operator=(const IDBInitializer< ALLOC >& from) {
+      if (this != &from) {
         __var_names = from.__var_names;
         __input_type = from.__input_type;
         __last_insertion_failed = false;
       }
       return *this;
     }
-    
-      
+
+
     // move constructor
-    template <template<typename> class ALLOC>
-    IDBInitializer<ALLOC>&
-    IDBInitializer<ALLOC>::operator= ( IDBInitializer<ALLOC>&& from ) {
-      if ( this != &from ) {
-        __var_names = std::move ( from.__var_names );
+    template < template < typename > class ALLOC >
+    IDBInitializer< ALLOC >& IDBInitializer< ALLOC >::
+                             operator=(IDBInitializer< ALLOC >&& from) {
+      if (this != &from) {
+        __var_names = std::move(from.__var_names);
         __input_type = from.__input_type;
         __last_insertion_failed = false;
       }
       return *this;
     }
 
-    
+
     /// fills the rows of the database
-    template <template<typename> class ALLOC>
-    template <template<template<typename> class> class DATABASE>
-    INLINE void IDBInitializer<ALLOC>::fillDatabase (
-      DATABASE<ALLOC>& database,
-      const bool retry_insertion ) {      
-      switch ( __input_type ) {
-      case InputType::STRING:
-        __fillDatabaseFromStrings ( database, retry_insertion );
-        return;
+    template < template < typename > class ALLOC >
+    template < template < template < typename > class > class DATABASE >
+    INLINE void IDBInitializer< ALLOC >::fillDatabase(DATABASE< ALLOC >& database,
+                                                      const bool retry_insertion) {
+      switch (__input_type) {
+        case InputType::STRING:
+          __fillDatabaseFromStrings(database, retry_insertion);
+          return;
 
-      case InputType::DBCELL:
-        __fillDatabaseFromDBCells ( database, retry_insertion );
-        return;
+        case InputType::DBCELL:
+          __fillDatabaseFromDBCells(database, retry_insertion);
+          return;
 
-      default:
-        GUM_ERROR ( NotImplementedYet,
+        default:
+          GUM_ERROR(NotImplementedYet,
                     "fillDatabase has not been implemented yet for this "
-                    "type of IDBInitializeInputType" );
+                    "type of IDBInitializeInputType");
       }
     }
-        
-    
+
+
     /// fills the rows of the database using string inputs
-    template <template<typename> class ALLOC>
-    template <template<template<typename> class> class DATABASE>
-    void IDBInitializer<ALLOC>::__fillDatabaseFromStrings (
-      DATABASE<ALLOC>& database,
-      const bool retry_insertion ) {
+    template < template < typename > class ALLOC >
+    template < template < template < typename > class > class DATABASE >
+    void IDBInitializer< ALLOC >::__fillDatabaseFromStrings(
+      DATABASE< ALLOC >& database, const bool retry_insertion) {
       // if need be, try to reinsert the row that could not be inserted
-      if ( retry_insertion && __last_insertion_failed ) {
-        database.insertRow ( _currentStringRow () );
+      if (retry_insertion && __last_insertion_failed) {
+        database.insertRow(_currentStringRow());
         __last_insertion_failed = false;
       }
 
       // try to insert the next rows
-      while ( this->_nextRow () ) {
+      while (this->_nextRow()) {
         try {
           // read a new line in the input file and insert it into the database
-          database.insertRow ( _currentStringRow () );
-        }
-        catch ( ... ) {
+          database.insertRow(_currentStringRow());
+        } catch (...) {
           __last_insertion_failed = true;
           throw;
         }
       }
     }
 
-    
+
     /// fills the rows of the database using DBCell inputs
-    template <template<typename> class ALLOC>
-    template <template<template<typename> class> class DATABASE>
-    void IDBInitializer<ALLOC>::__fillDatabaseFromDBCells (
-      DATABASE<ALLOC>& database,
-      const bool retry_insertion ) {
+    template < template < typename > class ALLOC >
+    template < template < template < typename > class > class DATABASE >
+    void IDBInitializer< ALLOC >::__fillDatabaseFromDBCells(
+      DATABASE< ALLOC >& database, const bool retry_insertion) {
       // if need be, try to reinsert the row that could not be inserted
-      if ( retry_insertion && __last_insertion_failed ) {
-        database.insertRow ( _currentDBCellRow () );
+      if (retry_insertion && __last_insertion_failed) {
+        database.insertRow(_currentDBCellRow());
         __last_insertion_failed = false;
       }
 
       // try to insert the next rows
-      while ( this->_nextRow () ) {
+      while (this->_nextRow()) {
         try {
           // read a new line in the input file and insert it into the database
-          database.insertRow ( _currentDBCellRow () );
-        }
-        catch ( ... ) {
+          database.insertRow(_currentDBCellRow());
+        } catch (...) {
           __last_insertion_failed = true;
           throw;
         }
@@ -204,25 +198,24 @@ namespace gum {
 
 
     /// asks the child class for the content of the current row using strings
-    template <template<typename> class ALLOC>
-    const std::vector<std::string,ALLOC<std::string>>&
-    IDBInitializer<ALLOC>::_currentStringRow () {
-      GUM_ERROR ( FatalError,
-                  "Method _currentStringRow should not be used or it should be "
-                  "overloaded in children classes." );
+    template < template < typename > class ALLOC >
+    const std::vector< std::string, ALLOC< std::string > >&
+      IDBInitializer< ALLOC >::_currentStringRow() {
+      GUM_ERROR(FatalError,
+                "Method _currentStringRow should not be used or it should be "
+                "overloaded in children classes.");
     }
 
 
     /// asks the child class for the content of the current row using dbcells
-    template <template<typename> class ALLOC>
-    const DBRow<DBCell,ALLOC>&
-    IDBInitializer<ALLOC>::_currentDBCellRow () {
-      GUM_ERROR ( FatalError,
-                  "Method _currentDBCellRow should not be used or it should be "
-                  "overloaded in children classes." );
+    template < template < typename > class ALLOC >
+    const DBRow< DBCell, ALLOC >& IDBInitializer< ALLOC >::_currentDBCellRow() {
+      GUM_ERROR(FatalError,
+                "Method _currentDBCellRow should not be used or it should be "
+                "overloaded in children classes.");
     }
 
-    
+
   } /* namespace learning */
 
 } /* namespace gum */

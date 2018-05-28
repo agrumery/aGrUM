@@ -1,23 +1,23 @@
 
 /***************************************************************************
-*   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 #include <chrono>
 #include <iostream>
@@ -31,7 +31,6 @@
 namespace gum_tests {
 
   class DAGCycleDetectorTestSuite : public CxxTest::TestSuite {
-
     gum::DAG __createDAG(gum::Size nb_nodes, gum::Size nb_arcs) {
       std::default_random_engine generator = gum::getRandomGenerator();
       gum::DAG                   dag;
@@ -46,19 +45,18 @@ namespace gum_tests {
           try {
             dag.addArc(id1, id2);
             --nb_arcs;
-          } catch (gum::Exception&) {
-          }
+          } catch (gum::Exception&) {}
         }
       }
 
       return dag;
     }
 
-    void
-    __createChanges(const gum::DAG&                               g,
-                    std::vector< gum::DAGCycleDetector::Change >& changes,
-                    std::vector< gum::DAGCycleDetector::Change >& del_add_changes,
-                    gum::Size                                     length) {
+    void __createChanges(
+      const gum::DAG&                               g,
+      std::vector< gum::DAGCycleDetector::Change >& changes,
+      std::vector< gum::DAGCycleDetector::Change >& del_add_changes,
+      gum::Size                                     length) {
       std::default_random_engine           generator = gum::getRandomGenerator();
       std::uniform_int_distribution< int > distrib_type(0, 2);
       std::uniform_int_distribution< int > distrib_node(0, g.size() - 1);
@@ -73,7 +71,7 @@ namespace gum_tests {
         gum::Idx chgt_type = distrib_type(generator);
 
         switch (chgt_type) {
-          case 0: {  // deletions
+          case 0: {   // deletions
             float nb_arcs = (float)gg.sizeArcs();
             if (!nb_arcs) {
               ++length;
@@ -93,13 +91,13 @@ namespace gum_tests {
             }
           } break;
 
-          case 1: {  // additions
+          case 1: {   // additions
             gum::NodeId node1, node2;
             while (true) {
               node1 = distrib_node(generator);
               node2 = distrib_node(generator);
-              if ((node1 != node2) && !gg.existsArc(node1, node2) &&
-                  !gg.existsArc(node2, node1)) {
+              if ((node1 != node2) && !gg.existsArc(node1, node2)
+                  && !gg.existsArc(node2, node1)) {
                 changes.push_back(gum::DAGCycleDetector::ArcAdd(node1, node2));
                 gg.addArc(node1, node2);
                 break;
@@ -107,7 +105,7 @@ namespace gum_tests {
             }
           } break;
 
-          case 2: {  // reversal
+          case 2: {   // reversal
             float nb_arcs = float(gg.sizeArcs());
             if (!nb_arcs) {
               ++length;
@@ -162,12 +160,11 @@ namespace gum_tests {
               additions.insert(arc, 1);
             break;
 
-          default:
-            GUM_ERROR(gum::OperationNotAllowed, "undefined change type");
+          default: GUM_ERROR(gum::OperationNotAllowed, "undefined change type");
         }
       }
 
-      for (auto iter = additions.beginSafe();  // safe iterator needed here
+      for (auto iter = additions.beginSafe();   // safe iterator needed here
            iter != additions.endSafe();
            ++iter) {
         if (deletions.exists(iter.key())) {
@@ -299,8 +296,7 @@ namespace gum_tests {
                   gg.addArc(chgt.tail(), chgt.head());
                   break;
 
-                default:
-                  GUM_ERROR(gum::NotFound, "del_add_changes");
+                default: GUM_ERROR(gum::NotFound, "del_add_changes");
               }
             }
 
@@ -313,9 +309,7 @@ namespace gum_tests {
                    ++iter) {
                 dag.addArc(iter->tail(), iter->head());
               }
-            } catch (gum::InvalidDirectedCycle&) {
-              hasCycle = true;
-            }
+            } catch (gum::InvalidDirectedCycle&) { hasCycle = true; }
           }
 
           TS_ASSERT(detector.hasCycleFromModifications(changes) == hasCycle);
@@ -361,8 +355,7 @@ namespace gum_tests {
                 detector1.reverseArc(chgt.tail(), chgt.head());
                 break;
 
-              default:
-                GUM_ERROR(gum::NotFound, "del_add_changes");
+              default: GUM_ERROR(gum::NotFound, "del_add_changes");
             }
             detector2.setDAG(g);
           }
@@ -391,25 +384,21 @@ namespace gum_tests {
           for (auto& chgt : changes) {
             switch (chgt.type()) {
               case gum::DAGCycleDetector::ChangeType::ARC_DELETION:
-                TS_ASSERT(
-                  detector1.hasCycleFromDeletion(chgt.tail(), chgt.head()) ==
-                  detector2.hasCycleFromModifications(changes));
+                TS_ASSERT(detector1.hasCycleFromDeletion(chgt.tail(), chgt.head())
+                          == detector2.hasCycleFromModifications(changes));
                 break;
 
               case gum::DAGCycleDetector::ChangeType::ARC_ADDITION:
-                TS_ASSERT(
-                  detector1.hasCycleFromAddition(chgt.tail(), chgt.head()) ==
-                  detector2.hasCycleFromModifications(changes));
+                TS_ASSERT(detector1.hasCycleFromAddition(chgt.tail(), chgt.head())
+                          == detector2.hasCycleFromModifications(changes));
                 break;
 
               case gum::DAGCycleDetector::ChangeType::ARC_REVERSAL:
-                TS_ASSERT(
-                  detector1.hasCycleFromReversal(chgt.tail(), chgt.head()) ==
-                  detector2.hasCycleFromModifications(changes));
+                TS_ASSERT(detector1.hasCycleFromReversal(chgt.tail(), chgt.head())
+                          == detector2.hasCycleFromModifications(changes));
                 break;
 
-              default:
-                GUM_ERROR(gum::NotFound, "del_add_changes");
+              default: GUM_ERROR(gum::NotFound, "del_add_changes");
             }
           }
         }
@@ -417,4 +406,4 @@ namespace gum_tests {
     }
   };
 
-}  // namespace gum_tests
+}   // namespace gum_tests

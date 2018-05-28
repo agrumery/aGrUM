@@ -46,8 +46,8 @@ namespace gum {
   const size_t SmallObjectAllocator::GUM_DEFAULT_MAX_OBJECT_SIZE = 512;
 
 
-} /* End of Namespace */
+}   // namespace gum
 
 #ifdef GUM_NO_INLINE
-#include <agrum/core/smallobjectallocator/smallObjectAllocator_inl.h>
+#  include <agrum/core/smallobjectallocator/smallObjectAllocator_inl.h>
 #endif

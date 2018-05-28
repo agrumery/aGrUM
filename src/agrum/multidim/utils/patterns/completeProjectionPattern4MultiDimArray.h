@@ -34,17 +34,16 @@
 #else
 namespace gum {
 
-// a specialized function for projecting a multiDimArray over all its variables
+  // a specialized function for projecting a multiDimArray over all its variables
 
-#ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME
-#define GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE GUM_SCALAR
+#  ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME
+#    define GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE GUM_SCALAR
   template < typename GUM_SCALAR >
-  GUM_SCALAR
-  GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME(const MultiDimArray< GUM_SCALAR >* table,
-                                         Instantiation* instantiation)
-#endif
+  GUM_SCALAR GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME(
+    const MultiDimArray< GUM_SCALAR >* table, Instantiation* instantiation)
+#  endif
 
-// clang-format off
+  // clang-format off
 
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE GUM_SCALAR *
@@ -98,15 +97,15 @@ namespace gum {
 
   {
 
-#ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_IMPL2ARRAY_NAME
+#  ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_IMPL2ARRAY_NAME
     const auto table =
       reinterpret_cast< const MultiDimArray< GUM_SCALAR >* >(ttable);
-#endif
+#  endif
 
-#ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_IMPL2ARRAY_NAME
+#  ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_IMPL2ARRAY_NAME
     const auto table =
       reinterpret_cast< const MultiDimArray< GUM_SCALAR* >* >(ttable);
-#endif
+#  endif
 
     // first, compute the domain size of the table:
     Size nb_elt = table->domainSize();
@@ -124,11 +123,11 @@ namespace gum {
       GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE* deb_ptr = ptable;
 
       for (Size i = 0; i < nb_elt; ++i, ++ptable) {
-#ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER
+#  ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER
         GUM_MULTI_DIM_COMPLETE_PROJECTION(&current_val, *ptable);
-#else
+#  else
         GUM_MULTI_DIM_COMPLETE_PROJECTION(current_val, *ptable);
-#endif
+#  endif
 
         if (current_val != old_val) {
           old_val = current_val;
@@ -147,13 +146,13 @@ namespace gum {
 
       // return the result
       table->fromOffset(*instantiation, Size(current_ptr - deb_ptr));
-#ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER
+#  ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER
       return *current_ptr;
-#else
+#  else
       return current_val;
-#endif /* GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER */
+#  endif /* GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER */
     } else {
-#ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER
+#  ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER
       GUM_SCALAR                              old_val = current_val;
       GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE* current_ptr = ptable;
 
@@ -167,22 +166,22 @@ namespace gum {
       }
 
       return *current_ptr;
-#else
+#  else
 
       for (Size i = 0; i < nb_elt; ++i, ++ptable) {
         GUM_MULTI_DIM_COMPLETE_PROJECTION(current_val, *ptable);
       }
 
       return current_val;
-#endif /* GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER  */
+#  endif /* GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER  */
     }
   }
 
-#undef GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE
+#  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE
 
-#ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER
-#undef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER
-#endif
+#  ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER
+#    undef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER
+#  endif
 
 } /* End of namespace gum */
 

@@ -29,12 +29,12 @@
 
 namespace gum {
   /**
-* @class LoopyBeliefPropagation loopyBeliefPropagation.h
-*<agrum/BN/inference/loopyBeliefPropagation.h>
-* @brief class for making Loopy Belief Propagation in bayesian networks.
-* @ingroup bn_inference
-*
-*/
+   * @class LoopyBeliefPropagation loopyBeliefPropagation.h
+   *<agrum/BN/inference/loopyBeliefPropagation.h>
+   * @brief class for making Loopy Belief Propagation in bayesian networks.
+   * @ingroup bn_inference
+   *
+   */
   template < typename GUM_SCALAR >
   class LoopyBeliefPropagation : public ApproximateInference< GUM_SCALAR > {
     public:
@@ -103,4 +103,4 @@ namespace gum {
 #include <agrum/BN/inference/loopyBeliefPropagation_tpl.h>
 
 
-#endif  // GUM_LOOPYBELIEFPROPAGATION_H
+#endif   // GUM_LOOPYBELIEFPROPAGATION_H

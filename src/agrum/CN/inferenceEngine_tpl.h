@@ -1,27 +1,27 @@
 /***************************************************************************
-*   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 /** @file
-* @brief the class for computing G2 scores
-*
-* @author Christophe GONZALES and Pierre-Henri WUILLEMIN
-*/
+ * @brief the class for computing G2 scores
+ *
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ */
 #include <agrum/CN/inferenceEngine.h>
 #include <agrum/agrum.h>
 
@@ -36,8 +36,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     InferenceEngine< GUM_SCALAR >::InferenceEngine(
-      const CredalNet< GUM_SCALAR >& credalNet)
-        : ApproximationScheme() {
+      const CredalNet< GUM_SCALAR >& credalNet) :
+        ApproximationScheme() {
       _credalNet = &credalNet;
 
       _dbnOpt.setCNet(credalNet);
@@ -135,7 +135,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     VarMod2BNsMap< GUM_SCALAR >*
-    InferenceEngine< GUM_SCALAR >::getVarMod2BNsMap() {
+      InferenceEngine< GUM_SCALAR >::getVarMod2BNsMap() {
       return &_dbnOpt;
     }
 
@@ -173,13 +173,13 @@ namespace gum {
         while (p != nullptr) {
           values.push_back(GUM_SCALAR(atof(p)));
           p = strtok(nullptr, " ");
-        }  // end of : line
+        }   // end of : line
 
-        _modal.insert(tmp, values);  //[tmp] = values;
+        _modal.insert(tmp, values);   //[tmp] = values;
 
         delete[] p;
         delete[] cstr;
-      }  // end of : file
+      }   // end of : file
 
       mod_stream.close();
 
@@ -214,7 +214,7 @@ namespace gum {
         // != "
         // << it->second.size());
 
-        _modal.insert(it->first, it->second);  //[ it->first ] = it->second;
+        _modal.insert(it->first, it->second);   //[ it->first ] = it->second;
       }
 
       //_modal = modals;
@@ -264,7 +264,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void
-    InferenceEngine< GUM_SCALAR >::insertEvidenceFile(const std::string& path) {
+      InferenceEngine< GUM_SCALAR >::insertEvidenceFile(const std::string& path) {
       std::ifstream evi_stream(path.c_str(), std::ios::in);
 
       if (!evi_stream.good()) {
@@ -313,13 +313,13 @@ namespace gum {
         while (p != nullptr) {
           values.push_back(GUM_SCALAR(atof(p)));
           p = strtok(nullptr, " ");
-        }  // end of : line
+        }   // end of : line
 
         _evidence.insert(node, values);
 
         delete[] p;
         delete[] cstr;
-      }  // end of : file
+      }   // end of : file
 
       evi_stream.close();
     }
@@ -403,56 +403,48 @@ namespace gum {
 
             values[atoi(p)] = true;
             p = strtok(nullptr, " ");
-          }  // end of : line
+          }   // end of : line
 
           _query.insert(node, values);
         }
 
         delete[] p;
         delete[] cstr;
-      }  // end of : file
+      }   // end of : file
 
       evi_stream.close();
     }
 
     template < typename GUM_SCALAR >
-    const std::vector< GUM_SCALAR >&
-    InferenceEngine< GUM_SCALAR >::marginalMin(const std::string& varName) const {
+    const std::vector< GUM_SCALAR >& InferenceEngine< GUM_SCALAR >::marginalMin(
+      const std::string& varName) const {
       try {
         return _marginalMin[_credalNet->current_bn().idFromName(varName)];
-      } catch (NotFound& err) {
-        throw(err);
-      }
+      } catch (NotFound& err) { throw(err); }
     }
 
     template < typename GUM_SCALAR >
-    const std::vector< GUM_SCALAR >&
-    InferenceEngine< GUM_SCALAR >::marginalMax(const std::string& varName) const {
+    const std::vector< GUM_SCALAR >& InferenceEngine< GUM_SCALAR >::marginalMax(
+      const std::string& varName) const {
       try {
         return _marginalMax[_credalNet->current_bn().idFromName(varName)];
-      } catch (NotFound& err) {
-        throw(err);
-      }
+      } catch (NotFound& err) { throw(err); }
     }
 
     template < typename GUM_SCALAR >
     const std::vector< GUM_SCALAR >&
-    InferenceEngine< GUM_SCALAR >::marginalMin(const NodeId id) const {
+      InferenceEngine< GUM_SCALAR >::marginalMin(const NodeId id) const {
       try {
         return _marginalMin[id];
-      } catch (NotFound& err) {
-        throw(err);
-      }
+      } catch (NotFound& err) { throw(err); }
     }
 
     template < typename GUM_SCALAR >
     const std::vector< GUM_SCALAR >&
-    InferenceEngine< GUM_SCALAR >::marginalMax(const NodeId id) const {
+      InferenceEngine< GUM_SCALAR >::marginalMax(const NodeId id) const {
       try {
         return _marginalMax[id];
-      } catch (NotFound& err) {
-        throw(err);
-      }
+      } catch (NotFound& err) { throw(err); }
     }
 
     template < typename GUM_SCALAR >
@@ -460,9 +452,7 @@ namespace gum {
       const std::string& varName) const {
       try {
         return _expectationMin[_credalNet->current_bn().idFromName(varName)];
-      } catch (NotFound& err) {
-        throw(err);
-      }
+      } catch (NotFound& err) { throw(err); }
     }
 
     template < typename GUM_SCALAR >
@@ -470,29 +460,23 @@ namespace gum {
       const std::string& varName) const {
       try {
         return _expectationMax[_credalNet->current_bn().idFromName(varName)];
-      } catch (NotFound& err) {
-        throw(err);
-      }
+      } catch (NotFound& err) { throw(err); }
     }
 
     template < typename GUM_SCALAR >
     const GUM_SCALAR&
-    InferenceEngine< GUM_SCALAR >::expectationMin(const NodeId id) const {
+      InferenceEngine< GUM_SCALAR >::expectationMin(const NodeId id) const {
       try {
         return _expectationMin[id];
-      } catch (NotFound& err) {
-        throw(err);
-      }
+      } catch (NotFound& err) { throw(err); }
     }
 
     template < typename GUM_SCALAR >
     const GUM_SCALAR&
-    InferenceEngine< GUM_SCALAR >::expectationMax(const NodeId id) const {
+      InferenceEngine< GUM_SCALAR >::expectationMax(const NodeId id) const {
       try {
         return _expectationMax[id];
-      } catch (NotFound& err) {
-        throw(err);
-      }
+      } catch (NotFound& err) { throw(err); }
     }
 
     template < typename GUM_SCALAR >
@@ -533,13 +517,13 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     const std::vector< std::vector< GUM_SCALAR > >&
-    InferenceEngine< GUM_SCALAR >::vertices(const NodeId id) const {
+      InferenceEngine< GUM_SCALAR >::vertices(const NodeId id) const {
       return _marginalSets[id];
     }
 
     template < typename GUM_SCALAR >
     void
-    InferenceEngine< GUM_SCALAR >::saveMarginals(const std::string& path) const {
+      InferenceEngine< GUM_SCALAR >::saveMarginals(const std::string& path) const {
       std::ofstream m_stream(path.c_str(), std::ios::out | std::ios::trunc);
 
       if (!m_stream.good()) {
@@ -566,7 +550,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     void InferenceEngine< GUM_SCALAR >::saveExpectations(
       const std::string& path) const {
-      if (_dynamicExpMin.empty())  //_modal.empty())
+      if (_dynamicExpMin.empty())   //_modal.empty())
         return;
 
       // else not here, to keep the const (natural with a saving process)
@@ -584,7 +568,7 @@ namespace gum {
       }
 
       for (const auto& elt : _dynamicExpMin) {
-        m_stream << elt.first;  // it->first;
+        m_stream << elt.first;   // it->first;
 
         // iterates over a vector
         for (const auto& elt2 : elt.second) {
@@ -638,7 +622,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void
-    InferenceEngine< GUM_SCALAR >::saveVertices(const std::string& path) const {
+      InferenceEngine< GUM_SCALAR >::saveVertices(const std::string& path) const {
       std::ofstream m_stream(path.c_str(), std::ios::out | std::ios::trunc);
 
       if (!m_stream.good()) {
@@ -767,7 +751,7 @@ namespace gum {
 
         expectationsMin.getWithDefault(var_name, innerMap())
           .getWithDefault(atoi(time_step.c_str()), 0) =
-          elt.second;  // we iterate with min iterators
+          elt.second;   // we iterate with min iterators
         expectationsMax.getWithDefault(var_name, innerMap())
           .getWithDefault(atoi(time_step.c_str()), 0) = _expectationMax[elt.first];
       }
@@ -849,9 +833,7 @@ namespace gum {
             }
           }
 
-          if (!found) {
-            _t1.insert(node, std::vector< NodeId >());
-          }
+          if (!found) { _t1.insert(node, std::vector< NodeId >()); }
         }
       }
 
@@ -975,25 +957,24 @@ namespace gum {
       // check that the point and all previously added ones are not inside the
       // actual
       // polytope
-      auto itEnd = std::remove_if(nodeCredalSet.begin(),
-                                  nodeCredalSet.end(),
-                                  [&](const std::vector< GUM_SCALAR >& v) -> bool {
-                                    for (auto jt = v.cbegin(),
-                                              jtEnd = v.cend(),
-                                              minIt = _marginalMin[id].cbegin(),
-                                              minItEnd = _marginalMin[id].cend(),
-                                              maxIt = _marginalMax[id].cbegin(),
-                                              maxItEnd = _marginalMax[id].cend();
-                                         jt != jtEnd && minIt != minItEnd &&
-                                         maxIt != maxItEnd;
-                                         ++jt, ++minIt, ++maxIt) {
-                                      if ((std::fabs(*jt - *minIt) < 1e-6 ||
-                                           std::fabs(*jt - *maxIt) < 1e-6) &&
-                                          std::fabs(*minIt - *maxIt) > 1e-6)
-                                        return false;
-                                    }
-                                    return true;
-                                  });
+      auto itEnd = std::remove_if(
+        nodeCredalSet.begin(),
+        nodeCredalSet.end(),
+        [&](const std::vector< GUM_SCALAR >& v) -> bool {
+          for (auto jt = v.cbegin(),
+                    jtEnd = v.cend(),
+                    minIt = _marginalMin[id].cbegin(),
+                    minItEnd = _marginalMin[id].cend(),
+                    maxIt = _marginalMax[id].cbegin(),
+                    maxItEnd = _marginalMax[id].cend();
+               jt != jtEnd && minIt != minItEnd && maxIt != maxItEnd;
+               ++jt, ++minIt, ++maxIt) {
+            if ((std::fabs(*jt - *minIt) < 1e-6 || std::fabs(*jt - *maxIt) < 1e-6)
+                && std::fabs(*minIt - *maxIt) > 1e-6)
+              return false;
+          }
+          return true;
+        });
 
       nodeCredalSet.erase(itEnd, nodeCredalSet.end());
 
@@ -1017,20 +998,20 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     const NodeProperty< std::vector< NodeId > >&
-    InferenceEngine< GUM_SCALAR >::getT0Cluster() const {
+      InferenceEngine< GUM_SCALAR >::getT0Cluster() const {
       return _t0;
     }
 
     template < typename GUM_SCALAR >
     const NodeProperty< std::vector< NodeId > >&
-    InferenceEngine< GUM_SCALAR >::getT1Cluster() const {
+      InferenceEngine< GUM_SCALAR >::getT1Cluster() const {
       return _t1;
     }
 
     template < typename GUM_SCALAR >
     inline const GUM_SCALAR InferenceEngine< GUM_SCALAR >::_computeEpsilon() {
       GUM_SCALAR eps = 0;
-#pragma omp      parallel
+#pragma omp parallel
       {
         GUM_SCALAR tEps = 0;
         GUM_SCALAR delta;
@@ -1057,7 +1038,7 @@ namespace gum {
             _oldMarginalMin[i][j] = _marginalMin[i][j];
             _oldMarginalMax[i][j] = _marginalMax[i][j];
           }
-        }  // end of : all variables
+        }   // end of : all variables
 
 #pragma omp critical(epsilon_max)
         {
@@ -1068,5 +1049,5 @@ namespace gum {
 
       return eps;
     }
-  }
-}  // namespace
+  }   // namespace credal
+}   // namespace gum

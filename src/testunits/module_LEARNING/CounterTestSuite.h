@@ -36,8 +36,8 @@ namespace gum_tests {
     struct MyCounter : public gum::learning::Counter<> {
       template < typename RowFilter >
       MyCounter(const RowFilter&               filter,
-                const std::vector< gum::Idx >& var_modalities)
-          : gum::learning::Counter<>(filter, var_modalities) {}
+                const std::vector< gum::Idx >& var_modalities) :
+          gum::learning::Counter<>(filter, var_modalities) {}
 
       const std::vector< double >& getAllCounts(gum::Idx index) {
         return gum::learning::Counter<>::_getAllCounts(index);
@@ -56,7 +56,7 @@ namespace gum_tests {
       }
 
       const std::vector< std::pair< std::vector< gum::Idx >, gum::Idx >* >&
-      getAllNodes() const noexcept {
+        getAllNodes() const noexcept {
         return gum::learning::Counter<>::_getAllNodes();
       }
 
@@ -67,33 +67,32 @@ namespace gum_tests {
       }
 
       const std::vector< std::pair< std::vector< gum::Idx >, gum::Idx >* >&
-      getConditioningNodes() const noexcept {
+        getConditioningNodes() const noexcept {
         return gum::learning::Counter<>::_getConditioningNodes();
       }
     };
 
     void test1() {
-      gum::learning::DBInitializerFromCSV<>
-        initializer ( GET_RESSOURCES_PATH( "asia.csv" ) );
-      const auto& var_names = initializer.variableNames ();
-      const std::size_t nb_vars = var_names.size ();
-      
-      gum::learning::DBTranslatorSet<> translator_set;
-      gum::learning::DBTranslator4LabelizedVariable<> translator;
-      for ( std::size_t i = 0; i < nb_vars; ++i ) {
-        translator_set.insertTranslator ( translator, i );
-      }
-      
-      gum::learning::DatabaseTable<> database ( translator_set );
-      database.setVariableNames( initializer.variableNames () );
-      initializer.fillDatabase ( database );
+      gum::learning::DBInitializerFromCSV<> initializer(
+        GET_RESSOURCES_PATH("asia.csv"));
+      const auto&       var_names = initializer.variableNames();
+      const std::size_t nb_vars = var_names.size();
 
-      gum::learning::DBRowGeneratorSet<> genset;
-      gum::learning::DBRowGeneratorParser<>
-        parser ( database.handler (), genset );
+      gum::learning::DBTranslatorSet<>                translator_set;
+      gum::learning::DBTranslator4LabelizedVariable<> translator;
+      for (std::size_t i = 0; i < nb_vars; ++i) {
+        translator_set.insertTranslator(translator, i);
+      }
+
+      gum::learning::DatabaseTable<> database(translator_set);
+      database.setVariableNames(initializer.variableNames());
+      initializer.fillDatabase(database);
+
+      gum::learning::DBRowGeneratorSet<>    genset;
+      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
 
       std::vector< gum::Size > modalities(8, 2);
-      MyCounter  counter(parser, modalities);
+      MyCounter                counter(parser, modalities);
 
       std::vector< gum::Idx > set1{0};
       std::vector< gum::Idx > set2{1};
@@ -128,8 +127,8 @@ namespace gum_tests {
         gum::Idx id4 = counter.addNodeSet(0, set4);
 
         TS_ASSERT(counter.getAllCounts(id2) == counter.getAllCounts(id4));
-        TS_ASSERT(counter.getConditioningCounts(id2) ==
-                  counter.getConditioningCounts(id4));
+        TS_ASSERT(counter.getConditioningCounts(id2)
+                  == counter.getConditioningCounts(id4));
       }
 
       counter.clear();
@@ -287,8 +286,8 @@ namespace gum_tests {
         for (gum::Idx j = 0; j < 2; ++j) {
           for (gum::Idx i = 0; i < 2; ++i) {
             index2 = i + j * 2 + k * 4;
-            index1 = i * (1 << (order[0] - 1)) + j * (1 << (order[1] - 1)) +
-                     k * (1 << (order[2] - 1));
+            index1 = i * (1 << (order[0] - 1)) + j * (1 << (order[1] - 1))
+                     + k * (1 << (order[2] - 1));
             if (v1[index1] != v2[index2]) return false;
           }
         }

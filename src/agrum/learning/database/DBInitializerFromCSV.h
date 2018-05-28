@@ -125,12 +125,11 @@ namespace gum {
      * // but only columns 1, 3 and 4 of the CSV file have been kept.
      * @endcode
      */
-    template <template<typename> class ALLOC = std::allocator>
-    class DBInitializerFromCSV : public IDBInitializer<ALLOC> {
-    public:
-
+    template < template < typename > class ALLOC = std::allocator >
+    class DBInitializerFromCSV : public IDBInitializer< ALLOC > {
+      public:
       /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC<std::string>;
+      using allocator_type = ALLOC< std::string >;
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -148,40 +147,40 @@ namespace gum {
        * in the CSV file
        * @param alloc the allocator used by all the methods
        */
-      DBInitializerFromCSV ( const std::string  filename,
-                             bool               fileContainsNames = true,
-                             const std::string  delimiter = ",",
-                             const char         commentmarker = '#',
-                             const char         quoteMarker = '"',
-                             const allocator_type& alloc = allocator_type () );
+      DBInitializerFromCSV(const std::string     filename,
+                           bool                  fileContainsNames = true,
+                           const std::string     delimiter = ",",
+                           const char            commentmarker = '#',
+                           const char            quoteMarker = '"',
+                           const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       /** the new initializer points to the same file as from, but it reparses
        * it from scratch. */
-      DBInitializerFromCSV ( const DBInitializerFromCSV<ALLOC>& from );
-      
+      DBInitializerFromCSV(const DBInitializerFromCSV< ALLOC >& from);
+
       /// copy constructor with a given allocator
       /** the new initializer points to the same file as from, but it reparses
        * it from scratch. */
-      DBInitializerFromCSV ( const DBInitializerFromCSV<ALLOC>& from,
-                             const allocator_type& alloc );
+      DBInitializerFromCSV(const DBInitializerFromCSV< ALLOC >& from,
+                           const allocator_type&                alloc);
 
       /// move constructor
-      DBInitializerFromCSV ( DBInitializerFromCSV<ALLOC>&& from );
+      DBInitializerFromCSV(DBInitializerFromCSV< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      DBInitializerFromCSV ( DBInitializerFromCSV<ALLOC>&& from,
-                             const allocator_type& alloc );
+      DBInitializerFromCSV(DBInitializerFromCSV< ALLOC >&& from,
+                           const allocator_type&           alloc);
 
       /// virtual copy constructor
-      virtual DBInitializerFromCSV<ALLOC>* clone () const;
+      virtual DBInitializerFromCSV< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual DBInitializerFromCSV<ALLOC>*
-      clone ( const allocator_type& alloc ) const;
+      virtual DBInitializerFromCSV< ALLOC >*
+        clone(const allocator_type& alloc) const;
 
       /// destructor
-      virtual ~DBInitializerFromCSV ();
+      virtual ~DBInitializerFromCSV();
 
       /// @}
 
@@ -191,43 +190,43 @@ namespace gum {
       // ##########################################################################
 
       /// @{
-      
+
       /// copy operator
       /** the initializer points to the same file as from, but it reparses
        * it from scratch. */
-      DBInitializerFromCSV<ALLOC>&
-      operator= ( const DBInitializerFromCSV<ALLOC>& from );
+      DBInitializerFromCSV< ALLOC >&
+        operator=(const DBInitializerFromCSV< ALLOC >& from);
 
       /// move operator
       /** the initializer points to the same file as from, but it reparses
        * it from scratch. */
-      DBInitializerFromCSV<ALLOC>&
-      operator= ( DBInitializerFromCSV<ALLOC>&& from );
+      DBInitializerFromCSV< ALLOC >&
+        operator=(DBInitializerFromCSV< ALLOC >&& from);
 
       /// @}
 
-      
-    protected:
+
+      protected:
       /// returns the names of the variables
-      virtual std::vector<std::string,ALLOC<std::string>> _variableNames () final;
+      virtual std::vector< std::string, ALLOC< std::string > >
+        _variableNames() final;
 
       /// returns the content of the current row using strings
-      virtual const std::vector<std::string,ALLOC<std::string>>&
-      _currentStringRow () final;
-      
-      /// indicates whether there is a next row to read (and point on it)
-      virtual bool _nextRow () final;
+      virtual const std::vector< std::string, ALLOC< std::string > >&
+        _currentStringRow() final;
 
-      
+      /// indicates whether there is a next row to read (and point on it)
+      virtual bool _nextRow() final;
+
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-     
-    private:
+
+      private:
       // the filename used for parsing
       std::string __filename;
 
       // indicates the delimiter used within the CSV
-      std::string  __delimiter;
+      std::string __delimiter;
 
       // indicates which character is a comment symbol in the CSV
       char __comment_marker;
@@ -242,13 +241,12 @@ namespace gum {
       std::ifstream __input_stream;
 
       // the CSV parser used for the reading the CSV file
-      CSVParser<ALLOC> __parser;
+      CSVParser< ALLOC > __parser;
 
       // the variables names, if the first row has names
-      std::vector<std::string,ALLOC<std::string>> __var_names;
-      
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+      std::vector< std::string, ALLOC< std::string > > __var_names;
 
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 
   } /* namespace learning */

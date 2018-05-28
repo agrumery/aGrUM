@@ -25,8 +25,8 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/agrum.h>
-#include <sstream>
+#  include <agrum/agrum.h>
+#  include <sstream>
 
 namespace gum {
 
@@ -36,13 +36,10 @@ namespace gum {
     const ScheduleMultiDim< GUM_SCALAR >& table,
     NodeProperty< Set< const MultiDimImplementation< GUM_SCALAR >* > >&
            clique_tables,
-    NodeId clique)
-      : ScheduleOperation< GUM_SCALAR >(
-          ScheduleOperation< GUM_SCALAR >::Type::CLIQUE_STORE_MULTIDIM)
-      , __table(table)
-      , __tableSet(&clique_tables)
-      , __clique(clique)
-      , __args(0) {
+    NodeId clique) :
+      ScheduleOperation< GUM_SCALAR >(
+        ScheduleOperation< GUM_SCALAR >::Type::CLIQUE_STORE_MULTIDIM),
+      __table(table), __tableSet(&clique_tables), __clique(clique), __args(0) {
     // for debugging purposes
     GUM_CONSTRUCTOR(ScheduleCliqueStoreMultiDim);
   }
@@ -50,12 +47,10 @@ namespace gum {
   /// copy constructor
   template < typename GUM_SCALAR >
   ScheduleCliqueStoreMultiDim< GUM_SCALAR >::ScheduleCliqueStoreMultiDim(
-    const ScheduleCliqueStoreMultiDim< GUM_SCALAR >& from)
-      : ScheduleOperation< GUM_SCALAR >(from)
-      , __table(from.__table)
-      , __tableSet(from.__tableSet)
-      , __clique(from.__clique)
-      , __args(0) {
+    const ScheduleCliqueStoreMultiDim< GUM_SCALAR >& from) :
+      ScheduleOperation< GUM_SCALAR >(from),
+      __table(from.__table), __tableSet(from.__tableSet), __clique(from.__clique),
+      __args(0) {
     // for debugging purposes
     GUM_CONS_CPY(ScheduleCliqueStoreMultiDim);
   }
@@ -63,7 +58,7 @@ namespace gum {
   /// virtual copy constructor: creates a clone of the operation
   template < typename GUM_SCALAR >
   ScheduleCliqueStoreMultiDim< GUM_SCALAR >*
-  ScheduleCliqueStoreMultiDim< GUM_SCALAR >::newFactory() const {
+    ScheduleCliqueStoreMultiDim< GUM_SCALAR >::newFactory() const {
     return new ScheduleCliqueStoreMultiDim< GUM_SCALAR >(*this);
   }
 
@@ -79,8 +74,8 @@ namespace gum {
   /// copy operator
   template < typename GUM_SCALAR >
   ScheduleCliqueStoreMultiDim< GUM_SCALAR >&
-  ScheduleCliqueStoreMultiDim< GUM_SCALAR >::
-  operator=(const ScheduleCliqueStoreMultiDim< GUM_SCALAR >& from) {
+      ScheduleCliqueStoreMultiDim< GUM_SCALAR >::
+      operator=(const ScheduleCliqueStoreMultiDim< GUM_SCALAR >& from) {
     // avoid self assignment
     if (&from != this) {
       ScheduleOperation< GUM_SCALAR >::operator=(from);
@@ -100,25 +95,25 @@ namespace gum {
   /// operator ==
   template < typename GUM_SCALAR >
   bool ScheduleCliqueStoreMultiDim< GUM_SCALAR >::
-  operator==(const ScheduleOperation< GUM_SCALAR >& op) const {
+       operator==(const ScheduleOperation< GUM_SCALAR >& op) const {
     if (this->type() != op.type()) return false;
 
     const ScheduleCliqueStoreMultiDim< GUM_SCALAR >& real_op =
       static_cast< const ScheduleCliqueStoreMultiDim< GUM_SCALAR >& >(op);
-    return ((__table == real_op.__table) && (__tableSet == real_op.__tableSet) &&
-            (__clique == real_op.__clique));
+    return ((__table == real_op.__table) && (__tableSet == real_op.__tableSet)
+            && (__clique == real_op.__clique));
   }
 
   /// operator !=
   template < typename GUM_SCALAR >
   bool ScheduleCliqueStoreMultiDim< GUM_SCALAR >::
-  operator!=(const ScheduleOperation< GUM_SCALAR >& op) const {
+       operator!=(const ScheduleOperation< GUM_SCALAR >& op) const {
     if (this->type() != op.type()) return true;
 
     const ScheduleCliqueStoreMultiDim< GUM_SCALAR >& real_op =
       static_cast< const ScheduleCliqueStoreMultiDim< GUM_SCALAR >& >(op);
-    return ((__table != real_op.__table) || (__tableSet != real_op.__tableSet) ||
-            (__clique != real_op.__clique));
+    return ((__table != real_op.__table) || (__tableSet != real_op.__tableSet)
+            || (__clique != real_op.__clique));
   }
 
   /// executes the operation
@@ -165,7 +160,7 @@ namespace gum {
   INLINE const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >&
                ScheduleCliqueStoreMultiDim< GUM_SCALAR >::multiDimResults() const {
     static Sequence< const ScheduleMultiDim< GUM_SCALAR >* > empty_seq;
-#ifndef NDEBUG
+#  ifndef NDEBUG
     // for debugging purposes, we should inform the aGrUM's debugger that
     // the static sequence used here will be removed at the end of the
     // program's execution.
@@ -182,7 +177,7 @@ namespace gum {
                                 (void*)&empty_seq);
     }
 
-#endif /* NDEBUG */
+#  endif /* NDEBUG */
     return empty_seq;
   }
 

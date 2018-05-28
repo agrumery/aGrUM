@@ -42,7 +42,8 @@
 namespace gum {
 
   /**
-   * @class BIFWriter BIFWriter.h <agrum/BN/io/BIF/BIFWriter.h>
+   * @class BIFWriter
+   * @headerfile BIFWriter.h <agrum/BN/io/BIF/BIFWriter.h>
    * @ingroup bn_io
    * @brief Writes a IBayesNet in the BIF format.
    *
@@ -104,8 +105,8 @@ namespace gum {
 
     // Returns the modalities labels of the variables in varsSeq
     std::string
-    __variablesLabels(const Sequence< const DiscreteVariable* >& varsSeq,
-                      const Instantiation&                       inst);
+      __variablesLabels(const Sequence< const DiscreteVariable* >& varsSeq,
+                        const Instantiation&                       inst);
   };
 
 
@@ -115,4 +116,4 @@ namespace gum {
 } /* namespace gum */
 
 #include <agrum/BN/io/BIF/BIFWriter_tpl.h>
-#endif  // GUM_BIF_WRITER_H
+#endif   // GUM_BIF_WRITER_H

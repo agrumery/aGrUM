@@ -37,10 +37,8 @@ namespace gum {
   // creates a tree with one node (with or without data)
 
   template < typename Key, typename Data >
-  IndexedTree< Key, Data >::IndexedTree(const Key& theKey, Data* theData)
-      : key(theKey)
-      , data(theData)
-      , parent(0) {
+  IndexedTree< Key, Data >::IndexedTree(const Key& theKey, Data* theData) :
+      key(theKey), data(theData), parent(0) {
     // for debugging purposes
     GUM_CONSTRUCTOR(IndexedTree);
   }
@@ -48,9 +46,7 @@ namespace gum {
   // creates a tree with one node (with or without data)
 
   template < typename Key, typename Data >
-  IndexedTree< Key, Data >::IndexedTree(Data* theData)
-      : data(theData)
-      , parent(0) {
+  IndexedTree< Key, Data >::IndexedTree(Data* theData) : data(theData), parent(0) {
     // for debugging purposes
     GUM_CONSTRUCTOR(IndexedTree);
   }
@@ -58,10 +54,8 @@ namespace gum {
   // creates a tree with one node with data
 
   template < typename Key, typename Data >
-  IndexedTree< Key, Data >::IndexedTree(const Key& theKey, const Data& theData)
-      : key(theKey)
-      , data(new Data(theData))
-      , parent(0) {
+  IndexedTree< Key, Data >::IndexedTree(const Key& theKey, const Data& theData) :
+      key(theKey), data(new Data(theData)), parent(0) {
     // for debugging purposes
     GUM_CONSTRUCTOR(IndexedTree);
   }
@@ -69,10 +63,8 @@ namespace gum {
   // copy constructor
 
   template < typename Key, typename Data >
-  IndexedTree< Key, Data >::IndexedTree(const IndexedTree< Key, Data >& from)
-      : key(from.key)
-      , data(0)
-      , parent(0) {
+  IndexedTree< Key, Data >::IndexedTree(const IndexedTree< Key, Data >& from) :
+      key(from.key), data(0), parent(0) {
     // for debugging purposes
     GUM_CONS_CPY(IndexedTree);
 
@@ -101,7 +93,7 @@ namespace gum {
 
   template < typename Key, typename Data >
   IndexedTree< Key, Data >& IndexedTree< Key, Data >::
-  operator=(const IndexedTree< Key, Data >& from) {
+                            operator=(const IndexedTree< Key, Data >& from) {
     // avoid self assignment
     if (this != &from) {
       // for debugging purposes
@@ -150,7 +142,7 @@ namespace gum {
 
   template < typename Key, typename Data >
   void IndexedTree< Key, Data >::insertNode(const std::vector< Key >& index,
-                                            const Data* theData) {
+                                            const Data*               theData) {
     // parse the tree until we are on the proper index. Then, insert the new
     // node.
     // current_node is a pointer on the node of the tree corresponding to
@@ -158,7 +150,7 @@ namespace gum {
     // i in vector index. When i+2 < index.size(), we need go down into the tree
     // structure before we can insert the new node
     IndexedTree< Key, Data >* current_node = this;
-    unsigned int i;
+    unsigned int              i;
 
     for (i = 0; i + 1 < index.size(); ++i) {
       // if the node that should be on the path between the root of the tree and
@@ -202,7 +194,7 @@ namespace gum {
 
   template < typename Key, typename Data >
   void IndexedTree< Key, Data >::insertNode(const std::vector< Key >& index,
-                                            const Data& theData) {
+                                            const Data&               theData) {
     // parse the tree until we are on the proper index. Then, insert the new
     // node.
     // current_node is a pointer on the node of the tree corresponding to
@@ -210,7 +202,7 @@ namespace gum {
     // i in vector index. When i+2 < index.size(), we need go down into the tree
     // structure before we can insert the new node
     IndexedTree< Key, Data >* current_node = this;
-    unsigned int i;
+    unsigned int              i;
 
     for (i = 0; i + 1 < index.size(); ++i) {
       // if the node that should be on the path between the root of the tree and
@@ -254,7 +246,7 @@ namespace gum {
 
   template < typename Key, typename Data >
   void IndexedTree< Key, Data >::setNode(const std::vector< Key >& index,
-                                         Data* theData) {
+                                         Data*                     theData) {
     // parse the tree until we are on the proper index. Then, insert the new
     // node.
     // current_node is a pointer on the node of the tree corresponding to
@@ -262,7 +254,7 @@ namespace gum {
     // i in vector index. When i+2 < index.size(), we need go down into the tree
     // structure before we can insert the new node
     IndexedTree< Key, Data >* current_node = this;
-    unsigned int i;
+    unsigned int              i;
 
     for (i = 0; i + 1 < index.size(); ++i) {
       // if the node that should be on the path between the root of the tree and
@@ -310,7 +302,7 @@ namespace gum {
 
   template < typename Key, typename Data >
   void IndexedTree< Key, Data >::setNode(const std::vector< Key >& index,
-                                         const Data& theData) {
+                                         const Data&               theData) {
     // parse the tree until we are on the proper index. Then, insert the new
     // node.
     // current_node is a pointer on the node of the tree corresponding to
@@ -318,7 +310,7 @@ namespace gum {
     // i in vector index. When i+2 < index.size(), we need go down into the tree
     // structure before we can insert the new node
     IndexedTree< Key, Data >* current_node = this;
-    unsigned int i;
+    unsigned int              i;
 
     for (i = 0; i + 1 < index.size(); ++i) {
       // if the node that should be on the path between the root of the tree and
@@ -366,16 +358,14 @@ namespace gum {
 
   template < typename Key, typename Data >
   INLINE Data&
-  IndexedTree< Key, Data >::getData(const std::vector< Key >& index) const {
+         IndexedTree< Key, Data >::getData(const std::vector< Key >& index) const {
     IndexedTree< Key, Data >* current_node =
       const_cast< IndexedTree< Key, Data >* >(this);
 
     for (unsigned int i = 0; i < index.size(); ++i)
       current_node = current_node->children[index[i]];
 
-    if (data == 0) {
-      GUM_ERROR(NotFound, "the datum could not be found");
-    }
+    if (data == 0) { GUM_ERROR(NotFound, "the datum could not be found"); }
 
     return *(current_node->data);
   }
@@ -384,7 +374,7 @@ namespace gum {
 
   template < typename Key, typename Data >
   INLINE IndexedTree< Key, Data >&
-  IndexedTree< Key, Data >::getNode(const std::vector< Key >& index) const {
+         IndexedTree< Key, Data >::getNode(const std::vector< Key >& index) const {
     IndexedTree< Key, Data >* current_node =
       const_cast< IndexedTree< Key, Data >* >(this);
 

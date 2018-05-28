@@ -36,7 +36,8 @@
 namespace gum {
 
   /**
-   * @class TreeOperator treeOperator.h <agrum/multidim/patterns/treeOperator.h>
+   * @class TreeOperator
+   * @headerfile treeOperator.h <agrum/multidim/patterns/treeOperator.h>
    * @ingroup multidim_group
    *
    * @brief Class used to perform Decision Tree Operation in the FMDP Framework
@@ -104,13 +105,13 @@ namespace gum {
     const COMBINEOPERATOR< GUM_SCALAR > __combine;
 
     HashTable< const DiscreteVariable*, Idx > __context;
-    NodeId __curDT1Leaf;
+    NodeId                                    __curDT1Leaf;
   };
 
   extern template class TreeOperator< double, std::plus >;
 
-}  // namespace gum
+}   // namespace gum
 
 #include <agrum/multidim/utils/FunctionGraphUtilities/operators/treeOperator_tpl.h>
 
-#endif  // GUM_OPERATOR_H
+#endif   // GUM_OPERATOR_H

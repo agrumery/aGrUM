@@ -258,8 +258,8 @@ namespace gum {
                              const Instantiation&                   mask);
 
     /**
-    * @brief Returns the implementation for this object (may be *this).
-    */
+     * @brief Returns the implementation for this object (may be *this).
+     */
     virtual const MultiDimImplementation< GUM_SCALAR >* content() const = 0;
 
     /**
@@ -271,14 +271,14 @@ namespace gum {
      * @brief In order to insure the dereference for decorators, we need to
      * virtualize the access to master pointer.
      * @return Returns the ref to content as MultiDimAdressable&
-    */
+     */
     virtual MultiDimAdressable& getMasterRef();
 
     /**
      * @brief In order to insure the dereference for decorators, we need to
      * virtualize the access to master pointer.
      * @return Returns the master of this MultiDimAdressable.
-    */
+     */
     virtual const MultiDimAdressable& getMasterRef() const;
 
 
@@ -354,8 +354,8 @@ namespace gum {
      * @param base the initial value
      */
     virtual GUM_SCALAR
-    reduce(std::function< GUM_SCALAR(GUM_SCALAR, GUM_SCALAR) > f,
-           GUM_SCALAR base) const;
+      reduce(std::function< GUM_SCALAR(GUM_SCALAR, GUM_SCALAR) > f,
+             GUM_SCALAR                                          base) const;
 
 
     /// @}

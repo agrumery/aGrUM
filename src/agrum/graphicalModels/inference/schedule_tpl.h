@@ -24,7 +24,7 @@
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/agrum.h>
+#  include <agrum/agrum.h>
 
 namespace gum {
 
@@ -37,12 +37,11 @@ namespace gum {
 
   /// copy constructor
   template < typename GUM_SCALAR >
-  Schedule< GUM_SCALAR >::Schedule(const Schedule< GUM_SCALAR >& from)
-      : __dag(from.__dag)
-      , __operation2node(from.__operation2node)
-      , __created_multidims(from.__created_multidims)
-      , __operations_with_wrong_parents(from.__operations_with_wrong_parents)
-      , __operations_available(from.__operations_available) {
+  Schedule< GUM_SCALAR >::Schedule(const Schedule< GUM_SCALAR >& from) :
+      __dag(from.__dag), __operation2node(from.__operation2node),
+      __created_multidims(from.__created_multidims),
+      __operations_with_wrong_parents(from.__operations_with_wrong_parents),
+      __operations_available(from.__operations_available) {
     // for debugging purposes
     GUM_CONS_CPY(Schedule);
 
@@ -109,7 +108,7 @@ namespace gum {
   /// inserts an operation to be scheduled
   template < typename GUM_SCALAR >
   NodeId
-  Schedule< GUM_SCALAR >::insert(const ScheduleOperation< GUM_SCALAR >& op) {
+    Schedule< GUM_SCALAR >::insert(const ScheduleOperation< GUM_SCALAR >& op) {
     // create a copy of the operation
     ScheduleOperation< GUM_SCALAR >* operation = op.newFactory();
 
@@ -187,7 +186,7 @@ namespace gum {
     // parse all the nodes whose parents sets are incorrect
 
     auto localWrongs =
-      __operations_with_wrong_parents;  // complete copy of NodeSet
+      __operations_with_wrong_parents;   // complete copy of NodeSet
 
     for (const auto wrong : localWrongs) {
       // get the arguments passed to wrong and check that those that are
@@ -218,9 +217,7 @@ namespace gum {
           }
 
         // check that there is no parent
-        if (!nb_parents) {
-          __operations_available.insert(wrong);
-        }
+        if (!nb_parents) { __operations_available.insert(wrong); }
 
         __operations_with_wrong_parents.erase(wrong);
       }
@@ -309,9 +306,7 @@ namespace gum {
            iter = ops_after.begin();
          iter != ops_after.end();
          ++iter) {
-      if (**iter != op_to_force) {
-        forceBefore(op_to_force, **iter);
-      }
+      if (**iter != op_to_force) { forceBefore(op_to_force, **iter); }
     }
   }
 
@@ -325,7 +320,7 @@ namespace gum {
   /// returns the set of operations involving a given multidim table
   template < typename GUM_SCALAR >
   INLINE const NodeSet&
-  Schedule< GUM_SCALAR >::operationsInvolving(MultiDimId table_id) const {
+               Schedule< GUM_SCALAR >::operationsInvolving(MultiDimId table_id) const {
     return *(__multidim2operations[table_id]);
   }
 
@@ -341,14 +336,14 @@ namespace gum {
   /// returns the scheduleOperation corresponding to an id in the DAG
   template < typename GUM_SCALAR >
   INLINE const ScheduleOperation< GUM_SCALAR >&
-  Schedule< GUM_SCALAR >::operation(NodeId node_id) const {
+               Schedule< GUM_SCALAR >::operation(NodeId node_id) const {
     return *(__node2operation[node_id]);
   }
 
   /// returns the id associated to a given operation
   template < typename GUM_SCALAR >
-  INLINE NodeId
-  Schedule< GUM_SCALAR >::nodeId(const ScheduleOperation< GUM_SCALAR >& op) const {
+  INLINE NodeId Schedule< GUM_SCALAR >::nodeId(
+    const ScheduleOperation< GUM_SCALAR >& op) const {
     return __operation2node[op.id()];
   }
 
@@ -410,7 +405,7 @@ namespace gum {
   /// executes a given operation
   template < typename GUM_SCALAR >
   INLINE void
-  Schedule< GUM_SCALAR >::execute(const ScheduleOperation< GUM_SCALAR >& op) {
+    Schedule< GUM_SCALAR >::execute(const ScheduleOperation< GUM_SCALAR >& op) {
     execute(__operation2node[op.id()]);
   }
 
@@ -424,22 +419,22 @@ namespace gum {
   /** @bried returns an estimation of the number of elementary operations needed
    * to perform a given ScheduleOperation */
   template < typename GUM_SCALAR >
-  INLINE float
-  Schedule< GUM_SCALAR >::nbOperations(ScheduleOperation< GUM_SCALAR >& op) const {
+  INLINE float Schedule< GUM_SCALAR >::nbOperations(
+    ScheduleOperation< GUM_SCALAR >& op) const {
     return op.nbOperations();
   }
 
   /// returns the memory consumption used during the execution of an operation
   template < typename GUM_SCALAR >
   INLINE std::pair< long, long >
-  Schedule< GUM_SCALAR >::memoryUsage(NodeId id) const {
+         Schedule< GUM_SCALAR >::memoryUsage(NodeId id) const {
     return __node2operation[id]->memoryUsage();
   }
 
   /// returns the memory consumption used during the execution of an operation
   template < typename GUM_SCALAR >
-  INLINE std::pair< long, long >
-  Schedule< GUM_SCALAR >::memoryUsage(ScheduleOperation< GUM_SCALAR >& op) const {
+  INLINE std::pair< long, long > Schedule< GUM_SCALAR >::memoryUsage(
+    ScheduleOperation< GUM_SCALAR >& op) const {
     return op.memoryUsage();
   }
 

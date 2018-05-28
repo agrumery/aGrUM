@@ -30,15 +30,15 @@
 
 
 #ifndef M_LOG2E
-#define M_LOG2E 1.4426950408889634074
+#  define M_LOG2E 1.4426950408889634074
 #endif
 
 #ifndef M_PI
-#define M_PI 3.14159265358979323846
+#  define M_PI 3.14159265358979323846
 #endif
 
-#ifndef GUM_LOG_SQRT_2PI  // std::log ( std::sqrt ( 2pi ) )
-#define GUM_LOG_SQRT_2PI .91893853320467274177
+#ifndef GUM_LOG_SQRT_2PI   // std::log ( std::sqrt ( 2pi ) )
+#  define GUM_LOG_SQRT_2PI .91893853320467274177
 #endif
 
 #endif /* GUM_MATH_H */

@@ -20,14 +20,14 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/BN/io/net/netReader.h>
+#  include <agrum/BN/io/net/netReader.h>
 
 namespace gum {
 
   template < typename GUM_SCALAR >
   NetReader< GUM_SCALAR >::NetReader(BayesNet< GUM_SCALAR >* bn,
-                                     const std::string&      filename)
-      : BNReader< GUM_SCALAR >(bn, filename) {
+                                     const std::string&      filename) :
+      BNReader< GUM_SCALAR >(bn, filename) {
     GUM_CONSTRUCTOR(NetReader);
     __bn = bn;
     __streamName = filename;
@@ -41,9 +41,7 @@ namespace gum {
       __scanner = new net::Scanner(__streamName.c_str());
       __parser = new net::Parser(__scanner);
       __parser->setFactory((IBayesNetFactory*)__factory);
-    } catch (IOError& e) {
-      __ioerror = true;
-    }
+    } catch (IOError& e) { __ioerror = true; }
   }
 
   template < typename GUM_SCALAR >
@@ -62,9 +60,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE net::Scanner& NetReader< GUM_SCALAR >::scanner() {
-    if (__ioerror) {
-      GUM_ERROR(gum::IOError, "No such file " + streamName());
-    }
+    if (__ioerror) { GUM_ERROR(gum::IOError, "No such file " + streamName()); }
 
     return *__scanner;
   }
@@ -87,9 +83,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Size NetReader< GUM_SCALAR >::proceed() {
-    if (__ioerror) {
-      GUM_ERROR(gum::IOError, "No such file " + streamName());
-    }
+    if (__ioerror) { GUM_ERROR(gum::IOError, "No such file " + streamName()); }
 
     if (!__parseDone) {
       try {
@@ -154,7 +148,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void
-  NetReader< GUM_SCALAR >::showElegantErrorsAndWarnings(std::ostream& o) {
+    NetReader< GUM_SCALAR >::showElegantErrorsAndWarnings(std::ostream& o) {
     if (__parseDone)
       __parser->errors().elegantErrorsAndWarnings(o);
     else {
@@ -191,6 +185,6 @@ namespace gum {
   }
 
   // @}
-}  // namespace
+}   // namespace gum
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS

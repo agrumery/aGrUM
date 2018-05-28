@@ -28,7 +28,7 @@
 
 /// include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
-#include <agrum/learning/constraints/structuralConstraintMandatoryArcs_inl.h>
+#  include <agrum/learning/constraints/structuralConstraintMandatoryArcs_inl.h>
 #endif /* GUM_NO_INLINE */
 
 namespace gum {
@@ -49,16 +49,16 @@ namespace gum {
 
     /// copy constructor
     StructuralConstraintMandatoryArcs::StructuralConstraintMandatoryArcs(
-      const StructuralConstraintMandatoryArcs& from)
-        : _MandatoryArcs__mandatory_arcs(from._MandatoryArcs__mandatory_arcs) {
+      const StructuralConstraintMandatoryArcs& from) :
+        _MandatoryArcs__mandatory_arcs(from._MandatoryArcs__mandatory_arcs) {
       GUM_CONS_CPY(StructuralConstraintMandatoryArcs);
     }
 
     /// move constructor
     StructuralConstraintMandatoryArcs::StructuralConstraintMandatoryArcs(
-      StructuralConstraintMandatoryArcs&& from)
-        : _MandatoryArcs__mandatory_arcs(
-            std::move(from._MandatoryArcs__mandatory_arcs)) {
+      StructuralConstraintMandatoryArcs&& from) :
+        _MandatoryArcs__mandatory_arcs(
+          std::move(from._MandatoryArcs__mandatory_arcs)) {
       GUM_CONS_MOV(StructuralConstraintMandatoryArcs);
     }
 
@@ -69,7 +69,7 @@ namespace gum {
 
     /// copy operator
     StructuralConstraintMandatoryArcs& StructuralConstraintMandatoryArcs::
-    operator=(const StructuralConstraintMandatoryArcs& from) {
+                                       operator=(const StructuralConstraintMandatoryArcs& from) {
       if (this != &from) {
         _MandatoryArcs__mandatory_arcs = from._MandatoryArcs__mandatory_arcs;
       }
@@ -78,7 +78,7 @@ namespace gum {
 
     /// move operator
     StructuralConstraintMandatoryArcs& StructuralConstraintMandatoryArcs::
-    operator=(StructuralConstraintMandatoryArcs&& from) {
+                                       operator=(StructuralConstraintMandatoryArcs&& from) {
       if (this != &from) {
         _MandatoryArcs__mandatory_arcs =
           std::move(from._MandatoryArcs__mandatory_arcs);

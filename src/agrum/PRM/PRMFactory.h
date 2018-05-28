@@ -312,7 +312,7 @@ namespace gum {
        * discrete type.
        */
       virtual void
-      addRangeType(const std::string& name, long minVal, long maxVal) override;
+        addRangeType(const std::string& name, long minVal, long maxVal) override;
       /// @}
 
       ///@name several checks for parsers
@@ -543,7 +543,7 @@ namespace gum {
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
       virtual void
-      setRawCPFByFloatLines(const std::vector< float >& array) override;
+        setRawCPFByFloatLines(const std::vector< float >& array) override;
 
       /**
        * @brief Gives the factory the CPF in its raw form.
@@ -566,7 +566,7 @@ namespace gum {
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
       virtual void
-      setRawCPFByFloatColumns(const std::vector< float >& array) override;
+        setRawCPFByFloatColumns(const std::vector< float >& array) override;
 
       /**
        * @brief  Gives the factory the CPF in its raw form use gum::Formula.
@@ -589,7 +589,7 @@ namespace gum {
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
       virtual void
-      setRawCPFByColumns(const std::vector< std::string >& array) override;
+        setRawCPFByColumns(const std::vector< std::string >& array) override;
 
       /**
        * @brief Gives the factory the CPF in its raw form using gum::Formula.
@@ -611,7 +611,7 @@ namespace gum {
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
       virtual void
-      setRawCPFByLines(const std::vector< std::string >& array) override;
+        setRawCPFByLines(const std::vector< std::string >& array) override;
 
       /**
        * @brief Fills the CPF using a rule.
@@ -738,11 +738,11 @@ namespace gum {
        *                            invalid.
        */
       virtual void
-      addNoisyOrCompound(const std::string&                name,
-                         const std::vector< std::string >& chains,
-                         const std::vector< float >&       numbers,
-                         float                             leak,
-                         const std::vector< std::string >& label) override;
+        addNoisyOrCompound(const std::string&                name,
+                           const std::vector< std::string >& chains,
+                           const std::vector< float >&       numbers,
+                           float                             leak,
+                           const std::vector< std::string >& label) override;
       /// @}
       // ======================================================================
       /// @name PRMReferenceSlot<GUM_SCALAR> construction methods.
@@ -784,8 +784,8 @@ namespace gum {
       /**
        * Add an instance with params as values of type's parameters.
        */
-      void addInstance(const std::string& type,
-                       const std::string& name,
+      void addInstance(const std::string&                      type,
+                       const std::string&                      name,
                        const HashTable< std::string, double >& params) override;
 
       /**
@@ -903,7 +903,7 @@ namespace gum {
       /// @throw NotFound If no class matching the name is found.
       /// @see PRMFactory::__retrieveType
       PRMInterface< GUM_SCALAR >*
-      __retrieveInterface(const std::string& name) const;
+        __retrieveInterface(const std::string& name) const;
 
       /// @}
       // ======================================================================
@@ -919,8 +919,8 @@ namespace gum {
       /// PRMSlotChain<GUM_SCALAR> could be built.
       ///
       PRMSlotChain< GUM_SCALAR >*
-      __buildSlotChain(PRMClassElementContainer< GUM_SCALAR >* start,
-                       const std::string&                      name);
+        __buildSlotChain(PRMClassElementContainer< GUM_SCALAR >* start,
+                         const std::string&                      name);
 
       /// @brief Retrieve inputs for an PRMAggregate.
       ///
@@ -1025,9 +1025,9 @@ namespace gum {
       /// @return Returns the name of the corresponding
       /// PRMSlotChain<GUM_SCALAR>.
       std::string
-      __retrieveInstanceSequence(PRMInstance< GUM_SCALAR >*              inst,
-                                 Sequence< PRMInstance< GUM_SCALAR >* >& seq,
-                                 PRMSlotChain< GUM_SCALAR >*             sc);
+        __retrieveInstanceSequence(PRMInstance< GUM_SCALAR >*              inst,
+                                   Sequence< PRMInstance< GUM_SCALAR >* >& seq,
+                                   PRMSlotChain< GUM_SCALAR >*             sc);
 
       /// @}
       // ======================================================================

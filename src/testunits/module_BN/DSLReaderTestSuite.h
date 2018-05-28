@@ -280,8 +280,8 @@ namespace gum_tests {
       TS_ASSERT(idMap.exists("HYPOVOLEMIA"));
       TS_ASSERT(idMap.exists("LVFAILURE"));
 
-      if (idMap.exists("LVEDVOLUME") && idMap.exists("HYPOVOLEMIA") &&
-          idMap.exists("LVFAILURE")) {
+      if (idMap.exists("LVEDVOLUME") && idMap.exists("HYPOVOLEMIA")
+          && idMap.exists("LVFAILURE")) {
         const gum::DiscreteVariable& lvedvolume =
           net->variable(idMap["LVEDVOLUME"]);
         const gum::DiscreteVariable& hypovolemia =
@@ -471,4 +471,4 @@ namespace gum_tests {
       if (net) delete net;
     }
   };
-}
+}   // namespace gum_tests

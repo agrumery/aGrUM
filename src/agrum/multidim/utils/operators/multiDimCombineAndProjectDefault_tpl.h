@@ -26,11 +26,11 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <limits>
+#  include <limits>
 
-#include <agrum/agrum.h>
+#  include <agrum/agrum.h>
 
-#include <agrum/multidim/utils/operators/multiDimCombineAndProjectDefault.h>
+#  include <agrum/multidim/utils/operators/multiDimCombineAndProjectDefault.h>
 
 namespace gum {
 
@@ -41,10 +41,10 @@ namespace gum {
       TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&,
                                       const TABLE< GUM_SCALAR >&),
       TABLE< GUM_SCALAR >* (*project)(const TABLE< GUM_SCALAR >&,
-                                      const Set< const DiscreteVariable* >&))
-      : MultiDimCombineAndProject< GUM_SCALAR, TABLE >()
-      , __combination(new MultiDimCombinationDefault< GUM_SCALAR, TABLE >(combine))
-      , __projection(new MultiDimProjection< GUM_SCALAR, TABLE >(project)) {
+                                      const Set< const DiscreteVariable* >&)) :
+      MultiDimCombineAndProject< GUM_SCALAR, TABLE >(),
+      __combination(new MultiDimCombinationDefault< GUM_SCALAR, TABLE >(combine)),
+      __projection(new MultiDimProjection< GUM_SCALAR, TABLE >(project)) {
     // for debugging purposes
     GUM_CONSTRUCTOR(MultiDimCombineAndProjectDefault);
   }
@@ -53,10 +53,10 @@ namespace gum {
   template < typename GUM_SCALAR, template < typename > class TABLE >
   MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::
     MultiDimCombineAndProjectDefault(
-      const MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >& from)
-      : MultiDimCombineAndProject< GUM_SCALAR, TABLE >()
-      , __combination(from.__combination->newFactory())
-      , __projection(from.__projection->newFactory()) {
+      const MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >& from) :
+      MultiDimCombineAndProject< GUM_SCALAR, TABLE >(),
+      __combination(from.__combination->newFactory()),
+      __projection(from.__projection->newFactory()) {
     // for debugging purposes
     GUM_CONS_CPY(MultiDimCombineAndProjectDefault);
   }
@@ -74,16 +74,16 @@ namespace gum {
   // virtual constructor
   template < typename GUM_SCALAR, template < typename > class TABLE >
   MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >*
-  MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::newFactory() const {
+    MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::newFactory() const {
     return new MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >(*this);
   }
 
   // combine and project
   template < typename GUM_SCALAR, template < typename > class TABLE >
   Set< const TABLE< GUM_SCALAR >* >
-  MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::combineAndProject(
-    Set< const TABLE< GUM_SCALAR >* > table_set,
-    Set< const DiscreteVariable* >    del_vars) {
+    MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::combineAndProject(
+      Set< const TABLE< GUM_SCALAR >* > table_set,
+      Set< const DiscreteVariable* >    del_vars) {
     // when we remove a variable, we need to combine all the tables containing
     // this
     // variable in order to produce a new unique table containing this variable.
@@ -161,9 +161,7 @@ namespace gum {
             for (unsigned int j = 0; j < vars.size(); ++j) {
               try {
                 ++iter_vars[vars[j]];
-              } catch (const NotFound&) {
-                iter_vars.insert(vars[j], 1);
-              }
+              } catch (const NotFound&) { iter_vars.insert(vars[j], 1); }
             }
           }
         }
@@ -180,7 +178,7 @@ namespace gum {
            const_iterator_safe iter = tables_vars_per_var.beginSafe();
          iter != tables_vars_per_var.endSafe();
          ++iter) {
-      float size = 1.0f;
+      float                                                     size = 1.0f;
       const HashTable< const DiscreteVariable*, unsigned int >& vars = iter.val();
 
       if (vars.size()) {
@@ -316,8 +314,8 @@ namespace gum {
 
           if (mult_size != 1) {
             product_size.setPriority(marginal_vars[i],
-                                     product_size.priority(marginal_vars[i]) *
-                                       mult_size);
+                                     product_size.priority(marginal_vars[i])
+                                       * mult_size);
           }
         }
       }
@@ -338,9 +336,9 @@ namespace gum {
   // changes the function used for combining two TABLES
   template < typename GUM_SCALAR, template < typename > class TABLE >
   INLINE void
-  MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setCombineFunction(
-    TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&,
-                                    const TABLE< GUM_SCALAR >&)) {
+    MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setCombineFunction(
+      TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&,
+                                      const TABLE< GUM_SCALAR >&)) {
     __combination->setCombineFunction(combine);
   }
 
@@ -355,8 +353,8 @@ namespace gum {
   // changes the class that performs the combinations
   template < typename GUM_SCALAR, template < typename > class TABLE >
   INLINE void
-  MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setCombinationClass(
-    const MultiDimCombination< GUM_SCALAR, TABLE >& comb_class) {
+    MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setCombinationClass(
+      const MultiDimCombination< GUM_SCALAR, TABLE >& comb_class) {
     delete __combination;
     __combination = comb_class.newFactory();
   }
@@ -364,9 +362,9 @@ namespace gum {
   // changes the function used for projecting TABLES
   template < typename GUM_SCALAR, template < typename > class TABLE >
   INLINE void
-  MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setProjectFunction(
-    TABLE< GUM_SCALAR >* (*proj)(const TABLE< GUM_SCALAR >&,
-                                 const Set< const DiscreteVariable* >&)) {
+    MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setProjectFunction(
+      TABLE< GUM_SCALAR >* (*proj)(const TABLE< GUM_SCALAR >&,
+                                   const Set< const DiscreteVariable* >&)) {
     __projection->setProjectFunction(proj);
   }
 
@@ -381,8 +379,8 @@ namespace gum {
   // changes the class that performs the projections
   template < typename GUM_SCALAR, template < typename > class TABLE >
   INLINE void
-  MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setProjectionClass(
-    const MultiDimProjection< GUM_SCALAR, TABLE >& proj_class) {
+    MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setProjectionClass(
+      const MultiDimProjection< GUM_SCALAR, TABLE >& proj_class) {
     delete __projection;
     __projection = proj_class.newFactory();
   }
@@ -472,9 +470,7 @@ namespace gum {
             for (unsigned int j = 0; j < vars.size(); ++j) {
               try {
                 ++iter_vars[vars[j]];
-              } catch (const NotFound&) {
-                iter_vars.insert(vars[j], 1);
-              }
+              } catch (const NotFound&) { iter_vars.insert(vars[j], 1); }
             }
           }
         }
@@ -491,7 +487,7 @@ namespace gum {
            const_iterator_safe iter = tables_vars_per_var.beginSafe();
          iter != tables_vars_per_var.endSafe();
          ++iter) {
-      float size = 1.0f;
+      float                                                     size = 1.0f;
       const HashTable< const DiscreteVariable*, unsigned int >& vars = iter.val();
 
       if (vars.size()) {
@@ -556,9 +552,7 @@ namespace gum {
                  iter2 = vars.beginSafe();
                iter2 != vars.endSafe();
                ++iter2) {
-            if (!joint->exists(*iter2)) {
-              joint->insert(*iter2);
-            }
+            if (!joint->exists(*iter2)) { joint->insert(*iter2); }
           }
         }
 
@@ -701,9 +695,9 @@ namespace gum {
   // projections
   template < typename GUM_SCALAR, template < typename > class TABLE >
   std::pair< long, long >
-  MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::memoryUsage(
-    const Set< const Sequence< const DiscreteVariable* >* >& table_set,
-    Set< const DiscreteVariable* >                           del_vars) const {
+    MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::memoryUsage(
+      const Set< const Sequence< const DiscreteVariable* >* >& table_set,
+      Set< const DiscreteVariable* >                           del_vars) const {
     // when we remove a variable, we need to combine all the tables containing
     // this
     // variable in order to produce a new unique table containing this variable.
@@ -783,9 +777,7 @@ namespace gum {
             for (unsigned int j = 0; j < vars.size(); ++j) {
               try {
                 ++iter_vars[vars[j]];
-              } catch (const NotFound&) {
-                iter_vars.insert(vars[j], 1);
-              }
+              } catch (const NotFound&) { iter_vars.insert(vars[j], 1); }
             }
           }
         }
@@ -802,7 +794,7 @@ namespace gum {
            const_iterator_safe iter = tables_vars_per_var.beginSafe();
          iter != tables_vars_per_var.endSafe();
          ++iter) {
-      float size = 1.0f;
+      float                                                     size = 1.0f;
       const HashTable< const DiscreteVariable*, unsigned int >& vars = iter.val();
 
       if (vars.size()) {
@@ -869,9 +861,7 @@ namespace gum {
                  iter2 = vars.beginSafe();
                iter2 != vars.endSafe();
                ++iter2) {
-            if (!joint->exists(*iter2)) {
-              joint->insert(*iter2);
-            }
+            if (!joint->exists(*iter2)) { joint->insert(*iter2); }
           }
         }
 
@@ -881,10 +871,10 @@ namespace gum {
         std::pair< long, long > comb_memory =
           __combination->memoryUsage(tables_to_combine);
 
-        if ((std::numeric_limits< long >::max() - current_memory <
-             comb_memory.first) ||
-            (std::numeric_limits< long >::max() - current_memory <
-             comb_memory.second)) {
+        if ((std::numeric_limits< long >::max() - current_memory
+             < comb_memory.first)
+            || (std::numeric_limits< long >::max() - current_memory
+                < comb_memory.second)) {
           GUM_ERROR(OutOfBounds, "memory usage out of long int range");
         }
 
@@ -903,10 +893,9 @@ namespace gum {
       std::pair< long, long > comb_memory =
         __projection->memoryUsage(*joint, del_one_var);
 
-      if ((std::numeric_limits< long >::max() - current_memory <
-           comb_memory.first) ||
-          (std::numeric_limits< long >::max() - current_memory <
-           comb_memory.second)) {
+      if ((std::numeric_limits< long >::max() - current_memory < comb_memory.first)
+          || (std::numeric_limits< long >::max() - current_memory
+              < comb_memory.second)) {
         GUM_ERROR(OutOfBounds, "memory usage out of long int range");
       }
 
@@ -1034,9 +1023,9 @@ namespace gum {
   // projections
   template < typename GUM_SCALAR, template < typename > class TABLE >
   std::pair< long, long >
-  MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::memoryUsage(
-    const Set< const TABLE< GUM_SCALAR >* >& set,
-    const Set< const DiscreteVariable* >&    del_vars) const {
+    MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::memoryUsage(
+      const Set< const TABLE< GUM_SCALAR >* >& set,
+      const Set< const DiscreteVariable* >&    del_vars) const {
     // create the set of sets of discrete variables involved in the tables
     Set< const Sequence< const DiscreteVariable* >* > var_set(set.size());
 

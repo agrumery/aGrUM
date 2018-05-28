@@ -25,4 +25,3 @@
  */
 
 #include <agrum/learning/database/DBInitializerFromCSV.h>
-

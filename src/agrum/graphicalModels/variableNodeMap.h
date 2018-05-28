@@ -150,7 +150,7 @@ namespace gum {
     /// @{
 
     /// @throw NotFound if no such name exists in the graph.
-    NodeId idFromName(const std::string& name) const;
+    NodeId                  idFromName(const std::string& name) const;
     const DiscreteVariable& variableFromName(const std::string& name) const;
 
     /// @}
@@ -173,7 +173,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/graphicalModels/variableNodeMap_inl.h>
+#  include <agrum/graphicalModels/variableNodeMap_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_VARIABLE_NODE_MAP_H*/

@@ -116,10 +116,10 @@ namespace gum {
      * format.
      */
     std::string
-    __variableDefinition(const NodeId&                         varNodeId,
-                         const InfluenceDiagram< GUM_SCALAR >& infdiag);
+      __variableDefinition(const NodeId&                         varNodeId,
+                           const InfluenceDiagram< GUM_SCALAR >& infdiag);
   };
 } /* namespace gum */
 
 #include <agrum/ID/io/BIFXML/BIFXMLIDWriter_tpl.h>
-#endif  // GUM_BIF_XML_ID_WRITER_H
+#endif   // GUM_BIF_XML_ID_WRITER_H

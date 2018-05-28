@@ -261,7 +261,7 @@ namespace gum {
      * @return Returns the MultiDimContainer and their respective Instantiation.
      */
     const HashTable< const MultiDimContainer< GUM_SCALAR >*, Instantiation* >&
-    multidims() const;
+      multidims() const;
 
     protected:
     virtual void _commitMultipleChanges() override;

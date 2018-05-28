@@ -1,23 +1,23 @@
 
 /***************************************************************************
-*   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 
 #include <iostream>
@@ -37,7 +37,6 @@
 
 namespace gum_tests {
   class DocumentationTestSuite : public CxxTest::TestSuite {
-
     public:
     void testBayesNet() {
       try {
@@ -79,51 +78,49 @@ namespace gum_tests {
           .fillWith({
             // True | False  == hasTuberculosis
             0.05f,
-            0.01f,  // visitToAsia == True
+            0.01f,   // visitToAsia == True
             0.95f,
-            0.99f  // visitToAsia == False
+            0.99f   // visitToAsia == False
           });
         bn.cpt(hasLungCancer)
           .fillWith({
             // True | False  == hasLungCancer
             0.10f,
-            0.90f,  // smoker == True
+            0.90f,   // smoker == True
             0.01f,
-            0.99f  // smoker == False
+            0.99f   // smoker == False
           });
         bn.cpt(tubOrCancer)
           .fillWith({
             // True | False  == tubOrCancer
             1.00f,
-            0.00f,  // hasTuberculosis == True,  hasLungCancer == True
+            0.00f,   // hasTuberculosis == True,  hasLungCancer == True
             1.00f,
-            0.00f,  // hasTuberculosis == False, hasLungCancer == True
+            0.00f,   // hasTuberculosis == False, hasLungCancer == True
             1.00f,
-            0.00f,  // hasTuberculosis == True,  hasLungCancer == False
+            0.00f,   // hasTuberculosis == True,  hasLungCancer == False
             0.00f,
-            1.00f  // hasTuberculosis == False, hasLungCancer == False
+            1.00f   // hasTuberculosis == False, hasLungCancer == False
           });
         bn.cpt(xray).fillWith({
           // True | False  == xray
           0.98f,
-          0.02f,  // tubOrCancer == 0
+          0.02f,   // tubOrCancer == 0
           0.05f,
-          0.95f  // tubOrCancer == 1
+          0.95f   // tubOrCancer == 1
         });
         bn.cpt(dyspnea).fillWith({
           // True | False  == dyspnea
           0.90f,
-          0.10f,  // tubOrCancer == True,  hasBronchitis == True
+          0.10f,   // tubOrCancer == True,  hasBronchitis == True
           0.70f,
-          0.30f,  // tubOrCancer == False, hasBronchitis == True
+          0.30f,   // tubOrCancer == False, hasBronchitis == True
           0.80f,
-          0.20f,  // tubOrCancer == True,  hasBronchitis == False
+          0.20f,   // tubOrCancer == True,  hasBronchitis == False
           0.10f,
-          0.90f  // tubOrCancer == False, hasBronchitis == False
+          0.90f   // tubOrCancer == False, hasBronchitis == False
         });
-      } catch (gum::Exception& e) {
-        TS_FAIL(e.errorContent());
-      }
+      } catch (gum::Exception& e) { TS_FAIL(e.errorContent()); }
     }
 
     void testBayesNetFactory() {
@@ -237,11 +234,11 @@ namespace gum_tests {
           {0.00f,
            0.00f,
            0.00f,
-           1.00f,  // False
+           1.00f,   // False
            1.00f,
            1.00f,
            1.00f,
-           0.00f};  // True
+           0.00f};   // True
         factory.rawConditionalTable(variables, values);
         factory.endRawProbabilityDeclaration();
 
@@ -261,9 +258,7 @@ namespace gum_tests {
         factory.setVariableValues(values);
         factory.endFactorizedEntry();
         factory.endFactorizedProbabilityDeclaration();
-      } catch (gum::Exception& e) {
-        TS_FAIL(e.errorContent());
-      }
+      } catch (gum::Exception& e) { TS_FAIL(e.errorContent()); }
     }
 
     void testInference() {
@@ -319,9 +314,7 @@ namespace gum_tests {
         TS_FAIL("Inference should not be correct with a undefined CPT");
       } catch (gum::IncompatibleEvidence& e) {
         // OK to be here : CPT of Has Bronchitis has not been defined.
-      } catch (gum::Exception& e) {
-        TS_FAIL(e.errorContent());
-      }
+      } catch (gum::Exception& e) { TS_FAIL(e.errorContent()); }
 
       asia.cpt("Has Bronchitis").fillWith({0.7f, 0.3f, 0.85f, 0.15f});
 
@@ -341,9 +334,7 @@ namespace gum_tests {
 
         // To prevent warning for unused variable
         TS_ASSERT_EQUALS(updated_marginal.domainSize(), gum::Size(2));
-      } catch (gum::Exception& e) {
-        TS_FAIL(e.errorContent());
-      }
+      } catch (gum::Exception& e) { TS_FAIL(e.errorContent()); }
     }
 
     void testSerialization() {
@@ -354,13 +345,9 @@ namespace gum_tests {
         auto        reader = gum::BIFReader< double >(&asia, file);
         try {
           reader.proceed();
-        } catch (gum::IOError& e) {
-          TS_FAIL(e.errorContent());
-        }
+        } catch (gum::IOError& e) { TS_FAIL(e.errorContent()); }
 
-      } catch (gum::Exception& e) {
-        TS_FAIL(e.errorContent());
-      }
+      } catch (gum::Exception& e) { TS_FAIL(e.errorContent()); }
     }
 
     void testDeserialization() {
@@ -410,7 +397,7 @@ namespace gum_tests {
         // One implementation of the gum::BNWriter class
         auto writer = gum::BIFWriter< double >();
         try {
-          std::stringstream buff;  // Don't want to write in files for this test
+          std::stringstream buff;   // Don't want to write in files for this test
           // This will print the asia BayesNet on the standard output stream
           writer.write(buff, asia);
 
@@ -420,10 +407,8 @@ namespace gum_tests {
           TS_FAIL(e.errorContent());
           // A gum::IOError will be raised if an error occured
         }
-      } catch (gum::Exception& e) {
-        TS_FAIL(e.errorContent());
-      }
+      } catch (gum::Exception& e) { TS_FAIL(e.errorContent()); }
     }
   };
 
-}  // tests
+}   // namespace gum_tests

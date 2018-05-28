@@ -21,7 +21,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // to ease parsers in IDE
-#include <agrum/variables/discreteVariable.h>
+#  include <agrum/variables/discreteVariable.h>
 
 namespace gum {
   /* =========================================================================*/
@@ -32,14 +32,14 @@ namespace gum {
 
   // Default constructor
   INLINE DiscreteVariable::DiscreteVariable(const std::string& aName,
-                                            const std::string& aDesc)
-      : Variable(aName, aDesc) {
+                                            const std::string& aDesc) :
+      Variable(aName, aDesc) {
     GUM_CONSTRUCTOR(DiscreteVariable);
   }
 
   // Copy constructor
-  INLINE DiscreteVariable::DiscreteVariable(const DiscreteVariable& aDRV)
-      : Variable(aDRV) {
+  INLINE DiscreteVariable::DiscreteVariable(const DiscreteVariable& aDRV) :
+      Variable(aDRV) {
     GUM_CONSTRUCTOR(DiscreteVariable);
   }
 
@@ -50,10 +50,8 @@ namespace gum {
 
   // Copy operator
   INLINE DiscreteVariable& DiscreteVariable::
-  operator=(const DiscreteVariable& aRV) {
-    if (&aRV != this) {
-      Variable::operator=(aRV);
-    }
+                           operator=(const DiscreteVariable& aRV) {
+    if (&aRV != this) { Variable::operator=(aRV); }
 
     return *this;
   }
@@ -80,4 +78,4 @@ namespace gum {
   }
 } /* namespace gum */
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS

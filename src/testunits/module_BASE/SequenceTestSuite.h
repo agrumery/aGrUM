@@ -1,23 +1,23 @@
 
 /***************************************************************************
-*   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
@@ -59,7 +59,7 @@ namespace gum_tests {
       TS_ASSERT(seq4.size() == 3);
 
       gum::Sequence< int, MyAlloc< int > > seq5{2, 4};
-      gum::Sequence< int > seq6(seq5);
+      gum::Sequence< int >                 seq6(seq5);
       TS_ASSERT(seq5 == seq6);
 
       seq5 = seq;
@@ -104,7 +104,7 @@ namespace gum_tests {
       TS_ASSERT(seq4.size() == 3);
 
       gum::Sequence< std::string, MyAlloc< std::string > > seq5{p[1], p[3]};
-      gum::Sequence< std::string > seq6(seq5);
+      gum::Sequence< std::string >                         seq6(seq5);
       TS_ASSERT(seq5 == seq6);
 
       seq5 = seq;
@@ -145,13 +145,13 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(
         gum::Sequence< int > seq2(seq);
-        if (seq2.toString() !=
-            "[0:1 - 1:3 - 2:5 - 3:2 - 4:4]") throw(gum::Exception("oups")););
+        if (seq2.toString()
+            != "[0:1 - 1:3 - 2:5 - 3:2 - 4:4]") throw(gum::Exception("oups")););
 
       TS_GUM_ASSERT_THROWS_NOTHING(
         gum::Sequence< int > seq3 = seq;
-        if (seq3.toString() !=
-            "[0:1 - 1:3 - 2:5 - 3:2 - 4:4]") throw(gum::Exception("oups")););
+        if (seq3.toString()
+            != "[0:1 - 1:3 - 2:5 - 3:2 - 4:4]") throw(gum::Exception("oups")););
     }
 
     void testEquality() {
@@ -384,7 +384,7 @@ namespace gum_tests {
       n = 0;
 
       for (gum::Sequence< std::string >::iterator_safe it =
-             seq.rbeginSafe();  // safe iterator needed here
+             seq.rbeginSafe();   // safe iterator needed here
            it != seq.rendSafe();
            --it)
         n++;
@@ -401,7 +401,7 @@ namespace gum_tests {
       n = 0;
 
       for (gum::Sequence< std::string >::iterator_safe it =
-             seq.beginSafe();  // safe iterator needed here
+             seq.beginSafe();   // safe iterator needed here
            it != seq.endSafe();
            ++it)
         n++;
@@ -511,13 +511,13 @@ namespace gum_tests {
 
       seq.erase(1);
       TS_ASSERT(seq.size() == 1);
-      seq.erase(seq.beginSafe());  // safe iterator needed here
+      seq.erase(seq.beginSafe());   // safe iterator needed here
       TS_ASSERT(seq.size() == 0);
     }
 
     void testInsert2() {
       gum::Sequence< std::string, MyAlloc< std::string > > seq;
-      std::string x = "1";
+      std::string                                          x = "1";
 
       seq.insert(x);
       TS_ASSERT(seq.size() == 1);
@@ -532,7 +532,7 @@ namespace gum_tests {
 
       seq.erase(x);
       TS_ASSERT(seq.size() == 1);
-      seq.erase(seq.beginSafe());  // safe iterator needed here
+      seq.erase(seq.beginSafe());   // safe iterator needed here
       TS_ASSERT(seq.size() == 0);
     }
 
@@ -547,13 +547,13 @@ namespace gum_tests {
 
       seq.erase(x);
       TS_ASSERT(seq.size() == 1);
-      seq.erase(seq.beginSafe());  // safe iterator needed here
+      seq.erase(seq.beginSafe());   // safe iterator needed here
       TS_ASSERT(seq.size() == 0);
     }
 
     void testEmplace2() {
       gum::Sequence< int, MyAlloc< int > > seq;
-      int x = 2;
+      int                                  x = 2;
 
       seq.emplace(2);
       TS_ASSERT(seq.size() == 1);
@@ -562,7 +562,7 @@ namespace gum_tests {
 
       seq.erase(x);
       TS_ASSERT(seq.size() == 1);
-      seq.erase(seq.beginSafe());  // safe iterator needed here
+      seq.erase(seq.beginSafe());   // safe iterator needed here
       TS_ASSERT(seq.size() == 0);
     }
 
@@ -653,7 +653,7 @@ namespace gum_tests {
       gum::Idx n = 0;
 
       for (auto it = seq.rbeginSafe(); it != seq.rendSafe();
-           --it) {  // safe iterator needed here
+           --it) {   // safe iterator needed here
         n *= 10;
         n += *it;
       }
@@ -670,7 +670,7 @@ namespace gum_tests {
       n = 0;
 
       for (auto it = seq.beginSafe(); it != seq.endSafe();
-           ++it) {  // safe iterator needed here
+           ++it) {   // safe iterator needed here
         n *= 10;
         n += *it;
       }
@@ -697,4 +697,4 @@ namespace gum_tests {
       TS_ASSERT_THROWS(seq2.front(), gum::NotFound);
     }
   };
-}
+}   // namespace gum_tests

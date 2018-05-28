@@ -51,9 +51,7 @@ namespace gum_tests {
           v[lvl].inner_density = 0.2f;
           v[lvl].outter_density = 0.05f;
         }
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
     }
 
     void generateLayer2(
@@ -70,9 +68,7 @@ namespace gum_tests {
           v[lvl].inner_density = 0.2f;
           v[lvl].outter_density = 0.05f;
         }
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
     }
 
     void generateLayer3(
@@ -89,13 +85,11 @@ namespace gum_tests {
           v[lvl].inner_density = 0.2f;
           v[lvl].outter_density = 0.05f;
         }
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
     }
 
     const gum::prm::PRMInstance< double >&
-    pickInstance(const gum::prm::PRMSystem< double >& sys) {
+      pickInstance(const gum::prm::PRMSystem< double >& sys) {
       gum::Sequence< const gum::prm::PRMInstance< double >* > seq;
 
       for (gum::prm::PRMSystem< double >::const_iterator iter = sys.begin();
@@ -107,7 +101,7 @@ namespace gum_tests {
     }
 
     const gum::prm::PRMAttribute< double >&
-    pickAttribute(const gum::prm::PRMInstance< double >& i) {
+      pickAttribute(const gum::prm::PRMInstance< double >& i) {
       gum::Sequence< const gum::prm::PRMAttribute< double >* > seq;
 
       for (gum::prm::PRMInstance< double >::const_iterator iter = i.begin();
@@ -145,9 +139,7 @@ namespace gum_tests {
 
         TS_ASSERT_DELTA(sum, 1.0, 1e-6);
         delete prm;
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
     }
 
     void testStructuredInference_gen2() {
@@ -177,9 +169,7 @@ namespace gum_tests {
 
         TS_ASSERT_DELTA(sum, 1.0, 1e-6);
         delete prm;
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
     }
 
     void testStructuredInference_gen3() {
@@ -209,9 +199,7 @@ namespace gum_tests {
 
         TS_ASSERT_DELTA(sum, 1.0, 1e-6);
         delete prm;
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
     }
 
     // void testFrequenceSearch_gen1() {
@@ -253,4 +241,4 @@ namespace gum_tests {
     //}
   };
 
-}  // namespace gum_tests
+}   // namespace gum_tests

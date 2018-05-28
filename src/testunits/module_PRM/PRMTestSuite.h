@@ -153,9 +153,7 @@ namespace gum_tests {
         const gum::DiscreteVariable* var = &(bn.variable(node));
 
         for (const auto node2 : bn.nodes())
-          if (node != node2) {
-            TS_ASSERT_DIFFERS(var, &(bn.variable(node2)));
-          }
+          if (node != node2) { TS_ASSERT_DIFFERS(var, &(bn.variable(node2))); }
       }
     }
 
@@ -210,4 +208,4 @@ namespace gum_tests {
     }
   };
 
-}  // namespace gum_tests
+}   // namespace gum_tests

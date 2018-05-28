@@ -77,8 +77,8 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // including coco-generated PARSER and SCANNER
-#include <agrum/FMDP/io/dat/cocoR/Parser.h>
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#  include <agrum/FMDP/io/dat/cocoR/Parser.h>
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
   /**
@@ -155,8 +155,8 @@ namespace gum {
   extern template class FMDPDatReader< float >;
   extern template class FMDPDatReader< double >;
 
-}  // namespace gum
+}   // namespace gum
 
 #include <agrum/FMDP/io/dat/fmdpDatReader_tpl.h>
 
-#endif  // FMDP_DAT_READER_H
+#endif   // FMDP_DAT_READER_H

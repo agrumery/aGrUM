@@ -75,7 +75,6 @@ namespace gum {
   namespace learning {
     template < typename GUM_SCALAR >
     class BNDatabaseGenerator : public ProgressNotifier {
-
       public:
       // #######################################################################
       /// @name Constructors / Destructors
@@ -98,7 +97,7 @@ namespace gum {
 
       /// generate and stock database, returns log2likelihood
       /// using ProgressNotifier as notification
-      double drawSamples(Size nbSamples);  // drawSamples
+      double drawSamples(Size nbSamples);   // drawSamples
 
       /// generates csv database according to bn
       void toCSV(const std::string& csvFileURL,
@@ -108,7 +107,7 @@ namespace gum {
                  bool               checkOnAppend = false) const;
 
       /// generates a DatabaseVectInRAM
-      DatabaseTable<> toDatabaseTable (bool useLabels = true) const;
+      DatabaseTable<> toDatabaseTable(bool useLabels = true) const;
 
       /// generates database according to bn into a std::vector
       /// @warning: makes a copy of the whole database
@@ -168,13 +167,13 @@ namespace gum {
 
       /// returns varOrder from a csv file
       std::vector< Idx >
-      __varOrderFromCSV(const std::string& csvFileURL,
-                        const std::string& csvSeparator = ",") const;
+        __varOrderFromCSV(const std::string& csvFileURL,
+                          const std::string& csvSeparator = ",") const;
 
       /// returns varOrder from a csv file
       std::vector< Idx >
-      __varOrderFromCSV(std::ifstream&     csvFile,
-                        const std::string& csvSeparator = ",") const;
+        __varOrderFromCSV(std::ifstream&     csvFile,
+                          const std::string& csvSeparator = ",") const;
 
       // forbidden copies / moves
       BNDatabaseGenerator(const BNDatabaseGenerator&) = delete;

@@ -21,7 +21,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // to ease parsing in IDE
-#include <agrum/BN/io/cnf/ContextualDependenciesCNFWriter.h>
+#  include <agrum/BN/io/cnf/ContextualDependenciesCNFWriter.h>
 
 namespace gum {
   /* =========================================================================*/
@@ -49,8 +49,8 @@ namespace gum {
   // @throws Raised if an I/O error occurs.
   template < typename GUM_SCALAR, template < class > class IApproximationPolicy >
   INLINE void
-  ContextualDependenciesCNFWriter< GUM_SCALAR, IApproximationPolicy >::write(
-    std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) {
+    ContextualDependenciesCNFWriter< GUM_SCALAR, IApproximationPolicy >::write(
+      std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) {
     Instantiation Order;
 
     for (auto node : bn.topologicalOrder())
@@ -61,10 +61,10 @@ namespace gum {
 
     std::stringstream strfile, strfile2;
 
-    Idx               num = 0;
-    Idx               numvar = 0;
-    Idx               clause = 0;
-    std::stringstream clausstr, clausstr2;
+    Idx                                num = 0;
+    Idx                                numvar = 0;
+    Idx                                clause = 0;
+    std::stringstream                  clausstr, clausstr2;
     gum::HashTable< std::string, Idx > vartable;
     gum::HashTable< std::string, Idx > protable;
     gum::HashTable<
@@ -145,7 +145,7 @@ namespace gum {
       while (!(itvar.val())->empty()) {
         gum::HashTable< std::string,
                         gum::Sequence< gum::Sequence< gum::Instantiation* >* >* >::
-          iterator itpvall = (itvar.val())->begin();  // needed here
+          iterator itpvall = (itvar.val())->begin();   // needed here
 
         for (auto pv : *itpvall.val()) {
           gum::Idx linecount = 0;
@@ -153,7 +153,7 @@ namespace gum {
                           gum::HashTable< const gum::DiscreteVariable*,
                                           std::pair< gum::Set< Idx >*,
                                                      gum::Set< Idx >* >* >* >
-            orderStruct;  // set sizeof Hashtable
+            orderStruct;   // set sizeof Hashtable
 
           for (auto seqv : *pv) {
             if (seqv->nbrDim() > 1) {
@@ -161,8 +161,8 @@ namespace gum {
                 gum::Instantiation instpro(*seqv, false);
                 instpro.reorder(Order);
                 const gum::DiscreteVariable* var = &(seqv->variable(iInst));
-                instpro.erase(*var);  // reorder instance to optimize make sure
-                                      // key unicity.
+                instpro.erase(*var);   // reorder instance to optimize make sure
+                                       // key unicity.
 
                 if (!orderStruct.exists(instpro.toString())) {
                   orderStruct.insert(
@@ -179,7 +179,7 @@ namespace gum {
                       new gum::Set< Idx >,
                       new gum::Set< Idx >(
                         seqv->variable(iInst)
-                          .domainSize())));  // set sizeof Hashtable
+                          .domainSize())));   // set sizeof Hashtable
                 }
 
                 gum::HashTable< const gum::DiscreteVariable*,
@@ -232,12 +232,12 @@ namespace gum {
               delete orderStruct.begin().val()->begin().val()->second;
               (orderStruct.begin().val())
                 ->erase((orderStruct.begin().val())
-                          ->beginSafe());  // safe iterator needed here
+                          ->beginSafe());   // safe iterator needed here
             }
 
             delete orderStruct.begin().val();
             orderStruct.erase(
-              orderStruct.beginSafe());  // safe iterator needed here
+              orderStruct.beginSafe());   // safe iterator needed here
           }
         }
 
@@ -277,11 +277,11 @@ namespace gum {
 
         delete (itpvall.val());
         (itvar.val())
-          ->erase(itvar.val()->beginSafe());  // safe iterator needed here
+          ->erase(itvar.val()->beginSafe());   // safe iterator needed here
       }
 
       delete (itvar.val());
-      cptparamval.erase(cptparamval.beginSafe());  // safe iterator needed here
+      cptparamval.erase(cptparamval.beginSafe());   // safe iterator needed here
     }
 
     clausstr << str2.str();
@@ -300,8 +300,8 @@ namespace gum {
   // @throws Raised if an I/O error occurs.
   template < typename GUM_SCALAR, template < class > class IApproximationPolicy >
   INLINE void
-  ContextualDependenciesCNFWriter< GUM_SCALAR, IApproximationPolicy >::write(
-    const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) {
+    ContextualDependenciesCNFWriter< GUM_SCALAR, IApproximationPolicy >::write(
+      const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
     std::ofstream outputvar((filePath + ".var").c_str(), std::ios_base::trunc);
 
@@ -313,10 +313,10 @@ namespace gum {
     if (!outputvar.good())
       GUM_ERROR(IOError, "Stream states flags are not all unset.");
 
-    Idx               num = 0;
-    Idx               numvar = 0;
-    Idx               clause = 0;
-    std::stringstream clausstr, clausstr2;
+    Idx                                num = 0;
+    Idx                                numvar = 0;
+    Idx                                clause = 0;
+    std::stringstream                  clausstr, clausstr2;
     gum::HashTable< std::string, Idx > vartable;
     gum::HashTable< std::string, Idx > protable;
     gum::HashTable<
@@ -366,8 +366,8 @@ namespace gum {
             (cptparamval[var])
               ->insert(valp,
                        new gum::Sequence<
-                         gum::Sequence< gum::Instantiation* >* >());  // remember
-                                                                      // to
+                         gum::Sequence< gum::Instantiation* >* >());   // remember
+                                                                       // to
             // verify
             // protocole for
             // param = to 1
@@ -414,9 +414,9 @@ namespace gum {
                           gum::HashTable< const gum::DiscreteVariable*,
                                           std::pair< gum::Set< Idx >*,
                                                      gum::Set< Idx >* >* >* >
-            orderStruct;  // set sizeof Hashtable
+            orderStruct;   // set sizeof Hashtable
 
-          gum::Set< gum::Idx > elimination;
+          gum::Set< gum::Idx >                               elimination;
           gum::HashTable< std::string, gum::Instantiation* > newSeqpre;
 
           for (auto seqv : *pv) {
@@ -427,8 +427,8 @@ namespace gum {
                 instpro->erase(*var);
                 instpro->reorder(Order);
 
-                if (!orderStruct.exists(instpro->toString()) &&
-                    !newSeqpre.exists(instpro->toString())) {
+                if (!orderStruct.exists(instpro->toString())
+                    && !newSeqpre.exists(instpro->toString())) {
                   orderStruct.insert(
                     instpro->toString(),
                     new gum::HashTable<
@@ -436,20 +436,19 @@ namespace gum {
                       std::pair< gum::Set< Idx >*, gum::Set< Idx >* >* >());
                 }
 
-                if (orderStruct.exists(instpro->toString()) &&
-                    !orderStruct[instpro->toString()]->exists(var)) {
-
+                if (orderStruct.exists(instpro->toString())
+                    && !orderStruct[instpro->toString()]->exists(var)) {
                   orderStruct[instpro->toString()]->insert(
                     var,
                     new std::pair< gum::Set< Idx >*, gum::Set< Idx >* >(
                       new gum::Set< Idx >,
                       new gum::Set< Idx >(
                         seqv->variable(iInst)
-                          .domainSize())));  // set sizeof Hashtable
+                          .domainSize())));   // set sizeof Hashtable
                 }
 
-                if (orderStruct.exists(instpro->toString()) &&
-                    !newSeqpre.exists(instpro->toString())) {
+                if (orderStruct.exists(instpro->toString())
+                    && !newSeqpre.exists(instpro->toString())) {
                   gum::HashTable< const gum::DiscreteVariable*,
                                   std::pair< gum::Set< Idx >*,
                                              gum::Set< Idx >* >* >* orderStruct2 =
@@ -506,14 +505,14 @@ namespace gum {
               delete orderStruct.begin().val()->begin().val()->first;
               delete orderStruct.begin().val()->begin().val()->second;
               (orderStruct.begin().val())
-                ->erase(orderStruct.begin().val()->beginSafe());  // safe
+                ->erase(orderStruct.begin().val()->beginSafe());   // safe
               // iterator
               // needed here
             }
 
             delete orderStruct.begin().val();
             orderStruct.erase(
-              orderStruct.beginSafe());  // safe iterator needed here
+              orderStruct.beginSafe());   // safe iterator needed here
           }
         }
 
@@ -544,21 +543,21 @@ namespace gum {
             str2 << " 0\n";
             clause++;
             delete (*itseqv);
-            (*itpv)->erase((*itpv)->beginSafe());  // safe iterator needed here
+            (*itpv)->erase((*itpv)->beginSafe());   // safe iterator needed here
           }
 
           delete (*itpv);
           (itpvall.val())
-            ->erase(itpvall.val()->beginSafe());  // safe iterator needed here
+            ->erase(itpvall.val()->beginSafe());   // safe iterator needed here
         }
 
         delete (itpvall.val());
         (itvar.val())
-          ->erase(itvar.val()->beginSafe());  // safe iterator needed here
+          ->erase(itvar.val()->beginSafe());   // safe iterator needed here
       }
 
       delete (itvar.val());
-      cptparamval.erase(cptparamval.beginSafe());  // safe iterator needed here
+      cptparamval.erase(cptparamval.beginSafe());   // safe iterator needed here
     }
 
     clausstr << str2.str();
@@ -579,4 +578,4 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS

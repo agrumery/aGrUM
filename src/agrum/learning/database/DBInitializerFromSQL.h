@@ -25,12 +25,12 @@
  */
 #ifdef _ODBC
 
-#ifndef GUM_LEARNING_DB_INITILIALIZER_FROM_SQL_H
-#define GUM_LEARNING_DB_INITILIALIZER_FROM_SQL_H
+#  ifndef GUM_LEARNING_DB_INITILIALIZER_FROM_SQL_H
+#    define GUM_LEARNING_DB_INITILIALIZER_FROM_SQL_H
 
-#include <agrum/agrum.h>
-#include <agrum/learning/database/IDBInitializer.h>
-#include <agrum/learning/database/nanodbcParser.h>
+#    include <agrum/agrum.h>
+#    include <agrum/learning/database/IDBInitializer.h>
+#    include <agrum/learning/database/nanodbcParser.h>
 
 namespace gum {
 
@@ -130,12 +130,11 @@ namespace gum {
      * // been kept.
      * @endcode
      */
-    template <template<typename> class ALLOC = std::allocator>
-    class DBInitializerFromSQL : public IDBInitializer<ALLOC> {
-    public:
-      
+    template < template < typename > class ALLOC = std::allocator >
+    class DBInitializerFromSQL : public IDBInitializer< ALLOC > {
+      public:
       /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC<std::string>;
+      using allocator_type = ALLOC< std::string >;
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -154,14 +153,14 @@ namespace gum {
        * then no timeout is set.
        * @param alloc the allocator used to allocate all the data structures
        */
-      DBInitializerFromSQL (const std::string&    dataSource,
-                            const std::string&    login,
-                            const std::string&    password,
-                            const std::string&    query,
-                            long                  timeout = 0L,
-                            const allocator_type& alloc = allocator_type () );
+      DBInitializerFromSQL(const std::string&    dataSource,
+                           const std::string&    login,
+                           const std::string&    password,
+                           const std::string&    query,
+                           long                  timeout = 0L,
+                           const allocator_type& alloc = allocator_type());
 
-      /// default constructor, especially for sqlite databases 
+      /// default constructor, especially for sqlite databases
       /** This will read the result of query and load it in memory.
        *
        * @param connection_string a string specifying to nanODBC how to connect
@@ -171,38 +170,38 @@ namespace gum {
        * then no timeout is set.
        * @param alloc the allocator used to allocate all the data structures
        */
-      DBInitializerFromSQL ( const std::string&    connection_string,
-                             const std::string&    query,
-                             long                  timeout = 0L,
-                             const allocator_type& alloc = allocator_type () );
+      DBInitializerFromSQL(const std::string&    connection_string,
+                           const std::string&    query,
+                           long                  timeout = 0L,
+                           const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       /** the new initializer points to the same SQL query as from, but
        * it reparses the result it from scratch. */
-      DBInitializerFromSQL ( const DBInitializerFromSQL<ALLOC>& from );
-      
+      DBInitializerFromSQL(const DBInitializerFromSQL< ALLOC >& from);
+
       /// copy constructor with a given allocator
       /** the new initializer points to the same SQL query as from, but
        * it reparses the result from scratch. */
-      DBInitializerFromSQL ( const DBInitializerFromSQL<ALLOC>& from,
-                             const allocator_type& alloc );
+      DBInitializerFromSQL(const DBInitializerFromSQL< ALLOC >& from,
+                           const allocator_type&                alloc);
 
       /// move constructor
-      DBInitializerFromSQL ( DBInitializerFromSQL<ALLOC>&& from );
+      DBInitializerFromSQL(DBInitializerFromSQL< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      DBInitializerFromSQL ( DBInitializerFromSQL<ALLOC>&& from,
-                             const allocator_type& alloc );
+      DBInitializerFromSQL(DBInitializerFromSQL< ALLOC >&& from,
+                           const allocator_type&           alloc);
 
       /// virtual copy constructor
-      virtual DBInitializerFromSQL<ALLOC>* clone () const;
+      virtual DBInitializerFromSQL< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual DBInitializerFromSQL<ALLOC>*
-      clone ( const allocator_type& alloc ) const;
+      virtual DBInitializerFromSQL< ALLOC >*
+        clone(const allocator_type& alloc) const;
 
       /// destructor
-      virtual ~DBInitializerFromSQL ();
+      virtual ~DBInitializerFromSQL();
 
       /// @}
 
@@ -212,38 +211,38 @@ namespace gum {
       // ##########################################################################
 
       /// @{
-      
+
       /// copy operator
       /** the new initializer points to the same SQL query as from, but
        * it reparses the result from scratch. */
-      DBInitializerFromSQL<ALLOC>&
-      operator= ( const DBInitializerFromSQL<ALLOC>& from );
+      DBInitializerFromSQL< ALLOC >&
+        operator=(const DBInitializerFromSQL< ALLOC >& from);
 
       /// move operator
       /** the new initializer points to the same SQL query as from, but
        * it reparses the result from scratch. */
-      DBInitializerFromSQL<ALLOC>&
-      operator= ( DBInitializerFromSQL<ALLOC>&& from );
+      DBInitializerFromSQL< ALLOC >&
+        operator=(DBInitializerFromSQL< ALLOC >&& from);
 
       /// @}
 
-      
-    protected:
+
+      protected:
       /// returns the names of the variables
-      virtual std::vector<std::string,ALLOC<std::string>> _variableNames () final;
+      virtual std::vector< std::string, ALLOC< std::string > >
+        _variableNames() final;
 
       /// returns the content of the current row using strings
-      virtual const std::vector<std::string,ALLOC<std::string>>&
-      _currentStringRow () final;
-      
+      virtual const std::vector< std::string, ALLOC< std::string > >&
+        _currentStringRow() final;
+
       /// indicates whether there is a next row to read (and point on it)
-      virtual bool _nextRow () final;
+      virtual bool _nextRow() final;
 
-      
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-     
-    private:
+#    ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+      private:
       // the string specifying how to connect to the database
       std::string __connection_string;
 
@@ -254,21 +253,19 @@ namespace gum {
       long __timeout;
 
       // the names of the columns in the query result
-      std::vector<std::string,ALLOC<std::string>> __var_names;
+      std::vector< std::string, ALLOC< std::string > > __var_names;
 
       // the nanodbc connection to the database
       nanodbc::connection __connection;
 
       // the parser used for parsing the query results
-      NanodbcParser<ALLOC> __parser;
+      NanodbcParser< ALLOC > __parser;
 
       /// perform a connection from a connection string
-      void __connect(const std::string& connection_string,
-                     long               timeout);
+      void __connect(const std::string& connection_string, long timeout);
 
- 
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
+#    endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 
   } /* namespace learning */
@@ -276,9 +273,8 @@ namespace gum {
 } /* namespace gum */
 
 // always include the template implementation
-#include <agrum/learning/database/DBInitializerFromSQL_tpl.h>
+#    include <agrum/learning/database/DBInitializerFromSQL_tpl.h>
 
-#endif /* GUM_LEARNING_DB_INITILIALIZER_FROM_SQL_H */
+#  endif /* GUM_LEARNING_DB_INITILIALIZER_FROM_SQL_H */
 
-#endif  /* _ODBC */
-
+#endif /* _ODBC */

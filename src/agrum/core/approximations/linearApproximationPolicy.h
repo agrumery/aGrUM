@@ -50,7 +50,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   class LinearApproximationPolicy
-    : public virtual ApproximationPolicy< GUM_SCALAR > {
+      : public virtual ApproximationPolicy< GUM_SCALAR > {
     public:
     // ===========================================================================
     /// @name Constructors / Destructors
@@ -233,7 +233,7 @@ namespace gum {
     /// The number of interval.
     Idx _nbInterval;
   };
-}
+}   // namespace gum
 
 
 extern template class gum::LinearApproximationPolicy< float >;

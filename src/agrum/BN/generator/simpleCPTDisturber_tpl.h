@@ -29,8 +29,8 @@ namespace gum {
 
   // Default constructor.
   template < typename GUM_SCALAR >
-  INLINE SimpleCPTDisturber< GUM_SCALAR >::SimpleCPTDisturber()
-      : ICPTDisturber< GUM_SCALAR >() {
+  INLINE SimpleCPTDisturber< GUM_SCALAR >::SimpleCPTDisturber() :
+      ICPTDisturber< GUM_SCALAR >() {
     GUM_CONSTRUCTOR(SimpleCPTDisturber);
   }
 

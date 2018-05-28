@@ -36,14 +36,13 @@ namespace gum {
 
   namespace aggregator {
     template < typename GUM_SCALAR >
-    INLINE Median< GUM_SCALAR >::Median()
-        : MultiDimAggregator< GUM_SCALAR >() {
+    INLINE Median< GUM_SCALAR >::Median() : MultiDimAggregator< GUM_SCALAR >() {
       GUM_CONSTRUCTOR(Median)
     }
 
     template < typename GUM_SCALAR >
-    INLINE Median< GUM_SCALAR >::Median(const Median< GUM_SCALAR >& from)
-        : MultiDimAggregator< GUM_SCALAR >(from) {
+    INLINE Median< GUM_SCALAR >::Median(const Median< GUM_SCALAR >& from) :
+        MultiDimAggregator< GUM_SCALAR >(from) {
       GUM_CONS_CPY(Median);
     }
 
@@ -68,7 +67,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     Idx Median< GUM_SCALAR >::_buildValue(const gum::Instantiation& i) const {
       if (i.nbrDim() < 2)
-        return i.nbrDim() / 2;  // arbitrary. Guess = (max-min)/2 .
+        return i.nbrDim() / 2;   // arbitrary. Guess = (max-min)/2 .
 
       // we assume that every (parent) variable has the same domainSize
       Idx maxVal = i.variable(1).domainSize();
@@ -78,7 +77,7 @@ namespace gum {
       for (Idx j = 1; j < this->nbrDim(); j++)
         cum[i.val(j)]++;
 
-      Idx half = (this->nbrDim() + 1) / 2;  // 50% of the population
+      Idx half = (this->nbrDim() + 1) / 2;   // 50% of the population
 
       Idx max = maxVal;
       for (Idx j = 0, sumcum = 0; j < maxVal; j++)
@@ -105,5 +104,5 @@ namespace gum {
       return 0;
     }
 
-  }  // namespace aggregator
-}  // namespace gum
+  }   // namespace aggregator
+}   // namespace gum

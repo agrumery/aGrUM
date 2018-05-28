@@ -37,14 +37,13 @@ namespace gum {
                                              const NodeProperty< Size >* domsizes,
                                              bool   minimality,
                                              double theRatio,
-                                             double theThreshold)
-      : UnconstrainedTriangulation(theGraph,
-                                   domsizes,
-                                   DefaultEliminationSequenceStrategy(),
-                                   DefaultJunctionTreeStrategy(),
-                                   minimality)
-      , __quasi_ratio(theRatio)
-      , __threshold(theThreshold) {
+                                             double theThreshold) :
+      UnconstrainedTriangulation(theGraph,
+                                 domsizes,
+                                 DefaultEliminationSequenceStrategy(),
+                                 DefaultJunctionTreeStrategy(),
+                                 minimality),
+      __quasi_ratio(theRatio), __threshold(theThreshold) {
     // for debugging purposes
     GUM_CONSTRUCTOR(DefaultTriangulation);
   }
@@ -52,30 +51,27 @@ namespace gum {
   /// default constructor: initialize the triangulation for an empty graph
   DefaultTriangulation::DefaultTriangulation(bool   minimality,
                                              double theRatio,
-                                             double theThreshold)
-      : UnconstrainedTriangulation(DefaultEliminationSequenceStrategy(),
-                                   DefaultJunctionTreeStrategy(),
-                                   minimality)
-      , __quasi_ratio(theRatio)
-      , __threshold(theThreshold) {
+                                             double theThreshold) :
+      UnconstrainedTriangulation(DefaultEliminationSequenceStrategy(),
+                                 DefaultJunctionTreeStrategy(),
+                                 minimality),
+      __quasi_ratio(theRatio), __threshold(theThreshold) {
     // for debugging purposes
     GUM_CONSTRUCTOR(DefaultTriangulation);
   }
 
   /// copy constructor
-  DefaultTriangulation::DefaultTriangulation(const DefaultTriangulation& from)
-      : UnconstrainedTriangulation(from)
-      , __quasi_ratio(from.__quasi_ratio)
-      , __threshold(from.__threshold) {
+  DefaultTriangulation::DefaultTriangulation(const DefaultTriangulation& from) :
+      UnconstrainedTriangulation(from), __quasi_ratio(from.__quasi_ratio),
+      __threshold(from.__threshold) {
     // for debugging purposes
     GUM_CONS_CPY(DefaultTriangulation);
   }
 
   /// move constructor
-  DefaultTriangulation::DefaultTriangulation(DefaultTriangulation&& from)
-      : UnconstrainedTriangulation(std::move(from))
-      , __quasi_ratio(from.__quasi_ratio)
-      , __threshold(from.__threshold) {
+  DefaultTriangulation::DefaultTriangulation(DefaultTriangulation&& from) :
+      UnconstrainedTriangulation(std::move(from)),
+      __quasi_ratio(from.__quasi_ratio), __threshold(from.__threshold) {
     // for debugging purposes
     GUM_CONS_MOV(DefaultTriangulation);
   }

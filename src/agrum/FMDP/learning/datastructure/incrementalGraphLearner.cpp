@@ -18,10 +18,10 @@
  * 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. *
  *********************************************************************************/
 /**
-* @file
-* @brief Source fot the IncrementalGraphLearner class
-*
-* @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
-*/
+ * @file
+ * @brief Source fot the IncrementalGraphLearner class
+ *
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
+ */
 
 #include <agrum/FMDP/learning/datastructure/incrementalGraphLearner.h>

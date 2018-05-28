@@ -28,8 +28,8 @@
 #include <agrum/core/list.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/BN/algorithms/dSeparation_inl.h>
-#endif  // GUM_NO_INLINE
+#  include <agrum/BN/algorithms/dSeparation_inl.h>
+#endif   // GUM_NO_INLINE
 
 namespace gum {
 
@@ -89,26 +89,20 @@ namespace gum {
       bool already_visited;
       if (direction) {
         already_visited = visited_from_child.exists(node);
-        if (!already_visited) {
-          visited_from_child.insert(node);
-        }
+        if (!already_visited) { visited_from_child.insert(node); }
       } else {
         already_visited = visited_from_parent.exists(node);
-        if (!already_visited) {
-          visited_from_parent.insert(node);
-        }
+        if (!already_visited) { visited_from_parent.insert(node); }
       }
 
       // if this is the first time we meet the node, then visit it
       if (!already_visited) {
         // mark the node as reachable if this is not a hard evidence
         const bool is_hard_evidence = hardEvidence.exists(node);
-        if (!is_hard_evidence) {
-          requisite.insert(node);
-        }
+        if (!is_hard_evidence) { requisite.insert(node); }
 
         // bounce the ball toward the neighbors
-        if (direction && !is_hard_evidence) {  // visit from a child
+        if (direction && !is_hard_evidence) {   // visit from a child
           // visit the parents
           for (const auto par : dag.parents(node)) {
             nodes_to_visit.insert(std::pair< NodeId, bool >(par, true));
@@ -118,7 +112,7 @@ namespace gum {
           for (const auto chi : dag.children(node)) {
             nodes_to_visit.insert(std::pair< NodeId, bool >(chi, false));
           }
-        } else {  // visit from a parent
+        } else {   // visit from a parent
           if (!hardEvidence.exists(node)) {
             // visit the children
             for (const auto chi : dag.children(node)) {

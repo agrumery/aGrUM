@@ -130,4 +130,4 @@ namespace gum_tests {
       if (id != 0) delete id;
     }
   };
-}
+}   // namespace gum_tests

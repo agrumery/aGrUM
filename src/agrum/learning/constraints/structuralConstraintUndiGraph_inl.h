@@ -31,22 +31,22 @@ namespace gum {
 
     /// sets a new graph from which we will perform checkings
     INLINE void
-    StructuralConstraintUndiGraph::setGraphAlone(const UndiGraph& graph) {
+      StructuralConstraintUndiGraph::setGraphAlone(const UndiGraph& graph) {
       _UndiGraph__graph = graph;
     }
 
     /// checks whether the constraints enable to add edge (x,y)
     INLINE bool
-    StructuralConstraintUndiGraph::checkEdgeAdditionAlone(NodeId x,
-                                                          NodeId y) const {
-      return _UndiGraph__graph.existsNode(x) && _UndiGraph__graph.existsNode(y) &&
-             !_UndiGraph__graph.existsEdge(x, y);
+      StructuralConstraintUndiGraph::checkEdgeAdditionAlone(NodeId x,
+                                                            NodeId y) const {
+      return _UndiGraph__graph.existsNode(x) && _UndiGraph__graph.existsNode(y)
+             && !_UndiGraph__graph.existsEdge(x, y);
     }
 
     /// checks whether the constraints enable to remove edge (x,y)
     INLINE bool
-    StructuralConstraintUndiGraph::checkEdgeDeletionAlone(NodeId x,
-                                                          NodeId y) const {
+      StructuralConstraintUndiGraph::checkEdgeDeletionAlone(NodeId x,
+                                                            NodeId y) const {
       return _UndiGraph__graph.existsEdge(x, y);
     }
 
@@ -81,19 +81,19 @@ namespace gum {
 
     /// notify the constraint of a modification of the graph
     INLINE void
-    StructuralConstraintUndiGraph::modifyGraphAlone(const EdgeAddition& change) {
+      StructuralConstraintUndiGraph::modifyGraphAlone(const EdgeAddition& change) {
       _UndiGraph__graph.addEdge(change.node1(), change.node2());
     }
 
     /// notify the constraint of a modification of the graph
     INLINE void
-    StructuralConstraintUndiGraph::modifyGraphAlone(const EdgeDeletion& change) {
+      StructuralConstraintUndiGraph::modifyGraphAlone(const EdgeDeletion& change) {
       _UndiGraph__graph.eraseEdge(Edge(change.node1(), change.node2()));
     }
 
     /// notify the constraint of a modification of the graph
     INLINE void
-    StructuralConstraintUndiGraph::modifyGraphAlone(const GraphChange& change) {
+      StructuralConstraintUndiGraph::modifyGraphAlone(const GraphChange& change) {
       switch (change.type()) {
         case GraphChangeType::EDGE_ADDITION:
           modifyGraphAlone(reinterpret_cast< const EdgeAddition& >(change));
@@ -111,8 +111,8 @@ namespace gum {
     }
 
     /// indicates whether a change will always violate the constraint
-    INLINE bool
-    StructuralConstraintUndiGraph::isAlwaysInvalidAlone(const GraphChange&) const {
+    INLINE bool StructuralConstraintUndiGraph::isAlwaysInvalidAlone(
+      const GraphChange&) const {
       return false;
     }
 
@@ -125,9 +125,9 @@ namespace gum {
     }
 
 // include all the methods applicable to the whole class hierarchy
-#define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintUndiGraph
-#include <agrum/learning/constraints/structuralConstraintPattern4UndiGraphRootInline.h>
-#undef GUM_CONSTRAINT_CLASS_NAME
+#  define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintUndiGraph
+#  include <agrum/learning/constraints/structuralConstraintPattern4UndiGraphRootInline.h>
+#  undef GUM_CONSTRAINT_CLASS_NAME
 
   } /* namespace learning */
 

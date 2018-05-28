@@ -110,17 +110,16 @@ namespace gum {
      * // but only columns 1, 3 and 4 of the CSV file have been kept.
      * @endcode
      */
-    template <template<typename> class ALLOC>
+    template < template < typename > class ALLOC >
     class IDBInitializer {
-    public:
-      
+      public:
       /** @brief the enumeration indicating the type of the data the
        * IDBInitializer expects as input data */
       enum class InputType : char { STRING, DBCELL };
 
       /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC<std::string>;
-      
+      using allocator_type = ALLOC< std::string >;
+
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -130,116 +129,111 @@ namespace gum {
       /** @param type indicates what type of data will be read by the
        * IDBInitializer when it will try to fill the database.
        * @param alloc The allocator that will be used by all methods */
-      IDBInitializer ( const InputType type,
-                       const allocator_type& alloc );
+      IDBInitializer(const InputType type, const allocator_type& alloc);
 
       /// copy constructor
-      IDBInitializer ( const IDBInitializer<ALLOC>& from );
-      
+      IDBInitializer(const IDBInitializer< ALLOC >& from);
+
       /// copy constructor with a given allocator
-      IDBInitializer ( const IDBInitializer<ALLOC>& from,
-                       const allocator_type& alloc );
-      
+      IDBInitializer(const IDBInitializer< ALLOC >& from,
+                     const allocator_type&          alloc);
+
       /// move constructor
-      IDBInitializer ( IDBInitializer<ALLOC>&& from );
-      
+      IDBInitializer(IDBInitializer< ALLOC >&& from);
+
       /// move constructor with a given allocator
-      IDBInitializer ( IDBInitializer<ALLOC>&& from,
-                       const allocator_type& alloc );
-      
+      IDBInitializer(IDBInitializer< ALLOC >&& from, const allocator_type& alloc);
+
       /// virtual copy constructor
-      virtual IDBInitializer<ALLOC>* clone () const = 0;
-      
+      virtual IDBInitializer< ALLOC >* clone() const = 0;
+
       /// virtual copy constructor with a given allocator
-      virtual IDBInitializer<ALLOC>*
-      clone ( const allocator_type& alloc ) const = 0;
-      
+      virtual IDBInitializer< ALLOC >*
+        clone(const allocator_type& alloc) const = 0;
+
       /// destructor
-      virtual ~IDBInitializer ();
-      
+      virtual ~IDBInitializer();
+
       /// @}
-      
-      
+
+
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
       /// @{
 
       /// returns the names of the variables in the input dataset
-      const std::vector<std::string,ALLOC<std::string>>& variableNames ();
-      
+      const std::vector< std::string, ALLOC< std::string > >& variableNames();
+
       /// fills the rows of the database table
       /** This method may raise exceptions when trying to insert new rows
        * into the database table. See Method insertRow() of the database table. */
-      template <template<template<typename> class> class DATABASE>
-      void fillDatabase ( DATABASE<ALLOC>& database,
-                          const bool retry_insertion = false );
+      template < template < template < typename > class > class DATABASE >
+      void fillDatabase(DATABASE< ALLOC >& database,
+                        const bool         retry_insertion = false);
 
       /** @brief This method indicates which column filling raised an exception,
        * if any, during the execution of fillDatabase */
-      std::size_t throwingColumn () const;
-      
+      std::size_t throwingColumn() const;
+
       /// returns the allocator used
-      allocator_type getAllocator () const;
+      allocator_type getAllocator() const;
 
       /// @}
-      
-      
-    protected:
+
+
+      protected:
       /// copy operator
-      IDBInitializer<ALLOC>&
-      operator= ( const IDBInitializer<ALLOC>& from );
-      
+      IDBInitializer< ALLOC >& operator=(const IDBInitializer< ALLOC >& from);
+
       /// move operator
-      IDBInitializer<ALLOC>&
-      operator= ( IDBInitializer<ALLOC>&& from );
+      IDBInitializer< ALLOC >& operator=(IDBInitializer< ALLOC >&& from);
 
       /// ask the child class for the names of the variables
-      virtual std::vector<std::string,ALLOC<std::string>> _variableNames () = 0;
+      virtual std::vector< std::string, ALLOC< std::string > >
+        _variableNames() = 0;
 
       /// asks the child class for the content of the current row using strings
       /** If the child class parses strings, this method should be overloaded */
-      virtual const std::vector<std::string,ALLOC<std::string>>&
-      _currentStringRow ();
+      virtual const std::vector< std::string, ALLOC< std::string > >&
+        _currentStringRow();
 
       /// asks the child class for the content of the current row using dbcells
       /** If the child class parses DBRows, this method should be overloaded */
-      virtual const DBRow<DBCell,ALLOC>&
-      _currentDBCellRow ();
+      virtual const DBRow< DBCell, ALLOC >& _currentDBCellRow();
 
       /// indicates whether there is a next row to read (and point on it)
-      virtual bool _nextRow () = 0;
+      virtual bool _nextRow() = 0;
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-     
-    private:
+
+      private:
       // the names of the variables
-      std::vector<std::string,ALLOC<std::string>> __var_names;
+      std::vector< std::string, ALLOC< std::string > > __var_names;
 
       // the types of the input data read to fill the database
       InputType __input_type;
-      
+
       // indicates whether an exception was raised when adding the last row
       // into the database. If so, when filling again the database, we may
       // try to insert again the same row
-      bool __last_insertion_failed { false };
+      bool __last_insertion_failed{false};
 
 
       /// fills the rows of the database using string inputs
-      template <template<template<typename> class> class DATABASE>
-      void __fillDatabaseFromStrings ( DATABASE<ALLOC>& database,
-                                       const bool retry_insertion );
+      template < template < template < typename > class > class DATABASE >
+      void __fillDatabaseFromStrings(DATABASE< ALLOC >& database,
+                                     const bool         retry_insertion);
 
       /// fills the rows of the database using DBCell inputs
-      template <template<template<typename> class> class DATABASE>
-      void __fillDatabaseFromDBCells ( DATABASE<ALLOC>& database,
-                                       const bool retry_insertion );
+      template < template < template < typename > class > class DATABASE >
+      void __fillDatabaseFromDBCells(DATABASE< ALLOC >& database,
+                                     const bool         retry_insertion);
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
-
     };
-    
+
   } /* namespace learning */
 
 } /* namespace gum */

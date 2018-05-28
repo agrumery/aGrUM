@@ -24,9 +24,9 @@
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/agrum.h>
-#include <agrum/graphs/algorithms/DAGCycleDetector.h>
-#include <agrum/learning/constraints/structuralConstraintDiGraph.h>
+#  include <agrum/agrum.h>
+#  include <agrum/graphs/algorithms/DAGCycleDetector.h>
+#  include <agrum/learning/constraints/structuralConstraintDiGraph.h>
 
 namespace gum {
 
@@ -115,25 +115,25 @@ namespace gum {
 
     /// notify the constraint of a modification of the graph
     INLINE void
-    StructuralConstraintDAG::modifyGraphAlone(const ArcAddition& change) {
+      StructuralConstraintDAG::modifyGraphAlone(const ArcAddition& change) {
       _DAG__cycle_detector.addArc(change.node1(), change.node2());
     }
 
     /// notify the constraint of a modification of the graph
     INLINE void
-    StructuralConstraintDAG::modifyGraphAlone(const ArcDeletion& change) {
+      StructuralConstraintDAG::modifyGraphAlone(const ArcDeletion& change) {
       _DAG__cycle_detector.eraseArc(change.node1(), change.node2());
     }
 
     /// notify the constraint of a modification of the graph
     INLINE void
-    StructuralConstraintDAG::modifyGraphAlone(const ArcReversal& change) {
+      StructuralConstraintDAG::modifyGraphAlone(const ArcReversal& change) {
       _DAG__cycle_detector.reverseArc(change.node1(), change.node2());
     }
 
     /// notify the constraint of a modification of the graph
     INLINE void
-    StructuralConstraintDAG::modifyGraphAlone(const GraphChange& change) {
+      StructuralConstraintDAG::modifyGraphAlone(const GraphChange& change) {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION:
           modifyGraphAlone(reinterpret_cast< const ArcAddition& >(change));
@@ -155,7 +155,7 @@ namespace gum {
 
     /// indicates whether a change will always violate the constraint
     INLINE bool
-    StructuralConstraintDAG::isAlwaysInvalidAlone(const GraphChange&) const {
+      StructuralConstraintDAG::isAlwaysInvalidAlone(const GraphChange&) const {
       return false;
     }
 
@@ -172,9 +172,9 @@ namespace gum {
     }
 
 // include all the methods applicable to the whole class hierarchy
-#define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintDAG
-#include <agrum/learning/constraints/structuralConstraintPatternInline.h>
-#undef GUM_CONSTRAINT_CLASS_NAME
+#  define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintDAG
+#  include <agrum/learning/constraints/structuralConstraintPatternInline.h>
+#  undef GUM_CONSTRAINT_CLASS_NAME
 
   } /* namespace learning */
 

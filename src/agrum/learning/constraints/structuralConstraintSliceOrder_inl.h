@@ -42,52 +42,52 @@ namespace gum {
 
     /// sets a new graph from which we will perform checkings
     INLINE void
-    StructuralConstraintSliceOrder::setGraphAlone(const DiGraph& graph) {}
+      StructuralConstraintSliceOrder::setGraphAlone(const DiGraph& graph) {}
 
     /// checks whether the constraints enable to add arc (x,y)
     INLINE bool
-    StructuralConstraintSliceOrder::checkArcAdditionAlone(NodeId x,
-                                                          NodeId y) const {
+      StructuralConstraintSliceOrder::checkArcAdditionAlone(NodeId x,
+                                                            NodeId y) const {
       try {
         return _SliceOrder__order[x] <= _SliceOrder__order[y];
-      } catch (const Exception&) {
-        return true;
-      }
+      } catch (const Exception&) { return true; }
     }
 
     /// checks whether the constraints enable to remove arc (x,y)
     INLINE bool
-    StructuralConstraintSliceOrder::checkArcDeletionAlone(NodeId x,
-                                                          NodeId y) const {
+      StructuralConstraintSliceOrder::checkArcDeletionAlone(NodeId x,
+                                                            NodeId y) const {
       return true;
     }
 
     /// checks whether the constraints enable to reverse arc (x,y)
     INLINE bool
-    StructuralConstraintSliceOrder::checkArcReversalAlone(NodeId x,
-                                                          NodeId y) const {
+      StructuralConstraintSliceOrder::checkArcReversalAlone(NodeId x,
+                                                            NodeId y) const {
       try {
         return _SliceOrder__order[x] == _SliceOrder__order[y];
-      } catch (const Exception&) {
-        return true;
-      }
+      } catch (const Exception&) { return true; }
     }
 
     /// notify the constraint of a modification of the graph
     INLINE void
-    StructuralConstraintSliceOrder::modifyGraphAlone(const ArcAddition& change) {}
+      StructuralConstraintSliceOrder::modifyGraphAlone(const ArcAddition& change) {
+    }
 
     /// notify the constraint of a modification of the graph
     INLINE void
-    StructuralConstraintSliceOrder::modifyGraphAlone(const ArcDeletion& change) {}
+      StructuralConstraintSliceOrder::modifyGraphAlone(const ArcDeletion& change) {
+    }
 
     /// notify the constraint of a modification of the graph
     INLINE void
-    StructuralConstraintSliceOrder::modifyGraphAlone(const ArcReversal& change) {}
+      StructuralConstraintSliceOrder::modifyGraphAlone(const ArcReversal& change) {
+    }
 
     /// notify the constraint of a modification of the graph
     INLINE void
-    StructuralConstraintSliceOrder::modifyGraphAlone(const GraphChange& change) {}
+      StructuralConstraintSliceOrder::modifyGraphAlone(const GraphChange& change) {
+    }
 
     /// indicates whether a change will always violate the constraint
     INLINE bool StructuralConstraintSliceOrder::isAlwaysInvalidAlone(
@@ -95,22 +95,17 @@ namespace gum {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION:
           try {
-            return (_SliceOrder__order[change.node1()] >
-                    _SliceOrder__order[change.node2()]);
-          } catch (const Exception&) {
-            return false;
-          }
+            return (_SliceOrder__order[change.node1()]
+                    > _SliceOrder__order[change.node2()]);
+          } catch (const Exception&) { return false; }
 
-        case GraphChangeType::ARC_DELETION:
-          return false;
+        case GraphChangeType::ARC_DELETION: return false;
 
         case GraphChangeType::ARC_REVERSAL:
           try {
-            return (_SliceOrder__order[change.node1()] !=
-                    _SliceOrder__order[change.node2()]);
-          } catch (const Exception&) {
-            return false;
-          }
+            return (_SliceOrder__order[change.node1()]
+                    != _SliceOrder__order[change.node2()]);
+          } catch (const Exception&) { return false; }
 
         default:
           GUM_ERROR(OperationNotAllowed,
@@ -183,9 +178,9 @@ namespace gum {
     }
 
 // include all the methods applicable to the whole class hierarchy
-#define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintSliceOrder
-#include <agrum/learning/constraints/structuralConstraintPatternInline.h>
-#undef GUM_CONSTRAINT_CLASS_NAME
+#  define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintSliceOrder
+#  include <agrum/learning/constraints/structuralConstraintPatternInline.h>
+#  undef GUM_CONSTRAINT_CLASS_NAME
 
   } /* namespace learning */
 

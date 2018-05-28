@@ -46,7 +46,6 @@ namespace gum {
    *
    */
   class IDecisionStrategy {
-
     // ###################################################################
     /// @name Constructor & destructor.
     // ###################################################################
@@ -106,5 +105,5 @@ namespace gum {
 
     /// @}
   };
-}
-#endif  // GUM_SDYNA_DECISION_STRATEGY_H
+}   // namespace gum
+#endif   // GUM_SDYNA_DECISION_STRATEGY_H

@@ -49,8 +49,8 @@ namespace gum {
     __senders.clear();
   }
 
-}  // namespace gum
+}   // namespace gum
 
 #ifdef GUM_NO_INLINE
-#include <agrum/core/signal/listener_inl.h>
-#endif  // GUM_NO_INLINE
+#  include <agrum/core/signal/listener_inl.h>
+#endif   // GUM_NO_INLINE

@@ -34,18 +34,18 @@
 #else
 namespace gum {
 
-// a specialized function for projecting a multiDimArray over a subset of its
-// vars
+  // a specialized function for projecting a multiDimArray over a subset of its
+  // vars
 
-#ifdef GUM_MULTI_DIM_PROJECTION_NAME
-#define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
+#  ifdef GUM_MULTI_DIM_PROJECTION_NAME
+#    define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
   template < typename GUM_SCALAR >
-  MultiDimArray< GUM_SCALAR >*
-  GUM_MULTI_DIM_PROJECTION_NAME(const MultiDimArray< GUM_SCALAR >*    table,
-                                const Set< const DiscreteVariable* >& del_vars)
-#endif
+  MultiDimArray< GUM_SCALAR >* GUM_MULTI_DIM_PROJECTION_NAME(
+    const MultiDimArray< GUM_SCALAR >*    table,
+    const Set< const DiscreteVariable* >& del_vars)
+#  endif
 
-// clang-format off
+  // clang-format off
 
 #ifdef GUM_MULTI_DIM_PROJECTION_POINTER_NAME
 #define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR *
@@ -99,15 +99,15 @@ namespace gum {
 
   {
 
-#ifdef GUM_MULTI_DIM_PROJECTION_IMPL2ARRAY_NAME
+#  ifdef GUM_MULTI_DIM_PROJECTION_IMPL2ARRAY_NAME
     const MultiDimArray< GUM_SCALAR >* table =
       reinterpret_cast< const MultiDimArray< GUM_SCALAR >* >(ttable);
-#endif
+#  endif
 
-#ifdef GUM_MULTI_DIM_PROJECTION_POINTER_IMPL2ARRAY_NAME
+#  ifdef GUM_MULTI_DIM_PROJECTION_POINTER_IMPL2ARRAY_NAME
     const MultiDimArray< GUM_SCALAR* >* table =
       reinterpret_cast< const MultiDimArray< GUM_SCALAR* >* >(ttable);
-#endif
+#  endif
 
     // create the neutral element used to fill the result upon its
     // creation
@@ -180,9 +180,7 @@ namespace gum {
       MultiDimArray< GUM_MULTI_DIM_PROJECTION_TYPE >* result =
         new MultiDimArray< GUM_MULTI_DIM_PROJECTION_TYPE >;
 
-      if (!result_varSeq.size()) {
-        return result;
-      }
+      if (!result_varSeq.size()) { return result; }
 
       result->beginMultipleChanges();
 
@@ -190,16 +188,16 @@ namespace gum {
         *result << *var;
 
 // fill the matrix with the neutral element
-#ifdef GUM_MULTI_DIM_PROJECTION_POINTER
+#  ifdef GUM_MULTI_DIM_PROJECTION_POINTER
       result->endMultipleChanges();
 
       for (Idx i = 0; i < result_domain_size; ++i) {
         result->unsafeSet(i, new GUM_SCALAR(neutral_element));
       }
 
-#else
+#  else
       result->endMultipleChanges(neutral_element);
-#endif
+#  endif
 
       // compute the projection: first loop over the variables X's in table
       // that do not belong to result and, for each value of these X's, loop
@@ -222,15 +220,15 @@ namespace gum {
       if (!nb_positive_before_incr) {
         for (Idx i = 0; i < table_alone_domain_size; ++i) {
           for (Idx j = 0; j < result_domain_size; ++j) {
-#ifdef GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
+#  ifdef GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
             GUM_MULTI_DIM_PROJECTION(*pres, *pt);
-#else
-#ifdef GUM_MULTI_DIM_PROJECTION_POINTER
+#  else
+#    ifdef GUM_MULTI_DIM_PROJECTION_POINTER
             **pres = GUM_MULTI_DIM_PROJECTION(*pres, *pt);
-#else
+#    else
             *pres = GUM_MULTI_DIM_PROJECTION(*pres, *pt);
-#endif
-#endif
+#    endif
+#  endif
 
             // update the offset of table and result
             ++pt;
@@ -246,16 +244,16 @@ namespace gum {
         Idx result_offset = 0;
 
         for (Idx i = 0; i < table_domain_size; ++i) {
-#ifdef GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
+#  ifdef GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
           GUM_MULTI_DIM_PROJECTION(pres[result_offset], *pt);
-#else
-#ifdef GUM_MULTI_DIM_PROJECTION_POINTER
+#  else
+#    ifdef GUM_MULTI_DIM_PROJECTION_POINTER
           *(pres[result_offset]) =
             GUM_MULTI_DIM_PROJECTION(pres[result_offset], *pt);
-#else
+#    else
           pres[result_offset] = GUM_MULTI_DIM_PROJECTION(pres[result_offset], *pt);
-#endif
-#endif
+#    endif
+#  endif
 
           // update the offset of table
           ++pt;
@@ -285,7 +283,7 @@ namespace gum {
       }
 
       return result;
-    } else {  // need_swapping = true
+    } else {   // need_swapping = true
 
       // Compute the variables that are in t1 but not in t2. For these
       // variables, get the increment in the offset of t1 that would result
@@ -296,10 +294,10 @@ namespace gum {
       // these vectors reference the variables of t1 \ t2 in the order in which
       // they appear in seq1. Keep as well the size of the Cartesian product of
       // these variables.
-      std::vector< Idx > table_alone_offset;
-      std::vector< Idx > table_alone_domain;
-      Idx                offset = 1;
-      Idx                table_alone_domain_size = 1;
+      std::vector< Idx >                        table_alone_offset;
+      std::vector< Idx >                        table_alone_domain;
+      Idx                                       offset = 1;
+      Idx                                       table_alone_domain_size = 1;
       HashTable< const DiscreteVariable*, Idx > var1offset(table_vars.size());
 
       for (const auto var : table_vars) {
@@ -365,7 +363,7 @@ namespace gum {
       for (const auto var : result_varSeq)
         *result << *var;
 
-#ifdef GUM_MULTI_DIM_PROJECTION_POINTER
+#  ifdef GUM_MULTI_DIM_PROJECTION_POINTER
       result->endMultipleChanges();
 
       // fill the matrix with the neutral element
@@ -373,9 +371,9 @@ namespace gum {
         result->unsafeSet(i, new GUM_SCALAR(neutral_element));
       }
 
-#else
+#  else
       result->endMultipleChanges(neutral_element);
-#endif
+#  endif
 
       // compute the sum: first loop over the variables X's both in table and
       // in result and, for each value of these X's, loop over the variables
@@ -399,15 +397,15 @@ namespace gum {
       if (!has_before_incr) {
         for (Idx i = 0; i < result_domain_size; ++i) {
           for (Idx j = 0; j < table_alone_domain_size; ++j) {
-#ifdef GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
+#  ifdef GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
             GUM_MULTI_DIM_PROJECTION(*pres, *pt);
-#else
-#ifdef GUM_MULTI_DIM_PROJECTION_POINTER
+#  else
+#    ifdef GUM_MULTI_DIM_PROJECTION_POINTER
             **pres = GUM_MULTI_DIM_PROJECTION(*pres, *pt);
-#else
+#    else
             *pres = GUM_MULTI_DIM_PROJECTION(*pres, *pt);
-#endif
-#endif
+#    endif
+#  endif
 
             // update the offset of table
             ++pt;
@@ -423,15 +421,15 @@ namespace gum {
 
         for (Idx j = 0; j < result_domain_size; ++j) {
           for (Idx i = 0; i < table_alone_domain_size; ++i) {
-#ifdef GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
+#  ifdef GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
             GUM_MULTI_DIM_PROJECTION(*pres, pt[table_offset]);
-#else
-#ifdef GUM_MULTI_DIM_PROJECTION_POINTER
+#  else
+#    ifdef GUM_MULTI_DIM_PROJECTION_POINTER
             **pres = GUM_MULTI_DIM_PROJECTION(*pres, pt[table_offset]);
-#else
+#    else
             *pres = GUM_MULTI_DIM_PROJECTION(*pres, pt[table_offset]);
-#endif
-#endif
+#    endif
+#  endif
 
             // update the increment of table for the inner loop
             for (unsigned int k = 0; k < table_alone_value.size(); ++k) {
@@ -470,10 +468,10 @@ namespace gum {
     }
   }
 
-#undef GUM_MULTI_DIM_PROJECTION_TYPE
+#  undef GUM_MULTI_DIM_PROJECTION_TYPE
 
-#ifdef GUM_MULTI_DIM_PROJECTION_POINTER
-#undef GUM_MULTI_DIM_PROJECTION_POINTER
-#endif
-} /* end of namespace GUM */
+#  ifdef GUM_MULTI_DIM_PROJECTION_POINTER
+#    undef GUM_MULTI_DIM_PROJECTION_POINTER
+#  endif
+}   // namespace gum
 #endif /* GUM_PROJECTION_PATTERN_ALLOWED */

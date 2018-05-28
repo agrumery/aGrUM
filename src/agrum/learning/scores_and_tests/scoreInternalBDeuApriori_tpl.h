@@ -38,20 +38,20 @@ namespace gum {
     /// copy constructor
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE
-    ScoreInternalBDeuApriori< IdSetAlloc, CountAlloc >::ScoreInternalBDeuApriori(
-      const ScoreInternalBDeuApriori< IdSetAlloc, CountAlloc >& from)
-        : ScoreInternalApriori< IdSetAlloc, CountAlloc >(from)
-        , __ess(from.__ess) {
+      ScoreInternalBDeuApriori< IdSetAlloc, CountAlloc >::ScoreInternalBDeuApriori(
+        const ScoreInternalBDeuApriori< IdSetAlloc, CountAlloc >& from) :
+        ScoreInternalApriori< IdSetAlloc, CountAlloc >(from),
+        __ess(from.__ess) {
       GUM_CONS_CPY(ScoreInternalBDeuApriori);
     }
 
     /// move constructor
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE
-    ScoreInternalBDeuApriori< IdSetAlloc, CountAlloc >::ScoreInternalBDeuApriori(
-      ScoreInternalBDeuApriori< IdSetAlloc, CountAlloc >&& from)
-        : ScoreInternalApriori< IdSetAlloc, CountAlloc >(std::move(from))
-        , __ess(std::move(from.__ess)) {
+      ScoreInternalBDeuApriori< IdSetAlloc, CountAlloc >::ScoreInternalBDeuApriori(
+        ScoreInternalBDeuApriori< IdSetAlloc, CountAlloc >&& from) :
+        ScoreInternalApriori< IdSetAlloc, CountAlloc >(std::move(from)),
+        __ess(std::move(from.__ess)) {
       GUM_CONS_MOV(ScoreInternalBDeuApriori);
     }
 
@@ -72,8 +72,8 @@ namespace gum {
     /// sets the effective sample size of the internal apriori
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE void
-    ScoreInternalBDeuApriori< IdSetAlloc, CountAlloc >::setEffectiveSampleSize(
-      double ess) {
+      ScoreInternalBDeuApriori< IdSetAlloc, CountAlloc >::setEffectiveSampleSize(
+        double ess) {
       if (ess < 0) {
         GUM_ERROR(OutOfBounds,
                   "The effective sample size of the BDeu's "
@@ -86,13 +86,13 @@ namespace gum {
     /// insert the internal score apriori into a set of countings
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE void
-    ScoreInternalBDeuApriori< IdSetAlloc, CountAlloc >::insertScoreApriori(
-      const std::vector< Size >& modalities,
-      std::vector< std::vector< double, CountAlloc > >& counts,
-      const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >&
-        target_nodesets,
-      const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >&
-        conditioning_nodesets) {
+      ScoreInternalBDeuApriori< IdSetAlloc, CountAlloc >::insertScoreApriori(
+        const std::vector< Size >&                        modalities,
+        std::vector< std::vector< double, CountAlloc > >& counts,
+        const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >&
+          target_nodesets,
+        const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >&
+          conditioning_nodesets) {
       if (__ess == 0) return;
 
       const Size size = Size(target_nodesets.size());
@@ -110,7 +110,7 @@ namespace gum {
           }
 
           // put ess / (r_i * q_i)  into the countings for the targets
-          const double target_weight = __ess / (r_i * q_i);
+          const double                       target_weight = __ess / (r_i * q_i);
           std::vector< double, CountAlloc >& countings =
             counts[target_nodesets[i]->second];
           for (auto& count : countings) {
@@ -119,7 +119,7 @@ namespace gum {
 
           // put ess / q_i into the countings for the conditioning nodes
           if (conditioning_nodesets[i] != nullptr) {
-            const double cond_weight = __ess / q_i;
+            const double                       cond_weight = __ess / q_i;
             std::vector< double, CountAlloc >& countings =
               counts[conditioning_nodesets[i]->second];
             for (auto& count : countings) {

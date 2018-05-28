@@ -65,11 +65,8 @@ namespace gum {
   const Idx O4DGContext::__offset2 = O4DGContext::__nbLogPrime - 2;
 
   // Default constructor.
-  O4DGContext::O4DGContext(Idx* varInst, Idx nbVar)
-      : __DG1ExploredNode(0)
-      , __DG2ExploredNode(0)
-      , __key(0) {
-
+  O4DGContext::O4DGContext(Idx* varInst, Idx nbVar) :
+      __DG1ExploredNode(0), __DG2ExploredNode(0), __key(0) {
     GUM_CONSTRUCTOR(O4DGContext);
     __varInstantiation = varInst;
     __nbVar = nbVar;
@@ -78,8 +75,8 @@ namespace gum {
   // Default Destructor.
   O4DGContext::~O4DGContext() { GUM_DESTRUCTOR(O4DGContext); }
 
-}  // namespace gum
+}   // namespace gum
 
 #ifdef GUM_NO_INLINE
-#include <agrum/multidim/utils/FunctionGraphUtilities/operators/o4DGContext_inl.h>
+#  include <agrum/multidim/utils/FunctionGraphUtilities/operators/o4DGContext_inl.h>
 #endif

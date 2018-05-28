@@ -54,22 +54,23 @@ def guideline(current, modif=False):
 def _checkForFormat(current, modif):
   nbrError = 0
   if cfg.clangformat is None:
-    error("No [clang-format] tool has been found.")
-  with open(os.devnull, "w") as blackhole:
-    for src in srcAgrum():
-      exceptions = ['/external/', 'Parser', 'Scanner']
-      if any(subs in src for subs in exceptions):
-        continue
+    error("No correct [clang-format] tool has been found.")
+  else:
+    with open(os.devnull, "w") as blackhole:
+      for src in srcAgrum():
+        exceptions = ['/external/', 'Parser', 'Scanner']
+        if any(subs in src for subs in exceptions):
+          continue
 
-      line = cfg.clangformat + " " + src + " | cmp " + src + " -"
-      if call(line, shell=True, stderr=blackhole, stdout=blackhole)==1:
-        nbrError += 1
-        if modif:
-          line = cfg.clangformat + " -i " + src
-          call(line, shell=True)
-          notif("    [" + src + "] not correctly formatted : [changed]")
-        else:
-          notif("    [" + src + "] not correctly formatted")
+        line = cfg.clangformat + " " + src + " | cmp " + src + " -"
+        if call(line, shell=True, stderr=blackhole, stdout=blackhole)==1:
+          nbrError += 1
+          if modif:
+            line = cfg.clangformat + " -i " + src
+            call(line, shell=True)
+            notif("    [" + src + "] not correctly formatted : [changed]")
+          else:
+            notif("    [" + src + "] not correctly formatted")
   return nbrError
 
 def __addGPLatTop(filename):
@@ -141,7 +142,7 @@ def _checkCppFileExists(current, modif):
   return nbrError
 
 def _checkForMissingDocs(modif):
-  nbrError = computeNbrError(modif)
+  nbrError = computeNbrError(True)
   if(nbrError>0):
     if(nbrError==1):
       error(str(nbrError)+" undocumented method")

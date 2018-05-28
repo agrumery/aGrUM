@@ -25,13 +25,13 @@
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/graphicalModels/variableNodeMap.h>
-#include <iostream>
-#include <sstream>
+#  include <agrum/graphicalModels/variableNodeMap.h>
+#  include <iostream>
+#  include <sstream>
 
-#ifdef GUM_NO_INLINE
-#include <agrum/graphicalModels/variableNodeMap_inl.h>
-#endif /* GUM_NO_INLINE */
+#  ifdef GUM_NO_INLINE
+#    include <agrum/graphicalModels/variableNodeMap_inl.h>
+#  endif /* GUM_NO_INLINE */
 
 namespace gum {
 

@@ -29,17 +29,18 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // including coco-generated PARSER and SCANNER
-#undef COCO_PARSER_H__
-#undef COCO_SCANNER_H__
-#include <agrum/BN/io/UAI/cocoR/Parser.h>
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#  undef COCO_PARSER_H__
+#  undef COCO_SCANNER_H__
+#  include <agrum/BN/io/UAI/cocoR/Parser.h>
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
   /* =========================================================================*/
   /* ===                               READERS === */
   /* =========================================================================*/
   /**
-   * @class UAIReader UAIReader.h <agrum/BN/io/UAI/UAIReader.h>
+   * @class UAIReader
+   * @headerfile UAIReader.h <agrum/BN/io/UAI/UAIReader.h>
    * @ingroup bn_io
    * @brief Pure virtual class for reading a BN from a file.
    *
@@ -48,16 +49,15 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   class UAIReader : public BNReader< GUM_SCALAR > {
-
     public:
     /**
      * Constructor
-    * A reader is defined for reading a defined file. Hence the 2 args of the
-    * constructor.
-    * Note that the BN has to be built outside the reader. There is no
-    * delegation to
-    * create/destroy
-    * the BN from inside the reader.
+     * A reader is defined for reading a defined file. Hence the 2 args of the
+     * constructor.
+     * Note that the BN has to be built outside the reader. There is no
+     * delegation to
+     * create/destroy
+     * the BN from inside the reader.
      */
     UAIReader(BayesNet< GUM_SCALAR >* bn, const std::string& filename);
 
@@ -82,8 +82,8 @@ namespace gum {
     /// @throws IOError if file not exists
     Size proceed() final;
 
-    void
-    buildFromQuartets(std::vector< std::tuple< float, int, int, int > > quartets);
+    void buildFromQuartets(
+      std::vector< std::tuple< float, int, int, int > > quartets);
 
     /// @{
     /// publishing Errors API
@@ -131,7 +131,7 @@ namespace gum {
 
     void __addFatalError(Idx                lig,
                          Idx                col,
-                         const std::string& s);  // throw an exception
+                         const std::string& s);   // throw an exception
     void __addError(Idx lig, Idx col, const std::string& s);
     void __addWarning(Idx lig, Idx col, const std::string& s);
   };
@@ -144,4 +144,4 @@ namespace gum {
 
 #include "UAIReader_tpl.h"
 
-#endif  // UAIREADER_H
+#endif   // UAIREADER_H

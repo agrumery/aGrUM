@@ -48,7 +48,6 @@ namespace gum {
    *
    */
   class IVisitableGraphLearner {
-
     // ###################################################################
     /// @name Constructor & destructor.
     // ###################################################################
@@ -97,5 +96,5 @@ namespace gum {
 
     /// @}
   };
-}
-#endif  // GUM_INTERFACE_VISITABLE_GRAPH_LEARNER_H
+}   // namespace gum
+#endif   // GUM_INTERFACE_VISITABLE_GRAPH_LEARNER_H

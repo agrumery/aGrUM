@@ -21,7 +21,7 @@
 #include <sstream>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/variables/discreteVariable_inl.h>
+#  include <agrum/variables/discreteVariable_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -53,4 +53,4 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS

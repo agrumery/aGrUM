@@ -79,26 +79,19 @@ namespace gum {
       /// Returns the string representation of a PRMObject.
       static std::string enum2str(prm_type type) {
         switch (type) {
-          case prm_type::CLASS:
-            return "PRMType::CLASS";
+          case prm_type::CLASS: return "PRMType::CLASS";
 
-          case prm_type::CLASS_ELT:
-            return "PRMType::CLASS_ELT";
+          case prm_type::CLASS_ELT: return "PRMType::CLASS_ELT";
 
-          case prm_type::TYPE:
-            return "PRMType::TYPE";
+          case prm_type::TYPE: return "PRMType::TYPE";
 
-          case prm_type::SYSTEM:
-            return "PRMType::SYSTEM";
+          case prm_type::SYSTEM: return "PRMType::SYSTEM";
 
-          case prm_type::INSTANCE:
-            return "PRMType::INSTANCE";
+          case prm_type::INSTANCE: return "PRMType::INSTANCE";
 
-          case prm_type::PRM_INTERFACE:
-            return "PRMType::PRM_INTERFACE";
+          case prm_type::PRM_INTERFACE: return "PRMType::PRM_INTERFACE";
 
-          default:
-            return "unknown";
+          default: return "unknown";
         }
       }
 
@@ -237,7 +230,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/PRM/elements/PRMObject_inl.h>
-#endif  // GUM_NO_INLINE
+#  include <agrum/PRM/elements/PRMObject_inl.h>
+#endif   // GUM_NO_INLINE
 
 #endif /* GUM_PRM_OBJECT_H */

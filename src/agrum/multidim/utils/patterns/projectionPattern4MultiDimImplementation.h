@@ -35,12 +35,12 @@
 
 namespace gum {
 
-#ifdef GUM_MULTI_DIM_PROJECTION_NAME
+#  ifdef GUM_MULTI_DIM_PROJECTION_NAME
   template < typename GUM_SCALAR >
-  MultiDimImplementation< GUM_SCALAR >*
-  GUM_MULTI_DIM_PROJECTION_NAME(const MultiDimImplementation< GUM_SCALAR >& ttable,
-                                const Set< const DiscreteVariable* >& del_vars) {
-#endif
+  MultiDimImplementation< GUM_SCALAR >* GUM_MULTI_DIM_PROJECTION_NAME(
+    const MultiDimImplementation< GUM_SCALAR >& ttable,
+    const Set< const DiscreteVariable* >&       del_vars) {
+#  endif
 
     typename ProjectionRegister4MultiDim< GUM_SCALAR >::ProjectionPtr func;
 
@@ -57,5 +57,5 @@ namespace gum {
     // perform the projection
     return func(&ttable, del_vars);
   }
-} /* end of namespace GUM */
+}   // namespace gum
 #endif /* GUM_PROJECTION_PATTERN_ALLOWED */

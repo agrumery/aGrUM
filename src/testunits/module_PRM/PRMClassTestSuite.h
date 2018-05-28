@@ -1,23 +1,23 @@
 
 /***************************************************************************
-*   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 
 #include <cxxtest/AgrumTestSuite.h>
@@ -224,7 +224,7 @@ namespace gum_tests {
       // Arra,ge
       PRMClass      c("class");
       PRMAttribute* attr = new PRMAttribute("attr", *__boolean);
-      gum::NodeId   id = 100;  // Id generation starts at 0
+      gum::NodeId   id = 100;   // Id generation starts at 0
       // Act & assert
       TS_ASSERT_THROWS_NOTHING(id = c.add(attr));
       TS_ASSERT(c.exists(attr->name()));
@@ -645,11 +645,9 @@ namespace gum_tests {
         knGate.addArc("Nb_true", "state");
         // Assert
         TS_ASSERT(knGate.isOutputNode(knGate.get("state")));
-      } catch (gum::Exception& e) {
-        TS_FAIL(e.errorContent());
-      }
+      } catch (gum::Exception& e) { TS_FAIL(e.errorContent()); }
     }
     /// @}
   };
 
-}  // gum_tests
+}   // namespace gum_tests

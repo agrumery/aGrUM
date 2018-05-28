@@ -28,7 +28,7 @@
 
 /// include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
-#include <agrum/learning/constraints/structuralConstraintDiGraph_inl.h>
+#  include <agrum/learning/constraints/structuralConstraintDiGraph_inl.h>
 #endif /* GUM_NO_INLINE */
 
 namespace gum {
@@ -55,15 +55,15 @@ namespace gum {
 
     /// copy constructor
     StructuralConstraintDiGraph::StructuralConstraintDiGraph(
-      const StructuralConstraintDiGraph& from)
-        : _DiGraph__graph(from._DiGraph__graph) {
+      const StructuralConstraintDiGraph& from) :
+        _DiGraph__graph(from._DiGraph__graph) {
       GUM_CONS_CPY(StructuralConstraintDiGraph);
     }
 
     /// move constructor
     StructuralConstraintDiGraph::StructuralConstraintDiGraph(
-      StructuralConstraintDiGraph&& from)
-        : _DiGraph__graph(std::move(from._DiGraph__graph)) {
+      StructuralConstraintDiGraph&& from) :
+        _DiGraph__graph(std::move(from._DiGraph__graph)) {
       GUM_CONS_MOV(StructuralConstraintDiGraph);
     }
 
@@ -74,19 +74,15 @@ namespace gum {
 
     /// copy operator
     StructuralConstraintDiGraph& StructuralConstraintDiGraph::
-    operator=(const StructuralConstraintDiGraph& from) {
-      if (this != &from) {
-        _DiGraph__graph = from._DiGraph__graph;
-      }
+                                 operator=(const StructuralConstraintDiGraph& from) {
+      if (this != &from) { _DiGraph__graph = from._DiGraph__graph; }
       return *this;
     }
 
     /// move operator
     StructuralConstraintDiGraph& StructuralConstraintDiGraph::
-    operator=(StructuralConstraintDiGraph&& from) {
-      if (this != &from) {
-        _DiGraph__graph = std::move(from._DiGraph__graph);
-      }
+                                 operator=(StructuralConstraintDiGraph&& from) {
+      if (this != &from) { _DiGraph__graph = std::move(from._DiGraph__graph); }
       return *this;
     }
 

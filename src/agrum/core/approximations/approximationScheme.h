@@ -258,11 +258,11 @@ namespace gum {
     void enableMaxTime();
 
     /**
-    * @brief Returns true if stopping criterion on timeout is enabled, false
-    * otherwise.
-    * @return Returns true if stopping criterion on timeout is enabled, false
-    * otherwise.
-    */
+     * @brief Returns true if stopping criterion on timeout is enabled, false
+     * otherwise.
+     * @return Returns true if stopping criterion on timeout is enabled, false
+     * otherwise.
+     */
     bool isEnabledMaxTime() const;
 
     /**
@@ -418,10 +418,10 @@ namespace gum {
     /// If true, verbosity is enabled.
     bool _verbosity;
   };
-}  // namespace gum
+}   // namespace gum
 
 #ifndef GUM_NO_INLINE
-#include <agrum/core/approximations/approximationScheme_inl.h>
+#  include <agrum/core/approximations/approximationScheme_inl.h>
 #endif
 
-#endif  // GUM_APPROXIMATION_SCHEME_H
+#endif   // GUM_APPROXIMATION_SCHEME_H

@@ -1,23 +1,23 @@
 
 /********************************************************************************
-*  Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES *
-*  {prenom.nom}_at_lip6.fr *
-*                                                                               *
-*  This program is free software; you can redistribute it and/or modify *
-*  it under the terms of the GNU General Public License as published by *
-*  the Free Software Foundation; either version 2 of the License, or *
-*  (at your option) any later version. *
-*                                                                               *
-*  This program is distributed in the hope that it will be useful, *
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of *
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the *
-*  GNU General Public License for more details. *
-*                                                                               *
-*  You should have received a copy of the GNU General Public License *
-*  along with this program; if not, write to the *
-*  Free Software Foundation, Inc., *
-*  59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. *
-*********************************************************************************/
+ *  Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES *
+ *  {prenom.nom}_at_lip6.fr *
+ *                                                                               *
+ *  This program is free software; you can redistribute it and/or modify *
+ *  it under the terms of the GNU General Public License as published by *
+ *  the Free Software Foundation; either version 2 of the License, or *
+ *  (at your option) any later version. *
+ *                                                                               *
+ *  This program is distributed in the hope that it will be useful, *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the *
+ *  GNU General Public License for more details. *
+ *                                                                               *
+ *  You should have received a copy of the GNU General Public License *
+ *  along with this program; if not, write to the *
+ *  Free Software Foundation, Inc., *
+ *  59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. *
+ *********************************************************************************/
 
 // ==========================================================================
 #include <cmath>
@@ -38,13 +38,11 @@
 namespace gum_tests {
 
   class MultiDimProjectors4FunctionGraphTestSuite : public CxxTest::TestSuite {
-
     private:
     // ************************************************************************************************
     /// Génération fixe d'une liste de variable
     // ************************************************************************************************
     gum::Sequence< const gum::DiscreteVariable* >* __generateFixVarList() {
-
       gum::Sequence< const gum::DiscreteVariable* >* ret =
         new gum::Sequence< const gum::DiscreteVariable* >();
       ret->insert(new gum::LabelizedVariable("A", "", 2));
@@ -60,7 +58,6 @@ namespace gum_tests {
     /// Génération aléatoire d'une liste de 10 variables
     // ************************************************************************************************
     gum::Sequence< const gum::DiscreteVariable* >* __generateRandomVarList(int i) {
-
       //        gum::Sequence< const gum::DiscreteVariable* >* ret = new
       //        gum::Sequence< const gum::DiscreteVariable* >();
       //        ret->insert ( new gum::LabelizedVariable ( "A", "", 3 ) );
@@ -88,7 +85,6 @@ namespace gum_tests {
     // ************************************************************************************************
     void __shuffleVarList(gum::Sequence< const gum::DiscreteVariable* >* varList,
                           int                                            i) {
-
       for (int j = 0; j < 10; j++)
         varList->swap(rand() % (varList->size()), rand() % (varList->size()));
     }
@@ -99,7 +95,6 @@ namespace gum_tests {
     // ************************************************************************************************
     gum::MultiDimFunctionGraph< double >* __generateFunctionGraph1(
       const gum::Sequence< const gum::DiscreteVariable* >* varList) {
-
       gum::MultiDimFunctionGraph< double >* generatedFunctionGraph =
         gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
 
@@ -144,7 +139,6 @@ namespace gum_tests {
       const gum::Sequence< const gum::DiscreteVariable* >* varList,
       double                                               lowLimit = -100,
       double                                               highLimit = 100) {
-
       gum::MultiDimFunctionGraphGenerator gene(2, 5, *varList);
 
       return gene.generate();
@@ -157,7 +151,6 @@ namespace gum_tests {
     void __saveDiagrams(gum::MultiDimFunctionGraph< double >*    a1,
                         gum::MultiDimFunctionGraph< double >*    a3,
                         gum::Set< const gum::DiscreteVariable* > delVars) {
-
       std::string   dotfile = GET_RESSOURCES_PATH("FunctionGraphError.log");
       std::ofstream output(dotfile.c_str(), std::ios::out);
 
@@ -219,7 +212,6 @@ namespace gum_tests {
                          double&                                  tempsCalcul,
                          double&                                  tempsEval,
                          double                                   delta = 0.01) {
-
       bool                                  hasNoError = true;
       gum::MultiDimFunctionGraph< double >* a3 = nullptr;
 
@@ -230,27 +222,27 @@ namespace gum_tests {
       // Generation du diagramme résultat
 
       switch (operationId) {
-        case 1:  // Test Addition
+        case 1:   // Test Addition
           TS_GUM_ASSERT_THROWS_NOTHING(
             a3 = projectSumMultiDimFunctionGraph(a1, del_vars));
           break;
 
-        case 2:  // Test Multiplication
+        case 2:   // Test Multiplication
           TS_GUM_ASSERT_THROWS_NOTHING(
             a3 = projectProductMultiDimFunctionGraph(a1, del_vars));
           break;
 
-        case 3:  // Test Minimisation
+        case 3:   // Test Minimisation
           TS_GUM_ASSERT_THROWS_NOTHING(
             a3 = projectMinMultiDimFunctionGraph(a1, del_vars));
           break;
 
-        case 4:  // Test Maximisation
+        case 4:   // Test Maximisation
           TS_GUM_ASSERT_THROWS_NOTHING(
             a3 = projectMaxMultiDimFunctionGraph(a1, del_vars));
           break;
 
-        default:  // Should Not Happen
+        default:   // Should Not Happen
           GUM_ERROR(gum::OperationNotAllowed, "HEU .....");
       }
 
@@ -262,7 +254,6 @@ namespace gum_tests {
 
       // ******************************************************************************************************
       if (a3 != nullptr) {
-
         gum::Instantiation instEleminatedVar;
         for (gum::SequenceIteratorSafe< const gum::DiscreteVariable* > varIter =
                a1->variablesSequence().beginSafe();
@@ -286,10 +277,8 @@ namespace gum_tests {
 
         for (instRemainingVar.setFirst(); !instRemainingVar.end() && hasNoError;
              ++instRemainingVar) {
-
           switch (operationId) {
-
-            case 1: {  // Test Addition
+            case 1: {   // Test Addition
               double sum = 0;
 
               for (instEleminatedVar.setVals(instRemainingVar);
@@ -309,9 +298,9 @@ namespace gum_tests {
 
             break;
 
-            case 2: {  // Test Multiplication
-                       // Hard to test because of Huge numbers
-                       //                        double product = 1;
+            case 2: {   // Test Multiplication
+                        // Hard to test because of Huge numbers
+                        //                        double product = 1;
 
               //                        for ( instEleminatedVar.setVals (
               //                        instRemainingVar ); !
@@ -332,7 +321,7 @@ namespace gum_tests {
 
             break;
 
-            case 3: {  // Test Minimisation
+            case 3: {   // Test Minimisation
               double min = std::numeric_limits< double >::max();
 
               for (instEleminatedVar.setVals(instRemainingVar);
@@ -350,7 +339,7 @@ namespace gum_tests {
 
             break;
 
-            case 4: {  // Test Maximisation
+            case 4: {   // Test Maximisation
               double max = -1 * (std::numeric_limits< double >::max());
 
               for (instEleminatedVar.setVals(instRemainingVar);
@@ -368,14 +357,12 @@ namespace gum_tests {
 
             break;
 
-            default:  // Should Not Happen
+            default:   // Should Not Happen
               GUM_ERROR(gum::OperationNotAllowed, "HEU .....");
           }
         }
 
-        if (!hasNoError) {
-          __saveDiagrams(a1, a3, del_vars);
-        }
+        if (!hasNoError) { __saveDiagrams(a1, a3, del_vars); }
 
         delete a3;
       } else {
@@ -394,7 +381,6 @@ namespace gum_tests {
     /// Test sur les fonctions avec valeurs exactes
     // ************************************************************************************************
     void test_Projections_Functions_on_MultiDimFunctionGraphs() {
-
       gum::Timer time;
       double     tempsGene = 0;
       double     tempsCalcul = 0;
@@ -446,8 +432,6 @@ namespace gum_tests {
     ///  pour débogage
     //  ************************************************************************************************
     void est_reproduction() {
-
-
       {
         gum::LabelizedVariable* vA = new gum::LabelizedVariable("A", "", 3);
         gum::LabelizedVariable* vB = new gum::LabelizedVariable("B", "", 5);
@@ -921,7 +905,7 @@ namespace gum_tests {
       }
     }
   };
-}
+}   // namespace gum_tests
 
 
 // ===================================================================================

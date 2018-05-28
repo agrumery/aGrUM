@@ -106,7 +106,7 @@ namespace gum {
     BayesNet< GUM_SCALAR >* __bn;
     ErrorsContainer         __errors;
 
-    void __generateBN(prm::PRMSystem< GUM_SCALAR >& system);
+    void               __generateBN(prm::PRMSystem< GUM_SCALAR >& system);
     static std::string __getVariableName(const std::string& path,
                                          const std::string& type,
                                          const std::string& name,
@@ -115,7 +115,7 @@ namespace gum {
     static std::string __getInstanceName(const std::string& classname);
   };
 
-}  // gum
+}   // namespace gum
 
 // always include the implementation of the templates
 #include <agrum/PRM/o3prm/O3prmBNReader_tpl.h>
@@ -125,4 +125,4 @@ extern template class gum::O3prmBNReader< float >;
 extern template class gum::O3prmBNReader< double >;
 
 
-#endif  // GUM_PRM_O3PRM_BNREADER_H
+#endif   // GUM_PRM_O3PRM_BNREADER_H

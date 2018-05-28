@@ -22,28 +22,25 @@ namespace gum {
 
 
   /// default constructor
-  INLINE BarrenNodesFinder::BarrenNodesFinder(const DAG* dag)
-      : __dag(dag) {
+  INLINE BarrenNodesFinder::BarrenNodesFinder(const DAG* dag) : __dag(dag) {
     // for debugging purposes
     GUM_CONSTRUCTOR(BarrenNodesFinder);
   }
 
 
   /// copy constructor
-  INLINE BarrenNodesFinder::BarrenNodesFinder(const BarrenNodesFinder& from)
-      : __dag(from.__dag)
-      , __observed_nodes(from.__observed_nodes)
-      , __target_nodes(from.__target_nodes) {
+  INLINE BarrenNodesFinder::BarrenNodesFinder(const BarrenNodesFinder& from) :
+      __dag(from.__dag), __observed_nodes(from.__observed_nodes),
+      __target_nodes(from.__target_nodes) {
     // for debugging purposes
     GUM_CONS_CPY(BarrenNodesFinder);
   }
 
 
   /// move constructor
-  INLINE BarrenNodesFinder::BarrenNodesFinder(BarrenNodesFinder&& from) noexcept
-      : __dag(from.__dag)
-      , __observed_nodes(from.__observed_nodes)
-      , __target_nodes(from.__target_nodes) {
+  INLINE BarrenNodesFinder::BarrenNodesFinder(BarrenNodesFinder&& from) noexcept :
+      __dag(from.__dag), __observed_nodes(from.__observed_nodes),
+      __target_nodes(from.__target_nodes) {
     // for debugging purposes
     GUM_CONS_MOV(BarrenNodesFinder);
   }
@@ -58,7 +55,7 @@ namespace gum {
 
   /// copy operator
   INLINE BarrenNodesFinder& BarrenNodesFinder::
-  operator=(const BarrenNodesFinder& from) {
+                            operator=(const BarrenNodesFinder& from) {
     if (this != &from) {
       __dag = from.__dag;
       __observed_nodes = from.__observed_nodes;
@@ -70,7 +67,7 @@ namespace gum {
 
   /// move operator
   INLINE BarrenNodesFinder& BarrenNodesFinder::
-  operator=(BarrenNodesFinder&& from) {
+                            operator=(BarrenNodesFinder&& from) {
     if (this != &from) {
       __dag = from.__dag;
       __observed_nodes = from.__observed_nodes;

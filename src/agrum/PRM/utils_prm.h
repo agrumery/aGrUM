@@ -1,22 +1,22 @@
 /***************************************************************************
-*   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it udnder the terms of the GNU General Public License as published by *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it udnder the terms of the GNU General Public License as published by *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 #ifndef GUM_UTILS_PRM_H
 #define GUM_UTILS_PRM_H
 
@@ -72,7 +72,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     Potential< GUM_SCALAR >* copyPotential(
       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-      const Potential< GUM_SCALAR >& source);
+      const Potential< GUM_SCALAR >&                                       source);
 
     template < typename GUM_SCALAR >
     Potential< GUM_SCALAR >* multPotential(const Potential< GUM_SCALAR >& t1,
@@ -105,4 +105,4 @@ namespace gum {
 
 #include <agrum/PRM/utils_prm_tpl.h>
 
-#endif  // GUM_UTILS_PRM_H
+#endif   // GUM_UTILS_PRM_H

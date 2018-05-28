@@ -30,9 +30,9 @@
 namespace gum {
   template < typename GUM_SCALAR >
   BayesNetFragment< GUM_SCALAR >::BayesNetFragment(
-    const IBayesNet< GUM_SCALAR >& bn)
-      : DiGraphListener(&bn.dag())
-      , __bn(bn) {
+    const IBayesNet< GUM_SCALAR >& bn) :
+      DiGraphListener(&bn.dag()),
+      __bn(bn) {
     GUM_CONSTRUCTOR(BayesNetFragment);
   }
 
@@ -74,7 +74,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >&
-  BayesNetFragment< GUM_SCALAR >::cpt(NodeId id) const {
+               BayesNetFragment< GUM_SCALAR >::cpt(NodeId id) const {
     if (!isInstalledNode(id)) GUM_ERROR(NotFound, id << " is not installed");
 
     if (__localCPTs.exists(id))
@@ -92,7 +92,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE const DiscreteVariable&
-  BayesNetFragment< GUM_SCALAR >::variable(NodeId id) const {
+               BayesNetFragment< GUM_SCALAR >::variable(NodeId id) const {
     if (!isInstalledNode(id)) GUM_ERROR(NotFound, id << " is not installed");
 
     return __bn.variable(id);
@@ -100,7 +100,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE NodeId
-  BayesNetFragment< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
+         BayesNetFragment< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
     NodeId id = __bn.nodeId(var);
 
     if (!isInstalledNode(id))
@@ -111,7 +111,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE NodeId
-  BayesNetFragment< GUM_SCALAR >::idFromName(const std::string& name) const {
+         BayesNetFragment< GUM_SCALAR >::idFromName(const std::string& name) const {
     NodeId id = __bn.idFromName(name);
 
     if (!isInstalledNode(id))
@@ -121,8 +121,8 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE const DiscreteVariable&
-  BayesNetFragment< GUM_SCALAR >::variableFromName(const std::string& name) const {
+  INLINE const DiscreteVariable& BayesNetFragment< GUM_SCALAR >::variableFromName(
+    const std::string& name) const {
     NodeId id = __bn.idFromName(name);
 
     if (!isInstalledNode(id))
@@ -193,7 +193,7 @@ namespace gum {
     // topology
     const auto& parents = this->parents(id);
     for (auto node_it = parents.beginSafe(); node_it != parents.endSafe();
-         ++node_it)  // safe iterator needed here
+         ++node_it)   // safe iterator needed here
       _uninstallArc(*node_it, id);
 
     for (Idx i = 1; i < pot->nbrDim(); i++) {
@@ -209,17 +209,15 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void
-  BayesNetFragment< GUM_SCALAR >::installCPT(NodeId                         id,
-                                             const Potential< GUM_SCALAR >* pot) {
+  void BayesNetFragment< GUM_SCALAR >::installCPT(
+    NodeId id, const Potential< GUM_SCALAR >* pot) {
     if (!dag().existsNode(id))
       GUM_ERROR(NotFound, "Node " << id << " is not installed in the fragment");
 
     if (&(pot->variable(0)) != &(variable(id))) {
       GUM_ERROR(OperationNotAllowed,
                 "The potential is not a marginal for __bn.variable <"
-                  << variable(id).name()
-                  << ">");
+                  << variable(id).name() << ">");
     }
 
     const NodeSet& parents = __bn.parents(id);
@@ -228,8 +226,7 @@ namespace gum {
       if (!parents.contains(__bn.idFromName(pot->variable(i).name())))
         GUM_ERROR(OperationNotAllowed,
                   "Variable <" << pot->variable(i).name()
-                               << "> is not in the parents of node "
-                               << id);
+                               << "> is not in the parents of node " << id);
     }
 
     _installCPT(id, pot);
@@ -271,8 +268,7 @@ namespace gum {
     if (&(pot->variable(0)) != &(__bn.variable(id))) {
       GUM_ERROR(OperationNotAllowed,
                 "The potential is not a marginal for __bn.variable <"
-                  << __bn.variable(id).name()
-                  << ">");
+                  << __bn.variable(id).name() << ">");
     }
 
     _installCPT(id, pot);
@@ -323,9 +319,7 @@ namespace gum {
 
     try {
       bn_name = __bn.property("name");
-    } catch (NotFound&) {
-      bn_name = "no_name";
-    }
+    } catch (NotFound&) { bn_name = "no_name"; }
 
     bn_name = "Fragment of " + bn_name;
 
@@ -375,4 +369,4 @@ namespace gum {
 
     return output.str();
   }
-}  // gum
+}   // namespace gum

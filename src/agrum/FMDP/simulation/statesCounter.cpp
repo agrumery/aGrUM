@@ -27,16 +27,15 @@ namespace gum {
   // =================================================================================================
   //
   // =================================================================================================
-  StatesCounter::StatesCounter()
-      : __counter(MultiDimFunctionGraph< Size >::getTreeInstance()) {
-    GUM_CONSTRUCTOR(StatesCounter)
-  }
+  StatesCounter::StatesCounter() :
+      __counter(MultiDimFunctionGraph< Size >::getTreeInstance()){
+        GUM_CONSTRUCTOR(StatesCounter)}
 
 
-  // =================================================================================================
-  //
-  // =================================================================================================
-  StatesCounter::~StatesCounter() {
+      // =================================================================================================
+      //
+      // =================================================================================================
+      StatesCounter::~StatesCounter() {
     delete __counter;
     GUM_DESTRUCTOR(StatesCounter)
   }
@@ -46,7 +45,6 @@ namespace gum {
   //
   // =================================================================================================
   void StatesCounter::reset(const Instantiation& initialState) {
-
     __counter->clear();
     for (SequenceIteratorSafe< const DiscreteVariable* > varIter =
            initialState.variablesSequence().beginSafe();
@@ -64,7 +62,6 @@ namespace gum {
   //
   // =================================================================================================
   void StatesCounter::incState(const Instantiation& state) {
-
     Idx nbVisits = __counter->get(state);
 
     NodeId parId = __counter->root();
@@ -84,7 +81,6 @@ namespace gum {
                                  NodeId               parentId,
                                  Idx                  parentModa,
                                  Size                 nbVisits) {
-
     Idx varIter = 0;
     if (parentId)
       varIter =
@@ -92,7 +88,6 @@ namespace gum {
 
 
     for (; varIter < state.variablesSequence().size(); ++varIter) {
-
       const DiscreteVariable* curVar = state.variablesSequence().atPos(varIter);
       NodeId varId = __counter->manager()->addInternalNode(curVar);
       if (parentId)
@@ -111,4 +106,4 @@ namespace gum {
     __counter->manager()->setSon(
       parentId, parentModa, __counter->manager()->addTerminalNode(nbVisits + 1));
   }
-}  // End of namespace gum
+}   // End of namespace gum

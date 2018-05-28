@@ -46,7 +46,6 @@ namespace gum {
 
 
   class LeafPair {
-
     public:
     // ==========================================================================
     /// @name Constructor & destructor.
@@ -56,9 +55,7 @@ namespace gum {
     // ###################################################################
     /// Default constructor
     // ###################################################################
-    LeafPair(AbstractLeaf* l1, AbstractLeaf* l2)
-        : __l1(l1)
-        , __l2(l2) {
+    LeafPair(AbstractLeaf* l1, AbstractLeaf* l2) : __l1(l1), __l2(l2) {
       GUM_CONSTRUCTOR(LeafPair)
     }
 
@@ -134,4 +131,4 @@ namespace gum {
 } /* namespace gum */
 
 
-#endif  // GUM_LEAF_PAIR_H
+#endif   // GUM_LEAF_PAIR_H

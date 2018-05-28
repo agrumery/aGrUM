@@ -39,18 +39,18 @@ namespace gum {
 
     /// copy constructor
     INLINE LocalSearchWithTabuList::LocalSearchWithTabuList(
-      const LocalSearchWithTabuList& from)
-        : ApproximationScheme(from)
-        , __MaxNbDecreasing(from.__MaxNbDecreasing) {
+      const LocalSearchWithTabuList& from) :
+        ApproximationScheme(from),
+        __MaxNbDecreasing(from.__MaxNbDecreasing) {
       GUM_CONS_CPY(LocalSearchWithTabuList);
     }
 
     /// move constructor
     INLINE
     LocalSearchWithTabuList::LocalSearchWithTabuList(
-      LocalSearchWithTabuList&& from)
-        : ApproximationScheme(std::move(from))
-        , __MaxNbDecreasing(std::move(from.__MaxNbDecreasing)) {
+      LocalSearchWithTabuList&& from) :
+        ApproximationScheme(std::move(from)),
+        __MaxNbDecreasing(std::move(from.__MaxNbDecreasing)) {
       GUM_CONS_MOV(LocalSearchWithTabuList);
     }
 
@@ -61,7 +61,7 @@ namespace gum {
 
     /// copy operator
     INLINE LocalSearchWithTabuList& LocalSearchWithTabuList::
-    operator=(const LocalSearchWithTabuList& from) {
+                                    operator=(const LocalSearchWithTabuList& from) {
       ApproximationScheme::operator=(from);
       __MaxNbDecreasing = from.__MaxNbDecreasing;
       return *this;
@@ -69,7 +69,7 @@ namespace gum {
 
     /// move operator
     INLINE LocalSearchWithTabuList& LocalSearchWithTabuList::
-    operator=(LocalSearchWithTabuList&& from) {
+                                    operator=(LocalSearchWithTabuList&& from) {
       ApproximationScheme::operator=(std::move(from));
       __MaxNbDecreasing = std::move(from.__MaxNbDecreasing);
       return *this;

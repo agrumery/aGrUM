@@ -31,15 +31,12 @@
 namespace gum {
 
   INLINE
-  Parent::Parent(NodeId pi, Idx m)
-      : parentId(pi)
-      , modality(m) {}
+  Parent::Parent(NodeId pi, Idx m) : parentId(pi), modality(m) {}
 
 
   INLINE
-  Parent::Parent(const Parent& src)
-      : parentId(src.parentId)
-      , modality(src.modality) {}
+  Parent::Parent(const Parent& src) :
+      parentId(src.parentId), modality(src.modality) {}
 
   INLINE
   void* Parent::operator new(size_t s) {
@@ -99,4 +96,4 @@ namespace gum {
   const Link< Parent >* InternalNode::parents() const {
     return __nodeParents.list();
   }
-}  // namespace gum
+}   // namespace gum

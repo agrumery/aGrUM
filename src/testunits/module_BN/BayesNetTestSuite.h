@@ -1,23 +1,23 @@
 
 /***************************************************************************
-*   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 #include <iostream>
 #include <string>
 #include <vector>
@@ -44,7 +44,6 @@ class Size;
 namespace gum_tests {
   int intest = 0;
   class BayesNetTestSuite : public CxxTest::TestSuite {
-
     private:
     void fillTopo(gum::BayesNet< float >& bn, gum::List< gum::NodeId >& idList) {
       try {
@@ -71,20 +70,19 @@ namespace gum_tests {
       fillTopo(bn, idList);
 
       try {
-
         bn.cpt(idList[0]).fillWith({0.2f, 0.8f});
 
         bn.cpt(idList[1]).fillWith({0.3f, 0.7f});
 
         bn.cpt(idList[2]).fillWith({0.1f, 0.9f, 0.9f, 0.1f});
 
-        bn.cpt(idList[3]).fillWith(  // clang-format off
+        bn.cpt(idList[3]).fillWith(   // clang-format off
                            {0.4f, 0.6f,
                             0.5f, 0.5f,
                             0.5f, 0.5f,
-                            1.0f, 0.0f} );  // clang-format on
+                            1.0f, 0.0f} );   // clang-format on
 
-        bn.cpt(idList[4]).fillWith(  // clang-format off
+        bn.cpt(idList[4]).fillWith(   // clang-format off
                       {0.3f,0.6f,0.1f,
                        0.5f,0.5f,0.0f,
                        0.5f,0.5f,0.0f,
@@ -92,7 +90,7 @@ namespace gum_tests {
                        0.4f,0.6f,0.0f,
                        0.5f,0.5f,0.0f,
                        0.5f,0.5f,0.0f,
-                       0.0f,0.0f,1.0f} );  // clang-format on
+                       0.0f,0.0f,1.0f} );   // clang-format on
 
       } catch (gum::Exception& e) {
         std::cerr << std::endl << e.errorContent() << std::endl;
@@ -209,9 +207,7 @@ namespace gum_tests {
         }
       }
 
-      if (copy) {
-        delete copy;
-      }
+      if (copy) { delete copy; }
     }
 
     void /*test*/ CopyOperator() {
@@ -991,4 +987,4 @@ namespace gum_tests {
     }
   };
 
-}  // tests
+}   // namespace gum_tests

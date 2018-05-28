@@ -30,7 +30,8 @@
 #include <agrum/multidim/potential.h>
 
 namespace gum {
-  /** @class ICPTGenerator ICPTGenerator.h <agrum/BN/generator/ICPTGenerator.h>
+  /** @class ICPTGenerator
+   * @headerfile ICPTGenerator.h <agrum/BN/generator/ICPTGenerator.h>
    * @brief Abstract class for generating Conditional Probability Tables.
    * @ingroup bn_generator
    *

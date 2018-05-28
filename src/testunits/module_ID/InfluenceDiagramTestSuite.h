@@ -1,23 +1,23 @@
 
 /***************************************************************************
-*   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 
 /***************************************************************************
@@ -71,22 +71,21 @@
 namespace gum_tests {
 
   class InfluenceDiagramTestSuite : public CxxTest::TestSuite {
-
     private:
     void fillTopo(gum::InfluenceDiagram< float >& id,
                   gum::List< gum::NodeId >&       idList) {
       try {
-        idList.insert(id.addDecisionNode(*decisionVar1));  // 0
-        idList.insert(id.addDecisionNode(*decisionVar2));  // 1
-        idList.insert(id.addDecisionNode(*decisionVar3));  // 2
-        idList.insert(id.addDecisionNode(*decisionVar4));  // 3
-        idList.insert(id.addChanceNode(*chanceVar1));      // 4
-        idList.insert(id.addChanceNode(*chanceVar2));      // 5
-        idList.insert(id.addChanceNode(*chanceVar3));      // 6
-        idList.insert(id.addChanceNode(*chanceVar4));      // 7
-        idList.insert(id.addChanceNode(*chanceVar5));      // 8
-        idList.insert(id.addUtilityNode(*utilityVar1));    // 9
-        idList.insert(id.addUtilityNode(*utilityVar2));    // 10
+        idList.insert(id.addDecisionNode(*decisionVar1));   // 0
+        idList.insert(id.addDecisionNode(*decisionVar2));   // 1
+        idList.insert(id.addDecisionNode(*decisionVar3));   // 2
+        idList.insert(id.addDecisionNode(*decisionVar4));   // 3
+        idList.insert(id.addChanceNode(*chanceVar1));       // 4
+        idList.insert(id.addChanceNode(*chanceVar2));       // 5
+        idList.insert(id.addChanceNode(*chanceVar3));       // 6
+        idList.insert(id.addChanceNode(*chanceVar4));       // 7
+        idList.insert(id.addChanceNode(*chanceVar5));       // 8
+        idList.insert(id.addUtilityNode(*utilityVar1));     // 9
+        idList.insert(id.addUtilityNode(*utilityVar2));     // 10
 
         id.addArc(idList[0], idList[4]);
         id.addArc(idList[4], idList[9]);
@@ -368,7 +367,6 @@ namespace gum_tests {
     }
 
     void testInsertion_1() {
-
       gum::InfluenceDiagram< float > id;
       gum::List< gum::NodeId >       idList;
 
@@ -797,26 +795,26 @@ namespace gum_tests {
       gum::LabelizedVariable uVar3("utilityVar3", "U3", 1);
       gum::LabelizedVariable uVar4("utilityVar4", "U4", 1);
 
-      idList.insert(id.addDecisionNode(dVar1));  // 0
-      idList.insert(id.addDecisionNode(dVar2));  // 1
-      idList.insert(id.addDecisionNode(dVar3));  // 2
-      idList.insert(id.addDecisionNode(dVar4));  // 3
-      idList.insert(id.addChanceNode(cVar1));    // 4
-      idList.insert(id.addChanceNode(cVar2));    // 5
-      idList.insert(id.addChanceNode(cVar3));    // 6
-      idList.insert(id.addChanceNode(cVar4));    // 7
-      idList.insert(id.addChanceNode(cVar5));    // 8
-      idList.insert(id.addChanceNode(cVar6));    // 9
-      idList.insert(id.addChanceNode(cVar7));    // 10
-      idList.insert(id.addChanceNode(cVar8));    // 11
-      idList.insert(id.addChanceNode(cVar9));    // 12
-      idList.insert(id.addChanceNode(cVar10));   // 13
-      idList.insert(id.addChanceNode(cVar11));   // 14
-      idList.insert(id.addChanceNode(cVar12));   // 15
-      idList.insert(id.addUtilityNode(uVar1));   // 16
-      idList.insert(id.addUtilityNode(uVar2));   // 17
-      idList.insert(id.addUtilityNode(uVar3));   // 18
-      idList.insert(id.addUtilityNode(uVar4));   // 19
+      idList.insert(id.addDecisionNode(dVar1));   // 0
+      idList.insert(id.addDecisionNode(dVar2));   // 1
+      idList.insert(id.addDecisionNode(dVar3));   // 2
+      idList.insert(id.addDecisionNode(dVar4));   // 3
+      idList.insert(id.addChanceNode(cVar1));     // 4
+      idList.insert(id.addChanceNode(cVar2));     // 5
+      idList.insert(id.addChanceNode(cVar3));     // 6
+      idList.insert(id.addChanceNode(cVar4));     // 7
+      idList.insert(id.addChanceNode(cVar5));     // 8
+      idList.insert(id.addChanceNode(cVar6));     // 9
+      idList.insert(id.addChanceNode(cVar7));     // 10
+      idList.insert(id.addChanceNode(cVar8));     // 11
+      idList.insert(id.addChanceNode(cVar9));     // 12
+      idList.insert(id.addChanceNode(cVar10));    // 13
+      idList.insert(id.addChanceNode(cVar11));    // 14
+      idList.insert(id.addChanceNode(cVar12));    // 15
+      idList.insert(id.addUtilityNode(uVar1));    // 16
+      idList.insert(id.addUtilityNode(uVar2));    // 17
+      idList.insert(id.addUtilityNode(uVar3));    // 18
+      idList.insert(id.addUtilityNode(uVar4));    // 19
 
       id.addArc(idList[4], idList[6]);
       id.addArc(idList[5], idList[6]);
@@ -887,4 +885,4 @@ namespace gum_tests {
       }
     }
   };
-}
+}   // namespace gum_tests

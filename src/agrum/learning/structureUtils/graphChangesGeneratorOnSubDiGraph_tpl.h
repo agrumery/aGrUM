@@ -32,8 +32,8 @@ namespace gum {
     /// default constructor
     template < typename STRUCT_CONSTRAINT >
     GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::
-      GraphChangesGeneratorOnSubDiGraph(STRUCT_CONSTRAINT& constraint)
-        : _constraint(&constraint) {
+      GraphChangesGeneratorOnSubDiGraph(STRUCT_CONSTRAINT& constraint) :
+        _constraint(&constraint) {
       GUM_CONSTRUCTOR(GraphChangesGeneratorOnSubDiGraph);
     }
 
@@ -41,24 +41,23 @@ namespace gum {
     template < typename STRUCT_CONSTRAINT >
     GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::
       GraphChangesGeneratorOnSubDiGraph(
-        const GraphChangesGeneratorOnSubDiGraph& from)
-        : _constraint(from._constraint)
-        , _target_nodes(from._target_nodes)
-        , _tail_nodes(from._tail_nodes)
-        , _legal_changes(from._legal_changes)
-        , __max_threads_number(from.__max_threads_number) {
+        const GraphChangesGeneratorOnSubDiGraph& from) :
+        _constraint(from._constraint),
+        _target_nodes(from._target_nodes), _tail_nodes(from._tail_nodes),
+        _legal_changes(from._legal_changes),
+        __max_threads_number(from.__max_threads_number) {
       GUM_CONS_CPY(GraphChangesGeneratorOnSubDiGraph);
     }
 
     /// move operator
     template < typename STRUCT_CONSTRAINT >
     GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::
-      GraphChangesGeneratorOnSubDiGraph(GraphChangesGeneratorOnSubDiGraph&& from)
-        : _constraint(from._constraint)
-        , _target_nodes(std::move(from._target_nodes))
-        , _tail_nodes(std::move(from._tail_nodes))
-        , _legal_changes(std::move(from._legal_changes))
-        , __max_threads_number(from.__max_threads_number) {
+      GraphChangesGeneratorOnSubDiGraph(GraphChangesGeneratorOnSubDiGraph&& from) :
+        _constraint(from._constraint),
+        _target_nodes(std::move(from._target_nodes)),
+        _tail_nodes(std::move(from._tail_nodes)),
+        _legal_changes(std::move(from._legal_changes)),
+        __max_threads_number(from.__max_threads_number) {
       GUM_CONS_MOV(GraphChangesGeneratorOnSubDiGraph);
     }
 
@@ -72,8 +71,8 @@ namespace gum {
     /// copy operator
     template < typename STRUCT_CONSTRAINT >
     GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >&
-    GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::
-    operator=(const GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >& from) {
+      GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::operator=(
+        const GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >& from) {
       if (this != &from) {
         _constraint = from._constraint;
         _target_nodes = from._target_nodes;
@@ -87,8 +86,8 @@ namespace gum {
     /// move operator
     template < typename STRUCT_CONSTRAINT >
     GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >&
-    GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::
-    operator=(GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >&& from) {
+        GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::
+        operator=(GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >&& from) {
       if (this != &from) {
         _constraint = std::move(from._constraint);
         _target_nodes = std::move(from._target_nodes);
@@ -106,11 +105,11 @@ namespace gum {
 
       // for all the pairs of nodes, consider adding, reverse and removing arcs
       std::vector< Set< GraphChange > > legal_changes;
-#pragma omp parallel num_threads(__max_threads_number)
+#  pragma omp parallel num_threads(__max_threads_number)
       {
         int num_threads = getNumberOfRunningThreads();
 
-#pragma omp single
+#  pragma omp single
         {
           // resize the change vectors so that each thread can write to its
           // own vector
@@ -183,8 +182,8 @@ namespace gum {
     /// removes a target
     template < typename STRUCT_CONSTRAINT >
     INLINE void
-    GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::eraseTarget(
-      NodeId node) {
+      GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::eraseTarget(
+        NodeId node) {
       _target_nodes.erase(node);
     }
 
@@ -207,8 +206,8 @@ namespace gum {
 
     /// adds a new "tail" node
     template < typename STRUCT_CONSTRAINT >
-    INLINE void
-    GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::addTail(NodeId node) {
+    INLINE void GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::addTail(
+      NodeId node) {
       _tail_nodes = node;
     }
 
@@ -238,52 +237,52 @@ namespace gum {
     template < typename STRUCT_CONSTRAINT >
     INLINE const typename GraphChangesGeneratorOnSubDiGraph<
       STRUCT_CONSTRAINT >::iterator&
-    GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::end() const {
+      GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::end() const {
       return _legal_changes.cend();
     }
 
     /// notify the operator set of a change applied to the graph
     template < typename STRUCT_CONSTRAINT >
     INLINE void
-    GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::modifyGraph(
-      const ArcAddition& change) {}
+      GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::modifyGraph(
+        const ArcAddition& change) {}
 
     /// notify the operator set of a change applied to the graph
     template < typename STRUCT_CONSTRAINT >
     INLINE void
-    GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::modifyGraph(
-      const ArcDeletion& change) {}
+      GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::modifyGraph(
+        const ArcDeletion& change) {}
 
     /// notify the operator set of a change applied to the graph
     template < typename STRUCT_CONSTRAINT >
     INLINE void
-    GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::modifyGraph(
-      const ArcReversal& change) {}
+      GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::modifyGraph(
+        const ArcReversal& change) {}
 
     /// notify the operator set of a change applied to the graph
     template < typename STRUCT_CONSTRAINT >
     INLINE void
-    GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::modifyGraph(
-      const GraphChange& change) {}
+      GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::modifyGraph(
+        const GraphChange& change) {}
 
     /// notifies the generator that we have parsed all its legal changes
     template < typename STRUCT_CONSTRAINT >
-    INLINE void
-    GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::notifyGetCompleted() {
+    INLINE void GraphChangesGeneratorOnSubDiGraph<
+      STRUCT_CONSTRAINT >::notifyGetCompleted() {
       if (_legal_changes.size()) _legal_changes.clear();
     }
 
     /// sets the maximum number of threads used to perform countings
     template < typename STRUCT_CONSTRAINT >
     INLINE void
-    GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::setMaxNbThreads(
-      Size nb) noexcept {
-#if defined(_OPENMP) && defined(NDEBUG)
+      GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::setMaxNbThreads(
+        Size nb) noexcept {
+#  if defined(_OPENMP) && defined(NDEBUG)
       if (nb == 0) nb = getMaxNumberOfThreads();
       __max_threads_number = nb;
-#else
+#  else
       __max_threads_number = 1;
-#endif /* _OPENMP && NDEBUG */
+#  endif /* _OPENMP && NDEBUG */
     }
 
     /// returns the constraint that is used by the generator

@@ -27,8 +27,8 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/agrum.h>
-#include <limits>
+#  include <agrum/agrum.h>
+#  include <limits>
 
 namespace gum {
 
@@ -36,8 +36,8 @@ namespace gum {
   template < typename GUM_SCALAR, template < typename > class TABLE >
   MultiDimProjection< GUM_SCALAR, TABLE >::MultiDimProjection(
     TABLE< GUM_SCALAR >* (*proj)(const TABLE< GUM_SCALAR >&,
-                                 const Set< const DiscreteVariable* >&))
-      : _proj(proj) {
+                                 const Set< const DiscreteVariable* >&)) :
+      _proj(proj) {
     // for debugging purposes
     GUM_CONSTRUCTOR(MultiDimProjection);
   }
@@ -45,8 +45,8 @@ namespace gum {
   // copy constructor
   template < typename GUM_SCALAR, template < typename > class TABLE >
   MultiDimProjection< GUM_SCALAR, TABLE >::MultiDimProjection(
-    const MultiDimProjection< GUM_SCALAR, TABLE >& from)
-      : _proj(from._proj) {
+    const MultiDimProjection< GUM_SCALAR, TABLE >& from) :
+      _proj(from._proj) {
     // for debugging purposes
     GUM_CONS_CPY(MultiDimProjection);
   }
@@ -61,7 +61,7 @@ namespace gum {
   // virtual constructor
   template < typename GUM_SCALAR, template < typename > class TABLE >
   MultiDimProjection< GUM_SCALAR, TABLE >*
-  MultiDimProjection< GUM_SCALAR, TABLE >::newFactory() const {
+    MultiDimProjection< GUM_SCALAR, TABLE >::newFactory() const {
     return new MultiDimProjection< GUM_SCALAR, TABLE >(*this);
   }
 
@@ -139,8 +139,8 @@ namespace gum {
          iter != vars.endSafe();
          ++iter) {
       if (!del_vars.contains(*iter)) {
-        if (std::numeric_limits< long >::max() / (long)(*iter)->domainSize() <
-            res) {
+        if (std::numeric_limits< long >::max() / (long)(*iter)->domainSize()
+            < res) {
           GUM_ERROR(OutOfBounds, "memory usage out of long int range");
         }
 
@@ -155,8 +155,8 @@ namespace gum {
   template < typename GUM_SCALAR, template < typename > class TABLE >
   INLINE std::pair< long, long >
          MultiDimProjection< GUM_SCALAR, TABLE >::memoryUsage(
-    const TABLE< GUM_SCALAR >&            table,
-    const Set< const DiscreteVariable* >& del_vars) const {
+      const TABLE< GUM_SCALAR >&            table,
+      const Set< const DiscreteVariable* >& del_vars) const {
     return memoryUsage(table.variablesSequence(), del_vars);
   }
 

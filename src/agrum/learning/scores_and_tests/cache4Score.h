@@ -99,7 +99,7 @@ namespace gum {
       /** @throws DuplicateElement exception is raised if a score for the same
        * variables already exists */
       void
-      insert(Idx var, const std::vector< Idx >& conditioning_set, double score);
+        insert(Idx var, const std::vector< Idx >& conditioning_set, double score);
 
       /// insert a new score into the cache
       /** @throws DuplicateElement exception is raised if a score for the same
@@ -141,7 +141,7 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/scores_and_tests/cache4Score_inl.h>
+#  include <agrum/learning/scores_and_tests/cache4Score_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_CACHE_4_SCORE_H */

@@ -28,77 +28,70 @@ namespace gum {
 
   namespace learning {
 
-    
+
     // checks whether a string correspond to a missing value
-    template <template<typename> class ALLOC>
-    INLINE bool
-    DBCell::isMissing ( const std::string& str,
-                        const std::vector<std::string,
-                                          ALLOC<std::string>>& missingVals ) {
-      for ( auto missing : missingVals ) {
-        if ( str == missing ) return true;
+    template < template < typename > class ALLOC >
+    INLINE bool DBCell::isMissing(
+      const std::string&                                      str,
+      const std::vector< std::string, ALLOC< std::string > >& missingVals) {
+      for (auto missing : missingVals) {
+        if (str == missing) return true;
       }
       return false;
     }
 
     // returns the best type to store a given element encoded as a string
-    template <template<typename> class ALLOC>
-    INLINE DBCell::EltType
-    DBCell::bestType( const std::string& str,
-                      const std::vector<std::string,
-                                        ALLOC<std::string>>& missingVals ) {
-      if ( isMissing ( str, missingVals ) ) return EltType::MISSING;
-      if ( isInteger ( str ) ) return EltType::INTEGER;
-      if ( isReal ( str ) ) return EltType::REAL;
+    template < template < typename > class ALLOC >
+    INLINE DBCell::EltType DBCell::bestType(
+      const std::string&                                      str,
+      const std::vector< std::string, ALLOC< std::string > >& missingVals) {
+      if (isMissing(str, missingVals)) return EltType::MISSING;
+      if (isInteger(str)) return EltType::INTEGER;
+      if (isReal(str)) return EltType::REAL;
       return EltType::STRING;
     }
-    
+
 
     // returns the DBCell with the best type for an element encoded as a string
-    template <template<typename> class ALLOC>
-    INLINE DBCell
-    DBCell::bestDBCell( const std::string& str,
-                        const std::vector<std::string,
-                                          ALLOC<std::string>>& missingVals ) {
-      if ( isMissing ( str, missingVals ) ) return DBCell ();
-      if ( isInteger ( str ) ) return DBCell ( std::stoi( str ) ); 
-      if ( isReal ( str ) ) return DBCell ( std::stof( str ) );
-      
-      return DBCell ( str );
+    template < template < typename > class ALLOC >
+    INLINE DBCell DBCell::bestDBCell(
+      const std::string&                                      str,
+      const std::vector< std::string, ALLOC< std::string > >& missingVals) {
+      if (isMissing(str, missingVals)) return DBCell();
+      if (isInteger(str)) return DBCell(std::stoi(str));
+      if (isReal(str)) return DBCell(std::stof(str));
+
+      return DBCell(str);
     }
-    
+
 
     /// returns the content of the DBCell as a string, whatever its type
-    template <template<typename> class ALLOC>
-    std::string DBCell::toString (
-      const std::vector<std::string,ALLOC<std::string>>& missingVals ) const {
-      switch ( __type ) {
-      case EltType::STRING:
-        return __strings().first( __val_index );
+    template < template < typename > class ALLOC >
+    std::string DBCell::toString(
+      const std::vector< std::string, ALLOC< std::string > >& missingVals) const {
+      switch (__type) {
+        case EltType::STRING: return __strings().first(__val_index);
 
-      case EltType::REAL:
-        {
+        case EltType::REAL: {
           char buffer[100];
-          sprintf( buffer, "%g", __val_real );
-          return std::string ( buffer );
+          sprintf(buffer, "%g", __val_real);
+          return std::string(buffer);
         }
-        
-      case EltType::INTEGER:
-        return std::to_string ( __val_integer );
 
-      case EltType::MISSING:
-        if ( missingVals.size () )
-          return missingVals[0];
-        else
-          GUM_ERROR ( UndefinedElement, "no missing value symbol found" );
+        case EltType::INTEGER: return std::to_string(__val_integer);
 
-      default:
-        GUM_ERROR( NotImplementedYet,
-                   "type not supported by DBCell toString" );
+        case EltType::MISSING:
+          if (missingVals.size())
+            return missingVals[0];
+          else
+            GUM_ERROR(UndefinedElement, "no missing value symbol found");
+
+        default:
+          GUM_ERROR(NotImplementedYet, "type not supported by DBCell toString");
       }
     }
 
-    
+
   } /* namespace learning */
 
 } /* namespace gum */

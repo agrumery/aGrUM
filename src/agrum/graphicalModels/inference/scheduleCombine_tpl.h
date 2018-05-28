@@ -25,9 +25,9 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/agrum.h>
-#include <agrum/graphicalModels/inference/scheduleCombine.h>
-#include <limits>
+#  include <agrum/agrum.h>
+#  include <agrum/graphicalModels/inference/scheduleCombine.h>
+#  include <limits>
 
 namespace gum {
 
@@ -38,14 +38,11 @@ namespace gum {
     const ScheduleMultiDim< GUM_SCALAR >& table2,
     MultiDimImplementation< GUM_SCALAR >* (*combine)(
       const MultiDimImplementation< GUM_SCALAR >&,
-      const MultiDimImplementation< GUM_SCALAR >&))
-      : ScheduleOperation< GUM_SCALAR >(
-          ScheduleOperation< GUM_SCALAR >::Type::COMBINE_MULTIDIM)
-      , __table1(table1)
-      , __table2(table2)
-      , __args(0)
-      , __results(0)
-      , __combine(combine) {
+      const MultiDimImplementation< GUM_SCALAR >&)) :
+      ScheduleOperation< GUM_SCALAR >(
+        ScheduleOperation< GUM_SCALAR >::Type::COMBINE_MULTIDIM),
+      __table1(table1), __table2(table2), __args(0), __results(0),
+      __combine(combine) {
     // for debugging purposes
     GUM_CONSTRUCTOR(ScheduleCombine);
 
@@ -58,9 +55,7 @@ namespace gum {
            vars2.beginSafe();
          iter != vars2.endSafe();
          ++iter) {
-      if (!vars.exists(*iter)) {
-        vars.insert(*iter);
-      }
+      if (!vars.exists(*iter)) { vars.insert(*iter); }
     }
 
     // create the scheduleMultiDim that should result from the combination of
@@ -71,14 +66,11 @@ namespace gum {
   /// copy constructor
   template < typename GUM_SCALAR >
   ScheduleCombine< GUM_SCALAR >::ScheduleCombine(
-    const ScheduleCombine< GUM_SCALAR >& from)
-      : ScheduleOperation< GUM_SCALAR >(from)
-      , __table1(from.__table1)
-      , __table2(from.__table2)
-      , __result(new ScheduleMultiDim< GUM_SCALAR >(*(from.__result)))
-      , __args(0)
-      , __results(0)
-      , __combine(from.__combine) {
+    const ScheduleCombine< GUM_SCALAR >& from) :
+      ScheduleOperation< GUM_SCALAR >(from),
+      __table1(from.__table1), __table2(from.__table2),
+      __result(new ScheduleMultiDim< GUM_SCALAR >(*(from.__result))), __args(0),
+      __results(0), __combine(from.__combine) {
     // for debugging purposes
     GUM_CONS_CPY(ScheduleCombine);
   }
@@ -86,7 +78,7 @@ namespace gum {
   /// virtual copy constructor: creates a clone of the operation
   template < typename GUM_SCALAR >
   ScheduleCombine< GUM_SCALAR >*
-  ScheduleCombine< GUM_SCALAR >::newFactory() const {
+    ScheduleCombine< GUM_SCALAR >::newFactory() const {
     return new ScheduleCombine< GUM_SCALAR >(*this);
   }
 
@@ -105,7 +97,7 @@ namespace gum {
   /// copy operator
   template < typename GUM_SCALAR >
   ScheduleCombine< GUM_SCALAR >& ScheduleCombine< GUM_SCALAR >::
-  operator=(const ScheduleCombine< GUM_SCALAR >& from) {
+                                 operator=(const ScheduleCombine< GUM_SCALAR >& from) {
     // avoid self assignment
     if (this != &from) {
       ScheduleOperation< GUM_SCALAR >::operator=(from);
@@ -133,20 +125,20 @@ namespace gum {
   /// operator ==
   template < typename GUM_SCALAR >
   INLINE bool ScheduleCombine< GUM_SCALAR >::
-  operator==(const ScheduleOperation< GUM_SCALAR >& op) const {
+              operator==(const ScheduleOperation< GUM_SCALAR >& op) const {
     if (this->type() != op.type()) return false;
 
     const ScheduleCombine< GUM_SCALAR >& real_op =
       static_cast< const ScheduleCombine< GUM_SCALAR >& >(op);
-    return ((((__table1 == real_op.__table1) && (__table2 == real_op.__table2)) ||
-             ((__table1 == real_op.__table2) && (__table2 == real_op.__table1))) &&
-            (__combine == real_op.__combine));
+    return ((((__table1 == real_op.__table1) && (__table2 == real_op.__table2))
+             || ((__table1 == real_op.__table2) && (__table2 == real_op.__table1)))
+            && (__combine == real_op.__combine));
   }
 
   /// operator !=
   template < typename GUM_SCALAR >
   INLINE bool ScheduleCombine< GUM_SCALAR >::
-  operator!=(const ScheduleOperation< GUM_SCALAR >& op) const {
+              operator!=(const ScheduleOperation< GUM_SCALAR >& op) const {
     return !operator==(op);
   }
 
@@ -242,8 +234,8 @@ namespace gum {
   /// displays the content of the operation
   template < typename GUM_SCALAR >
   std::string ScheduleCombine< GUM_SCALAR >::toString() const {
-    return __result->toString() + " = combine ( " + __table1.toString() + " , " +
-           __table2.toString() + " )";
+    return __result->toString() + " = combine ( " + __table1.toString() + " , "
+           + __table2.toString() + " )";
   }
 
   /// returns the scheduleMultidim resulting from the execution of the operation
@@ -253,6 +245,6 @@ namespace gum {
     return *__result;
   }
 
-} /* namespace */
+}   // namespace gum
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

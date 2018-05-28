@@ -1,23 +1,23 @@
 
 /***************************************************************************
-*   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 
 #define TESTKL_MAX_ITER_GIBBS_KL 5
@@ -45,7 +45,6 @@
 namespace gum_tests {
 
   class KLTestSuite : public CxxTest::TestSuite {
-
     public:
     void testConstructor() {
       gum::BayesNet< float > net1;
@@ -205,9 +204,9 @@ namespace gum_tests {
           TS_ASSERT_EQUALS(kl.errorPQ(), (gum::Size)0);
           TS_ASSERT_EQUALS(kl.errorQP(), (gum::Size)0);
           TS_ASSERT_DELTA(kl.hellinger(), 0.321089688, 1e-1);
-          TS_ASSERT(kl.history().size() -
-                      (kl.nbrIterations() - kl.burnIn()) / kl.periodSize() <
-                    2);
+          TS_ASSERT(kl.history().size()
+                      - (kl.nbrIterations() - kl.burnIn()) / kl.periodSize()
+                    < 2);
           break;
         } else {
           if (ii == TESTKL_MAX_ITER_GIBBS_KL - 1) TS_FAIL("even with many tries.");
@@ -227,9 +226,9 @@ namespace gum_tests {
           TS_ASSERT_EQUALS(kl.errorPQ(), (gum::Size)0);
           TS_ASSERT_EQUALS(kl.errorQP(), (gum::Size)0);
           TS_ASSERT_DELTA(kl.hellinger(), 0.321089688, 1e-1);
-          TS_ASSERT(kl.history().size() -
-                      (kl.nbrIterations() - kl.burnIn()) / kl.periodSize() <
-                    2);
+          TS_ASSERT(kl.history().size()
+                      - (kl.nbrIterations() - kl.burnIn()) / kl.periodSize()
+                    < 2);
           break;
         } else {
           if (ii == TESTKL_MAX_ITER_GIBBS_KL - 1) TS_FAIL("even with many tries.");
@@ -237,4 +236,4 @@ namespace gum_tests {
       }
     }
   };
-}  // gum_tests
+}   // namespace gum_tests

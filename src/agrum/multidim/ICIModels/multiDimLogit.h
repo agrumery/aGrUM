@@ -72,7 +72,7 @@ namespace gum {
      */
     MultiDimLogit(
       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-      const MultiDimLogit< GUM_SCALAR >& from);
+      const MultiDimLogit< GUM_SCALAR >&                                   from);
 
     /// Destructor.
     virtual ~MultiDimLogit();

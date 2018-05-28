@@ -31,26 +31,26 @@ namespace gum {
 
     /// sets a new graph from which we will perform checkings
     INLINE void
-    StructuralConstraintForbiddenArcs::setGraphAlone(const DiGraph& graph) {}
+      StructuralConstraintForbiddenArcs::setGraphAlone(const DiGraph& graph) {}
 
     /// checks whether the constraints enable to add arc (x,y)
     INLINE bool
-    StructuralConstraintForbiddenArcs::checkArcAdditionAlone(NodeId x,
-                                                             NodeId y) const {
+      StructuralConstraintForbiddenArcs::checkArcAdditionAlone(NodeId x,
+                                                               NodeId y) const {
       return !_ForbiddenArcs__forbidden_arcs.exists(Arc(x, y));
     }
 
     /// checks whether the constraints enable to remove arc (x,y)
     INLINE bool
-    StructuralConstraintForbiddenArcs::checkArcDeletionAlone(NodeId x,
-                                                             NodeId y) const {
+      StructuralConstraintForbiddenArcs::checkArcDeletionAlone(NodeId x,
+                                                               NodeId y) const {
       return true;
     }
 
     /// checks whether the constraints enable to reverse arc (x,y)
     INLINE bool
-    StructuralConstraintForbiddenArcs::checkArcReversalAlone(NodeId x,
-                                                             NodeId y) const {
+      StructuralConstraintForbiddenArcs::checkArcReversalAlone(NodeId x,
+                                                               NodeId y) const {
       return !_ForbiddenArcs__forbidden_arcs.exists(Arc(y, x));
     }
 
@@ -115,8 +115,7 @@ namespace gum {
         case GraphChangeType::ARC_ADDITION:
           return !checkArcAdditionAlone(change.node1(), change.node2());
 
-        case GraphChangeType::ARC_DELETION:
-          return false;
+        case GraphChangeType::ARC_DELETION: return false;
 
         case GraphChangeType::ARC_REVERSAL:
           return !checkArcAdditionAlone(change.node2(), change.node1());
@@ -149,9 +148,9 @@ namespace gum {
     }
 
 // include all the methods applicable to the whole class hierarchy
-#define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintForbiddenArcs
-#include <agrum/learning/constraints/structuralConstraintPatternRootInline.h>
-#undef GUM_CONSTRAINT_CLASS_NAME
+#  define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintForbiddenArcs
+#  include <agrum/learning/constraints/structuralConstraintPatternRootInline.h>
+#  undef GUM_CONSTRAINT_CLASS_NAME
 
   } /* namespace learning */
 

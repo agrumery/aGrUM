@@ -1,22 +1,22 @@
 /**************************************************************************
-*   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 /**
  * @file
  * @brief Inline implementation of PRMInference.
@@ -43,9 +43,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     PRMInference< GUM_SCALAR >::PRMInference(
-      const PRMInference< GUM_SCALAR >& source)
-        : _prm(source._prm)
-        , _sys(source._sys) {
+      const PRMInference< GUM_SCALAR >& source) :
+        _prm(source._prm),
+        _sys(source._sys) {
       GUM_CONS_CPY(PRMInference);
 
       for (const auto& elt : source.__evidences) {
@@ -66,7 +66,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     PRMInference< GUM_SCALAR >& PRMInference< GUM_SCALAR >::
-    operator=(const PRMInference< GUM_SCALAR >& source) {
+                                operator=(const PRMInference< GUM_SCALAR >& source) {
       clearEvidence();
       _prm = source._prm;
       _sys = source._sys;
@@ -92,7 +92,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     typename PRMInference< GUM_SCALAR >::EMap&
-    PRMInference< GUM_SCALAR >::__EMap(const PRMInstance< GUM_SCALAR >* i) {
+      PRMInference< GUM_SCALAR >::__EMap(const PRMInstance< GUM_SCALAR >* i) {
       if (__evidences.exists(i)) {
         return *(__evidences[i]);
       } else {
@@ -103,8 +103,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void
-    PRMInference< GUM_SCALAR >::addEvidence(const Chain&                   chain,
-                                            const Potential< GUM_SCALAR >& p) {
+      PRMInference< GUM_SCALAR >::addEvidence(const Chain&                   chain,
+                                              const Potential< GUM_SCALAR >& p) {
       if (chain.first->exists(chain.second->id())) {
         if ((p.nbrDim() != 1) || (!p.contains(chain.second->type().variable())))
           GUM_ERROR(OperationNotAllowed,
@@ -135,11 +135,10 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE
-    PRMInference< GUM_SCALAR >::PRMInference(const PRM< GUM_SCALAR >&       prm,
-                                             const PRMSystem< GUM_SCALAR >& system)
-        : _prm(&prm)
-        , _sys(&system) {
+    INLINE PRMInference< GUM_SCALAR >::PRMInference(
+      const PRM< GUM_SCALAR >& prm, const PRMSystem< GUM_SCALAR >& system) :
+        _prm(&prm),
+        _sys(&system) {
       GUM_CONSTRUCTOR(PRMInference);
     }
 
@@ -151,7 +150,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE typename PRMInference< GUM_SCALAR >::EMap&
-    PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >& i) {
+      PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >& i) {
       try {
         return *(__evidences[&i]);
       } catch (NotFound&) {
@@ -161,8 +160,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const typename PRMInference< GUM_SCALAR >::EMap&
-    PRMInference< GUM_SCALAR >::evidence(
-      const PRMInstance< GUM_SCALAR >& i) const {
+      PRMInference< GUM_SCALAR >::evidence(
+        const PRMInstance< GUM_SCALAR >& i) const {
       try {
         return *(__evidences[&i]);
       } catch (NotFound&) {
@@ -172,7 +171,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE typename PRMInference< GUM_SCALAR >::EMap&
-    PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >* i) {
+      PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >* i) {
       try {
         return *(__evidences[i]);
       } catch (NotFound&) {
@@ -182,8 +181,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const typename PRMInference< GUM_SCALAR >::EMap&
-    PRMInference< GUM_SCALAR >::evidence(
-      const PRMInstance< GUM_SCALAR >* i) const {
+      PRMInference< GUM_SCALAR >::evidence(
+        const PRMInstance< GUM_SCALAR >* i) const {
       try {
         return *(__evidences[i]);
       } catch (NotFound&) {

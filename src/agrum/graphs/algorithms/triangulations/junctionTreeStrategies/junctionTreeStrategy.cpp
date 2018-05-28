@@ -35,15 +35,15 @@ namespace gum {
   }
 
   // copy constructor
-  JunctionTreeStrategy::JunctionTreeStrategy(const JunctionTreeStrategy& from)
-      : _triangulation(from._triangulation) {
+  JunctionTreeStrategy::JunctionTreeStrategy(const JunctionTreeStrategy& from) :
+      _triangulation(from._triangulation) {
     // for debugging purposes
     GUM_CONS_CPY(JunctionTreeStrategy);
   }
 
   // move constructor
-  JunctionTreeStrategy::JunctionTreeStrategy(JunctionTreeStrategy&& from)
-      : _triangulation(from._triangulation) {
+  JunctionTreeStrategy::JunctionTreeStrategy(JunctionTreeStrategy&& from) :
+      _triangulation(from._triangulation) {
     // for debugging purposes
     GUM_CONS_MOV(JunctionTreeStrategy);
   }
@@ -57,7 +57,7 @@ namespace gum {
   /** @brief assigns a new triangulation to the junction tree strategy
    * during a move construction */
   void
-  JunctionTreeStrategy::moveTriangulation(StaticTriangulation* triangulation) {
+    JunctionTreeStrategy::moveTriangulation(StaticTriangulation* triangulation) {
     _triangulation = triangulation;
   }
 

@@ -34,18 +34,18 @@
 
 namespace gum {
 
-// a specialized function for combining two multiDimImplementations whose
-// real data type is unknown to us
+  // a specialized function for combining two multiDimImplementations whose
+  // real data type is unknown to us
 
-#ifdef GUM_MULTI_DIM_OPERATOR_NAME
-#define GUM_MULTI_DIM_OPERATOR_TYPE T
+#  ifdef GUM_MULTI_DIM_OPERATOR_NAME
+#    define GUM_MULTI_DIM_OPERATOR_TYPE T
   template < typename T >
   MultiDimImplementation< T >*
-  GUM_MULTI_DIM_OPERATOR_NAME(const MultiDimImplementation< T >* t1,
-                              const MultiDimImplementation< T >* t2)
-#endif
+    GUM_MULTI_DIM_OPERATOR_NAME(const MultiDimImplementation< T >* t1,
+                                const MultiDimImplementation< T >* t2)
+#  endif
 
-// clang-format off
+  // clang-format off
 
 #ifdef GUM_MULTI_DIM_OPERATOR_POINTER_NAME
 #define GUM_MULTI_DIM_OPERATOR_TYPE T *
@@ -293,6 +293,6 @@ namespace gum {
     return result;
   }
 
-#undef GUM_MULTI_DIM_OPERATOR_TYPE
-}
+#  undef GUM_MULTI_DIM_OPERATOR_TYPE
+}   // namespace gum
 #endif /* GUM_OPERATOR_PATTERN_ALLOWED */

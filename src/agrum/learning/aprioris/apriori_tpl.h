@@ -37,26 +37,25 @@ namespace gum {
     /// copy constructor
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE Apriori< IdSetAlloc, CountAlloc >::Apriori(
-      const Apriori< IdSetAlloc, CountAlloc >& from)
-        : _weight(from._weight)
-        , _modalities(from._modalities)
-        , _unapriori_counts(from._unapriori_counts)
-        , _target_nodesets(from._target_nodesets)
-        , _conditioning_nodesets(from._conditioning_nodesets)
-        , _apriori_counts(from._apriori_counts) {
+      const Apriori< IdSetAlloc, CountAlloc >& from) :
+        _weight(from._weight),
+        _modalities(from._modalities), _unapriori_counts(from._unapriori_counts),
+        _target_nodesets(from._target_nodesets),
+        _conditioning_nodesets(from._conditioning_nodesets),
+        _apriori_counts(from._apriori_counts) {
       GUM_CONS_CPY(Apriori);
     }
 
     /// move constructor
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE Apriori< IdSetAlloc, CountAlloc >::Apriori(
-      Apriori< IdSetAlloc, CountAlloc >&& from)
-        : _weight(std::move(from._weight))
-        , _modalities(std::move(from._modalities))
-        , _unapriori_counts(std::move(from._unapriori_counts))
-        , _target_nodesets(std::move(from._target_nodesets))
-        , _conditioning_nodesets(std::move(from._conditioning_nodesets))
-        , _apriori_counts(std::move(from._apriori_counts)) {
+      Apriori< IdSetAlloc, CountAlloc >&& from) :
+        _weight(std::move(from._weight)),
+        _modalities(std::move(from._modalities)),
+        _unapriori_counts(std::move(from._unapriori_counts)),
+        _target_nodesets(std::move(from._target_nodesets)),
+        _conditioning_nodesets(std::move(from._conditioning_nodesets)),
+        _apriori_counts(std::move(from._apriori_counts)) {
       GUM_CONS_MOV(Apriori);
     }
 
@@ -69,7 +68,7 @@ namespace gum {
     /// sets the parameters for the apriori
     template < typename IdSetAlloc, typename CountAlloc >
     void Apriori< IdSetAlloc, CountAlloc >::setParameters(
-      const std::vector< Size >& modalities,
+      const std::vector< Size >&                        modalities,
       std::vector< std::vector< double, CountAlloc > >& counts,
       const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >&
         target_nodesets,
@@ -123,7 +122,7 @@ namespace gum {
     /// returns the apriori vector for a given (conditioned) target set
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE const std::vector< double, CountAlloc >&
-    Apriori< IdSetAlloc, CountAlloc >::getAllApriori(Idx index) {
+                 Apriori< IdSetAlloc, CountAlloc >::getAllApriori(Idx index) {
       if (_weight) {
         return _apriori_counts[_target_nodesets->operator[](index)->second];
       } else {
@@ -136,7 +135,7 @@ namespace gum {
     /// returns the apriori vector for a conditioning set
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE const std::vector< double, CountAlloc >&
-    Apriori< IdSetAlloc, CountAlloc >::getConditioningApriori(Idx index) {
+                 Apriori< IdSetAlloc, CountAlloc >::getConditioningApriori(Idx index) {
       if (_weight) {
         return _apriori_counts[_conditioning_nodesets->operator[](index)->second];
       } else {

@@ -34,7 +34,8 @@ namespace gum {
   namespace prm {
 
     /**
-     * @class PRMAttribute attribute.h <agrum/PRM/attribute.h>
+     * @class PRMAttribute
+     * @headerfile attribute.h <agrum/PRM/attribute.h>
      * @brief PRMAttribute is a member of a Class in a PRM.
      *
      * A PRMAttribute is defined by its name, its containing class, its type and
@@ -56,7 +57,6 @@ namespace gum {
      */
     template < typename GUM_SCALAR >
     class PRMAttribute : public PRMClassElement< GUM_SCALAR > {
-
       public:
       // ========================================================================
       /// @name Constructors & destructor
@@ -75,8 +75,8 @@ namespace gum {
 
       virtual PRMAttribute* newFactory(const PRMClass< GUM_SCALAR >& c) const = 0;
       virtual PRMAttribute*
-      copy(Bijection< const DiscreteVariable*, const DiscreteVariable* > bij)
-        const = 0;
+        copy(Bijection< const DiscreteVariable*, const DiscreteVariable* > bij)
+          const = 0;
 
       virtual void copyCpf(
         const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bif,
@@ -84,7 +84,7 @@ namespace gum {
 
       /// See gum::PRMClassElement::elt_type().
       virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType
-      elt_type() const = 0;
+        elt_type() const = 0;
 
       /// See gum::PRMClassElement::type().
       virtual PRMType< GUM_SCALAR >& type() = 0;
@@ -174,7 +174,7 @@ namespace gum {
       PRMAttribute(const PRMAttribute< GUM_SCALAR >& source);
 
       virtual PRMType< GUM_SCALAR >* _type() = 0;
-      virtual void _type(PRMType< GUM_SCALAR >* t) = 0;
+      virtual void                   _type(PRMType< GUM_SCALAR >* t) = 0;
     };
 
 
@@ -183,7 +183,7 @@ namespace gum {
 
 
   } /* namespace prm */
-}  // namespace gum
+}   // namespace gum
 
 #include <agrum/PRM/elements/PRMAttribute_tpl.h>
 

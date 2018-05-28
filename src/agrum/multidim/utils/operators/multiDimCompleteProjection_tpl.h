@@ -27,16 +27,16 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/agrum.h>
-#include <limits>
+#  include <agrum/agrum.h>
+#  include <limits>
 
 namespace gum {
 
   // constructor
   template < typename GUM_SCALAR, template < typename > class TABLE >
   MultiDimCompleteProjection< GUM_SCALAR, TABLE >::MultiDimCompleteProjection(
-    GUM_SCALAR (*proj)(const TABLE< GUM_SCALAR >&, Instantiation*))
-      : _proj(proj) {
+    GUM_SCALAR (*proj)(const TABLE< GUM_SCALAR >&, Instantiation*)) :
+      _proj(proj) {
     // for debugging purposes
     GUM_CONSTRUCTOR(MultiDimCompleteProjection);
   }
@@ -44,8 +44,8 @@ namespace gum {
   // copy constructor
   template < typename GUM_SCALAR, template < typename > class TABLE >
   MultiDimCompleteProjection< GUM_SCALAR, TABLE >::MultiDimCompleteProjection(
-    const MultiDimCompleteProjection< GUM_SCALAR, TABLE >& from)
-      : _proj(from._proj) {
+    const MultiDimCompleteProjection< GUM_SCALAR, TABLE >& from) :
+      _proj(from._proj) {
     // for debugging purposes
     GUM_CONS_CPY(MultiDimCompleteProjection);
   }
@@ -60,7 +60,7 @@ namespace gum {
   // virtual constructor
   template < typename GUM_SCALAR, template < typename > class TABLE >
   MultiDimCompleteProjection< GUM_SCALAR, TABLE >*
-  MultiDimCompleteProjection< GUM_SCALAR, TABLE >::newFactory() const {
+    MultiDimCompleteProjection< GUM_SCALAR, TABLE >::newFactory() const {
     return new MultiDimCompleteProjection< GUM_SCALAR, TABLE >(*this);
   }
 
@@ -80,8 +80,8 @@ namespace gum {
 
   // returns the projection function currently used by the projector
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  INLINE
-  GUM_SCALAR (*MultiDimCompleteProjection< GUM_SCALAR, TABLE >::projectFunction())(
+  INLINE GUM_SCALAR (
+    *MultiDimCompleteProjection< GUM_SCALAR, TABLE >::projectFunction())(
     const TABLE< GUM_SCALAR >&, Instantiation*) {
     return _proj;
   }

@@ -71,13 +71,13 @@ namespace gum {
 
   // clang-format off
   /**
-   * @class TaxiSimulator taxiSimulator.h <agrum/FMDP/simulation/taxiSimulator.h>
+* @class TaxiSimulator
+* @headerfile taxiSimulator.h <agrum/FMDP/simulation/taxiSimulator.h>
    * @brief A class to simulate the Taxi problem
    * @ingroup fmdp_group
    */
   // clang-format on
   class TaxiSimulator : public AbstractSimulator {
-
     public:
     // ===========================================================================
     /// @name Constructors, Destructors.
@@ -175,17 +175,17 @@ namespace gum {
     /// @}
 
     /// Variables data structures
-    Sequence< const DiscreteVariable* > __taxiVars;
+    Sequence< const DiscreteVariable* >                           __taxiVars;
     Bijection< const DiscreteVariable*, const DiscreteVariable* > __primeMap;
-    LabelizedVariable* __xPos;
-    LabelizedVariable* __yPos;
-    LabelizedVariable* __passengerPos;
-    LabelizedVariable* __passengerDest;
-    LabelizedVariable* __fuelLevel;
+    LabelizedVariable*                                            __xPos;
+    LabelizedVariable*                                            __yPos;
+    LabelizedVariable*                                            __passengerPos;
+    LabelizedVariable*                                            __passengerDest;
+    LabelizedVariable*                                            __fuelLevel;
 
     /// Actions
-    Sequence< Idx > __taxiActions;
-    HashTable< Idx, std::string* > __actionMap;  //__actionMap.insert ( actionId,
+    Sequence< Idx >                __taxiActions;
+    HashTable< Idx, std::string* > __actionMap;   //__actionMap.insert ( actionId,
     // new std::string ( action ) );
     TaxiSimulationAction __lastAction;
 
@@ -196,4 +196,4 @@ namespace gum {
 } /* namespace gum */
 
 
-#endif  // GUM_TAXI_SIMULATOR_H
+#endif   // GUM_TAXI_SIMULATOR_H

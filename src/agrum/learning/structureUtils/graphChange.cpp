@@ -29,8 +29,8 @@
 #include <agrum/learning/structureUtils/graphChange.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/learning/structureUtils/graphChange_inl.h>
-#endif  // GUM_NOINLINE
+#  include <agrum/learning/structureUtils/graphChange_inl.h>
+#endif   // GUM_NOINLINE
 
 namespace gum {
 

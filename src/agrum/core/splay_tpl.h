@@ -36,7 +36,7 @@ namespace gum {
 
   template < class Element >
   INLINE void SplayBinaryNode< Element >::_copy(
-    const SplayBinaryNode< Element >& from,
+    const SplayBinaryNode< Element >&                  from,
     HashTable< Element, SplayBinaryNode< Element >* >& addr) {
     if (addr.exists(from.elt))
       addr[from.elt] = this;
@@ -68,16 +68,13 @@ namespace gum {
 
   template < class Element >
   INLINE SplayBinaryNode< Element >::SplayBinaryNode(
-    const Element& e,
+    const Element&                                     e,
     HashTable< Element, SplayBinaryNode< Element >* >& addr,
-    SplayBinaryNode* g,
-    SplayBinaryNode* d,
-    SplayBinaryNode* p)
-      : elt(e)
-      , size(1)
-      , fg(g)
-      , fd(d)
-      , pere(p) {
+    SplayBinaryNode*                                   g,
+    SplayBinaryNode*                                   d,
+    SplayBinaryNode*                                   p) :
+      elt(e),
+      size(1), fg(g), fd(d), pere(p) {
     if (addr.exists(elt))
       addr[elt] = this;
     else
@@ -91,7 +88,7 @@ namespace gum {
 
   template < class Element >
   INLINE SplayBinaryNode< Element >::SplayBinaryNode(
-    const SplayBinaryNode< Element >& from,
+    const SplayBinaryNode< Element >&                  from,
     HashTable< Element, SplayBinaryNode< Element >* >& addr) {
     _copy(from, addr);
     // for debugging purposes
@@ -220,7 +217,7 @@ namespace gum {
 
     while (pere) {
       // While this node isn't the root
-      gdp = pere->pere;  // gdp can be nullptr
+      gdp = pere->pere;   // gdp can be nullptr
 
       if (!gdp) {
         if (this == pere->fg) {
@@ -254,14 +251,14 @@ namespace gum {
       }
     }
 
-    return this;  // for compiler satisfaction
+    return this;   // for compiler satisfaction
   }
 
   // Concatenation of two threes
 
   template < class Element >
   INLINE SplayBinaryNode< Element >* SplayBinaryNode< Element >::join(
-    const SplayBinaryNode< Element >* e,
+    const SplayBinaryNode< Element >*                  e,
     HashTable< Element, SplayBinaryNode< Element >* >& addr) {
     SplayBinaryNode< Element >* b = new SplayBinaryNode< Element >(*e, addr);
     GUM_ASSERT(b != 0);
@@ -363,9 +360,7 @@ namespace gum {
   // basic constructor, make an empty splay tree
 
   template < class Element >
-  INLINE SplayTree< Element >::SplayTree()
-      : root(0)
-      , addr() {
+  INLINE SplayTree< Element >::SplayTree() : root(0), addr() {
     // for debugging purposes
     GUM_CONSTRUCTOR(SplayTree);
   }
@@ -376,9 +371,7 @@ namespace gum {
    */
 
   template < class Element >
-  INLINE SplayTree< Element >::SplayTree(const Element& e)
-      : root(0)
-      , addr() {
+  INLINE SplayTree< Element >::SplayTree(const Element& e) : root(0), addr() {
     root = new SplayBinaryNode< Element >(e, addr);
     // for debugging purposes
     GUM_CONSTRUCTOR(SplayTree);
@@ -387,8 +380,7 @@ namespace gum {
   // copy constructor
 
   template < class Element >
-  INLINE SplayTree< Element >::SplayTree(const SplayTree& from)
-      : addr() {
+  INLINE SplayTree< Element >::SplayTree(const SplayTree& from) : addr() {
     _copy(from);
     // for debugging purposes
     GUM_CONS_CPY(SplayTree);
@@ -398,7 +390,7 @@ namespace gum {
 
   template < class Element >
   INLINE SplayTree< Element >& SplayTree< Element >::
-  operator=(const SplayTree< Element >& from) {
+                               operator=(const SplayTree< Element >& from) {
     // avoid self assignment
     if (this != &from) {
       // for debugging purposes
@@ -507,9 +499,7 @@ namespace gum {
   INLINE Element& SplayTree< Element >::front() {
     SplayBinaryNode< Element >* act = root;
 
-    if (!root) {
-      GUM_ERROR(NotFound, "The splay tree is empty");
-    }
+    if (!root) { GUM_ERROR(NotFound, "The splay tree is empty"); }
 
     if (act->fg)
       for (; act->fg; act = act->fg)
@@ -526,9 +516,7 @@ namespace gum {
   INLINE Element& SplayTree< Element >::back() {
     SplayBinaryNode< Element >* act = root;
 
-    if (!root) {
-      GUM_ERROR(NotFound, "The splay tree is empty");
-    }
+    if (!root) { GUM_ERROR(NotFound, "The splay tree is empty"); }
 
     if (act->fd)
       for (; act->fd; act = act->fd)
@@ -666,8 +654,8 @@ namespace gum {
 
   template < class Element >
   INLINE static void
-  removeInfo(const SplayBinaryNode< Element >* e,
-             HashTable< Element, SplayBinaryNode< Element >* >& addr) {
+    removeInfo(const SplayBinaryNode< Element >*                  e,
+               HashTable< Element, SplayBinaryNode< Element >* >& addr) {
     GUM_ASSERT(addr.exists(e->getElement()));
     addr.erase(e->getElement());
 
@@ -744,7 +732,7 @@ namespace gum {
 
   template < typename Element >
   INLINE SplayTree< Element >
-  SplayTree< Element >::split_by_val(const Element& e) {
+         SplayTree< Element >::split_by_val(const Element& e) {
     GUM_ASSERT(root != 0);
 
     if (!addr.exists(e)) {
@@ -762,9 +750,7 @@ namespace gum {
 
     s.root = act->fd;
 
-    if (s.root) {
-      s.root->pere = 0;
-    }
+    if (s.root) { s.root->pere = 0; }
 
     root = act->fg;
 

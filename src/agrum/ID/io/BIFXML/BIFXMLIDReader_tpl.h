@@ -20,10 +20,10 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/ID/io/BIFXML/BIFXMLIDReader.h>
-#include <fstream>
-#include <iostream>
-#include <sstream>
+#  include <agrum/ID/io/BIFXML/BIFXMLIDReader.h>
+#  include <fstream>
+#  include <iostream>
+#  include <sstream>
 
 namespace gum {
   /*
@@ -33,8 +33,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE BIFXMLIDReader< GUM_SCALAR >::BIFXMLIDReader(
-    InfluenceDiagram< GUM_SCALAR >* infdiag, const std::string& filePath)
-      : IDReader< GUM_SCALAR >(infdiag, filePath) {
+    InfluenceDiagram< GUM_SCALAR >* infdiag, const std::string& filePath) :
+      IDReader< GUM_SCALAR >(infdiag, filePath) {
     GUM_CONSTRUCTOR(BIFXMLIDReader);
     __infdiag = infdiag;
     __filePath = filePath;
@@ -102,8 +102,8 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void
-  BIFXMLIDReader< GUM_SCALAR >::__parsingVariables(ticpp::Element* parentNetwork) {
+  void BIFXMLIDReader< GUM_SCALAR >::__parsingVariables(
+    ticpp::Element* parentNetwork) {
     // Counting the number of variable for the signal
     int                               nbVar = 0;
     ticpp::Iterator< ticpp::Element > varIte("VARIABLE");
@@ -158,7 +158,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void
-  BIFXMLIDReader< GUM_SCALAR >::__fillingDiagram(ticpp::Element* parentNetwork) {
+    BIFXMLIDReader< GUM_SCALAR >::__fillingDiagram(ticpp::Element* parentNetwork) {
     // Counting the number of variable for the signal
     int                               nbDef = 0;
     ticpp::Iterator< ticpp::Element > definitionIte("DEFINITION");
@@ -232,4 +232,4 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS

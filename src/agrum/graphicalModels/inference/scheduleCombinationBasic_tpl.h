@@ -25,10 +25,10 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/agrum.h>
-#include <limits>
+#  include <agrum/agrum.h>
+#  include <limits>
 
-#include <agrum/graphicalModels/inference/scheduleCombinationBasic.h>
+#  include <agrum/graphicalModels/inference/scheduleCombinationBasic.h>
 
 namespace gum {
 
@@ -37,9 +37,9 @@ namespace gum {
   ScheduleCombinationBasic< GUM_SCALAR >::ScheduleCombinationBasic(
     MultiDimImplementation< GUM_SCALAR >* (*combine)(
       const MultiDimImplementation< GUM_SCALAR >&,
-      const MultiDimImplementation< GUM_SCALAR >&))
-      : ScheduleCombination< GUM_SCALAR >()
-      , _combine(combine) {
+      const MultiDimImplementation< GUM_SCALAR >&)) :
+      ScheduleCombination< GUM_SCALAR >(),
+      _combine(combine) {
     /// for debugging purposes
     GUM_CONSTRUCTOR(ScheduleCombinationBasic);
   }
@@ -47,9 +47,9 @@ namespace gum {
   /// copy constructor
   template < typename GUM_SCALAR >
   ScheduleCombinationBasic< GUM_SCALAR >::ScheduleCombinationBasic(
-    const ScheduleCombinationBasic< GUM_SCALAR >& from)
-      : ScheduleCombination< GUM_SCALAR >(from)
-      , _combine(from._combine) {
+    const ScheduleCombinationBasic< GUM_SCALAR >& from) :
+      ScheduleCombination< GUM_SCALAR >(from),
+      _combine(from._combine) {
     /// for debugging purposes
     GUM_CONS_CPY(ScheduleCombinationBasic);
   }
@@ -64,7 +64,7 @@ namespace gum {
   /// virtual constructor
   template < typename GUM_SCALAR >
   ScheduleCombinationBasic< GUM_SCALAR >*
-  ScheduleCombinationBasic< GUM_SCALAR >::newFactory() const {
+    ScheduleCombinationBasic< GUM_SCALAR >::newFactory() const {
     return new ScheduleCombinationBasic< GUM_SCALAR >(*this);
   }
 
@@ -253,8 +253,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE ScheduleMultiDim< GUM_SCALAR >
          ScheduleCombinationBasic< GUM_SCALAR >::combine(
-    const Set< const MultiDimImplementation< GUM_SCALAR >* >& set,
-    Schedule< GUM_SCALAR >&                                   schedule) {
+      const Set< const MultiDimImplementation< GUM_SCALAR >* >& set,
+      Schedule< GUM_SCALAR >&                                   schedule) {
     return ScheduleCombination< GUM_SCALAR >::combine(set, schedule);
   }
 
@@ -263,8 +263,8 @@ namespace gum {
   template < template < typename > class TABLE >
   INLINE ScheduleMultiDim< GUM_SCALAR >
          ScheduleCombinationBasic< GUM_SCALAR >::combine(
-    const Set< const TABLE< GUM_SCALAR >* >& set,
-    Schedule< GUM_SCALAR >&                  schedule) {
+      const Set< const TABLE< GUM_SCALAR >* >& set,
+      Schedule< GUM_SCALAR >&                  schedule) {
     return ScheduleCombination< GUM_SCALAR >::combine(set, schedule);
   }
 
@@ -300,7 +300,7 @@ namespace gum {
     // for each pair of tables (i,j), compute the size of the table that would
     // result from the addition of tables i and j and store the result into a
     // priorityQueue
-    std::pair< Idx, Idx > pair;
+    std::pair< Idx, Idx >                        pair;
     PriorityQueue< std::pair< Idx, Idx >, Size > queue;
 
     for (Idx i = 0; i < tables.size(); ++i) {
@@ -500,8 +500,8 @@ namespace gum {
       long new_size = 1;
 
       for (const auto var : seq1) {
-        if (std::numeric_limits< long >::max() / (long)var->domainSize() <
-            new_size)
+        if (std::numeric_limits< long >::max() / (long)var->domainSize()
+            < new_size)
           GUM_ERROR(OutOfBounds, "memory usage out of long int range");
 
         new_size *= long(var->domainSize());
@@ -510,8 +510,8 @@ namespace gum {
 
       for (const auto var : seq2) {
         if (!seq1.exists(var)) {
-          if (std::numeric_limits< long >::max() / (long)var->domainSize() <
-              new_size)
+          if (std::numeric_limits< long >::max() / (long)var->domainSize()
+              < new_size)
             GUM_ERROR(OutOfBounds, "memory usage out of long int range");
 
           new_size *= long(var->domainSize());
@@ -525,9 +525,7 @@ namespace gum {
 
       current_memory += new_size;
 
-      if (current_memory > max_memory) {
-        max_memory = current_memory;
-      }
+      if (current_memory > max_memory) { max_memory = current_memory; }
 
       // substitute tables[pair.first] by the result
       if (tables[ti] && is_t_new[ti]) {
@@ -605,8 +603,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE std::pair< long, long >
          ScheduleCombinationBasic< GUM_SCALAR >::memoryUsage(
-    const Set< const MultiDimImplementation< GUM_SCALAR >* >& set,
-    const Schedule< GUM_SCALAR >&                             schedule) {
+      const Set< const MultiDimImplementation< GUM_SCALAR >* >& set,
+      const Schedule< GUM_SCALAR >&                             schedule) {
     return ScheduleCombination< GUM_SCALAR >::memoryUsage(set, schedule);
   }
 
@@ -615,8 +613,8 @@ namespace gum {
   template < template < typename > class TABLE >
   INLINE std::pair< long, long >
          ScheduleCombinationBasic< GUM_SCALAR >::memoryUsage(
-    const Set< const TABLE< GUM_SCALAR >* >& set,
-    const Schedule< GUM_SCALAR >&            schedule) {
+      const Set< const TABLE< GUM_SCALAR >* >& set,
+      const Schedule< GUM_SCALAR >&            schedule) {
     return ScheduleCombination< GUM_SCALAR >::memoryUsage(set, schedule);
   }
 

@@ -52,7 +52,7 @@ namespace gum {
 
   // add a label with a new index (we assume that we will NEVER remove a label)
   INLINE LabelizedVariable&
-  LabelizedVariable::addLabel(const std::string& aLabel) {
+         LabelizedVariable::addLabel(const std::string& aLabel) {
     __labels.insert(aLabel);
 
     return *this;
@@ -72,8 +72,8 @@ namespace gum {
 
   INLINE LabelizedVariable::LabelizedVariable(const std::string& aName,
                                               const std::string& aDesc,
-                                              const int          nbrLabel)
-      : DiscreteVariable(aName, aDesc) {
+                                              const int          nbrLabel) :
+      DiscreteVariable(aName, aDesc) {
     // for debugging purposes
     GUM_CONSTRUCTOR(LabelizedVariable);
 
@@ -86,8 +86,8 @@ namespace gum {
   INLINE
   LabelizedVariable::LabelizedVariable(const std::string&                aName,
                                        const std::string&                aDesc,
-                                       const std::vector< std::string >& labels)
-      : DiscreteVariable(aName, aDesc) {
+                                       const std::vector< std::string >& labels) :
+      DiscreteVariable(aName, aDesc) {
     // for debugging purposes
     GUM_CONSTRUCTOR(LabelizedVariable);
     __labels.clear();
@@ -102,9 +102,8 @@ namespace gum {
   // Copy constructor
 
   INLINE
-  LabelizedVariable::LabelizedVariable(const LabelizedVariable& aLDRV)
-      : DiscreteVariable(aLDRV)
-      , __labels(aLDRV.__labels) {
+  LabelizedVariable::LabelizedVariable(const LabelizedVariable& aLDRV) :
+      DiscreteVariable(aLDRV), __labels(aLDRV.__labels) {
     // for debugging purposes
     GUM_CONSTRUCTOR(LabelizedVariable);
   }
@@ -123,11 +122,9 @@ namespace gum {
 
   // copy operator
   INLINE LabelizedVariable& LabelizedVariable::
-  operator=(const LabelizedVariable& aLDRV) {
+                            operator=(const LabelizedVariable& aLDRV) {
     // avoid self assignment
-    if (&aLDRV != this) {
-      _copy(aLDRV);
-    }
+    if (&aLDRV != this) { _copy(aLDRV); }
 
     return *this;
   }

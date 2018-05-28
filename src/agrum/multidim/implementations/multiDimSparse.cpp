@@ -31,4 +31,4 @@ namespace gum {
   template class MultiDimSparse< float >;
   template class MultiDimSparse< double >;
 
-}  // namespace gum
+}   // namespace gum

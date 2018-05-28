@@ -26,7 +26,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // to ease parsers in IDE
-#include <agrum/graphicalModels/variableNodeMap.h>
+#  include <agrum/graphicalModels/variableNodeMap.h>
 
 namespace gum {
 
@@ -112,7 +112,7 @@ namespace gum {
 
   INLINE
   const DiscreteVariable&
-  VariableNodeMap::variableFromName(const std::string& name) const {
+    VariableNodeMap::variableFromName(const std::string& name) const {
     return *__nodes2vars.second(idFromName(name));
   }
 
@@ -138,7 +138,7 @@ namespace gum {
   }
 
   INLINE const std::string&
-  VariableNodeMap::name(const DiscreteVariable& var) const {
+               VariableNodeMap::name(const DiscreteVariable& var) const {
     return __names2nodes.first(__nodes2vars.first(&var));
   }
 

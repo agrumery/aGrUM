@@ -72,4 +72,4 @@ namespace gum_tests {
       t.endMultipleChanges();
     }
   };
-}
+}   // namespace gum_tests

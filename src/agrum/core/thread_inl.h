@@ -33,14 +33,13 @@ namespace gum {
 
   namespace thread {
 
-  
+
     // returns the maximum number of threads possible
-    INLINE unsigned int getMaxNumberOfThreads () {
+    INLINE unsigned int getMaxNumberOfThreads() {
       return std::thread::hardware_concurrency();
     }
 
-    
+
   } /* namespace thread */
 
 } /* namespace gum */
-

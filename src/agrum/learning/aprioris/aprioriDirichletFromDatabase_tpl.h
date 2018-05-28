@@ -33,8 +33,8 @@ namespace gum {
     template < typename RowFilter >
     INLINE AprioriDirichletFromDatabase< IdSetAlloc, CountAlloc >::
       AprioriDirichletFromDatabase(const RowFilter&           filter,
-                                   const std::vector< Size >& var_modalities)
-        : Counter< IdSetAlloc, CountAlloc >(filter, var_modalities) {
+                                   const std::vector< Size >& var_modalities) :
+        Counter< IdSetAlloc, CountAlloc >(filter, var_modalities) {
       GUM_CONSTRUCTOR(AprioriDirichletFromDatabase);
     }
 
@@ -42,9 +42,9 @@ namespace gum {
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE AprioriDirichletFromDatabase< IdSetAlloc, CountAlloc >::
       AprioriDirichletFromDatabase(
-        const AprioriDirichletFromDatabase< IdSetAlloc, CountAlloc >& from)
-        : Apriori< IdSetAlloc, CountAlloc >(from)
-        , Counter< IdSetAlloc, CountAlloc >(from) {
+        const AprioriDirichletFromDatabase< IdSetAlloc, CountAlloc >& from) :
+        Apriori< IdSetAlloc, CountAlloc >(from),
+        Counter< IdSetAlloc, CountAlloc >(from) {
       GUM_CONS_CPY(AprioriDirichletFromDatabase);
     }
 
@@ -52,9 +52,9 @@ namespace gum {
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE AprioriDirichletFromDatabase< IdSetAlloc, CountAlloc >::
       AprioriDirichletFromDatabase(
-        AprioriDirichletFromDatabase< IdSetAlloc, CountAlloc >&& from)
-        : Apriori< IdSetAlloc, CountAlloc >(std::move(from))
-        , Counter< IdSetAlloc, CountAlloc >(std::move(from)) {
+        AprioriDirichletFromDatabase< IdSetAlloc, CountAlloc >&& from) :
+        Apriori< IdSetAlloc, CountAlloc >(std::move(from)),
+        Counter< IdSetAlloc, CountAlloc >(std::move(from)) {
       GUM_CONS_MOV(AprioriDirichletFromDatabase);
     }
 
@@ -82,16 +82,17 @@ namespace gum {
         const Size size =
           Size(Apriori< IdSetAlloc, CountAlloc >::_target_nodesets->size());
         for (Idx i = 0; i < size; ++i) {
-          if (Apriori< IdSetAlloc, CountAlloc >::_target_nodesets->operator[](i) !=
-              nullptr) {
+          if (Apriori< IdSetAlloc, CountAlloc >::_target_nodesets->operator[](i)
+              != nullptr) {
             if (Apriori< IdSetAlloc, CountAlloc >::_conditioning_nodesets->
-                operator[](i) != nullptr) {
+                operator[](i)
+                != nullptr) {
               Counter< IdSetAlloc, CountAlloc >::addNodeSet(
                 Apriori< IdSetAlloc, CountAlloc >::_target_nodesets->operator[](i)
                   ->first.back(),
                 Apriori< IdSetAlloc, CountAlloc >::_conditioning_nodesets
                   ->
-                  operator[](i)
+                operator[](i)
                   ->first);
             } else {
               Counter< IdSetAlloc, CountAlloc >::addNodeSet(

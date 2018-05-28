@@ -210,10 +210,10 @@ namespace gum {
   /// MultiDims
   template < typename GUM_SCALAR >
   void
-  registerPartialInstantiation(const std::string& instantiation_func_name,
-                               const std::string& type_multidim,
-                               typename PartialInstantiationRegister4MultiDim<
-                                 GUM_SCALAR >::PartialInstantiationPtr function);
+    registerPartialInstantiation(const std::string& instantiation_func_name,
+                                 const std::string& type_multidim,
+                                 typename PartialInstantiationRegister4MultiDim<
+                                   GUM_SCALAR >::PartialInstantiationPtr function);
 
 } /* namespace gum */
 

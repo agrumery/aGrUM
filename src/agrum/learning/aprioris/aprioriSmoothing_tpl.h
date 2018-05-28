@@ -37,16 +37,16 @@ namespace gum {
     /// copy constructor
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE AprioriSmoothing< IdSetAlloc, CountAlloc >::AprioriSmoothing(
-      const AprioriSmoothing< IdSetAlloc, CountAlloc >& from)
-        : Apriori< IdSetAlloc, CountAlloc >(from) {
+      const AprioriSmoothing< IdSetAlloc, CountAlloc >& from) :
+        Apriori< IdSetAlloc, CountAlloc >(from) {
       GUM_CONS_CPY(AprioriSmoothing);
     }
 
     /// move constructor
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE AprioriSmoothing< IdSetAlloc, CountAlloc >::AprioriSmoothing(
-      AprioriSmoothing< IdSetAlloc, CountAlloc >&& from)
-        : Apriori< IdSetAlloc, CountAlloc >(std::move(from)) {
+      AprioriSmoothing< IdSetAlloc, CountAlloc >&& from) :
+        Apriori< IdSetAlloc, CountAlloc >(std::move(from)) {
       GUM_CONS_MOV(AprioriSmoothing);
     }
 
@@ -81,8 +81,9 @@ namespace gum {
 
           if (this->_conditioning_nodesets->operator[](i) != nullptr) {
             const double weight =
-              this->_weight *
-              (*(this->_modalities))[(*(this->_target_nodesets))[i]->first.back()];
+              this->_weight
+              * (*(this
+                     ->_modalities))[(*(this->_target_nodesets))[i]->first.back()];
             std::vector< double, CountAlloc >& apriori =
               this->_apriori_counts[this->_conditioning_nodesets->operator[](i)
                                       ->second];
@@ -96,8 +97,8 @@ namespace gum {
 
     /// indicates whether an apriori is of a certain type
     template < typename IdSetAlloc, typename CountAlloc >
-    INLINE bool
-    AprioriSmoothing< IdSetAlloc, CountAlloc >::isOfType(const std::string& type) {
+    INLINE bool AprioriSmoothing< IdSetAlloc, CountAlloc >::isOfType(
+      const std::string& type) {
       return AprioriSmoothingType::isOfType(type);
     }
 

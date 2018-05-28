@@ -40,7 +40,7 @@
 #define GIBBSKL_DEFAULT_BURNIN 2000
 #define GIBBSKL_DEFAULT_TIMEOUT 6000
 
-#define GIBBSKL_POURCENT_DRAWN_SAMPLE 10  // percent drawn
+#define GIBBSKL_POURCENT_DRAWN_SAMPLE 10   // percent drawn
 #define GIBBSKL_DRAWN_AT_RANDOM false
 
 namespace gum {
@@ -48,14 +48,14 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   GibbsKL< GUM_SCALAR >::GibbsKL(const IBayesNet< GUM_SCALAR >& P,
-                                 const IBayesNet< GUM_SCALAR >& Q)
-      : KL< GUM_SCALAR >(P, Q)
-      , ApproximationScheme()
-      , GibbsOperator< GUM_SCALAR >(
-          P,
-          nullptr,
-          1 + (P.size() * GIBBSKL_POURCENT_DRAWN_SAMPLE / 100),
-          GIBBSKL_DRAWN_AT_RANDOM) {
+                                 const IBayesNet< GUM_SCALAR >& Q) :
+      KL< GUM_SCALAR >(P, Q),
+      ApproximationScheme(),
+      GibbsOperator< GUM_SCALAR >(
+        P,
+        nullptr,
+        1 + (P.size() * GIBBSKL_POURCENT_DRAWN_SAMPLE / 100),
+        GIBBSKL_DRAWN_AT_RANDOM) {
     GUM_CONSTRUCTOR(GibbsKL);
 
     setEpsilon(GIBBSKL_DEFAULT_EPSILON);
@@ -68,15 +68,15 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  GibbsKL< GUM_SCALAR >::GibbsKL(const KL< GUM_SCALAR >& kl)
-      : KL< GUM_SCALAR >(kl)
-      , ApproximationScheme()
+  GibbsKL< GUM_SCALAR >::GibbsKL(const KL< GUM_SCALAR >& kl) :
+      KL< GUM_SCALAR >(kl), ApproximationScheme()
       // Gibbs operator with 10% of nodes changes at random between each samples
-      , GibbsOperator< GUM_SCALAR >(
-          kl.p(),
-          nullptr,
-          1 + (kl.p().size() * GIBBSKL_POURCENT_DRAWN_SAMPLE / 100),
-          true) {
+      ,
+      GibbsOperator< GUM_SCALAR >(
+        kl.p(),
+        nullptr,
+        1 + (kl.p().size() * GIBBSKL_POURCENT_DRAWN_SAMPLE / 100),
+        true) {
     GUM_CONSTRUCTOR(GibbsKL);
 
     setEpsilon(GIBBSKL_DEFAULT_EPSILON);
@@ -121,7 +121,6 @@ namespace gum {
     GUM_SCALAR pp, pq;
 
     do {
-
       this->disableMinEpsilonRate();
       I = this->nextSample(I);
       updateApproximationScheme();
@@ -136,9 +135,9 @@ namespace gum {
         _hellinger += std::pow(std::sqrt(pp) - std::sqrt(pq), 2) / pp;
 
         if (pq != (GUM_SCALAR)0.0) {
-          _bhattacharya += std::sqrt(pq / pp);  // std::sqrt(pp*pq)/pp
+          _bhattacharya += std::sqrt(pq / pp);   // std::sqrt(pp*pq)/pp
           /// check_rate=true;
-          this->enableMinEpsilonRate();  // replace check_rate=true;
+          this->enableMinEpsilonRate();   // replace check_rate=true;
           ratio = pq / pp;
           delta = (GUM_SCALAR)log2(ratio);
           _klPQ += delta;
@@ -158,13 +157,13 @@ namespace gum {
         }
       }
 
-      if (this->isEnabledMinEpsilonRate()) {  // replace check_rate
+      if (this->isEnabledMinEpsilonRate()) {   // replace check_rate
         // delta is used as a temporary variable
         delta = _klPQ / nbrIterations();
         error = (GUM_SCALAR)std::abs(delta - oldPQ);
         oldPQ = delta;
       }
-    } while (continueApproximationScheme(error));  //
+    } while (continueApproximationScheme(error));   //
 
     _klPQ = -_klPQ / (nbrIterations());
     _klQP = -_klQP / (nbrIterations());
@@ -181,4 +180,4 @@ namespace gum {
   Size GibbsKL< GUM_SCALAR >::burnIn() const {
     return this->_burn_in;
   }
-}
+}   // namespace gum

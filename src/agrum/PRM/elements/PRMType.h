@@ -57,7 +57,6 @@ namespace gum {
      */
     template < typename GUM_SCALAR >
     class PRMType : public PRMObject {
-
       public:
       // ==========================================================================
       /// @name Friends of PRMType

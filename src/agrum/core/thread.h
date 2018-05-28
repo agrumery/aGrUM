@@ -40,18 +40,18 @@ namespace gum {
      * @ingroup basicstruct_group
      *
      * @return Returns the number of concurrent threads supported by the
-     * implementation. The value should be considered only a hint. 
+     * implementation. The value should be considered only a hint.
      */
     unsigned int getMaxNumberOfThreads();
 
-  }
+  }   // namespace thread
 
 } /* namespace gum */
 
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/core/thread_inl.h>
+#  include <agrum/core/thread_inl.h>
 #endif /* GUM_NO_INLINE */
 
 

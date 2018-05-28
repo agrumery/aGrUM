@@ -40,7 +40,8 @@ namespace gum {
 
 
     /**
-     * @class PRMInstance instance.h <agrum/PRM/elements/instance.h>
+     * @class PRMInstance
+     * @headerfile instance.h <agrum/PRM/elements/instance.h>
      *
      * @brief An PRMInstance is a Bayesian Network fragment defined by a Class
      * and used in a PRMSystem.
@@ -57,7 +58,6 @@ namespace gum {
      */
     template < typename GUM_SCALAR >
     class PRMInstance : public PRMObject {
-
       public:
       // ========================================================================
       /// @name Constructors & private operators.
@@ -211,7 +211,7 @@ namespace gum {
        *         in this->type() and the second are in this.
        */
       const Bijection< const DiscreteVariable*, const DiscreteVariable* >&
-      bijection() const;
+        bijection() const;
 
       /// @}
       // ========================================================================
@@ -292,13 +292,13 @@ namespace gum {
        * @brief Returns a vector of pairs of refering attributes of id.
        */
       std::vector< std::pair< PRMInstance< GUM_SCALAR >*, std::string > >&
-      getRefAttr(NodeId id);
+        getRefAttr(NodeId id);
 
       /**
        * @brief Returns a vector of pairs of refering attributes of id.
        */
       const std::vector< std::pair< PRMInstance< GUM_SCALAR >*, std::string > >&
-      getRefAttr(NodeId id) const;
+        getRefAttr(NodeId id) const;
 
       /// @}
       // ========================================================================
@@ -340,7 +340,6 @@ namespace gum {
        * instantiations.
        */
       class RefIterator {
-
         public:
         explicit RefIterator(Set< PRMInstance< GUM_SCALAR >* >& set);
 

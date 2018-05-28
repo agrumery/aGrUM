@@ -43,7 +43,6 @@ namespace gum {
   // clang-format on
   template < typename GUM_SCALAR >
   class SetTerminalNodePolicy {
-
     public:
     ~SetTerminalNodePolicy() { clearAllTerminalNodes(); }
 
@@ -137,6 +136,6 @@ namespace gum {
     const NodeId jocker = 0;
   };
 
-}  // End of namespace gum
+}   // End of namespace gum
 
 #endif /* GUM_MULTI_DIM_FUNCTION_GRAPH_SET_TERMINAL_NODE_POLICY_H */

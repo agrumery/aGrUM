@@ -39,9 +39,9 @@ namespace gum {
 
   /// constructor for an a priori non empty graph
   UnconstrainedEliminationSequenceStrategy::
-    UnconstrainedEliminationSequenceStrategy(UndiGraph*                  graph,
-                                             const NodeProperty< Size >* dom_sizes)
-      : EliminationSequenceStrategy(graph, dom_sizes) {
+    UnconstrainedEliminationSequenceStrategy(
+      UndiGraph* graph, const NodeProperty< Size >* dom_sizes) :
+      EliminationSequenceStrategy(graph, dom_sizes) {
     // for debugging purposes
     GUM_CONSTRUCTOR(UnconstrainedEliminationSequenceStrategy);
   }
@@ -49,8 +49,8 @@ namespace gum {
   /// copy constructor
   UnconstrainedEliminationSequenceStrategy::
     UnconstrainedEliminationSequenceStrategy(
-      const UnconstrainedEliminationSequenceStrategy& from)
-      : EliminationSequenceStrategy(from) {
+      const UnconstrainedEliminationSequenceStrategy& from) :
+      EliminationSequenceStrategy(from) {
     // for debugging purposes
     GUM_CONS_CPY(UnconstrainedEliminationSequenceStrategy);
   }
@@ -58,8 +58,8 @@ namespace gum {
   /// move constructor
   UnconstrainedEliminationSequenceStrategy::
     UnconstrainedEliminationSequenceStrategy(
-      UnconstrainedEliminationSequenceStrategy&& from)
-      : EliminationSequenceStrategy(std::move(from)) {
+      UnconstrainedEliminationSequenceStrategy&& from) :
+      EliminationSequenceStrategy(std::move(from)) {
     // for debugging purposes
     GUM_CONS_MOV(UnconstrainedEliminationSequenceStrategy);
   }

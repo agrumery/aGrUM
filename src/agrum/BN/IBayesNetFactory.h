@@ -35,7 +35,8 @@
 
 namespace gum {
   /**
-   * @class IBayesNetFactory IBayesNetFactory.h <agrum/BN/IBayesNetFactory.h>
+   * @class IBayesNetFactory
+   * @headerfile IBayesNetFactory.h <agrum/BN/IBayesNetFactory.h>
    * @ingroup bn_group
    *
    * IBayesNetFactory is the non-template interface for @ref BayesNetFactory :
@@ -43,7 +44,6 @@ namespace gum {
    * GUM_SCALAR template argument (for instance for BN readers).
    */
   class IBayesNetFactory {
-
     public:
     /**
      * @brief The enumeration of states in which the factory can be in.
@@ -64,8 +64,7 @@ namespace gum {
       FACT_ENTRY
     };
 
-    IBayesNetFactory()
-        : __verbose(false){};
+    IBayesNetFactory() : __verbose(false){};
     // just to make some compilers happy
     virtual ~IBayesNetFactory(){};
 
@@ -86,35 +85,35 @@ namespace gum {
     /// @{
     /// @brief Please @see BayesNetFactory<GUM_SCALAR> for documentation.
     virtual const DiscreteVariable& varInBN(NodeId id) = 0;
-    virtual factory_state state() const = 0;
-    virtual NodeId variableId(const std::string& name) const = 0;
-    virtual Size cptDomainSize(NodeId n) const = 0;
+    virtual factory_state           state() const = 0;
+    virtual NodeId                  variableId(const std::string& name) const = 0;
+    virtual Size                    cptDomainSize(NodeId n) const = 0;
 
-    virtual void startNetworkDeclaration() = 0;
-    virtual void addNetworkProperty(const std::string& propName,
-                                    const std::string& propValue) = 0;
-    virtual void endNetworkDeclaration() = 0;
-    virtual void startVariableDeclaration() = 0;
-    virtual void variableName(const std::string& name) = 0;
-    virtual void variableDescription(const std::string& desc) = 0;
-    virtual void addModality(const std::string& name) = 0;
-    virtual void setVariableCPTImplementation(MultiDimAdressable* impl) = 0;
+    virtual void   startNetworkDeclaration() = 0;
+    virtual void   addNetworkProperty(const std::string& propName,
+                                      const std::string& propValue) = 0;
+    virtual void   endNetworkDeclaration() = 0;
+    virtual void   startVariableDeclaration() = 0;
+    virtual void   variableName(const std::string& name) = 0;
+    virtual void   variableDescription(const std::string& desc) = 0;
+    virtual void   addModality(const std::string& name) = 0;
+    virtual void   setVariableCPTImplementation(MultiDimAdressable* impl) = 0;
     virtual NodeId endVariableDeclaration() = 0;
-    virtual void startParentsDeclaration(const std::string& var) = 0;
-    virtual void addParent(const std::string& var) = 0;
-    virtual void endParentsDeclaration() = 0;
-    virtual void startRawProbabilityDeclaration(const std::string& var) = 0;
-    virtual void rawConditionalTable(const std::vector< std::string >& variables,
-                                     const std::vector< float >& rawTable) = 0;
-    virtual void rawConditionalTable(const std::vector< float >& rawTable) = 0;
-    virtual void endRawProbabilityDeclaration() = 0;
+    virtual void   startParentsDeclaration(const std::string& var) = 0;
+    virtual void   addParent(const std::string& var) = 0;
+    virtual void   endParentsDeclaration() = 0;
+    virtual void   startRawProbabilityDeclaration(const std::string& var) = 0;
+    virtual void   rawConditionalTable(const std::vector< std::string >& variables,
+                                       const std::vector< float >& rawTable) = 0;
+    virtual void   rawConditionalTable(const std::vector< float >& rawTable) = 0;
+    virtual void   endRawProbabilityDeclaration() = 0;
     virtual void startFactorizedProbabilityDeclaration(const std::string& var) = 0;
     virtual void startFactorizedEntry() = 0;
     virtual void endFactorizedEntry() = 0;
     virtual void setParentModality(const std::string& parent,
                                    const std::string& modality) = 0;
     virtual void
-    setVariableValuesUnchecked(const std::vector< float >& values) = 0;
+                 setVariableValuesUnchecked(const std::vector< float >& values) = 0;
     virtual void setVariableValues(const std::vector< float >& values) = 0;
     virtual void endFactorizedProbabilityDeclaration() = 0;
     virtual void setVariable(const DiscreteVariable& var) = 0;
@@ -128,4 +127,4 @@ namespace gum {
   };
 } /* namespace gum */
 
-#endif  // GUM_ASBTRACT_BAYESNET_FACTORY_H
+#endif   // GUM_ASBTRACT_BAYESNET_FACTORY_H

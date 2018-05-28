@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief A class for storing several translators 
+ * @brief A class for storing several translators
  *
  * When learning Bayesian networks, the records of the train dataset are
  * used to construct contingency tables that are either exploited in
@@ -108,14 +108,12 @@ namespace gum {
      * set.translateSafe ( row2, 3 ); // raises gum::UndefinedElement
      * @endcode
      */
-    template <template<typename> class ALLOC = std::allocator>
+    template < template < typename > class ALLOC = std::allocator >
     class DBTranslatorSet {
       public:
-
       /// type for the allocators passed in arguments of methods
-      using allocator_type =
-        typename DBTranslator<ALLOC>::allocator_type;
-      
+      using allocator_type = typename DBTranslator< ALLOC >::allocator_type;
+
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -123,29 +121,28 @@ namespace gum {
       /// @{
 
       /// default constructor
-      DBTranslatorSet( const allocator_type& alloc = allocator_type () );
+      DBTranslatorSet(const allocator_type& alloc = allocator_type());
 
       /// copy constructor
-      DBTranslatorSet( const DBTranslatorSet<ALLOC>& from );
+      DBTranslatorSet(const DBTranslatorSet< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      DBTranslatorSet( const DBTranslatorSet<ALLOC>& from,
-                       const allocator_type& alloc );
+      DBTranslatorSet(const DBTranslatorSet< ALLOC >& from,
+                      const allocator_type&           alloc);
 
       /// move constructor
-      DBTranslatorSet( DBTranslatorSet<ALLOC>&& from );
+      DBTranslatorSet(DBTranslatorSet< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      DBTranslatorSet( DBTranslatorSet<ALLOC>&& from,
-                       const allocator_type& alloc );
+      DBTranslatorSet(DBTranslatorSet< ALLOC >&& from,
+                      const allocator_type&      alloc);
 
       /// virtual copy constructor
-      virtual DBTranslatorSet<ALLOC>* clone () const;
-      
+      virtual DBTranslatorSet< ALLOC >* clone() const;
+
       /// virtual copy constructor with a given allocator
-      virtual DBTranslatorSet<ALLOC>*
-      clone ( const allocator_type& alloc ) const;
-      
+      virtual DBTranslatorSet< ALLOC >* clone(const allocator_type& alloc) const;
+
       /// destructor
       virtual ~DBTranslatorSet();
 
@@ -158,29 +155,25 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBTranslatorSet<ALLOC>&
-      operator=( const DBTranslatorSet<ALLOC>& from );
+      DBTranslatorSet< ALLOC >& operator=(const DBTranslatorSet< ALLOC >& from);
 
       /// move operator
-      DBTranslatorSet<ALLOC>&
-      operator=( DBTranslatorSet<ALLOC>&& from );
+      DBTranslatorSet< ALLOC >& operator=(DBTranslatorSet< ALLOC >&& from);
 
       /// returns the kth translator
       /** @warning this operator assumes that there are at least k translators.
        * So, it won't check that the kth translator actually exists. If unsure,
        * use method translatorSafe that performs this check. */
-      DBTranslator<ALLOC>&
-      operator[]( const std::size_t k );
+      DBTranslator< ALLOC >& operator[](const std::size_t k);
 
       /// returns the kth translator
       /** @warning this operator assumes that there are at least k translators.
        * So, it won't check that the kth translator actually exists. If unsure,
        * use method translatorSafe that performs this check. */
-      const DBTranslator<ALLOC>&
-      operator[]( const std::size_t k ) const;
+      const DBTranslator< ALLOC >& operator[](const std::size_t k) const;
 
       /// @}
-      
+
 
       // ##########################################################################
       /// @name Accessors / Modifiers
@@ -199,9 +192,9 @@ namespace gum {
        * other translators are added.
        * @throw DuplicateElement is raised if there already exists a translator
        * reading the column passed in argument. */
-      template <template<template<typename> class> class Translator>
-      std::size_t insertTranslator( const Translator<ALLOC>& translator,
-                                    const std::size_t column );
+      template < template < template < typename > class > class Translator >
+      std::size_t insertTranslator(const Translator< ALLOC >& translator,
+                                   const std::size_t          column);
 
       /// inserts a new translator for a given variable in the translator set
       /** The first template parameter (GUM_SCALAR) is necessary only for
@@ -219,13 +212,13 @@ namespace gum {
        * @throw DuplicateElement is raised if there already exists a translator
        * reading the column passed in argument.
        */
-      template <typename GUM_SCALAR = float,
-                template<typename> class XALLOC = ALLOC>
+      template < typename GUM_SCALAR = float,
+                 template < typename > class XALLOC = ALLOC >
       std::size_t insertTranslator(
-        const Variable& var,
-        const std::size_t column,
-        const std::vector<std::string,XALLOC<std::string>>& missing_symbols );
-      
+        const Variable&                                          var,
+        const std::size_t                                        column,
+        const std::vector< std::string, XALLOC< std::string > >& missing_symbols);
+
       /// inserts a new translator for a given variable in the translator set
       /** The first template parameter (GUM_SCALAR) is necessary only for
        * inserting variables of true types DiscretizedVariable and
@@ -240,9 +233,8 @@ namespace gum {
        * @throw DuplicateElement is raised if there already exists a translator
        * reading the column passed in argument.
        */
-      template <typename GUM_SCALAR = float>
-      std::size_t insertTranslator( const Variable& var,
-                                    const std::size_t column );
+      template < typename GUM_SCALAR = float >
+      std::size_t insertTranslator(const Variable& var, const std::size_t column);
 
       /** @brief erases either the kth translator or that parsing the kth
        * column of the input database
@@ -257,32 +249,30 @@ namespace gum {
        * that parses the kth column of the input database.
        * @warning if the translator does not exists, nothing is done. In
        * particular, no exception is raised. */
-      void eraseTranslator ( const std::size_t k,
-                             const bool k_is_input_col = false );
+      void eraseTranslator(const std::size_t k, const bool k_is_input_col = false);
 
       /// returns the kth translator
       /** @warning this method assumes that there are at least k translators.
        * So, it won't check that the kth translator actually exists. If unsure,
        * use method translatorSafe that performs this check.*/
-      DBTranslator<ALLOC>& translator ( const std::size_t k );
-      
+      DBTranslator< ALLOC >& translator(const std::size_t k);
+
       /// returns the kth translator
       /** @warning this method assumes that there are at least k translators.
        * So, it won't check that the kth translator actually exists. If unsure,
        * use method translatorSafe that performs this check.*/
-      const DBTranslator<ALLOC>& translator ( const std::size_t k ) const;
-      
+      const DBTranslator< ALLOC >& translator(const std::size_t k) const;
+
       /// returns the kth translator
       /** @throw UndefinedElement is raised if there are fewer than k
        * translators in the translator set. */
-      DBTranslator<ALLOC>& translatorSafe ( const std::size_t k );
-      
+      DBTranslator< ALLOC >& translatorSafe(const std::size_t k);
+
       /// returns the kth translator
       /** @throw UndefinedElement is raised if there are fewer than k
        * translators in the translator set. */
-      const DBTranslator<ALLOC>&
-      translatorSafe ( const std::size_t k ) const;
-      
+      const DBTranslator< ALLOC >& translatorSafe(const std::size_t k) const;
+
       /// ask the kth translator to translate a string in a row of the database
       /** @param row a row of the original database
        * @param k the index of the translator that will perform the translation
@@ -293,10 +283,10 @@ namespace gum {
        * set of columns of the database and the set of translators used, k may
        * not necessarily corresponds to the index of a column in the database:
        * this is the index of a translator within the set */
-      template <template<typename> class OTHER_ALLOC>
-      DBTranslatedValue
-      translate ( const std::vector<std::string,OTHER_ALLOC<std::string>>& row,
-                  const std::size_t k ) const;
+      template < template < typename > class OTHER_ALLOC >
+      DBTranslatedValue translate(
+        const std::vector< std::string, OTHER_ALLOC< std::string > >& row,
+        const std::size_t                                             k) const;
 
       /** @brief similar to method translate, except that it checks that the kth
        * translator exists
@@ -309,10 +299,10 @@ namespace gum {
        * set of columns of the database and the set of translators used, k may
        * not necessarily corresponds to the index of a column in the database:
        * this is the index of a translator within the set */
-      template <template<typename> class OTHER_ALLOC>
-      DBTranslatedValue
-      translateSafe ( const std::vector<std::string,OTHER_ALLOC<std::string>>& row,
-                      const std::size_t k ) const;
+      template < template < typename > class OTHER_ALLOC >
+      DBTranslatedValue translateSafe(
+        const std::vector< std::string, OTHER_ALLOC< std::string > >& row,
+        const std::size_t                                             k) const;
 
       /// returns the original string that was translated into translated_val
       /** @param translated_val the value from which we look for the
@@ -325,8 +315,8 @@ namespace gum {
        * set of columns of the database and the set of translators used, k may
        * not necessarily corresponds to the index of a column in the database:
        * this is the index of a translator within the set */
-      std::string translateBack( const DBTranslatedValue translated_val,
-                                 const std::size_t k ) const;
+      std::string translateBack(const DBTranslatedValue translated_val,
+                                const std::size_t       k) const;
 
       /** @brief similar to method translateBack, except that it checks that
        * the kth translator exists
@@ -340,8 +330,8 @@ namespace gum {
        * set of columns of the database and the set of translators used, k may
        * not necessarily corresponds to the index of a column in the database:
        * this is the index of a translator within the set */
-      std::string translateBackSafe ( const DBTranslatedValue translated_val,
-                                      const std::size_t k ) const;
+      std::string translateBackSafe(const DBTranslatedValue translated_val,
+                                    const std::size_t       k) const;
 
       /** @brief indicates whether the kth translator considers a translated_val
        * as a missing value
@@ -353,8 +343,8 @@ namespace gum {
        * So, it won't check that the kth translator actually exists. If unsure,
        * use method isMissingValueSafe that performs this check.
        */
-      bool isMissingValue ( const DBTranslatedValue translated_val,
-                            const std::size_t k ) const;
+      bool isMissingValue(const DBTranslatedValue translated_val,
+                          const std::size_t       k) const;
 
       /** @brief similar to method isMissingValue, except that it checks that
        * the kth translator exists
@@ -365,30 +355,30 @@ namespace gum {
        * @throw UndefinedElement is raised if there are fewer than k
        * translators in the translator set.
        */
-      bool isMissingValueSafe ( const DBTranslatedValue translated_val,
-                                const std::size_t k ) const;
+      bool isMissingValueSafe(const DBTranslatedValue translated_val,
+                              const std::size_t       k) const;
 
       /// returns the domain size of the variable stored into the kth translator
       /** @warning this method assumes that there are at least k translators.
        * So, it won't check that the kth translator actually exists. If unsure,
        * use method domainSizeSafe that performs this check. */
-      std::size_t domainSize ( const std::size_t k ) const;
+      std::size_t domainSize(const std::size_t k) const;
 
       /// returns the domain size of the variable stored into the kth translator
       /** @throw UndefinedElement is raised if there are fewer than k
        * translators in the translator set. */
-      std::size_t domainSizeSafe ( const std::size_t k ) const;
-      
+      std::size_t domainSizeSafe(const std::size_t k) const;
+
       /// returns the variable stored into the kth translator
       /** @warning this method assumes that there are at least k translators.
        * So, it won't check that the kth translator actually exists. If unsure,
        * use method variableSafe that performs this check. */
-      const Variable& variable ( const std::size_t k ) const;
+      const Variable& variable(const std::size_t k) const;
 
       /// returns the variable stored into the kth translator
       /** @throw UndefinedElement is raised if there are fewer than k
        * translators in the translator set. */
-      const Variable& variableSafe ( const std::size_t k ) const;
+      const Variable& variableSafe(const std::size_t k) const;
 
       /** @brief indicates whether a reordering is needed to make the kth
        * translator sorted
@@ -413,12 +403,12 @@ namespace gum {
        * @warning this method assumes that there are at least k translators.
        * So, it won't check that the kth translator actually exists. If unsure,
        * use method needsReorderingSafe that performs this check. */
-      bool needsReordering ( const std::size_t k ) const;
+      bool needsReordering(const std::size_t k) const;
 
       /// same as method needsReordering but checks that the kth translator exists
       /** @throw UndefinedElement is raised if there are fewer than k
        * translators in the translator set. */
-      bool needsReorderingSafe ( const std::size_t k ) const;
+      bool needsReorderingSafe(const std::size_t k) const;
 
       /** @brief performs a reordering of the dictionary and returns a mapping
        * from the old translated values to the new ones.
@@ -433,70 +423,73 @@ namespace gum {
        * @warning this method assumes that there are at least k translators.
        * So, it won't check that the kth translator actually exists. If unsure,
        * use method reorderSafe that performs this check. */
-      HashTable<std::size_t,std::size_t,ALLOC<std::pair<std::size_t,std::size_t>>>
-        reorder ( const std::size_t k );
+      HashTable< std::size_t,
+                 std::size_t,
+                 ALLOC< std::pair< std::size_t, std::size_t > > >
+        reorder(const std::size_t k);
 
       /// same as method reorder but checks that the kth translator exists
       /** @throw UndefinedElement is raised if there are fewer than k
        * translators in the translator set. */
-      HashTable<std::size_t,std::size_t,ALLOC<std::pair<std::size_t,std::size_t>>>
-        reorderSafe ( const std::size_t k );
-      
+      HashTable< std::size_t,
+                 std::size_t,
+                 ALLOC< std::pair< std::size_t, std::size_t > > >
+        reorderSafe(const std::size_t k);
+
       /** @brief returns the column of the input database that will be read
        * by the kth translator
        *
        * @warning this method assumes that there are at least k translators.
        * So, it won't check that the kth translator actually exists. If unsure,
        * use method inputColumnSafe that performs this check. */
-      std::size_t inputColumn ( const std::size_t k ) const;
+      std::size_t inputColumn(const std::size_t k) const;
 
       /** @brief returns the column of the input database that will be read
        * by the kth translator
        * @throw UndefinedElement is raised if there are fewer than k
        * translators in the translator set. */
-      std::size_t inputColumnSafe ( const std::size_t k ) const;
+      std::size_t inputColumnSafe(const std::size_t k) const;
 
       /// returns the largest input database column index read by the translators
-      std::size_t highestInputColumn () const;
+      std::size_t highestInputColumn() const;
 
       /// remove all the translators
       void clear();
 
       /// returns the number of translators stored into the set
       std::size_t nbTranslators() const;
-      
+
       /// returns the number of translators stored into the set
-      std::size_t size () const;
-      
+      std::size_t size() const;
+
       /// returns the allocator used by the translator set
-      allocator_type getAllocator () const;
+      allocator_type getAllocator() const;
 
       /// returns the set of translators
-      const std::vector<DBTranslator<ALLOC>*,
-                        ALLOC<DBTranslator<ALLOC>*>>& translators () const;
-      
+      const std::vector< DBTranslator< ALLOC >*, ALLOC< DBTranslator< ALLOC >* > >&
+        translators() const;
+
       /// @}
-      
+
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
       private:
       // the set of all the translators
-      std::vector<DBTranslator<ALLOC>*,
-                  ALLOC<DBTranslator<ALLOC>*>> __translators;
+      std::vector< DBTranslator< ALLOC >*, ALLOC< DBTranslator< ALLOC >* > >
+        __translators;
 
       // a vector indicating which column of the original database each
       // translator should translate
-      std::vector<std::size_t,ALLOC<std::size_t>> __columns;
+      std::vector< std::size_t, ALLOC< std::size_t > > __columns;
 
       // the highest column index read by the translators
-      std::size_t __highest_column { std::size_t(0) };
-      
+      std::size_t __highest_column{std::size_t(0)};
+
       /// copy the content of another translator set that uses another allocator
-      void __copy ( const DBTranslatorSet<ALLOC>& from,
-                    const allocator_type& alloc );
+      void __copy(const DBTranslatorSet< ALLOC >& from,
+                  const allocator_type&           alloc);
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
-
     };
 
   } /* namespace learning */

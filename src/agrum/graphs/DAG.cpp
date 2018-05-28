@@ -26,8 +26,8 @@
 #include <agrum/graphs/DAG.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/DAG_inl.h>
-#endif  // GUM_NOINLINE
+#  include <agrum/graphs/DAG_inl.h>
+#endif   // GUM_NOINLINE
 
 namespace gum {
 
@@ -35,18 +35,14 @@ namespace gum {
   DAG::DAG(Size nodes_size,
            bool nodes_resize_policy,
            Size arcs_size,
-           bool arcs_resize_policy)
-      : NodeGraphPart(nodes_size, nodes_resize_policy)
-      , DiGraph(nodes_size, nodes_resize_policy, arcs_size, arcs_resize_policy) {
+           bool arcs_resize_policy) :
+      NodeGraphPart(nodes_size, nodes_resize_policy),
+      DiGraph(nodes_size, nodes_resize_policy, arcs_size, arcs_resize_policy) {
     GUM_CONSTRUCTOR(DAG);
   }
 
   // diamond structure require to explicitly initialize NodeGraphPart
-  DAG::DAG(const DAG& g)
-      : NodeGraphPart(g)
-      , DiGraph(g) {
-    GUM_CONS_CPY(DAG);
-  }
+  DAG::DAG(const DAG& g) : NodeGraphPart(g), DiGraph(g) { GUM_CONS_CPY(DAG); }
 
   DAG::~DAG() { GUM_DESTRUCTOR(DAG); }
 

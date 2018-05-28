@@ -68,12 +68,12 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(sparse[k], full[k]);
       }
 
-      TS_ASSERT_EQUALS(agg.compressionRate(), (float)1.0);  // 100% de compression
+      TS_ASSERT_EQUALS(agg.compressionRate(), (float)1.0);   // 100% de compression
 
       TS_ASSERT_EQUALS(
         sparse.compressionRate(),
-        (float)0.75);  // deterministic as a sparse : 75% parameters are 0...
-      TS_ASSERT_EQUALS(full.compressionRate(), (float)0);  // 0% de compression...
+        (float)0.75);   // deterministic as a sparse : 75% parameters are 0...
+      TS_ASSERT_EQUALS(full.compressionRate(), (float)0);   // 0% de compression...
     }
   };
-}
+}   // namespace gum_tests

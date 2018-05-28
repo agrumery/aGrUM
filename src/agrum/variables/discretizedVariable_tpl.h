@@ -18,9 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-#include <sstream>
+#  include <sstream>
 
-#include <agrum/variables/discretizedVariable.h>
+#  include <agrum/variables/discretizedVariable.h>
 
 namespace gum {
   template < typename T_TICKS >
@@ -62,9 +62,7 @@ namespace gum {
 
   template < typename T_TICKS >
   INLINE Idx DiscretizedVariable< T_TICKS >::_pos(const T_TICKS& target) const {
-    if (__ticks_size < 2) {
-      GUM_ERROR(OutOfBounds, "not enough ticks");
-    }
+    if (__ticks_size < 2) { GUM_ERROR(OutOfBounds, "not enough ticks"); }
 
     if (target < __ticks[0]) {
       GUM_ERROR(OutOfLowerBound, "less than first range");
@@ -74,7 +72,7 @@ namespace gum {
       GUM_ERROR(OutOfUpperBound, "more than last range");
     }
 
-    if (target == __ticks[__ticks_size - 1])  // special case for upper limit
+    if (target == __ticks[__ticks_size - 1])   // special case for upper limit
       // (which belongs to class __ticks_size-2
       return __ticks_size - 2;
 
@@ -83,10 +81,10 @@ namespace gum {
 
   template < typename T_TICKS >
   INLINE
-  DiscretizedVariable< T_TICKS >::DiscretizedVariable(const std::string& aName,
-                                                      const std::string& aDesc)
-      : DiscreteVariable(aName, aDesc)
-      , __ticks_size((Size)0) {
+    DiscretizedVariable< T_TICKS >::DiscretizedVariable(const std::string& aName,
+                                                        const std::string& aDesc) :
+      DiscreteVariable(aName, aDesc),
+      __ticks_size((Size)0) {
     GUM_CONSTRUCTOR(DiscretizedVariable);
     __ticks.reserve(1);
   }
@@ -95,9 +93,9 @@ namespace gum {
   INLINE DiscretizedVariable< T_TICKS >::DiscretizedVariable(
     const std::string&            aName,
     const std::string&            aDesc,
-    const std::vector< T_TICKS >& ticks)
-      : DiscreteVariable(aName, aDesc)
-      , __ticks_size((Size)0) {
+    const std::vector< T_TICKS >& ticks) :
+      DiscreteVariable(aName, aDesc),
+      __ticks_size((Size)0) {
     GUM_CONSTRUCTOR(DiscretizedVariable);
     __ticks.reserve(ticks.size());
     for (const auto t : ticks)
@@ -106,8 +104,8 @@ namespace gum {
 
   template < typename T_TICKS >
   DiscretizedVariable< T_TICKS >::DiscretizedVariable(
-    const DiscretizedVariable< T_TICKS >& aDRV)
-      : DiscreteVariable(aDRV) {
+    const DiscretizedVariable< T_TICKS >& aDRV) :
+      DiscreteVariable(aDRV) {
     GUM_CONS_CPY(DiscretizedVariable);
     __ticks.reserve(1);
     _copy(aDRV);
@@ -128,7 +126,7 @@ namespace gum {
 
   template < typename T_TICKS >
   INLINE DiscretizedVariable< T_TICKS >& DiscretizedVariable< T_TICKS >::
-  operator=(const DiscretizedVariable< T_TICKS >& aDRV) {
+                                         operator=(const DiscretizedVariable< T_TICKS >& aDRV) {
     _copy(aDRV);
     return *this;
   }
@@ -144,27 +142,25 @@ namespace gum {
 
       if (zeIdx != __ticks_size - 2)
         return (__ticks[zeIdx] == aTick);
-      else  // special case for upper limit
+      else   // special case for upper limit
         return ((__ticks[zeIdx] == aTick) || (__ticks[zeIdx + 1] == aTick));
-    } catch (OutOfBounds&) {
-      return false;
-    }
+    } catch (OutOfBounds&) { return false; }
   }
 
   template < typename T_TICKS >
   DiscretizedVariable< T_TICKS >&
-  DiscretizedVariable< T_TICKS >::addTick(const T_TICKS& aTick) {
+    DiscretizedVariable< T_TICKS >::addTick(const T_TICKS& aTick) {
     if (isTick(aTick)) {
       GUM_ERROR(DefaultInLabel, "Tick already used for this variable ");
     }
 
-    if (__ticks_size == __ticks.size()) {  // streching __ticks if necessary
+    if (__ticks_size == __ticks.size()) {   // streching __ticks if necessary
       __ticks.resize(__ticks_size + 1);
     }
 
-    if (__ticks_size == 0) {  // special case for first tick
+    if (__ticks_size == 0) {   // special case for first tick
       __ticks[0] = aTick;
-    } else if (__ticks_size == 1) {  // special case for second tick
+    } else if (__ticks_size == 1) {   // special case for second tick
       if (__ticks[0] < aTick) {
         __ticks[1] = aTick;
       } else {
@@ -174,16 +170,16 @@ namespace gum {
     } else {
       try {
         Idx zeIdx =
-          _pos(aTick);  // aTick is in [ __ticks[zeIdx],__ticks[zeIdx+1] [
+          _pos(aTick);   // aTick is in [ __ticks[zeIdx],__ticks[zeIdx+1] [
 
         for (Idx i = __ticks_size - 1; i > zeIdx; --i) {
           __ticks[i + 1] = __ticks[i];
         }
 
         __ticks[zeIdx + 1] = aTick;
-      } catch (OutOfUpperBound&) {  // new upper bound
+      } catch (OutOfUpperBound&) {   // new upper bound
         __ticks[__ticks_size] = aTick;
-      } catch (OutOfLowerBound&) {  // new lower bound
+      } catch (OutOfLowerBound&) {   // new lower bound
         for (Idx i = __ticks_size; i >= 1; --i) {
           __ticks[i] = __ticks[i - 1];
         }
@@ -199,9 +195,7 @@ namespace gum {
 
   template < typename T_TICKS >
   INLINE void DiscretizedVariable< T_TICKS >::eraseTicks() {
-    if (__ticks_size != 0) {
-      __ticks_size = 0;
-    }
+    if (__ticks_size != 0) { __ticks_size = 0; }
   }
 
   template < typename T_TICKS >
@@ -231,10 +225,8 @@ namespace gum {
 
   template < typename T_TICKS >
   INLINE Idx
-  DiscretizedVariable< T_TICKS >::index(const std::string& label) const {
-    if (empty()) {
-      GUM_ERROR(OutOfBounds, "empty variable : " + toString());
-    }
+         DiscretizedVariable< T_TICKS >::index(const std::string& label) const {
+    if (empty()) { GUM_ERROR(OutOfBounds, "empty variable : " + toString()); }
 
     std::istringstream i(label);
     T_TICKS            target;
@@ -262,9 +254,7 @@ namespace gum {
 
   template < typename T_TICKS >
   INLINE const T_TICKS& DiscretizedVariable< T_TICKS >::tick(Idx i) const {
-    if (i >= __ticks_size) {
-      GUM_ERROR(OutOfBounds, "There is no such tick");
-    }
+    if (i >= __ticks_size) { GUM_ERROR(OutOfBounds, "There is no such tick"); }
 
     return __ticks[i];
   }

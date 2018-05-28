@@ -42,7 +42,8 @@
 namespace gum {
 
   /**
-   * @class NetWriter netWriter.h <agrum/BN/io/net/netWriter.h>
+   * @class NetWriter
+   * @headerfile netWriter.h <agrum/BN/io/net/netWriter.h>
    * @brief Writes a IBayesNet in the BN format.
    * @ingroup bn_io
    *
@@ -112,4 +113,4 @@ namespace gum {
 } /* namespace gum */
 
 #include <agrum/BN/io/net/netWriter_tpl.h>
-#endif  // GUM_NET_WRITER_H
+#endif   // GUM_NET_WRITER_H

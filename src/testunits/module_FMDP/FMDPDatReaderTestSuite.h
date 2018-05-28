@@ -37,12 +37,10 @@
 namespace gum_tests {
 
   class FMDPDatReaderTestSuite : public CxxTest::TestSuite {
-
     private:
     std::string file;
 
     void run() {
-
       gum::FMDP< float >          fmdp(true);
       gum::FMDPDatReader< float > reader(&fmdp, file);
 
@@ -117,4 +115,4 @@ namespace gum_tests {
       run();
     }
   };
-}
+}   // namespace gum_tests

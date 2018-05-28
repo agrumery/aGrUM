@@ -96,7 +96,7 @@ namespace gum {
     void execute();
 
     /** @brief returns an estimation of the number of elementary operations
-    * needed to perform the ScheduleOperation */
+     * needed to perform the ScheduleOperation */
     float nbOperations() const;
 
     /// returns the memory consumption used during the operation
@@ -119,7 +119,7 @@ namespace gum {
 
     /// returns the set of multidims that should be the result of the operation
     const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >&
-    multiDimResults() const;
+      multiDimResults() const;
 
     /// displays the content of the operation
     std::string toString() const;

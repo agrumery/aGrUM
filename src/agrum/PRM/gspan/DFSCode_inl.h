@@ -62,9 +62,7 @@ namespace gum {
       bool DFSCode::operator==(const DFSCode& from) const {
         if (codes.size() == from.codes.size()) {
           for (size_t idx = 0; idx < codes.size(); ++idx) {
-            if ((*codes[idx]) != (*codes[idx])) {
-              return false;
-            }
+            if ((*codes[idx]) != (*codes[idx])) { return false; }
           }
 
           return true;
@@ -77,9 +75,7 @@ namespace gum {
       bool DFSCode::operator!=(const DFSCode& from) const {
         if (codes.size() == from.codes.size()) {
           for (size_t idx = 0; idx < codes.size(); ++idx) {
-            if ((*codes[idx]) != (*codes[idx])) {
-              return true;
-            }
+            if ((*codes[idx]) != (*codes[idx])) { return true; }
           }
 
           return false;
@@ -146,9 +142,7 @@ namespace gum {
 
         for (; (iter != codes.end()) && (jter != from.codes.end());
              ++iter, ++jter) {
-          if ((**iter) != (**jter)) {
-            return (**iter) < (**jter);
-          }
+          if ((**iter) != (**jter)) { return (**iter) < (**jter); }
         }
 
         return codes.size() <= from.codes.size();

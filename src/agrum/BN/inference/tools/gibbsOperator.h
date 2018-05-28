@@ -35,7 +35,8 @@
 namespace gum {
 
   /**
-   * @class GibbsOperator gibbsOperator.h <agrum/BN/inference/gibbsOperator.h>
+   * @class GibbsOperator
+   * @headerfile gibbsOperator.h <agrum/BN/inference/gibbsOperator.h>
    * @brief class containing all variables and methods required for Gibbssampling
    *
    * @ingroup bn_approximation
@@ -44,7 +45,6 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   class GibbsOperator {
-
     public:
     /**
      *  constructor
@@ -96,7 +96,7 @@ namespace gum {
 
   extern template class GibbsOperator< float >;
   extern template class GibbsOperator< double >;
-}
+}   // namespace gum
 
 #include <agrum/BN/inference/tools/gibbsOperator_tpl.h>
 #endif

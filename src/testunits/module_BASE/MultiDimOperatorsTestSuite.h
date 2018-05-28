@@ -125,7 +125,7 @@ namespace gum_tests {
 
       gum::MultiDimArray< float > tt1, tt2, tt3;
 
-      gum::MultiDimImplementation< float > *t4, *t5, *t6, *t7;
+      gum::MultiDimImplementation< float >*t4, *t5, *t6, *t7;
       tt1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
       tt2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
       tt3 << *(vars[6]) << *(vars[4]) << *(vars[3]);
@@ -211,7 +211,7 @@ namespace gum_tests {
 
       gum::MultiDimArray< float > t1, t2, t3;
 
-      gum::MultiDimImplementation< float > *t4, *t5;
+      gum::MultiDimImplementation< float >*t4, *t5;
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
       t2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
       t3 << *(vars[6]) << *(vars[4]) << *(vars[3]);
@@ -257,8 +257,8 @@ namespace gum_tests {
       randomInitP(t2);
       randomInitP(t3);
 
-      gum::Potential< double > *t4, *t6;
-      gum::Potential< double > *t5, *t7;
+      gum::Potential< double >*t4, *t6;
+      gum::Potential< double >*t5, *t7;
 
       t4 = new gum::Potential< double >(t1 + t2);
       t5 = add_test_potentials(t1, t2);
@@ -328,7 +328,7 @@ namespace gum_tests {
         vars[i] = new gum::LabelizedVariable(s, s, 4);
       }
 
-      gum::MultiDimArray< float * > t1, t2, t3, *t4, *t5, *t6, *t7;
+      gum::MultiDimArray< float* > t1, t2, t3, *t4, *t5, *t6, *t7;
 
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
       t2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
@@ -405,9 +405,9 @@ namespace gum_tests {
         vars[i] = new gum::LabelizedVariable(s, s, 4);
       }
 
-      gum::MultiDimArray< float * > tt1, tt2, tt3;
+      gum::MultiDimArray< float* > tt1, tt2, tt3;
 
-      gum::MultiDimImplementation< float * > *t4, *t5, *t6, *t7;
+      gum::MultiDimImplementation< float* >*t4, *t5, *t6, *t7;
       tt1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
       tt2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
       tt3 << *(vars[6]) << *(vars[4]) << *(vars[3]);
@@ -491,9 +491,9 @@ namespace gum_tests {
         vars[i] = new gum::LabelizedVariable(s, s, 4);
       }
 
-      gum::MultiDimArray< float * > t1, t2, t3;
+      gum::MultiDimArray< float* > t1, t2, t3;
 
-      gum::MultiDimImplementation< float * > *t4, *t5;
+      gum::MultiDimImplementation< float* >*t4, *t5;
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
       t2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
       t3 << *(vars[6]) << *(vars[4]) << *(vars[3]);
@@ -644,7 +644,7 @@ namespace gum_tests {
 
       gum::MultiDimArray< float > tt1, tt2, tt3, tt4;
 
-      gum::MultiDimImplementation< float > *t5, *t6;
+      gum::MultiDimImplementation< float >*t5, *t6;
       tt1 << *(vars[0]) << *(vars[2]) << *(vars[1]);
       tt2 << *(vars[0]) << *(vars[1]) << *(vars[2]);
       tt3 << *(vars[6]) << *(vars[0]) << *(vars[2]);
@@ -783,9 +783,7 @@ namespace gum_tests {
         gum::Instantiation i(t1);
 
         for (i.setFirst(); !i.end(); ++i) {
-          if (*(t1.get(i)) != *(t2.get(i))) {
-            return false;
-          }
+          if (*(t1.get(i)) != *(t2.get(i))) { return false; }
         }
 
         return true;
@@ -829,8 +827,8 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     gum::MultiDimArray< float >*
-    add_test_arrays(const gum::MultiDimArray< float >* t1,
-                    const gum::MultiDimArray< float >* t2) {
+      add_test_arrays(const gum::MultiDimArray< float >* t1,
+                      const gum::MultiDimArray< float >* t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* > seq = t1->variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
@@ -863,8 +861,8 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     gum::MultiDimArray< float >*
-    sub_test_arrays(const gum::MultiDimArray< float >* t1,
-                    const gum::MultiDimArray< float >* t2) {
+      sub_test_arrays(const gum::MultiDimArray< float >* t1,
+                      const gum::MultiDimArray< float >* t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* > seq = t1->variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
@@ -897,8 +895,8 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     gum::MultiDimArray< float >*
-    mult_test_arrays(const gum::MultiDimArray< float >* t1,
-                     const gum::MultiDimArray< float >* t2) {
+      mult_test_arrays(const gum::MultiDimArray< float >* t1,
+                       const gum::MultiDimArray< float >* t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* > seq = t1->variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
@@ -931,8 +929,8 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     gum::MultiDimArray< float >*
-    div_test_arrays(const gum::MultiDimArray< float >* t1,
-                    const gum::MultiDimArray< float >* t2) {
+      div_test_arrays(const gum::MultiDimArray< float >* t1,
+                      const gum::MultiDimArray< float >* t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* > seq = t1->variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
@@ -965,8 +963,8 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     gum::MultiDimArray< float* >*
-    add_test_arrays4Pointers(const gum::MultiDimArray< float* >* t1,
-                             const gum::MultiDimArray< float* >* t2) {
+      add_test_arrays4Pointers(const gum::MultiDimArray< float* >* t1,
+                               const gum::MultiDimArray< float* >* t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* > seq = t1->variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
@@ -999,8 +997,8 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     gum::MultiDimArray< float* >*
-    sub_test_arrays4Pointers(const gum::MultiDimArray< float* >* t1,
-                             const gum::MultiDimArray< float* >* t2) {
+      sub_test_arrays4Pointers(const gum::MultiDimArray< float* >* t1,
+                               const gum::MultiDimArray< float* >* t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* > seq = t1->variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
@@ -1033,8 +1031,8 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     gum::MultiDimArray< float* >*
-    mult_test_arrays4Pointers(const gum::MultiDimArray< float* >* t1,
-                              const gum::MultiDimArray< float* >* t2) {
+      mult_test_arrays4Pointers(const gum::MultiDimArray< float* >* t1,
+                                const gum::MultiDimArray< float* >* t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* > seq = t1->variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
@@ -1067,8 +1065,8 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     gum::MultiDimArray< float* >*
-    div_test_arrays4Pointers(const gum::MultiDimArray< float* >* t1,
-                             const gum::MultiDimArray< float* >* t2) {
+      div_test_arrays4Pointers(const gum::MultiDimArray< float* >* t1,
+                               const gum::MultiDimArray< float* >* t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* > seq = t1->variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
@@ -1101,8 +1099,8 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     gum::Potential< double >*
-    add_test_potentials(const gum::Potential< double >& t1,
-                        const gum::Potential< double >& t2) {
+      add_test_potentials(const gum::Potential< double >& t1,
+                          const gum::Potential< double >& t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* > seq = t1.variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
@@ -1135,8 +1133,8 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     gum::Potential< double >*
-    sub_test_potentials(const gum::Potential< double >& t1,
-                        const gum::Potential< double >& t2) {
+      sub_test_potentials(const gum::Potential< double >& t1,
+                          const gum::Potential< double >& t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* > seq = t1.variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
@@ -1169,8 +1167,8 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     gum::Potential< double >*
-    mult_test_potentials(const gum::Potential< double >& t1,
-                         const gum::Potential< double >& t2) {
+      mult_test_potentials(const gum::Potential< double >& t1,
+                           const gum::Potential< double >& t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* > seq = t1.variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
@@ -1203,8 +1201,8 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     gum::Potential< double >*
-    div_test_potentials(const gum::Potential< double >& t1,
-                        const gum::Potential< double >& t2) {
+      div_test_potentials(const gum::Potential< double >& t1,
+                          const gum::Potential< double >& t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* > seq = t1.variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =

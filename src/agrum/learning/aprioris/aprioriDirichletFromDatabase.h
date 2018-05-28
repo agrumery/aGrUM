@@ -44,8 +44,8 @@ namespace gum {
     template < typename IdSetAlloc = std::allocator< Idx >,
                typename CountAlloc = std::allocator< double > >
     class AprioriDirichletFromDatabase
-      : public Apriori< IdSetAlloc, CountAlloc >,
-        private Counter< IdSetAlloc, CountAlloc > {
+        : public Apriori< IdSetAlloc, CountAlloc >
+        , private Counter< IdSetAlloc, CountAlloc > {
       public:
       using type = AprioriDirichletType;
 
@@ -61,7 +61,7 @@ namespace gum {
 
       /// virtual copy constructor
       virtual AprioriDirichletFromDatabase< IdSetAlloc, CountAlloc >*
-      copyFactory() const;
+        copyFactory() const;
 
       /// destructor
       virtual ~AprioriDirichletFromDatabase();

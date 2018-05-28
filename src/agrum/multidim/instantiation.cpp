@@ -28,15 +28,13 @@
 #include <agrum/multidim/instantiation.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/multidim/instantiation_inl.h>
+#  include <agrum/multidim/instantiation_inl.h>
 #endif /* GUM_NO_INLINE */
 
 namespace gum {
 
   // Default constructor
-  Instantiation::Instantiation()
-      : __master(nullptr)
-      , __overflow(false) {
+  Instantiation::Instantiation() : __master(nullptr), __overflow(false) {
     GUM_CONSTRUCTOR(Instantiation);
   }
 
@@ -64,26 +62,23 @@ namespace gum {
   }
 
   // constructor for a Instantiation contained into a MultiDimInterface
-  Instantiation::Instantiation(MultiDimAdressable& d)
-      : __master(0)
-      , __overflow(false) {
+  Instantiation::Instantiation(MultiDimAdressable& d) :
+      __master(0), __overflow(false) {
     // for debugging purposes
     GUM_CONSTRUCTOR(Instantiation);
     __init(&d);
   }
 
-  Instantiation::Instantiation(const MultiDimAdressable& d)
-      : __master(0)
-      , __overflow(false) {
+  Instantiation::Instantiation(const MultiDimAdressable& d) :
+      __master(0), __overflow(false) {
     // for debugging purposes
     GUM_CONSTRUCTOR(Instantiation);
     __init(const_cast< MultiDimAdressable* >(&d));
   }
 
   // constructor for a Instantiation contained into a MultiDimInterface
-  Instantiation::Instantiation(MultiDimAdressable* d)
-      : __master(0)
-      , __overflow(false) {
+  Instantiation::Instantiation(MultiDimAdressable* d) :
+      __master(0), __overflow(false) {
     // for debugging purposes
     GUM_CONSTRUCTOR(Instantiation);
 
@@ -93,9 +88,8 @@ namespace gum {
   // constructor for a Instantiation contained into a MultiDimInterface this
   // constructor is needed in order to allow creation of Instantiation(this) in
   // MultiDimAdressable and below
-  Instantiation::Instantiation(const MultiDimAdressable* const_d)
-      : __master(0)
-      , __overflow(false) {
+  Instantiation::Instantiation(const MultiDimAdressable* const_d) :
+      __master(0), __overflow(false) {
     // for debugging purposes
     GUM_CONSTRUCTOR(Instantiation);
 
@@ -103,10 +97,8 @@ namespace gum {
   }
 
   // copy constructor
-  Instantiation::Instantiation(const Instantiation& aI, const bool notifyMaster)
-      : MultiDimInterface()
-      , __master(0)
-      , __overflow(false) {
+  Instantiation::Instantiation(const Instantiation& aI, const bool notifyMaster) :
+      MultiDimInterface(), __master(0), __overflow(false) {
     // for debugging purposes
     GUM_CONS_CPY(Instantiation);
     // copy the content of aI
@@ -120,7 +112,7 @@ namespace gum {
   // operator=
   Instantiation& Instantiation::operator=(const Instantiation& aI) {
     if (__master) {
-      if (!aI.isMaster(__master)) {  // aI as the same master.
+      if (!aI.isMaster(__master)) {   // aI as the same master.
         if (nbrDim() != aI.nbrDim()) {
           GUM_ERROR(OperationNotAllowed, "in slave Instantiation");
         }
@@ -150,9 +142,7 @@ namespace gum {
     std::stringstream sstr;
     // check if the value of the instantiation is correct
 
-    if (__overflow) {
-      sstr << "<invalid>";
-    }
+    if (__overflow) { sstr << "<invalid>"; }
 
     sstr << "<";
 

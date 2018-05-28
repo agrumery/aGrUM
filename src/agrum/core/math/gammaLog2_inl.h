@@ -35,9 +35,9 @@ namespace gum {
     if (x < 50) {
       if (__requires_precision) {
         Idx index = int(x * 100);
-        return __small_values[index] +
-               (__small_values[index + 1] - __small_values[index]) *
-                 double(x * 100 - index);
+        return __small_values[index]
+               + (__small_values[index + 1] - __small_values[index])
+                   * double(x * 100 - index);
       } else {
         Idx index = int(x * 100 + 0.5);
         return __small_values[index];
@@ -45,8 +45,8 @@ namespace gum {
     }
 
     // returns the approximation by the stirling formula
-    return (__log_sqrt_2pi + (x - 0.5f) * log(x) - x + log(1.0 + 1.0 / (12 * x))) *
-           __1log2;
+    return (__log_sqrt_2pi + (x - 0.5f) * log(x) - x + log(1.0 + 1.0 / (12 * x)))
+           * __1log2;
   }
 
   ALWAYS_INLINE double GammaLog2::operator()(double x) const {

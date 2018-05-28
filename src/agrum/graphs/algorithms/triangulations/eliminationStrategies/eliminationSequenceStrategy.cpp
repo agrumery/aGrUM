@@ -28,8 +28,8 @@
 #include <agrum/graphs/algorithms/triangulations/eliminationStrategies/eliminationSequenceStrategy.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/algorithms/triangulations/eliminationStrategies/eliminationSequenceStrategy_inl.h>
-#endif  // GUM_NOINLINE
+#  include <agrum/graphs/algorithms/triangulations/eliminationStrategies/eliminationSequenceStrategy_inl.h>
+#endif   // GUM_NOINLINE
 
 namespace gum {
 
@@ -66,20 +66,20 @@ namespace gum {
 
   // copy constructor
   EliminationSequenceStrategy::EliminationSequenceStrategy(
-    const EliminationSequenceStrategy& from)
-      : _graph(from._graph)
-      , _domain_sizes(from._domain_sizes)
-      , _log_domain_sizes(from._log_domain_sizes) {
+    const EliminationSequenceStrategy& from) :
+      _graph(from._graph),
+      _domain_sizes(from._domain_sizes),
+      _log_domain_sizes(from._log_domain_sizes) {
     // for debugging purposes
     GUM_CONS_CPY(EliminationSequenceStrategy);
   }
 
   /// move constructor
   EliminationSequenceStrategy::EliminationSequenceStrategy(
-    EliminationSequenceStrategy&& from)
-      : _graph(from._graph)
-      , _domain_sizes(from._domain_sizes)
-      , _log_domain_sizes(std::move(from._log_domain_sizes)) {
+    EliminationSequenceStrategy&& from) :
+      _graph(from._graph),
+      _domain_sizes(from._domain_sizes),
+      _log_domain_sizes(std::move(from._log_domain_sizes)) {
     // for debugging purposes
     GUM_CONS_MOV(EliminationSequenceStrategy);
   }
@@ -108,12 +108,12 @@ namespace gum {
 
   // sets a new graph to be triangulated
   bool
-  EliminationSequenceStrategy::setGraph(UndiGraph*                  graph,
-                                        const NodeProperty< Size >* dom_sizes) {
+    EliminationSequenceStrategy::setGraph(UndiGraph*                  graph,
+                                          const NodeProperty< Size >* dom_sizes) {
     // check that both the graph and the domain sizes are different from nullptr
     // or else that both are equal to nullptr
-    if (((graph != nullptr) && (dom_sizes == nullptr)) ||
-        ((graph == nullptr) && (dom_sizes != nullptr))) {
+    if (((graph != nullptr) && (dom_sizes == nullptr))
+        || ((graph == nullptr) && (dom_sizes != nullptr))) {
       GUM_ERROR(GraphError,
                 "EliminationSequenceStrategy: one of the graph or the set of "
                 "domain sizes is a null pointer.");

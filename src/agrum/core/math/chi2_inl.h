@@ -32,7 +32,7 @@ namespace gum {
 
   // sets the conditioning nodes (useful for computing degrees of freedom)
   INLINE void
-  Chi2::setConditioningNodes(const std::vector< Idx >& db_conditioning_ids) {
+    Chi2::setConditioningNodes(const std::vector< Idx >& db_conditioning_ids) {
     __conditioning_size = 1;
     for (Idx i = 0; i < db_conditioning_ids.size(); ++i) {
       __conditioning_size *= __modalities[db_conditioning_ids[i]];
@@ -41,14 +41,14 @@ namespace gum {
 
   // returns the number of degrees of freedom
   INLINE Size Chi2::degreesOfFreedom(const std::pair< Idx, Idx >& pair) {
-    return (__conditioning_size * (__modalities[pair.first] - 1) *
-            (__modalities[pair.second] - 1));
+    return (__conditioning_size * (__modalities[pair.first] - 1)
+            * (__modalities[pair.second] - 1));
   }
 
   // returns the number of degrees of freedom
   INLINE Size Chi2::degreesOfFreedom(Idx var1, Idx var2) {
-    return (__conditioning_size * (__modalities[var1] - 1) *
-            (__modalities[var2] - 1));
+    return (__conditioning_size * (__modalities[var1] - 1)
+            * (__modalities[var2] - 1));
   }
 
   // computes the critical value according to the number of degrees of freedom

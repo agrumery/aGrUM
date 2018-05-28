@@ -32,16 +32,14 @@ namespace gum {
 
   // Constructor
   template < typename T >
-  INLINE Link< T >::Link(const T& elem)
-      : __element(elem) {
+  INLINE Link< T >::Link(const T& elem) : __element(elem) {
     GUM_CONSTRUCTOR(Link)
   }
 
   // Constructor
   template < typename T >
-  INLINE Link< T >::Link(const T& elem, Link< T >* nextLink)
-      : __element(elem)
-      , __nextLink(nextLink) {
+  INLINE Link< T >::Link(const T& elem, Link< T >* nextLink) :
+      __element(elem), __nextLink(nextLink) {
     GUM_CONSTRUCTOR(Link)
   }
 
@@ -139,7 +137,6 @@ namespace gum {
 
   template < typename T >
   INLINE void LinkedList< T >::searchAndRemoveLink(const T& elem) {
-
     Link< T >* curLink = __firstLink;
     Link< T >* prevLink = nullptr;
     while (curLink && curLink->element() != elem) {
@@ -155,4 +152,4 @@ namespace gum {
     }
   }
 
-}  // namespace gum
+}   // namespace gum

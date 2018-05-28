@@ -96,4 +96,4 @@ namespace gum {
 } /* namespace gum */
 
 #include <agrum/BN/generator/simpleCPTDisturber_tpl.h>
-#endif  // SIMPLECPTDISTURBER_H
+#endif   // SIMPLECPTDISTURBER_H

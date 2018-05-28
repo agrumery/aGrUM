@@ -18,17 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. *
  ********************************************************************************/
 /**
-* @file
-* @brief This files contains several function objects that are not (yet) defined
-*        in the STL
-*
-* Generically, function objects are instances of a class with member function
-* operator() defined.
-* This member function allows the object to be used with the same syntax as a
-* function call.
-*
-* @author Jean-Christophe MAGNAN
-*/
+ * @file
+ * @brief This files contains several function objects that are not (yet) defined
+ *        in the STL
+ *
+ * Generically, function objects are instances of a class with member function
+ * operator() defined.
+ * This member function allows the object to be used with the same syntax as a
+ * function call.
+ *
+ * @author Jean-Christophe MAGNAN
+ */
 
 // =========================================================================
 #ifndef GUM_ARG_MAX_SET_H
@@ -53,7 +53,6 @@ namespace gum {
   /// Class to handle efficiently argMaxSet
   template < typename GUM_SCALAR_VAL, typename GUM_SCALAR_SEQ >
   class ArgMaxSet {
-
     public:
     // ###########################################################################
     /// @name CNL
@@ -76,7 +75,7 @@ namespace gum {
     ArgMaxSet(const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& src);
 
     ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >&
-    operator=(const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& src);
+      operator=(const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& src);
 
     // ============================================================================
     /// Destructor
@@ -126,13 +125,13 @@ namespace gum {
     /// Ajout d'un élément
     // ============================================================================
     ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >&
-    operator+=(const GUM_SCALAR_SEQ& elem);
+      operator+=(const GUM_SCALAR_SEQ& elem);
 
     // ============================================================================
     /// Use to insert the content of another set inside this one
     // ============================================================================
     ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >&
-    operator+=(const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& src);
+      operator+=(const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& src);
 
     // ============================================================================
     /// Gives the ith element
@@ -144,30 +143,30 @@ namespace gum {
     // ============================================================================
     /// Compares two ArgMaxSet to check if they are equals
     // ============================================================================
-    bool
-    operator==(const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& compared) const;
-    bool
-    operator!=(const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& compared) const {
+    bool operator==(
+      const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& compared) const;
+    bool operator!=(
+      const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& compared) const {
       return !(*this == compared);
     }
 
     // ============================================================================
     /// Checks if val is lower or higher from the compared ArgMaxSet val
     // ============================================================================
-    bool
-    operator<(const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& compared) const {
+    bool operator<(
+      const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& compared) const {
       return __val < compared.value() ? true : false;
     }
-    bool
-    operator>(const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& compared) const {
+    bool operator>(
+      const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& compared) const {
       return compared < *this;
     }
-    bool
-    operator<=(const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& compared) const {
+    bool operator<=(
+      const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& compared) const {
       return !(*this > compared);
     }
-    bool
-    operator>=(const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& compared) const {
+    bool operator>=(
+      const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& compared) const {
       return !(*this < compared);
     }
 
@@ -200,7 +199,7 @@ namespace gum {
     }
   };
 
-}  // End of namespace gum
+}   // End of namespace gum
 
 #include <agrum/core/argMaxSet_tpl.h>
 

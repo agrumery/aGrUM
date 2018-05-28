@@ -48,22 +48,16 @@ namespace gum {
        */
 
       /// This constructor create an empty context.
-      O3prmrInterpreter::O3prmrInterpreter()
-          : m_context(new O3prmrContext< double >())
-          , m_reader(new o3prm::O3prmReader< double >())
-          , m_bn(0)
-          , m_inf(0)
-          , m_syntax_flag(false)
-          , m_verbose(false)
-          , m_log(std::cout)
-          , m_current_line(-1) {}
+      O3prmrInterpreter::O3prmrInterpreter() :
+          m_context(new O3prmrContext< double >()),
+          m_reader(new o3prm::O3prmReader< double >()), m_bn(0), m_inf(0),
+          m_syntax_flag(false), m_verbose(false), m_log(std::cout),
+          m_current_line(-1) {}
 
       /// Destructor. Delete current context.
       O3prmrInterpreter::~O3prmrInterpreter() {
         delete m_context;
-        if (m_bn) {
-          delete m_bn;
-        }
+        if (m_bn) { delete m_bn; }
         for (auto p : m_inf_map) {
           delete p.second;
         }
@@ -98,9 +92,7 @@ namespace gum {
       /// Root paths to search from there packages.
       /// Default are './' and one is calculate from request package if any.
       void O3prmrInterpreter::addPath(std::string path) {
-        if (path.length() && path.back() != '/') {
-          path = path + '/';
-        }
+        if (path.length() && path.back() != '/') { path = path + '/'; }
         if (Directory::isDir(path)) {
           m_paths.push_back(path);
         } else {
@@ -168,9 +160,7 @@ namespace gum {
 
           m_errors = p.errors();
 
-          if (errors() > 0) {
-            return false;
-          }
+          if (errors() > 0) { return false; }
 
           // Set paths to search from.
           delete m_reader->prm();
@@ -182,18 +172,14 @@ namespace gum {
           }
 
           // On vérifie la sémantique.
-          if (!checkSemantic(&c)) {
-            return false;
-          }
+          if (!checkSemantic(&c)) { return false; }
 
           if (isInSyntaxMode()) {
             return true;
           } else {
             return interpret(&c);
           }
-        } catch (gum::Exception&) {
-          return false;
-        }
+        } catch (gum::Exception&) { return false; }
       }
 
       std::string O3prmrInterpreter::__readFile(const std::string& file) {
@@ -206,7 +192,7 @@ namespace gum {
           istream.seekg(0, istream.beg);
 
           std::string str;
-          str.resize(length, ' ');  // reserve space
+          str.resize(length, ' ');   // reserve space
           char* begin = &*str.begin();
 
           istream.read(begin, length);
@@ -383,8 +369,8 @@ namespace gum {
                   break;
 
                 default:
-                  addError("Error : Unknow command : " + command->toString() +
-                           "\n -> Command not processed.");
+                  addError("Error : Unknow command : " + command->toString()
+                           + "\n -> Command not processed.");
                   result = false;
               }
             } catch (Exception& err) {
@@ -438,8 +424,8 @@ namespace gum {
 
       bool O3prmrInterpreter::checkSetGndEngine(SetGndEngineCommand* command) {
         m_bn_engine = command->value;
-        return m_bn_engine == "VE" || m_bn_engine == "VEBB" ||
-               m_bn_engine == "lazy";
+        return m_bn_engine == "VE" || m_bn_engine == "VEBB"
+               || m_bn_engine == "lazy";
       }
 
       bool O3prmrInterpreter::checkObserve(ObserveCommand< double >* command) {
@@ -467,7 +453,8 @@ namespace gum {
 
           for (i.setFirst(); !i.end(); i.inc()) {
             if (chain.second->type().variable().label(
-                  i.val(chain.second->type().variable())) == right_val) {
+                  i.val(chain.second->type().variable()))
+                == right_val) {
               command->potentiel.set(i, (double)1.0);
               found = true;
             } else {
@@ -483,9 +470,7 @@ namespace gum {
 
         } catch (Exception& err) {
           addError(err.errorContent());
-        } catch (std::string& err) {
-          addError(err);
-        }
+        } catch (std::string& err) { addError(err); }
 
         return false;
       }
@@ -510,9 +495,7 @@ namespace gum {
 
         } catch (Exception& err) {
           addError(err.errorContent());
-        } catch (std::string& err) {
-          addError(err);
-        }
+        } catch (std::string& err) { addError(err); }
 
         return false;
       }
@@ -537,9 +520,7 @@ namespace gum {
 
         } catch (Exception& err) {
           addError(err.errorContent());
-        } catch (std::string& err) {
-          addError(err);
-        }
+        } catch (std::string& err) { addError(err); }
 
         return false;
       }
@@ -550,7 +531,6 @@ namespace gum {
       bool O3prmrInterpreter::import(O3prmrContext< double >* context,
                                      std::string              import_name) {
         try {
-
           if (m_verbose) {
             m_log << "# Loading system '" << import_name << "' => '" << std::flush;
           }
@@ -587,9 +567,7 @@ namespace gum {
               file_test.open(import_abs_filename.c_str());
 
               if (file_test.is_open()) {
-                if (m_verbose) {
-                  m_log << "found !" << std::endl << std::flush;
-                }
+                if (m_verbose) { m_log << "found !" << std::endl << std::flush; }
 
                 file_test.close();
                 found = true;
@@ -612,7 +590,7 @@ namespace gum {
               size_t size = filename.find_last_of('/');
 
               if (size != std::string::npos) {
-                root += filename.substr(0, size + 1);  // take with the '/'
+                root += filename.substr(0, size + 1);   // take with the '/'
               }
             }
 
@@ -633,9 +611,7 @@ namespace gum {
             file_test.open(import_abs_filename.c_str());
 
             if (file_test.is_open()) {
-              if (m_verbose) {
-                m_log << "found !" << std::endl << std::flush;
-              }
+              if (m_verbose) { m_log << "found !" << std::endl << std::flush; }
 
               file_test.close();
               found = true;
@@ -656,9 +632,7 @@ namespace gum {
             file_test.open(import_abs_filename.c_str());
 
             if (file_test.is_open()) {
-              if (m_verbose) {
-                m_log << " found !" << std::endl << std::flush;
-              }
+              if (m_verbose) { m_log << " found !" << std::endl << std::flush; }
 
               file_test.close();
               found = true;
@@ -669,9 +643,7 @@ namespace gum {
           }
 
           if (!found) {
-            if (m_verbose) {
-              m_log << "Finished with errors." << std::endl;
-            }
+            if (m_verbose) { m_log << "Finished with errors." << std::endl; }
 
             addError("import not found.");
             return false;
@@ -685,18 +657,16 @@ namespace gum {
             m_reader->readFile(import_abs_filename, import_package);
 
             // Show errors and warning
-            if (m_verbose &&
-                (m_reader->errors() > (unsigned int)previousO3prmError ||
-                 errors() > previousO3prmrError)) {
+            if (m_verbose
+                && (m_reader->errors() > (unsigned int)previousO3prmError
+                    || errors() > previousO3prmrError)) {
               m_log << "Finished with errors." << std::endl;
             } else if (m_verbose) {
               m_log << "Finished." << std::endl;
             }
 
           } catch (const IOError& err) {
-            if (m_verbose) {
-              m_log << "Finished with errors." << std::endl;
-            }
+            if (m_verbose) { m_log << "Finished with errors." << std::endl; }
 
             addError(err.errorContent());
           }
@@ -710,9 +680,7 @@ namespace gum {
           return errors() == previousO3prmrError;
 
         } catch (const Exception& err) {
-          if (m_verbose) {
-            m_log << "Finished with exceptions." << std::endl;
-          }
+          if (m_verbose) { m_log << "Finished with exceptions." << std::endl; }
 
           addError(err.errorContent());
           return false;
@@ -748,26 +716,25 @@ namespace gum {
       }
 
       std::string
-      O3prmrInterpreter::findInstanceName(std::string&               s,
-                                          const PRMSystem< double >& sys) {
+        O3prmrInterpreter::findInstanceName(std::string&               s,
+                                            const PRMSystem< double >& sys) {
         // We have found system before, so 's' has been stripped.
         size_t      dot = s.find_first_of('.');
         std::string name = s.substr(0, dot);
 
         if (!sys.exists(name))
-          throw "'" + name + "' is not an instance of system '" + sys.name() +
-            "'.";
+          throw "'" + name + "' is not an instance of system '" + sys.name()
+            + "'.";
 
         s = s.substr(dot + 1);
         return name;
       }
 
-      std::string
-      O3prmrInterpreter::findAttributeName(const std::string&           s,
-                                           const PRMInstance< double >& instance) {
+      std::string O3prmrInterpreter::findAttributeName(
+        const std::string& s, const PRMInstance< double >& instance) {
         if (!instance.exists(s))
-          throw "'" + s + "' is not an attribute of instance '" + instance.name() +
-            "'.";
+          throw "'" + s + "' is not an attribute of instance '" + instance.name()
+            + "'.";
 
         return s;
       }
@@ -776,28 +743,24 @@ namespace gum {
       const PRMSystem< double >& O3prmrInterpreter::system(std::string& ident) {
         try {
           return prm()->getSystem(findSystemName(ident));
-        } catch (const std::string&) {
-        }
+        } catch (const std::string&) {}
 
-        if ((m_context->mainImport() != 0) &&
-            prm()->isSystem(m_context->mainImport()->value))
+        if ((m_context->mainImport() != 0)
+            && prm()->isSystem(m_context->mainImport()->value))
           return prm()->getSystem(m_context->mainImport()->value);
 
-        throw "could not find any system or alias in '" + ident +
-          "' and no default alias has been set.";
+        throw "could not find any system or alias in '" + ident
+          + "' and no default alias has been set.";
       }
 
       ///
 
       bool
-      O3prmrInterpreter::observe(const ObserveCommand< double >* command) try {
-
+        O3prmrInterpreter::observe(const ObserveCommand< double >* command) try {
         const typename PRMInference< double >::Chain& chain = command->chain;
 
         // Generate the inference engine if it doesn't exist.
-        if (!m_inf) {
-          generateInfEngine(*(command->system));
-        }
+        if (!m_inf) { generateInfEngine(*(command->system)); }
 
         // Prevent from something
         if (m_inf->hasEvidence(chain))
@@ -812,9 +775,8 @@ namespace gum {
         return true;
 
       } catch (OperationNotAllowed& ex) {
-        addError("something went wrong when adding evidence " +
-                 command->rightValue + " over " + command->leftValue + " : " +
-                 ex.errorContent());
+        addError("something went wrong when adding evidence " + command->rightValue
+                 + " over " + command->leftValue + " : " + ex.errorContent());
         return false;
 
       } catch (const std::string& msg) {
@@ -824,8 +786,8 @@ namespace gum {
 
       ///
 
-      bool
-      O3prmrInterpreter::unobserve(const UnobserveCommand< double >* command) try {
+      bool O3prmrInterpreter::unobserve(
+        const UnobserveCommand< double >* command) try {
         std::string                            name = command->value;
         typename PRMInference< double >::Chain chain = command->chain;
 
@@ -857,9 +819,7 @@ namespace gum {
         }
 
         // Create inference engine if it has not been already created.
-        if (!m_inf) {
-          generateInfEngine(*(command->system));
-        }
+        if (!m_inf) { generateInfEngine(*(command->system)); }
 
         // Inference
         if (m_verbose) {
@@ -876,9 +836,7 @@ namespace gum {
         // Compute spent time
         double t = timer.step();
 
-        if (m_verbose) {
-          m_log << "Finished." << std::endl;
-        }
+        if (m_verbose) { m_log << "Finished." << std::endl; }
 
         if (m_verbose) {
           m_log << "# Time in seconds (accuracy ~0.001): " << t << std::endl;
@@ -886,9 +844,7 @@ namespace gum {
 
         // Show results
 
-        if (m_verbose) {
-          m_log << std::endl;
-        }
+        if (m_verbose) { m_log << std::endl; }
 
         QueryResult result;
         result.command = query;
@@ -909,24 +865,18 @@ namespace gum {
 
           result.values.push_back(singleResult);
 
-          if (m_verbose) {
-            m_log << label << " : " << value << std::endl;
-          }
+          if (m_verbose) { m_log << label << " : " << value << std::endl; }
         }
 
         m_results.push_back(result);
 
-        if (m_verbose) {
-          m_log << std::endl;
-        }
+        if (m_verbose) { m_log << std::endl; }
 
       } catch (Exception& e) {
         GUM_SHOWERROR(e);
         throw "something went wrong while infering: " + e.errorContent();
 
-      } catch (const std::string& msg) {
-        addError(msg);
-      }
+      } catch (const std::string& msg) { addError(msg); }
 
       ///
       void O3prmrInterpreter::setEngine(const SetEngineCommand* command) {
@@ -949,19 +899,15 @@ namespace gum {
 
           //
         } else if (m_engine == "SVE") {
-
           m_inf = new SVE< double >(*(prm()), sys);
 
         } else {
-
           if (m_engine != "GRD") {
             addWarning("unkown engine '" + m_engine + "', use GRD insteed.");
           }
 
           MarginalTargetedInference< double >* bn_inf = nullptr;
-          if (m_bn) {
-            delete m_bn;
-          }
+          if (m_bn) { delete m_bn; }
           m_bn = new BayesNet< double >();
           BayesNetFactory< double > bn_factory(m_bn);
 
@@ -1039,6 +985,6 @@ namespace gum {
         if (m_verbose) m_log << m_errors.last().toString() << std::endl;
       }
 
-    }  // namespace o3prmr
-  }    // namespace prm
-}  // namespace gum
+    }   // namespace o3prmr
+  }     // namespace prm
+}   // namespace gum

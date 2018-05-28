@@ -70,7 +70,7 @@ namespace gum {
      */
     MultiDimNoisyORNet(
       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-      const MultiDimNoisyORNet< GUM_SCALAR >& from);
+      const MultiDimNoisyORNet< GUM_SCALAR >&                              from);
 
     /// Destructor.
     virtual ~MultiDimNoisyORNet();

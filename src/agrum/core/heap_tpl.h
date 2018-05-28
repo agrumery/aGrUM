@@ -33,8 +33,7 @@ namespace gum {
 
   // basic constructor. Creates an empty heap
   template < typename Val, typename Cmp, typename Alloc >
-  Heap< Val, Cmp, Alloc >::Heap(Cmp compare, Size capacity)
-      : __cmp(compare) {
+  Heap< Val, Cmp, Alloc >::Heap(Cmp compare, Size capacity) : __cmp(compare) {
     __heap.reserve(capacity);
 
     // for debugging purposes
@@ -55,10 +54,8 @@ namespace gum {
 
   // copy constructor
   template < typename Val, typename Cmp, typename Alloc >
-  Heap< Val, Cmp, Alloc >::Heap(const Heap< Val, Cmp, Alloc >& from)
-      : __heap(from.__heap)
-      , __nb_elements(from.__nb_elements)
-      , __cmp(from.__cmp) {
+  Heap< Val, Cmp, Alloc >::Heap(const Heap< Val, Cmp, Alloc >& from) :
+      __heap(from.__heap), __nb_elements(from.__nb_elements), __cmp(from.__cmp) {
     // for debugging purposes
     GUM_CONS_CPY(Heap);
   }
@@ -66,9 +63,8 @@ namespace gum {
   // generalized copy constructor
   template < typename Val, typename Cmp, typename Alloc >
   template < typename OtherAlloc >
-  Heap< Val, Cmp, Alloc >::Heap(const Heap< Val, Cmp, OtherAlloc >& from)
-      : __nb_elements(from.__nb_elements)
-      , __cmp(from.__cmp) {
+  Heap< Val, Cmp, Alloc >::Heap(const Heap< Val, Cmp, OtherAlloc >& from) :
+      __nb_elements(from.__nb_elements), __cmp(from.__cmp) {
     __heap.reserve(__nb_elements);
 
     // copy the elements of from.__heap
@@ -81,10 +77,9 @@ namespace gum {
 
   // move constructor
   template < typename Val, typename Cmp, typename Alloc >
-  Heap< Val, Cmp, Alloc >::Heap(Heap< Val, Cmp, Alloc >&& from) noexcept
-      : __heap(std::move(from.__heap))
-      , __nb_elements(std::move(from.__nb_elements))
-      , __cmp(std::move(from.__cmp)) {
+  Heap< Val, Cmp, Alloc >::Heap(Heap< Val, Cmp, Alloc >&& from) noexcept :
+      __heap(std::move(from.__heap)), __nb_elements(std::move(from.__nb_elements)),
+      __cmp(std::move(from.__cmp)) {
     // for debugging purposes
     GUM_CONS_MOV(Heap);
   }
@@ -99,7 +94,7 @@ namespace gum {
   // copy operator
   template < typename Val, typename Cmp, typename Alloc >
   Heap< Val, Cmp, Alloc >& Heap< Val, Cmp, Alloc >::
-  operator=(const Heap< Val, Cmp, Alloc >& from) {
+                           operator=(const Heap< Val, Cmp, Alloc >& from) {
     // avoid self assignment
     if (this != &from) {
       try {
@@ -126,7 +121,7 @@ namespace gum {
   template < typename Val, typename Cmp, typename Alloc >
   template < typename OtherAlloc >
   Heap< Val, Cmp, Alloc >& Heap< Val, Cmp, Alloc >::
-  operator=(const Heap< Val, Cmp, OtherAlloc >& from) {
+                           operator=(const Heap< Val, Cmp, OtherAlloc >& from) {
     // avoid self assignment
     if (this != &from) {
       try {
@@ -157,7 +152,7 @@ namespace gum {
   // move operator
   template < typename Val, typename Cmp, typename Alloc >
   Heap< Val, Cmp, Alloc >& Heap< Val, Cmp, Alloc >::
-  operator=(Heap< Val, Cmp, Alloc >&& from) noexcept {
+                           operator=(Heap< Val, Cmp, Alloc >&& from) noexcept {
     // avoid self assignment
     if (this != &from) {
       __heap = std::move(from.__heap);
@@ -171,9 +166,7 @@ namespace gum {
   // returns the element at the top of the heap
   template < typename Val, typename Cmp, typename Alloc >
   INLINE const Val& Heap< Val, Cmp, Alloc >::top() const {
-    if (!__nb_elements) {
-      GUM_ERROR(NotFound, "empty heap");
-    }
+    if (!__nb_elements) { GUM_ERROR(NotFound, "empty heap"); }
 
     return __heap[0];
   }
@@ -246,9 +239,7 @@ namespace gum {
   // removes the top element from the heap and return it
   template < typename Val, typename Cmp, typename Alloc >
   INLINE Val Heap< Val, Cmp, Alloc >::pop() {
-    if (!__nb_elements) {
-      GUM_ERROR(NotFound, "empty heap");
-    }
+    if (!__nb_elements) { GUM_ERROR(NotFound, "empty heap"); }
 
     Val v = __heap[0];
     eraseByPos(0);
@@ -345,7 +336,7 @@ namespace gum {
 
   // A \c << operator for Heap
   template < typename Val, typename Cmp, typename Alloc >
-  INLINE std::ostream& operator<<(std::ostream& stream,
+  INLINE std::ostream& operator<<(std::ostream&                  stream,
                                   const Heap< Val, Cmp, Alloc >& heap) {
     stream << heap.toString();
     return stream;

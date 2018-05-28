@@ -30,20 +30,20 @@
 #define GIBBS_SAMPLING_DEFAULT_MIN_EPSILON_RATE std::exp(-5)
 #define GIBBS_SAMPLING_DEFAULT_BURNIN 300
 
-#define GIBBS_SAMPLING_POURCENT_DRAWN_SAMPLE 50  // percent drawn
+#define GIBBS_SAMPLING_POURCENT_DRAWN_SAMPLE 50   // percent drawn
 #define GIBBS_SAMPLING_DRAWN_AT_RANDOM true
 
 namespace gum {
 
   ///  default constructor
   template < typename GUM_SCALAR >
-  GibbsSampling< GUM_SCALAR >::GibbsSampling(const IBayesNet< GUM_SCALAR >* bn)
-      : SamplingInference< GUM_SCALAR >(bn)
-      , GibbsOperator< GUM_SCALAR >(
-          *bn,
-          &this->hardEvidence(),
-          1 + (bn->size() * GIBBS_SAMPLING_POURCENT_DRAWN_SAMPLE / 100),
-          GIBBS_SAMPLING_DRAWN_AT_RANDOM) {
+  GibbsSampling< GUM_SCALAR >::GibbsSampling(const IBayesNet< GUM_SCALAR >* bn) :
+      SamplingInference< GUM_SCALAR >(bn),
+      GibbsOperator< GUM_SCALAR >(
+        *bn,
+        &this->hardEvidence(),
+        1 + (bn->size() * GIBBS_SAMPLING_POURCENT_DRAWN_SAMPLE / 100),
+        GIBBS_SAMPLING_DRAWN_AT_RANDOM) {
     GUM_CONSTRUCTOR(GibbsSampling);
 
     this->setEpsilon(GIBBS_SAMPLING_DEFAULT_EPSILON);
@@ -66,7 +66,6 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Instantiation GibbsSampling< GUM_SCALAR >::_burnIn() {
-
     gum::Instantiation Ip;
     if (this->burnIn() == 0) return Ip;
 
@@ -85,4 +84,4 @@ namespace gum {
     *w = 1.0;
     return GibbsOperator< GUM_SCALAR >::nextSample(prev);
   }
-}
+}   // namespace gum

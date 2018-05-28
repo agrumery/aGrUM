@@ -81,6 +81,7 @@ wrappers/pyAgrum/notebooks/out/*.csv
 wrappers/pyAgrum/notebooks/out/*.html
 wrappers/pyAgrum/testunits/resources/genere.csv
 wrappers/pyAgrum/testunits/resources/o3prm/BNO3PRMIO_file.o3prm
+wrappers/pyAgrum/notebooks/res/titanic/*.png
 apps/pyAgrum/notebooks/*.png
 apps/pyAgrum/notebooks/WaterSprinkler.*
 apps/pyAgrum/notebooks/*.csv

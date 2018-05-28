@@ -30,15 +30,14 @@ namespace gum {
   namespace prm {
 
     template < typename GUM_SCALAR >
-    PRMClassElement< GUM_SCALAR >::PRMClassElement(const std::string& name)
-        : PRMObject(name) {
+    PRMClassElement< GUM_SCALAR >::PRMClassElement(const std::string& name) :
+        PRMObject(name) {
       GUM_CONSTRUCTOR(PRMClassElement);
     }
 
     template < typename GUM_SCALAR >
-    PRMClassElement< GUM_SCALAR >::PRMClassElement(const PRMClassElement& source)
-        : PRMObject(source.name())
-        , __id(source.id()) {
+    PRMClassElement< GUM_SCALAR >::PRMClassElement(const PRMClassElement& source) :
+        PRMObject(source.name()), __id(source.id()) {
       GUM_CONS_CPY(PRMClassElement);
     }
 
@@ -69,10 +68,10 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE std::string
-    PRMClassElement< GUM_SCALAR >::cast(const PRMType< GUM_SCALAR >& t) const {
+           PRMClassElement< GUM_SCALAR >::cast(const PRMType< GUM_SCALAR >& t) const {
       if (type().isSubTypeOf(t)) {
-        return PRMObject::LEFT_CAST() + t.name() + PRMObject::RIGHT_CAST() +
-               name();
+        return PRMObject::LEFT_CAST() + t.name() + PRMObject::RIGHT_CAST()
+               + name();
       } else {
         GUM_ERROR(OperationNotAllowed, "illegal cast");
       }

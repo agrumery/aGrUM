@@ -55,7 +55,6 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   class SamplingInference : public ApproximateInference< GUM_SCALAR > {
-
     public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -65,7 +64,7 @@ namespace gum {
     /// default constructor
     /** @warning By default, all the nodes of the Bayes net are targets.
      * @warning note that, by aGrUM's rule, the BN is not copied but only
-             * referenced by the inference algorithm. */
+     * referenced by the inference algorithm. */
 
     explicit SamplingInference(const IBayesNet< GUM_SCALAR >* bn);
 
@@ -133,14 +132,14 @@ namespace gum {
     /// Simplifying the bayesian network with relevance reasonning to lighten the
     /// computational charge
     /**
-    * Sets the reference Bayesian Network as a BayesNetFragment after having
-    * eliminated nodes
-    * that are idle for simulation and computation, such as barren or d-separated
-    * nodes.
-    * Eliminates the arcs from evidence nodes to it's children, after setting new
-    * CPT's for them.
-    *
-    */
+     * Sets the reference Bayesian Network as a BayesNetFragment after having
+     * eliminated nodes
+     * that are idle for simulation and computation, such as barren or d-separated
+     * nodes.
+     * Eliminates the arcs from evidence nodes to it's children, after setting new
+     * CPT's for them.
+     *
+     */
     virtual void contextualize();
 
     // ############################################################################
@@ -187,10 +186,10 @@ namespace gum {
 
     /// draws a sample in the bayesian network given a previous one
     /**
-    * @param w the weight of sample being generated
-    * @param prev the previous sample generated
-    *
-    */
+     * @param w the weight of sample being generated
+     * @param prev the previous sample generated
+     *
+     */
     virtual Instantiation _draw(float* w, Instantiation prev) = 0;
 
     /// makes the inference by generating samples
@@ -199,23 +198,23 @@ namespace gum {
 
     /// adds a node to current instantiation
     /**
-    * @param nod the node to add to the sample
-    * @param I the current sample
-    *
-    * generates random value based on the BN's CPT's and adds the node to the
-    * Instantiation with that value
-    */
+     * @param nod the node to add to the sample
+     * @param I the current sample
+     *
+     * generates random value based on the BN's CPT's and adds the node to the
+     * Instantiation with that value
+     */
     virtual void _addVarSample(NodeId nod, Instantiation* I);
 
 
     /// fired when Bayesian network is contextualized
     /**
-    * @param bn the contextualized BayesNetFragment
-    * @param targets inference target variables
-    * @param hardEvNodes hard evidence nodes
-    * @param hardEv hard evidences values
-    *
-    */
+     * @param bn the contextualized BayesNetFragment
+     * @param targets inference target variables
+     * @param hardEvNodes hard evidence nodes
+     * @param hardEv hard evidences values
+     *
+     */
     virtual void _onContextualize(BayesNetFragment< GUM_SCALAR >* bn);
 
     void _onEvidenceAdded(NodeId id, bool isHardEvidence) override;
@@ -249,7 +248,7 @@ namespace gum {
 
   extern template class SamplingInference< float >;
   extern template class SamplingInference< double >;
-}
+}   // namespace gum
 
 #include <agrum/BN/inference/tools/samplingInference_tpl.h>
 #endif

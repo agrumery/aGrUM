@@ -38,9 +38,8 @@ namespace gum {
   // ###################################################################
   template < TESTNAME AttributeSelection, bool isScalar >
   NodeDatabase< AttributeSelection, isScalar >::NodeDatabase(
-    const Set< const DiscreteVariable* >* attrSet, const DiscreteVariable* value)
-      : __value(value) {
-
+    const Set< const DiscreteVariable* >* attrSet, const DiscreteVariable* value) :
+      __value(value) {
     GUM_CONSTRUCTOR(NodeDatabase);
 
     for (SetIteratorSafe< const DiscreteVariable* > varIter =
@@ -58,7 +57,6 @@ namespace gum {
   // ###################################################################
   template < TESTNAME AttributeSelection, bool isScalar >
   NodeDatabase< AttributeSelection, isScalar >::~NodeDatabase() {
-
     for (auto varIter = __attrTable.beginSafe(); varIter != __attrTable.endSafe();
          ++varIter)
       delete varIter.val();
@@ -89,7 +87,6 @@ namespace gum {
   template < TESTNAME AttributeSelection, bool isScalar >
   void NodeDatabase< AttributeSelection, isScalar >::__addObservation(
     const Observation* newObs, Int2Type< true >) {
-
     for (auto varIter = __attrTable.cbeginSafe();
          varIter != __attrTable.cendSafe();
          ++varIter)
@@ -105,7 +102,6 @@ namespace gum {
   template < TESTNAME AttributeSelection, bool isScalar >
   void NodeDatabase< AttributeSelection, isScalar >::__addObservation(
     const Observation* newObs, Int2Type< false >) {
-
     for (auto varIter = __attrTable.cbeginSafe();
          varIter != __attrTable.cendSafe();
          ++varIter)
@@ -129,8 +125,8 @@ namespace gum {
   // ###################################################################
   template < TESTNAME AttributeSelection, bool isScalar >
   NodeDatabase< AttributeSelection, isScalar >&
-  NodeDatabase< AttributeSelection, isScalar >::
-  operator+=(const NodeDatabase< AttributeSelection, isScalar >& src) {
+      NodeDatabase< AttributeSelection, isScalar >::
+      operator+=(const NodeDatabase< AttributeSelection, isScalar >& src) {
     this->__nbObservation += src.nbObservation();
 
     for (auto varIter = __attrTable.beginSafe(); varIter != __attrTable.endSafe();
@@ -160,7 +156,7 @@ namespace gum {
 
     return ss.str();
   }
-}  // End of namespace gum
+}   // End of namespace gum
 
 
 // LEFT HERE ON PURPOSE

@@ -53,7 +53,6 @@ namespace gum {
 
   template < TESTNAME AttributeSelection, bool isScalar >
   class ConcreteLeaf : public AbstractLeaf {
-
     typedef typename ValueSelect< isScalar, double, Idx >::type ValueType;
 
     public:
@@ -65,12 +64,11 @@ namespace gum {
     // ###################################################################
     /// Default constructor
     // ###################################################################
-    ConcreteLeaf(NodeId leafId,
+    ConcreteLeaf(NodeId                                        leafId,
                  NodeDatabase< AttributeSelection, isScalar >* n1,
-                 const Sequence< ValueType >* valueDomain)
-        : AbstractLeaf(leafId)
-        , __n1(n1)
-        , __valueDomain(valueDomain) {
+                 const Sequence< ValueType >*                  valueDomain) :
+        AbstractLeaf(leafId),
+        __n1(n1), __valueDomain(valueDomain) {
       GUM_CONSTRUCTOR(ConcreteLeaf)
     }
 
@@ -124,11 +122,11 @@ namespace gum {
 
     private:
     NodeDatabase< AttributeSelection, isScalar >* __n1;
-    const Sequence< ValueType >* __valueDomain;
+    const Sequence< ValueType >*                  __valueDomain;
   };
 
 
 } /* namespace gum */
 
 
-#endif  // GUM_CONCRETE_LEAF_H
+#endif   // GUM_CONCRETE_LEAF_H

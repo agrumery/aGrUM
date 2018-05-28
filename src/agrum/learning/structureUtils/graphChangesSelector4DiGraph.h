@@ -87,18 +87,18 @@ namespace gum {
       GraphChangesSelector4DiGraph< SCORE,
                                     STRUCTURAL_CONSTRAINT,
                                     GRAPH_CHANGES_GENERATOR >&
-      operator=(
-        const GraphChangesSelector4DiGraph< SCORE,
-                                            STRUCTURAL_CONSTRAINT,
-                                            GRAPH_CHANGES_GENERATOR >& from);
+        operator=(
+          const GraphChangesSelector4DiGraph< SCORE,
+                                              STRUCTURAL_CONSTRAINT,
+                                              GRAPH_CHANGES_GENERATOR >& from);
 
       /// move operator
       GraphChangesSelector4DiGraph< SCORE,
                                     STRUCTURAL_CONSTRAINT,
                                     GRAPH_CHANGES_GENERATOR >&
-      operator=(GraphChangesSelector4DiGraph< SCORE,
-                                              STRUCTURAL_CONSTRAINT,
-                                              GRAPH_CHANGES_GENERATOR >&& from);
+        operator=(GraphChangesSelector4DiGraph< SCORE,
+                                                STRUCTURAL_CONSTRAINT,
+                                                GRAPH_CHANGES_GENERATOR >&& from);
 
       /// @}
 

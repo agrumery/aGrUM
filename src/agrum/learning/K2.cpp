@@ -27,5 +27,5 @@
 
 /// include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
-#include <agrum/learning/K2_inl.h>
+#  include <agrum/learning/K2_inl.h>
 #endif /* GUM_NO_INLINE */

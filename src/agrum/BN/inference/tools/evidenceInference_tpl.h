@@ -30,8 +30,8 @@ namespace gum {
   // Default Constructor
   template < typename GUM_SCALAR >
   EvidenceInference< GUM_SCALAR >::EvidenceInference(
-    const IBayesNet< GUM_SCALAR >* bn)
-      : BayesNetInference< GUM_SCALAR >(bn) {
+    const IBayesNet< GUM_SCALAR >* bn) :
+      BayesNetInference< GUM_SCALAR >(bn) {
     // assign a BN if this has not been done before (due to virtual inheritance)
     if (this->__bn == nullptr) {
       BayesNetInference< GUM_SCALAR >::__setBayesNetDuringConstruction(bn);

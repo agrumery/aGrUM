@@ -111,8 +111,8 @@ namespace gum {
     __nodeParents.searchAndRemoveLink(Parent(parent, modality));
   }
 
-}  // namespace gum
+}   // namespace gum
 
 #ifdef GUM_NO_INLINE
-#include <agrum/multidim/utils/FunctionGraphUtilities/internalNode_inl.h>
+#  include <agrum/multidim/utils/FunctionGraphUtilities/internalNode_inl.h>
 #endif /* GUM_NO_INLINE */

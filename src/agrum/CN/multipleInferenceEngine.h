@@ -188,7 +188,7 @@ namespace gum {
       /** Fusion of threads expectations. */
       void _expFusion();
       /** @deprecated Fusion of threads vertices. */
-      void _verticesFusion();  // called ?? not done yet
+      void _verticesFusion();   // called ?? not done yet
 
       /// @}
 
@@ -233,8 +233,8 @@ namespace gum {
     extern template class MultipleInferenceEngine< float,
                                                    gum::LazyPropagation< float > >;
 
-  }  // end of namespace
-}
+  }   // namespace credal
+}   // namespace gum
 
 #include <agrum/CN/multipleInferenceEngine_tpl.h>
 

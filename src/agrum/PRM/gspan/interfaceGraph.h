@@ -222,7 +222,7 @@ namespace gum {
         /// Returns data about a node.
         /// @throw NotFound
         const NodeData< GUM_SCALAR >&
-        node(const PRMInstance< GUM_SCALAR >* i) const;
+          node(const PRMInstance< GUM_SCALAR >* i) const;
 
         /// Returns data about a node.
         /// @throw NotFound
@@ -278,12 +278,12 @@ namespace gum {
 
         /// Compute the label of node and add it to __labels if it does not
         /// exists yet. Update node with the correct label's id.
-        void __label(NodeData< GUM_SCALAR >* node,
+        void __label(NodeData< GUM_SCALAR >*               node,
                      HashTable< std::string, LabelData* >& label_map);
 
         /// Compute the label of edge and add it to __labels if it does not
         /// exists yet. Update edge with the correct label's id.
-        void __label(EdgeData< GUM_SCALAR >* edge,
+        void __label(EdgeData< GUM_SCALAR >*               edge,
                      HashTable< std::string, LabelData* >& label_map);
       };
 

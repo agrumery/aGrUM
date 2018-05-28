@@ -35,9 +35,8 @@ namespace gum {
     /// default constructor
     template < typename GUM_SCALAR >
     BNDatabaseGenerator< GUM_SCALAR >::BNDatabaseGenerator(
-      const BayesNet< GUM_SCALAR >& bn)
-        : __bn(bn) {
-
+      const BayesNet< GUM_SCALAR >& bn) :
+        __bn(bn) {
       // for debugging purposes
       GUM_CONSTRUCTOR(BNDatabaseGenerator);
 
@@ -143,7 +142,6 @@ namespace gum {
                                                   bool               append,
                                                   std::string        csvSeparator,
                                                   bool checkOnAppend) const {
-
       if (!__drawnSamples) {
         GUM_ERROR(OperationNotAllowed, "drawSamples() must be called first.");
       }
@@ -216,8 +214,7 @@ namespace gum {
     /// generates a DatabaseVectInRAM
     template < typename GUM_SCALAR >
     DatabaseTable<>
-    BNDatabaseGenerator< GUM_SCALAR >::toDatabaseTable(bool useLabels) const {
-
+      BNDatabaseGenerator< GUM_SCALAR >::toDatabaseTable(bool useLabels) const {
       if (!__drawnSamples)
         GUM_ERROR(OperationNotAllowed, "proceed() must be called first.");
 
@@ -229,17 +226,17 @@ namespace gum {
       }
 
       // create the translators
-      for ( std::size_t i = 0; i < __nbVars; ++i ) {
-        const Variable& var = __bn.variable ( __varOrder[i] );
-        db.insertTranslator ( var, i );
+      for (std::size_t i = 0; i < __nbVars; ++i) {
+        const Variable& var = __bn.variable(__varOrder[i]);
+        db.insertTranslator(var, i);
       }
 
-      
-      //db.setVariableNames(varNames);
-      //db.setVariableNames(varOrderNames());
 
-      if ( useLabels) {
-        std::vector<std::string> xrow (__nbVars);
+      // db.setVariableNames(varNames);
+      // db.setVariableNames(varOrderNames());
+
+      if (useLabels) {
+        std::vector< std::string > xrow(__nbVars);
         for (const auto& row : __database) {
           for (Idx i = 0; i < __nbVars; ++i) {
             Idx j = __varOrder.at(i);
@@ -247,22 +244,21 @@ namespace gum {
           }
           db.insertRow(xrow);
         }
-      }
-      else {
-        std::vector<DBTranslatedValueType> translatorType ( __nbVars );
-        for ( std::size_t i = 0; i < __nbVars; ++i ) {
-          translatorType[i] = db.translator(i).getValType ();
+      } else {
+        std::vector< DBTranslatedValueType > translatorType(__nbVars);
+        for (std::size_t i = 0; i < __nbVars; ++i) {
+          translatorType[i] = db.translator(i).getValType();
         }
-        DBRow<DBTranslatedValue> xrow ( __nbVars );
+        DBRow< DBTranslatedValue > xrow(__nbVars);
         const auto xmiss = gum::learning::DatabaseTable<>::IsMissing::False;
         for (const auto& row : __database) {
           for (Idx i = 0; i < __nbVars; ++i) {
             Idx j = __varOrder.at(i);
 
-            if ( translatorType[i] == DBTranslatedValueType::DISCRETE )
-              xrow[i].discr_val = std::size_t ( row.at(j) );
+            if (translatorType[i] == DBTranslatedValueType::DISCRETE)
+              xrow[i].discr_val = std::size_t(row.at(j));
             else
-              xrow[i].cont_val = float ( row.at(j) );
+              xrow[i].cont_val = float(row.at(j));
           }
         }
         db.insertRow(xrow, xmiss);
@@ -275,7 +271,7 @@ namespace gum {
     /// returns database using specified data order
     template < typename GUM_SCALAR >
     std::vector< std::vector< Idx > >
-    BNDatabaseGenerator< GUM_SCALAR >::database() const {
+      BNDatabaseGenerator< GUM_SCALAR >::database() const {
       if (!__drawnSamples)
         GUM_ERROR(OperationNotAllowed, "drawSamples() must be called first.");
 
@@ -292,14 +288,12 @@ namespace gum {
     template < typename GUM_SCALAR >
     void BNDatabaseGenerator< GUM_SCALAR >::setVarOrder(
       const std::vector< Idx >& varOrder) {
-
       if (varOrder.size() != __nbVars) {
         GUM_ERROR(FatalError,
                   "varOrder's size must be equal to the number of variables");
       }
       std::vector< bool > usedVars(__nbVars, false);
       for (const auto& i : varOrder) {
-
         if (i >= __nbVars) {
           GUM_ERROR(FatalError, "varOrder contains invalid variables");
         }
@@ -360,7 +354,6 @@ namespace gum {
     /// set columns in random order
     template < typename GUM_SCALAR >
     void BNDatabaseGenerator< GUM_SCALAR >::setRandomVarOrder() {
-
       std::vector< std::string > varOrder;
       varOrder.reserve(__bn.size());
       for (const auto& var : __bn.dag()) {
@@ -382,8 +375,7 @@ namespace gum {
     /// returns variable order.
     template < typename GUM_SCALAR >
     std::vector< std::string >
-    BNDatabaseGenerator< GUM_SCALAR >::varOrderNames() const {
-
+      BNDatabaseGenerator< GUM_SCALAR >::varOrderNames() const {
       std::vector< std::string > varNames;
       varNames.reserve(__nbVars);
       for (const auto& i : __varOrder) {
@@ -406,7 +398,6 @@ namespace gum {
     template < typename GUM_SCALAR >
     std::vector< Idx > BNDatabaseGenerator< GUM_SCALAR >::__varOrderFromCSV(
       const std::string& csvFileURL, const std::string& csvSeparator) const {
-
       std::ifstream      csvFile(csvFileURL);
       std::vector< Idx > varOrder;
       if (csvFile) {
@@ -423,7 +414,6 @@ namespace gum {
     template < typename GUM_SCALAR >
     std::vector< Idx > BNDatabaseGenerator< GUM_SCALAR >::__varOrderFromCSV(
       std::ifstream& csvFile, const std::string& csvSeparator) const {
-
       std::string                line;
       std::vector< std::string > header_found;
       header_found.reserve(__nbVars);

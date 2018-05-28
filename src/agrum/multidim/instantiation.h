@@ -41,7 +41,8 @@ namespace gum {
   // ===                           GUM_INSTANTIATION                       ===
   // =========================================================================
   /**
-   * @class Instantiation instantiation.h <agrum/multidim/instantiation.h>
+   * @class Instantiation
+   * @headerfile instantiation.h <agrum/multidim/instantiation.h>
    * @brief Class for assigning/browsing values to tuples of discrete
    * variables.
    * @ingroup multidim_group
@@ -328,13 +329,13 @@ namespace gum {
     const DiscreteVariable& variable(Idx i) const final;
 
     /**
-   * @brief Returns the variable with the name
-   *
-   * @param name The index of the variable
-   * @return Returns the variable qith the name in the tuple.
-   * @warging This function is not O(1)
-   * @throw NotFound Raised if the element cannot be found.
-   */
+     * @brief Returns the variable with the name
+     *
+     * @param name The index of the variable
+     * @return Returns the variable qith the name in the tuple.
+     * @warging This function is not O(1)
+     * @throw NotFound Raised if the element cannot be found.
+     */
     const DiscreteVariable& variable(const std::string& name) const final;
 
     /**
@@ -402,47 +403,47 @@ namespace gum {
     Instantiation& chgVal(Idx varPos, Idx newval);
 
     /**
-  * @brief Assign newval to variable at position varPos in the Instantiation.
-  *
-  * Consider the values of v as an array indexed from 0 to n of values
-  * (which might be anything from real numbers to strings, etc). Parameter
-  * newval indicates the index in this array of the new value taken by v.
-  *
-  * In addition to modifying the value of the variable, the Instantiation
-  * informs its master of the modification. This function also unsets the
-  * overflow flag.
-  *
-  * @param var the name of the variable whose value is assigned in the
-  * tuple of variables of the Instantiation.
-  * @param newval The index of the value assigned.
-  * @return A reference to *this in order to chain the chgVal.
-  *
-  * @throw NotFound Raised if the variable does not belong to this
-  * @throw NotFound Raised if newval is not a possible value for the
-  * variable
-  */
+     * @brief Assign newval to variable at position varPos in the Instantiation.
+     *
+     * Consider the values of v as an array indexed from 0 to n of values
+     * (which might be anything from real numbers to strings, etc). Parameter
+     * newval indicates the index in this array of the new value taken by v.
+     *
+     * In addition to modifying the value of the variable, the Instantiation
+     * informs its master of the modification. This function also unsets the
+     * overflow flag.
+     *
+     * @param var the name of the variable whose value is assigned in the
+     * tuple of variables of the Instantiation.
+     * @param newval The index of the value assigned.
+     * @return A reference to *this in order to chain the chgVal.
+     *
+     * @throw NotFound Raised if the variable does not belong to this
+     * @throw NotFound Raised if newval is not a possible value for the
+     * variable
+     */
     Instantiation& chgVal(const std::string& var, Idx newval);
 
     /**
-  * @brief Assign newval to variable at position varPos in the Instantiation.
-  *
-  * Consider the values of v as an array indexed from 0 to n of values
-  * (which might be anything from real numbers to strings, etc). Parameter
-  * newval indicates the index in this array of the new value taken by v.
-  *
-  * In addition to modifying the value of the variable, the Instantiation
-  * informs its master of the modification. This function also unsets the
-  * overflow flag.
-  *
-  * @param var the name of the variable whose value is assigned in the
-  * tuple of variables of the Instantiation.
-  * @param newval The label of the value assigned.
-  * @return A reference to *this in order to chain the chgVal.
-  *
-  * @throw NotFound Raised if the variable does not belong to this
-  * @throw OutOfBound Raised if newval is not a possible value for the
-  * variable
-  */
+     * @brief Assign newval to variable at position varPos in the Instantiation.
+     *
+     * Consider the values of v as an array indexed from 0 to n of values
+     * (which might be anything from real numbers to strings, etc). Parameter
+     * newval indicates the index in this array of the new value taken by v.
+     *
+     * In addition to modifying the value of the variable, the Instantiation
+     * informs its master of the modification. This function also unsets the
+     * overflow flag.
+     *
+     * @param var the name of the variable whose value is assigned in the
+     * tuple of variables of the Instantiation.
+     * @param newval The label of the value assigned.
+     * @return A reference to *this in order to chain the chgVal.
+     *
+     * @throw NotFound Raised if the variable does not belong to this
+     * @throw OutOfBound Raised if newval is not a possible value for the
+     * variable
+     */
     Instantiation& chgVal(const std::string& var, const std::string& newval);
 
     /**
@@ -1252,7 +1253,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/multidim/instantiation_inl.h>
+#  include <agrum/multidim/instantiation_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_INSTANTIATION_H */

@@ -406,9 +406,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(power.variable().label(15), "6");
         TS_ASSERT_EQUALS(power.variable().label(16), "7");
         TS_ASSERT_EQUALS(power.variable().label(17), "8");
-      } catch (gum::OutOfBounds& e) {
-        GUM_SHOWERROR(e);
-      }
+      } catch (gum::OutOfBounds& e) { GUM_SHOWERROR(e); }
     }
 
     void testIntTypeError1() {
@@ -750,4 +748,4 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(line, msg.str());
     }
   };
-}  // namespace gum_tests
+}   // namespace gum_tests

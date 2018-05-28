@@ -52,7 +52,8 @@ namespace gum {
     template < typename GUM_SCALAR >
     class PRMFactory;
     /**
-     * @class PRM PRM.h <agrum/PRM/PRM.h>
+     * @class PRM
+     * @headerfile PRM.h <agrum/PRM/PRM.h>
      * @brief This class represents a Probabilistic Relational
      *PRMSystem<GUM_SCALAR>.
      *
@@ -155,7 +156,7 @@ namespace gum {
        * @throw NotFound Raised if no class is found with the given name.
        */
       const PRMInterface< GUM_SCALAR >&
-      getInterface(const std::string& name) const;
+        getInterface(const std::string& name) const;
 
       /**
        * Returns the Set of all Class<GUM_SCALAR> in this PRM.

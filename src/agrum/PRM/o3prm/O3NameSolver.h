@@ -1,22 +1,22 @@
 /**************************************************************************
-*   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 /**
  * @file
@@ -36,7 +36,7 @@
 #include <agrum/core/utils_string.h>
 
 #ifndef GUM_PRM_O3PRM_O3NAMESOLVER_H
-#define GUM_PRM_O3PRM_O3NAMESOLVER_H
+#  define GUM_PRM_O3PRM_O3NAMESOLVER_H
 
 namespace gum {
   namespace prm {
@@ -53,7 +53,6 @@ namespace gum {
        */
       template < typename GUM_SCALAR >
       class O3NameSolver {
-
         public:
         O3NameSolver(PRM< GUM_SCALAR >& prm,
                      O3PRM&             o3_prm,
@@ -66,7 +65,7 @@ namespace gum {
         ~O3NameSolver();
 
         O3NameSolver< GUM_SCALAR >&
-        operator=(const O3NameSolver< GUM_SCALAR >& src);
+          operator=(const O3NameSolver< GUM_SCALAR >& src);
 
         O3NameSolver< GUM_SCALAR >& operator=(O3NameSolver< GUM_SCALAR >&& src);
 
@@ -94,9 +93,9 @@ namespace gum {
         NameMap __className;
       };
 
-    }  // o3prm
-  }    // prm
-}  // gum
+    }   // namespace o3prm
+  }     // namespace prm
+}   // namespace gum
 
 
 extern template class gum::prm::o3prm::O3NameSolver< float >;
@@ -104,6 +103,6 @@ extern template class gum::prm::o3prm::O3NameSolver< double >;
 
 
 // always include the implementation of the templates
-#include <agrum/PRM/o3prm/O3NameSolver_tpl.h>
+#  include <agrum/PRM/o3prm/O3NameSolver_tpl.h>
 
-#endif  // GUM_PRM_O3PRM_O3NAMESOLVER_H
+#endif   // GUM_PRM_O3PRM_O3NAMESOLVER_H

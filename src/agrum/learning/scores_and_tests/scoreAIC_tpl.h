@@ -25,8 +25,8 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/learning/scores_and_tests/scoreAIC.h>
-#include <sstream>
+#  include <agrum/learning/scores_and_tests/scoreAIC.h>
+#  include <sstream>
 
 namespace gum {
 
@@ -36,13 +36,13 @@ namespace gum {
     template < typename IdSetAlloc, typename CountAlloc >
     template < typename RowFilter >
     INLINE ScoreAIC< IdSetAlloc, CountAlloc >::ScoreAIC(
-      const RowFilter&           filter,
-      const std::vector< Size >& var_modalities,
+      const RowFilter&                   filter,
+      const std::vector< Size >&         var_modalities,
       Apriori< IdSetAlloc, CountAlloc >& apriori,
-      Size min_range,
-      Size max_range)
-        : Score< IdSetAlloc, CountAlloc >(
-            filter, var_modalities, apriori, min_range, max_range) {
+      Size                               min_range,
+      Size                               max_range) :
+        Score< IdSetAlloc, CountAlloc >(
+          filter, var_modalities, apriori, min_range, max_range) {
       // for debugging purposes
       GUM_CONSTRUCTOR(ScoreAIC);
     }
@@ -50,9 +50,9 @@ namespace gum {
     /// copy constructor
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE ScoreAIC< IdSetAlloc, CountAlloc >::ScoreAIC(
-      const ScoreAIC< IdSetAlloc, CountAlloc >& from)
-        : Score< IdSetAlloc, CountAlloc >(from)
-        , __internal_apriori(from.__internal_apriori) {
+      const ScoreAIC< IdSetAlloc, CountAlloc >& from) :
+        Score< IdSetAlloc, CountAlloc >(from),
+        __internal_apriori(from.__internal_apriori) {
       // for debugging purposes
       GUM_CONS_CPY(ScoreAIC);
     }
@@ -60,9 +60,9 @@ namespace gum {
     /// move constructor
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE ScoreAIC< IdSetAlloc, CountAlloc >::ScoreAIC(
-      ScoreAIC< IdSetAlloc, CountAlloc >&& from)
-        : Score< IdSetAlloc, CountAlloc >(std::move(from))
-        , __internal_apriori(std::move(from.__internal_apriori)) {
+      ScoreAIC< IdSetAlloc, CountAlloc >&& from) :
+        Score< IdSetAlloc, CountAlloc >(std::move(from)),
+        __internal_apriori(std::move(from.__internal_apriori)) {
       // for debugging purposes
       GUM_CONS_MOV(ScoreAIC);
     }
@@ -70,7 +70,7 @@ namespace gum {
     /// virtual copy factory
     template < typename IdSetAlloc, typename CountAlloc >
     ScoreAIC< IdSetAlloc, CountAlloc >*
-    ScoreAIC< IdSetAlloc, CountAlloc >::copyFactory() const {
+      ScoreAIC< IdSetAlloc, CountAlloc >::copyFactory() const {
       return new ScoreAIC< IdSetAlloc, CountAlloc >(*this);
     }
 
@@ -86,9 +86,9 @@ namespace gum {
     bool ScoreAIC< IdSetAlloc, CountAlloc >::isAprioriCompatible(
       const std::string& apriori_type, double weight) {
       // check that the apriori is compatible with the score
-      if ((apriori_type == AprioriDirichletType::type) ||
-          (apriori_type == AprioriSmoothingType::type) ||
-          (apriori_type == AprioriNoAprioriType::type)) {
+      if ((apriori_type == AprioriDirichletType::type)
+          || (apriori_type == AprioriSmoothingType::type)
+          || (apriori_type == AprioriNoAprioriType::type)) {
         return true;
       }
 
@@ -166,15 +166,11 @@ namespace gum {
           // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - sum_j=1^q_i N_ij log N_ij
           for (Idx k = 0; k < targets_modal; ++k) {
             const double new_count = N_ijk[k] + N_prime_ijk[k];
-            if (new_count) {
-              score += new_count * std::log(new_count);
-            }
+            if (new_count) { score += new_count * std::log(new_count); }
           }
           for (Idx j = 0; j < conditioning_modal; ++j) {
             const double new_count = N_ij[j] + N_prime_ij[j];
-            if (new_count) {
-              score -= new_count * std::log(new_count);
-            }
+            if (new_count) { score -= new_count * std::log(new_count); }
           }
         } else {
           // compute the score: it remains to compute the log likelihood, i.e.,
@@ -182,14 +178,10 @@ namespace gum {
           // equivalent to:
           // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - sum_j=1^q_i N_ij log N_ij
           for (Idx k = 0; k < targets_modal; ++k) {
-            if (N_ijk[k]) {
-              score += N_ijk[k] * std::log(N_ijk[k]);
-            }
+            if (N_ijk[k]) { score += N_ijk[k] * std::log(N_ijk[k]); }
           }
           for (Idx j = 0; j < conditioning_modal; ++j) {
-            if (N_ij[j]) {
-              score -= N_ij[j] * std::log(N_ij[j]);
-            }
+            if (N_ij[j]) { score -= N_ij[j] * std::log(N_ij[j]); }
           }
         }
 

@@ -153,11 +153,11 @@ namespace gum {
     virtual void erase(const DiscreteVariable& v) override;
 
     virtual const Sequence< const DiscreteVariable* >&
-    variablesSequence() const override;
+      variablesSequence() const override;
 
     virtual const DiscreteVariable& variable(Idx i) const override;
     virtual const DiscreteVariable&
-    variable(const std::string& name) const override;
+      variable(const std::string& name) const override;
 
     virtual Idx pos(const DiscreteVariable& v) const override;
 

@@ -87,10 +87,10 @@ namespace gum {
        * @param max_range The maximal range.
        */
       template < typename RowFilter >
-      Score(const RowFilter&           filter,
-            const std::vector< Size >& var_modalities,
+      Score(const RowFilter&                   filter,
+            const std::vector< Size >&         var_modalities,
             Apriori< IdSetAlloc, CountAlloc >& apriori,
-            Size min_range = 0,
+            Size                               min_range = 0,
             Size max_range = std::numeric_limits< Size >::max());
 
       /// virtual copy factory
@@ -185,7 +185,7 @@ namespace gum {
        * aprioris are taken into account during structure learning and parameter
        * learning. */
       virtual const ScoreInternalApriori< IdSetAlloc, CountAlloc >&
-      internalApriori() const noexcept = 0;
+        internalApriori() const noexcept = 0;
 
       /// sets the range of records taken into account by the counter
       /** @param min_range he number of the first record to be taken into
@@ -288,7 +288,7 @@ namespace gum {
 
       /// prevent copy operator
       Score< IdSetAlloc, CountAlloc >&
-      operator=(const Score< IdSetAlloc, CountAlloc >&) = delete;
+        operator=(const Score< IdSetAlloc, CountAlloc >&) = delete;
     };
 
   } /* namespace learning */

@@ -34,15 +34,14 @@ namespace gum {
   /// Default constructor
   template < typename GUM_SCALAR >
   MonteCarloSampling< GUM_SCALAR >::MonteCarloSampling(
-    const IBayesNet< GUM_SCALAR >* bn)
-      : SamplingInference< GUM_SCALAR >(bn) {
+    const IBayesNet< GUM_SCALAR >* bn) :
+      SamplingInference< GUM_SCALAR >(bn) {
     GUM_CONSTRUCTOR(MonteCarloSampling);
   }
 
   /// Destructor
   template < typename GUM_SCALAR >
   MonteCarloSampling< GUM_SCALAR >::~MonteCarloSampling() {
-
     GUM_DESTRUCTOR(MonteCarloSampling);
   }
 
@@ -57,7 +56,6 @@ namespace gum {
   template < typename GUM_SCALAR >
   Instantiation MonteCarloSampling< GUM_SCALAR >::_draw(float*        w,
                                                         Instantiation prev) {
-
     *w = 1.0f;
     bool wrong_value = false;
     do {
@@ -65,8 +63,8 @@ namespace gum {
       prev.clear();
       for (const auto nod : this->BN().topologicalOrder()) {
         this->_addVarSample(nod, &prev);
-        if (this->hardEvidenceNodes().contains(nod) &&
-            prev.val(this->BN().variable(nod)) != this->hardEvidence()[nod]) {
+        if (this->hardEvidenceNodes().contains(nod)
+            && prev.val(this->BN().variable(nod)) != this->hardEvidence()[nod]) {
           wrong_value = true;
           break;
         }
@@ -74,4 +72,4 @@ namespace gum {
     } while (wrong_value);
     return prev;
   }
-}
+}   // namespace gum

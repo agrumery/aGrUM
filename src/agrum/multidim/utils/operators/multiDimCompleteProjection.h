@@ -44,7 +44,6 @@ namespace gum {
   // clang-format on
   template < typename GUM_SCALAR, template < typename > class TABLE >
   class MultiDimCompleteProjection {
-
     public:
     // ========================================================================
     /// @name Constructors / Destructors
@@ -97,7 +96,7 @@ namespace gum {
     private:
     /// Forbid copy operators
     MultiDimCompleteProjection< GUM_SCALAR, TABLE >&
-    operator=(const MultiDimCompleteProjection< GUM_SCALAR, TABLE >&);
+      operator=(const MultiDimCompleteProjection< GUM_SCALAR, TABLE >&);
   };
 
 } /* namespace gum */

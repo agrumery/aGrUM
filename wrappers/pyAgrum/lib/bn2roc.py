@@ -399,7 +399,7 @@ def showROC(bn, csv_name, variable, label, visible=True, show_fig=False,with_lab
 
   try:
     shortname = os.path.basename(bn.property("name"))
-  except IndexError:
+  except gum.NotFound:
     shortname = "unnamed"
 
   title = shortname + " vs " + csv_name + " - " + variable + "=" + str(label)

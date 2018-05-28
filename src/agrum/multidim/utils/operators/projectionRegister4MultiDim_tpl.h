@@ -27,9 +27,9 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/agrum.h>
+#  include <agrum/agrum.h>
 
-#include <agrum/multidim/utils/operators/projectionRegister4MultiDim.h>
+#  include <agrum/multidim/utils/operators/projectionRegister4MultiDim.h>
 
 namespace gum {
 
@@ -45,13 +45,13 @@ namespace gum {
 
     if (!__set.exists(projection_name)) {
       theset = __set.insert(projection_name, new ProjectionSet).second;
-#ifndef NDEBUG
+#  ifndef NDEBUG
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the ProjectionRegister4MultiDim will be
       // removed at the end of the program's execution.
       __debug__::__inc_deletion(
         "HashTable", __FILE__, __LINE__, "destructor of", (void*)theset);
-#endif /* NDEBUG */
+#  endif /* NDEBUG */
     } else {
       theset = __set[projection_name];
     }
@@ -83,8 +83,8 @@ namespace gum {
    * MultiDimImplementation */
   template < typename GUM_SCALAR >
   INLINE typename ProjectionRegister4MultiDim< GUM_SCALAR >::ProjectionPtr
-  ProjectionRegister4MultiDim< GUM_SCALAR >::get(
-    const std::string& projection_name, const std::string& type_multidim) const {
+    ProjectionRegister4MultiDim< GUM_SCALAR >::get(
+      const std::string& projection_name, const std::string& type_multidim) const {
     ProjectionSet* theset = __set[projection_name];
     return theset->operator[](type_multidim);
   }
@@ -93,10 +93,10 @@ namespace gum {
   // type
   template < typename GUM_SCALAR >
   ProjectionRegister4MultiDim< GUM_SCALAR >&
-  ProjectionRegister4MultiDim< GUM_SCALAR >::Register() {
+    ProjectionRegister4MultiDim< GUM_SCALAR >::Register() {
     static ProjectionRegister4MultiDim container;
 
-#ifndef NDEBUG
+#  ifndef NDEBUG
     static bool first = true;
 
     if (first) {
@@ -108,7 +108,7 @@ namespace gum {
         "HashTable", __FILE__, __LINE__, "destructor of", (void*)&container.__set);
     }
 
-#endif /* NDEBUG */
+#  endif /* NDEBUG */
 
     return container;
   }

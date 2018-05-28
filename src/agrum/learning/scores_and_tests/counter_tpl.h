@@ -25,7 +25,7 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <cmath>
+#  include <cmath>
 
 namespace gum {
 
@@ -38,9 +38,9 @@ namespace gum {
       const RowFilter&           filter,
       const std::vector< Size >& var_modalities,
       Size                       min_range,
-      Size                       max_range)
-        : _modalities(var_modalities)
-        , _record_counter(filter, var_modalities, min_range, max_range) {
+      Size                       max_range) :
+        _modalities(var_modalities),
+        _record_counter(filter, var_modalities, min_range, max_range) {
       // for debugging purposes
       GUM_CONSTRUCTOR(Counter);
     }
@@ -48,10 +48,10 @@ namespace gum {
     /// copy constructor
     template < typename IdSetAlloc, typename CountAlloc >
     Counter< IdSetAlloc, CountAlloc >::Counter(
-      const Counter< IdSetAlloc, CountAlloc >& from)
-        : _modalities(from._modalities)
-        , _counts_computed(from._counts_computed)
-        , _record_counter(from._record_counter) {
+      const Counter< IdSetAlloc, CountAlloc >& from) :
+        _modalities(from._modalities),
+        _counts_computed(from._counts_computed),
+        _record_counter(from._record_counter) {
       // copy the target nodesets
       _target_nodesets.reserve(from._target_nodesets.size());
       for (const auto set : from._target_nodesets) {
@@ -105,12 +105,12 @@ namespace gum {
     /// move constructor
     template < typename IdSetAlloc, typename CountAlloc >
     Counter< IdSetAlloc, CountAlloc >::Counter(
-      Counter< IdSetAlloc, CountAlloc >&& from)
-        : _modalities(from._modalities)
-        , _counts_computed(std::move(from._counts_computed))
-        , _record_counter(std::move(from._record_counter))
-        , _target_nodesets(std::move(from._target_nodesets))
-        , _conditioning_nodesets(std::move(from._conditioning_nodesets)) {
+      Counter< IdSetAlloc, CountAlloc >&& from) :
+        _modalities(from._modalities),
+        _counts_computed(std::move(from._counts_computed)),
+        _record_counter(std::move(from._record_counter)),
+        _target_nodesets(std::move(from._target_nodesets)),
+        _conditioning_nodesets(std::move(from._conditioning_nodesets)) {
       from._target_nodesets.clear();
       from._conditioning_nodesets.clear();
 
@@ -320,7 +320,7 @@ namespace gum {
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE Idx Counter< IdSetAlloc, CountAlloc >::addNodeSet(
       const std::pair< Idx, Idx >& vars,
-      const std::vector< Idx >& conditioning_ids) {
+      const std::vector< Idx >&    conditioning_ids) {
       // if the conditioning set is empty, perform the unconditional addNodeSet
       if (!conditioning_ids.size()) {
         return Counter< IdSetAlloc, CountAlloc >::addNodeSet(vars.first,
@@ -412,7 +412,7 @@ namespace gum {
     /// returns the counting vector for a given (conditioned) target set
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE const std::vector< double, CountAlloc >&
-    Counter< IdSetAlloc, CountAlloc >::_getAllCounts(Idx index) {
+                 Counter< IdSetAlloc, CountAlloc >::_getAllCounts(Idx index) {
       if (!_counts_computed) _count();
       return _record_counter.getCounts(_target_nodesets[index]->second);
     }
@@ -420,7 +420,7 @@ namespace gum {
     /// returns the counting vector for a conditioning set
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE const std::vector< double, CountAlloc >&
-    Counter< IdSetAlloc, CountAlloc >::_getConditioningCounts(Idx index) {
+                 Counter< IdSetAlloc, CountAlloc >::_getConditioningCounts(Idx index) {
       if (!_counts_computed) _count();
       return _record_counter.getCounts(_conditioning_nodesets[index]->second);
     }
@@ -428,14 +428,14 @@ namespace gum {
     /// returns the set of target + conditioning nodes
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE const std::vector< Idx, IdSetAlloc >&
-    Counter< IdSetAlloc, CountAlloc >::_getAllNodes(Idx index) const noexcept {
+                 Counter< IdSetAlloc, CountAlloc >::_getAllNodes(Idx index) const noexcept {
       return _target_nodesets[index]->first;
     }
 
     /// returns the set of conditioning nodes
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE const std::vector< Idx, IdSetAlloc >*
-    Counter< IdSetAlloc, CountAlloc >::_getConditioningNodes(Idx index) const
+                 Counter< IdSetAlloc, CountAlloc >::_getConditioningNodes(Idx index) const
       noexcept {
       if (_conditioning_nodesets[index] != nullptr) {
         return &(_conditioning_nodesets[index]->first);
@@ -454,7 +454,7 @@ namespace gum {
     /// sets the maximum number of threads used to perform countings
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE void
-    Counter< IdSetAlloc, CountAlloc >::setMaxNbThreads(Size nb) noexcept {
+      Counter< IdSetAlloc, CountAlloc >::setMaxNbThreads(Size nb) noexcept {
       _record_counter.setMaxNbThreads(nb);
     }
 

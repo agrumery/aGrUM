@@ -57,7 +57,7 @@ namespace gum {
      * // create a safe and an unsafe handler. Those inherit from DBHandler
      * typename gum::learning::RawDatabaseTable<>::HandlerSafe handler( database );
      * typename gum::learning::RawDatabaseTable<>::Handler uhandler( database );
-     * // by default, the handlers range over the whole database, which 
+     * // by default, the handlers range over the whole database, which
      * // currently contains only one row
      *
      * // here, we add 5 new rows into the database
@@ -113,27 +113,26 @@ namespace gum {
      * @endcode
      * @ingroup learning_database
      */
-    template <typename T_DATA,
-              template<typename> class ALLOC = std::allocator>
+    template < typename T_DATA,
+               template < typename > class ALLOC = std::allocator >
     class DBHandler {
       public:
-
       /// Types for STL compliance.
       /// @{
       using iterator_category = std::random_access_iterator_tag;
-      using value_type = DBRow<T_DATA,ALLOC>;
+      using value_type = DBRow< T_DATA, ALLOC >;
       using reference = value_type&;
       using const_reference = const value_type&;
       using pointer = value_type*;
       using const_pointer = const value_type*;
       using size_type = std::size_t;
       using difference_type = std::ptrdiff_t;
-      using allocator_type = ALLOC<void>;
+      using allocator_type = ALLOC< void >;
       /// @}
 
       /// the type for the allocated vectors in IDatabases
-      template <typename TX_DATA>
-      using DBVector = std::vector<TX_DATA,ALLOC<TX_DATA>>;
+      template < typename TX_DATA >
+      using DBVector = std::vector< TX_DATA, ALLOC< TX_DATA > >;
 
 
       // ##########################################################################
@@ -141,7 +140,7 @@ namespace gum {
       // ##########################################################################
 
       /// @{
-     
+
       /// returns the number of rows managed by the handler
       /** A handler needs not necessarily handle all the rows of the database.
        * For instance, RecordCounters cut the database into several pieces and
@@ -208,35 +207,34 @@ namespace gum {
        * be the first one in the area managed by the DBHandler.
        * @param end the number of the row in the whole database from which
        * the DBHandler considers it is outside of its area. */
-      virtual void setRange( std::size_t begin, std::size_t end ) = 0;
+      virtual void setRange(std::size_t begin, std::size_t end) = 0;
 
       /// returns the current range of rows of the handler
       /** The range returned is of type [begin,end), i.e., the first row of the
        * range managed by the DBHandler has index begin in the whole database,
        * and the last row of the range has index end-1 in the whole database.
        * The endth row is therefore the first one outside the range.*/
-      virtual std::pair<std::size_t,std::size_t> range() const = 0;
+      virtual std::pair< std::size_t, std::size_t > range() const = 0;
 
       /// returns the names of the variables corresponding to the rows
-      virtual const DBVector<std::string>& variableNames() const = 0;
+      virtual const DBVector< std::string >& variableNames() const = 0;
 
       /// returns the number of variables (columns) of the database
       virtual std::size_t nbVariables() const = 0;
 
       /// @}
-      
+
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-    protected:
+      protected:
       // the cache used to avoid cacheline problems due to parallelism
-      static constexpr int _cache_size { 128 };
+      static constexpr int _cache_size{128};
 
       // a buffer to avoid cacheline problems due to parallelism
       char _align[_cache_size];
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
-
     };
 
   } /* namespace learning */

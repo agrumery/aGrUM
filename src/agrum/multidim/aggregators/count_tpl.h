@@ -31,15 +31,14 @@ namespace gum {
 
   namespace aggregator {
     template < typename GUM_SCALAR >
-    INLINE Count< GUM_SCALAR >::Count(Idx value)
-        : MultiDimAggregator< GUM_SCALAR >()
-        , __value(value) {
+    INLINE Count< GUM_SCALAR >::Count(Idx value) :
+        MultiDimAggregator< GUM_SCALAR >(), __value(value) {
       GUM_CONSTRUCTOR(Count)
     }
 
     template < typename GUM_SCALAR >
-    INLINE Count< GUM_SCALAR >::Count(const Count< GUM_SCALAR >& from)
-        : MultiDimAggregator< GUM_SCALAR >(from) {
+    INLINE Count< GUM_SCALAR >::Count(const Count< GUM_SCALAR >& from) :
+        MultiDimAggregator< GUM_SCALAR >(from) {
       __value = from.__value;
       GUM_CONS_CPY(Count);
     }
@@ -75,5 +74,5 @@ namespace gum {
       return new Count< GUM_SCALAR >(__value);
     }
 
-  }  // aggregator
-}  // namespace gum
+  }   // namespace aggregator
+}   // namespace gum

@@ -29,8 +29,8 @@ namespace gum {
   // Default constructor
 
   template < typename GUM_SCALAR >
-  INLINE MultiDimReadOnly< GUM_SCALAR >::MultiDimReadOnly()
-      : MultiDimImplementation< GUM_SCALAR >() {
+  INLINE MultiDimReadOnly< GUM_SCALAR >::MultiDimReadOnly() :
+      MultiDimImplementation< GUM_SCALAR >() {
     GUM_CONSTRUCTOR(MultiDimReadOnly);
   }
 
@@ -38,8 +38,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE MultiDimReadOnly< GUM_SCALAR >::MultiDimReadOnly(
-    const MultiDimReadOnly< GUM_SCALAR >& from)
-      : MultiDimImplementation< GUM_SCALAR >(from) {
+    const MultiDimReadOnly< GUM_SCALAR >& from) :
+      MultiDimImplementation< GUM_SCALAR >(from) {
     GUM_CONS_CPY(MultiDimReadOnly);
   }
 

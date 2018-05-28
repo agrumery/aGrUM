@@ -53,7 +53,6 @@ namespace gum {
 
   template < TESTNAME AttributeSelection, bool isScalar >
   class NodeDatabase {
-
     typedef typename ValueSelect< isScalar, double, Idx >::type ValueType;
 
     template < typename GUM_SCALAR >
@@ -159,7 +158,7 @@ namespace gum {
     /// Merges given NodeDatabase informations into current nDB.
     // ###################################################################
     NodeDatabase< AttributeSelection, isScalar >&
-    operator+=(const NodeDatabase< AttributeSelection, isScalar >& src);
+      operator+=(const NodeDatabase< AttributeSelection, isScalar >& src);
 
     // ###################################################################
     /// Returns a reference to nDB test policy for given variable
@@ -216,4 +215,4 @@ namespace gum {
 
 #include <agrum/FMDP/learning/datastructure/nodeDatabase_tpl.h>
 
-#endif  // GUM_NODE_DATABASE_H
+#endif   // GUM_NODE_DATABASE_H

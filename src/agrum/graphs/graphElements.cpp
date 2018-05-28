@@ -30,7 +30,7 @@
 #include <agrum/graphs/graphElements.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/graphElements_inl.h>
+#  include <agrum/graphs/graphElements_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

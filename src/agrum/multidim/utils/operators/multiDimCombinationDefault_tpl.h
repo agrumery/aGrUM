@@ -26,12 +26,12 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <limits>
+#  include <limits>
 
-#include <agrum/agrum.h>
+#  include <agrum/agrum.h>
 
-#include <agrum/core/priorityQueue.h>
-#include <agrum/multidim/utils/operators/multiDimCombinationDefault.h>
+#  include <agrum/core/priorityQueue.h>
+#  include <agrum/multidim/utils/operators/multiDimCombinationDefault.h>
 
 namespace gum {
 
@@ -39,9 +39,9 @@ namespace gum {
   template < typename GUM_SCALAR, template < typename > class TABLE >
   MultiDimCombinationDefault< GUM_SCALAR, TABLE >::MultiDimCombinationDefault(
     TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&,
-                                    const TABLE< GUM_SCALAR >&))
-      : MultiDimCombination< GUM_SCALAR, TABLE >()
-      , _combine(combine) {
+                                    const TABLE< GUM_SCALAR >&)) :
+      MultiDimCombination< GUM_SCALAR, TABLE >(),
+      _combine(combine) {
     // for debugging purposes
     GUM_CONSTRUCTOR(MultiDimCombinationDefault);
   }
@@ -49,9 +49,9 @@ namespace gum {
   // copy constructor
   template < typename GUM_SCALAR, template < typename > class TABLE >
   MultiDimCombinationDefault< GUM_SCALAR, TABLE >::MultiDimCombinationDefault(
-    const MultiDimCombinationDefault< GUM_SCALAR, TABLE >& from)
-      : MultiDimCombination< GUM_SCALAR, TABLE >()
-      , _combine(from._combine) {
+    const MultiDimCombinationDefault< GUM_SCALAR, TABLE >& from) :
+      MultiDimCombination< GUM_SCALAR, TABLE >(),
+      _combine(from._combine) {
     // for debugging purposes
     GUM_CONS_CPY(MultiDimCombinationDefault);
   }
@@ -66,7 +66,7 @@ namespace gum {
   // virtual constructor
   template < typename GUM_SCALAR, template < typename > class TABLE >
   MultiDimCombinationDefault< GUM_SCALAR, TABLE >*
-  MultiDimCombinationDefault< GUM_SCALAR, TABLE >::newFactory() const {
+    MultiDimCombinationDefault< GUM_SCALAR, TABLE >::newFactory() const {
     return new MultiDimCombinationDefault< GUM_SCALAR, TABLE >(_combine);
   }
 
@@ -139,8 +139,8 @@ namespace gum {
     {
       unsigned int i = 0;
 
-      for (typename Set< const TABLE< GUM_SCALAR > * >::const_iterator_safe
-             iter = set.beginSafe();
+      for (typename Set< const TABLE< GUM_SCALAR >* >::const_iterator_safe iter =
+             set.beginSafe();
            iter != set.endSafe();
            ++iter, ++i) {
         tables[i] = *iter;
@@ -265,9 +265,8 @@ namespace gum {
     {
       unsigned int i = 0;
 
-      for (typename Set<
-             const Sequence< const DiscreteVariable * > * >::const_iterator_safe
-             iter = set.beginSafe();
+      for (typename Set< const Sequence< const DiscreteVariable* >* >::
+             const_iterator_safe iter = set.beginSafe();
            iter != set.endSafe();
            ++iter, ++i) {
         tables[i] = *iter;
@@ -424,8 +423,8 @@ namespace gum {
   // returns the memory consumption used during the combination
   template < typename GUM_SCALAR, template < typename > class TABLE >
   std::pair< long, long >
-  MultiDimCombinationDefault< GUM_SCALAR, TABLE >::memoryUsage(
-    const Set< const Sequence< const DiscreteVariable* >* >& set) const {
+    MultiDimCombinationDefault< GUM_SCALAR, TABLE >::memoryUsage(
+      const Set< const Sequence< const DiscreteVariable* >* >& set) const {
     // check if the set passed in argument is empty.
     if (set.size() < 2) return std::pair< long, long >(0, 0);
 
@@ -441,9 +440,8 @@ namespace gum {
     {
       unsigned int i = 0;
 
-      for (typename Set<
-             const Sequence< const DiscreteVariable * > * >::const_iterator_safe
-             iter = set.beginSafe();
+      for (typename Set< const Sequence< const DiscreteVariable* >* >::
+             const_iterator_safe iter = set.beginSafe();
            iter != set.endSafe();
            ++iter, ++i) {
         const Sequence< const DiscreteVariable* >* vars = *iter;
@@ -507,8 +505,8 @@ namespace gum {
              seq1.beginSafe();
            iter != seq1.endSafe();
            ++iter) {
-        if (std::numeric_limits< Size >::max() / (*iter)->domainSize() <
-            new_size) {
+        if (std::numeric_limits< Size >::max() / (*iter)->domainSize()
+            < new_size) {
           GUM_ERROR(OutOfBounds, "memory usage out of long int range");
         }
 
@@ -522,8 +520,8 @@ namespace gum {
            iter != seq2.endSafe();
            ++iter) {
         if (!seq1.exists(*iter)) {
-          if (std::numeric_limits< Size >::max() / (*iter)->domainSize() <
-              new_size) {
+          if (std::numeric_limits< Size >::max() / (*iter)->domainSize()
+              < new_size) {
             GUM_ERROR(OutOfBounds, "memory usage out of long int range");
           }
 
@@ -539,9 +537,7 @@ namespace gum {
 
       current_memory += new_size;
 
-      if (current_memory > max_memory) {
-        max_memory = current_memory;
-      }
+      if (current_memory > max_memory) { max_memory = current_memory; }
 
       // substitute tables[pair.first] by the result
       if (tables[ti] && is_t_new[ti]) {
@@ -618,8 +614,8 @@ namespace gum {
   // returns the memory consumption used during the combination
   template < typename GUM_SCALAR, template < typename > class TABLE >
   std::pair< long, long >
-  MultiDimCombinationDefault< GUM_SCALAR, TABLE >::memoryUsage(
-    const Set< const TABLE< GUM_SCALAR >* >& set) const {
+    MultiDimCombinationDefault< GUM_SCALAR, TABLE >::memoryUsage(
+      const Set< const TABLE< GUM_SCALAR >* >& set) const {
     // check if the set passed in argument is empty.
     if (set.size() < 2) return std::pair< long, long >(0, 0);
 

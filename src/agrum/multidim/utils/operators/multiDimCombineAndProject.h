@@ -86,8 +86,8 @@ namespace gum {
      * argument contains less than two elements
      */
     virtual Set< const TABLE< GUM_SCALAR >* >
-    combineAndProject(Set< const TABLE< GUM_SCALAR >* > set,
-                      Set< const DiscreteVariable* >    del_vars) = 0;
+      combineAndProject(Set< const TABLE< GUM_SCALAR >* > set,
+                        Set< const DiscreteVariable* >    del_vars) = 0;
 
     /// changes the function used for combining two TABLES
     virtual void setCombineFunction(TABLE< GUM_SCALAR >* (*combine)(
@@ -110,18 +110,18 @@ namespace gum {
      * performed to compute the combination.
      */
     virtual float
-    nbOperations(const Set< const TABLE< GUM_SCALAR >* >& set,
-                 const Set< const DiscreteVariable* >&    del_vars) const = 0;
+      nbOperations(const Set< const TABLE< GUM_SCALAR >* >& set,
+                   const Set< const DiscreteVariable* >&    del_vars) const = 0;
     virtual std::pair< long, long >
-    memoryUsage(const Set< const Sequence< const DiscreteVariable* >* >& set,
-                Set< const DiscreteVariable* > del_vars) const = 0;
+      memoryUsage(const Set< const Sequence< const DiscreteVariable* >* >& set,
+                  Set< const DiscreteVariable* > del_vars) const = 0;
 
     /// @}
 
     private:
     /// forbid copy operators
     MultiDimCombineAndProject< GUM_SCALAR, TABLE >&
-    operator=(const MultiDimCombineAndProject< GUM_SCALAR, TABLE >&);
+      operator=(const MultiDimCombineAndProject< GUM_SCALAR, TABLE >&);
   };
 
 } /* namespace gum */

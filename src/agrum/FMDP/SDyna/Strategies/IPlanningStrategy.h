@@ -47,7 +47,6 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   class IPlanningStrategy {
-
     // ###################################################################
     /// @name Constructor & destructor.
     // ###################################################################
@@ -91,7 +90,7 @@ namespace gum {
     /// Returns optimalPolicy computed so far current size
     // ==========================================================================
     virtual const MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >*
-    optimalPolicy() = 0;
+      optimalPolicy() = 0;
 
     /// @}
 
@@ -118,5 +117,5 @@ namespace gum {
 
     /// @}
   };
-}
-#endif  // GUM_SDYNA_LEARNING_STRATEGY_H
+}   // namespace gum
+#endif   // GUM_SDYNA_LEARNING_STRATEGY_H

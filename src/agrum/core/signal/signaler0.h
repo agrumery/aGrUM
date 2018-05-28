@@ -102,9 +102,9 @@ namespace gum {
       void (TargetClass::*__action)(const void*);
     };
 
-  }  // namespace __sig__
+  }   // namespace __sig__
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
   /**
    * @class Signaler0
@@ -117,8 +117,7 @@ namespace gum {
     public:
     Signaler0() { GUM_CONSTRUCTOR(Signaler0); }
 
-    Signaler0(const Signaler0& s)
-        : __sig__::BasicSignaler0(s) {
+    Signaler0(const Signaler0& s) : __sig__::BasicSignaler0(s) {
       GUM_CONS_CPY(Signaler0);
     }
 
@@ -139,7 +138,7 @@ namespace gum {
     }
   };
 
-}  // namespace gum
+}   // namespace gum
 
 /// this macro is the good way of emitting a signal.
 #define GUM_EMIT0(signal) this->signal(this)
@@ -148,7 +147,7 @@ namespace gum {
 #include <agrum/core/signal/signaler0_tpl.h>
 
 #ifndef GUM_NO_INLINE
-#include <agrum/core/signal/signaler0_inl.h>
-#endif  // GUM_NO_INLINE
+#  include <agrum/core/signal/signaler0_inl.h>
+#endif   // GUM_NO_INLINE
 
-#endif  // GUM_SIGNALER0_H
+#endif   // GUM_SIGNALER0_H

@@ -43,8 +43,9 @@ namespace gum {
      * class
      * @ingroup learning_group
      */
-    class StructuralConstraintDAG : public virtual StructuralConstraintSetStatic<
-                                      StructuralConstraintDiGraph > {
+    class StructuralConstraintDAG
+        : public virtual StructuralConstraintSetStatic<
+            StructuralConstraintDiGraph > {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -189,16 +190,16 @@ namespace gum {
       /// sets a new empty graph from which we will perform checkings
       void setGraph(Size nb_nodes);
 
-/// @}
+      /// @}
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // include the set of methods that enable the structural constraint to
 // be standalone, i.e., that it needs not be included into a
 // StructuralConstraintSetStatic to be used by learning algorithms
-#define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintDAG
-#include <agrum/learning/constraints/structuralConstraintPatternHeader.h>
-#undef GUM_CONSTRAINT_CLASS_NAME
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#  define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintDAG
+#  include <agrum/learning/constraints/structuralConstraintPatternHeader.h>
+#  undef GUM_CONSTRAINT_CLASS_NAME
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
       protected:
       /// the cycle detector used to check quickly graph modifications
@@ -211,7 +212,7 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/constraints/structuralConstraintDAG_inl.h>
+#  include <agrum/learning/constraints/structuralConstraintDAG_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_STRUCTURAL_CONSTRAINT_DAG_H */

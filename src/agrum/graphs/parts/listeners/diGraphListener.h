@@ -105,10 +105,10 @@ namespace gum {
     DiGraphListener& operator=(const DiGraphListener& d);
   };
 
-}  // namespace gum
+}   // namespace gum
 
 #ifndef GUM_NO_INLINE
-#include <agrum/graphs/parts/listeners/diGraphListener_inl.h>
-#endif  // GUM_NOINLINE
+#  include <agrum/graphs/parts/listeners/diGraphListener_inl.h>
+#endif   // GUM_NOINLINE
 
-#endif  // GUM_DIGRAPH_LISTENER_H
+#endif   // GUM_DIGRAPH_LISTENER_H

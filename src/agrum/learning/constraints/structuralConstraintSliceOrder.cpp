@@ -38,7 +38,7 @@
 
 /// include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
-#include <agrum/learning/constraints/structuralConstraintSliceOrder_inl.h>
+#  include <agrum/learning/constraints/structuralConstraintSliceOrder_inl.h>
 #endif /* GUM_NO_INLINE */
 
 namespace gum {
@@ -63,25 +63,25 @@ namespace gum {
 
     /// constructor starting with a given graph
     StructuralConstraintSliceOrder::StructuralConstraintSliceOrder(
-      const DiGraph& graph, const NodeProperty< NodeId >& order)
-        : StructuralConstraintDiGraph(graph)
-        , _SliceOrder__order(order) {
+      const DiGraph& graph, const NodeProperty< NodeId >& order) :
+        StructuralConstraintDiGraph(graph),
+        _SliceOrder__order(order) {
       GUM_CONSTRUCTOR(StructuralConstraintSliceOrder);
     }
 
     /// copy constructor
     StructuralConstraintSliceOrder::StructuralConstraintSliceOrder(
-      const StructuralConstraintSliceOrder& from)
-        : StructuralConstraintDiGraph(from)
-        , _SliceOrder__order(from._SliceOrder__order) {
+      const StructuralConstraintSliceOrder& from) :
+        StructuralConstraintDiGraph(from),
+        _SliceOrder__order(from._SliceOrder__order) {
       GUM_CONS_CPY(StructuralConstraintSliceOrder);
     }
 
     /// move constructor
     StructuralConstraintSliceOrder::StructuralConstraintSliceOrder(
-      StructuralConstraintSliceOrder&& from)
-        : StructuralConstraintDiGraph(std::move(from))
-        , _SliceOrder__order(std::move(from._SliceOrder__order)) {
+      StructuralConstraintSliceOrder&& from) :
+        StructuralConstraintDiGraph(std::move(from)),
+        _SliceOrder__order(std::move(from._SliceOrder__order)) {
       GUM_CONS_MOV(StructuralConstraintSliceOrder);
     }
 
@@ -92,7 +92,7 @@ namespace gum {
 
     /// copy operator
     StructuralConstraintSliceOrder& StructuralConstraintSliceOrder::
-    operator=(const StructuralConstraintSliceOrder& from) {
+                                    operator=(const StructuralConstraintSliceOrder& from) {
       if (this != &from) {
         StructuralConstraintDiGraph::operator=(from);
         _SliceOrder__order = from._SliceOrder__order;
@@ -102,7 +102,7 @@ namespace gum {
 
     /// move operator
     StructuralConstraintSliceOrder& StructuralConstraintSliceOrder::
-    operator=(StructuralConstraintSliceOrder&& from) {
+                                    operator=(StructuralConstraintSliceOrder&& from) {
       if (this != &from) {
         StructuralConstraintDiGraph::operator=(std::move(from));
         _SliceOrder__order = std::move(from._SliceOrder__order);

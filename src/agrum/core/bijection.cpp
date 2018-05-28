@@ -29,7 +29,7 @@
 #include <agrum/core/bijection.h>
 
 #ifndef NDEBUG
-#include <agrum/core/debug.h>
+#  include <agrum/core/debug.h>
 #endif
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -38,13 +38,13 @@ namespace gum {
 
   // creates (if needed) and returns the safe iterator __BijectionIterEndSafe
   const BijectionIteratorSafe< int, int >*
-  BijectionIteratorStaticEnd::endSafe4Statics() {
+    BijectionIteratorStaticEnd::endSafe4Statics() {
     static bool first_time = true;
 
     if (first_time) {
       first_time = false;
       __BijectionIterEndSafe = new BijectionIteratorSafe< int, int >;
-#ifndef NDEBUG
+#  ifndef NDEBUG
       __debug__::__dec_creation("BijectionIteratorSafe",
                                 "__bijection_static_end",
                                 0,
@@ -55,7 +55,7 @@ namespace gum {
                                 0,
                                 "static variable correction",
                                 0);
-#endif
+#  endif
     }
 
     return __BijectionIterEndSafe;
@@ -68,7 +68,7 @@ namespace gum {
     if (first_time) {
       first_time = false;
       __BijectionIterEnd = new BijectionIterator< int, int >;
-#ifndef NDEBUG
+#  ifndef NDEBUG
       __debug__::__dec_creation("BijectionIterator",
                                 "__bijection_static_end",
                                 0,
@@ -79,7 +79,7 @@ namespace gum {
                                 0,
                                 "static variable correction",
                                 0);
-#endif
+#  endif
     }
 
     return __BijectionIterEnd;

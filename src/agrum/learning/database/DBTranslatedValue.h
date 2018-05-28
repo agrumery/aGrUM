@@ -70,7 +70,7 @@ namespace gum {
       /// the field for storing continuous values
       float cont_val;
 
-      
+
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -78,21 +78,19 @@ namespace gum {
       /// @{
 
       /// default constructor: stores discrete value 0
-      constexpr DBTranslatedValue () : discr_val { std::size_t(0) } {}
+      constexpr DBTranslatedValue() : discr_val{std::size_t(0)} {}
 
       /// the constructor for storing a continuous value
-      constexpr DBTranslatedValue ( const float& val ) : cont_val{val} {}
+      constexpr DBTranslatedValue(const float& val) : cont_val{val} {}
 
       /// the constructor for storing a discrete value
-      constexpr DBTranslatedValue ( const std::size_t& val ) : discr_val{val} {}
+      constexpr DBTranslatedValue(const std::size_t& val) : discr_val{val} {}
 
       /// destructor
-      ~DBTranslatedValue () {};
+      ~DBTranslatedValue(){};
 
       /// @}
-      
     };
-
 
 
     /** @enum DBTranslatedValueType
@@ -117,14 +115,11 @@ namespace gum {
      *
      * @ingroup learning_database
      */
-    enum class DBTranslatedValueType : char {
-      DISCRETE, CONTINUOUS
-    };
-    
+    enum class DBTranslatedValueType : char { DISCRETE, CONTINUOUS };
+
 
   } /* namespace learning */
 
 } /* namespace gum */
 
 #endif /* GUM_LEARNING_DB_TRANSLATED_VALUE_H */
-

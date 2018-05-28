@@ -44,15 +44,11 @@ namespace gum {
   }
 
   INLINE void ArcGraphPart::__checkParents(const NodeId id) const {
-    if (!__parents.exists(id)) {
-      __parents.insert(id, new NodeSet);
-    }
+    if (!__parents.exists(id)) { __parents.insert(id, new NodeSet); }
   }
 
   INLINE void ArcGraphPart::__checkChildren(const NodeId id) const {
-    if (!__children.exists(id)) {
-      __children.insert(id, new NodeSet);
-    }
+    if (!__children.exists(id)) { __children.insert(id, new NodeSet); }
   }
 
   INLINE const NodeSet& ArcGraphPart::parents(const NodeId id) const {
@@ -98,7 +94,7 @@ namespace gum {
     if (__parents.exists(id)) {
       NodeSet& parents = *(__parents[id]);
 
-      for (auto iter = parents.beginSafe();  // safe iterator needed here
+      for (auto iter = parents.beginSafe();   // safe iterator needed here
            iter != parents.endSafe();
            ++iter) {
         // warning: use this erase so that you actually use the virtualized
@@ -112,7 +108,7 @@ namespace gum {
     if (__children.exists(id)) {
       NodeSet& children = *(__children[id]);
 
-      for (auto iter = children.beginSafe();  // safe iterator needed here
+      for (auto iter = children.beginSafe();   // safe iterator needed here
            iter != children.endSafe();
            ++iter) {
         // warning: use this erase so that you actually use the vritualized
@@ -131,7 +127,7 @@ namespace gum {
     if (__parents.exists(id)) {
       NodeSet& parents = *(__parents[id]);
 
-      for (auto iter = parents.beginSafe();  // safe iterator needed here
+      for (auto iter = parents.beginSafe();   // safe iterator needed here
            iter != parents.endSafe();
            ++iter) {
         ArcGraphPart::eraseArc(Arc(*iter, id));
@@ -143,7 +139,7 @@ namespace gum {
     if (__children.exists(id)) {
       NodeSet& children = *(__children[id]);
 
-      for (auto iter = children.beginSafe();  // safe iterator needed here
+      for (auto iter = children.beginSafe();   // safe iterator needed here
            iter != children.endSafe();
            ++iter) {
         ArcGraphPart::eraseArc(Arc(id, *iter));

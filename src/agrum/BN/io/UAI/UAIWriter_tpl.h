@@ -20,7 +20,7 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/BN/io/UAI/UAIWriter.h>
+#  include <agrum/BN/io/UAI/UAIWriter.h>
 
 namespace gum {
 
@@ -63,9 +63,7 @@ namespace gum {
 
     output.flush();
 
-    if (output.fail()) {
-      GUM_ERROR(IOError, "Writing in the ostream failed.");
-    }
+    if (output.fail()) { GUM_ERROR(IOError, "Writing in the ostream failed."); }
   }
 
   /*
@@ -86,14 +84,12 @@ namespace gum {
 
     output.close();
 
-    if (output.fail()) {
-      GUM_ERROR(IOError, "Writing in the ostream failed.");
-    }
+    if (output.fail()) { GUM_ERROR(IOError, "Writing in the ostream failed."); }
   }
 
   template < typename GUM_SCALAR >
   INLINE std::string
-  UAIWriter< GUM_SCALAR >::__preambule(const IBayesNet< GUM_SCALAR >& bn) {
+         UAIWriter< GUM_SCALAR >::__preambule(const IBayesNet< GUM_SCALAR >& bn) {
     std::stringstream str;
 
     str << "BAYES" << std::endl;
@@ -104,7 +100,7 @@ namespace gum {
       str << bn.variable(node).domainSize() << " ";
     str << std::endl;
 
-    str << bn.size() << std::endl;  // number of potentials
+    str << bn.size() << std::endl;   // number of potentials
 
     for (auto node : bn.nodes()) {
       const auto& p = bn.cpt(node);
@@ -120,8 +116,8 @@ namespace gum {
   }
   template < typename GUM_SCALAR >
   INLINE std::string
-  UAIWriter< GUM_SCALAR >::__cptBloc(const IBayesNet< GUM_SCALAR >& bn,
-                                     NodeId                         node) {
+         UAIWriter< GUM_SCALAR >::__cptBloc(const IBayesNet< GUM_SCALAR >& bn,
+                                       NodeId                         node) {
     std::stringstream str;
 
     const auto& p = bn.cpt(node);
@@ -138,4 +134,4 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS

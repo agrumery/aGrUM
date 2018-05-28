@@ -57,7 +57,8 @@ namespace gum {
   // ===                                   NODE                            ===
   // =========================================================================
   /**
-   * @class SplayBinaryNode splay.h <agrum/core/splay.h>
+   * @class SplayBinaryNode
+   * @headerfile splay.h <agrum/core/splay.h>
    * @brief the nodes of splay trees
    * @ingroup splaytree_group
    *
@@ -117,18 +118,18 @@ namespace gum {
      * @param p The father of the node, can be nullptr if the node
      * is the root of the tree.
      */
-    SplayBinaryNode(const Element& e,
+    SplayBinaryNode(const Element&                                     e,
                     HashTable< Element, SplayBinaryNode< Element >* >& addr,
-                    SplayBinaryNode* g = 0,
-                    SplayBinaryNode* d = 0,
-                    SplayBinaryNode* p = 0);
+                    SplayBinaryNode*                                   g = 0,
+                    SplayBinaryNode*                                   d = 0,
+                    SplayBinaryNode*                                   p = 0);
 
     /**
      * @brief Copy constructor.
      * @param from the src SplayBinaryNode
      * @param addr TODO don't know what to do here.
      */
-    SplayBinaryNode(const SplayBinaryNode< Element >& from,
+    SplayBinaryNode(const SplayBinaryNode< Element >&                  from,
                     HashTable< Element, SplayBinaryNode< Element >* >& addr);
 
     /**
@@ -136,7 +137,7 @@ namespace gum {
      * @param from the src SplayBinaryNode
      * @param addr TODO don't know what to do here ..
      */
-    void _copy(const SplayBinaryNode< Element >& from,
+    void _copy(const SplayBinaryNode< Element >&                  from,
                HashTable< Element, SplayBinaryNode< Element >* >& addr);
 
     /**
@@ -175,8 +176,8 @@ namespace gum {
      * @return Returns the root of the created tree.
      */
     SplayBinaryNode< Element >*
-    join(const SplayBinaryNode< Element >* e,
-         HashTable< Element, SplayBinaryNode< Element >* >& addr);
+      join(const SplayBinaryNode< Element >*                  e,
+           HashTable< Element, SplayBinaryNode< Element >* >& addr);
 
     /// @}
     // ============================================================================
@@ -213,7 +214,8 @@ namespace gum {
   // ===                                SPLAY TREE ===
   // ============================================================================
   /**
-   * @class SplayTree splay.h <agrum/core/splay.h>
+   * @class SplayTree
+   * @headerfile splay.h <agrum/core/splay.h>
    * @brief A splay tree.
    * @ingroup splaytree_group
    * @ingroup basicstruct_group

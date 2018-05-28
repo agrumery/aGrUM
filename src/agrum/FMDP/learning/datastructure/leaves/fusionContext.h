@@ -53,7 +53,6 @@ namespace gum {
 
   template < bool isInitial = false >
   class FusionContext {
-
     public:
     // ==========================================================================
     /// @name Constructor & destructor.
@@ -248,4 +247,4 @@ namespace gum {
 
 #include <agrum/FMDP/learning/datastructure/leaves/fusionContext_tpl.h>
 
-#endif  // GUM_FUSION_CONTEXT_H
+#endif   // GUM_FUSION_CONTEXT_H

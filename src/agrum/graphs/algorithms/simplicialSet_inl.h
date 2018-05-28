@@ -29,7 +29,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // to ease IDE parser
-#include <agrum/graphs/algorithms/triangulations/eliminationStrategies/defaultPartialOrderedEliminationSequenceStrategy.h>
+#  include <agrum/graphs/algorithms/triangulations/eliminationStrategies/defaultPartialOrderedEliminationSequenceStrategy.h>
 
 namespace gum {
 
@@ -92,7 +92,7 @@ namespace gum {
   INLINE
   void SimplicialSet::__updateAllNodes() {
     // check if a node can enter the simplicial list
-    for (auto iter = __changed_status.beginSafe();  // safe iterator needed here
+    for (auto iter = __changed_status.beginSafe();   // safe iterator needed here
          iter != __changed_status.endSafe();
          ++iter) {
       __updateList(*iter);
@@ -111,7 +111,7 @@ namespace gum {
   /// returns all the almost simplicial nodes
   INLINE
   const PriorityQueue< NodeId, double >&
-  SimplicialSet::allAlmostSimplicialNodes() {
+    SimplicialSet::allAlmostSimplicialNodes() {
     __updateAllNodes();
     return __almost_simplicial_nodes;
   }

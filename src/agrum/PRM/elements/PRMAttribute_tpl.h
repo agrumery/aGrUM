@@ -28,14 +28,14 @@ namespace gum {
   namespace prm {
 
     template < typename GUM_SCALAR >
-    PRMAttribute< GUM_SCALAR >::PRMAttribute(const std::string& name)
-        : PRMClassElement< GUM_SCALAR >(name) {
+    PRMAttribute< GUM_SCALAR >::PRMAttribute(const std::string& name) :
+        PRMClassElement< GUM_SCALAR >(name) {
       GUM_CONSTRUCTOR(PRMAttribute);
     }
 
     template < typename GUM_SCALAR >
-    PRMAttribute< GUM_SCALAR >::PRMAttribute(const PRMAttribute& source)
-        : PRMClassElement< GUM_SCALAR >(source) {
+    PRMAttribute< GUM_SCALAR >::PRMAttribute(const PRMAttribute& source) :
+        PRMClassElement< GUM_SCALAR >(source) {
       GUM_CONS_CPY(PRMAttribute);
       GUM_ERROR(OperationNotAllowed, "Cannot copy Attributes");
     }

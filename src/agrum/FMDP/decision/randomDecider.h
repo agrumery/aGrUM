@@ -35,7 +35,8 @@
 namespace gum {
 
   /**
-   * @class RandomDecider randomDecider.h <agrum/FMDP/decision/randomDecider.h>
+   * @class RandomDecider
+   * @headerfile randomDecider.h <agrum/FMDP/decision/randomDecider.h>
    * @brief Class to make decision randomly
    * @ingroup fmdp_group
    *
@@ -43,7 +44,6 @@ namespace gum {
    *
    */
   class RandomDecider : public IDecisionStrategy {
-
     // ###################################################################
     /// @name Constructor & destructor.
     // ###################################################################
@@ -73,5 +73,5 @@ namespace gum {
       return _allActions;
     }
   };
-}
-#endif  // GUM_RANDOM_DECIDER_H
+}   // namespace gum
+#endif   // GUM_RANDOM_DECIDER_H

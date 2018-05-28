@@ -1,53 +1,50 @@
 /***************************************************************************
-*   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 /**
-* @file
-* @brief Implementations of the classes defined in
-* InfluenceDiagram/inference/influenceDiagramInference.h.
-*  @note For deep understanding of the inherent algorithms implemented here,
-*  a strong look at "From Influence Diagrams To Junction Trees, Frank Jensen,
-* Finn V.
-* Jensen, Soren L; Dittmer, 1994" is
-*  highly recommended.
-*  @note __triangulation->eliminationOrder() gives nodes in order in which they
-* disappear, meaning that the first one
-*  is the first one to be eliminated.
-*/
+ * @file
+ * @brief Implementations of the classes defined in
+ * InfluenceDiagram/inference/influenceDiagramInference.h.
+ *  @note For deep understanding of the inherent algorithms implemented here,
+ *  a strong look at "From Influence Diagrams To Junction Trees, Frank Jensen,
+ * Finn V.
+ * Jensen, Soren L; Dittmer, 1994" is
+ *  highly recommended.
+ *  @note __triangulation->eliminationOrder() gives nodes in order in which they
+ * disappear, meaning that the first one
+ *  is the first one to be eliminated.
+ */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // to ease parsing by IDE
-#include <agrum/ID/inference/influenceDiagramInference.h>
+#  include <agrum/ID/inference/influenceDiagramInference.h>
 
 namespace gum {
   // Default constructor.
   // @param inDiag The influence diagram on which we perform inferences
   template < typename GUM_SCALAR >
   InfluenceDiagramInference< GUM_SCALAR >::InfluenceDiagramInference(
-    const InfluenceDiagram< GUM_SCALAR >& infDiag)
-      : IInfluenceDiagramInference< GUM_SCALAR >(infDiag)
-      , __triangulation(0)
-      , __inferencePotential(0)
-      , __inferenceUtility(0)
-      , __inferenceMade(false) {
-
+    const InfluenceDiagram< GUM_SCALAR >& infDiag) :
+      IInfluenceDiagramInference< GUM_SCALAR >(infDiag),
+      __triangulation(0), __inferencePotential(0), __inferenceUtility(0),
+      __inferenceMade(false) {
     GUM_CONSTRUCTOR(InfluenceDiagramInference);
 
     // Make modalities map
@@ -80,7 +77,6 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   InfluenceDiagramInference< GUM_SCALAR >::~InfluenceDiagramInference() {
-
     GUM_DESTRUCTOR(InfluenceDiagramInference);
 
     delete __triangulation;
@@ -118,7 +114,6 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR InfluenceDiagramInference< GUM_SCALAR >::getMEU() {
-
     if (!__inferenceMade)
       GUM_ERROR(OperationNotAllowed, "No inference have yet been made");
 
@@ -132,7 +127,6 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE Idx InfluenceDiagramInference< GUM_SCALAR >::getBestDecisionChoice(
     NodeId decisionId) {
-
     if (!__inferenceMade)
       GUM_ERROR(OperationNotAllowed, "No inference have yet been made");
 
@@ -168,7 +162,6 @@ namespace gum {
   template < typename GUM_SCALAR >
   void InfluenceDiagramInference< GUM_SCALAR >::insertEvidence(
     const List< const Potential< GUM_SCALAR >* >& evidenceList) {
-
     for (const auto ev : evidenceList)
       __cliquePropertiesMap[__nodeToCliqueMap[this->influenceDiagram().nodeId(
                               (ev)->variable(0))]]
@@ -180,7 +173,6 @@ namespace gum {
   template < typename GUM_SCALAR >
   void InfluenceDiagramInference< GUM_SCALAR >::eraseEvidence(
     const Potential< GUM_SCALAR >* evidence) {
-
     if (!(evidence->variablesSequence().size() != 1))
       __cliquePropertiesMap[__nodeToCliqueMap[this->influenceDiagram().nodeId(
                               evidence->variable(0))]]
@@ -191,7 +183,6 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void InfluenceDiagramInference< GUM_SCALAR >::eraseAllEvidence() {
-
     for (const auto& elt : __cliquePropertiesMap)
       elt.second->removeAllEvidence();
   }
@@ -211,7 +202,6 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE Triangulation&
          InfluenceDiagramInference< GUM_SCALAR >::getTriangulation() {
-
     return *__triangulation;
   }
 
@@ -219,9 +209,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE const NodeSet&
-  InfluenceDiagramInference< GUM_SCALAR >::__getSeparator(NodeId clique_1,
-                                                          NodeId clique_2) {
-
+               InfluenceDiagramInference< GUM_SCALAR >::__getSeparator(NodeId clique_1,
+                                                            NodeId clique_2) {
     return __triangulation->junctionTree().separator(clique_1, clique_2);
   }
 
@@ -232,7 +221,6 @@ namespace gum {
   template < typename GUM_SCALAR >
   NodeId InfluenceDiagramInference< GUM_SCALAR >::__getClique(
     const std::vector< NodeId >& eliminationOrder, NodeId id) {
-
     //***********************************************************************************************************************************
     // First, we create a node set with node id and parents id
     NodeSet idSet;
@@ -258,7 +246,6 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void InfluenceDiagramInference< GUM_SCALAR >::__makeCliquePropertiesMap() {
-
     const std::vector< NodeId > elim = __triangulation->eliminationOrder();
 
     // Those two sets will contains cliques id for cliques which doesn't have a
@@ -284,7 +271,6 @@ namespace gum {
 
     // Second pass to add the potentials into good cliques
     for (size_t i = 0; i < elim.size(); i++) {
-
       // Récupération de la bonne clique
       NodeId cliqueId = __getClique(elim, elim[i]);
       __nodeToCliqueMap.insert(elim[i], cliqueId);
@@ -323,10 +309,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void InfluenceDiagramInference< GUM_SCALAR >::__makeStrongJunctionTree() {
-
     // Pour chaque clique
     for (NodeId cli : __triangulation->junctionTree().nodes()) {
-
       Sequence< NodeId > eliminationOrder =
         __cliquePropertiesMap[cli]->cliqueEliminationOrder();
       SequenceIterator< NodeId > cliqueNodesIter = eliminationOrder.begin();
@@ -334,17 +318,15 @@ namespace gum {
 
       // On parcours chaque noeud de la clique par ordre d'élimination, ...
       while (cliqueNodesIter != eliminationOrder.end() && !validIndex) {
-
         SequenceIterator< NodeId > cliqueRemainingNodesIter = cliqueNodesIter;
         ++cliqueRemainingNodesIter;
 
         if (cliqueRemainingNodesIter != eliminationOrder.end()) {
-
           NodeSet suspectedNodes(__triangulation->triangulatedGraph().neighbours(
             *cliqueRemainingNodesIter));
 
-          while (cliqueRemainingNodesIter != eliminationOrder.end() &&
-                 !suspectedNodes.empty()) {
+          while (cliqueRemainingNodesIter != eliminationOrder.end()
+                 && !suspectedNodes.empty()) {
             NodeSet possiblesNodes(suspectedNodes);
 
             for (const auto possibleNode : possiblesNodes)
@@ -358,8 +340,8 @@ namespace gum {
 
           if (!suspectedNodes.empty())
             for (const auto suspectedNode : suspectedNodes)
-              if (!eliminationOrder.exists(suspectedNode) &&
-                  __IsEliminatedAfter(suspectedNode, *cliqueNodesIter)) {
+              if (!eliminationOrder.exists(suspectedNode)
+                  && __IsEliminatedAfter(suspectedNode, *cliqueNodesIter)) {
                 validIndex = true;
                 break;
               }
@@ -371,10 +353,10 @@ namespace gum {
       if (validIndex) {
         Idx index = 1;
 
-        for (std::vector< NodeId >::const_iterator
-               eliminationOrderIter = __triangulation->eliminationOrder().begin();
-             eliminationOrderIter != __triangulation->eliminationOrder().end() &&
-             *eliminationOrderIter != *cliqueNodesIter;
+        for (std::vector< NodeId >::const_iterator eliminationOrderIter =
+               __triangulation->eliminationOrder().begin();
+             eliminationOrderIter != __triangulation->eliminationOrder().end()
+             && *eliminationOrderIter != *cliqueNodesIter;
              ++eliminationOrderIter, ++index)
           ;
 
@@ -383,9 +365,7 @@ namespace gum {
       } else
         try {
           __cliqueEliminationMap.insert(0, cli);
-        } catch (Exception& e) {
-          throw(e);
-        }
+        } catch (Exception& e) { throw(e); }
     }
   }
 
@@ -396,7 +376,6 @@ namespace gum {
   template < typename GUM_SCALAR >
   bool InfluenceDiagramInference< GUM_SCALAR >::__IsEliminatedAfter(
     NodeId observedNode, NodeId currentNode) {
-
     for (std::vector< NodeId >::const_iterator eliminationOrderIter =
            __triangulation->eliminationOrder().begin();
          eliminationOrderIter != __triangulation->eliminationOrder().end();
@@ -444,7 +423,6 @@ namespace gum {
   template < typename GUM_SCALAR >
   void InfluenceDiagramInference< GUM_SCALAR >::__collectChild(NodeId parent,
                                                                NodeId child) {
-
     for (const auto nei : __triangulation->junctionTree().neighbours(child))
       if (nei != parent) __collectChild(child, nei);
 
@@ -455,7 +433,6 @@ namespace gum {
   template < typename GUM_SCALAR >
   void InfluenceDiagramInference< GUM_SCALAR >::__absorbClique(
     NodeId absorbedCliqueId, NodeId absorbingCliqueId) {
-
     // Recuperation of absorbed clique properties
     CliqueProperties< GUM_SCALAR >* absorbedClique =
       __cliquePropertiesMap[absorbedCliqueId];
@@ -489,12 +466,11 @@ namespace gum {
 
     for (utilityMarginalInst.setFirst(); !utilityMarginalInst.end();
          utilityMarginalInst.inc()) {
-
       GUM_SCALAR uVal = (GUM_SCALAR)0;
 
       if (potentialMarginal->get(utilityMarginalInst) != (GUM_SCALAR)0)
-        uVal = utilityMarginal->get(utilityMarginalInst) /
-               potentialMarginal->get(utilityMarginalInst);
+        uVal = utilityMarginal->get(utilityMarginalInst)
+               / potentialMarginal->get(utilityMarginalInst);
 
       utilityMarginal->set(utilityMarginalInst, uVal);
     }
@@ -519,7 +495,6 @@ namespace gum {
     NodeSet&                        separator,
     Potential< GUM_SCALAR >*&       potentialMarginal,
     Potential< GUM_SCALAR >*&       utilityMarginal) {
-
     Instantiation cliqueInstance(absorbedClique->cliqueInstantiation());
     Sequence< const DiscreteVariable* > cliqueRemainVarList(
       cliqueInstance.variablesSequence());
@@ -560,7 +535,6 @@ namespace gum {
         // previous one
         for (newInstantiation.setFirst(); !newInstantiation.end();
              newInstantiation.inc()) {
-
           // Various initialization
           GUM_SCALAR potentialValue = (GUM_SCALAR)0;
           GUM_SCALAR utilityValue = (GUM_SCALAR)0;
@@ -573,7 +547,6 @@ namespace gum {
 
           for (cliqueInstance.setFirstOut(newInstantiation); !cliqueInstance.end();
                cliqueInstance.incOut(newInstantiation)) {
-
             // Récupération de la valeur de la cpt de la clique pour cette
             // instance
             GUM_SCALAR currentPotential = (GUM_SCALAR)1;
@@ -658,8 +631,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR >*
-  InfluenceDiagramInference< GUM_SCALAR >::__makeDummyPotential(NodeId cliqueId) {
-
+         InfluenceDiagramInference< GUM_SCALAR >::__makeDummyPotential(
+      NodeId cliqueId) {
     Potential< GUM_SCALAR >* pot =
       new Potential< GUM_SCALAR >(new MultiDimSparse< GUM_SCALAR >((GUM_SCALAR)1));
     __potentialDummies.insert(pot);
@@ -675,7 +648,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR >*
-  InfluenceDiagramInference< GUM_SCALAR >::__makeDummyUtility(NodeId cliqueId) {
+         InfluenceDiagramInference< GUM_SCALAR >::__makeDummyUtility(NodeId cliqueId) {
     Potential< GUM_SCALAR >* ut =
       new Potential< GUM_SCALAR >(new MultiDimSparse< GUM_SCALAR >((GUM_SCALAR)0));
     __utilityDummies.insert(ut);
@@ -738,9 +711,8 @@ namespace gum {
   // an
   // inference or not
   template < typename GUM_SCALAR >
-  void
-  CliqueProperties< GUM_SCALAR >::addPotential(const Potential< GUM_SCALAR >& cpt,
-                                               bool removable) {
+  void CliqueProperties< GUM_SCALAR >::addPotential(
+    const Potential< GUM_SCALAR >& cpt, bool removable) {
     __potentialBucket.insert(&cpt, new Instantiation(cpt));
 
     if (removable) __removablePotentialList.insert(&cpt);
@@ -770,8 +742,8 @@ namespace gum {
   // inference or not
   template < typename GUM_SCALAR >
   void
-  CliqueProperties< GUM_SCALAR >::addUtility(const Potential< GUM_SCALAR >& ut,
-                                             bool removable) {
+    CliqueProperties< GUM_SCALAR >::addUtility(const Potential< GUM_SCALAR >& ut,
+                                               bool removable) {
     __utilityBucket.insert(&ut, new Instantiation(ut));
 
     if (removable) __removableUtilityList.insert(&ut);
@@ -857,7 +829,6 @@ namespace gum {
   template < typename GUM_SCALAR >
   void CliqueProperties< GUM_SCALAR >::addEvidence(
     const Potential< GUM_SCALAR >& evidence) {
-
     // To avoid interference
     cleanFromInference();
 
@@ -891,7 +862,7 @@ namespace gum {
   // removeEvidence : Removes the evidence over v
   template < typename GUM_SCALAR >
   INLINE void
-  CliqueProperties< GUM_SCALAR >::removeEvidence(const DiscreteVariable& v) {
+    CliqueProperties< GUM_SCALAR >::removeEvidence(const DiscreteVariable& v) {
     const Potential< GUM_SCALAR >* evi = __evidences[&v];
 
     delete __potentialBucket[evi];

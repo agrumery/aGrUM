@@ -101,9 +101,7 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS(six, (gum::Size)30);
 
-        if (i.referenceSlots().size()) {
-          TS_ASSERT_EQUALS(two, (gum::Size)2);
-        }
+        if (i.referenceSlots().size()) { TS_ASSERT_EQUALS(two, (gum::Size)2); }
       }
 
       // testing classes
@@ -129,9 +127,7 @@ namespace gum_tests {
 
       if (prm) delete prm;
 
-      if (gen) {
-        TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
-      }
+      if (gen) { TS_GUM_ASSERT_THROWS_NOTHING(delete gen); }
     }
 
     void testClusterGenerator() {
@@ -184,9 +180,7 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS(six, (gum::Size)30);
 
-        if (i.referenceSlots().size()) {
-          TS_ASSERT_EQUALS(two, (gum::Size)2);
-        }
+        if (i.referenceSlots().size()) { TS_ASSERT_EQUALS(two, (gum::Size)2); }
       }
 
       // testing classes
@@ -212,10 +206,8 @@ namespace gum_tests {
 
       if (prm) delete prm;
 
-      if (gen) {
-        TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
-      }
+      if (gen) { TS_GUM_ASSERT_THROWS_NOTHING(delete gen); }
     }
   };
 
-}  // namespace gum_tests
+}   // namespace gum_tests

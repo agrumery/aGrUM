@@ -34,8 +34,7 @@ namespace gum {
   namespace learning {
 
     // returns the row filter
-    INLINE DBRowGeneratorParser<>&
-    genericBNLearner::Database::parser () {
+    INLINE DBRowGeneratorParser<>& genericBNLearner::Database::parser() {
       return *__parser;
     }
 
@@ -52,7 +51,7 @@ namespace gum {
 
     // returns the node id corresponding to a variable name
     INLINE NodeId
-    genericBNLearner::Database::idFromName(const std::string& var_name) const {
+           genericBNLearner::Database::idFromName(const std::string& var_name) const {
       try {
         return __name2nodeId.second(const_cast< std::string& >(var_name));
       } catch (gum::NotFound) {
@@ -62,24 +61,23 @@ namespace gum {
 
     // returns the variable name corresponding to a given node id
     INLINE const std::string&
-    genericBNLearner::Database::nameFromId(NodeId id) const {
+                 genericBNLearner::Database::nameFromId(NodeId id) const {
       return __name2nodeId.first(id);
     }
 
-    
+
     /// returns the internal database table
     INLINE const DatabaseTable<>&
-    genericBNLearner::Database::databaseTable () const {
+                 genericBNLearner::Database::databaseTable() const {
       return __database;
     }
 
-    
+
     /// returns the set of missing symbols taken into account
-    INLINE const std::vector<std::string>&
-    genericBNLearner::Database::missingSymbols () const {
-      return __database.missingSymbols ();
+    INLINE const std::vector< std::string >&
+                 genericBNLearner::Database::missingSymbols() const {
+      return __database.missingSymbols();
     }
-    
 
 
     // ===========================================================================
@@ -196,7 +194,7 @@ namespace gum {
 
     // indicate that we wish to use a K2 algorithm
     INLINE void
-    genericBNLearner::useK2(const std::vector< NodeId >& order) noexcept {
+      genericBNLearner::useK2(const std::vector< NodeId >& order) noexcept {
       __selected_algo = AlgoType::K2;
       __K2.setOrder(order);
     }
@@ -208,8 +206,8 @@ namespace gum {
 
     // indicate that we wish to use a local search with tabu list
     INLINE void
-    genericBNLearner::useLocalSearchWithTabuList(Size tabu_size,
-                                                 Size nb_decrease) noexcept {
+      genericBNLearner::useLocalSearchWithTabuList(Size tabu_size,
+                                                   Size nb_decrease) noexcept {
       __selected_algo = AlgoType::LOCAL_SEARCH_WITH_TABU_LIST;
       __constraint_TabuList.setTabuListSize(tabu_size);
       __local_search_with_tabu_list.setMaxNbDecreasingChanges(nb_decrease);
@@ -295,7 +293,7 @@ namespace gum {
 
     // sets a partial order on the nodes
     INLINE void
-    genericBNLearner::setSliceOrder(const NodeProperty< NodeId >& slice_order) {
+      genericBNLearner::setSliceOrder(const NodeProperty< NodeId >& slice_order) {
       __constraint_SliceOrder = StructuralConstraintSliceOrder(slice_order);
     }
 
@@ -319,16 +317,14 @@ namespace gum {
     INLINE void genericBNLearner::useAprioriSmoothing(double weight) {
       __apriori_type = AprioriType::SMOOTHING;
 
-      if (weight >= 0) {
-        setAprioriWeight(weight);
-      }
+      if (weight >= 0) { setAprioriWeight(weight); }
 
       __checkScoreAprioriCompatibility();
     }
 
     // use the Dirichlet apriori
     INLINE void
-    genericBNLearner::useAprioriDirichlet(const std::string& filename) {
+      genericBNLearner::useAprioriDirichlet(const std::string& filename) {
       __apriori_dbname = filename;
       __apriori_type = AprioriType::DIRICHLET_FROM_DATABASE;
       __checkScoreAprioriCompatibility();
@@ -337,11 +333,9 @@ namespace gum {
     // returns the type (as a string) of a given apriori
     INLINE const std::string& genericBNLearner::__getAprioriType() const {
       switch (__apriori_type) {
-        case AprioriType::NO_APRIORI:
-          return AprioriNoApriori<>::type::type;
+        case AprioriType::NO_APRIORI: return AprioriNoApriori<>::type::type;
 
-        case AprioriType::SMOOTHING:
-          return AprioriSmoothing<>::type::type;
+        case AprioriType::SMOOTHING: return AprioriSmoothing<>::type::type;
 
         case AprioriType::DIRICHLET_FROM_DATABASE:
           return AprioriDirichletFromDatabase<>::type::type;

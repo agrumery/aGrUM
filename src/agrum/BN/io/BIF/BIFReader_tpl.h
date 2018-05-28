@@ -33,8 +33,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   BIFReader< GUM_SCALAR >::BIFReader(BayesNet< GUM_SCALAR >* bn,
-                                     const std::string&      filename)
-      : BNReader< GUM_SCALAR >(bn, filename) {
+                                     const std::string&      filename) :
+      BNReader< GUM_SCALAR >(bn, filename) {
     GUM_CONSTRUCTOR(BIFReader);
     __bn = bn;
     __streamName = filename;
@@ -48,9 +48,7 @@ namespace gum {
       __scanner = new BIF::Scanner(__streamName.c_str());
       __parser = new BIF::Parser(__scanner);
       __parser->setFactory((IBayesNetFactory*)__factory);
-    } catch (IOError& e) {
-      __ioerror = true;
-    }
+    } catch (IOError& e) { __ioerror = true; }
   }
 
   template < typename GUM_SCALAR >
@@ -69,9 +67,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE BIF::Scanner& BIFReader< GUM_SCALAR >::scanner() {
-    if (__ioerror) {
-      GUM_ERROR(gum::IOError, "No such file " + streamName());
-    }
+    if (__ioerror) { GUM_ERROR(gum::IOError, "No such file " + streamName()); }
 
     return *__scanner;
   }
@@ -94,9 +90,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Size BIFReader< GUM_SCALAR >::proceed() {
-    if (__ioerror) {
-      GUM_ERROR(gum::IOError, "No such file " + streamName());
-    }
+    if (__ioerror) { GUM_ERROR(gum::IOError, "No such file " + streamName()); }
 
     if (!__parseDone) {
       try {
@@ -161,7 +155,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void
-  BIFReader< GUM_SCALAR >::showElegantErrorsAndWarnings(std::ostream& o) {
+    BIFReader< GUM_SCALAR >::showElegantErrorsAndWarnings(std::ostream& o) {
     if (__parseDone)
       __parser->errors().elegantErrorsAndWarnings(o);
     else {
@@ -189,6 +183,6 @@ namespace gum {
   }
 
   /// @}
-}  // namespace
+}   // namespace gum
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS

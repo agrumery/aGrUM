@@ -58,7 +58,7 @@ namespace gum {
 
       genericBNLearner* __bnlearner;
     };
-  }  // namespace learning
-}  // namespace gum
+  }   // namespace learning
+}   // namespace gum
 
-#endif  // BNLEARNERLISTENER_H
+#endif   // BNLEARNERLISTENER_H

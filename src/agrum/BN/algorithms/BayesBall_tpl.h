@@ -29,11 +29,11 @@ namespace gum {
   // query variables
   template < typename GUM_SCALAR, template < typename > class TABLE >
   void
-  BayesBall::relevantPotentials(const IBayesNet< GUM_SCALAR >&     bn,
-                                const NodeSet&                     query,
-                                const NodeSet&                     hardEvidence,
-                                const NodeSet&                     softEvidence,
-                                Set< const TABLE< GUM_SCALAR >* >& potentials) {
+    BayesBall::relevantPotentials(const IBayesNet< GUM_SCALAR >&     bn,
+                                  const NodeSet&                     query,
+                                  const NodeSet&                     hardEvidence,
+                                  const NodeSet&                     softEvidence,
+                                  Set< const TABLE< GUM_SCALAR >* >& potentials) {
     const DAG& dag = bn.dag();
 
     // create the marks (top = first and bottom = second)
@@ -85,9 +85,7 @@ namespace gum {
             const NodeId id = bn.nodeId(*var);
             if (id != node) {
               node2potentials[id].erase(pot);
-              if (node2potentials[id].empty()) {
-                node2potentials.erase(id);
-              }
+              if (node2potentials[id].empty()) { node2potentials.erase(id); }
             }
           }
         }
@@ -100,27 +98,25 @@ namespace gum {
 
 
       // bounce the ball toward the neighbors
-      if (nodes_to_visit.front().second) {  // visit from a child
+      if (nodes_to_visit.front().second) {   // visit from a child
         nodes_to_visit.popFront();
 
-        if (hardEvidence.exists(node)) {
-          continue;
-        }
+        if (hardEvidence.exists(node)) { continue; }
 
         if (!marks[node].first) {
-          marks[node].first = true;  // top marked
+          marks[node].first = true;   // top marked
           for (const auto par : dag.parents(node)) {
             nodes_to_visit.insert(std::pair< NodeId, bool >(par, true));
           }
         }
 
         if (!marks[node].second) {
-          marks[node].second = true;  // bottom marked
+          marks[node].second = true;   // bottom marked
           for (const auto chi : dag.children(node)) {
             nodes_to_visit.insert(std::pair< NodeId, bool >(chi, false));
           }
         }
-      } else {  // visit from a parent
+      } else {   // visit from a parent
         nodes_to_visit.popFront();
 
         const bool is_hard_evidence = hardEvidence.exists(node);

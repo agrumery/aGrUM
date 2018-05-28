@@ -29,7 +29,6 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Estimator< GUM_SCALAR >::Estimator() {
-
     GUM_CONSTRUCTOR(Estimator);
     _wtotal = (GUM_SCALAR)0.;
     _ntotal = (Size)0;
@@ -38,9 +37,8 @@ namespace gum {
 
 
   template < typename GUM_SCALAR >
-  Estimator< GUM_SCALAR >::Estimator(const IBayesNet< GUM_SCALAR >* bn)
-      : Estimator() {
-
+  Estimator< GUM_SCALAR >::Estimator(const IBayesNet< GUM_SCALAR >* bn) :
+      Estimator() {
     _bn = bn;
 
     for (gum::NodeGraphPartIterator iter = bn->nodes().begin();
@@ -67,15 +65,12 @@ namespace gum {
   template < typename GUM_SCALAR >
   void Estimator< GUM_SCALAR >::setFromBN(const IBayesNet< GUM_SCALAR >* bn,
                                           const NodeSet& hardEvidence) {
-
     for (gum::NodeGraphPartIterator iter = bn->nodes().begin();
          iter != bn->nodes().end();
          ++iter) {
-
       auto v = bn->variable(*iter).name();
 
       if (!hardEvidence.contains(*iter)) {
-
         if (_estimator.exists(v))
           _estimator[v] = std::vector< GUM_SCALAR >(
             bn->variable(*iter).domainSize(), (GUM_SCALAR)0.0);
@@ -91,14 +86,11 @@ namespace gum {
   // number of iterations
   template < typename GUM_SCALAR >
   void
-  Estimator< GUM_SCALAR >::setFromLBP(LoopyBeliefPropagation< GUM_SCALAR >* lbp,
-                                      const NodeSet& hardEvidence,
-                                      GUM_SCALAR     virtualLBPSize) {
-
+    Estimator< GUM_SCALAR >::setFromLBP(LoopyBeliefPropagation< GUM_SCALAR >* lbp,
+                                        const NodeSet& hardEvidence,
+                                        GUM_SCALAR     virtualLBPSize) {
     for (const auto& node : lbp->BN().nodes()) {
-
       if (!hardEvidence.contains(node)) {
-
         std::vector< GUM_SCALAR > v;
         auto                      p = lbp->posterior(node);
         gum::Instantiation        inst(p);
@@ -118,7 +110,6 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void Estimator< GUM_SCALAR >::update(Instantiation I, GUM_SCALAR w) {
-
     _wtotal += w;
     _ntotal += (Size)1;
 
@@ -132,7 +123,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
-  Estimator< GUM_SCALAR >::posterior(const DiscreteVariable& var) {
+    Estimator< GUM_SCALAR >::posterior(const DiscreteVariable& var) {
     Potential< GUM_SCALAR >* p = nullptr;
 
     if (!_estimator.exists(var.name()))
@@ -165,7 +156,6 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   GUM_SCALAR Estimator< GUM_SCALAR >::variance(std::string name, Idx val) {
-
     GUM_SCALAR p = EV(name, val);
     return p * (1 - p);
   }
@@ -176,13 +166,10 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   GUM_SCALAR Estimator< GUM_SCALAR >::confidence() {
-
     GUM_SCALAR ic_max = 0;
 
     for (auto iter = _estimator.begin(); iter != _estimator.end(); ++iter) {
-
       for (Idx i = 0; i < iter.val().size(); i++) {
-
         GUM_SCALAR ic = 2 * 1.96 * sqrt(variance(iter.key(), i) / (_ntotal - 1));
         if (ic > ic_max) ic_max = ic;
       }
@@ -200,4 +187,4 @@ namespace gum {
       delete pot.second;
     __target_posteriors.clear();
   }
-}
+}   // namespace gum

@@ -32,14 +32,13 @@ namespace gum {
 
   namespace aggregator {
     template < typename GUM_SCALAR >
-    INLINE Or< GUM_SCALAR >::Or()
-        : MultiDimAggregator< GUM_SCALAR >() {
+    INLINE Or< GUM_SCALAR >::Or() : MultiDimAggregator< GUM_SCALAR >() {
       GUM_CONSTRUCTOR(Or)
     }
 
     template < typename GUM_SCALAR >
-    INLINE Or< GUM_SCALAR >::Or(const Or< GUM_SCALAR >& from)
-        : MultiDimAggregator< GUM_SCALAR >(from) {
+    INLINE Or< GUM_SCALAR >::Or(const Or< GUM_SCALAR >& from) :
+        MultiDimAggregator< GUM_SCALAR >(from) {
       GUM_CONS_CPY(Or);
     }
 
@@ -76,5 +75,5 @@ namespace gum {
       return new Or< GUM_SCALAR >();
     }
 
-  }  // namespace aggregator
-}  // namespace gum
+  }   // namespace aggregator
+}   // namespace gum

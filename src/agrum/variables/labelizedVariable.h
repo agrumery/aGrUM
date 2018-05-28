@@ -54,20 +54,20 @@ namespace gum {
     /// @{
 
     /** @brief constructor
-    * @param aName the name
-    * @param aDesc the Description
-    * @param nbrLabel the domainSize (2 by default)
-    */
+     * @param aName the name
+     * @param aDesc the Description
+     * @param nbrLabel the domainSize (2 by default)
+     */
 
     LabelizedVariable(const std::string& aName,
                       const std::string& aDesc = "",
                       const int          nbrLabel = 2);
 
     /** @brief constructor
-    * @param aName the name
-    * @param aDesc the Description
-    * @param labels the labels
-    */
+     * @param aName the name
+     * @param aDesc the Description
+     * @param labels the labels
+     */
 
     LabelizedVariable(const std::string&                aName,
                       const std::string&                aDesc,
@@ -75,8 +75,8 @@ namespace gum {
 
     /// Copy constructor
     /**
-    * @param aLDRV the variable we copy
-    */
+     * @param aLDRV the variable we copy
+     */
 
     LabelizedVariable(const LabelizedVariable& aLDRV);
 
@@ -122,22 +122,22 @@ namespace gum {
     /// add a label with a new index (we assume that we will NEVER remove a
     /// label)
     /** @param aLabel the label to be added to the labelized variable
-       * @throw DuplicateElement is raised if the variable already contains
-       * the label
-       * @return *this which allows : v.addLabel("1").addLabel("2")...;
-       */
+     * @throw DuplicateElement is raised if the variable already contains
+     * the label
+     * @return *this which allows : v.addLabel("1").addLabel("2")...;
+     */
     LabelizedVariable& addLabel(const std::string& aLabel);
 
     /// change a label for this index
     /** @param pos the index of the label to be changed
-      * @param aLabel the label to be added to the labelized variable
-       * @throw DuplicateElement is raised if the variable already contains
-       * @throw OutOfBounds
-       * @warning Since this change does not affect the variable domain but only
+     * @param aLabel the label to be added to the labelized variable
+     * @throw DuplicateElement is raised if the variable already contains
+     * @throw OutOfBounds
+     * @warning Since this change does not affect the variable domain but only
      * the
      * variable representation,
-       * this method is allowed on const LabelizedVariable.
-       */
+     * this method is allowed on const LabelizedVariable.
+     */
     void changeLabel(Idx pos, const std::string& aLabel) const;
 
     /// erase all the labels
@@ -190,7 +190,7 @@ namespace gum {
 /* ==============================================================================
  */
 #ifndef GUM_NO_INLINE
-#include <agrum/variables/labelizedVariable_inl.h>
+#  include <agrum/variables/labelizedVariable_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LABELIZED_DISCRETE_VARIABLE_H */

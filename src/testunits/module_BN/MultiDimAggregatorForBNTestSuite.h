@@ -45,13 +45,12 @@
 namespace gum_tests {
 
   class MultiDimAggregratorsForBNTestSuite : public CxxTest::TestSuite {
-
     public:
     void testBNwithMin() {
       gum::List< gum::NodeId > idList;
       gum::BayesNet< double >  bn;
 
-      int nbr = 6;  // nbr=nbr of parents
+      int nbr = 6;   // nbr=nbr of parents
 
       std::string                 str;
       const double                t[4] = {0.1f, 0.1f, 0.1f, 0.7f};
@@ -78,7 +77,7 @@ namespace gum_tests {
           gum::Idx res;
 
           for (i.setFirst(); !i.end(); ++i) {
-            res = (gum::Idx)10000;  // clearly arbitraty choosen
+            res = (gum::Idx)10000;   // clearly arbitraty choosen
 
             for (gum::Idx j = 1; j < i.nbrDim(); j++) {
               if (res > i.val(j)) res = i.val(j);
@@ -96,9 +95,7 @@ namespace gum_tests {
         try {
           // Testing the inference
           inf.makeInference();
-        } catch (gum::Exception e) {
-          TS_ASSERT(false);
-        }
+        } catch (gum::Exception e) { TS_ASSERT(false); }
 
         try {
           TS_ASSERT_EQUALS(
@@ -108,9 +105,7 @@ namespace gum_tests {
           TS_ASSERT_EQUALS(inf.posterior(idList[1]).toString(),
                            "<var2:0> :: 0.1 /<var2:1> :: 0.1 /<var2:2> :: 0.1 "
                            "/<var2:3> :: 0.7");
-        } catch (gum::Exception e) {
-          TS_ASSERT(false);
-        }
+        } catch (gum::Exception e) { TS_ASSERT(false); }
       }
 
       {
@@ -119,9 +114,7 @@ namespace gum_tests {
         try {
           // Testing the inference
           inf.makeInference();
-        } catch (gum::Exception e) {
-          TS_ASSERT(false);
-        }
+        } catch (gum::Exception e) { TS_ASSERT(false); }
 
         try {
           TS_ASSERT_EQUALS(
@@ -131,9 +124,7 @@ namespace gum_tests {
           TS_ASSERT_EQUALS(inf.posterior(idList[1]).toString(),
                            "<var2:0> :: 0.1 /<var2:1> :: 0.1 /<var2:2> :: 0.1 "
                            "/<var2:3> :: 0.7");
-        } catch (gum::Exception) {
-          TS_ASSERT(false);
-        }
+        } catch (gum::Exception) { TS_ASSERT(false); }
       }
     }
 
@@ -398,4 +389,4 @@ namespace gum_tests {
       inf_LazyProp.makeInference();
     }
   };
-}
+}   // namespace gum_tests

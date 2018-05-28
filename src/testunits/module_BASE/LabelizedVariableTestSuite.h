@@ -1,23 +1,23 @@
 
 /***************************************************************************
-*   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 
 #include <iostream>
@@ -32,7 +32,6 @@
 namespace gum_tests {
 
   class LabelizedVariableTestSuite : public CxxTest::TestSuite {
-
     public:
     void testCopy() {
       gum::LabelizedVariable var1("var1", "this is var1", 2);
@@ -81,7 +80,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(var2.toString(), "var1<4,y,2,1>");
 
       TS_GUM_ASSERT_THROWS_NOTHING(
-        var1.changeLabel(1, "x"));  // should be OK since label 1 is already "x"
+        var1.changeLabel(1, "x"));   // should be OK since label 1 is already "x"
       TS_ASSERT_THROWS(var1.changeLabel(0, "x"), gum::DuplicateElement);
       TS_ASSERT_THROWS(var1.changeLabel(1000, "x"), gum::OutOfBounds);
     }
@@ -104,4 +103,4 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(var1.posLabel("vert"), gum::Idx(1));
     }
   };
-}
+}   // namespace gum_tests

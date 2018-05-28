@@ -33,21 +33,20 @@
 namespace gum {
 
   /**
-      * @class ImportanceInference importanceInference.h
-      *<agrum/BN/inference/importanceInference.h>
-      * @brief class for making Importance sampling inference in bayesian networks.
-      * @ingroup bn_approximation
-      *
-      * This class overrides pure function declared in the inherited class
-    *ApproximateInference.
-      * It defines the way Importance sampling draws a sample.
-      *
-      */
+   * @class ImportanceInference importanceInference.h
+   *<agrum/BN/inference/importanceInference.h>
+   * @brief class for making Importance sampling inference in bayesian networks.
+   * @ingroup bn_approximation
+   *
+   * This class overrides pure function declared in the inherited class
+   *ApproximateInference.
+   * It defines the way Importance sampling draws a sample.
+   *
+   */
 
 
   template < typename GUM_SCALAR >
   class ImportanceSampling : public SamplingInference< GUM_SCALAR > {
-
     public:
     /**
      * Default constructor
@@ -67,50 +66,50 @@ namespace gum {
 
     /// draws a sample according to Importance sampling
     /**
-    * @param w the weight of sample being generated
-    * @param prev the previous sample generated
-    * @param bn the bayesian network containing the evidence
-    * @param hardEvNodes hard evidence nodes
-    * @param hardEv hard evidences values
-    *
-    * uses the Importance sampling method to generate a new sample using an
-    * evidence-mutilated Bayesian network.
-    * Each node added to the sample (in a topological order) has a weight.
-    * The sample's weight is the product of all weights.
-    */
+     * @param w the weight of sample being generated
+     * @param prev the previous sample generated
+     * @param bn the bayesian network containing the evidence
+     * @param hardEvNodes hard evidence nodes
+     * @param hardEv hard evidences values
+     *
+     * uses the Importance sampling method to generate a new sample using an
+     * evidence-mutilated Bayesian network.
+     * Each node added to the sample (in a topological order) has a weight.
+     * The sample's weight is the product of all weights.
+     */
     Instantiation _draw(float* w, Instantiation prev) override;
 
 
     /// modifies the cpts of a BN in order to tend to uniform distributions
     /**
-    * @param bn a BN fragment on which we wish to modify CPTs
-    * @param epsilon a default parameter used to scale the modification of the
-    * distributions
-    *
-    * For every CPT in the BN, epsilon is added to each potential value before
-    * normalizing
-    *
-    */
+     * @param bn a BN fragment on which we wish to modify CPTs
+     * @param epsilon a default parameter used to scale the modification of the
+     * distributions
+     *
+     * For every CPT in the BN, epsilon is added to each potential value before
+     * normalizing
+     *
+     */
     void _unsharpenBN(BayesNetFragment< GUM_SCALAR >* bn, float epsilon);
 
     /// fired when Bayesian network is contextualized
     /**
-    * @param bn the contextualized BayesNetFragment
-   * @param targets inference target variables
-   * @param hardEvNodes hard evidence nodes
-   * @param hardEv hard evidences values
-   *
-   * Adds the target variables, erases the evidence variables and unsharpens the
-   * BN.
-   *
-   */
+     * @param bn the contextualized BayesNetFragment
+     * @param targets inference target variables
+     * @param hardEvNodes hard evidence nodes
+     * @param hardEv hard evidences values
+     *
+     * Adds the target variables, erases the evidence variables and unsharpens the
+     * BN.
+     *
+     */
     void _onContextualize(BayesNetFragment< GUM_SCALAR >* bn) override;
   };
 
   extern template class ImportanceSampling< float >;
 
   extern template class ImportanceSampling< double >;
-}
+}   // namespace gum
 
 #include <agrum/BN/inference/importanceSampling_tpl.h>
 

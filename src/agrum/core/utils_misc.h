@@ -39,9 +39,9 @@
 //#define NDEBUG
 
 #ifdef NDEBUG
-#define GUM_CAST dynamic_cast
+#  define GUM_CAST dynamic_cast
 #else
-#define GUM_CAST static_cast
+#  define GUM_CAST static_cast
 #endif
 
 #include <agrum/agrum.h>
@@ -115,9 +115,7 @@ namespace gum {
    * @brief Implements a stream with the same behaviour as /dev/null.
    */
   struct NullStream : std::ostream {
-    NullStream()
-        : std::ios(0)
-        , std::ostream(0) {}
+    NullStream() : std::ios(0), std::ostream(0) {}
   };
 
   /**

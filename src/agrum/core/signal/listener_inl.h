@@ -40,4 +40,4 @@ namespace gum {
     if (del != __senders.end()) __senders.erase(del, __senders.end());
   }
 
-}  // namespace gum
+}   // namespace gum

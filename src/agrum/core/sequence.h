@@ -55,7 +55,8 @@ namespace gum {
   // ===                 NON SCALAR GUM SEQUENCE IMPLEMENTATION              ===
   // ===========================================================================
   /**
-   * @class SequenceImplementation sequence.h <agrum/core/sequence.h>
+   * @class SequenceImplementation
+   * @headerfile sequence.h <agrum/core/sequence.h>
    * @brief The internal class for storing (ordered) sequences of objects.
    * @ingroup sequence_group
    *
@@ -84,7 +85,6 @@ namespace gum {
    */
   template < typename Key, typename Alloc, bool Gen >
   class SequenceImplementation {
-
     /// Friends to speed up access
     /// @{
     template < typename K, typename A, bool >
@@ -235,7 +235,7 @@ namespace gum {
      * @return Returns a ref to this.
      */
     SequenceImplementation< Key, Alloc, Gen >&
-    operator=(const SequenceImplementation< Key, Alloc, Gen >& aSeq);
+      operator=(const SequenceImplementation< Key, Alloc, Gen >& aSeq);
 
     /**
      * @brief Generalized opy operator.
@@ -245,7 +245,7 @@ namespace gum {
      */
     template < typename OtherAlloc >
     SequenceImplementation< Key, Alloc, Gen >&
-    operator=(const SequenceImplementation< Key, OtherAlloc, Gen >& aSeq);
+      operator=(const SequenceImplementation< Key, OtherAlloc, Gen >& aSeq);
 
     /**
      * @brief Move operator.
@@ -253,7 +253,7 @@ namespace gum {
      * @return Returns a ref to this.
      */
     SequenceImplementation< Key, Alloc, Gen >&
-    operator=(SequenceImplementation< Key, Alloc, Gen >&& aSeq);
+      operator=(SequenceImplementation< Key, Alloc, Gen >&& aSeq);
 
     /// @}
 
@@ -538,7 +538,8 @@ namespace gum {
   // ===          GUM_SEQUENCE_IMPLEMENTATION OPTIMIZED FOR SCALARS          ===
   // ===========================================================================
   /**
-   * @class SequenceImplementation sequence.h <agrum/core/sequence.h>
+   * @class SequenceImplementation
+   * @headerfile sequence.h <agrum/core/sequence.h>
    * @brief The class for storing (ordered) sequences of scalar objects
    * @ingroup sequence_group
    *
@@ -555,7 +556,6 @@ namespace gum {
    */
   template < typename Key, typename Alloc >
   class SequenceImplementation< Key, Alloc, true > {
-
     /// Friends to speed up access
     /// @{
     template < typename K, typename A, bool >
@@ -701,7 +701,7 @@ namespace gum {
      * @return Returns a ref to this.
      */
     SequenceImplementation< Key, Alloc, true >&
-    operator=(const SequenceImplementation< Key, Alloc, true >& aSeq);
+      operator=(const SequenceImplementation< Key, Alloc, true >& aSeq);
 
     /**
      * @brief generalized opy operator.
@@ -711,7 +711,7 @@ namespace gum {
      */
     template < typename OtherAlloc >
     SequenceImplementation< Key, Alloc, true >&
-    operator=(const SequenceImplementation< Key, OtherAlloc, true >& aSeq);
+      operator=(const SequenceImplementation< Key, OtherAlloc, true >& aSeq);
 
     /**
      * @brief Move operator.
@@ -719,7 +719,7 @@ namespace gum {
      * @return Returns a ref to this.
      */
     SequenceImplementation< Key, Alloc, true >&
-    operator=(SequenceImplementation< Key, Alloc, true >&& aSeq);
+      operator=(SequenceImplementation< Key, Alloc, true >&& aSeq);
 
     /// @}
 
@@ -768,7 +768,7 @@ namespace gum {
      */
     template < typename OtherAlloc >
     bool
-    operator==(const SequenceImplementation< Key, OtherAlloc, true >& k) const;
+      operator==(const SequenceImplementation< Key, OtherAlloc, true >& k) const;
 
     /**
      * @brief Returns true if the content of k is different from that of *this.
@@ -782,7 +782,7 @@ namespace gum {
      */
     template < typename OtherAlloc >
     bool
-    operator!=(const SequenceImplementation< Key, OtherAlloc, true >& k) const;
+      operator!=(const SequenceImplementation< Key, OtherAlloc, true >& k) const;
 
     /// @}
     // ============================================================================
@@ -974,7 +974,8 @@ namespace gum {
   // ===                             GUM_SEQUENCE                            ===
   // ===========================================================================
   /**
-   * @class Sequence sequence.h <agrum/core/sequence.h>
+   * @class Sequence
+   * @headerfile sequence.h <agrum/core/sequence.h>
    * @brief The generic class for storing (ordered) sequences of objects.
    * @ingroup basicstruct_group
    * @ingroup sequence_group
@@ -1016,7 +1017,7 @@ namespace gum {
    */
   template < typename Key, typename Alloc = std::allocator< Key > >
   class Sequence
-    : public SequenceImplementation< Key, Alloc, std::is_scalar< Key >::value > {
+      : public SequenceImplementation< Key, Alloc, std::is_scalar< Key >::value > {
     public:
     /// Types for STL compliance.
     /// @{
@@ -1167,7 +1168,8 @@ namespace gum {
   // class SequenceIteratorSafe
   // ===========================================================================
   /**
-   * @class SequenceIteratorSafe sequence.h <agrum/core/sequence.h>
+   * @class SequenceIteratorSafe
+   * @headerfile sequence.h <agrum/core/sequence.h>
    * @brief Safe iterators for Sequence.
    * @ingroup sequence_group
    *
@@ -1199,7 +1201,6 @@ namespace gum {
    */
   template < typename Key >
   class SequenceIteratorSafe {
-
     /// Friend to speed up access.
     template < typename K, typename A, bool >
     friend class SequenceImplementation;
@@ -1289,7 +1290,7 @@ namespace gum {
      * @return Returns this iterator.
      */
     SequenceIteratorSafe< Key >&
-    operator=(const SequenceIteratorSafe< Key >& source) noexcept;
+      operator=(const SequenceIteratorSafe< Key >& source) noexcept;
 
     /**
      * @brief Move operator.
@@ -1297,7 +1298,7 @@ namespace gum {
      * @return Returns this iterator.
      */
     SequenceIteratorSafe< Key >&
-    operator=(SequenceIteratorSafe< Key >&& source) noexcept;
+      operator=(SequenceIteratorSafe< Key >&& source) noexcept;
 
     /**
      * @brief Point the iterator to the next value in the sequence.
@@ -1445,4 +1446,4 @@ extern template class gum::Sequence< std::string >;
 // always include the implementation of the templates
 #include <agrum/core/sequence_tpl.h>
 
-#endif  // GUM_SEQUENCE_H
+#endif   // GUM_SEQUENCE_H

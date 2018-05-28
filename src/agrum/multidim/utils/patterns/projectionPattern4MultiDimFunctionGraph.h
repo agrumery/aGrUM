@@ -36,37 +36,37 @@
 
 #else
 
-#include <agrum/multidim/implementations/multiDimFunctionGraph.h>
-#include <agrum/multidim/implementations/multiDimImplementation.h>
-#include <agrum/multidim/utils/FunctionGraphUtilities/operators/multiDimFunctionGraphProjector.h>
+#  include <agrum/multidim/implementations/multiDimFunctionGraph.h>
+#  include <agrum/multidim/implementations/multiDimImplementation.h>
+#  include <agrum/multidim/utils/FunctionGraphUtilities/operators/multiDimFunctionGraphProjector.h>
 
 namespace gum {
 
-// a specialized function for projecting a multiDimFunctionGraph over a subset
-// of its vars
+  // a specialized function for projecting a multiDimFunctionGraph over a subset
+  // of its vars
 
-#ifdef GUM_MULTI_DIM_PROJECTION_NAME
-#define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
+#  ifdef GUM_MULTI_DIM_PROJECTION_NAME
+#    define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
   template < typename GUM_SCALAR >
-  MultiDimFunctionGraph< GUM_SCALAR >*
-  GUM_MULTI_DIM_PROJECTION_NAME(const MultiDimFunctionGraph< GUM_SCALAR >* table,
-                                const Set< const DiscreteVariable* >&      delVars)
-#endif
+  MultiDimFunctionGraph< GUM_SCALAR >* GUM_MULTI_DIM_PROJECTION_NAME(
+    const MultiDimFunctionGraph< GUM_SCALAR >* table,
+    const Set< const DiscreteVariable* >&      delVars)
+#  endif
 
 
-#ifdef GUM_MULTI_DIM_PROJECTION_IMPL2DECISION_GRAPH_NAME
-#define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
+#  ifdef GUM_MULTI_DIM_PROJECTION_IMPL2DECISION_GRAPH_NAME
+#    define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
     template < typename GUM_SCALAR >
     MultiDimImplementation< GUM_SCALAR >* GUM_MULTI_DIM_PROJECTION_IMPL2DECISION_GRAPH_NAME(
       const MultiDimImplementation< GUM_SCALAR >* ttable,
       const Set< const DiscreteVariable* >&       delVars)
-#endif
+#  endif
   {
 
-#ifdef GUM_MULTI_DIM_PROJECTION_IMPL2DECISION_GRAPH_NAME
+#  ifdef GUM_MULTI_DIM_PROJECTION_IMPL2DECISION_GRAPH_NAME
     const MultiDimFunctionGraph< GUM_SCALAR >* table =
       reinterpret_cast< const MultiDimFunctionGraph< GUM_SCALAR >* >(ttable);
-#endif
+#  endif
 
     MultiDimFunctionGraphProjector< GUM_MULTI_DIM_PROJECTION_TYPE,
                                     GUM_MULTI_DIM_PROJECTION_OPERATOR >
@@ -76,6 +76,6 @@ namespace gum {
   }
 
 
-#undef GUM_MULTI_DIM_PROJECTION_TYPE
-} /* end of namespace GUM */
+#  undef GUM_MULTI_DIM_PROJECTION_TYPE
+}   // namespace gum
 #endif /* GUM_PROJECTION_PATTERN_ALLOWED */

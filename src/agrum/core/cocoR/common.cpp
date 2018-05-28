@@ -1,23 +1,23 @@
 
 /***************************************************************************
-*   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 
 /*-------------------------------------------------------------------------
@@ -74,9 +74,7 @@ namespace gum {
     int      len = 0;
     wchar_t* data;
 
-    if (value) {
-      len = length;
-    }
+    if (value) { len = length; }
 
     data = new wchar_t[len + 1];
     wcsncpy(data, &(value[startIndex]), len);
@@ -86,15 +84,11 @@ namespace gum {
   }
 
   wchar_t* coco_string_create_upper(const wchar_t* data) {
-    if (!data) {
-      return nullptr;
-    }
+    if (!data) { return nullptr; }
 
     std::size_t dataLen = 0;
 
-    if (data) {
-      dataLen = wcslen(data);
-    }
+    if (data) { dataLen = wcslen(data); }
 
     wchar_t* newData = new wchar_t[dataLen + 1];
 
@@ -111,19 +105,15 @@ namespace gum {
   }
 
   wchar_t* coco_string_create_lower(const wchar_t* data) {
-    if (!data) {
-      return nullptr;
-    }
+    if (!data) { return nullptr; }
 
     std::size_t dataLen = wcslen(data);
     return coco_string_create_lower(data, 0, int(dataLen));
   }
 
   wchar_t*
-  coco_string_create_lower(const wchar_t* data, int startIndex, int dataLen) {
-    if (!data) {
-      return nullptr;
-    }
+    coco_string_create_lower(const wchar_t* data, int startIndex, int dataLen) {
+    if (!data) { return nullptr; }
 
     wchar_t* newData = new wchar_t[dataLen + 1];
 
@@ -146,23 +136,15 @@ namespace gum {
     std::size_t data1Len = 0;
     std::size_t data2Len = 0;
 
-    if (data1) {
-      data1Len = wcslen(data1);
-    }
+    if (data1) { data1Len = wcslen(data1); }
 
-    if (data2) {
-      data2Len = wcslen(data2);
-    }
+    if (data2) { data2Len = wcslen(data2); }
 
     data = new wchar_t[data1Len + data2Len + 1];
 
-    if (data1) {
-      wcscpy(data, data1);
-    }
+    if (data1) { wcscpy(data, data1); }
 
-    if (data2) {
-      wcscpy(data + data1Len, data2);
-    }
+    if (data2) { wcscpy(data + data1Len, data2); }
 
     data[data1Len + data2Len] = 0;
 
@@ -185,9 +167,7 @@ namespace gum {
   }
 
   int coco_string_length(const wchar_t* data) {
-    if (data) {
-      return (int)wcslen(data);
-    }
+    if (data) { return (int)wcslen(data); }
 
     return 0;
   }
@@ -201,9 +181,7 @@ namespace gum {
   int coco_string_indexof(const wchar_t* data, const wchar_t value) {
     const wchar_t* chr = wcschr(data, value);
 
-    if (chr) {
-      return (int)(chr - data);
-    }
+    if (chr) { return (int)(chr - data); }
 
     return -1;
   }
@@ -211,17 +189,13 @@ namespace gum {
   int coco_string_lastindexof(const wchar_t* data, const wchar_t value) {
     const wchar_t* chr = wcsrchr(data, value);
 
-    if (chr) {
-      return (int)(chr - data);
-    }
+    if (chr) { return (int)(chr - data); }
 
     return -1;
   }
 
   void coco_string_merge(wchar_t*& target, const wchar_t* appendix) {
-    if (!appendix) {
-      return;
-    }
+    if (!appendix) { return; }
 
     wchar_t* data = coco_string_create_append(target, appendix);
     delete[] target;
@@ -239,18 +213,14 @@ namespace gum {
   int coco_string_hash(const wchar_t* data) {
     int h = 0;
 
-    if (!data) {
-      return 0;
-    }
+    if (!data) { return 0; }
 
     while (*data != 0) {
       h = (h * 7) ^ *data;
       ++data;
     }
 
-    if (h < 0) {
-      h = -h;
-    }
+    if (h < 0) { h = -h; }
 
     return h;
   }
@@ -259,9 +229,7 @@ namespace gum {
   wchar_t* coco_string_create(const char* value) {
     std::size_t len = 0;
 
-    if (value) {
-      len = strlen(value);
-    }
+    if (value) { len = strlen(value); }
 
     wchar_t* data = new wchar_t[len + 1];
 
@@ -290,6 +258,6 @@ namespace gum {
     data = nullptr;
   }
 
-}  // namespace gum
+}   // namespace gum
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS

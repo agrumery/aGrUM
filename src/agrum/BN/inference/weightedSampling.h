@@ -33,20 +33,19 @@
 namespace gum {
 
   /**
-      * @class WeightedInference weightedInference.h
-      *<agrum/BN/inference/weightedInference.h>
-      * @brief class for making Weighted sampling inference in bayesian networks.
-      * @ingroup bn_approximation
-      *
-      * This class overrides pure function declared in the inherited class
-    *ApproximateInference.
-      * It defines the way Weighted sampling draws a sample.
-      *
-      */
+   * @class WeightedInference weightedInference.h
+   *<agrum/BN/inference/weightedInference.h>
+   * @brief class for making Weighted sampling inference in bayesian networks.
+   * @ingroup bn_approximation
+   *
+   * This class overrides pure function declared in the inherited class
+   *ApproximateInference.
+   * It defines the way Weighted sampling draws a sample.
+   *
+   */
 
   template < typename GUM_SCALAR >
   class WeightedSampling : public SamplingInference< GUM_SCALAR > {
-
     public:
     /**
      * Default constructor
@@ -64,23 +63,23 @@ namespace gum {
 
     /// draws a sample according to Weighted sampling
     /**
-    * @param w the weight of sample being generated
-    * @param prev the previous sample generated
-    * @param bn the bayesian network containing the evidence
-    * @param hardEvNodes hard evidence nodes
-    * @param hardEv hard evidences values
-    *
-    * Generates a new sample in topological order. Each sample has a weight bias.
-    * The sample weight is the product of each node's weight.
-    *
-    */
+     * @param w the weight of sample being generated
+     * @param prev the previous sample generated
+     * @param bn the bayesian network containing the evidence
+     * @param hardEvNodes hard evidence nodes
+     * @param hardEv hard evidences values
+     *
+     * Generates a new sample in topological order. Each sample has a weight bias.
+     * The sample weight is the product of each node's weight.
+     *
+     */
     Instantiation _draw(float* w, Instantiation prev) override;
   };
 
   extern template class WeightedSampling< float >;
 
   extern template class WeightedSampling< double >;
-}
+}   // namespace gum
 
 #include <agrum/BN/inference/weightedSampling_tpl.h>
 

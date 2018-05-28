@@ -31,16 +31,16 @@ namespace gum {
   // Default constructor
   template < typename GUM_SCALAR >
   INLINE MultiDimLogit< GUM_SCALAR >::MultiDimLogit(GUM_SCALAR external_weight,
-                                                    GUM_SCALAR default_weight)
-      : MultiDimICIModel< GUM_SCALAR >(external_weight, default_weight) {
+                                                    GUM_SCALAR default_weight) :
+      MultiDimICIModel< GUM_SCALAR >(external_weight, default_weight) {
     GUM_CONSTRUCTOR(MultiDimLogit);
   }
 
   // Default constructor
   template < typename GUM_SCALAR >
   INLINE MultiDimLogit< GUM_SCALAR >::MultiDimLogit(
-    const MultiDimLogit< GUM_SCALAR >& from)
-      : MultiDimICIModel< GUM_SCALAR >(from) {
+    const MultiDimLogit< GUM_SCALAR >& from) :
+      MultiDimICIModel< GUM_SCALAR >(from) {
     GUM_CONS_CPY(MultiDimLogit);
   }
 
@@ -48,8 +48,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE MultiDimLogit< GUM_SCALAR >::MultiDimLogit(
     const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-    const MultiDimLogit< GUM_SCALAR >& from)
-      : MultiDimICIModel< GUM_SCALAR >(bij, from) {
+    const MultiDimLogit< GUM_SCALAR >&                                   from) :
+      MultiDimICIModel< GUM_SCALAR >(bij, from) {
     GUM_CONSTRUCTOR(MultiDimLogit);
   }
 
@@ -77,7 +77,7 @@ namespace gum {
         GUM_SCALAR(this->causalWeight(v) * this->variable(j).numerical(i.val(v)));
     }
 
-    fact = 1 / (1 + std::exp(-fact));  // or std::exp(fact)/(1+std::exp(fact))
+    fact = 1 / (1 + std::exp(-fact));   // or std::exp(fact)/(1+std::exp(fact))
     auto res = (i.val(C) == 1) ? fact : (GUM_SCALAR)1.0 - fact;
 
     return res;

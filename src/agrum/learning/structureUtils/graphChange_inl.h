@@ -34,26 +34,21 @@ namespace gum {
     /// default constructor
     INLINE GraphChange::GraphChange(GraphChangeType type,
                                     NodeId          node1,
-                                    NodeId          node2) noexcept
-        : __type{type}
-        , __node1{node1}
-        , __node2{node2} {
+                                    NodeId          node2) noexcept :
+        __type{type},
+        __node1{node1}, __node2{node2} {
       GUM_CONSTRUCTOR(GraphChange);
     }
 
     /// copy constructor
-    INLINE GraphChange::GraphChange(const GraphChange& from) noexcept
-        : __type{from.__type}
-        , __node1{from.__node1}
-        , __node2{from.__node2} {
+    INLINE GraphChange::GraphChange(const GraphChange& from) noexcept :
+        __type{from.__type}, __node1{from.__node1}, __node2{from.__node2} {
       GUM_CONS_CPY(GraphChange);
     }
 
     /// move constructor
-    INLINE GraphChange::GraphChange(GraphChange&& from) noexcept
-        : __type{from.__type}
-        , __node1{from.__node1}
-        , __node2{from.__node2} {
+    INLINE GraphChange::GraphChange(GraphChange&& from) noexcept :
+        __type{from.__type}, __node1{from.__node1}, __node2{from.__node2} {
       GUM_CONS_MOV(GraphChange);
     }
 
@@ -87,8 +82,8 @@ namespace gum {
 
     /// returns whether two graph changes are identical or not
     INLINE bool GraphChange::operator==(const GraphChange& from) const noexcept {
-      return ((__node1 == from.__node1) && (__node2 == from.__node2) &&
-              (__type == from.__type));
+      return ((__node1 == from.__node1) && (__node2 == from.__node2)
+              && (__type == from.__type));
     }
 
     /// returns whether two graph changes are different or not
@@ -99,22 +94,22 @@ namespace gum {
     // ===========================================================================
 
     /// default constructor
-    INLINE ArcAddition::ArcAddition(NodeId node1, NodeId node2) noexcept
-        : GraphChange(GraphChangeType::ARC_ADDITION, node1, node2) {
+    INLINE ArcAddition::ArcAddition(NodeId node1, NodeId node2) noexcept :
+        GraphChange(GraphChangeType::ARC_ADDITION, node1, node2) {
       // do not use GUM_CONSTRUCTOR here because, to speed up GraphChange's
       // destructor, we did not make the latter's destructor virtual.
     }
 
     /// copy constructor
-    INLINE ArcAddition::ArcAddition(const ArcAddition& from) noexcept
-        : GraphChange(from) {
+    INLINE ArcAddition::ArcAddition(const ArcAddition& from) noexcept :
+        GraphChange(from) {
       // do not use GUM_CONS_CPY here because, to speed up GraphChange's
       // destructor, we did not make the latter's destructor virtual.
     }
 
     /// move constructor
-    INLINE ArcAddition::ArcAddition(ArcAddition&& from) noexcept
-        : GraphChange(std::move(from)) {
+    INLINE ArcAddition::ArcAddition(ArcAddition&& from) noexcept :
+        GraphChange(std::move(from)) {
       // do not use GUM_CONS_MOV here because, to speed up GraphChange's
       // destructor, we did not make the latter's destructor virtual.
     }
@@ -150,22 +145,22 @@ namespace gum {
     // ===========================================================================
 
     /// default constructor
-    INLINE ArcDeletion::ArcDeletion(NodeId node1, NodeId node2) noexcept
-        : GraphChange(GraphChangeType::ARC_DELETION, node1, node2) {
+    INLINE ArcDeletion::ArcDeletion(NodeId node1, NodeId node2) noexcept :
+        GraphChange(GraphChangeType::ARC_DELETION, node1, node2) {
       // do not use GUM_CONSTRUCTOR here because, to speed up GraphChange's
       // destructor, we did not make the latter's destructor virtual.
     }
 
     /// copy constructor
-    INLINE ArcDeletion::ArcDeletion(const ArcDeletion& from) noexcept
-        : GraphChange(from) {
+    INLINE ArcDeletion::ArcDeletion(const ArcDeletion& from) noexcept :
+        GraphChange(from) {
       // do not use GUM_CONS_CPY here because, to speed up GraphChange's
       // destructor, we did not make the latter's destructor virtual.
     }
 
     /// move constructor
-    INLINE ArcDeletion::ArcDeletion(ArcDeletion&& from) noexcept
-        : GraphChange(std::move(from)) {
+    INLINE ArcDeletion::ArcDeletion(ArcDeletion&& from) noexcept :
+        GraphChange(std::move(from)) {
       // do not use GUM_CONS_MOV here because, to speed up GraphChange's
       // destructor, we did not make the latter's destructor virtual.
     }
@@ -201,22 +196,22 @@ namespace gum {
     // ===========================================================================
 
     /// default constructor
-    INLINE ArcReversal::ArcReversal(NodeId node1, NodeId node2) noexcept
-        : GraphChange(GraphChangeType::ARC_REVERSAL, node1, node2) {
+    INLINE ArcReversal::ArcReversal(NodeId node1, NodeId node2) noexcept :
+        GraphChange(GraphChangeType::ARC_REVERSAL, node1, node2) {
       // do not use GUM_CONSTRUCTOR here because, to speed up GraphChange's
       // destructor, we did not make the latter's destructor virtual.
     }
 
     /// copy constructor
-    INLINE ArcReversal::ArcReversal(const ArcReversal& from) noexcept
-        : GraphChange(from) {
+    INLINE ArcReversal::ArcReversal(const ArcReversal& from) noexcept :
+        GraphChange(from) {
       // do not use GUM_CONS_CPY here because, to speed up GraphChange's
       // destructor, we did not make the latter's destructor virtual.
     }
 
     /// move constructor
-    INLINE ArcReversal::ArcReversal(ArcReversal&& from) noexcept
-        : GraphChange(std::move(from)) {
+    INLINE ArcReversal::ArcReversal(ArcReversal&& from) noexcept :
+        GraphChange(std::move(from)) {
       // do not use GUM_CONS_MOV here because, to speed up GraphChange's
       // destructor, we did not make the latter's destructor virtual.
     }
@@ -252,22 +247,22 @@ namespace gum {
     // ===========================================================================
 
     /// default constructor
-    INLINE EdgeAddition::EdgeAddition(NodeId node1, NodeId node2) noexcept
-        : GraphChange(GraphChangeType::EDGE_ADDITION, node1, node2) {
+    INLINE EdgeAddition::EdgeAddition(NodeId node1, NodeId node2) noexcept :
+        GraphChange(GraphChangeType::EDGE_ADDITION, node1, node2) {
       // do not use GUM_CONSTRUCTOR here because, to speed up GraphChange's
       // destructor, we did not make the latter's destructor virtual.
     }
 
     /// copy constructor
-    INLINE EdgeAddition::EdgeAddition(const EdgeAddition& from) noexcept
-        : GraphChange(from) {
+    INLINE EdgeAddition::EdgeAddition(const EdgeAddition& from) noexcept :
+        GraphChange(from) {
       // do not use GUM_CONS_CPY here because, to speed up GraphChange's
       // destructor, we did not make the latter's destructor virtual.
     }
 
     /// move constructor
-    INLINE EdgeAddition::EdgeAddition(EdgeAddition&& from) noexcept
-        : GraphChange(std::move(from)) {
+    INLINE EdgeAddition::EdgeAddition(EdgeAddition&& from) noexcept :
+        GraphChange(std::move(from)) {
       // do not use GUM_CONS_MOV here because, to speed up GraphChange's
       // destructor, we did not make the latter's destructor virtual.
     }
@@ -280,7 +275,7 @@ namespace gum {
 
     /// copy constructor
     INLINE EdgeAddition& EdgeAddition::
-    operator=(const EdgeAddition& from) noexcept {
+                         operator=(const EdgeAddition& from) noexcept {
       GraphChange::operator=(from);
       return *this;
     }
@@ -293,8 +288,8 @@ namespace gum {
 
     /// returns whether two graph changes are identical or not
     INLINE bool EdgeAddition::operator==(const EdgeAddition& from) const noexcept {
-      return (((node1() == from.node1()) && (node2() == from.node2())) ||
-              ((node1() == from.node2()) && (node2() == from.node1())));
+      return (((node1() == from.node1()) && (node2() == from.node2()))
+              || ((node1() == from.node2()) && (node2() == from.node1())));
     }
 
     /// returns whether two graph changes are different or not
@@ -305,22 +300,22 @@ namespace gum {
     // ===========================================================================
 
     /// default constructor
-    INLINE EdgeDeletion::EdgeDeletion(NodeId node1, NodeId node2) noexcept
-        : GraphChange(GraphChangeType::EDGE_DELETION, node1, node2) {
+    INLINE EdgeDeletion::EdgeDeletion(NodeId node1, NodeId node2) noexcept :
+        GraphChange(GraphChangeType::EDGE_DELETION, node1, node2) {
       // do not use GUM_CONSTRUCTOR here because, to speed up GraphChange's
       // destructor, we did not make the latter's destructor virtual.
     }
 
     /// copy constructor
-    INLINE EdgeDeletion::EdgeDeletion(const EdgeDeletion& from) noexcept
-        : GraphChange(from) {
+    INLINE EdgeDeletion::EdgeDeletion(const EdgeDeletion& from) noexcept :
+        GraphChange(from) {
       // do not use GUM_CONS_CPY here because, to speed up GraphChange's
       // destructor, we did not make the latter's destructor virtual.
     }
 
     /// move constructor
-    INLINE EdgeDeletion::EdgeDeletion(EdgeDeletion&& from) noexcept
-        : GraphChange(std::move(from)) {
+    INLINE EdgeDeletion::EdgeDeletion(EdgeDeletion&& from) noexcept :
+        GraphChange(std::move(from)) {
       // do not use GUM_CONS_MOV here because, to speed up GraphChange's
       // destructor, we did not make the latter's destructor virtual.
     }
@@ -333,7 +328,7 @@ namespace gum {
 
     /// copy constructor
     INLINE EdgeDeletion& EdgeDeletion::
-    operator=(const EdgeDeletion& from) noexcept {
+                         operator=(const EdgeDeletion& from) noexcept {
       GraphChange::operator=(from);
       return *this;
     }
@@ -346,8 +341,8 @@ namespace gum {
 
     /// returns whether two graph changes are identical or not
     INLINE bool EdgeDeletion::operator==(const EdgeDeletion& from) const noexcept {
-      return (((node1() == from.node1()) && (node2() == from.node2())) ||
-              ((node1() == from.node2()) && (node2() == from.node1())));
+      return (((node1() == from.node1()) && (node2() == from.node2()))
+              || ((node1() == from.node2()) && (node2() == from.node1())));
     }
 
     /// returns whether two graph changes are different or not

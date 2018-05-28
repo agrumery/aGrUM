@@ -65,4 +65,4 @@ namespace gum_tests {
       TS_ASSERT(ve.targets() == gum::NodeSet({0, 1}));
     }
   };
-}
+}   // namespace gum_tests

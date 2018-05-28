@@ -87,7 +87,7 @@ namespace gum {
       denominator = b;
       return;
     }
-  }  /// end of farey func
+  }   /// end of farey func
 
   template < typename GUM_SCALAR >
   void Rational< GUM_SCALAR >::continuedFracFirst(int64_t&          numerator,
@@ -133,7 +133,7 @@ namespace gum {
       if (std::abs(rnumber - a.back()) < 1e-6) break;
 
       rnumber = GUM_SCALAR(1.) / (rnumber - a.back());
-    }  /// end of while
+    }   /// end of while
 
     if (a.size() < 2) return;
 
@@ -181,7 +181,7 @@ namespace gum {
         denominator = q_tmp;
         return;
       }
-    }  /// end of for
+    }   /// end of for
 
     ///} // end of for
   }
@@ -194,7 +194,7 @@ namespace gum {
     const GUM_SCALAR pnumber = (number > 0) ? number : -number;
 
     const uint64_t denMax =
-      (uint64_t)den_max;  /// signed and unsigned comparison resolution ...
+      (uint64_t)den_max;   /// signed and unsigned comparison resolution ...
 
     /// reciprocal over iterations
     GUM_SCALAR rnumber = pnumber;
@@ -226,7 +226,7 @@ namespace gum {
       if (std::fabs(rnumber - a.back()) < 1e-6) break;
 
       rnumber = GUM_SCALAR(1.) / (rnumber - a.back());
-    }  /// end of while
+    }   /// end of while
 
     if (a.size() < 2 || q.back() == denMax || p.back() == denMax) {
       numerator = p.back();
@@ -244,7 +244,6 @@ namespace gum {
     /// p.size() - 2
     /// for ( ; i < p.size() - 1; ++i ) {
     for (n = a[i - 1] - 1; n >= (a[i - 1] + 2) / 2; --n) {
-
       p_tmp = n * p[i] + p[i - 1];
       q_tmp = n * q[i] + q[i - 1];
 
@@ -254,7 +253,7 @@ namespace gum {
       if (number < 0) numerator = -numerator;
       denominator = q_tmp;
       return;
-    }  // end of for
+    }   // end of for
 
     // Test n = a[i-1]/2
     n = a[i - 1] / 2;
@@ -278,4 +277,4 @@ namespace gum {
     ///}
   }
 
-}  // end of gum namespace
+}   // namespace gum

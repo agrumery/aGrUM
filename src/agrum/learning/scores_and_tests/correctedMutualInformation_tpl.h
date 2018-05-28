@@ -19,7 +19,7 @@
  ***************************************************************************/
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/core/timer.h>
+#  include <agrum/core/timer.h>
 namespace gum {
 
   namespace learning {
@@ -32,10 +32,9 @@ namespace gum {
     template < typename RowFilter >
     INLINE CorrectedMutualInformation< IdSetAlloc, CountAlloc >::
       CorrectedMutualInformation(const RowFilter&           filter,
-                                 const std::vector< Size >& var_modalities)
-        : _H(filter, var_modalities)
-        , __k_NML(filter, var_modalities)
-        , __modalities(var_modalities) {
+                                 const std::vector< Size >& var_modalities) :
+        _H(filter, var_modalities),
+        __k_NML(filter, var_modalities), __modalities(var_modalities) {
       //_H.useCache(false);
       GUM_CONSTRUCTOR(CorrectedMutualInformation);
     }
@@ -77,7 +76,7 @@ namespace gum {
     /// clears the current cache (clear nodesets as well)
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE void
-    CorrectedMutualInformation< IdSetAlloc, CountAlloc >::clearCache() {
+      CorrectedMutualInformation< IdSetAlloc, CountAlloc >::clearCache() {
       clear();
       __cache_2pt.clear();
       __cache_3pt.clear();
@@ -88,7 +87,7 @@ namespace gum {
     template < typename IdSetAlloc, typename CountAlloc >
     double CorrectedMutualInformation< IdSetAlloc, CountAlloc >::score(
       const std::pair< Idx, Idx >& vars,
-      const std::vector< Idx >& conditioning_ids) {
+      const std::vector< Idx >&    conditioning_ids) {
       return this->_score(vars.first, vars.second, conditioning_ids);
     }
 
@@ -114,7 +113,7 @@ namespace gum {
     template < typename IdSetAlloc, typename CountAlloc >
     double CorrectedMutualInformation< IdSetAlloc, CountAlloc >::score(
       const std::tuple< Idx, Idx, Idx >& vars,
-      const std::vector< Idx >& conditioning_ids) {
+      const std::vector< Idx >&          conditioning_ids) {
       return this->_score(std::get< 0 >(vars),
                           std::get< 1 >(vars),
                           std::get< 2 >(vars),
@@ -177,7 +176,6 @@ namespace gum {
     template < typename IdSetAlloc, typename CountAlloc >
     double CorrectedMutualInformation< IdSetAlloc, CountAlloc >::_score(
       Idx var1, Idx var2, const std::vector< Idx >& conditioning_ids) {
-
       double I = this->_I_score(var1, var2, conditioning_ids);
       double K = _K(var1, var2, conditioning_ids);
       Size   N = this->N();
@@ -190,7 +188,6 @@ namespace gum {
     template < typename IdSetAlloc, typename CountAlloc >
     double CorrectedMutualInformation< IdSetAlloc, CountAlloc >::_score(
       Idx var1, Idx var2, Idx var3, const std::vector< Idx >& conditioning_ids) {
-
       double I = this->_I_score(var1, var2, var3, conditioning_ids);
       double K = _K(var1, var2, var3, conditioning_ids);
       Size   N = this->N();
@@ -229,8 +226,7 @@ namespace gum {
           try {
             double score = __cache_2pt.score(var1, var2, conditioning_ids);
             return score;
-          } catch (const NotFound&) {
-          }
+          } catch (const NotFound&) {}
         }
 
         std::vector< Idx > vec_xz, vec_yz, vec_xyz;
@@ -259,20 +255,19 @@ namespace gum {
 
         // avoid numeric instability due to rounding errors
         double ratio = 1;
-        if ( Hxz_Hyz > 0 ) {
-          ratio = ( Hxz_Hyz - Hz_Hxyz ) / Hxz_Hyz;
+        if (Hxz_Hyz > 0) {
+          ratio = (Hxz_Hyz - Hz_Hxyz) / Hxz_Hyz;
+        } else if (Hz_Hxyz > 0) {
+          ratio = (Hxz_Hyz - Hz_Hxyz) / Hz_Hxyz;
         }
-        else if ( Hz_Hxyz > 0 ) {
-          ratio = ( Hxz_Hyz - Hz_Hxyz ) / Hz_Hxyz;
-        }
-        if ( ratio < 0 ) ratio = -ratio;
-        if ( ratio < __threshold ) {
-          Hz_Hxyz = Hxz_Hyz; // ensure that the score is equal to 0
-          //std::cout << Hxz_Hyz << "  " << Hz_Hxyz << "  " << ratio << "  =>  ";
+        if (ratio < 0) ratio = -ratio;
+        if (ratio < __threshold) {
+          Hz_Hxyz = Hxz_Hyz;   // ensure that the score is equal to 0
+          // std::cout << Hxz_Hyz << "  " << Hz_Hxyz << "  " << ratio << "  =>  ";
         }
 
         score = Hxz_Hyz - Hz_Hxyz;
-        //std::cout << score << std::endl;
+        // std::cout << score << std::endl;
 
         // shall we put the score into the cache?
         if (this->_isUsingCache()) {
@@ -289,8 +284,7 @@ namespace gum {
           try {
             double score = __cache_2pt.score(var1, var2, __empty_conditioning_set);
             return score;
-          } catch (const NotFound&) {
-          }
+          } catch (const NotFound&) {}
         }
 
         _H.clear();
@@ -308,20 +302,19 @@ namespace gum {
 
         // avoid numeric instability due to rounding errors
         double ratio = 1;
-        if ( Hx_Hy > 0 ) {
-          ratio = ( Hx_Hy - Hxy ) / Hx_Hy;
+        if (Hx_Hy > 0) {
+          ratio = (Hx_Hy - Hxy) / Hx_Hy;
+        } else if (Hxy > 0) {
+          ratio = (Hx_Hy - Hxy) / Hxy;
         }
-        else if ( Hxy > 0 ) {
-          ratio = ( Hx_Hy - Hxy ) / Hxy;
+        if (ratio < 0) ratio = -ratio;
+        if (ratio < __threshold) {
+          Hx_Hy = Hxy;   // ensure that the score is equal to 0
+          // std::cout << Hx_Hy << "  " << Hxy << "  " << ratio << "  =>  ";
         }
-        if ( ratio < 0 ) ratio = -ratio;
-        if ( ratio < __threshold ) {
-          Hx_Hy = Hxy; // ensure that the score is equal to 0
-          //std::cout << Hx_Hy << "  " << Hxy << "  " << ratio << "  =>  ";
-        }
-        
+
         score = Hx_Hy - Hxy;
-        //std::cout << score << std::endl;
+        // std::cout << score << std::endl;
 
         // shall we put the score into the cache?
         if (this->_isUsingCache()) {
@@ -339,13 +332,11 @@ namespace gum {
         try {
           double score = __cache_K2pt.score(var1, var2, conditioning_ids);
           return score;
-        } catch (const NotFound&) {
-        }
+        } catch (const NotFound&) {}
       }
       double score;
       Size   rx, ry, rui, N;
       switch (__kmode) {
-
         case KModeTypes::MDL:
           rx = __modalities[var1];
           ry = __modalities[var2];
@@ -362,9 +353,7 @@ namespace gum {
           score = __k_NML.score(__k_NML.addNodeSet(var1, var2, conditioning_ids));
           break;
 
-        case KModeTypes::NoCorr:
-          score = 0.0;
-          break;
+        case KModeTypes::NoCorr: score = 0.0; break;
 
         default:
           GUM_ERROR(OperationNotAllowed,
@@ -390,14 +379,12 @@ namespace gum {
       // without conditioning nodes
       double score = 0.0;
       if (!conditioning_ids.empty()) {
-
         // if the score has already been computed, get its value
         if (__use_cache) {
           try {
             double score = __cache_3pt.score(var1, var2, var3, conditioning_ids);
             return score;
-          } catch (const NotFound&) {
-          }
+          } catch (const NotFound&) {}
         }
 
         std::vector< Idx > vec_xyui, vec_xzui, vec_zyui, vec_xyzui;
@@ -449,24 +436,23 @@ namespace gum {
 
         // avoid numeric instability due to rounding errors
         double ratio = 1;
-        if ( Hxyzui_Hxui_Hyui_Hzui > 0 ) {
-          ratio = ( Hxyzui_Hxui_Hyui_Hzui - Hxyui_Hxzui_Hzyui_Hui ) /
-            Hxyzui_Hxui_Hyui_Hzui;
+        if (Hxyzui_Hxui_Hyui_Hzui > 0) {
+          ratio = (Hxyzui_Hxui_Hyui_Hzui - Hxyui_Hxzui_Hzyui_Hui)
+                  / Hxyzui_Hxui_Hyui_Hzui;
+        } else if (Hxyui_Hxzui_Hzyui_Hui > 0) {
+          ratio = (Hxyzui_Hxui_Hyui_Hzui - Hxyui_Hxzui_Hzyui_Hui)
+                  / Hxyui_Hxzui_Hzyui_Hui;
         }
-        else if ( Hxyui_Hxzui_Hzyui_Hui > 0 ) {
-          ratio = ( Hxyzui_Hxui_Hyui_Hzui - Hxyui_Hxzui_Hzyui_Hui ) /
-            Hxyui_Hxzui_Hzyui_Hui;
-        }
-        if ( ratio < 0 ) ratio = -ratio;
-        if ( ratio < __threshold ) {
+        if (ratio < 0) ratio = -ratio;
+        if (ratio < __threshold) {
           // ensure that the score is equal to 0
           Hxyzui_Hxui_Hyui_Hzui = Hxyui_Hxzui_Hzyui_Hui;
-          //std::cout << Hx_Hy << "  " << Hxy << "  " << ratio << "  =>  ";
+          // std::cout << Hx_Hy << "  " << Hxy << "  " << ratio << "  =>  ";
         }
-        
+
         score = Hxyzui_Hxui_Hyui_Hzui - Hxyui_Hxzui_Hzyui_Hui;
-        //std::cout << score << std::endl;
-        
+        // std::cout << score << std::endl;
+
         // shall we put the score into the cache?
         if (this->_isUsingCache()) {
           this->_insertIntoCache(var1, var2, var3, conditioning_ids, score);
@@ -481,8 +467,7 @@ namespace gum {
             double score =
               __cache_3pt.score(var1, var2, var3, __empty_conditioning_set);
             return score;
-          } catch (const NotFound&) {
-          }
+          } catch (const NotFound&) {}
         }
 
         _H.clear();
@@ -506,25 +491,24 @@ namespace gum {
         const double Hxyz = _H.score(id_xyz);
 
         double Hx_Hy_Hz_Hxyz = Hx + Hy + Hz + Hxyz;
-        double Hxy_Hxz_Hzy   = Hxy + Hxz + Hzy;
+        double Hxy_Hxz_Hzy = Hxy + Hxz + Hzy;
 
         // avoid numeric instability due to rounding errors
         double ratio = 1;
-        if ( Hx_Hy_Hz_Hxyz > 0 ) {
-          ratio = ( Hx_Hy_Hz_Hxyz - Hxy_Hxz_Hzy ) / Hx_Hy_Hz_Hxyz;
+        if (Hx_Hy_Hz_Hxyz > 0) {
+          ratio = (Hx_Hy_Hz_Hxyz - Hxy_Hxz_Hzy) / Hx_Hy_Hz_Hxyz;
+        } else if (Hxy_Hxz_Hzy > 0) {
+          ratio = (Hx_Hy_Hz_Hxyz - Hxy_Hxz_Hzy) / Hxy_Hxz_Hzy;
         }
-        else if ( Hxy_Hxz_Hzy > 0 ) {
-          ratio = ( Hx_Hy_Hz_Hxyz - Hxy_Hxz_Hzy ) / Hxy_Hxz_Hzy;
+        if (ratio < 0) ratio = -ratio;
+        if (ratio < __threshold) {
+          Hx_Hy_Hz_Hxyz = Hxy_Hxz_Hzy;   // ensure that the score is equal to 0
+          // std::cout << Hx_Hy << "  " << Hxy << "  " << ratio << "  =>  ";
         }
-        if ( ratio < 0 ) ratio = -ratio;
-        if ( ratio < __threshold ) {
-          Hx_Hy_Hz_Hxyz = Hxy_Hxz_Hzy; // ensure that the score is equal to 0
-          //std::cout << Hx_Hy << "  " << Hxy << "  " << ratio << "  =>  ";
-        }
-        
+
         score = Hx_Hy_Hz_Hxyz - Hxy_Hxz_Hzy;
-        //std::cout << score << std::endl;
-        
+        // std::cout << score << std::endl;
+
         // shall we put the score into the cache?
 
         if (this->_isUsingCache()) {
@@ -544,8 +528,7 @@ namespace gum {
         try {
           double score = __cache_K3pt.score(var1, var2, var3, conditioning_ids);
           return score;
-        } catch (const NotFound&) {
-        }
+        } catch (const NotFound&) {}
       }
       // k(x;y;z|ui) = k(x;y|ui,z) - k(x;y|ui)
       std::vector< Idx > uiz = conditioning_ids;
@@ -567,96 +550,86 @@ namespace gum {
     /// inserts a new score into the cache
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE void
-    CorrectedMutualInformation< IdSetAlloc, CountAlloc >::_insertIntoCache(
-      Idx                       var1,
-      Idx                       var2,
-      const std::vector< Idx >& conditioning_ids,
-      double                    score) {
-
+      CorrectedMutualInformation< IdSetAlloc, CountAlloc >::_insertIntoCache(
+        Idx                       var1,
+        Idx                       var2,
+        const std::vector< Idx >& conditioning_ids,
+        double                    score) {
       if (!conditioning_ids.empty()) {
         try {
           __cache_2pt.insert(var1, var2, conditioning_ids, score);
-        } catch (const gum::DuplicateElement&) {
-        }
+        } catch (const gum::DuplicateElement&) {}
       } else {
         try {
           __cache_2pt.insert(var1, var2, __empty_conditioning_set, score);
-        } catch (const gum::DuplicateElement&) {
-        }
+        } catch (const gum::DuplicateElement&) {}
       }
     }
 
     /// inserts a new score into the cache
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE void
-    CorrectedMutualInformation< IdSetAlloc, CountAlloc >::_insertIntoCache(
-      Idx                       var1,
-      Idx                       var2,
-      Idx                       var3,
-      const std::vector< Idx >& conditioning_ids,
-      double                    score) {
-
+      CorrectedMutualInformation< IdSetAlloc, CountAlloc >::_insertIntoCache(
+        Idx                       var1,
+        Idx                       var2,
+        Idx                       var3,
+        const std::vector< Idx >& conditioning_ids,
+        double                    score) {
       if (!conditioning_ids.empty()) {
         try {
           __cache_3pt.insert(var1, var2, var3, conditioning_ids, score);
-        } catch (const gum::DuplicateElement&) {
-        }
+        } catch (const gum::DuplicateElement&) {}
       } else {
         try {
           __cache_3pt.insert(var1, var2, var3, __empty_conditioning_set, score);
-        } catch (const gum::DuplicateElement&) {
-        }
+        } catch (const gum::DuplicateElement&) {}
       }
     }
 
     /// inserts a new score into the cache
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE void
-    CorrectedMutualInformation< IdSetAlloc, CountAlloc >::_insertIntoKCache(
-      Idx                       var1,
-      Idx                       var2,
-      const std::vector< Idx >& conditioning_ids,
-      double                    score) {
+      CorrectedMutualInformation< IdSetAlloc, CountAlloc >::_insertIntoKCache(
+        Idx                       var1,
+        Idx                       var2,
+        const std::vector< Idx >& conditioning_ids,
+        double                    score) {
       if (!conditioning_ids.empty()) {
         try {
           __cache_K2pt.insert(var1, var2, conditioning_ids, score);
-        } catch (const gum::DuplicateElement&) {
-        }
+        } catch (const gum::DuplicateElement&) {}
       } else {
         try {
           __cache_K2pt.insert(var1, var2, this->__empty_conditioning_set, score);
-        } catch (const gum::DuplicateElement&) {
-        }
+        } catch (const gum::DuplicateElement&) {}
       }
     }
 
     /// inserts a new score into the cache
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE void
-    CorrectedMutualInformation< IdSetAlloc, CountAlloc >::_insertIntoKCache(
-      Idx                       var1,
-      Idx                       var2,
-      Idx                       var3,
-      const std::vector< Idx >& conditioning_ids,
-      double                    score) {
+      CorrectedMutualInformation< IdSetAlloc, CountAlloc >::_insertIntoKCache(
+        Idx                       var1,
+        Idx                       var2,
+        Idx                       var3,
+        const std::vector< Idx >& conditioning_ids,
+        double                    score) {
       if (!conditioning_ids.empty()) {
         try {
           __cache_K3pt.insert(var1, var2, var3, conditioning_ids, score);
-        } catch (const gum::DuplicateElement&) {
-        }
+        } catch (const gum::DuplicateElement&) {}
       } else {
         try {
           __cache_K3pt.insert(
             var1, var2, var3, this->__empty_conditioning_set, score);
-        } catch (const gum::DuplicateElement&) {
-        }
+        } catch (const gum::DuplicateElement&) {}
       }
     }
 
     /// indicates whether we use the cache or not
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE bool
-    CorrectedMutualInformation< IdSetAlloc, CountAlloc >::_isUsingCache() const
+      CorrectedMutualInformation< IdSetAlloc, CountAlloc >::_isUsingCache() const
       noexcept {
       return __use_cache;
     }

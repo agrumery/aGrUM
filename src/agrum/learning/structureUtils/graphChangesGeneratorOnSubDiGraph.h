@@ -90,7 +90,7 @@ namespace gum {
      */
     template < typename STRUCT_CONSTRAINT >
     class GraphChangesGeneratorOnSubDiGraph
-      : public IGraphChangesGenerator4DiGraph {
+        : public IGraphChangesGenerator4DiGraph {
       public:
       /// the iterator for parsing the list of possible graph change operators
       using iterator = typename Set< GraphChange >::const_iterator;
@@ -130,7 +130,7 @@ namespace gum {
 
       /// move operator
       GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >&
-      operator=(GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >&& from);
+        operator=(GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >&& from);
 
       /// @}
 

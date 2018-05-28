@@ -58,7 +58,6 @@ namespace gum {
      */
     template < typename GUM_SCALAR >
     class PRMScalarAttribute : public PRMAttribute< GUM_SCALAR > {
-
       public:
       // ========================================================================
       /// @name Constructor & destructor.
@@ -92,7 +91,7 @@ namespace gum {
       /// @{
 
       virtual PRMAttribute< GUM_SCALAR >*
-      newFactory(const PRMClass< GUM_SCALAR >& c) const;
+                                          newFactory(const PRMClass< GUM_SCALAR >& c) const;
       virtual PRMAttribute< GUM_SCALAR >* copy(
         Bijection< const DiscreteVariable*, const DiscreteVariable* > bij) const;
 
@@ -102,7 +101,7 @@ namespace gum {
 
       /// See gum::PRMClassElement::elt_type().
       virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType
-      elt_type() const;
+        elt_type() const;
 
       /// See gum::PRMClassElement::type().
       virtual PRMType< GUM_SCALAR >& type();
@@ -136,7 +135,7 @@ namespace gum {
       PRMScalarAttribute& operator=(const PRMScalarAttribute& from);
 
       virtual PRMType< GUM_SCALAR >* _type();
-      virtual void _type(PRMType< GUM_SCALAR >* t);
+      virtual void                   _type(PRMType< GUM_SCALAR >* t);
 
       private:
       // ========================================================================
@@ -159,7 +158,7 @@ namespace gum {
 
 
   } /* namespace prm */
-}  // namespace gum
+}   // namespace gum
 
 #include <agrum/PRM/elements/PRMScalarAttribute_tpl.h>
 

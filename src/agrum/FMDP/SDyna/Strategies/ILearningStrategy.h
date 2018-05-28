@@ -50,7 +50,6 @@ namespace gum {
    *
    */
   class ILearningStrategy {
-
     // ###################################################################
     /// @name Constructor & destructor.
     // ###################################################################
@@ -123,12 +122,12 @@ namespace gum {
      */
     // ==========================================================================
     virtual const IVisitableGraphLearner*
-    varLearner(Idx actionId, const DiscreteVariable* var) const = 0;
+      varLearner(Idx actionId, const DiscreteVariable* var) const = 0;
 
     virtual double rMax() const = 0;
     virtual double modaMax() const = 0;
 
     /// @}
   };
-}
-#endif  // GUM_SDYNA_LEARNING_STRATEGY_H
+}   // namespace gum
+#endif   // GUM_SDYNA_LEARNING_STRATEGY_H

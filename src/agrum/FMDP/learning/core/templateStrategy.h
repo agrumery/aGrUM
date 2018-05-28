@@ -67,6 +67,6 @@ namespace gum {
     typedef B type;
   };
 
-}  // end of namespace gum
+}   // end of namespace gum
 
-#endif  // GUM_TEMPLATE_STRATEGY_H
+#endif   // GUM_TEMPLATE_STRATEGY_H

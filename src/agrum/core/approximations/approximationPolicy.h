@@ -44,7 +44,6 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   class ApproximationPolicy {
-
     public:
     // ===========================================================================
     /// @name Constructors / Destructors
@@ -115,6 +114,6 @@ namespace gum {
 
     /// @}
   };
-}
+}   // namespace gum
 
 #endif /* GUM_APPROXIMATION_POLICY_H */

@@ -30,5 +30,5 @@
 
 // include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
-#include <agrum/core/OMPThreads_inl.h>
+#  include <agrum/core/OMPThreads_inl.h>
 #endif /* GUM_NO_INLINE */

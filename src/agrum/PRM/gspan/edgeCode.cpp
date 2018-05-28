@@ -27,8 +27,8 @@
 #include <agrum/PRM/gspan/edgeCode.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/PRM/gspan/edgeCode_inl.h>
-#endif  // GUM_NO_INLINE
+#  include <agrum/PRM/gspan/edgeCode_inl.h>
+#endif   // GUM_NO_INLINE
 
 namespace gum {
   namespace prm {

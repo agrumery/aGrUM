@@ -75,7 +75,7 @@ namespace gum {
      */
     MultiDimNoisyORCompound(
       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-      const MultiDimNoisyORCompound< GUM_SCALAR >& from);
+      const MultiDimNoisyORCompound< GUM_SCALAR >&                         from);
 
     /// Destructor.
     virtual ~MultiDimNoisyORCompound();

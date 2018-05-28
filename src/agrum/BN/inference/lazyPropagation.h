@@ -43,16 +43,16 @@ namespace gum {
   // the function used to combine two tables
   template < typename GUM_SCALAR >
   INLINE static Potential< GUM_SCALAR >*
-  LPNewmultiPotential(const Potential< GUM_SCALAR >& t1,
-                      const Potential< GUM_SCALAR >& t2) {
+    LPNewmultiPotential(const Potential< GUM_SCALAR >& t1,
+                        const Potential< GUM_SCALAR >& t2) {
     return new Potential< GUM_SCALAR >(t1 * t2);
   }
 
   // the function used to combine two tables
   template < typename GUM_SCALAR >
   INLINE static Potential< GUM_SCALAR >*
-  LPNewprojPotential(const Potential< GUM_SCALAR >&        t1,
-                     const Set< const DiscreteVariable* >& del_vars) {
+    LPNewprojPotential(const Potential< GUM_SCALAR >&        t1,
+                       const Set< const DiscreteVariable* >& del_vars) {
     return new Potential< GUM_SCALAR >(t1.margSumOut(del_vars));
   }
 
@@ -65,8 +65,9 @@ namespace gum {
    * @ingroup bn_inference
    */
   template < typename GUM_SCALAR >
-  class LazyPropagation : public JointTargetedInference< GUM_SCALAR >,
-                          public EvidenceInference< GUM_SCALAR > {
+  class LazyPropagation
+      : public JointTargetedInference< GUM_SCALAR >
+      , public EvidenceInference< GUM_SCALAR > {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -86,7 +87,7 @@ namespace gum {
 
     /// avoid copy operators
     LazyPropagation< GUM_SCALAR >&
-    operator=(const LazyPropagation< GUM_SCALAR >&) = delete;
+      operator=(const LazyPropagation< GUM_SCALAR >&) = delete;
 
     /// destructor
     ~LazyPropagation() final;
@@ -224,8 +225,8 @@ namespace gum {
      * @param declared_target the joint target declared by the user that contains
      * set */
     const Potential< GUM_SCALAR >&
-    _jointPosterior(const NodeSet& wanted_target,
-                    const NodeSet& declared_target) final;
+      _jointPosterior(const NodeSet& wanted_target,
+                      const NodeSet& declared_target) final;
 
     /// returns a fresh potential equal to P(argument,evidence)
     Potential< GUM_SCALAR >* _unnormalizedJointPosterior(NodeId id) final;
@@ -432,8 +433,8 @@ namespace gum {
 
     // remove barren variables and return the newly created projected potentials
     __PotentialSet
-    __removeBarrenVariables(__PotentialSet&                 pot_list,
-                            Set< const DiscreteVariable* >& del_vars);
+      __removeBarrenVariables(__PotentialSet&                 pot_list,
+                              Set< const DiscreteVariable* >& del_vars);
 
     /** @brief removes variables del_vars from a list of potentials and
      * returns the resulting list */

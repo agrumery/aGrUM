@@ -35,14 +35,15 @@ namespace gum {
 
   namespace aggregator {
     template < typename GUM_SCALAR >
-    INLINE Amplitude< GUM_SCALAR >::Amplitude()
-        : MultiDimAggregator< GUM_SCALAR >() {
+    INLINE Amplitude< GUM_SCALAR >::Amplitude() :
+        MultiDimAggregator< GUM_SCALAR >() {
       GUM_CONSTRUCTOR(Amplitude)
     }
 
     template < typename GUM_SCALAR >
-    INLINE Amplitude< GUM_SCALAR >::Amplitude(const Amplitude< GUM_SCALAR >& from)
-        : MultiDimAggregator< GUM_SCALAR >(from) {
+    INLINE
+      Amplitude< GUM_SCALAR >::Amplitude(const Amplitude< GUM_SCALAR >& from) :
+        MultiDimAggregator< GUM_SCALAR >(from) {
       GUM_CONS_CPY(Amplitude);
     }
 
@@ -77,7 +78,7 @@ namespace gum {
         if (m < min) min = m;
         if (m > max) max = m;
       }
-      return max - min;  // multiDimAggregator::get will truncate if needed.
+      return max - min;   // multiDimAggregator::get will truncate if needed.
     }
 
     template < typename GUM_SCALAR >
@@ -88,5 +89,5 @@ namespace gum {
       return 0;
     }
 
-  }  // namespace aggregator
-}  // namespace gum
+  }   // namespace aggregator
+}   // namespace gum

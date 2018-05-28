@@ -25,10 +25,10 @@
 #include <agrum/agrum.h>
 #include <agrum/core/exceptions.h>
 #ifndef NDEBUG
-#ifdef HAVE_EXECINFO_H
-#include <execinfo.h>
-#endif  // HAVE_EXECINFO_H
-#endif  // NDEBUG
+#  ifdef HAVE_EXECINFO_H
+#    include <execinfo.h>
+#  endif   // HAVE_EXECINFO_H
+#endif     // NDEBUG
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -39,28 +39,25 @@ namespace gum {
                                 const int          line,
                                 const std::string& msg) {
     std::stringstream stream;
-#ifdef SWIG
+#  ifdef SWIG
     stream << std::endl << msg << std::endl;
-#else
+#  else
     stream << std::endl
            << "<" << filename << "> " << function << "() #" << std::setw(6)
            << std::dec << line << " :" << std::endl
            << "--------------" << std::endl
            << "! " << msg << std::endl
            << "--------------" << std::endl;
-#endif  // SWIG
+#  endif   // SWIG
     return stream.str();
   }
-  Exception::Exception(const Exception& e)
-      : _msg(e._msg)
-      , _type(e._type) {}
+  Exception::Exception(const Exception& e) : _msg(e._msg), _type(e._type) {}
 
-  Exception::Exception(const std::string aMsg, const std::string aType)
-      : _msg(aMsg)
-      , _type(aType) {
-#ifndef NDEBUG
-#ifdef HAVE_EXECINFO_H
-#define callStackDepth 20
+  Exception::Exception(const std::string aMsg, const std::string aType) :
+      _msg(aMsg), _type(aType) {
+#  ifndef NDEBUG
+#    ifdef HAVE_EXECINFO_H
+#      define callStackDepth 20
     void*  array[callStackDepth];
     size_t size;
     char** strings;
@@ -75,14 +72,14 @@ namespace gum {
 
     free(strings);
     _callstack = stream.str();
-#else   // HAVE_EXECINFO_H
+#    else    // HAVE_EXECINFO_H
     _callstack = "Callstack only in linux debug mode when execinfo.h available";
-#endif  // HAVE_EXECINFO_H
-#else   // NDEBUG
+#    endif   // HAVE_EXECINFO_H
+#  else      // NDEBUG
     _callstack = "Callstack only in linux debug mod ewhen execinfo.h available";
-#endif  // NDEBUG
+#  endif     // NDEBUG
   }
 
 } /* namespace gum */
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS

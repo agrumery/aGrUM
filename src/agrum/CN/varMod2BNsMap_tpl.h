@@ -1,23 +1,23 @@
 
 /***************************************************************************
-*   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 
 #include <agrum/CN/varMod2BNsMap.h>
@@ -56,7 +56,7 @@ namespace gum {
 
         for (Size pconf = 0; pconf < pConfs; pconf++) {
           Size          nVertices = Size((*cpt)[node][pconf].size());
-          unsigned long b, c;  // needed by superiorPow
+          unsigned long b, c;   // needed by superiorPow
           superiorPow(static_cast< unsigned long >(nVertices), b, c);
           Size nBits = Size(b);
           Size newCard = Size(c);
@@ -72,14 +72,14 @@ namespace gum {
                                              const std::vector< Size >& key) {
       _currentHash = Size(_vectHash(bn));
       std::list< Size >& nets =
-        _myVarHashs.getWithDefault(key, std::list< Size >());  //[ key ];
+        _myVarHashs.getWithDefault(key, std::list< Size >());   //[ key ];
 
       for (std::list< Size >::iterator it = nets.begin(); it != nets.end(); ++it) {
         if (*it == _currentHash) return false;
       }
 
       // add it
-      _myHashNet.set(_currentHash, bn);  //[_currentHash] = bn;
+      _myHashNet.set(_currentHash, bn);   //[_currentHash] = bn;
       // insert net hash in our key net list
       nets.push_back(_currentHash);
       // insert out key in the hash key list
@@ -95,7 +95,7 @@ namespace gum {
       if (isBetter) {
         // get all nets of this key (maybe entry does not exists)
         std::list< Size >& old_nets =
-          _myVarHashs.getWithDefault(key, std::list< Size >());  //[ key ];
+          _myVarHashs.getWithDefault(key, std::list< Size >());   //[ key ];
 
         // for each one
         for (std::list< Size >::iterator it = old_nets.begin();
@@ -103,7 +103,7 @@ namespace gum {
              ++it) {
           // get all keys associated to this net
           std::list< varKey >& netKeys =
-            _myHashVars.getWithDefault(*it, std::list< varKey >());  //[ *it ];
+            _myHashVars.getWithDefault(*it, std::list< varKey >());   //[ *it ];
 
           // if we are the sole user, delete the net entry
           if (netKeys.size() == 1) {
@@ -120,13 +120,13 @@ namespace gum {
               }
             }
           }
-        }  // end of : for each old_net
+        }   // end of : for each old_net
 
         // clear all old_nets
         old_nets.clear();
         // insert new net with it's hash
         _myHashNet.set(_currentHash,
-                       _currentSample);  //[_currentHash] = _currentSample;
+                       _currentSample);   //[_currentHash] = _currentSample;
         // insert net hash in our key net list
         old_nets.push_back(_currentHash);
         // insert out key in the hash key list
@@ -135,12 +135,12 @@ namespace gum {
           .push_back(key);
         return true;
 
-      }  // end of isBetter
+      }   // end of isBetter
       // another opt net
       else {
         // check that we didn't add it for this key
         std::list< Size >& nets =
-          _myVarHashs.getWithDefault(key, std::list< Size >());  //[ key ];
+          _myVarHashs.getWithDefault(key, std::list< Size >());   //[ key ];
 
         for (std::list< Size >::iterator it = nets.begin(); it != nets.end();
              ++it) {
@@ -164,7 +164,7 @@ namespace gum {
               _myHashVars[_currentHash].push_back(key);
         */
         return true;
-      }  // end of ! isBetter
+      }   // end of ! isBetter
     }
 
     template < typename GUM_SCALAR >
@@ -190,17 +190,18 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     const std::vector< std::vector< std::vector< bool > > >&
-    VarMod2BNsMap< GUM_SCALAR >::getSampleDef() {
+      VarMod2BNsMap< GUM_SCALAR >::getSampleDef() {
       return _sampleDef;
     }
 
     template < typename GUM_SCALAR >
     const std::vector< std::vector< bool >* >
-    VarMod2BNsMap< GUM_SCALAR >::getBNOptsFromKey(const std::vector< Size >& key) {
+      VarMod2BNsMap< GUM_SCALAR >::getBNOptsFromKey(
+        const std::vector< Size >& key) {
       // return something even if key does not exist
       if (!_myVarHashs.exists(key)) return std::vector< std::vector< bool >* >();
 
-      std::list< Size >& netsHash = _myVarHashs[key];  //.at(key);
+      std::list< Size >& netsHash = _myVarHashs[key];   //.at(key);
 
       std::vector< dBN* > nets;
       nets.resize(netsHash.size());
@@ -208,7 +209,7 @@ namespace gum {
       std::list< Size >::iterator it = netsHash.begin();
 
       for (Size i = 0; i < netsHash.size(); i++, ++it) {
-        nets[i] = &_myHashNet /*.at(*/[*it];  //);
+        nets[i] = &_myHashNet /*.at(*/[*it];   //);
       }
 
       return nets;
@@ -216,8 +217,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     std::vector< std::vector< std::vector< std::vector< bool > > > >
-    VarMod2BNsMap< GUM_SCALAR >::getFullBNOptsFromKey(
-      const std::vector< Size >& key) {
+      VarMod2BNsMap< GUM_SCALAR >::getFullBNOptsFromKey(
+        const std::vector< Size >& key) {
       if (cnet == nullptr)
         GUM_ERROR(
           OperationNotAllowed,
@@ -226,7 +227,7 @@ namespace gum {
       if (!_myVarHashs.exists(key))
         return std::vector< std::vector< std::vector< std::vector< bool > > > >();
 
-      std::list< Size >& netsHash = _myVarHashs[key];  //.at(key);
+      std::list< Size >& netsHash = _myVarHashs[key];   //.at(key);
 
       std::vector< std::vector< std::vector< std::vector< bool > > > > nets;
       nets.resize(netsHash.size(), _sampleDef);
@@ -255,5 +256,5 @@ namespace gum {
       return _myHashNet.size();
     }
 
-  }  // end of credal namespace
-}
+  }   // namespace credal
+}   // namespace gum

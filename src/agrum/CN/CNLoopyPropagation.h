@@ -166,9 +166,9 @@ namespace gum {
        * @param demanding_parent The constant node id of the node receiving the
        * message.
        */
-      void
-      _msgL(const NodeId X,
-            const NodeId demanding_parent);  // allways sent from X to demanding_X
+      void _msgL(
+        const NodeId X,
+        const NodeId demanding_parent);   // allways sent from X to demanding_X
 
       /**
        * Used by _msgL. Compute the final message for the given parent's message
@@ -238,13 +238,13 @@ namespace gum {
        * the CPT
        * of the one sending the message ( first parent, second ... ).
        */
-      void
-      _enum_combi(std::vector< std::vector< std::vector< GUM_SCALAR > > >& msgs_p,
-                  const NodeId&                                            id,
-                  GUM_SCALAR&                msg_l_min,
-                  GUM_SCALAR&                msg_l_max,
-                  std::vector< GUM_SCALAR >& lx,
-                  const Idx&                 pos);
+      void _enum_combi(
+        std::vector< std::vector< std::vector< GUM_SCALAR > > >& msgs_p,
+        const NodeId&                                            id,
+        GUM_SCALAR&                                              msg_l_min,
+        GUM_SCALAR&                                              msg_l_max,
+        std::vector< GUM_SCALAR >&                               lx,
+        const Idx&                                               pos);
 
       /**
        * Sends a message to one's child, i.e. X is sending a message to a
@@ -267,11 +267,11 @@ namespace gum {
        * message to
        * be sent.
        */
-      void
-      _enum_combi(std::vector< std::vector< std::vector< GUM_SCALAR > > >& msgs_p,
-                  const NodeId&                                            id,
-                  GUM_SCALAR& msg_p_min,
-                  GUM_SCALAR& msg_p_max);
+      void _enum_combi(
+        std::vector< std::vector< std::vector< GUM_SCALAR > > >& msgs_p,
+        const NodeId&                                            id,
+        GUM_SCALAR&                                              msg_p_min,
+        GUM_SCALAR&                                              msg_p_max);
 
       /**
        * Used by _msgP. Marginalisation.
@@ -385,8 +385,8 @@ namespace gum {
 
     extern template class CNLoopyPropagation< float >;
     extern template class CNLoopyPropagation< double >;
-  }
-}
+  }   // namespace credal
+}   // namespace gum
 
 #include <agrum/CN/CNLoopyPropagation_tpl.h>
 

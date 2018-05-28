@@ -38,10 +38,10 @@ namespace gum {
              typename Cmp,
              typename Alloc,
              bool Gen >
-  INLINE          PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::
-    PriorityQueueImplementation(Cmp compare, Size capacity)
-      : __indices(capacity >> 1, true, true)
-      , __cmp(compare) {
+  INLINE PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::
+    PriorityQueueImplementation(Cmp compare, Size capacity) :
+      __indices(capacity >> 1, true, true),
+      __cmp(compare) {
     __heap.reserve(capacity);
 
     // for debugging purposes
@@ -56,8 +56,8 @@ namespace gum {
              bool Gen >
   PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::
     PriorityQueueImplementation(
-      std::initializer_list< std::pair< Val, Priority > > list)
-      : __indices(Size(list.size()) / 2, true, true) {
+      std::initializer_list< std::pair< Val, Priority > > list) :
+      __indices(Size(list.size()) / 2, true, true) {
     // fill the queue
     __heap.reserve(list.size());
     for (const auto& elt : list) {
@@ -76,11 +76,10 @@ namespace gum {
              bool Gen >
   PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::
     PriorityQueueImplementation(
-      const PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >& from)
-      : __heap(from.__heap)
-      , __indices(from.__indices)
-      , __nb_elements(from.__nb_elements)
-      , __cmp(from.__cmp) {
+      const PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >& from) :
+      __heap(from.__heap),
+      __indices(from.__indices), __nb_elements(from.__nb_elements),
+      __cmp(from.__cmp) {
     // fill the heap structure
     for (const auto& elt : __indices) {
       __heap[elt.second].second = &(elt.first);
@@ -100,10 +99,9 @@ namespace gum {
   PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::
     PriorityQueueImplementation(
       const PriorityQueueImplementation< Val, Priority, Cmp, OtherAlloc, Gen >&
-        from)
-      : __indices(from.__indices)
-      , __nb_elements(from.__nb_elements)
-      , __cmp(from.__cmp) {
+        from) :
+      __indices(from.__indices),
+      __nb_elements(from.__nb_elements), __cmp(from.__cmp) {
     // fill the heap structure
     if (__nb_elements) {
       __heap.reserve(from.__heap.size());
@@ -127,11 +125,10 @@ namespace gum {
              bool Gen >
   PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::
     PriorityQueueImplementation(
-      PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >&& from)
-      : __heap(std::move(from.__heap))
-      , __indices(std::move(from.__indices))
-      , __nb_elements(std::move(from.__nb_elements))
-      , __cmp(std::move(from.__cmp)) {
+      PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >&& from) :
+      __heap(std::move(from.__heap)),
+      __indices(std::move(from.__indices)),
+      __nb_elements(std::move(from.__nb_elements)), __cmp(std::move(from.__cmp)) {
     // for debugging purposes
     GUM_CONS_MOV(PriorityQueueImplementation);
   }
@@ -155,8 +152,8 @@ namespace gum {
              typename Alloc,
              bool Gen >
   PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >&
-  PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::operator=(
-    const PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >& from) {
+    PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::operator=(
+      const PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >& from) {
     // avoid self assignment
     if (this != &from) {
       // for debugging purposes
@@ -195,9 +192,9 @@ namespace gum {
              bool Gen >
   template < typename OtherAlloc >
   PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >&
-  PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::operator=(
-    const PriorityQueueImplementation< Val, Priority, Cmp, OtherAlloc, Gen >&
-      from) {
+    PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::operator=(
+      const PriorityQueueImplementation< Val, Priority, Cmp, OtherAlloc, Gen >&
+        from) {
     // for debugging purposes
     GUM_OP_CPY(PriorityQueueImplementation);
 
@@ -236,9 +233,9 @@ namespace gum {
              typename Cmp,
              typename Alloc,
              bool Gen >
-  INLINE          PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >&
-                  PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::
-  operator=(PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >&& from) {
+  INLINE PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >&
+    PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::operator=(
+      PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >&& from) {
     // avoid self assignment
     if (this != &from) {
       // for debugging purposes
@@ -259,11 +256,9 @@ namespace gum {
              typename Cmp,
              typename Alloc,
              bool Gen >
-  INLINE const    Val&
-                  PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::top() const {
-    if (!__nb_elements) {
-      GUM_ERROR(NotFound, "empty priority queue");
-    }
+  INLINE const Val&
+               PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::top() const {
+    if (!__nb_elements) { GUM_ERROR(NotFound, "empty priority queue"); }
 
     return *(__heap[0].second);
   }
@@ -274,12 +269,10 @@ namespace gum {
              typename Cmp,
              typename Alloc,
              bool Gen >
-  INLINE const    Priority&
-                  PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::topPriority()
-    const {
-    if (!__nb_elements) {
-      GUM_ERROR(NotFound, "empty priority queue");
-    }
+  INLINE const Priority&
+               PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::topPriority()
+      const {
+    if (!__nb_elements) { GUM_ERROR(NotFound, "empty priority queue"); }
 
     return __heap[0].first;
   }
@@ -290,8 +283,8 @@ namespace gum {
              typename Cmp,
              typename Alloc,
              bool Gen >
-  INLINE          Size
-                  PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::size() const
+  INLINE Size
+         PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::size() const
     noexcept {
     return __nb_elements;
   }
@@ -302,8 +295,8 @@ namespace gum {
              typename Cmp,
              typename Alloc,
              bool Gen >
-  INLINE          Size
-                  PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::capacity() const
+  INLINE Size
+         PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::capacity() const
     noexcept {
     return Size(__heap.capacity());
   }
@@ -315,8 +308,8 @@ namespace gum {
              typename Alloc,
              bool Gen >
   INLINE void
-  PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::resize(
-    Size new_size) {
+    PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::resize(
+      Size new_size) {
     if (new_size < __nb_elements) return;
 
     __heap.reserve(new_size);
@@ -330,7 +323,7 @@ namespace gum {
              typename Alloc,
              bool Gen >
   INLINE void
-  PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::clear() {
+    PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::clear() {
     __nb_elements = 0;
     __heap.clear();
     __indices.clear();
@@ -387,8 +380,7 @@ namespace gum {
     const Val& val) {
     try {
       eraseByPos(__indices[val]);
-    } catch (NotFound&) {
-    }
+    } catch (NotFound&) {}
   }
 
   // removes the top of the priority queue (but does not return it)
@@ -398,7 +390,7 @@ namespace gum {
              typename Alloc,
              bool Gen >
   INLINE void
-  PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::eraseTop() {
+    PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::eraseTop() {
     eraseByPos(0);
   }
 
@@ -409,9 +401,7 @@ namespace gum {
              typename Alloc,
              bool Gen >
   INLINE Val PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::pop() {
-    if (!__nb_elements) {
-      GUM_ERROR(NotFound, "empty priority queue");
-    }
+    if (!__nb_elements) { GUM_ERROR(NotFound, "empty priority queue"); }
 
     Val v = *(__heap[0].second);
     eraseByPos(0);
@@ -425,9 +415,9 @@ namespace gum {
              typename Cmp,
              typename Alloc,
              bool Gen >
-  INLINE const    HashTable< Val, Size >&
-                  PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::allValues() const
-    noexcept {
+  INLINE const HashTable< Val, Size >&
+               PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::allValues()
+      const noexcept {
     return reinterpret_cast< const HashTable< Val, Size >& >(__indices);
   }
 
@@ -437,9 +427,9 @@ namespace gum {
              typename Cmp,
              typename Alloc,
              bool Gen >
-  INLINE          Size
-                  PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::insert(
-    const Val& val, const Priority& priority) {
+  INLINE Size
+         PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::insert(
+      const Val& val, const Priority& priority) {
     // create the entry in the indices hashtable (if the element already exists,
     // __indices.insert will raise a Duplicateelement exception)
     typename HashTable< Val, Size, IndexAllocator >::value_type& new_elt =
@@ -480,9 +470,9 @@ namespace gum {
              typename Cmp,
              typename Alloc,
              bool Gen >
-  INLINE          Size
-                  PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::insert(
-    Val&& val, Priority&& priority) {
+  INLINE Size
+         PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::insert(
+      Val&& val, Priority&& priority) {
     // create the entry in the indices hashtable (if the element already exists,
     // __indices.insert will raise a Duplicateelement exception)
     typename HashTable< Val, Size, IndexAllocator >::value_type& new_elt =
@@ -526,7 +516,7 @@ namespace gum {
   template < typename... Args >
   INLINE Size
          PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::emplace(
-    Args&&... args) {
+      Args&&... args) {
     std::pair< Val, Priority > new_elt =
       std::make_pair< Val, Priority >(std::forward< Args >(args)...);
     return insert(std::move(new_elt.first), std::move(new_elt.second));
@@ -539,7 +529,7 @@ namespace gum {
              typename Alloc,
              bool Gen >
   INLINE bool
-  PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::empty() const
+    PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::empty() const
     noexcept {
     return (__nb_elements == 0);
   }
@@ -551,8 +541,8 @@ namespace gum {
              typename Alloc,
              bool Gen >
   INLINE bool
-  PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::contains(
-    const Val& val) const {
+    PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::contains(
+      const Val& val) const {
     return __indices.exists(val);
   }
 
@@ -563,7 +553,7 @@ namespace gum {
              typename Alloc,
              bool Gen >
   INLINE const Val& PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::
-  operator[](Size index) const {
+                    operator[](Size index) const {
     if (index >= __nb_elements) {
       GUM_ERROR(NotFound,
                 "not enough elements in the PriorityQueueImplementation");
@@ -579,7 +569,8 @@ namespace gum {
              typename Alloc,
              bool Gen >
   std::string
-  PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::toString() const {
+    PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::toString()
+      const {
     bool              deja = false;
     std::stringstream stream;
     stream << "[";
@@ -601,9 +592,8 @@ namespace gum {
              typename Cmp,
              typename Alloc,
              bool Gen >
-  Size
-  PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::setPriorityByPos(
-    Size index, const Priority& new_priority) {
+  Size PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::
+    setPriorityByPos(Size index, const Priority& new_priority) {
     // check whether the element the priority of which should be changed exists
     if (index >= __nb_elements) {
       GUM_ERROR(NotFound,
@@ -651,9 +641,8 @@ namespace gum {
              typename Cmp,
              typename Alloc,
              bool Gen >
-  Size
-  PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::setPriorityByPos(
-    Size index, Priority&& new_priority) {
+  Size PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::
+    setPriorityByPos(Size index, Priority&& new_priority) {
     // check whether the element the priority of which should be changed exists
     if (index >= __nb_elements) {
       GUM_ERROR(NotFound,
@@ -723,9 +712,9 @@ namespace gum {
              typename Cmp,
              typename Alloc,
              bool Gen >
-  INLINE const    Priority&
-                  PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::priority(
-    const Val& elt) const {
+  INLINE const Priority&
+               PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::priority(
+      const Val& elt) const {
     return __heap[__indices[elt]].first;
   }
 
@@ -735,9 +724,9 @@ namespace gum {
              typename Cmp,
              typename Alloc,
              bool Gen >
-  INLINE const    Priority&
-                  PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::priorityByPos(
-    Size index) const {
+  INLINE const Priority&
+               PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >::priorityByPos(
+      Size index) const {
     if (index > __nb_elements) {
       GUM_ERROR(NotFound,
                 "not enough elements in the PriorityQueueImplementation");
@@ -752,9 +741,9 @@ namespace gum {
   // basic constructor
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::
-    PriorityQueueImplementation(Cmp compare, Size capacity)
-      : __indices(capacity >> 1, true, true)
-      , __cmp(compare) {
+    PriorityQueueImplementation(Cmp compare, Size capacity) :
+      __indices(capacity >> 1, true, true),
+      __cmp(compare) {
     __heap.reserve(capacity);
 
     // for debugging purposes
@@ -765,8 +754,8 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::
     PriorityQueueImplementation(
-      std::initializer_list< std::pair< Val, Priority > > list)
-      : __indices(Size(list.size()) / 2, true, true) {
+      std::initializer_list< std::pair< Val, Priority > > list) :
+      __indices(Size(list.size()) / 2, true, true) {
     // fill the queue
     __heap.reserve(list.size());
     for (const auto& elt : list) {
@@ -781,11 +770,10 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::
     PriorityQueueImplementation(
-      const PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >& from)
-      : __heap(from.__heap)
-      , __indices(from.__indices)
-      , __nb_elements(from.__nb_elements)
-      , __cmp(from.__cmp) {
+      const PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >& from) :
+      __heap(from.__heap),
+      __indices(from.__indices), __nb_elements(from.__nb_elements),
+      __cmp(from.__cmp) {
     // for debugging purposes
     GUM_CONS_CPY(PriorityQueueImplementation);
   }
@@ -796,10 +784,9 @@ namespace gum {
   PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::
     PriorityQueueImplementation(
       const PriorityQueueImplementation< Val, Priority, Cmp, OtherAlloc, true >&
-        from)
-      : __indices(from.__indices)
-      , __nb_elements(from.__nb_elements)
-      , __cmp(from.__cmp) {
+        from) :
+      __indices(from.__indices),
+      __nb_elements(from.__nb_elements), __cmp(from.__cmp) {
     // fill the heap structure
     if (__nb_elements) {
       __heap.reserve(from.__heap.size());
@@ -816,11 +803,10 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::
     PriorityQueueImplementation(
-      PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >&& from)
-      : __heap(std::move(from.__heap))
-      , __indices(std::move(from.__indices))
-      , __nb_elements(std::move(from.__nb_elements))
-      , __cmp(std::move(from.__cmp)) {
+      PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >&& from) :
+      __heap(std::move(from.__heap)),
+      __indices(std::move(from.__indices)),
+      __nb_elements(std::move(from.__nb_elements)), __cmp(std::move(from.__cmp)) {
     // for debugging purposes
     GUM_CONS_MOV(PriorityQueueImplementation);
   }
@@ -836,8 +822,8 @@ namespace gum {
   // copy operator
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >&
-  PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::operator=(
-    const PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >& from) {
+    PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::operator=(
+      const PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >& from) {
     // avoid self assignment
     if (this != &from) {
       // for debugging purposes
@@ -867,9 +853,9 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   template < typename OtherAlloc >
   PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >&
-  PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::operator=(
-    const PriorityQueueImplementation< Val, Priority, Cmp, OtherAlloc, true >&
-      from) {
+    PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::operator=(
+      const PriorityQueueImplementation< Val, Priority, Cmp, OtherAlloc, true >&
+        from) {
     // for debugging purposes
     GUM_OP_CPY(PriorityQueueImplementation);
 
@@ -902,8 +888,8 @@ namespace gum {
   // move operator
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >&
-         PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::operator=(
-    PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >&& from) {
+    PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::operator=(
+      PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >&& from) {
     // avoid self assignment
     if (this != &from) {
       // for debugging purposes
@@ -922,9 +908,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE const Val&
                PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::top() const {
-    if (!__nb_elements) {
-      GUM_ERROR(NotFound, "empty priority queue");
-    }
+    if (!__nb_elements) { GUM_ERROR(NotFound, "empty priority queue"); }
 
     return __heap[0].second;
   }
@@ -933,10 +917,8 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE const Priority&
                PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::topPriority()
-    const {
-    if (!__nb_elements) {
-      GUM_ERROR(NotFound, "empty priority queue");
-    }
+      const {
+    if (!__nb_elements) { GUM_ERROR(NotFound, "empty priority queue"); }
 
     return __heap[0].first;
   }
@@ -952,16 +934,16 @@ namespace gum {
   // return the size of the array storing the priority queue
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE Size
-         PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::capacity() const
-    noexcept {
+         PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::capacity()
+      const noexcept {
     return Size(__heap.capacity());
   }
 
   // changes the size of the array storing the priority queue
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE void
-  PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::resize(
-    Size new_size) {
+    PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::resize(
+      Size new_size) {
     if (new_size < __nb_elements) return;
 
     __heap.reserve(new_size);
@@ -971,7 +953,7 @@ namespace gum {
   // removes all the elements from the queue
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE void
-  PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::clear() {
+    PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::clear() {
     __nb_elements = 0;
     __heap.clear();
     __indices.clear();
@@ -1017,17 +999,17 @@ namespace gum {
   // removes a given element from the priority queue (but does not return it)
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE void
-  PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::erase(Val val) {
+    PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::erase(
+      Val val) {
     try {
       eraseByPos(__indices[val]);
-    } catch (NotFound&) {
-    }
+    } catch (NotFound&) {}
   }
 
   // removes the top of the priority queue (but does not return it)
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE void
-  PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::eraseTop() {
+    PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::eraseTop() {
     eraseByPos(0);
   }
 
@@ -1035,9 +1017,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE Val
          PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::pop() {
-    if (!__nb_elements) {
-      GUM_ERROR(NotFound, "empty priority queue");
-    }
+    if (!__nb_elements) { GUM_ERROR(NotFound, "empty priority queue"); }
 
     Val v = __heap[0].second;
     eraseByPos(0);
@@ -1048,8 +1028,8 @@ namespace gum {
   // returns a hashtable the keys of which are the values stored in the queue
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE const HashTable< Val, Size >&
-               PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::allValues() const
-    noexcept {
+               PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::allValues()
+      const noexcept {
     return reinterpret_cast< const HashTable< Val, Size >& >(__indices);
   }
 
@@ -1057,7 +1037,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE Size
          PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::insert(
-    Val val, const Priority& priority) {
+      Val val, const Priority& priority) {
     // create the entry in the indices hashtable (if the element already exists,
     // __indices.insert will raise a Duplicateelement exception)
     typename HashTable< Val, Size, IndexAllocator >::value_type& new_elt =
@@ -1094,7 +1074,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE Size
          PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::insert(
-    Val val, Priority&& priority) {
+      Val val, Priority&& priority) {
     // create the entry in the indices hashtable (if the element already exists,
     // __indices.insert will raise a Duplicateelement exception)
     typename HashTable< Val, Size, IndexAllocator >::value_type& new_elt =
@@ -1132,7 +1112,7 @@ namespace gum {
   template < typename... Args >
   INLINE Size
          PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::emplace(
-    Args&&... args) {
+      Args&&... args) {
     std::pair< Val, Priority > new_elt =
       std::make_pair< Val, Priority >(std::forward< Args >(args)...);
     return insert(new_elt.first, std::move(new_elt.second));
@@ -1141,7 +1121,7 @@ namespace gum {
   // indicates whether the priority queue is empty
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE bool
-  PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::empty() const
+    PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::empty() const
     noexcept {
     return (__nb_elements == 0);
   }
@@ -1149,8 +1129,8 @@ namespace gum {
   // indicates whether the priority queue contains a given value
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE bool
-  PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::contains(
-    Val val) const {
+    PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::contains(
+      Val val) const {
     return __indices.exists(val);
   }
 
@@ -1158,7 +1138,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE const Val&
                PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::
-    operator[](Size index) const {
+               operator[](Size index) const {
     if (index >= __nb_elements) {
       GUM_ERROR(NotFound,
                 "not enough elements in the PriorityQueueImplementation");
@@ -1170,8 +1150,8 @@ namespace gum {
   // displays the content of the queue
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   std::string
-  PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::toString()
-    const {
+    PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::toString()
+      const {
     bool              deja = false;
     std::stringstream stream;
     stream << "[";
@@ -1189,9 +1169,8 @@ namespace gum {
 
   // changes the size of the internal structure storing the priority queue
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
-  Size
-  PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::setPriorityByPos(
-    Size index, const Priority& new_priority) {
+  Size PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::
+    setPriorityByPos(Size index, const Priority& new_priority) {
     // check whether the element the priority of which should be changed exists
     if (index >= __nb_elements) {
       GUM_ERROR(NotFound,
@@ -1235,9 +1214,8 @@ namespace gum {
 
   // changes the size of the internal structure storing the priority queue
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
-  Size
-  PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::setPriorityByPos(
-    Size index, Priority&& new_priority) {
+  Size PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::
+    setPriorityByPos(Size index, Priority&& new_priority) {
     // check whether the element the priority of which should be changed exists
     if (index >= __nb_elements) {
       GUM_ERROR(NotFound,
@@ -1297,7 +1275,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE const Priority&
                PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::priority(
-    Val elt) const {
+      Val elt) const {
     return __heap[__indices[elt]].first;
   }
 
@@ -1305,7 +1283,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE const Priority&
                PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >::priorityByPos(
-    Size index) const {
+      Size index) const {
     if (index > __nb_elements) {
       GUM_ERROR(NotFound,
                 "not enough elements in the PriorityQueueImplementation");
@@ -1319,9 +1297,9 @@ namespace gum {
 
   // basic constructor
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
-  INLINE PriorityQueue< Val, Priority, Cmp, Alloc >::PriorityQueue(Cmp cmp,
-                                                                   Size capacity)
-      : PriorityQueue< Val, Priority, Cmp, Alloc >::Implementation(cmp, capacity) {
+  INLINE PriorityQueue< Val, Priority, Cmp, Alloc >::PriorityQueue(Cmp  cmp,
+                                                                   Size capacity) :
+      PriorityQueue< Val, Priority, Cmp, Alloc >::Implementation(cmp, capacity) {
     // for debugging purposes
     GUM_CONSTRUCTOR(PriorityQueue);
   }
@@ -1329,8 +1307,8 @@ namespace gum {
   // initializer list constructor
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE PriorityQueue< Val, Priority, Cmp, Alloc >::PriorityQueue(
-    std::initializer_list< std::pair< Val, Priority > > list)
-      : PriorityQueue< Val, Priority, Cmp, Alloc >::Implementation{list} {
+    std::initializer_list< std::pair< Val, Priority > > list) :
+      PriorityQueue< Val, Priority, Cmp, Alloc >::Implementation{list} {
     // for debugging purposes
     GUM_CONSTRUCTOR(PriorityQueue);
   }
@@ -1338,8 +1316,8 @@ namespace gum {
   // copy constructor
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE PriorityQueue< Val, Priority, Cmp, Alloc >::PriorityQueue(
-    const PriorityQueue< Val, Priority, Cmp, Alloc >& from)
-      : PriorityQueue< Val, Priority, Cmp, Alloc >::Implementation(from) {
+    const PriorityQueue< Val, Priority, Cmp, Alloc >& from) :
+      PriorityQueue< Val, Priority, Cmp, Alloc >::Implementation(from) {
     // for debugging purposes
     GUM_CONS_CPY(PriorityQueue);
   }
@@ -1348,8 +1326,8 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   template < typename OtherAlloc >
   INLINE PriorityQueue< Val, Priority, Cmp, Alloc >::PriorityQueue(
-    const PriorityQueue< Val, Priority, Cmp, OtherAlloc >& from)
-      : PriorityQueue< Val, Priority, Cmp, Alloc >::Implementation(from) {
+    const PriorityQueue< Val, Priority, Cmp, OtherAlloc >& from) :
+      PriorityQueue< Val, Priority, Cmp, Alloc >::Implementation(from) {
     // for debugging purposes
     GUM_CONS_CPY(PriorityQueue);
   }
@@ -1357,9 +1335,8 @@ namespace gum {
   // move constructor
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE PriorityQueue< Val, Priority, Cmp, Alloc >::PriorityQueue(
-    PriorityQueue< Val, Priority, Cmp, Alloc >&& from)
-      : PriorityQueue< Val, Priority, Cmp, Alloc >::Implementation(
-          std::move(from)) {
+    PriorityQueue< Val, Priority, Cmp, Alloc >&& from) :
+      PriorityQueue< Val, Priority, Cmp, Alloc >::Implementation(std::move(from)) {
     // for debugging purposes
     GUM_CONS_MOV(PriorityQueue);
   }
@@ -1375,7 +1352,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE PriorityQueue< Val, Priority, Cmp, Alloc >&
          PriorityQueue< Val, Priority, Cmp, Alloc >::
-  operator=(const PriorityQueue< Val, Priority, Cmp, Alloc >& from) {
+         operator=(const PriorityQueue< Val, Priority, Cmp, Alloc >& from) {
     Implementation::operator=(from);
     return *this;
   }
@@ -1385,7 +1362,7 @@ namespace gum {
   template < typename OtherAlloc >
   INLINE PriorityQueue< Val, Priority, Cmp, Alloc >&
          PriorityQueue< Val, Priority, Cmp, Alloc >::
-  operator=(const PriorityQueue< Val, Priority, Cmp, OtherAlloc >& from) {
+         operator=(const PriorityQueue< Val, Priority, Cmp, OtherAlloc >& from) {
     Implementation::operator=(from);
     return *this;
   }
@@ -1394,7 +1371,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE PriorityQueue< Val, Priority, Cmp, Alloc >&
          PriorityQueue< Val, Priority, Cmp, Alloc >::
-  operator=(PriorityQueue< Val, Priority, Cmp, Alloc >&& from) {
+         operator=(PriorityQueue< Val, Priority, Cmp, Alloc >&& from) {
     Implementation::operator=(std::move(from));
     return *this;
   }
@@ -1402,8 +1379,8 @@ namespace gum {
   // A \c << operator for priority queues
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE std::ostream&
-  operator<<(std::ostream& stream,
-             const PriorityQueue< Val, Priority, Cmp, Alloc >& queue) {
+         operator<<(std::ostream&                                     stream,
+               const PriorityQueue< Val, Priority, Cmp, Alloc >& queue) {
     stream << queue.toString();
     return stream;
   }

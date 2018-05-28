@@ -50,7 +50,7 @@ namespace gum {
   std::ostream& operator<<(std::ostream&,
                            const MultiPriorityQueue< Val, Priority, Cmp, Alloc >&);
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
   // ===========================================================================
   // ===                           PRIORITY QUEUES                           ===
@@ -122,7 +122,6 @@ namespace gum {
              typename Cmp = std::less< Priority >,
              typename Alloc = std::allocator< Val > >
   class MultiPriorityQueue {
-
     /// Making all MultiPriorityQueue friend with themselves.
     template < typename V, typename P, typename C, typename A >
     friend class MultiPriorityQueue;
@@ -221,7 +220,7 @@ namespace gum {
      * @param from The gum::MultiPriorityQueue to copy.
      */
     MultiPriorityQueue< Val, Priority, Cmp, Alloc >&
-    operator=(const MultiPriorityQueue< Val, Priority, Cmp, Alloc >& from);
+      operator=(const MultiPriorityQueue< Val, Priority, Cmp, Alloc >& from);
 
     /**
      * @brief Generalized copy operator.
@@ -236,14 +235,14 @@ namespace gum {
      */
     template < typename OtherAlloc >
     MultiPriorityQueue< Val, Priority, Cmp, Alloc >&
-    operator=(const MultiPriorityQueue< Val, Priority, Cmp, OtherAlloc >& from);
+      operator=(const MultiPriorityQueue< Val, Priority, Cmp, OtherAlloc >& from);
 
     /**
      * @brief Move operator.
      * @param from The gum::MultiPriorityQueue to copy.
      */
     MultiPriorityQueue< Val, Priority, Cmp, Alloc >&
-    operator=(MultiPriorityQueue< Val, Priority, Cmp, Alloc >&& from);
+      operator=(MultiPriorityQueue< Val, Priority, Cmp, Alloc >&& from);
 
     /**
      * @brief Returns the element at index "index_elt" from the priority queue.

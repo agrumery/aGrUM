@@ -33,7 +33,8 @@ namespace gum {
   namespace prm {
 
     /**
-     * @class PRMReferenceSlot referenceSlot.h <agrum/PRM/referenceSlot.h>
+     * @class PRMReferenceSlot
+     * @headerfile referenceSlot.h <agrum/PRM/referenceSlot.h>
      * @brief A PRMReferenceSlot represent a relation between two
      *        PRMClassElementContainer.
      *
@@ -86,7 +87,7 @@ namespace gum {
        * Implementation of the pure virtual method of PRMObject.
        */
       virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType
-      elt_type() const;
+        elt_type() const;
 
       /**
        * Returns the type of this slot, which is a PRMClassElementContainer
@@ -171,7 +172,7 @@ namespace gum {
 
 
   } /* namespace prm */
-}  // namespace gum
+}   // namespace gum
 
 #include <agrum/PRM/elements/PRMReferenceSlot_tpl.h>
 

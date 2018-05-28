@@ -1,29 +1,29 @@
 /***************************************************************************
-*   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 /**
-* @file
-* @brief algorithm for KL divergence between BNs
-*
-* @author Pierre-Henri WUILLEMIN
-*
-*/
+ * @file
+ * @brief algorithm for KL divergence between BNs
+ *
+ * @author Pierre-Henri WUILLEMIN
+ *
+ */
 #ifndef GUM_KL_H
 #define GUM_KL_H
 
@@ -43,24 +43,24 @@ namespace gum {
   enum class Complexity : char { Heavy, Difficult, Correct };
 
   /**
-  * @class KL
-  *
-  * @brief KL is the base class for KL computation betweens 2 BNs.
-  *
-  * KL is not virtual because it may be instantiated but protected methods throw
-  *gum::OperationNotAllow : we do not know here how the computation is done.
-  * Since this computation may be very difficult, KL.Complexity() give an
-  *estimation
-  *( KL_Complexity::Heavy,KL_Complexity::Difficult,KL_Complexity::Correct ) of
-  *the
-  *needed time.
-  * KL.process() computes KL(P||Q) using klPQ() and KL(Q||P) using klQP(). The
-  *computations are made once. The second is for free :)
-  *
-  * It may happen that P*ln(P/Q) is not computable (Q=0 and P!=0). In such a
-  *case, KL
-  *keeps working but trace this error (errorPQ() and errorQP())?
-  */
+   * @class KL
+   *
+   * @brief KL is the base class for KL computation betweens 2 BNs.
+   *
+   * KL is not virtual because it may be instantiated but protected methods throw
+   *gum::OperationNotAllow : we do not know here how the computation is done.
+   * Since this computation may be very difficult, KL.Complexity() give an
+   *estimation
+   *( KL_Complexity::Heavy,KL_Complexity::Difficult,KL_Complexity::Correct ) of
+   *the
+   *needed time.
+   * KL.process() computes KL(P||Q) using klPQ() and KL(Q||P) using klQP(). The
+   *computations are made once. The second is for free :)
+   *
+   * It may happen that P*ln(P/Q) is not computable (Q=0 and P!=0). In such a
+   *case, KL
+   *keeps working but trace this error (errorPQ() and errorQP())?
+   */
   template < typename GUM_SCALAR >
   class KL {
 // difficulty is chosen w.r.t the log10DomainSize of the BN
@@ -147,8 +147,8 @@ namespace gum {
   extern template class KL< float >;
   extern template class KL< double >;
 
-}  // namespace gum
+}   // namespace gum
 
 #include <agrum/BN/algorithms/divergence/KL_tpl.h>
 
-#endif  // GUM_KL_H
+#endif   // GUM_KL_H

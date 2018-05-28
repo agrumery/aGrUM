@@ -30,13 +30,9 @@
 namespace gum {
 
   INLINE void DiGraph::addArc(const NodeId tail, const NodeId head) {
-    if (!exists(head)) {
-      GUM_ERROR(InvalidNode, "head node");
-    }
+    if (!exists(head)) { GUM_ERROR(InvalidNode, "head node"); }
 
-    if (!exists(tail)) {
-      GUM_ERROR(InvalidNode, "tail node");
-    }
+    if (!exists(tail)) { GUM_ERROR(InvalidNode, "tail node"); }
 
     ArcGraphPart::addArc(tail, head);
   }
@@ -51,7 +47,7 @@ namespace gum {
     if (this != &g) {
       DiGraph::clear();
       NodeGraphPart::operator=(g);
-      ArcGraphPart::operator=(g);
+      ArcGraphPart:: operator=(g);
 
       if (__mutableTopologicalOrder != nullptr) {
         delete __mutableTopologicalOrder;

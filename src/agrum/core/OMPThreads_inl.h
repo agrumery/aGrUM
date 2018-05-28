@@ -117,4 +117,4 @@ namespace gum {
 #endif
   }
 
-}  // namespace gum
+}   // namespace gum

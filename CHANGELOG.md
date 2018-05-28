@@ -2,23 +2,35 @@
 
 ## Changelog for 0.13.0 (in progress)
 
-* Documentations
-  * agrum : doxygen helps structure and howtos
-  * pyAgrum : documentation of a large parts of the pyAgrum's API, export to <https://pyagrum.readthedocs.io>
-  * o3prm : still in progress (see <https://o3prm.lip6.fr>, <https://o3prm.readthedocs.io>)
-* O3PRM
-  * new syntax for types (see ?)
-  * read and write Bayesian Network with O3PRM syntax (see ?)
 * aGrUM
-  * new learning algorithm (see ?)
-  * new approximated inference : Monte-Carlo/Importance/Weighted Sampling + the same using LBP as a Dirichlet prior.
+  * inference: Loopy Belief Propagation (`LBP`)
+  * inference: new approximated inference : `Monte-Carlo`/`Importance`/`Weighted Sampling` + the same using LBP as a Dirichlet prior (`Loopy...`).
+  * learning: new algorithm 3off2 and miic
+  * learning: new database handling framework (allows for coping with missing values and with different types of variables)
+  * learning: possibility to load data from nanodbc databases (e.g., `postgres`, `sqlite`)
+  * learning: add a progress Listener/Signaler in `BNDatabaseGenerator`
+  * potential: API extension (`findAll`,`argmax`,`argmin`,`fillWith(pot,map)`)
+  * variable: new constructor for `LabelizedVariable` with labels as vector of string + `posLabel(std::string)`
+  * variable: new constructor with vector of ticks for `gum::DiscretizedVariable`
+  * graph: API extension (`addNodes(n)`)
+  * graph: API change (`addNode(id)`->`addNodeWithId(id)`)
+  * Changes and bug fixe in in BIF and NET writer/reader 
 * pyAgrum
   * wheels for python 3.3 and 3.4
-  * access to the new learning algorithm using `BNLearner`
+  * access to the new learning framework using `BNLearner`
   * access to the new inference algorithms
-* many bug fixes
+  * new methods `Instantiation.fromdict` and `Instantiation.todict`
+  * `DiscreteVariable.toDiscretized/toLabelized/toRange` copy the variable instead of giving a (not readonly) reference
+* O3PRM
+  * new syntax for types
+  * read and write Bayesian Network with O3PRM syntax
+* Documentations
+  * agrum : doxygen helps structure and howtos
+  * pyAgrum : documentation of a large part of pyAgrum's API, export to <https://pyagrum.readthedocs.io>
+  * o3prm : still in progress (see <https://o3prm.lip6.fr>, <https://o3prm.readthedocs.io>)
 * act
   * new command guideline for a few easy checks
+* many bug fixes 
 
 ## Changelog for 0.12.0
 

@@ -34,26 +34,25 @@ namespace gum_tests {
   class OMPCounterTestSuite : public CxxTest::TestSuite {
     public:
     void testOMP() {
-      gum::learning::DBInitializerFromCSV<>
-        initializer ( GET_RESSOURCES_PATH( "asia.csv" ) );
-      const auto& var_names = initializer.variableNames ();
-      const std::size_t nb_vars = var_names.size ();
-      
-      gum::learning::DBTranslatorSet<> translator_set;
+      gum::learning::DBInitializerFromCSV<> initializer(
+        GET_RESSOURCES_PATH("asia.csv"));
+      const auto&       var_names = initializer.variableNames();
+      const std::size_t nb_vars = var_names.size();
+
+      gum::learning::DBTranslatorSet<>                translator_set;
       gum::learning::DBTranslator4LabelizedVariable<> translator;
-      for ( std::size_t i = 0; i < nb_vars; ++i ) {
-        translator_set.insertTranslator ( translator, i );
+      for (std::size_t i = 0; i < nb_vars; ++i) {
+        translator_set.insertTranslator(translator, i);
       }
-      
-      gum::learning::DatabaseTable<> database ( translator_set );
-      database.setVariableNames( initializer.variableNames () );
-      initializer.fillDatabase ( database );
 
-      gum::learning::DBRowGeneratorSet<> genset;
-      gum::learning::DBRowGeneratorParser<>
-        parser ( database.handler (), genset );
+      gum::learning::DatabaseTable<> database(translator_set);
+      database.setVariableNames(initializer.variableNames());
+      initializer.fillDatabase(database);
 
-      std::vector< gum::Size > modalities(8, 2);
+      gum::learning::DBRowGeneratorSet<>    genset;
+      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
+
+      std::vector< gum::Size >       modalities(8, 2);
       gum::learning::RecordCounter<> counter(parser, modalities);
 
       std::vector< gum::Idx > set1{0};
@@ -107,8 +106,8 @@ namespace gum_tests {
         TS_ASSERT(vect3[2] == 40);
         TS_ASSERT(vect3[3] == 4932);
       }
-    }  // end testOMP()
+    }   // end testOMP()
 
-  };  // end class OMPCounterTestSuite
+  };   // end class OMPCounterTestSuite
 
 } /* namespace gum_tests */

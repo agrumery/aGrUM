@@ -61,7 +61,8 @@ namespace gum {
   // ===                           SMART POINTERS                            ===
   // ===========================================================================
   /**
-   * @class RefPtr refPtr.h <agrum/core/refPtr.h>
+   * @class RefPtr
+   * @headerfile refPtr.h <agrum/core/refPtr.h>
    * @brief Smart pointers
    * @ingroup basicstruct_group
    * @ingroup refptr_group

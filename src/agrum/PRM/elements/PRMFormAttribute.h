@@ -56,7 +56,7 @@ namespace gum {
 
       /// See gum::prm::PRMAttribute.
       virtual PRMAttribute< GUM_SCALAR >*
-      newFactory(const PRMClass< GUM_SCALAR >& c) const;
+        newFactory(const PRMClass< GUM_SCALAR >& c) const;
 
       /// See gum::prm::PRMAttribute.
       virtual PRMAttribute< GUM_SCALAR >* copy(
@@ -69,7 +69,7 @@ namespace gum {
 
       /// See gum::prm::PRMAttribute.
       virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType
-      elt_type() const;
+        elt_type() const;
 
       /// See gum::prm::PRMAttribute.
       virtual PRMType< GUM_SCALAR >& type();
@@ -102,7 +102,7 @@ namespace gum {
 
       protected:
       virtual PRMType< GUM_SCALAR >* _type();
-      virtual void _type(PRMType< GUM_SCALAR >* t);
+      virtual void                   _type(PRMType< GUM_SCALAR >* t);
 
       private:
       PRMFormAttribute(const PRMFormAttribute& source);
@@ -129,7 +129,7 @@ namespace gum {
 
 
   } /* namespace prm */
-}  // namespace gum
+}   // namespace gum
 
 #include <agrum/PRM/elements/PRMFormAttribute_tpl.h>
 

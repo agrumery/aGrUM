@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-#include <agrum/BN/io/BIFXML/BIFXMLBNReader.h>
+#  include <agrum/BN/io/BIFXML/BIFXMLBNReader.h>
 
 namespace gum {
   /*
@@ -28,9 +28,10 @@ namespace gum {
    * Note that an BN as to be created before and given in parameter.
    */
   template < typename GUM_SCALAR >
-  INLINE BIFXMLBNReader< GUM_SCALAR >::BIFXMLBNReader(BayesNet< GUM_SCALAR >* bn,
-                                                      const std::string& filePath)
-      : BNReader< GUM_SCALAR >(bn, filePath) {
+  INLINE
+    BIFXMLBNReader< GUM_SCALAR >::BIFXMLBNReader(BayesNet< GUM_SCALAR >* bn,
+                                                 const std::string& filePath) :
+      BNReader< GUM_SCALAR >(bn, filePath) {
     GUM_CONSTRUCTOR(BIFXMLBNReader);
     __bn = bn;
     __filePath = filePath;
@@ -100,8 +101,8 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void
-  BIFXMLBNReader< GUM_SCALAR >::__parsingVariables(ticpp::Element* parentNetwork) {
+  void BIFXMLBNReader< GUM_SCALAR >::__parsingVariables(
+    ticpp::Element* parentNetwork) {
     // Counting the number of variable for the signal
     int                               nbVar = 0;
     ticpp::Iterator< ticpp::Element > varIte("VARIABLE");
@@ -214,4 +215,4 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS

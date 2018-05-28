@@ -114,7 +114,7 @@ namespace gum {
      * @return Returns a const ref to the sequence of DiscreteVariable*.
      */
     virtual const Sequence< const DiscreteVariable* >&
-    variablesSequence() const = 0;
+      variablesSequence() const = 0;
 
     /**
      * @brief Returns a const ref to the ith var.
@@ -126,13 +126,13 @@ namespace gum {
     virtual const DiscreteVariable& variable(Idx i) const = 0;
 
     /**
-   * @brief Returns the variable with the name
-   *
-   * @param name The index of the variable
-   * @return Returns the variable qith the name in the tuple.
-   * @warging This function is not O(1)
-   * @throw NotFound Raised if the element cannot be found.
-   */
+     * @brief Returns the variable with the name
+     *
+     * @param name The index of the variable
+     * @return Returns the variable qith the name in the tuple.
+     * @warging This function is not O(1)
+     * @throw NotFound Raised if the element cannot be found.
+     */
     virtual const DiscreteVariable& variable(const std::string& name) const = 0;
 
     /**
@@ -218,7 +218,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/multidim/implementations/multiDimInterface_inl.h>
-#endif  // GUM_NO_INLINE
+#  include <agrum/multidim/implementations/multiDimInterface_inl.h>
+#endif   // GUM_NO_INLINE
 
 #endif /* GUM_MULTIDIM_INTERFACE_H */

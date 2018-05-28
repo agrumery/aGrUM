@@ -22,7 +22,7 @@
 #include <sstream>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/multidim/setInst_inl.h>
+#  include <agrum/multidim/setInst_inl.h>
 #endif
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -44,15 +44,14 @@ namespace gum {
 
   // constructor for a SetInst contained into a MultiDimInterface
 
-  SetInst::SetInst(MultiDimAdressable& d)
-      : /*__master( 0 ),*/ __overflow(false) {
+  SetInst::SetInst(MultiDimAdressable& d) : /*__master( 0 ),*/ __overflow(false) {
     // for debugging purposes
     GUM_CONSTRUCTOR(SetInst);
     __init(&d);
   }
 
-  SetInst::SetInst(const MultiDimAdressable& d)
-      : /*__master( 0 ),*/ __overflow(false) {
+  SetInst::SetInst(const MultiDimAdressable& d) :
+      /*__master( 0 ),*/ __overflow(false) {
     // for debugging purposes
     GUM_CONSTRUCTOR(SetInst);
     __init(const_cast< MultiDimAdressable* >(&d));
@@ -60,8 +59,7 @@ namespace gum {
 
   // constructor for a SetInst contained into a MultiDimInterface
 
-  SetInst::SetInst(MultiDimAdressable* d)
-      : /*__master( 0 ),*/ __overflow(false) {
+  SetInst::SetInst(MultiDimAdressable* d) : /*__master( 0 ),*/ __overflow(false) {
     // for debugging purposes
     GUM_CONSTRUCTOR(SetInst);
 
@@ -72,8 +70,8 @@ namespace gum {
   /** this constructor is needed in order to allow creation of SetInst(this)
    * in MultiDimAdressable and below */
 
-  SetInst::SetInst(const MultiDimAdressable* const_d)
-      : /*__master( 0 ),*/ __overflow(false) {
+  SetInst::SetInst(const MultiDimAdressable* const_d) :
+      /*__master( 0 ),*/ __overflow(false) {
     // for debugging purposes
     GUM_CONSTRUCTOR(SetInst);
 
@@ -82,8 +80,8 @@ namespace gum {
 
   // copy constructor
 
-  SetInst::SetInst(const SetInst& aI)
-      : /* MultiDimInterface(), __master( 0 ),*/ __overflow(false) {
+  SetInst::SetInst(const SetInst& aI) :
+      /* MultiDimInterface(), __master( 0 ),*/ __overflow(false) {
     // for debugging purposes
     GUM_CONS_CPY(SetInst);
     // copy the content of aI
@@ -94,8 +92,8 @@ namespace gum {
     // if ( aI.__master && notifyMaster ) actAsSlave( *aI.__master );
   }
 
-  SetInst::SetInst(const Instantiation& aI)
-      : /* MultiDimInterface(), __master( 0 ),*/ __overflow(false) {
+  SetInst::SetInst(const Instantiation& aI) :
+      /* MultiDimInterface(), __master( 0 ),*/ __overflow(false) {
     // for debugging purposes
     GUM_CONS_CPY(SetInst);
     const Sequence< const DiscreteVariable* >& v = aI.variablesSequence();
@@ -124,9 +122,7 @@ namespace gum {
     std::stringstream sstr;
     // check if the value of the SetInst is correct
 
-    if (__overflow) {
-      sstr << "<invalid>";
-    }
+    if (__overflow) { sstr << "<invalid>"; }
 
     sstr << "<";
 
@@ -190,11 +186,11 @@ namespace gum {
     return inst;
   }
 
-  void
-  gum::SetInst::assign_values(gum::Bijection< const gum::DiscreteVariable*,
-                                              const gum::DiscreteVariable* >& bij,
-                              const gum::SetInst&                             i,
-                              gum::SetInst&                                   j) {
+  void gum::SetInst::assign_values(
+    gum::Bijection< const gum::DiscreteVariable*, const gum::DiscreteVariable* >&
+                        bij,
+    const gum::SetInst& i,
+    gum::SetInst&       j) {
     try {
       for (const auto var : i.variablesSequence())
         j.chgVal(bij.second(var), i.val(var));
@@ -205,4 +201,4 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS

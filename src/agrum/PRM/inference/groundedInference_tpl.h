@@ -1,22 +1,22 @@
 /**************************************************************************
-*   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 /**
  * @file
  * @brief Inline implementation of GroundedInference.
@@ -71,7 +71,7 @@ namespace gum {
       const DiscreteVariable& var = __inf->BN().variableFromName(var_name.str());
 
       for (auto iter = __obs.beginSafe(); iter != __obs.endSafe();
-           ++iter) {  // safe iterator needed here
+           ++iter) {   // safe iterator needed here
         if ((**iter).contains(var)) {
           __inf->eraseEvidence(var_name.str());
           const Potential< GUM_SCALAR >* e = *iter;
@@ -84,24 +84,24 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE GroundedInference< GUM_SCALAR >::GroundedInference(
-      const PRM< GUM_SCALAR >& prm, const PRMSystem< GUM_SCALAR >& system)
-        : PRMInference< GUM_SCALAR >(prm, system)
-        , __inf(0) {
+      const PRM< GUM_SCALAR >& prm, const PRMSystem< GUM_SCALAR >& system) :
+        PRMInference< GUM_SCALAR >(prm, system),
+        __inf(0) {
       GUM_CONSTRUCTOR(GroundedInference);
     }
 
     template < typename GUM_SCALAR >
     INLINE GroundedInference< GUM_SCALAR >::GroundedInference(
-      const GroundedInference< GUM_SCALAR >& source)
-        : PRMInference< GUM_SCALAR >(source)
-        , __inf(0) {
+      const GroundedInference< GUM_SCALAR >& source) :
+        PRMInference< GUM_SCALAR >(source),
+        __inf(0) {
       GUM_CONS_CPY(GroundedInference);
       GUM_ERROR(FatalError, "illegal to copy constructor");
     }
 
     template < typename GUM_SCALAR >
     INLINE GroundedInference< GUM_SCALAR >& GroundedInference< GUM_SCALAR >::
-    operator=(const GroundedInference< GUM_SCALAR >& source) {
+                                            operator=(const GroundedInference< GUM_SCALAR >& source) {
       GUM_ERROR(FatalError, "illegal call to copy operator");
     }
 
@@ -118,9 +118,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE void GroundedInference< GUM_SCALAR >::setBNInference(
       MarginalTargetedInference< GUM_SCALAR >* bn_inf) {
-      if (__inf != 0) {
-        delete __inf;
-      }
+      if (__inf != 0) { delete __inf; }
 
       __inf = bn_inf;
     }
@@ -139,9 +137,7 @@ namespace gum {
         for (auto e : __obs) {
           try {
             __inf->addEvidence(*e);
-          } catch (InvalidArgument&) {
-            __inf->chgEvidence(*e);
-          }
+          } catch (InvalidArgument&) { __inf->chgEvidence(*e); }
         }
       }
 

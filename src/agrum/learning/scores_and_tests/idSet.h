@@ -157,7 +157,7 @@ namespace gum {
   /// the hash function for idSets
   template < typename Alloc >
   class HashFunc< learning::IdSet< Alloc > >
-    : public HashFuncBase< learning::IdSet< Alloc > > {
+      : public HashFuncBase< learning::IdSet< Alloc > > {
     public:
     /// computes the hashed value of a key
     Size operator()(const learning::IdSet< Alloc >& key) const;
@@ -166,7 +166,7 @@ namespace gum {
   /// the hash function for pairs (idSet,Idx)
   template < typename Alloc >
   class HashFunc< std::pair< learning::IdSet< Alloc >, Idx > >
-    : public HashFuncBase< std::pair< learning::IdSet< Alloc >, Idx > > {
+      : public HashFuncBase< std::pair< learning::IdSet< Alloc >, Idx > > {
     public:
     /// computes the hashed value of a key
     Size operator()(const std::pair< learning::IdSet< Alloc >, Idx >& key) const;
@@ -175,18 +175,18 @@ namespace gum {
   /// the hash function for pairs (idSet,pair<Idx,Idx>)
   template < typename Alloc >
   class HashFunc< std::tuple< learning::IdSet< Alloc >, Idx, Idx > >
-    : public HashFuncBase< std::tuple< learning::IdSet< Alloc >, Idx, Idx > > {
+      : public HashFuncBase< std::tuple< learning::IdSet< Alloc >, Idx, Idx > > {
     public:
     /// computes the hashed value of a key
-    Size
-    operator()(const std::tuple< learning::IdSet< Alloc >, Idx, Idx >& key) const;
+    Size operator()(
+      const std::tuple< learning::IdSet< Alloc >, Idx, Idx >& key) const;
   };
 
   /// the hash function for pairs (idSet,tuple<Idx,Idx,Idx>)
   template < typename Alloc >
   class HashFunc< std::tuple< learning::IdSet< Alloc >, Idx, Idx, Idx > >
-    : public HashFuncBase<
-        std::tuple< learning::IdSet< Alloc >, Idx, Idx, Idx > > {
+      : public HashFuncBase<
+          std::tuple< learning::IdSet< Alloc >, Idx, Idx, Idx > > {
     public:
     /// computes the hashed value of a key
     Size operator()(

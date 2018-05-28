@@ -22,15 +22,15 @@ s
 namespace gum {
   namespace learning {
     BNLearnerListener::BNLearnerListener(genericBNLearner*    bnl,
-                                         ApproximationScheme& sch)
-        : ApproximationSchemeListener(sch)
-        , __bnlearner(bnl) {
+                                         ApproximationScheme& sch) :
+        ApproximationSchemeListener(sch),
+        __bnlearner(bnl) {
       bnl->setCurrentApproximationScheme(&sch);
       GUM_CONSTRUCTOR(BNLearnerListener);
     }
 
-    BNLearnerListener::BNLearnerListener(const BNLearnerListener& other)
-        : ApproximationSchemeListener(other) {
+    BNLearnerListener::BNLearnerListener(const BNLearnerListener& other) :
+        ApproximationSchemeListener(other) {
       GUM_CONS_CPY(BNLearnerListener);
       GUM_ERROR(OperationNotAllowed, "No copy constructor for BNLearnerListener");
     }
@@ -38,7 +38,7 @@ namespace gum {
     BNLearnerListener::~BNLearnerListener() { GUM_DESTRUCTOR(BNLearnerListener); }
 
     BNLearnerListener& BNLearnerListener::
-    operator=(const BNLearnerListener& other) {
+                       operator=(const BNLearnerListener& other) {
       GUM_CONS_CPY(BNLearnerListener);
       GUM_ERROR(OperationNotAllowed, "No copy constructor for BNLearnerListener");
     }
@@ -54,5 +54,5 @@ namespace gum {
       __bnlearner->distributeStop(static_cast< const ApproximationScheme* >(src),
                                   message);
     }
-  }
-}
+  }   // namespace learning
+}   // namespace gum

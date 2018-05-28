@@ -34,8 +34,8 @@ namespace gum {
   OrderedTriangulation::OrderedTriangulation(
     const OrderedEliminationSequenceStrategy& elimSeq,
     const JunctionTreeStrategy&               JTStrategy,
-    bool                                      minimality)
-      : StaticTriangulation(elimSeq, JTStrategy, minimality) {
+    bool                                      minimality) :
+      StaticTriangulation(elimSeq, JTStrategy, minimality) {
     // for debugging purposes
     GUM_CONSTRUCTOR(OrderedTriangulation);
   }
@@ -47,9 +47,9 @@ namespace gum {
     const std::vector< NodeId >*              order,
     const OrderedEliminationSequenceStrategy& elimSeq,
     const JunctionTreeStrategy&               JTStrategy,
-    bool                                      minimality)
-      : StaticTriangulation(theGraph, dom, elimSeq, JTStrategy, minimality)
-      , __order(order) {
+    bool                                      minimality) :
+      StaticTriangulation(theGraph, dom, elimSeq, JTStrategy, minimality),
+      __order(order) {
     static_cast< OrderedEliminationSequenceStrategy* >(
       _elimination_sequence_strategy)
       ->setOrder(__order);
@@ -59,17 +59,15 @@ namespace gum {
   }
 
   // copy constructor
-  OrderedTriangulation::OrderedTriangulation(const OrderedTriangulation& from)
-      : StaticTriangulation(from)
-      , __order(from.__order) {
+  OrderedTriangulation::OrderedTriangulation(const OrderedTriangulation& from) :
+      StaticTriangulation(from), __order(from.__order) {
     // for debugging purposes
     GUM_CONS_CPY(OrderedTriangulation);
   }
 
   // move constructor
-  OrderedTriangulation::OrderedTriangulation(OrderedTriangulation&& from)
-      : StaticTriangulation(std::move(from))
-      , __order(from.__order) {
+  OrderedTriangulation::OrderedTriangulation(OrderedTriangulation&& from) :
+      StaticTriangulation(std::move(from)), __order(from.__order) {
     // for debugging purposes
     GUM_CONS_MOV(OrderedTriangulation);
   }

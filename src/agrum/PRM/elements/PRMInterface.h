@@ -39,7 +39,8 @@ namespace gum {
   namespace prm {
 
     /**
-     * @class PRMInterface interface.h <agrum/PRM/interface.h>
+     * @class PRMInterface
+     * @headerfile interface.h <agrum/PRM/interface.h>
      * @brief An PRMInterface is implemented by a Class<GUM_SCALAR> and defines
      *a
      *set of
@@ -123,7 +124,7 @@ namespace gum {
       /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::get(const
       /// std::string&).
       virtual const PRMClassElement< GUM_SCALAR >&
-      get(const std::string& name) const;
+        get(const std::string& name) const;
 
       /**
        * Returns the set of PRMAttribute<GUM_SCALAR> of this Class<GUM_SCALAR>.
@@ -206,7 +207,7 @@ namespace gum {
        * @return Returns true if this Class<GUM_SCALAR> is a subclass of cec.
        */
       virtual bool
-      isSubTypeOf(const PRMClassElementContainer< GUM_SCALAR >& cec) const;
+        isSubTypeOf(const PRMClassElementContainer< GUM_SCALAR >& cec) const;
 
       /**
        * @brief Returns the superInterface of this PRMInterface.
@@ -259,7 +260,7 @@ namespace gum {
       /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::operator[](const
       /// std::string&).
       const PRMClassElement< GUM_SCALAR >&
-      operator[](const std::string& name) const;
+        operator[](const std::string& name) const;
 
       /// @}
       // ========================================================================
@@ -360,8 +361,8 @@ namespace gum {
       void __addExtension(PRMInterface* c);
 
       bool
-      __checkOverloadLegality(const PRMClassElement< GUM_SCALAR >* overloaded,
-                              const PRMClassElement< GUM_SCALAR >* overloader);
+        __checkOverloadLegality(const PRMClassElement< GUM_SCALAR >* overloaded,
+                                const PRMClassElement< GUM_SCALAR >* overloader);
 
       void __overloadAttribute(PRMAttribute< GUM_SCALAR >* overloader,
                                PRMAttribute< GUM_SCALAR >* overloaded);
@@ -381,7 +382,7 @@ namespace gum {
 
 
   } /* namespace prm */
-}  // namespace gum
+}   // namespace gum
 
 #include <agrum/PRM/elements/PRMInterface_tpl.h>
 

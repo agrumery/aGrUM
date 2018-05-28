@@ -26,8 +26,8 @@
 #include <agrum/graphs/parts/listeners/undiGraphListener.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/parts/listeners/undiGraphListener_inl.h>
-#endif  // GUM_NOINLINE
+#  include <agrum/graphs/parts/listeners/undiGraphListener_inl.h>
+#endif   // GUM_NOINLINE
 
 namespace gum {
 
@@ -59,4 +59,4 @@ namespace gum {
 
   UndiGraphListener::~UndiGraphListener() { GUM_DESTRUCTOR(UndiGraphListener); }
 
-}  // namespace gum
+}   // namespace gum

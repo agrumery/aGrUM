@@ -33,12 +33,10 @@
 namespace gum_tests {
 
   class StructuredPlanerTestSuite : public CxxTest::TestSuite {
-
     private:
     std::string file;
 
     void run() {
-
       gum::FMDP< double >              fmdp(true);
       gum::StructuredPlaner< double >* planer = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
@@ -83,4 +81,4 @@ namespace gum_tests {
       run();
     }
   };
-}
+}   // namespace gum_tests

@@ -36,7 +36,8 @@
 namespace gum {
 
   /**
-   * @class BayesNetFactory BayesNetFactory.h <agrum/BN/BayesNetFactory.h>
+   * @class BayesNetFactory
+   * @headerfile BayesNetFactory.h <agrum/BN/BayesNetFactory.h>
    * @brief A factory class to ease BayesNet construction.
    * @ingroup bn_group
    *
@@ -56,7 +57,6 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   class BayesNetFactory : public IBayesNetFactory {
-
     public:
     // ==========================================================================
     /// @name Constructor & destructor.
@@ -247,12 +247,12 @@ namespace gum {
                              const std::vector< float >&       rawTable) final;
 
     /**
-    * @brief Fills the variable's table with the values in rawTable.
-    *
-    * use the canonical ordering for the variables (e.g. see BIF format) ...
-    *
-    * @param rawTable The raw table.
-    */
+     * @brief Fills the variable's table with the values in rawTable.
+     *
+     * use the canonical ordering for the variables (e.g. see BIF format) ...
+     *
+     * @param rawTable The raw table.
+     */
     void rawConditionalTable(const std::vector< float >& rawTable) final;
 
     /// Tells the factory that we finished declaring a conditional probability
@@ -315,10 +315,10 @@ namespace gum {
     void setVariableValuesUnchecked(const std::vector< float >& values) final;
 
     /**
-    * @brief same than below with gum::OperationNotAllowed exception if value's
-    * size
-    * not OK.
-    */
+     * @brief same than below with gum::OperationNotAllowed exception if value's
+     * size
+     * not OK.
+     */
     void setVariableValues(const std::vector< float >& values) final;
 
     /// Tells the factory that we finished declaring a conditional probability
@@ -414,7 +414,7 @@ namespace gum {
 
     /// Copy operator is illegal, use only copy constructor.
     BayesNetFactory< GUM_SCALAR >&
-    operator=(const BayesNetFactory< GUM_SCALAR >& source);
+      operator=(const BayesNetFactory< GUM_SCALAR >& source);
 
     /// Raise an OperationNotAllowed with the message "Illegal state."
     void __illegalStateError(const std::string& s);
@@ -457,4 +457,4 @@ namespace gum {
 
 #include <agrum/BN/BayesNetFactory_tpl.h>
 
-#endif  // GUM_BAYESNET_FACTORY_H
+#endif   // GUM_BAYESNET_FACTORY_H

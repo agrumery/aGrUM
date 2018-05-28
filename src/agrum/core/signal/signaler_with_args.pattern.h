@@ -27,8 +27,8 @@
  */
 
 #ifndef SIGNALER_PATRON_ACCEPTED
-#error "This file should not be included directly. Please use signaler{x}.h"
-#endif  // SIGNALER_PATRON_ACCEPTED
+#  error "This file should not be included directly. Please use signaler{x}.h"
+#endif   // SIGNALER_PATRON_ACCEPTED
 
 #include <agrum/core/list.h>
 
@@ -51,18 +51,16 @@ namespace gum {
     };
 
     template < LIST_DECL_CLASSES >
-    class MAKE_NAME(BasicSignaler)
-        : public ISignaler {
+    class MAKE_NAME(BasicSignaler) : public ISignaler {
       protected:
       typedef List< MAKE_NAME(IConnector) < LIST_CLASSES >* > ConnectorList;
-      typedef ListConstIteratorSafe< MAKE_NAME(IConnector) < LIST_CLASSES >* >
-        ConnectorIterator;
+      typedef ListConstIteratorSafe< MAKE_NAME(IConnector)
+                                     < LIST_CLASSES >* > ConnectorIterator;
 
       MAKE_NAME(BasicSignaler)() { GUM_CONSTRUCTOR(MAKE_NAME(BasicSignaler)); }
 
       MAKE_NAME(BasicSignaler)
-      (const MAKE_NAME(BasicSignaler) & s)
-          : ISignaler(s) {
+      (const MAKE_NAME(BasicSignaler) & s) : ISignaler(s) {
         GUM_CONS_CPY(MAKE_NAME(BasicSignaler));
 
         for (const auto& connector : _connectors) {
@@ -87,7 +85,7 @@ namespace gum {
 
       void detach(Listener* target) {
         for (ConnectorIterator it =
-               _connectors.reginSafe();  // safe iterator needed here
+               _connectors.reginSafe();   // safe iterator needed here
              it != _connectors.rendSafe();
              --it) {
           if ((*it)->target() == target) {
@@ -113,7 +111,7 @@ namespace gum {
         ConnectorIterator itprev;
 
         for (ConnectorIterator it =
-               _connectors.rbeginSafe();  // safe iterator needed here
+               _connectors.rbeginSafe();   // safe iterator needed here
              it != _connectors.rendSafe();) {
           itprev = it;
           --it;
@@ -129,8 +127,7 @@ namespace gum {
     };
 
     template < class TargetClass, LIST_DECL_CLASSES >
-    class MAKE_NAME(Connector)
-        : public MAKE_NAME(IConnector)< LIST_CLASSES > {
+    class MAKE_NAME(Connector) : public MAKE_NAME(IConnector)< LIST_CLASSES > {
       public:
       MAKE_NAME(Connector)() {
         GUM_CONSTRUCTOR(MAKE_NAME(Connector));
@@ -147,8 +144,8 @@ namespace gum {
       }
 
       MAKE_NAME(Connector)
-      (const MAKE_NAME(Connector) < TargetClass, LIST_CLASSES > *src)
-          : MAKE_NAME(IConnector)< LIST_CLASSES >(src) {
+      (const MAKE_NAME(Connector) < TargetClass, LIST_CLASSES > *src) :
+          MAKE_NAME(IConnector)< LIST_CLASSES >(src) {
         GUM_CONS_CPY(MAKE_NAME(Connector));
       }
 
@@ -175,12 +172,11 @@ namespace gum {
       void (TargetClass::*__action)(const void*, LIST_CLASSES);
     };
 
-  }  // namespace sig
+  }   // namespace __sig__
 
   template < LIST_DECL_CLASSES >
-  class MAKE_NAME(Signaler)
-      : public __sig__::MAKE_NAME(BasicSignaler)< LIST_CLASSES > {
-
+  class MAKE_NAME(Signaler) :
+      public __sig__::MAKE_NAME(BasicSignaler)< LIST_CLASSES > {
     typedef typename __sig__::MAKE_NAME(
       BasicSignaler)< LIST_CLASSES >::ConnectorIterator ConnectorIterator;
 
@@ -190,8 +186,8 @@ namespace gum {
     MAKE_NAME(Signaler)() { GUM_CONSTRUCTOR(MAKE_NAME(Signaler)); }
 
     MAKE_NAME(Signaler)
-    (const MAKE_NAME(Signaler) & s)
-        : __sig__::MAKE_NAME(BasicSignaler)< LIST_CLASSES >(s) {
+    (const MAKE_NAME(Signaler) & s) :
+        __sig__::MAKE_NAME(BasicSignaler)< LIST_CLASSES >(s) {
       GUM_CONS_CPY(MAKE_NAME(Signaler));
     }
 
@@ -214,9 +210,9 @@ namespace gum {
     }
   };
 
-}  // namespace gum
+}   // namespace gum
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 #undef MAKE_NAME
 #undef LIST_DECL_CLASSES

@@ -20,8 +20,8 @@
 /** @file
  * @brief ANoisy-OR as described by Henrion (UAI-3, 1989, pp161-173)
  *
-* @author Pierre-Henri WUILLEMIN et Christophe GONZALES
-*<{prenom.nom}_at_lip6.fr>
+ * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+ *<{prenom.nom}_at_lip6.fr>
  */
 #include <agrum/multidim/ICIModels/multiDimNoisyORCompound.h>
 
@@ -31,8 +31,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE MultiDimNoisyORCompound< GUM_SCALAR >::MultiDimNoisyORCompound(
-    GUM_SCALAR external_weight, GUM_SCALAR default_weight)
-      : MultiDimICIModel< GUM_SCALAR >(external_weight, default_weight) {
+    GUM_SCALAR external_weight, GUM_SCALAR default_weight) :
+      MultiDimICIModel< GUM_SCALAR >(external_weight, default_weight) {
     GUM_CONSTRUCTOR(MultiDimNoisyORCompound);
   }
 
@@ -40,8 +40,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE MultiDimNoisyORCompound< GUM_SCALAR >::MultiDimNoisyORCompound(
-    const MultiDimNoisyORCompound< GUM_SCALAR >& from)
-      : MultiDimICIModel< GUM_SCALAR >(from) {
+    const MultiDimNoisyORCompound< GUM_SCALAR >& from) :
+      MultiDimICIModel< GUM_SCALAR >(from) {
     GUM_CONS_CPY(MultiDimNoisyORCompound);
   }
 
@@ -50,8 +50,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE MultiDimNoisyORCompound< GUM_SCALAR >::MultiDimNoisyORCompound(
     const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-    const MultiDimNoisyORCompound< GUM_SCALAR >& from)
-      : MultiDimICIModel< GUM_SCALAR >(bij, from) {
+    const MultiDimNoisyORCompound< GUM_SCALAR >&                         from) :
+      MultiDimICIModel< GUM_SCALAR >(bij, from) {
     GUM_CONSTRUCTOR(MultiDimNoisyORCompound);
   }
 
@@ -64,7 +64,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   GUM_SCALAR
-  MultiDimNoisyORCompound< GUM_SCALAR >::get(const Instantiation& i) const {
+    MultiDimNoisyORCompound< GUM_SCALAR >::get(const Instantiation& i) const {
     if (this->nbrDim() < 1) {
       GUM_ERROR(OperationNotAllowed, "Not enough variable for a NoisyOr ");
     }
@@ -120,7 +120,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE std::ostream&
-  operator<<(std::ostream& s, const MultiDimNoisyORCompound< GUM_SCALAR >& ag) {
+         operator<<(std::ostream& s, const MultiDimNoisyORCompound< GUM_SCALAR >& ag) {
     return s << ag.toString();
   }
 

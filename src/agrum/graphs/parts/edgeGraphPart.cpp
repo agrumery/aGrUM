@@ -26,20 +26,19 @@
 #include <agrum/graphs/parts/edgeGraphPart.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/parts/edgeGraphPart_inl.h>
-#endif  // GUM_NOINLINE
+#  include <agrum/graphs/parts/edgeGraphPart_inl.h>
+#endif   // GUM_NOINLINE
 #include "agrum/graphs/graphElements.h"
 
 namespace gum {
 
   ///////////////////// EdgeGraphPart
-  EdgeGraphPart::EdgeGraphPart(Size edges_size, bool edges_resize_policy)
-      : __edges(edges_size, edges_resize_policy) {
+  EdgeGraphPart::EdgeGraphPart(Size edges_size, bool edges_resize_policy) :
+      __edges(edges_size, edges_resize_policy) {
     GUM_CONSTRUCTOR(EdgeGraphPart);
   }
 
-  EdgeGraphPart::EdgeGraphPart(const EdgeGraphPart& s)
-      : __edges(s.__edges) {
+  EdgeGraphPart::EdgeGraphPart(const EdgeGraphPart& s) : __edges(s.__edges) {
     GUM_CONS_CPY(EdgeGraphPart);
 
     // copy the set of neighbours
@@ -122,7 +121,7 @@ namespace gum {
   }
 
   const std::vector< NodeId >
-  EdgeGraphPart::undirectedPath(const NodeId n1, const NodeId n2) const {
+    EdgeGraphPart::undirectedPath(const NodeId n1, const NodeId n2) const {
     // not recursive version => use a FIFO for simulating the recursion
     List< NodeId > nodeFIFO;
     nodeFIFO.pushBack(n2);
@@ -139,7 +138,7 @@ namespace gum {
 
       // check the neighbour
       for (const auto new_one : neighbours(current)) {
-        if (mark.exists(new_one))  // if this node is already marked, stop
+        if (mark.exists(new_one))   // if this node is already marked, stop
           continue;
 
         mark.insert(new_one, current);

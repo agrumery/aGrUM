@@ -38,7 +38,8 @@ namespace gum {
     namespace gspan {
 
       /**
-       * @class EdgeCode edgeCode.h <agrum/PRM/gspan/edgeCode.h>
+       * @class EdgeCode
+       * @headerfile edgeCode.h <agrum/PRM/gspan/edgeCode.h>
        * @brief represent a DFS code used by gspan.
        *
        * A DFS code represents a pair of node and an edge between these two
@@ -46,7 +47,6 @@ namespace gum {
        */
 
       struct EdgeCode {
-
         /**
          * Default constructor.
          *
@@ -142,7 +142,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/PRM/gspan/edgeCode_inl.h>
-#endif  // GUM_NO_INLINE
+#  include <agrum/PRM/gspan/edgeCode_inl.h>
+#endif   // GUM_NO_INLINE
 
 #endif /* GUM_EDGE_CODE_H */

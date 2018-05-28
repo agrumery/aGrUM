@@ -73,8 +73,9 @@ namespace gum {
     // ###################################################################
     ///
     // ###################################################################
-    void
-    updateScore(const DiscreteVariable* var, double score, double secondaryscore);
+    void updateScore(const DiscreteVariable* var,
+                     double                  score,
+                     double                  secondaryscore);
     void downdateScore(const DiscreteVariable* var,
                        double                  score,
                        double                  secondaryscore);
@@ -114,6 +115,6 @@ namespace gum {
     HashTable< const DiscreteVariable*, double > __remainingVarsOtherScore;
   };
 
-}  // End of GUM Namespace
+}   // namespace gum
 
-#endif  // GUM_VARIABLE_SELECTOR_H
+#endif   // GUM_VARIABLE_SELECTOR_H

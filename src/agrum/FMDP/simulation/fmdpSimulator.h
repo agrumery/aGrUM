@@ -43,7 +43,6 @@ namespace gum {
    *
    */
   class FMDPSimulator : public AbstractSimulator {
-
     public:
     // ===========================================================================
     /// @name Constructors, Destructors.
@@ -129,4 +128,4 @@ namespace gum {
 } /* namespace gum */
 
 
-#endif  // GUM_FMDP_SIMULATOR_H
+#endif   // GUM_FMDP_SIMULATOR_H

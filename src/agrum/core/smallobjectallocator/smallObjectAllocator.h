@@ -51,7 +51,6 @@ namespace gum {
    * @ingroup core
    */
   class SmallObjectAllocator {
-
     public:
     /**
      * @param The default size of chunck of memory.
@@ -139,7 +138,7 @@ namespace gum {
     /// The pool containing FixedAllocator
     // ============================================================================
     typedef HashTable< Size, FixedAllocator* > __Pool;
-    __Pool __pool;
+    __Pool                                     __pool;
 
     // ============================================================================
     /// The memory that a chunk allocates
@@ -154,14 +153,14 @@ namespace gum {
     Idx nbAllocation;
     Idx nbDeallocation;
   };
-}  // namespace gum
+}   // namespace gum
 
 // Macro used to shorten code in classes using SmallObjectAllocator
 #define SOA_ALLOCATE(x) SmallObjectAllocator::instance().allocate(x)
 #define SOA_DEALLOCATE(x, y) SmallObjectAllocator::instance().deallocate(x, y)
 
 #ifndef GUM_NO_INLINE
-#include <agrum/core/smallobjectallocator/smallObjectAllocator_inl.h>
+#  include <agrum/core/smallobjectallocator/smallObjectAllocator_inl.h>
 #endif
 
-#endif  // GUM_SMALL_OBJECT_ALLOCATOR_H
+#endif   // GUM_SMALL_OBJECT_ALLOCATOR_H

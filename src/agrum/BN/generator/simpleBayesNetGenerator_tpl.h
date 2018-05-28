@@ -30,17 +30,17 @@
 namespace gum {
 
 #ifdef _MSC_VER
-#define IBNG IBayesNetGenerator
+#  define IBNG IBayesNetGenerator
 #else
-#define IBNG IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >
+#  define IBNG IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >
 #endif
 
   // Use the SimpleCPTGenerator for generating the BNs CPT.
   template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
   INLINE
-  SimpleBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::SimpleBayesNetGenerator(
-    Size nbrNodes, Size maxArcs, Size maxModality)
-      : IBNG(nbrNodes, maxArcs, maxModality) {
+    SimpleBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::SimpleBayesNetGenerator(
+      Size nbrNodes, Size maxArcs, Size maxModality) :
+      IBNG(nbrNodes, maxArcs, maxModality) {
     GUM_CONSTRUCTOR(SimpleBayesNetGenerator);
   }
 
@@ -73,7 +73,7 @@ namespace gum {
     BayesNet< GUM_SCALAR >& bayesNet) {
     this->_bayesNet = bayesNet;
     HashTable< Size, NodeId > map;
-    std::stringstream strBuff;
+    std::stringstream         strBuff;
 
     for (Size i = 0; this->_nbrNodes > i; ++i) {
       strBuff << "n" << i;
@@ -85,8 +85,8 @@ namespace gum {
     }
 
     // We add arcs
-    float density = (float)(this->_maxArcs * 2) /
-                    (float)(this->_nbrNodes * (this->_nbrNodes - 1));
+    float density = (float)(this->_maxArcs * 2)
+                    / (float)(this->_nbrNodes * (this->_nbrNodes - 1));
 
     for (Size i = 0; i < this->_nbrNodes; ++i)
       for (Size j = i + 1; j < this->_nbrNodes; ++j)

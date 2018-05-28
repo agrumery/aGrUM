@@ -21,7 +21,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // to ease parsing in IDE
-#include <agrum/BN/io/cnf/CNFWriter.h>
+#  include <agrum/BN/io/cnf/CNFWriter.h>
 
 namespace gum {
 
@@ -42,4 +42,4 @@ namespace gum {
 
 } /*namespace gum */
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS

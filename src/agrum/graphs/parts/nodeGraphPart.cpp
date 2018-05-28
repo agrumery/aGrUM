@@ -26,27 +26,23 @@
 #include <agrum/graphs/parts/nodeGraphPart.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/parts/nodeGraphPart_inl.h>
-#endif  // GUM_NOINLINE
+#  include <agrum/graphs/parts/nodeGraphPart_inl.h>
+#endif   // GUM_NOINLINE
 
 namespace gum {
 
   ///////////////////// NodeGraphPart
-  NodeGraphPart::NodeGraphPart(Size holes_size, bool holes_resize_policy)
-      : __holes_size(holes_size)
-      , __holes_resize_policy(holes_resize_policy)
-      , __endIteratorSafe(*this)
-      , __boundVal(0) {
+  NodeGraphPart::NodeGraphPart(Size holes_size, bool holes_resize_policy) :
+      __holes_size(holes_size), __holes_resize_policy(holes_resize_policy),
+      __endIteratorSafe(*this), __boundVal(0) {
     __holes = 0;
     GUM_CONSTRUCTOR(NodeGraphPart);
     __updateEndIteratorSafe();
   }
 
-  NodeGraphPart::NodeGraphPart(const NodeGraphPart& s)
-      : __holes_size(s.__holes_size)
-      , __holes_resize_policy(s.__holes_resize_policy)
-      , __endIteratorSafe(*this)
-      , __boundVal(s.__boundVal) {
+  NodeGraphPart::NodeGraphPart(const NodeGraphPart& s) :
+      __holes_size(s.__holes_size), __holes_resize_policy(s.__holes_resize_policy),
+      __endIteratorSafe(*this), __boundVal(s.__boundVal) {
     __holes = 0;
 
     if (s.__holes) __holes = new NodeSet(*s.__holes);
@@ -63,7 +59,7 @@ namespace gum {
   }
 
   void NodeGraphPart::populateNodes(const NodeGraphPart& s) {
-    clear();  // "virtual" flush of the nodes set
+    clear();   // "virtual" flush of the nodes set
     __holes_size = s.__holes_size;
     __holes_resize_policy = s.__holes_resize_policy;
 
@@ -76,7 +72,6 @@ namespace gum {
 
   // id is assumed to belong to NodeGraphPart
   void NodeGraphPart::__addHole(NodeId node) {
-
     // we assume that the node exists
     if (node + 1 == __boundVal) {
       // we remove the max : no new hole and maybe a bunch of holes to remove
@@ -90,9 +85,7 @@ namespace gum {
           __holes->erase(--__boundVal);
         }
 
-        if (__holes->empty()) {
-          __holes->resize(__holes_size);
-        }
+        if (__holes->empty()) { __holes->resize(__holes_size); }
       }
 
       __updateEndIteratorSafe();
@@ -132,7 +125,7 @@ namespace gum {
 
   void NodeGraphPart::addNodeWithId(const NodeId id) {
     if (id >= __boundVal) {
-      if (id > __boundVal) {  // we have to add holes
+      if (id > __boundVal) {   // we have to add holes
         if (!__holes) __holes = new NodeSet();
 
         for (NodeId i = __boundVal; i < id; ++i)
@@ -143,7 +136,7 @@ namespace gum {
 
       __updateEndIteratorSafe();
     } else {
-      if (__inHoles(id)) {  // we fill a hole
+      if (__inHoles(id)) {   // we fill a hole
         __eraseHole(id);
       } else {
         GUM_ERROR(DuplicateElement, "Id " << id << " is already used");
@@ -171,11 +164,11 @@ namespace gum {
   }
 
   void NodeGraphPartIteratorSafe::whenNodeDeleted(const void* src, NodeId id) {
-    if (id == _pos) {  // we just deleted the _pos in NodeGraphPart
+    if (id == _pos) {   // we just deleted the _pos in NodeGraphPart
       _valid = false;
     }
 
-    if (_pos >= _nodes->bound()) {  // moreover, it was the last position
+    if (_pos >= _nodes->bound()) {   // moreover, it was the last position
       _pos = _nodes->bound();
       _valid = false;
     }

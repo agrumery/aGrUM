@@ -58,7 +58,7 @@ namespace gum {
     /// indicates whether the apriori is potentially informative
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE bool
-    ScoreInternalApriori< IdSetAlloc, CountAlloc >::isInformative() const {
+      ScoreInternalApriori< IdSetAlloc, CountAlloc >::isInformative() const {
       return true;
     }
 

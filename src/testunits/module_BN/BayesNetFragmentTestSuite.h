@@ -1,23 +1,23 @@
 
 /***************************************************************************
-*   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 
 #include <iostream>
@@ -46,7 +46,6 @@
 namespace gum_tests {
 
   class BayesNetFragmentTestSuite : public CxxTest::TestSuite {
-
     private:
     void fill(gum::BayesNet< float >& bn) {
       try {
@@ -235,8 +234,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(I.toString(), "<v1:0|v3:0|v6:0>");
 
       while (!I.end()) {
-        float p = bn.cpt(bn.idFromName("v1"))[I] * bn.cpt(bn.idFromName("v3"))[I] *
-                  bn.cpt(bn.idFromName("v6"))[I];
+        float p = bn.cpt(bn.idFromName("v1"))[I] * bn.cpt(bn.idFromName("v3"))[I]
+                  * bn.cpt(bn.idFromName("v6"))[I];
         TS_ASSERT_DELTA(frag.jointProbability(I), p, 1e-5);
         TS_ASSERT_DELTA(frag.log2JointProbability(I), log2(p), 1e-5);
         ++I;
@@ -354,20 +353,18 @@ namespace gum_tests {
 
       try {
         auto p = inf_complete.posterior(bn.idFromName("v6"));
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e);
-      }
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
       const gum::Potential< float >& p1 =
         inf_complete.posterior(bn.idFromName("v6"));
 
       // propagation in the fragment
       gum::BayesNetFragment< float > frag(bn);
-      frag.installAscendants(bn.idFromName("v6"));  // 1->3->6
+      frag.installAscendants(bn.idFromName("v6"));   // 1->3->6
 
       gum::Potential< float >* newV3 = new gum::Potential< float >();
       (*newV3) << bn.variable(bn.idFromName("v3"));
       newV3->fillWith({0.0, 1.0});
-      frag.installMarginal(frag.idFromName("v3"), newV3);  // 1   3->6
+      frag.installMarginal(frag.idFromName("v3"), newV3);   // 1   3->6
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)3);
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)1);
 
@@ -388,7 +385,7 @@ namespace gum_tests {
       gum::BayesNet< float > bn;
       fill(bn);
       gum::BayesNetFragment< float > frag(bn);
-      frag.installAscendants(bn.idFromName("v6"));  // 1->3->6
+      frag.installAscendants(bn.idFromName("v6"));   // 1->3->6
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)3);
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)2);
 
@@ -410,13 +407,13 @@ namespace gum_tests {
       gum::Potential< float >* newV5 = new gum::Potential< float >();
       (*newV5) << bn.variable(bn.idFromName("v5"));
       newV5->fillWith({0.0, 0.0, 1.0});
-      frag.installMarginal(frag.idFromName("v5"), newV5);  // 1-->3-->6 5
+      frag.installMarginal(frag.idFromName("v5"), newV5);   // 1-->3-->6 5
       TS_ASSERT(frag.checkConsistency());
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)4);
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)2);
 
       frag.installAscendants(bn.idFromName("v4"));
-      TS_ASSERT(!frag.checkConsistency());  // V5 has now 2 parents : 4 and 2
+      TS_ASSERT(!frag.checkConsistency());   // V5 has now 2 parents : 4 and 2
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)6);
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)6);
 
@@ -494,4 +491,4 @@ namespace gum_tests {
         TS_ASSERT_DELTA(p1[II], p2[JJ], 1e-6);
     }
   };
-}  // gum_tests
+}   // namespace gum_tests

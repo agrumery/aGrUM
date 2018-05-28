@@ -42,7 +42,7 @@ namespace gum {
      * Translators are used by DatabaseTable instances to transform datasets'
      * strings into DBTranslatedValue instances. The point is that strings are
      * not adequate for fast learning, they need to be preprocessed into a type
-     * that can be analyzed quickly (the so-called DBTranslatedValue type). 
+     * that can be analyzed quickly (the so-called DBTranslatedValue type).
      *
      * A DBTranslator4LabelizedVariable is a translator that contains and
      * exploits a LabelizedVariable for translations. Each time a string needs
@@ -62,7 +62,7 @@ namespace gum {
      * auto val1 = translator.translate("xxx");
      * auto val2 = translator.translate("zzz");
      * auto val3 = translator << "yyy";
-     * auto val2bis = translator.translate( "zzz" ); 
+     * auto val2bis = translator.translate( "zzz" );
      * // In the first assignment, the translator initially contains an empty
      * // domain LabelizedVariable and it is by default in editable mode. So
      * // we add a new label "xxx" to the LabelizedVariable contained in the
@@ -107,7 +107,7 @@ namespace gum {
      * // it is possible to create a translator for an already known variable.
      * // In this case, by default, the translator is not in editable mode, but
      * // this behavior can be changed passing the right arguments to the
-     * // constructor of the translator, or using the setEditableDictionaryMode 
+     * // constructor of the translator, or using the setEditableDictionaryMode
      * // method.
      * gum::LabelizedVariable var ( "X1", "", 0 );
      * var.addLabel ( "toto" );
@@ -128,14 +128,12 @@ namespace gum {
      *
      * @ingroup learning_database
      */
-    template <template<typename> class ALLOC = std::allocator>
-    class DBTranslator4LabelizedVariable : public DBTranslator<ALLOC> {
+    template < template < typename > class ALLOC = std::allocator >
+    class DBTranslator4LabelizedVariable : public DBTranslator< ALLOC > {
       public:
-
       /// type for the allocators passed in arguments of methods
-      using allocator_type =
-        typename DBTranslator<ALLOC>::allocator_type;
-      
+      using allocator_type = typename DBTranslator< ALLOC >::allocator_type;
+
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -156,12 +154,11 @@ namespace gum {
        * @param alloc The allocator used to allocate memory for all the
        * fields of the DBTranslator4LabelizedVariable
        */
-      template <template<typename> class XALLOC>
-      DBTranslator4LabelizedVariable (
-          const std::vector<std::string,XALLOC<std::string>>& missing_symbols,
-          std::size_t max_dico_entries =
-          std::numeric_limits<std::size_t>::max(),
-          const allocator_type& alloc = allocator_type () );
+      template < template < typename > class XALLOC >
+      DBTranslator4LabelizedVariable(
+        const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
+        std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
+        const allocator_type& alloc = allocator_type());
 
       /// default constructor without any initial variable nor missing symbols
       /** When using this constructor, it is assumed implicitly that the
@@ -175,10 +172,9 @@ namespace gum {
        * @param alloc The allocator used to allocate memory for all the
        * fields of the DBTranslator4LabelizedVariable
        */
-      DBTranslator4LabelizedVariable (
-          std::size_t max_dico_entries =
-          std::numeric_limits<std::size_t>::max(),
-          const allocator_type& alloc = allocator_type () );
+      DBTranslator4LabelizedVariable(
+        std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
+        const allocator_type& alloc = allocator_type());
 
       /// default constructor with a labelized variable as translator
       /** @param var a labelized variable whose labels will be used for
@@ -199,14 +195,13 @@ namespace gum {
        * equal to a missing value symbol, the label will be taken into
        * account in the translations, not the missing value.
        */
-      template <template<typename> class XALLOC>
-      DBTranslator4LabelizedVariable (
-          const LabelizedVariable& var,
-          const std::vector<std::string,XALLOC<std::string>>& missing_symbols,
-          const bool editable_dictionary = false,
-          std::size_t max_dico_entries =
-          std::numeric_limits<std::size_t>::max(),
-          const allocator_type& alloc = allocator_type () );
+      template < template < typename > class XALLOC >
+      DBTranslator4LabelizedVariable(
+        const LabelizedVariable&                                 var,
+        const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
+        const bool  editable_dictionary = false,
+        std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
+        const allocator_type& alloc = allocator_type());
 
       /** @brief default constructor with a labelized variable as translator
        * but without missing symbols
@@ -227,44 +222,43 @@ namespace gum {
        * equal to a missing value symbol, the label will be taken into
        * account in the translations, not the missing value.
        */
-      DBTranslator4LabelizedVariable (
-          const LabelizedVariable& var,
-          const bool editable_dictionary = false,
-          std::size_t max_dico_entries =
-          std::numeric_limits<std::size_t>::max(),
-          const allocator_type& alloc = allocator_type () );
+      DBTranslator4LabelizedVariable(
+        const LabelizedVariable& var,
+        const bool               editable_dictionary = false,
+        std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
+        const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       DBTranslator4LabelizedVariable(
-          const DBTranslator4LabelizedVariable<ALLOC>& from );
+        const DBTranslator4LabelizedVariable< ALLOC >& from);
 
       /// copy constructor with a given allocator
       DBTranslator4LabelizedVariable(
-          const DBTranslator4LabelizedVariable<ALLOC>& from,
-          const allocator_type& alloc );
+        const DBTranslator4LabelizedVariable< ALLOC >& from,
+        const allocator_type&                          alloc);
 
       /// move constructor
       DBTranslator4LabelizedVariable(
-          DBTranslator4LabelizedVariable<ALLOC>&& from );
+        DBTranslator4LabelizedVariable< ALLOC >&& from);
 
       /// move constructor with a given allocator
       DBTranslator4LabelizedVariable(
-          DBTranslator4LabelizedVariable<ALLOC>&& from,
-          const allocator_type& alloc );
+        DBTranslator4LabelizedVariable< ALLOC >&& from,
+        const allocator_type&                     alloc);
 
       /// virtual copy constructor
-      virtual DBTranslator4LabelizedVariable<ALLOC>* clone () const;
+      virtual DBTranslator4LabelizedVariable< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual DBTranslator4LabelizedVariable<ALLOC>*
-      clone ( const allocator_type& alloc ) const;
+      virtual DBTranslator4LabelizedVariable< ALLOC >*
+        clone(const allocator_type& alloc) const;
 
       /// destructor
       virtual ~DBTranslator4LabelizedVariable();
 
       /// @}
 
-      
+
       // ##########################################################################
       /// @name Operators
       // ##########################################################################
@@ -272,15 +266,15 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBTranslator4LabelizedVariable<ALLOC>&
-      operator=( const DBTranslator4LabelizedVariable<ALLOC>& from );
+      DBTranslator4LabelizedVariable< ALLOC >&
+        operator=(const DBTranslator4LabelizedVariable< ALLOC >& from);
 
       /// move operator
-      DBTranslator4LabelizedVariable<ALLOC>&
-      operator=( DBTranslator4LabelizedVariable<ALLOC>&& from );
+      DBTranslator4LabelizedVariable< ALLOC >&
+        operator=(DBTranslator4LabelizedVariable< ALLOC >&& from);
 
       /// @}
-      
+
 
       // ##########################################################################
       /// @name Accessors / Modifiers
@@ -315,7 +309,7 @@ namespace gum {
        * @throws SizeError is raised if the number of entries in the dictionary
        * has already reached its maximum.
        */
-      virtual DBTranslatedValue translate ( const std::string& str ) final;
+      virtual DBTranslatedValue translate(const std::string& str) final;
 
       /// returns the original value for a given translation
       /** @return the string that was translated into a given DBTranslatedValue.
@@ -325,7 +319,7 @@ namespace gum {
        * @throws UnknownLabelInDatabase is raised if this original value
        * cannot be found */
       virtual std::string
-      translateBack ( const DBTranslatedValue translated_val ) const final;
+        translateBack(const DBTranslatedValue translated_val) const final;
 
       /// returns the domain size of a variable corresponding to the translations
       /** Assume that the translator has been fed with the observed values of
@@ -335,7 +329,7 @@ namespace gum {
        * labels of the LabelizedVariable contained in the translator.
        * Note that missing values are not taken into account in the domain
        * sizes. */
-      virtual std::size_t domainSize () const final;
+      virtual std::size_t domainSize() const final;
 
       /** @brief indicates whether a reordering is needed to make the
        * translations sorted
@@ -357,7 +351,7 @@ namespace gum {
        * reordering. Method needsReodering() returns a Boolean indicating
        * whether such a reordering should be performed or whether the current
        * order is OK. */
-      virtual bool needsReordering () const final;
+      virtual bool needsReordering() const final;
 
       /** @brief performs a reordering of the dictionary and returns a mapping
        * from the old translated values to the new ones.
@@ -368,26 +362,25 @@ namespace gum {
        * that enables changing the old dictionary values into the new ones.
        * @warning If there is no reordering to perform, the method returns
        * an empty hashtable. */
-      virtual HashTable<std::size_t,std::size_t,
-                        ALLOC<std::pair<std::size_t,std::size_t>>>
-      reorder () final;
+      virtual HashTable< std::size_t,
+                         std::size_t,
+                         ALLOC< std::pair< std::size_t, std::size_t > > >
+        reorder() final;
 
       /// returns the variable stored into the translator
-      virtual const LabelizedVariable* variable () const final;
+      virtual const LabelizedVariable* variable() const final;
 
       /// @}
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-    private:
+      private:
       // the LabelizedVariable assigned to the translator, if any
       LabelizedVariable __variable;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
-      
     };
 
-    
 
   } /* namespace learning */
 

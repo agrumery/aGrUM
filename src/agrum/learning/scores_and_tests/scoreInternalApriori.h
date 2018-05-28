@@ -75,7 +75,7 @@ namespace gum {
 
       /// virtual copy constructor
       virtual ScoreInternalApriori< IdSetAlloc, CountAlloc >*
-      copyFactory() const = 0;
+        copyFactory() const = 0;
 
       /// destructor
       virtual ~ScoreInternalApriori();
@@ -89,7 +89,7 @@ namespace gum {
 
       /// insert the internal score apriori into a set of countings
       virtual void insertScoreApriori(
-        const std::vector< Size >& modalities,
+        const std::vector< Size >&                        modalities,
         std::vector< std::vector< double, CountAlloc > >& counts,
         const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >&
           target_nodesets,

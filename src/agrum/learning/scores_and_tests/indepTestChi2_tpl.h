@@ -33,9 +33,9 @@ namespace gum {
     template < typename IdSetAlloc, typename CountAlloc >
     template < typename RowFilter >
     INLINE IndepTestChi2< IdSetAlloc, CountAlloc >::IndepTestChi2(
-      const RowFilter& filter, const std::vector< Size >& var_modalities)
-        : IndependenceTest< IdSetAlloc, CountAlloc >(filter, var_modalities)
-        , __chi2(var_modalities) {
+      const RowFilter& filter, const std::vector< Size >& var_modalities) :
+        IndependenceTest< IdSetAlloc, CountAlloc >(filter, var_modalities),
+        __chi2(var_modalities) {
       // for debugging purposes
       GUM_CONSTRUCTOR(IndepTestChi2);
     }

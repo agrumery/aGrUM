@@ -50,10 +50,8 @@ namespace gum_tests {
 
     protected:
     public:
-    explicit L2UListener(gum::ApproximationScheme& aS)
-        : gum::ApproximationSchemeListener(aS)
-        , __nbr(0)
-        , __msg(""){};
+    explicit L2UListener(gum::ApproximationScheme& aS) :
+        gum::ApproximationSchemeListener(aS), __nbr(0), __msg(""){};
 
     void whenProgress(const void*     buffer,
                       const gum::Size a,
@@ -67,7 +65,7 @@ namespace gum_tests {
     int nbr() { return __nbr; }
 
     std::string& msg() { return __msg; }
-  };  // end of : class l2uListener
+  };   // end of : class l2uListener
 
   ////////////////////////////////////////////////////////////////
   class L2UInferenceTestSuite : public CxxTest::TestSuite {
@@ -130,19 +128,15 @@ namespace gum_tests {
       // evidence from file
       try {
         lp.insertEvidenceFile(GET_RESSOURCES_PATH("cn/L2U.evi"));
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
 
       try {
         lp.eraseAllEvidence();
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
 
       // evidence from map
       std::map< std::string, std::vector< double > > eviMap;
-      std::vector< double > evi0(2, 0);
+      std::vector< double >                          evi0(2, 0);
       evi0[0] = 1;
       std::vector< double > evi1(2, 0);
       evi1[1] = 1;
@@ -151,18 +145,14 @@ namespace gum_tests {
 
       try {
         lp.insertEvidence(eviMap);
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
 
       try {
         lp.eraseAllEvidence();
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
 
       std::map< std::string, std::vector< double > > modals;
-      std::vector< double > binaryModal(2, 0);
+      std::vector< double >                          binaryModal(2, 0);
       binaryModal[1] = 1;
 
       // modalities from map
@@ -170,9 +160,7 @@ namespace gum_tests {
       try {
         for (const auto node : cn->current_bn().nodes())
           modals[cn->current_bn().variable(node).name()] = binaryModal;
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
 
       /*try {
         lp.insertModals( modals );
@@ -182,9 +170,7 @@ namespace gum_tests {
 
       try {
         lp.makeInference();
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
 
       try {
         for (const auto node : cn->current_bn().nodes()) {
@@ -193,18 +179,14 @@ namespace gum_tests {
           // double e_inf = lp.expectationMin ( node_idIt );
           // double e_sup = lp.expectationMax ( node_idIt );
         }
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
 
       try {
         lp.eraseAllEvidence();
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
 
       clearCNet();
-    }  // end of : testL2UInference (2U network)
+    }   // end of : testL2UInference (2U network)
 
     // dynamic (dynaCheese) - strong indep
     void testL2UInferenceD() {
@@ -220,9 +202,7 @@ namespace gum_tests {
       // evidence from file
       try {
         lp.insertEvidenceFile(GET_RESSOURCES_PATH("cn/dbn_bin_evi.evi"));
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
 
       // modalities from file
       /*try {
@@ -233,9 +213,7 @@ namespace gum_tests {
 
       try {
         lp.makeInference();
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
 
       try {
         for (const auto node : cn->current_bn().nodes()) {
@@ -244,9 +222,7 @@ namespace gum_tests {
           // double e_inf = lp.expectationMin ( node_idIt );
           // double e_sup = lp.expectationMax ( node_idIt );
         }
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
 
       /*
       try {
@@ -270,12 +246,10 @@ namespace gum_tests {
 
       try {
         lp.eraseAllEvidence();
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
 
       clearCNet();
-    }  // end of : testL2UInferenceD
+    }   // end of : testL2UInferenceD
 
     // with dynamic network
     void testL2UListener() {
@@ -286,31 +260,25 @@ namespace gum_tests {
       // evidence from file
       try {
         lp.insertEvidenceFile(GET_RESSOURCES_PATH("cn/dbn_bin_evi.evi"));
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
 
       // lp.inferenceType(gum::CNLoopyPropagation<double>::InferenceType::randomOrder);
       L2UListener mcl(lp);
 
       try {
         lp.makeInference();
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
 
       TS_ASSERT_EQUALS(mcl.nbr() * lp.periodSize(), lp.nbrIterations());
       TS_ASSERT_DIFFERS(mcl.msg(), std::string(""));
 
       try {
         lp.eraseAllEvidence();
-      } catch (gum::Exception&) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
 
       clearCNet();
-    }  // end of : testL2UListener
+    }   // end of : testL2UListener
 
-  };  // end of : class L2UInferenceTestSuite
+  };   // end of : class L2UInferenceTestSuite
 
-}  // end of : namespace gum_tests
+}   // namespace gum_tests

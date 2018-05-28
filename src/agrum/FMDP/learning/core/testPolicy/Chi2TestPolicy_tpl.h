@@ -80,8 +80,9 @@ namespace gum {
   double Chi2TestPolicy< GUM_SCALAR >::score() const {
     if (this->_isModified()) computeScore();
     double score =
-      1 - ChiSquare::probaChi2(
-            __chi2Score, (__conTab.attrASize() - 1) * (__conTab.attrBSize() - 1));
+      1
+      - ChiSquare::probaChi2(
+          __chi2Score, (__conTab.attrASize() - 1) * (__conTab.attrBSize() - 1));
     return score;
   }
 
@@ -100,4 +101,4 @@ namespace gum {
     __conTab += src.ct();
   }
 
-}  // End of namespace gum
+}   // End of namespace gum

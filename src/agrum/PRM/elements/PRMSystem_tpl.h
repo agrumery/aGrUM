@@ -1,22 +1,22 @@
 /**************************************************************************
-*   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 /**
  * @file
  * @brief Inline implementation of PRMSystem.
@@ -36,8 +36,7 @@
 namespace gum {
   namespace prm {
     template < typename GUM_SCALAR >
-    PRMSystem< GUM_SCALAR >::PRMSystem(const std::string& name)
-        : PRMObject(name) {
+    PRMSystem< GUM_SCALAR >::PRMSystem(const std::string& name) : PRMObject(name) {
       GUM_CONSTRUCTOR(PRMSystem);
     }
 
@@ -115,7 +114,7 @@ namespace gum {
                      << instance.type().get(node).safeName();
             DiscreteVariable* var = instance.get(node).type().variable().clone();
             var->setName(elt_name.str());
-            factory.setVariable(*var);  // var is copied by the factory
+            factory.setVariable(*var);   // var is copied by the factory
             delete var;
             break;
           }
@@ -274,7 +273,7 @@ namespace gum {
       const PRMAttribute< GUM_SCALAR >& attr,
       BayesNetFactory< GUM_SCALAR >&    factory) const {
       Bijection< const DiscreteVariable*, const DiscreteVariable* > bijection;
-      std::stringstream var_name;
+      std::stringstream                                             var_name;
       var_name << instance.name() << "." << attr.safeName();
       bijection.insert(&(attr.type().variable()),
                        &(factory.variable(var_name.str())));
@@ -352,7 +351,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const PRMInstance< GUM_SCALAR >&
-    PRMSystem< GUM_SCALAR >::get(NodeId id) const {
+                 PRMSystem< GUM_SCALAR >::get(NodeId id) const {
       try {
         return *(__nodeIdMap[id]);
       } catch (NotFound&) {
@@ -362,7 +361,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE NodeId
-    PRMSystem< GUM_SCALAR >::get(const PRMInstance< GUM_SCALAR >& i) const {
+           PRMSystem< GUM_SCALAR >::get(const PRMInstance< GUM_SCALAR >& i) const {
       try {
         return __nodeIdMap.keyByVal(const_cast< PRMInstance< GUM_SCALAR >* >(&i));
       } catch (NotFound&) {
@@ -388,7 +387,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE bool
-    PRMSystem< GUM_SCALAR >::isInstance(const std::string& name) const {
+      PRMSystem< GUM_SCALAR >::isInstance(const std::string& name) const {
       return __nameMap.exists(name);
     }
 
@@ -406,7 +405,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMInstance< GUM_SCALAR >&
-    PRMSystem< GUM_SCALAR >::get(const std::string& name) {
+           PRMSystem< GUM_SCALAR >::get(const std::string& name) {
       try {
         return *(__nameMap[name]);
       } catch (NotFound&) {
@@ -417,7 +416,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const PRMInstance< GUM_SCALAR >&
-    PRMSystem< GUM_SCALAR >::get(const std::string& name) const {
+                 PRMSystem< GUM_SCALAR >::get(const std::string& name) const {
       try {
         return *(__nameMap[name]);
       } catch (NotFound&) {
@@ -428,7 +427,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const Set< PRMInstance< GUM_SCALAR >* >&
-    PRMSystem< GUM_SCALAR >::get(const PRMClass< GUM_SCALAR >& type) const {
+                 PRMSystem< GUM_SCALAR >::get(const PRMClass< GUM_SCALAR >& type) const {
       try {
         return *(__instanceMap[const_cast< PRMClass< GUM_SCALAR >* >(&type)]);
       } catch (NotFound&) {
@@ -440,7 +439,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const Sequence< PRMInstance< GUM_SCALAR >* >&
-    PRMSystem< GUM_SCALAR >::getArray(const std::string& name) const {
+                 PRMSystem< GUM_SCALAR >::getArray(const std::string& name) const {
       try {
         return *(__arrayMap[name].second);
       } catch (NotFound&) {
@@ -450,7 +449,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMClassElementContainer< GUM_SCALAR >&
-    PRMSystem< GUM_SCALAR >::getArrayType(const std::string& name) {
+           PRMSystem< GUM_SCALAR >::getArrayType(const std::string& name) {
       try {
         return *(__arrayMap[name].first);
       } catch (NotFound&) {
@@ -460,7 +459,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElementContainer< GUM_SCALAR >&
-    PRMSystem< GUM_SCALAR >::getArrayType(const std::string& name) const {
+                 PRMSystem< GUM_SCALAR >::getArrayType(const std::string& name) const {
       try {
         return *(__arrayMap[name].first);
       } catch (NotFound&) {
@@ -501,31 +500,31 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE typename PRMSystem< GUM_SCALAR >::iterator
-    PRMSystem< GUM_SCALAR >::begin() {
+      PRMSystem< GUM_SCALAR >::begin() {
       return __nodeIdMap.begin();
     }
 
     template < typename GUM_SCALAR >
     INLINE const typename PRMSystem< GUM_SCALAR >::iterator&
-    PRMSystem< GUM_SCALAR >::end() {
+      PRMSystem< GUM_SCALAR >::end() {
       return __nodeIdMap.end();
     }
 
     template < typename GUM_SCALAR >
     INLINE typename PRMSystem< GUM_SCALAR >::const_iterator
-    PRMSystem< GUM_SCALAR >::begin() const {
+      PRMSystem< GUM_SCALAR >::begin() const {
       return __nodeIdMap.begin();
     }
 
     template < typename GUM_SCALAR >
     INLINE const typename PRMSystem< GUM_SCALAR >::const_iterator&
-    PRMSystem< GUM_SCALAR >::end() const {
+      PRMSystem< GUM_SCALAR >::end() const {
       return __nodeIdMap.end();
     }
 
     template < typename GUM_SCALAR >
     INLINE typename PRMSystem< GUM_SCALAR >::array_iterator
-    PRMSystem< GUM_SCALAR >::begin(const std::string& a) {
+      PRMSystem< GUM_SCALAR >::begin(const std::string& a) {
       try {
         return __arrayMap[a].second->begin();
       } catch (NotFound&) {
@@ -535,7 +534,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const typename PRMSystem< GUM_SCALAR >::array_iterator&
-    PRMSystem< GUM_SCALAR >::end(const std::string& a) {
+      PRMSystem< GUM_SCALAR >::end(const std::string& a) {
       try {
         return __arrayMap[a].second->end();
       } catch (NotFound&) {
@@ -545,7 +544,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE typename PRMSystem< GUM_SCALAR >::const_array_iterator
-    PRMSystem< GUM_SCALAR >::begin(const std::string& a) const {
+      PRMSystem< GUM_SCALAR >::begin(const std::string& a) const {
       try {
         return __arrayMap[a].second->begin();
       } catch (NotFound&) {
@@ -555,7 +554,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const typename PRMSystem< GUM_SCALAR >::const_array_iterator&
-    PRMSystem< GUM_SCALAR >::end(const std::string& a) const {
+      PRMSystem< GUM_SCALAR >::end(const std::string& a) const {
       try {
         return __arrayMap[a].second->end();
       } catch (NotFound&) {

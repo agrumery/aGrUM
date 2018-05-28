@@ -41,7 +41,8 @@
 namespace gum {
 
   /**
-   * @class ITI iti.h <agrum/FMDP/planning/FunctionGraph/iti.h>
+   * @class ITI
+   * @headerfile iti.h <agrum/FMDP/planning/FunctionGraph/iti.h>
    * @brief
    * @ingroup fmdp_group
    *
@@ -56,7 +57,6 @@ namespace gum {
 
   template < TESTNAME AttributeSelection, bool isScalar = false >
   class ITI : public IncrementalGraphLearner< AttributeSelection, isScalar > {
-
     public:
     // ###################################################################
     /// @name Constructor & destructor.
@@ -150,7 +150,7 @@ namespace gum {
      */
     // ==========================================================================
     NodeId _insertNode(NodeDatabase< AttributeSelection, isScalar >* nDB,
-                       const DiscreteVariable* boundVar);
+                       const DiscreteVariable*                       boundVar);
 
     // ==========================================================================
     /**
@@ -264,4 +264,4 @@ namespace gum {
 
 #include <agrum/FMDP/learning/datastructure/iti_tpl.h>
 
-#endif  // GUM_ITI_H
+#endif   // GUM_ITI_H

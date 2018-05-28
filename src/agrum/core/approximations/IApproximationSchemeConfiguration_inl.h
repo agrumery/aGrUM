@@ -35,13 +35,11 @@ namespace gum {
 
   INLINE
   std::string
-  IApproximationSchemeConfiguration::messageApproximationScheme() const {
+    IApproximationSchemeConfiguration::messageApproximationScheme() const {
     std::stringstream s;
 
     switch (stateApproximationScheme()) {
-      case ApproximationSchemeSTATE::Continue:
-        s << "in progress";
-        break;
+      case ApproximationSchemeSTATE::Continue: s << "in progress"; break;
 
       case ApproximationSchemeSTATE::Epsilon:
         s << "stopped with epsilon=" << epsilon();
@@ -59,16 +57,12 @@ namespace gum {
         s << "stopped with timeout=" << maxTime();
         break;
 
-      case ApproximationSchemeSTATE::Stopped:
-        s << "stopped on request";
-        break;
+      case ApproximationSchemeSTATE::Stopped: s << "stopped on request"; break;
 
-      case ApproximationSchemeSTATE::Undefined:
-        s << "undefined state";
-        break;
+      case ApproximationSchemeSTATE::Undefined: s << "undefined state"; break;
     };
 
     return s.str();
   }
 
-}  // namespace gum
+}   // namespace gum

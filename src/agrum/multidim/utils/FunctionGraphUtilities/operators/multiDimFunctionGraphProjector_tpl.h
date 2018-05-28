@@ -38,13 +38,10 @@ namespace gum {
   MultiDimFunctionGraphProjector< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
     MultiDimFunctionGraphProjector(
       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* src,
-      const Set< const DiscreteVariable* >& delVars,
-      const GUM_SCALAR                      neutral)
-      : __src(src)
-      , __delVars(delVars)
-      , __function()
-      , __neutral(neutral) {
-
+      const Set< const DiscreteVariable* >&                          delVars,
+      const GUM_SCALAR                                               neutral) :
+      __src(src),
+      __delVars(delVars), __function(), __neutral(neutral) {
     GUM_CONSTRUCTOR(MultiDimFunctionGraphProjector);
     __rd = MultiDimFunctionGraph< GUM_SCALAR >::getReducedAndOrderedInstance();
   }
@@ -66,16 +63,14 @@ namespace gum {
              template < typename > class FUNCTOR,
              template < typename > class TerminalNodePolicy >
   MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
-  MultiDimFunctionGraphProjector< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
-    project() {
-
+    MultiDimFunctionGraphProjector< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
+      project() {
     __rd->copy(*__src);
 
     for (SetIteratorSafe< const DiscreteVariable* > varIter =
            __delVars.beginSafe();
          varIter != __delVars.endSafe();
          ++varIter) {
-
       const DiscreteVariable* curVar = *varIter;
 
       // Tout d'abord, on déplace la variable à projeter en fin de séquence afin
@@ -85,7 +80,6 @@ namespace gum {
 
       // 1er cas spécial : le diagramme est un un simple noeud terminal
       if (__rd->isTerminalNode(__rd->root())) {
-
         GUM_SCALAR newVal = __neutral, oldVal = __rd->nodeValue(__rd->root());
         for (Idx curVarModality = 0; curVarModality < curVar->domainSize();
              ++curVarModality)
@@ -101,7 +95,6 @@ namespace gum {
       // 2ème cas spécial : la racine du diagramme est associée à la variable
       // projetée
       if (__rd->node(__rd->root())->nodeVar() == curVar) {
-
         const InternalNode* curVarNode = __rd->node(__rd->root());
         GUM_SCALAR          newVal = __neutral;
         for (Idx curVarModality = 0; curVarModality < curVar->domainSize();
@@ -119,7 +112,7 @@ namespace gum {
 
       // Cas général
       HashTable< NodeId, NodeId > visitedNode(2 * __rd->realSize(), true, false);
-      std::vector< NodeId > filo;
+      std::vector< NodeId >       filo;
       filo.push_back(__rd->root());
 
       while (!filo.empty()) {
@@ -130,20 +123,15 @@ namespace gum {
 
         for (Idx modality = 0; modality < curNode->nodeVar()->domainSize();
              ++modality) {
-
           NodeId oldSonId = curNode->son(modality);
 
           if (!visitedNode.exists(oldSonId)) {
-
             NodeId newSonId = oldSonId;
 
             if (!__rd->isTerminalNode(oldSonId)) {
-
-
               if (__rd->node(oldSonId)->nodeVar() != curVar) {
                 filo.push_back(oldSonId);
               } else {
-
                 const InternalNode* curVarNode = __rd->node(oldSonId);
                 GUM_SCALAR          newVal = __neutral;
                 for (Idx curVarModality = 0; curVarModality < curVar->domainSize();
@@ -158,7 +146,6 @@ namespace gum {
               }
 
             } else {
-
               GUM_SCALAR newVal = __neutral, oldVal = __rd->nodeValue(oldSonId);
               for (Idx curVarModality = 0; curVarModality < curVar->domainSize();
                    ++curVarModality)
@@ -171,7 +158,6 @@ namespace gum {
             visitedNode.insert(oldSonId, newSonId);
 
           } else {
-
             if (__rd->node(curNodeId)->son(modality) != visitedNode[oldSonId])
               __rd->manager()->setSon(curNodeId, modality, visitedNode[oldSonId]);
           }
@@ -184,4 +170,4 @@ namespace gum {
     return __rd;
   }
 
-}  // namespace gum
+}   // namespace gum

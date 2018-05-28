@@ -34,40 +34,37 @@
 
 // include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
-#include <agrum/learning/BNLearnUtils/genericBNLearner_inl.h>
+#  include <agrum/learning/BNLearnUtils/genericBNLearner_inl.h>
 #endif /* GUM_NO_INLINE */
 
 namespace gum {
 
   namespace learning {
 
-  
-    
-    genericBNLearner::Database::Database( const DatabaseTable<>& db)
-      : __database(db) {
+
+    genericBNLearner::Database::Database(const DatabaseTable<>& db) :
+        __database(db) {
       // get the variables names
-      const auto& var_names = __database.variableNames ();
-      const std::size_t nb_vars = var_names.size ();
-      __modalities.resize ( nb_vars );
-      const auto domainSizes = __database.domainSizes ();
-      for ( std::size_t i = 0; i < nb_vars; ++i ) {
-        __name2nodeId.insert ( var_names[i], NodeId(i) );
-        __modalities[i] = Size( domainSizes[i] );
+      const auto&       var_names = __database.variableNames();
+      const std::size_t nb_vars = var_names.size();
+      __modalities.resize(nb_vars);
+      const auto domainSizes = __database.domainSizes();
+      for (std::size_t i = 0; i < nb_vars; ++i) {
+        __name2nodeId.insert(var_names[i], NodeId(i));
+        __modalities[i] = Size(domainSizes[i]);
       }
 
       // create the parser
-      __parser = new DBRowGeneratorParser<> ( __database.handler (),
-                                              DBRowGeneratorSet<> () );
+      __parser =
+        new DBRowGeneratorParser<>(__database.handler(), DBRowGeneratorSet<>());
     }
 
-        
+
     genericBNLearner::Database::Database(
-      const std::string& filename,
-      const std::vector<std::string>& missing_symbols)
-      : Database(genericBNLearner::__readFile(filename, missing_symbols) ) {}
+      const std::string&                filename,
+      const std::vector< std::string >& missing_symbols) :
+        Database(genericBNLearner::__readFile(filename, missing_symbols)) {}
 
-
-    
 
     /*
     genericBNLearner::Database::Database(
@@ -75,9 +72,9 @@ namespace gum {
       const NodeProperty< Sequence< std::string > >& modalities,
       bool                                           check_database)
         : __database(genericBNLearner::__readFile(filename)) {
-      
+
       // #### TODO: change the domain sizes of the variables
-      
+
       // get the variables names
       const auto& var_names = __database.variableNames ();
       const std::size_t nb_vars = var_names.size ();
@@ -97,13 +94,13 @@ namespace gum {
                                               DBRowGeneratorSet<> () );
     }
     */
-  
+
 
     genericBNLearner::Database::Database(
-      const std::string& filename,
-      Database&  apriori_database,
-      const std::vector<std::string>& missing_symbols)
-      : __database(genericBNLearner::__readFile(filename,missing_symbols)) {
+      const std::string&                filename,
+      Database&                         apriori_database,
+      const std::vector< std::string >& missing_symbols) :
+        __database(genericBNLearner::__readFile(filename, missing_symbols)) {
       // check that there are at least as many variables in the a priori
       // database as those in the score_database
       if (__database.nbVariables() < apriori_database.__database.nbVariables()) {
@@ -114,8 +111,7 @@ namespace gum {
 
       const std::vector< std::string >& apriori_vars =
         apriori_database.__database.variableNames();
-      const std::vector< std::string >& score_vars =
-        __database.variableNames();
+      const std::vector< std::string >& score_vars = __database.variableNames();
 
       Size size = Size(apriori_vars.size());
       for (Idx i = 0; i < size; ++i) {
@@ -125,46 +121,42 @@ namespace gum {
                     "their counterpart in the score database");
         }
       }
-      
+
       /*
         ##### TODO: see what is the point of passing in argument score_database
-        
+
       __raw_translators = score_database.__raw_translators;
       auto raw_filter =
         make_DB_row_filter(__database, __raw_translators, __generators);
       __raw_translators = raw_filter.translatorSet();
       score_database.__raw_translators = raw_filter.translatorSet();
       */
-      
     }
 
-    
 
-    
-    genericBNLearner::Database::Database(const Database& from)
-        : __database(from.__database)
-        , __modalities(from.__modalities)
-        , __name2nodeId(from.__name2nodeId) {
+    genericBNLearner::Database::Database(const Database& from) :
+        __database(from.__database), __modalities(from.__modalities),
+        __name2nodeId(from.__name2nodeId) {
       // create the parser
-      __parser = new DBRowGeneratorParser<> ( __database.handler (),
-                                              DBRowGeneratorSet<> () );
+      __parser =
+        new DBRowGeneratorParser<>(__database.handler(), DBRowGeneratorSet<>());
     }
-    
 
-    genericBNLearner::Database::Database(Database&& from)
-        : __database(std::move(from.__database))
-        , __modalities(std::move(from.__modalities))
-        , __name2nodeId(std::move(from.__name2nodeId)) {
+
+    genericBNLearner::Database::Database(Database&& from) :
+        __database(std::move(from.__database)),
+        __modalities(std::move(from.__modalities)),
+        __name2nodeId(std::move(from.__name2nodeId)) {
       // create the parser
-      __parser = new DBRowGeneratorParser<> ( __database.handler (),
-                                              DBRowGeneratorSet<> () );
+      __parser =
+        new DBRowGeneratorParser<>(__database.handler(), DBRowGeneratorSet<>());
     }
-    
+
 
     genericBNLearner::Database::~Database() { delete __parser; }
 
     genericBNLearner::Database& genericBNLearner::Database::
-    operator=(const Database& from) {
+                                operator=(const Database& from) {
       if (this != &from) {
         delete __parser;
         __database = from.__database;
@@ -172,15 +164,15 @@ namespace gum {
         __name2nodeId = from.__name2nodeId;
 
         // create the parser
-        __parser = new DBRowGeneratorParser<> ( __database.handler (),
-                                                DBRowGeneratorSet<> () );
+        __parser =
+          new DBRowGeneratorParser<>(__database.handler(), DBRowGeneratorSet<>());
       }
 
       return *this;
     }
 
     genericBNLearner::Database& genericBNLearner::Database::
-    operator=(Database&& from) {
+                                operator=(Database&& from) {
       if (this != &from) {
         delete __parser;
         __database = std::move(from.__database);
@@ -188,40 +180,34 @@ namespace gum {
         __name2nodeId = std::move(from.__name2nodeId);
 
         // create the parser
-        __parser = new DBRowGeneratorParser<> ( __database.handler (),
-                                                DBRowGeneratorSet<> () );
+        __parser =
+          new DBRowGeneratorParser<>(__database.handler(), DBRowGeneratorSet<>());
       }
 
       return *this;
     }
 
 
-
-    
-    
-    
-
     // ===========================================================================
 
     genericBNLearner::genericBNLearner(
-      const std::string& filename,
-      const std::vector<std::string>& missing_symbols)
-      : __score_database ( filename, missing_symbols ) {
+      const std::string&                filename,
+      const std::vector< std::string >& missing_symbols) :
+        __score_database(filename, missing_symbols) {
       // for debugging purposes
       GUM_CONSTRUCTOR(genericBNLearner);
     }
 
-    
-    genericBNLearner::genericBNLearner(const DatabaseTable<>& db)
-      : __score_database(db) {
+
+    genericBNLearner::genericBNLearner(const DatabaseTable<>& db) :
+        __score_database(db) {
       // for debugging purposes
       GUM_CONSTRUCTOR(genericBNLearner);
     }
 
-    
 
     /*
-    
+
     genericBNLearner::genericBNLearner(
       const std::string&                             filename,
       const NodeProperty< Sequence< std::string > >& modalities,
@@ -234,53 +220,51 @@ namespace gum {
     }
 
     */
-    
 
-    genericBNLearner::genericBNLearner(const genericBNLearner& from)
-        : __score_type(from.__score_type)
-        , __param_estimator_type(from.__param_estimator_type)
-        , __apriori_type(from.__apriori_type)
-        , __apriori_weight(from.__apriori_weight)
-        , __constraint_SliceOrder(from.__constraint_SliceOrder)
-        , __constraint_Indegree(from.__constraint_Indegree)
-        , __constraint_TabuList(from.__constraint_TabuList)
-        , __constraint_ForbiddenArcs(from.__constraint_ForbiddenArcs)
-        , __constraint_MandatoryArcs(from.__constraint_MandatoryArcs)
-        , __selected_algo(from.__selected_algo)
-        , __K2(from.__K2)
-        , __miic_3off2(from.__miic_3off2)
-        , __greedy_hill_climbing(from.__greedy_hill_climbing)
-        , __local_search_with_tabu_list(from.__local_search_with_tabu_list)
-        , __score_database(from.__score_database)
-        , __user_modalities(from.__user_modalities)
-        , __modalities_parse_db(from.__modalities_parse_db)
-        , __apriori_dbname(from.__apriori_dbname)
-        , __initial_dag(from.__initial_dag) {
+
+    genericBNLearner::genericBNLearner(const genericBNLearner& from) :
+        __score_type(from.__score_type),
+        __param_estimator_type(from.__param_estimator_type),
+        __apriori_type(from.__apriori_type),
+        __apriori_weight(from.__apriori_weight),
+        __constraint_SliceOrder(from.__constraint_SliceOrder),
+        __constraint_Indegree(from.__constraint_Indegree),
+        __constraint_TabuList(from.__constraint_TabuList),
+        __constraint_ForbiddenArcs(from.__constraint_ForbiddenArcs),
+        __constraint_MandatoryArcs(from.__constraint_MandatoryArcs),
+        __selected_algo(from.__selected_algo), __K2(from.__K2),
+        __miic_3off2(from.__miic_3off2),
+        __greedy_hill_climbing(from.__greedy_hill_climbing),
+        __local_search_with_tabu_list(from.__local_search_with_tabu_list),
+        __score_database(from.__score_database),
+        __user_modalities(from.__user_modalities),
+        __modalities_parse_db(from.__modalities_parse_db),
+        __apriori_dbname(from.__apriori_dbname),
+        __initial_dag(from.__initial_dag) {
       // for debugging purposes
       GUM_CONS_CPY(genericBNLearner);
     }
 
-    genericBNLearner::genericBNLearner(genericBNLearner&& from)
-        : __score_type(from.__score_type)
-        , __param_estimator_type(from.__param_estimator_type)
-        , __apriori_type(from.__apriori_type)
-        , __apriori_weight(from.__apriori_weight)
-        , __constraint_SliceOrder(std::move(from.__constraint_SliceOrder))
-        , __constraint_Indegree(std::move(from.__constraint_Indegree))
-        , __constraint_TabuList(std::move(from.__constraint_TabuList))
-        , __constraint_ForbiddenArcs(std::move(from.__constraint_ForbiddenArcs))
-        , __constraint_MandatoryArcs(std::move(from.__constraint_MandatoryArcs))
-        , __selected_algo(from.__selected_algo)
-        , __K2(std::move(from.__K2))
-        , __miic_3off2(std::move(from.__miic_3off2))
-        , __greedy_hill_climbing(std::move(from.__greedy_hill_climbing))
-        , __local_search_with_tabu_list(
-            std::move(from.__local_search_with_tabu_list))
-        , __score_database(std::move(from.__score_database))
-        , __user_modalities(std::move(from.__user_modalities))
-        , __modalities_parse_db(from.__modalities_parse_db)
-        , __apriori_dbname(std::move(from.__apriori_dbname))
-        , __initial_dag(std::move(from.__initial_dag)) {
+    genericBNLearner::genericBNLearner(genericBNLearner&& from) :
+        __score_type(from.__score_type),
+        __param_estimator_type(from.__param_estimator_type),
+        __apriori_type(from.__apriori_type),
+        __apriori_weight(from.__apriori_weight),
+        __constraint_SliceOrder(std::move(from.__constraint_SliceOrder)),
+        __constraint_Indegree(std::move(from.__constraint_Indegree)),
+        __constraint_TabuList(std::move(from.__constraint_TabuList)),
+        __constraint_ForbiddenArcs(std::move(from.__constraint_ForbiddenArcs)),
+        __constraint_MandatoryArcs(std::move(from.__constraint_MandatoryArcs)),
+        __selected_algo(from.__selected_algo), __K2(std::move(from.__K2)),
+        __miic_3off2(std::move(from.__miic_3off2)),
+        __greedy_hill_climbing(std::move(from.__greedy_hill_climbing)),
+        __local_search_with_tabu_list(
+          std::move(from.__local_search_with_tabu_list)),
+        __score_database(std::move(from.__score_database)),
+        __user_modalities(std::move(from.__user_modalities)),
+        __modalities_parse_db(from.__modalities_parse_db),
+        __apriori_dbname(std::move(from.__apriori_dbname)),
+        __initial_dag(std::move(from.__initial_dag)) {
       // for debugging purposes
       GUM_CONS_MOV(genericBNLearner);
     }
@@ -405,7 +389,6 @@ namespace gum {
     }
 
 
-    
     DatabaseTable<> readFile(const std::string& filename) {
       // get the extension of the file
       Size filename_size = Size(filename.size());
@@ -421,29 +404,27 @@ namespace gum {
         extension.begin(), extension.end(), extension.begin(), ::tolower);
 
       if (extension != ".csv") {
-        GUM_ERROR(
-                  OperationNotAllowed,
+        GUM_ERROR(OperationNotAllowed,
                   "genericBNLearner does not support yet this type "
                   "of database file");
       }
 
-      DBInitializerFromCSV<> initializer ( filename );
+      DBInitializerFromCSV<> initializer(filename);
 
-      const auto& var_names = initializer.variableNames ();
-      const std::size_t nb_vars = var_names.size ();
-      
-      DBTranslatorSet<> translator_set;
+      const auto&       var_names = initializer.variableNames();
+      const std::size_t nb_vars = var_names.size();
+
+      DBTranslatorSet<>                translator_set;
       DBTranslator4LabelizedVariable<> translator;
-      for ( std::size_t i = 0; i < nb_vars; ++i ) {
-        translator_set.insertTranslator ( translator, i );
+      for (std::size_t i = 0; i < nb_vars; ++i) {
+        translator_set.insertTranslator(translator, i);
       }
-      
-      DatabaseTable<> database ( translator_set );
-      database.setVariableNames( initializer.variableNames () );
-      initializer.fillDatabase ( database );
-      
-      return database;
 
+      DatabaseTable<> database(translator_set);
+      database.setVariableNames(initializer.variableNames());
+      initializer.fillDatabase(database);
+
+      return database;
     }
 
 
@@ -462,17 +443,16 @@ namespace gum {
         extension.begin(), extension.end(), extension.begin(), ::tolower);
 
       if (extension != ".csv") {
-       GUM_ERROR(
-        OperationNotAllowed,
-        "genericBNLearner does not support yet this type of database file");
+        GUM_ERROR(
+          OperationNotAllowed,
+          "genericBNLearner does not support yet this type of database file");
       }
     }
 
-    
 
-    DatabaseTable<>
-    genericBNLearner::__readFile(const std::string& filename,
-                                 const std::vector<std::string>& missing_symbols) {
+    DatabaseTable<> genericBNLearner::__readFile(
+      const std::string&                filename,
+      const std::vector< std::string >& missing_symbols) {
       // get the extension of the file
       Size filename_size = Size(filename.size());
 
@@ -487,38 +467,38 @@ namespace gum {
         extension.begin(), extension.end(), extension.begin(), ::tolower);
 
       if (extension != ".csv") {
-       GUM_ERROR(
-        OperationNotAllowed,
-        "genericBNLearner does not support yet this type of database file");
+        GUM_ERROR(
+          OperationNotAllowed,
+          "genericBNLearner does not support yet this type of database file");
       }
 
 
-      DBInitializerFromCSV<> initializer ( filename );
+      DBInitializerFromCSV<> initializer(filename);
 
-      const auto& var_names = initializer.variableNames ();
-      const std::size_t nb_vars = var_names.size ();
-      
-      DBTranslatorSet<> translator_set;
-      DBTranslator4LabelizedVariable<> translator ( missing_symbols );
-      for ( std::size_t i = 0; i < nb_vars; ++i ) {
-        translator_set.insertTranslator ( translator, i );
+      const auto&       var_names = initializer.variableNames();
+      const std::size_t nb_vars = var_names.size();
+
+      DBTranslatorSet<>                translator_set;
+      DBTranslator4LabelizedVariable<> translator(missing_symbols);
+      for (std::size_t i = 0; i < nb_vars; ++i) {
+        translator_set.insertTranslator(translator, i);
       }
-      
-      DatabaseTable<> database ( missing_symbols, translator_set );
-      database.setVariableNames( initializer.variableNames () );
-      initializer.fillDatabase ( database );
+
+      DatabaseTable<> database(missing_symbols, translator_set);
+      database.setVariableNames(initializer.variableNames());
+      initializer.fillDatabase(database);
 
       // check that the database does not contain any missing value
-      if ( database.hasMissingValues () )
-        GUM_ERROR ( MissingValueInDatabase,
-                    "For the moment, the BNLearaner is unable to cope "
-                    "with missing values in databases" );
+      if (database.hasMissingValues())
+        GUM_ERROR(MissingValueInDatabase,
+                  "For the moment, the BNLearaner is unable to cope "
+                  "with missing values in databases");
 
-      database.reorder ();
-      
+      database.reorder();
+
       return database;
     }
-    
+
 
     void genericBNLearner::__createApriori() {
       // first, save the old apriori, to be delete if everything is ok
@@ -526,13 +506,9 @@ namespace gum {
 
       // create the new apriori
       switch (__apriori_type) {
-        case AprioriType::NO_APRIORI:
-          __apriori = new AprioriNoApriori<>;
-          break;
+        case AprioriType::NO_APRIORI: __apriori = new AprioriNoApriori<>; break;
 
-        case AprioriType::SMOOTHING:
-          __apriori = new AprioriSmoothing<>;
-          break;
+        case AprioriType::SMOOTHING: __apriori = new AprioriSmoothing<>; break;
 
         case AprioriType::DIRICHLET_FROM_DATABASE:
           if (__apriori_database != nullptr) {
@@ -541,12 +517,14 @@ namespace gum {
           }
 
           if (__user_modalities.empty()) {
-            __apriori_database = new Database(__apriori_dbname, __score_database,
-                                              __score_database.missingSymbols () );
+            __apriori_database = new Database(__apriori_dbname,
+                                              __score_database,
+                                              __score_database.missingSymbols());
           } else {
-            GUM_ERROR(OperationNotAllowed, "not implemented" );
+            GUM_ERROR(OperationNotAllowed, "not implemented");
             //__apriori_database =
-            //  new Database(__apriori_dbname, __score_database, __user_modalities);
+            //  new Database(__apriori_dbname, __score_database,
+            //  __user_modalities);
           }
 
           __apriori = new AprioriDirichletFromDatabase<>(
@@ -572,39 +550,33 @@ namespace gum {
       // create the new scoring function
       switch (__score_type) {
         case ScoreType::AIC:
-          __score = new ScoreAIC<>(__score_database.parser(),
-                                   __score_database.modalities(),
-                                   *__apriori);
+          __score = new ScoreAIC<>(
+            __score_database.parser(), __score_database.modalities(), *__apriori);
           break;
 
         case ScoreType::BD:
-          __score = new ScoreBD<>(__score_database.parser(),
-                                  __score_database.modalities(),
-                                  *__apriori);
+          __score = new ScoreBD<>(
+            __score_database.parser(), __score_database.modalities(), *__apriori);
           break;
 
         case ScoreType::BDeu:
-          __score = new ScoreBDeu<>(__score_database.parser(),
-                                    __score_database.modalities(),
-                                    *__apriori);
+          __score = new ScoreBDeu<>(
+            __score_database.parser(), __score_database.modalities(), *__apriori);
           break;
 
         case ScoreType::BIC:
-          __score = new ScoreBIC<>(__score_database.parser(),
-                                   __score_database.modalities(),
-                                   *__apriori);
+          __score = new ScoreBIC<>(
+            __score_database.parser(), __score_database.modalities(), *__apriori);
           break;
 
         case ScoreType::K2:
-          __score = new ScoreK2<>(__score_database.parser(),
-                                  __score_database.modalities(),
-                                  *__apriori);
+          __score = new ScoreK2<>(
+            __score_database.parser(), __score_database.modalities(), *__apriori);
           break;
 
         case ScoreType::LOG2LIKELIHOOD:
-          __score = new ScoreLog2Likelihood<>(__score_database.parser(),
-                                              __score_database.modalities(),
-                                              *__apriori);
+          __score = new ScoreLog2Likelihood<>(
+            __score_database.parser(), __score_database.modalities(), *__apriori);
           break;
 
         default:
@@ -672,9 +644,7 @@ namespace gum {
       }
       __miic_3off2.addConstraints(initial_marks);
       // create the mutual entropy object
-      if (__mutual_info == nullptr) {
-        this->useNML();
-      }
+      if (__mutual_info == nullptr) { this->useNML(); }
 
       return mgraph;
     }

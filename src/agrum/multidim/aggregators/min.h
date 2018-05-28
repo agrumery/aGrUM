@@ -76,8 +76,10 @@ namespace gum {
 
       protected:
       virtual Idx _neutralElt() const;
-      virtual Idx
-      _fold(const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration) const;
+      virtual Idx _fold(const DiscreteVariable& v,
+                        Idx                     i1,
+                        Idx                     i2,
+                        bool&                   stop_iteration) const;
     };
 
 
@@ -85,9 +87,9 @@ namespace gum {
     extern template class Min< double >;
 
 
-  }  // aggregator
-}  // gum
+  }   // namespace aggregator
+}   // namespace gum
 
 #include <agrum/multidim/aggregators/min_tpl.h>
 
-#endif  // GUM_MIN_AGGREGATOR_H
+#endif   // GUM_MIN_AGGREGATOR_H

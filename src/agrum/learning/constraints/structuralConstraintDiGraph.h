@@ -79,7 +79,7 @@ namespace gum {
 
       /// copy operator
       StructuralConstraintDiGraph&
-      operator=(const StructuralConstraintDiGraph& from);
+        operator=(const StructuralConstraintDiGraph& from);
 
       /// move operator
       StructuralConstraintDiGraph& operator=(StructuralConstraintDiGraph&& from);
@@ -175,16 +175,16 @@ namespace gum {
        * does not. */
       bool checkModificationAlone(const ArcReversal& change) const;
 
-/// @}
+      /// @}
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // include the set of methods that enable the structural constraint to
 // be standalone, i.e., that it needs not be included into a
 // StructuralConstraintSetStatic to be used by learning algorithms
-#define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintDiGraph
-#include <agrum/learning/constraints/structuralConstraintPatternHeader.h>
-#undef GUM_CONSTRAINT_CLASS_NAME
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#  define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintDiGraph
+#  include <agrum/learning/constraints/structuralConstraintPatternHeader.h>
+#  undef GUM_CONSTRAINT_CLASS_NAME
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
       protected:
       /// the DiGraph on which we perform checks
@@ -197,7 +197,7 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/constraints/structuralConstraintDiGraph_inl.h>
+#  include <agrum/learning/constraints/structuralConstraintDiGraph_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_STRUCTURAL_CONSTRAINT_DIGRAPH_H */

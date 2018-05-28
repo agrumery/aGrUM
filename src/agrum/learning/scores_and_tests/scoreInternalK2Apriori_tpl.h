@@ -31,25 +31,25 @@ namespace gum {
     /// default constructor
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE
-    ScoreInternalK2Apriori< IdSetAlloc, CountAlloc >::ScoreInternalK2Apriori() {
+      ScoreInternalK2Apriori< IdSetAlloc, CountAlloc >::ScoreInternalK2Apriori() {
       GUM_CONSTRUCTOR(ScoreInternalK2Apriori);
     }
 
     /// copy constructor
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE
-    ScoreInternalK2Apriori< IdSetAlloc, CountAlloc >::ScoreInternalK2Apriori(
-      const ScoreInternalK2Apriori< IdSetAlloc, CountAlloc >& from)
-        : ScoreInternalApriori< IdSetAlloc, CountAlloc >(from) {
+      ScoreInternalK2Apriori< IdSetAlloc, CountAlloc >::ScoreInternalK2Apriori(
+        const ScoreInternalK2Apriori< IdSetAlloc, CountAlloc >& from) :
+        ScoreInternalApriori< IdSetAlloc, CountAlloc >(from) {
       GUM_CONS_CPY(ScoreInternalK2Apriori);
     }
 
     /// move constructor
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE
-    ScoreInternalK2Apriori< IdSetAlloc, CountAlloc >::ScoreInternalK2Apriori(
-      ScoreInternalK2Apriori< IdSetAlloc, CountAlloc >&& from)
-        : ScoreInternalApriori< IdSetAlloc, CountAlloc >(std::move(from)) {
+      ScoreInternalK2Apriori< IdSetAlloc, CountAlloc >::ScoreInternalK2Apriori(
+        ScoreInternalK2Apriori< IdSetAlloc, CountAlloc >&& from) :
+        ScoreInternalApriori< IdSetAlloc, CountAlloc >(std::move(from)) {
       GUM_CONS_MOV(ScoreInternalK2Apriori);
     }
 
@@ -70,13 +70,13 @@ namespace gum {
     /// insert the internal score apriori into a set of countings
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE void
-    ScoreInternalK2Apriori< IdSetAlloc, CountAlloc >::insertScoreApriori(
-      const std::vector< Size >& modalities,
-      std::vector< std::vector< double, CountAlloc > >& counts,
-      const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >&
-        target_nodesets,
-      const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >&
-        conditioning_nodesets) {
+      ScoreInternalK2Apriori< IdSetAlloc, CountAlloc >::insertScoreApriori(
+        const std::vector< Size >&                        modalities,
+        std::vector< std::vector< double, CountAlloc > >& counts,
+        const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >&
+          target_nodesets,
+        const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >&
+          conditioning_nodesets) {
       // put 1's into the countings for the targets
       // and the sum of the weight times the target for the conditioning nodes
       const Size size = Size(target_nodesets.size());

@@ -53,20 +53,14 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   struct ArgumentMaximisesAction {
-
     // ###########################################################################
     /// @name Operator()
     // ###########################################################################
     /// @{
 
     const GUM_SCALAR& operator()(const GUM_SCALAR& x, const GUM_SCALAR& y) const {
-
-      if (x > y) {
-        return x;
-      }
-      if (x < y) {
-        return y;
-      }
+      if (x > y) { return x; }
+      if (x < y) { return y; }
 
       __temp = x;
       __temp += y;
@@ -79,7 +73,8 @@ namespace gum {
 
 
   /**
-   * @class ActionSet actionSet.h <agrum/FMDP/planning/actionSet.h>
+   * @class ActionSet
+   * @headerfile actionSet.h <agrum/FMDP/planning/actionSet.h>
    * @brief A class to store the optimal actions.
    * @ingroup fmdp_group
    *
@@ -88,7 +83,6 @@ namespace gum {
    *
    */
   class ActionSet {
-
     public:
     // ###########################################################################
     /// @name CNL
@@ -224,5 +218,5 @@ namespace gum {
       return streamy;
     }
   };
-}
-#endif  // GUM_ACTION_SET_H
+}   // namespace gum
+#endif   // GUM_ACTION_SET_H

@@ -45,7 +45,7 @@ namespace gum {
      * @ingroup learning_group
      */
     class StructuralConstraintUndiGraph
-      : public virtual StructuralConstraintEmpty {
+        : public virtual StructuralConstraintEmpty {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -79,11 +79,11 @@ namespace gum {
 
       /// copy operator
       StructuralConstraintUndiGraph&
-      operator=(const StructuralConstraintUndiGraph& from);
+        operator=(const StructuralConstraintUndiGraph& from);
 
       /// move operator
       StructuralConstraintUndiGraph&
-      operator=(StructuralConstraintUndiGraph&& from);
+        operator=(StructuralConstraintUndiGraph&& from);
 
       /// @}
 
@@ -157,16 +157,16 @@ namespace gum {
       /** an edge can be removed if and only if the edge exists. */
       bool checkModificationAlone(const EdgeDeletion& change) const;
 
-/// @}
+      /// @}
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // include the set of methods that enable the structural constraint to
 // be standalone, i.e., that it needs not be included into a
 // StructuralConstraintSetStatic to be used by learning algorithms
-#define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintUndiGraph
-#include <agrum/learning/constraints/structuralConstraintPattern4UndiGraphHeader.h>
-#undef GUM_CONSTRAINT_CLASS_NAME
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#  define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintUndiGraph
+#  include <agrum/learning/constraints/structuralConstraintPattern4UndiGraphHeader.h>
+#  undef GUM_CONSTRAINT_CLASS_NAME
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
       protected:
       /// the UndiGraph on which we perform checks
@@ -179,7 +179,7 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/constraints/structuralConstraintUndiGraph_inl.h>
+#  include <agrum/learning/constraints/structuralConstraintUndiGraph_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_STRUCTURAL_CONSTRAINT_UNDIGRAPH_H */

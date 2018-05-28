@@ -26,8 +26,8 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/agrum.h>
-#include <agrum/multidim/utils/partialInstantiationRegister4MultiDim.h>
+#  include <agrum/agrum.h>
+#  include <agrum/multidim/utils/partialInstantiationRegister4MultiDim.h>
 
 namespace gum {
 
@@ -44,14 +44,14 @@ namespace gum {
     if (!__set.exists(instantiation_func_name)) {
       theset =
         __set.insert(instantiation_func_name, new PartialInstantiationSet).second;
-#ifndef NDEBUG
+#  ifndef NDEBUG
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the
       // PartialInstantiationRegister4MultiDim
       // will be removed at the end of the program's execution.
       __debug__::__inc_deletion(
         "HashTable", __FILE__, __LINE__, "destructor of", (void*)theset);
-#endif /* NDEBUG */
+#  endif /* NDEBUG */
     } else {
       theset = __set[instantiation_func_name];
     }
@@ -85,21 +85,21 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE typename PartialInstantiationRegister4MultiDim<
     GUM_SCALAR >::PartialInstantiationPtr
-  PartialInstantiationRegister4MultiDim< GUM_SCALAR >::get(
-    const std::string& instantiation_func_name,
-    const std::string& type_multidim) const {
+    PartialInstantiationRegister4MultiDim< GUM_SCALAR >::get(
+      const std::string& instantiation_func_name,
+      const std::string& type_multidim) const {
     PartialInstantiationSet* theset = __set[instantiation_func_name];
-    return theset->operator[](type_multidim);
+    return theset->          operator[](type_multidim);
   }
 
   // a named constructor that constructs one and only one Register per data
   // type
   template < typename GUM_SCALAR >
   PartialInstantiationRegister4MultiDim< GUM_SCALAR >&
-  PartialInstantiationRegister4MultiDim< GUM_SCALAR >::Register() {
+    PartialInstantiationRegister4MultiDim< GUM_SCALAR >::Register() {
     static PartialInstantiationRegister4MultiDim container;
 
-#ifndef NDEBUG
+#  ifndef NDEBUG
     static bool first = true;
 
     if (first) {
@@ -112,7 +112,7 @@ namespace gum {
         "HashTable", __FILE__, __LINE__, "destructor of", (void*)&container.__set);
     }
 
-#endif /* NDEBUG */
+#  endif /* NDEBUG */
 
     return container;
   }
@@ -137,11 +137,11 @@ namespace gum {
   // a function to more easily register new instantiation functions in
   // MultiDims
   template < typename GUM_SCALAR >
-  void
-  registerPartialInstantiation(const std::string& instantiation_func_name,
-                               const std::string& type_multidim,
-                               typename PartialInstantiationRegister4MultiDim<
-                                 GUM_SCALAR >::PartialInstantiationPtr function) {
+  void registerPartialInstantiation(
+    const std::string& instantiation_func_name,
+    const std::string& type_multidim,
+    typename PartialInstantiationRegister4MultiDim<
+      GUM_SCALAR >::PartialInstantiationPtr function) {
     PartialInstantiationRegister4MultiDim< GUM_SCALAR >::Register().insert(
       instantiation_func_name, type_multidim, function);
   }

@@ -71,13 +71,13 @@ namespace gum {
 
   // clang-format off
   /**
-   * @class FactorySimulator factorySimulator.h <agrum/FMDP/simulation/factorySimulator.h>
+* @class FactorySimulator
+* @headerfile factorySimulator.h <agrum/FMDP/simulation/factorySimulator.h>
    * @brief A class to simulate the Factory problem
    * @ingroup fmdp_group
    */
   // clang-format on
   class FactorySimulator : public AbstractSimulator {
-
     public:
     // ===========================================================================
     /// @name Constructors, Destructors.
@@ -159,17 +159,17 @@ namespace gum {
     void __fillUp();
 
     /// Variables data structures
-    Sequence< const DiscreteVariable* > __FactoryVars;
+    Sequence< const DiscreteVariable* >                           __FactoryVars;
     Bijection< const DiscreteVariable*, const DiscreteVariable* > __primeMap;
-    DiscreteVariable* __xPos;
-    DiscreteVariable* __yPos;
-    DiscreteVariable* __passengerPos;
-    DiscreteVariable* __passengerDest;
-    DiscreteVariable* __fuelLevel;
+    DiscreteVariable*                                             __xPos;
+    DiscreteVariable*                                             __yPos;
+    DiscreteVariable*                                             __passengerPos;
+    DiscreteVariable*                                             __passengerDest;
+    DiscreteVariable*                                             __fuelLevel;
 
     /// Actions
-    Sequence< Idx > __FactoryActions;
-    HashTable< Idx, std::string* > __actionMap;  //__actionMap.insert ( actionId,
+    Sequence< Idx >                __FactoryActions;
+    HashTable< Idx, std::string* > __actionMap;   //__actionMap.insert ( actionId,
     // new std::string ( action ) );
     FactorySimulationAction __lastAction;
   };
@@ -177,4 +177,4 @@ namespace gum {
 } /* namespace gum */
 
 
-#endif  // GUM_FACTORY_SIMULATOR_H
+#endif   // GUM_FACTORY_SIMULATOR_H

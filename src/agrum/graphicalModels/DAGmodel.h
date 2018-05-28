@@ -1,29 +1,29 @@
 /***************************************************************************
-*   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 /**
-* @file
-* @brief Class representing probabilistic DAG model
-*
-* @author Pierre-Henri WUILLEMIN and Christophe GONZALES
-*
-*/
+ * @file
+ * @brief Class representing probabilistic DAG model
+ *
+ * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
+ *
+ */
 #ifndef GUM_DAGMODEL_H
 #define GUM_DAGMODEL_H
 #include <agrum/agrum.h>
@@ -37,12 +37,12 @@
 namespace gum {
 
   /**
-  * @class DAGmodel DAGmodel.h <agrum/graphicalModels/DAGmodel.h>
+   * @class DAGmodel
+   * @headerfile DAGmodel.h <agrum/graphicalModels/DAGmodel.h>
    * Virtual base class for PGMs using a DAG
    *
    */
   class DAGmodel {
-
     public:
     /// @name Constructors / Destructors
     /// @{
@@ -93,10 +93,10 @@ namespace gum {
     const DAG& dag() const;
 
     /**
-    * Returns a constant reference to the VariableNodeMap of this Directed
-    * Graphical
-    * Model
-    */
+     * Returns a constant reference to the VariableNodeMap of this Directed
+     * Graphical
+     * Model
+     */
     virtual const VariableNodeMap& variableNodeMap() const = 0;
 
     /**
@@ -117,15 +117,15 @@ namespace gum {
     const NodeGraphPart& nodes() const;
 
     /**
-    * Returns a constant reference over a variabe given it's node id.
-    * @throw NotFound If no variable's id matches varId.
-    */
+     * Returns a constant reference over a variabe given it's node id.
+     * @throw NotFound If no variable's id matches varId.
+     */
     virtual const DiscreteVariable& variable(NodeId id) const = 0;
 
     /**
-    * Return id node src discrete var pointer.
-    * @throw NotFound If no variable matches var.
-    */
+     * Return id node src discrete var pointer.
+     * @throw NotFound If no variable matches var.
+     */
     virtual NodeId nodeId(const DiscreteVariable& var) const = 0;
 
     /// Getter by name
@@ -135,7 +135,7 @@ namespace gum {
     /// Getter by name
     /// @throw NotFound if no such name exists in the graph.
     virtual const DiscreteVariable&
-    variableFromName(const std::string& name) const = 0;
+      variableFromName(const std::string& name) const = 0;
 
     /// Get an instantiation over all the variables of the model
     virtual Instantiation completeInstantiation() const final;
@@ -217,10 +217,10 @@ namespace gum {
     /// necessary.
     HashTable< std::string, std::string >& __properties() const;
   };
-}  // gum
+}   // namespace gum
 
 #ifndef GUM_NO_INLINE
-#include <agrum/graphicalModels/DAGmodel_inl.h>
+#  include <agrum/graphicalModels/DAGmodel_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_DAGMODEL_H */

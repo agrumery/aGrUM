@@ -108,7 +108,7 @@ namespace gum {
 
     /// @}
   };
-}
+}   // namespace gum
 
 
 extern template class gum::ExactPolicy< float >;

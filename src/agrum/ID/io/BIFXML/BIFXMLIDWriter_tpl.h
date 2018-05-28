@@ -20,7 +20,7 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/ID/io/BIFXML/BIFXMLIDWriter.h>
+#  include <agrum/ID/io/BIFXML/BIFXMLIDWriter.h>
 
 namespace gum {
 
@@ -77,9 +77,7 @@ namespace gum {
     output << __documentend();
     output.flush();
 
-    if (output.fail()) {
-      GUM_ERROR(IOError, "Writting in the ostream failed.");
-    }
+    if (output.fail()) { GUM_ERROR(IOError, "Writting in the ostream failed."); }
   }
 
   /*
@@ -100,9 +98,7 @@ namespace gum {
 
     output.close();
 
-    if (output.fail()) {
-      GUM_ERROR(IOError, "Writting in the ostream failed.");
-    }
+    if (output.fail()) { GUM_ERROR(IOError, "Writting in the ostream failed."); }
   }
 
   /*
@@ -152,8 +148,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE std::string
-  BIFXMLIDWriter< GUM_SCALAR >::__variableBloc(const DiscreteVariable& var,
-                                               int                     varType) {
+         BIFXMLIDWriter< GUM_SCALAR >::__variableBloc(const DiscreteVariable& var,
+                                                 int                     varType) {
     //<VARIABLE TYPE="nature|decision|utility">
     //<NAME>name</NAME>
     //<OUTCOME>outcome1</OUTCOME>
@@ -167,21 +163,13 @@ namespace gum {
     str << "<VARIABLE TYPE=\"";
 
     switch (varType) {
+      case 1: str << "decision"; break;
 
-      case 1:
-        str << "decision";
-        break;
+      case 2: str << "nature"; break;
 
-      case 2:
-        str << "nature";
-        break;
+      case 3: str << "utility"; break;
 
-      case 3:
-        str << "utility";
-        break;
-
-      default:
-        break;
+      default: break;
     }
 
     str << "\">" << std::endl;
@@ -214,8 +202,8 @@ namespace gum {
     //</DEFINITION>
     std::stringstream str;
 
-    if (!((infdiag.isDecisionNode(varNodeId)) &&
-          (infdiag.parents(varNodeId).empty()))) {
+    if (!((infdiag.isDecisionNode(varNodeId))
+          && (infdiag.parents(varNodeId).empty()))) {
       // Declaration
       str << "<DEFINITION>" << std::endl;
 
@@ -275,4 +263,4 @@ namespace gum {
 
 } /* namespace gum */
 
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif   // DOXYGEN_SHOULD_SKIP_THIS

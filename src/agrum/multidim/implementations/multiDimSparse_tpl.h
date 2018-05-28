@@ -29,9 +29,8 @@ namespace gum {
   // Default constructor: creates an empty null dimensional matrix
 
   template < typename GUM_SCALAR >
-  MultiDimSparse< GUM_SCALAR >::MultiDimSparse(const GUM_SCALAR& default_value)
-      : MultiDimWithOffset< GUM_SCALAR >()
-      , _default(default_value) {
+  MultiDimSparse< GUM_SCALAR >::MultiDimSparse(const GUM_SCALAR& default_value) :
+      MultiDimWithOffset< GUM_SCALAR >(), _default(default_value) {
     // for debugging purposes
     GUM_CONSTRUCTOR(MultiDimSparse);
   }
@@ -40,10 +39,9 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   MultiDimSparse< GUM_SCALAR >::MultiDimSparse(
-    const MultiDimSparse< GUM_SCALAR >& from)
-      : MultiDimWithOffset< GUM_SCALAR >(from)
-      , _params(from._params)
-      , _default(from._default) {
+    const MultiDimSparse< GUM_SCALAR >& from) :
+      MultiDimWithOffset< GUM_SCALAR >(from),
+      _params(from._params), _default(from._default) {
     // for debugging purposes
     GUM_CONS_CPY(MultiDimSparse);
   }
@@ -61,7 +59,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR
-  MultiDimSparse< GUM_SCALAR >::get(const Instantiation& i) const {
+         MultiDimSparse< GUM_SCALAR >::get(const Instantiation& i) const {
     Size key;
 
     if (i.isMaster(this)) {
@@ -151,7 +149,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR&
-  MultiDimSparse< GUM_SCALAR >::_get(const Instantiation& i) const {
+         MultiDimSparse< GUM_SCALAR >::_get(const Instantiation& i) const {
     GUM_ERROR(OperationNotAllowed,
               "Do not use this with the MultiDimSparse class.");
   }

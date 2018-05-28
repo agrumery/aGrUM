@@ -34,15 +34,14 @@ namespace gum {
 
     // Default constructor
     template < typename GUM_SCALAR >
-    INLINE Min< GUM_SCALAR >::Min()
-        : MultiDimAggregator< GUM_SCALAR >() {
+    INLINE Min< GUM_SCALAR >::Min() : MultiDimAggregator< GUM_SCALAR >() {
       GUM_CONSTRUCTOR(Min)
     }
 
     // Default constructor
     template < typename GUM_SCALAR >
-    INLINE Min< GUM_SCALAR >::Min(const Min< GUM_SCALAR >& from)
-        : MultiDimAggregator< GUM_SCALAR >(from) {
+    INLINE Min< GUM_SCALAR >::Min(const Min< GUM_SCALAR >& from) :
+        MultiDimAggregator< GUM_SCALAR >(from) {
       GUM_CONS_CPY(Min);
     }
 
@@ -75,5 +74,5 @@ namespace gum {
       return new Min< GUM_SCALAR >;
     }
 
-  }  // namespace aggregator
-}  // namespace gum
+  }   // namespace aggregator
+}   // namespace gum

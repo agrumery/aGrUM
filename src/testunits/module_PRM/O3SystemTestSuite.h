@@ -60,9 +60,7 @@ namespace gum_tests {
             GUM_ERROR(gum::FatalError, "corrupted ressource file");
           }
         }
-      } catch (gum::Exception& e) {
-        TS_ASSERT(false);
-      }
+      } catch (gum::Exception& e) { TS_ASSERT(false); }
     }
 
     void tearDown() {
@@ -346,4 +344,4 @@ namespace gum_tests {
     }
   };
 
-}  // namespace gum_tests
+}   // namespace gum_tests

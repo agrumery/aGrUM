@@ -46,12 +46,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   class Chi2TestPolicy : public ITestPolicy< GUM_SCALAR > {
-
     public:
-    Chi2TestPolicy()
-        : ITestPolicy< GUM_SCALAR >()
-        , __conTab()
-        , __chi2Score(0) {
+    Chi2TestPolicy() : ITestPolicy< GUM_SCALAR >(), __conTab(), __chi2Score(0) {
       GUM_CONSTRUCTOR(Chi2TestPolicy)
     }
 
@@ -90,8 +86,8 @@ namespace gum {
     /// relevant
     // ============================================================================
     bool isTestRelevant() const {
-      return (this->nbObservation() > 20 &&
-              this->nbObservation() > __conTab.attrASize() * 5);
+      return (this->nbObservation() > 20
+              && this->nbObservation() > __conTab.attrASize() * 5);
     }
 
     /// @}
@@ -140,7 +136,7 @@ namespace gum {
     mutable double __chi2Score;
   };
 
-}  // End of namespace gum
+}   // End of namespace gum
 
 #include <agrum/FMDP/learning/core/testPolicy/Chi2TestPolicy_tpl.h>
 

@@ -103,7 +103,9 @@ namespace gum {
   /* ===========================================================================
    */
 
-  class UndiGraph : public virtual NodeGraphPart, public EdgeGraphPart {
+  class UndiGraph
+      : public virtual NodeGraphPart
+      , public EdgeGraphPart {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -195,7 +197,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/graphs/undiGraph_inl.h>
-#endif  // GUM_NOINLINE
+#  include <agrum/graphs/undiGraph_inl.h>
+#endif   // GUM_NOINLINE
 
 #endif /* GUM_UNDIGRAPH_H */

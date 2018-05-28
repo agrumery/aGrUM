@@ -72,7 +72,6 @@ namespace gum_tests {
       del_vars << vars[1] << vars[4] << vars[5] << vars[6] << vars[9] << vars[10];
 
       try {
-
         gum::Set< const gum::Potential< double >* > res =
           projcomb.combineAndProject(to_comb, del_vars);
 
@@ -180,7 +179,6 @@ namespace gum_tests {
       del_vars << vars[1] << vars[4] << vars[5] << vars[6] << vars[9] << vars[10];
 
       try {
-
         gum::Set< const gum::Potential< float >* > res =
           projcomb.combineAndProject(to_comb, del_vars);
 
@@ -278,14 +276,14 @@ namespace gum_tests {
     }
 
     static gum::Potential< float >*
-    mySum(const gum::Potential< float >&                  table,
-          const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+      mySum(const gum::Potential< float >&                  table,
+            const gum::Set< const gum::DiscreteVariable* >& del_vars) {
       return new gum::Potential< float >(table.margSumOut(del_vars));
     }
 
     static gum::Potential< float >*
-    myMax(const gum::Potential< float >&                  table,
-          const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+      myMax(const gum::Potential< float >&                  table,
+            const gum::Set< const gum::DiscreteVariable* >& del_vars) {
       return new gum::Potential< float >(table.margMaxOut(del_vars));
     }
 
@@ -309,14 +307,14 @@ namespace gum_tests {
     }
 
     static gum::Potential< double >*
-    mySum(const gum::Potential< double >&                 table,
-          const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+      mySum(const gum::Potential< double >&                 table,
+            const gum::Set< const gum::DiscreteVariable* >& del_vars) {
       return new gum::Potential< double >(table.margSumOut(del_vars));
     }
 
     static gum::Potential< double >*
-    myMax(const gum::Potential< double >&                 table,
-          const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+      myMax(const gum::Potential< double >&                 table,
+            const gum::Set< const gum::DiscreteVariable* >& del_vars) {
       return new gum::Potential< double >(table.margMaxOut(del_vars));
     }
   };

@@ -59,7 +59,6 @@ namespace gum {
    */
   template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
   class IBayesNetGenerator : public ICPTGenerator< GUM_SCALAR > {
-
     public:
     // ############################################################################
     /// @name Constructors / Destructor
@@ -93,10 +92,10 @@ namespace gum {
     /// @{
 
     /**
-    * Virtual function that Generates a bayesian networks.
-    * @param bayesNet Bayesian Network to be completed after initialisation
-    * @return null but modify inputed empty Bayesian Network
-    */
+     * Virtual function that Generates a bayesian networks.
+     * @param bayesNet Bayesian Network to be completed after initialisation
+     * @return null but modify inputed empty Bayesian Network
+     */
 
     virtual void generateBN(BayesNet< GUM_SCALAR >& bayesNet) = 0;
 
@@ -131,9 +130,9 @@ namespace gum {
     Size maxArcs() const;
 
     /**
-    * Return a constant reference to the maximum modality imposed on the
-    * IBayesNetGenerator
-    */
+     * Return a constant reference to the maximum modality imposed on the
+     * IBayesNetGenerator
+     */
     Size maxModality() const;
 
     /**
@@ -142,18 +141,18 @@ namespace gum {
 
     //      void setcptGenerator(CPTGenerator * cptGenerator);
     /**
-    * Modifies the value of the number of nodes imposed on the BayesGenerator
-    */
+     * Modifies the value of the number of nodes imposed on the BayesGenerator
+     */
     void setNbrNodes(Size nbrNodes);
 
     /**
-    * Modifies the value of the number of nodes imposed on the BayesGenerator
-    */
+     * Modifies the value of the number of nodes imposed on the BayesGenerator
+     */
     void setMaxArcs(Size maxArcs);
 
     /**
-    * Modifies the value of the number of nodes imposed on the BayesGenerator
-    */
+     * Modifies the value of the number of nodes imposed on the BayesGenerator
+     */
     void setMaxModality(Size maxModality);
 
     /// @}

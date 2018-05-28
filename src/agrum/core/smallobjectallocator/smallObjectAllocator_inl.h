@@ -46,9 +46,9 @@ namespace gum {
    * Greater object than maxObjectSize will be forwarded to op new.
    */
   // ============================================================================
-  INLINE SmallObjectAllocator::SmallObjectAllocator()
-      : __chunkSize(GUM_DEFAULT_CHUNK_SIZE)
-      , __maxObjectSize(GUM_DEFAULT_MAX_OBJECT_SIZE) {
+  INLINE SmallObjectAllocator::SmallObjectAllocator() :
+      __chunkSize(GUM_DEFAULT_CHUNK_SIZE),
+      __maxObjectSize(GUM_DEFAULT_MAX_OBJECT_SIZE) {
     __pool.setKeyUniquenessPolicy(false);
     GUM_CONSTRUCTOR(SmallObjectAllocator);
     nbAllocation = 0;
@@ -84,14 +84,13 @@ namespace gum {
   // Allocates an object
   // ============================================================================
   INLINE void* SmallObjectAllocator::allocate(const size_t& objectSize) {
-
-    assert(objectSize > 0 &&
-           "Small Object Allocator called for an object of size equals to 0");
+    assert(objectSize > 0
+           && "Small Object Allocator called for an object of size equals to 0");
 
     // If objectSize is greater than maxObjectSize, normal new is called
     if (objectSize > __maxObjectSize) return new unsigned char[objectSize];
 
-    void*   ret;
+    void* ret;
 #pragma omp critical(soa)
     {
       //
@@ -119,9 +118,8 @@ namespace gum {
   // ============================================================================
   INLINE void SmallObjectAllocator::deallocate(void*         pDeallocatedObject,
                                                const size_t& objectSize) {
-
-    assert(objectSize > 0 &&
-           "Small Object Allocator called for an object of size equals to 0");
+    assert(objectSize > 0
+           && "Small Object Allocator called for an object of size equals to 0");
 
     // If objectSize is greater than maxObjectSize, normal new is called
     if (objectSize > __maxObjectSize) {
@@ -131,11 +129,10 @@ namespace gum {
 
 #pragma omp critical(soa)
     {
-
       //      std::cout << "Deallocating " << pDeallocatedObject << std::endl;
       __pool[Size(objectSize)]->deallocate(pDeallocatedObject);
       nbDeallocation++;
     }
   }
 
-}  // namespace gum
+}   // namespace gum
