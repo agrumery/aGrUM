@@ -151,7 +151,7 @@ namespace gum {
   DiscretizedVariable< T_TICKS >&
     DiscretizedVariable< T_TICKS >::addTick(const T_TICKS& aTick) {
     if (isTick(aTick)) {
-      GUM_ERROR(DefaultInLabel, "Tick already used for this variable ");
+      GUM_ERROR(DefaultInLabel, "Tick '"<<aTick<<"' already used for variable "<<name());
     }
 
     if (__ticks_size == __ticks.size()) {   // streching __ticks if necessary
