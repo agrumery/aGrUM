@@ -61,6 +61,34 @@ def loadBN(filename,listeners=None,verbose=False,**opts):
     :param system: (for O3PRM) name of the system to flatten in a BN
     :param classpath: (for O3PRM) list of folders containing classes
     :return: a BN from a file using one of the availableBNExts() suffixes.
+
+    Listeners could be added in order to monitor its loading.
+
+    Examples
+    --------
+    >>> import pyAgrum as gum
+    >>>
+    >>> # creating listeners
+    >>> def foo_listener(progress):
+    >>>    if progress==200:
+    >>>        print(' BN loaded ')
+    >>>        return
+    >>>    elif progress==100:
+    >>>        car='%'
+    >>>    elif progress%10==0:
+    >>>        car='#'
+    >>>    else:
+    >>>        car='.'
+    >>>    print(car,end='',flush=True)
+    >>>
+    >>> def bar_listener(progress):
+    >>>    if progress==50:
+    >>>        print('50%')
+    >>>
+    >>> # loadBN with list of listeners
+    >>> gum.loadBN('./bn.bif',listeners=[foo_listener,bar_listener])
+    >>> # .........#.........#.........#.........#..50%
+    >>> # .......#.........#.........#.........#.........#.........% | bn loaded
     """
     bn=BayesNet()
 
