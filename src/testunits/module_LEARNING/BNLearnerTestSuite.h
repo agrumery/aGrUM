@@ -851,7 +851,8 @@ namespace gum_tests {
         A.addTick(double(i));
       }
 
-      nodeList.push_back(templ.add(A));   // Ajout de la variable Age allant de 60
+      gum::NodeId a_id = templ.add(A);
+      nodeList.push_back(a_id);   // Ajout de la variable Age allant de 60
                                           // à 100 ans à la liste des noeuds
 
       // Ajout de la variable ADL allant de 0 à 6 à la liste des noeuds
