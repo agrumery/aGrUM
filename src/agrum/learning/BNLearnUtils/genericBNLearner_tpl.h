@@ -42,7 +42,7 @@ namespace gum {
       try {
         for (auto node : bn.dag()) {
           const Variable& var = bn.variable(node);
-          __database.template insertTranslator<GUM_SCALAR,std::allocator>(var, var_names[var.name()], missing_symbols);
+          __database.insertTranslator(var, var_names[var.name()], missing_symbols);
         }
       } catch (NotFound&) {
         GUM_ERROR(MissingVariableInDatabase,

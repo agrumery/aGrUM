@@ -212,8 +212,7 @@ namespace gum {
        * @throw DuplicateElement is raised if there already exists a translator
        * reading the column passed in argument.
        */
-      template < typename GUM_SCALAR = float,
-                 template < typename > class XALLOC = ALLOC >
+      template < template < typename > class XALLOC >
       std::size_t insertTranslator(
         const Variable&                                          var,
         const std::size_t                                        column,
@@ -233,7 +232,6 @@ namespace gum {
        * @throw DuplicateElement is raised if there already exists a translator
        * reading the column passed in argument.
        */
-      template < typename GUM_SCALAR = float >
       std::size_t insertTranslator(const Variable& var, const std::size_t column);
 
       /** @brief erases either the kth translator or that parsing the kth

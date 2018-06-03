@@ -376,11 +376,11 @@ namespace gum_tests {
       gum::LabelizedVariable     var1("var1", "", 0);
       var1.addLabel("toto");
       var1.addLabel("titi");
-      pos = set.insertTranslator<>(var1, 1, missing);
+      pos = set.insertTranslator(var1, 1, missing);
       TS_ASSERT(pos == std::size_t(0));
 
       gum::ContinuousVariable< double > var0("var0", "");
-      pos = set.insertTranslator< double >(var0, 0, missing);
+      pos = set.insertTranslator(var0, 0, missing);
       TS_ASSERT(pos == std::size_t(0));
 
       gum::LabelizedVariable var2("var2", "", 0);

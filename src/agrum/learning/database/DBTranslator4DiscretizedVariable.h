@@ -168,6 +168,46 @@ namespace gum {
         std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
         const allocator_type& alloc = allocator_type());
 
+      /// default constructor with a IDiscretized variable as translator
+      /** @param var a IDiscretized variable which will be used for translations.
+       * The translator keeps a copy of this variable
+       * @param  missing_symbols the set of symbols in the dataset
+       * representing missing values
+       * @param max_dico_entries the max number of entries that the dictionary
+       * can contain. During the construction, we check that the discretized
+       * variable passed in argument has fewer discretization intervals than
+       * the admissible dictionary size
+       * @param alloc The allocator used to allocate memory for all the
+       * fields of the DBTranslator4DiscretizedVariable
+       * @warning If the variable contained into the translator has a label
+       * equal to a missing value symbol, the label will be taken into
+       * account in the translation, not the missing value. */
+      template < template < typename > class XALLOC >
+      DBTranslator4DiscretizedVariable(
+        const IDiscretizedVariable&                             var,
+        const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
+        std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
+        const allocator_type& alloc = allocator_type());
+
+      /** @brief default constructor with a IDiscretized variable as translator
+       * but without missing symbols
+       *
+       * @param var a discretized variable which will be used for translations.
+       * The translator keeps a copy of this variable
+       * @param max_dico_entries the max number of entries that the dictionary
+       * can contain. During the construction, we check that the discretized
+       * variable passed in argument has fewer discretization intervals than
+       * the admissible dictionary size
+       * @param alloc The allocator used to allocate memory for all the
+       * fields of the DBTranslator4DiscretizedVariable
+       * @warning If the variable contained into the translator has a label
+       * equal to a missing value symbol, the label will be taken into
+       * account in the translation, not the missing value. */
+      DBTranslator4DiscretizedVariable(
+        const IDiscretizedVariable& var,
+        std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
+        const allocator_type& alloc = allocator_type());
+      
       /// copy constructor
       DBTranslator4DiscretizedVariable(
         const DBTranslator4DiscretizedVariable< ALLOC >& from);

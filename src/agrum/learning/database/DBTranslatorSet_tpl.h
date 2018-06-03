@@ -252,7 +252,7 @@ namespace gum {
 
     /// inserts a new translator for a given variable in the translator set
     template < template < typename > class ALLOC >
-    template < typename GUM_SCALAR, template < typename > class XALLOC >
+    template < template < typename > class XALLOC >
     std::size_t DBTranslatorSet< ALLOC >::insertTranslator(
       const Variable&                                          var,
       const std::size_t                                        column,
@@ -268,22 +268,23 @@ namespace gum {
         }
 
         case VarType::Discretized: {
-          const DiscretizedVariable< GUM_SCALAR >& xvar =
-            static_cast< const DiscretizedVariable< GUM_SCALAR >& >(var);
+          const IDiscretizedVariable& xvar =
+            static_cast< const IDiscretizedVariable& >(var);
           DBTranslator4DiscretizedVariable< ALLOC > translator(xvar,
                                                                missing_symbols);
           return insertTranslator(translator, column);
         }
 
         case VarType::Range: {
-          const RangeVariable& xvar = static_cast< const RangeVariable& >(var);
+          const RangeVariable& xvar =
+            static_cast< const RangeVariable& >(var);
           DBTranslator4RangeVariable< ALLOC > translator(xvar, missing_symbols);
           return insertTranslator(translator, column);
         }
 
         case VarType::Continuous: {
-          const ContinuousVariable< GUM_SCALAR >& xvar =
-            static_cast< const ContinuousVariable< GUM_SCALAR >& >(var);
+          const IContinuousVariable& xvar =
+            static_cast< const IContinuousVariable& >(var);
           DBTranslator4ContinuousVariable< ALLOC > translator(xvar,
                                                               missing_symbols);
           return insertTranslator(translator, column);
@@ -296,12 +297,11 @@ namespace gum {
 
     /// inserts a new translator for a given variable in the translator set
     template < template < typename > class ALLOC >
-    template < typename GUM_SCALAR >
     INLINE std::size_t
            DBTranslatorSet< ALLOC >::insertTranslator(const Variable&   var,
                                                  const std::size_t column) {
       const std::vector< std::string, ALLOC< std::string > > missing;
-      return insertTranslator< GUM_SCALAR, ALLOC >(var, column, missing);
+      return this->insertTranslator (var, column, missing);
     }
 
 

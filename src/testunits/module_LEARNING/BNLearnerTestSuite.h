@@ -870,14 +870,13 @@ namespace gum_tests {
         templ.addArc(iNRC, node);
       }
 
-      GUM_TRACE("building learner");
-      try {
-        gum::learning::BNLearner< double > learner(
+      gum::learning::BNLearner< double > learner(
           GET_RESSOURCES_PATH("bugDoumenc.csv"), templ);
-        GUM_TRACE("learning initiated");
-        auto bn = learner.learnParameters(templ);
-        GUM_TRACE("learning done");
-      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
+      learner.useScoreLog2Likelihood();
+      learner.useAprioriSmoothing();
+      learner.setAprioriWeight(1);
+      auto bn = learner.learnParameters(templ);
+      
     }
     
     void testBugDoumencWithInt() {
@@ -943,14 +942,14 @@ namespace gum_tests {
         templ.addArc(iNRC, node);
       }
 
-      GUM_TRACE("building learner");
-      try {
-        gum::learning::BNLearner< double > learner(
+
+      gum::learning::BNLearner< double > learner(
           GET_RESSOURCES_PATH("bugDoumenc.csv"), templ);
-        GUM_TRACE("learning initiated");
-        auto bn = learner.learnParameters(templ);
-        GUM_TRACE("learning done");
-      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
+      learner.useScoreLog2Likelihood();
+      learner.useAprioriSmoothing();
+      learner.setAprioriWeight(1);
+
+      auto bn = learner.learnParameters(templ);
     }
   };
 } /* namespace gum_tests */

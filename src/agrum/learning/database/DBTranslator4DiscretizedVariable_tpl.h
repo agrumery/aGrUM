@@ -101,6 +101,70 @@ namespace gum {
     }
 
 
+    /// default constructor with a IDiscretized variable as translator
+    template < template < typename > class ALLOC >
+    template < template < typename > class XALLOC >
+    DBTranslator4DiscretizedVariable< ALLOC >::DBTranslator4DiscretizedVariable(
+      const IDiscretizedVariable&                              var,
+      const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
+      std::size_t                                              max_dico_entries,
+      const typename DBTranslator4DiscretizedVariable< ALLOC >::allocator_type&
+        alloc) :
+        DBTranslator< ALLOC >(DBTranslatedValueType::DISCRETE,
+                              missing_symbols,
+                              false,
+                              max_dico_entries,
+                              alloc),
+        __variable(var.name(), var.description()) {
+      // check that the variable has not too many entries
+      if (var.domainSize() > max_dico_entries) {
+        GUM_ERROR(SizeError,
+                  "the dictionary induced by the variable is too large");
+      }
+
+      // copy the ticks of var into our internal variable
+      const auto ticks = var.ticksAsFloats ();
+      for (const auto tick : ticks) {
+        __variable.addTick( tick );
+      }
+
+      // the the bounds of the discretized variable
+      const float lower_bound = ticks[0];
+      const float upper_bound = ticks.back();
+
+      // remove all the missing symbols corresponding to a number between
+      // lower_bound and upper_bound
+      for (auto iter = this->_missing_symbols.beginSafe();
+           iter != this->_missing_symbols.endSafe();
+           ++iter) {
+        if (DBCell::isReal(*iter)) {
+          const float missing_val = std::stof(*iter);
+          if ((missing_val >= lower_bound) && (missing_val <= upper_bound)) {
+            this->_missing_symbols.erase(iter);
+          }
+        }
+      }
+
+      // add the content of the variable into the back dictionary
+      std::size_t size = 0;
+      for (const auto& label : var.labels()) {
+        // if the label corresponds to a missing value, then remove it from
+        // the set of missing symbols. If, in addition, it has already
+        // been entered into the back_dictionary, then, this has been done
+        // because the label corresponded to a missing value, so we should
+        // remove the label as well from the back_dictionary.
+        if (this->_missing_symbols.exists(label)) {
+          this->_missing_symbols.erase(label);
+        }
+
+        this->_back_dico.insert(size, label);
+        ++size;
+      }
+
+      GUM_CONSTRUCTOR(DBTranslator4DiscretizedVariable);
+    }
+
+
     /// default constructor with a discretized variable as translator
     template < template < typename > class ALLOC >
     template < typename GUM_SCALAR >
@@ -122,6 +186,39 @@ namespace gum {
       const auto& ticks = var.ticks();
       for (const auto tick : ticks) {
         __variable.addTick((float)tick);
+      }
+
+      // add the content of the variable into the back dictionary
+      std::size_t size = 0;
+      for (const auto& label : var.labels()) {
+        this->_back_dico.insert(size, label);
+        ++size;
+      }
+
+      GUM_CONSTRUCTOR(DBTranslator4DiscretizedVariable);
+    }
+
+
+    /// default constructor with a IDiscretized variable as translator
+    template < template < typename > class ALLOC >
+    DBTranslator4DiscretizedVariable< ALLOC >::DBTranslator4DiscretizedVariable(
+      const IDiscretizedVariable&              var,
+      std::size_t                              max_dico_entries,
+      const typename DBTranslator4DiscretizedVariable< ALLOC >::allocator_type&
+        alloc) :
+        DBTranslator< ALLOC >(
+          DBTranslatedValueType::DISCRETE, false, max_dico_entries, alloc),
+        __variable(var.name(), var.description()) {
+      // check that the variable has not too many entries
+      if (var.domainSize() > max_dico_entries) {
+        GUM_ERROR(SizeError,
+                  "the dictionary induced by the variable is too large");
+      }
+
+      // copy the ticks of var into our internal variable
+      const auto ticks = var.ticksAsFloats();
+      for (const auto tick : ticks) {
+        __variable.addTick(tick);
       }
 
       // add the content of the variable into the back dictionary
