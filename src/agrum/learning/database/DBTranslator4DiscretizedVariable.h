@@ -313,16 +313,21 @@ namespace gum {
         reorder() final;
 
       /// returns the variable stored into the translator
-      virtual const DiscretizedVariable< float >* variable() const final;
-
+      virtual const IDiscretizedVariable* variable() const final;
+      
       /// @}
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
       private:
-      // the DiscretizedVariable assigned to the translator
+      // the DiscretizedVariable used for translations
       DiscretizedVariable< float > __variable;
+
+      // the DiscretizedVariable returned by method variable ()
+      // We must return a IDiscretizedVariable because the user may have
+      // saved into the translator a DiscretizedVariable<X>, with X != float
+      IDiscretizedVariable* __real_variable;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

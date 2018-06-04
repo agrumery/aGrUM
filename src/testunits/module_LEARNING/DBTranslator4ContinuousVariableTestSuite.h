@@ -237,27 +237,26 @@ namespace gum_tests {
         allocator.destroy(translator5);
         allocator.deallocate(translator5, 1);
 
-
         TS_ASSERT(translator4.translate("12").cont_val == 12.0f);
-        TS_ASSERT(translator4.variable()->lowerBound() == -2.0);
-        TS_ASSERT(translator4.variable()->upperBound() == 12.0);
+        TS_ASSERT(translator4.variable()->lowerBoundAsFloat() == -2.0f);
+        TS_ASSERT(translator4.variable()->upperBoundAsFloat() == 12.0f);
         translator4 = translator2;
-        TS_ASSERT(translator4.variable()->lowerBound() == -2.0);
-        TS_ASSERT(translator4.variable()->upperBound() == 10.0);
+        TS_ASSERT(translator4.variable()->lowerBoundAsFloat() == -2.0f);
+        TS_ASSERT(translator4.variable()->upperBoundAsFloat() == 10.0f);
 
         TS_ASSERT(translator.translate("12").cont_val == 12.0f);
-        TS_ASSERT(translator.variable()->lowerBound() == -2.0);
-        TS_ASSERT(translator.variable()->upperBound() == 12.0);
+        TS_ASSERT(translator.variable()->lowerBoundAsFloat() == -2.0f);
+        TS_ASSERT(translator.variable()->upperBoundAsFloat() == 12.0f);
         translator = translator2;
-        TS_ASSERT(translator.variable()->lowerBound() == -2.0);
-        TS_ASSERT(translator.variable()->upperBound() == 10.0);
+        TS_ASSERT(translator.variable()->lowerBoundAsFloat() == -2.0f);
+        TS_ASSERT(translator.variable()->upperBoundAsFloat() == 10.0f);
 
         TS_ASSERT(translator.translate("12").cont_val == 12.0f);
-        TS_ASSERT(translator.variable()->lowerBound() == -2.0);
-        TS_ASSERT(translator.variable()->upperBound() == 12.0);
+        TS_ASSERT(translator.variable()->lowerBoundAsFloat() == -2.0f);
+        TS_ASSERT(translator.variable()->upperBoundAsFloat() == 12.0f);
         translator = std::move(translator2);
-        TS_ASSERT(translator.variable()->lowerBound() == -2.0);
-        TS_ASSERT(translator.variable()->upperBound() == 10.0);
+        TS_ASSERT(translator.variable()->lowerBoundAsFloat() == -2.0f);
+        TS_ASSERT(translator.variable()->upperBoundAsFloat() == 10.0f);
       }
 
       TS_ASSERT(MyAllocCount::hasMeroryLeak() == false);

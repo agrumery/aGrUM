@@ -29,6 +29,11 @@
 
 namespace gum {
 
+  /** @class IDiscretizedVariable
+   * @headerfile IDiscretizedVariable.h <agrum/variables/IDiscretizedVariable.h>
+   * @ingroup multidim_group
+   * @brief A base class for discretized variables, independent of the ticks type
+   */
   class IDiscretizedVariable : public DiscreteVariable {
   public:
     // ############################################################################

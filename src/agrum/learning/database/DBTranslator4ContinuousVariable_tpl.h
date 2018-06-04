@@ -46,7 +46,7 @@ namespace gum {
         alloc) :
         DBTranslator< ALLOC >(
           DBTranslatedValueType::CONTINUOUS, missing_symbols, fit_range, 1, alloc),
-        __variable("var", ""), __fit_range(fit_range) {
+      __variable("var", ""), __fit_range(fit_range) {
       // Here, if fit_range is set to false, and the range of the
       // random variable will remain (-inf,+inf). So all the missing symbols
       // that are numbers should be discarded since they lie in the domain
@@ -72,6 +72,9 @@ namespace gum {
       if (__fit_range)
         __variable.setLowerBound(std::numeric_limits< float >::infinity());
 
+      // store a copy of the variable, that should be used by method variable ()
+      __real_variable = __variable.clone ();
+ 
       GUM_CONSTRUCTOR(DBTranslator4ContinuousVariable);
     }
 
@@ -90,6 +93,9 @@ namespace gum {
       // value yet in the database, we fix the lower bound of __variable to +max
       if (__fit_range)
         __variable.setLowerBound(std::numeric_limits< float >::infinity());
+
+      // store a copy of the variable, that should be used by method variable ()
+      __real_variable = __variable.clone ();
 
       GUM_CONSTRUCTOR(DBTranslator4ContinuousVariable);
     }
@@ -131,6 +137,9 @@ namespace gum {
         }
       }
 
+      // store a copy of the variable, that should be used by method variable ()
+      __real_variable = var.clone ();
+
       GUM_CONSTRUCTOR(DBTranslator4ContinuousVariable);
     }
 
@@ -151,6 +160,9 @@ namespace gum {
       const float upper_bound = float(var.upperBound());
       __variable.setLowerBound(lower_bound);
       __variable.setUpperBound(upper_bound);
+
+      // store a copy of the variable, that should be used by method variable ()
+      __real_variable = var.clone ();
 
       GUM_CONSTRUCTOR(DBTranslator4ContinuousVariable);
     }
@@ -192,6 +204,9 @@ namespace gum {
         }
       }
 
+      // store a copy of the variable, that should be used by method variable ()
+      __real_variable = var.clone ();
+      
       GUM_CONSTRUCTOR(DBTranslator4ContinuousVariable);
     }
 
@@ -212,6 +227,9 @@ namespace gum {
       __variable.setLowerBound(lower_bound);
       __variable.setUpperBound(upper_bound);
 
+      // store a copy of the variable, that should be used by method variable ()
+      __real_variable = var.clone ();
+
       GUM_CONSTRUCTOR(DBTranslator4ContinuousVariable);
     }
 
@@ -227,6 +245,9 @@ namespace gum {
         __status_float_missing_symbols(from.__status_float_missing_symbols),
         __nonfloat_missing_symbol(from.__nonfloat_missing_symbol),
         __fit_range(from.__fit_range) {
+      // store a copy of the variable, that should be used by method variable ()
+      __real_variable = from.__real_variable->clone ();
+
       GUM_CONS_CPY(DBTranslator4ContinuousVariable);
     }
 
@@ -250,6 +271,10 @@ namespace gum {
           std::move(from.__status_float_missing_symbols)),
         __nonfloat_missing_symbol(std::move(from.__nonfloat_missing_symbol)),
         __fit_range(from.__fit_range) {
+      // store a copy of the variable, that should be used by method variable ()
+      __real_variable = from.__real_variable;
+      from.__real_variable = nullptr;
+
       GUM_CONS_MOV(DBTranslator4ContinuousVariable);
     }
 
@@ -291,6 +316,8 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE DBTranslator4ContinuousVariable<
       ALLOC >::~DBTranslator4ContinuousVariable() {
+      if ( __real_variable != nullptr ) delete __real_variable;
+      
       GUM_DESTRUCTOR(DBTranslator4ContinuousVariable);
     }
 
@@ -306,6 +333,9 @@ namespace gum {
         __status_float_missing_symbols = from.__status_float_missing_symbols;
         __nonfloat_missing_symbol = from.__nonfloat_missing_symbol;
         __fit_range = from.__fit_range;
+
+        if ( __real_variable != nullptr ) delete __real_variable;
+        __real_variable = from.__real_variable->clone ();
       }
 
       return *this;
@@ -324,6 +354,10 @@ namespace gum {
           std::move(from.__status_float_missing_symbols);
         __nonfloat_missing_symbol = std::move(from.__nonfloat_missing_symbol);
         __fit_range = from.__fit_range;
+
+        if ( __real_variable != nullptr ) delete __real_variable;
+        __real_variable = from.__real_variable;
+        from.__real_variable = nullptr;
       }
 
       return *this;
@@ -502,9 +536,11 @@ namespace gum {
 
     /// returns the variable stored into the translator
     template < template < typename > class ALLOC >
-    INLINE const ContinuousVariable< float >*
-                 DBTranslator4ContinuousVariable< ALLOC >::variable() const {
-      return &__variable;
+    INLINE const IContinuousVariable*
+    DBTranslator4ContinuousVariable< ALLOC >::variable() const {
+      __real_variable->setLowerBoundFromFloat ( __variable.lowerBound () );
+      __real_variable->setUpperBoundFromFloat ( __variable.upperBound () );
+      return __real_variable;
     }
 
 

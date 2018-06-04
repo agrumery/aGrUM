@@ -34,7 +34,12 @@
 
 namespace gum {
 
-
+  /** @class IContinuousVariable
+   * @headerfile IContinuousVariable.h <agrum/variables/IContinuousVariable.h>
+   * @ingroup multidim_group
+   * @brief A base class for continuous variables, independent of the
+   * GUM_SCALAR type
+   */
   class IContinuousVariable : public Variable {
   public:
     // ############################################################################

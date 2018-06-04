@@ -364,7 +364,7 @@ namespace gum {
         reorder() final;
 
       /// returns the variable stored into the translator
-      virtual const ContinuousVariable< float >* variable() const final;
+      virtual const IContinuousVariable* variable() const final;
 
       /// @}
 
@@ -375,6 +375,11 @@ namespace gum {
       // the ContinuousVariable really used by the translator. As its values
       // are floats, this speeds-up translations
       ContinuousVariable< float > __variable;
+
+      // the ContinuousVariablee returned by method variable ()
+      // We must return a IContinuousVariable because the user may have
+      // saved into the translator a ContinuousVariable<X>, with X != float
+      IContinuousVariable* __real_variable;
 
       // assign to each float missing symbol a Boolean indicating whether
       // we already translated it or not. If we translated it, then we cannot

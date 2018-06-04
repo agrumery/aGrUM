@@ -175,7 +175,7 @@ namespace gum {
         std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
         const allocator_type& alloc = allocator_type());
 
-      /// default constructor with a discrete variable as translator
+      /// default constructor with a range variable as translator
       /** @param var a range variable which will be used for translations.
        * The translator keeps a copy of this variable
        * @param missing_symbols the set of symbols in the dataset
@@ -203,7 +203,7 @@ namespace gum {
         std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
         const allocator_type& alloc = allocator_type());
 
-      /** @brief default constructor with a discrete variable as translator
+      /** @brief default constructor with a range variable as translator
        * but without missing symbols
        *
        * @param var a range variable which will be used for translations.
