@@ -33,6 +33,11 @@
 
 namespace gum {
 
+  // the object that casts correctly the discrete variable sequences
+  // within the hash table of instantiations
+  typename HashFuncCastKey< const DiscreteVariable* >::type
+  HashFunc< Instantiation >::__caster;
+
   // Default constructor
   Instantiation::Instantiation() : __master(nullptr), __overflow(false) {
     GUM_CONSTRUCTOR(Instantiation);
