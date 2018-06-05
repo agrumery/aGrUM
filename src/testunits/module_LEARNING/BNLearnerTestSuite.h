@@ -806,7 +806,7 @@ namespace gum_tests {
       TS_ASSERT(nb == 1);
     }
 
-    void testBugDoumenc() {
+    void test_BugDoumenc() {
       gum::BayesNet< double >    templ;
       std::vector< std::string > varBool{"S",
                                          "DEP",
@@ -879,7 +879,7 @@ namespace gum_tests {
       
     }
     
-    void testBugDoumencWithInt() {
+    void test_BugDoumencWithInt() {
       gum::BayesNet< double >    templ;
       std::vector< std::string > varBool{"S",
                                          "DEP",

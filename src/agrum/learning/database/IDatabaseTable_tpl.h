@@ -466,12 +466,12 @@ namespace gum {
         try {
           allocator2.construct(__end_safe, *this);
         } catch (...) {
-          allocator1.destroy(__end);
-          allocator1.deallocate(__end, 1);
+          allocator2.deallocate(__end_safe, 1);
           throw;
         }
-      } catch (...) {
-        allocator2.deallocate(__end_safe, 1);
+      } catch ( ... ) {
+        allocator1.destroy(__end);
+        allocator1.deallocate(__end, 1);
         throw;
       }
     }
