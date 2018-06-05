@@ -52,6 +52,7 @@
 #include <agrum/variables/discreteVariable.h>
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/variables/rangeVariable.h>
+#include <agrum/variables/IDiscretizedVariable.h>
 #include <agrum/variables/discretizedVariable.h>
 #include <agrum/graphs/graphElements.h>
 #include <agrum/multidim/potential.h>
@@ -188,6 +189,7 @@ namespace std {
 %include <agrum/variables/discreteVariable.h>
 %include <agrum/variables/labelizedVariable.h>
 %include <agrum/variables/rangeVariable.h>
+%include <agrum/variables/IDiscretizedVariable.h>
 %include <agrum/variables/discretizedVariable.h>
 
 %include <agrum/graphs/graphElements.h>

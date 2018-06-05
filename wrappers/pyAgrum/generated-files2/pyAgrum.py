@@ -4718,6 +4718,46 @@ class RangeVariable(DiscreteVariable):
 RangeVariable_swigregister = _pyAgrum.RangeVariable_swigregister
 RangeVariable_swigregister(RangeVariable)
 
+class IDiscretizedVariable(DiscreteVariable):
+    """Proxy of C++ gum::IDiscretizedVariable class."""
+
+    __swig_setmethods__ = {}
+    for _s in [DiscreteVariable]:
+        __swig_setmethods__.update(getattr(_s, '__swig_setmethods__', {}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, IDiscretizedVariable, name, value)
+    __swig_getmethods__ = {}
+    for _s in [DiscreteVariable]:
+        __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
+    __getattr__ = lambda self, name: _swig_getattr(self, IDiscretizedVariable, name)
+
+    def __init__(self, *args, **kwargs):
+        raise AttributeError("No constructor defined - class is abstract")
+    __repr__ = _swig_repr
+    __swig_destroy__ = _pyAgrum.delete_IDiscretizedVariable
+    def __del__(self):
+        return None
+
+    def clone(self):
+        """
+        clone(self) -> IDiscretizedVariable
+
+
+        Returns
+        -------
+        pyAgrum.DiscreteVariable
+        	a copy of the DiscreteVariable
+
+        """
+        return _pyAgrum.IDiscretizedVariable_clone(self)
+
+
+    def ticksAsDoubles(self):
+        """ticksAsDoubles(self) -> Vector_double"""
+        return _pyAgrum.IDiscretizedVariable_ticksAsDoubles(self)
+
+IDiscretizedVariable_swigregister = _pyAgrum.IDiscretizedVariable_swigregister
+IDiscretizedVariable_swigregister(IDiscretizedVariable)
+
 class Edge(_object):
     """
 
@@ -8622,7 +8662,7 @@ def randomDistribution_double(n):
 
     """
     return _pyAgrum.randomDistribution_double(n)
-class DiscretizedVariable_double(DiscreteVariable):
+class DiscretizedVariable_double(IDiscretizedVariable):
     """
 
     DiscretizedVariable is a discrete random variable with a set of ``ticks`` defining intervalls.
@@ -8665,11 +8705,11 @@ class DiscretizedVariable_double(DiscreteVariable):
     """
 
     __swig_setmethods__ = {}
-    for _s in [DiscreteVariable]:
+    for _s in [IDiscretizedVariable]:
         __swig_setmethods__.update(getattr(_s, '__swig_setmethods__', {}))
     __setattr__ = lambda self, name, value: _swig_setattr(self, DiscretizedVariable_double, name, value)
     __swig_getmethods__ = {}
-    for _s in [DiscreteVariable]:
+    for _s in [IDiscretizedVariable]:
         __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
     __getattr__ = lambda self, name: _swig_getattr(self, DiscretizedVariable_double, name)
 
@@ -8690,7 +8730,7 @@ class DiscretizedVariable_double(DiscreteVariable):
 
     def clone(self):
         """
-        clone(self) -> DiscreteVariable
+        clone(self) -> DiscretizedVariable_double
 
 
         Returns
@@ -8898,6 +8938,11 @@ class DiscretizedVariable_double(DiscreteVariable):
 
         """
         return _pyAgrum.DiscretizedVariable_double_ticks(self)
+
+
+    def ticksAsDoubles(self):
+        """ticksAsDoubles(self) -> Vector_double"""
+        return _pyAgrum.DiscretizedVariable_double_ticksAsDoubles(self)
 
 
     def __repr__(self):
