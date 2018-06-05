@@ -133,7 +133,7 @@ namespace gum {
     /// updates the lower bound of the domain of the variable
     /** @throw OutOfBounds is raised if the new bound is higher than the
      * current upper bound. */
-    virtual void setLowerBoundFromDouble (const double new_bound);
+    virtual void setLowerBoundFromDouble(const double new_bound);
 
     /// updates the lower bound of the domain of the variable
     /** @throw OutOfBounds is raised if the new bound is lower than the
@@ -143,7 +143,7 @@ namespace gum {
     /// updates the lower bound of the domain of the variable
     /** @throw OutOfBounds is raised if the new bound is lower than the
      * current lower bound */
-    virtual void setUpperBoundFromDouble (const double new_bound);
+    virtual void setUpperBoundFromDouble(const double new_bound);
 
     /// returns a string containing the value of the variable passed in argument
     /**

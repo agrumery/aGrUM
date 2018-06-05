@@ -853,7 +853,7 @@ namespace gum_tests {
 
       gum::NodeId a_id = templ.add(A);
       nodeList.push_back(a_id);   // Ajout de la variable Age allant de 60
-                                          // à 100 ans à la liste des noeuds
+                                  // à 100 ans à la liste des noeuds
 
       // Ajout de la variable ADL allant de 0 à 6 à la liste des noeuds
       nodeList.push_back(templ.add(gum::RangeVariable("ADL", "ADL", 0, 6)));
@@ -871,14 +871,13 @@ namespace gum_tests {
       }
 
       gum::learning::BNLearner< double > learner(
-          GET_RESSOURCES_PATH("bugDoumenc.csv"), templ);
+        GET_RESSOURCES_PATH("bugDoumenc.csv"), templ);
       learner.useScoreLog2Likelihood();
       learner.useAprioriSmoothing();
       learner.setAprioriWeight(1);
       auto bn = learner.learnParameters(templ);
-      
     }
-    
+
     void test_BugDoumencWithInt() {
       gum::BayesNet< double >    templ;
       std::vector< std::string > varBool{"S",
@@ -944,7 +943,7 @@ namespace gum_tests {
 
 
       gum::learning::BNLearner< double > learner(
-          GET_RESSOURCES_PATH("bugDoumenc.csv"), templ);
+        GET_RESSOURCES_PATH("bugDoumenc.csv"), templ);
       learner.useScoreLog2Likelihood();
       learner.useAprioriSmoothing();
       learner.setAprioriWeight(1);

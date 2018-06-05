@@ -91,11 +91,11 @@ namespace gum {
                         const char* zeMsg,
                         const void* zePtr,
                         int         zeSize) {
-      debug_mutex.lock ();
+      debug_mutex.lock();
       __show_trace(zeKey, zeFile, zeLine, zeMsg, zePtr);
       __creation()[zeKey]++;
       __sizeof()[zeKey] = zeSize;
-      debug_mutex.unlock ();
+      debug_mutex.unlock();
     }
 
     // to handle static element of agrum library
@@ -104,10 +104,10 @@ namespace gum {
                         long        zeLine,
                         const char* zeMsg,
                         const void* zePtr) {
-      debug_mutex.lock ();
+      debug_mutex.lock();
       __show_trace(zeKey, zeFile, zeLine, zeMsg, zePtr);
       __creation()[zeKey]--;
-      debug_mutex.unlock ();
+      debug_mutex.unlock();
     }
 
     void __inc_deletion(const char* zeKey,
@@ -115,10 +115,10 @@ namespace gum {
                         long        zeLine,
                         const char* zeMsg,
                         const void* zePtr) {
-      debug_mutex.lock ();
+      debug_mutex.lock();
       __show_trace(zeKey, zeFile, zeLine, zeMsg, zePtr);
       __deletion()[zeKey]++;
-      debug_mutex.unlock ();
+      debug_mutex.unlock();
     }
 
     void __dumpObjects() {

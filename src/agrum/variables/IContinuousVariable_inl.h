@@ -25,51 +25,51 @@
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/variables/IContinuousVariable.h>
+#  include <agrum/variables/IContinuousVariable.h>
 
 namespace gum {
 
 
   /// Default constructor
   INLINE
-  IContinuousVariable::IContinuousVariable( const std::string& aName,
-                                            const std::string& aDesc )
-    : Variable ( aName, aDesc ) {}
+  IContinuousVariable::IContinuousVariable(const std::string& aName,
+                                           const std::string& aDesc) :
+      Variable(aName, aDesc) {}
 
-  
+
   /// Copy Constructor
   INLINE
-  IContinuousVariable::IContinuousVariable(const IContinuousVariable& from )
-    : Variable ( from ) {}
+  IContinuousVariable::IContinuousVariable(const IContinuousVariable& from) :
+      Variable(from) {}
 
-  
+
   /// move constructor
   INLINE
-  IContinuousVariable::IContinuousVariable( IContinuousVariable&& from)
-    : Variable ( std::move ( from ) ) {}
+  IContinuousVariable::IContinuousVariable(IContinuousVariable&& from) :
+      Variable(std::move(from)) {}
 
-  
+
   /// destructor
   INLINE
   IContinuousVariable::~IContinuousVariable() {}
 
 
   /// copy operator
-  INLINE IContinuousVariable&
-  IContinuousVariable::operator=(const IContinuousVariable& from ) {
-    Variable::operator= ( from );
+  INLINE IContinuousVariable& IContinuousVariable::
+                              operator=(const IContinuousVariable& from) {
+    Variable::operator=(from);
     return *this;
   }
 
 
   /// move operator
-  INLINE IContinuousVariable&
-  IContinuousVariable::operator=( IContinuousVariable&& from ) {
-    Variable::operator= ( std::move ( from ) );
+  INLINE IContinuousVariable& IContinuousVariable::
+                              operator=(IContinuousVariable&& from) {
+    Variable::operator=(std::move(from));
     return *this;
   }
 
-  
+
 } /* namespace gum */
 
 

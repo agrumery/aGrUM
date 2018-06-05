@@ -810,9 +810,9 @@ namespace gum {
     Size h = 0;
     for (const auto k :
          key.variablesSequence())   // k are unique only by address (not by name)
-      h += __caster.castToSize(k) * (Size) key.val(*k);
+      h += __caster.castToSize(k) * (Size)key.val(*k);
 
-    return HashFunc<Size>::operator() ( h );
+    return HashFunc< Size >::operator()(h);
   }
 
   INLINE bool Instantiation::operator==(const Instantiation& other) const {

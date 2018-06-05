@@ -118,7 +118,7 @@ namespace gum {
     /// @}
 
     /// a virtual clone
-    virtual DiscretizedVariable<T_TICKS>* clone() const;
+    virtual DiscretizedVariable< T_TICKS >* clone() const;
 
     /// returns the type of variable
 
@@ -180,8 +180,7 @@ namespace gum {
     const std::vector< T_TICKS >& ticks() const;
 
     /// return the list of ticks as a vector of doubles
-    virtual std::vector<double> ticksAsDoubles () const;
-    
+    virtual std::vector< double > ticksAsDoubles() const;
   };
 
 } /* namespace gum */

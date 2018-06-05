@@ -469,7 +469,7 @@ namespace gum {
           allocator2.deallocate(__end_safe, 1);
           throw;
         }
-      } catch ( ... ) {
+      } catch (...) {
         allocator1.destroy(__end);
         allocator1.deallocate(__end, 1);
         throw;

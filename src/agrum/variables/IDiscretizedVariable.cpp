@@ -20,6 +20,5 @@
 #include <agrum/variables/IDiscretizedVariable.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/variables/IDiscretizedVariable_inl.h>
+#  include <agrum/variables/IDiscretizedVariable_inl.h>
 #endif /* GUM_NO_INLINE */
-

@@ -41,15 +41,14 @@ namespace gum {
    * GUM_SCALAR type
    */
   class IContinuousVariable : public Variable {
-  public:
+    public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
 
     /// Default constructor
-    IContinuousVariable( const std::string& aName,
-                         const std::string& aDesc );
+    IContinuousVariable(const std::string& aName, const std::string& aDesc);
 
     /** Copy Constructor.
      *
@@ -57,10 +56,10 @@ namespace gum {
      *
      * @param from the variable we copy
      */
-    IContinuousVariable(const IContinuousVariable& from );
+    IContinuousVariable(const IContinuousVariable& from);
 
     /// move constructor
-    IContinuousVariable( IContinuousVariable&& from);
+    IContinuousVariable(IContinuousVariable&& from);
 
     /// destructor
     virtual ~IContinuousVariable();
@@ -85,33 +84,30 @@ namespace gum {
     /// updates the lower bound of the domain of the variable
     /** @throw OutOfBounds is raised if the new bound is higher than the
      * current upper bound. */
-    virtual void setLowerBoundFromDouble (const double new_bound) = 0;
+    virtual void setLowerBoundFromDouble(const double new_bound) = 0;
 
     /// updates the lower bound of the domain of the variable
     /** @throw OutOfBounds is raised if the new bound is lower than the
      * current lower bound */
-    virtual void setUpperBoundFromDouble (const double new_bound) = 0;
-    
+    virtual void setUpperBoundFromDouble(const double new_bound) = 0;
+
     /// @}
 
 
-  protected:
-
+    protected:
     /// copy operator
-    IContinuousVariable& operator=(const IContinuousVariable& from );
+    IContinuousVariable& operator=(const IContinuousVariable& from);
 
     /// move operator
-    IContinuousVariable& operator=( IContinuousVariable&& from );
-
+    IContinuousVariable& operator=(IContinuousVariable&& from);
   };
 
-  
+
 } /* namespace gum */
 
 
 #ifndef GUM_NO_INLINE
-#include <agrum/variables/IContinuousVariable_inl.h>
+#  include <agrum/variables/IContinuousVariable_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_I_CONTINUOUS_VARIABLE_H */
-

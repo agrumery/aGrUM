@@ -244,7 +244,7 @@ namespace gum {
 
       // insert the translator into the translator set
       const std::size_t pos =
-        __translators.insertTranslator (var, input_column, missing_symbols);
+        __translators.insertTranslator(var, input_column, missing_symbols);
 
       // insert the name of the translator's variable to the set of variable names
       try {

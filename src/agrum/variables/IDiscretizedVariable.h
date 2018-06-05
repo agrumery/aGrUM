@@ -35,15 +35,14 @@ namespace gum {
    * @brief A base class for discretized variables, independent of the ticks type
    */
   class IDiscretizedVariable : public DiscreteVariable {
-  public:
+    public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
 
     /// Default constructor
-    IDiscretizedVariable( const std::string& aName,
-                          const std::string& aDesc );
+    IDiscretizedVariable(const std::string& aName, const std::string& aDesc);
 
     /** Copy Constructor.
      *
@@ -51,7 +50,7 @@ namespace gum {
      *
      * @param from the variable we copy
      */
-    IDiscretizedVariable(const IDiscretizedVariable& from );
+    IDiscretizedVariable(const IDiscretizedVariable& from);
 
     /// destructor
     virtual ~IDiscretizedVariable();
@@ -68,24 +67,22 @@ namespace gum {
     /// @{
 
     /// return the list of ticks as a vector of doubles
-    virtual std::vector<double> ticksAsDoubles () const = 0;
+    virtual std::vector< double > ticksAsDoubles() const = 0;
 
     /// @}
 
 
-  protected:
-
+    protected:
     /// copy operator
-    IDiscretizedVariable& operator=(const IDiscretizedVariable& from );
-
+    IDiscretizedVariable& operator=(const IDiscretizedVariable& from);
   };
 
-  
+
 } /* namespace gum */
 
 
 #ifndef GUM_NO_INLINE
-#include <agrum/variables/IDiscretizedVariable_inl.h>
+#  include <agrum/variables/IDiscretizedVariable_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_I_DISCRETIZED_VARIABLE_H */

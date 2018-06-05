@@ -184,7 +184,7 @@ namespace gum {
        * account in the translation, not the missing value. */
       template < template < typename > class XALLOC >
       DBTranslator4DiscretizedVariable(
-        const IDiscretizedVariable&                             var,
+        const IDiscretizedVariable&                              var,
         const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
         std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
         const allocator_type& alloc = allocator_type());
@@ -207,7 +207,7 @@ namespace gum {
         const IDiscretizedVariable& var,
         std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
         const allocator_type& alloc = allocator_type());
-      
+
       /// copy constructor
       DBTranslator4DiscretizedVariable(
         const DBTranslator4DiscretizedVariable< ALLOC >& from);
@@ -314,7 +314,7 @@ namespace gum {
 
       /// returns the variable stored into the translator
       virtual const IDiscretizedVariable* variable() const final;
-      
+
       /// @}
 
 

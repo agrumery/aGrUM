@@ -20,6 +20,5 @@
 #include <agrum/variables/IContinuousVariable.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/variables/IContinuousVariable_inl.h>
+#  include <agrum/variables/IContinuousVariable_inl.h>
 #endif /* GUM_NO_INLINE */
-

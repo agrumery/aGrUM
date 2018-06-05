@@ -46,7 +46,7 @@ namespace gum {
         alloc) :
         DBTranslator< ALLOC >(
           DBTranslatedValueType::CONTINUOUS, missing_symbols, fit_range, 1, alloc),
-      __variable("var", ""), __fit_range(fit_range) {
+        __variable("var", ""), __fit_range(fit_range) {
       // Here, if fit_range is set to false, and the range of the
       // random variable will remain (-inf,+inf). So all the missing symbols
       // that are numbers should be discarded since they lie in the domain
@@ -73,8 +73,8 @@ namespace gum {
         __variable.setLowerBound(std::numeric_limits< float >::infinity());
 
       // store a copy of the variable, that should be used by method variable ()
-      __real_variable = __variable.clone ();
- 
+      __real_variable = __variable.clone();
+
       GUM_CONSTRUCTOR(DBTranslator4ContinuousVariable);
     }
 
@@ -95,7 +95,7 @@ namespace gum {
         __variable.setLowerBound(std::numeric_limits< float >::infinity());
 
       // store a copy of the variable, that should be used by method variable ()
-      __real_variable = __variable.clone ();
+      __real_variable = __variable.clone();
 
       GUM_CONSTRUCTOR(DBTranslator4ContinuousVariable);
     }
@@ -138,7 +138,7 @@ namespace gum {
       }
 
       // store a copy of the variable, that should be used by method variable ()
-      __real_variable = var.clone ();
+      __real_variable = var.clone();
 
       GUM_CONSTRUCTOR(DBTranslator4ContinuousVariable);
     }
@@ -162,12 +162,12 @@ namespace gum {
       __variable.setUpperBound(upper_bound);
 
       // store a copy of the variable, that should be used by method variable ()
-      __real_variable = var.clone ();
+      __real_variable = var.clone();
 
       GUM_CONSTRUCTOR(DBTranslator4ContinuousVariable);
     }
 
-    
+
     /// default constructor with a IContinuous variable as translator
     template < template < typename > class ALLOC >
     template < template < typename > class XALLOC >
@@ -181,8 +181,8 @@ namespace gum {
           DBTranslatedValueType::CONTINUOUS, missing_symbols, fit_range, 1, alloc),
         __variable(var.name(), var.description()), __fit_range(fit_range) {
       // get the bounds of the range variable
-      const float lower_bound = var.lowerBoundAsDouble ();
-      const float upper_bound = var.upperBoundAsDouble ();
+      const float lower_bound = var.lowerBoundAsDouble();
+      const float upper_bound = var.upperBoundAsDouble();
       __variable.setLowerBound(lower_bound);
       __variable.setUpperBound(upper_bound);
 
@@ -205,8 +205,8 @@ namespace gum {
       }
 
       // store a copy of the variable, that should be used by method variable ()
-      __real_variable = var.clone ();
-      
+      __real_variable = var.clone();
+
       GUM_CONSTRUCTOR(DBTranslator4ContinuousVariable);
     }
 
@@ -214,8 +214,8 @@ namespace gum {
     /// default constructor with a IContinuous variable as translator
     template < template < typename > class ALLOC >
     DBTranslator4ContinuousVariable< ALLOC >::DBTranslator4ContinuousVariable(
-      const IContinuousVariable&              var,
-      const bool                              fit_range,
+      const IContinuousVariable& var,
+      const bool                 fit_range,
       const typename DBTranslator4ContinuousVariable< ALLOC >::allocator_type&
         alloc) :
         DBTranslator< ALLOC >(
@@ -228,12 +228,12 @@ namespace gum {
       __variable.setUpperBound(upper_bound);
 
       // store a copy of the variable, that should be used by method variable ()
-      __real_variable = var.clone ();
+      __real_variable = var.clone();
 
       GUM_CONSTRUCTOR(DBTranslator4ContinuousVariable);
     }
 
-    
+
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
     DBTranslator4ContinuousVariable< ALLOC >::DBTranslator4ContinuousVariable(
@@ -246,7 +246,7 @@ namespace gum {
         __nonfloat_missing_symbol(from.__nonfloat_missing_symbol),
         __fit_range(from.__fit_range) {
       // store a copy of the variable, that should be used by method variable ()
-      __real_variable = from.__real_variable->clone ();
+      __real_variable = from.__real_variable->clone();
 
       GUM_CONS_CPY(DBTranslator4ContinuousVariable);
     }
@@ -316,8 +316,8 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE DBTranslator4ContinuousVariable<
       ALLOC >::~DBTranslator4ContinuousVariable() {
-      if ( __real_variable != nullptr ) delete __real_variable;
-      
+      if (__real_variable != nullptr) delete __real_variable;
+
       GUM_DESTRUCTOR(DBTranslator4ContinuousVariable);
     }
 
@@ -334,8 +334,8 @@ namespace gum {
         __nonfloat_missing_symbol = from.__nonfloat_missing_symbol;
         __fit_range = from.__fit_range;
 
-        if ( __real_variable != nullptr ) delete __real_variable;
-        __real_variable = from.__real_variable->clone ();
+        if (__real_variable != nullptr) delete __real_variable;
+        __real_variable = from.__real_variable->clone();
       }
 
       return *this;
@@ -355,7 +355,7 @@ namespace gum {
         __nonfloat_missing_symbol = std::move(from.__nonfloat_missing_symbol);
         __fit_range = from.__fit_range;
 
-        if ( __real_variable != nullptr ) delete __real_variable;
+        if (__real_variable != nullptr) delete __real_variable;
         __real_variable = from.__real_variable;
         from.__real_variable = nullptr;
       }
@@ -537,9 +537,9 @@ namespace gum {
     /// returns the variable stored into the translator
     template < template < typename > class ALLOC >
     INLINE const IContinuousVariable*
-    DBTranslator4ContinuousVariable< ALLOC >::variable() const {
-      __real_variable->setLowerBoundFromDouble ( __variable.lowerBound () );
-      __real_variable->setUpperBoundFromDouble ( __variable.upperBound () );
+                 DBTranslator4ContinuousVariable< ALLOC >::variable() const {
+      __real_variable->setLowerBoundFromDouble(__variable.lowerBound());
+      __real_variable->setUpperBoundFromDouble(__variable.upperBound());
       return __real_variable;
     }
 

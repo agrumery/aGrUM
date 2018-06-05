@@ -226,7 +226,7 @@ namespace gum {
        * can contain the range of the observed values in the database. */
       template < template < typename > class XALLOC >
       DBTranslator4ContinuousVariable(
-        const IContinuousVariable&                              var,
+        const IContinuousVariable&                               var,
         const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
         const bool                                               fit_range = false,
         const allocator_type& alloc = allocator_type());
@@ -246,9 +246,9 @@ namespace gum {
        * parameter is on, the range of the variable is updated so that it
        * can contain the range of the observed values in the database. */
       DBTranslator4ContinuousVariable(
-        const IContinuousVariable&              var,
-        const bool                              fit_range = false,
-        const allocator_type&                   alloc = allocator_type());
+        const IContinuousVariable& var,
+        const bool                 fit_range = false,
+        const allocator_type&      alloc = allocator_type());
 
       /// copy constructor
       DBTranslator4ContinuousVariable(

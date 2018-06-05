@@ -154,7 +154,7 @@ namespace gum {
   /// returns the lower bound of the domain of the variable as a double
   template < typename GUM_SCALAR >
   INLINE double ContinuousVariable< GUM_SCALAR >::lowerBoundAsDouble() const {
-    return (double) __lower_bound;
+    return (double)__lower_bound;
   }
 
 
@@ -168,14 +168,14 @@ namespace gum {
   /// returns the upper bound of the domain of the variable
   template < typename GUM_SCALAR >
   INLINE double ContinuousVariable< GUM_SCALAR >::upperBoundAsDouble() const {
-    return (double) __upper_bound;
+    return (double)__upper_bound;
   }
 
 
   /// updates the lower bound of the domain of the variable
   template < typename GUM_SCALAR >
   INLINE void
-  ContinuousVariable< GUM_SCALAR >::setLowerBound(const GUM_SCALAR& new_bound) {
+    ContinuousVariable< GUM_SCALAR >::setLowerBound(const GUM_SCALAR& new_bound) {
     if (new_bound <= __upper_bound)
       __lower_bound = new_bound;
     else
@@ -186,17 +186,16 @@ namespace gum {
 
   /// updates the lower bound of the domain of the variable
   template < typename GUM_SCALAR >
-  INLINE void
-  ContinuousVariable< GUM_SCALAR >::setLowerBoundFromDouble(
+  INLINE void ContinuousVariable< GUM_SCALAR >::setLowerBoundFromDouble(
     const double new_bound) {
-    setLowerBound ( (GUM_SCALAR) new_bound );
+    setLowerBound((GUM_SCALAR)new_bound);
   }
-    
+
 
   /// updates the lower bound of the domain of the variable
   template < typename GUM_SCALAR >
   INLINE void
-  ContinuousVariable< GUM_SCALAR >::setUpperBound(const GUM_SCALAR& new_bound) {
+    ContinuousVariable< GUM_SCALAR >::setUpperBound(const GUM_SCALAR& new_bound) {
     if (new_bound >= __lower_bound)
       __upper_bound = new_bound;
     else
@@ -207,10 +206,9 @@ namespace gum {
 
   /// updates the lower bound of the domain of the variable
   template < typename GUM_SCALAR >
-  INLINE void
-  ContinuousVariable< GUM_SCALAR >::setUpperBoundFromDouble(
+  INLINE void ContinuousVariable< GUM_SCALAR >::setUpperBoundFromDouble(
     const double new_bound) {
-    setUpperBound ( (GUM_SCALAR) new_bound );
+    setUpperBound((GUM_SCALAR)new_bound);
   }
 
 

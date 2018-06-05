@@ -22,20 +22,20 @@
 
 namespace gum {
 
-  
+
   /// Default constructor
   INLINE
-  IDiscretizedVariable::IDiscretizedVariable( const std::string& aName,
-                                              const std::string& aDesc )
-    : DiscreteVariable ( aName, aDesc ) {}
+  IDiscretizedVariable::IDiscretizedVariable(const std::string& aName,
+                                             const std::string& aDesc) :
+      DiscreteVariable(aName, aDesc) {}
 
-  
+
   /// Copy Constructor
   INLINE
-  IDiscretizedVariable::IDiscretizedVariable(const IDiscretizedVariable& from )
-    : DiscreteVariable ( from ) {}
+  IDiscretizedVariable::IDiscretizedVariable(const IDiscretizedVariable& from) :
+      DiscreteVariable(from) {}
 
-  
+
   /// destructor
   INLINE
   IDiscretizedVariable::~IDiscretizedVariable() {}
@@ -43,13 +43,13 @@ namespace gum {
 
   /// copy assignment
   INLINE
-  IDiscretizedVariable&
-  IDiscretizedVariable::operator=(const IDiscretizedVariable& from ) {
-    DiscreteVariable::operator= ( from );
+  IDiscretizedVariable& IDiscretizedVariable::
+                        operator=(const IDiscretizedVariable& from) {
+    DiscreteVariable::operator=(from);
     return *this;
   }
 
-  
+
 } /* namespace gum */
 
 

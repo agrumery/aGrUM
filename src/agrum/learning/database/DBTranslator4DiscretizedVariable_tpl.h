@@ -98,7 +98,7 @@ namespace gum {
       }
 
       // store a copy of the variable, that should be used by method variable ()
-      __real_variable = var.clone ();
+      __real_variable = var.clone();
 
       GUM_CONSTRUCTOR(DBTranslator4DiscretizedVariable);
     }
@@ -126,9 +126,9 @@ namespace gum {
       }
 
       // copy the ticks of var into our internal variable
-      const auto ticks = var.ticksAsDoubles ();
+      const auto ticks = var.ticksAsDoubles();
       for (const auto tick : ticks) {
-        __variable.addTick( (float) tick );
+        __variable.addTick((float)tick);
       }
 
       // the the bounds of the discretized variable
@@ -165,7 +165,7 @@ namespace gum {
       }
 
       // store a copy of the variable, that should be used by method variable ()
-      __real_variable = var.clone ();
+      __real_variable = var.clone();
 
       GUM_CONSTRUCTOR(DBTranslator4DiscretizedVariable);
     }
@@ -202,7 +202,7 @@ namespace gum {
       }
 
       // store a copy of the variable, that should be used by method variable ()
-      __real_variable = var.clone ();
+      __real_variable = var.clone();
 
       GUM_CONSTRUCTOR(DBTranslator4DiscretizedVariable);
     }
@@ -211,8 +211,8 @@ namespace gum {
     /// default constructor with a IDiscretized variable as translator
     template < template < typename > class ALLOC >
     DBTranslator4DiscretizedVariable< ALLOC >::DBTranslator4DiscretizedVariable(
-      const IDiscretizedVariable&              var,
-      std::size_t                              max_dico_entries,
+      const IDiscretizedVariable& var,
+      std::size_t                 max_dico_entries,
       const typename DBTranslator4DiscretizedVariable< ALLOC >::allocator_type&
         alloc) :
         DBTranslator< ALLOC >(
@@ -227,7 +227,7 @@ namespace gum {
       // copy the ticks of var into our internal variable
       const auto ticks = var.ticksAsDoubles();
       for (const auto tick : ticks) {
-        __variable.addTick((float) tick);
+        __variable.addTick((float)tick);
       }
 
       // add the content of the variable into the back dictionary
@@ -238,7 +238,7 @@ namespace gum {
       }
 
       // store a copy of the variable, that should be used by method variable ()
-      __real_variable = var.clone ();
+      __real_variable = var.clone();
 
       GUM_CONSTRUCTOR(DBTranslator4DiscretizedVariable);
     }
@@ -250,11 +250,11 @@ namespace gum {
       const DBTranslator4DiscretizedVariable< ALLOC >& from,
       const typename DBTranslator4DiscretizedVariable< ALLOC >::allocator_type&
         alloc) :
-      DBTranslator< ALLOC >(from, alloc),
-      __variable(from.__variable) {
+        DBTranslator< ALLOC >(from, alloc),
+        __variable(from.__variable) {
       // store a copy of the variable, that should be used by method variable ()
-      __real_variable = from.__real_variable->clone ();
-      
+      __real_variable = from.__real_variable->clone();
+
       GUM_CONS_CPY(DBTranslator4DiscretizedVariable);
     }
 
@@ -277,7 +277,7 @@ namespace gum {
       // moves the copy of the variable, that should be used by method variable ()
       __real_variable = from.__real_variable;
       from.__real_variable = nullptr;
-      
+
       GUM_CONS_MOV(DBTranslator4DiscretizedVariable);
     }
 
@@ -297,7 +297,7 @@ namespace gum {
         const typename DBTranslator4DiscretizedVariable< ALLOC >::allocator_type&
           alloc) const {
       ALLOC< DBTranslator4DiscretizedVariable< ALLOC > > allocator(alloc);
-      DBTranslator4DiscretizedVariable< ALLOC >* translator =
+      DBTranslator4DiscretizedVariable< ALLOC >*         translator =
         allocator.allocate(1);
       try {
         allocator.construct(translator, *this, alloc);
@@ -321,8 +321,8 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE DBTranslator4DiscretizedVariable<
       ALLOC >::~DBTranslator4DiscretizedVariable() {
-      if ( __real_variable != nullptr ) delete __real_variable;
-      
+      if (__real_variable != nullptr) delete __real_variable;
+
       GUM_DESTRUCTOR(DBTranslator4DiscretizedVariable);
     }
 
@@ -336,8 +336,8 @@ namespace gum {
         DBTranslator< ALLOC >::operator=(from);
         __variable = from.__variable;
 
-        if ( __real_variable != nullptr ) delete __real_variable;
-        __real_variable = from.__real_variable->clone ();
+        if (__real_variable != nullptr) delete __real_variable;
+        __real_variable = from.__real_variable->clone();
       }
 
       return *this;
@@ -353,7 +353,7 @@ namespace gum {
         DBTranslator< ALLOC >::operator=(std::move(from));
         __variable = std::move(from.__variable);
 
-        if ( __real_variable != nullptr ) delete __real_variable;
+        if (__real_variable != nullptr) delete __real_variable;
         __real_variable = from.__real_variable;
         from.__real_variable = nullptr;
       }

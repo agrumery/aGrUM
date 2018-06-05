@@ -276,8 +276,7 @@ namespace gum {
         }
 
         case VarType::Range: {
-          const RangeVariable& xvar =
-            static_cast< const RangeVariable& >(var);
+          const RangeVariable& xvar = static_cast< const RangeVariable& >(var);
           DBTranslator4RangeVariable< ALLOC > translator(xvar, missing_symbols);
           return insertTranslator(translator, column);
         }
@@ -301,7 +300,7 @@ namespace gum {
            DBTranslatorSet< ALLOC >::insertTranslator(const Variable&   var,
                                                  const std::size_t column) {
       const std::vector< std::string, ALLOC< std::string > > missing;
-      return this->insertTranslator (var, column, missing);
+      return this->insertTranslator(var, column, missing);
     }
 
 

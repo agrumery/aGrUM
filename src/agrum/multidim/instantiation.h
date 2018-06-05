@@ -1241,9 +1241,8 @@ namespace gum {
    * @ingroup hashfunctions_group
    */
   template <>
-  //class HashFunc< Instantiation > : public HashFuncBase< Instantiation > {
-  class HashFunc< Instantiation > :
-    public HashFunc<Size> {
+  // class HashFunc< Instantiation > : public HashFuncBase< Instantiation > {
+  class HashFunc< Instantiation > : public HashFunc< Size > {
     public:
     /**
      * @brief Computes the hashed value of a key.
@@ -1252,7 +1251,7 @@ namespace gum {
      */
     Size operator()(const Instantiation& key) const;
 
-  private:
+    private:
     static typename HashFuncCastKey< const DiscreteVariable* >::type __caster;
   };
 } /* namespace gum */
