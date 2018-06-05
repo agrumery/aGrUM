@@ -151,13 +151,6 @@ namespace gum {
   }
 
 
-  /// returns the lower bound of the domain of the variable as a float
-  template < typename GUM_SCALAR >
-  INLINE float ContinuousVariable< GUM_SCALAR >::lowerBoundAsFloat() const {
-    return (float) __lower_bound;
-  }
-  
-
   /// returns the lower bound of the domain of the variable as a double
   template < typename GUM_SCALAR >
   INLINE double ContinuousVariable< GUM_SCALAR >::lowerBoundAsDouble() const {
@@ -172,13 +165,6 @@ namespace gum {
   }
 
 
-  /// returns the upper bound of the domain of the variable
-  template < typename GUM_SCALAR >
-  INLINE float ContinuousVariable< GUM_SCALAR >::upperBoundAsFloat() const {
-    return (float) __upper_bound;
-  }
-
-  
   /// returns the upper bound of the domain of the variable
   template < typename GUM_SCALAR >
   INLINE double ContinuousVariable< GUM_SCALAR >::upperBoundAsDouble() const {
@@ -201,15 +187,6 @@ namespace gum {
   /// updates the lower bound of the domain of the variable
   template < typename GUM_SCALAR >
   INLINE void
-  ContinuousVariable< GUM_SCALAR >::setLowerBoundFromFloat (
-    const float new_bound) {
-    setLowerBound ( (GUM_SCALAR) new_bound );
-  }
-
-
-  /// updates the lower bound of the domain of the variable
-  template < typename GUM_SCALAR >
-  INLINE void
   ContinuousVariable< GUM_SCALAR >::setLowerBoundFromDouble(
     const double new_bound) {
     setLowerBound ( (GUM_SCALAR) new_bound );
@@ -225,15 +202,6 @@ namespace gum {
     else
       GUM_ERROR(OutOfBounds,
                 "the new upper bound would be lower than the lower bound");
-  }
-
-
-  /// updates the lower bound of the domain of the variable
-  template < typename GUM_SCALAR >
-  INLINE void
-  ContinuousVariable< GUM_SCALAR >::setUpperBoundFromFloat(
-    const float new_bound) {
-    setUpperBound ( (GUM_SCALAR) new_bound );
   }
 
 

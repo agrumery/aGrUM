@@ -116,17 +116,11 @@ namespace gum {
     /// returns the lower bound of the domain of the variable
     GUM_SCALAR lowerBound() const;
 
-    /// returns the upper bound of the domain of the variable
-    GUM_SCALAR upperBound() const;
-
-    /// returns the lower bound of the domain of the variable as a float
-    virtual float lowerBoundAsFloat() const;
-
     /// returns the lower bound of the domain of the variable as a double
     virtual double lowerBoundAsDouble() const;
 
-    /// returns the upper bound of the domain of the variable as a float
-    virtual float upperBoundAsFloat() const;
+    /// returns the upper bound of the domain of the variable
+    GUM_SCALAR upperBound() const;
 
     /// returns the upper bound of the domain of the variable as a double
     virtual double upperBoundAsDouble() const;
@@ -139,22 +133,12 @@ namespace gum {
     /// updates the lower bound of the domain of the variable
     /** @throw OutOfBounds is raised if the new bound is higher than the
      * current upper bound. */
-    virtual void setLowerBoundFromFloat (const float new_bound);
-    
-    /// updates the lower bound of the domain of the variable
-    /** @throw OutOfBounds is raised if the new bound is higher than the
-     * current upper bound. */
     virtual void setLowerBoundFromDouble (const double new_bound);
 
     /// updates the lower bound of the domain of the variable
     /** @throw OutOfBounds is raised if the new bound is lower than the
      * current lower bound */
     void setUpperBound(const GUM_SCALAR& new_bound);
-
-    /// updates the lower bound of the domain of the variable
-    /** @throw OutOfBounds is raised if the new bound is lower than the
-     * current lower bound */
-    virtual void setUpperBoundFromFloat (const float new_bound);
 
     /// updates the lower bound of the domain of the variable
     /** @throw OutOfBounds is raised if the new bound is lower than the

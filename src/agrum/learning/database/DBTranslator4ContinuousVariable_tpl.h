@@ -181,8 +181,8 @@ namespace gum {
           DBTranslatedValueType::CONTINUOUS, missing_symbols, fit_range, 1, alloc),
         __variable(var.name(), var.description()), __fit_range(fit_range) {
       // get the bounds of the range variable
-      const float lower_bound = var.lowerBoundAsFloat ();
-      const float upper_bound = var.upperBoundAsFloat ();
+      const float lower_bound = var.lowerBoundAsDouble ();
+      const float upper_bound = var.upperBoundAsDouble ();
       __variable.setLowerBound(lower_bound);
       __variable.setUpperBound(upper_bound);
 
@@ -222,8 +222,8 @@ namespace gum {
           DBTranslatedValueType::CONTINUOUS, fit_range, 1, alloc),
         __variable(var.name(), var.description()), __fit_range(fit_range) {
       // get the bounds of the range variable
-      const float lower_bound = var.lowerBoundAsFloat();
-      const float upper_bound = var.upperBoundAsFloat();
+      const float lower_bound = var.lowerBoundAsDouble();
+      const float upper_bound = var.upperBoundAsDouble();
       __variable.setLowerBound(lower_bound);
       __variable.setUpperBound(upper_bound);
 
@@ -538,8 +538,8 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE const IContinuousVariable*
     DBTranslator4ContinuousVariable< ALLOC >::variable() const {
-      __real_variable->setLowerBoundFromFloat ( __variable.lowerBound () );
-      __real_variable->setUpperBoundFromFloat ( __variable.upperBound () );
+      __real_variable->setLowerBoundFromDouble ( __variable.lowerBound () );
+      __real_variable->setUpperBoundFromDouble ( __variable.upperBound () );
       return __real_variable;
     }
 

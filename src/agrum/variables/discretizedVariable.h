@@ -179,9 +179,6 @@ namespace gum {
     /// Return the list of ticks
     const std::vector< T_TICKS >& ticks() const;
 
-    /// return the list of ticks as a vector of floats
-    virtual std::vector<float> ticksAsFloats () const;
-
     /// return the list of ticks as a vector of doubles
     virtual std::vector<double> ticksAsDoubles () const;
     

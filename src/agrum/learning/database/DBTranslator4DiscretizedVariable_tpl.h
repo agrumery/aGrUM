@@ -126,9 +126,9 @@ namespace gum {
       }
 
       // copy the ticks of var into our internal variable
-      const auto ticks = var.ticksAsFloats ();
+      const auto ticks = var.ticksAsDoubles ();
       for (const auto tick : ticks) {
-        __variable.addTick( tick );
+        __variable.addTick( (float) tick );
       }
 
       // the the bounds of the discretized variable
@@ -225,9 +225,9 @@ namespace gum {
       }
 
       // copy the ticks of var into our internal variable
-      const auto ticks = var.ticksAsFloats();
+      const auto ticks = var.ticksAsDoubles();
       for (const auto tick : ticks) {
-        __variable.addTick(tick);
+        __variable.addTick((float) tick);
       }
 
       // add the content of the variable into the back dictionary

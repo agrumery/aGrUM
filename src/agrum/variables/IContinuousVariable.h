@@ -76,14 +76,8 @@ namespace gum {
     // ############################################################################
     /// @{
 
-    /// returns the lower bound of the domain of the variable as a float
-    virtual float lowerBoundAsFloat() const = 0;
-
     /// returns the lower bound of the domain of the variable as a double
     virtual double lowerBoundAsDouble() const = 0;
-
-    /// returns the upper bound of the domain of the variable as a float
-    virtual float upperBoundAsFloat() const = 0;
 
     /// returns the upper bound of the domain of the variable as a double
     virtual double upperBoundAsDouble() const = 0;
@@ -91,17 +85,7 @@ namespace gum {
     /// updates the lower bound of the domain of the variable
     /** @throw OutOfBounds is raised if the new bound is higher than the
      * current upper bound. */
-    virtual void setLowerBoundFromFloat (const float new_bound) = 0;
-    
-    /// updates the lower bound of the domain of the variable
-    /** @throw OutOfBounds is raised if the new bound is higher than the
-     * current upper bound. */
     virtual void setLowerBoundFromDouble (const double new_bound) = 0;
-
-    /// updates the lower bound of the domain of the variable
-    /** @throw OutOfBounds is raised if the new bound is lower than the
-     * current lower bound */
-    virtual void setUpperBoundFromFloat (const float new_bound) = 0;
 
     /// updates the lower bound of the domain of the variable
     /** @throw OutOfBounds is raised if the new bound is lower than the

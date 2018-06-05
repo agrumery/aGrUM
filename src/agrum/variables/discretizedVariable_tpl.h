@@ -282,16 +282,6 @@ namespace gum {
   }
 
   template < typename T_TICKS >
-  INLINE std::vector<float>
-  DiscretizedVariable< T_TICKS >::ticksAsFloats () const {
-    const std::size_t size = __ticks.size ();
-    std::vector<float> ticks ( size );
-    for ( std::size_t i = std::size_t(0); i < size; ++i )
-      ticks[i] = (float) __ticks[i];
-    return ticks;
-  }
-
-  template < typename T_TICKS >
   INLINE std::vector<double>
   DiscretizedVariable< T_TICKS >::ticksAsDoubles () const {
     const std::size_t size = __ticks.size ();

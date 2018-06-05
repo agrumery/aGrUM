@@ -67,9 +67,6 @@ namespace gum {
     // ############################################################################
     /// @{
 
-    /// return the list of ticks as a vector of floats
-    virtual std::vector<float> ticksAsFloats () const = 0;
-
     /// return the list of ticks as a vector of doubles
     virtual std::vector<double> ticksAsDoubles () const = 0;
 
