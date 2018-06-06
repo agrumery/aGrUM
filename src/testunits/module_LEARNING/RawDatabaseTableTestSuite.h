@@ -847,6 +847,7 @@ namespace gum_tests {
       row[0] = "L0";
       row[1] = "L0";
       row[2] = "L0";
+      database.insertRow(row);
 
       TS_ASSERT(database.hasMissingValues());
 
