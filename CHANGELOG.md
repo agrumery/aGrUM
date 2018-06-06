@@ -12,9 +12,11 @@
   * potential: API extension (`findAll`,`argmax`,`argmin`,`fillWith(pot,map)`)
   * variable: new constructor for `LabelizedVariable` with labels as vector of string + `posLabel(std::string)`
   * variable: new constructor with vector of ticks for `gum::DiscretizedVariable`
+  * variable: new methods to set bounds with doubles in `gum::ContinuousVariable`
   * graph: API extension (`addNodes(n)`)
   * graph: API change (`addNode(id)`->`addNodeWithId(id)`)
-  * Changes and bug fixe in in BIF and NET writer/reader 
+  * Changes and bug fixe in in BIF and NET writer/reader
+  * Changed the code of instantiations' hash functions to make it compliant with windows mingw implementation
 * pyAgrum
   * wheels for python 3.3 and 3.4
   * access to the new learning framework using `BNLearner`
@@ -28,6 +30,8 @@
   * agrum : doxygen helps structure and howtos
   * pyAgrum : documentation of a large part of pyAgrum's API, export to <https://pyagrum.readthedocs.io>
   * o3prm : still in progress (see <https://o3prm.lip6.fr>, <https://o3prm.readthedocs.io>)
+* TestUnits
+  * fixed bug in RawDatabaseTable test unit
 * act
   * new command guideline for a few easy checks
 * many bug fixes 
