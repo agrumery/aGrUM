@@ -4750,11 +4750,6 @@ class IDiscretizedVariable(DiscreteVariable):
         """
         return _pyAgrum.IDiscretizedVariable_clone(self)
 
-
-    def ticksAsDoubles(self) -> "std::vector< double,std::allocator< double > >":
-        """ticksAsDoubles(self) -> Vector_double"""
-        return _pyAgrum.IDiscretizedVariable_ticksAsDoubles(self)
-
 IDiscretizedVariable_swigregister = _pyAgrum.IDiscretizedVariable_swigregister
 IDiscretizedVariable_swigregister(IDiscretizedVariable)
 
@@ -8792,7 +8787,7 @@ class DiscretizedVariable_double(IDiscretizedVariable):
         Raises
         ------
         gum.DefaultInLabel
-            If the Tick is already defined
+            If the tick is already defined
         """
         _pyAgrum.DiscretizedVariable_double_addTick(self,*args)
         return self
@@ -8938,11 +8933,6 @@ class DiscretizedVariable_double(IDiscretizedVariable):
 
         """
         return _pyAgrum.DiscretizedVariable_double_ticks(self)
-
-
-    def ticksAsDoubles(self) -> "std::vector< double,std::allocator< double > >":
-        """ticksAsDoubles(self) -> Vector_double"""
-        return _pyAgrum.DiscretizedVariable_double_ticksAsDoubles(self)
 
 
     def __repr__(self) -> "std::string":
