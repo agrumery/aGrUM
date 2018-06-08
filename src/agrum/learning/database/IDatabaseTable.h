@@ -21,7 +21,7 @@
  * @brief The common class for the tabular database tables
  *
  * IDatabases are not intended to be created as is but should be created through
- * classes that inherit them, like rawDatabaseTable and DatabaseTable.
+ * the rawDatabaseTable and DatabaseTable classes.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -125,9 +125,9 @@ namespace gum {
      * @headerfile IDatabaseTable.h <agrum/learning/IDatabaseTable.h>
      * @brief The common class for the tabular database tables
      *
-     * Although it is possible to create IDatabases, those are not intended to
-     * be created as is but should be created through classes that inherit them,
-     * like RawDatabaseTable and DatabaseTable.
+     * IDatabases are not intended to be created as is but should be created
+     * through the rawDatabaseTable and DatabaseTable classes. They represent
+     * the structures shared by these latter classes.
      *
      * Here is an example of how to use the class, illustrated with the
      * DatabaseTable class (in this case, the T_DATA type is just equal to

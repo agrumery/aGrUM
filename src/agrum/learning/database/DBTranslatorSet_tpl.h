@@ -47,6 +47,7 @@ namespace gum {
 
       __translators.clear();
       __columns.clear();
+      __highest_column = std::size_t(0);
     }
 
 
@@ -57,7 +58,12 @@ namespace gum {
       const typename DBTranslatorSet< ALLOC >::allocator_type& alloc) {
       if (__translators.size() != 0) clear();
 
+      // resize the vectors used in the set. First, we reserve new memory. This
+      // will keep the DBTranslatorSet in a correct state, even if the memory
+      // allocation fails
       const std::size_t size = from.__translators.size();
+      __translators.reserve(size);
+      __columns.reserve(size);
       __translators.resize(size);
       __columns.resize(size);
 

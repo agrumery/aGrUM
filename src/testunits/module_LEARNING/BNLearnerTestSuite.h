@@ -949,6 +949,21 @@ namespace gum_tests {
       learner.setAprioriWeight(1);
 
       auto bn = learner.learnParameters(templ);
+
+      const gum::DiscreteVariable& var_discr = bn.variable ( "A" );
+      int good = 1;
+      try {
+        const gum::DiscretizedVariable< int >&  xvar_discr =
+          dynamic_cast<const gum::DiscretizedVariable< int >&> ( var_discr );
+        TS_ASSERT ( xvar_discr.domainSize () == 9 );
+        TS_ASSERT ( xvar_discr.label(0) == "[60;65[" );
+        TS_ASSERT ( xvar_discr.label(1) == "[65;70[" );
+        TS_ASSERT ( xvar_discr.label(8) == "[100;105]" );
+      }
+      catch ( std::bad_cast& ) {
+        good = 0;
+      }
+      TS_ASSERT ( good == 1 );
     }
   };
 } /* namespace gum_tests */

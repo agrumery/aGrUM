@@ -56,6 +56,20 @@ namespace gum_tests {
         translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})
         == "[3;10]");
 
+      const auto& tr_var = *( translator.variable () );
+      int good_discr = 1;
+      try {
+        const gum::DiscretizedVariable< int >&  xvar_discr =
+          dynamic_cast<const gum::DiscretizedVariable< int >&> ( tr_var );
+        TS_ASSERT ( xvar_discr.domainSize () == 2 );
+        TS_ASSERT ( xvar_discr.label(0) == "[1;3[" );
+        TS_ASSERT ( xvar_discr.label(1) == "[3;10]" );
+      }
+      catch ( std::bad_cast& ) {
+        good_discr = 0;
+      }
+      TS_ASSERT ( good_discr == 1 );
+
       std::vector< std::string >                        missing{"?", "N/A", "???"};
       gum::learning::DBTranslator4DiscretizedVariable<> translator2(var, missing);
       TS_GUM_ASSERT_THROWS_NOTHING(translator2.translate("1.3"));
