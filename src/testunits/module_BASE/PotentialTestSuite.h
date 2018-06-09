@@ -881,10 +881,12 @@ namespace gum_tests {
       TS_ASSERT_THROWS(res = p.KL(s), gum::InvalidArgument);
       TS_ASSERT_THROWS(res = s.KL(p), gum::InvalidArgument);
 
-      TS_ASSERT_THROWS(res = p.KL(q), gum::FatalError);
+      TS_GUM_ASSERT_THROWS_NOTHING(res = p.KL(q));
+      TS_ASSERT_DELTA(res, 0.0 + 1.0 * log2(1.0 / 0.5), 1e-5);
       TS_ASSERT_THROWS(res = q.KL(p), gum::FatalError);
 
-      TS_ASSERT_THROWS(res = p.KL(r), gum::FatalError);
+      TS_GUM_ASSERT_THROWS_NOTHING(res = p.KL(r));
+      TS_ASSERT_DELTA(res, 0.0 + 1.0 * log2(1.0 / 0.3), 1e-5);
       TS_ASSERT_THROWS(res = r.KL(p), gum::FatalError);
 
       TS_GUM_ASSERT_THROWS_NOTHING(res = q.KL(r));
