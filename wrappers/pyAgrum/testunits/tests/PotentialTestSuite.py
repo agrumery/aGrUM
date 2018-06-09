@@ -633,13 +633,15 @@ class TestOperators(pyAgrumTestCase):
     with self.assertRaises(gum.InvalidArgument):
       res = s.KL(p)
 
-    with self.assertRaises(gum.FatalError):
-      res = p.KL(q)
+    res = p.KL(q)
+    self.assertAlmostEqual(res, 0.0 + 1.0 * math.log(1.0 / 0.5, 2), 1e-5)
+
     with self.assertRaises(gum.FatalError):
       res = q.KL(p)
 
-    with self.assertRaises(gum.FatalError):
-      res = p.KL(r)
+    res = p.KL(r)    
+    self.assertAlmostEqual(res, 0.0 + 1.0 * math.log(1.0 / 0.3, 2), 1e-5)
+
     with self.assertRaises(gum.FatalError):
       res = r.KL(p)
 
