@@ -22,7 +22,7 @@ pyAgrum.Potential
 
 %feature("docstring") gum::Potential::KL
 "
-Compute the Kullback-Leibler divergence between the potential and p, check the compatibility and call fastKL.
+C heck the compatibility and compute the Kullback-Leibler divergence between the potential and.
 
 Parameters
 ----------
@@ -111,26 +111,6 @@ Returns
 -------
 pyAgrum.Potential
   the new Potential
-"
-
-%feature("docstring") gum::Potential::fastKL
-"
-compute KL divergence between this and p without testing compatibilty (undefined errors may occur in this case)
-
-Parameters
-----------
-p : pyAgrum.Potential
-  the potential from which we want to calculate the divergence.
-
-Returns
--------
-float
-  The value of the divergence
-
-Raises
-------
-gum.FatalError
-  If a zero is found in p or this and not in the other. 
 "
 
 %feature("docstring") gum::Potential::fill

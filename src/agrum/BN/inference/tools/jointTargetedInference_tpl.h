@@ -267,6 +267,9 @@ namespace gum {
   template < typename GUM_SCALAR >
   GUM_SCALAR JointTargetedInference< GUM_SCALAR >::I(NodeId X, NodeId Y) {
     Potential< GUM_SCALAR > pX, pY, *pXY = nullptr;
+    if (X == Y) {
+      GUM_ERROR(OperationNotAllowed, "Mutual Information I(X,Y) with X==Y");
+    }
 
     try {
       // here use unnormalized joint posterior rather than just posterior
@@ -274,17 +277,11 @@ namespace gum {
       // like LazyPropagation or SahferShenoy.
       pXY = this->_unnormalizedJointPosterior({X, Y});
       pXY->normalize();
-      if (X != Y) {
-        pX = pXY->margSumOut({&(this->BN().variable(Y))});
-        pY = pXY->margSumOut({&(this->BN().variable(X))});
-      } else {
-        pX = *pXY;
-        pY = *pXY;
-      }
+      pX = pXY->margSumOut({&(this->BN().variable(Y))});
+      pY = pXY->margSumOut({&(this->BN().variable(X))});
     } catch (...) {
       if (pXY != nullptr) {
         delete pXY;
-        pXY = nullptr;
       }
       throw;
     }

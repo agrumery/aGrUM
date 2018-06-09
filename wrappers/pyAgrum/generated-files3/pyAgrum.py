@@ -9353,7 +9353,7 @@ class Potential_double(_object):
         KL(self, p) -> double
 
 
-        Compute the Kullback-Leibler divergence between the potential and p, check the compatibility and call fastKL.
+        C heck the compatibility and compute the Kullback-Leibler divergence between the potential and.
 
         Parameters
         ----------
@@ -9374,32 +9374,6 @@ class Potential_double(_object):
 
         """
         return _pyAgrum.Potential_double_KL(self, p)
-
-
-    def fastKL(self, p: 'Potential_double') -> "double":
-        """
-        fastKL(self, p) -> double
-
-
-        compute KL divergence between this and p without testing compatibilty (undefined errors may occur in this case)
-
-        Parameters
-        ----------
-        p : pyAgrum.Potential
-          the potential from which we want to calculate the divergence.
-
-        Returns
-        -------
-        float
-          The value of the divergence
-
-        Raises
-        ------
-        gum.FatalError
-          If a zero is found in p or this and not in the other. 
-
-        """
-        return _pyAgrum.Potential_double_fastKL(self, p)
 
 
     def normalizeAsCPT(self) -> "void":
