@@ -634,19 +634,19 @@ class TestOperators(pyAgrumTestCase):
       res = s.KL(p)
 
     res = p.KL(q)
-    self.assertAlmostEqual(res, 0.0 + 1.0 * math.log(1.0 / 0.5, 2), 1e-5)
+    self.assertAlmostEqual(res, 0.0 + 1.0 * math.log(1.0 / 0.5, 2))
 
     with self.assertRaises(gum.FatalError):
       res = q.KL(p)
 
     res = p.KL(r)    
-    self.assertAlmostEqual(res, 0.0 + 1.0 * math.log(1.0 / 0.3, 2), 1e-5)
+    self.assertAlmostEqual(res, 0.0 + 1.0 * math.log(1.0 / 0.3, 2))
 
     with self.assertRaises(gum.FatalError):
       res = r.KL(p)
 
-    self.assertAlmostEqual(q.KL(r), 0.5 * math.log(0.5 / 0.7, 2) + 0.5 * math.log(0.5 / 0.3, 2), 1e-5)
-    self.assertAlmostEqual(r.KL(q), 0.7 * math.log(0.7 / 0.5, 2) + 0.3 * math.log(0.3 / 0.5, 2), 1e-5)
+    self.assertAlmostEqual(q.KL(r), 0.5 * math.log(0.5 / 0.7, 2) + 0.5 * math.log(0.5 / 0.3, 2))
+    self.assertAlmostEqual(r.KL(q), 0.7 * math.log(0.7 / 0.5, 2) + 0.3 * math.log(0.3 / 0.5, 2))
 
   def testVariableAccessor(self):
     v = gum.LabelizedVariable("v", "v", 2)
