@@ -254,7 +254,7 @@ namespace gum {
     Instantiation Idst(*this);
     for (Isrc.setFirst(); !Isrc.end(); ++Isrc) {
       for (Idx i = 0; i < this->nbrDim(); i++) {
-        Idst.chgVal(Isrc.variable(i).name(), Isrc.variable(i).label(Isrc.val(i)));
+        Idst.chgVal(Isrc.variable(i).name(), Isrc.val(i));
       }
       this->set(Idst, src.get(Isrc));
     }
