@@ -1,11 +1,16 @@
 # aGrUM Changelog
 
+## Changelog for 0.13.2
+* aGrUM/pyAgrum
+  * fixed bugs in `Potential::fillWith`
+  * removed unsafe and ambiguous `Potential::fastKL` and kept safe `Potential::KL`
+
 ## Changelog for 0.13.1
 * aGrUM
-  * variable: new methods to set bounds with doubles in `gum::ContinuousVariable`
-  * Changed the code of instantiations' hash functions to make it compliant with windows mingw implementation
+  * variable: new methods to set bounds with doubles in `ContinuousVariable`
+  * Changed the code of `Instantiation`'s hash functions to make it compliant with windows mingw implementation
 * TestUnits
-  * fixed bug in RawDatabaseTable test unit
+  * fixed bug in `RawDatabaseTable` test unit
 
 ## Changelog for 0.13.0
 
