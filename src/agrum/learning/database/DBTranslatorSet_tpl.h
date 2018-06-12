@@ -379,7 +379,8 @@ namespace gum {
       const std::vector< std::string, OTHER_ALLOC< std::string > >& row,
       const std::size_t                                             k) const {
       if (__translators.size() <= k)
-        GUM_ERROR(UndefinedElement, "the translator could not be found");
+        GUM_ERROR(UndefinedElement,
+                  "Translator #" << k << " could not be found");
       return __translators[k]->translate(row[__columns[k]]);
     }
 
@@ -397,7 +398,8 @@ namespace gum {
     INLINE std::string DBTranslatorSet< ALLOC >::translateBackSafe(
       const DBTranslatedValue translated_val, const std::size_t k) const {
       if (__translators.size() <= k)
-        GUM_ERROR(UndefinedElement, "the translator could not be found");
+        GUM_ERROR(UndefinedElement,
+                  "Translator #" << k << "could not be found");
       return __translators[k]->translateBack(translated_val);
     }
 
@@ -417,7 +419,8 @@ namespace gum {
     INLINE bool DBTranslatorSet< ALLOC >::isMissingValueSafe(
       const DBTranslatedValue translated_val, const std::size_t k) const {
       if (__translators.size() <= k)
-        GUM_ERROR(UndefinedElement, "the translator could not be found");
+        GUM_ERROR(UndefinedElement,
+                  "Translator #" << k << "could not be found");
       return __translators[k]->isMissingValue(translated_val);
     }
 
@@ -443,7 +446,8 @@ namespace gum {
     INLINE DBTranslator< ALLOC >&
            DBTranslatorSet< ALLOC >::translatorSafe(const std::size_t k) {
       if (__translators.size() <= k)
-        GUM_ERROR(UndefinedElement, "the translator could not be found");
+        GUM_ERROR(UndefinedElement,
+                  "Translator #" << k << "could not be found");
       return *(__translators[k]);
     }
 
@@ -453,7 +457,8 @@ namespace gum {
     INLINE const DBTranslator< ALLOC >&
                  DBTranslatorSet< ALLOC >::translatorSafe(const std::size_t k) const {
       if (__translators.size() <= k)
-        GUM_ERROR(UndefinedElement, "the translator could not be found");
+        GUM_ERROR(UndefinedElement,
+                  "Translator #" << k << "could not be found");
       return *(__translators[k]);
     }
 
@@ -471,7 +476,7 @@ namespace gum {
     INLINE std::size_t
            DBTranslatorSet< ALLOC >::domainSizeSafe(const std::size_t k) const {
       if (__translators.size() <= k)
-        GUM_ERROR(UndefinedElement, "the variable could not be found");
+        GUM_ERROR(UndefinedElement, "Variable #" << k << "could not be found");
       return __translators[k]->domainSize();
     }
 
@@ -489,7 +494,7 @@ namespace gum {
     INLINE const Variable&
                  DBTranslatorSet< ALLOC >::variableSafe(const std::size_t k) const {
       if (__translators.size() <= k)
-        GUM_ERROR(UndefinedElement, "the variable could not be found");
+        GUM_ERROR(UndefinedElement, "Variable #" << k << "could not be found");
       return *(__translators[k]->variable());
     }
 
@@ -509,7 +514,7 @@ namespace gum {
     INLINE bool
       DBTranslatorSet< ALLOC >::needsReorderingSafe(const std::size_t k) const {
       if (__translators.size() <= k)
-        GUM_ERROR(UndefinedElement, "the variable could not be found");
+        GUM_ERROR(UndefinedElement, "Variable #" << k << "could not be found");
       return __translators[k]->needsReordering();
     }
 
@@ -533,7 +538,7 @@ namespace gum {
                       ALLOC< std::pair< std::size_t, std::size_t > > >
            DBTranslatorSet< ALLOC >::reorderSafe(const std::size_t k) {
       if (__translators.size() <= k)
-        GUM_ERROR(UndefinedElement, "the variable could not be found");
+        GUM_ERROR(UndefinedElement, "Variable #" << k << "could not be found");
       return __translators[k]->reorder();
     }
 
@@ -553,7 +558,7 @@ namespace gum {
     INLINE std::size_t
            DBTranslatorSet< ALLOC >::inputColumnSafe(const std::size_t k) const {
       if (__translators.size() <= k)
-        GUM_ERROR(UndefinedElement, "the column could not be found");
+        GUM_ERROR(UndefinedElement, "Column #" << k << "could not be found");
       return __columns[k];
     }
 

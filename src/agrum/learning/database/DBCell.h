@@ -272,10 +272,12 @@ namespace gum {
       using UnionType =
         typename std::conditional< sizeof(int) < sizeof(float), float, int >::type;
 
+      // raises an appropriate exception when encountering a type error
+      std::string __typeErrorMsg ( const std::string& real_type ) const;
+      
 
       // a bijection assigning to each string index its corresponding string
       static Bijection< std::string, int >& __strings();
-
 
       // the last index used so far
       static int __string_max_index;

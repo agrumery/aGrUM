@@ -55,31 +55,43 @@ namespace gum {
 
         deb_index = connection_string.find(delimiter, 0);
         if (deb_index == std::string::npos)
-          GUM_ERROR(DatabaseError, "could not determine the datasource");
+          GUM_ERROR(DatabaseError,
+                    "could not determine the datasource from string " <<
+                    connection_string);
         deb_index += std::size_t(1);
         end_index = connection_string.find(delimiter, deb_index);
         if (end_index == std::string::npos)
-          GUM_ERROR(DatabaseError, "could not determine the datasource");
+          GUM_ERROR(DatabaseError,
+                    "could not determine the datasource from string " <<
+                    connection_string);
         std::string dataSource =
           connection_string.substr(deb_index, end_index - deb_index);
 
         deb_index = connection_string.find(delimiter, end_index + std::size_t(1));
         if (deb_index == std::string::npos)
-          GUM_ERROR(DatabaseError, "could not determine the database login");
+          GUM_ERROR(DatabaseError,
+                    "could not determine the database login from string " <<
+                    connection_string);
         deb_index += std::size_t(1);
         end_index = connection_string.find(delimiter, deb_index);
         if (end_index == std::string::npos)
-          GUM_ERROR(DatabaseError, "could not determine the database login");
+          GUM_ERROR(DatabaseError,
+                    "could not determine the database login from string " <<
+                    connection_string);
         std::string login =
           connection_string.substr(deb_index, end_index - deb_index);
 
         deb_index = connection_string.find(delimiter, end_index + std::size_t(1));
         if (deb_index == std::string::npos)
-          GUM_ERROR(DatabaseError, "could not determine the database password");
+          GUM_ERROR(DatabaseError,
+                    "could not determine the database password from string " <<
+                    connection_string);
         deb_index += std::size_t(1);
         end_index = connection_string.find(delimiter, deb_index);
         if (end_index == std::string::npos)
-          GUM_ERROR(DatabaseError, "could not determine the database password");
+          GUM_ERROR(DatabaseError,
+                    "could not determine the database password from string " <<
+                    connection_string);
         std::string password =
           connection_string.substr(deb_index, end_index - deb_index);
 

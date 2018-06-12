@@ -157,13 +157,13 @@ namespace gum {
     /// returns the current type of the DBCell
     INLINE DBCell::EltType DBCell::type() const noexcept { return __type; }
 
-
+    
     /// returns the DBcell as a float
     INLINE float DBCell::real() const {
       if (__type == EltType::REAL)
         return __val_real;
       else
-        GUM_ERROR(TypeError, "the DBCell does not contain a real number");
+        GUM_ERROR(TypeError, __typeErrorMsg ("a real number") );
     }
 
 
@@ -188,7 +188,7 @@ namespace gum {
       if (__type == EltType::INTEGER)
         return __val_integer;
       else
-        GUM_ERROR(TypeError, "the DBCell does not contain an integer");
+        GUM_ERROR(TypeError, __typeErrorMsg ("an integer") );
     }
 
 
@@ -213,7 +213,7 @@ namespace gum {
       if (__type == EltType::STRING)
         return __strings().first(__val_index);
       else
-        GUM_ERROR(TypeError, "the DBCell does not contain a string");
+        GUM_ERROR(TypeError, __typeErrorMsg ("a string") );
     }
 
 
@@ -222,7 +222,7 @@ namespace gum {
       if (__type == EltType::STRING)
         return __val_index;
       else
-        GUM_ERROR(TypeError, "the DBCell does not contain a string");
+        GUM_ERROR(TypeError, __typeErrorMsg ("a string") );
     }
 
 
