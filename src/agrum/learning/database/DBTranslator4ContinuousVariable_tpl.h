@@ -543,6 +543,14 @@ namespace gum {
       return __real_variable;
     }
 
+    
+    /// returns the translation of a missing value
+    template < template < typename > class ALLOC >
+    INLINE DBTranslatedValue
+           DBTranslator4ContinuousVariable< ALLOC >::missingValue () const {
+      return DBTranslatedValue{std::numeric_limits< float >::max()};
+    }
+
 
   } /* namespace learning */
 

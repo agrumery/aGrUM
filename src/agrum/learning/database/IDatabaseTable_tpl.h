@@ -291,8 +291,9 @@ namespace gum {
       }
       if (end > __row->size()) {
         GUM_ERROR(SizeError,
-                  "the database has fewer rows than the upper range "
-                  "specified to the handler");
+                  "the database has fewer rows (" << __row->size() <<
+                  ") than the upper range (" << end <<
+                  ") specified to the handler");
       }
 
       __begin_index = begin;
@@ -760,13 +761,13 @@ namespace gum {
       this->setVariableNames(variable_names, from_external_object);
     }
 
-
+    
     /// returns the name of the kth column of the database
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE const std::string&
-                 IDatabaseTable< T_DATA, ALLOC >::variableName(const std::size_t k) const {
+    IDatabaseTable< T_DATA, ALLOC >::variableName(const std::size_t k) const {
       if (_variable_names.size() <= k)
-        GUM_ERROR(OutOfBounds, "the database does not contain this column");
+        GUM_ERROR(OutOfBounds, "the database does not contain Column #" << k);
       return _variable_names[k];
     }
 
@@ -780,7 +781,26 @@ namespace gum {
         if (_variable_names[i] == name) return i;
 
       GUM_ERROR(UndefinedElement,
-                "the database contains no column with this name");
+                "the database contains no column whose name is " << name );
+    }
+
+
+    /// returns the indices of the columns whose name is passed in argument
+    template < typename T_DATA, template < typename > class ALLOC >
+    INLINE
+    typename IDatabaseTable< T_DATA, ALLOC >:: template DBVector<std::size_t>
+    IDatabaseTable< T_DATA, ALLOC >::columnsFromVariableName(
+      const std::string& name) const {
+      const std::size_t size = _variable_names.size();
+      DBVector<std::size_t> cols;
+      for (std::size_t i = 0; i < size; ++i)
+        if (_variable_names[i] == name) cols.push_back ( i );
+
+      if ( cols.empty () )
+        GUM_ERROR(UndefinedElement,
+                  "the database contains no column whose name is " << name );
+
+      return cols;
     }
 
 
@@ -796,6 +816,21 @@ namespace gum {
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE std::size_t IDatabaseTable< T_DATA, ALLOC >::size() const noexcept {
       return __data.size();
+    }
+
+
+    // returns the number of records in the database
+    template < typename T_DATA, template < typename > class ALLOC >
+    INLINE std::size_t
+    IDatabaseTable< T_DATA, ALLOC >::nbRows() const noexcept {
+      return __data.size();
+    }
+    
+
+    // indicates whether the database contains some records or not
+    template < typename T_DATA, template < typename > class ALLOC >
+    INLINE bool IDatabaseTable< T_DATA, ALLOC >::empty () const noexcept {
+      return __data.empty();
     }
 
 
@@ -884,8 +919,9 @@ namespace gum {
       // check that the size of the row is the same as the rest of the database
       if (!_isRowSizeOK(new_row.size()))
         GUM_ERROR(SizeError,
-                  "the new row has not the same size as the "
-                  "rest of the database");
+                  "the new row is of size " << new_row.size() <<
+                  ", which is different from the number of columns " <<
+                  "of the database, i.e., " << _variable_names.size() );
 
       __updateHandlers(__data.size() + 1);
       __data.push_back(std::move(new_row));
@@ -919,14 +955,21 @@ namespace gum {
         rows_have_missing_vals) {
       if (new_rows.empty()) return;
 
+      // check that the missing values indicators vector has the same size
+      // as the new rows
+      if ( rows_have_missing_vals.size () != new_rows.size () )
+        GUM_ERROR(SizeError,
+                  "the number of new rows (i.e., " << new_rows.size () <<
+                  ") is different from the number of missing values indicators ("
+                  << rows_have_missing_vals.size () );
+
       // check that all the rows have the same size
       const std::size_t new_size = new_rows[0].size();
 
       for (const auto& row : new_rows) {
         if (row.size() != new_size) {
           GUM_ERROR(SizeError,
-                    "all the new rows do not have the same "
-                    "nunber of columns");
+                    "all the new rows do not have the same number of columns");
         }
       }
 
@@ -935,8 +978,9 @@ namespace gum {
       std::size_t db_size = __data.size();
       if (!_isRowSizeOK(new_size)) {
         GUM_ERROR(SizeError,
-                  "the new rows have not the same size as the "
-                  "number of columns in the database");
+                  "the new rows have " << new_size <<
+                  " columns, which is different from the number of columns " <<
+                  "of the database, i.e., " << _variable_names.size() );
       }
 
       std::size_t nb_new_rows = new_rows.size();
@@ -971,14 +1015,21 @@ namespace gum {
         rows_have_missing_vals) {
       if (new_rows.empty()) return;
 
+      // check that the missing values indicators vector has the same size
+      // as the new rows
+      if ( rows_have_missing_vals.size () != new_rows.size () )
+        GUM_ERROR(SizeError,
+                  "the number of new rows (i.e., " << new_rows.size () <<
+                  ") is different from the number of missing values indicators ("
+                  << rows_have_missing_vals.size () );
+
       // check that all the rows have the same size
       const std::size_t new_size = new_rows[0].size();
 
       for (const auto& row : new_rows) {
         if (row.size() != new_size) {
           GUM_ERROR(SizeError,
-                    "all the new rows do not have the same "
-                    "nunber of columns");
+                    "all the new rows do not have the same number of columns");
         }
       }
 
@@ -988,8 +1039,9 @@ namespace gum {
 
       if (!_isRowSizeOK(new_size)) {
         GUM_ERROR(SizeError,
-                  "the new rows have not the same size as the "
-                  "number of columns in the database");
+                  "the new rows have " << new_size <<
+                  " columns, which is different from the number of columns " <<
+                  "of the database, i.e., " << _variable_names.size() );
       }
 
       std::size_t nb_new_rows = new_rows.size();

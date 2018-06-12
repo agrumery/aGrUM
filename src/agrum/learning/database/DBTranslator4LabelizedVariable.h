@@ -370,6 +370,9 @@ namespace gum {
       /// returns the variable stored into the translator
       virtual const LabelizedVariable* variable() const final;
 
+      /// returns the translation of a missing value
+      virtual DBTranslatedValue missingValue () const final;
+
       /// @}
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

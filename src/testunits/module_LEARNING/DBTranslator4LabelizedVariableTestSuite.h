@@ -37,6 +37,9 @@ namespace gum_tests {
       TS_ASSERT(translator.translate("toto").discr_val == 0);
       TS_ASSERT(translator.translate("toto").discr_val == 0);
 
+      TS_ASSERT(translator.missingValue().discr_val ==
+                std::numeric_limits< std::size_t >::max() );
+
       TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("titi"));
       TS_ASSERT(translator.translate("toto").discr_val == 0);
       TS_ASSERT(translator.translate("titi").discr_val == 1);

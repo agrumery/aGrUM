@@ -39,6 +39,10 @@ namespace gum_tests {
       TS_ASSERT(
         std::stof(translator.translateBack(gum::learning::DBTranslatedValue{3.0f}))
         == 3);
+
+      TS_ASSERT(translator.missingValue().cont_val ==
+                std::numeric_limits< float >::max() );
+      
       TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("5"));
       TS_ASSERT(translator.translate("4.22").cont_val == 4.22f);
       TS_ASSERT(translator.translate("-5.34").cont_val == -5.34f);

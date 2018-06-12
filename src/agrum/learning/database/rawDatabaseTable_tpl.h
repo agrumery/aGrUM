@@ -173,11 +173,16 @@ namespace gum {
       const std::size_t size = names.size();
       const std::size_t ignored_cols_size = __ignored_cols.size();
       const auto&       data = IDatabaseTable< DBCell, ALLOC >::_content();
-
+      
       if (!from_external_object || !ignored_cols_size) {
         if (data.empty() || (size == data[0].size())) {
           this->_variable_names = names;
-          return;
+        }
+        else {
+          GUM_ERROR(SizeError,
+                    "the number of variable's names (i.e., " << size <<
+                    ") does not correspond to the number of columns of the " <<
+                    "raw database table (i.e.," << data[0].size() << ")");
         }
       } else {
         // check that the size of the names vector (after removing the ignored
@@ -208,11 +213,14 @@ namespace gum {
           this->_variable_names = std::move(new_names);
           return;
         }
+        else {
+          GUM_ERROR(SizeError,
+                    "the number of variable's names excluding the ignored " << 
+                    "columns (i.e., " << (size - ignored_size) <<
+                    ") does not correspond to the number of columns of the " <<
+                    "raw database table (i.e.," << data[0].size() << ")");
+        }
       }
-
-      GUM_ERROR(SizeError,
-                "the number of variable's names does not "
-                "correspond to the number of columns of the database");
     }
 
 
@@ -362,10 +370,12 @@ namespace gum {
         ignored_size = ignored_cols_size - ignored_size;
       }
 
-      if (!this->_isRowSizeOK(row_size - ignored_size))
+      if (!this->_isRowSizeOK(row_size - ignored_size)) {
         GUM_ERROR(SizeError,
-                  "the new row has not the same size as the "
-                  "rest of the database");
+                  "the new row has " << (row_size - ignored_size) <<
+                  " elements whereas the raw database table has " <<
+                  this->_variable_names.size() << " columns" );
+      }
 
       // create the dbrow that will contain the new data
       Row< DBCell > dbrow;

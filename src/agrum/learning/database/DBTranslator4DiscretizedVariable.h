@@ -315,6 +315,9 @@ namespace gum {
       /// returns the variable stored into the translator
       virtual const IDiscretizedVariable* variable() const final;
 
+      /// returns the translation of a missing value
+      virtual DBTranslatedValue missingValue () const final;
+
       /// @}
 
 

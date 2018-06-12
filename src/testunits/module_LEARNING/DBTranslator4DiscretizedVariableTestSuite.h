@@ -46,6 +46,9 @@ namespace gum_tests {
       TS_ASSERT_THROWS(translator.translate("11"), gum::UnknownLabelInDatabase);
       TS_ASSERT_THROWS(translator.translate("aaa"), gum::TypeError);
 
+      TS_ASSERT(translator.missingValue().discr_val ==
+                std::numeric_limits< std::size_t >::max() );
+
       TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("7"));
       TS_ASSERT(translator.translate("10").discr_val == 1);
       TS_ASSERT(translator.translate("9").discr_val == 1);

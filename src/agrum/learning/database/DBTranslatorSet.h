@@ -181,60 +181,60 @@ namespace gum {
 
       /// @{
 
-      /// inserts a new translator in the translator set
+      /// inserts a new translator at the end of the translator set
       /** @param translator a translator that will be copied into the
        * translator set
        * @param column the index of the column that this new translator should
        * read in the database.
+       * @param unique_column indicates whether the column can be read by
+       * several translators.
        * @return the position of the translator within the translator set.
-       * @warning Translators are order by increasing column within the
-       * translator set. As a consequence, their position may change when
-       * other translators are added.
        * @throw DuplicateElement is raised if there already exists a translator
-       * reading the column passed in argument. */
+       * reading the column passed in argument and the unique_column
+       * argument is set to true. */
       template < template < template < typename > class > class Translator >
       std::size_t insertTranslator(const Translator< ALLOC >& translator,
-                                   const std::size_t          column);
+                                   const std::size_t          column,
+                                   const bool                 unique_column=true);
 
-      /// inserts a new translator for a given variable in the translator set
-      /** The first template parameter (GUM_SCALAR) is necessary only for
-       * inserting variables of true types DiscretizedVariable and
-       * ContinuousVariable, which depend on the GUM_SCALAR parameter type.
-       * However, usually, when you use this function, this is to add into
-       * the TranslatorSet the variables of a BayesNet<GUM_SCALAR>. As such, you
-       * can safely call insert all the variables of this Bayesian network
-       * using inertTranslator<GUM_SCALAR> ( bn.variable() ... ) instructions.
+      /** @brief inserts a new translator for a given variable at the end of
+       * the translator set
+       *
        * @param var the variable that will be contained into the translator
        * @param column the index of the column that this new translator should
        * read in the database.
        * @param  missing_symbols the set of symbols in the database
        * representing missing values
+       * @param unique_column indicates whether the column can be read by
+       * several translators.
        * @throw DuplicateElement is raised if there already exists a translator
-       * reading the column passed in argument.
+       * reading the column passed in argument and the unique_column
+       * argument is set to true.
        */
       template < template < typename > class XALLOC >
       std::size_t insertTranslator(
         const Variable&                                          var,
         const std::size_t                                        column,
-        const std::vector< std::string, XALLOC< std::string > >& missing_symbols);
+        const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
+        const bool                                             unique_column=true);
 
-      /// inserts a new translator for a given variable in the translator set
-      /** The first template parameter (GUM_SCALAR) is necessary only for
-       * inserting variables of true types DiscretizedVariable and
-       * ContinuousVariable, which depend on the GUM_SCALAR parameter type.
-       * However, usually, when you use this function, this is to add into
-       * the TranslatorSet the variables of a BayesNet<GUM_SCALAR>. As such, you
-       * can safely call insert all the variables of this Bayesian network
-       * using inertTranslator<GUM_SCALAR> ( bn.variable() ... ) instructions.
+      /** @brief inserts a new translator for a given variable at the end of
+       * the translator set
+       *
        * @param var the variable that will be contained into the translator
        * @param column the index of the column that this new translator should
        * read in the database.
+       * @param unique_column indicates whether the column can be read by
+       * several translators.
        * @throw DuplicateElement is raised if there already exists a translator
-       * reading the column passed in argument.
+       * reading the column passed in argumentt and the unique_column
+       * argument is set to true.
        */
-      std::size_t insertTranslator(const Variable& var, const std::size_t column);
+      std::size_t insertTranslator(const Variable&   var,
+                                   const std::size_t column,
+                                   const bool        unique_column=true);
 
-      /** @brief erases either the kth translator or that parsing the kth
+      /** @brief erases either the kth translator or those parsing the kth
        * column of the input database
        *
        * DBTranslatorSets do not necessarily read all the columns of their
@@ -243,11 +243,13 @@ namespace gum {
        * and 5 respectively. When k_is_input_col is set to false, Parameter k
        * passed in argument corresponds to either 0 or 1, i.e., to the index of
        * one of the two translators stored into the DBTranslatorSet. When
-       * k_is_input_col is set to true, the translator to be erased is the one
-       * that parses the kth column of the input database.
+       * k_is_input_col is set to true, the translators to be erased are the ones
+       * that parse the kth column of the input database (when several
+       * translators parse the column k, all of them are removed).
        * @warning if the translator does not exists, nothing is done. In
        * particular, no exception is raised. */
-      void eraseTranslator(const std::size_t k, const bool k_is_input_col = false);
+      void eraseTranslator(const std::size_t k,
+                           const bool k_is_input_col = false);
 
       /// returns the kth translator
       /** @warning this method assumes that there are at least k translators.
