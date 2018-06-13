@@ -147,8 +147,8 @@ namespace gum {
       BayesNet< GUM_SCALAR > learnParameters(const DAG& dag,
                                              bool take_into_account_score = true);
 
-      /// learns a BN (its parameters) when its structure is known
-      /**
+      // learns a BN (its parameters) when its structure is known
+      /*
        * @param bn the structure of the Bayesian network
        * @param take_into_account_score The dag passed in argument may have
        * been learnt from a structure learning. In this case, if the score used
@@ -165,8 +165,7 @@ namespace gum {
        * @throw UnknownLabelInDatabase if a label is found in the databast that
        * do not correpond to the variable.
        */
-      BayesNet< GUM_SCALAR > learnParameters(const BayesNet< GUM_SCALAR >& bn,
-                                             bool take_into_account_score = true);
+      //BayesNet< GUM_SCALAR > learnParameters(bool take_into_account_score = true);
 
       private:
       /// read the first line of a file to find column names

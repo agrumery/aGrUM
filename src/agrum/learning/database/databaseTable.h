@@ -298,10 +298,9 @@ namespace gum {
        * all the column of the database corresponding to the new translator is
        * filled with missing values.
        */
-      std::size_t
-      insertTranslator(const DBTranslator< ALLOC >& translator,
-                       const std::size_t            input_column,
-                       const bool                   unique_column=true);
+      std::size_t insertTranslator(const DBTranslator< ALLOC >& translator,
+                                   const std::size_t            input_column,
+                                   const bool unique_column = true);
 
       /// insert a new translator into the database table
       /** @param var the variable that will be contained into the translator
@@ -325,8 +324,8 @@ namespace gum {
         const Variable&                                   var,
         const std::size_t                                 input_column,
         std::vector< std::string, XALLOC< std::string > > missing_symbols =
-        std::vector< std::string, XALLOC< std::string > >(),
-        const bool                                        unique_column = true);
+          std::vector< std::string, XALLOC< std::string > >(),
+        const bool unique_column = true);
 
       /** @brief erases either the kth translator or all those parsing the kth
        * column of the input dataset
@@ -343,7 +342,7 @@ namespace gum {
        * @warning if the translator does not exists, nothing is done. In
        * particular, no exception is raised. */
       void eraseTranslators(const std::size_t k,
-                            const bool k_is_input_col = false);
+                            const bool        k_is_input_col = false);
 
       /// returns the set of translators
       const DBTranslatorSet< ALLOC >& translatorSet() const;
@@ -700,9 +699,8 @@ namespace gum {
        * or to all those that parse the kth column of the input dataset
        *
        * @warning the indices are sorted by deacreasing order */
-      DBVector<std::size_t>
-      __getKthIndices(const std::size_t k,
-                      const bool        k_is_input_col) const;
+      DBVector< std::size_t > __getKthIndices(const std::size_t k,
+                                              const bool k_is_input_col) const;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

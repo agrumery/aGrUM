@@ -367,7 +367,7 @@ namespace gum {
       virtual const IContinuousVariable* variable() const final;
 
       /// returns the translation of a missing value
-      virtual DBTranslatedValue missingValue () const final;
+      virtual DBTranslatedValue missingValue() const final;
 
       /// @}
 

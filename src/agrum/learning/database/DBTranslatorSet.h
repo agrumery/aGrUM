@@ -195,7 +195,7 @@ namespace gum {
       template < template < template < typename > class > class Translator >
       std::size_t insertTranslator(const Translator< ALLOC >& translator,
                                    const std::size_t          column,
-                                   const bool                 unique_column=true);
+                                   const bool unique_column = true);
 
       /** @brief inserts a new translator for a given variable at the end of
        * the translator set
@@ -216,7 +216,7 @@ namespace gum {
         const Variable&                                          var,
         const std::size_t                                        column,
         const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
-        const bool                                             unique_column=true);
+        const bool unique_column = true);
 
       /** @brief inserts a new translator for a given variable at the end of
        * the translator set
@@ -232,7 +232,7 @@ namespace gum {
        */
       std::size_t insertTranslator(const Variable&   var,
                                    const std::size_t column,
-                                   const bool        unique_column=true);
+                                   const bool        unique_column = true);
 
       /** @brief erases either the kth translator or those parsing the kth
        * column of the input database
@@ -248,8 +248,7 @@ namespace gum {
        * translators parse the column k, all of them are removed).
        * @warning if the translator does not exists, nothing is done. In
        * particular, no exception is raised. */
-      void eraseTranslator(const std::size_t k,
-                           const bool k_is_input_col = false);
+      void eraseTranslator(const std::size_t k, const bool k_is_input_col = false);
 
       /// returns the kth translator
       /** @warning this method assumes that there are at least k translators.

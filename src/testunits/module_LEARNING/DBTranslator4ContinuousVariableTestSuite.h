@@ -40,9 +40,9 @@ namespace gum_tests {
         std::stof(translator.translateBack(gum::learning::DBTranslatedValue{3.0f}))
         == 3);
 
-      TS_ASSERT(translator.missingValue().cont_val ==
-                std::numeric_limits< float >::max() );
-      
+      TS_ASSERT(translator.missingValue().cont_val
+                == std::numeric_limits< float >::max());
+
       TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("5"));
       TS_ASSERT(translator.translate("4.22").cont_val == 4.22f);
       TS_ASSERT(translator.translate("-5.34").cont_val == -5.34f);
@@ -89,19 +89,16 @@ namespace gum_tests {
       TS_ASSERT(translator3.translate("xxx").cont_val
                 == std::numeric_limits< float >::max());
 
-      const auto& tr_var = *( translator3.variable () );
-      int good_cont = 1;
+      const auto& tr_var = *(translator3.variable());
+      int         good_cont = 1;
       try {
-        const gum::ContinuousVariable< double >&  xvar_cont =
-          dynamic_cast<const gum::ContinuousVariable< double >&> ( tr_var );
-        TS_ASSERT ( xvar_cont.lowerBound() == -2.0 );
-        TS_ASSERT ( xvar_cont.upperBound() == 10.0 );
-      }
-      catch ( std::bad_cast& ) {
-        good_cont = 0;
-      }
-      TS_ASSERT ( good_cont == 1 );
-      
+        const gum::ContinuousVariable< double >& xvar_cont =
+          dynamic_cast< const gum::ContinuousVariable< double >& >(tr_var);
+        TS_ASSERT(xvar_cont.lowerBound() == -2.0);
+        TS_ASSERT(xvar_cont.upperBound() == 10.0);
+      } catch (std::bad_cast&) { good_cont = 0; }
+      TS_ASSERT(good_cont == 1);
+
       std::vector< std::string > missing4{"2", "N/A", "20", "4", "xxx", "-10"};
       gum::learning::DBTranslator4ContinuousVariable<> translator4(
         var, missing4, true);

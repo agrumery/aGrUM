@@ -351,7 +351,7 @@ namespace gum {
       bool isMissingValue(const DBTranslatedValue& val) const;
 
       /// returns the translation of a missing value
-      virtual DBTranslatedValue missingValue () const = 0;
+      virtual DBTranslatedValue missingValue() const = 0;
 
       /// @}
 

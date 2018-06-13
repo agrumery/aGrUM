@@ -139,10 +139,10 @@ namespace gum {
     }
 
     /// learns a BN (its parameters) when its structure is known
+    /*
     template < typename GUM_SCALAR >
     BayesNet< GUM_SCALAR >
-      BNLearner< GUM_SCALAR >::learnParameters(const BayesNet< GUM_SCALAR >& bn,
-                                               bool take_into_account_score) {
+      BNLearner< GUM_SCALAR >::learnParameters(bool take_into_account_score) {
       // create the apriori and the estimator
       __createApriori();
       __createParamEstimator(take_into_account_score);
@@ -152,6 +152,7 @@ namespace gum {
       NodeProperty< NodeId > mapIds(bn.size());
       auto                   mods = modalities();
 
+      
       for (auto node : bn.nodes()) {
         const NodeId new_id = idFromName(bn.variable(node).name());
 
@@ -168,6 +169,7 @@ namespace gum {
         newDAG.addArc(mapIds[arc.tail()], mapIds[arc.head()]);
       }
 
+
       return DAG2BNLearner::
         createBN< GUM_SCALAR, ParamEstimator<>, DBTranslatorSet<> >(
           *__param_estimator,
@@ -176,6 +178,7 @@ namespace gum {
           __score_database.modalities(),
           __score_database.databaseTable().translatorSet());
     }
+  */
 
     template < typename GUM_SCALAR >
     NodeProperty< Sequence< std::string > >

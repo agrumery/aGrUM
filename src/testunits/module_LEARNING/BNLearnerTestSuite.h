@@ -449,7 +449,7 @@ namespace gum_tests {
       gum::BayesNet< double > bn = learner.learnBN();
 
       try {
-        gum::BayesNet< double > bn2 = learner.learnParameters(bn);
+        gum::BayesNet< double > bn2 = learner.learnParameters(bn.dag());
         TS_ASSERT(bn2.dag().arcs().size() == bn.dag().arcs().size());
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
@@ -487,7 +487,7 @@ namespace gum_tests {
       gum::BayesNet< float > bn = learner.learnBN();
 
       try {
-        gum::BayesNet< float > bn2 = learner.learnParameters(bn);
+        gum::BayesNet< float > bn2 = learner.learnParameters(bn.dag());
         TS_ASSERT(bn2.dag().arcs().size() == bn.dag().arcs().size());
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
@@ -532,7 +532,7 @@ namespace gum_tests {
       learner.useAprioriSmoothing();
 
       try {
-        gum::BayesNet< double > bn2 = learner.learnParameters(bn);
+        gum::BayesNet< double > bn2 = learner.learnParameters(bn.dag());
         TS_ASSERT(bn2.dim() == bn.dim());
 
         for (gum::NodeId node : bn.nodes()) {
@@ -608,7 +608,7 @@ namespace gum_tests {
       learner.useScoreLog2Likelihood();
       learner.useAprioriSmoothing();
 
-      gum::BayesNet< double > bn2 = learner.learnParameters(bn);
+      gum::BayesNet< double > bn2 = learner.learnParameters(bn.dag());
     }
 
     void test_asia_param_bn_with_unknow_modality() {
@@ -736,7 +736,7 @@ namespace gum_tests {
           GET_RESSOURCES_PATH("DBN_Tonda.csv"));
         learner.useScoreLog2Likelihood();
         learner.useAprioriSmoothing(1.0);
-        learn1 = learner.learnParameters(dbn);
+        learn1 = learner.learnParameters(dbn.dag());
       }
       gum::BayesNet< double > learn2;
       {
@@ -759,7 +759,7 @@ namespace gum_tests {
             GET_RESSOURCES_PATH("DBN_Tonda.csv"), learn1);
           learner.useScoreLog2Likelihood();
           learner.useAprioriSmoothing(1.0);
-          learn2 = learner.learnParameters(dbn);
+          learn2 = learner.learnParameters(dbn.dag());
         } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
       }
       gum::BayesNet< double > learn3;
@@ -769,7 +769,7 @@ namespace gum_tests {
           GET_RESSOURCES_PATH("DBN_Tonda.csv"), dbn);
         learner.useScoreLog2Likelihood();
         learner.useAprioriSmoothing(1.0);
-        learn3 = learner.learnParameters(dbn);
+        learn3 = learner.learnParameters(dbn.dag());
       }
 
       TS_ASSERT_EQUALS(learn1.variable(learn1.idFromName("wl_0")).toString(),
@@ -875,7 +875,7 @@ namespace gum_tests {
       learner.useScoreLog2Likelihood();
       learner.useAprioriSmoothing();
       learner.setAprioriWeight(1);
-      auto bn = learner.learnParameters(templ);
+      auto bn = learner.learnParameters(templ.dag());
     }
 
     void test_BugDoumencWithInt() {
@@ -948,22 +948,19 @@ namespace gum_tests {
       learner.useAprioriSmoothing();
       learner.setAprioriWeight(1);
 
-      auto bn = learner.learnParameters(templ);
+      auto bn = learner.learnParameters(templ.dag());
 
-      const gum::DiscreteVariable& var_discr = bn.variable ( "A" );
-      int good = 1;
+      const gum::DiscreteVariable& var_discr = bn.variable("A");
+      int                          good = 1;
       try {
-        const gum::DiscretizedVariable< int >&  xvar_discr =
-          dynamic_cast<const gum::DiscretizedVariable< int >&> ( var_discr );
-        TS_ASSERT ( xvar_discr.domainSize () == 9 );
-        TS_ASSERT ( xvar_discr.label(0) == "[60;65[" );
-        TS_ASSERT ( xvar_discr.label(1) == "[65;70[" );
-        TS_ASSERT ( xvar_discr.label(8) == "[100;105]" );
-      }
-      catch ( std::bad_cast& ) {
-        good = 0;
-      }
-      TS_ASSERT ( good == 1 );
+        const gum::DiscretizedVariable< int >& xvar_discr =
+          dynamic_cast< const gum::DiscretizedVariable< int >& >(var_discr);
+        TS_ASSERT(xvar_discr.domainSize() == 9);
+        TS_ASSERT(xvar_discr.label(0) == "[60;65[");
+        TS_ASSERT(xvar_discr.label(1) == "[65;70[");
+        TS_ASSERT(xvar_discr.label(8) == "[100;105]");
+      } catch (std::bad_cast&) { good = 0; }
+      TS_ASSERT(good == 1);
     }
   };
 } /* namespace gum_tests */

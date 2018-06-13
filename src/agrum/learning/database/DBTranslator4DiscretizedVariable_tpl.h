@@ -381,8 +381,10 @@ namespace gum {
           return DBTranslatedValue{this->_back_dico.first(str)};
         } catch (gum::Exception&) {
           if (!DBCell::isReal(str)) {
-            GUM_ERROR(TypeError, "String \"" << str <<
-                      "\" cannot be translated because it is not a number");
+            GUM_ERROR(TypeError,
+                      "String \""
+                        << str
+                        << "\" cannot be translated because it is not a number");
           } else {
             GUM_ERROR(UnknownLabelInDatabase,
                       "The translation of \"" << str << "\" could not be found");
@@ -405,8 +407,8 @@ namespace gum {
           return *(this->_missing_symbols.begin());
         else
           GUM_ERROR(UnknownLabelInDatabase,
-                    "The back translation of \"" << translated_val.discr_val <<
-                    "\" could not be found");
+                    "The back translation of \"" << translated_val.discr_val
+                                                 << "\" could not be found");
       }
     }
 
@@ -463,7 +465,7 @@ namespace gum {
     /// returns the translation of a missing value
     template < template < typename > class ALLOC >
     INLINE DBTranslatedValue
-           DBTranslator4DiscretizedVariable< ALLOC >::missingValue () const {
+           DBTranslator4DiscretizedVariable< ALLOC >::missingValue() const {
       return DBTranslatedValue{std::numeric_limits< std::size_t >::max()};
     }
 

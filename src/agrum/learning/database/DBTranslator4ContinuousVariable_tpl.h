@@ -373,8 +373,10 @@ namespace gum {
         if (this->isMissingSymbol(str)) {
           return DBTranslatedValue{std::numeric_limits< float >::max()};
         } else
-          GUM_ERROR(TypeError, "String \"" << str <<
-                    "\" cannot be translated because it is not a number");
+          GUM_ERROR(TypeError,
+                    "String \""
+                      << str
+                      << "\" cannot be translated because it is not a number");
       }
 
       // here we know that the string is a number
@@ -394,8 +396,9 @@ namespace gum {
       // check if we are allowed to update the domain of the variable
       if (!__fit_range) {
         GUM_ERROR(UnknownLabelInDatabase,
-                  "String \"" << str << "\" cannot be translated because it is "
-                  "out of the domain of the continuous variable");
+                  "String \"" << str
+                              << "\" cannot be translated because it is "
+                                 "out of the domain of the continuous variable");
       }
 
       // now, we can try to add str as a new bound of the range variable
@@ -425,9 +428,10 @@ namespace gum {
             const float miss_val = std::stof(missing.first);
             if ((miss_val >= number) && (miss_val <= upper_bound)) {
               GUM_ERROR(OperationNotAllowed,
-                        "String \"" << str << "\" cannot be translated because " <<
-                        "it would induce a new domain containing an already " <<
-                        "translated missing symbol");
+                        "String \""
+                          << str << "\" cannot be translated because "
+                          << "it would induce a new domain containing an already "
+                          << "translated missing symbol");
             }
           }
         }
@@ -458,9 +462,10 @@ namespace gum {
             const float miss_val = std::stof(missing.first);
             if ((miss_val >= lower_bound) && (miss_val <= number)) {
               GUM_ERROR(OperationNotAllowed,
-                        "String \"" << str << "\" cannot be translated because " <<
-                        "it would induce a new domain containing an already " <<
-                        "translated missing symbol");
+                        "String \""
+                          << str << "\" cannot be translated because "
+                          << "it would induce a new domain containing an already "
+                          << "translated missing symbol");
             }
           }
         }
@@ -500,9 +505,10 @@ namespace gum {
       if ((translated_val.cont_val < __variable.lowerBound())
           || (translated_val.cont_val > __variable.upperBound())) {
         GUM_ERROR(UnknownLabelInDatabase,
-                  "The back translation of " << translated_val.cont_val <<
-                  " could not be found because the value is outside the " <<
-                  "domain of the continuous variable");
+                  "The back translation of "
+                    << translated_val.cont_val
+                    << " could not be found because the value is outside the "
+                    << "domain of the continuous variable");
       }
 
       char buffer[100];
@@ -547,11 +553,11 @@ namespace gum {
       return __real_variable;
     }
 
-    
+
     /// returns the translation of a missing value
     template < template < typename > class ALLOC >
     INLINE DBTranslatedValue
-           DBTranslator4ContinuousVariable< ALLOC >::missingValue () const {
+           DBTranslator4ContinuousVariable< ALLOC >::missingValue() const {
       return DBTranslatedValue{std::numeric_limits< float >::max()};
     }
 

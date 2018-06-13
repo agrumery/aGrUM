@@ -37,6 +37,7 @@
 #include <mutex>
 
 #include <agrum/agrum.h>
+#include <agrum/core/thread.h>
 #include <agrum/learning/database/DBCell.h>
 #include <agrum/learning/database/DBRow.h>
 #include <agrum/learning/database/DBHandler.h>
@@ -978,13 +979,6 @@ namespace gum {
        * present in the IDatabaseTable */
       virtual const DBVector< std::size_t > inputColumns() const = 0;
 
-
-      /// indicates whether the database contains some missing values
-      bool hasMissingValues() const;
-
-      /// indicates whether the kth row contains some missing values
-      bool hasMissingValues(const std::size_t k) const;
-
       using IDatabaseTableInsert4DBCell<
         ALLOC,
         !std::is_same< T_DATA, DBCell >::value >::insertRow;
@@ -1097,6 +1091,29 @@ namespace gum {
       /// returns the set of missing symbols
       const DBVector< std::string >& missingSymbols() const;
 
+      /// indicates whether the database contains some missing values
+      bool hasMissingValues() const;
+
+      /// indicates whether the kth row contains some missing values
+      bool hasMissingValues(const std::size_t k) const;
+
+      /// changes the max number of threads that a database can use
+      /** Within databases, some methods can be processed in a parallel fashion.
+       * This methods indicates the maximum number of threads that can be run
+       * in parallel at the same time. */
+      void setMaxNbThreads(const std::size_t nb) const;
+
+      /** @brief changes the number min of rows a thread should process in a
+       * multithreading context
+       *
+       * When a method executes several threads to perform actions on the rows
+       * of the database, the MinNbRowsPerThread indicates how many rows each
+       * thread should at least process. This is used to compute the number of
+       * threads actually run. This number is equal to the min between the max
+       * number of threads allowed and the number of records in the database
+       * divided by nb. */
+      void setMinNbRowsPerThread ( const std::size_t nb ) const;
+      
       /// @}
 
 
@@ -1104,14 +1121,23 @@ namespace gum {
       /// the names of the variables for each column
       DBVector< std::string > _variable_names;
 
-      /// returns the content of the database
-      Matrix< T_DATA >& _content() noexcept;
+      // the vector of DBRows containing all the raw data
+      Matrix< T_DATA > _rows;
 
-      /// returns the vector indicating whether a row contains missing values
-      DBVector< IsMissing >& _hasRowMissingVal() noexcept;
+      // the set of string corresponding to missing values
+      DBVector< std::string > _missing_symbols;
 
-      /// returns the set of symbols for the missing values
-      const DBVector< std::string >& _missingSymbols() const;
+      // a vector indicating which rows have missing values (char != 0)
+      DBVector< IsMissing > _has_row_missing_val;
+
+      // the maximal number of threads that the database can use
+      mutable std::size_t _max_nb_threads
+      {std::size_t(thread::getMaxNumberOfThreads())};
+
+      // the min number of rows that a thread should process in a
+      // multithreading context
+      mutable std::size_t _min_nb_rows_per_thread{100};
+      
 
       /** @brief checks whether a size corresponds to the number of columns
        * of the database */
@@ -1121,23 +1147,14 @@ namespace gum {
       IDatabaseTable< T_DATA, ALLOC >&
         operator=(const IDatabaseTable< T_DATA, ALLOC >& from);
 
-      /// move constructor
+      /// move operator
       IDatabaseTable< T_DATA, ALLOC >&
         operator=(IDatabaseTable< T_DATA, ALLOC >&& from);
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-      private:
-      // the vector of DBRows containing all the raw data
-      Matrix< T_DATA > __data;
-
-      // the set of string corresponding to missing values
-      DBVector< std::string > __missing_symbols;
-
-      // a vector indicating which rows have missing values (char != 0)
-      DBVector< IsMissing > __has_row_missing_val;
-
+    private:
       // the list of handlers currently attached to the database
       /* this is useful when the database is resized */
       mutable DBVector< HandlerSafe* > __list_of_safe_handlers;

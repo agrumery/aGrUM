@@ -172,17 +172,16 @@ namespace gum {
       const bool from_external_object) {
       const std::size_t size = names.size();
       const std::size_t ignored_cols_size = __ignored_cols.size();
-      const auto&       data = IDatabaseTable< DBCell, ALLOC >::_content();
-      
+
       if (!from_external_object || !ignored_cols_size) {
-        if (data.empty() || (size == data[0].size())) {
+        if (this->_rows.empty() || (size == this->_rows[0].size())) {
           this->_variable_names = names;
-        }
-        else {
-          GUM_ERROR(SizeError,
-                    "the number of variable's names (i.e., " << size <<
-                    ") does not correspond to the number of columns of the " <<
-                    "raw database table (i.e.," << data[0].size() << ")");
+        } else {
+          GUM_ERROR(
+            SizeError,
+            "the number of variable's names (i.e., "
+              << size << ") does not correspond to the number of columns of the "
+              << "raw database table (i.e.," << this->_rows[0].size() << ")");
         }
       } else {
         // check that the size of the names vector (after removing the ignored
@@ -197,7 +196,8 @@ namespace gum {
         }
         ignored_size = ignored_cols_size - ignored_size;
 
-        if (data.empty() || (size == data[0].size() + ignored_size)) {
+        if (this->_rows.empty()
+            || (size == this->_rows[0].size() + ignored_size)) {
           DBVector< std::string > new_names;
           for (std::size_t i = std::size_t(0), j = std::size_t(0); i < size; ++i) {
             if (i != __ignored_cols[j]) {
@@ -212,13 +212,13 @@ namespace gum {
           }
           this->_variable_names = std::move(new_names);
           return;
-        }
-        else {
+        } else {
           GUM_ERROR(SizeError,
-                    "the number of variable's names excluding the ignored " << 
-                    "columns (i.e., " << (size - ignored_size) <<
-                    ") does not correspond to the number of columns of the " <<
-                    "raw database table (i.e.," << data[0].size() << ")");
+                    "the number of variable's names excluding the ignored "
+                      << "columns (i.e., " << (size - ignored_size)
+                      << ") does not correspond to the number of columns of the "
+                      << "raw database table (i.e.," << this->_rows[0].size()
+                      << ")");
         }
       }
     }
@@ -250,26 +250,23 @@ namespace gum {
         }
       }
 
-      // the column of __data and _variable_names impacted by the ignoreColumn
+      // the column of __rows and _variable_names impacted by the ignoreColumn
       // operation is therefore equal to kk-i. So, we should check that such
-      // a column exists and, if so, we should remove the column from __data
+      // a column exists and, if so, we should remove the column from __rows
       // and from _variable_names. Note that if there is no more variable,
-      // __data should become empty
+      // __rows should become empty
       const std::size_t col = kk - i;
       if (col < this->_variable_names.size()) {
         this->_variable_names.erase(this->_variable_names.begin() + col);
         if (this->_variable_names.empty()) {
           IDatabaseTable< DBCell, ALLOC >::eraseAllRows();
         } else {
-          auto& rows = IDatabaseTable< DBCell, ALLOC >::_content();
-          auto& has_row_missing_val =
-            IDatabaseTable< DBCell, ALLOC >::_hasRowMissingVal();
-          const std::size_t nb_rows = rows.size();
+          const std::size_t nb_rows = this->_rows.size();
           if (nb_rows != std::size_t(0)) {
-            const std::size_t nb_cols = rows[0].size();
+            const std::size_t nb_cols = this->_rows[0].size();
             for (std::size_t i = std::size_t(0); i < nb_rows; ++i) {
-              auto& row = rows[i].row();
-              if (has_row_missing_val[i] == IsMissing::True) {
+              auto& row = this->_rows[i].row();
+              if (this->_has_row_missing_val[i] == IsMissing::True) {
                 bool has_missing_val = false;
                 for (std::size_t j = std::size_t(0); j < nb_cols; ++j) {
                   if ((j != col) && row[j].isMissing()) {
@@ -277,7 +274,8 @@ namespace gum {
                     break;
                   }
                 }
-                if (!has_missing_val) has_row_missing_val[i] = IsMissing::False;
+                if (!has_missing_val)
+                  this->_has_row_missing_val[i] = IsMissing::False;
               }
               row.erase(row.begin() + col);
             }
@@ -347,7 +345,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE DBCell
            RawDatabaseTable< ALLOC >::__convert(const std::string& elt) const {
-      return DBCell::bestDBCell(elt, this->_missingSymbols());
+      return DBCell::bestDBCell(elt, this->_missing_symbols);
     }
 
 
@@ -372,9 +370,10 @@ namespace gum {
 
       if (!this->_isRowSizeOK(row_size - ignored_size)) {
         GUM_ERROR(SizeError,
-                  "the new row has " << (row_size - ignored_size) <<
-                  " elements whereas the raw database table has " <<
-                  this->_variable_names.size() << " columns" );
+                  "the new row has "
+                    << (row_size - ignored_size)
+                    << " elements whereas the raw database table has "
+                    << this->_variable_names.size() << " columns");
       }
 
       // create the dbrow that will contain the new data

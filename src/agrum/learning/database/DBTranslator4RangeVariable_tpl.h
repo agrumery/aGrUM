@@ -323,15 +323,15 @@ namespace gum {
         // check if we are allowed to update the range variable
         if (!this->hasEditableDictionary()) {
           GUM_ERROR(UnknownLabelInDatabase,
-                    "The translation of String \"" << str <<
-                    "\" could not be found");
+                    "The translation of String \"" << str
+                                                   << "\" could not be found");
         }
 
         // check if str could correspond to a bound of the range variable
         if (!DBCell::isInteger(str)) {
           GUM_ERROR(TypeError,
-                    "String \"" << str << "\" cannot be translated because " <<
-                    "it cannot be converted into an integer");
+                    "String \"" << str << "\" cannot be translated because "
+                                << "it cannot be converted into an integer");
         }
         const long new_value = std::stol(str);
 
@@ -339,8 +339,9 @@ namespace gum {
         // translated, raise an exception
         if (__translated_int_missing_symbols.exists(new_value)) {
           GUM_ERROR(OperationNotAllowed,
-                    "String \"" << str << "\" cannot be translated because " <<
-                    "it corresponds to an already translated missing symbol");
+                    "String \""
+                      << str << "\" cannot be translated because "
+                      << "it corresponds to an already translated missing symbol");
         }
 
         // now, we can try to add str as a new bound of the range variable
@@ -353,8 +354,8 @@ namespace gum {
         if (__variable.minVal() > __variable.maxVal()) {
           if (this->_max_dico_entries == 0) {
             GUM_ERROR(SizeError,
-                      "String \"" << str << "\" cannot be translated because " << 
-                      "the dictionary is already full");
+                      "String \"" << str << "\" cannot be translated because "
+                                  << "the dictionary is already full");
           }
           __variable.setMinVal(new_value);
           __variable.setMaxVal(new_value);
@@ -374,17 +375,18 @@ namespace gum {
         if (new_value < __variable.minVal()) {
           if (std::size_t(upper_bound - new_value + 1) > this->_max_dico_entries)
             GUM_ERROR(SizeError,
-                      "String \"" << str << "\" cannot be translated because " << 
-                      "the dictionary is already full");
+                      "String \"" << str << "\" cannot be translated because "
+                                  << "the dictionary is already full");
 
           // check that there does not already exist a translated missing
           // value within the new bounds of the range variable
           for (const auto& missing : __translated_int_missing_symbols) {
             if ((missing >= new_value) && (missing <= upper_bound)) {
               GUM_ERROR(OperationNotAllowed,
-                        "String \"" << str << "\" cannot be translated " <<
-                        "because it would induce a new range containing " <<
-                        "an already translated missing symbol");
+                        "String \""
+                          << str << "\" cannot be translated "
+                          << "because it would induce a new range containing "
+                          << "an already translated missing symbol");
             }
           }
 
@@ -414,17 +416,18 @@ namespace gum {
         } else {
           if (std::size_t(new_value - lower_bound + 1) > this->_max_dico_entries)
             GUM_ERROR(SizeError,
-                      "String \"" << str << "\" cannot be translated because " << 
-                      "the dictionary is already full");
+                      "String \"" << str << "\" cannot be translated because "
+                                  << "the dictionary is already full");
 
           // check that there does not already exist a translated missing
           // value within the new bounds of the range variable
           for (const auto& missing : __translated_int_missing_symbols) {
             if ((missing <= new_value) && (missing >= lower_bound)) {
               GUM_ERROR(OperationNotAllowed,
-                        "String \"" << str << "\" cannot be translated " <<
-                        "because it would induce a new range containing " <<
-                        "an already translated missing symbol");
+                        "String \""
+                          << str << "\" cannot be translated "
+                          << "because it would induce a new range containing "
+                          << "an already translated missing symbol");
             }
           }
 
@@ -471,8 +474,8 @@ namespace gum {
         }
 
         GUM_ERROR(UnknownLabelInDatabase,
-                  "The back translation of \"" << translated_val.discr_val <<
-                  "\" could not be found");
+                  "The back translation of \"" << translated_val.discr_val
+                                               << "\" could not be found");
       }
     }
 
@@ -552,11 +555,11 @@ namespace gum {
       return &__variable;
     }
 
-    
+
     /// returns the translation of a missing value
     template < template < typename > class ALLOC >
     INLINE DBTranslatedValue
-           DBTranslator4RangeVariable< ALLOC >::missingValue () const {
+           DBTranslator4RangeVariable< ALLOC >::missingValue() const {
       return DBTranslatedValue{std::numeric_limits< std::size_t >::max()};
     }
 
