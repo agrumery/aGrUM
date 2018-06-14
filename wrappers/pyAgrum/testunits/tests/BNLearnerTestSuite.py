@@ -89,7 +89,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     learner.useScoreLog2Likelihood()
     learner.useAprioriSmoothing(1.0)
 
-    bn2 = learner.learnParameters(bn)
+    bn2 = learner.learnParameters()
     for i in range(bn.size()):
       # self.assertEquals(str(bn2.variable(i)), str(bn.variable(bn.idFromName(bn2.variable(i).name()))))
       self.assertEquals(set(bn2.variable(i).labels()), set(
@@ -127,12 +127,12 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     l1 = gum.BNLearner(csvfile)
     l1.useScoreLog2Likelihood()
     l1.useAprioriSmoothing()
-    bn1 = l1.learnParameters(dbn)
+    bn1 = l1.learnParameters(dbn.dag())
 
     l2 = gum.BNLearner(csvfile, dbn)
     l2.useScoreLog2Likelihood()
     l2.useAprioriSmoothing()
-    bn2 = l2.learnParameters(dbn)
+    bn2 = l2.learnParameters()
 
     p1 = bn1.cpt(bn1.idFromName("c_0"))
     I1 = gum.Instantiation(p1)
