@@ -33,6 +33,8 @@
 #include <numeric>
 #include <algorithm>
 #include <functional>
+#include <exception>
+#include <vector>
 
 #include <agrum/agrum.h>
 #include <agrum/core/set.h>
@@ -701,6 +703,29 @@ namespace gum {
        * @warning the indices are sorted by deacreasing order */
       DBVector< std::size_t > __getKthIndices(const std::size_t k,
                                               const bool k_is_input_col) const;
+
+      /// a method to process the rows of the database in multithreading
+      /** The function tries to execute function/functor exec_func using one
+       * or several threads. If an exception is raised by at least one thread,
+       * then function undo_func is executed to undo what exec_func
+       * did, and the exception is rethrown.
+       *
+       * @param exec_func this should be a function/functor/lambda that
+       * takes 2 arguments: the first one is an std::size_t containing the
+       * index of the first row that it should process, the second argument is
+       * an std::size_t equal to 1 + the index of the last row processed (so
+       * the processing is performed on [first,last). The return type of exec_func
+       * is a void. If a thread executing exec_func raises an exception, then
+       * before exiting, it should undo what it did.
+       * @param undo_func a Function/functor/lambda with the same
+       * prototype as exec_func. If a thread raises an exception, those that
+       * did not raise exceptions should undo what they did in order to restore
+       * the state that the database had before the execution of the thread. After
+       * calling undo_func, they should have restored this state.
+       */
+      template <typename Functor1, typename Functor2>
+      void __threadProcessDatabase ( Functor1& exec_func,
+                                     Functor2& undo_func );
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
