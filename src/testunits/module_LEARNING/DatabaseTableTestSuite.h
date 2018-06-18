@@ -1250,14 +1250,17 @@ namespace gum_tests {
       const auto xmiss = gum::learning::DatabaseTable<>::IsMissing::False;
       gum::learning::DBRow< gum::learning::DBTranslatedValue > row(
         3, gum::learning::DBTranslatedValue{2.0f});
-      for ( int i = 0; i < 1004; ++i ) 
+      std::size_t xsize = 1004;
+      for ( std::size_t i = 0; i < xsize; ++i ) 
         database.insertRow(row, xmiss);
-      TS_ASSERT(database.content().size() == 1004);
-      TS_ASSERT(database.nbRows() == 1004);
+      TS_ASSERT(database.content().size() == xsize);
+      TS_ASSERT(database.nbRows() == xsize);
       TS_ASSERT(!database.hasMissingValues());
 
       translator.setVariableName("v4");
-      database.insertTranslator(translator, 2, false);
+
+      for ( int i = 0; i < 20; ++i ) 
+        database.insertTranslator(translator, 2, false);
       TS_ASSERT(database.hasMissingValues());
       database.setMinNbRowsPerThread ( 10000 );
       database.insertTranslator(translator, 2, false);

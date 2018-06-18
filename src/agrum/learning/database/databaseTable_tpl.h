@@ -323,7 +323,7 @@ namespace gum {
 
       // launch the threads executing the lambdas
       this->__threadProcessDatabase ( reserve_lambda, undo_reserve_lambda );
-
+            
       // insert the translator into the translator set
       const std::size_t pos =
         __translators.insertTranslator(translator, input_column, unique_column);
@@ -390,8 +390,21 @@ namespace gum {
 
       // reserve some place for the new column in the records of the database
       const std::size_t new_size = this->nbVariables() + 1;
-      for (auto& row : this->_rows)
-        row.reserve(new_size);
+
+      // create the lambda for reserving some memory for the new column
+      // and the one that undoes what it performed if some thread executing
+      // it raised an exception
+      auto reserve_lambda = 
+        [this,new_size](std::size_t begin,std::size_t end) -> void {
+        for ( std::size_t i = begin; i < end; ++i )
+          this->_rows[i].row().reserve(new_size);
+      };
+
+      auto undo_reserve_lambda = 
+        [](std::size_t begin,std::size_t end) ->void {};
+
+      // launch the threads executing the lambdas
+      this->__threadProcessDatabase ( reserve_lambda, undo_reserve_lambda );
 
       // insert the translator into the translator set
       const std::size_t pos = __translators.insertTranslator(
@@ -406,15 +419,37 @@ namespace gum {
       }
 
       // if the databaseTable is not empty, fill the column of the database
-      // corresponding to the translator with
+      // corresponding to the translator with missing values
       if (!IDatabaseTable< DBTranslatedValue, ALLOC >::empty()) {
         const DBTranslatedValue missing = __translators[pos].missingValue();
-        for (auto& row : this->_rows)
-          row.row().push_back(missing);
-        for (auto& status_row : this->_has_row_missing_val)
-          status_row = IsMissing::True;
-      }
+        
+        // create the lambda for adding a new column filled wih a missing value
+        auto fill_lambda =
+          [this,missing] (std::size_t begin,std::size_t end) -> void {
+          std::size_t i = begin;
+          try {
+            for ( ; i < end; ++i ) {
+              this->_rows[i].row().push_back(missing);
+              this->_has_row_missing_val[i] = IsMissing::True;
+            }
+          }
+          catch ( ... ) {
+            for ( std::size_t j = begin; j < i; ++j )
+              this->_rows[i].row().pop_back ();
+            throw;
+          }
+        };
 
+        auto undo_fill_lambda =
+          [this] (std::size_t begin,std::size_t end) -> void {
+           for ( std::size_t i = begin; i < end; ++i )
+             this->_rows[i].row().pop_back ();
+        };
+        
+        // launch the threads executing the lambdas
+        this->__threadProcessDatabase ( fill_lambda, undo_fill_lambda );
+      }
+      
       return pos;
     }
 
@@ -452,31 +487,37 @@ namespace gum {
       for (const auto kk : __getKthIndices(k, k_is_input_col)) {
         // erase the translator of index kk and the corresponding variable
         // name. If there remains no more translator in the translator set,
-        // __rows should become empty
+        // _rows should become empty
         this->_variable_names.erase(this->_variable_names.begin() + kk);
         if (this->_variable_names.empty()) {
           IDatabaseTable< DBTranslatedValue, ALLOC >::eraseAllRows();
         } else {
           const std::size_t nb_trans = __translators.size();
 
-          std::size_t index = 0;
-          for (auto& xrow : this->_rows) {
-            auto& row = xrow.row();
-            if (__translators.isMissingValue(row[kk], kk)) {
-              bool has_missing_val = false;
-              for (std::size_t j = std::size_t(0); j < nb_trans; ++j) {
-                if ((j != kk) && __translators.isMissingValue(row[j], j)) {
-                  has_missing_val = true;
-                  break;
+          auto erase_lambda =
+            [this,nb_trans,kk] (std::size_t begin,std::size_t end) -> void {
+            for ( std::size_t i = begin; i < end; ++i ) {
+              auto& row = this->_rows[i].row();
+              if (this->__translators.isMissingValue(row[kk], kk)) {
+                bool has_missing_val = false;
+                for (std::size_t j = std::size_t(0); j < nb_trans; ++j) {
+                  if ((j != kk) && this->__translators.isMissingValue(row[j], j)) {
+                    has_missing_val = true;
+                    break;
+                  }
                 }
+                if (!has_missing_val)
+                  this->_has_row_missing_val[i] = IsMissing::False;
               }
-              if (!has_missing_val)
-                this->_has_row_missing_val[index] = IsMissing::False;
+              row.erase(row.begin() + kk);
             }
+          };
 
-            row.erase(row.begin() + kk);
-            ++index;
-          }
+          auto undo_erase_lambda = 
+            [](std::size_t begin,std::size_t end) ->void {};
+
+          // launch the threads executing the lambdas
+          this->__threadProcessDatabase ( erase_lambda, undo_erase_lambda );
         }
         __translators.eraseTranslator(kk);
       }
@@ -807,12 +848,20 @@ namespace gum {
       }
 
       // apply the translations
-      // auto nb_threads = thread::getMaxNumberOfThreads();
-      for (auto& row : this->_rows) {
-        auto& elt = row[kk].discr_val;
-        if (elt != std::numeric_limits< std::size_t >::max())
-          elt = new_values[elt];
-      }
+      auto newtrans_lambda = 
+        [this,kk,&new_values](std::size_t begin,std::size_t end) -> void {
+        for ( std::size_t i = begin; i < end; ++i ) {
+          auto& elt = this->_rows[i][kk].discr_val;
+          if (elt != std::numeric_limits< std::size_t >::max())
+            elt = new_values[elt];
+        }
+      };
+       
+      auto undo_newtrans_lambda = 
+        [](std::size_t begin,std::size_t end) ->void {};
+      
+      // launch the threads executing the lambdas
+      this->__threadProcessDatabase ( newtrans_lambda, undo_newtrans_lambda );
     }
 
 
