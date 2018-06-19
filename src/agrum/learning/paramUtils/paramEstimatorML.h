@@ -32,6 +32,8 @@
 #ifndef GUM_LEARNING_PARAM_ESTIMATOR_ML_H
 #define GUM_LEARNING_PARAM_ESTIMATOR_ML_H
 
+#include <sstream>
+
 #include <agrum/agrum.h>
 #include <agrum/learning/paramUtils/paramEstimator.h>
 #include <agrum/learning/scores_and_tests/scoreInternalNoApriori.h>
