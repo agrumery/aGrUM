@@ -111,7 +111,7 @@ namespace gum {
        * follows:
        * first, there are the conditioning nodes (in the order in which they
        * were specified) and, then, the target node.
-       * @throw CPTError is raised if some values of the conditioning sets were
+       * @throw DatabaseError is raised if some values of the conditioning sets were
        * not observed in the database. */
       const std::vector< double, CountAlloc >& parameters(Idx nodeset_index);
 

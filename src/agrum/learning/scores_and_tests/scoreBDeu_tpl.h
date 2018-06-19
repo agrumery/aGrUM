@@ -86,42 +86,41 @@ namespace gum {
 
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < typename IdSetAlloc, typename CountAlloc >
-    bool ScoreBDeu< IdSetAlloc, CountAlloc >::isAprioriCompatible(
+    std::string ScoreBDeu< IdSetAlloc, CountAlloc >::isAprioriCompatible(
       const std::string& apriori_type, double weight) {
       // check that the apriori is compatible with the score
-      if (apriori_type == AprioriNoAprioriType::type) { return true; }
+      if (apriori_type == AprioriNoAprioriType::type) { return ""; }
 
       if (weight == 0) {
-        GUM_ERROR(PossiblyIncompatibleScoreApriori,
-                  "The apriori is currently compatible with the BDeu score but "
-                  "if you change the weight, it will become incompatible");
+        return "The apriori is currently compatible with the BDeu score but "
+               "if you change the weight, it will become incompatible.";
       }
 
       // known incompatible aprioris
       if ((apriori_type == AprioriDirichletType::type)
           || (apriori_type == AprioriSmoothingType::type)) {
-        GUM_ERROR(IncompatibleScoreApriori,
-                  "The BDeu score already contains a different 'implicit' aprio"
-                  "ri. Therefore, the learning will probably be meaningless.");
+        return "The BDeu score already contains a different 'implicit' apriori. "
+               "Therefore, the learning will probably be meaningless.";
       }
 
       // apriori types unsupported by the type checker
       std::stringstream msg;
       msg << "The apriori '" << apriori_type
           << "' is not yet supported by method isAprioriCompatible";
-      GUM_ERROR(InvalidArgument, msg.str());
+      return msg.str();
     }
 
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < typename IdSetAlloc, typename CountAlloc >
-    INLINE bool ScoreBDeu< IdSetAlloc, CountAlloc >::isAprioriCompatible(
+    INLINE std::string ScoreBDeu< IdSetAlloc, CountAlloc >::isAprioriCompatible(
       const Apriori< IdSetAlloc, CountAlloc >& apriori) {
       return isAprioriCompatible(apriori.getType(), apriori.weight());
     }
 
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < typename IdSetAlloc, typename CountAlloc >
-    INLINE bool ScoreBDeu< IdSetAlloc, CountAlloc >::isAprioriCompatible() const {
+    INLINE std::string
+           ScoreBDeu< IdSetAlloc, CountAlloc >::isAprioriCompatible() const {
       return isAprioriCompatible(*this->_apriori);
     }
 

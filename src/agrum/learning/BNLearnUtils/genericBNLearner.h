@@ -411,6 +411,11 @@ namespace gum {
       /// use the Dirichlet apriori
       void useAprioriDirichlet(const std::string& filename);
 
+
+      /// checks whether the current score and apriori are compatible
+      /** @returns a non empty string if the apriori is somehow compatible with the
+       * score.*/
+      std::string checkScoreAprioriCompatibility();
       /// @}
 
       // ##########################################################################
@@ -607,28 +612,6 @@ namespace gum {
 
       /// prepares the initial graph for 3off2 or miic
       MixedGraph __prepare_miic_3off2();
-
-      /// checks whether the current score and apriori are compatible
-      /** @returns true if the apriori is compatible with the score.
-       * @throws IncompatibleScoreApriori is raised if the apriori is known to
-       * be incompatible with the score. Such a case usually arises because the
-       * score already implicitly contains an apriori which should not be
-       * combined
-       * with the apriori passed in argument. aGrUM will nevertheless allow you
-       * to
-       * use this apriori with the score, but you should be warned that the
-       * result
-       * of learning will most probably be meaningless.
-       * @throws PossiblyIncompatibleScoreApriori is raised if, in general, the
-       * apriori is incompatible with the score but, with its current weight, it
-       * becomes compatible (e.g., a Dirichlet apriori with a 0-weight is the
-       * same as a NoApriori). In such a case, you should not modify the weight.
-       * aGrUM will allow you to do so but the result of learning will most
-       * probably be meaningless.
-       * @throws InvalidArgument is raised if the apriori is not handled yet by
-       * method isAprioriCompatible (the method needs be updated to take it into
-       * account). */
-      bool __checkScoreAprioriCompatibility();
 
       /// returns the type (as a string) of a given apriori
       const std::string& __getAprioriType() const;

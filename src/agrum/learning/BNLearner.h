@@ -173,9 +173,6 @@ namespace gum {
       NodeProperty< Sequence< std::string > >
         __labelsFromBN(const std::string&            filename,
                        const BayesNet< GUM_SCALAR >& src);
-
-      // patch for learnParameters(bool take_into_account_score );
-      DAG __dag4learnParams;
     };
 
   } /* namespace learning */

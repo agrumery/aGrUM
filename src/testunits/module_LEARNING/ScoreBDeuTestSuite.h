@@ -64,14 +64,14 @@ namespace gum_tests {
         gum::learning::AprioriNoApriori<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(
         gum::learning::ScoreBDeu<>::isAprioriCompatible(apriori));
-      TS_ASSERT_THROWS(gum::learning::ScoreBDeu<>::isAprioriCompatible(apriori2),
-                       gum::IncompatibleScoreApriori);
-      TS_ASSERT_THROWS(gum::learning::ScoreBDeu<>::isAprioriCompatible(
-                         gum::learning::AprioriSmoothing<>::type::type),
-                       gum::IncompatibleScoreApriori);
+      TS_ASSERT_DIFFERS(gum::learning::ScoreBDeu<>::isAprioriCompatible(apriori2),
+                        "");
+      TS_ASSERT_DIFFERS(gum::learning::ScoreBDeu<>::isAprioriCompatible(
+                          gum::learning::AprioriSmoothing<>::type::type),
+                        "");
       apriori2.setWeight(0);
-      TS_ASSERT_THROWS(gum::learning::ScoreBDeu<>::isAprioriCompatible(apriori2),
-                       gum::PossiblyIncompatibleScoreApriori);
+      TS_ASSERT_DIFFERS(gum::learning::ScoreBDeu<>::isAprioriCompatible(apriori2),
+                        "");
 
       // to test, we exploit the fact that if the effective sample size is
       // equal to ri * qi, then score BDeu = score K2

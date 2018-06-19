@@ -832,7 +832,7 @@ namespace gum {
       }
     }
 
-    bool genericBNLearner::__checkScoreAprioriCompatibility() {
+    std::string genericBNLearner::checkScoreAprioriCompatibility() {
       const std::string& apriori = __getAprioriType();
 
       switch (__score_type) {
@@ -856,8 +856,7 @@ namespace gum {
                                                             __apriori_weight);
 
         default:
-          GUM_ERROR(OperationNotAllowed,
-                    "genericBNLearner does not support yet this score");
+          return "genericBNLearner does not support yet this score";
       }
     }
 

@@ -62,8 +62,10 @@ namespace gum_tests {
       learner.setMaxIndegree(10);
       learner.useScoreLog2Likelihood();
 
-      TS_ASSERT_THROWS(learner.useScoreBD(), gum::IncompatibleScoreApriori);
+      TS_GUM_ASSERT_THROWS_NOTHING(learner.useScoreBD());
+      TS_ASSERT_DIFFERS("", learner.checkScoreAprioriCompatibility());
       TS_GUM_ASSERT_THROWS_NOTHING(learner.useScoreBDeu());
+      TS_ASSERT_EQUALS("", learner.checkScoreAprioriCompatibility());
       learner.useScoreLog2Likelihood();
 
       learner.useK2(std::vector< gum::NodeId >{1, 5, 2, 6, 0, 3, 4, 7});

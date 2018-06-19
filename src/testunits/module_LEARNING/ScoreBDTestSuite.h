@@ -63,17 +63,16 @@ namespace gum_tests {
       // to 1, then score BD = score K2
       apriori.setWeight(1);
 
-      TS_ASSERT_THROWS(gum::learning::ScoreBD<>::isAprioriCompatible(apriori),
-                       gum::PossiblyIncompatibleScoreApriori);
-      TS_ASSERT_THROWS(gum::learning::ScoreBD<>::isAprioriCompatible(
-                         gum::learning::AprioriNoApriori<>::type::type),
-                       gum::IncompatibleScoreApriori);
+      TS_ASSERT_DIFFERS(gum::learning::ScoreBD<>::isAprioriCompatible(apriori),
+                        "");
+      TS_ASSERT_DIFFERS(gum::learning::ScoreBD<>::isAprioriCompatible(
+                          gum::learning::AprioriNoApriori<>::type::type),
+                        "");
 
-      TS_ASSERT_THROWS(score.isAprioriCompatible(apriori),
-                       gum::PossiblyIncompatibleScoreApriori);
-      TS_ASSERT_THROWS(
+      TS_ASSERT_DIFFERS(score.isAprioriCompatible(apriori), "");
+      TS_ASSERT_DIFFERS(
         score.isAprioriCompatible(gum::learning::AprioriNoApriori<>::type::type),
-        gum::IncompatibleScoreApriori);
+        "");
 
       gum::Idx id1 = score.addNodeSet(0);
       gum::Idx id2 = score.addNodeSet(2);

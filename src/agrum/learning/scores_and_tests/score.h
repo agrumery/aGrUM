@@ -163,10 +163,10 @@ namespace gum {
        * instance, adding a Dirichlet apriori to the K2 score is not very
        * meaningful since K2 corresonds to a BD score with a 1-smoothing
        * apriori.
-       * aGrUM allows you to perform such combination, but yuou can check with
+       * aGrUM allows you to perform such combination, but you can check with
        * method isAprioriCompatible () whether the result the score will give
        * you is meaningful or not. */
-      virtual bool isAprioriCompatible() const = 0;
+      virtual std::string isAprioriCompatible() const = 0;
 
       /// returns the internal apriori of the score
       /** Some scores include an apriori. For instance, the K2 score is a BD
