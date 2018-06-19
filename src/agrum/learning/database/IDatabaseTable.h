@@ -561,6 +561,11 @@ namespace gum {
         /// returns the number of variables (columns) of the database
         virtual std::size_t nbVariables() const final;
 
+        /// returns a pointer on the database
+        /** @throw NullElement is raised if the handler does not point toward
+         * any database. */
+        virtual const IDatabaseTable< T_DATA, ALLOC >& database () const;
+
         /// @}
 
 

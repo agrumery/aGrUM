@@ -132,16 +132,21 @@ namespace gum {
                 values[jj] = offset / offsets[jj];
                 offset %= offsets[jj];
               }
+              //const DatabaseTable<>& da
               std::stringstream str;
               str << "The conditioning set <";
               bool deja = false;
               for ( i = std::size_t(0); i < cond_nb; ++i ) {
                 if ( deja ) str << ", ";
-                else deja = false;
-                str << "Node #" << conditioning_nodes->operator[](i)
-                    << "=" << values[i];
+                else deja = true;
+                auto id = conditioning_nodes->operator[](i);
+                const DiscreteVariable& var =
+                  dynamic_cast<const DiscreteVariable&> ( this->_database->variable(id) );
+                str << var.name() << "=" << var.labels()[values[i]];
               }
-              str << "> for target node #" << all_nodes[all_nodes.size() - 1]
+              auto id = all_nodes[all_nodes.size() - 1];
+              const Variable& var = this->_database->variable(id);
+              str << "> for target node " << var.name()
                   << " never appears in the database";
               
               GUM_ERROR(CPTError, str.str());
@@ -175,14 +180,18 @@ namespace gum {
               }
               std::stringstream str;
               str << "The conditioning set <";
-              bool deja = false;
+              bool deja = true;
               for ( i = std::size_t(0); i < cond_nb; ++i ) {
                 if ( deja ) str << ", ";
-                else deja = false;
-                str << "Node #" << conditioning_nodes->operator[](i)
-                    << "=" << values[i];
+                else deja = true;
+                auto id = conditioning_nodes->operator[](i);
+                const DiscreteVariable& var =
+                  dynamic_cast<const DiscreteVariable&> ( this->_database->variable(id) );
+                str << var.name() << "=" << var.labels()[values[i]];
               }
-              str << "> for target node #" << all_nodes[all_nodes.size() - 1]
+              auto id = all_nodes[all_nodes.size() - 1];
+              const Variable& var = this->_database->variable(id);
+              str << "> for target node " << var.name()
                   << " never appears in the database";
               
               GUM_ERROR(CPTError, str.str());

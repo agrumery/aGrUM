@@ -34,6 +34,7 @@
 #define GUM_LEARNING_PARAM_ESTIMATOR_H
 
 #include <agrum/agrum.h>
+#include <agrum/learning/database/databaseTable.h>
 #include <agrum/learning/aprioris/apriori.h>
 #include <agrum/learning/scores_and_tests/counter.h>
 #include <agrum/learning/scores_and_tests/scoreInternalApriori.h>
@@ -178,6 +179,9 @@ namespace gum {
 
       /// the score that was use for structure learning (used for its apriori)
       ScoreInternalApriori< IdSetAlloc, CountAlloc >* _score_internal_apriori;
+
+      /// the database
+      const DatabaseTable<std::allocator> *_database;
 
       /// indicate whether we have already normalized the parameters
       std::vector< bool > _is_normalized;

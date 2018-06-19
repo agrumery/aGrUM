@@ -318,6 +318,7 @@ namespace gum {
       return __db->variableNames();
     }
 
+
     // returns the number of variables (columns) of the database
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE std::size_t
@@ -326,6 +327,18 @@ namespace gum {
         return __db->variableNames().size();
       else
         return 0;
+    }
+
+
+    // returns a pointer on the database
+    template < typename T_DATA, template < typename > class ALLOC >
+    INLINE const IDatabaseTable< T_DATA, ALLOC >&
+    IDatabaseTable< T_DATA, ALLOC >::Handler::database () const {
+      if ( __db == nullptr ) {
+        GUM_ERROR ( NullElement,
+                    "The database handler does not point toward a database" );
+      }
+      return *__db;
     }
 
 
