@@ -254,7 +254,7 @@ namespace gum {
     Instantiation Idst(*this);
     for (Isrc.setFirst(); !Isrc.end(); ++Isrc) {
       for (Idx i = 0; i < this->nbrDim(); i++) {
-        Idst.chgVal(Isrc.variable(i).name(), Isrc.variable(i).label(Isrc.val(i)));
+        Idst.chgVal(Isrc.variable(i).name(), Isrc.val(i));
       }
       this->set(Idst, src.get(Isrc));
     }
@@ -313,29 +313,21 @@ namespace gum {
       if (!p.contains(*var))
         GUM_ERROR(InvalidArgument, "A variable does not belong to the argument.");
     }
-    return fastKL(p);
-  }
 
-  template < typename GUM_SCALAR >
-  INLINE GUM_SCALAR
-         Potential< GUM_SCALAR >::fastKL(const Potential< GUM_SCALAR >& p) const {
     Instantiation inst(*this);
-    Instantiation instP(p);
     GUM_SCALAR    res = static_cast< GUM_SCALAR >(0);
-    for (inst.setFirst(), instP.setFirst(); !inst.end(); inst.inc(), instP.inc()) {
+    for (inst.setFirst(); !inst.end(); inst.inc()) {
       GUM_SCALAR x = this->get(inst);
-      GUM_SCALAR y = p.get(instP);
-      if (static_cast< GUM_SCALAR >(0) == x) {
-        if (static_cast< GUM_SCALAR >(0) == y) {
-          continue;   // we add 0 to res
-        }
-        GUM_ERROR(FatalError, "The Potential has a 0 while the argument has not.")
-      }
+      GUM_SCALAR y = p.get(inst);
+      if (static_cast< GUM_SCALAR >(0) == x)   // 0*log(0/y)=0
+        continue;
 
-      if (static_cast< GUM_SCALAR >(0) == y) {
+      if (static_cast< GUM_SCALAR >(0) == y)
         // we know that x!=0;
-        GUM_ERROR(FatalError, "The argument has a 0 while the potential has not.")
-      }
+        GUM_ERROR(FatalError,
+                  "The argument has a 0 at " << inst
+                                             << " while the potential has not.")
+
       res += x * log2(x / y);
     }
     return res;

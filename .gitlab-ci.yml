@@ -168,7 +168,7 @@ agrum_master_documentation:
 ################################################################################
 # Deployment
 ################################################################################
-aGruM-Deploy:
+aGruM-Deploy-Latest:
   only:
     - tags
   tags:
@@ -176,3 +176,13 @@ aGruM-Deploy:
   stage: deployment
   script:
     - curl -X POST -F token=${AGRUM_DEPLOY_TOKEN} -F ref=master https://gitlab.com/api/v4/projects/4935470/trigger/pipeline
+
+agrum_master_documentation:
+  only:
+    - tags
+  tags:
+    - linux
+  stage: deployment
+  allow_failure: true
+  script:
+    - sshpass -p "${OVH_PASSWORD}" ssh -oStrictHostKeyChecking=no ${OVH_LOGIN}@${OVH_URL} "/bin/bash ~/update_latest.sh"
