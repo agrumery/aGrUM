@@ -26491,8 +26491,8 @@ class BNLearner_double(_object):
         """
         learnParameters(self, dag, take_into_account_score=True) -> BayesNet_double
         learnParameters(self, dag) -> BayesNet_double
-        learnParameters(self, bn, take_into_account_score=True) -> BayesNet_double
-        learnParameters(self, bn) -> BayesNet_double
+        learnParameters(self, take_into_account_score=True) -> BayesNet_double
+        learnParameters(self) -> BayesNet_double
 
 
         learns a BN (its parameters) when its structure is known.

@@ -57,16 +57,16 @@ except ImportError:
     import __builtin__
 
 def _swig_setattr_nondynamic(self, class_type, name, value, static=1):
-    if (name == "thisown"):
+    if name == "thisown":
         return self.this.own(value)
-    if (name == "this"):
+    if name == "this":
         if type(value).__name__ == 'SwigPyObject':
             self.__dict__[name] = value
             return
     method = class_type.__swig_setmethods__.get(name, None)
     if method:
         return method(self, value)
-    if (not static):
+    if not static:
         if _newclass:
             object.__setattr__(self, name, value)
         else:
@@ -80,7 +80,7 @@ def _swig_setattr(self, class_type, name, value):
 
 
 def _swig_getattr(self, class_type, name):
-    if (name == "thisown"):
+    if name == "thisown":
         return self.this.own()
     method = class_type.__swig_getmethods__.get(name, None)
     if method:
