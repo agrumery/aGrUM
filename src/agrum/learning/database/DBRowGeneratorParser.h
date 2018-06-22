@@ -211,7 +211,10 @@ namespace gum {
       /// returns the handler used by the parser
       const typename DatabaseTable<ALLOC>::Handler& handler() const;
 
-     /// returns the generator set that is actually used
+      /// returns a reference on the database
+      const DatabaseTable<ALLOC>& database () const;
+
+      /// returns the generator set that is actually used
       DBRowGeneratorSet<ALLOC>& generatorSet();
 
       /// returns the generator set that is actually used

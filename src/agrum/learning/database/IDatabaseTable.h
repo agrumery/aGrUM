@@ -1108,6 +1108,9 @@ namespace gum {
        * in parallel at the same time. */
       void setMaxNbThreads(const std::size_t nb) const;
 
+      /// returns the number of threads used to parse the database
+      std::size_t nbThreads () const;
+
       /** @brief changes the number min of rows a thread should process in a
        * multithreading context
        *
@@ -1118,7 +1121,11 @@ namespace gum {
        * number of threads allowed and the number of records in the database
        * divided by nb. */
       void setMinNbRowsPerThread ( const std::size_t nb ) const;
-      
+
+      /// returns the minimum of rows that each thread should process
+      std::size_t minNbRowsPerThread () const;
+ 
+
       /// @}
 
 

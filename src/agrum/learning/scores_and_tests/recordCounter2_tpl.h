@@ -82,7 +82,8 @@ namespace gum {
       __last_DB_ids ( from.__last_DB_ids ),
       __last_nonDB_countings ( from.__last_nonDB_countings ),
       __last_nonDB_ids ( from.__last_nonDB_ids ),
-      __max_nb_threads ( from.__max_nb_threads ) {
+      __max_nb_threads ( from.__max_nb_threads ),
+      __min_nb_rows_per_thread (from.__min_nb_rows_per_thread) {
       GUM_CONS_CPY ( RecordCounter2 );
     }
 
@@ -105,7 +106,8 @@ namespace gum {
       __last_DB_ids ( std::move ( from.__last_DB_ids ) ),
       __last_nonDB_countings ( std::move ( from.__last_nonDB_countings ) ),
       __last_nonDB_ids ( std::move ( from.__last_nonDB_ids ) ),
-      __max_nb_threads ( from.__max_nb_threads ) {
+      __max_nb_threads ( from.__max_nb_threads ),
+      __min_nb_rows_per_thread (from.__min_nb_rows_per_thread) {
       GUM_CONS_MOV ( RecordCounter2 );
     }
 
@@ -152,14 +154,15 @@ namespace gum {
     RecordCounter2<ALLOC>&
     RecordCounter2<ALLOC>::operator=(const RecordCounter2<ALLOC>& from ) {
       if ( this != &from ) {
-        __parsers              = from.__parsers;
-        __ranges               = from.__ranges;
-        __nodeId2columns       = from.__nodeId2columns;
-        __last_DB_countings    = from.__last_DB_countings;
-        __last_DB_ids          = from.__last_DB_ids;
-        __last_nonDB_countings = from.__last_nonDB_countings;
-        __last_nonDB_ids       = from.__last_nonDB_ids;
-        __max_nb_threads       = from.__max_nb_threads;
+        __parsers                = from.__parsers;
+        __ranges                 = from.__ranges;
+        __nodeId2columns         = from.__nodeId2columns;
+        __last_DB_countings      = from.__last_DB_countings;
+        __last_DB_ids            = from.__last_DB_ids;
+        __last_nonDB_countings   = from.__last_nonDB_countings;
+        __last_nonDB_ids         = from.__last_nonDB_ids;
+        __max_nb_threads         = from.__max_nb_threads;
+        __min_nb_rows_per_thread = from.__min_nb_rows_per_thread;
       }
       return *this;
     }
@@ -170,14 +173,15 @@ namespace gum {
     RecordCounter2<ALLOC>&
     RecordCounter2<ALLOC>::operator=(RecordCounter2<ALLOC>&& from ) {
       if ( this != &from ) {
-        __parsers              = std::move ( from.__parsers );
-        __ranges               = std::move ( from.__ranges );
-        __nodeId2columns       = std::move ( from.__nodeId2columns );
-        __last_DB_countings    = std::move ( from.__last_DB_countings );
-        __last_DB_ids          = std::move ( from.__last_DB_ids );
-        __last_nonDB_countings = std::move ( from.__last_nonDB_countings );
-        __last_nonDB_ids       = std::move ( from.__last_nonDB_ids );
-        __max_nb_threads       = from.__max_nb_threads;
+        __parsers                = std::move ( from.__parsers );
+        __ranges                 = std::move ( from.__ranges );
+        __nodeId2columns         = std::move ( from.__nodeId2columns );
+        __last_DB_countings      = std::move ( from.__last_DB_countings );
+        __last_DB_ids            = std::move ( from.__last_DB_ids );
+        __last_nonDB_countings   = std::move ( from.__last_nonDB_countings );
+        __last_nonDB_ids         = std::move ( from.__last_nonDB_ids );
+        __max_nb_threads         = from.__max_nb_threads;
+        __min_nb_rows_per_thread = from.__min_nb_rows_per_thread;
       }
       return *this;
     }
@@ -205,18 +209,364 @@ namespace gum {
 
     /// returns the number of threads used to parse the database
     template < template < typename > class ALLOC >   
-    std::size_t RecordCounter2<ALLOC>::nbThreads () const {
+    INLINE std::size_t RecordCounter2<ALLOC>::nbThreads () const {
       return __max_nb_threads;
     }
 
+    
+    // changes the number min of rows a thread should process in a
+    // multithreading context
+    template < template < typename > class ALLOC >   
+    void RecordCounter2<ALLOC>::setMinNbRowsPerThread (
+         const std::size_t nb ) const {
+      if (nb == std::size_t(0))
+        __min_nb_rows_per_thread = std::size_t(1);
+      else
+        __min_nb_rows_per_thread = nb;
+    }
+      
+
+    /// returns the minimum of rows that each thread should process
+    template < template < typename > class ALLOC >   
+    INLINE std::size_t RecordCounter2<ALLOC>::minNbRowsPerThread () const {
+      return __min_nb_rows_per_thread;
+    }
+    
 
     /// returns the counts for a given set of nodes
     template < template < typename > class ALLOC >   
-    const std::vector< double, ALLOC<double> >&
-    RecordCounter2<ALLOC>::counts( const std::vector<NodeId>& ids ) const {
-      return __last_DB_countings;
+    INLINE const std::vector< double, ALLOC<double> >&
+    RecordCounter2<ALLOC>::counts( const Sequence<NodeId>& ids ) const {
+      if ( __isSubset ( ids, __last_nonDB_ids, __last_nonDB_countings ) )
+        return __extractFromCountings ( ids, __last_nonDB_countings );
+      else if ( __isSubset ( ids, __last_DB_ids, __last_DB_countings ) )
+        return __extractFromCountings ( ids, __last_DB_countings );
+      else
+        return __countFromDatabase ( ids );
     }
 
+
+    /// indicates whether a first set of ids is contained in the second set
+    template < template < typename > class ALLOC >   
+    bool RecordCounter2<ALLOC>::__isSubset (
+         const Sequence<NodeId>& ids1,
+         const Sequence<NodeId>& ids2,
+         const std::vector<double,ALLOC<double>>& superset_vect) const {
+      if ( ( ids1.size () > ids2.size () ) ||
+           ( ids1.size () > superset_vect.size () ) )
+        return false;
+      for ( const auto id : ids1 )
+        if ( ! ids2.exists ( id ) ) return false;
+      return true;
+    }
+
+    
+    // returns a mapping from the nodes ids to the columns of the database
+    // for a given sequence of ids
+    template < template < typename > class ALLOC >   
+    HashTable<NodeId, std::size_t>
+    RecordCounter2<ALLOC>::__getNodeIds2Columns (
+        const Sequence<NodeId>& ids ) const {
+      HashTable<NodeId, std::size_t> res ( ids.size () );
+      for ( const auto id : ids ) {
+        try { res.insert ( id, __nodeId2columns.second(id) ); }
+        catch ( ... ) { res.insert ( id, std::size_t(id) ); }
+      }
+      return res;
+    }
+    
+    
+    /// extracts some new countings from previously computed ones
+    template < template < typename > class ALLOC >   
+    INLINE std::vector< double, ALLOC<double> >&
+    RecordCounter2<ALLOC>::__extractFromCountings (
+      const Sequence<NodeId>& subset_ids,
+      const Sequence<NodeId>& superset_ids,
+      const std::vector<double,ALLOC<double>>& superset_vect ) {
+      // get a mapping between the node Ids and their columns in the database.
+      // This should be stored into __nodeId2columns, except if the latter is
+      // empty, in which case there is an identity mapping
+      const auto nodeId2columns = __getNodeIds2Columns ( superset_ids );
+      
+      // we first determine the size of the output vector, the domain of
+      // each of its variables and their offsets in the output vector
+      const auto& database = __parsers[0].database ();
+      std::size_t result_vect_size = std::size_t(1);
+      for ( const auto id : subset_ids ) {
+        result_vect_size *= database.domainSize(nodeId2columns[id]);
+      }
+
+      // we create the output vector
+      const std::size_t subset_ids_size = std::size_t(subset_ids.size());
+      std::vector< double, ALLOC<double> > result_vect ( result_vect_size, 0.0 );
+
+      
+      // check if the subset_ids is the beginning of the sequence of superset_ids
+      // if this is the case, then we can outer loop over the variables not in
+      // subset_ids and, for each iteration of this loop add a vector of size
+      // result_size to result_vect
+      bool subset_begin = true;
+      for ( std::size_t i = 0; i < subset_ids_size; ++i ) {
+        if ( superset_ids.pos ( subset_ids[i] ) != i ) {
+          subset_begin = false;
+          break;
+        }
+      }
+      
+      if ( subset_begin ) {
+        const std::size_t superset_vect_size = superset_vect.size ();
+        std::size_t i = std::size_t(0);
+        while (  i < superset_vect_size ) {
+          for ( std::size_t j = std::size_t(0); j < result_vect_size; ++j, ++i ) {
+            result_vect[j] += superset_vect[i];
+          }
+        }
+
+        // save the subset_ids and the result vector
+        try {
+          __last_nonDB_ids = subset_ids;
+          __last_nonDB_countings = std::move ( result_vect );
+          return __last_nonDB_countings;
+        }
+        catch ( ... ) {
+          __last_nonDB_ids.clear ();
+          __last_nonDB_countings.clear ();
+          throw;
+        }
+      }
+
+      
+      // check if subset_ids is the end of the sequence of superset_ids.
+      // In this case, as above, there are two simple loops to perform the
+      // countings
+      bool subset_end = true;
+      const std::size_t superset_ids_size = std::size_t(superset_ids.size());
+      for ( std::size_t i = 0; i < subset_ids_size; ++i ) {
+        if ( superset_ids.pos ( subset_ids[i] ) !=
+             i + superset_ids_size - subset_ids_size ) {
+          subset_end = false;
+          break;
+        }
+      }
+        
+      if ( subset_end ) {
+        // determine the size of the vector corresponding to the variables
+        // not belonging to subset_ids
+        std::size_t vect_not_subset_size = std::size_t(1);
+        for ( std::size_t i = std::size_t(0);
+              i < superset_ids_size - subset_ids_size; ++i )
+          vect_not_subset_size *=
+            database.domainSize(nodeId2columns[superset_ids[i]]);
+
+        // perform the two loops
+        std::size_t i = std::size_t(0);
+        for ( std::size_t j = std::size_t(0); j < result_vect_size; ++j ) {
+          for ( std::size_t k=std::size_t(0); k < vect_not_subset_size; ++k,++i ) {
+            result_vect[j] += superset_vect[i];
+          }
+        }
+        
+        // save the subset_ids and the result vector
+        try {
+          __last_nonDB_ids = subset_ids;
+          __last_nonDB_countings = std::move ( result_vect );
+          return __last_nonDB_countings;
+        }
+        catch ( ... ) {
+          __last_nonDB_ids.clear ();
+          __last_nonDB_countings.clear ();
+          throw;
+        }
+      }
+
+
+      // here subset_ids is a subset of superset_ids neither prefixing nor
+      // postfixing it. So the computation is somewhat more complicated.
+      
+      // We will parse the superset_vect sequentially (using ++ operator).
+      // Sometimes, we will need to change the offset of the cell of result_vect
+      // that will be affected, sometimes not. Vector before_incr will indicate
+      // whether we need to change the offset (value = 0) or not (value different
+      // from 0). Vectors result_domain will indicate how this offset should be
+      // computed. Here is an example of the values of these vectors. Assume that
+      // superset_ids = <A,B,C,D,E> and subset_ids = <A,D,C>. Then, the three
+      // vectors before_incr, result_domain and result_offset are indexed w.r.t.
+      // A,C,D, i.e., w.r.t. to the variables in subset_ids but order w.r.t.
+      // superset_ids (this is convenient as we will parse superset_vect
+      // sequentially. For a variable or a set of variables X, let M_X denote the
+      // domain size of X. Then the contents of the three vectors are as follows:
+      // before_incr = {0, M_B, 0} (this means that whenever we iterate over B's
+      //                       values, the offset in result_vect does not change)
+      // result_domain = { M_A, M_C, M_D } (i.e., the domain sizes of the variables
+      //                       in subset_ids, order w.r.t. superset_ids)
+      // result_offset = { 1, M_A*M_D, M_A } (this corresponds to the offsets
+      //                       in result_vect of variables A, C and D)
+      // Vector superset_order = { 0, 2, 1} : this is a map from the indices of
+      // the variables in subset_ids to the indices of these variables in the
+      // three vectors described above. For instance, the "2" means that variable
+      // D (which is at index 1 in subset_ids) is located at index 2 in vector
+      // before_incr
+      std::vector<std::size_t> before_incr   (subset_ids_size);
+      std::vector<std::size_t> result_domain (subset_ids_size);
+      std::vector<std::size_t> result_offset (subset_ids_size);
+      {
+        std::size_t              result_domain_size = std::size_t(1);
+        std::size_t              tmp_before_incr = std::size_t(1);
+        bool                     has_before_incr = false;
+        std::vector<std::size_t> superset_order(subset_ids_size);
+
+        for (std::size_t h = std::size_t(0), j = std::size_t(0);
+             j < subset_ids_size; ++h) {
+          if (subset_ids.exists(superset_ids[h])) {
+            before_incr[j] = tmp_before_incr - 1;
+            has_before_incr = false;
+
+            superset_order[subset_ids.pos(superset_ids[h])] = j;
+            tmp_before_incr = 1;
+            ++j;
+          }
+          else {
+            tmp_before_incr *=
+              database.domainSize(nodeId2columns[superset_ids[h]]);
+            has_before_incr = true;
+          }
+        }
+
+        // compute the offsets in the order of the superset_ids
+        for (std::size_t i = 0; i < subset_ids.size(); ++i) {
+          const std::size_t domain_size =
+            database.domainSize(nodeId2columns[subset_ids[i]]);
+          const std::size_t j = superset_order[i];
+          result_domain[j] = domain_size;
+          result_offset[j] = result_domain_size;
+          result_domain_size *= domain_size;
+        }
+      }
+
+      std::vector< std::size_t > result_value (result_domain);
+      std::vector< std::size_t > current_incr (before_incr);
+      std::vector< std::size_t > result_down  (result_offset);
+
+      for (std::size_t j = std::size_t(0); j < result_down.size(); ++j) {
+        result_down[j] *= (result_domain[j] - 1);
+      }
+
+      // now we can loop over the superset_vect to fill result_vect
+      const std::size_t superset_vect_size = superset_vect.size ();
+      std::size_t the_result_offset = std::size_t(0);
+      for (std::size_t h = std::size_t(0); h < superset_vect_size; ++h) {
+        result_vect[the_result_offset] += superset_vect[h];
+
+        // update the offset of result_vect
+        for (std::size_t k = 0; k < current_incr.size(); ++k) {
+          // check if we need modify result_offset
+          if (current_incr[k]) {
+            --current_incr[k];
+            break;
+          }
+
+          current_incr[k] = before_incr[k];
+
+          // here we shall modify result_offset
+          --result_value[k];
+
+          if (result_value[k]) {
+            the_result_offset += result_offset[k];
+            break;
+          }
+
+          result_value[k] = result_domain[k];
+          the_result_offset -= result_down[k];
+        }
+      }
+
+      // save the subset_ids and the result vector
+      try {
+        __last_nonDB_ids = subset_ids;
+        __last_nonDB_countings = std::move ( result_vect );
+        return __last_nonDB_countings;
+      }
+      catch ( ... ) {
+        __last_nonDB_ids.clear ();
+        __last_nonDB_countings.clear ();
+        throw;
+      }      
+    }
+
+    
+    /// parse the database to produce new countings
+    template < template < typename > class ALLOC >   
+    std::vector< double, ALLOC<double> >&
+    RecordCounter2<ALLOC>::__countFromDatabase ( const Sequence<NodeId>& ids ) {
+      // first, we translate the ids into their corresponding columns in the
+      // DatabaseTable
+      const auto nodeId2columns = __getNodeIds2Columns ( ids );
+
+      // we first determine the size of the counting vector, the domain of
+      // each of its variables and their offsets in the output vector
+      const auto& database = __parsers[0].database ();
+      std::size_t counting_vect_size = std::size_t(1);
+      for ( const auto id : ids ) {
+        counting_vect_size *= database.domainSize(nodeId2columns[id]);
+      }
+
+      // get the set of ranges within which each thread should perform its
+      // computations
+      std::vector<std::pair<std::size_t,std::size_t>> ranges;
+      bool add_range = false;
+      if ( __ranges.empty () ) {
+        __ranges.insert(std::pair<std::size_t,std::size_t> ( std::size_t(0),
+                                                             database.nbRows()));
+        add_range = true;
+      }
+      for ( const auto& range : __ranges ) {
+        const std::size_t range_size = range.second - range.first;
+        std::size_t nb_threads = range_size / __min_nb_rows_per_thread;
+        if ( nb_threads < 1 )
+          nb_threads = 1;
+        else if ( nb_threads > __max_nb_threads )
+          nb_threads = __max_nb_threads;
+        std::size_t nb_rows_par_thread = range_size / nb_threads;
+        std::size_t rest_rows = range_size - nb_rows_par_thread * nb_threads;
+
+        std::size_t begin_index = std::size_t(0);
+        for ( std::size_t i = std::size_t(0); i < nb_threads; ++i ) {
+          std::size_t end_index = begin_index + nb_rows_par_thread;
+          if ( rest_rows != std::size_t(0) ) {
+            ++end_index;
+            --rest_rows;
+          }
+          ranges.push_back(std::pair<std::size_t, std::size_t>
+                           (begin_index,end_index));
+          begin_index = end_index;
+        }
+      }
+      if ( add_range ) __ranges.clear ();
+      
+      // sort ranges by decreasing range size, so that if the number of
+      // ranges exceeds the number of threads allowed, we start first a round of
+      // threads with the highest range, then another round with lower ranges,
+      // and so on until all the ranges have been processed
+      std::sort(ranges.begin(),
+                ranges.end(),
+                [](const std::pair< std::size_t, std::size_t >& a,
+                   const std::pair< std::size_t, std::size_t >& b) -> bool {
+                  return (a.second - a.first) > (b.second - b.first);
+                });
+
+      // launch the threads
+      
+      
+
+      
+     
+
+      // we create the output vector
+      std::vector< double, ALLOC<double> > counting_vect(counting_vect_size, 0.0);
+
+      return __last_DB_countings;
+    }
+      
 
   } /* namespace learning */
 

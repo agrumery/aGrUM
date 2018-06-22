@@ -192,7 +192,16 @@ namespace gum {
     DBRowGeneratorParser<ALLOC>::handler() const {
       return __handler;
     }
+
     
+    /// returns a reference on the database
+    template <template<typename> class ALLOC>
+    INLINE const DatabaseTable< ALLOC >&
+    DBRowGeneratorParser<ALLOC>::database () const {
+      return static_cast<const DatabaseTable< ALLOC >&>
+        (__handler.database ());
+    }
+
 
     /// returns the generator set that is actually used
     template <template<typename> class ALLOC>

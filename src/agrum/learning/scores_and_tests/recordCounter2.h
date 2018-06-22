@@ -33,7 +33,9 @@
 
 #include <agrum/agrum.h>
 #include <agrum/core/bijection.h>
+#include <agrum/core/sequence.h>
 #include <agrum/core/thread.h>
+#include <agrum/core/threadData.h>
 #include <agrum/graphs/DAG.h>
 #include <agrum/learning/database/DBRowGeneratorParser.h>
 
@@ -178,43 +180,32 @@ namespace gum {
       /// returns the number of threads used to parse the database
       std::size_t nbThreads () const;
 
+      /** @brief changes the number min of rows a thread should process in a
+       * multithreading context
+       *
+       * When Method counts executes several threads to perform countings on the
+       * rows of the database, the MinNbRowsPerThread indicates how many rows each
+       * thread should at least process. This is used to compute the number of
+       * threads actually run. This number is equal to the min between the max
+       * number of threads allowed and the number of records in the database
+       * divided by nb. */
+      void setMinNbRowsPerThread ( const std::size_t nb ) const;
+
+      /// returns the minimum of rows that each thread should process
+      std::size_t minNbRowsPerThread () const;
+ 
       /// returns the counts for a given set of nodes
       const std::vector< double, ALLOC<double> >&
-      counts( const std::vector<NodeId>& ids ) const;
+      counts( const Sequence<NodeId>& ids ) const;
 
       /// @}
 
     private:
-
-      template<typename T_DATA>
-      struct ThreadData {
-        // the data we wish to store without cacheline parallel problem
-        T_DATA _data;
-        
-        // the size of the cache used to prevent cacheline parallel problems
-        static constexpr Size _cache_size{128};
-
-        // used to prevent cacheline parallel problems
-        const char _align[_cache_size]{};
-
-        ThreadData ( const T_DATA& data ) : _data ( data ) {}
-        ThreadData ( const ThreadData<T_DATA>& from ) : _data ( from._data ) {}
-        ThreadData ( ThreadData<T_DATA>&& from ) : _data (std::move(from._data)) {}
-        ThreadData<T_DATA>& operator= ( const ThreadData<T_DATA>& from ) {
-          if ( this != &from ) _data = from._data;
-          return *this;
-        }
-        ThreadData<T_DATA>& operator= ( ThreadData<T_DATA>&& from ) {
-          _data = std::move ( from._data );
-          return *this;
-        }
-        
-      };
-
-      
+  
       // the parsers used by the threads
-      std::vector<ThreadData<DBRowGeneratorParser<ALLOC>>,
-                  ALLOC<ThreadData<DBRowGeneratorParser<ALLOC>>> > __parsers;
+      std::vector<thread::ThreadData<DBRowGeneratorParser<ALLOC>>,
+                  ALLOC<thread::ThreadData<DBRowGeneratorParser<ALLOC>>> >
+      __parsers;
 
       // the set of ranges of the database's rows indices over which we
       // perform the countings
@@ -229,18 +220,45 @@ namespace gum {
       std::vector<double,ALLOC<double>> __last_DB_countings;
 
       // the ids of the nodes for the last database-parsed countings
-      std::vector<NodeId,ALLOC<NodeId>> __last_DB_ids;
+      Sequence<NodeId> __last_DB_ids;
 
       // the last countings deduced from __last_DB_countings
       std::vector<double,ALLOC<double>> __last_nonDB_countings;
 
       // the ids of the nodes of last countings deduced from __last_DB_countings
-      std::vector<NodeId,ALLOC<NodeId>> __last_nonDB_ids;
+      Sequence<NodeId> __last_nonDB_ids;
 
       // the maximal number of threads that the database can use
       mutable std::size_t __max_nb_threads
       {std::size_t(thread::getMaxNumberOfThreads())};
 
+      // the min number of rows that a thread should process in a
+      // multithreading context
+      mutable std::size_t __min_nb_rows_per_thread{100};
+ 
+
+      /// indicates whether a first set of ids is contained in the second set
+      bool __isSubset (
+           const Sequence<NodeId>& ids1,
+           const Sequence<NodeId>& ids2,
+           const std::vector<double,ALLOC<double>>& superset_vect ) const;
+
+      // returns a mapping from the nodes ids to the columns of the database
+      // for a given sequence of ids. This is especially convenient when
+      // __nodeId2columns is empty (which means that there is an identity mapping)
+      HashTable<NodeId, std::size_t>
+      __getNodeIds2Columns ( const Sequence<NodeId>& ids ) const;
+
+      /// extracts some new countings from previously computed ones
+      std::vector< double, ALLOC<double> >& __extractFromCountings (
+           const Sequence<NodeId>& subset_ids,
+           const Sequence<NodeId>& superset_ids,
+           const std::vector<double,ALLOC<double>>& superset_vect);
+
+      /// parse the database to produce new countings
+      std::vector< double, ALLOC<double> >&
+      __countFromDatabase ( const Sequence<NodeId>& ids );
+      
     };
 
   } /* namespace learning */
