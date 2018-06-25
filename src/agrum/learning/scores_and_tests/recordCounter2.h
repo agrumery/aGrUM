@@ -25,8 +25,8 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_LEARNING_RECORD_COUNTER_H
-#define GUM_LEARNING_RECORD_COUNTER_H
+#ifndef GUM_LEARNING_RECORD_COUNTER2_H
+#define GUM_LEARNING_RECORD_COUNTER2_H
 
 #include <vector>
 #include <utility>
@@ -69,6 +69,40 @@ namespace gum {
      * parsing. Finally, if we ask for countings over A, a new database parsing
      * will be performed because only the countings over {B,C,D} are now contained
      * in the RecordCounter.
+     *
+     * @par Here is an example of how to use the RecorDounter class:
+     * @code
+     * // here, write the code to construct your database, e.g.:
+     * gum::learning::DBInitializerFromCSV<> initializer( "file.csv" );
+     * const auto& var_names = initializer.variableNames();
+     * const std::size_t nb_vars = var_names.size();
+     * gum::learning::DBTranslatorSet<> translator_set;
+     * gum::learning::DBTranslator4ContinuousVariable<> translator;
+     * for (std::size_t i = 0; i < nb_vars; ++i) {
+     *   translator_set.insertTranslator(translator, i);
+     * }
+     * gum::learning::DatabaseTable<> database(translator_set);
+     *
+     * // create the parser of the database
+     * gum::learning::DBRowGeneratorSet<> genset;
+     * gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
+     *
+     * // create the record counter
+     * gum::learning::RecordCounter2<> counter(parser);
+     *
+     * // get the counts:
+     * gum::Sequence<gum::NodeId> ids {0,2,1};
+     * const std::vector< double >& counts1 = counter.counts ( ids );
+     *
+     * // change the rows from which we compute the counts:
+     * // they should now be made on rows [500,600) U [1050,1125) U [100,150)
+     * std::vector<std::pair<std::size_t,std::size_t>> new_ranges
+     *   { std::pair<std::size_t,std::size_t>(500,600),
+     *     std::pair<std::size_t,std::size_t>(1050,1125),
+     *     std::pair<std::size_t,std::size_t>(100,150) };
+     * counter.setRanges ( new_ranges );
+     * const std::vector< double >& counts2 = counter.counts ( ids );
+     * @endcode
      */
     template < template < typename > class ALLOC = std::allocator >
     class RecordCounter2 : private ALLOC<DBTranslatedValue>  {
@@ -197,6 +231,33 @@ namespace gum {
       std::size_t minNbRowsPerThread () const;
  
       /// returns the counts for a given set of nodes
+      /** @ids the ids of the variables for we we perform countings.
+       * @return a vector containing the multidimensional contingency table
+       * over all the variables corresponding to the ids passed in argument.
+       * The first dimension is that of the first variable in the sequence,
+       * i.e., when its value increases by 1, the offset in the vector also
+       * increases by 1. The second dimention is that of the second variable
+       * in the sequence, i.e., when its value increases by 1, the offset in the
+       * vector increases by the domain size of the first variable. For the third
+       * variable, the offset corresponds to the product of the domain sizes of
+       * the first two variables, and so on.
+       * @warning The vector returned by the function may differ from one
+       * call to another. So, care must be taken. E,g. a code like:
+       * @code
+       * const std::vector< double, ALLOC<double> >& counts =
+       *   counter.counts(ids);
+       * counts = counter.counts(other_ids);
+       * @endcode
+       * may be erroneous because the two calls to method counts() may return
+       * references to different vectors. The correct way of using method
+       * counts is always to call it declaring a new reference variable:
+       * @code
+       * const std::vector< double, ALLOC<double> >& counts =
+       *   counter.counts(ids);
+       * const std::vector< double, ALLOC<double> >& other_counts =
+       *   counter.counts(other_ids);
+       * @endcode
+       */
       const std::vector< double, ALLOC<double> >&
       counts( const Sequence<NodeId>& ids );
 
@@ -305,5 +366,5 @@ namespace gum {
 /// always include the templated implementations
 #include <agrum/learning/scores_and_tests/recordCounter2_tpl.h>
 
-#endif /* GUM_LEARNING_RECORD_COUNTER_H */
+#endif /* GUM_LEARNING_RECORD_COUNTER2_H */
 
