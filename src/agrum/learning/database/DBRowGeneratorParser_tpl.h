@@ -211,6 +211,14 @@ namespace gum {
     }
 
     
+    /// sets the area in the database the handler will handle
+    template <template<typename> class ALLOC>
+    INLINE void DBRowGeneratorParser<ALLOC>::setRange(std::size_t begin,
+                                                      std::size_t end) {
+      __handler.setRange (begin,end);
+    }
+    
+    
     /// returns the generator set that is actually used
     template <template<typename> class ALLOC>
     INLINE const DBRowGeneratorSet<ALLOC>&

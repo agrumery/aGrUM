@@ -30,6 +30,8 @@
 
 #include <vector>
 #include <utility>
+#include <sstream>
+#include <string>
 
 #include <agrum/agrum.h>
 #include <agrum/core/bijection.h>
@@ -143,7 +145,7 @@ namespace gum {
       clone (const allocator_type& alloc) const;
 
       /// destructor
-      ~RecordCounter2();
+      virtual ~RecordCounter2();
 
       /// @}
 
@@ -196,7 +198,24 @@ namespace gum {
  
       /// returns the counts for a given set of nodes
       const std::vector< double, ALLOC<double> >&
-      counts( const Sequence<NodeId>& ids ) const;
+      counts( const Sequence<NodeId>& ids );
+
+      /// sets new ranges to perform the countings
+      /** @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
+       * indices. The countings are then performed only on the union of the
+       * rows [Xi,Yi), i in {1,...,n}. This is useful, e.g, when performing
+       * cross validation tasks, in which part of the database should be ignored.
+       * An empty set of ranges is equivalent to an interval [X,Y) ranging over
+       * the whole database. */
+      template < template < typename > class XALLOC > 
+      void setRanges (const std::vector<std::pair<std::size_t,std::size_t>,
+                      XALLOC<std::pair<std::size_t,std::size_t>>>& new_ranges );
+
+      /// reset the ranges to the one range corresponding to the whole database
+      void clearRanges ();
+
+      /// returns the allocator used
+      allocator_type getAllocator () const;
 
       /// @}
 
@@ -258,7 +277,25 @@ namespace gum {
       /// parse the database to produce new countings
       std::vector< double, ALLOC<double> >&
       __countFromDatabase ( const Sequence<NodeId>& ids );
-      
+
+      /// the method used by threads to produce countings by parsing the database
+      void __threadedCount (
+         const std::size_t begin,
+         const std::size_t end,
+         DBRowGeneratorParser<ALLOC>& parser,
+         const std::vector<std::size_t,ALLOC<std::size_t>>& columns,
+         const std::vector<std::size_t,ALLOC<std::size_t>>& offsets,
+         std::vector< double, ALLOC<double> >& countings );
+
+      /// checks that the ranges passed in argument are ok or raise an exception
+      /** A range is ok if its upper bound is strictly higher than its lower
+       * bound and the latter is also lower than or equal to the number of rows
+       * in the database. */
+      template < template < typename > class XALLOC > 
+      void __checkRanges (
+           const std::vector<std::pair<std::size_t,std::size_t>,
+           XALLOC<std::pair<std::size_t,std::size_t>>>& new_ranges ) const;
+
     };
 
   } /* namespace learning */
