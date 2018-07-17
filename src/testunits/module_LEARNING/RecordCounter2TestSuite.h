@@ -69,7 +69,7 @@ namespace gum_tests {
       // create the record counter
       gum::learning::RecordCounter2<> counter(parser);
 
-      gum::Sequence<gum::NodeId> ids {0,2,1};
+      gum::learning::IdSet2<> ids ( 0, std::vector<gum::NodeId> {2,1}, true );
       std::vector< double > counts = counter.counts ( ids );
 
       TS_ASSERT ( counts.size() == std::size_t(27));
@@ -85,33 +85,29 @@ namespace gum_tests {
         }
       }
 
-      ids.clear ();
-      ids << 2 << 0;
-      counts = counter.counts ( ids );
+      gum::learning::IdSet2<> ids2 ( 2, std::vector<gum::NodeId> {0}, true );
+      counts = counter.counts ( ids2 );
       TS_ASSERT ( counts.size() == std::size_t(9));
       TS_ASSERT ( counts[0] == double(1200)); // A=0, C=0
       TS_ASSERT ( counts[3] == double(125));  // A=1, C=0
       TS_ASSERT ( counts[6] == double(75));   // A=2, C=0
 
-      ids.clear ();
-      ids << 0;
-      counts = counter.counts ( ids );
+      gum::learning::IdSet2<> ids3 ( 0, std::vector<gum::NodeId> (), true );
+      counts = counter.counts ( ids3 );
       TS_ASSERT ( counts.size() == std::size_t(3));
       TS_ASSERT ( counts[0] == double(1200)); // A=0
       TS_ASSERT ( counts[1] == double(125));  // A=1
       TS_ASSERT ( counts[2] == double(75));   // A=2
 
-      ids.clear ();
-      ids << 2;
-      counts = counter.counts ( ids );
+      gum::learning::IdSet2<> ids4 ( 2, std::vector<gum::NodeId> (), true );
+      counts = counter.counts ( ids4 );
       TS_ASSERT ( counts.size() == std::size_t(3));
       TS_ASSERT ( counts[0] == double(1400)); // C=0
       TS_ASSERT ( counts[1] == double(0));    // C=1
       TS_ASSERT ( counts[2] == double(0));    // C=2
 
-      ids.clear ();
-      ids << 0 << 1;
-      counts = counter.counts ( ids );
+      gum::learning::IdSet2<> ids5 ( 0, std::vector<gum::NodeId> {1}, true );
+      counts = counter.counts ( ids5 );
       TS_ASSERT ( counts.size() == std::size_t(9));
       TS_ASSERT ( counts[0] == double(200));  // A=0, B=0
       TS_ASSERT ( counts[1] == double(75));   // A=1, B=0
@@ -123,30 +119,28 @@ namespace gum_tests {
       TS_ASSERT ( counts[7] == double(50));   // A=1, B=2
       TS_ASSERT ( counts[8] == double(0));    // A=2, B=2
 
-      ids.clear ();
-      ids << 3;
-      counts = counter.counts ( ids );
+      gum::learning::IdSet2<> ids6 ( 3, std::vector<gum::NodeId> (), true );
+      counts = counter.counts ( ids6 );
       TS_ASSERT ( counts.size() == std::size_t(3));
       TS_ASSERT ( counts[0] == double(75));   // D=0
       TS_ASSERT ( counts[1] == double(325));  // D=1
       TS_ASSERT ( counts[2] == double(1000)); // D=2
 
-      counts = counter.counts ( ids );
+      counts = counter.counts ( ids6 );
       TS_ASSERT ( counts.size() == std::size_t(3));
       TS_ASSERT ( counts[0] == double(75));   // D=0
       TS_ASSERT ( counts[1] == double(325));  // D=1
       TS_ASSERT ( counts[2] == double(1000)); // D=2
 
       counter.clear ();
-      counts = counter.counts ( ids );
+      counts = counter.counts ( ids6 );
       TS_ASSERT ( counts.size() == std::size_t(3));
       TS_ASSERT ( counts[0] == double(75));   // D=0
       TS_ASSERT ( counts[1] == double(325));  // D=1
       TS_ASSERT ( counts[2] == double(1000)); // D=2
       
-      ids.clear ();
-      ids << 0 << 1;
-      counts = counter.counts ( ids );
+      gum::learning::IdSet2<> ids7 ( 0, std::vector<gum::NodeId> {1}, true );
+      counts = counter.counts ( ids7 );
       TS_ASSERT ( counts.size() == std::size_t(9));
       TS_ASSERT ( counts[0] == double(200));  // A=0, B=0
       TS_ASSERT ( counts[1] == double(75));   // A=1, B=0
@@ -164,7 +158,7 @@ namespace gum_tests {
         std::pair<std::size_t,std::size_t>(100,150) };
       counter.setRanges ( new_ranges );
 
-      counts = counter.counts ( ids );
+      counts = counter.counts ( ids7 );
       TS_ASSERT ( counts.size() == std::size_t(9));
       TS_ASSERT ( counts[0] == double(0));   // A=0, B=0
       TS_ASSERT ( counts[1] == double(0));   // A=1, B=0
@@ -177,7 +171,7 @@ namespace gum_tests {
       TS_ASSERT ( counts[8] == double(0));   // A=2, B=2
 
       gum::learning::RecordCounter2<> counter2 ( counter );
-      counts = counter2.counts ( ids );
+      counts = counter2.counts ( ids7 );
       TS_ASSERT ( counts.size() == std::size_t(9));
       TS_ASSERT ( counts[0] == double(0));   // A=0, B=0
       TS_ASSERT ( counts[1] == double(0));   // A=1, B=0
@@ -190,7 +184,7 @@ namespace gum_tests {
       TS_ASSERT ( counts[8] == double(0));   // A=2, B=2
 
       gum::learning::RecordCounter2<> counter3 ( std::move(counter2));
-      counts = counter3.counts ( ids );
+      counts = counter3.counts ( ids7 );
       TS_ASSERT ( counts.size() == std::size_t(9));
       TS_ASSERT ( counts[0] == double(0));   // A=0, B=0
       TS_ASSERT ( counts[1] == double(0));   // A=1, B=0
@@ -203,7 +197,7 @@ namespace gum_tests {
       TS_ASSERT ( counts[8] == double(0));   // A=2, B=2
 
       gum::learning::RecordCounter2<>* counter4 = counter.clone ();
-      counts = counter4->counts ( ids );
+      counts = counter4->counts ( ids7 );
       TS_ASSERT ( counts.size() == std::size_t(9));
       TS_ASSERT ( counts[0] == double(0));   // A=0, B=0
       TS_ASSERT ( counts[1] == double(0));   // A=1, B=0
@@ -216,7 +210,7 @@ namespace gum_tests {
       TS_ASSERT ( counts[8] == double(0));   // A=2, B=2
       counter.clearRanges ();
       counter3 = counter;
-      counts = counter3.counts ( ids );
+      counts = counter3.counts ( ids7 );
       TS_ASSERT ( counts.size() == std::size_t(9));
       TS_ASSERT ( counts[0] == double(200));  // A=0, B=0
       TS_ASSERT ( counts[1] == double(75));   // A=1, B=0
@@ -230,7 +224,7 @@ namespace gum_tests {
 
       counter3 = std::move ( *counter4 );
       delete counter4;
-      counts = counter3.counts ( ids );
+      counts = counter3.counts ( ids7 );
       TS_ASSERT ( counts.size() == std::size_t(9));
       TS_ASSERT ( counts[0] == double(0));   // A=0, B=0
       TS_ASSERT ( counts[1] == double(0));   // A=1, B=0
@@ -244,7 +238,7 @@ namespace gum_tests {
     }
 
 
-    void test2() {
+    void xtest2() {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
       var.addLabel("0");
@@ -292,7 +286,7 @@ namespace gum_tests {
       { std::pair<std::size_t,std::size_t>( std::size_t(0),database.nbRows())};
       gum::learning::RecordCounter2<> counter(parser,ranges,nodeId2columns);
 
-      gum::Sequence<gum::NodeId> ids {5,0,3};
+      gum::learning::IdSet2<> ids ( 5, std::vector<gum::NodeId> {0,3}, true );
       std::vector< double > counts = counter.counts ( ids );
       TS_ASSERT ( counts.size() == std::size_t(27));
       TS_ASSERT ( counts[0]  == double(200));  // A=0, C=0, B=0
@@ -307,33 +301,43 @@ namespace gum_tests {
         }
       }
 
-      ids.clear ();
-      ids << 0 << 5;
-      counts = counter.counts ( ids );
+      gum::learning::IdSet2<> ids1 ( 5,0,3,std::vector<gum::NodeId>(), true );
+      counts = counter.counts ( ids1 );
+      TS_ASSERT ( counts.size() == std::size_t(27));
+      TS_ASSERT ( counts[0]  == double(200));  // A=0, C=0, B=0
+      TS_ASSERT ( counts[1]  == double(75));   // A=1, C=0, B=0
+      TS_ASSERT ( counts[11] == double(75));   // A=2, C=0, B=1
+      TS_ASSERT ( counts[19] == double(50));   // A=1, C=0, B=2
+      TS_ASSERT ( counts[9]  == double(1000)); // A=0, C=1, B=0
+      for ( std::size_t i = std::size_t(0); i < counts.size(); ++i ) {
+        if ( ! xxx.exists ( i ) ) {
+          TS_ASSERT ( counts[i] == 0.0 );
+        }
+      }
+
+      gum::learning::IdSet2<> ids2 ( 0, std::vector<gum::NodeId> {5}, true );
+      counts = counter.counts ( ids2 );
       TS_ASSERT ( counts.size() == std::size_t(9));
       TS_ASSERT ( counts[0] == double(1200)); // A=0, C=0
       TS_ASSERT ( counts[3] == double(125));  // A=1, C=0
       TS_ASSERT ( counts[6] == double(75));   // A=2, C=0
 
-      ids.clear ();
-      ids << 5;
-      counts = counter.counts ( ids );
+      gum::learning::IdSet2<> ids3 ( 5, std::vector<gum::NodeId> (), true );
+      counts = counter.counts ( ids3 );
       TS_ASSERT ( counts.size() == std::size_t(3));
       TS_ASSERT ( counts[0] == double(1200)); // A=0
       TS_ASSERT ( counts[1] == double(125));  // A=1
       TS_ASSERT ( counts[2] == double(75));   // A=2
 
-      ids.clear ();
-      ids << 0;
-      counts = counter.counts ( ids );
+      gum::learning::IdSet2<> ids4 ( 0, std::vector<gum::NodeId> (), true );
+      counts = counter.counts ( ids4 );
       TS_ASSERT ( counts.size() == std::size_t(3));
       TS_ASSERT ( counts[0] == double(1400)); // C=0
       TS_ASSERT ( counts[1] == double(0));    // C=1
       TS_ASSERT ( counts[2] == double(0));    // C=2
 
-      ids.clear ();
-      ids << 5 << 3;
-      counts = counter.counts ( ids );
+      gum::learning::IdSet2<> ids5 ( 5,3, std::vector<gum::NodeId>(), true );
+      counts = counter.counts ( ids5 );
       TS_ASSERT ( counts.size() == std::size_t(9));
       TS_ASSERT ( counts[0] == double(200));  // A=0, B=0
       TS_ASSERT ( counts[1] == double(75));   // A=1, B=0
@@ -345,30 +349,28 @@ namespace gum_tests {
       TS_ASSERT ( counts[7] == double(50));   // A=1, B=2
       TS_ASSERT ( counts[8] == double(0));    // A=2, B=2
 
-      ids.clear ();
-      ids << 4;
-      counts = counter.counts ( ids );
+      gum::learning::IdSet2<> ids6 ( 4, std::vector<gum::NodeId>(), true );
+      counts = counter.counts ( ids6 );
       TS_ASSERT ( counts.size() == std::size_t(3));
       TS_ASSERT ( counts[0] == double(75));   // D=0
       TS_ASSERT ( counts[1] == double(325));  // D=1
       TS_ASSERT ( counts[2] == double(1000)); // D=2
 
-      counts = counter.counts ( ids );
+      counts = counter.counts ( ids6 );
       TS_ASSERT ( counts.size() == std::size_t(3));
       TS_ASSERT ( counts[0] == double(75));   // D=0
       TS_ASSERT ( counts[1] == double(325));  // D=1
       TS_ASSERT ( counts[2] == double(1000)); // D=2
 
       counter.clear ();
-      counts = counter.counts ( ids );
+      counts = counter.counts ( ids6 );
       TS_ASSERT ( counts.size() == std::size_t(3));
       TS_ASSERT ( counts[0] == double(75));   // D=0
       TS_ASSERT ( counts[1] == double(325));  // D=1
       TS_ASSERT ( counts[2] == double(1000)); // D=2
       
-      ids.clear ();
-      ids << 5 << 3;
-      counts = counter.counts ( ids );
+      gum::learning::IdSet2<> ids7 ( 5,3, std::vector<gum::NodeId>(), true );
+      counts = counter.counts ( ids7 );
       TS_ASSERT ( counts.size() == std::size_t(9));
       TS_ASSERT ( counts[0] == double(200));  // A=0, B=0
       TS_ASSERT ( counts[1] == double(75));   // A=1, B=0
@@ -386,7 +388,7 @@ namespace gum_tests {
         std::pair<std::size_t,std::size_t>(100,150) };
       counter.setRanges ( new_ranges );
 
-      counts = counter.counts ( ids );
+      counts = counter.counts ( ids7 );
       TS_ASSERT ( counts.size() == std::size_t(9));
       TS_ASSERT ( counts[0] == double(0));   // A=0, B=0
       TS_ASSERT ( counts[1] == double(0));   // A=1, B=0
@@ -402,7 +404,7 @@ namespace gum_tests {
       TS_ASSERT (counter2.nbThreads () == gum::thread::getMaxNumberOfThreads());
       counter2.setMaxNbThreads(std::size_t(2));
       TS_ASSERT (counter2.nbThreads () == std::size_t(2));
-      counts = counter2.counts ( ids );
+      counts = counter2.counts ( ids7 );
       TS_ASSERT ( counts.size() == std::size_t(9));
       TS_ASSERT ( counts[0] == double(0));   // A=0, B=0
       TS_ASSERT ( counts[1] == double(0));   // A=1, B=0
@@ -415,7 +417,7 @@ namespace gum_tests {
       TS_ASSERT ( counts[8] == double(0));   // A=2, B=2
 
       gum::learning::RecordCounter2<> counter3 ( std::move(counter2));
-      counts = counter3.counts ( ids );
+      counts = counter3.counts ( ids7 );
       TS_ASSERT ( counts.size() == std::size_t(9));
       TS_ASSERT ( counts[0] == double(0));   // A=0, B=0
       TS_ASSERT ( counts[1] == double(0));   // A=1, B=0
@@ -428,7 +430,7 @@ namespace gum_tests {
       TS_ASSERT ( counts[8] == double(0));   // A=2, B=2
 
       gum::learning::RecordCounter2<>* counter4 = counter.clone ();
-      counts = counter4->counts ( ids );
+      counts = counter4->counts ( ids7 );
       TS_ASSERT ( counts.size() == std::size_t(9));
       TS_ASSERT ( counts[0] == double(0));   // A=0, B=0
       TS_ASSERT ( counts[1] == double(0));   // A=1, B=0
@@ -443,7 +445,7 @@ namespace gum_tests {
       counter3 = counter;
       TS_ASSERT (counter3.nbThreads () == gum::thread::getMaxNumberOfThreads());
       counter3.setMinNbRowsPerThread ( std::size_t(10000));
-      counts = counter3.counts ( ids );
+      counts = counter3.counts ( ids7 );
       TS_ASSERT ( counts.size() == std::size_t(9));
       TS_ASSERT ( counts[0] == double(200));  // A=0, B=0
       TS_ASSERT ( counts[1] == double(75));   // A=1, B=0
@@ -457,7 +459,7 @@ namespace gum_tests {
 
       counter3 = std::move ( *counter4 );
       delete counter4;
-      counts = counter3.counts ( ids );
+      counts = counter3.counts ( ids7 );
       TS_ASSERT ( counts.size() == std::size_t(9));
       TS_ASSERT ( counts[0] == double(0));   // A=0, B=0
       TS_ASSERT ( counts[1] == double(0));   // A=1, B=0
@@ -468,6 +470,7 @@ namespace gum_tests {
       TS_ASSERT ( counts[6] == double(0));   // A=0, B=2
       TS_ASSERT ( counts[7] == double(0));   // A=1, B=2
       TS_ASSERT ( counts[8] == double(0));   // A=2, B=2
+      
     }
 
   };

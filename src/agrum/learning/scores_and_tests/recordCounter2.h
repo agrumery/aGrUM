@@ -40,6 +40,8 @@
 #include <agrum/core/threadData.h>
 #include <agrum/graphs/DAG.h>
 #include <agrum/learning/database/DBRowGeneratorParser.h>
+#include <agrum/learning/scores_and_tests/idSet2.h>
+
 
 namespace gum {
 
@@ -47,7 +49,7 @@ namespace gum {
 
     /** @class RecordCounter
      * @brief The class that computes countings of observations from the database.
-     * @headerfile recordCounter.h <agrum/learning/database/recordCounter.h>
+     * @headerfile recordCounter.h <agrum/learning/scores_and_tests/recordCounter.h>
      * @ingroup learning_scores
      *
      * This class is the one to be called by scores and independence tests to
@@ -70,7 +72,7 @@ namespace gum {
      * will be performed because only the countings over {B,C,D} are now contained
      * in the RecordCounter.
      *
-     * @par Here is an example of how to use the RecorDounter class:
+     * @par Here is an example of how to use the RecordCounter class:
      * @code
      * // here, write the code to construct your database, e.g.:
      * gum::learning::DBInitializerFromCSV<> initializer( "file.csv" );
@@ -91,7 +93,7 @@ namespace gum {
      * gum::learning::RecordCounter2<> counter(parser);
      *
      * // get the counts:
-     * gum::Sequence<gum::NodeId> ids {0,2,1};
+     * gum::learning::IdSet<> ids ( 0, gum::vector<gum::NodeId> {2,1} );
      * const std::vector< double >& counts1 = counter.counts ( ids );
      *
      * // change the rows from which we compute the counts:
@@ -105,11 +107,11 @@ namespace gum {
      * @endcode
      */
     template < template < typename > class ALLOC = std::allocator >
-    class RecordCounter2 : private ALLOC<DBTranslatedValue>  {
+    class RecordCounter2 {
     public:
       
       /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC<DBTranslatedValue>;
+      using allocator_type = ALLOC<NodeId>;
       
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -133,12 +135,12 @@ namespace gum {
        * NodeId is equal to the index of the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
        * RecordCounter. */
-      template < template < typename > class XALLOC > 
       RecordCounter2(const DBRowGeneratorParser<ALLOC>& parser,
                      const std::vector<std::pair<std::size_t,std::size_t>,
-                           XALLOC<std::pair<std::size_t,std::size_t>>>& ranges,
-                     const Bijection<NodeId,std::size_t>& nodeId2columns =
-                     Bijection<NodeId,std::size_t> (),
+                     ALLOC<std::pair<std::size_t,std::size_t>>>& ranges,
+                     const Bijection<NodeId,std::size_t,
+                     ALLOC<std::size_t>>& nodeId2columns =
+                     Bijection<NodeId,std::size_t,ALLOC<std::size_t>> (),
                      const allocator_type& alloc = allocator_type ());
 
       /// default constructor
@@ -153,8 +155,9 @@ namespace gum {
        * @param alloc the allocator used to allocate the structures within the
        * RecordCounter. */
       RecordCounter2(const DBRowGeneratorParser<ALLOC>& parser,
-                     const Bijection<NodeId,std::size_t>& nodeId2columns =
-                     Bijection<NodeId,std::size_t> (),
+                     const Bijection<NodeId,std::size_t,
+                     ALLOC<std::size_t>>& nodeId2columns =
+                     Bijection<NodeId,std::size_t,ALLOC<std::size_t>> (),
                      const allocator_type& alloc = allocator_type ());
 
       /// copy constructor
@@ -259,7 +262,7 @@ namespace gum {
        * @endcode
        */
       const std::vector< double, ALLOC<double> >&
-      counts( const Sequence<NodeId>& ids );
+      counts( const IdSet2<ALLOC>& ids );
 
       /// sets new ranges to perform the countings
       /** @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
@@ -294,19 +297,19 @@ namespace gum {
 
       // the mapping from the NodeIds of the variables to the indices of the
       // columns in the database
-      Bijection<NodeId,std::size_t> __nodeId2columns;
+      Bijection<NodeId,std::size_t,ALLOC<std::size_t>> __nodeId2columns;
 
       // the last database-parsed countings
       std::vector<double,ALLOC<double>> __last_DB_countings;
 
       // the ids of the nodes for the last database-parsed countings
-      Sequence<NodeId> __last_DB_ids;
+      IdSet2<ALLOC> __last_DB_ids;
 
       // the last countings deduced from __last_DB_countings
       std::vector<double,ALLOC<double>> __last_nonDB_countings;
 
       // the ids of the nodes of last countings deduced from __last_DB_countings
-      Sequence<NodeId> __last_nonDB_ids;
+      IdSet2<ALLOC> __last_nonDB_ids;
 
       // the maximal number of threads that the database can use
       mutable std::size_t __max_nb_threads
@@ -317,27 +320,22 @@ namespace gum {
       mutable std::size_t __min_nb_rows_per_thread{100};
  
 
-      /// indicates whether a first set of ids is contained in the second set
-      bool __isSubset (
-           const Sequence<NodeId>& ids1,
-           const Sequence<NodeId>& ids2,
-           const std::vector<double,ALLOC<double>>& superset_vect ) const;
-
+      
       // returns a mapping from the nodes ids to the columns of the database
       // for a given sequence of ids. This is especially convenient when
       // __nodeId2columns is empty (which means that there is an identity mapping)
       HashTable<NodeId, std::size_t>
-      __getNodeIds2Columns ( const Sequence<NodeId>& ids ) const;
+      __getNodeIds2Columns ( const IdSet2<ALLOC>& ids ) const;
 
       /// extracts some new countings from previously computed ones
       std::vector< double, ALLOC<double> >& __extractFromCountings (
-           const Sequence<NodeId>& subset_ids,
-           const Sequence<NodeId>& superset_ids,
+           const IdSet2<ALLOC>& subset_ids,
+           const IdSet2<ALLOC>& superset_ids,
            const std::vector<double,ALLOC<double>>& superset_vect);
 
       /// parse the database to produce new countings
       std::vector< double, ALLOC<double> >&
-      __countFromDatabase ( const Sequence<NodeId>& ids );
+      __countFromDatabase ( const IdSet2<ALLOC>& ids );
 
       /// the method used by threads to produce countings by parsing the database
       void __threadedCount (

@@ -36,21 +36,25 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE typename RecordCounter2<ALLOC>::allocator_type
       RecordCounter2<ALLOC>::getAllocator() const {
-      return *this;
+      return __parsers.get_allocator ();
     }
 
 
     /// default constructor
     template < template < typename > class ALLOC >
-    template < template < typename > class XALLOC > 
     RecordCounter2<ALLOC>::RecordCounter2(
         const DBRowGeneratorParser<ALLOC>& parser,
         const std::vector<std::pair<std::size_t,std::size_t>,
-               XALLOC<std::pair<std::size_t,std::size_t>>>& ranges,
-        const Bijection<NodeId,std::size_t>& nodeId2columns,
+        ALLOC<std::pair<std::size_t,std::size_t>>>& ranges,
+        const Bijection<NodeId,std::size_t,ALLOC<std::size_t>>& nodeId2columns,
         const allocator_type& alloc ) :
-      ALLOC<DBTranslatedValue> ( alloc ),
-      __nodeId2columns ( nodeId2columns ) {
+      __parsers ( alloc ),
+      __ranges ( alloc ),
+      __nodeId2columns ( nodeId2columns ),
+      __last_DB_countings ( alloc ),
+      __last_DB_ids ( alloc ),
+      __last_nonDB_countings ( alloc ),
+      __last_nonDB_ids ( alloc ) {
       // create the parsers. There should always be at least one parser
       if ( __max_nb_threads < std::size_t(1) )
         __max_nb_threads = std::size_t(1);
@@ -72,7 +76,7 @@ namespace gum {
     template < template < typename > class ALLOC >   
     RecordCounter2<ALLOC>::RecordCounter2(
          const DBRowGeneratorParser<ALLOC>& parser,
-         const Bijection<NodeId,std::size_t>& nodeId2columns,
+         const Bijection<NodeId,std::size_t,ALLOC<std::size_t>>& nodeId2columns,
          const allocator_type& alloc ) :
       RecordCounter2<ALLOC> ( parser,
                               std::vector<std::pair<std::size_t,std::size_t>,
@@ -85,13 +89,12 @@ namespace gum {
     template < template < typename > class ALLOC >   
     RecordCounter2<ALLOC>::RecordCounter2(const RecordCounter2<ALLOC>& from,
                                           const allocator_type& alloc) :
-      ALLOC<DBTranslatedValue> ( alloc ),
-      __parsers ( from.__parsers ),
-      __ranges ( from.__ranges ),
+      __parsers ( from.__parsers, alloc ),
+      __ranges ( from.__ranges , alloc),
       __nodeId2columns ( from.__nodeId2columns ),
-      __last_DB_countings ( from.__last_DB_countings ),
+      __last_DB_countings ( from.__last_DB_countings, alloc ),
       __last_DB_ids ( from.__last_DB_ids ),
-      __last_nonDB_countings ( from.__last_nonDB_countings ),
+      __last_nonDB_countings ( from.__last_nonDB_countings, alloc ),
       __last_nonDB_ids ( from.__last_nonDB_ids ),
       __max_nb_threads ( from.__max_nb_threads ),
       __min_nb_rows_per_thread (from.__min_nb_rows_per_thread) {
@@ -109,13 +112,12 @@ namespace gum {
     template < template < typename > class ALLOC >   
     RecordCounter2<ALLOC>::RecordCounter2(RecordCounter2<ALLOC>&& from,
                                           const allocator_type& alloc) :
-       ALLOC<DBTranslatedValue> ( alloc ),
-      __parsers ( std::move ( from.__parsers ) ),
-      __ranges ( std::move ( from.__ranges ) ),
+      __parsers ( std::move ( from.__parsers ), alloc ),
+      __ranges ( std::move ( from.__ranges ), alloc ),
       __nodeId2columns ( std::move ( from.__nodeId2columns ) ),
-      __last_DB_countings ( std::move ( from.__last_DB_countings )) ,
+      __last_DB_countings ( std::move ( from.__last_DB_countings ), alloc) ,
       __last_DB_ids ( std::move ( from.__last_DB_ids ) ),
-      __last_nonDB_countings ( std::move ( from.__last_nonDB_countings ) ),
+      __last_nonDB_countings ( std::move ( from.__last_nonDB_countings ), alloc ),
       __last_nonDB_ids ( std::move ( from.__last_nonDB_ids ) ),
       __max_nb_threads ( from.__max_nb_threads ),
       __min_nb_rows_per_thread (from.__min_nb_rows_per_thread) {
@@ -247,29 +249,24 @@ namespace gum {
     /// returns the counts for a given set of nodes
     template < template < typename > class ALLOC >   
     INLINE const std::vector< double, ALLOC<double> >&
-    RecordCounter2<ALLOC>::counts( const Sequence<NodeId>& ids ) {
-      if ( __isSubset ( ids, __last_nonDB_ids, __last_nonDB_countings ) )
-        return __extractFromCountings ( ids,
-                                        __last_nonDB_ids, __last_nonDB_countings );
-      else if ( __isSubset ( ids, __last_DB_ids, __last_DB_countings ) )
-        return __extractFromCountings ( ids, __last_DB_ids, __last_DB_countings );
+    RecordCounter2<ALLOC>::counts( const IdSet2<ALLOC>& ids ) {
+      // if the idset is empty, return an empty vector
+      if ( ids.empty () ) {
+        __last_nonDB_ids.clear ();
+        __last_nonDB_countings.clear ();
+        return __last_nonDB_countings;
+      }
+
+      // check whether we can extract the vector we wish to return from
+      // some already computed counting vector
+      if ( __last_nonDB_ids.contains ( ids ) )
+        return __extractFromCountings(ids, __last_nonDB_ids,
+                                      __last_nonDB_countings);
+      else if ( __last_DB_ids.contains ( ids ) )
+        return __extractFromCountings ( ids, __last_DB_ids,
+                                        __last_DB_countings );
       else
         return __countFromDatabase ( ids );
-    }
-
-
-    /// indicates whether a first set of ids is contained in the second set
-    template < template < typename > class ALLOC >   
-    bool RecordCounter2<ALLOC>::__isSubset (
-         const Sequence<NodeId>& ids1,
-         const Sequence<NodeId>& ids2,
-         const std::vector<double,ALLOC<double>>& superset_vect) const {
-      if ( ( ids1.size () > ids2.size () ) ||
-           ( ids1.size () > superset_vect.size () ) )
-        return false;
-      for ( const auto id : ids1 )
-        if ( ! ids2.exists ( id ) ) return false;
-      return true;
     }
 
     
@@ -277,8 +274,7 @@ namespace gum {
     // for a given sequence of ids
     template < template < typename > class ALLOC >   
     HashTable<NodeId, std::size_t>
-    RecordCounter2<ALLOC>::__getNodeIds2Columns (
-        const Sequence<NodeId>& ids ) const {
+    RecordCounter2<ALLOC>::__getNodeIds2Columns(const IdSet2<ALLOC>& ids) const {
       HashTable<NodeId, std::size_t> res ( ids.size () );
       for ( const auto id : ids ) {
         try { res.insert ( id, __nodeId2columns.second(id) ); }
@@ -292,8 +288,8 @@ namespace gum {
     template < template < typename > class ALLOC >   
     INLINE std::vector< double, ALLOC<double> >&
     RecordCounter2<ALLOC>::__extractFromCountings (
-      const Sequence<NodeId>& subset_ids,
-      const Sequence<NodeId>& superset_ids,
+      const IdSet2<ALLOC>& subset_ids,
+      const IdSet2<ALLOC>& superset_ids,
       const std::vector<double,ALLOC<double>>& superset_vect ) {
       // get a mapping between the node Ids and their columns in the database.
       // This should be stored into __nodeId2columns, except if the latter is
@@ -505,7 +501,7 @@ namespace gum {
     /// parse the database to produce new countings
     template < template < typename > class ALLOC >   
     std::vector< double, ALLOC<double> >&
-    RecordCounter2<ALLOC>::__countFromDatabase ( const Sequence<NodeId>& ids ) {
+    RecordCounter2<ALLOC>::__countFromDatabase ( const IdSet2<ALLOC>& ids ) {
       // if the ids vector is empty or the database is empty, return an
       // empty vector
       const auto& database = __parsers[0].data.database ();
