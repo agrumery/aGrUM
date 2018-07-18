@@ -34,7 +34,7 @@ namespace gum {
 
   namespace thread {
 
-    
+
     /** @class ThreadData
      * @brief A wrapper that enables to store data in a way that prevents false
      * cacheline sharing.
@@ -50,7 +50,7 @@ namespace gum {
      * To create a wrapper data, simply use wrapped_data = ThreadData (data) and
      * To get the data wrapped, use wrapped_data.data;
      */
-    template<typename T_DATA>
+    template < typename T_DATA >
     // #TODO: replace by alignas(std::hardware_destructive_interference_size)
     // when pyAgrum will be compiled in C++17
     struct alignas(128) ThreadData {
@@ -60,19 +60,19 @@ namespace gum {
       /// @{
 
       /// default constructor
-      ThreadData ( const T_DATA& theData ) : data ( theData ) {}
+      ThreadData(const T_DATA& theData) : data(theData) {}
 
       /// default constructor
-      ThreadData ( T_DATA&& theData ) : data ( std::move ( theData ) ) {}
+      ThreadData(T_DATA&& theData) : data(std::move(theData)) {}
 
       /// copy constructor
-      ThreadData ( const ThreadData<T_DATA>& from ) : data ( from.data ) {}
+      ThreadData(const ThreadData< T_DATA >& from) : data(from.data) {}
 
       /// move constructor
-      ThreadData ( ThreadData<T_DATA>&& from ) : data (std::move(from.data)) {}
+      ThreadData(ThreadData< T_DATA >&& from) : data(std::move(from.data)) {}
 
       /// destructor
-      ~ThreadData () {}
+      ~ThreadData() {}
 
       /// @}
 
@@ -83,25 +83,24 @@ namespace gum {
       /// @{
 
       /// copy operator
-      ThreadData<T_DATA>& operator= ( const ThreadData<T_DATA>& from ) {
-        if ( this != &from ) data = from.data;
+      ThreadData< T_DATA >& operator=(const ThreadData< T_DATA >& from) {
+        if (this != &from) data = from.data;
         return *this;
       }
 
       /// move operator
-      ThreadData<T_DATA>& operator= ( ThreadData<T_DATA>&& from ) {
-        data = std::move ( from.data );
+      ThreadData< T_DATA >& operator=(ThreadData< T_DATA >&& from) {
+        data = std::move(from.data);
         return *this;
       }
 
       /// @}
-      
+
       /// the data we wish to store without cacheline parallel problem
       T_DATA data;
-
     };
 
-  } /* namespace learning */
+  }   // namespace thread
 
 } /* namespace gum */
 

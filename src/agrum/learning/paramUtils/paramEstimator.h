@@ -181,7 +181,7 @@ namespace gum {
       ScoreInternalApriori< IdSetAlloc, CountAlloc >* _score_internal_apriori;
 
       /// the database
-      const DatabaseTable<std::allocator> *_database;
+      const DatabaseTable< std::allocator >* _database;
 
       /// indicate whether we have already normalized the parameters
       std::vector< bool > _is_normalized;

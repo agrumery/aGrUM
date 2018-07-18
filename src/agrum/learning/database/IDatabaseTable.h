@@ -564,7 +564,7 @@ namespace gum {
         /// returns a pointer on the database
         /** @throw NullElement is raised if the handler does not point toward
          * any database. */
-        virtual const IDatabaseTable< T_DATA, ALLOC >& database () const;
+        virtual const IDatabaseTable< T_DATA, ALLOC >& database() const;
 
         /// @}
 
@@ -918,7 +918,7 @@ namespace gum {
       const std::string& variableName(const std::size_t k) const;
 
       /// returns the index of the column whose name is passed in argument
-      /** @warning If several columns correspond to the name, only the 
+      /** @warning If several columns correspond to the name, only the
        * column with the lowest index is returned. If you wish to retrieve all
        * the columns, use method columnsFromVariableName
        * @throw UndefinedElement is raised if there exists no column with
@@ -929,20 +929,20 @@ namespace gum {
       /** It may happen that several columns correspond to a given variable
        * name. In this case, the function returns the indices of all the
        * columns of the IDatabase that match the name. */
-      DBVector<std::size_t>
-      columnsFromVariableName(const std::string& name) const;
+      DBVector< std::size_t >
+        columnsFromVariableName(const std::string& name) const;
 
       /// returns the number of variables (columns) of the database
       std::size_t nbVariables() const noexcept;
 
       /// returns the number of records (rows) in the database
-      std::size_t nbRows () const noexcept;
+      std::size_t nbRows() const noexcept;
 
       /// returns the number of records (rows) in the database
       std::size_t size() const noexcept;
 
       /// indicates whether the database contains some records or not
-      bool empty () const noexcept;
+      bool empty() const noexcept;
 
       /// makes the database table ignore from now on the kth column
       /** This method can be called in two different ways: either k refers to
@@ -1109,7 +1109,7 @@ namespace gum {
       void setMaxNbThreads(const std::size_t nb) const;
 
       /// returns the number of threads used to parse the database
-      std::size_t nbThreads () const;
+      std::size_t nbThreads() const;
 
       /** @brief changes the number min of rows a thread should process in a
        * multithreading context
@@ -1120,11 +1120,11 @@ namespace gum {
        * threads actually run. This number is equal to the min between the max
        * number of threads allowed and the number of records in the database
        * divided by nb. */
-      void setMinNbRowsPerThread ( const std::size_t nb ) const;
+      void setMinNbRowsPerThread(const std::size_t nb) const;
 
       /// returns the minimum of rows that each thread should process
-      std::size_t minNbRowsPerThread () const;
- 
+      std::size_t minNbRowsPerThread() const;
+
 
       /// @}
 
@@ -1143,13 +1143,13 @@ namespace gum {
       DBVector< IsMissing > _has_row_missing_val;
 
       // the maximal number of threads that the database can use
-      mutable std::size_t _max_nb_threads
-      {std::size_t(thread::getMaxNumberOfThreads())};
+      mutable std::size_t _max_nb_threads{
+        std::size_t(thread::getMaxNumberOfThreads())};
 
       // the min number of rows that a thread should process in a
       // multithreading context
       mutable std::size_t _min_nb_rows_per_thread{100};
-      
+
 
       /** @brief checks whether a size corresponds to the number of columns
        * of the database */
@@ -1166,7 +1166,7 @@ namespace gum {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-    private:
+      private:
       // the list of handlers currently attached to the database
       /* this is useful when the database is resized */
       mutable DBVector< HandlerSafe* > __list_of_safe_handlers;
@@ -1198,7 +1198,6 @@ namespace gum {
       /// allow the handlers to access the database directly
       friend class Handler;
       friend class HandlerSafe;
-      
     };
 
   } /* namespace learning */

@@ -333,10 +333,10 @@ namespace gum {
     // returns a pointer on the database
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE const IDatabaseTable< T_DATA, ALLOC >&
-    IDatabaseTable< T_DATA, ALLOC >::Handler::database () const {
-      if ( __db == nullptr ) {
-        GUM_ERROR ( NullElement,
-                    "The database handler does not point toward a database" );
+                 IDatabaseTable< T_DATA, ALLOC >::Handler::database() const {
+      if (__db == nullptr) {
+        GUM_ERROR(NullElement,
+                  "The database handler does not point toward a database");
       }
       return *__db;
     }
@@ -526,11 +526,11 @@ namespace gum {
       const IDatabaseTable< T_DATA, ALLOC >&                          from,
       const typename IDatabaseTable< T_DATA, ALLOC >::allocator_type& alloc) :
         ALLOC< T_DATA >(alloc),
-      _variable_names(from._variable_names, alloc), _rows(from._rows, alloc),
-      _missing_symbols(from._missing_symbols, alloc),
-      _has_row_missing_val(from._has_row_missing_val, alloc),
-      _max_nb_threads ( from._max_nb_threads ),
-      _min_nb_rows_per_thread ( from._min_nb_rows_per_thread),
+        _variable_names(from._variable_names, alloc), _rows(from._rows, alloc),
+        _missing_symbols(from._missing_symbols, alloc),
+        _has_row_missing_val(from._has_row_missing_val, alloc),
+        _max_nb_threads(from._max_nb_threads),
+        _min_nb_rows_per_thread(from._min_nb_rows_per_thread),
         __list_of_safe_handlers(alloc) {
       // create the end iterators
       __createEndIterators();
@@ -556,8 +556,8 @@ namespace gum {
         _rows(std::move(from._rows), alloc),
         _missing_symbols(std::move(from._missing_symbols), alloc),
         _has_row_missing_val(std::move(from._has_row_missing_val), alloc),
-      _max_nb_threads ( from._max_nb_threads ),
-      _min_nb_rows_per_thread ( from._min_nb_rows_per_thread),
+        _max_nb_threads(from._max_nb_threads),
+        _min_nb_rows_per_thread(from._min_nb_rows_per_thread),
         __list_of_safe_handlers(alloc) {
       // create the end iterators
       __createEndIterators();
@@ -620,7 +620,7 @@ namespace gum {
         _has_row_missing_val = from._has_row_missing_val;
         _max_nb_threads = from._max_nb_threads;
         _min_nb_rows_per_thread = from._min_nb_rows_per_thread;
-        
+
         // update the end iterators
         const std::size_t db_size = _rows.size();
         __end->__index = db_size;
@@ -991,10 +991,10 @@ namespace gum {
 
       const std::size_t nb_new_rows = new_rows.size();
       const std::size_t new_db_size = _rows.size() + nb_new_rows;
-      
-      _rows.reserve ( new_db_size );
-      _has_row_missing_val.reserve ( new_db_size );
-      
+
+      _rows.reserve(new_db_size);
+      _has_row_missing_val.reserve(new_db_size);
+
       for (std::size_t i = std::size_t(0); i < nb_new_rows; ++i) {
         _rows.push_back(std::move(new_rows[i]));
         _has_row_missing_val.push_back(rows_have_missing_vals[i]);
@@ -1049,8 +1049,8 @@ namespace gum {
       const std::size_t nb_new_rows = new_rows.size();
       const std::size_t new_db_size = _rows.size() + nb_new_rows;
 
-      _rows.reserve ( new_db_size );
-      _has_row_missing_val.reserve ( new_db_size );
+      _rows.reserve(new_db_size);
+      _has_row_missing_val.reserve(new_db_size);
 
       for (std::size_t i = std::size_t(0); i < nb_new_rows; ++i) {
         _rows.push_back(new_rows[i]);
@@ -1187,8 +1187,8 @@ namespace gum {
 
     /// changes the max number of threads that a database can use
     template < typename T_DATA, template < typename > class ALLOC >
-    void IDatabaseTable< T_DATA, ALLOC >::setMaxNbThreads(const std::size_t nb)
-      const {
+    void IDatabaseTable< T_DATA, ALLOC >::setMaxNbThreads(
+      const std::size_t nb) const {
       if (nb == std::size_t(0))
         _max_nb_threads = std::size_t(1);
       else
@@ -1198,31 +1198,31 @@ namespace gum {
 
     /// returns the number of threads used to parse the database
     template < typename T_DATA, template < typename > class ALLOC >
-    INLINE std::size_t IDatabaseTable< T_DATA, ALLOC >::nbThreads () const {
+    INLINE std::size_t IDatabaseTable< T_DATA, ALLOC >::nbThreads() const {
       return _max_nb_threads;
     }
- 
-    
+
+
     /** @brief changes the number min of rows a thread should process in a
      * multithreading context */
     template < typename T_DATA, template < typename > class ALLOC >
-    void IDatabaseTable< T_DATA, ALLOC >::setMinNbRowsPerThread (
-         const std::size_t nb ) const {
+    void IDatabaseTable< T_DATA, ALLOC >::setMinNbRowsPerThread(
+      const std::size_t nb) const {
       if (nb == std::size_t(0))
         _min_nb_rows_per_thread = std::size_t(1);
       else
         _min_nb_rows_per_thread = nb;
     }
 
-    
+
     /// returns the minimum of rows that each thread should process
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE std::size_t
-    IDatabaseTable< T_DATA, ALLOC >::minNbRowsPerThread () const {
+           IDatabaseTable< T_DATA, ALLOC >::minNbRowsPerThread() const {
       return _min_nb_rows_per_thread;
     }
 
-    
+
     /// insert new rows at the end of the database
     template < template < typename > class ALLOC >
     void IDatabaseTableInsert4DBCell< ALLOC, true >::insertRows(
@@ -1241,8 +1241,8 @@ namespace gum {
       for (const auto& new_row : new_rows)
         this->insertRow(new_row);
     }
-    
-      
+
+
   } /* namespace learning */
 
 } /* namespace gum */

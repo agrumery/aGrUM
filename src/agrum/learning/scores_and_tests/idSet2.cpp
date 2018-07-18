@@ -25,4 +25,3 @@
  */
 
 #include <agrum/learning/scores_and_tests/idSet2.h>
-

@@ -44,12 +44,11 @@ namespace gum {
      * @ingroup learning_apriori
      */
     template < template < typename > class ALLOC = std::allocator >
-    class Apriori2 : private ALLOC<NodeId> {
-    public:
-
+    class Apriori2 : private ALLOC< NodeId > {
+      public:
       /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC<NodeId>;
-      
+      using allocator_type = ALLOC< NodeId >;
+
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -67,17 +66,17 @@ namespace gum {
        * the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
        * RecordCounter.*/
-      Apriori2( const DatabaseTable<ALLOC>& database,
-                const Bijection<NodeId,std::size_t,
-                ALLOC<std::size_t>>& nodeId2columns =
-                Bijection<NodeId,std::size_t,ALLOC<std::size_t>> (),
-                const allocator_type& alloc = allocator_type ());
+      Apriori2(const DatabaseTable< ALLOC >& database,
+               const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                 nodeId2columns =
+                   Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+               const allocator_type& alloc = allocator_type());
 
       /// virtual copy constructor
-      virtual Apriori2<ALLOC>* clone () const = 0;
+      virtual Apriori2< ALLOC >* clone() const = 0;
 
       /// virtual copy constructor with a given allocator
-      virtual Apriori2<ALLOC>* clone (const allocator_type& alloc) const = 0;
+      virtual Apriori2< ALLOC >* clone(const allocator_type& alloc) const = 0;
 
       /// destructor
       virtual ~Apriori2();
@@ -104,52 +103,48 @@ namespace gum {
       /// returns the apriori vector all the variables in the idset
       /** @returns the apriori vector over the union of the variables on the
        * left and right hand side of the conditioning bar */
-      virtual std::vector< double, ALLOC<double> >
-      getAllApriori( const IdSet2<ALLOC>& idset ) = 0;
+      virtual std::vector< double, ALLOC< double > >
+        getAllApriori(const IdSet2< ALLOC >& idset) = 0;
 
       /// returns the apriori vector over only the conditioning set of an idset
-      virtual std::vector< double, ALLOC<double> >
-      getConditioningApriori( const IdSet2<ALLOC>& idset ) = 0;
+      virtual std::vector< double, ALLOC< double > >
+        getConditioningApriori(const IdSet2< ALLOC >& idset) = 0;
 
       /// returns the allocator used by the translator
       allocator_type getAllocator() const;
 
       /// @}
 
-      
-    protected:
+
+      protected:
       /// the weight of the apriori
       double _weight{1.0};
 
       /// a reference to the database in order to have access to its variables
-      const DatabaseTable<ALLOC>* _database;
+      const DatabaseTable< ALLOC >* _database;
 
       /** @brief a mapping from the NodeIds of the variables to the indices of
        * the columns in the database */
-      Bijection<NodeId,std::size_t,ALLOC<std::size_t>> _nodeId2columns;
+      Bijection< NodeId, std::size_t, ALLOC< std::size_t > > _nodeId2columns;
 
-      
-      
+
       /// copy constructor
       Apriori2(const Apriori2< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      Apriori2(const Apriori2< ALLOC >& from,
-               const allocator_type& alloc);
+      Apriori2(const Apriori2< ALLOC >& from, const allocator_type& alloc);
 
       /// move constructor
       Apriori2(Apriori2< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      Apriori2(Apriori2< ALLOC >&& from,
-               const allocator_type& alloc);
+      Apriori2(Apriori2< ALLOC >&& from, const allocator_type& alloc);
 
       /// copy operator
       Apriori2< ALLOC >& operator=(const Apriori2< ALLOC >& from);
 
       /// move operator
-      Apriori2< ALLOC >& operator=(Apriori2< ALLOC >&& from );
-      
+      Apriori2< ALLOC >& operator=(Apriori2< ALLOC >&& from);
     };
 
   } /* namespace learning */

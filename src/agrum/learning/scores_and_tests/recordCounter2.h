@@ -108,11 +108,10 @@ namespace gum {
      */
     template < template < typename > class ALLOC = std::allocator >
     class RecordCounter2 {
-    public:
-      
+      public:
       /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC<NodeId>;
-      
+      using allocator_type = ALLOC< NodeId >;
+
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -135,13 +134,15 @@ namespace gum {
        * NodeId is equal to the index of the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
        * RecordCounter. */
-      RecordCounter2(const DBRowGeneratorParser<ALLOC>& parser,
-                     const std::vector<std::pair<std::size_t,std::size_t>,
-                     ALLOC<std::pair<std::size_t,std::size_t>>>& ranges,
-                     const Bijection<NodeId,std::size_t,
-                     ALLOC<std::size_t>>& nodeId2columns =
-                     Bijection<NodeId,std::size_t,ALLOC<std::size_t>> (),
-                     const allocator_type& alloc = allocator_type ());
+      RecordCounter2(
+        const DBRowGeneratorParser< ALLOC >& parser,
+        const std::vector< std::pair< std::size_t, std::size_t >,
+                           ALLOC< std::pair< std::size_t, std::size_t > > >&
+          ranges,
+        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+          nodeId2columns =
+            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+        const allocator_type& alloc = allocator_type());
 
       /// default constructor
       /** @param parser the parser used to parse the database
@@ -154,39 +155,37 @@ namespace gum {
        * NodeId is equal to the index of the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
        * RecordCounter. */
-      RecordCounter2(const DBRowGeneratorParser<ALLOC>& parser,
-                     const Bijection<NodeId,std::size_t,
-                     ALLOC<std::size_t>>& nodeId2columns =
-                     Bijection<NodeId,std::size_t,ALLOC<std::size_t>> (),
-                     const allocator_type& alloc = allocator_type ());
+      RecordCounter2(const DBRowGeneratorParser< ALLOC >& parser,
+                     const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                       nodeId2columns =
+                         Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+                     const allocator_type& alloc = allocator_type());
 
       /// copy constructor
-      RecordCounter2(const RecordCounter2<ALLOC>& from);
+      RecordCounter2(const RecordCounter2< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      RecordCounter2(const RecordCounter2<ALLOC>& from,
-                     const allocator_type& alloc);
+      RecordCounter2(const RecordCounter2< ALLOC >& from,
+                     const allocator_type&          alloc);
 
       /// move constructor
-      RecordCounter2(RecordCounter2<ALLOC>&& from);
+      RecordCounter2(RecordCounter2< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      RecordCounter2(RecordCounter2<ALLOC>&& from,
-                     const allocator_type& alloc);
+      RecordCounter2(RecordCounter2< ALLOC >&& from, const allocator_type& alloc);
 
       /// virtual copy constructor
-      virtual RecordCounter2<ALLOC>* clone () const;
+      virtual RecordCounter2< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual RecordCounter2<ALLOC>*
-      clone (const allocator_type& alloc) const;
+      virtual RecordCounter2< ALLOC >* clone(const allocator_type& alloc) const;
 
       /// destructor
       virtual ~RecordCounter2();
 
       /// @}
 
-      
+
       // ##########################################################################
       /// @name Operators
       // ##########################################################################
@@ -194,15 +193,13 @@ namespace gum {
       /// @{
 
       /// copy operator
-      RecordCounter2<ALLOC>&
-      operator=(const RecordCounter2<ALLOC>& from );
+      RecordCounter2< ALLOC >& operator=(const RecordCounter2< ALLOC >& from);
 
       /// move operator
-      RecordCounter2<ALLOC>&
-      operator=(RecordCounter2<ALLOC>&& from );
+      RecordCounter2< ALLOC >& operator=(RecordCounter2< ALLOC >&& from);
 
       /// @}
-      
+
 
       // ##########################################################################
       /// @name Accessors / Modifiers
@@ -217,7 +214,7 @@ namespace gum {
       void setMaxNbThreads(const std::size_t nb) const;
 
       /// returns the number of threads used to parse the database
-      std::size_t nbThreads () const;
+      std::size_t nbThreads() const;
 
       /** @brief changes the number min of rows a thread should process in a
        * multithreading context
@@ -228,11 +225,11 @@ namespace gum {
        * threads actually run. This number is equal to the min between the max
        * number of threads allowed and the number of records in the database
        * divided by nb. */
-      void setMinNbRowsPerThread ( const std::size_t nb ) const;
+      void setMinNbRowsPerThread(const std::size_t nb) const;
 
       /// returns the minimum of rows that each thread should process
-      std::size_t minNbRowsPerThread () const;
- 
+      std::size_t minNbRowsPerThread() const;
+
       /// returns the counts for a given set of nodes
       /** @ids the ids of the variables for we we perform countings.
        * @return a vector containing the multidimensional contingency table
@@ -261,8 +258,8 @@ namespace gum {
        *   counter.counts(other_ids);
        * @endcode
        */
-      const std::vector< double, ALLOC<double> >&
-      counts( const IdSet2<ALLOC>& ids );
+      const std::vector< double, ALLOC< double > >&
+        counts(const IdSet2< ALLOC >& ids);
 
       /// sets new ranges to perform the countings
       /** @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
@@ -271,90 +268,91 @@ namespace gum {
        * cross validation tasks, in which part of the database should be ignored.
        * An empty set of ranges is equivalent to an interval [X,Y) ranging over
        * the whole database. */
-      template < template < typename > class XALLOC > 
-      void setRanges (const std::vector<std::pair<std::size_t,std::size_t>,
-                      XALLOC<std::pair<std::size_t,std::size_t>>>& new_ranges );
+      template < template < typename > class XALLOC >
+      void setRanges(
+        const std::vector< std::pair< std::size_t, std::size_t >,
+                           XALLOC< std::pair< std::size_t, std::size_t > > >&
+          new_ranges);
 
       /// reset the ranges to the one range corresponding to the whole database
-      void clearRanges ();
+      void clearRanges();
 
       /// returns the allocator used
-      allocator_type getAllocator () const;
+      allocator_type getAllocator() const;
 
       /// @}
 
-    private:
-  
+      private:
       // the parsers used by the threads
-      std::vector<thread::ThreadData<DBRowGeneratorParser<ALLOC>>,
-                  ALLOC<thread::ThreadData<DBRowGeneratorParser<ALLOC>>> >
-      __parsers;
+      std::vector< thread::ThreadData< DBRowGeneratorParser< ALLOC > >,
+                   ALLOC< thread::ThreadData< DBRowGeneratorParser< ALLOC > > > >
+        __parsers;
 
       // the set of ranges of the database's rows indices over which we
       // perform the countings
-      std::vector<std::pair<std::size_t,std::size_t>,
-                  ALLOC<std::pair<std::size_t,std::size_t>>> __ranges;
+      std::vector< std::pair< std::size_t, std::size_t >,
+                   ALLOC< std::pair< std::size_t, std::size_t > > >
+        __ranges;
 
       // the mapping from the NodeIds of the variables to the indices of the
       // columns in the database
-      Bijection<NodeId,std::size_t,ALLOC<std::size_t>> __nodeId2columns;
+      Bijection< NodeId, std::size_t, ALLOC< std::size_t > > __nodeId2columns;
 
       // the last database-parsed countings
-      std::vector<double,ALLOC<double>> __last_DB_countings;
+      std::vector< double, ALLOC< double > > __last_DB_countings;
 
       // the ids of the nodes for the last database-parsed countings
-      IdSet2<ALLOC> __last_DB_ids;
+      IdSet2< ALLOC > __last_DB_ids;
 
       // the last countings deduced from __last_DB_countings
-      std::vector<double,ALLOC<double>> __last_nonDB_countings;
+      std::vector< double, ALLOC< double > > __last_nonDB_countings;
 
       // the ids of the nodes of last countings deduced from __last_DB_countings
-      IdSet2<ALLOC> __last_nonDB_ids;
+      IdSet2< ALLOC > __last_nonDB_ids;
 
       // the maximal number of threads that the database can use
-      mutable std::size_t __max_nb_threads
-      {std::size_t(thread::getMaxNumberOfThreads())};
+      mutable std::size_t __max_nb_threads{
+        std::size_t(thread::getMaxNumberOfThreads())};
 
       // the min number of rows that a thread should process in a
       // multithreading context
       mutable std::size_t __min_nb_rows_per_thread{100};
- 
 
-      
+
       // returns a mapping from the nodes ids to the columns of the database
       // for a given sequence of ids. This is especially convenient when
       // __nodeId2columns is empty (which means that there is an identity mapping)
-      HashTable<NodeId, std::size_t>
-      __getNodeIds2Columns ( const IdSet2<ALLOC>& ids ) const;
+      HashTable< NodeId, std::size_t >
+        __getNodeIds2Columns(const IdSet2< ALLOC >& ids) const;
 
       /// extracts some new countings from previously computed ones
-      std::vector< double, ALLOC<double> >& __extractFromCountings (
-           const IdSet2<ALLOC>& subset_ids,
-           const IdSet2<ALLOC>& superset_ids,
-           const std::vector<double,ALLOC<double>>& superset_vect);
+      std::vector< double, ALLOC< double > >& __extractFromCountings(
+        const IdSet2< ALLOC >&                        subset_ids,
+        const IdSet2< ALLOC >&                        superset_ids,
+        const std::vector< double, ALLOC< double > >& superset_vect);
 
       /// parse the database to produce new countings
-      std::vector< double, ALLOC<double> >&
-      __countFromDatabase ( const IdSet2<ALLOC>& ids );
+      std::vector< double, ALLOC< double > >&
+        __countFromDatabase(const IdSet2< ALLOC >& ids);
 
       /// the method used by threads to produce countings by parsing the database
-      void __threadedCount (
-         const std::size_t begin,
-         const std::size_t end,
-         DBRowGeneratorParser<ALLOC>& parser,
-         const std::vector<std::size_t,ALLOC<std::size_t>>& columns,
-         const std::vector<std::size_t,ALLOC<std::size_t>>& offsets,
-         std::vector< double, ALLOC<double> >& countings );
+      void __threadedCount(
+        const std::size_t                                       begin,
+        const std::size_t                                       end,
+        DBRowGeneratorParser< ALLOC >&                          parser,
+        const std::vector< std::size_t, ALLOC< std::size_t > >& columns,
+        const std::vector< std::size_t, ALLOC< std::size_t > >& offsets,
+        std::vector< double, ALLOC< double > >&                 countings);
 
       /// checks that the ranges passed in argument are ok or raise an exception
       /** A range is ok if its upper bound is strictly higher than its lower
        * bound and the latter is also lower than or equal to the number of rows
        * in the database. */
-      template < template < typename > class XALLOC > 
-      void __checkRanges (
-           const std::vector<std::pair<std::size_t,std::size_t>,
-           XALLOC<std::pair<std::size_t,std::size_t>>>& new_ranges ) const;
-
+      template < template < typename > class XALLOC >
+      void __checkRanges(
+        const std::vector< std::pair< std::size_t, std::size_t >,
+                           XALLOC< std::pair< std::size_t, std::size_t > > >&
+          new_ranges) const;
     };
 
   } /* namespace learning */
@@ -365,4 +363,3 @@ namespace gum {
 #include <agrum/learning/scores_and_tests/recordCounter2_tpl.h>
 
 #endif /* GUM_LEARNING_RECORD_COUNTER2_H */
-

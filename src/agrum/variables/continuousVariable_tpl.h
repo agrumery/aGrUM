@@ -239,7 +239,7 @@ namespace gum {
 
   /// returns the domain of the variable as a string
   template < typename GUM_SCALAR >
-  INLINE std::string ContinuousVariable< GUM_SCALAR >::domain() const {
+  INLINE const std::string ContinuousVariable< GUM_SCALAR >::domain() const {
     std::ostringstream stream;
     stream << '[' << __lower_bound << ';' << __upper_bound << ']';
     return stream.str();

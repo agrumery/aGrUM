@@ -28,58 +28,58 @@ namespace gum {
 
   namespace learning {
 
-    
+
     /// returns the allocator used by the translator
-    template < template < typename > class ALLOC>
-    INLINE typename ScoringCache<ALLOC>::allocator_type
-    ScoringCache<ALLOC>::getAllocator() const {
+    template < template < typename > class ALLOC >
+    INLINE typename ScoringCache< ALLOC >::allocator_type
+      ScoringCache< ALLOC >::getAllocator() const {
       return *this;
     }
 
 
     /// default constructor
-    template < template < typename > class ALLOC>
-    INLINE ScoringCache<ALLOC>::ScoringCache(
-           const typename ScoringCache<ALLOC>::allocator_type& alloc )
-      : ALLOC<NodeId> ( alloc ) {
+    template < template < typename > class ALLOC >
+    INLINE ScoringCache< ALLOC >::ScoringCache(
+      const typename ScoringCache< ALLOC >::allocator_type& alloc) :
+        ALLOC< NodeId >(alloc) {
       GUM_CONSTRUCTOR(ScoringCache);
     }
-    
+
 
     /// copy constructor with a given allocator
-    template < template < typename > class ALLOC>
-    INLINE ScoringCache<ALLOC>::ScoringCache(
-           const ScoringCache<ALLOC>& from,
-           const typename ScoringCache<ALLOC>::allocator_type& alloc ) :
-      ALLOC<NodeId> ( alloc ),
-      __scores( from.__scores) {
+    template < template < typename > class ALLOC >
+    INLINE ScoringCache< ALLOC >::ScoringCache(
+      const ScoringCache< ALLOC >&                          from,
+      const typename ScoringCache< ALLOC >::allocator_type& alloc) :
+        ALLOC< NodeId >(alloc),
+        __scores(from.__scores) {
       GUM_CONS_CPY(ScoringCache);
     }
 
-    
+
     /// copy constructor
-    template < template < typename > class ALLOC>
-    INLINE ScoringCache<ALLOC>::ScoringCache(const ScoringCache<ALLOC>& from) :
-      ScoringCache<ALLOC> ( from, this->getAllocator () ) {}
+    template < template < typename > class ALLOC >
+    INLINE ScoringCache< ALLOC >::ScoringCache(const ScoringCache< ALLOC >& from) :
+        ScoringCache< ALLOC >(from, this->getAllocator()) {}
 
 
     /// move constructor with a given allocator
-    template < template < typename > class ALLOC>
-    INLINE ScoringCache<ALLOC>::ScoringCache(
-           ScoringCache<ALLOC>&& from,
-           const typename ScoringCache<ALLOC>::allocator_type& alloc ) :
-      ALLOC<NodeId> ( alloc ),
-      __scores(std::move(from.__scores)) {
+    template < template < typename > class ALLOC >
+    INLINE ScoringCache< ALLOC >::ScoringCache(
+      ScoringCache< ALLOC >&&                               from,
+      const typename ScoringCache< ALLOC >::allocator_type& alloc) :
+        ALLOC< NodeId >(alloc),
+        __scores(std::move(from.__scores)) {
       GUM_CONS_MOV(ScoringCache);
     }
 
-    
-    /// move constructor
-    template < template < typename > class ALLOC>
-    INLINE ScoringCache<ALLOC>::ScoringCache(ScoringCache<ALLOC>&& from) :
-      ScoringCache<ALLOC> ( std::move (from), this->getAllocator () ) {}
 
-    
+    /// move constructor
+    template < template < typename > class ALLOC >
+    INLINE ScoringCache< ALLOC >::ScoringCache(ScoringCache< ALLOC >&& from) :
+        ScoringCache< ALLOC >(std::move(from), this->getAllocator()) {}
+
+
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
     ScoringCache< ALLOC >* ScoringCache< ALLOC >::clone(
@@ -102,27 +102,27 @@ namespace gum {
       return clone(this->getAllocator());
     }
 
-    
+
     /// destructor
     template < template < typename > class ALLOC >
-    INLINE ScoringCache<ALLOC>::~ScoringCache() {
+    INLINE ScoringCache< ALLOC >::~ScoringCache() {
       GUM_DESTRUCTOR(ScoringCache);
     }
 
-    
+
     /// copy operator
     template < template < typename > class ALLOC >
-    INLINE ScoringCache<ALLOC>&
-    ScoringCache<ALLOC>::operator=(const ScoringCache<ALLOC>& from) {
+    INLINE ScoringCache< ALLOC >& ScoringCache< ALLOC >::
+                                  operator=(const ScoringCache< ALLOC >& from) {
       if (&from != this) { __scores = from.__scores; }
       return *this;
     }
 
-    
+
     /// move operator
     template < template < typename > class ALLOC >
-    INLINE ScoringCache<ALLOC>&
-    ScoringCache<ALLOC>::operator=(ScoringCache<ALLOC>&& from) {
+    INLINE ScoringCache< ALLOC >& ScoringCache< ALLOC >::
+                                  operator=(ScoringCache< ALLOC >&& from) {
       if (&from != this) { __scores = std::move(from.__scores); }
       return *this;
     }
@@ -130,52 +130,54 @@ namespace gum {
 
     /// insert a new score into the cache
     template < template < typename > class ALLOC >
-    INLINE void ScoringCache<ALLOC>::insert( const IdSet2< ALLOC >& idset,
-                                             double score) {
-      __scores.insert( idset, score );
+    INLINE void ScoringCache< ALLOC >::insert(const IdSet2< ALLOC >& idset,
+                                              double                 score) {
+      __scores.insert(idset, score);
     }
 
-    
+
     /// insert a new score into the cache
     template < template < typename > class ALLOC >
-    INLINE void ScoringCache<ALLOC>::insert( IdSet2< ALLOC >&& idset,
-                                             double score) {
-      __scores.insert( std::move (idset), std::move(score) );
+    INLINE void ScoringCache< ALLOC >::insert(IdSet2< ALLOC >&& idset,
+                                              double            score) {
+      __scores.insert(std::move(idset), std::move(score));
     }
 
 
     /// removes a score (if it exists)
     template < template < typename > class ALLOC >
-    INLINE void ScoringCache<ALLOC>::erase( const IdSet2< ALLOC >& idset ) {
-      __scores.erase( idset );
+    INLINE void ScoringCache< ALLOC >::erase(const IdSet2< ALLOC >& idset) {
+      __scores.erase(idset);
     }
 
 
     /// indicates whether a given score exists
     template < template < typename > class ALLOC >
-    INLINE bool ScoringCache<ALLOC>::exists( const IdSet2< ALLOC >& idset ) {
-      return __scores.exists ( idset );
+    INLINE bool ScoringCache< ALLOC >::exists(const IdSet2< ALLOC >& idset) {
+      return __scores.exists(idset);
     }
 
 
     /// returns a given score
     template < template < typename > class ALLOC >
-    INLINE double ScoringCache<ALLOC>::score( const IdSet2< ALLOC >& idset ) {
+    INLINE double ScoringCache< ALLOC >::score(const IdSet2< ALLOC >& idset) {
       return __scores[idset];
     }
-    
+
 
     /// removes all the stored scores
     template < template < typename > class ALLOC >
-    INLINE void ScoringCache<ALLOC>::clear() { __scores.clear(); }
+    INLINE void ScoringCache< ALLOC >::clear() {
+      __scores.clear();
+    }
 
-    
+
     /// returns the number of scores saved in the cache
     template < template < typename > class ALLOC >
-    INLINE std::size_t ScoringCache<ALLOC>::size () const {
-      return __scores.size ();
+    INLINE std::size_t ScoringCache< ALLOC >::size() const {
+      return __scores.size();
     }
-      
+
 
   } /* namespace learning */
 

@@ -157,7 +157,7 @@ namespace gum {
     bool belongs(const GUM_SCALAR& value) const;
 
     /// returns the domain of the variable as a string
-    std::string domain() const;
+    virtual const std::string domain() const;
 
     /// returns the type of the variable
     virtual VarType varType() const;

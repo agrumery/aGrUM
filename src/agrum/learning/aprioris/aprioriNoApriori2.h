@@ -42,14 +42,12 @@ namespace gum {
     template < template < typename > class ALLOC = std::allocator >
     class AprioriNoApriori2 : public Apriori2< ALLOC > {
       public:
-
       /// the type of the a priori
       using type = AprioriNoAprioriType;
 
       /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC<NodeId>;
-      
-      
+      using allocator_type = ALLOC< NodeId >;
+
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -68,39 +66,39 @@ namespace gum {
        * the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
        * RecordCounter.*/
-      AprioriNoApriori2( const DatabaseTable<ALLOC>& database,
-                         const Bijection<NodeId,std::size_t,
-                         ALLOC<std::size_t>>& nodeId2columns =
-                         Bijection<NodeId,std::size_t,ALLOC<std::size_t>> (),
-                         const allocator_type& alloc = allocator_type ());
+      AprioriNoApriori2(
+        const DatabaseTable< ALLOC >& database,
+        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+          nodeId2columns =
+            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+        const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       AprioriNoApriori2(const AprioriNoApriori2< ALLOC >& from);
 
       /// copy constructor with a given allocator
       AprioriNoApriori2(const AprioriNoApriori2< ALLOC >& from,
-                        const allocator_type& alloc);
+                        const allocator_type&             alloc);
 
       /// move constructor
       AprioriNoApriori2(AprioriNoApriori2< ALLOC >&& from);
 
       /// move constructor with a given allocator
       AprioriNoApriori2(AprioriNoApriori2< ALLOC >&& from,
-                        const allocator_type& alloc);
+                        const allocator_type&        alloc);
 
       /// virtual copy constructor
-      virtual AprioriNoApriori2<ALLOC>* clone () const;
+      virtual AprioriNoApriori2< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual AprioriNoApriori2<ALLOC>*
-      clone (const allocator_type& alloc) const;
+      virtual AprioriNoApriori2< ALLOC >* clone(const allocator_type& alloc) const;
 
       /// destructor
       virtual ~AprioriNoApriori2();
 
       /// @}
 
-      
+
       // ##########################################################################
       /// @name Operators
       // ##########################################################################
@@ -108,20 +106,19 @@ namespace gum {
 
       /// copy operator
       AprioriNoApriori2< ALLOC >&
-      operator=(const AprioriNoApriori2< ALLOC >& from);
+        operator=(const AprioriNoApriori2< ALLOC >& from);
 
       /// move operator
-      AprioriNoApriori2< ALLOC >&
-      operator=(AprioriNoApriori2< ALLOC >&& from );
+      AprioriNoApriori2< ALLOC >& operator=(AprioriNoApriori2< ALLOC >&& from);
 
       /// @}
-      
-      
+
+
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
       /// @{
-      
+
       /// sets the weight of the a priori (kind of effective sample size)
       virtual void setWeight(const double weight) final;
 
@@ -134,16 +131,15 @@ namespace gum {
       /// returns the apriori vector all the variables in the idset
       /** @returns the apriori vector over the union of the variables on the
        * left and right hand side of the conditioning bar */
-      virtual std::vector< double, ALLOC<double> >
-      getAllApriori( const IdSet2<ALLOC>& idset ) final;
+      virtual std::vector< double, ALLOC< double > >
+        getAllApriori(const IdSet2< ALLOC >& idset) final;
 
       /// returns the apriori vector over only the conditioning set of an idset
-      virtual std::vector< double, ALLOC<double> >
-      getConditioningApriori( const IdSet2<ALLOC>& idset ) final;
+      virtual std::vector< double, ALLOC< double > >
+        getConditioningApriori(const IdSet2< ALLOC >& idset) final;
 
 
       /// @}
-     
     };
 
   } /* namespace learning */

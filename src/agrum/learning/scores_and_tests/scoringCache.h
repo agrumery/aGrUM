@@ -54,32 +54,30 @@ namespace gum {
      * learning computational burden.
      */
     template < template < typename > class ALLOC = std::allocator >
-    class ScoringCache : private ALLOC<NodeId> {
+    class ScoringCache : private ALLOC< NodeId > {
       public:
       /// type for the allocators passed in arguments of methods
-      using allocator_type = ALLOC<NodeId>;
-      
+      using allocator_type = ALLOC< NodeId >;
+
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// default constructor
-      ScoringCache( const allocator_type& alloc = allocator_type () );
+      ScoringCache(const allocator_type& alloc = allocator_type());
 
       /// copy constructor
-      ScoringCache(const ScoringCache<ALLOC>& from);
+      ScoringCache(const ScoringCache< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      ScoringCache(const ScoringCache<ALLOC>& from,
-                   const allocator_type& alloc);
+      ScoringCache(const ScoringCache< ALLOC >& from, const allocator_type& alloc);
 
       /// move constructor
-      ScoringCache(ScoringCache<ALLOC>&& from);
+      ScoringCache(ScoringCache< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      ScoringCache(ScoringCache<ALLOC>&& from,
-                   const allocator_type& alloc);
+      ScoringCache(ScoringCache< ALLOC >&& from, const allocator_type& alloc);
 
       /// virtual copy constructor
       virtual ScoringCache< ALLOC >* clone() const;
@@ -92,7 +90,7 @@ namespace gum {
 
       /// @}
 
-      
+
       // ##########################################################################
       /// @name Operators
       // ##########################################################################
@@ -106,7 +104,7 @@ namespace gum {
 
       /// @}
 
-      
+
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
@@ -117,16 +115,14 @@ namespace gum {
        * @param score the score assigned to the IdSet
        * @throws DuplicateElement exception is raised if a score for the same
        * variables already exists */
-      void insert(const IdSet2< ALLOC >& idset,
-                  double score);
+      void insert(const IdSet2< ALLOC >& idset, double score);
 
       /// insert a new score into the cache
       /** @param idset the IdSet storing the sets of variables
        * @param score the score assigned to the IdSet
        * @throws DuplicateElement exception is raised if a score for the same
        * variables already exists */
-      void insert(IdSet2< ALLOC >&& idset,
-                  double score);
+      void insert(IdSet2< ALLOC >&& idset, double score);
 
       /// removes a score (if it exists)
       /** @param idset the IdSet storing the sets of variables
@@ -137,7 +133,7 @@ namespace gum {
       /// indicates whether a given score exists
       /** @param idset the IdSet storing the sets of variables */
       bool exists(const IdSet2< ALLOC >& idset);
-      
+
       /// returns a given score
       /** @param idset the IdSet storing the sets of variables
        * @throws NotFound is raised if the score is not cached */
@@ -147,8 +143,8 @@ namespace gum {
       void clear();
 
       /// returns the number of scores saved in the cache
-      std::size_t size () const;
-      
+      std::size_t size() const;
+
       /// returns the allocator used by the translator
       allocator_type getAllocator() const;
 
@@ -156,9 +152,10 @@ namespace gum {
 
       private:
       /// the scores stored into the cache
-      HashTable< IdSet2<ALLOC>, double, ALLOC<std::pair<IdSet2<ALLOC>, double>> >
-      __scores;
-
+      HashTable< IdSet2< ALLOC >,
+                 double,
+                 ALLOC< std::pair< IdSet2< ALLOC >, double > > >
+        __scores;
     };
 
   } /* namespace learning */

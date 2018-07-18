@@ -119,7 +119,7 @@ namespace gum {
       /** @returns a non empty string if the apriori is compatible with the
        * score.*/
       static std::string isAprioriCompatible(const std::string& apriori_type,
-                                      double             weight = 1.0f);
+                                             double             weight = 1.0f);
 
       /// indicates whether the apriori is compatible (meaningful) with the
       /// score

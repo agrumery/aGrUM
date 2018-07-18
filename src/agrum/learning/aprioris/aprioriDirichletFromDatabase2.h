@@ -18,32 +18,33 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the smooth a priori: adds a weight w to all the countings
+ * @brief A dirichlet priori: computes its N'_ijk from a database
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_LEARNING_A_PRIORI_SMOOTHING2_H
-#define GUM_LEARNING_A_PRIORI_SMOOTHING2_H
+#ifndef GUM_LEARNING_A_PRIORI_DIRICHLET_FROM_DATABASE2_H
+#define GUM_LEARNING_A_PRIORI_DIRICHLET_FROM_DATABASE2_H
 
 #include <vector>
 
 #include <agrum/agrum.h>
+#include <agrum/learning/scores_and_tests/recordCounter2.h>
 #include <agrum/learning/aprioris/apriori2.h>
 
 namespace gum {
 
   namespace learning {
 
-    /** @class AprioriSmoothing2
-     * @brief the smooth a priori: adds a weight w to all the countings
-     * @headerfile aprioriSmoothing2.h <agrum/learning/database/aprioriSmoothing2.h>
+    /** @class AprioriDirichletFromDatabase2
+     * @brief A dirichlet priori: computes its N'_ijk from a database
+     * @headerfile aprioriDirichletFromDatabase2.h <agrum/learning/database/aprioriDirichletFromDatabase2.h>
      * @ingroup learning_apriori
      */
     template < template < typename > class ALLOC = std::allocator >
-    class AprioriSmoothing2 : public Apriori2< ALLOC > {
+    class AprioriDirichletFromDatabase2 : public Apriori2< ALLOC > {
       public:
       /// the type of the a priori
-      using type = AprioriSmoothingType;
+      using type = AprioriDirichletType;
 
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;
@@ -55,46 +56,58 @@ namespace gum {
       /// @{
 
       /// default constructor
-      /** @param database the database from which learning is performed. This is
-       * useful to get access to the random variables
+      /** @param learning_db the database from which learning is performed.
+       * This is useful to get access to the random variables
+       * @param apriori_parser the parser used to parse the apriori database
        * @param nodeId2Columns a mapping from the ids of the nodes in the
-       * graphical model to the corresponding column in the DatabaseTable.
+       * graphical model to the corresponding column in learning_db.
        * This enables estimating from a database in which variable A corresponds
        * to the 2nd column the parameters of a BN in which variable A has a
        * NodeId of 5. An empty nodeId2Columns bijection means that the mapping
        * is an identity, i.e., the value of a NodeId is equal to the index of
        * the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
-       * RecordCounter.*/
-      AprioriSmoothing2(
-        const DatabaseTable< ALLOC >& database,
+       * RecordCounter.
+       *
+       * @throws DatabaseError The apriori database may differ from the learning
+       * database, i.e., the apriori may have more nodes than the learning one.
+       * However, a check is performed to ensure that the variables within the
+       * apriori database that correspond to those in the learning database
+       * (they have the same names) are exactly identical. If this is not the
+       * case, then a DatabaseError exception is raised. */
+      AprioriDirichletFromDatabase2(
+        const DatabaseTable< ALLOC >&        learning_db,
+        const DBRowGeneratorParser< ALLOC >& apriori_parser,
         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
           nodeId2columns =
             Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
         const allocator_type& alloc = allocator_type());
 
       /// copy constructor
-      AprioriSmoothing2(const AprioriSmoothing2< ALLOC >& from);
+      AprioriDirichletFromDatabase2(
+        const AprioriDirichletFromDatabase2< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      AprioriSmoothing2(const AprioriSmoothing2< ALLOC >& from,
-                        const allocator_type&             alloc);
+      AprioriDirichletFromDatabase2(
+        const AprioriDirichletFromDatabase2< ALLOC >& from,
+        const allocator_type&                         alloc);
 
       /// move constructor
-      AprioriSmoothing2(AprioriSmoothing2< ALLOC >&& from);
+      AprioriDirichletFromDatabase2(AprioriDirichletFromDatabase2< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      AprioriSmoothing2(AprioriSmoothing2< ALLOC >&& from,
-                        const allocator_type&        alloc);
+      AprioriDirichletFromDatabase2(AprioriDirichletFromDatabase2< ALLOC >&& from,
+                                    const allocator_type& alloc);
 
       /// virtual copy constructor
-      virtual AprioriSmoothing2< ALLOC >* clone() const;
+      virtual AprioriDirichletFromDatabase2< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual AprioriSmoothing2< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual AprioriDirichletFromDatabase2< ALLOC >*
+        clone(const allocator_type& alloc) const;
 
       /// destructor
-      virtual ~AprioriSmoothing2();
+      virtual ~AprioriDirichletFromDatabase2();
 
       /// @}
 
@@ -105,11 +118,12 @@ namespace gum {
       /// @{
 
       /// copy operator
-      AprioriSmoothing2< ALLOC >&
-        operator=(const AprioriSmoothing2< ALLOC >& from);
+      AprioriDirichletFromDatabase2< ALLOC >&
+        operator=(const AprioriDirichletFromDatabase2< ALLOC >& from);
 
       /// move operator
-      AprioriSmoothing2< ALLOC >& operator=(AprioriSmoothing2< ALLOC >&& from);
+      AprioriDirichletFromDatabase2< ALLOC >&
+        operator=(AprioriDirichletFromDatabase2< ALLOC >&& from);
 
       /// @}
 
@@ -135,8 +149,12 @@ namespace gum {
       virtual std::vector< double, ALLOC< double > >
         getConditioningApriori(const IdSet2< ALLOC >& idset) final;
 
-
       /// @}
+
+
+      private:
+      /// the record counter used to parse the apriori database
+      RecordCounter2< ALLOC > __counter;
     };
 
   } /* namespace learning */
@@ -144,6 +162,6 @@ namespace gum {
 } /* namespace gum */
 
 /// include the template implementation
-#include <agrum/learning/aprioris/aprioriSmoothing2_tpl.h>
+#include <agrum/learning/aprioris/aprioriDirichletFromDatabase2_tpl.h>
 
-#endif /* GUM_LEARNING_A_PRIORI_SMOOTHING2_H */
+#endif /* GUM_LEARNING_A_PRIORI_DIRICHLET_FROM_DATABASE2_H */
