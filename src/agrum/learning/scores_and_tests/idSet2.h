@@ -207,6 +207,8 @@ namespace gum {
       /// default constructor with no variable on the left side
       /** @param rhs_ids the set of variables on the right side of the
        * conditioning bar
+       * @param ordered_rhs_ids indicates whether the ids in rhs_ids should be
+       * considered as an ordered set or an unordered set 
        * @param alloc the allocator used to store the data in the IdSet */
       IdSet2(const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids,
              const bool                                    ordered_rhs_ids = false,
@@ -216,6 +218,8 @@ namespace gum {
       /** @param var1 the variable on the left side of the conditioning bar
        * @param rhs_ids the set of variables on the right side of the
        * conditioning bar
+       * @param ordered_rhs_ids indicates whether the ids in rhs_ids should be
+       * considered as an ordered set or an unordered set 
        * @param alloc the allocator used to store the data in the IdSet */
       IdSet2(NodeId                                        var1,
              const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids,
@@ -230,6 +234,8 @@ namespace gum {
        * @param ordered_lhs_vars a Boolean indicating whether {var1,var2} should
        * be considered as an ordered set or not. Typically, in an independence
        * test, this set is unordered. When set to false,
+       * @param ordered_rhs_ids indicates whether the ids in rhs_ids should be
+       * considered as an ordered set or an unordered set 
        * @param ordered_rhs_ids
        * @param alloc the allocator used to store the data in the IdSet */
       IdSet2(NodeId                                        var1,
@@ -247,6 +253,8 @@ namespace gum {
        * conditioning bar
        * @param ordered_vars a Boolean indicating whether {var1,var2,var3}
        * should be considered as an ordered set or not.
+       * @param ordered_rhs_ids indicates whether the ids in rhs_ids should be
+       * considered as an ordered set or an unordered set 
        * @param alloc the allocator used to store the data in the IdSet */
       IdSet2(NodeId                                        var1,
              NodeId                                        var2,
