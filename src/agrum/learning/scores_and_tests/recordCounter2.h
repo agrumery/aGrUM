@@ -310,7 +310,7 @@ namespace gum {
       // the ids of the nodes of last countings deduced from __last_DB_countings
       IdSet2< ALLOC > __last_nonDB_ids;
 
-      // the maximal number of threads that the database can use
+      // the maximal number of threads that the record counter can use
       mutable std::size_t __max_nb_threads{
         std::size_t(thread::getMaxNumberOfThreads())};
 

@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the base class for all a prioris
+ * @brief the base class for all the score's internal aprioris
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -28,68 +28,75 @@ namespace gum {
 
   namespace learning {
 
+
+    /// returns the allocator used by the translator
+    template < template < typename > class ALLOC >
+    INLINE typename ScoreInternalApriori2< ALLOC >::allocator_type
+    ScoreInternalApriori2< ALLOC >::getAllocator() const {
+      return *this;
+    }
+
+    
     /// default constructor
     template < template < typename > class ALLOC >
-    INLINE Apriori2< ALLOC >::Apriori2(
+    INLINE ScoreInternalApriori2< ALLOC >::ScoreInternalApriori2(
       const DatabaseTable< ALLOC >&                                 database,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename Apriori2< ALLOC >::allocator_type&             alloc) :
+      const typename ScoreInternalApriori2< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc),
         _database(&database), _nodeId2columns(nodeId2columns) {
-      GUM_CONSTRUCTOR(Apriori2);
+      GUM_CONSTRUCTOR(ScoreInternalApriori2);
     }
 
 
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE Apriori2< ALLOC >::Apriori2(
-      const Apriori2< ALLOC >&                          from,
-      const typename Apriori2< ALLOC >::allocator_type& alloc) :
+    INLINE ScoreInternalApriori2< ALLOC >::ScoreInternalApriori2(
+      const ScoreInternalApriori2< ALLOC >&                          from,
+      const typename ScoreInternalApriori2< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc),
-        _weight(from._weight), _database(from._database),
-        _nodeId2columns(from._nodeId2columns) {
-      GUM_CONS_CPY(Apriori2);
+        _database(from._database), _nodeId2columns(from._nodeId2columns) {
+      GUM_CONS_CPY(ScoreInternalApriori2);
     }
 
 
     /// copy constructor
     template < template < typename > class ALLOC >
-    INLINE Apriori2< ALLOC >::Apriori2(const Apriori2< ALLOC >& from) :
-        Apriori2(from, this->getAllocator()) {}
+    INLINE ScoreInternalApriori2< ALLOC >::ScoreInternalApriori2(const ScoreInternalApriori2< ALLOC >& from) :
+        ScoreInternalApriori2(from, this->getAllocator()) {}
 
 
     /// move constructor
     template < template < typename > class ALLOC >
-    INLINE Apriori2< ALLOC >::Apriori2(
-      Apriori2< ALLOC >&&                               from,
-      const typename Apriori2< ALLOC >::allocator_type& alloc) :
+    INLINE ScoreInternalApriori2< ALLOC >::ScoreInternalApriori2(
+      ScoreInternalApriori2< ALLOC >&&                               from,
+      const typename ScoreInternalApriori2< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc),
-        _weight(from._weight), _database(from._database),
+        _database(from._database),
         _nodeId2columns(std::move(from._nodeId2columns)) {
-      GUM_CONS_MOV(Apriori2);
+      GUM_CONS_MOV(ScoreInternalApriori2);
     }
 
 
     /// move constructor
     template < template < typename > class ALLOC >
-    INLINE Apriori2< ALLOC >::Apriori2(Apriori2< ALLOC >&& from) :
-        Apriori2(std::move(from), this->getAllocator()) {}
+    INLINE ScoreInternalApriori2< ALLOC >::ScoreInternalApriori2(ScoreInternalApriori2< ALLOC >&& from) :
+        ScoreInternalApriori2(std::move(from), this->getAllocator()) {}
 
 
     /// destructor
     template < template < typename > class ALLOC >
-    INLINE Apriori2< ALLOC >::~Apriori2() {
-      GUM_DESTRUCTOR(Apriori2);
+    INLINE ScoreInternalApriori2< ALLOC >::~ScoreInternalApriori2() {
+      GUM_DESTRUCTOR(ScoreInternalApriori2);
     }
 
 
     /// copy operator
     template < template < typename > class ALLOC >
-    Apriori2< ALLOC >& Apriori2< ALLOC >::
-                       operator=(const Apriori2< ALLOC >& from) {
+    ScoreInternalApriori2< ALLOC >& ScoreInternalApriori2< ALLOC >::
+                       operator=(const ScoreInternalApriori2< ALLOC >& from) {
       if (this != &from) {
         _nodeId2columns = from._nodeId2columns;
-        _weight = from._weight;
         _database = from._database;
       }
       return *this;
@@ -98,43 +105,22 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    Apriori2< ALLOC >& Apriori2< ALLOC >::operator=(Apriori2< ALLOC >&& from) {
+    ScoreInternalApriori2< ALLOC >&
+    ScoreInternalApriori2< ALLOC >::operator=(ScoreInternalApriori2< ALLOC >&& from) {
       if (this != &from) {
         _nodeId2columns = std::move(from._nodeId2columns);
-        _weight = from._weight;
         _database = from._database;
       }
       return *this;
     }
 
-
-    /// sets the weight of the a priori (kind of effective sample size)
-    template < template < typename > class ALLOC >
-    INLINE void Apriori2< ALLOC >::setWeight(const double weight) {
-      if (weight < 0.0) {
-        GUM_ERROR(OutOfBounds,
-                  "A negative weight (" << weight
-                                        << ") is forbidden for an apriori");
-      }
-      _weight = weight;
+    
+    /// indicates whether the apriori is potentially informative
+   template < template < typename > class ALLOC >
+    INLINE bool
+      ScoreInternalApriori2< ALLOC >::isInformative() const {
+      return true;
     }
-
-
-    /// returns the weight assigned to the apriori
-    template < template < typename > class ALLOC >
-    INLINE double Apriori2< ALLOC >::weight() const {
-      return _weight;
-    }
-
-
-    /// returns the allocator used by the translator
-    template < template < typename > class ALLOC >
-    INLINE typename Apriori2< ALLOC >::allocator_type
-      Apriori2< ALLOC >::getAllocator() const {
-      return *this;
-    }
-
-
   } /* namespace learning */
 
 } /* namespace gum */

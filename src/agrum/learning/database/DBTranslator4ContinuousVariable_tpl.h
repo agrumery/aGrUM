@@ -291,7 +291,8 @@ namespace gum {
     template < template < typename > class ALLOC >
     DBTranslator4ContinuousVariable< ALLOC >*
       DBTranslator4ContinuousVariable< ALLOC >::clone(
-        const allocator_type& alloc) const {
+        const typename DBTranslator4ContinuousVariable< ALLOC >::allocator_type&
+        alloc) const {
       ALLOC< DBTranslator4ContinuousVariable< ALLOC > > allocator(alloc);
       DBTranslator4ContinuousVariable< ALLOC >* translator = allocator.allocate(1);
       try {

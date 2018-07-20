@@ -33,7 +33,7 @@
 #include <agrum/learning/scores_and_tests/scoringCache.h>
 #include <agrum/learning/scores_and_tests/scoreInternalApriori2.h>
 
-#include <agrum/learning/aprioris/apriori.h>
+#include <agrum/learning/aprioris/apriori2.h>
 #include <agrum/learning/structureUtils/graphChange.h>
 
 namespace gum {
@@ -46,7 +46,7 @@ namespace gum {
      * @ingroup learning_scores
      */
     template < template < typename > class ALLOC = std::allocator >
-    class Score {
+    class Score2 {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;
@@ -101,19 +101,16 @@ namespace gum {
       Score2(
         const DBRowGeneratorParser< ALLOC >& parser,
         const Apriori2< ALLOC >& apriori,
-        const std::vector< std::pair< std::size_t, std::size_t >,
-                           ALLOC< std::pair< std::size_t, std::size_t > > >&
-          ranges,
         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
           nodeId2columns =
             Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
         const allocator_type& alloc = allocator_type());
 
-     /// virtual copy constructor
-      virtual Score2< ALLOC >* clone() const;
+      /// virtual copy constructor
+      virtual Score2< ALLOC >* clone() const = 0;
 
       /// virtual copy constructor with a given allocator
-      virtual Score2< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual Score2< ALLOC >* clone(const allocator_type& alloc) const = 0;
       
       /// destructor
       virtual ~Score2();
@@ -127,46 +124,21 @@ namespace gum {
       /// @{
 
       /// changes the max number of threads used to parse the database
-      void setMaxNbThreads(const std::size_t nb) const;
+      void setMaxNbThreads(std::size_t nb) const;
 
       /// returns the number of threads used to parse the database
       std::size_t nbThreads() const;
 
       /// returns the score of a singe node
-      virtual double score ( NodeId var );
+      double score ( const NodeId var );
 
       /// returns the score of a singe node given some other nodes
-      /** @param var1 the variable on the left side of the conditioning bar
+      /** @param var the variable on the left side of the conditioning bar
        * @param rhs_ids the set of variables on the right side of the
        * conditioning bar */
-      virtual double score (
-              NodeId var1,
-              const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids );
+      double score ( const NodeId var,
+                     const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids );
 
-      /// returns the score of a pair of nodes given some other nodes
-      /** @param var1 the 1st variable on the left side of the conditioning bar
-       * @param var2 the 2nd variable on the left side of the conditioning bar
-       * @param rhs_ids the set of variables on the right side of the
-       * conditioning bar */
-      virtual double score (
-              NodeId var1,
-              NodeId var2,
-              const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids );
-
-      /// returns the score of a triple of nodes given some other nodes
-      /** @param var1 the 1st variable on the left side of the conditioning bar
-       * @param var2 the 2nd variable on the left side of the conditioning bar
-       * @param rhs_ids the set of variables on the right side of the
-       * conditioning bar */
-      virtual double score (
-              NodeId var1,
-              NodeId var2,
-              NodeId var3,
-              const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids );
-
-      /// returns the score for a given IdSet
-      virtual double score ( const IdSet2< ALLOC >& idset );
-      
       /// clears all the data structures from memory
       void clear();
 
@@ -199,6 +171,9 @@ namespace gum {
        * and parameter learning. */
       virtual const ScoreInternalApriori2< ALLOC >& internalApriori() const = 0;
 
+      /// returns the allocator used by the score
+      allocator_type getAllocator() const;
+
       /// @}
 
       
@@ -207,13 +182,28 @@ namespace gum {
       const double _1log2{M_LOG2E};
 
       /// the a priori used by the score
-      Apriori2< ALLOC >* _apriori;
+      Apriori2< ALLOC >* _apriori {nullptr};
+      
+      /// the record counter used for the countings over discrete variables
+      RecordCounter2< ALLOC > _counter;
 
       /// the scoring cache
       ScoringCache< ALLOC > _cache;
 
       /// a Boolean indicating whether we wish to use the cache
       bool _use_cache{true};
+
+      /// the maximal number of threads that the score can use
+      mutable std::size_t _max_nb_threads{
+        std::size_t(thread::getMaxNumberOfThreads())};
+
+      /** @brief the min number of database rows that a thread should process
+       * in a multithreading context */
+      mutable std::size_t _min_nb_rows_per_thread{100};
+
+      /// an empty vector
+      const std::vector<NodeId, ALLOC<NodeId> > _empty_ids;
+
 
 
 
@@ -236,6 +226,18 @@ namespace gum {
       /// move operator
       Score2< ALLOC >& operator=(Score2< ALLOC >&& from);
 
+      /// returns the score for a given IdSet
+      /** @throws OperationNotAllowed is raised if the score does not support
+       * calling method score such an idset (due to too many/too few variables
+       * in the left hand side or the right hand side of the idset). */
+      virtual double _score ( const IdSet2< ALLOC >& idset ) = 0;
+
+      /// returns the score for a given IdSet
+      /** @throws OperationNotAllowed is raised if the score does not support
+       * calling method score such an idset (due to too many/too few variables
+       * in the left hand side or the right hand side of the idset). */
+      virtual double _score ( IdSet2< ALLOC >&& idset ) = 0;
+      
     };
 
   } /* namespace learning */

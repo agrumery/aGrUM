@@ -36,7 +36,7 @@ namespace gum {
       const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > >
                                column_types,
       const DBRowGeneratorGoal goal,
-      const allocator_type&    alloc) :
+      const typename DBRowGenerator< ALLOC >::allocator_type&    alloc) :
         _column_types(column_types, alloc),
         _columns_of_interest(alloc), _goal(goal) {
       GUM_CONSTRUCTOR(DBRowGenerator);
