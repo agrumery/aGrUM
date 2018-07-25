@@ -145,56 +145,16 @@ namespace gum {
 
     /// returns the apriori vector all the variables in the idset
     template < template < typename > class ALLOC >
-    std::vector< double, ALLOC< double > >
-      AprioriNoApriori2< ALLOC >::getAllApriori(const IdSet2< ALLOC >& idset) {
-      // if the idset is empty, the apriori is also empty
-      if (idset.empty())
-        return std::vector< double, ALLOC< double > >(this->getAllocator());
+    INLINE void AprioriNoApriori2< ALLOC >::addAllApriori(
+           const IdSet2< ALLOC >& idset,
+           std::vector< double, ALLOC< double > >& counts ) {}
 
-      // we determine the size of the counting vector
-      std::size_t apriori_size = std::size_t(1);
-      if (this->_nodeId2columns.empty()) {
-        for (const auto id : idset) {
-          apriori_size *= this->_database->domainSize(id);
-        }
-      } else {
-        for (const auto id : idset) {
-          apriori_size *=
-            this->_database->domainSize(this->_nodeId2columns.second(id));
-        }
-      }
-
-      return std::vector< double, ALLOC< double > >(
-        apriori_size, 0.0, this->getAllocator());
-    }
-
-
+    
     /// returns the apriori vector over only the conditioning set of an idset
     template < template < typename > class ALLOC >
-    std::vector< double, ALLOC< double > >
-      AprioriNoApriori2< ALLOC >::getConditioningApriori(
-        const IdSet2< ALLOC >& idset) {
-      // if the idset is empty, the apriori is also empty
-      if (idset.size() == idset.nbLHSIds())
-        return std::vector< double, ALLOC< double > >(this->getAllocator());
-
-      // we determine the size of the counting vector
-      std::size_t       apriori_size = std::size_t(1);
-      const std::size_t idset_size = idset.size();
-      if (this->_nodeId2columns.empty()) {
-        for (std::size_t i = idset.nbLHSIds(); i < idset_size; ++i) {
-          apriori_size *= this->_database->domainSize(idset[i]);
-        }
-      } else {
-        for (std::size_t i = idset.nbLHSIds(); i < idset_size; ++i) {
-          apriori_size *=
-            this->_database->domainSize(this->_nodeId2columns.second(idset[i]));
-        }
-      }
-
-      return std::vector< double, ALLOC< double > >(
-        apriori_size, 0.0, this->getAllocator());
-    }
+    INLINE void AprioriNoApriori2< ALLOC >::addConditioningApriori(
+           const IdSet2< ALLOC >& idset,
+           std::vector< double, ALLOC< double > >& counts ) {}
 
 
   } /* namespace learning */

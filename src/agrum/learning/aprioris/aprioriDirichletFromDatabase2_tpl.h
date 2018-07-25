@@ -243,30 +243,41 @@ namespace gum {
 
     /// returns the apriori vector all the variables in the idset
     template < template < typename > class ALLOC >
-    std::vector< double, ALLOC< double > >
-      AprioriDirichletFromDatabase2< ALLOC >::getAllApriori(
-        const IdSet2< ALLOC >& idset) {
-      std::vector< double, ALLOC< double > > res(__counter.counts(idset));
-      if (this->_weight != 1.0) {
-        for (auto& val : res)
-          val *= this->_weight;
+    INLINE void AprioriDirichletFromDatabase2< ALLOC >::addAllApriori(
+         const IdSet2< ALLOC >& idset,
+         std::vector< double, ALLOC< double > >& counts ) {
+      const auto& apriori = __counter.counts(idset);
+      const std::size_t size = apriori.size ();
+      if ( this->_weight != 1.0) {
+        for ( std::size_t i = std::size_t(0); i < size; ++i ) {
+          counts[i] += apriori[i] * this->_weight;
+        }
       }
-      return res;
+      else {
+        for ( std::size_t i = std::size_t(0); i < size; ++i ) {
+          counts[i] += apriori[i];
+        }
+      }
     }
 
 
     /// returns the apriori vector over only the conditioning set of an idset
     template < template < typename > class ALLOC >
-    std::vector< double, ALLOC< double > >
-      AprioriDirichletFromDatabase2< ALLOC >::getConditioningApriori(
-        const IdSet2< ALLOC >& idset) {
-      std::vector< double, ALLOC< double > > res(
-        __counter.counts(idset.conditionalIdSet()));
-      if (this->_weight != 1.0) {
-        for (auto& val : res)
-          val *= this->_weight;
+    void AprioriDirichletFromDatabase2< ALLOC >::addConditioningApriori(
+         const IdSet2< ALLOC >& idset,
+         std::vector< double, ALLOC< double > >& counts ) {
+      const auto& apriori = __counter.counts(idset.conditionalIdSet());
+      const std::size_t size = apriori.size ();
+      if ( this->_weight != 1.0) {
+        for ( std::size_t i = std::size_t(0); i < size; ++i ) {
+          counts[i] += apriori[i] * this->_weight;
+        }
       }
-      return res;
+      else {
+        for ( std::size_t i = std::size_t(0); i < size; ++i ) {
+          counts[i] += apriori[i];
+        }
+      }
     }
 
 

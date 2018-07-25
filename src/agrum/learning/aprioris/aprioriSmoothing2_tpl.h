@@ -139,72 +139,42 @@ namespace gum {
 
     /// returns the apriori vector all the variables in the idset
     template < template < typename > class ALLOC >
-    std::vector< double, ALLOC< double > >
-      AprioriSmoothing2< ALLOC >::getAllApriori(const IdSet2< ALLOC >& idset) {
-      // if the idset is empty, the apriori is also empty
-      if (idset.empty())
-        return std::vector< double, ALLOC< double > >(this->getAllocator());
+    INLINE void AprioriSmoothing2< ALLOC >::addAllApriori(
+           const IdSet2< ALLOC >& idset,
+           std::vector< double, ALLOC< double > >& counts ) {
+      // if the idset is empty or the weight is zero, the apriori is also empty
+      if (idset.empty() || ( this->_weight == 0.0 ) ) return;
 
-      // we determine the size of the counting vector
-      std::size_t apriori_size = std::size_t(1);
-      if (this->_nodeId2columns.empty()) {
-        for (const auto id : idset) {
-          apriori_size *= this->_database->domainSize(id);
-        }
-      } else {
-        for (const auto id : idset) {
-          apriori_size *=
-            this->_database->domainSize(this->_nodeId2columns.second(id));
-        }
-      }
-
-      return std::vector< double, ALLOC< double > >(
-        apriori_size, this->_weight, this->getAllocator());
+      // otherwise, add the weight to all the cells in the counting vector
+      for ( auto& count : counts ) count += this->_weight;
     }
 
 
     /// returns the apriori vector over only the conditioning set of an idset
     template < template < typename > class ALLOC >
-    std::vector< double, ALLOC< double > >
-      AprioriSmoothing2< ALLOC >::getConditioningApriori(
-        const IdSet2< ALLOC >& idset) {
-      // if the idset is empty, the apriori is also empty
-      if (idset.size() == idset.nbLHSIds())
-        return std::vector< double, ALLOC< double > >(this->getAllocator());
+    void AprioriSmoothing2< ALLOC >::addConditioningApriori(
+         const IdSet2< ALLOC >& idset,
+         std::vector< double, ALLOC< double > >& counts ) {
+      // if the conditioning set is empty or the weight is equal to zero,
+      // the apriori is also empty
+      if ( (idset.size() == idset.nbLHSIds()) || ( this->weight == 0.0 ) ||
+           (idset.nbLHSIds() == std::size_t(0)) ) return;
 
       // compute the weight of the conditioning set
       double weight = this->_weight;
-      if ((idset.nbLHSIds() == std::size_t(0)) || (weight == 0.0))
-        weight = 0.0;
-      else {
-        if (this->_nodeId2columns.empty()) {
-          for (std::size_t i = std::size_t(0); i < idset.nbLHSIds(); ++i) {
-            weight *= this->_database->domainSize(idset[i]);
-          }
-        } else {
-          for (std::size_t i = std::size_t(0); i < idset.nbLHSIds(); ++i) {
-            weight *=
-              this->_database->domainSize(this->_nodeId2columns.second(idset[i]));
-          }
-        }
-      }
-
-      // we determine the size of the counting vector
-      std::size_t       apriori_size = std::size_t(1);
-      const std::size_t idset_size = idset.size();
       if (this->_nodeId2columns.empty()) {
-        for (std::size_t i = idset.nbLHSIds(); i < idset_size; ++i) {
-          apriori_size *= this->_database->domainSize(idset[i]);
+        for (std::size_t i = std::size_t(0); i < idset.nbLHSIds(); ++i) {
+          weight *= this->_database->domainSize(idset[i]);
         }
       } else {
-        for (std::size_t i = idset.nbLHSIds(); i < idset_size; ++i) {
-          apriori_size *=
+        for (std::size_t i = std::size_t(0); i < idset.nbLHSIds(); ++i) {
+          weight *=
             this->_database->domainSize(this->_nodeId2columns.second(idset[i]));
         }
       }
 
-      return std::vector< double, ALLOC< double > >(
-        apriori_size, weight, this->getAllocator());
+      // add the weight to the counting vector
+      for ( auto& count : counts ) count += weight;
     }
 
 
