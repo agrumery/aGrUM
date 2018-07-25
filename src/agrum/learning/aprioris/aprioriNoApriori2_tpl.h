@@ -146,15 +146,15 @@ namespace gum {
     /// returns the apriori vector all the variables in the idset
     template < template < typename > class ALLOC >
     INLINE void AprioriNoApriori2< ALLOC >::addAllApriori(
-           const IdSet2< ALLOC >& idset,
-           std::vector< double, ALLOC< double > >& counts ) {}
+      const IdSet2< ALLOC >&                  idset,
+      std::vector< double, ALLOC< double > >& counts) {}
 
-    
+
     /// returns the apriori vector over only the conditioning set of an idset
     template < template < typename > class ALLOC >
     INLINE void AprioriNoApriori2< ALLOC >::addConditioningApriori(
-           const IdSet2< ALLOC >& idset,
-           std::vector< double, ALLOC< double > >& counts ) {}
+      const IdSet2< ALLOC >&                  idset,
+      std::vector< double, ALLOC< double > >& counts) {}
 
 
   } /* namespace learning */

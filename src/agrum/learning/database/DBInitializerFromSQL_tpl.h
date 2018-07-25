@@ -153,7 +153,7 @@ namespace gum {
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
     DBInitializerFromSQL< ALLOC >::DBInitializerFromSQL(
-      const DBInitializerFromSQL< ALLOC >& from,
+      const DBInitializerFromSQL< ALLOC >&                          from,
       const typename DBInitializerFromSQL< ALLOC >::allocator_type& alloc) :
         DBInitializerFromSQL< ALLOC >(
           from.__connection_string, from.__query, from.__timeout, alloc) {}
@@ -169,7 +169,7 @@ namespace gum {
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
     DBInitializerFromSQL< ALLOC >::DBInitializerFromSQL(
-      DBInitializerFromSQL< ALLOC >&& from,
+      DBInitializerFromSQL< ALLOC >&&                               from,
       const typename DBInitializerFromSQL< ALLOC >::allocator_type& alloc) :
         DBInitializerFromSQL< ALLOC >(
           from.__connection_string, from.__query, from.__timeout, alloc) {}
@@ -183,8 +183,7 @@ namespace gum {
 
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    DBInitializerFromSQL< ALLOC >*
-      DBInitializerFromSQL< ALLOC >::clone(
+    DBInitializerFromSQL< ALLOC >* DBInitializerFromSQL< ALLOC >::clone(
       const typename DBInitializerFromSQL< ALLOC >::allocator_type& alloc) const {
       ALLOC< DBInitializerFromSQL< ALLOC > > allocator(alloc);
       DBInitializerFromSQL< ALLOC >* new_initializer = allocator.allocate(1);

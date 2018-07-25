@@ -85,31 +85,35 @@ namespace gum_tests {
       gum::learning::IdSet2<> idset3(
         node1, node0, cond1, true, true);   // #576,#48
 
-      std::vector< double > vect = apriori.getAllApriori(idset1);
-      TS_ASSERT(vect.size() == std::size_t(3));
+      std::vector< double > vect(3, 1.0);
+      apriori.addAllApriori(idset1, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 4.0);
+        TS_ASSERT(val == 5.0);
       }
-      vect = apriori.getConditioningApriori(idset1);
-      TS_ASSERT(vect.size() == std::size_t(0));
+      vect.clear();
+      apriori.addConditioningApriori(idset1, vect);
 
-      vect = apriori.getAllApriori(idset2);
-      TS_ASSERT(vect.size() == std::size_t(12));
+      vect.clear();
+      vect.resize(12, 1.0);
+      apriori.addAllApriori(idset2, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 4.0);
+        TS_ASSERT(val == 5.0);
       }
-      vect = apriori.getConditioningApriori(idset2);
-      TS_ASSERT(vect.size() == std::size_t(0));
+      vect.clear();
+      apriori.addConditioningApriori(idset2, vect);
 
-      vect = apriori.getAllApriori(idset3);
-      TS_ASSERT(vect.size() == std::size_t(576));
+      vect.clear();
+      vect.resize(576, 1.0);
+      apriori.addAllApriori(idset3, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 4.0);
+        TS_ASSERT(val == 5.0);
       }
-      vect = apriori.getConditioningApriori(idset3);
-      TS_ASSERT(vect.size() == std::size_t(48));
+
+      vect.clear();
+      vect.resize(48, 1.0);
+      apriori.addConditioningApriori(idset3, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 48.0);
+        TS_ASSERT(val == 49.0);
       }
 
 
@@ -122,31 +126,35 @@ namespace gum_tests {
       TS_ASSERT(apriori2.isOfType("Smoothing"));
       TS_ASSERT(!apriori2.isOfType("NoApriori"));
 
-      vect = apriori2.getAllApriori(idset1);
-      TS_ASSERT(vect.size() == std::size_t(3));
+      vect.clear();
+      vect.resize(3, 1.0);
+      apriori2.addAllApriori(idset1, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 2.0);
+        TS_ASSERT(val == 3.0);
       }
-      vect = apriori2.getConditioningApriori(idset1);
-      TS_ASSERT(vect.size() == std::size_t(0));
+      vect.clear();
+      apriori2.addConditioningApriori(idset1, vect);
 
-      vect = apriori2.getAllApriori(idset2);
-      TS_ASSERT(vect.size() == std::size_t(12));
+      vect.clear();
+      vect.resize(12, 1.0);
+      apriori2.addAllApriori(idset2, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 2.0);
+        TS_ASSERT(val == 3.0);
       }
-      vect = apriori2.getConditioningApriori(idset2);
-      TS_ASSERT(vect.size() == std::size_t(0));
+      vect.clear();
+      apriori2.addConditioningApriori(idset2, vect);
 
-      vect = apriori2.getAllApriori(idset3);
-      TS_ASSERT(vect.size() == std::size_t(576));
+      vect.clear();
+      vect.resize(576, 1.0);
+      apriori2.addAllApriori(idset3, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 2.0);
+        TS_ASSERT(val == 3.0);
       }
-      vect = apriori2.getConditioningApriori(idset3);
-      TS_ASSERT(vect.size() == std::size_t(48));
+      vect.clear();
+      vect.resize(48, 1.0);
+      apriori2.addConditioningApriori(idset3, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 24.0);
+        TS_ASSERT(val == 25.0);
       }
 
 
@@ -159,31 +167,35 @@ namespace gum_tests {
       TS_ASSERT(apriori3.isOfType("Smoothing"));
       TS_ASSERT(!apriori3.isOfType("NoApriori"));
 
-      vect = apriori3.getAllApriori(idset1);
-      TS_ASSERT(vect.size() == std::size_t(3));
+      vect.clear();
+      vect.resize(3, 1.0);
+      apriori3.addAllApriori(idset1, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 4.0);
+        TS_ASSERT(val == 5.0);
       }
-      vect = apriori3.getConditioningApriori(idset1);
-      TS_ASSERT(vect.size() == std::size_t(0));
+      vect.clear();
+      apriori3.addConditioningApriori(idset1, vect);
 
-      vect = apriori3.getAllApriori(idset2);
-      TS_ASSERT(vect.size() == std::size_t(12));
+      vect.clear();
+      vect.resize(12, 1.0);
+      apriori3.addAllApriori(idset2, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 4.0);
+        TS_ASSERT(val == 5.0);
       }
-      vect = apriori3.getConditioningApriori(idset2);
-      TS_ASSERT(vect.size() == std::size_t(0));
+      vect.clear();
+      apriori3.addConditioningApriori(idset2, vect);
 
-      vect = apriori3.getAllApriori(idset3);
-      TS_ASSERT(vect.size() == std::size_t(576));
+      vect.clear();
+      vect.resize(576, 1.0);
+      apriori3.addAllApriori(idset3, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 4.0);
+        TS_ASSERT(val == 5.0);
       }
-      vect = apriori3.getConditioningApriori(idset3);
-      TS_ASSERT(vect.size() == std::size_t(48));
+      vect.clear();
+      vect.resize(48, 1.0);
+      apriori3.addConditioningApriori(idset3, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 48.0);
+        TS_ASSERT(val == 49.0);
       }
 
 
@@ -196,31 +208,35 @@ namespace gum_tests {
       TS_ASSERT(apriori4->isOfType("Smoothing"));
       TS_ASSERT(!apriori4->isOfType("NoApriori"));
 
-      vect = apriori4->getAllApriori(idset1);
-      TS_ASSERT(vect.size() == std::size_t(3));
+      vect.clear();
+      vect.resize(3, 1.0);
+      apriori4->addAllApriori(idset1, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 2.0);
+        TS_ASSERT(val == 3.0);
       }
-      vect = apriori4->getConditioningApriori(idset1);
-      TS_ASSERT(vect.size() == std::size_t(0));
+      vect.clear();
+      apriori4->addConditioningApriori(idset1, vect);
 
-      vect = apriori4->getAllApriori(idset2);
-      TS_ASSERT(vect.size() == std::size_t(12));
+      vect.clear();
+      vect.resize(12, 1.0);
+      apriori4->addAllApriori(idset2, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 2.0);
+        TS_ASSERT(val == 3.0);
       }
-      vect = apriori4->getConditioningApriori(idset2);
-      TS_ASSERT(vect.size() == std::size_t(0));
+      vect.clear();
+      apriori4->addConditioningApriori(idset2, vect);
 
-      vect = apriori4->getAllApriori(idset3);
-      TS_ASSERT(vect.size() == std::size_t(576));
+      vect.clear();
+      vect.resize(576, 1.0);
+      apriori4->addAllApriori(idset3, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 2.0);
+        TS_ASSERT(val == 3.0);
       }
-      vect = apriori4->getConditioningApriori(idset3);
-      TS_ASSERT(vect.size() == std::size_t(48));
+      vect.clear();
+      vect.resize(48, 1.0);
+      apriori4->addConditioningApriori(idset3, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 24.0);
+        TS_ASSERT(val == 25.0);
       }
 
       delete apriori4;
@@ -237,31 +253,35 @@ namespace gum_tests {
       TS_ASSERT(apriori5.isOfType("Smoothing"));
       TS_ASSERT(!apriori5.isOfType("NoApriori"));
 
-      vect = apriori5.getAllApriori(idset1);
-      TS_ASSERT(vect.size() == std::size_t(3));
+      vect.clear();
+      vect.resize(3, 1.0);
+      apriori5.addAllApriori(idset1, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 2.0);
+        TS_ASSERT(val == 3.0);
       }
-      vect = apriori5.getConditioningApriori(idset1);
-      TS_ASSERT(vect.size() == std::size_t(0));
+      vect.clear();
+      apriori5.addConditioningApriori(idset1, vect);
 
-      vect = apriori5.getAllApriori(idset2);
-      TS_ASSERT(vect.size() == std::size_t(12));
+      vect.clear();
+      vect.resize(12, 1.0);
+      apriori5.addAllApriori(idset2, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 2.0);
+        TS_ASSERT(val == 3.0);
       }
-      vect = apriori5.getConditioningApriori(idset2);
-      TS_ASSERT(vect.size() == std::size_t(0));
+      vect.clear();
+      apriori5.addConditioningApriori(idset2, vect);
 
-      vect = apriori5.getAllApriori(idset3);
-      TS_ASSERT(vect.size() == std::size_t(576));
+      vect.clear();
+      vect.resize(576, 1.0);
+      apriori5.addAllApriori(idset3, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 2.0);
+        TS_ASSERT(val == 3.0);
       }
-      vect = apriori5.getConditioningApriori(idset3);
-      TS_ASSERT(vect.size() == std::size_t(48));
+      vect.clear();
+      vect.resize(48, 1.0);
+      apriori5.addConditioningApriori(idset3, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 24.0);
+        TS_ASSERT(val == 25.0);
       }
 
       apriori5 = std::move(apriori);
@@ -273,31 +293,35 @@ namespace gum_tests {
       TS_ASSERT(apriori5.isOfType("Smoothing"));
       TS_ASSERT(!apriori5.isOfType("NoApriori"));
 
-      vect = apriori5.getAllApriori(idset1);
-      TS_ASSERT(vect.size() == std::size_t(3));
+      vect.clear();
+      vect.resize(3, 1.0);
+      apriori5.addAllApriori(idset1, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 1.0);
+        TS_ASSERT(val == 2.0);
       }
-      vect = apriori5.getConditioningApriori(idset1);
-      TS_ASSERT(vect.size() == std::size_t(0));
+      vect.clear();
+      apriori5.addConditioningApriori(idset1, vect);
 
-      vect = apriori5.getAllApriori(idset2);
-      TS_ASSERT(vect.size() == std::size_t(12));
+      vect.clear();
+      vect.resize(12, 1.0);
+      apriori5.addAllApriori(idset2, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 1.0);
+        TS_ASSERT(val == 2.0);
       }
-      vect = apriori5.getConditioningApriori(idset2);
-      TS_ASSERT(vect.size() == std::size_t(0));
+      vect.clear();
+      apriori5.addConditioningApriori(idset2, vect);
 
-      vect = apriori5.getAllApriori(idset3);
-      TS_ASSERT(vect.size() == std::size_t(576));
+      vect.clear();
+      vect.resize(576, 1.0);
+      apriori5.addAllApriori(idset3, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 1.0);
+        TS_ASSERT(val == 2.0);
       }
-      vect = apriori5.getConditioningApriori(idset3);
-      TS_ASSERT(vect.size() == std::size_t(48));
+      vect.clear();
+      vect.resize(48, 1.0);
+      apriori5.addConditioningApriori(idset3, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 12.0);
+        TS_ASSERT(val == 13.0);
       }
     }
 
@@ -366,31 +390,34 @@ namespace gum_tests {
       gum::learning::IdSet2<> idset3(
         node1, node0, cond1, true, true);   // #576,#36
 
-      std::vector< double > vect = apriori.getAllApriori(idset1);
-      TS_ASSERT(vect.size() == std::size_t(4));
+      std::vector< double > vect(4, 1.0);
+      apriori.addAllApriori(idset1, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 4.0);
+        TS_ASSERT(val == 5.0);
       }
-      vect = apriori.getConditioningApriori(idset1);
-      TS_ASSERT(vect.size() == std::size_t(0));
+      vect.clear();
+      apriori.addConditioningApriori(idset1, vect);
 
-      vect = apriori.getAllApriori(idset2);
-      TS_ASSERT(vect.size() == std::size_t(16));
+      vect.clear();
+      vect.resize(16, 1.0);
+      apriori.addAllApriori(idset2, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 4.0);
+        TS_ASSERT(val == 5.0);
       }
-      vect = apriori.getConditioningApriori(idset2);
-      TS_ASSERT(vect.size() == std::size_t(0));
+      vect.clear();
+      apriori.addConditioningApriori(idset2, vect);
 
-      vect = apriori.getAllApriori(idset3);
-      TS_ASSERT(vect.size() == std::size_t(576));
+      vect.clear();
+      vect.resize(576, 1.0);
+      apriori.addAllApriori(idset3, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 4.0);
+        TS_ASSERT(val == 5.0);
       }
-      vect = apriori.getConditioningApriori(idset3);
-      TS_ASSERT(vect.size() == std::size_t(36));
+      vect.clear();
+      vect.resize(36, 1.0);
+      apriori.addConditioningApriori(idset3, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 64.0);
+        TS_ASSERT(val == 65.0);
       }
 
 
@@ -403,31 +430,35 @@ namespace gum_tests {
       TS_ASSERT(apriori2.isOfType("Smoothing"));
       TS_ASSERT(!apriori2.isOfType("NoApriori"));
 
-      vect = apriori2.getAllApriori(idset1);
-      TS_ASSERT(vect.size() == std::size_t(4));
+      vect.clear();
+      vect.resize(4, 1.0);
+      apriori2.addAllApriori(idset1, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 2.0);
+        TS_ASSERT(val == 3.0);
       }
-      vect = apriori2.getConditioningApriori(idset1);
-      TS_ASSERT(vect.size() == std::size_t(0));
+      vect.clear();
+      apriori2.addConditioningApriori(idset1, vect);
 
-      vect = apriori2.getAllApriori(idset2);
-      TS_ASSERT(vect.size() == std::size_t(16));
+      vect.clear();
+      vect.resize(16, 1.0);
+      apriori2.addAllApriori(idset2, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 2.0);
+        TS_ASSERT(val == 3.0);
       }
-      vect = apriori2.getConditioningApriori(idset2);
-      TS_ASSERT(vect.size() == std::size_t(0));
+      vect.clear();
+      apriori2.addConditioningApriori(idset2, vect);
 
-      vect = apriori2.getAllApriori(idset3);
-      TS_ASSERT(vect.size() == std::size_t(576));
+      vect.clear();
+      vect.resize(576, 1.0);
+      apriori2.addAllApriori(idset3, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 2.0);
+        TS_ASSERT(val == 3.0);
       }
-      vect = apriori2.getConditioningApriori(idset3);
-      TS_ASSERT(vect.size() == std::size_t(36));
+      vect.clear();
+      vect.resize(36, 1.0);
+      apriori2.addConditioningApriori(idset3, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 32.0);
+        TS_ASSERT(val == 33.0);
       }
 
       gum::learning::AprioriSmoothing2<> apriori3(std::move(apriori2));
@@ -439,31 +470,35 @@ namespace gum_tests {
       TS_ASSERT(apriori3.isOfType("Smoothing"));
       TS_ASSERT(!apriori3.isOfType("NoApriori"));
 
-      vect = apriori3.getAllApriori(idset1);
-      TS_ASSERT(vect.size() == std::size_t(4));
+      vect.clear();
+      vect.resize(4, 1.0);
+      apriori3.addAllApriori(idset1, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 4.0);
+        TS_ASSERT(val == 5.0);
       }
-      vect = apriori3.getConditioningApriori(idset1);
-      TS_ASSERT(vect.size() == std::size_t(0));
+      vect.clear();
+      apriori3.addConditioningApriori(idset1, vect);
 
-      vect = apriori3.getAllApriori(idset2);
-      TS_ASSERT(vect.size() == std::size_t(16));
+      vect.clear();
+      vect.resize(16, 1.0);
+      apriori3.addAllApriori(idset2, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 4.0);
+        TS_ASSERT(val == 5.0);
       }
-      vect = apriori3.getConditioningApriori(idset2);
-      TS_ASSERT(vect.size() == std::size_t(0));
+      vect.clear();
+      apriori3.addConditioningApriori(idset2, vect);
 
-      vect = apriori3.getAllApriori(idset3);
-      TS_ASSERT(vect.size() == std::size_t(576));
+      vect.clear();
+      vect.resize(576, 1.0);
+      apriori3.addAllApriori(idset3, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 4.0);
+        TS_ASSERT(val == 5.0);
       }
-      vect = apriori3.getConditioningApriori(idset3);
-      TS_ASSERT(vect.size() == std::size_t(36));
+      vect.clear();
+      vect.resize(36, 1.0);
+      apriori3.addConditioningApriori(idset3, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 64.0);
+        TS_ASSERT(val == 65.0);
       }
 
 
@@ -476,31 +511,35 @@ namespace gum_tests {
       TS_ASSERT(apriori4->isOfType("Smoothing"));
       TS_ASSERT(!apriori4->isOfType("NoApriori"));
 
-      vect = apriori4->getAllApriori(idset1);
-      TS_ASSERT(vect.size() == std::size_t(4));
+      vect.clear();
+      vect.resize(4, 1.0);
+      apriori4->addAllApriori(idset1, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 2.0);
+        TS_ASSERT(val == 3.0);
       }
-      vect = apriori4->getConditioningApriori(idset1);
-      TS_ASSERT(vect.size() == std::size_t(0));
+      vect.clear();
+      apriori4->addConditioningApriori(idset1, vect);
 
-      vect = apriori4->getAllApriori(idset2);
-      TS_ASSERT(vect.size() == std::size_t(16));
+      vect.clear();
+      vect.resize(16, 1.0);
+      apriori4->addAllApriori(idset2, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 2.0);
+        TS_ASSERT(val == 3.0);
       }
-      vect = apriori4->getConditioningApriori(idset2);
-      TS_ASSERT(vect.size() == std::size_t(0));
+      vect.clear();
+      apriori4->addConditioningApriori(idset2, vect);
 
-      vect = apriori4->getAllApriori(idset3);
-      TS_ASSERT(vect.size() == std::size_t(576));
+      vect.clear();
+      vect.resize(576, 1.0);
+      apriori4->addAllApriori(idset3, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 2.0);
+        TS_ASSERT(val == 3.0);
       }
-      vect = apriori4->getConditioningApriori(idset3);
-      TS_ASSERT(vect.size() == std::size_t(36));
+      vect.clear();
+      vect.resize(36, 1.0);
+      apriori4->addConditioningApriori(idset3, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 32.0);
+        TS_ASSERT(val == 33.0);
       }
 
       delete apriori4;
@@ -516,31 +555,35 @@ namespace gum_tests {
       TS_ASSERT(apriori5.isOfType("Smoothing"));
       TS_ASSERT(!apriori5.isOfType("NoApriori"));
 
-      vect = apriori5.getAllApriori(idset1);
-      TS_ASSERT(vect.size() == std::size_t(4));
+      vect.clear();
+      vect.resize(4, 1.0);
+      apriori5.addAllApriori(idset1, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 2.0);
+        TS_ASSERT(val == 3.0);
       }
-      vect = apriori5.getConditioningApriori(idset1);
-      TS_ASSERT(vect.size() == std::size_t(0));
+      vect.clear();
+      apriori5.addConditioningApriori(idset1, vect);
 
-      vect = apriori5.getAllApriori(idset2);
-      TS_ASSERT(vect.size() == std::size_t(16));
+      vect.clear();
+      vect.resize(16, 1.0);
+      apriori5.addAllApriori(idset2, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 2.0);
+        TS_ASSERT(val == 3.0);
       }
-      vect = apriori5.getConditioningApriori(idset2);
-      TS_ASSERT(vect.size() == std::size_t(0));
+      vect.clear();
+      apriori5.addConditioningApriori(idset2, vect);
 
-      vect = apriori5.getAllApriori(idset3);
-      TS_ASSERT(vect.size() == std::size_t(576));
+      vect.clear();
+      vect.resize(576, 1.0);
+      apriori5.addAllApriori(idset3, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 2.0);
+        TS_ASSERT(val == 3.0);
       }
-      vect = apriori5.getConditioningApriori(idset3);
-      TS_ASSERT(vect.size() == std::size_t(36));
+      vect.clear();
+      vect.resize(36, 1.0);
+      apriori5.addConditioningApriori(idset3, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 32.0);
+        TS_ASSERT(val == 33.0);
       }
 
 
@@ -553,31 +596,35 @@ namespace gum_tests {
       TS_ASSERT(apriori5.isOfType("Smoothing"));
       TS_ASSERT(!apriori5.isOfType("NoApriori"));
 
-      vect = apriori5.getAllApriori(idset1);
-      TS_ASSERT(vect.size() == std::size_t(4));
+      vect.clear();
+      vect.resize(4, 1.0);
+      apriori5.addAllApriori(idset1, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 1.0);
+        TS_ASSERT(val == 2.0);
       }
-      vect = apriori5.getConditioningApriori(idset1);
-      TS_ASSERT(vect.size() == std::size_t(0));
+      vect.clear();
+      apriori5.addConditioningApriori(idset1, vect);
 
-      vect = apriori5.getAllApriori(idset2);
-      TS_ASSERT(vect.size() == std::size_t(16));
+      vect.clear();
+      vect.resize(16, 1.0);
+      apriori5.addAllApriori(idset2, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 1.0);
+        TS_ASSERT(val == 2.0);
       }
-      vect = apriori5.getConditioningApriori(idset2);
-      TS_ASSERT(vect.size() == std::size_t(0));
+      vect.clear();
+      apriori5.addConditioningApriori(idset2, vect);
 
-      vect = apriori5.getAllApriori(idset3);
-      TS_ASSERT(vect.size() == std::size_t(576));
+      vect.clear();
+      vect.resize(576, 1.0);
+      apriori5.addAllApriori(idset3, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 1.0);
+        TS_ASSERT(val == 2.0);
       }
-      vect = apriori5.getConditioningApriori(idset3);
-      TS_ASSERT(vect.size() == std::size_t(36));
+      vect.clear();
+      vect.resize(36, 1.0);
+      apriori5.addConditioningApriori(idset3, vect);
       for (const auto val : vect) {
-        TS_ASSERT(val == 16.0);
+        TS_ASSERT(val == 17.0);
       }
     }
   };

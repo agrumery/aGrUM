@@ -140,25 +140,27 @@ namespace gum {
     /// returns the apriori vector all the variables in the idset
     template < template < typename > class ALLOC >
     INLINE void AprioriSmoothing2< ALLOC >::addAllApriori(
-           const IdSet2< ALLOC >& idset,
-           std::vector< double, ALLOC< double > >& counts ) {
+      const IdSet2< ALLOC >&                  idset,
+      std::vector< double, ALLOC< double > >& counts) {
       // if the idset is empty or the weight is zero, the apriori is also empty
-      if (idset.empty() || ( this->_weight == 0.0 ) ) return;
+      if (idset.empty() || (this->_weight == 0.0)) return;
 
       // otherwise, add the weight to all the cells in the counting vector
-      for ( auto& count : counts ) count += this->_weight;
+      for (auto& count : counts)
+        count += this->_weight;
     }
 
 
     /// returns the apriori vector over only the conditioning set of an idset
     template < template < typename > class ALLOC >
     void AprioriSmoothing2< ALLOC >::addConditioningApriori(
-         const IdSet2< ALLOC >& idset,
-         std::vector< double, ALLOC< double > >& counts ) {
+      const IdSet2< ALLOC >&                  idset,
+      std::vector< double, ALLOC< double > >& counts) {
       // if the conditioning set is empty or the weight is equal to zero,
       // the apriori is also empty
-      if ( (idset.size() == idset.nbLHSIds()) || ( this->weight == 0.0 ) ||
-           (idset.nbLHSIds() == std::size_t(0)) ) return;
+      if ((idset.size() == idset.nbLHSIds()) || (this->_weight == 0.0)
+          || (idset.nbLHSIds() == std::size_t(0)))
+        return;
 
       // compute the weight of the conditioning set
       double weight = this->_weight;
@@ -174,7 +176,8 @@ namespace gum {
       }
 
       // add the weight to the counting vector
-      for ( auto& count : counts ) count += weight;
+      for (auto& count : counts)
+        count += weight;
     }
 
 

@@ -32,11 +32,11 @@ namespace gum {
     /// returns the allocator used by the translator
     template < template < typename > class ALLOC >
     INLINE typename ScoreInternalApriori2< ALLOC >::allocator_type
-    ScoreInternalApriori2< ALLOC >::getAllocator() const {
+      ScoreInternalApriori2< ALLOC >::getAllocator() const {
       return *this;
     }
 
-    
+
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE ScoreInternalApriori2< ALLOC >::ScoreInternalApriori2(
@@ -62,7 +62,8 @@ namespace gum {
 
     /// copy constructor
     template < template < typename > class ALLOC >
-    INLINE ScoreInternalApriori2< ALLOC >::ScoreInternalApriori2(const ScoreInternalApriori2< ALLOC >& from) :
+    INLINE ScoreInternalApriori2< ALLOC >::ScoreInternalApriori2(
+      const ScoreInternalApriori2< ALLOC >& from) :
         ScoreInternalApriori2(from, this->getAllocator()) {}
 
 
@@ -80,7 +81,8 @@ namespace gum {
 
     /// move constructor
     template < template < typename > class ALLOC >
-    INLINE ScoreInternalApriori2< ALLOC >::ScoreInternalApriori2(ScoreInternalApriori2< ALLOC >&& from) :
+    INLINE ScoreInternalApriori2< ALLOC >::ScoreInternalApriori2(
+      ScoreInternalApriori2< ALLOC >&& from) :
         ScoreInternalApriori2(std::move(from), this->getAllocator()) {}
 
 
@@ -94,7 +96,7 @@ namespace gum {
     /// copy operator
     template < template < typename > class ALLOC >
     ScoreInternalApriori2< ALLOC >& ScoreInternalApriori2< ALLOC >::
-                       operator=(const ScoreInternalApriori2< ALLOC >& from) {
+                                    operator=(const ScoreInternalApriori2< ALLOC >& from) {
       if (this != &from) {
         _nodeId2columns = from._nodeId2columns;
         _database = from._database;
@@ -105,8 +107,8 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    ScoreInternalApriori2< ALLOC >&
-    ScoreInternalApriori2< ALLOC >::operator=(ScoreInternalApriori2< ALLOC >&& from) {
+    ScoreInternalApriori2< ALLOC >& ScoreInternalApriori2< ALLOC >::
+                                    operator=(ScoreInternalApriori2< ALLOC >&& from) {
       if (this != &from) {
         _nodeId2columns = std::move(from._nodeId2columns);
         _database = from._database;
@@ -114,11 +116,10 @@ namespace gum {
       return *this;
     }
 
-    
+
     /// indicates whether the apriori is potentially informative
-   template < template < typename > class ALLOC >
-    INLINE bool
-      ScoreInternalApriori2< ALLOC >::isInformative() const {
+    template < template < typename > class ALLOC >
+    INLINE bool ScoreInternalApriori2< ALLOC >::isInformative() const {
       return true;
     }
   } /* namespace learning */

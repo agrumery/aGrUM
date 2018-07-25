@@ -125,15 +125,15 @@ namespace gum {
       /// returns the type of the apriori
       virtual const std::string& getType() const final;
 
-     /// adds the apriori to a counting vector corresponding to the idset
+      /// adds the apriori to a counting vector corresponding to the idset
       /** adds the apriori to an already created counting vector defined over
        * the union of the variables on both the left and right hand side of the
        * conditioning bar of the idset.
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint variables set. */
-      virtual void 
-      addAllApriori(const IdSet2< ALLOC >& idset,
-                    std::vector< double, ALLOC< double > >& counts ) final;
+      virtual void
+        addAllApriori(const IdSet2< ALLOC >&                  idset,
+                      std::vector< double, ALLOC< double > >& counts) final;
 
       /** @brief adds the apriori to a counting vectordefined over the right
        * hand side of the idset
@@ -141,8 +141,8 @@ namespace gum {
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint RHS variables of the idset. */
       virtual void addConditioningApriori(
-              const IdSet2< ALLOC >& idset,
-              std::vector< double, ALLOC< double > >& counts ) final;
+        const IdSet2< ALLOC >&                  idset,
+        std::vector< double, ALLOC< double > >& counts) final;
 
       /// @}
     };

@@ -370,7 +370,8 @@ namespace gum {
 
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    IdSet2< ALLOC >* IdSet2< ALLOC >::clone(const typename IdSet2< ALLOC >::allocator_type& alloc) const {
+    IdSet2< ALLOC >* IdSet2< ALLOC >::clone(
+      const typename IdSet2< ALLOC >::allocator_type& alloc) const {
       ALLOC< IdSet2< ALLOC > > allocator(alloc);
       IdSet2< ALLOC >*         new_set = allocator.allocate(1);
       try {

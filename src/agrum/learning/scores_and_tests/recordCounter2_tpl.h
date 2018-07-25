@@ -47,7 +47,7 @@ namespace gum {
       const std::vector< std::pair< std::size_t, std::size_t >,
                          ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename RecordCounter2< ALLOC >::allocator_type&  alloc) :
+      const typename RecordCounter2< ALLOC >::allocator_type&       alloc) :
         __parsers(alloc),
         __ranges(alloc), __nodeId2columns(nodeId2columns),
         __last_DB_countings(alloc), __last_DB_ids(alloc),
@@ -85,8 +85,9 @@ namespace gum {
 
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    RecordCounter2< ALLOC >::RecordCounter2(const RecordCounter2< ALLOC >& from,
-                                            const typename RecordCounter2< ALLOC >::allocator_type&          alloc) :
+    RecordCounter2< ALLOC >::RecordCounter2(
+      const RecordCounter2< ALLOC >&                          from,
+      const typename RecordCounter2< ALLOC >::allocator_type& alloc) :
         __parsers(from.__parsers, alloc),
         __ranges(from.__ranges, alloc), __nodeId2columns(from.__nodeId2columns),
         __last_DB_countings(from.__last_DB_countings, alloc),
@@ -107,8 +108,9 @@ namespace gum {
 
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
-    RecordCounter2< ALLOC >::RecordCounter2(RecordCounter2< ALLOC >&& from,
-                                            const typename RecordCounter2< ALLOC >::allocator_type&     alloc) :
+    RecordCounter2< ALLOC >::RecordCounter2(
+      RecordCounter2< ALLOC >&&                               from,
+      const typename RecordCounter2< ALLOC >::allocator_type& alloc) :
         __parsers(std::move(from.__parsers), alloc),
         __ranges(std::move(from.__ranges), alloc),
         __nodeId2columns(std::move(from.__nodeId2columns)),
@@ -130,8 +132,8 @@ namespace gum {
 
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    RecordCounter2< ALLOC >*
-      RecordCounter2< ALLOC >::clone(const typename RecordCounter2< ALLOC >::allocator_type& alloc) const {
+    RecordCounter2< ALLOC >* RecordCounter2< ALLOC >::clone(
+      const typename RecordCounter2< ALLOC >::allocator_type& alloc) const {
       ALLOC< RecordCounter2< ALLOC > > allocator(alloc);
       RecordCounter2< ALLOC >*         new_counter = allocator.allocate(1);
       try {

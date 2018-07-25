@@ -74,18 +74,17 @@ namespace gum {
        * NodeId is equal to the index of the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
        * Score. */
-      Score2(
-        const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori2< ALLOC >& apriori,
-        const std::vector< std::pair< std::size_t, std::size_t >,
-                           ALLOC< std::pair< std::size_t, std::size_t > > >&
-          ranges,
-        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-          nodeId2columns =
-            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-        const allocator_type& alloc = allocator_type());
+      Score2(const DBRowGeneratorParser< ALLOC >& parser,
+             const Apriori2< ALLOC >&             apriori,
+             const std::vector< std::pair< std::size_t, std::size_t >,
+                                ALLOC< std::pair< std::size_t, std::size_t > > >&
+               ranges,
+             const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+               nodeId2columns =
+                 Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+             const allocator_type& alloc = allocator_type());
 
-      
+
       /// default constructor
       /** @param parser the parser used to parse the database
        * @param apriori An apriori that we add to the computation of the score
@@ -98,26 +97,25 @@ namespace gum {
        * NodeId is equal to the index of the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
        * Score. */
-      Score2(
-        const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori2< ALLOC >& apriori,
-        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-          nodeId2columns =
-            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-        const allocator_type& alloc = allocator_type());
+      Score2(const DBRowGeneratorParser< ALLOC >& parser,
+             const Apriori2< ALLOC >&             apriori,
+             const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+               nodeId2columns =
+                 Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+             const allocator_type& alloc = allocator_type());
 
       /// virtual copy constructor
       virtual Score2< ALLOC >* clone() const = 0;
 
       /// virtual copy constructor with a given allocator
       virtual Score2< ALLOC >* clone(const allocator_type& alloc) const = 0;
-      
+
       /// destructor
       virtual ~Score2();
 
       /// @}
 
- 
+
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
@@ -130,14 +128,14 @@ namespace gum {
       std::size_t nbThreads() const;
 
       /// returns the score of a singe node
-      double score ( const NodeId var );
+      double score(const NodeId var);
 
       /// returns the score of a singe node given some other nodes
       /** @param var the variable on the left side of the conditioning bar
        * @param rhs_ids the set of variables on the right side of the
        * conditioning bar */
-      double score ( const NodeId var,
-                     const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids );
+      double score(const NodeId                                  var,
+                   const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids);
 
       /// clears all the data structures from memory
       void clear();
@@ -176,14 +174,14 @@ namespace gum {
 
       /// @}
 
-      
-    protected:
+
+      protected:
       /// 1 / log(2)
       const double _1log2{M_LOG2E};
 
       /// the a priori used by the score
-      Apriori2< ALLOC >* _apriori {nullptr};
-      
+      Apriori2< ALLOC >* _apriori{nullptr};
+
       /// the record counter used for the countings over discrete variables
       RecordCounter2< ALLOC > _counter;
 
@@ -202,17 +200,14 @@ namespace gum {
       mutable std::size_t _min_nb_rows_per_thread{100};
 
       /// an empty vector
-      const std::vector<NodeId, ALLOC<NodeId> > _empty_ids;
-
-
+      const std::vector< NodeId, ALLOC< NodeId > > _empty_ids;
 
 
       /// copy constructor
       Score2(const Score2< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      Score2(const Score2< ALLOC >& from,
-             const allocator_type&  alloc);
+      Score2(const Score2< ALLOC >& from, const allocator_type& alloc);
 
       /// move constructor
       Score2(Score2< ALLOC >&& from);
@@ -230,14 +225,13 @@ namespace gum {
       /** @throws OperationNotAllowed is raised if the score does not support
        * calling method score such an idset (due to too many/too few variables
        * in the left hand side or the right hand side of the idset). */
-      virtual double _score ( const IdSet2< ALLOC >& idset ) = 0;
+      virtual double _score(const IdSet2< ALLOC >& idset) = 0;
 
       /// returns the score for a given IdSet
       /** @throws OperationNotAllowed is raised if the score does not support
        * calling method score such an idset (due to too many/too few variables
        * in the left hand side or the right hand side of the idset). */
-      virtual double _score ( IdSet2< ALLOC >&& idset ) = 0;
-      
+      virtual double _score(IdSet2< ALLOC >&& idset) = 0;
     };
 
   } /* namespace learning */

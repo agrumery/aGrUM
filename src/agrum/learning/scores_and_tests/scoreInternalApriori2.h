@@ -54,7 +54,6 @@ namespace gum {
     template < template < typename > class ALLOC = std::allocator >
     class ScoreInternalApriori2 : private ALLOC< NodeId > {
       public:
-
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;
 
@@ -64,25 +63,25 @@ namespace gum {
       /// @{
 
       /// default constructor
-      ScoreInternalApriori2 (
-      const DatabaseTable< ALLOC >& database,
-      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-      nodeId2columns =
-      Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-      const allocator_type&  alloc = allocator_type());
+      ScoreInternalApriori2(
+        const DatabaseTable< ALLOC >& database,
+        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+          nodeId2columns =
+            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+        const allocator_type& alloc = allocator_type());
 
       /// virtual copy constructor
       virtual ScoreInternalApriori2< ALLOC >* clone() const = 0;
 
       /// virtual copy constructor with a given allocator
       virtual ScoreInternalApriori2< ALLOC >*
-      clone(const allocator_type& alloc) const = 0;
+        clone(const allocator_type& alloc) const = 0;
 
       /// destructor
       virtual ~ScoreInternalApriori2();
 
       /// @}
-      
+
 
       // ##########################################################################
       /// @name Accessors / Modifiers
@@ -104,7 +103,7 @@ namespace gum {
 
       /// @}
 
-    protected:
+      protected:
       /// a reference to the database in order to have access to its variables
       const DatabaseTable< ALLOC >* _database;
 
@@ -113,29 +112,27 @@ namespace gum {
       Bijection< NodeId, std::size_t, ALLOC< std::size_t > > _nodeId2columns;
 
 
-      
       /// copy constructor
       ScoreInternalApriori2(const ScoreInternalApriori2< ALLOC >& from);
 
       /// copy constructor with a given allocator
       ScoreInternalApriori2(const ScoreInternalApriori2< ALLOC >& from,
-                            const allocator_type& alloc);
+                            const allocator_type&                 alloc);
 
       /// move constructor
       ScoreInternalApriori2(ScoreInternalApriori2< ALLOC >&& from);
 
       /// move constructor with a given allocator
       ScoreInternalApriori2(ScoreInternalApriori2< ALLOC >&& from,
-                            const allocator_type& alloc);
+                            const allocator_type&            alloc);
 
       /// copy operator
       ScoreInternalApriori2< ALLOC >&
-      operator=(const ScoreInternalApriori2< ALLOC >& from);
+        operator=(const ScoreInternalApriori2< ALLOC >& from);
 
       /// move operator
       ScoreInternalApriori2< ALLOC >&
-      operator=(ScoreInternalApriori2< ALLOC >&& from);
-
+        operator=(ScoreInternalApriori2< ALLOC >&& from);
     };
 
   } /* namespace learning */
