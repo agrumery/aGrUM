@@ -71,6 +71,7 @@ namespace gum {
       const typename Score2< ALLOC >::allocator_type& alloc) :
         _apriori(from._apriori->clone(alloc)),
         _counter(from._counter, alloc), _cache(from._cache, alloc),
+        _use_cache(from._use_cache),
         _max_nb_threads(from._max_nb_threads),
         _min_nb_rows_per_thread(from._min_nb_rows_per_thread) {
       GUM_CONS_CPY(Score2);
@@ -90,7 +91,7 @@ namespace gum {
       const typename Score2< ALLOC >::allocator_type& alloc) :
         _apriori(from._apriori),
         _counter(std::move(from._counter), alloc),
-        _cache(std::move(from._cache), alloc),
+        _cache(std::move(from._cache), alloc), _use_cache(from._use_cache),
         _max_nb_threads(from._max_nb_threads),
         _min_nb_rows_per_thread(from._min_nb_rows_per_thread) {
       from._apriori = nullptr;
@@ -122,7 +123,7 @@ namespace gum {
       if (this != &from) {
         Apriori2< ALLOC >*      new_apriori = from._apriori->clone();
         RecordCounter2< ALLOC > new_counter = from._counter;
-        ScoringCache< ALLOC >   new_cache = from._cache;
+        ScoringCache< ALLOC >   new_cache   = from._cache;
 
         if (_apriori != nullptr) {
           ALLOC< Apriori2< ALLOC > > allocator(this->getAllocator());
@@ -133,7 +134,8 @@ namespace gum {
         _apriori = new_apriori;
         _counter = std::move(new_counter);
         _cache = std::move(new_cache);
-
+        
+        _use_cache = from._use_cache;
         _max_nb_threads = from._max_nb_threads;
         _min_nb_rows_per_thread = from._min_nb_rows_per_thread;
       }
@@ -150,6 +152,7 @@ namespace gum {
 
         _counter = std::move(from._counter);
         _cache = std::move(from._cache);
+        _use_cache = from._use_cache;
         _max_nb_threads = from._max_nb_threads;
         _min_nb_rows_per_thread = from._min_nb_rows_per_thread;
       }
@@ -196,8 +199,9 @@ namespace gum {
      * conditioning bar */
     template < template < typename > class ALLOC >
     INLINE double Score2< ALLOC >::score(
-      const NodeId var, const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids) {
-      IdSet2< ALLOC > idset(var, rhs_ids, true, this->getAllocator());
+      const NodeId var,
+      const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids) {
+      IdSet2< ALLOC > idset(var, rhs_ids, false, this->getAllocator());
       if (_use_cache) {
         try {
           return _cache.score(idset);

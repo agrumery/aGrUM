@@ -1,0 +1,317 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+/** @file
+ * @brief the class for computing AIC scores
+ *
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ */
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+#include <agrum/learning/scores_and_tests/scoreAIC2.h>
+#include <sstream>
+
+namespace gum {
+
+  namespace learning {
+
+    /// default constructor
+    template < template < typename > class ALLOC >
+    INLINE ScoreAIC2< ALLOC >::ScoreAIC2(
+      const DBRowGeneratorParser< ALLOC >&                                 parser,
+      const Apriori2< ALLOC >&                                             apriori,
+      const std::vector< std::pair< std::size_t, std::size_t >,
+                         ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
+      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
+      const typename ScoreAIC2< ALLOC >::allocator_type&               alloc) :
+      Score2<ALLOC> ( parser, apriori, ranges, nodeId2columns, alloc ),
+      __internal_apriori ( parser.database(), nodeId2columns ) {
+      GUM_CONSTRUCTOR(ScoreAIC2);
+    }
+
+    
+    /// default constructor
+    template < template < typename > class ALLOC >
+    INLINE ScoreAIC2< ALLOC >::ScoreAIC2(
+      const DBRowGeneratorParser< ALLOC >&                                 parser,
+      const Apriori2< ALLOC >&                                             apriori,
+      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
+      const typename ScoreAIC2< ALLOC >::allocator_type&               alloc) :
+      Score2<ALLOC> ( parser, apriori, nodeId2columns, alloc ),
+      __internal_apriori ( parser.database(), nodeId2columns ) {
+      GUM_CONSTRUCTOR(ScoreAIC2);
+    }
+
+    
+    /// copy constructor with a given allocator
+    template < template < typename > class ALLOC >
+    INLINE ScoreAIC2< ALLOC >::ScoreAIC2(
+       const ScoreAIC2< ALLOC >& from,
+       const typename ScoreAIC2< ALLOC >::allocator_type&  alloc) :
+      Score2<ALLOC> ( from, alloc ),
+      __internal_apriori ( from.__internal_apriori, alloc ) {
+      GUM_CONS_CPY(ScoreAIC2);
+    }
+      
+
+    /// copy constructor
+    template < template < typename > class ALLOC >
+    INLINE ScoreAIC2< ALLOC >::ScoreAIC2(const ScoreAIC2< ALLOC >& from) :
+      ScoreAIC2<ALLOC> ( from, this->getAllocator () ) {}
+
+
+    /// move constructor with a given allocator
+    template < template < typename > class ALLOC >
+    INLINE ScoreAIC2< ALLOC >::ScoreAIC2(
+       ScoreAIC2< ALLOC >&& from,
+       const typename ScoreAIC2< ALLOC >::allocator_type&  alloc) :
+      Score2<ALLOC> ( std::move(from), alloc ),
+      __internal_apriori ( std::move(from.__internal_apriori), alloc ) {
+      GUM_CONS_MOV(ScoreAIC2);
+    }
+      
+
+    /// move constructor
+    template < template < typename > class ALLOC >
+    INLINE ScoreAIC2< ALLOC >::ScoreAIC2(ScoreAIC2< ALLOC >&& from) :
+      ScoreAIC2<ALLOC> ( std::move(from), this->getAllocator () ) {}
+
+
+    /// virtual copy constructor with a given allocator
+    template < template < typename > class ALLOC >
+    ScoreAIC2< ALLOC >* ScoreAIC2< ALLOC >::clone(
+      const typename ScoreAIC2< ALLOC >::allocator_type& alloc) const {
+      ALLOC< ScoreAIC2< ALLOC > > allocator(alloc);
+      ScoreAIC2< ALLOC >*         new_score = allocator.allocate(1);
+      try {
+        allocator.construct(new_score, *this, alloc);
+      } catch (...) {
+        allocator.deallocate(new_score, 1);
+        throw;
+      }
+
+      return new_score;
+    }
+
+
+    /// virtual copy constructor
+    template < template < typename > class ALLOC >
+    ScoreAIC2< ALLOC >* ScoreAIC2< ALLOC >::clone() const {
+      return clone(this->getAllocator());
+    }
+
+    
+    /// destructor
+    template < template < typename > class ALLOC >
+    ScoreAIC2< ALLOC >::~ScoreAIC2< ALLOC > () {
+      GUM_DESTRUCTOR(ScoreAIC2);
+    }
+    
+
+    /// indicates whether the apriori is compatible (meaningful) with the score
+    template < template < typename > class ALLOC >
+    std::string ScoreAIC2< ALLOC >::isAprioriCompatible(
+      const std::string& apriori_type, double weight) {
+      // check that the apriori is compatible with the score
+      if ((apriori_type == AprioriDirichletType::type)
+          || (apriori_type == AprioriSmoothingType::type)
+          || (apriori_type == AprioriNoAprioriType::type)) {
+        return "";
+      }
+
+      // apriori types unsupported by the type checker
+      std::stringstream msg;
+      msg << "The apriori '" << apriori_type
+          << "' is not yet supported by method isAprioriCompatible os Score AIC";
+      return msg.str();
+    }
+    
+
+    /// indicates whether the apriori is compatible (meaningful) with the score
+    template < template < typename > class ALLOC >
+    INLINE std::string ScoreAIC2< ALLOC >::isAprioriCompatible(
+      const Apriori2< ALLOC >& apriori) {
+      return isAprioriCompatible(apriori.getType(), apriori.weight());
+    }
+    
+
+    /// indicates whether the apriori is compatible (meaningful) with the score
+    template < template < typename > class ALLOC >
+    INLINE std::string ScoreAIC2< ALLOC >::isAprioriCompatible() const {
+      return isAprioriCompatible(*(this->_apriori));
+    }
+    
+
+    /// returns the internal apriori of the score
+    template < template < typename > class ALLOC >
+    INLINE const ScoreInternalApriori2< ALLOC >&
+                 ScoreAIC2< ALLOC >::internalApriori() const {
+      return __internal_apriori;
+    }
+    
+
+    /// returns the score corresponding to a given nodeset
+    template < template < typename > class ALLOC >
+    INLINE double ScoreAIC2< ALLOC >::_score(IdSet2< ALLOC >&& idset) {
+      return _score( idset );
+    }
+
+    /// returns the score corresponding to a given nodeset
+    template < template < typename > class ALLOC >
+    double ScoreAIC2< ALLOC >::_score(const IdSet2< ALLOC >& idset) {
+      return 0;
+    }
+   
+      /*
+      
+      // get the counts for all the targets and for the conditioning nodes
+      const std::vector< double, ALLOC<double> > N_ijk =
+        _counter.getcounts ( idset );
+      
+      
+      const Size targets_modal = Size(N_ijk.size());
+      double     score = 0;
+
+      // get the nodes involved in the score as well as their modalities
+      const std::vector< Idx, IdSetAlloc >& all_nodes =
+        this->_getAllNodes(nodeset_index);
+      const std::vector< Idx, IdSetAlloc >* conditioning_nodes =
+        this->_getConditioningNodes(nodeset_index);
+      const std::vector< Size >& modalities = this->modalities();
+
+      // here, we distinguish nodesets with conditioning nodes from those
+      // without conditioning nodes
+      if (conditioning_nodes) {
+        // get the counts for the conditioning nodes
+        const std::vector< double, CountAlloc >& N_ij =
+          this->_getConditioningCounts(nodeset_index);
+        const Size conditioning_modal = Size(N_ij.size());
+
+        // initialize the score: this should be the penalty of the AIC score,
+        // i.e.,
+        // -(ri-1 ) * qi
+        const double penalty =
+          double(conditioning_modal * (modalities[all_nodes.back()] - 1));
+
+        if (this->_apriori->weight()) {
+          const std::vector< double, CountAlloc >& N_prime_ijk =
+            this->_getAllApriori(nodeset_index);
+          const std::vector< double, CountAlloc >& N_prime_ij =
+            this->_getConditioningApriori(nodeset_index);
+
+          // compute the score: it remains to compute the log likelihood, i.e.,
+          // sum_k=1^r_i sum_j=1^q_i N_ijk log (N_ijk / N_ij), which is also
+          // equivalent to:
+          // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - sum_j=1^q_i N_ij log N_ij
+          for (Idx k = 0; k < targets_modal; ++k) {
+            const double new_count = N_ijk[k] + N_prime_ijk[k];
+            if (new_count) { score += new_count * std::log(new_count); }
+          }
+          for (Idx j = 0; j < conditioning_modal; ++j) {
+            const double new_count = N_ij[j] + N_prime_ij[j];
+            if (new_count) { score -= new_count * std::log(new_count); }
+          }
+        } else {
+          // compute the score: it remains to compute the log likelihood, i.e.,
+          // sum_k=1^r_i sum_j=1^q_i N_ijk log (N_ijk / N_ij), which is also
+          // equivalent to:
+          // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - sum_j=1^q_i N_ij log N_ij
+          for (Idx k = 0; k < targets_modal; ++k) {
+            if (N_ijk[k]) { score += N_ijk[k] * std::log(N_ijk[k]); }
+          }
+          for (Idx j = 0; j < conditioning_modal; ++j) {
+            if (N_ij[j]) { score -= N_ij[j] * std::log(N_ij[j]); }
+          }
+        }
+
+        // divide by log(2), since the log likelihood uses log_2
+        score *= this->_1log2;
+
+        // finally, remove the penalty
+        score -= penalty;
+
+        // shall we put the score into the cache?
+        if (this->_isUsingCache()) {
+          this->_insertIntoCache(nodeset_index, score);
+        }
+
+        return score;
+      } else {
+        // here, there are no conditioning nodes
+
+        // initialize the score: this should be the penalty of the AIC score,
+        // i.e.,
+        // -(ri-1 )
+        const double penalty = double(modalities[all_nodes.back()]) - 1;
+
+        if (this->_apriori->weight()) {
+          const std::vector< double, CountAlloc >& N_prime_ijk =
+            this->_getAllApriori(nodeset_index);
+
+          // compute the score: it remains to compute the log likelihood, i.e.,
+          // sum_k=1^r_i N_ijk log (N_ijk / N), which is also
+          // equivalent to:
+          // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - N log N
+          double N = 0;
+          for (Idx k = 0; k < targets_modal; ++k) {
+            const double new_count = N_ijk[k] + N_prime_ijk[k];
+            if (new_count) {
+              score += new_count * std::log(new_count);
+              N += new_count;
+            }
+          }
+          score -= N * std::log(N);
+        } else {
+          // compute the score: it remains to compute the log likelihood, i.e.,
+          // sum_k=1^r_i N_ijk log (N_ijk / N), which is also
+          // equivalent to:
+          // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - N log N
+          double N = 0;
+          for (Idx k = 0; k < targets_modal; ++k) {
+            if (N_ijk[k]) {
+              score += N_ijk[k] * std::log(N_ijk[k]);
+              N += N_ijk[k];
+            }
+          }
+          score -= N * std::log(N);
+        }
+
+        // divide by log(2), since the log likelihood uses log_2
+        score *= this->_1log2;
+
+        // finally, remove the penalty
+        score -= penalty;
+
+        // shall we put the score into the cache?
+        if (this->_isUsingCache()) {
+          this->_insertIntoCache(nodeset_index, score);
+        }
+
+        return score;
+      }
+    }
+
+    */
+
+  } /* namespace learning */
+
+} /* namespace gum */
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */

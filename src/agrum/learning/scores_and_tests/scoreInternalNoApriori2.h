@@ -18,26 +18,25 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the base class for all the score's internal aprioris
+ * @brief the internal apriori for the scores without apriori (e.g., BD)
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_LEARNING_SCORE_INTERNAL_APRIORI2_H
-#define GUM_LEARNING_SCORE_INTERNAL_APRIORI2_H
+#ifndef GUM_LEARNING_SCORE_INTERNAL_NO_APRIORI2_H
+#define GUM_LEARNING_SCORE_INTERNAL_NO_APRIORI2_H
+
+#include <vector>
 
 #include <agrum/agrum.h>
-#include <vector>
-#include <agrum/core/bijection.h>
-#include <agrum/learning/database/databaseTable.h>
-#include <agrum/learning/scores_and_tests/idSet2.h>
+#include <agrum/learning/scores_and_tests/scoreInternalApriori2.h>
 
 namespace gum {
 
   namespace learning {
 
-    /** @class ScoreInternalApriori
-     * @brief the base class for all the score's internal aprioris
-     * @headerfile scoreInternalApriori2.h <agrum/learning/scores_and_tests/scoreInternalApriori2.h>
+    /** @class ScoreInternalNoApriori2
+     * @brief the internal apriori for the scores without apriori (e.g., BD)
+     * @headerfile scoreInternalNoApriori2.h <agrum/learning/scores_and_tests/scoreInternalNoApriori2.h>
      * @ingroup learning_scores
      *
      * Some scores include an apriori. For instance, the K2 score is a BD score
@@ -52,7 +51,7 @@ namespace gum {
      * and parameter learning.
      */
     template < template < typename > class ALLOC = std::allocator >
-    class ScoreInternalApriori2 : private ALLOC< NodeId > {
+    class ScoreInternalNoApriori2 : public ScoreInternalApriori2< ALLOC > {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;
@@ -63,22 +62,52 @@ namespace gum {
       /// @{
 
       /// default constructor
-      ScoreInternalApriori2(
-        const DatabaseTable< ALLOC >& database,
-        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-          nodeId2columns =
-            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-        const allocator_type& alloc = allocator_type());
+      ScoreInternalNoApriori2(const DatabaseTable< ALLOC >& database,
+               const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                 nodeId2columns =
+                   Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+               const allocator_type& alloc = allocator_type());
+
+      /// copy constructor
+      ScoreInternalNoApriori2(const ScoreInternalNoApriori2< ALLOC >& from);
+
+      /// copy constructor with a given allocator
+      ScoreInternalNoApriori2(const ScoreInternalNoApriori2< ALLOC >& from,
+                            const allocator_type&                 alloc);
+
+      /// move constructor
+      ScoreInternalNoApriori2(ScoreInternalNoApriori2< ALLOC >&& from);
+
+      /// move constructor with a given allocator
+      ScoreInternalNoApriori2(ScoreInternalNoApriori2< ALLOC >&& from,
+                            const allocator_type&            alloc);
 
       /// virtual copy constructor
-      virtual ScoreInternalApriori2< ALLOC >* clone() const = 0;
+      virtual ScoreInternalNoApriori2< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual ScoreInternalApriori2< ALLOC >*
-        clone(const allocator_type& alloc) const = 0;
+      virtual ScoreInternalNoApriori2< ALLOC >*
+        clone(const allocator_type& alloc) const;
 
       /// destructor
-      virtual ~ScoreInternalApriori2();
+      virtual ~ScoreInternalNoApriori2();
+
+      /// @}
+
+      
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+
+      /// @{
+
+      /// copy operator
+      ScoreInternalNoApriori2< ALLOC >&
+        operator=(const ScoreInternalNoApriori2< ALLOC >& from);
+
+      /// move operator
+      ScoreInternalNoApriori2< ALLOC >&
+        operator=(ScoreInternalNoApriori2< ALLOC >&& from);
 
       /// @}
 
@@ -87,7 +116,7 @@ namespace gum {
       /// @name Accessors / Modifiers
       // ##########################################################################
       /// @{
-      
+
       /// adds the apriori to a counting vector corresponding to the idset
       /** adds the apriori to an already created counting vector defined over
        * the union of the variables on both the left and right hand side of the
@@ -96,7 +125,7 @@ namespace gum {
        * the domain size of the joint variables set. */
       virtual void 
       addAllApriori(const IdSet2< ALLOC >& idset,
-                    std::vector< double, ALLOC< double > >& counts ) = 0;
+                    std::vector< double, ALLOC< double > >& counts ) final;
 
       /** @brief adds the apriori to a counting vectordefined over the right
        * hand side of the idset
@@ -105,53 +134,13 @@ namespace gum {
        * the domain size of the joint RHS variables of the idset. */
       virtual void 
       addConditioningApriori(const IdSet2< ALLOC >& idset,
-                             std::vector< double, ALLOC< double > >& counts ) = 0;
+                             std::vector< double, ALLOC< double > >& counts )
+        final;
 
       /// indicates whether the apriori is potentially informative
-      /** Basically, only the NoApriori is uninformative. However, it may happen
-       * that, under some circonstances, an apriori, which is usually not equal
-       * to the NoApriori, becomes equal to it. In this case, if the apriori can
-       * detect this case, it shall informs the classes that use it that it is
-       * temporarily uninformative. These classes will then be able to speed-up
-       * their code by avoiding to take into account the apriori in their
-       * computations. */
-      virtual bool isInformative() const;
-
-      /// returns the allocator used by the internal apriori
-      allocator_type getAllocator() const;
+      virtual bool isInformative() const final;
 
       /// @}
-
-      protected:
-      /// a reference to the database in order to have access to its variables
-      const DatabaseTable< ALLOC >* _database;
-
-      /** @brief a mapping from the NodeIds of the variables to the indices of
-       * the columns in the database */
-      Bijection< NodeId, std::size_t, ALLOC< std::size_t > > _nodeId2columns;
-
-
-      /// copy constructor
-      ScoreInternalApriori2(const ScoreInternalApriori2< ALLOC >& from);
-
-      /// copy constructor with a given allocator
-      ScoreInternalApriori2(const ScoreInternalApriori2< ALLOC >& from,
-                            const allocator_type&                 alloc);
-
-      /// move constructor
-      ScoreInternalApriori2(ScoreInternalApriori2< ALLOC >&& from);
-
-      /// move constructor with a given allocator
-      ScoreInternalApriori2(ScoreInternalApriori2< ALLOC >&& from,
-                            const allocator_type&            alloc);
-
-      /// copy operator
-      ScoreInternalApriori2< ALLOC >&
-        operator=(const ScoreInternalApriori2< ALLOC >& from);
-
-      /// move operator
-      ScoreInternalApriori2< ALLOC >&
-        operator=(ScoreInternalApriori2< ALLOC >&& from);
     };
 
   } /* namespace learning */
@@ -159,10 +148,10 @@ namespace gum {
 } /* namespace gum */
 
 
-extern template class gum::learning::ScoreInternalApriori2<>;
+extern template class gum::learning::ScoreInternalNoApriori2<>;
 
 
 /// include the template implementation
-#include <agrum/learning/scores_and_tests/scoreInternalApriori2_tpl.h>
+#include <agrum/learning/scores_and_tests/scoreInternalNoApriori2_tpl.h>
 
-#endif /* GUM_LEARNING_SCORE_INTERNAL_APRIORI2_H */
+#endif /* GUM_LEARNING_SCORE_INTERNAL_NO_APRIORI2_H */
