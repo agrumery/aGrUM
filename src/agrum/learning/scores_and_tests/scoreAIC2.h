@@ -204,12 +204,6 @@ namespace gum {
        * in the left hand side or the right hand side of the idset). */
       virtual double _score ( const IdSet2< ALLOC >& idset ) final;
 
-      /// returns the score for a given IdSet
-      /** @throws OperationNotAllowed is raised if the score does not support
-       * calling method score such an idset (due to too many/too few variables
-       * in the left hand side or the right hand side of the idset). */
-      virtual double _score ( IdSet2< ALLOC >&& idset ) final;
-      
 
     private:
       /// the internal apriori of the score

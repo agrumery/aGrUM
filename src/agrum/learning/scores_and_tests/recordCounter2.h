@@ -230,36 +230,47 @@ namespace gum {
       /// returns the minimum of rows that each thread should process
       std::size_t minNbRowsPerThread() const;
 
-      /// returns the counts for a given set of nodes
-      /** @ids the ids of the variables for we we perform countings.
+      /// returns the counts over all the variables in an IdSet
+      /** @param ids the idset of the variables over which we perform countings.
+       * @param check_discrete_vars The record counter can only produce correct
+       * results on sets of discrete variables. By default, the method does not
+       * check whether the variables corresponding to the IdSet are actually
+       * discrete. If check_discrete_vars is set to true, then this check is
+       * performed before computing the counting vector. In this case, if a
+       * variable is not discrete, a TypeError exception is raised.
        * @return a vector containing the multidimensional contingency table
-       * over all the variables corresponding to the ids passed in argument.
-       * The first dimension is that of the first variable in the sequence,
-       * i.e., when its value increases by 1, the offset in the vector also
-       * increases by 1. The second dimention is that of the second variable
-       * in the sequence, i.e., when its value increases by 1, the offset in the
-       * vector increases by the domain size of the first variable. For the third
-       * variable, the offset corresponds to the product of the domain sizes of
-       * the first two variables, and so on.
+       * over all the variables corresponding to the ids passed in argument
+       * (both at the left hand side and right hand side of the conditioning
+       * bar of the IdSet). The first dimension is that of the first variable in
+       * the IdSet, i.e., when its value increases by 1, the offset in the
+       * output vector also increases by 1. The second dimension is that of the
+       * second variable in the IdSet, i.e., when its value increases by 1, the
+       * offset in the ouput vector increases by the domain size of the first
+       * variable. For the third variable, the offset corresponds to the product
+       * of the domain sizes of the first two variables, and so on.
        * @warning The vector returned by the function may differ from one
        * call to another. So, care must be taken. E,g. a code like:
        * @code
-       * const std::vector< double, ALLOC<double> >& counts =
-       *   counter.counts(ids);
+       * const std::vector< double, ALLOC<double> >&
+       * counts = counter.counts(ids);
        * counts = counter.counts(other_ids);
        * @endcode
-       * may be erroneous because the two calls to method counts() may return
-       * references to different vectors. The correct way of using method
-       * counts is always to call it declaring a new reference variable:
+       * may be erroneous because the two calls to method counts() may
+       * return references to different vectors. The correct way of using method
+       * counts() is always to call it declaring a new reference variable:
        * @code
        * const std::vector< double, ALLOC<double> >& counts =
        *   counter.counts(ids);
        * const std::vector< double, ALLOC<double> >& other_counts =
        *   counter.counts(other_ids);
        * @endcode
+       * @throw TypeError is raised if check_discrete_vars is set to true (i.e.,
+       * we check that all variables in the IdSet are discrete) and if at least
+       * one variable is not of a discrete nature.
        */
       const std::vector< double, ALLOC< double > >&
-        counts(const IdSet2< ALLOC >& ids);
+      counts(const IdSet2< ALLOC >& ids,
+             const bool check_discrete_vars = false );
 
       /// sets new ranges to perform the countings
       /** @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
@@ -279,6 +290,10 @@ namespace gum {
 
       /// returns the allocator used
       allocator_type getAllocator() const;
+
+      /// returns the mapping from ids to column positions in the database
+      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+      nodeId2Columns () const;
 
       /// @}
 
@@ -353,6 +368,19 @@ namespace gum {
         const std::vector< std::pair< std::size_t, std::size_t >,
                            XALLOC< std::pair< std::size_t, std::size_t > > >&
           new_ranges) const;
+
+      /// check that the variables at indices [beg,end) of an idset are discrete
+      /** @throw TypeError is raised if at least one variable in ids is
+       * of a continuous nature. */
+      void __checkDiscreteVariables (const IdSet2< ALLOC >& ids ) const;
+
+      /// compute and raise the exception when some variables are continuous
+      /** This method is used by __checkDiscreteVariables to determine the
+       * appropriate message to include in the TypeError exception raised when
+       * some variables over which we should perform countings are continuous. */
+      void __raiseCheckException ( 
+           const std::vector<std::string,ALLOC<std::string>>& bad_vars ) const;
+      
     };
 
   } /* namespace learning */

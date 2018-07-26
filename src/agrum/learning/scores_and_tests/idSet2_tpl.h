@@ -585,6 +585,13 @@ namespace gum {
       return __ids.exists(id);
     }
 
+    
+    /// indicates whether the idset contains a non-empty conditioning set
+    template < template < typename > class ALLOC >
+    INLINE bool IdSet2< ALLOC >::hasConditioningSet () const {
+      return __nb_lhs_ids != __ids.size ();
+    }
+
 
     /// indicates whether the IdSet contains some nodes or not
     template < template < typename > class ALLOC >

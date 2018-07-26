@@ -210,7 +210,7 @@ namespace gum {
         _cache.insert(std::move(idset), the_score);
         return the_score;
       } else {
-        return _score(std::move(idset));
+        return _score(idset);
       }
     }
 
