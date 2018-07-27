@@ -123,6 +123,30 @@ namespace gum {
     ScoreAIC2< ALLOC >::~ScoreAIC2< ALLOC > () {
       GUM_DESTRUCTOR(ScoreAIC2);
     }
+
+
+    /// copy operator
+    template < template < typename > class ALLOC >
+    ScoreAIC2< ALLOC >&
+    ScoreAIC2< ALLOC >::operator=(const ScoreAIC2< ALLOC >& from) {
+      if ( this != &from ) {
+        Score2<ALLOC>::operator= ( from );
+        __internal_apriori = from.__internal_apriori;
+      }
+      return *this;
+    }
+
+
+    /// move operator
+    template < template < typename > class ALLOC >
+    ScoreAIC2< ALLOC >&
+    ScoreAIC2< ALLOC >::operator=(ScoreAIC2< ALLOC >&& from) {
+      if ( this != &from ) {
+        Score2<ALLOC>::operator= ( std::move ( from ) );
+        __internal_apriori = std::move ( from.__internal_apriori );
+      }
+      return *this;
+    }
     
 
     /// indicates whether the apriori is compatible (meaningful) with the score

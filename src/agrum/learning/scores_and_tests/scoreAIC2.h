@@ -31,6 +31,7 @@
 #ifndef GUM_LEARNING_SCORE_AIC2_H
 #define GUM_LEARNING_SCORE_AIC2_H
 
+#include <cmath>
 #include <string>
 
 #include <agrum/agrum.h>
