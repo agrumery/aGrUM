@@ -247,79 +247,80 @@ namespace gum {
 
     /// compute and raise the exception when some variables are continuous
     template < template < typename > class ALLOC >
-    void RecordCounter2< ALLOC >::__raiseCheckException ( 
-         const std::vector<std::string,ALLOC<std::string>>& bad_vars ) const {
+    void RecordCounter2< ALLOC >::__raiseCheckException(
+      const std::vector< std::string, ALLOC< std::string > >& bad_vars) const {
       // generate the exception
       std::stringstream msg;
       msg << "Counts cannot be performed on continuous variables. ";
       msg << "Unfortunately the following variable";
-      if ( bad_vars.size() == 1 )
+      if (bad_vars.size() == 1)
         msg << " is continuous: " << bad_vars[0];
       else {
         msg << "s are continuous: ";
         bool deja = false;
-        for ( const auto& name : bad_vars ) {
-          if ( deja ) msg << ", ";
-          else deja = true;
+        for (const auto& name : bad_vars) {
+          if (deja)
+            msg << ", ";
+          else
+            deja = true;
           msg << name;
         }
       }
-      GUM_ERROR ( TypeError, msg.str() );
+      GUM_ERROR(TypeError, msg.str());
     }
 
-      
+
     /// check that all the variables in an idset are discrete
     template < template < typename > class ALLOC >
-    void RecordCounter2< ALLOC >::__checkDiscreteVariables (
-         const IdSet2< ALLOC >& ids ) const {
-      const std::size_t size = ids.size ();
-      const DatabaseTable<ALLOC>& database = __parsers[0].data.database ();
+    void RecordCounter2< ALLOC >::__checkDiscreteVariables(
+      const IdSet2< ALLOC >& ids) const {
+      const std::size_t             size = ids.size();
+      const DatabaseTable< ALLOC >& database = __parsers[0].data.database();
 
-      if ( __nodeId2columns.empty () ) {
+      if (__nodeId2columns.empty()) {
         // check all the ids
-        for ( std::size_t i = std::size_t(0); i < size; ++i ) {
-          if ( database.variable(i).varType() == VarType::Continuous ) {
+        for (std::size_t i = std::size_t(0); i < size; ++i) {
+          if (database.variable(i).varType() == VarType::Continuous) {
             // here, var i does not correspond to a discrete variable.
             // we check whether there are other non discrete variables, so that
             // we can generate an exception mentioning all these variables
-            std::vector<std::string,ALLOC<std::string>>
-              bad_vars { database.variable(i).name() };
-            for ( ++i; i < size; ++i ) {
-              if ( database.variable(i).varType() == VarType::Continuous )
-                bad_vars.push_back ( database.variable(i).name() );
+            std::vector< std::string, ALLOC< std::string > > bad_vars{
+              database.variable(i).name()};
+            for (++i; i < size; ++i) {
+              if (database.variable(i).varType() == VarType::Continuous)
+                bad_vars.push_back(database.variable(i).name());
             }
-            __raiseCheckException ( bad_vars );
+            __raiseCheckException(bad_vars);
           }
         }
-      }
-      else {
+      } else {
         // check all the ids
-        for ( std::size_t i = std::size_t(0); i < size; ++i ) {
+        for (std::size_t i = std::size_t(0); i < size; ++i) {
           // get the position of the variable in the database
-          std::size_t pos = __nodeId2columns.second( ids[i] );
+          std::size_t pos = __nodeId2columns.second(ids[i]);
 
-          if ( database.variable(pos).varType() == VarType::Continuous ) {
+          if (database.variable(pos).varType() == VarType::Continuous) {
             // here, id does not correspond to a discrete variable.
             // we check whether there are other non discrete variables, so that
             // we can generate an exception mentioning all these variables
-            std::vector<std::string,ALLOC<std::string>>
-              bad_vars { database.variable(pos).name() };
-            for ( ++i; i < size; ++i ) {
-              const std::size_t pos = __nodeId2columns.second( ids[i] );
-              if ( database.variable(pos).varType() == VarType::Continuous )
-                bad_vars.push_back ( database.variable(pos).name() );
+            std::vector< std::string, ALLOC< std::string > > bad_vars{
+              database.variable(pos).name()};
+            for (++i; i < size; ++i) {
+              const std::size_t pos = __nodeId2columns.second(ids[i]);
+              if (database.variable(pos).varType() == VarType::Continuous)
+                bad_vars.push_back(database.variable(pos).name());
             }
-            __raiseCheckException ( bad_vars );
+            __raiseCheckException(bad_vars);
           }
         }
       }
     }
 
-    
+
     /// returns the mapping from ids to column positions in the database
     template < template < typename > class ALLOC >
     INLINE const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-    RecordCounter2< ALLOC >::nodeId2Columns () const {
+                 RecordCounter2< ALLOC >::nodeId2Columns() const {
       return __nodeId2columns;
     }
 
@@ -327,8 +328,8 @@ namespace gum {
     /// returns the counts for a given set of nodes
     template < template < typename > class ALLOC >
     INLINE const std::vector< double, ALLOC< double > >&
-    RecordCounter2< ALLOC >::counts(const IdSet2< ALLOC >& ids,
-                                    const bool check_discrete_vars) {
+                 RecordCounter2< ALLOC >::counts(const IdSet2< ALLOC >& ids,
+                                      const bool             check_discrete_vars) {
       // if the idset is empty, return an empty vector
       if (ids.empty()) {
         __last_nonDB_ids.clear();
@@ -344,7 +345,7 @@ namespace gum {
       else if (__last_DB_ids.contains(ids))
         return __extractFromCountings(ids, __last_DB_ids, __last_DB_countings);
       else {
-        if ( check_discrete_vars ) __checkDiscreteVariables ( ids );
+        if (check_discrete_vars) __checkDiscreteVariables(ids);
         return __countFromDatabase(ids);
       }
     }

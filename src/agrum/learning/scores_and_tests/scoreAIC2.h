@@ -81,7 +81,7 @@ namespace gum {
        * Score. */
       ScoreAIC2(
         const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori2< ALLOC >& apriori,
+        const Apriori2< ALLOC >&             apriori,
         const std::vector< std::pair< std::size_t, std::size_t >,
                            ALLOC< std::pair< std::size_t, std::size_t > > >&
           ranges,
@@ -90,7 +90,7 @@ namespace gum {
             Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
         const allocator_type& alloc = allocator_type());
 
-      
+
       /// default constructor
       /** @param parser the parser used to parse the database
        * @param apriori An apriori that we add to the computation of the score
@@ -103,33 +103,31 @@ namespace gum {
        * NodeId is equal to the index of the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
        * Score. */
-      ScoreAIC2(
-        const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori2< ALLOC >& apriori,
-        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-          nodeId2columns =
-            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-        const allocator_type& alloc = allocator_type());
+      ScoreAIC2(const DBRowGeneratorParser< ALLOC >& parser,
+                const Apriori2< ALLOC >&             apriori,
+                const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                  nodeId2columns =
+                    Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+                const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       ScoreAIC2(const ScoreAIC2< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      ScoreAIC2(const ScoreAIC2< ALLOC >& from,
-                const allocator_type&  alloc);
+      ScoreAIC2(const ScoreAIC2< ALLOC >& from, const allocator_type& alloc);
 
       /// move constructor
       ScoreAIC2(ScoreAIC2< ALLOC >&& from);
 
       /// move constructor with a given allocator
       ScoreAIC2(ScoreAIC2< ALLOC >&& from, const allocator_type& alloc);
-      
+
       /// virtual copy constructor
       virtual ScoreAIC2< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
       virtual ScoreAIC2< ALLOC >* clone(const allocator_type& alloc) const;
-      
+
       /// destructor
       virtual ~ScoreAIC2();
 
@@ -149,7 +147,7 @@ namespace gum {
       ScoreAIC2< ALLOC >& operator=(ScoreAIC2< ALLOC >&& from);
 
       /// @}
-      
+
 
       // ##########################################################################
       /// @name Accessors / Modifiers
@@ -179,12 +177,10 @@ namespace gum {
        * note that, to be meaningful, a structure + parameter learning requires
        * that the same aprioris are taken into account during structure learning
        * and parameter learning. */
-      virtual const ScoreInternalApriori2< ALLOC >&
-        internalApriori() const final;
+      virtual const ScoreInternalApriori2< ALLOC >& internalApriori() const final;
 
       /// @}
 
-      
 
       /// indicates whether the apriori is compatible (meaningful) with the score
       /** @returns a non empty string if the apriori is compatible with the score.
@@ -197,19 +193,17 @@ namespace gum {
       static std::string isAprioriCompatible(const Apriori2< ALLOC >& apriori);
 
 
-
-    protected:
+      protected:
       /// returns the score for a given IdSet
       /** @throws OperationNotAllowed is raised if the score does not support
        * calling method score such an idset (due to too many/too few variables
        * in the left hand side or the right hand side of the idset). */
-      virtual double _score ( const IdSet2< ALLOC >& idset ) final;
+      virtual double _score(const IdSet2< ALLOC >& idset) final;
 
 
-    private:
+      private:
       /// the internal apriori of the score
       ScoreInternalNoApriori2< ALLOC > __internal_apriori;
-
     };
 
   } /* namespace learning */

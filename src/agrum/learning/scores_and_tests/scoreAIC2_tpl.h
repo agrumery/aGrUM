@@ -25,8 +25,8 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/learning/scores_and_tests/scoreAIC2.h>
-#include <sstream>
+#  include <agrum/learning/scores_and_tests/scoreAIC2.h>
+#  include <sstream>
 
 namespace gum {
 
@@ -40,58 +40,58 @@ namespace gum {
       const std::vector< std::pair< std::size_t, std::size_t >,
                          ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename ScoreAIC2< ALLOC >::allocator_type&               alloc) :
-      Score2<ALLOC> ( parser, apriori, ranges, nodeId2columns, alloc ),
-      __internal_apriori ( parser.database(), nodeId2columns ) {
+      const typename ScoreAIC2< ALLOC >::allocator_type&            alloc) :
+        Score2< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
+        __internal_apriori(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreAIC2);
     }
 
-    
+
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE ScoreAIC2< ALLOC >::ScoreAIC2(
-      const DBRowGeneratorParser< ALLOC >&                                 parser,
-      const Apriori2< ALLOC >&                                             apriori,
+      const DBRowGeneratorParser< ALLOC >&                          parser,
+      const Apriori2< ALLOC >&                                      apriori,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename ScoreAIC2< ALLOC >::allocator_type&               alloc) :
-      Score2<ALLOC> ( parser, apriori, nodeId2columns, alloc ),
-      __internal_apriori ( parser.database(), nodeId2columns ) {
+      const typename ScoreAIC2< ALLOC >::allocator_type&            alloc) :
+        Score2< ALLOC >(parser, apriori, nodeId2columns, alloc),
+        __internal_apriori(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreAIC2);
     }
 
-    
+
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE ScoreAIC2< ALLOC >::ScoreAIC2(
-       const ScoreAIC2< ALLOC >& from,
-       const typename ScoreAIC2< ALLOC >::allocator_type&  alloc) :
-      Score2<ALLOC> ( from, alloc ),
-      __internal_apriori ( from.__internal_apriori, alloc ) {
+      const ScoreAIC2< ALLOC >&                          from,
+      const typename ScoreAIC2< ALLOC >::allocator_type& alloc) :
+        Score2< ALLOC >(from, alloc),
+        __internal_apriori(from.__internal_apriori, alloc) {
       GUM_CONS_CPY(ScoreAIC2);
     }
-      
+
 
     /// copy constructor
     template < template < typename > class ALLOC >
     INLINE ScoreAIC2< ALLOC >::ScoreAIC2(const ScoreAIC2< ALLOC >& from) :
-      ScoreAIC2<ALLOC> ( from, this->getAllocator () ) {}
+        ScoreAIC2< ALLOC >(from, this->getAllocator()) {}
 
 
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE ScoreAIC2< ALLOC >::ScoreAIC2(
-       ScoreAIC2< ALLOC >&& from,
-       const typename ScoreAIC2< ALLOC >::allocator_type&  alloc) :
-      Score2<ALLOC> ( std::move(from), alloc ),
-      __internal_apriori ( std::move(from.__internal_apriori), alloc ) {
+      ScoreAIC2< ALLOC >&&                               from,
+      const typename ScoreAIC2< ALLOC >::allocator_type& alloc) :
+        Score2< ALLOC >(std::move(from), alloc),
+        __internal_apriori(std::move(from.__internal_apriori), alloc) {
       GUM_CONS_MOV(ScoreAIC2);
     }
-      
+
 
     /// move constructor
     template < template < typename > class ALLOC >
     INLINE ScoreAIC2< ALLOC >::ScoreAIC2(ScoreAIC2< ALLOC >&& from) :
-      ScoreAIC2<ALLOC> ( std::move(from), this->getAllocator () ) {}
+        ScoreAIC2< ALLOC >(std::move(from), this->getAllocator()) {}
 
 
     /// virtual copy constructor with a given allocator
@@ -117,20 +117,20 @@ namespace gum {
       return clone(this->getAllocator());
     }
 
-    
+
     /// destructor
     template < template < typename > class ALLOC >
-    ScoreAIC2< ALLOC >::~ScoreAIC2< ALLOC > () {
+    ScoreAIC2< ALLOC >::~ScoreAIC2< ALLOC >() {
       GUM_DESTRUCTOR(ScoreAIC2);
     }
 
 
     /// copy operator
     template < template < typename > class ALLOC >
-    ScoreAIC2< ALLOC >&
-    ScoreAIC2< ALLOC >::operator=(const ScoreAIC2< ALLOC >& from) {
-      if ( this != &from ) {
-        Score2<ALLOC>::operator= ( from );
+    ScoreAIC2< ALLOC >& ScoreAIC2< ALLOC >::
+                        operator=(const ScoreAIC2< ALLOC >& from) {
+      if (this != &from) {
+        Score2< ALLOC >::operator=(from);
         __internal_apriori = from.__internal_apriori;
       }
       return *this;
@@ -139,20 +139,20 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    ScoreAIC2< ALLOC >&
-    ScoreAIC2< ALLOC >::operator=(ScoreAIC2< ALLOC >&& from) {
-      if ( this != &from ) {
-        Score2<ALLOC>::operator= ( std::move ( from ) );
-        __internal_apriori = std::move ( from.__internal_apriori );
+    ScoreAIC2< ALLOC >& ScoreAIC2< ALLOC >::operator=(ScoreAIC2< ALLOC >&& from) {
+      if (this != &from) {
+        Score2< ALLOC >::operator=(std::move(from));
+        __internal_apriori = std::move(from.__internal_apriori);
       }
       return *this;
     }
-    
+
 
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < template < typename > class ALLOC >
-    std::string ScoreAIC2< ALLOC >::isAprioriCompatible(
-      const std::string& apriori_type, double weight) {
+    std::string
+      ScoreAIC2< ALLOC >::isAprioriCompatible(const std::string& apriori_type,
+                                              double             weight) {
       // check that the apriori is compatible with the score
       if ((apriori_type == AprioriDirichletType::type)
           || (apriori_type == AprioriSmoothingType::type)
@@ -166,22 +166,22 @@ namespace gum {
           << "' is not yet supported by method isAprioriCompatible os Score AIC";
       return msg.str();
     }
-    
+
 
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < template < typename > class ALLOC >
-    INLINE std::string ScoreAIC2< ALLOC >::isAprioriCompatible(
-      const Apriori2< ALLOC >& apriori) {
+    INLINE std::string
+           ScoreAIC2< ALLOC >::isAprioriCompatible(const Apriori2< ALLOC >& apriori) {
       return isAprioriCompatible(apriori.getType(), apriori.weight());
     }
-    
+
 
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < template < typename > class ALLOC >
     INLINE std::string ScoreAIC2< ALLOC >::isAprioriCompatible() const {
       return isAprioriCompatible(*(this->_apriori));
     }
-    
+
 
     /// returns the internal apriori of the score
     template < template < typename > class ALLOC >
@@ -189,41 +189,41 @@ namespace gum {
                  ScoreAIC2< ALLOC >::internalApriori() const {
       return __internal_apriori;
     }
-    
-    
+
+
     /// returns the score corresponding to a given nodeset
     template < template < typename > class ALLOC >
     double ScoreAIC2< ALLOC >::_score(const IdSet2< ALLOC >& idset) {
       // get the counts for all the nodes in the idset and add the apriori
-      std::vector< double, ALLOC<double> >
-        N_ijk (this->_counter.counts(idset,true));
-      this->_apriori->addAllApriori( idset, N_ijk);
+      std::vector< double, ALLOC< double > > N_ijk(
+        this->_counter.counts(idset, true));
+      this->_apriori->addAllApriori(idset, N_ijk);
       const std::size_t all_size = N_ijk.size();
 
       // here, we distinguish idsets with conditioning nodes from those
       // without conditioning nodes
-      if ( idset.hasConditioningSet()) {
+      if (idset.hasConditioningSet()) {
         // get the counts for the conditioning nodes
-        std::vector< double, ALLOC<double> > N_ij =
-          this->_counter.counts ( idset.conditionalIdSet(), false );
-        this->_apriori->addConditioningApriori( idset, N_ij);
+        std::vector< double, ALLOC< double > > N_ij =
+          this->_counter.counts(idset.conditionalIdSet(), false);
+        this->_apriori->addConditioningApriori(idset, N_ij);
         const std::size_t conditioning_size = N_ij.size();
 
         // initialize the score: this should be the penalty of the AIC score,
         // i.e., -(ri-1 ) * qi
         const std::size_t target_domsize = all_size / conditioning_size;
-        const double penalty = double(conditioning_size *
-                                      (target_domsize-std::size_t(1)));
+        const double      penalty =
+          double(conditioning_size * (target_domsize - std::size_t(1)));
 
         // compute the score: it remains to compute the log likelihood, i.e.,
         // sum_k=1^r_i sum_j=1^q_i N_ijk log (N_ijk / N_ij), which is also
         // equivalent to:
         // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - sum_j=1^q_i N_ij log N_ij
         double score = 0.0;
-        for ( const auto n_ijk : N_ijk ) {
+        for (const auto n_ijk : N_ijk) {
           if (n_ijk) { score += n_ijk * std::log(n_ijk); }
         }
-        for ( const auto n_ij : N_ij) {
+        for (const auto n_ij : N_ij) {
           if (n_ij) { score -= n_ij * std::log(n_ij); }
         }
 
@@ -234,8 +234,7 @@ namespace gum {
         score -= penalty;
 
         return score;
-      }
-      else {
+      } else {
         // here, there are no conditioning nodes
 
         // initialize the score: this should be the penalty of the AIC score,
@@ -248,7 +247,7 @@ namespace gum {
         // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - N log N
         double N = 0.0;
         double score = 0.0;
-        for ( const auto n_ijk : N_ijk ) {
+        for (const auto n_ijk : N_ijk) {
           if (n_ijk) {
             score += n_ijk * std::log(n_ijk);
             N += n_ijk;

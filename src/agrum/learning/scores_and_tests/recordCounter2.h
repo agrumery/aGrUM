@@ -269,8 +269,7 @@ namespace gum {
        * one variable is not of a discrete nature.
        */
       const std::vector< double, ALLOC< double > >&
-      counts(const IdSet2< ALLOC >& ids,
-             const bool check_discrete_vars = false );
+        counts(const IdSet2< ALLOC >& ids, const bool check_discrete_vars = false);
 
       /// sets new ranges to perform the countings
       /** @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
@@ -293,7 +292,7 @@ namespace gum {
 
       /// returns the mapping from ids to column positions in the database
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-      nodeId2Columns () const;
+        nodeId2Columns() const;
 
       /// @}
 
@@ -372,15 +371,14 @@ namespace gum {
       /// check that the variables at indices [beg,end) of an idset are discrete
       /** @throw TypeError is raised if at least one variable in ids is
        * of a continuous nature. */
-      void __checkDiscreteVariables (const IdSet2< ALLOC >& ids ) const;
+      void __checkDiscreteVariables(const IdSet2< ALLOC >& ids) const;
 
       /// compute and raise the exception when some variables are continuous
       /** This method is used by __checkDiscreteVariables to determine the
        * appropriate message to include in the TypeError exception raised when
        * some variables over which we should perform countings are continuous. */
-      void __raiseCheckException ( 
-           const std::vector<std::string,ALLOC<std::string>>& bad_vars ) const;
-      
+      void __raiseCheckException(
+        const std::vector< std::string, ALLOC< std::string > >& bad_vars) const;
     };
 
   } /* namespace learning */

@@ -62,25 +62,26 @@ namespace gum {
       /// @{
 
       /// default constructor
-      ScoreInternalNoApriori2(const DatabaseTable< ALLOC >& database,
-               const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                 nodeId2columns =
-                   Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-               const allocator_type& alloc = allocator_type());
+      ScoreInternalNoApriori2(
+        const DatabaseTable< ALLOC >& database,
+        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+          nodeId2columns =
+            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+        const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       ScoreInternalNoApriori2(const ScoreInternalNoApriori2< ALLOC >& from);
 
       /// copy constructor with a given allocator
       ScoreInternalNoApriori2(const ScoreInternalNoApriori2< ALLOC >& from,
-                            const allocator_type&                 alloc);
+                              const allocator_type&                   alloc);
 
       /// move constructor
       ScoreInternalNoApriori2(ScoreInternalNoApriori2< ALLOC >&& from);
 
       /// move constructor with a given allocator
       ScoreInternalNoApriori2(ScoreInternalNoApriori2< ALLOC >&& from,
-                            const allocator_type&            alloc);
+                              const allocator_type&              alloc);
 
       /// virtual copy constructor
       virtual ScoreInternalNoApriori2< ALLOC >* clone() const;
@@ -94,7 +95,7 @@ namespace gum {
 
       /// @}
 
-      
+
       // ##########################################################################
       /// @name Operators
       // ##########################################################################
@@ -123,19 +124,18 @@ namespace gum {
        * conditioning bar of the idset.
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint variables set. */
-      virtual void 
-      addAllApriori(const IdSet2< ALLOC >& idset,
-                    std::vector< double, ALLOC< double > >& counts ) final;
+      virtual void
+        addAllApriori(const IdSet2< ALLOC >&                  idset,
+                      std::vector< double, ALLOC< double > >& counts) final;
 
       /** @brief adds the apriori to a counting vectordefined over the right
        * hand side of the idset
        *
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint RHS variables of the idset. */
-      virtual void 
-      addConditioningApriori(const IdSet2< ALLOC >& idset,
-                             std::vector< double, ALLOC< double > >& counts )
-        final;
+      virtual void addConditioningApriori(
+        const IdSet2< ALLOC >&                  idset,
+        std::vector< double, ALLOC< double > >& counts) final;
 
       /// indicates whether the apriori is potentially informative
       virtual bool isInformative() const final;

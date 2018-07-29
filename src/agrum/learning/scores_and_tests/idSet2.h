@@ -374,7 +374,7 @@ namespace gum {
       bool exists(const NodeId id) const;
 
       /// indicates whether the idset contains a non-empty conditioning set
-      bool hasConditioningSet () const;
+      bool hasConditioningSet() const;
 
       /// indicates whether the IdSet contains some nodes or not
       bool empty() const;

@@ -25,6 +25,8 @@
 #ifndef GUM_LEARNING_SCORE2_H
 #define GUM_LEARNING_SCORE2_H
 
+#include <utility>
+
 #include <agrum/agrum.h>
 #include <agrum/core/math/math.h>
 #include <agrum/core/thread.h>
@@ -228,7 +230,6 @@ namespace gum {
        * calling method score such an idset (due to too many/too few variables
        * in the left hand side or the right hand side of the idset). */
       virtual double _score(const IdSet2< ALLOC >& idset) = 0;
-
     };
 
   } /* namespace learning */
