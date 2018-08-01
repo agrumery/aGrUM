@@ -18,13 +18,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the class for computing AIC scores
+ * @brief the class for computing BIC scores
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#ifndef GUM_LEARNING_SCORE_AIC2_H
-#define GUM_LEARNING_SCORE_AIC2_H
+#ifndef GUM_LEARNING_SCORE_BIC2_H
+#define GUM_LEARNING_SCORE_BIC2_H
 
 #include <cmath>
 #include <string>
@@ -37,16 +37,16 @@ namespace gum {
 
   namespace learning {
 
-    /** @class ScoreAIC2
-     * @brief the class for computing AIC scores
-     * @headerfile scoreAIC2.h <agrum/learning/scores_and_tests/scoreAIC2.h>
+    /** @class ScoreBIC2
+     * @brief the class for computing BIC scores
+     * @headerfile scoreBIC2.h <agrum/learning/scores_and_tests/scoreBIC2.h>
      * @ingroup learning_scores
      *
      * @warning If you pass an apriori to the score, this one will be added
      * into the log-likelihood part of the score.
      */
     template < template < typename > class ALLOC = std::allocator >
-    class ScoreAIC2 : public Score2< ALLOC > {
+    class ScoreBIC2 : public Score2< ALLOC > {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;
@@ -74,7 +74,7 @@ namespace gum {
        * NodeId is equal to the index of the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
        * Score. */
-      ScoreAIC2(
+      ScoreBIC2(
         const DBRowGeneratorParser< ALLOC >& parser,
         const Apriori2< ALLOC >&             apriori,
         const std::vector< std::pair< std::size_t, std::size_t >,
@@ -98,7 +98,7 @@ namespace gum {
        * NodeId is equal to the index of the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
        * Score. */
-      ScoreAIC2(const DBRowGeneratorParser< ALLOC >& parser,
+      ScoreBIC2(const DBRowGeneratorParser< ALLOC >& parser,
                 const Apriori2< ALLOC >&             apriori,
                 const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
                   nodeId2columns =
@@ -106,25 +106,25 @@ namespace gum {
                 const allocator_type& alloc = allocator_type());
 
       /// copy constructor
-      ScoreAIC2(const ScoreAIC2< ALLOC >& from);
+      ScoreBIC2(const ScoreBIC2< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      ScoreAIC2(const ScoreAIC2< ALLOC >& from, const allocator_type& alloc);
+      ScoreBIC2(const ScoreBIC2< ALLOC >& from, const allocator_type& alloc);
 
       /// move constructor
-      ScoreAIC2(ScoreAIC2< ALLOC >&& from);
+      ScoreBIC2(ScoreBIC2< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      ScoreAIC2(ScoreAIC2< ALLOC >&& from, const allocator_type& alloc);
+      ScoreBIC2(ScoreBIC2< ALLOC >&& from, const allocator_type& alloc);
 
       /// virtual copy constructor
-      virtual ScoreAIC2< ALLOC >* clone() const;
+      virtual ScoreBIC2< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual ScoreAIC2< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual ScoreBIC2< ALLOC >* clone(const allocator_type& alloc) const;
 
       /// destructor
-      virtual ~ScoreAIC2();
+      virtual ~ScoreBIC2();
 
       /// @}
 
@@ -136,10 +136,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      ScoreAIC2< ALLOC >& operator=(const ScoreAIC2< ALLOC >& from);
+      ScoreBIC2< ALLOC >& operator=(const ScoreBIC2< ALLOC >& from);
 
       /// move operator
-      ScoreAIC2< ALLOC >& operator=(ScoreAIC2< ALLOC >&& from);
+      ScoreBIC2< ALLOC >& operator=(ScoreBIC2< ALLOC >&& from);
 
       /// @}
 
@@ -206,10 +206,10 @@ namespace gum {
 } /* namespace gum */
 
 
-extern template class gum::learning::ScoreAIC2<>;
+extern template class gum::learning::ScoreBIC2<>;
 
 
 // always include the template implementation
-#include <agrum/learning/scores_and_tests/scoreAIC2_tpl.h>
+#include <agrum/learning/scores_and_tests/scoreBIC2_tpl.h>
 
-#endif /* GUM_LEARNING_SCORE_AIC2_H */
+#endif /* GUM_LEARNING_SCORE_BIC2_H */
