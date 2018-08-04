@@ -17,23 +17,14 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief the different types of apriori
+/**
+ * @file
+ * @brief Implementation of gum::learning::ScoreLog2Likelihood.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/learning/aprioris/aprioriTypes.h>
+#include <agrum/learning/scores_and_tests/scoreLog2Likelihood2.h>
 
-namespace gum {
+template class gum::learning::ScoreLog2Likelihood2<>;
 
-  namespace learning {
-
-    const std::string AprioriDirichletType::type = "Dirichlet";
-    const std::string AprioriSmoothingType::type = "Smoothing";
-    const std::string AprioriNoAprioriType::type = "NoApriori";
-    const std::string AprioriBDeuType::type      = "BDeu";
-
-  } /* namespace learning */
-
-} /* namespace gum */

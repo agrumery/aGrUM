@@ -91,7 +91,7 @@ namespace gum {
       // check that the apriori is compatible with the score
       if (apriori_type == AprioriNoAprioriType::type) { return ""; }
 
-      if (weight == 0) {
+      if (weight == 0.0) {
         return "The apriori is currently compatible with the BDeu score but "
                "if you change the weight, it will become incompatible.";
       }
@@ -100,7 +100,7 @@ namespace gum {
       if ((apriori_type == AprioriDirichletType::type)
           || (apriori_type == AprioriSmoothingType::type)) {
         return "The BDeu score already contains a different 'implicit' apriori. "
-               "Therefore, the learning will probably be meaningless.";
+               "Therefore, the learning will probably be biased.";
       }
 
       // apriori types unsupported by the type checker

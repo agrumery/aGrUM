@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+ *   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
  *   {prenom.nom}_at_lip6.fr                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -19,11 +19,9 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Implementation of gum::learning::ScoreInternalNoApriori.
+ * @brief the internal apriori for the BDeu score (N' / (r_i * q_i)
  *
- * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  */
 
-#include <agrum/learning/scores_and_tests/scoreInternalNoApriori2.h>
-
-template class gum::learning::ScoreInternalNoApriori2<>;
+#include <agrum/learning/aprioris/aprioriBDeu2.h>

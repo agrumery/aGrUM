@@ -33,8 +33,6 @@
 
 #include <agrum/learning/scores_and_tests/recordCounter2.h>
 #include <agrum/learning/scores_and_tests/scoringCache.h>
-#include <agrum/learning/scores_and_tests/scoreInternalApriori2.h>
-
 #include <agrum/learning/aprioris/apriori2.h>
 #include <agrum/learning/structureUtils/graphChange.h>
 
@@ -171,7 +169,7 @@ namespace gum {
        * note that, to be meaningful, a structure + parameter learning requires
        * that the same aprioris are taken into account during structure learning
        * and parameter learning. */
-      virtual const ScoreInternalApriori2< ALLOC >& internalApriori() const = 0;
+      virtual const Apriori2< ALLOC >& internalApriori() const = 0;
 
       /// returns the allocator used by the score
       allocator_type getAllocator() const;

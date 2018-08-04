@@ -18,13 +18,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the class for computing BIC scores
+ * @brief the class for computing Log2-likelihood scores
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#ifndef GUM_LEARNING_SCORE_BIC2_H
-#define GUM_LEARNING_SCORE_BIC2_H
+#ifndef GUM_LEARNING_SCORE_LOG2_LIKELIHOOD2_H
+#define GUM_LEARNING_SCORE_LOG2_LIKELIHOOD2_H
 
 #include <cmath>
 #include <string>
@@ -37,16 +37,16 @@ namespace gum {
 
   namespace learning {
 
-    /** @class ScoreBIC2
-     * @brief the class for computing BIC scores
-     * @headerfile scoreBIC2.h <agrum/learning/scores_and_tests/scoreBIC2.h>
+    /** @class ScoreLog2Likelihood2
+     * @brief the class for computing Log2-likelihood scores
+     * @headerfile scoreLog2Likelihood2.h <agrum/learning/scores_and_tests/scoreLog2Likelihood2.h>
      * @ingroup learning_scores
      *
      * @warning If you pass an apriori to the score, this one will be added
      * into the log-likelihood part of the score.
      */
     template < template < typename > class ALLOC = std::allocator >
-    class ScoreBIC2 : public Score2< ALLOC > {
+    class ScoreLog2Likelihood2 : public Score2< ALLOC > {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;
@@ -74,7 +74,7 @@ namespace gum {
        * NodeId is equal to the index of the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
        * Score. */
-      ScoreBIC2(
+      ScoreLog2Likelihood2(
         const DBRowGeneratorParser< ALLOC >& parser,
         const Apriori2< ALLOC >&             apriori,
         const std::vector< std::pair< std::size_t, std::size_t >,
@@ -98,7 +98,7 @@ namespace gum {
        * NodeId is equal to the index of the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
        * Score. */
-      ScoreBIC2(const DBRowGeneratorParser< ALLOC >& parser,
+      ScoreLog2Likelihood2(const DBRowGeneratorParser< ALLOC >& parser,
                 const Apriori2< ALLOC >&             apriori,
                 const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
                   nodeId2columns =
@@ -106,25 +106,25 @@ namespace gum {
                 const allocator_type& alloc = allocator_type());
 
       /// copy constructor
-      ScoreBIC2(const ScoreBIC2< ALLOC >& from);
+      ScoreLog2Likelihood2(const ScoreLog2Likelihood2< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      ScoreBIC2(const ScoreBIC2< ALLOC >& from, const allocator_type& alloc);
+      ScoreLog2Likelihood2(const ScoreLog2Likelihood2< ALLOC >& from, const allocator_type& alloc);
 
       /// move constructor
-      ScoreBIC2(ScoreBIC2< ALLOC >&& from);
+      ScoreLog2Likelihood2(ScoreLog2Likelihood2< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      ScoreBIC2(ScoreBIC2< ALLOC >&& from, const allocator_type& alloc);
+      ScoreLog2Likelihood2(ScoreLog2Likelihood2< ALLOC >&& from, const allocator_type& alloc);
 
       /// virtual copy constructor
-      virtual ScoreBIC2< ALLOC >* clone() const;
+      virtual ScoreLog2Likelihood2< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual ScoreBIC2< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual ScoreLog2Likelihood2< ALLOC >* clone(const allocator_type& alloc) const;
 
       /// destructor
-      virtual ~ScoreBIC2();
+      virtual ~ScoreLog2Likelihood2();
 
       /// @}
 
@@ -136,10 +136,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      ScoreBIC2< ALLOC >& operator=(const ScoreBIC2< ALLOC >& from);
+      ScoreLog2Likelihood2< ALLOC >& operator=(const ScoreLog2Likelihood2< ALLOC >& from);
 
       /// move operator
-      ScoreBIC2< ALLOC >& operator=(ScoreBIC2< ALLOC >&& from);
+      ScoreLog2Likelihood2< ALLOC >& operator=(ScoreLog2Likelihood2< ALLOC >&& from);
 
       /// @}
 
@@ -206,10 +206,10 @@ namespace gum {
 } /* namespace gum */
 
 
-extern template class gum::learning::ScoreBIC2<>;
+extern template class gum::learning::ScoreLog2Likelihood2<>;
 
 
 // always include the template implementation
-#include <agrum/learning/scores_and_tests/scoreBIC2_tpl.h>
+#include <agrum/learning/scores_and_tests/scoreLog2Likelihood2_tpl.h>
 
-#endif /* GUM_LEARNING_SCORE_BIC2_H */
+#endif /* GUM_LEARNING_SCORE_LOG2_LIKELIHOOD2_H */

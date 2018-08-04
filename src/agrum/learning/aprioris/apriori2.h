@@ -100,6 +100,16 @@ namespace gum {
       /// returns the type of the apriori
       virtual const std::string& getType() const = 0;
 
+      /// indicates whether the apriori is potentially informative
+      /** Basically, only the NoApriori is uninformative. However, it may happen
+       * that, under some circonstances, an apriori, which is usually not equal
+       * to the NoApriori, becomes equal to it (e.g., when the weight is equal
+       * to zero). In this case, if the apriori can detect this case, it shall
+       * inform the classes that use it that it is temporarily uninformative.
+       * These classes will then be able to speed-up their code by avoiding to
+       * take into account the apriori in their computations. */
+      virtual bool isInformative() const = 0;
+
       /// adds the apriori to a counting vector corresponding to the idset
       /** adds the apriori to an already created counting vector defined over
        * the union of the variables on both the left and right hand side of the
@@ -119,7 +129,7 @@ namespace gum {
         addConditioningApriori(const IdSet2< ALLOC >&                  idset,
                                std::vector< double, ALLOC< double > >& counts) = 0;
 
-      /// returns the allocator used by the apriori
+      /// returns the allocator used by the internal apriori
       allocator_type getAllocator() const;
 
       /// @}

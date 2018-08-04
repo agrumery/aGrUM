@@ -19,11 +19,11 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Implementation of gum::learning::ScoreInternalApriori.
+ * @brief Implementation of gum::learning::ScoreBDeu.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/learning/scores_and_tests/scoreInternalApriori2.h>
+#include <agrum/learning/scores_and_tests/scoreBDeu2.h>
 
-template class gum::learning::ScoreInternalApriori2<>;
+template class gum::learning::ScoreBDeu2<>;

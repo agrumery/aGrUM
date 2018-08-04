@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the no a priori class: corresponds to 0 weight-sample
+ * @brief the internal apriori for the BDeu score (N' / (r_i * q_i)
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -31,55 +31,55 @@ namespace gum {
 
     /// default constructor
     template < template < typename > class ALLOC >
-    INLINE AprioriSmoothing2< ALLOC >::AprioriSmoothing2(
+    INLINE AprioriBDeu2< ALLOC >::AprioriBDeu2(
       const DatabaseTable< ALLOC >&                                 database,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename AprioriSmoothing2< ALLOC >::allocator_type&    alloc) :
+      const typename AprioriBDeu2< ALLOC >::allocator_type&    alloc) :
         Apriori2< ALLOC >(database, nodeId2columns, alloc) {
-      GUM_CONSTRUCTOR(AprioriSmoothing2);
+      GUM_CONSTRUCTOR(AprioriBDeu2);
     }
 
 
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE AprioriSmoothing2< ALLOC >::AprioriSmoothing2(
-      const AprioriSmoothing2< ALLOC >&                          from,
-      const typename AprioriSmoothing2< ALLOC >::allocator_type& alloc) :
+    INLINE AprioriBDeu2< ALLOC >::AprioriBDeu2(
+      const AprioriBDeu2< ALLOC >&                          from,
+      const typename AprioriBDeu2< ALLOC >::allocator_type& alloc) :
         Apriori2< ALLOC >(from, alloc) {
-      GUM_CONS_CPY(AprioriSmoothing2);
+      GUM_CONS_CPY(AprioriBDeu2);
     }
 
 
     /// copy constructor
     template < template < typename > class ALLOC >
-    INLINE AprioriSmoothing2< ALLOC >::AprioriSmoothing2(
-      const AprioriSmoothing2< ALLOC >& from) :
-        AprioriSmoothing2< ALLOC >(from, from.getAllocator()) {}
+    INLINE AprioriBDeu2< ALLOC >::AprioriBDeu2(
+      const AprioriBDeu2< ALLOC >& from) :
+        AprioriBDeu2< ALLOC >(from, from.getAllocator()) {}
 
 
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE AprioriSmoothing2< ALLOC >::AprioriSmoothing2(
-      AprioriSmoothing2< ALLOC >&&                               from,
-      const typename AprioriSmoothing2< ALLOC >::allocator_type& alloc) :
+    INLINE AprioriBDeu2< ALLOC >::AprioriBDeu2(
+      AprioriBDeu2< ALLOC >&&                               from,
+      const typename AprioriBDeu2< ALLOC >::allocator_type& alloc) :
         Apriori2< ALLOC >(std::move(from), alloc) {
-      GUM_CONS_MOV(AprioriSmoothing2);
+      GUM_CONS_MOV(AprioriBDeu2);
     }
 
 
     /// move constructor
     template < template < typename > class ALLOC >
-    INLINE AprioriSmoothing2< ALLOC >::AprioriSmoothing2(
-      AprioriSmoothing2< ALLOC >&& from) :
-        AprioriSmoothing2< ALLOC >(std::move(from), from.getAllocator()) {}
+    INLINE AprioriBDeu2< ALLOC >::AprioriBDeu2(
+      AprioriBDeu2< ALLOC >&& from) :
+        AprioriBDeu2< ALLOC >(std::move(from), from.getAllocator()) {}
 
 
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    AprioriSmoothing2< ALLOC >* AprioriSmoothing2< ALLOC >::clone(
-      const typename AprioriSmoothing2< ALLOC >::allocator_type& alloc) const {
-      ALLOC< AprioriSmoothing2< ALLOC > > allocator(alloc);
-      AprioriSmoothing2< ALLOC >*         apriori = allocator.allocate(1);
+    AprioriBDeu2< ALLOC >* AprioriBDeu2< ALLOC >::clone(
+      const typename AprioriBDeu2< ALLOC >::allocator_type& alloc) const {
+      ALLOC< AprioriBDeu2< ALLOC > > allocator(alloc);
+      AprioriBDeu2< ALLOC >*         apriori = allocator.allocate(1);
       try {
         allocator.construct(apriori, *this, alloc);
       } catch (...) {
@@ -93,22 +93,22 @@ namespace gum {
 
     /// virtual copy constructor
     template < template < typename > class ALLOC >
-    INLINE AprioriSmoothing2< ALLOC >* AprioriSmoothing2< ALLOC >::clone() const {
+    INLINE AprioriBDeu2< ALLOC >* AprioriBDeu2< ALLOC >::clone() const {
       return clone(this->getAllocator());
     }
 
 
     /// destructor
     template < template < typename > class ALLOC >
-    INLINE AprioriSmoothing2< ALLOC >::~AprioriSmoothing2() {
-      GUM_DESTRUCTOR(AprioriSmoothing2);
+    INLINE AprioriBDeu2< ALLOC >::~AprioriBDeu2() {
+      GUM_DESTRUCTOR(AprioriBDeu2);
     }
 
 
     /// copy operator
     template < template < typename > class ALLOC >
-    INLINE AprioriSmoothing2< ALLOC >& AprioriSmoothing2< ALLOC >::
-                                       operator=(const AprioriSmoothing2< ALLOC >& from) {
+    INLINE AprioriBDeu2< ALLOC >& AprioriBDeu2< ALLOC >::
+                                       operator=(const AprioriBDeu2< ALLOC >& from) {
       Apriori2< ALLOC >::operator=(from);
       return *this;
     }
@@ -116,51 +116,72 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    INLINE AprioriSmoothing2< ALLOC >& AprioriSmoothing2< ALLOC >::
-                                       operator=(AprioriSmoothing2< ALLOC >&& from) {
+    INLINE AprioriBDeu2< ALLOC >& AprioriBDeu2< ALLOC >::
+                                       operator=(AprioriBDeu2< ALLOC >&& from) {
       Apriori2< ALLOC >::operator=(std::move(from));
       return *this;
     }
 
 
+    /// sets the effective sample size N' (alias of setEffectiveSampleSize ())
+    template < template < typename > class ALLOC >
+    INLINE void AprioriBDeu2< ALLOC >::setWeight(const double weight) {
+      if (weight < 0.0) {
+        GUM_ERROR(OutOfBounds,
+                  "A negative weight (" << weight
+                                        << ") is forbidden for the BDeu apriori");
+      }
+      this->_weight = weight;
+    }
+
+    
+    /// sets the effective sample size N'
+    template < template < typename > class ALLOC >
+    INLINE void
+    AprioriBDeu2< ALLOC >::setEffectiveSampleSize (const double weight) {
+      setWeight ( weight );
+    }
+
+    
     /// indicates whether an apriori is of a certain type
     template < template < typename > class ALLOC >
-    INLINE bool AprioriSmoothing2< ALLOC >::isOfType(const std::string& type) {
-      return AprioriSmoothingType::isOfType(type);
+    INLINE bool AprioriBDeu2< ALLOC >::isOfType(const std::string& type) {
+      return AprioriBDeuType::isOfType(type);
     }
 
 
     /// returns the type of the apriori
     template < template < typename > class ALLOC >
-    INLINE const std::string& AprioriSmoothing2< ALLOC >::getType() const {
-      return AprioriSmoothingType::type;
+    INLINE const std::string& AprioriBDeu2< ALLOC >::getType() const {
+      return AprioriBDeuType::type;
     }
 
     
     /// indicates whether the apriori is potentially informative
     template < template < typename > class ALLOC >
-    INLINE bool AprioriSmoothing2< ALLOC >::isInformative() const {
+    INLINE bool AprioriBDeu2< ALLOC >::isInformative() const {
       return this->_weight != 0.0;
     }
     
       
     /// returns the apriori vector all the variables in the idset
     template < template < typename > class ALLOC >
-    INLINE void AprioriSmoothing2< ALLOC >::addAllApriori(
+    INLINE void AprioriBDeu2< ALLOC >::addAllApriori(
       const IdSet2< ALLOC >&                  idset,
       std::vector< double, ALLOC< double > >& counts) {
       // if the idset is empty or the weight is zero, the apriori is also empty
       if (idset.empty() || (this->_weight == 0.0)) return;
 
       // otherwise, add the weight to all the cells in the counting vector
+      const double weight = this->_weight / counts.size ();
       for (auto& count : counts)
-        count += this->_weight;
+        count += weight;
     }
 
 
     /// returns the apriori vector over only the conditioning set of an idset
     template < template < typename > class ALLOC >
-    void AprioriSmoothing2< ALLOC >::addConditioningApriori(
+    void AprioriBDeu2< ALLOC >::addConditioningApriori(
       const IdSet2< ALLOC >&                  idset,
       std::vector< double, ALLOC< double > >& counts) {
       // if the conditioning set is empty or the weight is equal to zero,
@@ -169,20 +190,8 @@ namespace gum {
           || (idset.nbLHSIds() == std::size_t(0)))
         return;
 
-      // compute the weight of the conditioning set
-      double weight = this->_weight;
-      if (this->_nodeId2columns.empty()) {
-        for (std::size_t i = std::size_t(0); i < idset.nbLHSIds(); ++i) {
-          weight *= this->_database->domainSize(idset[i]);
-        }
-      } else {
-        for (std::size_t i = std::size_t(0); i < idset.nbLHSIds(); ++i) {
-          weight *=
-            this->_database->domainSize(this->_nodeId2columns.second(idset[i]));
-        }
-      }
-
       // add the weight to the counting vector
+      const double weight = this->_weight / counts.size ();
       for (auto& count : counts)
         count += weight;
     }

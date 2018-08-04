@@ -18,35 +18,36 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the class for computing BIC scores
+ * @brief the class for computing BDeu scores
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#ifndef GUM_LEARNING_SCORE_BIC2_H
-#define GUM_LEARNING_SCORE_BIC2_H
+#ifndef GUM_LEARNING_SCORE_BDEU2_H
+#define GUM_LEARNING_SCORE_BDEU2_H
 
 #include <cmath>
 #include <string>
 
 #include <agrum/agrum.h>
+#include <agrum/core/math/gammaLog2.h>
 #include <agrum/learning/scores_and_tests/score2.h>
-#include <agrum/learning/aprioris/aprioriNoApriori2.h>
+#include <agrum/learning/aprioris/aprioriBDeu2.h>
 
 namespace gum {
 
   namespace learning {
 
-    /** @class ScoreBIC2
-     * @brief the class for computing BIC scores
-     * @headerfile scoreBIC2.h <agrum/learning/scores_and_tests/scoreBIC2.h>
+    /** @class ScoreBDeu2
+     * @brief the class for computing BDeu scores
+     * @headerfile scoreBDeu2.h <agrum/learning/scores_and_tests/scoreBDeu2.h>
      * @ingroup learning_scores
      *
      * @warning If you pass an apriori to the score, this one will be added
      * into the log-likelihood part of the score.
      */
     template < template < typename > class ALLOC = std::allocator >
-    class ScoreBIC2 : public Score2< ALLOC > {
+    class ScoreBDeu2 : public Score2< ALLOC > {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;
@@ -74,7 +75,7 @@ namespace gum {
        * NodeId is equal to the index of the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
        * Score. */
-      ScoreBIC2(
+      ScoreBDeu2(
         const DBRowGeneratorParser< ALLOC >& parser,
         const Apriori2< ALLOC >&             apriori,
         const std::vector< std::pair< std::size_t, std::size_t >,
@@ -98,7 +99,7 @@ namespace gum {
        * NodeId is equal to the index of the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
        * Score. */
-      ScoreBIC2(const DBRowGeneratorParser< ALLOC >& parser,
+      ScoreBDeu2(const DBRowGeneratorParser< ALLOC >& parser,
                 const Apriori2< ALLOC >&             apriori,
                 const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
                   nodeId2columns =
@@ -106,25 +107,25 @@ namespace gum {
                 const allocator_type& alloc = allocator_type());
 
       /// copy constructor
-      ScoreBIC2(const ScoreBIC2< ALLOC >& from);
+      ScoreBDeu2(const ScoreBDeu2< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      ScoreBIC2(const ScoreBIC2< ALLOC >& from, const allocator_type& alloc);
+      ScoreBDeu2(const ScoreBDeu2< ALLOC >& from, const allocator_type& alloc);
 
       /// move constructor
-      ScoreBIC2(ScoreBIC2< ALLOC >&& from);
+      ScoreBDeu2(ScoreBDeu2< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      ScoreBIC2(ScoreBIC2< ALLOC >&& from, const allocator_type& alloc);
+      ScoreBDeu2(ScoreBDeu2< ALLOC >&& from, const allocator_type& alloc);
 
       /// virtual copy constructor
-      virtual ScoreBIC2< ALLOC >* clone() const;
+      virtual ScoreBDeu2< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual ScoreBIC2< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual ScoreBDeu2< ALLOC >* clone(const allocator_type& alloc) const;
 
       /// destructor
-      virtual ~ScoreBIC2();
+      virtual ~ScoreBDeu2();
 
       /// @}
 
@@ -136,10 +137,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      ScoreBIC2< ALLOC >& operator=(const ScoreBIC2< ALLOC >& from);
+      ScoreBDeu2< ALLOC >& operator=(const ScoreBDeu2< ALLOC >& from);
 
       /// move operator
-      ScoreBIC2< ALLOC >& operator=(ScoreBIC2< ALLOC >&& from);
+      ScoreBDeu2< ALLOC >& operator=(ScoreBDeu2< ALLOC >&& from);
 
       /// @}
 
@@ -152,7 +153,7 @@ namespace gum {
       /// indicates whether the apriori is compatible (meaningful) with the score
       /** The combination of some scores and aprioris can be meaningless. For
        * instance, adding a Dirichlet apriori to the K2 score is not very
-       * meaningful since K2 corresonds to a BD score with a 1-smoothing
+       * meaningful since K2 corresponds to a BD score with a 1-smoothing
        * apriori.
        * aGrUM allows you to perform such combination, but you can check with
        * method isAprioriCompatible () whether the result the score will give
@@ -174,6 +175,9 @@ namespace gum {
        * and parameter learning. */
       virtual const Apriori2< ALLOC >& internalApriori() const final;
 
+      /// sets the effective sample size of the internal apriori
+      void setEffectiveSampleSize(double ess);
+      
       /// @}
 
 
@@ -198,7 +202,11 @@ namespace gum {
 
       private:
       /// the internal apriori of the score
-      AprioriNoApriori2< ALLOC > __internal_apriori;
+      AprioriBDeu2< ALLOC > __internal_apriori;
+
+      /// the log(gamma (n)) function: generalizes log((n-1)!)
+      GammaLog2 __gammalog2;
+
     };
 
   } /* namespace learning */
@@ -206,10 +214,10 @@ namespace gum {
 } /* namespace gum */
 
 
-extern template class gum::learning::ScoreBIC2<>;
+extern template class gum::learning::ScoreBDeu2<>;
 
 
 // always include the template implementation
-#include <agrum/learning/scores_and_tests/scoreBIC2_tpl.h>
+#include <agrum/learning/scores_and_tests/scoreBDeu2_tpl.h>
 
-#endif /* GUM_LEARNING_SCORE_BIC2_H */
+#endif /* GUM_LEARNING_SCORE_BDEU2_H */

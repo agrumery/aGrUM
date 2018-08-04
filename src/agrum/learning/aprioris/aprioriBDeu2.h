@@ -18,43 +18,44 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the internal apriori for the scores without apriori (e.g., BD)
+ * @brief the internal apriori for the BDeu score (N' / (r_i * q_i)
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_LEARNING_SCORE_INTERNAL_NO_APRIORI2_H
-#define GUM_LEARNING_SCORE_INTERNAL_NO_APRIORI2_H
+#ifndef GUM_LEARNING_A_PRIORI_BDEU2_H
+#define GUM_LEARNING_A_PRIORI_BDEU2_H
 
 #include <vector>
 
 #include <agrum/agrum.h>
-#include <agrum/learning/scores_and_tests/scoreInternalApriori2.h>
+#include <agrum/learning/aprioris/apriori2.h>
 
 namespace gum {
 
   namespace learning {
 
-    /** @class ScoreInternalNoApriori2
-     * @brief the internal apriori for the scores without apriori (e.g., BD)
-     * @headerfile scoreInternalNoApriori2.h <agrum/learning/scores_and_tests/scoreInternalNoApriori2.h>
-     * @ingroup learning_scores
+    /** @class AprioriBDeu2
+     * @brief the internal apriori for the BDeu score (N' / (r_i * q_i)
+     * @headerfile aprioriBDeu2.h <agrum/learning/database/aprioriBDeu2.h>
+     * @ingroup learning_apriori
      *
-     * Some scores include an apriori. For instance, the K2 score is a BD score
-     * with a Laplace Apriori ( smoothing(1) ). BDeu is a BD score with a
-     * N'/(r_i * q_i) apriori, where N' is an effective sample size and r_i is
-     * the domain size of the target variable and q_i is the domain size of the
-     * Cartesian product of its parents. The goal of the score's internal
-     * apriori classes is to enable to account for these aprioris outside the
-     * score, e.g., when performing parameter estimation. It is important to
-     * note that, to be meaningful, a structure + parameter learning requires
-     * that the same aprioris are taken into account during structure learning
-     * and parameter learning.
+     * BDeu is a BD score with a N'/(r_i * q_i) apriori, where N' is an
+     * effective sample size and r_i is the domain size of the target variable
+     * and q_i is the domain size of the Cartesian product of its parents.
+     *
+     * It is important to note that, to be meaningful a structure + parameter
+     * learning requires that the same aprioris are taken into account during
+     * structure learning and parameter learning.
      */
     template < template < typename > class ALLOC = std::allocator >
-    class ScoreInternalNoApriori2 : public ScoreInternalApriori2< ALLOC > {
+    class AprioriBDeu2 : public Apriori2< ALLOC > {
       public:
+      /// the type of the a priori
+      using type = AprioriBDeuType;
+
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;
+
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -62,7 +63,18 @@ namespace gum {
       /// @{
 
       /// default constructor
-      ScoreInternalNoApriori2(
+      /** @param database the database from which learning is performed. This is
+       * useful to get access to the random variables
+       * @param nodeId2Columns a mapping from the ids of the nodes in the
+       * graphical model to the corresponding column in the DatabaseTable.
+       * This enables estimating from a database in which variable A corresponds
+       * to the 2nd column the parameters of a BN in which variable A has a
+       * NodeId of 5. An empty nodeId2Columns bijection means that the mapping
+       * is an identity, i.e., the value of a NodeId is equal to the index of
+       * the column in the DatabaseTable.
+       * @param alloc the allocator used to allocate the structures within the
+       * RecordCounter.*/
+      AprioriBDeu2(
         const DatabaseTable< ALLOC >& database,
         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
           nodeId2columns =
@@ -70,28 +82,27 @@ namespace gum {
         const allocator_type& alloc = allocator_type());
 
       /// copy constructor
-      ScoreInternalNoApriori2(const ScoreInternalNoApriori2< ALLOC >& from);
+      AprioriBDeu2(const AprioriBDeu2< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      ScoreInternalNoApriori2(const ScoreInternalNoApriori2< ALLOC >& from,
-                              const allocator_type&                   alloc);
+      AprioriBDeu2(const AprioriBDeu2< ALLOC >& from,
+                        const allocator_type&             alloc);
 
       /// move constructor
-      ScoreInternalNoApriori2(ScoreInternalNoApriori2< ALLOC >&& from);
+      AprioriBDeu2(AprioriBDeu2< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      ScoreInternalNoApriori2(ScoreInternalNoApriori2< ALLOC >&& from,
-                              const allocator_type&              alloc);
+      AprioriBDeu2(AprioriBDeu2< ALLOC >&& from,
+                        const allocator_type&        alloc);
 
       /// virtual copy constructor
-      virtual ScoreInternalNoApriori2< ALLOC >* clone() const;
+      virtual AprioriBDeu2< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual ScoreInternalNoApriori2< ALLOC >*
-        clone(const allocator_type& alloc) const;
+      virtual AprioriBDeu2< ALLOC >* clone(const allocator_type& alloc) const;
 
       /// destructor
-      virtual ~ScoreInternalNoApriori2();
+      virtual ~AprioriBDeu2();
 
       /// @}
 
@@ -99,16 +110,14 @@ namespace gum {
       // ##########################################################################
       /// @name Operators
       // ##########################################################################
-
       /// @{
 
       /// copy operator
-      ScoreInternalNoApriori2< ALLOC >&
-        operator=(const ScoreInternalNoApriori2< ALLOC >& from);
+      AprioriBDeu2< ALLOC >&
+        operator=(const AprioriBDeu2< ALLOC >& from);
 
       /// move operator
-      ScoreInternalNoApriori2< ALLOC >&
-        operator=(ScoreInternalNoApriori2< ALLOC >&& from);
+      AprioriBDeu2< ALLOC >& operator=(AprioriBDeu2< ALLOC >&& from);
 
       /// @}
 
@@ -117,6 +126,28 @@ namespace gum {
       /// @name Accessors / Modifiers
       // ##########################################################################
       /// @{
+
+      /// sets the effective sample size N' (alias of setEffectiveSampleSize ())
+      virtual void setWeight(const double weight) final;
+
+      /// sets the effective sample size N'
+      void setEffectiveSampleSize (const double weight);
+      
+      /// indicates whether an apriori is of a certain type
+      virtual bool isOfType(const std::string& type) final;
+
+      /// returns the type of the apriori
+      virtual const std::string& getType() const final;
+
+      /// indicates whether the apriori is potentially informative
+      /** Basically, only the NoApriori is uninformative. However, it may happen
+       * that, under some circonstances, an apriori, which is usually not equal
+       * to the NoApriori, becomes equal to it (e.g., when the weight is equal
+       * to zero). In this case, if the apriori can detect this case, it shall
+       * inform the classes that use it that it is temporarily uninformative.
+       * These classes will then be able to speed-up their code by avoiding to
+       * take into account the apriori in their computations. */
+      virtual bool isInformative() const final;
 
       /// adds the apriori to a counting vector corresponding to the idset
       /** adds the apriori to an already created counting vector defined over
@@ -137,21 +168,15 @@ namespace gum {
         const IdSet2< ALLOC >&                  idset,
         std::vector< double, ALLOC< double > >& counts) final;
 
-      /// indicates whether the apriori is potentially informative
-      virtual bool isInformative() const final;
-
       /// @}
+
     };
 
   } /* namespace learning */
 
 } /* namespace gum */
 
-
-extern template class gum::learning::ScoreInternalNoApriori2<>;
-
-
 /// include the template implementation
-#include <agrum/learning/scores_and_tests/scoreInternalNoApriori2_tpl.h>
+#include <agrum/learning/aprioris/aprioriBDeu2_tpl.h>
 
-#endif /* GUM_LEARNING_SCORE_INTERNAL_NO_APRIORI2_H */
+#endif /* GUM_LEARNING_A_PRIORI_BDEU2_H */

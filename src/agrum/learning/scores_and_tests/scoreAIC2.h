@@ -31,7 +31,7 @@
 
 #include <agrum/agrum.h>
 #include <agrum/learning/scores_and_tests/score2.h>
-#include <agrum/learning/scores_and_tests/scoreInternalNoApriori2.h>
+#include <agrum/learning/aprioris/aprioriNoApriori2.h>
 
 namespace gum {
 
@@ -172,7 +172,7 @@ namespace gum {
        * note that, to be meaningful, a structure + parameter learning requires
        * that the same aprioris are taken into account during structure learning
        * and parameter learning. */
-      virtual const ScoreInternalApriori2< ALLOC >& internalApriori() const final;
+      virtual const Apriori2< ALLOC >& internalApriori() const final;
 
       /// @}
 
@@ -198,7 +198,7 @@ namespace gum {
 
       private:
       /// the internal apriori of the score
-      ScoreInternalNoApriori2< ALLOC > __internal_apriori;
+      AprioriNoApriori2< ALLOC > __internal_apriori;
     };
 
   } /* namespace learning */

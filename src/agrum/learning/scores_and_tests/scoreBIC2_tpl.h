@@ -185,7 +185,7 @@ namespace gum {
 
     /// returns the internal apriori of the score
     template < template < typename > class ALLOC >
-    INLINE const ScoreInternalApriori2< ALLOC >&
+    INLINE const Apriori2< ALLOC >&
                  ScoreBIC2< ALLOC >::internalApriori() const {
       return __internal_apriori;
     }
