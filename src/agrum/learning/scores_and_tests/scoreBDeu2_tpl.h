@@ -232,9 +232,8 @@ namespace gum {
         std::vector< double, ALLOC< double > > N_ij =
           this->_counter.counts(idset.conditionalIdSet(), false);
         const double conditioning_size = double(N_ij.size());
-        const double ri = double(all_size) / conditioning_size;
-        const double ess_qi = ess / conditioning_size;
-        const double ess_riqi = ess_qi / ri;
+        const double ess_qi   = ess / conditioning_size;
+        const double ess_riqi = ess / all_size;
 
         if (ess != 0.0) {
           // the score to compute is that of BD with aprioris
@@ -267,7 +266,7 @@ namespace gum {
           // + sum_j=1^qi sum_k=1^ri log [ gammalog2 ( N_ijk + ess / (ri * qi) )
           // ]
           score = conditioning_size * __gammalog2(ess_qi)
-            - ri * conditioning_size * __gammalog2(ess_riqi);
+            - all_size * __gammalog2(ess_riqi);
 
           for (std::size_t j = std::size_t(0); j < conditioning_size; ++j) {
             score -= __gammalog2(N_ij[j] + ess_qi);
@@ -278,8 +277,7 @@ namespace gum {
         }
       } else {
         // here, there are no conditioning nodes
-        const double ri = all_size;
-        const double ess_ri = ess / ri;
+        const double ess_ri = ess / all_size;
         
         if (this->_apriori->weight()) {        
          // the score to compute is that of BD with aprioris
@@ -309,7 +307,7 @@ namespace gum {
           // - gammalog2 ( N + ess )
           // + sum_k=1^ri log [ gammalog2 ( N_ijk + ess / ri ) ]
 
-          score = __gammalog2(ess) - ri * __gammalog2(ess_ri);
+          score = __gammalog2(ess) - all_size * __gammalog2(ess_ri);
           double N = 0;
           for (std::size_t k = std::size_t(0); k < all_size; ++k) {
             score += __gammalog2(N_ijk[k] + ess_ri);

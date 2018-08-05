@@ -181,9 +181,6 @@ namespace gum_tests {
       TS_ASSERT(__equal(xscore_2, score4->score(node0, cond2)));
       TS_ASSERT(__equal(xscore_3, score4->score(node0, cond3)));
 
-      delete score4;
-      return;
-
       score4->operator=(std::move(score));
       TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
         gum::learning::AprioriSmoothing2<>::type::type));
@@ -197,7 +194,7 @@ namespace gum_tests {
     }
 
 
-    void xtest2() {
+    void test2() {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
       var.addLabel("0");
