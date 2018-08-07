@@ -18,14 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the class for computing Log2-Likelihood scores
+ * @brief the class for computing K2 scores
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#  include <agrum/learning/scores_and_tests/scoreLog2Likelihood2.h>
+#  include <agrum/learning/scores_and_tests/scoreK22.h>
 #  include <sstream>
 
 namespace gum {
@@ -34,72 +34,74 @@ namespace gum {
 
     /// default constructor
     template < template < typename > class ALLOC >
-    INLINE ScoreLog2Likelihood2< ALLOC >::ScoreLog2Likelihood2(
+    INLINE ScoreK22< ALLOC >::ScoreK22(
       const DBRowGeneratorParser< ALLOC >&                                 parser,
       const Apriori2< ALLOC >&                                             apriori,
       const std::vector< std::pair< std::size_t, std::size_t >,
                          ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename ScoreLog2Likelihood2< ALLOC >::allocator_type&            alloc) :
+      const typename ScoreK22< ALLOC >::allocator_type&            alloc) :
         Score2< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
         __internal_apriori(parser.database(), nodeId2columns) {
-      GUM_CONSTRUCTOR(ScoreLog2Likelihood2);
+      GUM_CONSTRUCTOR(ScoreK22);
     }
 
 
     /// default constructor
     template < template < typename > class ALLOC >
-    INLINE ScoreLog2Likelihood2< ALLOC >::ScoreLog2Likelihood2(
+    INLINE ScoreK22< ALLOC >::ScoreK22(
       const DBRowGeneratorParser< ALLOC >&                          parser,
       const Apriori2< ALLOC >&                                      apriori,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename ScoreLog2Likelihood2< ALLOC >::allocator_type&            alloc) :
+      const typename ScoreK22< ALLOC >::allocator_type&            alloc) :
         Score2< ALLOC >(parser, apriori, nodeId2columns, alloc),
         __internal_apriori(parser.database(), nodeId2columns) {
-      GUM_CONSTRUCTOR(ScoreLog2Likelihood2);
+      GUM_CONSTRUCTOR(ScoreK22);
     }
 
 
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE ScoreLog2Likelihood2< ALLOC >::ScoreLog2Likelihood2(
-      const ScoreLog2Likelihood2< ALLOC >&                          from,
-      const typename ScoreLog2Likelihood2< ALLOC >::allocator_type& alloc) :
+    INLINE ScoreK22< ALLOC >::ScoreK22(
+      const ScoreK22< ALLOC >&                          from,
+      const typename ScoreK22< ALLOC >::allocator_type& alloc) :
         Score2< ALLOC >(from, alloc),
-        __internal_apriori(from.__internal_apriori, alloc) {
-      GUM_CONS_CPY(ScoreLog2Likelihood2);
+      __internal_apriori(from.__internal_apriori, alloc),
+      __gammalog2(from.__gammalog2) {
+      GUM_CONS_CPY(ScoreK22);
     }
 
 
     /// copy constructor
     template < template < typename > class ALLOC >
-    INLINE ScoreLog2Likelihood2< ALLOC >::ScoreLog2Likelihood2(const ScoreLog2Likelihood2< ALLOC >& from) :
-        ScoreLog2Likelihood2< ALLOC >(from, this->getAllocator()) {}
+    INLINE ScoreK22< ALLOC >::ScoreK22(const ScoreK22< ALLOC >& from) :
+        ScoreK22< ALLOC >(from, this->getAllocator()) {}
 
 
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE ScoreLog2Likelihood2< ALLOC >::ScoreLog2Likelihood2(
-      ScoreLog2Likelihood2< ALLOC >&&                               from,
-      const typename ScoreLog2Likelihood2< ALLOC >::allocator_type& alloc) :
+    INLINE ScoreK22< ALLOC >::ScoreK22(
+      ScoreK22< ALLOC >&&                               from,
+      const typename ScoreK22< ALLOC >::allocator_type& alloc) :
         Score2< ALLOC >(std::move(from), alloc),
-        __internal_apriori(std::move(from.__internal_apriori), alloc) {
-      GUM_CONS_MOV(ScoreLog2Likelihood2);
+      __internal_apriori(std::move(from.__internal_apriori), alloc),
+      __gammalog2(std::move(from.__gammalog2)) {
+      GUM_CONS_MOV(ScoreK22);
     }
 
 
     /// move constructor
     template < template < typename > class ALLOC >
-    INLINE ScoreLog2Likelihood2< ALLOC >::ScoreLog2Likelihood2(ScoreLog2Likelihood2< ALLOC >&& from) :
-        ScoreLog2Likelihood2< ALLOC >(std::move(from), this->getAllocator()) {}
+    INLINE ScoreK22< ALLOC >::ScoreK22(ScoreK22< ALLOC >&& from) :
+        ScoreK22< ALLOC >(std::move(from), this->getAllocator()) {}
 
 
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    ScoreLog2Likelihood2< ALLOC >* ScoreLog2Likelihood2< ALLOC >::clone(
-      const typename ScoreLog2Likelihood2< ALLOC >::allocator_type& alloc) const {
-      ALLOC< ScoreLog2Likelihood2< ALLOC > > allocator(alloc);
-      ScoreLog2Likelihood2< ALLOC >*         new_score = allocator.allocate(1);
+    ScoreK22< ALLOC >* ScoreK22< ALLOC >::clone(
+      const typename ScoreK22< ALLOC >::allocator_type& alloc) const {
+      ALLOC< ScoreK22< ALLOC > > allocator(alloc);
+      ScoreK22< ALLOC >*         new_score = allocator.allocate(1);
       try {
         allocator.construct(new_score, *this, alloc);
       } catch (...) {
@@ -113,22 +115,22 @@ namespace gum {
 
     /// virtual copy constructor
     template < template < typename > class ALLOC >
-    ScoreLog2Likelihood2< ALLOC >* ScoreLog2Likelihood2< ALLOC >::clone() const {
+    ScoreK22< ALLOC >* ScoreK22< ALLOC >::clone() const {
       return clone(this->getAllocator());
     }
 
 
     /// destructor
     template < template < typename > class ALLOC >
-    ScoreLog2Likelihood2< ALLOC >::~ScoreLog2Likelihood2< ALLOC >() {
-      GUM_DESTRUCTOR(ScoreLog2Likelihood2);
+    ScoreK22< ALLOC >::~ScoreK22< ALLOC >() {
+      GUM_DESTRUCTOR(ScoreK22);
     }
 
 
     /// copy operator
     template < template < typename > class ALLOC >
-    ScoreLog2Likelihood2< ALLOC >& ScoreLog2Likelihood2< ALLOC >::
-                        operator=(const ScoreLog2Likelihood2< ALLOC >& from) {
+    ScoreK22< ALLOC >& ScoreK22< ALLOC >::
+                        operator=(const ScoreK22< ALLOC >& from) {
       if (this != &from) {
         Score2< ALLOC >::operator=(from);
         __internal_apriori = from.__internal_apriori;
@@ -139,7 +141,7 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    ScoreLog2Likelihood2< ALLOC >& ScoreLog2Likelihood2< ALLOC >::operator=(ScoreLog2Likelihood2< ALLOC >&& from) {
+    ScoreK22< ALLOC >& ScoreK22< ALLOC >::operator=(ScoreK22< ALLOC >&& from) {
       if (this != &from) {
         Score2< ALLOC >::operator=(std::move(from));
         __internal_apriori = std::move(from.__internal_apriori);
@@ -151,20 +153,27 @@ namespace gum {
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < template < typename > class ALLOC >
     std::string
-      ScoreLog2Likelihood2< ALLOC >::isAprioriCompatible(const std::string& apriori_type,
+      ScoreK22< ALLOC >::isAprioriCompatible(const std::string& apriori_type,
                                               double             weight) {
       // check that the apriori is compatible with the score
+      if (apriori_type == AprioriNoAprioriType::type) { return ""; }
+
+      if (weight == 0.0) {
+        return "The apriori is currently compatible with the K2 score but "
+               "if you change the weight, it will become incompatible.";
+      }
+
+      // known incompatible aprioris
       if ((apriori_type == AprioriDirichletType::type)
-          || (apriori_type == AprioriSmoothingType::type)
-          || (apriori_type == AprioriNoAprioriType::type)) {
-        return "";
+          || (apriori_type == AprioriSmoothingType::type)) {
+        return "The K2 score already contains a different 'implicit' apriori. "
+               "Therefore, the learning will probably be biased.";
       }
 
       // apriori types unsupported by the type checker
       std::stringstream msg;
       msg << "The apriori '" << apriori_type
-          << "' is not yet supported by method isAprioriCompatible of "
-          << "Score Log2Likelihood";
+          << "' is not yet supported by method isAprioriCompatible os Score K2";
       return msg.str();
     }
 
@@ -172,14 +181,14 @@ namespace gum {
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < template < typename > class ALLOC >
     INLINE std::string
-           ScoreLog2Likelihood2< ALLOC >::isAprioriCompatible(const Apriori2< ALLOC >& apriori) {
+           ScoreK22< ALLOC >::isAprioriCompatible(const Apriori2< ALLOC >& apriori) {
       return isAprioriCompatible(apriori.getType(), apriori.weight());
     }
 
 
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < template < typename > class ALLOC >
-    INLINE std::string ScoreLog2Likelihood2< ALLOC >::isAprioriCompatible() const {
+    INLINE std::string ScoreK22< ALLOC >::isAprioriCompatible() const {
       return isAprioriCompatible(*(this->_apriori));
     }
 
@@ -187,68 +196,106 @@ namespace gum {
     /// returns the internal apriori of the score
     template < template < typename > class ALLOC >
     INLINE const Apriori2< ALLOC >&
-                 ScoreLog2Likelihood2< ALLOC >::internalApriori() const {
+                 ScoreK22< ALLOC >::internalApriori() const {
       return __internal_apriori;
     }
 
 
     /// returns the score corresponding to a given nodeset
     template < template < typename > class ALLOC >
-    double ScoreLog2Likelihood2< ALLOC >::_score(const IdSet2< ALLOC >& idset) {
+    double ScoreK22< ALLOC >::_score(const IdSet2< ALLOC >& idset) {
       // get the counts for all the nodes in the idset and add the apriori
       std::vector< double, ALLOC< double > > N_ijk(
         this->_counter.counts(idset, true));
+      const double all_size = (N_ijk.size());
       const bool informative_external_apriori = this->_apriori->isInformative ();
-      if (informative_external_apriori)
-        this->_apriori->addAllApriori(idset, N_ijk);
-
+      double score = 0.0;
+ 
       // here, we distinguish idsets with conditioning nodes from those
       // without conditioning nodes
       if (idset.hasConditioningSet()) {
         // get the counts for the conditioning nodes
         std::vector< double, ALLOC< double > > N_ij =
           this->_counter.counts(idset.conditionalIdSet(), false);
-        if (informative_external_apriori)
-          this->_apriori->addConditioningApriori(idset, N_ij);
+        const double conditioning_size = double(N_ij.size());
+        const double ri = all_size / conditioning_size;
         
-        // compute the score: it remains to compute the log likelihood, i.e.,
-        // sum_k=1^r_i sum_j=1^q_i N_ijk log (N_ijk / N_ij), which is also
-        // equivalent to:
-        // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - sum_j=1^q_i N_ij log N_ij
-        double score = 0.0;
-        for (const auto n_ijk : N_ijk) {
-          if (n_ijk) { score += n_ijk * std::log(n_ijk); }
-        }
-        for (const auto n_ij : N_ij) {
-          if (n_ij) { score -= n_ij * std::log(n_ij); }
-        }
-
-        // divide by log(2), since the log likelihood uses log_2
-        score *= this->_1log2;
-
-        return score;
-      } else {
-        // here, there are no conditioning nodes
+        if (informative_external_apriori) {
+          // the score to compute is that of BD with aprioris N'_ijk + 1
+          // (the + 1 is here to take into account the internal apriori of K2)
+          std::vector< double, ALLOC< double > > N_prime_ijk ( all_size, 0.0 );
+          this->_apriori->addAllApriori(idset, N_prime_ijk);
+          std::vector< double, ALLOC< double > > N_prime_ij ( N_ij.size(), 0.0 );
+          this->_apriori->addConditioningApriori(idset, N_prime_ij);
         
-        // compute the score: it remains to compute the log likelihood, i.e.,
-        // sum_k=1^r_i N_ijk log (N_ijk / N), which is also
-        // equivalent to:
-        // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - N log N
-        double N = 0.0;
-        double score = 0.0;
-        for (const auto n_ijk : N_ijk) {
-          if (n_ijk) {
-            score += n_ijk * std::log(n_ijk);
-            N += n_ijk;
+          // the K2 score can be computed as follows:
+          // sum_j=1^qi [ gammalog2 ( N'_ij + r_i ) -
+          //              gammalog2 ( N_ij + N'_ij + r_i )
+          //              + sum_k=1^ri { gammlog2 ( N_ijk + N'_ijk + 1 ) -
+          //                             gammalog2 ( N'_ijk + 1 ) } ]
+          for (std::size_t j = std::size_t(0); j < conditioning_size; ++j) {
+            score += __gammalog2(N_prime_ij[j] + ri)
+              - __gammalog2(N_ij[j] + N_prime_ij[j] + ri);
+          }
+          for (std::size_t k = std::size_t(0); k < all_size; ++k) {
+            score += __gammalog2(N_ijk[k] + N_prime_ijk[k] + 1.0)
+              - __gammalog2(N_prime_ijk[k] + 1.0);
           }
         }
-        score -= N * std::log(N);
+        else {
+          // the K2 score can be computed as follows:
+          // qi log {(ri - 1)!} + sum_j=1^qi [ - log {(N_ij+ri-1)!} +
+          //                                   sum_k=1^ri log { N_ijk! } ]
+          score = conditioning_size * __gammalog2(ri);
 
-        // divide by log(2), since the log likelihood uses log_2
-        score *= this->_1log2;
-
-        return score;
+          for (const auto n_ij : N_ij) {
+            score -= __gammalog2(n_ij + ri);
+          }
+          for (const auto n_ijk : N_ijk) {
+            score += __gammalog2(n_ijk + 1);
+          }
+        }
       }
+      else {
+        // here, there are no conditioning nodes
+        const double ri = all_size;
+
+        if (informative_external_apriori) {        
+          // the score to compute is that of BD with aprioris N'_ijk + 1
+          // (the + 1 is here to take into account the internal apriori of K2)
+
+          // the K2 score can be computed as follows:
+          // gammalog2 ( N' + r_i ) - gammalog2 ( N + N' + r_i )
+          // + sum_k=1^ri { gammlog2 ( N_i + N'_i + 1 ) - gammalog2 ( N'_i + 1 )
+          // }
+          std::vector< double, ALLOC< double > > N_prime_ijk ( all_size, 0.0 );
+          this->_apriori->addAllApriori(idset, N_prime_ijk);
+ 
+          // the K2 score can be computed as follows:
+          double N = 0.0;
+          double N_prime = 0.0;
+          for (std::size_t k = std::size_t(0); k < all_size; ++k) {
+            score += __gammalog2(N_ijk[k] + N_prime_ijk[k] + 1)
+              - __gammalog2(N_prime_ijk[k] + 1);
+            N += N_ijk[k];
+            N_prime += N_prime_ijk[k];
+          }
+          score += __gammalog2(N_prime + ri) - __gammalog2(N + N_prime + ri);
+        }
+        else {
+          // the K2 score can be computed as follows:
+          // log {(ri - 1)!} - log {(N + ri-1)!} + sum_k=1^ri log { N_ijk! } ]
+          score = __gammalog2(ri);
+          double N = 0;
+          for (const auto n_ijk : N_ijk) {
+            score += __gammalog2(n_ijk + 1);
+            N += n_ijk;
+          }
+          score -= __gammalog2(N + ri);
+        }
+      }
+
+      return score;
     }
 
   } /* namespace learning */

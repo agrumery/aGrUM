@@ -18,13 +18,16 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the class for computing BDeu scores
+ * @brief the class for computing K2 scores (actually their log2 value)
+ *
+ * @warning This class does not actually compute a K2 score but rather the
+ * log in base 2 of the K2 score
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#ifndef GUM_LEARNING_SCORE_BDEU2_H
-#define GUM_LEARNING_SCORE_BDEU2_H
+#ifndef GUM_LEARNING_SCORE_K22_H
+#define GUM_LEARNING_SCORE_K22_H
 
 #include <cmath>
 #include <string>
@@ -32,28 +35,27 @@
 #include <agrum/agrum.h>
 #include <agrum/core/math/gammaLog2.h>
 #include <agrum/learning/scores_and_tests/score2.h>
-#include <agrum/learning/aprioris/aprioriBDeu2.h>
+#include <agrum/learning/aprioris/aprioriK2.h>
 
 namespace gum {
 
   namespace learning {
 
-    /** @class ScoreBDeu2
-     * @brief the class for computing BDeu scores
-     * @headerfile scoreBDeu2.h <agrum/learning/scores_and_tests/scoreBDeu2.h>
+    /** @class ScoreK22
+     * @brief the class for computing K2 scores (actually their log2 value)
+     * @headerfile scoreK22.h <agrum/learning/scores_and_tests/scoreK22.h>
      * @ingroup learning_scores
      *
-     * @warning As BDeu already includes an implicit smoothing apriori on all
-     * the cells of contingency tables, the apriori passed to the score should
+     * @warning As the K2 score already includes an implicit Laplace apriori on
+     * all the cells of contingency tables, the apriori passed to the score should
      * be a NoApriori. But aGrUM will let you use another (certainly incompatible)
-     * apriori with the score. In this case, this apriori will be included in
-     * addition to the implicit smoothing apriori in a BD fashion, i.e., we
-     * will ressort to the Bayesian Dirichlet (BD) formula to include the sum of
-     * the two aprioris into the score.
-     *
+     * apriori with the score. In this case, this additional apriori will be
+     * included in addition to the implicit Laplace apriori in a BD fashion,
+     * i.e., we will resort to the Bayesian Dirichlet (BD) formula to include
+     * the sum of the two aprioris into the score.
      */
     template < template < typename > class ALLOC = std::allocator >
-    class ScoreBDeu2 : public Score2< ALLOC > {
+    class ScoreK22 : public Score2< ALLOC > {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;
@@ -81,7 +83,7 @@ namespace gum {
        * NodeId is equal to the index of the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
        * Score. */
-      ScoreBDeu2(
+      ScoreK22(
         const DBRowGeneratorParser< ALLOC >& parser,
         const Apriori2< ALLOC >&             apriori,
         const std::vector< std::pair< std::size_t, std::size_t >,
@@ -105,7 +107,7 @@ namespace gum {
        * NodeId is equal to the index of the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
        * Score. */
-      ScoreBDeu2(const DBRowGeneratorParser< ALLOC >& parser,
+      ScoreK22(const DBRowGeneratorParser< ALLOC >& parser,
                 const Apriori2< ALLOC >&             apriori,
                 const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
                   nodeId2columns =
@@ -113,25 +115,25 @@ namespace gum {
                 const allocator_type& alloc = allocator_type());
 
       /// copy constructor
-      ScoreBDeu2(const ScoreBDeu2< ALLOC >& from);
+      ScoreK22(const ScoreK22< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      ScoreBDeu2(const ScoreBDeu2< ALLOC >& from, const allocator_type& alloc);
+      ScoreK22(const ScoreK22< ALLOC >& from, const allocator_type& alloc);
 
       /// move constructor
-      ScoreBDeu2(ScoreBDeu2< ALLOC >&& from);
+      ScoreK22(ScoreK22< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      ScoreBDeu2(ScoreBDeu2< ALLOC >&& from, const allocator_type& alloc);
+      ScoreK22(ScoreK22< ALLOC >&& from, const allocator_type& alloc);
 
       /// virtual copy constructor
-      virtual ScoreBDeu2< ALLOC >* clone() const;
+      virtual ScoreK22< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual ScoreBDeu2< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual ScoreK22< ALLOC >* clone(const allocator_type& alloc) const;
 
       /// destructor
-      virtual ~ScoreBDeu2();
+      virtual ~ScoreK22();
 
       /// @}
 
@@ -143,10 +145,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      ScoreBDeu2< ALLOC >& operator=(const ScoreBDeu2< ALLOC >& from);
+      ScoreK22< ALLOC >& operator=(const ScoreK22< ALLOC >& from);
 
       /// move operator
-      ScoreBDeu2< ALLOC >& operator=(ScoreBDeu2< ALLOC >&& from);
+      ScoreK22< ALLOC >& operator=(ScoreK22< ALLOC >&& from);
 
       /// @}
 
@@ -170,7 +172,7 @@ namespace gum {
 
       /// returns the internal apriori of the score
       /** Some scores include an apriori. For instance, the K2 score is a BD
-       * score with a Laplace Apriori ( smoothing(1) ). BDeu is a BD score with
+       * score with a Laplace Apriori ( smoothing(1) ). K2 is a BD score with
        * a N'/(r_i * q_i) apriori, where N' is an effective sample size and r_i
        * is the domain size of the target variable and q_i is the domain size of
        * the Cartesian product of its parents. The goal of the score's internal
@@ -181,9 +183,6 @@ namespace gum {
        * and parameter learning. */
       virtual const Apriori2< ALLOC >& internalApriori() const final;
 
-      /// sets the effective sample size of the internal apriori
-      void setEffectiveSampleSize(double ess);
-      
       /// @}
 
 
@@ -208,7 +207,7 @@ namespace gum {
 
       private:
       /// the internal apriori of the score
-      AprioriBDeu2< ALLOC > __internal_apriori;
+      AprioriK2< ALLOC > __internal_apriori;
 
       /// the log(gamma (n)) function: generalizes log((n-1)!)
       GammaLog2 __gammalog2;
@@ -220,10 +219,10 @@ namespace gum {
 } /* namespace gum */
 
 
-extern template class gum::learning::ScoreBDeu2<>;
+extern template class gum::learning::ScoreK22<>;
 
 
 // always include the template implementation
-#include <agrum/learning/scores_and_tests/scoreBDeu2_tpl.h>
+#include <agrum/learning/scores_and_tests/scoreK22_tpl.h>
 
-#endif /* GUM_LEARNING_SCORE_BDEU2_H */
+#endif /* GUM_LEARNING_SCORE_K22_H */

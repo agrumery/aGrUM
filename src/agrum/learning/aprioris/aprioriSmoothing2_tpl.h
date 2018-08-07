@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the no a priori class: corresponds to 0 weight-sample
+ * @brief the smooth a priori: adds a weight w to all the countings
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */

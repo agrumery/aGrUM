@@ -224,6 +224,8 @@ namespace gum {
       const double all_size = (N_ijk.size());
       double score = 0.0;
       const double ess = __internal_apriori.weight ();
+      const bool informative_external_apriori = this->_apriori->isInformative ();
+      
 
       // here, we distinguish idsets with conditioning nodes from those
       // without conditioning nodes
@@ -235,7 +237,7 @@ namespace gum {
         const double ess_qi   = ess / conditioning_size;
         const double ess_riqi = ess / all_size;
 
-        if (ess != 0.0) {
+        if (informative_external_apriori) {
           // the score to compute is that of BD with aprioris
           // N'_ijk + ESS / (r_i * q_i )
           // (the + ESS / (r_i * q_i ) is here to take into account the
@@ -268,18 +270,18 @@ namespace gum {
           score = conditioning_size * __gammalog2(ess_qi)
             - all_size * __gammalog2(ess_riqi);
 
-          for (std::size_t j = std::size_t(0); j < conditioning_size; ++j) {
-            score -= __gammalog2(N_ij[j] + ess_qi);
+          for (const auto n_ij : N_ij) {
+            score -= __gammalog2(n_ij + ess_qi);
           }
-          for (std::size_t k = std::size_t(0); k < all_size; ++k) {
-            score += __gammalog2(N_ijk[k] + ess_riqi);
+          for (const auto n_ijk : N_ijk) {
+            score += __gammalog2(n_ijk + ess_riqi);
           }
         }
       } else {
         // here, there are no conditioning nodes
         const double ess_ri = ess / all_size;
         
-        if (this->_apriori->weight()) {        
+        if (informative_external_apriori) {        
          // the score to compute is that of BD with aprioris
           // N'_ijk + ESS / ( ri * qi )
           // (the + ESS / ( ri * qi ) is here to take into account the
@@ -309,9 +311,9 @@ namespace gum {
 
           score = __gammalog2(ess) - all_size * __gammalog2(ess_ri);
           double N = 0;
-          for (std::size_t k = std::size_t(0); k < all_size; ++k) {
-            score += __gammalog2(N_ijk[k] + ess_ri);
-            N += N_ijk[k];
+          for (const auto n_ijk : N_ijk) {
+            score += __gammalog2(n_ijk + ess_ri);
+            N += n_ijk;
           }
           score -= __gammalog2(N + ess);
         }
