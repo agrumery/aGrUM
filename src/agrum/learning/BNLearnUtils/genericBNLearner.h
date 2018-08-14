@@ -474,8 +474,18 @@ namespace gum {
       /// sets the max indegree
       void setMaxIndegree(Size max_indegree);
 
-      /// sets a partial order on the nodes
+      /**
+       * sets a partial order on the nodes
+       * @param slice_order a NodeProperty given the rank (priority) of nodes in
+       * the partial order
+       */
       void setSliceOrder(const NodeProperty< NodeId >& slice_order);
+
+      /**
+       * sets a partial order on the nodes
+       * @param slices the list of list of variable names
+       */
+      void setSliceOrder(const std::vector< std::vector< std::string > >& slices);
 
       /// assign a set of forbidden arcs
       void setForbiddenArcs(const ArcSet& set);
