@@ -304,104 +304,13 @@ gum.OutOfLowerBound
 	If p<1
 "
 
-%feature("docstring") gum::IApproximationSchemeConfiguration::setSliceOrder
-"
-Set a partial order on the nodes.
-
-Parameters
-----------
-l : list
-	a list of sequences (composed of ids)
-"
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::setVerbosity
 "
 Parameters
 ----------
 v : bool
-	verbosity
-"
-
-%feature("docstring") gum::IApproximationSchemeConfiguration::useAprioriDirichlet
-"
-Use the Dirichlet apriori.
-
-Parameters
-----------
-filename : str
-	the Dirichlet related database
-"
-
-%feature("docstring") gum::IApproximationSchemeConfiguration::useAprioriSmoothing
-"
-Use the apriori smoothing.
-
-Parameters
-----------
-weight : double
-	pass in argument a weight if you wish to assign a weight to the smoothing, else the current weight of the learner will be used.
-"
-
-%feature("docstring") gum::IApproximationSchemeConfiguration::useGreedyHillClimbing
-"
-Indicate that we wish to use a greedy hill climbing algorithm.
-"
-
-%feature("docstring") gum::IApproximationSchemeConfiguration::useK2
-"
-Indicate that we wish to use K2.
-
-Parameters
-----------
-order : list
-	a list of ids
-"
-
-%feature("docstring") gum::IApproximationSchemeConfiguration::useLocalSearchWithTabuList
-"
-Indicate that we wish to use a local search with tabu list
-
-Parameters
-----------
-tabu_size : int
-	The size of the tabu list
-nb_decrease : int
-	The max number of changes decreasing the score consecutively that we allow to apply
-"
-
-%feature("docstring") gum::IApproximationSchemeConfiguration::useNoApriori
-"
-Use no apriori.
-"
-
-%feature("docstring") gum::IApproximationSchemeConfiguration::useScoreAIC
-"
-Indicate that we wish to use an AIC score.
-"
-
-%feature("docstring") gum::IApproximationSchemeConfiguration::useScoreBD
-"
-Indicate that we wish to use a BD score.
-"
-
-%feature("docstring") gum::IApproximationSchemeConfiguration::useScoreBDeu
-"
-Indicate that we wish to use a BDeu score.
-"
-
-%feature("docstring") gum::IApproximationSchemeConfiguration::useScoreBIC
-"
-Indicate that we wish to use a BIC score.
-"
-
-%feature("docstring") gum::IApproximationSchemeConfiguration::useScoreK2
-"
-Indicate that we wish to use a K2 score.
-"
-
-%feature("docstring") gum::IApproximationSchemeConfiguration::useScoreLog2Likelihood
-"
-Indicate that we wish to use a Log2Likelihood score.
+        verbosity
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::verbosity
