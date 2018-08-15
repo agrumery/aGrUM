@@ -210,3 +210,156 @@ Indicate that we wish to use a K2 score.
 "
 Indicate that we wish to use a Log2Likelihood score.
 "
+
+
+%feature("docstring") gum::learning::BNLearner::idFromName
+"
+Parameters
+----------
+var_names : str
+	a variable's name
+
+Returns
+-------
+int
+	the node id corresponding to a variable name
+
+Raises
+------
+gum.MissingVariableInDatabase
+	If a variable of the BN is not found in the database.
+"
+
+%feature("docstring") gum::learning::BNLearner::learnDAG
+"
+learn a structure from a file (must have read the db before)
+
+Returns
+-------
+pyAgrum.DAG
+	the learned DAG
+"
+
+
+%feature("docstring") gum::learning::BNLearner::eraseForbiddenArc
+"
+Allow the arc in parameter to be added if necessary.
+
+Parameters
+----------
+arc : pyAgrum
+	an arc
+head :
+	a variable's id (int)
+tail :
+	a variable's id (int)
+head :
+	a variable's name (str)
+tail :
+	a variable's name (str)
+"
+
+%feature("docstring") gum::learning::BNLearner::eraseMandatoryArc
+"
+Parameters
+----------
+arc : pyAgrum
+	an arc
+head :
+	a variable's id (int)
+tail :
+	a variable's id (int)
+head :
+	a variable's name (str)
+tail :
+	a variable's name (str)
+"
+
+%feature("docstring") gum::learning::BNLearner::addForbiddenArc
+"
+The arc in parameters won't be added.
+
+Parameters
+----------
+arc : pyAgrum
+	an arc
+head :
+	a variable's id (int)
+tail :
+	a variable's id (int)
+head :
+	a variable's name (str)
+tail :
+	a variable's name (str)
+"
+
+%feature("docstring") gum::learning::BNLearner::addMandatoryArc
+"
+Allow to add prior structural knowledge.
+
+Parameters
+----------
+arc : pyAgrum
+	an arc
+head :
+	a variable's id (int)
+tail :
+	a variable's id (int)
+head :
+	a variable's name (str)
+tail :
+	a variable's name (str)
+
+Raises
+------
+gum.InvalidDirectedCycle
+	If the added arc creates a directed cycle in the DAG
+"
+
+
+%feature("docstring") gum::learning::BNLearner::modalities
+"
+Returns
+-------
+vector<pos,size>
+	the number of modalities of the database's variables.
+"
+
+%feature("docstring") gum::learning::BNLearner::nameFromId
+"
+Parameters
+----------
+id
+	a node id
+
+Returns
+-------
+str
+	the variable's name
+"
+
+%feature("docstring") gum::learning::BNLearner::names
+"
+Returns
+-------
+str
+	the names of the variables in the database
+"
+
+
+%feature("docstring") gum::learning::BNLearner::setMaxIndegree
+"
+Parameters
+----------
+max_indegree : int
+	the limit number of parents
+"
+
+
+%feature("docstring") gum::learning::BNLearner::setAprioriWeight
+"
+Parameters
+----------
+weight : double
+	the apriori weight
+"

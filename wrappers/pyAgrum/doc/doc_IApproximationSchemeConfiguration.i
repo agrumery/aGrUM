@@ -1,44 +1,3 @@
-%feature("docstring") gum::IApproximationSchemeConfiguration::addForbiddenArc
-"
-The arc in parameters won't be added.
-
-Parameters
-----------
-arc : pyAgrum
-	an arc
-head :
-	a variable's id (int)
-tail :
-	a variable's id (int)
-head :
-	a variable's name (str)
-tail :
-	a variable's name (str)
-"
-
-%feature("docstring") gum::IApproximationSchemeConfiguration::addMandatoryArc
-"
-Allow to add prior structural knowledge.
-
-Parameters
-----------
-arc : pyAgrum
-	an arc
-head :
-	a variable's id (int)
-tail :
-	a variable's id (int)
-head :
-	a variable's name (str)
-tail :
-	a variable's name (str)
-
-Raises
-------
-gum.InvalidDirectedCycle
-	If the added arc creates a directed cycle in the DAG
-"
-
 %feature("docstring") gum::IApproximationSchemeConfiguration::burnIn
 "
 Returns
@@ -63,40 +22,6 @@ double
 	the value of epsilon
 "
 
-%feature("docstring") gum::IApproximationSchemeConfiguration::eraseForbiddenArc
-"
-Allow the arc in parameter to be added if necessary.
-
-Parameters
-----------
-arc : pyAgrum
-	an arc
-head :
-	a variable's id (int)
-tail :
-	a variable's id (int)
-head :
-	a variable's name (str)
-tail :
-	a variable's name (str)
-"
-
-%feature("docstring") gum::IApproximationSchemeConfiguration::eraseMandatoryArc
-"
-Parameters
-----------
-arc : pyAgrum
-	an arc
-head :
-	a variable's id (int)
-tail :
-	a variable's id (int)
-head :
-	a variable's name (str)
-tail :
-	a variable's name (str)
-"
-
 %feature("docstring") gum::IApproximationSchemeConfiguration::history
 "
 Returns
@@ -108,34 +33,6 @@ Raises
 ------
 gum.OperationNotAllowed
 	If the scheme did not performed or if verbosity is set to false
-"
-
-%feature("docstring") gum::IApproximationSchemeConfiguration::idFromName
-"
-Parameters
-----------
-var_names : str
-	a variable's name
-
-Returns
--------
-int
-	the node id corresponding to a variable name
-
-Raises
-------
-gum.MissingVariableInDatabase
-	If a variable of the BN is not found in the database.
-"
-
-%feature("docstring") gum::IApproximationSchemeConfiguration::learnDAG
-"
-learn a structure from a file (must have read the db before)
-
-Returns
--------
-pyAgrum.DAG
-	the learned DAG
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::maxIter
@@ -170,35 +67,6 @@ double
 	the value of the minimal epsilon rate
 "
 
-%feature("docstring") gum::IApproximationSchemeConfiguration::modalities
-"
-Returns
--------
-vector<pos,size>
-	the number of modalities of the database's variables.
-"
-
-%feature("docstring") gum::IApproximationSchemeConfiguration::nameFromId
-"
-Parameters
-----------
-id
-	a node id
-
-Returns
--------
-str
-	the variable's name
-"
-
-%feature("docstring") gum::IApproximationSchemeConfiguration::names
-"
-Returns
--------
-str
-	the names of the variables in the database
-"
-
 %feature("docstring") gum::IApproximationSchemeConfiguration::nbrIterations
 "
 Returns
@@ -218,14 +86,6 @@ Raises
 ------
 gum.OutOfLowerBound
 	If p<1
-"
-
-%feature("docstring") gum::IApproximationSchemeConfiguration::setAprioriWeight
-"
-Parameters
-----------
-weight : double
-	the apriori weight
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::setBurnIn
@@ -249,13 +109,6 @@ gum.OutOfLowerBound
 	If eps<0
 "
 
-%feature("docstring") gum::IApproximationSchemeConfiguration::setMaxIndegree
-"
-Parameters
-----------
-max_indegree : int
-	the limit number of parents
-"
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::setMaxIter
 "

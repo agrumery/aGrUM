@@ -60,7 +60,7 @@ from .pyAgrum import isOMP, setNumberOfThreads, getThreadNumber, getNumberOfRunn
 
 from .pyAgrum import getNestedParallelism, setNestedParallelism
 
-from .pyAgrum import DefaultInLabel, DuplicateElement, DuplicateLabel, EmptyBSTree, EmptySet, GumException, FatalError, FormatNotFound, GraphError, IOError, IdError, InvalidArc, InvalidArgument, InvalidArgumentsNumber, InvalidDirectedCycle, InvalidEdge, InvalidNode, NoChild, NoNeighbour, NoParent, NotFound, NullElement, OperationNotAllowed, OutOfBounds, OutOfLowerBound, OutOfUpperBound, ReferenceError, SizeError, SyntaxError, UndefinedElement, UndefinedIteratorKey, UndefinedIteratorValue, UnknownLabelInDatabase, MissingValueInDatabase
+from .pyAgrum import DefaultInLabel, DuplicateElement, DuplicateLabel, EmptyBSTree, EmptySet, GumException, FatalError, FormatNotFound, GraphError, IOError, IdError, InvalidArc, InvalidArgument, InvalidArgumentsNumber, InvalidDirectedCycle, InvalidEdge, InvalidNode, MissingValueInDatabase, MissingVariableInDatabase, NoChild, NoNeighbour, NoParent, NotFound, NullElement, OperationNotAllowed, OutOfBounds, OutOfLowerBound, OutOfUpperBound, ReferenceError, SizeError, SyntaxError, UndefinedElement, UndefinedIteratorKey, UndefinedIteratorValue, UnknownLabelInDatabase
 
 # selection of imports extracted from dir(pyAgrum)
 __all__=[
@@ -94,7 +94,7 @@ __all__=[
 
   'getNestedParallelism', 'setNestedParallelism',
 
-  'DefaultInLabel','DuplicateElement','DuplicateLabel','EmptyBSTree','EmptySet','GumException','FatalError','FormatNotFound','GraphError','IOError','IdError','InvalidArc','InvalidArgument','InvalidArgumentsNumber','InvalidDirectedCycle','InvalidEdge','InvalidNode','NoChild','NoNeighbour','NoParent','NotFound','NullElement','OperationNotAllowed','OutOfBounds','OutOfLowerBound','OutOfUpperBound','ReferenceError','SizeError','SyntaxError','UndefinedElement','UndefinedIteratorKey','UndefinedIteratorValue','UnknownLabelInDatabase'
+  'DefaultInLabel','DuplicateElement','DuplicateLabel','EmptyBSTree','EmptySet','GumException','FatalError','FormatNotFound','GraphError','IOError','IdError','InvalidArc','InvalidArgument','InvalidArgumentsNumber','InvalidDirectedCycle','InvalidEdge','InvalidNode','MissingValueInDatabase','MissingVariableInDatabase', 'NoChild','NoNeighbour','NoParent','NotFound','NullElement','OperationNotAllowed','OutOfBounds','OutOfLowerBound','OutOfUpperBound','ReferenceError','SizeError','SyntaxError','UndefinedElement','UndefinedIteratorKey','UndefinedIteratorValue','UnknownLabelInDatabase'
   ]
 
 # seed is chosen randomly :)

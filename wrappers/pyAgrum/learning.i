@@ -1,4 +1,5 @@
 %ignore gum::learning::BNLearner::setSliceOrder(const NodeProperty< unsigned int >& slice_order);
+%ignore gum::learning::BNLearner::setSliceOrder(const std::vector< std::vector< std::string > >& slices);
 %ignore gum::learning::BNLearner::useK2(const gum::Sequence< gum::NodeId >& order);
 %ignore gum::learning::BNLearner::useK2(const std::vector< gum::NodeId >& order);
 %ignore gum::learning::BNLearner::setForbiddenArcs(const gum::ArcSet& set);
@@ -16,7 +17,7 @@
 
     if (PyList_Check(l) == 0) {
       PyErr_SetString(PyExc_TypeError,
-                      "arg must be a sequence (of sequences of int)");
+                      "arg must be a sequence (of sequences of int or string)");
       return;
     }
 
@@ -24,18 +25,25 @@
       PyObject* rows = PyList_GetItem(l, i);
       if (PyList_Check(rows) == 0) {
         PyErr_SetString(PyExc_TypeError,
-                        "arg must be a sequence of sequences (of int)");
+                        "arg must be a sequence of sequences (of int or string)");
         return;
       }
 
       for (Py_ssize_t j = 0; j < PySequence_Size(rows); j++) {
         PyObject* row = PyList_GetItem(rows, j);
-        if (PyInt_Check(row) == 0) {
-          PyErr_SetString(PyExc_TypeError,
-                          "arg must be a sequence of sequence of int");
-          return;
+        if (PyInt_Check(row) != 0) {
+          ranks.insert(PyInt_AsLong(row), i);
+          continue;
         }
-        ranks.insert(PyInt_AsLong(row), i);
+        std::string n=PyAgrumHelper::stringFromPyObject(row);
+        if (n!="") {
+          ranks.insert($self->idFromName(n),i);
+          continue;
+        }
+
+        PyErr_SetString(PyExc_TypeError,
+                        "arg must be a sequence of sequence of int or string");
+        return;
       }
     }
     $self->setSliceOrder(ranks);
