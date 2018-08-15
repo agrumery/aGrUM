@@ -279,9 +279,9 @@ namespace gum_tests {
       TS_ASSERT(uhandler2.nbVariables() == 3);
 
       // check that we cannot convert an unsafe handler into a safe one
-      TS_ASSERT_THROWS(handler2 = uhandler2, std::bad_cast);
+      TS_ASSERT_THROWS(handler2 = uhandler2, std::bad_cast&);
       gum::learning::DatabaseTable<>::Handler& uxhandler2 = handler2;
-      TS_ASSERT_THROWS(uxhandler2 = uhandler2, std::bad_cast);
+      TS_ASSERT_THROWS(uxhandler2 = uhandler2, std::bad_cast&);
     }
 
     void test_db3() {
