@@ -227,6 +227,11 @@ namespace gum {
       outfile.precision (20);
       outfile << "namespace gum {\n\n";
       outfile << "  namespace learning {\n\n";
+      outfile << "    // the size in r of ScorefNMLCTable\n";
+      outfile << "    const std::size_t ScorefNMLCTableRSize = 4;\n\n";
+      outfile << "    // the size in n of ScorefNMLCTable\n";
+      outfile << "    const std::size_t ScorefNMLCTableNSize = "
+              << __Szpankowski_threshold << ";\n\n";
       outfile << "    // the CTable for log2(Cnr), n < "
               << __Szpankowski_threshold << " and r in {2,3,4,5}\n";
       outfile << "    const double ScorefNMLCTable[4]["
