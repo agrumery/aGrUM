@@ -87,7 +87,7 @@ namespace gum_tests {
         std::make_pair(gum::NodeId(0), 1),
         std::make_pair(gum::NodeId(3), 0),
         std::make_pair(gum::NodeId(1), 0)};
-      // learner.setSliceOrder ( slice_order );
+      learner.setSliceOrder(slice_order);
 
       const std::vector< std::string >& names = learner.names();
       TS_ASSERT(!names.empty());
@@ -235,7 +235,7 @@ namespace gum_tests {
         std::make_pair(gum::NodeId(0), 1),
         std::make_pair(gum::NodeId(3), 0),
         std::make_pair(gum::NodeId(1), 0)};
-      // learner.setSliceOrder ( slice_order );
+      learner.setSliceOrder(slice_order);
 
       const std::vector< std::string >& names = learner.names();
       TS_ASSERT(!names.empty());
@@ -294,7 +294,7 @@ namespace gum_tests {
         std::make_pair(gum::NodeId(0), 1),
         std::make_pair(gum::NodeId(3), 0),
         std::make_pair(gum::NodeId(1), 0)};
-      // learner.setSliceOrder ( slice_order );
+      learner.setSliceOrder(slice_order);
 
       const std::vector< std::string >& names = learner.names();
       TS_ASSERT(!names.empty());
@@ -359,13 +359,9 @@ namespace gum_tests {
       learner.useScoreLog2Likelihood();
 
       learner.useK2(std::vector< gum::NodeId >{1, 5, 2, 6, 0, 3, 4, 7});
-      // learner.addForbiddenArc ( gum::Arc (4,3) );
-      // learner.addForbiddenArc ( gum::Arc (5,1) );
-      // learner.addForbiddenArc ( gum::Arc (5,7) );
-
-      // learner.addMandatoryArc ( gum::Arc ( learner.nodeId ( "bronchitis?" ),
-      //                                      learner.nodeId ( "lung_cancer?" )
-      //                                      ) );
+      learner.addForbiddenArc(gum::Arc(4, 3));
+      learner.addForbiddenArc(gum::Arc(5, 1));
+      learner.addForbiddenArc(gum::Arc(5, 7));
 
       learner.addMandatoryArc("bronchitis?", "lung_cancer?");
 
@@ -377,7 +373,7 @@ namespace gum_tests {
         std::make_pair(gum::NodeId(0), 1),
         std::make_pair(gum::NodeId(3), 0),
         std::make_pair(gum::NodeId(1), 0)};
-      // learner.setSliceOrder ( slice_order );
+      learner.setSliceOrder(slice_order);
 
       const std::vector< std::string >& names = learner.names();
       TS_ASSERT(!names.empty());
@@ -963,6 +959,29 @@ namespace gum_tests {
         TS_ASSERT(xvar_discr.label(8) == "[100;105]");
       } catch (std::bad_cast&) { good = 0; }
       TS_ASSERT(good == 1);
+    }
+
+    void test_setSliceOrderWithNames() {
+      gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("asia3.csv"));
+      learner.setSliceOrder({{"smoking?", "lung_cancer?"},
+                             {"bronchitis?", "visit_to_Asia?"},
+                             {"tuberculosis?"}});
+
+
+      gum::learning::BNLearner< double > learner2(
+        GET_RESSOURCES_PATH("asia3.csv"));
+      TS_ASSERT_THROWS(
+        learner2.setSliceOrder({{"smoking?", "lung_cancer?"},
+                                {"bronchitis?", "visit_to_Asia?"},
+                                {"smoking?", "tuberculosis?", "lung_cancer?"}}),
+        gum::DuplicateElement);
+
+      gum::learning::BNLearner< double > learner3(
+        GET_RESSOURCES_PATH("asia3.csv"));
+      TS_ASSERT_THROWS(learner3.setSliceOrder({{"smoking?", "lung_cancer?"},
+                                               {"bronchitis?", "visit_to_Asia?"},
+                                               {"CRUCRU"}}),
+                       gum::MissingVariableInDatabase);
     }
   };
 } /* namespace gum_tests */

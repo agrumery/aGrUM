@@ -13,43 +13,19 @@ interface generator.
 
 
 from sys import version_info as _swig_python_version_info
-if _swig_python_version_info >= (2, 7, 0):
-    def swig_import_helper():
-        import importlib
-        pkg = __name__.rpartition('.')[0]
-        mname = '.'.join((pkg, '_pyAgrum')).lstrip('.')
-        try:
-            return importlib.import_module(mname)
-        except ImportError:
-            return importlib.import_module('_pyAgrum')
-    _pyAgrum = swig_import_helper()
-    del swig_import_helper
-elif _swig_python_version_info >= (2, 6, 0):
-    def swig_import_helper():
-        from os.path import dirname
-        import imp
-        fp = None
-        try:
-            fp, pathname, description = imp.find_module('_pyAgrum', [dirname(__file__)])
-        except ImportError:
-            import _pyAgrum
-            return _pyAgrum
-        try:
-            _mod = imp.load_module('_pyAgrum', fp, pathname, description)
-        finally:
-            if fp is not None:
-                fp.close()
-        return _mod
-    _pyAgrum = swig_import_helper()
-    del swig_import_helper
-else:
-    import _pyAgrum
+if _swig_python_version_info < (2, 7, 0):
+    raise RuntimeError('Python 2.7 or later required')
+def swig_import_helper():
+    import importlib
+    pkg = __name__.rpartition('.')[0]
+    mname = '.'.join((pkg, '_pyAgrum')).lstrip('.')
+    try:
+        return importlib.import_module(mname)
+    except ImportError:
+        return importlib.import_module('_pyAgrum')
+_pyAgrum = swig_import_helper()
+del swig_import_helper
 del _swig_python_version_info
-
-try:
-    _swig_property = property
-except NameError:
-    pass  # Python < 2.2 doesn't have 'property'.
 
 try:
     import builtins as __builtin__
@@ -103,15 +79,10 @@ except __builtin__.Exception:
         pass
     _newclass = 0
 
-try:
-    import weakref
-    weakref_proxy = weakref.proxy
-except __builtin__.Exception:
-    weakref_proxy = lambda x: x
-
+import weakref
 
 class SwigPyIterator(_object):
-    """Proxy of C++ swig::SwigPyIterator class."""
+    r"""Proxy of C++ swig::SwigPyIterator class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, SwigPyIterator, name, value)
@@ -126,12 +97,12 @@ class SwigPyIterator(_object):
         return None
 
     def value(self):
-        """value(self) -> PyObject *"""
+        r"""value(self) -> PyObject *"""
         return _pyAgrum.SwigPyIterator_value(self)
 
 
     def incr(self, n=1):
-        """
+        r"""
         incr(self, n=1) -> SwigPyIterator
         incr(self) -> SwigPyIterator
         """
@@ -139,7 +110,7 @@ class SwigPyIterator(_object):
 
 
     def decr(self, n=1):
-        """
+        r"""
         decr(self, n=1) -> SwigPyIterator
         decr(self) -> SwigPyIterator
         """
@@ -147,67 +118,67 @@ class SwigPyIterator(_object):
 
 
     def distance(self, x):
-        """distance(self, x) -> ptrdiff_t"""
+        r"""distance(self, x) -> ptrdiff_t"""
         return _pyAgrum.SwigPyIterator_distance(self, x)
 
 
     def equal(self, x):
-        """equal(self, x) -> bool"""
+        r"""equal(self, x) -> bool"""
         return _pyAgrum.SwigPyIterator_equal(self, x)
 
 
     def copy(self):
-        """copy(self) -> SwigPyIterator"""
+        r"""copy(self) -> SwigPyIterator"""
         return _pyAgrum.SwigPyIterator_copy(self)
 
 
     def next(self):
-        """next(self) -> PyObject *"""
+        r"""next(self) -> PyObject *"""
         return _pyAgrum.SwigPyIterator_next(self)
 
 
     def __next__(self):
-        """__next__(self) -> PyObject *"""
+        r"""__next__(self) -> PyObject *"""
         return _pyAgrum.SwigPyIterator___next__(self)
 
 
     def previous(self):
-        """previous(self) -> PyObject *"""
+        r"""previous(self) -> PyObject *"""
         return _pyAgrum.SwigPyIterator_previous(self)
 
 
     def advance(self, n):
-        """advance(self, n) -> SwigPyIterator"""
+        r"""advance(self, n) -> SwigPyIterator"""
         return _pyAgrum.SwigPyIterator_advance(self, n)
 
 
     def __eq__(self, x):
-        """__eq__(self, x) -> bool"""
+        r"""__eq__(self, x) -> bool"""
         return _pyAgrum.SwigPyIterator___eq__(self, x)
 
 
     def __ne__(self, x):
-        """__ne__(self, x) -> bool"""
+        r"""__ne__(self, x) -> bool"""
         return _pyAgrum.SwigPyIterator___ne__(self, x)
 
 
     def __iadd__(self, n):
-        """__iadd__(self, n) -> SwigPyIterator"""
+        r"""__iadd__(self, n) -> SwigPyIterator"""
         return _pyAgrum.SwigPyIterator___iadd__(self, n)
 
 
     def __isub__(self, n):
-        """__isub__(self, n) -> SwigPyIterator"""
+        r"""__isub__(self, n) -> SwigPyIterator"""
         return _pyAgrum.SwigPyIterator___isub__(self, n)
 
 
     def __add__(self, n):
-        """__add__(self, n) -> SwigPyIterator"""
+        r"""__add__(self, n) -> SwigPyIterator"""
         return _pyAgrum.SwigPyIterator___add__(self, n)
 
 
     def __sub__(self, *args):
-        """
+        r"""
         __sub__(self, n) -> SwigPyIterator
         __sub__(self, x) -> ptrdiff_t
         """
@@ -215,14 +186,14 @@ class SwigPyIterator(_object):
 
     def __iter__(self):
         return self
-SwigPyIterator_swigregister = _pyAgrum.SwigPyIterator_swigregister
-SwigPyIterator_swigregister(SwigPyIterator)
+# Register SwigPyIterator in _pyAgrum:
+_pyAgrum.SwigPyIterator_swigregister(SwigPyIterator)
 
 
 import numpy
 
 class JTGenerator(_object):
-    """
+    r"""
 
     JTGenerator is use to generate junction tree or binary junction tree from bayesian networks.
 
@@ -238,10 +209,9 @@ class JTGenerator(_object):
     __repr__ = _swig_repr
 
     def junctionTree(self, *args):
-        """
+        r"""
         junctionTree(self, g) -> CliqueGraph
         junctionTree(self, bn) -> CliqueGraph
-
 
         Parameters
         ----------
@@ -260,10 +230,9 @@ class JTGenerator(_object):
 
 
     def binaryJoinTree(self, *args):
-        """
+        r"""
         binaryJoinTree(self, g) -> CliqueGraph
         binaryJoinTree(self, bn) -> CliqueGraph
-
 
         Parameters
         ----------
@@ -282,9 +251,8 @@ class JTGenerator(_object):
 
 
     def __init__(self):
-        """
+        r"""
         __init__(self) -> JTGenerator
-
 
         JTGenerator is use to generate junction tree or binary junction tree from bayesian networks.
 
@@ -300,11 +268,11 @@ class JTGenerator(_object):
     __swig_destroy__ = _pyAgrum.delete_JTGenerator
     def __del__(self):
         return None
-JTGenerator_swigregister = _pyAgrum.JTGenerator_swigregister
-JTGenerator_swigregister(JTGenerator)
+# Register JTGenerator in _pyAgrum:
+_pyAgrum.JTGenerator_swigregister(JTGenerator)
 
 class PythonBNListener(_object):
-    """Proxy of C++ PythonBNListener class."""
+    r"""Proxy of C++ PythonBNListener class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, PythonBNListener, name, value)
@@ -313,7 +281,7 @@ class PythonBNListener(_object):
     __repr__ = _swig_repr
 
     def __init__(self, g, vnm):
-        """__init__(self, g, vnm) -> PythonBNListener"""
+        r"""__init__(self, g, vnm) -> PythonBNListener"""
         this = _pyAgrum.new_PythonBNListener(g, vnm)
         try:
             self.this.append(this)
@@ -324,29 +292,28 @@ class PythonBNListener(_object):
         return None
 
     def whenNodeAdded(self, source, id):
-        """whenNodeAdded(self, source, id)"""
+        r"""whenNodeAdded(self, source, id)"""
         return _pyAgrum.PythonBNListener_whenNodeAdded(self, source, id)
 
 
     def whenNodeDeleted(self, arg2, id):
-        """whenNodeDeleted(self, arg2, id)"""
+        r"""whenNodeDeleted(self, arg2, id)"""
         return _pyAgrum.PythonBNListener_whenNodeDeleted(self, arg2, id)
 
 
     def whenArcAdded(self, arg2, src, dst):
-        """whenArcAdded(self, arg2, src, dst)"""
+        r"""whenArcAdded(self, arg2, src, dst)"""
         return _pyAgrum.PythonBNListener_whenArcAdded(self, arg2, src, dst)
 
 
     def whenArcDeleted(self, arg2, src, dst):
-        """whenArcDeleted(self, arg2, src, dst)"""
+        r"""whenArcDeleted(self, arg2, src, dst)"""
         return _pyAgrum.PythonBNListener_whenArcDeleted(self, arg2, src, dst)
 
 
     def setWhenArcAdded(self, pyfunc):
-        """
+        r"""
         setWhenArcAdded(self, pyfunc)
-
 
 
 
@@ -355,9 +322,8 @@ class PythonBNListener(_object):
 
 
     def setWhenArcDeleted(self, pyfunc):
-        """
+        r"""
         setWhenArcDeleted(self, pyfunc)
-
 
 
 
@@ -366,9 +332,8 @@ class PythonBNListener(_object):
 
 
     def setWhenNodeAdded(self, pyfunc):
-        """
+        r"""
         setWhenNodeAdded(self, pyfunc)
-
 
 
 
@@ -377,20 +342,19 @@ class PythonBNListener(_object):
 
 
     def setWhenNodeDeleted(self, pyfunc):
-        """
+        r"""
         setWhenNodeDeleted(self, pyfunc)
-
 
 
 
         """
         return _pyAgrum.PythonBNListener_setWhenNodeDeleted(self, pyfunc)
 
-PythonBNListener_swigregister = _pyAgrum.PythonBNListener_swigregister
-PythonBNListener_swigregister(PythonBNListener)
+# Register PythonBNListener in _pyAgrum:
+_pyAgrum.PythonBNListener_swigregister(PythonBNListener)
 
 class PythonLoadListener(_object):
-    """Proxy of C++ PythonLoadListener class."""
+    r"""Proxy of C++ PythonLoadListener class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, PythonLoadListener, name, value)
@@ -399,14 +363,13 @@ class PythonLoadListener(_object):
     __repr__ = _swig_repr
 
     def whenLoading(self, buffer, percent):
-        """whenLoading(self, buffer, percent)"""
+        r"""whenLoading(self, buffer, percent)"""
         return _pyAgrum.PythonLoadListener_whenLoading(self, buffer, percent)
 
 
     def setPythonListener(self, l):
-        """
+        r"""
         setPythonListener(self, l) -> bool
-
 
 
 
@@ -415,7 +378,7 @@ class PythonLoadListener(_object):
 
 
     def __init__(self):
-        """__init__(self) -> PythonLoadListener"""
+        r"""__init__(self) -> PythonLoadListener"""
         this = _pyAgrum.new_PythonLoadListener()
         try:
             self.this.append(this)
@@ -424,15 +387,15 @@ class PythonLoadListener(_object):
     __swig_destroy__ = _pyAgrum.delete_PythonLoadListener
     def __del__(self):
         return None
-PythonLoadListener_swigregister = _pyAgrum.PythonLoadListener_swigregister
-PythonLoadListener_swigregister(PythonLoadListener)
+# Register PythonLoadListener in _pyAgrum:
+_pyAgrum.PythonLoadListener_swigregister(PythonLoadListener)
 
 
 def __fillLoadListeners(py_listener, l):
-    """__fillLoadListeners(py_listener, l) -> int"""
+    r"""__fillLoadListeners(py_listener, l) -> int"""
     return _pyAgrum.__fillLoadListeners(py_listener, l)
 class PythonApproximationListener(_object):
-    """
+    r"""
 
     Parameters
     ----------
@@ -448,9 +411,8 @@ class PythonApproximationListener(_object):
     __repr__ = _swig_repr
 
     def __init__(self, algo):
-        """
+        r"""
         __init__(self, algo) -> PythonApproximationListener
-
 
         Parameters
         ----------
@@ -468,19 +430,18 @@ class PythonApproximationListener(_object):
         return None
 
     def whenProgress(self, src, step, error, duration):
-        """whenProgress(self, src, step, error, duration)"""
+        r"""whenProgress(self, src, step, error, duration)"""
         return _pyAgrum.PythonApproximationListener_whenProgress(self, src, step, error, duration)
 
 
     def whenStop(self, src, message):
-        """whenStop(self, src, message)"""
+        r"""whenStop(self, src, message)"""
         return _pyAgrum.PythonApproximationListener_whenStop(self, src, message)
 
 
     def setWhenProgress(self, pyfunc):
-        """
+        r"""
         setWhenProgress(self, pyfunc)
-
 
         Parameters
         ----------
@@ -492,9 +453,8 @@ class PythonApproximationListener(_object):
 
 
     def setWhenStop(self, pyfunc):
-        """
+        r"""
         setWhenStop(self, pyfunc)
-
 
         Parameters
         ----------
@@ -504,11 +464,11 @@ class PythonApproximationListener(_object):
         """
         return _pyAgrum.PythonApproximationListener_setWhenStop(self, pyfunc)
 
-PythonApproximationListener_swigregister = _pyAgrum.PythonApproximationListener_swigregister
-PythonApproximationListener_swigregister(PythonApproximationListener)
+# Register PythonApproximationListener in _pyAgrum:
+_pyAgrum.PythonApproximationListener_swigregister(PythonApproximationListener)
 
 class PythonDatabaseGeneratorListener(_object):
-    """Proxy of C++ PythonDatabaseGeneratorListener class."""
+    r"""Proxy of C++ PythonDatabaseGeneratorListener class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, PythonDatabaseGeneratorListener, name, value)
@@ -517,7 +477,7 @@ class PythonDatabaseGeneratorListener(_object):
     __repr__ = _swig_repr
 
     def __init__(self, notif):
-        """__init__(self, notif) -> PythonDatabaseGeneratorListener"""
+        r"""__init__(self, notif) -> PythonDatabaseGeneratorListener"""
         this = _pyAgrum.new_PythonDatabaseGeneratorListener(notif)
         try:
             self.this.append(this)
@@ -528,29 +488,29 @@ class PythonDatabaseGeneratorListener(_object):
         return None
 
     def whenProgress(self, src, step, duration):
-        """whenProgress(self, src, step, duration)"""
+        r"""whenProgress(self, src, step, duration)"""
         return _pyAgrum.PythonDatabaseGeneratorListener_whenProgress(self, src, step, duration)
 
 
     def whenStop(self, src, message):
-        """whenStop(self, src, message)"""
+        r"""whenStop(self, src, message)"""
         return _pyAgrum.PythonDatabaseGeneratorListener_whenStop(self, src, message)
 
 
     def setWhenProgress(self, pyfunc):
-        """setWhenProgress(self, pyfunc)"""
+        r"""setWhenProgress(self, pyfunc)"""
         return _pyAgrum.PythonDatabaseGeneratorListener_setWhenProgress(self, pyfunc)
 
 
     def setWhenStop(self, pyfunc):
-        """setWhenStop(self, pyfunc)"""
+        r"""setWhenStop(self, pyfunc)"""
         return _pyAgrum.PythonDatabaseGeneratorListener_setWhenStop(self, pyfunc)
 
-PythonDatabaseGeneratorListener_swigregister = _pyAgrum.PythonDatabaseGeneratorListener_swigregister
-PythonDatabaseGeneratorListener_swigregister(PythonDatabaseGeneratorListener)
+# Register PythonDatabaseGeneratorListener in _pyAgrum:
+_pyAgrum.PythonDatabaseGeneratorListener_swigregister(PythonDatabaseGeneratorListener)
 
 class BNGenerator(_object):
-    """
+    r"""
 
     BNGenerator is used to easily generate Bayesian networks.
 
@@ -567,12 +527,11 @@ class BNGenerator(_object):
     __repr__ = _swig_repr
 
     def generate(self, n_nodes=10, n_arcs=15, n_modmax=4):
-        """
+        r"""
         generate(self, n_nodes=10, n_arcs=15, n_modmax=4) -> BayesNet_double
         generate(self, n_nodes=10, n_arcs=15) -> BayesNet_double
         generate(self, n_nodes=10) -> BayesNet_double
         generate(self) -> BayesNet_double
-
 
         Generate a new Bayesian network 
 
@@ -602,9 +561,8 @@ class BNGenerator(_object):
 
 
     def __init__(self):
-        """
+        r"""
         __init__(self) -> BNGenerator
-
 
         BNGenerator is used to easily generate Bayesian networks.
 
@@ -621,11 +579,11 @@ class BNGenerator(_object):
     __swig_destroy__ = _pyAgrum.delete_BNGenerator
     def __del__(self):
         return None
-BNGenerator_swigregister = _pyAgrum.BNGenerator_swigregister
-BNGenerator_swigregister(BNGenerator)
+# Register BNGenerator in _pyAgrum:
+_pyAgrum.BNGenerator_swigregister(BNGenerator)
 
 class IDGenerator(_object):
-    """
+    r"""
 
     IDGenerator is used to easily generate influence diagrams.
 
@@ -642,14 +600,13 @@ class IDGenerator(_object):
     __repr__ = _swig_repr
 
     def generate(self, nbrNodes=10, arcDensity=0.2, chanceNodeDensity=0.8, utilityNodeDensity=0.1, max_modality=2):
-        """
+        r"""
         generate(self, nbrNodes=10, arcDensity=0.2, chanceNodeDensity=0.8, utilityNodeDensity=0.1, max_modality=2) -> InfluenceDiagram_double
         generate(self, nbrNodes=10, arcDensity=0.2, chanceNodeDensity=0.8, utilityNodeDensity=0.1) -> InfluenceDiagram_double
         generate(self, nbrNodes=10, arcDensity=0.2, chanceNodeDensity=0.8) -> InfluenceDiagram_double
         generate(self, nbrNodes=10, arcDensity=0.2) -> InfluenceDiagram_double
         generate(self, nbrNodes=10) -> InfluenceDiagram_double
         generate(self) -> InfluenceDiagram_double
-
 
         Generate a new influence diagram given the parameters.
 
@@ -676,9 +633,8 @@ class IDGenerator(_object):
 
 
     def __init__(self):
-        """
+        r"""
         __init__(self) -> IDGenerator
-
 
         IDGenerator is used to easily generate influence diagrams.
 
@@ -695,11 +651,11 @@ class IDGenerator(_object):
     __swig_destroy__ = _pyAgrum.delete_IDGenerator
     def __del__(self):
         return None
-IDGenerator_swigregister = _pyAgrum.IDGenerator_swigregister
-IDGenerator_swigregister(IDGenerator)
+# Register IDGenerator in _pyAgrum:
+_pyAgrum.IDGenerator_swigregister(IDGenerator)
 
 class PRMexplorer(_object):
-    """
+    r"""
 
     PRMexplorer helps navigate through probabilistic relational models.
 
@@ -715,9 +671,8 @@ class PRMexplorer(_object):
     __repr__ = _swig_repr
 
     def __init__(self):
-        """
+        r"""
         __init__(self) -> PRMexplorer
-
 
         PRMexplorer helps navigate through probabilistic relational models.
 
@@ -735,11 +690,10 @@ class PRMexplorer(_object):
         return None
 
     def load(self, *args):
-        """
+        r"""
         load(self, filename, classpath, verbose=False)
         load(self, filename, classpath)
         load(self, filename)
-
 
         Load a PRM into the explorer.
 
@@ -760,9 +714,8 @@ class PRMexplorer(_object):
 
 
     def isType(self, name):
-        """
+        r"""
         isType(self, name) -> PyObject *
-
 
         Parameters
         ----------
@@ -779,9 +732,8 @@ class PRMexplorer(_object):
 
 
     def isClass(self, name):
-        """
+        r"""
         isClass(self, name) -> PyObject *
-
 
         Parameters
         ----------
@@ -798,9 +750,8 @@ class PRMexplorer(_object):
 
 
     def isInterface(self, name):
-        """
+        r"""
         isInterface(self, name) -> PyObject *
-
 
         Parameters
         ----------
@@ -817,9 +768,8 @@ class PRMexplorer(_object):
 
 
     def classes(self):
-        """
+        r"""
         classes(self) -> PyObject *
-
 
         Returns
         -------
@@ -831,9 +781,8 @@ class PRMexplorer(_object):
 
 
     def classAttributes(self, class_name):
-        """
+        r"""
         classAttributes(self, class_name) -> PyObject *
-
 
         Parameters
         ----------
@@ -855,9 +804,8 @@ class PRMexplorer(_object):
 
 
     def isAttribute(self, class_name, att_name):
-        """
+        r"""
         isAttribute(self, class_name, att_name) -> PyObject *
-
 
         Parameters
         ----------
@@ -883,9 +831,8 @@ class PRMexplorer(_object):
 
 
     def classReferences(self, class_name):
-        """
+        r"""
         classReferences(self, class_name) -> PyObject *
-
 
         Parameters
         ----------
@@ -907,9 +854,8 @@ class PRMexplorer(_object):
 
 
     def classParameters(self, class_name):
-        """
+        r"""
         classParameters(self, class_name) -> PyObject *
-
 
         Parameters
         ----------
@@ -931,9 +877,8 @@ class PRMexplorer(_object):
 
 
     def classImplements(self, class_name):
-        """
+        r"""
         classImplements(self, class_name) -> PyObject *
-
 
         Parameters
         ----------
@@ -951,12 +896,11 @@ class PRMexplorer(_object):
     __swig_setmethods__["aggType"] = _pyAgrum.PRMexplorer_aggType_set
     __swig_getmethods__["aggType"] = _pyAgrum.PRMexplorer_aggType_get
     if _newclass:
-        aggType = _swig_property(_pyAgrum.PRMexplorer_aggType_get, _pyAgrum.PRMexplorer_aggType_set)
+        aggType = property(_pyAgrum.PRMexplorer_aggType_get, _pyAgrum.PRMexplorer_aggType_set)
 
     def classAggregates(self, class_name):
-        """
+        r"""
         classAggregates(self, class_name) -> PyObject *
-
 
         Parameters
         ----------
@@ -978,9 +922,8 @@ class PRMexplorer(_object):
 
 
     def classSlotChains(self, class_name):
-        """
+        r"""
         classSlotChains(self, class_name) -> PyObject *
-
 
         Parameters
         ----------
@@ -1002,9 +945,8 @@ class PRMexplorer(_object):
 
 
     def classDag(self, class_name):
-        """
+        r"""
         classDag(self, class_name) -> PyObject *
-
 
         Parameters
         ----------
@@ -1026,9 +968,8 @@ class PRMexplorer(_object):
 
 
     def getalltheSystems(self):
-        """
+        r"""
         getalltheSystems(self) -> PyObject *
-
 
         Returns
         -------
@@ -1040,9 +981,8 @@ class PRMexplorer(_object):
 
 
     def getSuperClass(self, class_name):
-        """
+        r"""
         getSuperClass(self, class_name) -> PyObject *
-
 
         Parameters
         ----------
@@ -1064,9 +1004,8 @@ class PRMexplorer(_object):
 
 
     def getDirectSubClass(self, class_name):
-        """
+        r"""
         getDirectSubClass(self, class_name) -> PyObject *
-
 
         Parameters
         ----------
@@ -1088,9 +1027,8 @@ class PRMexplorer(_object):
 
 
     def cpf(self, class_name, attribute):
-        """
+        r"""
         cpf(self, class_name, attribute) -> Potential_double
-
 
         Parameters
         ----------
@@ -1119,9 +1057,8 @@ class PRMexplorer(_object):
 
 
     def types(self):
-        """
+        r"""
         types(self) -> PyObject *
-
 
         Returns
         -------
@@ -1133,9 +1070,8 @@ class PRMexplorer(_object):
 
 
     def getSuperType(self, type_name):
-        """
+        r"""
         getSuperType(self, type_name) -> PyObject *
-
 
         Parameters
         ----------
@@ -1157,9 +1093,8 @@ class PRMexplorer(_object):
 
 
     def getDirectSubTypes(self, type_name):
-        """
+        r"""
         getDirectSubTypes(self, type_name) -> PyObject *
-
 
         Parameters
         ----------
@@ -1181,9 +1116,8 @@ class PRMexplorer(_object):
 
 
     def getLabels(self, type_name):
-        """
+        r"""
         getLabels(self, type_name) -> PyObject *
-
 
         Parameters
         ----------
@@ -1205,9 +1139,8 @@ class PRMexplorer(_object):
 
 
     def getLabelMap(self, type_name):
-        """
+        r"""
         getLabelMap(self, type_name) -> PyObject *
-
 
         Parameters
         ----------
@@ -1229,9 +1162,8 @@ class PRMexplorer(_object):
 
 
     def interfaces(self):
-        """
+        r"""
         interfaces(self) -> PyObject *
-
 
         Returns
         -------
@@ -1243,10 +1175,9 @@ class PRMexplorer(_object):
 
 
     def interAttributes(self, interface_name, allAttributes=False):
-        """
+        r"""
         interAttributes(self, interface_name, allAttributes=False) -> PyObject
         interAttributes(self, interface_name) -> PyObject *
-
 
         Parameters
         ----------
@@ -1271,9 +1202,8 @@ class PRMexplorer(_object):
 
 
     def interReferences(self, interface_name):
-        """
+        r"""
         interReferences(self, interface_name) -> PyObject *
-
 
         Parameters
         ----------
@@ -1295,9 +1225,8 @@ class PRMexplorer(_object):
 
 
     def getSuperInterface(self, interface_name):
-        """
+        r"""
         getSuperInterface(self, interface_name) -> PyObject *
-
 
         Parameters
         ----------
@@ -1319,9 +1248,8 @@ class PRMexplorer(_object):
 
 
     def getDirectSubInterfaces(self, interface_name):
-        """
+        r"""
         getDirectSubInterfaces(self, interface_name) -> PyObject *
-
 
         Parameters
         ----------
@@ -1343,9 +1271,8 @@ class PRMexplorer(_object):
 
 
     def getImplementations(self, interface_name):
-        """
+        r"""
         getImplementations(self, interface_name) -> PyObject *
-
 
         Parameters
         ----------
@@ -1365,11 +1292,11 @@ class PRMexplorer(_object):
         """
         return _pyAgrum.PRMexplorer_getImplementations(self, interface_name)
 
-PRMexplorer_swigregister = _pyAgrum.PRMexplorer_swigregister
-PRMexplorer_swigregister(PRMexplorer)
+# Register PRMexplorer in _pyAgrum:
+_pyAgrum.PRMexplorer_swigregister(PRMexplorer)
 
 class Vector_double(_object):
-    """Proxy of C++ std::vector< double > class."""
+    r"""Proxy of C++ std::vector< double > class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, Vector_double, name, value)
@@ -1378,34 +1305,34 @@ class Vector_double(_object):
     __repr__ = _swig_repr
 
     def iterator(self):
-        """iterator(self) -> SwigPyIterator"""
+        r"""iterator(self) -> SwigPyIterator"""
         return _pyAgrum.Vector_double_iterator(self)
 
     def __iter__(self):
         return self.iterator()
 
     def __nonzero__(self):
-        """__nonzero__(self) -> bool"""
+        r"""__nonzero__(self) -> bool"""
         return _pyAgrum.Vector_double___nonzero__(self)
 
 
     def __bool__(self):
-        """__bool__(self) -> bool"""
+        r"""__bool__(self) -> bool"""
         return _pyAgrum.Vector_double___bool__(self)
 
 
     def __len__(self):
-        """__len__(self) -> std::vector< double >::size_type"""
+        r"""__len__(self) -> std::vector< double >::size_type"""
         return _pyAgrum.Vector_double___len__(self)
 
 
     def __getslice__(self, i, j):
-        """__getslice__(self, i, j) -> Vector_double"""
+        r"""__getslice__(self, i, j) -> Vector_double"""
         return _pyAgrum.Vector_double___getslice__(self, i, j)
 
 
     def __setslice__(self, *args):
-        """
+        r"""
         __setslice__(self, i, j)
         __setslice__(self, i, j, v)
         """
@@ -1413,12 +1340,12 @@ class Vector_double(_object):
 
 
     def __delslice__(self, i, j):
-        """__delslice__(self, i, j)"""
+        r"""__delslice__(self, i, j)"""
         return _pyAgrum.Vector_double___delslice__(self, i, j)
 
 
     def __delitem__(self, *args):
-        """
+        r"""
         __delitem__(self, i)
         __delitem__(self, slice)
         """
@@ -1426,7 +1353,7 @@ class Vector_double(_object):
 
 
     def __getitem__(self, *args):
-        """
+        r"""
         __getitem__(self, slice) -> Vector_double
         __getitem__(self, i) -> std::vector< double >::value_type const &
         """
@@ -1434,7 +1361,7 @@ class Vector_double(_object):
 
 
     def __setitem__(self, *args):
-        """
+        r"""
         __setitem__(self, slice, v)
         __setitem__(self, slice)
         __setitem__(self, i, x)
@@ -1443,67 +1370,67 @@ class Vector_double(_object):
 
 
     def pop(self):
-        """pop(self) -> std::vector< double >::value_type"""
+        r"""pop(self) -> std::vector< double >::value_type"""
         return _pyAgrum.Vector_double_pop(self)
 
 
     def append(self, x):
-        """append(self, x)"""
+        r"""append(self, x)"""
         return _pyAgrum.Vector_double_append(self, x)
 
 
     def empty(self):
-        """empty(self) -> bool"""
+        r"""empty(self) -> bool"""
         return _pyAgrum.Vector_double_empty(self)
 
 
     def size(self):
-        """size(self) -> std::vector< double >::size_type"""
+        r"""size(self) -> std::vector< double >::size_type"""
         return _pyAgrum.Vector_double_size(self)
 
 
     def swap(self, v):
-        """swap(self, v)"""
+        r"""swap(self, v)"""
         return _pyAgrum.Vector_double_swap(self, v)
 
 
     def begin(self):
-        """begin(self) -> std::vector< double >::iterator"""
+        r"""begin(self) -> std::vector< double >::iterator"""
         return _pyAgrum.Vector_double_begin(self)
 
 
     def end(self):
-        """end(self) -> std::vector< double >::iterator"""
+        r"""end(self) -> std::vector< double >::iterator"""
         return _pyAgrum.Vector_double_end(self)
 
 
     def rbegin(self):
-        """rbegin(self) -> std::vector< double >::reverse_iterator"""
+        r"""rbegin(self) -> std::vector< double >::reverse_iterator"""
         return _pyAgrum.Vector_double_rbegin(self)
 
 
     def rend(self):
-        """rend(self) -> std::vector< double >::reverse_iterator"""
+        r"""rend(self) -> std::vector< double >::reverse_iterator"""
         return _pyAgrum.Vector_double_rend(self)
 
 
     def clear(self):
-        """clear(self)"""
+        r"""clear(self)"""
         return _pyAgrum.Vector_double_clear(self)
 
 
     def get_allocator(self):
-        """get_allocator(self) -> std::vector< double >::allocator_type"""
+        r"""get_allocator(self) -> std::vector< double >::allocator_type"""
         return _pyAgrum.Vector_double_get_allocator(self)
 
 
     def pop_back(self):
-        """pop_back(self)"""
+        r"""pop_back(self)"""
         return _pyAgrum.Vector_double_pop_back(self)
 
 
     def erase(self, *args):
-        """
+        r"""
         erase(self, pos) -> std::vector< double >::iterator
         erase(self, first, last) -> std::vector< double >::iterator
         """
@@ -1511,7 +1438,7 @@ class Vector_double(_object):
 
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self) -> Vector_double
         __init__(self, arg2) -> Vector_double
         __init__(self, size) -> Vector_double
@@ -1524,27 +1451,27 @@ class Vector_double(_object):
             self.this = this
 
     def push_back(self, x):
-        """push_back(self, x)"""
+        r"""push_back(self, x)"""
         return _pyAgrum.Vector_double_push_back(self, x)
 
 
     def front(self):
-        """front(self) -> std::vector< double >::value_type const &"""
+        r"""front(self) -> std::vector< double >::value_type const &"""
         return _pyAgrum.Vector_double_front(self)
 
 
     def back(self):
-        """back(self) -> std::vector< double >::value_type const &"""
+        r"""back(self) -> std::vector< double >::value_type const &"""
         return _pyAgrum.Vector_double_back(self)
 
 
     def assign(self, n, x):
-        """assign(self, n, x)"""
+        r"""assign(self, n, x)"""
         return _pyAgrum.Vector_double_assign(self, n, x)
 
 
     def resize(self, *args):
-        """
+        r"""
         resize(self, new_size)
         resize(self, new_size, x)
         """
@@ -1552,7 +1479,7 @@ class Vector_double(_object):
 
 
     def insert(self, *args):
-        """
+        r"""
         insert(self, pos, x) -> std::vector< double >::iterator
         insert(self, pos, n, x)
         """
@@ -1560,22 +1487,22 @@ class Vector_double(_object):
 
 
     def reserve(self, n):
-        """reserve(self, n)"""
+        r"""reserve(self, n)"""
         return _pyAgrum.Vector_double_reserve(self, n)
 
 
     def capacity(self):
-        """capacity(self) -> std::vector< double >::size_type"""
+        r"""capacity(self) -> std::vector< double >::size_type"""
         return _pyAgrum.Vector_double_capacity(self)
 
     __swig_destroy__ = _pyAgrum.delete_Vector_double
     def __del__(self):
         return None
-Vector_double_swigregister = _pyAgrum.Vector_double_swigregister
-Vector_double_swigregister(Vector_double)
+# Register Vector_double in _pyAgrum:
+_pyAgrum.Vector_double_swigregister(Vector_double)
 
 class Vector_int(_object):
-    """Proxy of C++ std::vector< unsigned int > class."""
+    r"""Proxy of C++ std::vector< unsigned int > class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, Vector_int, name, value)
@@ -1584,34 +1511,34 @@ class Vector_int(_object):
     __repr__ = _swig_repr
 
     def iterator(self):
-        """iterator(self) -> SwigPyIterator"""
+        r"""iterator(self) -> SwigPyIterator"""
         return _pyAgrum.Vector_int_iterator(self)
 
     def __iter__(self):
         return self.iterator()
 
     def __nonzero__(self):
-        """__nonzero__(self) -> bool"""
+        r"""__nonzero__(self) -> bool"""
         return _pyAgrum.Vector_int___nonzero__(self)
 
 
     def __bool__(self):
-        """__bool__(self) -> bool"""
+        r"""__bool__(self) -> bool"""
         return _pyAgrum.Vector_int___bool__(self)
 
 
     def __len__(self):
-        """__len__(self) -> std::vector< unsigned int >::size_type"""
+        r"""__len__(self) -> std::vector< unsigned int >::size_type"""
         return _pyAgrum.Vector_int___len__(self)
 
 
     def __getslice__(self, i, j):
-        """__getslice__(self, i, j) -> Vector_int"""
+        r"""__getslice__(self, i, j) -> Vector_int"""
         return _pyAgrum.Vector_int___getslice__(self, i, j)
 
 
     def __setslice__(self, *args):
-        """
+        r"""
         __setslice__(self, i, j)
         __setslice__(self, i, j, v)
         """
@@ -1619,12 +1546,12 @@ class Vector_int(_object):
 
 
     def __delslice__(self, i, j):
-        """__delslice__(self, i, j)"""
+        r"""__delslice__(self, i, j)"""
         return _pyAgrum.Vector_int___delslice__(self, i, j)
 
 
     def __delitem__(self, *args):
-        """
+        r"""
         __delitem__(self, i)
         __delitem__(self, slice)
         """
@@ -1632,7 +1559,7 @@ class Vector_int(_object):
 
 
     def __getitem__(self, *args):
-        """
+        r"""
         __getitem__(self, slice) -> Vector_int
         __getitem__(self, i) -> std::vector< unsigned int >::value_type const &
         """
@@ -1640,7 +1567,7 @@ class Vector_int(_object):
 
 
     def __setitem__(self, *args):
-        """
+        r"""
         __setitem__(self, slice, v)
         __setitem__(self, slice)
         __setitem__(self, i, x)
@@ -1649,67 +1576,67 @@ class Vector_int(_object):
 
 
     def pop(self):
-        """pop(self) -> std::vector< unsigned int >::value_type"""
+        r"""pop(self) -> std::vector< unsigned int >::value_type"""
         return _pyAgrum.Vector_int_pop(self)
 
 
     def append(self, x):
-        """append(self, x)"""
+        r"""append(self, x)"""
         return _pyAgrum.Vector_int_append(self, x)
 
 
     def empty(self):
-        """empty(self) -> bool"""
+        r"""empty(self) -> bool"""
         return _pyAgrum.Vector_int_empty(self)
 
 
     def size(self):
-        """size(self) -> std::vector< unsigned int >::size_type"""
+        r"""size(self) -> std::vector< unsigned int >::size_type"""
         return _pyAgrum.Vector_int_size(self)
 
 
     def swap(self, v):
-        """swap(self, v)"""
+        r"""swap(self, v)"""
         return _pyAgrum.Vector_int_swap(self, v)
 
 
     def begin(self):
-        """begin(self) -> std::vector< unsigned int >::iterator"""
+        r"""begin(self) -> std::vector< unsigned int >::iterator"""
         return _pyAgrum.Vector_int_begin(self)
 
 
     def end(self):
-        """end(self) -> std::vector< unsigned int >::iterator"""
+        r"""end(self) -> std::vector< unsigned int >::iterator"""
         return _pyAgrum.Vector_int_end(self)
 
 
     def rbegin(self):
-        """rbegin(self) -> std::vector< unsigned int >::reverse_iterator"""
+        r"""rbegin(self) -> std::vector< unsigned int >::reverse_iterator"""
         return _pyAgrum.Vector_int_rbegin(self)
 
 
     def rend(self):
-        """rend(self) -> std::vector< unsigned int >::reverse_iterator"""
+        r"""rend(self) -> std::vector< unsigned int >::reverse_iterator"""
         return _pyAgrum.Vector_int_rend(self)
 
 
     def clear(self):
-        """clear(self)"""
+        r"""clear(self)"""
         return _pyAgrum.Vector_int_clear(self)
 
 
     def get_allocator(self):
-        """get_allocator(self) -> std::vector< unsigned int >::allocator_type"""
+        r"""get_allocator(self) -> std::vector< unsigned int >::allocator_type"""
         return _pyAgrum.Vector_int_get_allocator(self)
 
 
     def pop_back(self):
-        """pop_back(self)"""
+        r"""pop_back(self)"""
         return _pyAgrum.Vector_int_pop_back(self)
 
 
     def erase(self, *args):
-        """
+        r"""
         erase(self, pos) -> std::vector< unsigned int >::iterator
         erase(self, first, last) -> std::vector< unsigned int >::iterator
         """
@@ -1717,7 +1644,7 @@ class Vector_int(_object):
 
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self) -> Vector_int
         __init__(self, arg2) -> Vector_int
         __init__(self, size) -> Vector_int
@@ -1730,27 +1657,27 @@ class Vector_int(_object):
             self.this = this
 
     def push_back(self, x):
-        """push_back(self, x)"""
+        r"""push_back(self, x)"""
         return _pyAgrum.Vector_int_push_back(self, x)
 
 
     def front(self):
-        """front(self) -> std::vector< unsigned int >::value_type const &"""
+        r"""front(self) -> std::vector< unsigned int >::value_type const &"""
         return _pyAgrum.Vector_int_front(self)
 
 
     def back(self):
-        """back(self) -> std::vector< unsigned int >::value_type const &"""
+        r"""back(self) -> std::vector< unsigned int >::value_type const &"""
         return _pyAgrum.Vector_int_back(self)
 
 
     def assign(self, n, x):
-        """assign(self, n, x)"""
+        r"""assign(self, n, x)"""
         return _pyAgrum.Vector_int_assign(self, n, x)
 
 
     def resize(self, *args):
-        """
+        r"""
         resize(self, new_size)
         resize(self, new_size, x)
         """
@@ -1758,7 +1685,7 @@ class Vector_int(_object):
 
 
     def insert(self, *args):
-        """
+        r"""
         insert(self, pos, x) -> std::vector< unsigned int >::iterator
         insert(self, pos, n, x)
         """
@@ -1766,22 +1693,22 @@ class Vector_int(_object):
 
 
     def reserve(self, n):
-        """reserve(self, n)"""
+        r"""reserve(self, n)"""
         return _pyAgrum.Vector_int_reserve(self, n)
 
 
     def capacity(self):
-        """capacity(self) -> std::vector< unsigned int >::size_type"""
+        r"""capacity(self) -> std::vector< unsigned int >::size_type"""
         return _pyAgrum.Vector_int_capacity(self)
 
     __swig_destroy__ = _pyAgrum.delete_Vector_int
     def __del__(self):
         return None
-Vector_int_swigregister = _pyAgrum.Vector_int_swigregister
-Vector_int_swigregister(Vector_int)
+# Register Vector_int in _pyAgrum:
+_pyAgrum.Vector_int_swigregister(Vector_int)
 
 class Vector_string(_object):
-    """Proxy of C++ std::vector< std::string > class."""
+    r"""Proxy of C++ std::vector< std::string > class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, Vector_string, name, value)
@@ -1790,34 +1717,34 @@ class Vector_string(_object):
     __repr__ = _swig_repr
 
     def iterator(self):
-        """iterator(self) -> SwigPyIterator"""
+        r"""iterator(self) -> SwigPyIterator"""
         return _pyAgrum.Vector_string_iterator(self)
 
     def __iter__(self):
         return self.iterator()
 
     def __nonzero__(self):
-        """__nonzero__(self) -> bool"""
+        r"""__nonzero__(self) -> bool"""
         return _pyAgrum.Vector_string___nonzero__(self)
 
 
     def __bool__(self):
-        """__bool__(self) -> bool"""
+        r"""__bool__(self) -> bool"""
         return _pyAgrum.Vector_string___bool__(self)
 
 
     def __len__(self):
-        """__len__(self) -> std::vector< std::string >::size_type"""
+        r"""__len__(self) -> std::vector< std::string >::size_type"""
         return _pyAgrum.Vector_string___len__(self)
 
 
     def __getslice__(self, i, j):
-        """__getslice__(self, i, j) -> Vector_string"""
+        r"""__getslice__(self, i, j) -> Vector_string"""
         return _pyAgrum.Vector_string___getslice__(self, i, j)
 
 
     def __setslice__(self, *args):
-        """
+        r"""
         __setslice__(self, i, j)
         __setslice__(self, i, j, v)
         """
@@ -1825,12 +1752,12 @@ class Vector_string(_object):
 
 
     def __delslice__(self, i, j):
-        """__delslice__(self, i, j)"""
+        r"""__delslice__(self, i, j)"""
         return _pyAgrum.Vector_string___delslice__(self, i, j)
 
 
     def __delitem__(self, *args):
-        """
+        r"""
         __delitem__(self, i)
         __delitem__(self, slice)
         """
@@ -1838,7 +1765,7 @@ class Vector_string(_object):
 
 
     def __getitem__(self, *args):
-        """
+        r"""
         __getitem__(self, slice) -> Vector_string
         __getitem__(self, i) -> std::vector< std::string >::value_type const &
         """
@@ -1846,7 +1773,7 @@ class Vector_string(_object):
 
 
     def __setitem__(self, *args):
-        """
+        r"""
         __setitem__(self, slice, v)
         __setitem__(self, slice)
         __setitem__(self, i, x)
@@ -1855,67 +1782,67 @@ class Vector_string(_object):
 
 
     def pop(self):
-        """pop(self) -> std::vector< std::string >::value_type"""
+        r"""pop(self) -> std::vector< std::string >::value_type"""
         return _pyAgrum.Vector_string_pop(self)
 
 
     def append(self, x):
-        """append(self, x)"""
+        r"""append(self, x)"""
         return _pyAgrum.Vector_string_append(self, x)
 
 
     def empty(self):
-        """empty(self) -> bool"""
+        r"""empty(self) -> bool"""
         return _pyAgrum.Vector_string_empty(self)
 
 
     def size(self):
-        """size(self) -> std::vector< std::string >::size_type"""
+        r"""size(self) -> std::vector< std::string >::size_type"""
         return _pyAgrum.Vector_string_size(self)
 
 
     def swap(self, v):
-        """swap(self, v)"""
+        r"""swap(self, v)"""
         return _pyAgrum.Vector_string_swap(self, v)
 
 
     def begin(self):
-        """begin(self) -> std::vector< std::string >::iterator"""
+        r"""begin(self) -> std::vector< std::string >::iterator"""
         return _pyAgrum.Vector_string_begin(self)
 
 
     def end(self):
-        """end(self) -> std::vector< std::string >::iterator"""
+        r"""end(self) -> std::vector< std::string >::iterator"""
         return _pyAgrum.Vector_string_end(self)
 
 
     def rbegin(self):
-        """rbegin(self) -> std::vector< std::string >::reverse_iterator"""
+        r"""rbegin(self) -> std::vector< std::string >::reverse_iterator"""
         return _pyAgrum.Vector_string_rbegin(self)
 
 
     def rend(self):
-        """rend(self) -> std::vector< std::string >::reverse_iterator"""
+        r"""rend(self) -> std::vector< std::string >::reverse_iterator"""
         return _pyAgrum.Vector_string_rend(self)
 
 
     def clear(self):
-        """clear(self)"""
+        r"""clear(self)"""
         return _pyAgrum.Vector_string_clear(self)
 
 
     def get_allocator(self):
-        """get_allocator(self) -> std::vector< std::string >::allocator_type"""
+        r"""get_allocator(self) -> std::vector< std::string >::allocator_type"""
         return _pyAgrum.Vector_string_get_allocator(self)
 
 
     def pop_back(self):
-        """pop_back(self)"""
+        r"""pop_back(self)"""
         return _pyAgrum.Vector_string_pop_back(self)
 
 
     def erase(self, *args):
-        """
+        r"""
         erase(self, pos) -> std::vector< std::string >::iterator
         erase(self, first, last) -> std::vector< std::string >::iterator
         """
@@ -1923,7 +1850,7 @@ class Vector_string(_object):
 
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self) -> Vector_string
         __init__(self, arg2) -> Vector_string
         __init__(self, size) -> Vector_string
@@ -1936,27 +1863,27 @@ class Vector_string(_object):
             self.this = this
 
     def push_back(self, x):
-        """push_back(self, x)"""
+        r"""push_back(self, x)"""
         return _pyAgrum.Vector_string_push_back(self, x)
 
 
     def front(self):
-        """front(self) -> std::vector< std::string >::value_type const &"""
+        r"""front(self) -> std::vector< std::string >::value_type const &"""
         return _pyAgrum.Vector_string_front(self)
 
 
     def back(self):
-        """back(self) -> std::vector< std::string >::value_type const &"""
+        r"""back(self) -> std::vector< std::string >::value_type const &"""
         return _pyAgrum.Vector_string_back(self)
 
 
     def assign(self, n, x):
-        """assign(self, n, x)"""
+        r"""assign(self, n, x)"""
         return _pyAgrum.Vector_string_assign(self, n, x)
 
 
     def resize(self, *args):
-        """
+        r"""
         resize(self, new_size)
         resize(self, new_size, x)
         """
@@ -1964,7 +1891,7 @@ class Vector_string(_object):
 
 
     def insert(self, *args):
-        """
+        r"""
         insert(self, pos, x) -> std::vector< std::string >::iterator
         insert(self, pos, n, x)
         """
@@ -1972,22 +1899,22 @@ class Vector_string(_object):
 
 
     def reserve(self, n):
-        """reserve(self, n)"""
+        r"""reserve(self, n)"""
         return _pyAgrum.Vector_string_reserve(self, n)
 
 
     def capacity(self):
-        """capacity(self) -> std::vector< std::string >::size_type"""
+        r"""capacity(self) -> std::vector< std::string >::size_type"""
         return _pyAgrum.Vector_string_capacity(self)
 
     __swig_destroy__ = _pyAgrum.delete_Vector_string
     def __del__(self):
         return None
-Vector_string_swigregister = _pyAgrum.Vector_string_swigregister
-Vector_string_swigregister(Vector_string)
+# Register Vector_string in _pyAgrum:
+_pyAgrum.Vector_string_swigregister(Vector_string)
 
 class SetIteratorStaticEnd(_object):
-    """Proxy of C++ gum::SetIteratorStaticEnd class."""
+    r"""Proxy of C++ gum::SetIteratorStaticEnd class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, SetIteratorStaticEnd, name, value)
@@ -1996,7 +1923,7 @@ class SetIteratorStaticEnd(_object):
     __repr__ = _swig_repr
 
     def __init__(self):
-        """__init__(self) -> SetIteratorStaticEnd"""
+        r"""__init__(self) -> SetIteratorStaticEnd"""
         this = _pyAgrum.new_SetIteratorStaticEnd()
         try:
             self.this.append(this)
@@ -2005,11 +1932,11 @@ class SetIteratorStaticEnd(_object):
     __swig_destroy__ = _pyAgrum.delete_SetIteratorStaticEnd
     def __del__(self):
         return None
-SetIteratorStaticEnd_swigregister = _pyAgrum.SetIteratorStaticEnd_swigregister
-SetIteratorStaticEnd_swigregister(SetIteratorStaticEnd)
+# Register SetIteratorStaticEnd in _pyAgrum:
+_pyAgrum.SetIteratorStaticEnd_swigregister(SetIteratorStaticEnd)
 
 class GumException(Exception):
-    """Proxy of C++ gum::Exception class."""
+    r"""Proxy of C++ gum::Exception class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, GumException, name, value)
@@ -2018,10 +1945,10 @@ class GumException(Exception):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
-        __init__(self, aMsg, aType) -> GumException
-        __init__(self, aMsg) -> GumException
-        __init__(self) -> GumException
+        r"""
+        Exception(aMsg, aType) -> GumException
+        Exception(aMsg) -> GumException
+        Exception() -> GumException
         __init__(self, e) -> GumException
         """
         this = _pyAgrum.new_GumException(*args)
@@ -2034,14 +1961,13 @@ class GumException(Exception):
         return None
 
     def what(self):
-        """what(self) -> std::string const"""
+        r"""what(self) -> std::string const"""
         return _pyAgrum.GumException_what(self)
 
 
     def errorContent(self):
-        """
+        r"""
         errorContent(self) -> std::string const
-
 
         Returns
         -------
@@ -2053,9 +1979,8 @@ class GumException(Exception):
 
 
     def errorType(self):
-        """
+        r"""
         errorType(self) -> std::string const
-
 
         Returns
         -------
@@ -2067,9 +1992,8 @@ class GumException(Exception):
 
 
     def errorCallStack(self):
-        """
+        r"""
         errorCallStack(self) -> std::string const
-
 
         Returns
         -------
@@ -2079,15 +2003,15 @@ class GumException(Exception):
         """
         return _pyAgrum.GumException_errorCallStack(self)
 
-GumException_swigregister = _pyAgrum.GumException_swigregister
-GumException_swigregister(GumException)
+# Register GumException in _pyAgrum:
+_pyAgrum.GumException_swigregister(GumException)
 
 
 def __createMsg(filename, function, line, msg):
-    """__createMsg(filename, function, line, msg) -> std::string const"""
+    r"""__createMsg(filename, function, line, msg) -> std::string const"""
     return _pyAgrum.__createMsg(filename, function, line, msg)
 class IdError(GumException):
-    """Proxy of C++ gum::IdError class."""
+    r"""Proxy of C++ gum::IdError class."""
 
     __swig_setmethods__ = {}
     for _s in [GumException]:
@@ -2100,7 +2024,7 @@ class IdError(GumException):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> IdError
         __init__(self, aMsg) -> IdError
         __init__(self, src) -> IdError
@@ -2113,11 +2037,11 @@ class IdError(GumException):
     __swig_destroy__ = _pyAgrum.delete_IdError
     def __del__(self):
         return None
-IdError_swigregister = _pyAgrum.IdError_swigregister
-IdError_swigregister(IdError)
+# Register IdError in _pyAgrum:
+_pyAgrum.IdError_swigregister(IdError)
 
 class FatalError(GumException):
-    """Proxy of C++ gum::FatalError class."""
+    r"""Proxy of C++ gum::FatalError class."""
 
     __swig_setmethods__ = {}
     for _s in [GumException]:
@@ -2130,7 +2054,7 @@ class FatalError(GumException):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> FatalError
         __init__(self, aMsg) -> FatalError
         __init__(self, src) -> FatalError
@@ -2143,11 +2067,11 @@ class FatalError(GumException):
     __swig_destroy__ = _pyAgrum.delete_FatalError
     def __del__(self):
         return None
-FatalError_swigregister = _pyAgrum.FatalError_swigregister
-FatalError_swigregister(FatalError)
+# Register FatalError in _pyAgrum:
+_pyAgrum.FatalError_swigregister(FatalError)
 
 class NotImplementedYet(GumException):
-    """Proxy of C++ gum::NotImplementedYet class."""
+    r"""Proxy of C++ gum::NotImplementedYet class."""
 
     __swig_setmethods__ = {}
     for _s in [GumException]:
@@ -2160,7 +2084,7 @@ class NotImplementedYet(GumException):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> NotImplementedYet
         __init__(self, aMsg) -> NotImplementedYet
         __init__(self, src) -> NotImplementedYet
@@ -2173,11 +2097,11 @@ class NotImplementedYet(GumException):
     __swig_destroy__ = _pyAgrum.delete_NotImplementedYet
     def __del__(self):
         return None
-NotImplementedYet_swigregister = _pyAgrum.NotImplementedYet_swigregister
-NotImplementedYet_swigregister(NotImplementedYet)
+# Register NotImplementedYet in _pyAgrum:
+_pyAgrum.NotImplementedYet_swigregister(NotImplementedYet)
 
 class UndefinedIteratorValue(GumException):
-    """Proxy of C++ gum::UndefinedIteratorValue class."""
+    r"""Proxy of C++ gum::UndefinedIteratorValue class."""
 
     __swig_setmethods__ = {}
     for _s in [GumException]:
@@ -2190,7 +2114,7 @@ class UndefinedIteratorValue(GumException):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> UndefinedIteratorValue
         __init__(self, aMsg) -> UndefinedIteratorValue
         __init__(self, src) -> UndefinedIteratorValue
@@ -2203,11 +2127,11 @@ class UndefinedIteratorValue(GumException):
     __swig_destroy__ = _pyAgrum.delete_UndefinedIteratorValue
     def __del__(self):
         return None
-UndefinedIteratorValue_swigregister = _pyAgrum.UndefinedIteratorValue_swigregister
-UndefinedIteratorValue_swigregister(UndefinedIteratorValue)
+# Register UndefinedIteratorValue in _pyAgrum:
+_pyAgrum.UndefinedIteratorValue_swigregister(UndefinedIteratorValue)
 
 class UndefinedIteratorKey(GumException):
-    """Proxy of C++ gum::UndefinedIteratorKey class."""
+    r"""Proxy of C++ gum::UndefinedIteratorKey class."""
 
     __swig_setmethods__ = {}
     for _s in [GumException]:
@@ -2220,7 +2144,7 @@ class UndefinedIteratorKey(GumException):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> UndefinedIteratorKey
         __init__(self, aMsg) -> UndefinedIteratorKey
         __init__(self, src) -> UndefinedIteratorKey
@@ -2233,11 +2157,11 @@ class UndefinedIteratorKey(GumException):
     __swig_destroy__ = _pyAgrum.delete_UndefinedIteratorKey
     def __del__(self):
         return None
-UndefinedIteratorKey_swigregister = _pyAgrum.UndefinedIteratorKey_swigregister
-UndefinedIteratorKey_swigregister(UndefinedIteratorKey)
+# Register UndefinedIteratorKey in _pyAgrum:
+_pyAgrum.UndefinedIteratorKey_swigregister(UndefinedIteratorKey)
 
 class NullElement(GumException):
-    """Proxy of C++ gum::NullElement class."""
+    r"""Proxy of C++ gum::NullElement class."""
 
     __swig_setmethods__ = {}
     for _s in [GumException]:
@@ -2250,7 +2174,7 @@ class NullElement(GumException):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> NullElement
         __init__(self, aMsg) -> NullElement
         __init__(self, src) -> NullElement
@@ -2263,11 +2187,11 @@ class NullElement(GumException):
     __swig_destroy__ = _pyAgrum.delete_NullElement
     def __del__(self):
         return None
-NullElement_swigregister = _pyAgrum.NullElement_swigregister
-NullElement_swigregister(NullElement)
+# Register NullElement in _pyAgrum:
+_pyAgrum.NullElement_swigregister(NullElement)
 
 class UndefinedElement(GumException):
-    """Proxy of C++ gum::UndefinedElement class."""
+    r"""Proxy of C++ gum::UndefinedElement class."""
 
     __swig_setmethods__ = {}
     for _s in [GumException]:
@@ -2280,7 +2204,7 @@ class UndefinedElement(GumException):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> UndefinedElement
         __init__(self, aMsg) -> UndefinedElement
         __init__(self, src) -> UndefinedElement
@@ -2293,11 +2217,11 @@ class UndefinedElement(GumException):
     __swig_destroy__ = _pyAgrum.delete_UndefinedElement
     def __del__(self):
         return None
-UndefinedElement_swigregister = _pyAgrum.UndefinedElement_swigregister
-UndefinedElement_swigregister(UndefinedElement)
+# Register UndefinedElement in _pyAgrum:
+_pyAgrum.UndefinedElement_swigregister(UndefinedElement)
 
 class SizeError(GumException):
-    """Proxy of C++ gum::SizeError class."""
+    r"""Proxy of C++ gum::SizeError class."""
 
     __swig_setmethods__ = {}
     for _s in [GumException]:
@@ -2310,7 +2234,7 @@ class SizeError(GumException):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> SizeError
         __init__(self, aMsg) -> SizeError
         __init__(self, src) -> SizeError
@@ -2323,11 +2247,11 @@ class SizeError(GumException):
     __swig_destroy__ = _pyAgrum.delete_SizeError
     def __del__(self):
         return None
-SizeError_swigregister = _pyAgrum.SizeError_swigregister
-SizeError_swigregister(SizeError)
+# Register SizeError in _pyAgrum:
+_pyAgrum.SizeError_swigregister(SizeError)
 
 class EmptySet(GumException):
-    """Proxy of C++ gum::EmptySet class."""
+    r"""Proxy of C++ gum::EmptySet class."""
 
     __swig_setmethods__ = {}
     for _s in [GumException]:
@@ -2340,7 +2264,7 @@ class EmptySet(GumException):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> EmptySet
         __init__(self, aMsg) -> EmptySet
         __init__(self, src) -> EmptySet
@@ -2353,11 +2277,11 @@ class EmptySet(GumException):
     __swig_destroy__ = _pyAgrum.delete_EmptySet
     def __del__(self):
         return None
-EmptySet_swigregister = _pyAgrum.EmptySet_swigregister
-EmptySet_swigregister(EmptySet)
+# Register EmptySet in _pyAgrum:
+_pyAgrum.EmptySet_swigregister(EmptySet)
 
 class InvalidArgumentsNumber(GumException):
-    """Proxy of C++ gum::InvalidArgumentsNumber class."""
+    r"""Proxy of C++ gum::InvalidArgumentsNumber class."""
 
     __swig_setmethods__ = {}
     for _s in [GumException]:
@@ -2370,7 +2294,7 @@ class InvalidArgumentsNumber(GumException):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> InvalidArgumentsNumber
         __init__(self, aMsg) -> InvalidArgumentsNumber
         __init__(self, src) -> InvalidArgumentsNumber
@@ -2383,11 +2307,11 @@ class InvalidArgumentsNumber(GumException):
     __swig_destroy__ = _pyAgrum.delete_InvalidArgumentsNumber
     def __del__(self):
         return None
-InvalidArgumentsNumber_swigregister = _pyAgrum.InvalidArgumentsNumber_swigregister
-InvalidArgumentsNumber_swigregister(InvalidArgumentsNumber)
+# Register InvalidArgumentsNumber in _pyAgrum:
+_pyAgrum.InvalidArgumentsNumber_swigregister(InvalidArgumentsNumber)
 
 class InvalidArgument(GumException):
-    """Proxy of C++ gum::InvalidArgument class."""
+    r"""Proxy of C++ gum::InvalidArgument class."""
 
     __swig_setmethods__ = {}
     for _s in [GumException]:
@@ -2400,7 +2324,7 @@ class InvalidArgument(GumException):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> InvalidArgument
         __init__(self, aMsg) -> InvalidArgument
         __init__(self, src) -> InvalidArgument
@@ -2413,11 +2337,11 @@ class InvalidArgument(GumException):
     __swig_destroy__ = _pyAgrum.delete_InvalidArgument
     def __del__(self):
         return None
-InvalidArgument_swigregister = _pyAgrum.InvalidArgument_swigregister
-InvalidArgument_swigregister(InvalidArgument)
+# Register InvalidArgument in _pyAgrum:
+_pyAgrum.InvalidArgument_swigregister(InvalidArgument)
 
 class IOError(GumException):
-    """Proxy of C++ gum::IOError class."""
+    r"""Proxy of C++ gum::IOError class."""
 
     __swig_setmethods__ = {}
     for _s in [GumException]:
@@ -2430,7 +2354,7 @@ class IOError(GumException):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> IOError
         __init__(self, aMsg) -> IOError
         __init__(self, src) -> IOError
@@ -2443,11 +2367,11 @@ class IOError(GumException):
     __swig_destroy__ = _pyAgrum.delete_IOError
     def __del__(self):
         return None
-IOError_swigregister = _pyAgrum.IOError_swigregister
-IOError_swigregister(IOError)
+# Register IOError in _pyAgrum:
+_pyAgrum.IOError_swigregister(IOError)
 
 class FormatNotFound(IOError):
-    """Proxy of C++ gum::FormatNotFound class."""
+    r"""Proxy of C++ gum::FormatNotFound class."""
 
     __swig_setmethods__ = {}
     for _s in [IOError]:
@@ -2460,7 +2384,7 @@ class FormatNotFound(IOError):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> FormatNotFound
         __init__(self, aMsg) -> FormatNotFound
         __init__(self, src) -> FormatNotFound
@@ -2473,11 +2397,11 @@ class FormatNotFound(IOError):
     __swig_destroy__ = _pyAgrum.delete_FormatNotFound
     def __del__(self):
         return None
-FormatNotFound_swigregister = _pyAgrum.FormatNotFound_swigregister
-FormatNotFound_swigregister(FormatNotFound)
+# Register FormatNotFound in _pyAgrum:
+_pyAgrum.FormatNotFound_swigregister(FormatNotFound)
 
 class OperationNotAllowed(GumException):
-    """Proxy of C++ gum::OperationNotAllowed class."""
+    r"""Proxy of C++ gum::OperationNotAllowed class."""
 
     __swig_setmethods__ = {}
     for _s in [GumException]:
@@ -2490,7 +2414,7 @@ class OperationNotAllowed(GumException):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> OperationNotAllowed
         __init__(self, aMsg) -> OperationNotAllowed
         __init__(self, src) -> OperationNotAllowed
@@ -2503,11 +2427,11 @@ class OperationNotAllowed(GumException):
     __swig_destroy__ = _pyAgrum.delete_OperationNotAllowed
     def __del__(self):
         return None
-OperationNotAllowed_swigregister = _pyAgrum.OperationNotAllowed_swigregister
-OperationNotAllowed_swigregister(OperationNotAllowed)
+# Register OperationNotAllowed in _pyAgrum:
+_pyAgrum.OperationNotAllowed_swigregister(OperationNotAllowed)
 
 class NotFound(GumException):
-    """Proxy of C++ gum::NotFound class."""
+    r"""Proxy of C++ gum::NotFound class."""
 
     __swig_setmethods__ = {}
     for _s in [GumException]:
@@ -2520,7 +2444,7 @@ class NotFound(GumException):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> NotFound
         __init__(self, aMsg) -> NotFound
         __init__(self, src) -> NotFound
@@ -2533,11 +2457,11 @@ class NotFound(GumException):
     __swig_destroy__ = _pyAgrum.delete_NotFound
     def __del__(self):
         return None
-NotFound_swigregister = _pyAgrum.NotFound_swigregister
-NotFound_swigregister(NotFound)
+# Register NotFound in _pyAgrum:
+_pyAgrum.NotFound_swigregister(NotFound)
 
 class ReferenceError(GumException):
-    """Proxy of C++ gum::ReferenceError class."""
+    r"""Proxy of C++ gum::ReferenceError class."""
 
     __swig_setmethods__ = {}
     for _s in [GumException]:
@@ -2550,7 +2474,7 @@ class ReferenceError(GumException):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> ReferenceError
         __init__(self, aMsg) -> ReferenceError
         __init__(self, src) -> ReferenceError
@@ -2563,11 +2487,11 @@ class ReferenceError(GumException):
     __swig_destroy__ = _pyAgrum.delete_ReferenceError
     def __del__(self):
         return None
-ReferenceError_swigregister = _pyAgrum.ReferenceError_swigregister
-ReferenceError_swigregister(ReferenceError)
+# Register ReferenceError in _pyAgrum:
+_pyAgrum.ReferenceError_swigregister(ReferenceError)
 
 class OutOfBounds(ReferenceError):
-    """Proxy of C++ gum::OutOfBounds class."""
+    r"""Proxy of C++ gum::OutOfBounds class."""
 
     __swig_setmethods__ = {}
     for _s in [ReferenceError]:
@@ -2580,7 +2504,7 @@ class OutOfBounds(ReferenceError):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> OutOfBounds
         __init__(self, aMsg) -> OutOfBounds
         __init__(self, src) -> OutOfBounds
@@ -2593,11 +2517,11 @@ class OutOfBounds(ReferenceError):
     __swig_destroy__ = _pyAgrum.delete_OutOfBounds
     def __del__(self):
         return None
-OutOfBounds_swigregister = _pyAgrum.OutOfBounds_swigregister
-OutOfBounds_swigregister(OutOfBounds)
+# Register OutOfBounds in _pyAgrum:
+_pyAgrum.OutOfBounds_swigregister(OutOfBounds)
 
 class OutOfLowerBound(OutOfBounds):
-    """Proxy of C++ gum::OutOfLowerBound class."""
+    r"""Proxy of C++ gum::OutOfLowerBound class."""
 
     __swig_setmethods__ = {}
     for _s in [OutOfBounds]:
@@ -2610,7 +2534,7 @@ class OutOfLowerBound(OutOfBounds):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> OutOfLowerBound
         __init__(self, aMsg) -> OutOfLowerBound
         __init__(self, src) -> OutOfLowerBound
@@ -2623,11 +2547,11 @@ class OutOfLowerBound(OutOfBounds):
     __swig_destroy__ = _pyAgrum.delete_OutOfLowerBound
     def __del__(self):
         return None
-OutOfLowerBound_swigregister = _pyAgrum.OutOfLowerBound_swigregister
-OutOfLowerBound_swigregister(OutOfLowerBound)
+# Register OutOfLowerBound in _pyAgrum:
+_pyAgrum.OutOfLowerBound_swigregister(OutOfLowerBound)
 
 class OutOfUpperBound(OutOfBounds):
-    """Proxy of C++ gum::OutOfUpperBound class."""
+    r"""Proxy of C++ gum::OutOfUpperBound class."""
 
     __swig_setmethods__ = {}
     for _s in [OutOfBounds]:
@@ -2640,7 +2564,7 @@ class OutOfUpperBound(OutOfBounds):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> OutOfUpperBound
         __init__(self, aMsg) -> OutOfUpperBound
         __init__(self, src) -> OutOfUpperBound
@@ -2653,11 +2577,11 @@ class OutOfUpperBound(OutOfBounds):
     __swig_destroy__ = _pyAgrum.delete_OutOfUpperBound
     def __del__(self):
         return None
-OutOfUpperBound_swigregister = _pyAgrum.OutOfUpperBound_swigregister
-OutOfUpperBound_swigregister(OutOfUpperBound)
+# Register OutOfUpperBound in _pyAgrum:
+_pyAgrum.OutOfUpperBound_swigregister(OutOfUpperBound)
 
 class DuplicateElement(ReferenceError):
-    """Proxy of C++ gum::DuplicateElement class."""
+    r"""Proxy of C++ gum::DuplicateElement class."""
 
     __swig_setmethods__ = {}
     for _s in [ReferenceError]:
@@ -2670,7 +2594,7 @@ class DuplicateElement(ReferenceError):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> DuplicateElement
         __init__(self, aMsg) -> DuplicateElement
         __init__(self, src) -> DuplicateElement
@@ -2683,11 +2607,11 @@ class DuplicateElement(ReferenceError):
     __swig_destroy__ = _pyAgrum.delete_DuplicateElement
     def __del__(self):
         return None
-DuplicateElement_swigregister = _pyAgrum.DuplicateElement_swigregister
-DuplicateElement_swigregister(DuplicateElement)
+# Register DuplicateElement in _pyAgrum:
+_pyAgrum.DuplicateElement_swigregister(DuplicateElement)
 
 class DuplicateLabel(ReferenceError):
-    """Proxy of C++ gum::DuplicateLabel class."""
+    r"""Proxy of C++ gum::DuplicateLabel class."""
 
     __swig_setmethods__ = {}
     for _s in [ReferenceError]:
@@ -2700,7 +2624,7 @@ class DuplicateLabel(ReferenceError):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> DuplicateLabel
         __init__(self, aMsg) -> DuplicateLabel
         __init__(self, src) -> DuplicateLabel
@@ -2713,11 +2637,11 @@ class DuplicateLabel(ReferenceError):
     __swig_destroy__ = _pyAgrum.delete_DuplicateLabel
     def __del__(self):
         return None
-DuplicateLabel_swigregister = _pyAgrum.DuplicateLabel_swigregister
-DuplicateLabel_swigregister(DuplicateLabel)
+# Register DuplicateLabel in _pyAgrum:
+_pyAgrum.DuplicateLabel_swigregister(DuplicateLabel)
 
 class GraphError(GumException):
-    """Proxy of C++ gum::GraphError class."""
+    r"""Proxy of C++ gum::GraphError class."""
 
     __swig_setmethods__ = {}
     for _s in [GumException]:
@@ -2730,7 +2654,7 @@ class GraphError(GumException):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> GraphError
         __init__(self, aMsg) -> GraphError
         __init__(self, src) -> GraphError
@@ -2743,11 +2667,11 @@ class GraphError(GumException):
     __swig_destroy__ = _pyAgrum.delete_GraphError
     def __del__(self):
         return None
-GraphError_swigregister = _pyAgrum.GraphError_swigregister
-GraphError_swigregister(GraphError)
+# Register GraphError in _pyAgrum:
+_pyAgrum.GraphError_swigregister(GraphError)
 
 class NoNeighbour(GraphError):
-    """Proxy of C++ gum::NoNeighbour class."""
+    r"""Proxy of C++ gum::NoNeighbour class."""
 
     __swig_setmethods__ = {}
     for _s in [GraphError]:
@@ -2760,7 +2684,7 @@ class NoNeighbour(GraphError):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> NoNeighbour
         __init__(self, aMsg) -> NoNeighbour
         __init__(self, src) -> NoNeighbour
@@ -2773,11 +2697,11 @@ class NoNeighbour(GraphError):
     __swig_destroy__ = _pyAgrum.delete_NoNeighbour
     def __del__(self):
         return None
-NoNeighbour_swigregister = _pyAgrum.NoNeighbour_swigregister
-NoNeighbour_swigregister(NoNeighbour)
+# Register NoNeighbour in _pyAgrum:
+_pyAgrum.NoNeighbour_swigregister(NoNeighbour)
 
 class NoParent(GraphError):
-    """Proxy of C++ gum::NoParent class."""
+    r"""Proxy of C++ gum::NoParent class."""
 
     __swig_setmethods__ = {}
     for _s in [GraphError]:
@@ -2790,7 +2714,7 @@ class NoParent(GraphError):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> NoParent
         __init__(self, aMsg) -> NoParent
         __init__(self, src) -> NoParent
@@ -2803,11 +2727,11 @@ class NoParent(GraphError):
     __swig_destroy__ = _pyAgrum.delete_NoParent
     def __del__(self):
         return None
-NoParent_swigregister = _pyAgrum.NoParent_swigregister
-NoParent_swigregister(NoParent)
+# Register NoParent in _pyAgrum:
+_pyAgrum.NoParent_swigregister(NoParent)
 
 class NoChild(GraphError):
-    """Proxy of C++ gum::NoChild class."""
+    r"""Proxy of C++ gum::NoChild class."""
 
     __swig_setmethods__ = {}
     for _s in [GraphError]:
@@ -2820,7 +2744,7 @@ class NoChild(GraphError):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> NoChild
         __init__(self, aMsg) -> NoChild
         __init__(self, src) -> NoChild
@@ -2833,11 +2757,11 @@ class NoChild(GraphError):
     __swig_destroy__ = _pyAgrum.delete_NoChild
     def __del__(self):
         return None
-NoChild_swigregister = _pyAgrum.NoChild_swigregister
-NoChild_swigregister(NoChild)
+# Register NoChild in _pyAgrum:
+_pyAgrum.NoChild_swigregister(NoChild)
 
 class InvalidEdge(GraphError):
-    """Proxy of C++ gum::InvalidEdge class."""
+    r"""Proxy of C++ gum::InvalidEdge class."""
 
     __swig_setmethods__ = {}
     for _s in [GraphError]:
@@ -2850,7 +2774,7 @@ class InvalidEdge(GraphError):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> InvalidEdge
         __init__(self, aMsg) -> InvalidEdge
         __init__(self, src) -> InvalidEdge
@@ -2863,11 +2787,11 @@ class InvalidEdge(GraphError):
     __swig_destroy__ = _pyAgrum.delete_InvalidEdge
     def __del__(self):
         return None
-InvalidEdge_swigregister = _pyAgrum.InvalidEdge_swigregister
-InvalidEdge_swigregister(InvalidEdge)
+# Register InvalidEdge in _pyAgrum:
+_pyAgrum.InvalidEdge_swigregister(InvalidEdge)
 
 class InvalidArc(GraphError):
-    """Proxy of C++ gum::InvalidArc class."""
+    r"""Proxy of C++ gum::InvalidArc class."""
 
     __swig_setmethods__ = {}
     for _s in [GraphError]:
@@ -2880,7 +2804,7 @@ class InvalidArc(GraphError):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> InvalidArc
         __init__(self, aMsg) -> InvalidArc
         __init__(self, src) -> InvalidArc
@@ -2893,11 +2817,11 @@ class InvalidArc(GraphError):
     __swig_destroy__ = _pyAgrum.delete_InvalidArc
     def __del__(self):
         return None
-InvalidArc_swigregister = _pyAgrum.InvalidArc_swigregister
-InvalidArc_swigregister(InvalidArc)
+# Register InvalidArc in _pyAgrum:
+_pyAgrum.InvalidArc_swigregister(InvalidArc)
 
 class InvalidNode(GraphError):
-    """Proxy of C++ gum::InvalidNode class."""
+    r"""Proxy of C++ gum::InvalidNode class."""
 
     __swig_setmethods__ = {}
     for _s in [GraphError]:
@@ -2910,7 +2834,7 @@ class InvalidNode(GraphError):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> InvalidNode
         __init__(self, aMsg) -> InvalidNode
         __init__(self, src) -> InvalidNode
@@ -2923,11 +2847,11 @@ class InvalidNode(GraphError):
     __swig_destroy__ = _pyAgrum.delete_InvalidNode
     def __del__(self):
         return None
-InvalidNode_swigregister = _pyAgrum.InvalidNode_swigregister
-InvalidNode_swigregister(InvalidNode)
+# Register InvalidNode in _pyAgrum:
+_pyAgrum.InvalidNode_swigregister(InvalidNode)
 
 class EmptyBSTree(GraphError):
-    """Proxy of C++ gum::EmptyBSTree class."""
+    r"""Proxy of C++ gum::EmptyBSTree class."""
 
     __swig_setmethods__ = {}
     for _s in [GraphError]:
@@ -2940,7 +2864,7 @@ class EmptyBSTree(GraphError):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> EmptyBSTree
         __init__(self, aMsg) -> EmptyBSTree
         __init__(self, src) -> EmptyBSTree
@@ -2953,11 +2877,11 @@ class EmptyBSTree(GraphError):
     __swig_destroy__ = _pyAgrum.delete_EmptyBSTree
     def __del__(self):
         return None
-EmptyBSTree_swigregister = _pyAgrum.EmptyBSTree_swigregister
-EmptyBSTree_swigregister(EmptyBSTree)
+# Register EmptyBSTree in _pyAgrum:
+_pyAgrum.EmptyBSTree_swigregister(EmptyBSTree)
 
 class DefaultInLabel(GraphError):
-    """Proxy of C++ gum::DefaultInLabel class."""
+    r"""Proxy of C++ gum::DefaultInLabel class."""
 
     __swig_setmethods__ = {}
     for _s in [GraphError]:
@@ -2970,7 +2894,7 @@ class DefaultInLabel(GraphError):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> DefaultInLabel
         __init__(self, aMsg) -> DefaultInLabel
         __init__(self, src) -> DefaultInLabel
@@ -2983,11 +2907,11 @@ class DefaultInLabel(GraphError):
     __swig_destroy__ = _pyAgrum.delete_DefaultInLabel
     def __del__(self):
         return None
-DefaultInLabel_swigregister = _pyAgrum.DefaultInLabel_swigregister
-DefaultInLabel_swigregister(DefaultInLabel)
+# Register DefaultInLabel in _pyAgrum:
+_pyAgrum.DefaultInLabel_swigregister(DefaultInLabel)
 
 class InvalidDirectedCycle(GraphError):
-    """Proxy of C++ gum::InvalidDirectedCycle class."""
+    r"""Proxy of C++ gum::InvalidDirectedCycle class."""
 
     __swig_setmethods__ = {}
     for _s in [GraphError]:
@@ -3000,7 +2924,7 @@ class InvalidDirectedCycle(GraphError):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> InvalidDirectedCycle
         __init__(self, aMsg) -> InvalidDirectedCycle
         __init__(self, src) -> InvalidDirectedCycle
@@ -3013,11 +2937,11 @@ class InvalidDirectedCycle(GraphError):
     __swig_destroy__ = _pyAgrum.delete_InvalidDirectedCycle
     def __del__(self):
         return None
-InvalidDirectedCycle_swigregister = _pyAgrum.InvalidDirectedCycle_swigregister
-InvalidDirectedCycle_swigregister(InvalidDirectedCycle)
+# Register InvalidDirectedCycle in _pyAgrum:
+_pyAgrum.InvalidDirectedCycle_swigregister(InvalidDirectedCycle)
 
 class CPTError(GumException):
-    """Proxy of C++ gum::CPTError class."""
+    r"""Proxy of C++ gum::CPTError class."""
 
     __swig_setmethods__ = {}
     for _s in [GumException]:
@@ -3030,7 +2954,7 @@ class CPTError(GumException):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> CPTError
         __init__(self, aMsg) -> CPTError
         __init__(self, src) -> CPTError
@@ -3043,11 +2967,11 @@ class CPTError(GumException):
     __swig_destroy__ = _pyAgrum.delete_CPTError
     def __del__(self):
         return None
-CPTError_swigregister = _pyAgrum.CPTError_swigregister
-CPTError_swigregister(CPTError)
+# Register CPTError in _pyAgrum:
+_pyAgrum.CPTError_swigregister(CPTError)
 
 class CPTNoSumTo1(CPTError):
-    """Proxy of C++ gum::CPTNoSumTo1 class."""
+    r"""Proxy of C++ gum::CPTNoSumTo1 class."""
 
     __swig_setmethods__ = {}
     for _s in [CPTError]:
@@ -3060,7 +2984,7 @@ class CPTNoSumTo1(CPTError):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> CPTNoSumTo1
         __init__(self, aMsg) -> CPTNoSumTo1
         __init__(self, src) -> CPTNoSumTo1
@@ -3073,11 +2997,11 @@ class CPTNoSumTo1(CPTError):
     __swig_destroy__ = _pyAgrum.delete_CPTNoSumTo1
     def __del__(self):
         return None
-CPTNoSumTo1_swigregister = _pyAgrum.CPTNoSumTo1_swigregister
-CPTNoSumTo1_swigregister(CPTNoSumTo1)
+# Register CPTNoSumTo1 in _pyAgrum:
+_pyAgrum.CPTNoSumTo1_swigregister(CPTNoSumTo1)
 
 class IncompatibleEvidence(GumException):
-    """Proxy of C++ gum::IncompatibleEvidence class."""
+    r"""Proxy of C++ gum::IncompatibleEvidence class."""
 
     __swig_setmethods__ = {}
     for _s in [GumException]:
@@ -3090,7 +3014,7 @@ class IncompatibleEvidence(GumException):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> IncompatibleEvidence
         __init__(self, aMsg) -> IncompatibleEvidence
         __init__(self, src) -> IncompatibleEvidence
@@ -3103,11 +3027,11 @@ class IncompatibleEvidence(GumException):
     __swig_destroy__ = _pyAgrum.delete_IncompatibleEvidence
     def __del__(self):
         return None
-IncompatibleEvidence_swigregister = _pyAgrum.IncompatibleEvidence_swigregister
-IncompatibleEvidence_swigregister(IncompatibleEvidence)
+# Register IncompatibleEvidence in _pyAgrum:
+_pyAgrum.IncompatibleEvidence_swigregister(IncompatibleEvidence)
 
 class FactoryError(GumException):
-    """Proxy of C++ gum::FactoryError class."""
+    r"""Proxy of C++ gum::FactoryError class."""
 
     __swig_setmethods__ = {}
     for _s in [GumException]:
@@ -3120,7 +3044,7 @@ class FactoryError(GumException):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> FactoryError
         __init__(self, aMsg) -> FactoryError
         __init__(self, src) -> FactoryError
@@ -3133,11 +3057,11 @@ class FactoryError(GumException):
     __swig_destroy__ = _pyAgrum.delete_FactoryError
     def __del__(self):
         return None
-FactoryError_swigregister = _pyAgrum.FactoryError_swigregister
-FactoryError_swigregister(FactoryError)
+# Register FactoryError in _pyAgrum:
+_pyAgrum.FactoryError_swigregister(FactoryError)
 
 class FactoryInvalidState(FactoryError):
-    """Proxy of C++ gum::FactoryInvalidState class."""
+    r"""Proxy of C++ gum::FactoryInvalidState class."""
 
     __swig_setmethods__ = {}
     for _s in [FactoryError]:
@@ -3150,7 +3074,7 @@ class FactoryInvalidState(FactoryError):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> FactoryInvalidState
         __init__(self, aMsg) -> FactoryInvalidState
         __init__(self, src) -> FactoryInvalidState
@@ -3163,11 +3087,11 @@ class FactoryInvalidState(FactoryError):
     __swig_destroy__ = _pyAgrum.delete_FactoryInvalidState
     def __del__(self):
         return None
-FactoryInvalidState_swigregister = _pyAgrum.FactoryInvalidState_swigregister
-FactoryInvalidState_swigregister(FactoryInvalidState)
+# Register FactoryInvalidState in _pyAgrum:
+_pyAgrum.FactoryInvalidState_swigregister(FactoryInvalidState)
 
 class WrongType(FactoryError):
-    """Proxy of C++ gum::WrongType class."""
+    r"""Proxy of C++ gum::WrongType class."""
 
     __swig_setmethods__ = {}
     for _s in [FactoryError]:
@@ -3180,7 +3104,7 @@ class WrongType(FactoryError):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> WrongType
         __init__(self, aMsg) -> WrongType
         __init__(self, src) -> WrongType
@@ -3193,11 +3117,11 @@ class WrongType(FactoryError):
     __swig_destroy__ = _pyAgrum.delete_WrongType
     def __del__(self):
         return None
-WrongType_swigregister = _pyAgrum.WrongType_swigregister
-WrongType_swigregister(WrongType)
+# Register WrongType in _pyAgrum:
+_pyAgrum.WrongType_swigregister(WrongType)
 
 class WrongClassElement(FactoryError):
-    """Proxy of C++ gum::WrongClassElement class."""
+    r"""Proxy of C++ gum::WrongClassElement class."""
 
     __swig_setmethods__ = {}
     for _s in [FactoryError]:
@@ -3210,7 +3134,7 @@ class WrongClassElement(FactoryError):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> WrongClassElement
         __init__(self, aMsg) -> WrongClassElement
         __init__(self, src) -> WrongClassElement
@@ -3223,11 +3147,11 @@ class WrongClassElement(FactoryError):
     __swig_destroy__ = _pyAgrum.delete_WrongClassElement
     def __del__(self):
         return None
-WrongClassElement_swigregister = _pyAgrum.WrongClassElement_swigregister
-WrongClassElement_swigregister(WrongClassElement)
+# Register WrongClassElement in _pyAgrum:
+_pyAgrum.WrongClassElement_swigregister(WrongClassElement)
 
 class TypeError(FactoryError):
-    """Proxy of C++ gum::TypeError class."""
+    r"""Proxy of C++ gum::TypeError class."""
 
     __swig_setmethods__ = {}
     for _s in [FactoryError]:
@@ -3240,7 +3164,7 @@ class TypeError(FactoryError):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> TypeError
         __init__(self, aMsg) -> TypeError
         __init__(self, src) -> TypeError
@@ -3253,11 +3177,11 @@ class TypeError(FactoryError):
     __swig_destroy__ = _pyAgrum.delete_TypeError
     def __del__(self):
         return None
-TypeError_swigregister = _pyAgrum.TypeError_swigregister
-TypeError_swigregister(TypeError)
+# Register TypeError in _pyAgrum:
+_pyAgrum.TypeError_swigregister(TypeError)
 
 class LearningError(GumException):
-    """Proxy of C++ gum::LearningError class."""
+    r"""Proxy of C++ gum::LearningError class."""
 
     __swig_setmethods__ = {}
     for _s in [GumException]:
@@ -3270,7 +3194,7 @@ class LearningError(GumException):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> LearningError
         __init__(self, aMsg) -> LearningError
         __init__(self, src) -> LearningError
@@ -3283,11 +3207,11 @@ class LearningError(GumException):
     __swig_destroy__ = _pyAgrum.delete_LearningError
     def __del__(self):
         return None
-LearningError_swigregister = _pyAgrum.LearningError_swigregister
-LearningError_swigregister(LearningError)
+# Register LearningError in _pyAgrum:
+_pyAgrum.LearningError_swigregister(LearningError)
 
 class IncompatibleScoreApriori(LearningError):
-    """Proxy of C++ gum::IncompatibleScoreApriori class."""
+    r"""Proxy of C++ gum::IncompatibleScoreApriori class."""
 
     __swig_setmethods__ = {}
     for _s in [LearningError]:
@@ -3300,7 +3224,7 @@ class IncompatibleScoreApriori(LearningError):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> IncompatibleScoreApriori
         __init__(self, aMsg) -> IncompatibleScoreApriori
         __init__(self, src) -> IncompatibleScoreApriori
@@ -3313,11 +3237,11 @@ class IncompatibleScoreApriori(LearningError):
     __swig_destroy__ = _pyAgrum.delete_IncompatibleScoreApriori
     def __del__(self):
         return None
-IncompatibleScoreApriori_swigregister = _pyAgrum.IncompatibleScoreApriori_swigregister
-IncompatibleScoreApriori_swigregister(IncompatibleScoreApriori)
+# Register IncompatibleScoreApriori in _pyAgrum:
+_pyAgrum.IncompatibleScoreApriori_swigregister(IncompatibleScoreApriori)
 
 class PossiblyIncompatibleScoreApriori(LearningError):
-    """Proxy of C++ gum::PossiblyIncompatibleScoreApriori class."""
+    r"""Proxy of C++ gum::PossiblyIncompatibleScoreApriori class."""
 
     __swig_setmethods__ = {}
     for _s in [LearningError]:
@@ -3330,7 +3254,7 @@ class PossiblyIncompatibleScoreApriori(LearningError):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> PossiblyIncompatibleScoreApriori
         __init__(self, aMsg) -> PossiblyIncompatibleScoreApriori
         __init__(self, src) -> PossiblyIncompatibleScoreApriori
@@ -3343,11 +3267,11 @@ class PossiblyIncompatibleScoreApriori(LearningError):
     __swig_destroy__ = _pyAgrum.delete_PossiblyIncompatibleScoreApriori
     def __del__(self):
         return None
-PossiblyIncompatibleScoreApriori_swigregister = _pyAgrum.PossiblyIncompatibleScoreApriori_swigregister
-PossiblyIncompatibleScoreApriori_swigregister(PossiblyIncompatibleScoreApriori)
+# Register PossiblyIncompatibleScoreApriori in _pyAgrum:
+_pyAgrum.PossiblyIncompatibleScoreApriori_swigregister(PossiblyIncompatibleScoreApriori)
 
 class DatabaseError(LearningError):
-    """Proxy of C++ gum::DatabaseError class."""
+    r"""Proxy of C++ gum::DatabaseError class."""
 
     __swig_setmethods__ = {}
     for _s in [LearningError]:
@@ -3360,7 +3284,7 @@ class DatabaseError(LearningError):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> DatabaseError
         __init__(self, aMsg) -> DatabaseError
         __init__(self, src) -> DatabaseError
@@ -3373,11 +3297,11 @@ class DatabaseError(LearningError):
     __swig_destroy__ = _pyAgrum.delete_DatabaseError
     def __del__(self):
         return None
-DatabaseError_swigregister = _pyAgrum.DatabaseError_swigregister
-DatabaseError_swigregister(DatabaseError)
+# Register DatabaseError in _pyAgrum:
+_pyAgrum.DatabaseError_swigregister(DatabaseError)
 
 class MissingVariableInDatabase(LearningError):
-    """Proxy of C++ gum::MissingVariableInDatabase class."""
+    r"""Proxy of C++ gum::MissingVariableInDatabase class."""
 
     __swig_setmethods__ = {}
     for _s in [LearningError]:
@@ -3390,7 +3314,7 @@ class MissingVariableInDatabase(LearningError):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> MissingVariableInDatabase
         __init__(self, aMsg) -> MissingVariableInDatabase
         __init__(self, src) -> MissingVariableInDatabase
@@ -3403,11 +3327,11 @@ class MissingVariableInDatabase(LearningError):
     __swig_destroy__ = _pyAgrum.delete_MissingVariableInDatabase
     def __del__(self):
         return None
-MissingVariableInDatabase_swigregister = _pyAgrum.MissingVariableInDatabase_swigregister
-MissingVariableInDatabase_swigregister(MissingVariableInDatabase)
+# Register MissingVariableInDatabase in _pyAgrum:
+_pyAgrum.MissingVariableInDatabase_swigregister(MissingVariableInDatabase)
 
 class MissingValueInDatabase(LearningError):
-    """Proxy of C++ gum::MissingValueInDatabase class."""
+    r"""Proxy of C++ gum::MissingValueInDatabase class."""
 
     __swig_setmethods__ = {}
     for _s in [LearningError]:
@@ -3420,7 +3344,7 @@ class MissingValueInDatabase(LearningError):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> MissingValueInDatabase
         __init__(self, aMsg) -> MissingValueInDatabase
         __init__(self, src) -> MissingValueInDatabase
@@ -3433,11 +3357,11 @@ class MissingValueInDatabase(LearningError):
     __swig_destroy__ = _pyAgrum.delete_MissingValueInDatabase
     def __del__(self):
         return None
-MissingValueInDatabase_swigregister = _pyAgrum.MissingValueInDatabase_swigregister
-MissingValueInDatabase_swigregister(MissingValueInDatabase)
+# Register MissingValueInDatabase in _pyAgrum:
+_pyAgrum.MissingValueInDatabase_swigregister(MissingValueInDatabase)
 
 class UnknownLabelInDatabase(LearningError):
-    """Proxy of C++ gum::UnknownLabelInDatabase class."""
+    r"""Proxy of C++ gum::UnknownLabelInDatabase class."""
 
     __swig_setmethods__ = {}
     for _s in [LearningError]:
@@ -3450,7 +3374,7 @@ class UnknownLabelInDatabase(LearningError):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, aType) -> UnknownLabelInDatabase
         __init__(self, aMsg) -> UnknownLabelInDatabase
         __init__(self, src) -> UnknownLabelInDatabase
@@ -3463,11 +3387,11 @@ class UnknownLabelInDatabase(LearningError):
     __swig_destroy__ = _pyAgrum.delete_UnknownLabelInDatabase
     def __del__(self):
         return None
-UnknownLabelInDatabase_swigregister = _pyAgrum.UnknownLabelInDatabase_swigregister
-UnknownLabelInDatabase_swigregister(UnknownLabelInDatabase)
+# Register UnknownLabelInDatabase in _pyAgrum:
+_pyAgrum.UnknownLabelInDatabase_swigregister(UnknownLabelInDatabase)
 
 class SyntaxError(IOError):
-    """Proxy of C++ gum::SyntaxError class."""
+    r"""Proxy of C++ gum::SyntaxError class."""
 
     __swig_setmethods__ = {}
     for _s in [IOError]:
@@ -3480,7 +3404,7 @@ class SyntaxError(IOError):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aMsg, nol, noc, aType) -> SyntaxError
         __init__(self, aMsg, nol, noc) -> SyntaxError
         """
@@ -3491,9 +3415,8 @@ class SyntaxError(IOError):
             self.this = this
 
     def col(self):
-        """
+        r"""
         col(self) -> gum::Size
-
 
         Returns
         -------
@@ -3505,9 +3428,8 @@ class SyntaxError(IOError):
 
 
     def line(self):
-        """
+        r"""
         line(self) -> gum::Size
-
 
         Returns
         -------
@@ -3520,15 +3442,14 @@ class SyntaxError(IOError):
     __swig_destroy__ = _pyAgrum.delete_SyntaxError
     def __del__(self):
         return None
-SyntaxError_swigregister = _pyAgrum.SyntaxError_swigregister
-SyntaxError_swigregister(SyntaxError)
+# Register SyntaxError in _pyAgrum:
+_pyAgrum.SyntaxError_swigregister(SyntaxError)
 
 
 def randomValue(max=2):
-    """
+    r"""
     randomValue(max=2) -> gum::Idx
     randomValue() -> gum::Idx
-
 
     Returns
     -------
@@ -3539,9 +3460,8 @@ def randomValue(max=2):
     return _pyAgrum.randomValue(max)
 
 def randomProba():
-    """
+    r"""
     randomProba() -> double
-
 
     Returns
     -------
@@ -3552,9 +3472,8 @@ def randomProba():
     return _pyAgrum.randomProba()
 
 def randomGeneratorSeed():
-    """
+    r"""
     randomGeneratorSeed() -> unsigned int
-
 
     Returns
     -------
@@ -3565,10 +3484,9 @@ def randomGeneratorSeed():
     return _pyAgrum.randomGeneratorSeed()
 
 def initRandom(seed=0):
-    """
+    r"""
     initRandom(seed=0)
     initRandom()
-
 
     Initialize random generator seed.
 
@@ -3581,10 +3499,9 @@ def initRandom(seed=0):
     return _pyAgrum.initRandom(seed)
 
 def getRandomGenerator(seed=0):
-    """
+    r"""
     getRandomGenerator(seed=0) -> std::default_random_engine
     getRandomGenerator() -> std::default_random_engine
-
 
     Returns
     -------
@@ -3595,9 +3512,8 @@ def getRandomGenerator(seed=0):
     return _pyAgrum.getRandomGenerator(seed)
 
 def isOMP():
-    """
+    r"""
     isOMP() -> bool
-
 
     Returns
     -------
@@ -3608,9 +3524,8 @@ def isOMP():
     return _pyAgrum.isOMP()
 
 def setNumberOfThreads(number):
-    """
+    r"""
     setNumberOfThreads(number)
-
 
     To avoid spare cycles (less then 100% CPU occupied), use more threads than logical processors (x2 is a good all-around value). 
 
@@ -3623,9 +3538,8 @@ def setNumberOfThreads(number):
     return _pyAgrum.setNumberOfThreads(number)
 
 def getMaxNumberOfThreads():
-    """
+    r"""
     getMaxNumberOfThreads() -> unsigned int
-
 
     Returns
     -------
@@ -3636,9 +3550,8 @@ def getMaxNumberOfThreads():
     return _pyAgrum.getMaxNumberOfThreads()
 
 def getThreadNumber():
-    """
+    r"""
     getThreadNumber() -> unsigned int
-
 
     Returns
     -------
@@ -3649,9 +3562,8 @@ def getThreadNumber():
     return _pyAgrum.getThreadNumber()
 
 def getNumberOfRunningThreads():
-    """
+    r"""
     getNumberOfRunningThreads() -> unsigned int
-
 
     Returns
     -------
@@ -3662,9 +3574,8 @@ def getNumberOfRunningThreads():
     return _pyAgrum.getNumberOfRunningThreads()
 
 def getNumberOfLogicalProcessors():
-    """
+    r"""
     getNumberOfLogicalProcessors() -> unsigned int
-
 
     Returns
     -------
@@ -3675,9 +3586,8 @@ def getNumberOfLogicalProcessors():
     return _pyAgrum.getNumberOfLogicalProcessors()
 
 def setNestedParallelism(value):
-    """
+    r"""
     setNestedParallelism(value)
-
 
     Parameters
     ----------
@@ -3688,9 +3598,8 @@ def setNestedParallelism(value):
     return _pyAgrum.setNestedParallelism(value)
 
 def getNestedParallelism():
-    """
+    r"""
     getNestedParallelism() -> bool
-
 
     Returns
     -------
@@ -3701,9 +3610,8 @@ def getNestedParallelism():
     return _pyAgrum.getNestedParallelism()
 
 def setDynamicThreadsNumber(value):
-    """
+    r"""
     setDynamicThreadsNumber(value)
-
 
     Parameters
     ----------
@@ -3714,9 +3622,8 @@ def setDynamicThreadsNumber(value):
     return _pyAgrum.setDynamicThreadsNumber(value)
 
 def getDynamicThreadsNumber():
-    """
+    r"""
     getDynamicThreadsNumber() -> bool
-
 
     Returns
     -------
@@ -3726,11 +3633,15 @@ def getDynamicThreadsNumber():
     """
     return _pyAgrum.getDynamicThreadsNumber()
 VarType_Discretized = _pyAgrum.VarType_Discretized
+
 VarType_Labelized = _pyAgrum.VarType_Labelized
+
 VarType_Range = _pyAgrum.VarType_Range
+
 VarType_Continuous = _pyAgrum.VarType_Continuous
+
 class Variable(_object):
-    """
+    r"""
 
     Abstract class used by DiscreteVariable.
 
@@ -3749,9 +3660,8 @@ class Variable(_object):
         return None
 
     def clone(self):
-        """
+        r"""
         clone(self) -> Variable
-
 
         Copy factory
 
@@ -3765,19 +3675,18 @@ class Variable(_object):
 
 
     def __eq__(self, aRV):
-        """__eq__(self, aRV) -> bool"""
+        r"""__eq__(self, aRV) -> bool"""
         return _pyAgrum.Variable___eq__(self, aRV)
 
 
     def __ne__(self, aRV):
-        """__ne__(self, aRV) -> bool"""
+        r"""__ne__(self, aRV) -> bool"""
         return _pyAgrum.Variable___ne__(self, aRV)
 
 
     def setName(self, theValue):
-        """
+        r"""
         setName(self, theValue)
-
 
         sets the name of the variable.
 
@@ -3791,9 +3700,8 @@ class Variable(_object):
 
 
     def name(self):
-        """
+        r"""
         name(self) -> std::string const &
-
 
         Returns
         -------
@@ -3805,9 +3713,8 @@ class Variable(_object):
 
 
     def setDescription(self, theValue):
-        """
+        r"""
         setDescription(self, theValue)
-
 
         set the description of the variable.
 
@@ -3821,9 +3728,8 @@ class Variable(_object):
 
 
     def description(self):
-        """
+        r"""
         description(self) -> std::string const &
-
 
         Returns
         -------
@@ -3835,14 +3741,14 @@ class Variable(_object):
 
 
     def varType(self):
-        """varType(self) -> gum::VarType"""
+        r"""varType(self) -> gum::VarType"""
         return _pyAgrum.Variable_varType(self)
 
-Variable_swigregister = _pyAgrum.Variable_swigregister
-Variable_swigregister(Variable)
+# Register Variable in _pyAgrum:
+_pyAgrum.Variable_swigregister(Variable)
 
 class DiscreteVariable(Variable):
-    """
+    r"""
 
     DiscreteVariable is the base class for discrete random variable.
 
@@ -3879,9 +3785,8 @@ class DiscreteVariable(Variable):
         return None
 
     def clone(self):
-        """
+        r"""
         clone(self) -> DiscreteVariable
-
 
         Returns
         -------
@@ -3893,9 +3798,8 @@ class DiscreteVariable(Variable):
 
 
     def empty(self):
-        """
+        r"""
         empty(self) -> bool
-
 
         Returns
         -------
@@ -3907,9 +3811,8 @@ class DiscreteVariable(Variable):
 
 
     def domainSize(self):
-        """
+        r"""
         domainSize(self) -> gum::Size
-
 
         Returns
         -------
@@ -3921,9 +3824,8 @@ class DiscreteVariable(Variable):
 
 
     def labels(self):
-        """
+        r"""
         labels(self) -> Vector_string
-
 
         Returns
         -------
@@ -3935,9 +3837,8 @@ class DiscreteVariable(Variable):
 
 
     def numerical(self, indice):
-        """
+        r"""
         numerical(self, indice) -> double
-
 
         Parameters
         ----------
@@ -3954,9 +3855,8 @@ class DiscreteVariable(Variable):
 
 
     def varType(self):
-        """
+        r"""
         varType(self) -> gum::VarType
-
 
         returns the type of variable
 
@@ -3970,19 +3870,18 @@ class DiscreteVariable(Variable):
 
 
     def __eq__(self, aRV):
-        """__eq__(self, aRV) -> bool"""
+        r"""__eq__(self, aRV) -> bool"""
         return _pyAgrum.DiscreteVariable___eq__(self, aRV)
 
 
     def __ne__(self, aRV):
-        """__ne__(self, aRV) -> bool"""
+        r"""__ne__(self, aRV) -> bool"""
         return _pyAgrum.DiscreteVariable___ne__(self, aRV)
 
 
     def index(self, label):
-        """
+        r"""
         index(self, label) -> gum::Idx
-
 
         Parameters
         ----------
@@ -3999,9 +3898,8 @@ class DiscreteVariable(Variable):
 
 
     def label(self, i):
-        """
+        r"""
         label(self, i) -> std::string
-
 
         Parameters
         ----------
@@ -4023,9 +3921,8 @@ class DiscreteVariable(Variable):
 
 
     def toStringWithDescription(self):
-        """
+        r"""
         toStringWithDescription(self) -> std::string const
-
 
         Returns
         -------
@@ -4037,9 +3934,8 @@ class DiscreteVariable(Variable):
 
 
     def domain(self):
-        """
+        r"""
         domain(self) -> std::string const
-
 
         Returns
         -------
@@ -4051,12 +3947,12 @@ class DiscreteVariable(Variable):
 
 
     def __repr__(self):
-        """__repr__(self) -> std::string"""
+        r"""__repr__(self) -> std::string"""
         return _pyAgrum.DiscreteVariable___repr__(self)
 
 
     def __str__(self):
-        """__str__(self) -> std::string"""
+        r"""__str__(self) -> std::string"""
         return _pyAgrum.DiscreteVariable___str__(self)
 
 
@@ -4065,9 +3961,8 @@ class DiscreteVariable(Variable):
 
 
     def toLabelizedVar(self):
-        """
+        r"""
         toLabelizedVar(self) -> LabelizedVariable
-
 
         Returns
         -------
@@ -4084,9 +3979,8 @@ class DiscreteVariable(Variable):
 
 
     def toRangeVar(self):
-        """
+        r"""
         toRangeVar(self) -> RangeVariable
-
 
         Returns
         -------
@@ -4103,9 +3997,8 @@ class DiscreteVariable(Variable):
 
 
     def toDiscretizedVar(self):
-        """
+        r"""
         toDiscretizedVar(self) -> DiscretizedVariable_double
-
 
         Returns
         -------
@@ -4120,11 +4013,11 @@ class DiscreteVariable(Variable):
         """
         return _pyAgrum.DiscreteVariable_toDiscretizedVar(self)
 
-DiscreteVariable_swigregister = _pyAgrum.DiscreteVariable_swigregister
-DiscreteVariable_swigregister(DiscreteVariable)
+# Register DiscreteVariable in _pyAgrum:
+_pyAgrum.DiscreteVariable_swigregister(DiscreteVariable)
 
 class LabelizedVariable(DiscreteVariable):
-    """
+    r"""
 
     LabelizedVariable is a discrete random variable with a customizable sequence of labels.
 
@@ -4189,7 +4082,7 @@ class LabelizedVariable(DiscreteVariable):
     __getattr__ = lambda self, name: _swig_getattr(self, LabelizedVariable, name)
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aName, aDesc, nbrLabel=2) -> LabelizedVariable
         __init__(self, aName, aDesc) -> LabelizedVariable
         __init__(self, aName) -> LabelizedVariable
@@ -4206,9 +4099,8 @@ class LabelizedVariable(DiscreteVariable):
         return None
 
     def clone(self):
-        """
+        r"""
         clone(self) -> LabelizedVariable
-
 
         Returns
         -------
@@ -4220,9 +4112,8 @@ class LabelizedVariable(DiscreteVariable):
 
 
     def index(self, label):
-        """
+        r"""
         index(self, label) -> gum::Idx
-
 
         Parameters
         ----------
@@ -4239,9 +4130,8 @@ class LabelizedVariable(DiscreteVariable):
 
 
     def isLabel(self, aLabel):
-        """
+        r"""
         isLabel(self, aLabel) -> bool
-
 
         Indicates whether the variable already has the label passed in argument
 
@@ -4284,9 +4174,8 @@ class LabelizedVariable(DiscreteVariable):
 
 
     def changeLabel(self, pos, aLabel):
-        """
+        r"""
         changeLabel(self, pos, aLabel)
-
 
         Change the label at the specified index
 
@@ -4309,9 +4198,8 @@ class LabelizedVariable(DiscreteVariable):
 
 
     def eraseLabels(self):
-        """
+        r"""
         eraseLabels(self)
-
 
         Erase all the labels from the variable.
 
@@ -4320,9 +4208,8 @@ class LabelizedVariable(DiscreteVariable):
 
 
     def label(self, i):
-        """
+        r"""
         label(self, i) -> std::string
-
 
         Parameters
         ----------
@@ -4344,14 +4231,13 @@ class LabelizedVariable(DiscreteVariable):
 
 
     def posLabel(self, label):
-        """posLabel(self, label) -> gum::Idx"""
+        r"""posLabel(self, label) -> gum::Idx"""
         return _pyAgrum.LabelizedVariable_posLabel(self, label)
 
 
     def numerical(self, indice):
-        """
+        r"""
         numerical(self, indice) -> double
-
 
         Parameters
         ----------
@@ -4368,9 +4254,8 @@ class LabelizedVariable(DiscreteVariable):
 
 
     def domainSize(self):
-        """
+        r"""
         domainSize(self) -> gum::Size
-
 
         Returns
         -------
@@ -4382,9 +4267,8 @@ class LabelizedVariable(DiscreteVariable):
 
 
     def varType(self):
-        """
+        r"""
         varType(self) -> gum::VarType
-
 
         returns the type of variable
 
@@ -4398,9 +4282,8 @@ class LabelizedVariable(DiscreteVariable):
 
 
     def domain(self):
-        """
+        r"""
         domain(self) -> std::string const
-
 
         Returns
         -------
@@ -4412,19 +4295,19 @@ class LabelizedVariable(DiscreteVariable):
 
 
     def __repr__(self):
-        """__repr__(self) -> std::string"""
+        r"""__repr__(self) -> std::string"""
         return _pyAgrum.LabelizedVariable___repr__(self)
 
 
     def __str__(self):
-        """__str__(self) -> std::string"""
+        r"""__str__(self) -> std::string"""
         return _pyAgrum.LabelizedVariable___str__(self)
 
-LabelizedVariable_swigregister = _pyAgrum.LabelizedVariable_swigregister
-LabelizedVariable_swigregister(LabelizedVariable)
+# Register LabelizedVariable in _pyAgrum:
+_pyAgrum.LabelizedVariable_swigregister(LabelizedVariable)
 
 class RangeVariable(DiscreteVariable):
-    """
+    r"""
 
     RangeVariable represents a variable with a range of integers as domain.
 
@@ -4484,7 +4367,7 @@ class RangeVariable(DiscreteVariable):
     __getattr__ = lambda self, name: _swig_getattr(self, RangeVariable, name)
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aName, aDesc, minVal=0, maxVal=1) -> RangeVariable
         __init__(self, aName, aDesc, minVal=0) -> RangeVariable
         __init__(self, aName, aDesc) -> RangeVariable
@@ -4500,9 +4383,8 @@ class RangeVariable(DiscreteVariable):
         return None
 
     def clone(self):
-        """
+        r"""
         clone(self) -> DiscreteVariable
-
 
         Returns
         -------
@@ -4514,9 +4396,8 @@ class RangeVariable(DiscreteVariable):
 
 
     def domainSize(self):
-        """
+        r"""
         domainSize(self) -> gum::Size
-
 
         Returns
         -------
@@ -4528,9 +4409,8 @@ class RangeVariable(DiscreteVariable):
 
 
     def varType(self):
-        """
+        r"""
         varType(self) -> gum::VarType
-
 
         returns the type of variable
 
@@ -4544,9 +4424,8 @@ class RangeVariable(DiscreteVariable):
 
 
     def label(self, indice):
-        """
+        r"""
         label(self, indice) -> std::string
-
 
         Parameters
         ----------
@@ -4568,9 +4447,8 @@ class RangeVariable(DiscreteVariable):
 
 
     def numerical(self, indice):
-        """
+        r"""
         numerical(self, indice) -> double
-
 
         Parameters
         ----------
@@ -4587,9 +4465,8 @@ class RangeVariable(DiscreteVariable):
 
 
     def minVal(self):
-        """
+        r"""
         minVal(self) -> long
-
 
         Returns
         -------
@@ -4601,9 +4478,8 @@ class RangeVariable(DiscreteVariable):
 
 
     def setMinVal(self, minVal):
-        """
+        r"""
         setMinVal(self, minVal)
-
 
         Set a new value of the lower bound
 
@@ -4621,9 +4497,8 @@ class RangeVariable(DiscreteVariable):
 
 
     def maxVal(self):
-        """
+        r"""
         maxVal(self) -> long
-
 
         Returns
         -------
@@ -4635,9 +4510,8 @@ class RangeVariable(DiscreteVariable):
 
 
     def setMaxVal(self, maxVal):
-        """
+        r"""
         setMaxVal(self, maxVal)
-
 
         Set a new value of the upper bound
 
@@ -4655,9 +4529,8 @@ class RangeVariable(DiscreteVariable):
 
 
     def belongs(self, val):
-        """
+        r"""
         belongs(self, val) -> bool
-
 
         Parameters
         ----------
@@ -4674,9 +4547,8 @@ class RangeVariable(DiscreteVariable):
 
 
     def index(self, arg2):
-        """
+        r"""
         index(self, arg2) -> gum::Idx
-
 
         Parameters
         ----------
@@ -4693,9 +4565,8 @@ class RangeVariable(DiscreteVariable):
 
 
     def domain(self):
-        """
+        r"""
         domain(self) -> std::string const
-
 
         Returns
         -------
@@ -4707,19 +4578,19 @@ class RangeVariable(DiscreteVariable):
 
 
     def __repr__(self):
-        """__repr__(self) -> std::string"""
+        r"""__repr__(self) -> std::string"""
         return _pyAgrum.RangeVariable___repr__(self)
 
 
     def __str__(self):
-        """__str__(self) -> std::string"""
+        r"""__str__(self) -> std::string"""
         return _pyAgrum.RangeVariable___str__(self)
 
-RangeVariable_swigregister = _pyAgrum.RangeVariable_swigregister
-RangeVariable_swigregister(RangeVariable)
+# Register RangeVariable in _pyAgrum:
+_pyAgrum.RangeVariable_swigregister(RangeVariable)
 
 class IDiscretizedVariable(DiscreteVariable):
-    """Proxy of C++ gum::IDiscretizedVariable class."""
+    r"""Proxy of C++ gum::IDiscretizedVariable class."""
 
     __swig_setmethods__ = {}
     for _s in [DiscreteVariable]:
@@ -4738,9 +4609,8 @@ class IDiscretizedVariable(DiscreteVariable):
         return None
 
     def clone(self):
-        """
+        r"""
         clone(self) -> IDiscretizedVariable
-
 
         Returns
         -------
@@ -4750,11 +4620,11 @@ class IDiscretizedVariable(DiscreteVariable):
         """
         return _pyAgrum.IDiscretizedVariable_clone(self)
 
-IDiscretizedVariable_swigregister = _pyAgrum.IDiscretizedVariable_swigregister
-IDiscretizedVariable_swigregister(IDiscretizedVariable)
+# Register IDiscretizedVariable in _pyAgrum:
+_pyAgrum.IDiscretizedVariable_swigregister(IDiscretizedVariable)
 
 class Edge(_object):
-    """
+    r"""
 
     pyAgrum.Edge is the representation of an arc between two nodes represented by `int`s : the first and the second.
 
@@ -4781,7 +4651,7 @@ class Edge(_object):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aN1, aN2) -> Edge
         __init__(self, src) -> Edge
         """
@@ -4795,9 +4665,8 @@ class Edge(_object):
         return None
 
     def other(self, id):
-        """
+        r"""
         other(self, id) -> gum::NodeId
-
 
         Parameters
         ----------
@@ -4815,9 +4684,8 @@ class Edge(_object):
 
 
     def first(self):
-        """
+        r"""
         first(self) -> gum::NodeId
-
 
         Returns
         ------
@@ -4829,9 +4697,8 @@ class Edge(_object):
 
 
     def second(self):
-        """
+        r"""
         second(self) -> gum::NodeId
-
 
         Returns
         ------
@@ -4843,19 +4710,19 @@ class Edge(_object):
 
 
     def __eq__(self, src):
-        """__eq__(self, src) -> bool"""
+        r"""__eq__(self, src) -> bool"""
         return _pyAgrum.Edge___eq__(self, src)
 
 
     def __ne__(self, src):
-        """__ne__(self, src) -> bool"""
+        r"""__ne__(self, src) -> bool"""
         return _pyAgrum.Edge___ne__(self, src)
 
-Edge_swigregister = _pyAgrum.Edge_swigregister
-Edge_swigregister(Edge)
+# Register Edge in _pyAgrum:
+_pyAgrum.Edge_swigregister(Edge)
 
 class Arc(_object):
-    """
+    r"""
 
     pyAgrum.Arc is the representation of an arc between two nodes represented by `int`s : the head and the tail.
 
@@ -4883,7 +4750,7 @@ class Arc(_object):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, tail, head) -> Arc
         __init__(self, src) -> Arc
         """
@@ -4897,9 +4764,8 @@ class Arc(_object):
         return None
 
     def tail(self):
-        """
+        r"""
         tail(self) -> gum::NodeId
-
 
         Returns
         -------
@@ -4911,9 +4777,8 @@ class Arc(_object):
 
 
     def head(self):
-        """
+        r"""
         head(self) -> gum::NodeId
-
 
         Returns
         ------
@@ -4925,9 +4790,8 @@ class Arc(_object):
 
 
     def other(self, id):
-        """
+        r"""
         other(self, id) -> gum::NodeId
-
 
         Parameters
         ----------
@@ -4945,9 +4809,8 @@ class Arc(_object):
 
 
     def first(self):
-        """
+        r"""
         first(self) -> gum::NodeId
-
 
         Returns
         -------
@@ -4959,9 +4822,8 @@ class Arc(_object):
 
 
     def second(self):
-        """
+        r"""
         second(self) -> gum::NodeId
-
 
         Returns
         -------
@@ -4973,19 +4835,19 @@ class Arc(_object):
 
 
     def __eq__(self, src):
-        """__eq__(self, src) -> bool"""
+        r"""__eq__(self, src) -> bool"""
         return _pyAgrum.Arc___eq__(self, src)
 
 
     def __ne__(self, src):
-        """__ne__(self, src) -> bool"""
+        r"""__ne__(self, src) -> bool"""
         return _pyAgrum.Arc___ne__(self, src)
 
-Arc_swigregister = _pyAgrum.Arc_swigregister
-Arc_swigregister(Arc)
+# Register Arc in _pyAgrum:
+_pyAgrum.Arc_swigregister(Arc)
 
 class DiGraph(_object):
-    """
+    r"""
 
     DiGraph represents a Directed Graph.
 
@@ -5008,7 +4870,7 @@ class DiGraph(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, DiGraph, name)
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, nodes_size, nodes_resize_policy=True, arcs_size, arcs_resize_policy=True) -> DiGraph
         __init__(self, nodes_size, nodes_resize_policy=True, arcs_size) -> DiGraph
         __init__(self, nodes_size, nodes_resize_policy=True) -> DiGraph
@@ -5026,19 +4888,18 @@ class DiGraph(_object):
         return None
 
     def __eq__(self, g):
-        """__eq__(self, g) -> bool"""
+        r"""__eq__(self, g) -> bool"""
         return _pyAgrum.DiGraph___eq__(self, g)
 
 
     def __ne__(self, g):
-        """__ne__(self, g) -> bool"""
+        r"""__ne__(self, g) -> bool"""
         return _pyAgrum.DiGraph___ne__(self, g)
 
 
     def eraseNode(self, id):
-        """
+        r"""
         eraseNode(self, id)
-
 
         Erase the node and all the related arcs.
 
@@ -5052,9 +4913,8 @@ class DiGraph(_object):
 
 
     def clear(self):
-        """
+        r"""
         clear(self)
-
 
         Remove all the nodes and arcs from the graph.
 
@@ -5063,9 +4923,8 @@ class DiGraph(_object):
 
 
     def toDot(self):
-        """
+        r"""
         toDot(self) -> std::string const
-
 
         Returns
         -------
@@ -5077,10 +4936,9 @@ class DiGraph(_object):
 
 
     def topologicalOrder(self, clear=True):
-        """
+        r"""
         topologicalOrder(self, clear=True) -> gum::Sequence< gum::NodeId > const
         topologicalOrder(self) -> gum::Sequence< gum::NodeId > const &
-
 
         Returns
         -------
@@ -5097,19 +4955,18 @@ class DiGraph(_object):
 
 
     def __repr__(self):
-        """__repr__(self) -> std::string"""
+        r"""__repr__(self) -> std::string"""
         return _pyAgrum.DiGraph___repr__(self)
 
 
     def __str__(self):
-        """__str__(self) -> std::string"""
+        r"""__str__(self) -> std::string"""
         return _pyAgrum.DiGraph___str__(self)
 
 
     def nodes(self):
-        """
+        r"""
         nodes(self) -> PyObject *
-
 
         Returns
         -------
@@ -5121,9 +4978,8 @@ class DiGraph(_object):
 
 
     def addNodes(self, n):
-        """
+        r"""
         addNodes(self, n) -> PyObject *
-
 
         Add n nodes.
 
@@ -5142,9 +4998,8 @@ class DiGraph(_object):
 
 
     def arcs(self):
-        """
+        r"""
         arcs(self) -> PyObject *
-
 
         Returns
         -------
@@ -5156,9 +5011,8 @@ class DiGraph(_object):
 
 
     def parents(self, id):
-        """
+        r"""
         parents(self, id) -> PyObject *
-
 
         Parameters
         ----------
@@ -5175,9 +5029,8 @@ class DiGraph(_object):
 
 
     def children(self, id):
-        """
+        r"""
         children(self, id) -> PyObject *
-
 
         Parameters
         ----------
@@ -5194,9 +5047,8 @@ class DiGraph(_object):
 
 
     def addNode(self):
-        """
+        r"""
         addNode(self) -> gum::NodeId
-
 
         Returns
         -------
@@ -5208,9 +5060,8 @@ class DiGraph(_object):
 
 
     def addNodeWithId(self, id):
-        """
+        r"""
         addNodeWithId(self, id)
-
 
         Add a node by choosing a new NodeId.
 
@@ -5229,9 +5080,8 @@ class DiGraph(_object):
 
 
     def existsNode(self, id):
-        """
+        r"""
         existsNode(self, id) -> bool
-
 
         Check if a node with a certain id exists in the graph.
 
@@ -5250,9 +5100,8 @@ class DiGraph(_object):
 
 
     def size(self):
-        """
+        r"""
         size(self) -> gum::Size
-
 
         Returns
         -------
@@ -5264,9 +5113,8 @@ class DiGraph(_object):
 
 
     def empty(self):
-        """
+        r"""
         empty(self) -> bool
-
 
         Check if the graph is empty.
 
@@ -5280,10 +5128,9 @@ class DiGraph(_object):
 
 
     def addArc(self, *args):
-        """
+        r"""
         addArc(self, tail, head)
         addArc(self, n1, n2)
-
 
         Add an arc from tail to head.
 
@@ -5304,9 +5151,8 @@ class DiGraph(_object):
 
 
     def eraseArc(self, n1, n2):
-        """
+        r"""
         eraseArc(self, n1, n2)
-
 
         Erase the arc between n1 and n2.
 
@@ -5322,9 +5168,8 @@ class DiGraph(_object):
 
 
     def existsArc(self, n1, n2):
-        """
+        r"""
         existsArc(self, n1, n2) -> bool
-
 
         Check if an arc exists bewteen n1 and n2.
 
@@ -5345,9 +5190,8 @@ class DiGraph(_object):
 
 
     def eraseParents(self, n):
-        """
+        r"""
         eraseParents(self, n)
-
 
         Erase the arcs coming to the node.
 
@@ -5361,9 +5205,8 @@ class DiGraph(_object):
 
 
     def eraseChildren(self, n):
-        """
+        r"""
         eraseChildren(self, n)
-
 
         Erase the arcs heading through the node's children.
 
@@ -5377,9 +5220,8 @@ class DiGraph(_object):
 
 
     def sizeArcs(self):
-        """
+        r"""
         sizeArcs(self) -> gum::Size
-
 
         Returns
         -------
@@ -5391,9 +5233,8 @@ class DiGraph(_object):
 
 
     def emptyArcs(self):
-        """
+        r"""
         emptyArcs(self) -> bool
-
 
         Check if the graph doesn't contains arcs.
 
@@ -5405,11 +5246,11 @@ class DiGraph(_object):
         """
         return _pyAgrum.DiGraph_emptyArcs(self)
 
-DiGraph_swigregister = _pyAgrum.DiGraph_swigregister
-DiGraph_swigregister(DiGraph)
+# Register DiGraph in _pyAgrum:
+_pyAgrum.DiGraph_swigregister(DiGraph)
 
 class DAG(DiGraph):
-    """
+    r"""
 
     DAG represents a Directed Acyclic Graph.
 
@@ -5436,7 +5277,7 @@ class DAG(DiGraph):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, nodes_size, nodes_resize_policy=True, arcs_size, arcs_resize_policy=True) -> DAG
         __init__(self, nodes_size, nodes_resize_policy=True, arcs_size) -> DAG
         __init__(self, nodes_size, nodes_resize_policy=True) -> DAG
@@ -5454,15 +5295,14 @@ class DAG(DiGraph):
         return None
 
     def addNodes(self, n):
-        """addNodes(self, n) -> PyObject *"""
+        r"""addNodes(self, n) -> PyObject *"""
         return _pyAgrum.DAG_addNodes(self, n)
 
 
     def addArc(self, *args):
-        """
+        r"""
         addArc(self, tail, head)
         addArc(self, n1, n2)
-
 
         Add an arc from tail to head.
 
@@ -5483,11 +5323,11 @@ class DAG(DiGraph):
         """
         return _pyAgrum.DAG_addArc(self, *args)
 
-DAG_swigregister = _pyAgrum.DAG_swigregister
-DAG_swigregister(DAG)
+# Register DAG in _pyAgrum:
+_pyAgrum.DAG_swigregister(DAG)
 
 class UndiGraph(_object):
-    """
+    r"""
 
     UndiGraph represents an Undirected Graph.
 
@@ -5510,7 +5350,7 @@ class UndiGraph(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, UndiGraph, name)
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, nodes_size, nodes_resize_policy=True, edges_size, edges_resize_policy=True) -> UndiGraph
         __init__(self, nodes_size, nodes_resize_policy=True, edges_size) -> UndiGraph
         __init__(self, nodes_size, nodes_resize_policy=True) -> UndiGraph
@@ -5528,19 +5368,18 @@ class UndiGraph(_object):
         return None
 
     def __eq__(self, g):
-        """__eq__(self, g) -> bool"""
+        r"""__eq__(self, g) -> bool"""
         return _pyAgrum.UndiGraph___eq__(self, g)
 
 
     def __ne__(self, g):
-        """__ne__(self, g) -> bool"""
+        r"""__ne__(self, g) -> bool"""
         return _pyAgrum.UndiGraph___ne__(self, g)
 
 
     def eraseNode(self, id):
-        """
+        r"""
         eraseNode(self, id)
-
 
         Erase the node and all the adjacent edges.
 
@@ -5554,9 +5393,8 @@ class UndiGraph(_object):
 
 
     def clear(self):
-        """
+        r"""
         clear(self)
-
 
         Remove all the nodes and edges from the graph.
 
@@ -5565,9 +5403,8 @@ class UndiGraph(_object):
 
 
     def toDot(self):
-        """
+        r"""
         toDot(self) -> std::string const
-
 
         Returns
         -------
@@ -5579,9 +5416,8 @@ class UndiGraph(_object):
 
 
     def hasUndirectedCycle(self):
-        """
+        r"""
         hasUndirectedCycle(self) -> bool
-
 
         Checks whether the graph contains cycles.
 
@@ -5595,9 +5431,8 @@ class UndiGraph(_object):
 
 
     def partialUndiGraph(self, nodesSet):
-        """
+        r"""
         partialUndiGraph(self, nodesSet) -> UndiGraph
-
 
         Parameters
         ----------
@@ -5614,19 +5449,18 @@ class UndiGraph(_object):
 
 
     def __repr__(self):
-        """__repr__(self) -> std::string"""
+        r"""__repr__(self) -> std::string"""
         return _pyAgrum.UndiGraph___repr__(self)
 
 
     def __str__(self):
-        """__str__(self) -> std::string"""
+        r"""__str__(self) -> std::string"""
         return _pyAgrum.UndiGraph___str__(self)
 
 
     def nodes(self):
-        """
+        r"""
         nodes(self) -> PyObject *
-
 
         Returns
         -------
@@ -5638,9 +5472,8 @@ class UndiGraph(_object):
 
 
     def addNodes(self, n):
-        """
+        r"""
         addNodes(self, n) -> PyObject *
-
 
         Add n nodes.
 
@@ -5659,9 +5492,8 @@ class UndiGraph(_object):
 
 
     def edges(self):
-        """
+        r"""
         edges(self) -> PyObject *
-
 
         Returns
         -------
@@ -5673,9 +5505,8 @@ class UndiGraph(_object):
 
 
     def neighbours(self, id):
-        """
+        r"""
         neighbours(self, id) -> PyObject *
-
 
         Parameters
         ----------
@@ -5692,9 +5523,8 @@ class UndiGraph(_object):
 
 
     def addNode(self):
-        """
+        r"""
         addNode(self) -> gum::NodeId
-
 
         Returns
         -------
@@ -5706,9 +5536,8 @@ class UndiGraph(_object):
 
 
     def addNodeWithId(self, id):
-        """
+        r"""
         addNodeWithId(self, id)
-
 
         Add a node by choosing a new NodeId.
 
@@ -5727,9 +5556,8 @@ class UndiGraph(_object):
 
 
     def existsNode(self, id):
-        """
+        r"""
         existsNode(self, id) -> bool
-
 
         Check if a node with a certain id exists in the graph.
 
@@ -5748,9 +5576,8 @@ class UndiGraph(_object):
 
 
     def size(self):
-        """
+        r"""
         size(self) -> gum::Size
-
 
         Returns
         -------
@@ -5762,9 +5589,8 @@ class UndiGraph(_object):
 
 
     def empty(self):
-        """
+        r"""
         empty(self) -> bool
-
 
         Check if the graph is empty.
 
@@ -5778,9 +5604,8 @@ class UndiGraph(_object):
 
 
     def addEdge(self, n1, n2):
-        """
+        r"""
         addEdge(self, n1, n2)
-
 
         Insert a new edge into the graph.
 
@@ -5801,9 +5626,8 @@ class UndiGraph(_object):
 
 
     def eraseEdge(self, n1, n2):
-        """
+        r"""
         eraseEdge(self, n1, n2)
-
 
         Erase the edge between n1 and n2.
 
@@ -5819,9 +5643,8 @@ class UndiGraph(_object):
 
 
     def existsEdge(self, n1, n2):
-        """
+        r"""
         existsEdge(self, n1, n2) -> bool
-
 
         Check if an edge exists bewteen n1 and n2.
 
@@ -5842,9 +5665,8 @@ class UndiGraph(_object):
 
 
     def sizeEdges(self):
-        """
+        r"""
         sizeEdges(self) -> gum::Size
-
 
         Returns
         -------
@@ -5856,9 +5678,8 @@ class UndiGraph(_object):
 
 
     def emptyEdges(self):
-        """
+        r"""
         emptyEdges(self) -> bool
-
 
         Check if the graph doesn't contains edges.
 
@@ -5872,9 +5693,8 @@ class UndiGraph(_object):
 
 
     def eraseNeighbours(self, n):
-        """
+        r"""
         eraseNeighbours(self, n)
-
 
         Erase all the edges adjacent to a given node.
 
@@ -5886,11 +5706,11 @@ class UndiGraph(_object):
         """
         return _pyAgrum.UndiGraph_eraseNeighbours(self, n)
 
-UndiGraph_swigregister = _pyAgrum.UndiGraph_swigregister
-UndiGraph_swigregister(UndiGraph)
+# Register UndiGraph in _pyAgrum:
+_pyAgrum.UndiGraph_swigregister(UndiGraph)
 
 class MixedGraph(UndiGraph, DiGraph):
-    """
+    r"""
 
     MixedGraph represents a Clique Graph.
 
@@ -5916,7 +5736,7 @@ class MixedGraph(UndiGraph, DiGraph):
     __getattr__ = lambda self, name: _swig_getattr(self, MixedGraph, name)
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, nodes_size, nodes_resize_policy=True, arcs_size, arcs_resize_policy=True, edges_size, edges_resize_policy=True) -> MixedGraph
         __init__(self, nodes_size, nodes_resize_policy=True, arcs_size, arcs_resize_policy=True, edges_size) -> MixedGraph
         __init__(self, nodes_size, nodes_resize_policy=True, arcs_size, arcs_resize_policy=True) -> MixedGraph
@@ -5936,19 +5756,18 @@ class MixedGraph(UndiGraph, DiGraph):
         return None
 
     def __eq__(self, g):
-        """__eq__(self, g) -> bool"""
+        r"""__eq__(self, g) -> bool"""
         return _pyAgrum.MixedGraph___eq__(self, g)
 
 
     def __ne__(self, g):
-        """__ne__(self, g) -> bool"""
+        r"""__ne__(self, g) -> bool"""
         return _pyAgrum.MixedGraph___ne__(self, g)
 
 
     def eraseNode(self, id):
-        """
+        r"""
         eraseNode(self, id)
-
 
         Erase the node and all the adjacent edges.
 
@@ -5962,9 +5781,8 @@ class MixedGraph(UndiGraph, DiGraph):
 
 
     def clear(self):
-        """
+        r"""
         clear(self)
-
 
         Remove all the nodes and edges from the graph.
 
@@ -5973,9 +5791,8 @@ class MixedGraph(UndiGraph, DiGraph):
 
 
     def mixedOrientedPath(self, node1, node2):
-        """
+        r"""
         mixedOrientedPath(self, node1, node2) -> Vector_int
-
 
         Parameters
         ----------
@@ -5999,9 +5816,8 @@ class MixedGraph(UndiGraph, DiGraph):
 
 
     def mixedUnorientedPath(self, node1, node2):
-        """
+        r"""
         mixedUnorientedPath(self, node1, node2) -> Vector_int
-
 
         Parameters
         ----------
@@ -6025,9 +5841,8 @@ class MixedGraph(UndiGraph, DiGraph):
 
 
     def toDot(self):
-        """
+        r"""
         toDot(self) -> std::string const
-
 
         Returns
         -------
@@ -6039,19 +5854,19 @@ class MixedGraph(UndiGraph, DiGraph):
 
 
     def __repr__(self):
-        """__repr__(self) -> std::string"""
+        r"""__repr__(self) -> std::string"""
         return _pyAgrum.MixedGraph___repr__(self)
 
 
     def __str__(self):
-        """__str__(self) -> std::string"""
+        r"""__str__(self) -> std::string"""
         return _pyAgrum.MixedGraph___str__(self)
 
-MixedGraph_swigregister = _pyAgrum.MixedGraph_swigregister
-MixedGraph_swigregister(MixedGraph)
+# Register MixedGraph in _pyAgrum:
+_pyAgrum.MixedGraph_swigregister(MixedGraph)
 
 class CliqueGraph(UndiGraph):
-    """
+    r"""
 
     CliqueGraph represents a Clique Graph.
 
@@ -6078,7 +5893,7 @@ class CliqueGraph(UndiGraph):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, nodes_size, nodes_resize_policy=True, edges_size, edges_resize_policy=True) -> CliqueGraph
         __init__(self, nodes_size, nodes_resize_policy=True, edges_size) -> CliqueGraph
         __init__(self, nodes_size, nodes_resize_policy=True) -> CliqueGraph
@@ -6096,9 +5911,8 @@ class CliqueGraph(UndiGraph):
         return None
 
     def addEdge(self, first, second):
-        """
+        r"""
         addEdge(self, first, second)
-
 
         Insert a new edge into the graph.
 
@@ -6119,9 +5933,8 @@ class CliqueGraph(UndiGraph):
 
 
     def eraseEdge(self, edge):
-        """
+        r"""
         eraseEdge(self, edge)
-
 
         Erase the edge between n1 and n2.
 
@@ -6137,9 +5950,8 @@ class CliqueGraph(UndiGraph):
 
 
     def clearEdges(self):
-        """
+        r"""
         clearEdges(self)
-
 
         Remove all edges and their separators 
 
@@ -6148,12 +5960,11 @@ class CliqueGraph(UndiGraph):
 
 
     def addNode(self, *args):
-        """
+        r"""
         addNode(self, clique) -> gum::NodeId
         addNode(self) -> gum::NodeId
         addNode(self, id, clique)
         addNode(self, id)
-
 
         Returns
         -------
@@ -6165,9 +5976,8 @@ class CliqueGraph(UndiGraph):
 
 
     def eraseNode(self, node):
-        """
+        r"""
         eraseNode(self, node)
-
 
         Erase the node and all the adjacent edges.
 
@@ -6181,9 +5991,8 @@ class CliqueGraph(UndiGraph):
 
 
     def clear(self):
-        """
+        r"""
         clear(self)
-
 
         Remove all the nodes and edges from the graph.
 
@@ -6192,9 +6001,8 @@ class CliqueGraph(UndiGraph):
 
 
     def container(self, idNode):
-        """
+        r"""
         container(self, idNode) -> gum::NodeId
-
 
         Parameters
         ----------
@@ -6216,9 +6024,8 @@ class CliqueGraph(UndiGraph):
 
 
     def setClique(self, idClique, new_clique):
-        """
+        r"""
         setClique(self, idClique, new_clique)
-
 
         changes the set of nodes included into a given clique
 
@@ -6239,9 +6046,8 @@ class CliqueGraph(UndiGraph):
 
 
     def addToClique(self, clique_id, node_id):
-        """
+        r"""
         addToClique(self, clique_id, node_id)
-
 
         Change the set of nodes included into a given clique and returns the new set 
 
@@ -6264,9 +6070,8 @@ class CliqueGraph(UndiGraph):
 
 
     def eraseFromClique(self, clique_id, node_id):
-        """
+        r"""
         eraseFromClique(self, clique_id, node_id)
-
 
         Remove a node from a clique
 
@@ -6287,10 +6092,9 @@ class CliqueGraph(UndiGraph):
 
 
     def separator(self, *args):
-        """
+        r"""
         separator(self, edge) -> gum::NodeSet const
         separator(self, clique1, clique) -> gum::NodeSet const &
-
 
         Parameters
         ----------
@@ -6316,9 +6120,8 @@ class CliqueGraph(UndiGraph):
 
 
     def containerPath(self, node1, node2):
-        """
+        r"""
         containerPath(self, node1, node2) -> Vector_int
-
 
         Parameters
         ----------
@@ -6342,9 +6145,8 @@ class CliqueGraph(UndiGraph):
 
 
     def hasRunningIntersection(self):
-        """
+        r"""
         hasRunningIntersection(self) -> bool
-
 
         Returns
         -------
@@ -6356,9 +6158,8 @@ class CliqueGraph(UndiGraph):
 
 
     def isJoinTree(self):
-        """
+        r"""
         isJoinTree(self) -> bool
-
 
         Returns
         -------
@@ -6370,9 +6171,8 @@ class CliqueGraph(UndiGraph):
 
 
     def toDot(self):
-        """
+        r"""
         toDot(self) -> std::string const
-
 
         Returns
         -------
@@ -6384,19 +6184,18 @@ class CliqueGraph(UndiGraph):
 
 
     def __ne__(self, arg2):
-        """__ne__(self, arg2) -> bool"""
+        r"""__ne__(self, arg2) -> bool"""
         return _pyAgrum.CliqueGraph___ne__(self, arg2)
 
 
     def __eq__(self, arg2):
-        """__eq__(self, arg2) -> bool"""
+        r"""__eq__(self, arg2) -> bool"""
         return _pyAgrum.CliqueGraph___eq__(self, arg2)
 
 
     def clique(self, clique):
-        """
+        r"""
         clique(self, clique) -> PyObject *
-
 
         Parameters
         ----------
@@ -6436,11 +6235,11 @@ class CliqueGraph(UndiGraph):
         m = re.compile('(?<=label=\")\d+[\-\d+]*')
         return m.sub(nameFromId,self.toDot())
 
-CliqueGraph_swigregister = _pyAgrum.CliqueGraph_swigregister
-CliqueGraph_swigregister(CliqueGraph)
+# Register CliqueGraph in _pyAgrum:
+_pyAgrum.CliqueGraph_swigregister(CliqueGraph)
 
 class Instantiation(_object):
-    """
+    r"""
 
     Class for assigning/browsing values to tuples of discrete variables.
 
@@ -6479,7 +6278,7 @@ class Instantiation(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, Instantiation, name)
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self) -> Instantiation
         __init__(self, aI, notifyMaster=True) -> Instantiation
         __init__(self, aI) -> Instantiation
@@ -6498,9 +6297,8 @@ class Instantiation(_object):
         return None
 
     def nbrDim(self):
-        """
+        r"""
         nbrDim(self) -> gum::Idx
-
 
         Returns
         -------
@@ -6512,9 +6310,8 @@ class Instantiation(_object):
 
 
     def add(self, v):
-        """
+        r"""
         add(self, v)
-
 
         Adds a new variable in the Instantiation.
 
@@ -6534,9 +6331,8 @@ class Instantiation(_object):
 
 
     def erase(self, v):
-        """
+        r"""
         erase(self, v)
-
 
         Parameters
         ----------
@@ -6553,9 +6349,8 @@ class Instantiation(_object):
 
 
     def clear(self):
-        """
+        r"""
         clear(self)
-
 
         Erase all variables from an Instantiation.
 
@@ -6564,9 +6359,8 @@ class Instantiation(_object):
 
 
     def domainSize(self):
-        """
+        r"""
         domainSize(self) -> gum::Size
-
 
         Returns
         -------
@@ -6578,9 +6372,8 @@ class Instantiation(_object):
 
 
     def pos(self, v):
-        """
+        r"""
         pos(self, v) -> gum::Idx
-
 
         Returns
         -------
@@ -6602,10 +6395,9 @@ class Instantiation(_object):
 
 
     def val(self, *args):
-        """
+        r"""
         val(self, i) -> gum::Idx
         val(self, var) -> gum::Idx
-
 
         Parameters
         ----------
@@ -6629,10 +6421,9 @@ class Instantiation(_object):
 
 
     def variable(self, *args):
-        """
+        r"""
         variable(self, i) -> DiscreteVariable
         variable(self, name) -> DiscreteVariable
-
 
         Parameters
         ----------
@@ -6654,13 +6445,12 @@ class Instantiation(_object):
 
 
     def chgVal(self, *args):
-        """
+        r"""
         chgVal(self, v, newval) -> Instantiation
         chgVal(self, v, newval) -> Instantiation
         chgVal(self, varPos, newval) -> Instantiation
         chgVal(self, var, newval) -> Instantiation
         chgVal(self, var, newval) -> Instantiation
-
 
         Assign newval to v (or to the variable at position varPos) in the Instantiation.
 
@@ -6690,9 +6480,8 @@ class Instantiation(_object):
 
 
     def setVals(self, i):
-        """
+        r"""
         setVals(self, i) -> Instantiation
-
 
         Assign the values from i in the Instantiation.
 
@@ -6711,10 +6500,9 @@ class Instantiation(_object):
 
 
     def contains(self, *args):
-        """
+        r"""
         contains(self, v) -> bool
         contains(self, v) -> bool
-
 
         Indicates whether a given variable belongs to the Instantiation.
 
@@ -6733,9 +6521,8 @@ class Instantiation(_object):
 
 
     def variablesSequence(self):
-        """
+        r"""
         variablesSequence(self) -> gum::Sequence< gum::DiscreteVariable const * > const &
-
 
         Returns
         -------
@@ -6747,9 +6534,8 @@ class Instantiation(_object):
 
 
     def empty(self):
-        """
+        r"""
         empty(self) -> bool
-
 
         Returns
         -------
@@ -6761,9 +6547,8 @@ class Instantiation(_object):
 
 
     def inOverflow(self):
-        """
+        r"""
         inOverflow(self) -> bool
-
 
         Returns
         -------
@@ -6775,9 +6560,8 @@ class Instantiation(_object):
 
 
     def unsetOverflow(self):
-        """
+        r"""
         unsetOverflow(self)
-
 
         Removes the flag overflow.
 
@@ -6786,9 +6570,8 @@ class Instantiation(_object):
 
 
     def unsetEnd(self):
-        """
+        r"""
         unsetEnd(self)
-
 
         Alias for unsetOverflow().
 
@@ -6797,9 +6580,8 @@ class Instantiation(_object):
 
 
     def end(self):
-        """
+        r"""
         end(self) -> bool
-
 
         Returns
         -------
@@ -6811,9 +6593,8 @@ class Instantiation(_object):
 
 
     def rend(self):
-        """
+        r"""
         rend(self) -> bool
-
 
         Returns
         -------
@@ -6825,9 +6606,8 @@ class Instantiation(_object):
 
 
     def inc(self):
-        """
+        r"""
         inc(self)
-
 
         Operator ++.
 
@@ -6836,9 +6616,8 @@ class Instantiation(_object):
 
 
     def dec(self):
-        """
+        r"""
         dec(self)
-
 
         Operator --.
 
@@ -6847,9 +6626,8 @@ class Instantiation(_object):
 
 
     def incIn(self, i):
-        """
+        r"""
         incIn(self, i)
-
 
         Operator ++ for the variables in i.
 
@@ -6863,9 +6641,8 @@ class Instantiation(_object):
 
 
     def decIn(self, i):
-        """
+        r"""
         decIn(self, i)
-
 
         Operator -- for the variables in i.
 
@@ -6879,9 +6656,8 @@ class Instantiation(_object):
 
 
     def incOut(self, i):
-        """
+        r"""
         incOut(self, i)
-
 
         Operator ++ for the variables not in i.
 
@@ -6895,9 +6671,8 @@ class Instantiation(_object):
 
 
     def decOut(self, i):
-        """
+        r"""
         decOut(self, i)
-
 
         Operator -- for the variables not in i.
 
@@ -6911,9 +6686,8 @@ class Instantiation(_object):
 
 
     def incNotVar(self, v):
-        """
+        r"""
         incNotVar(self, v)
-
 
         Operator ++ for vars which are not v.
 
@@ -6927,9 +6701,8 @@ class Instantiation(_object):
 
 
     def decNotVar(self, v):
-        """
+        r"""
         decNotVar(self, v)
-
 
         Operator -- for vars which are not v.
 
@@ -6943,9 +6716,8 @@ class Instantiation(_object):
 
 
     def incVar(self, v):
-        """
+        r"""
         incVar(self, v)
-
 
         Operator ++ for variable v only.
 
@@ -6964,9 +6736,8 @@ class Instantiation(_object):
 
 
     def decVar(self, v):
-        """
+        r"""
         decVar(self, v)
-
 
         Operator -- for variable v only.
 
@@ -6985,9 +6756,8 @@ class Instantiation(_object):
 
 
     def setFirst(self):
-        """
+        r"""
         setFirst(self)
-
 
         Assign the first values to the tuple of the Instantiation.
 
@@ -6996,9 +6766,8 @@ class Instantiation(_object):
 
 
     def setLast(self):
-        """
+        r"""
         setLast(self)
-
 
         Assign the last values in the Instantiation.
 
@@ -7007,9 +6776,8 @@ class Instantiation(_object):
 
 
     def setFirstIn(self, i):
-        """
+        r"""
         setFirstIn(self, i)
-
 
         Assign the first values in the Instantiation for the variables in i.
 
@@ -7023,9 +6791,8 @@ class Instantiation(_object):
 
 
     def setLastIn(self, i):
-        """
+        r"""
         setLastIn(self, i)
-
 
         Assign the last values in the Instantiation for the variables in i.
 
@@ -7039,9 +6806,8 @@ class Instantiation(_object):
 
 
     def setFirstOut(self, i):
-        """
+        r"""
         setFirstOut(self, i)
-
 
         Assign the first values in the Instantiation for the variables not in i.
 
@@ -7055,9 +6821,8 @@ class Instantiation(_object):
 
 
     def setLastOut(self, i):
-        """
+        r"""
         setLastOut(self, i)
-
 
         Assign the last values in the Instantiation for the variables not in i.
 
@@ -7071,9 +6836,8 @@ class Instantiation(_object):
 
 
     def setFirstNotVar(self, v):
-        """
+        r"""
         setFirstNotVar(self, v)
-
 
         Assign the first values to variables different of v.
 
@@ -7087,9 +6851,8 @@ class Instantiation(_object):
 
 
     def setLastNotVar(self, v):
-        """
+        r"""
         setLastNotVar(self, v)
-
 
         Assign the last values to variables different of v.
 
@@ -7103,9 +6866,8 @@ class Instantiation(_object):
 
 
     def setFirstVar(self, v):
-        """
+        r"""
         setFirstVar(self, v)
-
 
         Assign the first value in the Instantiation for var v.
 
@@ -7119,9 +6881,8 @@ class Instantiation(_object):
 
 
     def setLastVar(self, v):
-        """
+        r"""
         setLastVar(self, v)
-
 
         Assign the last value in the Instantiation for var v.
 
@@ -7135,24 +6896,23 @@ class Instantiation(_object):
 
 
     def __eq__(self, other):
-        """__eq__(self, other) -> bool"""
+        r"""__eq__(self, other) -> bool"""
         return _pyAgrum.Instantiation___eq__(self, other)
 
 
     def __iadd__(self, depl):
-        """__iadd__(self, depl) -> Instantiation"""
+        r"""__iadd__(self, depl) -> Instantiation"""
         return _pyAgrum.Instantiation___iadd__(self, depl)
 
 
     def __isub__(self, depl):
-        """__isub__(self, depl) -> Instantiation"""
+        r"""__isub__(self, depl) -> Instantiation"""
         return _pyAgrum.Instantiation___isub__(self, depl)
 
 
     def hamming(self):
-        """
+        r"""
         hamming(self) -> gum::Idx
-
 
         Returns
         -------
@@ -7164,10 +6924,9 @@ class Instantiation(_object):
 
 
     def reorder(self, *args):
-        """
+        r"""
         reorder(self, v)
         reorder(self, i)
-
 
         Reorder vars of this instantiation giving the order in v (or i).
 
@@ -7183,20 +6942,19 @@ class Instantiation(_object):
 
 
     def __repr__(self):
-        """__repr__(self) -> std::string"""
+        r"""__repr__(self) -> std::string"""
         return _pyAgrum.Instantiation___repr__(self)
 
 
     def __str__(self):
-        """__str__(self) -> std::string"""
+        r"""__str__(self) -> std::string"""
         return _pyAgrum.Instantiation___str__(self)
 
 
     def todict(self, withLabels=False):
-        """
+        r"""
         todict(self, withLabels=False) -> PyObject
         todict(self) -> PyObject *
-
 
         Create a dict (variable_name:value) from an instantiation
 
@@ -7215,9 +6973,8 @@ class Instantiation(_object):
 
 
     def fromdict(self, dict):
-        """
+        r"""
         fromdict(self, dict)
-
 
         Change the values in an instantiation from a dict (variable_name:value) where value can be a position (int) or a label (string).
 
@@ -7237,12 +6994,13 @@ class Instantiation(_object):
     def __getitem__(self,key):
       return self.val(self.variable(key))
 
-Instantiation_swigregister = _pyAgrum.Instantiation_swigregister
-Instantiation_swigregister(Instantiation)
+# Register Instantiation in _pyAgrum:
+_pyAgrum.Instantiation_swigregister(Instantiation)
 
 GUM_DEFAULT_ITERATOR_NUMBER = _pyAgrum.GUM_DEFAULT_ITERATOR_NUMBER
+
 class DAGmodel(_object):
-    """
+    r"""
 
     Abstract class used by IBayesNet and InfluenceDiagram.
 
@@ -7261,9 +7019,8 @@ class DAGmodel(_object):
         return None
 
     def property(self, name):
-        """
+        r"""
         property(self, name) -> std::string const &
-
 
         Warnings
         --------
@@ -7274,9 +7031,8 @@ class DAGmodel(_object):
 
 
     def propertyWithDefault(self, name, byDefault):
-        """
+        r"""
         propertyWithDefault(self, name, byDefault) -> std::string const &
-
 
         Warnings
         --------
@@ -7287,9 +7043,8 @@ class DAGmodel(_object):
 
 
     def setProperty(self, name, value):
-        """
+        r"""
         setProperty(self, name, value)
-
 
         Warnings
         --------
@@ -7300,9 +7055,8 @@ class DAGmodel(_object):
 
 
     def dag(self):
-        """
+        r"""
         dag(self) -> DAG
-
 
         Returns
         -------
@@ -7314,9 +7068,8 @@ class DAGmodel(_object):
 
 
     def variableNodeMap(self):
-        """
+        r"""
         variableNodeMap(self) -> VariableNodeMap
-
 
         Returns
         -------
@@ -7328,9 +7081,8 @@ class DAGmodel(_object):
 
 
     def size(self):
-        """
+        r"""
         size(self) -> gum::Size
-
 
         Returns
         -------
@@ -7342,9 +7094,8 @@ class DAGmodel(_object):
 
 
     def sizeArcs(self):
-        """
+        r"""
         sizeArcs(self) -> gum::Size
-
 
         Returns
         -------
@@ -7356,9 +7107,8 @@ class DAGmodel(_object):
 
 
     def empty(self):
-        """
+        r"""
         empty(self) -> bool
-
 
         Returns
         -------
@@ -7370,9 +7120,8 @@ class DAGmodel(_object):
 
 
     def nodes(self):
-        """
+        r"""
         nodes(self) -> NodeGraphPart
-
 
         Returns
         -------
@@ -7384,9 +7133,8 @@ class DAGmodel(_object):
 
 
     def variable(self, id):
-        """
+        r"""
         variable(self, id) -> DiscreteVariable
-
 
         Parameters
         ----------
@@ -7410,9 +7158,8 @@ class DAGmodel(_object):
 
 
     def nodeId(self, var):
-        """
+        r"""
         nodeId(self, var) -> gum::NodeId
-
 
         Parameters
         ----------
@@ -7434,9 +7181,8 @@ class DAGmodel(_object):
 
 
     def idFromName(self, name):
-        """
+        r"""
         idFromName(self, name) -> gum::NodeId
-
 
         Returns a variable's id given its name in the graph.
 
@@ -7460,9 +7206,8 @@ class DAGmodel(_object):
 
 
     def variableFromName(self, name):
-        """
+        r"""
         variableFromName(self, name) -> DiscreteVariable
-
 
         Parameters
         ----------
@@ -7484,9 +7229,8 @@ class DAGmodel(_object):
 
 
     def completeInstantiation(self):
-        """
+        r"""
         completeInstantiation(self) -> Instantiation
-
 
         Get an instantiation over all the variables of the model.
 
@@ -7500,9 +7244,8 @@ class DAGmodel(_object):
 
 
     def arcs(self):
-        """
+        r"""
         arcs(self) -> gum::ArcSet const &
-
 
         Returns
         -------
@@ -7514,7 +7257,7 @@ class DAGmodel(_object):
 
 
     def parents(self, *args):
-        """
+        r"""
         parents(self, id) -> gum::NodeSet const
         parents(self, name) -> gum::NodeSet const &
         """
@@ -7522,7 +7265,7 @@ class DAGmodel(_object):
 
 
     def children(self, *args):
-        """
+        r"""
         children(self, id) -> gum::NodeSet const
         children(self, name) -> gum::NodeSet const &
         """
@@ -7530,10 +7273,9 @@ class DAGmodel(_object):
 
 
     def moralGraph(self, clear=True):
-        """
+        r"""
         moralGraph(self, clear=True) -> UndiGraph
         moralGraph(self) -> UndiGraph
-
 
         Returns the moral graph of the BayesNet, formed by adding edges between all pairs of nodes that have a common child, and then making all edges in the graph undirected.
 
@@ -7547,10 +7289,9 @@ class DAGmodel(_object):
 
 
     def topologicalOrder(self, clear=True):
-        """
+        r"""
         topologicalOrder(self, clear=True) -> gum::Sequence< gum::NodeId > const
         topologicalOrder(self) -> gum::Sequence< gum::NodeId > const &
-
 
         Returns
         -------
@@ -7567,9 +7308,8 @@ class DAGmodel(_object):
 
 
     def log10DomainSize(self):
-        """
+        r"""
         log10DomainSize(self) -> double
-
 
         Returns
         -------
@@ -7581,9 +7321,8 @@ class DAGmodel(_object):
 
 
     def hasSameStructure(self, other):
-        """
+        r"""
         hasSameStructure(self, other) -> bool
-
 
         Parameters
         ----------
@@ -7598,14 +7337,14 @@ class DAGmodel(_object):
         """
         return _pyAgrum.DAGmodel_hasSameStructure(self, other)
 
-DAGmodel_swigregister = _pyAgrum.DAGmodel_swigregister
-DAGmodel_swigregister(DAGmodel)
+# Register DAGmodel in _pyAgrum:
+_pyAgrum.DAGmodel_swigregister(DAGmodel)
 cvar = _pyAgrum.cvar
 __list_end_safe = cvar.__list_end_safe
 __list_end = cvar.__list_end
 
 class EssentialGraph(_object):
-    """Proxy of C++ gum::EssentialGraph class."""
+    r"""Proxy of C++ gum::EssentialGraph class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, EssentialGraph, name, value)
@@ -7614,7 +7353,7 @@ class EssentialGraph(_object):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self) -> EssentialGraph
         __init__(self, m) -> EssentialGraph
         __init__(self, m, mg) -> EssentialGraph
@@ -7630,9 +7369,8 @@ class EssentialGraph(_object):
         return None
 
     def mixedGraph(self):
-        """
+        r"""
         mixedGraph(self) -> MixedGraph
-
 
         Returns
         -------
@@ -7644,9 +7382,8 @@ class EssentialGraph(_object):
 
 
     def toDot(self):
-        """
+        r"""
         toDot(self) -> std::string
-
 
         Returns
         -------
@@ -7658,9 +7395,8 @@ class EssentialGraph(_object):
 
 
     def sizeArcs(self):
-        """
+        r"""
         sizeArcs(self) -> gum::Size
-
 
         Returns
         -------
@@ -7672,9 +7408,8 @@ class EssentialGraph(_object):
 
 
     def sizeEdges(self):
-        """
+        r"""
         sizeEdges(self) -> gum::Size
-
 
         Returns
         -------
@@ -7686,9 +7421,8 @@ class EssentialGraph(_object):
 
 
     def sizeNodes(self):
-        """
+        r"""
         sizeNodes(self) -> gum::Size
-
 
         Returns
         -------
@@ -7700,9 +7434,8 @@ class EssentialGraph(_object):
 
 
     def size(self):
-        """
+        r"""
         size(self) -> gum::Size
-
 
         Returns
         -------
@@ -7714,14 +7447,13 @@ class EssentialGraph(_object):
 
 
     def nodes(self):
-        """nodes(self) -> PyObject *"""
+        r"""nodes(self) -> PyObject *"""
         return _pyAgrum.EssentialGraph_nodes(self)
 
 
     def arcs(self):
-        """
+        r"""
         arcs(self) -> PyObject *
-
 
         Returns
         -------
@@ -7733,9 +7465,8 @@ class EssentialGraph(_object):
 
 
     def parents(self, id):
-        """
+        r"""
         parents(self, id) -> PyObject *
-
 
         Parameters
         ----------
@@ -7752,9 +7483,8 @@ class EssentialGraph(_object):
 
 
     def children(self, id):
-        """
+        r"""
         children(self, id) -> PyObject *
-
 
         Parameters
         ----------
@@ -7771,9 +7501,8 @@ class EssentialGraph(_object):
 
 
     def edges(self):
-        """
+        r"""
         edges(self) -> PyObject *
-
 
         Returns
         -------
@@ -7785,9 +7514,8 @@ class EssentialGraph(_object):
 
 
     def neighbours(self, id):
-        """
+        r"""
         neighbours(self, id) -> PyObject *
-
 
         Parameters
         ----------
@@ -7802,11 +7530,11 @@ class EssentialGraph(_object):
         """
         return _pyAgrum.EssentialGraph_neighbours(self, id)
 
-EssentialGraph_swigregister = _pyAgrum.EssentialGraph_swigregister
-EssentialGraph_swigregister(EssentialGraph)
+# Register EssentialGraph in _pyAgrum:
+_pyAgrum.EssentialGraph_swigregister(EssentialGraph)
 
 class MarkovBlanket(_object):
-    """Proxy of C++ gum::MarkovBlanket class."""
+    r"""Proxy of C++ gum::MarkovBlanket class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, MarkovBlanket, name, value)
@@ -7815,7 +7543,7 @@ class MarkovBlanket(_object):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, m, n) -> MarkovBlanket
         __init__(self, m, name) -> MarkovBlanket
         """
@@ -7829,9 +7557,8 @@ class MarkovBlanket(_object):
         return None
 
     def mb(self):
-        """
+        r"""
         mb(self) -> DiGraph
-
 
         Returns
         -------
@@ -7843,9 +7570,8 @@ class MarkovBlanket(_object):
 
 
     def toDot(self):
-        """
+        r"""
         toDot(self) -> std::string
-
 
         Returns
         -------
@@ -7857,9 +7583,8 @@ class MarkovBlanket(_object):
 
 
     def sizeArcs(self):
-        """
+        r"""
         sizeArcs(self) -> gum::Size
-
 
         Returns
         -------
@@ -7871,9 +7596,8 @@ class MarkovBlanket(_object):
 
 
     def sizeNodes(self):
-        """
+        r"""
         sizeNodes(self) -> gum::Size
-
 
         Returns
         -------
@@ -7885,9 +7609,8 @@ class MarkovBlanket(_object):
 
 
     def size(self):
-        """
+        r"""
         size(self) -> gum::Size
-
 
         Returns
         -------
@@ -7899,9 +7622,8 @@ class MarkovBlanket(_object):
 
 
     def hasSameStructure(self, other):
-        """
+        r"""
         hasSameStructure(self, other) -> bool
-
 
         Parameters
         ----------
@@ -7918,9 +7640,8 @@ class MarkovBlanket(_object):
 
 
     def nodes(self):
-        """
+        r"""
         nodes(self) -> PyObject *
-
 
         Returns
         -------
@@ -7932,9 +7653,8 @@ class MarkovBlanket(_object):
 
 
     def arcs(self):
-        """
+        r"""
         arcs(self) -> PyObject *
-
 
         Returns
         -------
@@ -7946,9 +7666,8 @@ class MarkovBlanket(_object):
 
 
     def parents(self, id):
-        """
+        r"""
         parents(self, id) -> PyObject *
-
 
         Parameters
         ----------
@@ -7965,9 +7684,8 @@ class MarkovBlanket(_object):
 
 
     def children(self, id):
-        """
+        r"""
         children(self, id) -> PyObject *
-
 
         Parameters
         ----------
@@ -7982,11 +7700,11 @@ class MarkovBlanket(_object):
         """
         return _pyAgrum.MarkovBlanket_children(self, id)
 
-MarkovBlanket_swigregister = _pyAgrum.MarkovBlanket_swigregister
-MarkovBlanket_swigregister(MarkovBlanket)
+# Register MarkovBlanket in _pyAgrum:
+_pyAgrum.MarkovBlanket_swigregister(MarkovBlanket)
 
 class StructuralComparator(_object):
-    """Proxy of C++ gum::StructuralComparator class."""
+    r"""Proxy of C++ gum::StructuralComparator class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, StructuralComparator, name, value)
@@ -7995,7 +7713,7 @@ class StructuralComparator(_object):
     __repr__ = _swig_repr
 
     def __init__(self):
-        """__init__(self) -> StructuralComparator"""
+        r"""__init__(self) -> StructuralComparator"""
         this = _pyAgrum.new_StructuralComparator()
         try:
             self.this.append(this)
@@ -8006,11 +7724,10 @@ class StructuralComparator(_object):
         return None
 
     def compare(self, *args):
-        """
+        r"""
         compare(self, ref, test)
         compare(self, ref, test)
         compare(self, ref, test)
-
 
         Use to compare the edges/arcs of two structure of the same type and same sizes (either DiGraph, UndiGraph or MixedGraph).
 
@@ -8028,9 +7745,8 @@ class StructuralComparator(_object):
 
 
     def precision_skeleton(self):
-        """
+        r"""
         precision_skeleton(self) -> double
-
 
         Rate of true postive over labelized edges.
 
@@ -8044,9 +7760,8 @@ class StructuralComparator(_object):
 
 
     def recall_skeleton(self):
-        """
+        r"""
         recall_skeleton(self) -> double
-
 
         Rate of true postive over labelized edges.
 
@@ -8060,9 +7775,8 @@ class StructuralComparator(_object):
 
 
     def f_score_skeleton(self):
-        """
+        r"""
         f_score_skeleton(self) -> double
-
 
         Harmonic mean between recall and precision.
 
@@ -8076,9 +7790,8 @@ class StructuralComparator(_object):
 
 
     def precision(self):
-        """
+        r"""
         precision(self) -> double
-
 
         Rate of true postive over postively labelized arcs/edges.
 
@@ -8092,9 +7805,8 @@ class StructuralComparator(_object):
 
 
     def recall(self):
-        """
+        r"""
         recall(self) -> double
-
 
         Rate of true postive over labelized arcs/edges.
 
@@ -8108,9 +7820,8 @@ class StructuralComparator(_object):
 
 
     def f_score(self):
-        """
+        r"""
         f_score(self) -> double
-
 
         Harmonic mean between recall and precision.
 
@@ -8122,11 +7833,11 @@ class StructuralComparator(_object):
         """
         return _pyAgrum.StructuralComparator_f_score(self)
 
-StructuralComparator_swigregister = _pyAgrum.StructuralComparator_swigregister
-StructuralComparator_swigregister(StructuralComparator)
+# Register StructuralComparator in _pyAgrum:
+_pyAgrum.StructuralComparator_swigregister(StructuralComparator)
 
 class ApproximationScheme(_object):
-    """
+    r"""
 
     Used to parametrize stopping criteria in approximate inference or learning algorithm.
 
@@ -8148,7 +7859,7 @@ class ApproximationScheme(_object):
     __repr__ = _swig_repr
 
     def __init__(self, v=False):
-        """
+        r"""
         __init__(self, v=False) -> ApproximationScheme
         __init__(self) -> ApproximationScheme
         """
@@ -8162,9 +7873,8 @@ class ApproximationScheme(_object):
         return None
 
     def setEpsilon(self, eps):
-        """
+        r"""
         setEpsilon(self, eps)
-
 
         Parameters
         ----------
@@ -8181,9 +7891,8 @@ class ApproximationScheme(_object):
 
 
     def epsilon(self):
-        """
+        r"""
         epsilon(self) -> double
-
 
         Returns
         -------
@@ -8195,9 +7904,8 @@ class ApproximationScheme(_object):
 
 
     def disableEpsilon(self):
-        """
+        r"""
         disableEpsilon(self)
-
 
         Disable epsilon as a stopping criterion.
 
@@ -8206,9 +7914,8 @@ class ApproximationScheme(_object):
 
 
     def enableEpsilon(self):
-        """
+        r"""
         enableEpsilon(self)
-
 
         Enable epsilon as a stopping criterion.
 
@@ -8217,9 +7924,8 @@ class ApproximationScheme(_object):
 
 
     def isEnabledEpsilon(self):
-        """
+        r"""
         isEnabledEpsilon(self) -> bool
-
 
         Returns
         -------
@@ -8231,9 +7937,8 @@ class ApproximationScheme(_object):
 
 
     def setMinEpsilonRate(self, rate):
-        """
+        r"""
         setMinEpsilonRate(self, rate)
-
 
         Parameters
         ----------
@@ -8245,9 +7950,8 @@ class ApproximationScheme(_object):
 
 
     def minEpsilonRate(self):
-        """
+        r"""
         minEpsilonRate(self) -> double
-
 
         Returns
         -------
@@ -8259,9 +7963,8 @@ class ApproximationScheme(_object):
 
 
     def disableMinEpsilonRate(self):
-        """
+        r"""
         disableMinEpsilonRate(self)
-
 
         Disable a min epsilon rate as a stopping criterion.
 
@@ -8270,9 +7973,8 @@ class ApproximationScheme(_object):
 
 
     def enableMinEpsilonRate(self):
-        """
+        r"""
         enableMinEpsilonRate(self)
-
 
         Enable a min epsilon rate as a stopping criterion.
 
@@ -8281,9 +7983,8 @@ class ApproximationScheme(_object):
 
 
     def isEnabledMinEpsilonRate(self):
-        """
+        r"""
         isEnabledMinEpsilonRate(self) -> bool
-
 
         Returns
         -------
@@ -8295,9 +7996,8 @@ class ApproximationScheme(_object):
 
 
     def setMaxIter(self, max):
-        """
+        r"""
         setMaxIter(self, max)
-
 
         Parameters
         ----------
@@ -8314,9 +8014,8 @@ class ApproximationScheme(_object):
 
 
     def maxIter(self):
-        """
+        r"""
         maxIter(self) -> gum::Size
-
 
         Returns
         -------
@@ -8328,9 +8027,8 @@ class ApproximationScheme(_object):
 
 
     def disableMaxIter(self):
-        """
+        r"""
         disableMaxIter(self)
-
 
         Disable max iterations as a stopping criterion.
 
@@ -8339,9 +8037,8 @@ class ApproximationScheme(_object):
 
 
     def enableMaxIter(self):
-        """
+        r"""
         enableMaxIter(self)
-
 
         Enable max iterations as a stopping criterion.
 
@@ -8350,9 +8047,8 @@ class ApproximationScheme(_object):
 
 
     def isEnabledMaxIter(self):
-        """
+        r"""
         isEnabledMaxIter(self) -> bool
-
 
         Returns
         -------
@@ -8364,9 +8060,8 @@ class ApproximationScheme(_object):
 
 
     def setMaxTime(self, timeout):
-        """
+        r"""
         setMaxTime(self, timeout)
-
 
         Parameters
         ----------
@@ -8383,9 +8078,8 @@ class ApproximationScheme(_object):
 
 
     def maxTime(self):
-        """
+        r"""
         maxTime(self) -> double
-
 
         Returns
         -------
@@ -8397,9 +8091,8 @@ class ApproximationScheme(_object):
 
 
     def currentTime(self):
-        """
+        r"""
         currentTime(self) -> double
-
 
         Returns
         -------
@@ -8411,9 +8104,8 @@ class ApproximationScheme(_object):
 
 
     def disableMaxTime(self):
-        """
+        r"""
         disableMaxTime(self)
-
 
         Disable max time as a stopping criterion.
 
@@ -8422,9 +8114,8 @@ class ApproximationScheme(_object):
 
 
     def enableMaxTime(self):
-        """
+        r"""
         enableMaxTime(self)
-
 
         Enable max time as a stopping criterion.
 
@@ -8433,9 +8124,8 @@ class ApproximationScheme(_object):
 
 
     def isEnabledMaxTime(self):
-        """
+        r"""
         isEnabledMaxTime(self) -> bool
-
 
         Returns
         -------
@@ -8447,9 +8137,8 @@ class ApproximationScheme(_object):
 
 
     def setPeriodSize(self, p):
-        """
+        r"""
         setPeriodSize(self, p)
-
 
         Parameters
         ----------
@@ -8466,9 +8155,8 @@ class ApproximationScheme(_object):
 
 
     def periodSize(self):
-        """
+        r"""
         periodSize(self) -> gum::Size
-
 
         Returns
         -------
@@ -8485,23 +8173,21 @@ class ApproximationScheme(_object):
 
 
     def setVerbosity(self, v):
-        """
+        r"""
         setVerbosity(self, v)
-
 
         Parameters
         ----------
         v : bool
-        	verbosity
+                verbosity
 
         """
         return _pyAgrum.ApproximationScheme_setVerbosity(self, v)
 
 
     def verbosity(self):
-        """
+        r"""
         verbosity(self) -> bool
-
 
         Returns
         -------
@@ -8513,9 +8199,8 @@ class ApproximationScheme(_object):
 
 
     def stateApproximationScheme(self):
-        """
+        r"""
         stateApproximationScheme(self) -> gum::IApproximationSchemeConfiguration::ApproximationSchemeSTATE
-
 
         Returns
         -------
@@ -8527,9 +8212,8 @@ class ApproximationScheme(_object):
 
 
     def nbrIterations(self):
-        """
+        r"""
         nbrIterations(self) -> gum::Size
-
 
         Returns
         -------
@@ -8541,9 +8225,8 @@ class ApproximationScheme(_object):
 
 
     def history(self):
-        """
+        r"""
         history(self) -> Vector_double
-
 
         Returns
         -------
@@ -8560,9 +8243,8 @@ class ApproximationScheme(_object):
 
 
     def initApproximationScheme(self):
-        """
+        r"""
         initApproximationScheme(self)
-
 
         Initiate the approximation scheme.
 
@@ -8571,9 +8253,8 @@ class ApproximationScheme(_object):
 
 
     def startOfPeriod(self):
-        """
+        r"""
         startOfPeriod(self) -> bool
-
 
         Returns
         -------
@@ -8585,10 +8266,9 @@ class ApproximationScheme(_object):
 
 
     def updateApproximationScheme(self, incr=1):
-        """
+        r"""
         updateApproximationScheme(self, incr=1)
         updateApproximationScheme(self)
-
 
         Update the approximation scheme.
 
@@ -8597,9 +8277,8 @@ class ApproximationScheme(_object):
 
 
     def remainingBurnIn(self):
-        """
+        r"""
         remainingBurnIn(self) -> gum::Size
-
 
         Returns
         -------
@@ -8611,9 +8290,8 @@ class ApproximationScheme(_object):
 
 
     def stopApproximationScheme(self):
-        """
+        r"""
         stopApproximationScheme(self)
-
 
         Stop the approximation scheme.
 
@@ -8622,9 +8300,8 @@ class ApproximationScheme(_object):
 
 
     def continueApproximationScheme(self, error):
-        """
+        r"""
         continueApproximationScheme(self, error) -> bool
-
 
         Continue the approximation scheme.
 
@@ -8635,16 +8312,17 @@ class ApproximationScheme(_object):
         """
         return _pyAgrum.ApproximationScheme_continueApproximationScheme(self, error)
 
-ApproximationScheme_swigregister = _pyAgrum.ApproximationScheme_swigregister
-ApproximationScheme_swigregister(ApproximationScheme)
+# Register ApproximationScheme in _pyAgrum:
+_pyAgrum.ApproximationScheme_swigregister(ApproximationScheme)
 
 FindBarrenNodesType_FIND_NO_BARREN_NODES = _pyAgrum.FindBarrenNodesType_FIND_NO_BARREN_NODES
+
 FindBarrenNodesType_FIND_BARREN_NODES = _pyAgrum.FindBarrenNodesType_FIND_BARREN_NODES
 
-def randomDistribution_double(n):
-    """
-    randomDistribution_double(n) -> Vector_double
 
+def randomDistribution_double(n):
+    r"""
+    randomDistribution_double(n) -> Vector_double
 
     Parameters
     ----------
@@ -8658,7 +8336,7 @@ def randomDistribution_double(n):
     """
     return _pyAgrum.randomDistribution_double(n)
 class DiscretizedVariable_double(IDiscretizedVariable):
-    """
+    r"""
 
     DiscretizedVariable is a discrete random variable with a set of ``ticks`` defining intervalls.
 
@@ -8709,7 +8387,7 @@ class DiscretizedVariable_double(IDiscretizedVariable):
     __getattr__ = lambda self, name: _swig_getattr(self, DiscretizedVariable_double, name)
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, aName, aDesc) -> DiscretizedVariable_double
         __init__(self, aName, aDesc, ticks) -> DiscretizedVariable_double
         __init__(self, aDRV) -> DiscretizedVariable_double
@@ -8724,9 +8402,8 @@ class DiscretizedVariable_double(IDiscretizedVariable):
         return None
 
     def clone(self):
-        """
+        r"""
         clone(self) -> DiscretizedVariable_double
-
 
         Returns
         -------
@@ -8738,9 +8415,8 @@ class DiscretizedVariable_double(IDiscretizedVariable):
 
 
     def varType(self):
-        """
+        r"""
         varType(self) -> gum::VarType
-
 
         returns the type of variable
 
@@ -8754,9 +8430,8 @@ class DiscretizedVariable_double(IDiscretizedVariable):
 
 
     def isTick(self, aTick):
-        """
+        r"""
         isTick(self, aTick) -> bool
-
 
         Parameters
         ----------
@@ -8795,9 +8470,8 @@ class DiscretizedVariable_double(IDiscretizedVariable):
 
 
     def eraseTicks(self):
-        """
+        r"""
         eraseTicks(self)
-
 
         erase all the Ticks 
 
@@ -8806,9 +8480,8 @@ class DiscretizedVariable_double(IDiscretizedVariable):
 
 
     def label(self, i):
-        """
+        r"""
         label(self, i) -> std::string
-
 
         Parameters
         ----------
@@ -8830,9 +8503,8 @@ class DiscretizedVariable_double(IDiscretizedVariable):
 
 
     def numerical(self, indice):
-        """
+        r"""
         numerical(self, indice) -> double
-
 
         Parameters
         ----------
@@ -8849,9 +8521,8 @@ class DiscretizedVariable_double(IDiscretizedVariable):
 
 
     def index(self, label):
-        """
+        r"""
         index(self, label) -> gum::Idx
-
 
         Parameters
         ----------
@@ -8868,9 +8539,8 @@ class DiscretizedVariable_double(IDiscretizedVariable):
 
 
     def domainSize(self):
-        """
+        r"""
         domainSize(self) -> gum::Size
-
 
         Returns
         -------
@@ -8882,9 +8552,8 @@ class DiscretizedVariable_double(IDiscretizedVariable):
 
 
     def domain(self):
-        """
+        r"""
         domain(self) -> std::string const
-
 
         Returns
         -------
@@ -8896,9 +8565,8 @@ class DiscretizedVariable_double(IDiscretizedVariable):
 
 
     def tick(self, i):
-        """
+        r"""
         tick(self, i) -> double const &
-
 
         Indicate the index of the Tick
 
@@ -8922,9 +8590,8 @@ class DiscretizedVariable_double(IDiscretizedVariable):
 
 
     def ticks(self):
-        """
+        r"""
         ticks(self) -> Vector_double
-
 
         Returns
         -------
@@ -8936,19 +8603,19 @@ class DiscretizedVariable_double(IDiscretizedVariable):
 
 
     def __repr__(self):
-        """__repr__(self) -> std::string"""
+        r"""__repr__(self) -> std::string"""
         return _pyAgrum.DiscretizedVariable_double___repr__(self)
 
 
     def __str__(self):
-        """__str__(self) -> std::string"""
+        r"""__str__(self) -> std::string"""
         return _pyAgrum.DiscretizedVariable_double___str__(self)
 
-DiscretizedVariable_double_swigregister = _pyAgrum.DiscretizedVariable_double_swigregister
-DiscretizedVariable_double_swigregister(DiscretizedVariable_double)
+# Register DiscretizedVariable_double in _pyAgrum:
+_pyAgrum.DiscretizedVariable_double_swigregister(DiscretizedVariable_double)
 
 class MultiDimContainer_double(_object):
-    """Proxy of C++ gum::MultiDimContainer< double > class."""
+    r"""Proxy of C++ gum::MultiDimContainer< double > class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, MultiDimContainer_double, name, value)
@@ -8963,22 +8630,22 @@ class MultiDimContainer_double(_object):
         return None
 
     def set(self, i, value):
-        """set(self, i, value)"""
+        r"""set(self, i, value)"""
         return _pyAgrum.MultiDimContainer_double_set(self, i, value)
 
 
     def get(self, i):
-        """get(self, i) -> double"""
+        r"""get(self, i) -> double"""
         return _pyAgrum.MultiDimContainer_double_get(self, i)
 
 
     def fill(self, d):
-        """fill(self, d)"""
+        r"""fill(self, d)"""
         return _pyAgrum.MultiDimContainer_double_fill(self, d)
 
 
     def populate(self, *args):
-        """
+        r"""
         populate(self, v)
         populate(self, l)
         """
@@ -8986,7 +8653,7 @@ class MultiDimContainer_double(_object):
 
 
     def copyFrom(self, *args):
-        """
+        r"""
         copyFrom(self, src)
         copyFrom(self, src, p_i)
         """
@@ -8994,12 +8661,12 @@ class MultiDimContainer_double(_object):
 
 
     def extractFrom(self, src, mask):
-        """extractFrom(self, src, mask)"""
+        r"""extractFrom(self, src, mask)"""
         return _pyAgrum.MultiDimContainer_double_extractFrom(self, src, mask)
 
 
     def content(self, *args):
-        """
+        r"""
         content(self) -> gum::MultiDimImplementation< double > const
         content(self) -> gum::MultiDimImplementation< double > *
         """
@@ -9007,7 +8674,7 @@ class MultiDimContainer_double(_object):
 
 
     def getMasterRef(self, *args):
-        """
+        r"""
         getMasterRef(self) -> MultiDimAdressable
         getMasterRef(self) -> MultiDimAdressable
         """
@@ -9015,17 +8682,17 @@ class MultiDimContainer_double(_object):
 
 
     def copy(self, src):
-        """copy(self, src)"""
+        r"""copy(self, src)"""
         return _pyAgrum.MultiDimContainer_double_copy(self, src)
 
 
     def newFactory(self):
-        """newFactory(self) -> MultiDimContainer_double"""
+        r"""newFactory(self) -> MultiDimContainer_double"""
         return _pyAgrum.MultiDimContainer_double_newFactory(self)
 
 
     def toString(self, *args):
-        """
+        r"""
         toString(self) -> std::string const
         toString(self, i) -> std::string const
         """
@@ -9033,42 +8700,42 @@ class MultiDimContainer_double(_object):
 
 
     def __eq__(self, p):
-        """__eq__(self, p) -> bool"""
+        r"""__eq__(self, p) -> bool"""
         return _pyAgrum.MultiDimContainer_double___eq__(self, p)
 
 
     def __ne__(self, p):
-        """__ne__(self, p) -> bool"""
+        r"""__ne__(self, p) -> bool"""
         return _pyAgrum.MultiDimContainer_double___ne__(self, p)
 
 
     def apply(self, f):
-        """apply(self, f)"""
+        r"""apply(self, f)"""
         return _pyAgrum.MultiDimContainer_double_apply(self, f)
 
 
     def reduce(self, f, base):
-        """reduce(self, f, base) -> double"""
+        r"""reduce(self, f, base) -> double"""
         return _pyAgrum.MultiDimContainer_double_reduce(self, f, base)
 
 
     def beginMultipleChanges(self):
-        """beginMultipleChanges(self)"""
+        r"""beginMultipleChanges(self)"""
         return _pyAgrum.MultiDimContainer_double_beginMultipleChanges(self)
 
 
     def endMultipleChanges(self, *args):
-        """
+        r"""
         endMultipleChanges(self)
         endMultipleChanges(self, v)
         """
         return _pyAgrum.MultiDimContainer_double_endMultipleChanges(self, *args)
 
-MultiDimContainer_double_swigregister = _pyAgrum.MultiDimContainer_double_swigregister
-MultiDimContainer_double_swigregister(MultiDimContainer_double)
+# Register MultiDimContainer_double in _pyAgrum:
+_pyAgrum.MultiDimContainer_double_swigregister(MultiDimContainer_double)
 
 class Potential_double(_object):
-    """
+    r"""
 
     Class representing a potential.
 
@@ -9097,7 +8764,7 @@ class Potential_double(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, Potential_double, name)
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self) -> Potential_double
         __init__(self, aContent) -> Potential_double
         __init__(self, aContent, src) -> Potential_double
@@ -9119,9 +8786,8 @@ class Potential_double(_object):
         return None
 
     def newFactory(self):
-        """
+        r"""
         newFactory(self) -> Potential_double
-
 
         Erase the Potential content and create a new empty one.
 
@@ -9135,9 +8801,8 @@ class Potential_double(_object):
 
 
     def isNonZeroMap(self):
-        """
+        r"""
         isNonZeroMap(self) -> Potential_double
-
 
         Returns
         -------
@@ -9149,9 +8814,8 @@ class Potential_double(_object):
 
 
     def sum(self):
-        """
+        r"""
         sum(self) -> double
-
 
         Returns
         -------
@@ -9163,9 +8827,8 @@ class Potential_double(_object):
 
 
     def product(self):
-        """
+        r"""
         product(self) -> double
-
 
         Returns
         -------
@@ -9177,9 +8840,8 @@ class Potential_double(_object):
 
 
     def max(self):
-        """
+        r"""
         max(self) -> double
-
 
         Returns
         -------
@@ -9191,9 +8853,8 @@ class Potential_double(_object):
 
 
     def min(self):
-        """
+        r"""
         min(self) -> double
-
 
         Returns
         -------
@@ -9205,9 +8866,8 @@ class Potential_double(_object):
 
 
     def maxNonOne(self):
-        """
+        r"""
         maxNonOne(self) -> double
-
 
         Returns
         -------
@@ -9224,9 +8884,8 @@ class Potential_double(_object):
 
 
     def minNonZero(self):
-        """
+        r"""
         minNonZero(self) -> double
-
 
         Returns
         -------
@@ -9243,24 +8902,23 @@ class Potential_double(_object):
 
 
     def findAll(self, v):
-        """findAll(self, v) -> gum::Set< gum::Instantiation >"""
+        r"""findAll(self, v) -> gum::Set< gum::Instantiation >"""
         return _pyAgrum.Potential_double_findAll(self, v)
 
 
     def argmax(self):
-        """argmax(self) -> gum::Set< gum::Instantiation >"""
+        r"""argmax(self) -> gum::Set< gum::Instantiation >"""
         return _pyAgrum.Potential_double_argmax(self)
 
 
     def argmin(self):
-        """argmin(self) -> gum::Set< gum::Instantiation >"""
+        r"""argmin(self) -> gum::Set< gum::Instantiation >"""
         return _pyAgrum.Potential_double_argmin(self)
 
 
     def entropy(self):
-        """
+        r"""
         entropy(self) -> double
-
 
         Returns
         -------
@@ -9272,7 +8930,7 @@ class Potential_double(_object):
 
 
     def fillWith(self, *args):
-        """
+        r"""
         fillWith(self, src) -> Potential_double
         fillWith(self, src, mapSrc) -> Potential_double
         fillWith(self, v) -> Potential_double
@@ -9288,9 +8946,8 @@ class Potential_double(_object):
 
 
     def abs(self):
-        """
+        r"""
         abs(self) -> Potential_double
-
 
         Apply abs on every element of the container
 
@@ -9310,9 +8967,8 @@ class Potential_double(_object):
 
 
     def normalize(self):
-        """
+        r"""
         normalize(self) -> Potential_double
-
 
         Normalize the Potential (do nothing if sum is 0)
 
@@ -9332,9 +8988,8 @@ class Potential_double(_object):
 
 
     def sq(self):
-        """
+        r"""
         sq(self) -> Potential_double
-
 
         Square all the values in the Potential
 
@@ -9349,9 +9004,8 @@ class Potential_double(_object):
 
 
     def KL(self, p):
-        """
+        r"""
         KL(self, p) -> double
-
 
         C heck the compatibility and compute the Kullback-Leibler divergence between the potential and.
 
@@ -9377,9 +9031,8 @@ class Potential_double(_object):
 
 
     def normalizeAsCPT(self):
-        """
+        r"""
         normalizeAsCPT(self)
-
 
         Normalize the Potential as a CPT
 
@@ -9404,9 +9057,8 @@ class Potential_double(_object):
 
 
     def scale(self, v):
-        """
+        r"""
         scale(self, v) -> Potential_double
-
 
         Create a new potential multiplied by v.
 
@@ -9430,9 +9082,8 @@ class Potential_double(_object):
 
 
     def translate(self, v):
-        """
+        r"""
         translate(self, v) -> Potential_double
-
 
         Create a new potential added with v.
 
@@ -9456,9 +9107,8 @@ class Potential_double(_object):
 
 
     def draw(self):
-        """
+        r"""
         draw(self) -> gum::Idx
-
 
         draw a value using the potential as a probability table.
 
@@ -9472,32 +9122,32 @@ class Potential_double(_object):
 
 
     def __add__(self, p2):
-        """__add__(self, p2) -> Potential_double"""
+        r"""__add__(self, p2) -> Potential_double"""
         return _pyAgrum.Potential_double___add__(self, p2)
 
 
     def __sub__(self, p2):
-        """__sub__(self, p2) -> Potential_double"""
+        r"""__sub__(self, p2) -> Potential_double"""
         return _pyAgrum.Potential_double___sub__(self, p2)
 
 
     def __mul__(self, p2):
-        """__mul__(self, p2) -> Potential_double"""
+        r"""__mul__(self, p2) -> Potential_double"""
         return _pyAgrum.Potential_double___mul__(self, p2)
 
 
     def __iadd__(self, r):
-        """__iadd__(self, r) -> Potential_double"""
+        r"""__iadd__(self, r) -> Potential_double"""
         return _pyAgrum.Potential_double___iadd__(self, r)
 
 
     def __imul__(self, r):
-        """__imul__(self, r) -> Potential_double"""
+        r"""__imul__(self, r) -> Potential_double"""
         return _pyAgrum.Potential_double___imul__(self, r)
 
 
     def __isub__(self, r):
-        """__isub__(self, r) -> Potential_double"""
+        r"""__isub__(self, r) -> Potential_double"""
         return _pyAgrum.Potential_double___isub__(self, r)
 
 
@@ -9508,20 +9158,19 @@ class Potential_double(_object):
 
 
     def __repr__(self):
-        """__repr__(self) -> std::string"""
+        r"""__repr__(self) -> std::string"""
         return _pyAgrum.Potential_double___repr__(self)
 
 
     def __str__(self):
-        """__str__(self) -> std::string"""
+        r"""__str__(self) -> std::string"""
         return _pyAgrum.Potential_double___str__(self)
 
 
     def extract(self, *args):
-        """
+        r"""
         extract(self, inst) -> Potential_double
         extract(self, dict) -> Potential_double
-
 
         create a new Potential extracted from self given a partial instantiation.
 
@@ -9542,10 +9191,9 @@ class Potential_double(_object):
 
 
     def reorganize(self, *args):
-        """
+        r"""
         reorganize(self, vars) -> Potential_double
         reorganize(self, varnames) -> Potential_double
-
 
         Create a new Potential with another order.
 
@@ -9564,9 +9212,8 @@ class Potential_double(_object):
 
 
     def putFirst(self, varname):
-        """
+        r"""
         putFirst(self, varname) -> Potential_double
-
 
         Parameters
         ----------
@@ -9588,9 +9235,8 @@ class Potential_double(_object):
 
 
     def margSumOut(self, varnames):
-        """
+        r"""
         margSumOut(self, varnames) -> Potential_double
-
 
         Projection using sum as operation.
 
@@ -9614,9 +9260,8 @@ class Potential_double(_object):
 
 
     def margProdOut(self, varnames):
-        """
+        r"""
         margProdOut(self, varnames) -> Potential_double
-
 
         Projection using multiplication as operation.
 
@@ -9640,9 +9285,8 @@ class Potential_double(_object):
 
 
     def margMaxOut(self, varnames):
-        """
+        r"""
         margMaxOut(self, varnames) -> Potential_double
-
 
         Projection using max as operation.
 
@@ -9666,9 +9310,8 @@ class Potential_double(_object):
 
 
     def margMinOut(self, varnames):
-        """
+        r"""
         margMinOut(self, varnames) -> Potential_double
-
 
         Projection using min as operation.
 
@@ -9691,9 +9334,8 @@ class Potential_double(_object):
 
 
     def margSumIn(self, varnames):
-        """
+        r"""
         margSumIn(self, varnames) -> Potential_double
-
 
         Projection using sum as operation.
 
@@ -9712,9 +9354,8 @@ class Potential_double(_object):
 
 
     def margProdIn(self, varnames):
-        """
+        r"""
         margProdIn(self, varnames) -> Potential_double
-
 
         Projection using multiplication as operation.
 
@@ -9733,9 +9374,8 @@ class Potential_double(_object):
 
 
     def margMaxIn(self, varnames):
-        """
+        r"""
         margMaxIn(self, varnames) -> Potential_double
-
 
         Projection using max as operation.
 
@@ -9754,9 +9394,8 @@ class Potential_double(_object):
 
 
     def margMinIn(self, varnames):
-        """
+        r"""
         margMinIn(self, varnames) -> Potential_double
-
 
         Projection using min as operation.
 
@@ -9775,7 +9414,7 @@ class Potential_double(_object):
 
 
     def __truediv__(self, *args):
-        """
+        r"""
         __truediv__(self, p2) -> Potential_double
         __truediv__(self, b) -> Potential_double
         """
@@ -9783,12 +9422,12 @@ class Potential_double(_object):
 
 
     def __div__(self, b):
-        """__div__(self, b) -> Potential_double"""
+        r"""__div__(self, b) -> Potential_double"""
         return _pyAgrum.Potential_double___div__(self, b)
 
 
     def __eq__(self, *args):
-        """
+        r"""
         __eq__(self, r) -> bool
         __eq__(self, b) -> bool
         """
@@ -9796,7 +9435,7 @@ class Potential_double(_object):
 
 
     def __ne__(self, *args):
-        """
+        r"""
         __ne__(self, r) -> bool
         __ne__(self, b) -> bool
         """
@@ -9945,9 +9584,8 @@ class Potential_double(_object):
 
 
     def get(self, i):
-        """
+        r"""
         get(self, i) -> double
-
 
         Parameters
         ----------
@@ -9964,9 +9602,8 @@ class Potential_double(_object):
 
 
     def set(self, i, value):
-        """
+        r"""
         set(self, i, value)
-
 
         Change the value pointed by i
 
@@ -9987,9 +9624,8 @@ class Potential_double(_object):
 
 
     def empty(self):
-        """
+        r"""
         empty(self) -> bool
-
 
         Returns
         -------
@@ -10001,9 +9637,8 @@ class Potential_double(_object):
 
 
     def pos(self, v):
-        """
+        r"""
         pos(self, v) -> gum::Idx
-
 
         Parameters
         ----------
@@ -10024,9 +9659,8 @@ class Potential_double(_object):
 
 
     def contains(self, v):
-        """
+        r"""
         contains(self, v) -> bool
-
 
         Parameters
         ----------
@@ -10043,9 +9677,8 @@ class Potential_double(_object):
 
 
     def nbrDim(self):
-        """
+        r"""
         nbrDim(self) -> gum::Idx
-
 
         Returns
         -------
@@ -10057,10 +9690,9 @@ class Potential_double(_object):
 
 
     def variable(self, *args):
-        """
+        r"""
         variable(self, i) -> DiscreteVariable
         variable(self, name) -> DiscreteVariable
-
 
         Parameters
         ----------
@@ -10081,9 +9713,8 @@ class Potential_double(_object):
 
 
     def remove(self, var):
-        """
+        r"""
         remove(self, var)
-
 
         Parameters
         ----------
@@ -10109,9 +9740,8 @@ class Potential_double(_object):
 
 
     def add(self, v):
-        """
+        r"""
         add(self, v)
-
 
         Add a discrete variable to the potential.
 
@@ -10134,11 +9764,11 @@ class Potential_double(_object):
 
         return val
 
-Potential_double_swigregister = _pyAgrum.Potential_double_swigregister
-Potential_double_swigregister(Potential_double)
+# Register Potential_double in _pyAgrum:
+_pyAgrum.Potential_double_swigregister(Potential_double)
 
 class IBayesNet_double(DAGmodel):
-    """
+    r"""
 
     Abstract class used by BayesNet.
 
@@ -10160,9 +9790,8 @@ class IBayesNet_double(DAGmodel):
         return None
 
     def cpt(self, varId):
-        """
+        r"""
         cpt(self, varId) -> Potential_double
-
 
         Returns the CPT of a variable.
 
@@ -10188,9 +9817,8 @@ class IBayesNet_double(DAGmodel):
 
 
     def variableNodeMap(self):
-        """
+        r"""
         variableNodeMap(self) -> VariableNodeMap
-
 
         Returns
         -------
@@ -10202,9 +9830,8 @@ class IBayesNet_double(DAGmodel):
 
 
     def variable(self, id):
-        """
+        r"""
         variable(self, id) -> DiscreteVariable
-
 
         Parameters
         ----------
@@ -10228,9 +9855,8 @@ class IBayesNet_double(DAGmodel):
 
 
     def nodeId(self, var):
-        """
+        r"""
         nodeId(self, var) -> gum::NodeId
-
 
         Parameters
         ----------
@@ -10252,9 +9878,8 @@ class IBayesNet_double(DAGmodel):
 
 
     def idFromName(self, name):
-        """
+        r"""
         idFromName(self, name) -> gum::NodeId
-
 
         Returns a variable's id given its name in the graph.
 
@@ -10278,9 +9903,8 @@ class IBayesNet_double(DAGmodel):
 
 
     def variableFromName(self, name):
-        """
+        r"""
         variableFromName(self, name) -> DiscreteVariable
-
 
         Parameters
         ----------
@@ -10302,9 +9926,8 @@ class IBayesNet_double(DAGmodel):
 
 
     def jointProbability(self, i):
-        """
+        r"""
         jointProbability(self, i) -> double
-
 
         Parameters
         ----------
@@ -10325,9 +9948,8 @@ class IBayesNet_double(DAGmodel):
 
 
     def log2JointProbability(self, i):
-        """
+        r"""
         log2JointProbability(self, i) -> double
-
 
         Parameters
         ----------
@@ -10348,19 +9970,18 @@ class IBayesNet_double(DAGmodel):
 
 
     def __eq__(self, arg2):
-        """__eq__(self, arg2) -> bool"""
+        r"""__eq__(self, arg2) -> bool"""
         return _pyAgrum.IBayesNet_double___eq__(self, arg2)
 
 
     def __ne__(self, arg2):
-        """__ne__(self, arg2) -> bool"""
+        r"""__ne__(self, arg2) -> bool"""
         return _pyAgrum.IBayesNet_double___ne__(self, arg2)
 
 
     def dim(self):
-        """
+        r"""
         dim(self) -> gum::Size
-
 
         Returns the dimension (the number of free parameters) in this BayesNet.
 
@@ -10374,9 +9995,8 @@ class IBayesNet_double(DAGmodel):
 
 
     def maxVarDomainSize(self):
-        """
+        r"""
         maxVarDomainSize(self) -> gum::Size
-
 
         Returns
         -------
@@ -10388,9 +10008,8 @@ class IBayesNet_double(DAGmodel):
 
 
     def minParam(self):
-        """
+        r"""
         minParam(self) -> double
-
 
         Returns
         -------
@@ -10402,9 +10021,8 @@ class IBayesNet_double(DAGmodel):
 
 
     def maxParam(self):
-        """
+        r"""
         maxParam(self) -> double
-
 
         Returns
         -------
@@ -10416,9 +10034,8 @@ class IBayesNet_double(DAGmodel):
 
 
     def minNonZeroParam(self):
-        """
+        r"""
         minNonZeroParam(self) -> double
-
 
         Returns
         -------
@@ -10430,9 +10047,8 @@ class IBayesNet_double(DAGmodel):
 
 
     def maxNonOneParam(self):
-        """
+        r"""
         maxNonOneParam(self) -> double
-
 
         Returns
         -------
@@ -10444,9 +10060,8 @@ class IBayesNet_double(DAGmodel):
 
 
     def toDot(self):
-        """
+        r"""
         toDot(self) -> std::string
-
 
         Returns
         -------
@@ -10458,9 +10073,8 @@ class IBayesNet_double(DAGmodel):
 
 
     def nodes(self):
-        """
+        r"""
         nodes(self) -> PyObject *
-
 
         Returns
         -------
@@ -10472,9 +10086,8 @@ class IBayesNet_double(DAGmodel):
 
 
     def names(self):
-        """
+        r"""
         names(self) -> PyObject *
-
 
         Returns
         -------
@@ -10486,12 +10099,11 @@ class IBayesNet_double(DAGmodel):
 
 
     def minimalCondSet(self, *args):
-        """
+        r"""
         minimalCondSet(self, target, soids) -> gum::NodeSet
         minimalCondSet(self, targets, soids) -> gum::NodeSet
         minimalCondSet(self, target, list) -> PyObject
         minimalCondSet(self, targets, list) -> PyObject *
-
 
         Returns, given one or many targets and a list of variables, the minimal set of those needed to calculate the target/targets.
 
@@ -10514,19 +10126,18 @@ class IBayesNet_double(DAGmodel):
 
 
     def __repr__(self):
-        """__repr__(self) -> std::string"""
+        r"""__repr__(self) -> std::string"""
         return _pyAgrum.IBayesNet_double___repr__(self)
 
 
     def __str__(self):
-        """__str__(self) -> std::string"""
+        r"""__str__(self) -> std::string"""
         return _pyAgrum.IBayesNet_double___str__(self)
 
 
     def arcs(self):
-        """
+        r"""
         arcs(self) -> PyObject *
-
 
         Returns
         -------
@@ -10538,9 +10149,8 @@ class IBayesNet_double(DAGmodel):
 
 
     def parents(self, id):
-        """
+        r"""
         parents(self, id) -> PyObject *
-
 
         Parameters
         ----------
@@ -10557,9 +10167,8 @@ class IBayesNet_double(DAGmodel):
 
 
     def children(self, id):
-        """
+        r"""
         children(self, id) -> PyObject *
-
 
         Parameters
         ----------
@@ -10574,11 +10183,11 @@ class IBayesNet_double(DAGmodel):
         """
         return _pyAgrum.IBayesNet_double_children(self, id)
 
-IBayesNet_double_swigregister = _pyAgrum.IBayesNet_double_swigregister
-IBayesNet_double_swigregister(IBayesNet_double)
+# Register IBayesNet_double in _pyAgrum:
+_pyAgrum.IBayesNet_double_swigregister(IBayesNet_double)
 
 class BayesNet_double(IBayesNet_double):
-    """
+    r"""
 
     BayesNet represents a Bayesian Network.
 
@@ -10606,10 +10215,9 @@ class BayesNet_double(IBayesNet_double):
     __getattr__ = lambda self, name: _swig_getattr(self, BayesNet_double, name)
 
     def fastPrototype(dotlike, domainSize=2):
-        """
+        r"""
         fastPrototype(dotlike, domainSize=2) -> BayesNet_double
         fastPrototype(dotlike) -> BayesNet_double
-
 
         Create a bn with a dotlike syntax : 'a->b->c;b->d;'.
 
@@ -10638,7 +10246,7 @@ class BayesNet_double(IBayesNet_double):
         return None
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self) -> BayesNet_double
         __init__(self, name) -> BayesNet_double
         __init__(self, source) -> BayesNet_double
@@ -10650,10 +10258,9 @@ class BayesNet_double(IBayesNet_double):
             self.this = this
 
     def cpt(self, *args):
-        """
+        r"""
         cpt(self, varId) -> Potential_double
         cpt(self, name) -> Potential_double
-
 
         Returns the CPT of a variable.
 
@@ -10684,9 +10291,8 @@ class BayesNet_double(IBayesNet_double):
 
 
     def variableNodeMap(self):
-        """
+        r"""
         variableNodeMap(self) -> VariableNodeMap
-
 
         Returns
         -------
@@ -10698,13 +10304,12 @@ class BayesNet_double(IBayesNet_double):
 
 
     def add(self, *args):
-        """
+        r"""
         add(self, var) -> gum::NodeId
         add(self, name, nbrmod) -> gum::NodeId
         add(self, var, aContent) -> gum::NodeId
         add(self, var, id) -> gum::NodeId
         add(self, var, aContent, id) -> gum::NodeId
-
 
         Add a variable to the pyAgrum.BayesNet. 
 
@@ -10738,11 +10343,10 @@ class BayesNet_double(IBayesNet_double):
 
 
     def erase(self, *args):
-        """
+        r"""
         erase(self, varId)
         erase(self, name)
         erase(self, var)
-
 
         Remove a variable from the gum::BayesNet.
 
@@ -10764,10 +10368,9 @@ class BayesNet_double(IBayesNet_double):
 
 
     def variable(self, *args):
-        """
+        r"""
         variable(self, id) -> DiscreteVariable
         variable(self, name) -> DiscreteVariable
-
 
         Parameters
         ----------
@@ -10791,10 +10394,9 @@ class BayesNet_double(IBayesNet_double):
 
 
     def changeVariableName(self, *args):
-        """
+        r"""
         changeVariableName(self, id, new_name)
         changeVariableName(self, name, new_name)
-
 
         Changes a variable's name in the gum::BayesNet.
 
@@ -10821,10 +10423,9 @@ class BayesNet_double(IBayesNet_double):
 
 
     def changeVariableLabel(self, *args):
-        """
+        r"""
         changeVariableLabel(self, id, old_label, new_label)
         changeVariableLabel(self, name, old_label, new_label)
-
 
         change the label of the variable associated to nodeId to the new value.
 
@@ -10849,9 +10450,8 @@ class BayesNet_double(IBayesNet_double):
 
 
     def nodeId(self, var):
-        """
+        r"""
         nodeId(self, var) -> gum::NodeId
-
 
         Parameters
         ----------
@@ -10873,9 +10473,8 @@ class BayesNet_double(IBayesNet_double):
 
 
     def idFromName(self, name):
-        """
+        r"""
         idFromName(self, name) -> gum::NodeId
-
 
         Returns a variable's id given its name in the graph.
 
@@ -10899,9 +10498,8 @@ class BayesNet_double(IBayesNet_double):
 
 
     def variableFromName(self, name):
-        """
+        r"""
         variableFromName(self, name) -> DiscreteVariable
-
 
         Parameters
         ----------
@@ -10923,10 +10521,9 @@ class BayesNet_double(IBayesNet_double):
 
 
     def addArc(self, *args):
-        """
+        r"""
         addArc(self, tail, head)
         addArc(self, tail, head)
-
 
         Add an arc in the BN, and update arc.head's CPT.
 
@@ -10951,11 +10548,10 @@ class BayesNet_double(IBayesNet_double):
 
 
     def eraseArc(self, *args):
-        """
+        r"""
         eraseArc(self, arc)
         eraseArc(self, tail, head)
         eraseArc(self, tail, head)
-
 
         Removes an arc in the BN, and update head's CTP.
 
@@ -10979,9 +10575,8 @@ class BayesNet_double(IBayesNet_double):
 
 
     def beginTopologyTransformation(self):
-        """
+        r"""
         beginTopologyTransformation(self)
-
 
         When inserting/removing arcs, node CPTs change their dimension with a cost in time.
         begin Multiple Change for all CPTs
@@ -10992,9 +10587,8 @@ class BayesNet_double(IBayesNet_double):
 
 
     def endTopologyTransformation(self):
-        """
+        r"""
         endTopologyTransformation(self)
-
 
         Terminates a sequence of insertions/deletions of arcs by adjusting all CPTs dimensions.
         End Multiple Change for all CPTs.
@@ -11008,11 +10602,10 @@ class BayesNet_double(IBayesNet_double):
 
 
     def reverseArc(self, *args):
-        """
+        r"""
         reverseArc(self, tail, head)
         reverseArc(self, tail, head)
         reverseArc(self, arc)
-
 
         Reverses an arc while preserving the same joint distribution. 
 
@@ -11039,10 +10632,9 @@ class BayesNet_double(IBayesNet_double):
 
 
     def addNoisyOR(self, *args):
-        """
+        r"""
         addNoisyOR(self, var, external_weight) -> gum::NodeId
         addNoisyOR(self, var, external_weight, id) -> gum::NodeId
-
 
         Add a variable, it's associate node and a noisyOR implementation.
 
@@ -11074,10 +10666,9 @@ class BayesNet_double(IBayesNet_double):
 
 
     def addNoisyORNet(self, *args):
-        """
+        r"""
         addNoisyORNet(self, var, external_weight) -> gum::NodeId
         addNoisyORNet(self, var, external_weight, id) -> gum::NodeId
-
 
         Add a variable, its associate node and a noisyOR implementation.
 
@@ -11104,10 +10695,9 @@ class BayesNet_double(IBayesNet_double):
 
 
     def addNoisyORCompound(self, *args):
-        """
+        r"""
         addNoisyORCompound(self, var, external_weight) -> gum::NodeId
         addNoisyORCompound(self, var, external_weight, id) -> gum::NodeId
-
 
         Add a variable, it's associate node and a noisyOR implementation.
 
@@ -11139,10 +10729,9 @@ class BayesNet_double(IBayesNet_double):
 
 
     def addNoisyAND(self, *args):
-        """
+        r"""
         addNoisyAND(self, var, external_weight, id) -> gum::NodeId
         addNoisyAND(self, var, external_weight) -> gum::NodeId
-
 
         Add a variable, its associate node and a noisyAND implementation.
 
@@ -11172,10 +10761,9 @@ class BayesNet_double(IBayesNet_double):
 
 
     def addLogit(self, *args):
-        """
+        r"""
         addLogit(self, var, external_weight, id) -> gum::NodeId
         addLogit(self, var, external_weight) -> gum::NodeId
-
 
         Add a variable, its associate node and a Logit implementation.
 
@@ -11205,9 +10793,8 @@ class BayesNet_double(IBayesNet_double):
 
 
     def addOR(self, var):
-        """
+        r"""
         addOR(self, var) -> gum::NodeId
-
 
         Add a variable, it's associate node and an OR implementation.
 
@@ -11237,9 +10824,8 @@ class BayesNet_double(IBayesNet_double):
 
 
     def addAND(self, var):
-        """
+        r"""
         addAND(self, var) -> gum::NodeId
-
 
         Add a variable, it's associate node and an AND implementation.
 
@@ -11265,9 +10851,8 @@ class BayesNet_double(IBayesNet_double):
 
 
     def addAMPLITUDE(self, var):
-        """
+        r"""
         addAMPLITUDE(self, var) -> gum::NodeId
-
 
         Others aggregators
 
@@ -11286,10 +10871,9 @@ class BayesNet_double(IBayesNet_double):
 
 
     def addCOUNT(self, var, value=1):
-        """
+        r"""
         addCOUNT(self, var, value=1) -> gum::NodeId
         addCOUNT(self, var) -> gum::NodeId
-
 
         Others aggregators
 
@@ -11308,10 +10892,9 @@ class BayesNet_double(IBayesNet_double):
 
 
     def addEXISTS(self, var, value=1):
-        """
+        r"""
         addEXISTS(self, var, value=1) -> gum::NodeId
         addEXISTS(self, var) -> gum::NodeId
-
 
         Others aggregators
 
@@ -11330,10 +10913,9 @@ class BayesNet_double(IBayesNet_double):
 
 
     def addFORALL(self, var, value=1):
-        """
+        r"""
         addFORALL(self, var, value=1) -> gum::NodeId
         addFORALL(self, var) -> gum::NodeId
-
 
         Others aggregators
 
@@ -11352,9 +10934,8 @@ class BayesNet_double(IBayesNet_double):
 
 
     def addMAX(self, var):
-        """
+        r"""
         addMAX(self, var) -> gum::NodeId
-
 
         Others aggregators
 
@@ -11373,9 +10954,8 @@ class BayesNet_double(IBayesNet_double):
 
 
     def addMEDIAN(self, var):
-        """
+        r"""
         addMEDIAN(self, var) -> gum::NodeId
-
 
         Others aggregators
 
@@ -11394,9 +10974,8 @@ class BayesNet_double(IBayesNet_double):
 
 
     def addMIN(self, var):
-        """
+        r"""
         addMIN(self, var) -> gum::NodeId
-
 
         Others aggregators
 
@@ -11415,10 +10994,9 @@ class BayesNet_double(IBayesNet_double):
 
 
     def addWeightedArc(self, *args):
-        """
+        r"""
         addWeightedArc(self, tail, head, causalWeight)
         addWeightedArc(self, tail, head, causalWeight)
-
 
         Add an arc in the BN, and update arc.head's CPT.
 
@@ -11448,9 +11026,8 @@ class BayesNet_double(IBayesNet_double):
 
 
     def generateCPTs(self):
-        """
+        r"""
         generateCPTs(self)
-
 
         Randomly generates CPTs for a given structure.
 
@@ -11459,10 +11036,9 @@ class BayesNet_double(IBayesNet_double):
 
 
     def generateCPT(self, *args):
-        """
+        r"""
         generateCPT(self, node)
         generateCPT(self, name)
-
 
         Randomly generate CPT for a given node in a given structure.
 
@@ -11478,10 +11054,9 @@ class BayesNet_double(IBayesNet_double):
 
 
     def changePotential(self, *args):
-        """
+        r"""
         changePotential(self, id, newPot)
         changePotential(self, name, newPot)
-
 
         change the CPT associated to nodeId to newPot delete the old CPT associated to nodeId.
 
@@ -11504,9 +11079,8 @@ class BayesNet_double(IBayesNet_double):
 
 
     def dag(self):
-        """
+        r"""
         dag(self) -> DAG
-
 
         Returns
         -------
@@ -11518,9 +11092,8 @@ class BayesNet_double(IBayesNet_double):
 
 
     def size(self):
-        """
+        r"""
         size(self) -> gum::Size
-
 
         Returns
         -------
@@ -11532,9 +11105,8 @@ class BayesNet_double(IBayesNet_double):
 
 
     def log10DomainSize(self):
-        """
+        r"""
         log10DomainSize(self) -> double
-
 
         Returns
         -------
@@ -11580,10 +11152,9 @@ class BayesNet_double(IBayesNet_double):
 
 
     def loadBIF(self, *args):
-        """
+        r"""
         loadBIF(self, name, l) -> std::string
         loadBIF(self, name) -> std::string
-
 
         Load a BIF file.
 
@@ -11606,9 +11177,8 @@ class BayesNet_double(IBayesNet_double):
 
 
     def saveBIF(self, name):
-        """
+        r"""
         saveBIF(self, name)
-
 
         Save the BayesNet in a BIF file.
 
@@ -11622,10 +11192,9 @@ class BayesNet_double(IBayesNet_double):
 
 
     def loadDSL(self, *args):
-        """
+        r"""
         loadDSL(self, name, l) -> std::string
         loadDSL(self, name) -> std::string
-
 
         Load a DSL file.
 
@@ -11648,9 +11217,8 @@ class BayesNet_double(IBayesNet_double):
 
 
     def saveDSL(self, name):
-        """
+        r"""
         saveDSL(self, name)
-
 
         Save the BayesNet in a DSL file.
 
@@ -11664,10 +11232,9 @@ class BayesNet_double(IBayesNet_double):
 
 
     def loadNET(self, *args):
-        """
+        r"""
         loadNET(self, name, l) -> std::string
         loadNET(self, name) -> std::string
-
 
         Load a NET file.
 
@@ -11690,9 +11257,8 @@ class BayesNet_double(IBayesNet_double):
 
 
     def saveNET(self, name):
-        """
+        r"""
         saveNET(self, name)
-
 
         Save the BayesNet in a NET file.
 
@@ -11706,12 +11272,11 @@ class BayesNet_double(IBayesNet_double):
 
 
     def loadO3PRM(self, *args):
-        """
+        r"""
         loadO3PRM(self, name, system, classpath, l) -> std::string
         loadO3PRM(self, name, system, classpath) -> std::string
         loadO3PRM(self, name, system) -> std::string
         loadO3PRM(self, name) -> std::string
-
 
         Load an O3PRM file.
 
@@ -11742,9 +11307,8 @@ class BayesNet_double(IBayesNet_double):
 
 
     def saveO3PRM(self, name):
-        """
+        r"""
         saveO3PRM(self, name)
-
 
         Save the BayesNet in an O3PRM file.
 
@@ -11762,10 +11326,9 @@ class BayesNet_double(IBayesNet_double):
 
 
     def loadBIFXML(self, *args):
-        """
+        r"""
         loadBIFXML(self, name, l) -> std::string
         loadBIFXML(self, name) -> std::string
-
 
         Load a BIFXML file.
 
@@ -11788,9 +11351,8 @@ class BayesNet_double(IBayesNet_double):
 
 
     def saveBIFXML(self, name):
-        """
+        r"""
         saveBIFXML(self, name)
-
 
         Save the BayesNet in a BIFXML file.
 
@@ -11804,10 +11366,9 @@ class BayesNet_double(IBayesNet_double):
 
 
     def loadUAI(self, *args):
-        """
+        r"""
         loadUAI(self, name, l) -> std::string
         loadUAI(self, name) -> std::string
-
 
         Load an UAI file.
 
@@ -11830,9 +11391,8 @@ class BayesNet_double(IBayesNet_double):
 
 
     def saveUAI(self, name):
-        """
+        r"""
         saveUAI(self, name)
-
 
         Save the BayesNet in an UAI file.
 
@@ -11846,22 +11406,21 @@ class BayesNet_double(IBayesNet_double):
 
 
     def __repr__(self):
-        """__repr__(self) -> std::string"""
+        r"""__repr__(self) -> std::string"""
         return _pyAgrum.BayesNet_double___repr__(self)
 
 
     def __str__(self):
-        """__str__(self) -> std::string"""
+        r"""__str__(self) -> std::string"""
         return _pyAgrum.BayesNet_double___str__(self)
 
-BayesNet_double_swigregister = _pyAgrum.BayesNet_double_swigregister
-BayesNet_double_swigregister(BayesNet_double)
+# Register BayesNet_double in _pyAgrum:
+_pyAgrum.BayesNet_double_swigregister(BayesNet_double)
 
 def BayesNet_double_fastPrototype(dotlike, domainSize=2):
-    """
+    r"""
     fastPrototype(dotlike, domainSize=2) -> BayesNet_double
     BayesNet_double_fastPrototype(dotlike) -> BayesNet_double
-
 
     Create a bn with a dotlike syntax : 'a->b->c;b->d;'.
 
@@ -11885,7 +11444,7 @@ def BayesNet_double_fastPrototype(dotlike, domainSize=2):
     return _pyAgrum.BayesNet_double_fastPrototype(dotlike, domainSize)
 
 class BayesNetInference_double(_object):
-    """Proxy of C++ gum::BayesNetInference< double > class."""
+    r"""Proxy of C++ gum::BayesNetInference< double > class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, BayesNetInference_double, name, value)
@@ -11896,75 +11455,79 @@ class BayesNetInference_double(_object):
         raise AttributeError("No constructor defined - class is abstract")
     __repr__ = _swig_repr
     StateOfInference_OutdatedBNStructure = _pyAgrum.BayesNetInference_double_StateOfInference_OutdatedBNStructure
+    
     StateOfInference_OutdatedBNPotentials = _pyAgrum.BayesNetInference_double_StateOfInference_OutdatedBNPotentials
+    
     StateOfInference_ReadyForInference = _pyAgrum.BayesNetInference_double_StateOfInference_ReadyForInference
+    
     StateOfInference_Done = _pyAgrum.BayesNetInference_double_StateOfInference_Done
+    
     __swig_destroy__ = _pyAgrum.delete_BayesNetInference_double
     def __del__(self):
         return None
 
     def setBN(self, bn):
-        """setBN(self, bn)"""
+        r"""setBN(self, bn)"""
         return _pyAgrum.BayesNetInference_double_setBN(self, bn)
 
 
     def BN(self):
-        """BN(self) -> IBayesNet_double"""
+        r"""BN(self) -> IBayesNet_double"""
         return _pyAgrum.BayesNetInference_double_BN(self)
 
 
     def domainSizes(self):
-        """domainSizes(self) -> gum::NodeProperty< gum::Size > const &"""
+        r"""domainSizes(self) -> gum::NodeProperty< gum::Size > const &"""
         return _pyAgrum.BayesNetInference_double_domainSizes(self)
 
 
     def isInferenceReady(self):
-        """isInferenceReady(self) -> bool"""
+        r"""isInferenceReady(self) -> bool"""
         return _pyAgrum.BayesNetInference_double_isInferenceReady(self)
 
 
     def isInferenceOutdatedBNStructure(self):
-        """isInferenceOutdatedBNStructure(self) -> bool"""
+        r"""isInferenceOutdatedBNStructure(self) -> bool"""
         return _pyAgrum.BayesNetInference_double_isInferenceOutdatedBNStructure(self)
 
 
     def isInferenceOutdatedBNPotentials(self):
-        """isInferenceOutdatedBNPotentials(self) -> bool"""
+        r"""isInferenceOutdatedBNPotentials(self) -> bool"""
         return _pyAgrum.BayesNetInference_double_isInferenceOutdatedBNPotentials(self)
 
 
     def isInferenceDone(self):
-        """isInferenceDone(self) -> bool"""
+        r"""isInferenceDone(self) -> bool"""
         return _pyAgrum.BayesNetInference_double_isInferenceDone(self)
 
 
     def isDone(self):
-        """isDone(self) -> bool"""
+        r"""isDone(self) -> bool"""
         return _pyAgrum.BayesNetInference_double_isDone(self)
 
 
     def prepareInference(self):
-        """prepareInference(self)"""
+        r"""prepareInference(self)"""
         return _pyAgrum.BayesNetInference_double_prepareInference(self)
 
 
     def makeInference(self):
-        """makeInference(self)"""
+        r"""makeInference(self)"""
         return _pyAgrum.BayesNetInference_double_makeInference(self)
 
 
     def clear(self):
-        """clear(self)"""
+        r"""clear(self)"""
         return _pyAgrum.BayesNetInference_double_clear(self)
 
 
     def state(self):
-        """state(self) -> gum::BayesNetInference< double >::StateOfInference"""
+        r"""state(self) -> gum::BayesNetInference< double >::StateOfInference"""
         return _pyAgrum.BayesNetInference_double_state(self)
 
 
     def addEvidence(self, *args):
-        """
+        r"""
         addEvidence(self, id, val)
         addEvidence(self, nodeName, val)
         addEvidence(self, id, label)
@@ -11978,17 +11541,17 @@ class BayesNetInference_double(_object):
 
 
     def addSetOfEvidence(self, potset):
-        """addSetOfEvidence(self, potset)"""
+        r"""addSetOfEvidence(self, potset)"""
         return _pyAgrum.BayesNetInference_double_addSetOfEvidence(self, potset)
 
 
     def addListOfEvidence(self, potlist):
-        """addListOfEvidence(self, potlist)"""
+        r"""addListOfEvidence(self, potlist)"""
         return _pyAgrum.BayesNetInference_double_addListOfEvidence(self, potlist)
 
 
     def chgEvidence(self, *args):
-        """
+        r"""
         chgEvidence(self, id, val)
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, label)
@@ -12001,12 +11564,12 @@ class BayesNetInference_double(_object):
 
 
     def eraseAllEvidence(self):
-        """eraseAllEvidence(self)"""
+        r"""eraseAllEvidence(self)"""
         return _pyAgrum.BayesNetInference_double_eraseAllEvidence(self)
 
 
     def eraseEvidence(self, *args):
-        """
+        r"""
         eraseEvidence(self, id)
         eraseEvidence(self, nodeName)
         """
@@ -12014,7 +11577,7 @@ class BayesNetInference_double(_object):
 
 
     def hasEvidence(self, *args):
-        """
+        r"""
         hasEvidence(self) -> bool
         hasEvidence(self, id) -> bool
         hasEvidence(self, nodeName) -> bool
@@ -12023,7 +11586,7 @@ class BayesNetInference_double(_object):
 
 
     def hasHardEvidence(self, *args):
-        """
+        r"""
         hasHardEvidence(self, id) -> bool
         hasHardEvidence(self, nodeName) -> bool
         """
@@ -12031,7 +11594,7 @@ class BayesNetInference_double(_object):
 
 
     def hasSoftEvidence(self, *args):
-        """
+        r"""
         hasSoftEvidence(self, id) -> bool
         hasSoftEvidence(self, nodeName) -> bool
         """
@@ -12039,44 +11602,44 @@ class BayesNetInference_double(_object):
 
 
     def nbrEvidence(self):
-        """nbrEvidence(self) -> gum::Size"""
+        r"""nbrEvidence(self) -> gum::Size"""
         return _pyAgrum.BayesNetInference_double_nbrEvidence(self)
 
 
     def nbrHardEvidence(self):
-        """nbrHardEvidence(self) -> gum::Size"""
+        r"""nbrHardEvidence(self) -> gum::Size"""
         return _pyAgrum.BayesNetInference_double_nbrHardEvidence(self)
 
 
     def nbrSoftEvidence(self):
-        """nbrSoftEvidence(self) -> gum::Size"""
+        r"""nbrSoftEvidence(self) -> gum::Size"""
         return _pyAgrum.BayesNetInference_double_nbrSoftEvidence(self)
 
 
     def evidence(self):
-        """evidence(self) -> gum::NodeProperty< gum::Potential< double > const * > const &"""
+        r"""evidence(self) -> gum::NodeProperty< gum::Potential< double > const * > const &"""
         return _pyAgrum.BayesNetInference_double_evidence(self)
 
 
     def softEvidenceNodes(self):
-        """softEvidenceNodes(self) -> gum::NodeSet const &"""
+        r"""softEvidenceNodes(self) -> gum::NodeSet const &"""
         return _pyAgrum.BayesNetInference_double_softEvidenceNodes(self)
 
 
     def hardEvidenceNodes(self):
-        """hardEvidenceNodes(self) -> gum::NodeSet const &"""
+        r"""hardEvidenceNodes(self) -> gum::NodeSet const &"""
         return _pyAgrum.BayesNetInference_double_hardEvidenceNodes(self)
 
 
     def hardEvidence(self):
-        """hardEvidence(self) -> gum::NodeProperty< gum::Idx > const &"""
+        r"""hardEvidence(self) -> gum::NodeProperty< gum::Idx > const &"""
         return _pyAgrum.BayesNetInference_double_hardEvidence(self)
 
-BayesNetInference_double_swigregister = _pyAgrum.BayesNetInference_double_swigregister
-BayesNetInference_double_swigregister(BayesNetInference_double)
+# Register BayesNetInference_double in _pyAgrum:
+_pyAgrum.BayesNetInference_double_swigregister(BayesNetInference_double)
 
 class LazyPropagation_double(_object):
-    """
+    r"""
 
     Class used for Lazy Propagation
 
@@ -12097,7 +11660,7 @@ class LazyPropagation_double(_object):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, BN, arg3, arg4, use_binary_join_tree=True) -> LazyPropagation_double
         __init__(self, BN, arg3, arg4) -> LazyPropagation_double
         __init__(self, BN, arg3) -> LazyPropagation_double
@@ -12118,14 +11681,13 @@ class LazyPropagation_double(_object):
         return None
 
     def setTriangulation(self, new_triangulation):
-        """setTriangulation(self, new_triangulation)"""
+        r"""setTriangulation(self, new_triangulation)"""
         return _pyAgrum.LazyPropagation_double_setTriangulation(self, new_triangulation)
 
 
     def setRelevantPotentialsFinderType(self, type):
-        """
+        r"""
         setRelevantPotentialsFinderType(self, type)
-
 
         sets how we determine the relevant potentials to combine
 
@@ -12151,9 +11713,8 @@ class LazyPropagation_double(_object):
 
 
     def setFindBarrenNodesType(self, type):
-        """
+        r"""
         setFindBarrenNodesType(self, type)
-
 
         sets how we determine barren nodes
 
@@ -12177,9 +11738,8 @@ class LazyPropagation_double(_object):
 
 
     def joinTree(self):
-        """
+        r"""
         joinTree(self) -> CliqueGraph
-
 
         Returns
         -------
@@ -12191,9 +11751,8 @@ class LazyPropagation_double(_object):
 
 
     def junctionTree(self):
-        """
+        r"""
         junctionTree(self) -> CliqueGraph
-
 
         Returns
         -------
@@ -12205,9 +11764,8 @@ class LazyPropagation_double(_object):
 
 
     def evidenceProbability(self):
-        """
+        r"""
         evidenceProbability(self) -> double
-
 
         Returns
         -------
@@ -12301,9 +11859,8 @@ class LazyPropagation_double(_object):
 
 
     def hardEvidenceNodes(self):
-        """
+        r"""
         hardEvidenceNodes(self) -> PyObject *
-
 
         Returns
         -------
@@ -12315,9 +11872,8 @@ class LazyPropagation_double(_object):
 
 
     def softEvidenceNodes(self):
-        """
+        r"""
         softEvidenceNodes(self) -> PyObject *
-
 
         Returns
         -------
@@ -12329,9 +11885,8 @@ class LazyPropagation_double(_object):
 
 
     def targets(self):
-        """
+        r"""
         targets(self) -> PyObject *
-
 
         Returns
         -------
@@ -12343,9 +11898,8 @@ class LazyPropagation_double(_object):
 
 
     def jointPosterior(self, list):
-        """
+        r"""
         jointPosterior(self, list) -> Potential_double
-
 
         Compute the joint posterior of a set of nodes.
 
@@ -12369,9 +11923,8 @@ class LazyPropagation_double(_object):
 
 
     def addJointTarget(self, list):
-        """
+        r"""
         addJointTarget(self, list)
-
 
         Add a list of nodes as a new joint target. As a collateral effect, every node is added as a marginal target.
 
@@ -12390,9 +11943,8 @@ class LazyPropagation_double(_object):
 
 
     def eraseJointTarget(self, list):
-        """
+        r"""
         eraseJointTarget(self, list)
-
 
         Remove, if existing, the joint target.
 
@@ -12413,9 +11965,8 @@ class LazyPropagation_double(_object):
 
 
     def isJointTarget(self, list):
-        """
+        r"""
         isJointTarget(self, list) -> bool
-
 
         Parameters
         ----------
@@ -12439,9 +11990,8 @@ class LazyPropagation_double(_object):
 
 
     def jointTargets(self):
-        """
+        r"""
         jointTargets(self) -> PyObject *
-
 
         Returns
         -------
@@ -12453,9 +12003,8 @@ class LazyPropagation_double(_object):
 
 
     def makeInference(self):
-        """
+        r"""
         makeInference(self)
-
 
         Perform the heavy computations needed to compute the targets' posteriors
 
@@ -12467,10 +12016,9 @@ class LazyPropagation_double(_object):
 
 
     def posterior(self, *args):
-        """
+        r"""
         posterior(self, var) -> Potential_double
         posterior(self, nodeName) -> Potential_double
-
 
         Computes and returns the posterior of a node.
 
@@ -12496,9 +12044,8 @@ class LazyPropagation_double(_object):
 
 
     def BN(self):
-        """
+        r"""
         BN(self) -> IBayesNet_double
-
 
         Returns
         -------
@@ -12515,14 +12062,13 @@ class LazyPropagation_double(_object):
 
 
     def addEvidence(self, *args):
-        """
+        r"""
         addEvidence(self, id, val)
         addEvidence(self, nodeName, val)
         addEvidence(self, id, val)
         addEvidence(self, nodeName, val)
         addEvidence(self, id, vals)
         addEvidence(self, nodeName, vals)
-
 
         Adds a new evidence on a node (might be soft or hard).
 
@@ -12557,14 +12103,13 @@ class LazyPropagation_double(_object):
 
 
     def chgEvidence(self, *args):
-        """
+        r"""
         chgEvidence(self, id, val)
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, val)
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, vals)
         chgEvidence(self, nodeName, vals)
-
 
         Change the value of an already existing evidence on a node (might be soft or hard).
 
@@ -12599,10 +12144,9 @@ class LazyPropagation_double(_object):
 
 
     def hasEvidence(self, *args):
-        """
+        r"""
         hasEvidence(self, id) -> bool
         hasEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -12626,9 +12170,8 @@ class LazyPropagation_double(_object):
 
 
     def eraseAllEvidence(self):
-        """
+        r"""
         eraseAllEvidence(self)
-
 
         Removes all the evidence entered into the network.
 
@@ -12637,10 +12180,9 @@ class LazyPropagation_double(_object):
 
 
     def eraseEvidence(self, *args):
-        """
+        r"""
         eraseEvidence(self, id)
         eraseEvidence(self, nodeName)
-
 
         Remove the evidence, if any, corresponding to the node Id or name.
 
@@ -12661,9 +12203,8 @@ class LazyPropagation_double(_object):
 
 
     def hasHardEvidence(self, nodeName):
-        """
+        r"""
         hasHardEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -12687,10 +12228,9 @@ class LazyPropagation_double(_object):
 
 
     def hasSoftEvidence(self, *args):
-        """
+        r"""
         hasSoftEvidence(self, id) -> bool
         hasSoftEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -12714,9 +12254,8 @@ class LazyPropagation_double(_object):
 
 
     def nbrEvidence(self):
-        """
+        r"""
         nbrEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -12728,9 +12267,8 @@ class LazyPropagation_double(_object):
 
 
     def nbrHardEvidence(self):
-        """
+        r"""
         nbrHardEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -12742,9 +12280,8 @@ class LazyPropagation_double(_object):
 
 
     def nbrSoftEvidence(self):
-        """
+        r"""
         nbrSoftEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -12756,9 +12293,8 @@ class LazyPropagation_double(_object):
 
 
     def eraseAllTargets(self):
-        """
+        r"""
         eraseAllTargets(self)
-
 
         Clear all previously defined targets (marginal and joint targets).
 
@@ -12769,9 +12305,8 @@ class LazyPropagation_double(_object):
 
 
     def addAllTargets(self):
-        """
+        r"""
         addAllTargets(self)
-
 
         Add all the nodes as targets.
 
@@ -12780,10 +12315,9 @@ class LazyPropagation_double(_object):
 
 
     def addTarget(self, *args):
-        """
+        r"""
         addTarget(self, target)
         addTarget(self, nodeName)
-
 
         Add a marginal target to the list of targets.
 
@@ -12804,10 +12338,9 @@ class LazyPropagation_double(_object):
 
 
     def eraseTarget(self, *args):
-        """
+        r"""
         eraseTarget(self, target)
         eraseTarget(self, nodeName)
-
 
         Remove, if existing, the marginal target.
 
@@ -12830,10 +12363,9 @@ class LazyPropagation_double(_object):
 
 
     def isTarget(self, *args):
-        """
+        r"""
         isTarget(self, variable) -> bool
         isTarget(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -12859,9 +12391,8 @@ class LazyPropagation_double(_object):
 
 
     def nbrTargets(self):
-        """
+        r"""
         nbrTargets(self) -> gum::Size
-
 
         Returns
         -------
@@ -12873,10 +12404,9 @@ class LazyPropagation_double(_object):
 
 
     def H(self, *args):
-        """
+        r"""
         H(self, X) -> double
         H(self, nodeName) -> double
-
 
         Parameters
         ----------
@@ -12895,10 +12425,9 @@ class LazyPropagation_double(_object):
 
 
     def evidenceImpact(self, *args):
-        """
+        r"""
         evidenceImpact(self, target, evs) -> Potential_double
         evidenceImpact(self, target, evs) -> Potential_double
-
 
         Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
 
@@ -12923,9 +12452,8 @@ class LazyPropagation_double(_object):
 
 
     def eraseAllJointTargets(self):
-        """
+        r"""
         eraseAllJointTargets(self)
-
 
         Clear all previously defined joint targets.
 
@@ -12934,9 +12462,8 @@ class LazyPropagation_double(_object):
 
 
     def eraseAllMarginalTargets(self):
-        """
+        r"""
         eraseAllMarginalTargets(self)
-
 
         Clear all the previously defined marginal targets.
 
@@ -12945,9 +12472,8 @@ class LazyPropagation_double(_object):
 
 
     def nbrJointTargets(self):
-        """
+        r"""
         nbrJointTargets(self) -> gum::Size
-
 
         Returns
         -------
@@ -12959,9 +12485,8 @@ class LazyPropagation_double(_object):
 
 
     def I(self, X, Y):
-        """
+        r"""
         I(self, X, Y) -> double
-
 
         Parameters
         ----------
@@ -12980,9 +12505,8 @@ class LazyPropagation_double(_object):
 
 
     def VI(self, X, Y):
-        """
+        r"""
         VI(self, X, Y) -> double
-
 
         Parameters
         ----------
@@ -13001,10 +12525,9 @@ class LazyPropagation_double(_object):
 
 
     def evidenceJointImpact(self, *args):
-        """
+        r"""
         evidenceJointImpact(self, targets, evs) -> Potential_double
         evidenceJointImpact(self, targets, evs) -> Potential_double
-
 
         Create a pyAgrum.Potential for P(joint targets|evs) (for all instanciation of targets and evs) 
 
@@ -13030,11 +12553,11 @@ class LazyPropagation_double(_object):
         """
         return _pyAgrum.LazyPropagation_double_evidenceJointImpact(self, *args)
 
-LazyPropagation_double_swigregister = _pyAgrum.LazyPropagation_double_swigregister
-LazyPropagation_double_swigregister(LazyPropagation_double)
+# Register LazyPropagation_double in _pyAgrum:
+_pyAgrum.LazyPropagation_double_swigregister(LazyPropagation_double)
 
 class ShaferShenoyInference_double(_object):
-    """
+    r"""
 
     Class used for Shafer-Shenoy inferences.
 
@@ -13055,7 +12578,7 @@ class ShaferShenoyInference_double(_object):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, BN, barren_type, use_binary_join_tree=True) -> ShaferShenoyInference_double
         __init__(self, BN, barren_type) -> ShaferShenoyInference_double
         __init__(self, BN) -> ShaferShenoyInference_double
@@ -13075,14 +12598,13 @@ class ShaferShenoyInference_double(_object):
         return None
 
     def setTriangulation(self, new_triangulation):
-        """setTriangulation(self, new_triangulation)"""
+        r"""setTriangulation(self, new_triangulation)"""
         return _pyAgrum.ShaferShenoyInference_double_setTriangulation(self, new_triangulation)
 
 
     def setFindBarrenNodesType(self, type):
-        """
+        r"""
         setFindBarrenNodesType(self, type)
-
 
         sets how we determine barren nodes
 
@@ -13106,9 +12628,8 @@ class ShaferShenoyInference_double(_object):
 
 
     def joinTree(self):
-        """
+        r"""
         joinTree(self) -> CliqueGraph
-
 
         Returns
         -------
@@ -13120,9 +12641,8 @@ class ShaferShenoyInference_double(_object):
 
 
     def junctionTree(self):
-        """
+        r"""
         junctionTree(self) -> CliqueGraph
-
 
         Returns
         -------
@@ -13134,9 +12654,8 @@ class ShaferShenoyInference_double(_object):
 
 
     def evidenceProbability(self):
-        """
+        r"""
         evidenceProbability(self) -> double
-
 
         Returns
         -------
@@ -13230,9 +12749,8 @@ class ShaferShenoyInference_double(_object):
 
 
     def hardEvidenceNodes(self):
-        """
+        r"""
         hardEvidenceNodes(self) -> PyObject *
-
 
         Returns
         -------
@@ -13244,9 +12762,8 @@ class ShaferShenoyInference_double(_object):
 
 
     def softEvidenceNodes(self):
-        """
+        r"""
         softEvidenceNodes(self) -> PyObject *
-
 
         Returns
         -------
@@ -13258,9 +12775,8 @@ class ShaferShenoyInference_double(_object):
 
 
     def targets(self):
-        """
+        r"""
         targets(self) -> PyObject *
-
 
         Returns
         -------
@@ -13272,9 +12788,8 @@ class ShaferShenoyInference_double(_object):
 
 
     def jointPosterior(self, list):
-        """
+        r"""
         jointPosterior(self, list) -> Potential_double
-
 
         Compute the joint posterior of a set of nodes.
 
@@ -13298,9 +12813,8 @@ class ShaferShenoyInference_double(_object):
 
 
     def addJointTarget(self, list):
-        """
+        r"""
         addJointTarget(self, list)
-
 
         Add a list of nodes as a new joint target. As a collateral effect, every node is added as a marginal target.
 
@@ -13319,9 +12833,8 @@ class ShaferShenoyInference_double(_object):
 
 
     def eraseJointTarget(self, list):
-        """
+        r"""
         eraseJointTarget(self, list)
-
 
         Remove, if existing, the joint target.
 
@@ -13342,9 +12855,8 @@ class ShaferShenoyInference_double(_object):
 
 
     def isJointTarget(self, list):
-        """
+        r"""
         isJointTarget(self, list) -> bool
-
 
         Parameters
         ----------
@@ -13368,9 +12880,8 @@ class ShaferShenoyInference_double(_object):
 
 
     def jointTargets(self):
-        """
+        r"""
         jointTargets(self) -> PyObject *
-
 
         Returns
         -------
@@ -13382,9 +12893,8 @@ class ShaferShenoyInference_double(_object):
 
 
     def makeInference(self):
-        """
+        r"""
         makeInference(self)
-
 
         Perform the heavy computations needed to compute the targets' posteriors
 
@@ -13396,10 +12906,9 @@ class ShaferShenoyInference_double(_object):
 
 
     def posterior(self, *args):
-        """
+        r"""
         posterior(self, var) -> Potential_double
         posterior(self, nodeName) -> Potential_double
-
 
         Computes and returns the posterior of a node.
 
@@ -13425,9 +12934,8 @@ class ShaferShenoyInference_double(_object):
 
 
     def BN(self):
-        """
+        r"""
         BN(self) -> IBayesNet_double
-
 
         Returns
         -------
@@ -13444,14 +12952,13 @@ class ShaferShenoyInference_double(_object):
 
 
     def addEvidence(self, *args):
-        """
+        r"""
         addEvidence(self, id, val)
         addEvidence(self, nodeName, val)
         addEvidence(self, id, val)
         addEvidence(self, nodeName, val)
         addEvidence(self, id, vals)
         addEvidence(self, nodeName, vals)
-
 
         Adds a new evidence on a node (might be soft or hard).
 
@@ -13486,14 +12993,13 @@ class ShaferShenoyInference_double(_object):
 
 
     def chgEvidence(self, *args):
-        """
+        r"""
         chgEvidence(self, id, val)
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, val)
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, vals)
         chgEvidence(self, nodeName, vals)
-
 
         Change the value of an already existing evidence on a node (might be soft or hard).
 
@@ -13528,10 +13034,9 @@ class ShaferShenoyInference_double(_object):
 
 
     def hasEvidence(self, *args):
-        """
+        r"""
         hasEvidence(self, id) -> bool
         hasEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -13555,9 +13060,8 @@ class ShaferShenoyInference_double(_object):
 
 
     def eraseAllEvidence(self):
-        """
+        r"""
         eraseAllEvidence(self)
-
 
         Removes all the evidence entered into the network.
 
@@ -13566,10 +13070,9 @@ class ShaferShenoyInference_double(_object):
 
 
     def eraseEvidence(self, *args):
-        """
+        r"""
         eraseEvidence(self, id)
         eraseEvidence(self, nodeName)
-
 
         Remove the evidence, if any, corresponding to the node Id or name.
 
@@ -13590,9 +13093,8 @@ class ShaferShenoyInference_double(_object):
 
 
     def hasHardEvidence(self, nodeName):
-        """
+        r"""
         hasHardEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -13616,10 +13118,9 @@ class ShaferShenoyInference_double(_object):
 
 
     def hasSoftEvidence(self, *args):
-        """
+        r"""
         hasSoftEvidence(self, id) -> bool
         hasSoftEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -13643,9 +13144,8 @@ class ShaferShenoyInference_double(_object):
 
 
     def nbrEvidence(self):
-        """
+        r"""
         nbrEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -13657,9 +13157,8 @@ class ShaferShenoyInference_double(_object):
 
 
     def nbrHardEvidence(self):
-        """
+        r"""
         nbrHardEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -13671,9 +13170,8 @@ class ShaferShenoyInference_double(_object):
 
 
     def nbrSoftEvidence(self):
-        """
+        r"""
         nbrSoftEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -13685,9 +13183,8 @@ class ShaferShenoyInference_double(_object):
 
 
     def eraseAllTargets(self):
-        """
+        r"""
         eraseAllTargets(self)
-
 
         Clear all previously defined targets (marginal and joint targets).
 
@@ -13698,9 +13195,8 @@ class ShaferShenoyInference_double(_object):
 
 
     def addAllTargets(self):
-        """
+        r"""
         addAllTargets(self)
-
 
         Add all the nodes as targets.
 
@@ -13709,10 +13205,9 @@ class ShaferShenoyInference_double(_object):
 
 
     def addTarget(self, *args):
-        """
+        r"""
         addTarget(self, target)
         addTarget(self, nodeName)
-
 
         Add a marginal target to the list of targets.
 
@@ -13733,10 +13228,9 @@ class ShaferShenoyInference_double(_object):
 
 
     def eraseTarget(self, *args):
-        """
+        r"""
         eraseTarget(self, target)
         eraseTarget(self, nodeName)
-
 
         Remove, if existing, the marginal target.
 
@@ -13759,10 +13253,9 @@ class ShaferShenoyInference_double(_object):
 
 
     def isTarget(self, *args):
-        """
+        r"""
         isTarget(self, variable) -> bool
         isTarget(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -13788,9 +13281,8 @@ class ShaferShenoyInference_double(_object):
 
 
     def nbrTargets(self):
-        """
+        r"""
         nbrTargets(self) -> gum::Size
-
 
         Returns
         -------
@@ -13802,10 +13294,9 @@ class ShaferShenoyInference_double(_object):
 
 
     def H(self, *args):
-        """
+        r"""
         H(self, X) -> double
         H(self, nodeName) -> double
-
 
         Parameters
         ----------
@@ -13824,10 +13315,9 @@ class ShaferShenoyInference_double(_object):
 
 
     def evidenceImpact(self, *args):
-        """
+        r"""
         evidenceImpact(self, target, evs) -> Potential_double
         evidenceImpact(self, target, evs) -> Potential_double
-
 
         Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
 
@@ -13852,9 +13342,8 @@ class ShaferShenoyInference_double(_object):
 
 
     def eraseAllJointTargets(self):
-        """
+        r"""
         eraseAllJointTargets(self)
-
 
         Clear all previously defined joint targets.
 
@@ -13863,9 +13352,8 @@ class ShaferShenoyInference_double(_object):
 
 
     def eraseAllMarginalTargets(self):
-        """
+        r"""
         eraseAllMarginalTargets(self)
-
 
         Clear all the previously defined marginal targets.
 
@@ -13874,9 +13362,8 @@ class ShaferShenoyInference_double(_object):
 
 
     def nbrJointTargets(self):
-        """
+        r"""
         nbrJointTargets(self) -> gum::Size
-
 
         Returns
         -------
@@ -13888,9 +13375,8 @@ class ShaferShenoyInference_double(_object):
 
 
     def I(self, X, Y):
-        """
+        r"""
         I(self, X, Y) -> double
-
 
         Parameters
         ----------
@@ -13909,9 +13395,8 @@ class ShaferShenoyInference_double(_object):
 
 
     def VI(self, X, Y):
-        """
+        r"""
         VI(self, X, Y) -> double
-
 
         Parameters
         ----------
@@ -13930,10 +13415,9 @@ class ShaferShenoyInference_double(_object):
 
 
     def evidenceJointImpact(self, *args):
-        """
+        r"""
         evidenceJointImpact(self, targets, evs) -> Potential_double
         evidenceJointImpact(self, targets, evs) -> Potential_double
-
 
         Create a pyAgrum.Potential for P(joint targets|evs) (for all instanciation of targets and evs) 
 
@@ -13959,11 +13443,11 @@ class ShaferShenoyInference_double(_object):
         """
         return _pyAgrum.ShaferShenoyInference_double_evidenceJointImpact(self, *args)
 
-ShaferShenoyInference_double_swigregister = _pyAgrum.ShaferShenoyInference_double_swigregister
-ShaferShenoyInference_double_swigregister(ShaferShenoyInference_double)
+# Register ShaferShenoyInference_double in _pyAgrum:
+_pyAgrum.ShaferShenoyInference_double_swigregister(ShaferShenoyInference_double)
 
 class VariableElimination_double(_object):
-    """
+    r"""
 
     Class used for Variable Elimination inference algorithm.
 
@@ -13984,7 +13468,7 @@ class VariableElimination_double(_object):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, BN, relevant_type, arg4) -> VariableElimination_double
         __init__(self, BN, relevant_type) -> VariableElimination_double
         __init__(self, BN) -> VariableElimination_double
@@ -14004,14 +13488,13 @@ class VariableElimination_double(_object):
         return None
 
     def setTriangulation(self, new_triangulation):
-        """setTriangulation(self, new_triangulation)"""
+        r"""setTriangulation(self, new_triangulation)"""
         return _pyAgrum.VariableElimination_double_setTriangulation(self, new_triangulation)
 
 
     def setRelevantPotentialsFinderType(self, type):
-        """
+        r"""
         setRelevantPotentialsFinderType(self, type)
-
 
         sets how we determine the relevant potentials to combine
 
@@ -14037,9 +13520,8 @@ class VariableElimination_double(_object):
 
 
     def setFindBarrenNodesType(self, type):
-        """
+        r"""
         setFindBarrenNodesType(self, type)
-
 
         sets how we determine barren nodes
 
@@ -14063,9 +13545,8 @@ class VariableElimination_double(_object):
 
 
     def junctionTree(self, id):
-        """
+        r"""
         junctionTree(self, id) -> CliqueGraph
-
 
         Returns
         -------
@@ -14159,9 +13640,8 @@ class VariableElimination_double(_object):
 
 
     def hardEvidenceNodes(self):
-        """
+        r"""
         hardEvidenceNodes(self) -> PyObject *
-
 
         Returns
         -------
@@ -14173,9 +13653,8 @@ class VariableElimination_double(_object):
 
 
     def softEvidenceNodes(self):
-        """
+        r"""
         softEvidenceNodes(self) -> PyObject *
-
 
         Returns
         -------
@@ -14187,9 +13666,8 @@ class VariableElimination_double(_object):
 
 
     def targets(self):
-        """
+        r"""
         targets(self) -> PyObject *
-
 
         Returns
         -------
@@ -14201,9 +13679,8 @@ class VariableElimination_double(_object):
 
 
     def jointPosterior(self, list):
-        """
+        r"""
         jointPosterior(self, list) -> Potential_double
-
 
         Compute the joint posterior of a set of nodes.
 
@@ -14227,9 +13704,8 @@ class VariableElimination_double(_object):
 
 
     def addJointTarget(self, list):
-        """
+        r"""
         addJointTarget(self, list)
-
 
         Add a list of nodes as a new joint target. As a collateral effect, every node is added as a marginal target.
 
@@ -14248,9 +13724,8 @@ class VariableElimination_double(_object):
 
 
     def eraseJointTarget(self, list):
-        """
+        r"""
         eraseJointTarget(self, list)
-
 
         Remove, if existing, the joint target.
 
@@ -14271,9 +13746,8 @@ class VariableElimination_double(_object):
 
 
     def isJointTarget(self, list):
-        """
+        r"""
         isJointTarget(self, list) -> bool
-
 
         Parameters
         ----------
@@ -14297,9 +13771,8 @@ class VariableElimination_double(_object):
 
 
     def jointTargets(self):
-        """
+        r"""
         jointTargets(self) -> PyObject *
-
 
         Returns
         -------
@@ -14311,9 +13784,8 @@ class VariableElimination_double(_object):
 
 
     def makeInference(self):
-        """
+        r"""
         makeInference(self)
-
 
         Perform the heavy computations needed to compute the targets' posteriors
 
@@ -14325,10 +13797,9 @@ class VariableElimination_double(_object):
 
 
     def posterior(self, *args):
-        """
+        r"""
         posterior(self, var) -> Potential_double
         posterior(self, nodeName) -> Potential_double
-
 
         Computes and returns the posterior of a node.
 
@@ -14354,9 +13825,8 @@ class VariableElimination_double(_object):
 
 
     def BN(self):
-        """
+        r"""
         BN(self) -> IBayesNet_double
-
 
         Returns
         -------
@@ -14373,14 +13843,13 @@ class VariableElimination_double(_object):
 
 
     def addEvidence(self, *args):
-        """
+        r"""
         addEvidence(self, id, val)
         addEvidence(self, nodeName, val)
         addEvidence(self, id, val)
         addEvidence(self, nodeName, val)
         addEvidence(self, id, vals)
         addEvidence(self, nodeName, vals)
-
 
         Adds a new evidence on a node (might be soft or hard).
 
@@ -14415,14 +13884,13 @@ class VariableElimination_double(_object):
 
 
     def chgEvidence(self, *args):
-        """
+        r"""
         chgEvidence(self, id, val)
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, val)
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, vals)
         chgEvidence(self, nodeName, vals)
-
 
         Change the value of an already existing evidence on a node (might be soft or hard).
 
@@ -14457,10 +13925,9 @@ class VariableElimination_double(_object):
 
 
     def hasEvidence(self, *args):
-        """
+        r"""
         hasEvidence(self, id) -> bool
         hasEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -14484,9 +13951,8 @@ class VariableElimination_double(_object):
 
 
     def eraseAllEvidence(self):
-        """
+        r"""
         eraseAllEvidence(self)
-
 
         Removes all the evidence entered into the network.
 
@@ -14495,10 +13961,9 @@ class VariableElimination_double(_object):
 
 
     def eraseEvidence(self, *args):
-        """
+        r"""
         eraseEvidence(self, id)
         eraseEvidence(self, nodeName)
-
 
         Remove the evidence, if any, corresponding to the node Id or name.
 
@@ -14519,9 +13984,8 @@ class VariableElimination_double(_object):
 
 
     def hasHardEvidence(self, nodeName):
-        """
+        r"""
         hasHardEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -14545,10 +14009,9 @@ class VariableElimination_double(_object):
 
 
     def hasSoftEvidence(self, *args):
-        """
+        r"""
         hasSoftEvidence(self, id) -> bool
         hasSoftEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -14572,9 +14035,8 @@ class VariableElimination_double(_object):
 
 
     def nbrEvidence(self):
-        """
+        r"""
         nbrEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -14586,9 +14048,8 @@ class VariableElimination_double(_object):
 
 
     def nbrHardEvidence(self):
-        """
+        r"""
         nbrHardEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -14600,9 +14061,8 @@ class VariableElimination_double(_object):
 
 
     def nbrSoftEvidence(self):
-        """
+        r"""
         nbrSoftEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -14614,9 +14074,8 @@ class VariableElimination_double(_object):
 
 
     def eraseAllTargets(self):
-        """
+        r"""
         eraseAllTargets(self)
-
 
         Clear all previously defined targets (marginal and joint targets).
 
@@ -14627,9 +14086,8 @@ class VariableElimination_double(_object):
 
 
     def addAllTargets(self):
-        """
+        r"""
         addAllTargets(self)
-
 
         Add all the nodes as targets.
 
@@ -14638,10 +14096,9 @@ class VariableElimination_double(_object):
 
 
     def addTarget(self, *args):
-        """
+        r"""
         addTarget(self, target)
         addTarget(self, nodeName)
-
 
         Add a marginal target to the list of targets.
 
@@ -14662,10 +14119,9 @@ class VariableElimination_double(_object):
 
 
     def eraseTarget(self, *args):
-        """
+        r"""
         eraseTarget(self, target)
         eraseTarget(self, nodeName)
-
 
         Remove, if existing, the marginal target.
 
@@ -14688,10 +14144,9 @@ class VariableElimination_double(_object):
 
 
     def isTarget(self, *args):
-        """
+        r"""
         isTarget(self, variable) -> bool
         isTarget(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -14717,9 +14172,8 @@ class VariableElimination_double(_object):
 
 
     def nbrTargets(self):
-        """
+        r"""
         nbrTargets(self) -> gum::Size
-
 
         Returns
         -------
@@ -14731,10 +14185,9 @@ class VariableElimination_double(_object):
 
 
     def H(self, *args):
-        """
+        r"""
         H(self, X) -> double
         H(self, nodeName) -> double
-
 
         Parameters
         ----------
@@ -14753,10 +14206,9 @@ class VariableElimination_double(_object):
 
 
     def evidenceImpact(self, *args):
-        """
+        r"""
         evidenceImpact(self, target, evs) -> Potential_double
         evidenceImpact(self, target, evs) -> Potential_double
-
 
         Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
 
@@ -14779,11 +14231,11 @@ class VariableElimination_double(_object):
         """
         return _pyAgrum.VariableElimination_double_evidenceImpact(self, *args)
 
-VariableElimination_double_swigregister = _pyAgrum.VariableElimination_double_swigregister
-VariableElimination_double_swigregister(VariableElimination_double)
+# Register VariableElimination_double in _pyAgrum:
+_pyAgrum.VariableElimination_double_swigregister(VariableElimination_double)
 
 class GibbsSampling_double(_object):
-    """
+    r"""
 
     Class for making Gibbs sampling inference in bayesian networks.
 
@@ -14804,7 +14256,7 @@ class GibbsSampling_double(_object):
     __repr__ = _swig_repr
 
     def __init__(self, bn):
-        """__init__(self, bn) -> GibbsSampling_double"""
+        r"""__init__(self, bn) -> GibbsSampling_double"""
         this = _pyAgrum.new_GibbsSampling_double(bn)
         try:
             self.this.append(this)
@@ -14820,9 +14272,8 @@ class GibbsSampling_double(_object):
         return None
 
     def setBurnIn(self, b):
-        """
+        r"""
         setBurnIn(self, b)
-
 
         Parameters
         ----------
@@ -14834,9 +14285,8 @@ class GibbsSampling_double(_object):
 
 
     def burnIn(self):
-        """
+        r"""
         burnIn(self) -> gum::Size
-
 
         Returns
         -------
@@ -14930,9 +14380,8 @@ class GibbsSampling_double(_object):
 
 
     def hardEvidenceNodes(self):
-        """
+        r"""
         hardEvidenceNodes(self) -> PyObject *
-
 
         Returns
         -------
@@ -14944,9 +14393,8 @@ class GibbsSampling_double(_object):
 
 
     def softEvidenceNodes(self):
-        """
+        r"""
         softEvidenceNodes(self) -> PyObject *
-
 
         Returns
         -------
@@ -14958,9 +14406,8 @@ class GibbsSampling_double(_object):
 
 
     def targets(self):
-        """
+        r"""
         targets(self) -> PyObject *
-
 
         Returns
         -------
@@ -14972,23 +14419,21 @@ class GibbsSampling_double(_object):
 
 
     def setVerbosity(self, v):
-        """
+        r"""
         setVerbosity(self, v)
-
 
         Parameters
         ----------
         v : bool
-        	verbosity
+                verbosity
 
         """
         return _pyAgrum.GibbsSampling_double_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps):
-        """
+        r"""
         setEpsilon(self, eps)
-
 
         Parameters
         ----------
@@ -15005,9 +14450,8 @@ class GibbsSampling_double(_object):
 
 
     def setMinEpsilonRate(self, rate):
-        """
+        r"""
         setMinEpsilonRate(self, rate)
-
 
         Parameters
         ----------
@@ -15019,9 +14463,8 @@ class GibbsSampling_double(_object):
 
 
     def setMaxIter(self, max):
-        """
+        r"""
         setMaxIter(self, max)
-
 
         Parameters
         ----------
@@ -15038,9 +14481,8 @@ class GibbsSampling_double(_object):
 
 
     def setMaxTime(self, timeout):
-        """
+        r"""
         setMaxTime(self, timeout)
-
 
         Parameters
         ----------
@@ -15057,9 +14499,8 @@ class GibbsSampling_double(_object):
 
 
     def setPeriodSize(self, p):
-        """
+        r"""
         setPeriodSize(self, p)
-
 
         Parameters
         ----------
@@ -15076,9 +14517,8 @@ class GibbsSampling_double(_object):
 
 
     def verbosity(self):
-        """
+        r"""
         verbosity(self) -> bool
-
 
         Returns
         -------
@@ -15090,9 +14530,8 @@ class GibbsSampling_double(_object):
 
 
     def epsilon(self):
-        """
+        r"""
         epsilon(self) -> double
-
 
         Returns
         -------
@@ -15104,9 +14543,8 @@ class GibbsSampling_double(_object):
 
 
     def minEpsilonRate(self):
-        """
+        r"""
         minEpsilonRate(self) -> double
-
 
         Returns
         -------
@@ -15118,9 +14556,8 @@ class GibbsSampling_double(_object):
 
 
     def maxIter(self):
-        """
+        r"""
         maxIter(self) -> gum::Size
-
 
         Returns
         -------
@@ -15132,9 +14569,8 @@ class GibbsSampling_double(_object):
 
 
     def maxTime(self):
-        """
+        r"""
         maxTime(self) -> double
-
 
         Returns
         -------
@@ -15146,9 +14582,8 @@ class GibbsSampling_double(_object):
 
 
     def periodSize(self):
-        """
+        r"""
         periodSize(self) -> gum::Size
-
 
         Returns
         -------
@@ -15165,9 +14600,8 @@ class GibbsSampling_double(_object):
 
 
     def nbrIterations(self):
-        """
+        r"""
         nbrIterations(self) -> gum::Size
-
 
         Returns
         -------
@@ -15179,9 +14613,8 @@ class GibbsSampling_double(_object):
 
 
     def currentTime(self):
-        """
+        r"""
         currentTime(self) -> double
-
 
         Returns
         -------
@@ -15193,9 +14626,8 @@ class GibbsSampling_double(_object):
 
 
     def messageApproximationScheme(self):
-        """
+        r"""
         messageApproximationScheme(self) -> std::string
-
 
         Returns
         -------
@@ -15207,9 +14639,8 @@ class GibbsSampling_double(_object):
 
 
     def history(self):
-        """
+        r"""
         history(self) -> Vector_double
-
 
         Returns
         -------
@@ -15226,9 +14657,8 @@ class GibbsSampling_double(_object):
 
 
     def asIApproximationSchemeConfiguration(self):
-        """
+        r"""
         asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
-
 
         Returns
         -------
@@ -15239,9 +14669,8 @@ class GibbsSampling_double(_object):
 
 
     def makeInference(self):
-        """
+        r"""
         makeInference(self)
-
 
         Perform the heavy computations needed to compute the targets' posteriors
 
@@ -15253,10 +14682,9 @@ class GibbsSampling_double(_object):
 
 
     def posterior(self, *args):
-        """
+        r"""
         posterior(self, var) -> Potential_double
         posterior(self, nodeName) -> Potential_double
-
 
         Computes and returns the posterior of a node.
 
@@ -15282,9 +14710,8 @@ class GibbsSampling_double(_object):
 
 
     def BN(self):
-        """
+        r"""
         BN(self) -> IBayesNet_double
-
 
         Returns
         -------
@@ -15301,14 +14728,13 @@ class GibbsSampling_double(_object):
 
 
     def addEvidence(self, *args):
-        """
+        r"""
         addEvidence(self, id, val)
         addEvidence(self, nodeName, val)
         addEvidence(self, id, val)
         addEvidence(self, nodeName, val)
         addEvidence(self, id, vals)
         addEvidence(self, nodeName, vals)
-
 
         Adds a new evidence on a node (might be soft or hard).
 
@@ -15343,14 +14769,13 @@ class GibbsSampling_double(_object):
 
 
     def chgEvidence(self, *args):
-        """
+        r"""
         chgEvidence(self, id, val)
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, val)
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, vals)
         chgEvidence(self, nodeName, vals)
-
 
         Change the value of an already existing evidence on a node (might be soft or hard).
 
@@ -15385,10 +14810,9 @@ class GibbsSampling_double(_object):
 
 
     def hasEvidence(self, *args):
-        """
+        r"""
         hasEvidence(self, id) -> bool
         hasEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -15412,9 +14836,8 @@ class GibbsSampling_double(_object):
 
 
     def eraseAllEvidence(self):
-        """
+        r"""
         eraseAllEvidence(self)
-
 
         Removes all the evidence entered into the network.
 
@@ -15423,10 +14846,9 @@ class GibbsSampling_double(_object):
 
 
     def eraseEvidence(self, *args):
-        """
+        r"""
         eraseEvidence(self, id)
         eraseEvidence(self, nodeName)
-
 
         Remove the evidence, if any, corresponding to the node Id or name.
 
@@ -15447,9 +14869,8 @@ class GibbsSampling_double(_object):
 
 
     def hasHardEvidence(self, nodeName):
-        """
+        r"""
         hasHardEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -15473,10 +14894,9 @@ class GibbsSampling_double(_object):
 
 
     def hasSoftEvidence(self, *args):
-        """
+        r"""
         hasSoftEvidence(self, id) -> bool
         hasSoftEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -15500,9 +14920,8 @@ class GibbsSampling_double(_object):
 
 
     def nbrEvidence(self):
-        """
+        r"""
         nbrEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -15514,9 +14933,8 @@ class GibbsSampling_double(_object):
 
 
     def nbrHardEvidence(self):
-        """
+        r"""
         nbrHardEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -15528,9 +14946,8 @@ class GibbsSampling_double(_object):
 
 
     def nbrSoftEvidence(self):
-        """
+        r"""
         nbrSoftEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -15542,9 +14959,8 @@ class GibbsSampling_double(_object):
 
 
     def eraseAllTargets(self):
-        """
+        r"""
         eraseAllTargets(self)
-
 
         Clear all previously defined targets (marginal and joint targets).
 
@@ -15555,9 +14971,8 @@ class GibbsSampling_double(_object):
 
 
     def addAllTargets(self):
-        """
+        r"""
         addAllTargets(self)
-
 
         Add all the nodes as targets.
 
@@ -15566,10 +14981,9 @@ class GibbsSampling_double(_object):
 
 
     def addTarget(self, *args):
-        """
+        r"""
         addTarget(self, target)
         addTarget(self, nodeName)
-
 
         Add a marginal target to the list of targets.
 
@@ -15590,10 +15004,9 @@ class GibbsSampling_double(_object):
 
 
     def eraseTarget(self, *args):
-        """
+        r"""
         eraseTarget(self, target)
         eraseTarget(self, nodeName)
-
 
         Remove, if existing, the marginal target.
 
@@ -15616,10 +15029,9 @@ class GibbsSampling_double(_object):
 
 
     def isTarget(self, *args):
-        """
+        r"""
         isTarget(self, variable) -> bool
         isTarget(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -15645,9 +15057,8 @@ class GibbsSampling_double(_object):
 
 
     def nbrTargets(self):
-        """
+        r"""
         nbrTargets(self) -> gum::Size
-
 
         Returns
         -------
@@ -15659,10 +15070,9 @@ class GibbsSampling_double(_object):
 
 
     def H(self, *args):
-        """
+        r"""
         H(self, X) -> double
         H(self, nodeName) -> double
-
 
         Parameters
         ----------
@@ -15681,10 +15091,9 @@ class GibbsSampling_double(_object):
 
 
     def evidenceImpact(self, *args):
-        """
+        r"""
         evidenceImpact(self, target, evs) -> Potential_double
         evidenceImpact(self, target, evs) -> Potential_double
-
 
         Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
 
@@ -15709,10 +15118,9 @@ class GibbsSampling_double(_object):
 
 
     def currentPosterior(self, *args):
-        """
+        r"""
         currentPosterior(self, id) -> Potential_double
         currentPosterior(self, name) -> Potential_double
-
 
         Computes and returns the current posterior of a node.
 
@@ -15738,9 +15146,8 @@ class GibbsSampling_double(_object):
 
 
     def nbrDrawnVar(self):
-        """
+        r"""
         nbrDrawnVar(self) -> gum::Size
-
 
         Returns
         -------
@@ -15752,9 +15159,8 @@ class GibbsSampling_double(_object):
 
 
     def setNbrDrawnVar(self, _nbr):
-        """
+        r"""
         setNbrDrawnVar(self, _nbr)
-
 
         Parameters
         ----------
@@ -15766,9 +15172,8 @@ class GibbsSampling_double(_object):
 
 
     def isDrawnAtRandom(self):
-        """
+        r"""
         isDrawnAtRandom(self) -> bool
-
 
         Returns
         -------
@@ -15780,9 +15185,8 @@ class GibbsSampling_double(_object):
 
 
     def setDrawnAtRandom(self, _atRandom):
-        """
+        r"""
         setDrawnAtRandom(self, _atRandom)
-
 
         Parameters
         ----------
@@ -15792,11 +15196,11 @@ class GibbsSampling_double(_object):
         """
         return _pyAgrum.GibbsSampling_double_setDrawnAtRandom(self, _atRandom)
 
-GibbsSampling_double_swigregister = _pyAgrum.GibbsSampling_double_swigregister
-GibbsSampling_double_swigregister(GibbsSampling_double)
+# Register GibbsSampling_double in _pyAgrum:
+_pyAgrum.GibbsSampling_double_swigregister(GibbsSampling_double)
 
 class ImportanceSampling_double(_object):
-    """
+    r"""
 
     Class used for inferences using the Importance Sampling algorithm.
 
@@ -15817,7 +15221,7 @@ class ImportanceSampling_double(_object):
     __repr__ = _swig_repr
 
     def __init__(self, bn):
-        """__init__(self, bn) -> ImportanceSampling_double"""
+        r"""__init__(self, bn) -> ImportanceSampling_double"""
         this = _pyAgrum.new_ImportanceSampling_double(bn)
         try:
             self.this.append(this)
@@ -15915,9 +15319,8 @@ class ImportanceSampling_double(_object):
 
 
     def hardEvidenceNodes(self):
-        """
+        r"""
         hardEvidenceNodes(self) -> PyObject *
-
 
         Returns
         -------
@@ -15929,9 +15332,8 @@ class ImportanceSampling_double(_object):
 
 
     def softEvidenceNodes(self):
-        """
+        r"""
         softEvidenceNodes(self) -> PyObject *
-
 
         Returns
         -------
@@ -15943,9 +15345,8 @@ class ImportanceSampling_double(_object):
 
 
     def targets(self):
-        """
+        r"""
         targets(self) -> PyObject *
-
 
         Returns
         -------
@@ -15957,23 +15358,21 @@ class ImportanceSampling_double(_object):
 
 
     def setVerbosity(self, v):
-        """
+        r"""
         setVerbosity(self, v)
-
 
         Parameters
         ----------
         v : bool
-        	verbosity
+                verbosity
 
         """
         return _pyAgrum.ImportanceSampling_double_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps):
-        """
+        r"""
         setEpsilon(self, eps)
-
 
         Parameters
         ----------
@@ -15990,9 +15389,8 @@ class ImportanceSampling_double(_object):
 
 
     def setMinEpsilonRate(self, rate):
-        """
+        r"""
         setMinEpsilonRate(self, rate)
-
 
         Parameters
         ----------
@@ -16004,9 +15402,8 @@ class ImportanceSampling_double(_object):
 
 
     def setMaxIter(self, max):
-        """
+        r"""
         setMaxIter(self, max)
-
 
         Parameters
         ----------
@@ -16023,9 +15420,8 @@ class ImportanceSampling_double(_object):
 
 
     def setMaxTime(self, timeout):
-        """
+        r"""
         setMaxTime(self, timeout)
-
 
         Parameters
         ----------
@@ -16042,9 +15438,8 @@ class ImportanceSampling_double(_object):
 
 
     def setPeriodSize(self, p):
-        """
+        r"""
         setPeriodSize(self, p)
-
 
         Parameters
         ----------
@@ -16061,9 +15456,8 @@ class ImportanceSampling_double(_object):
 
 
     def verbosity(self):
-        """
+        r"""
         verbosity(self) -> bool
-
 
         Returns
         -------
@@ -16075,9 +15469,8 @@ class ImportanceSampling_double(_object):
 
 
     def epsilon(self):
-        """
+        r"""
         epsilon(self) -> double
-
 
         Returns
         -------
@@ -16089,9 +15482,8 @@ class ImportanceSampling_double(_object):
 
 
     def minEpsilonRate(self):
-        """
+        r"""
         minEpsilonRate(self) -> double
-
 
         Returns
         -------
@@ -16103,9 +15495,8 @@ class ImportanceSampling_double(_object):
 
 
     def maxIter(self):
-        """
+        r"""
         maxIter(self) -> gum::Size
-
 
         Returns
         -------
@@ -16117,9 +15508,8 @@ class ImportanceSampling_double(_object):
 
 
     def maxTime(self):
-        """
+        r"""
         maxTime(self) -> double
-
 
         Returns
         -------
@@ -16131,9 +15521,8 @@ class ImportanceSampling_double(_object):
 
 
     def periodSize(self):
-        """
+        r"""
         periodSize(self) -> gum::Size
-
 
         Returns
         -------
@@ -16150,9 +15539,8 @@ class ImportanceSampling_double(_object):
 
 
     def nbrIterations(self):
-        """
+        r"""
         nbrIterations(self) -> gum::Size
-
 
         Returns
         -------
@@ -16164,9 +15552,8 @@ class ImportanceSampling_double(_object):
 
 
     def currentTime(self):
-        """
+        r"""
         currentTime(self) -> double
-
 
         Returns
         -------
@@ -16178,9 +15565,8 @@ class ImportanceSampling_double(_object):
 
 
     def messageApproximationScheme(self):
-        """
+        r"""
         messageApproximationScheme(self) -> std::string
-
 
         Returns
         -------
@@ -16192,9 +15578,8 @@ class ImportanceSampling_double(_object):
 
 
     def history(self):
-        """
+        r"""
         history(self) -> Vector_double
-
 
         Returns
         -------
@@ -16211,9 +15596,8 @@ class ImportanceSampling_double(_object):
 
 
     def asIApproximationSchemeConfiguration(self):
-        """
+        r"""
         asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
-
 
         Returns
         -------
@@ -16224,9 +15608,8 @@ class ImportanceSampling_double(_object):
 
 
     def makeInference(self):
-        """
+        r"""
         makeInference(self)
-
 
         Perform the heavy computations needed to compute the targets' posteriors
 
@@ -16238,10 +15621,9 @@ class ImportanceSampling_double(_object):
 
 
     def posterior(self, *args):
-        """
+        r"""
         posterior(self, var) -> Potential_double
         posterior(self, nodeName) -> Potential_double
-
 
         Computes and returns the posterior of a node.
 
@@ -16267,9 +15649,8 @@ class ImportanceSampling_double(_object):
 
 
     def BN(self):
-        """
+        r"""
         BN(self) -> IBayesNet_double
-
 
         Returns
         -------
@@ -16286,14 +15667,13 @@ class ImportanceSampling_double(_object):
 
 
     def addEvidence(self, *args):
-        """
+        r"""
         addEvidence(self, id, val)
         addEvidence(self, nodeName, val)
         addEvidence(self, id, val)
         addEvidence(self, nodeName, val)
         addEvidence(self, id, vals)
         addEvidence(self, nodeName, vals)
-
 
         Adds a new evidence on a node (might be soft or hard).
 
@@ -16328,14 +15708,13 @@ class ImportanceSampling_double(_object):
 
 
     def chgEvidence(self, *args):
-        """
+        r"""
         chgEvidence(self, id, val)
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, val)
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, vals)
         chgEvidence(self, nodeName, vals)
-
 
         Change the value of an already existing evidence on a node (might be soft or hard).
 
@@ -16370,10 +15749,9 @@ class ImportanceSampling_double(_object):
 
 
     def hasEvidence(self, *args):
-        """
+        r"""
         hasEvidence(self, id) -> bool
         hasEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -16397,9 +15775,8 @@ class ImportanceSampling_double(_object):
 
 
     def eraseAllEvidence(self):
-        """
+        r"""
         eraseAllEvidence(self)
-
 
         Removes all the evidence entered into the network.
 
@@ -16408,10 +15785,9 @@ class ImportanceSampling_double(_object):
 
 
     def eraseEvidence(self, *args):
-        """
+        r"""
         eraseEvidence(self, id)
         eraseEvidence(self, nodeName)
-
 
         Remove the evidence, if any, corresponding to the node Id or name.
 
@@ -16432,9 +15808,8 @@ class ImportanceSampling_double(_object):
 
 
     def hasHardEvidence(self, nodeName):
-        """
+        r"""
         hasHardEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -16458,10 +15833,9 @@ class ImportanceSampling_double(_object):
 
 
     def hasSoftEvidence(self, *args):
-        """
+        r"""
         hasSoftEvidence(self, id) -> bool
         hasSoftEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -16485,9 +15859,8 @@ class ImportanceSampling_double(_object):
 
 
     def nbrEvidence(self):
-        """
+        r"""
         nbrEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -16499,9 +15872,8 @@ class ImportanceSampling_double(_object):
 
 
     def nbrHardEvidence(self):
-        """
+        r"""
         nbrHardEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -16513,9 +15885,8 @@ class ImportanceSampling_double(_object):
 
 
     def nbrSoftEvidence(self):
-        """
+        r"""
         nbrSoftEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -16527,9 +15898,8 @@ class ImportanceSampling_double(_object):
 
 
     def eraseAllTargets(self):
-        """
+        r"""
         eraseAllTargets(self)
-
 
         Clear all previously defined targets (marginal and joint targets).
 
@@ -16540,9 +15910,8 @@ class ImportanceSampling_double(_object):
 
 
     def addAllTargets(self):
-        """
+        r"""
         addAllTargets(self)
-
 
         Add all the nodes as targets.
 
@@ -16551,10 +15920,9 @@ class ImportanceSampling_double(_object):
 
 
     def addTarget(self, *args):
-        """
+        r"""
         addTarget(self, target)
         addTarget(self, nodeName)
-
 
         Add a marginal target to the list of targets.
 
@@ -16575,10 +15943,9 @@ class ImportanceSampling_double(_object):
 
 
     def eraseTarget(self, *args):
-        """
+        r"""
         eraseTarget(self, target)
         eraseTarget(self, nodeName)
-
 
         Remove, if existing, the marginal target.
 
@@ -16601,10 +15968,9 @@ class ImportanceSampling_double(_object):
 
 
     def isTarget(self, *args):
-        """
+        r"""
         isTarget(self, variable) -> bool
         isTarget(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -16630,9 +15996,8 @@ class ImportanceSampling_double(_object):
 
 
     def nbrTargets(self):
-        """
+        r"""
         nbrTargets(self) -> gum::Size
-
 
         Returns
         -------
@@ -16644,10 +16009,9 @@ class ImportanceSampling_double(_object):
 
 
     def H(self, *args):
-        """
+        r"""
         H(self, X) -> double
         H(self, nodeName) -> double
-
 
         Parameters
         ----------
@@ -16666,10 +16030,9 @@ class ImportanceSampling_double(_object):
 
 
     def evidenceImpact(self, *args):
-        """
+        r"""
         evidenceImpact(self, target, evs) -> Potential_double
         evidenceImpact(self, target, evs) -> Potential_double
-
 
         Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
 
@@ -16694,10 +16057,9 @@ class ImportanceSampling_double(_object):
 
 
     def currentPosterior(self, *args):
-        """
+        r"""
         currentPosterior(self, id) -> Potential_double
         currentPosterior(self, name) -> Potential_double
-
 
         Computes and returns the current posterior of a node.
 
@@ -16721,11 +16083,11 @@ class ImportanceSampling_double(_object):
         """
         return _pyAgrum.ImportanceSampling_double_currentPosterior(self, *args)
 
-ImportanceSampling_double_swigregister = _pyAgrum.ImportanceSampling_double_swigregister
-ImportanceSampling_double_swigregister(ImportanceSampling_double)
+# Register ImportanceSampling_double in _pyAgrum:
+_pyAgrum.ImportanceSampling_double_swigregister(ImportanceSampling_double)
 
 class WeightedSampling_double(_object):
-    """
+    r"""
 
     Class used for Weighted sampling inference algorithm.
 
@@ -16746,7 +16108,7 @@ class WeightedSampling_double(_object):
     __repr__ = _swig_repr
 
     def __init__(self, bn):
-        """__init__(self, bn) -> WeightedSampling_double"""
+        r"""__init__(self, bn) -> WeightedSampling_double"""
         this = _pyAgrum.new_WeightedSampling_double(bn)
         try:
             self.this.append(this)
@@ -16844,9 +16206,8 @@ class WeightedSampling_double(_object):
 
 
     def hardEvidenceNodes(self):
-        """
+        r"""
         hardEvidenceNodes(self) -> PyObject *
-
 
         Returns
         -------
@@ -16858,9 +16219,8 @@ class WeightedSampling_double(_object):
 
 
     def softEvidenceNodes(self):
-        """
+        r"""
         softEvidenceNodes(self) -> PyObject *
-
 
         Returns
         -------
@@ -16872,9 +16232,8 @@ class WeightedSampling_double(_object):
 
 
     def targets(self):
-        """
+        r"""
         targets(self) -> PyObject *
-
 
         Returns
         -------
@@ -16886,23 +16245,21 @@ class WeightedSampling_double(_object):
 
 
     def setVerbosity(self, v):
-        """
+        r"""
         setVerbosity(self, v)
-
 
         Parameters
         ----------
         v : bool
-        	verbosity
+                verbosity
 
         """
         return _pyAgrum.WeightedSampling_double_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps):
-        """
+        r"""
         setEpsilon(self, eps)
-
 
         Parameters
         ----------
@@ -16919,9 +16276,8 @@ class WeightedSampling_double(_object):
 
 
     def setMinEpsilonRate(self, rate):
-        """
+        r"""
         setMinEpsilonRate(self, rate)
-
 
         Parameters
         ----------
@@ -16933,9 +16289,8 @@ class WeightedSampling_double(_object):
 
 
     def setMaxIter(self, max):
-        """
+        r"""
         setMaxIter(self, max)
-
 
         Parameters
         ----------
@@ -16952,9 +16307,8 @@ class WeightedSampling_double(_object):
 
 
     def setMaxTime(self, timeout):
-        """
+        r"""
         setMaxTime(self, timeout)
-
 
         Parameters
         ----------
@@ -16971,9 +16325,8 @@ class WeightedSampling_double(_object):
 
 
     def setPeriodSize(self, p):
-        """
+        r"""
         setPeriodSize(self, p)
-
 
         Parameters
         ----------
@@ -16990,9 +16343,8 @@ class WeightedSampling_double(_object):
 
 
     def verbosity(self):
-        """
+        r"""
         verbosity(self) -> bool
-
 
         Returns
         -------
@@ -17004,9 +16356,8 @@ class WeightedSampling_double(_object):
 
 
     def epsilon(self):
-        """
+        r"""
         epsilon(self) -> double
-
 
         Returns
         -------
@@ -17018,9 +16369,8 @@ class WeightedSampling_double(_object):
 
 
     def minEpsilonRate(self):
-        """
+        r"""
         minEpsilonRate(self) -> double
-
 
         Returns
         -------
@@ -17032,9 +16382,8 @@ class WeightedSampling_double(_object):
 
 
     def maxIter(self):
-        """
+        r"""
         maxIter(self) -> gum::Size
-
 
         Returns
         -------
@@ -17046,9 +16395,8 @@ class WeightedSampling_double(_object):
 
 
     def maxTime(self):
-        """
+        r"""
         maxTime(self) -> double
-
 
         Returns
         -------
@@ -17060,9 +16408,8 @@ class WeightedSampling_double(_object):
 
 
     def periodSize(self):
-        """
+        r"""
         periodSize(self) -> gum::Size
-
 
         Returns
         -------
@@ -17079,9 +16426,8 @@ class WeightedSampling_double(_object):
 
 
     def nbrIterations(self):
-        """
+        r"""
         nbrIterations(self) -> gum::Size
-
 
         Returns
         -------
@@ -17093,9 +16439,8 @@ class WeightedSampling_double(_object):
 
 
     def currentTime(self):
-        """
+        r"""
         currentTime(self) -> double
-
 
         Returns
         -------
@@ -17107,9 +16452,8 @@ class WeightedSampling_double(_object):
 
 
     def messageApproximationScheme(self):
-        """
+        r"""
         messageApproximationScheme(self) -> std::string
-
 
         Returns
         -------
@@ -17121,9 +16465,8 @@ class WeightedSampling_double(_object):
 
 
     def history(self):
-        """
+        r"""
         history(self) -> Vector_double
-
 
         Returns
         -------
@@ -17140,9 +16483,8 @@ class WeightedSampling_double(_object):
 
 
     def asIApproximationSchemeConfiguration(self):
-        """
+        r"""
         asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
-
 
         Returns
         -------
@@ -17153,9 +16495,8 @@ class WeightedSampling_double(_object):
 
 
     def makeInference(self):
-        """
+        r"""
         makeInference(self)
-
 
         Perform the heavy computations needed to compute the targets' posteriors
 
@@ -17167,10 +16508,9 @@ class WeightedSampling_double(_object):
 
 
     def posterior(self, *args):
-        """
+        r"""
         posterior(self, var) -> Potential_double
         posterior(self, nodeName) -> Potential_double
-
 
         Computes and returns the posterior of a node.
 
@@ -17196,9 +16536,8 @@ class WeightedSampling_double(_object):
 
 
     def BN(self):
-        """
+        r"""
         BN(self) -> IBayesNet_double
-
 
         Returns
         -------
@@ -17215,14 +16554,13 @@ class WeightedSampling_double(_object):
 
 
     def addEvidence(self, *args):
-        """
+        r"""
         addEvidence(self, id, val)
         addEvidence(self, nodeName, val)
         addEvidence(self, id, val)
         addEvidence(self, nodeName, val)
         addEvidence(self, id, vals)
         addEvidence(self, nodeName, vals)
-
 
         Adds a new evidence on a node (might be soft or hard).
 
@@ -17257,14 +16595,13 @@ class WeightedSampling_double(_object):
 
 
     def chgEvidence(self, *args):
-        """
+        r"""
         chgEvidence(self, id, val)
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, val)
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, vals)
         chgEvidence(self, nodeName, vals)
-
 
         Change the value of an already existing evidence on a node (might be soft or hard).
 
@@ -17299,10 +16636,9 @@ class WeightedSampling_double(_object):
 
 
     def hasEvidence(self, *args):
-        """
+        r"""
         hasEvidence(self, id) -> bool
         hasEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -17326,9 +16662,8 @@ class WeightedSampling_double(_object):
 
 
     def eraseAllEvidence(self):
-        """
+        r"""
         eraseAllEvidence(self)
-
 
         Removes all the evidence entered into the network.
 
@@ -17337,10 +16672,9 @@ class WeightedSampling_double(_object):
 
 
     def eraseEvidence(self, *args):
-        """
+        r"""
         eraseEvidence(self, id)
         eraseEvidence(self, nodeName)
-
 
         Remove the evidence, if any, corresponding to the node Id or name.
 
@@ -17361,9 +16695,8 @@ class WeightedSampling_double(_object):
 
 
     def hasHardEvidence(self, nodeName):
-        """
+        r"""
         hasHardEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -17387,10 +16720,9 @@ class WeightedSampling_double(_object):
 
 
     def hasSoftEvidence(self, *args):
-        """
+        r"""
         hasSoftEvidence(self, id) -> bool
         hasSoftEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -17414,9 +16746,8 @@ class WeightedSampling_double(_object):
 
 
     def nbrEvidence(self):
-        """
+        r"""
         nbrEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -17428,9 +16759,8 @@ class WeightedSampling_double(_object):
 
 
     def nbrHardEvidence(self):
-        """
+        r"""
         nbrHardEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -17442,9 +16772,8 @@ class WeightedSampling_double(_object):
 
 
     def nbrSoftEvidence(self):
-        """
+        r"""
         nbrSoftEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -17456,9 +16785,8 @@ class WeightedSampling_double(_object):
 
 
     def eraseAllTargets(self):
-        """
+        r"""
         eraseAllTargets(self)
-
 
         Clear all previously defined targets (marginal and joint targets).
 
@@ -17469,9 +16797,8 @@ class WeightedSampling_double(_object):
 
 
     def addAllTargets(self):
-        """
+        r"""
         addAllTargets(self)
-
 
         Add all the nodes as targets.
 
@@ -17480,10 +16807,9 @@ class WeightedSampling_double(_object):
 
 
     def addTarget(self, *args):
-        """
+        r"""
         addTarget(self, target)
         addTarget(self, nodeName)
-
 
         Add a marginal target to the list of targets.
 
@@ -17504,10 +16830,9 @@ class WeightedSampling_double(_object):
 
 
     def eraseTarget(self, *args):
-        """
+        r"""
         eraseTarget(self, target)
         eraseTarget(self, nodeName)
-
 
         Remove, if existing, the marginal target.
 
@@ -17530,10 +16855,9 @@ class WeightedSampling_double(_object):
 
 
     def isTarget(self, *args):
-        """
+        r"""
         isTarget(self, variable) -> bool
         isTarget(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -17559,9 +16883,8 @@ class WeightedSampling_double(_object):
 
 
     def nbrTargets(self):
-        """
+        r"""
         nbrTargets(self) -> gum::Size
-
 
         Returns
         -------
@@ -17573,10 +16896,9 @@ class WeightedSampling_double(_object):
 
 
     def H(self, *args):
-        """
+        r"""
         H(self, X) -> double
         H(self, nodeName) -> double
-
 
         Parameters
         ----------
@@ -17595,10 +16917,9 @@ class WeightedSampling_double(_object):
 
 
     def evidenceImpact(self, *args):
-        """
+        r"""
         evidenceImpact(self, target, evs) -> Potential_double
         evidenceImpact(self, target, evs) -> Potential_double
-
 
         Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
 
@@ -17623,10 +16944,9 @@ class WeightedSampling_double(_object):
 
 
     def currentPosterior(self, *args):
-        """
+        r"""
         currentPosterior(self, id) -> Potential_double
         currentPosterior(self, name) -> Potential_double
-
 
         Computes and returns the current posterior of a node.
 
@@ -17650,11 +16970,11 @@ class WeightedSampling_double(_object):
         """
         return _pyAgrum.WeightedSampling_double_currentPosterior(self, *args)
 
-WeightedSampling_double_swigregister = _pyAgrum.WeightedSampling_double_swigregister
-WeightedSampling_double_swigregister(WeightedSampling_double)
+# Register WeightedSampling_double in _pyAgrum:
+_pyAgrum.WeightedSampling_double_swigregister(WeightedSampling_double)
 
 class MonteCarloSampling_double(_object):
-    """
+    r"""
 
     Class used for Monte Carlo sampling inference algorithm.
 
@@ -17675,7 +16995,7 @@ class MonteCarloSampling_double(_object):
     __repr__ = _swig_repr
 
     def __init__(self, bn):
-        """__init__(self, bn) -> MonteCarloSampling_double"""
+        r"""__init__(self, bn) -> MonteCarloSampling_double"""
         this = _pyAgrum.new_MonteCarloSampling_double(bn)
         try:
             self.this.append(this)
@@ -17773,9 +17093,8 @@ class MonteCarloSampling_double(_object):
 
 
     def hardEvidenceNodes(self):
-        """
+        r"""
         hardEvidenceNodes(self) -> PyObject *
-
 
         Returns
         -------
@@ -17787,9 +17106,8 @@ class MonteCarloSampling_double(_object):
 
 
     def softEvidenceNodes(self):
-        """
+        r"""
         softEvidenceNodes(self) -> PyObject *
-
 
         Returns
         -------
@@ -17801,9 +17119,8 @@ class MonteCarloSampling_double(_object):
 
 
     def targets(self):
-        """
+        r"""
         targets(self) -> PyObject *
-
 
         Returns
         -------
@@ -17815,23 +17132,21 @@ class MonteCarloSampling_double(_object):
 
 
     def setVerbosity(self, v):
-        """
+        r"""
         setVerbosity(self, v)
-
 
         Parameters
         ----------
         v : bool
-        	verbosity
+                verbosity
 
         """
         return _pyAgrum.MonteCarloSampling_double_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps):
-        """
+        r"""
         setEpsilon(self, eps)
-
 
         Parameters
         ----------
@@ -17848,9 +17163,8 @@ class MonteCarloSampling_double(_object):
 
 
     def setMinEpsilonRate(self, rate):
-        """
+        r"""
         setMinEpsilonRate(self, rate)
-
 
         Parameters
         ----------
@@ -17862,9 +17176,8 @@ class MonteCarloSampling_double(_object):
 
 
     def setMaxIter(self, max):
-        """
+        r"""
         setMaxIter(self, max)
-
 
         Parameters
         ----------
@@ -17881,9 +17194,8 @@ class MonteCarloSampling_double(_object):
 
 
     def setMaxTime(self, timeout):
-        """
+        r"""
         setMaxTime(self, timeout)
-
 
         Parameters
         ----------
@@ -17900,9 +17212,8 @@ class MonteCarloSampling_double(_object):
 
 
     def setPeriodSize(self, p):
-        """
+        r"""
         setPeriodSize(self, p)
-
 
         Parameters
         ----------
@@ -17919,9 +17230,8 @@ class MonteCarloSampling_double(_object):
 
 
     def verbosity(self):
-        """
+        r"""
         verbosity(self) -> bool
-
 
         Returns
         -------
@@ -17933,9 +17243,8 @@ class MonteCarloSampling_double(_object):
 
 
     def epsilon(self):
-        """
+        r"""
         epsilon(self) -> double
-
 
         Returns
         -------
@@ -17947,9 +17256,8 @@ class MonteCarloSampling_double(_object):
 
 
     def minEpsilonRate(self):
-        """
+        r"""
         minEpsilonRate(self) -> double
-
 
         Returns
         -------
@@ -17961,9 +17269,8 @@ class MonteCarloSampling_double(_object):
 
 
     def maxIter(self):
-        """
+        r"""
         maxIter(self) -> gum::Size
-
 
         Returns
         -------
@@ -17975,9 +17282,8 @@ class MonteCarloSampling_double(_object):
 
 
     def maxTime(self):
-        """
+        r"""
         maxTime(self) -> double
-
 
         Returns
         -------
@@ -17989,9 +17295,8 @@ class MonteCarloSampling_double(_object):
 
 
     def periodSize(self):
-        """
+        r"""
         periodSize(self) -> gum::Size
-
 
         Returns
         -------
@@ -18008,9 +17313,8 @@ class MonteCarloSampling_double(_object):
 
 
     def nbrIterations(self):
-        """
+        r"""
         nbrIterations(self) -> gum::Size
-
 
         Returns
         -------
@@ -18022,9 +17326,8 @@ class MonteCarloSampling_double(_object):
 
 
     def currentTime(self):
-        """
+        r"""
         currentTime(self) -> double
-
 
         Returns
         -------
@@ -18036,9 +17339,8 @@ class MonteCarloSampling_double(_object):
 
 
     def messageApproximationScheme(self):
-        """
+        r"""
         messageApproximationScheme(self) -> std::string
-
 
         Returns
         -------
@@ -18050,9 +17352,8 @@ class MonteCarloSampling_double(_object):
 
 
     def history(self):
-        """
+        r"""
         history(self) -> Vector_double
-
 
         Returns
         -------
@@ -18069,9 +17370,8 @@ class MonteCarloSampling_double(_object):
 
 
     def asIApproximationSchemeConfiguration(self):
-        """
+        r"""
         asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
-
 
         Returns
         -------
@@ -18082,9 +17382,8 @@ class MonteCarloSampling_double(_object):
 
 
     def makeInference(self):
-        """
+        r"""
         makeInference(self)
-
 
         Perform the heavy computations needed to compute the targets' posteriors
 
@@ -18096,10 +17395,9 @@ class MonteCarloSampling_double(_object):
 
 
     def posterior(self, *args):
-        """
+        r"""
         posterior(self, var) -> Potential_double
         posterior(self, nodeName) -> Potential_double
-
 
         Computes and returns the posterior of a node.
 
@@ -18125,9 +17423,8 @@ class MonteCarloSampling_double(_object):
 
 
     def BN(self):
-        """
+        r"""
         BN(self) -> IBayesNet_double
-
 
         Returns
         -------
@@ -18144,14 +17441,13 @@ class MonteCarloSampling_double(_object):
 
 
     def addEvidence(self, *args):
-        """
+        r"""
         addEvidence(self, id, val)
         addEvidence(self, nodeName, val)
         addEvidence(self, id, val)
         addEvidence(self, nodeName, val)
         addEvidence(self, id, vals)
         addEvidence(self, nodeName, vals)
-
 
         Adds a new evidence on a node (might be soft or hard).
 
@@ -18186,14 +17482,13 @@ class MonteCarloSampling_double(_object):
 
 
     def chgEvidence(self, *args):
-        """
+        r"""
         chgEvidence(self, id, val)
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, val)
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, vals)
         chgEvidence(self, nodeName, vals)
-
 
         Change the value of an already existing evidence on a node (might be soft or hard).
 
@@ -18228,10 +17523,9 @@ class MonteCarloSampling_double(_object):
 
 
     def hasEvidence(self, *args):
-        """
+        r"""
         hasEvidence(self, id) -> bool
         hasEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -18255,9 +17549,8 @@ class MonteCarloSampling_double(_object):
 
 
     def eraseAllEvidence(self):
-        """
+        r"""
         eraseAllEvidence(self)
-
 
         Removes all the evidence entered into the network.
 
@@ -18266,10 +17559,9 @@ class MonteCarloSampling_double(_object):
 
 
     def eraseEvidence(self, *args):
-        """
+        r"""
         eraseEvidence(self, id)
         eraseEvidence(self, nodeName)
-
 
         Remove the evidence, if any, corresponding to the node Id or name.
 
@@ -18290,9 +17582,8 @@ class MonteCarloSampling_double(_object):
 
 
     def hasHardEvidence(self, nodeName):
-        """
+        r"""
         hasHardEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -18316,10 +17607,9 @@ class MonteCarloSampling_double(_object):
 
 
     def hasSoftEvidence(self, *args):
-        """
+        r"""
         hasSoftEvidence(self, id) -> bool
         hasSoftEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -18343,9 +17633,8 @@ class MonteCarloSampling_double(_object):
 
 
     def nbrEvidence(self):
-        """
+        r"""
         nbrEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -18357,9 +17646,8 @@ class MonteCarloSampling_double(_object):
 
 
     def nbrHardEvidence(self):
-        """
+        r"""
         nbrHardEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -18371,9 +17659,8 @@ class MonteCarloSampling_double(_object):
 
 
     def nbrSoftEvidence(self):
-        """
+        r"""
         nbrSoftEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -18385,9 +17672,8 @@ class MonteCarloSampling_double(_object):
 
 
     def eraseAllTargets(self):
-        """
+        r"""
         eraseAllTargets(self)
-
 
         Clear all previously defined targets (marginal and joint targets).
 
@@ -18398,9 +17684,8 @@ class MonteCarloSampling_double(_object):
 
 
     def addAllTargets(self):
-        """
+        r"""
         addAllTargets(self)
-
 
         Add all the nodes as targets.
 
@@ -18409,10 +17694,9 @@ class MonteCarloSampling_double(_object):
 
 
     def addTarget(self, *args):
-        """
+        r"""
         addTarget(self, target)
         addTarget(self, nodeName)
-
 
         Add a marginal target to the list of targets.
 
@@ -18433,10 +17717,9 @@ class MonteCarloSampling_double(_object):
 
 
     def eraseTarget(self, *args):
-        """
+        r"""
         eraseTarget(self, target)
         eraseTarget(self, nodeName)
-
 
         Remove, if existing, the marginal target.
 
@@ -18459,10 +17742,9 @@ class MonteCarloSampling_double(_object):
 
 
     def isTarget(self, *args):
-        """
+        r"""
         isTarget(self, variable) -> bool
         isTarget(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -18488,9 +17770,8 @@ class MonteCarloSampling_double(_object):
 
 
     def nbrTargets(self):
-        """
+        r"""
         nbrTargets(self) -> gum::Size
-
 
         Returns
         -------
@@ -18502,10 +17783,9 @@ class MonteCarloSampling_double(_object):
 
 
     def H(self, *args):
-        """
+        r"""
         H(self, X) -> double
         H(self, nodeName) -> double
-
 
         Parameters
         ----------
@@ -18524,10 +17804,9 @@ class MonteCarloSampling_double(_object):
 
 
     def evidenceImpact(self, *args):
-        """
+        r"""
         evidenceImpact(self, target, evs) -> Potential_double
         evidenceImpact(self, target, evs) -> Potential_double
-
 
         Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
 
@@ -18552,10 +17831,9 @@ class MonteCarloSampling_double(_object):
 
 
     def currentPosterior(self, *args):
-        """
+        r"""
         currentPosterior(self, id) -> Potential_double
         currentPosterior(self, name) -> Potential_double
-
 
         Computes and returns the current posterior of a node.
 
@@ -18579,11 +17857,11 @@ class MonteCarloSampling_double(_object):
         """
         return _pyAgrum.MonteCarloSampling_double_currentPosterior(self, *args)
 
-MonteCarloSampling_double_swigregister = _pyAgrum.MonteCarloSampling_double_swigregister
-MonteCarloSampling_double_swigregister(MonteCarloSampling_double)
+# Register MonteCarloSampling_double in _pyAgrum:
+_pyAgrum.MonteCarloSampling_double_swigregister(MonteCarloSampling_double)
 
 class LoopyImportanceSampling_double(_object):
-    """
+    r"""
 
     Class used for inferences using a loopy version of importance sampling.
 
@@ -18604,7 +17882,7 @@ class LoopyImportanceSampling_double(_object):
     __repr__ = _swig_repr
 
     def __init__(self, bn):
-        """__init__(self, bn) -> LoopyImportanceSampling_double"""
+        r"""__init__(self, bn) -> LoopyImportanceSampling_double"""
         this = _pyAgrum.new_LoopyImportanceSampling_double(bn)
         try:
             self.this.append(this)
@@ -18620,14 +17898,13 @@ class LoopyImportanceSampling_double(_object):
         return None
 
     def _makeInference(self):
-        """_makeInference(self)"""
+        r"""_makeInference(self)"""
         return _pyAgrum.LoopyImportanceSampling_double__makeInference(self)
 
 
     def setVirtualLBPSize(self, vlbpsize):
-        """
+        r"""
         setVirtualLBPSize(self, vlbpsize)
-
 
         Parameters
         ----------
@@ -18721,9 +17998,8 @@ class LoopyImportanceSampling_double(_object):
 
 
     def hardEvidenceNodes(self):
-        """
+        r"""
         hardEvidenceNodes(self) -> PyObject *
-
 
         Returns
         -------
@@ -18735,9 +18011,8 @@ class LoopyImportanceSampling_double(_object):
 
 
     def softEvidenceNodes(self):
-        """
+        r"""
         softEvidenceNodes(self) -> PyObject *
-
 
         Returns
         -------
@@ -18749,9 +18024,8 @@ class LoopyImportanceSampling_double(_object):
 
 
     def targets(self):
-        """
+        r"""
         targets(self) -> PyObject *
-
 
         Returns
         -------
@@ -18763,23 +18037,21 @@ class LoopyImportanceSampling_double(_object):
 
 
     def setVerbosity(self, v):
-        """
+        r"""
         setVerbosity(self, v)
-
 
         Parameters
         ----------
         v : bool
-        	verbosity
+                verbosity
 
         """
         return _pyAgrum.LoopyImportanceSampling_double_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps):
-        """
+        r"""
         setEpsilon(self, eps)
-
 
         Parameters
         ----------
@@ -18796,9 +18068,8 @@ class LoopyImportanceSampling_double(_object):
 
 
     def setMinEpsilonRate(self, rate):
-        """
+        r"""
         setMinEpsilonRate(self, rate)
-
 
         Parameters
         ----------
@@ -18810,9 +18081,8 @@ class LoopyImportanceSampling_double(_object):
 
 
     def setMaxIter(self, max):
-        """
+        r"""
         setMaxIter(self, max)
-
 
         Parameters
         ----------
@@ -18829,9 +18099,8 @@ class LoopyImportanceSampling_double(_object):
 
 
     def setMaxTime(self, timeout):
-        """
+        r"""
         setMaxTime(self, timeout)
-
 
         Parameters
         ----------
@@ -18848,9 +18117,8 @@ class LoopyImportanceSampling_double(_object):
 
 
     def setPeriodSize(self, p):
-        """
+        r"""
         setPeriodSize(self, p)
-
 
         Parameters
         ----------
@@ -18867,9 +18135,8 @@ class LoopyImportanceSampling_double(_object):
 
 
     def verbosity(self):
-        """
+        r"""
         verbosity(self) -> bool
-
 
         Returns
         -------
@@ -18881,9 +18148,8 @@ class LoopyImportanceSampling_double(_object):
 
 
     def epsilon(self):
-        """
+        r"""
         epsilon(self) -> double
-
 
         Returns
         -------
@@ -18895,9 +18161,8 @@ class LoopyImportanceSampling_double(_object):
 
 
     def minEpsilonRate(self):
-        """
+        r"""
         minEpsilonRate(self) -> double
-
 
         Returns
         -------
@@ -18909,9 +18174,8 @@ class LoopyImportanceSampling_double(_object):
 
 
     def maxIter(self):
-        """
+        r"""
         maxIter(self) -> gum::Size
-
 
         Returns
         -------
@@ -18923,9 +18187,8 @@ class LoopyImportanceSampling_double(_object):
 
 
     def maxTime(self):
-        """
+        r"""
         maxTime(self) -> double
-
 
         Returns
         -------
@@ -18937,9 +18200,8 @@ class LoopyImportanceSampling_double(_object):
 
 
     def periodSize(self):
-        """
+        r"""
         periodSize(self) -> gum::Size
-
 
         Returns
         -------
@@ -18956,9 +18218,8 @@ class LoopyImportanceSampling_double(_object):
 
 
     def nbrIterations(self):
-        """
+        r"""
         nbrIterations(self) -> gum::Size
-
 
         Returns
         -------
@@ -18970,9 +18231,8 @@ class LoopyImportanceSampling_double(_object):
 
 
     def currentTime(self):
-        """
+        r"""
         currentTime(self) -> double
-
 
         Returns
         -------
@@ -18984,9 +18244,8 @@ class LoopyImportanceSampling_double(_object):
 
 
     def messageApproximationScheme(self):
-        """
+        r"""
         messageApproximationScheme(self) -> std::string
-
 
         Returns
         -------
@@ -18998,9 +18257,8 @@ class LoopyImportanceSampling_double(_object):
 
 
     def history(self):
-        """
+        r"""
         history(self) -> Vector_double
-
 
         Returns
         -------
@@ -19017,9 +18275,8 @@ class LoopyImportanceSampling_double(_object):
 
 
     def asIApproximationSchemeConfiguration(self):
-        """
+        r"""
         asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
-
 
         Returns
         -------
@@ -19030,9 +18287,8 @@ class LoopyImportanceSampling_double(_object):
 
 
     def makeInference(self):
-        """
+        r"""
         makeInference(self)
-
 
         Perform the heavy computations needed to compute the targets' posteriors
 
@@ -19044,10 +18300,9 @@ class LoopyImportanceSampling_double(_object):
 
 
     def posterior(self, *args):
-        """
+        r"""
         posterior(self, var) -> Potential_double
         posterior(self, nodeName) -> Potential_double
-
 
         Computes and returns the posterior of a node.
 
@@ -19073,9 +18328,8 @@ class LoopyImportanceSampling_double(_object):
 
 
     def BN(self):
-        """
+        r"""
         BN(self) -> IBayesNet_double
-
 
         Returns
         -------
@@ -19092,14 +18346,13 @@ class LoopyImportanceSampling_double(_object):
 
 
     def addEvidence(self, *args):
-        """
+        r"""
         addEvidence(self, id, val)
         addEvidence(self, nodeName, val)
         addEvidence(self, id, val)
         addEvidence(self, nodeName, val)
         addEvidence(self, id, vals)
         addEvidence(self, nodeName, vals)
-
 
         Adds a new evidence on a node (might be soft or hard).
 
@@ -19134,14 +18387,13 @@ class LoopyImportanceSampling_double(_object):
 
 
     def chgEvidence(self, *args):
-        """
+        r"""
         chgEvidence(self, id, val)
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, val)
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, vals)
         chgEvidence(self, nodeName, vals)
-
 
         Change the value of an already existing evidence on a node (might be soft or hard).
 
@@ -19176,10 +18428,9 @@ class LoopyImportanceSampling_double(_object):
 
 
     def hasEvidence(self, *args):
-        """
+        r"""
         hasEvidence(self, id) -> bool
         hasEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -19203,9 +18454,8 @@ class LoopyImportanceSampling_double(_object):
 
 
     def eraseAllEvidence(self):
-        """
+        r"""
         eraseAllEvidence(self)
-
 
         Removes all the evidence entered into the network.
 
@@ -19214,10 +18464,9 @@ class LoopyImportanceSampling_double(_object):
 
 
     def eraseEvidence(self, *args):
-        """
+        r"""
         eraseEvidence(self, id)
         eraseEvidence(self, nodeName)
-
 
         Remove the evidence, if any, corresponding to the node Id or name.
 
@@ -19238,9 +18487,8 @@ class LoopyImportanceSampling_double(_object):
 
 
     def hasHardEvidence(self, nodeName):
-        """
+        r"""
         hasHardEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -19264,10 +18512,9 @@ class LoopyImportanceSampling_double(_object):
 
 
     def hasSoftEvidence(self, *args):
-        """
+        r"""
         hasSoftEvidence(self, id) -> bool
         hasSoftEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -19291,9 +18538,8 @@ class LoopyImportanceSampling_double(_object):
 
 
     def nbrEvidence(self):
-        """
+        r"""
         nbrEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -19305,9 +18551,8 @@ class LoopyImportanceSampling_double(_object):
 
 
     def nbrHardEvidence(self):
-        """
+        r"""
         nbrHardEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -19319,9 +18564,8 @@ class LoopyImportanceSampling_double(_object):
 
 
     def nbrSoftEvidence(self):
-        """
+        r"""
         nbrSoftEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -19333,9 +18577,8 @@ class LoopyImportanceSampling_double(_object):
 
 
     def eraseAllTargets(self):
-        """
+        r"""
         eraseAllTargets(self)
-
 
         Clear all previously defined targets (marginal and joint targets).
 
@@ -19346,9 +18589,8 @@ class LoopyImportanceSampling_double(_object):
 
 
     def addAllTargets(self):
-        """
+        r"""
         addAllTargets(self)
-
 
         Add all the nodes as targets.
 
@@ -19357,10 +18599,9 @@ class LoopyImportanceSampling_double(_object):
 
 
     def addTarget(self, *args):
-        """
+        r"""
         addTarget(self, target)
         addTarget(self, nodeName)
-
 
         Add a marginal target to the list of targets.
 
@@ -19381,10 +18622,9 @@ class LoopyImportanceSampling_double(_object):
 
 
     def eraseTarget(self, *args):
-        """
+        r"""
         eraseTarget(self, target)
         eraseTarget(self, nodeName)
-
 
         Remove, if existing, the marginal target.
 
@@ -19407,10 +18647,9 @@ class LoopyImportanceSampling_double(_object):
 
 
     def isTarget(self, *args):
-        """
+        r"""
         isTarget(self, variable) -> bool
         isTarget(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -19436,9 +18675,8 @@ class LoopyImportanceSampling_double(_object):
 
 
     def nbrTargets(self):
-        """
+        r"""
         nbrTargets(self) -> gum::Size
-
 
         Returns
         -------
@@ -19450,10 +18688,9 @@ class LoopyImportanceSampling_double(_object):
 
 
     def H(self, *args):
-        """
+        r"""
         H(self, X) -> double
         H(self, nodeName) -> double
-
 
         Parameters
         ----------
@@ -19472,10 +18709,9 @@ class LoopyImportanceSampling_double(_object):
 
 
     def evidenceImpact(self, *args):
-        """
+        r"""
         evidenceImpact(self, target, evs) -> Potential_double
         evidenceImpact(self, target, evs) -> Potential_double
-
 
         Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
 
@@ -19500,10 +18736,9 @@ class LoopyImportanceSampling_double(_object):
 
 
     def currentPosterior(self, *args):
-        """
+        r"""
         currentPosterior(self, id) -> Potential_double
         currentPosterior(self, name) -> Potential_double
-
 
         Computes and returns the current posterior of a node.
 
@@ -19527,11 +18762,11 @@ class LoopyImportanceSampling_double(_object):
         """
         return _pyAgrum.LoopyImportanceSampling_double_currentPosterior(self, *args)
 
-LoopyImportanceSampling_double_swigregister = _pyAgrum.LoopyImportanceSampling_double_swigregister
-LoopyImportanceSampling_double_swigregister(LoopyImportanceSampling_double)
+# Register LoopyImportanceSampling_double in _pyAgrum:
+_pyAgrum.LoopyImportanceSampling_double_swigregister(LoopyImportanceSampling_double)
 
 class LoopyWeightedSampling_double(_object):
-    """
+    r"""
 
     Class used for inferences using a loopy version of weighted sampling.
 
@@ -19552,7 +18787,7 @@ class LoopyWeightedSampling_double(_object):
     __repr__ = _swig_repr
 
     def __init__(self, bn):
-        """__init__(self, bn) -> LoopyWeightedSampling_double"""
+        r"""__init__(self, bn) -> LoopyWeightedSampling_double"""
         this = _pyAgrum.new_LoopyWeightedSampling_double(bn)
         try:
             self.this.append(this)
@@ -19568,14 +18803,13 @@ class LoopyWeightedSampling_double(_object):
         return None
 
     def _makeInference(self):
-        """_makeInference(self)"""
+        r"""_makeInference(self)"""
         return _pyAgrum.LoopyWeightedSampling_double__makeInference(self)
 
 
     def setVirtualLBPSize(self, vlbpsize):
-        """
+        r"""
         setVirtualLBPSize(self, vlbpsize)
-
 
         Parameters
         ----------
@@ -19669,9 +18903,8 @@ class LoopyWeightedSampling_double(_object):
 
 
     def hardEvidenceNodes(self):
-        """
+        r"""
         hardEvidenceNodes(self) -> PyObject *
-
 
         Returns
         -------
@@ -19683,9 +18916,8 @@ class LoopyWeightedSampling_double(_object):
 
 
     def softEvidenceNodes(self):
-        """
+        r"""
         softEvidenceNodes(self) -> PyObject *
-
 
         Returns
         -------
@@ -19697,9 +18929,8 @@ class LoopyWeightedSampling_double(_object):
 
 
     def targets(self):
-        """
+        r"""
         targets(self) -> PyObject *
-
 
         Returns
         -------
@@ -19711,23 +18942,21 @@ class LoopyWeightedSampling_double(_object):
 
 
     def setVerbosity(self, v):
-        """
+        r"""
         setVerbosity(self, v)
-
 
         Parameters
         ----------
         v : bool
-        	verbosity
+                verbosity
 
         """
         return _pyAgrum.LoopyWeightedSampling_double_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps):
-        """
+        r"""
         setEpsilon(self, eps)
-
 
         Parameters
         ----------
@@ -19744,9 +18973,8 @@ class LoopyWeightedSampling_double(_object):
 
 
     def setMinEpsilonRate(self, rate):
-        """
+        r"""
         setMinEpsilonRate(self, rate)
-
 
         Parameters
         ----------
@@ -19758,9 +18986,8 @@ class LoopyWeightedSampling_double(_object):
 
 
     def setMaxIter(self, max):
-        """
+        r"""
         setMaxIter(self, max)
-
 
         Parameters
         ----------
@@ -19777,9 +19004,8 @@ class LoopyWeightedSampling_double(_object):
 
 
     def setMaxTime(self, timeout):
-        """
+        r"""
         setMaxTime(self, timeout)
-
 
         Parameters
         ----------
@@ -19796,9 +19022,8 @@ class LoopyWeightedSampling_double(_object):
 
 
     def setPeriodSize(self, p):
-        """
+        r"""
         setPeriodSize(self, p)
-
 
         Parameters
         ----------
@@ -19815,9 +19040,8 @@ class LoopyWeightedSampling_double(_object):
 
 
     def verbosity(self):
-        """
+        r"""
         verbosity(self) -> bool
-
 
         Returns
         -------
@@ -19829,9 +19053,8 @@ class LoopyWeightedSampling_double(_object):
 
 
     def epsilon(self):
-        """
+        r"""
         epsilon(self) -> double
-
 
         Returns
         -------
@@ -19843,9 +19066,8 @@ class LoopyWeightedSampling_double(_object):
 
 
     def minEpsilonRate(self):
-        """
+        r"""
         minEpsilonRate(self) -> double
-
 
         Returns
         -------
@@ -19857,9 +19079,8 @@ class LoopyWeightedSampling_double(_object):
 
 
     def maxIter(self):
-        """
+        r"""
         maxIter(self) -> gum::Size
-
 
         Returns
         -------
@@ -19871,9 +19092,8 @@ class LoopyWeightedSampling_double(_object):
 
 
     def maxTime(self):
-        """
+        r"""
         maxTime(self) -> double
-
 
         Returns
         -------
@@ -19885,9 +19105,8 @@ class LoopyWeightedSampling_double(_object):
 
 
     def periodSize(self):
-        """
+        r"""
         periodSize(self) -> gum::Size
-
 
         Returns
         -------
@@ -19904,9 +19123,8 @@ class LoopyWeightedSampling_double(_object):
 
 
     def nbrIterations(self):
-        """
+        r"""
         nbrIterations(self) -> gum::Size
-
 
         Returns
         -------
@@ -19918,9 +19136,8 @@ class LoopyWeightedSampling_double(_object):
 
 
     def currentTime(self):
-        """
+        r"""
         currentTime(self) -> double
-
 
         Returns
         -------
@@ -19932,9 +19149,8 @@ class LoopyWeightedSampling_double(_object):
 
 
     def messageApproximationScheme(self):
-        """
+        r"""
         messageApproximationScheme(self) -> std::string
-
 
         Returns
         -------
@@ -19946,9 +19162,8 @@ class LoopyWeightedSampling_double(_object):
 
 
     def history(self):
-        """
+        r"""
         history(self) -> Vector_double
-
 
         Returns
         -------
@@ -19965,9 +19180,8 @@ class LoopyWeightedSampling_double(_object):
 
 
     def asIApproximationSchemeConfiguration(self):
-        """
+        r"""
         asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
-
 
         Returns
         -------
@@ -19978,9 +19192,8 @@ class LoopyWeightedSampling_double(_object):
 
 
     def makeInference(self):
-        """
+        r"""
         makeInference(self)
-
 
         Perform the heavy computations needed to compute the targets' posteriors
 
@@ -19992,10 +19205,9 @@ class LoopyWeightedSampling_double(_object):
 
 
     def posterior(self, *args):
-        """
+        r"""
         posterior(self, var) -> Potential_double
         posterior(self, nodeName) -> Potential_double
-
 
         Computes and returns the posterior of a node.
 
@@ -20021,9 +19233,8 @@ class LoopyWeightedSampling_double(_object):
 
 
     def BN(self):
-        """
+        r"""
         BN(self) -> IBayesNet_double
-
 
         Returns
         -------
@@ -20040,14 +19251,13 @@ class LoopyWeightedSampling_double(_object):
 
 
     def addEvidence(self, *args):
-        """
+        r"""
         addEvidence(self, id, val)
         addEvidence(self, nodeName, val)
         addEvidence(self, id, val)
         addEvidence(self, nodeName, val)
         addEvidence(self, id, vals)
         addEvidence(self, nodeName, vals)
-
 
         Adds a new evidence on a node (might be soft or hard).
 
@@ -20082,14 +19292,13 @@ class LoopyWeightedSampling_double(_object):
 
 
     def chgEvidence(self, *args):
-        """
+        r"""
         chgEvidence(self, id, val)
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, val)
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, vals)
         chgEvidence(self, nodeName, vals)
-
 
         Change the value of an already existing evidence on a node (might be soft or hard).
 
@@ -20124,10 +19333,9 @@ class LoopyWeightedSampling_double(_object):
 
 
     def hasEvidence(self, *args):
-        """
+        r"""
         hasEvidence(self, id) -> bool
         hasEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -20151,9 +19359,8 @@ class LoopyWeightedSampling_double(_object):
 
 
     def eraseAllEvidence(self):
-        """
+        r"""
         eraseAllEvidence(self)
-
 
         Removes all the evidence entered into the network.
 
@@ -20162,10 +19369,9 @@ class LoopyWeightedSampling_double(_object):
 
 
     def eraseEvidence(self, *args):
-        """
+        r"""
         eraseEvidence(self, id)
         eraseEvidence(self, nodeName)
-
 
         Remove the evidence, if any, corresponding to the node Id or name.
 
@@ -20186,9 +19392,8 @@ class LoopyWeightedSampling_double(_object):
 
 
     def hasHardEvidence(self, nodeName):
-        """
+        r"""
         hasHardEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -20212,10 +19417,9 @@ class LoopyWeightedSampling_double(_object):
 
 
     def hasSoftEvidence(self, *args):
-        """
+        r"""
         hasSoftEvidence(self, id) -> bool
         hasSoftEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -20239,9 +19443,8 @@ class LoopyWeightedSampling_double(_object):
 
 
     def nbrEvidence(self):
-        """
+        r"""
         nbrEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -20253,9 +19456,8 @@ class LoopyWeightedSampling_double(_object):
 
 
     def nbrHardEvidence(self):
-        """
+        r"""
         nbrHardEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -20267,9 +19469,8 @@ class LoopyWeightedSampling_double(_object):
 
 
     def nbrSoftEvidence(self):
-        """
+        r"""
         nbrSoftEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -20281,9 +19482,8 @@ class LoopyWeightedSampling_double(_object):
 
 
     def eraseAllTargets(self):
-        """
+        r"""
         eraseAllTargets(self)
-
 
         Clear all previously defined targets (marginal and joint targets).
 
@@ -20294,9 +19494,8 @@ class LoopyWeightedSampling_double(_object):
 
 
     def addAllTargets(self):
-        """
+        r"""
         addAllTargets(self)
-
 
         Add all the nodes as targets.
 
@@ -20305,10 +19504,9 @@ class LoopyWeightedSampling_double(_object):
 
 
     def addTarget(self, *args):
-        """
+        r"""
         addTarget(self, target)
         addTarget(self, nodeName)
-
 
         Add a marginal target to the list of targets.
 
@@ -20329,10 +19527,9 @@ class LoopyWeightedSampling_double(_object):
 
 
     def eraseTarget(self, *args):
-        """
+        r"""
         eraseTarget(self, target)
         eraseTarget(self, nodeName)
-
 
         Remove, if existing, the marginal target.
 
@@ -20355,10 +19552,9 @@ class LoopyWeightedSampling_double(_object):
 
 
     def isTarget(self, *args):
-        """
+        r"""
         isTarget(self, variable) -> bool
         isTarget(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -20384,9 +19580,8 @@ class LoopyWeightedSampling_double(_object):
 
 
     def nbrTargets(self):
-        """
+        r"""
         nbrTargets(self) -> gum::Size
-
 
         Returns
         -------
@@ -20398,10 +19593,9 @@ class LoopyWeightedSampling_double(_object):
 
 
     def H(self, *args):
-        """
+        r"""
         H(self, X) -> double
         H(self, nodeName) -> double
-
 
         Parameters
         ----------
@@ -20420,10 +19614,9 @@ class LoopyWeightedSampling_double(_object):
 
 
     def evidenceImpact(self, *args):
-        """
+        r"""
         evidenceImpact(self, target, evs) -> Potential_double
         evidenceImpact(self, target, evs) -> Potential_double
-
 
         Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
 
@@ -20448,10 +19641,9 @@ class LoopyWeightedSampling_double(_object):
 
 
     def currentPosterior(self, *args):
-        """
+        r"""
         currentPosterior(self, id) -> Potential_double
         currentPosterior(self, name) -> Potential_double
-
 
         Computes and returns the current posterior of a node.
 
@@ -20475,11 +19667,11 @@ class LoopyWeightedSampling_double(_object):
         """
         return _pyAgrum.LoopyWeightedSampling_double_currentPosterior(self, *args)
 
-LoopyWeightedSampling_double_swigregister = _pyAgrum.LoopyWeightedSampling_double_swigregister
-LoopyWeightedSampling_double_swigregister(LoopyWeightedSampling_double)
+# Register LoopyWeightedSampling_double in _pyAgrum:
+_pyAgrum.LoopyWeightedSampling_double_swigregister(LoopyWeightedSampling_double)
 
 class LoopyGibbsSampling_double(_object):
-    """
+    r"""
 
     Class used for inferences using a loopy version of Gibbs sampling.
 
@@ -20500,7 +19692,7 @@ class LoopyGibbsSampling_double(_object):
     __repr__ = _swig_repr
 
     def __init__(self, bn):
-        """__init__(self, bn) -> LoopyGibbsSampling_double"""
+        r"""__init__(self, bn) -> LoopyGibbsSampling_double"""
         this = _pyAgrum.new_LoopyGibbsSampling_double(bn)
         try:
             self.this.append(this)
@@ -20516,14 +19708,13 @@ class LoopyGibbsSampling_double(_object):
         return None
 
     def _makeInference(self):
-        """_makeInference(self)"""
+        r"""_makeInference(self)"""
         return _pyAgrum.LoopyGibbsSampling_double__makeInference(self)
 
 
     def setVirtualLBPSize(self, vlbpsize):
-        """
+        r"""
         setVirtualLBPSize(self, vlbpsize)
-
 
         Parameters
         ----------
@@ -20617,9 +19808,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def hardEvidenceNodes(self):
-        """
+        r"""
         hardEvidenceNodes(self) -> PyObject *
-
 
         Returns
         -------
@@ -20631,9 +19821,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def softEvidenceNodes(self):
-        """
+        r"""
         softEvidenceNodes(self) -> PyObject *
-
 
         Returns
         -------
@@ -20645,9 +19834,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def targets(self):
-        """
+        r"""
         targets(self) -> PyObject *
-
 
         Returns
         -------
@@ -20659,23 +19847,21 @@ class LoopyGibbsSampling_double(_object):
 
 
     def setVerbosity(self, v):
-        """
+        r"""
         setVerbosity(self, v)
-
 
         Parameters
         ----------
         v : bool
-        	verbosity
+                verbosity
 
         """
         return _pyAgrum.LoopyGibbsSampling_double_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps):
-        """
+        r"""
         setEpsilon(self, eps)
-
 
         Parameters
         ----------
@@ -20692,9 +19878,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def setMinEpsilonRate(self, rate):
-        """
+        r"""
         setMinEpsilonRate(self, rate)
-
 
         Parameters
         ----------
@@ -20706,9 +19891,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def setMaxIter(self, max):
-        """
+        r"""
         setMaxIter(self, max)
-
 
         Parameters
         ----------
@@ -20725,9 +19909,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def setMaxTime(self, timeout):
-        """
+        r"""
         setMaxTime(self, timeout)
-
 
         Parameters
         ----------
@@ -20744,9 +19927,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def setPeriodSize(self, p):
-        """
+        r"""
         setPeriodSize(self, p)
-
 
         Parameters
         ----------
@@ -20763,9 +19945,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def verbosity(self):
-        """
+        r"""
         verbosity(self) -> bool
-
 
         Returns
         -------
@@ -20777,9 +19958,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def epsilon(self):
-        """
+        r"""
         epsilon(self) -> double
-
 
         Returns
         -------
@@ -20791,9 +19971,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def minEpsilonRate(self):
-        """
+        r"""
         minEpsilonRate(self) -> double
-
 
         Returns
         -------
@@ -20805,9 +19984,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def maxIter(self):
-        """
+        r"""
         maxIter(self) -> gum::Size
-
 
         Returns
         -------
@@ -20819,9 +19997,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def maxTime(self):
-        """
+        r"""
         maxTime(self) -> double
-
 
         Returns
         -------
@@ -20833,9 +20010,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def periodSize(self):
-        """
+        r"""
         periodSize(self) -> gum::Size
-
 
         Returns
         -------
@@ -20852,9 +20028,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def nbrIterations(self):
-        """
+        r"""
         nbrIterations(self) -> gum::Size
-
 
         Returns
         -------
@@ -20866,9 +20041,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def currentTime(self):
-        """
+        r"""
         currentTime(self) -> double
-
 
         Returns
         -------
@@ -20880,9 +20054,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def messageApproximationScheme(self):
-        """
+        r"""
         messageApproximationScheme(self) -> std::string
-
 
         Returns
         -------
@@ -20894,9 +20067,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def history(self):
-        """
+        r"""
         history(self) -> Vector_double
-
 
         Returns
         -------
@@ -20913,9 +20085,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def asIApproximationSchemeConfiguration(self):
-        """
+        r"""
         asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
-
 
         Returns
         -------
@@ -20926,9 +20097,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def makeInference(self):
-        """
+        r"""
         makeInference(self)
-
 
         Perform the heavy computations needed to compute the targets' posteriors
 
@@ -20940,10 +20110,9 @@ class LoopyGibbsSampling_double(_object):
 
 
     def posterior(self, *args):
-        """
+        r"""
         posterior(self, var) -> Potential_double
         posterior(self, nodeName) -> Potential_double
-
 
         Computes and returns the posterior of a node.
 
@@ -20969,9 +20138,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def BN(self):
-        """
+        r"""
         BN(self) -> IBayesNet_double
-
 
         Returns
         -------
@@ -20988,14 +20156,13 @@ class LoopyGibbsSampling_double(_object):
 
 
     def addEvidence(self, *args):
-        """
+        r"""
         addEvidence(self, id, val)
         addEvidence(self, nodeName, val)
         addEvidence(self, id, val)
         addEvidence(self, nodeName, val)
         addEvidence(self, id, vals)
         addEvidence(self, nodeName, vals)
-
 
         Adds a new evidence on a node (might be soft or hard).
 
@@ -21030,14 +20197,13 @@ class LoopyGibbsSampling_double(_object):
 
 
     def chgEvidence(self, *args):
-        """
+        r"""
         chgEvidence(self, id, val)
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, val)
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, vals)
         chgEvidence(self, nodeName, vals)
-
 
         Change the value of an already existing evidence on a node (might be soft or hard).
 
@@ -21072,10 +20238,9 @@ class LoopyGibbsSampling_double(_object):
 
 
     def hasEvidence(self, *args):
-        """
+        r"""
         hasEvidence(self, id) -> bool
         hasEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -21099,9 +20264,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def eraseAllEvidence(self):
-        """
+        r"""
         eraseAllEvidence(self)
-
 
         Removes all the evidence entered into the network.
 
@@ -21110,10 +20274,9 @@ class LoopyGibbsSampling_double(_object):
 
 
     def eraseEvidence(self, *args):
-        """
+        r"""
         eraseEvidence(self, id)
         eraseEvidence(self, nodeName)
-
 
         Remove the evidence, if any, corresponding to the node Id or name.
 
@@ -21134,9 +20297,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def hasHardEvidence(self, nodeName):
-        """
+        r"""
         hasHardEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -21160,10 +20322,9 @@ class LoopyGibbsSampling_double(_object):
 
 
     def hasSoftEvidence(self, *args):
-        """
+        r"""
         hasSoftEvidence(self, id) -> bool
         hasSoftEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -21187,9 +20348,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def nbrEvidence(self):
-        """
+        r"""
         nbrEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -21201,9 +20361,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def nbrHardEvidence(self):
-        """
+        r"""
         nbrHardEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -21215,9 +20374,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def nbrSoftEvidence(self):
-        """
+        r"""
         nbrSoftEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -21229,9 +20387,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def eraseAllTargets(self):
-        """
+        r"""
         eraseAllTargets(self)
-
 
         Clear all previously defined targets (marginal and joint targets).
 
@@ -21242,9 +20399,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def addAllTargets(self):
-        """
+        r"""
         addAllTargets(self)
-
 
         Add all the nodes as targets.
 
@@ -21253,10 +20409,9 @@ class LoopyGibbsSampling_double(_object):
 
 
     def addTarget(self, *args):
-        """
+        r"""
         addTarget(self, target)
         addTarget(self, nodeName)
-
 
         Add a marginal target to the list of targets.
 
@@ -21277,10 +20432,9 @@ class LoopyGibbsSampling_double(_object):
 
 
     def eraseTarget(self, *args):
-        """
+        r"""
         eraseTarget(self, target)
         eraseTarget(self, nodeName)
-
 
         Remove, if existing, the marginal target.
 
@@ -21303,10 +20457,9 @@ class LoopyGibbsSampling_double(_object):
 
 
     def isTarget(self, *args):
-        """
+        r"""
         isTarget(self, variable) -> bool
         isTarget(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -21332,9 +20485,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def nbrTargets(self):
-        """
+        r"""
         nbrTargets(self) -> gum::Size
-
 
         Returns
         -------
@@ -21346,10 +20498,9 @@ class LoopyGibbsSampling_double(_object):
 
 
     def H(self, *args):
-        """
+        r"""
         H(self, X) -> double
         H(self, nodeName) -> double
-
 
         Parameters
         ----------
@@ -21368,10 +20519,9 @@ class LoopyGibbsSampling_double(_object):
 
 
     def evidenceImpact(self, *args):
-        """
+        r"""
         evidenceImpact(self, target, evs) -> Potential_double
         evidenceImpact(self, target, evs) -> Potential_double
-
 
         Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
 
@@ -21396,10 +20546,9 @@ class LoopyGibbsSampling_double(_object):
 
 
     def currentPosterior(self, *args):
-        """
+        r"""
         currentPosterior(self, id) -> Potential_double
         currentPosterior(self, name) -> Potential_double
-
 
         Computes and returns the current posterior of a node.
 
@@ -21425,9 +20574,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def nbrDrawnVar(self):
-        """
+        r"""
         nbrDrawnVar(self) -> gum::Size
-
 
         Returns
         -------
@@ -21439,9 +20587,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def setNbrDrawnVar(self, _nbr):
-        """
+        r"""
         setNbrDrawnVar(self, _nbr)
-
 
         Parameters
         ----------
@@ -21453,9 +20600,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def isDrawnAtRandom(self):
-        """
+        r"""
         isDrawnAtRandom(self) -> bool
-
 
         Returns
         -------
@@ -21467,9 +20613,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def setDrawnAtRandom(self, _atRandom):
-        """
+        r"""
         setDrawnAtRandom(self, _atRandom)
-
 
         Parameters
         ----------
@@ -21481,9 +20626,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def burnIn(self):
-        """
+        r"""
         burnIn(self) -> gum::Size
-
 
         Returns
         -------
@@ -21495,9 +20639,8 @@ class LoopyGibbsSampling_double(_object):
 
 
     def setBurnIn(self, b):
-        """
+        r"""
         setBurnIn(self, b)
-
 
         Parameters
         ----------
@@ -21507,11 +20650,11 @@ class LoopyGibbsSampling_double(_object):
         """
         return _pyAgrum.LoopyGibbsSampling_double_setBurnIn(self, b)
 
-LoopyGibbsSampling_double_swigregister = _pyAgrum.LoopyGibbsSampling_double_swigregister
-LoopyGibbsSampling_double_swigregister(LoopyGibbsSampling_double)
+# Register LoopyGibbsSampling_double in _pyAgrum:
+_pyAgrum.LoopyGibbsSampling_double_swigregister(LoopyGibbsSampling_double)
 
 class LoopyMonteCarloSampling_double(_object):
-    """Proxy of C++ gum::LoopySamplingInference< double,gum::MonteCarloSampling > class."""
+    r"""Proxy of C++ gum::LoopySamplingInference< double,gum::MonteCarloSampling > class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, LoopyMonteCarloSampling_double, name, value)
@@ -21520,7 +20663,7 @@ class LoopyMonteCarloSampling_double(_object):
     __repr__ = _swig_repr
 
     def __init__(self, bn):
-        """__init__(self, bn) -> LoopyMonteCarloSampling_double"""
+        r"""__init__(self, bn) -> LoopyMonteCarloSampling_double"""
         this = _pyAgrum.new_LoopyMonteCarloSampling_double(bn)
         try:
             self.this.append(this)
@@ -21536,14 +20679,13 @@ class LoopyMonteCarloSampling_double(_object):
         return None
 
     def _makeInference(self):
-        """_makeInference(self)"""
+        r"""_makeInference(self)"""
         return _pyAgrum.LoopyMonteCarloSampling_double__makeInference(self)
 
 
     def setVirtualLBPSize(self, vlbpsize):
-        """
+        r"""
         setVirtualLBPSize(self, vlbpsize)
-
 
         Parameters
         ----------
@@ -21637,9 +20779,8 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def hardEvidenceNodes(self):
-        """
+        r"""
         hardEvidenceNodes(self) -> PyObject *
-
 
         Returns
         -------
@@ -21651,9 +20792,8 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def softEvidenceNodes(self):
-        """
+        r"""
         softEvidenceNodes(self) -> PyObject *
-
 
         Returns
         -------
@@ -21665,9 +20805,8 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def targets(self):
-        """
+        r"""
         targets(self) -> PyObject *
-
 
         Returns
         -------
@@ -21679,23 +20818,21 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def setVerbosity(self, v):
-        """
+        r"""
         setVerbosity(self, v)
-
 
         Parameters
         ----------
         v : bool
-        	verbosity
+                verbosity
 
         """
         return _pyAgrum.LoopyMonteCarloSampling_double_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps):
-        """
+        r"""
         setEpsilon(self, eps)
-
 
         Parameters
         ----------
@@ -21712,9 +20849,8 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def setMinEpsilonRate(self, rate):
-        """
+        r"""
         setMinEpsilonRate(self, rate)
-
 
         Parameters
         ----------
@@ -21726,9 +20862,8 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def setMaxIter(self, max):
-        """
+        r"""
         setMaxIter(self, max)
-
 
         Parameters
         ----------
@@ -21745,9 +20880,8 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def setMaxTime(self, timeout):
-        """
+        r"""
         setMaxTime(self, timeout)
-
 
         Parameters
         ----------
@@ -21764,9 +20898,8 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def setPeriodSize(self, p):
-        """
+        r"""
         setPeriodSize(self, p)
-
 
         Parameters
         ----------
@@ -21783,9 +20916,8 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def verbosity(self):
-        """
+        r"""
         verbosity(self) -> bool
-
 
         Returns
         -------
@@ -21797,9 +20929,8 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def epsilon(self):
-        """
+        r"""
         epsilon(self) -> double
-
 
         Returns
         -------
@@ -21811,9 +20942,8 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def minEpsilonRate(self):
-        """
+        r"""
         minEpsilonRate(self) -> double
-
 
         Returns
         -------
@@ -21825,9 +20955,8 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def maxIter(self):
-        """
+        r"""
         maxIter(self) -> gum::Size
-
 
         Returns
         -------
@@ -21839,9 +20968,8 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def maxTime(self):
-        """
+        r"""
         maxTime(self) -> double
-
 
         Returns
         -------
@@ -21853,9 +20981,8 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def periodSize(self):
-        """
+        r"""
         periodSize(self) -> gum::Size
-
 
         Returns
         -------
@@ -21872,9 +20999,8 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def nbrIterations(self):
-        """
+        r"""
         nbrIterations(self) -> gum::Size
-
 
         Returns
         -------
@@ -21886,9 +21012,8 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def currentTime(self):
-        """
+        r"""
         currentTime(self) -> double
-
 
         Returns
         -------
@@ -21900,9 +21025,8 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def messageApproximationScheme(self):
-        """
+        r"""
         messageApproximationScheme(self) -> std::string
-
 
         Returns
         -------
@@ -21914,9 +21038,8 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def history(self):
-        """
+        r"""
         history(self) -> Vector_double
-
 
         Returns
         -------
@@ -21933,9 +21056,8 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def asIApproximationSchemeConfiguration(self):
-        """
+        r"""
         asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
-
 
         Returns
         -------
@@ -21946,9 +21068,8 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def makeInference(self):
-        """
+        r"""
         makeInference(self)
-
 
         Perform the heavy computations needed to compute the targets' posteriors
 
@@ -21960,10 +21081,9 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def posterior(self, *args):
-        """
+        r"""
         posterior(self, var) -> Potential_double
         posterior(self, nodeName) -> Potential_double
-
 
         Computes and returns the posterior of a node.
 
@@ -21989,9 +21109,8 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def BN(self):
-        """
+        r"""
         BN(self) -> IBayesNet_double
-
 
         Returns
         -------
@@ -22008,14 +21127,13 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def addEvidence(self, *args):
-        """
+        r"""
         addEvidence(self, id, val)
         addEvidence(self, nodeName, val)
         addEvidence(self, id, val)
         addEvidence(self, nodeName, val)
         addEvidence(self, id, vals)
         addEvidence(self, nodeName, vals)
-
 
         Adds a new evidence on a node (might be soft or hard).
 
@@ -22050,14 +21168,13 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def chgEvidence(self, *args):
-        """
+        r"""
         chgEvidence(self, id, val)
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, val)
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, vals)
         chgEvidence(self, nodeName, vals)
-
 
         Change the value of an already existing evidence on a node (might be soft or hard).
 
@@ -22092,10 +21209,9 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def hasEvidence(self, *args):
-        """
+        r"""
         hasEvidence(self, id) -> bool
         hasEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -22119,9 +21235,8 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def eraseAllEvidence(self):
-        """
+        r"""
         eraseAllEvidence(self)
-
 
         Removes all the evidence entered into the network.
 
@@ -22130,10 +21245,9 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def eraseEvidence(self, *args):
-        """
+        r"""
         eraseEvidence(self, id)
         eraseEvidence(self, nodeName)
-
 
         Remove the evidence, if any, corresponding to the node Id or name.
 
@@ -22154,9 +21268,8 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def hasHardEvidence(self, nodeName):
-        """
+        r"""
         hasHardEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -22180,10 +21293,9 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def hasSoftEvidence(self, *args):
-        """
+        r"""
         hasSoftEvidence(self, id) -> bool
         hasSoftEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -22207,9 +21319,8 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def nbrEvidence(self):
-        """
+        r"""
         nbrEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -22221,9 +21332,8 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def nbrHardEvidence(self):
-        """
+        r"""
         nbrHardEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -22235,9 +21345,8 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def nbrSoftEvidence(self):
-        """
+        r"""
         nbrSoftEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -22249,9 +21358,8 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def eraseAllTargets(self):
-        """
+        r"""
         eraseAllTargets(self)
-
 
         Clear all previously defined targets (marginal and joint targets).
 
@@ -22262,9 +21370,8 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def addAllTargets(self):
-        """
+        r"""
         addAllTargets(self)
-
 
         Add all the nodes as targets.
 
@@ -22273,10 +21380,9 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def addTarget(self, *args):
-        """
+        r"""
         addTarget(self, target)
         addTarget(self, nodeName)
-
 
         Add a marginal target to the list of targets.
 
@@ -22297,10 +21403,9 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def eraseTarget(self, *args):
-        """
+        r"""
         eraseTarget(self, target)
         eraseTarget(self, nodeName)
-
 
         Remove, if existing, the marginal target.
 
@@ -22323,10 +21428,9 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def isTarget(self, *args):
-        """
+        r"""
         isTarget(self, variable) -> bool
         isTarget(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -22352,9 +21456,8 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def nbrTargets(self):
-        """
+        r"""
         nbrTargets(self) -> gum::Size
-
 
         Returns
         -------
@@ -22366,10 +21469,9 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def H(self, *args):
-        """
+        r"""
         H(self, X) -> double
         H(self, nodeName) -> double
-
 
         Parameters
         ----------
@@ -22388,10 +21490,9 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def evidenceImpact(self, *args):
-        """
+        r"""
         evidenceImpact(self, target, evs) -> Potential_double
         evidenceImpact(self, target, evs) -> Potential_double
-
 
         Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
 
@@ -22416,10 +21517,9 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def currentPosterior(self, *args):
-        """
+        r"""
         currentPosterior(self, id) -> Potential_double
         currentPosterior(self, name) -> Potential_double
-
 
         Computes and returns the current posterior of a node.
 
@@ -22443,11 +21543,11 @@ class LoopyMonteCarloSampling_double(_object):
         """
         return _pyAgrum.LoopyMonteCarloSampling_double_currentPosterior(self, *args)
 
-LoopyMonteCarloSampling_double_swigregister = _pyAgrum.LoopyMonteCarloSampling_double_swigregister
-LoopyMonteCarloSampling_double_swigregister(LoopyMonteCarloSampling_double)
+# Register LoopyMonteCarloSampling_double in _pyAgrum:
+_pyAgrum.LoopyMonteCarloSampling_double_swigregister(LoopyMonteCarloSampling_double)
 
 class LoopyBeliefPropagation_double(_object):
-    """
+    r"""
 
     Class used for inferences using loopy belief propagation algorithm.
 
@@ -22468,7 +21568,7 @@ class LoopyBeliefPropagation_double(_object):
     __repr__ = _swig_repr
 
     def __init__(self, bn):
-        """__init__(self, bn) -> LoopyBeliefPropagation_double"""
+        r"""__init__(self, bn) -> LoopyBeliefPropagation_double"""
         this = _pyAgrum.new_LoopyBeliefPropagation_double(bn)
         try:
             self.this.append(this)
@@ -22566,9 +21666,8 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def hardEvidenceNodes(self):
-        """
+        r"""
         hardEvidenceNodes(self) -> PyObject *
-
 
         Returns
         -------
@@ -22580,9 +21679,8 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def softEvidenceNodes(self):
-        """
+        r"""
         softEvidenceNodes(self) -> PyObject *
-
 
         Returns
         -------
@@ -22594,9 +21692,8 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def targets(self):
-        """
+        r"""
         targets(self) -> PyObject *
-
 
         Returns
         -------
@@ -22608,23 +21705,21 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def setVerbosity(self, v):
-        """
+        r"""
         setVerbosity(self, v)
-
 
         Parameters
         ----------
         v : bool
-        	verbosity
+                verbosity
 
         """
         return _pyAgrum.LoopyBeliefPropagation_double_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps):
-        """
+        r"""
         setEpsilon(self, eps)
-
 
         Parameters
         ----------
@@ -22641,9 +21736,8 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def setMinEpsilonRate(self, rate):
-        """
+        r"""
         setMinEpsilonRate(self, rate)
-
 
         Parameters
         ----------
@@ -22655,9 +21749,8 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def setMaxIter(self, max):
-        """
+        r"""
         setMaxIter(self, max)
-
 
         Parameters
         ----------
@@ -22674,9 +21767,8 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def setMaxTime(self, timeout):
-        """
+        r"""
         setMaxTime(self, timeout)
-
 
         Parameters
         ----------
@@ -22693,9 +21785,8 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def setPeriodSize(self, p):
-        """
+        r"""
         setPeriodSize(self, p)
-
 
         Parameters
         ----------
@@ -22712,9 +21803,8 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def verbosity(self):
-        """
+        r"""
         verbosity(self) -> bool
-
 
         Returns
         -------
@@ -22726,9 +21816,8 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def epsilon(self):
-        """
+        r"""
         epsilon(self) -> double
-
 
         Returns
         -------
@@ -22740,9 +21829,8 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def minEpsilonRate(self):
-        """
+        r"""
         minEpsilonRate(self) -> double
-
 
         Returns
         -------
@@ -22754,9 +21842,8 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def maxIter(self):
-        """
+        r"""
         maxIter(self) -> gum::Size
-
 
         Returns
         -------
@@ -22768,9 +21855,8 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def maxTime(self):
-        """
+        r"""
         maxTime(self) -> double
-
 
         Returns
         -------
@@ -22782,9 +21868,8 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def periodSize(self):
-        """
+        r"""
         periodSize(self) -> gum::Size
-
 
         Returns
         -------
@@ -22801,9 +21886,8 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def nbrIterations(self):
-        """
+        r"""
         nbrIterations(self) -> gum::Size
-
 
         Returns
         -------
@@ -22815,9 +21899,8 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def currentTime(self):
-        """
+        r"""
         currentTime(self) -> double
-
 
         Returns
         -------
@@ -22829,9 +21912,8 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def messageApproximationScheme(self):
-        """
+        r"""
         messageApproximationScheme(self) -> std::string
-
 
         Returns
         -------
@@ -22843,9 +21925,8 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def history(self):
-        """
+        r"""
         history(self) -> Vector_double
-
 
         Returns
         -------
@@ -22862,9 +21943,8 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def asIApproximationSchemeConfiguration(self):
-        """
+        r"""
         asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
-
 
         Returns
         -------
@@ -22875,9 +21955,8 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def makeInference(self):
-        """
+        r"""
         makeInference(self)
-
 
         Perform the heavy computations needed to compute the targets' posteriors
 
@@ -22889,10 +21968,9 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def posterior(self, *args):
-        """
+        r"""
         posterior(self, var) -> Potential_double
         posterior(self, nodeName) -> Potential_double
-
 
         Computes and returns the posterior of a node.
 
@@ -22918,9 +21996,8 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def BN(self):
-        """
+        r"""
         BN(self) -> IBayesNet_double
-
 
         Returns
         -------
@@ -22937,14 +22014,13 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def addEvidence(self, *args):
-        """
+        r"""
         addEvidence(self, id, val)
         addEvidence(self, nodeName, val)
         addEvidence(self, id, val)
         addEvidence(self, nodeName, val)
         addEvidence(self, id, vals)
         addEvidence(self, nodeName, vals)
-
 
         Adds a new evidence on a node (might be soft or hard).
 
@@ -22979,14 +22055,13 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def chgEvidence(self, *args):
-        """
+        r"""
         chgEvidence(self, id, val)
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, val)
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, vals)
         chgEvidence(self, nodeName, vals)
-
 
         Change the value of an already existing evidence on a node (might be soft or hard).
 
@@ -23021,10 +22096,9 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def hasEvidence(self, *args):
-        """
+        r"""
         hasEvidence(self, id) -> bool
         hasEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -23048,9 +22122,8 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def eraseAllEvidence(self):
-        """
+        r"""
         eraseAllEvidence(self)
-
 
         Removes all the evidence entered into the network.
 
@@ -23059,10 +22132,9 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def eraseEvidence(self, *args):
-        """
+        r"""
         eraseEvidence(self, id)
         eraseEvidence(self, nodeName)
-
 
         Remove the evidence, if any, corresponding to the node Id or name.
 
@@ -23083,9 +22155,8 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def hasHardEvidence(self, nodeName):
-        """
+        r"""
         hasHardEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -23109,10 +22180,9 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def hasSoftEvidence(self, *args):
-        """
+        r"""
         hasSoftEvidence(self, id) -> bool
         hasSoftEvidence(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -23136,9 +22206,8 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def nbrEvidence(self):
-        """
+        r"""
         nbrEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -23150,9 +22219,8 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def nbrHardEvidence(self):
-        """
+        r"""
         nbrHardEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -23164,9 +22232,8 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def nbrSoftEvidence(self):
-        """
+        r"""
         nbrSoftEvidence(self) -> gum::Size
-
 
         Returns
         -------
@@ -23178,9 +22245,8 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def eraseAllTargets(self):
-        """
+        r"""
         eraseAllTargets(self)
-
 
         Clear all previously defined targets (marginal and joint targets).
 
@@ -23191,9 +22257,8 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def addAllTargets(self):
-        """
+        r"""
         addAllTargets(self)
-
 
         Add all the nodes as targets.
 
@@ -23202,10 +22267,9 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def addTarget(self, *args):
-        """
+        r"""
         addTarget(self, target)
         addTarget(self, nodeName)
-
 
         Add a marginal target to the list of targets.
 
@@ -23226,10 +22290,9 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def eraseTarget(self, *args):
-        """
+        r"""
         eraseTarget(self, target)
         eraseTarget(self, nodeName)
-
 
         Remove, if existing, the marginal target.
 
@@ -23252,10 +22315,9 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def isTarget(self, *args):
-        """
+        r"""
         isTarget(self, variable) -> bool
         isTarget(self, nodeName) -> bool
-
 
         Parameters
         ----------
@@ -23281,9 +22343,8 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def nbrTargets(self):
-        """
+        r"""
         nbrTargets(self) -> gum::Size
-
 
         Returns
         -------
@@ -23295,10 +22356,9 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def H(self, *args):
-        """
+        r"""
         H(self, X) -> double
         H(self, nodeName) -> double
-
 
         Parameters
         ----------
@@ -23317,10 +22377,9 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def evidenceImpact(self, *args):
-        """
+        r"""
         evidenceImpact(self, target, evs) -> Potential_double
         evidenceImpact(self, target, evs) -> Potential_double
-
 
         Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
 
@@ -23343,11 +22402,11 @@ class LoopyBeliefPropagation_double(_object):
         """
         return _pyAgrum.LoopyBeliefPropagation_double_evidenceImpact(self, *args)
 
-LoopyBeliefPropagation_double_swigregister = _pyAgrum.LoopyBeliefPropagation_double_swigregister
-LoopyBeliefPropagation_double_swigregister(LoopyBeliefPropagation_double)
+# Register LoopyBeliefPropagation_double in _pyAgrum:
+_pyAgrum.LoopyBeliefPropagation_double_swigregister(LoopyBeliefPropagation_double)
 
 class BruteForceKL_double(_object):
-    """
+    r"""
 
     Class representing an exact KL-divergence
 
@@ -23380,7 +22439,7 @@ class BruteForceKL_double(_object):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, P, Q) -> BruteForceKL_double
         __init__(self, kl) -> BruteForceKL_double
         """
@@ -23394,9 +22453,8 @@ class BruteForceKL_double(_object):
         return None
 
     def compute(self):
-        """
+        r"""
         compute(self) -> PyObject *
-
 
         Returns
         -------
@@ -23406,11 +22464,11 @@ class BruteForceKL_double(_object):
         """
         return _pyAgrum.BruteForceKL_double_compute(self)
 
-BruteForceKL_double_swigregister = _pyAgrum.BruteForceKL_double_swigregister
-BruteForceKL_double_swigregister(BruteForceKL_double)
+# Register BruteForceKL_double in _pyAgrum:
+_pyAgrum.BruteForceKL_double_swigregister(BruteForceKL_double)
 
 class GibbsKL_double(ApproximationScheme):
-    """
+    r"""
 
     Class representing a Gibbs-Approximated KL-divergence 
 
@@ -23447,7 +22505,7 @@ class GibbsKL_double(ApproximationScheme):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, P, Q) -> GibbsKL_double
         __init__(self, kl) -> GibbsKL_double
         """
@@ -23461,9 +22519,8 @@ class GibbsKL_double(ApproximationScheme):
         return None
 
     def setBurnIn(self, b):
-        """
+        r"""
         setBurnIn(self, b)
-
 
         Parameters
         ----------
@@ -23475,9 +22532,8 @@ class GibbsKL_double(ApproximationScheme):
 
 
     def burnIn(self):
-        """
+        r"""
         burnIn(self) -> gum::Size
-
 
         Returns
         -------
@@ -23489,9 +22545,8 @@ class GibbsKL_double(ApproximationScheme):
 
 
     def compute(self):
-        """
+        r"""
         compute(self) -> PyObject *
-
 
         Returns
         -------
@@ -23503,23 +22558,21 @@ class GibbsKL_double(ApproximationScheme):
 
 
     def setVerbosity(self, v):
-        """
+        r"""
         setVerbosity(self, v)
-
 
         Parameters
         ----------
         v : bool
-        	verbosity
+                verbosity
 
         """
         return _pyAgrum.GibbsKL_double_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps):
-        """
+        r"""
         setEpsilon(self, eps)
-
 
         Parameters
         ----------
@@ -23536,9 +22589,8 @@ class GibbsKL_double(ApproximationScheme):
 
 
     def setMinEpsilonRate(self, rate):
-        """
+        r"""
         setMinEpsilonRate(self, rate)
-
 
         Parameters
         ----------
@@ -23550,9 +22602,8 @@ class GibbsKL_double(ApproximationScheme):
 
 
     def setMaxIter(self, max):
-        """
+        r"""
         setMaxIter(self, max)
-
 
         Parameters
         ----------
@@ -23569,9 +22620,8 @@ class GibbsKL_double(ApproximationScheme):
 
 
     def setMaxTime(self, timeout):
-        """
+        r"""
         setMaxTime(self, timeout)
-
 
         Parameters
         ----------
@@ -23588,9 +22638,8 @@ class GibbsKL_double(ApproximationScheme):
 
 
     def setPeriodSize(self, p):
-        """
+        r"""
         setPeriodSize(self, p)
-
 
         Parameters
         ----------
@@ -23607,9 +22656,8 @@ class GibbsKL_double(ApproximationScheme):
 
 
     def verbosity(self):
-        """
+        r"""
         verbosity(self) -> bool
-
 
         Returns
         -------
@@ -23621,9 +22669,8 @@ class GibbsKL_double(ApproximationScheme):
 
 
     def epsilon(self):
-        """
+        r"""
         epsilon(self) -> double
-
 
         Returns
         -------
@@ -23635,9 +22682,8 @@ class GibbsKL_double(ApproximationScheme):
 
 
     def minEpsilonRate(self):
-        """
+        r"""
         minEpsilonRate(self) -> double
-
 
         Returns
         -------
@@ -23649,9 +22695,8 @@ class GibbsKL_double(ApproximationScheme):
 
 
     def maxIter(self):
-        """
+        r"""
         maxIter(self) -> gum::Size
-
 
         Returns
         -------
@@ -23663,9 +22708,8 @@ class GibbsKL_double(ApproximationScheme):
 
 
     def maxTime(self):
-        """
+        r"""
         maxTime(self) -> double
-
 
         Returns
         -------
@@ -23677,9 +22721,8 @@ class GibbsKL_double(ApproximationScheme):
 
 
     def periodSize(self):
-        """
+        r"""
         periodSize(self) -> gum::Size
-
 
         Returns
         -------
@@ -23696,9 +22739,8 @@ class GibbsKL_double(ApproximationScheme):
 
 
     def nbrIterations(self):
-        """
+        r"""
         nbrIterations(self) -> gum::Size
-
 
         Returns
         -------
@@ -23710,9 +22752,8 @@ class GibbsKL_double(ApproximationScheme):
 
 
     def currentTime(self):
-        """
+        r"""
         currentTime(self) -> double
-
 
         Returns
         -------
@@ -23724,9 +22765,8 @@ class GibbsKL_double(ApproximationScheme):
 
 
     def messageApproximationScheme(self):
-        """
+        r"""
         messageApproximationScheme(self) -> std::string
-
 
         Returns
         -------
@@ -23738,9 +22778,8 @@ class GibbsKL_double(ApproximationScheme):
 
 
     def history(self):
-        """
+        r"""
         history(self) -> Vector_double
-
 
         Returns
         -------
@@ -23757,9 +22796,8 @@ class GibbsKL_double(ApproximationScheme):
 
 
     def asIApproximationSchemeConfiguration(self):
-        """
+        r"""
         asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
-
 
         Returns
         -------
@@ -23770,9 +22808,8 @@ class GibbsKL_double(ApproximationScheme):
 
 
     def nbrDrawnVar(self):
-        """
+        r"""
         nbrDrawnVar(self) -> gum::Size
-
 
         Returns
         -------
@@ -23784,9 +22821,8 @@ class GibbsKL_double(ApproximationScheme):
 
 
     def setNbrDrawnVar(self, _nbr):
-        """
+        r"""
         setNbrDrawnVar(self, _nbr)
-
 
         Parameters
         ----------
@@ -23798,9 +22834,8 @@ class GibbsKL_double(ApproximationScheme):
 
 
     def isDrawnAtRandom(self):
-        """
+        r"""
         isDrawnAtRandom(self) -> bool
-
 
         Returns
         -------
@@ -23812,9 +22847,8 @@ class GibbsKL_double(ApproximationScheme):
 
 
     def setDrawnAtRandom(self, _atRandom):
-        """
+        r"""
         setDrawnAtRandom(self, _atRandom)
-
 
         Parameters
         ----------
@@ -23824,11 +22858,11 @@ class GibbsKL_double(ApproximationScheme):
         """
         return _pyAgrum.GibbsKL_double_setDrawnAtRandom(self, _atRandom)
 
-GibbsKL_double_swigregister = _pyAgrum.GibbsKL_double_swigregister
-GibbsKL_double_swigregister(GibbsKL_double)
+# Register GibbsKL_double in _pyAgrum:
+_pyAgrum.GibbsKL_double_swigregister(GibbsKL_double)
 
 class CredalNet_double(_object):
-    """
+    r"""
 
     Constructor used to create a CredalNet (step by step or with two BayesNet)
 
@@ -23857,12 +22891,16 @@ class CredalNet_double(_object):
     __swig_getmethods__ = {}
     __getattr__ = lambda self, name: _swig_getattr(self, CredalNet_double, name)
     NodeType_Precise = _pyAgrum.CredalNet_double_NodeType_Precise
+    
     NodeType_Credal = _pyAgrum.CredalNet_double_NodeType_Credal
+    
     NodeType_Vacuous = _pyAgrum.CredalNet_double_NodeType_Vacuous
+    
     NodeType_Indic = _pyAgrum.CredalNet_double_NodeType_Indic
+    
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self) -> CredalNet_double
         __init__(self, src_min_num, src_max_den) -> CredalNet_double
         __init__(self, src_min_num) -> CredalNet_double
@@ -23879,9 +22917,8 @@ class CredalNet_double(_object):
         return None
 
     def addVariable(self, name, card):
-        """
+        r"""
         addVariable(self, name, card) -> gum::NodeId
-
 
         Parameters
         ----------
@@ -23900,9 +22937,8 @@ class CredalNet_double(_object):
 
 
     def addArc(self, tail, head):
-        """
+        r"""
         addArc(self, tail, head)
-
 
         Adds an arc between two nodes
 
@@ -23927,9 +22963,8 @@ class CredalNet_double(_object):
 
 
     def setCPTs(self, id, cpt):
-        """
+        r"""
         setCPTs(self, id, cpt)
-
 
         Warnings
         --------
@@ -23954,10 +22989,9 @@ class CredalNet_double(_object):
 
 
     def setCPT(self, *args):
-        """
+        r"""
         setCPT(self, id, entry, cpt)
         setCPT(self, id, ins, cpt)
-
 
         Warnings
         --------
@@ -23986,9 +23020,8 @@ class CredalNet_double(_object):
 
 
     def fillConstraints(self, id, lower, upper):
-        """
+        r"""
         fillConstraints(self, id, lower, upper)
-
 
         Set the interval constraints of the credal sets of a given node (all instantiations) 
 
@@ -24014,10 +23047,9 @@ class CredalNet_double(_object):
 
 
     def fillConstraint(self, *args):
-        """
+        r"""
         fillConstraint(self, id, entry, lower, upper)
         fillConstraint(self, id, ins, lower, upper)
-
 
         Set the interval constraints of a credal set of a given node (from an instantiation index)
 
@@ -24047,9 +23079,8 @@ class CredalNet_double(_object):
 
 
     def instantiation(self, id):
-        """
+        r"""
         instantiation(self, id) -> Instantiation
-
 
         Get an Instantiation from a node id, usefull to fill the constraints of the network.
 
@@ -24070,9 +23101,8 @@ class CredalNet_double(_object):
 
 
     def domainSize(self, id):
-        """
+        r"""
         domainSize(self, id) -> gum::Size
-
 
         Parameters
         ----------
@@ -24089,10 +23119,9 @@ class CredalNet_double(_object):
 
 
     def bnToCredal(self, beta, oneNet, keepZeroes=False):
-        """
+        r"""
         bnToCredal(self, beta, oneNet, keepZeroes=False)
         bnToCredal(self, beta, oneNet)
-
 
         Perturbates the BayesNet provided as input for this CredalNet by generating intervals instead of point probabilities and then computes each vertex of each credal set.
 
@@ -24110,9 +23139,8 @@ class CredalNet_double(_object):
 
 
     def intervalToCredalWithFiles(self):
-        """
+        r"""
         intervalToCredalWithFiles(self)
-
 
         Warnings
         --------
@@ -24128,9 +23156,8 @@ class CredalNet_double(_object):
 
 
     def intervalToCredal(self):
-        """
+        r"""
         intervalToCredal(self)
-
 
         Computes the vertices of each credal set according to their interval definition (uses lrs).
 
@@ -24141,9 +23168,8 @@ class CredalNet_double(_object):
 
 
     def lagrangeNormalization(self):
-        """
+        r"""
         lagrangeNormalization(self)
-
 
         Normalize counts of a BayesNet storing counts of each events such that no probability is 0.
 
@@ -24156,11 +23182,10 @@ class CredalNet_double(_object):
 
 
     def idmLearning(self, s=0, keepZeroes=False):
-        """
+        r"""
         idmLearning(self, s=0, keepZeroes=False)
         idmLearning(self, s=0)
         idmLearning(self)
-
 
         Learns parameters from a BayesNet storing counts of events.
 
@@ -24178,9 +23203,8 @@ class CredalNet_double(_object):
 
 
     def approximatedBinarization(self):
-        """
+        r"""
         approximatedBinarization(self)
-
 
         Approximate binarization.
 
@@ -24195,9 +23219,8 @@ class CredalNet_double(_object):
 
 
     def saveBNsMinMax(self, min_path, max_path):
-        """
+        r"""
         saveBNsMinMax(self, min_path, max_path)
-
 
         If this CredalNet was built over a perturbed BayesNet, one can save the intervals as two BayesNet.
 
@@ -24215,9 +23238,8 @@ class CredalNet_double(_object):
 
 
     def computeCPTMinMax(self):
-        """
+        r"""
         computeCPTMinMax(self)
-
 
         Used with binary networks to speed-up L2U inference.
 
@@ -24228,9 +23250,8 @@ class CredalNet_double(_object):
 
 
     def src_bn(self):
-        """
+        r"""
         src_bn(self) -> BayesNet_double
-
 
         Returns
         -------
@@ -24242,9 +23263,8 @@ class CredalNet_double(_object):
 
 
     def current_bn(self):
-        """
+        r"""
         current_bn(self) -> BayesNet_double
-
 
         Returns
         -------
@@ -24256,9 +23276,8 @@ class CredalNet_double(_object):
 
 
     def credalNet_currentCpt(self):
-        """
+        r"""
         credalNet_currentCpt(self) -> gum::NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > const &
-
 
         Warnings
         --------
@@ -24274,9 +23293,8 @@ class CredalNet_double(_object):
 
 
     def credalNet_srcCpt(self):
-        """
+        r"""
         credalNet_srcCpt(self) -> gum::NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > const &
-
 
         Warnings
         --------
@@ -24292,9 +23310,8 @@ class CredalNet_double(_object):
 
 
     def currentNodeType(self, id):
-        """
+        r"""
         currentNodeType(self, id) -> gum::credal::CredalNet< double >::NodeType
-
 
         Parameters
         ----------
@@ -24311,9 +23328,8 @@ class CredalNet_double(_object):
 
 
     def nodeType(self, id):
-        """
+        r"""
         nodeType(self, id) -> gum::credal::CredalNet< double >::NodeType
-
 
         Parameters
         ----------
@@ -24330,9 +23346,8 @@ class CredalNet_double(_object):
 
 
     def epsilonMin(self):
-        """
+        r"""
         epsilonMin(self) -> double const &
-
 
         Returns
         -------
@@ -24344,9 +23359,8 @@ class CredalNet_double(_object):
 
 
     def epsilonMax(self):
-        """
+        r"""
         epsilonMax(self) -> double const &
-
 
         Returns
         -------
@@ -24358,9 +23372,8 @@ class CredalNet_double(_object):
 
 
     def epsilonMean(self):
-        """
+        r"""
         epsilonMean(self) -> double const &
-
 
         Returns
         -------
@@ -24372,9 +23385,8 @@ class CredalNet_double(_object):
 
 
     def isSeparatelySpecified(self):
-        """
+        r"""
         isSeparatelySpecified(self) -> bool const
-
 
         Returns
         -------
@@ -24386,9 +23398,8 @@ class CredalNet_double(_object):
 
 
     def hasComputedCPTMinMax(self):
-        """
+        r"""
         hasComputedCPTMinMax(self) -> bool const
-
 
         Returns
         -------
@@ -24400,9 +23411,8 @@ class CredalNet_double(_object):
 
 
     def get_CPT_min(self):
-        """
+        r"""
         get_CPT_min(self) -> std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &
-
 
         Warnings
         --------
@@ -24418,9 +23428,8 @@ class CredalNet_double(_object):
 
 
     def get_CPT_max(self):
-        """
+        r"""
         get_CPT_max(self) -> std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &
-
 
         Warnings
         --------
@@ -24436,19 +23445,19 @@ class CredalNet_double(_object):
 
 
     def __repr__(self):
-        """__repr__(self) -> std::string"""
+        r"""__repr__(self) -> std::string"""
         return _pyAgrum.CredalNet_double___repr__(self)
 
 
     def __str__(self):
-        """__str__(self) -> std::string"""
+        r"""__str__(self) -> std::string"""
         return _pyAgrum.CredalNet_double___str__(self)
 
-CredalNet_double_swigregister = _pyAgrum.CredalNet_double_swigregister
-CredalNet_double_swigregister(CredalNet_double)
+# Register CredalNet_double in _pyAgrum:
+_pyAgrum.CredalNet_double_swigregister(CredalNet_double)
 
 class CNMonteCarloSampling_double(_object):
-    """
+    r"""
 
     Class used for inferences in credal networks with Monte Carlo sampling algorithm.
 
@@ -24470,7 +23479,7 @@ class CNMonteCarloSampling_double(_object):
     __repr__ = _swig_repr
 
     def __init__(self, credalNet):
-        """__init__(self, credalNet) -> CNMonteCarloSampling_double"""
+        r"""__init__(self, credalNet) -> CNMonteCarloSampling_double"""
         this = _pyAgrum.new_CNMonteCarloSampling_double(credalNet)
         try:
             self.this.append(this)
@@ -24481,9 +23490,8 @@ class CNMonteCarloSampling_double(_object):
         return None
 
     def makeInference(self):
-        """
+        r"""
         makeInference(self)
-
 
         Starts the inference.
 
@@ -24492,9 +23500,8 @@ class CNMonteCarloSampling_double(_object):
 
 
     def insertEvidenceFile(self, path):
-        """
+        r"""
         insertEvidenceFile(self, path)
-
 
         Insert evidence from file.
 
@@ -24508,23 +23515,21 @@ class CNMonteCarloSampling_double(_object):
 
 
     def setVerbosity(self, v):
-        """
+        r"""
         setVerbosity(self, v)
-
 
         Parameters
         ----------
         v : bool
-        	verbosity
+                verbosity
 
         """
         return _pyAgrum.CNMonteCarloSampling_double_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps):
-        """
+        r"""
         setEpsilon(self, eps)
-
 
         Parameters
         ----------
@@ -24541,9 +23546,8 @@ class CNMonteCarloSampling_double(_object):
 
 
     def setMinEpsilonRate(self, rate):
-        """
+        r"""
         setMinEpsilonRate(self, rate)
-
 
         Parameters
         ----------
@@ -24555,9 +23559,8 @@ class CNMonteCarloSampling_double(_object):
 
 
     def setMaxIter(self, max):
-        """
+        r"""
         setMaxIter(self, max)
-
 
         Parameters
         ----------
@@ -24574,9 +23577,8 @@ class CNMonteCarloSampling_double(_object):
 
 
     def setMaxTime(self, timeout):
-        """
+        r"""
         setMaxTime(self, timeout)
-
 
         Parameters
         ----------
@@ -24593,9 +23595,8 @@ class CNMonteCarloSampling_double(_object):
 
 
     def setPeriodSize(self, p):
-        """
+        r"""
         setPeriodSize(self, p)
-
 
         Parameters
         ----------
@@ -24612,9 +23613,8 @@ class CNMonteCarloSampling_double(_object):
 
 
     def verbosity(self):
-        """
+        r"""
         verbosity(self) -> bool
-
 
         Returns
         -------
@@ -24626,9 +23626,8 @@ class CNMonteCarloSampling_double(_object):
 
 
     def epsilon(self):
-        """
+        r"""
         epsilon(self) -> double
-
 
         Returns
         -------
@@ -24640,9 +23639,8 @@ class CNMonteCarloSampling_double(_object):
 
 
     def minEpsilonRate(self):
-        """
+        r"""
         minEpsilonRate(self) -> double
-
 
         Returns
         -------
@@ -24654,9 +23652,8 @@ class CNMonteCarloSampling_double(_object):
 
 
     def maxIter(self):
-        """
+        r"""
         maxIter(self) -> gum::Size
-
 
         Returns
         -------
@@ -24668,9 +23665,8 @@ class CNMonteCarloSampling_double(_object):
 
 
     def maxTime(self):
-        """
+        r"""
         maxTime(self) -> double
-
 
         Returns
         -------
@@ -24682,9 +23678,8 @@ class CNMonteCarloSampling_double(_object):
 
 
     def periodSize(self):
-        """
+        r"""
         periodSize(self) -> gum::Size
-
 
         Returns
         -------
@@ -24701,9 +23696,8 @@ class CNMonteCarloSampling_double(_object):
 
 
     def nbrIterations(self):
-        """
+        r"""
         nbrIterations(self) -> gum::Size
-
 
         Returns
         -------
@@ -24715,9 +23709,8 @@ class CNMonteCarloSampling_double(_object):
 
 
     def currentTime(self):
-        """
+        r"""
         currentTime(self) -> double
-
 
         Returns
         -------
@@ -24729,9 +23722,8 @@ class CNMonteCarloSampling_double(_object):
 
 
     def messageApproximationScheme(self):
-        """
+        r"""
         messageApproximationScheme(self) -> std::string
-
 
         Returns
         -------
@@ -24743,9 +23735,8 @@ class CNMonteCarloSampling_double(_object):
 
 
     def history(self):
-        """
+        r"""
         history(self) -> Vector_double
-
 
         Returns
         -------
@@ -24762,9 +23753,8 @@ class CNMonteCarloSampling_double(_object):
 
 
     def asIApproximationSchemeConfiguration(self):
-        """
+        r"""
         asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
-
 
         Returns
         -------
@@ -24775,9 +23765,8 @@ class CNMonteCarloSampling_double(_object):
 
 
     def setRepetitiveInd(self, flag):
-        """
+        r"""
         setRepetitiveInd(self, flag)
-
 
         Parameters
         ----------
@@ -24789,10 +23778,9 @@ class CNMonteCarloSampling_double(_object):
 
 
     def marginalMax(self, *args):
-        """
+        r"""
         marginalMax(self, id) -> Vector_double
         marginalMax(self, name) -> Vector_double
-
 
         Get the upper marginals of a given node id.
 
@@ -24818,10 +23806,9 @@ class CNMonteCarloSampling_double(_object):
 
 
     def marginalMin(self, *args):
-        """
+        r"""
         marginalMin(self, id) -> Vector_double
         marginalMin(self, name) -> Vector_double
-
 
         Get the lower marginals of a given node id.
 
@@ -24847,9 +23834,8 @@ class CNMonteCarloSampling_double(_object):
 
 
     def insertModalsFile(self, path):
-        """
+        r"""
         insertModalsFile(self, path)
-
 
         Insert variables modalities from file to compute expectations.
 
@@ -24863,9 +23849,8 @@ class CNMonteCarloSampling_double(_object):
 
 
     def dynamicExpMax(self, varName):
-        """
+        r"""
         dynamicExpMax(self, varName) -> Vector_double
-
 
         Get the upper dynamic expectation of a given variable prefix.
 
@@ -24884,9 +23869,8 @@ class CNMonteCarloSampling_double(_object):
 
 
     def dynamicExpMin(self, varName):
-        """
+        r"""
         dynamicExpMin(self, varName) -> Vector_double
-
 
         Get the lower dynamic expectation of a given variable prefix.
 
@@ -24903,11 +23887,11 @@ class CNMonteCarloSampling_double(_object):
         """
         return _pyAgrum.CNMonteCarloSampling_double_dynamicExpMin(self, varName)
 
-CNMonteCarloSampling_double_swigregister = _pyAgrum.CNMonteCarloSampling_double_swigregister
-CNMonteCarloSampling_double_swigregister(CNMonteCarloSampling_double)
+# Register CNMonteCarloSampling_double in _pyAgrum:
+_pyAgrum.CNMonteCarloSampling_double_swigregister(CNMonteCarloSampling_double)
 
 class CNLoopyPropagation_double(_object):
-    """
+    r"""
 
     Class used for inferences in credal networks with Loopy Propagation algorithm.
 
@@ -24928,13 +23912,15 @@ class CNLoopyPropagation_double(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, CNLoopyPropagation_double, name)
     __repr__ = _swig_repr
     InferenceType_nodeToNeighbours = _pyAgrum.CNLoopyPropagation_double_InferenceType_nodeToNeighbours
+    
     InferenceType_ordered = _pyAgrum.CNLoopyPropagation_double_InferenceType_ordered
+    
     InferenceType_randomOrder = _pyAgrum.CNLoopyPropagation_double_InferenceType_randomOrder
+    
 
     def makeInference(self):
-        """
+        r"""
         makeInference(self)
-
 
         Starts the inference.
 
@@ -24943,10 +23929,9 @@ class CNLoopyPropagation_double(_object):
 
 
     def inferenceType(self, *args):
-        """
+        r"""
         inferenceType(self, inft)
         inferenceType(self) -> gum::credal::CNLoopyPropagation< double >::InferenceType
-
 
         Returns
         -------
@@ -24958,9 +23943,8 @@ class CNLoopyPropagation_double(_object):
 
 
     def eraseAllEvidence(self):
-        """
+        r"""
         eraseAllEvidence(self)
-
 
         Erase all inference related data to perform another one.
 
@@ -24971,9 +23955,8 @@ class CNLoopyPropagation_double(_object):
 
 
     def saveInference(self, path):
-        """
+        r"""
         saveInference(self, path)
-
 
         Saves marginals.
 
@@ -24987,7 +23970,7 @@ class CNLoopyPropagation_double(_object):
 
 
     def __init__(self, cnet):
-        """__init__(self, cnet) -> CNLoopyPropagation_double"""
+        r"""__init__(self, cnet) -> CNLoopyPropagation_double"""
         this = _pyAgrum.new_CNLoopyPropagation_double(cnet)
         try:
             self.this.append(this)
@@ -24998,9 +23981,8 @@ class CNLoopyPropagation_double(_object):
         return None
 
     def insertEvidenceFile(self, path):
-        """
+        r"""
         insertEvidenceFile(self, path)
-
 
         Insert evidence from file.
 
@@ -25014,23 +23996,21 @@ class CNLoopyPropagation_double(_object):
 
 
     def setVerbosity(self, v):
-        """
+        r"""
         setVerbosity(self, v)
-
 
         Parameters
         ----------
         v : bool
-        	verbosity
+                verbosity
 
         """
         return _pyAgrum.CNLoopyPropagation_double_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps):
-        """
+        r"""
         setEpsilon(self, eps)
-
 
         Parameters
         ----------
@@ -25047,9 +24027,8 @@ class CNLoopyPropagation_double(_object):
 
 
     def setMinEpsilonRate(self, rate):
-        """
+        r"""
         setMinEpsilonRate(self, rate)
-
 
         Parameters
         ----------
@@ -25061,9 +24040,8 @@ class CNLoopyPropagation_double(_object):
 
 
     def setMaxIter(self, max):
-        """
+        r"""
         setMaxIter(self, max)
-
 
         Parameters
         ----------
@@ -25080,9 +24058,8 @@ class CNLoopyPropagation_double(_object):
 
 
     def setMaxTime(self, timeout):
-        """
+        r"""
         setMaxTime(self, timeout)
-
 
         Parameters
         ----------
@@ -25099,9 +24076,8 @@ class CNLoopyPropagation_double(_object):
 
 
     def setPeriodSize(self, p):
-        """
+        r"""
         setPeriodSize(self, p)
-
 
         Parameters
         ----------
@@ -25118,9 +24094,8 @@ class CNLoopyPropagation_double(_object):
 
 
     def verbosity(self):
-        """
+        r"""
         verbosity(self) -> bool
-
 
         Returns
         -------
@@ -25132,9 +24107,8 @@ class CNLoopyPropagation_double(_object):
 
 
     def epsilon(self):
-        """
+        r"""
         epsilon(self) -> double
-
 
         Returns
         -------
@@ -25146,9 +24120,8 @@ class CNLoopyPropagation_double(_object):
 
 
     def minEpsilonRate(self):
-        """
+        r"""
         minEpsilonRate(self) -> double
-
 
         Returns
         -------
@@ -25160,9 +24133,8 @@ class CNLoopyPropagation_double(_object):
 
 
     def maxIter(self):
-        """
+        r"""
         maxIter(self) -> gum::Size
-
 
         Returns
         -------
@@ -25174,9 +24146,8 @@ class CNLoopyPropagation_double(_object):
 
 
     def maxTime(self):
-        """
+        r"""
         maxTime(self) -> double
-
 
         Returns
         -------
@@ -25188,9 +24159,8 @@ class CNLoopyPropagation_double(_object):
 
 
     def periodSize(self):
-        """
+        r"""
         periodSize(self) -> gum::Size
-
 
         Returns
         -------
@@ -25207,9 +24177,8 @@ class CNLoopyPropagation_double(_object):
 
 
     def nbrIterations(self):
-        """
+        r"""
         nbrIterations(self) -> gum::Size
-
 
         Returns
         -------
@@ -25221,9 +24190,8 @@ class CNLoopyPropagation_double(_object):
 
 
     def currentTime(self):
-        """
+        r"""
         currentTime(self) -> double
-
 
         Returns
         -------
@@ -25235,9 +24203,8 @@ class CNLoopyPropagation_double(_object):
 
 
     def messageApproximationScheme(self):
-        """
+        r"""
         messageApproximationScheme(self) -> std::string
-
 
         Returns
         -------
@@ -25249,9 +24216,8 @@ class CNLoopyPropagation_double(_object):
 
 
     def history(self):
-        """
+        r"""
         history(self) -> Vector_double
-
 
         Returns
         -------
@@ -25268,9 +24234,8 @@ class CNLoopyPropagation_double(_object):
 
 
     def asIApproximationSchemeConfiguration(self):
-        """
+        r"""
         asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
-
 
         Returns
         -------
@@ -25281,9 +24246,8 @@ class CNLoopyPropagation_double(_object):
 
 
     def setRepetitiveInd(self, flag):
-        """
+        r"""
         setRepetitiveInd(self, flag)
-
 
         Parameters
         ----------
@@ -25295,10 +24259,9 @@ class CNLoopyPropagation_double(_object):
 
 
     def marginalMax(self, *args):
-        """
+        r"""
         marginalMax(self, id) -> Vector_double
         marginalMax(self, name) -> Vector_double
-
 
         Get the upper marginals of a given node id.
 
@@ -25324,10 +24287,9 @@ class CNLoopyPropagation_double(_object):
 
 
     def marginalMin(self, *args):
-        """
+        r"""
         marginalMin(self, id) -> Vector_double
         marginalMin(self, name) -> Vector_double
-
 
         Get the lower marginals of a given node id.
 
@@ -25353,9 +24315,8 @@ class CNLoopyPropagation_double(_object):
 
 
     def insertModalsFile(self, path):
-        """
+        r"""
         insertModalsFile(self, path)
-
 
         Insert variables modalities from file to compute expectations.
 
@@ -25369,9 +24330,8 @@ class CNLoopyPropagation_double(_object):
 
 
     def dynamicExpMax(self, varName):
-        """
+        r"""
         dynamicExpMax(self, varName) -> Vector_double
-
 
         Get the upper dynamic expectation of a given variable prefix.
 
@@ -25390,9 +24350,8 @@ class CNLoopyPropagation_double(_object):
 
 
     def dynamicExpMin(self, varName):
-        """
+        r"""
         dynamicExpMin(self, varName) -> Vector_double
-
 
         Get the lower dynamic expectation of a given variable prefix.
 
@@ -25409,11 +24368,11 @@ class CNLoopyPropagation_double(_object):
         """
         return _pyAgrum.CNLoopyPropagation_double_dynamicExpMin(self, varName)
 
-CNLoopyPropagation_double_swigregister = _pyAgrum.CNLoopyPropagation_double_swigregister
-CNLoopyPropagation_double_swigregister(CNLoopyPropagation_double)
+# Register CNLoopyPropagation_double in _pyAgrum:
+_pyAgrum.CNLoopyPropagation_double_swigregister(CNLoopyPropagation_double)
 
 class InfluenceDiagram_double(DAGmodel):
-    """
+    r"""
 
     InfluenceDiagram represents an Influence Diagram.
 
@@ -25442,7 +24401,7 @@ class InfluenceDiagram_double(DAGmodel):
         return None
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self) -> InfluenceDiagram_double
         __init__(self, source) -> InfluenceDiagram_double
         """
@@ -25453,9 +24412,8 @@ class InfluenceDiagram_double(DAGmodel):
             self.this = this
 
     def toDot(self):
-        """
+        r"""
         toDot(self) -> std::string
-
 
         Returns
         -------
@@ -25467,9 +24425,8 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def cpt(self, varId):
-        """
+        r"""
         cpt(self, varId) -> Potential_double
-
 
         Returns the CPT of a variable.
 
@@ -25498,9 +24455,8 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def utility(self, varId):
-        """
+        r"""
         utility(self, varId) -> Potential_double
-
 
         Parameters
         ----------
@@ -25527,9 +24483,8 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def isUtilityNode(self, varId):
-        """
+        r"""
         isUtilityNode(self, varId) -> bool
-
 
         Parameters
         ----------
@@ -25546,9 +24501,8 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def isDecisionNode(self, varId):
-        """
+        r"""
         isDecisionNode(self, varId) -> bool
-
 
         Parameters
         ----------
@@ -25565,9 +24519,8 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def isChanceNode(self, varId):
-        """
+        r"""
         isChanceNode(self, varId) -> bool
-
 
         Parameters
         ----------
@@ -25584,9 +24537,8 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def utilityNodeSize(self):
-        """
+        r"""
         utilityNodeSize(self) -> gum::Size
-
 
         Returns
         -------
@@ -25598,9 +24550,8 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def chanceNodeSize(self):
-        """
+        r"""
         chanceNodeSize(self) -> gum::Size
-
 
         Returns
         -------
@@ -25612,9 +24563,8 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def decisionNodeSize(self):
-        """
+        r"""
         decisionNodeSize(self) -> gum::Size
-
 
         Returns
         -------
@@ -25626,9 +24576,8 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def variable(self, id):
-        """
+        r"""
         variable(self, id) -> DiscreteVariable
-
 
         Parameters
         ----------
@@ -25650,9 +24599,8 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def nodeId(self, var):
-        """
+        r"""
         nodeId(self, var) -> gum::NodeId
-
 
         Parameters
         ----------
@@ -25674,9 +24622,8 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def idFromName(self, name):
-        """
+        r"""
         idFromName(self, name) -> gum::NodeId
-
 
         Returns a variable's id given its name.
 
@@ -25700,9 +24647,8 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def variableFromName(self, name):
-        """
+        r"""
         variableFromName(self, name) -> DiscreteVariable
-
 
         Parameters
         ----------
@@ -25724,10 +24670,9 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def add(self, variable, id=0):
-        """
+        r"""
         add(self, variable, id=0) -> gum::NodeId
         add(self, variable) -> gum::NodeId
-
 
         Add a chance variable, it's associate node and it's CPT.
 
@@ -25759,10 +24704,9 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def addDecisionNode(self, variable, id=0):
-        """
+        r"""
         addDecisionNode(self, variable, id=0) -> gum::NodeId
         addDecisionNode(self, variable) -> gum::NodeId
-
 
         Add a decision variable.
 
@@ -25794,12 +24738,11 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def addChanceNode(self, *args):
-        """
+        r"""
         addChanceNode(self, variable, id=0) -> gum::NodeId
         addChanceNode(self, variable) -> gum::NodeId
         addChanceNode(self, variable, aContent, id=0) -> gum::NodeId
         addChanceNode(self, variable, aContent) -> gum::NodeId
-
 
         Add a chance variable, it's associate node and it's CPT.
 
@@ -25831,12 +24774,11 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def addUtilityNode(self, *args):
-        """
+        r"""
         addUtilityNode(self, variable, id=0) -> gum::NodeId
         addUtilityNode(self, variable) -> gum::NodeId
         addUtilityNode(self, variable, aContent, id=0) -> gum::NodeId
         addUtilityNode(self, variable, aContent) -> gum::NodeId
-
 
         Add a utility variable, it's associate node and it's UT. 
 
@@ -25870,10 +24812,9 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def erase(self, *args):
-        """
+        r"""
         erase(self, id)
         erase(self, var)
-
 
         Erase a Variable from the network and remove the variable from all his childs.
 
@@ -25891,9 +24832,8 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def changeVariableName(self, id, new_name):
-        """
+        r"""
         changeVariableName(self, id, new_name)
-
 
         Parameters
         ----------
@@ -25914,9 +24854,8 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def addArc(self, tail, head):
-        """
+        r"""
         addArc(self, tail, head)
-
 
         Add an arc in the ID, and update diagram's potential nodes cpt if necessary.
 
@@ -25939,10 +24878,9 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def eraseArc(self, *args):
-        """
+        r"""
         eraseArc(self, arc)
         eraseArc(self, tail, head)
-
 
         Removes an arc in the ID, and update diagram's potential nodes cpt if necessary.
 
@@ -25962,9 +24900,8 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def decisionOrderExists(self):
-        """
+        r"""
         decisionOrderExists(self) -> bool
-
 
         Returns
         -------
@@ -25976,9 +24913,8 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def getDecisionGraph(self):
-        """
+        r"""
         getDecisionGraph(self) -> DAG
-
 
         Returns
         -------
@@ -25990,9 +24926,8 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def getDecisionOrder(self):
-        """
+        r"""
         getDecisionOrder(self) -> Vector_int
-
 
         Returns
         -------
@@ -26009,9 +24944,8 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def existsPathBetween(self, src, dest):
-        """
+        r"""
         existsPathBetween(self, src, dest) -> bool
-
 
         Returns
         -------
@@ -26023,9 +24957,8 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def names(self):
-        """
+        r"""
         names(self) -> PyObject *
-
 
         Returns
         -------
@@ -26037,9 +24970,8 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def ids(self):
-        """
+        r"""
         ids(self) -> PyObject *
-
 
         .. note:: Deprecated in pyAgrum>0.13.0
             Please use nodes() instead
@@ -26049,9 +24981,8 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def arcs(self):
-        """
+        r"""
         arcs(self) -> PyObject *
-
 
         Returns
         -------
@@ -26063,9 +24994,8 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def parents(self, id):
-        """
+        r"""
         parents(self, id) -> PyObject *
-
 
         Parameters
         ----------
@@ -26082,9 +25012,8 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def children(self, id):
-        """
+        r"""
         children(self, id) -> PyObject *
-
 
         Parameters
         ----------
@@ -26101,10 +25030,9 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def loadBIFXML(self, *args):
-        """
+        r"""
         loadBIFXML(self, name, l) -> bool
         loadBIFXML(self, name) -> bool
-
 
         Load a BIFXML file.
 
@@ -26125,9 +25053,8 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def saveBIFXML(self, name):
-        """
+        r"""
         saveBIFXML(self, name)
-
 
         Save the BayesNet in a BIFXML file.
 
@@ -26141,19 +25068,19 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def __repr__(self):
-        """__repr__(self) -> std::string"""
+        r"""__repr__(self) -> std::string"""
         return _pyAgrum.InfluenceDiagram_double___repr__(self)
 
 
     def __str__(self):
-        """__str__(self) -> std::string"""
+        r"""__str__(self) -> std::string"""
         return _pyAgrum.InfluenceDiagram_double___str__(self)
 
-InfluenceDiagram_double_swigregister = _pyAgrum.InfluenceDiagram_double_swigregister
-InfluenceDiagram_double_swigregister(InfluenceDiagram_double)
+# Register InfluenceDiagram_double in _pyAgrum:
+_pyAgrum.InfluenceDiagram_double_swigregister(InfluenceDiagram_double)
 
 class InfluenceDiagramInference_double(_object):
-    """Proxy of C++ gum::InfluenceDiagramInference< double > class."""
+    r"""Proxy of C++ gum::InfluenceDiagramInference< double > class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, InfluenceDiagramInference_double, name, value)
@@ -26162,7 +25089,7 @@ class InfluenceDiagramInference_double(_object):
     __repr__ = _swig_repr
 
     def __init__(self, infDiag):
-        """__init__(self, infDiag) -> InfluenceDiagramInference_double"""
+        r"""__init__(self, infDiag) -> InfluenceDiagramInference_double"""
         this = _pyAgrum.new_InfluenceDiagramInference_double(infDiag)
         try:
             self.this.append(this)
@@ -26173,9 +25100,8 @@ class InfluenceDiagramInference_double(_object):
         return None
 
     def makeInference(self):
-        """
+        r"""
         makeInference(self)
-
 
         Makes the inference. 
 
@@ -26184,9 +25110,8 @@ class InfluenceDiagramInference_double(_object):
 
 
     def getMEU(self):
-        """
+        r"""
         getMEU(self) -> double
-
 
         Returns maximum expected utility obtained from inference.
 
@@ -26200,9 +25125,8 @@ class InfluenceDiagramInference_double(_object):
 
 
     def getBestDecisionChoice(self, decisionId):
-        """
+        r"""
         getBestDecisionChoice(self, decisionId) -> gum::Idx
-
 
         Returns best choice for decision variable given in parameter ( based upon MEU criteria )
 
@@ -26223,9 +25147,8 @@ class InfluenceDiagramInference_double(_object):
 
 
     def displayResult(self):
-        """
+        r"""
         displayResult(self) -> std::string
-
 
         Displays the result of an inference.
 
@@ -26234,9 +25157,8 @@ class InfluenceDiagramInference_double(_object):
 
 
     def insertEvidence(self, evidenceList):
-        """
+        r"""
         insertEvidence(self, evidenceList)
-
 
         Insert new evidence in the graph.
 
@@ -26259,9 +25181,8 @@ class InfluenceDiagramInference_double(_object):
 
 
     def eraseEvidence(self, evidence):
-        """
+        r"""
         eraseEvidence(self, evidence)
-
 
         Parameters
         ----------
@@ -26278,9 +25199,8 @@ class InfluenceDiagramInference_double(_object):
 
 
     def eraseAllEvidence(self):
-        """
+        r"""
         eraseAllEvidence(self)
-
 
         Removes all the evidence entered into the diagram.
 
@@ -26289,9 +25209,8 @@ class InfluenceDiagramInference_double(_object):
 
 
     def displayStrongJunctionTree(self, *args):
-        """
+        r"""
         displayStrongJunctionTree(self, stream)
-
 
         Displays on terminal the result of strong junction tree computation for test purpose only.
 
@@ -26304,9 +25223,8 @@ class InfluenceDiagramInference_double(_object):
 
 
     def influenceDiagram(self):
-        """
+        r"""
         influenceDiagram(self) -> InfluenceDiagram_double
-
 
         Returns a constant reference over the InfluenceDiagram on which this class work.
 
@@ -26403,14 +25321,13 @@ class InfluenceDiagramInference_double(_object):
 
 
     def _setEvidence(self, evidences):
-        """_setEvidence(self, evidences)"""
+        r"""_setEvidence(self, evidences)"""
         return _pyAgrum.InfluenceDiagramInference_double__setEvidence(self, evidences)
 
 
     def junctionTreeToDot(self):
-        """
+        r"""
         junctionTreeToDot(self) -> std::string const
-
 
         Returns
         -------
@@ -26420,11 +25337,11 @@ class InfluenceDiagramInference_double(_object):
         """
         return _pyAgrum.InfluenceDiagramInference_double_junctionTreeToDot(self)
 
-InfluenceDiagramInference_double_swigregister = _pyAgrum.InfluenceDiagramInference_double_swigregister
-InfluenceDiagramInference_double_swigregister(InfluenceDiagramInference_double)
+# Register InfluenceDiagramInference_double in _pyAgrum:
+_pyAgrum.InfluenceDiagramInference_double_swigregister(InfluenceDiagramInference_double)
 
 class BNLearner_double(_object):
-    """
+    r"""
 
     Available constructors:
     	``BNLearner(filename) -> BNLearner``
@@ -26453,7 +25370,7 @@ class BNLearner_double(_object):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        """
+        r"""
         __init__(self, filename, missing_symbols) -> BNLearner_double
         __init__(self, filename) -> BNLearner_double
         __init__(self, db) -> BNLearner_double
@@ -26472,9 +25389,8 @@ class BNLearner_double(_object):
         return None
 
     def learnBN(self):
-        """
+        r"""
         learnBN(self) -> BayesNet_double
-
 
         learn a BayesNet from a file (must have read the db before)
 
@@ -26488,12 +25404,11 @@ class BNLearner_double(_object):
 
 
     def learnParameters(self, *args):
-        """
+        r"""
         learnParameters(self, dag, take_into_account_score=True) -> BayesNet_double
         learnParameters(self, dag) -> BayesNet_double
         learnParameters(self, take_into_account_score=True) -> BayesNet_double
         learnParameters(self) -> BayesNet_double
-
 
         learns a BN (its parameters) when its structure is known.
 
@@ -26521,23 +25436,21 @@ class BNLearner_double(_object):
 
 
     def setVerbosity(self, v):
-        """
+        r"""
         setVerbosity(self, v)
-
 
         Parameters
         ----------
         v : bool
-        	verbosity
+                verbosity
 
         """
         return _pyAgrum.BNLearner_double_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps):
-        """
+        r"""
         setEpsilon(self, eps)
-
 
         Parameters
         ----------
@@ -26554,9 +25467,8 @@ class BNLearner_double(_object):
 
 
     def setMinEpsilonRate(self, rate):
-        """
+        r"""
         setMinEpsilonRate(self, rate)
-
 
         Parameters
         ----------
@@ -26568,9 +25480,8 @@ class BNLearner_double(_object):
 
 
     def setMaxIter(self, max):
-        """
+        r"""
         setMaxIter(self, max)
-
 
         Parameters
         ----------
@@ -26587,9 +25498,8 @@ class BNLearner_double(_object):
 
 
     def setMaxTime(self, timeout):
-        """
+        r"""
         setMaxTime(self, timeout)
-
 
         Parameters
         ----------
@@ -26606,9 +25516,8 @@ class BNLearner_double(_object):
 
 
     def setPeriodSize(self, p):
-        """
+        r"""
         setPeriodSize(self, p)
-
 
         Parameters
         ----------
@@ -26625,9 +25534,8 @@ class BNLearner_double(_object):
 
 
     def verbosity(self):
-        """
+        r"""
         verbosity(self) -> bool
-
 
         Returns
         -------
@@ -26639,9 +25547,8 @@ class BNLearner_double(_object):
 
 
     def epsilon(self):
-        """
+        r"""
         epsilon(self) -> double
-
 
         Returns
         -------
@@ -26653,9 +25560,8 @@ class BNLearner_double(_object):
 
 
     def minEpsilonRate(self):
-        """
+        r"""
         minEpsilonRate(self) -> double
-
 
         Returns
         -------
@@ -26667,9 +25573,8 @@ class BNLearner_double(_object):
 
 
     def maxIter(self):
-        """
+        r"""
         maxIter(self) -> gum::Size
-
 
         Returns
         -------
@@ -26681,9 +25586,8 @@ class BNLearner_double(_object):
 
 
     def maxTime(self):
-        """
+        r"""
         maxTime(self) -> double
-
 
         Returns
         -------
@@ -26695,9 +25599,8 @@ class BNLearner_double(_object):
 
 
     def periodSize(self):
-        """
+        r"""
         periodSize(self) -> gum::Size
-
 
         Returns
         -------
@@ -26714,9 +25617,8 @@ class BNLearner_double(_object):
 
 
     def nbrIterations(self):
-        """
+        r"""
         nbrIterations(self) -> gum::Size
-
 
         Returns
         -------
@@ -26728,9 +25630,8 @@ class BNLearner_double(_object):
 
 
     def currentTime(self):
-        """
+        r"""
         currentTime(self) -> double
-
 
         Returns
         -------
@@ -26742,9 +25643,8 @@ class BNLearner_double(_object):
 
 
     def messageApproximationScheme(self):
-        """
+        r"""
         messageApproximationScheme(self) -> std::string
-
 
         Returns
         -------
@@ -26756,9 +25656,8 @@ class BNLearner_double(_object):
 
 
     def history(self):
-        """
+        r"""
         history(self) -> Vector_double
-
 
         Returns
         -------
@@ -26775,9 +25674,8 @@ class BNLearner_double(_object):
 
 
     def asIApproximationSchemeConfiguration(self):
-        """
+        r"""
         asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
-
 
         Returns
         -------
@@ -26788,407 +25686,159 @@ class BNLearner_double(_object):
 
 
     def learnDAG(self):
-        """
-        learnDAG(self) -> DAG
-
-
-        learn a structure from a file (must have read the db before)
-
-        Returns
-        -------
-        pyAgrum.DAG
-        	the learned DAG
-
-        """
+        r"""learnDAG(self) -> DAG"""
         return _pyAgrum.BNLearner_double_learnDAG(self)
 
 
     def names(self):
-        """
-        names(self) -> Vector_string
-
-
-        Returns
-        -------
-        str
-        	the names of the variables in the database
-
-        """
+        r"""names(self) -> Vector_string"""
         return _pyAgrum.BNLearner_double_names(self)
 
 
     def modalities(self):
-        """
-        modalities(self) -> std::vector< gum::Size,std::allocator< gum::Size > > const &
-
-
-        Returns
-        -------
-        vector<pos,size>
-        	the number of modalities of the database's variables.
-
-        """
+        r"""modalities(self) -> std::vector< gum::Size,std::allocator< gum::Size > > const &"""
         return _pyAgrum.BNLearner_double_modalities(self)
 
 
     def idFromName(self, var_name):
-        """
-        idFromName(self, var_name) -> gum::NodeId
-
-
-        Parameters
-        ----------
-        var_names : str
-        	a variable's name
-
-        Returns
-        -------
-        int
-        	the node id corresponding to a variable name
-
-        Raises
-        ------
-        gum.MissingVariableInDatabase
-        	If a variable of the BN is not found in the database.
-
-        """
+        r"""idFromName(self, var_name) -> gum::NodeId"""
         return _pyAgrum.BNLearner_double_idFromName(self, var_name)
 
 
     def nameFromId(self, id):
-        """
-        nameFromId(self, id) -> std::string const &
-
-
-        Parameters
-        ----------
-        id
-        	a node id
-
-        Returns
-        -------
-        str
-        	the variable's name
-
-        """
+        r"""nameFromId(self, id) -> std::string const &"""
         return _pyAgrum.BNLearner_double_nameFromId(self, id)
 
 
     def useScoreAIC(self):
-        """
-        useScoreAIC(self)
-
-
-        Indicate that we wish to use an AIC score.
-
-        """
+        r"""useScoreAIC(self)"""
         return _pyAgrum.BNLearner_double_useScoreAIC(self)
 
 
     def useScoreBD(self):
-        """
-        useScoreBD(self)
-
-
-        Indicate that we wish to use a BD score.
-
-        """
+        r"""useScoreBD(self)"""
         return _pyAgrum.BNLearner_double_useScoreBD(self)
 
 
     def useScoreBDeu(self):
-        """
-        useScoreBDeu(self)
-
-
-        Indicate that we wish to use a BDeu score.
-
-        """
+        r"""useScoreBDeu(self)"""
         return _pyAgrum.BNLearner_double_useScoreBDeu(self)
 
 
     def useScoreBIC(self):
-        """
-        useScoreBIC(self)
-
-
-        Indicate that we wish to use a BIC score.
-
-        """
+        r"""useScoreBIC(self)"""
         return _pyAgrum.BNLearner_double_useScoreBIC(self)
 
 
     def useScoreK2(self):
-        """
-        useScoreK2(self)
-
-
-        Indicate that we wish to use a K2 score.
-
-        """
+        r"""useScoreK2(self)"""
         return _pyAgrum.BNLearner_double_useScoreK2(self)
 
 
     def useScoreLog2Likelihood(self):
-        """
-        useScoreLog2Likelihood(self)
-
-
-        Indicate that we wish to use a Log2Likelihood score.
-
-        """
+        r"""useScoreLog2Likelihood(self)"""
         return _pyAgrum.BNLearner_double_useScoreLog2Likelihood(self)
 
 
     def setAprioriWeight(self, weight):
-        """
-        setAprioriWeight(self, weight)
-
-
-        Parameters
-        ----------
-        weight : double
-        	the apriori weight
-
-        """
+        r"""setAprioriWeight(self, weight)"""
         return _pyAgrum.BNLearner_double_setAprioriWeight(self, weight)
 
 
     def useNoApriori(self):
-        """
-        useNoApriori(self)
-
-
-        Use no apriori.
-
-        """
+        r"""useNoApriori(self)"""
         return _pyAgrum.BNLearner_double_useNoApriori(self)
 
 
     def useAprioriSmoothing(self, *args):
-        """
+        r"""
         useAprioriSmoothing(self, weight=-1)
         useAprioriSmoothing(self)
-
-
-        Use the apriori smoothing.
-
-        Parameters
-        ----------
-        weight : double
-        	pass in argument a weight if you wish to assign a weight to the smoothing, else the current weight of the learner will be used.
-
         """
         return _pyAgrum.BNLearner_double_useAprioriSmoothing(self, *args)
 
 
     def useAprioriDirichlet(self, filename):
-        """
-        useAprioriDirichlet(self, filename)
-
-
-        Use the Dirichlet apriori.
-
-        Parameters
-        ----------
-        filename : str
-        	the Dirichlet related database
-
-        """
+        r"""useAprioriDirichlet(self, filename)"""
         return _pyAgrum.BNLearner_double_useAprioriDirichlet(self, filename)
 
 
     def useGreedyHillClimbing(self):
-        """
-        useGreedyHillClimbing(self)
-
-
-        Indicate that we wish to use a greedy hill climbing algorithm.
-
-        """
+        r"""useGreedyHillClimbing(self)"""
         return _pyAgrum.BNLearner_double_useGreedyHillClimbing(self)
 
 
     def useLocalSearchWithTabuList(self, *args):
-        """
+        r"""
         useLocalSearchWithTabuList(self, tabu_size=100, nb_decrease=2)
         useLocalSearchWithTabuList(self, tabu_size=100)
         useLocalSearchWithTabuList(self)
-
-
-        Indicate that we wish to use a local search with tabu list
-
-        Parameters
-        ----------
-        tabu_size : int
-        	The size of the tabu list
-        nb_decrease : int
-        	The max number of changes decreasing the score consecutively that we allow to apply
-
         """
         return _pyAgrum.BNLearner_double_useLocalSearchWithTabuList(self, *args)
 
 
     def useK2(self, *args):
-        """
+        r"""
         useK2(self, l)
         useK2(self, order)
         useK2(self, order)
-
-
-        Indicate that we wish to use K2.
-
-        Parameters
-        ----------
-        order : list
-        	a list of ids
-
         """
         return _pyAgrum.BNLearner_double_useK2(self, *args)
 
 
     def setMaxIndegree(self, max_indegree):
-        """
-        setMaxIndegree(self, max_indegree)
-
-
-        Parameters
-        ----------
-        max_indegree : int
-        	the limit number of parents
-
-        """
+        r"""setMaxIndegree(self, max_indegree)"""
         return _pyAgrum.BNLearner_double_setMaxIndegree(self, max_indegree)
 
 
     def setSliceOrder(self, *args):
-        """
+        r"""
         setSliceOrder(self, l)
         setSliceOrder(self, slice_order)
-
-
-        Set a partial order on the nodes.
-
-        Parameters
-        ----------
-        l : list
-        	a list of sequences (composed of ids)
-
+        setSliceOrder(self, slices)
         """
         return _pyAgrum.BNLearner_double_setSliceOrder(self, *args)
 
 
     def addForbiddenArc(self, *args):
-        """
+        r"""
         addForbiddenArc(self, arc)
         addForbiddenArc(self, tail, head)
         addForbiddenArc(self, tail, head)
-
-
-        The arc in parameters won't be added.
-
-        Parameters
-        ----------
-        arc : pyAgrum
-        	an arc
-        head :
-        	a variable's id (int)
-        tail :
-        	a variable's id (int)
-        head :
-        	a variable's name (str)
-        tail :
-        	a variable's name (str)
-
         """
         return _pyAgrum.BNLearner_double_addForbiddenArc(self, *args)
 
 
     def eraseForbiddenArc(self, *args):
-        """
+        r"""
         eraseForbiddenArc(self, arc)
         eraseForbiddenArc(self, tail, head)
         eraseForbiddenArc(self, tail, head)
-
-
-        Allow the arc in parameter to be added if necessary.
-
-        Parameters
-        ----------
-        arc : pyAgrum
-        	an arc
-        head :
-        	a variable's id (int)
-        tail :
-        	a variable's id (int)
-        head :
-        	a variable's name (str)
-        tail :
-        	a variable's name (str)
-
         """
         return _pyAgrum.BNLearner_double_eraseForbiddenArc(self, *args)
 
 
     def addMandatoryArc(self, *args):
-        """
+        r"""
         addMandatoryArc(self, arc)
         addMandatoryArc(self, tail, head)
         addMandatoryArc(self, tail, head)
-
-
-        Allow to add prior structural knowledge.
-
-        Parameters
-        ----------
-        arc : pyAgrum
-        	an arc
-        head :
-        	a variable's id (int)
-        tail :
-        	a variable's id (int)
-        head :
-        	a variable's name (str)
-        tail :
-        	a variable's name (str)
-
-        Raises
-        ------
-        gum.InvalidDirectedCycle
-        	If the added arc creates a directed cycle in the DAG
-
         """
         return _pyAgrum.BNLearner_double_addMandatoryArc(self, *args)
 
 
     def eraseMandatoryArc(self, *args):
-        """
+        r"""
         eraseMandatoryArc(self, arc)
         eraseMandatoryArc(self, tail, head)
         eraseMandatoryArc(self, tail, head)
-
-
-        Parameters
-        ----------
-        arc : pyAgrum
-        	an arc
-        head :
-        	a variable's id (int)
-        tail :
-        	a variable's id (int)
-        head :
-        	a variable's name (str)
-        tail :
-        	a variable's name (str)
-
         """
         return _pyAgrum.BNLearner_double_eraseMandatoryArc(self, *args)
 
 
     def setInitialDAG(self, g):
-        """
+        r"""
         setInitialDAG(self, g)
-
 
         Parameters
         ----------
@@ -27200,9 +25850,8 @@ class BNLearner_double(_object):
 
 
     def use3off2(self):
-        """
+        r"""
         use3off2(self)
-
 
         Indicate that we wish to use 3off2.
 
@@ -27211,9 +25860,8 @@ class BNLearner_double(_object):
 
 
     def useMIIC(self):
-        """
+        r"""
         useMIIC(self)
-
 
         Indicate that we wish to use MIIC.
 
@@ -27222,9 +25870,8 @@ class BNLearner_double(_object):
 
 
     def useNML(self):
-        """
+        r"""
         useNML(self)
-
 
         Indicate that we wish to use the NML correction for 3off2 or MIIC
 
@@ -27233,9 +25880,8 @@ class BNLearner_double(_object):
 
 
     def useMDL(self):
-        """
+        r"""
         useMDL(self)
-
 
         Indicate that we wish to use the MDL correction for 3off2 or MIIC
 
@@ -27244,9 +25890,8 @@ class BNLearner_double(_object):
 
 
     def useNoCorr(self):
-        """
+        r"""
         useNoCorr(self)
-
 
         Indicate that we wish to use the NoCorr correction for 3off2 or MIIC
 
@@ -27255,10 +25900,9 @@ class BNLearner_double(_object):
 
 
     def latentVariables(self, *args):
-        """
+        r"""
         latentVariables(self) -> PyObject
         latentVariables(self) -> std::vector< gum::Arc,std::allocator< gum::Arc > > const
-
 
         Warnings
         --------
@@ -27274,9 +25918,8 @@ class BNLearner_double(_object):
 
 
     def learnMixedStructure(self):
-        """
+        r"""
         learnMixedStructure(self) -> MixedGraph
-
 
         Warnings
         --------
@@ -27300,11 +25943,11 @@ class BNLearner_double(_object):
 
         return val
 
-BNLearner_double_swigregister = _pyAgrum.BNLearner_double_swigregister
-BNLearner_double_swigregister(BNLearner_double)
+# Register BNLearner_double in _pyAgrum:
+_pyAgrum.BNLearner_double_swigregister(BNLearner_double)
 
 class BNDatabaseGenerator_double(_object):
-    """Proxy of C++ gum::learning::BNDatabaseGenerator< double > class."""
+    r"""Proxy of C++ gum::learning::BNDatabaseGenerator< double > class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, BNDatabaseGenerator_double, name, value)
@@ -27313,7 +25956,7 @@ class BNDatabaseGenerator_double(_object):
     __repr__ = _swig_repr
 
     def __init__(self, bn):
-        """__init__(self, bn) -> BNDatabaseGenerator_double"""
+        r"""__init__(self, bn) -> BNDatabaseGenerator_double"""
         this = _pyAgrum.new_BNDatabaseGenerator_double(bn)
         try:
             self.this.append(this)
@@ -27324,12 +25967,12 @@ class BNDatabaseGenerator_double(_object):
         return None
 
     def drawSamples(self, nbSamples):
-        """drawSamples(self, nbSamples) -> double"""
+        r"""drawSamples(self, nbSamples) -> double"""
         return _pyAgrum.BNDatabaseGenerator_double_drawSamples(self, nbSamples)
 
 
     def toCSV(self, *args):
-        """
+        r"""
         toCSV(self, csvFileURL, useLabels=True, append=False, csvSeparator, checkOnAppend=False)
         toCSV(self, csvFileURL, useLabels=True, append=False, csvSeparator)
         toCSV(self, csvFileURL, useLabels=True, append=False)
@@ -27340,7 +25983,7 @@ class BNDatabaseGenerator_double(_object):
 
 
     def toDatabaseTable(self, useLabels=True):
-        """
+        r"""
         toDatabaseTable(self, useLabels=True) -> gum::learning::DatabaseTable< >
         toDatabaseTable(self) -> gum::learning::DatabaseTable< >
         """
@@ -27348,12 +25991,12 @@ class BNDatabaseGenerator_double(_object):
 
 
     def database(self):
-        """database(self) -> std::vector< std::vector< gum::Idx,std::allocator< gum::Idx > >,std::allocator< std::vector< gum::Idx,std::allocator< gum::Idx > > > >"""
+        r"""database(self) -> std::vector< std::vector< gum::Idx,std::allocator< gum::Idx > >,std::allocator< std::vector< gum::Idx,std::allocator< gum::Idx > > > >"""
         return _pyAgrum.BNDatabaseGenerator_double_database(self)
 
 
     def setVarOrder(self, *args):
-        """
+        r"""
         setVarOrder(self, varOrder)
         setVarOrder(self, varOrder)
         """
@@ -27361,7 +26004,7 @@ class BNDatabaseGenerator_double(_object):
 
 
     def setVarOrderFromCSV(self, *args):
-        """
+        r"""
         setVarOrderFromCSV(self, csvFileURL, csvSeparator)
         setVarOrderFromCSV(self, csvFileURL)
         """
@@ -27369,40 +26012,40 @@ class BNDatabaseGenerator_double(_object):
 
 
     def setTopologicalVarOrder(self):
-        """setTopologicalVarOrder(self)"""
+        r"""setTopologicalVarOrder(self)"""
         return _pyAgrum.BNDatabaseGenerator_double_setTopologicalVarOrder(self)
 
 
     def setAntiTopologicalVarOrder(self):
-        """setAntiTopologicalVarOrder(self)"""
+        r"""setAntiTopologicalVarOrder(self)"""
         return _pyAgrum.BNDatabaseGenerator_double_setAntiTopologicalVarOrder(self)
 
 
     def setRandomVarOrder(self):
-        """setRandomVarOrder(self)"""
+        r"""setRandomVarOrder(self)"""
         return _pyAgrum.BNDatabaseGenerator_double_setRandomVarOrder(self)
 
 
     def varOrder(self):
-        """varOrder(self) -> std::vector< gum::Idx,std::allocator< gum::Idx > >"""
+        r"""varOrder(self) -> std::vector< gum::Idx,std::allocator< gum::Idx > >"""
         return _pyAgrum.BNDatabaseGenerator_double_varOrder(self)
 
 
     def varOrderNames(self):
-        """varOrderNames(self) -> Vector_string"""
+        r"""varOrderNames(self) -> Vector_string"""
         return _pyAgrum.BNDatabaseGenerator_double_varOrderNames(self)
 
 
     def log2likelihood(self):
-        """log2likelihood(self) -> double"""
+        r"""log2likelihood(self) -> double"""
         return _pyAgrum.BNDatabaseGenerator_double_log2likelihood(self)
 
-BNDatabaseGenerator_double_swigregister = _pyAgrum.BNDatabaseGenerator_double_swigregister
-BNDatabaseGenerator_double_swigregister(BNDatabaseGenerator_double)
+# Register BNDatabaseGenerator_double in _pyAgrum:
+_pyAgrum.BNDatabaseGenerator_double_swigregister(BNDatabaseGenerator_double)
 
 
 def statsObj():
-    """statsObj()"""
+    r"""statsObj()"""
     return _pyAgrum.statsObj()
 
 Potential = Potential_double

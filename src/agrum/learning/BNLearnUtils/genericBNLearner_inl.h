@@ -297,6 +297,19 @@ namespace gum {
       __constraint_SliceOrder = StructuralConstraintSliceOrder(slice_order);
     }
 
+    INLINE void genericBNLearner::setSliceOrder(
+      const std::vector< std::vector< std::string > >& slices) {
+      NodeProperty< NodeId > slice_order;
+      NodeId                 rank = 0;
+      for (const auto& slice : slices) {
+        for (const auto& name : slice) {
+          slice_order.insert(idFromName(name), rank);
+        }
+        rank++;
+      }
+      setSliceOrder(slice_order);
+    }
+
     // sets the apriori weight
     INLINE void genericBNLearner::setAprioriWeight(double weight) {
       if (weight < 0) {

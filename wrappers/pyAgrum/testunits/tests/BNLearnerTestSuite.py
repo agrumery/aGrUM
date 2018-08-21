@@ -1,5 +1,6 @@
 # -*- encoding: UTF-8 -*-
 import unittest
+import sys
 
 import pyAgrum as gum
 from pyAgrumTestSuite import pyAgrumTestCase, addTests
@@ -181,6 +182,32 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertFalse(bn.dag().existsArc(4, 1))
     self.assertTrue(bn.dag().existsArc(7, 5))
     self.assertEquals(len(learner.latentVariables()), 2)
+
+  def test_setSliceOrder_with_names(self):
+    learner=gum.BNLearner(self.agrumSrcDir(
+      'src/testunits/ressources/asia3.csv'))
+    learner.setSliceOrder([["smoking?", "lung_cancer?"],
+                           ["bronchitis?", "visit_to_Asia?"],
+                           ["tuberculosis?"]])
+
+    learner=gum.BNLearner(self.agrumSrcDir(
+      'src/testunits/ressources/asia3.csv'))
+    learner.setSliceOrder([[0, "lung_cancer?"],
+                           [2, "visit_to_Asia?"],
+                           ["tuberculosis?"]])
+
+    learner=gum.BNLearner(self.agrumSrcDir(
+      'src/testunits/ressources/asia3.csv'))
+
+    with self.assertRaises(gum.DuplicateElement):
+      learner.setSliceOrder([["smoking?", "lung_cancer?"],
+                             [0, "visit_to_Asia?"],
+                             ["tuberculosis?"]])
+
+    with self.assertRaises(gum.MissingVariableInDatabase):
+      learner.setSliceOrder([["smoking?", "lung_cancer?"],
+                             ["bronchitis?",  "CRUCRU?"],
+                             ["tuberculosis?"]])    
 
 
 ts = unittest.TestSuite()
