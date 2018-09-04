@@ -1219,7 +1219,7 @@ namespace gum_tests {
       TS_ASSERT(database.hasMissingValues() == false);
     }
 
-    
+
     void test_threads() {
       std::vector< std::string >                       missing{"?", "N/A", "???"};
       gum::ContinuousVariable< float >                 var("var", "");
@@ -1251,7 +1251,7 @@ namespace gum_tests {
       gum::learning::DBRow< gum::learning::DBTranslatedValue > row(
         3, gum::learning::DBTranslatedValue{2.0f});
       std::size_t xsize = 1004;
-      for ( std::size_t i = 0; i < xsize; ++i ) 
+      for (std::size_t i = 0; i < xsize; ++i)
         database.insertRow(row, xmiss);
       TS_ASSERT(database.content().size() == xsize);
       TS_ASSERT(database.nbRows() == xsize);
@@ -1259,13 +1259,13 @@ namespace gum_tests {
 
       translator.setVariableName("v4");
 
-      for ( int i = 0; i < 20; ++i ) 
+      for (int i = 0; i < 20; ++i)
         database.insertTranslator(translator, 2, false);
       TS_ASSERT(database.hasMissingValues());
-      database.setMinNbRowsPerThread ( 10000 );
+      database.setMinNbRowsPerThread(10000);
       database.insertTranslator(translator, 2, false);
     }
-      
+
 
     private:
     void __create_handler(gum::learning::DatabaseTable<>*           database,

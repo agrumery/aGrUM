@@ -40,9 +40,9 @@ namespace gum {
         score_internal_apriori) :
         Counter< IdSetAlloc, CountAlloc >(filter, var_modalities),
         _apriori(&apriori),
-      _score_internal_apriori(score_internal_apriori.copyFactory()),
-      _database ( dynamic_cast<const DatabaseTable<std::allocator> *>
-                  ( &( filter.handler().database () ) ) ) {
+        _score_internal_apriori(score_internal_apriori.copyFactory()),
+        _database(dynamic_cast< const DatabaseTable< std::allocator >* >(
+          &(filter.handler().database()))) {
       GUM_CONSTRUCTOR(ParamEstimator);
     }
 
@@ -53,10 +53,9 @@ namespace gum {
         Counter< IdSetAlloc, CountAlloc >(from),
         _apriori(from._apriori),
         _score_internal_apriori(from._score_internal_apriori->copyFactory()),
-      _database ( from._database ),
-        _is_normalized(from._is_normalized),
+        _database(from._database), _is_normalized(from._is_normalized),
         __apriori_computed(from.__apriori_computed),
-      __score_apriori_inserted(from.__score_apriori_inserted) {
+        __score_apriori_inserted(from.__score_apriori_inserted) {
       GUM_CONS_CPY(ParamEstimator);
     }
 
@@ -67,10 +66,9 @@ namespace gum {
         Counter< IdSetAlloc, CountAlloc >(std::move(from)),
         _apriori(std::move(from._apriori)),
         _score_internal_apriori(std::move(from._score_internal_apriori)),
-      _database ( from._database ),
-        _is_normalized(std::move(from._is_normalized)),
+        _database(from._database), _is_normalized(std::move(from._is_normalized)),
         __apriori_computed(std::move(from.__apriori_computed)),
-      __score_apriori_inserted(std::move(from.__score_apriori_inserted)) {
+        __score_apriori_inserted(std::move(from.__score_apriori_inserted)) {
       from._score_internal_apriori = nullptr;
       GUM_CONS_MOV(ParamEstimator);
     }

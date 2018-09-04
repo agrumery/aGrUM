@@ -855,8 +855,7 @@ namespace gum {
           return ScoreLog2Likelihood<>::isAprioriCompatible(apriori,
                                                             __apriori_weight);
 
-        default:
-          return "genericBNLearner does not support yet this score";
+        default: return "genericBNLearner does not support yet this score";
       }
     }
 

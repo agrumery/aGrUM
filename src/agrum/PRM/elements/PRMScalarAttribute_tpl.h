@@ -149,14 +149,11 @@ namespace gum {
       try {
         __cpf->add(elt.type().variable());
       } catch (DuplicateElement&) {
-        std::stringstream msg;
-        msg << ": " << elt.name() << " as parent of " << this->name();
-        GUM_ERROR(DuplicateElement, msg.str());
+        GUM_ERROR(DuplicateElement,
+                  elt.name() << " as parent of " << this->name());
       } catch (OperationNotAllowed&) {
-        std::stringstream msg;
-        msg << ": " << elt.name() << " of wrong type as parent of "
-            << this->name();
-        GUM_ERROR(OperationNotAllowed, msg.str());
+        GUM_ERROR(OperationNotAllowed,
+                  elt.name() << " of wrong type as parent of " << this->name());
       }
     }
 

@@ -309,7 +309,8 @@ namespace gum {
     // check the uniqueness property
     if (existsFirst(first) || existsSecond(second)) {
       GUM_ERROR(DuplicateElement,
-                "the bijection contains an element with the same key");
+                "the bijection contains an element with the same couple ("
+                  << first << "," << second << ")");
     }
 
     // insert copies of first and second
@@ -339,7 +340,8 @@ namespace gum {
     // check the uniqueness property
     if (existsFirst(first) || existsSecond(second)) {
       GUM_ERROR(DuplicateElement,
-                "the bijection contains an element with the same key");
+                "the bijection contains an element with the same couple ("
+                  << first << "," << second << ")");
     }
 
     // insert copies of first and second
@@ -764,7 +766,8 @@ namespace gum {
     // check the uniqueness property
     if (existsFirst(first) || existsSecond(second)) {
       GUM_ERROR(DuplicateElement,
-                "the bijection contains an element with the same key");
+                "the bijection contains an element with the same couple ("
+                  << first << "," << second << ")");
     }
 
     // insert copies of first and second

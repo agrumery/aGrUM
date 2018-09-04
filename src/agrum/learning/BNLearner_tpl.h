@@ -131,7 +131,7 @@ namespace gum {
       BNLearner< GUM_SCALAR >::learnParameters(const DAG& dag,
                                                bool take_into_account_score) {
       // if the dag contains no node, return an empty BN
-      if (dag.size()==0) return BayesNet< GUM_SCALAR >();
+      if (dag.size() == 0) return BayesNet< GUM_SCALAR >();
 
       // check that the dag corresponds to the database
       std::vector< NodeId > ids;

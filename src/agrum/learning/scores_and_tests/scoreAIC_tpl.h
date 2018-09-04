@@ -108,7 +108,8 @@ namespace gum {
 
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < typename IdSetAlloc, typename CountAlloc >
-    INLINE std::string ScoreAIC< IdSetAlloc, CountAlloc >::isAprioriCompatible() const {
+    INLINE std::string
+           ScoreAIC< IdSetAlloc, CountAlloc >::isAprioriCompatible() const {
       return isAprioriCompatible(*this->_apriori);
     }
 

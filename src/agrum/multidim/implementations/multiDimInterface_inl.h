@@ -35,7 +35,7 @@ namespace gum {
     if (!contains(x)) { GUM_ERROR(NotFound, "could not find the variable"); }
 
     if (contains(y)) {
-      GUM_ERROR(DuplicateElement, "variable already in MultiDim");
+      GUM_ERROR(DuplicateElement, "variable " << y << " already in MultiDim");
     }
 
     if (x.domainSize() != y.domainSize()) {
