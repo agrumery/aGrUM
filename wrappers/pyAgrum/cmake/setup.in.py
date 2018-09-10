@@ -14,6 +14,11 @@ README = ''
 with open('README.rst', mode='r', encoding='utf-8') as fd:
   README = fd.read()
 
+#TODO copy requirements from requirements.txt
+# REQUIREMENTS = list()
+# with open('requirements.txt', mode='r', encoding='utf-8') as fd:
+#   REQUIREMENTS=fd.read().splitlines()
+
 swig_files = [ "pyAgrum/pyAgrum.i" ]
 flags = ["-fopenmp",
          "-std=c++1y", 
@@ -23,7 +28,7 @@ flags = ["-fopenmp",
          "-fPIC"]
 
 options = ["-c++",
-           "-I/usr/loca/include",
+           "-I/usr/local/include",
            "-I/usr/include",
            "-I./pyAgrum/extensions",
            "-I./pyAgrum/doc"]
@@ -51,7 +56,7 @@ setup(
     long_description=README,
     include_package_data=True,
     ext_modules=[my_ext],
-    install_requires=['numpy'],
+    install_requires=['numpy','pydotplus'],
     classifiers=[
     'Development Status :: 4 - Beta', 
     'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
