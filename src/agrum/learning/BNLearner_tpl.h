@@ -57,7 +57,6 @@ namespace gum {
       const gum::BayesNet< GUM_SCALAR >& bn,
       const std::vector< std::string >&  missing_symbols) :
         genericBNLearner(filename, bn, missing_symbols) {
-      setInitialDAG(bn.dag());
       GUM_CONSTRUCTOR(BNLearner)
     }
 
