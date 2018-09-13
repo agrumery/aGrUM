@@ -87,6 +87,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
     learner = gum.BNLearner(self.agrumSrcDir(
         'src/testunits/ressources/asia3.csv'), bn)
+    learner.setInitialDAG(bn.dag())
     learner.useScoreLog2Likelihood()
     learner.useAprioriSmoothing(1.0)
 
@@ -126,11 +127,13 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
     csvfile = self.agrumSrcDir('src/testunits/ressources/DBN_Tonda.csv')
     l1 = gum.BNLearner(csvfile)
+    l1.setInitialDAG(dbn.dag())
     l1.useScoreLog2Likelihood()
     l1.useAprioriSmoothing()
-    bn1 = l1.learnParameters(dbn.dag())
+    bn1 = l1.learnParameters()
 
     l2 = gum.BNLearner(csvfile, dbn)
+    l2.setInitialDAG(dbn.dag())
     l2.useScoreLog2Likelihood()
     l2.useAprioriSmoothing()
     bn2 = l2.learnParameters()
