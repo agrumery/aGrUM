@@ -105,10 +105,17 @@ namespace gum {
     for (auto node : bn.nodes()) {
       const auto& p = bn.cpt(node);
       str << p.nbrDim() << " ";
+      // P(X|Y,Z) has to be written "Y Z X". So we need to keep the first var (X)
+      // in order to print it at last
+      int first = -1;
       for (auto k : p.variablesSequence()) {
-        str << bn.idFromName(k->name()) << " ";
+        if (first == -1) {
+          first = bn.idFromName(k->name());
+        } else {
+          str << bn.idFromName(k->name()) << " ";
+        }
       }
-      str << "  # " << bn.variable(node).name() << std::endl;
+      str << first << "   # " << bn.variable(node).name() << std::endl;
     }
     str << std::endl;
 
