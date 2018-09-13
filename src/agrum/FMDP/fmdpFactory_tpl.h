@@ -195,7 +195,8 @@ namespace gum {
   INLINE void
     FMDPFactory< GUM_SCALAR >::__checkModalityInBag(const std::string& mod) {
     for (size_t i = 2; i < __stringBag.size(); ++i)
-      if (mod == __stringBag[i]) GUM_ERROR(DuplicateElement,"Modality"<< mod<< " already exists.");
+      if (mod == __stringBag[i])
+        GUM_ERROR(DuplicateElement, "Modality" << mod << " already exists.");
   }
 
 
