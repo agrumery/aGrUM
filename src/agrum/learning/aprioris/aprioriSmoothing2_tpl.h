@@ -136,14 +136,14 @@ namespace gum {
       return AprioriSmoothingType::type;
     }
 
-    
+
     /// indicates whether the apriori is potentially informative
     template < template < typename > class ALLOC >
     INLINE bool AprioriSmoothing2< ALLOC >::isInformative() const {
       return this->_weight != 0.0;
     }
-    
-      
+
+
     /// returns the apriori vector all the variables in the idset
     template < template < typename > class ALLOC >
     INLINE void AprioriSmoothing2< ALLOC >::addAllApriori(

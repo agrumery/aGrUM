@@ -74,26 +74,23 @@ namespace gum {
        * the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
        * RecordCounter.*/
-      AprioriBDeu2(
-        const DatabaseTable< ALLOC >& database,
-        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-          nodeId2columns =
-            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-        const allocator_type& alloc = allocator_type());
+      AprioriBDeu2(const DatabaseTable< ALLOC >& database,
+                   const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                     nodeId2columns =
+                       Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+                   const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       AprioriBDeu2(const AprioriBDeu2< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      AprioriBDeu2(const AprioriBDeu2< ALLOC >& from,
-                        const allocator_type&             alloc);
+      AprioriBDeu2(const AprioriBDeu2< ALLOC >& from, const allocator_type& alloc);
 
       /// move constructor
       AprioriBDeu2(AprioriBDeu2< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      AprioriBDeu2(AprioriBDeu2< ALLOC >&& from,
-                        const allocator_type&        alloc);
+      AprioriBDeu2(AprioriBDeu2< ALLOC >&& from, const allocator_type& alloc);
 
       /// virtual copy constructor
       virtual AprioriBDeu2< ALLOC >* clone() const;
@@ -113,8 +110,7 @@ namespace gum {
       /// @{
 
       /// copy operator
-      AprioriBDeu2< ALLOC >&
-        operator=(const AprioriBDeu2< ALLOC >& from);
+      AprioriBDeu2< ALLOC >& operator=(const AprioriBDeu2< ALLOC >& from);
 
       /// move operator
       AprioriBDeu2< ALLOC >& operator=(AprioriBDeu2< ALLOC >&& from);
@@ -131,8 +127,8 @@ namespace gum {
       virtual void setWeight(const double weight) final;
 
       /// sets the effective sample size N'
-      void setEffectiveSampleSize (const double weight);
-      
+      void setEffectiveSampleSize(const double weight);
+
       /// indicates whether an apriori is of a certain type
       virtual bool isOfType(const std::string& type) final;
 
@@ -169,7 +165,6 @@ namespace gum {
         std::vector< double, ALLOC< double > >& counts) final;
 
       /// @}
-
     };
 
   } /* namespace learning */

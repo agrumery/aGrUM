@@ -34,7 +34,7 @@ namespace gum {
     INLINE AprioriBDeu2< ALLOC >::AprioriBDeu2(
       const DatabaseTable< ALLOC >&                                 database,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename AprioriBDeu2< ALLOC >::allocator_type&    alloc) :
+      const typename AprioriBDeu2< ALLOC >::allocator_type&         alloc) :
         Apriori2< ALLOC >(database, nodeId2columns, alloc) {
       GUM_CONSTRUCTOR(AprioriBDeu2);
     }
@@ -52,8 +52,7 @@ namespace gum {
 
     /// copy constructor
     template < template < typename > class ALLOC >
-    INLINE AprioriBDeu2< ALLOC >::AprioriBDeu2(
-      const AprioriBDeu2< ALLOC >& from) :
+    INLINE AprioriBDeu2< ALLOC >::AprioriBDeu2(const AprioriBDeu2< ALLOC >& from) :
         AprioriBDeu2< ALLOC >(from, from.getAllocator()) {}
 
 
@@ -69,8 +68,7 @@ namespace gum {
 
     /// move constructor
     template < template < typename > class ALLOC >
-    INLINE AprioriBDeu2< ALLOC >::AprioriBDeu2(
-      AprioriBDeu2< ALLOC >&& from) :
+    INLINE AprioriBDeu2< ALLOC >::AprioriBDeu2(AprioriBDeu2< ALLOC >&& from) :
         AprioriBDeu2< ALLOC >(std::move(from), from.getAllocator()) {}
 
 
@@ -108,7 +106,7 @@ namespace gum {
     /// copy operator
     template < template < typename > class ALLOC >
     INLINE AprioriBDeu2< ALLOC >& AprioriBDeu2< ALLOC >::
-                                       operator=(const AprioriBDeu2< ALLOC >& from) {
+                                  operator=(const AprioriBDeu2< ALLOC >& from) {
       Apriori2< ALLOC >::operator=(from);
       return *this;
     }
@@ -117,7 +115,7 @@ namespace gum {
     /// move operator
     template < template < typename > class ALLOC >
     INLINE AprioriBDeu2< ALLOC >& AprioriBDeu2< ALLOC >::
-                                       operator=(AprioriBDeu2< ALLOC >&& from) {
+                                  operator=(AprioriBDeu2< ALLOC >&& from) {
       Apriori2< ALLOC >::operator=(std::move(from));
       return *this;
     }
@@ -134,15 +132,15 @@ namespace gum {
       this->_weight = weight;
     }
 
-    
+
     /// sets the effective sample size N'
     template < template < typename > class ALLOC >
     INLINE void
-    AprioriBDeu2< ALLOC >::setEffectiveSampleSize (const double weight) {
-      setWeight ( weight );
+      AprioriBDeu2< ALLOC >::setEffectiveSampleSize(const double weight) {
+      setWeight(weight);
     }
 
-    
+
     /// indicates whether an apriori is of a certain type
     template < template < typename > class ALLOC >
     INLINE bool AprioriBDeu2< ALLOC >::isOfType(const std::string& type) {
@@ -156,14 +154,14 @@ namespace gum {
       return AprioriBDeuType::type;
     }
 
-    
+
     /// indicates whether the apriori is potentially informative
     template < template < typename > class ALLOC >
     INLINE bool AprioriBDeu2< ALLOC >::isInformative() const {
       return this->_weight != 0.0;
     }
-    
-      
+
+
     /// returns the apriori vector all the variables in the idset
     template < template < typename > class ALLOC >
     INLINE void AprioriBDeu2< ALLOC >::addAllApriori(
@@ -173,7 +171,7 @@ namespace gum {
       if (idset.empty() || (this->_weight == 0.0)) return;
 
       // otherwise, add the weight to all the cells in the counting vector
-      const double weight = this->_weight / counts.size ();
+      const double weight = this->_weight / counts.size();
       for (auto& count : counts)
         count += weight;
     }
@@ -191,7 +189,7 @@ namespace gum {
         return;
 
       // add the weight to the counting vector
-      const double weight = this->_weight / counts.size ();
+      const double weight = this->_weight / counts.size();
       for (auto& count : counts)
         count += weight;
     }

@@ -133,7 +133,10 @@ namespace gum {
        * bijection means that the mapping is an identity, i.e., the value of a
        * NodeId is equal to the index of the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
-       * RecordCounter. */
+       * RecordCounter.
+       * @warning If nodeId2columns is not empty, then only the counts over the
+       * ids belonging to this bijection can be computed: applying method
+       * counts() over other ids will raise exception NotFound. */
       RecordCounter2(
         const DBRowGeneratorParser< ALLOC >& parser,
         const std::vector< std::pair< std::size_t, std::size_t >,
@@ -154,7 +157,10 @@ namespace gum {
        * bijection means that the mapping is an identity, i.e., the value of a
        * NodeId is equal to the index of the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
-       * RecordCounter. */
+       * RecordCounter.
+       * @warning If nodeId2columns is not empty, then only the counts over the
+       * ids belonging to this bijection can be computed: applying method
+       * counts() over other ids will raise exception NotFound. */
       RecordCounter2(const DBRowGeneratorParser< ALLOC >& parser,
                      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
                        nodeId2columns =
@@ -291,8 +297,14 @@ namespace gum {
       allocator_type getAllocator() const;
 
       /// returns the mapping from ids to column positions in the database
+      /** @warning An empty nodeId2Columns bijection means that the mapping is
+       * an identity, i.e., the value of a NodeId is equal to the index of the
+       * column in the DatabaseTable. */
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-        nodeId2Columns() const;
+      nodeId2Columns() const;
+
+      /// returns the database on which we perform the counts
+      const DatabaseTable< ALLOC >& database () const;
 
       /// @}
 

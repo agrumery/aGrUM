@@ -45,52 +45,54 @@ namespace gum_tests {
 
       gum::GammaLog2 gamma_log2;
       if (!N_ij.empty()) {
-        const std::size_t r = N_ijk.size() / N_ij.size ();
+        const std::size_t r = N_ijk.size() / N_ij.size();
         for (const auto n_ij : N_ij) {
           if (n_ij) {
             score -= n_ij * std::log2(n_ij);
 
             // compute the penalty:
             double cn2 = 2;
-            for ( int h = 1; h < n_ij; h++ ) {
-              double elt =
-                ( gamma_log2 (n_ij+1) - gamma_log2 (h+1) - gamma_log2((n_ij-h)+1) ) * M_LN2 +
-                h * std::log ( h/n_ij ) + (n_ij-h) * std::log ( (n_ij-h) / n_ij );
-              cn2 += std::exp ( elt );
+            for (int h = 1; h < n_ij; h++) {
+              double elt = (gamma_log2(n_ij + 1) - gamma_log2(h + 1)
+                            - gamma_log2((n_ij - h) + 1))
+                             * M_LN2
+                           + h * std::log(h / n_ij)
+                           + (n_ij - h) * std::log((n_ij - h) / n_ij);
+              cn2 += std::exp(elt);
             }
-            double cnr1 = cn2; // equal C_n^2
-            double cnr2 = 1;   // equal C_n^1
-            double cnr  = cnr1;
-            for ( std::size_t i = std::size_t(3); i <= r; ++i ) {
-              cnr  = cnr1 + (n_ij / (i - 2.0)) * cnr2;
+            double cnr1 = cn2;   // equal C_n^2
+            double cnr2 = 1;     // equal C_n^1
+            double cnr = cnr1;
+            for (std::size_t i = std::size_t(3); i <= r; ++i) {
+              cnr = cnr1 + (n_ij / (i - 2.0)) * cnr2;
               cnr2 = cnr1;
               cnr1 = cnr;
             }
-            penalty += std::log2 ( cnr );
+            penalty += std::log2(cnr);
           }
         }
-      }
-      else {
+      } else {
         score -= N * std::log2(N);
-        const std::size_t r = N_ijk.size ();
-        
+        const std::size_t r = N_ijk.size();
+
         // compute the penalty:
         long double cn2 = 2;
-        for ( double h = 1; h < N; ++h ) {
+        for (double h = 1; h < N; ++h) {
           long double elt =
-            ( gamma_log2 (N+1) - gamma_log2 (h+1) - gamma_log2((N-h)+1) ) * M_LN2 +
-            h * std::log ( h/N ) + (N-h) * std::log ( ( N-h) / N );
-          cn2 += std::exp ( elt );
+            (gamma_log2(N + 1) - gamma_log2(h + 1) - gamma_log2((N - h) + 1))
+              * M_LN2
+            + h * std::log(h / N) + (N - h) * std::log((N - h) / N);
+          cn2 += std::exp(elt);
         }
-        long double cnr1 = cn2; // equal C_n^2
-        long double cnr2 = 1;   // equal C_n^1
-        long double cnr  = cnr1;
-        for ( std::size_t i = std::size_t(3); i <= r; ++i ) {
-          cnr  = cnr1 + (N / (i - 2.0)) * cnr2;
+        long double cnr1 = cn2;   // equal C_n^2
+        long double cnr2 = 1;     // equal C_n^1
+        long double cnr = cnr1;
+        for (std::size_t i = std::size_t(3); i <= r; ++i) {
+          cnr = cnr1 + (N / (i - 2.0)) * cnr2;
           cnr2 = cnr1;
           cnr1 = cnr;
         }
-        penalty += std::log2 ( cnr );
+        penalty += std::log2(cnr);
       }
 
       score -= penalty;
@@ -150,8 +152,9 @@ namespace gum_tests {
       gum::learning::AprioriSmoothing2<> apriori(database);
       gum::learning::ScorefNML2<>        score(parser, apriori);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScorefNML2<>::isAprioriCompatible(
-        gum::learning::AprioriSmoothing2<>::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+        gum::learning::ScorefNML2<>::isAprioriCompatible(
+          gum::learning::AprioriSmoothing2<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(
         gum::learning::ScorefNML2<>::isAprioriCompatible(apriori));
       TS_GUM_ASSERT_THROWS_NOTHING(
@@ -293,10 +296,11 @@ namespace gum_tests {
       nodeId2columns.insert(node5, std::size_t(1));
 
       gum::learning::AprioriSmoothing2<> apriori(database, nodeId2columns);
-      gum::learning::ScorefNML2<>         score(parser, apriori, nodeId2columns);
+      gum::learning::ScorefNML2<>        score(parser, apriori, nodeId2columns);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScorefNML2<>::isAprioriCompatible(
-        gum::learning::AprioriSmoothing2<>::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+        gum::learning::ScorefNML2<>::isAprioriCompatible(
+          gum::learning::AprioriSmoothing2<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(
         gum::learning::ScorefNML2<>::isAprioriCompatible(apriori));
       TS_GUM_ASSERT_THROWS_NOTHING(

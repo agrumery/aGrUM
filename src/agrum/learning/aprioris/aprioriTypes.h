@@ -50,7 +50,7 @@ namespace gum {
       static const std::string type;
       static bool              isOfType(const std::string& t) { return t == type; }
     };
-    
+
 
   } /* namespace learning */
 

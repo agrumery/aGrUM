@@ -40,10 +40,10 @@ namespace gum {
 
     // the size in n of ScorefNMLCTable
     extern const std::size_t ScorefNMLCTableNSize;
-    
+
   } /* namespace learning */
 
-  
+
 } /* namespace gum */
 
 

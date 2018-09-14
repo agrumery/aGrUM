@@ -86,17 +86,19 @@ namespace gum {
        * bijection means that the mapping is an identity, i.e., the value of a
        * NodeId is equal to the index of the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
-       * Score. */
-      ScoreBD2(
-        const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori2< ALLOC >&             apriori,
-        const std::vector< std::pair< std::size_t, std::size_t >,
-                           ALLOC< std::pair< std::size_t, std::size_t > > >&
-          ranges,
-        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-          nodeId2columns =
-            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-        const allocator_type& alloc = allocator_type());
+       * Score.
+       * @warning If nodeId2columns is not empty, then only the scores over the
+       * ids belonging to this bijection can be computed: applying method
+       * score() over other ids will raise exception NotFound. */
+      ScoreBD2(const DBRowGeneratorParser< ALLOC >& parser,
+               const Apriori2< ALLOC >&             apriori,
+               const std::vector< std::pair< std::size_t, std::size_t >,
+                                  ALLOC< std::pair< std::size_t, std::size_t > > >&
+                 ranges,
+               const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                 nodeId2columns =
+                   Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+               const allocator_type& alloc = allocator_type());
 
 
       /// default constructor
@@ -110,13 +112,16 @@ namespace gum {
        * bijection means that the mapping is an identity, i.e., the value of a
        * NodeId is equal to the index of the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
-       * Score. */
+       * Score.
+       * @warning If nodeId2columns is not empty, then only the scores over the
+       * ids belonging to this bijection can be computed: applying method
+       * score() over other ids will raise exception NotFound. */
       ScoreBD2(const DBRowGeneratorParser< ALLOC >& parser,
-                const Apriori2< ALLOC >&             apriori,
-                const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                  nodeId2columns =
-                    Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-                const allocator_type& alloc = allocator_type());
+               const Apriori2< ALLOC >&             apriori,
+               const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                 nodeId2columns =
+                   Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+               const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       ScoreBD2(const ScoreBD2< ALLOC >& from);
@@ -215,7 +220,6 @@ namespace gum {
 
       /// the log(gamma (n)) function: generalizes log((n-1)!)
       GammaLog2 __gammalog2;
-
     };
 
   } /* namespace learning */

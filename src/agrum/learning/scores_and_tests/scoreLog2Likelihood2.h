@@ -73,7 +73,10 @@ namespace gum {
        * bijection means that the mapping is an identity, i.e., the value of a
        * NodeId is equal to the index of the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
-       * Score. */
+       * Score.
+       * @warning If nodeId2columns is not empty, then only the scores over the
+       * ids belonging to this bijection can be computed: applying method
+       * score() over other ids will raise exception NotFound. */
       ScoreLog2Likelihood2(
         const DBRowGeneratorParser< ALLOC >& parser,
         const Apriori2< ALLOC >&             apriori,
@@ -97,31 +100,38 @@ namespace gum {
        * bijection means that the mapping is an identity, i.e., the value of a
        * NodeId is equal to the index of the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
-       * Score. */
-      ScoreLog2Likelihood2(const DBRowGeneratorParser< ALLOC >& parser,
-                const Apriori2< ALLOC >&             apriori,
-                const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                  nodeId2columns =
-                    Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-                const allocator_type& alloc = allocator_type());
+       * Score.
+       * @warning If nodeId2columns is not empty, then only the scores over the
+       * ids belonging to this bijection can be computed: applying method
+       * score() over other ids will raise exception NotFound. */
+      ScoreLog2Likelihood2(
+        const DBRowGeneratorParser< ALLOC >& parser,
+        const Apriori2< ALLOC >&             apriori,
+        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+          nodeId2columns =
+            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+        const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       ScoreLog2Likelihood2(const ScoreLog2Likelihood2< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      ScoreLog2Likelihood2(const ScoreLog2Likelihood2< ALLOC >& from, const allocator_type& alloc);
+      ScoreLog2Likelihood2(const ScoreLog2Likelihood2< ALLOC >& from,
+                           const allocator_type&                alloc);
 
       /// move constructor
       ScoreLog2Likelihood2(ScoreLog2Likelihood2< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      ScoreLog2Likelihood2(ScoreLog2Likelihood2< ALLOC >&& from, const allocator_type& alloc);
+      ScoreLog2Likelihood2(ScoreLog2Likelihood2< ALLOC >&& from,
+                           const allocator_type&           alloc);
 
       /// virtual copy constructor
       virtual ScoreLog2Likelihood2< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual ScoreLog2Likelihood2< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual ScoreLog2Likelihood2< ALLOC >*
+        clone(const allocator_type& alloc) const;
 
       /// destructor
       virtual ~ScoreLog2Likelihood2();
@@ -136,10 +146,12 @@ namespace gum {
       /// @{
 
       /// copy operator
-      ScoreLog2Likelihood2< ALLOC >& operator=(const ScoreLog2Likelihood2< ALLOC >& from);
+      ScoreLog2Likelihood2< ALLOC >&
+        operator=(const ScoreLog2Likelihood2< ALLOC >& from);
 
       /// move operator
-      ScoreLog2Likelihood2< ALLOC >& operator=(ScoreLog2Likelihood2< ALLOC >&& from);
+      ScoreLog2Likelihood2< ALLOC >&
+        operator=(ScoreLog2Likelihood2< ALLOC >&& from);
 
       /// @}
 

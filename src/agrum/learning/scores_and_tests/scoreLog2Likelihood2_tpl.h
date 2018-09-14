@@ -40,7 +40,7 @@ namespace gum {
       const std::vector< std::pair< std::size_t, std::size_t >,
                          ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename ScoreLog2Likelihood2< ALLOC >::allocator_type&            alloc) :
+      const typename ScoreLog2Likelihood2< ALLOC >::allocator_type& alloc) :
         Score2< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
         __internal_apriori(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreLog2Likelihood2);
@@ -53,7 +53,7 @@ namespace gum {
       const DBRowGeneratorParser< ALLOC >&                          parser,
       const Apriori2< ALLOC >&                                      apriori,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename ScoreLog2Likelihood2< ALLOC >::allocator_type&            alloc) :
+      const typename ScoreLog2Likelihood2< ALLOC >::allocator_type& alloc) :
         Score2< ALLOC >(parser, apriori, nodeId2columns, alloc),
         __internal_apriori(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreLog2Likelihood2);
@@ -73,7 +73,8 @@ namespace gum {
 
     /// copy constructor
     template < template < typename > class ALLOC >
-    INLINE ScoreLog2Likelihood2< ALLOC >::ScoreLog2Likelihood2(const ScoreLog2Likelihood2< ALLOC >& from) :
+    INLINE ScoreLog2Likelihood2< ALLOC >::ScoreLog2Likelihood2(
+      const ScoreLog2Likelihood2< ALLOC >& from) :
         ScoreLog2Likelihood2< ALLOC >(from, this->getAllocator()) {}
 
 
@@ -90,7 +91,8 @@ namespace gum {
 
     /// move constructor
     template < template < typename > class ALLOC >
-    INLINE ScoreLog2Likelihood2< ALLOC >::ScoreLog2Likelihood2(ScoreLog2Likelihood2< ALLOC >&& from) :
+    INLINE ScoreLog2Likelihood2< ALLOC >::ScoreLog2Likelihood2(
+      ScoreLog2Likelihood2< ALLOC >&& from) :
         ScoreLog2Likelihood2< ALLOC >(std::move(from), this->getAllocator()) {}
 
 
@@ -128,7 +130,7 @@ namespace gum {
     /// copy operator
     template < template < typename > class ALLOC >
     ScoreLog2Likelihood2< ALLOC >& ScoreLog2Likelihood2< ALLOC >::
-                        operator=(const ScoreLog2Likelihood2< ALLOC >& from) {
+                                   operator=(const ScoreLog2Likelihood2< ALLOC >& from) {
       if (this != &from) {
         Score2< ALLOC >::operator=(from);
         __internal_apriori = from.__internal_apriori;
@@ -139,7 +141,8 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    ScoreLog2Likelihood2< ALLOC >& ScoreLog2Likelihood2< ALLOC >::operator=(ScoreLog2Likelihood2< ALLOC >&& from) {
+    ScoreLog2Likelihood2< ALLOC >& ScoreLog2Likelihood2< ALLOC >::
+                                   operator=(ScoreLog2Likelihood2< ALLOC >&& from) {
       if (this != &from) {
         Score2< ALLOC >::operator=(std::move(from));
         __internal_apriori = std::move(from.__internal_apriori);
@@ -150,9 +153,8 @@ namespace gum {
 
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < template < typename > class ALLOC >
-    std::string
-      ScoreLog2Likelihood2< ALLOC >::isAprioriCompatible(const std::string& apriori_type,
-                                              double             weight) {
+    std::string ScoreLog2Likelihood2< ALLOC >::isAprioriCompatible(
+      const std::string& apriori_type, double weight) {
       // check that the apriori is compatible with the score
       if ((apriori_type == AprioriDirichletType::type)
           || (apriori_type == AprioriSmoothingType::type)
@@ -171,8 +173,8 @@ namespace gum {
 
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < template < typename > class ALLOC >
-    INLINE std::string
-           ScoreLog2Likelihood2< ALLOC >::isAprioriCompatible(const Apriori2< ALLOC >& apriori) {
+    INLINE std::string ScoreLog2Likelihood2< ALLOC >::isAprioriCompatible(
+      const Apriori2< ALLOC >& apriori) {
       return isAprioriCompatible(apriori.getType(), apriori.weight());
     }
 
@@ -198,7 +200,7 @@ namespace gum {
       // get the counts for all the nodes in the idset and add the apriori
       std::vector< double, ALLOC< double > > N_ijk(
         this->_counter.counts(idset, true));
-      const bool informative_external_apriori = this->_apriori->isInformative ();
+      const bool informative_external_apriori = this->_apriori->isInformative();
       if (informative_external_apriori)
         this->_apriori->addAllApriori(idset, N_ijk);
 
@@ -210,7 +212,7 @@ namespace gum {
           this->_counter.counts(idset.conditionalIdSet(), false);
         if (informative_external_apriori)
           this->_apriori->addConditioningApriori(idset, N_ij);
-        
+
         // compute the score: it remains to compute the log likelihood, i.e.,
         // sum_k=1^r_i sum_j=1^q_i N_ijk log (N_ijk / N_ij), which is also
         // equivalent to:
@@ -229,7 +231,7 @@ namespace gum {
         return score;
       } else {
         // here, there are no conditioning nodes
-        
+
         // compute the score: it remains to compute the log likelihood, i.e.,
         // sum_k=1^r_i N_ijk log (N_ijk / N), which is also
         // equivalent to:

@@ -1,5 +1,6 @@
-/***************************************************************************
- *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+
+/**************************************************************************
+ *   Copyright (C) 2017 by Pierre-Henri WUILLEMIN  and Christophe GONZALES *
  *   {prenom.nom}_at_lip6.fr                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,23 +18,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief the different types of apriori
+
+
+/**
+ * @file
+ * @brief Class to include at least once this header
  *
- * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  */
 
-#include <agrum/learning/aprioris/aprioriTypes.h>
-
-namespace gum {
-
-  namespace learning {
-
-    const std::string AprioriDirichletType::type = "Dirichlet";
-    const std::string AprioriSmoothingType::type = "Smoothing";
-    const std::string AprioriNoAprioriType::type = "NoApriori";
-    const std::string AprioriBDeuType::type = "BDeu";
-
-  } /* namespace learning */
-
-} /* namespace gum */
+#include <agrum/learning/scores_and_tests/scoreMDL2.h>

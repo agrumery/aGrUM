@@ -241,7 +241,7 @@ namespace gum_tests {
     }
 
 
-    void xtest2() {
+    void test2() {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
       var.addLabel("0");
@@ -475,6 +475,90 @@ namespace gum_tests {
       TS_ASSERT(counts[7] == double(0));     // A=1, B=2
       TS_ASSERT(counts[8] == double(0));     // A=2, B=2
     }
+
+    
+    void test_partial_nodes() {
+      // create the translator set
+      gum::LabelizedVariable var("X1", "", 0);
+      var.addLabel("0");
+      var.addLabel("1");
+      var.addLabel("2");
+
+      gum::learning::DBTranslatorSet<> trans_set;
+      {
+        const std::vector< std::string >                miss;
+        gum::learning::DBTranslator4LabelizedVariable<> translator(var, miss);
+        std::vector< std::string > names{"A", "B", "C", "D", "E", "F"};
+
+        for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
+          // translator.setName ( name );
+          trans_set.insertTranslator(translator, i);
+        }
+      }
+
+      // create the database
+      gum::learning::DatabaseTable<> database(trans_set);
+      std::vector< std::string >     row0{"0", "1", "0", "2", "1", "1"};
+      std::vector< std::string >     row1{"1", "2", "0", "1", "2", "2"};
+      std::vector< std::string >     row2{"2", "1", "0", "1", "1", "0"};
+      std::vector< std::string >     row3{"1", "0", "0", "0", "0", "0"};
+      std::vector< std::string >     row4{"0", "0", "0", "1", "1", "1"};
+      for (int i = 0; i < 1000; ++i)
+        database.insertRow(row0);
+      for (int i = 0; i < 50; ++i)
+        database.insertRow(row1);
+      for (int i = 0; i < 75; ++i)
+        database.insertRow(row2);
+      for (int i = 0; i < 75; ++i)
+        database.insertRow(row3);
+      for (int i = 0; i < 200; ++i)
+        database.insertRow(row4);
+
+      // create the parser
+      gum::learning::DBRowGeneratorSet<>    genset;
+      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
+
+      // create the record counter
+      gum::Bijection< gum::NodeId, std::size_t > nodeId2columns;
+      nodeId2columns.insert(gum::NodeId(0), std::size_t(2));
+      nodeId2columns.insert(gum::NodeId(1), std::size_t(4));
+      nodeId2columns.insert(gum::NodeId(2), std::size_t(5));
+      nodeId2columns.insert(gum::NodeId(3), std::size_t(1));
+      nodeId2columns.insert(gum::NodeId(4), std::size_t(0));
+      std::vector< std::pair< std::size_t, std::size_t > > ranges{
+        std::pair< std::size_t, std::size_t >(std::size_t(0), database.nbRows())};
+      gum::learning::RecordCounter2<> counter(parser, ranges, nodeId2columns);
+      
+      gum::learning::IdSet2<> ids(4, std::vector< gum::NodeId >{0, 3}, true);
+      std::vector< double >   counts = counter.counts(ids);
+      TS_ASSERT(counts.size() == std::size_t(27));
+      TS_ASSERT(counts[0] == double(200));    // A=0, C=0, B=0
+      TS_ASSERT(counts[1] == double(75));     // A=1, C=0, B=0
+      TS_ASSERT(counts[11] == double(75));    // A=2, C=0, B=1
+      TS_ASSERT(counts[19] == double(50));    // A=1, C=0, B=2
+      TS_ASSERT(counts[9] == double(1000));   // A=0, C=1, B=0
+      gum::Set< std::size_t > xxx{0, 1, 11, 19, 9};
+      for (std::size_t i = std::size_t(0); i < counts.size(); ++i) {
+        if (!xxx.exists(i)) { TS_ASSERT(counts[i] == 0.0); }
+      }
+
+      gum::learning::IdSet2<> ids1(4, 0, 3, std::vector< gum::NodeId >(), true);
+      counts = counter.counts(ids1);
+      TS_ASSERT(counts.size() == std::size_t(27));
+      TS_ASSERT(counts[0] == double(200));    // A=0, C=0, B=0
+      TS_ASSERT(counts[1] == double(75));     // A=1, C=0, B=0
+      TS_ASSERT(counts[11] == double(75));    // A=2, C=0, B=1
+      TS_ASSERT(counts[19] == double(50));    // A=1, C=0, B=2
+      TS_ASSERT(counts[9] == double(1000));   // A=0, C=1, B=0
+      for (std::size_t i = std::size_t(0); i < counts.size(); ++i) {
+        if (!xxx.exists(i)) { TS_ASSERT(counts[i] == 0.0); }
+      }
+
+      gum::learning::IdSet2<> ids4(5, std::vector< gum::NodeId >(), true);
+      TS_ASSERT_THROWS( counts = counter.counts(ids4), gum::NotFound );
+      
+    }
+    
   };
 
 
