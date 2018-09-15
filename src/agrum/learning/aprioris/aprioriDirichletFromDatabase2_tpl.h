@@ -240,21 +240,21 @@ namespace gum {
       return AprioriDirichletType::type;
     }
 
-    
+
     /// indicates whether the apriori is potentially informative
     template < template < typename > class ALLOC >
     INLINE bool AprioriDirichletFromDatabase2< ALLOC >::isInformative() const {
-      return ( this->_weight != 0.0 ); 
+      return (this->_weight != 0.0);
     }
-      
+
 
     /// returns the apriori vector all the variables in the idset
     template < template < typename > class ALLOC >
     INLINE void AprioriDirichletFromDatabase2< ALLOC >::addAllApriori(
       const IdSet2< ALLOC >&                  idset,
       std::vector< double, ALLOC< double > >& counts) {
-      if ( this->_weight == 0.0 ) return; 
-      
+      if (this->_weight == 0.0) return;
+
       const auto&       apriori = __counter.counts(idset);
       const std::size_t size = apriori.size();
       if (this->_weight != 1.0) {
@@ -274,7 +274,7 @@ namespace gum {
     void AprioriDirichletFromDatabase2< ALLOC >::addConditioningApriori(
       const IdSet2< ALLOC >&                  idset,
       std::vector< double, ALLOC< double > >& counts) {
-      if ( this->_weight == 0.0 ) return; 
+      if (this->_weight == 0.0) return;
 
       const auto&       apriori = __counter.counts(idset.conditionalIdSet());
       const std::size_t size = apriori.size();

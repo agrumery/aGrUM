@@ -38,8 +38,8 @@
 namespace gum {
 
   namespace learning {
-    
-        
+
+
     /** @class ScorefNML2
      * @brief the class for computing fNML scores
      * @headerfile scorefNML2.h <agrum/learning/scores_and_tests/scorefNML2.h>
@@ -54,20 +54,19 @@ namespace gum {
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;
 
-      
+
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-      
+
       // the class for computing efficiently the CTable penalties of Score fNML
       class CTable {
-      public:        
-        
+        public:
         // ########################################################################
         /// @name Constructors / Destructors
         // ########################################################################
         /// @{
-        
+
         /// default constructor
-        CTable ();
+        CTable();
 
         /// copy constructor
         CTable(const CTable& from);
@@ -86,12 +85,12 @@ namespace gum {
 
         /// @}
 
-        
+
         // ########################################################################
         /// @name Operators
         // ########################################################################
         /// @{
-        
+
         /// copy operator
         CTable& operator=(const CTable& from);
 
@@ -107,17 +106,16 @@ namespace gum {
         /// @{
 
         /// returns the value of the log in base 2 of Cnr
-        double log2Cnr ( const std::size_t r,
-                         const double n );
+        double log2Cnr(const std::size_t r, const double n);
 
         /// the function used to write the cpp file with the values of log2(Cnr)
-        void CnrToFile ( const std::string& filename );
+        void CnrToFile(const std::string& filename);
 
         /// @}
 
-      private:
+        private:
         /// the value of N above which we should use Szpankowski's approximation
-        const double __Szpankowski_threshold { 1000.0 };
+        const double __Szpankowski_threshold{1000.0};
 
         // constants used to speed-up the computation of the Szpankowski
         // approximation.
@@ -132,15 +130,14 @@ namespace gum {
         // (3/36 - 4/(9*pi)) / n.
         // So, given the constants below, it is equal to:
         // 0.5 * std::log2 (n) + __cst1 + __cst2 / std::sqrt(n) + __cst3 / n
-        const double __cst1 = -0.5 + std::log2 (std::sqrt (M_PI));
-        const double __cst2 = std::sqrt (2.0/M_PI) / 3.0;
-        const double __cst3 = 3.0/36.0 - 4.0 / (9.0 * M_PI);
+        const double __cst1 = -0.5 + std::log2(std::sqrt(M_PI));
+        const double __cst2 = std::sqrt(2.0 / M_PI) / 3.0;
+        const double __cst3 = 3.0 / 36.0 - 4.0 / (9.0 * M_PI);
       };
 
-      
+
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
-      
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -164,7 +161,10 @@ namespace gum {
        * bijection means that the mapping is an identity, i.e., the value of a
        * NodeId is equal to the index of the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
-       * Score. */
+       * Score.
+       * @warning If nodeId2columns is not empty, then only the scores over the
+       * ids belonging to this bijection can be computed: applying method
+       * score() over other ids will raise exception NotFound. */
       ScorefNML2(
         const DBRowGeneratorParser< ALLOC >& parser,
         const Apriori2< ALLOC >&             apriori,
@@ -188,13 +188,16 @@ namespace gum {
        * bijection means that the mapping is an identity, i.e., the value of a
        * NodeId is equal to the index of the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
-       * Score. */
+       * Score.
+       * @warning If nodeId2columns is not empty, then only the scores over the
+       * ids belonging to this bijection can be computed: applying method
+       * score() over other ids will raise exception NotFound. */
       ScorefNML2(const DBRowGeneratorParser< ALLOC >& parser,
-                const Apriori2< ALLOC >&             apriori,
-                const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                  nodeId2columns =
-                    Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-                const allocator_type& alloc = allocator_type());
+                 const Apriori2< ALLOC >&             apriori,
+                 const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                   nodeId2columns =
+                     Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+                 const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       ScorefNML2(const ScorefNML2< ALLOC >& from);
@@ -293,13 +296,12 @@ namespace gum {
 
       /// the CTable cache
       CTable __ctable;
-      
     };
 
-    
+
   } /* namespace learning */
 
-  
+
 } /* namespace gum */
 
 

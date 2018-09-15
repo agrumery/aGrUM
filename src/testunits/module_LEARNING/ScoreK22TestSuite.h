@@ -32,26 +32,24 @@ namespace gum_tests {
 
   class ScoreK22TestSuite : public CxxTest::TestSuite {
     private:
-
     gum::GammaLog2 __gammalog2;
-    bool __gum_destructor_increased { false };
+    bool           __gum_destructor_increased{false};
 
-    void setUp () {
-    }
-    
-    void tearDown () {
-      if ( ! __gum_destructor_increased ) {
-        GUM_DESTRUCTOR (GammaLog2);
+    void setUp() {}
+
+    void tearDown() {
+      if (!__gum_destructor_increased) {
+        GUM_DESTRUCTOR(GammaLog2);
         __gum_destructor_increased = true;
       }
     }
-    
+
     double __score(const std::vector< double >& N_ijk,
                    const std::vector< double >& N_ij) const {
       double score = 0.0;
 
       if (!N_ij.empty()) {
-        const double ri = N_ijk.size () / N_ij.size();
+        const double ri = N_ijk.size() / N_ij.size();
         score = N_ij.size() * __gammalog2(ri);
 
         for (const auto n_ij : N_ij) {
@@ -60,8 +58,7 @@ namespace gum_tests {
         for (const auto n_ijk : N_ijk) {
           score += __gammalog2(n_ijk + 1);
         }
-      }
-      else {
+      } else {
         const double ri = N_ijk.size();
         score = __gammalog2(ri);
         double N = 0;
@@ -126,8 +123,8 @@ namespace gum_tests {
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
 
       gum::learning::AprioriNoApriori2<> apriori(database);
-      gum::learning::ScoreK22<>        score(parser, apriori);
-      
+      gum::learning::ScoreK22<>          score(parser, apriori);
+
       TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreK22<>::isAprioriCompatible(
         gum::learning::AprioriNoApriori2<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(
@@ -270,7 +267,7 @@ namespace gum_tests {
       nodeId2columns.insert(node5, std::size_t(1));
 
       gum::learning::AprioriNoApriori2<> apriori(database, nodeId2columns);
-      gum::learning::ScoreK22<>         score(parser, apriori, nodeId2columns);
+      gum::learning::ScoreK22<>          score(parser, apriori, nodeId2columns);
 
       TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreK22<>::isAprioriCompatible(
         gum::learning::AprioriNoApriori2<>::type::type));

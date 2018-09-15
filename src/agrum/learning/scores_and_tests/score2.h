@@ -74,7 +74,10 @@ namespace gum {
        * bijection means that the mapping is an identity, i.e., the value of a
        * NodeId is equal to the index of the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
-       * Score. */
+       * Score.
+       * @warning If nodeId2columns is not empty, then only the scores over the
+       * ids belonging to this bijection can be computed: applying method
+       * score() over other ids will raise exception NotFound. */
       Score2(const DBRowGeneratorParser< ALLOC >& parser,
              const Apriori2< ALLOC >&             external_apriori,
              const std::vector< std::pair< std::size_t, std::size_t >,
@@ -98,7 +101,10 @@ namespace gum {
        * bijection means that the mapping is an identity, i.e., the value of a
        * NodeId is equal to the index of the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
-       * Score. */
+       * Score.
+       * @warning If nodeId2columns is not empty, then only the scores over the
+       * ids belonging to this bijection can be computed: applying method
+       * score() over other ids will raise exception NotFound. */
       Score2(const DBRowGeneratorParser< ALLOC >& parser,
              const Apriori2< ALLOC >&             external_apriori,
              const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
@@ -139,7 +145,7 @@ namespace gum {
       double score(const NodeId                                  var,
                    const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids);
 
-      /// clears all the data structures from memory
+      /// clears all the data structures from memory, including the cache
       void clear();
 
       /// clears the current cache (clear nodesets as well)
@@ -147,6 +153,16 @@ namespace gum {
 
       /// turn on/off the use of a cache of the previously computed score
       void useCache(const bool on_off);
+
+      /// return the mapping between the columns of the database and the node ids
+      /** @warning An empty nodeId2Columns bijection means that the mapping is
+       * an identity, i.e., the value of a NodeId is equal to the index of the
+       * column in the DatabaseTable. */
+      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+      nodeId2Columns () const;
+
+      /// return the database used by the score
+      const DatabaseTable< ALLOC >& database () const;
 
       /// indicates whether the apriori is compatible (meaningful) with the score
       /** The combination of some scores and aprioris can be meaningless. For

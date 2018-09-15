@@ -40,7 +40,7 @@ namespace gum {
       const std::vector< std::pair< std::size_t, std::size_t >,
                          ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename ScoreBDeu2< ALLOC >::allocator_type&            alloc) :
+      const typename ScoreBDeu2< ALLOC >::allocator_type&           alloc) :
         Score2< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
         __internal_apriori(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreBDeu2);
@@ -53,7 +53,7 @@ namespace gum {
       const DBRowGeneratorParser< ALLOC >&                          parser,
       const Apriori2< ALLOC >&                                      apriori,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename ScoreBDeu2< ALLOC >::allocator_type&            alloc) :
+      const typename ScoreBDeu2< ALLOC >::allocator_type&           alloc) :
         Score2< ALLOC >(parser, apriori, nodeId2columns, alloc),
         __internal_apriori(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreBDeu2);
@@ -66,8 +66,8 @@ namespace gum {
       const ScoreBDeu2< ALLOC >&                          from,
       const typename ScoreBDeu2< ALLOC >::allocator_type& alloc) :
         Score2< ALLOC >(from, alloc),
-      __internal_apriori(from.__internal_apriori, alloc),
-      __gammalog2(from.__gammalog2) {
+        __internal_apriori(from.__internal_apriori, alloc),
+        __gammalog2(from.__gammalog2) {
       GUM_CONS_CPY(ScoreBDeu2);
     }
 
@@ -84,8 +84,8 @@ namespace gum {
       ScoreBDeu2< ALLOC >&&                               from,
       const typename ScoreBDeu2< ALLOC >::allocator_type& alloc) :
         Score2< ALLOC >(std::move(from), alloc),
-      __internal_apriori(std::move(from.__internal_apriori), alloc),
-      __gammalog2(std::move(from.__gammalog2)) {
+        __internal_apriori(std::move(from.__internal_apriori), alloc),
+        __gammalog2(std::move(from.__gammalog2)) {
       GUM_CONS_MOV(ScoreBDeu2);
     }
 
@@ -130,7 +130,7 @@ namespace gum {
     /// copy operator
     template < template < typename > class ALLOC >
     ScoreBDeu2< ALLOC >& ScoreBDeu2< ALLOC >::
-                        operator=(const ScoreBDeu2< ALLOC >& from) {
+                         operator=(const ScoreBDeu2< ALLOC >& from) {
       if (this != &from) {
         Score2< ALLOC >::operator=(from);
         __internal_apriori = from.__internal_apriori;
@@ -141,7 +141,8 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    ScoreBDeu2< ALLOC >& ScoreBDeu2< ALLOC >::operator=(ScoreBDeu2< ALLOC >&& from) {
+    ScoreBDeu2< ALLOC >& ScoreBDeu2< ALLOC >::
+                         operator=(ScoreBDeu2< ALLOC >&& from) {
       if (this != &from) {
         Score2< ALLOC >::operator=(std::move(from));
         __internal_apriori = std::move(from.__internal_apriori);
@@ -154,7 +155,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     std::string
       ScoreBDeu2< ALLOC >::isAprioriCompatible(const std::string& apriori_type,
-                                              double             weight) {
+                                               double             weight) {
       // check that the apriori is compatible with the score
       if (apriori_type == AprioriNoAprioriType::type) { return ""; }
 
@@ -195,16 +196,14 @@ namespace gum {
 
     /// returns the internal apriori of the score
     template < template < typename > class ALLOC >
-    INLINE const Apriori2< ALLOC >&
-                 ScoreBDeu2< ALLOC >::internalApriori() const {
+    INLINE const Apriori2< ALLOC >& ScoreBDeu2< ALLOC >::internalApriori() const {
       return __internal_apriori;
     }
 
 
     /// sets the effective sample size of the internal apriori
     template < template < typename > class ALLOC >
-    INLINE void
-      ScoreBDeu2< ALLOC >::setEffectiveSampleSize(double ess) {
+    INLINE void ScoreBDeu2< ALLOC >::setEffectiveSampleSize(double ess) {
       if (ess < 0) {
         GUM_ERROR(OutOfBounds,
                   "The effective sample size of the BDeu's "
@@ -222,10 +221,10 @@ namespace gum {
       std::vector< double, ALLOC< double > > N_ijk(
         this->_counter.counts(idset, true));
       const double all_size = (N_ijk.size());
-      double score = 0.0;
-      const double ess = __internal_apriori.weight ();
-      const bool informative_external_apriori = this->_apriori->isInformative ();
-      
+      double       score = 0.0;
+      const double ess = __internal_apriori.weight();
+      const bool   informative_external_apriori = this->_apriori->isInformative();
+
 
       // here, we distinguish idsets with conditioning nodes from those
       // without conditioning nodes
@@ -234,7 +233,7 @@ namespace gum {
         std::vector< double, ALLOC< double > > N_ij =
           this->_counter.counts(idset.conditionalIdSet(), false);
         const double conditioning_size = double(N_ij.size());
-        const double ess_qi   = ess / conditioning_size;
+        const double ess_qi = ess / conditioning_size;
         const double ess_riqi = ess / all_size;
 
         if (informative_external_apriori) {
@@ -242,11 +241,11 @@ namespace gum {
           // N'_ijk + ESS / (r_i * q_i )
           // (the + ESS / (r_i * q_i ) is here to take into account the
           // internal apriori of BDeu)
-          std::vector< double, ALLOC< double > > N_prime_ijk ( all_size, 0.0 );
+          std::vector< double, ALLOC< double > > N_prime_ijk(all_size, 0.0);
           this->_apriori->addAllApriori(idset, N_prime_ijk);
-          std::vector< double, ALLOC< double > > N_prime_ij ( N_ij.size(), 0.0 );
+          std::vector< double, ALLOC< double > > N_prime_ij(N_ij.size(), 0.0);
           this->_apriori->addConditioningApriori(idset, N_prime_ij);
-        
+
           // the BDeu score can be computed as follows:
           // sum_j=1^qi [ gammalog2 ( N'_ij + ESS / q_i ) -
           //     gammalog2 ( N_ij + N'_ij + ESS / q_i )
@@ -254,21 +253,20 @@ namespace gum {
           //     - gammalog2 ( N'_ijk + ESS / (r_i * q_i ) ) } ]
           for (std::size_t j = std::size_t(0); j < conditioning_size; ++j) {
             score += __gammalog2(N_prime_ij[j] + ess_qi)
-              - __gammalog2(N_ij[j] + N_prime_ij[j] + ess_qi);
+                     - __gammalog2(N_ij[j] + N_prime_ij[j] + ess_qi);
           }
           for (std::size_t k = std::size_t(0); k < all_size; ++k) {
             score += __gammalog2(N_ijk[k] + N_prime_ijk[k] + ess_riqi)
-              - __gammalog2(N_prime_ijk[k] + ess_riqi);
+                     - __gammalog2(N_prime_ijk[k] + ess_riqi);
           }
-        }
-        else {
+        } else {
           // the BDeu score can be computed as follows:
           // qi * gammalog2 (ess / qi) - ri * qi * gammalog2 (ess / (ri * qi) )
           // - sum_j=1^qi [ gammalog2 ( N_ij + ess / qi ) ]
           // + sum_j=1^qi sum_k=1^ri log [ gammalog2 ( N_ijk + ess / (ri * qi) )
           // ]
           score = conditioning_size * __gammalog2(ess_qi)
-            - all_size * __gammalog2(ess_riqi);
+                  - all_size * __gammalog2(ess_riqi);
 
           for (const auto n_ij : N_ij) {
             score -= __gammalog2(n_ij + ess_qi);
@@ -280,15 +278,15 @@ namespace gum {
       } else {
         // here, there are no conditioning nodes
         const double ess_ri = ess / all_size;
-        
-        if (informative_external_apriori) {        
-         // the score to compute is that of BD with aprioris
+
+        if (informative_external_apriori) {
+          // the score to compute is that of BD with aprioris
           // N'_ijk + ESS / ( ri * qi )
           // (the + ESS / ( ri * qi ) is here to take into account the
           // internal apriori of K2)
-          std::vector< double, ALLOC< double > > N_prime_ijk ( all_size, 0.0 );
+          std::vector< double, ALLOC< double > > N_prime_ijk(all_size, 0.0);
           this->_apriori->addAllApriori(idset, N_prime_ijk);
- 
+
           // the BDeu score can be computed as follows:
           // gammalog2 ( N' + ess ) - gammalog2 ( N + N' + ess )
           // + sum_k=1^ri { gammlog2 ( N_i + N'_i + ESS / ri)
@@ -297,13 +295,12 @@ namespace gum {
           double N_prime = 0.0;
           for (std::size_t k = std::size_t(0); k < all_size; ++k) {
             score += __gammalog2(N_ijk[k] + N_prime_ijk[k] + ess_ri)
-              - __gammalog2(N_prime_ijk[k] + ess_ri);
+                     - __gammalog2(N_prime_ijk[k] + ess_ri);
             N += N_ijk[k];
             N_prime += N_prime_ijk[k];
           }
           score += __gammalog2(N_prime + ess) - __gammalog2(N + N_prime + ess);
-        }
-        else {
+        } else {
           // the BDeu score can be computed as follows:
           // gammalog2 ( ess ) - ri * gammalog2 ( ess / ri )
           // - gammalog2 ( N + ess )

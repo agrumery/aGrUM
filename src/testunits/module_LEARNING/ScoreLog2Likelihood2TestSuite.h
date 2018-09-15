@@ -98,11 +98,12 @@ namespace gum_tests {
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
 
-      gum::learning::AprioriSmoothing2<> apriori(database);
-      gum::learning::ScoreLog2Likelihood2<>         score(parser, apriori);
+      gum::learning::AprioriSmoothing2<>    apriori(database);
+      gum::learning::ScoreLog2Likelihood2<> score(parser, apriori);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreLog2Likelihood2<>::isAprioriCompatible(
-        gum::learning::AprioriSmoothing2<>::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+        gum::learning::ScoreLog2Likelihood2<>::isAprioriCompatible(
+          gum::learning::AprioriSmoothing2<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(
         gum::learning::ScoreLog2Likelihood2<>::isAprioriCompatible(apriori));
       TS_GUM_ASSERT_THROWS_NOTHING(
@@ -243,11 +244,12 @@ namespace gum_tests {
       nodeId2columns.insert(node4, std::size_t(5));
       nodeId2columns.insert(node5, std::size_t(1));
 
-      gum::learning::AprioriSmoothing2<> apriori(database, nodeId2columns);
-      gum::learning::ScoreLog2Likelihood2<>         score(parser, apriori, nodeId2columns);
+      gum::learning::AprioriSmoothing2<>    apriori(database, nodeId2columns);
+      gum::learning::ScoreLog2Likelihood2<> score(parser, apriori, nodeId2columns);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreLog2Likelihood2<>::isAprioriCompatible(
-        gum::learning::AprioriSmoothing2<>::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+        gum::learning::ScoreLog2Likelihood2<>::isAprioriCompatible(
+          gum::learning::AprioriSmoothing2<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(
         gum::learning::ScoreLog2Likelihood2<>::isAprioriCompatible(apriori));
       TS_GUM_ASSERT_THROWS_NOTHING(

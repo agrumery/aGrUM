@@ -34,7 +34,7 @@ namespace gum {
     INLINE AprioriK2< ALLOC >::AprioriK2(
       const DatabaseTable< ALLOC >&                                 database,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename AprioriK2< ALLOC >::allocator_type&    alloc) :
+      const typename AprioriK2< ALLOC >::allocator_type&            alloc) :
         AprioriSmoothing2< ALLOC >(database, nodeId2columns, alloc) {
       GUM_CONSTRUCTOR(AprioriK2);
     }
@@ -52,8 +52,7 @@ namespace gum {
 
     /// copy constructor
     template < template < typename > class ALLOC >
-    INLINE AprioriK2< ALLOC >::AprioriK2(
-      const AprioriK2< ALLOC >& from) :
+    INLINE AprioriK2< ALLOC >::AprioriK2(const AprioriK2< ALLOC >& from) :
         AprioriK2< ALLOC >(from, from.getAllocator()) {}
 
 
@@ -69,8 +68,7 @@ namespace gum {
 
     /// move constructor
     template < template < typename > class ALLOC >
-    INLINE AprioriK2< ALLOC >::AprioriK2(
-      AprioriK2< ALLOC >&& from) :
+    INLINE AprioriK2< ALLOC >::AprioriK2(AprioriK2< ALLOC >&& from) :
         AprioriK2< ALLOC >(std::move(from), from.getAllocator()) {}
 
 
@@ -108,7 +106,7 @@ namespace gum {
     /// copy operator
     template < template < typename > class ALLOC >
     INLINE AprioriK2< ALLOC >& AprioriK2< ALLOC >::
-                                       operator=(const AprioriK2< ALLOC >& from) {
+                               operator=(const AprioriK2< ALLOC >& from) {
       AprioriSmoothing2< ALLOC >::operator=(from);
       return *this;
     }
@@ -117,12 +115,12 @@ namespace gum {
     /// move operator
     template < template < typename > class ALLOC >
     INLINE AprioriK2< ALLOC >& AprioriK2< ALLOC >::
-                                       operator=(AprioriK2< ALLOC >&& from) {
+                               operator=(AprioriK2< ALLOC >&& from) {
       AprioriSmoothing2< ALLOC >::operator=(std::move(from));
       return *this;
     }
 
-    
+
     /// dummy set weight function: in K2, weights are always equal to 1
     template < template < typename > class ALLOC >
     INLINE void AprioriK2< ALLOC >::setWeight(const double weight) {}

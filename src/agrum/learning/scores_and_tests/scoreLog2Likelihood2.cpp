@@ -27,4 +27,3 @@
 #include <agrum/learning/scores_and_tests/scoreLog2Likelihood2.h>
 
 template class gum::learning::ScoreLog2Likelihood2<>;
-

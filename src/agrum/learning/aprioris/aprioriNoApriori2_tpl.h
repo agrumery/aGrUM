@@ -142,7 +142,7 @@ namespace gum {
       return AprioriNoAprioriType::type;
     }
 
-    
+
     /// indicates whether the apriori is potentially informative
     template < template < typename > class ALLOC >
     INLINE bool AprioriNoApriori2< ALLOC >::isInformative() const {

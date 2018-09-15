@@ -72,26 +72,23 @@ namespace gum {
        * the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
        * RecordCounter.*/
-      AprioriK2(
-        const DatabaseTable< ALLOC >& database,
-        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-          nodeId2columns =
-            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-        const allocator_type& alloc = allocator_type());
+      AprioriK2(const DatabaseTable< ALLOC >& database,
+                const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                  nodeId2columns =
+                    Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+                const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       AprioriK2(const AprioriK2< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      AprioriK2(const AprioriK2< ALLOC >& from,
-                        const allocator_type&             alloc);
+      AprioriK2(const AprioriK2< ALLOC >& from, const allocator_type& alloc);
 
       /// move constructor
       AprioriK2(AprioriK2< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      AprioriK2(AprioriK2< ALLOC >&& from,
-                        const allocator_type&        alloc);
+      AprioriK2(AprioriK2< ALLOC >&& from, const allocator_type& alloc);
 
       /// virtual copy constructor
       virtual AprioriK2< ALLOC >* clone() const;
@@ -111,8 +108,7 @@ namespace gum {
       /// @{
 
       /// copy operator
-      AprioriK2< ALLOC >&
-        operator=(const AprioriK2< ALLOC >& from);
+      AprioriK2< ALLOC >& operator=(const AprioriK2< ALLOC >& from);
 
       /// move operator
       AprioriK2< ALLOC >& operator=(AprioriK2< ALLOC >&& from);
@@ -129,7 +125,6 @@ namespace gum {
       virtual void setWeight(const double weight) final;
 
       /// @}
-
     };
 
   } /* namespace learning */

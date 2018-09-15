@@ -185,8 +185,7 @@ namespace gum {
 
     /// returns the internal apriori of the score
     template < template < typename > class ALLOC >
-    INLINE const Apriori2< ALLOC >&
-                 ScoreAIC2< ALLOC >::internalApriori() const {
+    INLINE const Apriori2< ALLOC >& ScoreAIC2< ALLOC >::internalApriori() const {
       return __internal_apriori;
     }
 
@@ -197,7 +196,7 @@ namespace gum {
       // get the counts for all the nodes in the idset and add the apriori
       std::vector< double, ALLOC< double > > N_ijk(
         this->_counter.counts(idset, true));
-      const bool informative_external_apriori = this->_apriori->isInformative ();
+      const bool informative_external_apriori = this->_apriori->isInformative();
       if (informative_external_apriori)
         this->_apriori->addAllApriori(idset, N_ijk);
       const double all_size = (N_ijk.size());
@@ -208,7 +207,7 @@ namespace gum {
         // get the counts for the conditioning nodes
         std::vector< double, ALLOC< double > > N_ij =
           this->_counter.counts(idset.conditionalIdSet(), false);
-        if(informative_external_apriori)
+        if (informative_external_apriori)
           this->_apriori->addConditioningApriori(idset, N_ij);
         const double conditioning_size = double(N_ij.size());
 

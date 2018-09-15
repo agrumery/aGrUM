@@ -234,6 +234,21 @@ namespace gum {
     }
 
 
+    /// return the mapping between the columns of the database and the node ids
+    template < template < typename > class ALLOC >
+    INLINE const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+    Score2< ALLOC >::nodeId2Columns () const {
+      return _counter.nodeId2Columns();
+    }
+
+
+    /// return the database used by the score
+    template < template < typename > class ALLOC >
+    INLINE const DatabaseTable< ALLOC >& Score2< ALLOC >::database () const {
+      return _counter.database ();
+    }
+    
+
   } /* namespace learning */
 
 } /* namespace gum */

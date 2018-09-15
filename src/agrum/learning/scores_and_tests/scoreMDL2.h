@@ -43,8 +43,8 @@ namespace gum {
      * into the log-likelihood part of the score.
      */
     template < template < typename > class ALLOC = std::allocator >
-    using ScoreMDL2 = ScoreBIC2<ALLOC>;
-    
+    using ScoreMDL2 = ScoreBIC2< ALLOC >;
+
 
   } /* namespace learning */
 
