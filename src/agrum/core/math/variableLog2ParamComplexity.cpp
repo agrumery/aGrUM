@@ -17,26 +17,23 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief the beginning of the CTable for the fNML score
+/**
+ * @file
+ * @brief the class for computing the log2 of the parametric complexity of
+ * an r-ary multinomial variable
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/learning/scores_and_tests/scorefNMLCTable.h>
+#include <agrum/core/math/variableLog2ParamComplexity.h>
+
 
 namespace gum {
 
-  namespace learning {
-
-    // the size in r of ScorefNMLCTable
-    const std::size_t ScorefNMLCTableRSize = 4;
-
-    // the size in n of ScorefNMLCTable
-    const std::size_t ScorefNMLCTableNSize = 1000;
-
-    // the CTable for log2(Cnr), n < 1000 and r in {2,3,4,5}
-    const double ScorefNMLCTable[4][1000] = {{0,
+  
+    // the CTable cache for log2(Cnr), n < 1000 and r in {2,3,4,5}
+    const double VariableLog2ParamComplexityCTable[4][1000] = {
+      {0,
                                               1,
                                               1.3219280948873624038,
                                               1.5305148703230577745,
@@ -4035,8 +4032,8 @@ namespace gum {
                                               18.477908603777017049,
                                               18.480732653319968506,
                                               18.483553907336020217,
-                                              18.486372371370983103}};
+                                              18.486372371370983103}
+    };
 
-  } /* namespace learning */
 
 } /* namespace gum */

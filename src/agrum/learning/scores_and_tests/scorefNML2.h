@@ -28,10 +28,9 @@
 
 #include <cmath>
 #include <string>
-#include <fstream>
 
 #include <agrum/agrum.h>
-#include <agrum/core/hashFunc.h>
+#include <agrum/core/math/variableLog2ParamComplexity.h>
 #include <agrum/learning/scores_and_tests/score2.h>
 #include <agrum/learning/aprioris/aprioriNoApriori2.h>
 
@@ -53,91 +52,6 @@ namespace gum {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;
-
-
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
-      // the class for computing efficiently the CTable penalties of Score fNML
-      class CTable {
-        public:
-        // ########################################################################
-        /// @name Constructors / Destructors
-        // ########################################################################
-        /// @{
-
-        /// default constructor
-        CTable();
-
-        /// copy constructor
-        CTable(const CTable& from);
-
-        /// move constructor
-        CTable(CTable&& from);
-
-        /// virtual copy constructor
-        virtual CTable* clone() const;
-
-        /// virtual copy constructor with a given allocator
-        virtual CTable* clone(const allocator_type& alloc) const;
-
-        /// destructor
-        virtual ~CTable();
-
-        /// @}
-
-
-        // ########################################################################
-        /// @name Operators
-        // ########################################################################
-        /// @{
-
-        /// copy operator
-        CTable& operator=(const CTable& from);
-
-        /// move operator
-        CTable& operator=(CTable&& from);
-
-        /// @}
-
-
-        // ########################################################################
-        /// @name Accessors / Modifiers
-        // ########################################################################
-        /// @{
-
-        /// returns the value of the log in base 2 of Cnr
-        double log2Cnr(const std::size_t r, const double n);
-
-        /// the function used to write the cpp file with the values of log2(Cnr)
-        void CnrToFile(const std::string& filename);
-
-        /// @}
-
-        private:
-        /// the value of N above which we should use Szpankowski's approximation
-        const double __Szpankowski_threshold{1000.0};
-
-        // constants used to speed-up the computation of the Szpankowski
-        // approximation.
-        // The formula for the approximation given in Silander, Roos,
-        // Kontkanen and Myllymaki (2007) "Factorized Normalized Maximum "
-        // Likelihood Criterion for Learning Bayesian Network Structures" paper
-        // is incorrect. However, the on in Kontkanen, Buntine, Myllymaki,
-        // Rissanen and Tirri (2003) "Efficient Computation of Stochastic
-        // Complexity" is correct. So we use the latter and simplify it. Thus,
-        // the approximation of log2(Cnr) is equal to:
-        // 0.5 log2(n) - 0.5 + log2(sqrt(pi)) + (sqrt(2/pi)/3) / sqrt(n) +
-        // (3/36 - 4/(9*pi)) / n.
-        // So, given the constants below, it is equal to:
-        // 0.5 * std::log2 (n) + __cst1 + __cst2 / std::sqrt(n) + __cst3 / n
-        const double __cst1 = -0.5 + std::log2(std::sqrt(M_PI));
-        const double __cst2 = std::sqrt(2.0 / M_PI) / 3.0;
-        const double __cst3 = 3.0 / 36.0 - 4.0 / (9.0 * M_PI);
-      };
-
-
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
-
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -295,7 +209,7 @@ namespace gum {
       AprioriNoApriori2< ALLOC > __internal_apriori;
 
       /// the CTable cache
-      CTable __ctable;
+      VariableLog2ParamComplexity< ALLOC > __ctable;
     };
 
 
