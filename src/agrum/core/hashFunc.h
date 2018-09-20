@@ -752,6 +752,20 @@ namespace gum {
       : public HashFuncCastKeyPair< double, long unsigned int >::type {};
 
   /**
+   * @headerfile hashFunc.h <agrum/core/hashFunc.h>
+   * @brief Hash function for pairs of std::size_t and double
+   * @ingroup hashfunctions_group
+   */
+  template <>
+  class HashFunc< std::pair<
+                    typename HashFuncConditionalType< std::size_t,
+                                                      unsigned long,
+                                                      unsigned int,
+                                                      long,
+                                                      int >::type , double > >
+    : public HashFuncCastKeyPair< std::size_t, double >::type {};
+
+  /**
    * @author JCM
    * @brief Modification : adding mirrored pair key of the one above
    * Though the question should be asked of whether we enforce only

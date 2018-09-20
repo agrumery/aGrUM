@@ -130,6 +130,8 @@ namespace gum {
       void useMDL();
       void useNML();
       void useNoCorr();
+
+      const KNML< IdSetAlloc, CountAlloc >& kNML () const { return __k_NML; };
       /// @}
 
 

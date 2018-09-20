@@ -33,6 +33,7 @@
 #include <fstream>
 
 #include <agrum/agrum.h>
+#include <agrum/core/hashTable.h>
 
 namespace gum {
 
@@ -46,7 +47,8 @@ namespace gum {
   // the size in n of the CTable cache 
   constexpr std::size_t VariableLog2ParamComplexityCTableNSize {std::size_t(1000)};
 
-
+  
+  
   
   /** @class VariableParamComplexity
    * @brief the class for computing the log2 of the parametric complexity
@@ -120,6 +122,12 @@ namespace gum {
     /// the function used to write the cpp file with the values of log2(Cnr)
     void CnrToFile(const std::string& filename);
 
+    /// indicates whether we wish to use a cache for the Cnr
+    void useCache ( const bool on_off );
+
+    /// clears the current cache
+    void clearCache();
+
     /// @}
 
   private:
@@ -131,7 +139,7 @@ namespace gum {
     // The formula for the approximation given in Silander, Roos,
     // Kontkanen and Myllymaki (2007) "Factorized Normalized Maximum "
     // Likelihood Criterion for Learning Bayesian Network Structures" paper
-    // is incorrect. However, the on in Kontkanen, Buntine, Myllymaki,
+    // is incorrect. However, the one in Kontkanen, Buntine, Myllymaki,
     // Rissanen and Tirri (2003) "Efficient Computation of Stochastic
     // Complexity" is correct. So we use the latter and simplify it. Thus,
     // the approximation of log2(Cnr) is equal to:
@@ -142,6 +150,13 @@ namespace gum {
     const double __cst1 = -0.5 + std::log2(std::sqrt(M_PI));
     const double __cst2 = std::sqrt(2.0 / M_PI) / 3.0;
     const double __cst3 = 3.0 / 36.0 - 4.0 / (9.0 * M_PI);
+
+    // indicates whether we should use a cache or not
+    bool __use_cache { true };
+    
+    // the cache used, eventually, to store the log2Cnr values
+    HashTable<std::pair<std::size_t,double>,double> __cache;
+    
   };
 
 } /* namespace gum */

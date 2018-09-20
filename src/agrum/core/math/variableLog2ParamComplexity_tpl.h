@@ -37,7 +37,8 @@ namespace gum {
 
   /// default constructor
     template < template < typename > class ALLOC >
-    INLINE VariableLog2ParamComplexity< ALLOC >::VariableLog2ParamComplexity() {
+    INLINE VariableLog2ParamComplexity< ALLOC >::VariableLog2ParamComplexity()
+      : __cache ( 1000 ) {
       GUM_CONSTRUCTOR(VariableLog2ParamComplexity);
     }
 
@@ -45,7 +46,9 @@ namespace gum {
     /// copy constructor
     template < template < typename > class ALLOC >
     INLINE VariableLog2ParamComplexity< ALLOC >::VariableLog2ParamComplexity(
-      const VariableLog2ParamComplexity< ALLOC >& from) {
+      const VariableLog2ParamComplexity< ALLOC >& from)
+      :  __use_cache ( from.__use_cache ),
+         __cache ( from.__cache ) {
       GUM_CONS_CPY(VariableLog2ParamComplexity);
     }
 
@@ -53,7 +56,9 @@ namespace gum {
     /// move constructor
     template < template < typename > class ALLOC >
     INLINE VariableLog2ParamComplexity< ALLOC >::VariableLog2ParamComplexity(
-      VariableLog2ParamComplexity< ALLOC >&& from) {
+      VariableLog2ParamComplexity< ALLOC >&& from)
+      : __use_cache ( from.__use_cache ),
+        __cache ( std::move ( from.__cache ) ) {
       GUM_CONS_MOV(VariableLog2ParamComplexity);
     }
 
@@ -133,6 +138,12 @@ namespace gum {
         if (r - 2 < VariableLog2ParamComplexityCTableRSize) {
           return VariableLog2ParamComplexityCTable[r - 2][xn];
         } else {
+          // try to find the value in the cache
+          if ( __use_cache ) {
+            try { return __cache[std::pair<std::size_t,double> {r,n}]; }
+            catch ( NotFound& ) {}
+          }
+            
           // use Equation (13) of the paper to compute the value of cnr:
           // C_n^r = C_n^{r-1} + (n / (r-2)) C_n^{r-2}
           // as we handle only log2's of C_n^r, we have the following:
@@ -160,9 +171,21 @@ namespace gum {
             k_r = 1.0 / q_r;
             q_r = 1.0 + k_r * (n / (i - 1.0));
           }
+
+          // if we use a cache, update it
+          if ( __use_cache ) {
+            __cache.insert ( std::pair<std::size_t,double> {r,n}, log2Cnr );
+          }
+          
           return log2Cnr;
         }
       } else {
+        // try to find the value in the cache
+        if ( __use_cache ) {
+          try { return __cache[std::pair<std::size_t,double> {r,n}]; }
+          catch ( NotFound& ) {}
+        }
+
         // compute the corrected Szpankowski approximation of cn2 (see the
         // documentation of constants cst1, cst2, cst3 in the ScorefNML header)
         double log2Cnr1 =
@@ -183,6 +206,12 @@ namespace gum {
           k_r = 1.0 / q_r;
           q_r = 1.0 + k_r * (n / (i - 1.0));
         }
+
+        // if we use a cache, update it
+        if ( __use_cache ) {
+          __cache.insert ( std::pair<std::size_t,double> {r,n}, log2Cnr );
+        }
+        
         return log2Cnr;
       }
     }

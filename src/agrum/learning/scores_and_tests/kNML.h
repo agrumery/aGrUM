@@ -81,6 +81,9 @@ namespace gum {
       /// returns the score corresponding to a given nodeset
       double score(Idx nodeset_index);
 
+      std::size_t cache_size { std::size_t(0) };
+      std::size_t cache_hit  { std::size_t(0) };
+
       /// @}
 
       protected:

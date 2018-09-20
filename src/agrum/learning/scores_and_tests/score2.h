@@ -148,7 +148,7 @@ namespace gum {
       /// clears all the data structures from memory, including the cache
       void clear();
 
-      /// clears the current cache (clear nodesets as well)
+      /// clears the current cache
       void clearCache();
 
       /// turn on/off the use of a cache of the previously computed score
