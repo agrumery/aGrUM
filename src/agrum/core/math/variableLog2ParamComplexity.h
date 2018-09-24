@@ -64,7 +64,7 @@ namespace gum {
    * Likelihood Criterion for Learning Bayesian Network Structures)"
    */
   template < template < typename > class ALLOC = std::allocator >
-  class VariableLog2ParamComplexity {
+  class VariableLog2ParamComplexity : private ALLOC< double > {
   public:
     /// type for the allocators passed in arguments of methods
     using allocator_type = ALLOC< double >;
@@ -75,13 +75,21 @@ namespace gum {
     /// @{
 
     /// default constructor
-    VariableLog2ParamComplexity();
+    VariableLog2ParamComplexity( const allocator_type& alloc = allocator_type());
 
     /// copy constructor
     VariableLog2ParamComplexity(const VariableLog2ParamComplexity& from);
 
+    /// copy constructor with a given allocator
+    VariableLog2ParamComplexity(const VariableLog2ParamComplexity& from,
+                                const allocator_type& alloc);
+
     /// move constructor
     VariableLog2ParamComplexity(VariableLog2ParamComplexity&& from);
+
+    /// move constructor with a given allocator
+    VariableLog2ParamComplexity(VariableLog2ParamComplexity&& from,
+                                const allocator_type& alloc);
 
     /// virtual copy constructor
     virtual VariableLog2ParamComplexity* clone() const;
@@ -127,6 +135,10 @@ namespace gum {
 
     /// clears the current cache
     void clearCache();
+
+    /// returns the allocator used by the parameterized complexity class
+    allocator_type getAllocator() const;
+
 
     /// @}
 

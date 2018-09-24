@@ -373,6 +373,11 @@ namespace gum {
       /// indicates whether a given id is contained in the IdSet
       bool exists(const NodeId id) const;
 
+      /// erase a node in the idset
+      /** If the element cannot be found, the function does nothing. In
+       * particular, it throws no exception. */
+      void erase (const NodeId id);
+      
       /// indicates whether the idset contains a non-empty conditioning set
       bool hasConditioningSet() const;
 

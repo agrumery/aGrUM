@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the base class for all the scores used for learning (BIC, BDeu, etc)
+ * @brief the base class for all the independence tests used for learning
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -28,97 +28,98 @@ namespace gum {
 
   namespace learning {
 
-    /// returns the allocator used by the translator
+    /// returns the allocator used by the independence test
     template < template < typename > class ALLOC >
-    INLINE typename Score2< ALLOC >::allocator_type
-      Score2< ALLOC >::getAllocator() const {
+    INLINE typename IndependenceTest2< ALLOC >::allocator_type
+      IndependenceTest2< ALLOC >::getAllocator() const {
       return _counter.getAllocator();
     }
 
 
     /// default constructor
     template < template < typename > class ALLOC >
-    INLINE Score2< ALLOC >::Score2(
+    INLINE IndependenceTest2< ALLOC >::IndependenceTest2(
       const DBRowGeneratorParser< ALLOC >&                                 parser,
       const Apriori2< ALLOC >&                                             apriori,
       const std::vector< std::pair< std::size_t, std::size_t >,
                          ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename Score2< ALLOC >::allocator_type&               alloc) :
+      const typename IndependenceTest2< ALLOC >::allocator_type&               alloc) :
         _apriori(apriori.clone(alloc)),
         _counter(parser, ranges, nodeId2columns, alloc), _cache(alloc) {
-      GUM_CONSTRUCTOR(Score2);
+      GUM_CONSTRUCTOR(IndependenceTest2);
     }
 
 
     /// default constructor
     template < template < typename > class ALLOC >
-    INLINE Score2< ALLOC >::Score2(
+    INLINE IndependenceTest2< ALLOC >::IndependenceTest2(
       const DBRowGeneratorParser< ALLOC >&                          parser,
       const Apriori2< ALLOC >&                                      apriori,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename Score2< ALLOC >::allocator_type&               alloc) :
+      const typename IndependenceTest2< ALLOC >::allocator_type&               alloc) :
         _apriori(apriori.clone(alloc)),
         _counter(parser, nodeId2columns, alloc), _cache(alloc) {
-      GUM_CONSTRUCTOR(Score2);
+      GUM_CONSTRUCTOR(IndependenceTest2);
     }
 
 
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE Score2< ALLOC >::Score2(
-      const Score2< ALLOC >&                          from,
-      const typename Score2< ALLOC >::allocator_type& alloc) :
+    INLINE IndependenceTest2< ALLOC >::IndependenceTest2(
+      const IndependenceTest2< ALLOC >&                          from,
+      const typename IndependenceTest2< ALLOC >::allocator_type& alloc) :
         _apriori(from._apriori->clone(alloc)),
         _counter(from._counter, alloc), _cache(from._cache, alloc),
         _use_cache(from._use_cache), _max_nb_threads(from._max_nb_threads),
         _min_nb_rows_per_thread(from._min_nb_rows_per_thread) {
-      GUM_CONS_CPY(Score2);
+      GUM_CONS_CPY(IndependenceTest2);
     }
 
 
     /// copy constructor
     template < template < typename > class ALLOC >
-    INLINE Score2< ALLOC >::Score2(const Score2< ALLOC >& from) :
-        Score2(from, this->getAllocator()) {}
+    INLINE IndependenceTest2< ALLOC >::IndependenceTest2(const IndependenceTest2< ALLOC >& from) :
+        IndependenceTest2(from, this->getAllocator()) {}
 
 
     /// move constructor
     template < template < typename > class ALLOC >
-    INLINE Score2< ALLOC >::Score2(
-      Score2< ALLOC >&&                               from,
-      const typename Score2< ALLOC >::allocator_type& alloc) :
+    INLINE IndependenceTest2< ALLOC >::IndependenceTest2(
+      IndependenceTest2< ALLOC >&&                               from,
+      const typename IndependenceTest2< ALLOC >::allocator_type& alloc) :
         _apriori(from._apriori),
         _counter(std::move(from._counter), alloc),
         _cache(std::move(from._cache), alloc), _use_cache(from._use_cache),
         _max_nb_threads(from._max_nb_threads),
         _min_nb_rows_per_thread(from._min_nb_rows_per_thread) {
       from._apriori = nullptr;
-      GUM_CONS_MOV(Score2);
+      GUM_CONS_MOV(IndependenceTest2);
     }
 
 
     /// move constructor
     template < template < typename > class ALLOC >
-    INLINE Score2< ALLOC >::Score2(Score2< ALLOC >&& from) :
-        Score2(std::move(from), this->getAllocator()) {}
+    INLINE IndependenceTest2< ALLOC >::IndependenceTest2(IndependenceTest2< ALLOC >&& from) :
+        IndependenceTest2(std::move(from), this->getAllocator()) {}
 
 
     /// destructor
     template < template < typename > class ALLOC >
-    INLINE Score2< ALLOC >::~Score2() {
+    INLINE IndependenceTest2< ALLOC >::~IndependenceTest2() {
       if (_apriori != nullptr) {
         ALLOC< Apriori2< ALLOC > > allocator(this->getAllocator());
         allocator.destroy(_apriori);
         allocator.deallocate(_apriori, 1);
       }
-      GUM_DESTRUCTOR(Score2);
+      GUM_DESTRUCTOR(IndependenceTest2);
     }
 
 
     /// copy operator
     template < template < typename > class ALLOC >
-    Score2< ALLOC >& Score2< ALLOC >::operator=(const Score2< ALLOC >& from) {
+    IndependenceTest2< ALLOC >&
+    IndependenceTest2< ALLOC >::operator=(const IndependenceTest2< ALLOC >& from) {
       if (this != &from) {
         Apriori2< ALLOC >*      new_apriori = from._apriori->clone();
         RecordCounter2< ALLOC > new_counter = from._counter;
@@ -144,7 +145,8 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    Score2< ALLOC >& Score2< ALLOC >::operator=(Score2< ALLOC >&& from) {
+    IndependenceTest2< ALLOC >&
+    IndependenceTest2< ALLOC >::operator=(IndependenceTest2< ALLOC >&& from) {
       if (this != &from) {
         std::swap(_apriori, from._apriori);
 
@@ -160,7 +162,7 @@ namespace gum {
 
     /// changes the max number of threads used to parse the database
     template < template < typename > class ALLOC >
-    INLINE void Score2< ALLOC >::setMaxNbThreads(std::size_t nb) const {
+    INLINE void IndependenceTest2< ALLOC >::setMaxNbThreads(std::size_t nb) const {
       if (nb == std::size_t(0)) nb = std::size_t(1);
       _counter.setMaxNbThreads(nb);
       _max_nb_threads = nb;
@@ -169,15 +171,17 @@ namespace gum {
 
     /// returns the number of threads used to parse the database
     template < template < typename > class ALLOC >
-    INLINE std::size_t Score2< ALLOC >::nbThreads() const {
+    INLINE std::size_t IndependenceTest2< ALLOC >::nbThreads() const {
       return _max_nb_threads;
     }
 
 
-    /// returns the score of a single node
+    /// returns the score of a pair of nodes
     template < template < typename > class ALLOC >
-    INLINE double Score2< ALLOC >::score(const NodeId var) {
-      IdSet2< ALLOC > idset(var, _empty_ids, true, this->getAllocator());
+    INLINE double IndependenceTest2< ALLOC >::score(const NodeId var1,
+                                                    const NodeId var2) {
+      IdSet2< ALLOC > idset(var1, var2, _empty_ids, false, true,
+                            this->getAllocator());
       if (_use_cache) {
         try {
           return _cache.score(idset);
@@ -191,14 +195,14 @@ namespace gum {
     }
 
 
-    /// returns the score of a single node given some other nodes
-    /** @param var1 the variable on the left side of the conditioning bar
-     * @param rhs_ids the set of variables on the right side of the
-     * conditioning bar */
+    /// returns the score of a pair of nodes given some other nodes
     template < template < typename > class ALLOC >
-    INLINE double Score2< ALLOC >::score(
-      const NodeId var, const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids) {
-      IdSet2< ALLOC > idset(var, rhs_ids, false, this->getAllocator());
+    INLINE double IndependenceTest2< ALLOC >::score(
+      const NodeId var1,
+      const NodeId var2,
+      const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids) {
+      IdSet2< ALLOC > idset(var1, var2, rhs_ids, false, false,
+                            this->getAllocator());
       if (_use_cache) {
         try {
           return _cache.score(idset);
@@ -214,7 +218,7 @@ namespace gum {
 
     /// clears all the data structures from memory
     template < template < typename > class ALLOC >
-    INLINE void Score2< ALLOC >::clear() {
+    INLINE void IndependenceTest2< ALLOC >::clear() {
       _counter.clear();
       _cache.clear();
     }
@@ -222,14 +226,14 @@ namespace gum {
 
     /// clears the current cache (clear nodesets as well)
     template < template < typename > class ALLOC >
-    INLINE void Score2< ALLOC >::clearCache() {
+    INLINE void IndependenceTest2< ALLOC >::clearCache() {
       _cache.clear();
     }
 
 
     /// turn on/off the use of a cache of the previously computed score
     template < template < typename > class ALLOC >
-    INLINE void Score2< ALLOC >::useCache(const bool on_off) {
+    INLINE void IndependenceTest2< ALLOC >::useCache(const bool on_off) {
       _use_cache = on_off;
     }
 
@@ -237,14 +241,15 @@ namespace gum {
     /// return the mapping between the columns of the database and the node ids
     template < template < typename > class ALLOC >
     INLINE const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-    Score2< ALLOC >::nodeId2Columns () const {
+    IndependenceTest2< ALLOC >::nodeId2Columns () const {
       return _counter.nodeId2Columns();
     }
 
 
     /// return the database used by the score
     template < template < typename > class ALLOC >
-    INLINE const DatabaseTable< ALLOC >& Score2< ALLOC >::database () const {
+    INLINE const DatabaseTable< ALLOC >&
+    IndependenceTest2< ALLOC >::database () const {
       return _counter.database ();
     }
     

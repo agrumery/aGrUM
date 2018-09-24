@@ -505,6 +505,25 @@ namespace gum {
     }
 
 
+    /// erase a node in the idset
+    template < template < typename > class ALLOC >
+    void IdSet2< ALLOC >::erase (const NodeId id) {
+      // search for id in Sequence __ids
+      const std::size_t size = __ids.size ();
+      std::size_t pos = std::size_t(0);
+      for ( ; pos < size; ++pos ) {
+        if ( __ids[pos] == id ) break;
+      }
+
+      // if we found the id, remove it
+      if ( pos < size ) {
+        __ids.erase (SequenceIteratorSafe< NodeId > (__ids, pos));
+        if ( pos < __nb_lhs_ids ) --__nb_lhs_ids;
+        __end_safe.__gotoEnd();
+      }
+    }
+    
+
     /// returns the content of the set as a string
     template < template < typename > class ALLOC >
     std::string IdSet2< ALLOC >::toString() const {
