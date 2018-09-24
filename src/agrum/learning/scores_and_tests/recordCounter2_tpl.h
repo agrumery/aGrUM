@@ -54,16 +54,16 @@ namespace gum {
         __last_nonDB_countings(alloc), __last_nonDB_ids(alloc) {
       // check that the columns in nodeId2columns do belong to the database
       const std::size_t db_nb_cols = parser.database().nbVariables();
-      for ( auto iter = nodeId2columns.cbegin();
-            iter != nodeId2columns.cend(); ++iter ) {
-        if ( iter.second() >= db_nb_cols ) {
-          GUM_ERROR ( OutOfBounds,
-                      "the mapping between ids and database columns " <<
-                      "is incorrect because Column " << iter.second() <<
-                      " does not belong to the database." );
+      for (auto iter = nodeId2columns.cbegin(); iter != nodeId2columns.cend();
+           ++iter) {
+        if (iter.second() >= db_nb_cols) {
+          GUM_ERROR(OutOfBounds,
+                    "the mapping between ids and database columns "
+                      << "is incorrect because Column " << iter.second()
+                      << " does not belong to the database.");
         }
       }
-      
+
       // create the parsers. There should always be at least one parser
       if (__max_nb_threads < std::size_t(1)) __max_nb_threads = std::size_t(1);
       __parsers.reserve(__max_nb_threads);
@@ -335,11 +335,11 @@ namespace gum {
                  RecordCounter2< ALLOC >::nodeId2Columns() const {
       return __nodeId2columns;
     }
-    
+
 
     /// returns the database on which we perform the counts
     template < template < typename > class ALLOC >
-    const DatabaseTable< ALLOC >& RecordCounter2< ALLOC >::database () const {
+    const DatabaseTable< ALLOC >& RecordCounter2< ALLOC >::database() const {
       return __parsers[0].data.database();
     }
 
@@ -348,7 +348,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE const std::vector< double, ALLOC< double > >&
                  RecordCounter2< ALLOC >::counts(const IdSet2< ALLOC >& ids,
-                                                 const bool check_discrete_vars) {
+                                      const bool             check_discrete_vars) {
       // if the idset is empty, return an empty vector
       if (ids.empty()) {
         __last_nonDB_ids.clear();
@@ -376,12 +376,11 @@ namespace gum {
     HashTable< NodeId, std::size_t > RecordCounter2< ALLOC >::__getNodeIds2Columns(
       const IdSet2< ALLOC >& ids) const {
       HashTable< NodeId, std::size_t > res(ids.size());
-      if ( __nodeId2columns.empty () ) {
+      if (__nodeId2columns.empty()) {
         for (const auto id : ids) {
           res.insert(id, std::size_t(id));
         }
-      }
-      else {
+      } else {
         for (const auto id : ids) {
           res.insert(id, __nodeId2columns.second(id));
         }

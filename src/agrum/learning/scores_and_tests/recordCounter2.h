@@ -301,10 +301,10 @@ namespace gum {
        * an identity, i.e., the value of a NodeId is equal to the index of the
        * column in the DatabaseTable. */
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-      nodeId2Columns() const;
+        nodeId2Columns() const;
 
       /// returns the database on which we perform the counts
-      const DatabaseTable< ALLOC >& database () const;
+      const DatabaseTable< ALLOC >& database() const;
 
       /// @}
 

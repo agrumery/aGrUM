@@ -26,20 +26,19 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/core/math/variableLog2ParamComplexity.h>
-#include <agrum/core/math/gammaLog2.h>
-#include <iostream>
-#include <sstream>
+#  include <agrum/core/math/variableLog2ParamComplexity.h>
+#  include <agrum/core/math/gammaLog2.h>
+#  include <iostream>
+#  include <sstream>
 
 
 namespace gum {
 
 
-  
   /// returns the allocator used by the parameterized complexity class
   template < template < typename > class ALLOC >
   INLINE typename VariableLog2ParamComplexity< ALLOC >::allocator_type
-  VariableLog2ParamComplexity< ALLOC >::getAllocator() const {
+    VariableLog2ParamComplexity< ALLOC >::getAllocator() const {
     return *this;
   }
 
@@ -47,9 +46,9 @@ namespace gum {
   /// default constructor
   template < template < typename > class ALLOC >
   INLINE VariableLog2ParamComplexity< ALLOC >::VariableLog2ParamComplexity(
-                                                                           const allocator_type& alloc)
-    : VariableLog2ParamComplexity< ALLOC >::allocator_type(alloc),
-    __cache ( 1000 ) {
+    const allocator_type& alloc) :
+      VariableLog2ParamComplexity< ALLOC >::allocator_type(alloc),
+      __cache(1000) {
     GUM_CONSTRUCTOR(VariableLog2ParamComplexity);
   }
 
@@ -57,11 +56,10 @@ namespace gum {
   /// copy constructor with a given allocator
   template < template < typename > class ALLOC >
   INLINE VariableLog2ParamComplexity< ALLOC >::VariableLog2ParamComplexity(
-                                                                           const VariableLog2ParamComplexity< ALLOC >& from,
-                                                                           const typename VariableLog2ParamComplexity< ALLOC >::allocator_type& alloc)
-    :  VariableLog2ParamComplexity< ALLOC >::allocator_type(alloc),
-    __use_cache ( from.__use_cache ),
-    __cache ( from.__cache ) {
+    const VariableLog2ParamComplexity< ALLOC >&                          from,
+    const typename VariableLog2ParamComplexity< ALLOC >::allocator_type& alloc) :
+      VariableLog2ParamComplexity< ALLOC >::allocator_type(alloc),
+      __use_cache(from.__use_cache), __cache(from.__cache) {
     GUM_CONS_CPY(VariableLog2ParamComplexity);
   }
 
@@ -69,35 +67,34 @@ namespace gum {
   /// copy constructor
   template < template < typename > class ALLOC >
   INLINE VariableLog2ParamComplexity< ALLOC >::VariableLog2ParamComplexity(
-                                                                           const VariableLog2ParamComplexity< ALLOC >& from)
-    : VariableLog2ParamComplexity(from, this->getAllocator() ) {}
+    const VariableLog2ParamComplexity< ALLOC >& from) :
+      VariableLog2ParamComplexity(from, this->getAllocator()) {}
 
 
   /// move constructor with a given allocator
   template < template < typename > class ALLOC >
   INLINE VariableLog2ParamComplexity< ALLOC >::VariableLog2ParamComplexity(
-                                                                           VariableLog2ParamComplexity< ALLOC >&& from,
-                                                                           const typename VariableLog2ParamComplexity< ALLOC >::allocator_type& alloc)
-    : VariableLog2ParamComplexity< ALLOC >::allocator_type(alloc),
-    __use_cache ( from.__use_cache ),
-      __cache ( std::move ( from.__cache ) ) {
+    VariableLog2ParamComplexity< ALLOC >&&                               from,
+    const typename VariableLog2ParamComplexity< ALLOC >::allocator_type& alloc) :
+      VariableLog2ParamComplexity< ALLOC >::allocator_type(alloc),
+      __use_cache(from.__use_cache), __cache(std::move(from.__cache)) {
     GUM_CONS_MOV(VariableLog2ParamComplexity);
   }
 
-  
+
   /// move constructor
   template < template < typename > class ALLOC >
   INLINE VariableLog2ParamComplexity< ALLOC >::VariableLog2ParamComplexity(
-                                                                           VariableLog2ParamComplexity< ALLOC >&& from)
-    : VariableLog2ParamComplexity(std::move(from), this->getAllocator() ) {}
+    VariableLog2ParamComplexity< ALLOC >&& from) :
+      VariableLog2ParamComplexity(std::move(from), this->getAllocator()) {}
 
 
   /// virtual copy constructor
   template < template < typename > class ALLOC >
   VariableLog2ParamComplexity< ALLOC >*
-  VariableLog2ParamComplexity< ALLOC >::clone(
-                                              const typename VariableLog2ParamComplexity< ALLOC >::allocator_type& alloc)
-    const {
+    VariableLog2ParamComplexity< ALLOC >::clone(
+      const typename VariableLog2ParamComplexity< ALLOC >::allocator_type& alloc)
+      const {
     ALLOC< VariableLog2ParamComplexity< ALLOC > > allocator(alloc);
     VariableLog2ParamComplexity< ALLOC >*         table = allocator.allocate(1);
     try {
@@ -113,7 +110,7 @@ namespace gum {
   /// virtual copy constructor
   template < template < typename > class ALLOC >
   VariableLog2ParamComplexity< ALLOC >*
-  VariableLog2ParamComplexity< ALLOC >::clone() const {
+    VariableLog2ParamComplexity< ALLOC >::clone() const {
     return clone(this->getAllocator());
   }
 
@@ -128,8 +125,8 @@ namespace gum {
   /// copy operator
   template < template < typename > class ALLOC >
   INLINE VariableLog2ParamComplexity< ALLOC >&
-  VariableLog2ParamComplexity< ALLOC >::operator=(
-                                                  const VariableLog2ParamComplexity< ALLOC >& from) {
+         VariableLog2ParamComplexity< ALLOC >::
+         operator=(const VariableLog2ParamComplexity< ALLOC >& from) {
     return *this;
   }
 
@@ -137,23 +134,23 @@ namespace gum {
   /// move operator
   template < template < typename > class ALLOC >
   INLINE VariableLog2ParamComplexity< ALLOC >&
-  VariableLog2ParamComplexity< ALLOC >::operator=(
-                                                  VariableLog2ParamComplexity< ALLOC >&& from) {
+         VariableLog2ParamComplexity< ALLOC >::
+         operator=(VariableLog2ParamComplexity< ALLOC >&& from) {
     return *this;
   }
 
 
   /// indicates whether we wish to use a cache for the Cnr
   template < template < typename > class ALLOC >
-  INLINE void VariableLog2ParamComplexity< ALLOC >::useCache (const bool on_off) {
+  INLINE void VariableLog2ParamComplexity< ALLOC >::useCache(const bool on_off) {
     __use_cache = on_off;
   }
-  
+
 
   /// clears the current cache
   template < template < typename > class ALLOC >
   INLINE void VariableLog2ParamComplexity< ALLOC >::clearCache() {
-    __cache.clear ();
+    __cache.clear();
   }
 
 
@@ -171,7 +168,7 @@ namespace gum {
     if (n < 0.0) {
       GUM_ERROR(OutOfBounds,
                 "In the penalty of the fNML score, n must be greater "
-                << "than or equal to 0. But, here, n = " << n);
+                  << "than or equal to 0. But, here, n = " << n);
     }
 
     if (n < VariableLog2ParamComplexityCTableNSize) {
@@ -182,11 +179,12 @@ namespace gum {
         return VariableLog2ParamComplexityCTable[r - 2][xn];
       } else {
         // try to find the value in the cache
-        if ( __use_cache ) {
-          try { return __cache[std::pair<std::size_t,double> {r,n}]; }
-          catch ( NotFound& ) {}
+        if (__use_cache) {
+          try {
+            return __cache[std::pair< std::size_t, double >{r, n}];
+          } catch (NotFound&) {}
         }
-            
+
         // use Equation (13) of the paper to compute the value of cnr:
         // C_n^r = C_n^{r-1} + (n / (r-2)) C_n^{r-2}
         // as we handle only log2's of C_n^r, we have the following:
@@ -203,9 +201,9 @@ namespace gum {
         // k_{r+1}   = C_n^{r-1} / C_n^r = 1 / q_r
         // q_{r+1}   = 1 + k_{r+1} * (n/(r-1))
         // C_n^{r+1} = C_n^r * q_{r+1}
-        double log2Cnr1 = VariableLog2ParamComplexityCTable[3][xn]; // log(C_n^5)
-        double log2Cnr2 = VariableLog2ParamComplexityCTable[2][xn]; // log(C_n^4)
-        double log2Cnr  = 0.0;
+        double log2Cnr1 = VariableLog2ParamComplexityCTable[3][xn];   // log(C_n^5)
+        double log2Cnr2 = VariableLog2ParamComplexityCTable[2][xn];   // log(C_n^4)
+        double log2Cnr = 0.0;
         double k_r = std::exp((log2Cnr2 - log2Cnr1) * M_LN2);
         double q_r = 1.0 + k_r * n / (6.0 - 2.0);   // we first compute C_n^6
         for (std::size_t i = std::size_t(6); i <= r; ++i) {
@@ -216,17 +214,18 @@ namespace gum {
         }
 
         // if we use a cache, update it
-        if ( __use_cache ) {
-          __cache.insert ( std::pair<std::size_t,double> {r,n}, log2Cnr );
+        if (__use_cache) {
+          __cache.insert(std::pair< std::size_t, double >{r, n}, log2Cnr);
         }
-          
+
         return log2Cnr;
       }
     } else {
       // try to find the value in the cache
-      if ( __use_cache ) {
-        try { return __cache[std::pair<std::size_t,double> {r,n}]; }
-        catch ( NotFound& ) {}
+      if (__use_cache) {
+        try {
+          return __cache[std::pair< std::size_t, double >{r, n}];
+        } catch (NotFound&) {}
       }
 
       // compute the corrected Szpankowski approximation of cn2 (see the
@@ -251,10 +250,10 @@ namespace gum {
       }
 
       // if we use a cache, update it
-      if ( __use_cache ) {
-        __cache.insert ( std::pair<std::size_t,double> {r,n}, log2Cnr );
+      if (__use_cache) {
+        __cache.insert(std::pair< std::size_t, double >{r, n}, log2Cnr);
       }
-        
+
       return log2Cnr;
     }
   }
@@ -262,8 +261,8 @@ namespace gum {
 
   /// the function used to write the cpp file with the values of log2(Cnr)
   template < template < typename > class ALLOC >
-  void VariableLog2ParamComplexity< ALLOC >::CnrToFile(
-                                                       const std::string& filename) {
+  void
+    VariableLog2ParamComplexity< ALLOC >::CnrToFile(const std::string& filename) {
     // save all the value of cn2
     std::vector< long double > cn2_table(VariableLog2ParamComplexityCTableNSize);
     cn2_table[0] = 1;
@@ -282,8 +281,7 @@ namespace gum {
       long double cn2 = 2;
       for (double h = 1; h < n; ++h) {
         long double elt =
-          (gamma_log2(n + 1) - gamma_log2(h + 1) - gamma_log2((n - h) + 1))
-          * M_LN2
+          (gamma_log2(n + 1) - gamma_log2(h + 1) - gamma_log2((n - h) + 1)) * M_LN2
           + h * std::log(h / n) + (n - h) * std::log((n - h) / n);
         cn2 += std::exp(elt);
       }
@@ -328,7 +326,8 @@ namespace gum {
     // write the values of cn3, which are equal to cn2 + n
     outfile << "      { ";
     for (std::size_t i = std::size_t(0);
-         i < VariableLog2ParamComplexityCTableNSize; ++i) {
+         i < VariableLog2ParamComplexityCTableNSize;
+         ++i) {
       if (i > std::size_t(0)) outfile << ",\n        ";
       const double logCn3 = (double)std::log2(cn2_table[i] + i);
       outfile << logCn3;
@@ -338,10 +337,10 @@ namespace gum {
     // write the values of cn4, which are equal to cn2 * (1 + n/2) + n
     outfile << "      { ";
     for (std::size_t i = std::size_t(0);
-         i < VariableLog2ParamComplexityCTableNSize; ++i) {
+         i < VariableLog2ParamComplexityCTableNSize;
+         ++i) {
       if (i > std::size_t(0)) outfile << ",\n        ";
-      const double logCn4 =
-        (double)std::log2(cn2_table[i] * (1.0 + i / 2.0) + i);
+      const double logCn4 = (double)std::log2(cn2_table[i] * (1.0 + i / 2.0) + i);
       outfile << logCn4;
     }
     outfile << " },\n";
@@ -349,10 +348,11 @@ namespace gum {
     // write the values of cn5, which are equal to cn2 * (1 + 5n/6) + n + n^2/3
     outfile << "      { ";
     for (std::size_t i = std::size_t(0);
-         i < VariableLog2ParamComplexityCTableNSize; ++i) {
+         i < VariableLog2ParamComplexityCTableNSize;
+         ++i) {
       if (i > std::size_t(0)) outfile << ",\n        ";
-      const double logCn5 = (double)std::log2(
-                                              cn2_table[i] * (1.0 + 5.0 * i / 6.0) + i + i * i / 3.0);
+      const double logCn5 =
+        (double)std::log2(cn2_table[i] * (1.0 + 5.0 * i / 6.0) + i + i * i / 3.0);
       outfile << logCn5;
     }
     outfile << " }\n";
@@ -364,7 +364,6 @@ namespace gum {
   }
 
 
-  
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

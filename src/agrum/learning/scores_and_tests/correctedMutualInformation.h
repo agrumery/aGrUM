@@ -131,7 +131,7 @@ namespace gum {
       void useNML();
       void useNoCorr();
 
-      const KNML< IdSetAlloc, CountAlloc >& kNML () const { return __k_NML; };
+      const KNML< IdSetAlloc, CountAlloc >& kNML() const { return __k_NML; };
       /// @}
 
 

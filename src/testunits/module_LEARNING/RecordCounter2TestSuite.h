@@ -476,7 +476,7 @@ namespace gum_tests {
       TS_ASSERT(counts[8] == double(0));     // A=2, B=2
     }
 
-    
+
     void test_partial_nodes() {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
@@ -528,7 +528,7 @@ namespace gum_tests {
       std::vector< std::pair< std::size_t, std::size_t > > ranges{
         std::pair< std::size_t, std::size_t >(std::size_t(0), database.nbRows())};
       gum::learning::RecordCounter2<> counter(parser, ranges, nodeId2columns);
-      
+
       gum::learning::IdSet2<> ids(4, std::vector< gum::NodeId >{0, 3}, true);
       std::vector< double >   counts = counter.counts(ids);
       TS_ASSERT(counts.size() == std::size_t(27));
@@ -555,10 +555,8 @@ namespace gum_tests {
       }
 
       gum::learning::IdSet2<> ids4(5, std::vector< gum::NodeId >(), true);
-      TS_ASSERT_THROWS( counts = counter.counts(ids4), gum::NotFound );
-      
+      TS_ASSERT_THROWS(counts = counter.counts(ids4), gum::NotFound);
     }
-    
   };
 
 

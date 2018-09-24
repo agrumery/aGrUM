@@ -45,10 +45,10 @@ namespace gum {
      */
     template < template < typename > class ALLOC = std::allocator >
     class KNML2 : private IndependenceTest2< ALLOC > {
-    public:
+      public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;
-      
+
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -77,16 +77,15 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      KNML2(
-        const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori2< ALLOC >&             apriori,
-        const std::vector< std::pair< std::size_t, std::size_t >,
-                           ALLOC< std::pair< std::size_t, std::size_t > > >&
-          ranges,
-        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-          nodeId2columns =
-            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-        const allocator_type& alloc = allocator_type());
+      KNML2(const DBRowGeneratorParser< ALLOC >& parser,
+            const Apriori2< ALLOC >&             apriori,
+            const std::vector< std::pair< std::size_t, std::size_t >,
+                               ALLOC< std::pair< std::size_t, std::size_t > > >&
+              ranges,
+            const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+              nodeId2columns =
+                Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+            const allocator_type& alloc = allocator_type());
 
 
       /// default constructor
@@ -107,11 +106,11 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       KNML2(const DBRowGeneratorParser< ALLOC >& parser,
-                const Apriori2< ALLOC >&             apriori,
-                const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                  nodeId2columns =
-                    Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-                const allocator_type& alloc = allocator_type());
+            const Apriori2< ALLOC >&             apriori,
+            const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+              nodeId2columns =
+                Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+            const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       KNML2(const KNML2< ALLOC >& from);
@@ -151,7 +150,7 @@ namespace gum {
 
       /// @}
 
-      
+
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
@@ -165,7 +164,7 @@ namespace gum {
 
       /// the scores
       using IndependenceTest2< ALLOC >::score;
-      
+
       /// clears all the data structures from memory, including the cache
       virtual void clear();
 
@@ -186,11 +185,11 @@ namespace gum {
 
       /// returns the allocator used by the score
       using IndependenceTest2< ALLOC >::getAllocator;
-      
+
       /// @}
 
 
-    protected:
+      protected:
       /// returns the score for a given IdSet
       /** @throws OperationNotAllowed is raised if the score does not support
        * calling method score such an idset (due to too many/too few variables
@@ -198,10 +197,9 @@ namespace gum {
       virtual double _score(const IdSet2< ALLOC >& idset) final;
 
 
-    private:
+      private:
       /// the CTable computation
       VariableLog2ParamComplexity< ALLOC > __param_complexity;
-
     };
 
   } /* namespace learning */

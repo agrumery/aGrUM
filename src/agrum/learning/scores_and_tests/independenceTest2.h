@@ -79,15 +79,16 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      IndependenceTest2(const DBRowGeneratorParser< ALLOC >& parser,
-             const Apriori2< ALLOC >&                        external_apriori,
-             const std::vector< std::pair< std::size_t, std::size_t >,
-                                ALLOC< std::pair< std::size_t, std::size_t > > >&
-               ranges,
-             const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-               nodeId2columns =
-                 Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-             const allocator_type& alloc = allocator_type());
+      IndependenceTest2(
+        const DBRowGeneratorParser< ALLOC >& parser,
+        const Apriori2< ALLOC >&             external_apriori,
+        const std::vector< std::pair< std::size_t, std::size_t >,
+                           ALLOC< std::pair< std::size_t, std::size_t > > >&
+          ranges,
+        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+          nodeId2columns =
+            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+        const allocator_type& alloc = allocator_type());
 
 
       /// default constructor
@@ -107,19 +108,20 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      IndependenceTest2(const DBRowGeneratorParser< ALLOC >& parser,
-             const Apriori2< ALLOC >&                        external_apriori,
-             const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-               nodeId2columns =
-                 Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-             const allocator_type& alloc = allocator_type());
+      IndependenceTest2(
+        const DBRowGeneratorParser< ALLOC >& parser,
+        const Apriori2< ALLOC >&             external_apriori,
+        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+          nodeId2columns =
+            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+        const allocator_type& alloc = allocator_type());
 
       /// virtual copy constructor
       virtual IndependenceTest2< ALLOC >* clone() const = 0;
 
       /// virtual copy constructor with a given allocator
       virtual IndependenceTest2< ALLOC >*
-      clone(const allocator_type& alloc) const = 0;
+        clone(const allocator_type& alloc) const = 0;
 
       /// destructor
       virtual ~IndependenceTest2();
@@ -164,10 +166,10 @@ namespace gum {
        * an identity, i.e., the value of a NodeId is equal to the index of the
        * column in the DatabaseTable. */
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-      nodeId2Columns () const;
+        nodeId2Columns() const;
 
       /// return the database used by the score
-      const DatabaseTable< ALLOC >& database () const;
+      const DatabaseTable< ALLOC >& database() const;
 
       /// returns the allocator used by the score
       allocator_type getAllocator() const;
@@ -208,22 +210,21 @@ namespace gum {
 
       /// copy constructor with a given allocator
       IndependenceTest2(const IndependenceTest2< ALLOC >& from,
-                        const allocator_type& alloc);
+                        const allocator_type&             alloc);
 
       /// move constructor
       IndependenceTest2(IndependenceTest2< ALLOC >&& from);
 
       /// move constructor with a given allocator
       IndependenceTest2(IndependenceTest2< ALLOC >&& from,
-                        const allocator_type& alloc);
+                        const allocator_type&        alloc);
 
       /// copy operator
       IndependenceTest2< ALLOC >&
-      operator=(const IndependenceTest2< ALLOC >& from);
+        operator=(const IndependenceTest2< ALLOC >& from);
 
       /// move operator
-      IndependenceTest2< ALLOC >&
-      operator=(IndependenceTest2< ALLOC >&& from);
+      IndependenceTest2< ALLOC >& operator=(IndependenceTest2< ALLOC >&& from);
 
       /// returns the score for a given IdSet
       /** @throws OperationNotAllowed is raised if the score does not support

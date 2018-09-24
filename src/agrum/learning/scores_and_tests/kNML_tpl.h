@@ -255,7 +255,7 @@ namespace gum {
     template < typename IdSetAlloc, typename CountAlloc >
     double KNML< IdSetAlloc, CountAlloc >::score(Idx nodeset_index) {
       // if the score has already been computed, get its value
-      if (this->_isInCache(nodeset_index) ) {
+      if (this->_isInCache(nodeset_index)) {
         //++cache_hit;
         return this->_cachedScore(nodeset_index);
       }
@@ -398,8 +398,7 @@ namespace gum {
     INLINE void
       KNML< IdSetAlloc, CountAlloc >::_insertIntoCCache(Size r, Size n, double c) {
       __cache_C.insert(std::vector< Idx >{r, n}, c);
-      ++ cache_size;
-
+      ++cache_size;
     }
 
   } /* namespace learning */

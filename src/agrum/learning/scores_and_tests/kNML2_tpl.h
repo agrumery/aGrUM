@@ -30,7 +30,7 @@ namespace gum {
 
   namespace learning {
 
-   /// default constructor
+    /// default constructor
     template < template < typename > class ALLOC >
     INLINE KNML2< ALLOC >::KNML2(
       const DBRowGeneratorParser< ALLOC >&                                 parser,
@@ -38,9 +38,9 @@ namespace gum {
       const std::vector< std::pair< std::size_t, std::size_t >,
                          ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename KNML2< ALLOC >::allocator_type&            alloc) :
-      IndependenceTest2< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
-      __param_complexity(alloc) {
+      const typename KNML2< ALLOC >::allocator_type&                alloc) :
+        IndependenceTest2< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
+        __param_complexity(alloc) {
       GUM_CONSTRUCTOR(KNML2);
     }
 
@@ -51,20 +51,20 @@ namespace gum {
       const DBRowGeneratorParser< ALLOC >&                          parser,
       const Apriori2< ALLOC >&                                      apriori,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename KNML2< ALLOC >::allocator_type&            alloc) :
-      IndependenceTest2< ALLOC >(parser, apriori, nodeId2columns, alloc),
-      __param_complexity(alloc)  {
+      const typename KNML2< ALLOC >::allocator_type&                alloc) :
+        IndependenceTest2< ALLOC >(parser, apriori, nodeId2columns, alloc),
+        __param_complexity(alloc) {
       GUM_CONSTRUCTOR(KNML2);
     }
 
 
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE KNML2< ALLOC >::KNML2(
-      const KNML2< ALLOC >&                          from,
-      const typename KNML2< ALLOC >::allocator_type& alloc) :
-      IndependenceTest2< ALLOC >(from, alloc),
-       __param_complexity(from.__param_complexity, alloc) {
+    INLINE
+      KNML2< ALLOC >::KNML2(const KNML2< ALLOC >&                          from,
+                            const typename KNML2< ALLOC >::allocator_type& alloc) :
+        IndependenceTest2< ALLOC >(from, alloc),
+        __param_complexity(from.__param_complexity, alloc) {
       GUM_CONS_CPY(KNML2);
     }
 
@@ -77,11 +77,11 @@ namespace gum {
 
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE KNML2< ALLOC >::KNML2(
-      KNML2< ALLOC >&&                               from,
-      const typename KNML2< ALLOC >::allocator_type& alloc) :
-      IndependenceTest2< ALLOC >(std::move(from), alloc),
-      __param_complexity(std::move(from.__param_complexity), alloc) {
+    INLINE
+      KNML2< ALLOC >::KNML2(KNML2< ALLOC >&&                               from,
+                            const typename KNML2< ALLOC >::allocator_type& alloc) :
+        IndependenceTest2< ALLOC >(std::move(from), alloc),
+        __param_complexity(std::move(from.__param_complexity), alloc) {
       GUM_CONS_MOV(KNML2);
     }
 
@@ -89,7 +89,7 @@ namespace gum {
     /// move constructor
     template < template < typename > class ALLOC >
     INLINE KNML2< ALLOC >::KNML2(KNML2< ALLOC >&& from) :
-      KNML2< ALLOC >(std::move(from), this->getAllocator()) {}
+        KNML2< ALLOC >(std::move(from), this->getAllocator()) {}
 
 
     /// virtual copy constructor with a given allocator
@@ -148,26 +148,26 @@ namespace gum {
     /// clears all the data structures from memory, including the cache
     template < template < typename > class ALLOC >
     void KNML2< ALLOC >::clear() {
-      IndependenceTest2< ALLOC >::clear ();
-      __param_complexity.clearCache ();
+      IndependenceTest2< ALLOC >::clear();
+      __param_complexity.clearCache();
     }
 
-    
+
     /// clears the current cache
     template < template < typename > class ALLOC >
     void KNML2< ALLOC >::clearCache() {
-      IndependenceTest2< ALLOC >::clearCache ();
-      __param_complexity.clearCache ();
+      IndependenceTest2< ALLOC >::clearCache();
+      __param_complexity.clearCache();
     }
 
 
     /// turn on/off the use of a cache of the previously computed score
     template < template < typename > class ALLOC >
     void KNML2< ALLOC >::useCache(const bool on_off) {
-      IndependenceTest2< ALLOC >::useCache ( on_off );
-      __param_complexity.useCache ( on_off );
+      IndependenceTest2< ALLOC >::useCache(on_off);
+      __param_complexity.useCache(on_off);
     }
-    
+
 
     /// returns the score corresponding to a given nodeset
     template < template < typename > class ALLOC >
@@ -180,19 +180,18 @@ namespace gum {
       const bool informative_external_apriori = this->_apriori->isInformative();
 
       // get the domain sizes of X and Y
-      const auto& db = this->database ();
-      const auto& node2cols = this->nodeId2Columns ();
+      const auto& db = this->database();
+      const auto& node2cols = this->nodeId2Columns();
       std::size_t r_x, r_y;
-      if ( ! node2cols.empty () ) {
-        r_x = db.domainSize (node2cols.second(idset[0]));
-        r_y = db.domainSize (node2cols.second(idset[1]));
-      }
-      else {
-        r_x = db.domainSize (idset[0]);
-        r_y = db.domainSize (idset[1]);
+      if (!node2cols.empty()) {
+        r_x = db.domainSize(node2cols.second(idset[0]));
+        r_y = db.domainSize(node2cols.second(idset[1]));
+      } else {
+        r_x = db.domainSize(idset[0]);
+        r_y = db.domainSize(idset[1]);
       }
 
-      
+
       // here, we distinguish idsets with conditioning nodes from those
       // without conditioning nodes
       if (idset.hasConditioningSet()) {
@@ -214,19 +213,19 @@ namespace gum {
           this->_apriori->addAllApriori(idset, N_xui);
           this->_apriori->addAllApriori(idset, N_yui);
         }
-      
+
 
         // the value of kNML is equal to:
         // 0.5 * sum_Z ( sum_X( log( C^(r_y)_#ZX ) ) - log( C^(r_y)_#Z ) +
         // 		 sum_Y( log( C^(r_x)_#ZY ) ) - log( C^(r_x)_#Z ) )
         double score = 0.0;
         for (auto n_xui : N_xui)
-          score += __param_complexity.log2Cnr (r_y, n_xui);
+          score += __param_complexity.log2Cnr(r_y, n_xui);
         for (auto n_yui : N_yui)
-          score += __param_complexity.log2Cnr (r_x, n_yui);
+          score += __param_complexity.log2Cnr(r_x, n_yui);
         for (auto n_ui : N_ui) {
-          score -= __param_complexity.log2Cnr (r_y, n_ui);
-          score -= __param_complexity.log2Cnr (r_x, n_ui);
+          score -= __param_complexity.log2Cnr(r_y, n_ui);
+          score -= __param_complexity.log2Cnr(r_x, n_ui);
         }
 
         score *= 0.5;
@@ -236,8 +235,8 @@ namespace gum {
       } else {
         // here, there is no conditioning set
         // now get the Nxui, Nyui and Nui
-        IdSet2< ALLOC > idset_xui (idset[0], this->_empty_ids, true);
-        IdSet2< ALLOC > idset_yui (idset[1], this->_empty_ids, true);
+        IdSet2< ALLOC > idset_xui(idset[0], this->_empty_ids, true);
+        IdSet2< ALLOC > idset_yui(idset[1], this->_empty_ids, true);
 
         std::vector< double, ALLOC< double > > N_xui =
           this->_counter.counts(idset_xui, false);
@@ -248,7 +247,7 @@ namespace gum {
           this->_apriori->addAllApriori(idset, N_xui);
           this->_apriori->addAllApriori(idset, N_yui);
         }
-      
+
 
         // so, the formula for kNML is:
         // 0.5 * ( sum_X( log( C^(r_y)_#X ) ) - log( C^(r_y)_N ) +
@@ -256,14 +255,14 @@ namespace gum {
         double N = 0.0;
         double score = 0.0;
         for (auto n_xui : N_xui) {
-          score += __param_complexity.log2Cnr (r_y, n_xui);
+          score += __param_complexity.log2Cnr(r_y, n_xui);
           N += n_xui;
         }
         for (auto n_yui : N_yui)
-          score += __param_complexity.log2Cnr (r_x, n_yui);
-        score -= __param_complexity.log2Cnr (r_y, N);
-        score -= __param_complexity.log2Cnr (r_x, N);
-       
+          score += __param_complexity.log2Cnr(r_x, n_yui);
+        score -= __param_complexity.log2Cnr(r_y, N);
+        score -= __param_complexity.log2Cnr(r_x, N);
+
         score *= 0.5;
         score *= std::log(2);
 

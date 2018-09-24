@@ -159,10 +159,10 @@ namespace gum {
        * an identity, i.e., the value of a NodeId is equal to the index of the
        * column in the DatabaseTable. */
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-      nodeId2Columns () const;
+        nodeId2Columns() const;
 
       /// return the database used by the score
-      const DatabaseTable< ALLOC >& database () const;
+      const DatabaseTable< ALLOC >& database() const;
 
       /// indicates whether the apriori is compatible (meaningful) with the score
       /** The combination of some scores and aprioris can be meaningless. For

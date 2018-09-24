@@ -38,7 +38,7 @@ namespace gum_tests {
       gum::learning::DBInitializerFromCSV<> initializer(
         GET_RESSOURCES_PATH("alarm.csv"));
       const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars   = var_names.size();
+      const std::size_t nb_vars = var_names.size();
 
       gum::learning::DBTranslatorSet<>                translator_set;
       gum::learning::DBTranslator4LabelizedVariable<> translator;
@@ -57,7 +57,7 @@ namespace gum_tests {
       for (auto dom : database.domainSizes())
         modalities.push_back(dom);
       gum::MixedGraph graph;
-      for ( std::size_t i = 0; i < modalities.size (); ++i ) {
+      for (std::size_t i = 0; i < modalities.size(); ++i) {
         graph.addNodeWithId(i);
         for (std::size_t j = 0; j < i; ++j) {
           graph.addEdge(j, i);
@@ -72,10 +72,10 @@ namespace gum_tests {
       miic.learnMixedStructure(I, graph);
       std::cout << graph << std::endl;
 
-      const auto& kNML = I.kNML ();
-      std::cout << "cache : " << kNML.cache_size << "  hits : " << kNML.cache_hit << std::endl;
+      const auto& kNML = I.kNML();
+      std::cout << "cache : " << kNML.cache_size << "  hits : " << kNML.cache_hit
+                << std::endl;
     }
-
   };
 
-} // namespace
+}   // namespace gum_tests

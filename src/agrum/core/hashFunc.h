@@ -757,13 +757,13 @@ namespace gum {
    * @ingroup hashfunctions_group
    */
   template <>
-  class HashFunc< std::pair<
-                    typename HashFuncConditionalType< std::size_t,
-                                                      unsigned long,
-                                                      unsigned int,
-                                                      long,
-                                                      int >::type , double > >
-    : public HashFuncCastKeyPair< std::size_t, double >::type {};
+  class HashFunc< std::pair< typename HashFuncConditionalType< std::size_t,
+                                                               unsigned long,
+                                                               unsigned int,
+                                                               long,
+                                                               int >::type,
+                             double > >
+      : public HashFuncCastKeyPair< std::size_t, double >::type {};
 
   /**
    * @author JCM

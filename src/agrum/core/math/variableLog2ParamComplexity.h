@@ -37,19 +37,17 @@
 
 namespace gum {
 
-  
+
   // the CTable cache for log2(C_n^r), with n in {0,...,999} and r in {2,3,4,5}
   extern const double VariableLog2ParamComplexityCTable[4][1000];
 
-  // the size in r of the CTable cache 
-  constexpr std::size_t VariableLog2ParamComplexityCTableRSize {std::size_t(4)};
+  // the size in r of the CTable cache
+  constexpr std::size_t VariableLog2ParamComplexityCTableRSize{std::size_t(4)};
 
-  // the size in n of the CTable cache 
-  constexpr std::size_t VariableLog2ParamComplexityCTableNSize {std::size_t(1000)};
+  // the size in n of the CTable cache
+  constexpr std::size_t VariableLog2ParamComplexityCTableNSize{std::size_t(1000)};
 
-  
-  
-  
+
   /** @class VariableParamComplexity
    * @brief the class for computing the log2 of the parametric complexity
    * of an r-ary multinomial variable
@@ -65,7 +63,7 @@ namespace gum {
    */
   template < template < typename > class ALLOC = std::allocator >
   class VariableLog2ParamComplexity : private ALLOC< double > {
-  public:
+    public:
     /// type for the allocators passed in arguments of methods
     using allocator_type = ALLOC< double >;
 
@@ -75,21 +73,21 @@ namespace gum {
     /// @{
 
     /// default constructor
-    VariableLog2ParamComplexity( const allocator_type& alloc = allocator_type());
+    VariableLog2ParamComplexity(const allocator_type& alloc = allocator_type());
 
     /// copy constructor
     VariableLog2ParamComplexity(const VariableLog2ParamComplexity& from);
 
     /// copy constructor with a given allocator
     VariableLog2ParamComplexity(const VariableLog2ParamComplexity& from,
-                                const allocator_type& alloc);
+                                const allocator_type&              alloc);
 
     /// move constructor
     VariableLog2ParamComplexity(VariableLog2ParamComplexity&& from);
 
     /// move constructor with a given allocator
     VariableLog2ParamComplexity(VariableLog2ParamComplexity&& from,
-                                const allocator_type& alloc);
+                                const allocator_type&         alloc);
 
     /// virtual copy constructor
     virtual VariableLog2ParamComplexity* clone() const;
@@ -110,11 +108,10 @@ namespace gum {
 
     /// copy operator
     VariableLog2ParamComplexity&
-    operator=(const VariableLog2ParamComplexity& from);
+      operator=(const VariableLog2ParamComplexity& from);
 
     /// move operator
-    VariableLog2ParamComplexity&
-    operator=(VariableLog2ParamComplexity&& from);
+    VariableLog2ParamComplexity& operator=(VariableLog2ParamComplexity&& from);
 
     /// @}
 
@@ -131,7 +128,7 @@ namespace gum {
     void CnrToFile(const std::string& filename);
 
     /// indicates whether we wish to use a cache for the Cnr
-    void useCache ( const bool on_off );
+    void useCache(const bool on_off);
 
     /// clears the current cache
     void clearCache();
@@ -142,7 +139,7 @@ namespace gum {
 
     /// @}
 
-  private:
+    private:
     /// the value of N above which we should use Szpankowski's approximation
     const double __Szpankowski_threshold{VariableLog2ParamComplexityCTableNSize};
 
@@ -164,11 +161,10 @@ namespace gum {
     const double __cst3 = 3.0 / 36.0 - 4.0 / (9.0 * M_PI);
 
     // indicates whether we should use a cache or not
-    bool __use_cache { true };
-    
+    bool __use_cache{true};
+
     // the cache used, eventually, to store the log2Cnr values
-    HashTable<std::pair<std::size_t,double>,double> __cache;
-    
+    HashTable< std::pair< std::size_t, double >, double > __cache;
   };
 
 } /* namespace gum */
