@@ -339,8 +339,7 @@ def showBN(bn, size="4", format="svg", nodeColor=None, arcWidth=None, arcColor=N
   :param bn: the bayesian network
   :param size: size of the rendered graph
   :param format: render as "png" or "svg"
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0
-  and 1)
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
   :param arcWidth: a arcMap of values to be shown as width of arcs
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
   :param cmap: color map to show the colors
@@ -360,12 +359,12 @@ def getBN(bn, size="4", format="svg", nodeColor=None, arcWidth=None, arcColor=No
   :param bn: the bayesian network
   :param size: size of the rendered graph
   :param format: render as "png" or "svg"
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0
-  and 1)
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
   :param arcWidth: a arcMap of values to be shown as width of arcs
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
   :param cmap: color map to show the colors
   :param cmapArc: color map to show the arc color if distinction is needed
+
   :return: the graph
   """
   if cmapArc is None:
@@ -515,8 +514,7 @@ def getInference(bn, engine=None, evs=None, targets=None, size="7", format='png'
   :param set targets: set of targets
   :param string size: size of the rendered graph
   :param string format: render as "png" or "svg"
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0
-  and 1)
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
   :param arcWidth: a arcMap of values to be shown as width of arcs
   :param cmap: color map to show the color of nodes and arcs
   :return: the desired representation of the inference
@@ -741,7 +739,8 @@ def getInferenceEngine(ie, inferenceCaption):
   display an inference as a BN+ lists of hard/soft evidence and list of targets
 
   :param gum.InferenceEngine ie: inference engine
-  :param string inferenceCaption : title for caption
+  :param string inferenceCaption: title for caption
+
   """
   t = '<div align="left"><ul>'
   if ie.nbrHardEvidence() > 0:

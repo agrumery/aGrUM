@@ -4626,7 +4626,7 @@ _pyAgrum.IDiscretizedVariable_swigregister(IDiscretizedVariable)
 class Edge(_object):
     r"""
 
-    pyAgrum.Edge is the representation of an arc between two nodes represented by `int`s : the first and the second.
+    pyAgrum.Edge is the representation of an arc between two nodes represented by int : the first and the second.
 
     Available constructors :
         ``Edge(aN1,aN2) -> Edge``
@@ -4724,7 +4724,7 @@ _pyAgrum.Edge_swigregister(Edge)
 class Arc(_object):
     r"""
 
-    pyAgrum.Arc is the representation of an arc between two nodes represented by `int`s : the head and the tail.
+    pyAgrum.Arc is the representation of an arc between two nodes represented by int : the head and the tail.
 
     Available constructors:
         ``Arc(tail, head) -> Arc``

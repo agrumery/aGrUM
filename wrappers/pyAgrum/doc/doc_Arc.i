@@ -1,6 +1,6 @@
 %feature("docstring") gum::Arc
 "
-pyAgrum.Arc is the representation of an arc between two nodes represented by `int`s : the head and the tail.
+pyAgrum.Arc is the representation of an arc between two nodes represented by int : the head and the tail.
 
 Available constructors:
     ``Arc(tail, head) -> Arc``
