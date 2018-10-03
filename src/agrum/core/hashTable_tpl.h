@@ -840,10 +840,12 @@ namespace gum {
     // check that there does not already exist an element with the same key
     if (__key_uniqueness_policy && __nodes[hash_key].exists(bucket->key())) {
       // remove the bucket from memory
+      Key k = bucket->key();
       __alloc.destroy(bucket);
       __alloc.deallocate(bucket, 1);
       GUM_ERROR(DuplicateElement,
-                "the hashtable contains an element with the same key");
+                "the hashtable contains an element with the same key (" << k
+                                                                        << ")");
     }
 
     // check whether there is sufficient space to insert the new pair

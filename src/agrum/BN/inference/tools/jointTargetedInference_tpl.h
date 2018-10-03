@@ -280,9 +280,7 @@ namespace gum {
       pX = pXY->margSumOut({&(this->BN().variable(Y))});
       pY = pXY->margSumOut({&(this->BN().variable(X))});
     } catch (...) {
-      if (pXY != nullptr) {
-        delete pXY;
-      }
+      if (pXY != nullptr) { delete pXY; }
       throw;
     }
 

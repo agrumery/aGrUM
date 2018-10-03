@@ -26,6 +26,12 @@
 
 #include <agrum/core/utils_misc.h>
 
+namespace std {
+  std::ostream& operator<<(std::ostream& os, const std::tuple<>&) {
+    return os << "()";
+  }
+}   // namespace std
+
 namespace gum {
 
   bool Memcmp(const void* const _in, const void* const _out, unsigned long size) {

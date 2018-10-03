@@ -69,9 +69,9 @@ namespace gum_tests {
       gum::BayesNet< float >* net = new gum::BayesNet< float >();
       gum::UAIReader< float > reader(net, file);
 
-      gum::Size isOK = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(isOK = reader.proceed());
-      TS_ASSERT_EQUALS(isOK, gum::Size(0));
+      gum::Size nbErr = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
+      TS_ASSERT_EQUALS(nbErr, gum::Size(0));
 
       TS_ASSERT(net != nullptr);
 
@@ -119,9 +119,9 @@ namespace gum_tests {
       gum::BayesNet< double >* net = new gum::BayesNet< double >();
       gum::UAIReader< double > reader(net, file);
 
-      gum::Size isOK = false;
-      TS_GUM_ASSERT_THROWS_NOTHING(isOK = reader.proceed());
-      TS_ASSERT_EQUALS(isOK, gum::Size(0));
+      gum::Size nbErr = false;
+      TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
+      TS_ASSERT_EQUALS(nbErr, gum::Size(0));
 
       TS_ASSERT(net != nullptr);
 
@@ -141,9 +141,9 @@ namespace gum_tests {
       gum::BayesNet< float >* net = new gum::BayesNet< float >();
       gum::UAIReader< float > reader(net, file);
 
-      gum::Size isOK = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(isOK = reader.proceed());
-      TS_ASSERT_EQUALS(isOK, gum::Size(0));
+      gum::Size nbErr = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
+      TS_ASSERT_EQUALS(nbErr, gum::Size(0));
       TS_ASSERT(net != nullptr);
 
       if (net != nullptr) {
@@ -474,6 +474,25 @@ namespace gum_tests {
 
         delete net;
       }
+    }
+
+    void testDogRead() {
+      std::string              file = GET_RESSOURCES_PATH("uai/dog.uai");
+      gum::BayesNet< double >  net;
+      gum::UAIReader< double > reader(&net, file);
+
+      gum::Size nbErr = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
+      TS_ASSERT_EQUALS(nbErr, gum::Size(0));
+    }
+    void testAsiaRead() {
+      std::string              file = GET_RESSOURCES_PATH("uai/asia.uai");
+      gum::BayesNet< double >  net;
+      gum::UAIReader< double > reader(&net, file);
+
+      gum::Size nbErr = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
+      TS_ASSERT_EQUALS(nbErr, gum::Size(0));
     }
   };
 }   // namespace gum_tests

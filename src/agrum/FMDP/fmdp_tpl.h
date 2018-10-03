@@ -163,7 +163,7 @@ namespace gum {
 
     if (__actionMap.existsFirst(actionId))
       GUM_ERROR(DuplicateElement,
-                " An action with same id has already been inserted.");
+                " An action with same id ("<<actionId<<") has already been inserted.");
 
     __actionMap.insert(actionId, new std::string(action));
 

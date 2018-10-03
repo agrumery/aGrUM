@@ -58,6 +58,31 @@ namespace std {
     return stream;
   }
 
+  template < size_t N >
+  struct __auxiliary_print_tuple {
+    template < typename... T >
+    static typename std::enable_if< (N < sizeof...(T)) >::type
+      print(std::ostream& os, const std::tuple< T... >& t) {
+      char quote =
+        (std::is_convertible< decltype(std::get< N >(t)), std::string >::value)
+          ? '"'
+          : 0;
+      os << ", " << quote << std::get< N >(t) << quote;
+      __auxiliary_print_tuple< N + 1 >::print(os, t);
+    }
+    template < typename... T >
+    static typename std::enable_if< !(N < sizeof...(T)) >::type
+      print(std::ostream&, const std::tuple< T... >&) {}
+  };
+
+  template < typename T0, typename... T >
+  std::ostream& operator<<(std::ostream& os, const std::tuple< T0, T... >& t) {
+    char quote = (std::is_convertible< T0, std::string >::value) ? '"' : 0;
+    os << '(' << quote << std::get< 0 >(t) << quote;
+    __auxiliary_print_tuple< 1 >::print(os, t);
+    return os << ')';
+  }
+
   template < class T >
   bool hasUniqueElts(std::vector< T > const& x) {
     if (x.size() <= 1) return true;

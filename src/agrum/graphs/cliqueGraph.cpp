@@ -103,7 +103,7 @@ namespace gum {
 
     // check if the node already exists, in which case throw an exception
     if (clique.contains(node_id)) {
-      GUM_ERROR(DuplicateElement, "the clique set already contains the node");
+      GUM_ERROR(DuplicateElement, "the clique set already contains the node "<<node_id);
     }
 
     clique.insert(node_id);

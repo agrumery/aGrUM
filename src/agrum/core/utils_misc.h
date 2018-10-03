@@ -32,7 +32,9 @@
 #include <numeric>
 #include <utility>
 #include <vector>
-#include <vector>
+#include <tuple>
+#include <string>
+#include <type_traits>
 
 // FLAG : DEBUG mode
 //#undef  NDEBUG
@@ -68,6 +70,17 @@ namespace std {
 
   /**
    * @brief 'std::cout<<' operator for vectors.
+   * @param stream The stream to print to.
+   * @tparam t The std::tuple
+   * @param val The std::vector to print to stream.
+   * @return Returns stream.
+   */
+  template < typename T0, typename... T >
+  std::ostream& operator<<(std::ostream& os, const std::tuple< T0, T... >& t);
+
+
+  /**
+   * @brief 'std::cout<<' operator for vectors.
    * @tparam T The vector's elements type.
    * @param stream The stream to print to.
    * @param val The std::vector to print to stream.
@@ -76,11 +89,13 @@ namespace std {
   template < typename T >
   ostream& operator<<(ostream& stream, const vector< T >& val);
 
-  /**
+  /**   *
    * @brief check if a vector consists in unique values (no duplicate).
    * @tparam T The vector's elements type.
    * @param x the vector
    * @return Returns true if the vector has no duplicate.
+   *
+   * @todo WHY IN STD namespace ??
    */
   template < typename T >
   bool hasUniqueElts(std::vector< T > const& x);

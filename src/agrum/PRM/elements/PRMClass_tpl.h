@@ -508,7 +508,8 @@ namespace gum {
       if (!__dag.existsArc(Arc(tail->id(), head->id()))) {
         __dag.addArc(tail->id(), head->id());
       } else {
-        GUM_ERROR(DuplicateElement, "duplicate arc");
+        GUM_ERROR(DuplicateElement,
+                  "duplicate arc " << tail_name << "->" << head_name);
       }
 
       get(tail->id()).addChild(get(head->id()));
@@ -619,7 +620,8 @@ namespace gum {
     NodeId PRMClass< GUM_SCALAR >::add(PRMClassElement< GUM_SCALAR >* elt) {
       if (__nameMap.exists(elt->name())) {
         GUM_ERROR(DuplicateElement,
-                  "name already used by another ClassElement<GUM_SCALAR>");
+                  "name " << elt->name()
+                          << " already used by another ClassElement");
       }
 
       elt->setId(nextNodeId());
@@ -741,7 +743,8 @@ namespace gum {
 
       PRMClassElement< GUM_SCALAR >* overloaded = __nameMap[overloader->name()];
       if (overloaded == overloader) {
-        GUM_ERROR(DuplicateElement, "dupplicate ClassElement");
+        GUM_ERROR(DuplicateElement,
+                  "dupplicate ClassElement " << overloader->name());
       }
       // Checking overload legality
       if (!__checkOverloadLegality(overloaded, overloader)) {

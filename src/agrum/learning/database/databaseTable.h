@@ -723,9 +723,8 @@ namespace gum {
        * the state that the database had before the execution of the thread. After
        * calling undo_func, they should have restored this state.
        */
-      template <typename Functor1, typename Functor2>
-      void __threadProcessDatabase ( Functor1& exec_func,
-                                     Functor2& undo_func );
+      template < typename Functor1, typename Functor2 >
+      void __threadProcessDatabase(Functor1& exec_func, Functor2& undo_func);
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

@@ -80,7 +80,8 @@ namespace gum {
     }
 
     if (exists(id)) {
-      GUM_ERROR(DuplicateElement, "Unable to insert new var with this id.");
+      GUM_ERROR(DuplicateElement,
+                "Unable to insert a new variable with id " << id << ".");
     }
 
     __nodes2vars.insert(id, var.clone());

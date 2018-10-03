@@ -88,12 +88,11 @@ namespace gum {
     if (!__parseDone) {
       try {
         __parser->Parse();
+        __parseDone = true;
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
         return 1 + __parser->errors().error_count;
       }
-
-      __parseDone = true;
     }
 
     return (__parser->errors().error_count);
