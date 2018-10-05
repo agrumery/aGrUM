@@ -1,5 +1,17 @@
 # aGrUM Changelog
 
+## Changelog for 0.13.3
+* pyAgrum
+  * updating tests
+  * updating pyAgrum.lib
+  * new functions for colouring and graphically comparing BNs
+* aGrUM
+  * fixing UAI format for read and write
+  * BNLearner.setSliceOrder with list of list of names (and not only with ids)
+  * improved error messages
+  * fixing learnParameters
+  * multi-thread support for learning
+
 ## Changelog for 0.13.2
 * aGrUM/pyAgrum
   * fixed bugs in `Potential::fillWith`
