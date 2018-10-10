@@ -27,6 +27,7 @@ cmake_minimum_required (VERSION 3.1)
 option(BUILD_SHARED_LIBS "build shared|static libs" ON)
 option (BUILD_PYTHON "build python bindings" ON)
 option (BUILD_JAVA "build java bindings (experimental)" OFF) ## Very experimental for now.
+option (USE_OPENMP "use openmp" ON)
 
 set (AGRUM_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set (AGRUM_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR})
@@ -35,7 +36,9 @@ list (APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/src/cmake)
 
 set (LIBAGRUM "agrum")
 include (CompilOptions.agrum)
-include (openMP)
+if (USE_OPENMP)
+  include (openMP)
+endif ()
 
 add_subdirectory (src)
 add_subdirectory (wrappers)
