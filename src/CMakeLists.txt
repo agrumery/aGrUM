@@ -1,17 +1,5 @@
 include (GenerateExportHeader)
 
-if (POLICY CMP0018)
-  # ignore the POSITION_INDEPENDENT_CODE property for all targets and
-  # use the modified value of CMAKE_SHARED_LIBRARY_<Lang>_FLAGS for
-  # SHARED and MODULE libraries.
-  cmake_policy(SET CMP0018 OLD)
-endif ()
-
-if(APPLE)
-	set(CMAKE_MACOSX_RPATH ON)
-endif()
-
-
 set (CMAKE_CURRENT_CMAKE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 include(Config.agrum)
@@ -54,6 +42,9 @@ set_target_properties (${LIBAGRUM} PROPERTIES POSITION_INDEPENDENT_CODE ON)
 set_target_properties (${LIBAGRUM} PROPERTIES DEBUG_POSTFIX "-dbg")
 set_target_properties(${LIBAGRUM} PROPERTIES VERSION ${AGRUM_VERSION} SOVERSION ${AGRUM_VERSION_MAJOR})
 target_link_libraries( ${LIBAGRUM} ${ODBC_LIBRARIES} ${GUM_COVERAGE_LINK_LIBRARY})
+if (OPENMP_FOUND)
+  set_target_properties (${LIBAGRUM} PROPERTIES LINK_FLAGS ${OpenMP_CXX_FLAGS})
+endif ()
 GENERATE_EXPORT_HEADER( ${LIBAGRUM}
              BASE_NAME ${LIBAGRUM}
              EXPORT_MACRO_NAME ${LIBAGRUM}_EXPORT

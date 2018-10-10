@@ -1,9 +1,3 @@
-if (POLICY CMP0018)
-  # ignore the POSITION_INDEPENDENT_CODE property for all targets and
-  # use the modified value of CMAKE_SHARED_LIBRARY_<Lang>_FLAGS for
-  # SHARED and MODULE libraries.
-  cmake_policy(SET CMP0018 OLD)
-endif ()
 
 option (FOR_PYTHON3 "ON if pyAgrum uses python3. Python3 is used by default" ON)
 
