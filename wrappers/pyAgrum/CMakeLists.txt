@@ -1,5 +1,6 @@
 
 option (FOR_PYTHON3 "ON if pyAgrum uses python3. Python3 is used by default" ON)
+option (LINK_PYTHON_LIBRARY "Link Python library" ON)
 
 if (PYTHON_TARGET)
   set(PYTHON_EXECUTABLE ${PYTHON_TARGET})
@@ -29,7 +30,6 @@ if (NOT DEFINED PYTHON_INSTALL)
 endif ()
 
 set(GENERATED_PYTHON "${CMAKE_CURRENT_SOURCE_DIR}/generated-files${PYTHON_VERSION_MAJOR}")
-set(_PYAGRUMLIB "_pyAgrum")
 
 
 message(STATUS "================================")
@@ -90,23 +90,21 @@ include_directories(BEFORE ${AGRUM_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/doc)
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR})
 include_directories (${SWIG_SOURCE_DIR})
 
-set(SWIG_MODULE${_PYAGRUMLIB}_EXTRA_DEPS ${BUILDSWIGFILES})
 set(CMAKE_SWIG_OUTDIR ${GENERATED_PYTHON})
 
 
 if (SWIG_FOUND)
+  set(_PYAGRUMLIB "pyAgrum")
+  set(SWIG_MODULE_${_PYAGRUMLIB}_EXTRA_DEPS ${BUILDSWIGFILES})
   if (CMAKE_VERSION VERSION_LESS 3.8)
     swig_add_module (pyAgrum python ${CMAKE_CURRENT_SOURCE_DIR}/pyAgrum.i)
   else ()
     swig_add_library (pyAgrum LANGUAGE python SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/pyAgrum.i)
   endif ()
-  swig_link_libraries(pyAgrum ${LIBAGRUM})
-  swig_link_libraries(pyAgrum ${PYTHON_LIBRARY})  #for Apple ?
 else (SWIG_FOUND)
+  set(_PYAGRUMLIB "_pyAgrum")
   file(GLOB SWIG_GENERATED_FILES "${GENERATED_PYTHON}/*.cxx")
   add_library (${_PYAGRUMLIB} MODULE ${SWIG_GENERATED_FILES})
-  target_link_libraries (${_PYAGRUMLIB} ${LIBAGRUM})
-  target_link_libraries (${_PYAGRUMLIB} ${PYTHON_LIBRARY})
   set_target_properties(${_PYAGRUMLIB} PROPERTIES PREFIX "")
   set_target_properties(${_PYAGRUMLIB} PROPERTIES LINKER_LANGUAGE CXX)
   if (WIN32)
@@ -115,6 +113,13 @@ else (SWIG_FOUND)
     set_target_properties(${_PYAGRUMLIB} PROPERTIES SUFFIX ".so")
   endif (WIN32)
 endif (SWIG_FOUND)
+
+target_link_libraries (${_PYAGRUMLIB} ${LIBAGRUM})
+if (LINK_PYTHON_LIBRARY)
+  target_link_libraries (${_PYAGRUMLIB} ${PYTHON_LIBRARY})
+endif ()
+
+set_target_properties(${_PYAGRUMLIB} PROPERTIES INSTALL_RPATH_USE_LINK_PATH TRUE INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX})
 
 set_target_properties(${_PYAGRUMLIB} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 target_sources (${_PYAGRUMLIB} PUBLIC ${AGRUM_SOURCES})
