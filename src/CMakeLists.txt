@@ -1,10 +1,5 @@
 include (GenerateExportHeader)
 
-if(APPLE)
-	set(CMAKE_MACOSX_RPATH ON)
-endif()
-
-
 set (CMAKE_CURRENT_CMAKE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 include(Config.agrum)

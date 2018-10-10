@@ -1,5 +1,5 @@
 if(POLICY CMP0042) # use of @rpath
-  cmake_policy(SET CMP0042 OLD)
+  cmake_policy(SET CMP0042 NEW)
 endif(POLICY CMP0042)
 
 if (NOT DEFINED CMAKE_BUILD_TYPE)
