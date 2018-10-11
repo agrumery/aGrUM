@@ -51,6 +51,12 @@ GENERATE_EXPORT_HEADER( ${LIBAGRUM}
              EXPORT_FILE_NAME ${LIBAGRUM}_Export.h
              STATIC_DEFINE ${LIBAGRUM}_BUILT_AS_STATIC
 )
+target_include_directories(${LIBAGRUM} INTERFACE
+  $<INSTALL_INTERFACE:include>
+)
+
+# Add targets to the build-tree export set
+export (TARGETS ${LIBAGRUM} FILE ${LIBAGRUM}-targets.cmake)
 
 ####################################################################
 ## TARGET docs
