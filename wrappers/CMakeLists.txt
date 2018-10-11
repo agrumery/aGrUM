@@ -7,7 +7,13 @@ if (USE_SWIG)
   find_package(SWIG 3.0.11)
   if (SWIG_FOUND)
     message(STATUS "** aGrUM notification : Swig 3 found")
-    include(${SWIG_USE_FILE})
+
+    if (POLICY CMP0078)
+      # new swig target name
+      cmake_policy (SET CMP0078 NEW)
+    endif ()
+
+    include (${SWIG_USE_FILE})
   else ()
     message(STATUS "** aGrUM notification : Swig 3 not found : you cannot change *.i files !")
   endif ()
