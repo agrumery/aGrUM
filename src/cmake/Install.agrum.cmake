@@ -2,6 +2,7 @@
 install(FILES
     ${CMAKE_CURRENT_CMAKE_DIR}/aGrUMUse.cmake
     ${CMAKE_CURRENT_BINARY_DIR}/aGrUMConfig.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/aGrUMConfigVersion.cmake
     DESTINATION lib${LIB_SUFFIX}/cmake/aGrUM
     )
 install(FILES
