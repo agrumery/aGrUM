@@ -92,7 +92,6 @@ include_directories (${SWIG_SOURCE_DIR})
 
 set(CMAKE_SWIG_OUTDIR ${GENERATED_PYTHON})
 
-
 if (SWIG_FOUND)
   set(_PYAGRUMLIB "pyAgrum")
   set(SWIG_MODULE_${_PYAGRUMLIB}_EXTRA_DEPS ${BUILDSWIGFILES})
@@ -101,7 +100,7 @@ if (SWIG_FOUND)
   else ()
     swig_add_library (pyAgrum LANGUAGE python SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/pyAgrum.i)
   endif ()
-  if (CMAKE_VERSION VERSION_LESS 3.12)
+  if (CMAKE_VERSION VERSION_LESS 3.13)
     set(_PYAGRUMLIB ${SWIG_MODULE_pyAgrum_REAL_NAME})
   else ()
     set(_PYAGRUMLIB "pyAgrum")
