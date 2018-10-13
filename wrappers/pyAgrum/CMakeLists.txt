@@ -1,6 +1,5 @@
 
 option (FOR_PYTHON3 "ON if pyAgrum uses python3. Python3 is used by default" ON)
-option (LINK_PYTHON_LIBRARY "Link Python library" ON)
 
 if (PYTHON_TARGET)
   set(PYTHON_EXECUTABLE ${PYTHON_TARGET})
@@ -119,9 +118,7 @@ else (SWIG_FOUND)
 endif (SWIG_FOUND)
 
 target_link_libraries (${_PYAGRUMLIB} ${LIBAGRUM})
-if (LINK_PYTHON_LIBRARY)
-  target_link_libraries (${_PYAGRUMLIB} ${PYTHON_LIBRARY})
-endif ()
+target_link_libraries_with_dynamic_lookup (${_PYAGRUMLIB} ${PYTHON_LIBRARIES})
 
 set_target_properties(${_PYAGRUMLIB} PROPERTIES INSTALL_RPATH_USE_LINK_PATH TRUE INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX})
 
