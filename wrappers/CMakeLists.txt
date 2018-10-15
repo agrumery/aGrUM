@@ -1,3 +1,5 @@
+include (TargetLinkLibrariesWithDynamicLookup)
+
 ## if you do not want to use swig
 option (USE_SWIG "use swig to generate bindings" ON)
 
@@ -14,7 +16,6 @@ if (USE_SWIG)
     endif ()
 
     include (${SWIG_USE_FILE})
-    include (TargetLinkLibrariesWithDynamicLookup)
 
   else ()
     message(STATUS "** aGrUM notification : Swig 3 not found : you cannot change *.i files !")
