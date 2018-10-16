@@ -73,42 +73,67 @@ interface generator."
 %include "aGrUM_wrap.i"
 
 %pythoncode %{
-Potential = Potential_double
+class Potential(Potential_double):
+    pass
 
 randomDistribution = randomDistribution_double
 
-SimpleBayesNet = IBayesNet_double
-BayesNet = BayesNet_double
+class SimpleBayesNet(IBayesNet_double):
+    pass
+class BayesNet(BayesNet_double):
+    pass
 
-LazyPropagation = LazyPropagation_double
-ShaferShenoyInference = ShaferShenoyInference_double
-VariableElimination = VariableElimination_double
+class LazyPropagation(LazyPropagation_double):
+    pass
+class ShaferShenoyInference(ShaferShenoyInference_double):
+    pass
+class VariableElimination(VariableElimination_double):
+    pass
 
-GibbsSampling = GibbsSampling_double
-ImportanceSampling=ImportanceSampling_double
-WeightedSampling=WeightedSampling_double
-MonteCarloSampling=MonteCarloSampling_double
-LoopyImportanceSampling=LoopyImportanceSampling_double
-LoopyGibbsSampling=LoopyGibbsSampling_double
-LoopyWeightedSampling=LoopyWeightedSampling_double
-LoopyMonteCarloSampling=LoopyMonteCarloSampling_double
+class GibbsSampling(GibbsSampling_double):
+    pass
+class ImportanceSampling(ImportanceSampling_double):
+    pass
+class WeightedSampling(WeightedSampling_double):
+    pass
+class MonteCarloSampling(MonteCarloSampling_double):
+    pass
+class LoopyImportanceSampling(LoopyImportanceSampling_double):
+    pass
+class  LoopyGibbsSampling(LoopyGibbsSampling_double):
+    pass
+class LoopyWeightedSampling(LoopyWeightedSampling_double):
+    pass
+class LoopyMonteCarloSampling(LoopyMonteCarloSampling_double):
+    pass
 
-LoopyBeliefPropagation = LoopyBeliefPropagation_double
+class LoopyBeliefPropagation(LoopyBeliefPropagation_double):
+    pass
 
-BruteForceKL = BruteForceKL_double
-GibbsKL = GibbsKL_double
+class BruteForceKL(BruteForceKL_double):
+    pass
+class GibbsKL(GibbsKL_double):
+    pass
 
-CredalNet = CredalNet_double
-CNMonteCarloSampling = CNMonteCarloSampling_double
-CNLoopyPropagation = CNLoopyPropagation_double
+class CredalNet(CredalNet_double):
+    pass
+class CNMonteCarloSampling(CNMonteCarloSampling_double):
+    pass
+class CNLoopyPropagation(CNLoopyPropagation_double):
+    pass
 
-DiscretizedVariable = DiscretizedVariable_double
+class DiscretizedVariable(DiscretizedVariable_double):
+    pass
 
-InfluenceDiagram = InfluenceDiagram_double
-InfluenceDiagramInference = InfluenceDiagramInference_double
+class InfluenceDiagram(InfluenceDiagram_double):
+    pass
+class InfluenceDiagramInference(InfluenceDiagramInference_double):
+    pass
 
-BNLearner =  BNLearner_double
-BNDatabaseGenerator = BNDatabaseGenerator_double
+class BNLearner(BNLearner_double):
+    pass
+class BNDatabaseGenerator(BNDatabaseGenerator_double):
+    pass
 %}
 
  // Explicit template instantiation ignored.
