@@ -77,29 +77,34 @@ macos_aGrUM_build:
   <<: *macos_template
   stage: agrum
   script:
+    - source activate py37
     - if ! python act --no-fun lib release aGrUM --python=3; then  python act --no-fun clean ; python act --no-fun lib release aGrUM --python=3; fi
+    - source deactivate
 
 macos_pyAgrum_build:
   <<: *macos_template
   stage: pyagrum
   script:
+    - source activate py37
     - if ! python act --no-fun lib release pyAgrum --python=3; then python act --no-fun clean ; python act --no-fun lib release pyAgrum --python=3; fi
+    - source deactivate
 
 macos_aGrUM_test:
   <<: *macos_template
   stage: agrum_test
   script:
+    - source activate py37
     - if ! python act --no-fun test release aGrUM --python=3; then python act --no-fun clean ; python act --no-fun test release aGrUM --python=3; fi
+    - source deactivate
 
 macos_pyAgrum_test:
   <<: *macos_template
   stage: pyagrum_test
   script:
-    - virtualenv venv --python=$(which python3.6)
-    - source venv/bin/activate
+    - source activate py37
     - pip install -r wrappers/pyAgrum/testunits/requirements.txt
     - if ! python act --no-fun test release pyAgrum --python=3 -t quick; then python act --no-fun clean ; python act --no-fun test release pyAgrum --python=3 -t quick; fi
-    - deactivate
+    - source deactivate
 
 ################################################################################
 # Windows / MVSC
