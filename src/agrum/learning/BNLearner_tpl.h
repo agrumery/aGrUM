@@ -107,6 +107,10 @@ namespace gum {
     template < typename GUM_SCALAR >
     BayesNet< GUM_SCALAR > BNLearner< GUM_SCALAR >::learnBN() {
       // create the score, the apriori and the estimator
+      auto notification = checkScoreAprioriCompatibility();
+      if (notification != "") {
+        std::cout << "[aGrUM notification] " << notification << std::endl;
+      }
       __createApriori();
       __createScore();
       __createParamEstimator();
@@ -125,6 +129,37 @@ namespace gum {
     BayesNet< GUM_SCALAR >
       BNLearner< GUM_SCALAR >::learnParameters(const DAG& dag,
                                                bool take_into_account_score) {
+      // if the dag contains no node, return an empty BN
+      if (dag.size() == 0) return BayesNet< GUM_SCALAR >();
+
+      // check that the dag corresponds to the database
+      std::vector< NodeId > ids;
+      ids.reserve(dag.sizeNodes());
+      for (const auto node : dag)
+        ids.push_back(node);
+      std::sort(ids.begin(), ids.end());
+
+      if (ids.back() >= __score_database.names().size()) {
+        std::stringstream str;
+        str << "Learning parameters corresponding to the dag is impossible "
+            << "because the database does not contain the following nodeID";
+        std::vector< NodeId > bad_ids;
+        for (const auto node : ids) {
+          if (node >= __score_database.names().size()) bad_ids.push_back(node);
+        }
+        if (bad_ids.size() > 1) str << 's';
+        str << ": ";
+        bool deja = false;
+        for (const auto node : bad_ids) {
+          if (deja)
+            str << ", ";
+          else
+            deja = true;
+          str << node;
+        }
+        GUM_ERROR(MissingVariableInDatabase, str.str());
+      }
+
       // create the apriori and the estimator
       __createApriori();
       __createParamEstimator(take_into_account_score);
@@ -138,44 +173,14 @@ namespace gum {
           __score_database.databaseTable().translatorSet());
     }
 
+
     /// learns a BN (its parameters) when its structure is known
     template < typename GUM_SCALAR >
     BayesNet< GUM_SCALAR >
-      BNLearner< GUM_SCALAR >::learnParameters(const BayesNet< GUM_SCALAR >& bn,
-                                               bool take_into_account_score) {
-      // create the apriori and the estimator
-      __createApriori();
-      __createParamEstimator(take_into_account_score);
-
-      // create a DAG with node ids coherent with those of the database
-      DAG                    newDAG;
-      NodeProperty< NodeId > mapIds(bn.size());
-      auto                   mods = modalities();
-
-      for (auto node : bn.nodes()) {
-        const NodeId new_id = idFromName(bn.variable(node).name());
-
-        if (mods[new_id] != bn.variable(node).domainSize()) {
-          GUM_ERROR(UnknownLabelInDatabase,
-                    "for variable " << bn.variable(node).name());
-        }
-
-        mapIds.insert(node, new_id);
-        newDAG.addNodeWithId(new_id);
-      }
-
-      for (const auto& arc : bn.arcs()) {
-        newDAG.addArc(mapIds[arc.tail()], mapIds[arc.head()]);
-      }
-
-      return DAG2BNLearner::
-        createBN< GUM_SCALAR, ParamEstimator<>, DBTranslatorSet<> >(
-          *__param_estimator,
-          newDAG,
-          __score_database.names(),
-          __score_database.modalities(),
-          __score_database.databaseTable().translatorSet());
+      BNLearner< GUM_SCALAR >::learnParameters(bool take_into_account_score) {
+      return learnParameters(__initial_dag, take_into_account_score);
     }
+
 
     template < typename GUM_SCALAR >
     NodeProperty< Sequence< std::string > >

@@ -122,7 +122,7 @@ namespace gum {
           __refcount = 0;
 
         __val = from;
-      } catch (std::bad_alloc) {
+      } catch (std::bad_alloc&) {
         if (*old_refcount == 1) {
           __val = from;
           delete old_val;

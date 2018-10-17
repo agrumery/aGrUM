@@ -505,7 +505,8 @@ namespace gum {
     // check if the variable already belongs to the tuple of variables
     // of the SetInst
     if (__vars.exists(&v))
-      GUM_ERROR(DuplicateElement, "Var already exists in this SetInst");
+      GUM_ERROR(DuplicateElement,
+                "Variable '" << v.name() << "' already exists in this SetInst");
 
     // actually add the new dimension
     __add(v);

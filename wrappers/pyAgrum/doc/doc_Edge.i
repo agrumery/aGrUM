@@ -1,6 +1,6 @@
 %feature("docstring") gum::Edge
 "
-pyAgrum.Edge is the representation of an arc between two nodes represented by `int`s : the first and the second.
+pyAgrum.Edge is the representation of an arc between two nodes represented by int : the first and the second.
 
 Available constructors :
     ``Edge(aN1,aN2) -> Edge``

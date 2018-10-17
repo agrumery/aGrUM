@@ -99,3 +99,7 @@ wrappers/pyAgrum/sphinx/sphinx_warnings.txt
 
 # VS Code working folder
 .vscode/
+
+# Pipenv files
+Pipfile
+Pipfile.lock

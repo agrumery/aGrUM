@@ -85,35 +85,35 @@ namespace gum {
 
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < typename IdSetAlloc, typename CountAlloc >
-    bool ScoreBD< IdSetAlloc, CountAlloc >::isAprioriCompatible(
+    std::string ScoreBD< IdSetAlloc, CountAlloc >::isAprioriCompatible(
       const std::string& apriori_type, double weight) {
       if (apriori_type == AprioriNoAprioriType::type) {
-        GUM_ERROR(IncompatibleScoreApriori, "The BD score requires an apriori");
+        return "The BD score requires an apriori";
       }
 
       if (weight != 0) {
-        GUM_ERROR(PossiblyIncompatibleScoreApriori,
-                  "The apriori is currently compatible with the BD score but if "
-                  "you change the weight, it may become incompatible");
+        return "The apriori is currently compatible with the BD score but if "
+               "you change the weight, it may become incompatible";
       }
 
       // apriori types unsupported by the type checker
       std::stringstream msg;
       msg << "The apriori '" << apriori_type
           << "' is not yet supported by method isAprioriCompatible";
-      GUM_ERROR(InvalidArgument, msg.str());
+      return msg.str();
     }
 
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < typename IdSetAlloc, typename CountAlloc >
-    INLINE bool ScoreBD< IdSetAlloc, CountAlloc >::isAprioriCompatible(
+    INLINE std::string ScoreBD< IdSetAlloc, CountAlloc >::isAprioriCompatible(
       const Apriori< IdSetAlloc, CountAlloc >& apriori) {
       return isAprioriCompatible(apriori.getType(), apriori.weight());
     }
 
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < typename IdSetAlloc, typename CountAlloc >
-    INLINE bool ScoreBD< IdSetAlloc, CountAlloc >::isAprioriCompatible() const {
+    INLINE std::string
+           ScoreBD< IdSetAlloc, CountAlloc >::isAprioriCompatible() const {
       return isAprioriCompatible(*this->_apriori);
     }
 

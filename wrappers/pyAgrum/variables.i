@@ -1,4 +1,5 @@
 %rename ( index ) gum::DiscretizedVariable<double>::index(const double& tick) const;
+%ignore **::ticksAsDoubles() const;
 
 %newobject gum::LabelizedVariable::clone(); 
 
@@ -49,7 +50,7 @@ def addTick(self,*args):
     Raises
     ------
     gum.DefaultInLabel
-        If the Tick is already defined
+        If the tick is already defined
     """
     $action(self,*args)
     return self

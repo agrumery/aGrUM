@@ -77,29 +77,34 @@ macos_aGrUM_build:
   <<: *macos_template
   stage: agrum
   script:
+    - source activate py37
     - if ! python act --no-fun lib release aGrUM --python=3; then  python act --no-fun clean ; python act --no-fun lib release aGrUM --python=3; fi
+    - source deactivate
 
 macos_pyAgrum_build:
   <<: *macos_template
   stage: pyagrum
   script:
+    - source activate py37
     - if ! python act --no-fun lib release pyAgrum --python=3; then python act --no-fun clean ; python act --no-fun lib release pyAgrum --python=3; fi
+    - source deactivate
 
 macos_aGrUM_test:
   <<: *macos_template
   stage: agrum_test
   script:
+    - source activate py37
     - if ! python act --no-fun test release aGrUM --python=3; then python act --no-fun clean ; python act --no-fun test release aGrUM --python=3; fi
+    - source deactivate
 
 macos_pyAgrum_test:
   <<: *macos_template
   stage: pyagrum_test
   script:
-    - virtualenv venv --python=$(which python3.6)
-    - source venv/bin/activate
+    - source activate py37
     - pip install -r wrappers/pyAgrum/testunits/requirements.txt
     - if ! python act --no-fun test release pyAgrum --python=3 -t quick; then python act --no-fun clean ; python act --no-fun test release pyAgrum --python=3 -t quick; fi
-    - deactivate
+    - source deactivate
 
 ################################################################################
 # Windows / MVSC
@@ -168,7 +173,7 @@ agrum_master_documentation:
 ################################################################################
 # Deployment
 ################################################################################
-aGruM-Deploy:
+aGruM-Deploy-Latest:
   only:
     - tags
   tags:
@@ -176,3 +181,13 @@ aGruM-Deploy:
   stage: deployment
   script:
     - curl -X POST -F token=${AGRUM_DEPLOY_TOKEN} -F ref=master https://gitlab.com/api/v4/projects/4935470/trigger/pipeline
+
+agrum_master_documentation:
+  only:
+    - tags
+  tags:
+    - linux
+  stage: deployment
+  allow_failure: true
+  script:
+    - sshpass -p "${OVH_PASSWORD}" ssh -oStrictHostKeyChecking=no ${OVH_LOGIN}@${OVH_URL} "/bin/bash ~/update_latest.sh"

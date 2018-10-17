@@ -21,7 +21,7 @@
  * @brief The common class for the tabular database tables
  *
  * IDatabases are not intended to be created as is but should be created through
- * classes that inherit them, like rawDatabaseTable and DatabaseTable.
+ * the RawDatabaseTable and DatabaseTable classes.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -37,6 +37,7 @@
 #include <mutex>
 
 #include <agrum/agrum.h>
+#include <agrum/core/thread.h>
 #include <agrum/learning/database/DBCell.h>
 #include <agrum/learning/database/DBRow.h>
 #include <agrum/learning/database/DBHandler.h>
@@ -125,9 +126,9 @@ namespace gum {
      * @headerfile IDatabaseTable.h <agrum/learning/IDatabaseTable.h>
      * @brief The common class for the tabular database tables
      *
-     * Although it is possible to create IDatabases, those are not intended to
-     * be created as is but should be created through classes that inherit them,
-     * like RawDatabaseTable and DatabaseTable.
+     * IDatabases are not intended to be created as is but should be created
+     * through the RawDatabaseTable and DatabaseTable classes. They represent
+     * the structures shared by these latter classes.
      *
      * Here is an example of how to use the class, illustrated with the
      * DatabaseTable class (in this case, the T_DATA type is just equal to
@@ -147,7 +148,7 @@ namespace gum {
      *
      * // here, database contains the content of the asia.csv file.
      * // determine how many columns and rows the database contains
-     * std::size_t nb_rows = database.content().size()
+     * std::size_t nb_rows = database.nbRows();
      * std::size_t nb_cols = database.nbVariables ();
      *
      * // manually add a new row into the database
@@ -174,17 +175,18 @@ namespace gum {
      *   std::cout << dbrow.row() << "  weight: " << dbrow.weight() << std::endl;
      *
      * // ignore some columns of the database, i.e., remove them
-     * database.ignoreColumn ( 3 ); // remove the 4th column of the CSV file
+     * database.ignoreColumn ( 3 ); // remove the column X3 of the CSV file
      * // now, the database contains columns 0, 1, 2, 4, 5, 6, 7 of the
-     * // CSV file. If we wish to remove Column 5 of the CSV file:
-     * database.ignoreColumn ( 3 ); // remove the 4th column of the CSV file
+     * // CSV file. If we wish to remove Column X5 of the CSV file:
+     * database.ignoreColumn ( 5 ); // remove the column X5 of the CSV file
      * // now, the database contains columns 0, 1, 2, 4, 6, 7 of the CSV file.
-     * // if we wish to remove the 3rd column of the IDatabaseTable, i.e.,
-     * // column 2 of the CSV, either we determine that this actually correspond
-     * // to column 2 of the CSV and we use database.ignoreColumn ( 2 ) or
+     * // if we wish to remove the 5th column of the IDatabaseTable, i.e.,
+     * // column #4 of the CSV, either we determine that this actually correspond
+     * // to column X6 of the CSV and we use database.ignoreColumn ( 6 ) or
      * // we call:
-     * database.ignoreColumn ( 2, false ); // false => 2 = the 3rd column of
-     * // the IDatabaseTable, not the 3rd column of the CSV file
+     * database.ignoreColumn ( 4, false ); // false => 4 = the 5th column of
+     * // the IDatabaseTable, not the 5th column/variable of the CSV file
+     * // (remember that all column numbers start from 0).
      *
      * // display the columns of the CSV that were ignored and those that
      * // were kept:
@@ -559,6 +561,11 @@ namespace gum {
         /// returns the number of variables (columns) of the database
         virtual std::size_t nbVariables() const final;
 
+        /// returns a pointer on the database
+        /** @throw NullElement is raised if the handler does not point toward
+         * any database. */
+        virtual const IDatabaseTable< T_DATA, ALLOC >& database() const;
+
         /// @}
 
 
@@ -594,7 +601,7 @@ namespace gum {
        *
        * The IDatabaseTable class is provided with two types of handlers: unsafe
        * handlers and safe ones. Compared to the former, the safe handlers
-       * incur a small overhead during their creation. But safe handler
+       * incur a small overhead during their creation. But safe handlers
        * are informed by their associated database when the structure of
        * this one changes, i.e., when the number of rows/columns changes or
        * when rows are added/removed, whereas unsafe handlers are not aware
@@ -831,13 +838,13 @@ namespace gum {
       // ##########################################################################
       /// @{
 
-      /// returns the content of the database
+      /// returns the content (the records) of the database
       const Matrix< T_DATA >& content() const noexcept;
 
-      /// returns a new unsafe handler on the database
+      /// returns a new unsafe handler pointing to the 1st record of the database
       iterator handler() const;
 
-      /// returns a new safe handler on the database
+      /// returns a new safe handler pointing to the 1st record of the database
       iterator_safe handlerSafe() const;
 
       /// returns the variable names for all the columns of the database
@@ -850,10 +857,10 @@ namespace gum {
        * (in this case, parameter from_external_object is equal to false),
        * or they corresponds to the columns of an external database (e.g., a
        * CSV file) from which we potentially excluded some columns and,
-       * consequently, these columns should not be taken into account (in this
+       * consequently, the latter should not be taken into account (in this
        * case, parameter from_external_object is equal to true). As an
        * example, imagine that the database table is created from a CSV file
-       * with 5 columns named X0, X1, X2, X3 and X4 respectivly. Suppose that
+       * with 5 columns named X0, X1, X2, X3 and X4 respectively. Suppose that
        * we asked the database table to ignore columns X1 and X3. Then
        * setVariableNames( { "X0", "X1", "X2", "X3", "X4" }, true ) will
        * set the columns of the database table as { "X0", "X2", "X4" }. The
@@ -880,10 +887,10 @@ namespace gum {
        * (in this case, parameter from_external_object is equal to false),
        * or they corresponds to the columns of an external database (e.g., a
        * CSV file) from which we potentially excluded some columns and,
-       * consequently, these columns should not be taken into account (in this
+       * consequently, the latter should not be taken into account (in this
        * case, parameter from_external_object is equal to true). As an
        * example, imagine that the database table is created from a CSV file
-       * with 5 columns named X0, X1, X2, X3 and X4 respectivly. Suppose that
+       * with 5 columns named X0, X1, X2, X3 and X4 respectively. Suppose that
        * we asked the database table to ignore columns X1 and X3. Then
        * setVariableNames( { "X0", "X1", "X2", "X3", "X4" }, true ) will
        * set the columns of the database table as { "X0", "X2", "X4" }. The
@@ -905,21 +912,37 @@ namespace gum {
         const std::vector< std::string, OTHER_ALLOC< std::string > >& names,
         const bool from_external_object = true);
 
-      /// returns the name of the kth column of the database
-      /** @throw OutOfBounds is raised if the dtabase contains fewer than
-       * k columns. */
+      /// returns the name of the kth column of the IDatabaseTable
+      /** @throw OutOfBounds is raised if the IDatabaseTable contains fewer
+       * than k columns. */
       const std::string& variableName(const std::size_t k) const;
 
       /// returns the index of the column whose name is passed in argument
-      /** @throw UndefinedElement is raised if there exists no column with
+      /** @warning If several columns correspond to the name, only the
+       * column with the lowest index is returned. If you wish to retrieve all
+       * the columns, use method columnsFromVariableName
+       * @throw UndefinedElement is raised if there exists no column with
        * the given name*/
       std::size_t columnFromVariableName(const std::string& name) const;
+
+      /// returns the indices of all the columns whose name is passed in argument
+      /** It may happen that several columns correspond to a given variable
+       * name. In this case, the function returns the indices of all the
+       * columns of the IDatabase that match the name. */
+      DBVector< std::size_t >
+        columnsFromVariableName(const std::string& name) const;
 
       /// returns the number of variables (columns) of the database
       std::size_t nbVariables() const noexcept;
 
       /// returns the number of records (rows) in the database
+      std::size_t nbRows() const noexcept;
+
+      /// returns the number of records (rows) in the database
       std::size_t size() const noexcept;
+
+      /// indicates whether the database contains some records or not
+      bool empty() const noexcept;
 
       /// makes the database table ignore from now on the kth column
       /** This method can be called in two different ways: either k refers to
@@ -960,13 +983,6 @@ namespace gum {
       /** @brief returns the set of columns of the original dataset that are
        * present in the IDatabaseTable */
       virtual const DBVector< std::size_t > inputColumns() const = 0;
-
-
-      /// indicates whether the database contains some missing values
-      bool hasMissingValues() const;
-
-      /// indicates whether the kth row contains some missing values
-      bool hasMissingValues(const std::size_t k) const;
 
       using IDatabaseTableInsert4DBCell<
         ALLOC,
@@ -1011,8 +1027,14 @@ namespace gum {
        * this method assumes that the new rows passed in argument do not contain
        * any data of the ignored columns. So, basically, these rows could be
        * copied as is into the database table.
+       * @param new_rows the new set of rows to be copied as is
+       * @param rows_have_missing_vals a vector of the same size as new_rows
+       * that indicates, for each new row, whether it contains some missing
+       * value or not
        * @throw SizeError is raised if the size of at least one row in new_rows
-       * is not equal to the number of columns retained in the IDatabaseTable */
+       * is not equal to the number of columns retained in the IDatabaseTable.
+       * A SizeError exception will also be raised if the number of new rows
+       * is not identical to the size of vector rows_have_missing_vals. */
       virtual void insertRows(Matrix< T_DATA >&&           new_rows,
                               const DBVector< IsMissing >& rows_have_missing_vals);
 
@@ -1021,8 +1043,14 @@ namespace gum {
        * this method assumes that the new rows passed in argument do not contain
        * any data of the ignored columns. So, basically, these rows could be
        * copied as is into the database table.
+       * @param new_rows the new set of rows to be copied as is
+       * @param rows_have_missing_vals a vector of the same size as new_rows
+       * that indicates, for each new row, whether it contains some missing
+       * value or not
        * @throw SizeError is raised if the size of at least one row in new_rows
-       * is not equal to the number of columns retained in the IDatabaseTable */
+       * is not equal to the number of columns retained in the IDatabaseTable.
+       * A SizeError exception will also be raised if the number of new rows
+       * is not identical to the size of vector rows_have_missing_vals. */
       virtual void insertRows(const Matrix< T_DATA >&      new_rows,
                               const DBVector< IsMissing >& rows_have_missing_vals);
 
@@ -1068,6 +1096,29 @@ namespace gum {
       /// returns the set of missing symbols
       const DBVector< std::string >& missingSymbols() const;
 
+      /// indicates whether the database contains some missing values
+      bool hasMissingValues() const;
+
+      /// indicates whether the kth row contains some missing values
+      bool hasMissingValues(const std::size_t k) const;
+
+      /// changes the max number of threads that a database can use
+      /** Within databases, some methods can be processed in a parallel fashion.
+       * This methods indicates the maximum number of threads that can be run
+       * in parallel at the same time. */
+      void setMaxNbThreads(const std::size_t nb) const;
+
+      /** @brief changes the number min of rows a thread should process in a
+       * multithreading context
+       *
+       * When a method executes several threads to perform actions on the rows
+       * of the database, the MinNbRowsPerThread indicates how many rows each
+       * thread should at least process. This is used to compute the number of
+       * threads actually run. This number is equal to the min between the max
+       * number of threads allowed and the number of records in the database
+       * divided by nb. */
+      void setMinNbRowsPerThread(const std::size_t nb) const;
+
       /// @}
 
 
@@ -1075,14 +1126,23 @@ namespace gum {
       /// the names of the variables for each column
       DBVector< std::string > _variable_names;
 
-      /// returns the content of the database
-      Matrix< T_DATA >& _content() noexcept;
+      // the vector of DBRows containing all the raw data
+      Matrix< T_DATA > _rows;
 
-      /// returns the vector indicating whether a row contains missing values
-      DBVector< IsMissing >& _hasRowMissingVal() noexcept;
+      // the set of string corresponding to missing values
+      DBVector< std::string > _missing_symbols;
 
-      /// returns the set of symbols for the missing values
-      const DBVector< std::string >& _missingSymbols() const;
+      // a vector indicating which rows have missing values (char != 0)
+      DBVector< IsMissing > _has_row_missing_val;
+
+      // the maximal number of threads that the database can use
+      mutable std::size_t _max_nb_threads{
+        std::size_t(thread::getMaxNumberOfThreads())};
+
+      // the min number of rows that a thread should process in a
+      // multithreading context
+      mutable std::size_t _min_nb_rows_per_thread{100};
+
 
       /** @brief checks whether a size corresponds to the number of columns
        * of the database */
@@ -1092,7 +1152,7 @@ namespace gum {
       IDatabaseTable< T_DATA, ALLOC >&
         operator=(const IDatabaseTable< T_DATA, ALLOC >& from);
 
-      /// move constructor
+      /// move operator
       IDatabaseTable< T_DATA, ALLOC >&
         operator=(IDatabaseTable< T_DATA, ALLOC >&& from);
 
@@ -1100,15 +1160,6 @@ namespace gum {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
       private:
-      // the vector of DBRows containing all the raw data
-      Matrix< T_DATA > __data;
-
-      // the set of string corresponding to missing values
-      DBVector< std::string > __missing_symbols;
-
-      // a vector indicating which rows have missing values (char != 0)
-      DBVector< IsMissing > __has_row_missing_val;
-
       // the list of handlers currently attached to the database
       /* this is useful when the database is resized */
       mutable DBVector< HandlerSafe* > __list_of_safe_handlers;
@@ -1140,10 +1191,6 @@ namespace gum {
       /// allow the handlers to access the database directly
       friend class Handler;
       friend class HandlerSafe;
-
-      // used for constructors and operators
-      template < typename TX_DATA, template < typename > class OTHER_ALLOC >
-      friend class IDatabaseTable;
     };
 
   } /* namespace learning */

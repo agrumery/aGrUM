@@ -24,10 +24,10 @@ tools for BN analysis in jupyter notebook
 """
 from __future__ import print_function
 
-import base64
 import time
 
 import IPython.display
+import base64
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
@@ -38,6 +38,7 @@ from IPython.core.pylabtools import print_figure
 from IPython.display import display, HTML, SVG
 from matplotlib.backends.backend_agg import FigureCanvasAgg as fc
 from pyAgrum.lib.bn2graph import BN2dot, proba2histo, BNinference2dot, _proba2bgcolor
+from pyAgrum.lib.bn_vs_bn import graphicalBNDiff
 
 _cdict = {
   'red'  : ((0.0, 0.1, 0.3),
@@ -147,6 +148,38 @@ def getDot(dotstring, size="4", format="png"):
   g = dot.graph_from_dot_data(dotstring)
   g.set_bgcolor("transparent")
   return getGraph(g, size, format)
+
+
+def getBNDiff(bn1, bn2, size="4", format="png"):
+  """ get a HTML string representation of a graphical diff between the arcs of bn1 (reference) with those of bn2.
+
+  * full black line: the arc is common for both
+  * full red line: the arc is common but inverted in bn2
+  * dotted black line: the arc is added in bn2
+  * dotted red line: the arc is removed in bn2
+
+  :param BayesNet bn1: referent model for the comparison
+  :param BayesNet bn2: bn compared to the referent model
+  :param size: size of the rendered graph
+  :param format: render as "png" or "svg"
+  """
+  return getGraph(graphicalBNDiff(bn1, bn2), size, format)
+
+
+def showBNDiff(bn1, bn2, size="4", format="png"):
+  """ show a graphical diff between the arcs of bn1 (reference) with those of bn2.
+
+  * full black line: the arc is common for both
+  * full red line: the arc is common but inverted in bn2
+  * dotted black line: the arc is added in bn2
+  * dotted red line: the arc is removed in bn2
+
+  :param BayesNet bn1: referent model for the comparison
+  :param BayesNet bn2: bn compared to the referent model
+  :param size: size of the rendered graph
+  :param format: render as "png" or "svg"
+  """
+  showGraph(graphicalBNDiff(bn1, bn2), size, format)
 
 
 def showJunctionTree(bn, withNames=True, size="4", format="png"):
@@ -291,41 +324,53 @@ def showApproximationScheme(apsc, scale=np.log10):
       plt.xlim(1, 10)
     else:
       plt.xlim(1, len(apsc.history()))
-    plt.title("{0} \n Time : {1} s | Iterations : {2} | Espilon : {3}".format(x, apsc.currentTime(), apsc.nbrIterations(),
-                                                                              apsc.epsilon()))
+    plt.title(
+        "{0} \n Time : {1} s | Iterations : {2} | Espilon : {3}".format(x, apsc.currentTime(), apsc.nbrIterations(),
+                                                                        apsc.epsilon()))
     plt.plot(scale(apsc.history()), 'g')
   else:
     ie2.messageApproximationScheme()
 
 
-def showBN(bn, size="4", format="svg", arcvals=None, vals=None, cmap=None):
+def showBN(bn, size="4", format="svg", nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None):
   """
   show a Bayesian network
 
   :param bn: the bayesian network
   :param size: size of the rendered graph
   :param format: render as "png" or "svg"
-  :param vals: a nodeMap of values to be shown as color nodes
-  :param arcvals: a arcMap of values to be shown as bold arcs
-  :param cmap: color map to show the vals
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
+  :param arcWidth: a arcMap of values to be shown as width of arcs
+  :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
+  :param cmap: color map to show the colors
+  :param cmapArc: color map to show the arc color if distinction is needed
   :return: the graph
   """
-  return showGraph(BN2dot(bn, size, arcvals, vals, cmap), size, format)
+  if cmapArc is None:
+    cmapArc = cmap
+
+  return showGraph(BN2dot(bn, size, nodeColor, arcWidth, arcColor, cmap, cmapArc), size, format)
 
 
-def getBN(bn, size="4", format="svg", arcvals=None, vals=None, cmap=None):
+def getBN(bn, size="4", format="svg", nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None):
   """
   get a HTML string for a Bayesian network
 
   :param bn: the bayesian network
   :param size: size of the rendered graph
   :param format: render as "png" or "svg"
-  :param vals: a nodeMap of values to be shown as color nodes
-  :param arcvals: a arcMap of values to be shown as bold arcs
-  :param cmap: color map to show the vals
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
+  :param arcWidth: a arcMap of values to be shown as width of arcs
+  :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
+  :param cmap: color map to show the colors
+  :param cmapArc: color map to show the arc color if distinction is needed
+
   :return: the graph
   """
-  return getGraph(BN2dot(bn, size, arcvals, vals, cmap), size, format)
+  if cmapArc is None:
+    cmapArc = cmap
+
+  return getGraph(BN2dot(bn, size, nodeColor, arcWidth, arcColor, cmap, cmapArc), size, format)
 
 
 def _normalizeVals(vals, hilightExtrema=False):
@@ -369,7 +414,9 @@ def _reprInformation(bn, evs, size, cmap, asString):
   idEvs = {bn.idFromName(name) for name in evs}
   nodevals = {bn.variable(n).name(): ie.H(n) for n in bn.nodes() if not n in idEvs}
   arcvals = {(x, y): ie.I(x, y) for x, y in bn.arcs()}
-  gr = BN2dot(bn, size, arcvals, _normalizeVals(nodevals, hilightExtrema=False), cmap, showValues=nodevals)
+  gr = BN2dot(bn, size, nodeColor=_normalizeVals(nodevals, hilightExtrema=False), arcWidth=arcvals, cmapNode=cmap,
+              cmapArc=cmap,
+              showMsg=nodevals)
 
   mi = min(nodevals.values())
   ma = max(nodevals.values())
@@ -401,7 +448,7 @@ def _reprInformation(bn, evs, size, cmap, asString):
     return display(HTML(sss))
 
 
-def getInformation(bn, evs={}, size="4", cmap=_INFOcmap):
+def getInformation(bn, evs=None, size="4", cmap=_INFOcmap):
   """
   get a HTML string for a bn annoted with results from inference : entropy and mutual informations
 
@@ -411,10 +458,13 @@ def getInformation(bn, evs={}, size="4", cmap=_INFOcmap):
   :param cmap: colour map used
   :return: the HTML string
   """
+  if evs is None:
+    evs = {}
+
   return _reprInformation(bn, evs, size, cmap, asString=True)
 
 
-def showInformation(bn, evs={}, size="4", cmap=_INFOcmap):
+def showInformation(bn, evs=None, size="4", cmap=_INFOcmap):
   """
   show a bn annoted with results from inference : entropy and mutual informations
 
@@ -424,10 +474,14 @@ def showInformation(bn, evs={}, size="4", cmap=_INFOcmap):
   :param cmap: colour map used
   :return: the graph
   """
+  if evs is None:
+    evs = {}
+
   return _reprInformation(bn, evs, size, cmap, asString=False)
 
 
-def showInference(bn, engine=None, evs={}, targets={}, size="7", format='png', vals=None, arcvals=None, cmap=None):
+def showInference(bn, engine=None, evs=None, targets=None, size="7", format='png', nodeColor=None, arcWidth=None,
+                  cmap=None):
   """
   show pydot graph for an inference in a notebook
 
@@ -440,10 +494,17 @@ def showInference(bn, engine=None, evs={}, targets={}, size="7", format='png', v
   :param boolean asString: display the graph or return a string containing the corresponding HTML fragment
   :return: the desired representation of the inference
   """
-  return showGraph(BNinference2dot(bn, size, engine, evs, targets, format, vals, arcvals, cmap), size, format)
+  if evs is None:
+    evs = {}
+
+  if targets is None:
+    targets = {}
+
+  return showGraph(BNinference2dot(bn, size, engine, evs, targets, format, nodeColor, arcWidth, cmap), size, format)
 
 
-def getInference(bn, engine=None, evs={}, targets={}, size="7", format='png', vals=None, arcvals=None, cmap=None):
+def getInference(bn, engine=None, evs=None, targets=None, size="7", format='png', nodeColor=None, arcWidth=None,
+                 cmap=None):
   """
   get a HTML string for an inference in a notebook
 
@@ -453,10 +514,18 @@ def getInference(bn, engine=None, evs={}, targets={}, size="7", format='png', va
   :param set targets: set of targets
   :param string size: size of the rendered graph
   :param string format: render as "png" or "svg"
-  :param boolean asString: display the graph or return a string containing the corresponding HTML fragment
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
+  :param arcWidth: a arcMap of values to be shown as width of arcs
+  :param cmap: color map to show the color of nodes and arcs
   :return: the desired representation of the inference
   """
-  return getGraph(BNinference2dot(bn, size, engine, evs, targets, format, vals, arcvals, cmap), size, format)
+  if evs is None:
+    evs = {}
+
+  if targets is None:
+    targets = {}
+
+  return getGraph(BNinference2dot(bn, size, engine, evs, targets, format, nodeColor, arcWidth, cmap), size, format)
 
 
 def _reprPotential(pot, digits=4, withColors=True, varnames=None, asString=False):
@@ -556,21 +625,23 @@ def _reprPotential(pot, digits=4, withColors=True, varnames=None, asString=False
   else:
     return HTML("".join(html))
 
+
 def __isKindOfProba(pot):
   """
   check if pot is a joint proba or a CPT
   :param pot: the potential
   :return: True or False
   """
-  if abs(pot.sum()-1)<1e-2:
+  if abs(pot.sum() - 1) < 1e-2:
     return True
 
-  q=pot.margSumOut([pot.variable(0).name()])
-  if abs(q.max()-1)>1e-2:
+  q = pot.margSumOut([pot.variable(0).name()])
+  if abs(q.max() - 1) > 1e-2:
     return False
-  if abs(q.min()-1)>1e-2:
+  if abs(q.min() - 1) > 1e-2:
     return False
   return True
+
 
 def showPotential(pot, digits=4, withColors=None, varnames=None):
   """
@@ -584,7 +655,7 @@ def showPotential(pot, digits=4, withColors=None, varnames=None):
   :return: the display of the potential
   """
   if withColors is None:
-    withColors=__isKindOfProba
+    withColors = __isKindOfProba
 
   display(_reprPotential(pot, digits, withColors, varnames, asString=False))
 
@@ -601,7 +672,7 @@ def getPotential(pot, digits=4, withColors=None, varnames=None):
   :return: the HTML string
   """
   if withColors is None:
-    withColors=__isKindOfProba(pot)
+    withColors = __isKindOfProba(pot)
 
   return _reprPotential(pot, digits, withColors, varnames, asString=True)
 
@@ -668,7 +739,8 @@ def getInferenceEngine(ie, inferenceCaption):
   display an inference as a BN+ lists of hard/soft evidence and list of targets
 
   :param gum.InferenceEngine ie: inference engine
-  :param string inferenceCaption : title for caption
+  :param string inferenceCaption: title for caption
+
   """
   t = '<div align="left"><ul>'
   if ie.nbrHardEvidence() > 0:

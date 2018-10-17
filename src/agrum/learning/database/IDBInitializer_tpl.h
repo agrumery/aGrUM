@@ -144,7 +144,7 @@ namespace gum {
         default:
           GUM_ERROR(NotImplementedYet,
                     "fillDatabase has not been implemented yet for this "
-                    "type of IDBInitializeInputType");
+                    "type of IDBInitializerInputType");
       }
     }
 

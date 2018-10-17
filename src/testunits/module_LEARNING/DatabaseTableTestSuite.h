@@ -279,9 +279,9 @@ namespace gum_tests {
       TS_ASSERT(uhandler2.nbVariables() == 3);
 
       // check that we cannot convert an unsafe handler into a safe one
-      TS_ASSERT_THROWS(handler2 = uhandler2, std::bad_cast);
+      TS_ASSERT_THROWS(handler2 = uhandler2, std::bad_cast&);
       gum::learning::DatabaseTable<>::Handler& uxhandler2 = handler2;
-      TS_ASSERT_THROWS(uxhandler2 = uhandler2, std::bad_cast);
+      TS_ASSERT_THROWS(uxhandler2 = uhandler2, std::bad_cast&);
     }
 
     void test_db3() {
@@ -340,6 +340,7 @@ namespace gum_tests {
       TS_ASSERT(database.content().size() == 11);
       std::vector< gum::learning::DBRow< gum::learning::DBTranslatedValue > >
         vecty(2, row);
+      is_miss.resize(2);
       database.insertRows(std::move(vecty), is_miss);
       TS_ASSERT(database.content().size() == 13);
 
@@ -410,7 +411,7 @@ namespace gum_tests {
 
       gum::learning::DBRow< gum::learning::DBTranslatedValue > row2(
         2, gum::learning::DBTranslatedValue{2.0f});
-      TS_ASSERT_THROWS(database2.insertRow(row2, xmiss), gum::InvalidArgument);
+      TS_ASSERT_THROWS(database2.insertRow(row2, xmiss), gum::SizeError);
 
       gum::learning::DBRow< gum::learning::DBTranslatedValue > row3(
         3, gum::learning::DBTranslatedValue{4.0f});
@@ -554,12 +555,21 @@ namespace gum_tests {
       database.insertRow(row, xmiss);
       database.insertRow(row, xmiss);
       TS_ASSERT(database.content().size() == 4);
+      TS_ASSERT(database.nbRows() == 4);
+      TS_ASSERT(!database.hasMissingValues());
 
-      TS_ASSERT_THROWS(database.insertTranslator(translator, 5),
-                       gum::OperationNotAllowed);
+      TS_GUM_ASSERT_THROWS_NOTHING(database.insertTranslator(translator, 5));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+        database.insertTranslator(translator, 5, false));
+      TS_ASSERT(database.hasMissingValues());
+      TS_ASSERT(database.nbVariables() == std::size_t(5));
+      database.eraseTranslators(5, true);
+      TS_ASSERT(!database.hasMissingValues());
+      TS_ASSERT(database.nbVariables() == std::size_t(3));
+      TS_ASSERT(database.content()[0].size() == 3);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(database.eraseTranslator(10));
-      database.eraseTranslator(1);
+      TS_GUM_ASSERT_THROWS_NOTHING(database.eraseTranslators(10));
+      database.eraseTranslators(1);
       TS_ASSERT(database.variableNames().size() == 2);
       TS_ASSERT(database.nbVariables() == 2);
       TS_ASSERT(database.variableNames()[0] == "v1");
@@ -951,8 +961,8 @@ namespace gum_tests {
       database2.insertTranslator(translator, 2);
       {
         const auto cols = database2.inputColumns();
-        TS_ASSERT(cols[0] == std::size_t(2));
-        TS_ASSERT(cols[1] == std::size_t(5));
+        TS_ASSERT(cols[0] == std::size_t(5));
+        TS_ASSERT(cols[1] == std::size_t(2));
 
         const auto ignored_vect = database2.ignoredColumns();
         TS_ASSERT(ignored_vect.size() == std::size_t(5));
@@ -1009,7 +1019,7 @@ namespace gum_tests {
       gum::learning::DBRow< gum::learning::DBTranslatedValue > row3(
         3, gum::learning::DBTranslatedValue{std::size_t(0)});
       database.insertRow(std::move(row3), xmiss);
-      TS_ASSERT(database.content().size() == 3);
+      TS_ASSERT(database.nbRows() == 3);
 
       std::vector< gum::learning::DatabaseTable<>::IsMissing > is_miss(
         4, gum::learning::DatabaseTable<>::IsMissing::False);
@@ -1022,6 +1032,7 @@ namespace gum_tests {
         vectx(4, row2);
       database.insertRows(vectx, is_miss);
       TS_ASSERT(database.content().size() == 11);
+      is_miss.resize(2);
       std::vector< gum::learning::DBRow< gum::learning::DBTranslatedValue > >
         vecty(2, row);
       database.insertRows(std::move(vecty), is_miss);
@@ -1206,6 +1217,53 @@ namespace gum_tests {
 
       database.ignoreColumn(3);
       TS_ASSERT(database.hasMissingValues() == false);
+    }
+
+
+    void test_threads() {
+      std::vector< std::string >                       missing{"?", "N/A", "???"};
+      gum::ContinuousVariable< float >                 var("var", "");
+      gum::learning::DBTranslator4ContinuousVariable<> translator(
+        var, missing, true);
+
+      gum::learning::DatabaseTable<> database;
+      translator.setVariableName("v1");
+      database.insertTranslator(translator, 0);
+      translator.setVariableName("v2");
+      database.insertTranslator(translator, 1);
+      translator.setVariableName("v3");
+      database.insertTranslator(translator, 2);
+
+      TS_ASSERT(database.variableNames().size() == 3);
+      TS_ASSERT(database.nbVariables() == 3);
+      TS_ASSERT(database.variableNames()[0] == "v1");
+      TS_ASSERT(database.variableNames()[1] == "v2");
+      TS_ASSERT(database.variableNames()[2] == "v3");
+      TS_ASSERT(database.variable(0).name() == "v1");
+      TS_ASSERT(database.variable(1).name() == "v2");
+      TS_ASSERT(database.variable(2).name() == "v3");
+
+      database.ignoreColumn(4);
+      TS_ASSERT_THROWS(database.insertTranslator(translator, 4),
+                       gum::OperationNotAllowed);
+
+      const auto xmiss = gum::learning::DatabaseTable<>::IsMissing::False;
+      gum::learning::DBRow< gum::learning::DBTranslatedValue > row(
+        3, gum::learning::DBTranslatedValue{2.0f});
+      std::size_t xsize = 1004;
+      for (std::size_t i = 0; i < xsize; ++i)
+        database.insertRow(row, xmiss);
+      TS_ASSERT(database.content().size() == xsize);
+      TS_ASSERT(database.nbRows() == xsize);
+      TS_ASSERT(!database.hasMissingValues());
+
+      translator.setVariableName("v4");
+
+      for (int i = 0; i < 20; ++i)
+        database.insertTranslator(translator, 2, false);
+      TS_ASSERT(database.hasMissingValues());
+      database.setMinNbRowsPerThread(10000);
+      database.insertTranslator(translator, 2, false);
     }
 
 

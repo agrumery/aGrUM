@@ -32,7 +32,7 @@
 #include <string>
 
 #include <agrum/agrum.h>
-#include <agrum/variables/variable.h>
+#include <agrum/variables/IContinuousVariable.h>
 
 namespace gum {
 
@@ -41,7 +41,7 @@ namespace gum {
    * @brief Defines a continuous random variable.
    */
   template < typename GUM_SCALAR = float >
-  class ContinuousVariable : public Variable {
+  class ContinuousVariable : public IContinuousVariable {
     public:
     // ##########################################################################
     /// @name Constructors / Destructors
@@ -116,8 +116,14 @@ namespace gum {
     /// returns the lower bound of the domain of the variable
     GUM_SCALAR lowerBound() const;
 
+    /// returns the lower bound of the domain of the variable as a double
+    virtual double lowerBoundAsDouble() const;
+
     /// returns the upper bound of the domain of the variable
     GUM_SCALAR upperBound() const;
+
+    /// returns the upper bound of the domain of the variable as a double
+    virtual double upperBoundAsDouble() const;
 
     /// updates the lower bound of the domain of the variable
     /** @throw OutOfBounds is raised if the new bound is higher than the
@@ -125,9 +131,19 @@ namespace gum {
     void setLowerBound(const GUM_SCALAR& new_bound);
 
     /// updates the lower bound of the domain of the variable
+    /** @throw OutOfBounds is raised if the new bound is higher than the
+     * current upper bound. */
+    virtual void setLowerBoundFromDouble(const double new_bound);
+
+    /// updates the lower bound of the domain of the variable
     /** @throw OutOfBounds is raised if the new bound is lower than the
      * current lower bound */
     void setUpperBound(const GUM_SCALAR& new_bound);
+
+    /// updates the lower bound of the domain of the variable
+    /** @throw OutOfBounds is raised if the new bound is lower than the
+     * current lower bound */
+    virtual void setUpperBoundFromDouble(const double new_bound);
 
     /// returns a string containing the value of the variable passed in argument
     /**

@@ -1,5 +1,6 @@
 # -*- encoding: UTF-8 -*-
 import unittest
+import sys
 
 import pyAgrum as gum
 from pyAgrumTestSuite import pyAgrumTestCase, addTests
@@ -86,10 +87,11 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
     learner = gum.BNLearner(self.agrumSrcDir(
         'src/testunits/ressources/asia3.csv'), bn)
+    learner.setInitialDAG(bn.dag())
     learner.useScoreLog2Likelihood()
     learner.useAprioriSmoothing(1.0)
 
-    bn2 = learner.learnParameters(bn)
+    bn2 = learner.learnParameters()
     for i in range(bn.size()):
       # self.assertEquals(str(bn2.variable(i)), str(bn.variable(bn.idFromName(bn2.variable(i).name()))))
       self.assertEquals(set(bn2.variable(i).labels()), set(
@@ -125,14 +127,16 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
     csvfile = self.agrumSrcDir('src/testunits/ressources/DBN_Tonda.csv')
     l1 = gum.BNLearner(csvfile)
+    l1.setInitialDAG(dbn.dag())
     l1.useScoreLog2Likelihood()
     l1.useAprioriSmoothing()
-    bn1 = l1.learnParameters(dbn)
+    bn1 = l1.learnParameters()
 
     l2 = gum.BNLearner(csvfile, dbn)
+    l2.setInitialDAG(dbn.dag())
     l2.useScoreLog2Likelihood()
     l2.useAprioriSmoothing()
-    bn2 = l2.learnParameters(dbn)
+    bn2 = l2.learnParameters()
 
     p1 = bn1.cpt(bn1.idFromName("c_0"))
     I1 = gum.Instantiation(p1)
@@ -181,6 +185,32 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertFalse(bn.dag().existsArc(4, 1))
     self.assertTrue(bn.dag().existsArc(7, 5))
     self.assertEquals(len(learner.latentVariables()), 2)
+
+  def test_setSliceOrder_with_names(self):
+    learner=gum.BNLearner(self.agrumSrcDir(
+      'src/testunits/ressources/asia3.csv'))
+    learner.setSliceOrder([["smoking?", "lung_cancer?"],
+                           ["bronchitis?", "visit_to_Asia?"],
+                           ["tuberculosis?"]])
+
+    learner=gum.BNLearner(self.agrumSrcDir(
+      'src/testunits/ressources/asia3.csv'))
+    learner.setSliceOrder([[0, "lung_cancer?"],
+                           [2, "visit_to_Asia?"],
+                           ["tuberculosis?"]])
+
+    learner=gum.BNLearner(self.agrumSrcDir(
+      'src/testunits/ressources/asia3.csv'))
+
+    with self.assertRaises(gum.DuplicateElement):
+      learner.setSliceOrder([["smoking?", "lung_cancer?"],
+                             [0, "visit_to_Asia?"],
+                             ["tuberculosis?"]])
+
+    with self.assertRaises(gum.MissingVariableInDatabase):
+      learner.setSliceOrder([["smoking?", "lung_cancer?"],
+                             ["bronchitis?",  "CRUCRU?"],
+                             ["tuberculosis?"]])    
 
 
 ts = unittest.TestSuite()

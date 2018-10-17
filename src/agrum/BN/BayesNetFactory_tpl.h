@@ -47,7 +47,8 @@ namespace gum {
 
     for (auto node : bn->nodes()) {
       if (__varNameMap.exists(bn->variable(node).name()))
-        GUM_ERROR(DuplicateElement, bn->variable(node).name());
+        GUM_ERROR(DuplicateElement,
+                  "Name already used: " << bn->variable(node).name());
 
       __varNameMap.insert(bn->variable(node).name(), node);
     }
@@ -195,8 +196,7 @@ namespace gum {
       __illegalStateError("variableName");
     } else {
       if (__varNameMap.exists(name)) {
-        std::string str = "Name already used: ";
-        GUM_ERROR(DuplicateElement, str + name);
+        GUM_ERROR(DuplicateElement, "Name already used: " << name);
       }
 
       __foo_flag = true;
@@ -720,7 +720,7 @@ namespace gum {
     } else {
       try {
         __checkVariableName(var.name());
-        GUM_ERROR(DuplicateElement, var.name());
+        GUM_ERROR(DuplicateElement, "Name already used: " << var.name());
       } catch (NotFound&) {
         // The var name is unused
         __varNameMap.insert(var.name(), __bn->add(var));
@@ -862,7 +862,9 @@ namespace gum {
   INLINE void
     BayesNetFactory< GUM_SCALAR >::__checkModalityInBag(const std::string& mod) {
     for (size_t i = 2; i < __stringBag.size(); ++i) {
-      if (mod == __stringBag[i]) { GUM_ERROR(DuplicateElement, mod); }
+      if (mod == __stringBag[i]) {
+        GUM_ERROR(DuplicateElement, "Label already used: " << mod);
+      }
     }
   }
 

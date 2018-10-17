@@ -39,6 +39,9 @@ namespace gum_tests {
         translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})
         == "3");
 
+      TS_ASSERT(translator.missingValue().discr_val
+                == std::numeric_limits< std::size_t >::max());
+
       TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("5"));
       TS_ASSERT(translator.translate("5").discr_val == 2);
       TS_ASSERT(translator.translate("4").discr_val == 1);

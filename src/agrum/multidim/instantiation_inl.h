@@ -808,11 +808,11 @@ namespace gum {
   INLINE Size HashFunc< Instantiation >::
               operator()(const Instantiation& key) const {
     Size h = 0;
-    for (const auto& k :
+    for (const auto k :
          key.variablesSequence())   // k are unique only by address (not by name)
-      h += Size(k) * key.val(*k);
+      h += __caster.castToSize(k) * (Size)key.val(*k);
 
-    return ((h * HashFuncConst::gold) & this->_hash_mask);
+    return HashFunc< Size >::operator()(h);
   }
 
   INLINE bool Instantiation::operator==(const Instantiation& other) const {

@@ -52,6 +52,7 @@
 #include <agrum/variables/discreteVariable.h>
 #include <agrum/variables/labelizedVariable.h>
 #include <agrum/variables/rangeVariable.h>
+#include <agrum/variables/IDiscretizedVariable.h>
 #include <agrum/variables/discretizedVariable.h>
 #include <agrum/graphs/graphElements.h>
 #include <agrum/multidim/potential.h>
@@ -148,29 +149,47 @@ namespace std {
 
 %include "forUsing.i"
 
-
 /* EXCEPTION HANDLING */
 %exceptionclass std::bad_cast;
+
 %exceptionclass gum::Exception;
-%exceptionclass gum::GraphError;
-%exceptionclass gum::IdError;
-%exceptionclass gum::OperationNotAllowed;
-%exceptionclass gum::ReferenceError;
+
 %exceptionclass gum::DefaultInLabel;
-%exceptionclass gum::Circuit;
-%exceptionclass gum::InvalidNode;
-%exceptionclass gum::NotFound;
-%exceptionclass gum::InvalidEdge;
-%exceptionclass gum::DuplicateLabel;
 %exceptionclass gum::DuplicateElement;
-%exceptionclass gum::UndefinedElement;
+%exceptionclass gum::DuplicateLabel;
+%exceptionclass gum::EmptyBSTree;
+%exceptionclass gum::EmptySet;
+%exceptionclass gum::FatalError;
+%exceptionclass gum::FormatNotFound;
+%exceptionclass gum::GraphError;
+%exceptionclass gum::IOError;
+%exceptionclass gum::IdError;
+%exceptionclass gum::InvalidArc;
+%exceptionclass gum::InvalidArgument;
+%exceptionclass gum::InvalidArgumentsNumber;
+%exceptionclass gum::InvalidDirectedCycle;
+%exceptionclass gum::InvalidEdge;
+%exceptionclass gum::InvalidNode;
+%exceptionclass gum::MissingValueInDatabase;
+%exceptionclass gum::MissingVariableInDatabase;
+%exceptionclass gum::NoChild;
+%exceptionclass gum::NoNeighbour;
+%exceptionclass gum::NoParent;
+%exceptionclass gum::NotFound;
+%exceptionclass gum::NullElement;
+%exceptionclass gum::OperationNotAllowed;
 %exceptionclass gum::OutOfBounds;
 %exceptionclass gum::OutOfLowerBound;
 %exceptionclass gum::OutOfUpperBound;
-%exceptionclass gum::IOError;
-%exceptionclass std::exception;
+%exceptionclass gum::ReferenceError;
+%exceptionclass gum::SizeError;
+%exceptionclass gum::SyntaxError;
+%exceptionclass gum::UndefinedElement;
+%exceptionclass gum::UndefinedIteratorKey;
+%exceptionclass gum::UndefinedIteratorValue;
+%exceptionclass gum::UnknownLabelInDatabase;
 
-%rename Exception GumException;
+%rename gum::Exception GumException;
 
 /* WRAPPED HEADERS (pyAgrum API) */
 %import <agrum/config.h>
@@ -188,6 +207,7 @@ namespace std {
 %include <agrum/variables/discreteVariable.h>
 %include <agrum/variables/labelizedVariable.h>
 %include <agrum/variables/rangeVariable.h>
+%include <agrum/variables/IDiscretizedVariable.h>
 %include <agrum/variables/discretizedVariable.h>
 
 %include <agrum/graphs/graphElements.h>

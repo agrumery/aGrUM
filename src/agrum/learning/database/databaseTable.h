@@ -30,6 +30,11 @@
 #define GUM_DATABASE_TABLE_H
 
 #include <cmath>
+#include <numeric>
+#include <algorithm>
+#include <functional>
+#include <exception>
+#include <vector>
 
 #include <agrum/agrum.h>
 #include <agrum/core/set.h>
@@ -71,7 +76,7 @@ namespace gum {
      *
      * // here, database contains the content of the asia.csv file.
      * // determine how many columns and rows the database contains
-     * std::size_t nb_rows = database.content().size()
+     * std::size_t nb_rows = database.nbRows();
      * std::size_t nb_cols = database.nbVariables ();
      *
      * // manually add a new row into the database
@@ -98,17 +103,18 @@ namespace gum {
      *   std::cout << dbrow.row() << "  weight: " << dbrow.weight() << std::endl;
      *
      * // ignore some columns of the database, i.e., remove them
-     * database.ignoreColumn ( 3 ); // remove the 4th column of the CSV file
+     * database.ignoreColumn ( 3 ); // remove the column X3 of the CSV file
      * // now, the database contains columns 0, 1, 2, 4, 5, 6, 7 of the
-     * // CSV file. If we wish to remove Column 5 of the CSV file:
-     * database.ignoreColumn ( 3 ); // remove the 4th column of the CSV file
+     * // CSV file. If we wish to remove Column X5 of the CSV file:
+     * database.ignoreColumn ( 5 ); // remove the column X5 of the CSV file
      * // now, the database contains columns 0, 1, 2, 4, 6, 7 of the CSV file.
-     * // if we wish to remove the 3rd column of the DatabaseTable, i.e.,
-     * // column 2 of the CSV, either we determine that this actually correspond
-     * // to column 2 of the CSV and we use database.ignoreColumn ( 2 ) or
+     * // if we wish to remove the 5th column of the DatabaseTable, i.e.,
+     * // column #4 of the CSV, either we determine that this actually correspond
+     * // to column X6 of the CSV and we use database.ignoreColumn ( 6 ) or
      * // we call:
-     * database.ignoreColumn ( 2, false ); // false => 2 = the 3rd column of
-     * // the DatabaseTable, not the 3rd column of the CSV file
+     * database.ignoreColumn ( 4, false ); // false => 4 = the 5th column of
+     * // the DatabaseTable, not the 5th column/variable of the CSV file
+     * // (remember that all column numbers start from 0).
      *
      * // display the columns of the CSV that were ignored and those that
      * // were kept:
@@ -283,48 +289,47 @@ namespace gum {
       /** @param translator This translator is copied into the DatabaseTable
        * @param input_column indicates which column in the original dataset
        * (usually a CSV file) the translator will read
-       * @throws OperationNotAllowed if the databaseTable is not empty,
-       * i.e., it already contains some rows, or if the column is marked
-       * as being ignored (through method ignoreColumn).
-       * @warning if there already exists a translator reading the input
-       * column passed in argument, the method does nothing. In particular,
-       * it raises no exception.
-       * @throw DuplicateElement is raised if there already exists a translator
-       * reading the column passed in argument. */
-      void insertTranslator(const DBTranslator< ALLOC >& translator,
-                            const std::size_t            input_column);
+       * @param unique_column indicates whether the input column can be read by
+       * several translators.
+       * @return the index of the translator within the set of translators
+       * @throws OperationNotAllowed if the input column is marked as ignored
+       * @throws DuplicateElement if there already exists a translator
+       * reading the input column passed in argument, and if the unique_column
+       * is set to true
+       * @warning if the database is not empty, i.e., it contains some records,
+       * all the column of the database corresponding to the new translator is
+       * filled with missing values.
+       */
+      std::size_t insertTranslator(const DBTranslator< ALLOC >& translator,
+                                   const std::size_t            input_column,
+                                   const bool unique_column = true);
 
       /// insert a new translator into the database table
-      /** The first template parameter (GUM_SCALAR) is necessary only for
-       * inserting variables of true types DiscretizedVariable and
-       * ContinuousVariable, which depend on the GUM_SCALAR parameter type.
-       * However, usually, when you use this function, this is to add into
-       * the TranslatorSet the variables of a BayesNet<GUM_SCALAR>. As such, you
-       * can safely call insert all the variables of this Bayesian network
-       * using inertTranslator<GUM_SCALAR> ( bn.variable() ... ) instructions.
-       * @param var the variable that will be contained into the translator
-       * @param input_column the index of the column that this new translator
-       * should read in the database.
-       * @param  missing_symbols the set of symbols in the database
+      /** @param var the variable that will be contained into the translator
+       * @param input_column indicates which column in the original dataset
+       * (usually a CSV file) the translator will read
+       * @param unique_column indicates whether the input column can be read by
+       * several translators
+       * @param missing_symbols the set of symbols in the database
        * representing missing values
-       * @warning if there already exists a translator reading the input
-       * column passed in argument, the method does nothing. In particular,
-       * it raises no exception.
-       * @throws OperationNotAllowed if the databaseTable is not empty,
-       * i.e., it already contains some rows, or if the column is marked
-       * as being ignored (through method ignoreColumn).
-       * @throw DuplicateElement is raised if there already exists a translator
-       * reading the column passed in argument.
+       * @return the index of the translator within the set of translators
+       * @throws OperationNotAllowed if the input column is marked as ignored
+       * @throws DuplicateElement if there already exists a translator
+       * reading the input column passed in argument, and if the unique_column
+       * is set to true
+       * @warning if the database is not empty, i.e., it contains some records,
+       * all the column of the database corresponding to the new translator is
+       * filled with missing values.
        */
-      template < typename GUM_SCALAR = float,
-                 template < typename > class XALLOC = ALLOC >
-      void insertTranslator(
+      template < template < typename > class XALLOC = ALLOC >
+      std::size_t insertTranslator(
         const Variable&                                   var,
         const std::size_t                                 input_column,
         std::vector< std::string, XALLOC< std::string > > missing_symbols =
-          std::vector< std::string, XALLOC< std::string > >());
+          std::vector< std::string, XALLOC< std::string > >(),
+        const bool unique_column = true);
 
-      /** @brief erases either the kth translator or that parsing the kth
+      /** @brief erases either the kth translator or all those parsing the kth
        * column of the input dataset
        *
        * Translators read an input dataset that is not necessarily the same as
@@ -334,17 +339,18 @@ namespace gum {
        * columns. When k_is_input_col is set to false, Parameter k passed in
        * argument corresponds to either 0 or 1, i.e., to the index of one of
        * these two output columns. When k_is_input_col is set to true, the
-       * translator to be erased is the one that parses the kth column of the
+       * translators to be erased are all those that parse the kth column of the
        * input database.
        * @warning if the translator does not exists, nothing is done. In
        * particular, no exception is raised. */
-      void eraseTranslator(const std::size_t k, const bool k_is_input_col = false);
+      void eraseTranslators(const std::size_t k,
+                            const bool        k_is_input_col = false);
 
       /// returns the set of translators
       const DBTranslatorSet< ALLOC >& translatorSet() const;
 
-      /** @brief returns either the kth translator of the database table or that
-       * reading the kth column of the input database
+      /** @brief returns either the kth translator of the database table or the
+       * first one reading the kth column of the input database
        *
        * Translators read an input dataset that is not necessarily the same as
        * the content of the DatabaseTable. For instance, a CSV may contain 10
@@ -353,14 +359,14 @@ namespace gum {
        * columns. When k_is_input_col is set to false, Parameter k passed in
        * argument corresponds to either 0 or 1, i.e., the index of one of these
        * two columns. When k_is_input_col is set to true, the translator returned
-       * is that which parses the kth column of the input database.
+       * is the first one that parses the kth column of the input database.
        * @throw UndefinedElement is raised if there is no translator
        * corresponding to k. */
       const DBTranslator< ALLOC >&
         translator(const std::size_t k, const bool k_is_input_col = false) const;
 
-      /** @brief returns either the kth variable of the database table or that
-       * corresponding to the kth column of the input database
+      /** @brief returns either the kth variable of the database table or the
+       * first one corresponding to the kth column of the input database
        *
        * Translators read an input dataset that is not necessarily the same as
        * the content of the DatabaseTable. For instance, a CSV may contain 10
@@ -382,9 +388,9 @@ namespace gum {
       /** This method can be called in two different ways: either the names
        * correspond precisely to the columns stored into the database table
        * (in this case, parameter from_external_object is equal to false),
-       * or they corresponds to the columns of an external database (e.g., a
+       * or they correspond to the columns of an external database (e.g., a
        * CSV file) from which we potentially excluded some columns and,
-       * consequently, these columns should not be taken into account (in this
+       * consequently, the latter should not be taken into account (in this
        * case, parameter from_external_object is equal to true). As an
        * example, imagine that the database table is created from a CSV file
        * with 5 columns named X0, X1, X2, X3 and X4 respectivly. Suppose that
@@ -408,8 +414,10 @@ namespace gum {
         const std::vector< std::string, ALLOC< std::string > >& names,
         const bool from_external_object = true) final;
 
-      /// makes the database table ignore from now on the kth column
-      /** This method can be called in two different ways: either k refers to
+      /** @brief makes the database table ignore from now on the kth column of
+       * the input dataset or the column parsed by the kth translator
+       *
+       * This method can be called in two different ways: either k refers to
        * the current kth column of the database table (in this case parameter
        * from_external_object is set to false), or k corresponds to the kth
        * column of an original database used to fill the database table
@@ -426,8 +434,8 @@ namespace gum {
        * remove column X3 because, in the original database, X3 was the 4th
        * column.
        *
-       * The method also erases the translator assigned to column k, if any.
-       * If the DatabaseTable contains some rows, then their column
+       * The method also erases all the translators corresponding to column k,
+       * if any. If the DatabaseTable contains some rows, then their column
        * corresponding to k is removed. If the resulting DatabaseTable
        * contains only empty rows, then those are removed.
        *
@@ -435,13 +443,15 @@ namespace gum {
        * detailed description on how k is computed.
        * @param from_external_object indicates whether k refers to the kth
        * column of an original external database (true) or to the current kth
-       * column of the DatabaseTable (false). */
+       * column of the DatabaseTable (false).
+       * @throw UndefinedElement is raised if k refers to the position of a
+       * translator that does not exist (k >= number of translators). */
       virtual void ignoreColumn(const std::size_t k,
                                 const bool from_external_object = true) final;
 
       /// returns  the set of columns of the original dataset that are ignored
-      /** In this vector, all the column indices higher than its last element
-       * are also ignored. */
+      /** In this vector, all the column indices greater than or equal to its
+       * last element are also ignored. */
       virtual const DBVector< std::size_t > ignoredColumns() const final;
 
       /** @brief returns the set of columns of the original dataset that are
@@ -449,7 +459,8 @@ namespace gum {
       virtual const DBVector< std::size_t > inputColumns() const final;
 
       /** @brief returns the domain size of the kth variable of the database
-       * table or of that corresponding to the kth column of the input database
+       * table or of that of the first one corresponding to the kth column of
+       * the input database
        *
        * Translators read an input dataset that is not necessarily the same as
        * the content of the DatabaseTable. For instance, a CSV may contain 10
@@ -467,8 +478,9 @@ namespace gum {
       /// returns the domain sizes of all the variables in the database table
       DBVector< std::size_t > domainSizes() const;
 
-      /** @brief indicates whether a reordering is needed to make the kth
-       * translator sorted
+      /** @brief indicates whether a reordering is needed to sort the translations
+       * of the kth translator or those of the first translator parsing the kth
+       * column
        *
        * For a given translator, if the strings represented by the translations
        * are only numbers, the translations are considered to be sorted if and
@@ -502,7 +514,7 @@ namespace gum {
                            const bool        k_is_input_col = false) const;
 
       /** @brief performs a reordering of the kth translator or
-       * of the translator corresponding to the kth column of the input database
+       * of the first translator parsing the kth column of the input database
        *
        * For a given translator, if the strings represented by the translations
        * are only numbers, the translations are considered to be sorted if and
@@ -536,10 +548,26 @@ namespace gum {
       /// insert a new row at the end of the database
       /** The new_row passed in argument is supposed to come from an external
        * database. So it must contain data for the ignored columns.
-       * @throw SizeError is raised if the vector of string cannot be inserted
+       * @throws SizeError is raised if the vector of string cannot be inserted
        * in the DatabaseTable because its size does not allow a matching with
        * the columns of the DatabaseTable (taking into account the ignored
-       * columns) */
+       * columns)
+       * @throws UnknownLabelInDatabase is raised if the translation of an
+       * element in the new row cannot be found and the corresponding translator
+       * is not in an editable dictionary mode.
+       * @throws SizeError is raised if the number of entries in the dictionary
+       * of a translator has already reached its maximum.
+       * @throws OperationNotAllowed exception is raised if the translation of
+       * an element in new_row cannot be found and the insertion of the string
+       * into the corresponding translator's dictionary fails because it would
+       * induce incoherent behavior (e.g., a DBTranslator4ContinuousVariable
+       * that contains a variable whose domain is [x,y] as well as a missing
+       * value symbol z \f$\in\f$ [x,y]).
+       * @throws TypeError is raised if the translation of an element in new_row
+       * cannot be found and the insertion of the string into the translator's
+       * dictionary fails due to str being impossible to be converted into an
+       * appropriate type.
+       */
       virtual void insertRow(
         const std::vector< std::string, ALLOC< std::string > >& new_row) final;
 
@@ -549,7 +577,10 @@ namespace gum {
        * argument does not contain any data of the ignored columns. So,
        * basically, it could be copied as is into the database table.
        * @throw SizeError is raised if the size of the new_row is not equal to
-       * the number of translators of the DatabaseTable  */
+       * the number of translators of the DatabaseTable
+       * @InvalidArgument is raised if at least one element of new_row does
+       * not belong to the domain of its corresponding translator.
+       */
       virtual void insertRow(Row< DBTranslatedValue >&& new_row,
                              const IsMissing contains_missing_data) final;
 
@@ -559,7 +590,10 @@ namespace gum {
        * argument does not contain any data of the ignored columns. So,
        * basically, it could be copied as is into the database table.
        * @throw SizeError is raised if the size of the new_row is not equal to
-       * the number of translators of the DatabaseTable  */
+       * the number of translators of the DatabaseTable
+       * @InvalidArgument is raised if at least one element of new_row does
+       * not belong to the domain of its corresponding translator.
+       */
       virtual void insertRow(const Row< DBTranslatedValue >& new_row,
                              const IsMissing contains_missing_data) final;
 
@@ -587,7 +621,10 @@ namespace gum {
        * argument do not contain any data of the ignored columns. So, basically,
        * these rows could be copied as is into the database table.
        * @throw SizeError is raised if the size of at least one row in new_rows
-       * is not equal to the number of translators in the DatabaseTable  */
+       * is not equal to the number of translators in the DatabaseTable
+       * @InvalidArgument is raised if at least one element of new_row does
+       * not belong to the domain of its corresponding translator.
+       */
       virtual void
         insertRows(Matrix< DBTranslatedValue >&& new_rows,
                    const DBVector< IsMissing >&  rows_have_missing_vals) final;
@@ -598,7 +635,9 @@ namespace gum {
        * argument do not contain any data of the ignored columns. So, basically,
        * these rows could be copied as is into the database table.
        * @throw SizeError is raised if the size of at least one row in new_rows
-       * is not equal to the number of translators in the DatabaseTable  */
+       * is not equal to the number of translators in the DatabaseTable
+       * @InvalidArgument is raised if at least one element of new_row does
+       * not belong to the domain of its corresponding translator.*/
       virtual void
         insertRows(const Matrix< DBTranslatedValue >& new_rows,
                    const DBVector< IsMissing >& rows_have_missing_vals) final;
@@ -651,12 +690,41 @@ namespace gum {
       bool __isRowCompatible(const Row< DBTranslatedValue >& row) const;
 
       /** @brief returns the index corresponding either to the kth translator or
-       * to that of the translator parsing the kth column of the input dataset
+       * to the first one that parses the kth column of the input dataset
        *
        * @warning if the translator does not exists, the function returns an
        * index which is greater than the number of translators */
       std::size_t __getKthIndex(const std::size_t k,
                                 const bool        k_is_input_col) const;
+
+      /** @brief returns the indices corresponding either to the kth translator
+       * or to all those that parse the kth column of the input dataset
+       *
+       * @warning the indices are sorted by deacreasing order */
+      DBVector< std::size_t > __getKthIndices(const std::size_t k,
+                                              const bool k_is_input_col) const;
+
+      /// a method to process the rows of the database in multithreading
+      /** The function tries to execute function/functor exec_func using one
+       * or several threads. If an exception is raised by at least one thread,
+       * then function undo_func is executed to undo what exec_func
+       * did, and the exception is rethrown.
+       *
+       * @param exec_func this should be a function/functor/lambda that
+       * takes 2 arguments: the first one is an std::size_t containing the
+       * index of the first row that it should process, the second argument is
+       * an std::size_t equal to 1 + the index of the last row processed (so
+       * the processing is performed on [first,last). The return type of exec_func
+       * is a void. If a thread executing exec_func raises an exception, then
+       * before exiting, it should undo what it did.
+       * @param undo_func a Function/functor/lambda with the same
+       * prototype as exec_func. If a thread raises an exception, those that
+       * did not raise exceptions should undo what they did in order to restore
+       * the state that the database had before the execution of the thread. After
+       * calling undo_func, they should have restored this state.
+       */
+      template < typename Functor1, typename Functor2 >
+      void __threadProcessDatabase(Functor1& exec_func, Functor2& undo_func);
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

@@ -472,7 +472,8 @@ namespace gum {
         else {
           // here we found a node with the same key and the uniqueness policy
           // is set. So we should raise an exception
-          GUM_ERROR(DuplicateElement, "key already defined in binary search tree");
+          GUM_ERROR(DuplicateElement,
+                    "Val " << val << " already in the binary search tree");
         }
       }
     }

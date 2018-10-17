@@ -49,9 +49,7 @@ namespace gum {
       std::string real_name = __addPrefix(name);
       if (__prm->__classMap.exists(real_name)
           || __prm->__interfaceMap.exists(real_name)) {
-        std::stringstream msg;
-        msg << "\"" << real_name << "\" is already used.";
-        GUM_ERROR(DuplicateElement, msg.str());
+        GUM_ERROR(DuplicateElement, "'" << real_name << "' is already used.");
       }
       PRMClass< GUM_SCALAR >*            c = nullptr;
       PRMClass< GUM_SCALAR >*            mother = nullptr;
@@ -85,7 +83,7 @@ namespace gum {
       std::string real_name = __addPrefix(name);
       if (!(__prm->__classMap.exists(real_name))) {
         std::stringstream msg;
-        msg << "\"" << real_name << "\" not found";
+        msg << "'" << real_name << "' not found";
         GUM_ERROR(NotFound, msg.str());
       }
       __stack.push_back(&(__prm->getClass(real_name)));
@@ -187,9 +185,7 @@ namespace gum {
       std::string real_name = __addPrefix(name);
       if (__prm->__classMap.exists(real_name)
           || __prm->__interfaceMap.exists(real_name)) {
-        std::stringstream msg;
-        msg << "\"" << real_name << "\" is already used.";
-        GUM_ERROR(DuplicateElement, msg.str());
+        GUM_ERROR(DuplicateElement, "'" << real_name << "' is already used.");
       }
       PRMInterface< GUM_SCALAR >* i = nullptr;
       PRMInterface< GUM_SCALAR >* super = nullptr;
@@ -212,9 +208,7 @@ namespace gum {
       PRMFactory< GUM_SCALAR >::continueInterface(const std::string& name) {
       std::string real_name = __addPrefix(name);
       if (!__prm->__interfaceMap.exists(real_name)) {
-        std::stringstream msg;
-        msg << "\"" << real_name << "\" not found.";
-        GUM_ERROR(DuplicateElement, msg.str());
+        GUM_ERROR(DuplicateElement, "'" << real_name << "' not found.");
       }
 
       PRMInterface< GUM_SCALAR >* i = __retrieveInterface(real_name);
@@ -1416,9 +1410,7 @@ namespace gum {
                                                   std::string        super) {
       std::string real_name = __addPrefix(name);
       if (__prm->__typeMap.exists(real_name)) {
-        std::stringstream msg;
-        msg << "\"" << real_name << "\" is already used.";
-        GUM_ERROR(DuplicateElement, msg.str());
+        GUM_ERROR(DuplicateElement, "'" << real_name << "' is already used.");
       }
       if (super == "") {
         auto t = new PRMType< GUM_SCALAR >(LabelizedVariable(real_name, "", 0));
@@ -1449,8 +1441,7 @@ namespace gum {
         try {
           var->addLabel(l);
         } catch (DuplicateElement&) {
-          GUM_ERROR(DuplicateElement,
-                    "a label with the same value already exists");
+          GUM_ERROR(DuplicateElement, "a label '" << l << "' already exists");
         }
       } else {
         PRMType< GUM_SCALAR >* t = static_cast< PRMType< GUM_SCALAR >* >(
@@ -1471,8 +1462,7 @@ namespace gum {
             try {
               var->addLabel(l);
             } catch (DuplicateElement&) {
-              GUM_ERROR(DuplicateElement,
-                        "a label with the same value already exists");
+              GUM_ERROR(DuplicateElement, "a label '" << l << "' already exists");
             }
 
             t->__label_map->push_back(i);
@@ -1509,9 +1499,7 @@ namespace gum {
       PRMFactory< GUM_SCALAR >::startDiscretizedType(const std::string& name) {
       std::string real_name = __addPrefix(name);
       if (__prm->__typeMap.exists(real_name)) {
-        std::stringstream msg;
-        msg << "\"" << real_name << "\" is already used.";
-        GUM_ERROR(DuplicateElement, msg.str());
+        GUM_ERROR(DuplicateElement, "'" << real_name << "' is already used.");
       }
       auto var = DiscretizedVariable< double >(real_name, "");
       auto t = new PRMType< GUM_SCALAR >(var);
@@ -1560,7 +1548,7 @@ namespace gum {
       std::string real_name = __addPrefix(name);
       if (__prm->__typeMap.exists(real_name)) {
         std::stringstream msg;
-        msg << "\"" << real_name << "\" is already used.";
+        msg << "\"" << real_name << "' is already used.";
         GUM_ERROR(DuplicateElement, msg.str());
       }
 
@@ -1639,9 +1627,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE void PRMFactory< GUM_SCALAR >::startSystem(const std::string& name) {
       if (__prm->__systemMap.exists(name)) {
-        std::stringstream msg;
-        msg << "\"" << name << "\" is already used.";
-        GUM_ERROR(DuplicateElement, msg.str());
+        GUM_ERROR(DuplicateElement, "'" << name << "' is already used.");
       }
       PRMSystem< GUM_SCALAR >* model =
         new PRMSystem< GUM_SCALAR >(__addPrefix(name));

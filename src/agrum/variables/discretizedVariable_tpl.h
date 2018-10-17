@@ -27,7 +27,7 @@ namespace gum {
   INLINE void DiscretizedVariable< T_TICKS >::_copy(
     const DiscretizedVariable< T_TICKS >& aDRV) {
     eraseTicks();
-    DiscreteVariable::_copy(aDRV);
+    IDiscretizedVariable::_copy(aDRV);
 
     for (Idx i = 0; i < aDRV.__ticks_size; ++i) {
       addTick((T_TICKS)aDRV.__ticks[i]);
@@ -83,7 +83,7 @@ namespace gum {
   INLINE
     DiscretizedVariable< T_TICKS >::DiscretizedVariable(const std::string& aName,
                                                         const std::string& aDesc) :
-      DiscreteVariable(aName, aDesc),
+      IDiscretizedVariable(aName, aDesc),
       __ticks_size((Size)0) {
     GUM_CONSTRUCTOR(DiscretizedVariable);
     __ticks.reserve(1);
@@ -94,7 +94,7 @@ namespace gum {
     const std::string&            aName,
     const std::string&            aDesc,
     const std::vector< T_TICKS >& ticks) :
-      DiscreteVariable(aName, aDesc),
+      IDiscretizedVariable(aName, aDesc),
       __ticks_size((Size)0) {
     GUM_CONSTRUCTOR(DiscretizedVariable);
     __ticks.reserve(ticks.size());
@@ -105,7 +105,7 @@ namespace gum {
   template < typename T_TICKS >
   DiscretizedVariable< T_TICKS >::DiscretizedVariable(
     const DiscretizedVariable< T_TICKS >& aDRV) :
-      DiscreteVariable(aDRV) {
+      IDiscretizedVariable(aDRV) {
     GUM_CONS_CPY(DiscretizedVariable);
     __ticks.reserve(1);
     _copy(aDRV);
@@ -117,11 +117,8 @@ namespace gum {
   }
 
   template < typename T_TICKS >
-  DiscreteVariable* DiscretizedVariable< T_TICKS >::clone() const {
-    DiscretizedVariable< T_TICKS >* varPtr =
-      new DiscretizedVariable< T_TICKS >(*this);
-
-    return (DiscreteVariable*)varPtr;
+  DiscretizedVariable< T_TICKS >* DiscretizedVariable< T_TICKS >::clone() const {
+    return new DiscretizedVariable< T_TICKS >(*this);
   }
 
   template < typename T_TICKS >
@@ -151,7 +148,8 @@ namespace gum {
   DiscretizedVariable< T_TICKS >&
     DiscretizedVariable< T_TICKS >::addTick(const T_TICKS& aTick) {
     if (isTick(aTick)) {
-      GUM_ERROR(DefaultInLabel, "Tick already used for this variable ");
+      GUM_ERROR(DefaultInLabel,
+                "Tick '" << aTick << "' already used for variable " << name());
     }
 
     if (__ticks_size == __ticks.size()) {   // streching __ticks if necessary
@@ -282,6 +280,16 @@ namespace gum {
   INLINE const std::vector< T_TICKS >&
                DiscretizedVariable< T_TICKS >::ticks() const {
     return this->__ticks;
+  }
+
+  template < typename T_TICKS >
+  INLINE std::vector< double >
+         DiscretizedVariable< T_TICKS >::ticksAsDoubles() const {
+    const std::size_t     size = __ticks.size();
+    std::vector< double > ticks(size);
+    for (std::size_t i = std::size_t(0); i < size; ++i)
+      ticks[i] = (double)__ticks[i];
+    return ticks;
   }
 
 } /* namespace gum */

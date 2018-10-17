@@ -2006,9 +2006,9 @@ class GumException(Exception):
 
     def __init__(self, *args):
         """
-        __init__(self, aMsg, aType) -> GumException
-        __init__(self, aMsg) -> GumException
-        __init__(self) -> GumException
+        Exception(aMsg, aType) -> GumException
+        Exception(aMsg) -> GumException
+        Exception() -> GumException
         __init__(self, e) -> GumException
         """
         this = _pyAgrum.new_GumException(*args)
@@ -4653,10 +4653,44 @@ class RangeVariable(DiscreteVariable):
 RangeVariable_swigregister = _pyAgrum.RangeVariable_swigregister
 RangeVariable_swigregister(RangeVariable)
 
+class IDiscretizedVariable(DiscreteVariable):
+    """Proxy of C++ gum::IDiscretizedVariable class."""
+
+    __swig_setmethods__ = {}
+    for _s in [DiscreteVariable]:
+        __swig_setmethods__.update(getattr(_s, '__swig_setmethods__', {}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, IDiscretizedVariable, name, value)
+    __swig_getmethods__ = {}
+    for _s in [DiscreteVariable]:
+        __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
+    __getattr__ = lambda self, name: _swig_getattr(self, IDiscretizedVariable, name)
+
+    def __init__(self, *args, **kwargs):
+        raise AttributeError("No constructor defined - class is abstract")
+    __repr__ = _swig_repr
+    __swig_destroy__ = _pyAgrum.delete_IDiscretizedVariable
+    __del__ = lambda self: None
+
+    def clone(self) -> "gum::IDiscretizedVariable *":
+        """
+        clone(self) -> IDiscretizedVariable
+
+
+        Returns
+        -------
+        pyAgrum.DiscreteVariable
+        	a copy of the DiscreteVariable
+
+        """
+        return _pyAgrum.IDiscretizedVariable_clone(self)
+
+IDiscretizedVariable_swigregister = _pyAgrum.IDiscretizedVariable_swigregister
+IDiscretizedVariable_swigregister(IDiscretizedVariable)
+
 class Edge(_object):
     """
 
-    pyAgrum.Edge is the representation of an arc between two nodes represented by `int`s : the first and the second.
+    pyAgrum.Edge is the representation of an arc between two nodes represented by int : the first and the second.
 
     Available constructors :
         ``Edge(aN1,aN2) -> Edge``
@@ -4756,7 +4790,7 @@ Edge_swigregister(Edge)
 class Arc(_object):
     """
 
-    pyAgrum.Arc is the representation of an arc between two nodes represented by `int`s : the head and the tail.
+    pyAgrum.Arc is the representation of an arc between two nodes represented by int : the head and the tail.
 
     Available constructors:
         ``Arc(tail, head) -> Arc``
@@ -8379,7 +8413,7 @@ class ApproximationScheme(_object):
         Parameters
         ----------
         v : bool
-        	verbosity
+                verbosity
 
         """
         return _pyAgrum.ApproximationScheme_setVerbosity(self, v)
@@ -8544,7 +8578,7 @@ def randomDistribution_double(n: 'gum::Size') -> "std::vector< double,std::alloc
 
     """
     return _pyAgrum.randomDistribution_double(n)
-class DiscretizedVariable_double(DiscreteVariable):
+class DiscretizedVariable_double(IDiscretizedVariable):
     """
 
     DiscretizedVariable is a discrete random variable with a set of ``ticks`` defining intervalls.
@@ -8587,11 +8621,11 @@ class DiscretizedVariable_double(DiscreteVariable):
     """
 
     __swig_setmethods__ = {}
-    for _s in [DiscreteVariable]:
+    for _s in [IDiscretizedVariable]:
         __swig_setmethods__.update(getattr(_s, '__swig_setmethods__', {}))
     __setattr__ = lambda self, name, value: _swig_setattr(self, DiscretizedVariable_double, name, value)
     __swig_getmethods__ = {}
-    for _s in [DiscreteVariable]:
+    for _s in [IDiscretizedVariable]:
         __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
     __getattr__ = lambda self, name: _swig_getattr(self, DiscretizedVariable_double, name)
 
@@ -8609,9 +8643,9 @@ class DiscretizedVariable_double(DiscreteVariable):
     __swig_destroy__ = _pyAgrum.delete_DiscretizedVariable_double
     __del__ = lambda self: None
 
-    def clone(self) -> "gum::DiscreteVariable *":
+    def clone(self) -> "gum::DiscretizedVariable< double > *":
         """
-        clone(self) -> DiscreteVariable
+        clone(self) -> DiscretizedVariable_double
 
 
         Returns
@@ -8673,7 +8707,7 @@ class DiscretizedVariable_double(DiscreteVariable):
         Raises
         ------
         gum.DefaultInLabel
-            If the Tick is already defined
+            If the tick is already defined
         """
         _pyAgrum.DiscretizedVariable_double_addTick(self,*args)
         return self
@@ -9237,7 +9271,7 @@ class Potential_double(_object):
         KL(self, p) -> double
 
 
-        Compute the Kullback-Leibler divergence between the potential and p, check the compatibility and call fastKL.
+        C heck the compatibility and compute the Kullback-Leibler divergence between the potential and.
 
         Parameters
         ----------
@@ -9258,32 +9292,6 @@ class Potential_double(_object):
 
         """
         return _pyAgrum.Potential_double_KL(self, p)
-
-
-    def fastKL(self, p: 'Potential_double') -> "double":
-        """
-        fastKL(self, p) -> double
-
-
-        compute KL divergence between this and p without testing compatibilty (undefined errors may occur in this case)
-
-        Parameters
-        ----------
-        p : pyAgrum.Potential
-          the potential from which we want to calculate the divergence.
-
-        Returns
-        -------
-        float
-          The value of the divergence
-
-        Raises
-        ------
-        gum.FatalError
-          If a zero is found in p or this and not in the other. 
-
-        """
-        return _pyAgrum.Potential_double_fastKL(self, p)
 
 
     def normalizeAsCPT(self) -> "void":
@@ -14882,7 +14890,7 @@ class GibbsSampling_double(_object):
         Parameters
         ----------
         v : bool
-        	verbosity
+                verbosity
 
         """
         return _pyAgrum.GibbsSampling_double_setVerbosity(self, v)
@@ -15866,7 +15874,7 @@ class ImportanceSampling_double(_object):
         Parameters
         ----------
         v : bool
-        	verbosity
+                verbosity
 
         """
         return _pyAgrum.ImportanceSampling_double_setVerbosity(self, v)
@@ -16794,7 +16802,7 @@ class WeightedSampling_double(_object):
         Parameters
         ----------
         v : bool
-        	verbosity
+                verbosity
 
         """
         return _pyAgrum.WeightedSampling_double_setVerbosity(self, v)
@@ -17722,7 +17730,7 @@ class MonteCarloSampling_double(_object):
         Parameters
         ----------
         v : bool
-        	verbosity
+                verbosity
 
         """
         return _pyAgrum.MonteCarloSampling_double_setVerbosity(self, v)
@@ -18669,7 +18677,7 @@ class LoopyImportanceSampling_double(_object):
         Parameters
         ----------
         v : bool
-        	verbosity
+                verbosity
 
         """
         return _pyAgrum.LoopyImportanceSampling_double_setVerbosity(self, v)
@@ -19616,7 +19624,7 @@ class LoopyWeightedSampling_double(_object):
         Parameters
         ----------
         v : bool
-        	verbosity
+                verbosity
 
         """
         return _pyAgrum.LoopyWeightedSampling_double_setVerbosity(self, v)
@@ -20563,7 +20571,7 @@ class LoopyGibbsSampling_double(_object):
         Parameters
         ----------
         v : bool
-        	verbosity
+                verbosity
 
         """
         return _pyAgrum.LoopyGibbsSampling_double_setVerbosity(self, v)
@@ -21582,7 +21590,7 @@ class LoopyMonteCarloSampling_double(_object):
         Parameters
         ----------
         v : bool
-        	verbosity
+                verbosity
 
         """
         return _pyAgrum.LoopyMonteCarloSampling_double_setVerbosity(self, v)
@@ -22510,7 +22518,7 @@ class LoopyBeliefPropagation_double(_object):
         Parameters
         ----------
         v : bool
-        	verbosity
+                verbosity
 
         """
         return _pyAgrum.LoopyBeliefPropagation_double_setVerbosity(self, v)
@@ -23403,7 +23411,7 @@ class GibbsKL_double(ApproximationScheme):
         Parameters
         ----------
         v : bool
-        	verbosity
+                verbosity
 
         """
         return _pyAgrum.GibbsKL_double_setVerbosity(self, v)
@@ -24406,7 +24414,7 @@ class CNMonteCarloSampling_double(_object):
         Parameters
         ----------
         v : bool
-        	verbosity
+                verbosity
 
         """
         return _pyAgrum.CNMonteCarloSampling_double_setVerbosity(self, v)
@@ -24911,7 +24919,7 @@ class CNLoopyPropagation_double(_object):
         Parameters
         ----------
         v : bool
-        	verbosity
+                verbosity
 
         """
         return _pyAgrum.CNLoopyPropagation_double_setVerbosity(self, v)
@@ -26378,8 +26386,8 @@ class BNLearner_double(_object):
         """
         learnParameters(self, dag, take_into_account_score=True) -> BayesNet_double
         learnParameters(self, dag) -> BayesNet_double
-        learnParameters(self, bn, take_into_account_score=True) -> BayesNet_double
-        learnParameters(self, bn) -> BayesNet_double
+        learnParameters(self, take_into_account_score=True) -> BayesNet_double
+        learnParameters(self) -> BayesNet_double
 
 
         learns a BN (its parameters) when its structure is known.
@@ -26415,7 +26423,7 @@ class BNLearner_double(_object):
         Parameters
         ----------
         v : bool
-        	verbosity
+                verbosity
 
         """
         return _pyAgrum.BNLearner_double_setVerbosity(self, v)
@@ -26675,180 +26683,67 @@ class BNLearner_double(_object):
 
 
     def learnDAG(self) -> "gum::DAG":
-        """
-        learnDAG(self) -> DAG
-
-
-        learn a structure from a file (must have read the db before)
-
-        Returns
-        -------
-        pyAgrum.DAG
-        	the learned DAG
-
-        """
+        """learnDAG(self) -> DAG"""
         return _pyAgrum.BNLearner_double_learnDAG(self)
 
 
     def names(self) -> "std::vector< std::string,std::allocator< std::string > > const &":
-        """
-        names(self) -> Vector_string
-
-
-        Returns
-        -------
-        str
-        	the names of the variables in the database
-
-        """
+        """names(self) -> Vector_string"""
         return _pyAgrum.BNLearner_double_names(self)
 
 
     def modalities(self) -> "std::vector< gum::Size,std::allocator< gum::Size > > const &":
-        """
-        modalities(self) -> std::vector< gum::Size,std::allocator< gum::Size > > const &
-
-
-        Returns
-        -------
-        vector<pos,size>
-        	the number of modalities of the database's variables.
-
-        """
+        """modalities(self) -> std::vector< gum::Size,std::allocator< gum::Size > > const &"""
         return _pyAgrum.BNLearner_double_modalities(self)
 
 
     def idFromName(self, var_name: 'std::string const &') -> "gum::NodeId":
-        """
-        idFromName(self, var_name) -> gum::NodeId
-
-
-        Parameters
-        ----------
-        var_names : str
-        	a variable's name
-
-        Returns
-        -------
-        int
-        	the node id corresponding to a variable name
-
-        Raises
-        ------
-        gum.MissingVariableInDatabase
-        	If a variable of the BN is not found in the database.
-
-        """
+        """idFromName(self, var_name) -> gum::NodeId"""
         return _pyAgrum.BNLearner_double_idFromName(self, var_name)
 
 
     def nameFromId(self, id: 'gum::NodeId') -> "std::string const &":
-        """
-        nameFromId(self, id) -> std::string const &
-
-
-        Parameters
-        ----------
-        id
-        	a node id
-
-        Returns
-        -------
-        str
-        	the variable's name
-
-        """
+        """nameFromId(self, id) -> std::string const &"""
         return _pyAgrum.BNLearner_double_nameFromId(self, id)
 
 
     def useScoreAIC(self) -> "void":
-        """
-        useScoreAIC(self)
-
-
-        Indicate that we wish to use an AIC score.
-
-        """
+        """useScoreAIC(self)"""
         return _pyAgrum.BNLearner_double_useScoreAIC(self)
 
 
     def useScoreBD(self) -> "void":
-        """
-        useScoreBD(self)
-
-
-        Indicate that we wish to use a BD score.
-
-        """
+        """useScoreBD(self)"""
         return _pyAgrum.BNLearner_double_useScoreBD(self)
 
 
     def useScoreBDeu(self) -> "void":
-        """
-        useScoreBDeu(self)
-
-
-        Indicate that we wish to use a BDeu score.
-
-        """
+        """useScoreBDeu(self)"""
         return _pyAgrum.BNLearner_double_useScoreBDeu(self)
 
 
     def useScoreBIC(self) -> "void":
-        """
-        useScoreBIC(self)
-
-
-        Indicate that we wish to use a BIC score.
-
-        """
+        """useScoreBIC(self)"""
         return _pyAgrum.BNLearner_double_useScoreBIC(self)
 
 
     def useScoreK2(self) -> "void":
-        """
-        useScoreK2(self)
-
-
-        Indicate that we wish to use a K2 score.
-
-        """
+        """useScoreK2(self)"""
         return _pyAgrum.BNLearner_double_useScoreK2(self)
 
 
     def useScoreLog2Likelihood(self) -> "void":
-        """
-        useScoreLog2Likelihood(self)
-
-
-        Indicate that we wish to use a Log2Likelihood score.
-
-        """
+        """useScoreLog2Likelihood(self)"""
         return _pyAgrum.BNLearner_double_useScoreLog2Likelihood(self)
 
 
     def setAprioriWeight(self, weight: 'double') -> "void":
-        """
-        setAprioriWeight(self, weight)
-
-
-        Parameters
-        ----------
-        weight : double
-        	the apriori weight
-
-        """
+        """setAprioriWeight(self, weight)"""
         return _pyAgrum.BNLearner_double_setAprioriWeight(self, weight)
 
 
     def useNoApriori(self) -> "void":
-        """
-        useNoApriori(self)
-
-
-        Use no apriori.
-
-        """
+        """useNoApriori(self)"""
         return _pyAgrum.BNLearner_double_useNoApriori(self)
 
 
@@ -26856,43 +26751,17 @@ class BNLearner_double(_object):
         """
         useAprioriSmoothing(self, weight=-1)
         useAprioriSmoothing(self)
-
-
-        Use the apriori smoothing.
-
-        Parameters
-        ----------
-        weight : double
-        	pass in argument a weight if you wish to assign a weight to the smoothing, else the current weight of the learner will be used.
-
         """
         return _pyAgrum.BNLearner_double_useAprioriSmoothing(self, *args)
 
 
     def useAprioriDirichlet(self, filename: 'std::string const &') -> "void":
-        """
-        useAprioriDirichlet(self, filename)
-
-
-        Use the Dirichlet apriori.
-
-        Parameters
-        ----------
-        filename : str
-        	the Dirichlet related database
-
-        """
+        """useAprioriDirichlet(self, filename)"""
         return _pyAgrum.BNLearner_double_useAprioriDirichlet(self, filename)
 
 
     def useGreedyHillClimbing(self) -> "void":
-        """
-        useGreedyHillClimbing(self)
-
-
-        Indicate that we wish to use a greedy hill climbing algorithm.
-
-        """
+        """useGreedyHillClimbing(self)"""
         return _pyAgrum.BNLearner_double_useGreedyHillClimbing(self)
 
 
@@ -26901,17 +26770,6 @@ class BNLearner_double(_object):
         useLocalSearchWithTabuList(self, tabu_size=100, nb_decrease=2)
         useLocalSearchWithTabuList(self, tabu_size=100)
         useLocalSearchWithTabuList(self)
-
-
-        Indicate that we wish to use a local search with tabu list
-
-        Parameters
-        ----------
-        tabu_size : int
-        	The size of the tabu list
-        nb_decrease : int
-        	The max number of changes decreasing the score consecutively that we allow to apply
-
         """
         return _pyAgrum.BNLearner_double_useLocalSearchWithTabuList(self, *args)
 
@@ -26921,30 +26779,12 @@ class BNLearner_double(_object):
         useK2(self, l)
         useK2(self, order)
         useK2(self, order)
-
-
-        Indicate that we wish to use K2.
-
-        Parameters
-        ----------
-        order : list
-        	a list of ids
-
         """
         return _pyAgrum.BNLearner_double_useK2(self, *args)
 
 
     def setMaxIndegree(self, max_indegree: 'gum::Size') -> "void":
-        """
-        setMaxIndegree(self, max_indegree)
-
-
-        Parameters
-        ----------
-        max_indegree : int
-        	the limit number of parents
-
-        """
+        """setMaxIndegree(self, max_indegree)"""
         return _pyAgrum.BNLearner_double_setMaxIndegree(self, max_indegree)
 
 
@@ -26952,15 +26792,7 @@ class BNLearner_double(_object):
         """
         setSliceOrder(self, l)
         setSliceOrder(self, slice_order)
-
-
-        Set a partial order on the nodes.
-
-        Parameters
-        ----------
-        l : list
-        	a list of sequences (composed of ids)
-
+        setSliceOrder(self, slices)
         """
         return _pyAgrum.BNLearner_double_setSliceOrder(self, *args)
 
@@ -26970,23 +26802,6 @@ class BNLearner_double(_object):
         addForbiddenArc(self, arc)
         addForbiddenArc(self, tail, head)
         addForbiddenArc(self, tail, head)
-
-
-        The arc in parameters won't be added.
-
-        Parameters
-        ----------
-        arc : pyAgrum
-        	an arc
-        head :
-        	a variable's id (int)
-        tail :
-        	a variable's id (int)
-        head :
-        	a variable's name (str)
-        tail :
-        	a variable's name (str)
-
         """
         return _pyAgrum.BNLearner_double_addForbiddenArc(self, *args)
 
@@ -26996,23 +26811,6 @@ class BNLearner_double(_object):
         eraseForbiddenArc(self, arc)
         eraseForbiddenArc(self, tail, head)
         eraseForbiddenArc(self, tail, head)
-
-
-        Allow the arc in parameter to be added if necessary.
-
-        Parameters
-        ----------
-        arc : pyAgrum
-        	an arc
-        head :
-        	a variable's id (int)
-        tail :
-        	a variable's id (int)
-        head :
-        	a variable's name (str)
-        tail :
-        	a variable's name (str)
-
         """
         return _pyAgrum.BNLearner_double_eraseForbiddenArc(self, *args)
 
@@ -27022,28 +26820,6 @@ class BNLearner_double(_object):
         addMandatoryArc(self, arc)
         addMandatoryArc(self, tail, head)
         addMandatoryArc(self, tail, head)
-
-
-        Allow to add prior structural knowledge.
-
-        Parameters
-        ----------
-        arc : pyAgrum
-        	an arc
-        head :
-        	a variable's id (int)
-        tail :
-        	a variable's id (int)
-        head :
-        	a variable's name (str)
-        tail :
-        	a variable's name (str)
-
-        Raises
-        ------
-        gum.InvalidDirectedCycle
-        	If the added arc creates a directed cycle in the DAG
-
         """
         return _pyAgrum.BNLearner_double_addMandatoryArc(self, *args)
 
@@ -27053,21 +26829,6 @@ class BNLearner_double(_object):
         eraseMandatoryArc(self, arc)
         eraseMandatoryArc(self, tail, head)
         eraseMandatoryArc(self, tail, head)
-
-
-        Parameters
-        ----------
-        arc : pyAgrum
-        	an arc
-        head :
-        	a variable's id (int)
-        tail :
-        	a variable's id (int)
-        head :
-        	a variable's name (str)
-        tail :
-        	a variable's name (str)
-
         """
         return _pyAgrum.BNLearner_double_eraseMandatoryArc(self, *args)
 
@@ -27291,42 +27052,67 @@ def statsObj() -> "void":
     """statsObj()"""
     return _pyAgrum.statsObj()
 
-Potential = Potential_double
+class Potential(Potential_double):
+    pass
 
 randomDistribution = randomDistribution_double
 
-SimpleBayesNet = IBayesNet_double
-BayesNet = BayesNet_double
+class SimpleBayesNet(IBayesNet_double):
+    pass
+class BayesNet(BayesNet_double):
+    pass
 
-LazyPropagation = LazyPropagation_double
-ShaferShenoyInference = ShaferShenoyInference_double
-VariableElimination = VariableElimination_double
+class LazyPropagation(LazyPropagation_double):
+    pass
+class ShaferShenoyInference(ShaferShenoyInference_double):
+    pass
+class VariableElimination(VariableElimination_double):
+    pass
 
-GibbsSampling = GibbsSampling_double
-ImportanceSampling=ImportanceSampling_double
-WeightedSampling=WeightedSampling_double
-MonteCarloSampling=MonteCarloSampling_double
-LoopyImportanceSampling=LoopyImportanceSampling_double
-LoopyGibbsSampling=LoopyGibbsSampling_double
-LoopyWeightedSampling=LoopyWeightedSampling_double
-LoopyMonteCarloSampling=LoopyMonteCarloSampling_double
+class GibbsSampling(GibbsSampling_double):
+    pass
+class ImportanceSampling(ImportanceSampling_double):
+    pass
+class WeightedSampling(WeightedSampling_double):
+    pass
+class MonteCarloSampling(MonteCarloSampling_double):
+    pass
+class LoopyImportanceSampling(LoopyImportanceSampling_double):
+    pass
+class  LoopyGibbsSampling(LoopyGibbsSampling_double):
+    pass
+class LoopyWeightedSampling(LoopyWeightedSampling_double):
+    pass
+class LoopyMonteCarloSampling(LoopyMonteCarloSampling_double):
+    pass
 
-LoopyBeliefPropagation = LoopyBeliefPropagation_double
+class LoopyBeliefPropagation(LoopyBeliefPropagation_double):
+    pass
 
-BruteForceKL = BruteForceKL_double
-GibbsKL = GibbsKL_double
+class BruteForceKL(BruteForceKL_double):
+    pass
+class GibbsKL(GibbsKL_double):
+    pass
 
-CredalNet = CredalNet_double
-CNMonteCarloSampling = CNMonteCarloSampling_double
-CNLoopyPropagation = CNLoopyPropagation_double
+class CredalNet(CredalNet_double):
+    pass
+class CNMonteCarloSampling(CNMonteCarloSampling_double):
+    pass
+class CNLoopyPropagation(CNLoopyPropagation_double):
+    pass
 
-DiscretizedVariable = DiscretizedVariable_double
+class DiscretizedVariable(DiscretizedVariable_double):
+    pass
 
-InfluenceDiagram = InfluenceDiagram_double
-InfluenceDiagramInference = InfluenceDiagramInference_double
+class InfluenceDiagram(InfluenceDiagram_double):
+    pass
+class InfluenceDiagramInference(InfluenceDiagramInference_double):
+    pass
 
-BNLearner =  BNLearner_double
-BNDatabaseGenerator = BNDatabaseGenerator_double
+class BNLearner(BNLearner_double):
+    pass
+class BNDatabaseGenerator(BNDatabaseGenerator_double):
+    pass
 
 # This file is compatible with both classic and new-style classes.
 

@@ -1,6 +1,30 @@
 # aGrUM Changelog
 
-## Changelog for 0.13.0 (in progress)
+## Changelog for 0.13.3
+* pyAgrum
+  * updating tests
+  * updating pyAgrum.lib
+  * new functions for colouring and graphically comparing BNs
+* aGrUM
+  * fixing UAI format for read and write
+  * BNLearner.setSliceOrder with list of list of names (and not only with ids)
+  * improved error messages
+  * fixing learnParameters
+  * multi-thread support for learning
+
+## Changelog for 0.13.2
+* aGrUM/pyAgrum
+  * fixed bugs in `Potential::fillWith`
+  * removed unsafe and ambiguous `Potential::fastKL` and kept safe `Potential::KL`
+
+## Changelog for 0.13.1
+* aGrUM
+  * variable: new methods to set bounds with doubles in `ContinuousVariable`
+  * Changed the code of `Instantiation`'s hash functions to make it compliant with windows mingw implementation
+* TestUnits
+  * fixed bug in `RawDatabaseTable` test unit
+
+## Changelog for 0.13.0
 
 * aGrUM
   * inference: Loopy Belief Propagation (`LBP`)
@@ -14,7 +38,7 @@
   * variable: new constructor with vector of ticks for `gum::DiscretizedVariable`
   * graph: API extension (`addNodes(n)`)
   * graph: API change (`addNode(id)`->`addNodeWithId(id)`)
-  * Changes and bug fixe in in BIF and NET writer/reader 
+  * Changes and bug fixe in in BIF and NET writer/reader
 * pyAgrum
   * wheels for python 3.3 and 3.4
   * access to the new learning framework using `BNLearner`

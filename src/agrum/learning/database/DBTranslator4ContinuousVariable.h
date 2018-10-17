@@ -169,8 +169,8 @@ namespace gum {
         const bool            fit_range = false,
         const allocator_type& alloc = allocator_type());
 
-      /// default constructor with a discrete variable as translator
-      /** @param var a labelized variable whose labels will be used for
+      /// default constructor with a continuous variable as translator
+      /** @param var a continuous variable that will be used for
        * translations. The translator keeps a copy of this variable
        * @param  missing_symbols the set of symbols in the database
        * representing missing values
@@ -190,10 +190,10 @@ namespace gum {
         const bool                                               fit_range = false,
         const allocator_type& alloc = allocator_type());
 
-      /** @brief default constructor with a discrete variable as translator
+      /** @brief default constructor with a continuous variable as translator
        * but without missing symbol
        *
-       * @param var a labelized variable whose labels will be used for
+       * @param var a continuous variable that will be used for
        * translations. The translator keeps a copy of this variable
        * @param fit_range if true, the range of the variable is updated
        * so that it precisely fits the range of the observed values in the
@@ -209,6 +209,46 @@ namespace gum {
         const ContinuousVariable< GUM_SCALAR >& var,
         const bool                              fit_range = false,
         const allocator_type&                   alloc = allocator_type());
+
+      /// default constructor with a IContinuous variable as translator
+      /** @param var a IContinuous variable that will be used for
+       * translations. The translator keeps a copy of this variable
+       * @param  missing_symbols the set of symbols in the database
+       * representing missing values
+       * @param fit_range if true, the range of the variable is updated
+       * so that it precisely fits the range of the observed values in the
+       * database, else the range is kept to (-inf,inf)
+       * @param alloc The allocator used to allocate memory for all the
+       * fields of the DBTranslator4ContinuousVariable
+       * @warning If a missing value symbol is a number included in the range
+       * of the continuous variable, it will be discarded. If the fit_range
+       * parameter is on, the range of the variable is updated so that it
+       * can contain the range of the observed values in the database. */
+      template < template < typename > class XALLOC >
+      DBTranslator4ContinuousVariable(
+        const IContinuousVariable&                               var,
+        const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
+        const bool                                               fit_range = false,
+        const allocator_type& alloc = allocator_type());
+
+      /** @brief default constructor with a IContinuous variable as translator
+       * but without missing symbol
+       *
+       * @param var a IContinuous variable that will be used for
+       * translations. The translator keeps a copy of this variable
+       * @param fit_range if true, the range of the variable is updated
+       * so that it precisely fits the range of the observed values in the
+       * database, else the range is kept to (-inf,inf)
+       * @param alloc The allocator used to allocate memory for all the
+       * fields of the DBTranslator4ContinuousVariable
+       * @warning If a missing value symbol is a number included in the range
+       * of the continuous variable, it will be discarded. If the fit_range
+       * parameter is on, the range of the variable is updated so that it
+       * can contain the range of the observed values in the database. */
+      DBTranslator4ContinuousVariable(
+        const IContinuousVariable& var,
+        const bool                 fit_range = false,
+        const allocator_type&      alloc = allocator_type());
 
       /// copy constructor
       DBTranslator4ContinuousVariable(
@@ -324,7 +364,10 @@ namespace gum {
         reorder() final;
 
       /// returns the variable stored into the translator
-      virtual const ContinuousVariable< float >* variable() const final;
+      virtual const IContinuousVariable* variable() const final;
+
+      /// returns the translation of a missing value
+      virtual DBTranslatedValue missingValue() const final;
 
       /// @}
 
@@ -335,6 +378,11 @@ namespace gum {
       // the ContinuousVariable really used by the translator. As its values
       // are floats, this speeds-up translations
       ContinuousVariable< float > __variable;
+
+      // the ContinuousVariablee returned by method variable ()
+      // We must return a IContinuousVariable because the user may have
+      // saved into the translator a ContinuousVariable<X>, with X != float
+      IContinuousVariable* __real_variable;
 
       // assign to each float missing symbol a Boolean indicating whether
       // we already translated it or not. If we translated it, then we cannot

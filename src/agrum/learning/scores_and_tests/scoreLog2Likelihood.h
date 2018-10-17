@@ -110,70 +110,22 @@ namespace gum {
 
       /// indicates whether the apriori is compatible (meaningful) with the
       /// score
-      /** @returns true if the apriori is compatible with the score.
-       * @throws IncompatibleScoreApriori is raised if the apriori is known to
-       * be incompatible with the score. Such a case arises because the score
-       * already implicitly contains an apriori which should not be combined
-       * with the apriori passed in argument. aGrUM will nevertheless allow you
-       * to
-       * use this apriori with the score, but you should be warned that the
-       * result
-       * of learning will most probably be meaningless.
-       * @throws PossiblyIncompatibleScoreApriori is raised if, in general, the
-       * apriori is incompatible with the score but, with its current weight, it
-       * becomes compatible (e.g., a Dirichlet apriori with a 0-weight is the
-       * same as a NoApriori). In such a case, you should not modify the weight.
-       * aGrUM will allow you to do so but the result of learning will most
-       * probably be meaningless.
-       * @throws InvalidArgument is raised if the apriori is not handled yet by
-       * method isAprioriCompatible (the method needs be updated to take it into
-       * account). */
-      virtual bool isAprioriCompatible() const final;
+      /** @returns a non empty string if the apriori is compatible with the
+       * score.*/
+      virtual std::string isAprioriCompatible() const final;
 
       /// indicates whether the apriori is compatible (meaningful) with the
       /// score
-      /** @returns true if the apriori is compatible with the score.
-       * @throws IncompatibleScoreApriori is raised if the apriori is known to
-       * be incompatible with the score. Such a case arises because the score
-       * already implicitly contains an apriori which should not be combined
-       * with the apriori passed in argument. aGrUM will nevertheless allow you
-       * to
-       * use this apriori with the score, but you should be warned that the
-       * result
-       * of learning will most probably be meaningless.
-       * @throws PossiblyIncompatibleScoreApriori is raised if, in general, the
-       * apriori is incompatible with the score but, with its current weight, it
-       * becomes compatible (e.g., a Dirichlet apriori with a 0-weight is the
-       * same as a NoApriori). In such a case, you should not modify the weight.
-       * aGrUM will allow you to do so but the result of learning will most
-       * probably be meaningless.
-       * @throws InvalidArgument is raised if the apriori is not handled yet by
-       * method isAprioriCompatible (the method needs be updated to take it into
-       * account). */
-      static bool isAprioriCompatible(const std::string& apriori_type,
-                                      double             weight = 1.0f);
+      /** @returns a non empty string if the apriori is compatible with the
+       * score.*/
+      static std::string isAprioriCompatible(const std::string& apriori_type,
+                                             double             weight = 1.0f);
 
       /// indicates whether the apriori is compatible (meaningful) with the
       /// score
-      /** @returns true if the apriori is compatible with the score.
-       * @throws IncompatibleScoreApriori is raised if the apriori is known to
-       * be incompatible with the score. Such a case arises because the score
-       * already implicitly contains an apriori which should not be combined
-       * with the apriori passed in argument. aGrUM will nevertheless allow you
-       * to
-       * use this apriori with the score, but you should be warned that the
-       * result
-       * of learning will most probably be meaningless.
-       * @throws PossiblyIncompatibleScoreApriori is raised if, in general, the
-       * apriori is incompatible with the score but, with its current weight, it
-       * becomes compatible (e.g., a Dirichlet apriori with a 0-weight is the
-       * same as a NoApriori). In such a case, you should not modify the weight.
-       * aGrUM will allow you to do so but the result of learning will most
-       * probably be meaningless.
-       * @throws InvalidArgument is raised if the apriori is not handled yet by
-       * method isAprioriCompatible (the method needs be updated to take it into
-       * account). */
-      static bool
+      /** @returns a non empty string if the apriori is compatible with the
+       * score.*/
+      static std::string
         isAprioriCompatible(const Apriori< IdSetAlloc, CountAlloc >& apriori);
 
       /// returns the internal apriori of the score

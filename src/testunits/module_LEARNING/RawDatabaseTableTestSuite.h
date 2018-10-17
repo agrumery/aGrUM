@@ -269,9 +269,9 @@ namespace gum_tests {
       TS_ASSERT(uhandler2.nbVariables() == 3);
 
       // check that we cannot convert an unsafe handler into a safe one
-      TS_ASSERT_THROWS(handler2 = uhandler2, std::bad_cast);
+      TS_ASSERT_THROWS(handler2 = uhandler2, std::bad_cast&);
       gum::learning::RawDatabaseTable<>::Handler& uxhandler2 = handler2;
-      TS_ASSERT_THROWS(uxhandler2 = uhandler2, std::bad_cast);
+      TS_ASSERT_THROWS(uxhandler2 = uhandler2, std::bad_cast&);
     }
 
 
@@ -308,6 +308,7 @@ namespace gum_tests {
       std::vector< gum::learning::DBRow< gum::learning::DBCell > > vectx(4, row2);
       database.insertRows(vectx, is_miss);
       TS_ASSERT(database.content().size() == 11);
+      is_miss.resize(2);
       std::vector< gum::learning::DBRow< gum::learning::DBCell > > vecty(2, row);
       database.insertRows(vecty, is_miss);
       TS_ASSERT(database.content().size() == 13);
@@ -359,7 +360,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(database2.insertRow(row2, xmiss), gum::SizeError);
 
       std::vector< gum::learning::RawDatabaseTable<>::IsMissing > is_miss(
-        4, gum::learning::RawDatabaseTable<>::IsMissing::False);
+        2, gum::learning::RawDatabaseTable<>::IsMissing::False);
       gum::learning::DBRow< gum::learning::DBCell > row3(3,
                                                          gum::learning::DBCell(4));
       gum::learning::DBRow< gum::learning::DBCell > row4(3,
@@ -428,7 +429,7 @@ namespace gum_tests {
       TS_ASSERT(database.content().size() == 4);
 
       std::vector< gum::learning::RawDatabaseTable<>::IsMissing > is_miss(
-        4, gum::learning::RawDatabaseTable<>::IsMissing::False);
+        2, gum::learning::RawDatabaseTable<>::IsMissing::False);
       gum::learning::DBRow< gum::learning::DBCell > row3(3,
                                                          gum::learning::DBCell(4));
       gum::learning::DBRow< gum::learning::DBCell > row4(3,
@@ -517,7 +518,7 @@ namespace gum_tests {
       TS_ASSERT(database.content().size() == 4);
 
       std::vector< gum::learning::RawDatabaseTable<>::IsMissing > is_miss(
-        4, gum::learning::RawDatabaseTable<>::IsMissing::False);
+        2, gum::learning::RawDatabaseTable<>::IsMissing::False);
       gum::learning::DBRow< gum::learning::DBCell > row3(3,
                                                          gum::learning::DBCell(4));
       gum::learning::DBRow< gum::learning::DBCell > row4(3,
@@ -574,7 +575,7 @@ namespace gum_tests {
       TS_ASSERT(database.content().size() == 4);
 
       std::vector< gum::learning::RawDatabaseTable<>::IsMissing > is_miss(
-        4, gum::learning::RawDatabaseTable<>::IsMissing::False);
+        2, gum::learning::RawDatabaseTable<>::IsMissing::False);
       gum::learning::DBRow< gum::learning::DBCell > row3(3,
                                                          gum::learning::DBCell(4));
       gum::learning::DBRow< gum::learning::DBCell > row4(3,
@@ -671,7 +672,7 @@ namespace gum_tests {
       TS_ASSERT(nb_col2 == 8);
 
       std::vector< gum::learning::RawDatabaseTable<>::IsMissing > is_miss(
-        4, gum::learning::RawDatabaseTable<>::IsMissing::False);
+        2, gum::learning::RawDatabaseTable<>::IsMissing::False);
       gum::learning::DBRow< gum::learning::DBCell > row3(3,
                                                          gum::learning::DBCell(4));
       gum::learning::DBRow< gum::learning::DBCell > row4(3,
@@ -847,6 +848,7 @@ namespace gum_tests {
       row[0] = "L0";
       row[1] = "L0";
       row[2] = "L0";
+      database.insertRow(row);
 
       TS_ASSERT(database.hasMissingValues());
 

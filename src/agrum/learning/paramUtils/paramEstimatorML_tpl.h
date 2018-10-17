@@ -91,7 +91,8 @@ namespace gum {
         this->_getAllNodes(nodeset_index);
       const std::vector< Idx, IdSetAlloc >* conditioning_nodes =
         this->_getConditioningNodes(nodeset_index);
-      const Idx target_modal = this->modalities()[all_nodes[all_nodes.size() - 1]];
+      const auto& modals = this->modalities();
+      const Idx   target_modal = modals[all_nodes[all_nodes.size() - 1]];
       std::vector< double, CountAlloc >& N_ijk =
         const_cast< std::vector< double, CountAlloc >& >(
           this->_getAllCounts(nodeset_index));
@@ -116,9 +117,43 @@ namespace gum {
           // check that all conditioning nodes have strictly positive counts
           for (Idx j = 0; j < conditioning_size; ++j) {
             if (N_ij[j] + N_prime_ij[j] == 0) {
-              GUM_ERROR(CPTError,
-                        "A conditioning set has a value that never "
-                        "appears in the database");
+              const std::size_t  cond_nb = conditioning_nodes->size();
+              std::vector< Idx > offsets(cond_nb);
+              Idx                offset = 1;
+              std::size_t        i;
+              for (i = std::size_t(0); i < cond_nb; ++i) {
+                offsets[i] = offset;
+                offset *= modals[conditioning_nodes->operator[](i)];
+              }
+              std::vector< Idx > values(cond_nb);
+              i = 0;
+              offset = j;
+              for (Idx jj = cond_nb - 1; i < cond_nb; ++i, --jj) {
+                values[jj] = offset / offsets[jj];
+                offset %= offsets[jj];
+              }
+              // const DatabaseTable<>& da
+              std::stringstream str;
+              str << "The conditioning set <";
+              bool deja = false;
+              for (i = std::size_t(0); i < cond_nb; ++i) {
+                if (deja)
+                  str << ", ";
+                else
+                  deja = true;
+                auto id = conditioning_nodes->operator[](i);
+                const DiscreteVariable&       var =
+                  dynamic_cast< const DiscreteVariable& >(
+                    this->_database->variable(id));
+                str << var.name() << "=" << var.labels()[values[i]];
+              }
+              auto            id = all_nodes[all_nodes.size() - 1];
+              const Variable& var = this->_database->variable(id);
+              str << "> for target node " << var.name()
+                  << " never appears in the database. Please consider using "
+                     "priors such as smoothing.";
+
+              GUM_ERROR(DatabaseError, str.str());
             }
           }
 
@@ -132,9 +167,42 @@ namespace gum {
           // check that all conditioning nodes have strictly positive counts
           for (Idx j = 0; j < conditioning_size; ++j) {
             if (!N_ij[j]) {
-              GUM_ERROR(CPTError,
-                        "A conditioning set has a value that never "
-                        "appears in the database");
+              const std::size_t  cond_nb = conditioning_nodes->size();
+              std::vector< Idx > offsets(cond_nb);
+              Idx                offset = 1;
+              std::size_t        i;
+              for (i = std::size_t(0); i < cond_nb; ++i) {
+                offsets[i] = offset;
+                offset *= modals[conditioning_nodes->operator[](i)];
+              }
+              std::vector< Idx > values(cond_nb);
+              i = 0;
+              offset = j;
+              for (Idx jj = cond_nb - 1; i < cond_nb; ++i, --jj) {
+                values[jj] = offset / offsets[jj];
+                offset %= offsets[jj];
+              }
+              std::stringstream str;
+              str << "The conditioning set <";
+              bool deja = true;
+              for (i = std::size_t(0); i < cond_nb; ++i) {
+                if (deja)
+                  str << ", ";
+                else
+                  deja = true;
+                auto id = conditioning_nodes->operator[](i);
+                const DiscreteVariable&       var =
+                  dynamic_cast< const DiscreteVariable& >(
+                    this->_database->variable(id));
+                str << var.name() << "=" << var.labels()[values[i]];
+              }
+              auto            id = all_nodes[all_nodes.size() - 1];
+              const Variable& var = this->_database->variable(id);
+              str << "> for target node " << var.name()
+                  << " never appears in the database. Please consider using "
+                     "priors such as smoothing.";
+
+              GUM_ERROR(DatabaseError, str.str());
             }
           }
 
@@ -162,7 +230,7 @@ namespace gum {
               N_ijk[k] = (N_ijk[k] + N_prime_ijk[k]) / sum;
             }
           } else {
-            GUM_ERROR(CPTError,
+            GUM_ERROR(DatabaseError,
                       "The database being empty, it is impossible "
                       "to estimate the parameters by maximum likelihood");
           }
@@ -177,7 +245,7 @@ namespace gum {
               N_ijk[k] /= sum;
             }
           } else {
-            GUM_ERROR(CPTError,
+            GUM_ERROR(DatabaseError,
                       "The database being empty, it is impossible "
                       "to estimate the parameters by maximum likelihood");
           }

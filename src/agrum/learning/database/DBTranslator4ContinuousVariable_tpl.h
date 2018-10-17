@@ -72,6 +72,9 @@ namespace gum {
       if (__fit_range)
         __variable.setLowerBound(std::numeric_limits< float >::infinity());
 
+      // store a copy of the variable, that should be used by method variable ()
+      __real_variable = __variable.clone();
+
       GUM_CONSTRUCTOR(DBTranslator4ContinuousVariable);
     }
 
@@ -91,11 +94,14 @@ namespace gum {
       if (__fit_range)
         __variable.setLowerBound(std::numeric_limits< float >::infinity());
 
+      // store a copy of the variable, that should be used by method variable ()
+      __real_variable = __variable.clone();
+
       GUM_CONSTRUCTOR(DBTranslator4ContinuousVariable);
     }
 
 
-    /// default constructor with a range variable as translator
+    /// default constructor with a continuous variable as translator
     template < template < typename > class ALLOC >
     template < typename GUM_SCALAR, template < typename > class XALLOC >
     DBTranslator4ContinuousVariable< ALLOC >::DBTranslator4ContinuousVariable(
@@ -131,11 +137,14 @@ namespace gum {
         }
       }
 
+      // store a copy of the variable, that should be used by method variable ()
+      __real_variable = var.clone();
+
       GUM_CONSTRUCTOR(DBTranslator4ContinuousVariable);
     }
 
 
-    /// default constructor with a range variable as translator
+    /// default constructor with a continuous variable as translator
     template < template < typename > class ALLOC >
     template < typename GUM_SCALAR >
     DBTranslator4ContinuousVariable< ALLOC >::DBTranslator4ContinuousVariable(
@@ -152,6 +161,75 @@ namespace gum {
       __variable.setLowerBound(lower_bound);
       __variable.setUpperBound(upper_bound);
 
+      // store a copy of the variable, that should be used by method variable ()
+      __real_variable = var.clone();
+
+      GUM_CONSTRUCTOR(DBTranslator4ContinuousVariable);
+    }
+
+
+    /// default constructor with a IContinuous variable as translator
+    template < template < typename > class ALLOC >
+    template < template < typename > class XALLOC >
+    DBTranslator4ContinuousVariable< ALLOC >::DBTranslator4ContinuousVariable(
+      const IContinuousVariable&                               var,
+      const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
+      const bool                                               fit_range,
+      const typename DBTranslator4ContinuousVariable< ALLOC >::allocator_type&
+        alloc) :
+        DBTranslator< ALLOC >(
+          DBTranslatedValueType::CONTINUOUS, missing_symbols, fit_range, 1, alloc),
+        __variable(var.name(), var.description()), __fit_range(fit_range) {
+      // get the bounds of the range variable
+      const float lower_bound = var.lowerBoundAsDouble();
+      const float upper_bound = var.upperBoundAsDouble();
+      __variable.setLowerBound(lower_bound);
+      __variable.setUpperBound(upper_bound);
+
+      // remove all the missing symbols corresponding to a number between
+      // lower_bound and upper_bound
+      bool non_float_symbol_found = false;
+      for (auto iter = this->_missing_symbols.beginSafe();
+           iter != this->_missing_symbols.endSafe();
+           ++iter) {
+        if (DBCell::isReal(*iter)) {
+          const float missing_val = std::stof(*iter);
+          if ((missing_val >= lower_bound) && (missing_val <= upper_bound)) {
+            this->_missing_symbols.erase(iter);
+          } else
+            __status_float_missing_symbols.insert(*iter, false);
+        } else if (!non_float_symbol_found) {
+          non_float_symbol_found = true;
+          __nonfloat_missing_symbol = *iter;
+        }
+      }
+
+      // store a copy of the variable, that should be used by method variable ()
+      __real_variable = var.clone();
+
+      GUM_CONSTRUCTOR(DBTranslator4ContinuousVariable);
+    }
+
+
+    /// default constructor with a IContinuous variable as translator
+    template < template < typename > class ALLOC >
+    DBTranslator4ContinuousVariable< ALLOC >::DBTranslator4ContinuousVariable(
+      const IContinuousVariable& var,
+      const bool                 fit_range,
+      const typename DBTranslator4ContinuousVariable< ALLOC >::allocator_type&
+        alloc) :
+        DBTranslator< ALLOC >(
+          DBTranslatedValueType::CONTINUOUS, fit_range, 1, alloc),
+        __variable(var.name(), var.description()), __fit_range(fit_range) {
+      // get the bounds of the range variable
+      const float lower_bound = var.lowerBoundAsDouble();
+      const float upper_bound = var.upperBoundAsDouble();
+      __variable.setLowerBound(lower_bound);
+      __variable.setUpperBound(upper_bound);
+
+      // store a copy of the variable, that should be used by method variable ()
+      __real_variable = var.clone();
+
       GUM_CONSTRUCTOR(DBTranslator4ContinuousVariable);
     }
 
@@ -167,6 +245,9 @@ namespace gum {
         __status_float_missing_symbols(from.__status_float_missing_symbols),
         __nonfloat_missing_symbol(from.__nonfloat_missing_symbol),
         __fit_range(from.__fit_range) {
+      // store a copy of the variable, that should be used by method variable ()
+      __real_variable = from.__real_variable->clone();
+
       GUM_CONS_CPY(DBTranslator4ContinuousVariable);
     }
 
@@ -190,6 +271,10 @@ namespace gum {
           std::move(from.__status_float_missing_symbols)),
         __nonfloat_missing_symbol(std::move(from.__nonfloat_missing_symbol)),
         __fit_range(from.__fit_range) {
+      // store a copy of the variable, that should be used by method variable ()
+      __real_variable = from.__real_variable;
+      from.__real_variable = nullptr;
+
       GUM_CONS_MOV(DBTranslator4ContinuousVariable);
     }
 
@@ -231,6 +316,8 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE DBTranslator4ContinuousVariable<
       ALLOC >::~DBTranslator4ContinuousVariable() {
+      if (__real_variable != nullptr) delete __real_variable;
+
       GUM_DESTRUCTOR(DBTranslator4ContinuousVariable);
     }
 
@@ -246,6 +333,9 @@ namespace gum {
         __status_float_missing_symbols = from.__status_float_missing_symbols;
         __nonfloat_missing_symbol = from.__nonfloat_missing_symbol;
         __fit_range = from.__fit_range;
+
+        if (__real_variable != nullptr) delete __real_variable;
+        __real_variable = from.__real_variable->clone();
       }
 
       return *this;
@@ -264,6 +354,10 @@ namespace gum {
           std::move(from.__status_float_missing_symbols);
         __nonfloat_missing_symbol = std::move(from.__nonfloat_missing_symbol);
         __fit_range = from.__fit_range;
+
+        if (__real_variable != nullptr) delete __real_variable;
+        __real_variable = from.__real_variable;
+        from.__real_variable = nullptr;
       }
 
       return *this;
@@ -279,7 +373,10 @@ namespace gum {
         if (this->isMissingSymbol(str)) {
           return DBTranslatedValue{std::numeric_limits< float >::max()};
         } else
-          GUM_ERROR(TypeError, "the string is not a number");
+          GUM_ERROR(TypeError,
+                    "String \""
+                      << str
+                      << "\" cannot be translated because it is not a number");
       }
 
       // here we know that the string is a number
@@ -299,8 +396,9 @@ namespace gum {
       // check if we are allowed to update the domain of the variable
       if (!__fit_range) {
         GUM_ERROR(UnknownLabelInDatabase,
-                  "the string cannot be translated because it is "
-                  "out of the domain of the continuous variable");
+                  "String \"" << str
+                              << "\" cannot be translated because it is "
+                                 "out of the domain of the continuous variable");
       }
 
       // now, we can try to add str as a new bound of the range variable
@@ -330,8 +428,10 @@ namespace gum {
             const float miss_val = std::stof(missing.first);
             if ((miss_val >= number) && (miss_val <= upper_bound)) {
               GUM_ERROR(OperationNotAllowed,
-                        "the string would induce a new domain containing "
-                        "an already translated missing symbol");
+                        "String \""
+                          << str << "\" cannot be translated because "
+                          << "it would induce a new domain containing an already "
+                          << "translated missing symbol");
             }
           }
         }
@@ -362,8 +462,10 @@ namespace gum {
             const float miss_val = std::stof(missing.first);
             if ((miss_val >= lower_bound) && (miss_val <= number)) {
               GUM_ERROR(OperationNotAllowed,
-                        "the string would induce a new domain containing "
-                        "an already translated missing symbol");
+                        "String \""
+                          << str << "\" cannot be translated because "
+                          << "it would induce a new domain containing an already "
+                          << "translated missing symbol");
             }
           }
         }
@@ -403,8 +505,10 @@ namespace gum {
       if ((translated_val.cont_val < __variable.lowerBound())
           || (translated_val.cont_val > __variable.upperBound())) {
         GUM_ERROR(UnknownLabelInDatabase,
-                  "The back translation could not be found because the "
-                  "value is outside the domain of the continuous variable");
+                  "The back translation of "
+                    << translated_val.cont_val
+                    << " could not be found because the value is outside the "
+                    << "domain of the continuous variable");
       }
 
       char buffer[100];
@@ -442,9 +546,19 @@ namespace gum {
 
     /// returns the variable stored into the translator
     template < template < typename > class ALLOC >
-    INLINE const ContinuousVariable< float >*
+    INLINE const IContinuousVariable*
                  DBTranslator4ContinuousVariable< ALLOC >::variable() const {
-      return &__variable;
+      __real_variable->setLowerBoundFromDouble(__variable.lowerBound());
+      __real_variable->setUpperBoundFromDouble(__variable.upperBound());
+      return __real_variable;
+    }
+
+
+    /// returns the translation of a missing value
+    template < template < typename > class ALLOC >
+    INLINE DBTranslatedValue
+           DBTranslator4ContinuousVariable< ALLOC >::missingValue() const {
+      return DBTranslatedValue{std::numeric_limits< float >::max()};
     }
 
 

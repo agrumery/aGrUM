@@ -32,6 +32,8 @@
 #ifndef GUM_LEARNING_PARAM_ESTIMATOR_ML_H
 #define GUM_LEARNING_PARAM_ESTIMATOR_ML_H
 
+#include <sstream>
+
 #include <agrum/agrum.h>
 #include <agrum/learning/paramUtils/paramEstimator.h>
 #include <agrum/learning/scores_and_tests/scoreInternalNoApriori.h>
@@ -109,8 +111,8 @@ namespace gum {
        * follows:
        * first, there are the conditioning nodes (in the order in which they
        * were specified) and, then, the target node.
-       * @throw CPTError is raised if some values of the conditioning sets were
-       * not observed in the database. */
+       * @throw DatabaseError is raised if some values of the conditioning sets
+       * were not observed in the database. */
       const std::vector< double, CountAlloc >& parameters(Idx nodeset_index);
 
       /// @}

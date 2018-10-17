@@ -66,7 +66,6 @@ namespace gum {
       for (std::size_t i = std::size_t(0); i < nb_vars; ++i)
         __name2nodeId.insert(__database.variable(i).name(), i);
 
-
       // create the parser
       __parser =
         new DBRowGeneratorParser<>(__database.handler(), DBRowGeneratorSet<>());

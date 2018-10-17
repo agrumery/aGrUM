@@ -259,12 +259,15 @@ namespace gum {
         if (this->hasEditableDictionary()) {
           const std::size_t size = __variable.domainSize();
           if (size >= this->_max_dico_entries)
-            GUM_ERROR(SizeError, "the dictionary is full");
+            GUM_ERROR(SizeError,
+                      "String \"" << str << "\" cannot be translated "
+                                  << "because the dictionary is already full");
           __variable.addLabel(str);
           this->_back_dico.insert(size, str);
           return DBTranslatedValue{size};
         } else
-          GUM_ERROR(UnknownLabelInDatabase, "The translation could not be found");
+          GUM_ERROR(UnknownLabelInDatabase,
+                    "The translation of \"" << str << "\" could not be found");
       }
     }
 
@@ -282,7 +285,8 @@ namespace gum {
           return *(this->_missing_symbols.begin());
         else
           GUM_ERROR(UnknownLabelInDatabase,
-                    "The back translation could not be found");
+                    "The back translation of \"" << translated_val.discr_val
+                                                 << "\" could not be found");
       }
     }
 
@@ -412,6 +416,14 @@ namespace gum {
     INLINE const LabelizedVariable*
                  DBTranslator4LabelizedVariable< ALLOC >::variable() const {
       return &__variable;
+    }
+
+
+    /// returns the translation of a missing value
+    template < template < typename > class ALLOC >
+    INLINE DBTranslatedValue
+           DBTranslator4LabelizedVariable< ALLOC >::missingValue() const {
+      return DBTranslatedValue{std::numeric_limits< std::size_t >::max()};
     }
 
 

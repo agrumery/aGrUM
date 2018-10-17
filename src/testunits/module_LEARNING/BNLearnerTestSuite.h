@@ -19,6 +19,8 @@
  ***************************************************************************/
 // floating point env
 #include <cfenv>
+#include <vector>
+#include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
@@ -60,8 +62,10 @@ namespace gum_tests {
       learner.setMaxIndegree(10);
       learner.useScoreLog2Likelihood();
 
-      TS_ASSERT_THROWS(learner.useScoreBD(), gum::IncompatibleScoreApriori);
+      TS_GUM_ASSERT_THROWS_NOTHING(learner.useScoreBD());
+      TS_ASSERT_DIFFERS("", learner.checkScoreAprioriCompatibility());
       TS_GUM_ASSERT_THROWS_NOTHING(learner.useScoreBDeu());
+      TS_ASSERT_EQUALS("", learner.checkScoreAprioriCompatibility());
       learner.useScoreLog2Likelihood();
 
       learner.useK2(std::vector< gum::NodeId >{1, 5, 2, 6, 0, 3, 4, 7});
@@ -83,7 +87,7 @@ namespace gum_tests {
         std::make_pair(gum::NodeId(0), 1),
         std::make_pair(gum::NodeId(3), 0),
         std::make_pair(gum::NodeId(1), 0)};
-      // learner.setSliceOrder ( slice_order );
+      learner.setSliceOrder(slice_order);
 
       const std::vector< std::string >& names = learner.names();
       TS_ASSERT(!names.empty());
@@ -231,7 +235,7 @@ namespace gum_tests {
         std::make_pair(gum::NodeId(0), 1),
         std::make_pair(gum::NodeId(3), 0),
         std::make_pair(gum::NodeId(1), 0)};
-      // learner.setSliceOrder ( slice_order );
+      learner.setSliceOrder(slice_order);
 
       const std::vector< std::string >& names = learner.names();
       TS_ASSERT(!names.empty());
@@ -290,7 +294,7 @@ namespace gum_tests {
         std::make_pair(gum::NodeId(0), 1),
         std::make_pair(gum::NodeId(3), 0),
         std::make_pair(gum::NodeId(1), 0)};
-      // learner.setSliceOrder ( slice_order );
+      learner.setSliceOrder(slice_order);
 
       const std::vector< std::string >& names = learner.names();
       TS_ASSERT(!names.empty());
@@ -355,13 +359,9 @@ namespace gum_tests {
       learner.useScoreLog2Likelihood();
 
       learner.useK2(std::vector< gum::NodeId >{1, 5, 2, 6, 0, 3, 4, 7});
-      // learner.addForbiddenArc ( gum::Arc (4,3) );
-      // learner.addForbiddenArc ( gum::Arc (5,1) );
-      // learner.addForbiddenArc ( gum::Arc (5,7) );
-
-      // learner.addMandatoryArc ( gum::Arc ( learner.nodeId ( "bronchitis?" ),
-      //                                      learner.nodeId ( "lung_cancer?" )
-      //                                      ) );
+      learner.addForbiddenArc(gum::Arc(4, 3));
+      learner.addForbiddenArc(gum::Arc(5, 1));
+      learner.addForbiddenArc(gum::Arc(5, 7));
 
       learner.addMandatoryArc("bronchitis?", "lung_cancer?");
 
@@ -373,7 +373,7 @@ namespace gum_tests {
         std::make_pair(gum::NodeId(0), 1),
         std::make_pair(gum::NodeId(3), 0),
         std::make_pair(gum::NodeId(1), 0)};
-      // learner.setSliceOrder ( slice_order );
+      learner.setSliceOrder(slice_order);
 
       const std::vector< std::string >& names = learner.names();
       TS_ASSERT(!names.empty());
@@ -447,7 +447,7 @@ namespace gum_tests {
       gum::BayesNet< double > bn = learner.learnBN();
 
       try {
-        gum::BayesNet< double > bn2 = learner.learnParameters(bn);
+        gum::BayesNet< double > bn2 = learner.learnParameters(bn.dag());
         TS_ASSERT(bn2.dag().arcs().size() == bn.dag().arcs().size());
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
@@ -485,7 +485,7 @@ namespace gum_tests {
       gum::BayesNet< float > bn = learner.learnBN();
 
       try {
-        gum::BayesNet< float > bn2 = learner.learnParameters(bn);
+        gum::BayesNet< float > bn2 = learner.learnParameters(bn.dag());
         TS_ASSERT(bn2.dag().arcs().size() == bn.dag().arcs().size());
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
@@ -530,7 +530,7 @@ namespace gum_tests {
       learner.useAprioriSmoothing();
 
       try {
-        gum::BayesNet< double > bn2 = learner.learnParameters(bn);
+        gum::BayesNet< double > bn2 = learner.learnParameters(bn.dag());
         TS_ASSERT(bn2.dim() == bn.dim());
 
         for (gum::NodeId node : bn.nodes()) {
@@ -606,7 +606,7 @@ namespace gum_tests {
       learner.useScoreLog2Likelihood();
       learner.useAprioriSmoothing();
 
-      gum::BayesNet< double > bn2 = learner.learnParameters(bn);
+      gum::BayesNet< double > bn2 = learner.learnParameters(bn.dag());
     }
 
     void test_asia_param_bn_with_unknow_modality() {
@@ -734,7 +734,7 @@ namespace gum_tests {
           GET_RESSOURCES_PATH("DBN_Tonda.csv"));
         learner.useScoreLog2Likelihood();
         learner.useAprioriSmoothing(1.0);
-        learn1 = learner.learnParameters(dbn);
+        learn1 = learner.learnParameters(dbn.dag());
       }
       gum::BayesNet< double > learn2;
       {
@@ -757,7 +757,7 @@ namespace gum_tests {
             GET_RESSOURCES_PATH("DBN_Tonda.csv"), learn1);
           learner.useScoreLog2Likelihood();
           learner.useAprioriSmoothing(1.0);
-          learn2 = learner.learnParameters(dbn);
+          learn2 = learner.learnParameters(dbn.dag());
         } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
       }
       gum::BayesNet< double > learn3;
@@ -767,7 +767,7 @@ namespace gum_tests {
           GET_RESSOURCES_PATH("DBN_Tonda.csv"), dbn);
         learner.useScoreLog2Likelihood();
         learner.useAprioriSmoothing(1.0);
-        learn3 = learner.learnParameters(dbn);
+        learn3 = learner.learnParameters(dbn.dag());
       }
 
       TS_ASSERT_EQUALS(learn1.variable(learn1.idFromName("wl_0")).toString(),
@@ -803,6 +803,185 @@ namespace gum_tests {
 
       TS_ASSERT(nb == 1);
     }
-  };
 
+    void test_BugDoumenc() {
+      gum::BayesNet< double >    templ;
+      std::vector< std::string > varBool{"S",
+                                         "DEP",
+                                         "TM",
+                                         "TE",
+                                         "TV",
+                                         "PSY",
+                                         "AL",
+                                         "PT",
+                                         "HYP",
+                                         "FRE",
+                                         "PC",
+                                         "C",
+                                         "MN",
+                                         "AM",
+                                         "PR",
+                                         "AR",
+                                         "DFM"};   // les vraibles booléennes du RB
+
+      std::vector< std::string > varTer{
+        "NBC",
+        "MED",
+        "DEM",
+        "SP"};   // les variables pouvant prendre 3 valeurs possibles du RB
+
+      std::vector< std::string > varContinuous{
+        "A", "ADL"};   // les variables continues du RB
+
+
+      std::vector< gum::NodeId > nodeList;   // Liste des noeuds du RB
+
+      for (auto var : varBool)
+        nodeList.push_back(templ.add(gum::LabelizedVariable(
+          var, var, 2)));   // Ajout des variables booléennes à la liste des noeuds
+
+      for (auto var : varTer)
+        nodeList.push_back(templ.add(gum::LabelizedVariable(
+          var, var, 3)));   // Ajout des variables ternaires à la liste des noeuds
+
+      gum::DiscretizedVariable< double > A("A", "A");
+      for (int i = 60; i <= 105; i += 5) {
+        A.addTick(double(i));
+      }
+
+      gum::NodeId a_id = templ.add(A);
+      nodeList.push_back(a_id);   // Ajout de la variable Age allant de 60
+                                  // à 100 ans à la liste des noeuds
+
+      // Ajout de la variable ADL allant de 0 à 6 à la liste des noeuds
+      nodeList.push_back(templ.add(gum::RangeVariable("ADL", "ADL", 0, 6)));
+      // Création du noeud central NRC (niveau de risque de chute)
+      gum::LabelizedVariable NRC("NRC", "NRC", 0);
+
+      NRC.addLabel("faible");
+      NRC.addLabel("modere");
+      NRC.addLabel("eleve");
+      auto iNRC = templ.add(NRC);
+
+      // Création des arcs partant du noeud NRC vers les autres noeuds
+      for (auto node : nodeList) {
+        templ.addArc(iNRC, node);
+      }
+
+      gum::learning::BNLearner< double > learner(
+        GET_RESSOURCES_PATH("bugDoumenc.csv"), templ);
+      learner.useScoreLog2Likelihood();
+      learner.useAprioriSmoothing();
+      learner.setAprioriWeight(1);
+      auto bn = learner.learnParameters(templ.dag());
+    }
+
+    void test_BugDoumencWithInt() {
+      gum::BayesNet< double >    templ;
+      std::vector< std::string > varBool{"S",
+                                         "DEP",
+                                         "TM",
+                                         "TE",
+                                         "TV",
+                                         "PSY",
+                                         "AL",
+                                         "PT",
+                                         "HYP",
+                                         "FRE",
+                                         "PC",
+                                         "C",
+                                         "MN",
+                                         "AM",
+                                         "PR",
+                                         "AR",
+                                         "DFM"};   // les vraibles booléennes du RB
+
+      std::vector< std::string > varTer{
+        "NBC",
+        "MED",
+        "DEM",
+        "SP"};   // les variables pouvant prendre 3 valeurs possibles du RB
+
+      std::vector< std::string > varContinuous{
+        "A", "ADL"};   // les variables continues du RB
+
+
+      std::vector< gum::NodeId > nodeList;   // Liste des noeuds du RB
+
+      for (auto var : varBool)
+        nodeList.push_back(templ.add(gum::LabelizedVariable(
+          var, var, 2)));   // Ajout des variables booléennes à la liste des noeuds
+
+      for (auto var : varTer)
+        nodeList.push_back(templ.add(gum::LabelizedVariable(
+          var, var, 3)));   // Ajout des variables ternaires à la liste des noeuds
+
+      gum::DiscretizedVariable< int > A("A", "A");
+      for (int i = 60; i <= 105; i += 5) {
+        A.addTick(i);
+      }
+
+      nodeList.push_back(templ.add(A));   // Ajout de la variable Age allant de 60
+                                          // à 100 ans à la liste des noeuds
+
+      // Ajout de la variable ADL allant de 0 à 6 à la liste des noeuds
+      nodeList.push_back(templ.add(gum::RangeVariable("ADL", "ADL", 0, 6)));
+      // Création du noeud central NRC (niveau de risque de chute)
+      gum::LabelizedVariable NRC("NRC", "NRC", 0);
+
+      NRC.addLabel("faible");
+      NRC.addLabel("modere");
+      NRC.addLabel("eleve");
+      auto iNRC = templ.add(NRC);
+
+      // Création des arcs partant du noeud NRC vers les autres noeuds
+      for (auto node : nodeList) {
+        templ.addArc(iNRC, node);
+      }
+
+
+      gum::learning::BNLearner< double > learner(
+        GET_RESSOURCES_PATH("bugDoumenc.csv"), templ);
+      learner.useScoreLog2Likelihood();
+      learner.useAprioriSmoothing();
+      learner.setAprioriWeight(1);
+
+      auto bn = learner.learnParameters(templ.dag());
+
+      const gum::DiscreteVariable& var_discr = bn.variable("A");
+      int                          good = 1;
+      try {
+        const gum::DiscretizedVariable< int >& xvar_discr =
+          dynamic_cast< const gum::DiscretizedVariable< int >& >(var_discr);
+        TS_ASSERT(xvar_discr.domainSize() == 9);
+        TS_ASSERT(xvar_discr.label(0) == "[60;65[");
+        TS_ASSERT(xvar_discr.label(1) == "[65;70[");
+        TS_ASSERT(xvar_discr.label(8) == "[100;105]");
+      } catch (std::bad_cast&) { good = 0; }
+      TS_ASSERT(good == 1);
+    }
+
+    void test_setSliceOrderWithNames() {
+      gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("asia3.csv"));
+      learner.setSliceOrder({{"smoking?", "lung_cancer?"},
+                             {"bronchitis?", "visit_to_Asia?"},
+                             {"tuberculosis?"}});
+
+
+      gum::learning::BNLearner< double > learner2(
+        GET_RESSOURCES_PATH("asia3.csv"));
+      TS_ASSERT_THROWS(
+        learner2.setSliceOrder({{"smoking?", "lung_cancer?"},
+                                {"bronchitis?", "visit_to_Asia?"},
+                                {"smoking?", "tuberculosis?", "lung_cancer?"}}),
+        gum::DuplicateElement);
+
+      gum::learning::BNLearner< double > learner3(
+        GET_RESSOURCES_PATH("asia3.csv"));
+      TS_ASSERT_THROWS(learner3.setSliceOrder({{"smoking?", "lung_cancer?"},
+                                               {"bronchitis?", "visit_to_Asia?"},
+                                               {"CRUCRU"}}),
+                       gum::MissingVariableInDatabase);
+    }
+  };
 } /* namespace gum_tests */

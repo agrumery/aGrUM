@@ -100,37 +100,37 @@ namespace gum {
     // indicate that we wish to use an AIC score
     INLINE void genericBNLearner::useScoreAIC() {
       __score_type = ScoreType::AIC;
-      __checkScoreAprioriCompatibility();
+      checkScoreAprioriCompatibility();
     }
 
     // indicate that we wish to use a BD score
     INLINE void genericBNLearner::useScoreBD() {
       __score_type = ScoreType::BD;
-      __checkScoreAprioriCompatibility();
+      checkScoreAprioriCompatibility();
     }
 
     // indicate that we wish to use a BDeu score
     INLINE void genericBNLearner::useScoreBDeu() {
       __score_type = ScoreType::BDeu;
-      __checkScoreAprioriCompatibility();
+      checkScoreAprioriCompatibility();
     }
 
     // indicate that we wish to use a BIC score
     INLINE void genericBNLearner::useScoreBIC() {
       __score_type = ScoreType::BIC;
-      __checkScoreAprioriCompatibility();
+      checkScoreAprioriCompatibility();
     }
 
     // indicate that we wish to use a K2 score
     INLINE void genericBNLearner::useScoreK2() {
       __score_type = ScoreType::K2;
-      __checkScoreAprioriCompatibility();
+      checkScoreAprioriCompatibility();
     }
 
     // indicate that we wish to use a Log2Likelihood score
     INLINE void genericBNLearner::useScoreLog2Likelihood() {
       __score_type = ScoreType::LOG2LIKELIHOOD;
-      __checkScoreAprioriCompatibility();
+      checkScoreAprioriCompatibility();
     }
 
     // sets the max indegree
@@ -297,6 +297,19 @@ namespace gum {
       __constraint_SliceOrder = StructuralConstraintSliceOrder(slice_order);
     }
 
+    INLINE void genericBNLearner::setSliceOrder(
+      const std::vector< std::vector< std::string > >& slices) {
+      NodeProperty< NodeId > slice_order;
+      NodeId                 rank = 0;
+      for (const auto& slice : slices) {
+        for (const auto& name : slice) {
+          slice_order.insert(idFromName(name), rank);
+        }
+        rank++;
+      }
+      setSliceOrder(slice_order);
+    }
+
     // sets the apriori weight
     INLINE void genericBNLearner::setAprioriWeight(double weight) {
       if (weight < 0) {
@@ -304,13 +317,13 @@ namespace gum {
       }
 
       __apriori_weight = weight;
-      __checkScoreAprioriCompatibility();
+      checkScoreAprioriCompatibility();
     }
 
     // use the apriori smoothing
     INLINE void genericBNLearner::useNoApriori() {
       __apriori_type = AprioriType::NO_APRIORI;
-      __checkScoreAprioriCompatibility();
+      checkScoreAprioriCompatibility();
     }
 
     // use the apriori smoothing
@@ -319,7 +332,7 @@ namespace gum {
 
       if (weight >= 0) { setAprioriWeight(weight); }
 
-      __checkScoreAprioriCompatibility();
+      checkScoreAprioriCompatibility();
     }
 
     // use the Dirichlet apriori
@@ -327,7 +340,7 @@ namespace gum {
       genericBNLearner::useAprioriDirichlet(const std::string& filename) {
       __apriori_dbname = filename;
       __apriori_type = AprioriType::DIRICHLET_FROM_DATABASE;
-      __checkScoreAprioriCompatibility();
+      checkScoreAprioriCompatibility();
     }
 
     // returns the type (as a string) of a given apriori

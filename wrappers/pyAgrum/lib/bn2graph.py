@@ -33,73 +33,74 @@ import pydotplus as dot
 import shutil
 
 
-def _proba2rgb(p=0.99, cmap=None):
-  if cmap is None:
-    cmap=plt.get_cmap('summer')
+def _proba2rgb(p, cmap, withSpecialColor):
+  (r, g, b, _) = cmap(p)
+  r = "%02x" % int(r * 256)
+  g = "%02x" % int(g * 256)
+  b = "%02x" % int(b * 256)
 
-  if p == 0.0:
-    r, g, b = "FF", "33", "33"
-  elif p == 1.0:
-    r, g, b = "AA", "FF", "FF"
-  else:
-    (r, g, b, _) = cmap(p)
-    r = "%02x" % int(r * 256)
-    g = "%02x" % int(g * 256)
-    b = "%02x" % int(b * 256)
+  if withSpecialColor:  # add special color for p=0 or p=1
+    if p == 0.0:
+      r, g, b = "FF", "33", "33"
+    elif p == 1.0:
+      r, g, b = "AA", "FF", "FF"
 
   return r, g, b
 
 
-def _proba2bgcolor(p, cmap=None):
-  if cmap is None:
-    cmap=plt.get_cmap('summer')
-
-  r, g, b = _proba2rgb(p, cmap)
+def _proba2color(p, cmap):
+  r, g, b = _proba2rgb(p, cmap, withSpecialColor=False)
   return "#" + r + g + b
 
 
-def _proba2fgcolor(p, cmap=None):
-  if cmap is None:
-    cmap=plt.get_cmap('summer')
+def _proba2bgcolor(p, cmap):
+  r, g, b = _proba2rgb(p, cmap, withSpecialColor=True)
+  return "#" + r + g + b
 
-  if max([eval("0x" + s[0]) for s in _proba2rgb(p, cmap)]) <= 12:
+
+def _proba2fgcolor(p, cmap):
+  if max([eval("0x" + s[0]) for s in _proba2rgb(p, cmap, withSpecialColor=True)]) <= 12:
     return "#FFFFFF"
   else:
     return "#000000"
 
 
-def BN2dot(bn, size="4", arcvals=None, vals=None, cmap=None, showValues=None):
+def BN2dot(bn, size="4", nodeColor=None, arcWidth=None, arcColor=None, cmapNode=None, cmapArc=None, showMsg=None):
   """
   create a pydotplus representation of the BN
 
   :param pyAgrum.BayesNet bn:
   :param string size: size of the rendered graph
-  :param dictionnary evs: map of evidence
-  :param set targets: set of targets. If targets={} then each node is a target
-  :param vals: a nodeMap of values to be shown as color nodes (with special colors for 0 and 1)
-  :param arcvals: a arcMap of values to be shown as bold arcs
-  :param cmap: color map to show the vals
-  :param showValues: a nodeMap of values to be shown as tooltip
-  :return: the desired representation of the inference
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
+  :param arcWidth: a arcMap of values to be shown as width of arcs
+  :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
+  :param cmapNode: color map to show the vals of Nodes
+  :param cmapArc: color map to show the vals of Arcs.
+  :param showMsg: a nodeMap of values to be shown as tooltip
+
+  :return: the desired representation of the BN as a dot graph
   """
-  if cmap is None:
-    cmap=plt.get_cmap('summer')
+  if cmapNode is None:
+    cmapNode = plt.get_cmap('summer')
 
-  if arcvals is not None:
-    minarcs = min(arcvals.values())
-    maxarcs = max(arcvals.values())
+  if cmapArc is None:
+    cmapArc = plt.get_cmap('BuGn')
 
-  graph = dot.Dot(graph_type='digraph',bgcolor="transparent")
+  if arcWidth is not None:
+    minarcs = min(arcWidth.values())
+    maxarcs = max(arcWidth.values())
+
+  graph = dot.Dot(graph_type='digraph', bgcolor="transparent")
 
   for n in bn.names():
-    if vals is None or n not in vals:
+    if nodeColor is None or n not in nodeColor:
       bgcol = "#444444"
       fgcol = "#FFFFFF"
       res = ""
     else:
-      bgcol = _proba2bgcolor(vals[n], cmap)
-      fgcol = _proba2fgcolor(vals[n], cmap)
-      res = " : {0:2.5f}".format(vals[n] if showValues is None else showValues[n])
+      bgcol = _proba2bgcolor(nodeColor[n], cmapNode)
+      fgcol = _proba2fgcolor(nodeColor[n], cmapNode)
+      res = " : {0:2.5f}".format(nodeColor[n] if showMsg is None else showMsg[n])
 
     node = dot.Node('"' + n + '"', style="filled",
                     fillcolor=bgcol,
@@ -108,18 +109,25 @@ def BN2dot(bn, size="4", arcvals=None, vals=None, cmap=None, showValues=None):
     graph.add_node(node)
 
   for a in bn.arcs():
-    if arcvals is None:
+    if arcWidth is None:
       pw = 1
       av = ""
     else:
-      if a in arcvals:
-        pw = 0.1 + 5 * (arcvals[a] - minarcs) / (maxarcs - minarcs)
-        av = arcvals[a]
+      if a in arcWidth:
+        pw = 0.1 + 5 * (arcWidth[a] - minarcs) / (maxarcs - minarcs)
+        av = arcWidth[a]
       else:
         pw = 1
+    if arcColor is None:
+      col = "#000000"
+    else:
+      if a in arcColor:
+        col = _proba2color(arcColor[a], cmapArc)
+      else:
+        col = "#000000"
 
     edge = dot.Edge('"' + bn.variable(a[0]).name() + '"', '"' + bn.variable(a[1]).name() + '"',
-                    penwidth=pw,
+                    penwidth=pw, color=col,
                     tooltip="{} : {}".format(a, av))
     graph.add_edge(edge)
 
@@ -204,7 +212,8 @@ def _saveFigProba(p, filename, format="svg"):
   plt.close(fig)
 
 
-def BNinference2dot(bn, size="4",engine=None, evs={}, targets={}, format='png', vals=None, arcvals=None,cmap=None):
+def BNinference2dot(bn, size="4", engine=None, evs={}, targets={}, format='png', nodeColor=None, arcWidth=None,
+                    cmap=None):
   """
   create a pydotplus representation of an inference in a BN
 
@@ -214,19 +223,19 @@ def BNinference2dot(bn, size="4",engine=None, evs={}, targets={}, format='png', 
   :param dictionnary evs: map of evidence
   :param set targets: set of targets. If targets={} then each node is a target
   :param string format: render as "png" or "svg"
-  :param vals: a nodeMap of values to be shown as color nodes (with special color for 0 and 1)
-  :param arcvals: a arcMap of values to be shown as bold arcs
+  :param nodeColor: a nodeMap of values to be shown as color nodes (with special color for 0 and 1)
+  :param arcWidth: a arcMap of values to be shown as bold arcs
   :param cmap: color map to show the vals
   :return: the desired representation of the inference
   """
-  if vals is None:
-    vals=dict()
+  if nodeColor is None:
+    nodeColor = dict()
 
-  if arcvals is None:
-    arcvals=dict()
-    
+  if arcWidth is None:
+    arcWidth = dict()
+
   if cmap is None:
-    cmap=plt.get_cmap('summer')
+    cmap = plt.get_cmap('summer')
 
   startTime = time.time()
   if engine is None:
@@ -250,28 +259,28 @@ def BNinference2dot(bn, size="4",engine=None, evs={}, targets={}, format='png', 
     fgcol = "#000000"
     bgcol = "#F8F8F8"
     if name in evs or nid in evs:
-      bgcol = "sandybrown" 
-    elif  name in vals or nid in vals:
-      bgcol = _proba2bgcolor(vals[name], cmap)
-      fgcol = _proba2fgcolor(vals[name], cmap)
+      bgcol = "sandybrown"
+    elif name in nodeColor or nid in nodeColor:
+      bgcol = _proba2bgcolor(nodeColor[name], cmap)
+      fgcol = _proba2fgcolor(nodeColor[name], cmap)
     colorattribute = 'fillcolor="{}", fontcolor="{}", color="#000000"'.format(bgcol, fgcol)
 
-    if len(targets)==0 or name in targets or nid in targets:
+    if len(targets) == 0 or name in targets or nid in targets:
       filename = temp_dir + name + "." + format
-      _saveFigProba(ie.posterior(name), filename, format=format)      
+      _saveFigProba(ie.posterior(name), filename, format=format)
       dotstr += ' "{0}" [shape=rectangle,image="{1}",label="", {2}];\n'.format(name, filename, colorattribute)
     else:
       dotstr += ' "{0}" [{1}]'.format(name, colorattribute)
 
-  if len(arcvals)>0:
-    minarcs = min(arcvals.values())
-    maxarcs = max(arcvals.values())
+  if len(arcWidth) > 0:
+    minarcs = min(arcWidth.values())
+    maxarcs = max(arcWidth.values())
 
   for a in bn.arcs():
     (n, j) = a
-    if (n, j) in arcvals:
-      pw = 0.1 + 5 * (arcvals[a] - minarcs) / (maxarcs - minarcs)
-      av = arcvals[a]
+    if (n, j) in arcWidth:
+      pw = 0.1 + 5 * (arcWidth[a] - minarcs) / (maxarcs - minarcs)
+      av = arcWidth[a]
     else:
       pw = 1
       av = ""
@@ -339,7 +348,7 @@ if __name__ == "__main__":
   bn = gum.fastBN("a->b->d;a->c->d->e;f->b")
   g = BNinference2dot(bn,
                       targets=['f', 'd'],
-                      vals={'a': 1, 'b': 0.3, 'c': 0.3, 'd': 0.1, 'e': 0.1, 'f': 0.3},
-                      arcvals={(0, 1): 2, (0, 2): 0.5})
+                      nodeColor={'a': 1, 'b': 0.3, 'c': 0.3, 'd': 0.1, 'e': 0.1, 'f': 0.3},
+                      arcWidth={(0, 1): 2, (0, 2): 0.5})
   g.write("test.pdf", format='pdf')
   # pdfize(bn, "test")

@@ -80,33 +80,34 @@ namespace gum {
 
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < typename IdSetAlloc, typename CountAlloc >
-    bool ScoreLog2Likelihood< IdSetAlloc, CountAlloc >::isAprioriCompatible(
+    std::string ScoreLog2Likelihood< IdSetAlloc, CountAlloc >::isAprioriCompatible(
       const std::string& apriori_type, double weight) {
       // check that the apriori is compatible with the score
       if ((apriori_type == AprioriDirichletType::type)
           || (apriori_type == AprioriSmoothingType::type)
           || (apriori_type == AprioriNoAprioriType::type)) {
-        return true;
+        return "";
       }
 
       // apriori types unsupported by the type checker
       std::stringstream msg;
       msg << "The apriori '" << apriori_type
           << "' is not yet supported by method isAprioriCompatible";
-      GUM_ERROR(InvalidArgument, msg.str());
+      return msg.str();
     }
 
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < typename IdSetAlloc, typename CountAlloc >
-    INLINE bool ScoreLog2Likelihood< IdSetAlloc, CountAlloc >::isAprioriCompatible(
-      const Apriori< IdSetAlloc, CountAlloc >& apriori) {
+    INLINE std::string
+           ScoreLog2Likelihood< IdSetAlloc, CountAlloc >::isAprioriCompatible(
+        const Apriori< IdSetAlloc, CountAlloc >& apriori) {
       return isAprioriCompatible(apriori.getType(), apriori.weight());
     }
 
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < typename IdSetAlloc, typename CountAlloc >
-    INLINE bool
-      ScoreLog2Likelihood< IdSetAlloc, CountAlloc >::isAprioriCompatible() const {
+    INLINE std::string
+           ScoreLog2Likelihood< IdSetAlloc, CountAlloc >::isAprioriCompatible() const {
       return isAprioriCompatible(*this->_apriori);
     }
 

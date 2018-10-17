@@ -27,7 +27,7 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/variables/discreteVariable.h>
+#include <agrum/variables/IDiscretizedVariable.h>
 
 namespace gum {
   /**
@@ -51,7 +51,7 @@ namespace gum {
    * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
    */
   template < typename T_TICKS >
-  class DiscretizedVariable : public DiscreteVariable {
+  class DiscretizedVariable : public IDiscretizedVariable {
     private:
     std::vector< T_TICKS > __ticks;   // Array from 0 to domainSize-2
     Size                   __ticks_size;
@@ -118,7 +118,7 @@ namespace gum {
     /// @}
 
     /// a virtual clone
-    virtual DiscreteVariable* clone() const;
+    virtual DiscretizedVariable< T_TICKS >* clone() const;
 
     /// returns the type of variable
 
@@ -178,6 +178,9 @@ namespace gum {
 
     /// Return the list of ticks
     const std::vector< T_TICKS >& ticks() const;
+
+    /// return the list of ticks as a vector of doubles
+    virtual std::vector< double > ticksAsDoubles() const;
   };
 
 } /* namespace gum */

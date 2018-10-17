@@ -24,7 +24,7 @@ def processeNotebook(notebook_filename):
   res = "ok"
 
   try:
-    ep = ExecutePreprocessor(timeout=600, kernel_name='python3')
+    ep = ExecutePreprocessor(timeout=5000, kernel_name='python3')
     with open(notebook_filename) as f:
       nb = nbformat.read(f, as_version=4)
     nb['cells'].insert(0, nbformat.from_dict({

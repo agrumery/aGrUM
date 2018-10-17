@@ -73,13 +73,13 @@ def computeScores(bn_name, csv_name, visible=False, transforme_label=None):
 
   nbr_lines = lines_count(csv_name) - 1
 
-  csvfile = open(csv_name, "rb")
+  csvfile = open(csv_name, "r")
   dialect = csv.Sniffer().sniff(csvfile.read(1024))
   csvfile.seek(0)
 
-  batchReader = csv.reader(open(csv_name, 'rb'), dialect)
+  batchReader = csv.reader(open(csv_name, 'r'), dialect)
 
-  titre = batchReader.next()
+  titre = next(batchReader)
   fields = {}
   for i, nom in enumerate(titre):
     fields[nom] = i

@@ -46,6 +46,9 @@ namespace gum_tests {
       TS_ASSERT_THROWS(translator.translate("11"), gum::UnknownLabelInDatabase);
       TS_ASSERT_THROWS(translator.translate("aaa"), gum::TypeError);
 
+      TS_ASSERT(translator.missingValue().discr_val
+                == std::numeric_limits< std::size_t >::max());
+
       TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("7"));
       TS_ASSERT(translator.translate("10").discr_val == 1);
       TS_ASSERT(translator.translate("9").discr_val == 1);
@@ -55,6 +58,17 @@ namespace gum_tests {
       TS_ASSERT(
         translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})
         == "[3;10]");
+
+      const auto& tr_var = *(translator.variable());
+      int         good_discr = 1;
+      try {
+        const gum::DiscretizedVariable< int >& xvar_discr =
+          dynamic_cast< const gum::DiscretizedVariable< int >& >(tr_var);
+        TS_ASSERT(xvar_discr.domainSize() == 2);
+        TS_ASSERT(xvar_discr.label(0) == "[1;3[");
+        TS_ASSERT(xvar_discr.label(1) == "[3;10]");
+      } catch (std::bad_cast&) { good_discr = 0; }
+      TS_ASSERT(good_discr == 1);
 
       std::vector< std::string >                        missing{"?", "N/A", "???"};
       gum::learning::DBTranslator4DiscretizedVariable<> translator2(var, missing);
