@@ -22,8 +22,6 @@ DiscretizedVariable
 
 .. autoclass:: pyAgrum.DiscretizedVariable
 
-.. autoclass:: pyAgrum.pyAgrum.DiscretizedVariable_double
-
 RangeVariable
 ^^^^^^^^^^^^^
 
