@@ -7,6 +7,7 @@ Available constructors:
 
 	``BayesNet(source) -> BayesNet``
 
+
 Parameters
 ----------
 name: str
@@ -162,7 +163,6 @@ externalWeight : double
 	the added external weight
 id : int
 	The proposed id for the variable.
-
 Returns
 -------
 int
@@ -373,7 +373,6 @@ gum.InvalidArc
     If arc.tail and/or arc.head are not in the BN.
 gum.InvalidArc
     If variable in arc.head is not a NoisyOR variable.
-
 "
 
 %feature("docstring") gum::BayesNet::beginTopologyTransformation

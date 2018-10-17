@@ -112,8 +112,32 @@ Returns
 pyAgrum.Potential
   the new Potential
 "
-
 %feature("docstring") gum::Potential::fill
+"
+Automatically fills the potential with v.
+
+Parameters
+----------
+v : number or list or pyAgrum.Potential the number of parameters of the Potential
+    a value or a list/pyAgrum.Potential containing the values to fill the Potential with.
+
+Warning
+-------
+    if v is a list, the size of the list must be the
+    if v is a pyAgrum.Potential. It must to contain variables with exactly the same names and labels but not necessarily the same variables.
+
+Returns
+-------
+pyAgrum.Potential
+      a reference to the modified potentia
+
+Raises
+------
+gum.SizeError
+  If v size's does not matches the domain size. 
+"
+
+%feature("docstring") gum::Potential::fillWith
 "
 Automatically fills the potential with v.
 
@@ -156,7 +180,7 @@ i : pyAgrum.Instantiation
 Returns
 -------
 double
-  the value of the instantiation
+  the value in the Potential at the position given by the instantiation
 "
 
 %feature("docstring") gum::Potential::isNonZeroMap
