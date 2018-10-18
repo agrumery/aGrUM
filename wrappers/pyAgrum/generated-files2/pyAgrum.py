@@ -8859,6 +8859,7 @@ class Potential_double(_object):
             self.this = this
 
         self._notSync=True
+        self._list_vars=list()
 
 
 
@@ -9111,7 +9112,7 @@ class Potential_double(_object):
         r"""
         KL(self, p) -> double
 
-        C heck the compatibility and compute the Kullback-Leibler divergence between the potential and.
+        Check the compatibility and compute the Kullback-Leibler divergence between the potential and.
 
         Parameters
         ----------
@@ -9837,6 +9838,7 @@ class Potential_double(_object):
         """
         val = _pyAgrum.Potential_double_remove(self, var)
 
+        self._list_vars.remove(var)
         self._notSync=True
 
 
@@ -9856,12 +9858,15 @@ class Potential_double(_object):
 
         Raises
         ------
-        gum.Error
-          If DiscretizedVariable added with no Tick.
+        DuplicateElement
+          If the variable is already in this Potential.
+        InvalidArgument
+          If the variable is empty.
 
         """
         val = _pyAgrum.Potential_double_add(self, v)
 
+        self._list_vars.append(v)
         self._notSync=True
         return self
 
