@@ -22,7 +22,7 @@ pyAgrum.Potential
 
 %feature("docstring") gum::Potential::KL
 "
-C heck the compatibility and compute the Kullback-Leibler divergence between the potential and.
+Check the compatibility and compute the Kullback-Leibler divergence between the potential and.
 
 Parameters
 ----------
@@ -63,8 +63,10 @@ v : pyAgrum.DiscreteVariable
 
 Raises
 ------
-gum.Error
-  If DiscretizedVariable added with no Tick.
+DuplicateElement
+  If the variable is already in this Potential.
+InvalidArgument
+  If the variable is empty.
 "
 
 %feature("docstring") gum::Potential::contains
