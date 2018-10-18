@@ -7,13 +7,22 @@
 /* Synchronisation between gum::Potential and numpy array */
 %pythonappend gum::Potential<double>::Potential %{
         self._notSync=True
+        self._list_vars=list()
 %}
 %pythonappend gum::Potential<double>::remove %{
+        self._list_vars.remove(var)
         self._notSync=True
 %}
 %pythonappend gum::Potential<double>::set %{
         self._notSync=True
 %}
+
+%pythonappend gum::Potential<double>::add %{
+        self._list_vars.append(v)
+        self._notSync=True
+        return self
+%}
+
 
 %define CHANGE_THEN_RETURN_SELF(methodname)
 %pythonappend gum::Potential<double>::methodname %{
@@ -22,7 +31,6 @@
 %}
 %enddef
 
-CHANGE_THEN_RETURN_SELF(add)
 CHANGE_THEN_RETURN_SELF(abs)
 CHANGE_THEN_RETURN_SELF(normalize)
 CHANGE_THEN_RETURN_SELF(fillWith)
