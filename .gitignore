@@ -87,6 +87,7 @@ apps/pyAgrum/notebooks/WaterSprinkler.*
 apps/pyAgrum/notebooks/*.csv
 apps/pyAgrum/notebooks/*.html
 .ipynb_checkpoints
+wrappers/pyAgrum/doc/sphinx/sphinx_warnings.txt
 
 apps/pyAgrum/samples/actuel.png
 apps/pyAgrum/samples/alarm.csv
@@ -103,3 +104,6 @@ wrappers/pyAgrum/sphinx/sphinx_warnings.txt
 # Pipenv files
 Pipfile
 Pipfile.lock
+
+#virtual env
+.venv

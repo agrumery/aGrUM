@@ -80,6 +80,10 @@ namespace gum {
 
     /// @{
     /// returns the size of the random discrete variable domain
+    /// @warning :  It is technically possible to create RangeVariable with minVal > maxVal
+    ///   (or modify in that way an already created RangeVariable). The result is
+    ///   an empty variable (i.e. empty() returns true).
+    ///   If maxVal - minVal < 0, then domainsize() = 0.
     virtual Size domainSize() const;
 
     /// returns the type of variable

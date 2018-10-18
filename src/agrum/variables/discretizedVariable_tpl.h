@@ -242,7 +242,7 @@ namespace gum {
    */
   template < typename T_TICKS >
   INLINE Size DiscretizedVariable< T_TICKS >::domainSize() const {
-    return __ticks_size < 2 ? 0 : __ticks_size - 1;
+    return (__ticks_size < 2) ? Size(0) : Size(__ticks_size - 1);
   }
 
   template < typename T_TICKS >
