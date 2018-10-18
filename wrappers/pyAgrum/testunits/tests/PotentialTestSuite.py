@@ -1,10 +1,10 @@
 # -*- encoding: UTF-8 -*-
 
 import math
-import unittest
 
 import numpy as np
 import pyAgrum as gum
+import unittest
 from pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 
@@ -639,7 +639,7 @@ class TestOperators(pyAgrumTestCase):
     with self.assertRaises(gum.FatalError):
       res = q.KL(p)
 
-    res = p.KL(r)    
+    res = p.KL(r)
     self.assertAlmostEqual(res, 0.0 + 1.0 * math.log(1.0 / 0.3, 2))
 
     with self.assertRaises(gum.FatalError):
@@ -694,24 +694,6 @@ class TestOperators(pyAgrumTestCase):
     with self.assertRaises(gum.InvalidArgument):
       ppp.fillWith(p, ["w", "v"])
 
-  """
-      void __testval_for_set(const gum::Potential< int >&         p,
-                             int                                  val,
-                             const gum::Set< gum::Instantiation > s,
-                             gum::Size                            expected_size) {
-        gum::Instantiation ip(p);
-  
-        TS_ASSERT_EQUALS(s.size(), expected_size);
-        for (ip.setFirst(); !ip.end(); ++ip) {
-          if (s.contains(ip)) {
-            TS_ASSERT_EQUALS(p[ip], val);
-          } else {
-            TS_ASSERT_DIFFERS(p[ip], val);
-          }
-        }
-      } 
-  """
-
   def __test_val_for_set(self, p, val, soi, nbr):
     self.assertEqual(len(soi), nbr)
     for i in soi:
@@ -731,6 +713,61 @@ class TestOperators(pyAgrumTestCase):
     self.__test_val_for_set(p, 10, p.findAll(10), 0)
     self.__test_val_for_set(p, 4, p.argmax(), 2)
     self.__test_val_for_set(p, 1, p.argmin(), 2)
+
+  def testAddDummyVariables(self):
+    # === LabelizedVariable
+    v = gum.LabelizedVariable("v", "v", 0)
+    p = gum.Potential()
+    self.assertEquals(v.domainSize(), 0)
+    with self.assertRaises(gum.InvalidArgument):
+      p.add(v)
+
+    v.addLabel("first")
+    self.assertEquals(v.domainSize(), 1)
+    p.add(v)
+
+    p = gum.Potential()
+    v.addLabel("second")
+    self.assertEquals(v.domainSize(), 2)
+    p.add(v)
+
+    # === RangeVariable
+    v = gum.RangeVariable("v", "v", 1, 0)
+    p = gum.Potential()
+    self.assertEquals(v.domainSize(), 0)
+    with self.assertRaises(gum.InvalidArgument):
+      p.add(v)
+
+    v.setMaxVal(1)
+    self.assertEquals(v.domainSize(), 1)
+    p.add(v)
+
+    p = gum.Potential()
+    v.setMaxVal(2)
+    self.assertEquals(v.domainSize(), 2)
+    p.add(v)
+
+    # === DiscretizedVariable
+    v = gum.DiscretizedVariable("v", "v")
+    p = gum.Potential()
+
+    self.assertEquals(v.domainSize(), 0)
+    with self.assertRaises(gum.InvalidArgument):
+      p.add(v)
+
+    v.addTick(1)
+    self.assertEquals(v.domainSize(), 0)
+    with self.assertRaises(gum.InvalidArgument):
+      p.add(v)
+
+    v.addTick(2)
+    self.assertEquals(v.domainSize(), 1)
+    p.add(v)
+
+    p = gum.Potential()
+    v.addTick(3)
+    self.assertEquals(v.domainSize(), 2)
+    p.add(v)
 
 
 ts = unittest.TestSuite()

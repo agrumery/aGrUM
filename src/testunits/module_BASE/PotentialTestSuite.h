@@ -22,6 +22,7 @@
 
 #include <agrum/variables/discretizedVariable.h>
 #include <agrum/variables/labelizedVariable.h>
+#include <agrum/variables/rangeVariable.h>
 
 #include <agrum/multidim/ICIModels/multiDimLogit.h>
 #include <agrum/multidim/implementations/multiDimArray.h>
@@ -1048,6 +1049,63 @@ namespace gum_tests {
       __testval_for_set(p, 10, p.findAll(10), 0);
       __testval_for_set(p, 4, p.argmax(), 2);
       __testval_for_set(p, 1, p.argmin(), 2);
+    }
+
+    void testAddDummyVariables() {
+      {
+        gum::LabelizedVariable v("v", "v", 0);
+
+        gum::Potential< double > p;
+        TS_ASSERT_EQUALS(v.domainSize(), gum::Size(0));
+        TS_ASSERT_THROWS(p.add(v), gum::InvalidArgument);
+
+        v.addLabel("first");
+        TS_ASSERT_EQUALS(v.domainSize(), gum::Size(1));
+        TS_GUM_ASSERT_THROWS_NOTHING(p.add(v));
+
+        p = gum::Potential< double >();
+        v.addLabel("second");
+        TS_ASSERT_EQUALS(v.domainSize(), gum::Size(2));
+        TS_GUM_ASSERT_THROWS_NOTHING(p.add(v));
+      }
+
+      {
+        gum::RangeVariable v("v", "v");
+        v.setMinVal(1);
+        v.setMaxVal(0);
+        gum::Potential< double > p;
+        TS_ASSERT_EQUALS(v.domainSize(), gum::Size(0));
+        TS_ASSERT_THROWS(p.add(v), gum::InvalidArgument);
+
+        v.setMaxVal(1);
+        TS_ASSERT_EQUALS(v.domainSize(), gum::Size(1));
+        TS_GUM_ASSERT_THROWS_NOTHING(p.add(v));
+
+        p = gum::Potential< double >();
+        v.setMaxVal(2);
+        TS_ASSERT_EQUALS(v.domainSize(), gum::Size(2));
+        TS_GUM_ASSERT_THROWS_NOTHING(p.add(v));
+      }
+
+      {
+        gum::DiscretizedVariable< int > v("v", "v");
+        gum::Potential< double >        p;
+        TS_ASSERT_EQUALS(v.domainSize(), gum::Size(0));
+        TS_ASSERT_THROWS(p.add(v), gum::InvalidArgument);
+
+        v.addTick(1);
+        TS_ASSERT_EQUALS(v.domainSize(), gum::Size(0));
+        TS_ASSERT_THROWS(p.add(v), gum::InvalidArgument);
+
+        v.addTick(2);
+        TS_ASSERT_EQUALS(v.domainSize(), gum::Size(1));
+        TS_GUM_ASSERT_THROWS_NOTHING(p.add(v));
+
+        p = gum::Potential< double >();
+        v.addTick(3);
+        TS_ASSERT_EQUALS(v.domainSize(), gum::Size(2));
+        TS_GUM_ASSERT_THROWS_NOTHING(p.add(v));
+      }
     }
   };
 }   // namespace gum_tests
