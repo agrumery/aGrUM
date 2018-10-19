@@ -284,6 +284,10 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
         -------
         list
             a list containing the name of each variables in the potential
+
+        Warnings
+        --------
+            Listed in reverse from the variable enumeration order
         """
         self.__fill_distrib__()
         return self._var_names
