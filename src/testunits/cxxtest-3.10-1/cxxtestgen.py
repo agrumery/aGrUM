@@ -178,10 +178,10 @@ def scanInputFiles(files):
     global suites
     if len(suites) is 0 and not root:
         abort( 'No tests defined' )
-
-def scanInputFile(fileName):
+    
+def scanInputFile(filename):
     '''Scan single input file for test suites'''
-    file = open(fileName)
+    file = open(filename, encoding='utf-8')
     lineNo = 0
     while 1:
         line = file.readline()
@@ -189,7 +189,7 @@ def scanInputFile(fileName):
             break
         lineNo = lineNo + 1
 
-        scanInputLine( fileName, lineNo, line )
+        scanInputLine(filename, lineNo, line )
     closeSuite()
     file.close()
 
