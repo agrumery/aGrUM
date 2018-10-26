@@ -135,6 +135,17 @@ def BN2dot(bn, size="4", nodeColor=None, arcWidth=None, arcColor=None, cmapNode=
   return graph
 
 
+def _getTitleHisto(p):
+  var = p.variable(0)
+
+  if var.varType()==0: # Discretized
+    return "{} : $\mu=1$ $\sigma=2$".format(var.name())
+  elif var.varType()==2: # RangeVariable
+    return "{} : $\mu=1$ $\sigma=2$".format(var.name())
+
+  #Labelized
+  return "{}".format(var.name())
+
 def _getProbaV(p):
   """
   compute the representation of an histogram for a mono-dim Potential
@@ -152,15 +163,13 @@ def _getProbaV(p):
 
   ax = fig.add_subplot(111)
 
-  ax.bar(ra, p.tolist(), align='center')
-  # ax.set_ylim(0,1)
+  bars=ax.bar(ra, p.tolist(), align='center')
+  ax.set_ylim(0,1)
   ax.set_xticks(ra)
-  ax.set_xticklabels([])
-  # ax.set_xlabel('Probability')
-  ax.set_title(var.name())
+  ax.set_xticklabels(["{:.1%}".format(bar.get_height()) for bar in bars],rotation='vertical')
+  ax.set_title(_getTitleHisto(p))
   ax.get_yaxis().grid(True)
   return fig
-
 
 def _getProbaH(p):
   """
@@ -172,7 +181,7 @@ def _getProbaH(p):
   var = p.variable(0)
   ra = np.arange(var.domainSize())
   ra_reverse = np.arange(var.domainSize() - 1, -1, -1)  # reverse order
-  vx = ["{0}:{1:1.4f}".format(var.label(int(i)), p[i]) for i in ra_reverse]
+  vx = ["{0}".format(var.label(int(i  ))) for i in ra_reverse]
 
   fig = plt.figure()
   fig.set_figheight(var.domainSize() / 4.0)
@@ -182,13 +191,18 @@ def _getProbaH(p):
 
   vals = p.tolist()
   vals.reverse()
-  ax.barh(ra, vals, align='center')
+  bars=ax.barh(ra, vals, align='center')
+
+  for bar in bars:
+    txt="{:.1%}".format(bar.get_width())
+    ax.text(1, bar.get_y() , txt, ha='right', va='bottom')
+
   ax.set_xlim(0, 1)
   ax.set_yticks(np.arange(var.domainSize()))
   ax.set_yticklabels(vx)
   ax.set_xticklabels([])
   # ax.set_xlabel('Probability')
-  ax.set_title(var.name())
+  ax.set_title(_getTitleHisto(p))
   ax.get_xaxis().grid(True)
   return fig
 
