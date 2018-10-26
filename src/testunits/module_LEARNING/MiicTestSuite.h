@@ -66,6 +66,7 @@ namespace gum_tests {
 
       gum::learning::CorrectedMutualInformation<> I(parser, modalities);
       I.useNML();
+      I.useKCache ( true );
 
       gum::learning::Miic miic;
 
@@ -73,8 +74,17 @@ namespace gum_tests {
       std::cout << graph << std::endl;
 
       const auto& kNML = I.kNML();
-      std::cout << "cache : " << kNML.cache_size << "  hits : " << kNML.cache_hit
-                << std::endl;
+      std::cout << "knml cache : " << kNML.cache_size
+                << "  hits : " << kNML.cache_hit  << std::endl;
+      std::cout << "corrMutInfo I2 cache : " << I.I2_cache_size
+                << "  hits : " << I.I2_cache_hits << std::endl;
+      std::cout << "corrMutInfo I3 cache : " << I.I3_cache_size
+                << "  hits : " << I.I3_cache_hits << std::endl;
+      std::cout << "corrMutInfo K2 cache : " << I.K2_cache_size
+                << "  hits : " << I.K2_cache_hits << std::endl;
+      std::cout << "corrMutInfo K3 cache : " << I.K3_cache_size
+                << "  hits : " << I.K3_cache_hits << std::endl;
+      
     }
   };
 

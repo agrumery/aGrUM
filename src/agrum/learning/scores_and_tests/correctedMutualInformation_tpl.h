@@ -225,6 +225,7 @@ namespace gum {
         if (__use_cache) {
           try {
             double score = __cache_2pt.score(var1, var2, conditioning_ids);
+            ++I2_cache_hits;
             return score;
           } catch (const NotFound&) {}
         }
@@ -272,6 +273,7 @@ namespace gum {
         // shall we put the score into the cache?
         if (this->_isUsingCache()) {
           this->_insertIntoCache(var1, var2, conditioning_ids, score);
+          ++I2_cache_size;
         }
         return score;
 
@@ -283,6 +285,7 @@ namespace gum {
         if (__use_cache) {
           try {
             double score = __cache_2pt.score(var1, var2, __empty_conditioning_set);
+            ++I2_cache_hits;
             return score;
           } catch (const NotFound&) {}
         }
@@ -319,6 +322,7 @@ namespace gum {
         // shall we put the score into the cache?
         if (this->_isUsingCache()) {
           this->_insertIntoCache(var1, var2, __empty_conditioning_set, score);
+          ++I2_cache_size;
         }
         return score;
       }
@@ -331,6 +335,7 @@ namespace gum {
       if (this->__use_Kcache) {
         try {
           double score = __cache_K2pt.score(var1, var2, conditioning_ids);
+          ++K2_cache_hits;
           return score;
         } catch (const NotFound&) {}
       }
@@ -363,6 +368,7 @@ namespace gum {
       // shall we put the score into the cache?
       if (this->__use_Kcache) {
         this->_insertIntoKCache(var1, var2, conditioning_ids, score);
+        ++K2_cache_size;
       }
       return score;
     }
@@ -383,6 +389,7 @@ namespace gum {
         if (__use_cache) {
           try {
             double score = __cache_3pt.score(var1, var2, var3, conditioning_ids);
+            ++I3_cache_hits;
             return score;
           } catch (const NotFound&) {}
         }
@@ -456,6 +463,7 @@ namespace gum {
         // shall we put the score into the cache?
         if (this->_isUsingCache()) {
           this->_insertIntoCache(var1, var2, var3, conditioning_ids, score);
+          ++I3_cache_size;
         }
 
         return score;
@@ -466,6 +474,7 @@ namespace gum {
           try {
             double score =
               __cache_3pt.score(var1, var2, var3, __empty_conditioning_set);
+            ++I3_cache_hits;
             return score;
           } catch (const NotFound&) {}
         }
@@ -514,6 +523,7 @@ namespace gum {
         if (this->_isUsingCache()) {
           this->_insertIntoCache(
             var1, var2, var3, __empty_conditioning_set, score);
+          ++I3_cache_size;
         }
         return score;
       }
@@ -527,6 +537,7 @@ namespace gum {
       if (this->__use_Kcache) {
         try {
           double score = __cache_K3pt.score(var1, var2, var3, conditioning_ids);
+          ++K3_cache_hits;
           return score;
         } catch (const NotFound&) {}
       }
@@ -538,6 +549,7 @@ namespace gum {
       // shall we put the score into the cache?
       if (this->__use_Kcache) {
         this->_insertIntoKCache(var1, var2, var3, conditioning_ids, score);
+        ++K3_cache_size;
       }
 
       return score;

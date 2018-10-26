@@ -138,6 +138,16 @@ namespace gum {
       /// the description type for the complexity correction
       enum class KModeTypes { MDL, NML, NoCorr };
 
+      std::size_t I2_cache_hits { std::size_t(0) };
+      std::size_t K2_cache_hits { std::size_t(0) };
+      std::size_t I2_cache_size { std::size_t(0) };
+      std::size_t K2_cache_size { std::size_t(0) };
+      std::size_t I3_cache_hits { std::size_t(0) };
+      std::size_t K3_cache_hits { std::size_t(0) };
+      std::size_t I3_cache_size { std::size_t(0) };
+      std::size_t K3_cache_size { std::size_t(0) };
+      
+
       protected:
       /// returns the 2-point mutual information corresponding to a given nodeset
       virtual double
