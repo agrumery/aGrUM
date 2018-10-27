@@ -25,6 +25,7 @@
 from __future__ import print_function
 
 import time
+import math
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -135,17 +136,24 @@ def BN2dot(bn, size="4", nodeColor=None, arcWidth=None, arcColor=None, cmapNode=
   return graph
 
 
+def _stats(p):
+    mu=0.0
+    mu2=0.0
+    v=p.variable(0)
+    for i,p in enumerate(p.tolist()):
+        x=v.numerical(i)
+        mu+=p*x
+        mu2+=p*x*x
+    return (mu,math.sqrt(mu2-mu*mu))
+
 def _getTitleHisto(p):
   var = p.variable(0)
+  if var.varType()==1: # Labelized
+    return "{}".format(var.name())
 
-  if var.varType()==0: # Discretized
-    return "{} : $\mu=1$ $\sigma=2$".format(var.name())
-  elif var.varType()==2: # RangeVariable
-    return "{} : $\mu=1$ $\sigma=2$".format(var.name())
-
-  #Labelized
-  return "{}".format(var.name())
-
+  (mu,std)=_stats(p)
+  return "{}\n$\mu={:.2f}$; $\sigma={:.2f}$".format(var.name(),mu,std)
+  
 def _getProbaV(p):
   """
   compute the representation of an histogram for a mono-dim Potential
@@ -222,7 +230,7 @@ def proba2histo(p):
 
 def _saveFigProba(p, filename, format="svg"):
   fig = proba2histo(p)
-  fig.savefig(filename, bbox_inches='tight', transparent=True, pad_inches=0, dpi=fig.dpi, format=format)
+  fig.savefig(filename, bbox_inches='tight', transparent=True, pad_inches=0.05, dpi=fig.dpi, format=format)
   plt.close(fig)
 
 
@@ -277,8 +285,8 @@ def BNinference2dot(bn, size="4", engine=None, evs={}, targets={}, format='png',
     elif name in nodeColor or nid in nodeColor:
       bgcol = _proba2bgcolor(nodeColor[name], cmap)
       fgcol = _proba2fgcolor(nodeColor[name], cmap)
-    colorattribute = 'fillcolor="{}", fontcolor="{}", color="#000000"'.format(bgcol, fgcol)
 
+    colorattribute = 'fillcolor="{}", fontcolor="{}", color="#000000"'.format(bgcol, fgcol)
     if len(targets) == 0 or name in targets or nid in targets:
       filename = temp_dir + name + "." + format
       _saveFigProba(ie.posterior(name), filename, format=format)
