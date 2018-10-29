@@ -9067,6 +9067,10 @@ class Potential(object):
         -------
         list
             a list containing the name of each variables in the potential
+
+        Warnings
+        --------
+            Listed in reverse from the variable enumeration order
         """
         self.__fill_distrib__()
         return self._var_names
@@ -11248,7 +11252,7 @@ class LazyPropagation(object):
         Returns
         -------
         pyAgrum.CliqueGraph
-          the current junction tree 
+          the current junction tree
 
         """
         return _pyAgrum.LazyPropagation_junctionTree(self)
@@ -11356,7 +11360,7 @@ class LazyPropagation(object):
         Returns
         -------
         set
-          the set of nodes with hard evidence 
+          the set of nodes with hard evidence
 
         """
         return _pyAgrum.LazyPropagation_hardEvidenceNodes(self)
@@ -11369,7 +11373,7 @@ class LazyPropagation(object):
         Returns
         -------
         set
-          the set of nodes with soft evidence 
+          the set of nodes with soft evidence
 
         """
         return _pyAgrum.LazyPropagation_softEvidenceNodes(self)
@@ -11396,17 +11400,22 @@ class LazyPropagation(object):
 
         Parameters
         ----------
-        list : 
+        list :
           the list of nodes whose posterior joint probability is wanted
+
+
+        Warnings
+        --------
+        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used bu the Potential.
 
         Returns
         -------
         pyAgrum.Potential
-          a const ref to the posterior joint probability of the set of nodes. 
+          a const ref to the posterior joint probability of the set of nodes.
 
         Raises
         ------
-        gum.UndefinedElement 
+        gum.UndefinedElement
           If an element of nodes is not in targets
 
         """
@@ -11467,7 +11476,7 @@ class LazyPropagation(object):
         Returns
         -------
         bool
-          True if target is a joint target. 
+          True if target is a joint target.
 
         Raises
         ------
@@ -11487,7 +11496,7 @@ class LazyPropagation(object):
         Returns
         -------
         list
-          the list of target sets 
+          the list of target sets
 
         """
         return _pyAgrum.LazyPropagation_jointTargets(self)
@@ -11500,7 +11509,7 @@ class LazyPropagation(object):
         Perform the heavy computations needed to compute the targets' posteriors
 
         In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
-        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages. 
+        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages.
 
         """
         return _pyAgrum.LazyPropagation_makeInference(self)
@@ -11789,7 +11798,7 @@ class LazyPropagation(object):
 
         Clear all previously defined targets (marginal and joint targets).
 
-        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user). 
+        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user).
 
         """
         return _pyAgrum.LazyPropagation_eraseAllTargets(self)
@@ -11822,7 +11831,7 @@ class LazyPropagation(object):
         Raises
         ------
         gum.UndefinedElement
-          If target is not a NodeId in the Bayes net 
+          If target is not a NodeId in the Bayes net
 
         """
         return _pyAgrum.LazyPropagation_addTarget(self, *args)
@@ -11920,7 +11929,7 @@ class LazyPropagation(object):
         evidenceImpact(self, target, evs) -> Potential
         evidenceImpact(self, target, evs) -> Potential
 
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -12020,7 +12029,7 @@ class LazyPropagation(object):
         evidenceJointImpact(self, targets, evs) -> Potential
         evidenceJointImpact(self, targets, evs) -> Potential
 
-        Create a pyAgrum.Potential for P(joint targets|evs) (for all instanciation of targets and evs) 
+        Create a pyAgrum.Potential for P(joint targets|evs) (for all instanciation of targets and evs)
 
         Parameters
         ----------
@@ -12136,7 +12145,7 @@ class ShaferShenoyInference(object):
         Returns
         -------
         pyAgrum.CliqueGraph
-          the current junction tree 
+          the current junction tree
 
         """
         return _pyAgrum.ShaferShenoyInference_junctionTree(self)
@@ -12244,7 +12253,7 @@ class ShaferShenoyInference(object):
         Returns
         -------
         set
-          the set of nodes with hard evidence 
+          the set of nodes with hard evidence
 
         """
         return _pyAgrum.ShaferShenoyInference_hardEvidenceNodes(self)
@@ -12257,7 +12266,7 @@ class ShaferShenoyInference(object):
         Returns
         -------
         set
-          the set of nodes with soft evidence 
+          the set of nodes with soft evidence
 
         """
         return _pyAgrum.ShaferShenoyInference_softEvidenceNodes(self)
@@ -12284,17 +12293,22 @@ class ShaferShenoyInference(object):
 
         Parameters
         ----------
-        list : 
+        list :
           the list of nodes whose posterior joint probability is wanted
+
+
+        Warnings
+        --------
+        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used bu the Potential.
 
         Returns
         -------
         pyAgrum.Potential
-          a const ref to the posterior joint probability of the set of nodes. 
+          a const ref to the posterior joint probability of the set of nodes.
 
         Raises
         ------
-        gum.UndefinedElement 
+        gum.UndefinedElement
           If an element of nodes is not in targets
 
         """
@@ -12355,7 +12369,7 @@ class ShaferShenoyInference(object):
         Returns
         -------
         bool
-          True if target is a joint target. 
+          True if target is a joint target.
 
         Raises
         ------
@@ -12375,7 +12389,7 @@ class ShaferShenoyInference(object):
         Returns
         -------
         list
-          the list of target sets 
+          the list of target sets
 
         """
         return _pyAgrum.ShaferShenoyInference_jointTargets(self)
@@ -12388,7 +12402,7 @@ class ShaferShenoyInference(object):
         Perform the heavy computations needed to compute the targets' posteriors
 
         In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
-        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages. 
+        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages.
 
         """
         return _pyAgrum.ShaferShenoyInference_makeInference(self)
@@ -12677,7 +12691,7 @@ class ShaferShenoyInference(object):
 
         Clear all previously defined targets (marginal and joint targets).
 
-        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user). 
+        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user).
 
         """
         return _pyAgrum.ShaferShenoyInference_eraseAllTargets(self)
@@ -12710,7 +12724,7 @@ class ShaferShenoyInference(object):
         Raises
         ------
         gum.UndefinedElement
-          If target is not a NodeId in the Bayes net 
+          If target is not a NodeId in the Bayes net
 
         """
         return _pyAgrum.ShaferShenoyInference_addTarget(self, *args)
@@ -12808,7 +12822,7 @@ class ShaferShenoyInference(object):
         evidenceImpact(self, target, evs) -> Potential
         evidenceImpact(self, target, evs) -> Potential
 
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -12908,7 +12922,7 @@ class ShaferShenoyInference(object):
         evidenceJointImpact(self, targets, evs) -> Potential
         evidenceJointImpact(self, targets, evs) -> Potential
 
-        Create a pyAgrum.Potential for P(joint targets|evs) (for all instanciation of targets and evs) 
+        Create a pyAgrum.Potential for P(joint targets|evs) (for all instanciation of targets and evs)
 
         Parameters
         ----------
@@ -13038,7 +13052,7 @@ class VariableElimination(object):
         Returns
         -------
         pyAgrum.CliqueGraph
-          the current junction tree 
+          the current junction tree
 
         """
         return _pyAgrum.VariableElimination_junctionTree(self, id)
@@ -13133,7 +13147,7 @@ class VariableElimination(object):
         Returns
         -------
         set
-          the set of nodes with hard evidence 
+          the set of nodes with hard evidence
 
         """
         return _pyAgrum.VariableElimination_hardEvidenceNodes(self)
@@ -13146,7 +13160,7 @@ class VariableElimination(object):
         Returns
         -------
         set
-          the set of nodes with soft evidence 
+          the set of nodes with soft evidence
 
         """
         return _pyAgrum.VariableElimination_softEvidenceNodes(self)
@@ -13173,17 +13187,22 @@ class VariableElimination(object):
 
         Parameters
         ----------
-        list : 
+        list :
           the list of nodes whose posterior joint probability is wanted
+
+
+        Warnings
+        --------
+        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used bu the Potential.
 
         Returns
         -------
         pyAgrum.Potential
-          a const ref to the posterior joint probability of the set of nodes. 
+          a const ref to the posterior joint probability of the set of nodes.
 
         Raises
         ------
-        gum.UndefinedElement 
+        gum.UndefinedElement
           If an element of nodes is not in targets
 
         """
@@ -13244,7 +13263,7 @@ class VariableElimination(object):
         Returns
         -------
         bool
-          True if target is a joint target. 
+          True if target is a joint target.
 
         Raises
         ------
@@ -13264,7 +13283,7 @@ class VariableElimination(object):
         Returns
         -------
         list
-          the list of target sets 
+          the list of target sets
 
         """
         return _pyAgrum.VariableElimination_jointTargets(self)
@@ -13277,7 +13296,7 @@ class VariableElimination(object):
         Perform the heavy computations needed to compute the targets' posteriors
 
         In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
-        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages. 
+        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages.
 
         """
         return _pyAgrum.VariableElimination_makeInference(self)
@@ -13566,7 +13585,7 @@ class VariableElimination(object):
 
         Clear all previously defined targets (marginal and joint targets).
 
-        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user). 
+        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user).
 
         """
         return _pyAgrum.VariableElimination_eraseAllTargets(self)
@@ -13599,7 +13618,7 @@ class VariableElimination(object):
         Raises
         ------
         gum.UndefinedElement
-          If target is not a NodeId in the Bayes net 
+          If target is not a NodeId in the Bayes net
 
         """
         return _pyAgrum.VariableElimination_addTarget(self, *args)
@@ -13697,7 +13716,7 @@ class VariableElimination(object):
         evidenceImpact(self, target, evs) -> Potential
         evidenceImpact(self, target, evs) -> Potential
 
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -13871,7 +13890,7 @@ class GibbsSampling(object):
         Returns
         -------
         set
-          the set of nodes with hard evidence 
+          the set of nodes with hard evidence
 
         """
         return _pyAgrum.GibbsSampling_hardEvidenceNodes(self)
@@ -13884,7 +13903,7 @@ class GibbsSampling(object):
         Returns
         -------
         set
-          the set of nodes with soft evidence 
+          the set of nodes with soft evidence
 
         """
         return _pyAgrum.GibbsSampling_softEvidenceNodes(self)
@@ -14160,7 +14179,7 @@ class GibbsSampling(object):
         Perform the heavy computations needed to compute the targets' posteriors
 
         In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
-        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages. 
+        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages.
 
         """
         return _pyAgrum.GibbsSampling_makeInference(self)
@@ -14449,7 +14468,7 @@ class GibbsSampling(object):
 
         Clear all previously defined targets (marginal and joint targets).
 
-        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user). 
+        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user).
 
         """
         return _pyAgrum.GibbsSampling_eraseAllTargets(self)
@@ -14482,7 +14501,7 @@ class GibbsSampling(object):
         Raises
         ------
         gum.UndefinedElement
-          If target is not a NodeId in the Bayes net 
+          If target is not a NodeId in the Bayes net
 
         """
         return _pyAgrum.GibbsSampling_addTarget(self, *args)
@@ -14580,7 +14599,7 @@ class GibbsSampling(object):
         evidenceImpact(self, target, evs) -> Potential
         evidenceImpact(self, target, evs) -> Potential
 
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -14808,7 +14827,7 @@ class ImportanceSampling(object):
         Returns
         -------
         set
-          the set of nodes with hard evidence 
+          the set of nodes with hard evidence
 
         """
         return _pyAgrum.ImportanceSampling_hardEvidenceNodes(self)
@@ -14821,7 +14840,7 @@ class ImportanceSampling(object):
         Returns
         -------
         set
-          the set of nodes with soft evidence 
+          the set of nodes with soft evidence
 
         """
         return _pyAgrum.ImportanceSampling_softEvidenceNodes(self)
@@ -15097,7 +15116,7 @@ class ImportanceSampling(object):
         Perform the heavy computations needed to compute the targets' posteriors
 
         In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
-        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages. 
+        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages.
 
         """
         return _pyAgrum.ImportanceSampling_makeInference(self)
@@ -15386,7 +15405,7 @@ class ImportanceSampling(object):
 
         Clear all previously defined targets (marginal and joint targets).
 
-        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user). 
+        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user).
 
         """
         return _pyAgrum.ImportanceSampling_eraseAllTargets(self)
@@ -15419,7 +15438,7 @@ class ImportanceSampling(object):
         Raises
         ------
         gum.UndefinedElement
-          If target is not a NodeId in the Bayes net 
+          If target is not a NodeId in the Bayes net
 
         """
         return _pyAgrum.ImportanceSampling_addTarget(self, *args)
@@ -15517,7 +15536,7 @@ class ImportanceSampling(object):
         evidenceImpact(self, target, evs) -> Potential
         evidenceImpact(self, target, evs) -> Potential
 
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -15693,7 +15712,7 @@ class WeightedSampling(object):
         Returns
         -------
         set
-          the set of nodes with hard evidence 
+          the set of nodes with hard evidence
 
         """
         return _pyAgrum.WeightedSampling_hardEvidenceNodes(self)
@@ -15706,7 +15725,7 @@ class WeightedSampling(object):
         Returns
         -------
         set
-          the set of nodes with soft evidence 
+          the set of nodes with soft evidence
 
         """
         return _pyAgrum.WeightedSampling_softEvidenceNodes(self)
@@ -15982,7 +16001,7 @@ class WeightedSampling(object):
         Perform the heavy computations needed to compute the targets' posteriors
 
         In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
-        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages. 
+        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages.
 
         """
         return _pyAgrum.WeightedSampling_makeInference(self)
@@ -16271,7 +16290,7 @@ class WeightedSampling(object):
 
         Clear all previously defined targets (marginal and joint targets).
 
-        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user). 
+        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user).
 
         """
         return _pyAgrum.WeightedSampling_eraseAllTargets(self)
@@ -16304,7 +16323,7 @@ class WeightedSampling(object):
         Raises
         ------
         gum.UndefinedElement
-          If target is not a NodeId in the Bayes net 
+          If target is not a NodeId in the Bayes net
 
         """
         return _pyAgrum.WeightedSampling_addTarget(self, *args)
@@ -16402,7 +16421,7 @@ class WeightedSampling(object):
         evidenceImpact(self, target, evs) -> Potential
         evidenceImpact(self, target, evs) -> Potential
 
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -16578,7 +16597,7 @@ class MonteCarloSampling(object):
         Returns
         -------
         set
-          the set of nodes with hard evidence 
+          the set of nodes with hard evidence
 
         """
         return _pyAgrum.MonteCarloSampling_hardEvidenceNodes(self)
@@ -16591,7 +16610,7 @@ class MonteCarloSampling(object):
         Returns
         -------
         set
-          the set of nodes with soft evidence 
+          the set of nodes with soft evidence
 
         """
         return _pyAgrum.MonteCarloSampling_softEvidenceNodes(self)
@@ -16867,7 +16886,7 @@ class MonteCarloSampling(object):
         Perform the heavy computations needed to compute the targets' posteriors
 
         In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
-        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages. 
+        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages.
 
         """
         return _pyAgrum.MonteCarloSampling_makeInference(self)
@@ -17156,7 +17175,7 @@ class MonteCarloSampling(object):
 
         Clear all previously defined targets (marginal and joint targets).
 
-        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user). 
+        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user).
 
         """
         return _pyAgrum.MonteCarloSampling_eraseAllTargets(self)
@@ -17189,7 +17208,7 @@ class MonteCarloSampling(object):
         Raises
         ------
         gum.UndefinedElement
-          If target is not a NodeId in the Bayes net 
+          If target is not a NodeId in the Bayes net
 
         """
         return _pyAgrum.MonteCarloSampling_addTarget(self, *args)
@@ -17287,7 +17306,7 @@ class MonteCarloSampling(object):
         evidenceImpact(self, target, evs) -> Potential
         evidenceImpact(self, target, evs) -> Potential
 
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -17479,7 +17498,7 @@ class LoopyImportanceSampling(object):
         Returns
         -------
         set
-          the set of nodes with hard evidence 
+          the set of nodes with hard evidence
 
         """
         return _pyAgrum.LoopyImportanceSampling_hardEvidenceNodes(self)
@@ -17492,7 +17511,7 @@ class LoopyImportanceSampling(object):
         Returns
         -------
         set
-          the set of nodes with soft evidence 
+          the set of nodes with soft evidence
 
         """
         return _pyAgrum.LoopyImportanceSampling_softEvidenceNodes(self)
@@ -17768,7 +17787,7 @@ class LoopyImportanceSampling(object):
         Perform the heavy computations needed to compute the targets' posteriors
 
         In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
-        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages. 
+        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages.
 
         """
         return _pyAgrum.LoopyImportanceSampling_makeInference(self)
@@ -18057,7 +18076,7 @@ class LoopyImportanceSampling(object):
 
         Clear all previously defined targets (marginal and joint targets).
 
-        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user). 
+        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user).
 
         """
         return _pyAgrum.LoopyImportanceSampling_eraseAllTargets(self)
@@ -18090,7 +18109,7 @@ class LoopyImportanceSampling(object):
         Raises
         ------
         gum.UndefinedElement
-          If target is not a NodeId in the Bayes net 
+          If target is not a NodeId in the Bayes net
 
         """
         return _pyAgrum.LoopyImportanceSampling_addTarget(self, *args)
@@ -18188,7 +18207,7 @@ class LoopyImportanceSampling(object):
         evidenceImpact(self, target, evs) -> Potential
         evidenceImpact(self, target, evs) -> Potential
 
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -18380,7 +18399,7 @@ class LoopyWeightedSampling(object):
         Returns
         -------
         set
-          the set of nodes with hard evidence 
+          the set of nodes with hard evidence
 
         """
         return _pyAgrum.LoopyWeightedSampling_hardEvidenceNodes(self)
@@ -18393,7 +18412,7 @@ class LoopyWeightedSampling(object):
         Returns
         -------
         set
-          the set of nodes with soft evidence 
+          the set of nodes with soft evidence
 
         """
         return _pyAgrum.LoopyWeightedSampling_softEvidenceNodes(self)
@@ -18669,7 +18688,7 @@ class LoopyWeightedSampling(object):
         Perform the heavy computations needed to compute the targets' posteriors
 
         In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
-        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages. 
+        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages.
 
         """
         return _pyAgrum.LoopyWeightedSampling_makeInference(self)
@@ -18958,7 +18977,7 @@ class LoopyWeightedSampling(object):
 
         Clear all previously defined targets (marginal and joint targets).
 
-        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user). 
+        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user).
 
         """
         return _pyAgrum.LoopyWeightedSampling_eraseAllTargets(self)
@@ -18991,7 +19010,7 @@ class LoopyWeightedSampling(object):
         Raises
         ------
         gum.UndefinedElement
-          If target is not a NodeId in the Bayes net 
+          If target is not a NodeId in the Bayes net
 
         """
         return _pyAgrum.LoopyWeightedSampling_addTarget(self, *args)
@@ -19089,7 +19108,7 @@ class LoopyWeightedSampling(object):
         evidenceImpact(self, target, evs) -> Potential
         evidenceImpact(self, target, evs) -> Potential
 
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -19281,7 +19300,7 @@ class LoopyGibbsSampling(object):
         Returns
         -------
         set
-          the set of nodes with hard evidence 
+          the set of nodes with hard evidence
 
         """
         return _pyAgrum.LoopyGibbsSampling_hardEvidenceNodes(self)
@@ -19294,7 +19313,7 @@ class LoopyGibbsSampling(object):
         Returns
         -------
         set
-          the set of nodes with soft evidence 
+          the set of nodes with soft evidence
 
         """
         return _pyAgrum.LoopyGibbsSampling_softEvidenceNodes(self)
@@ -19570,7 +19589,7 @@ class LoopyGibbsSampling(object):
         Perform the heavy computations needed to compute the targets' posteriors
 
         In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
-        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages. 
+        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages.
 
         """
         return _pyAgrum.LoopyGibbsSampling_makeInference(self)
@@ -19859,7 +19878,7 @@ class LoopyGibbsSampling(object):
 
         Clear all previously defined targets (marginal and joint targets).
 
-        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user). 
+        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user).
 
         """
         return _pyAgrum.LoopyGibbsSampling_eraseAllTargets(self)
@@ -19892,7 +19911,7 @@ class LoopyGibbsSampling(object):
         Raises
         ------
         gum.UndefinedElement
-          If target is not a NodeId in the Bayes net 
+          If target is not a NodeId in the Bayes net
 
         """
         return _pyAgrum.LoopyGibbsSampling_addTarget(self, *args)
@@ -19990,7 +20009,7 @@ class LoopyGibbsSampling(object):
         evidenceImpact(self, target, evs) -> Potential
         evidenceImpact(self, target, evs) -> Potential
 
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -20248,7 +20267,7 @@ class LoopyMonteCarloSampling(object):
         Returns
         -------
         set
-          the set of nodes with hard evidence 
+          the set of nodes with hard evidence
 
         """
         return _pyAgrum.LoopyMonteCarloSampling_hardEvidenceNodes(self)
@@ -20261,7 +20280,7 @@ class LoopyMonteCarloSampling(object):
         Returns
         -------
         set
-          the set of nodes with soft evidence 
+          the set of nodes with soft evidence
 
         """
         return _pyAgrum.LoopyMonteCarloSampling_softEvidenceNodes(self)
@@ -20537,7 +20556,7 @@ class LoopyMonteCarloSampling(object):
         Perform the heavy computations needed to compute the targets' posteriors
 
         In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
-        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages. 
+        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages.
 
         """
         return _pyAgrum.LoopyMonteCarloSampling_makeInference(self)
@@ -20826,7 +20845,7 @@ class LoopyMonteCarloSampling(object):
 
         Clear all previously defined targets (marginal and joint targets).
 
-        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user). 
+        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user).
 
         """
         return _pyAgrum.LoopyMonteCarloSampling_eraseAllTargets(self)
@@ -20859,7 +20878,7 @@ class LoopyMonteCarloSampling(object):
         Raises
         ------
         gum.UndefinedElement
-          If target is not a NodeId in the Bayes net 
+          If target is not a NodeId in the Bayes net
 
         """
         return _pyAgrum.LoopyMonteCarloSampling_addTarget(self, *args)
@@ -20957,7 +20976,7 @@ class LoopyMonteCarloSampling(object):
         evidenceImpact(self, target, evs) -> Potential
         evidenceImpact(self, target, evs) -> Potential
 
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -21133,7 +21152,7 @@ class LoopyBeliefPropagation(object):
         Returns
         -------
         set
-          the set of nodes with hard evidence 
+          the set of nodes with hard evidence
 
         """
         return _pyAgrum.LoopyBeliefPropagation_hardEvidenceNodes(self)
@@ -21146,7 +21165,7 @@ class LoopyBeliefPropagation(object):
         Returns
         -------
         set
-          the set of nodes with soft evidence 
+          the set of nodes with soft evidence
 
         """
         return _pyAgrum.LoopyBeliefPropagation_softEvidenceNodes(self)
@@ -21422,7 +21441,7 @@ class LoopyBeliefPropagation(object):
         Perform the heavy computations needed to compute the targets' posteriors
 
         In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
-        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages. 
+        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages.
 
         """
         return _pyAgrum.LoopyBeliefPropagation_makeInference(self)
@@ -21711,7 +21730,7 @@ class LoopyBeliefPropagation(object):
 
         Clear all previously defined targets (marginal and joint targets).
 
-        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user). 
+        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user).
 
         """
         return _pyAgrum.LoopyBeliefPropagation_eraseAllTargets(self)
@@ -21744,7 +21763,7 @@ class LoopyBeliefPropagation(object):
         Raises
         ------
         gum.UndefinedElement
-          If target is not a NodeId in the Bayes net 
+          If target is not a NodeId in the Bayes net
 
         """
         return _pyAgrum.LoopyBeliefPropagation_addTarget(self, *args)
@@ -21842,7 +21861,7 @@ class LoopyBeliefPropagation(object):
         evidenceImpact(self, target, evs) -> Potential
         evidenceImpact(self, target, evs) -> Potential
 
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
