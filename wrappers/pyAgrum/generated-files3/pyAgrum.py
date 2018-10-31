@@ -24729,7 +24729,7 @@ class InfluenceDiagramInference(object):
           items=evidces.items()
 
         for var_name, evidce in items:
-            pot = Potential_double()
+            pot = Potential()
 
             if isinstance(var_name, int):
                 var = bn.variable(var_name)

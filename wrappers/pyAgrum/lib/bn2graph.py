@@ -172,7 +172,7 @@ def _getProbaV(p):
   ax = fig.add_subplot(111)
 
   bars=ax.bar(ra, p.tolist(), align='center')
-  ax.set_ylim(0,1)
+  ax.set_ylim(bottom=0)
   ax.set_xticks(ra)
   ax.set_xticklabels(["{:.1%}".format(bar.get_height()) for bar in bars],rotation='vertical')
   ax.set_title(_getTitleHisto(p))
