@@ -193,6 +193,10 @@ def get_tags():
   impl = pep425.get_abbr_impl() + pep425.get_impl_ver()
   abi = pep425.get_abi_tag()
   arch = pep425.get_platform()
+  if arch == "linux_x86_64":
+    arch = 'manylinux1_x86_64'
+  elif arch == "linux_i686":
+    arch = 'manylinux1_i686'
   tags = '{0}-{1}-{2}'.format(impl, abi, arch)
   return tags
 
