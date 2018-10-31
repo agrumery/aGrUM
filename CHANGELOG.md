@@ -2,14 +2,21 @@
 
 ## Changelog for 0.13.3
 * pyAgrum
+  * **pip** : wheels for mac/windows/linux for python 2.7,3.{4-7}
+  * **anaconda** : compilation for maxOS/anaconda64/python3 should be fixed
   * updating tests
   * updating pyAgrum.lib
+  * updating posterior histograms for notebooks (adding mean/stdev for `RangeVariable` and `DiscretizedVariable`)
   * new functions for colouring and graphically comparing BNs
+  * improved documentation
 * aGrUM
-  * fixing UAI format for read and write
-  * BNLearner.setSliceOrder with list of list of names (and not only with ids)
+  * fixed bugs for `DiscreteVariable` with `domainSize()`<=1 (particularly when added in `Potential`)
+  * improved `CMakeFiles.txt`
+  * improved documentation
+  * fixing `UAI` format for read and write
+  * `BNLearner.setSliceOrder` with list of list of names (and not only with ids)
   * improved error messages
-  * fixing learnParameters
+  * fixing `learnParameters`
   * multi-thread support for learning
 
 ## Changelog for 0.13.2
