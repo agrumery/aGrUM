@@ -127,7 +127,7 @@
 %include "std_string.i"
 
 namespace std {
-    %template ( Vector_double) vector<double>;
+    %template ( Vector) vector<double>;
     %template ( Vector_int) vector<unsigned int>;
     %template ( Vector_string) vector<string>;
 }
@@ -294,49 +294,49 @@ namespace std {
 
 /* TEMPLATES INSTANTIATIONS */
 
-%template ( randomDistribution_double ) gum::randomDistribution<double>;
+%template ( randomDistribution ) gum::randomDistribution<double>;
 
-%template ( DiscretizedVariable_double ) gum::DiscretizedVariable<double>;
+%template ( DiscretizedVariable ) gum::DiscretizedVariable<double>;
 
-%template ( MultiDimContainer_double ) gum::MultiDimContainer<double>;
-%template ( MultiDimImplementation_double ) gum::MultiDimImplementation<double>;
-%template ( MultiDimDecorator_double ) gum::MultiDimDecorator<double>;
-%template ( MultiDimWithOffset_double ) gum::MultiDimWithOffset<double>;
-%template ( MultiDimArray_double ) gum::MultiDimArray<double>;
+%template ( MultiDimContainer ) gum::MultiDimContainer<double>;
+%template ( MultiDimImplementation ) gum::MultiDimImplementation<double>;
+%template ( MultiDimDecorator ) gum::MultiDimDecorator<double>;
+%template ( MultiDimWithOffset ) gum::MultiDimWithOffset<double>;
+%template ( MultiDimArray ) gum::MultiDimArray<double>;
 
-%template ( Potential_double ) gum::Potential<double>;
+%template ( Potential ) gum::Potential<double>;
 
-%template (IBayesNet_double ) gum::IBayesNet<double>;
-%template ( BayesNet_double ) gum::BayesNet<double>;
+%template (IBayesNet ) gum::IBayesNet<double>;
+%template ( BayesNet ) gum::BayesNet<double>;
 
-%template ( BayesNetInference_double ) gum::BayesNetInference<double>;
-%template ( LazyPropagation_double ) gum::LazyPropagation<double>;
-%template ( ShaferShenoyInference_double ) gum::ShaferShenoyInference<double>;
-%template ( VariableElimination_double ) gum::VariableElimination<double>;
+%template ( BayesNetInference ) gum::BayesNetInference<double>;
+%template ( LazyPropagation ) gum::LazyPropagation<double>;
+%template ( ShaferShenoyInference ) gum::ShaferShenoyInference<double>;
+%template ( VariableElimination ) gum::VariableElimination<double>;
 
-%template ( GibbsSampling_double ) gum::GibbsSampling<double>;
-%template ( ImportanceSampling_double ) gum::ImportanceSampling<double>;
-%template ( WeightedSampling_double ) gum::WeightedSampling<double>;
-%template ( MonteCarloSampling_double ) gum::MonteCarloSampling<double>;
-%template ( LoopyImportanceSampling_double ) gum::LoopySamplingInference<double,gum::ImportanceSampling>;
-%template ( LoopyWeightedSampling_double ) gum::LoopySamplingInference<double,gum::WeightedSampling>;
-%template ( LoopyGibbsSampling_double ) gum::LoopySamplingInference<double,gum::GibbsSampling>;
-%template ( LoopyMonteCarloSampling_double ) gum::LoopySamplingInference<double,gum::MonteCarloSampling>;
+%template ( GibbsSampling ) gum::GibbsSampling<double>;
+%template ( ImportanceSampling ) gum::ImportanceSampling<double>;
+%template ( WeightedSampling ) gum::WeightedSampling<double>;
+%template ( MonteCarloSampling ) gum::MonteCarloSampling<double>;
+%template ( LoopyImportanceSampling ) gum::LoopySamplingInference<double,gum::ImportanceSampling>;
+%template ( LoopyWeightedSampling ) gum::LoopySamplingInference<double,gum::WeightedSampling>;
+%template ( LoopyGibbsSampling ) gum::LoopySamplingInference<double,gum::GibbsSampling>;
+%template ( LoopyMonteCarloSampling ) gum::LoopySamplingInference<double,gum::MonteCarloSampling>;
 
-%template ( LoopyBeliefPropagation_double ) gum::LoopyBeliefPropagation<double>;
+%template ( LoopyBeliefPropagation ) gum::LoopyBeliefPropagation<double>;
 
-%template ( BruteForceKL_double ) gum::BruteForceKL<double>;
-%template ( GibbsKL_double ) gum::GibbsKL<double>;
+%template ( BruteForceKL ) gum::BruteForceKL<double>;
+%template ( GibbsKL ) gum::GibbsKL<double>;
 
-%template ( CredalNet_double ) gum::credal::CredalNet<double>;
-%template ( CNMonteCarloSampling_double ) gum::credal::CNMonteCarloSampling<double>;
-%template ( CNLoopyPropagation_double ) gum::credal::CNLoopyPropagation<double>;
+%template ( CredalNet ) gum::credal::CredalNet<double>;
+%template ( CNMonteCarloSampling ) gum::credal::CNMonteCarloSampling<double>;
+%template ( CNLoopyPropagation ) gum::credal::CNLoopyPropagation<double>;
 
-%template ( InfluenceDiagram_double) gum::InfluenceDiagram<double>;
-%template ( InfluenceDiagramInference_double) gum::InfluenceDiagramInference<double>;
+%template ( InfluenceDiagram) gum::InfluenceDiagram<double>;
+%template ( InfluenceDiagramInference) gum::InfluenceDiagramInference<double>;
 
-%template ( BNLearner_double) gum::learning::BNLearner<double>;
-%template ( BNDatabaseGenerator_double) gum::learning::BNDatabaseGenerator<double>;
+%template ( BNLearner) gum::learning::BNLearner<double>;
+%template ( BNDatabaseGenerator) gum::learning::BNDatabaseGenerator<double>;
 
 /* for debug */
 namespace gum {

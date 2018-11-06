@@ -85,22 +85,6 @@ namespace gum_tests {
       // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
     }
 
-    void testWriter_string() {
-      gum::O3prmBNWriter< double > writer;
-      std::string file = GET_RESSOURCES_PATH("o3prm/BNO3PRMIO_file.o3prm");
-      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
-
-      file = GET_RESSOURCES_PATH("o3prm/BNO3PRMIO_file.o3prm");
-
-      TS_ASSERT_EQUALS(chmod(file.c_str(), 0444), 0);
-
-      try {
-        writer.write(file, *bn);
-        TS_ASSERT(false);
-      } catch (gum::IOError&) { TS_ASSERT(true); }
-      TS_ASSERT_EQUALS(chmod(file.c_str(), 0666), 0);
-    }
-
     void testReadAfterWrite() {
       gum::O3prmBNWriter< double > writer;
       std::string file = GET_RESSOURCES_PATH("o3prm/BNO3PRMIO_file.o3prm");

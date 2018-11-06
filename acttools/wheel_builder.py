@@ -94,14 +94,13 @@ def prepare(current, tmp):
     critic("Python version used to build pyAgrum:   {0}".format(gum_version))
 
 def safe_windows_path(path):
-  path = path.replace('\\', '\\\\').replace("'", "\\'").replace('"', '\\"').replace("(", "\\(").replace(")", "\\)").replace(" ", "\\ ")
-  return path
+  return path.replace('\\', '/')
 
 def install_pyAgrum(current, tmp):
   """Instals pyAgrum in tmp and return the Python version used to build it."""
   targets = 'install release pyAgrum'
   version = sys.version_info[0]
-  options = '--no-fun --withoutSQL -m all -d {0} --python={1}'.format(safe_windows_path(tmp), version)
+  options = '--no-fun --withoutSQL -m all -d "{0}" --python={1}'.format(safe_windows_path(tmp), version)
   if platform.system() == "Windows":
     cmd = "python"
     if current['mvsc']:
@@ -110,8 +109,6 @@ def install_pyAgrum(current, tmp):
       options = "{0} --mvsc32".format(options)
   else:
     cmd = sys.executable
-  #cmd = sys.executable.replace("'", "\\'").replace('"', '\\"')
-  #cmd = cmd.replace("(", "\\(").replace(")", "\\)").replace(" ", "\\ ")
   cmd = '{0} act {1} {2}'.format(cmd, targets, options)
   proc = Popen(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
   out = proc.stdout.readlines()
@@ -171,7 +168,7 @@ def get_pyAgrum_version(path):
       m = re.match(pattern, f)
       if m != None:
         return m.group(1)
-  except FileNotFoundError:
+  except :
     warn("Error while accessing to path {0}".format(path))
   warn("Could not retrieve pyAgrum version.")
   return ""
@@ -196,6 +193,10 @@ def get_tags():
   impl = pep425.get_abbr_impl() + pep425.get_impl_ver()
   abi = pep425.get_abi_tag()
   arch = pep425.get_platform()
+  if arch == "linux_x86_64":
+    arch = 'manylinux1_x86_64'
+  elif arch == "linux_i686":
+    arch = 'manylinux1_i686'
   tags = '{0}-{1}-{2}'.format(impl, abi, arch)
   return tags
 

@@ -490,7 +490,7 @@ namespace gum {
       const std::string& array, PRMClassElementContainer< GUM_SCALAR >& type) {
       if (__arrayMap.exists(array)) {
         GUM_ERROR(DuplicateElement,
-                  "an array with the same is already in this System");
+                  "an array '" << array << "' is already in this System");
       }
 
       __arrayMap.insert(array,

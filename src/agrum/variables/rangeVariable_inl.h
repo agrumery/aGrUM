@@ -38,7 +38,7 @@ namespace gum {
 
   // returns the size of the random discrete variable domain
   INLINE Size RangeVariable::domainSize() const {
-    return (__maxBound <= __minBound) ? 0 : (__maxBound - __minBound + 1);
+    return (__maxBound < __minBound) ? Size(0) : Size(__maxBound + 1 - __minBound);
   }
 
   // Get the indice-th label. This method is pure virtual.

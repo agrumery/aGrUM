@@ -81,13 +81,12 @@ namespace gum {
     if (!__parseDone) {
       try {
         __parser->Parse();
+        __parseDone = true;
         buildFromQuartets(__parser->getQuartets());
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
         return 1 + __parser->errors().error_count;
       }
-
-      __parseDone = true;
     }
 
     return (__parser->errors().error_count);
@@ -146,6 +145,15 @@ namespace gum {
       Size nbrPar = (Size)getInt();
       if (nbrPar == 0) __addError(lig(), col(), "0 is not possible here");
 
+      std::vector< NodeId > papas;
+      for (NodeId j = 1; j < nbrPar; j++) {
+        incCurrent();
+        NodeId papa = (NodeId)getInt();
+        if (papa >= nbrNode)
+          __addError(lig(), col(), "Not enough variables in the BayesNet");
+        papas.push_back(papa);
+      }
+
       incCurrent();
       NodeId nodePot = (Size)getInt();
       if (nodePot >= nbrNode)
@@ -153,12 +161,7 @@ namespace gum {
       if (s.contains(nodePot)) __addError(lig(), col(), "Parents already defined");
       s.insert(nodePot);
 
-      for (NodeId j = 1; j < nbrPar; j++) {
-        incCurrent();
-        NodeId papa = (NodeId)getInt();
-        if (papa >= nbrNode)
-          __addError(lig(), col(), "Not enough variables in the BayesNet");
-
+      for (const auto papa : papas) {
         __bn->addArc(papa, nodePot);
       }
     }

@@ -171,6 +171,10 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void MultiDimDecorator< GUM_SCALAR >::add(const DiscreteVariable& v) {
+    if (v.domainSize() < 1) {
+      GUM_ERROR(InvalidArgument,
+                "Empty variable " << v << " cannot be added in a Potential");
+    }
     static_cast< MultiDimContainer< GUM_SCALAR >* >(_content)->add(v);
   }
 

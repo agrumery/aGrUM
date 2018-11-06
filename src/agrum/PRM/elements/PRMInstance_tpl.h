@@ -120,6 +120,7 @@ namespace gum {
         delete set;
         set = temp;
       }
+
       GUM_ASSERT(set->size() > 0);
       // set contains all the instances references by sc
       if (__referenceMap.exists(sc->id())) {

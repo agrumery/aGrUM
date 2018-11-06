@@ -115,7 +115,8 @@ namespace gum {
     NodeId PRMInterface< GUM_SCALAR >::add(PRMClassElement< GUM_SCALAR >* elt) {
       if (__nameMap.exists(elt->name())) {
         GUM_ERROR(DuplicateElement,
-                  "name already used by another ClassElement<GUM_SCALAR>");
+                  "name '" << elt->name()
+                           << "' is already used by another ClassElement");
       }
 
       if (PRMClassElement< GUM_SCALAR >::isAttribute(*elt)) {
@@ -167,7 +168,8 @@ namespace gum {
 
       PRMClassElement< GUM_SCALAR >* overloaded = __nameMap[overloader->name()];
       if (overloaded == overloader) {
-        GUM_ERROR(DuplicateElement, "dupplicate ClassElement");
+        GUM_ERROR(DuplicateElement,
+                  "duplicate ClassElement '" << overloader->name() << "'");
       }
       if (!__checkOverloadLegality(overloaded, overloader)) {
         GUM_ERROR(OperationNotAllowed, "illegal overload");

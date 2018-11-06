@@ -125,11 +125,11 @@ namespace gum {
   template < typename Val >
   INLINE void BinTreeNode< Val >::insertLeftChild(BinTreeNode< Val >& new_child) {
     if (new_child._parent) {
-      GUM_ERROR(DuplicateElement, "this child has already a parent");
+      GUM_ERROR(DuplicateElement, "this child already has a parent in the BST");
     }
 
     if (_children[static_cast< int >(BinTreeDir::LEFT_CHILD)]) {
-      GUM_ERROR(DuplicateElement, "this node has already a left child");
+      GUM_ERROR(DuplicateElement, "this child already has a parent in the BST");
     }
 
     // proceed to the chaining
@@ -141,7 +141,7 @@ namespace gum {
   template < typename Val >
   INLINE BinTreeNode< Val >* BinTreeNode< Val >::insertLeftChild(const Val& val) {
     if (_children[static_cast< int >(BinTreeDir::LEFT_CHILD)]) {
-      GUM_ERROR(DuplicateElement, "this node has already a left child");
+      GUM_ERROR(DuplicateElement, "this child already has a parent in the BST");
     }
 
     BinTreeNode< Val >* new_child = new BinTreeNode< Val >(val);
@@ -157,11 +157,11 @@ namespace gum {
   template < typename Val >
   INLINE void BinTreeNode< Val >::insertRightChild(BinTreeNode< Val >& new_child) {
     if (new_child._parent) {
-      GUM_ERROR(DuplicateElement, "this child has already a parent");
+      GUM_ERROR(DuplicateElement, "this child already has a parent in the BST");
     }
 
     if (_children[static_cast< int >(BinTreeDir::RIGHT_CHILD)]) {
-      GUM_ERROR(DuplicateElement, "this node has already a right child");
+      GUM_ERROR(DuplicateElement, "this node already has a right child");
     }
 
     // proceed to the chaining
@@ -173,7 +173,7 @@ namespace gum {
   template < typename Val >
   INLINE BinTreeNode< Val >* BinTreeNode< Val >::insertRightChild(const Val& val) {
     if (_children[static_cast< int >(BinTreeDir::RIGHT_CHILD)]) {
-      GUM_ERROR(DuplicateElement, "this node has already a right child");
+      GUM_ERROR(DuplicateElement, "this node already has a right child");
     }
 
     BinTreeNode< Val >* new_child = new BinTreeNode< Val >(val);

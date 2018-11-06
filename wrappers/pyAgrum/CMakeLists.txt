@@ -1,9 +1,3 @@
-if (POLICY CMP0018)
-  # ignore the POSITION_INDEPENDENT_CODE property for all targets and
-  # use the modified value of CMAKE_SHARED_LIBRARY_<Lang>_FLAGS for
-  # SHARED and MODULE libraries.
-  cmake_policy(SET CMP0018 OLD)
-endif ()
 
 option (FOR_PYTHON3 "ON if pyAgrum uses python3. Python3 is used by default" ON)
 
@@ -35,7 +29,6 @@ if (NOT DEFINED PYTHON_INSTALL)
 endif ()
 
 set(GENERATED_PYTHON "${CMAKE_CURRENT_SOURCE_DIR}/generated-files${PYTHON_VERSION_MAJOR}")
-set(_PYAGRUMLIB "_pyAgrum")
 
 
 message(STATUS "================================")
@@ -96,23 +89,25 @@ include_directories(BEFORE ${AGRUM_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/doc)
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR})
 include_directories (${SWIG_SOURCE_DIR})
 
-set(SWIG_MODULE${_PYAGRUMLIB}_EXTRA_DEPS ${BUILDSWIGFILES})
 set(CMAKE_SWIG_OUTDIR ${GENERATED_PYTHON})
 
-
 if (SWIG_FOUND)
+  set(_PYAGRUMLIB "pyAgrum")
+  set(SWIG_MODULE_${_PYAGRUMLIB}_EXTRA_DEPS ${BUILDSWIGFILES})
   if (CMAKE_VERSION VERSION_LESS 3.8)
     swig_add_module (pyAgrum python ${CMAKE_CURRENT_SOURCE_DIR}/pyAgrum.i)
   else ()
     swig_add_library (pyAgrum LANGUAGE python SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/pyAgrum.i)
   endif ()
-  swig_link_libraries(pyAgrum ${LIBAGRUM})
-  swig_link_libraries(pyAgrum ${PYTHON_LIBRARY})  #for Apple ?
+  if (CMAKE_VERSION VERSION_LESS 3.13)
+    set(_PYAGRUMLIB ${SWIG_MODULE_pyAgrum_REAL_NAME})
+  else ()
+    set(_PYAGRUMLIB "pyAgrum")
+  endif ()
 else (SWIG_FOUND)
+  set(_PYAGRUMLIB "_pyAgrum")
   file(GLOB SWIG_GENERATED_FILES "${GENERATED_PYTHON}/*.cxx")
   add_library (${_PYAGRUMLIB} MODULE ${SWIG_GENERATED_FILES})
-  target_link_libraries (${_PYAGRUMLIB} ${LIBAGRUM})
-  target_link_libraries (${_PYAGRUMLIB} ${PYTHON_LIBRARY})
   set_target_properties(${_PYAGRUMLIB} PROPERTIES PREFIX "")
   set_target_properties(${_PYAGRUMLIB} PROPERTIES LINKER_LANGUAGE CXX)
   if (WIN32)
@@ -121,6 +116,11 @@ else (SWIG_FOUND)
     set_target_properties(${_PYAGRUMLIB} PROPERTIES SUFFIX ".so")
   endif (WIN32)
 endif (SWIG_FOUND)
+
+target_link_libraries (${_PYAGRUMLIB} ${LIBAGRUM})
+target_link_libraries_with_dynamic_lookup (${_PYAGRUMLIB} ${PYTHON_LIBRARIES})
+
+set_target_properties(${_PYAGRUMLIB} PROPERTIES INSTALL_RPATH_USE_LINK_PATH TRUE INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX})
 
 set_target_properties(${_PYAGRUMLIB} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 target_sources (${_PYAGRUMLIB} PUBLIC ${AGRUM_SOURCES})
@@ -135,6 +135,10 @@ file(GLOB GUMLIB_UTILS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/lib/_utils/*.py")
 
 #include("${CMAKE_CURRENT_SOURCE_DIR}/../../VERSION.txt")
 set(PYAGRUM_VERSION "${AGRUM_VERSION_MAJOR}.${AGRUM_VERSION_MINOR}.${AGRUM_VERSION_PATCH}")
+if (DEFINED AGRUM_VERSION_TWEAK)
+  set(PAGRUM_VERSION "${PYAGRUM_VERSION}.{$AGRUM_VERSION_TWEAK}")
+endif ()
+
 set(PYAGRUM_EGGFILE "pyAgrum-${PYAGRUM_VERSION}-py${PYTHON_VERSION_MAJOR}.egg-info")
 set(PYAGRUM_DISTDIR "pyAgrum-${PYAGRUM_VERSION}.dist-info")
 

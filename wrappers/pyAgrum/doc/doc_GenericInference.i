@@ -122,7 +122,7 @@ nodeName : str
 Raises
 ------
 gum.UndefinedElement
-  If target is not a NodeId in the Bayes net 
+  If target is not a NodeId in the Bayes net
 "
 
 %feature("docstring") gum::classname::chgEvidence
@@ -175,7 +175,7 @@ Clear all the previously defined marginal targets.
 "
 Clear all previously defined targets (marginal and joint targets).
 
-As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user). 
+As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user).
 "
 
 %feature("docstring") gum::classname::eraseEvidence
@@ -233,7 +233,7 @@ gum.UndefinedElement
 
 %feature("docstring") gum::classname::evidenceImpact
 "
-Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
+Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
 
 Parameters
 ----------
@@ -254,7 +254,7 @@ pyAgrum.Potential
 
 %feature("docstring") gum::classname::evidenceJointImpact
 "
-Create a pyAgrum.Potential for P(joint targets|evs) (for all instanciation of targets and evs) 
+Create a pyAgrum.Potential for P(joint targets|evs) (for all instanciation of targets and evs)
 
 Parameters
 ----------
@@ -289,7 +289,7 @@ double
 Returns
 -------
 set
-  the set of nodes with hard evidence 
+  the set of nodes with hard evidence
 "
 
 %feature("docstring") gum::classname::hasEvidence
@@ -362,7 +362,7 @@ list
 Returns
 -------
 bool
-  True if target is a joint target. 
+  True if target is a joint target.
 
 Raises
 ------
@@ -408,17 +408,22 @@ Compute the joint posterior of a set of nodes.
 
 Parameters
 ----------
-list : 
+list :
   the list of nodes whose posterior joint probability is wanted
+
+
+Warnings
+--------
+The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used bu the Potential.
 
 Returns
 -------
 pyAgrum.Potential
-  a const ref to the posterior joint probability of the set of nodes. 
+  a const ref to the posterior joint probability of the set of nodes.
 
 Raises
 ------
-gum.UndefinedElement 
+gum.UndefinedElement
   If an element of nodes is not in targets
 "
 
@@ -427,7 +432,7 @@ gum.UndefinedElement
 Returns
 -------
 list
-  the list of target sets 
+  the list of target sets
 "
 
 %feature("docstring") gum::classname::junctionTree
@@ -435,7 +440,7 @@ list
 Returns
 -------
 pyAgrum.CliqueGraph
-  the current junction tree 
+  the current junction tree
 "
 
 %feature("docstring") gum::classname::makeInference
@@ -443,7 +448,7 @@ pyAgrum.CliqueGraph
 Perform the heavy computations needed to compute the targets' posteriors
 
 In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
-This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages. 
+This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages.
 "
 
 %feature("docstring") gum::classname::nbrEvidence
@@ -513,7 +518,7 @@ gum.UndefinedElement
 Returns
 -------
 set
-  the set of nodes with soft evidence 
+  the set of nodes with soft evidence
 "
 
 %feature("docstring") gum::classname::targets

@@ -2,11 +2,11 @@ BAYES
 5
 2 2 2 2 2 
 5
-2 0 4   # light-on
-1 1   # bowel-problem
-3 2 4 1   # dog-out
-2 3 2   # hear-bark
-1 4   # family-out
+2 4 0   # light-on
+1 1 # bowel-problem
+3 4 1 2  # dog-out
+2 2 3  # hear-bark
+1 4  # family-out
 
 
 4

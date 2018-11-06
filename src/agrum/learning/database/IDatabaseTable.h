@@ -1125,7 +1125,6 @@ namespace gum {
       /// returns the minimum of rows that each thread should process
       std::size_t minNbRowsPerThread() const;
 
-
       /// @}
 
 

@@ -2,6 +2,7 @@
 install(FILES
     ${CMAKE_CURRENT_CMAKE_DIR}/aGrUMUse.cmake
     ${CMAKE_CURRENT_BINARY_DIR}/aGrUMConfig.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/aGrUMConfigVersion.cmake
     DESTINATION lib${LIB_SUFFIX}/cmake/aGrUM
     )
 install(FILES
@@ -21,6 +22,11 @@ install(CODE "MESSAGE(\"************************\n\n\")")
 install(DIRECTORY ${AGRUM_SOURCE_DIR}/agrum DESTINATION include FILES_MATCHING PATTERN PATTERN "*.h" PATTERN "*.hpp" PATTERN "*.hh")
 install(DIRECTORY ${AGRUM_BINARY_DIR}/agrum DESTINATION include FILES_MATCHING PATTERN PATTERN "*.h")
 install(TARGETS ${LIBAGRUM}
+        EXPORT ${LIBAGRUM}-targets
         RUNTIME DESTINATION bin
         LIBRARY DESTINATION lib${LIB_SUFFIX}
         ARCHIVE DESTINATION lib${LIB_SUFFIX})
+
+install(EXPORT ${LIBAGRUM}-targets
+        DESTINATION lib${LIB_SUFFIX}/cmake/aGrUM
+        COMPONENT Development)

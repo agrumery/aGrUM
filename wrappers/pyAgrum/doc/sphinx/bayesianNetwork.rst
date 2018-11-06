@@ -9,9 +9,6 @@ Model
 .. autoclass:: pyAgrum.BayesNet
 			:exclude-members: setProperty, property, propertyWithDefault
 
-.. autoclass:: pyAgrum.pyAgrum.BayesNet_double
-			:exclude-members: setProperty, property, propertyWithDefault
-
 Exact Inference
 ---------------
 
@@ -22,16 +19,11 @@ Lazy Propagation
 			:inherited-members:
 			:exclude-members: setFindBarrenNodesType, setRelevantPotentialsFinderType, setTriangulation
 
-.. autoclass:: pyAgrum.pyAgrum.LazyPropagation_double
-			:exclude-members: setFindBarrenNodesType, setRelevantPotentialsFinderType, setTriangulation
 
 Shafer Shenoy Inference
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autoclass:: pyAgrum.ShaferShenoyInference
-			:exclude-members: setFindBarrenNodesType, setRelevantPotentialsFinderType, setTriangulation
-
-.. autoclass:: pyAgrum.pyAgrum.ShaferShenoyInference_double
 			:exclude-members: setFindBarrenNodesType, setRelevantPotentialsFinderType, setTriangulation
 
 Variable Elimination
@@ -40,8 +32,6 @@ Variable Elimination
 .. autoclass:: pyAgrum.VariableElimination
 			:exclude-members: setFindBarrenNodesType, setRelevantPotentialsFinderType, setTriangulation
 
-.. autoclass:: pyAgrum.pyAgrum.VariableElimination_double
-			:exclude-members: setFindBarrenNodesType, setRelevantPotentialsFinderType, setTriangulation
 
 Approximate Inference
 ---------------------
@@ -50,9 +40,6 @@ Loopy Belief Propagation
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autoclass:: pyAgrum.LoopyBeliefPropagation
-			:exclude-members: asIApproximationSchemeConfiguration
-
-.. autoclass:: pyAgrum.pyAgrum.LoopyBeliefPropagation_double
 			:exclude-members: asIApproximationSchemeConfiguration
 
 Sampling
@@ -64,17 +51,12 @@ Gibbs Sampling
 .. autoclass:: pyAgrum.GibbsSampling
 			:exclude-members: asIApproximationSchemeConfiguration
 
-.. autoclass:: pyAgrum.pyAgrum.GibbsSampling_double
-			:exclude-members: asIApproximationSchemeConfiguration
-
 Monte Carlo Sampling
 ++++++++++++++++++++
 
 .. autoclass:: pyAgrum.MonteCarloSampling
 			:exclude-members: asIApproximationSchemeConfiguration
 
-.. autoclass:: pyAgrum.pyAgrum.MonteCarloSampling_double
-			:exclude-members: asIApproximationSchemeConfiguration
 
 Weighted Sampling
 +++++++++++++++++
@@ -82,16 +64,10 @@ Weighted Sampling
 .. autoclass:: pyAgrum.WeightedSampling
 			:exclude-members: asIApproximationSchemeConfiguration
 
-.. autoclass:: pyAgrum.pyAgrum.WeightedSampling_double
-			:exclude-members: asIApproximationSchemeConfiguration
-
 Importance Sampling
 +++++++++++++++++++
 
 .. autoclass:: pyAgrum.ImportanceSampling
-			:exclude-members: asIApproximationSchemeConfiguration
-
-.. autoclass:: pyAgrum.pyAgrum.ImportanceSampling_double
 			:exclude-members: asIApproximationSchemeConfiguration
 
 Loopy sampling
@@ -103,16 +79,10 @@ Loopy Gibbs Sampling
 .. autoclass:: pyAgrum.LoopyGibbsSampling
 			:exclude-members: asIApproximationSchemeConfiguration
 
-.. autoclass:: pyAgrum.pyAgrum.LoopyGibbsSampling_double
-			:exclude-members: asIApproximationSchemeConfiguration
-
 Loopy Monte Carlo Sampling
 ++++++++++++++++++++++++++
 
 .. autoclass:: pyAgrum.LoopyMonteCarloSampling
-			:exclude-members: asIApproximationSchemeConfiguration
-
-.. autoclass:: pyAgrum.pyAgrum.LoopyMonteCarloSampling_double
 			:exclude-members: asIApproximationSchemeConfiguration
 
 Loopy Weighted Sampling
@@ -121,16 +91,10 @@ Loopy Weighted Sampling
 .. autoclass:: pyAgrum.LoopyWeightedSampling
 			:exclude-members: asIApproximationSchemeConfiguration
 
-.. autoclass:: pyAgrum.pyAgrum.LoopyWeightedSampling_double
-			:exclude-members: asIApproximationSchemeConfiguration
-
 Loopy Importance Sampling
 +++++++++++++++++++++++++
 
 .. autoclass:: pyAgrum.LoopyImportanceSampling
-			:exclude-members: asIApproximationSchemeConfiguration
-
-.. autoclass:: pyAgrum.pyAgrum.LoopyImportanceSampling_double
 			:exclude-members: asIApproximationSchemeConfiguration
 
 Learning
@@ -139,5 +103,3 @@ Learning
 .. autoclass:: pyAgrum.BNLearner
 			:exclude-members: asIApproximationSchemeConfiguration
 
-.. autoclass:: pyAgrum.pyAgrum.BNLearner_double
-			:exclude-members: asIApproximationSchemeConfiguration

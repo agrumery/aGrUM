@@ -30,3 +30,5 @@ set (AGRUM_VERSION_MAJOR "@AGRUM_VERSION_MAJOR@")
 set (AGRUM_VERSION_MINOR "@AGRUM_VERSION_MINOR@")
 set (AGRUM_VERSION_PATCH "@AGRUM_VERSION_PATCH@")
 
+# Our library dependencies (contains definitions for IMPORTED targets)
+include ("@CMAKE_INSTALL_PREFIX@/lib@LIB_SUFFIX@/cmake/aGrUM/${AGRUM_LIBRARY}-targets.cmake")

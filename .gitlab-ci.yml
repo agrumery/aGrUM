@@ -1,188 +1,103 @@
 stages:
-- agrum
-- pyagrum
-- agrum_test
-- pyagrum_test
-- documentation
-- deployment
-
-cache:
-  untracked: false
+- build
+- deploy
 
 ################################################################################
 # Linux / gcc
 ################################################################################
-.linux_template: &linux_template
-  only:
-    - branches@agrumery/aGrUM
+linux_agrum:
+  image: malichief/ubuntu
   tags:
-    - linux
-    - python3
-    - gcc-5
-  variables:
-    CC: "/usr/bin/gcc-5"
-    CXX: "/usr/bin/g++-5"
+    - docker
   cache:
     key: linux
     paths:
-    - build/
-
-linux_aGrUM_build:
-  <<: *linux_template
-  stage: agrum
+      - build/
+  stage: build
   script:
-    - if ! python act --no-fun lib release aGrUM --python=3; then  python act --no-fun clean ; python act --no-fun lib release aGrUM --python=3; fi
+    - if ! python3 act --no-fun lib release aGrUM --python=3 -j 4; then python3 act clean && python3 act --no-fun lib release aGrUM --python=3 -j 4; fi
+    - python3 act --no-fun test release aGrUM --python=3 -j 4
+  retry: 2
 
-linux_pyAgrum_build:
-  <<: *linux_template
-  stage: pyagrum
+linux_pyagrum:
+  image: malichief/ubuntu
+  tags:
+    - docker
+  cache:
+    key: linux
+    paths:
+      - build/
+  stage: build
   script:
-    - if ! python act --no-fun lib release pyAgrum --python=3; then python act --no-fun clean ; python act --no-fun lib release pyAgrum --python=3; fi
-
-linux_aGrUM_test:
-  <<: *linux_template
-  stage: agrum_test
-  script:
-    - if ! python act --no-fun test release aGrUM --python=3; then python act --no-fun clean ; python act --no-fun test release aGrUM --python=3; fi
-
-linux_pyAgrum_test:
-  <<: *linux_template
-  stage: pyagrum_test
-  script:
-    - virtualenv venv --python=$(which python3)
-    - source venv/bin/activate
-    - pip install -r wrappers/pyAgrum/testunits/requirements.txt
-    - if ! python act --no-fun test release pyAgrum --python=3 -t quick; then python act --no-fun clean ; python act --no-fun test release pyAgrum --python=3 -t quick; fi
-    - deactivate
+    - if ! python3 act --no-fun lib release aGrUM --python=3 -j 4; then python3 act clean && python3 act --no-fun lib release aGrUM --python=3 -j 4; fi
+    - python3 act --no-fun test release pyAgrum --python=3 -t quick -j 4
+  retry: 2
 
 ################################################################################
 # MacOS / clang
 ################################################################################
-
-.macos_template: &macos_template
+macos_build:
   only:
-    - branches@agrumery/aGrUM
+    - master@agrumery/aGrUM
+    - web@agrumery/aGrUM
   tags:
     - macos
-    - python3
+    - conda
   variables:
     CC: "/usr/bin/clang"
     CXX: "/usr/bin/clang++"
+  stage: build
   cache:
     key: macos
     paths:
-    - build/
-
-macos_aGrUM_build:
-  <<: *macos_template
-  stage: agrum
+      - build/
   script:
-    - if ! python act --no-fun lib release aGrUM --python=3; then  python act --no-fun clean ; python act --no-fun lib release aGrUM --python=3; fi
-
-macos_pyAgrum_build:
-  <<: *macos_template
-  stage: pyagrum
-  script:
-    - if ! python act --no-fun lib release pyAgrum --python=3; then python act --no-fun clean ; python act --no-fun lib release pyAgrum --python=3; fi
-
-macos_aGrUM_test:
-  <<: *macos_template
-  stage: agrum_test
-  script:
-    - if ! python act --no-fun test release aGrUM --python=3; then python act --no-fun clean ; python act --no-fun test release aGrUM --python=3; fi
-
-macos_pyAgrum_test:
-  <<: *macos_template
-  stage: pyagrum_test
-  script:
-    - virtualenv venv --python=$(which python3.6)
-    - source venv/bin/activate
-    - pip install -r wrappers/pyAgrum/testunits/requirements.txt
-    - if ! python act --no-fun test release pyAgrum --python=3 -t quick; then python act --no-fun clean ; python act --no-fun test release pyAgrum --python=3 -t quick; fi
-    - deactivate
+    - source activate py37
+    - if ! python3 act --no-fun lib release aGrUM --python=3 -j 3; then python3 act clean && python3 act --no-fun lib release aGrUM --python=3 -j 3; fi
+    - python act --no-fun test release aGrUM --python=3 -j 3
+    - python act --no-fun test release pyAgrum --python=3 -t quick -j 3
+    - source deactivate
+  retry: 2
 
 ################################################################################
 # Windows / MVSC
 ################################################################################
-.windows_template: &windows_template
+windows_build:
   only:
-    - branches@agrumery/aGrUM
+    - master@agrumery/aGrUM
+    - web@agrumery/aGrUM
   tags:
     - windows
     - conda
   variables:
-    PATH: "C:\\Program Files\\Git\\bin;C:\\Users\\conda64\\Anaconda3;C:\\Users\\conda64\\Anaconda3\\Library\\mingw-w64\\bin;C:\\Users\\conda64\\Anaconda3\\Library\\usr\\bin;C:\\Users\\conda64\\Anaconda3\\Library\\bin;C:\\Users\\conda64\\Anaconda3\\Scripts;C:\\Program Files\\CMake\\bin;C:\\Program Files (x86)\\MSBuild\\14.0\\Bin;%PATH%;"
-    ACT_OPTIONS: "--no-fun --mvsc -d build"
+    PATH: "C:\\Program Files\\Git\\bin;C:\\ProgramData\\Anaconda3\\envs\\py37;C:\\ProgramData\\Anaconda3\\envs\\py37\\Library\\bin;C:\\ProgramData\\Anaconda3\\envs\\py37\\Scripts;C:\\Program Files\\CMake\\bin;C:\\Program Files (x86)\\MSBuild\\14.0\\Bin;%PATH%;"
+    ACT_OPTIONS: ""
   cache:
     key: mvsc
     paths:
-    - build/
-
-windows_aGrUM_build:
-  <<: *windows_template
-  stage: agrum
+      - build/
+  stage: build
   script:
-    - python act --no-fun install release aGrUM %ACT_OPTIONS% || python act --no-fun clean && python act --no-fun install release aGrUM %ACT_OPTIONS%
-
-windows_pyAgrum_build:
-  <<: *windows_template
-  stage: pyagrum
-  script:
-    - python act --no-fun install release pyAgrum %ACT_OPTIONS% || python act --no-fun clean && python act --no-fun install release pyAgrum %ACT_OPTIONS%
-
-windows_aGrUM_test:
-  <<: *windows_template
-  stage: agrum_test
-  script:
-    - python act --no-fun test release aGrUM %ACT_OPTIONS% || python act --no-fun clean && python act --no-fun test release aGrUM %ACT_OPTIONS%
-
-windows_pyAgrum_test:
-  <<: *windows_template
-  stage: pyagrum_test
-  script:
-    - pip install -r wrappers/pyAgrum/testunits/requirements.txt
-    - python act --no-fun test release pyAgrum %ACT_OPTIONS%  -t quick || python act --no-fun clean && python act --no-fun test release pyAgrum %ACT_OPTIONS% -t quick
+    - python act clean
+    - python act --no-fun test release aGrUM --no-fun --mvsc -d build -j 3
+    - python act --no-fun test release pyAgrum --no-fun --mvsc -d build -j 3 -t quick
+  retry: 2
 
 ################################################################################
-# Documentation
+# Deploy  wheels
 ################################################################################
-agrum_master_documentation:
+linux_build:
+  image: malichief/ubuntu
   only:
-    - tags
-    - master@agrumery/aGrUM
+    - tags@agrumery/aGrUM
   tags:
-    - linux
-    - python3
-    - doxygen
-  stage: documentation
-  allow_failure: true
+    - docker
+  cache:
+    key: linux
+    paths:
+      - build/
+  stage: deploy
   script:
-    - python act clean --no-fun && python act release doc aGrUM --no-fun
-    - cd ${CI_PROJECT_DIR}/build/release/docs/html && tar czf $(basename ${CI_COMMIT_REF_NAME}).tgz ./* && mv $(basename ${CI_COMMIT_REF_NAME}).tgz ${CI_PROJECT_DIR}
-    - sshpass -p "${OVH_PASSWORD}" ssh -oStrictHostKeyChecking=no ${OVH_LOGIN}@${OVH_URL} "rm -rf ~/www/aGrUM/${CI_COMMIT_REF_NAME}"
-    - sshpass -p "${OVH_PASSWORD}" scp -oStrictHostKeyChecking=no ${CI_PROJECT_DIR}/$(basename ${CI_COMMIT_REF_NAME}).tgz ${OVH_LOGIN}@${OVH_URL}:~/$(basename ${CI_COMMIT_REF_NAME}).tgz
-    - sshpass -p "${OVH_PASSWORD}" ssh -oStrictHostKeyChecking=no ${OVH_LOGIN}@${OVH_URL} "mkdir -p ~/www/aGrUM/${CI_COMMIT_REF_NAME}"
-    - sshpass -p "${OVH_PASSWORD}" ssh -oStrictHostKeyChecking=no ${OVH_LOGIN}@${OVH_URL} "tar xzf ~/$(basename ${CI_COMMIT_REF_NAME}).tgz -C ~/www/aGrUM/${CI_COMMIT_REF_NAME}/"
-    - sshpass -p "${OVH_PASSWORD}" ssh -oStrictHostKeyChecking=no ${OVH_LOGIN}@${OVH_URL} "rm -f ~/$(basename ${CI_COMMIT_REF_NAME}).tgz"
-
-################################################################################
-# Deployment
-################################################################################
-aGruM-Deploy-Latest:
-  only:
-    - tags
-  tags:
-    - linux
-  stage: deployment
-  script:
-    - curl -X POST -F token=${AGRUM_DEPLOY_TOKEN} -F ref=master https://gitlab.com/api/v4/projects/4935470/trigger/pipeline
-
-agrum_master_documentation:
-  only:
-    - tags
-  tags:
-    - linux
-  stage: deployment
-  allow_failure: true
-  script:
-    - sshpass -p "${OVH_PASSWORD}" ssh -oStrictHostKeyChecking=no ${OVH_LOGIN}@${OVH_URL} "/bin/bash ~/update_latest.sh"
+    - apt-get install -y curl
+    - curl -X POST -F token=${AGRUM_DEPLOY_TOKEN} -F ref=master -F "variables[AGRUM_TAG]=${CI_COMMIT_TAG}" -F "variables[AGRUM_BUILD]=1" -F "variables[DEPLOY_TO_PYPI]=TRUE" https://gitlab.com/api/v4/projects/4935470/trigger/pipeline
+  retry: 1
