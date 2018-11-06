@@ -64,10 +64,10 @@ namespace gum_tests {
       // gum::Idx id1 = score.addNodeSet(3, 4);
       // gum::Idx id2 = score.addNodeSet(2, 6);
       // gum::Idx id3 = score.addNodeSet(4, 7, std::vector< gum::Idx >{5});
-      TS_ASSERT_DELTA(score.score(3, 4), 2.68448, 1e-2);
-      TS_ASSERT_DELTA(score.score(2, 6), 4.1414, 1e-2);
+      TS_ASSERT_DELTA(score.score(3, 4), 3.87288, 1e-2);
+      TS_ASSERT_DELTA(score.score(2, 6), 5.97477, 1e-2);
       TS_ASSERT_DELTA(
-        score.score(4, 7, std::vector< gum::NodeId >{5}), 3.76384, 1e-2);
+        score.score(4, 7, std::vector< gum::NodeId >{5}), 5.43007, 1e-2);
 
       score.clear();
       // id1 = score.addNodeSet(6, 7, std::vector< gum::Idx >{5, 1, 4});

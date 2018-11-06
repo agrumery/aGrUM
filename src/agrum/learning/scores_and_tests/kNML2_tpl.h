@@ -174,7 +174,7 @@ namespace gum {
     double KNML2< ALLOC >::_score(const IdSet2< ALLOC >& idset) {
       // perform the countings on the database for all the nodes in the idset
       // This will help optimizing the computations of the Nxui, Nyui and Nui
-      // that we will need subsequently
+      // that we will be needed subsequently
       this->_counter.counts(idset, true);
 
       const bool informative_external_apriori = this->_apriori->isInformative();
@@ -229,7 +229,6 @@ namespace gum {
         }
 
         score *= 0.5;
-        score *= std::log(2);
 
         return score;
       } else {
@@ -264,7 +263,6 @@ namespace gum {
         score -= __param_complexity.log2Cnr(r_x, N);
 
         score *= 0.5;
-        score *= std::log(2);
 
         return score;
       }

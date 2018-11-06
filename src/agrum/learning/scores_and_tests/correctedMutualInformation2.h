@@ -1,0 +1,375 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+/**
+ * @file
+ * @brief The class computing n times the corrected mutual information,
+ * as used in the 3off2 algorithm
+ *
+ * @author Quentin FALCAND, Christophe GONZALES and Pierre-Henri WUILLEMIN.
+ */
+#ifndef GUM_LEARNING_CORRECTED_MUTUAL_INFORMATION2_H
+#define GUM_LEARNING_CORRECTED_MUTUAL_INFORMATION2_H
+
+#include <agrum/config.h>
+#include <agrum/core/math/math.h>
+#include <vector>
+
+#include <agrum/learning/scores_and_tests/kNML2.h>
+#include <agrum/learning/scores_and_tests/scoreLog2Likelihood2.h>
+#include <agrum/learning/scores_and_tests/scoreMDL2.h>
+
+namespace gum {
+
+  namespace learning {
+
+    /**
+     * @class CorrectedMutualInformation
+     * @brief The class computing n times the corrected mutual information,
+     * as used in the 3off2 algorithm
+     *
+     * This class handles the computations and storage of the mutual information
+     * values used in 3off2 and potential corrections.
+     *
+     * @ingroup learning_group
+     */
+    template < template < typename > class ALLOC = std::allocator >
+    class CorrectedMutualInformation2 {
+    public:
+      /// type for the allocators passed in arguments of methods
+      using allocator_type = ALLOC< NodeId >;
+
+      // ##########################################################################
+      /// @name Constructors / Destructors
+      // ##########################################################################
+      /// @{
+
+      /// default constructor
+      /** @param parser the parser used to parse the database
+       * @param apriori An apriori that we add to the computation of
+       * the score (this should come from expert knowledge): this consists in
+       * adding numbers to countings in the contingency tables
+       * @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
+       * indices. The countings are then performed only on the union of the
+       * rows [Xi,Yi), i in {1,...,n}. This is useful, e.g, when performing
+       * cross validation tasks, in which part of the database should be ignored.
+       * An empty set of ranges is equivalent to an interval [X,Y) ranging over
+       * the whole database.
+       * @param nodeId2Columns a mapping from the ids of the nodes in the
+       * graphical model to the corresponding column in the DatabaseTable
+       * parsed by the parser. This enables estimating from a database in
+       * which variable A corresponds to the 2nd column the parameters of a BN
+       * in which variable A has a NodeId of 5. An empty nodeId2Columns
+       * bijection means that the mapping is an identity, i.e., the value of a
+       * NodeId is equal to the index of the column in the DatabaseTable.
+       * @param alloc the allocator used to allocate the structures within the
+       * Score.
+       * @warning If nodeId2columns is not empty, then only the scores over the
+       * ids belonging to this bijection can be computed: applying method
+       * score() over other ids will raise exception NotFound. */
+      CorrectedMutualInformation2(
+            const DBRowGeneratorParser< ALLOC >& parser,
+            const Apriori2< ALLOC >&             apriori,
+            const std::vector< std::pair< std::size_t, std::size_t >,
+                               ALLOC< std::pair< std::size_t, std::size_t > > >&
+              ranges,
+            const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+              nodeId2columns =
+                Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+            const allocator_type& alloc = allocator_type());
+
+      /// default constructor
+      /** @param parser the parser used to parse the database
+       * @param apriori An apriori that we add to the computation of
+       * the score (this should come from expert knowledge): this consists in
+       * adding numbers to countings in the contingency tables
+       * @param nodeId2Columns a mapping from the ids of the nodes in the
+       * graphical model to the corresponding column in the DatabaseTable
+       * parsed by the parser. This enables estimating from a database in
+       * which variable A corresponds to the 2nd column the parameters of a BN
+       * in which variable A has a NodeId of 5. An empty nodeId2Columns
+       * bijection means that the mapping is an identity, i.e., the value of a
+       * NodeId is equal to the index of the column in the DatabaseTable.
+       * @param alloc the allocator used to allocate the structures within the
+       * Score.
+       * @warning If nodeId2columns is not empty, then only the scores over the
+       * ids belonging to this bijection can be computed: applying method
+       * score() over other ids will raise exception NotFound. */
+      CorrectedMutualInformation2(
+            const DBRowGeneratorParser< ALLOC >& parser,
+            const Apriori2< ALLOC >&             apriori,
+            const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+              nodeId2columns =
+                Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+            const allocator_type& alloc = allocator_type());
+      
+      /// copy constructor
+      CorrectedMutualInformation2(
+            const CorrectedMutualInformation2< ALLOC >& from);
+
+      /// copy constructor with a given allocator
+      CorrectedMutualInformation2(
+            const CorrectedMutualInformation2< ALLOC >& from,
+            const allocator_type& alloc);
+
+      /// move constructor
+      CorrectedMutualInformation2(CorrectedMutualInformation2< ALLOC >&& from);
+
+      /// move constructor with a given allocator
+      CorrectedMutualInformation2(CorrectedMutualInformation2< ALLOC >&& from,
+                                  const allocator_type& alloc);
+
+      /// virtual copy constructor
+      virtual CorrectedMutualInformation2< ALLOC >* clone() const;
+
+      /// virtual copy constructor with a given allocator
+      virtual CorrectedMutualInformation2< ALLOC >*
+      clone(const allocator_type& alloc) const;
+
+      /// destructor
+      virtual ~CorrectedMutualInformation2();
+      
+      /// @}
+
+      
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+
+      /// @{
+
+      /// copy operator
+      CorrectedMutualInformation2< ALLOC >&
+      operator=(const CorrectedMutualInformation2< ALLOC >& from);
+
+      /// move operator
+      CorrectedMutualInformation2< ALLOC >&
+      operator=(CorrectedMutualInformation2< ALLOC >&& from);
+
+      /// @}
+
+
+      // ##########################################################################
+      /// @name caching functions
+      // ##########################################################################
+      /// @{
+      
+      /// clears all the data structures from memory
+      virtual void clear();
+
+      /// clears all the current caches
+      /** There are 4 caches in the CorrectedMutualInformation class:
+       * # The I cache is intended to cache the computations of the mutual
+       * informations used by 3off2
+       * # the H cache is intended to store the results of the computations
+       * of the entropies used in the mutual information formula
+       * # the K cache is intended to store the penalties computed so far
+       * # the Cnr cache is intended to store the results of the computations
+       * of the Cnr formula used by the kNML penalty */
+      virtual void clearCache();
+      
+      /// turn on/off the use of all the caches
+      /** There are 4 caches in the CorrectedMutualInformation class:
+       * # The I cache is intended to cache the computations of the mutual
+       * informations used by 3off2
+       * # the H cache is intended to store the results of the computations
+       * of the entropies used in the mutual information formula
+       * # the K cache is intended to store the penalties computed so far
+       * # the Cnr cache is intended to store the results of the computations
+       * of the Cnr formula used by the kNML penalty */
+       virtual void useCache(bool on_off);
+
+      /// turn on/off the use of the ICache (the mutual information cache)
+      void useICache(bool on_off);
+      
+      /// clears the ICache (the mutual information  cache)
+      void clearICache ();
+
+      /// turn on/off the use of the HCache (the cache for the entropies)
+      void useHCache(bool on_off);
+      
+      /// clears the HCache (the cache for the entropies)
+      void clearHCache ();
+      
+      /// turn on/off the use of the KCache (the cache for the penalties)
+      void useKCache(bool on_off);
+      
+      /// clears the KCache (the cache for the penalties)
+      void clearKCache ();
+
+      /// turn on/off the use of the CnrCache (the cache for the Cnr formula)
+      void useCnrCache(bool on_off);
+      
+      /// clears the CnrCache (the cache for the Cnr formula)
+      void clearCnrCache ();
+      
+      /// @}
+
+      
+      // ##########################################################################
+      /// @name score function, used to declare the variables
+      // ##########################################################################
+      /// @{
+
+      /// returns the 2-point mutual information corresponding to a given nodeset
+      double score(NodeId var1, NodeId var2);
+
+      /// returns the 2-point mutual information corresponding to a given nodeset
+      double score(NodeId var1,
+                   NodeId var2,
+                   const std::vector< NodeId, ALLOC< NodeId > >& conditioning_ids);
+
+      /// returns the 3-point mutual information corresponding to a given nodeset
+      double score(NodeId var1, NodeId var2, NodeId var3);
+
+      /// returns the 3-point mutual information corresponding to a given nodeset
+      double score(NodeId var1,
+                   NodeId var2,
+                   NodeId var3,
+                   const std::vector< NodeId, ALLOC< NodeId > >& conditioning_ids);
+
+      /// @}
+
+      
+      // ##########################################################################
+      /// @name Accessors / Modifiers
+      // ##########################################################################
+      /// @{
+
+      /// use the MDL penalty function
+      void useMDL();
+
+      /// use the kNML penalty function
+      void useNML();
+
+      /// use no correction/penalty function
+      void useNoCorr();
+      
+      /// changes the max number of threads used to parse the database
+      void setMaxNbThreads(std::size_t nb) const;
+
+      /// returns the number of threads used to parse the database
+      std::size_t nbThreads() const;
+      
+      /// returns the allocator used by the score
+      allocator_type getAllocator() const;
+
+      /// @}
+
+
+      /// the description type for the complexity correction
+      enum class KModeTypes { MDL, NML, NoCorr };
+
+      
+
+    private:
+      
+      /// The object to compute N times Entropy H used by mutual information I
+      /* Note that the log2-likelihood is equal to N times the entropy H */
+      ScoreLog2Likelihood2< ALLOC > __NH;
+      
+      /// the object computing the NML k score
+      KNML2< ALLOC > __k_NML;
+
+      /** @brief a score MDL used to compute the size N of the database,
+       * including the a priori */
+      ScoreMDL2< ALLOC > __score_MDL;
+      
+      /// the mode used for the correction
+      KModeTypes __kmode{KModeTypes::MDL};
+
+
+      /// a Boolean indicating whether we wish to use the I cache
+      /** The I cache is the cache used to store N times the values of
+       * mutual informations */
+      bool __use_ICache {true};
+
+      /// a Boolean indicating whether we wish to use the H cache
+      /** The H cache is the cache for storing N times the entropy. Mutual
+       * information is computed as a summation/subtraction of entropies. The
+       * latter are cached directly within the __NH instance. */
+      bool __use_HCache {true};
+
+      /// a Boolean indicating whether we wish to use the K cache
+      /** The K cache is used to cache K-scores, which corresponds to
+       * summations/subtractions of kNML individual values. The cache for the 
+       * latter is called the Cnr cache because it uses Cnr values */
+      bool __use_KCache {true};
+
+      /// a Boolean indicating whether we wish to use the Cnr cache
+      /** When using the kNML class, the computation of the K-scores
+       * consists of summations/subtractions of kNML scores. The latter
+       * essentially amount to computing Cnr values. Those can be
+       * cached directly within the __k_NML instance */
+      bool __use_CnrCache {true};
+
+
+      /// the ICache
+      ScoringCache< ALLOC > __ICache;
+
+      /// the KCache
+      ScoringCache< ALLOC > __KCache;
+
+
+      
+      /// an empty conditioning set
+      const std::vector< NodeId, ALLOC< NodeId > > __empty_conditioning_set;
+
+      /// a constant used to prevent numerical instabilities
+      const double __threshold{1e-10};
+
+
+
+
+      /// returns the 2-point mutual information corresponding to a given nodeset
+      double __NI_score(NodeId var_x,
+                        NodeId var_y,
+                        const std::vector< NodeId, ALLOC< NodeId > >& vars_z);
+
+      /// returns the 3-point mutual information corresponding to a given nodeset
+      double __NI_score(NodeId var_x,
+                        NodeId var_y,
+                        NodeId var_z,
+                        const std::vector< NodeId, ALLOC< NodeId > >& vars_ui);
+
+      /// computes the complexity correction for the mutual information
+      double __K_score(NodeId var_x,
+                       NodeId var_y,
+                       const std::vector< NodeId, ALLOC< NodeId > >& vars_z);
+
+      /// computes the complexity correction for the mutual information
+      double __K_score(NodeId var_x,
+                       NodeId var_y,
+                       NodeId var_z,
+                       const std::vector< NodeId, ALLOC< NodeId > >& vars_ui);
+
+    };
+
+  } /* namespace learning */
+
+} /* namespace gum */
+
+
+extern template class gum::learning::CorrectedMutualInformation2<>;
+
+
+// always include the template implementation
+#include <agrum/learning/scores_and_tests/correctedMutualInformation2_tpl.h>
+
+#endif /* GUM_LEARNING_CORRECTED_MUTUAL_INFORMATION2_H */

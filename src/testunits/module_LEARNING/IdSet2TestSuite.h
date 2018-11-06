@@ -62,7 +62,7 @@ namespace gum_tests {
       TS_ASSERT(set4[0] == node0);
 
       std::vector< gum::NodeId > seq1{node4, node3, node6, node5};
-      gum::learning::IdSet2<>    set1(seq1, false);
+      gum::learning::IdSet2<>    set1(seq1, true, false);
       TS_ASSERT(set1.nbLHSIds() == std::size_t(0));
       TS_ASSERT(set1[0] == node3);
       TS_ASSERT(set1[1] == node4);
@@ -80,7 +80,7 @@ namespace gum_tests {
         cs1 += node;
       TS_ASSERT(cs1 == std::size_t(18));
 
-      gum::learning::IdSet2<> set1b(empty, false);
+      gum::learning::IdSet2<> set1b(empty, true, false);
       TS_ASSERT(set1b.nbLHSIds() == std::size_t(0));
       TS_ASSERT(set1b.size() == std::size_t(0));
 

@@ -132,6 +132,9 @@ namespace gum {
       void useNoCorr();
 
       const KNML< IdSetAlloc, CountAlloc >& kNML() const { return __k_NML; };
+      const PartialEntropy< IdSetAlloc, CountAlloc >& partialEnt () const
+      { return  _H; }
+      
       /// @}
 
 

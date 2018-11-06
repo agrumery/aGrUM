@@ -165,13 +165,13 @@ namespace gum {
       /// the scores
       using IndependenceTest2< ALLOC >::score;
 
-      /// clears all the data structures from memory, including the cache
+      /// clears all the data structures from memory, including the C_n^r cache
       virtual void clear();
 
-      /// clears the current cache
+      /// clears the current C_n^r cache
       virtual void clearCache();
 
-      /// turn on/off the use of a cache of the previously computed score
+      /// turn on/off the use of the C_n^r cache
       virtual void useCache(const bool on_off);
 
       /// return the mapping between the columns of the database and the node ids

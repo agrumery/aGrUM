@@ -48,10 +48,10 @@ namespace gum {
   constexpr std::size_t VariableLog2ParamComplexityCTableNSize{std::size_t(1000)};
 
 
-  /** @class VariableParamComplexity
+  /** @class VariableLog2ParamComplexity
    * @brief the class for computing the log2 of the parametric complexity
    * of an r-ary multinomial variable
-   * @headerfile VariableParamComplexity.h <agrum/core/math/VariableParamComplexity.h>
+   * @headerfile VariableLog2ParamComplexity.h <agrum/core/math/VariableLog2ParamComplexity.h>
    * @ingroup math_group
    *
    * This class enables to compute the log in base 2 of the parametric

@@ -205,13 +205,15 @@ namespace gum {
       IdSet2(const allocator_type& alloc = allocator_type());
 
       /// default constructor with no variable on the left side
-      /** @param rhs_ids the set of variables on the right side of the
-       * conditioning bar
-       * @param ordered_rhs_ids indicates whether the ids in rhs_ids should be
+      /** @param ids the set of variables
+       * @param rhs_ids indicate whether the ids are on the right side of the
+       * conditioning bar or not
+       * @param ordered_ids indicates whether the ids in rhs_ids should be
        * considered as an ordered set or an unordered set
        * @param alloc the allocator used to store the data in the IdSet */
-      IdSet2(const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids,
-             const bool                                    ordered_rhs_ids = false,
+      IdSet2(const std::vector< NodeId, ALLOC< NodeId > >& ids,
+             const bool                                    rhs_ids,
+             const bool                                    ordered_ids,
              const allocator_type& alloc = allocator_type());
 
       /// default constructor with one variable on the left side

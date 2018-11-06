@@ -192,24 +192,27 @@ namespace gum {
     /// default constructor with no variable on the left side
     template < template < typename > class ALLOC >
     INLINE IdSet2< ALLOC >::IdSet2(
-      const std::vector< NodeId, ALLOC< NodeId > >&   rhs_ids,
-      const bool                                      ordered_rhs_ids,
+      const std::vector< NodeId, ALLOC< NodeId > >&   ids,
+      const bool                                      rhs_ids,
+      const bool                                      ordered_ids,
       const typename IdSet2< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc),
-        __end_safe(*this) {
-      __ids.resize(rhs_ids.size());
+      __end_safe(*this) {
+      __ids.resize(ids.size());
 
       // if the rhs_ids should be considered as unordered, we sort them by
       // increasing order so that we can compare easily two different rhs_ids
-      if (!ordered_rhs_ids) {
-        std::vector< NodeId, ALLOC< NodeId > > vect(rhs_ids);
+      if (!ordered_ids) {
+        std::vector< NodeId, ALLOC< NodeId > > vect(ids);
         std::sort(vect.begin(), vect.end());
         for (const auto id : vect)
           __ids << id;
       } else {
-        for (const auto id : rhs_ids)
+        for (const auto id : ids)
           __ids << id;
       }
+
+      if ( ! rhs_ids ) __nb_lhs_ids = __ids.size ();
 
       // update the end iterator
       __end_safe.__gotoEnd();

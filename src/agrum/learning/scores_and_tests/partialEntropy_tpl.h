@@ -101,6 +101,7 @@ namespace gum {
     double PartialEntropy< IdSetAlloc, CountAlloc >::score(Idx nodeset_index) {
       // if the score has already been computed, get its value
       if (this->_isInCache(nodeset_index)) {
+        ++cache_hits;
         return this->_cachedScore(nodeset_index);
       }
 
@@ -139,6 +140,7 @@ namespace gum {
       // shall we put the score into the cache?
       if (this->_isUsingCache()) { this->_insertIntoCache(nodeset_index, score); }
 
+      ++cache_size;
       return score;
     }
 

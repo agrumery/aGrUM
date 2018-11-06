@@ -186,6 +186,14 @@ namespace gum {
        * and parameter learning. */
       virtual const Apriori2< ALLOC >& internalApriori() const final;
 
+      using Score2<ALLOC>::score;
+      
+      /// returns the score for a given IdSet
+      /** @throws OperationNotAllowed is raised if the score does not support
+       * calling method score such an idset (due to too many/too few variables
+       * in the left hand side or the right hand side of the idset). */
+      double score(const IdSet2< ALLOC >& idset);
+
       /// @}
 
 

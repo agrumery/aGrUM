@@ -271,6 +271,24 @@ namespace gum {
       }
     }
 
+
+    /// returns the size of the database w.r.t. a given idset
+    template < template < typename > class ALLOC >
+    double ScoreBIC2< ALLOC >::N(const IdSet2< ALLOC >& idset) {
+      // get the counts for all the nodes in the idset and add the apriori
+      std::vector< double, ALLOC< double > > N_ijk(
+        this->_counter.counts(idset, true));
+      if (this->_apriori->isInformative())
+        this->_apriori->addAllApriori(idset, N_ijk);
+      
+      double N = 0;
+      for (const auto n_ijk : N_ijk) {
+        N += n_ijk;
+      }
+
+      return N;
+    }
+
   } /* namespace learning */
 
 } /* namespace gum */

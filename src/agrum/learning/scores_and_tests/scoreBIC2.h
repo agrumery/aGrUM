@@ -180,6 +180,17 @@ namespace gum {
        * and parameter learning. */
       virtual const Apriori2< ALLOC >& internalApriori() const final;
 
+      /// returns the size of the database w.r.t. a given idset
+      /** Usually, the size of the database should be a constant. But some
+       * a priori violate this condition. This is the case, for instance, of
+       * the Laplace a priori: this one adds ones to each cells of the
+       * contingency tables. As all those tables have not necessarily the same
+       * size, the number of ones added differ from one contingency table
+       * to the other. As a result, the size of the database, including the a
+       * priori, depends on the variables of the contingency tables (the idset
+       * passed in argument of this function). */
+      double N(const IdSet2< ALLOC >& idset);      
+
       /// @}
 
 

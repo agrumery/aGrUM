@@ -84,6 +84,8 @@ namespace gum_tests {
                 << "  hits : " << I.K2_cache_hits << std::endl;
       std::cout << "corrMutInfo K3 cache : " << I.K3_cache_size
                 << "  hits : " << I.K3_cache_hits << std::endl;
+      std::cout << "partial ent cache    : " << I.partialEnt().cache_size
+                << "  hits : " << I.partialEnt().cache_hits << std::endl;
       
     }
   };
