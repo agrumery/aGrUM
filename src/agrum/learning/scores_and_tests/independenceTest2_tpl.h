@@ -81,7 +81,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE IndependenceTest2< ALLOC >::IndependenceTest2(
       const IndependenceTest2< ALLOC >& from) :
-        IndependenceTest2(from, this->getAllocator()) {}
+        IndependenceTest2(from, from.getAllocator()) {}
 
 
     /// move constructor
@@ -103,7 +103,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE IndependenceTest2< ALLOC >::IndependenceTest2(
       IndependenceTest2< ALLOC >&& from) :
-        IndependenceTest2(std::move(from), this->getAllocator()) {}
+        IndependenceTest2(std::move(from), from.getAllocator()) {}
 
 
     /// destructor

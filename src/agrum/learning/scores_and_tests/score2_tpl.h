@@ -80,7 +80,7 @@ namespace gum {
     /// copy constructor
     template < template < typename > class ALLOC >
     INLINE Score2< ALLOC >::Score2(const Score2< ALLOC >& from) :
-        Score2(from, this->getAllocator()) {}
+        Score2(from, from.getAllocator()) {}
 
 
     /// move constructor
@@ -101,7 +101,7 @@ namespace gum {
     /// move constructor
     template < template < typename > class ALLOC >
     INLINE Score2< ALLOC >::Score2(Score2< ALLOC >&& from) :
-        Score2(std::move(from), this->getAllocator()) {}
+        Score2(std::move(from), from.getAllocator()) {}
 
 
     /// destructor

@@ -72,7 +72,7 @@ namespace gum {
     /// copy constructor
     template < template < typename > class ALLOC >
     INLINE KNML2< ALLOC >::KNML2(const KNML2< ALLOC >& from) :
-        KNML2< ALLOC >(from, this->getAllocator()) {}
+        KNML2< ALLOC >(from, from.getAllocator()) {}
 
 
     /// move constructor with a given allocator
@@ -89,7 +89,7 @@ namespace gum {
     /// move constructor
     template < template < typename > class ALLOC >
     INLINE KNML2< ALLOC >::KNML2(KNML2< ALLOC >&& from) :
-        KNML2< ALLOC >(std::move(from), this->getAllocator()) {}
+        KNML2< ALLOC >(std::move(from), from.getAllocator()) {}
 
 
     /// virtual copy constructor with a given allocator

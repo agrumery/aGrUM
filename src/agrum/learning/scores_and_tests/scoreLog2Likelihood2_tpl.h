@@ -75,7 +75,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE ScoreLog2Likelihood2< ALLOC >::ScoreLog2Likelihood2(
       const ScoreLog2Likelihood2< ALLOC >& from) :
-        ScoreLog2Likelihood2< ALLOC >(from, this->getAllocator()) {}
+        ScoreLog2Likelihood2< ALLOC >(from, from.getAllocator()) {}
 
 
     /// move constructor with a given allocator
@@ -93,7 +93,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE ScoreLog2Likelihood2< ALLOC >::ScoreLog2Likelihood2(
       ScoreLog2Likelihood2< ALLOC >&& from) :
-        ScoreLog2Likelihood2< ALLOC >(std::move(from), this->getAllocator()) {}
+        ScoreLog2Likelihood2< ALLOC >(std::move(from), from.getAllocator()) {}
 
 
     /// virtual copy constructor with a given allocator

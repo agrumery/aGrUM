@@ -60,7 +60,7 @@ namespace gum {
     /// copy constructor
     template < template < typename > class ALLOC >
     INLINE ScoringCache< ALLOC >::ScoringCache(const ScoringCache< ALLOC >& from) :
-        ScoringCache< ALLOC >(from, this->getAllocator()) {}
+        ScoringCache< ALLOC >(from, from.getAllocator()) {}
 
 
     /// move constructor with a given allocator
@@ -77,7 +77,7 @@ namespace gum {
     /// move constructor
     template < template < typename > class ALLOC >
     INLINE ScoringCache< ALLOC >::ScoringCache(ScoringCache< ALLOC >&& from) :
-        ScoringCache< ALLOC >(std::move(from), this->getAllocator()) {}
+        ScoringCache< ALLOC >(std::move(from), from.getAllocator()) {}
 
 
     /// virtual copy constructor with a given allocator

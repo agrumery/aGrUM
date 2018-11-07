@@ -55,7 +55,7 @@ namespace gum {
     /// copy constructor
     template < template < typename > class ALLOC >
     INLINE Apriori2< ALLOC >::Apriori2(const Apriori2< ALLOC >& from) :
-        Apriori2(from, this->getAllocator()) {}
+        Apriori2(from, from.getAllocator()) {}
 
 
     /// move constructor
@@ -73,7 +73,7 @@ namespace gum {
     /// move constructor
     template < template < typename > class ALLOC >
     INLINE Apriori2< ALLOC >::Apriori2(Apriori2< ALLOC >&& from) :
-        Apriori2(std::move(from), this->getAllocator()) {}
+        Apriori2(std::move(from), from.getAllocator()) {}
 
 
     /// destructor

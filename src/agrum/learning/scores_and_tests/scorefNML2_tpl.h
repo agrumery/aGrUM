@@ -73,7 +73,7 @@ namespace gum {
     /// copy constructor
     template < template < typename > class ALLOC >
     INLINE ScorefNML2< ALLOC >::ScorefNML2(const ScorefNML2< ALLOC >& from) :
-        ScorefNML2< ALLOC >(from, this->getAllocator()) {}
+        ScorefNML2< ALLOC >(from, from.getAllocator()) {}
 
 
     /// move constructor with a given allocator
@@ -90,7 +90,7 @@ namespace gum {
     /// move constructor
     template < template < typename > class ALLOC >
     INLINE ScorefNML2< ALLOC >::ScorefNML2(ScorefNML2< ALLOC >&& from) :
-        ScorefNML2< ALLOC >(std::move(from), this->getAllocator()) {}
+        ScorefNML2< ALLOC >(std::move(from), from.getAllocator()) {}
 
 
     /// virtual copy constructor with a given allocator
