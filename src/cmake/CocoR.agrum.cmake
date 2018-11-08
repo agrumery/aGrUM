@@ -4,7 +4,7 @@ find_program(COCOR_EXECUTABLE cococpp)
 if(COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
   find_program(COCOR_EXECUTABLE2 Coco)
   if(COCOR_EXECUTABLE2 STREQUAL "COCOR_EXECUTABLE2-NOTFOUND")
-    message(STATUS "** aGrUM notification : Coco/R not found : you cannot change atg files !")
+    message(STATUS "** aGrUM notification: Coco/R not found : you cannot change atg files !")
   else(COCOR_EXECUTABLE2 STREQUAL "COCOR_EXECUTABLE2-NOTFOUND")
     set(COCOR_EXECUTABLE "${COCOR_EXECUTABLE2}")
     message(STATUS "** aGrUM Notification: Coco/R found")
@@ -28,7 +28,7 @@ macro(CocoRTarget DIRNAME ARG_PREFIX ARG_NAMESPACE MODULE)
   SET_SOURCE_FILES_PROPERTIES(${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Parser.h GENERATED)
   SET_SOURCE_FILES_PROPERTIES(${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Scanner.cpp GENERATED)
   SET_SOURCE_FILES_PROPERTIES(${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Scanner.h GENERATED)
-  
+
   message(STATUS "** aGrUM notification:      (+) ${ARG_NAMESPACE} found")
 endmacro(CocoRTarget)
 # Since parser does not exists yet when cmake is run, mark it as generated

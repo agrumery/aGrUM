@@ -24,11 +24,11 @@
 
 #include <agrum/agrum.h>
 #include <agrum/core/exceptions.h>
-#ifndef NDEBUG
+#ifdef GUM_DEBUG_MODE
 #  ifdef HAVE_EXECINFO_H
 #    include <execinfo.h>
 #  endif   // HAVE_EXECINFO_H
-#endif     // NDEBUG
+#endif // GUM_DEBUG_MODE
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -55,7 +55,7 @@ namespace gum {
 
   Exception::Exception(const std::string aMsg, const std::string aType) :
       _msg(aMsg), _type(aType) {
-#  ifndef NDEBUG
+#ifdef GUM_DEBUG_MODE
 #    ifdef HAVE_EXECINFO_H
 #      define callStackDepth 20
     void*  array[callStackDepth];
@@ -75,9 +75,9 @@ namespace gum {
 #    else    // HAVE_EXECINFO_H
     _callstack = "Callstack only in linux debug mode when execinfo.h available";
 #    endif   // HAVE_EXECINFO_H
-#  else      // NDEBUG
+#  else      // GUM_DEBUG_MODE
     _callstack = "Callstack only in linux debug mod ewhen execinfo.h available";
-#  endif     // NDEBUG
+#endif // GUM_DEBUG_MODE
   }
 
 } /* namespace gum */

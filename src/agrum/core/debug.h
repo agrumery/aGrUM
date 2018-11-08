@@ -34,7 +34,7 @@
 #  include <vector>
 
 
-#  ifndef NDEBUG
+#ifdef GUM_DEBUG_MODE
 #    ifndef GUM_TRACE_ON
 #      define GUM_TRACE_ON   // in DEBUG MODE we force TRACE to be ON
 #    else   // GUM_TRACE_ON on mode debug add  TRACE_CONSTRUCTION_ON (tracing
@@ -100,7 +100,7 @@
       }
 #    define GUM_OP_MOV(x) GUM_OP_MOV_BASIC(x)
 /////////////////////////////////////////////////////////////
-#  else   // NDEBUG
+#  else   // GUM_DEBUG_MODE
 /////////////////////////////////////////////////////////////
 #    define GUM_ASSERT(condition)
 #    define GUM_DEBUG_ONLY(x)
@@ -111,7 +111,7 @@
 #    define GUM_OP_CPY(x)
 #    define GUM_OP_MOV(x)
 /////////////////////////////////////////////////////////////
-#  endif   // NDEBUG
+#endif // GUM_DEBUG_MODE
 
 #  ifdef GUM_TRACE_ON
 #    define GUM__PRINT(file, line, x)                                       \
@@ -138,7 +138,7 @@
 
 namespace gum {
 
-#  ifndef NDEBUG
+#ifdef GUM_DEBUG_MODE
 
   namespace __debug__ {
 
@@ -170,7 +170,7 @@ namespace gum {
 
   }   // namespace __debug__
 
-#  endif   // NDEBUG
+#endif // GUM_DEBUG_MODE
 
   // ===========================================================================
   // ===         A CLASS USED FOR MAKING VALGRIND HAPPY IN DEBUG MODE        ===

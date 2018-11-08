@@ -400,11 +400,11 @@ namespace gum {
       Size __nb_thread_counters{0};
 
 /// the max number of threads authorized
-#if defined(_OPENMP) && defined(NDEBUG)
+#if defined(_OPENMP) && !defined(GUM_DEBUG_MODE)
       Size __max_threads_number{getMaxNumberOfThreads()};
 #else
       Size __max_threads_number{1};
-#endif /* NDEBUG */
+#endif /* GUM_DEBUG_MODE */
 
       /// the minimal number of rows to parse (on average) by thread
       Size __min_nb_rows_per_thread{100};

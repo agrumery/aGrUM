@@ -11,9 +11,9 @@
 
 // in order to force GUM_CHECKPOINT / GUM_TRACE / GUM_TRACE_VAR to works even in
 // release mode
-#ifdef NDEBUG
+#ifdef GUM_DEBUG_MODE
 #define GUM_TRACE_ON
-#endif
+#endif  // GUM_DEBUG_MODE
 #include <cstdlib>
 
 #include <agrum/config.h>
@@ -120,9 +120,9 @@ namespace CxxTest {
     void leaveWorld( const WorldDescription& desc ) {
       delete ( __clock );
       newLine();
-#ifndef NDEBUG
+#ifdef GUM_DEBUG_MODE
       gum::__debug__::__atexit();
-#endif  // NDEBUG
+#endif // GUM_DEBUG_MODE
 
       ( *_o ) << endl
               << "## Profiling : " << ( gum::Size )( 1000.0 * __totalTime )

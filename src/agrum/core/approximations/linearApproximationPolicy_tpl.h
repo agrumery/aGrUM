@@ -264,7 +264,7 @@ namespace gum {
   INLINE Idx LinearApproximationPolicy< GUM_SCALAR >::encode(
     const GUM_SCALAR& value) const {
 // we keep the bounds checked in debug mode
-#ifndef NDEBUG
+#ifdef GUM_DEBUG_MODE
     if (value > this->_highLimit) {
       GUM_TRACE(value << " not in (" << this->_lowLimit << "-" << this->_highLimit
                       << ")");
@@ -277,7 +277,7 @@ namespace gum {
       GUM_ERROR(OutOfLowerBound, "Value asked is lower than low limit");
     }
 
-#endif   // NDEBUG
+#endif // GUM_DEBUG_MODE
     return __encode(value);
   }
 

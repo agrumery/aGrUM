@@ -40,7 +40,7 @@
 
 namespace gum {
 
-#  ifndef NDEBUG
+#ifdef GUM_DEBUG_MODE
 
   namespace __debug__ {
     typedef std::map< std::string, int > DEBUG_MAP;
@@ -260,7 +260,7 @@ namespace gum {
 
   }   // namespace __debug__
 
-#  endif   // NDEBUG
+#endif // GUM_DEBUG_MODE
 
 } /* namespace gum */
 

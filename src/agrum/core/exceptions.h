@@ -48,7 +48,7 @@
                 << (e).errorType() << " : " << (e).errorContent() << std::endl; \
     }
 #else
-#  ifdef NDEBUG
+#  ifndef GUM_DEBUG_MODE
 #    define GUM_ERROR(type, msg)                                    \
       {                                                             \
         std::ostringstream __error__str;                            \
@@ -78,7 +78,7 @@
                   << (e).errorContent() << std::endl;                      \
         std::cout << (e).errorCallStack() << std::endl;                    \
       }
-#  endif   // NDEBUG
+#endif // GUM_DEBUG_MODE
 #endif     // SWIG
 
 #define GUM_MAKE_ERROR(TYPE, SUPERCLASS, MSG)                                    \

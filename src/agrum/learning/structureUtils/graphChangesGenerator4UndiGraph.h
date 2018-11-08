@@ -209,11 +209,11 @@ namespace gum {
 
       private:
 /// the max number of threads authorized
-#if defined(_OPENMP) && defined(NDEBUG)
+#if defined(_OPENMP) && !defined(GUM_DEBUG_MODE)
       Size __max_threads_number{getMaxNumberOfThreads()};
 #else
       Size __max_threads_number{1};
-#endif /* NDEBUG */
+#endif /* GUM_DEBUG_MODE */
     };
 
   } /* namespace learning */

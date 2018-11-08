@@ -345,11 +345,11 @@ namespace gum {
 %{
 namespace gum {
   void statsObj(void) {
-#ifndef NDEBUG
+#ifdef GUM_DEBUG_MODE
     gum::__debug__::__atexit();
 #else
     //std::cout<<"Stats on aGrUM objects only available in debug mode"<<std::endl;
-#endif //NDEBUG
+#endif // GUM_DEBUG_MODE
   }
 }
 %}

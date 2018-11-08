@@ -207,12 +207,12 @@ namespace gum {
     INLINE void
       GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::setMaxNbThreads(
         Size nb) noexcept {
-#  if defined(_OPENMP) && defined(NDEBUG)
+#  if defined(_OPENMP) && !defined(GUM_DEBUG_MODE)
       if (nb == 0) nb = getMaxNumberOfThreads();
       __max_threads_number = nb;
 #  else
       __max_threads_number = 1;
-#  endif /* _OPENMP && NDEBUG */
+#  endif /* _OPENMP && GUM_DEBUG_MODE */
     }
 
     /// returns the constraint that is used by the generator

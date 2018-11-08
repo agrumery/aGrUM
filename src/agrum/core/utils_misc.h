@@ -36,15 +36,12 @@
 #include <string>
 #include <type_traits>
 
-// FLAG : DEBUG mode
-//#undef  NDEBUG
-//#define NDEBUG
 
-#ifdef NDEBUG
+#ifdef GUM_DEBUG_MODE
 #  define GUM_CAST dynamic_cast
 #else
 #  define GUM_CAST static_cast
-#endif
+#endif // GUM_DEBUG_MODE
 
 #include <agrum/agrum.h>
 

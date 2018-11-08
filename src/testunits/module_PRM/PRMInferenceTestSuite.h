@@ -398,7 +398,7 @@ namespace gum_tests {
           break;
         }
 
-#ifndef NDEBUG
+#ifdef GUM_DEBUG_MODE
         // In debug mode we do it for just one node
         break;
 #endif

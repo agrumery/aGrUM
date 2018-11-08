@@ -36,7 +36,7 @@ namespace gum {
     if (first_time) {
       first_time = false;
       __SetIterEndSafe = new SetIteratorSafe< int >;
-#  ifndef NDEBUG
+#ifdef GUM_DEBUG_MODE
       __debug__::__dec_creation(
         "SetIteratorSafe", "__set_static_end", 0, "static variable correction", 0);
       __debug__::__dec_creation("HashTableConstIteratorSafe",
@@ -62,7 +62,7 @@ namespace gum {
     if (first_time) {
       first_time = false;
       __SetIterEnd = new SetIterator< int >;
-#  ifndef NDEBUG
+#ifdef GUM_DEBUG_MODE
       __debug__::__dec_creation(
         "SetIterator", "__set_static_end", 0, "static variable correction", 0);
       __debug__::__dec_creation("HashTableConstIterator",

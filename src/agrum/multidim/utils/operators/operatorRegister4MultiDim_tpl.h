@@ -45,13 +45,13 @@ namespace gum {
 
     if (!__set.exists(operation_name)) {
       theset = __set.insert(operation_name, new OperatorSet).second;
-#  ifndef NDEBUG
+#ifdef GUM_DEBUG_MODE
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the OperatorRegister4MultiDim will be
       // removed at the end of the program's execution.
       __debug__::__inc_deletion(
         "HashTable", __FILE__, __LINE__, "destructor of", (void*)theset);
-#  endif /* NDEBUG */
+#  endif /* GUM_DEBUG_MODE */
     } else {
       theset = __set[operation_name];
     }
@@ -104,7 +104,7 @@ namespace gum {
     OperatorRegister4MultiDim< GUM_SCALAR >::Register() {
     static OperatorRegister4MultiDim container;
 
-#  ifndef NDEBUG
+#ifdef GUM_DEBUG_MODE
     static bool first = true;
 
     if (first) {
@@ -116,7 +116,7 @@ namespace gum {
         "HashTable", __FILE__, __LINE__, "destructor of", (void*)&container.__set);
     }
 
-#  endif /* NDEBUG */
+#  endif /* GUM_DEBUG_MODE */
 
     return container;
   }

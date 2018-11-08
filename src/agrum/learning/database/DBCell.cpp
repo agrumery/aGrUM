@@ -42,7 +42,7 @@ namespace gum {
 
 
     Bijection< std::string, int >& DBCell::__strings() {
-#  ifndef NDEBUG
+#ifdef GUM_DEBUG_MODE
       static bool first_time = true;
       if (first_time) {
         first_time = false;
