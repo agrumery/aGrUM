@@ -1,6 +1,4 @@
 
-option (FOR_PYTHON3 "ON if pyAgrum uses python3. Python3 is used by default" ON)
-
 if (PYTHON_TARGET)
   set(PYTHON_EXECUTABLE ${PYTHON_TARGET})
   unset(PYTHON_INCLUDE_DIR CACHE)
@@ -9,15 +7,12 @@ if (PYTHON_TARGET)
   unset(PYTHON_VERSION_MAJOR CACHE)
 endif (PYTHON_TARGET)
 
-if (FOR_PYTHON3)
-  find_package(PythonInterp 3 REQUIRED)
-  find_package(PythonLibs   3 REQUIRED)
+find_package (PythonInterp ${PYAGRUM_REQUIRED_PYTHON_VERSION} REQUIRED)
+find_package (PythonLibs   ${PYTHON_VERSION_STRING} EXACT  REQUIRED)
 
-  set(CMAKE_SWIG_FLAGS  "${CMAKE_SWIG_FLAGS};-py3" )
-else ()
-  find_package(PythonInterp 2 REQUIRED)
-  find_package(PythonLibs   2 REQUIRED)
-endif()
+if (PYTHON_VERSION_MAJOR VERSION_GREATER 2)
+  list (APPEND CMAKE_SWIG_FLAGS "-py3")
+endif ()
 
 # PYTHON_INSTALL
 if (NOT DEFINED PYTHON_INSTALL)

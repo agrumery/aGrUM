@@ -73,10 +73,8 @@ def getCmake(current, target):
   else:
     line += " -DBUILD_PYTHON=ON"
 
-  if current["python"] == "3":
-    line += " -DFOR_PYTHON3=ON"
-  else:
-    line += " -DFOR_PYTHON3=OFF"
+  line += " -DPYAGRUM_REQUIRED_PYTHON_VERSION=" + current["python"]
+  
   line += " -DPYTHON_TARGET=" + cfg.python
 
   if platform.system() == "Windows":
