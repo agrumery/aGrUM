@@ -1,17 +1,17 @@
- project(EXAMPLE)
+project(EXAMPLE)
 cmake_minimum_required(VERSION 2.8)
 # classical options 
-# -DCMAKE_BUILD_TYPE=DEBUG|RELEASE 
+# -DCMAKE_BUILD_TYPE=Debug|Release 
 # -G "MinGW Makefiles" 
 
-# cmake -DCMAKE_BUILD_TYPE=DEBUG
+# cmake -DCMAKE_BUILD_TYPE=Debug
 # or
-# cmake -DCMAKE_BUILD_TYPE=RELEASE
-#     RELEASE is the default option (thanks to the next lines)
+# cmake -DCMAKE_BUILD_TYPE=Release
+#     Release is the default option (thanks to the next lines)
 if( CMAKE_BUILD_TYPE )
   message(STATUS  "version : '${CMAKE_BUILD_TYPE}'")
 else ()
-  set( CMAKE_BUILD_TYPE RELEASE)
+  set( CMAKE_BUILD_TYPE Release)
   message(STATUS  "default version : ${CMAKE_BUILD_TYPE}")
 endif()
 
@@ -28,17 +28,11 @@ else (aGrUM_FOUND)
   message(FATAL_ERROR "Please install aGrUM")
 endif (aGrUM_FOUND)
 
-
-
 file(GLOB EXAMPLE_SOURCE ${EXAMPLE_SOURCE_DIR}/*.cpp)
 file(GLOB EXAMPLE_INCLUDE ${EXAMPLE_SOURCE_DIR}/*.h)
 
 add_executable (example ${EXAMPLE_SOURCE})
-if (${CMAKE_BUILD_TYPE}  STREQUAL "RELEASE") # release : act install release
-  target_link_libraries(example agrum)
-else() # debug : act install debug
-  target_link_libraries(example agrum-dbg)
-endif()
+target_link_libraries(example agrum)
 
 install (TARGETS example DESTINATION bin)
 
