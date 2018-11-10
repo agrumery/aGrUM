@@ -263,5 +263,6 @@ def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdd
   };
 }
 
-
-%ignore gum::BayesNet<double>::nodes const;
+%pythonappend gum::DAGmodel::dag %{
+    val = DAG(val) # copying the DAG
+%}

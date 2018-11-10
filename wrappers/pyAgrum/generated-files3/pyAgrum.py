@@ -6568,7 +6568,12 @@ class DAGmodel(object):
         	a constant reference to the dag of this BayesNet.
 
         """
-        return _pyAgrum.DAGmodel_dag(self)
+        val = _pyAgrum.DAGmodel_dag(self)
+
+        val = DAG(val) # copying the DAG
+
+
+        return val
 
 
     def variableNodeMap(self) -> "gum::VariableNodeMap const &":
@@ -10586,7 +10591,12 @@ class BayesNet(IBayesNet):
         	a constant reference to the dag of this BayesNet.
 
         """
-        return _pyAgrum.BayesNet_dag(self)
+        val = _pyAgrum.BayesNet_dag(self)
+
+        val = DAG(val) # copying the DAG
+
+
+        return val
 
 
     def size(self) -> "gum::Size":
@@ -10600,6 +10610,19 @@ class BayesNet(IBayesNet):
 
         """
         return _pyAgrum.BayesNet_size(self)
+
+
+    def nodes(self) -> "PyObject *":
+        r"""
+        nodes(self) -> PyObject *
+
+        Returns
+        -------
+        set
+            the set of ids
+
+        """
+        return _pyAgrum.BayesNet_nodes(self)
 
 
     def log10DomainSize(self) -> "double":
