@@ -71,7 +71,7 @@ def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdd
     if not hasattr(self,"_listeners"):
       self._listeners=[]
 
-    nl = PythonBNListener(self.dag(), self.variableNodeMap())
+    nl = PythonBNListener(self, self.variableNodeMap())
     if whenNodeAdded is not None:
       nl.setWhenNodeAdded(whenNodeAdded)
     if whenNodeDeleted is not None:

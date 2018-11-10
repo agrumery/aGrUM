@@ -293,9 +293,9 @@ class PythonBNListener(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
-    def __init__(self, g, vnm):
-        r"""__init__(self, g, vnm) -> PythonBNListener"""
-        this = _pyAgrum.new_PythonBNListener(g, vnm)
+    def __init__(self, bn, vnm):
+        r"""__init__(self, bn, vnm) -> PythonBNListener"""
+        this = _pyAgrum.new_PythonBNListener(bn, vnm)
         try:
             self.this.append(this)
         except __builtin__.Exception:
@@ -10659,7 +10659,7 @@ class BayesNet(IBayesNet):
         if not hasattr(self,"_listeners"):
           self._listeners=[]
 
-        nl = PythonBNListener(self.dag(), self.variableNodeMap())
+        nl = PythonBNListener(self, self.variableNodeMap())
         if whenNodeAdded is not None:
           nl.setWhenNodeAdded(whenNodeAdded)
         if whenNodeDeleted is not None:
