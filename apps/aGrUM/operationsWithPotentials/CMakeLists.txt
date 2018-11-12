@@ -1,26 +1,22 @@
-project(OPERATIONS_WITH_POTENTIAL)
+project(EXAMPLE)
 cmake_minimum_required(VERSION 2.8)
 # classical options 
-# -DCMAKE_BUILD_TYPE=DEBUG|RELEASE 
+# -DCMAKE_BUILD_TYPE=Debug|Release 
 # -G "MinGW Makefiles" 
 
-# cmake -DCMAKE_BUILD_TYPE=DEBUG
+# cmake -DCMAKE_BUILD_TYPE=Debug
 # or
-# cmake -DCMAKE_BUILD_TYPE=RELEASE
-#     RELEASE is the default option (thanks to the next 3 lines)
-if( CMAKE_BUILD_TYPE )
-  message(STATUS  "version : '${CMAKE_BUILD_TYPE}'")
-else ()
-  set( CMAKE_BUILD_TYPE RELEASE)
-  message(STATUS  "default version : ${CMAKE_BUILD_TYPE}")
-endif()
+# cmake -DCMAKE_BUILD_TYPE=Release
+#     Release is the default option (thanks to the next lines)
 
-include("${OPERATIONS_WITH_POTENTIAL_SOURCE_DIR}/../config.txt")
+set (CMAKE_CXX_STANDARD 14)
+
+include("${EXAMPLE_SOURCE_DIR}/../config.txt")
 if (NOT DEFINED aGrUM_DIR)
   set(aGrUM_DIR "${AGRUM_INSTALLATION_DIRECTORY}/lib/cmake/aGrUM/")
 endif ()
 
-find_package(aGrUM NO_MODULE)
+find_package(aGrUM)
 
 if (aGrUM_FOUND)
   include(${AGRUM_USE_FILE})
@@ -28,15 +24,11 @@ else (aGrUM_FOUND)
   message(FATAL_ERROR "Please install aGrUM")
 endif (aGrUM_FOUND)
 
-file(GLOB OPERATIONS_WITH_POTENTIAL_SOURCE ${OPERATIONS_WITH_POTENTIAL_SOURCE_DIR}/*.cpp)
-file(GLOB OPERATIONS_WITH_POTENTIAL_INCLUDE ${OPERATIONS_WITH_POTENTIAL_SOURCE_DIR}/*.h)
+file(GLOB EXAMPLE_SOURCE ${EXAMPLE_SOURCE_DIR}/*.cpp)
+file(GLOB EXAMPLE_INCLUDE ${EXAMPLE_SOURCE_DIR}/*.h)
 
-add_executable (example ${OPERATIONS_WITH_POTENTIAL_SOURCE})
-if (${CMAKE_BUILD_TYPE}  STREQUAL "RELEASE") # release : act install release
-  target_link_libraries(example agrum)
-else() # debug : act install debug
-  target_link_libraries(example agrum-dbg)
-endif()
+add_executable (example ${EXAMPLE_SOURCE})
+target_link_libraries(example agrum)
 
 install (TARGETS example DESTINATION bin)
 
