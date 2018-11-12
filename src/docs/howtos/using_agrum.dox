@@ -27,16 +27,15 @@ else (aGrUM_FOUND)
   message(FATAL_ERROR "Please install aGrUM")
 endif (aGrUM_FOUND)
 
-file(GLOB EXAMPLE_SOURCE ${EXAMPLE_SOURCE_DIR}/*.cpp)
-file(GLOB EXAMPLE_INCLUDE ${EXAMPLE_SOURCE_DIR}/*.h)
+file(GLOB FOO_SOURCE ${FOO_SOURCE_DIR}/*.cpp)
+file(GLOB FOO_INCLUDE ${FOO_SOURCE_DIR}/*.h)
 
-add_executable (example ${EXAMPLE_SOURCE})
-target_link_libraries(example agrum)
+add_executable (foo ${FOO_SOURCE})
+target_link_libraries(foo agrum)
 
-install (TARGETS example DESTINATION bin)
  * \endcode
  *
- * - a small minimum src/example.cpp :
+ * - a small minimum src/FOO.cpp :
  * \code{.cpp}
 #include <iostream>
 
