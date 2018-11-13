@@ -342,7 +342,7 @@ namespace gum {
 
       // the min number of rows that a thread should process in a
       // multithreading context
-      mutable std::size_t __min_nb_rows_per_thread{100};
+      mutable std::size_t __min_nb_rows_per_thread{50};
 
 
       // returns a mapping from the nodes ids to the columns of the database
@@ -363,11 +363,11 @@ namespace gum {
 
       /// the method used by threads to produce countings by parsing the database
       void __threadedCount(
-        const std::size_t                                       begin,
-        const std::size_t                                       end,
+        const std::size_t                                       range_begin,
+        const std::size_t                                       range_end,
         DBRowGeneratorParser< ALLOC >&                          parser,
-        const std::vector< std::size_t, ALLOC< std::size_t > >& columns,
-        const std::vector< std::size_t, ALLOC< std::size_t > >& offsets,
+        const std::vector< std::pair< std::size_t, std::size_t >,
+        ALLOC< std::pair< std::size_t, std::size_t > > >&       cols_and_offsets,
         std::vector< double, ALLOC< double > >&                 countings);
 
       /// checks that the ranges passed in argument are ok or raise an exception

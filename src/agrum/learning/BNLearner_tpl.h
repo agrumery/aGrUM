@@ -115,13 +115,8 @@ namespace gum {
       __createScore();
       __createParamEstimator();
 
-      return DAG2BNLearner::
-        createBN< GUM_SCALAR, ParamEstimator<>, DBTranslatorSet<> >(
-          *__param_estimator,
-          __learnDAG(),
-          __score_database.names(),
-          __score_database.modalities(),
-          __score_database.databaseTable().translatorSet());
+      return DAG2BNLearner2<>::
+        createBN< GUM_SCALAR >( *__param_estimator, __learnDAG());
     }
 
     /// learns a BN (its parameters) when its structure is known
@@ -164,13 +159,8 @@ namespace gum {
       __createApriori();
       __createParamEstimator(take_into_account_score);
 
-      return DAG2BNLearner::
-        createBN< GUM_SCALAR, ParamEstimator<>, DBTranslatorSet<> >(
-          *__param_estimator,
-          dag,
-          __score_database.names(),
-          __score_database.modalities(),
-          __score_database.databaseTable().translatorSet());
+      return DAG2BNLearner2<>::
+        createBN< GUM_SCALAR >( *__param_estimator, dag);
     }
 
 

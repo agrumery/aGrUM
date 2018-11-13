@@ -197,7 +197,7 @@ namespace gum {
       const bool                                      ordered_ids,
       const typename IdSet2< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc),
-      __end_safe(*this) {
+        __end_safe(*this) {
       __ids.resize(ids.size());
 
       // if the rhs_ids should be considered as unordered, we sort them by
@@ -212,7 +212,7 @@ namespace gum {
           __ids << id;
       }
 
-      if ( ! rhs_ids ) __nb_lhs_ids = __ids.size ();
+      if (!rhs_ids) __nb_lhs_ids = __ids.size();
 
       // update the end iterator
       __end_safe.__gotoEnd();

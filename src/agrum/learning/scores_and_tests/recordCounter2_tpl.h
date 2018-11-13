@@ -24,6 +24,8 @@
  */
 
 #include <agrum/learning/scores_and_tests/recordCounter2.h>
+#include <agrum/core/OMPThreads.h>
+
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -615,29 +617,6 @@ namespace gum {
         return __last_nonDB_countings;
       }
 
-      // first, we translate the ids into their corresponding columns in the
-      // DatabaseTable
-      const auto nodeId2columns = __getNodeIds2Columns(ids);
-
-      // we first determine the size of the counting vector, the domain of
-      // each of its variables and their offsets in the output vector
-      const std::size_t ids_size = ids.size();
-      std::size_t       counting_vect_size = std::size_t(1);
-      std::vector< std::size_t, ALLOC< std::size_t > > columns;
-      std::vector< std::size_t, ALLOC< std::size_t > > domain_sizes;
-      std::vector< std::size_t, ALLOC< std::size_t > > offsets;
-      columns.reserve(ids_size);
-      domain_sizes.reserve(ids_size);
-      offsets.reserve(ids_size);
-      for (const auto id : ids) {
-        const std::size_t domain_size = database.domainSize(nodeId2columns[id]);
-        columns.push_back(nodeId2columns[id]);
-        domain_sizes.push_back(domain_size);
-        offsets.push_back(counting_vect_size);
-        counting_vect_size *= domain_size;
-      }
-
-
       // get the set of ranges within which each thread should perform its
       // computations
       std::vector< std::pair< std::size_t, std::size_t > > ranges;
@@ -691,6 +670,40 @@ namespace gum {
                   return (a.second - a.first) > (b.second - b.first);
                 });
 
+
+      // we translate the ids into their corresponding columns in the
+      // DatabaseTable
+      const auto nodeId2columns = __getNodeIds2Columns(ids);
+
+      // we first determine the size of the counting vector, the domain of
+      // each of its variables and their offsets in the output vector
+      const std::size_t ids_size = ids.size();
+      std::size_t       counting_vect_size = std::size_t(1);
+      std::vector< std::size_t, ALLOC< std::size_t > > domain_sizes(ids_size);
+      std::vector< std::pair< std::size_t, std::size_t >,
+                   ALLOC< std::pair< std::size_t, std::size_t > > >
+        cols_offsets(ids_size);
+      {
+        std::size_t i = std::size_t(0);
+        for (const auto id : ids) {
+          const std::size_t domain_size = database.domainSize(nodeId2columns[id]);
+          domain_sizes[i] = domain_size;
+          cols_offsets[i].first = nodeId2columns[id];
+          cols_offsets[i].second = counting_vect_size;
+          counting_vect_size *= domain_size;
+          ++i;
+        }
+      }
+
+      // we sort the columns and offsets by increasing column index. This
+      // may speed up threaded countings by improving the cacheline hits
+      std::sort(cols_offsets.begin(),
+                cols_offsets.end(),
+                [](const std::pair< std::size_t, std::size_t >& a,
+                   const std::pair< std::size_t, std::size_t >& b) -> bool {
+                  return a.first < b.first;
+                });
+
       // create parsers if needed
       const std::size_t nb_ranges = ranges.size();
       const std::size_t nb_threads =
@@ -702,7 +715,8 @@ namespace gum {
       }
 
       // allocate all the counting vectors, including that which will add
-      // all the results provided by the threads
+      // all the results provided by the threads. We initialize once and
+      // for all these vectors with zeroes
       std::vector< double, ALLOC< double > > counting_vect(counting_vect_size,
                                                            0.0);
       std::vector<
@@ -714,35 +728,47 @@ namespace gum {
             counting_vect));
 
       // launch the threads
-      std::vector< std::thread > threads;
-      threads.reserve(nb_threads);
-      std::size_t i = std::size_t(0);
-      while (i < nb_ranges) {
-        threads.clear();
-        std::size_t j = std::size_t(0);
-        for (; j < nb_threads && i < nb_ranges; ++j, ++i) {
-          for (auto& count : thread_countings[j].data)
-            count = 0.0;
-          threads.push_back(std::thread(&RecordCounter2< ALLOC >::__threadedCount,
-                                        this,
-                                        ranges[i].first,
-                                        ranges[i].second,
-                                        std::ref(__parsers[j].data),
-                                        std::ref(columns),
-                                        std::ref(offsets),
-                                        std::ref(thread_countings[j].data)));
+      // here we use openMP for launching the threads because, experimentally,
+      // it seems to provide results that are twice as fast as the results
+      // with the std::thread
+      for (std::size_t i = std::size_t(0); i < nb_ranges; i+= nb_threads) {
+#pragma omp parallel num_threads(int(nb_threads))
+        {
+          // get the number of the thread
+          const std::size_t this_thread = getThreadNumber();
+
+          DBRowGeneratorParser< ALLOC >& parser = __parsers[this_thread].data;
+          parser.setRange(ranges[this_thread+i].first,
+                          ranges[this_thread+i].second);
+          std::vector< double, ALLOC< double > >& countings = 
+            thread_countings[this_thread].data;
+
+          // parse the database
+          try {
+            while (parser.hasRows()) {
+              // get the observed rows
+              const DBRow< DBTranslatedValue >& row = parser.row();
+
+              // fill the counts for the current row
+              std::size_t offset = std::size_t(0);
+              for (std::size_t i = std::size_t(0); i < ids_size; ++i) {
+                offset +=
+                  row[cols_offsets[i].first].discr_val * cols_offsets[i].second;
+              }
+
+              countings[offset] += row.weight();
+            }
+          } catch (NotFound&) {}   // this exception is raised by the row filter
+                                   // if the row generators create no output row
+                                   // from the last rows of the database
         }
-
-        // wait for the threads to complete their executions
-        std::for_each(
-          threads.begin(), threads.end(), std::mem_fn(&std::thread::join));
-
-        // add the counts to counting_vect
-        for (std::size_t k = std::size_t(0); k < j; ++k) {
-          const auto& thread_counting = thread_countings[k].data;
-          for (std::size_t r = std::size_t(0); r < counting_vect_size; ++r) {
-            counting_vect[r] += thread_counting[r];
-          }
+      }
+      
+      // add the counts to counting_vect
+      for (std::size_t k = std::size_t(0); k < nb_threads; ++k) {
+        const auto& thread_counting = thread_countings[k].data;
+        for (std::size_t r = std::size_t(0); r < counting_vect_size; ++r) {
+          counting_vect[r] += thread_counting[r];
         }
       }
 
@@ -760,13 +786,13 @@ namespace gum {
       const std::size_t                                       begin,
       const std::size_t                                       end,
       DBRowGeneratorParser< ALLOC >&                          parser,
-      const std::vector< std::size_t, ALLOC< std::size_t > >& columns,
-      const std::vector< std::size_t, ALLOC< std::size_t > >& offsets,
+      const std::vector< std::pair< std::size_t, std::size_t >,
+      ALLOC< std::pair< std::size_t, std::size_t > > >&       cols_offsets,
       std::vector< double, ALLOC< double > >&                 countings) {
       parser.setRange(begin, end);
 
       try {
-        const std::size_t nb_columns = columns.size();
+        const std::size_t nb_columns = cols_offsets.size();
         while (parser.hasRows()) {
           // get the observed filtered rows
           const DBRow< DBTranslatedValue >& row = parser.row();
@@ -774,7 +800,8 @@ namespace gum {
           // fill the counts for the current row
           std::size_t offset = std::size_t(0);
           for (std::size_t i = std::size_t(0); i < nb_columns; ++i) {
-            offset += row[columns[i]].discr_val * offsets[i];
+            offset +=
+              row[cols_offsets[i].first].discr_val * cols_offsets[i].second;
           }
 
           countings[offset] += row.weight();

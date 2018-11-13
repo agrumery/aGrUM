@@ -398,8 +398,7 @@ namespace gum {
     INLINE void
       KNML< IdSetAlloc, CountAlloc >::_insertIntoCCache(Size r, Size n, double c) {
       __cache_C.insert(std::vector< Idx >{r, n}, c);
-      if ( n > 5000 ) 
-      ++cache_size;
+      if (n > 5000) ++cache_size;
     }
 
   } /* namespace learning */

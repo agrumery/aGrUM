@@ -27,7 +27,8 @@
 #include <agrum/learning/database/DBInitializerFromCSV.h>
 #include <agrum/learning/database/databaseTable.h>
 #include <agrum/learning/database/DBTranslatorSet.h>
-#include <agrum/learning/scores_and_tests/correctedMutualInformation.h>
+#include <agrum/learning/aprioris/aprioriNoApriori2.h>
+#include <agrum/learning/scores_and_tests/correctedMutualInformation2.h>
 #include <agrum/learning/Miic.h>
 
 namespace gum_tests {
@@ -64,18 +65,20 @@ namespace gum_tests {
         }
       }
 
-      gum::learning::CorrectedMutualInformation<> I(parser, modalities);
+      gum::learning::AprioriNoApriori2<>    apriori(database);
+      gum::learning::CorrectedMutualInformation2<> I(parser, apriori);
       I.useNML();
-      I.useKCache ( true );
+      I.useKCache(true);
 
       gum::learning::Miic miic;
 
       miic.learnMixedStructure(I, graph);
       std::cout << graph << std::endl;
 
+      /*
       const auto& kNML = I.kNML();
       std::cout << "knml cache : " << kNML.cache_size
-                << "  hits : " << kNML.cache_hit  << std::endl;
+                << "  hits : " << kNML.cache_hit << std::endl;
       std::cout << "corrMutInfo I2 cache : " << I.I2_cache_size
                 << "  hits : " << I.I2_cache_hits << std::endl;
       std::cout << "corrMutInfo I3 cache : " << I.I3_cache_size
@@ -86,7 +89,7 @@ namespace gum_tests {
                 << "  hits : " << I.K3_cache_hits << std::endl;
       std::cout << "partial ent cache    : " << I.partialEnt().cache_size
                 << "  hits : " << I.partialEnt().cache_hits << std::endl;
-      
+      */
     }
   };
 

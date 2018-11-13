@@ -91,7 +91,7 @@ namespace gum {
     /// move constructor
     template < template < typename > class ALLOC >
     INLINE ScoreBIC2< ALLOC >::ScoreBIC2(ScoreBIC2< ALLOC >&& from) :
-      ScoreBIC2< ALLOC >(std::move(from), from.getAllocator()) {}
+        ScoreBIC2< ALLOC >(std::move(from), from.getAllocator()) {}
 
 
     /// virtual copy constructor with a given allocator
@@ -280,7 +280,7 @@ namespace gum {
         this->_counter.counts(idset, true));
       if (this->_apriori->isInformative())
         this->_apriori->addAllApriori(idset, N_ijk);
-      
+
       double N = 0;
       for (const auto n_ijk : N_ijk) {
         N += n_ijk;

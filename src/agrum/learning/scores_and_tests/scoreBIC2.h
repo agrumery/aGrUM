@@ -189,7 +189,7 @@ namespace gum {
        * to the other. As a result, the size of the database, including the a
        * priori, depends on the variables of the contingency tables (the idset
        * passed in argument of this function). */
-      double N(const IdSet2< ALLOC >& idset);      
+      double N(const IdSet2< ALLOC >& idset);
 
       /// @}
 

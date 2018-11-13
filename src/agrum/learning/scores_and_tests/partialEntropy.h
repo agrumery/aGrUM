@@ -100,8 +100,8 @@ namespace gum {
       const Size N();
       /// @}
 
-      std::size_t cache_size {std::size_t(0)};
-      std::size_t cache_hits {std::size_t(0)};
+      std::size_t cache_size{std::size_t(0)};
+      std::size_t cache_hits{std::size_t(0)};
 
       protected:
       /// 1 / log(2)

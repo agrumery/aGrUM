@@ -41,7 +41,7 @@ namespace gum {
      */
     template < template < typename > class ALLOC = std::allocator >
     class ParamEstimatorML2 : public ParamEstimator2< ALLOC > {
-    public:
+      public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;
 
@@ -74,16 +74,17 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      ParamEstimatorML2(const DBRowGeneratorParser< ALLOC >& parser,
-                        const Apriori2< ALLOC >& external_apriori,
-                        const Apriori2< ALLOC >& score_internal__apriori,
-                        const std::vector< std::pair< std::size_t, std::size_t >,
-                        ALLOC< std::pair< std::size_t, std::size_t > > >&
-                        ranges,
-                        const Bijection< NodeId, std::size_t, ALLOC<std::size_t> >&
-                        nodeId2columns =
-                        Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-                        const allocator_type& alloc = allocator_type());
+      ParamEstimatorML2(
+        const DBRowGeneratorParser< ALLOC >& parser,
+        const Apriori2< ALLOC >&             external_apriori,
+        const Apriori2< ALLOC >&             score_internal__apriori,
+        const std::vector< std::pair< std::size_t, std::size_t >,
+                           ALLOC< std::pair< std::size_t, std::size_t > > >&
+          ranges,
+        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+          nodeId2columns =
+            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+        const allocator_type& alloc = allocator_type());
 
       /// default constructor
       /** @param parser the parser used to parse the database
@@ -103,40 +104,40 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      ParamEstimatorML2(const DBRowGeneratorParser< ALLOC >& parser,
-                        const Apriori2< ALLOC >& external_apriori,
-                        const Apriori2< ALLOC >& score_internal__apriori,
-                        const Bijection< NodeId, std::size_t, ALLOC<std::size_t> >&
-                        nodeId2columns =
-                        Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-                        const allocator_type& alloc = allocator_type());
+      ParamEstimatorML2(
+        const DBRowGeneratorParser< ALLOC >& parser,
+        const Apriori2< ALLOC >&             external_apriori,
+        const Apriori2< ALLOC >&             score_internal__apriori,
+        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+          nodeId2columns =
+            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+        const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       ParamEstimatorML2(const ParamEstimatorML2< ALLOC >& from);
 
       /// copy constructor with a given allocator
       ParamEstimatorML2(const ParamEstimatorML2< ALLOC >& from,
-                        const allocator_type& alloc);
+                        const allocator_type&             alloc);
 
       /// move constructor
       ParamEstimatorML2(ParamEstimatorML2< ALLOC >&& from);
 
       /// move constructor with a given allocator
       ParamEstimatorML2(ParamEstimatorML2< ALLOC >&& from,
-                        const allocator_type& alloc);
+                        const allocator_type&        alloc);
 
       /// virtual copy constructor
       virtual ParamEstimatorML2< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual ParamEstimatorML2< ALLOC >*
-      clone(const allocator_type& alloc) const;
+      virtual ParamEstimatorML2< ALLOC >* clone(const allocator_type& alloc) const;
 
       /// destructor
       virtual ~ParamEstimatorML2();
 
       /// @}
-      
+
 
       // ##########################################################################
       /// @name Operators
@@ -146,15 +147,14 @@ namespace gum {
 
       /// copy operator
       ParamEstimatorML2< ALLOC >&
-      operator=(const ParamEstimatorML2< ALLOC >& from);
+        operator=(const ParamEstimatorML2< ALLOC >& from);
 
       /// move operator
-      ParamEstimatorML2< ALLOC >&
-      operator=(ParamEstimatorML2< ALLOC >&& from);
+      ParamEstimatorML2< ALLOC >& operator=(ParamEstimatorML2< ALLOC >&& from);
 
       /// @}
 
-      
+
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
@@ -165,15 +165,14 @@ namespace gum {
        * distribution of the dimensions of the CPT within the vector is as
        * follows:
        * first, there is the target node, then the conditioning nodes (in the
-       * order in which they were specified). 
+       * order in which they were specified).
        * @throw DatabaseError is raised if some values of the conditioning sets
        * were not observed in the database. */
-      virtual std::vector< double, ALLOC< double > >
-      parameters(const NodeId target_node,
-                 const std::vector< NodeId, ALLOC< NodeId> >& conditioning_nodes);
+      virtual std::vector< double, ALLOC< double > > parameters(
+        const NodeId                                  target_node,
+        const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes);
 
       /// @}
-      
     };
 
   } /* namespace learning */

@@ -76,16 +76,17 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      ParamEstimator2(const DBRowGeneratorParser< ALLOC >& parser,
-                      const Apriori2< ALLOC >& external_apriori,
-                      const Apriori2< ALLOC >& score_internal__apriori,
-                      const std::vector< std::pair< std::size_t, std::size_t >,
-                      ALLOC< std::pair< std::size_t, std::size_t > > >&
-                      ranges,
-                      const Bijection< NodeId, std::size_t, ALLOC<std::size_t> >&
-                      nodeId2columns =
-                      Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-                      const allocator_type& alloc = allocator_type());
+      ParamEstimator2(
+        const DBRowGeneratorParser< ALLOC >& parser,
+        const Apriori2< ALLOC >&             external_apriori,
+        const Apriori2< ALLOC >&             score_internal__apriori,
+        const std::vector< std::pair< std::size_t, std::size_t >,
+                           ALLOC< std::pair< std::size_t, std::size_t > > >&
+          ranges,
+        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+          nodeId2columns =
+            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+        const allocator_type& alloc = allocator_type());
 
       /// default constructor
       /** @param parser the parser used to parse the database
@@ -106,11 +107,11 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       ParamEstimator2(const DBRowGeneratorParser< ALLOC >& parser,
-                      const Apriori2< ALLOC >& external_apriori,
-                      const Apriori2< ALLOC >& score_internal__apriori,
-                      const Bijection< NodeId, std::size_t, ALLOC<std::size_t> >&
-                      nodeId2columns =
-                      Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+                      const Apriori2< ALLOC >&             external_apriori,
+                      const Apriori2< ALLOC >&             score_internal__apriori,
+                      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                        nodeId2columns =
+                          Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
                       const allocator_type& alloc = allocator_type());
 
       /// copy constructor
@@ -118,21 +119,21 @@ namespace gum {
 
       /// copy constructor with a given allocator
       ParamEstimator2(const ParamEstimator2< ALLOC >& from,
-                      const allocator_type& alloc);
+                      const allocator_type&           alloc);
 
       /// move constructor
       ParamEstimator2(ParamEstimator2< ALLOC >&& from);
 
       /// move constructor with a given allocator
       ParamEstimator2(ParamEstimator2< ALLOC >&& from,
-                      const allocator_type& alloc);
+                      const allocator_type&      alloc);
 
       /// virtual copy constructor
       virtual ParamEstimator2< ALLOC >* clone() const = 0;
 
       /// virtual copy constructor with a given allocator
       virtual ParamEstimator2< ALLOC >*
-      clone(const allocator_type& alloc) const = 0;
+        clone(const allocator_type& alloc) const = 0;
 
       /// destructor
       virtual ~ParamEstimator2();
@@ -160,53 +161,60 @@ namespace gum {
        * follows:
        * first, there is the target node, then the conditioning nodes (in the
        * order in which they were specified). */
-      virtual std::vector< double, ALLOC< double > >
-      parameters(const NodeId target_node,
-                 const std::vector< NodeId, ALLOC< NodeId> >& conditioning_nodes)
-      = 0;
+      virtual std::vector< double, ALLOC< double > > parameters(
+        const NodeId                                  target_node,
+        const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes) = 0;
 
       /// sets the CPT's parameters corresponding to a given Potential
       /** The potential is assumed to be a conditional probability, the first
        * variable of its variablesSequence() being the target variable, the
        * other ones being on the right side of the conditioning bar. */
       template < typename GUM_SCALAR >
-      void
-      setParameters(const NodeId target_node,
-                    const std::vector< NodeId, ALLOC<NodeId> >& conditioning_nodes,
-                    Potential< GUM_SCALAR >& pot);
+      void setParameters(
+        const NodeId                                  target_node,
+        const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
+        Potential< GUM_SCALAR >&                      pot);
+
+      /// returns the mapping from ids to column positions in the database
+      /** @warning An empty nodeId2Columns bijection means that the mapping is
+       * an identity, i.e., the value of a NodeId is equal to the index of the
+       * column in the DatabaseTable. */
+      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+        nodeId2Columns() const;
+
+      /// returns the database on which we perform the counts
+      const DatabaseTable< ALLOC >& database() const;
 
       /// returns the allocator used by the score
       allocator_type getAllocator() const;
-      
+
       /// @}
 
-    protected:
+      protected:
       /// an external a priori
-      Apriori2< ALLOC >* _external_apriori {nullptr};
+      Apriori2< ALLOC >* _external_apriori{nullptr};
 
       /** @brief if a score was used for learning the structure of the PGM, this
        * is the a priori internal to the score */
-      Apriori2< ALLOC >* _score_internal_apriori {nullptr};
+      Apriori2< ALLOC >* _score_internal_apriori{nullptr};
 
       /// the record counter used to parse the database
       RecordCounter2< ALLOC > _counter;
 
 
       /// copy operator
-      ParamEstimator2< ALLOC >&
-      operator=(const ParamEstimator2< ALLOC >& from);
+      ParamEstimator2< ALLOC >& operator=(const ParamEstimator2< ALLOC >& from);
 
       /// move operator
-      ParamEstimator2< ALLOC >&
-      operator=(ParamEstimator2< ALLOC >&& from);
+      ParamEstimator2< ALLOC >& operator=(ParamEstimator2< ALLOC >&& from);
 
       /** @brief check the coherency between the parameters passed to
        * the setParameters functions */
       template < typename GUM_SCALAR >
       void __checkParameters(
-           const NodeId target_node,
-           const std::vector< NodeId, ALLOC< NodeId> >& conditioning_nodes,
-           Potential< GUM_SCALAR >& pot);
+        const NodeId                                  target_node,
+        const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
+        Potential< GUM_SCALAR >&                      pot);
     };
 
   } /* namespace learning */

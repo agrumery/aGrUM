@@ -130,10 +130,24 @@ namespace gum {
       /// @{
 
       /// changes the max number of threads used to parse the database
-      void setMaxNbThreads(std::size_t nb) const;
+      virtual void setMaxNbThreads(std::size_t nb) const;
 
       /// returns the number of threads used to parse the database
-      std::size_t nbThreads() const;
+      virtual std::size_t nbThreads() const;
+      
+      /** @brief changes the number min of rows a thread should process in a
+       * multithreading context
+       *
+       * When computing score, several threads are used by record counters to
+       * perform countings on the rows of the database, the MinNbRowsPerThread
+       * method indicates how many rows each thread should at least process.
+       * This is used to compute the number of threads actually run. This number
+       * is equal to the min between the max number of threads allowed and the
+       * number of records in the database divided by nb. */
+      virtual void setMinNbRowsPerThread(const std::size_t nb) const;
+
+      /// returns the minimum of rows that each thread should process
+      virtual std::size_t minNbRowsPerThread() const;
 
       /// returns the score of a single node
       double score(const NodeId var);
@@ -154,6 +168,9 @@ namespace gum {
       /// turn on/off the use of a cache of the previously computed score
       void useCache(const bool on_off);
 
+      /// indicates whether the score uses a cache
+      bool isUsingCache () const;
+      
       /// return the mapping between the columns of the database and the node ids
       /** @warning An empty nodeId2Columns bijection means that the mapping is
        * an identity, i.e., the value of a NodeId is equal to the index of the

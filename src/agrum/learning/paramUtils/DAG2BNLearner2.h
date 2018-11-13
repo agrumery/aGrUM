@@ -18,120 +18,114 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief The K2 algorithm
+ * @brief A class that, given a structure and a parameter estimator returns a
+ * full Bayes net
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_LEARNING_K2_H
-#define GUM_LEARNING_K2_H
+#ifndef GUM_LEARNING_DAG_2_BN_LEARNER2_H
+#define GUM_LEARNING_DAG_2_BN_LEARNER2_H
 
-#include <string>
 #include <vector>
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/core/sequence.h>
 #include <agrum/graphs/DAG.h>
-#include <agrum/learning/greedyHillClimbing.h>
+#include <agrum/learning/paramUtils/paramEstimator2.h>
 
 namespace gum {
 
   namespace learning {
 
-    /** @class K2
-     * @brief The K2 algorithm
-     * @ingroup learning_group
+    /** @class DAG2BNLearner2
+     * @brief A class that, given a structure and a parameter estimator returns
+     * a full Bayes net
+     * @headerfile DAG2BNLearner2.h <agrum/learning/paramUtils/DAG2BNLearner2.h>
+     * @ingroup learning_param_utils
      */
-    class K2 : private GreedyHillClimbing {
+    template < template < typename > class ALLOC = std::allocator >
+    class DAG2BNLearner2 : private ALLOC< NodeId > {
       public:
+      /// type for the allocators passed in arguments of methods
+      using allocator_type = ALLOC< NodeId >;
+
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// default constructor
-      K2();
+      DAG2BNLearner2(const allocator_type& alloc = allocator_type());
 
       /// copy constructor
-      K2(const K2& from);
+      DAG2BNLearner2(const DAG2BNLearner2< ALLOC >& from);
+
+      /// copy constructor with a given allocator
+      DAG2BNLearner2(const DAG2BNLearner2< ALLOC >& from,
+                     const allocator_type&          alloc);
 
       /// move constructor
-      K2(K2&& from);
+      DAG2BNLearner2(DAG2BNLearner2< ALLOC >&& from);
+
+      /// move constructor with a given allocator
+      DAG2BNLearner2(DAG2BNLearner2< ALLOC >&& from, const allocator_type& alloc);
+
+      /// virtual copy constructor
+      virtual DAG2BNLearner2< ALLOC >* clone() const;
+
+      /// virtual copy constructor with a given allocator
+      virtual DAG2BNLearner2< ALLOC >* clone(const allocator_type& alloc) const;
 
       /// destructor
-      ~K2();
+      virtual ~DAG2BNLearner2();
 
       /// @}
+
 
       // ##########################################################################
       /// @name Operators
       // ##########################################################################
+
       /// @{
 
       /// copy operator
-      K2& operator=(const K2& from);
+      DAG2BNLearner2< ALLOC >& operator=(const DAG2BNLearner2< ALLOC >& from);
 
       /// move operator
-      K2& operator=(K2&& from);
+      DAG2BNLearner2< ALLOC >& operator=(DAG2BNLearner2< ALLOC >&& from);
 
       /// @}
+
 
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
       /// @{
 
-      /// returns the approximation policy of the learning algorithm
-      ApproximationScheme& approximationScheme();
+      /// create a BN
+      template < typename GUM_SCALAR = double >
+      static BayesNet< GUM_SCALAR > createBN(ParamEstimator2< ALLOC >& estimator,
+                                             const DAG&                dag);
 
-      /// sets the order on the variables
-      void setOrder(const Sequence< NodeId >& order);
+      /// returns the allocator used by the score
+      allocator_type getAllocator() const;
 
-      /// sets the order on the variables
-      void setOrder(const std::vector< NodeId >& order);
-
-      /// returns the current order
-      const Sequence< NodeId >& order() const noexcept;
-
-      /// learns the structure of a Bayes net
-      /**
-       * @param selector A selector class that computes the best changes that
-       * can be applied and that enables the user to get them very easily.
-       * Typically, the selector is a GraphChangesSelector4DiGraph<SCORE,
-       * STRUCT_CONSTRAINT, GRAPH_CHANGES_GENERATOR>.
-       * @param initial_dag the DAG we start from for our learning */
-      template < typename GRAPH_CHANGES_SELECTOR >
-      DAG learnStructure(GRAPH_CHANGES_SELECTOR& selector,
-                         DAG                     initial_dag = DAG());
-
-      /// learns the structure and the parameters of a BN
-      template < typename GUM_SCALAR,
-                 typename GRAPH_CHANGES_SELECTOR,
-                 typename PARAM_ESTIMATOR >
-      BayesNet< GUM_SCALAR > learnBN(GRAPH_CHANGES_SELECTOR& selector,
-                                     PARAM_ESTIMATOR&        estimator,
-                                     DAG                     initial_dag = DAG());
+      /// @}
 
       private:
-      /// the order on the variable used for learning
-      Sequence< NodeId > __order;
-
-      /** @brief checks that the order passed to K2 is coherent with the
-       * variables
-       * as specified by their modalities */
-      void __checkOrder(const std::vector< Size >& modal);
-      /// @}
+      /// copy a potential into another whose variables' sequence differs
+      /** The variables of both potential should be the same, only their
+       * order differs */
+      template < typename GUM_SCALAR = double >
+      static void
+        __probaVarReordering(gum::Potential< GUM_SCALAR >&       pot,
+                             const gum::Potential< GUM_SCALAR >& other_pot);
     };
 
   } /* namespace learning */
 
 } /* namespace gum */
 
-/// include the inlined functions if necessary
-#ifndef GUM_NO_INLINE
-#  include <agrum/learning/K2_inl.h>
-#endif /* GUM_NO_INLINE */
-
 /// always include templated methods
-#include <agrum/learning/K2_tpl.h>
+#include <agrum/learning/paramUtils/DAG2BNLearner2_tpl.h>
 
-#endif /* GUM_LEARNING_K2_H */
+#endif /* GUM_LEARNING_DAG_2_BN_LEARNER2_H */

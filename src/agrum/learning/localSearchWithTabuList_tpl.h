@@ -24,7 +24,7 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/learning/paramUtils/DAG2BNLearner.h>
+#include <agrum/learning/paramUtils/DAG2BNLearner2.h>
 #include <agrum/learning/structureUtils/graphChange.h>
 
 namespace gum {
@@ -34,9 +34,8 @@ namespace gum {
     /// learns the structure of a Bayes net
     template < typename GRAPH_CHANGES_SELECTOR >
     DAG LocalSearchWithTabuList::learnStructure(GRAPH_CHANGES_SELECTOR& selector,
-                                                const std::vector< Size >& modal,
-                                                DAG                        dag) {
-      selector.setGraph(dag, modal);
+                                                DAG                     dag) {
+      selector.setGraph(dag);
 
       Size nb_changes_applied = 0;
       Idx  applied_change_with_positive_score = 0;
@@ -195,22 +194,14 @@ namespace gum {
     /// learns the structure and the parameters of a BN
     template < typename GUM_SCALAR,
                typename GRAPH_CHANGES_SELECTOR,
-               typename PARAM_ESTIMATOR,
-               typename CELL_TRANSLATORS >
+               typename PARAM_ESTIMATOR >
     BayesNet< GUM_SCALAR >
-      LocalSearchWithTabuList::learnBN(GRAPH_CHANGES_SELECTOR&           selector,
-                                       PARAM_ESTIMATOR&                  estimator,
-                                       const std::vector< std::string >& names,
-                                       const std::vector< Size >&        modal,
-                                       const CELL_TRANSLATORS& translator,
+      LocalSearchWithTabuList::learnBN(GRAPH_CHANGES_SELECTOR& selector,
+                                       PARAM_ESTIMATOR&        estimator,
                                        DAG                     initial_dag) {
-      return DAG2BNLearner::
-        createBN< GUM_SCALAR, PARAM_ESTIMATOR, CELL_TRANSLATORS >(
+      return DAG2BNLearner2<>::createBN< GUM_SCALAR >(
           estimator,
-          learnStructure(selector, modal, initial_dag),
-          names,
-          modal,
-          translator);
+          learnStructure(selector, initial_dag));
     }
 
   } /* namespace learning */

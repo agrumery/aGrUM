@@ -172,6 +172,13 @@ namespace gum_tests {
         TS_ASSERT(!selector.empty(node));
       }
 
+      selector.setGraph(graph);
+
+      TS_ASSERT(!selector.empty());
+      for (const auto node : graph) {
+        TS_ASSERT(!selector.empty(node));
+      }
+
       gum::learning::GraphChange change(
         gum::learning::GraphChangeType::ARC_DELETION, 0, 1);
       TS_ASSERT(!selector.isChangeValid(change));

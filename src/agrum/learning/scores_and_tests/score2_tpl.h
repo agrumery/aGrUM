@@ -174,6 +174,22 @@ namespace gum {
     }
 
 
+    /** @brief changes the number min of rows a thread should process in a
+     * multithreading context */
+    template < template < typename > class ALLOC >
+    INLINE void
+    Score2< ALLOC >::setMinNbRowsPerThread(const std::size_t nb) const {
+      _counter.setMinNbRowsPerThread(nb);
+    }
+    
+
+    /// returns the minimum of rows that each thread should process
+    template < template < typename > class ALLOC >
+    INLINE std::size_t Score2< ALLOC >::minNbRowsPerThread() const {
+      return _counter.minNbRowsPerThread();
+    }
+    
+
     /// returns the score of a single node
     template < template < typename > class ALLOC >
     INLINE double Score2< ALLOC >::score(const NodeId var) {
@@ -233,6 +249,13 @@ namespace gum {
       _use_cache = on_off;
     }
 
+    
+    /// indicates whether the score uses a cache
+    template < template < typename > class ALLOC >
+    INLINE bool Score2< ALLOC >::isUsingCache () const {
+      return _use_cache;
+    }
+    
 
     /// return the mapping between the columns of the database and the node ids
     template < template < typename > class ALLOC >

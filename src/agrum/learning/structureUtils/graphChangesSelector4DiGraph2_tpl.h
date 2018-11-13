@@ -274,7 +274,7 @@ namespace gum {
 
       // save the set of parents of each node (this will speed-up the
       // computations of the scores)
-      const NodeId nb_nodes = graph.size();
+      const std::size_t nb_nodes = graph.size();
       {
         const std::vector< NodeId, ALLOC< NodeId > > empty_pars;
         __parents.clear();
@@ -294,8 +294,8 @@ namespace gum {
       }
 
       // assign a score to each node given its parents in the current graph
+      __node_current_scores.clear();
       __node_current_scores.resize(nb_nodes);
-      __score->clear();
       for (const auto node : graph) {
         __node_current_scores.insert(node, __score->score(node, __parents[node]));
       }
@@ -308,12 +308,12 @@ namespace gum {
       }
       __changes_generator->notifyGetCompleted();
 
-
       // determine the changes that are illegal and prepare the computation of
       // the scores of all the legal changes
       __illegal_changes.clear();
 
       // set the __change_scores and __change_queue_per_node for legal changes
+      __change_scores.clear();
       __change_scores.resize(
         __changes.size(),
         std::pair< double, double >(std::numeric_limits< double >::min(),
@@ -327,6 +327,7 @@ namespace gum {
           __change_queue_per_node.insert(node, empty_prio);
         }
       }
+
       for (std::size_t i = std::size_t(0); i < __changes.size(); ++i) {
         if (!__isChangeValid(i)) {
           __illegal_changes.insert(i);

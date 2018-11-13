@@ -35,9 +35,8 @@ namespace gum {
 
     /// learns the structure of a Bayes net
     template < typename GRAPH_CHANGES_SELECTOR >
-    DAG K2::learnStructure(GRAPH_CHANGES_SELECTOR&    selector,
-                           const std::vector< Size >& modal,
-                           DAG                        initial_dag) {
+    DAG K2::learnStructure(GRAPH_CHANGES_SELECTOR& selector,
+                           DAG                     initial_dag) {
       // check that we used a selector compatible with the K2 algorithm
       static_assert(
         std::is_base_of< __GraphChangesGenerator4K2,
@@ -45,26 +44,22 @@ namespace gum {
         "K2 must be called with a K2-compliant Graph Change Generator");
 
       // check that the order passed in argument concerns all the nodes
-      __checkOrder(modal);
+      //__checkOrder(modal);
 
       // get the generator and assign the order
       auto& generator = selector.graphChangeGenerator();
       generator.setOrder(__order);
 
       // use the greedy hill climbing algorithm to perform the search
-      return GreedyHillClimbing::learnStructure(selector, modal, initial_dag);
+      return GreedyHillClimbing::learnStructure(selector, initial_dag);
     }
 
     /// learns the structure and the parameters of a BN
     template < typename GUM_SCALAR,
                typename GRAPH_CHANGES_SELECTOR,
-               typename PARAM_ESTIMATOR,
-               typename CELL_TRANSLATORS >
-    BayesNet< GUM_SCALAR > K2::learnBN(GRAPH_CHANGES_SELECTOR&           selector,
-                                       PARAM_ESTIMATOR&                  estimator,
-                                       const std::vector< std::string >& names,
-                                       const std::vector< Size >&        modal,
-                                       const CELL_TRANSLATORS& translator,
+               typename PARAM_ESTIMATOR >
+    BayesNet< GUM_SCALAR > K2::learnBN(GRAPH_CHANGES_SELECTOR& selector,
+                                       PARAM_ESTIMATOR&        estimator,
                                        DAG                     initial_dag) {
       // check that we used a selector compatible with the K2 algorithm
       static_assert(
@@ -73,7 +68,7 @@ namespace gum {
         "K2 must be called with a K2-compliant Graph Change Generator");
 
       // check that the order passed in argument concerns all the nodes
-      __checkOrder(modal);
+      //__checkOrder(modal);
 
       // get the generator and assign the order
       auto& generator = selector.graphChangeGenerator();
@@ -81,7 +76,7 @@ namespace gum {
 
       // use the greedy hill climbing algorithm to perform the search
       return GreedyHillClimbing::learnBN< GUM_SCALAR >(
-        selector, estimator, names, modal, translator, initial_dag);
+        selector, estimator, initial_dag);
     }
 
   } /* namespace learning */

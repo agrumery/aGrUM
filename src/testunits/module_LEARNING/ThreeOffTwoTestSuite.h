@@ -33,10 +33,12 @@
 #include <agrum/learning/database/databaseTable.h>
 #include <agrum/learning/database/DBTranslatorSet.h>
 
+#include <agrum/learning/aprioris/aprioriNoApriori2.h>
+
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/learning/Miic.h>
-#include <agrum/learning/paramUtils/paramEstimatorML.h>
+#include <agrum/learning/paramUtils/paramEstimatorML2.h>
 
 namespace gum_tests {
 
@@ -60,14 +62,14 @@ namespace gum_tests {
 
       database.reorder();
 
-      gum::learning::DBRowGeneratorSet<>    genset;
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-
       std::vector< gum::Size > modalities;
       for (auto dom : database.domainSizes())
         modalities.push_back(dom);
 
-      gum::learning::CorrectedMutualInformation<> I(parser, modalities);
+      gum::learning::DBRowGeneratorSet<>    genset;
+      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
+      gum::learning::AprioriNoApriori2<>    apriori(database);
+      gum::learning::CorrectedMutualInformation2<> I(parser, apriori);
       I.useNoCorr();
 
 
@@ -109,7 +111,8 @@ namespace gum_tests {
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::CorrectedMutualInformation<> cI(parser, modalities);
+      gum::learning::AprioriNoApriori2<>    apriori(database);
+      gum::learning::CorrectedMutualInformation2<> cI(parser, apriori);
       cI.useMDL();
       // cI.useCache( false );
 
@@ -153,7 +156,8 @@ namespace gum_tests {
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::CorrectedMutualInformation<> cI(parser, modalities);
+      gum::learning::AprioriNoApriori2<>    apriori(database);
+      gum::learning::CorrectedMutualInformation2<> cI(parser, apriori);
       cI.useNML();
       // cI.useCache( false );
 
@@ -199,7 +203,8 @@ namespace gum_tests {
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::CorrectedMutualInformation<> cI(parser, modalities);
+      gum::learning::AprioriNoApriori2<>    apriori(database);
+      gum::learning::CorrectedMutualInformation2<> cI(parser, apriori);
       cI.useNML();
 
       gum::learning::Miic search;
@@ -289,14 +294,15 @@ namespace gum_tests {
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::CorrectedMutualInformation<> cI(parser, modalities);
+      gum::learning::AprioriNoApriori2<>    apriori(database);
+      gum::learning::CorrectedMutualInformation2<> cI(parser, apriori);
       cI.useNML();
       // cI.useCache( false );
 
       gum::learning::Miic search;
 
       // adding constraints
-      gum::HashTable< std::pair< gum::Idx, gum::Idx >, char > initial_marks;
+      gum::HashTable< std::pair< gum::NodeId, gum::NodeId >, char > initial_marks;
       initial_marks.insert({4, 3}, '>');
       initial_marks.insert({5, 7}, '-');
       search.addConstraints(initial_marks);
@@ -343,7 +349,8 @@ namespace gum_tests {
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::CorrectedMutualInformation<> cI(parser, modalities);
+      gum::learning::AprioriNoApriori2<>    apriori(database);
+      gum::learning::CorrectedMutualInformation2<> cI(parser, apriori);
       cI.useMDL();
       // cI.useCache( false );
 
@@ -392,7 +399,8 @@ namespace gum_tests {
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::CorrectedMutualInformation<> cI(parser, modalities);
+      gum::learning::AprioriNoApriori2<>    apriori(database);
+      gum::learning::CorrectedMutualInformation2<> cI(parser, apriori);
       cI.useMDL();
       // cI.useCache( false );
 
@@ -402,7 +410,7 @@ namespace gum_tests {
       search.setMiicBehaviour();
 
       // adding constraints
-      gum::HashTable< std::pair< gum::Idx, gum::Idx >, char > initial_marks;
+      gum::HashTable< std::pair< gum::NodeId, gum::NodeId >, char > initial_marks;
       initial_marks.insert({4, 3}, '>');
       initial_marks.insert({5, 7}, '-');
       search.addConstraints(initial_marks);

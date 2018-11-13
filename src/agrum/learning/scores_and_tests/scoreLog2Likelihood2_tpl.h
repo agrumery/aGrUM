@@ -253,15 +253,15 @@ namespace gum {
       }
     }
 
-    
+
     /// returns the score corresponding to a given nodeset
     template < template < typename > class ALLOC >
-    INLINE double ScoreLog2Likelihood2< ALLOC >::score(
-           const IdSet2< ALLOC >& idset) {
-      return _score ( idset );
+    INLINE double
+      ScoreLog2Likelihood2< ALLOC >::score(const IdSet2< ALLOC >& idset) {
+      return _score(idset);
     }
 
-      
+
   } /* namespace learning */
 
 } /* namespace gum */

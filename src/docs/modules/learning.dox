@@ -33,5 +33,6 @@
  * \defgroup learning_scores Scores and Independence Tests
  * \defgroup learning_apriori Scores A Priori 
  * \defgroup learning_constraints Structural Constraints
+ * \defgroup learning_param_utils Parameters utilities
  * @}
  */

@@ -51,7 +51,7 @@ namespace gum {
      */
     template < template < typename > class ALLOC = std::allocator >
     class CorrectedMutualInformation2 {
-    public:
+      public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;
 
@@ -84,15 +84,15 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       CorrectedMutualInformation2(
-            const DBRowGeneratorParser< ALLOC >& parser,
-            const Apriori2< ALLOC >&             apriori,
-            const std::vector< std::pair< std::size_t, std::size_t >,
-                               ALLOC< std::pair< std::size_t, std::size_t > > >&
-              ranges,
-            const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-              nodeId2columns =
-                Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-            const allocator_type& alloc = allocator_type());
+        const DBRowGeneratorParser< ALLOC >& parser,
+        const Apriori2< ALLOC >&             apriori,
+        const std::vector< std::pair< std::size_t, std::size_t >,
+                           ALLOC< std::pair< std::size_t, std::size_t > > >&
+          ranges,
+        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+          nodeId2columns =
+            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+        const allocator_type& alloc = allocator_type());
 
       /// default constructor
       /** @param parser the parser used to parse the database
@@ -112,42 +112,41 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       CorrectedMutualInformation2(
-            const DBRowGeneratorParser< ALLOC >& parser,
-            const Apriori2< ALLOC >&             apriori,
-            const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-              nodeId2columns =
-                Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-            const allocator_type& alloc = allocator_type());
-      
+        const DBRowGeneratorParser< ALLOC >& parser,
+        const Apriori2< ALLOC >&             apriori,
+        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+          nodeId2columns =
+            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+        const allocator_type& alloc = allocator_type());
+
       /// copy constructor
       CorrectedMutualInformation2(
-            const CorrectedMutualInformation2< ALLOC >& from);
+        const CorrectedMutualInformation2< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      CorrectedMutualInformation2(
-            const CorrectedMutualInformation2< ALLOC >& from,
-            const allocator_type& alloc);
+      CorrectedMutualInformation2(const CorrectedMutualInformation2< ALLOC >& from,
+                                  const allocator_type& alloc);
 
       /// move constructor
       CorrectedMutualInformation2(CorrectedMutualInformation2< ALLOC >&& from);
 
       /// move constructor with a given allocator
       CorrectedMutualInformation2(CorrectedMutualInformation2< ALLOC >&& from,
-                                  const allocator_type& alloc);
+                                  const allocator_type&                  alloc);
 
       /// virtual copy constructor
       virtual CorrectedMutualInformation2< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
       virtual CorrectedMutualInformation2< ALLOC >*
-      clone(const allocator_type& alloc) const;
+        clone(const allocator_type& alloc) const;
 
       /// destructor
       virtual ~CorrectedMutualInformation2();
-      
+
       /// @}
 
-      
+
       // ##########################################################################
       /// @name Operators
       // ##########################################################################
@@ -156,11 +155,11 @@ namespace gum {
 
       /// copy operator
       CorrectedMutualInformation2< ALLOC >&
-      operator=(const CorrectedMutualInformation2< ALLOC >& from);
+        operator=(const CorrectedMutualInformation2< ALLOC >& from);
 
       /// move operator
       CorrectedMutualInformation2< ALLOC >&
-      operator=(CorrectedMutualInformation2< ALLOC >&& from);
+        operator=(CorrectedMutualInformation2< ALLOC >&& from);
 
       /// @}
 
@@ -169,7 +168,7 @@ namespace gum {
       /// @name caching functions
       // ##########################################################################
       /// @{
-      
+
       /// clears all the data structures from memory
       virtual void clear();
 
@@ -183,7 +182,7 @@ namespace gum {
        * # the Cnr cache is intended to store the results of the computations
        * of the Cnr formula used by the kNML penalty */
       virtual void clearCache();
-      
+
       /// turn on/off the use of all the caches
       /** There are 4 caches in the CorrectedMutualInformation class:
        * # The I cache is intended to cache the computations of the mutual
@@ -193,35 +192,35 @@ namespace gum {
        * # the K cache is intended to store the penalties computed so far
        * # the Cnr cache is intended to store the results of the computations
        * of the Cnr formula used by the kNML penalty */
-       virtual void useCache(bool on_off);
+      virtual void useCache(bool on_off);
 
       /// turn on/off the use of the ICache (the mutual information cache)
       void useICache(bool on_off);
-      
+
       /// clears the ICache (the mutual information  cache)
-      void clearICache ();
+      void clearICache();
 
       /// turn on/off the use of the HCache (the cache for the entropies)
       void useHCache(bool on_off);
-      
+
       /// clears the HCache (the cache for the entropies)
-      void clearHCache ();
-      
+      void clearHCache();
+
       /// turn on/off the use of the KCache (the cache for the penalties)
       void useKCache(bool on_off);
-      
+
       /// clears the KCache (the cache for the penalties)
-      void clearKCache ();
+      void clearKCache();
 
       /// turn on/off the use of the CnrCache (the cache for the Cnr formula)
       void useCnrCache(bool on_off);
-      
+
       /// clears the CnrCache (the cache for the Cnr formula)
-      void clearCnrCache ();
-      
+      void clearCnrCache();
+
       /// @}
 
-      
+
       // ##########################################################################
       /// @name score function, used to declare the variables
       // ##########################################################################
@@ -231,22 +230,22 @@ namespace gum {
       double score(NodeId var1, NodeId var2);
 
       /// returns the 2-point mutual information corresponding to a given nodeset
-      double score(NodeId var1,
-                   NodeId var2,
+      double score(NodeId                                        var1,
+                   NodeId                                        var2,
                    const std::vector< NodeId, ALLOC< NodeId > >& conditioning_ids);
 
       /// returns the 3-point mutual information corresponding to a given nodeset
       double score(NodeId var1, NodeId var2, NodeId var3);
 
       /// returns the 3-point mutual information corresponding to a given nodeset
-      double score(NodeId var1,
-                   NodeId var2,
-                   NodeId var3,
+      double score(NodeId                                        var1,
+                   NodeId                                        var2,
+                   NodeId                                        var3,
                    const std::vector< NodeId, ALLOC< NodeId > >& conditioning_ids);
 
       /// @}
 
-      
+
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
@@ -260,13 +259,13 @@ namespace gum {
 
       /// use no correction/penalty function
       void useNoCorr();
-      
+
       /// changes the max number of threads used to parse the database
       void setMaxNbThreads(std::size_t nb) const;
 
       /// returns the number of threads used to parse the database
       std::size_t nbThreads() const;
-      
+
       /// returns the allocator used by the score
       allocator_type getAllocator() const;
 
@@ -276,21 +275,19 @@ namespace gum {
       /// the description type for the complexity correction
       enum class KModeTypes { MDL, NML, NoCorr };
 
-      
 
-    private:
-      
+      private:
       /// The object to compute N times Entropy H used by mutual information I
       /* Note that the log2-likelihood is equal to N times the entropy H */
       ScoreLog2Likelihood2< ALLOC > __NH;
-      
+
       /// the object computing the NML k score
       KNML2< ALLOC > __k_NML;
 
       /** @brief a score MDL used to compute the size N of the database,
        * including the a priori */
       ScoreMDL2< ALLOC > __score_MDL;
-      
+
       /// the mode used for the correction
       KModeTypes __kmode{KModeTypes::MDL};
 
@@ -298,26 +295,26 @@ namespace gum {
       /// a Boolean indicating whether we wish to use the I cache
       /** The I cache is the cache used to store N times the values of
        * mutual informations */
-      bool __use_ICache {true};
+      bool __use_ICache{true};
 
       /// a Boolean indicating whether we wish to use the H cache
       /** The H cache is the cache for storing N times the entropy. Mutual
        * information is computed as a summation/subtraction of entropies. The
        * latter are cached directly within the __NH instance. */
-      bool __use_HCache {true};
+      bool __use_HCache{true};
 
       /// a Boolean indicating whether we wish to use the K cache
       /** The K cache is used to cache K-scores, which corresponds to
-       * summations/subtractions of kNML individual values. The cache for the 
+       * summations/subtractions of kNML individual values. The cache for the
        * latter is called the Cnr cache because it uses Cnr values */
-      bool __use_KCache {true};
+      bool __use_KCache{true};
 
       /// a Boolean indicating whether we wish to use the Cnr cache
       /** When using the kNML class, the computation of the K-scores
        * consists of summations/subtractions of kNML scores. The latter
        * essentially amount to computing Cnr values. Those can be
        * cached directly within the __k_NML instance */
-      bool __use_CnrCache {true};
+      bool __use_CnrCache{true};
 
 
       /// the ICache
@@ -327,7 +324,6 @@ namespace gum {
       ScoringCache< ALLOC > __KCache;
 
 
-      
       /// an empty conditioning set
       const std::vector< NodeId, ALLOC< NodeId > > __empty_conditioning_set;
 
@@ -335,30 +331,27 @@ namespace gum {
       const double __threshold{1e-10};
 
 
-
-
       /// returns the 2-point mutual information corresponding to a given nodeset
-      double __NI_score(NodeId var_x,
-                        NodeId var_y,
+      double __NI_score(NodeId                                        var_x,
+                        NodeId                                        var_y,
                         const std::vector< NodeId, ALLOC< NodeId > >& vars_z);
 
       /// returns the 3-point mutual information corresponding to a given nodeset
-      double __NI_score(NodeId var_x,
-                        NodeId var_y,
-                        NodeId var_z,
+      double __NI_score(NodeId                                        var_x,
+                        NodeId                                        var_y,
+                        NodeId                                        var_z,
                         const std::vector< NodeId, ALLOC< NodeId > >& vars_ui);
 
       /// computes the complexity correction for the mutual information
-      double __K_score(NodeId var_x,
-                       NodeId var_y,
+      double __K_score(NodeId                                        var_x,
+                       NodeId                                        var_y,
                        const std::vector< NodeId, ALLOC< NodeId > >& vars_z);
 
       /// computes the complexity correction for the mutual information
-      double __K_score(NodeId var_x,
-                       NodeId var_y,
-                       NodeId var_z,
+      double __K_score(NodeId                                        var_x,
+                       NodeId                                        var_y,
+                       NodeId                                        var_z,
                        const std::vector< NodeId, ALLOC< NodeId > >& vars_ui);
-
     };
 
   } /* namespace learning */

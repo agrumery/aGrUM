@@ -44,16 +44,16 @@
 #include <agrum/learning/database/databaseTable.h>
 #include <agrum/learning/database/DBRowGeneratorParser.h>
 
-#include <agrum/learning/scores_and_tests/scoreAIC.h>
-#include <agrum/learning/scores_and_tests/scoreBD.h>
-#include <agrum/learning/scores_and_tests/scoreBDeu.h>
-#include <agrum/learning/scores_and_tests/scoreBIC.h>
-#include <agrum/learning/scores_and_tests/scoreK2.h>
-#include <agrum/learning/scores_and_tests/scoreLog2Likelihood.h>
+#include <agrum/learning/scores_and_tests/scoreAIC2.h>
+#include <agrum/learning/scores_and_tests/scoreBD2.h>
+#include <agrum/learning/scores_and_tests/scoreBDeu2.h>
+#include <agrum/learning/scores_and_tests/scoreBIC2.h>
+#include <agrum/learning/scores_and_tests/scoreK22.h>
+#include <agrum/learning/scores_and_tests/scoreLog2Likelihood2.h>
 
-#include <agrum/learning/aprioris/aprioriDirichletFromDatabase.h>
-#include <agrum/learning/aprioris/aprioriNoApriori.h>
-#include <agrum/learning/aprioris/aprioriSmoothing.h>
+#include <agrum/learning/aprioris/aprioriDirichletFromDatabase2.h>
+#include <agrum/learning/aprioris/aprioriNoApriori2.h>
+#include <agrum/learning/aprioris/aprioriSmoothing2.h>
 
 #include <agrum/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/learning/constraints/structuralConstraintDiGraph.h>
@@ -67,10 +67,10 @@
 #include <agrum/learning/structureUtils/graphChange.h>
 #include <agrum/learning/structureUtils/graphChangesGenerator4DiGraph.h>
 #include <agrum/learning/structureUtils/graphChangesGenerator4K2.h>
-#include <agrum/learning/structureUtils/graphChangesSelector4DiGraph.h>
+#include <agrum/learning/structureUtils/graphChangesSelector4DiGraph2.h>
 
-#include <agrum/learning/paramUtils/DAG2BNLearner.h>
-#include <agrum/learning/paramUtils/paramEstimatorML.h>
+#include <agrum/learning/paramUtils/DAG2BNLearner2.h>
+#include <agrum/learning/paramUtils/paramEstimatorML2.h>
 
 #include <agrum/core/approximations/IApproximationSchemeConfiguration.h>
 #include <agrum/core/approximations/approximationSchemeListener.h>
@@ -219,11 +219,11 @@ namespace gum {
         /// returns the parser for the database
         DBRowGeneratorParser<>& parser();
 
-        /// returns the modalities of the variables
-        std::vector< Size >& modalities() noexcept;
+        /// returns the domain sizes of the variables
+        const std::vector< std::size_t >& domainSizes() const;
 
         /// returns the names of the variables in the database
-        const std::vector< std::string >& names() const noexcept;
+        const std::vector< std::string >& names() const;
 
         /// returns the node id corresponding to a variable name
         NodeId idFromName(const std::string& var_name) const;
@@ -246,8 +246,8 @@ namespace gum {
         /// the parser used for reading the database
         DBRowGeneratorParser<>* __parser{nullptr};
 
-        /// the modalities of the variables
-        std::vector< Size > __modalities;
+        /// the domain sizes of the variables (useful to speed-up computations)
+        std::vector< std::size_t > __domain_sizes;
 
         /// a hashtable assigning to each variable name its NodeId
         Bijection< std::string, NodeId > __name2nodeId;
@@ -351,8 +351,8 @@ namespace gum {
       /// returns the names of the variables in the database
       const std::vector< std::string >& names() const;
 
-      /// returns the names of the variables in the database
-      const std::vector< Size >& modalities() noexcept;
+      /// returns the domain sizes of the variables in the database
+      const std::vector< std::size_t >& domainSizes() const;
 
       /// returns the node id corresponding to a variable name
       /**
@@ -424,26 +424,26 @@ namespace gum {
       /// @{
 
       /// indicate that we wish to use a greedy hill climbing algorithm
-      void useGreedyHillClimbing() noexcept;
+      void useGreedyHillClimbing();
 
       /// indicate that we wish to use a local search with tabu list
       /** @param tabu_size indicate the size of the tabu list
        * @param nb_decrease indicate the max number of changes decreasing the
        * score consecutively that we allow to apply */
       void useLocalSearchWithTabuList(Size tabu_size = 100,
-                                      Size nb_decrease = 2) noexcept;
+                                      Size nb_decrease = 2);
 
       /// indicate that we wish to use K2
-      void useK2(const Sequence< NodeId >& order) noexcept;
+      void useK2(const Sequence< NodeId >& order);
 
       /// indicate that we wish to use K2
-      void useK2(const std::vector< NodeId >& order) noexcept;
+      void useK2(const std::vector< NodeId >& order);
 
       /// indicate that we wish to use 3off2
-      void use3off2() noexcept;
+      void use3off2();
 
       /// indicate that we wish to use MIIC
-      void useMIIC() noexcept;
+      void useMIIC();
 
       /// @}
 
@@ -528,22 +528,24 @@ namespace gum {
       ScoreType __score_type{ScoreType::BDeu};
 
       /// the score used
-      Score<>* __score{nullptr};
+      Score2<>* __score{nullptr};
 
       /// the type of the parameter estimator
       ParamEstimatorType __param_estimator_type{ParamEstimatorType::ML};
 
       /// the parameter estimator to use
-      ParamEstimator<>* __param_estimator{nullptr};
+      ParamEstimator2<>* __param_estimator{nullptr};
 
       /// the selected correction for 3off2 and miic
-      CorrectedMutualInformation<>* __mutual_info{nullptr};
+      CorrectedMutualInformation2<>* __mutual_info{nullptr};
 
       /// the a priori selected for the score and parameters
       AprioriType __apriori_type{AprioriType::NO_APRIORI};
 
       /// the apriori used
-      Apriori<>* __apriori{nullptr};
+      Apriori2<>* __apriori{nullptr};
+
+      AprioriNoApriori2<>* __no_apriori{nullptr};
 
       /// the weight of the apriori
       double __apriori_weight{1.0f};
@@ -580,13 +582,6 @@ namespace gum {
 
       /// the database to be used by the scores and parameter estimators
       Database __score_database;
-
-      /// indicates the values the user specified for the translators
-      NodeProperty< Sequence< std::string > > __user_modalities;
-
-      /// indicates whether we shall parse the database to update
-      /// __user_modalities
-      bool __modalities_parse_db{false};
 
       /// the database used by the Dirichlet a priori
       Database* __apriori_database{nullptr};
