@@ -34,7 +34,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE Forall< GUM_SCALAR >::Forall(Idx value) :
         MultiDimAggregator< GUM_SCALAR >(), __value(value) {
-      GUM_CONSTRUCTOR(Forall)
+      GUM_CONSTRUCTOR(Forall);
     }
 
     template < typename GUM_SCALAR >

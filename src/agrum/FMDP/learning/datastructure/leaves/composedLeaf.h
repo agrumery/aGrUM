@@ -54,13 +54,13 @@ namespace gum {
     // ###################################################################
     ComposedLeaf(NodeId leafId, AbstractLeaf* l1, AbstractLeaf* l2) :
         AbstractLeaf(leafId), __l1(l1), __l2(l2) {
-      GUM_CONSTRUCTOR(ComposedLeaf)
+      GUM_CONSTRUCTOR(ComposedLeaf);
     }
 
     // ###################################################################
     /// Default destructor
     // ###################################################################
-    ~ComposedLeaf() { GUM_DESTRUCTOR(ComposedLeaf) }
+    ~ComposedLeaf() { GUM_DESTRUCTOR(ComposedLeaf); }
 
     // ============================================================================
     /// Allocators and Deallocators redefinition

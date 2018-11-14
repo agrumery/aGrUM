@@ -63,7 +63,7 @@ namespace gum {
       __observationPhaseLenght(observationPhaseLenght),
       __nbValueIterationStep(nbValueIterationStep), __actionReward(actionReward),
       _verbose(verbose) {
-    GUM_CONSTRUCTOR(SDYNA)
+    GUM_CONSTRUCTOR(SDYNA);
 
     _fmdp = new FMDP< double >();
 
@@ -85,7 +85,7 @@ namespace gum {
 
     delete _fmdp;
 
-    GUM_DESTRUCTOR(SDYNA)
+    GUM_DESTRUCTOR(SDYNA);
   }
 
   // ==========================================================================

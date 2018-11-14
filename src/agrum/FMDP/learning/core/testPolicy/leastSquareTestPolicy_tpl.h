@@ -37,7 +37,7 @@ namespace gum {
          ++obsIter)
       delete obsIter.val();
 
-    GUM_DESTRUCTOR(LeastSquareTestPolicy)
+    GUM_DESTRUCTOR(LeastSquareTestPolicy);
   }
 
 

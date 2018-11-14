@@ -42,7 +42,7 @@ namespace gum {
                                  double         similarityThreshold) :
       __leavesCpt(idSource),
       __similarityThreshold(similarityThreshold) {
-    GUM_CONSTRUCTOR(LeafAggregator)
+    GUM_CONSTRUCTOR(LeafAggregator);
     __initialContext = new FusionContext< true >(nullptr);
     __needsUpdate = false;
   }
@@ -71,7 +71,7 @@ namespace gum {
     }
 
 
-    GUM_DESTRUCTOR(LeafAggregator)
+    GUM_DESTRUCTOR(LeafAggregator);
   }
 
   // ############################################################################

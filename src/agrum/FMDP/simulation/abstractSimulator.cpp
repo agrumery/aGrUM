@@ -40,14 +40,12 @@ namespace gum {
   /*
    * Default constructor.
    */
-  AbstractSimulator::AbstractSimulator(){GUM_CONSTRUCTOR(AbstractSimulator)}
+  AbstractSimulator::AbstractSimulator() { GUM_CONSTRUCTOR(AbstractSimulator); }
 
   /*
    * Default destructor.
    */
-  AbstractSimulator::~AbstractSimulator() {
-    GUM_DESTRUCTOR(AbstractSimulator)
-  }
+  AbstractSimulator::~AbstractSimulator() { GUM_DESTRUCTOR(AbstractSimulator); }
 
 
   // ===========================================================================

@@ -57,13 +57,13 @@ namespace gum {
     /// Constructor
     // ==========================================================================
     StatisticalLazyDecider() : __counter(), __initialized(false) {
-      GUM_CONSTRUCTOR(StatisticalLazyDecider)
+      GUM_CONSTRUCTOR(StatisticalLazyDecider);
     }
 
     // ==========================================================================
     /// Destructor
     // ==========================================================================
-    ~StatisticalLazyDecider() { GUM_DESTRUCTOR(StatisticalLazyDecider) }
+    ~StatisticalLazyDecider() { GUM_DESTRUCTOR(StatisticalLazyDecider); }
 
     /// @}
 

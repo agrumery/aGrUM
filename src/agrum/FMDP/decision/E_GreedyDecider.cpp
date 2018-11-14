@@ -43,7 +43,7 @@ namespace gum {
    */
   // ###################################################################
   E_GreedyDecider::E_GreedyDecider() {
-    GUM_CONSTRUCTOR(E_GreedyDecider)
+    GUM_CONSTRUCTOR(E_GreedyDecider);
 
     __sss = 1.0;
   }
@@ -54,7 +54,7 @@ namespace gum {
    *
    */
   // ###################################################################
-  E_GreedyDecider::~E_GreedyDecider() { GUM_DESTRUCTOR(E_GreedyDecider) }
+  E_GreedyDecider::~E_GreedyDecider() { GUM_DESTRUCTOR(E_GreedyDecider); }
 
 
   // ==========================================================================

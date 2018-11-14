@@ -26,11 +26,13 @@ namespace gum {
   StatesChecker::StatesChecker() :
       __nbVisitedStates(0),
       __checker(MultiDimFunctionGraph< bool >::getTreeInstance()),
-      __checkerTrueId(0), __checkerFalseId(0){GUM_CONSTRUCTOR(StatesChecker)}
+      __checkerTrueId(0), __checkerFalseId(0) {
+    GUM_CONSTRUCTOR(StatesChecker);
+  }
 
-      StatesChecker::~StatesChecker() {
+  StatesChecker::~StatesChecker() {
     delete __checker;
-    GUM_DESTRUCTOR(StatesChecker)
+    GUM_DESTRUCTOR(StatesChecker);
   }
 
   void StatesChecker::reset(const Instantiation& initialState) {

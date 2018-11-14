@@ -33,7 +33,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE Count< GUM_SCALAR >::Count(Idx value) :
         MultiDimAggregator< GUM_SCALAR >(), __value(value) {
-      GUM_CONSTRUCTOR(Count)
+      GUM_CONSTRUCTOR(Count);
     }
 
     template < typename GUM_SCALAR >

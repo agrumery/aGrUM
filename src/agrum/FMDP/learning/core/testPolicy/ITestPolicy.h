@@ -55,13 +55,13 @@ namespace gum {
     ///
     // ============================================================================
     ITestPolicy() : __isModified(false), __nbObs(0) {
-      GUM_CONSTRUCTOR(ITestPolicy)
+      GUM_CONSTRUCTOR(ITestPolicy);
     }
 
     // ============================================================================
     ///
     // ============================================================================
-    virtual ~ITestPolicy() { GUM_DESTRUCTOR(ITestPolicy) }
+    virtual ~ITestPolicy() { GUM_DESTRUCTOR(ITestPolicy); }
 
     // ============================================================================
     /// Allocators and Deallocators redefinition

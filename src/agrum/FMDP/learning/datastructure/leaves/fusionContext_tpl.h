@@ -40,7 +40,7 @@ namespace gum {
   // ============================================================================
   template < bool isInitial >
   FusionContext< isInitial >::FusionContext(AbstractLeaf* leaf) : __leaf(leaf) {
-    GUM_CONSTRUCTOR(FusionContext)
+    GUM_CONSTRUCTOR(FusionContext);
   }
 
   // ============================================================================
@@ -48,7 +48,7 @@ namespace gum {
   // ============================================================================
   template < bool isInitial >
   FusionContext< isInitial >::~FusionContext() {
-    GUM_DESTRUCTOR(FusionContext)
+    GUM_DESTRUCTOR(FusionContext);
 
     for (auto leafIter = __leaf2Pair.beginSafe();
          leafIter != __leaf2Pair.endSafe();

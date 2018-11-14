@@ -28,16 +28,17 @@ namespace gum {
   //
   // =================================================================================================
   StatesCounter::StatesCounter() :
-      __counter(MultiDimFunctionGraph< Size >::getTreeInstance()){
-        GUM_CONSTRUCTOR(StatesCounter)}
+      __counter(MultiDimFunctionGraph< Size >::getTreeInstance()) {
+    GUM_CONSTRUCTOR(StatesCounter);
+  }
 
 
-      // =================================================================================================
-      //
-      // =================================================================================================
-      StatesCounter::~StatesCounter() {
+  // =================================================================================================
+  //
+  // =================================================================================================
+  StatesCounter::~StatesCounter() {
     delete __counter;
-    GUM_DESTRUCTOR(StatesCounter)
+    GUM_DESTRUCTOR(StatesCounter);
   }
 
 

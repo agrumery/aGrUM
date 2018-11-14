@@ -37,7 +37,7 @@ namespace gum {
   namespace aggregator {
     template < typename GUM_SCALAR >
     INLINE Median< GUM_SCALAR >::Median() : MultiDimAggregator< GUM_SCALAR >() {
-      GUM_CONSTRUCTOR(Median)
+      GUM_CONSTRUCTOR(Median);
     }
 
     template < typename GUM_SCALAR >

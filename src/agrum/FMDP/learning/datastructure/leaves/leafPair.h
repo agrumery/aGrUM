@@ -56,13 +56,13 @@ namespace gum {
     /// Default constructor
     // ###################################################################
     LeafPair(AbstractLeaf* l1, AbstractLeaf* l2) : __l1(l1), __l2(l2) {
-      GUM_CONSTRUCTOR(LeafPair)
+      GUM_CONSTRUCTOR(LeafPair);
     }
 
     // ###################################################################
     /// Default destructor
     // ###################################################################
-    ~LeafPair() { GUM_DESTRUCTOR(LeafPair) }
+    ~LeafPair() { GUM_DESTRUCTOR(LeafPair); }
 
     // ============================================================================
     /// Allocators and Deallocators redefinition

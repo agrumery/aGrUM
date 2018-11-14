@@ -80,7 +80,7 @@ namespace gum {
   // ============================================================================
   template < typename GUM_SCALAR_VAL, typename GUM_SCALAR_SEQ >
   ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >::~ArgMaxSet() {
-    GUM_DESTRUCTOR(ArgMaxSet)
+    GUM_DESTRUCTOR(ArgMaxSet);
     delete __argMaxSeq;
   }
 

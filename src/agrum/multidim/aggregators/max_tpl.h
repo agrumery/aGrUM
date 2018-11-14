@@ -32,7 +32,7 @@ namespace gum {
   namespace aggregator {
     template < typename GUM_SCALAR >
     INLINE Max< GUM_SCALAR >::Max() : MultiDimAggregator< GUM_SCALAR >() {
-      GUM_CONSTRUCTOR(Max)
+      GUM_CONSTRUCTOR(Max);
     }
 
     template < typename GUM_SCALAR >

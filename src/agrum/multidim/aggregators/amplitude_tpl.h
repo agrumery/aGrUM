@@ -37,7 +37,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE Amplitude< GUM_SCALAR >::Amplitude() :
         MultiDimAggregator< GUM_SCALAR >() {
-      GUM_CONSTRUCTOR(Amplitude)
+      GUM_CONSTRUCTOR(Amplitude);
     }
 
     template < typename GUM_SCALAR >

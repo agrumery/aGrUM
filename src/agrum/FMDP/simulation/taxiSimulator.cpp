@@ -34,7 +34,7 @@
 namespace gum {
 
   TaxiSimulator::TaxiSimulator() : AbstractSimulator() {
-    GUM_CONSTRUCTOR(TaxiSimulator)
+    GUM_CONSTRUCTOR(TaxiSimulator);
 
     // *****************************************************************************************
     // Défintion des variables du problème
@@ -107,7 +107,7 @@ namespace gum {
   }
 
   TaxiSimulator::~TaxiSimulator() {
-    GUM_DESTRUCTOR(TaxiSimulator)
+    GUM_DESTRUCTOR(TaxiSimulator);
 
     for (BijectionIteratorSafe< const DiscreteVariable*, const DiscreteVariable* >
            varIter = __primeMap.beginSafe();

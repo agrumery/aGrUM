@@ -93,12 +93,12 @@ namespace gum {
     /// Constructor
     // ============================================================================
     ActionSet() {
-      GUM_CONSTRUCTOR(ActionSet)
+      GUM_CONSTRUCTOR(ActionSet);
       __actionSeq = new Sequence< Idx >();
     }
 
     ActionSet(const ActionSet& src) {
-      GUM_CONSTRUCTOR(ActionSet)
+      GUM_CONSTRUCTOR(ActionSet);
       __actionSeq = new Sequence< Idx >();
       for (auto idi = src.beginSafe(); idi != src.endSafe(); ++idi)
         __actionSeq->insert(*idi);
@@ -115,7 +115,7 @@ namespace gum {
     /// Destructor
     // ============================================================================
     ~ActionSet() {
-      GUM_DESTRUCTOR(ActionSet)
+      GUM_DESTRUCTOR(ActionSet);
       delete __actionSeq;
     }
 

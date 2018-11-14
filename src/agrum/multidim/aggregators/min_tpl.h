@@ -35,7 +35,7 @@ namespace gum {
     // Default constructor
     template < typename GUM_SCALAR >
     INLINE Min< GUM_SCALAR >::Min() : MultiDimAggregator< GUM_SCALAR >() {
-      GUM_CONSTRUCTOR(Min)
+      GUM_CONSTRUCTOR(Min);
     }
 
     // Default constructor

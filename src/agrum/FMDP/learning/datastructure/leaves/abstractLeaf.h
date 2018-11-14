@@ -58,13 +58,13 @@ namespace gum {
     /// Default constructor
     // ###################################################################
     AbstractLeaf(NodeId leafId) : __leafId(leafId) {
-      GUM_CONSTRUCTOR(AbstractLeaf)
+      GUM_CONSTRUCTOR(AbstractLeaf);
     }
 
     // ###################################################################
     /// Default destructor
     // ###################################################################
-    virtual ~AbstractLeaf() { GUM_DESTRUCTOR(AbstractLeaf) }
+    virtual ~AbstractLeaf() { GUM_DESTRUCTOR(AbstractLeaf); }
 
     // ============================================================================
     /// Allocators and Deallocators redefinition

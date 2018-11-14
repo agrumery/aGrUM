@@ -48,10 +48,10 @@ namespace gum {
   class Chi2TestPolicy : public ITestPolicy< GUM_SCALAR > {
     public:
     Chi2TestPolicy() : ITestPolicy< GUM_SCALAR >(), __conTab(), __chi2Score(0) {
-      GUM_CONSTRUCTOR(Chi2TestPolicy)
+      GUM_CONSTRUCTOR(Chi2TestPolicy);
     }
 
-    virtual ~Chi2TestPolicy() { GUM_DESTRUCTOR(Chi2TestPolicy) }
+    virtual ~Chi2TestPolicy() { GUM_DESTRUCTOR(Chi2TestPolicy); }
 
     // ============================================================================
     /// Allocators and Deallocators redefinition

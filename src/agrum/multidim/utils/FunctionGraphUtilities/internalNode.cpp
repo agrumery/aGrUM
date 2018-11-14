@@ -37,17 +37,17 @@ namespace gum {
   // Constructors
   // ============================================================================
   InternalNode::InternalNode() {
-    GUM_CONSTRUCTOR(InternalNode)
+    GUM_CONSTRUCTOR(InternalNode);
     __nodeVar = nullptr;
   }
 
   InternalNode::InternalNode(const DiscreteVariable* v) {
-    GUM_CONSTRUCTOR(InternalNode)
+    GUM_CONSTRUCTOR(InternalNode);
     __setNodeVar(v);
   }
 
   InternalNode::InternalNode(const DiscreteVariable* v, NodeId* sons) {
-    GUM_CONSTRUCTOR(InternalNode)
+    GUM_CONSTRUCTOR(InternalNode);
     __nodeVar = v;
     __nodeSons = sons;
   }
@@ -56,7 +56,7 @@ namespace gum {
   // Destructors
   // ============================================================================
   InternalNode::~InternalNode() {
-    GUM_DESTRUCTOR(InternalNode)
+    GUM_DESTRUCTOR(InternalNode);
     if (__nodeVar != nullptr) deallocateNodeSons(__nodeVar, __nodeSons);
   }
 

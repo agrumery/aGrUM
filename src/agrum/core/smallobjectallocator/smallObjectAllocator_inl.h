@@ -25,8 +25,6 @@
  *
  */
 // ============================================================================
-#include <assert.h>
-// ============================================================================
 #include <agrum/core/smallobjectallocator/fixedAllocator.h>
 #include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
 // ============================================================================
@@ -65,7 +63,7 @@ namespace gum {
   // Destructor.
   // ============================================================================
   INLINE SmallObjectAllocator::~SmallObjectAllocator() {
-    GUM_DESTRUCTOR(SmallObjectAllocator)
+    GUM_DESTRUCTOR(SmallObjectAllocator);
     for (__Pool::iterator pit = __pool.begin(); pit != __pool.end(); ++pit)
       delete pit.val();
   }
@@ -84,9 +82,8 @@ namespace gum {
   // Allocates an object
   // ============================================================================
   INLINE void* SmallObjectAllocator::allocate(const size_t& objectSize) {
-    GUM_ASSERT(
-      objectSize > 0
-      && "Small Object Allocator called for an object of size equals to 0");
+    // Small Object Allocator called for an object of size equals to 0
+    GUM_ASSERT(objectSize > 0);
 
     // If objectSize is greater than maxObjectSize, normal new is called
     if (objectSize > __maxObjectSize) return new unsigned char[objectSize];
@@ -119,9 +116,8 @@ namespace gum {
   // ============================================================================
   INLINE void SmallObjectAllocator::deallocate(void*         pDeallocatedObject,
                                                const size_t& objectSize) {
-    GUM_ASSERT(
-      objectSize > 0
-      && "Small Object Allocator called for an object of size equals to 0");
+    // Small Object Allocator called for an object of size equals to 0
+    GUM_ASSERT(objectSize > 0);
 
     // If objectSize is greater than maxObjectSize, normal new is called
     if (objectSize > __maxObjectSize) {

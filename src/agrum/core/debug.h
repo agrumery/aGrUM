@@ -49,7 +49,7 @@
                     << #condition << ") failed" << std::endl;             \
           std::abort();                                                   \
         }                                                                 \
-      } while (0)es message s
+      } while (0)
 
 #    define GUM_DEBUG_ONLY(x) \
       { x }
@@ -110,13 +110,14 @@
 #  else   // GUM_DEBUG_MODE
 /////////////////////////////////////////////////////////////
 #    define GUM_ASSERT(condition) ((void)0)
-#    define GUM_DEBUG_ONLY(x) ((void)0)
 #    define GUM_CONSTRUCTOR(x) ((void)0)
 #    define GUM_DESTRUCTOR(x) ((void)0)
 #    define GUM_CONS_CPY(x) ((void)0)
 #    define GUM_CONS_MOV(x) ((void)0)
 #    define GUM_OP_CPY(x) ((void)0)
 #    define GUM_OP_MOV(x) ((void)0)
+
+#    define GUM_DEBUG_ONLY(x)
 /////////////////////////////////////////////////////////////
 #  endif   // GUM_DEBUG_MODE
 

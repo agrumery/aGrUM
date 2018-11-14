@@ -34,7 +34,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE Exists< GUM_SCALAR >::Exists(Idx value) :
         MultiDimAggregator< GUM_SCALAR >(), __value(value) {
-      GUM_CONSTRUCTOR(Exists)
+      GUM_CONSTRUCTOR(Exists);
     }
 
     template < typename GUM_SCALAR >

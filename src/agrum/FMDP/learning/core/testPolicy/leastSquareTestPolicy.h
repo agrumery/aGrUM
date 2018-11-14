@@ -58,7 +58,7 @@ namespace gum {
     // ============================================================================
     LeastSquareTestPolicy() :
         ITestPolicy< GUM_SCALAR >(), __sumO(0.0), __score(0) {
-      GUM_CONSTRUCTOR(LeastSquareTestPolicy)
+      GUM_CONSTRUCTOR(LeastSquareTestPolicy);
     }
 
     // ============================================================================

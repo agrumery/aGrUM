@@ -58,13 +58,13 @@ namespace gum {
     /// Constructor
     // ============================================================================
     GTestPolicy() : ITestPolicy< GUM_SCALAR >(), __conTab(), __GStat(0) {
-      GUM_CONSTRUCTOR(GTestPolicy)
+      GUM_CONSTRUCTOR(GTestPolicy);
     }
 
     // ============================================================================
     /// Destructor
     // ============================================================================
-    virtual ~GTestPolicy() { GUM_DESTRUCTOR(GTestPolicy) }
+    virtual ~GTestPolicy() { GUM_DESTRUCTOR(GTestPolicy); }
 
     // ============================================================================
     /// Allocators and Deallocators redefinition

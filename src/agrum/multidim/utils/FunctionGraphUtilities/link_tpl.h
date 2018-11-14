@@ -33,20 +33,20 @@ namespace gum {
   // Constructor
   template < typename T >
   INLINE Link< T >::Link(const T& elem) : __element(elem) {
-    GUM_CONSTRUCTOR(Link)
+    GUM_CONSTRUCTOR(Link);
   }
 
   // Constructor
   template < typename T >
   INLINE Link< T >::Link(const T& elem, Link< T >* nextLink) :
       __element(elem), __nextLink(nextLink) {
-    GUM_CONSTRUCTOR(Link)
+    GUM_CONSTRUCTOR(Link);
   }
 
   // Destructor
   template < typename T >
   INLINE Link< T >::~Link() {
-    GUM_DESTRUCTOR(Link)
+    GUM_DESTRUCTOR(Link);
   }
 
   template < typename T >
@@ -87,7 +87,7 @@ namespace gum {
   // Constructor
   template < typename T >
   INLINE LinkedList< T >::LinkedList() {
-    GUM_CONSTRUCTOR(LinkedList)
+    GUM_CONSTRUCTOR(LinkedList);
     __firstLink = nullptr;
   }
 
@@ -95,7 +95,7 @@ namespace gum {
   template < typename T >
   INLINE LinkedList< T >::~LinkedList() {
     clear();
-    GUM_DESTRUCTOR(LinkedList)
+    GUM_DESTRUCTOR(LinkedList);
   }
 
   template < typename T >

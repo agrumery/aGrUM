@@ -27,9 +27,8 @@
 #ifndef GUM_SPLAY_H
 #define GUM_SPLAY_H
 
-#include <cassert>
 #include <iostream>
-#include <stdlib.h>
+//#include <stdlib.h>
 
 #include <agrum/agrum.h>
 #include <agrum/core/hashTable.h>

@@ -69,13 +69,13 @@ namespace gum {
                  const Sequence< ValueType >*                  valueDomain) :
         AbstractLeaf(leafId),
         __n1(n1), __valueDomain(valueDomain) {
-      GUM_CONSTRUCTOR(ConcreteLeaf)
+      GUM_CONSTRUCTOR(ConcreteLeaf);
     }
 
     // ###################################################################
     /// Default destructor
     // ###################################################################
-    ~ConcreteLeaf() { GUM_DESTRUCTOR(ConcreteLeaf) }
+    ~ConcreteLeaf() { GUM_DESTRUCTOR(ConcreteLeaf); }
 
     // ============================================================================
     /// Allocators and Deallocators redefinition

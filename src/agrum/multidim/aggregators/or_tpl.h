@@ -33,7 +33,7 @@ namespace gum {
   namespace aggregator {
     template < typename GUM_SCALAR >
     INLINE Or< GUM_SCALAR >::Or() : MultiDimAggregator< GUM_SCALAR >() {
-      GUM_CONSTRUCTOR(Or)
+      GUM_CONSTRUCTOR(Or);
     }
 
     template < typename GUM_SCALAR >
