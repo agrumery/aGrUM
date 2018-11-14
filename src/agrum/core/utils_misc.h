@@ -41,7 +41,7 @@
 #  define GUM_CAST dynamic_cast
 #else
 #  define GUM_CAST static_cast
-#endif // GUM_DEBUG_MODE
+#endif   // GUM_DEBUG_MODE
 
 #include <agrum/agrum.h>
 

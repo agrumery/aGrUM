@@ -40,7 +40,7 @@ namespace gum {
     if (first_time) {
       first_time = false;
       __HashTableIterEnd = new HashTableIterator< int, int >;
-#ifdef GUM_DEBUG_MODE
+#  ifdef GUM_DEBUG_MODE
       __debug__::__dec_creation("HashTableIterator",
                                 "__hash_static_end",
                                 0,
@@ -70,7 +70,7 @@ namespace gum {
     if (first_time) {
       first_time = false;
       __HashTableIterEndSafe = new HashTableIteratorSafe< int, int >;
-#ifdef GUM_DEBUG_MODE
+#  ifdef GUM_DEBUG_MODE
       __debug__::__dec_creation("HashTableIteratorSafe",
                                 "__hash_static_end",
                                 0,

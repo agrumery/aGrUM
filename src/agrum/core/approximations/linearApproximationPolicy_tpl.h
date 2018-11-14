@@ -277,7 +277,7 @@ namespace gum {
       GUM_ERROR(OutOfLowerBound, "Value asked is lower than low limit");
     }
 
-#endif // GUM_DEBUG_MODE
+#endif   // GUM_DEBUG_MODE
     return __encode(value);
   }
 

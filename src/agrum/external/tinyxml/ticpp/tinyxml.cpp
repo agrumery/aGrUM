@@ -254,7 +254,7 @@ TiXmlNode* TiXmlNode::InsertAfterChild(TiXmlNode*       afterThis,
   if (afterThis->next) {
     afterThis->next->prev = node;
   } else {
-    assert(lastChild == afterThis);
+      assert(lastChild == afterThis);
     lastChild = node;
   }
 
@@ -290,7 +290,7 @@ TiXmlNode* TiXmlNode::ReplaceChild(TiXmlNode*       replaceThis,
 
 bool TiXmlNode::RemoveChild(TiXmlNode* removeThis) {
   if (removeThis->parent != this) {
-    assert(0);
+      assert(0);
     return false;
   }
 

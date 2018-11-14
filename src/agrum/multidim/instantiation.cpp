@@ -53,7 +53,7 @@ namespace gum {
 
   void Instantiation::__init(MultiDimAdressable* master) {
     // for speed issues
-    assert(master != nullptr);
+    GUM_ASSERT(master != nullptr);
 
     const Sequence< const DiscreteVariable* >& v = master->variablesSequence();
     __vars.resize(v.size());

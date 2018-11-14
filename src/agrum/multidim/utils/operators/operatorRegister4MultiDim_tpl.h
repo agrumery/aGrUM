@@ -45,7 +45,7 @@ namespace gum {
 
     if (!__set.exists(operation_name)) {
       theset = __set.insert(operation_name, new OperatorSet).second;
-#ifdef GUM_DEBUG_MODE
+#  ifdef GUM_DEBUG_MODE
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the OperatorRegister4MultiDim will be
       // removed at the end of the program's execution.
@@ -104,7 +104,7 @@ namespace gum {
     OperatorRegister4MultiDim< GUM_SCALAR >::Register() {
     static OperatorRegister4MultiDim container;
 
-#ifdef GUM_DEBUG_MODE
+#  ifdef GUM_DEBUG_MODE
     static bool first = true;
 
     if (first) {

@@ -156,7 +156,7 @@ namespace gum {
   INLINE const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >&
                ScheduleDeleteMultiDim< GUM_SCALAR >::multiDimResults() const {
     static Sequence< const ScheduleMultiDim< GUM_SCALAR >* > empty_seq;
-#ifdef GUM_DEBUG_MODE
+#  ifdef GUM_DEBUG_MODE
     // for debugging purposes, we should inform the aGrUM's debugger that
     // the static sequence used here will be removed at the end of the
     // program's execution.
@@ -185,7 +185,7 @@ namespace gum {
                                 (void*)&empty_seq);
     }
 
-#endif /* GUM_DEBUG_MODE */
+#  endif /* GUM_DEBUG_MODE */
     return empty_seq;
   }
 

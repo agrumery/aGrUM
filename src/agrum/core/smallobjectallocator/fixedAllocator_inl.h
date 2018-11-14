@@ -89,7 +89,7 @@ namespace gum {
   INLINE void FixedAllocator::__Chunk::__deallocat(void* pDeallocatedBlock,
                                                    const std::size_t& blockSize) {
     // first, ensure that deallocated is in this chunk
-    assert(pDeallocatedBlock >= __pData);
+    GUM_ASSERT(pDeallocatedBlock >= __pData);
 
     // Conversion pf pointer for handling
     unsigned char* toRelease = static_cast< unsigned char* >(pDeallocatedBlock);
@@ -106,7 +106,7 @@ namespace gum {
       static_cast< unsigned char >((toRelease - __pData) / blockSize);
 
     // Truncation check
-    assert(__firstAvailableBlock == (toRelease - __pData) / blockSize);
+    GUM_ASSERT(__firstAvailableBlock == (toRelease - __pData) / blockSize);
 
     // We gain one block, yeah
     ++__blocksAvailable;

@@ -277,11 +277,7 @@ class JTGenerator(object):
         	``JTGenerator() -> JTGenerator``
 
         """
-        this = _pyAgrum.new_JTGenerator()
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.JTGenerator_swiginit(self, _pyAgrum.new_JTGenerator())
     __swig_destroy__ = _pyAgrum.delete_JTGenerator
 
 # Register JTGenerator in _pyAgrum:
@@ -295,11 +291,7 @@ class PythonBNListener(object):
 
     def __init__(self, bn: 'BayesNet', vnm: 'VariableNodeMap'):
         r"""__init__(self, bn, vnm) -> PythonBNListener"""
-        this = _pyAgrum.new_PythonBNListener(bn, vnm)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.PythonBNListener_swiginit(self, _pyAgrum.new_PythonBNListener(bn, vnm))
     __swig_destroy__ = _pyAgrum.delete_PythonBNListener
 
     def whenNodeAdded(self, source: 'void const *', id: 'gum::NodeId') -> "void":
@@ -388,11 +380,7 @@ class PythonLoadListener(object):
 
     def __init__(self):
         r"""__init__(self) -> PythonLoadListener"""
-        this = _pyAgrum.new_PythonLoadListener()
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.PythonLoadListener_swiginit(self, _pyAgrum.new_PythonLoadListener())
     __swig_destroy__ = _pyAgrum.delete_PythonLoadListener
 
 # Register PythonLoadListener in _pyAgrum:
@@ -425,11 +413,7 @@ class PythonApproximationListener(object):
         	an approxmation scheme
 
         """
-        this = _pyAgrum.new_PythonApproximationListener(algo)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.PythonApproximationListener_swiginit(self, _pyAgrum.new_PythonApproximationListener(algo))
     __swig_destroy__ = _pyAgrum.delete_PythonApproximationListener
 
     def whenProgress(self, src: 'void const *', step: 'gum::Size const', error: 'double const', duration: 'double const') -> "void":
@@ -479,11 +463,7 @@ class PythonDatabaseGeneratorListener(object):
 
     def __init__(self, notif: 'BNDatabaseGenerator'):
         r"""__init__(self, notif) -> PythonDatabaseGeneratorListener"""
-        this = _pyAgrum.new_PythonDatabaseGeneratorListener(notif)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.PythonDatabaseGeneratorListener_swiginit(self, _pyAgrum.new_PythonDatabaseGeneratorListener(notif))
     __swig_destroy__ = _pyAgrum.delete_PythonDatabaseGeneratorListener
 
     def whenProgress(self, src: 'void const *', step: 'gum::Size const', duration: 'double const') -> "void":
@@ -568,11 +548,7 @@ class BNGenerator(object):
             ``BNGenerator() -> BNGenerator``
 
         """
-        this = _pyAgrum.new_BNGenerator()
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.BNGenerator_swiginit(self, _pyAgrum.new_BNGenerator())
     __swig_destroy__ = _pyAgrum.delete_BNGenerator
 
 # Register BNGenerator in _pyAgrum:
@@ -636,11 +612,7 @@ class IDGenerator(object):
             ``IDGenerator() -> IDGenerator``
 
         """
-        this = _pyAgrum.new_IDGenerator()
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.IDGenerator_swiginit(self, _pyAgrum.new_IDGenerator())
     __swig_destroy__ = _pyAgrum.delete_IDGenerator
 
 # Register IDGenerator in _pyAgrum:
@@ -669,11 +641,7 @@ class PRMexplorer(object):
         	``JTGenerator() -> JTGenerator``
 
         """
-        this = _pyAgrum.new_PRMexplorer()
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.PRMexplorer_swiginit(self, _pyAgrum.new_PRMexplorer())
     __swig_destroy__ = _pyAgrum.delete_PRMexplorer
 
     def load(self, *args) -> "void":
@@ -1426,11 +1394,7 @@ class Vector(object):
         __init__(self, size) -> Vector
         __init__(self, size, value) -> Vector
         """
-        this = _pyAgrum.new_Vector(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.Vector_swiginit(self, _pyAgrum.new_Vector(*args))
 
     def push_back(self, x: 'std::vector< double >::value_type const &') -> "void":
         r"""push_back(self, x)"""
@@ -1628,11 +1592,7 @@ class Vector_int(object):
         __init__(self, size) -> Vector_int
         __init__(self, size, value) -> Vector_int
         """
-        this = _pyAgrum.new_Vector_int(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.Vector_int_swiginit(self, _pyAgrum.new_Vector_int(*args))
 
     def push_back(self, x: 'std::vector< unsigned int >::value_type const &') -> "void":
         r"""push_back(self, x)"""
@@ -1830,11 +1790,7 @@ class Vector_string(object):
         __init__(self, size) -> Vector_string
         __init__(self, size, value) -> Vector_string
         """
-        this = _pyAgrum.new_Vector_string(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.Vector_string_swiginit(self, _pyAgrum.new_Vector_string(*args))
 
     def push_back(self, x: 'std::vector< std::string >::value_type const &') -> "void":
         r"""push_back(self, x)"""
@@ -1894,11 +1850,7 @@ class SetIteratorStaticEnd(object):
 
     def __init__(self):
         r"""__init__(self) -> SetIteratorStaticEnd"""
-        this = _pyAgrum.new_SetIteratorStaticEnd()
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.SetIteratorStaticEnd_swiginit(self, _pyAgrum.new_SetIteratorStaticEnd())
     __swig_destroy__ = _pyAgrum.delete_SetIteratorStaticEnd
 
 # Register SetIteratorStaticEnd in _pyAgrum:
@@ -1917,11 +1869,7 @@ class GumException(Exception):
         Exception() -> GumException
         __init__(self, e) -> GumException
         """
-        this = _pyAgrum.new_GumException(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.GumException_swiginit(self, _pyAgrum.new_GumException(*args))
     __swig_destroy__ = _pyAgrum.delete_GumException
 
     def what(self) -> "std::string const":
@@ -1987,11 +1935,7 @@ class IdError(GumException):
         __init__(self, aMsg) -> IdError
         __init__(self, src) -> IdError
         """
-        this = _pyAgrum.new_IdError(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.IdError_swiginit(self, _pyAgrum.new_IdError(*args))
     __swig_destroy__ = _pyAgrum.delete_IdError
 
 # Register IdError in _pyAgrum:
@@ -2009,11 +1953,7 @@ class FatalError(GumException):
         __init__(self, aMsg) -> FatalError
         __init__(self, src) -> FatalError
         """
-        this = _pyAgrum.new_FatalError(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.FatalError_swiginit(self, _pyAgrum.new_FatalError(*args))
     __swig_destroy__ = _pyAgrum.delete_FatalError
 
 # Register FatalError in _pyAgrum:
@@ -2031,11 +1971,7 @@ class NotImplementedYet(GumException):
         __init__(self, aMsg) -> NotImplementedYet
         __init__(self, src) -> NotImplementedYet
         """
-        this = _pyAgrum.new_NotImplementedYet(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.NotImplementedYet_swiginit(self, _pyAgrum.new_NotImplementedYet(*args))
     __swig_destroy__ = _pyAgrum.delete_NotImplementedYet
 
 # Register NotImplementedYet in _pyAgrum:
@@ -2053,11 +1989,7 @@ class UndefinedIteratorValue(GumException):
         __init__(self, aMsg) -> UndefinedIteratorValue
         __init__(self, src) -> UndefinedIteratorValue
         """
-        this = _pyAgrum.new_UndefinedIteratorValue(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.UndefinedIteratorValue_swiginit(self, _pyAgrum.new_UndefinedIteratorValue(*args))
     __swig_destroy__ = _pyAgrum.delete_UndefinedIteratorValue
 
 # Register UndefinedIteratorValue in _pyAgrum:
@@ -2075,11 +2007,7 @@ class UndefinedIteratorKey(GumException):
         __init__(self, aMsg) -> UndefinedIteratorKey
         __init__(self, src) -> UndefinedIteratorKey
         """
-        this = _pyAgrum.new_UndefinedIteratorKey(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.UndefinedIteratorKey_swiginit(self, _pyAgrum.new_UndefinedIteratorKey(*args))
     __swig_destroy__ = _pyAgrum.delete_UndefinedIteratorKey
 
 # Register UndefinedIteratorKey in _pyAgrum:
@@ -2097,11 +2025,7 @@ class NullElement(GumException):
         __init__(self, aMsg) -> NullElement
         __init__(self, src) -> NullElement
         """
-        this = _pyAgrum.new_NullElement(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.NullElement_swiginit(self, _pyAgrum.new_NullElement(*args))
     __swig_destroy__ = _pyAgrum.delete_NullElement
 
 # Register NullElement in _pyAgrum:
@@ -2119,11 +2043,7 @@ class UndefinedElement(GumException):
         __init__(self, aMsg) -> UndefinedElement
         __init__(self, src) -> UndefinedElement
         """
-        this = _pyAgrum.new_UndefinedElement(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.UndefinedElement_swiginit(self, _pyAgrum.new_UndefinedElement(*args))
     __swig_destroy__ = _pyAgrum.delete_UndefinedElement
 
 # Register UndefinedElement in _pyAgrum:
@@ -2141,11 +2061,7 @@ class SizeError(GumException):
         __init__(self, aMsg) -> SizeError
         __init__(self, src) -> SizeError
         """
-        this = _pyAgrum.new_SizeError(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.SizeError_swiginit(self, _pyAgrum.new_SizeError(*args))
     __swig_destroy__ = _pyAgrum.delete_SizeError
 
 # Register SizeError in _pyAgrum:
@@ -2163,11 +2079,7 @@ class EmptySet(GumException):
         __init__(self, aMsg) -> EmptySet
         __init__(self, src) -> EmptySet
         """
-        this = _pyAgrum.new_EmptySet(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.EmptySet_swiginit(self, _pyAgrum.new_EmptySet(*args))
     __swig_destroy__ = _pyAgrum.delete_EmptySet
 
 # Register EmptySet in _pyAgrum:
@@ -2185,11 +2097,7 @@ class InvalidArgumentsNumber(GumException):
         __init__(self, aMsg) -> InvalidArgumentsNumber
         __init__(self, src) -> InvalidArgumentsNumber
         """
-        this = _pyAgrum.new_InvalidArgumentsNumber(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.InvalidArgumentsNumber_swiginit(self, _pyAgrum.new_InvalidArgumentsNumber(*args))
     __swig_destroy__ = _pyAgrum.delete_InvalidArgumentsNumber
 
 # Register InvalidArgumentsNumber in _pyAgrum:
@@ -2207,11 +2115,7 @@ class InvalidArgument(GumException):
         __init__(self, aMsg) -> InvalidArgument
         __init__(self, src) -> InvalidArgument
         """
-        this = _pyAgrum.new_InvalidArgument(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.InvalidArgument_swiginit(self, _pyAgrum.new_InvalidArgument(*args))
     __swig_destroy__ = _pyAgrum.delete_InvalidArgument
 
 # Register InvalidArgument in _pyAgrum:
@@ -2229,11 +2133,7 @@ class IOError(GumException):
         __init__(self, aMsg) -> IOError
         __init__(self, src) -> IOError
         """
-        this = _pyAgrum.new_IOError(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.IOError_swiginit(self, _pyAgrum.new_IOError(*args))
     __swig_destroy__ = _pyAgrum.delete_IOError
 
 # Register IOError in _pyAgrum:
@@ -2251,11 +2151,7 @@ class FormatNotFound(IOError):
         __init__(self, aMsg) -> FormatNotFound
         __init__(self, src) -> FormatNotFound
         """
-        this = _pyAgrum.new_FormatNotFound(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.FormatNotFound_swiginit(self, _pyAgrum.new_FormatNotFound(*args))
     __swig_destroy__ = _pyAgrum.delete_FormatNotFound
 
 # Register FormatNotFound in _pyAgrum:
@@ -2273,11 +2169,7 @@ class OperationNotAllowed(GumException):
         __init__(self, aMsg) -> OperationNotAllowed
         __init__(self, src) -> OperationNotAllowed
         """
-        this = _pyAgrum.new_OperationNotAllowed(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.OperationNotAllowed_swiginit(self, _pyAgrum.new_OperationNotAllowed(*args))
     __swig_destroy__ = _pyAgrum.delete_OperationNotAllowed
 
 # Register OperationNotAllowed in _pyAgrum:
@@ -2295,11 +2187,7 @@ class NotFound(GumException):
         __init__(self, aMsg) -> NotFound
         __init__(self, src) -> NotFound
         """
-        this = _pyAgrum.new_NotFound(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.NotFound_swiginit(self, _pyAgrum.new_NotFound(*args))
     __swig_destroy__ = _pyAgrum.delete_NotFound
 
 # Register NotFound in _pyAgrum:
@@ -2317,11 +2205,7 @@ class ReferenceError(GumException):
         __init__(self, aMsg) -> ReferenceError
         __init__(self, src) -> ReferenceError
         """
-        this = _pyAgrum.new_ReferenceError(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.ReferenceError_swiginit(self, _pyAgrum.new_ReferenceError(*args))
     __swig_destroy__ = _pyAgrum.delete_ReferenceError
 
 # Register ReferenceError in _pyAgrum:
@@ -2339,11 +2223,7 @@ class OutOfBounds(ReferenceError):
         __init__(self, aMsg) -> OutOfBounds
         __init__(self, src) -> OutOfBounds
         """
-        this = _pyAgrum.new_OutOfBounds(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.OutOfBounds_swiginit(self, _pyAgrum.new_OutOfBounds(*args))
     __swig_destroy__ = _pyAgrum.delete_OutOfBounds
 
 # Register OutOfBounds in _pyAgrum:
@@ -2361,11 +2241,7 @@ class OutOfLowerBound(OutOfBounds):
         __init__(self, aMsg) -> OutOfLowerBound
         __init__(self, src) -> OutOfLowerBound
         """
-        this = _pyAgrum.new_OutOfLowerBound(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.OutOfLowerBound_swiginit(self, _pyAgrum.new_OutOfLowerBound(*args))
     __swig_destroy__ = _pyAgrum.delete_OutOfLowerBound
 
 # Register OutOfLowerBound in _pyAgrum:
@@ -2383,11 +2259,7 @@ class OutOfUpperBound(OutOfBounds):
         __init__(self, aMsg) -> OutOfUpperBound
         __init__(self, src) -> OutOfUpperBound
         """
-        this = _pyAgrum.new_OutOfUpperBound(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.OutOfUpperBound_swiginit(self, _pyAgrum.new_OutOfUpperBound(*args))
     __swig_destroy__ = _pyAgrum.delete_OutOfUpperBound
 
 # Register OutOfUpperBound in _pyAgrum:
@@ -2405,11 +2277,7 @@ class DuplicateElement(ReferenceError):
         __init__(self, aMsg) -> DuplicateElement
         __init__(self, src) -> DuplicateElement
         """
-        this = _pyAgrum.new_DuplicateElement(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.DuplicateElement_swiginit(self, _pyAgrum.new_DuplicateElement(*args))
     __swig_destroy__ = _pyAgrum.delete_DuplicateElement
 
 # Register DuplicateElement in _pyAgrum:
@@ -2427,11 +2295,7 @@ class DuplicateLabel(ReferenceError):
         __init__(self, aMsg) -> DuplicateLabel
         __init__(self, src) -> DuplicateLabel
         """
-        this = _pyAgrum.new_DuplicateLabel(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.DuplicateLabel_swiginit(self, _pyAgrum.new_DuplicateLabel(*args))
     __swig_destroy__ = _pyAgrum.delete_DuplicateLabel
 
 # Register DuplicateLabel in _pyAgrum:
@@ -2449,11 +2313,7 @@ class GraphError(GumException):
         __init__(self, aMsg) -> GraphError
         __init__(self, src) -> GraphError
         """
-        this = _pyAgrum.new_GraphError(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.GraphError_swiginit(self, _pyAgrum.new_GraphError(*args))
     __swig_destroy__ = _pyAgrum.delete_GraphError
 
 # Register GraphError in _pyAgrum:
@@ -2471,11 +2331,7 @@ class NoNeighbour(GraphError):
         __init__(self, aMsg) -> NoNeighbour
         __init__(self, src) -> NoNeighbour
         """
-        this = _pyAgrum.new_NoNeighbour(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.NoNeighbour_swiginit(self, _pyAgrum.new_NoNeighbour(*args))
     __swig_destroy__ = _pyAgrum.delete_NoNeighbour
 
 # Register NoNeighbour in _pyAgrum:
@@ -2493,11 +2349,7 @@ class NoParent(GraphError):
         __init__(self, aMsg) -> NoParent
         __init__(self, src) -> NoParent
         """
-        this = _pyAgrum.new_NoParent(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.NoParent_swiginit(self, _pyAgrum.new_NoParent(*args))
     __swig_destroy__ = _pyAgrum.delete_NoParent
 
 # Register NoParent in _pyAgrum:
@@ -2515,11 +2367,7 @@ class NoChild(GraphError):
         __init__(self, aMsg) -> NoChild
         __init__(self, src) -> NoChild
         """
-        this = _pyAgrum.new_NoChild(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.NoChild_swiginit(self, _pyAgrum.new_NoChild(*args))
     __swig_destroy__ = _pyAgrum.delete_NoChild
 
 # Register NoChild in _pyAgrum:
@@ -2537,11 +2385,7 @@ class InvalidEdge(GraphError):
         __init__(self, aMsg) -> InvalidEdge
         __init__(self, src) -> InvalidEdge
         """
-        this = _pyAgrum.new_InvalidEdge(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.InvalidEdge_swiginit(self, _pyAgrum.new_InvalidEdge(*args))
     __swig_destroy__ = _pyAgrum.delete_InvalidEdge
 
 # Register InvalidEdge in _pyAgrum:
@@ -2559,11 +2403,7 @@ class InvalidArc(GraphError):
         __init__(self, aMsg) -> InvalidArc
         __init__(self, src) -> InvalidArc
         """
-        this = _pyAgrum.new_InvalidArc(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.InvalidArc_swiginit(self, _pyAgrum.new_InvalidArc(*args))
     __swig_destroy__ = _pyAgrum.delete_InvalidArc
 
 # Register InvalidArc in _pyAgrum:
@@ -2581,11 +2421,7 @@ class InvalidNode(GraphError):
         __init__(self, aMsg) -> InvalidNode
         __init__(self, src) -> InvalidNode
         """
-        this = _pyAgrum.new_InvalidNode(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.InvalidNode_swiginit(self, _pyAgrum.new_InvalidNode(*args))
     __swig_destroy__ = _pyAgrum.delete_InvalidNode
 
 # Register InvalidNode in _pyAgrum:
@@ -2603,11 +2439,7 @@ class EmptyBSTree(GraphError):
         __init__(self, aMsg) -> EmptyBSTree
         __init__(self, src) -> EmptyBSTree
         """
-        this = _pyAgrum.new_EmptyBSTree(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.EmptyBSTree_swiginit(self, _pyAgrum.new_EmptyBSTree(*args))
     __swig_destroy__ = _pyAgrum.delete_EmptyBSTree
 
 # Register EmptyBSTree in _pyAgrum:
@@ -2625,11 +2457,7 @@ class DefaultInLabel(GraphError):
         __init__(self, aMsg) -> DefaultInLabel
         __init__(self, src) -> DefaultInLabel
         """
-        this = _pyAgrum.new_DefaultInLabel(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.DefaultInLabel_swiginit(self, _pyAgrum.new_DefaultInLabel(*args))
     __swig_destroy__ = _pyAgrum.delete_DefaultInLabel
 
 # Register DefaultInLabel in _pyAgrum:
@@ -2647,11 +2475,7 @@ class InvalidDirectedCycle(GraphError):
         __init__(self, aMsg) -> InvalidDirectedCycle
         __init__(self, src) -> InvalidDirectedCycle
         """
-        this = _pyAgrum.new_InvalidDirectedCycle(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.InvalidDirectedCycle_swiginit(self, _pyAgrum.new_InvalidDirectedCycle(*args))
     __swig_destroy__ = _pyAgrum.delete_InvalidDirectedCycle
 
 # Register InvalidDirectedCycle in _pyAgrum:
@@ -2669,11 +2493,7 @@ class CPTError(GumException):
         __init__(self, aMsg) -> CPTError
         __init__(self, src) -> CPTError
         """
-        this = _pyAgrum.new_CPTError(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.CPTError_swiginit(self, _pyAgrum.new_CPTError(*args))
     __swig_destroy__ = _pyAgrum.delete_CPTError
 
 # Register CPTError in _pyAgrum:
@@ -2691,11 +2511,7 @@ class CPTNoSumTo1(CPTError):
         __init__(self, aMsg) -> CPTNoSumTo1
         __init__(self, src) -> CPTNoSumTo1
         """
-        this = _pyAgrum.new_CPTNoSumTo1(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.CPTNoSumTo1_swiginit(self, _pyAgrum.new_CPTNoSumTo1(*args))
     __swig_destroy__ = _pyAgrum.delete_CPTNoSumTo1
 
 # Register CPTNoSumTo1 in _pyAgrum:
@@ -2713,11 +2529,7 @@ class IncompatibleEvidence(GumException):
         __init__(self, aMsg) -> IncompatibleEvidence
         __init__(self, src) -> IncompatibleEvidence
         """
-        this = _pyAgrum.new_IncompatibleEvidence(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.IncompatibleEvidence_swiginit(self, _pyAgrum.new_IncompatibleEvidence(*args))
     __swig_destroy__ = _pyAgrum.delete_IncompatibleEvidence
 
 # Register IncompatibleEvidence in _pyAgrum:
@@ -2735,11 +2547,7 @@ class FactoryError(GumException):
         __init__(self, aMsg) -> FactoryError
         __init__(self, src) -> FactoryError
         """
-        this = _pyAgrum.new_FactoryError(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.FactoryError_swiginit(self, _pyAgrum.new_FactoryError(*args))
     __swig_destroy__ = _pyAgrum.delete_FactoryError
 
 # Register FactoryError in _pyAgrum:
@@ -2757,11 +2565,7 @@ class FactoryInvalidState(FactoryError):
         __init__(self, aMsg) -> FactoryInvalidState
         __init__(self, src) -> FactoryInvalidState
         """
-        this = _pyAgrum.new_FactoryInvalidState(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.FactoryInvalidState_swiginit(self, _pyAgrum.new_FactoryInvalidState(*args))
     __swig_destroy__ = _pyAgrum.delete_FactoryInvalidState
 
 # Register FactoryInvalidState in _pyAgrum:
@@ -2779,11 +2583,7 @@ class WrongType(FactoryError):
         __init__(self, aMsg) -> WrongType
         __init__(self, src) -> WrongType
         """
-        this = _pyAgrum.new_WrongType(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.WrongType_swiginit(self, _pyAgrum.new_WrongType(*args))
     __swig_destroy__ = _pyAgrum.delete_WrongType
 
 # Register WrongType in _pyAgrum:
@@ -2801,11 +2601,7 @@ class WrongClassElement(FactoryError):
         __init__(self, aMsg) -> WrongClassElement
         __init__(self, src) -> WrongClassElement
         """
-        this = _pyAgrum.new_WrongClassElement(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.WrongClassElement_swiginit(self, _pyAgrum.new_WrongClassElement(*args))
     __swig_destroy__ = _pyAgrum.delete_WrongClassElement
 
 # Register WrongClassElement in _pyAgrum:
@@ -2823,11 +2619,7 @@ class TypeError(FactoryError):
         __init__(self, aMsg) -> TypeError
         __init__(self, src) -> TypeError
         """
-        this = _pyAgrum.new_TypeError(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.TypeError_swiginit(self, _pyAgrum.new_TypeError(*args))
     __swig_destroy__ = _pyAgrum.delete_TypeError
 
 # Register TypeError in _pyAgrum:
@@ -2845,11 +2637,7 @@ class LearningError(GumException):
         __init__(self, aMsg) -> LearningError
         __init__(self, src) -> LearningError
         """
-        this = _pyAgrum.new_LearningError(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.LearningError_swiginit(self, _pyAgrum.new_LearningError(*args))
     __swig_destroy__ = _pyAgrum.delete_LearningError
 
 # Register LearningError in _pyAgrum:
@@ -2867,11 +2655,7 @@ class IncompatibleScoreApriori(LearningError):
         __init__(self, aMsg) -> IncompatibleScoreApriori
         __init__(self, src) -> IncompatibleScoreApriori
         """
-        this = _pyAgrum.new_IncompatibleScoreApriori(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.IncompatibleScoreApriori_swiginit(self, _pyAgrum.new_IncompatibleScoreApriori(*args))
     __swig_destroy__ = _pyAgrum.delete_IncompatibleScoreApriori
 
 # Register IncompatibleScoreApriori in _pyAgrum:
@@ -2889,11 +2673,7 @@ class PossiblyIncompatibleScoreApriori(LearningError):
         __init__(self, aMsg) -> PossiblyIncompatibleScoreApriori
         __init__(self, src) -> PossiblyIncompatibleScoreApriori
         """
-        this = _pyAgrum.new_PossiblyIncompatibleScoreApriori(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.PossiblyIncompatibleScoreApriori_swiginit(self, _pyAgrum.new_PossiblyIncompatibleScoreApriori(*args))
     __swig_destroy__ = _pyAgrum.delete_PossiblyIncompatibleScoreApriori
 
 # Register PossiblyIncompatibleScoreApriori in _pyAgrum:
@@ -2911,11 +2691,7 @@ class DatabaseError(LearningError):
         __init__(self, aMsg) -> DatabaseError
         __init__(self, src) -> DatabaseError
         """
-        this = _pyAgrum.new_DatabaseError(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.DatabaseError_swiginit(self, _pyAgrum.new_DatabaseError(*args))
     __swig_destroy__ = _pyAgrum.delete_DatabaseError
 
 # Register DatabaseError in _pyAgrum:
@@ -2933,11 +2709,7 @@ class MissingVariableInDatabase(LearningError):
         __init__(self, aMsg) -> MissingVariableInDatabase
         __init__(self, src) -> MissingVariableInDatabase
         """
-        this = _pyAgrum.new_MissingVariableInDatabase(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.MissingVariableInDatabase_swiginit(self, _pyAgrum.new_MissingVariableInDatabase(*args))
     __swig_destroy__ = _pyAgrum.delete_MissingVariableInDatabase
 
 # Register MissingVariableInDatabase in _pyAgrum:
@@ -2955,11 +2727,7 @@ class MissingValueInDatabase(LearningError):
         __init__(self, aMsg) -> MissingValueInDatabase
         __init__(self, src) -> MissingValueInDatabase
         """
-        this = _pyAgrum.new_MissingValueInDatabase(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.MissingValueInDatabase_swiginit(self, _pyAgrum.new_MissingValueInDatabase(*args))
     __swig_destroy__ = _pyAgrum.delete_MissingValueInDatabase
 
 # Register MissingValueInDatabase in _pyAgrum:
@@ -2977,11 +2745,7 @@ class UnknownLabelInDatabase(LearningError):
         __init__(self, aMsg) -> UnknownLabelInDatabase
         __init__(self, src) -> UnknownLabelInDatabase
         """
-        this = _pyAgrum.new_UnknownLabelInDatabase(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.UnknownLabelInDatabase_swiginit(self, _pyAgrum.new_UnknownLabelInDatabase(*args))
     __swig_destroy__ = _pyAgrum.delete_UnknownLabelInDatabase
 
 # Register UnknownLabelInDatabase in _pyAgrum:
@@ -2998,11 +2762,7 @@ class SyntaxError(IOError):
         __init__(self, aMsg, nol, noc, aType) -> SyntaxError
         __init__(self, aMsg, nol, noc) -> SyntaxError
         """
-        this = _pyAgrum.new_SyntaxError(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.SyntaxError_swiginit(self, _pyAgrum.new_SyntaxError(*args))
 
     def col(self) -> "gum::Size":
         r"""
@@ -3659,11 +3419,7 @@ class LabelizedVariable(DiscreteVariable):
         __init__(self, aName, aDesc, labels) -> LabelizedVariable
         __init__(self, aLDRV) -> LabelizedVariable
         """
-        this = _pyAgrum.new_LabelizedVariable(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.LabelizedVariable_swiginit(self, _pyAgrum.new_LabelizedVariable(*args))
     __swig_destroy__ = _pyAgrum.delete_LabelizedVariable
 
     def clone(self) -> "gum::LabelizedVariable *":
@@ -3935,11 +3691,7 @@ class RangeVariable(DiscreteVariable):
         __init__(self, aName, aDesc) -> RangeVariable
         __init__(self, aDRV) -> RangeVariable
         """
-        this = _pyAgrum.new_RangeVariable(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.RangeVariable_swiginit(self, _pyAgrum.new_RangeVariable(*args))
     __swig_destroy__ = _pyAgrum.delete_RangeVariable
 
     def clone(self) -> "gum::DiscreteVariable *":
@@ -4205,11 +3957,7 @@ class Edge(object):
         __init__(self, aN1, aN2) -> Edge
         __init__(self, src) -> Edge
         """
-        this = _pyAgrum.new_Edge(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.Edge_swiginit(self, _pyAgrum.new_Edge(*args))
     __swig_destroy__ = _pyAgrum.delete_Edge
 
     def other(self, id: 'gum::NodeId') -> "gum::NodeId":
@@ -4300,11 +4048,7 @@ class Arc(object):
         __init__(self, tail, head) -> Arc
         __init__(self, src) -> Arc
         """
-        this = _pyAgrum.new_Arc(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.Arc_swiginit(self, _pyAgrum.new_Arc(*args))
     __swig_destroy__ = _pyAgrum.delete_Arc
 
     def tail(self) -> "gum::NodeId":
@@ -4420,11 +4164,7 @@ class DiGraph(object):
         __init__(self) -> DiGraph
         __init__(self, g) -> DiGraph
         """
-        this = _pyAgrum.new_DiGraph(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.DiGraph_swiginit(self, _pyAgrum.new_DiGraph(*args))
     __swig_destroy__ = _pyAgrum.delete_DiGraph
 
     def __eq__(self, g: 'DiGraph') -> "bool":
@@ -4819,11 +4559,7 @@ class DAG(DiGraph):
         __init__(self) -> DAG
         __init__(self, g) -> DAG
         """
-        this = _pyAgrum.new_DAG(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.DAG_swiginit(self, _pyAgrum.new_DAG(*args))
     __swig_destroy__ = _pyAgrum.delete_DAG
 
     def addNodes(self, n: 'gum::Size') -> "PyObject *":
@@ -4888,11 +4624,7 @@ class UndiGraph(object):
         __init__(self) -> UndiGraph
         __init__(self, g) -> UndiGraph
         """
-        this = _pyAgrum.new_UndiGraph(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.UndiGraph_swiginit(self, _pyAgrum.new_UndiGraph(*args))
     __swig_destroy__ = _pyAgrum.delete_UndiGraph
 
     def __eq__(self, g: 'UndiGraph') -> "bool":
@@ -5268,11 +5000,7 @@ class MixedGraph(UndiGraph, DiGraph):
         __init__(self) -> MixedGraph
         __init__(self, g) -> MixedGraph
         """
-        this = _pyAgrum.new_MixedGraph(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.MixedGraph_swiginit(self, _pyAgrum.new_MixedGraph(*args))
     __swig_destroy__ = _pyAgrum.delete_MixedGraph
 
     def __eq__(self, g: 'MixedGraph') -> "bool":
@@ -5415,11 +5143,7 @@ class CliqueGraph(UndiGraph):
         __init__(self) -> CliqueGraph
         __init__(self, arg2) -> CliqueGraph
         """
-        this = _pyAgrum.new_CliqueGraph(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.CliqueGraph_swiginit(self, _pyAgrum.new_CliqueGraph(*args))
     __swig_destroy__ = _pyAgrum.delete_CliqueGraph
 
     def addEdge(self, first: 'gum::NodeId const', second: 'gum::NodeId const') -> "void":
@@ -5797,11 +5521,7 @@ class Instantiation(object):
         __init__(self, aMD) -> Instantiation
         __init__(self, aMD) -> Instantiation
         """
-        this = _pyAgrum.new_Instantiation(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.Instantiation_swiginit(self, _pyAgrum.new_Instantiation(*args))
     __swig_destroy__ = _pyAgrum.delete_Instantiation
 
     def nbrDim(self) -> "gum::Idx":
@@ -6866,11 +6586,7 @@ class EssentialGraph(object):
         __init__(self, m, mg) -> EssentialGraph
         __init__(self, g) -> EssentialGraph
         """
-        this = _pyAgrum.new_EssentialGraph(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.EssentialGraph_swiginit(self, _pyAgrum.new_EssentialGraph(*args))
     __swig_destroy__ = _pyAgrum.delete_EssentialGraph
 
     def mixedGraph(self) -> "gum::MixedGraph":
@@ -7050,11 +6766,7 @@ class MarkovBlanket(object):
         __init__(self, m, n) -> MarkovBlanket
         __init__(self, m, name) -> MarkovBlanket
         """
-        this = _pyAgrum.new_MarkovBlanket(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.MarkovBlanket_swiginit(self, _pyAgrum.new_MarkovBlanket(*args))
     __swig_destroy__ = _pyAgrum.delete_MarkovBlanket
 
     def mb(self) -> "gum::DiGraph":
@@ -7213,11 +6925,7 @@ class StructuralComparator(object):
 
     def __init__(self):
         r"""__init__(self) -> StructuralComparator"""
-        this = _pyAgrum.new_StructuralComparator()
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.StructuralComparator_swiginit(self, _pyAgrum.new_StructuralComparator())
     __swig_destroy__ = _pyAgrum.delete_StructuralComparator
 
     def compare(self, *args) -> "void":
@@ -7358,11 +7066,7 @@ class ApproximationScheme(object):
         __init__(self, v=False) -> ApproximationScheme
         __init__(self) -> ApproximationScheme
         """
-        this = _pyAgrum.new_ApproximationScheme(v)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.ApproximationScheme_swiginit(self, _pyAgrum.new_ApproximationScheme(v))
     __swig_destroy__ = _pyAgrum.delete_ApproximationScheme
 
     def setEpsilon(self, eps: 'double') -> "void":
@@ -7881,11 +7585,7 @@ class DiscretizedVariable(IDiscretizedVariable):
         __init__(self, aName, aDesc, ticks) -> DiscretizedVariable
         __init__(self, aDRV) -> DiscretizedVariable
         """
-        this = _pyAgrum.new_DiscretizedVariable(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.DiscretizedVariable_swiginit(self, _pyAgrum.new_DiscretizedVariable(*args))
     __swig_destroy__ = _pyAgrum.delete_DiscretizedVariable
 
     def clone(self) -> "gum::DiscretizedVariable< double > *":
@@ -8257,11 +7957,7 @@ class Potential(object):
         __init__(self, src) -> Potential
         __init__(self, arg2) -> Potential
         """
-        this = _pyAgrum.new_Potential(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.Potential_swiginit(self, _pyAgrum.new_Potential(*args))
 
         self._notSync=True
         self._list_vars=list()
@@ -9756,11 +9452,7 @@ class BayesNet(IBayesNet):
         __init__(self, name) -> BayesNet
         __init__(self, source) -> BayesNet
         """
-        this = _pyAgrum.new_BayesNet(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.BayesNet_swiginit(self, _pyAgrum.new_BayesNet(*args))
 
     def cpt(self, *args) -> "gum::Potential< double > const &":
         r"""
@@ -11186,11 +10878,7 @@ class LazyPropagation(object):
         __init__(self, BN, arg3) -> LazyPropagation
         __init__(self, BN) -> LazyPropagation
         """
-        this = _pyAgrum.new_LazyPropagation(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.LazyPropagation_swiginit(self, _pyAgrum.new_LazyPropagation(*args))
 
         self._bn=args[0]#BN
 
@@ -12106,11 +11794,7 @@ class ShaferShenoyInference(object):
         __init__(self, BN, barren_type) -> ShaferShenoyInference
         __init__(self, BN) -> ShaferShenoyInference
         """
-        this = _pyAgrum.new_ShaferShenoyInference(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.ShaferShenoyInference_swiginit(self, _pyAgrum.new_ShaferShenoyInference(*args))
 
         self._bn=args[0]#BN
 
@@ -12999,11 +12683,7 @@ class VariableElimination(object):
         __init__(self, BN, relevant_type) -> VariableElimination
         __init__(self, BN) -> VariableElimination
         """
-        this = _pyAgrum.new_VariableElimination(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.VariableElimination_swiginit(self, _pyAgrum.new_VariableElimination(*args))
 
         self._bn=args[0]#BN
 
@@ -13786,11 +13466,7 @@ class GibbsSampling(object):
 
     def __init__(self, bn: 'IBayesNet'):
         r"""__init__(self, bn) -> GibbsSampling"""
-        this = _pyAgrum.new_GibbsSampling(bn)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.GibbsSampling_swiginit(self, _pyAgrum.new_GibbsSampling(bn))
 
         self._bn=bn#BN
 
@@ -14749,11 +14425,7 @@ class ImportanceSampling(object):
 
     def __init__(self, bn: 'IBayesNet'):
         r"""__init__(self, bn) -> ImportanceSampling"""
-        this = _pyAgrum.new_ImportanceSampling(bn)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.ImportanceSampling_swiginit(self, _pyAgrum.new_ImportanceSampling(bn))
 
         self._bn=bn#BN
 
@@ -15634,11 +15306,7 @@ class WeightedSampling(object):
 
     def __init__(self, bn: 'IBayesNet'):
         r"""__init__(self, bn) -> WeightedSampling"""
-        this = _pyAgrum.new_WeightedSampling(bn)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.WeightedSampling_swiginit(self, _pyAgrum.new_WeightedSampling(bn))
 
         self._bn=bn#BN
 
@@ -16519,11 +16187,7 @@ class MonteCarloSampling(object):
 
     def __init__(self, bn: 'IBayesNet'):
         r"""__init__(self, bn) -> MonteCarloSampling"""
-        this = _pyAgrum.new_MonteCarloSampling(bn)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.MonteCarloSampling_swiginit(self, _pyAgrum.new_MonteCarloSampling(bn))
 
         self._bn=bn#BN
 
@@ -17402,11 +17066,7 @@ class LoopyImportanceSampling(object):
 
     def __init__(self, bn: 'IBayesNet'):
         r"""__init__(self, bn) -> LoopyImportanceSampling"""
-        this = _pyAgrum.new_LoopyImportanceSampling(bn)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.LoopyImportanceSampling_swiginit(self, _pyAgrum.new_LoopyImportanceSampling(bn))
 
         self._bn=bn#BN
 
@@ -18303,11 +17963,7 @@ class LoopyWeightedSampling(object):
 
     def __init__(self, bn: 'IBayesNet'):
         r"""__init__(self, bn) -> LoopyWeightedSampling"""
-        this = _pyAgrum.new_LoopyWeightedSampling(bn)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.LoopyWeightedSampling_swiginit(self, _pyAgrum.new_LoopyWeightedSampling(bn))
 
         self._bn=bn#BN
 
@@ -19204,11 +18860,7 @@ class LoopyGibbsSampling(object):
 
     def __init__(self, bn: 'IBayesNet'):
         r"""__init__(self, bn) -> LoopyGibbsSampling"""
-        this = _pyAgrum.new_LoopyGibbsSampling(bn)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.LoopyGibbsSampling_swiginit(self, _pyAgrum.new_LoopyGibbsSampling(bn))
 
         self._bn=bn#BN
 
@@ -20171,11 +19823,7 @@ class LoopyMonteCarloSampling(object):
 
     def __init__(self, bn: 'IBayesNet'):
         r"""__init__(self, bn) -> LoopyMonteCarloSampling"""
-        this = _pyAgrum.new_LoopyMonteCarloSampling(bn)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.LoopyMonteCarloSampling_swiginit(self, _pyAgrum.new_LoopyMonteCarloSampling(bn))
 
         self._bn=bn#BN
 
@@ -21074,11 +20722,7 @@ class LoopyBeliefPropagation(object):
 
     def __init__(self, bn: 'IBayesNet'):
         r"""__init__(self, bn) -> LoopyBeliefPropagation"""
-        this = _pyAgrum.new_LoopyBeliefPropagation(bn)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.LoopyBeliefPropagation_swiginit(self, _pyAgrum.new_LoopyBeliefPropagation(bn))
 
         self._bn=bn#BN
 
@@ -21946,11 +21590,7 @@ class BruteForceKL(object):
         __init__(self, P, Q) -> BruteForceKL
         __init__(self, kl) -> BruteForceKL
         """
-        this = _pyAgrum.new_BruteForceKL(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.BruteForceKL_swiginit(self, _pyAgrum.new_BruteForceKL(*args))
     __swig_destroy__ = _pyAgrum.delete_BruteForceKL
 
     def compute(self) -> "PyObject *":
@@ -22006,11 +21646,7 @@ class GibbsKL(ApproximationScheme):
         __init__(self, P, Q) -> GibbsKL
         __init__(self, kl) -> GibbsKL
         """
-        this = _pyAgrum.new_GibbsKL(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.GibbsKL_swiginit(self, _pyAgrum.new_GibbsKL(*args))
     __swig_destroy__ = _pyAgrum.delete_GibbsKL
 
     def setBurnIn(self, b: 'gum::Size') -> "void":
@@ -22402,11 +22038,7 @@ class CredalNet(object):
         __init__(self, src_min_num, src_max_den) -> CredalNet
         __init__(self, src_min_num) -> CredalNet
         """
-        this = _pyAgrum.new_CredalNet(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.CredalNet_swiginit(self, _pyAgrum.new_CredalNet(*args))
     __swig_destroy__ = _pyAgrum.delete_CredalNet
 
     def addVariable(self, name: 'std::string const &', card: 'gum::Size const &') -> "gum::NodeId":
@@ -22973,11 +22605,7 @@ class CNMonteCarloSampling(object):
 
     def __init__(self, credalNet: 'CredalNet'):
         r"""__init__(self, credalNet) -> CNMonteCarloSampling"""
-        this = _pyAgrum.new_CNMonteCarloSampling(credalNet)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.CNMonteCarloSampling_swiginit(self, _pyAgrum.new_CNMonteCarloSampling(credalNet))
     __swig_destroy__ = _pyAgrum.delete_CNMonteCarloSampling
 
     def makeInference(self) -> "void":
@@ -23462,11 +23090,7 @@ class CNLoopyPropagation(object):
 
     def __init__(self, cnet: 'CredalNet'):
         r"""__init__(self, cnet) -> CNLoopyPropagation"""
-        this = _pyAgrum.new_CNLoopyPropagation(cnet)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.CNLoopyPropagation_swiginit(self, _pyAgrum.new_CNLoopyPropagation(cnet))
     __swig_destroy__ = _pyAgrum.delete_CNLoopyPropagation
 
     def insertEvidenceFile(self, path: 'std::string const &') -> "void":
@@ -23888,11 +23512,7 @@ class InfluenceDiagram(DAGmodel):
         __init__(self) -> InfluenceDiagram
         __init__(self, source) -> InfluenceDiagram
         """
-        this = _pyAgrum.new_InfluenceDiagram(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.InfluenceDiagram_swiginit(self, _pyAgrum.new_InfluenceDiagram(*args))
 
     def toDot(self) -> "std::string":
         r"""
@@ -24574,11 +24194,7 @@ class InfluenceDiagramInference(object):
 
     def __init__(self, infDiag: 'InfluenceDiagram'):
         r"""__init__(self, infDiag) -> InfluenceDiagramInference"""
-        this = _pyAgrum.new_InfluenceDiagramInference(infDiag)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.InfluenceDiagramInference_swiginit(self, _pyAgrum.new_InfluenceDiagramInference(infDiag))
     __swig_destroy__ = _pyAgrum.delete_InfluenceDiagramInference
 
     def makeInference(self) -> "void":
@@ -24861,11 +24477,7 @@ class BNLearner(object):
         __init__(self, arg2) -> BNLearner
         __init__(self, arg2) -> BNLearner
         """
-        this = _pyAgrum.new_BNLearner(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.BNLearner_swiginit(self, _pyAgrum.new_BNLearner(*args))
     __swig_destroy__ = _pyAgrum.delete_BNLearner
 
     def learnBN(self) -> "gum::BayesNet< double >":
@@ -25438,11 +25050,7 @@ class BNDatabaseGenerator(object):
 
     def __init__(self, bn: 'BayesNet'):
         r"""__init__(self, bn) -> BNDatabaseGenerator"""
-        this = _pyAgrum.new_BNDatabaseGenerator(bn)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
+        _pyAgrum.BNDatabaseGenerator_swiginit(self, _pyAgrum.new_BNDatabaseGenerator(bn))
     __swig_destroy__ = _pyAgrum.delete_BNDatabaseGenerator
 
     def drawSamples(self, nbSamples: 'gum::Size') -> "double":

@@ -47,7 +47,7 @@ namespace gum {
     ScheduleMultiDim< GUM_SCALAR >::__id2multidim() {
     static HashTable< Idx, const MultiDimImplementation< GUM_SCALAR >* >
       __multidims;
-#ifdef GUM_DEBUG_MODE
+#  ifdef GUM_DEBUG_MODE
     // for debugging purposes, we should inform the aGrUM's debugger that
     // the static hashtable used here will be removed at the end of the
     // program's execution.
@@ -59,7 +59,7 @@ namespace gum {
         "HashTable", __FILE__, __LINE__, "destructor of", (void*)&__multidims);
     }
 
-#endif /* GUM_DEBUG_MODE */
+#  endif /* GUM_DEBUG_MODE */
     return __multidims;
   }
 
@@ -69,7 +69,7 @@ namespace gum {
     ScheduleMultiDim< GUM_SCALAR >::__multidim2id() {
     static HashTable< const MultiDimImplementation< GUM_SCALAR >*, Idx >
       __multidim_ids;
-#ifdef GUM_DEBUG_MODE
+#  ifdef GUM_DEBUG_MODE
     // for debugging purposes, we should inform the aGrUM's debugger that
     // the static hashtable used here will be removed at the end of the
     // program's execution.
@@ -81,7 +81,7 @@ namespace gum {
         "HashTable", __FILE__, __LINE__, "destructor of", (void*)&__multidim_ids);
     }
 
-#endif /* GUM_DEBUG_MODE */
+#  endif /* GUM_DEBUG_MODE */
     return __multidim_ids;
   }
 
@@ -89,7 +89,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   HashTable< Idx, Idx >& ScheduleMultiDim< GUM_SCALAR >::__id2refs() {
     static HashTable< Idx, Idx > __ids;
-#ifdef GUM_DEBUG_MODE
+#  ifdef GUM_DEBUG_MODE
     // for debugging purposes, we should inform the aGrUM's debugger that
     // the static hashtable used here will be removed at the end of the
     // program's execution.
@@ -101,7 +101,7 @@ namespace gum {
         "HashTable", __FILE__, __LINE__, "destructor of", (void*)&__ids);
     }
 
-#endif /* GUM_DEBUG_MODE */
+#  endif /* GUM_DEBUG_MODE */
     return __ids;
   }
 
@@ -110,7 +110,7 @@ namespace gum {
   HashTable< Idx, const Sequence< const DiscreteVariable* >* >&
     ScheduleMultiDim< GUM_SCALAR >::__id2vars() {
     static HashTable< Idx, const Sequence< const DiscreteVariable* >* > __vars;
-#ifdef GUM_DEBUG_MODE
+#  ifdef GUM_DEBUG_MODE
     // for debugging purposes, we should inform the aGrUM's debugger that
     // the static hashtable used here will be removed at the end of the
     // program's execution.
@@ -122,7 +122,7 @@ namespace gum {
         "HashTable", __FILE__, __LINE__, "destructor of", (void*)&__vars);
     }
 
-#endif /* GUM_DEBUG_MODE */
+#  endif /* GUM_DEBUG_MODE */
     return __vars;
   }
 
@@ -130,7 +130,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   HashTable< Idx, Size >& ScheduleMultiDim< GUM_SCALAR >::__id2size() {
     static HashTable< Idx, Size > __size;
-#ifdef GUM_DEBUG_MODE
+#  ifdef GUM_DEBUG_MODE
     // for debugging purposes, we should inform the aGrUM's debugger that
     // the static hashtable used here will be removed at the end of the
     // program's execution.
@@ -142,7 +142,7 @@ namespace gum {
         "HashTable", __FILE__, __LINE__, "destructor of", (void*)&__size);
     }
 
-#endif /* GUM_DEBUG_MODE */
+#  endif /* GUM_DEBUG_MODE */
     return __size;
   }
 

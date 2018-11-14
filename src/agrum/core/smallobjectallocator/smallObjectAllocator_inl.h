@@ -84,8 +84,9 @@ namespace gum {
   // Allocates an object
   // ============================================================================
   INLINE void* SmallObjectAllocator::allocate(const size_t& objectSize) {
-    assert(objectSize > 0
-           && "Small Object Allocator called for an object of size equals to 0");
+    GUM_ASSERT(
+      objectSize > 0
+      && "Small Object Allocator called for an object of size equals to 0");
 
     // If objectSize is greater than maxObjectSize, normal new is called
     if (objectSize > __maxObjectSize) return new unsigned char[objectSize];
@@ -118,8 +119,9 @@ namespace gum {
   // ============================================================================
   INLINE void SmallObjectAllocator::deallocate(void*         pDeallocatedObject,
                                                const size_t& objectSize) {
-    assert(objectSize > 0
-           && "Small Object Allocator called for an object of size equals to 0");
+    GUM_ASSERT(
+      objectSize > 0
+      && "Small Object Allocator called for an object of size equals to 0");
 
     // If objectSize is greater than maxObjectSize, normal new is called
     if (objectSize > __maxObjectSize) {

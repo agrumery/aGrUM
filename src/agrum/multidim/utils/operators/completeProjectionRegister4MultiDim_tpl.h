@@ -45,7 +45,7 @@ namespace gum {
 
     if (!__set.exists(projection_name)) {
       theset = __set.insert(projection_name, new CompleteProjectionSet).second;
-#ifdef GUM_DEBUG_MODE
+#  ifdef GUM_DEBUG_MODE
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the CompleteProjectionRegister4MultiDim
       // will be removed at the end of the program's execution.
@@ -97,7 +97,7 @@ namespace gum {
     CompleteProjectionRegister4MultiDim< GUM_SCALAR >::Register() {
     static CompleteProjectionRegister4MultiDim container;
 
-#ifdef GUM_DEBUG_MODE
+#  ifdef GUM_DEBUG_MODE
     static bool first = true;
 
     if (first) {

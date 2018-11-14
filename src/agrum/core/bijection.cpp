@@ -44,7 +44,7 @@ namespace gum {
     if (first_time) {
       first_time = false;
       __BijectionIterEndSafe = new BijectionIteratorSafe< int, int >;
-#ifdef GUM_DEBUG_MODE
+#  ifdef GUM_DEBUG_MODE
       __debug__::__dec_creation("BijectionIteratorSafe",
                                 "__bijection_static_end",
                                 0,
@@ -68,7 +68,7 @@ namespace gum {
     if (first_time) {
       first_time = false;
       __BijectionIterEnd = new BijectionIterator< int, int >;
-#ifdef GUM_DEBUG_MODE
+#  ifdef GUM_DEBUG_MODE
       __debug__::__dec_creation("BijectionIterator",
                                 "__bijection_static_end",
                                 0,

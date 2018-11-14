@@ -44,7 +44,7 @@ namespace gum {
     if (!__set.exists(instantiation_func_name)) {
       theset =
         __set.insert(instantiation_func_name, new PartialInstantiationSet).second;
-#ifdef GUM_DEBUG_MODE
+#  ifdef GUM_DEBUG_MODE
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the
       // PartialInstantiationRegister4MultiDim
@@ -99,7 +99,7 @@ namespace gum {
     PartialInstantiationRegister4MultiDim< GUM_SCALAR >::Register() {
     static PartialInstantiationRegister4MultiDim container;
 
-#ifdef GUM_DEBUG_MODE
+#  ifdef GUM_DEBUG_MODE
     static bool first = true;
 
     if (first) {
