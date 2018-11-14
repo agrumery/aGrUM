@@ -95,7 +95,7 @@ namespace gum {
     unsigned char* toRelease = static_cast< unsigned char* >(pDeallocatedBlock);
 
     // Alignement check
-    assert((toRelease - __pData) % blockSize == 0);
+    GUM_ASSERT((toRelease - __pData) % blockSize == 0);
 
     // First byte of toRelease has now to give the index of current first
     // available block
