@@ -160,6 +160,8 @@ namespace gum {
       // ##########################################################################
       /// @{
 
+      using ParamEstimator2< ALLOC >::parameters;
+      
       /// returns the CPT's parameters corresponding to a given nodeset
       /** The vector contains the parameters of an n-dimensional CPT. The
        * distribution of the dimensions of the CPT within the vector is as

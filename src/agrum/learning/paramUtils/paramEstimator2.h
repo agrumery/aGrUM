@@ -155,6 +155,9 @@ namespace gum {
       /// returns the number of threads used to parse the database
       virtual std::size_t nbThreads() const;
 
+      /// returns the CPT's parameters corresponding to a given target node
+      std::vector< double, ALLOC< double > > parameters(const NodeId target_node);
+
       /// returns the CPT's parameters corresponding to a given nodeset
       /** The vector contains the parameters of an n-dimensional CPT. The
        * distribution of the dimensions of the CPT within the vector is as
@@ -200,6 +203,9 @@ namespace gum {
 
       /// the record counter used to parse the database
       RecordCounter2< ALLOC > _counter;
+
+      /// an empty vector of nodes, used for empty conditioning
+      const std::vector< NodeId, ALLOC< NodeId > > _empty_nodevect;
 
 
       /// copy operator

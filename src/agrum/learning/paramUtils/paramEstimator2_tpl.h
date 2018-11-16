@@ -208,6 +208,14 @@ namespace gum {
     }
 
 
+    /// returns the CPT's parameters corresponding to a given target node
+    template < template < typename > class ALLOC >
+    INLINE std::vector< double, ALLOC< double > >
+    ParamEstimator2< ALLOC >::parameters(const NodeId target_node) {
+      return parameters(target_node,_empty_nodevect);
+    }
+    
+
     // check the coherency between the parameters passed to setParameters functions
     template < template < typename > class ALLOC >
     template < typename GUM_SCALAR >

@@ -119,9 +119,6 @@ int main(int argc, char* argv[]) {
         I.add(bn.variableFromName(name));
       }
 
-      std::cout << "================== cpt(0) = " << bn.cpt(0) << std::endl;
-      std::cout << bn.dag() << std::endl;
-      
       double LL = 0.0;
       std::cout << "  TESTING on "
                 << "[" << unfold_deb << "," << unfold_end << ")";

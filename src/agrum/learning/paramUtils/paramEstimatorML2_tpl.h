@@ -169,7 +169,7 @@ namespace gum {
         this->_external_apriori->addAllApriori(idset, N_ijk);
       if (informative_score_internal_apriori)
         this->_score_internal_apriori->addAllApriori(idset, N_ijk);
-
+ 
 
       // now, normalize N_ijk
 
@@ -252,11 +252,10 @@ namespace gum {
         }
 
         // normalize the counts
-        for (std::size_t i = std::size_t(0), k = std::size_t(0);
-             i < target_domsize;
-             ++i) {
-          for (std::size_t j = std::size_t(0); j < conditioning_domsize;
-               ++k, ++j) {
+        for (std::size_t j = std::size_t(0), k = std::size_t(0);
+             j < conditioning_domsize;
+             ++j) {
+          for (std::size_t i = std::size_t(0); i < target_domsize; ++i, ++k) {
             N_ijk[k] /= N_ij[j];
           }
         }
