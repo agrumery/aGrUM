@@ -195,7 +195,7 @@ def getPosterior(bn, evs, target):
   return Potential(inf.posterior(target))
 
 
-def generateCSV(bn, name_out, n, visible=False, with_labels=False):
+def generateCSV(bn, name_out, n, visible=False, with_labels=False, random_order=True):
   """
   generate a CSV file of samples from a bn.
 
@@ -209,6 +209,8 @@ def generateCSV(bn, name_out, n, visible=False, with_labels=False):
   :type visible: boolean
   :param with_labels: if True, use the labels of the modalities of variables in the csv. If False, use their ids.
   :type with_labels: boolean
+  :param random_order: if True, the columns in the csv are randomized sorted
+  :type random_order: boolean  
   :return: the log2-likelihood of the generated base
   """
 
@@ -231,7 +233,8 @@ def generateCSV(bn, name_out, n, visible=False, with_labels=False):
     listen.setWhenProgress(whenStep)
     listen.setWhenStop(whenStop)
 
-  genere.setRandomVarOrder()
+  if random_order:
+    genere.setRandomVarOrder()
   ll=genere.drawSamples(n)
 
   genere.toCSV(name_out,with_labels)

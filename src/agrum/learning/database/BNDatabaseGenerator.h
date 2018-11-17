@@ -20,7 +20,7 @@
 /** @file
  * @brief
  *
- * @author Santiago CORTIJO
+ * @author Santiago CORTIJO and Pierre-Henri WUILLEMIN
  *
  * Constructor
  * @code
