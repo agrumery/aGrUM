@@ -50,7 +50,7 @@ namespace gum {
       __domain_sizes.resize(nb_vars);
       const auto domainSizes = __database.domainSizes();
       for (std::size_t i = 0; i < nb_vars; ++i) {
-        __name2nodeId.insert(var_names[i], NodeId(i));
+        __nodeId2cols.insert(NodeId(i),i);
         __domain_sizes[i] = Size(domainSizes[i]);
       }
 
@@ -98,45 +98,63 @@ namespace gum {
 
     genericBNLearner::Database::Database(
       const std::string&                filename,
-      Database&                         apriori_database,
+      Database&                         score_database,
       const std::vector< std::string >& missing_symbols) :
         __database(genericBNLearner::__readFile(filename, missing_symbols)) {
       // check that there are at least as many variables in the a priori
       // database as those in the score_database
-      if (__database.nbVariables() < apriori_database.__database.nbVariables()) {
+      if (__database.nbVariables() < score_database.__database.nbVariables()) {
         GUM_ERROR(InvalidArgument,
-                  "the a priori seems to have fewer variables "
+                  "the a apriori database has fewer variables "
                   "than the observed database");
       }
 
-      const std::vector< std::string >& apriori_vars =
-        apriori_database.__database.variableNames();
-      const std::vector< std::string >& score_vars = __database.variableNames();
-
+      const auto& score_nodeId2cols = score_database.nodeId2Columns();
+      const std::vector< std::string >& apriori_vars = __database.variableNames();
+      
       Size size = Size(apriori_vars.size());
+      __domain_sizes.resize(size);
+      const auto domainSizes = __database.domainSizes();
       for (Idx i = 0; i < size; ++i) {
-        if (apriori_vars[i] != score_vars[i]) {
-          GUM_ERROR(InvalidArgument,
-                    "some a priori variables do not match "
-                    "their counterpart in the score database");
+        std::size_t col = std::size_t(0);
+        try {
+          const auto cols =
+            score_database.__database.columnsFromVariableName(apriori_vars[i]);
+          col = cols[0];
         }
+        catch (...) {
+           GUM_ERROR(InvalidArgument,
+                     "A priori Variable "
+                     << apriori_vars[i]
+                     << " does not belong to the observed database");
+        }
+        
+        // check that the domain size of the variable is lower than or
+        // equal to that of the original variable
+        if (score_database.__database.domainSize(col) < __database.domainSize(i)) {
+          GUM_ERROR(InvalidArgument,
+                    "A priori Variable "
+                    << apriori_vars[i] << " has a domain size of "
+                    << __database.domainSize(i)
+                    << ", which is higher than that of the same variable in "
+                    << "the observed database, which is equal to "
+                    << score_database.__database.domainSize(col));
+        }
+
+        const NodeId id = score_nodeId2cols.first(col);
+        __nodeId2cols.insert(id,i);
+        __domain_sizes[i] = Size(domainSizes[i]);
       }
 
-      /*
-        ##### TODO: see what is the point of passing in argument score_database
-
-      __raw_translators = score_database.__raw_translators;
-      auto raw_filter =
-        make_DB_row_filter(__database, __raw_translators, __generators);
-      __raw_translators = raw_filter.translatorSet();
-      score_database.__raw_translators = raw_filter.translatorSet();
-      */
+      // create the parser
+      __parser =
+        new DBRowGeneratorParser<>(__database.handler(), DBRowGeneratorSet<>());
     }
 
 
     genericBNLearner::Database::Database(const Database& from) :
         __database(from.__database), __domain_sizes(from.__domain_sizes),
-        __name2nodeId(from.__name2nodeId) {
+        __nodeId2cols(from.__nodeId2cols) {
       // create the parser
       __parser =
         new DBRowGeneratorParser<>(__database.handler(), DBRowGeneratorSet<>());
@@ -146,7 +164,7 @@ namespace gum {
     genericBNLearner::Database::Database(Database&& from) :
         __database(std::move(from.__database)),
         __domain_sizes(std::move(from.__domain_sizes)),
-        __name2nodeId(std::move(from.__name2nodeId)) {
+        __nodeId2cols(std::move(from.__nodeId2cols)) {
       // create the parser
       __parser =
         new DBRowGeneratorParser<>(__database.handler(), DBRowGeneratorSet<>());
@@ -161,7 +179,7 @@ namespace gum {
         delete __parser;
         __database = from.__database;
         __domain_sizes = from.__domain_sizes;
-        __name2nodeId = from.__name2nodeId;
+        __nodeId2cols = from.__nodeId2cols;
 
         // create the parser
         __parser =
@@ -177,7 +195,7 @@ namespace gum {
         delete __parser;
         __database = std::move(from.__database);
         __domain_sizes = std::move(from.__domain_sizes);
-        __name2nodeId = std::move(from.__name2nodeId);
+        __nodeId2cols = std::move(from.__nodeId2cols);
 
         // create the parser
         __parser =
@@ -186,6 +204,14 @@ namespace gum {
 
       return *this;
     }
+    
+
+    /// returns the mapping between node ids and their columns in the database
+    const Bijection< NodeId, std::size_t >&
+    genericBNLearner::Database::nodeId2Columns() const {
+      return __nodeId2cols;
+    }
+    
 
 
     // ===========================================================================
@@ -528,7 +554,8 @@ namespace gum {
          
           __apriori = new AprioriDirichletFromDatabase2<>(
                     __score_database.databaseTable(),
-                    __apriori_database->parser());
+                    __apriori_database->parser(),
+                    __apriori_database->nodeId2Columns() );
           break;
 
         default:

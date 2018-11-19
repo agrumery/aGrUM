@@ -54,8 +54,9 @@ namespace gum {
     INLINE NodeId
            genericBNLearner::Database::idFromName(const std::string& var_name) const {
       try {
-        return __name2nodeId.second(const_cast< std::string& >(var_name));
-      } catch (gum::NotFound) {
+        const auto cols = __database.columnsFromVariableName(var_name);
+        return __nodeId2cols.first(cols[0]);
+      } catch (...) {
         GUM_ERROR(MissingVariableInDatabase, "for variable " << var_name);
       }
     }
@@ -63,7 +64,7 @@ namespace gum {
     // returns the variable name corresponding to a given node id
     INLINE const std::string&
                  genericBNLearner::Database::nameFromId(NodeId id) const {
-      return __name2nodeId.first(id);
+      return __database.variableName(__nodeId2cols.second(id));
     }
 
 

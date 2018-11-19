@@ -64,7 +64,7 @@ namespace gum {
 
       nb_vars = __database.nbVariables();
       for (std::size_t i = std::size_t(0); i < nb_vars; ++i)
-        __name2nodeId.insert(__database.variable(i).name(), i);
+        __nodeId2cols.insert(NodeId(i), i);
 
       // create the parser
       __parser =

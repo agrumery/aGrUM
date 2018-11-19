@@ -234,6 +234,9 @@ namespace gum {
         /// returns the internal database table
         const DatabaseTable<>& databaseTable() const;
 
+        /// returns the mapping between node ids and their columns in the database
+        const Bijection< NodeId, std::size_t >& nodeId2Columns() const;
+
         /// returns the set of missing symbols taken into account
         const std::vector< std::string >& missingSymbols() const;
 
@@ -249,8 +252,8 @@ namespace gum {
         /// the domain sizes of the variables (useful to speed-up computations)
         std::vector< std::size_t > __domain_sizes;
 
-        /// a hashtable assigning to each variable name its NodeId
-        Bijection< std::string, NodeId > __name2nodeId;
+        /// a bijection assigning to each variable name its NodeId
+        Bijection< NodeId, std::size_t > __nodeId2cols;
 
 /// the max number of threads authorized
 #if defined(_OPENMP) && defined(NDEBUG)
