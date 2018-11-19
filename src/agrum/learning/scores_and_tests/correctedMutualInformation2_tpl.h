@@ -359,20 +359,20 @@ namespace gum {
       double score;
       if (!vars_z.empty()) {
         std::vector< NodeId, ALLOC< NodeId > > vars(vars_z);
-        std::sort(vars.begin(), vars.end());
+        //std::sort(vars.begin(), vars.end());
         vars.push_back(var_x);
         vars.push_back(var_y);
-        const double NHxyz = __NH.score(IdSet2< ALLOC >(vars, false, false));
+        const double NHxyz = __NH.score(IdSet2< ALLOC >(vars, false, true));
 
         vars.pop_back();
-        const double NHxz = __NH.score(IdSet2< ALLOC >(vars, false, false));
+        const double NHxz = __NH.score(IdSet2< ALLOC >(vars, false, true));
 
         vars.pop_back();
         vars.push_back(var_y);
-        const double NHyz = __NH.score(IdSet2< ALLOC >(vars, false, false));
+        const double NHyz = __NH.score(IdSet2< ALLOC >(vars, false, true));
 
         vars.pop_back();
-        const double NHz = __NH.score(IdSet2< ALLOC >(vars, false, false));
+        const double NHz = __NH.score(IdSet2< ALLOC >(vars, false, true));
 
         const double NHxz_NHyz = NHxz + NHyz;
         double       NHz_NHxyz = NHz + NHxyz;
@@ -467,13 +467,13 @@ namespace gum {
           if (!node2cols.empty()) {
             rx = database.domainSize(node2cols.second(var1));
             ry = database.domainSize(node2cols.second(var2));
-            for (NodeId i : conditioning_ids) {
+            for (const NodeId i : conditioning_ids) {
               rui *= database.domainSize(node2cols.second(i));
             }
           } else {
             rx = database.domainSize(var1);
             ry = database.domainSize(var2);
-            for (NodeId i : conditioning_ids) {
+            for (const NodeId i : conditioning_ids) {
               rui *= database.domainSize(i);
             }
           }
