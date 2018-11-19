@@ -62,10 +62,6 @@ namespace gum_tests {
 
       database.reorder();
 
-      std::vector< gum::Size > modalities;
-      for (auto dom : database.domainSizes())
-        modalities.push_back(dom);
-
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
       gum::learning::AprioriNoApriori2<>    apriori(database);
@@ -77,7 +73,7 @@ namespace gum_tests {
 
       // creating complete graph
       gum::MixedGraph graph;
-      for (gum::Size i = 0; i < modalities.size(); ++i) {
+      for (gum::Size i = 0; i < database.nbVariables(); ++i) {
         graph.addNodeWithId(i);
         for (gum::Size j = 0; j < i; ++j) {
           graph.addEdge(j, i);
@@ -225,7 +221,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(latents.size(), gum::Size(3));
     }
 
-    void test_tonda() {
+    void xtest_tonda() {
       /*
       gum::learning::DatabaseFromCSV database(
         GET_RESSOURCES_PATH("DBN_Tonda.csv"));

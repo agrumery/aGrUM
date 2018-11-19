@@ -362,17 +362,17 @@ namespace gum {
         //std::sort(vars.begin(), vars.end());
         vars.push_back(var_x);
         vars.push_back(var_y);
-        const double NHxyz = __NH.score(IdSet2< ALLOC >(vars, false, true));
+        const double NHxyz = -__NH.score(IdSet2< ALLOC >(vars, false, true));
 
         vars.pop_back();
-        const double NHxz = __NH.score(IdSet2< ALLOC >(vars, false, true));
+        const double NHxz = -__NH.score(IdSet2< ALLOC >(vars, false, true));
 
         vars.pop_back();
         vars.push_back(var_y);
-        const double NHyz = __NH.score(IdSet2< ALLOC >(vars, false, true));
+        const double NHyz = -__NH.score(IdSet2< ALLOC >(vars, false, true));
 
         vars.pop_back();
-        const double NHz = __NH.score(IdSet2< ALLOC >(vars, false, true));
+        const double NHz = -__NH.score(IdSet2< ALLOC >(vars, false, true));
 
         const double NHxz_NHyz = NHxz + NHyz;
         double       NHz_NHxyz = NHz + NHxyz;
@@ -391,10 +391,10 @@ namespace gum {
 
         score = NHxz_NHyz - NHz_NHxyz;
       } else {
-        const double NHxy = __NH.score(
+        const double NHxy = -__NH.score(
           IdSet2< ALLOC >(var_x, var_y, __empty_conditioning_set, true, false));
-        const double NHx = __NH.score(var_x);
-        const double NHy = __NH.score(var_y);
+        const double NHx = -__NH.score(var_x);
+        const double NHy = -__NH.score(var_y);
 
         double NHx_NHy = NHx + NHy;
 

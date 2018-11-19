@@ -23,6 +23,8 @@
  * @author Quentin FALCAND and Pierre-Henri WUILLEMIN
  */
 
+#include <cmath>
+
 #include <agrum/core/hashTable.h>
 #include <agrum/core/heap.h>
 #include <agrum/core/timer.h>
@@ -180,46 +182,40 @@ namespace gum {
             GreaterPairOn2nd >&                               _rank) {
       // if no triples to further examine pass
       std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*, double > best;
-      if (!_rank.empty()) {
-        best = _rank.pop();
-      } else {
-        auto tup =
-          new std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >{0, 0, 0, {}};
-        best.first = tup;
-        best.second = 0;
-      }
 
       Size steps_init = _current_step;
       Size steps_iter = _rank.size();
 
-      while (best.second > 0.5) {
-        NodeId                x, y, z;
-        std::vector< NodeId > ui;
-        x = std::get< 0 >(*best.first);
-        y = std::get< 1 >(*best.first);
-        z = std::get< 2 >(*best.first);
-        ui = std::get< 3 >(*best.first);
+      try { 
+        while ( _rank.top().second > 0.5 ) {
+          best = _rank.pop ();
+          
+          const NodeId x = std::get< 0 >(*(best.first));
+          const NodeId y = std::get< 1 >(*(best.first));
+          const NodeId z = std::get< 2 >(*(best.first));
+          std::vector< NodeId > ui = std::move(std::get< 3 >(*(best.first)));
 
-        ui.push_back(z);
-        double Ixy_ui = I.score(x, y, ui);
-        if (Ixy_ui <= 0) {
-          graph.eraseEdge(Edge(x, y));
-          sep_set.insert(std::make_pair(x, y), std::move(ui));
-        } else {
-          _findBestContributor(x, y, ui, graph, I, _rank);
-        }
+          ui.push_back(z);
+          const double Ixy_ui = I.score(x, y, ui);
+          if (Ixy_ui < 0) {
+            graph.eraseEdge(Edge(x, y));
+            sep_set.insert(std::make_pair(x, y), std::move(ui));
+          } else {
+            _findBestContributor(x, y, ui, graph, I, _rank);
+          }
 
-        delete best.first;
-        best = _rank.pop();
+          delete best.first;
 
-        ++_current_step;
-        if (onProgress.hasListener()) {
-          GUM_EMIT3(onProgress,
-                    (_current_step * 66) / (steps_init + steps_iter),
-                    0.,
-                    _timer.step());
+          ++_current_step;
+          if (onProgress.hasListener()) {
+            GUM_EMIT3(onProgress,
+                      (_current_step * 66) / (steps_init + steps_iter),
+                      0.,
+                      _timer.step());
+          }
         }
       }
+      catch (...) {} // here, rank is empty
       _current_step = steps_init + steps_iter;
       if (onProgress.hasListener()) {
         GUM_EMIT3(onProgress, 66, 0., _timer.step());
@@ -758,7 +754,7 @@ namespace gum {
 
           // Computing Pnv
           const double Ixyz_ui = I.score(x, y, z, ui);
-          double       calc_expo1 = -Ixyz_ui;
+          double       calc_expo1 = -Ixyz_ui * M_LN2;
           // if exponentials are too high or to low, crop them at |__maxLog|
           if (calc_expo1 > __maxLog) {
             Pnv = 0.0;
@@ -772,8 +768,8 @@ namespace gum {
           const double Ixz_ui = I.score(x, z, ui);
           const double Iyz_ui = I.score(y, z, ui);
 
-          calc_expo1 = -(Ixz_ui - Ixy_ui);
-          double calc_expo2 = -(Iyz_ui - Ixy_ui);
+          calc_expo1 = -(Ixz_ui - Ixy_ui) * M_LN2;
+          double calc_expo2 = -(Iyz_ui - Ixy_ui) * M_LN2;
 
           // if exponentials are too high or to low, crop them at __maxLog
           if (calc_expo1 > __maxLog || calc_expo2 > __maxLog) {
@@ -796,8 +792,9 @@ namespace gum {
           }
 
           // Getting max(min(Pnv, pb))
-          if (std::min(Pnv, Pb) > maxP) {
-            maxP = std::min(Pnv, Pb);
+          const double min_pnv_pb = std::min(Pnv, Pb);
+          if (min_pnv_pb > maxP) {
+            maxP = min_pnv_pb;
             maxZ = z;
           }
         }   // if z not in (x, y)

@@ -39,11 +39,11 @@ namespace gum_tests {
       double sum = 0.0;
       for ( auto nb : vect ) {
         if (nb) {
-          res += nb * std::log2(nb);
+          res -= nb * std::log2(nb);
           sum += nb;
         }
       }
-      res -= sum * std::log2(sum);
+      res += sum * std::log2(sum);
       return res;
     }
     
