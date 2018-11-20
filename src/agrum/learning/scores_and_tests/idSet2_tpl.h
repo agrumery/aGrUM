@@ -567,6 +567,13 @@ namespace gum {
     }
 
 
+    /// returns the number of right hand side ids
+    template < template < typename > class ALLOC >
+    INLINE std::size_t IdSet2< ALLOC >::nbRHSIds() const {
+      return __ids.size() - __nb_lhs_ids;
+    }
+
+
     /// indicates whether the IdSet contains the IdSet passed in argument
     template < template < typename > class ALLOC >
     bool IdSet2< ALLOC >::contains(const IdSet2< ALLOC >& set) const {

@@ -256,6 +256,69 @@ namespace gum {
     }
 
 
+
+    /// returns a counting vector where variables are marginalized from N_xyz
+    /** @param node_2_marginalize indicates which node(s) shall be marginalized:
+     * - 0 means that X should be marginalized
+     * - 1 means that Y should be marginalized
+     * - 2 means that Z should be marginalized
+     */
+    template < template < typename > class ALLOC >
+    std::vector< double, ALLOC< double > >
+    IndependenceTest2< ALLOC >::_marginalize (
+      const std::size_t node_2_marginalize,
+      const std::size_t X_size,
+      const std::size_t Y_size,
+      const std::size_t Z_size,
+      const std::vector< double, ALLOC< double > >& N_xyz) const {
+      // determine the size of the output vector
+      std::size_t out_size = Z_size; 
+      if (node_2_marginalize == std::size_t(0))
+        out_size *= Y_size;
+      else if (node_2_marginalize == std::size_t(1))
+        out_size *= X_size;
+
+      // allocate the output vector
+      std::vector< double, ALLOC< double > > res(out_size, 0.0);
+      
+      // fill the vector:
+      if (node_2_marginalize == std::size_t(0)) { // marginalize X
+        for ( std::size_t yz = std::size_t(0), xyz = std::size_t(0);
+              yz < out_size; ++yz) { 
+          for ( std::size_t x = std::size_t(0); x < X_size; ++x, ++xyz) {
+            res[yz] += N_xyz[xyz];
+          }
+        }
+      }
+      else if (node_2_marginalize == std::size_t(1)) { // marginalize Y
+        for (std::size_t z = std::size_t(0), xyz = std::size_t(0),
+               beg_xz = std::size_t(0); z < Z_size; ++z, beg_xz += X_size ) {
+          for (std::size_t y = std::size_t(0); y < Y_size; ++y) {
+            for (std::size_t x = std::size_t(0), xz = beg_xz; x < X_size;
+                 ++x, ++xz, ++xyz) {
+              res[xz] += N_xyz[xyz];
+            }
+          }
+        }
+      }
+      else if (node_2_marginalize == std::size_t(2)) { // marginalize X and Y
+        const std::size_t XY_size = X_size * Y_size;
+        for ( std::size_t z = std::size_t(0), xyz = std::size_t(0);
+              z < out_size; ++z) { 
+          for ( std::size_t xy = std::size_t(0); xy < XY_size; ++xy, ++xyz) {
+            res[z] += N_xyz[xyz];
+          }
+        }
+      }
+      else {
+        GUM_ERROR (NotImplementedYet,
+                   "_marginalize not implemented for nodeset "
+                   << node_2_marginalize);
+      }
+ 
+      return res;
+    }
+
   } /* namespace learning */
 
 } /* namespace gum */

@@ -359,6 +359,9 @@ namespace gum {
       /// returns the number of left hand side ids
       std::size_t nbLHSIds() const;
 
+      /// returns the number of right hand side ids
+      std::size_t nbRHSIds() const;
+
       /// indicates whether the IdSet contains the IdSet passed in argument
       bool contains(const IdSet2< ALLOC >& set) const;
 

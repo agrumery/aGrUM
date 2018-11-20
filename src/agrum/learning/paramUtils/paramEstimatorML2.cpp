@@ -25,4 +25,4 @@
  * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  */
 
-#include <agrum/learning/paramUtils/paramEstimatorML.h>
+#include <agrum/learning/paramUtils/paramEstimatorML2.h>
