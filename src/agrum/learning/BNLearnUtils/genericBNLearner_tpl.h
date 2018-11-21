@@ -100,7 +100,7 @@ namespace gum {
       const gum::BayesNet< GUM_SCALAR >& bn,
       const std::vector< std::string >&  missing_symbols) :
         __score_database(filename, bn, missing_symbols) {
-      __no_apriori = new AprioriNoApriori2<> (__score_database.databaseTable());
+      __no_apriori = new AprioriNoApriori<> (__score_database.databaseTable());
       GUM_CONSTRUCTOR(genericBNLearner);
     }
 

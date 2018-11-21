@@ -39,16 +39,16 @@ namespace gum {
   namespace learning {
 
 
-    /** @class ScorefNML2
+    /** @class ScorefNML
      * @brief the class for computing fNML scores
-     * @headerfile scorefNML2.h <agrum/learning/scores_and_tests/scorefNML2.h>
+     * @headerfile scorefNML.h <agrum/learning/scores_and_tests/scorefNML.h>
      * @ingroup learning_scores
      *
      * @warning If you pass an apriori to the score, this one will be added
      * into the log-likelihood part of the score.
      */
     template < template < typename > class ALLOC = std::allocator >
-    class ScorefNML2 : public Score2< ALLOC > {
+    class ScorefNML : public Score< ALLOC > {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;
@@ -79,9 +79,9 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      ScorefNML2(
+      ScorefNML(
         const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori2< ALLOC >&             apriori,
+        const Apriori< ALLOC >&             apriori,
         const std::vector< std::pair< std::size_t, std::size_t >,
                            ALLOC< std::pair< std::size_t, std::size_t > > >&
           ranges,
@@ -106,33 +106,33 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      ScorefNML2(const DBRowGeneratorParser< ALLOC >& parser,
-                 const Apriori2< ALLOC >&             apriori,
+      ScorefNML(const DBRowGeneratorParser< ALLOC >& parser,
+                 const Apriori< ALLOC >&             apriori,
                  const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
                    nodeId2columns =
                      Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
                  const allocator_type& alloc = allocator_type());
 
       /// copy constructor
-      ScorefNML2(const ScorefNML2< ALLOC >& from);
+      ScorefNML(const ScorefNML< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      ScorefNML2(const ScorefNML2< ALLOC >& from, const allocator_type& alloc);
+      ScorefNML(const ScorefNML< ALLOC >& from, const allocator_type& alloc);
 
       /// move constructor
-      ScorefNML2(ScorefNML2< ALLOC >&& from);
+      ScorefNML(ScorefNML< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      ScorefNML2(ScorefNML2< ALLOC >&& from, const allocator_type& alloc);
+      ScorefNML(ScorefNML< ALLOC >&& from, const allocator_type& alloc);
 
       /// virtual copy constructor
-      virtual ScorefNML2< ALLOC >* clone() const;
+      virtual ScorefNML< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual ScorefNML2< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual ScorefNML< ALLOC >* clone(const allocator_type& alloc) const;
 
       /// destructor
-      virtual ~ScorefNML2();
+      virtual ~ScorefNML();
 
       /// @}
 
@@ -144,10 +144,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      ScorefNML2< ALLOC >& operator=(const ScorefNML2< ALLOC >& from);
+      ScorefNML< ALLOC >& operator=(const ScorefNML< ALLOC >& from);
 
       /// move operator
-      ScorefNML2< ALLOC >& operator=(ScorefNML2< ALLOC >&& from);
+      ScorefNML< ALLOC >& operator=(ScorefNML< ALLOC >&& from);
 
       /// @}
 
@@ -180,7 +180,7 @@ namespace gum {
        * note that, to be meaningful, a structure + parameter learning requires
        * that the same aprioris are taken into account during structure learning
        * and parameter learning. */
-      virtual const Apriori2< ALLOC >& internalApriori() const final;
+      virtual const Apriori< ALLOC >& internalApriori() const final;
 
       /// @}
 
@@ -193,7 +193,7 @@ namespace gum {
 
       /// indicates whether the apriori is compatible (meaningful) with the score
       /** a non empty string if the apriori is compatible with the score. */
-      static std::string isAprioriCompatible(const Apriori2< ALLOC >& apriori);
+      static std::string isAprioriCompatible(const Apriori< ALLOC >& apriori);
 
 
       protected:
@@ -201,12 +201,12 @@ namespace gum {
       /** @throws OperationNotAllowed is raised if the score does not support
        * calling method score such an idset (due to too many/too few variables
        * in the left hand side or the right hand side of the idset). */
-      virtual double _score(const IdSet2< ALLOC >& idset) final;
+      virtual double _score(const IdSet< ALLOC >& idset) final;
 
 
       private:
       /// the internal apriori of the score
-      AprioriNoApriori2< ALLOC > __internal_apriori;
+      AprioriNoApriori< ALLOC > __internal_apriori;
 
       /// the CTable cache
       VariableLog2ParamComplexity< ALLOC > __ctable;
@@ -219,7 +219,7 @@ namespace gum {
 } /* namespace gum */
 
 
-extern template class gum::learning::ScorefNML2<>;
+extern template class gum::learning::ScorefNML<>;
 
 
 // always include the template implementation

@@ -40,13 +40,13 @@ namespace gum {
 
   namespace learning {
 
-    /** @class IndependenceTest2
+    /** @class IndependenceTest
      * @brief The base class for all the independence tests used for learning
-     * @headerfile independenceTest2.h <agrum/learning/scores_and_tests/independenceTest2.h>
+     * @headerfile independenceTest.h <agrum/learning/scores_and_tests/independenceTest.h>
      * @ingroup learning_scores
      */
     template < template < typename > class ALLOC = std::allocator >
-    class IndependenceTest2 {
+    class IndependenceTest {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;
@@ -79,9 +79,9 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      IndependenceTest2(
+      IndependenceTest(
         const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori2< ALLOC >&             external_apriori,
+        const Apriori< ALLOC >&             external_apriori,
         const std::vector< std::pair< std::size_t, std::size_t >,
                            ALLOC< std::pair< std::size_t, std::size_t > > >&
           ranges,
@@ -108,23 +108,23 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      IndependenceTest2(
+      IndependenceTest(
         const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori2< ALLOC >&             external_apriori,
+        const Apriori< ALLOC >&             external_apriori,
         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
           nodeId2columns =
             Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
         const allocator_type& alloc = allocator_type());
 
       /// virtual copy constructor
-      virtual IndependenceTest2< ALLOC >* clone() const = 0;
+      virtual IndependenceTest< ALLOC >* clone() const = 0;
 
       /// virtual copy constructor with a given allocator
-      virtual IndependenceTest2< ALLOC >*
+      virtual IndependenceTest< ALLOC >*
         clone(const allocator_type& alloc) const = 0;
 
       /// destructor
-      virtual ~IndependenceTest2();
+      virtual ~IndependenceTest();
 
       /// @}
 
@@ -182,10 +182,10 @@ namespace gum {
       const double _1log2{M_LOG2E};
 
       /// the expert knowledge a priori we add to the contongency tables
-      Apriori2< ALLOC >* _apriori{nullptr};
+      Apriori< ALLOC >* _apriori{nullptr};
 
       /// the record counter used for the countings over discrete variables
-      RecordCounter2< ALLOC > _counter;
+      RecordCounter< ALLOC > _counter;
 
       /// the scoring cache
       ScoringCache< ALLOC > _cache;
@@ -206,31 +206,31 @@ namespace gum {
 
 
       /// copy constructor
-      IndependenceTest2(const IndependenceTest2< ALLOC >& from);
+      IndependenceTest(const IndependenceTest< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      IndependenceTest2(const IndependenceTest2< ALLOC >& from,
+      IndependenceTest(const IndependenceTest< ALLOC >& from,
                         const allocator_type&             alloc);
 
       /// move constructor
-      IndependenceTest2(IndependenceTest2< ALLOC >&& from);
+      IndependenceTest(IndependenceTest< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      IndependenceTest2(IndependenceTest2< ALLOC >&& from,
+      IndependenceTest(IndependenceTest< ALLOC >&& from,
                         const allocator_type&        alloc);
 
       /// copy operator
-      IndependenceTest2< ALLOC >&
-        operator=(const IndependenceTest2< ALLOC >& from);
+      IndependenceTest< ALLOC >&
+        operator=(const IndependenceTest< ALLOC >& from);
 
       /// move operator
-      IndependenceTest2< ALLOC >& operator=(IndependenceTest2< ALLOC >&& from);
+      IndependenceTest< ALLOC >& operator=(IndependenceTest< ALLOC >&& from);
 
       /// returns the score for a given IdSet
       /** @throws OperationNotAllowed is raised if the score does not support
        * calling method score such an idset (due to too many/too few variables
        * in the left hand side or the right hand side of the idset). */
-      virtual double _score(const IdSet2< ALLOC >& idset) = 0;
+      virtual double _score(const IdSet< ALLOC >& idset) = 0;
 
       /// returns a counting vector where variables are marginalized from N_xyz
       /** @param node_2_marginalize indicates which node(s) shall be marginalized:
@@ -255,7 +255,7 @@ namespace gum {
 } /* namespace gum */
 
 
-extern template class gum::learning::IndependenceTest2<>;
+extern template class gum::learning::IndependenceTest<>;
 
 
 /// include the template implementation

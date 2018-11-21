@@ -102,7 +102,7 @@ namespace gum {
     }
 
     /// learns the structure of a MixedGraph
-    MixedGraph Miic::learnMixedStructure(CorrectedMutualInformation2<>& I,
+    MixedGraph Miic::learnMixedStructure(CorrectedMutualInformation<>& I,
                                          MixedGraph                     graph) {
       _timer.reset();
       _current_step = 0;
@@ -139,7 +139,7 @@ namespace gum {
      * the edge is deleted. If not, the best contributor is found.
      */
     void Miic::_initiation(
-      CorrectedMutualInformation2<>&                          I,
+      CorrectedMutualInformation<>&                          I,
       MixedGraph&                                             graph,
       HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set,
       Heap< std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*, double >,
@@ -175,7 +175,7 @@ namespace gum {
      * we can assess the independence of the variables.
      */
     void Miic::_iteration(
-      CorrectedMutualInformation2<>&                          I,
+      CorrectedMutualInformation<>&                          I,
       MixedGraph&                                             graph,
       HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set,
       Heap< std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*, double >,
@@ -229,7 +229,7 @@ namespace gum {
      * Try to assess v-structures and propagate them.
      */
     void Miic::_orientation_3off2(
-      CorrectedMutualInformation2<>&                                I,
+      CorrectedMutualInformation<>&                                I,
       MixedGraph&                                                   graph,
       const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set) {
       std::vector< std::pair< std::tuple< NodeId, NodeId, NodeId >*, double > > triples =
@@ -411,7 +411,7 @@ namespace gum {
 
     /// varient trying to propagate both orientations in a bidirected arc
     void Miic::_orientation_latents(
-      CorrectedMutualInformation2<>&                                I,
+      CorrectedMutualInformation<>&                                I,
       MixedGraph&                                                   graph,
       const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set) {
       std::vector< std::pair< std::tuple< NodeId, NodeId, NodeId >*, double > > triples =
@@ -556,7 +556,7 @@ namespace gum {
 
     /// varient using the orientation protocol of MIIC
     void Miic::_orientation_miic(
-      CorrectedMutualInformation2<>&                                I,
+      CorrectedMutualInformation<>&                                I,
       MixedGraph&                                                   graph,
       const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set) {
       // structure to store the orientations marks -, o, or >,
@@ -736,7 +736,7 @@ namespace gum {
       NodeId                           y,
       const std::vector< NodeId >&     ui,
       const MixedGraph&             graph,
-      CorrectedMutualInformation2<>& I,
+      CorrectedMutualInformation<>& I,
       Heap< std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*, double >,
             GreaterPairOn2nd >&     _rank) {
       double maxP = -1.0;
@@ -813,7 +813,7 @@ namespace gum {
     std::vector< std::pair< std::tuple< NodeId, NodeId, NodeId >*, double > >
       Miic::_getUnshieldedTriples(
         const MixedGraph&                                             graph,
-        CorrectedMutualInformation2<>&                                I,
+        CorrectedMutualInformation<>&                                I,
         const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set) {
       std::vector< std::pair< std::tuple< NodeId, NodeId, NodeId >*, double > > triples;
       for (NodeId z : graph) {
@@ -852,7 +852,7 @@ namespace gum {
       std::tuple< std::tuple< NodeId, NodeId, NodeId >*, double, double, double > >
       Miic::_getUnshieldedTriplesMIIC(
         const MixedGraph&                                             graph,
-        CorrectedMutualInformation2<>&                                I,
+        CorrectedMutualInformation<>&                                I,
         const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set,
         HashTable< std::pair< NodeId, NodeId >, char >&                     marks) {
       std::vector<
@@ -938,7 +938,7 @@ namespace gum {
 
     /// learns the structure of an Bayesian network, ie a DAG, from an Essential
     /// graph.
-    DAG Miic::learnStructure(CorrectedMutualInformation2<>& I,
+    DAG Miic::learnStructure(CorrectedMutualInformation<>& I,
                              MixedGraph                     initialGraph) {
       MixedGraph essentialGraph = learnMixedStructure(I, initialGraph);
 
@@ -1011,7 +1011,7 @@ namespace gum {
     BayesNet< GUM_SCALAR > Miic::learnBN(GRAPH_CHANGES_SELECTOR& selector,
                                          PARAM_ESTIMATOR&        estimator,
                                          DAG                     initial_dag) {
-      return DAG2BNLearner2<>::createBN< GUM_SCALAR >(
+      return DAG2BNLearner<>::createBN< GUM_SCALAR >(
           estimator, learnStructure(selector, initial_dag));
     }
 

@@ -34,13 +34,13 @@ namespace gum {
 
   namespace learning {
 
-    /** @class AprioriNoApriori2
+    /** @class AprioriNoApriori
      * @brief the no a priori class: corresponds to 0 weight-sample
-     * @headerfile aprioriNoApriori2.h <agrum/learning/database/aprioriNoApriori2.h>
+     * @headerfile aprioriNoApriori.h <agrum/learning/database/aprioriNoApriori.h>
      * @ingroup learning_apriori
      */
     template < template < typename > class ALLOC = std::allocator >
-    class AprioriNoApriori2 : public Apriori2< ALLOC > {
+    class AprioriNoApriori : public Apriori< ALLOC > {
       public:
       /// the type of the a priori
       using type = AprioriNoAprioriType;
@@ -66,7 +66,7 @@ namespace gum {
        * the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
        * RecordCounter.*/
-      AprioriNoApriori2(
+      AprioriNoApriori(
         const DatabaseTable< ALLOC >& database,
         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
           nodeId2columns =
@@ -74,27 +74,27 @@ namespace gum {
         const allocator_type& alloc = allocator_type());
 
       /// copy constructor
-      AprioriNoApriori2(const AprioriNoApriori2< ALLOC >& from);
+      AprioriNoApriori(const AprioriNoApriori< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      AprioriNoApriori2(const AprioriNoApriori2< ALLOC >& from,
+      AprioriNoApriori(const AprioriNoApriori< ALLOC >& from,
                         const allocator_type&             alloc);
 
       /// move constructor
-      AprioriNoApriori2(AprioriNoApriori2< ALLOC >&& from);
+      AprioriNoApriori(AprioriNoApriori< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      AprioriNoApriori2(AprioriNoApriori2< ALLOC >&& from,
+      AprioriNoApriori(AprioriNoApriori< ALLOC >&& from,
                         const allocator_type&        alloc);
 
       /// virtual copy constructor
-      virtual AprioriNoApriori2< ALLOC >* clone() const;
+      virtual AprioriNoApriori< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual AprioriNoApriori2< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual AprioriNoApriori< ALLOC >* clone(const allocator_type& alloc) const;
 
       /// destructor
-      virtual ~AprioriNoApriori2();
+      virtual ~AprioriNoApriori();
 
       /// @}
 
@@ -105,11 +105,11 @@ namespace gum {
       /// @{
 
       /// copy operator
-      AprioriNoApriori2< ALLOC >&
-        operator=(const AprioriNoApriori2< ALLOC >& from);
+      AprioriNoApriori< ALLOC >&
+        operator=(const AprioriNoApriori< ALLOC >& from);
 
       /// move operator
-      AprioriNoApriori2< ALLOC >& operator=(AprioriNoApriori2< ALLOC >&& from);
+      AprioriNoApriori< ALLOC >& operator=(AprioriNoApriori< ALLOC >&& from);
 
       /// @}
 
@@ -145,7 +145,7 @@ namespace gum {
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint variables set. */
       virtual void
-        addAllApriori(const IdSet2< ALLOC >&                  idset,
+        addAllApriori(const IdSet< ALLOC >&                  idset,
                       std::vector< double, ALLOC< double > >& counts) final;
 
       /** @brief adds the apriori to a counting vectordefined over the right
@@ -154,7 +154,7 @@ namespace gum {
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint RHS variables of the idset. */
       virtual void addConditioningApriori(
-        const IdSet2< ALLOC >&                  idset,
+        const IdSet< ALLOC >&                  idset,
         std::vector< double, ALLOC< double > >& counts) final;
 
       /// @}

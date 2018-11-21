@@ -101,8 +101,8 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriSmoothing2<>    apriori(database);
-      gum::learning::ScoreK22<>             score(parser, apriori);
+      gum::learning::AprioriSmoothing<>    apriori(database);
+      gum::learning::ScoreK2<>             score(parser, apriori);
 
       gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG,
@@ -126,13 +126,13 @@ namespace gum_tests {
       static_cast< gum::learning::StructuralConstraintIndegree& >(
         struct_constraint) = constraint1;
 
-      gum::learning::ParamEstimatorML2<> estimator(
+      gum::learning::ParamEstimatorML<> estimator(
         parser, apriori, score.internalApriori());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
         op_set(struct_constraint);
 
-      gum::learning::GraphChangesSelector4DiGraph2< decltype(struct_constraint),
+      gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint),
                                                     decltype(op_set) >
         selector(score, struct_constraint, op_set);
 
@@ -175,8 +175,8 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriSmoothing2<>    apriori(database);
-      gum::learning::ScoreK22<>             score(parser, apriori);
+      gum::learning::AprioriSmoothing<>    apriori(database);
+      gum::learning::ScoreK2<>             score(parser, apriori);
 
       gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG,
@@ -200,13 +200,13 @@ namespace gum_tests {
       static_cast< gum::learning::StructuralConstraintIndegree& >(
         struct_constraint) = constraint1;
 
-      gum::learning::ParamEstimatorML2<> estimator(
+      gum::learning::ParamEstimatorML<> estimator(
         parser, apriori, score.internalApriori());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
         op_set(struct_constraint);
 
-      gum::learning::GraphChangesSelector4DiGraph2< decltype(struct_constraint),
+      gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint),
                                                     decltype(op_set) >
         selector(score, struct_constraint, op_set);
 
@@ -252,8 +252,8 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriSmoothing2<>    apriori(database);
-      gum::learning::ScoreK22<>             score(parser, apriori);
+      gum::learning::AprioriSmoothing<>    apriori(database);
+      gum::learning::ScoreK2<>             score(parser, apriori);
       //score.setMaxNbThreads(24);
 
       gum::learning::StructuralConstraintSetStatic<
@@ -278,13 +278,13 @@ namespace gum_tests {
       static_cast< gum::learning::StructuralConstraintIndegree& >(
         struct_constraint) = constraint1;
 
-      gum::learning::ParamEstimatorML2<> estimator(
+      gum::learning::ParamEstimatorML<> estimator(
         parser, apriori, score.internalApriori());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
         op_set(struct_constraint);
 
-      gum::learning::GraphChangesSelector4DiGraph2< decltype(struct_constraint),
+      gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint),
                                                     decltype(op_set) >
         selector(score, struct_constraint, op_set);
 
@@ -333,8 +333,8 @@ namespace gum_tests {
       
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriSmoothing2<>    apriori(database);
-      gum::learning::ScoreK22<>             score(parser, apriori);
+      gum::learning::AprioriSmoothing<>    apriori(database);
+      gum::learning::ScoreK2<>             score(parser, apriori);
 
       gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG,
@@ -358,13 +358,13 @@ namespace gum_tests {
       static_cast< gum::learning::StructuralConstraintIndegree& >(
         struct_constraint) = constraint1;
 
-      gum::learning::ParamEstimatorML2<> estimator(
+      gum::learning::ParamEstimatorML<> estimator(
         parser, apriori, score.internalApriori());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
         op_set(struct_constraint);
 
-      gum::learning::GraphChangesSelector4DiGraph2< decltype(struct_constraint),
+      gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint),
                                                     decltype(op_set) >
         selector(score, struct_constraint, op_set);
 

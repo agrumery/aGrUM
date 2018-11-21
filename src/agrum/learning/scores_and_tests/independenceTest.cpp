@@ -19,11 +19,11 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Implementation of gum::learning::IndependenceTest2
+ * @brief Implementation of gum::learning::IndependenceTest
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
 #include <agrum/learning/scores_and_tests/independenceTest.h>
 
-template class gum::learning::IndependenceTest2<>;
+template class gum::learning::IndependenceTest<>;

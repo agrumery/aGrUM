@@ -130,7 +130,7 @@ namespace gum {
 
     /// insert a new score into the cache
     template < template < typename > class ALLOC >
-    INLINE void ScoringCache< ALLOC >::insert(const IdSet2< ALLOC >& idset,
+    INLINE void ScoringCache< ALLOC >::insert(const IdSet< ALLOC >& idset,
                                               double                 score) {
       __scores.insert(idset, score);
     }
@@ -138,7 +138,7 @@ namespace gum {
 
     /// insert a new score into the cache
     template < template < typename > class ALLOC >
-    INLINE void ScoringCache< ALLOC >::insert(IdSet2< ALLOC >&& idset,
+    INLINE void ScoringCache< ALLOC >::insert(IdSet< ALLOC >&& idset,
                                               double            score) {
       __scores.insert(std::move(idset), std::move(score));
     }
@@ -146,21 +146,21 @@ namespace gum {
 
     /// removes a score (if it exists)
     template < template < typename > class ALLOC >
-    INLINE void ScoringCache< ALLOC >::erase(const IdSet2< ALLOC >& idset) {
+    INLINE void ScoringCache< ALLOC >::erase(const IdSet< ALLOC >& idset) {
       __scores.erase(idset);
     }
 
 
     /// indicates whether a given score exists
     template < template < typename > class ALLOC >
-    INLINE bool ScoringCache< ALLOC >::exists(const IdSet2< ALLOC >& idset) {
+    INLINE bool ScoringCache< ALLOC >::exists(const IdSet< ALLOC >& idset) {
       return __scores.exists(idset);
     }
 
 
     /// returns a given score
     template < template < typename > class ALLOC >
-    INLINE double ScoringCache< ALLOC >::score(const IdSet2< ALLOC >& idset) {
+    INLINE double ScoringCache< ALLOC >::score(const IdSet< ALLOC >& idset) {
       return __scores[idset];
     }
 

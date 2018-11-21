@@ -157,7 +157,7 @@ namespace gum {
       if (__selected_algo != AlgoType::MIIC_THREE_OFF_TWO) {
         GUM_ERROR(OperationNotAllowed, "Must be using the 3off2 algorithm");
       }
-      __mutual_info = new CorrectedMutualInformation2<>(
+      __mutual_info = new CorrectedMutualInformation<>(
         __score_database.parser(), *__no_apriori);
       __mutual_info->useNML();
     }
@@ -166,7 +166,7 @@ namespace gum {
       if (__selected_algo != AlgoType::MIIC_THREE_OFF_TWO) {
         GUM_ERROR(OperationNotAllowed, "Must be using the 3off2 algorithm");
       }
-      __mutual_info = new CorrectedMutualInformation2<>(
+      __mutual_info = new CorrectedMutualInformation<>(
         __score_database.parser(), *__no_apriori);
       __mutual_info->useMDL();
     }
@@ -175,7 +175,7 @@ namespace gum {
       if (__selected_algo != AlgoType::MIIC_THREE_OFF_TWO) {
         GUM_ERROR(OperationNotAllowed, "Must be using the 3off2 algorithm");
       }
-      __mutual_info = new CorrectedMutualInformation2<>(
+      __mutual_info = new CorrectedMutualInformation<>(
         __score_database.parser(), *__no_apriori);
       __mutual_info->useNoCorr();
     }
@@ -348,12 +348,12 @@ namespace gum {
     // returns the type (as a string) of a given apriori
     INLINE const std::string& genericBNLearner::__getAprioriType() const {
       switch (__apriori_type) {
-        case AprioriType::NO_APRIORI: return AprioriNoApriori2<>::type::type;
+        case AprioriType::NO_APRIORI: return AprioriNoApriori<>::type::type;
 
-        case AprioriType::SMOOTHING: return AprioriSmoothing2<>::type::type;
+        case AprioriType::SMOOTHING: return AprioriSmoothing<>::type::type;
 
         case AprioriType::DIRICHLET_FROM_DATABASE:
-          return AprioriDirichletFromDatabase2<>::type::type;
+          return AprioriDirichletFromDatabase<>::type::type;
 
         default:
           GUM_ERROR(OperationNotAllowed,

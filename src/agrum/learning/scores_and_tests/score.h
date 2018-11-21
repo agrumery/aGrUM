@@ -40,13 +40,13 @@ namespace gum {
 
   namespace learning {
 
-    /** @class Score2
+    /** @class Score
      * @brief The base class for all the scores used for learning (BIC, BDeu, etc)
-     * @headerfile score2.h <agrum/learning/scores_and_tests/score2.h>
+     * @headerfile score.h <agrum/learning/scores_and_tests/score.h>
      * @ingroup learning_scores
      */
     template < template < typename > class ALLOC = std::allocator >
-    class Score2 {
+    class Score {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;
@@ -78,8 +78,8 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      Score2(const DBRowGeneratorParser< ALLOC >& parser,
-             const Apriori2< ALLOC >&             external_apriori,
+      Score(const DBRowGeneratorParser< ALLOC >& parser,
+             const Apriori< ALLOC >&             external_apriori,
              const std::vector< std::pair< std::size_t, std::size_t >,
                                 ALLOC< std::pair< std::size_t, std::size_t > > >&
                ranges,
@@ -105,21 +105,21 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      Score2(const DBRowGeneratorParser< ALLOC >& parser,
-             const Apriori2< ALLOC >&             external_apriori,
+      Score(const DBRowGeneratorParser< ALLOC >& parser,
+             const Apriori< ALLOC >&             external_apriori,
              const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
                nodeId2columns =
                  Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
              const allocator_type& alloc = allocator_type());
 
       /// virtual copy constructor
-      virtual Score2< ALLOC >* clone() const = 0;
+      virtual Score< ALLOC >* clone() const = 0;
 
       /// virtual copy constructor with a given allocator
-      virtual Score2< ALLOC >* clone(const allocator_type& alloc) const = 0;
+      virtual Score< ALLOC >* clone(const allocator_type& alloc) const = 0;
 
       /// destructor
-      virtual ~Score2();
+      virtual ~Score();
 
       /// @}
 
@@ -202,7 +202,7 @@ namespace gum {
        * note that, to be meaningful, a structure + parameter learning requires
        * that the same aprioris are taken into account during structure learning
        * and parameter learning. */
-      virtual const Apriori2< ALLOC >& internalApriori() const = 0;
+      virtual const Apriori< ALLOC >& internalApriori() const = 0;
 
       /// returns the allocator used by the score
       allocator_type getAllocator() const;
@@ -215,10 +215,10 @@ namespace gum {
       const double _1log2{M_LOG2E};
 
       /// the expert knowledge a priori we add to the score
-      Apriori2< ALLOC >* _apriori{nullptr};
+      Apriori< ALLOC >* _apriori{nullptr};
 
       /// the record counter used for the countings over discrete variables
-      RecordCounter2< ALLOC > _counter;
+      RecordCounter< ALLOC > _counter;
 
       /// the scoring cache
       ScoringCache< ALLOC > _cache;
@@ -239,28 +239,28 @@ namespace gum {
 
 
       /// copy constructor
-      Score2(const Score2< ALLOC >& from);
+      Score(const Score< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      Score2(const Score2< ALLOC >& from, const allocator_type& alloc);
+      Score(const Score< ALLOC >& from, const allocator_type& alloc);
 
       /// move constructor
-      Score2(Score2< ALLOC >&& from);
+      Score(Score< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      Score2(Score2< ALLOC >&& from, const allocator_type& alloc);
+      Score(Score< ALLOC >&& from, const allocator_type& alloc);
 
       /// copy operator
-      Score2< ALLOC >& operator=(const Score2< ALLOC >& from);
+      Score< ALLOC >& operator=(const Score< ALLOC >& from);
 
       /// move operator
-      Score2< ALLOC >& operator=(Score2< ALLOC >&& from);
+      Score< ALLOC >& operator=(Score< ALLOC >&& from);
 
       /// returns the score for a given IdSet
       /** @throws OperationNotAllowed is raised if the score does not support
        * calling method score such an idset (due to too many/too few variables
        * in the left hand side or the right hand side of the idset). */
-      virtual double _score(const IdSet2< ALLOC >& idset) = 0;
+      virtual double _score(const IdSet< ALLOC >& idset) = 0;
     };
 
   } /* namespace learning */
@@ -268,7 +268,7 @@ namespace gum {
 } /* namespace gum */
 
 
-extern template class gum::learning::Score2<>;
+extern template class gum::learning::Score<>;
 
 
 /// include the template implementation

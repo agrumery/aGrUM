@@ -35,7 +35,7 @@
 
 namespace gum_tests {
 
-  class GraphChangesSelector4DiGraph2TestSuite : public CxxTest::TestSuite {
+  class GraphChangesSelector4DiGraphTestSuite : public CxxTest::TestSuite {
     private:
     void __order_nodes(
       const std::vector< std::vector< double > >&      all_scores,
@@ -55,7 +55,7 @@ namespace gum_tests {
                 });
     }
 
-    void __compute_scores(gum::learning::ScoreK22<>&            score,
+    void __compute_scores(gum::learning::ScoreK2<>&            score,
                           const gum::DAG&                       graph,
                           std::vector< std::vector< double > >& all_scores,
                           std::vector< gum::NodeId >&           best_nodes,
@@ -150,8 +150,8 @@ namespace gum_tests {
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
 
-      gum::learning::AprioriSmoothing2<> apriori(database);
-      gum::learning::ScoreK22<>          score(parser, apriori);
+      gum::learning::AprioriSmoothing<> apriori(database);
+      gum::learning::ScoreK2<>          score(parser, apriori);
 
       gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDiGraph >
@@ -160,7 +160,7 @@ namespace gum_tests {
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
         op_set(struct_constraint);
 
-      gum::learning::GraphChangesSelector4DiGraph2< decltype(struct_constraint),
+      gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint),
                                                     decltype(op_set) >
         selector(score, struct_constraint, op_set);
 

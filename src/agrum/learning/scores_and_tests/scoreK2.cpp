@@ -19,11 +19,11 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Implementation of gum::learning::ScoreK22.
+ * @brief Implementation of gum::learning::ScoreK2.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
 #include <agrum/learning/scores_and_tests/scoreK2.h>
 
-template class gum::learning::ScoreK22<>;
+template class gum::learning::ScoreK2<>;

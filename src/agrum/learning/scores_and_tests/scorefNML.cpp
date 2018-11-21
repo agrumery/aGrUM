@@ -26,4 +26,4 @@
 
 #include <agrum/learning/scores_and_tests/scorefNML.h>
 
-template class gum::learning::ScorefNML2<>;
+template class gum::learning::ScorefNML<>;

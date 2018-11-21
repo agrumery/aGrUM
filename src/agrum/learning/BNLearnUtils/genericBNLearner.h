@@ -531,24 +531,24 @@ namespace gum {
       ScoreType __score_type{ScoreType::BDeu};
 
       /// the score used
-      Score2<>* __score{nullptr};
+      Score<>* __score{nullptr};
 
       /// the type of the parameter estimator
       ParamEstimatorType __param_estimator_type{ParamEstimatorType::ML};
 
       /// the parameter estimator to use
-      ParamEstimator2<>* __param_estimator{nullptr};
+      ParamEstimator<>* __param_estimator{nullptr};
 
       /// the selected correction for 3off2 and miic
-      CorrectedMutualInformation2<>* __mutual_info{nullptr};
+      CorrectedMutualInformation<>* __mutual_info{nullptr};
 
       /// the a priori selected for the score and parameters
       AprioriType __apriori_type{AprioriType::NO_APRIORI};
 
       /// the apriori used
-      Apriori2<>* __apriori{nullptr};
+      Apriori<>* __apriori{nullptr};
 
-      AprioriNoApriori2<>* __no_apriori{nullptr};
+      AprioriNoApriori<>* __no_apriori{nullptr};
 
       /// the weight of the apriori
       double __apriori_weight{1.0f};

@@ -32,7 +32,7 @@
 
 namespace gum_tests {
 
-  class CorrectedMutualInformation2TestSuite : public CxxTest::TestSuite {
+  class CorrectedMutualInformationTestSuite : public CxxTest::TestSuite {
   private:
     double __entropy(const std::vector< double >& vect) {
       double res = 0.0;
@@ -49,15 +49,15 @@ namespace gum_tests {
     
     double __H(const gum::learning::DBRowGeneratorParser<>& parser,
                const gum::NodeId id) {
-      gum::learning::RecordCounter2<> counter(parser);
-      return __entropy(counter.counts (gum::learning::IdSet2<>(id,{})));
+      gum::learning::RecordCounter<> counter(parser);
+      return __entropy(counter.counts (gum::learning::IdSet<>(id,{})));
     }
 
     double __H(const gum::learning::DBRowGeneratorParser<>& parser,
                const gum::NodeId id1,
                const gum::NodeId id2) {
-      gum::learning::RecordCounter2<> counter(parser);
-      return __entropy(counter.counts (gum::learning::IdSet2<>(id1,id2,{},true)));
+      gum::learning::RecordCounter<> counter(parser);
+      return __entropy(counter.counts (gum::learning::IdSet<>(id1,id2,{},true)));
     }
 
     double __I(const gum::learning::DBRowGeneratorParser<>& parser,
@@ -68,26 +68,26 @@ namespace gum_tests {
 
     double __H(const gum::learning::DBRowGeneratorParser<>& parser,
                const std::vector< gum::NodeId >& cond) {
-      gum::learning::RecordCounter2<> counter(parser);
-      return __entropy(counter.counts(gum::learning::IdSet2<>(cond,true,true)));
+      gum::learning::RecordCounter<> counter(parser);
+      return __entropy(counter.counts(gum::learning::IdSet<>(cond,true,true)));
     }
 
     double __H(const gum::learning::DBRowGeneratorParser<>& parser,
                const gum::NodeId id,
                const std::vector< gum::NodeId >& cond) {
-      gum::learning::RecordCounter2<> counter(parser);
-      return __entropy(counter.counts(gum::learning::IdSet2<>(id,cond,true))) -
-        __entropy(counter.counts(gum::learning::IdSet2<>(cond,false,true)));
+      gum::learning::RecordCounter<> counter(parser);
+      return __entropy(counter.counts(gum::learning::IdSet<>(id,cond,true))) -
+        __entropy(counter.counts(gum::learning::IdSet<>(cond,false,true)));
     }
 
     double __H(const gum::learning::DBRowGeneratorParser<>& parser,
                const gum::NodeId id1,
                const gum::NodeId id2,
                const std::vector< gum::NodeId >& cond) {
-      gum::learning::RecordCounter2<> counter(parser);
-      return __entropy(counter.counts(gum::learning::IdSet2<>(id1,id2,cond,
+      gum::learning::RecordCounter<> counter(parser);
+      return __entropy(counter.counts(gum::learning::IdSet<>(id1,id2,cond,
                                                               true,true))) -
-        __entropy(counter.counts(gum::learning::IdSet2<>(cond,false,true)));
+        __entropy(counter.counts(gum::learning::IdSet<>(cond,false,true)));
     }
 
     double __I(const gum::learning::DBRowGeneratorParser<>& parser,
@@ -136,9 +136,9 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriNoApriori2<>    apriori(database);
+      gum::learning::AprioriNoApriori<>    apriori(database);
 
-      gum::learning::CorrectedMutualInformation2<> score(parser, apriori);
+      gum::learning::CorrectedMutualInformation<> score(parser, apriori);
       score.useNoCorr();
 
       TS_ASSERT_DELTA(score.score(2, 6), __I(parser,2,6), 0.001);
@@ -193,11 +193,11 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriNoApriori2<>    apriori(database);
+      gum::learning::AprioriNoApriori<>    apriori(database);
       
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::CorrectedMutualInformation2<> score(parser, apriori);
+      gum::learning::CorrectedMutualInformation<> score(parser, apriori);
       score.useMDL();
       
       const double cst = 0.5 * std::log2(10000);

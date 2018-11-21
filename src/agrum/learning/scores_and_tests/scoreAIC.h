@@ -37,16 +37,16 @@ namespace gum {
 
   namespace learning {
 
-    /** @class ScoreAIC2
+    /** @class ScoreAIC
      * @brief the class for computing AIC scores
-     * @headerfile scoreAIC2.h <agrum/learning/scores_and_tests/scoreAIC2.h>
+     * @headerfile scoreAIC.h <agrum/learning/scores_and_tests/scoreAIC.h>
      * @ingroup learning_scores
      *
      * @warning If you pass an apriori to the score, this one will be added
      * into the log-likelihood part of the score.
      */
     template < template < typename > class ALLOC = std::allocator >
-    class ScoreAIC2 : public Score2< ALLOC > {
+    class ScoreAIC : public Score< ALLOC > {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;
@@ -77,9 +77,9 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      ScoreAIC2(
+      ScoreAIC(
         const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori2< ALLOC >&             apriori,
+        const Apriori< ALLOC >&             apriori,
         const std::vector< std::pair< std::size_t, std::size_t >,
                            ALLOC< std::pair< std::size_t, std::size_t > > >&
           ranges,
@@ -104,33 +104,33 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      ScoreAIC2(const DBRowGeneratorParser< ALLOC >& parser,
-                const Apriori2< ALLOC >&             apriori,
+      ScoreAIC(const DBRowGeneratorParser< ALLOC >& parser,
+                const Apriori< ALLOC >&             apriori,
                 const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
                   nodeId2columns =
                     Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
                 const allocator_type& alloc = allocator_type());
 
       /// copy constructor
-      ScoreAIC2(const ScoreAIC2< ALLOC >& from);
+      ScoreAIC(const ScoreAIC< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      ScoreAIC2(const ScoreAIC2< ALLOC >& from, const allocator_type& alloc);
+      ScoreAIC(const ScoreAIC< ALLOC >& from, const allocator_type& alloc);
 
       /// move constructor
-      ScoreAIC2(ScoreAIC2< ALLOC >&& from);
+      ScoreAIC(ScoreAIC< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      ScoreAIC2(ScoreAIC2< ALLOC >&& from, const allocator_type& alloc);
+      ScoreAIC(ScoreAIC< ALLOC >&& from, const allocator_type& alloc);
 
       /// virtual copy constructor
-      virtual ScoreAIC2< ALLOC >* clone() const;
+      virtual ScoreAIC< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual ScoreAIC2< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual ScoreAIC< ALLOC >* clone(const allocator_type& alloc) const;
 
       /// destructor
-      virtual ~ScoreAIC2();
+      virtual ~ScoreAIC();
 
       /// @}
 
@@ -142,10 +142,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      ScoreAIC2< ALLOC >& operator=(const ScoreAIC2< ALLOC >& from);
+      ScoreAIC< ALLOC >& operator=(const ScoreAIC< ALLOC >& from);
 
       /// move operator
-      ScoreAIC2< ALLOC >& operator=(ScoreAIC2< ALLOC >&& from);
+      ScoreAIC< ALLOC >& operator=(ScoreAIC< ALLOC >&& from);
 
       /// @}
 
@@ -178,7 +178,7 @@ namespace gum {
        * note that, to be meaningful, a structure + parameter learning requires
        * that the same aprioris are taken into account during structure learning
        * and parameter learning. */
-      virtual const Apriori2< ALLOC >& internalApriori() const final;
+      virtual const Apriori< ALLOC >& internalApriori() const final;
 
       /// @}
 
@@ -191,7 +191,7 @@ namespace gum {
 
       /// indicates whether the apriori is compatible (meaningful) with the score
       /** a non empty string if the apriori is compatible with the score. */
-      static std::string isAprioriCompatible(const Apriori2< ALLOC >& apriori);
+      static std::string isAprioriCompatible(const Apriori< ALLOC >& apriori);
 
 
       protected:
@@ -199,12 +199,12 @@ namespace gum {
       /** @throws OperationNotAllowed is raised if the score does not support
        * calling method score such an idset (due to too many/too few variables
        * in the left hand side or the right hand side of the idset). */
-      virtual double _score(const IdSet2< ALLOC >& idset) final;
+      virtual double _score(const IdSet< ALLOC >& idset) final;
 
 
       private:
       /// the internal apriori of the score
-      AprioriNoApriori2< ALLOC > __internal_apriori;
+      AprioriNoApriori< ALLOC > __internal_apriori;
     };
 
   } /* namespace learning */
@@ -212,7 +212,7 @@ namespace gum {
 } /* namespace gum */
 
 
-extern template class gum::learning::ScoreAIC2<>;
+extern template class gum::learning::ScoreAIC<>;
 
 
 // always include the template implementation

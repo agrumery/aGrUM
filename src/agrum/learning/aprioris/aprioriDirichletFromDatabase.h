@@ -35,13 +35,13 @@ namespace gum {
 
   namespace learning {
 
-    /** @class AprioriDirichletFromDatabase2
+    /** @class AprioriDirichletFromDatabase
      * @brief A dirichlet priori: computes its N'_ijk from a database
-     * @headerfile aprioriDirichletFromDatabase2.h <agrum/learning/database/aprioriDirichletFromDatabase2.h>
+     * @headerfile aprioriDirichletFromDatabase.h <agrum/learning/database/aprioriDirichletFromDatabase.h>
      * @ingroup learning_apriori
      */
     template < template < typename > class ALLOC = std::allocator >
-    class AprioriDirichletFromDatabase2 : public Apriori2< ALLOC > {
+    class AprioriDirichletFromDatabase : public Apriori< ALLOC > {
       public:
       /// the type of the a priori
       using type = AprioriDirichletType;
@@ -75,7 +75,7 @@ namespace gum {
        * apriori database that correspond to those in the learning database
        * (they have the same names) are exactly identical. If this is not the
        * case, then a DatabaseError exception is raised. */
-      AprioriDirichletFromDatabase2(
+      AprioriDirichletFromDatabase(
         const DatabaseTable< ALLOC >&        learning_db,
         const DBRowGeneratorParser< ALLOC >& apriori_parser,
         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
@@ -84,30 +84,30 @@ namespace gum {
         const allocator_type& alloc = allocator_type());
 
       /// copy constructor
-      AprioriDirichletFromDatabase2(
-        const AprioriDirichletFromDatabase2< ALLOC >& from);
+      AprioriDirichletFromDatabase(
+        const AprioriDirichletFromDatabase< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      AprioriDirichletFromDatabase2(
-        const AprioriDirichletFromDatabase2< ALLOC >& from,
+      AprioriDirichletFromDatabase(
+        const AprioriDirichletFromDatabase< ALLOC >& from,
         const allocator_type&                         alloc);
 
       /// move constructor
-      AprioriDirichletFromDatabase2(AprioriDirichletFromDatabase2< ALLOC >&& from);
+      AprioriDirichletFromDatabase(AprioriDirichletFromDatabase< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      AprioriDirichletFromDatabase2(AprioriDirichletFromDatabase2< ALLOC >&& from,
+      AprioriDirichletFromDatabase(AprioriDirichletFromDatabase< ALLOC >&& from,
                                     const allocator_type& alloc);
 
       /// virtual copy constructor
-      virtual AprioriDirichletFromDatabase2< ALLOC >* clone() const;
+      virtual AprioriDirichletFromDatabase< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual AprioriDirichletFromDatabase2< ALLOC >*
+      virtual AprioriDirichletFromDatabase< ALLOC >*
         clone(const allocator_type& alloc) const;
 
       /// destructor
-      virtual ~AprioriDirichletFromDatabase2();
+      virtual ~AprioriDirichletFromDatabase();
 
       /// @}
 
@@ -118,12 +118,12 @@ namespace gum {
       /// @{
 
       /// copy operator
-      AprioriDirichletFromDatabase2< ALLOC >&
-        operator=(const AprioriDirichletFromDatabase2< ALLOC >& from);
+      AprioriDirichletFromDatabase< ALLOC >&
+        operator=(const AprioriDirichletFromDatabase< ALLOC >& from);
 
       /// move operator
-      AprioriDirichletFromDatabase2< ALLOC >&
-        operator=(AprioriDirichletFromDatabase2< ALLOC >&& from);
+      AprioriDirichletFromDatabase< ALLOC >&
+        operator=(AprioriDirichletFromDatabase< ALLOC >&& from);
 
       /// @}
 
@@ -156,7 +156,7 @@ namespace gum {
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint variables set. */
       virtual void
-        addAllApriori(const IdSet2< ALLOC >&                  idset,
+        addAllApriori(const IdSet< ALLOC >&                  idset,
                       std::vector< double, ALLOC< double > >& counts) final;
 
       /** @brief adds the apriori to a counting vectordefined over the right
@@ -165,7 +165,7 @@ namespace gum {
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint RHS variables of the idset. */
       virtual void addConditioningApriori(
-        const IdSet2< ALLOC >&                  idset,
+        const IdSet< ALLOC >&                  idset,
         std::vector< double, ALLOC< double > >& counts) final;
 
       /// @}
@@ -173,7 +173,7 @@ namespace gum {
 
       private:
       /// the record counter used to parse the apriori database
-      RecordCounter2< ALLOC > __counter;
+      RecordCounter< ALLOC > __counter;
     };
 
   } /* namespace learning */

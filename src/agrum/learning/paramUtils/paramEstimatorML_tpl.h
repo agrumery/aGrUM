@@ -30,81 +30,81 @@ namespace gum {
 
     /// default constructor
     template < template < typename > class ALLOC >
-    INLINE ParamEstimatorML2< ALLOC >::ParamEstimatorML2(
+    INLINE ParamEstimatorML< ALLOC >::ParamEstimatorML(
       const DBRowGeneratorParser< ALLOC >& parser,
-      const Apriori2< ALLOC >&             external_apriori,
-      const Apriori2< ALLOC >&             score_internal_apriori,
+      const Apriori< ALLOC >&             external_apriori,
+      const Apriori< ALLOC >&             score_internal_apriori,
       const std::vector< std::pair< std::size_t, std::size_t >,
                          ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename ParamEstimatorML2< ALLOC >::allocator_type&    alloc) :
-        ParamEstimator2< ALLOC >(parser,
+      const typename ParamEstimatorML< ALLOC >::allocator_type&    alloc) :
+        ParamEstimator< ALLOC >(parser,
                                  external_apriori,
                                  score_internal_apriori,
                                  ranges,
                                  nodeId2columns,
                                  alloc) {
-      GUM_CONSTRUCTOR(ParamEstimatorML2);
+      GUM_CONSTRUCTOR(ParamEstimatorML);
     }
 
 
     /// default constructor
     template < template < typename > class ALLOC >
-    INLINE ParamEstimatorML2< ALLOC >::ParamEstimatorML2(
+    INLINE ParamEstimatorML< ALLOC >::ParamEstimatorML(
       const DBRowGeneratorParser< ALLOC >& parser,
-      const Apriori2< ALLOC >&             external_apriori,
-      const Apriori2< ALLOC >&             score_internal_apriori,
+      const Apriori< ALLOC >&             external_apriori,
+      const Apriori< ALLOC >&             score_internal_apriori,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename ParamEstimatorML2< ALLOC >::allocator_type&    alloc) :
-        ParamEstimator2< ALLOC >(parser,
+      const typename ParamEstimatorML< ALLOC >::allocator_type&    alloc) :
+        ParamEstimator< ALLOC >(parser,
                                  external_apriori,
                                  score_internal_apriori,
                                  nodeId2columns,
                                  alloc) {
-      GUM_CONSTRUCTOR(ParamEstimatorML2);
+      GUM_CONSTRUCTOR(ParamEstimatorML);
     }
 
 
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE ParamEstimatorML2< ALLOC >::ParamEstimatorML2(
-      const ParamEstimatorML2< ALLOC >&                          from,
-      const typename ParamEstimatorML2< ALLOC >::allocator_type& alloc) :
-        ParamEstimator2< ALLOC >(from, alloc) {
-      GUM_CONS_CPY(ParamEstimatorML2);
+    INLINE ParamEstimatorML< ALLOC >::ParamEstimatorML(
+      const ParamEstimatorML< ALLOC >&                          from,
+      const typename ParamEstimatorML< ALLOC >::allocator_type& alloc) :
+        ParamEstimator< ALLOC >(from, alloc) {
+      GUM_CONS_CPY(ParamEstimatorML);
     }
 
 
     /// copy constructor
     template < template < typename > class ALLOC >
-    INLINE ParamEstimatorML2< ALLOC >::ParamEstimatorML2(
-      const ParamEstimatorML2< ALLOC >& from) :
-        ParamEstimatorML2< ALLOC >(from, this->getAllocator()) {}
+    INLINE ParamEstimatorML< ALLOC >::ParamEstimatorML(
+      const ParamEstimatorML< ALLOC >& from) :
+        ParamEstimatorML< ALLOC >(from, this->getAllocator()) {}
 
 
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE ParamEstimatorML2< ALLOC >::ParamEstimatorML2(
-      ParamEstimatorML2< ALLOC >&&                               from,
-      const typename ParamEstimatorML2< ALLOC >::allocator_type& alloc) :
-        ParamEstimator2< ALLOC >(std::move(from), alloc) {
-      GUM_CONS_MOV(ParamEstimatorML2);
+    INLINE ParamEstimatorML< ALLOC >::ParamEstimatorML(
+      ParamEstimatorML< ALLOC >&&                               from,
+      const typename ParamEstimatorML< ALLOC >::allocator_type& alloc) :
+        ParamEstimator< ALLOC >(std::move(from), alloc) {
+      GUM_CONS_MOV(ParamEstimatorML);
     }
 
 
     /// move constructor
     template < template < typename > class ALLOC >
-    INLINE ParamEstimatorML2< ALLOC >::ParamEstimatorML2(
-      ParamEstimatorML2< ALLOC >&& from) :
-        ParamEstimatorML2< ALLOC >(std::move(from), this->getAllocator()) {}
+    INLINE ParamEstimatorML< ALLOC >::ParamEstimatorML(
+      ParamEstimatorML< ALLOC >&& from) :
+        ParamEstimatorML< ALLOC >(std::move(from), this->getAllocator()) {}
 
 
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    ParamEstimatorML2< ALLOC >* ParamEstimatorML2< ALLOC >::clone(
-      const typename ParamEstimatorML2< ALLOC >::allocator_type& alloc) const {
-      ALLOC< ParamEstimatorML2< ALLOC > > allocator(alloc);
-      ParamEstimatorML2< ALLOC >*         new_score = allocator.allocate(1);
+    ParamEstimatorML< ALLOC >* ParamEstimatorML< ALLOC >::clone(
+      const typename ParamEstimatorML< ALLOC >::allocator_type& alloc) const {
+      ALLOC< ParamEstimatorML< ALLOC > > allocator(alloc);
+      ParamEstimatorML< ALLOC >*         new_score = allocator.allocate(1);
       try {
         allocator.construct(new_score, *this, alloc);
       } catch (...) {
@@ -118,44 +118,44 @@ namespace gum {
 
     /// virtual copy constructor
     template < template < typename > class ALLOC >
-    ParamEstimatorML2< ALLOC >* ParamEstimatorML2< ALLOC >::clone() const {
+    ParamEstimatorML< ALLOC >* ParamEstimatorML< ALLOC >::clone() const {
       return clone(this->getAllocator());
     }
 
 
     /// destructor
     template < template < typename > class ALLOC >
-    ParamEstimatorML2< ALLOC >::~ParamEstimatorML2() {
-      GUM_DESTRUCTOR(ParamEstimatorML2);
+    ParamEstimatorML< ALLOC >::~ParamEstimatorML() {
+      GUM_DESTRUCTOR(ParamEstimatorML);
     }
 
 
     /// copy operator
     template < template < typename > class ALLOC >
-    ParamEstimatorML2< ALLOC >& ParamEstimatorML2< ALLOC >::
-                                operator=(const ParamEstimatorML2< ALLOC >& from) {
-      ParamEstimator2< ALLOC >::operator=(from);
+    ParamEstimatorML< ALLOC >& ParamEstimatorML< ALLOC >::
+                                operator=(const ParamEstimatorML< ALLOC >& from) {
+      ParamEstimator< ALLOC >::operator=(from);
       return *this;
     }
 
 
     /// move operator
     template < template < typename > class ALLOC >
-    ParamEstimatorML2< ALLOC >& ParamEstimatorML2< ALLOC >::
-                                operator=(ParamEstimatorML2< ALLOC >&& from) {
-      ParamEstimator2< ALLOC >::operator=(std::move(from));
+    ParamEstimatorML< ALLOC >& ParamEstimatorML< ALLOC >::
+                                operator=(ParamEstimatorML< ALLOC >&& from) {
+      ParamEstimator< ALLOC >::operator=(std::move(from));
       return *this;
     }
 
 
     /// returns the CPT's parameters corresponding to a given set of nodes
     template < template < typename > class ALLOC >
-    std::vector< double, ALLOC< double > > ParamEstimatorML2< ALLOC >::parameters(
+    std::vector< double, ALLOC< double > > ParamEstimatorML< ALLOC >::parameters(
       const NodeId                                  target_node,
       const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes) {
       // create an idset that contains all the nodes in the following order:
       // first, the target node, then all the conditioning nodes
-      IdSet2< ALLOC > idset(target_node, conditioning_nodes, true);
+      IdSet< ALLOC > idset(target_node, conditioning_nodes, true);
 
       // get the counts for all the nodes in the idset and add the external and
       // score internal aprioris

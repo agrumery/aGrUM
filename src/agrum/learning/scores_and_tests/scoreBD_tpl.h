@@ -34,74 +34,74 @@ namespace gum {
 
     /// default constructor
     template < template < typename > class ALLOC >
-    INLINE ScoreBD2< ALLOC >::ScoreBD2(
+    INLINE ScoreBD< ALLOC >::ScoreBD(
       const DBRowGeneratorParser< ALLOC >&                                 parser,
-      const Apriori2< ALLOC >&                                             apriori,
+      const Apriori< ALLOC >&                                             apriori,
       const std::vector< std::pair< std::size_t, std::size_t >,
                          ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename ScoreBD2< ALLOC >::allocator_type&             alloc) :
-        Score2< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
+      const typename ScoreBD< ALLOC >::allocator_type&             alloc) :
+        Score< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
         __internal_apriori(parser.database(), nodeId2columns) {
-      GUM_CONSTRUCTOR(ScoreBD2);
+      GUM_CONSTRUCTOR(ScoreBD);
     }
 
 
     /// default constructor
     template < template < typename > class ALLOC >
-    INLINE ScoreBD2< ALLOC >::ScoreBD2(
+    INLINE ScoreBD< ALLOC >::ScoreBD(
       const DBRowGeneratorParser< ALLOC >&                          parser,
-      const Apriori2< ALLOC >&                                      apriori,
+      const Apriori< ALLOC >&                                      apriori,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename ScoreBD2< ALLOC >::allocator_type&             alloc) :
-        Score2< ALLOC >(parser, apriori, nodeId2columns, alloc),
+      const typename ScoreBD< ALLOC >::allocator_type&             alloc) :
+        Score< ALLOC >(parser, apriori, nodeId2columns, alloc),
         __internal_apriori(parser.database(), nodeId2columns) {
-      GUM_CONSTRUCTOR(ScoreBD2);
+      GUM_CONSTRUCTOR(ScoreBD);
     }
 
 
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE ScoreBD2< ALLOC >::ScoreBD2(
-      const ScoreBD2< ALLOC >&                          from,
-      const typename ScoreBD2< ALLOC >::allocator_type& alloc) :
-        Score2< ALLOC >(from, alloc),
+    INLINE ScoreBD< ALLOC >::ScoreBD(
+      const ScoreBD< ALLOC >&                          from,
+      const typename ScoreBD< ALLOC >::allocator_type& alloc) :
+        Score< ALLOC >(from, alloc),
         __internal_apriori(from.__internal_apriori, alloc),
         __gammalog2(from.__gammalog2) {
-      GUM_CONS_CPY(ScoreBD2);
+      GUM_CONS_CPY(ScoreBD);
     }
 
 
     /// copy constructor
     template < template < typename > class ALLOC >
-    INLINE ScoreBD2< ALLOC >::ScoreBD2(const ScoreBD2< ALLOC >& from) :
-        ScoreBD2< ALLOC >(from, from.getAllocator()) {}
+    INLINE ScoreBD< ALLOC >::ScoreBD(const ScoreBD< ALLOC >& from) :
+        ScoreBD< ALLOC >(from, from.getAllocator()) {}
 
 
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE ScoreBD2< ALLOC >::ScoreBD2(
-      ScoreBD2< ALLOC >&&                               from,
-      const typename ScoreBD2< ALLOC >::allocator_type& alloc) :
-        Score2< ALLOC >(std::move(from), alloc),
+    INLINE ScoreBD< ALLOC >::ScoreBD(
+      ScoreBD< ALLOC >&&                               from,
+      const typename ScoreBD< ALLOC >::allocator_type& alloc) :
+        Score< ALLOC >(std::move(from), alloc),
         __internal_apriori(std::move(from.__internal_apriori), alloc),
         __gammalog2(std::move(from.__gammalog2)) {
-      GUM_CONS_MOV(ScoreBD2);
+      GUM_CONS_MOV(ScoreBD);
     }
 
 
     /// move constructor
     template < template < typename > class ALLOC >
-    INLINE ScoreBD2< ALLOC >::ScoreBD2(ScoreBD2< ALLOC >&& from) :
-        ScoreBD2< ALLOC >(std::move(from), from.getAllocator()) {}
+    INLINE ScoreBD< ALLOC >::ScoreBD(ScoreBD< ALLOC >&& from) :
+        ScoreBD< ALLOC >(std::move(from), from.getAllocator()) {}
 
 
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    ScoreBD2< ALLOC >* ScoreBD2< ALLOC >::clone(
-      const typename ScoreBD2< ALLOC >::allocator_type& alloc) const {
-      ALLOC< ScoreBD2< ALLOC > > allocator(alloc);
-      ScoreBD2< ALLOC >*         new_score = allocator.allocate(1);
+    ScoreBD< ALLOC >* ScoreBD< ALLOC >::clone(
+      const typename ScoreBD< ALLOC >::allocator_type& alloc) const {
+      ALLOC< ScoreBD< ALLOC > > allocator(alloc);
+      ScoreBD< ALLOC >*         new_score = allocator.allocate(1);
       try {
         allocator.construct(new_score, *this, alloc);
       } catch (...) {
@@ -115,24 +115,24 @@ namespace gum {
 
     /// virtual copy constructor
     template < template < typename > class ALLOC >
-    ScoreBD2< ALLOC >* ScoreBD2< ALLOC >::clone() const {
+    ScoreBD< ALLOC >* ScoreBD< ALLOC >::clone() const {
       return clone(this->getAllocator());
     }
 
 
     /// destructor
     template < template < typename > class ALLOC >
-    ScoreBD2< ALLOC >::~ScoreBD2< ALLOC >() {
-      GUM_DESTRUCTOR(ScoreBD2);
+    ScoreBD< ALLOC >::~ScoreBD< ALLOC >() {
+      GUM_DESTRUCTOR(ScoreBD);
     }
 
 
     /// copy operator
     template < template < typename > class ALLOC >
-    ScoreBD2< ALLOC >& ScoreBD2< ALLOC >::
-                       operator=(const ScoreBD2< ALLOC >& from) {
+    ScoreBD< ALLOC >& ScoreBD< ALLOC >::
+                       operator=(const ScoreBD< ALLOC >& from) {
       if (this != &from) {
-        Score2< ALLOC >::operator=(from);
+        Score< ALLOC >::operator=(from);
         __internal_apriori = from.__internal_apriori;
       }
       return *this;
@@ -141,9 +141,9 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    ScoreBD2< ALLOC >& ScoreBD2< ALLOC >::operator=(ScoreBD2< ALLOC >&& from) {
+    ScoreBD< ALLOC >& ScoreBD< ALLOC >::operator=(ScoreBD< ALLOC >&& from) {
       if (this != &from) {
-        Score2< ALLOC >::operator=(std::move(from));
+        Score< ALLOC >::operator=(std::move(from));
         __internal_apriori = std::move(from.__internal_apriori);
       }
       return *this;
@@ -153,7 +153,7 @@ namespace gum {
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < template < typename > class ALLOC >
     std::string
-      ScoreBD2< ALLOC >::isAprioriCompatible(const std::string& apriori_type,
+      ScoreBD< ALLOC >::isAprioriCompatible(const std::string& apriori_type,
                                              double             weight) {
       if (apriori_type == AprioriNoAprioriType::type) {
         return "The BD score requires an apriori";
@@ -175,28 +175,28 @@ namespace gum {
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < template < typename > class ALLOC >
     INLINE std::string
-           ScoreBD2< ALLOC >::isAprioriCompatible(const Apriori2< ALLOC >& apriori) {
+           ScoreBD< ALLOC >::isAprioriCompatible(const Apriori< ALLOC >& apriori) {
       return isAprioriCompatible(apriori.getType(), apriori.weight());
     }
 
 
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < template < typename > class ALLOC >
-    INLINE std::string ScoreBD2< ALLOC >::isAprioriCompatible() const {
+    INLINE std::string ScoreBD< ALLOC >::isAprioriCompatible() const {
       return isAprioriCompatible(*(this->_apriori));
     }
 
 
     /// returns the internal apriori of the score
     template < template < typename > class ALLOC >
-    INLINE const Apriori2< ALLOC >& ScoreBD2< ALLOC >::internalApriori() const {
+    INLINE const Apriori< ALLOC >& ScoreBD< ALLOC >::internalApriori() const {
       return __internal_apriori;
     }
 
 
     /// returns the score corresponding to a given nodeset
     template < template < typename > class ALLOC >
-    double ScoreBD2< ALLOC >::_score(const IdSet2< ALLOC >& idset) {
+    double ScoreBD< ALLOC >::_score(const IdSet< ALLOC >& idset) {
       // if the weight of the apriori is 0, then gammaLog2 will fail
       if (!this->_apriori->isInformative()) {
         GUM_ERROR(OutOfBounds,

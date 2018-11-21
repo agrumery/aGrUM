@@ -90,7 +90,7 @@ namespace gum {
      * gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
      *
      * // create the record counter
-     * gum::learning::RecordCounter2<> counter(parser);
+     * gum::learning::RecordCounter<> counter(parser);
      *
      * // get the counts:
      * gum::learning::IdSet<> ids ( 0, gum::vector<gum::NodeId> {2,1} );
@@ -107,7 +107,7 @@ namespace gum {
      * @endcode
      */
     template < template < typename > class ALLOC = std::allocator >
-    class RecordCounter2 {
+    class RecordCounter {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;
@@ -137,7 +137,7 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the counts over the
        * ids belonging to this bijection can be computed: applying method
        * counts() over other ids will raise exception NotFound. */
-      RecordCounter2(
+      RecordCounter(
         const DBRowGeneratorParser< ALLOC >& parser,
         const std::vector< std::pair< std::size_t, std::size_t >,
                            ALLOC< std::pair< std::size_t, std::size_t > > >&
@@ -161,33 +161,33 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the counts over the
        * ids belonging to this bijection can be computed: applying method
        * counts() over other ids will raise exception NotFound. */
-      RecordCounter2(const DBRowGeneratorParser< ALLOC >& parser,
+      RecordCounter(const DBRowGeneratorParser< ALLOC >& parser,
                      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
                        nodeId2columns =
                          Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
                      const allocator_type& alloc = allocator_type());
 
       /// copy constructor
-      RecordCounter2(const RecordCounter2< ALLOC >& from);
+      RecordCounter(const RecordCounter< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      RecordCounter2(const RecordCounter2< ALLOC >& from,
+      RecordCounter(const RecordCounter< ALLOC >& from,
                      const allocator_type&          alloc);
 
       /// move constructor
-      RecordCounter2(RecordCounter2< ALLOC >&& from);
+      RecordCounter(RecordCounter< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      RecordCounter2(RecordCounter2< ALLOC >&& from, const allocator_type& alloc);
+      RecordCounter(RecordCounter< ALLOC >&& from, const allocator_type& alloc);
 
       /// virtual copy constructor
-      virtual RecordCounter2< ALLOC >* clone() const;
+      virtual RecordCounter< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual RecordCounter2< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual RecordCounter< ALLOC >* clone(const allocator_type& alloc) const;
 
       /// destructor
-      virtual ~RecordCounter2();
+      virtual ~RecordCounter();
 
       /// @}
 
@@ -199,10 +199,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      RecordCounter2< ALLOC >& operator=(const RecordCounter2< ALLOC >& from);
+      RecordCounter< ALLOC >& operator=(const RecordCounter< ALLOC >& from);
 
       /// move operator
-      RecordCounter2< ALLOC >& operator=(RecordCounter2< ALLOC >&& from);
+      RecordCounter< ALLOC >& operator=(RecordCounter< ALLOC >&& from);
 
       /// @}
 
@@ -275,7 +275,7 @@ namespace gum {
        * one variable is not of a discrete nature.
        */
       const std::vector< double, ALLOC< double > >&
-        counts(const IdSet2< ALLOC >& ids, const bool check_discrete_vars = false);
+        counts(const IdSet< ALLOC >& ids, const bool check_discrete_vars = false);
 
       /// sets new ranges to perform the countings
       /** @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
@@ -328,13 +328,13 @@ namespace gum {
       std::vector< double, ALLOC< double > > __last_DB_countings;
 
       // the ids of the nodes for the last database-parsed countings
-      IdSet2< ALLOC > __last_DB_ids;
+      IdSet< ALLOC > __last_DB_ids;
 
       // the last countings deduced from __last_DB_countings
       std::vector< double, ALLOC< double > > __last_nonDB_countings;
 
       // the ids of the nodes of last countings deduced from __last_DB_countings
-      IdSet2< ALLOC > __last_nonDB_ids;
+      IdSet< ALLOC > __last_nonDB_ids;
 
       // the maximal number of threads that the record counter can use
       mutable std::size_t __max_nb_threads{
@@ -349,17 +349,17 @@ namespace gum {
       // for a given sequence of ids. This is especially convenient when
       // __nodeId2columns is empty (which means that there is an identity mapping)
       HashTable< NodeId, std::size_t >
-        __getNodeIds2Columns(const IdSet2< ALLOC >& ids) const;
+        __getNodeIds2Columns(const IdSet< ALLOC >& ids) const;
 
       /// extracts some new countings from previously computed ones
       std::vector< double, ALLOC< double > >& __extractFromCountings(
-        const IdSet2< ALLOC >&                        subset_ids,
-        const IdSet2< ALLOC >&                        superset_ids,
+        const IdSet< ALLOC >&                        subset_ids,
+        const IdSet< ALLOC >&                        superset_ids,
         const std::vector< double, ALLOC< double > >& superset_vect);
 
       /// parse the database to produce new countings
       std::vector< double, ALLOC< double > >&
-        __countFromDatabase(const IdSet2< ALLOC >& ids);
+        __countFromDatabase(const IdSet< ALLOC >& ids);
 
       /// the method used by threads to produce countings by parsing the database
       void __threadedCount(
@@ -383,7 +383,7 @@ namespace gum {
       /// check that the variables at indices [beg,end) of an idset are discrete
       /** @throw TypeError is raised if at least one variable in ids is
        * of a continuous nature. */
-      void __checkDiscreteVariables(const IdSet2< ALLOC >& ids) const;
+      void __checkDiscreteVariables(const IdSet< ALLOC >& ids) const;
 
       /// compute and raise the exception when some variables are continuous
       /** This method is used by __checkDiscreteVariables to determine the

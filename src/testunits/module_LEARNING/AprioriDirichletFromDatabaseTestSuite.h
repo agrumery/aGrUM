@@ -28,7 +28,7 @@
 
 namespace gum_tests {
 
-  class AprioriDirichletFromDatabase2TestSuite : public CxxTest::TestSuite {
+  class AprioriDirichletFromDatabaseTestSuite : public CxxTest::TestSuite {
     public:
     void test1() {
       // create the translator set
@@ -72,7 +72,7 @@ namespace gum_tests {
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
 
 
-      gum::learning::AprioriDirichletFromDatabase2<> apriori(database, parser);
+      gum::learning::AprioriDirichletFromDatabase<> apriori(database, parser);
 
       TS_ASSERT(apriori.weight() == 1.0);
       apriori.setWeight(2.0);
@@ -88,9 +88,9 @@ namespace gum_tests {
       std::vector< gum::NodeId > cond_empty;
       std::vector< gum::NodeId > cond1{node3};
 
-      gum::learning::IdSet2<> idset1(node0, cond_empty);                // #3,#0
-      gum::learning::IdSet2<> idset2(node0, node1, cond_empty, true);   // #9,#0
-      gum::learning::IdSet2<> idset3(node0, cond1, true);               // #9,#0
+      gum::learning::IdSet<> idset1(node0, cond_empty);                // #3,#0
+      gum::learning::IdSet<> idset2(node0, node1, cond_empty, true);   // #9,#0
+      gum::learning::IdSet<> idset3(node0, cond1, true);               // #9,#0
 
 
       std::vector< double > vect(3, 1.0);
@@ -139,7 +139,7 @@ namespace gum_tests {
       TS_ASSERT(vect[2] == 2001.0);
 
 
-      gum::learning::AprioriDirichletFromDatabase2<> apriori2(apriori);
+      gum::learning::AprioriDirichletFromDatabase<> apriori2(apriori);
       TS_ASSERT(apriori2.weight() == 2.0);
       apriori2.setWeight(1.0);
       TS_ASSERT(apriori2.weight() == 1.0);
@@ -195,7 +195,7 @@ namespace gum_tests {
       TS_ASSERT(vect[2] == 1001.0);
 
 
-      gum::learning::AprioriDirichletFromDatabase2<> apriori3(std::move(apriori2));
+      gum::learning::AprioriDirichletFromDatabase<> apriori3(std::move(apriori2));
       TS_ASSERT(apriori3.weight() == 1.0);
       apriori3.setWeight(2.0);
       TS_ASSERT(apriori3.weight() == 2.0);
@@ -247,7 +247,7 @@ namespace gum_tests {
       TS_ASSERT(vect[2] == 2001.0);
 
 
-      gum::learning::AprioriDirichletFromDatabase2<>* apriori4 = apriori3.clone();
+      gum::learning::AprioriDirichletFromDatabase<>* apriori4 = apriori3.clone();
       TS_ASSERT(apriori4->weight() == 2.0);
       apriori4->setWeight(1.0);
       TS_ASSERT(apriori4->weight() == 1.0);
@@ -474,7 +474,7 @@ namespace gum_tests {
       nodeId2columns.insert(node4, std::size_t(5));
       nodeId2columns.insert(node5, std::size_t(1));
 
-      gum::learning::AprioriDirichletFromDatabase2<> apriori(
+      gum::learning::AprioriDirichletFromDatabase<> apriori(
         database, parser, nodeId2columns);
 
       TS_ASSERT(apriori.weight() == 1.0);
@@ -488,9 +488,9 @@ namespace gum_tests {
       std::vector< gum::NodeId > cond_empty;
       std::vector< gum::NodeId > cond1{node1};
 
-      gum::learning::IdSet2<> idset1(node2, cond_empty);                // #3,#0
-      gum::learning::IdSet2<> idset2(node2, node5, cond_empty, true);   // #9,#0
-      gum::learning::IdSet2<> idset3(node2, cond1, true);               // #9,#0
+      gum::learning::IdSet<> idset1(node2, cond_empty);                // #3,#0
+      gum::learning::IdSet<> idset2(node2, node5, cond_empty, true);   // #9,#0
+      gum::learning::IdSet<> idset3(node2, cond1, true);               // #9,#0
 
 
       std::vector< double > vect(3, 1.0);
@@ -539,7 +539,7 @@ namespace gum_tests {
       TS_ASSERT(vect[2] == 2001.0);
 
 
-      gum::learning::AprioriDirichletFromDatabase2<> apriori2(apriori);
+      gum::learning::AprioriDirichletFromDatabase<> apriori2(apriori);
       TS_ASSERT(apriori2.weight() == 2.0);
       apriori2.setWeight(1.0);
       TS_ASSERT(apriori2.weight() == 1.0);
@@ -595,7 +595,7 @@ namespace gum_tests {
       TS_ASSERT(vect[2] == 1001.0);
 
 
-      gum::learning::AprioriDirichletFromDatabase2<> apriori3(std::move(apriori2));
+      gum::learning::AprioriDirichletFromDatabase<> apriori3(std::move(apriori2));
       TS_ASSERT(apriori3.weight() == 1.0);
       apriori3.setWeight(2.0);
       TS_ASSERT(apriori3.weight() == 2.0);
@@ -648,7 +648,7 @@ namespace gum_tests {
       TS_ASSERT(vect[2] == 2001.0);
 
 
-      gum::learning::AprioriDirichletFromDatabase2<>* apriori4 = apriori3.clone();
+      gum::learning::AprioriDirichletFromDatabase<>* apriori4 = apriori3.clone();
       TS_ASSERT(apriori4->weight() == 2.0);
       apriori4->setWeight(1.0);
       TS_ASSERT(apriori4->weight() == 1.0);

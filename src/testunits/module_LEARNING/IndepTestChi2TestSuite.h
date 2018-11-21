@@ -52,7 +52,7 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriNoApriori2<>    apriori(database);
+      gum::learning::AprioriNoApriori<>    apriori(database);
       gum::learning::IndepTestChi2<>        score(parser, apriori);
 
       TS_ASSERT(fabs(score.score(0,3) + 0.999) <= 0.01);
@@ -100,7 +100,7 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriNoApriori2<>    apriori(database);
+      gum::learning::AprioriNoApriori<>    apriori(database);
       gum::learning::IndepTestChi2<>        score(parser, apriori);
       //score.useCache ( false );
 
@@ -137,7 +137,7 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriNoApriori2<>    apriori(database);
+      gum::learning::AprioriNoApriori<>    apriori(database);
       gum::learning::IndepTestChi2<>        score(parser, apriori);
       //score.useCache ( false );
 

@@ -31,7 +31,7 @@
 
 namespace gum_tests {
 
-  class DAG2BNLearner2TestSuite : public CxxTest::TestSuite {
+  class DAG2BNLearnerTestSuite : public CxxTest::TestSuite {
   private:
     std::vector<double> __normalize (const std::vector<double>& vin) {
       double sum = 0;
@@ -102,13 +102,13 @@ namespace gum_tests {
       // create the parser
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriSmoothing2<>    extern_apriori(database);
-      gum::learning::AprioriNoApriori2<>    intern_apriori(database);
+      gum::learning::AprioriSmoothing<>    extern_apriori(database);
+      gum::learning::AprioriNoApriori<>    intern_apriori(database);
 
-      gum::learning::ParamEstimatorML2<>
+      gum::learning::ParamEstimatorML<>
         param_estimator(parser,extern_apriori,intern_apriori);
 
-      gum::learning::DAG2BNLearner2<> learner;
+      gum::learning::DAG2BNLearner<> learner;
 
       gum::DAG dag;
       for (std::size_t i = std::size_t(0); i < database.nbVariables(); ++i) {

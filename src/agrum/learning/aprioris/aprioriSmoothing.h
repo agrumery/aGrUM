@@ -34,13 +34,13 @@ namespace gum {
 
   namespace learning {
 
-    /** @class AprioriSmoothing2
+    /** @class AprioriSmoothing
      * @brief the smooth a priori: adds a weight w to all the countings
-     * @headerfile aprioriSmoothing2.h <agrum/learning/database/aprioriSmoothing2.h>
+     * @headerfile aprioriSmoothing.h <agrum/learning/database/aprioriSmoothing.h>
      * @ingroup learning_apriori
      */
     template < template < typename > class ALLOC = std::allocator >
-    class AprioriSmoothing2 : public Apriori2< ALLOC > {
+    class AprioriSmoothing : public Apriori< ALLOC > {
       public:
       /// the type of the a priori
       using type = AprioriSmoothingType;
@@ -66,7 +66,7 @@ namespace gum {
        * the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
        * RecordCounter.*/
-      AprioriSmoothing2(
+      AprioriSmoothing(
         const DatabaseTable< ALLOC >& database,
         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
           nodeId2columns =
@@ -74,27 +74,27 @@ namespace gum {
         const allocator_type& alloc = allocator_type());
 
       /// copy constructor
-      AprioriSmoothing2(const AprioriSmoothing2< ALLOC >& from);
+      AprioriSmoothing(const AprioriSmoothing< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      AprioriSmoothing2(const AprioriSmoothing2< ALLOC >& from,
+      AprioriSmoothing(const AprioriSmoothing< ALLOC >& from,
                         const allocator_type&             alloc);
 
       /// move constructor
-      AprioriSmoothing2(AprioriSmoothing2< ALLOC >&& from);
+      AprioriSmoothing(AprioriSmoothing< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      AprioriSmoothing2(AprioriSmoothing2< ALLOC >&& from,
+      AprioriSmoothing(AprioriSmoothing< ALLOC >&& from,
                         const allocator_type&        alloc);
 
       /// virtual copy constructor
-      virtual AprioriSmoothing2< ALLOC >* clone() const;
+      virtual AprioriSmoothing< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual AprioriSmoothing2< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual AprioriSmoothing< ALLOC >* clone(const allocator_type& alloc) const;
 
       /// destructor
-      virtual ~AprioriSmoothing2();
+      virtual ~AprioriSmoothing();
 
       /// @}
 
@@ -105,11 +105,11 @@ namespace gum {
       /// @{
 
       /// copy operator
-      AprioriSmoothing2< ALLOC >&
-        operator=(const AprioriSmoothing2< ALLOC >& from);
+      AprioriSmoothing< ALLOC >&
+        operator=(const AprioriSmoothing< ALLOC >& from);
 
       /// move operator
-      AprioriSmoothing2< ALLOC >& operator=(AprioriSmoothing2< ALLOC >&& from);
+      AprioriSmoothing< ALLOC >& operator=(AprioriSmoothing< ALLOC >&& from);
 
       /// @}
 
@@ -142,7 +142,7 @@ namespace gum {
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint variables set. */
       virtual void
-        addAllApriori(const IdSet2< ALLOC >&                  idset,
+        addAllApriori(const IdSet< ALLOC >&                  idset,
                       std::vector< double, ALLOC< double > >& counts) final;
 
       /** @brief adds the apriori to a counting vectordefined over the right
@@ -151,7 +151,7 @@ namespace gum {
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint RHS variables of the idset. */
       virtual void addConditioningApriori(
-        const IdSet2< ALLOC >&                  idset,
+        const IdSet< ALLOC >&                  idset,
         std::vector< double, ALLOC< double > >& counts) final;
 
       /// @}

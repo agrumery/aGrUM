@@ -37,16 +37,16 @@ namespace gum {
 
   namespace learning {
 
-    /** @class ScoreLog2Likelihood2
+    /** @class ScoreLog2Likelihood
      * @brief the class for computing Log2-likelihood scores
-     * @headerfile scoreLog2Likelihood2.h <agrum/learning/scores_and_tests/scoreLog2Likelihood2.h>
+     * @headerfile scoreLog2Likelihood.h <agrum/learning/scores_and_tests/scoreLog2Likelihood.h>
      * @ingroup learning_scores
      *
      * @warning If you pass an apriori to the score, this one will be added
      * into the log-likelihood part of the score.
      */
     template < template < typename > class ALLOC = std::allocator >
-    class ScoreLog2Likelihood2 : public Score2< ALLOC > {
+    class ScoreLog2Likelihood : public Score< ALLOC > {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;
@@ -77,9 +77,9 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      ScoreLog2Likelihood2(
+      ScoreLog2Likelihood(
         const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori2< ALLOC >&             apriori,
+        const Apriori< ALLOC >&             apriori,
         const std::vector< std::pair< std::size_t, std::size_t >,
                            ALLOC< std::pair< std::size_t, std::size_t > > >&
           ranges,
@@ -104,37 +104,37 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      ScoreLog2Likelihood2(
+      ScoreLog2Likelihood(
         const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori2< ALLOC >&             apriori,
+        const Apriori< ALLOC >&             apriori,
         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
           nodeId2columns =
             Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
         const allocator_type& alloc = allocator_type());
 
       /// copy constructor
-      ScoreLog2Likelihood2(const ScoreLog2Likelihood2< ALLOC >& from);
+      ScoreLog2Likelihood(const ScoreLog2Likelihood< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      ScoreLog2Likelihood2(const ScoreLog2Likelihood2< ALLOC >& from,
+      ScoreLog2Likelihood(const ScoreLog2Likelihood< ALLOC >& from,
                            const allocator_type&                alloc);
 
       /// move constructor
-      ScoreLog2Likelihood2(ScoreLog2Likelihood2< ALLOC >&& from);
+      ScoreLog2Likelihood(ScoreLog2Likelihood< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      ScoreLog2Likelihood2(ScoreLog2Likelihood2< ALLOC >&& from,
+      ScoreLog2Likelihood(ScoreLog2Likelihood< ALLOC >&& from,
                            const allocator_type&           alloc);
 
       /// virtual copy constructor
-      virtual ScoreLog2Likelihood2< ALLOC >* clone() const;
+      virtual ScoreLog2Likelihood< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual ScoreLog2Likelihood2< ALLOC >*
+      virtual ScoreLog2Likelihood< ALLOC >*
         clone(const allocator_type& alloc) const;
 
       /// destructor
-      virtual ~ScoreLog2Likelihood2();
+      virtual ~ScoreLog2Likelihood();
 
       /// @}
 
@@ -146,12 +146,12 @@ namespace gum {
       /// @{
 
       /// copy operator
-      ScoreLog2Likelihood2< ALLOC >&
-        operator=(const ScoreLog2Likelihood2< ALLOC >& from);
+      ScoreLog2Likelihood< ALLOC >&
+        operator=(const ScoreLog2Likelihood< ALLOC >& from);
 
       /// move operator
-      ScoreLog2Likelihood2< ALLOC >&
-        operator=(ScoreLog2Likelihood2< ALLOC >&& from);
+      ScoreLog2Likelihood< ALLOC >&
+        operator=(ScoreLog2Likelihood< ALLOC >&& from);
 
       /// @}
 
@@ -184,15 +184,15 @@ namespace gum {
        * note that, to be meaningful, a structure + parameter learning requires
        * that the same aprioris are taken into account during structure learning
        * and parameter learning. */
-      virtual const Apriori2< ALLOC >& internalApriori() const final;
+      virtual const Apriori< ALLOC >& internalApriori() const final;
 
-      using Score2< ALLOC >::score;
+      using Score< ALLOC >::score;
 
       /// returns the score for a given IdSet
       /** @throws OperationNotAllowed is raised if the score does not support
        * calling method score such an idset (due to too many/too few variables
        * in the left hand side or the right hand side of the idset). */
-      double score(const IdSet2< ALLOC >& idset);
+      double score(const IdSet< ALLOC >& idset);
 
       /// @}
 
@@ -205,7 +205,7 @@ namespace gum {
 
       /// indicates whether the apriori is compatible (meaningful) with the score
       /** a non empty string if the apriori is compatible with the score. */
-      static std::string isAprioriCompatible(const Apriori2< ALLOC >& apriori);
+      static std::string isAprioriCompatible(const Apriori< ALLOC >& apriori);
 
 
       protected:
@@ -213,12 +213,12 @@ namespace gum {
       /** @throws OperationNotAllowed is raised if the score does not support
        * calling method score such an idset (due to too many/too few variables
        * in the left hand side or the right hand side of the idset). */
-      virtual double _score(const IdSet2< ALLOC >& idset) final;
+      virtual double _score(const IdSet< ALLOC >& idset) final;
 
 
       private:
       /// the internal apriori of the score
-      AprioriNoApriori2< ALLOC > __internal_apriori;
+      AprioriNoApriori< ALLOC > __internal_apriori;
     };
 
   } /* namespace learning */
@@ -226,7 +226,7 @@ namespace gum {
 } /* namespace gum */
 
 
-extern template class gum::learning::ScoreLog2Likelihood2<>;
+extern template class gum::learning::ScoreLog2Likelihood<>;
 
 
 // always include the template implementation

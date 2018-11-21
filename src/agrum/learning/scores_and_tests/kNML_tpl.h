@@ -32,72 +32,72 @@ namespace gum {
 
     /// default constructor
     template < template < typename > class ALLOC >
-    INLINE KNML2< ALLOC >::KNML2(
+    INLINE KNML< ALLOC >::KNML(
       const DBRowGeneratorParser< ALLOC >&                                 parser,
-      const Apriori2< ALLOC >&                                             apriori,
+      const Apriori< ALLOC >&                                             apriori,
       const std::vector< std::pair< std::size_t, std::size_t >,
                          ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename KNML2< ALLOC >::allocator_type&                alloc) :
-        IndependenceTest2< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
+      const typename KNML< ALLOC >::allocator_type&                alloc) :
+        IndependenceTest< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
         __param_complexity(alloc) {
-      GUM_CONSTRUCTOR(KNML2);
+      GUM_CONSTRUCTOR(KNML);
     }
 
 
     /// default constructor
     template < template < typename > class ALLOC >
-    INLINE KNML2< ALLOC >::KNML2(
+    INLINE KNML< ALLOC >::KNML(
       const DBRowGeneratorParser< ALLOC >&                          parser,
-      const Apriori2< ALLOC >&                                      apriori,
+      const Apriori< ALLOC >&                                      apriori,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename KNML2< ALLOC >::allocator_type&                alloc) :
-        IndependenceTest2< ALLOC >(parser, apriori, nodeId2columns, alloc),
+      const typename KNML< ALLOC >::allocator_type&                alloc) :
+        IndependenceTest< ALLOC >(parser, apriori, nodeId2columns, alloc),
         __param_complexity(alloc) {
-      GUM_CONSTRUCTOR(KNML2);
+      GUM_CONSTRUCTOR(KNML);
     }
 
 
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE
-      KNML2< ALLOC >::KNML2(const KNML2< ALLOC >&                          from,
-                            const typename KNML2< ALLOC >::allocator_type& alloc) :
-        IndependenceTest2< ALLOC >(from, alloc),
+      KNML< ALLOC >::KNML(const KNML< ALLOC >&                          from,
+                            const typename KNML< ALLOC >::allocator_type& alloc) :
+        IndependenceTest< ALLOC >(from, alloc),
         __param_complexity(from.__param_complexity, alloc) {
-      GUM_CONS_CPY(KNML2);
+      GUM_CONS_CPY(KNML);
     }
 
 
     /// copy constructor
     template < template < typename > class ALLOC >
-    INLINE KNML2< ALLOC >::KNML2(const KNML2< ALLOC >& from) :
-        KNML2< ALLOC >(from, from.getAllocator()) {}
+    INLINE KNML< ALLOC >::KNML(const KNML< ALLOC >& from) :
+        KNML< ALLOC >(from, from.getAllocator()) {}
 
 
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE
-      KNML2< ALLOC >::KNML2(KNML2< ALLOC >&&                               from,
-                            const typename KNML2< ALLOC >::allocator_type& alloc) :
-        IndependenceTest2< ALLOC >(std::move(from), alloc),
+      KNML< ALLOC >::KNML(KNML< ALLOC >&&                               from,
+                            const typename KNML< ALLOC >::allocator_type& alloc) :
+        IndependenceTest< ALLOC >(std::move(from), alloc),
         __param_complexity(std::move(from.__param_complexity), alloc) {
-      GUM_CONS_MOV(KNML2);
+      GUM_CONS_MOV(KNML);
     }
 
 
     /// move constructor
     template < template < typename > class ALLOC >
-    INLINE KNML2< ALLOC >::KNML2(KNML2< ALLOC >&& from) :
-        KNML2< ALLOC >(std::move(from), from.getAllocator()) {}
+    INLINE KNML< ALLOC >::KNML(KNML< ALLOC >&& from) :
+        KNML< ALLOC >(std::move(from), from.getAllocator()) {}
 
 
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    KNML2< ALLOC >* KNML2< ALLOC >::clone(
-      const typename KNML2< ALLOC >::allocator_type& alloc) const {
-      ALLOC< KNML2< ALLOC > > allocator(alloc);
-      KNML2< ALLOC >*         new_score = allocator.allocate(1);
+    KNML< ALLOC >* KNML< ALLOC >::clone(
+      const typename KNML< ALLOC >::allocator_type& alloc) const {
+      ALLOC< KNML< ALLOC > > allocator(alloc);
+      KNML< ALLOC >*         new_score = allocator.allocate(1);
       try {
         allocator.construct(new_score, *this, alloc);
       } catch (...) {
@@ -111,23 +111,23 @@ namespace gum {
 
     /// virtual copy constructor
     template < template < typename > class ALLOC >
-    KNML2< ALLOC >* KNML2< ALLOC >::clone() const {
+    KNML< ALLOC >* KNML< ALLOC >::clone() const {
       return clone(this->getAllocator());
     }
 
 
     /// destructor
     template < template < typename > class ALLOC >
-    KNML2< ALLOC >::~KNML2< ALLOC >() {
-      GUM_DESTRUCTOR(KNML2);
+    KNML< ALLOC >::~KNML< ALLOC >() {
+      GUM_DESTRUCTOR(KNML);
     }
 
 
     /// copy operator
     template < template < typename > class ALLOC >
-    KNML2< ALLOC >& KNML2< ALLOC >::operator=(const KNML2< ALLOC >& from) {
+    KNML< ALLOC >& KNML< ALLOC >::operator=(const KNML< ALLOC >& from) {
       if (this != &from) {
-        IndependenceTest2< ALLOC >::operator=(from);
+        IndependenceTest< ALLOC >::operator=(from);
         __param_complexity = from.__param_complexityi;
       }
       return *this;
@@ -136,9 +136,9 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    KNML2< ALLOC >& KNML2< ALLOC >::operator=(KNML2< ALLOC >&& from) {
+    KNML< ALLOC >& KNML< ALLOC >::operator=(KNML< ALLOC >&& from) {
       if (this != &from) {
-        IndependenceTest2< ALLOC >::operator=(std::move(from));
+        IndependenceTest< ALLOC >::operator=(std::move(from));
         __param_complexity = std::move(from.__param_complexity);
       }
       return *this;
@@ -147,31 +147,31 @@ namespace gum {
 
     /// clears all the data structures from memory, including the cache
     template < template < typename > class ALLOC >
-    void KNML2< ALLOC >::clear() {
-      IndependenceTest2< ALLOC >::clear();
+    void KNML< ALLOC >::clear() {
+      IndependenceTest< ALLOC >::clear();
       __param_complexity.clearCache();
     }
 
 
     /// clears the current cache
     template < template < typename > class ALLOC >
-    void KNML2< ALLOC >::clearCache() {
-      IndependenceTest2< ALLOC >::clearCache();
+    void KNML< ALLOC >::clearCache() {
+      IndependenceTest< ALLOC >::clearCache();
       __param_complexity.clearCache();
     }
 
 
     /// turn on/off the use of a cache of the previously computed score
     template < template < typename > class ALLOC >
-    void KNML2< ALLOC >::useCache(const bool on_off) {
-      IndependenceTest2< ALLOC >::useCache(on_off);
+    void KNML< ALLOC >::useCache(const bool on_off) {
+      IndependenceTest< ALLOC >::useCache(on_off);
       __param_complexity.useCache(on_off);
     }
 
 
     /// returns the score corresponding to a given nodeset
     template < template < typename > class ALLOC >
-    double KNML2< ALLOC >::_score(const IdSet2< ALLOC >& idset) {
+    double KNML< ALLOC >::_score(const IdSet< ALLOC >& idset) {
       // perform the countings on the database for all the nodes in the idset
       // This will help optimizing the computations of the Nxui, Nyui and Nui
       // that we will be needed subsequently
@@ -196,9 +196,9 @@ namespace gum {
       // without conditioning nodes
       if (idset.hasConditioningSet()) {
         // now get the Nxui, Nyui and Nui
-        IdSet2< ALLOC > idset_xui = idset;
+        IdSet< ALLOC > idset_xui = idset;
         idset_xui.erase(idset[1]);
-        IdSet2< ALLOC > idset_yui = idset;
+        IdSet< ALLOC > idset_yui = idset;
         idset_yui.erase(idset[0]);
 
         std::vector< double, ALLOC< double > > N_ui =
@@ -234,8 +234,8 @@ namespace gum {
       } else {
         // here, there is no conditioning set
         // now get the Nxui, Nyui and Nui
-        IdSet2< ALLOC > idset_xui(idset[0], this->_empty_ids, true);
-        IdSet2< ALLOC > idset_yui(idset[1], this->_empty_ids, true);
+        IdSet< ALLOC > idset_xui(idset[0], this->_empty_ids, true);
+        IdSet< ALLOC > idset_yui(idset[1], this->_empty_ids, true);
 
         std::vector< double, ALLOC< double > > N_xui =
           this->_counter.counts(idset_xui, false);

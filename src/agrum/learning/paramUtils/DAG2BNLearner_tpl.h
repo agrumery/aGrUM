@@ -35,59 +35,59 @@ namespace gum {
 
     /// returns the allocator used by the score
     template < template < typename > class ALLOC >
-    INLINE typename DAG2BNLearner2< ALLOC >::allocator_type
-      DAG2BNLearner2< ALLOC >::getAllocator() const {
+    INLINE typename DAG2BNLearner< ALLOC >::allocator_type
+      DAG2BNLearner< ALLOC >::getAllocator() const {
       return *this;
     }
 
 
     /// default constructor
     template < template < typename > class ALLOC >
-    DAG2BNLearner2< ALLOC >::DAG2BNLearner2(
-      const typename DAG2BNLearner2< ALLOC >::allocator_type& alloc) :
+    DAG2BNLearner< ALLOC >::DAG2BNLearner(
+      const typename DAG2BNLearner< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc) {
-      GUM_CONSTRUCTOR(DAG2BNLearner2);
+      GUM_CONSTRUCTOR(DAG2BNLearner);
     }
 
 
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    DAG2BNLearner2< ALLOC >::DAG2BNLearner2(
-      const DAG2BNLearner2< ALLOC >&                          from,
-      const typename DAG2BNLearner2< ALLOC >::allocator_type& alloc) :
+    DAG2BNLearner< ALLOC >::DAG2BNLearner(
+      const DAG2BNLearner< ALLOC >&                          from,
+      const typename DAG2BNLearner< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc) {
-      GUM_CONS_CPY(DAG2BNLearner2);
+      GUM_CONS_CPY(DAG2BNLearner);
     }
 
 
     /// copy constructor
     template < template < typename > class ALLOC >
-    DAG2BNLearner2< ALLOC >::DAG2BNLearner2(const DAG2BNLearner2< ALLOC >& from) :
-        DAG2BNLearner2(from, from.getAllocator()) {}
+    DAG2BNLearner< ALLOC >::DAG2BNLearner(const DAG2BNLearner< ALLOC >& from) :
+        DAG2BNLearner(from, from.getAllocator()) {}
 
 
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
-    DAG2BNLearner2< ALLOC >::DAG2BNLearner2(
-      DAG2BNLearner2< ALLOC >&&                               from,
-      const typename DAG2BNLearner2< ALLOC >::allocator_type& alloc) :
+    DAG2BNLearner< ALLOC >::DAG2BNLearner(
+      DAG2BNLearner< ALLOC >&&                               from,
+      const typename DAG2BNLearner< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc) {
-      GUM_CONS_MOV(DAG2BNLearner2);
+      GUM_CONS_MOV(DAG2BNLearner);
     }
 
 
     /// move constructor
     template < template < typename > class ALLOC >
-    DAG2BNLearner2< ALLOC >::DAG2BNLearner2(DAG2BNLearner2< ALLOC >&& from) :
-        DAG2BNLearner2(std::move(from), from.getAllocator()) {}
+    DAG2BNLearner< ALLOC >::DAG2BNLearner(DAG2BNLearner< ALLOC >&& from) :
+        DAG2BNLearner(std::move(from), from.getAllocator()) {}
 
 
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    DAG2BNLearner2< ALLOC >* DAG2BNLearner2< ALLOC >::clone(
-      const typename DAG2BNLearner2< ALLOC >::allocator_type& alloc) const {
-      ALLOC< DAG2BNLearner2< ALLOC > > allocator(alloc);
-      DAG2BNLearner2< ALLOC >*         new_learner = allocator.allocate(1);
+    DAG2BNLearner< ALLOC >* DAG2BNLearner< ALLOC >::clone(
+      const typename DAG2BNLearner< ALLOC >::allocator_type& alloc) const {
+      ALLOC< DAG2BNLearner< ALLOC > > allocator(alloc);
+      DAG2BNLearner< ALLOC >*         new_learner = allocator.allocate(1);
       try {
         allocator.construct(new_learner, *this, alloc);
       } catch (...) {
@@ -101,30 +101,30 @@ namespace gum {
 
     /// virtual copy constructor
     template < template < typename > class ALLOC >
-    DAG2BNLearner2< ALLOC >* DAG2BNLearner2< ALLOC >::clone() const {
+    DAG2BNLearner< ALLOC >* DAG2BNLearner< ALLOC >::clone() const {
       return clone(this->getAllocator());
     }
 
 
     /// destructor
     template < template < typename > class ALLOC >
-    DAG2BNLearner2< ALLOC >::~DAG2BNLearner2() {
-      GUM_DESTRUCTOR(DAG2BNLearner2);
+    DAG2BNLearner< ALLOC >::~DAG2BNLearner() {
+      GUM_DESTRUCTOR(DAG2BNLearner);
     }
 
 
     /// copy operator
     template < template < typename > class ALLOC >
-    DAG2BNLearner2< ALLOC >& DAG2BNLearner2< ALLOC >::
-                             operator=(const DAG2BNLearner2< ALLOC >& from) {
+    DAG2BNLearner< ALLOC >& DAG2BNLearner< ALLOC >::
+                             operator=(const DAG2BNLearner< ALLOC >& from) {
       return *this;
     }
 
 
     /// move operator
     template < template < typename > class ALLOC >
-    DAG2BNLearner2< ALLOC >& DAG2BNLearner2< ALLOC >::
-                             operator=(DAG2BNLearner2< ALLOC >&& from) {
+    DAG2BNLearner< ALLOC >& DAG2BNLearner< ALLOC >::
+                             operator=(DAG2BNLearner< ALLOC >&& from) {
       return *this;
     }
 
@@ -132,7 +132,7 @@ namespace gum {
     /// copy a potential into another whose variables' sequence differs
     template < template < typename > class ALLOC >
     template < typename GUM_SCALAR >
-    void DAG2BNLearner2< ALLOC >::__probaVarReordering(
+    void DAG2BNLearner< ALLOC >::__probaVarReordering(
       gum::Potential< GUM_SCALAR >&       pot,
       const gum::Potential< GUM_SCALAR >& other_pot) {
       // check that the variables are identical
@@ -155,7 +155,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     template < typename GUM_SCALAR >
     BayesNet< GUM_SCALAR >
-      DAG2BNLearner2< ALLOC >::createBN(ParamEstimator2< ALLOC >& estimator,
+      DAG2BNLearner< ALLOC >::createBN(ParamEstimator< ALLOC >& estimator,
                                         const DAG&                dag) {
       BayesNet< GUM_SCALAR > bn;
 

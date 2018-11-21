@@ -199,7 +199,7 @@ namespace gum {
       LocalSearchWithTabuList::learnBN(GRAPH_CHANGES_SELECTOR& selector,
                                        PARAM_ESTIMATOR&        estimator,
                                        DAG                     initial_dag) {
-      return DAG2BNLearner2<>::createBN< GUM_SCALAR >(
+      return DAG2BNLearner<>::createBN< GUM_SCALAR >(
           estimator,
           learnStructure(selector, initial_dag));
     }

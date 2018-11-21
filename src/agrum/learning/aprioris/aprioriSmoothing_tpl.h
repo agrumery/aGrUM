@@ -31,55 +31,55 @@ namespace gum {
 
     /// default constructor
     template < template < typename > class ALLOC >
-    INLINE AprioriSmoothing2< ALLOC >::AprioriSmoothing2(
+    INLINE AprioriSmoothing< ALLOC >::AprioriSmoothing(
       const DatabaseTable< ALLOC >&                                 database,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename AprioriSmoothing2< ALLOC >::allocator_type&    alloc) :
-        Apriori2< ALLOC >(database, nodeId2columns, alloc) {
-      GUM_CONSTRUCTOR(AprioriSmoothing2);
+      const typename AprioriSmoothing< ALLOC >::allocator_type&    alloc) :
+        Apriori< ALLOC >(database, nodeId2columns, alloc) {
+      GUM_CONSTRUCTOR(AprioriSmoothing);
     }
 
 
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE AprioriSmoothing2< ALLOC >::AprioriSmoothing2(
-      const AprioriSmoothing2< ALLOC >&                          from,
-      const typename AprioriSmoothing2< ALLOC >::allocator_type& alloc) :
-        Apriori2< ALLOC >(from, alloc) {
-      GUM_CONS_CPY(AprioriSmoothing2);
+    INLINE AprioriSmoothing< ALLOC >::AprioriSmoothing(
+      const AprioriSmoothing< ALLOC >&                          from,
+      const typename AprioriSmoothing< ALLOC >::allocator_type& alloc) :
+        Apriori< ALLOC >(from, alloc) {
+      GUM_CONS_CPY(AprioriSmoothing);
     }
 
 
     /// copy constructor
     template < template < typename > class ALLOC >
-    INLINE AprioriSmoothing2< ALLOC >::AprioriSmoothing2(
-      const AprioriSmoothing2< ALLOC >& from) :
-        AprioriSmoothing2< ALLOC >(from, from.getAllocator()) {}
+    INLINE AprioriSmoothing< ALLOC >::AprioriSmoothing(
+      const AprioriSmoothing< ALLOC >& from) :
+        AprioriSmoothing< ALLOC >(from, from.getAllocator()) {}
 
 
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE AprioriSmoothing2< ALLOC >::AprioriSmoothing2(
-      AprioriSmoothing2< ALLOC >&&                               from,
-      const typename AprioriSmoothing2< ALLOC >::allocator_type& alloc) :
-        Apriori2< ALLOC >(std::move(from), alloc) {
-      GUM_CONS_MOV(AprioriSmoothing2);
+    INLINE AprioriSmoothing< ALLOC >::AprioriSmoothing(
+      AprioriSmoothing< ALLOC >&&                               from,
+      const typename AprioriSmoothing< ALLOC >::allocator_type& alloc) :
+        Apriori< ALLOC >(std::move(from), alloc) {
+      GUM_CONS_MOV(AprioriSmoothing);
     }
 
 
     /// move constructor
     template < template < typename > class ALLOC >
-    INLINE AprioriSmoothing2< ALLOC >::AprioriSmoothing2(
-      AprioriSmoothing2< ALLOC >&& from) :
-        AprioriSmoothing2< ALLOC >(std::move(from), from.getAllocator()) {}
+    INLINE AprioriSmoothing< ALLOC >::AprioriSmoothing(
+      AprioriSmoothing< ALLOC >&& from) :
+        AprioriSmoothing< ALLOC >(std::move(from), from.getAllocator()) {}
 
 
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    AprioriSmoothing2< ALLOC >* AprioriSmoothing2< ALLOC >::clone(
-      const typename AprioriSmoothing2< ALLOC >::allocator_type& alloc) const {
-      ALLOC< AprioriSmoothing2< ALLOC > > allocator(alloc);
-      AprioriSmoothing2< ALLOC >*         apriori = allocator.allocate(1);
+    AprioriSmoothing< ALLOC >* AprioriSmoothing< ALLOC >::clone(
+      const typename AprioriSmoothing< ALLOC >::allocator_type& alloc) const {
+      ALLOC< AprioriSmoothing< ALLOC > > allocator(alloc);
+      AprioriSmoothing< ALLOC >*         apriori = allocator.allocate(1);
       try {
         allocator.construct(apriori, *this, alloc);
       } catch (...) {
@@ -93,61 +93,61 @@ namespace gum {
 
     /// virtual copy constructor
     template < template < typename > class ALLOC >
-    INLINE AprioriSmoothing2< ALLOC >* AprioriSmoothing2< ALLOC >::clone() const {
+    INLINE AprioriSmoothing< ALLOC >* AprioriSmoothing< ALLOC >::clone() const {
       return clone(this->getAllocator());
     }
 
 
     /// destructor
     template < template < typename > class ALLOC >
-    INLINE AprioriSmoothing2< ALLOC >::~AprioriSmoothing2() {
-      GUM_DESTRUCTOR(AprioriSmoothing2);
+    INLINE AprioriSmoothing< ALLOC >::~AprioriSmoothing() {
+      GUM_DESTRUCTOR(AprioriSmoothing);
     }
 
 
     /// copy operator
     template < template < typename > class ALLOC >
-    INLINE AprioriSmoothing2< ALLOC >& AprioriSmoothing2< ALLOC >::
-                                       operator=(const AprioriSmoothing2< ALLOC >& from) {
-      Apriori2< ALLOC >::operator=(from);
+    INLINE AprioriSmoothing< ALLOC >& AprioriSmoothing< ALLOC >::
+                                       operator=(const AprioriSmoothing< ALLOC >& from) {
+      Apriori< ALLOC >::operator=(from);
       return *this;
     }
 
 
     /// move operator
     template < template < typename > class ALLOC >
-    INLINE AprioriSmoothing2< ALLOC >& AprioriSmoothing2< ALLOC >::
-                                       operator=(AprioriSmoothing2< ALLOC >&& from) {
-      Apriori2< ALLOC >::operator=(std::move(from));
+    INLINE AprioriSmoothing< ALLOC >& AprioriSmoothing< ALLOC >::
+                                       operator=(AprioriSmoothing< ALLOC >&& from) {
+      Apriori< ALLOC >::operator=(std::move(from));
       return *this;
     }
 
 
     /// indicates whether an apriori is of a certain type
     template < template < typename > class ALLOC >
-    INLINE bool AprioriSmoothing2< ALLOC >::isOfType(const std::string& type) {
+    INLINE bool AprioriSmoothing< ALLOC >::isOfType(const std::string& type) {
       return AprioriSmoothingType::isOfType(type);
     }
 
 
     /// returns the type of the apriori
     template < template < typename > class ALLOC >
-    INLINE const std::string& AprioriSmoothing2< ALLOC >::getType() const {
+    INLINE const std::string& AprioriSmoothing< ALLOC >::getType() const {
       return AprioriSmoothingType::type;
     }
 
 
     /// indicates whether the apriori is potentially informative
     template < template < typename > class ALLOC >
-    INLINE bool AprioriSmoothing2< ALLOC >::isInformative() const {
+    INLINE bool AprioriSmoothing< ALLOC >::isInformative() const {
       return this->_weight != 0.0;
     }
 
 
     /// returns the apriori vector all the variables in the idset
     template < template < typename > class ALLOC >
-    INLINE void AprioriSmoothing2< ALLOC >::addAllApriori(
-      const IdSet2< ALLOC >&                  idset,
+    INLINE void AprioriSmoothing< ALLOC >::addAllApriori(
+      const IdSet< ALLOC >&                  idset,
       std::vector< double, ALLOC< double > >& counts) {
       // if the idset is empty or the weight is zero, the apriori is also empty
       if (idset.empty() || (this->_weight == 0.0)) return;
@@ -160,8 +160,8 @@ namespace gum {
 
     /// returns the apriori vector over only the conditioning set of an idset
     template < template < typename > class ALLOC >
-    void AprioriSmoothing2< ALLOC >::addConditioningApriori(
-      const IdSet2< ALLOC >&                  idset,
+    void AprioriSmoothing< ALLOC >::addConditioningApriori(
+      const IdSet< ALLOC >&                  idset,
       std::vector< double, ALLOC< double > >& counts) {
       // if the conditioning set is empty or the weight is equal to zero,
       // the apriori is also empty

@@ -26,4 +26,4 @@
 
 #include <agrum/learning/scores_and_tests/correctedMutualInformation.h>
 
-template class gum::learning::CorrectedMutualInformation2<>;
+template class gum::learning::CorrectedMutualInformation<>;

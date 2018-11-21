@@ -48,7 +48,7 @@ namespace gum {
     template < typename STRUCTURAL_CONSTRAINT,
                typename GRAPH_CHANGES_GENERATOR,
                template < typename > class ALLOC = std::allocator >
-    class GraphChangesSelector4DiGraph2 {
+    class GraphChangesSelector4DiGraph {
       public:
       /// the type of the generator
       using GeneratorType = GRAPH_CHANGES_GENERATOR;
@@ -59,24 +59,24 @@ namespace gum {
       /// @{
 
       /// default constructor
-      GraphChangesSelector4DiGraph2(Score2< ALLOC >&         score,
+      GraphChangesSelector4DiGraph(Score< ALLOC >&         score,
                                     STRUCTURAL_CONSTRAINT&   constraint,
                                     GRAPH_CHANGES_GENERATOR& changes_generator);
 
       /// copy constructor
-      GraphChangesSelector4DiGraph2(
-        const GraphChangesSelector4DiGraph2< STRUCTURAL_CONSTRAINT,
+      GraphChangesSelector4DiGraph(
+        const GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
                                              GRAPH_CHANGES_GENERATOR,
                                              ALLOC >& from);
 
       /// move constructor
-      GraphChangesSelector4DiGraph2(
-        GraphChangesSelector4DiGraph2< STRUCTURAL_CONSTRAINT,
+      GraphChangesSelector4DiGraph(
+        GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
                                        GRAPH_CHANGES_GENERATOR,
                                        ALLOC >&& from);
 
       /// destructor
-      ~GraphChangesSelector4DiGraph2();
+      ~GraphChangesSelector4DiGraph();
 
       /// @}
 
@@ -86,18 +86,18 @@ namespace gum {
       /// @{
 
       /// copy operator
-      GraphChangesSelector4DiGraph2< STRUCTURAL_CONSTRAINT,
+      GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
                                      GRAPH_CHANGES_GENERATOR,
                                      ALLOC >&
-        operator=(const GraphChangesSelector4DiGraph2< STRUCTURAL_CONSTRAINT,
+        operator=(const GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
                                                        GRAPH_CHANGES_GENERATOR,
                                                        ALLOC >& from);
 
       /// move operator
-      GraphChangesSelector4DiGraph2< STRUCTURAL_CONSTRAINT,
+      GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
                                      GRAPH_CHANGES_GENERATOR,
                                      ALLOC >&
-        operator=(GraphChangesSelector4DiGraph2< STRUCTURAL_CONSTRAINT,
+        operator=(GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
                                                  GRAPH_CHANGES_GENERATOR,
                                                  ALLOC >&& from);
 
@@ -178,7 +178,7 @@ namespace gum {
 
       private:
       /// the scoring function
-      Score2< ALLOC >* __score;
+      Score< ALLOC >* __score;
 
       /// the set of constraints used to determine valid changes
       STRUCTURAL_CONSTRAINT* __constraint;

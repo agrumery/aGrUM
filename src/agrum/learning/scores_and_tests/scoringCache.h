@@ -115,29 +115,29 @@ namespace gum {
        * @param score the score assigned to the IdSet
        * @throws DuplicateElement exception is raised if a score for the same
        * variables already exists */
-      void insert(const IdSet2< ALLOC >& idset, double score);
+      void insert(const IdSet< ALLOC >& idset, double score);
 
       /// insert a new score into the cache
       /** @param idset the IdSet storing the sets of variables
        * @param score the score assigned to the IdSet
        * @throws DuplicateElement exception is raised if a score for the same
        * variables already exists */
-      void insert(IdSet2< ALLOC >&& idset, double score);
+      void insert(IdSet< ALLOC >&& idset, double score);
 
       /// removes a score (if it exists)
       /** @param idset the IdSet storing the sets of variables
        * @warning If the score does not exist, nothing is done. In particular,
        * no exception is raised */
-      void erase(const IdSet2< ALLOC >& idset);
+      void erase(const IdSet< ALLOC >& idset);
 
       /// indicates whether a given score exists
       /** @param idset the IdSet storing the sets of variables */
-      bool exists(const IdSet2< ALLOC >& idset);
+      bool exists(const IdSet< ALLOC >& idset);
 
       /// returns a given score
       /** @param idset the IdSet storing the sets of variables
        * @throws NotFound is raised if the score is not cached */
-      double score(const IdSet2< ALLOC >& idset);
+      double score(const IdSet< ALLOC >& idset);
 
       /// removes all the stored scores
       void clear();
@@ -152,9 +152,9 @@ namespace gum {
 
       private:
       /// the scores stored into the cache
-      HashTable< IdSet2< ALLOC >,
+      HashTable< IdSet< ALLOC >,
                  double,
-                 ALLOC< std::pair< IdSet2< ALLOC >, double > > >
+                 ALLOC< std::pair< IdSet< ALLOC >, double > > >
         __scores;
     };
 

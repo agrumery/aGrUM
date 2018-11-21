@@ -136,7 +136,7 @@ namespace gum {
        * and has loaded the database.
        * @param graph the MixedGraph we start from for the learning
        * */
-      MixedGraph learnMixedStructure(CorrectedMutualInformation2<>& I,
+      MixedGraph learnMixedStructure(CorrectedMutualInformation<>& I,
                                      MixedGraph                     graph);
 
       /// learns the structure of an Bayesian network, ie a DAG, by first learning
@@ -145,7 +145,7 @@ namespace gum {
        * and has loaded the database
        * @param graph the MixedGraph we start from for the learning
        */
-      DAG learnStructure(CorrectedMutualInformation2<>& I, MixedGraph graph);
+      DAG learnStructure(CorrectedMutualInformation<>& I, MixedGraph graph);
 
       /// learns the structure and the parameters of a BN
       /** @param selector A selector class that computes the best changes that
@@ -195,7 +195,7 @@ namespace gum {
        * @param _rank the heap of ranks of the algorithm
        */
       void _initiation(
-        CorrectedMutualInformation2<>&                          I,
+        CorrectedMutualInformation<>&                          I,
         MixedGraph&                                             graph,
         HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set,
         Heap<
@@ -215,7 +215,7 @@ namespace gum {
        * @param _rank the heap of ranks of the algorithm
        */
       void _iteration(
-        CorrectedMutualInformation2<>&                          I,
+        CorrectedMutualInformation<>&                          I,
         MixedGraph&                                             graph,
         HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set,
         Heap<
@@ -230,7 +230,7 @@ namespace gum {
        * the previous phase
        */
       void _orientation_3off2(
-        CorrectedMutualInformation2<>&                                I,
+        CorrectedMutualInformation<>&                                I,
         MixedGraph&                                                   graph,
         const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set);
 
@@ -243,7 +243,7 @@ namespace gum {
        * the previous phase
        */
       void _orientation_latents(
-        CorrectedMutualInformation2<>&                                I,
+        CorrectedMutualInformation<>&                                I,
         MixedGraph&                                                   graph,
         const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set);
 
@@ -256,7 +256,7 @@ namespace gum {
        * the previous phase
        */
       void _orientation_miic(
-        CorrectedMutualInformation2<>&                                I,
+        CorrectedMutualInformation<>&                                I,
         MixedGraph&                                                   graph,
         const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set);
       /// @}
@@ -275,7 +275,7 @@ namespace gum {
         NodeId                            y,
         const std::vector< NodeId >&      ui,
         const MixedGraph&              graph,
-        CorrectedMutualInformation2<>& I,
+        CorrectedMutualInformation<>& I,
         Heap<
           std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*, double >,
           GreaterPairOn2nd >& _rank);
@@ -289,7 +289,7 @@ namespace gum {
       std::vector< std::pair< std::tuple< NodeId, NodeId, NodeId >*, double > >
         _getUnshieldedTriples(
           const MixedGraph&                                             graph,
-          CorrectedMutualInformation2<>&                                I,
+          CorrectedMutualInformation<>&                                I,
           const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set);
 
       /// gets the list of unshielded triples in the graph in decreasing value of
@@ -303,7 +303,7 @@ namespace gum {
         std::tuple< std::tuple< NodeId, NodeId, NodeId >*, double, double, double > >
         _getUnshieldedTriplesMIIC(
           const MixedGraph&                                             graph,
-          CorrectedMutualInformation2<>&                                I,
+          CorrectedMutualInformation<>&                                I,
           const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set,
           HashTable< std::pair< NodeId, NodeId >, char >&                     marks);
 

@@ -35,7 +35,7 @@ namespace gum {
       const DatabaseTable< ALLOC >&                                 database,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
       const typename AprioriK2< ALLOC >::allocator_type&            alloc) :
-        AprioriSmoothing2< ALLOC >(database, nodeId2columns, alloc) {
+        AprioriSmoothing< ALLOC >(database, nodeId2columns, alloc) {
       GUM_CONSTRUCTOR(AprioriK2);
     }
 
@@ -45,7 +45,7 @@ namespace gum {
     INLINE AprioriK2< ALLOC >::AprioriK2(
       const AprioriK2< ALLOC >&                          from,
       const typename AprioriK2< ALLOC >::allocator_type& alloc) :
-        AprioriSmoothing2< ALLOC >(from, alloc) {
+        AprioriSmoothing< ALLOC >(from, alloc) {
       GUM_CONS_CPY(AprioriK2);
     }
 
@@ -61,7 +61,7 @@ namespace gum {
     INLINE AprioriK2< ALLOC >::AprioriK2(
       AprioriK2< ALLOC >&&                               from,
       const typename AprioriK2< ALLOC >::allocator_type& alloc) :
-        AprioriSmoothing2< ALLOC >(std::move(from), alloc) {
+        AprioriSmoothing< ALLOC >(std::move(from), alloc) {
       GUM_CONS_MOV(AprioriK2);
     }
 
@@ -107,7 +107,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE AprioriK2< ALLOC >& AprioriK2< ALLOC >::
                                operator=(const AprioriK2< ALLOC >& from) {
-      AprioriSmoothing2< ALLOC >::operator=(from);
+      AprioriSmoothing< ALLOC >::operator=(from);
       return *this;
     }
 
@@ -116,7 +116,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE AprioriK2< ALLOC >& AprioriK2< ALLOC >::
                                operator=(AprioriK2< ALLOC >&& from) {
-      AprioriSmoothing2< ALLOC >::operator=(std::move(from));
+      AprioriSmoothing< ALLOC >::operator=(std::move(from));
       return *this;
     }
 

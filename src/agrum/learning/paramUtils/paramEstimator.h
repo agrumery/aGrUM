@@ -36,13 +36,13 @@ namespace gum {
   namespace learning {
 
 
-    /** @class ParamEstimator2
+    /** @class ParamEstimator
      * @brief The base class for estimating parameters of CPTs
-     * @headerfile paramEstimator2.h <agrum/learning/paramUtils/paramEstimator2.h>
+     * @headerfile paramEstimator.h <agrum/learning/paramUtils/paramEstimator.h>
      * @ingroup learning_param_utils
      */
     template < template < typename > class ALLOC = std::allocator >
-    class ParamEstimator2 {
+    class ParamEstimator {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;
@@ -76,10 +76,10 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      ParamEstimator2(
+      ParamEstimator(
         const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori2< ALLOC >&             external_apriori,
-        const Apriori2< ALLOC >&             score_internal__apriori,
+        const Apriori< ALLOC >&             external_apriori,
+        const Apriori< ALLOC >&             score_internal__apriori,
         const std::vector< std::pair< std::size_t, std::size_t >,
                            ALLOC< std::pair< std::size_t, std::size_t > > >&
           ranges,
@@ -106,37 +106,37 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      ParamEstimator2(const DBRowGeneratorParser< ALLOC >& parser,
-                      const Apriori2< ALLOC >&             external_apriori,
-                      const Apriori2< ALLOC >&             score_internal__apriori,
+      ParamEstimator(const DBRowGeneratorParser< ALLOC >& parser,
+                      const Apriori< ALLOC >&             external_apriori,
+                      const Apriori< ALLOC >&             score_internal__apriori,
                       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
                         nodeId2columns =
                           Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
                       const allocator_type& alloc = allocator_type());
 
       /// copy constructor
-      ParamEstimator2(const ParamEstimator2< ALLOC >& from);
+      ParamEstimator(const ParamEstimator< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      ParamEstimator2(const ParamEstimator2< ALLOC >& from,
+      ParamEstimator(const ParamEstimator< ALLOC >& from,
                       const allocator_type&           alloc);
 
       /// move constructor
-      ParamEstimator2(ParamEstimator2< ALLOC >&& from);
+      ParamEstimator(ParamEstimator< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      ParamEstimator2(ParamEstimator2< ALLOC >&& from,
+      ParamEstimator(ParamEstimator< ALLOC >&& from,
                       const allocator_type&      alloc);
 
       /// virtual copy constructor
-      virtual ParamEstimator2< ALLOC >* clone() const = 0;
+      virtual ParamEstimator< ALLOC >* clone() const = 0;
 
       /// virtual copy constructor with a given allocator
-      virtual ParamEstimator2< ALLOC >*
+      virtual ParamEstimator< ALLOC >*
         clone(const allocator_type& alloc) const = 0;
 
       /// destructor
-      virtual ~ParamEstimator2();
+      virtual ~ParamEstimator();
 
       /// @}
 
@@ -195,24 +195,24 @@ namespace gum {
 
       protected:
       /// an external a priori
-      Apriori2< ALLOC >* _external_apriori{nullptr};
+      Apriori< ALLOC >* _external_apriori{nullptr};
 
       /** @brief if a score was used for learning the structure of the PGM, this
        * is the a priori internal to the score */
-      Apriori2< ALLOC >* _score_internal_apriori{nullptr};
+      Apriori< ALLOC >* _score_internal_apriori{nullptr};
 
       /// the record counter used to parse the database
-      RecordCounter2< ALLOC > _counter;
+      RecordCounter< ALLOC > _counter;
 
       /// an empty vector of nodes, used for empty conditioning
       const std::vector< NodeId, ALLOC< NodeId > > _empty_nodevect;
 
 
       /// copy operator
-      ParamEstimator2< ALLOC >& operator=(const ParamEstimator2< ALLOC >& from);
+      ParamEstimator< ALLOC >& operator=(const ParamEstimator< ALLOC >& from);
 
       /// move operator
-      ParamEstimator2< ALLOC >& operator=(ParamEstimator2< ALLOC >&& from);
+      ParamEstimator< ALLOC >& operator=(ParamEstimator< ALLOC >&& from);
 
       /** @brief check the coherency between the parameters passed to
        * the setParameters functions */

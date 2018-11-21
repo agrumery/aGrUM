@@ -40,11 +40,11 @@ namespace gum {
 
     /** @class KNML
      * @brief the class for computing the NML penalty used by 3off2
-     * @ingroup learning_group
+     * @ingroup learning_scores
      *
      */
     template < template < typename > class ALLOC = std::allocator >
-    class KNML2 : private IndependenceTest2< ALLOC > {
+    class KNML : private IndependenceTest< ALLOC > {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;
@@ -77,8 +77,8 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      KNML2(const DBRowGeneratorParser< ALLOC >& parser,
-            const Apriori2< ALLOC >&             apriori,
+      KNML(const DBRowGeneratorParser< ALLOC >& parser,
+            const Apriori< ALLOC >&             apriori,
             const std::vector< std::pair< std::size_t, std::size_t >,
                                ALLOC< std::pair< std::size_t, std::size_t > > >&
               ranges,
@@ -105,33 +105,33 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      KNML2(const DBRowGeneratorParser< ALLOC >& parser,
-            const Apriori2< ALLOC >&             apriori,
+      KNML(const DBRowGeneratorParser< ALLOC >& parser,
+            const Apriori< ALLOC >&             apriori,
             const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
               nodeId2columns =
                 Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
             const allocator_type& alloc = allocator_type());
 
       /// copy constructor
-      KNML2(const KNML2< ALLOC >& from);
+      KNML(const KNML< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      KNML2(const KNML2< ALLOC >& from, const allocator_type& alloc);
+      KNML(const KNML< ALLOC >& from, const allocator_type& alloc);
 
       /// move constructor
-      KNML2(KNML2< ALLOC >&& from);
+      KNML(KNML< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      KNML2(KNML2< ALLOC >&& from, const allocator_type& alloc);
+      KNML(KNML< ALLOC >&& from, const allocator_type& alloc);
 
       /// virtual copy constructor
-      virtual KNML2< ALLOC >* clone() const;
+      virtual KNML< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual KNML2< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual KNML< ALLOC >* clone(const allocator_type& alloc) const;
 
       /// destructor
-      virtual ~KNML2();
+      virtual ~KNML();
 
       /// @}
 
@@ -143,10 +143,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      KNML2< ALLOC >& operator=(const KNML2< ALLOC >& from);
+      KNML< ALLOC >& operator=(const KNML< ALLOC >& from);
 
       /// move operator
-      KNML2< ALLOC >& operator=(KNML2< ALLOC >&& from);
+      KNML< ALLOC >& operator=(KNML< ALLOC >&& from);
 
       /// @}
 
@@ -157,13 +157,13 @@ namespace gum {
       /// @{
 
       /// changes the max number of threads used to parse the database
-      using IndependenceTest2< ALLOC >::setMaxNbThreads;
+      using IndependenceTest< ALLOC >::setMaxNbThreads;
 
       /// returns the number of threads used to parse the database
-      using IndependenceTest2< ALLOC >::nbThreads;
+      using IndependenceTest< ALLOC >::nbThreads;
 
       /// the scores
-      using IndependenceTest2< ALLOC >::score;
+      using IndependenceTest< ALLOC >::score;
 
       /// clears all the data structures from memory, including the C_n^r cache
       virtual void clear();
@@ -178,13 +178,13 @@ namespace gum {
       /** @warning An empty nodeId2Columns bijection means that the mapping is
        * an identity, i.e., the value of a NodeId is equal to the index of the
        * column in the DatabaseTable. */
-      using IndependenceTest2< ALLOC >::nodeId2Columns;
+      using IndependenceTest< ALLOC >::nodeId2Columns;
 
       /// return the database used by the score
-      using IndependenceTest2< ALLOC >::database;
+      using IndependenceTest< ALLOC >::database;
 
       /// returns the allocator used by the score
-      using IndependenceTest2< ALLOC >::getAllocator;
+      using IndependenceTest< ALLOC >::getAllocator;
 
       /// @}
 
@@ -194,7 +194,7 @@ namespace gum {
       /** @throws OperationNotAllowed is raised if the score does not support
        * calling method score such an idset (due to too many/too few variables
        * in the left hand side or the right hand side of the idset). */
-      virtual double _score(const IdSet2< ALLOC >& idset) final;
+      virtual double _score(const IdSet< ALLOC >& idset) final;
 
 
       private:

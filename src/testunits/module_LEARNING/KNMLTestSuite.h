@@ -32,7 +32,7 @@
 
 namespace gum_tests {
 
-  class KNML2TestSuite : public CxxTest::TestSuite {
+  class KNMLTestSuite : public CxxTest::TestSuite {
     public:
     void test1() {
       gum::learning::DBInitializerFromCSV<> initializer(
@@ -54,9 +54,9 @@ namespace gum_tests {
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
 
       // std::vector< gum::Size > modalities(nb_vars, 2);
-      gum::learning::AprioriNoApriori2<> apriori(database);
+      gum::learning::AprioriNoApriori<> apriori(database);
 
-      gum::learning::KNML2<> score(parser, apriori);
+      gum::learning::KNML<> score(parser, apriori);
       /* 3-4 K 2.6844818514806183
        * 2-6 K 4.1414644088786756
        * 4-7|5 K 3.763846399915938

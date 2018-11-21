@@ -26,4 +26,4 @@
 
 #include <agrum/learning/scores_and_tests/scoreAIC.h>
 
-template class gum::learning::ScoreAIC2<>;
+template class gum::learning::ScoreAIC<>;

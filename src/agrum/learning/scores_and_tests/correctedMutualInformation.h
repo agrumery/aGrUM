@@ -47,10 +47,10 @@ namespace gum {
      * This class handles the computations and storage of the mutual information
      * values used in 3off2 and potential corrections.
      *
-     * @ingroup learning_group
+     * @ingroup learning_scores
      */
     template < template < typename > class ALLOC = std::allocator >
-    class CorrectedMutualInformation2 {
+    class CorrectedMutualInformation {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;
@@ -83,9 +83,9 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      CorrectedMutualInformation2(
+      CorrectedMutualInformation(
         const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori2< ALLOC >&             apriori,
+        const Apriori< ALLOC >&             apriori,
         const std::vector< std::pair< std::size_t, std::size_t >,
                            ALLOC< std::pair< std::size_t, std::size_t > > >&
           ranges,
@@ -111,38 +111,38 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      CorrectedMutualInformation2(
+      CorrectedMutualInformation(
         const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori2< ALLOC >&             apriori,
+        const Apriori< ALLOC >&             apriori,
         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
           nodeId2columns =
             Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
         const allocator_type& alloc = allocator_type());
 
       /// copy constructor
-      CorrectedMutualInformation2(
-        const CorrectedMutualInformation2< ALLOC >& from);
+      CorrectedMutualInformation(
+        const CorrectedMutualInformation< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      CorrectedMutualInformation2(const CorrectedMutualInformation2< ALLOC >& from,
+      CorrectedMutualInformation(const CorrectedMutualInformation< ALLOC >& from,
                                   const allocator_type& alloc);
 
       /// move constructor
-      CorrectedMutualInformation2(CorrectedMutualInformation2< ALLOC >&& from);
+      CorrectedMutualInformation(CorrectedMutualInformation< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      CorrectedMutualInformation2(CorrectedMutualInformation2< ALLOC >&& from,
+      CorrectedMutualInformation(CorrectedMutualInformation< ALLOC >&& from,
                                   const allocator_type&                  alloc);
 
       /// virtual copy constructor
-      virtual CorrectedMutualInformation2< ALLOC >* clone() const;
+      virtual CorrectedMutualInformation< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual CorrectedMutualInformation2< ALLOC >*
+      virtual CorrectedMutualInformation< ALLOC >*
         clone(const allocator_type& alloc) const;
 
       /// destructor
-      virtual ~CorrectedMutualInformation2();
+      virtual ~CorrectedMutualInformation();
 
       /// @}
 
@@ -154,12 +154,12 @@ namespace gum {
       /// @{
 
       /// copy operator
-      CorrectedMutualInformation2< ALLOC >&
-        operator=(const CorrectedMutualInformation2< ALLOC >& from);
+      CorrectedMutualInformation< ALLOC >&
+        operator=(const CorrectedMutualInformation< ALLOC >& from);
 
       /// move operator
-      CorrectedMutualInformation2< ALLOC >&
-        operator=(CorrectedMutualInformation2< ALLOC >&& from);
+      CorrectedMutualInformation< ALLOC >&
+        operator=(CorrectedMutualInformation< ALLOC >&& from);
 
       /// @}
 
@@ -279,14 +279,14 @@ namespace gum {
       private:
       /// The object to compute N times Entropy H used by mutual information I
       /* Note that the log2-likelihood is equal to N times the entropy H */
-      ScoreLog2Likelihood2< ALLOC > __NH;
+      ScoreLog2Likelihood< ALLOC > __NH;
 
       /// the object computing the NML k score
-      KNML2< ALLOC > __k_NML;
+      KNML< ALLOC > __k_NML;
 
       /** @brief a score MDL used to compute the size N of the database,
        * including the a priori */
-      ScoreMDL2< ALLOC > __score_MDL;
+      ScoreMDL< ALLOC > __score_MDL;
 
       /// the mode used for the correction
       KModeTypes __kmode{KModeTypes::MDL};
@@ -359,7 +359,7 @@ namespace gum {
 } /* namespace gum */
 
 
-extern template class gum::learning::CorrectedMutualInformation2<>;
+extern template class gum::learning::CorrectedMutualInformation<>;
 
 
 // always include the template implementation

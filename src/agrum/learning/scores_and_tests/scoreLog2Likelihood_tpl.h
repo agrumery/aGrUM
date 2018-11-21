@@ -34,74 +34,74 @@ namespace gum {
 
     /// default constructor
     template < template < typename > class ALLOC >
-    INLINE ScoreLog2Likelihood2< ALLOC >::ScoreLog2Likelihood2(
+    INLINE ScoreLog2Likelihood< ALLOC >::ScoreLog2Likelihood(
       const DBRowGeneratorParser< ALLOC >&                                 parser,
-      const Apriori2< ALLOC >&                                             apriori,
+      const Apriori< ALLOC >&                                             apriori,
       const std::vector< std::pair< std::size_t, std::size_t >,
                          ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename ScoreLog2Likelihood2< ALLOC >::allocator_type& alloc) :
-        Score2< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
+      const typename ScoreLog2Likelihood< ALLOC >::allocator_type& alloc) :
+        Score< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
         __internal_apriori(parser.database(), nodeId2columns) {
-      GUM_CONSTRUCTOR(ScoreLog2Likelihood2);
+      GUM_CONSTRUCTOR(ScoreLog2Likelihood);
     }
 
 
     /// default constructor
     template < template < typename > class ALLOC >
-    INLINE ScoreLog2Likelihood2< ALLOC >::ScoreLog2Likelihood2(
+    INLINE ScoreLog2Likelihood< ALLOC >::ScoreLog2Likelihood(
       const DBRowGeneratorParser< ALLOC >&                          parser,
-      const Apriori2< ALLOC >&                                      apriori,
+      const Apriori< ALLOC >&                                      apriori,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename ScoreLog2Likelihood2< ALLOC >::allocator_type& alloc) :
-        Score2< ALLOC >(parser, apriori, nodeId2columns, alloc),
+      const typename ScoreLog2Likelihood< ALLOC >::allocator_type& alloc) :
+        Score< ALLOC >(parser, apriori, nodeId2columns, alloc),
         __internal_apriori(parser.database(), nodeId2columns) {
-      GUM_CONSTRUCTOR(ScoreLog2Likelihood2);
+      GUM_CONSTRUCTOR(ScoreLog2Likelihood);
     }
 
 
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE ScoreLog2Likelihood2< ALLOC >::ScoreLog2Likelihood2(
-      const ScoreLog2Likelihood2< ALLOC >&                          from,
-      const typename ScoreLog2Likelihood2< ALLOC >::allocator_type& alloc) :
-        Score2< ALLOC >(from, alloc),
+    INLINE ScoreLog2Likelihood< ALLOC >::ScoreLog2Likelihood(
+      const ScoreLog2Likelihood< ALLOC >&                          from,
+      const typename ScoreLog2Likelihood< ALLOC >::allocator_type& alloc) :
+        Score< ALLOC >(from, alloc),
         __internal_apriori(from.__internal_apriori, alloc) {
-      GUM_CONS_CPY(ScoreLog2Likelihood2);
+      GUM_CONS_CPY(ScoreLog2Likelihood);
     }
 
 
     /// copy constructor
     template < template < typename > class ALLOC >
-    INLINE ScoreLog2Likelihood2< ALLOC >::ScoreLog2Likelihood2(
-      const ScoreLog2Likelihood2< ALLOC >& from) :
-        ScoreLog2Likelihood2< ALLOC >(from, from.getAllocator()) {}
+    INLINE ScoreLog2Likelihood< ALLOC >::ScoreLog2Likelihood(
+      const ScoreLog2Likelihood< ALLOC >& from) :
+        ScoreLog2Likelihood< ALLOC >(from, from.getAllocator()) {}
 
 
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE ScoreLog2Likelihood2< ALLOC >::ScoreLog2Likelihood2(
-      ScoreLog2Likelihood2< ALLOC >&&                               from,
-      const typename ScoreLog2Likelihood2< ALLOC >::allocator_type& alloc) :
-        Score2< ALLOC >(std::move(from), alloc),
+    INLINE ScoreLog2Likelihood< ALLOC >::ScoreLog2Likelihood(
+      ScoreLog2Likelihood< ALLOC >&&                               from,
+      const typename ScoreLog2Likelihood< ALLOC >::allocator_type& alloc) :
+        Score< ALLOC >(std::move(from), alloc),
         __internal_apriori(std::move(from.__internal_apriori), alloc) {
-      GUM_CONS_MOV(ScoreLog2Likelihood2);
+      GUM_CONS_MOV(ScoreLog2Likelihood);
     }
 
 
     /// move constructor
     template < template < typename > class ALLOC >
-    INLINE ScoreLog2Likelihood2< ALLOC >::ScoreLog2Likelihood2(
-      ScoreLog2Likelihood2< ALLOC >&& from) :
-        ScoreLog2Likelihood2< ALLOC >(std::move(from), from.getAllocator()) {}
+    INLINE ScoreLog2Likelihood< ALLOC >::ScoreLog2Likelihood(
+      ScoreLog2Likelihood< ALLOC >&& from) :
+        ScoreLog2Likelihood< ALLOC >(std::move(from), from.getAllocator()) {}
 
 
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    ScoreLog2Likelihood2< ALLOC >* ScoreLog2Likelihood2< ALLOC >::clone(
-      const typename ScoreLog2Likelihood2< ALLOC >::allocator_type& alloc) const {
-      ALLOC< ScoreLog2Likelihood2< ALLOC > > allocator(alloc);
-      ScoreLog2Likelihood2< ALLOC >*         new_score = allocator.allocate(1);
+    ScoreLog2Likelihood< ALLOC >* ScoreLog2Likelihood< ALLOC >::clone(
+      const typename ScoreLog2Likelihood< ALLOC >::allocator_type& alloc) const {
+      ALLOC< ScoreLog2Likelihood< ALLOC > > allocator(alloc);
+      ScoreLog2Likelihood< ALLOC >*         new_score = allocator.allocate(1);
       try {
         allocator.construct(new_score, *this, alloc);
       } catch (...) {
@@ -115,24 +115,24 @@ namespace gum {
 
     /// virtual copy constructor
     template < template < typename > class ALLOC >
-    ScoreLog2Likelihood2< ALLOC >* ScoreLog2Likelihood2< ALLOC >::clone() const {
+    ScoreLog2Likelihood< ALLOC >* ScoreLog2Likelihood< ALLOC >::clone() const {
       return clone(this->getAllocator());
     }
 
 
     /// destructor
     template < template < typename > class ALLOC >
-    ScoreLog2Likelihood2< ALLOC >::~ScoreLog2Likelihood2< ALLOC >() {
-      GUM_DESTRUCTOR(ScoreLog2Likelihood2);
+    ScoreLog2Likelihood< ALLOC >::~ScoreLog2Likelihood< ALLOC >() {
+      GUM_DESTRUCTOR(ScoreLog2Likelihood);
     }
 
 
     /// copy operator
     template < template < typename > class ALLOC >
-    ScoreLog2Likelihood2< ALLOC >& ScoreLog2Likelihood2< ALLOC >::
-                                   operator=(const ScoreLog2Likelihood2< ALLOC >& from) {
+    ScoreLog2Likelihood< ALLOC >& ScoreLog2Likelihood< ALLOC >::
+                                   operator=(const ScoreLog2Likelihood< ALLOC >& from) {
       if (this != &from) {
-        Score2< ALLOC >::operator=(from);
+        Score< ALLOC >::operator=(from);
         __internal_apriori = from.__internal_apriori;
       }
       return *this;
@@ -141,10 +141,10 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    ScoreLog2Likelihood2< ALLOC >& ScoreLog2Likelihood2< ALLOC >::
-                                   operator=(ScoreLog2Likelihood2< ALLOC >&& from) {
+    ScoreLog2Likelihood< ALLOC >& ScoreLog2Likelihood< ALLOC >::
+                                   operator=(ScoreLog2Likelihood< ALLOC >&& from) {
       if (this != &from) {
-        Score2< ALLOC >::operator=(std::move(from));
+        Score< ALLOC >::operator=(std::move(from));
         __internal_apriori = std::move(from.__internal_apriori);
       }
       return *this;
@@ -153,7 +153,7 @@ namespace gum {
 
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < template < typename > class ALLOC >
-    std::string ScoreLog2Likelihood2< ALLOC >::isAprioriCompatible(
+    std::string ScoreLog2Likelihood< ALLOC >::isAprioriCompatible(
       const std::string& apriori_type, double weight) {
       // check that the apriori is compatible with the score
       if ((apriori_type == AprioriDirichletType::type)
@@ -173,30 +173,30 @@ namespace gum {
 
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < template < typename > class ALLOC >
-    INLINE std::string ScoreLog2Likelihood2< ALLOC >::isAprioriCompatible(
-      const Apriori2< ALLOC >& apriori) {
+    INLINE std::string ScoreLog2Likelihood< ALLOC >::isAprioriCompatible(
+      const Apriori< ALLOC >& apriori) {
       return isAprioriCompatible(apriori.getType(), apriori.weight());
     }
 
 
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < template < typename > class ALLOC >
-    INLINE std::string ScoreLog2Likelihood2< ALLOC >::isAprioriCompatible() const {
+    INLINE std::string ScoreLog2Likelihood< ALLOC >::isAprioriCompatible() const {
       return isAprioriCompatible(*(this->_apriori));
     }
 
 
     /// returns the internal apriori of the score
     template < template < typename > class ALLOC >
-    INLINE const Apriori2< ALLOC >&
-                 ScoreLog2Likelihood2< ALLOC >::internalApriori() const {
+    INLINE const Apriori< ALLOC >&
+                 ScoreLog2Likelihood< ALLOC >::internalApriori() const {
       return __internal_apriori;
     }
 
 
     /// returns the score corresponding to a given nodeset
     template < template < typename > class ALLOC >
-    double ScoreLog2Likelihood2< ALLOC >::_score(const IdSet2< ALLOC >& idset) {
+    double ScoreLog2Likelihood< ALLOC >::_score(const IdSet< ALLOC >& idset) {
       // get the counts for all the nodes in the idset and add the apriori
       std::vector< double, ALLOC< double > > N_ijk(
         this->_counter.counts(idset, true));
@@ -257,7 +257,7 @@ namespace gum {
     /// returns the score corresponding to a given nodeset
     template < template < typename > class ALLOC >
     INLINE double
-      ScoreLog2Likelihood2< ALLOC >::score(const IdSet2< ALLOC >& idset) {
+      ScoreLog2Likelihood< ALLOC >::score(const IdSet< ALLOC >& idset) {
       return _score(idset);
     }
 

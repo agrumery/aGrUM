@@ -34,16 +34,16 @@ namespace gum {
 
   namespace learning {
 
-    /** @class ScoreMDL2
+    /** @class ScoreMDL
      * @brief the class for computing MDL scores
-     * @headerfile scoreMDL2.h <agrum/learning/scores_and_tests/scoreMDL2.h>
+     * @headerfile scoreMDL.h <agrum/learning/scores_and_tests/scoreMDL.h>
      * @ingroup learning_scores
      *
      * @warning If you pass an apriori to the score, this one will be added
      * into the log-likelihood part of the score.
      */
     template < template < typename > class ALLOC = std::allocator >
-    using ScoreMDL2 = ScoreBIC2< ALLOC >;
+    using ScoreMDL = ScoreBIC< ALLOC >;
 
 
   } /* namespace learning */

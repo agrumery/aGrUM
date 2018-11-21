@@ -33,12 +33,12 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE IndepTestChi2< ALLOC >::IndepTestChi2(
       const DBRowGeneratorParser< ALLOC >&                                 parser,
-      const Apriori2< ALLOC >&                                             apriori,
+      const Apriori< ALLOC >&                                             apriori,
       const std::vector< std::pair< std::size_t, std::size_t >,
                          ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
       const typename IndepTestChi2< ALLOC >::allocator_type&            alloc) :
-      IndependenceTest2< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
+      IndependenceTest< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
       __domain_sizes (parser.database().domainSizes()),
       __chi2(__domain_sizes) {
       GUM_CONSTRUCTOR(IndepTestChi2);
@@ -49,10 +49,10 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE IndepTestChi2< ALLOC >::IndepTestChi2(
       const DBRowGeneratorParser< ALLOC >&                          parser,
-      const Apriori2< ALLOC >&                                      apriori,
+      const Apriori< ALLOC >&                                      apriori,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
       const typename IndepTestChi2< ALLOC >::allocator_type&            alloc) :
-      IndependenceTest2< ALLOC >(parser, apriori, nodeId2columns, alloc),
+      IndependenceTest< ALLOC >(parser, apriori, nodeId2columns, alloc),
       __domain_sizes (parser.database().domainSizes()),
       __chi2(__domain_sizes) {
       GUM_CONSTRUCTOR(IndepTestChi2);
@@ -64,7 +64,7 @@ namespace gum {
     INLINE IndepTestChi2< ALLOC >::IndepTestChi2(
       const IndepTestChi2< ALLOC >&                          from,
       const typename IndepTestChi2< ALLOC >::allocator_type& alloc) :
-      IndependenceTest2< ALLOC >(from, alloc),
+      IndependenceTest< ALLOC >(from, alloc),
       __domain_sizes (from.__domain_sizes),
       __chi2(__domain_sizes) {
       GUM_CONS_CPY(IndepTestChi2);
@@ -83,7 +83,7 @@ namespace gum {
     INLINE IndepTestChi2< ALLOC >::IndepTestChi2(
       IndepTestChi2< ALLOC >&&                               from,
       const typename IndepTestChi2< ALLOC >::allocator_type& alloc) :
-        IndependenceTest2< ALLOC >(std::move(from), alloc),
+        IndependenceTest< ALLOC >(std::move(from), alloc),
       __domain_sizes (from.__domain_sizes),
       __chi2(__domain_sizes) {
       GUM_CONS_MOV(IndepTestChi2);
@@ -132,7 +132,7 @@ namespace gum {
     IndepTestChi2< ALLOC >& IndepTestChi2< ALLOC >::
                         operator=(const IndepTestChi2< ALLOC >& from) {
       if (this != &from) {
-        IndependenceTest2< ALLOC >::operator=(from);
+        IndependenceTest< ALLOC >::operator=(from);
         //__chi2 = from.__chi2;
       }
       return *this;
@@ -144,7 +144,7 @@ namespace gum {
     IndepTestChi2< ALLOC >&
     IndepTestChi2< ALLOC >::operator=(IndepTestChi2< ALLOC >&& from) {
       if (this != &from) {
-        IndependenceTest2< ALLOC >::operator=(std::move(from));
+        IndependenceTest< ALLOC >::operator=(std::move(from));
         //__chi2 = std::move(from.__chi2);
       }
       return *this;
@@ -153,7 +153,7 @@ namespace gum {
 
     /// returns the score corresponding to a given nodeset
     template < template < typename > class ALLOC >
-    double IndepTestChi2< ALLOC >::_score(const IdSet2< ALLOC >& idset) {
+    double IndepTestChi2< ALLOC >::_score(const IdSet< ALLOC >& idset) {
       // get the countings
       std::vector< double, ALLOC< double > > N_xyz(
         this->_counter.counts(idset, true));

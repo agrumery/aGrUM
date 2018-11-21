@@ -31,13 +31,13 @@ namespace gum {
 
     /// default constructor
     template < template < typename > class ALLOC >
-    AprioriDirichletFromDatabase2< ALLOC >::AprioriDirichletFromDatabase2(
+    AprioriDirichletFromDatabase< ALLOC >::AprioriDirichletFromDatabase(
       const DatabaseTable< ALLOC >&                                 learning_db,
       const DBRowGeneratorParser< ALLOC >&                          apriori_parser,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename AprioriDirichletFromDatabase2< ALLOC >::allocator_type&
+      const typename AprioriDirichletFromDatabase< ALLOC >::allocator_type&
         alloc) :
-        Apriori2< ALLOC >(apriori_parser.database(),
+        Apriori< ALLOC >(apriori_parser.database(),
                           Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
                           alloc),
         __counter(
@@ -117,61 +117,61 @@ namespace gum {
       std::vector< std::pair< std::size_t, std::size_t >,
                    ALLOC< std::pair< std::size_t, std::size_t > > >
                               ranges(alloc);
-      RecordCounter2< ALLOC > good_counter(
+      RecordCounter< ALLOC > good_counter(
         apriori_parser, ranges, this->_nodeId2columns, alloc);
       __counter = std::move(good_counter);
 
-      GUM_CONSTRUCTOR(AprioriDirichletFromDatabase2);
+      GUM_CONSTRUCTOR(AprioriDirichletFromDatabase);
     }
 
 
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE AprioriDirichletFromDatabase2< ALLOC >::AprioriDirichletFromDatabase2(
-      const AprioriDirichletFromDatabase2< ALLOC >& from,
-      const typename AprioriDirichletFromDatabase2< ALLOC >::allocator_type&
+    INLINE AprioriDirichletFromDatabase< ALLOC >::AprioriDirichletFromDatabase(
+      const AprioriDirichletFromDatabase< ALLOC >& from,
+      const typename AprioriDirichletFromDatabase< ALLOC >::allocator_type&
         alloc) :
-        Apriori2< ALLOC >(from, alloc),
+        Apriori< ALLOC >(from, alloc),
         __counter(from.__counter, alloc) {
-      GUM_CONS_CPY(AprioriDirichletFromDatabase2);
+      GUM_CONS_CPY(AprioriDirichletFromDatabase);
     }
 
 
     /// copy constructor
     template < template < typename > class ALLOC >
-    INLINE AprioriDirichletFromDatabase2< ALLOC >::AprioriDirichletFromDatabase2(
-      const AprioriDirichletFromDatabase2< ALLOC >& from) :
-        AprioriDirichletFromDatabase2< ALLOC >(from, from.getAllocator()) {}
+    INLINE AprioriDirichletFromDatabase< ALLOC >::AprioriDirichletFromDatabase(
+      const AprioriDirichletFromDatabase< ALLOC >& from) :
+        AprioriDirichletFromDatabase< ALLOC >(from, from.getAllocator()) {}
 
 
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE AprioriDirichletFromDatabase2< ALLOC >::AprioriDirichletFromDatabase2(
-      AprioriDirichletFromDatabase2< ALLOC >&& from,
-      const typename AprioriDirichletFromDatabase2< ALLOC >::allocator_type&
+    INLINE AprioriDirichletFromDatabase< ALLOC >::AprioriDirichletFromDatabase(
+      AprioriDirichletFromDatabase< ALLOC >&& from,
+      const typename AprioriDirichletFromDatabase< ALLOC >::allocator_type&
         alloc) :
-        Apriori2< ALLOC >(std::move(from), alloc),
+        Apriori< ALLOC >(std::move(from), alloc),
         __counter(std::move(from.__counter), alloc) {
-      GUM_CONS_MOV(AprioriDirichletFromDatabase2);
+      GUM_CONS_MOV(AprioriDirichletFromDatabase);
     }
 
 
     /// move constructor
     template < template < typename > class ALLOC >
-    INLINE AprioriDirichletFromDatabase2< ALLOC >::AprioriDirichletFromDatabase2(
-      AprioriDirichletFromDatabase2< ALLOC >&& from) :
-        AprioriDirichletFromDatabase2< ALLOC >(std::move(from),
+    INLINE AprioriDirichletFromDatabase< ALLOC >::AprioriDirichletFromDatabase(
+      AprioriDirichletFromDatabase< ALLOC >&& from) :
+        AprioriDirichletFromDatabase< ALLOC >(std::move(from),
                                                from.getAllocator()) {}
 
 
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    AprioriDirichletFromDatabase2< ALLOC >*
-      AprioriDirichletFromDatabase2< ALLOC >::clone(
-        const typename AprioriDirichletFromDatabase2< ALLOC >::allocator_type&
+    AprioriDirichletFromDatabase< ALLOC >*
+      AprioriDirichletFromDatabase< ALLOC >::clone(
+        const typename AprioriDirichletFromDatabase< ALLOC >::allocator_type&
           alloc) const {
-      ALLOC< AprioriDirichletFromDatabase2< ALLOC > > allocator(alloc);
-      AprioriDirichletFromDatabase2< ALLOC >* apriori = allocator.allocate(1);
+      ALLOC< AprioriDirichletFromDatabase< ALLOC > > allocator(alloc);
+      AprioriDirichletFromDatabase< ALLOC >* apriori = allocator.allocate(1);
       try {
         allocator.construct(apriori, *this, alloc);
       } catch (...) {
@@ -185,8 +185,8 @@ namespace gum {
 
     /// virtual copy constructor
     template < template < typename > class ALLOC >
-    INLINE AprioriDirichletFromDatabase2< ALLOC >*
-           AprioriDirichletFromDatabase2< ALLOC >::clone() const {
+    INLINE AprioriDirichletFromDatabase< ALLOC >*
+           AprioriDirichletFromDatabase< ALLOC >::clone() const {
       return clone(this->getAllocator());
     }
 
@@ -194,18 +194,18 @@ namespace gum {
     /// destructor
     template < template < typename > class ALLOC >
     INLINE
-      AprioriDirichletFromDatabase2< ALLOC >::~AprioriDirichletFromDatabase2() {
-      GUM_DESTRUCTOR(AprioriDirichletFromDatabase2);
+      AprioriDirichletFromDatabase< ALLOC >::~AprioriDirichletFromDatabase() {
+      GUM_DESTRUCTOR(AprioriDirichletFromDatabase);
     }
 
 
     /// copy operator
     template < template < typename > class ALLOC >
-    INLINE AprioriDirichletFromDatabase2< ALLOC >&
-           AprioriDirichletFromDatabase2< ALLOC >::
-           operator=(const AprioriDirichletFromDatabase2< ALLOC >& from) {
+    INLINE AprioriDirichletFromDatabase< ALLOC >&
+           AprioriDirichletFromDatabase< ALLOC >::
+           operator=(const AprioriDirichletFromDatabase< ALLOC >& from) {
       if (this != &from) {
-        Apriori2< ALLOC >::operator=(from);
+        Apriori< ALLOC >::operator=(from);
         __counter = from.__counter;
       }
       return *this;
@@ -214,11 +214,11 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    INLINE AprioriDirichletFromDatabase2< ALLOC >&
-           AprioriDirichletFromDatabase2< ALLOC >::
-           operator=(AprioriDirichletFromDatabase2< ALLOC >&& from) {
+    INLINE AprioriDirichletFromDatabase< ALLOC >&
+           AprioriDirichletFromDatabase< ALLOC >::
+           operator=(AprioriDirichletFromDatabase< ALLOC >&& from) {
       if (this != &from) {
-        Apriori2< ALLOC >::operator=(std::move(from));
+        Apriori< ALLOC >::operator=(std::move(from));
         __counter = std::move(from.__counter);
       }
       return *this;
@@ -228,7 +228,7 @@ namespace gum {
     /// indicates whether an apriori is of a certain type
     template < template < typename > class ALLOC >
     INLINE bool
-      AprioriDirichletFromDatabase2< ALLOC >::isOfType(const std::string& type) {
+      AprioriDirichletFromDatabase< ALLOC >::isOfType(const std::string& type) {
       return AprioriDirichletType::isOfType(type);
     }
 
@@ -236,22 +236,22 @@ namespace gum {
     /// returns the type of the apriori
     template < template < typename > class ALLOC >
     INLINE const std::string&
-                 AprioriDirichletFromDatabase2< ALLOC >::getType() const {
+                 AprioriDirichletFromDatabase< ALLOC >::getType() const {
       return AprioriDirichletType::type;
     }
 
 
     /// indicates whether the apriori is potentially informative
     template < template < typename > class ALLOC >
-    INLINE bool AprioriDirichletFromDatabase2< ALLOC >::isInformative() const {
+    INLINE bool AprioriDirichletFromDatabase< ALLOC >::isInformative() const {
       return (this->_weight != 0.0);
     }
 
 
     /// returns the apriori vector all the variables in the idset
     template < template < typename > class ALLOC >
-    INLINE void AprioriDirichletFromDatabase2< ALLOC >::addAllApriori(
-      const IdSet2< ALLOC >&                  idset,
+    INLINE void AprioriDirichletFromDatabase< ALLOC >::addAllApriori(
+      const IdSet< ALLOC >&                  idset,
       std::vector< double, ALLOC< double > >& counts) {
       if (this->_weight == 0.0) return;
 
@@ -271,8 +271,8 @@ namespace gum {
 
     /// returns the apriori vector over only the conditioning set of an idset
     template < template < typename > class ALLOC >
-    void AprioriDirichletFromDatabase2< ALLOC >::addConditioningApriori(
-      const IdSet2< ALLOC >&                  idset,
+    void AprioriDirichletFromDatabase< ALLOC >::addConditioningApriori(
+      const IdSet< ALLOC >&                  idset,
       std::vector< double, ALLOC< double > >& counts) {
       if (this->_weight == 0.0) return;
 

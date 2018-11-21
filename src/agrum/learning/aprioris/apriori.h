@@ -38,13 +38,13 @@ namespace gum {
 
   namespace learning {
 
-    /** @class Apriori2
+    /** @class Apriori
      * @brief the base class for all a priori
-     * @headerfile apriori2.h <agrum/learning/database/apriori2.h>
+     * @headerfile apriori.h <agrum/learning/database/apriori.h>
      * @ingroup learning_apriori
      */
     template < template < typename > class ALLOC = std::allocator >
-    class Apriori2 : private ALLOC< NodeId > {
+    class Apriori : private ALLOC< NodeId > {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;
@@ -66,20 +66,20 @@ namespace gum {
        * the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
        * RecordCounter.*/
-      Apriori2(const DatabaseTable< ALLOC >& database,
+      Apriori(const DatabaseTable< ALLOC >& database,
                const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
                  nodeId2columns =
                    Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
                const allocator_type& alloc = allocator_type());
 
       /// virtual copy constructor
-      virtual Apriori2< ALLOC >* clone() const = 0;
+      virtual Apriori< ALLOC >* clone() const = 0;
 
       /// virtual copy constructor with a given allocator
-      virtual Apriori2< ALLOC >* clone(const allocator_type& alloc) const = 0;
+      virtual Apriori< ALLOC >* clone(const allocator_type& alloc) const = 0;
 
       /// destructor
-      virtual ~Apriori2();
+      virtual ~Apriori();
 
       /// @}
 
@@ -117,7 +117,7 @@ namespace gum {
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint variables set. */
       virtual void
-        addAllApriori(const IdSet2< ALLOC >&                  idset,
+        addAllApriori(const IdSet< ALLOC >&                  idset,
                       std::vector< double, ALLOC< double > >& counts) = 0;
 
       /** @brief adds the apriori to a counting vectordefined over the right
@@ -126,7 +126,7 @@ namespace gum {
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint RHS variables of the idset. */
       virtual void
-        addConditioningApriori(const IdSet2< ALLOC >&                  idset,
+        addConditioningApriori(const IdSet< ALLOC >&                  idset,
                                std::vector< double, ALLOC< double > >& counts) = 0;
 
       /// returns the allocator used by the internal apriori
@@ -148,22 +148,22 @@ namespace gum {
 
 
       /// copy constructor
-      Apriori2(const Apriori2< ALLOC >& from);
+      Apriori(const Apriori< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      Apriori2(const Apriori2< ALLOC >& from, const allocator_type& alloc);
+      Apriori(const Apriori< ALLOC >& from, const allocator_type& alloc);
 
       /// move constructor
-      Apriori2(Apriori2< ALLOC >&& from);
+      Apriori(Apriori< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      Apriori2(Apriori2< ALLOC >&& from, const allocator_type& alloc);
+      Apriori(Apriori< ALLOC >&& from, const allocator_type& alloc);
 
       /// copy operator
-      Apriori2< ALLOC >& operator=(const Apriori2< ALLOC >& from);
+      Apriori< ALLOC >& operator=(const Apriori< ALLOC >& from);
 
       /// move operator
-      Apriori2< ALLOC >& operator=(Apriori2< ALLOC >&& from);
+      Apriori< ALLOC >& operator=(Apriori< ALLOC >&& from);
     };
 
   } /* namespace learning */

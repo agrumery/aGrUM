@@ -29,7 +29,7 @@ namespace gum_tests {
   class ScoringCacheTestSuite : public CxxTest::TestSuite {
     public:
     void test1() {
-      gum::learning::IdSet2<>       set1;
+      gum::learning::IdSet<>       set1;
       gum::learning::ScoringCache<> cache;
 
       cache.insert(set1, 2.0);
@@ -44,7 +44,7 @@ namespace gum_tests {
 
       std::vector< gum::NodeId > empty;
 
-      gum::learning::IdSet2<> set2(node0, empty);
+      gum::learning::IdSet<> set2(node0, empty);
       cache.insert(set2, 3.2);
       TS_ASSERT(cache.exists(set2));
       TS_ASSERT(cache.score(set2) == 3.2);
@@ -54,13 +54,13 @@ namespace gum_tests {
       cache.clear();
       TS_ASSERT(cache.size() == std::size_t(0));
 
-      gum::learning::IdSet2<> xset2(set2);
+      gum::learning::IdSet<> xset2(set2);
       cache.insert(std::move(xset2), 7.3);
       TS_ASSERT(cache.exists(set2));
       TS_ASSERT(cache.score(set2) == 7.3);
 
       std::vector< gum::NodeId > vect{node4, node2, node3};
-      gum::learning::IdSet2<>    set3(node0, node1, vect, true, true);
+      gum::learning::IdSet<>    set3(node0, node1, vect, true, true);
       TS_ASSERT(!cache.exists(set3));
       cache.insert(set3, 1.3);
       TS_ASSERT(cache.exists(set3));
@@ -113,7 +113,7 @@ namespace gum_tests {
       TS_ASSERT(cache3.score(set2) == 7.3);
       TS_ASSERT(cache3.size() == std::size_t(2));
 
-      gum::learning::IdSet2<> set4(node1, vect, true);
+      gum::learning::IdSet<> set4(node1, vect, true);
       TS_GUM_ASSERT_THROWS_NOTHING(cache3.erase(set4));
       TS_ASSERT(cache3.score(set3) == 1.3);
       TS_ASSERT(cache3.score(set2) == 7.3);

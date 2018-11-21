@@ -33,72 +33,72 @@ namespace gum {
 
     /// default constructor
     template < template < typename > class ALLOC >
-    INLINE ScorefNML2< ALLOC >::ScorefNML2(
+    INLINE ScorefNML< ALLOC >::ScorefNML(
       const DBRowGeneratorParser< ALLOC >&                                 parser,
-      const Apriori2< ALLOC >&                                             apriori,
+      const Apriori< ALLOC >&                                             apriori,
       const std::vector< std::pair< std::size_t, std::size_t >,
                          ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename ScorefNML2< ALLOC >::allocator_type&           alloc) :
-        Score2< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
+      const typename ScorefNML< ALLOC >::allocator_type&           alloc) :
+        Score< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
         __internal_apriori(parser.database(), nodeId2columns) {
-      GUM_CONSTRUCTOR(ScorefNML2);
+      GUM_CONSTRUCTOR(ScorefNML);
     }
 
 
     /// default constructor
     template < template < typename > class ALLOC >
-    INLINE ScorefNML2< ALLOC >::ScorefNML2(
+    INLINE ScorefNML< ALLOC >::ScorefNML(
       const DBRowGeneratorParser< ALLOC >&                          parser,
-      const Apriori2< ALLOC >&                                      apriori,
+      const Apriori< ALLOC >&                                      apriori,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename ScorefNML2< ALLOC >::allocator_type&           alloc) :
-        Score2< ALLOC >(parser, apriori, nodeId2columns, alloc),
+      const typename ScorefNML< ALLOC >::allocator_type&           alloc) :
+        Score< ALLOC >(parser, apriori, nodeId2columns, alloc),
         __internal_apriori(parser.database(), nodeId2columns) {
-      GUM_CONSTRUCTOR(ScorefNML2);
+      GUM_CONSTRUCTOR(ScorefNML);
     }
 
 
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE ScorefNML2< ALLOC >::ScorefNML2(
-      const ScorefNML2< ALLOC >&                          from,
-      const typename ScorefNML2< ALLOC >::allocator_type& alloc) :
-        Score2< ALLOC >(from, alloc),
+    INLINE ScorefNML< ALLOC >::ScorefNML(
+      const ScorefNML< ALLOC >&                          from,
+      const typename ScorefNML< ALLOC >::allocator_type& alloc) :
+        Score< ALLOC >(from, alloc),
         __internal_apriori(from.__internal_apriori, alloc) {
-      GUM_CONS_CPY(ScorefNML2);
+      GUM_CONS_CPY(ScorefNML);
     }
 
 
     /// copy constructor
     template < template < typename > class ALLOC >
-    INLINE ScorefNML2< ALLOC >::ScorefNML2(const ScorefNML2< ALLOC >& from) :
-        ScorefNML2< ALLOC >(from, from.getAllocator()) {}
+    INLINE ScorefNML< ALLOC >::ScorefNML(const ScorefNML< ALLOC >& from) :
+        ScorefNML< ALLOC >(from, from.getAllocator()) {}
 
 
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE ScorefNML2< ALLOC >::ScorefNML2(
-      ScorefNML2< ALLOC >&&                               from,
-      const typename ScorefNML2< ALLOC >::allocator_type& alloc) :
-        Score2< ALLOC >(std::move(from), alloc),
+    INLINE ScorefNML< ALLOC >::ScorefNML(
+      ScorefNML< ALLOC >&&                               from,
+      const typename ScorefNML< ALLOC >::allocator_type& alloc) :
+        Score< ALLOC >(std::move(from), alloc),
         __internal_apriori(std::move(from.__internal_apriori), alloc) {
-      GUM_CONS_MOV(ScorefNML2);
+      GUM_CONS_MOV(ScorefNML);
     }
 
 
     /// move constructor
     template < template < typename > class ALLOC >
-    INLINE ScorefNML2< ALLOC >::ScorefNML2(ScorefNML2< ALLOC >&& from) :
-        ScorefNML2< ALLOC >(std::move(from), from.getAllocator()) {}
+    INLINE ScorefNML< ALLOC >::ScorefNML(ScorefNML< ALLOC >&& from) :
+        ScorefNML< ALLOC >(std::move(from), from.getAllocator()) {}
 
 
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    ScorefNML2< ALLOC >* ScorefNML2< ALLOC >::clone(
-      const typename ScorefNML2< ALLOC >::allocator_type& alloc) const {
-      ALLOC< ScorefNML2< ALLOC > > allocator(alloc);
-      ScorefNML2< ALLOC >*         new_score = allocator.allocate(1);
+    ScorefNML< ALLOC >* ScorefNML< ALLOC >::clone(
+      const typename ScorefNML< ALLOC >::allocator_type& alloc) const {
+      ALLOC< ScorefNML< ALLOC > > allocator(alloc);
+      ScorefNML< ALLOC >*         new_score = allocator.allocate(1);
       try {
         allocator.construct(new_score, *this, alloc);
       } catch (...) {
@@ -112,24 +112,24 @@ namespace gum {
 
     /// virtual copy constructor
     template < template < typename > class ALLOC >
-    ScorefNML2< ALLOC >* ScorefNML2< ALLOC >::clone() const {
+    ScorefNML< ALLOC >* ScorefNML< ALLOC >::clone() const {
       return clone(this->getAllocator());
     }
 
 
     /// destructor
     template < template < typename > class ALLOC >
-    ScorefNML2< ALLOC >::~ScorefNML2< ALLOC >() {
-      GUM_DESTRUCTOR(ScorefNML2);
+    ScorefNML< ALLOC >::~ScorefNML< ALLOC >() {
+      GUM_DESTRUCTOR(ScorefNML);
     }
 
 
     /// copy operator
     template < template < typename > class ALLOC >
-    ScorefNML2< ALLOC >& ScorefNML2< ALLOC >::
-                         operator=(const ScorefNML2< ALLOC >& from) {
+    ScorefNML< ALLOC >& ScorefNML< ALLOC >::
+                         operator=(const ScorefNML< ALLOC >& from) {
       if (this != &from) {
-        Score2< ALLOC >::operator=(from);
+        Score< ALLOC >::operator=(from);
         __internal_apriori = from.__internal_apriori;
       }
       return *this;
@@ -138,10 +138,10 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    ScorefNML2< ALLOC >& ScorefNML2< ALLOC >::
-                         operator=(ScorefNML2< ALLOC >&& from) {
+    ScorefNML< ALLOC >& ScorefNML< ALLOC >::
+                         operator=(ScorefNML< ALLOC >&& from) {
       if (this != &from) {
-        Score2< ALLOC >::operator=(std::move(from));
+        Score< ALLOC >::operator=(std::move(from));
         __internal_apriori = std::move(from.__internal_apriori);
       }
       return *this;
@@ -151,7 +151,7 @@ namespace gum {
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < template < typename > class ALLOC >
     std::string
-      ScorefNML2< ALLOC >::isAprioriCompatible(const std::string& apriori_type,
+      ScorefNML< ALLOC >::isAprioriCompatible(const std::string& apriori_type,
                                                double             weight) {
       // check that the apriori is compatible with the score
       if ((apriori_type == AprioriDirichletType::type)
@@ -171,28 +171,28 @@ namespace gum {
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < template < typename > class ALLOC >
     INLINE std::string
-           ScorefNML2< ALLOC >::isAprioriCompatible(const Apriori2< ALLOC >& apriori) {
+           ScorefNML< ALLOC >::isAprioriCompatible(const Apriori< ALLOC >& apriori) {
       return isAprioriCompatible(apriori.getType(), apriori.weight());
     }
 
 
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < template < typename > class ALLOC >
-    INLINE std::string ScorefNML2< ALLOC >::isAprioriCompatible() const {
+    INLINE std::string ScorefNML< ALLOC >::isAprioriCompatible() const {
       return isAprioriCompatible(*(this->_apriori));
     }
 
 
     /// returns the internal apriori of the score
     template < template < typename > class ALLOC >
-    INLINE const Apriori2< ALLOC >& ScorefNML2< ALLOC >::internalApriori() const {
+    INLINE const Apriori< ALLOC >& ScorefNML< ALLOC >::internalApriori() const {
       return __internal_apriori;
     }
 
 
     /// returns the score corresponding to a given nodeset
     template < template < typename > class ALLOC >
-    double ScorefNML2< ALLOC >::_score(const IdSet2< ALLOC >& idset) {
+    double ScorefNML< ALLOC >::_score(const IdSet< ALLOC >& idset) {
       // get the counts for all the nodes in the idset and add the apriori
       std::vector< double, ALLOC< double > > N_ijk(
         this->_counter.counts(idset, true));

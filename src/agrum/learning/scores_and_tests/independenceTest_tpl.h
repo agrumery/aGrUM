@@ -30,105 +30,105 @@ namespace gum {
 
     /// returns the allocator used by the independence test
     template < template < typename > class ALLOC >
-    INLINE typename IndependenceTest2< ALLOC >::allocator_type
-      IndependenceTest2< ALLOC >::getAllocator() const {
+    INLINE typename IndependenceTest< ALLOC >::allocator_type
+      IndependenceTest< ALLOC >::getAllocator() const {
       return _counter.getAllocator();
     }
 
 
     /// default constructor
     template < template < typename > class ALLOC >
-    INLINE IndependenceTest2< ALLOC >::IndependenceTest2(
+    INLINE IndependenceTest< ALLOC >::IndependenceTest(
       const DBRowGeneratorParser< ALLOC >&                                 parser,
-      const Apriori2< ALLOC >&                                             apriori,
+      const Apriori< ALLOC >&                                             apriori,
       const std::vector< std::pair< std::size_t, std::size_t >,
                          ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename IndependenceTest2< ALLOC >::allocator_type&    alloc) :
+      const typename IndependenceTest< ALLOC >::allocator_type&    alloc) :
         _apriori(apriori.clone(alloc)),
         _counter(parser, ranges, nodeId2columns, alloc), _cache(alloc) {
-      GUM_CONSTRUCTOR(IndependenceTest2);
+      GUM_CONSTRUCTOR(IndependenceTest);
     }
 
 
     /// default constructor
     template < template < typename > class ALLOC >
-    INLINE IndependenceTest2< ALLOC >::IndependenceTest2(
+    INLINE IndependenceTest< ALLOC >::IndependenceTest(
       const DBRowGeneratorParser< ALLOC >&                          parser,
-      const Apriori2< ALLOC >&                                      apriori,
+      const Apriori< ALLOC >&                                      apriori,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename IndependenceTest2< ALLOC >::allocator_type&    alloc) :
+      const typename IndependenceTest< ALLOC >::allocator_type&    alloc) :
         _apriori(apriori.clone(alloc)),
         _counter(parser, nodeId2columns, alloc), _cache(alloc) {
-      GUM_CONSTRUCTOR(IndependenceTest2);
+      GUM_CONSTRUCTOR(IndependenceTest);
     }
 
 
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE IndependenceTest2< ALLOC >::IndependenceTest2(
-      const IndependenceTest2< ALLOC >&                          from,
-      const typename IndependenceTest2< ALLOC >::allocator_type& alloc) :
+    INLINE IndependenceTest< ALLOC >::IndependenceTest(
+      const IndependenceTest< ALLOC >&                          from,
+      const typename IndependenceTest< ALLOC >::allocator_type& alloc) :
         _apriori(from._apriori->clone(alloc)),
         _counter(from._counter, alloc), _cache(from._cache, alloc),
         _use_cache(from._use_cache), _max_nb_threads(from._max_nb_threads),
         _min_nb_rows_per_thread(from._min_nb_rows_per_thread) {
-      GUM_CONS_CPY(IndependenceTest2);
+      GUM_CONS_CPY(IndependenceTest);
     }
 
 
     /// copy constructor
     template < template < typename > class ALLOC >
-    INLINE IndependenceTest2< ALLOC >::IndependenceTest2(
-      const IndependenceTest2< ALLOC >& from) :
-        IndependenceTest2(from, from.getAllocator()) {}
+    INLINE IndependenceTest< ALLOC >::IndependenceTest(
+      const IndependenceTest< ALLOC >& from) :
+        IndependenceTest(from, from.getAllocator()) {}
 
 
     /// move constructor
     template < template < typename > class ALLOC >
-    INLINE IndependenceTest2< ALLOC >::IndependenceTest2(
-      IndependenceTest2< ALLOC >&&                               from,
-      const typename IndependenceTest2< ALLOC >::allocator_type& alloc) :
+    INLINE IndependenceTest< ALLOC >::IndependenceTest(
+      IndependenceTest< ALLOC >&&                               from,
+      const typename IndependenceTest< ALLOC >::allocator_type& alloc) :
         _apriori(from._apriori),
         _counter(std::move(from._counter), alloc),
         _cache(std::move(from._cache), alloc), _use_cache(from._use_cache),
         _max_nb_threads(from._max_nb_threads),
         _min_nb_rows_per_thread(from._min_nb_rows_per_thread) {
       from._apriori = nullptr;
-      GUM_CONS_MOV(IndependenceTest2);
+      GUM_CONS_MOV(IndependenceTest);
     }
 
 
     /// move constructor
     template < template < typename > class ALLOC >
-    INLINE IndependenceTest2< ALLOC >::IndependenceTest2(
-      IndependenceTest2< ALLOC >&& from) :
-        IndependenceTest2(std::move(from), from.getAllocator()) {}
+    INLINE IndependenceTest< ALLOC >::IndependenceTest(
+      IndependenceTest< ALLOC >&& from) :
+        IndependenceTest(std::move(from), from.getAllocator()) {}
 
 
     /// destructor
     template < template < typename > class ALLOC >
-    INLINE IndependenceTest2< ALLOC >::~IndependenceTest2() {
+    INLINE IndependenceTest< ALLOC >::~IndependenceTest() {
       if (_apriori != nullptr) {
-        ALLOC< Apriori2< ALLOC > > allocator(this->getAllocator());
+        ALLOC< Apriori< ALLOC > > allocator(this->getAllocator());
         allocator.destroy(_apriori);
         allocator.deallocate(_apriori, 1);
       }
-      GUM_DESTRUCTOR(IndependenceTest2);
+      GUM_DESTRUCTOR(IndependenceTest);
     }
 
 
     /// copy operator
     template < template < typename > class ALLOC >
-    IndependenceTest2< ALLOC >& IndependenceTest2< ALLOC >::
-                                operator=(const IndependenceTest2< ALLOC >& from) {
+    IndependenceTest< ALLOC >& IndependenceTest< ALLOC >::
+                                operator=(const IndependenceTest< ALLOC >& from) {
       if (this != &from) {
-        Apriori2< ALLOC >*      new_apriori = from._apriori->clone();
-        RecordCounter2< ALLOC > new_counter = from._counter;
+        Apriori< ALLOC >*      new_apriori = from._apriori->clone();
+        RecordCounter< ALLOC > new_counter = from._counter;
         ScoringCache< ALLOC >   new_cache = from._cache;
 
         if (_apriori != nullptr) {
-          ALLOC< Apriori2< ALLOC > > allocator(this->getAllocator());
+          ALLOC< Apriori< ALLOC > > allocator(this->getAllocator());
           allocator.destroy(_apriori);
           allocator.deallocate(_apriori, 1);
         }
@@ -147,8 +147,8 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    IndependenceTest2< ALLOC >& IndependenceTest2< ALLOC >::
-                                operator=(IndependenceTest2< ALLOC >&& from) {
+    IndependenceTest< ALLOC >& IndependenceTest< ALLOC >::
+                                operator=(IndependenceTest< ALLOC >&& from) {
       if (this != &from) {
         std::swap(_apriori, from._apriori);
 
@@ -164,7 +164,7 @@ namespace gum {
 
     /// changes the max number of threads used to parse the database
     template < template < typename > class ALLOC >
-    INLINE void IndependenceTest2< ALLOC >::setMaxNbThreads(std::size_t nb) const {
+    INLINE void IndependenceTest< ALLOC >::setMaxNbThreads(std::size_t nb) const {
       if (nb == std::size_t(0)) nb = std::size_t(1);
       _counter.setMaxNbThreads(nb);
       _max_nb_threads = nb;
@@ -173,16 +173,16 @@ namespace gum {
 
     /// returns the number of threads used to parse the database
     template < template < typename > class ALLOC >
-    INLINE std::size_t IndependenceTest2< ALLOC >::nbThreads() const {
+    INLINE std::size_t IndependenceTest< ALLOC >::nbThreads() const {
       return _max_nb_threads;
     }
 
 
     /// returns the score of a pair of nodes
     template < template < typename > class ALLOC >
-    INLINE double IndependenceTest2< ALLOC >::score(const NodeId var1,
+    INLINE double IndependenceTest< ALLOC >::score(const NodeId var1,
                                                     const NodeId var2) {
-      IdSet2< ALLOC > idset(
+      IdSet< ALLOC > idset(
         var1, var2, _empty_ids, false, true, this->getAllocator());
       if (_use_cache) {
         try {
@@ -199,11 +199,11 @@ namespace gum {
 
     /// returns the score of a pair of nodes given some other nodes
     template < template < typename > class ALLOC >
-    INLINE double IndependenceTest2< ALLOC >::score(
+    INLINE double IndependenceTest< ALLOC >::score(
       const NodeId                                  var1,
       const NodeId                                  var2,
       const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids) {
-      IdSet2< ALLOC > idset(
+      IdSet< ALLOC > idset(
         var1, var2, rhs_ids, false, false, this->getAllocator());
       if (_use_cache) {
         try {
@@ -220,7 +220,7 @@ namespace gum {
 
     /// clears all the data structures from memory
     template < template < typename > class ALLOC >
-    INLINE void IndependenceTest2< ALLOC >::clear() {
+    INLINE void IndependenceTest< ALLOC >::clear() {
       _counter.clear();
       _cache.clear();
     }
@@ -228,14 +228,14 @@ namespace gum {
 
     /// clears the current cache (clear nodesets as well)
     template < template < typename > class ALLOC >
-    INLINE void IndependenceTest2< ALLOC >::clearCache() {
+    INLINE void IndependenceTest< ALLOC >::clearCache() {
       _cache.clear();
     }
 
 
     /// turn on/off the use of a cache of the previously computed score
     template < template < typename > class ALLOC >
-    INLINE void IndependenceTest2< ALLOC >::useCache(const bool on_off) {
+    INLINE void IndependenceTest< ALLOC >::useCache(const bool on_off) {
       _use_cache = on_off;
     }
 
@@ -243,7 +243,7 @@ namespace gum {
     /// return the mapping between the columns of the database and the node ids
     template < template < typename > class ALLOC >
     INLINE const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                 IndependenceTest2< ALLOC >::nodeId2Columns() const {
+                 IndependenceTest< ALLOC >::nodeId2Columns() const {
       return _counter.nodeId2Columns();
     }
 
@@ -251,7 +251,7 @@ namespace gum {
     /// return the database used by the score
     template < template < typename > class ALLOC >
     INLINE const DatabaseTable< ALLOC >&
-                 IndependenceTest2< ALLOC >::database() const {
+                 IndependenceTest< ALLOC >::database() const {
       return _counter.database();
     }
 
@@ -265,7 +265,7 @@ namespace gum {
      */
     template < template < typename > class ALLOC >
     std::vector< double, ALLOC< double > >
-    IndependenceTest2< ALLOC >::_marginalize (
+    IndependenceTest< ALLOC >::_marginalize (
       const std::size_t node_2_marginalize,
       const std::size_t X_size,
       const std::size_t Y_size,

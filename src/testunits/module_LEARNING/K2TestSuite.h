@@ -71,12 +71,12 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriSmoothing2<>    apriori(database);
-      gum::learning::ScoreK22<>             score(parser, apriori);
+      gum::learning::AprioriSmoothing<>    apriori(database);
+      gum::learning::ScoreK2<>             score(parser, apriori);
 
       gum::learning::StructuralConstraintDAG struct_constraint;
 
-      gum::learning::ParamEstimatorML2<> estimator(parser, apriori,
+      gum::learning::ParamEstimatorML<> estimator(parser, apriori,
                                                    score.internalApriori());
 
       std::vector< gum::NodeId > order(database.nbVariables());
@@ -87,7 +87,7 @@ namespace gum_tests {
       gum::learning::GraphChangesGenerator4K2< decltype(struct_constraint) >
         op_set(struct_constraint);
 
-      gum::learning::GraphChangesSelector4DiGraph2< decltype(struct_constraint),
+      gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint),
                                                     decltype(op_set) >
         selector(score, struct_constraint, op_set);
 

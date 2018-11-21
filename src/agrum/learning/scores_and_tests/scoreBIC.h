@@ -37,16 +37,16 @@ namespace gum {
 
   namespace learning {
 
-    /** @class ScoreBIC2
+    /** @class ScoreBIC
      * @brief the class for computing BIC scores
-     * @headerfile scoreBIC2.h <agrum/learning/scores_and_tests/scoreBIC2.h>
+     * @headerfile scoreBIC.h <agrum/learning/scores_and_tests/scoreBIC.h>
      * @ingroup learning_scores
      *
      * @warning If you pass an apriori to the score, this one will be added
      * into the log-likelihood part of the score.
      */
     template < template < typename > class ALLOC = std::allocator >
-    class ScoreBIC2 : public Score2< ALLOC > {
+    class ScoreBIC : public Score< ALLOC > {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;
@@ -77,9 +77,9 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      ScoreBIC2(
+      ScoreBIC(
         const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori2< ALLOC >&             apriori,
+        const Apriori< ALLOC >&             apriori,
         const std::vector< std::pair< std::size_t, std::size_t >,
                            ALLOC< std::pair< std::size_t, std::size_t > > >&
           ranges,
@@ -104,33 +104,33 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      ScoreBIC2(const DBRowGeneratorParser< ALLOC >& parser,
-                const Apriori2< ALLOC >&             apriori,
+      ScoreBIC(const DBRowGeneratorParser< ALLOC >& parser,
+                const Apriori< ALLOC >&             apriori,
                 const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
                   nodeId2columns =
                     Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
                 const allocator_type& alloc = allocator_type());
 
       /// copy constructor
-      ScoreBIC2(const ScoreBIC2< ALLOC >& from);
+      ScoreBIC(const ScoreBIC< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      ScoreBIC2(const ScoreBIC2< ALLOC >& from, const allocator_type& alloc);
+      ScoreBIC(const ScoreBIC< ALLOC >& from, const allocator_type& alloc);
 
       /// move constructor
-      ScoreBIC2(ScoreBIC2< ALLOC >&& from);
+      ScoreBIC(ScoreBIC< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      ScoreBIC2(ScoreBIC2< ALLOC >&& from, const allocator_type& alloc);
+      ScoreBIC(ScoreBIC< ALLOC >&& from, const allocator_type& alloc);
 
       /// virtual copy constructor
-      virtual ScoreBIC2< ALLOC >* clone() const;
+      virtual ScoreBIC< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual ScoreBIC2< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual ScoreBIC< ALLOC >* clone(const allocator_type& alloc) const;
 
       /// destructor
-      virtual ~ScoreBIC2();
+      virtual ~ScoreBIC();
 
       /// @}
 
@@ -142,10 +142,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      ScoreBIC2< ALLOC >& operator=(const ScoreBIC2< ALLOC >& from);
+      ScoreBIC< ALLOC >& operator=(const ScoreBIC< ALLOC >& from);
 
       /// move operator
-      ScoreBIC2< ALLOC >& operator=(ScoreBIC2< ALLOC >&& from);
+      ScoreBIC< ALLOC >& operator=(ScoreBIC< ALLOC >&& from);
 
       /// @}
 
@@ -178,7 +178,7 @@ namespace gum {
        * note that, to be meaningful, a structure + parameter learning requires
        * that the same aprioris are taken into account during structure learning
        * and parameter learning. */
-      virtual const Apriori2< ALLOC >& internalApriori() const final;
+      virtual const Apriori< ALLOC >& internalApriori() const final;
 
       /// returns the size of the database w.r.t. a given idset
       /** Usually, the size of the database should be a constant. But some
@@ -189,7 +189,7 @@ namespace gum {
        * to the other. As a result, the size of the database, including the a
        * priori, depends on the variables of the contingency tables (the idset
        * passed in argument of this function). */
-      double N(const IdSet2< ALLOC >& idset);
+      double N(const IdSet< ALLOC >& idset);
 
       /// @}
 
@@ -202,7 +202,7 @@ namespace gum {
 
       /// indicates whether the apriori is compatible (meaningful) with the score
       /** a non empty string if the apriori is compatible with the score. */
-      static std::string isAprioriCompatible(const Apriori2< ALLOC >& apriori);
+      static std::string isAprioriCompatible(const Apriori< ALLOC >& apriori);
 
 
       protected:
@@ -210,12 +210,12 @@ namespace gum {
       /** @throws OperationNotAllowed is raised if the score does not support
        * calling method score such an idset (due to too many/too few variables
        * in the left hand side or the right hand side of the idset). */
-      virtual double _score(const IdSet2< ALLOC >& idset) final;
+      virtual double _score(const IdSet< ALLOC >& idset) final;
 
 
       private:
       /// the internal apriori of the score
-      AprioriNoApriori2< ALLOC > __internal_apriori;
+      AprioriNoApriori< ALLOC > __internal_apriori;
     };
 
   } /* namespace learning */
@@ -223,7 +223,7 @@ namespace gum {
 } /* namespace gum */
 
 
-extern template class gum::learning::ScoreBIC2<>;
+extern template class gum::learning::ScoreBIC<>;
 
 
 // always include the template implementation

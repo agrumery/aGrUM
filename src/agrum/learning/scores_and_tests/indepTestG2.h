@@ -42,7 +42,7 @@ namespace gum {
      */
     // clang-format on
     template < template < typename > class ALLOC = std::allocator >
-    class IndepTestG2 : public IndependenceTest2< ALLOC > {
+    class IndepTestG2 : public IndependenceTest< ALLOC > {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;
@@ -77,7 +77,7 @@ namespace gum {
        * score() over other ids will raise exception NotFound. */
       IndepTestG2(
         const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori2< ALLOC >&             external_apriori,
+        const Apriori< ALLOC >&             external_apriori,
         const std::vector< std::pair< std::size_t, std::size_t >,
                            ALLOC< std::pair< std::size_t, std::size_t > > >&
           ranges,
@@ -103,7 +103,7 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       IndepTestG2(const DBRowGeneratorParser< ALLOC >& parser,
-                const Apriori2< ALLOC >&               apriori,
+                const Apriori< ALLOC >&               apriori,
                 const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
                   nodeId2columns =
                     Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
@@ -154,7 +154,7 @@ namespace gum {
       /** @throws OperationNotAllowed is raised if the score does not support
        * calling method score such an idset (due to too many/too few variables
        * in the left hand side or the right hand side of the idset). */
-      virtual double _score(const IdSet2< ALLOC >& idset) final;
+      virtual double _score(const IdSet< ALLOC >& idset) final;
 
     private:
       /// the domain sizes of the variables

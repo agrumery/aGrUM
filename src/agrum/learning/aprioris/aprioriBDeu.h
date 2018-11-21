@@ -34,9 +34,9 @@ namespace gum {
 
   namespace learning {
 
-    /** @class AprioriBDeu2
+    /** @class AprioriBDeu
      * @brief the internal apriori for the BDeu score (N' / (r_i * q_i)
-     * @headerfile aprioriBDeu2.h <agrum/learning/database/aprioriBDeu2.h>
+     * @headerfile aprioriBDeu.h <agrum/learning/database/aprioriBDeu.h>
      * @ingroup learning_apriori
      *
      * BDeu is a BD score with a N'/(r_i * q_i) apriori, where N' is an
@@ -48,7 +48,7 @@ namespace gum {
      * structure learning and parameter learning.
      */
     template < template < typename > class ALLOC = std::allocator >
-    class AprioriBDeu2 : public Apriori2< ALLOC > {
+    class AprioriBDeu : public Apriori< ALLOC > {
       public:
       /// the type of the a priori
       using type = AprioriBDeuType;
@@ -74,32 +74,32 @@ namespace gum {
        * the column in the DatabaseTable.
        * @param alloc the allocator used to allocate the structures within the
        * RecordCounter.*/
-      AprioriBDeu2(const DatabaseTable< ALLOC >& database,
+      AprioriBDeu(const DatabaseTable< ALLOC >& database,
                    const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
                      nodeId2columns =
                        Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
                    const allocator_type& alloc = allocator_type());
 
       /// copy constructor
-      AprioriBDeu2(const AprioriBDeu2< ALLOC >& from);
+      AprioriBDeu(const AprioriBDeu< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      AprioriBDeu2(const AprioriBDeu2< ALLOC >& from, const allocator_type& alloc);
+      AprioriBDeu(const AprioriBDeu< ALLOC >& from, const allocator_type& alloc);
 
       /// move constructor
-      AprioriBDeu2(AprioriBDeu2< ALLOC >&& from);
+      AprioriBDeu(AprioriBDeu< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      AprioriBDeu2(AprioriBDeu2< ALLOC >&& from, const allocator_type& alloc);
+      AprioriBDeu(AprioriBDeu< ALLOC >&& from, const allocator_type& alloc);
 
       /// virtual copy constructor
-      virtual AprioriBDeu2< ALLOC >* clone() const;
+      virtual AprioriBDeu< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual AprioriBDeu2< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual AprioriBDeu< ALLOC >* clone(const allocator_type& alloc) const;
 
       /// destructor
-      virtual ~AprioriBDeu2();
+      virtual ~AprioriBDeu();
 
       /// @}
 
@@ -110,10 +110,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      AprioriBDeu2< ALLOC >& operator=(const AprioriBDeu2< ALLOC >& from);
+      AprioriBDeu< ALLOC >& operator=(const AprioriBDeu< ALLOC >& from);
 
       /// move operator
-      AprioriBDeu2< ALLOC >& operator=(AprioriBDeu2< ALLOC >&& from);
+      AprioriBDeu< ALLOC >& operator=(AprioriBDeu< ALLOC >&& from);
 
       /// @}
 
@@ -152,7 +152,7 @@ namespace gum {
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint variables set. */
       virtual void
-        addAllApriori(const IdSet2< ALLOC >&                  idset,
+        addAllApriori(const IdSet< ALLOC >&                  idset,
                       std::vector< double, ALLOC< double > >& counts) final;
 
       /** @brief adds the apriori to a counting vectordefined over the right
@@ -161,7 +161,7 @@ namespace gum {
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint RHS variables of the idset. */
       virtual void addConditioningApriori(
-        const IdSet2< ALLOC >&                  idset,
+        const IdSet< ALLOC >&                  idset,
         std::vector< double, ALLOC< double > >& counts) final;
 
       /// @}

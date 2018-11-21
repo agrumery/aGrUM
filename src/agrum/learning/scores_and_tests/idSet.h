@@ -42,16 +42,16 @@ namespace gum {
 
 
     template < template < typename > class ALLOC >
-    class IdSet2;
+    class IdSet;
 
 
-    /** @class IdSet2Iterator
+    /** @class IdSetIterator
      * @brief The iterators for IdSets
-     * @headerfile idSet2.h <agrum/learning/scores_and_tests/idSet2.h>
+     * @headerfile idSet.h <agrum/learning/scores_and_tests/idSet.h>
      * @ingroup learning_scores
      */
     template < template < typename > class ALLOC = std::allocator >
-    class IdSet2Iterator {
+    class IdSetIterator {
       public:
       /// types for STL compliance
       /// @{
@@ -72,20 +72,20 @@ namespace gum {
 
       /// default constructor
       /** @return an iterator pointing toward nothing. */
-      IdSet2Iterator();
+      IdSetIterator();
 
       /// Constructor for a begin
       /** @param idset The IdSet to iterate over. */
-      IdSet2Iterator(const IdSet2< ALLOC >& idset);
+      IdSetIterator(const IdSet< ALLOC >& idset);
 
       /// Copy constructor.
-      IdSet2Iterator(const IdSet2Iterator< ALLOC >& from);
+      IdSetIterator(const IdSetIterator< ALLOC >& from);
 
       /// move constructor
-      IdSet2Iterator(IdSet2Iterator< ALLOC >&& from);
+      IdSetIterator(IdSetIterator< ALLOC >&& from);
 
       /// destructor
-      virtual ~IdSet2Iterator();
+      virtual ~IdSetIterator();
 
       /// @}
 
@@ -96,10 +96,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      IdSet2Iterator< ALLOC >& operator=(const IdSet2Iterator< ALLOC >& from);
+      IdSetIterator< ALLOC >& operator=(const IdSetIterator< ALLOC >& from);
 
       /// move operator
-      IdSet2Iterator< ALLOC >& operator=(IdSet2Iterator< ALLOC >&& from);
+      IdSetIterator< ALLOC >& operator=(IdSetIterator< ALLOC >&& from);
 
       /** @brief Gives access to the content of the iterator.
        * @throw UndefinedIteratorValue Raised if the iterator points to nothing.
@@ -108,10 +108,10 @@ namespace gum {
       NodeId operator*() const;
 
       /// Checks whether two iterators point toward different elements.
-      bool operator!=(const IdSet2Iterator< ALLOC >& from) const;
+      bool operator!=(const IdSetIterator< ALLOC >& from) const;
 
       /// Checks whether two iterators point toward the same elements.
-      bool operator==(const IdSet2Iterator< ALLOC >& from) const;
+      bool operator==(const IdSetIterator< ALLOC >& from) const;
 
       /** @brief Makes the iterator point to the next element in the IdSet
        *
@@ -122,23 +122,23 @@ namespace gum {
        * The above loop is guaranteed to parse the whole IdSet as long as no
        * element is added to or deleted from the IdSet while being in the loop.
        *
-       * @return Returns this gum::IdSet2Iterator.
+       * @return Returns this gum::IdSetIterator.
        */
-      IdSet2Iterator< ALLOC >& operator++();
+      IdSetIterator< ALLOC >& operator++();
 
       /**
        * @brief Makes the iterator point to i elements further in the IdSet
        * @param i The number of steps to move the iterator.
-       * @return Returns this gum::IdSet2Iterator.
+       * @return Returns this gum::IdSetIterator.
        */
-      IdSet2Iterator< ALLOC >& operator+=(const std::size_t i);
+      IdSetIterator< ALLOC >& operator+=(const std::size_t i);
 
       /**
        * @brief Returns a new iterator pointing to i further elements in the IdSet
        * @param i The number of steps to move the iterator.
-       * @return Returns a new gum::IdSet2Iterator.
+       * @return Returns a new gum::IdSetIterator.
        */
-      IdSet2Iterator< ALLOC > operator+(const std::size_t i);
+      IdSetIterator< ALLOC > operator+(const std::size_t i);
 
       /// @}
 
@@ -149,8 +149,8 @@ namespace gum {
       /// @{
 
       /**
-       * @brief Returns the position of the iterator in the IdSet2.
-       * @return Returns the position of the iterator in the IdSet2.
+       * @brief Returns the position of the iterator in the IdSet.
+       * @return Returns the position of the iterator in the IdSet.
        * @throw UndefinedIteratorValue Raised on end()
        */
       std::size_t pos() const;
@@ -158,43 +158,43 @@ namespace gum {
       /// @}
 
       private:
-      /// a pointer on the sequence stored in the idSet2
+      /// a pointer on the sequence stored in the IdSet
       const Sequence< NodeId, ALLOC< NodeId > >* __seq{nullptr};
 
-      /// The index in the IdSet2's sequence where the iterator is pointing.
+      /// The index in the IdSet's sequence where the iterator is pointing.
       std::size_t __index{std::size_t(0)};
 
 
       /// places the index to the end of the sequence
       void __gotoEnd();
 
-      friend class IdSet2< ALLOC >;
+      friend class IdSet< ALLOC >;
     };
 
 
-    /** @class IdSet2
+    /** @class IdSet
      * @brief A class for storing a pair of sets of NodeIds, the second one
      * corresponding to a conditional set.
-     * @headerfile idSet2.h <agrum/learning/scores_and_tests/idSet2.h>
+     * @headerfile idSet.h <agrum/learning/scores_and_tests/idSet.h>
      * @ingroup learning_scores
      *
-     * IdSet2s are used by learning caches to store pairs of sets of nodes,
+     * IdSets are used by learning caches to store pairs of sets of nodes,
      * the second ones represent typically conditional sets.
      * This is useful for storing in hashtables the scores assigned to sets
      * of nodes given other nodes. NodeSets are actually not well suited for
      * this purpose because their implementations makes the computation of their
-     * hash values quite difficult. IdSet2s fix this issue.
+     * hash values quite difficult. IdSets fix this issue.
      */
     template < template < typename > class ALLOC = std::allocator >
-    class IdSet2 : private ALLOC< NodeId > {
+    class IdSet : private ALLOC< NodeId > {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;
 
-      using iterator = IdSet2Iterator< ALLOC >;
-      using const_iterator = IdSet2Iterator< ALLOC >;
-      using iterator_safe = IdSet2Iterator< ALLOC >;
-      using const_iterator_safe = IdSet2Iterator< ALLOC >;
+      using iterator = IdSetIterator< ALLOC >;
+      using const_iterator = IdSetIterator< ALLOC >;
+      using iterator_safe = IdSetIterator< ALLOC >;
+      using const_iterator_safe = IdSetIterator< ALLOC >;
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -202,7 +202,7 @@ namespace gum {
       /// @{
 
       /// default constructor
-      IdSet2(const allocator_type& alloc = allocator_type());
+      IdSet(const allocator_type& alloc = allocator_type());
 
       /// default constructor with no variable on the left side
       /** @param ids the set of variables
@@ -211,7 +211,7 @@ namespace gum {
        * @param ordered_ids indicates whether the ids in rhs_ids should be
        * considered as an ordered set or an unordered set
        * @param alloc the allocator used to store the data in the IdSet */
-      IdSet2(const std::vector< NodeId, ALLOC< NodeId > >& ids,
+      IdSet(const std::vector< NodeId, ALLOC< NodeId > >& ids,
              const bool                                    rhs_ids,
              const bool                                    ordered_ids,
              const allocator_type& alloc = allocator_type());
@@ -223,7 +223,7 @@ namespace gum {
        * @param ordered_rhs_ids indicates whether the ids in rhs_ids should be
        * considered as an ordered set or an unordered set
        * @param alloc the allocator used to store the data in the IdSet */
-      IdSet2(NodeId                                        var1,
+      IdSet(NodeId                                        var1,
              const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids,
              const bool                                    ordered_rhs_ids = false,
              const allocator_type& alloc = allocator_type());
@@ -240,7 +240,7 @@ namespace gum {
        * considered as an ordered set or an unordered set
        * @param ordered_rhs_ids
        * @param alloc the allocator used to store the data in the IdSet */
-      IdSet2(NodeId                                        var1,
+      IdSet(NodeId                                        var1,
              NodeId                                        var2,
              const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids,
              const bool                                    ordered_lhs_vars,
@@ -258,7 +258,7 @@ namespace gum {
        * @param ordered_rhs_ids indicates whether the ids in rhs_ids should be
        * considered as an ordered set or an unordered set
        * @param alloc the allocator used to store the data in the IdSet */
-      IdSet2(NodeId                                        var1,
+      IdSet(NodeId                                        var1,
              NodeId                                        var2,
              NodeId                                        var3,
              const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids,
@@ -267,25 +267,25 @@ namespace gum {
              const allocator_type& alloc = allocator_type());
 
       /// copy constructor
-      IdSet2(const IdSet2< ALLOC >& from);
+      IdSet(const IdSet< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      IdSet2(const IdSet2< ALLOC >& from, const allocator_type& alloc);
+      IdSet(const IdSet< ALLOC >& from, const allocator_type& alloc);
 
       /// move constructor
-      IdSet2(IdSet2< ALLOC >&& from);
+      IdSet(IdSet< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      IdSet2(IdSet2< ALLOC >&& from, const allocator_type& alloc);
+      IdSet(IdSet< ALLOC >&& from, const allocator_type& alloc);
 
       /// virtual copy constructor
-      virtual IdSet2< ALLOC >* clone() const;
+      virtual IdSet< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual IdSet2< ALLOC >* clone(const allocator_type& alloc) const;
+      virtual IdSet< ALLOC >* clone(const allocator_type& alloc) const;
 
       /// destructor
-      virtual ~IdSet2();
+      virtual ~IdSet();
 
       /// @}
 
@@ -296,19 +296,19 @@ namespace gum {
       /// @{
 
       /// copy operator
-      IdSet2< ALLOC >& operator=(const IdSet2< ALLOC >& from);
+      IdSet< ALLOC >& operator=(const IdSet< ALLOC >& from);
 
       /// move operator
-      IdSet2< ALLOC >& operator=(IdSet2< ALLOC >&& from);
+      IdSet< ALLOC >& operator=(IdSet< ALLOC >&& from);
 
       /// returns the node id stored at a given index
       NodeId operator[](const std::size_t index) const;
 
       /// returns true if both sets are equal
-      bool operator==(const IdSet2< ALLOC >& from) const;
+      bool operator==(const IdSet< ALLOC >& from) const;
 
       /// returns true if the sets differ
-      bool operator!=(const IdSet2< ALLOC >& from) const;
+      bool operator!=(const IdSet< ALLOC >& from) const;
 
       /// @}
 
@@ -354,7 +354,7 @@ namespace gum {
       const Sequence< NodeId, ALLOC< NodeId > >& ids() const;
 
       /// returns the idSet at the right hand side of the conditioning bar
-      IdSet2< ALLOC > conditionalIdSet() const;
+      IdSet< ALLOC > conditionalIdSet() const;
 
       /// returns the number of left hand side ids
       std::size_t nbLHSIds() const;
@@ -363,7 +363,7 @@ namespace gum {
       std::size_t nbRHSIds() const;
 
       /// indicates whether the IdSet contains the IdSet passed in argument
-      bool contains(const IdSet2< ALLOC >& set) const;
+      bool contains(const IdSet< ALLOC >& set) const;
 
       /// removes all the nodes from the IdSet
       void clear();
@@ -405,24 +405,24 @@ namespace gum {
       std::size_t __nb_lhs_ids{std::size_t(0)};
 
       /// Stores the end iterator for fast access.
-      IdSet2Iterator< ALLOC > __end_safe;
+      IdSetIterator< ALLOC > __end_safe;
     };
 
 
     /// the display operator
     template < template < typename > class ALLOC >
-    std::ostream& operator<<(std::ostream& stream, const IdSet2< ALLOC >& idset);
+    std::ostream& operator<<(std::ostream& stream, const IdSet< ALLOC >& idset);
 
   } /* namespace learning */
 
 
   /// the hash function for idSets
   template < template < typename > class ALLOC >
-  class HashFunc< learning::IdSet2< ALLOC > >
-      : public HashFuncBase< learning::IdSet2< ALLOC > > {
+  class HashFunc< learning::IdSet< ALLOC > >
+      : public HashFuncBase< learning::IdSet< ALLOC > > {
     public:
     /// computes the hashed value of a key
-    Size operator()(const learning::IdSet2< ALLOC >& key) const;
+    Size operator()(const learning::IdSet< ALLOC >& key) const;
   };
 
 
