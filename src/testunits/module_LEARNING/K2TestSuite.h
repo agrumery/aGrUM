@@ -32,10 +32,10 @@
 #include <agrum/learning/database/databaseTable.h>
 #include <agrum/learning/database/DBTranslatorSet.h>
 
-#include <agrum/learning/scores_and_tests/scoreBDeu2.h>
-#include <agrum/learning/scores_and_tests/scoreK22.h>
+#include <agrum/learning/scores_and_tests/scoreBDeu.h>
+#include <agrum/learning/scores_and_tests/scoreK2.h>
 
-#include <agrum/learning/aprioris/aprioriSmoothing2.h>
+#include <agrum/learning/aprioris/aprioriSmoothing.h>
 
 #include <agrum/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/learning/constraints/structuralConstraintDiGraph.h>
@@ -44,10 +44,10 @@
 #include <agrum/learning/constraints/structuralConstraintSliceOrder.h>
 
 #include <agrum/learning/structureUtils/graphChangesGenerator4K2.h>
-#include <agrum/learning/structureUtils/graphChangesSelector4DiGraph2.h>
+#include <agrum/learning/structureUtils/graphChangesSelector4DiGraph.h>
 
 #include <agrum/learning/K2.h>
-#include <agrum/learning/paramUtils/paramEstimatorML2.h>
+#include <agrum/learning/paramUtils/paramEstimatorML.h>
 
 namespace gum_tests {
 

@@ -24,7 +24,7 @@
 
 #include <agrum/learning/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/learning/database/DBRowGeneratorParser.h>
-#include <agrum/learning/scores_and_tests/recordCounter2.h>
+#include <agrum/learning/scores_and_tests/recordCounter.h>
 
 namespace gum_tests {
 

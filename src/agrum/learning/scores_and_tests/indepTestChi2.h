@@ -29,8 +29,8 @@
 #include <vector>
 
 #include <agrum/core/math/chi2.h>
-#include <agrum/learning/scores_and_tests/independenceTest2.h>
-#include <agrum/learning/aprioris/aprioriNoApriori2.h>
+#include <agrum/learning/scores_and_tests/independenceTest.h>
+#include <agrum/learning/aprioris/aprioriNoApriori.h>
 
 namespace gum {
 

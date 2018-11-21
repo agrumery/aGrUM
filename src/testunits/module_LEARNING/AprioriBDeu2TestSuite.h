@@ -24,7 +24,7 @@
 
 #include <agrum/learning/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/learning/database/DBTranslatorSet.h>
-#include <agrum/learning/aprioris/aprioriBDeu2.h>
+#include <agrum/learning/aprioris/aprioriBDeu.h>
 
 namespace gum_tests {
 

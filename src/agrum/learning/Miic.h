@@ -47,7 +47,7 @@
 #include <agrum/core/heap.h>
 #include <agrum/graphs/DAG.h>
 #include <agrum/graphs/mixedGraph.h>
-#include <agrum/learning/scores_and_tests/correctedMutualInformation2.h>
+#include <agrum/learning/scores_and_tests/correctedMutualInformation.h>
 
 namespace gum {
 

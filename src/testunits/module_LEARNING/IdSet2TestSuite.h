@@ -22,7 +22,7 @@
 #include <cxxtest/testsuite_utils.h>
 #include <iostream>
 
-#include <agrum/learning/scores_and_tests/idSet2.h>
+#include <agrum/learning/scores_and_tests/idSet.h>
 
 namespace gum_tests {
 

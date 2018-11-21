@@ -25,9 +25,9 @@
 
 #include <agrum/learning/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/learning/database/DBTranslatorSet.h>
-#include <agrum/learning/aprioris/aprioriSmoothing2.h>
-#include <agrum/learning/scores_and_tests/scoreK22.h>
-#include <agrum/learning/structureUtils/graphChangesSelector4DiGraph2.h>
+#include <agrum/learning/aprioris/aprioriSmoothing.h>
+#include <agrum/learning/scores_and_tests/scoreK2.h>
+#include <agrum/learning/structureUtils/graphChangesSelector4DiGraph.h>
 
 #include <agrum/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/learning/constraints/structuralConstraintDiGraph.h>

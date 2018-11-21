@@ -44,16 +44,16 @@
 #include <agrum/learning/database/databaseTable.h>
 #include <agrum/learning/database/DBRowGeneratorParser.h>
 
-#include <agrum/learning/scores_and_tests/scoreAIC2.h>
-#include <agrum/learning/scores_and_tests/scoreBD2.h>
-#include <agrum/learning/scores_and_tests/scoreBDeu2.h>
-#include <agrum/learning/scores_and_tests/scoreBIC2.h>
-#include <agrum/learning/scores_and_tests/scoreK22.h>
-#include <agrum/learning/scores_and_tests/scoreLog2Likelihood2.h>
+#include <agrum/learning/scores_and_tests/scoreAIC.h>
+#include <agrum/learning/scores_and_tests/scoreBD.h>
+#include <agrum/learning/scores_and_tests/scoreBDeu.h>
+#include <agrum/learning/scores_and_tests/scoreBIC.h>
+#include <agrum/learning/scores_and_tests/scoreK2.h>
+#include <agrum/learning/scores_and_tests/scoreLog2Likelihood.h>
 
-#include <agrum/learning/aprioris/aprioriDirichletFromDatabase2.h>
-#include <agrum/learning/aprioris/aprioriNoApriori2.h>
-#include <agrum/learning/aprioris/aprioriSmoothing2.h>
+#include <agrum/learning/aprioris/aprioriDirichletFromDatabase.h>
+#include <agrum/learning/aprioris/aprioriNoApriori.h>
+#include <agrum/learning/aprioris/aprioriSmoothing.h>
 
 #include <agrum/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/learning/constraints/structuralConstraintDiGraph.h>
@@ -67,10 +67,10 @@
 #include <agrum/learning/structureUtils/graphChange.h>
 #include <agrum/learning/structureUtils/graphChangesGenerator4DiGraph.h>
 #include <agrum/learning/structureUtils/graphChangesGenerator4K2.h>
-#include <agrum/learning/structureUtils/graphChangesSelector4DiGraph2.h>
+#include <agrum/learning/structureUtils/graphChangesSelector4DiGraph.h>
 
-#include <agrum/learning/paramUtils/DAG2BNLearner2.h>
-#include <agrum/learning/paramUtils/paramEstimatorML2.h>
+#include <agrum/learning/paramUtils/DAG2BNLearner.h>
+#include <agrum/learning/paramUtils/paramEstimatorML.h>
 
 #include <agrum/core/approximations/IApproximationSchemeConfiguration.h>
 #include <agrum/core/approximations/approximationSchemeListener.h>

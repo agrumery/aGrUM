@@ -30,8 +30,8 @@
 #include <agrum/core/timer.h>
 #include <agrum/graphs/mixedGraph.h>
 #include <agrum/learning/Miic.h>
-#include <agrum/learning/paramUtils/DAG2BNLearner2.h>
-#include <agrum/learning/scores_and_tests/correctedMutualInformation2.h>
+#include <agrum/learning/paramUtils/DAG2BNLearner.h>
+#include <agrum/learning/scores_and_tests/correctedMutualInformation.h>
 
 
 namespace gum {

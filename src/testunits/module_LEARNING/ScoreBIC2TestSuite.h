@@ -24,8 +24,8 @@
 
 #include <agrum/learning/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/learning/database/DBTranslatorSet.h>
-#include <agrum/learning/aprioris/aprioriSmoothing2.h>
-#include <agrum/learning/scores_and_tests/scoreBIC2.h>
+#include <agrum/learning/aprioris/aprioriSmoothing.h>
+#include <agrum/learning/scores_and_tests/scoreBIC.h>
 
 namespace gum_tests {
 

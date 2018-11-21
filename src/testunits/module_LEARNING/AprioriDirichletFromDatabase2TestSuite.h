@@ -24,7 +24,7 @@
 
 #include <agrum/learning/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/learning/database/DBTranslatorSet.h>
-#include <agrum/learning/aprioris/aprioriDirichletFromDatabase2.h>
+#include <agrum/learning/aprioris/aprioriDirichletFromDatabase.h>
 
 namespace gum_tests {
 

@@ -34,7 +34,7 @@
 #include <utility>
 
 #include <agrum/agrum.h>
-#include <agrum/learning/scores_and_tests/idSet2.h>
+#include <agrum/learning/scores_and_tests/idSet.h>
 
 namespace gum {
 

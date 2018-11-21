@@ -25,8 +25,8 @@
 #include <agrum/core/math/gammaLog2.h>
 #include <agrum/learning/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/learning/database/DBTranslatorSet.h>
-#include <agrum/learning/aprioris/aprioriNoApriori2.h>
-#include <agrum/learning/scores_and_tests/scoreBDeu2.h>
+#include <agrum/learning/aprioris/aprioriNoApriori.h>
+#include <agrum/learning/scores_and_tests/scoreBDeu.h>
 
 namespace gum_tests {
 

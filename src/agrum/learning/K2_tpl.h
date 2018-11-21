@@ -25,7 +25,7 @@
 
 #include <type_traits>
 
-#include <agrum/learning/paramUtils/DAG2BNLearner2.h>
+#include <agrum/learning/paramUtils/DAG2BNLearner.h>
 #include <agrum/learning/structureUtils/graphChange.h>
 #include <agrum/learning/structureUtils/graphChangesGenerator4K2.h>
 

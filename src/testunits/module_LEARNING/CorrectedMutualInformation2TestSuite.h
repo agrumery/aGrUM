@@ -27,8 +27,8 @@
 #include <agrum/learning/database/DBInitializerFromCSV.h>
 #include <agrum/learning/database/databaseTable.h>
 #include <agrum/learning/database/DBTranslatorSet.h>
-#include <agrum/learning/scores_and_tests/correctedMutualInformation2.h>
-#include <agrum/learning/aprioris/aprioriNoApriori2.h>
+#include <agrum/learning/scores_and_tests/correctedMutualInformation.h>
+#include <agrum/learning/aprioris/aprioriNoApriori.h>
 
 namespace gum_tests {
 

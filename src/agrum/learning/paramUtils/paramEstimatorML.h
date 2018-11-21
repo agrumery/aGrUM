@@ -1,0 +1,187 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+/** @file
+ * @brief the class for estimating parameters of CPTs using Maximum Likelihood
+ *
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ */
+#ifndef GUM_LEARNING_PARAM_ESTIMATOR_ML_H
+#define GUM_LEARNING_PARAM_ESTIMATOR_ML_H
+
+#include <sstream>
+
+#include <agrum/agrum.h>
+#include <agrum/learning/paramUtils/paramEstimator.h>
+
+namespace gum {
+
+  namespace learning {
+
+    /** @class ParamEstimatorML2
+     * @brief The class for estimating parameters of CPTs using Maximum Likelihood
+     * @headerfile paramEstimatorML2.h <agrum/learning/paramUtils/paramEstimatorML2.h>
+     * @ingroup learning_param_utils
+     */
+    template < template < typename > class ALLOC = std::allocator >
+    class ParamEstimatorML2 : public ParamEstimator2< ALLOC > {
+      public:
+      /// type for the allocators passed in arguments of methods
+      using allocator_type = ALLOC< NodeId >;
+
+      // ##########################################################################
+      /// @name Constructors / Destructors
+      // ##########################################################################
+      /// @{
+
+      /// default constructor
+      /** @param parser the parser used to parse the database
+       * @param external_apriori An apriori that we add to the computation
+       * of the score
+       * @param score_internal_apriori The apriori within the score used
+       * to learn the data structure (might be a NoApriori)
+       * @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
+       * indices. The countings are then performed only on the union of the
+       * rows [Xi,Yi), i in {1,...,n}. This is useful, e.g, when performing
+       * cross validation tasks, in which part of the database should be ignored.
+       * An empty set of ranges is equivalent to an interval [X,Y) ranging over
+       * the whole database.
+       * @param nodeId2Columns a mapping from the ids of the nodes in the
+       * graphical model to the corresponding column in the DatabaseTable
+       * parsed by the parser. This enables estimating from a database in
+       * which variable A corresponds to the 2nd column the parameters of a BN
+       * in which variable A has a NodeId of 5. An empty nodeId2Columns
+       * bijection means that the mapping is an identity, i.e., the value of a
+       * NodeId is equal to the index of the column in the DatabaseTable.
+       * @param alloc the allocator used to allocate the structures within the
+       * Score.
+       * @warning If nodeId2columns is not empty, then only the scores over the
+       * ids belonging to this bijection can be computed: applying method
+       * score() over other ids will raise exception NotFound. */
+      ParamEstimatorML2(
+        const DBRowGeneratorParser< ALLOC >& parser,
+        const Apriori2< ALLOC >&             external_apriori,
+        const Apriori2< ALLOC >&             score_internal__apriori,
+        const std::vector< std::pair< std::size_t, std::size_t >,
+                           ALLOC< std::pair< std::size_t, std::size_t > > >&
+          ranges,
+        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+          nodeId2columns =
+            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+        const allocator_type& alloc = allocator_type());
+
+      /// default constructor
+      /** @param parser the parser used to parse the database
+       * @param external_apriori An apriori that we add to the computation
+       * of the score
+       * @param score_internal_apriori The apriori within the score used
+       * to learn the data structure (might be a NoApriori)
+       * @param nodeId2Columns a mapping from the ids of the nodes in the
+       * graphical model to the corresponding column in the DatabaseTable
+       * parsed by the parser. This enables estimating from a database in
+       * which variable A corresponds to the 2nd column the parameters of a BN
+       * in which variable A has a NodeId of 5. An empty nodeId2Columns
+       * bijection means that the mapping is an identity, i.e., the value of a
+       * NodeId is equal to the index of the column in the DatabaseTable.
+       * @param alloc the allocator used to allocate the structures within the
+       * Score.
+       * @warning If nodeId2columns is not empty, then only the scores over the
+       * ids belonging to this bijection can be computed: applying method
+       * score() over other ids will raise exception NotFound. */
+      ParamEstimatorML2(
+        const DBRowGeneratorParser< ALLOC >& parser,
+        const Apriori2< ALLOC >&             external_apriori,
+        const Apriori2< ALLOC >&             score_internal__apriori,
+        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+          nodeId2columns =
+            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+        const allocator_type& alloc = allocator_type());
+
+      /// copy constructor
+      ParamEstimatorML2(const ParamEstimatorML2< ALLOC >& from);
+
+      /// copy constructor with a given allocator
+      ParamEstimatorML2(const ParamEstimatorML2< ALLOC >& from,
+                        const allocator_type&             alloc);
+
+      /// move constructor
+      ParamEstimatorML2(ParamEstimatorML2< ALLOC >&& from);
+
+      /// move constructor with a given allocator
+      ParamEstimatorML2(ParamEstimatorML2< ALLOC >&& from,
+                        const allocator_type&        alloc);
+
+      /// virtual copy constructor
+      virtual ParamEstimatorML2< ALLOC >* clone() const;
+
+      /// virtual copy constructor with a given allocator
+      virtual ParamEstimatorML2< ALLOC >* clone(const allocator_type& alloc) const;
+
+      /// destructor
+      virtual ~ParamEstimatorML2();
+
+      /// @}
+
+
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+
+      /// @{
+
+      /// copy operator
+      ParamEstimatorML2< ALLOC >&
+        operator=(const ParamEstimatorML2< ALLOC >& from);
+
+      /// move operator
+      ParamEstimatorML2< ALLOC >& operator=(ParamEstimatorML2< ALLOC >&& from);
+
+      /// @}
+
+
+      // ##########################################################################
+      /// @name Accessors / Modifiers
+      // ##########################################################################
+      /// @{
+
+      using ParamEstimator2< ALLOC >::parameters;
+      
+      /// returns the CPT's parameters corresponding to a given nodeset
+      /** The vector contains the parameters of an n-dimensional CPT. The
+       * distribution of the dimensions of the CPT within the vector is as
+       * follows:
+       * first, there is the target node, then the conditioning nodes (in the
+       * order in which they were specified).
+       * @throw DatabaseError is raised if some values of the conditioning sets
+       * were not observed in the database. */
+      virtual std::vector< double, ALLOC< double > > parameters(
+        const NodeId                                  target_node,
+        const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes);
+
+      /// @}
+    };
+
+  } /* namespace learning */
+
+} /* namespace gum */
+
+/// include the template implementation
+#include <agrum/learning/paramUtils/paramEstimatorML_tpl.h>
+
+#endif /* GUM_LEARNING_PARAM_ESTIMATOR_ML_H */

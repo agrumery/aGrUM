@@ -24,7 +24,7 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/learning/paramUtils/DAG2BNLearner2.h>
+#include <agrum/learning/paramUtils/DAG2BNLearner.h>
 #include <agrum/learning/structureUtils/graphChange.h>
 
 namespace gum {

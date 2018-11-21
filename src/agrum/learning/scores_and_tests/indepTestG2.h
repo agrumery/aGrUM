@@ -27,8 +27,8 @@
 #define GUM_LEARNING_INDEP_TEST_G2_H
 
 #include <agrum/core/math/chi2.h>
-#include <agrum/learning/scores_and_tests/independenceTest2.h>
-#include <agrum/learning/aprioris/aprioriNoApriori2.h>
+#include <agrum/learning/scores_and_tests/independenceTest.h>
+#include <agrum/learning/aprioris/aprioriNoApriori.h>
 
 namespace gum {
 

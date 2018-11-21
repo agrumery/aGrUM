@@ -33,12 +33,12 @@
 #include <agrum/learning/database/databaseTable.h>
 #include <agrum/learning/database/DBTranslatorSet.h>
 
-#include <agrum/learning/aprioris/aprioriNoApriori2.h>
+#include <agrum/learning/aprioris/aprioriNoApriori.h>
 
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/learning/Miic.h>
-#include <agrum/learning/paramUtils/paramEstimatorML2.h>
+#include <agrum/learning/paramUtils/paramEstimatorML.h>
 
 namespace gum_tests {
 
