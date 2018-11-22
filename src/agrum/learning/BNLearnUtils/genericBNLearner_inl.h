@@ -157,27 +157,23 @@ namespace gum {
       if (__selected_algo != AlgoType::MIIC_THREE_OFF_TWO) {
         GUM_ERROR(OperationNotAllowed, "Must be using the 3off2 algorithm");
       }
-      __mutual_info =
-        new CorrectedMutualInformation<>(__score_database.parser(), *__no_apriori);
-      __mutual_info->useNML();
+      __3off2_kmode = CorrectedMutualInformation<>::KModeTypes::NML;
     }
+
     /// indicate that we wish to use the MDL correction for 3off2
     INLINE void genericBNLearner::useMDL() {
       if (__selected_algo != AlgoType::MIIC_THREE_OFF_TWO) {
         GUM_ERROR(OperationNotAllowed, "Must be using the 3off2 algorithm");
       }
-      __mutual_info =
-        new CorrectedMutualInformation<>(__score_database.parser(), *__no_apriori);
-      __mutual_info->useMDL();
+      __3off2_kmode = CorrectedMutualInformation<>::KModeTypes::MDL;
     }
+
     /// indicate that we wish to use the NoCorr correction for 3off2
     INLINE void genericBNLearner::useNoCorr() {
       if (__selected_algo != AlgoType::MIIC_THREE_OFF_TWO) {
         GUM_ERROR(OperationNotAllowed, "Must be using the 3off2 algorithm");
       }
-      __mutual_info =
-        new CorrectedMutualInformation<>(__score_database.parser(), *__no_apriori);
-      __mutual_info->useNoCorr();
+      __3off2_kmode = CorrectedMutualInformation<>::KModeTypes::NoCorr;
     }
 
     /// get the list of arcs hiding latent variables
@@ -343,6 +339,15 @@ namespace gum {
       checkScoreAprioriCompatibility();
     }
 
+
+    // use the apriori BDeu
+    INLINE void genericBNLearner::useAprioriBDeu(double weight) {
+      __apriori_type = AprioriType::BDEU;
+      if (weight >= 0) { setAprioriWeight(weight); }
+      checkScoreAprioriCompatibility();
+    }
+
+
     // returns the type (as a string) of a given apriori
     INLINE const std::string& genericBNLearner::__getAprioriType() const {
       switch (__apriori_type) {
@@ -352,6 +357,8 @@ namespace gum {
 
         case AprioriType::DIRICHLET_FROM_DATABASE:
           return AprioriDirichletFromDatabase<>::type::type;
+
+        case AprioriType::BDEU: return AprioriBDeu<>::type::type;
 
         default:
           GUM_ERROR(OperationNotAllowed,

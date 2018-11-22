@@ -100,7 +100,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
-    void xxxtest_asia_3off2() {
+    void test_asia_3off2() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("asia.csv"));
 
       aSimpleBNLeanerListener listen(learner);

@@ -54,6 +54,7 @@
 #include <agrum/learning/aprioris/aprioriDirichletFromDatabase.h>
 #include <agrum/learning/aprioris/aprioriNoApriori.h>
 #include <agrum/learning/aprioris/aprioriSmoothing.h>
+#include <agrum/learning/aprioris/aprioriBDeu.h>
 
 #include <agrum/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/learning/constraints/structuralConstraintDiGraph.h>
@@ -106,7 +107,12 @@ namespace gum {
       enum class ParamEstimatorType { ML };
 
       /// an enumeration to select the apriori
-      enum class AprioriType { NO_APRIORI, SMOOTHING, DIRICHLET_FROM_DATABASE };
+      enum class AprioriType {
+        NO_APRIORI,
+        SMOOTHING,
+        DIRICHLET_FROM_DATABASE,
+        BDEU
+      };
 
       /// an enumeration to select easily the learning algorithm to use
       enum class AlgoType {
@@ -405,6 +411,12 @@ namespace gum {
       /// use no apriori
       void useNoApriori();
 
+      /// use the BDeu apriori
+      /** The BDeu apriori adds weight/riqi to all the cells of the countings
+       * tables. In other words, it adds weight rows in the database with
+       * equally probable values. */
+      void useAprioriBDeu(double weight = -1);
+
       /// use the apriori smoothing
       /** @param weight pass in argument a weight if you wish to assign a weight
        * to the smoothing, else the current weight of the genericBNLearner will
@@ -576,6 +588,10 @@ namespace gum {
       /// the 3off2 algorithm
       Miic __miic_3off2;
 
+      /// the penalty used in 3off2
+      typename CorrectedMutualInformation<>::KModeTypes __3off2_kmode{
+        CorrectedMutualInformation<>::KModeTypes::MDL};
+
       /// the greedy hill climbing algorithm
       GreedyHillClimbing __greedy_hill_climbing;
 
@@ -622,6 +638,10 @@ namespace gum {
 
       /// returns the type (as a string) of a given apriori
       const std::string& __getAprioriType() const;
+
+      /// create the Corrected Mutual Information instance for Miic/3off2
+      void __createCorrectedMutualInformation();
+
 
       public:
       // ##########################################################################

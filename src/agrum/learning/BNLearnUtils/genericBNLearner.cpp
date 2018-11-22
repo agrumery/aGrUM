@@ -66,36 +66,6 @@ namespace gum {
         Database(genericBNLearner::__readFile(filename, missing_symbols)) {}
 
 
-    /*
-    genericBNLearner::Database::Database(
-      std::string                                    filename,
-      const NodeProperty< Sequence< std::string > >& modalities,
-      bool                                           check_database)
-        : __database(genericBNLearner::__readFile(filename)) {
-
-      // #### TODO: change the domain sizes of the variables
-
-      // get the variables names
-      const auto& var_names = __database.variableNames ();
-      const std::size_t nb_vars = var_names.size ();
-      for ( std::size_t i = 0; i < nb_vars; ++i )
-        __name2nodeId.insert ( var_names[i], i );
-
-      // get the domain sizes of the variables
-      __domain_sizes.resize ( nb_vars );
-      for ( std::size_t i = 0; i < nb_vars; ++i ) {
-        const DiscreteVariable& var =
-          static_cast<const DiscreteVariable&> __database.variable ( i );
-        __domain_sizes[i] = var.domainSize ();
-      }
-
-      // create the parser
-      __parser = new DBRowGeneratorParser<> ( __database.handler (),
-                                              DBRowGeneratorSet<> () );
-    }
-    */
-
-
     genericBNLearner::Database::Database(
       const std::string&                filename,
       Database&                         score_database,
@@ -234,22 +204,6 @@ namespace gum {
     }
 
 
-    /*
-
-    genericBNLearner::genericBNLearner(
-      const std::string&                             filename,
-      const NodeProperty< Sequence< std::string > >& modalities,
-      bool                                           parse_database)
-        : __score_database(filename, modalities, parse_database)
-        , __user_modalities(modalities)
-        , __domain_sizes_parse_db(parse_database) {
-      // for debugging purposes
-      GUM_CONSTRUCTOR(genericBNLearner);
-    }
-
-    */
-
-
     genericBNLearner::genericBNLearner(const genericBNLearner& from) :
         __score_type(from.__score_type),
         __param_estimator_type(from.__param_estimator_type),
@@ -261,7 +215,7 @@ namespace gum {
         __constraint_ForbiddenArcs(from.__constraint_ForbiddenArcs),
         __constraint_MandatoryArcs(from.__constraint_MandatoryArcs),
         __selected_algo(from.__selected_algo), __K2(from.__K2),
-        __miic_3off2(from.__miic_3off2),
+        __miic_3off2(from.__miic_3off2), __3off2_kmode(from.__3off2_kmode),
         __greedy_hill_climbing(from.__greedy_hill_climbing),
         __local_search_with_tabu_list(from.__local_search_with_tabu_list),
         __score_database(from.__score_database),
@@ -285,6 +239,7 @@ namespace gum {
         __constraint_MandatoryArcs(std::move(from.__constraint_MandatoryArcs)),
         __selected_algo(from.__selected_algo), __K2(std::move(from.__K2)),
         __miic_3off2(std::move(from.__miic_3off2)),
+        __3off2_kmode(from.__3off2_kmode),
         __greedy_hill_climbing(std::move(from.__greedy_hill_climbing)),
         __local_search_with_tabu_list(
           std::move(from.__local_search_with_tabu_list)),
@@ -352,6 +307,7 @@ namespace gum {
         __selected_algo = from.__selected_algo;
         __K2 = from.__K2;
         __miic_3off2 = from.__miic_3off2;
+        __3off2_kmode = from.__3off2_kmode;
         __greedy_hill_climbing = from.__greedy_hill_climbing;
         __local_search_with_tabu_list = from.__local_search_with_tabu_list;
         __score_database = from.__score_database;
@@ -402,6 +358,7 @@ namespace gum {
         __selected_algo = from.__selected_algo;
         __K2 = from.__K2;
         __miic_3off2 = std::move(from.__miic_3off2);
+        __3off2_kmode = from.__3off2_kmode;
         __greedy_hill_climbing = std::move(from.__greedy_hill_climbing);
         __local_search_with_tabu_list =
           std::move(from.__local_search_with_tabu_list);
@@ -555,6 +512,10 @@ namespace gum {
             __apriori_database->nodeId2Columns());
           break;
 
+        case AprioriType::BDEU:
+          __apriori = new AprioriBDeu<>(__score_database.databaseTable());
+          break;
+
         default:
           GUM_ERROR(OperationNotAllowed,
                     "genericBNLearner does not support yet this apriori");
@@ -681,6 +642,31 @@ namespace gum {
       return __learnDAG();
     }
 
+    void genericBNLearner::__createCorrectedMutualInformation() {
+      if (__mutual_info != nullptr) delete __mutual_info;
+
+      __mutual_info =
+        new CorrectedMutualInformation<>(__score_database.parser(), *__no_apriori);
+      switch (__3off2_kmode) {
+        case CorrectedMutualInformation<>::KModeTypes::MDL:
+          __mutual_info->useMDL();
+          break;
+
+        case CorrectedMutualInformation<>::KModeTypes::NML:
+          __mutual_info->useNML();
+          break;
+
+        case CorrectedMutualInformation<>::KModeTypes::NoCorr:
+          __mutual_info->useNoCorr();
+          break;
+
+        default:
+          GUM_ERROR(NotImplementedYet,
+                    "The BNLearner's corrected mutual information class does "
+                      << "not support yet penalty mode " << int(__3off2_kmode));
+      }
+    }
+
     DAG genericBNLearner::__learnDAG() {
       // add the mandatory arcs to the initial dag and remove the forbidden ones
       // from the initial graph
@@ -709,8 +695,12 @@ namespace gum {
           // create the mixedGraph
           MixedGraph mgraph = this->__prepare_miic_3off2();
 
+          // recreate the corrected mutual information
+          __createCorrectedMutualInformation();
+
           return __miic_3off2.learnStructure(*__mutual_info, mgraph);
         }
+
         // ========================================================================
         case AlgoType::GREEDY_HILL_CLIMBING: {
           BNLearnerListener listener(this, __greedy_hill_climbing);
