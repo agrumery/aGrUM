@@ -494,7 +494,8 @@ namespace gum {
     // default constructor
     template < typename T_DATA, template < typename > class ALLOC >
     template < template < typename > class VARALLOC,
-               template < typename > class MISSALLOC >
+               template < typename >
+               class MISSALLOC >
     IDatabaseTable< T_DATA, ALLOC >::IDatabaseTable(
       const typename IDatabaseTable< T_DATA, ALLOC >::template MissingValType<
         MISSALLOC >&                                             missing_symbols,

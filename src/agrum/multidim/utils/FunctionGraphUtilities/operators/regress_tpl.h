@@ -34,9 +34,12 @@
 namespace gum {
 
   template < typename GUM_SCALAR,
-             template < typename > class COMBINEOPERATOR,
-             template < typename > class PROJECTOPERATOR,
-             template < typename > class TerminalNodePolicy >
+             template < typename >
+             class COMBINEOPERATOR,
+             template < typename >
+             class PROJECTOPERATOR,
+             template < typename >
+             class TerminalNodePolicy >
   INLINE
     Regress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::
       Regress(const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* DG1,
@@ -59,9 +62,12 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR,
-             template < typename > class COMBINEOPERATOR,
-             template < typename > class PROJECTOPERATOR,
-             template < typename > class TerminalNodePolicy >
+             template < typename >
+             class COMBINEOPERATOR,
+             template < typename >
+             class PROJECTOPERATOR,
+             template < typename >
+             class TerminalNodePolicy >
   INLINE
     Regress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::
       ~Regress() {
@@ -84,9 +90,12 @@ namespace gum {
   // This function is the main function. To be call every time an operation
   // between the two given Function Graphs is required
   template < typename GUM_SCALAR,
-             template < typename > class COMBINEOPERATOR,
-             template < typename > class PROJECTOPERATOR,
-             template < typename > class TerminalNodePolicy >
+             template < typename >
+             class COMBINEOPERATOR,
+             template < typename >
+             class PROJECTOPERATOR,
+             template < typename >
+             class TerminalNodePolicy >
   INLINE MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
          Regress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::
       compute() {
@@ -119,9 +128,12 @@ namespace gum {
   // Its main criterion to do so is the number of
   // re-exploration to be done
   template < typename GUM_SCALAR,
-             template < typename > class COMBINEOPERATOR,
-             template < typename > class PROJECTOPERATOR,
-             template < typename > class TerminalNodePolicy >
+             template < typename >
+             class COMBINEOPERATOR,
+             template < typename >
+             class PROJECTOPERATOR,
+             template < typename >
+             class TerminalNodePolicy >
   INLINE void
     Regress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::
       __establishVarOrder() {
@@ -204,9 +216,12 @@ namespace gum {
   // This function computes for every nodes if any retrograde variable is
   // present below
   template < typename GUM_SCALAR,
-             template < typename > class COMBINEOPERATOR,
-             template < typename > class PROJECTOPERATOR,
-             template < typename > class TerminalNodePolicy >
+             template < typename >
+             class COMBINEOPERATOR,
+             template < typename >
+             class PROJECTOPERATOR,
+             template < typename >
+             class TerminalNodePolicy >
   INLINE void
     Regress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::
       __findRetrogradeVariables(
@@ -299,9 +314,12 @@ namespace gum {
   // algorithm ( meaning each time we explore a node we go trought
   // this function ), check only have to be at the beginning of that function.
   template < typename GUM_SCALAR,
-             template < typename > class COMBINEOPERATOR,
-             template < typename > class PROJECTOPERATOR,
-             template < typename > class TerminalNodePolicy >
+             template < typename >
+             class COMBINEOPERATOR,
+             template < typename >
+             class PROJECTOPERATOR,
+             template < typename >
+             class TerminalNodePolicy >
   INLINE NodeId
          Regress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::
       __compute(O4DGContext& currentSituation, Idx lastInstVarPos) {

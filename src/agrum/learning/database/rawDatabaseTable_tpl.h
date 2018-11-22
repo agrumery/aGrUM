@@ -34,7 +34,8 @@ namespace gum {
     // default constructor
     template < template < typename > class ALLOC >
     template < template < typename > class VARALLOC,
-               template < typename > class MISSALLOC >
+               template < typename >
+               class MISSALLOC >
     INLINE RawDatabaseTable< ALLOC >::RawDatabaseTable(
       const typename RawDatabaseTable< ALLOC >::template MissingValType<
         MISSALLOC >&                                             missing_symbols,
