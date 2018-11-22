@@ -59,21 +59,21 @@ namespace gum {
       /// @{
 
       /// default constructor
-      GraphChangesSelector4DiGraph(Score< ALLOC >&         score,
-                                    STRUCTURAL_CONSTRAINT&   constraint,
-                                    GRAPH_CHANGES_GENERATOR& changes_generator);
+      GraphChangesSelector4DiGraph(Score< ALLOC >&          score,
+                                   STRUCTURAL_CONSTRAINT&   constraint,
+                                   GRAPH_CHANGES_GENERATOR& changes_generator);
 
       /// copy constructor
       GraphChangesSelector4DiGraph(
         const GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                             GRAPH_CHANGES_GENERATOR,
-                                             ALLOC >& from);
+                                            GRAPH_CHANGES_GENERATOR,
+                                            ALLOC >& from);
 
       /// move constructor
       GraphChangesSelector4DiGraph(
         GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                       GRAPH_CHANGES_GENERATOR,
-                                       ALLOC >&& from);
+                                      GRAPH_CHANGES_GENERATOR,
+                                      ALLOC >&& from);
 
       /// destructor
       ~GraphChangesSelector4DiGraph();
@@ -87,19 +87,19 @@ namespace gum {
 
       /// copy operator
       GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                     GRAPH_CHANGES_GENERATOR,
-                                     ALLOC >&
+                                    GRAPH_CHANGES_GENERATOR,
+                                    ALLOC >&
         operator=(const GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                                       GRAPH_CHANGES_GENERATOR,
-                                                       ALLOC >& from);
+                                                      GRAPH_CHANGES_GENERATOR,
+                                                      ALLOC >& from);
 
       /// move operator
       GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                     GRAPH_CHANGES_GENERATOR,
-                                     ALLOC >&
+                                    GRAPH_CHANGES_GENERATOR,
+                                    ALLOC >&
         operator=(GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                                 GRAPH_CHANGES_GENERATOR,
-                                                 ALLOC >&& from);
+                                                GRAPH_CHANGES_GENERATOR,
+                                                ALLOC >&& from);
 
       /// @}
 

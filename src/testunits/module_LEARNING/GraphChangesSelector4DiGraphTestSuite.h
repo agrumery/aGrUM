@@ -55,7 +55,7 @@ namespace gum_tests {
                 });
     }
 
-    void __compute_scores(gum::learning::ScoreK2<>&            score,
+    void __compute_scores(gum::learning::ScoreK2<>&             score,
                           const gum::DAG&                       graph,
                           std::vector< std::vector< double > >& all_scores,
                           std::vector< gum::NodeId >&           best_nodes,
@@ -161,7 +161,7 @@ namespace gum_tests {
         op_set(struct_constraint);
 
       gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint),
-                                                    decltype(op_set) >
+                                                   decltype(op_set) >
         selector(score, struct_constraint, op_set);
 
       gum::DAG graph;

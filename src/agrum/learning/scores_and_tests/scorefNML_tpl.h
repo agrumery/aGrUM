@@ -35,11 +35,11 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE ScorefNML< ALLOC >::ScorefNML(
       const DBRowGeneratorParser< ALLOC >&                                 parser,
-      const Apriori< ALLOC >&                                             apriori,
+      const Apriori< ALLOC >&                                              apriori,
       const std::vector< std::pair< std::size_t, std::size_t >,
                          ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename ScorefNML< ALLOC >::allocator_type&           alloc) :
+      const typename ScorefNML< ALLOC >::allocator_type&            alloc) :
         Score< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
         __internal_apriori(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScorefNML);
@@ -50,9 +50,9 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE ScorefNML< ALLOC >::ScorefNML(
       const DBRowGeneratorParser< ALLOC >&                          parser,
-      const Apriori< ALLOC >&                                      apriori,
+      const Apriori< ALLOC >&                                       apriori,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename ScorefNML< ALLOC >::allocator_type&           alloc) :
+      const typename ScorefNML< ALLOC >::allocator_type&            alloc) :
         Score< ALLOC >(parser, apriori, nodeId2columns, alloc),
         __internal_apriori(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScorefNML);
@@ -127,7 +127,7 @@ namespace gum {
     /// copy operator
     template < template < typename > class ALLOC >
     ScorefNML< ALLOC >& ScorefNML< ALLOC >::
-                         operator=(const ScorefNML< ALLOC >& from) {
+                        operator=(const ScorefNML< ALLOC >& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(from);
         __internal_apriori = from.__internal_apriori;
@@ -138,8 +138,7 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    ScorefNML< ALLOC >& ScorefNML< ALLOC >::
-                         operator=(ScorefNML< ALLOC >&& from) {
+    ScorefNML< ALLOC >& ScorefNML< ALLOC >::operator=(ScorefNML< ALLOC >&& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(std::move(from));
         __internal_apriori = std::move(from.__internal_apriori);
@@ -152,7 +151,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     std::string
       ScorefNML< ALLOC >::isAprioriCompatible(const std::string& apriori_type,
-                                               double             weight) {
+                                              double             weight) {
       // check that the apriori is compatible with the score
       if ((apriori_type == AprioriDirichletType::type)
           || (apriori_type == AprioriSmoothingType::type)

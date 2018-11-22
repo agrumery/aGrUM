@@ -81,7 +81,7 @@ namespace gum {
        * score() over other ids will raise exception NotFound. */
       IndependenceTest(
         const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori< ALLOC >&             external_apriori,
+        const Apriori< ALLOC >&              external_apriori,
         const std::vector< std::pair< std::size_t, std::size_t >,
                            ALLOC< std::pair< std::size_t, std::size_t > > >&
           ranges,
@@ -110,7 +110,7 @@ namespace gum {
        * score() over other ids will raise exception NotFound. */
       IndependenceTest(
         const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori< ALLOC >&             external_apriori,
+        const Apriori< ALLOC >&              external_apriori,
         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
           nodeId2columns =
             Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
@@ -210,18 +210,17 @@ namespace gum {
 
       /// copy constructor with a given allocator
       IndependenceTest(const IndependenceTest< ALLOC >& from,
-                        const allocator_type&             alloc);
+                       const allocator_type&            alloc);
 
       /// move constructor
       IndependenceTest(IndependenceTest< ALLOC >&& from);
 
       /// move constructor with a given allocator
       IndependenceTest(IndependenceTest< ALLOC >&& from,
-                        const allocator_type&        alloc);
+                       const allocator_type&       alloc);
 
       /// copy operator
-      IndependenceTest< ALLOC >&
-        operator=(const IndependenceTest< ALLOC >& from);
+      IndependenceTest< ALLOC >& operator=(const IndependenceTest< ALLOC >& from);
 
       /// move operator
       IndependenceTest< ALLOC >& operator=(IndependenceTest< ALLOC >&& from);
@@ -243,7 +242,7 @@ namespace gum {
        * @param N_xyz a counting vector of dimension X * Y * Z (in this order)
        */
       std::vector< double, ALLOC< double > >
-      _marginalize ( const std::size_t node_2_marginalize,
+        _marginalize(const std::size_t node_2_marginalize,
                      const std::size_t X_size,
                      const std::size_t Y_size,
                      const std::size_t Z_size,

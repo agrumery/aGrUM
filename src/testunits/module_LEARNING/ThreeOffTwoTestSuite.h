@@ -64,7 +64,7 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriNoApriori<>    apriori(database);
+      gum::learning::AprioriNoApriori<>     apriori(database);
       gum::learning::CorrectedMutualInformation<> I(parser, apriori);
       I.useNoCorr();
 
@@ -107,7 +107,7 @@ namespace gum_tests {
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::AprioriNoApriori<>    apriori(database);
+      gum::learning::AprioriNoApriori<>           apriori(database);
       gum::learning::CorrectedMutualInformation<> cI(parser, apriori);
       cI.useMDL();
       // cI.useCache( false );
@@ -152,7 +152,7 @@ namespace gum_tests {
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::AprioriNoApriori<>    apriori(database);
+      gum::learning::AprioriNoApriori<>           apriori(database);
       gum::learning::CorrectedMutualInformation<> cI(parser, apriori);
       cI.useNML();
       // cI.useCache( false );
@@ -199,7 +199,7 @@ namespace gum_tests {
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::AprioriNoApriori<>    apriori(database);
+      gum::learning::AprioriNoApriori<>           apriori(database);
       gum::learning::CorrectedMutualInformation<> cI(parser, apriori);
       cI.useNML();
 
@@ -290,7 +290,7 @@ namespace gum_tests {
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::AprioriNoApriori<>    apriori(database);
+      gum::learning::AprioriNoApriori<>           apriori(database);
       gum::learning::CorrectedMutualInformation<> cI(parser, apriori);
       cI.useNML();
       // cI.useCache( false );
@@ -345,7 +345,7 @@ namespace gum_tests {
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::AprioriNoApriori<>    apriori(database);
+      gum::learning::AprioriNoApriori<>           apriori(database);
       gum::learning::CorrectedMutualInformation<> cI(parser, apriori);
       cI.useMDL();
       // cI.useCache( false );
@@ -364,8 +364,8 @@ namespace gum_tests {
       }
 
       graph = search.learnMixedStructure(cI, graph);
-      TS_ASSERT_EQUALS(graph.arcs().size(), gum::Size(4));
-      TS_ASSERT_EQUALS(graph.edges().size(), gum::Size(4));
+      TS_ASSERT_EQUALS(graph.arcs().size(), gum::Size(5));
+      TS_ASSERT_EQUALS(graph.edges().size(), gum::Size(3));
       std::vector< gum::Arc > latents = search.latentVariables();
       TS_ASSERT_EQUALS(latents.size(), gum::Size(0));
       gum::DAG dag = search.learnStructure(cI, graph);
@@ -395,7 +395,7 @@ namespace gum_tests {
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::AprioriNoApriori<>    apriori(database);
+      gum::learning::AprioriNoApriori<>           apriori(database);
       gum::learning::CorrectedMutualInformation<> cI(parser, apriori);
       cI.useMDL();
       // cI.useCache( false );

@@ -131,7 +131,7 @@ namespace gum {
     /// insert a new score into the cache
     template < template < typename > class ALLOC >
     INLINE void ScoringCache< ALLOC >::insert(const IdSet< ALLOC >& idset,
-                                              double                 score) {
+                                              double                score) {
       __scores.insert(idset, score);
     }
 
@@ -139,7 +139,7 @@ namespace gum {
     /// insert a new score into the cache
     template < template < typename > class ALLOC >
     INLINE void ScoringCache< ALLOC >::insert(IdSet< ALLOC >&& idset,
-                                              double            score) {
+                                              double           score) {
       __scores.insert(std::move(idset), std::move(score));
     }
 

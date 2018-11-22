@@ -55,27 +55,32 @@ namespace gum {
 
     class GreaterPairOn2nd {
       public:
-      bool operator()(
-        const std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
-                         double >& e1,
-        const std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
-                         double >& e2) const;
+      bool
+        operator()(const std::pair<
+                     std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
+                     double >& e1,
+                   const std::pair<
+                     std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
+                     double >& e2) const;
     };
 
     class GreaterAbsPairOn2nd {
       public:
       bool operator()(
         const std::pair< std::tuple< NodeId, NodeId, NodeId >*, double >& e1,
-        const std::pair< std::tuple< NodeId, NodeId, NodeId >*, double >& e2) const;
+        const std::pair< std::tuple< NodeId, NodeId, NodeId >*, double >& e2)
+        const;
     };
 
     class GreaterTupleOnLast {
       public:
       bool operator()(
-        const std::tuple< std::tuple< NodeId, NodeId, NodeId >*, double, double, double >&
-          e1,
-        const std::tuple< std::tuple< NodeId, NodeId, NodeId >*, double, double, double >&
-          e2) const;
+        const std::
+          tuple< std::tuple< NodeId, NodeId, NodeId >*, double, double, double >&
+            e1,
+        const std::
+          tuple< std::tuple< NodeId, NodeId, NodeId >*, double, double, double >&
+            e2) const;
     };
     /**
      * @class Miic
@@ -137,7 +142,7 @@ namespace gum {
        * @param graph the MixedGraph we start from for the learning
        * */
       MixedGraph learnMixedStructure(CorrectedMutualInformation<>& I,
-                                     MixedGraph                     graph);
+                                     MixedGraph                    graph);
 
       /// learns the structure of an Bayesian network, ie a DAG, by first learning
       /// an Essential graph and then directing the remaining edges.
@@ -174,7 +179,8 @@ namespace gum {
       void set3off2Behaviour();
 
       /// Set a ensemble of constraints for the orientation phase
-      void addConstraints(HashTable< std::pair< NodeId, NodeId >, char > constraints);
+      void
+        addConstraints(HashTable< std::pair< NodeId, NodeId >, char > constraints);
       /// @}
 
       protected:
@@ -195,11 +201,12 @@ namespace gum {
        * @param _rank the heap of ranks of the algorithm
        */
       void _initiation(
-        CorrectedMutualInformation<>&                          I,
-        MixedGraph&                                             graph,
+        CorrectedMutualInformation<>&                                    I,
+        MixedGraph&                                                      graph,
         HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set,
         Heap<
-          std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*, double >,
+          std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
+                     double >,
           GreaterPairOn2nd >& _rank);
 
       /// Iteration phase
@@ -215,11 +222,12 @@ namespace gum {
        * @param _rank the heap of ranks of the algorithm
        */
       void _iteration(
-        CorrectedMutualInformation<>&                          I,
-        MixedGraph&                                             graph,
+        CorrectedMutualInformation<>&                                    I,
+        MixedGraph&                                                      graph,
         HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set,
         Heap<
-          std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*, double >,
+          std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
+                     double >,
           GreaterPairOn2nd >& _rank);
 
       /// Orientation phase from the 3off2 algorithm, returns a CPDAG
@@ -229,10 +237,10 @@ namespace gum {
        * @param sep_set the separation set for independent couples, built during
        * the previous phase
        */
-      void _orientation_3off2(
-        CorrectedMutualInformation<>&                                I,
-        MixedGraph&                                                   graph,
-        const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set);
+      void _orientation_3off2(CorrectedMutualInformation<>&             I,
+                              MixedGraph&                               graph,
+                              const HashTable< std::pair< NodeId, NodeId >,
+                                               std::vector< NodeId > >& sep_set);
 
       /// Modified version of the orientation phase that tries to propagate
       /// orientations from both orientations in case of a bidirected arc, not used
@@ -242,10 +250,10 @@ namespace gum {
        * @param sep_set the separation set for independent couples, built during
        * the previous phase
        */
-      void _orientation_latents(
-        CorrectedMutualInformation<>&                                I,
-        MixedGraph&                                                   graph,
-        const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set);
+      void _orientation_latents(CorrectedMutualInformation<>&             I,
+                                MixedGraph&                               graph,
+                                const HashTable< std::pair< NodeId, NodeId >,
+                                                 std::vector< NodeId > >& sep_set);
 
       /// Orientation phase from the MIIC algorithm, returns a mixed graph that
       /// may contain circles
@@ -255,10 +263,10 @@ namespace gum {
        * @param sep_set the separation set for independent couples, built during
        * the previous phase
        */
-      void _orientation_miic(
-        CorrectedMutualInformation<>&                                I,
-        MixedGraph&                                                   graph,
-        const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set);
+      void _orientation_miic(CorrectedMutualInformation<>&             I,
+                             MixedGraph&                               graph,
+                             const HashTable< std::pair< NodeId, NodeId >,
+                                              std::vector< NodeId > >& sep_set);
       /// @}
 
       /// finds the best contributor node for a pair given a conditioning set
@@ -271,13 +279,14 @@ namespace gum {
        * @param _rank the heap of ranks of the algorithm
        */
       void _findBestContributor(
-        NodeId                            x,
-        NodeId                            y,
-        const std::vector< NodeId >&      ui,
-        const MixedGraph&              graph,
+        NodeId                        x,
+        NodeId                        y,
+        const std::vector< NodeId >&  ui,
+        const MixedGraph&             graph,
         CorrectedMutualInformation<>& I,
         Heap<
-          std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*, double >,
+          std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
+                     double >,
           GreaterPairOn2nd >& _rank);
 
       /// gets the list of unshielded triples in the graph in decreasing value of
@@ -287,10 +296,10 @@ namespace gum {
        *@param sep_set hashtable storing the separation sets for pairs of variables
        */
       std::vector< std::pair< std::tuple< NodeId, NodeId, NodeId >*, double > >
-        _getUnshieldedTriples(
-          const MixedGraph&                                             graph,
-          CorrectedMutualInformation<>&                                I,
-          const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set);
+        _getUnshieldedTriples(const MixedGraph&                         graph,
+                              CorrectedMutualInformation<>&             I,
+                              const HashTable< std::pair< NodeId, NodeId >,
+                                               std::vector< NodeId > >& sep_set);
 
       /// gets the list of unshielded triples in the graph in decreasing value of
       ///|I'(x, y, z|{ui})|, prepares the orientation matrix for MIIC
@@ -300,24 +309,28 @@ namespace gum {
        * @param marks hashtable containing the orientation marks for edges
        */
       std::vector<
-        std::tuple< std::tuple< NodeId, NodeId, NodeId >*, double, double, double > >
+        std::
+          tuple< std::tuple< NodeId, NodeId, NodeId >*, double, double, double > >
         _getUnshieldedTriplesMIIC(
-          const MixedGraph&                                             graph,
-          CorrectedMutualInformation<>&                                I,
-          const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set,
-          HashTable< std::pair< NodeId, NodeId >, char >&                     marks);
+          const MixedGraph&             graph,
+          CorrectedMutualInformation<>& I,
+          const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >&
+                                                          sep_set,
+          HashTable< std::pair< NodeId, NodeId >, char >& marks);
 
       /// Gets the orientation probabilities like MIIC for the orientation phase
       /*@param graph graph in which to find the triples
        *@param proba_triples probabilities for the different triples to update
        */
       std::vector<
-        std::tuple< std::tuple< NodeId, NodeId, NodeId >*, double, double, double > >
+        std::
+          tuple< std::tuple< NodeId, NodeId, NodeId >*, double, double, double > >
         _updateProbaTriples(
-          const MixedGraph& graph,
-          std::vector<
-            std::tuple< std::tuple< NodeId, NodeId, NodeId >*, double, double, double > >
-            proba_triples);
+          const MixedGraph&                   graph,
+          std::vector< std::tuple< std::tuple< NodeId, NodeId, NodeId >*,
+                                   double,
+                                   double,
+                                   double > > proba_triples);
 
       /// Propagates the orientation from a node to its neighbours
       /*@param dag graph in which to which to propagate arcs

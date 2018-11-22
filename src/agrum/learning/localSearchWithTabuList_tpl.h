@@ -200,8 +200,7 @@ namespace gum {
                                        PARAM_ESTIMATOR&        estimator,
                                        DAG                     initial_dag) {
       return DAG2BNLearner<>::createBN< GUM_SCALAR >(
-          estimator,
-          learnStructure(selector, initial_dag));
+        estimator, learnStructure(selector, initial_dag));
     }
 
   } /* namespace learning */

@@ -32,36 +32,40 @@
 namespace gum_tests {
 
   class DAG2BNLearnerTestSuite : public CxxTest::TestSuite {
-  private:
-    std::vector<double> __normalize (const std::vector<double>& vin) {
+    private:
+    std::vector< double > __normalize(const std::vector< double >& vin) {
       double sum = 0;
-      for ( const auto& val : vin ) sum += val;
-      std::vector<double> vout(vin);
-      for ( auto& val : vout ) val /= sum;
+      for (const auto& val : vin)
+        sum += val;
+      std::vector< double > vout(vin);
+      for (auto& val : vout)
+        val /= sum;
       return vout;
     }
 
-    std::vector<double> __xnormalize (const std::vector<double>& vin) {
-      std::vector<double> vout(vin);
-      for ( std::size_t i = 0; i < vin.size(); i += 3) {
+    std::vector< double > __xnormalize(const std::vector< double >& vin) {
+      std::vector< double > vout(vin);
+      for (std::size_t i = 0; i < vin.size(); i += 3) {
         double sum = 0;
-        for ( std::size_t j = std::size_t(0); j < 3; ++j ) sum += vin[i+j];
-        for ( std::size_t j = std::size_t(0); j < 3; ++j ) vout[i+j] /= sum;
+        for (std::size_t j = std::size_t(0); j < 3; ++j)
+          sum += vin[i + j];
+        for (std::size_t j = std::size_t(0); j < 3; ++j)
+          vout[i + j] /= sum;
       }
       return vout;
     }
 
-    std::vector<double> __getProba ( const gum::BayesNet<double>& bn,
-                                     const gum::NodeId id) {
+    std::vector< double > __getProba(const gum::BayesNet< double >& bn,
+                                     const gum::NodeId              id) {
       const gum::Potential< double >& pot = bn.cpt(id);
-      std::vector< double > vect;
-      for ( gum::Instantiation inst (pot); ! inst.end(); ++inst ) {
-        vect.push_back ( pot.get(inst));
+      std::vector< double >           vect;
+      for (gum::Instantiation inst(pot); !inst.end(); ++inst) {
+        vect.push_back(pot.get(inst));
       }
       return vect;
     }
-    
-  public:
+
+    public:
     void test1() {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
@@ -102,34 +106,31 @@ namespace gum_tests {
       // create the parser
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriSmoothing<>    extern_apriori(database);
-      gum::learning::AprioriNoApriori<>    intern_apriori(database);
+      gum::learning::AprioriSmoothing<>     extern_apriori(database);
+      gum::learning::AprioriNoApriori<>     intern_apriori(database);
 
-      gum::learning::ParamEstimatorML<>
-        param_estimator(parser,extern_apriori,intern_apriori);
+      gum::learning::ParamEstimatorML<> param_estimator(
+        parser, extern_apriori, intern_apriori);
 
       gum::learning::DAG2BNLearner<> learner;
 
       gum::DAG dag;
       for (std::size_t i = std::size_t(0); i < database.nbVariables(); ++i) {
-        dag.addNodeWithId ( gum::NodeId(i) );
+        dag.addNodeWithId(gum::NodeId(i));
       }
-      dag.addArc(0,1);
-      dag.addArc(2,0);
-      
-      auto bn1 = learner.createBN(param_estimator,dag);
+      dag.addArc(0, 1);
+      dag.addArc(2, 0);
 
-      auto v2 = __getProba ( bn1, 2);
-      std::vector<double> xv2 = __normalize({1401, 1, 1});
+      auto bn1 = learner.createBN(param_estimator, dag);
+
+      auto                  v2 = __getProba(bn1, 2);
+      std::vector< double > xv2 = __normalize({1401, 1, 1});
       TS_ASSERT(v2 == xv2);
 
-      auto v02 = __getProba ( bn1, 0);
-      std::vector<double> xv02 = __xnormalize ({1201,126,76,1,1,1,1,1,1});
+      auto                  v02 = __getProba(bn1, 0);
+      std::vector< double > xv02 = __xnormalize({1201, 126, 76, 1, 1, 1, 1, 1, 1});
       TS_ASSERT(v02 == xv02);
-      
     }
-
   };
 
-} // namespace
-
+}   // namespace gum_tests

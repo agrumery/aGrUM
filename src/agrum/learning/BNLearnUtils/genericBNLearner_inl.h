@@ -40,7 +40,7 @@ namespace gum {
 
     // returns the modalities of the variables
     INLINE const std::vector< std::size_t >&
-    genericBNLearner::Database::domainSizes() const {
+                 genericBNLearner::Database::domainSizes() const {
       return __domain_sizes;
     }
 
@@ -157,8 +157,8 @@ namespace gum {
       if (__selected_algo != AlgoType::MIIC_THREE_OFF_TWO) {
         GUM_ERROR(OperationNotAllowed, "Must be using the 3off2 algorithm");
       }
-      __mutual_info = new CorrectedMutualInformation<>(
-        __score_database.parser(), *__no_apriori);
+      __mutual_info =
+        new CorrectedMutualInformation<>(__score_database.parser(), *__no_apriori);
       __mutual_info->useNML();
     }
     /// indicate that we wish to use the MDL correction for 3off2
@@ -166,8 +166,8 @@ namespace gum {
       if (__selected_algo != AlgoType::MIIC_THREE_OFF_TWO) {
         GUM_ERROR(OperationNotAllowed, "Must be using the 3off2 algorithm");
       }
-      __mutual_info = new CorrectedMutualInformation<>(
-        __score_database.parser(), *__no_apriori);
+      __mutual_info =
+        new CorrectedMutualInformation<>(__score_database.parser(), *__no_apriori);
       __mutual_info->useMDL();
     }
     /// indicate that we wish to use the NoCorr correction for 3off2
@@ -175,8 +175,8 @@ namespace gum {
       if (__selected_algo != AlgoType::MIIC_THREE_OFF_TWO) {
         GUM_ERROR(OperationNotAllowed, "Must be using the 3off2 algorithm");
       }
-      __mutual_info = new CorrectedMutualInformation<>(
-        __score_database.parser(), *__no_apriori);
+      __mutual_info =
+        new CorrectedMutualInformation<>(__score_database.parser(), *__no_apriori);
       __mutual_info->useNoCorr();
     }
 
@@ -195,8 +195,7 @@ namespace gum {
     }
 
     // indicate that we wish to use a K2 algorithm
-    INLINE void
-      genericBNLearner::useK2(const std::vector< NodeId >& order) {
+    INLINE void genericBNLearner::useK2(const std::vector< NodeId >& order) {
       __selected_algo = AlgoType::K2;
       __K2.setOrder(order);
     }
@@ -207,9 +206,8 @@ namespace gum {
     }
 
     // indicate that we wish to use a local search with tabu list
-    INLINE void
-      genericBNLearner::useLocalSearchWithTabuList(Size tabu_size,
-                                                   Size nb_decrease) {
+    INLINE void genericBNLearner::useLocalSearchWithTabuList(Size tabu_size,
+                                                             Size nb_decrease) {
       __selected_algo = AlgoType::LOCAL_SEARCH_WITH_TABU_LIST;
       __constraint_TabuList.setTabuListSize(tabu_size);
       __local_search_with_tabu_list.setMaxNbDecreasingChanges(nb_decrease);
@@ -369,7 +367,7 @@ namespace gum {
 
     // returns the modalities  of the variables in the database
     INLINE const std::vector< std::size_t >&
-    genericBNLearner::domainSizes() const {
+                 genericBNLearner::domainSizes() const {
       return __score_database.domainSizes();
     }
 

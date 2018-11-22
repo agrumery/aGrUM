@@ -125,9 +125,8 @@ namespace gum_tests {
       gum::learning::ScoreBDeu<>        score(parser, apriori);
       score.setEffectiveSampleSize(2.0);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(
-        gum::learning::ScoreBDeu<>::isAprioriCompatible(
-          gum::learning::AprioriNoApriori<>::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreBDeu<>::isAprioriCompatible(
+        gum::learning::AprioriNoApriori<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(
         gum::learning::ScoreBDeu<>::isAprioriCompatible(apriori));
       TS_GUM_ASSERT_THROWS_NOTHING(
@@ -165,8 +164,8 @@ namespace gum_tests {
 
       gum::learning::ScoreBDeu<> score2(score);
       score2.setEffectiveSampleSize(2.0);
-      TS_GUM_ASSERT_THROWS_NOTHING(score2.isAprioriCompatible(
-        gum::learning::AprioriNoApriori<>::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+        score2.isAprioriCompatible(gum::learning::AprioriNoApriori<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score2.isAprioriCompatible(apriori));
 
       TS_ASSERT(__equal(xscore_1, score2.score(node0)));
@@ -175,8 +174,8 @@ namespace gum_tests {
 
       gum::learning::ScoreBDeu<> score3(std::move(score2));
       score3.setEffectiveSampleSize(2.0);
-      TS_GUM_ASSERT_THROWS_NOTHING(score3.isAprioriCompatible(
-        gum::learning::AprioriNoApriori<>::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+        score3.isAprioriCompatible(gum::learning::AprioriNoApriori<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score3.isAprioriCompatible(apriori));
 
       TS_ASSERT(__equal(xscore_1, score3.score(node0)));
@@ -274,9 +273,8 @@ namespace gum_tests {
       gum::learning::ScoreBDeu<>        score(parser, apriori, nodeId2columns);
       score.setEffectiveSampleSize(2.0);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(
-        gum::learning::ScoreBDeu<>::isAprioriCompatible(
-          gum::learning::AprioriNoApriori<>::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreBDeu<>::isAprioriCompatible(
+        gum::learning::AprioriNoApriori<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(
         gum::learning::ScoreBDeu<>::isAprioriCompatible(apriori));
       TS_GUM_ASSERT_THROWS_NOTHING(
@@ -313,8 +311,8 @@ namespace gum_tests {
 
       gum::learning::ScoreBDeu<> score2(score);
       score2.setEffectiveSampleSize(2.0);
-      TS_GUM_ASSERT_THROWS_NOTHING(score2.isAprioriCompatible(
-        gum::learning::AprioriNoApriori<>::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+        score2.isAprioriCompatible(gum::learning::AprioriNoApriori<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score2.isAprioriCompatible(apriori));
 
       TS_ASSERT(__equal(xscore_1, score2.score(node2)));
@@ -323,8 +321,8 @@ namespace gum_tests {
 
       gum::learning::ScoreBDeu<> score3(std::move(score2));
       score3.setEffectiveSampleSize(2.0);
-      TS_GUM_ASSERT_THROWS_NOTHING(score3.isAprioriCompatible(
-        gum::learning::AprioriNoApriori<>::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+        score3.isAprioriCompatible(gum::learning::AprioriNoApriori<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(score3.isAprioriCompatible(apriori));
 
       TS_ASSERT(__equal(xscore_1, score3.score(node2)));

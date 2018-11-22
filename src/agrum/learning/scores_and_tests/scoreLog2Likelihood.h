@@ -79,7 +79,7 @@ namespace gum {
        * score() over other ids will raise exception NotFound. */
       ScoreLog2Likelihood(
         const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori< ALLOC >&             apriori,
+        const Apriori< ALLOC >&              apriori,
         const std::vector< std::pair< std::size_t, std::size_t >,
                            ALLOC< std::pair< std::size_t, std::size_t > > >&
           ranges,
@@ -106,7 +106,7 @@ namespace gum {
        * score() over other ids will raise exception NotFound. */
       ScoreLog2Likelihood(
         const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori< ALLOC >&             apriori,
+        const Apriori< ALLOC >&              apriori,
         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
           nodeId2columns =
             Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
@@ -117,14 +117,14 @@ namespace gum {
 
       /// copy constructor with a given allocator
       ScoreLog2Likelihood(const ScoreLog2Likelihood< ALLOC >& from,
-                           const allocator_type&                alloc);
+                          const allocator_type&               alloc);
 
       /// move constructor
       ScoreLog2Likelihood(ScoreLog2Likelihood< ALLOC >&& from);
 
       /// move constructor with a given allocator
       ScoreLog2Likelihood(ScoreLog2Likelihood< ALLOC >&& from,
-                           const allocator_type&           alloc);
+                          const allocator_type&          alloc);
 
       /// virtual copy constructor
       virtual ScoreLog2Likelihood< ALLOC >* clone() const;
@@ -150,8 +150,7 @@ namespace gum {
         operator=(const ScoreLog2Likelihood< ALLOC >& from);
 
       /// move operator
-      ScoreLog2Likelihood< ALLOC >&
-        operator=(ScoreLog2Likelihood< ALLOC >&& from);
+      ScoreLog2Likelihood< ALLOC >& operator=(ScoreLog2Likelihood< ALLOC >&& from);
 
       /// @}
 

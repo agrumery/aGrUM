@@ -77,16 +77,15 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      ScoreAIC(
-        const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori< ALLOC >&             apriori,
-        const std::vector< std::pair< std::size_t, std::size_t >,
-                           ALLOC< std::pair< std::size_t, std::size_t > > >&
-          ranges,
-        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-          nodeId2columns =
-            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-        const allocator_type& alloc = allocator_type());
+      ScoreAIC(const DBRowGeneratorParser< ALLOC >& parser,
+               const Apriori< ALLOC >&              apriori,
+               const std::vector< std::pair< std::size_t, std::size_t >,
+                                  ALLOC< std::pair< std::size_t, std::size_t > > >&
+                 ranges,
+               const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                 nodeId2columns =
+                   Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+               const allocator_type& alloc = allocator_type());
 
 
       /// default constructor
@@ -105,11 +104,11 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       ScoreAIC(const DBRowGeneratorParser< ALLOC >& parser,
-                const Apriori< ALLOC >&             apriori,
-                const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                  nodeId2columns =
-                    Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-                const allocator_type& alloc = allocator_type());
+               const Apriori< ALLOC >&              apriori,
+               const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                 nodeId2columns =
+                   Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+               const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       ScoreAIC(const ScoreAIC< ALLOC >& from);

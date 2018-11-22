@@ -50,7 +50,7 @@ namespace gum {
       __domain_sizes.resize(nb_vars);
       const auto domainSizes = __database.domainSizes();
       for (std::size_t i = 0; i < nb_vars; ++i) {
-        __nodeId2cols.insert(NodeId(i),i);
+        __nodeId2cols.insert(NodeId(i), i);
         __domain_sizes[i] = Size(domainSizes[i]);
       }
 
@@ -111,7 +111,7 @@ namespace gum {
 
       const auto& score_nodeId2cols = score_database.nodeId2Columns();
       const std::vector< std::string >& apriori_vars = __database.variableNames();
-      
+
       Size size = Size(apriori_vars.size());
       __domain_sizes.resize(size);
       const auto domainSizes = __database.domainSizes();
@@ -121,28 +121,27 @@ namespace gum {
           const auto cols =
             score_database.__database.columnsFromVariableName(apriori_vars[i]);
           col = cols[0];
+        } catch (...) {
+          GUM_ERROR(InvalidArgument,
+                    "A priori Variable "
+                      << apriori_vars[i]
+                      << " does not belong to the observed database");
         }
-        catch (...) {
-           GUM_ERROR(InvalidArgument,
-                     "A priori Variable "
-                     << apriori_vars[i]
-                     << " does not belong to the observed database");
-        }
-        
+
         // check that the domain size of the variable is lower than or
         // equal to that of the original variable
         if (score_database.__database.domainSize(col) < __database.domainSize(i)) {
           GUM_ERROR(InvalidArgument,
                     "A priori Variable "
-                    << apriori_vars[i] << " has a domain size of "
-                    << __database.domainSize(i)
-                    << ", which is higher than that of the same variable in "
-                    << "the observed database, which is equal to "
-                    << score_database.__database.domainSize(col));
+                      << apriori_vars[i] << " has a domain size of "
+                      << __database.domainSize(i)
+                      << ", which is higher than that of the same variable in "
+                      << "the observed database, which is equal to "
+                      << score_database.__database.domainSize(col));
         }
 
         const NodeId id = score_nodeId2cols.first(col);
-        __nodeId2cols.insert(id,i);
+        __nodeId2cols.insert(id, i);
         __domain_sizes[i] = Size(domainSizes[i]);
       }
 
@@ -204,14 +203,13 @@ namespace gum {
 
       return *this;
     }
-    
+
 
     /// returns the mapping between node ids and their columns in the database
     const Bijection< NodeId, std::size_t >&
-    genericBNLearner::Database::nodeId2Columns() const {
+      genericBNLearner::Database::nodeId2Columns() const {
       return __nodeId2cols;
     }
-    
 
 
     // ===========================================================================
@@ -219,8 +217,8 @@ namespace gum {
     genericBNLearner::genericBNLearner(
       const std::string&                filename,
       const std::vector< std::string >& missing_symbols) :
-      __score_database(filename, missing_symbols) {
-      __no_apriori = new AprioriNoApriori<> (__score_database.databaseTable());
+        __score_database(filename, missing_symbols) {
+      __no_apriori = new AprioriNoApriori<>(__score_database.databaseTable());
 
       // for debugging purposes
       GUM_CONSTRUCTOR(genericBNLearner);
@@ -228,9 +226,9 @@ namespace gum {
 
 
     genericBNLearner::genericBNLearner(const DatabaseTable<>& db) :
-      __score_database(db) {
-      __no_apriori = new AprioriNoApriori<> (__score_database.databaseTable());
-      
+        __score_database(db) {
+      __no_apriori = new AprioriNoApriori<>(__score_database.databaseTable());
+
       // for debugging purposes
       GUM_CONSTRUCTOR(genericBNLearner);
     }
@@ -269,7 +267,7 @@ namespace gum {
         __score_database(from.__score_database),
         __apriori_dbname(from.__apriori_dbname),
         __initial_dag(from.__initial_dag) {
-      __no_apriori = new AprioriNoApriori<> (__score_database.databaseTable());
+      __no_apriori = new AprioriNoApriori<>(__score_database.databaseTable());
 
       // for debugging purposes
       GUM_CONS_CPY(genericBNLearner);
@@ -293,7 +291,7 @@ namespace gum {
         __score_database(std::move(from.__score_database)),
         __apriori_dbname(std::move(from.__apriori_dbname)),
         __initial_dag(std::move(from.__initial_dag)) {
-      __no_apriori = new AprioriNoApriori<> (__score_database.databaseTable());
+      __no_apriori = new AprioriNoApriori<>(__score_database.databaseTable());
 
       // for debugging purposes
       GUM_CONS_MOV(genericBNLearner);
@@ -535,11 +533,11 @@ namespace gum {
       // create the new apriori
       switch (__apriori_type) {
         case AprioriType::NO_APRIORI:
-          __apriori = new AprioriNoApriori<> (__score_database.databaseTable());
+          __apriori = new AprioriNoApriori<>(__score_database.databaseTable());
           break;
 
         case AprioriType::SMOOTHING:
-          __apriori = new AprioriSmoothing<> (__score_database.databaseTable());
+          __apriori = new AprioriSmoothing<>(__score_database.databaseTable());
           break;
 
         case AprioriType::DIRICHLET_FROM_DATABASE:
@@ -548,14 +546,13 @@ namespace gum {
             __apriori_database = nullptr;
           }
 
-          __apriori_database = new Database(__apriori_dbname,
-                                            __score_database,
-                                            __score_database.missingSymbols());
-         
+          __apriori_database = new Database(
+            __apriori_dbname, __score_database, __score_database.missingSymbols());
+
           __apriori = new AprioriDirichletFromDatabase<>(
-                    __score_database.databaseTable(),
-                    __apriori_database->parser(),
-                    __apriori_database->nodeId2Columns() );
+            __score_database.databaseTable(),
+            __apriori_database->parser(),
+            __apriori_database->nodeId2Columns());
           break;
 
         default:
@@ -581,23 +578,24 @@ namespace gum {
           break;
 
         case ScoreType::BD:
-          __score = new ScoreBD<>( __score_database.parser(), *__apriori);
+          __score = new ScoreBD<>(__score_database.parser(), *__apriori);
           break;
 
         case ScoreType::BDeu:
-          __score = new ScoreBDeu<>( __score_database.parser(), *__apriori);
+          __score = new ScoreBDeu<>(__score_database.parser(), *__apriori);
           break;
 
         case ScoreType::BIC:
-          __score = new ScoreBIC<>( __score_database.parser(), *__apriori);
+          __score = new ScoreBIC<>(__score_database.parser(), *__apriori);
           break;
 
         case ScoreType::K2:
-          __score = new ScoreK2<>( __score_database.parser(), *__apriori);
+          __score = new ScoreK2<>(__score_database.parser(), *__apriori);
           break;
 
         case ScoreType::LOG2LIKELIHOOD:
-          __score = new ScoreLog2Likelihood<>( __score_database.parser(), *__apriori);
+          __score =
+            new ScoreLog2Likelihood<>(__score_database.parser(), *__apriori);
           break;
 
         default:
@@ -617,15 +615,11 @@ namespace gum {
       switch (__param_estimator_type) {
         case ParamEstimatorType::ML:
           if (take_into_account_score && (__score != nullptr)) {
-            __param_estimator =
-              new ParamEstimatorML<>(__score_database.parser(),
-                                      *__apriori,
-                                     __score->internalApriori());
+            __param_estimator = new ParamEstimatorML<>(
+              __score_database.parser(), *__apriori, __score->internalApriori());
           } else {
-            __param_estimator =
-              new ParamEstimatorML<>(__score_database.parser(),
-                                      *__apriori,
-                                      *__no_apriori);
+            __param_estimator = new ParamEstimatorML<>(
+              __score_database.parser(), *__apriori, *__no_apriori);
           }
 
           break;
@@ -741,11 +735,10 @@ namespace gum {
             __constraint_Indegree;
 
           GraphChangesSelector4DiGraph< decltype(sel_constraint),
-                                         decltype(op_set) >
+                                        decltype(op_set) >
             selector(*__score, sel_constraint, op_set);
 
-          return __greedy_hill_climbing.learnStructure(
-            selector, init_graph);
+          return __greedy_hill_climbing.learnStructure(selector, init_graph);
         }
 
         // ========================================================================
@@ -775,11 +768,11 @@ namespace gum {
             __constraint_Indegree;
 
           GraphChangesSelector4DiGraph< decltype(sel_constraint),
-                                         decltype(op_set) >
+                                        decltype(op_set) >
             selector(*__score, sel_constraint, op_set);
 
-          return __local_search_with_tabu_list.learnStructure(
-            selector, init_graph);
+          return __local_search_with_tabu_list.learnStructure(selector,
+                                                              init_graph);
         }
 
         // ========================================================================
@@ -819,11 +812,10 @@ namespace gum {
               __constraint_Indegree;
 
             GraphChangesSelector4DiGraph< decltype(sel_constraint),
-                                           decltype(op_set) >
+                                          decltype(op_set) >
               selector(*__score, sel_constraint, op_set);
 
-            return __K2.learnStructure(
-              selector, init_graph);
+            return __K2.learnStructure(selector, init_graph);
           } else {
             StructuralConstraintSetStatic< StructuralConstraintIndegree,
                                            StructuralConstraintDAG >
@@ -832,11 +824,10 @@ namespace gum {
               __constraint_Indegree;
 
             GraphChangesSelector4DiGraph< decltype(sel_constraint),
-                                           decltype(op_set) >
+                                          decltype(op_set) >
               selector(*__score, sel_constraint, op_set);
 
-            return __K2.learnStructure(
-              selector, init_graph);
+            return __K2.learnStructure(selector, init_graph);
           }
         }
 
@@ -869,7 +860,7 @@ namespace gum {
 
         case ScoreType::LOG2LIKELIHOOD:
           return ScoreLog2Likelihood<>::isAprioriCompatible(apriori,
-                                                             __apriori_weight);
+                                                            __apriori_weight);
 
         default: return "genericBNLearner does not support yet this score";
       }

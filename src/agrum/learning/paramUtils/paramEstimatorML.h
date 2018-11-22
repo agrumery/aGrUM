@@ -76,8 +76,8 @@ namespace gum {
        * score() over other ids will raise exception NotFound. */
       ParamEstimatorML(
         const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori< ALLOC >&             external_apriori,
-        const Apriori< ALLOC >&             score_internal__apriori,
+        const Apriori< ALLOC >&              external_apriori,
+        const Apriori< ALLOC >&              score_internal__apriori,
         const std::vector< std::pair< std::size_t, std::size_t >,
                            ALLOC< std::pair< std::size_t, std::size_t > > >&
           ranges,
@@ -106,8 +106,8 @@ namespace gum {
        * score() over other ids will raise exception NotFound. */
       ParamEstimatorML(
         const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori< ALLOC >&             external_apriori,
-        const Apriori< ALLOC >&             score_internal__apriori,
+        const Apriori< ALLOC >&              external_apriori,
+        const Apriori< ALLOC >&              score_internal__apriori,
         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
           nodeId2columns =
             Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
@@ -118,14 +118,14 @@ namespace gum {
 
       /// copy constructor with a given allocator
       ParamEstimatorML(const ParamEstimatorML< ALLOC >& from,
-                        const allocator_type&             alloc);
+                       const allocator_type&            alloc);
 
       /// move constructor
       ParamEstimatorML(ParamEstimatorML< ALLOC >&& from);
 
       /// move constructor with a given allocator
       ParamEstimatorML(ParamEstimatorML< ALLOC >&& from,
-                        const allocator_type&        alloc);
+                       const allocator_type&       alloc);
 
       /// virtual copy constructor
       virtual ParamEstimatorML< ALLOC >* clone() const;
@@ -146,8 +146,7 @@ namespace gum {
       /// @{
 
       /// copy operator
-      ParamEstimatorML< ALLOC >&
-        operator=(const ParamEstimatorML< ALLOC >& from);
+      ParamEstimatorML< ALLOC >& operator=(const ParamEstimatorML< ALLOC >& from);
 
       /// move operator
       ParamEstimatorML< ALLOC >& operator=(ParamEstimatorML< ALLOC >&& from);
@@ -161,7 +160,7 @@ namespace gum {
       /// @{
 
       using ParamEstimator< ALLOC >::parameters;
-      
+
       /// returns the CPT's parameters corresponding to a given nodeset
       /** The vector contains the parameters of an n-dimensional CPT. The
        * distribution of the dimensions of the CPT within the vector is as

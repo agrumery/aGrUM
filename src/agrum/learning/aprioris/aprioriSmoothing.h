@@ -78,14 +78,14 @@ namespace gum {
 
       /// copy constructor with a given allocator
       AprioriSmoothing(const AprioriSmoothing< ALLOC >& from,
-                        const allocator_type&             alloc);
+                       const allocator_type&            alloc);
 
       /// move constructor
       AprioriSmoothing(AprioriSmoothing< ALLOC >&& from);
 
       /// move constructor with a given allocator
       AprioriSmoothing(AprioriSmoothing< ALLOC >&& from,
-                        const allocator_type&        alloc);
+                       const allocator_type&       alloc);
 
       /// virtual copy constructor
       virtual AprioriSmoothing< ALLOC >* clone() const;
@@ -105,8 +105,7 @@ namespace gum {
       /// @{
 
       /// copy operator
-      AprioriSmoothing< ALLOC >&
-        operator=(const AprioriSmoothing< ALLOC >& from);
+      AprioriSmoothing< ALLOC >& operator=(const AprioriSmoothing< ALLOC >& from);
 
       /// move operator
       AprioriSmoothing< ALLOC >& operator=(AprioriSmoothing< ALLOC >&& from);
@@ -142,7 +141,7 @@ namespace gum {
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint variables set. */
       virtual void
-        addAllApriori(const IdSet< ALLOC >&                  idset,
+        addAllApriori(const IdSet< ALLOC >&                   idset,
                       std::vector< double, ALLOC< double > >& counts) final;
 
       /** @brief adds the apriori to a counting vectordefined over the right
@@ -151,7 +150,7 @@ namespace gum {
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint RHS variables of the idset. */
       virtual void addConditioningApriori(
-        const IdSet< ALLOC >&                  idset,
+        const IdSet< ALLOC >&                   idset,
         std::vector< double, ALLOC< double > >& counts) final;
 
       /// @}

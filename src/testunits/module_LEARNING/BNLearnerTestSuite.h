@@ -986,34 +986,28 @@ namespace gum_tests {
                        gum::MissingVariableInDatabase);
     }
 
-    void test_dirichlet () {
-      auto bn = gum::BayesNet<double>::fastPrototype("A->B<-C->D->E<-B");
-      
-      gum::learning::BNDatabaseGenerator<double> genere(bn);
+    void test_dirichlet() {
+      auto bn = gum::BayesNet< double >::fastPrototype("A->B<-C->D->E<-B");
+
+      gum::learning::BNDatabaseGenerator< double > genere(bn);
       genere.setRandomVarOrder();
       genere.drawSamples(2000);
       genere.toCSV(GET_RESSOURCES_PATH("bnlearner_dirichlet.csv"));
 
-      auto bn2 = gum::BayesNet<double>::fastPrototype("A->B->C->D->E");
-      gum::learning::BNDatabaseGenerator<double> genere2(bn2);
+      auto bn2 = gum::BayesNet< double >::fastPrototype("A->B->C->D->E");
+      gum::learning::BNDatabaseGenerator< double > genere2(bn2);
       genere2.drawSamples(100);
       genere2.toCSV(GET_RESSOURCES_PATH("bnlearner_database.csv"));
-      
-      gum::learning::BNLearner< double >
-        learner(GET_RESSOURCES_PATH("bnlearner_database.csv"), bn);
+
+      gum::learning::BNLearner< double > learner(
+        GET_RESSOURCES_PATH("bnlearner_database.csv"), bn);
       learner.setAprioriWeight(10);
       learner.useAprioriDirichlet(GET_RESSOURCES_PATH("bnlearner_dirichlet.csv"));
       learner.useScoreAIC();
 
       try {
-        gum::BayesNet<double> bn3 = learner.learnBN();
-      }
-      catch ( gum::Exception& e) {
-        GUM_SHOWERROR(e);
-      }
+        gum::BayesNet< double > bn3 = learner.learnBN();
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
-    
-
-    
   };
 } /* namespace gum_tests */

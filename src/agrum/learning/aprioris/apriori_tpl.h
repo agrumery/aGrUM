@@ -33,7 +33,7 @@ namespace gum {
     INLINE Apriori< ALLOC >::Apriori(
       const DatabaseTable< ALLOC >&                                 database,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename Apriori< ALLOC >::allocator_type&             alloc) :
+      const typename Apriori< ALLOC >::allocator_type&              alloc) :
         ALLOC< NodeId >(alloc),
         _database(&database), _nodeId2columns(nodeId2columns) {
       GUM_CONSTRUCTOR(Apriori);
@@ -85,8 +85,7 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    Apriori< ALLOC >& Apriori< ALLOC >::
-                       operator=(const Apriori< ALLOC >& from) {
+    Apriori< ALLOC >& Apriori< ALLOC >::operator=(const Apriori< ALLOC >& from) {
       if (this != &from) {
         _nodeId2columns = from._nodeId2columns;
         _weight = from._weight;

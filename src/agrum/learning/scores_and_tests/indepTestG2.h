@@ -77,7 +77,7 @@ namespace gum {
        * score() over other ids will raise exception NotFound. */
       IndepTestG2(
         const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori< ALLOC >&             external_apriori,
+        const Apriori< ALLOC >&              external_apriori,
         const std::vector< std::pair< std::size_t, std::size_t >,
                            ALLOC< std::pair< std::size_t, std::size_t > > >&
           ranges,
@@ -103,18 +103,17 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       IndepTestG2(const DBRowGeneratorParser< ALLOC >& parser,
-                const Apriori< ALLOC >&               apriori,
-                const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                  nodeId2columns =
-                    Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-                const allocator_type& alloc = allocator_type());
+                  const Apriori< ALLOC >&              apriori,
+                  const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                    nodeId2columns =
+                      Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+                  const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       IndepTestG2(const IndepTestG2< ALLOC >& from);
 
       /// copy constructor with a given allocator
-      IndepTestG2(const IndepTestG2< ALLOC >& from,
-                    const allocator_type& alloc);
+      IndepTestG2(const IndepTestG2< ALLOC >& from, const allocator_type& alloc);
 
       /// move constructor
       IndepTestG2(IndepTestG2< ALLOC >&& from);
@@ -149,14 +148,14 @@ namespace gum {
       /// @}
 
 
-    protected:
+      protected:
       /// returns the score for a given IdSet
       /** @throws OperationNotAllowed is raised if the score does not support
        * calling method score such an idset (due to too many/too few variables
        * in the left hand side or the right hand side of the idset). */
       virtual double _score(const IdSet< ALLOC >& idset) final;
 
-    private:
+      private:
       /// the domain sizes of the variables
       std::vector< std::size_t, ALLOC< std::size_t > > __domain_sizes;
 

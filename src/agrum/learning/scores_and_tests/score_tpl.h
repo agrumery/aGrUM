@@ -40,11 +40,11 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE Score< ALLOC >::Score(
       const DBRowGeneratorParser< ALLOC >&                                 parser,
-      const Apriori< ALLOC >&                                             apriori,
+      const Apriori< ALLOC >&                                              apriori,
       const std::vector< std::pair< std::size_t, std::size_t >,
                          ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename Score< ALLOC >::allocator_type&               alloc) :
+      const typename Score< ALLOC >::allocator_type&                alloc) :
         _apriori(apriori.clone(alloc)),
         _counter(parser, ranges, nodeId2columns, alloc), _cache(alloc) {
       GUM_CONSTRUCTOR(Score);
@@ -55,9 +55,9 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE Score< ALLOC >::Score(
       const DBRowGeneratorParser< ALLOC >&                          parser,
-      const Apriori< ALLOC >&                                      apriori,
+      const Apriori< ALLOC >&                                       apriori,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename Score< ALLOC >::allocator_type&               alloc) :
+      const typename Score< ALLOC >::allocator_type&                alloc) :
         _apriori(apriori.clone(alloc)),
         _counter(parser, nodeId2columns, alloc), _cache(alloc) {
       GUM_CONSTRUCTOR(Score);
@@ -66,9 +66,9 @@ namespace gum {
 
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE Score< ALLOC >::Score(
-      const Score< ALLOC >&                          from,
-      const typename Score< ALLOC >::allocator_type& alloc) :
+    INLINE
+      Score< ALLOC >::Score(const Score< ALLOC >&                          from,
+                            const typename Score< ALLOC >::allocator_type& alloc) :
         _apriori(from._apriori->clone(alloc)),
         _counter(from._counter, alloc), _cache(from._cache, alloc),
         _use_cache(from._use_cache), _max_nb_threads(from._max_nb_threads),
@@ -85,9 +85,9 @@ namespace gum {
 
     /// move constructor
     template < template < typename > class ALLOC >
-    INLINE Score< ALLOC >::Score(
-      Score< ALLOC >&&                               from,
-      const typename Score< ALLOC >::allocator_type& alloc) :
+    INLINE
+      Score< ALLOC >::Score(Score< ALLOC >&&                               from,
+                            const typename Score< ALLOC >::allocator_type& alloc) :
         _apriori(from._apriori),
         _counter(std::move(from._counter), alloc),
         _cache(std::move(from._cache), alloc), _use_cache(from._use_cache),
@@ -122,7 +122,7 @@ namespace gum {
       if (this != &from) {
         Apriori< ALLOC >*      new_apriori = from._apriori->clone();
         RecordCounter< ALLOC > new_counter = from._counter;
-        ScoringCache< ALLOC >   new_cache = from._cache;
+        ScoringCache< ALLOC >  new_cache = from._cache;
 
         if (_apriori != nullptr) {
           ALLOC< Apriori< ALLOC > > allocator(this->getAllocator());
@@ -177,18 +177,17 @@ namespace gum {
     /** @brief changes the number min of rows a thread should process in a
      * multithreading context */
     template < template < typename > class ALLOC >
-    INLINE void
-    Score< ALLOC >::setMinNbRowsPerThread(const std::size_t nb) const {
+    INLINE void Score< ALLOC >::setMinNbRowsPerThread(const std::size_t nb) const {
       _counter.setMinNbRowsPerThread(nb);
     }
-    
+
 
     /// returns the minimum of rows that each thread should process
     template < template < typename > class ALLOC >
     INLINE std::size_t Score< ALLOC >::minNbRowsPerThread() const {
       return _counter.minNbRowsPerThread();
     }
-    
+
 
     /// returns the score of a single node
     template < template < typename > class ALLOC >
@@ -249,13 +248,13 @@ namespace gum {
       _use_cache = on_off;
     }
 
-    
+
     /// indicates whether the score uses a cache
     template < template < typename > class ALLOC >
-    INLINE bool Score< ALLOC >::isUsingCache () const {
+    INLINE bool Score< ALLOC >::isUsingCache() const {
       return _use_cache;
     }
-    
+
 
     /// return the mapping between the columns of the database and the node ids
     template < template < typename > class ALLOC >

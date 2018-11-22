@@ -38,8 +38,8 @@ namespace gum {
       const typename AprioriDirichletFromDatabase< ALLOC >::allocator_type&
         alloc) :
         Apriori< ALLOC >(apriori_parser.database(),
-                          Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-                          alloc),
+                         Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+                         alloc),
         __counter(
           apriori_parser,
           std::vector< std::pair< std::size_t, std::size_t >,
@@ -116,7 +116,7 @@ namespace gum {
       // recreate the record counter with the appropriate node2col mapping
       std::vector< std::pair< std::size_t, std::size_t >,
                    ALLOC< std::pair< std::size_t, std::size_t > > >
-                              ranges(alloc);
+                             ranges(alloc);
       RecordCounter< ALLOC > good_counter(
         apriori_parser, ranges, this->_nodeId2columns, alloc);
       __counter = std::move(good_counter);
@@ -161,7 +161,7 @@ namespace gum {
     INLINE AprioriDirichletFromDatabase< ALLOC >::AprioriDirichletFromDatabase(
       AprioriDirichletFromDatabase< ALLOC >&& from) :
         AprioriDirichletFromDatabase< ALLOC >(std::move(from),
-                                               from.getAllocator()) {}
+                                              from.getAllocator()) {}
 
 
     /// virtual copy constructor with a given allocator
@@ -193,8 +193,7 @@ namespace gum {
 
     /// destructor
     template < template < typename > class ALLOC >
-    INLINE
-      AprioriDirichletFromDatabase< ALLOC >::~AprioriDirichletFromDatabase() {
+    INLINE AprioriDirichletFromDatabase< ALLOC >::~AprioriDirichletFromDatabase() {
       GUM_DESTRUCTOR(AprioriDirichletFromDatabase);
     }
 
@@ -251,7 +250,7 @@ namespace gum {
     /// returns the apriori vector all the variables in the idset
     template < template < typename > class ALLOC >
     INLINE void AprioriDirichletFromDatabase< ALLOC >::addAllApriori(
-      const IdSet< ALLOC >&                  idset,
+      const IdSet< ALLOC >&                   idset,
       std::vector< double, ALLOC< double > >& counts) {
       if (this->_weight == 0.0) return;
 
@@ -272,7 +271,7 @@ namespace gum {
     /// returns the apriori vector over only the conditioning set of an idset
     template < template < typename > class ALLOC >
     void AprioriDirichletFromDatabase< ALLOC >::addConditioningApriori(
-      const IdSet< ALLOC >&                  idset,
+      const IdSet< ALLOC >&                   idset,
       std::vector< double, ALLOC< double > >& counts) {
       if (this->_weight == 0.0) return;
 

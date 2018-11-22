@@ -70,11 +70,13 @@ namespace gum {
     }
 
 
-    bool GreaterPairOn2nd::operator()(
-      const std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*, double >&
-        e1,
-      const std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*, double >&
-        e2) const {
+    bool GreaterPairOn2nd::
+         operator()(const std::pair<
+                   std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
+                   double >& e1,
+                 const std::pair<
+                   std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
+                   double >& e2) const {
       return e1.second > e2.second;
     }
 
@@ -85,8 +87,10 @@ namespace gum {
     }
 
     bool GreaterTupleOnLast::operator()(
-      const std::tuple< std::tuple< NodeId, NodeId, NodeId >*, double, double, double >& e1,
-      const std::tuple< std::tuple< NodeId, NodeId, NodeId >*, double, double, double >& e2)
+      const std::
+        tuple< std::tuple< NodeId, NodeId, NodeId >*, double, double, double >& e1,
+      const std::
+        tuple< std::tuple< NodeId, NodeId, NodeId >*, double, double, double >& e2)
       const {
       double p1xz = std::get< 2 >(e1);
       double p1yz = std::get< 3 >(e1);
@@ -103,7 +107,7 @@ namespace gum {
 
     /// learns the structure of a MixedGraph
     MixedGraph Miic::learnMixedStructure(CorrectedMutualInformation<>& I,
-                                         MixedGraph                     graph) {
+                                         MixedGraph                    graph) {
       _timer.reset();
       _current_step = 0;
 
@@ -111,8 +115,10 @@ namespace gum {
       __latent_couples.clear();
 
       /// the heap of ranks, with the score, and the NodeIds of x, y and z.
-      Heap< std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*, double >,
-            GreaterPairOn2nd >
+      Heap<
+        std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
+                   double >,
+        GreaterPairOn2nd >
         _rank;
 
       /// the variables separation sets
@@ -139,12 +145,14 @@ namespace gum {
      * the edge is deleted. If not, the best contributor is found.
      */
     void Miic::_initiation(
-      CorrectedMutualInformation<>&                          I,
-      MixedGraph&                                             graph,
+      CorrectedMutualInformation<>&                                    I,
+      MixedGraph&                                                      graph,
       HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set,
-      Heap< std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*, double >,
-            GreaterPairOn2nd >&                               _rank) {
-      NodeId     x, y;
+      Heap<
+        std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
+                   double >,
+        GreaterPairOn2nd >& _rank) {
+      NodeId  x, y;
       EdgeSet edges = graph.edges();
       Size    steps_init = edges.size();
 
@@ -175,24 +183,28 @@ namespace gum {
      * we can assess the independence of the variables.
      */
     void Miic::_iteration(
-      CorrectedMutualInformation<>&                          I,
-      MixedGraph&                                             graph,
+      CorrectedMutualInformation<>&                                    I,
+      MixedGraph&                                                      graph,
       HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set,
-      Heap< std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*, double >,
-            GreaterPairOn2nd >&                               _rank) {
+      Heap<
+        std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
+                   double >,
+        GreaterPairOn2nd >& _rank) {
       // if no triples to further examine pass
-      std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*, double > best;
+      std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
+                 double >
+        best;
 
       Size steps_init = _current_step;
       Size steps_iter = _rank.size();
 
-      try { 
-        while ( _rank.top().second > 0.5 ) {
-          best = _rank.pop ();
-          
-          const NodeId x = std::get< 0 >(*(best.first));
-          const NodeId y = std::get< 1 >(*(best.first));
-          const NodeId z = std::get< 2 >(*(best.first));
+      try {
+        while (_rank.top().second > 0.5) {
+          best = _rank.pop();
+
+          const NodeId          x = std::get< 0 >(*(best.first));
+          const NodeId          y = std::get< 1 >(*(best.first));
+          const NodeId          z = std::get< 2 >(*(best.first));
           std::vector< NodeId > ui = std::move(std::get< 3 >(*(best.first)));
 
           ui.push_back(z);
@@ -214,8 +226,7 @@ namespace gum {
                       _timer.step());
           }
         }
-      }
-      catch (...) {} // here, rank is empty
+      } catch (...) {}   // here, rank is empty
       _current_step = steps_init + steps_iter;
       if (onProgress.hasListener()) {
         GUM_EMIT3(onProgress, 66, 0., _timer.step());
@@ -228,12 +239,13 @@ namespace gum {
      *
      * Try to assess v-structures and propagate them.
      */
-    void Miic::_orientation_3off2(
-      CorrectedMutualInformation<>&                                I,
-      MixedGraph&                                                   graph,
-      const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set) {
-      std::vector< std::pair< std::tuple< NodeId, NodeId, NodeId >*, double > > triples =
-        _getUnshieldedTriples(graph, I, sep_set);
+    void
+      Miic::_orientation_3off2(CorrectedMutualInformation<>&             I,
+                               MixedGraph&                               graph,
+                               const HashTable< std::pair< NodeId, NodeId >,
+                                                std::vector< NodeId > >& sep_set) {
+      std::vector< std::pair< std::tuple< NodeId, NodeId, NodeId >*, double > >
+           triples = _getUnshieldedTriples(graph, I, sep_set);
       Size steps_orient = triples.size();
       Size past_steps = _current_step;
 
@@ -256,13 +268,14 @@ namespace gum {
       // has been applied
       while (i < triples.size()) {
         // if i not in do_not_reread
-        std::pair< std::tuple< NodeId, NodeId, NodeId >*, double > triple = triples[i];
-        NodeId                                               x, y, z;
+        std::pair< std::tuple< NodeId, NodeId, NodeId >*, double > triple =
+          triples[i];
+        NodeId x, y, z;
         x = std::get< 0 >(*triple.first);
         y = std::get< 1 >(*triple.first);
         z = std::get< 2 >(*triple.first);
 
-        std::vector< NodeId >    ui;
+        std::vector< NodeId >       ui;
         std::pair< NodeId, NodeId > key = {x, y};
         std::pair< NodeId, NodeId > rev_key = {y, x};
         if (sep_set.exists(key)) {
@@ -411,11 +424,12 @@ namespace gum {
 
     /// varient trying to propagate both orientations in a bidirected arc
     void Miic::_orientation_latents(
-      CorrectedMutualInformation<>&                                I,
-      MixedGraph&                                                   graph,
-      const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set) {
-      std::vector< std::pair< std::tuple< NodeId, NodeId, NodeId >*, double > > triples =
-        _getUnshieldedTriples(graph, I, sep_set);
+      CorrectedMutualInformation<>& I,
+      MixedGraph&                   graph,
+      const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >&
+        sep_set) {
+      std::vector< std::pair< std::tuple< NodeId, NodeId, NodeId >*, double > >
+           triples = _getUnshieldedTriples(graph, I, sep_set);
       Size steps_orient = triples.size();
       Size past_steps = _current_step;
 
@@ -426,13 +440,14 @@ namespace gum {
       // has been applied
       while (i < triples.size()) {
         // if i not in do_not_reread
-        std::pair< std::tuple< NodeId, NodeId, NodeId >*, double > triple = triples[i];
-        NodeId                                               x, y, z;
+        std::pair< std::tuple< NodeId, NodeId, NodeId >*, double > triple =
+          triples[i];
+        NodeId x, y, z;
         x = std::get< 0 >(*triple.first);
         y = std::get< 1 >(*triple.first);
         z = std::get< 2 >(*triple.first);
 
-        std::vector< NodeId >    ui;
+        std::vector< NodeId >       ui;
         std::pair< NodeId, NodeId > key = {x, y};
         std::pair< NodeId, NodeId > rev_key = {y, x};
         if (sep_set.exists(key)) {
@@ -555,10 +570,11 @@ namespace gum {
     }
 
     /// varient using the orientation protocol of MIIC
-    void Miic::_orientation_miic(
-      CorrectedMutualInformation<>&                                I,
-      MixedGraph&                                                   graph,
-      const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set) {
+    void
+      Miic::_orientation_miic(CorrectedMutualInformation<>&             I,
+                              MixedGraph&                               graph,
+                              const HashTable< std::pair< NodeId, NodeId >,
+                                               std::vector< NodeId > >& sep_set) {
       // structure to store the orientations marks -, o, or >,
       // Considers the head of the arc/edge first node -* second node
       HashTable< std::pair< NodeId, NodeId >, char > marks = __initial_marks;
@@ -575,13 +591,15 @@ namespace gum {
       }
 
       std::vector<
-        std::tuple< std::tuple< NodeId, NodeId, NodeId >*, double, double, double > >
+        std::
+          tuple< std::tuple< NodeId, NodeId, NodeId >*, double, double, double > >
         proba_triples = _getUnshieldedTriplesMIIC(graph, I, sep_set, marks);
 
       Size steps_orient = proba_triples.size();
       Size past_steps = _current_step;
 
-      std::tuple< std::tuple< NodeId, NodeId, NodeId >*, double, double, double > best;
+      std::tuple< std::tuple< NodeId, NodeId, NodeId >*, double, double, double >
+        best;
       if (steps_orient > 0) { best = proba_triples[0]; }
 
       while (!proba_triples.empty()
@@ -732,15 +750,17 @@ namespace gum {
 
     /// finds the best contributor node for a pair given a conditioning set
     void Miic::_findBestContributor(
-      NodeId                           x,
-      NodeId                           y,
-      const std::vector< NodeId >&     ui,
+      NodeId                        x,
+      NodeId                        y,
+      const std::vector< NodeId >&  ui,
       const MixedGraph&             graph,
       CorrectedMutualInformation<>& I,
-      Heap< std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*, double >,
-            GreaterPairOn2nd >&     _rank) {
+      Heap<
+        std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
+                   double >,
+        GreaterPairOn2nd >& _rank) {
       double maxP = -1.0;
-      NodeId    maxZ;
+      NodeId maxZ;
 
       // compute N
       //__N = I.N();
@@ -800,9 +820,11 @@ namespace gum {
         }   // if z not in (x, y)
       }     // for z in graph.nodes
       // storing best z in _rank
-      std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*, double > final;
-      auto                                                                  tup =
-        new std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >{x, y, maxZ, ui};
+      std::pair< std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
+                 double >
+           final;
+      auto tup = new std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >{
+        x, y, maxZ, ui};
       final.first = tup;
       final.second = maxP;
       _rank.insert(final);
@@ -812,15 +834,17 @@ namespace gum {
     ///|I'(x, y, z|{ui})|
     std::vector< std::pair< std::tuple< NodeId, NodeId, NodeId >*, double > >
       Miic::_getUnshieldedTriples(
-        const MixedGraph&                                             graph,
-        CorrectedMutualInformation<>&                                I,
-        const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set) {
-      std::vector< std::pair< std::tuple< NodeId, NodeId, NodeId >*, double > > triples;
+        const MixedGraph&             graph,
+        CorrectedMutualInformation<>& I,
+        const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >&
+          sep_set) {
+      std::vector< std::pair< std::tuple< NodeId, NodeId, NodeId >*, double > >
+        triples;
       for (NodeId z : graph) {
         for (NodeId x : graph.neighbours(z)) {
           for (NodeId y : graph.neighbours(z)) {
             if (y < x && !graph.existsEdge(x, y)) {
-              std::vector< NodeId >    ui;
+              std::vector< NodeId >       ui;
               std::pair< NodeId, NodeId > key = {x, y};
               std::pair< NodeId, NodeId > rev_key = {y, x};
               if (sep_set.exists(key)) {
@@ -851,18 +875,20 @@ namespace gum {
     std::vector<
       std::tuple< std::tuple< NodeId, NodeId, NodeId >*, double, double, double > >
       Miic::_getUnshieldedTriplesMIIC(
-        const MixedGraph&                                             graph,
-        CorrectedMutualInformation<>&                                I,
-        const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sep_set,
-        HashTable< std::pair< NodeId, NodeId >, char >&                     marks) {
+        const MixedGraph&             graph,
+        CorrectedMutualInformation<>& I,
+        const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >&
+                                                        sep_set,
+        HashTable< std::pair< NodeId, NodeId >, char >& marks) {
       std::vector<
-        std::tuple< std::tuple< NodeId, NodeId, NodeId >*, double, double, double > >
+        std::
+          tuple< std::tuple< NodeId, NodeId, NodeId >*, double, double, double > >
         triples;
       for (NodeId z : graph) {
         for (NodeId x : graph.neighbours(z)) {
           for (NodeId y : graph.neighbours(z)) {
             if (y < x && !graph.existsEdge(x, y)) {
-              std::vector< NodeId >    ui;
+              std::vector< NodeId >       ui;
               std::pair< NodeId, NodeId > key = {x, y};
               std::pair< NodeId, NodeId > rev_key = {y, x};
               if (sep_set.exists(key)) {
@@ -876,7 +902,10 @@ namespace gum {
 
               const double Ixyz_ui = I.score(x, y, z, ui);
               auto         tup = new std::tuple< NodeId, NodeId, NodeId >{x, y, z};
-              std::tuple< std::tuple< NodeId, NodeId, NodeId >*, double, double, double >
+              std::tuple< std::tuple< NodeId, NodeId, NodeId >*,
+                          double,
+                          double,
+                          double >
                 triple{tup, Ixyz_ui, 0.5, 0.5};
               triples.push_back(triple);
               if (!marks.exists({x, z})) { marks.insert({x, z}, 'o'); }
@@ -896,10 +925,11 @@ namespace gum {
     std::vector<
       std::tuple< std::tuple< NodeId, NodeId, NodeId >*, double, double, double > >
       Miic::_updateProbaTriples(
-        const MixedGraph& graph,
-        std::vector<
-          std::tuple< std::tuple< NodeId, NodeId, NodeId >*, double, double, double > >
-          proba_triples) {
+        const MixedGraph&                   graph,
+        std::vector< std::tuple< std::tuple< NodeId, NodeId, NodeId >*,
+                                 double,
+                                 double,
+                                 double > > proba_triples) {
       for (auto& triple : proba_triples) {
         NodeId x, y, z;
         x = std::get< 0 >(*std::get< 0 >(triple));
@@ -939,7 +969,7 @@ namespace gum {
     /// learns the structure of an Bayesian network, ie a DAG, from an Essential
     /// graph.
     DAG Miic::learnStructure(CorrectedMutualInformation<>& I,
-                             MixedGraph                     initialGraph) {
+                             MixedGraph                    initialGraph) {
       MixedGraph essentialGraph = learnMixedStructure(I, initialGraph);
 
       // Second, orientate remaining edges
@@ -1012,14 +1042,14 @@ namespace gum {
                                          PARAM_ESTIMATOR&        estimator,
                                          DAG                     initial_dag) {
       return DAG2BNLearner<>::createBN< GUM_SCALAR >(
-          estimator, learnStructure(selector, initial_dag));
+        estimator, learnStructure(selector, initial_dag));
     }
 
     void Miic::setMiicBehaviour() { this->__usemiic = true; }
     void Miic::set3off2Behaviour() { this->__usemiic = false; }
 
-    void
-      Miic::addConstraints(HashTable< std::pair< NodeId, NodeId >, char > constraints) {
+    void Miic::addConstraints(
+      HashTable< std::pair< NodeId, NodeId >, char > constraints) {
       this->__initial_marks = constraints;
     }
 

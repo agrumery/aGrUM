@@ -71,13 +71,13 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriSmoothing<>    apriori(database);
-      gum::learning::ScoreK2<>             score(parser, apriori);
+      gum::learning::AprioriSmoothing<>     apriori(database);
+      gum::learning::ScoreK2<>              score(parser, apriori);
 
       gum::learning::StructuralConstraintDAG struct_constraint;
 
-      gum::learning::ParamEstimatorML<> estimator(parser, apriori,
-                                                   score.internalApriori());
+      gum::learning::ParamEstimatorML<> estimator(
+        parser, apriori, score.internalApriori());
 
       std::vector< gum::NodeId > order(database.nbVariables());
       for (gum::NodeId i = 0; i < order.size(); ++i) {
@@ -88,7 +88,7 @@ namespace gum_tests {
         op_set(struct_constraint);
 
       gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint),
-                                                    decltype(op_set) >
+                                                   decltype(op_set) >
         selector(score, struct_constraint, op_set);
 
       gum::learning::K2 k2;
@@ -98,8 +98,7 @@ namespace gum_tests {
       try {
         gum::BayesNet< float > bn = k2.learnBN< float >(selector, estimator);
 
-        gum::BayesNet< double > bn2 =
-          k2.learnBN< double >(selector, estimator);
+        gum::BayesNet< double > bn2 = k2.learnBN< double >(selector, estimator);
         TS_ASSERT(bn.dag().arcs().size() == 8);
         TS_ASSERT(bn2.dag().arcs().size() == 8);
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }

@@ -67,10 +67,10 @@ namespace gum {
        * @param alloc the allocator used to allocate the structures within the
        * RecordCounter.*/
       Apriori(const DatabaseTable< ALLOC >& database,
-               const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                 nodeId2columns =
-                   Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-               const allocator_type& alloc = allocator_type());
+              const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                nodeId2columns =
+                  Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+              const allocator_type& alloc = allocator_type());
 
       /// virtual copy constructor
       virtual Apriori< ALLOC >* clone() const = 0;
@@ -117,7 +117,7 @@ namespace gum {
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint variables set. */
       virtual void
-        addAllApriori(const IdSet< ALLOC >&                  idset,
+        addAllApriori(const IdSet< ALLOC >&                   idset,
                       std::vector< double, ALLOC< double > >& counts) = 0;
 
       /** @brief adds the apriori to a counting vectordefined over the right
@@ -126,7 +126,7 @@ namespace gum {
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint RHS variables of the idset. */
       virtual void
-        addConditioningApriori(const IdSet< ALLOC >&                  idset,
+        addConditioningApriori(const IdSet< ALLOC >&                   idset,
                                std::vector< double, ALLOC< double > >& counts) = 0;
 
       /// returns the allocator used by the internal apriori

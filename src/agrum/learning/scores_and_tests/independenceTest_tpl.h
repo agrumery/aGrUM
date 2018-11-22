@@ -40,11 +40,11 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE IndependenceTest< ALLOC >::IndependenceTest(
       const DBRowGeneratorParser< ALLOC >&                                 parser,
-      const Apriori< ALLOC >&                                             apriori,
+      const Apriori< ALLOC >&                                              apriori,
       const std::vector< std::pair< std::size_t, std::size_t >,
                          ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename IndependenceTest< ALLOC >::allocator_type&    alloc) :
+      const typename IndependenceTest< ALLOC >::allocator_type&     alloc) :
         _apriori(apriori.clone(alloc)),
         _counter(parser, ranges, nodeId2columns, alloc), _cache(alloc) {
       GUM_CONSTRUCTOR(IndependenceTest);
@@ -55,9 +55,9 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE IndependenceTest< ALLOC >::IndependenceTest(
       const DBRowGeneratorParser< ALLOC >&                          parser,
-      const Apriori< ALLOC >&                                      apriori,
+      const Apriori< ALLOC >&                                       apriori,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename IndependenceTest< ALLOC >::allocator_type&    alloc) :
+      const typename IndependenceTest< ALLOC >::allocator_type&     alloc) :
         _apriori(apriori.clone(alloc)),
         _counter(parser, nodeId2columns, alloc), _cache(alloc) {
       GUM_CONSTRUCTOR(IndependenceTest);
@@ -121,11 +121,11 @@ namespace gum {
     /// copy operator
     template < template < typename > class ALLOC >
     IndependenceTest< ALLOC >& IndependenceTest< ALLOC >::
-                                operator=(const IndependenceTest< ALLOC >& from) {
+                               operator=(const IndependenceTest< ALLOC >& from) {
       if (this != &from) {
         Apriori< ALLOC >*      new_apriori = from._apriori->clone();
         RecordCounter< ALLOC > new_counter = from._counter;
-        ScoringCache< ALLOC >   new_cache = from._cache;
+        ScoringCache< ALLOC >  new_cache = from._cache;
 
         if (_apriori != nullptr) {
           ALLOC< Apriori< ALLOC > > allocator(this->getAllocator());
@@ -148,7 +148,7 @@ namespace gum {
     /// move operator
     template < template < typename > class ALLOC >
     IndependenceTest< ALLOC >& IndependenceTest< ALLOC >::
-                                operator=(IndependenceTest< ALLOC >&& from) {
+                               operator=(IndependenceTest< ALLOC >&& from) {
       if (this != &from) {
         std::swap(_apriori, from._apriori);
 
@@ -181,7 +181,7 @@ namespace gum {
     /// returns the score of a pair of nodes
     template < template < typename > class ALLOC >
     INLINE double IndependenceTest< ALLOC >::score(const NodeId var1,
-                                                    const NodeId var2) {
+                                                   const NodeId var2) {
       IdSet< ALLOC > idset(
         var1, var2, _empty_ids, false, true, this->getAllocator());
       if (_use_cache) {
@@ -256,7 +256,6 @@ namespace gum {
     }
 
 
-
     /// returns a counting vector where variables are marginalized from N_xyz
     /** @param node_2_marginalize indicates which node(s) shall be marginalized:
      * - 0 means that X should be marginalized
@@ -264,15 +263,14 @@ namespace gum {
      * - 2 means that Z should be marginalized
      */
     template < template < typename > class ALLOC >
-    std::vector< double, ALLOC< double > >
-    IndependenceTest< ALLOC >::_marginalize (
-      const std::size_t node_2_marginalize,
-      const std::size_t X_size,
-      const std::size_t Y_size,
-      const std::size_t Z_size,
+    std::vector< double, ALLOC< double > > IndependenceTest< ALLOC >::_marginalize(
+      const std::size_t                             node_2_marginalize,
+      const std::size_t                             X_size,
+      const std::size_t                             Y_size,
+      const std::size_t                             Z_size,
       const std::vector< double, ALLOC< double > >& N_xyz) const {
       // determine the size of the output vector
-      std::size_t out_size = Z_size; 
+      std::size_t out_size = Z_size;
       if (node_2_marginalize == std::size_t(0))
         out_size *= Y_size;
       else if (node_2_marginalize == std::size_t(1))
@@ -280,19 +278,21 @@ namespace gum {
 
       // allocate the output vector
       std::vector< double, ALLOC< double > > res(out_size, 0.0);
-      
+
       // fill the vector:
-      if (node_2_marginalize == std::size_t(0)) { // marginalize X
-        for ( std::size_t yz = std::size_t(0), xyz = std::size_t(0);
-              yz < out_size; ++yz) { 
-          for ( std::size_t x = std::size_t(0); x < X_size; ++x, ++xyz) {
+      if (node_2_marginalize == std::size_t(0)) {   // marginalize X
+        for (std::size_t yz = std::size_t(0), xyz = std::size_t(0); yz < out_size;
+             ++yz) {
+          for (std::size_t x = std::size_t(0); x < X_size; ++x, ++xyz) {
             res[yz] += N_xyz[xyz];
           }
         }
-      }
-      else if (node_2_marginalize == std::size_t(1)) { // marginalize Y
-        for (std::size_t z = std::size_t(0), xyz = std::size_t(0),
-               beg_xz = std::size_t(0); z < Z_size; ++z, beg_xz += X_size ) {
+      } else if (node_2_marginalize == std::size_t(1)) {   // marginalize Y
+        for (std::size_t z = std::size_t(0),
+                         xyz = std::size_t(0),
+                         beg_xz = std::size_t(0);
+             z < Z_size;
+             ++z, beg_xz += X_size) {
           for (std::size_t y = std::size_t(0); y < Y_size; ++y) {
             for (std::size_t x = std::size_t(0), xz = beg_xz; x < X_size;
                  ++x, ++xz, ++xyz) {
@@ -300,22 +300,20 @@ namespace gum {
             }
           }
         }
-      }
-      else if (node_2_marginalize == std::size_t(2)) { // marginalize X and Y
+      } else if (node_2_marginalize == std::size_t(2)) {   // marginalize X and Y
         const std::size_t XY_size = X_size * Y_size;
-        for ( std::size_t z = std::size_t(0), xyz = std::size_t(0);
-              z < out_size; ++z) { 
-          for ( std::size_t xy = std::size_t(0); xy < XY_size; ++xy, ++xyz) {
+        for (std::size_t z = std::size_t(0), xyz = std::size_t(0); z < out_size;
+             ++z) {
+          for (std::size_t xy = std::size_t(0); xy < XY_size; ++xy, ++xyz) {
             res[z] += N_xyz[xyz];
           }
         }
+      } else {
+        GUM_ERROR(NotImplementedYet,
+                  "_marginalize not implemented for nodeset "
+                    << node_2_marginalize);
       }
-      else {
-        GUM_ERROR (NotImplementedYet,
-                   "_marginalize not implemented for nodeset "
-                   << node_2_marginalize);
-      }
- 
+
       return res;
     }
 

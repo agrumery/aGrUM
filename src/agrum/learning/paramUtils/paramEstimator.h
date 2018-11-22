@@ -78,8 +78,8 @@ namespace gum {
        * score() over other ids will raise exception NotFound. */
       ParamEstimator(
         const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori< ALLOC >&             external_apriori,
-        const Apriori< ALLOC >&             score_internal__apriori,
+        const Apriori< ALLOC >&              external_apriori,
+        const Apriori< ALLOC >&              score_internal__apriori,
         const std::vector< std::pair< std::size_t, std::size_t >,
                            ALLOC< std::pair< std::size_t, std::size_t > > >&
           ranges,
@@ -107,26 +107,25 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       ParamEstimator(const DBRowGeneratorParser< ALLOC >& parser,
-                      const Apriori< ALLOC >&             external_apriori,
-                      const Apriori< ALLOC >&             score_internal__apriori,
-                      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                        nodeId2columns =
-                          Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-                      const allocator_type& alloc = allocator_type());
+                     const Apriori< ALLOC >&              external_apriori,
+                     const Apriori< ALLOC >&              score_internal__apriori,
+                     const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                       nodeId2columns =
+                         Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+                     const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       ParamEstimator(const ParamEstimator< ALLOC >& from);
 
       /// copy constructor with a given allocator
       ParamEstimator(const ParamEstimator< ALLOC >& from,
-                      const allocator_type&           alloc);
+                     const allocator_type&          alloc);
 
       /// move constructor
       ParamEstimator(ParamEstimator< ALLOC >&& from);
 
       /// move constructor with a given allocator
-      ParamEstimator(ParamEstimator< ALLOC >&& from,
-                      const allocator_type&      alloc);
+      ParamEstimator(ParamEstimator< ALLOC >&& from, const allocator_type& alloc);
 
       /// virtual copy constructor
       virtual ParamEstimator< ALLOC >* clone() const = 0;

@@ -79,14 +79,14 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       Score(const DBRowGeneratorParser< ALLOC >& parser,
-             const Apriori< ALLOC >&             external_apriori,
-             const std::vector< std::pair< std::size_t, std::size_t >,
-                                ALLOC< std::pair< std::size_t, std::size_t > > >&
-               ranges,
-             const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-               nodeId2columns =
-                 Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-             const allocator_type& alloc = allocator_type());
+            const Apriori< ALLOC >&              external_apriori,
+            const std::vector< std::pair< std::size_t, std::size_t >,
+                               ALLOC< std::pair< std::size_t, std::size_t > > >&
+              ranges,
+            const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+              nodeId2columns =
+                Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+            const allocator_type& alloc = allocator_type());
 
 
       /// default constructor
@@ -106,11 +106,11 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       Score(const DBRowGeneratorParser< ALLOC >& parser,
-             const Apriori< ALLOC >&             external_apriori,
-             const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-               nodeId2columns =
-                 Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-             const allocator_type& alloc = allocator_type());
+            const Apriori< ALLOC >&              external_apriori,
+            const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+              nodeId2columns =
+                Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+            const allocator_type& alloc = allocator_type());
 
       /// virtual copy constructor
       virtual Score< ALLOC >* clone() const = 0;
@@ -134,7 +134,7 @@ namespace gum {
 
       /// returns the number of threads used to parse the database
       virtual std::size_t nbThreads() const;
-      
+
       /** @brief changes the number min of rows a thread should process in a
        * multithreading context
        *
@@ -169,8 +169,8 @@ namespace gum {
       void useCache(const bool on_off);
 
       /// indicates whether the score uses a cache
-      bool isUsingCache () const;
-      
+      bool isUsingCache() const;
+
       /// return the mapping between the columns of the database and the node ids
       /** @warning An empty nodeId2Columns bijection means that the mapping is
        * an identity, i.e., the value of a NodeId is equal to the index of the

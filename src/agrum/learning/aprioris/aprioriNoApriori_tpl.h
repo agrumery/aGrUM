@@ -34,7 +34,7 @@ namespace gum {
     INLINE AprioriNoApriori< ALLOC >::AprioriNoApriori(
       const DatabaseTable< ALLOC >&                                 database,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename AprioriNoApriori< ALLOC >::allocator_type&    alloc) :
+      const typename AprioriNoApriori< ALLOC >::allocator_type&     alloc) :
         Apriori< ALLOC >(database, nodeId2columns, alloc) {
       Apriori< ALLOC >::setWeight(0.0);
       GUM_CONSTRUCTOR(AprioriNoApriori);
@@ -109,7 +109,7 @@ namespace gum {
     /// copy operator
     template < template < typename > class ALLOC >
     INLINE AprioriNoApriori< ALLOC >& AprioriNoApriori< ALLOC >::
-                                       operator=(const AprioriNoApriori< ALLOC >& from) {
+                                      operator=(const AprioriNoApriori< ALLOC >& from) {
       Apriori< ALLOC >::operator=(from);
       return *this;
     }
@@ -118,7 +118,7 @@ namespace gum {
     /// move operator
     template < template < typename > class ALLOC >
     INLINE AprioriNoApriori< ALLOC >& AprioriNoApriori< ALLOC >::
-                                       operator=(AprioriNoApriori< ALLOC >&& from) {
+                                      operator=(AprioriNoApriori< ALLOC >&& from) {
       Apriori< ALLOC >::operator=(std::move(from));
       return *this;
     }
@@ -153,14 +153,14 @@ namespace gum {
     /// returns the apriori vector all the variables in the idset
     template < template < typename > class ALLOC >
     INLINE void AprioriNoApriori< ALLOC >::addAllApriori(
-      const IdSet< ALLOC >&                  idset,
+      const IdSet< ALLOC >&                   idset,
       std::vector< double, ALLOC< double > >& counts) {}
 
 
     /// returns the apriori vector over only the conditioning set of an idset
     template < template < typename > class ALLOC >
     INLINE void AprioriNoApriori< ALLOC >::addConditioningApriori(
-      const IdSet< ALLOC >&                  idset,
+      const IdSet< ALLOC >&                   idset,
       std::vector< double, ALLOC< double > >& counts) {}
 
 

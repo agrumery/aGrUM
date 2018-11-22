@@ -35,8 +35,7 @@ namespace gum {
 
     /// learns the structure of a Bayes net
     template < typename GRAPH_CHANGES_SELECTOR >
-    DAG K2::learnStructure(GRAPH_CHANGES_SELECTOR& selector,
-                           DAG                     initial_dag) {
+    DAG K2::learnStructure(GRAPH_CHANGES_SELECTOR& selector, DAG initial_dag) {
       // check that we used a selector compatible with the K2 algorithm
       static_assert(
         std::is_base_of< __GraphChangesGenerator4K2,

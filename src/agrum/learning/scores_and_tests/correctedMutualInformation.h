@@ -85,7 +85,7 @@ namespace gum {
        * score() over other ids will raise exception NotFound. */
       CorrectedMutualInformation(
         const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori< ALLOC >&             apriori,
+        const Apriori< ALLOC >&              apriori,
         const std::vector< std::pair< std::size_t, std::size_t >,
                            ALLOC< std::pair< std::size_t, std::size_t > > >&
           ranges,
@@ -113,26 +113,25 @@ namespace gum {
        * score() over other ids will raise exception NotFound. */
       CorrectedMutualInformation(
         const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori< ALLOC >&             apriori,
+        const Apriori< ALLOC >&              apriori,
         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
           nodeId2columns =
             Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
         const allocator_type& alloc = allocator_type());
 
       /// copy constructor
-      CorrectedMutualInformation(
-        const CorrectedMutualInformation< ALLOC >& from);
+      CorrectedMutualInformation(const CorrectedMutualInformation< ALLOC >& from);
 
       /// copy constructor with a given allocator
       CorrectedMutualInformation(const CorrectedMutualInformation< ALLOC >& from,
-                                  const allocator_type& alloc);
+                                 const allocator_type&                      alloc);
 
       /// move constructor
       CorrectedMutualInformation(CorrectedMutualInformation< ALLOC >&& from);
 
       /// move constructor with a given allocator
       CorrectedMutualInformation(CorrectedMutualInformation< ALLOC >&& from,
-                                  const allocator_type&                  alloc);
+                                 const allocator_type&                 alloc);
 
       /// virtual copy constructor
       virtual CorrectedMutualInformation< ALLOC >* clone() const;

@@ -34,7 +34,7 @@ namespace gum {
     INLINE AprioriSmoothing< ALLOC >::AprioriSmoothing(
       const DatabaseTable< ALLOC >&                                 database,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename AprioriSmoothing< ALLOC >::allocator_type&    alloc) :
+      const typename AprioriSmoothing< ALLOC >::allocator_type&     alloc) :
         Apriori< ALLOC >(database, nodeId2columns, alloc) {
       GUM_CONSTRUCTOR(AprioriSmoothing);
     }
@@ -108,7 +108,7 @@ namespace gum {
     /// copy operator
     template < template < typename > class ALLOC >
     INLINE AprioriSmoothing< ALLOC >& AprioriSmoothing< ALLOC >::
-                                       operator=(const AprioriSmoothing< ALLOC >& from) {
+                                      operator=(const AprioriSmoothing< ALLOC >& from) {
       Apriori< ALLOC >::operator=(from);
       return *this;
     }
@@ -117,7 +117,7 @@ namespace gum {
     /// move operator
     template < template < typename > class ALLOC >
     INLINE AprioriSmoothing< ALLOC >& AprioriSmoothing< ALLOC >::
-                                       operator=(AprioriSmoothing< ALLOC >&& from) {
+                                      operator=(AprioriSmoothing< ALLOC >&& from) {
       Apriori< ALLOC >::operator=(std::move(from));
       return *this;
     }
@@ -147,7 +147,7 @@ namespace gum {
     /// returns the apriori vector all the variables in the idset
     template < template < typename > class ALLOC >
     INLINE void AprioriSmoothing< ALLOC >::addAllApriori(
-      const IdSet< ALLOC >&                  idset,
+      const IdSet< ALLOC >&                   idset,
       std::vector< double, ALLOC< double > >& counts) {
       // if the idset is empty or the weight is zero, the apriori is also empty
       if (idset.empty() || (this->_weight == 0.0)) return;
@@ -161,7 +161,7 @@ namespace gum {
     /// returns the apriori vector over only the conditioning set of an idset
     template < template < typename > class ALLOC >
     void AprioriSmoothing< ALLOC >::addConditioningApriori(
-      const IdSet< ALLOC >&                  idset,
+      const IdSet< ALLOC >&                   idset,
       std::vector< double, ALLOC< double > >& counts) {
       // if the conditioning set is empty or the weight is equal to zero,
       // the apriori is also empty

@@ -212,9 +212,9 @@ namespace gum {
        * considered as an ordered set or an unordered set
        * @param alloc the allocator used to store the data in the IdSet */
       IdSet(const std::vector< NodeId, ALLOC< NodeId > >& ids,
-             const bool                                    rhs_ids,
-             const bool                                    ordered_ids,
-             const allocator_type& alloc = allocator_type());
+            const bool                                    rhs_ids,
+            const bool                                    ordered_ids,
+            const allocator_type& alloc = allocator_type());
 
       /// default constructor with one variable on the left side
       /** @param var1 the variable on the left side of the conditioning bar
@@ -224,9 +224,9 @@ namespace gum {
        * considered as an ordered set or an unordered set
        * @param alloc the allocator used to store the data in the IdSet */
       IdSet(NodeId                                        var1,
-             const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids,
-             const bool                                    ordered_rhs_ids = false,
-             const allocator_type& alloc = allocator_type());
+            const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids,
+            const bool                                    ordered_rhs_ids = false,
+            const allocator_type& alloc = allocator_type());
 
       /// default constructor with two variables on the left side
       /** @param var1 the 1st variable on the left side of the conditioning bar
@@ -241,11 +241,11 @@ namespace gum {
        * @param ordered_rhs_ids
        * @param alloc the allocator used to store the data in the IdSet */
       IdSet(NodeId                                        var1,
-             NodeId                                        var2,
-             const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids,
-             const bool                                    ordered_lhs_vars,
-             const bool                                    ordered_rhs_ids = false,
-             const allocator_type& alloc = allocator_type());
+            NodeId                                        var2,
+            const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids,
+            const bool                                    ordered_lhs_vars,
+            const bool                                    ordered_rhs_ids = false,
+            const allocator_type& alloc = allocator_type());
 
       /// default constructor with three variables on the left side
       /** @param var1 the 1st variable on the left side of the conditioning bar
@@ -259,12 +259,12 @@ namespace gum {
        * considered as an ordered set or an unordered set
        * @param alloc the allocator used to store the data in the IdSet */
       IdSet(NodeId                                        var1,
-             NodeId                                        var2,
-             NodeId                                        var3,
-             const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids,
-             const bool                                    ordered_lhs_vars,
-             const bool                                    ordered_rhs_ids = false,
-             const allocator_type& alloc = allocator_type());
+            NodeId                                        var2,
+            NodeId                                        var3,
+            const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids,
+            const bool                                    ordered_lhs_vars,
+            const bool                                    ordered_rhs_ids = false,
+            const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       IdSet(const IdSet< ALLOC >& from);

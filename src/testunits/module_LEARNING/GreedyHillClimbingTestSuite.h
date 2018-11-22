@@ -97,12 +97,12 @@ namespace gum_tests {
       gum::learning::DatabaseTable<> database(translator_set);
       database.setVariableNames(initializer.variableNames());
       initializer.fillDatabase(database);
-      //database.reorder();
+      // database.reorder();
 
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriSmoothing<>    apriori(database);
-      gum::learning::ScoreK2<>             score(parser, apriori);
+      gum::learning::AprioriSmoothing<>     apriori(database);
+      gum::learning::ScoreK2<>              score(parser, apriori);
 
       gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG,
@@ -133,13 +133,13 @@ namespace gum_tests {
         op_set(struct_constraint);
 
       gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint),
-                                                    decltype(op_set) >
+                                                   decltype(op_set) >
         selector(score, struct_constraint, op_set);
 
       gum::learning::GreedyHillClimbing search;
       // simpleListenerForGHC agsl ( search );
       search.approximationScheme().setEpsilon(1000);
-      
+
       gum::DAG dag = search.learnStructure(selector);
       TS_ASSERT(dag.arcs().size() == 11);
 
@@ -175,8 +175,8 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriSmoothing<>    apriori(database);
-      gum::learning::ScoreK2<>             score(parser, apriori);
+      gum::learning::AprioriSmoothing<>     apriori(database);
+      gum::learning::ScoreK2<>              score(parser, apriori);
 
       gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG,
@@ -207,7 +207,7 @@ namespace gum_tests {
         op_set(struct_constraint);
 
       gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint),
-                                                    decltype(op_set) >
+                                                   decltype(op_set) >
         selector(score, struct_constraint, op_set);
 
       gum::learning::GreedyHillClimbing search;
@@ -228,7 +228,7 @@ namespace gum_tests {
       }
     }
 
-  
+
     void test_alarm_with_ordered_values() {
       gum::learning::DBInitializerFromCSV<> initializer(
         GET_RESSOURCES_PATH("alarm.csv"));
@@ -252,9 +252,9 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriSmoothing<>    apriori(database);
-      gum::learning::ScoreK2<>             score(parser, apriori);
-      //score.setMaxNbThreads(24);
+      gum::learning::AprioriSmoothing<>     apriori(database);
+      gum::learning::ScoreK2<>              score(parser, apriori);
+      // score.setMaxNbThreads(24);
 
       gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG,
@@ -285,14 +285,14 @@ namespace gum_tests {
         op_set(struct_constraint);
 
       gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint),
-                                                    decltype(op_set) >
+                                                   decltype(op_set) >
         selector(score, struct_constraint, op_set);
 
       gum::learning::GreedyHillClimbing search;
       // simpleListenerForGHC agsl ( search );
       search.approximationScheme().setEpsilon(1000);
 
-      gum::BayesNet< double > bn = search.learnBN< double >(selector,estimator);
+      gum::BayesNet< double > bn = search.learnBN< double >(selector, estimator);
 
       const std::string    s0 = "0";
       const std::string    s1 = "1";
@@ -330,11 +330,11 @@ namespace gum_tests {
       gum::learning::DatabaseTable<> database(translator_set);
       database.setVariableNames(initializer.variableNames());
       initializer.fillDatabase(database);
-      
+
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriSmoothing<>    apriori(database);
-      gum::learning::ScoreK2<>             score(parser, apriori);
+      gum::learning::AprioriSmoothing<>     apriori(database);
+      gum::learning::ScoreK2<>              score(parser, apriori);
 
       gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG,
@@ -365,7 +365,7 @@ namespace gum_tests {
         op_set(struct_constraint);
 
       gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint),
-                                                    decltype(op_set) >
+                                                   decltype(op_set) >
         selector(score, struct_constraint, op_set);
 
       gum::learning::GreedyHillClimbing search;
@@ -385,7 +385,7 @@ namespace gum_tests {
         TS_ASSERT(var.label(2) == s2);
       }
     }
-    
+
 
     void xtest_alarm1() {
       /*

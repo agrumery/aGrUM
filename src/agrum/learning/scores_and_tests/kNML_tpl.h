@@ -34,11 +34,11 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE KNML< ALLOC >::KNML(
       const DBRowGeneratorParser< ALLOC >&                                 parser,
-      const Apriori< ALLOC >&                                             apriori,
+      const Apriori< ALLOC >&                                              apriori,
       const std::vector< std::pair< std::size_t, std::size_t >,
                          ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename KNML< ALLOC >::allocator_type&                alloc) :
+      const typename KNML< ALLOC >::allocator_type&                 alloc) :
         IndependenceTest< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
         __param_complexity(alloc) {
       GUM_CONSTRUCTOR(KNML);
@@ -49,9 +49,9 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE KNML< ALLOC >::KNML(
       const DBRowGeneratorParser< ALLOC >&                          parser,
-      const Apriori< ALLOC >&                                      apriori,
+      const Apriori< ALLOC >&                                       apriori,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename KNML< ALLOC >::allocator_type&                alloc) :
+      const typename KNML< ALLOC >::allocator_type&                 alloc) :
         IndependenceTest< ALLOC >(parser, apriori, nodeId2columns, alloc),
         __param_complexity(alloc) {
       GUM_CONSTRUCTOR(KNML);
@@ -62,7 +62,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE
       KNML< ALLOC >::KNML(const KNML< ALLOC >&                          from,
-                            const typename KNML< ALLOC >::allocator_type& alloc) :
+                          const typename KNML< ALLOC >::allocator_type& alloc) :
         IndependenceTest< ALLOC >(from, alloc),
         __param_complexity(from.__param_complexity, alloc) {
       GUM_CONS_CPY(KNML);
@@ -79,7 +79,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE
       KNML< ALLOC >::KNML(KNML< ALLOC >&&                               from,
-                            const typename KNML< ALLOC >::allocator_type& alloc) :
+                          const typename KNML< ALLOC >::allocator_type& alloc) :
         IndependenceTest< ALLOC >(std::move(from), alloc),
         __param_complexity(std::move(from.__param_complexity), alloc) {
       GUM_CONS_MOV(KNML);

@@ -61,7 +61,7 @@ namespace gum {
 
       /// copy constructor with a given allocator
       DAG2BNLearner(const DAG2BNLearner< ALLOC >& from,
-                     const allocator_type&          alloc);
+                    const allocator_type&         alloc);
 
       /// move constructor
       DAG2BNLearner(DAG2BNLearner< ALLOC >&& from);
@@ -104,7 +104,7 @@ namespace gum {
       /// create a BN
       template < typename GUM_SCALAR = double >
       static BayesNet< GUM_SCALAR > createBN(ParamEstimator< ALLOC >& estimator,
-                                             const DAG&                dag);
+                                             const DAG&               dag);
 
       /// returns the allocator used by the score
       allocator_type getAllocator() const;

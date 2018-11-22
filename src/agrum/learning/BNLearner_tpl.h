@@ -115,8 +115,8 @@ namespace gum {
       __createScore();
       __createParamEstimator();
 
-      return DAG2BNLearner<>::
-        createBN< GUM_SCALAR >( *__param_estimator, __learnDAG());
+      return DAG2BNLearner<>::createBN< GUM_SCALAR >(*__param_estimator,
+                                                     __learnDAG());
     }
 
     /// learns a BN (its parameters) when its structure is known
@@ -159,8 +159,7 @@ namespace gum {
       __createApriori();
       __createParamEstimator(take_into_account_score);
 
-      return DAG2BNLearner<>::
-        createBN< GUM_SCALAR >( *__param_estimator, dag);
+      return DAG2BNLearner<>::createBN< GUM_SCALAR >(*__param_estimator, dag);
     }
 
 

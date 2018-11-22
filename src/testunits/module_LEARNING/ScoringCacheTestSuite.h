@@ -29,7 +29,7 @@ namespace gum_tests {
   class ScoringCacheTestSuite : public CxxTest::TestSuite {
     public:
     void test1() {
-      gum::learning::IdSet<>       set1;
+      gum::learning::IdSet<>        set1;
       gum::learning::ScoringCache<> cache;
 
       cache.insert(set1, 2.0);
@@ -60,7 +60,7 @@ namespace gum_tests {
       TS_ASSERT(cache.score(set2) == 7.3);
 
       std::vector< gum::NodeId > vect{node4, node2, node3};
-      gum::learning::IdSet<>    set3(node0, node1, vect, true, true);
+      gum::learning::IdSet<>     set3(node0, node1, vect, true, true);
       TS_ASSERT(!cache.exists(set3));
       cache.insert(set3, 1.3);
       TS_ASSERT(cache.exists(set3));

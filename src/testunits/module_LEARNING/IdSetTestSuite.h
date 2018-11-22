@@ -62,7 +62,7 @@ namespace gum_tests {
       TS_ASSERT(set4[0] == node0);
 
       std::vector< gum::NodeId > seq1{node4, node3, node6, node5};
-      gum::learning::IdSet<>    set1(seq1, true, false);
+      gum::learning::IdSet<>     set1(seq1, true, false);
       TS_ASSERT(set1.nbLHSIds() == std::size_t(0));
       TS_ASSERT(set1[0] == node3);
       TS_ASSERT(set1[1] == node4);
@@ -306,8 +306,8 @@ namespace gum_tests {
         ++xnb;
       }
 
-      auto                                       iter1 = set4.begin() + 2;
-      auto                                       iter2 = set4.begin();
+      auto                                      iter1 = set4.begin() + 2;
+      auto                                      iter2 = set4.begin();
       typename gum::learning::IdSet<>::iterator iter3;
       TS_ASSERT(iter1 != iter2);
       TS_ASSERT(iter1 != iter3);
@@ -321,7 +321,7 @@ namespace gum_tests {
       TS_ASSERT(set4.contains(set25));
       TS_ASSERT(!set25.contains(set4));
 
-      gum::NodeId             node7 = 7;
+      gum::NodeId            node7 = 7;
       gum::learning::IdSet<> set26(node7, seq1, false);
       TS_ASSERT(!set4.contains(set26));
       TS_ASSERT(!set26.contains(set4));

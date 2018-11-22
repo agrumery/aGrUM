@@ -162,17 +162,17 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * counts() over other ids will raise exception NotFound. */
       RecordCounter(const DBRowGeneratorParser< ALLOC >& parser,
-                     const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                       nodeId2columns =
-                         Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-                     const allocator_type& alloc = allocator_type());
+                    const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                      nodeId2columns =
+                        Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+                    const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       RecordCounter(const RecordCounter< ALLOC >& from);
 
       /// copy constructor with a given allocator
       RecordCounter(const RecordCounter< ALLOC >& from,
-                     const allocator_type&          alloc);
+                    const allocator_type&         alloc);
 
       /// move constructor
       RecordCounter(RecordCounter< ALLOC >&& from);
@@ -353,8 +353,8 @@ namespace gum {
 
       /// extracts some new countings from previously computed ones
       std::vector< double, ALLOC< double > >& __extractFromCountings(
-        const IdSet< ALLOC >&                        subset_ids,
-        const IdSet< ALLOC >&                        superset_ids,
+        const IdSet< ALLOC >&                         subset_ids,
+        const IdSet< ALLOC >&                         superset_ids,
         const std::vector< double, ALLOC< double > >& superset_vect);
 
       /// parse the database to produce new countings
@@ -363,12 +363,13 @@ namespace gum {
 
       /// the method used by threads to produce countings by parsing the database
       void __threadedCount(
-        const std::size_t                                       range_begin,
-        const std::size_t                                       range_end,
-        DBRowGeneratorParser< ALLOC >&                          parser,
+        const std::size_t              range_begin,
+        const std::size_t              range_end,
+        DBRowGeneratorParser< ALLOC >& parser,
         const std::vector< std::pair< std::size_t, std::size_t >,
-        ALLOC< std::pair< std::size_t, std::size_t > > >&       cols_and_offsets,
-        std::vector< double, ALLOC< double > >&                 countings);
+                           ALLOC< std::pair< std::size_t, std::size_t > > >&
+                                                cols_and_offsets,
+        std::vector< double, ALLOC< double > >& countings);
 
       /// checks that the ranges passed in argument are ok or raise an exception
       /** A range is ok if its upper bound is strictly higher than its lower

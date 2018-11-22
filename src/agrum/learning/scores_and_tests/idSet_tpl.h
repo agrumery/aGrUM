@@ -48,8 +48,8 @@ namespace gum {
 
     /// Copy constructor.
     template < template < typename > class ALLOC >
-    INLINE IdSetIterator< ALLOC >::IdSetIterator(
-      const IdSetIterator< ALLOC >& from) :
+    INLINE
+      IdSetIterator< ALLOC >::IdSetIterator(const IdSetIterator< ALLOC >& from) :
         __seq(from.__seq),
         __index(from.__index) {
       GUM_CONS_CPY(IdSetIterator);
@@ -58,10 +58,8 @@ namespace gum {
 
     /// move constructor
     template < template < typename > class ALLOC >
-    INLINE
-      IdSetIterator< ALLOC >::IdSetIterator(IdSetIterator< ALLOC >&& from) :
-        __seq(from.__seq),
-        __index(from.__index) {
+    INLINE IdSetIterator< ALLOC >::IdSetIterator(IdSetIterator< ALLOC >&& from) :
+        __seq(from.__seq), __index(from.__index) {
       GUM_CONS_MOV(IdSetIterator);
     }
 
@@ -86,7 +84,7 @@ namespace gum {
     /// copy operator
     template < template < typename > class ALLOC >
     INLINE IdSetIterator< ALLOC >& IdSetIterator< ALLOC >::
-                                    operator=(const IdSetIterator< ALLOC >& from) {
+                                   operator=(const IdSetIterator< ALLOC >& from) {
       __seq = from.__seq;
       __index = from.__index;
       return *this;
@@ -96,7 +94,7 @@ namespace gum {
     /// move operator
     template < template < typename > class ALLOC >
     INLINE IdSetIterator< ALLOC >& IdSetIterator< ALLOC >::
-                                    operator=(IdSetIterator< ALLOC >&& from) {
+                                   operator=(IdSetIterator< ALLOC >&& from) {
       __seq = from.__seq;
       __index = from.__index;
       return *this;
@@ -137,7 +135,7 @@ namespace gum {
     /// Makes the iterator point to i elements further in the IdSet
     template < template < typename > class ALLOC >
     INLINE IdSetIterator< ALLOC >& IdSetIterator< ALLOC >::
-                                    operator+=(const std::size_t i) {
+                                   operator+=(const std::size_t i) {
       __index += i;
       return *this;
     }
@@ -145,8 +143,7 @@ namespace gum {
 
     /// Returns a new iterator pointing to i further elements in the IdSet
     template < template < typename > class ALLOC >
-    IdSetIterator< ALLOC > IdSetIterator< ALLOC >::
-                            operator+(const std::size_t i) {
+    IdSetIterator< ALLOC > IdSetIterator< ALLOC >::operator+(const std::size_t i) {
       IdSetIterator< ALLOC > res(*this);
       res += i;
       return res;
@@ -181,8 +178,8 @@ namespace gum {
 
     /// default constructor
     template < template < typename > class ALLOC >
-    INLINE IdSet< ALLOC >::IdSet(
-      const typename IdSet< ALLOC >::allocator_type& alloc) :
+    INLINE
+      IdSet< ALLOC >::IdSet(const typename IdSet< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc),
         __end_safe(*this) {
       GUM_CONSTRUCTOR(IdSet);
@@ -191,11 +188,11 @@ namespace gum {
 
     /// default constructor with no variable on the left side
     template < template < typename > class ALLOC >
-    INLINE IdSet< ALLOC >::IdSet(
-      const std::vector< NodeId, ALLOC< NodeId > >&   ids,
-      const bool                                      rhs_ids,
-      const bool                                      ordered_ids,
-      const typename IdSet< ALLOC >::allocator_type& alloc) :
+    INLINE
+      IdSet< ALLOC >::IdSet(const std::vector< NodeId, ALLOC< NodeId > >& ids,
+                            const bool                                    rhs_ids,
+                            const bool ordered_ids,
+                            const typename IdSet< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc),
         __end_safe(*this) {
       __ids.resize(ids.size());
@@ -223,11 +220,11 @@ namespace gum {
 
     /// default constructor with one variable on the left side
     template < template < typename > class ALLOC >
-    INLINE IdSet< ALLOC >::IdSet(
-      NodeId                                          var1,
-      const std::vector< NodeId, ALLOC< NodeId > >&   rhs_ids,
-      const bool                                      ordered_rhs_ids,
-      const typename IdSet< ALLOC >::allocator_type& alloc) :
+    INLINE
+      IdSet< ALLOC >::IdSet(NodeId                                        var1,
+                            const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids,
+                            const bool ordered_rhs_ids,
+                            const typename IdSet< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc),
         __nb_lhs_ids(std::size_t(1)), __end_safe(*this) {
       __ids.resize(rhs_ids.size() + std::size_t(1));
@@ -254,13 +251,13 @@ namespace gum {
 
     /// default constructor with two variables on the left side
     template < template < typename > class ALLOC >
-    INLINE IdSet< ALLOC >::IdSet(
-      NodeId                                          var1,
-      NodeId                                          var2,
-      const std::vector< NodeId, ALLOC< NodeId > >&   rhs_ids,
-      const bool                                      ordered_lhs_vars,
-      const bool                                      ordered_rhs_ids,
-      const typename IdSet< ALLOC >::allocator_type& alloc) :
+    INLINE
+      IdSet< ALLOC >::IdSet(NodeId                                        var1,
+                            NodeId                                        var2,
+                            const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids,
+                            const bool ordered_lhs_vars,
+                            const bool ordered_rhs_ids,
+                            const typename IdSet< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc),
         __nb_lhs_ids(std::size_t(2)), __end_safe(*this) {
       __ids.resize(rhs_ids.size() + std::size_t(2));
@@ -292,14 +289,14 @@ namespace gum {
 
     /// default constructor with three variables on the left side
     template < template < typename > class ALLOC >
-    INLINE IdSet< ALLOC >::IdSet(
-      NodeId                                          var1,
-      NodeId                                          var2,
-      NodeId                                          var3,
-      const std::vector< NodeId, ALLOC< NodeId > >&   rhs_ids,
-      const bool                                      ordered_lhs_vars,
-      const bool                                      ordered_rhs_ids,
-      const typename IdSet< ALLOC >::allocator_type& alloc) :
+    INLINE
+      IdSet< ALLOC >::IdSet(NodeId                                        var1,
+                            NodeId                                        var2,
+                            NodeId                                        var3,
+                            const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids,
+                            const bool ordered_lhs_vars,
+                            const bool ordered_rhs_ids,
+                            const typename IdSet< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc),
         __nb_lhs_ids(std::size_t(3)), __end_safe(*this) {
       __ids.resize(rhs_ids.size() + std::size_t(3));
@@ -336,9 +333,9 @@ namespace gum {
 
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE IdSet< ALLOC >::IdSet(
-      const IdSet< ALLOC >&                          from,
-      const typename IdSet< ALLOC >::allocator_type& alloc) :
+    INLINE
+      IdSet< ALLOC >::IdSet(const IdSet< ALLOC >&                          from,
+                            const typename IdSet< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc),
         __ids(from.__ids), __nb_lhs_ids(from.__nb_lhs_ids), __end_safe(*this) {
       __end_safe.__gotoEnd();
@@ -354,9 +351,9 @@ namespace gum {
 
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE IdSet< ALLOC >::IdSet(
-      IdSet< ALLOC >&&                               from,
-      const typename IdSet< ALLOC >::allocator_type& alloc) :
+    INLINE
+      IdSet< ALLOC >::IdSet(IdSet< ALLOC >&&                               from,
+                            const typename IdSet< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc),
         __ids(std::move(from.__ids)), __nb_lhs_ids(from.__nb_lhs_ids),
         __end_safe(*this) {
@@ -404,8 +401,7 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    INLINE IdSet< ALLOC >& IdSet< ALLOC >::
-                            operator=(const IdSet< ALLOC >& from) {
+    INLINE IdSet< ALLOC >& IdSet< ALLOC >::operator=(const IdSet< ALLOC >& from) {
       if (this != &from) {
         __ids = from.__ids;
         __nb_lhs_ids = from.__nb_lhs_ids;
@@ -490,8 +486,7 @@ namespace gum {
 
     /// returns the set of ids contained in the object
     template < template < typename > class ALLOC >
-    INLINE const Sequence< NodeId, ALLOC< NodeId > >&
-                 IdSet< ALLOC >::ids() const {
+    INLINE const Sequence< NodeId, ALLOC< NodeId > >& IdSet< ALLOC >::ids() const {
       return __ids;
     }
 
@@ -499,7 +494,7 @@ namespace gum {
     /// returns the idSet at the right hand side of the conditioning bar
     template < template < typename > class ALLOC >
     IdSet< ALLOC > IdSet< ALLOC >::conditionalIdSet() const {
-      IdSet< ALLOC >   set(this->getAllocator());
+      IdSet< ALLOC >    set(this->getAllocator());
       const std::size_t size = __ids.size();
       for (std::size_t i = __nb_lhs_ids; i < size; ++i)
         set.__ids << __ids[i];

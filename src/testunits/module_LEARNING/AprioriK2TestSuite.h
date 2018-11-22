@@ -80,10 +80,9 @@ namespace gum_tests {
       std::vector< gum::NodeId > cond_empty;
       std::vector< gum::NodeId > cond1{node3, node5, node4};
 
-      gum::learning::IdSet<> idset1(node0, cond_empty);                // #3,#0
-      gum::learning::IdSet<> idset2(node0, node1, cond_empty, true);   // #12,#0
-      gum::learning::IdSet<> idset3(
-        node1, node0, cond1, true, true);   // #576,#48
+      gum::learning::IdSet<> idset1(node0, cond_empty);                 // #3,#0
+      gum::learning::IdSet<> idset2(node0, node1, cond_empty, true);    // #12,#0
+      gum::learning::IdSet<> idset3(node1, node0, cond1, true, true);   // #576,#48
 
       std::vector< double > vect(3, 1.0);
       apriori.addAllApriori(idset1, vect);
@@ -115,7 +114,7 @@ namespace gum_tests {
       for (const auto val : vect) {
         TS_ASSERT(val == 13.0);
       }
-      
+
 
       gum::learning::AprioriK2<> apriori2(apriori);
       TS_ASSERT(apriori2.weight() == 1.0);
@@ -385,10 +384,9 @@ namespace gum_tests {
       std::vector< gum::NodeId > cond_empty;
       std::vector< gum::NodeId > cond1{node3, node5, node4};
 
-      gum::learning::IdSet<> idset1(node0, cond_empty);                // #4,#0
-      gum::learning::IdSet<> idset2(node0, node1, cond_empty, true);   // #16,#0
-      gum::learning::IdSet<> idset3(
-        node1, node0, cond1, true, true);   // #576,#36
+      gum::learning::IdSet<> idset1(node0, cond_empty);                 // #4,#0
+      gum::learning::IdSet<> idset2(node0, node1, cond_empty, true);    // #16,#0
+      gum::learning::IdSet<> idset3(node1, node0, cond1, true, true);   // #576,#36
 
       std::vector< double > vect(4, 1.0);
       apriori.addAllApriori(idset1, vect);
@@ -420,7 +418,7 @@ namespace gum_tests {
         TS_ASSERT(val == 17.0);
       }
 
-      
+
       gum::learning::AprioriK2<> apriori2(apriori);
       TS_ASSERT(apriori2.weight() == 1.0);
       apriori2.setWeight(2.0);

@@ -41,12 +41,12 @@ namespace gum {
     template < template < typename > class ALLOC >
     ParamEstimator< ALLOC >::ParamEstimator(
       const DBRowGeneratorParser< ALLOC >& parser,
-      const Apriori< ALLOC >&             external_apriori,
-      const Apriori< ALLOC >&             score_internal_apriori,
+      const Apriori< ALLOC >&              external_apriori,
+      const Apriori< ALLOC >&              score_internal_apriori,
       const std::vector< std::pair< std::size_t, std::size_t >,
                          ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename ParamEstimator< ALLOC >::allocator_type&      alloc) :
+      const typename ParamEstimator< ALLOC >::allocator_type&       alloc) :
         _counter(parser, ranges, nodeId2columns, alloc) {
       // copy the a prioris
       _external_apriori = external_apriori.clone(alloc);
@@ -67,10 +67,10 @@ namespace gum {
     template < template < typename > class ALLOC >
     ParamEstimator< ALLOC >::ParamEstimator(
       const DBRowGeneratorParser< ALLOC >& parser,
-      const Apriori< ALLOC >&             external_apriori,
-      const Apriori< ALLOC >&             score_internal_apriori,
+      const Apriori< ALLOC >&              external_apriori,
+      const Apriori< ALLOC >&              score_internal_apriori,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename ParamEstimator< ALLOC >::allocator_type&      alloc) :
+      const typename ParamEstimator< ALLOC >::allocator_type&       alloc) :
         _counter(parser, nodeId2columns, alloc) {
       // copy the a prioris
       _external_apriori = external_apriori.clone(alloc);
@@ -148,7 +148,7 @@ namespace gum {
     /// copy operator
     template < template < typename > class ALLOC >
     ParamEstimator< ALLOC >& ParamEstimator< ALLOC >::
-                              operator=(const ParamEstimator< ALLOC >& from) {
+                             operator=(const ParamEstimator< ALLOC >& from) {
       if (this != &from) {
         ALLOC< Apriori< ALLOC > > allocator(this->getAllocator());
         if (_external_apriori != nullptr) {
@@ -175,7 +175,7 @@ namespace gum {
     /// move operator
     template < template < typename > class ALLOC >
     ParamEstimator< ALLOC >& ParamEstimator< ALLOC >::
-                              operator=(ParamEstimator< ALLOC >&& from) {
+                             operator=(ParamEstimator< ALLOC >&& from) {
       if (this != &from) {
         _external_apriori = from._external_apriori;
         _score_internal_apriori = from._score_internal_apriori;
@@ -211,10 +211,10 @@ namespace gum {
     /// returns the CPT's parameters corresponding to a given target node
     template < template < typename > class ALLOC >
     INLINE std::vector< double, ALLOC< double > >
-    ParamEstimator< ALLOC >::parameters(const NodeId target_node) {
-      return parameters(target_node,_empty_nodevect);
+           ParamEstimator< ALLOC >::parameters(const NodeId target_node) {
+      return parameters(target_node, _empty_nodevect);
     }
-    
+
 
     // check the coherency between the parameters passed to setParameters functions
     template < template < typename > class ALLOC >

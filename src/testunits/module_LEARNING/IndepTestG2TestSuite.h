@@ -52,32 +52,32 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriNoApriori<>    apriori(database);
+      gum::learning::AprioriNoApriori<>     apriori(database);
       gum::learning::IndepTestG2<>          score(parser, apriori);
 
-      TS_ASSERT(fabs(score.score(0,1) - 61.181) <= 0.01);
-      TS_ASSERT(fabs(score.score(3,1) + 0.617) <= 0.01);
+      TS_ASSERT(fabs(score.score(0, 1) - 61.181) <= 0.01);
+      TS_ASSERT(fabs(score.score(3, 1) + 0.617) <= 0.01);
 
-      TS_ASSERT(fabs(score.score(0,2) - 114.873) <= 0.01);
-      TS_ASSERT(fabs(score.score(2,0) - 114.873) <= 0.01);
+      TS_ASSERT(fabs(score.score(0, 2) - 114.873) <= 0.01);
+      TS_ASSERT(fabs(score.score(2, 0) - 114.873) <= 0.01);
 
-      TS_ASSERT(fabs(score.score(1,3,std::vector< gum::NodeId >{4}) + 0.778)
+      TS_ASSERT(fabs(score.score(1, 3, std::vector< gum::NodeId >{4}) + 0.778)
                 <= 0.01);
-      TS_ASSERT(fabs(score.score(0,2,std::vector< gum::NodeId >{4}) - 73.36)
-                <= 0.01);
-
-      TS_ASSERT(fabs(score.score(3,6,std::vector< gum::NodeId >{1,2}) + 0.808)
+      TS_ASSERT(fabs(score.score(0, 2, std::vector< gum::NodeId >{4}) - 73.36)
                 <= 0.01);
 
-      TS_ASSERT(fabs(score.score(0,1) - 61.181) <= 0.01);
-      TS_ASSERT(fabs(score.score(1,3) + 0.617) <= 0.01);
-      TS_ASSERT(fabs(score.score(3,6,std::vector< gum::NodeId >{1,2}) + 0.808)
+      TS_ASSERT(fabs(score.score(3, 6, std::vector< gum::NodeId >{1, 2}) + 0.808)
                 <= 0.01);
-      TS_ASSERT(fabs(score.score(2,0) - 114.873) <= 0.01);
-      TS_ASSERT(fabs(score.score(3,1,std::vector< gum::NodeId >{4}) + 0.778)
+
+      TS_ASSERT(fabs(score.score(0, 1) - 61.181) <= 0.01);
+      TS_ASSERT(fabs(score.score(1, 3) + 0.617) <= 0.01);
+      TS_ASSERT(fabs(score.score(3, 6, std::vector< gum::NodeId >{1, 2}) + 0.808)
                 <= 0.01);
-      TS_ASSERT(fabs(score.score(2,0) - 114.873) <= 0.01);
-      TS_ASSERT(fabs(score.score(1,3,std::vector< gum::NodeId >{4}) + 0.778)
+      TS_ASSERT(fabs(score.score(2, 0) - 114.873) <= 0.01);
+      TS_ASSERT(fabs(score.score(3, 1, std::vector< gum::NodeId >{4}) + 0.778)
+                <= 0.01);
+      TS_ASSERT(fabs(score.score(2, 0) - 114.873) <= 0.01);
+      TS_ASSERT(fabs(score.score(1, 3, std::vector< gum::NodeId >{4}) + 0.778)
                 <= 0.01);
     }
 
@@ -99,26 +99,26 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriNoApriori<>    apriori(database);
+      gum::learning::AprioriNoApriori<>     apriori(database);
       gum::learning::IndepTestG2<>          score(parser, apriori);
       // score.useCache ( false );
 
       for (gum::Idx i = 0; i < 1000; ++i) {
-        TS_ASSERT(fabs(score.score(0,1) - 61.181) <= 0.01);
-        TS_ASSERT(fabs(score.score(1,3) + 0.617) <= 0.01);
-        TS_ASSERT(fabs(score.score(3,6,std::vector< gum::NodeId >{1,2}) + 0.808)
+        TS_ASSERT(fabs(score.score(0, 1) - 61.181) <= 0.01);
+        TS_ASSERT(fabs(score.score(1, 3) + 0.617) <= 0.01);
+        TS_ASSERT(fabs(score.score(3, 6, std::vector< gum::NodeId >{1, 2}) + 0.808)
                   <= 0.01);
-        TS_ASSERT(fabs(score.score(2,0) - 114.873) <= 0.01);
-        TS_ASSERT(fabs(score.score(3,1,std::vector< gum::NodeId >{4}) + 0.778)
+        TS_ASSERT(fabs(score.score(2, 0) - 114.873) <= 0.01);
+        TS_ASSERT(fabs(score.score(3, 1, std::vector< gum::NodeId >{4}) + 0.778)
                   <= 0.01);
-        TS_ASSERT(fabs(score.score(2,0) - 114.873) <= 0.01);
-        TS_ASSERT(fabs(score.score(1,3,std::vector< gum::NodeId >{4}) + 0.778)
+        TS_ASSERT(fabs(score.score(2, 0) - 114.873) <= 0.01);
+        TS_ASSERT(fabs(score.score(1, 3, std::vector< gum::NodeId >{4}) + 0.778)
                   <= 0.01);
       }
     }
 
     void xtest_clearcache() {
-       gum::learning::DBInitializerFromCSV<> initializer(
+      gum::learning::DBInitializerFromCSV<> initializer(
         GET_RESSOURCES_PATH("asia.csv"));
       const auto&       var_names = initializer.variableNames();
       const std::size_t nb_vars = var_names.size();
@@ -135,21 +135,21 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-      gum::learning::AprioriNoApriori<>    apriori(database);
+      gum::learning::AprioriNoApriori<>     apriori(database);
       gum::learning::IndepTestG2<>          score(parser, apriori);
       // score.useCache ( false );
 
       for (gum::Idx i = 0; i < 4; ++i) {
         score.clearCache();
-        TS_ASSERT(fabs(score.score(0,1) - 61.181) <= 0.01);
-        TS_ASSERT(fabs(score.score(1,3) + 0.617) <= 0.01);
-        TS_ASSERT(fabs(score.score(3,6,std::vector< gum::NodeId >{1,2}) + 0.808)
+        TS_ASSERT(fabs(score.score(0, 1) - 61.181) <= 0.01);
+        TS_ASSERT(fabs(score.score(1, 3) + 0.617) <= 0.01);
+        TS_ASSERT(fabs(score.score(3, 6, std::vector< gum::NodeId >{1, 2}) + 0.808)
                   <= 0.01);
-        TS_ASSERT(fabs(score.score(2,0) - 114.873) <= 0.01);
-        TS_ASSERT(fabs(score.score(3,1,std::vector< gum::NodeId >{4}) + 0.778)
+        TS_ASSERT(fabs(score.score(2, 0) - 114.873) <= 0.01);
+        TS_ASSERT(fabs(score.score(3, 1, std::vector< gum::NodeId >{4}) + 0.778)
                   <= 0.01);
-        TS_ASSERT(fabs(score.score(2,0) - 114.873) <= 0.01);
-        TS_ASSERT(fabs(score.score(1,3,std::vector< gum::NodeId >{4}) + 0.778)
+        TS_ASSERT(fabs(score.score(2, 0) - 114.873) <= 0.01);
+        TS_ASSERT(fabs(score.score(1, 3, std::vector< gum::NodeId >{4}) + 0.778)
                   <= 0.01);
       }
     }

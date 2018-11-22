@@ -32,18 +32,18 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE ParamEstimatorML< ALLOC >::ParamEstimatorML(
       const DBRowGeneratorParser< ALLOC >& parser,
-      const Apriori< ALLOC >&             external_apriori,
-      const Apriori< ALLOC >&             score_internal_apriori,
+      const Apriori< ALLOC >&              external_apriori,
+      const Apriori< ALLOC >&              score_internal_apriori,
       const std::vector< std::pair< std::size_t, std::size_t >,
                          ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename ParamEstimatorML< ALLOC >::allocator_type&    alloc) :
+      const typename ParamEstimatorML< ALLOC >::allocator_type&     alloc) :
         ParamEstimator< ALLOC >(parser,
-                                 external_apriori,
-                                 score_internal_apriori,
-                                 ranges,
-                                 nodeId2columns,
-                                 alloc) {
+                                external_apriori,
+                                score_internal_apriori,
+                                ranges,
+                                nodeId2columns,
+                                alloc) {
       GUM_CONSTRUCTOR(ParamEstimatorML);
     }
 
@@ -52,15 +52,15 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE ParamEstimatorML< ALLOC >::ParamEstimatorML(
       const DBRowGeneratorParser< ALLOC >& parser,
-      const Apriori< ALLOC >&             external_apriori,
-      const Apriori< ALLOC >&             score_internal_apriori,
+      const Apriori< ALLOC >&              external_apriori,
+      const Apriori< ALLOC >&              score_internal_apriori,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename ParamEstimatorML< ALLOC >::allocator_type&    alloc) :
+      const typename ParamEstimatorML< ALLOC >::allocator_type&     alloc) :
         ParamEstimator< ALLOC >(parser,
-                                 external_apriori,
-                                 score_internal_apriori,
-                                 nodeId2columns,
-                                 alloc) {
+                                external_apriori,
+                                score_internal_apriori,
+                                nodeId2columns,
+                                alloc) {
       GUM_CONSTRUCTOR(ParamEstimatorML);
     }
 
@@ -133,7 +133,7 @@ namespace gum {
     /// copy operator
     template < template < typename > class ALLOC >
     ParamEstimatorML< ALLOC >& ParamEstimatorML< ALLOC >::
-                                operator=(const ParamEstimatorML< ALLOC >& from) {
+                               operator=(const ParamEstimatorML< ALLOC >& from) {
       ParamEstimator< ALLOC >::operator=(from);
       return *this;
     }
@@ -142,7 +142,7 @@ namespace gum {
     /// move operator
     template < template < typename > class ALLOC >
     ParamEstimatorML< ALLOC >& ParamEstimatorML< ALLOC >::
-                                operator=(ParamEstimatorML< ALLOC >&& from) {
+                               operator=(ParamEstimatorML< ALLOC >&& from) {
       ParamEstimator< ALLOC >::operator=(std::move(from));
       return *this;
     }
@@ -169,7 +169,7 @@ namespace gum {
         this->_external_apriori->addAllApriori(idset, N_ijk);
       if (informative_score_internal_apriori)
         this->_score_internal_apriori->addAllApriori(idset, N_ijk);
- 
+
 
       // now, normalize N_ijk
 

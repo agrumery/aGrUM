@@ -42,7 +42,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     CorrectedMutualInformation< ALLOC >::CorrectedMutualInformation(
       const DBRowGeneratorParser< ALLOC >&                                 parser,
-      const Apriori< ALLOC >&                                             apriori,
+      const Apriori< ALLOC >&                                              apriori,
       const std::vector< std::pair< std::size_t, std::size_t >,
                          ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
@@ -59,7 +59,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     CorrectedMutualInformation< ALLOC >::CorrectedMutualInformation(
       const DBRowGeneratorParser< ALLOC >&                          parser,
-      const Apriori< ALLOC >&                                      apriori,
+      const Apriori< ALLOC >&                                       apriori,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
       const typename CorrectedMutualInformation< ALLOC >::allocator_type& alloc) :
         __NH(parser, apriori, nodeId2columns, alloc),
@@ -286,7 +286,7 @@ namespace gum {
     /// returns the 2-point mutual information corresponding to a given nodeset
     template < template < typename > class ALLOC >
     INLINE double CorrectedMutualInformation< ALLOC >::score(NodeId var1,
-                                                              NodeId var2) {
+                                                             NodeId var2) {
       return score(var1, var2, __empty_conditioning_set);
     }
 
@@ -305,8 +305,8 @@ namespace gum {
     /// returns the 3-point mutual information corresponding to a given nodeset
     template < template < typename > class ALLOC >
     INLINE double CorrectedMutualInformation< ALLOC >::score(NodeId var1,
-                                                              NodeId var2,
-                                                              NodeId var3) {
+                                                             NodeId var2,
+                                                             NodeId var3) {
       return score(var1, var2, var3, __empty_conditioning_set);
     }
 
@@ -359,7 +359,7 @@ namespace gum {
       double score;
       if (!vars_z.empty()) {
         std::vector< NodeId, ALLOC< NodeId > > vars(vars_z);
-        //std::sort(vars.begin(), vars.end());
+        // std::sort(vars.begin(), vars.end());
         vars.push_back(var_x);
         vars.push_back(var_y);
         const double NHxyz = -__NH.score(IdSet< ALLOC >(vars, false, true));
@@ -480,8 +480,7 @@ namespace gum {
 
           // compute the size of the database, including the a priori
           if (!__use_KCache) {
-            idset =
-              std::move(IdSet< ALLOC >(var1, var2, conditioning_ids, false));
+            idset = std::move(IdSet< ALLOC >(var1, var2, conditioning_ids, false));
           }
           const double N = __score_MDL.N(idset);
 
