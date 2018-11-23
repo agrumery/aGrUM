@@ -112,7 +112,7 @@ namespace gum {
   void     coco_string_merge(wchar_t*& data, const wchar_t* value);
   bool     coco_string_equal(const wchar_t* data1, const wchar_t* data2);
   int      coco_string_compareto(const wchar_t* data1, const wchar_t* data2);
-  int      coco_string_hash(const wchar_t* data);
+  unsigned int coco_string_hash(const wchar_t* data);
 
   /// string handling, ascii character
   wchar_t* coco_string_create(const char* value);

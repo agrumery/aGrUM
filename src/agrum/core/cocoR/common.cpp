@@ -210,8 +210,8 @@ namespace gum {
     return wcscmp(data1, data2);
   }
 
-  int coco_string_hash(const wchar_t* data) {
-    int h = 0;
+  unsigned int coco_string_hash(const wchar_t* data) {
+    unsigned int h = 0;
 
     if (!data) { return 0; }
 
@@ -219,8 +219,6 @@ namespace gum {
       h = (h * 7) ^ *data;
       ++data;
     }
-
-    if (h < 0) { h = -h; }
 
     return h;
   }
