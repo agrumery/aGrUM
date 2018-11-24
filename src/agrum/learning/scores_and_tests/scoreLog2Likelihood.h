@@ -26,10 +26,10 @@
 #ifndef GUM_LEARNING_SCORE_LOG2_LIKELIHOOD_H
 #define GUM_LEARNING_SCORE_LOG2_LIKELIHOOD_H
 
-#include <cmath>
 #include <string>
 
 #include <agrum/agrum.h>
+#include <agrum/core/math/math.h>
 #include <agrum/learning/scores_and_tests/score.h>
 #include <agrum/learning/aprioris/aprioriNoApriori.h>
 

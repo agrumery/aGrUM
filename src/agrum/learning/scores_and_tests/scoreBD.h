@@ -29,10 +29,10 @@
 #ifndef GUM_LEARNING_SCORE_BD_H
 #define GUM_LEARNING_SCORE_BD_H
 
-#include <cmath>
 #include <string>
 
 #include <agrum/agrum.h>
+#include <agrum/core/math/math.h>
 #include <agrum/core/math/gammaLog2.h>
 #include <agrum/learning/scores_and_tests/score.h>
 #include <agrum/learning/aprioris/aprioriNoApriori.h>

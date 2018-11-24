@@ -30,11 +30,15 @@
 
 
 #ifndef M_LOG2E
-#  define M_LOG2E 1.4426950408889634074
+#  define M_LOG2E 1.4426950408889634074	/* log_2 e */
 #endif
 
 #ifndef M_PI
 #  define M_PI 3.14159265358979323846
+#endif
+
+#ifndef M_LN2
+# define M_LN2 0.69314718055994530942	/* log_e 2 */
 #endif
 
 #ifndef GUM_LOG_SQRT_2PI   // std::log ( std::sqrt ( 2pi ) )

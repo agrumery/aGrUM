@@ -29,7 +29,6 @@
 #ifndef GUM_DATABASE_TABLE_H
 #define GUM_DATABASE_TABLE_H
 
-#include <cmath>
 #include <numeric>
 #include <algorithm>
 #include <functional>
@@ -37,6 +36,7 @@
 #include <vector>
 
 #include <agrum/agrum.h>
+#include <agrum/core/math/math.h>
 #include <agrum/core/set.h>
 #include <agrum/core/thread.h>
 #include <agrum/learning/database/DBCell.h>

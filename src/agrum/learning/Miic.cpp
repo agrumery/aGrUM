@@ -23,8 +23,7 @@
  * @author Quentin FALCAND and Pierre-Henri WUILLEMIN
  */
 
-#include <cmath>
-
+#include <agrum/core/math/math.h>
 #include <agrum/core/hashTable.h>
 #include <agrum/core/heap.h>
 #include <agrum/core/timer.h>
