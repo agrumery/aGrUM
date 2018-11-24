@@ -252,11 +252,11 @@ namespace gum_tests {
 
       gum::learning::ParamEstimatorML<> param_estimator(
         parser, extern_apriori, intern_apriori, ranges);
-
+ 
       std::vector< double > r0 = param_estimator.parameters(gum::NodeId(0));
       std::vector< double > xr0 = __normalize({401, 76, 76});
       TS_ASSERT(r0 == xr0);
-
+ 
       std::vector< double > r1 = param_estimator.parameters(gum::NodeId(1));
       std::vector< double > xr1 = __normalize({276, 276, 1});
       TS_ASSERT(r1 == xr1);

@@ -627,8 +627,8 @@ namespace gum {
         add_range = true;
       }
       for (const auto& range : __ranges) {
-        const std::size_t range_size = range.second - range.first;
-        if (range_size > std::size_t(0)) {
+        if (range.second > range.first) {
+          const std::size_t range_size = range.second - range.first;
           std::size_t nb_threads = range_size / __min_nb_rows_per_thread;
           if (nb_threads < 1)
             nb_threads = 1;
@@ -736,31 +736,32 @@ namespace gum {
         {
           // get the number of the thread
           const std::size_t this_thread = getThreadNumber();
+          if ( this_thread + i < nb_ranges ) {
+            DBRowGeneratorParser< ALLOC >& parser = __parsers[this_thread].data;
+            parser.setRange(ranges[this_thread + i].first,
+                            ranges[this_thread + i].second);
+            std::vector< double, ALLOC< double > >& countings =
+              thread_countings[this_thread].data;
 
-          DBRowGeneratorParser< ALLOC >& parser = __parsers[this_thread].data;
-          parser.setRange(ranges[this_thread + i].first,
-                          ranges[this_thread + i].second);
-          std::vector< double, ALLOC< double > >& countings =
-            thread_countings[this_thread].data;
+            // parse the database
+            try {
+              while (parser.hasRows()) {
+                // get the observed rows
+                const DBRow< DBTranslatedValue >& row = parser.row();
 
-          // parse the database
-          try {
-            while (parser.hasRows()) {
-              // get the observed rows
-              const DBRow< DBTranslatedValue >& row = parser.row();
-
-              // fill the counts for the current row
-              std::size_t offset = std::size_t(0);
-              for (std::size_t i = std::size_t(0); i < ids_size; ++i) {
-                offset +=
-                  row[cols_offsets[i].first].discr_val * cols_offsets[i].second;
+                // fill the counts for the current row
+                std::size_t offset = std::size_t(0);
+                for (std::size_t i = std::size_t(0); i < ids_size; ++i) {
+                  offset +=
+                    row[cols_offsets[i].first].discr_val * cols_offsets[i].second;
+                }
+                
+                countings[offset] += row.weight();
               }
-
-              countings[offset] += row.weight();
-            }
-          } catch (NotFound&) {}   // this exception is raised by the row filter
-                                   // if the row generators create no output row
-                                   // from the last rows of the database
+            } catch (NotFound&) {}   // this exception is raised by the row filter
+                                     // if the row generators create no output row
+                                     // from the last rows of the database
+          }
         }
       }
 
