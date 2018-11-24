@@ -65,7 +65,7 @@ namespace gum {
      * @param var_modalities The variables modalities.
      * @param confidence_proba The confidence probability.
      */
-    Chi2(const std::vector< Idx >& var_modalities,
+    Chi2(const std::vector< std::size_t >& var_modalities,
          double confidence_proba = GUM_LEARNING_CONFIDENCE_PROBA);
 
     /**
@@ -129,7 +129,7 @@ namespace gum {
 
     private:
     /// The modalities of the random variables.
-    const std::vector< Idx >& __modalities;
+    const std::vector< std::size_t >& __modalities;
 
     /// The confidence probability used for critical values.
     double __confidence_proba;
