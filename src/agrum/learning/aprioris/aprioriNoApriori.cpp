@@ -20,7 +20,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Class to include at least once this header
+ * @brief the no a priori class: corresponds to 0 weight-sample
  *
  * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  */

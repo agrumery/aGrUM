@@ -22,202 +22,252 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
 
   namespace learning {
 
+    /// returns the allocator used by the translator
+    template < template < typename > class ALLOC >
+    INLINE typename Score< ALLOC >::allocator_type
+      Score< ALLOC >::getAllocator() const {
+      return _counter.getAllocator();
+    }
+
+
     /// default constructor
-    template < typename IdSetAlloc, typename CountAlloc >
-    template < typename RowFilter >
-    INLINE Score< IdSetAlloc, CountAlloc >::Score(
-      const RowFilter&                   filter,
-      const std::vector< Size >&         var_modalities,
-      Apriori< IdSetAlloc, CountAlloc >& apriori,
-      Size                               min_range,
-      Size                               max_range) :
-        Counter< IdSetAlloc, CountAlloc >(
-          filter, var_modalities, min_range, max_range),
-        _apriori(&apriori) {
+    template < template < typename > class ALLOC >
+    INLINE Score< ALLOC >::Score(
+      const DBRowGeneratorParser< ALLOC >&                                 parser,
+      const Apriori< ALLOC >&                                              apriori,
+      const std::vector< std::pair< std::size_t, std::size_t >,
+                         ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
+      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
+      const typename Score< ALLOC >::allocator_type&                alloc) :
+        _apriori(apriori.clone(alloc)),
+        _counter(parser, ranges, nodeId2columns, alloc), _cache(alloc) {
       GUM_CONSTRUCTOR(Score);
     }
 
-    /// copy constructor: to be used by the virtual copy constructor
-    template < typename IdSetAlloc, typename CountAlloc >
-    Score< IdSetAlloc, CountAlloc >::Score(
-      const Score< IdSetAlloc, CountAlloc >& from) :
-        Counter< IdSetAlloc, CountAlloc >(from),
-        _apriori(from._apriori), __cache(from.__cache),
-        __use_cache(from.__use_cache), __is_cached_score(from.__is_cached_score),
-        __cached_score(from.__cached_score),
-        __apriori_computed(from.__apriori_computed) {
+
+    /// default constructor
+    template < template < typename > class ALLOC >
+    INLINE Score< ALLOC >::Score(
+      const DBRowGeneratorParser< ALLOC >&                          parser,
+      const Apriori< ALLOC >&                                       apriori,
+      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
+      const typename Score< ALLOC >::allocator_type&                alloc) :
+        _apriori(apriori.clone(alloc)),
+        _counter(parser, nodeId2columns, alloc), _cache(alloc) {
+      GUM_CONSTRUCTOR(Score);
+    }
+
+
+    /// copy constructor with a given allocator
+    template < template < typename > class ALLOC >
+    INLINE
+      Score< ALLOC >::Score(const Score< ALLOC >&                          from,
+                            const typename Score< ALLOC >::allocator_type& alloc) :
+        _apriori(from._apriori->clone(alloc)),
+        _counter(from._counter, alloc), _cache(from._cache, alloc),
+        _use_cache(from._use_cache), _max_nb_threads(from._max_nb_threads),
+        _min_nb_rows_per_thread(from._min_nb_rows_per_thread) {
       GUM_CONS_CPY(Score);
     }
 
+
+    /// copy constructor
+    template < template < typename > class ALLOC >
+    INLINE Score< ALLOC >::Score(const Score< ALLOC >& from) :
+        Score(from, from.getAllocator()) {}
+
+
     /// move constructor
-    template < typename IdSetAlloc, typename CountAlloc >
-    Score< IdSetAlloc, CountAlloc >::Score(
-      Score< IdSetAlloc, CountAlloc >&& from) :
-        Counter< IdSetAlloc, CountAlloc >(std::move(from)),
-        _apriori(std::move(from._apriori)), __cache(std::move(from.__cache)),
-        __use_cache(std::move(from.__use_cache)),
-        __is_cached_score(std::move(from.__is_cached_score)),
-        __cached_score(std::move(from.__cached_score)),
-        __apriori_computed(std::move(from.__apriori_computed)) {
+    template < template < typename > class ALLOC >
+    INLINE
+      Score< ALLOC >::Score(Score< ALLOC >&&                               from,
+                            const typename Score< ALLOC >::allocator_type& alloc) :
+        _apriori(from._apriori),
+        _counter(std::move(from._counter), alloc),
+        _cache(std::move(from._cache), alloc), _use_cache(from._use_cache),
+        _max_nb_threads(from._max_nb_threads),
+        _min_nb_rows_per_thread(from._min_nb_rows_per_thread) {
+      from._apriori = nullptr;
       GUM_CONS_MOV(Score);
     }
 
+
+    /// move constructor
+    template < template < typename > class ALLOC >
+    INLINE Score< ALLOC >::Score(Score< ALLOC >&& from) :
+        Score(std::move(from), from.getAllocator()) {}
+
+
     /// destructor
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE Score< IdSetAlloc, CountAlloc >::~Score() {
+    template < template < typename > class ALLOC >
+    INLINE Score< ALLOC >::~Score() {
+      if (_apriori != nullptr) {
+        ALLOC< Apriori< ALLOC > > allocator(this->getAllocator());
+        allocator.destroy(_apriori);
+        allocator.deallocate(_apriori, 1);
+      }
       GUM_DESTRUCTOR(Score);
     }
 
-    /// add a new single variable to be counted
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE Idx Score< IdSetAlloc, CountAlloc >::addNodeSet(Idx var) {
-      if (__use_cache) {
-        try {
-          double score = __cache.score(var, __empty_conditioning_set);
-          __is_cached_score.push_back(true);
-          __cached_score.push_back(score);
-          return Counter< IdSetAlloc, CountAlloc >::addEmptyNodeSet();
-        } catch (const NotFound&) {}
-      }
 
-      __is_cached_score.push_back(false);
-      __cached_score.push_back(0);
-      __apriori_computed = false;
-      return Counter< IdSetAlloc, CountAlloc >::addNodeSet(var);
+    /// copy operator
+    template < template < typename > class ALLOC >
+    Score< ALLOC >& Score< ALLOC >::operator=(const Score< ALLOC >& from) {
+      if (this != &from) {
+        Apriori< ALLOC >*      new_apriori = from._apriori->clone();
+        RecordCounter< ALLOC > new_counter = from._counter;
+        ScoringCache< ALLOC >  new_cache = from._cache;
+
+        if (_apriori != nullptr) {
+          ALLOC< Apriori< ALLOC > > allocator(this->getAllocator());
+          allocator.destroy(_apriori);
+          allocator.deallocate(_apriori, 1);
+        }
+
+        _apriori = new_apriori;
+        _counter = std::move(new_counter);
+        _cache = std::move(new_cache);
+
+        _use_cache = from._use_cache;
+        _max_nb_threads = from._max_nb_threads;
+        _min_nb_rows_per_thread = from._min_nb_rows_per_thread;
+      }
+      return *this;
     }
 
-    /// add a new target variable plus some conditioning vars
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE Idx Score< IdSetAlloc, CountAlloc >::addNodeSet(
-      Idx var, const std::vector< Idx >& conditioning_ids) {
-      if (__use_cache) {
-        try {
-          double score = __cache.score(var, conditioning_ids);
-          __is_cached_score.push_back(true);
-          __cached_score.push_back(score);
-          return Counter< IdSetAlloc, CountAlloc >::addEmptyNodeSet();
-        } catch (const NotFound&) {}
-      }
 
-      __is_cached_score.push_back(false);
-      __cached_score.push_back(0);
-      __apriori_computed = false;
-      return Counter< IdSetAlloc, CountAlloc >::addNodeSet(var, conditioning_ids);
+    /// move operator
+    template < template < typename > class ALLOC >
+    Score< ALLOC >& Score< ALLOC >::operator=(Score< ALLOC >&& from) {
+      if (this != &from) {
+        std::swap(_apriori, from._apriori);
+
+        _counter = std::move(from._counter);
+        _cache = std::move(from._cache);
+        _use_cache = from._use_cache;
+        _max_nb_threads = from._max_nb_threads;
+        _min_nb_rows_per_thread = from._min_nb_rows_per_thread;
+      }
+      return *this;
     }
+
+
+    /// changes the max number of threads used to parse the database
+    template < template < typename > class ALLOC >
+    INLINE void Score< ALLOC >::setMaxNbThreads(std::size_t nb) const {
+      if (nb == std::size_t(0)) nb = std::size_t(1);
+      _counter.setMaxNbThreads(nb);
+      _max_nb_threads = nb;
+    }
+
+
+    /// returns the number of threads used to parse the database
+    template < template < typename > class ALLOC >
+    INLINE std::size_t Score< ALLOC >::nbThreads() const {
+      return _max_nb_threads;
+    }
+
+
+    /** @brief changes the number min of rows a thread should process in a
+     * multithreading context */
+    template < template < typename > class ALLOC >
+    INLINE void Score< ALLOC >::setMinNbRowsPerThread(const std::size_t nb) const {
+      _counter.setMinNbRowsPerThread(nb);
+    }
+
+
+    /// returns the minimum of rows that each thread should process
+    template < template < typename > class ALLOC >
+    INLINE std::size_t Score< ALLOC >::minNbRowsPerThread() const {
+      return _counter.minNbRowsPerThread();
+    }
+
+
+    /// returns the score of a single node
+    template < template < typename > class ALLOC >
+    INLINE double Score< ALLOC >::score(const NodeId var) {
+      IdSet< ALLOC > idset(var, _empty_ids, true, this->getAllocator());
+      if (_use_cache) {
+        try {
+          return _cache.score(idset);
+        } catch (NotFound&) {}
+        double the_score = _score(idset);
+        _cache.insert(std::move(idset), the_score);
+        return the_score;
+      } else {
+        return _score(std::move(idset));
+      }
+    }
+
+
+    /// returns the score of a single node given some other nodes
+    /** @param var1 the variable on the left side of the conditioning bar
+     * @param rhs_ids the set of variables on the right side of the
+     * conditioning bar */
+    template < template < typename > class ALLOC >
+    INLINE double Score< ALLOC >::score(
+      const NodeId var, const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids) {
+      IdSet< ALLOC > idset(var, rhs_ids, false, this->getAllocator());
+      if (_use_cache) {
+        try {
+          return _cache.score(idset);
+        } catch (NotFound&) {}
+        double the_score = _score(idset);
+        _cache.insert(std::move(idset), the_score);
+        return the_score;
+      } else {
+        return _score(idset);
+      }
+    }
+
 
     /// clears all the data structures from memory
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE void Score< IdSetAlloc, CountAlloc >::clear() {
-      Counter< IdSetAlloc, CountAlloc >::clear();
-      __is_cached_score.clear();
-      __cached_score.clear();
-      __apriori_computed = false;
+    template < template < typename > class ALLOC >
+    INLINE void Score< ALLOC >::clear() {
+      _counter.clear();
+      _cache.clear();
     }
 
-    /// indicates whether a score belongs to the cache
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE bool
-      Score< IdSetAlloc, CountAlloc >::_isInCache(Idx nodeset_index) const
-      noexcept {
-      return ((nodeset_index < __is_cached_score.size())
-              && __is_cached_score[nodeset_index]);
-    }
-
-    /// inserts a new score into the cache
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE void
-      Score< IdSetAlloc, CountAlloc >::_insertIntoCache(Idx    nodeset_index,
-                                                        double score) {
-      const std::vector< Idx, IdSetAlloc >& all_nodes =
-        _getAllNodes(nodeset_index);
-      const std::vector< Idx, IdSetAlloc >* conditioning_nodes =
-        _getConditioningNodes(nodeset_index);
-
-      if (conditioning_nodes != nullptr) {
-        try {
-          __cache.insert(
-            all_nodes[all_nodes.size() - 1], *conditioning_nodes, score);
-        } catch (const gum::DuplicateElement&) {}
-      } else {
-        try {
-          __cache.insert(all_nodes[0], __empty_conditioning_set, score);
-        } catch (const gum::DuplicateElement&) {}
-      }
-    }
-
-    /// returns a cached score
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE double
-      Score< IdSetAlloc, CountAlloc >::_cachedScore(Idx nodeset_index) const
-      noexcept {
-      return __cached_score[nodeset_index];
-    }
-
-    /// indicates whether we use the cache or not
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE bool Score< IdSetAlloc, CountAlloc >::_isUsingCache() const noexcept {
-      return __use_cache;
-    }
-
-    /// turn on/off the use of a cache of the previously computed score
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE void Score< IdSetAlloc, CountAlloc >::useCache(bool on_off) noexcept {
-      if (!on_off) clear();
-      __use_cache = on_off;
-    }
 
     /// clears the current cache (clear nodesets as well)
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE void Score< IdSetAlloc, CountAlloc >::clearCache() {
-      clear();
-      __cache.clear();
-    }
-
-    /// returns the apriori vector for a given (conditioned) target set
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE const std::vector< double, CountAlloc >&
-                 Score< IdSetAlloc, CountAlloc >::_getAllApriori(Idx index) {
-      if (!__apriori_computed) {
-        _apriori->setParameters(this->_modalities,
-                                Counter< IdSetAlloc, CountAlloc >::_getCounts(),
-                                this->_target_nodesets,
-                                this->_conditioning_nodesets);
-        _apriori->compute();
-        __apriori_computed = true;
-      }
-
-      return _apriori->getAllApriori(index);
-    }
-
-    /// returns the apriori vector for a conditioning set
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE const std::vector< double, CountAlloc >&
-                 Score< IdSetAlloc, CountAlloc >::_getConditioningApriori(Idx index) {
-      if (!__apriori_computed) {
-        _apriori->setParameters(this->_modalities,
-                                Counter< IdSetAlloc, CountAlloc >::_getCounts(),
-                                this->_target_nodesets,
-                                this->_conditioning_nodesets);
-        _apriori->compute();
-        __apriori_computed = true;
-      }
-
-      return _apriori->getConditioningApriori(index);
+    template < template < typename > class ALLOC >
+    INLINE void Score< ALLOC >::clearCache() {
+      _cache.clear();
     }
 
 
-    /// sets the range of records taken into account by the counter
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE void Score< IdSetAlloc, CountAlloc >::setRange(Size min_range,
-                                                          Size max_range) {
-      Counter< IdSetAlloc, CountAlloc >::setRange(min_range, max_range);
+    /// turn on/off the use of a cache of the previously computed score
+    template < template < typename > class ALLOC >
+    INLINE void Score< ALLOC >::useCache(const bool on_off) {
+      _use_cache = on_off;
+    }
+
+
+    /// indicates whether the score uses a cache
+    template < template < typename > class ALLOC >
+    INLINE bool Score< ALLOC >::isUsingCache() const {
+      return _use_cache;
+    }
+
+
+    /// return the mapping between the columns of the database and the node ids
+    template < template < typename > class ALLOC >
+    INLINE const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                 Score< ALLOC >::nodeId2Columns() const {
+      return _counter.nodeId2Columns();
+    }
+
+
+    /// return the database used by the score
+    template < template < typename > class ALLOC >
+    INLINE const DatabaseTable< ALLOC >& Score< ALLOC >::database() const {
+      return _counter.database();
     }
 
 

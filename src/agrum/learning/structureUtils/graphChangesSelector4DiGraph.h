@@ -28,10 +28,12 @@
 
 #include <vector>
 
+#include <agrum/agrum.h>
 #include <agrum/core/priorityQueue.h>
 #include <agrum/core/sequence.h>
 #include <agrum/core/set.h>
 #include <agrum/graphs/diGraph.h>
+#include <agrum/learning/scores_and_tests/score.h>
 #include <agrum/learning/structureUtils/graphChange.h>
 
 namespace gum {
@@ -43,9 +45,9 @@ namespace gum {
      * directed structure learning search algorithms.
      * @ingroup learning_group
      */
-    template < typename SCORE,
-               typename STRUCTURAL_CONSTRAINT,
-               typename GRAPH_CHANGES_GENERATOR >
+    template < typename STRUCTURAL_CONSTRAINT,
+               typename GRAPH_CHANGES_GENERATOR,
+               template < typename > class ALLOC = std::allocator >
     class GraphChangesSelector4DiGraph {
       public:
       /// the type of the generator
@@ -57,21 +59,21 @@ namespace gum {
       /// @{
 
       /// default constructor
-      GraphChangesSelector4DiGraph(SCORE&                   score,
+      GraphChangesSelector4DiGraph(Score< ALLOC >&          score,
                                    STRUCTURAL_CONSTRAINT&   constraint,
                                    GRAPH_CHANGES_GENERATOR& changes_generator);
 
       /// copy constructor
       GraphChangesSelector4DiGraph(
-        const GraphChangesSelector4DiGraph< SCORE,
-                                            STRUCTURAL_CONSTRAINT,
-                                            GRAPH_CHANGES_GENERATOR >& from);
+        const GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
+                                            GRAPH_CHANGES_GENERATOR,
+                                            ALLOC >& from);
 
       /// move constructor
       GraphChangesSelector4DiGraph(
-        GraphChangesSelector4DiGraph< SCORE,
-                                      STRUCTURAL_CONSTRAINT,
-                                      GRAPH_CHANGES_GENERATOR >&& from);
+        GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
+                                      GRAPH_CHANGES_GENERATOR,
+                                      ALLOC >&& from);
 
       /// destructor
       ~GraphChangesSelector4DiGraph();
@@ -84,21 +86,20 @@ namespace gum {
       /// @{
 
       /// copy operator
-      GraphChangesSelector4DiGraph< SCORE,
-                                    STRUCTURAL_CONSTRAINT,
-                                    GRAPH_CHANGES_GENERATOR >&
-        operator=(
-          const GraphChangesSelector4DiGraph< SCORE,
-                                              STRUCTURAL_CONSTRAINT,
-                                              GRAPH_CHANGES_GENERATOR >& from);
+      GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
+                                    GRAPH_CHANGES_GENERATOR,
+                                    ALLOC >&
+        operator=(const GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
+                                                      GRAPH_CHANGES_GENERATOR,
+                                                      ALLOC >& from);
 
       /// move operator
-      GraphChangesSelector4DiGraph< SCORE,
-                                    STRUCTURAL_CONSTRAINT,
-                                    GRAPH_CHANGES_GENERATOR >&
-        operator=(GraphChangesSelector4DiGraph< SCORE,
-                                                STRUCTURAL_CONSTRAINT,
-                                                GRAPH_CHANGES_GENERATOR >&& from);
+      GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
+                                    GRAPH_CHANGES_GENERATOR,
+                                    ALLOC >&
+        operator=(GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
+                                                GRAPH_CHANGES_GENERATOR,
+                                                ALLOC >&& from);
 
       /// @}
 
@@ -116,7 +117,7 @@ namespace gum {
       /** @brief indicates whether the selector contains graph changes related
        * to
        * the ith node */
-      bool empty(NodeId i);
+      bool empty(const NodeId i);
 
       /// returns the best graph change to examine
       /** @throws NotFound exception is thrown if the selector is empty */
@@ -128,7 +129,7 @@ namespace gum {
        * allows to get the change that is considered the best for modifying the
        * parents' set of the ith node.
        * @throws NotFound exception is thrown if the selector is empty */
-      const GraphChange& bestChange(NodeId i);
+      const GraphChange& bestChange(const NodeId i);
 
       /// return the score of the best graph change
       /** @throws NotFound exception is thrown if the selector is empty */
@@ -140,7 +141,7 @@ namespace gum {
        * allows to get the score of the change that is considered the best for
        * modifying the parents' set of the ith node.
        * @throws NotFound exception is thrown if the selector is empty */
-      double bestScore(NodeId i);
+      double bestScore(const NodeId i);
 
       /// indicate to the selector that a change has been applied
       void applyChange(const GraphChange& change);
@@ -165,19 +166,19 @@ namespace gum {
       bool isChangeValid(const GraphChange& change) const;
 
       /// sets the graph from which scores are computed
-      void setGraph(DiGraph& graph, const std::vector< Size >& modal);
+      void setGraph(DiGraph& graph);
 
       /// returns the set of queues sorted by decreasing top priority
       std::vector< std::pair< NodeId, double > > nodesSortedByBestScore() const;
 
       /// returns the set of queues top priorities
-      std::vector< std::pair< Idx, double > > nodesUnsortedWithScore() const;
+      std::vector< std::pair< NodeId, double > > nodesUnsortedWithScore() const;
 
       /// @}
 
       private:
       /// the scoring function
-      SCORE* __score;
+      Score< ALLOC >* __score;
 
       /// the set of constraints used to determine valid changes
       STRUCTURAL_CONSTRAINT* __constraint;
@@ -192,53 +193,48 @@ namespace gum {
       /** the scores are indexed by their index in sequence __changes */
       std::vector< std::pair< double, double > > __change_scores;
 
-      /// for each node, a priority queue sorting GraphChanges by decreasing
-      /// score
+      /// for each node, a priority queue sorting GraphChanges by decreasing score
       /** within each queue, the changes are determined by their index in
        * sequence __changes. */
-      std::vector< PriorityQueue< Idx, double, std::greater< double > > >
+      NodeProperty< PriorityQueue< std::size_t, double, std::greater< double > > >
         __change_queue_per_node;
 
       /// a global priority queue indicating for each node its best score
       PriorityQueue< NodeId, double, std::greater< double > > __node_queue;
 
-      /// the set of changes known to be currently illegal (due to the
-      /// constraints)
+      /// the set of changes known to be currently illegal (due to the constraints)
       /** within each queue, the changes are determined by their index in
        * sequence __changes. */
-      Set< Idx > __illegal_changes;
+      Set< std::size_t > __illegal_changes;
 
       /// the current score of each node
-      std::vector< double > __node_current_scores;
+      NodeProperty< double > __node_current_scores;
 
       /// the set of parents of each node (speeds-up score computations)
-      std::vector< std::vector< Idx > > __parents;
+      NodeProperty< std::vector< NodeId, ALLOC< NodeId > > > __parents;
 
-      /// indicates whether we need to recompute whether the queue is empty or
-      /// not
+      /// indicates whether we need to recompute whether the queue is empty or not
       bool __queues_valid{false};
 
       /// the set of queues to update when applying several changes
-      Set< Idx > __queues_to_update;
-
-      /// prepare the next pack of  score computations
-      void __addScoreToCompute(Idx change_index) const;
+      Set< NodeId > __queues_to_update;
 
       /// indicates whether a given change is valid or not
-      bool __isChangeValid(Idx index) const;
+      bool __isChangeValid(const std::size_t index) const;
 
       /// put a change into the illegal set
-      void __invalidateChange(Idx change_index);
+      void __invalidateChange(const std::size_t change_index);
 
       /// remove the now legal changes from the illegal set
-      void __illegal2LegalChanges(Set< Idx >& changes_to_recompute);
+      void __illegal2LegalChanges(Set< std::size_t >& changes_to_recompute);
 
       /// finds the changes that are affected by a given node modification
-      void __findLegalChangesNeedingUpdate(Set< Idx >& changes_to_recompute,
-                                           NodeId      target_node);
+      void
+        __findLegalChangesNeedingUpdate(Set< std::size_t >& changes_to_recompute,
+                                        const NodeId        target_node);
 
       /// perform the necessary updates of the scores
-      void __updateScores(const Set< Idx >& changes_to_recompute);
+      void __updateScores(const Set< std::size_t >& changes_to_recompute);
 
       /// get from the graph change generator a new set of changes
       void __getNewChanges();

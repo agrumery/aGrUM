@@ -39,13 +39,14 @@ namespace gum {
     }
 
     // returns the modalities of the variables
-    INLINE std::vector< Size >& genericBNLearner::Database::modalities() noexcept {
-      return __modalities;
+    INLINE const std::vector< std::size_t >&
+                 genericBNLearner::Database::domainSizes() const {
+      return __domain_sizes;
     }
 
     // returns the names of the variables in the database
     INLINE const std::vector< std::string >&
-                 genericBNLearner::Database::names() const noexcept {
+                 genericBNLearner::Database::names() const {
       return __database.variableNames();
     }
 
@@ -53,8 +54,9 @@ namespace gum {
     INLINE NodeId
            genericBNLearner::Database::idFromName(const std::string& var_name) const {
       try {
-        return __name2nodeId.second(const_cast< std::string& >(var_name));
-      } catch (gum::NotFound) {
+        const auto cols = __database.columnsFromVariableName(var_name);
+        return __nodeId2cols.first(cols[0]);
+      } catch (...) {
         GUM_ERROR(MissingVariableInDatabase, "for variable " << var_name);
       }
     }
@@ -62,7 +64,7 @@ namespace gum {
     // returns the variable name corresponding to a given node id
     INLINE const std::string&
                  genericBNLearner::Database::nameFromId(NodeId id) const {
-      return __name2nodeId.first(id);
+      return __database.variableName(__nodeId2cols.second(id));
     }
 
 
@@ -139,13 +141,13 @@ namespace gum {
     }
 
     // indicate that we wish to use 3off2
-    INLINE void genericBNLearner::use3off2() noexcept {
+    INLINE void genericBNLearner::use3off2() {
       __selected_algo = AlgoType::MIIC_THREE_OFF_TWO;
       __miic_3off2.set3off2Behaviour();
     }
 
     // indicate that we wish to use 3off2
-    INLINE void genericBNLearner::useMIIC() noexcept {
+    INLINE void genericBNLearner::useMIIC() {
       __selected_algo = AlgoType::MIIC_THREE_OFF_TWO;
       __miic_3off2.setMiicBehaviour();
     }
@@ -155,27 +157,23 @@ namespace gum {
       if (__selected_algo != AlgoType::MIIC_THREE_OFF_TWO) {
         GUM_ERROR(OperationNotAllowed, "Must be using the 3off2 algorithm");
       }
-      __mutual_info = new CorrectedMutualInformation<>(
-        __score_database.parser(), __score_database.modalities());
-      __mutual_info->useNML();
+      __3off2_kmode = CorrectedMutualInformation<>::KModeTypes::NML;
     }
+
     /// indicate that we wish to use the MDL correction for 3off2
     INLINE void genericBNLearner::useMDL() {
       if (__selected_algo != AlgoType::MIIC_THREE_OFF_TWO) {
         GUM_ERROR(OperationNotAllowed, "Must be using the 3off2 algorithm");
       }
-      __mutual_info = new CorrectedMutualInformation<>(
-        __score_database.parser(), __score_database.modalities());
-      __mutual_info->useMDL();
+      __3off2_kmode = CorrectedMutualInformation<>::KModeTypes::MDL;
     }
+
     /// indicate that we wish to use the NoCorr correction for 3off2
     INLINE void genericBNLearner::useNoCorr() {
       if (__selected_algo != AlgoType::MIIC_THREE_OFF_TWO) {
         GUM_ERROR(OperationNotAllowed, "Must be using the 3off2 algorithm");
       }
-      __mutual_info = new CorrectedMutualInformation<>(
-        __score_database.parser(), __score_database.modalities());
-      __mutual_info->useNoCorr();
+      __3off2_kmode = CorrectedMutualInformation<>::KModeTypes::NoCorr;
     }
 
     /// get the list of arcs hiding latent variables
@@ -187,27 +185,25 @@ namespace gum {
     }
 
     // indicate that we wish to use a K2 algorithm
-    INLINE void genericBNLearner::useK2(const Sequence< NodeId >& order) noexcept {
+    INLINE void genericBNLearner::useK2(const Sequence< NodeId >& order) {
       __selected_algo = AlgoType::K2;
       __K2.setOrder(order);
     }
 
     // indicate that we wish to use a K2 algorithm
-    INLINE void
-      genericBNLearner::useK2(const std::vector< NodeId >& order) noexcept {
+    INLINE void genericBNLearner::useK2(const std::vector< NodeId >& order) {
       __selected_algo = AlgoType::K2;
       __K2.setOrder(order);
     }
 
     // indicate that we wish to use a greedy hill climbing algorithm
-    INLINE void genericBNLearner::useGreedyHillClimbing() noexcept {
+    INLINE void genericBNLearner::useGreedyHillClimbing() {
       __selected_algo = AlgoType::GREEDY_HILL_CLIMBING;
     }
 
     // indicate that we wish to use a local search with tabu list
-    INLINE void
-      genericBNLearner::useLocalSearchWithTabuList(Size tabu_size,
-                                                   Size nb_decrease) noexcept {
+    INLINE void genericBNLearner::useLocalSearchWithTabuList(Size tabu_size,
+                                                             Size nb_decrease) {
       __selected_algo = AlgoType::LOCAL_SEARCH_WITH_TABU_LIST;
       __constraint_TabuList.setTabuListSize(tabu_size);
       __local_search_with_tabu_list.setMaxNbDecreasingChanges(nb_decrease);
@@ -343,6 +339,15 @@ namespace gum {
       checkScoreAprioriCompatibility();
     }
 
+
+    // use the apriori BDeu
+    INLINE void genericBNLearner::useAprioriBDeu(double weight) {
+      __apriori_type = AprioriType::BDEU;
+      if (weight >= 0) { setAprioriWeight(weight); }
+      checkScoreAprioriCompatibility();
+    }
+
+
     // returns the type (as a string) of a given apriori
     INLINE const std::string& genericBNLearner::__getAprioriType() const {
       switch (__apriori_type) {
@@ -352,6 +357,8 @@ namespace gum {
 
         case AprioriType::DIRICHLET_FROM_DATABASE:
           return AprioriDirichletFromDatabase<>::type::type;
+
+        case AprioriType::BDEU: return AprioriBDeu<>::type::type;
 
         default:
           GUM_ERROR(OperationNotAllowed,
@@ -366,8 +373,9 @@ namespace gum {
     }
 
     // returns the modalities  of the variables in the database
-    INLINE const std::vector< Size >& genericBNLearner::modalities() noexcept {
-      return __score_database.modalities();
+    INLINE const std::vector< std::size_t >&
+                 genericBNLearner::domainSizes() const {
+      return __score_database.domainSizes();
     }
 
   } /* namespace learning */

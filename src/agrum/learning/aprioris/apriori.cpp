@@ -20,7 +20,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Class to include at least once this header
+ * @brief the base class for all a priori
  *
  * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  */

@@ -72,11 +72,8 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-
-      std::vector< gum::Size > modalities(nb_vars, 2);
-
-      gum::learning::AprioriSmoothing<> apriori;
-      gum::learning::ScoreK2<>          score(parser, modalities, apriori);
+      gum::learning::AprioriSmoothing<>     apriori(database);
+      gum::learning::ScoreK2<>              score(parser, apriori);
 
       gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG,
@@ -93,13 +90,13 @@ namespace gum_tests {
       struct_constraint.setSliceOrder(slices);
       struct_constraint.setDefaultSlice(1);
 
-      gum::learning::ParamEstimatorML<> estimator(parser, modalities, apriori);
+      gum::learning::ParamEstimatorML<> estimator(
+        parser, apriori, score.internalApriori());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
         op_set(struct_constraint);
 
-      gum::learning::GraphChangesSelector4DiGraph< decltype(score),
-                                                   decltype(struct_constraint),
+      gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint),
                                                    decltype(op_set) >
         selector(score, struct_constraint, op_set);
 
@@ -107,18 +104,9 @@ namespace gum_tests {
       search.setMaxNbDecreasingChanges(2);
 
       try {
-        gum::BayesNet< float > bn =
-          search.learnBN< float >(selector,
-                                  estimator,
-                                  database.variableNames(),
-                                  modalities,
-                                  database.translatorSet());
+        gum::BayesNet< float >  bn = search.learnBN< float >(selector, estimator);
         gum::BayesNet< double > bn2 =
-          search.learnBN< double >(selector,
-                                   estimator,
-                                   database.variableNames(),
-                                   modalities,
-                                   database.translatorSet());
+          search.learnBN< double >(selector, estimator);
         TS_ASSERT(bn.dag().arcs().size() == 10);
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }

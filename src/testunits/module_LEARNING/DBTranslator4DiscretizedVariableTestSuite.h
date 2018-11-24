@@ -333,14 +333,14 @@ namespace gum_tests {
         TS_ASSERT(translator.translate("4").discr_val == 2);
         TS_ASSERT(translator.translateBack(
                     gum::learning::DBTranslatedValue{std::size_t{0}})
-                  == "[1,2[");
+                  == "[1;2[");
         TS_ASSERT(translator.translateBack(
                     gum::learning::DBTranslatedValue{std::size_t{1}})
-                  == "[2,3[");
+                  == "[2;3[");
         TS_ASSERT(translator.translateBack(
                     gum::learning::DBTranslatedValue{std::size_t{2}})
-                  == "[3,4]");
-        TS_ASSERT(translator.variable()->toString() == "X1<[1,2[,[2,3[,[3,4]>");
+                  == "[3;4]");
+        TS_ASSERT(translator.variable()->toString() == "X1<[1;2[,[2;3[,[3;4]>");
 
         const auto& allocator = translator.getAllocator();
         std::cout << (allocator == alloc) << std::endl;

@@ -127,6 +127,8 @@ namespace gum {
 
     virtual VarType varType() const = 0;
 
+    /// string represent the domain of the variable
+    virtual const std::string domain() const = 0;
 
     /// @}
 

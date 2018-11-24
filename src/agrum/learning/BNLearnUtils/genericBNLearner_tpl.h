@@ -60,11 +60,11 @@ namespace gum {
 
       // get the domain sizes of the variables
       for (auto dom : __database.domainSizes())
-        __modalities.push_back(dom);
+        __domain_sizes.push_back(dom);
 
       nb_vars = __database.nbVariables();
       for (std::size_t i = std::size_t(0); i < nb_vars; ++i)
-        __name2nodeId.insert(__database.variable(i).name(), i);
+        __nodeId2cols.insert(NodeId(i), i);
 
       // create the parser
       __parser =
@@ -100,6 +100,7 @@ namespace gum {
       const gum::BayesNet< GUM_SCALAR >& bn,
       const std::vector< std::string >&  missing_symbols) :
         __score_database(filename, bn, missing_symbols) {
+      __no_apriori = new AprioriNoApriori<>(__score_database.databaseTable());
       GUM_CONSTRUCTOR(genericBNLearner);
     }
 

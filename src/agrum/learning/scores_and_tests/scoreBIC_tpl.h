@@ -33,58 +33,126 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    template < typename IdSetAlloc, typename CountAlloc >
-    template < typename RowFilter >
-    INLINE ScoreBIC< IdSetAlloc, CountAlloc >::ScoreBIC(
-      const RowFilter&                   filter,
-      const std::vector< Size >&         var_modalities,
-      Apriori< IdSetAlloc, CountAlloc >& apriori,
-      Size                               min_range,
-      Size                               max_range) :
-        Score< IdSetAlloc, CountAlloc >(
-          filter, var_modalities, apriori, min_range, max_range) {
-      // for debugging purposes
+    template < template < typename > class ALLOC >
+    INLINE ScoreBIC< ALLOC >::ScoreBIC(
+      const DBRowGeneratorParser< ALLOC >&                                 parser,
+      const Apriori< ALLOC >&                                              apriori,
+      const std::vector< std::pair< std::size_t, std::size_t >,
+                         ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
+      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
+      const typename ScoreBIC< ALLOC >::allocator_type&             alloc) :
+        Score< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
+        __internal_apriori(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreBIC);
     }
 
-    /// copy constructor
-    template < typename IdSetAlloc, typename CountAlloc >
-    ScoreBIC< IdSetAlloc, CountAlloc >::ScoreBIC(
-      const ScoreBIC< IdSetAlloc, CountAlloc >& from) :
-        Score< IdSetAlloc, CountAlloc >(from),
-        __internal_apriori(from.__internal_apriori) {
-      // for debugging purposes
+
+    /// default constructor
+    template < template < typename > class ALLOC >
+    INLINE ScoreBIC< ALLOC >::ScoreBIC(
+      const DBRowGeneratorParser< ALLOC >&                          parser,
+      const Apriori< ALLOC >&                                       apriori,
+      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
+      const typename ScoreBIC< ALLOC >::allocator_type&             alloc) :
+        Score< ALLOC >(parser, apriori, nodeId2columns, alloc),
+        __internal_apriori(parser.database(), nodeId2columns) {
+      GUM_CONSTRUCTOR(ScoreBIC);
+    }
+
+
+    /// copy constructor with a given allocator
+    template < template < typename > class ALLOC >
+    INLINE ScoreBIC< ALLOC >::ScoreBIC(
+      const ScoreBIC< ALLOC >&                          from,
+      const typename ScoreBIC< ALLOC >::allocator_type& alloc) :
+        Score< ALLOC >(from, alloc),
+        __internal_apriori(from.__internal_apriori, alloc) {
       GUM_CONS_CPY(ScoreBIC);
     }
 
-    /// move constructor
-    template < typename IdSetAlloc, typename CountAlloc >
-    ScoreBIC< IdSetAlloc, CountAlloc >::ScoreBIC(
-      ScoreBIC< IdSetAlloc, CountAlloc >&& from) :
-        Score< IdSetAlloc, CountAlloc >(std::move(from)),
-        __internal_apriori(std::move(from.__internal_apriori)) {
-      // for debugging purposes
+
+    /// copy constructor
+    template < template < typename > class ALLOC >
+    INLINE ScoreBIC< ALLOC >::ScoreBIC(const ScoreBIC< ALLOC >& from) :
+        ScoreBIC< ALLOC >(from, from.getAllocator()) {}
+
+
+    /// move constructor with a given allocator
+    template < template < typename > class ALLOC >
+    INLINE ScoreBIC< ALLOC >::ScoreBIC(
+      ScoreBIC< ALLOC >&&                               from,
+      const typename ScoreBIC< ALLOC >::allocator_type& alloc) :
+        Score< ALLOC >(std::move(from), alloc),
+        __internal_apriori(std::move(from.__internal_apriori), alloc) {
       GUM_CONS_MOV(ScoreBIC);
     }
 
-    /// virtual copy factory
-    template < typename IdSetAlloc, typename CountAlloc >
-    ScoreBIC< IdSetAlloc, CountAlloc >*
-      ScoreBIC< IdSetAlloc, CountAlloc >::copyFactory() const {
-      return new ScoreBIC< IdSetAlloc, CountAlloc >(*this);
+
+    /// move constructor
+    template < template < typename > class ALLOC >
+    INLINE ScoreBIC< ALLOC >::ScoreBIC(ScoreBIC< ALLOC >&& from) :
+        ScoreBIC< ALLOC >(std::move(from), from.getAllocator()) {}
+
+
+    /// virtual copy constructor with a given allocator
+    template < template < typename > class ALLOC >
+    ScoreBIC< ALLOC >* ScoreBIC< ALLOC >::clone(
+      const typename ScoreBIC< ALLOC >::allocator_type& alloc) const {
+      ALLOC< ScoreBIC< ALLOC > > allocator(alloc);
+      ScoreBIC< ALLOC >*         new_score = allocator.allocate(1);
+      try {
+        allocator.construct(new_score, *this, alloc);
+      } catch (...) {
+        allocator.deallocate(new_score, 1);
+        throw;
+      }
+
+      return new_score;
     }
 
+
+    /// virtual copy constructor
+    template < template < typename > class ALLOC >
+    ScoreBIC< ALLOC >* ScoreBIC< ALLOC >::clone() const {
+      return clone(this->getAllocator());
+    }
+
+
     /// destructor
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE ScoreBIC< IdSetAlloc, CountAlloc >::ScoreBIC::~ScoreBIC() {
-      // for debugging purposes
+    template < template < typename > class ALLOC >
+    ScoreBIC< ALLOC >::~ScoreBIC< ALLOC >() {
       GUM_DESTRUCTOR(ScoreBIC);
     }
 
+
+    /// copy operator
+    template < template < typename > class ALLOC >
+    ScoreBIC< ALLOC >& ScoreBIC< ALLOC >::
+                       operator=(const ScoreBIC< ALLOC >& from) {
+      if (this != &from) {
+        Score< ALLOC >::operator=(from);
+        __internal_apriori = from.__internal_apriori;
+      }
+      return *this;
+    }
+
+
+    /// move operator
+    template < template < typename > class ALLOC >
+    ScoreBIC< ALLOC >& ScoreBIC< ALLOC >::operator=(ScoreBIC< ALLOC >&& from) {
+      if (this != &from) {
+        Score< ALLOC >::operator=(std::move(from));
+        __internal_apriori = std::move(from.__internal_apriori);
+      }
+      return *this;
+    }
+
+
     /// indicates whether the apriori is compatible (meaningful) with the score
-    template < typename IdSetAlloc, typename CountAlloc >
-    std::string ScoreBIC< IdSetAlloc, CountAlloc >::isAprioriCompatible(
-      const std::string& apriori_type, double weight) {
+    template < template < typename > class ALLOC >
+    std::string
+      ScoreBIC< ALLOC >::isAprioriCompatible(const std::string& apriori_type,
+                                             double             weight) {
       // check that the apriori is compatible with the score
       if ((apriori_type == AprioriDirichletType::type)
           || (apriori_type == AprioriSmoothingType::type)
@@ -95,176 +163,130 @@ namespace gum {
       // apriori types unsupported by the type checker
       std::stringstream msg;
       msg << "The apriori '" << apriori_type
-          << "' is not yet supported by method isAprioriCompatible";
+          << "' is not yet supported by method isAprioriCompatible os Score BIC";
       return msg.str();
     }
 
+
     /// indicates whether the apriori is compatible (meaningful) with the score
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE std::string ScoreBIC< IdSetAlloc, CountAlloc >::isAprioriCompatible(
-      const Apriori< IdSetAlloc, CountAlloc >& apriori) {
+    template < template < typename > class ALLOC >
+    INLINE std::string
+           ScoreBIC< ALLOC >::isAprioriCompatible(const Apriori< ALLOC >& apriori) {
       return isAprioriCompatible(apriori.getType(), apriori.weight());
     }
 
+
     /// indicates whether the apriori is compatible (meaningful) with the score
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE std::string
-           ScoreBIC< IdSetAlloc, CountAlloc >::isAprioriCompatible() const {
-      return isAprioriCompatible(*this->_apriori);
+    template < template < typename > class ALLOC >
+    INLINE std::string ScoreBIC< ALLOC >::isAprioriCompatible() const {
+      return isAprioriCompatible(*(this->_apriori));
     }
 
+
     /// returns the internal apriori of the score
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE const ScoreInternalApriori< IdSetAlloc, CountAlloc >&
-                 ScoreBIC< IdSetAlloc, CountAlloc >::internalApriori() const noexcept {
+    template < template < typename > class ALLOC >
+    INLINE const Apriori< ALLOC >& ScoreBIC< ALLOC >::internalApriori() const {
       return __internal_apriori;
     }
 
+
     /// returns the score corresponding to a given nodeset
-    template < typename IdSetAlloc, typename CountAlloc >
-    double ScoreBIC< IdSetAlloc, CountAlloc >::score(Idx nodeset_index) {
-      // if the score has already been computed, get its value
-      if (this->_isInCache(nodeset_index)) {
-        return this->_cachedScore(nodeset_index);
-      }
+    template < template < typename > class ALLOC >
+    double ScoreBIC< ALLOC >::_score(const IdSet< ALLOC >& idset) {
+      // get the counts for all the nodes in the idset and add the apriori
+      std::vector< double, ALLOC< double > > N_ijk(
+        this->_counter.counts(idset, true));
+      const bool informative_external_apriori = this->_apriori->isInformative();
+      if (informative_external_apriori)
+        this->_apriori->addAllApriori(idset, N_ijk);
+      const double all_size = double(N_ijk.size());
 
-      // get the counts for all the targets and for the conditioning nodes
-      const std::vector< double, CountAlloc >& N_ijk =
-        this->_getAllCounts(nodeset_index);
-      const Size targets_modal = Size(N_ijk.size());
-      double     score = 0;
-
-      // get the nodes involved in the score as well as their modalities
-      const std::vector< Idx, IdSetAlloc >& all_nodes =
-        this->_getAllNodes(nodeset_index);
-      const std::vector< Idx, IdSetAlloc >* conditioning_nodes =
-        this->_getConditioningNodes(nodeset_index);
-      const std::vector< Idx >& modalities = this->modalities();
-
-      // here, we distinguish nodesets with conditioning nodes from those
+      // here, we distinguish idsets with conditioning nodes from those
       // without conditioning nodes
-      if (conditioning_nodes) {
+      if (idset.hasConditioningSet()) {
         // get the counts for the conditioning nodes
-        const std::vector< double, CountAlloc >& N_ij =
-          this->_getConditioningCounts(nodeset_index);
-        const Size conditioning_modal = Size(N_ij.size());
+        std::vector< double, ALLOC< double > > N_ij =
+          this->_counter.counts(idset.conditionalIdSet(), false);
+        if (informative_external_apriori)
+          this->_apriori->addConditioningApriori(idset, N_ij);
+        const double conditioning_size = double(N_ij.size());
 
         // initialize the score: this should be the penalty of the BIC score,
-        // i.e.,
-        // -(ri-1 ) * qi * .5 * log ( N + N' )
-        const double penalty =
-          double(conditioning_modal * (modalities[all_nodes.back()] - 1));
+        // i.e., -(ri-1 ) * qi * .5 * log ( N + N' )
+        const std::size_t target_domsize = all_size / conditioning_size;
+        const double      penalty =
+          conditioning_size * (target_domsize - std::size_t(1));
 
-        if (this->_apriori->weight()) {
-          const std::vector< double, CountAlloc >& N_prime_ijk =
-            this->_getAllApriori(nodeset_index);
-          const std::vector< double, CountAlloc >& N_prime_ij =
-            this->_getConditioningApriori(nodeset_index);
-
-          // compute the score: it remains to compute the log likelihood, i.e.,
-          // sum_k=1^r_i sum_j=1^q_i N_ijk log (N_ijk / N_ij), which is also
-          // equivalent to:
-          // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - sum_j=1^q_i N_ij log N_ij
-          for (Idx k = 0; k < targets_modal; ++k) {
-            const double new_count = N_ijk[k] + N_prime_ijk[k];
-            if (new_count) { score += new_count * std::log(new_count); }
-          }
-          double N_plus_N_prime = 0;
-          for (Idx j = 0; j < conditioning_modal; ++j) {
-            const double new_count = N_ij[j] + N_prime_ij[j];
-            if (new_count) {
-              score -= new_count * std::log(new_count);
-              N_plus_N_prime += new_count;
-            }
-          }
-
-          // finally, remove the penalty
-          score -= penalty * std::log(N_plus_N_prime) * 0.5f;
-        } else {
-          // compute the score: it remains to compute the log likelihood, i.e.,
-          // sum_k=1^r_i sum_j=1^q_i N_ijk log (N_ijk / N_ij), which is also
-          // equivalent to:
-          // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - sum_j=1^q_i N_ij log N_ij
-          for (Idx k = 0; k < targets_modal; ++k) {
-            if (N_ijk[k]) { score += N_ijk[k] * std::log(N_ijk[k]); }
-          }
-          double N = 0;
-          for (Idx j = 0; j < conditioning_modal; ++j) {
-            if (N_ij[j]) {
-              score -= N_ij[j] * std::log(N_ij[j]);
-              N += N_ij[j];
-            }
-          }
-
-          // finally, remove the penalty
-          score -= penalty * std::log(N) * 0.5f;
+        // compute the score: it remains to compute the log likelihood, i.e.,
+        // sum_k=1^r_i sum_j=1^q_i N_ijk log (N_ijk / N_ij), which is also
+        // equivalent to:
+        // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - sum_j=1^q_i N_ij log N_ij
+        double score = 0.0;
+        for (const auto n_ijk : N_ijk) {
+          if (n_ijk) { score += n_ijk * std::log(n_ijk); }
         }
+        double N = 0;
+        for (const auto n_ij : N_ij) {
+          if (n_ij) {
+            score -= n_ij * std::log(n_ij);
+            N += n_ij;
+          }
+        }
+
+        // finally, remove the penalty
+        score -= penalty * std::log(N) * 0.5;
 
         // divide by log(2), since the log likelihood uses log_2
         score *= this->_1log2;
-
-        // shall we put the score into the cache?
-        if (this->_isUsingCache()) {
-          this->_insertIntoCache(nodeset_index, score);
-        }
 
         return score;
       } else {
         // here, there are no conditioning nodes
 
-        // initialize the score: this should be the penalty of the AIC score,
-        // i.e.,
-        // -(ri-1 )
-        const double penalty = double(modalities[all_nodes.back()]) - 1;
+        // initialize the score: this should be the penalty of the BIC score,
+        // i.e., -(ri-1 )
+        const double penalty = double(all_size - std::size_t(1));
 
-        if (this->_apriori->weight()) {
-          const std::vector< double, CountAlloc >& N_prime_ijk =
-            this->_getAllApriori(nodeset_index);
-
-          // compute the score: it remains to compute the log likelihood, i.e.,
-          // sum_k=1^r_i N_ijk log (N_ijk / N), which is also
-          // equivalent to:
-          // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - N log N
-          double N_plus_N_prime = 0;
-          for (Idx k = 0; k < targets_modal; ++k) {
-            const double new_count = N_ijk[k] + N_prime_ijk[k];
-            if (new_count) {
-              score += new_count * std::log(new_count);
-              N_plus_N_prime += new_count;
-            }
+        // compute the score: it remains to compute the log likelihood, i.e.,
+        // sum_k=1^r_i N_ijk log (N_ijk / N), which is also
+        // equivalent to:
+        // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - N log N
+        double N = 0.0;
+        double score = 0.0;
+        for (const auto n_ijk : N_ijk) {
+          if (n_ijk) {
+            score += n_ijk * std::log(n_ijk);
+            N += n_ijk;
           }
-          score -= N_plus_N_prime * std::log(N_plus_N_prime);
-
-          // finally, remove the penalty
-          score -= penalty * std::log(N_plus_N_prime) * 0.5f;
-        } else {
-          // compute the score: it remains to compute the log likelihood, i.e.,
-          // sum_k=1^r_i N_ijk log (N_ijk / N), which is also
-          // equivalent to:
-          // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - N log N
-          double N = 0;
-          for (Idx k = 0; k < targets_modal; ++k) {
-            if (N_ijk[k]) {
-              score += N_ijk[k] * std::log(N_ijk[k]);
-              N += N_ijk[k];
-            }
-          }
-          score -= N * std::log(N);
-
-          // finally, remove the penalty
-          score -= penalty * std::log(N) * 0.5f;
         }
+        score -= N * std::log(N);
+
+        // finally, remove the penalty
+        score -= penalty * std::log(N) * 0.5;
 
         // divide by log(2), since the log likelihood uses log_2
         score *= this->_1log2;
 
-        // shall we put the score into the cache?
-        if (this->_isUsingCache()) {
-          this->_insertIntoCache(nodeset_index, score);
-        }
-
         return score;
       }
+    }
+
+
+    /// returns the size of the database w.r.t. a given idset
+    template < template < typename > class ALLOC >
+    double ScoreBIC< ALLOC >::N(const IdSet< ALLOC >& idset) {
+      // get the counts for all the nodes in the idset and add the apriori
+      std::vector< double, ALLOC< double > > N_ijk(
+        this->_counter.counts(idset, true));
+      if (this->_apriori->isInformative())
+        this->_apriori->addAllApriori(idset, N_ijk);
+
+      double N = 0;
+      for (const auto n_ijk : N_ijk) {
+        N += n_ijk;
+      }
+
+      return N;
     }
 
   } /* namespace learning */

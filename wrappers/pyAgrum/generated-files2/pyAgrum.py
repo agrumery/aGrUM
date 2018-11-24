@@ -3089,6 +3089,11 @@ class Variable(object):
         return _pyAgrum.Variable_varType(self)
 
 
+    def domain(self):
+        r"""domain(self) -> std::string const"""
+        return _pyAgrum.Variable_domain(self)
+
+
 # Register Variable in _pyAgrum:
 _pyAgrum.Variable_swigregister(Variable)
 
@@ -24785,11 +24790,6 @@ class BNLearner(object):
     def names(self):
         r"""names(self) -> Vector_string"""
         return _pyAgrum.BNLearner_names(self)
-
-
-    def modalities(self):
-        r"""modalities(self) -> std::vector< gum::Size,std::allocator< gum::Size > > const &"""
-        return _pyAgrum.BNLearner_modalities(self)
 
 
     def idFromName(self, var_name):

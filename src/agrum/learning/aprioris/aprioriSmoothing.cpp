@@ -20,7 +20,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Class to include at least once this header
+ * @brief the smooth a priori: adds a weight w to all the countings
  *
  * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  */

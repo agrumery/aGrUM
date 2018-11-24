@@ -18,566 +18,558 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Template implementation of RecordCounters and RecordCounterThreads
+ * @brief The class that computes countings of observations from the database.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
+#include <agrum/learning/scores_and_tests/recordCounter.h>
+#include <agrum/core/OMPThreads.h>
 
-#  include <agrum/core/set.h>
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
 
   namespace learning {
 
-    /// default constructor
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE
-      RecordCounterThreadBase< IdSetAlloc, CountAlloc >::RecordCounterThreadBase(
-        const std::vector< Size >& var_modalities) :
-        _modalities(&var_modalities) {
-      GUM_CONSTRUCTOR(RecordCounterThreadBase);
+
+    /// returns the allocator used by the translator
+    template < template < typename > class ALLOC >
+    INLINE typename RecordCounter< ALLOC >::allocator_type
+      RecordCounter< ALLOC >::getAllocator() const {
+      return __parsers.get_allocator();
     }
 
-    /// copy constructor
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE
-      RecordCounterThreadBase< IdSetAlloc, CountAlloc >::RecordCounterThreadBase(
-        const RecordCounterThreadBase< IdSetAlloc, CountAlloc >& from) :
-        _modalities(from._modalities) {
-      GUM_CONS_CPY(RecordCounterThreadBase);
-    }
-
-    /// move operator
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE
-      RecordCounterThreadBase< IdSetAlloc, CountAlloc >::RecordCounterThreadBase(
-        RecordCounterThreadBase< IdSetAlloc, CountAlloc >&& from) :
-        _modalities(from._modalities),
-        _nodesets(std::move(from._nodesets)),
-        _countings(std::move(from._countings)) {
-      GUM_CONS_MOV(RecordCounterThreadBase);
-    }
-
-    /// destructor
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE RecordCounterThreadBase< IdSetAlloc,
-                                    CountAlloc >::~RecordCounterThreadBase() {
-      GUM_DESTRUCTOR(RecordCounterThreadBase);
-    }
-
-    /// adds a new target nodeset to be counted
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE Idx RecordCounterThreadBase< IdSetAlloc, CountAlloc >::addNodeSet(
-      const std::vector< Idx, IdSetAlloc >& ids) {
-      // adds the nodeset
-      const Idx nodeset_id = Idx(_nodesets.size());
-      _nodesets.push_back(&ids);
-
-      // compute the size of the nodeset and allocate a _counting correspondingly
-      Size size = 1;
-
-      for (const auto id : ids) {
-        size *= _modalities->operator[](id);
-      }
-
-      // allocate the _counting set
-      _countings.push_back(std::vector< double, CountAlloc >(size, 0));
-
-      return nodeset_id;
-    }
-
-    /// remove all the current target nodesets
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE void
-      RecordCounterThreadBase< IdSetAlloc, CountAlloc >::clearNodeSets() noexcept {
-      _nodesets.clear();
-      _countings.clear();
-    }
-
-    /// returns the countings for the nodeset specified in argument
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE const std::vector< double, CountAlloc >&
-                 RecordCounterThreadBase< IdSetAlloc, CountAlloc >::getCounts(
-        Idx nodeset_id) const noexcept {
-      return _countings[nodeset_id];
-    }
-
-    // ============================================================================
 
     /// default constructor
-    template < typename RowFilter, typename IdSetAlloc, typename CountAlloc >
-    INLINE RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >::
-      RecordCounterThread(const RowFilter&           filter,
-                          const std::vector< Size >& var_modalities) :
-        Base(var_modalities),
-        __parser(filter) {
-      GUM_CONSTRUCTOR(RecordCounterThread);
-    }
-
-    /// copy constructor
-    template < typename RowFilter, typename IdSetAlloc, typename CountAlloc >
-    INLINE RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >::
-      RecordCounterThread(
-        const RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >& from) :
-        Base(from),
-        __parser(from.__parser) {
-      GUM_CONS_CPY(RecordCounterThread);
-    }
-
-    /// move operator
-    template < typename RowFilter, typename IdSetAlloc, typename CountAlloc >
-    INLINE RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >::
-      RecordCounterThread(
-        RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >&& from) :
-        Base(std::move(from)),
-        __parser(std::move(from.__parser)) {
-      GUM_CONS_MOV(RecordCounterThread);
-    }
-
-    /// virtual copy constructor
-    template < typename RowFilter, typename IdSetAlloc, typename CountAlloc >
-    INLINE RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >*
-           RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >::copyFactory()
-        const {
-      return new RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >(*this);
-    }
-
-    /// destructor
-    template < typename RowFilter, typename IdSetAlloc, typename CountAlloc >
-    INLINE RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >::
-      ~RecordCounterThread() {
-      GUM_DESTRUCTOR(RecordCounterThread);
-    }
-
-    /// update all the countings of all the nodesets by parsing the database
-    template < typename RowFilter, typename IdSetAlloc, typename CountAlloc >
-    INLINE void RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >::count() {
-      __parser.reset();
-
-      // get the number of nodesets to process
-      const auto size = this->_nodesets.size();
-
-      try {
-        while (__parser.hasRows()) {
-          // get the observed filtered rows
-          const DBRow< DBTranslatedValue >& row = __parser.row();
-
-          // fill the counts for the ith nodeset
-          for (Idx i = 0; i < size; ++i) {
-            const std::vector< Idx >& var_ids = *(this->_nodesets[i]);
-            Idx                       offset = 0;
-            Idx                       dim = 1;
-
-            for (Idx j = 0, vsize = Size(var_ids.size()); j < vsize; ++j) {
-              offset += row[var_ids[j]].discr_val * dim;
-              dim *= this->_modalities->operator[](var_ids[j]);
-            }
-
-            this->_countings[i][offset] += row.weight();
-          }
+    template < template < typename > class ALLOC >
+    RecordCounter< ALLOC >::RecordCounter(
+      const DBRowGeneratorParser< ALLOC >&                                 parser,
+      const std::vector< std::pair< std::size_t, std::size_t >,
+                         ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
+      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
+      const typename RecordCounter< ALLOC >::allocator_type&        alloc) :
+        __parsers(alloc),
+        __ranges(alloc), __nodeId2columns(nodeId2columns),
+        __last_DB_countings(alloc), __last_DB_ids(alloc),
+        __last_nonDB_countings(alloc), __last_nonDB_ids(alloc) {
+      // check that the columns in nodeId2columns do belong to the database
+      const std::size_t db_nb_cols = parser.database().nbVariables();
+      for (auto iter = nodeId2columns.cbegin(); iter != nodeId2columns.cend();
+           ++iter) {
+        if (iter.second() >= db_nb_cols) {
+          GUM_ERROR(OutOfBounds,
+                    "the mapping between ids and database columns "
+                      << "is incorrect because Column " << iter.second()
+                      << " does not belong to the database.");
         }
-      } catch (NotFound&) {}   // this exception is raised by the row filter if the
-                               // row generators create no output row from the last
-                               // rows of the database
-    }
-
-    /// returns the filter used for the countings
-    template < typename RowFilter, typename IdSetAlloc, typename CountAlloc >
-    INLINE RowFilter&
-           RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >::parser() noexcept {
-      return __parser;
-    }
-
-    /// returns the size of the database
-    template < typename RowFilter, typename IdSetAlloc, typename CountAlloc >
-    INLINE Size
-           RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >::DBSize() noexcept {
-      return __parser.handler().DBSize();
-    }
-
-    /// sets the interval of records on which countings should be performed
-    template < typename RowFilter, typename IdSetAlloc, typename CountAlloc >
-    INLINE void RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >::setRange(
-      Size min_range, Size max_range) {
-      __parser.handler().setRange(min_range, max_range);
-    }
-
-    // ============================================================================
-
-    /// default constructor
-    template < typename IdSetAlloc, typename CountAlloc >
-    template < typename RowFilter >
-    INLINE RecordCounter< IdSetAlloc, CountAlloc >::RecordCounter(
-      const RowFilter&           filter,
-      const std::vector< Size >& var_modalities,
-      Size                       min_range,
-      Size                       max_range) :
-        __modalities(&var_modalities),
-        __min_range(min_range), __max_range(max_range) {
-      // create a first recordCounter so that we can store the row filter
-      // and apply subsequently virtual copy constructors to create other
-      // thread counters
-      __thread_counters.reserve(__max_threads_number);
-      auto counter = new RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >(
-        filter, var_modalities);
-      __thread_counters.push_back(counter);
-
-      // set the range of the counter
-      const Size db_size = counter->DBSize();
-      if (__max_range > db_size) { __max_range = db_size; }
-      if (__min_range >= __max_range) {
-        GUM_ERROR(OutOfBounds, "min/max database range incorrects");
       }
+
+      // create the parsers. There should always be at least one parser
+      if (__max_nb_threads < std::size_t(1)) __max_nb_threads = std::size_t(1);
+      __parsers.reserve(__max_nb_threads);
+      for (std::size_t i = std::size_t(0); i < __max_nb_threads; ++i)
+        __parsers.push_back(parser);
+
+      // check that the ranges are within the bounds of the database and
+      // save them
+      __checkRanges(ranges);
+      __ranges.reserve(ranges.size());
+      for (const auto& range : ranges)
+        __ranges.push_back(range);
 
       GUM_CONSTRUCTOR(RecordCounter);
     }
 
-    /// copy constructor
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE RecordCounter< IdSetAlloc, CountAlloc >::RecordCounter(
-      const RecordCounter< IdSetAlloc, CountAlloc >& from) :
-        __modalities(from.__modalities),
-        __idsets(from.__idsets), __nodesets(from.__nodesets),
-        __set_state(from.__set_state), __countings(from.__countings),
-        __subset_lattice(from.__subset_lattice),
-        __nb_thread_counters(from.__nb_thread_counters),
-        __min_range(from.__min_range), __max_range(from.__max_range) {
-      // create the thread counters
-      __thread_counters.reserve(from.__thread_counters.size());
 
-      try {
-        Size size = Size(from.__thread_counters.size());
-        for (Idx i = 0; i < size; ++i) {
-          __thread_counters.push_back(from.__thread_counters[i]->copyFactory());
-        }
-      } catch (...) {
-        for (auto elt : __thread_counters)
-          delete elt;
+    /// default constructor
+    template < template < typename > class ALLOC >
+    RecordCounter< ALLOC >::RecordCounter(
+      const DBRowGeneratorParser< ALLOC >&                          parser,
+      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
+      const typename RecordCounter< ALLOC >::allocator_type&        alloc) :
+        RecordCounter< ALLOC >(
+          parser,
+          std::vector< std::pair< std::size_t, std::size_t >,
+                       ALLOC< std::pair< std::size_t, std::size_t > > >(),
+          nodeId2columns,
+          alloc) {}
 
-        throw;
-      }
 
-      // create the idsets2index
-      for (auto iter = __idsets.begin(); iter != __idsets.end(); ++iter) {
-        __idset2index.insert(&(iter.first()), iter.second());
-      }
-
-      // fill the set2thread_id
-      __set2thread_id.reserve(from.__set2thread_id.size());
-      for (const auto& thepair : from.__set2thread_id) {
-        if (thepair.first != nullptr) {
-          __set2thread_id.push_back(std::pair< const IdSet< IdSetAlloc >*, Idx >(
-            &(__idsets.first(thepair.second)), thepair.second));
-        } else {
-          __set2thread_id.push_back(
-            std::pair< const IdSet< IdSetAlloc >*, Idx >(nullptr, thepair.second));
-        }
-      }
-
-      // fill the var2idsets
-      for (auto iter = __idsets.begin(); iter != __idsets.end(); ++iter) {
-        const IdSet< IdSetAlloc >& idset = iter.first();
-        for (const auto id : idset.ids()) {
-          try {
-            __var2idsets[id].push_back(&idset);
-          } catch (NotFound&) {
-            __var2idsets.insert(id, std::vector< const IdSet< IdSetAlloc >* >());
-            __var2idsets[id].push_back(&idset);
-          }
-        }
-      }
-
+    /// copy constructor with a given allocator
+    template < template < typename > class ALLOC >
+    RecordCounter< ALLOC >::RecordCounter(
+      const RecordCounter< ALLOC >&                          from,
+      const typename RecordCounter< ALLOC >::allocator_type& alloc) :
+        __parsers(from.__parsers, alloc),
+        __ranges(from.__ranges, alloc), __nodeId2columns(from.__nodeId2columns),
+        __last_DB_countings(from.__last_DB_countings, alloc),
+        __last_DB_ids(from.__last_DB_ids),
+        __last_nonDB_countings(from.__last_nonDB_countings, alloc),
+        __last_nonDB_ids(from.__last_nonDB_ids),
+        __max_nb_threads(from.__max_nb_threads),
+        __min_nb_rows_per_thread(from.__min_nb_rows_per_thread) {
       GUM_CONS_CPY(RecordCounter);
     }
 
-    /// move constructor
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE RecordCounter< IdSetAlloc, CountAlloc >::RecordCounter(
-      RecordCounter< IdSetAlloc, CountAlloc >&& from) :
-        __modalities(from.__modalities),
-        __idsets(from.__idsets), __nodesets(std::move(from.__nodesets)),
-        __var2idsets(std::move(from.__var2idsets)),
-        __set_state(std::move(from.__set_state)),
-        __countings(std::move(from.__countings)),
-        __idset2index(std::move(from.__idset2index)),
-        __set2thread_id(std::move(from.__set2thread_id)),
-        __subset_lattice(std::move(from.__subset_lattice)),
-        __thread_counters(std::move(from.__thread_counters)),
-        __nb_thread_counters(from.__nb_thread_counters),
-        __min_range(from.__min_range), __max_range(from.__max_range) {
+
+    /// copy constructor
+    template < template < typename > class ALLOC >
+    RecordCounter< ALLOC >::RecordCounter(const RecordCounter< ALLOC >& from) :
+        RecordCounter< ALLOC >(from, from.getAllocator()) {}
+
+
+    /// move constructor with a given allocator
+    template < template < typename > class ALLOC >
+    RecordCounter< ALLOC >::RecordCounter(
+      RecordCounter< ALLOC >&&                               from,
+      const typename RecordCounter< ALLOC >::allocator_type& alloc) :
+        __parsers(std::move(from.__parsers), alloc),
+        __ranges(std::move(from.__ranges), alloc),
+        __nodeId2columns(std::move(from.__nodeId2columns)),
+        __last_DB_countings(std::move(from.__last_DB_countings), alloc),
+        __last_DB_ids(std::move(from.__last_DB_ids)),
+        __last_nonDB_countings(std::move(from.__last_nonDB_countings), alloc),
+        __last_nonDB_ids(std::move(from.__last_nonDB_ids)),
+        __max_nb_threads(from.__max_nb_threads),
+        __min_nb_rows_per_thread(from.__min_nb_rows_per_thread) {
       GUM_CONS_MOV(RecordCounter);
     }
 
-    /// destructor
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE RecordCounter< IdSetAlloc, CountAlloc >::~RecordCounter() {
-      for (auto counter : __thread_counters)
-        delete counter;
 
+    /// move constructor
+    template < template < typename > class ALLOC >
+    RecordCounter< ALLOC >::RecordCounter(RecordCounter< ALLOC >&& from) :
+        RecordCounter< ALLOC >(std::move(from), from.getAllocator()) {}
+
+
+    /// virtual copy constructor with a given allocator
+    template < template < typename > class ALLOC >
+    RecordCounter< ALLOC >* RecordCounter< ALLOC >::clone(
+      const typename RecordCounter< ALLOC >::allocator_type& alloc) const {
+      ALLOC< RecordCounter< ALLOC > > allocator(alloc);
+      RecordCounter< ALLOC >*         new_counter = allocator.allocate(1);
+      try {
+        allocator.construct(new_counter, *this, alloc);
+      } catch (...) {
+        allocator.deallocate(new_counter, 1);
+        throw;
+      }
+
+      return new_counter;
+    }
+
+
+    /// virtual copy constructor
+    template < template < typename > class ALLOC >
+    RecordCounter< ALLOC >* RecordCounter< ALLOC >::clone() const {
+      return clone(this->getAllocator());
+    }
+
+
+    /// destructor
+    template < template < typename > class ALLOC >
+    RecordCounter< ALLOC >::~RecordCounter() {
       GUM_DESTRUCTOR(RecordCounter);
     }
 
-    /// add a new nodeset to count
-    template < typename IdSetAlloc, typename CountAlloc >
-    Idx RecordCounter< IdSetAlloc, CountAlloc >::addNodeSet(
-      const std::vector< Idx, IdSetAlloc >& ids) {
-      // allocate a count vector of the domain size of the idset
-      Size set_size = 1;
 
-      for (const auto id : ids) {
-        set_size *= __modalities->operator[](id);
+    /// copy operator
+    template < template < typename > class ALLOC >
+    RecordCounter< ALLOC >& RecordCounter< ALLOC >::
+                            operator=(const RecordCounter< ALLOC >& from) {
+      if (this != &from) {
+        __parsers = from.__parsers;
+        __ranges = from.__ranges;
+        __nodeId2columns = from.__nodeId2columns;
+        __last_DB_countings = from.__last_DB_countings;
+        __last_DB_ids = from.__last_DB_ids;
+        __last_nonDB_countings = from.__last_nonDB_countings;
+        __last_nonDB_ids = from.__last_nonDB_ids;
+        __max_nb_threads = from.__max_nb_threads;
+        __min_nb_rows_per_thread = from.__min_nb_rows_per_thread;
       }
+      return *this;
+    }
 
-      __countings.push_back(std::vector< double, CountAlloc >(set_size, 0.0f));
 
-      // create the corresponding idset
-      NodeId node = NodeId(__nodesets.size());
-      __nodesets.push_back(&ids);
+    /// move operator
+    template < template < typename > class ALLOC >
+    RecordCounter< ALLOC >& RecordCounter< ALLOC >::
+                            operator=(RecordCounter< ALLOC >&& from) {
+      if (this != &from) {
+        __parsers = std::move(from.__parsers);
+        __ranges = std::move(from.__ranges);
+        __nodeId2columns = std::move(from.__nodeId2columns);
+        __last_DB_countings = std::move(from.__last_DB_countings);
+        __last_DB_ids = std::move(from.__last_DB_ids);
+        __last_nonDB_countings = std::move(from.__last_nonDB_countings);
+        __last_nonDB_ids = std::move(from.__last_nonDB_ids);
+        __max_nb_threads = from.__max_nb_threads;
+        __min_nb_rows_per_thread = from.__min_nb_rows_per_thread;
+      }
+      return *this;
+    }
 
-      // for empty sets
+
+    /// clears all the last database-parsed countings from memory
+    template < template < typename > class ALLOC >
+    void RecordCounter< ALLOC >::clear() {
+      __last_DB_countings.clear();
+      __last_DB_ids.clear();
+      __last_nonDB_countings.clear();
+      __last_nonDB_ids.clear();
+    }
+
+
+    /// changes the max number of threads used to parse the database
+    template < template < typename > class ALLOC >
+    void RecordCounter< ALLOC >::setMaxNbThreads(const std::size_t nb) const {
+      if (nb == std::size_t(0))
+        __max_nb_threads = std::size_t(1);
+      else
+        __max_nb_threads = nb;
+    }
+
+
+    /// returns the number of threads used to parse the database
+    template < template < typename > class ALLOC >
+    INLINE std::size_t RecordCounter< ALLOC >::nbThreads() const {
+      return __max_nb_threads;
+    }
+
+
+    // changes the number min of rows a thread should process in a
+    // multithreading context
+    template < template < typename > class ALLOC >
+    void
+      RecordCounter< ALLOC >::setMinNbRowsPerThread(const std::size_t nb) const {
+      if (nb == std::size_t(0))
+        __min_nb_rows_per_thread = std::size_t(1);
+      else
+        __min_nb_rows_per_thread = nb;
+    }
+
+
+    /// returns the minimum of rows that each thread should process
+    template < template < typename > class ALLOC >
+    INLINE std::size_t RecordCounter< ALLOC >::minNbRowsPerThread() const {
+      return __min_nb_rows_per_thread;
+    }
+
+
+    /// compute and raise the exception when some variables are continuous
+    template < template < typename > class ALLOC >
+    void RecordCounter< ALLOC >::__raiseCheckException(
+      const std::vector< std::string, ALLOC< std::string > >& bad_vars) const {
+      // generate the exception
+      std::stringstream msg;
+      msg << "Counts cannot be performed on continuous variables. ";
+      msg << "Unfortunately the following variable";
+      if (bad_vars.size() == 1)
+        msg << " is continuous: " << bad_vars[0];
+      else {
+        msg << "s are continuous: ";
+        bool deja = false;
+        for (const auto& name : bad_vars) {
+          if (deja)
+            msg << ", ";
+          else
+            deja = true;
+          msg << name;
+        }
+      }
+      GUM_ERROR(TypeError, msg.str());
+    }
+
+
+    /// check that all the variables in an idset are discrete
+    template < template < typename > class ALLOC >
+    void RecordCounter< ALLOC >::__checkDiscreteVariables(
+      const IdSet< ALLOC >& ids) const {
+      const std::size_t             size = ids.size();
+      const DatabaseTable< ALLOC >& database = __parsers[0].data.database();
+
+      if (__nodeId2columns.empty()) {
+        // check all the ids
+        for (std::size_t i = std::size_t(0); i < size; ++i) {
+          if (database.variable(i).varType() == VarType::Continuous) {
+            // here, var i does not correspond to a discrete variable.
+            // we check whether there are other non discrete variables, so that
+            // we can generate an exception mentioning all these variables
+            std::vector< std::string, ALLOC< std::string > > bad_vars{
+              database.variable(i).name()};
+            for (++i; i < size; ++i) {
+              if (database.variable(i).varType() == VarType::Continuous)
+                bad_vars.push_back(database.variable(i).name());
+            }
+            __raiseCheckException(bad_vars);
+          }
+        }
+      } else {
+        // check all the ids
+        for (std::size_t i = std::size_t(0); i < size; ++i) {
+          // get the position of the variable in the database
+          std::size_t pos = __nodeId2columns.second(ids[i]);
+
+          if (database.variable(pos).varType() == VarType::Continuous) {
+            // here, id does not correspond to a discrete variable.
+            // we check whether there are other non discrete variables, so that
+            // we can generate an exception mentioning all these variables
+            std::vector< std::string, ALLOC< std::string > > bad_vars{
+              database.variable(pos).name()};
+            for (++i; i < size; ++i) {
+              const std::size_t pos = __nodeId2columns.second(ids[i]);
+              if (database.variable(pos).varType() == VarType::Continuous)
+                bad_vars.push_back(database.variable(pos).name());
+            }
+            __raiseCheckException(bad_vars);
+          }
+        }
+      }
+    }
+
+
+    /// returns the mapping from ids to column positions in the database
+    template < template < typename > class ALLOC >
+    INLINE const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                 RecordCounter< ALLOC >::nodeId2Columns() const {
+      return __nodeId2columns;
+    }
+
+
+    /// returns the database on which we perform the counts
+    template < template < typename > class ALLOC >
+    const DatabaseTable< ALLOC >& RecordCounter< ALLOC >::database() const {
+      return __parsers[0].data.database();
+    }
+
+
+    /// returns the counts for a given set of nodes
+    template < template < typename > class ALLOC >
+    INLINE const std::vector< double, ALLOC< double > >&
+                 RecordCounter< ALLOC >::counts(const IdSet< ALLOC >& ids,
+                                     const bool            check_discrete_vars) {
+      // if the idset is empty, return an empty vector
       if (ids.empty()) {
-        __set_state.push_back(SetState::EMPTY_SET);
-        __set2thread_id.push_back(
-          std::pair< const IdSet< IdSetAlloc >*, Idx >(nullptr, 0));
-        return node;
+        __last_nonDB_ids.clear();
+        __last_nonDB_countings.clear();
+        return __last_nonDB_countings;
       }
 
-      // for nonempty sets, always add the node to the subset lattice
-      __subset_lattice.addNodeWithId(node);
-      IdSet< IdSetAlloc > tmp_idset(ids, set_size);
-
-      if (!__idsets.existsFirst(tmp_idset)) {
-        // a priori, the idset is not a subset
-        __set_state.push_back(SetState::NOT_SUBSET);
-
-        __idsets.insert(std::move(tmp_idset), std::move(node));
-        const IdSet< IdSetAlloc >& idset = __idsets.first(node);
-        __idset2index.insert(&idset, node);
-        __set2thread_id.push_back(
-          std::pair< const IdSet< IdSetAlloc >*, Idx >(&idset, node));
-
-        // for each variable in ids, indicate that ids contain this variable
-        for (auto id : ids) {
-          try {
-            __var2idsets[id].push_back(&idset);
-          } catch (NotFound&) {
-            __var2idsets.insert(id, std::vector< const IdSet< IdSetAlloc >* >());
-            __var2idsets[id].push_back(&idset);
-          }
-        }
-      } else {
-        // this set is a copy of another set
-        __set_state.push_back(SetState::COPY_SET);
-
-        __set2thread_id.push_back(std::pair< const IdSet< IdSetAlloc >*, Idx >(
-          nullptr, __idsets.second(tmp_idset)));
-
-        __subset_lattice.addArc(NodeId(__idsets.second(tmp_idset)), node);
-      }
-
-      return node;
-    }
-
-    // an algorithm to parse a subset of the database
-    template < typename IdSetAlloc, typename CountAlloc >
-    void RecordCounter< IdSetAlloc, CountAlloc >::countOnSubDatabase() {
-      // now, for all the non-subsets, compute their countings
-      // start parallel ThreadCounters
-      const Size parsed_db_size = __max_range - __min_range;
-
-      // compute the max number of threads to use to parse the database, so that
-      // each thread has at least NB elements to parse. This proves useful for
-      // small databases and large numbers of processors
-      Size max_nb_threads =
-        std::min(parsed_db_size / __min_nb_rows_per_thread, __max_threads_number);
-      Size max_size_per_thread;
-      if (max_nb_threads == 0) {
-        max_nb_threads = 1;
-        max_size_per_thread = parsed_db_size;
-      } else {
-        max_size_per_thread =
-          (parsed_db_size + max_nb_threads - 1) / max_nb_threads;
-        max_nb_threads = parsed_db_size / max_size_per_thread;
-      }
-
-#  pragma omp parallel num_threads(int(max_nb_threads))
-      {
-        // create ThreadCounters if needed
-        const Size num_threads = getNumberOfRunningThreads();
-
-#  pragma omp single
-        {
-          while (__thread_counters.size() < num_threads) {
-            __thread_counters.push_back(__thread_counters[0]->copyFactory());
-          }
-
-          __nb_thread_counters = num_threads;
-        }
-
-        // initialize the thread counters
-        const int this_thread = getThreadNumber();
-        RecordCounterThreadBase< IdSetAlloc, CountAlloc >& thread_counter =
-          *(__thread_counters[this_thread]);
-        thread_counter.clearNodeSets();
-
-        Size size = Size(__set_state.size());
-        for (Idx i = 0; i < size; ++i) {
-          if (__set_state[i] == SetState::NOT_SUBSET) {
-            thread_counter.addNodeSet(*(__nodesets[i]));
-          }
-        }
-
-        // indicate to the filter which part of the database it must parse
-        Size size_per_thread = (parsed_db_size + num_threads - 1) / num_threads;
-        if (size_per_thread == 0) size_per_thread = parsed_db_size;
-        const Size min_range = __min_range + size_per_thread * this_thread;
-        const Size max_range = std::min(min_range + size_per_thread, __max_range);
-
-        if (min_range < max_range) {
-          thread_counter.setRange(min_range, max_range);
-
-          // compute the counts
-          thread_counter.count();
-        }
-
-      }   // omp parallel
-
-// perform the aggregation of the countings
-#  pragma omp parallel num_threads(int(__nb_thread_counters))
-      {
-        const Size this_thread = getThreadNumber();
-        auto&      counter = *(__thread_counters[this_thread]);
-        Size       size_per_thread, min_range, max_range;
-        Size       size = Size(__countings.size());
-        for (Idx i = 0; i < size; ++i) {
-          if (__set_state[i] == SetState::NOT_SUBSET) {
-            // get the ith idset countings computed by the curent thread
-            std::vector< double, CountAlloc >& vect =
-              const_cast< std::vector< double, CountAlloc >& >(
-                counter.getCounts(__set2thread_id[i].second));
-            size_per_thread = (Size(vect.size()) + __nb_thread_counters - 1)
-                              / __nb_thread_counters;
-
-            // add to vect the countings of the other threads
-            min_range = size_per_thread * this_thread;
-            max_range = std::min(min_range + size_per_thread, (Size)vect.size());
-
-            for (Idx j = 0; j < __nb_thread_counters; ++j) {
-              if (j != this_thread) {
-                const std::vector< double, CountAlloc >& othervect =
-                  __thread_counters[j]->getCounts(__set2thread_id[i].second);
-
-                for (Idx k = min_range; k < max_range; ++k) {
-                  vect[k] += othervect[k];
-                }
-              }
-            }
-
-            // now copy what we just computed into the countings of the
-            // current object
-            std::vector< double, CountAlloc >& final_vect = __countings[i];
-
-            for (Idx k = min_range; k < max_range; ++k) {
-              final_vect[k] = vect[k];
-            }
-          }
-        }
+      // check whether we can extract the vector we wish to return from
+      // some already computed counting vector
+      if (__last_nonDB_ids.contains(ids))
+        return __extractFromCountings(
+          ids, __last_nonDB_ids, __last_nonDB_countings);
+      else if (__last_DB_ids.contains(ids))
+        return __extractFromCountings(ids, __last_DB_ids, __last_DB_countings);
+      else {
+        if (check_discrete_vars) __checkDiscreteVariables(ids);
+        return __countFromDatabase(ids);
       }
     }
 
-    // computes the countings of one subset from those of its superset
-    template < typename IdSetAlloc, typename CountAlloc >
-    void RecordCounter< IdSetAlloc, CountAlloc >::__countOneSubset(Idx i) {
-      // get the subset and its superset
-      const auto& subset_ids = *(__nodesets[i]);
-      const auto& superset_ids = *(__nodesets[__set2thread_id[i].second]);
-      auto&       subset_vect = __countings[i];
-      const auto& superset_vect = __countings[__set2thread_id[i].second];
 
-      // Compute the variables that belong to both the (projection) subset
-      // and its superset. Store the number of increments in the computation
-      // loops at the end of the function before which the variables of the
-      // projection set need be incremented (vector before_incr).
-      std::vector< Idx > result_offset(subset_ids.size());
-      std::vector< Idx > result_domain(subset_ids.size());
-      std::vector< Idx > before_incr(subset_ids.size());
+    // returns a mapping from the nodes ids to the columns of the database
+    // for a given sequence of ids
+    template < template < typename > class ALLOC >
+    HashTable< NodeId, std::size_t > RecordCounter< ALLOC >::__getNodeIds2Columns(
+      const IdSet< ALLOC >& ids) const {
+      HashTable< NodeId, std::size_t > res(ids.size());
+      if (__nodeId2columns.empty()) {
+        for (const auto id : ids) {
+          res.insert(id, std::size_t(id));
+        }
+      } else {
+        for (const auto id : ids) {
+          res.insert(id, __nodeId2columns.second(id));
+        }
+      }
+      return res;
+    }
+
+
+    /// extracts some new countings from previously computed ones
+    template < template < typename > class ALLOC >
+    INLINE std::vector< double, ALLOC< double > >&
+           RecordCounter< ALLOC >::__extractFromCountings(
+        const IdSet< ALLOC >&                         subset_ids,
+        const IdSet< ALLOC >&                         superset_ids,
+        const std::vector< double, ALLOC< double > >& superset_vect) {
+      // get a mapping between the node Ids and their columns in the database.
+      // This should be stored into __nodeId2columns, except if the latter is
+      // empty, in which case there is an identity mapping
+      const auto nodeId2columns = __getNodeIds2Columns(superset_ids);
+
+      // we first determine the size of the output vector, the domain of
+      // each of its variables and their offsets in the output vector
+      const auto& database = __parsers[0].data.database();
+      std::size_t result_vect_size = std::size_t(1);
+      for (const auto id : subset_ids) {
+        result_vect_size *= database.domainSize(nodeId2columns[id]);
+      }
+
+      // we create the output vector
+      const std::size_t subset_ids_size = std::size_t(subset_ids.size());
+      std::vector< double, ALLOC< double > > result_vect(result_vect_size, 0.0);
+
+
+      // check if the subset_ids is the beginning of the sequence of superset_ids
+      // if this is the case, then we can outer loop over the variables not in
+      // subset_ids and, for each iteration of this loop add a vector of size
+      // result_size to result_vect
+      bool subset_begin = true;
+      for (std::size_t i = 0; i < subset_ids_size; ++i) {
+        if (superset_ids.pos(subset_ids[i]) != i) {
+          subset_begin = false;
+          break;
+        }
+      }
+
+      if (subset_begin) {
+        const std::size_t superset_vect_size = superset_vect.size();
+        std::size_t       i = std::size_t(0);
+        while (i < superset_vect_size) {
+          for (std::size_t j = std::size_t(0); j < result_vect_size; ++j, ++i) {
+            result_vect[j] += superset_vect[i];
+          }
+        }
+
+        // save the subset_ids and the result vector
+        try {
+          __last_nonDB_ids = subset_ids;
+          __last_nonDB_countings = std::move(result_vect);
+          return __last_nonDB_countings;
+        } catch (...) {
+          __last_nonDB_ids.clear();
+          __last_nonDB_countings.clear();
+          throw;
+        }
+      }
+
+
+      // check if subset_ids is the end of the sequence of superset_ids.
+      // In this case, as above, there are two simple loops to perform the
+      // countings
+      bool              subset_end = true;
+      const std::size_t superset_ids_size = std::size_t(superset_ids.size());
+      for (std::size_t i = 0; i < subset_ids_size; ++i) {
+        if (superset_ids.pos(subset_ids[i])
+            != i + superset_ids_size - subset_ids_size) {
+          subset_end = false;
+          break;
+        }
+      }
+
+      if (subset_end) {
+        // determine the size of the vector corresponding to the variables
+        // not belonging to subset_ids
+        std::size_t vect_not_subset_size = std::size_t(1);
+        for (std::size_t i = std::size_t(0);
+             i < superset_ids_size - subset_ids_size;
+             ++i)
+          vect_not_subset_size *=
+            database.domainSize(nodeId2columns[superset_ids[i]]);
+
+        // perform the two loops
+        std::size_t i = std::size_t(0);
+        for (std::size_t j = std::size_t(0); j < result_vect_size; ++j) {
+          for (std::size_t k = std::size_t(0); k < vect_not_subset_size;
+               ++k, ++i) {
+            result_vect[j] += superset_vect[i];
+          }
+        }
+
+        // save the subset_ids and the result vector
+        try {
+          __last_nonDB_ids = subset_ids;
+          __last_nonDB_countings = std::move(result_vect);
+          return __last_nonDB_countings;
+        } catch (...) {
+          __last_nonDB_ids.clear();
+          __last_nonDB_countings.clear();
+          throw;
+        }
+      }
+
+
+      // here subset_ids is a subset of superset_ids neither prefixing nor
+      // postfixing it. So the computation is somewhat more complicated.
+
+      // We will parse the superset_vect sequentially (using ++ operator).
+      // Sometimes, we will need to change the offset of the cell of result_vect
+      // that will be affected, sometimes not. Vector before_incr will indicate
+      // whether we need to change the offset (value = 0) or not (value different
+      // from 0). Vectors result_domain will indicate how this offset should be
+      // computed. Here is an example of the values of these vectors. Assume that
+      // superset_ids = <A,B,C,D,E> and subset_ids = <A,D,C>. Then, the three
+      // vectors before_incr, result_domain and result_offset are indexed w.r.t.
+      // A,C,D, i.e., w.r.t. to the variables in subset_ids but order w.r.t.
+      // superset_ids (this is convenient as we will parse superset_vect
+      // sequentially. For a variable or a set of variables X, let M_X denote the
+      // domain size of X. Then the contents of the three vectors are as follows:
+      // before_incr = {0, M_B, 0} (this means that whenever we iterate over B's
+      //                       values, the offset in result_vect does not change)
+      // result_domain = { M_A, M_C, M_D } (i.e., the domain sizes of the variables
+      //                       in subset_ids, order w.r.t. superset_ids)
+      // result_offset = { 1, M_A*M_D, M_A } (this corresponds to the offsets
+      //                       in result_vect of variables A, C and D)
+      // Vector superset_order = { 0, 2, 1} : this is a map from the indices of
+      // the variables in subset_ids to the indices of these variables in the
+      // three vectors described above. For instance, the "2" means that variable
+      // D (which is at index 1 in subset_ids) is located at index 2 in vector
+      // before_incr
+      std::vector< std::size_t > before_incr(subset_ids_size);
+      std::vector< std::size_t > result_domain(subset_ids_size);
+      std::vector< std::size_t > result_offset(subset_ids_size);
       {
-        Size               result_domain_size = 1;
-        Idx                tmp_before_incr = 1;
-        bool               has_before_incr = false;
-        Size               subset_size = Size(subset_ids.size());
-        std::vector< Idx > superset_order(subset_ids.size());
+        std::size_t                result_domain_size = std::size_t(1);
+        std::size_t                tmp_before_incr = std::size_t(1);
+        std::vector< std::size_t > superset_order(subset_ids_size);
 
-        // put the subset ids into a Set in order to know quickly if a given
-        // id belongs to the subset or not
-        HashTable< Idx, Idx > subset;
-        {
-          Idx i = 0;
-
-          for (auto id : subset_ids) {
-            subset.insert(id, i);
-            ++i;
+        for (std::size_t h = std::size_t(0), j = std::size_t(0);
+             j < subset_ids_size;
+             ++h) {
+          if (subset_ids.exists(superset_ids[h])) {
+            before_incr[j] = tmp_before_incr - 1;
+            superset_order[subset_ids.pos(superset_ids[h])] = j;
+            tmp_before_incr = 1;
+            ++j;
+          } else {
+            tmp_before_incr *=
+              database.domainSize(nodeId2columns[superset_ids[h]]);
           }
         }
 
-        for (Idx h = 0, j = 0; h < superset_ids.size(); ++h) {
-          if (j < subset_size) {
-            if (subset.exists(superset_ids[h])) {
-              if (has_before_incr) {
-                before_incr[j] = tmp_before_incr - 1;
-                has_before_incr = false;
-              } else {
-                before_incr[j] = 0;
-              }
-
-              superset_order[subset[superset_ids[h]]] = j;
-              tmp_before_incr = 1;
-              ++j;
-            } else {
-              Idx modality = __modalities->operator[](superset_ids[h]);
-              tmp_before_incr *= modality;
-              has_before_incr = true;
-            }
-          }
-        }
-
-        // compute the offsets in the correct order
-        for (Idx i = 0; i < subset_ids.size(); ++i) {
-          Idx modality = __modalities->operator[](subset_ids[i]);
-          Idx                          j = superset_order[i];
-          result_domain[j] = modality;
+        // compute the offsets in the order of the superset_ids
+        for (std::size_t i = 0; i < subset_ids.size(); ++i) {
+          const std::size_t domain_size =
+            database.domainSize(nodeId2columns[subset_ids[i]]);
+          const std::size_t j = superset_order[i];
+          result_domain[j] = domain_size;
           result_offset[j] = result_domain_size;
-          result_domain_size *= modality;
+          result_domain_size *= domain_size;
         }
       }
 
-      std::vector< Idx > result_value = result_domain;
-      std::vector< Idx > current_incr = before_incr;
-      std::vector< Idx > result_down = result_offset;
+      std::vector< std::size_t > result_value(result_domain);
+      std::vector< std::size_t > current_incr(before_incr);
+      std::vector< std::size_t > result_down(result_offset);
 
-      for (Idx j = 0; j < result_down.size(); ++j) {
-        result_down[j] = (result_domain[j] - 1) * result_offset[j];
+      for (std::size_t j = std::size_t(0); j < result_down.size(); ++j) {
+        result_down[j] *= (result_domain[j] - 1);
       }
 
-      // now, fill the subset _counting vector: first loop over the variables
-      // X's in table that do not belong to result and, for each value of
-      // these X's, loop over the variables in both table and result. As
-      // such, in the internal loop, the offsets of "result" need only be
-      // incremented as usually to parse appropriately this table. For
-      // result, the problem is slightly more complicated: in the outer for
-      // loop, we shall always reset resul_offset to 0. For the inner loop,
-      // result_offset should be incremented (++) only when t1
-      // before_incr[xxx] steps in the loop have already been made.
-      Idx  the_result_offset = 0;
-      Size table_domain_size = Size(superset_vect.size());
+      // now we can loop over the superset_vect to fill result_vect
+      const std::size_t superset_vect_size = superset_vect.size();
+      std::size_t       the_result_offset = std::size_t(0);
+      for (std::size_t h = std::size_t(0); h < superset_vect_size; ++h) {
+        result_vect[the_result_offset] += superset_vect[h];
 
-      for (Idx h = 0; h < table_domain_size; ++h) {
-        subset_vect[the_result_offset] += superset_vect[h];
-
-        // update the offset of result
-        for (Idx k = 0; k < current_incr.size(); ++k) {
+        // update the offset of result_vect
+        for (std::size_t k = 0; k < current_incr.size(); ++k) {
           // check if we need modify result_offset
           if (current_incr[k]) {
             --current_incr[k];
@@ -598,202 +590,297 @@ namespace gum {
           the_result_offset -= result_down[k];
         }
       }
-    }
 
-    // computes the countings of the subsets from those of their supersets
-    template < typename IdSetAlloc, typename CountAlloc >
-    void RecordCounter< IdSetAlloc, CountAlloc >::countSubsets() {
-      // computes a queue of the subsets that can be considered for _counting
-      // to do so, simply fill it with the nodes without parents in the
-      // subset lattice
-      List< NodeId > setFIFO;
-
-      for (const auto node : __subset_lattice) {
-        if (__subset_lattice.parents(node).size() == 0) { setFIFO.pushBack(node); }
-      }
-
-      // perform the countings for the subsets
-      while (!setFIFO.empty()) {
-        // get the next set to count
-        NodeId new_set = setFIFO.front();
-        setFIFO.popFront();
-
-        // perform the _counting
-        __countOneSubset(new_set);
-
-        // update the subset lattice and add, if needed, new sets into setFIFO
-        const NodeSet& children = __subset_lattice.children(new_set);
-
-        for (typename NodeSet::const_iterator iter = children.begin();
-             iter != children.end();
-             ++iter) {
-          if (__subset_lattice.parents(*iter).size() == 1) {
-            setFIFO.pushBack(*iter);
-          } else {
-            __subset_lattice.eraseArc(Arc(new_set, *iter));
-          }
-        }
+      // save the subset_ids and the result vector
+      try {
+        __last_nonDB_ids = subset_ids;
+        __last_nonDB_countings = std::move(result_vect);
+        return __last_nonDB_countings;
+      } catch (...) {
+        __last_nonDB_ids.clear();
+        __last_nonDB_countings.clear();
+        throw;
       }
     }
 
-    /// perform the countings of all the sets of ids
-    template < typename IdSetAlloc, typename CountAlloc >
-    void RecordCounter< IdSetAlloc, CountAlloc >::count() {
-      // first, we examine the nodesets to determine which ones are subsets
-      // of other nodesets. For those sets, we will derive their countings
-      // directly from their supersets
-      __computeSubsets();
 
-      // divide the countings among threads w.r.t. the database, i.e., each
-      // thread will compute all the countings but only on a subset of the
-      // database
-      countOnSubDatabase();
-
-      // perform the countings on the subsets
-      countSubsets();
-
-      // deallocate the memory used by the thread counters
-      for (auto counter : __thread_counters) {
-        counter->clearNodeSets();
-      }
-    }
-
-    /// returns the counts performed for a given idSet
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE const std::vector< double, CountAlloc >&
-                 RecordCounter< IdSetAlloc, CountAlloc >::getCounts(Idx idset) const
-      noexcept {
-      return __countings[idset];
-    }
-
-    /// resets the counter, i.e., remove all its sets of ids and counting
-    /// vectors
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE void RecordCounter< IdSetAlloc, CountAlloc >::clearNodeSets() noexcept {
-      for (auto counter : __thread_counters) {
-        counter->clearNodeSets();
+    /// parse the database to produce new countings
+    template < template < typename > class ALLOC >
+    std::vector< double, ALLOC< double > >&
+      RecordCounter< ALLOC >::__countFromDatabase(const IdSet< ALLOC >& ids) {
+      // if the ids vector is empty or the database is empty, return an
+      // empty vector
+      const auto& database = __parsers[0].data.database();
+      if (ids.empty() || database.empty()) {
+        __last_nonDB_countings.clear();
+        __last_nonDB_ids.clear();
+        return __last_nonDB_countings;
       }
 
-      __idsets.clear();
-      __var2idsets.clear();
-      __set_state.clear();
-      __countings.clear();
-      __set2thread_id.clear();
-      __idset2index.clear();
-      __nodesets.clear();
-      __subset_lattice.clear();
-    }
-
-    /// determine which sets are subsets
-    template < typename IdSetAlloc, typename CountAlloc >
-    void RecordCounter< IdSetAlloc, CountAlloc >::__computeSubsets() {
-      // sort the idSets by increasing size order for each variable
-      for (auto iter = __var2idsets.begin(); iter != __var2idsets.end(); ++iter) {
-        std::sort(iter.val().begin(),
-                  iter.val().end(),
-                  [](const IdSet< IdSetAlloc >* set1,
-                     const IdSet< IdSetAlloc >* set2) -> bool {
-                    return set1->ids().size() < set2->ids().size();
-                  });
+      // get the set of ranges within which each thread should perform its
+      // computations
+      std::vector< std::pair< std::size_t, std::size_t > > ranges;
+      bool                                                 add_range = false;
+      if (__ranges.empty()) {
+        __ranges.push_back(std::pair< std::size_t, std::size_t >(
+          std::size_t(0), database.nbRows()));
+        add_range = true;
       }
+      for (const auto& range : __ranges) {
+        const std::size_t range_size = range.second - range.first;
+        if (range_size > std::size_t(0)) {
+          std::size_t nb_threads = range_size / __min_nb_rows_per_thread;
+          if (nb_threads < 1)
+            nb_threads = 1;
+          else if (nb_threads > __max_nb_threads)
+            nb_threads = __max_nb_threads;
+          std::size_t nb_rows_par_thread = range_size / nb_threads;
+          std::size_t rest_rows = range_size - nb_rows_par_thread * nb_threads;
 
-      // now, for each IdSet, determine if it is a subset of another IdSet
-      for (NodeId i = 0, j = 0, size = NodeId(__set2thread_id.size()); i < size;
-           ++i) {
-        if (__set_state[i] < SetState::COPY_SET) {
-          // the set is not known to be a copy of another set and is not empty
-
-          // get the IdSet to determine
-          const IdSet< IdSetAlloc >& ids = *(__set2thread_id[i].first);
-          const Size                 ids_size = Size(ids.ids().size());
-
-          // get all the sets that contain its first variable and parse them
-          const std::vector< const IdSet< IdSetAlloc >* >& sets =
-            __var2idsets[ids[0]];
-          bool subset = false;
-          Idx  index;
-
-          for (const auto set : sets) {
-            if ((set->ids().size() > ids_size) && ids.isSubset(*set)) {
-              subset = true;
-              index = __idset2index[set];
-              break;
+          std::size_t begin_index = range.first;
+          for (std::size_t i = std::size_t(0); i < nb_threads; ++i) {
+            std::size_t end_index = begin_index + nb_rows_par_thread;
+            if (rest_rows != std::size_t(0)) {
+              ++end_index;
+              --rest_rows;
             }
-          }
-
-          if (subset) {
-            // assign the superset to the subset and allocate the subset's
-            // _counting
-            __set_state[i] = SetState::STRICT_SUBSET;
-            __set2thread_id[i].second = NodeId(index);
-            __subset_lattice.addArc(NodeId(index), i);
-          } else {
-            __set2thread_id[i].second = j;
-            ++j;
+            ranges.push_back(
+              std::pair< std::size_t, std::size_t >(begin_index, end_index));
+            begin_index = end_index;
           }
         }
       }
+      if (add_range) __ranges.clear();
 
-      // now that we know which nodes are supersets and which ones are not, we
-      // can remove from the lattice all the nodes that are supersets
-      Size size = Size(__set2thread_id.size());
-      for (NodeId i = 0; i < size; ++i) {
-        if (__set_state[i] == SetState::NOT_SUBSET) {
-          __subset_lattice.eraseNode(i);
+      // if ranges is empty, return the empty vector
+      if (ranges.empty()) {
+        __last_nonDB_countings.clear();
+        __last_nonDB_ids.clear();
+        return __last_nonDB_countings;
+      }
+
+      // sort ranges by decreasing range size, so that if the number of
+      // ranges exceeds the number of threads allowed, we start a first round of
+      // threads with the highest range, then another round with lower ranges,
+      // and so on until all the ranges have been processed
+      std::sort(ranges.begin(),
+                ranges.end(),
+                [](const std::pair< std::size_t, std::size_t >& a,
+                   const std::pair< std::size_t, std::size_t >& b) -> bool {
+                  return (a.second - a.first) > (b.second - b.first);
+                });
+
+
+      // we translate the ids into their corresponding columns in the
+      // DatabaseTable
+      const auto nodeId2columns = __getNodeIds2Columns(ids);
+
+      // we first determine the size of the counting vector, the domain of
+      // each of its variables and their offsets in the output vector
+      const std::size_t ids_size = ids.size();
+      std::size_t       counting_vect_size = std::size_t(1);
+      std::vector< std::size_t, ALLOC< std::size_t > > domain_sizes(ids_size);
+      std::vector< std::pair< std::size_t, std::size_t >,
+                   ALLOC< std::pair< std::size_t, std::size_t > > >
+        cols_offsets(ids_size);
+      {
+        std::size_t i = std::size_t(0);
+        for (const auto id : ids) {
+          const std::size_t domain_size = database.domainSize(nodeId2columns[id]);
+          domain_sizes[i] = domain_size;
+          cols_offsets[i].first = nodeId2columns[id];
+          cols_offsets[i].second = counting_vect_size;
+          counting_vect_size *= domain_size;
+          ++i;
         }
       }
+
+      // we sort the columns and offsets by increasing column index. This
+      // may speed up threaded countings by improving the cacheline hits
+      std::sort(cols_offsets.begin(),
+                cols_offsets.end(),
+                [](const std::pair< std::size_t, std::size_t >& a,
+                   const std::pair< std::size_t, std::size_t >& b) -> bool {
+                  return a.first < b.first;
+                });
+
+      // create parsers if needed
+      const std::size_t nb_ranges = ranges.size();
+      const std::size_t nb_threads =
+        nb_ranges <= __max_nb_threads ? nb_ranges : __max_nb_threads;
+      while (__parsers.size() < nb_threads) {
+        thread::ThreadData< DBRowGeneratorParser< ALLOC > > new_parser(
+          __parsers[0]);
+        __parsers.push_back(std::move(new_parser));
+      }
+
+      // allocate all the counting vectors, including that which will add
+      // all the results provided by the threads. We initialize once and
+      // for all these vectors with zeroes
+      std::vector< double, ALLOC< double > > counting_vect(counting_vect_size,
+                                                           0.0);
+      std::vector<
+        thread::ThreadData< std::vector< double, ALLOC< double > > >,
+        ALLOC< thread::ThreadData< std::vector< double, ALLOC< double > > > > >
+        thread_countings(
+          nb_threads,
+          thread::ThreadData< std::vector< double, ALLOC< double > > >(
+            counting_vect));
+
+      // launch the threads
+      // here we use openMP for launching the threads because, experimentally,
+      // it seems to provide results that are twice as fast as the results
+      // with the std::thread
+      for (std::size_t i = std::size_t(0); i < nb_ranges; i += nb_threads) {
+#  pragma omp parallel num_threads(int(nb_threads))
+        {
+          // get the number of the thread
+          const std::size_t this_thread = getThreadNumber();
+
+          DBRowGeneratorParser< ALLOC >& parser = __parsers[this_thread].data;
+          parser.setRange(ranges[this_thread + i].first,
+                          ranges[this_thread + i].second);
+          std::vector< double, ALLOC< double > >& countings =
+            thread_countings[this_thread].data;
+
+          // parse the database
+          try {
+            while (parser.hasRows()) {
+              // get the observed rows
+              const DBRow< DBTranslatedValue >& row = parser.row();
+
+              // fill the counts for the current row
+              std::size_t offset = std::size_t(0);
+              for (std::size_t i = std::size_t(0); i < ids_size; ++i) {
+                offset +=
+                  row[cols_offsets[i].first].discr_val * cols_offsets[i].second;
+              }
+
+              countings[offset] += row.weight();
+            }
+          } catch (NotFound&) {}   // this exception is raised by the row filter
+                                   // if the row generators create no output row
+                                   // from the last rows of the database
+        }
+      }
+
+      // add the counts to counting_vect
+      for (std::size_t k = std::size_t(0); k < nb_threads; ++k) {
+        const auto& thread_counting = thread_countings[k].data;
+        for (std::size_t r = std::size_t(0); r < counting_vect_size; ++r) {
+          counting_vect[r] += thread_counting[r];
+        }
+      }
+
+      // save the final results
+      __last_DB_ids = ids;
+      __last_DB_countings = std::move(counting_vect);
+
+      return __last_DB_countings;
     }
 
-    /// returns the modalities of the variables in the database
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE const std::vector< Idx >&
-                 RecordCounter< IdSetAlloc, CountAlloc >::modalities() const {
-      if (__modalities)
-        return *__modalities;
-      else {
-        GUM_ERROR(NullElement,
-                  "The record Counter does not have any modalities stored yet");
+
+    /// the method used by threads to produce countings by parsing the database
+    template < template < typename > class ALLOC >
+    void RecordCounter< ALLOC >::__threadedCount(
+      const std::size_t              begin,
+      const std::size_t              end,
+      DBRowGeneratorParser< ALLOC >& parser,
+      const std::vector< std::pair< std::size_t, std::size_t >,
+                         ALLOC< std::pair< std::size_t, std::size_t > > >&
+                                              cols_offsets,
+      std::vector< double, ALLOC< double > >& countings) {
+      parser.setRange(begin, end);
+
+      try {
+        const std::size_t nb_columns = cols_offsets.size();
+        while (parser.hasRows()) {
+          // get the observed filtered rows
+          const DBRow< DBTranslatedValue >& row = parser.row();
+
+          // fill the counts for the current row
+          std::size_t offset = std::size_t(0);
+          for (std::size_t i = std::size_t(0); i < nb_columns; ++i) {
+            offset +=
+              row[cols_offsets[i].first].discr_val * cols_offsets[i].second;
+          }
+
+          countings[offset] += row.weight();
+        }
+      } catch (NotFound&) {}   // this exception is raised by the row filter if the
+                               // row generators create no output row from the last
+                               // rows of the database
+    }
+
+
+    /// checks that the ranges passed in argument are ok or raise an exception
+    template < template < typename > class ALLOC >
+    template < template < typename > class XALLOC >
+    void RecordCounter< ALLOC >::__checkRanges(
+      const std::vector< std::pair< std::size_t, std::size_t >,
+                         XALLOC< std::pair< std::size_t, std::size_t > > >&
+        new_ranges) const {
+      const std::size_t dbsize = __parsers[0].data.database().nbRows();
+      std::vector< std::pair< std::size_t, std::size_t >,
+                   ALLOC< std::pair< std::size_t, std::size_t > > >
+        incorrect_ranges;
+      for (const auto& range : new_ranges) {
+        if ((range.first >= range.second) || (range.second > dbsize)) {
+          incorrect_ranges.push_back(range);
+        }
+      }
+      if (!incorrect_ranges.empty()) {
+        std::stringstream str;
+        str << "It is impossible to set the ranges because the following one";
+        if (incorrect_ranges.size() > 1)
+          str << "s are incorrect: ";
+        else
+          str << " is incorrect: ";
+        bool deja = false;
+        for (const auto& range : incorrect_ranges) {
+          if (deja)
+            str << ", ";
+          else
+            deja = true;
+          str << '[' << range.first << ';' << range.second << ')';
+        }
+
+        GUM_ERROR(OutOfBounds, str.str());
       }
     }
 
-    /// sets the maximum number of threads used to perform countings
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE void
-      RecordCounter< IdSetAlloc, CountAlloc >::setMaxNbThreads(Size nb) noexcept {
-#  if defined(_OPENMP) && !defined(GUM_DEBUG_MODE)
-      if (nb == 0) nb = getMaxNumberOfThreads();
 
-      __max_threads_number = nb;
-#  else
-      __max_threads_number = 1;
-#  endif /* _OPENMP && GUM_DEBUG_MODE */
-    }
+    /// sets new ranges to perform the countings
+    template < template < typename > class ALLOC >
+    template < template < typename > class XALLOC >
+    void RecordCounter< ALLOC >::setRanges(
+      const std::vector< std::pair< std::size_t, std::size_t >,
+                         XALLOC< std::pair< std::size_t, std::size_t > > >&
+        new_ranges) {
+      // first, we check that all ranges are within the database's bounds
+      __checkRanges(new_ranges);
 
-    /// returns the counting performed
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE std::vector< std::vector< double, CountAlloc > >&
-           RecordCounter< IdSetAlloc, CountAlloc >::__getCounts() noexcept {
-      return __countings;
-    }
-
-    /// returns the size of the database
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE Size RecordCounter< IdSetAlloc, CountAlloc >::DBParsedSize() noexcept {
-      return __max_range - __min_range;
-    }
-
-
-    /// returns the size of the database
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE void RecordCounter< IdSetAlloc, CountAlloc >::setRange(Size min_range,
-                                                                  Size max_range) {
-      const Size db_size = __thread_counters[0]->DBSize();
-      if (max_range > db_size) { max_range = db_size; }
-      if (min_range >= max_range) {
-        GUM_ERROR(OutOfBounds, "min/max database range incorrects");
+      // since the ranges are OK, save them and clear the counting caches
+      const std::size_t new_size = new_ranges.size();
+      std::vector< std::pair< std::size_t, std::size_t >,
+                   ALLOC< std::pair< std::size_t, std::size_t > > >
+        ranges(new_size);
+      for (std::size_t i = std::size_t(0); i < new_size; ++i) {
+        ranges[i].first = new_ranges[i].first;
+        ranges[i].second = new_ranges[i].second;
       }
-      __min_range = min_range;
-      __max_range = max_range;
+
+      clear();
+      __ranges = std::move(ranges);
+    }
+
+
+    /// reset the ranges to the one range corresponding to the whole database
+    template < template < typename > class ALLOC >
+    void RecordCounter< ALLOC >::clearRanges() {
+      if (__ranges.empty()) return;
+      clear();
+      __ranges.clear();
     }
 
 

@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief the abstract class for all the independence tests
+ * @brief Implementation of gum::learning::IndependenceTest
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */

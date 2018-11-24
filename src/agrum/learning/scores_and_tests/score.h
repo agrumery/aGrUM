@@ -20,27 +20,19 @@
 /** @file
  * @brief the base class for all the scores used for learning (BIC, BDeu, etc)
  *
- * The class should be used as follows: first, to speed-up computations, you
- * should consider computing all the scores you need in one pass. To do so,
- * use the appropriate addNodeSet methods. These will compute everything you
- * need. The addNodeSet methods where you do not specify a set of conditioning
- * nodes assume that this set is empty. Once the computations have been
- * performed, use method _getAllCounts and _getConditioningCounts to get the
- * observed countings if you are developping a new score class, or use
- * method score to get the computed score if you are an end user.
- *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #ifndef GUM_LEARNING_SCORE_H
 #define GUM_LEARNING_SCORE_H
 
+#include <utility>
+
 #include <agrum/agrum.h>
 #include <agrum/core/math/math.h>
+#include <agrum/core/thread.h>
 
-#include <agrum/learning/scores_and_tests/cache4Score.h>
-#include <agrum/learning/scores_and_tests/counter.h>
-#include <agrum/learning/scores_and_tests/scoreInternalApriori.h>
-
+#include <agrum/learning/scores_and_tests/recordCounter.h>
+#include <agrum/learning/scores_and_tests/scoringCache.h>
 #include <agrum/learning/aprioris/apriori.h>
 #include <agrum/learning/structureUtils/graphChange.h>
 
@@ -48,117 +40,148 @@ namespace gum {
 
   namespace learning {
 
-    /* =========================================================================
-     */
-    /* ===                            SCORE CLASS                            ===
-     */
-    /* =========================================================================
-     */
     /** @class Score
-     * @brief The base class for all the scores used for learning (BIC, BDeu,
-     *etc)
-     * @ingroup learning_group
-     *
-     * The class should be used as follows: first, to speed-up computations, you
-     * should consider computing all the scores you need in one pass. To do so,
-     * use the appropriate addNodeSet methods. These will compute everything you
-     * need. The addNodeSet methods where you do not specify a set of
-     *conditioning
-     * nodes assume that this set is empty. Once the computations have been
-     * performed, use method _getAllCounts and _getConditioningCounts to get the
-     * observed countings if you are developping a new score class, or use
-     * method score to get the computed score if you are an end user. */
-    template < typename IdSetAlloc = std::allocator< Idx >,
-               typename CountAlloc = std::allocator< double > >
-    class Score : private Counter< IdSetAlloc, CountAlloc > {
+     * @brief The base class for all the scores used for learning (BIC, BDeu, etc)
+     * @headerfile score.h <agrum/learning/scores_and_tests/score.h>
+     * @ingroup learning_scores
+     */
+    template < template < typename > class ALLOC = std::allocator >
+    class Score {
       public:
+      /// type for the allocators passed in arguments of methods
+      using allocator_type = ALLOC< NodeId >;
+
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// default constructor
-      /**
-       * @param filter the row filter that will be used to read the database
-       * @param var_modalities the domain sizes of the variables in the database
-       * @param apriori the a priori that is taken into account in the
-       * score/countings
-       * @param min_range The minimal range.
-       * @param max_range The maximal range.
-       */
-      template < typename RowFilter >
-      Score(const RowFilter&                   filter,
-            const std::vector< Size >&         var_modalities,
-            Apriori< IdSetAlloc, CountAlloc >& apriori,
-            Size                               min_range = 0,
-            Size max_range = std::numeric_limits< Size >::max());
+      /** @param parser the parser used to parse the database
+       * @param external_apriori An apriori that we add to the computation of
+       * the score (this should come from expert knowledge)
+       * @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
+       * indices. The countings are then performed only on the union of the
+       * rows [Xi,Yi), i in {1,...,n}. This is useful, e.g, when performing
+       * cross validation tasks, in which part of the database should be ignored.
+       * An empty set of ranges is equivalent to an interval [X,Y) ranging over
+       * the whole database.
+       * @param nodeId2Columns a mapping from the ids of the nodes in the
+       * graphical model to the corresponding column in the DatabaseTable
+       * parsed by the parser. This enables estimating from a database in
+       * which variable A corresponds to the 2nd column the parameters of a BN
+       * in which variable A has a NodeId of 5. An empty nodeId2Columns
+       * bijection means that the mapping is an identity, i.e., the value of a
+       * NodeId is equal to the index of the column in the DatabaseTable.
+       * @param alloc the allocator used to allocate the structures within the
+       * Score.
+       * @warning If nodeId2columns is not empty, then only the scores over the
+       * ids belonging to this bijection can be computed: applying method
+       * score() over other ids will raise exception NotFound. */
+      Score(const DBRowGeneratorParser< ALLOC >& parser,
+            const Apriori< ALLOC >&              external_apriori,
+            const std::vector< std::pair< std::size_t, std::size_t >,
+                               ALLOC< std::pair< std::size_t, std::size_t > > >&
+              ranges,
+            const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+              nodeId2columns =
+                Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+            const allocator_type& alloc = allocator_type());
 
-      /// virtual copy factory
-      virtual Score< IdSetAlloc, CountAlloc >* copyFactory() const = 0;
+
+      /// default constructor
+      /** @param parser the parser used to parse the database
+       * @param external_apriori An apriori that we add to the computation of
+       * the score (this should come from expert knowledge)
+       * @param nodeId2Columns a mapping from the ids of the nodes in the
+       * graphical model to the corresponding column in the DatabaseTable
+       * parsed by the parser. This enables estimating from a database in
+       * which variable A corresponds to the 2nd column the parameters of a BN
+       * in which variable A has a NodeId of 5. An empty nodeId2Columns
+       * bijection means that the mapping is an identity, i.e., the value of a
+       * NodeId is equal to the index of the column in the DatabaseTable.
+       * @param alloc the allocator used to allocate the structures within the
+       * Score.
+       * @warning If nodeId2columns is not empty, then only the scores over the
+       * ids belonging to this bijection can be computed: applying method
+       * score() over other ids will raise exception NotFound. */
+      Score(const DBRowGeneratorParser< ALLOC >& parser,
+            const Apriori< ALLOC >&              external_apriori,
+            const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+              nodeId2columns =
+                Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+            const allocator_type& alloc = allocator_type());
+
+      /// virtual copy constructor
+      virtual Score< ALLOC >* clone() const = 0;
+
+      /// virtual copy constructor with a given allocator
+      virtual Score< ALLOC >* clone(const allocator_type& alloc) const = 0;
 
       /// destructor
       virtual ~Score();
 
       /// @}
 
+
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
       /// @{
 
-      /// add a new single variable to be counted
-      /** @param var represents the index of the variable in the filtered rows
-       * produced by the database cell filters whose observations shall be
-       * counted
-       * @return the index of the produced counting vector: the user should use
-       * class Score to compute in one pass several scores or independence
-       * tests. These and their corresponding countings in the database are
-       * stored
-       * into a vector and the value returned by method addNodeSet is the index
-       * of
-       * the observed countings of "var" in this vector. The user shall pass
-       * this
-       * index as argument to methods _getAllCounts to get the corresponding
-       * counting vector. */
-      Idx addNodeSet(Idx var);
+      /// changes the max number of threads used to parse the database
+      virtual void setMaxNbThreads(std::size_t nb) const;
 
-      /// add a new target variable plus some conditioning vars
-      /** @param var represents the index of the target variable in the filtered
-       * rows produced by the database cell filters
-       * @param conditioning_ids the indices of the variables of the
-       * conditioning
-       * set in the filtered rows
-       * @return the index of the produced counting vector: the user should use
-       * class Score to compute in one pass several scores or independence
-       * tests. These and their corresponding countings in the database are
-       * stored into a vector and the value returned by method addNodeSet is the
-       * index of the countings of (var | conditioning_ids) in this vector. The
-       * user shall pass this index as argument to methods _getAllCounts and
-       * _getConditioningCounts to get the counting vectors of
-       * (conditioning_ids,vars) [in this order] and conditioning_ids
-       * respectively. */
-      Idx addNodeSet(Idx var, const std::vector< Idx >& conditioning_ids);
+      /// returns the number of threads used to parse the database
+      virtual std::size_t nbThreads() const;
 
-      /// clears all the data structures from memory
+      /** @brief changes the number min of rows a thread should process in a
+       * multithreading context
+       *
+       * When computing score, several threads are used by record counters to
+       * perform countings on the rows of the database, the MinNbRowsPerThread
+       * method indicates how many rows each thread should at least process.
+       * This is used to compute the number of threads actually run. This number
+       * is equal to the min between the max number of threads allowed and the
+       * number of records in the database divided by nb. */
+      virtual void setMinNbRowsPerThread(const std::size_t nb) const;
+
+      /// returns the minimum of rows that each thread should process
+      virtual std::size_t minNbRowsPerThread() const;
+
+      /// returns the score of a single node
+      double score(const NodeId var);
+
+      /// returns the score of a single node given some other nodes
+      /** @param var the variable on the left side of the conditioning bar
+       * @param rhs_ids the set of variables on the right side of the
+       * conditioning bar */
+      double score(const NodeId                                  var,
+                   const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids);
+
+      /// clears all the data structures from memory, including the cache
       void clear();
 
-      /// clears the current cache (clear nodesets as well)
+      /// clears the current cache
       void clearCache();
 
       /// turn on/off the use of a cache of the previously computed score
-      void useCache(bool on_off) noexcept;
+      void useCache(const bool on_off);
 
-      /// returns the modalities of the variables
-      using Counter< IdSetAlloc, CountAlloc >::modalities;
+      /// indicates whether the score uses a cache
+      bool isUsingCache() const;
 
-      /// sets the maximum number of threads used to compute the scores
-      using Counter< IdSetAlloc, CountAlloc >::setMaxNbThreads;
+      /// return the mapping between the columns of the database and the node ids
+      /** @warning An empty nodeId2Columns bijection means that the mapping is
+       * an identity, i.e., the value of a NodeId is equal to the index of the
+       * column in the DatabaseTable. */
+      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+        nodeId2Columns() const;
 
-      /// returns the score corresponding to a given nodeset
-      virtual double score(Idx nodeset_index) = 0;
+      /// return the database used by the score
+      const DatabaseTable< ALLOC >& database() const;
 
-      /// indicates whether the apriori is compatible (meaningful) with the
-      /// score
+      /// indicates whether the apriori is compatible (meaningful) with the score
       /** The combination of some scores and aprioris can be meaningless. For
        * instance, adding a Dirichlet apriori to the K2 score is not very
        * meaningful since K2 corresonds to a BD score with a 1-smoothing
@@ -170,125 +193,74 @@ namespace gum {
 
       /// returns the internal apriori of the score
       /** Some scores include an apriori. For instance, the K2 score is a BD
-       * score
-       * with a Laplace Apriori ( smoothing(1) ). BDeu is a BD score with a
-       * N'/(r_i * q_i) apriori, where N' is an effective sample size and r_i is
-       * the domain size of the target variable and q_i is the domain size of
-       * the
-       * Cartesian product of its parents. The goal of the score's internal
-       * apriori
-       * classes is to enable to account for these aprioris outside the score,
-       * e.g., when performing parameter estimation. It is important to note
-       * that,
-       * to be meaningfull a structure + parameter learning requires that the
-       * same
-       * aprioris are taken into account during structure learning and parameter
-       * learning. */
-      virtual const ScoreInternalApriori< IdSetAlloc, CountAlloc >&
-        internalApriori() const noexcept = 0;
+       * score with a Laplace Apriori ( smoothing(1) ). BDeu is a BD score with
+       * a N'/(r_i * q_i) apriori, where N' is an effective sample size and r_i
+       * is the domain size of the target variable and q_i is the domain size of
+       * the Cartesian product of its parents. The goal of the score's internal
+       * apriori classes is to enable to account for these aprioris outside the
+       * score, e.g., when performing parameter estimation. It is important to
+       * note that, to be meaningful, a structure + parameter learning requires
+       * that the same aprioris are taken into account during structure learning
+       * and parameter learning. */
+      virtual const Apriori< ALLOC >& internalApriori() const = 0;
 
-      /// sets the range of records taken into account by the counter
-      /** @param min_range he number of the first record to be taken into
-       * account during learning
-       * @param max_range the number of the record after the last one taken
-       * into account*/
-      void setRange(Size min_range, Size max_range);
+      /// returns the allocator used by the score
+      allocator_type getAllocator() const;
 
       /// @}
+
 
       protected:
       /// 1 / log(2)
       const double _1log2{M_LOG2E};
 
-      /// the a priori used by the score
-      Apriori< IdSetAlloc, CountAlloc >* _apriori;
+      /// the expert knowledge a priori we add to the score
+      Apriori< ALLOC >* _apriori{nullptr};
 
-      /// returns the counting vector for a given (conditioned) target set
-      /** This method returns the observation countings for the set of variables
-       * whose index was returned by method addNodeSet or addNodeSet. If the
-       * set was conditioned, the countings correspond to the target variables
-       * @b and the conditioning variables. If you wish to get only the
-       * countings
-       * for the conditioning variables, prefer using method
-       * _getConditioningCounts.
-       * @warning the dimensions of the vector are as follows: first come the
-       * nodes of the conditioning set (in the order in which they were
-       * specified
-       * when callind addNodeset, and then the target nodes. */
-      using Counter< IdSetAlloc, CountAlloc >::_getAllCounts;
+      /// the record counter used for the countings over discrete variables
+      RecordCounter< ALLOC > _counter;
 
-      /// returns the counting vector for a conditioning set
-      /** see method _getAllCounts for details */
-      using Counter< IdSetAlloc, CountAlloc >::_getConditioningCounts;
-
-      /// returns the set of target + conditioning nodes
-      /** conditioning nodes are always the first ones in the vector and targets
-       * are the last ones */
-      using Counter< IdSetAlloc, CountAlloc >::_getAllNodes;
-
-      /// returns the conditioning nodes (nullptr if there are no such nodes)
-      using Counter< IdSetAlloc, CountAlloc >::_getConditioningNodes;
-
-      /// returns the apriori vector for a given (conditioned) target set
-      /** This method returns the observation countings for the set of variables
-       * whose index was returned by method addNodeSet or addNodeSet. If the
-       * set was conditioned, the countings correspond to the target variables
-       * @b and the conditioning variables. If you wish to get only the
-       * countings
-       * for the conditioning variables, prefer using method
-       * _getConditioningApriori.
-       * @warning the dimensions of the vector are as follows: first come the
-       * nodes of the conditioning set (in the order in which they were
-       * specified
-       * when callind addNodeset, and then the target nodes. */
-      const std::vector< double, CountAlloc >& _getAllApriori(Idx index);
-
-      /// returns the apriori vector for a conditioning set
-      const std::vector< double, CountAlloc >& _getConditioningApriori(Idx index);
-
-      /// indicates whether a score belongs to the cache
-      bool _isInCache(Idx nodeset_index) const noexcept;
-
-      /// inserts a new score into the cache
-      void _insertIntoCache(Idx nodeset_index, double score);
-
-      /// returns a cached score
-      double _cachedScore(Idx nodeset_index) const noexcept;
-
-      /// indicates whether we use the cache or not
-      bool _isUsingCache() const noexcept;
-
-      /// copy constructor: to be used by the virtual copy constructor
-      Score(const Score< IdSetAlloc, CountAlloc >&);
-
-      /// move constructor: to be used by the descendants in the hierarchy
-      Score(Score< IdSetAlloc, CountAlloc >&&);
-
-      private:
-      /// a cache for the previously computed scores
-      Cache4Score __cache;
+      /// the scoring cache
+      ScoringCache< ALLOC > _cache;
 
       /// a Boolean indicating whether we wish to use the cache
-      bool __use_cache{true};
+      bool _use_cache{true};
 
-      /// indicates whether the ith nodeset's score is in the cache or not
-      std::vector< bool > __is_cached_score;
+      /// the maximal number of threads that the score can use
+      mutable std::size_t _max_nb_threads{
+        std::size_t(thread::getMaxNumberOfThreads())};
 
-      /// the vector of scores for the current nodesets
-      std::vector< double > __cached_score;
+      /** @brief the min number of database rows that a thread should process
+       * in a multithreading context */
+      mutable std::size_t _min_nb_rows_per_thread{100};
 
-      /// has the a priori been computed
-      bool __apriori_computed{false};
+      /// an empty vector
+      const std::vector< NodeId, ALLOC< NodeId > > _empty_ids;
 
-      /// an empty conditioning set
-      const std::vector< Idx > __empty_conditioning_set;
 
-      // ##########################################################################
-      // ##########################################################################
+      /// copy constructor
+      Score(const Score< ALLOC >& from);
 
-      /// prevent copy operator
-      Score< IdSetAlloc, CountAlloc >&
-        operator=(const Score< IdSetAlloc, CountAlloc >&) = delete;
+      /// copy constructor with a given allocator
+      Score(const Score< ALLOC >& from, const allocator_type& alloc);
+
+      /// move constructor
+      Score(Score< ALLOC >&& from);
+
+      /// move constructor with a given allocator
+      Score(Score< ALLOC >&& from, const allocator_type& alloc);
+
+      /// copy operator
+      Score< ALLOC >& operator=(const Score< ALLOC >& from);
+
+      /// move operator
+      Score< ALLOC >& operator=(Score< ALLOC >&& from);
+
+      /// returns the score for a given IdSet
+      /** @throws OperationNotAllowed is raised if the score does not support
+       * calling method score such an idset (due to too many/too few variables
+       * in the left hand side or the right hand side of the idset). */
+      virtual double _score(const IdSet< ALLOC >& idset) = 0;
     };
 
   } /* namespace learning */

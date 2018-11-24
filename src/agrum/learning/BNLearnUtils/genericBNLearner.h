@@ -54,6 +54,7 @@
 #include <agrum/learning/aprioris/aprioriDirichletFromDatabase.h>
 #include <agrum/learning/aprioris/aprioriNoApriori.h>
 #include <agrum/learning/aprioris/aprioriSmoothing.h>
+#include <agrum/learning/aprioris/aprioriBDeu.h>
 
 #include <agrum/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/learning/constraints/structuralConstraintDiGraph.h>
@@ -106,7 +107,12 @@ namespace gum {
       enum class ParamEstimatorType { ML };
 
       /// an enumeration to select the apriori
-      enum class AprioriType { NO_APRIORI, SMOOTHING, DIRICHLET_FROM_DATABASE };
+      enum class AprioriType {
+        NO_APRIORI,
+        SMOOTHING,
+        DIRICHLET_FROM_DATABASE,
+        BDEU
+      };
 
       /// an enumeration to select easily the learning algorithm to use
       enum class AlgoType {
@@ -219,11 +225,11 @@ namespace gum {
         /// returns the parser for the database
         DBRowGeneratorParser<>& parser();
 
-        /// returns the modalities of the variables
-        std::vector< Size >& modalities() noexcept;
+        /// returns the domain sizes of the variables
+        const std::vector< std::size_t >& domainSizes() const;
 
         /// returns the names of the variables in the database
-        const std::vector< std::string >& names() const noexcept;
+        const std::vector< std::string >& names() const;
 
         /// returns the node id corresponding to a variable name
         NodeId idFromName(const std::string& var_name) const;
@@ -233,6 +239,9 @@ namespace gum {
 
         /// returns the internal database table
         const DatabaseTable<>& databaseTable() const;
+
+        /// returns the mapping between node ids and their columns in the database
+        const Bijection< NodeId, std::size_t >& nodeId2Columns() const;
 
         /// returns the set of missing symbols taken into account
         const std::vector< std::string >& missingSymbols() const;
@@ -246,11 +255,11 @@ namespace gum {
         /// the parser used for reading the database
         DBRowGeneratorParser<>* __parser{nullptr};
 
-        /// the modalities of the variables
-        std::vector< Size > __modalities;
+        /// the domain sizes of the variables (useful to speed-up computations)
+        std::vector< std::size_t > __domain_sizes;
 
-        /// a hashtable assigning to each variable name its NodeId
-        Bijection< std::string, NodeId > __name2nodeId;
+        /// a bijection assigning to each variable name its NodeId
+        Bijection< NodeId, std::size_t > __nodeId2cols;
 
 /// the max number of threads authorized
 #if defined(_OPENMP) && !defined(GUM_DEBUG_MODE)
@@ -351,8 +360,8 @@ namespace gum {
       /// returns the names of the variables in the database
       const std::vector< std::string >& names() const;
 
-      /// returns the names of the variables in the database
-      const std::vector< Size >& modalities() noexcept;
+      /// returns the domain sizes of the variables in the database
+      const std::vector< std::size_t >& domainSizes() const;
 
       /// returns the node id corresponding to a variable name
       /**
@@ -402,6 +411,12 @@ namespace gum {
       /// use no apriori
       void useNoApriori();
 
+      /// use the BDeu apriori
+      /** The BDeu apriori adds weight/riqi to all the cells of the countings
+       * tables. In other words, it adds weight rows in the database with
+       * equally probable values. */
+      void useAprioriBDeu(double weight = -1);
+
       /// use the apriori smoothing
       /** @param weight pass in argument a weight if you wish to assign a weight
        * to the smoothing, else the current weight of the genericBNLearner will
@@ -424,26 +439,25 @@ namespace gum {
       /// @{
 
       /// indicate that we wish to use a greedy hill climbing algorithm
-      void useGreedyHillClimbing() noexcept;
+      void useGreedyHillClimbing();
 
       /// indicate that we wish to use a local search with tabu list
       /** @param tabu_size indicate the size of the tabu list
        * @param nb_decrease indicate the max number of changes decreasing the
        * score consecutively that we allow to apply */
-      void useLocalSearchWithTabuList(Size tabu_size = 100,
-                                      Size nb_decrease = 2) noexcept;
+      void useLocalSearchWithTabuList(Size tabu_size = 100, Size nb_decrease = 2);
 
       /// indicate that we wish to use K2
-      void useK2(const Sequence< NodeId >& order) noexcept;
+      void useK2(const Sequence< NodeId >& order);
 
       /// indicate that we wish to use K2
-      void useK2(const std::vector< NodeId >& order) noexcept;
+      void useK2(const std::vector< NodeId >& order);
 
       /// indicate that we wish to use 3off2
-      void use3off2() noexcept;
+      void use3off2();
 
       /// indicate that we wish to use MIIC
-      void useMIIC() noexcept;
+      void useMIIC();
 
       /// @}
 
@@ -545,6 +559,8 @@ namespace gum {
       /// the apriori used
       Apriori<>* __apriori{nullptr};
 
+      AprioriNoApriori<>* __no_apriori{nullptr};
+
       /// the weight of the apriori
       double __apriori_weight{1.0f};
 
@@ -572,6 +588,10 @@ namespace gum {
       /// the 3off2 algorithm
       Miic __miic_3off2;
 
+      /// the penalty used in 3off2
+      typename CorrectedMutualInformation<>::KModeTypes __3off2_kmode{
+        CorrectedMutualInformation<>::KModeTypes::MDL};
+
       /// the greedy hill climbing algorithm
       GreedyHillClimbing __greedy_hill_climbing;
 
@@ -580,13 +600,6 @@ namespace gum {
 
       /// the database to be used by the scores and parameter estimators
       Database __score_database;
-
-      /// indicates the values the user specified for the translators
-      NodeProperty< Sequence< std::string > > __user_modalities;
-
-      /// indicates whether we shall parse the database to update
-      /// __user_modalities
-      bool __modalities_parse_db{false};
 
       /// the database used by the Dirichlet a priori
       Database* __apriori_database{nullptr};
@@ -625,6 +638,10 @@ namespace gum {
 
       /// returns the type (as a string) of a given apriori
       const std::string& __getAprioriType() const;
+
+      /// create the Corrected Mutual Information instance for Miic/3off2
+      void __createCorrectedMutualInformation();
+
 
       public:
       // ##########################################################################

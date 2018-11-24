@@ -211,11 +211,27 @@ namespace gum {
       /// returns the handler used by the parser
       const typename DatabaseTable<ALLOC>::Handler& handler() const;
 
-     /// returns the generator set that is actually used
+      /// returns a reference on the database
+      const DatabaseTable<ALLOC>& database () const;
+
+      /// returns the generator set that is actually used
       DBRowGeneratorSet<ALLOC>& generatorSet();
 
       /// returns the generator set that is actually used
       const DBRowGeneratorSet<ALLOC>& generatorSet() const;
+
+      /// sets the area in the database the handler will handle
+      /** In addition to setting the area that will be parsed by the handler,
+       * this method makes the handler point to the beginning of the area.
+       * @param begin the first row to be handled
+       * @param end the handler handles rows in interval [begin,end). Thus,
+       * the endth row is not included in the set of rows handled.
+       * @warning if begin is greater than end, these values are swapped.
+       * @throw NullElement is raised if the handler does not point to
+       * any database
+       * @throw SizeError is raised if end is greater than the number of
+       * rows of the database */
+      void setRange(std::size_t begin, std::size_t end);
 
       /** @brief sets the columns of interest: the output DBRow needs only 
        * contain values fot these columns

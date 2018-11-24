@@ -97,18 +97,12 @@ namespace gum_tests {
       gum::learning::DatabaseTable<> database(translator_set);
       database.setVariableNames(initializer.variableNames());
       initializer.fillDatabase(database);
-
-      database.reorder();
+      // database.reorder();
 
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-
-      std::vector< gum::Size > modalities;
-      for (auto dom : database.domainSizes())
-        modalities.push_back(dom);
-
-      gum::learning::AprioriSmoothing<> apriori;
-      gum::learning::ScoreK2<>          score(parser, modalities, apriori);
+      gum::learning::AprioriSmoothing<>     apriori(database);
+      gum::learning::ScoreK2<>              score(parser, apriori);
 
       gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG,
@@ -133,13 +127,12 @@ namespace gum_tests {
         struct_constraint) = constraint1;
 
       gum::learning::ParamEstimatorML<> estimator(
-        parser, modalities, apriori, score.internalApriori());
+        parser, apriori, score.internalApriori());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
         op_set(struct_constraint);
 
-      gum::learning::GraphChangesSelector4DiGraph< decltype(score),
-                                                   decltype(struct_constraint),
+      gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint),
                                                    decltype(op_set) >
         selector(score, struct_constraint, op_set);
 
@@ -147,19 +140,18 @@ namespace gum_tests {
       // simpleListenerForGHC agsl ( search );
       search.approximationScheme().setEpsilon(1000);
 
-      gum::DAG dag = search.learnStructure(selector, modalities);
+      gum::DAG dag = search.learnStructure(selector);
       TS_ASSERT(dag.arcs().size() == 11);
-      /*
-        gum::BayesNet<double> bn =
-        search.learnBN<double> ( selector, estimator,
-        database.variableNames (),
-        modalities );
 
-        gum::BayesNet<double> bn2 =
-        search.learnBN ( selector, estimator,
-        database.variableNames (),
-        modalities );
-      */
+      // gum::BayesNet<double> bn =
+      // search.learnBN<double> ( selector, estimator,
+      // database.variableNames (),
+      // modalities );
+
+      // gum::BayesNet<double> bn2 =
+      // search.learnBN ( selector, estimator,
+      // database.variableNames (),
+      // modalities );
     }
 
     void test_asia_with_ordered_values() {
@@ -183,13 +175,8 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-
-      std::vector< gum::Size > modalities;
-      for (auto dom : database.domainSizes())
-        modalities.push_back(dom);
-
-      gum::learning::AprioriSmoothing<> apriori;
-      gum::learning::ScoreK2<>          score(parser, modalities, apriori);
+      gum::learning::AprioriSmoothing<>     apriori(database);
+      gum::learning::ScoreK2<>              score(parser, apriori);
 
       gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG,
@@ -214,13 +201,12 @@ namespace gum_tests {
         struct_constraint) = constraint1;
 
       gum::learning::ParamEstimatorML<> estimator(
-        parser, modalities, apriori, score.internalApriori());
+        parser, apriori, score.internalApriori());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
         op_set(struct_constraint);
 
-      gum::learning::GraphChangesSelector4DiGraph< decltype(score),
-                                                   decltype(struct_constraint),
+      gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint),
                                                    decltype(op_set) >
         selector(score, struct_constraint, op_set);
 
@@ -228,15 +214,10 @@ namespace gum_tests {
       // simpleListenerForGHC agsl ( search );
       search.approximationScheme().setEpsilon(1000);
 
-      gum::DAG dag = search.learnStructure(selector, modalities);
+      gum::DAG dag = search.learnStructure(selector);
       TS_ASSERT(dag.arcs().size() == 11);
 
-      gum::BayesNet< double > bn =
-        search.learnBN< double >(selector,
-                                 estimator,
-                                 database.variableNames(),
-                                 modalities,
-                                 database.translatorSet());
+      gum::BayesNet< double > bn = search.learnBN< double >(selector, estimator);
 
       const std::string s0 = "0";
       const std::string s1 = "1";
@@ -246,6 +227,7 @@ namespace gum_tests {
         TS_ASSERT(var.label(1) == s1);
       }
     }
+
 
     void test_alarm_with_ordered_values() {
       gum::learning::DBInitializerFromCSV<> initializer(
@@ -268,16 +250,11 @@ namespace gum_tests {
       database.setVariableNames(initializer.variableNames());
       initializer.fillDatabase(database);
 
-      const auto&              translators = database.translatorSet();
-      std::vector< gum::Size > modalities(nb_vars);
-      for (std::size_t i = 0; i < nb_vars; ++i)
-        modalities[i] = translators.domainSize(i);
-
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-
-      gum::learning::AprioriSmoothing<> apriori;
-      gum::learning::ScoreK2<>          score(parser, modalities, apriori);
+      gum::learning::AprioriSmoothing<>     apriori(database);
+      gum::learning::ScoreK2<>              score(parser, apriori);
+      // score.setMaxNbThreads(24);
 
       gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG,
@@ -302,13 +279,12 @@ namespace gum_tests {
         struct_constraint) = constraint1;
 
       gum::learning::ParamEstimatorML<> estimator(
-        parser, modalities, apriori, score.internalApriori());
+        parser, apriori, score.internalApriori());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
         op_set(struct_constraint);
 
-      gum::learning::GraphChangesSelector4DiGraph< decltype(score),
-                                                   decltype(struct_constraint),
+      gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint),
                                                    decltype(op_set) >
         selector(score, struct_constraint, op_set);
 
@@ -316,12 +292,7 @@ namespace gum_tests {
       // simpleListenerForGHC agsl ( search );
       search.approximationScheme().setEpsilon(1000);
 
-      gum::BayesNet< double > bn =
-        search.learnBN< double >(selector,
-                                 estimator,
-                                 database.variableNames(),
-                                 modalities,
-                                 database.translatorSet());
+      gum::BayesNet< double > bn = search.learnBN< double >(selector, estimator);
 
       const std::string    s0 = "0";
       const std::string    s1 = "1";
@@ -360,39 +331,10 @@ namespace gum_tests {
       database.setVariableNames(initializer.variableNames());
       initializer.fillDatabase(database);
 
-      const auto&              translators = database.translatorSet();
-      std::vector< gum::Size > modalities(nb_vars);
-      for (std::size_t i = 0; i < nb_vars; ++i)
-        modalities[i] = translators.domainSize(i);
-
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-
-
-      /*
-      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("alarm.csv"));
-
-      gum::learning::DBRowTranslatorSet< gum::learning::CellTranslatorUniversal >
-        translators;
-      translators.insertTranslator(0, database.nbVariables());
-      translators[1].setUserValues(gum::Sequence< double >{0, 1, 2}, false);
-      translators[10].setUserValues(gum::Sequence< double >{0, 1, 2}, false);
-      translators[11].setUserValues(gum::Sequence< double >{0, 1, 2}, false);
-      translators[14].setUserValues(gum::Sequence< double >{0, 1, 2}, false);
-
-      gum::learning::FilteredRowGeneratorSet< gum::learning::RowGeneratorIdentity >
-        generators;
-      generators.insertGenerator();
-
-      auto filter =
-        gum::learning::make_DB_row_filter(database, translators, generators);
-
-      std::vector< gum::Idx > modalities = filter.modalities();
-      */
-
-
-      gum::learning::AprioriSmoothing<> apriori;
-      gum::learning::ScoreK2<>          score(parser, modalities, apriori);
+      gum::learning::AprioriSmoothing<>     apriori(database);
+      gum::learning::ScoreK2<>              score(parser, apriori);
 
       gum::learning::StructuralConstraintSetStatic<
         gum::learning::StructuralConstraintDAG,
@@ -417,13 +359,12 @@ namespace gum_tests {
         struct_constraint) = constraint1;
 
       gum::learning::ParamEstimatorML<> estimator(
-        parser, modalities, apriori, score.internalApriori());
+        parser, apriori, score.internalApriori());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
         op_set(struct_constraint);
 
-      gum::learning::GraphChangesSelector4DiGraph< decltype(score),
-                                                   decltype(struct_constraint),
+      gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint),
                                                    decltype(op_set) >
         selector(score, struct_constraint, op_set);
 
@@ -431,12 +372,7 @@ namespace gum_tests {
       // simpleListenerForGHC agsl ( search );
       search.approximationScheme().setEpsilon(1000);
 
-      gum::BayesNet< double > bn =
-        search.learnBN< double >(selector,
-                                 estimator,
-                                 database.variableNames(),
-                                 modalities,
-                                 database.translatorSet());
+      gum::BayesNet< double > bn = search.learnBN< double >(selector, estimator);
 
       const std::string    s0 = "0";
       const std::string    s1 = "1";
@@ -449,6 +385,7 @@ namespace gum_tests {
         TS_ASSERT(var.label(2) == s2);
       }
     }
+
 
     void xtest_alarm1() {
       /*

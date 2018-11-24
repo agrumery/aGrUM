@@ -20,137 +20,201 @@
 /** @file
  * @brief the class for computing BIC scores
  *
- * The class should be used as follows: first, to speed-up computations, you
- * should consider computing all the scores you need in one pass. To do so, use
- * the appropriate addNodeSet methods. These will compute everything you need.
- * Use methods score to retrieve the scores computed. See the Score class for
- * details.
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
 #ifndef GUM_LEARNING_SCORE_BIC_H
 #define GUM_LEARNING_SCORE_BIC_H
 
+#include <cmath>
+#include <string>
+
+#include <agrum/agrum.h>
 #include <agrum/learning/scores_and_tests/score.h>
-#include <agrum/learning/scores_and_tests/scoreInternalNoApriori.h>
+#include <agrum/learning/aprioris/aprioriNoApriori.h>
 
 namespace gum {
 
   namespace learning {
 
-    /* =========================================================================
-     */
-    /* ===                         SCORE BIC CLASS                           ===
-     */
-    /* =========================================================================
-     */
     /** @class ScoreBIC
-     * @ingroup learning_group
-     * @brief The class for computing BIC scores
+     * @brief the class for computing BIC scores
+     * @headerfile scoreBIC.h <agrum/learning/scores_and_tests/scoreBIC.h>
+     * @ingroup learning_scores
      *
      * @warning If you pass an apriori to the score, this one will be added
-     * into the log-likelihood part of the score and its sample size will also
-     * be added to the penalty formula of the score.
-     *
-     * The class should be used as follows: first, to speed-up computations, you
-     * should consider computing all the scores you need in one pass. To do so,
-     *use
-     * the appropriate addNodeSet methods. These will compute everything you
-     *need.
-     * Use methods score to retrieve the scores computed. See the Score class
-     *for
-     * details.
+     * into the log-likelihood part of the score.
      */
-    template < typename IdSetAlloc = std::allocator< Idx >,
-               typename CountAlloc = std::allocator< double > >
-    class ScoreBIC : public Score< IdSetAlloc, CountAlloc > {
+    template < template < typename > class ALLOC = std::allocator >
+    class ScoreBIC : public Score< ALLOC > {
       public:
+      /// type for the allocators passed in arguments of methods
+      using allocator_type = ALLOC< NodeId >;
+
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// default constructor
-      /**
-       * @param filter the row filter that will be used to read the database
-       * @param var_modalities the domain sizes of the variables in the database
-       * @param apriori The score apriori.
-       * @param min_range The minimal range.
-       * @param max_range The maximal range.
-       */
-      template < typename RowFilter >
-      ScoreBIC(const RowFilter&                   filter,
-               const std::vector< Size >&         var_modalities,
-               Apriori< IdSetAlloc, CountAlloc >& apriori,
-               Size                               min_range = 0,
-               Size max_range = std::numeric_limits< Size >::max());
+      /** @param parser the parser used to parse the database
+       * @param apriori An apriori that we add to the computation of the score
+       * @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
+       * indices. The countings are then performed only on the union of the
+       * rows [Xi,Yi), i in {1,...,n}. This is useful, e.g, when performing
+       * cross validation tasks, in which part of the database should be ignored.
+       * An empty set of ranges is equivalent to an interval [X,Y) ranging over
+       * the whole database.
+       * @param nodeId2Columns a mapping from the ids of the nodes in the
+       * graphical model to the corresponding column in the DatabaseTable
+       * parsed by the parser. This enables estimating from a database in
+       * which variable A corresponds to the 2nd column the parameters of a BN
+       * in which variable A has a NodeId of 5. An empty nodeId2Columns
+       * bijection means that the mapping is an identity, i.e., the value of a
+       * NodeId is equal to the index of the column in the DatabaseTable.
+       * @param alloc the allocator used to allocate the structures within the
+       * Score.
+       * @warning If nodeId2columns is not empty, then only the scores over the
+       * ids belonging to this bijection can be computed: applying method
+       * score() over other ids will raise exception NotFound. */
+      ScoreBIC(const DBRowGeneratorParser< ALLOC >& parser,
+               const Apriori< ALLOC >&              apriori,
+               const std::vector< std::pair< std::size_t, std::size_t >,
+                                  ALLOC< std::pair< std::size_t, std::size_t > > >&
+                 ranges,
+               const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                 nodeId2columns =
+                   Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+               const allocator_type& alloc = allocator_type());
+
+
+      /// default constructor
+      /** @param parser the parser used to parse the database
+       * @param apriori An apriori that we add to the computation of the score
+       * @param nodeId2Columns a mapping from the ids of the nodes in the
+       * graphical model to the corresponding column in the DatabaseTable
+       * parsed by the parser. This enables estimating from a database in
+       * which variable A corresponds to the 2nd column the parameters of a BN
+       * in which variable A has a NodeId of 5. An empty nodeId2Columns
+       * bijection means that the mapping is an identity, i.e., the value of a
+       * NodeId is equal to the index of the column in the DatabaseTable.
+       * @param alloc the allocator used to allocate the structures within the
+       * Score.
+       * @warning If nodeId2columns is not empty, then only the scores over the
+       * ids belonging to this bijection can be computed: applying method
+       * score() over other ids will raise exception NotFound. */
+      ScoreBIC(const DBRowGeneratorParser< ALLOC >& parser,
+               const Apriori< ALLOC >&              apriori,
+               const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                 nodeId2columns =
+                   Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+               const allocator_type& alloc = allocator_type());
 
       /// copy constructor
-      ScoreBIC(const ScoreBIC< IdSetAlloc, CountAlloc >&);
+      ScoreBIC(const ScoreBIC< ALLOC >& from);
+
+      /// copy constructor with a given allocator
+      ScoreBIC(const ScoreBIC< ALLOC >& from, const allocator_type& alloc);
 
       /// move constructor
-      ScoreBIC(ScoreBIC< IdSetAlloc, CountAlloc >&&);
+      ScoreBIC(ScoreBIC< ALLOC >&& from);
 
-      /// virtual copy factory
-      virtual ScoreBIC< IdSetAlloc, CountAlloc >* copyFactory() const;
+      /// move constructor with a given allocator
+      ScoreBIC(ScoreBIC< ALLOC >&& from, const allocator_type& alloc);
+
+      /// virtual copy constructor
+      virtual ScoreBIC< ALLOC >* clone() const;
+
+      /// virtual copy constructor with a given allocator
+      virtual ScoreBIC< ALLOC >* clone(const allocator_type& alloc) const;
 
       /// destructor
       virtual ~ScoreBIC();
 
       /// @}
 
+
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+
+      /// @{
+
+      /// copy operator
+      ScoreBIC< ALLOC >& operator=(const ScoreBIC< ALLOC >& from);
+
+      /// move operator
+      ScoreBIC< ALLOC >& operator=(ScoreBIC< ALLOC >&& from);
+
+      /// @}
+
+
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
       /// @{
 
-      /// returns the score corresponding to a given nodeset
-      double score(Idx nodeset_index);
-
-      /// indicates whether the apriori is compatible (meaningful) with the
-      /// score
-      /** @returns a non empty string if the apriori is compatible with the
+      /// indicates whether the apriori is compatible (meaningful) with the score
+      /** The combination of some scores and aprioris can be meaningless. For
+       * instance, adding a Dirichlet apriori to the K2 score is not very
+       * meaningful since K2 corresonds to a BD score with a 1-smoothing
+       * apriori.
+       * aGrUM allows you to perform such combination, but you can check with
+       * method isAprioriCompatible () whether the result the score will give
+       * you is meaningful or not.
+       * @returns a non empty string if the apriori is compatible with the
        * score.*/
       virtual std::string isAprioriCompatible() const final;
 
-      /// indicates whether the apriori is compatible (meaningful) with the
-      /// score
-      /** @returns a non empty string if the apriori is compatible with the
-       * score.*/
-      static std::string isAprioriCompatible(const std::string& apriori_type,
-                                             double             weight = 1.0f);
-
-      /// indicates whether the apriori is compatible (meaningful) with the
-      /// score
-      /** @returns a non empty string if the apriori is compatible with the
-       * score.*/
-      static std::string
-        isAprioriCompatible(const Apriori< IdSetAlloc, CountAlloc >& apriori);
-
       /// returns the internal apriori of the score
       /** Some scores include an apriori. For instance, the K2 score is a BD
-       * score
-       * with a Laplace Apriori ( smoothing(1) ). BDeu is a BD score with a
-       * N'/(r_i * q_i) apriori, where N' is an effective sample size and r_i is
-       * the domain size of the target variable and q_i is the domain size of
-       * the
-       * Cartesian product of its parents. The goal of the score's internal
-       * apriori
-       * classes is to enable to account for these aprioris outside the score,
-       * e.g., when performing parameter estimation. It is important to note
-       * that,
-       * to be meaningfull a structure + parameter learning requires that the
-       * same
-       * aprioris are taken into account during structure learning and parameter
-       * learning. */
-      virtual const ScoreInternalApriori< IdSetAlloc, CountAlloc >&
-        internalApriori() const noexcept final;
+       * score with a Laplace Apriori ( smoothing(1) ). BDeu is a BD score with
+       * a N'/(r_i * q_i) apriori, where N' is an effective sample size and r_i
+       * is the domain size of the target variable and q_i is the domain size of
+       * the Cartesian product of its parents. The goal of the score's internal
+       * apriori classes is to enable to account for these aprioris outside the
+       * score, e.g., when performing parameter estimation. It is important to
+       * note that, to be meaningful, a structure + parameter learning requires
+       * that the same aprioris are taken into account during structure learning
+       * and parameter learning. */
+      virtual const Apriori< ALLOC >& internalApriori() const final;
+
+      /// returns the size of the database w.r.t. a given idset
+      /** Usually, the size of the database should be a constant. But some
+       * a priori violate this condition. This is the case, for instance, of
+       * the Laplace a priori: this one adds ones to each cells of the
+       * contingency tables. As all those tables have not necessarily the same
+       * size, the number of ones added differ from one contingency table
+       * to the other. As a result, the size of the database, including the a
+       * priori, depends on the variables of the contingency tables (the idset
+       * passed in argument of this function). */
+      double N(const IdSet< ALLOC >& idset);
 
       /// @}
 
+
+      /// indicates whether the apriori is compatible (meaningful) with the score
+      /** @returns a non empty string if the apriori is compatible with the score.
+       */
+      static std::string isAprioriCompatible(const std::string& apriori_type,
+                                             double             weight = 1.0f);
+
+      /// indicates whether the apriori is compatible (meaningful) with the score
+      /** a non empty string if the apriori is compatible with the score. */
+      static std::string isAprioriCompatible(const Apriori< ALLOC >& apriori);
+
+
+      protected:
+      /// returns the score for a given IdSet
+      /** @throws OperationNotAllowed is raised if the score does not support
+       * calling method score such an idset (due to too many/too few variables
+       * in the left hand side or the right hand side of the idset). */
+      virtual double _score(const IdSet< ALLOC >& idset) final;
+
+
       private:
       /// the internal apriori of the score
-      ScoreInternalNoApriori< IdSetAlloc, CountAlloc > __internal_apriori;
+      AprioriNoApriori< ALLOC > __internal_apriori;
     };
 
   } /* namespace learning */

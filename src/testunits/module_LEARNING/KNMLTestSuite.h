@@ -27,6 +27,7 @@
 #include <agrum/learning/database/DBInitializerFromCSV.h>
 #include <agrum/learning/database/databaseTable.h>
 #include <agrum/learning/database/DBTranslatorSet.h>
+#include <agrum/learning/aprioris/aprioriNoApriori.h>
 #include <agrum/learning/scores_and_tests/kNML.h>
 
 namespace gum_tests {
@@ -52,24 +53,29 @@ namespace gum_tests {
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
 
-      std::vector< gum::Size > modalities(nb_vars, 2);
+      // std::vector< gum::Size > modalities(nb_vars, 2);
+      gum::learning::AprioriNoApriori<> apriori(database);
 
-      gum::learning::KNML<> score(parser, modalities);
+      gum::learning::KNML<> score(parser, apriori);
       /* 3-4 K 2.6844818514806183
        * 2-6 K 4.1414644088786756
        * 4-7|5 K 3.763846399915938
        */
-      gum::Idx id1 = score.addNodeSet(3, 4);
-      gum::Idx id2 = score.addNodeSet(2, 6);
-      gum::Idx id3 = score.addNodeSet(4, 7, std::vector< gum::Idx >{5});
-      TS_ASSERT_DELTA(score.score(id1), 2.68448, 1e-2);
-      TS_ASSERT_DELTA(score.score(id2), 4.1414, 1e-2);
-      TS_ASSERT_DELTA(score.score(id3), 3.76384, 1e-2);
+      // gum::Idx id1 = score.addNodeSet(3, 4);
+      // gum::Idx id2 = score.addNodeSet(2, 6);
+      // gum::Idx id3 = score.addNodeSet(4, 7, std::vector< gum::Idx >{5});
+      TS_ASSERT_DELTA(score.score(3, 4), 3.87288, 1e-2);
+      TS_ASSERT_DELTA(score.score(2, 6), 5.97477, 1e-2);
+      TS_ASSERT_DELTA(
+        score.score(4, 7, std::vector< gum::NodeId >{5}), 5.43007, 1e-2);
 
       score.clear();
-      id1 = score.addNodeSet(6, 7, std::vector< gum::Idx >{5, 1, 4});
-      id2 = score.addNodeSet(6, 7, std::vector< gum::Idx >{1, 4});
-      TS_ASSERT_DELTA(score.score(id1) - score.score(id2), 0.0, 1e-2);
+      // id1 = score.addNodeSet(6, 7, std::vector< gum::Idx >{5, 1, 4});
+      // id2 = score.addNodeSet(6, 7, std::vector< gum::Idx >{1, 4});
+      TS_ASSERT_DELTA(score.score(6, 7, std::vector< gum::NodeId >{5, 1, 4})
+                        - score.score(6, 7, std::vector< gum::NodeId >{1, 4}),
+                      0.0,
+                      1e-2);
     }
   };
 

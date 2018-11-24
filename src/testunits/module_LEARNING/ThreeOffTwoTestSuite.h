@@ -33,6 +33,8 @@
 #include <agrum/learning/database/databaseTable.h>
 #include <agrum/learning/database/DBTranslatorSet.h>
 
+#include <agrum/learning/aprioris/aprioriNoApriori.h>
+
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/learning/Miic.h>
@@ -62,12 +64,8 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-
-      std::vector< gum::Size > modalities;
-      for (auto dom : database.domainSizes())
-        modalities.push_back(dom);
-
-      gum::learning::CorrectedMutualInformation<> I(parser, modalities);
+      gum::learning::AprioriNoApriori<>     apriori(database);
+      gum::learning::CorrectedMutualInformation<> I(parser, apriori);
       I.useNoCorr();
 
 
@@ -75,7 +73,7 @@ namespace gum_tests {
 
       // creating complete graph
       gum::MixedGraph graph;
-      for (gum::Size i = 0; i < modalities.size(); ++i) {
+      for (gum::Size i = 0; i < database.nbVariables(); ++i) {
         graph.addNodeWithId(i);
         for (gum::Size j = 0; j < i; ++j) {
           graph.addEdge(j, i);
@@ -109,7 +107,8 @@ namespace gum_tests {
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::CorrectedMutualInformation<> cI(parser, modalities);
+      gum::learning::AprioriNoApriori<>           apriori(database);
+      gum::learning::CorrectedMutualInformation<> cI(parser, apriori);
       cI.useMDL();
       // cI.useCache( false );
 
@@ -153,7 +152,8 @@ namespace gum_tests {
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::CorrectedMutualInformation<> cI(parser, modalities);
+      gum::learning::AprioriNoApriori<>           apriori(database);
+      gum::learning::CorrectedMutualInformation<> cI(parser, apriori);
       cI.useNML();
       // cI.useCache( false );
 
@@ -199,7 +199,8 @@ namespace gum_tests {
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::CorrectedMutualInformation<> cI(parser, modalities);
+      gum::learning::AprioriNoApriori<>           apriori(database);
+      gum::learning::CorrectedMutualInformation<> cI(parser, apriori);
       cI.useNML();
 
       gum::learning::Miic search;
@@ -220,7 +221,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(latents.size(), gum::Size(3));
     }
 
-    void test_tonda() {
+    void xtest_tonda() {
       /*
       gum::learning::DatabaseFromCSV database(
         GET_RESSOURCES_PATH("DBN_Tonda.csv"));
@@ -289,14 +290,15 @@ namespace gum_tests {
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::CorrectedMutualInformation<> cI(parser, modalities);
+      gum::learning::AprioriNoApriori<>           apriori(database);
+      gum::learning::CorrectedMutualInformation<> cI(parser, apriori);
       cI.useNML();
       // cI.useCache( false );
 
       gum::learning::Miic search;
 
       // adding constraints
-      gum::HashTable< std::pair< gum::Idx, gum::Idx >, char > initial_marks;
+      gum::HashTable< std::pair< gum::NodeId, gum::NodeId >, char > initial_marks;
       initial_marks.insert({4, 3}, '>');
       initial_marks.insert({5, 7}, '-');
       search.addConstraints(initial_marks);
@@ -343,7 +345,8 @@ namespace gum_tests {
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::CorrectedMutualInformation<> cI(parser, modalities);
+      gum::learning::AprioriNoApriori<>           apriori(database);
+      gum::learning::CorrectedMutualInformation<> cI(parser, apriori);
       cI.useMDL();
       // cI.useCache( false );
 
@@ -392,7 +395,8 @@ namespace gum_tests {
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::CorrectedMutualInformation<> cI(parser, modalities);
+      gum::learning::AprioriNoApriori<>           apriori(database);
+      gum::learning::CorrectedMutualInformation<> cI(parser, apriori);
       cI.useMDL();
       // cI.useCache( false );
 
@@ -402,7 +406,7 @@ namespace gum_tests {
       search.setMiicBehaviour();
 
       // adding constraints
-      gum::HashTable< std::pair< gum::Idx, gum::Idx >, char > initial_marks;
+      gum::HashTable< std::pair< gum::NodeId, gum::NodeId >, char > initial_marks;
       initial_marks.insert({4, 3}, '>');
       initial_marks.insert({5, 7}, '-');
       search.addConstraints(initial_marks);

@@ -20,12 +20,6 @@
 /** @file
  * @brief the class for computing Chi2 scores
  *
- * The class should be used as follows: first, to speed-up computations, you
- * should consider computing all the independence tests you need in one pass.
- * To do so, use the appropriate addNodeSet methods. These will compute
- * everything you need. Use method score to retrieve the scores related to
- * the independence test that were computed. See the IndependenceTest class for
- * details.
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
@@ -36,76 +30,141 @@
 
 #include <agrum/core/math/chi2.h>
 #include <agrum/learning/scores_and_tests/independenceTest.h>
+#include <agrum/learning/aprioris/aprioriNoApriori.h>
 
 namespace gum {
 
   namespace learning {
 
-    /* =========================================================================
-     */
-    /* ===                      INDEP TEST CHI2 CLASS                        ===
-     */
-    /* =========================================================================
-     */
     /** @class IndepTestChi2
      * @brief the class for computing Chi2 independence test scores
-     * @ingroup learning_group
-     *
-     * The class should be used as follows: first, to speed-up computations, you
-     * should consider computing all the independence tests you need in one
-     *pass.
-     * To do so, use the appropriate addNodeSet methods. These will compute
-     * everything you need. Use method score to retrieve the scores related to
-     * the independence test that were computed. See the IndependenceTest class
-     *for
-     * details.
+     * @headerfile indepTestChi2.h <agrum/learning/scores_and_tests/indepTestChi2.h>
+     * @ingroup learning_scores
      */
-    template < typename IdSetAlloc = std::allocator< Idx >,
-               typename CountAlloc = std::allocator< double > >
-    class IndepTestChi2 : public IndependenceTest< IdSetAlloc, CountAlloc > {
+    template < template < typename > class ALLOC = std::allocator >
+    class IndepTestChi2 : public IndependenceTest< ALLOC > {
       public:
+      /// type for the allocators passed in arguments of methods
+      using allocator_type = ALLOC< NodeId >;
+
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// default constructor
-      /** @param filter the row filter that will be used to read the database
-       * @param var_modalities the domain sizes of the variables in the database
-       */
-      template < typename RowFilter >
-      IndepTestChi2(const RowFilter&           filter,
-                    const std::vector< Size >& var_modalities);
+      /** @param parser the parser used to parse the database
+       * @param external_apriori An apriori that we add to the computation
+       * of the score (this should come from expert knowledge): this consists in
+       * adding numbers to countings in the contingency tables
+       * @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
+       * indices. The countings are then performed only on the union of the
+       * rows [Xi,Yi), i in {1,...,n}. This is useful, e.g, when performing
+       * cross validation tasks, in which part of the database should be ignored.
+       * An empty set of ranges is equivalent to an interval [X,Y) ranging over
+       * the whole database.
+       * @param nodeId2Columns a mapping from the ids of the nodes in the
+       * graphical model to the corresponding column in the DatabaseTable
+       * parsed by the parser. This enables estimating from a database in
+       * which variable A corresponds to the 2nd column the parameters of a BN
+       * in which variable A has a NodeId of 5. An empty nodeId2Columns
+       * bijection means that the mapping is an identity, i.e., the value of a
+       * NodeId is equal to the index of the column in the DatabaseTable.
+       * @param alloc the allocator used to allocate the structures within the
+       * Score.
+       * @warning If nodeId2columns is not empty, then only the scores over the
+       * ids belonging to this bijection can be computed: applying method
+       * score() over other ids will raise exception NotFound. */
+      IndepTestChi2(
+        const DBRowGeneratorParser< ALLOC >& parser,
+        const Apriori< ALLOC >&              external_apriori,
+        const std::vector< std::pair< std::size_t, std::size_t >,
+                           ALLOC< std::pair< std::size_t, std::size_t > > >&
+          ranges,
+        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+          nodeId2columns =
+            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+        const allocator_type& alloc = allocator_type());
+
+
+      /// default constructor
+      /** @param parser the parser used to parse the database
+       * @param apriori An apriori that we add to the computation of the score
+       * @param nodeId2Columns a mapping from the ids of the nodes in the
+       * graphical model to the corresponding column in the DatabaseTable
+       * parsed by the parser. This enables estimating from a database in
+       * which variable A corresponds to the 2nd column the parameters of a BN
+       * in which variable A has a NodeId of 5. An empty nodeId2Columns
+       * bijection means that the mapping is an identity, i.e., the value of a
+       * NodeId is equal to the index of the column in the DatabaseTable.
+       * @param alloc the allocator used to allocate the structures within the
+       * Score.
+       * @warning If nodeId2columns is not empty, then only the scores over the
+       * ids belonging to this bijection can be computed: applying method
+       * score() over other ids will raise exception NotFound. */
+      IndepTestChi2(const DBRowGeneratorParser< ALLOC >& parser,
+                    const Apriori< ALLOC >&              apriori,
+                    const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                      nodeId2columns =
+                        Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+                    const allocator_type& alloc = allocator_type());
+
+      /// copy constructor
+      IndepTestChi2(const IndepTestChi2< ALLOC >& from);
+
+      /// copy constructor with a given allocator
+      IndepTestChi2(const IndepTestChi2< ALLOC >& from,
+                    const allocator_type&         alloc);
+
+      /// move constructor
+      IndepTestChi2(IndepTestChi2< ALLOC >&& from);
+
+      /// move constructor with a given allocator
+      IndepTestChi2(IndepTestChi2< ALLOC >&& from, const allocator_type& alloc);
+
+      /// virtual copy constructor
+      virtual IndepTestChi2< ALLOC >* clone() const;
+
+      /// virtual copy constructor with a given allocator
+      virtual IndepTestChi2< ALLOC >* clone(const allocator_type& alloc) const;
 
       /// destructor
-      ~IndepTestChi2();
+      virtual ~IndepTestChi2();
 
       /// @}
 
+
       // ##########################################################################
-      /// @name Accessors / Modifiers
+      /// @name Operators
       // ##########################################################################
+
       /// @{
 
-      /// returns the score corresponding to a given nodeset
-      /** This method computes sum_X sum_Y sum_Z ( @#XYZ - (@#XZ * @#YZ) / @#Z
-       * )^2 / (( @#XZ * @#YZ) / @#Z ), where @#XYZ, @#XZ, @#YZ, @#Z correspond
-       * to the number of occurences of (X,Y,Z), (X,Z), (Y,Z) and Z
-       * respectively in the database. Then, it computes the critical value
-       * alpha for the chi2 test and returns ( @#sum - alpha ) / alpha, where
-       * @#sum corresponds to the summations mentioned above. Therefore, any
-       * positive result should reflect a dependence whereas negative results
-       * should reflect independences. */
-      double score(Idx nodeset_index);
+      /// copy operator
+      IndepTestChi2< ALLOC >& operator=(const IndepTestChi2< ALLOC >& from);
+
+      /// move operator
+      IndepTestChi2< ALLOC >& operator=(IndepTestChi2< ALLOC >&& from);
 
       /// @}
 
+
+      protected:
+      /// returns the score for a given IdSet
+      /** @throws OperationNotAllowed is raised if the score does not support
+       * calling method score such an idset (due to too many/too few variables
+       * in the left hand side or the right hand side of the idset). */
+      virtual double _score(const IdSet< ALLOC >& idset) final;
+
       private:
+      /// the domain sizes of the variables
+      std::vector< std::size_t, ALLOC< std::size_t > > __domain_sizes;
+
       /// a chi2 distribution for computing critical values
       Chi2 __chi2;
 
-      /// an empty vector of ids
-      const std::vector< Idx, IdSetAlloc > __empty_set;
+      /// an empty conditioning set
+      const std::vector< Idx > __empty_set;
     };
 
   } /* namespace learning */

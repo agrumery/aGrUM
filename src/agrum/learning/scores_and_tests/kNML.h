@@ -19,13 +19,9 @@
  ***************************************************************************/
 /**
  * @file
- * @brief The class for the NML corrections used in 3off2
+ * @brief The class for the NML penalty used in 3off2
  *
- * To accomodate for finite datasets, corrections for the mutual information are
- * introduced by the authors. The NML correction is one of them, and they claim it
- * to be the most effective
- *
- * @author Quentin FALCAND and Pierre-Henri WUILLEMIN
+ * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
 #ifndef GUM_LEARNING_K_NML_H
@@ -34,83 +30,181 @@
 #include <vector>
 
 #include <agrum/core/math/math.h>
-#include <agrum/learning/scores_and_tests/cache4PartEntropy.h>
+#include <agrum/core/math/variableLog2ParamComplexity.h>
 #include <agrum/learning/scores_and_tests/independenceTest.h>
 
 namespace gum {
 
   namespace learning {
 
-    /* =========================================================================
-     */
-    /* ===                      INDEP TEST CHI2 CLASS                        ===
-     */
-    /* =========================================================================
-     */
+
     /** @class KNML
-     * @brief the class for computing Chi2 independence test scores
-     * @ingroup learning_group
+     * @brief the class for computing the NML penalty used by 3off2
+     * @ingroup learning_scores
      *
      */
-    template < typename IdSetAlloc = std::allocator< Idx >,
-               typename CountAlloc = std::allocator< double > >
-    class KNML : public IndependenceTest< IdSetAlloc, CountAlloc > {
+    template < template < typename > class ALLOC = std::allocator >
+    class KNML : private IndependenceTest< ALLOC > {
       public:
+      /// type for the allocators passed in arguments of methods
+      using allocator_type = ALLOC< NodeId >;
+
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// default constructor
-      /** @param filter the row filter that will be used to read the database
-       * @param var_modalities the domain sizes of the variables in the database
-       */
-      template < typename RowFilter >
-      KNML(const RowFilter& filter, const std::vector< Size >& var_modalities);
+      /** @param parser the parser used to parse the database
+       * @param apriori An apriori that we add to the computation of
+       * the score (this should come from expert knowledge): this consists in
+       * adding numbers to countings in the contingency tables
+       * @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
+       * indices. The countings are then performed only on the union of the
+       * rows [Xi,Yi), i in {1,...,n}. This is useful, e.g, when performing
+       * cross validation tasks, in which part of the database should be ignored.
+       * An empty set of ranges is equivalent to an interval [X,Y) ranging over
+       * the whole database.
+       * @param nodeId2Columns a mapping from the ids of the nodes in the
+       * graphical model to the corresponding column in the DatabaseTable
+       * parsed by the parser. This enables estimating from a database in
+       * which variable A corresponds to the 2nd column the parameters of a BN
+       * in which variable A has a NodeId of 5. An empty nodeId2Columns
+       * bijection means that the mapping is an identity, i.e., the value of a
+       * NodeId is equal to the index of the column in the DatabaseTable.
+       * @param alloc the allocator used to allocate the structures within the
+       * Score.
+       * @warning If nodeId2columns is not empty, then only the scores over the
+       * ids belonging to this bijection can be computed: applying method
+       * score() over other ids will raise exception NotFound. */
+      KNML(const DBRowGeneratorParser< ALLOC >& parser,
+           const Apriori< ALLOC >&              apriori,
+           const std::vector< std::pair< std::size_t, std::size_t >,
+                              ALLOC< std::pair< std::size_t, std::size_t > > >&
+             ranges,
+           const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+             nodeId2columns =
+               Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+           const allocator_type& alloc = allocator_type());
+
+
+      /// default constructor
+      /** @param parser the parser used to parse the database
+       * @param apriori An apriori that we add to the computation of
+       * the score (this should come from expert knowledge): this consists in
+       * adding numbers to countings in the contingency tables
+       * @param nodeId2Columns a mapping from the ids of the nodes in the
+       * graphical model to the corresponding column in the DatabaseTable
+       * parsed by the parser. This enables estimating from a database in
+       * which variable A corresponds to the 2nd column the parameters of a BN
+       * in which variable A has a NodeId of 5. An empty nodeId2Columns
+       * bijection means that the mapping is an identity, i.e., the value of a
+       * NodeId is equal to the index of the column in the DatabaseTable.
+       * @param alloc the allocator used to allocate the structures within the
+       * Score.
+       * @warning If nodeId2columns is not empty, then only the scores over the
+       * ids belonging to this bijection can be computed: applying method
+       * score() over other ids will raise exception NotFound. */
+      KNML(const DBRowGeneratorParser< ALLOC >& parser,
+           const Apriori< ALLOC >&              apriori,
+           const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+             nodeId2columns =
+               Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+           const allocator_type& alloc = allocator_type());
+
+      /// copy constructor
+      KNML(const KNML< ALLOC >& from);
+
+      /// copy constructor with a given allocator
+      KNML(const KNML< ALLOC >& from, const allocator_type& alloc);
+
+      /// move constructor
+      KNML(KNML< ALLOC >&& from);
+
+      /// move constructor with a given allocator
+      KNML(KNML< ALLOC >&& from, const allocator_type& alloc);
+
+      /// virtual copy constructor
+      virtual KNML< ALLOC >* clone() const;
+
+      /// virtual copy constructor with a given allocator
+      virtual KNML< ALLOC >* clone(const allocator_type& alloc) const;
 
       /// destructor
-      ~KNML();
+      virtual ~KNML();
 
       /// @}
+
+
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+
+      /// @{
+
+      /// copy operator
+      KNML< ALLOC >& operator=(const KNML< ALLOC >& from);
+
+      /// move operator
+      KNML< ALLOC >& operator=(KNML< ALLOC >&& from);
+
+      /// @}
+
 
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
       /// @{
 
-      /// returns the score corresponding to a given nodeset
-      double score(Idx nodeset_index);
+      /// changes the max number of threads used to parse the database
+      using IndependenceTest< ALLOC >::setMaxNbThreads;
+
+      /// returns the number of threads used to parse the database
+      using IndependenceTest< ALLOC >::nbThreads;
+
+      /// the scores
+      using IndependenceTest< ALLOC >::score;
+
+      /// clears all the data structures from memory, including the C_n^r cache
+      virtual void clear();
+
+      /// clears the current C_n^r cache
+      virtual void clearCache();
+
+      /// turn on/off the use of the C_n^r cache
+      virtual void useCache(const bool on_off);
+
+      /// return the mapping between the columns of the database and the node ids
+      /** @warning An empty nodeId2Columns bijection means that the mapping is
+       * an identity, i.e., the value of a NodeId is equal to the index of the
+       * column in the DatabaseTable. */
+      using IndependenceTest< ALLOC >::nodeId2Columns;
+
+      /// return the database used by the score
+      using IndependenceTest< ALLOC >::database;
+
+      /// returns the allocator used by the score
+      using IndependenceTest< ALLOC >::getAllocator;
 
       /// @}
 
-      protected:
-      /// Computing the universal normalization constant, intermediary computation
-      double _C(Size r, Size n);
 
-      /// inserts a new score into the cache for C
-      /// @todo remove exception driven programation
-      void _insertIntoCCache(Size r, Size n, double c);
+      protected:
+      /// returns the score for a given IdSet
+      /** @throws OperationNotAllowed is raised if the score does not support
+       * calling method score such an idset (due to too many/too few variables
+       * in the left hand side or the right hand side of the idset). */
+      virtual double _score(const IdSet< ALLOC >& idset) final;
+
 
       private:
-      /// an empty vector of ids
-      const std::vector< Idx, IdSetAlloc > __empty_set;
-
-      /// pre-computed values of C for r=2 and 0<n<=1000
-      static const std::vector< double > __Cvec;
-
-      /// cache for the values of C
-      Cache4PartEntropy __cache_C;
-
-      /// a Boolean indicating whether we wish to use the cache for C
-      bool __use_cache_C{true};
+      /// the CTable computation
+      VariableLog2ParamComplexity< ALLOC > __param_complexity;
     };
 
   } /* namespace learning */
 
 } /* namespace gum */
-
-
-extern template class gum::learning::KNML<>;
 
 
 // always include the template implementation

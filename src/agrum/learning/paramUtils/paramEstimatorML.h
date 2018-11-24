@@ -20,13 +20,6 @@
 /** @file
  * @brief the class for estimating parameters of CPTs using Maximum Likelihood
  *
- * The class should be used as follows: first, to speed-up computations, you
- * should consider computing all the parameters you need in one pass. To do so,
- * use the appropriate addNodeSet methods. These will compute everything you
- * need. The addNodeSet methods where you do not specify a set of conditioning
- * nodes assume that this set is empty. Once the computations have been
- * performed, use method parameters to retrieve the parameters of interest.
- *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #ifndef GUM_LEARNING_PARAM_ESTIMATOR_ML_H
@@ -36,84 +29,149 @@
 
 #include <agrum/agrum.h>
 #include <agrum/learning/paramUtils/paramEstimator.h>
-#include <agrum/learning/scores_and_tests/scoreInternalNoApriori.h>
 
 namespace gum {
 
   namespace learning {
 
-    /* =========================================================================
-     */
-    /* ===                     PARAM ESTIMATOR ML CLASS                      ===
-     */
-    /* =========================================================================
-     */
     /** @class ParamEstimatorML
-     * @brief The class for estimating parameters of CPTs using Maximum
-     *Likelihood
-     * @ingroup learning_group
-     *
-     * The class should be used as follows: first, to speed-up computations, you
-     * should consider computing all the parameters you need in one pass. To do
-     *so,
-     * use the appropriate addNodeSet methods. These will compute everything you
-     * need. The addNodeSet methods where you do not specify a set of
-     *conditioning
-     * nodes assume that this set is empty. Once the computations have been
-     * performed, use method parameters to retrieve the parameters of interest.
+     * @brief The class for estimating parameters of CPTs using Maximum Likelihood
+     * @headerfile paramEstimatorML.h <agrum/learning/paramUtils/paramEstimatorML.h>
+     * @ingroup learning_param_utils
      */
-    template < typename IdSetAlloc = std::allocator< Idx >,
-               typename CountAlloc = std::allocator< double > >
-    class ParamEstimatorML : public ParamEstimator< IdSetAlloc, CountAlloc > {
+    template < template < typename > class ALLOC = std::allocator >
+    class ParamEstimatorML : public ParamEstimator< ALLOC > {
       public:
+      /// type for the allocators passed in arguments of methods
+      using allocator_type = ALLOC< NodeId >;
+
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// default constructor
-      /**
-       * @param filter the row filter that will be used to read the database
-       * @param var_modalities the domain sizes of the variables in the database
-       * @param apriori The parameter apriori.
-       * @param score_internal_apriori The score internal apriori.
-       */
-      template < typename RowFilter >
-      ParamEstimatorML(const RowFilter&                   filter,
-                       const std::vector< Size >&         var_modalities,
-                       Apriori< IdSetAlloc, CountAlloc >& apriori,
-                       const ScoreInternalApriori< IdSetAlloc, CountAlloc >&
-                         score_internal_apriori =
-                           ScoreInternalNoApriori< IdSetAlloc, CountAlloc >());
+      /** @param parser the parser used to parse the database
+       * @param external_apriori An apriori that we add to the computation
+       * of the score
+       * @param score_internal_apriori The apriori within the score used
+       * to learn the data structure (might be a NoApriori)
+       * @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
+       * indices. The countings are then performed only on the union of the
+       * rows [Xi,Yi), i in {1,...,n}. This is useful, e.g, when performing
+       * cross validation tasks, in which part of the database should be ignored.
+       * An empty set of ranges is equivalent to an interval [X,Y) ranging over
+       * the whole database.
+       * @param nodeId2Columns a mapping from the ids of the nodes in the
+       * graphical model to the corresponding column in the DatabaseTable
+       * parsed by the parser. This enables estimating from a database in
+       * which variable A corresponds to the 2nd column the parameters of a BN
+       * in which variable A has a NodeId of 5. An empty nodeId2Columns
+       * bijection means that the mapping is an identity, i.e., the value of a
+       * NodeId is equal to the index of the column in the DatabaseTable.
+       * @param alloc the allocator used to allocate the structures within the
+       * Score.
+       * @warning If nodeId2columns is not empty, then only the scores over the
+       * ids belonging to this bijection can be computed: applying method
+       * score() over other ids will raise exception NotFound. */
+      ParamEstimatorML(
+        const DBRowGeneratorParser< ALLOC >& parser,
+        const Apriori< ALLOC >&              external_apriori,
+        const Apriori< ALLOC >&              score_internal__apriori,
+        const std::vector< std::pair< std::size_t, std::size_t >,
+                           ALLOC< std::pair< std::size_t, std::size_t > > >&
+          ranges,
+        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+          nodeId2columns =
+            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+        const allocator_type& alloc = allocator_type());
+
+      /// default constructor
+      /** @param parser the parser used to parse the database
+       * @param external_apriori An apriori that we add to the computation
+       * of the score
+       * @param score_internal_apriori The apriori within the score used
+       * to learn the data structure (might be a NoApriori)
+       * @param nodeId2Columns a mapping from the ids of the nodes in the
+       * graphical model to the corresponding column in the DatabaseTable
+       * parsed by the parser. This enables estimating from a database in
+       * which variable A corresponds to the 2nd column the parameters of a BN
+       * in which variable A has a NodeId of 5. An empty nodeId2Columns
+       * bijection means that the mapping is an identity, i.e., the value of a
+       * NodeId is equal to the index of the column in the DatabaseTable.
+       * @param alloc the allocator used to allocate the structures within the
+       * Score.
+       * @warning If nodeId2columns is not empty, then only the scores over the
+       * ids belonging to this bijection can be computed: applying method
+       * score() over other ids will raise exception NotFound. */
+      ParamEstimatorML(
+        const DBRowGeneratorParser< ALLOC >& parser,
+        const Apriori< ALLOC >&              external_apriori,
+        const Apriori< ALLOC >&              score_internal__apriori,
+        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+          nodeId2columns =
+            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+        const allocator_type& alloc = allocator_type());
 
       /// copy constructor
-      ParamEstimatorML(const ParamEstimatorML< IdSetAlloc, CountAlloc >&);
+      ParamEstimatorML(const ParamEstimatorML< ALLOC >& from);
+
+      /// copy constructor with a given allocator
+      ParamEstimatorML(const ParamEstimatorML< ALLOC >& from,
+                       const allocator_type&            alloc);
 
       /// move constructor
-      ParamEstimatorML(ParamEstimatorML< IdSetAlloc, CountAlloc >&&);
+      ParamEstimatorML(ParamEstimatorML< ALLOC >&& from);
 
-      /// virtual copy factory
-      virtual ParamEstimatorML< IdSetAlloc, CountAlloc >* copyFactory() const;
+      /// move constructor with a given allocator
+      ParamEstimatorML(ParamEstimatorML< ALLOC >&& from,
+                       const allocator_type&       alloc);
+
+      /// virtual copy constructor
+      virtual ParamEstimatorML< ALLOC >* clone() const;
+
+      /// virtual copy constructor with a given allocator
+      virtual ParamEstimatorML< ALLOC >* clone(const allocator_type& alloc) const;
 
       /// destructor
       virtual ~ParamEstimatorML();
 
       /// @}
 
+
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+
+      /// @{
+
+      /// copy operator
+      ParamEstimatorML< ALLOC >& operator=(const ParamEstimatorML< ALLOC >& from);
+
+      /// move operator
+      ParamEstimatorML< ALLOC >& operator=(ParamEstimatorML< ALLOC >&& from);
+
+      /// @}
+
+
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
       /// @{
 
+      using ParamEstimator< ALLOC >::parameters;
+
       /// returns the CPT's parameters corresponding to a given nodeset
       /** The vector contains the parameters of an n-dimensional CPT. The
        * distribution of the dimensions of the CPT within the vector is as
        * follows:
-       * first, there are the conditioning nodes (in the order in which they
-       * were specified) and, then, the target node.
+       * first, there is the target node, then the conditioning nodes (in the
+       * order in which they were specified).
        * @throw DatabaseError is raised if some values of the conditioning sets
        * were not observed in the database. */
-      const std::vector< double, CountAlloc >& parameters(Idx nodeset_index);
+      virtual std::vector< double, ALLOC< double > > parameters(
+        const NodeId                                  target_node,
+        const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes);
 
       /// @}
     };

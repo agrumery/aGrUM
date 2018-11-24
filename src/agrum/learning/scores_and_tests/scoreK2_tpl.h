@@ -18,14 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the class for computing K2 scores (actually their log2 value)
+ * @brief the class for computing K2 scores
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#  include <cmath>
+#  include <agrum/learning/scores_and_tests/scoreK2.h>
 #  include <sstream>
 
 namespace gum {
@@ -33,224 +33,264 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    template < typename IdSetAlloc, typename CountAlloc >
-    template < typename RowFilter >
-    INLINE ScoreK2< IdSetAlloc, CountAlloc >::ScoreK2(
-      const RowFilter&                   filter,
-      const std::vector< Size >&         var_modalities,
-      Apriori< IdSetAlloc, CountAlloc >& apriori,
-      Size                               min_range,
-      Size                               max_range) :
-        Score< IdSetAlloc, CountAlloc >(
-          filter, var_modalities, apriori, min_range, max_range) {
-      // for debugging purposes
+    template < template < typename > class ALLOC >
+    INLINE ScoreK2< ALLOC >::ScoreK2(
+      const DBRowGeneratorParser< ALLOC >&                                 parser,
+      const Apriori< ALLOC >&                                              apriori,
+      const std::vector< std::pair< std::size_t, std::size_t >,
+                         ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
+      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
+      const typename ScoreK2< ALLOC >::allocator_type&              alloc) :
+        Score< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
+        __internal_apriori(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreK2);
     }
 
-    /// copy constructor
-    template < typename IdSetAlloc, typename CountAlloc >
-    ScoreK2< IdSetAlloc, CountAlloc >::ScoreK2(
-      const ScoreK2< IdSetAlloc, CountAlloc >& from) :
-        Score< IdSetAlloc, CountAlloc >(from),
-        __gammalog2(from.__gammalog2),
-        __internal_apriori(from.__internal_apriori) {
+
+    /// default constructor
+    template < template < typename > class ALLOC >
+    INLINE ScoreK2< ALLOC >::ScoreK2(
+      const DBRowGeneratorParser< ALLOC >&                          parser,
+      const Apriori< ALLOC >&                                       apriori,
+      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
+      const typename ScoreK2< ALLOC >::allocator_type&              alloc) :
+        Score< ALLOC >(parser, apriori, nodeId2columns, alloc),
+        __internal_apriori(parser.database(), nodeId2columns) {
+      GUM_CONSTRUCTOR(ScoreK2);
+    }
+
+
+    /// copy constructor with a given allocator
+    template < template < typename > class ALLOC >
+    INLINE ScoreK2< ALLOC >::ScoreK2(
+      const ScoreK2< ALLOC >&                          from,
+      const typename ScoreK2< ALLOC >::allocator_type& alloc) :
+        Score< ALLOC >(from, alloc),
+        __internal_apriori(from.__internal_apriori, alloc),
+        __gammalog2(from.__gammalog2) {
       GUM_CONS_CPY(ScoreK2);
     }
 
-    /// move constructor
-    template < typename IdSetAlloc, typename CountAlloc >
-    ScoreK2< IdSetAlloc, CountAlloc >::ScoreK2(
-      ScoreK2< IdSetAlloc, CountAlloc >&& from) :
-        Score< IdSetAlloc, CountAlloc >(std::move(from)),
-        __gammalog2(std::move(from.__gammalog2)),
-        __internal_apriori(std::move(from.__internal_apriori)) {
+
+    /// copy constructor
+    template < template < typename > class ALLOC >
+    INLINE ScoreK2< ALLOC >::ScoreK2(const ScoreK2< ALLOC >& from) :
+        ScoreK2< ALLOC >(from, from.getAllocator()) {}
+
+
+    /// move constructor with a given allocator
+    template < template < typename > class ALLOC >
+    INLINE ScoreK2< ALLOC >::ScoreK2(
+      ScoreK2< ALLOC >&&                               from,
+      const typename ScoreK2< ALLOC >::allocator_type& alloc) :
+        Score< ALLOC >(std::move(from), alloc),
+        __internal_apriori(std::move(from.__internal_apriori), alloc),
+        __gammalog2(std::move(from.__gammalog2)) {
       GUM_CONS_MOV(ScoreK2);
     }
 
-    /// virtual copy factory
-    template < typename IdSetAlloc, typename CountAlloc >
-    ScoreK2< IdSetAlloc, CountAlloc >*
-      ScoreK2< IdSetAlloc, CountAlloc >::copyFactory() const {
-      return new ScoreK2< IdSetAlloc, CountAlloc >(*this);
+
+    /// move constructor
+    template < template < typename > class ALLOC >
+    INLINE ScoreK2< ALLOC >::ScoreK2(ScoreK2< ALLOC >&& from) :
+        ScoreK2< ALLOC >(std::move(from), from.getAllocator()) {}
+
+
+    /// virtual copy constructor with a given allocator
+    template < template < typename > class ALLOC >
+    ScoreK2< ALLOC >* ScoreK2< ALLOC >::clone(
+      const typename ScoreK2< ALLOC >::allocator_type& alloc) const {
+      ALLOC< ScoreK2< ALLOC > > allocator(alloc);
+      ScoreK2< ALLOC >*         new_score = allocator.allocate(1);
+      try {
+        allocator.construct(new_score, *this, alloc);
+      } catch (...) {
+        allocator.deallocate(new_score, 1);
+        throw;
+      }
+
+      return new_score;
     }
 
+
+    /// virtual copy constructor
+    template < template < typename > class ALLOC >
+    ScoreK2< ALLOC >* ScoreK2< ALLOC >::clone() const {
+      return clone(this->getAllocator());
+    }
+
+
     /// destructor
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE ScoreK2< IdSetAlloc, CountAlloc >::~ScoreK2() {
-      // for debugging purposes
+    template < template < typename > class ALLOC >
+    ScoreK2< ALLOC >::~ScoreK2< ALLOC >() {
       GUM_DESTRUCTOR(ScoreK2);
     }
 
+
+    /// copy operator
+    template < template < typename > class ALLOC >
+    ScoreK2< ALLOC >& ScoreK2< ALLOC >::operator=(const ScoreK2< ALLOC >& from) {
+      if (this != &from) {
+        Score< ALLOC >::operator=(from);
+        __internal_apriori = from.__internal_apriori;
+      }
+      return *this;
+    }
+
+
+    /// move operator
+    template < template < typename > class ALLOC >
+    ScoreK2< ALLOC >& ScoreK2< ALLOC >::operator=(ScoreK2< ALLOC >&& from) {
+      if (this != &from) {
+        Score< ALLOC >::operator=(std::move(from));
+        __internal_apriori = std::move(from.__internal_apriori);
+      }
+      return *this;
+    }
+
+
     /// indicates whether the apriori is compatible (meaningful) with the score
-    template < typename IdSetAlloc, typename CountAlloc >
-    std::string ScoreK2< IdSetAlloc, CountAlloc >::isAprioriCompatible(
-      const std::string& apriori_type, double weight) {
+    template < template < typename > class ALLOC >
+    std::string
+      ScoreK2< ALLOC >::isAprioriCompatible(const std::string& apriori_type,
+                                            double             weight) {
       // check that the apriori is compatible with the score
       if (apriori_type == AprioriNoAprioriType::type) { return ""; }
 
-      if (weight == 0) {
-        return "The apriori is currently compatible with the K2 score but if "
-               "you change the weight, it will become incompatible";
+      if (weight == 0.0) {
+        return "The apriori is currently compatible with the K2 score but "
+               "if you change the weight, it will become incompatible.";
       }
 
       // known incompatible aprioris
       if ((apriori_type == AprioriDirichletType::type)
           || (apriori_type == AprioriSmoothingType::type)) {
-        return "The K2 score already contains a different 'implicit' apriori."
-               " Therefore, the learning will probably be meaningless.";
+        return "The K2 score already contains a different 'implicit' apriori. "
+               "Therefore, the learning will probably be biased.";
       }
 
       // apriori types unsupported by the type checker
       std::stringstream msg;
       msg << "The apriori '" << apriori_type
-          << "' is not yet supported by method isAprioriCompatible";
+          << "' is not yet supported by method isAprioriCompatible os Score K2";
       return msg.str();
     }
 
+
     /// indicates whether the apriori is compatible (meaningful) with the score
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE std::string ScoreK2< IdSetAlloc, CountAlloc >::isAprioriCompatible(
-      const Apriori< IdSetAlloc, CountAlloc >& apriori) {
+    template < template < typename > class ALLOC >
+    INLINE std::string
+           ScoreK2< ALLOC >::isAprioriCompatible(const Apriori< ALLOC >& apriori) {
       return isAprioriCompatible(apriori.getType(), apriori.weight());
     }
 
+
     /// indicates whether the apriori is compatible (meaningful) with the score
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE std::string
-           ScoreK2< IdSetAlloc, CountAlloc >::isAprioriCompatible() const {
-      return isAprioriCompatible(*this->_apriori);
+    template < template < typename > class ALLOC >
+    INLINE std::string ScoreK2< ALLOC >::isAprioriCompatible() const {
+      return isAprioriCompatible(*(this->_apriori));
     }
 
+
     /// returns the internal apriori of the score
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE const ScoreInternalApriori< IdSetAlloc, CountAlloc >&
-                 ScoreK2< IdSetAlloc, CountAlloc >::internalApriori() const noexcept {
+    template < template < typename > class ALLOC >
+    INLINE const Apriori< ALLOC >& ScoreK2< ALLOC >::internalApriori() const {
       return __internal_apriori;
     }
 
+
     /// returns the score corresponding to a given nodeset
-    template < typename IdSetAlloc, typename CountAlloc >
-    double ScoreK2< IdSetAlloc, CountAlloc >::score(Idx nodeset_index) {
-      // if the score has already been computed, get its value
-      if (this->_isInCache(nodeset_index)) {
-        return this->_cachedScore(nodeset_index);
-      }
+    template < template < typename > class ALLOC >
+    double ScoreK2< ALLOC >::_score(const IdSet< ALLOC >& idset) {
+      // get the counts for all the nodes in the idset and add the apriori
+      std::vector< double, ALLOC< double > > N_ijk(
+        this->_counter.counts(idset, true));
+      const double all_size = (N_ijk.size());
+      const bool   informative_external_apriori = this->_apriori->isInformative();
+      double       score = 0.0;
 
-      // get the counts for all the targets and for the conditioning nodes
-      const std::vector< double, CountAlloc >& N_ijk =
-        this->_getAllCounts(nodeset_index);
-      const Size targets_modal = Size(N_ijk.size());
-      double     score = 0;
-
-      // get the nodes involved in the score as well as their modalities
-      const std::vector< Idx, IdSetAlloc >& all_nodes =
-        this->_getAllNodes(nodeset_index);
-      const std::vector< Idx, IdSetAlloc >* conditioning_nodes =
-        this->_getConditioningNodes(nodeset_index);
-      const std::vector< Idx >& modalities = this->modalities();
-
-      // here, we distinguish nodesets with conditioning nodes from those
+      // here, we distinguish idsets with conditioning nodes from those
       // without conditioning nodes
-      if (conditioning_nodes) {
-        const std::vector< double, CountAlloc >& N_ij =
-          this->_getConditioningCounts(nodeset_index);
-        const Size conditioning_modal = Size(N_ij.size());
+      if (idset.hasConditioningSet()) {
+        // get the counts for the conditioning nodes
+        std::vector< double, ALLOC< double > > N_ij =
+          this->_counter.counts(idset.conditionalIdSet(), false);
+        const double conditioning_size = double(N_ij.size());
+        const double ri = all_size / conditioning_size;
 
-        if (this->_apriori->weight()) {
+        if (informative_external_apriori) {
           // the score to compute is that of BD with aprioris N'_ijk + 1
           // (the + 1 is here to take into account the internal apriori of K2)
-          const std::vector< double, CountAlloc >& N_prime_ijk =
-            this->_getAllApriori(nodeset_index);
-          const std::vector< double, CountAlloc >& N_prime_ij =
-            this->_getConditioningApriori(nodeset_index);
+          std::vector< double, ALLOC< double > > N_prime_ijk(all_size, 0.0);
+          this->_apriori->addAllApriori(idset, N_prime_ijk);
+          std::vector< double, ALLOC< double > > N_prime_ij(N_ij.size(), 0.0);
+          this->_apriori->addConditioningApriori(idset, N_prime_ij);
 
           // the K2 score can be computed as follows:
           // sum_j=1^qi [ gammalog2 ( N'_ij + r_i ) -
           //              gammalog2 ( N_ij + N'_ij + r_i )
           //              + sum_k=1^ri { gammlog2 ( N_ijk + N'_ijk + 1 ) -
           //                             gammalog2 ( N'_ijk + 1 ) } ]
-
-          const double r_i = double(modalities[all_nodes.back()]);
-          for (Idx j = 0; j < conditioning_modal; ++j) {
-            score += __gammalog2(N_prime_ij[j] + r_i)
-                     - __gammalog2(N_ij[j] + N_prime_ij[j] + r_i);
+          for (std::size_t j = std::size_t(0); j < conditioning_size; ++j) {
+            score += __gammalog2(N_prime_ij[j] + ri)
+                     - __gammalog2(N_ij[j] + N_prime_ij[j] + ri);
           }
-          for (Idx k = 0; k < targets_modal; ++k) {
-            score += __gammalog2(N_ijk[k] + N_prime_ijk[k] + 1)
-                     - __gammalog2(N_prime_ijk[k] + 1);
+          for (std::size_t k = std::size_t(0); k < all_size; ++k) {
+            score += __gammalog2(N_ijk[k] + N_prime_ijk[k] + 1.0)
+                     - __gammalog2(N_prime_ijk[k] + 1.0);
           }
         } else {
           // the K2 score can be computed as follows:
           // qi log {(ri - 1)!} + sum_j=1^qi [ - log {(N_ij+ri-1)!} +
           //                                   sum_k=1^ri log { N_ijk! } ]
+          score = conditioning_size * __gammalog2(ri);
 
-          // put the first term: qi log {(ri - 1)!} into the score
-          const double r_i = double(modalities[all_nodes.back()]);
-          score = conditioning_modal * __gammalog2(r_i);
-
-          for (Idx k = 0; k < targets_modal; ++k) {
-            score += __gammalog2(N_ijk[k] + 1);
+          for (const auto n_ij : N_ij) {
+            score -= __gammalog2(n_ij + ri);
           }
-
-          for (Idx j = 0; j < conditioning_modal; ++j) {
-            score -= __gammalog2(N_ij[j] + r_i);
+          for (const auto n_ijk : N_ijk) {
+            score += __gammalog2(n_ijk + 1);
           }
         }
-
-        // shall we put the score into the cache?
-        if (this->_isUsingCache()) {
-          this->_insertIntoCache(nodeset_index, score);
-        }
-
-        return score;
       } else {
         // here, there are no conditioning nodes
+        const double ri = all_size;
 
-        if (this->_apriori->weight()) {
-          const std::vector< double, CountAlloc >& N_prime_ijk =
-            this->_getAllApriori(nodeset_index);
-
+        if (informative_external_apriori) {
           // the score to compute is that of BD with aprioris N'_ijk + 1
           // (the + 1 is here to take into account the internal apriori of K2)
 
-          // the BD score can be computed as follows:
+          // the K2 score can be computed as follows:
           // gammalog2 ( N' + r_i ) - gammalog2 ( N + N' + r_i )
           // + sum_k=1^ri { gammlog2 ( N_i + N'_i + 1 ) - gammalog2 ( N'_i + 1 )
           // }
-          const double r_i = double(modalities[all_nodes.back()]);
-          double       N = 0;
-          double       N_prime = 0;
-          for (Idx k = 0; k < targets_modal; ++k) {
+          std::vector< double, ALLOC< double > > N_prime_ijk(all_size, 0.0);
+          this->_apriori->addAllApriori(idset, N_prime_ijk);
+
+          // the K2 score can be computed as follows:
+          double N = 0.0;
+          double N_prime = 0.0;
+          for (std::size_t k = std::size_t(0); k < all_size; ++k) {
             score += __gammalog2(N_ijk[k] + N_prime_ijk[k] + 1)
                      - __gammalog2(N_prime_ijk[k] + 1);
             N += N_ijk[k];
             N_prime += N_prime_ijk[k];
           }
-          score += __gammalog2(N_prime + r_i) - __gammalog2(N + N_prime + r_i);
+          score += __gammalog2(N_prime + ri) - __gammalog2(N + N_prime + ri);
         } else {
           // the K2 score can be computed as follows:
           // log {(ri - 1)!} - log {(N + ri-1)!} + sum_k=1^ri log { N_ijk! } ]
-
-          // put the first term: log {(ri - 1)!} into the score
-          const double r_i = double(modalities[all_nodes.back()]);
-          score = __gammalog2(r_i);
-
+          score = __gammalog2(ri);
           double N = 0;
-          for (Idx k = 0; k < targets_modal; ++k) {
-            score += __gammalog2(N_ijk[k] + 1);
-            N += N_ijk[k];
+          for (const auto n_ijk : N_ijk) {
+            score += __gammalog2(n_ijk + 1);
+            N += n_ijk;
           }
-
-          score -= __gammalog2(N + r_i);
+          score -= __gammalog2(N + ri);
         }
-
-        // shall we put the score into the cache?
-        if (this->_isUsingCache()) {
-          this->_insertIntoCache(nodeset_index, score);
-        }
-
-        return score;
       }
+
+      return score;
     }
 
   } /* namespace learning */

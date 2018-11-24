@@ -20,14 +20,6 @@
 /** @file
  * @brief the base class for estimating parameters of CPTs
  *
- * The class should be used as follows: first, to speed-up computations, you
- * should consider computing all the parameters you need in one pass. To do so,
- * use the appropriate addNodeSet methods. These will compute everything you
- * need. The addNodeSet methods where you do not specify a set of conditioning
- * nodes assume that this set is empty. Once the computations have been
- * performed, use method _getAllCounts and _getConditioningCounts to retrieve
- * the parameters of interest.
- *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #ifndef GUM_LEARNING_PARAM_ESTIMATOR_H
@@ -36,223 +28,198 @@
 #include <agrum/agrum.h>
 #include <agrum/learning/database/databaseTable.h>
 #include <agrum/learning/aprioris/apriori.h>
-#include <agrum/learning/scores_and_tests/counter.h>
-#include <agrum/learning/scores_and_tests/scoreInternalApriori.h>
+#include <agrum/learning/scores_and_tests/recordCounter.h>
 #include <agrum/multidim/potential.h>
 
 namespace gum {
 
   namespace learning {
 
-    /* =========================================================================
-     */
-    /* ===                       PARAM ESTIMATOR CLASS                       ===
-     */
-    /* =========================================================================
-     */
+
     /** @class ParamEstimator
      * @brief The base class for estimating parameters of CPTs
-     * @ingroup learning_group
-     *
-     * The class should be used as follows: first, to speed-up computations, you
-     * should consider computing all the parameters you need in one pass. To do
-     *so,
-     * use the appropriate addNodeSet methods. These will compute everything you
-     * need. The addNodeSet methods where you do not specify a set of
-     *conditioning
-     * nodes assume that this set is empty. Once the computations have been
-     * performed, use methods _getAllCounts and _getConditioningCounts to
-     *retrieve
-     * the parameters of interest.
+     * @headerfile paramEstimator.h <agrum/learning/paramUtils/paramEstimator.h>
+     * @ingroup learning_param_utils
      */
-    template < typename IdSetAlloc = std::allocator< Idx >,
-               typename CountAlloc = std::allocator< double > >
-    class ParamEstimator : private Counter< IdSetAlloc, CountAlloc > {
+    template < template < typename > class ALLOC = std::allocator >
+    class ParamEstimator {
       public:
+      /// type for the allocators passed in arguments of methods
+      using allocator_type = ALLOC< NodeId >;
+
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// default constructor
-      /** @param filter the row filter that will be used to read the database
-       * @param var_modalities the domain sizes of the variables in the database
-       * @param apriori the a priori that is taken into account in the
-       * score/countings
-       * @param score_internal_apriori The score internal apriori.
-       * */
-      template < typename RowFilter >
-      ParamEstimator(const RowFilter&                   filter,
-                     const std::vector< Size >&         var_modalities,
-                     Apriori< IdSetAlloc, CountAlloc >& apriori,
-                     const ScoreInternalApriori< IdSetAlloc, CountAlloc >&
-                       score_internal_apriori);
+      /** @param parser the parser used to parse the database
+       * @param external_apriori An apriori that we add to the computation
+       * of the score
+       * @param score_internal_apriori The apriori within the score used
+       * to learn the data structure (might be a NoApriori)
+       * @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
+       * indices. The countings are then performed only on the union of the
+       * rows [Xi,Yi), i in {1,...,n}. This is useful, e.g, when performing
+       * cross validation tasks, in which part of the database should be ignored.
+       * An empty set of ranges is equivalent to an interval [X,Y) ranging over
+       * the whole database.
+       * @param nodeId2Columns a mapping from the ids of the nodes in the
+       * graphical model to the corresponding column in the DatabaseTable
+       * parsed by the parser. This enables estimating from a database in
+       * which variable A corresponds to the 2nd column the parameters of a BN
+       * in which variable A has a NodeId of 5. An empty nodeId2Columns
+       * bijection means that the mapping is an identity, i.e., the value of a
+       * NodeId is equal to the index of the column in the DatabaseTable.
+       * @param alloc the allocator used to allocate the structures within the
+       * Score.
+       * @warning If nodeId2columns is not empty, then only the scores over the
+       * ids belonging to this bijection can be computed: applying method
+       * score() over other ids will raise exception NotFound. */
+      ParamEstimator(
+        const DBRowGeneratorParser< ALLOC >& parser,
+        const Apriori< ALLOC >&              external_apriori,
+        const Apriori< ALLOC >&              score_internal__apriori,
+        const std::vector< std::pair< std::size_t, std::size_t >,
+                           ALLOC< std::pair< std::size_t, std::size_t > > >&
+          ranges,
+        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+          nodeId2columns =
+            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+        const allocator_type& alloc = allocator_type());
 
-      /// virtual copy factory
-      virtual ParamEstimator< IdSetAlloc, CountAlloc >* copyFactory() const = 0;
+      /// default constructor
+      /** @param parser the parser used to parse the database
+       * @param external_apriori An apriori that we add to the computation
+       * of the score
+       * @param score_internal_apriori The apriori within the score used
+       * to learn the data structure (might be a NoApriori)
+       * @param nodeId2Columns a mapping from the ids of the nodes in the
+       * graphical model to the corresponding column in the DatabaseTable
+       * parsed by the parser. This enables estimating from a database in
+       * which variable A corresponds to the 2nd column the parameters of a BN
+       * in which variable A has a NodeId of 5. An empty nodeId2Columns
+       * bijection means that the mapping is an identity, i.e., the value of a
+       * NodeId is equal to the index of the column in the DatabaseTable.
+       * @param alloc the allocator used to allocate the structures within the
+       * Score.
+       * @warning If nodeId2columns is not empty, then only the scores over the
+       * ids belonging to this bijection can be computed: applying method
+       * score() over other ids will raise exception NotFound. */
+      ParamEstimator(const DBRowGeneratorParser< ALLOC >& parser,
+                     const Apriori< ALLOC >&              external_apriori,
+                     const Apriori< ALLOC >&              score_internal__apriori,
+                     const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                       nodeId2columns =
+                         Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+                     const allocator_type& alloc = allocator_type());
+
+      /// copy constructor
+      ParamEstimator(const ParamEstimator< ALLOC >& from);
+
+      /// copy constructor with a given allocator
+      ParamEstimator(const ParamEstimator< ALLOC >& from,
+                     const allocator_type&          alloc);
+
+      /// move constructor
+      ParamEstimator(ParamEstimator< ALLOC >&& from);
+
+      /// move constructor with a given allocator
+      ParamEstimator(ParamEstimator< ALLOC >&& from, const allocator_type& alloc);
+
+      /// virtual copy constructor
+      virtual ParamEstimator< ALLOC >* clone() const = 0;
+
+      /// virtual copy constructor with a given allocator
+      virtual ParamEstimator< ALLOC >*
+        clone(const allocator_type& alloc) const = 0;
 
       /// destructor
       virtual ~ParamEstimator();
 
       /// @}
 
+
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
       /// @{
 
-      /// add a new CPT with a single variable to be estimated
-      /** @param var represents the index of the variable in the filtered rows
-       * produced by the database cell filters whose observations shall be
-       * counted
-       * @return the index of the produced counting vector: the user should use
-       * class ParamEstimator to compute in one pass several CPT's parameters.
-       * These and their corresponding countings in the database are stored
-       * into a vector and the value returned by method addNodeSet is the index
-       * of
-       * the observed countings of "var" in this vector. The user shall pass
-       * this
-       * index as argument to methods _getAllCounts and _getConditioningCounts
-       * to
-       * get the corresponding counting vectors. */
-      Idx addNodeSet(Idx var);
-
-      /// add a new target variable plus some conditioning vars
-      /** @param var represents the index of the target variable in the filtered
-       * rows produced by the database cell filters
-       * @param conditioning_ids the indices of the variables of the
-       * conditioning
-       * set in the filtered rows
-       * @return the index of the produced counting vector: the user should use
-       * class ParamEstimator to compute in one pass several CPT's parameters.
-       * These and their corresponding countings in the database are stored
-       * into a vector and the value returned by method addNodeSet is the index
-       * of
-       * the observed countings of "var" in this vector. The user shall pass
-       * this
-       * index as argument to methods _getAllCounts and _getConditioningCounts
-       * to
-       * get the corresponding counting vectors. */
-      Idx addNodeSet(Idx var, const std::vector< Idx >& conditioning_ids);
-
       /// clears all the data structures from memory
-      void clear();
+      virtual void clear();
 
-      /// returns the modalities of the variables
-      using Counter< IdSetAlloc, CountAlloc >::modalities;
+      /// changes the max number of threads used to parse the database
+      virtual void setMaxNbThreads(std::size_t nb) const;
 
-      /// sets the maximum number of threads used to compute the scores
-      using Counter< IdSetAlloc, CountAlloc >::setMaxNbThreads;
+      /// returns the number of threads used to parse the database
+      virtual std::size_t nbThreads() const;
+
+      /// returns the CPT's parameters corresponding to a given target node
+      std::vector< double, ALLOC< double > > parameters(const NodeId target_node);
 
       /// returns the CPT's parameters corresponding to a given nodeset
       /** The vector contains the parameters of an n-dimensional CPT. The
        * distribution of the dimensions of the CPT within the vector is as
        * follows:
-       * first, there are the conditioning nodes (in the order in which they
-       * were specified) and, then, the target node. */
-      virtual const std::vector< double, CountAlloc >&
-        parameters(Idx nodeset_index) = 0;
+       * first, there is the target node, then the conditioning nodes (in the
+       * order in which they were specified). */
+      virtual std::vector< double, ALLOC< double > > parameters(
+        const NodeId                                  target_node,
+        const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes) = 0;
 
-      /// sets the CPT's parameters corresponding to a given nodeset
-      /** The order of the variables in the potential and in the nodeset
-       * are assumed to be identical */
-      void setParameters(Idx nodeset_index, Potential< double >& pot);
-
-      /// sets the CPT's parameters corresponding to a given nodeset
-      /** The order of the variables in the potential and in the nodeset
-       * are assumed to be identical */
+      /// sets the CPT's parameters corresponding to a given Potential
+      /** The potential is assumed to be a conditional probability, the first
+       * variable of its variablesSequence() being the target variable, the
+       * other ones being on the right side of the conditioning bar. */
       template < typename GUM_SCALAR >
-      void setParameters(Idx nodeset_index, Potential< GUM_SCALAR >& pot);
+      void setParameters(
+        const NodeId                                  target_node,
+        const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
+        Potential< GUM_SCALAR >&                      pot);
 
-      /// sets the range of records taken into account by the counter
-      /** @param min_range he number of the first record to be taken into
-       * account during learning
-       * @param max_range the number of the record after the last one taken
-       * into account*/
-      void setRange(Size min_range, Size max_range);
+      /// returns the mapping from ids to column positions in the database
+      /** @warning An empty nodeId2Columns bijection means that the mapping is
+       * an identity, i.e., the value of a NodeId is equal to the index of the
+       * column in the DatabaseTable. */
+      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+        nodeId2Columns() const;
+
+      /// returns the database on which we perform the counts
+      const DatabaseTable< ALLOC >& database() const;
+
+      /// returns the allocator used by the score
+      allocator_type getAllocator() const;
 
       /// @}
 
       protected:
-      /// the a priori used by the score
-      Apriori< IdSetAlloc, CountAlloc >* _apriori;
+      /// an external a priori
+      Apriori< ALLOC >* _external_apriori{nullptr};
 
-      /// the score that was use for structure learning (used for its apriori)
-      ScoreInternalApriori< IdSetAlloc, CountAlloc >* _score_internal_apriori;
+      /** @brief if a score was used for learning the structure of the PGM, this
+       * is the a priori internal to the score */
+      Apriori< ALLOC >* _score_internal_apriori{nullptr};
 
-      /// the database
-      const DatabaseTable< std::allocator >* _database;
+      /// the record counter used to parse the database
+      RecordCounter< ALLOC > _counter;
 
-      /// indicate whether we have already normalized the parameters
-      std::vector< bool > _is_normalized;
+      /// an empty vector of nodes, used for empty conditioning
+      const std::vector< NodeId, ALLOC< NodeId > > _empty_nodevect;
 
-      /// returns the counting vector for a given (conditioned) target set
-      /** This method returns the observtion countings for the set of variables
-       * whose index was returned by method addNodeSet. If the
-       * set was conditioned, the countings correspond to the target variables
-       * @b and the conditioning variables. If you wish to get only the
-       * countings
-       * for the conditioning variables, prefer using method countConditioning.
-       * @warning the dimensions of the vector are as follows: first come the
-       * nodes of the conditioning set (in the order in which they were
-       * specified
-       * when callind addNodeset, and then the target nodes.
-       * @warning it is assumed that, after using addNodeSet, you have executed
-       * method count() before calling method countTarget. */
-      using Counter< IdSetAlloc, CountAlloc >::_getAllCounts;
 
-      /// returns the counting vector for a conditioning set
-      /** @warning it is assumed that, after using addNodeSet, you have executed
-       * method count() before calling method countTarget. */
-      using Counter< IdSetAlloc, CountAlloc >::_getConditioningCounts;
+      /// copy operator
+      ParamEstimator< ALLOC >& operator=(const ParamEstimator< ALLOC >& from);
 
-      /// returns the set of target + conditioning nodes
-      /** conditioning nodes are always the first ones in the vector and targets
-       * are the last ones */
-      using Counter< IdSetAlloc, CountAlloc >::_getAllNodes;
+      /// move operator
+      ParamEstimator< ALLOC >& operator=(ParamEstimator< ALLOC >&& from);
 
-      /// returns the conditioning nodes (nullptr if there are no such nodes)
-      using Counter< IdSetAlloc, CountAlloc >::_getConditioningNodes;
-
-      /// returns the apriori vector for a given (conditioned) target set
-      /** This method returns the observation countings for the set of variables
-       * whose index was returned by method addNodeSet. If the
-       * set was conditioned, the countings correspond to the target variables
-       * @b and the conditioning variables. If you wish to get only the
-       * countings
-       * for the conditioning variables, prefer using method
-       * _getConditioningApriori.
-       * @warning the dimensions of the vector are as follows: first come the
-       * nodes of the conditioning set (in the order in which they were
-       * specified
-       * when callind addNodeset, and then the target nodes. */
-      const std::vector< double, CountAlloc >& _getAllApriori(Idx index);
-
-      /// returns the apriori vector for a conditioning set
-      const std::vector< double, CountAlloc >& _getConditioningApriori(Idx index);
-
-      /// if needed insert the score apriori into the countings
-      void _insertScoreApriori();
-
-      /// copy constructor
-      ParamEstimator(const ParamEstimator< IdSetAlloc, CountAlloc >&);
-
-      /// move constructor
-      ParamEstimator(ParamEstimator< IdSetAlloc, CountAlloc >&&);
-
-      private:
-      /// has the a priori been computed
-      bool __apriori_computed{false};
-
-      /// has the score's internal apriori been inserted into the countings ?
-      bool __score_apriori_inserted{false};
-
-      // ##########################################################################
-      // ##########################################################################
-
-      /// prevent copy operator
-      ParamEstimator< IdSetAlloc, CountAlloc >&
-        operator=(const ParamEstimator< IdSetAlloc, CountAlloc >&) = delete;
+      /** @brief check the coherency between the parameters passed to
+       * the setParameters functions */
+      template < typename GUM_SCALAR >
+      void __checkParameters(
+        const NodeId                                  target_node,
+        const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
+        Potential< GUM_SCALAR >&                      pot);
     };
 
   } /* namespace learning */

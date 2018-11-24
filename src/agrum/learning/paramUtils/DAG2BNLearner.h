@@ -30,42 +30,71 @@
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/graphs/DAG.h>
+#include <agrum/learning/paramUtils/paramEstimator.h>
 
 namespace gum {
 
   namespace learning {
 
-    /* =========================================================================
-     */
-    /* ===                          BN CREATOR CLASS                         ===
-     */
-    /* =========================================================================
-     */
     /** @class DAG2BNLearner
      * @brief A class that, given a structure and a parameter estimator returns
      * a full Bayes net
-     * @ingroup learning_group
+     * @headerfile DAG2BNLearner.h <agrum/learning/paramUtils/DAG2BNLearner.h>
+     * @ingroup learning_param_utils
      */
-    class DAG2BNLearner {
+    template < template < typename > class ALLOC = std::allocator >
+    class DAG2BNLearner : private ALLOC< NodeId > {
       public:
+      /// type for the allocators passed in arguments of methods
+      using allocator_type = ALLOC< NodeId >;
+
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// default constructor
-      DAG2BNLearner();
+      DAG2BNLearner(const allocator_type& alloc = allocator_type());
 
       /// copy constructor
-      DAG2BNLearner(const DAG2BNLearner& from);
+      DAG2BNLearner(const DAG2BNLearner< ALLOC >& from);
+
+      /// copy constructor with a given allocator
+      DAG2BNLearner(const DAG2BNLearner< ALLOC >& from,
+                    const allocator_type&         alloc);
 
       /// move constructor
-      DAG2BNLearner(DAG2BNLearner&& from);
+      DAG2BNLearner(DAG2BNLearner< ALLOC >&& from);
+
+      /// move constructor with a given allocator
+      DAG2BNLearner(DAG2BNLearner< ALLOC >&& from, const allocator_type& alloc);
+
+      /// virtual copy constructor
+      virtual DAG2BNLearner< ALLOC >* clone() const;
+
+      /// virtual copy constructor with a given allocator
+      virtual DAG2BNLearner< ALLOC >* clone(const allocator_type& alloc) const;
 
       /// destructor
-      ~DAG2BNLearner();
+      virtual ~DAG2BNLearner();
 
       /// @}
+
+
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+
+      /// @{
+
+      /// copy operator
+      DAG2BNLearner< ALLOC >& operator=(const DAG2BNLearner< ALLOC >& from);
+
+      /// move operator
+      DAG2BNLearner< ALLOC >& operator=(DAG2BNLearner< ALLOC >&& from);
+
+      /// @}
+
 
       // ##########################################################################
       /// @name Accessors / Modifiers
@@ -73,15 +102,12 @@ namespace gum {
       /// @{
 
       /// create a BN
-      template < typename GUM_SCALAR = double,
-                 typename PARAM_ESTIMATOR,
-                 typename CELL_TRANSLATORS >
-      static BayesNet< GUM_SCALAR >
-        createBN(PARAM_ESTIMATOR&                  estimator,
-                 const DAG&                        dag,
-                 const std::vector< std::string >& names,
-                 const std::vector< Size >&        modal,
-                 const CELL_TRANSLATORS&           translator);
+      template < typename GUM_SCALAR = double >
+      static BayesNet< GUM_SCALAR > createBN(ParamEstimator< ALLOC >& estimator,
+                                             const DAG&               dag);
+
+      /// returns the allocator used by the score
+      allocator_type getAllocator() const;
 
       /// @}
 

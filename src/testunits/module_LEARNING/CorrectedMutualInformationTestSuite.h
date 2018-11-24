@@ -28,84 +28,98 @@
 #include <agrum/learning/database/databaseTable.h>
 #include <agrum/learning/database/DBTranslatorSet.h>
 #include <agrum/learning/scores_and_tests/correctedMutualInformation.h>
+#include <agrum/learning/aprioris/aprioriNoApriori.h>
 
 namespace gum_tests {
 
   class CorrectedMutualInformationTestSuite : public CxxTest::TestSuite {
-    public:
-    void test_Ixy_Kmdl() {
-      gum::learning::DBInitializerFromCSV<> initializer(
-        GET_RESSOURCES_PATH("asia.csv"));
-      const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars = var_names.size();
-
-      gum::learning::DBTranslatorSet<>                translator_set;
-      gum::learning::DBTranslator4LabelizedVariable<> translator;
-      for (std::size_t i = 0; i < nb_vars; ++i) {
-        translator_set.insertTranslator(translator, i);
+    private:
+    double __entropy(const std::vector< double >& vect) {
+      double res = 0.0;
+      double sum = 0.0;
+      for (auto nb : vect) {
+        if (nb) {
+          res -= nb * std::log2(nb);
+          sum += nb;
+        }
       }
-
-      gum::learning::DatabaseTable<> database(translator_set);
-      database.setVariableNames(initializer.variableNames());
-      initializer.fillDatabase(database);
-
-      gum::learning::DBRowGeneratorSet<>    genset;
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-
-      std::vector< gum::Size > modalities(nb_vars, 2);
-
-      gum::learning::CorrectedMutualInformation<> score(parser, modalities);
-      score.useMDL();
-      /*
-       * Edge 2-6 Ixy 0.2515024365984908 K 4.605170185988092
-       * Edge 3-4 Ixy 0.000686553442274418 K 4.605170185988092
-       * Edge 4-7 Ixy 0.02569138409986288 K 4.605170185988092
-       * Edge 4-7 [5] Ixy 7.691726685465916e-06 K 9.210340371976184
-       * Edge 1-6 [0] Ixy 0.011185182353024459 K 9.210340371976184
-       */
-      TS_ASSERT_DELTA(score.score(2, 6), 0.2515024 - 4.605 / 10000, 1e-4);
-      TS_ASSERT_DELTA(score.score(std::pair< gum::Idx, gum::Idx >{4, 7}),
-                      0.0256913 - 4.605 / 10000,
-                      1e-4);
-      TS_ASSERT_DELTA(score.score(std::pair< gum::Idx, gum::Idx >{4, 7},
-                                  std::vector< gum::Idx >{5}),
-                      7.69172e-6 - 9.2103 / 10000,
-                      1e-5);
-      TS_ASSERT_DELTA(score.score(1, 6, std::vector< gum::Idx >{0}),
-                      0.011185 - 9.210 / 10000,
-                      1e-4);
-      TS_ASSERT_DELTA(score.score(2, 6, std::vector< gum::Idx >{}),
-                      0.2515024 - 4.605 / 10000,
-                      1e-4);
-
-      score.clear();
-      TS_ASSERT_DELTA(score.score(6, 2), 0.2515024 - 4.605 / 10000, 1e-4);
-      TS_ASSERT_DELTA(score.score(2, 6), 0.2515024 - 4.605 / 10000, 1e-4);
-
-      /* Ixyz de 263 vaut -4.990557243433891e-05
-       * Triple 0 - 1 - 5 | [] with I(x,y,z)=0.016970292639588713
-       * k=4.605170185988092
-       * Triple 4 - 5 - 7 | [] with I(x,y,z)=0.025683692373177247
-       * k=4.605170185988092
-       * Triple 2 - 6 - 5 | [1] with I(x,y,z)=-0.0038160334747804336
-       * k=9.210340371976184
-       * Triple 2 - 7 - 5 | [1, 4] with I(x,y,z)=-1.1102230246251565e-16
-       * Triple 0 - 6 - 5 | [1, 4] with I(x,y,z)=0.0
-       */
-      score.clear();
-      TS_ASSERT_DELTA(score.score(0, 1, 5), 0.01697029 + 4.605 / 10000, 1e-4);
-      TS_ASSERT_DELTA(score.score(2, 6, 5, std::vector< gum::Idx >{1}),
-                      -0.003816 + 9.210 / 10000,
-                      1e-4);
-      score.clear();
-      TS_ASSERT_DELTA(score.score(4, 5, 7), 0.0256836 + 4.605 / 10000, 1e-4);
-      TS_ASSERT_DELTA(score.score(4, 7, 5), 0.0256836 + 4.605 / 10000, 1e-4);
-      TS_ASSERT_DELTA(score.score(5, 4, 7), 0.0256836 + 4.605 / 10000, 1e-4);
-      TS_ASSERT_DELTA(score.score(5, 7, 4), 0.0256836 + 4.605 / 10000, 1e-4);
-      TS_ASSERT_DELTA(score.score(7, 5, 4), 0.0256836 + 4.605 / 10000, 1e-4);
-      TS_ASSERT_DELTA(score.score(7, 4, 5), 0.0256836 + 4.605 / 10000, 1e-4);
+      res += sum * std::log2(sum);
+      return res;
     }
 
+    double __H(const gum::learning::DBRowGeneratorParser<>& parser,
+               const gum::NodeId                            id) {
+      gum::learning::RecordCounter<> counter(parser);
+      return __entropy(counter.counts(gum::learning::IdSet<>(id, {})));
+    }
+
+    double __H(const gum::learning::DBRowGeneratorParser<>& parser,
+               const gum::NodeId                            id1,
+               const gum::NodeId                            id2) {
+      gum::learning::RecordCounter<> counter(parser);
+      return __entropy(counter.counts(gum::learning::IdSet<>(id1, id2, {}, true)));
+    }
+
+    double __I(const gum::learning::DBRowGeneratorParser<>& parser,
+               const gum::NodeId                            id1,
+               const gum::NodeId                            id2) {
+      return __H(parser, id1) + __H(parser, id2) - __H(parser, id1, id2);
+    }
+
+    double __H(const gum::learning::DBRowGeneratorParser<>& parser,
+               const std::vector< gum::NodeId >&            cond) {
+      gum::learning::RecordCounter<> counter(parser);
+      return __entropy(counter.counts(gum::learning::IdSet<>(cond, true, true)));
+    }
+
+    double __H(const gum::learning::DBRowGeneratorParser<>& parser,
+               const gum::NodeId                            id,
+               const std::vector< gum::NodeId >&            cond) {
+      gum::learning::RecordCounter<> counter(parser);
+      return __entropy(counter.counts(gum::learning::IdSet<>(id, cond, true)))
+             - __entropy(
+                 counter.counts(gum::learning::IdSet<>(cond, false, true)));
+    }
+
+    double __H(const gum::learning::DBRowGeneratorParser<>& parser,
+               const gum::NodeId                            id1,
+               const gum::NodeId                            id2,
+               const std::vector< gum::NodeId >&            cond) {
+      gum::learning::RecordCounter<> counter(parser);
+      return __entropy(
+               counter.counts(gum::learning::IdSet<>(id1, id2, cond, true, true)))
+             - __entropy(
+                 counter.counts(gum::learning::IdSet<>(cond, false, true)));
+    }
+
+    double __I(const gum::learning::DBRowGeneratorParser<>& parser,
+               const gum::NodeId                            id1,
+               const gum::NodeId                            id2,
+               const std::vector< gum::NodeId >&            cond) {
+      return __H(parser, id1, cond) + __H(parser, id2, cond)
+             - __H(parser, id1, id2, cond);
+    }
+
+    double __I(const gum::learning::DBRowGeneratorParser<>& parser,
+               const gum::NodeId                            id1,
+               const gum::NodeId                            id2,
+               const gum::NodeId                            id3) {
+      return __I(parser, id1, id2)
+             - __I(parser, id1, id2, std::vector< gum::NodeId >{id3});
+    }
+
+    double __I(const gum::learning::DBRowGeneratorParser<>& parser,
+               const gum::NodeId                            id1,
+               const gum::NodeId                            id2,
+               const gum::NodeId                            id3,
+               const std::vector< gum::NodeId >&            cond) {
+      std::vector< gum::NodeId > xcond(cond);
+      xcond.push_back(id3);
+      return __I(parser, id1, id2, cond) - __I(parser, id1, id2, xcond);
+    }
+
+
+    public:
     void test_Ixy_NoCorr() {
       gum::learning::DBInitializerFromCSV<> initializer(
         GET_RESSOURCES_PATH("asia.csv"));
@@ -124,52 +138,105 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
+      gum::learning::AprioriNoApriori<>     apriori(database);
+
+      gum::learning::CorrectedMutualInformation<> score(parser, apriori);
+      score.useNoCorr();
+
+      TS_ASSERT_DELTA(score.score(2, 6), __I(parser, 2, 6), 0.001);
+      TS_ASSERT_DELTA(score.score(4, 7), __I(parser, 4, 7), 0.001);
+      TS_ASSERT_DELTA(score.score(1, 6, std::vector< gum::NodeId >{0}),
+                      __I(parser, 1, 6, std::vector< gum::NodeId >{0}),
+                      0.001);
+      TS_ASSERT_DELTA(
+        score.score(2, 6, std::vector< gum::NodeId >{}), __I(parser, 2, 6), 0.001);
+
+      score.clear();
+      TS_ASSERT_DELTA(score.score(6, 2), __I(parser, 6, 2), 0.001);
+      TS_ASSERT_DELTA(score.score(2, 6), __I(parser, 2, 6), 0.001);
+
+      score.clear();
+      TS_ASSERT_DELTA(score.score(0, 1, 5), __I(parser, 0, 1, 5), 0.01);
+      TS_ASSERT_DELTA(score.score(2, 6, 5, std::vector< gum::NodeId >{1}),
+                      __I(parser, 2, 6, 5, std::vector< gum::NodeId >{1}),
+                      0.001);
+
+      score.clear();
+      TS_ASSERT_DELTA(score.score(4, 5, 7), __I(parser, 4, 5, 7), 0.001);
+      TS_ASSERT_DELTA(score.score(4, 7, 5), __I(parser, 4, 7, 5), 0.001);
+      TS_ASSERT_DELTA(score.score(5, 4, 7), __I(parser, 5, 4, 7), 0.001);
+      TS_ASSERT_DELTA(score.score(5, 7, 4), __I(parser, 5, 7, 4), 0.001);
+      TS_ASSERT_DELTA(score.score(7, 5, 4), __I(parser, 7, 5, 4), 0.001);
+      TS_ASSERT_DELTA(score.score(7, 4, 5), __I(parser, 7, 4, 5), 0.001);
+
+      score.clear();
+      TS_ASSERT_DELTA(score.score(0, 6, 5, std::vector< gum::NodeId >{1, 4}),
+                      __I(parser, 0, 6, 5, std::vector< gum::NodeId >{1, 4}),
+                      1e-4);
+      TS_ASSERT_DELTA(score.score(6, 0, 5, std::vector< gum::NodeId >{1, 4}),
+                      __I(parser, 6, 0, 5, std::vector< gum::NodeId >{1, 4}),
+                      1e-4);
+    }
+
+
+    void test_Ixy_Kmdl() {
+      gum::learning::DBInitializerFromCSV<> initializer(
+        GET_RESSOURCES_PATH("asia.csv"));
+      const auto&       var_names = initializer.variableNames();
+      const std::size_t nb_vars = var_names.size();
+
+      gum::learning::DBTranslatorSet<>                translator_set;
+      gum::learning::DBTranslator4LabelizedVariable<> translator;
+      for (std::size_t i = 0; i < nb_vars; ++i) {
+        translator_set.insertTranslator(translator, i);
+      }
+
+      gum::learning::DatabaseTable<> database(translator_set);
+      database.setVariableNames(initializer.variableNames());
+      initializer.fillDatabase(database);
+
+      gum::learning::DBRowGeneratorSet<>    genset;
+      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
+      gum::learning::AprioriNoApriori<>     apriori(database);
 
       std::vector< gum::Size > modalities(nb_vars, 2);
 
-      gum::learning::CorrectedMutualInformation<> score(parser, modalities);
-      score.useNoCorr();
-      /*
-       * Edge 2-6 Ixy 0.2515024365984908
-       * Edge 3-4 Ixy 0.000686553442274418
-       * Edge 4-7 Ixy 0.02569138409986288
-       * Edge 1-6 [0] Ixy 0.011185182353024459
-       */
-      TS_ASSERT_DELTA(score.score(2, 6), 0.2515, 0.001);
-      TS_ASSERT_DELTA(
-        score.score(std::pair< gum::Idx, gum::Idx >{4, 7}), 0.0256, 0.001);
-      TS_ASSERT_DELTA(
-        score.score(1, 6, std::vector< gum::Idx >{0}), 0.01118, 0.001);
-      TS_ASSERT_DELTA(score.score(2, 6, std::vector< gum::Idx >{}), 0.2515, 0.001);
+      gum::learning::CorrectedMutualInformation<> score(parser, apriori);
+      score.useMDL();
+
+      const double cst = 0.5 * std::log2(10000);
+
+      TS_ASSERT_DELTA(score.score(2, 6), __I(parser, 6, 2) - cst, 1e-4);
+      TS_ASSERT_DELTA(score.score(4, 7), __I(parser, 4, 7) - cst, 1e-4);
+      TS_ASSERT_DELTA(score.score(4, 7, std::vector< gum::NodeId >{5}),
+                      __I(parser, 4, 7, std::vector< gum::NodeId >{5}) - 2 * cst,
+                      1e-5);
+      TS_ASSERT_DELTA(score.score(1, 6, std::vector< gum::NodeId >{0}),
+                      __I(parser, 1, 6, std::vector< gum::NodeId >{0}) - 2 * cst,
+                      1e-4);
+      TS_ASSERT_DELTA(score.score(2, 6, std::vector< gum::NodeId >{}),
+                      __I(parser, 2, 6) - cst,
+                      1e-4);
 
       score.clear();
-      TS_ASSERT_DELTA(score.score(6, 2), 0.2515, 0.001);
-      TS_ASSERT_DELTA(score.score(2, 6), 0.2515, 0.001);
-
-      /* Ixyz de 263 vaut -4.990557243433891e-05
-       * Triple 0 - 1 - 5 | [] with I(x,y,z)=0.016970292639588713
-       * Triple 4 - 5 - 7 | [] with I(x,y,z)=0.025683692373177247
-       * Triple 2 - 6 - 5 | [1] with I(x,y,z)=-0.0038160334747804336
-       * Triple 2 - 7 - 5 | [1, 4] with I(x,y,z)=-1.1102230246251565e-16
-       * Triple 0 - 6 - 5 | [1, 4] with I(x,y,z)=0.0
-       */
-      score.clear();
-      TS_ASSERT_DELTA(score.score(0, 1, 5), 0.0169, 0.01);
-      TS_ASSERT_DELTA(
-        score.score(2, 6, 5, std::vector< gum::Idx >{1}), -0.003816, 0.001);
-      score.clear();
-      TS_ASSERT_DELTA(score.score(4, 5, 7), 0.025683, 0.001);
-      TS_ASSERT_DELTA(score.score(4, 7, 5), 0.025683, 0.001);
-      TS_ASSERT_DELTA(score.score(5, 4, 7), 0.025683, 0.001);
-      TS_ASSERT_DELTA(score.score(5, 7, 4), 0.025683, 0.001);
-      TS_ASSERT_DELTA(score.score(7, 5, 4), 0.025683, 0.001);
-      TS_ASSERT_DELTA(score.score(7, 4, 5), 0.025683, 0.001);
+      TS_ASSERT_DELTA(score.score(6, 2), __I(parser, 6, 2) - cst, 1e-4);
+      TS_ASSERT_DELTA(score.score(2, 6), __I(parser, 2, 6) - cst, 1e-4);
 
       score.clear();
-      TS_ASSERT_DELTA(
-        score.score(0, 6, 5, std::vector< gum::Idx >{1, 4}), 0.0, 1e-4);
-      TS_ASSERT_DELTA(
-        score.score(6, 0, 5, std::vector< gum::Idx >{1, 4}), 0.0, 1e-4);
+      TS_ASSERT_DELTA(score.score(0, 1, 5), __I(parser, 0, 1, 5) + cst, 1e-4);
+      TS_ASSERT_DELTA(score.score(2, 6, 5, std::vector< gum::NodeId >{1}),
+                      __I(parser, 2, 6, 5, std::vector< gum::NodeId >{1})
+                        + 2 * cst,
+                      1e-4);
+
+
+      score.clear();
+      TS_ASSERT_DELTA(score.score(4, 5, 7), __I(parser, 4, 5, 7) + cst, 1e-4);
+      TS_ASSERT_DELTA(score.score(4, 7, 5), __I(parser, 4, 7, 5) + cst, 1e-4);
+      TS_ASSERT_DELTA(score.score(5, 4, 7), __I(parser, 5, 4, 7) + cst, 1e-4);
+      TS_ASSERT_DELTA(score.score(5, 7, 4), __I(parser, 5, 7, 4) + cst, 1e-4);
+      TS_ASSERT_DELTA(score.score(7, 5, 4), __I(parser, 7, 5, 4) + cst, 1e-4);
+      TS_ASSERT_DELTA(score.score(7, 4, 5), __I(parser, 7, 4, 5) + cst, 1e-4);
     }
   };
 

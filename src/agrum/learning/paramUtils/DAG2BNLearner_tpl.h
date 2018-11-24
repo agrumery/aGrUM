@@ -24,19 +24,115 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/variables/labelizedVariable.h>
-#include <agrum/learning/database/DBTranslatedValue.h>
 
 #include <algorithm>
 #include <string>
 #include <vector>
+
 namespace gum {
 
   namespace learning {
 
+    /// returns the allocator used by the score
+    template < template < typename > class ALLOC >
+    INLINE typename DAG2BNLearner< ALLOC >::allocator_type
+      DAG2BNLearner< ALLOC >::getAllocator() const {
+      return *this;
+    }
+
+
+    /// default constructor
+    template < template < typename > class ALLOC >
+    DAG2BNLearner< ALLOC >::DAG2BNLearner(
+      const typename DAG2BNLearner< ALLOC >::allocator_type& alloc) :
+        ALLOC< NodeId >(alloc) {
+      GUM_CONSTRUCTOR(DAG2BNLearner);
+    }
+
+
+    /// copy constructor with a given allocator
+    template < template < typename > class ALLOC >
+    DAG2BNLearner< ALLOC >::DAG2BNLearner(
+      const DAG2BNLearner< ALLOC >&                          from,
+      const typename DAG2BNLearner< ALLOC >::allocator_type& alloc) :
+        ALLOC< NodeId >(alloc) {
+      GUM_CONS_CPY(DAG2BNLearner);
+    }
+
+
+    /// copy constructor
+    template < template < typename > class ALLOC >
+    DAG2BNLearner< ALLOC >::DAG2BNLearner(const DAG2BNLearner< ALLOC >& from) :
+        DAG2BNLearner(from, from.getAllocator()) {}
+
+
+    /// move constructor with a given allocator
+    template < template < typename > class ALLOC >
+    DAG2BNLearner< ALLOC >::DAG2BNLearner(
+      DAG2BNLearner< ALLOC >&&                               from,
+      const typename DAG2BNLearner< ALLOC >::allocator_type& alloc) :
+        ALLOC< NodeId >(alloc) {
+      GUM_CONS_MOV(DAG2BNLearner);
+    }
+
+
+    /// move constructor
+    template < template < typename > class ALLOC >
+    DAG2BNLearner< ALLOC >::DAG2BNLearner(DAG2BNLearner< ALLOC >&& from) :
+        DAG2BNLearner(std::move(from), from.getAllocator()) {}
+
+
+    /// virtual copy constructor with a given allocator
+    template < template < typename > class ALLOC >
+    DAG2BNLearner< ALLOC >* DAG2BNLearner< ALLOC >::clone(
+      const typename DAG2BNLearner< ALLOC >::allocator_type& alloc) const {
+      ALLOC< DAG2BNLearner< ALLOC > > allocator(alloc);
+      DAG2BNLearner< ALLOC >*         new_learner = allocator.allocate(1);
+      try {
+        allocator.construct(new_learner, *this, alloc);
+      } catch (...) {
+        allocator.deallocate(new_learner, 1);
+        throw;
+      }
+
+      return new_learner;
+    }
+
+
+    /// virtual copy constructor
+    template < template < typename > class ALLOC >
+    DAG2BNLearner< ALLOC >* DAG2BNLearner< ALLOC >::clone() const {
+      return clone(this->getAllocator());
+    }
+
+
+    /// destructor
+    template < template < typename > class ALLOC >
+    DAG2BNLearner< ALLOC >::~DAG2BNLearner() {
+      GUM_DESTRUCTOR(DAG2BNLearner);
+    }
+
+
+    /// copy operator
+    template < template < typename > class ALLOC >
+    DAG2BNLearner< ALLOC >& DAG2BNLearner< ALLOC >::
+                            operator=(const DAG2BNLearner< ALLOC >& from) {
+      return *this;
+    }
+
+
+    /// move operator
+    template < template < typename > class ALLOC >
+    DAG2BNLearner< ALLOC >& DAG2BNLearner< ALLOC >::
+                            operator=(DAG2BNLearner< ALLOC >&& from) {
+      return *this;
+    }
+
+
     /// copy a potential into another whose variables' sequence differs
+    template < template < typename > class ALLOC >
     template < typename GUM_SCALAR >
-    void DAG2BNLearner::__probaVarReordering(
+    void DAG2BNLearner< ALLOC >::__probaVarReordering(
       gum::Potential< GUM_SCALAR >&       pot,
       const gum::Potential< GUM_SCALAR >& other_pot) {
       // check that the variables are identical
@@ -56,35 +152,27 @@ namespace gum {
     }
 
     /// create a BN
-    template < typename GUM_SCALAR,
-               typename PARAM_ESTIMATOR,
-               typename CELL_TRANSLATORS >
+    template < template < typename > class ALLOC >
+    template < typename GUM_SCALAR >
     BayesNet< GUM_SCALAR >
-      DAG2BNLearner::createBN(PARAM_ESTIMATOR&                  estimator,
-                              const DAG&                        dag,
-                              const std::vector< std::string >& names,
-                              const std::vector< Size >&        modal,
-                              const CELL_TRANSLATORS&           translators) {
+      DAG2BNLearner< ALLOC >::createBN(ParamEstimator< ALLOC >& estimator,
+                                       const DAG&               dag) {
       BayesNet< GUM_SCALAR > bn;
 
       // create a bn with dummy parameters corresponding to the dag
-      for (const auto id : dag) {
-        // create the labelized variable
-        /*
-        std::vector< std::string > labels;
-        auto& translator = translators.translator ( id );
-        for (Idx i = 0; i < modal[id]; ++i) {
-          labels.push_back(translator.translateBack(DBTranslatedValue{std::size_t(i)}));
+      const auto& node2cols = estimator.nodeId2Columns();
+      const auto& database = estimator.database();
+      if (node2cols.empty()) {
+        for (const auto id : dag) {
+          bn.add(dynamic_cast< const DiscreteVariable& >(database.variable(id)),
+                 id);
         }
-        sort(labels.begin(), labels.end());
-        LabelizedVariable variable(names[id], "", 0);
-        for (auto s : labels) {
-          variable.addLabel(s);
+      } else {
+        for (const auto id : dag) {
+          const std::size_t col = node2cols.second(id);
+          bn.add(dynamic_cast< const DiscreteVariable& >(database.variable(col)),
+                 id);
         }
-        */
-
-        bn.add(dynamic_cast< const DiscreteVariable& >(translators.variable(id)),
-               id);
       }
 
       // add the arcs
@@ -97,34 +185,21 @@ namespace gum {
       // estimate the parameters
       const VariableNodeMap& varmap = bn.variableNodeMap();
       for (const auto id : dag) {
-        estimator.clear();
-
         // get the sequence of variables and make the targets be the last
         Potential< GUM_SCALAR >& pot =
           const_cast< Potential< GUM_SCALAR >& >(bn.cpt(id));
-        const DiscreteVariable& var = varmap.get(id);
 
         // get the variables of the CPT of id in the correct order
-        Sequence< const DiscreteVariable* > vars = pot.variablesSequence();
-        if (vars.pos(&var) != vars.size() - 1) {
-          vars.erase(&var);
-          vars.insert(&var);
-        }
+        const Sequence< const DiscreteVariable* >& vars = pot.variablesSequence();
 
         // setup the estimation
-        if (vars.size() > 1) {
-          std::vector< Idx > cond_ids(vars.size() - 1);
-          for (Idx i = 0; i < cond_ids.size(); ++i) {
-            cond_ids[i] = varmap.get(*(vars[i]));
-          }
-          estimator.addNodeSet(id, cond_ids);
-        } else {
-          estimator.addNodeSet(id);
+        std::vector< NodeId > conditioning_ids(vars.size() - 1);
+        for (std::size_t i = std::size_t(1); i < vars.size(); ++i) {
+          conditioning_ids[i - 1] = varmap.get(*(vars[i]));
         }
+        estimator.setParameters(id, conditioning_ids, pot);
 
-        // assign the parameters to the potentials
-        Idx index = 0;
-
+        /*
         // create a potential with the appropriate size
         Potential< GUM_SCALAR > ordered_pot;
         ordered_pot.beginMultipleChanges();
@@ -132,10 +207,11 @@ namespace gum {
           ordered_pot.add(*var);
         }
         ordered_pot.endMultipleChanges();
-        estimator.setParameters(index, ordered_pot);
+
 
         // assign the potential to the BN
         __probaVarReordering(pot, ordered_pot);
+        */
       }
 
       return bn;

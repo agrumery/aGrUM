@@ -18,236 +18,303 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the abstract class for all the independence tests
+ * @brief the base class for all the independence tests used for learning
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-
-#  include <limits>
 
 namespace gum {
 
   namespace learning {
 
+    /// returns the allocator used by the independence test
+    template < template < typename > class ALLOC >
+    INLINE typename IndependenceTest< ALLOC >::allocator_type
+      IndependenceTest< ALLOC >::getAllocator() const {
+      return _counter.getAllocator();
+    }
+
+
     /// default constructor
-    template < typename IdSetAlloc, typename CountAlloc >
-    template < typename RowFilter >
-    INLINE IndependenceTest< IdSetAlloc, CountAlloc >::IndependenceTest(
-      const RowFilter& filter, const std::vector< Size >& var_modalities) :
-        Counter< IdSetAlloc, CountAlloc >(filter, var_modalities) {
+    template < template < typename > class ALLOC >
+    INLINE IndependenceTest< ALLOC >::IndependenceTest(
+      const DBRowGeneratorParser< ALLOC >&                                 parser,
+      const Apriori< ALLOC >&                                              apriori,
+      const std::vector< std::pair< std::size_t, std::size_t >,
+                         ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
+      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
+      const typename IndependenceTest< ALLOC >::allocator_type&     alloc) :
+        _apriori(apriori.clone(alloc)),
+        _counter(parser, ranges, nodeId2columns, alloc), _cache(alloc) {
       GUM_CONSTRUCTOR(IndependenceTest);
     }
 
+
+    /// default constructor
+    template < template < typename > class ALLOC >
+    INLINE IndependenceTest< ALLOC >::IndependenceTest(
+      const DBRowGeneratorParser< ALLOC >&                          parser,
+      const Apriori< ALLOC >&                                       apriori,
+      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
+      const typename IndependenceTest< ALLOC >::allocator_type&     alloc) :
+        _apriori(apriori.clone(alloc)),
+        _counter(parser, nodeId2columns, alloc), _cache(alloc) {
+      GUM_CONSTRUCTOR(IndependenceTest);
+    }
+
+
+    /// copy constructor with a given allocator
+    template < template < typename > class ALLOC >
+    INLINE IndependenceTest< ALLOC >::IndependenceTest(
+      const IndependenceTest< ALLOC >&                          from,
+      const typename IndependenceTest< ALLOC >::allocator_type& alloc) :
+        _apriori(from._apriori->clone(alloc)),
+        _counter(from._counter, alloc), _cache(from._cache, alloc),
+        _use_cache(from._use_cache), _max_nb_threads(from._max_nb_threads),
+        _min_nb_rows_per_thread(from._min_nb_rows_per_thread) {
+      GUM_CONS_CPY(IndependenceTest);
+    }
+
+
+    /// copy constructor
+    template < template < typename > class ALLOC >
+    INLINE IndependenceTest< ALLOC >::IndependenceTest(
+      const IndependenceTest< ALLOC >& from) :
+        IndependenceTest(from, from.getAllocator()) {}
+
+
+    /// move constructor
+    template < template < typename > class ALLOC >
+    INLINE IndependenceTest< ALLOC >::IndependenceTest(
+      IndependenceTest< ALLOC >&&                               from,
+      const typename IndependenceTest< ALLOC >::allocator_type& alloc) :
+        _apriori(from._apriori),
+        _counter(std::move(from._counter), alloc),
+        _cache(std::move(from._cache), alloc), _use_cache(from._use_cache),
+        _max_nb_threads(from._max_nb_threads),
+        _min_nb_rows_per_thread(from._min_nb_rows_per_thread) {
+      from._apriori = nullptr;
+      GUM_CONS_MOV(IndependenceTest);
+    }
+
+
+    /// move constructor
+    template < template < typename > class ALLOC >
+    INLINE IndependenceTest< ALLOC >::IndependenceTest(
+      IndependenceTest< ALLOC >&& from) :
+        IndependenceTest(std::move(from), from.getAllocator()) {}
+
+
     /// destructor
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE IndependenceTest< IdSetAlloc, CountAlloc >::~IndependenceTest() {
+    template < template < typename > class ALLOC >
+    INLINE IndependenceTest< ALLOC >::~IndependenceTest() {
+      if (_apriori != nullptr) {
+        ALLOC< Apriori< ALLOC > > allocator(this->getAllocator());
+        allocator.destroy(_apriori);
+        allocator.deallocate(_apriori, 1);
+      }
       GUM_DESTRUCTOR(IndependenceTest);
     }
 
-    /// add a new pair of target unconditioned variables to be counted
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE Idx IndependenceTest< IdSetAlloc, CountAlloc >::addNodeSet(Idx var1,
-                                                                      Idx var2) {
-      if (__use_cache) {
-        // check whether the score is already in the cache
+
+    /// copy operator
+    template < template < typename > class ALLOC >
+    IndependenceTest< ALLOC >& IndependenceTest< ALLOC >::
+                               operator=(const IndependenceTest< ALLOC >& from) {
+      if (this != &from) {
+        Apriori< ALLOC >*      new_apriori = from._apriori->clone();
+        RecordCounter< ALLOC > new_counter = from._counter;
+        ScoringCache< ALLOC >  new_cache = from._cache;
+
+        if (_apriori != nullptr) {
+          ALLOC< Apriori< ALLOC > > allocator(this->getAllocator());
+          allocator.destroy(_apriori);
+          allocator.deallocate(_apriori, 1);
+        }
+
+        _apriori = new_apriori;
+        _counter = std::move(new_counter);
+        _cache = std::move(new_cache);
+
+        _use_cache = from._use_cache;
+        _max_nb_threads = from._max_nb_threads;
+        _min_nb_rows_per_thread = from._min_nb_rows_per_thread;
+      }
+      return *this;
+    }
+
+
+    /// move operator
+    template < template < typename > class ALLOC >
+    IndependenceTest< ALLOC >& IndependenceTest< ALLOC >::
+                               operator=(IndependenceTest< ALLOC >&& from) {
+      if (this != &from) {
+        std::swap(_apriori, from._apriori);
+
+        _counter = std::move(from._counter);
+        _cache = std::move(from._cache);
+        _use_cache = from._use_cache;
+        _max_nb_threads = from._max_nb_threads;
+        _min_nb_rows_per_thread = from._min_nb_rows_per_thread;
+      }
+      return *this;
+    }
+
+
+    /// changes the max number of threads used to parse the database
+    template < template < typename > class ALLOC >
+    INLINE void IndependenceTest< ALLOC >::setMaxNbThreads(std::size_t nb) const {
+      if (nb == std::size_t(0)) nb = std::size_t(1);
+      _counter.setMaxNbThreads(nb);
+      _max_nb_threads = nb;
+    }
+
+
+    /// returns the number of threads used to parse the database
+    template < template < typename > class ALLOC >
+    INLINE std::size_t IndependenceTest< ALLOC >::nbThreads() const {
+      return _max_nb_threads;
+    }
+
+
+    /// returns the score of a pair of nodes
+    template < template < typename > class ALLOC >
+    INLINE double IndependenceTest< ALLOC >::score(const NodeId var1,
+                                                   const NodeId var2) {
+      IdSet< ALLOC > idset(
+        var1, var2, _empty_ids, false, true, this->getAllocator());
+      if (_use_cache) {
         try {
-          double score = __cache.score(var1, var2, __empty_conditioning_set);
-          __is_cached_score.push_back(true);
-          __cached_score.push_back(score);
-          return Counter< IdSetAlloc, CountAlloc >::addEmptyNodeSet();
-        } catch (const NotFound&) {}
+          return _cache.score(idset);
+        } catch (NotFound&) {}
+        double the_score = _score(idset);
+        _cache.insert(std::move(idset), the_score);
+        return the_score;
+      } else {
+        return _score(std::move(idset));
       }
-
-      // check if the number of parameters is not too high compared to the
-      // size of the database (basically, if there are fewer than an average
-      // of 5 observations per parameter in the database, the independence
-      // test will be incorrect)
-      if (this->_modalities[var1] * this->_modalities[var2] * 5
-          > this->_record_counter.DBParsedSize()) {
-        __is_cached_score.push_back(true);
-        __cached_score.push_back(std::numeric_limits< double >::max());
-        return Counter< IdSetAlloc, CountAlloc >::addEmptyNodeSet();
-      }
-
-      __is_cached_score.push_back(false);
-      __cached_score.push_back(0);
-      const Idx index = Counter< IdSetAlloc, CountAlloc >::addNodeSet(var1, var2);
-
-      __is_cached_score.push_back(false);
-      __cached_score.push_back(0);
-      Counter< IdSetAlloc, CountAlloc >::addNodeSet(var1);
-      return index;
     }
 
-    /// add a new pair of target unconditioned variables to be counted
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE Idx IndependenceTest< IdSetAlloc, CountAlloc >::addNodeSet(
-      const std::pair< Idx, Idx >& vars) {
-      return addNodeSet(vars.first, vars.second);
-    }
 
-    /// add a new pair of target conditioned variables to be counted
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE Idx IndependenceTest< IdSetAlloc, CountAlloc >::addNodeSet(
-      Idx var1, Idx var2, const std::vector< Idx >& conditioning_ids) {
-      if (__use_cache) {
+    /// returns the score of a pair of nodes given some other nodes
+    template < template < typename > class ALLOC >
+    INLINE double IndependenceTest< ALLOC >::score(
+      const NodeId                                  var1,
+      const NodeId                                  var2,
+      const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids) {
+      IdSet< ALLOC > idset(
+        var1, var2, rhs_ids, false, false, this->getAllocator());
+      if (_use_cache) {
         try {
-          double score = __cache.score(var1, var2, conditioning_ids);
-          __is_cached_score.push_back(true);
-          __cached_score.push_back(score);
-          return Counter< IdSetAlloc, CountAlloc >::addEmptyNodeSet();
-        } catch (const NotFound&) {}
+          return _cache.score(idset);
+        } catch (NotFound&) {}
+        double the_score = _score(idset);
+        _cache.insert(std::move(idset), the_score);
+        return the_score;
+      } else {
+        return _score(idset);
       }
-
-      // check if the number of parameters is not too high compared to the
-      // size of the database (basically, if there are fewer than an average
-      // of 5 observations per parameter in the database, the independence
-      // test will be incorrect)
-      Size cpt_size = this->_modalities[var1] * this->_modalities[var2] * 5;
-      for (auto node : conditioning_ids) {
-        cpt_size *= this->_modalities[node];
-      }
-      if (cpt_size > this->_record_counter.DBParsedSize()) {
-        __is_cached_score.push_back(true);
-        __cached_score.push_back(std::numeric_limits< double >::max());
-        return Counter< IdSetAlloc, CountAlloc >::addEmptyNodeSet();
-      }
-
-      __is_cached_score.push_back(false);
-      __cached_score.push_back(0);
-      const Idx index = Counter< IdSetAlloc, CountAlloc >::addNodeSet(
-        var1, var2, conditioning_ids);
-
-      __is_cached_score.push_back(false);
-      __cached_score.push_back(0);
-      Counter< IdSetAlloc, CountAlloc >::addNodeSet(var1, conditioning_ids);
-      return index;
     }
 
-    /// add a new pair of target conditioned variables to be counted
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE Idx IndependenceTest< IdSetAlloc, CountAlloc >::addNodeSet(
-      const std::pair< Idx, Idx >& vars,
-      const std::vector< Idx >&    conditioning_ids) {
-      return addNodeSet(vars.first, vars.second, conditioning_ids);
-    }
-
-    /// add a new pair of target conditioned variables to be counted
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE Idx IndependenceTest< IdSetAlloc, CountAlloc >::addNodeSet(
-      Idx var1, Idx var2, std::vector< Idx >&& conditioning_ids) {
-      if (__use_cache) {
-        try {
-          double score = __cache.score(var1, var2, conditioning_ids);
-          __is_cached_score.push_back(true);
-          __cached_score.push_back(score);
-          return Counter< IdSetAlloc, CountAlloc >::addEmptyNodeSet();
-        } catch (const NotFound&) {}
-      }
-
-      // check if the number of parameters is not too high compared to the
-      // size of the database (basically, if there are fewer than an average
-      // of 5 observations per parameter in the database, the independence
-      // test will be incorrect)
-      Size cpt_size = this->_modalities[var1] * this->_modalities[var2] * 5;
-      for (auto node : conditioning_ids) {
-        cpt_size *= this->_modalities[node];
-      }
-      if (cpt_size > this->_record_counter.DBParsedSize()) {
-        __is_cached_score.push_back(true);
-        __cached_score.push_back(std::numeric_limits< double >::max());
-        return Counter< IdSetAlloc, CountAlloc >::addEmptyNodeSet();
-      }
-
-      __is_cached_score.push_back(false);
-      __cached_score.push_back(0);
-      const Idx index = Counter< IdSetAlloc, CountAlloc >::addNodeSet(
-        var1, var2, conditioning_ids);
-
-      __is_cached_score.push_back(false);
-      __cached_score.push_back(0);
-      Counter< IdSetAlloc, CountAlloc >::addNodeSet(var1,
-                                                    std::move(conditioning_ids));
-      return index;
-    }
-
-    /// add a new pair of target conditioned variables to be counted
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE Idx IndependenceTest< IdSetAlloc, CountAlloc >::addNodeSet(
-      const std::pair< Idx, Idx >& vars, std::vector< Idx >&& conditioning_ids) {
-      return addNodeSet(vars.first, vars.second, std::move(conditioning_ids));
-    }
 
     /// clears all the data structures from memory
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE void IndependenceTest< IdSetAlloc, CountAlloc >::clear() {
-      Counter< IdSetAlloc, CountAlloc >::clear();
-      __is_cached_score.clear();
-      __cached_score.clear();
+    template < template < typename > class ALLOC >
+    INLINE void IndependenceTest< ALLOC >::clear() {
+      _counter.clear();
+      _cache.clear();
     }
 
-    /// indicates whether a score belongs to the cache
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE bool IndependenceTest< IdSetAlloc, CountAlloc >::_isInCache(
-      Idx nodeset_index) const noexcept {
-      return ((nodeset_index < __is_cached_score.size())
-              && __is_cached_score[nodeset_index]);
-    }
-
-    /// inserts a new score into the cache
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE void IndependenceTest< IdSetAlloc, CountAlloc >::_insertIntoCache(
-      Idx nodeset_index, double score) {
-      const std::vector< Idx, IdSetAlloc >& all_nodes =
-        _getAllNodes(nodeset_index);
-      std::vector< Idx, IdSetAlloc > conditioning_nodes =
-        *(_getConditioningNodes(nodeset_index));
-      conditioning_nodes.pop_back();
-
-      if (!conditioning_nodes.empty()) {
-        try {
-          __cache.insert(all_nodes[all_nodes.size() - 1],
-                         all_nodes[all_nodes.size() - 2],
-                         conditioning_nodes,
-                         score);
-        } catch (const gum::DuplicateElement&) {}
-      } else {
-        try {
-          __cache.insert(
-            all_nodes[0], all_nodes[1], __empty_conditioning_set, score);
-        } catch (const gum::DuplicateElement&) {}
-      }
-    }
-
-    /// returns a cached score
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE double IndependenceTest< IdSetAlloc, CountAlloc >::_cachedScore(
-      Idx nodeset_index) const noexcept {
-      return __cached_score[nodeset_index];
-    }
-
-    /// indicates whether we use the cache or not
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE bool IndependenceTest< IdSetAlloc, CountAlloc >::_isUsingCache() const
-      noexcept {
-      return __use_cache;
-    }
-
-    /// turn on/off the use of a cache of the previously computed score
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE void
-      IndependenceTest< IdSetAlloc, CountAlloc >::useCache(bool on_off) noexcept {
-      if (!on_off) clear();
-      __use_cache = on_off;
-    }
 
     /// clears the current cache (clear nodesets as well)
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE void IndependenceTest< IdSetAlloc, CountAlloc >::clearCache() {
-      clear();
-      __cache.clear();
+    template < template < typename > class ALLOC >
+    INLINE void IndependenceTest< ALLOC >::clearCache() {
+      _cache.clear();
+    }
+
+
+    /// turn on/off the use of a cache of the previously computed score
+    template < template < typename > class ALLOC >
+    INLINE void IndependenceTest< ALLOC >::useCache(const bool on_off) {
+      _use_cache = on_off;
+    }
+
+
+    /// return the mapping between the columns of the database and the node ids
+    template < template < typename > class ALLOC >
+    INLINE const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                 IndependenceTest< ALLOC >::nodeId2Columns() const {
+      return _counter.nodeId2Columns();
+    }
+
+
+    /// return the database used by the score
+    template < template < typename > class ALLOC >
+    INLINE const DatabaseTable< ALLOC >&
+                 IndependenceTest< ALLOC >::database() const {
+      return _counter.database();
+    }
+
+
+    /// returns a counting vector where variables are marginalized from N_xyz
+    /** @param node_2_marginalize indicates which node(s) shall be marginalized:
+     * - 0 means that X should be marginalized
+     * - 1 means that Y should be marginalized
+     * - 2 means that Z should be marginalized
+     */
+    template < template < typename > class ALLOC >
+    std::vector< double, ALLOC< double > > IndependenceTest< ALLOC >::_marginalize(
+      const std::size_t                             node_2_marginalize,
+      const std::size_t                             X_size,
+      const std::size_t                             Y_size,
+      const std::size_t                             Z_size,
+      const std::vector< double, ALLOC< double > >& N_xyz) const {
+      // determine the size of the output vector
+      std::size_t out_size = Z_size;
+      if (node_2_marginalize == std::size_t(0))
+        out_size *= Y_size;
+      else if (node_2_marginalize == std::size_t(1))
+        out_size *= X_size;
+
+      // allocate the output vector
+      std::vector< double, ALLOC< double > > res(out_size, 0.0);
+
+      // fill the vector:
+      if (node_2_marginalize == std::size_t(0)) {   // marginalize X
+        for (std::size_t yz = std::size_t(0), xyz = std::size_t(0); yz < out_size;
+             ++yz) {
+          for (std::size_t x = std::size_t(0); x < X_size; ++x, ++xyz) {
+            res[yz] += N_xyz[xyz];
+          }
+        }
+      } else if (node_2_marginalize == std::size_t(1)) {   // marginalize Y
+        for (std::size_t z = std::size_t(0),
+                         xyz = std::size_t(0),
+                         beg_xz = std::size_t(0);
+             z < Z_size;
+             ++z, beg_xz += X_size) {
+          for (std::size_t y = std::size_t(0); y < Y_size; ++y) {
+            for (std::size_t x = std::size_t(0), xz = beg_xz; x < X_size;
+                 ++x, ++xz, ++xyz) {
+              res[xz] += N_xyz[xyz];
+            }
+          }
+        }
+      } else if (node_2_marginalize == std::size_t(2)) {   // marginalize X and Y
+        const std::size_t XY_size = X_size * Y_size;
+        for (std::size_t z = std::size_t(0), xyz = std::size_t(0); z < out_size;
+             ++z) {
+          for (std::size_t xy = std::size_t(0); xy < XY_size; ++xy, ++xyz) {
+            res[z] += N_xyz[xyz];
+          }
+        }
+      } else {
+        GUM_ERROR(NotImplementedYet,
+                  "_marginalize not implemented for nodeset "
+                    << node_2_marginalize);
+      }
+
+      return res;
     }
 
   } /* namespace learning */

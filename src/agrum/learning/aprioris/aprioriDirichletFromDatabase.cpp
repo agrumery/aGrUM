@@ -20,7 +20,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Class to include at least once this header
+ * @brief A dirichlet priori: computes its N'_ijk from a database
  *
  * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  */

@@ -28,105 +28,266 @@ namespace gum {
 
   namespace learning {
 
+
     /// default constructor
-    template < typename IdSetAlloc, typename CountAlloc >
-    template < typename RowFilter >
-    INLINE AprioriDirichletFromDatabase< IdSetAlloc, CountAlloc >::
-      AprioriDirichletFromDatabase(const RowFilter&           filter,
-                                   const std::vector< Size >& var_modalities) :
-        Counter< IdSetAlloc, CountAlloc >(filter, var_modalities) {
+    template < template < typename > class ALLOC >
+    AprioriDirichletFromDatabase< ALLOC >::AprioriDirichletFromDatabase(
+      const DatabaseTable< ALLOC >&                                 learning_db,
+      const DBRowGeneratorParser< ALLOC >&                          apriori_parser,
+      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
+      const typename AprioriDirichletFromDatabase< ALLOC >::allocator_type&
+        alloc) :
+        Apriori< ALLOC >(apriori_parser.database(),
+                         Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+                         alloc),
+        __counter(
+          apriori_parser,
+          std::vector< std::pair< std::size_t, std::size_t >,
+                       ALLOC< std::pair< std::size_t, std::size_t > > >(alloc),
+          nodeId2columns,
+          alloc) {
+      // we check that the variables in the learning database also exist in the
+      // apriori database and that they are precisely equal.
+      const DatabaseTable< ALLOC >& apriori_db = apriori_parser.database();
+      const auto&                   apriori_names = apriori_db.variableNames();
+      const std::size_t             apriori_size = apriori_names.size();
+      HashTable< std::string, std::size_t > names2col(apriori_size);
+      for (std::size_t i = std::size_t(0); i < apriori_size; ++i)
+        names2col.insert(apriori_names[i], i);
+
+      const auto&       learning_names = learning_db.variableNames();
+      const std::size_t learning_size = learning_names.size();
+      HashTable< std::size_t, std::size_t > learning2apriori_index(learning_size);
+      bool                                  different_index = false;
+      for (std::size_t i = std::size_t(0); i < learning_size; ++i) {
+        // get the column of the variable in the apriori database
+        std::size_t apriori_col;
+        try {
+          apriori_col = names2col[learning_names[i]];
+        } catch (...) {
+          GUM_ERROR(DatabaseError,
+                    "Variable " << learning_names[i]
+                                << " could not be found in the apriori database");
+        }
+
+        // check that both variables are the same
+        const Variable& learning_var = learning_db.variable(i);
+        const Variable& apriori_var = apriori_db.variable(apriori_col);
+        if (learning_var.varType() != apriori_var.varType()) {
+          GUM_ERROR(DatabaseError,
+                    "Variable "
+                      << learning_names[i]
+                      << " has not the same type in the learning database "
+                         " and the apriori database");
+        }
+        if (learning_var.domain() != apriori_var.domain()) {
+          GUM_ERROR(DatabaseError,
+                    "Variable " << learning_names[i] << " has domain "
+                                << learning_var.domain()
+                                << " in the learning database and domain "
+                                << apriori_var.domain()
+                                << " in the aprioi database");
+        }
+
+        // save the mapping from i to col
+        learning2apriori_index.insert(i, apriori_col);
+        if (i != apriori_col) different_index = true;
+      }
+
+      // here we are guaranteed that the variables in the learning database
+      // have their equivalent in the a priori database. Now, we should
+      // fill the bijection from ids to columns
+      if (!different_index) {
+        this->_nodeId2columns = nodeId2columns;
+      } else {
+        if (nodeId2columns.empty()) {
+          for (std::size_t i = std::size_t(0); i < learning_size; ++i) {
+            this->_nodeId2columns.insert(NodeId(i), learning2apriori_index[i]);
+          }
+        } else {
+          for (auto iter = nodeId2columns.begin(); iter != nodeId2columns.end();
+               ++iter) {
+            this->_nodeId2columns.insert(iter.first(),
+                                         learning2apriori_index[iter.second()]);
+          }
+        }
+      }
+
+      // recreate the record counter with the appropriate node2col mapping
+      std::vector< std::pair< std::size_t, std::size_t >,
+                   ALLOC< std::pair< std::size_t, std::size_t > > >
+                             ranges(alloc);
+      RecordCounter< ALLOC > good_counter(
+        apriori_parser, ranges, this->_nodeId2columns, alloc);
+      __counter = std::move(good_counter);
+
       GUM_CONSTRUCTOR(AprioriDirichletFromDatabase);
     }
 
-    /// copy constructor
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE AprioriDirichletFromDatabase< IdSetAlloc, CountAlloc >::
-      AprioriDirichletFromDatabase(
-        const AprioriDirichletFromDatabase< IdSetAlloc, CountAlloc >& from) :
-        Apriori< IdSetAlloc, CountAlloc >(from),
-        Counter< IdSetAlloc, CountAlloc >(from) {
+
+    /// copy constructor with a given allocator
+    template < template < typename > class ALLOC >
+    INLINE AprioriDirichletFromDatabase< ALLOC >::AprioriDirichletFromDatabase(
+      const AprioriDirichletFromDatabase< ALLOC >& from,
+      const typename AprioriDirichletFromDatabase< ALLOC >::allocator_type&
+        alloc) :
+        Apriori< ALLOC >(from, alloc),
+        __counter(from.__counter, alloc) {
       GUM_CONS_CPY(AprioriDirichletFromDatabase);
     }
 
-    /// move constructor
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE AprioriDirichletFromDatabase< IdSetAlloc, CountAlloc >::
-      AprioriDirichletFromDatabase(
-        AprioriDirichletFromDatabase< IdSetAlloc, CountAlloc >&& from) :
-        Apriori< IdSetAlloc, CountAlloc >(std::move(from)),
-        Counter< IdSetAlloc, CountAlloc >(std::move(from)) {
+
+    /// copy constructor
+    template < template < typename > class ALLOC >
+    INLINE AprioriDirichletFromDatabase< ALLOC >::AprioriDirichletFromDatabase(
+      const AprioriDirichletFromDatabase< ALLOC >& from) :
+        AprioriDirichletFromDatabase< ALLOC >(from, from.getAllocator()) {}
+
+
+    /// move constructor with a given allocator
+    template < template < typename > class ALLOC >
+    INLINE AprioriDirichletFromDatabase< ALLOC >::AprioriDirichletFromDatabase(
+      AprioriDirichletFromDatabase< ALLOC >&& from,
+      const typename AprioriDirichletFromDatabase< ALLOC >::allocator_type&
+        alloc) :
+        Apriori< ALLOC >(std::move(from), alloc),
+        __counter(std::move(from.__counter), alloc) {
       GUM_CONS_MOV(AprioriDirichletFromDatabase);
     }
 
-    /// virtual copy constructor
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE AprioriDirichletFromDatabase< IdSetAlloc, CountAlloc >*
-           AprioriDirichletFromDatabase< IdSetAlloc, CountAlloc >::copyFactory() const {
-      return new AprioriDirichletFromDatabase< IdSetAlloc, CountAlloc >(*this);
+
+    /// move constructor
+    template < template < typename > class ALLOC >
+    INLINE AprioriDirichletFromDatabase< ALLOC >::AprioriDirichletFromDatabase(
+      AprioriDirichletFromDatabase< ALLOC >&& from) :
+        AprioriDirichletFromDatabase< ALLOC >(std::move(from),
+                                              from.getAllocator()) {}
+
+
+    /// virtual copy constructor with a given allocator
+    template < template < typename > class ALLOC >
+    AprioriDirichletFromDatabase< ALLOC >*
+      AprioriDirichletFromDatabase< ALLOC >::clone(
+        const typename AprioriDirichletFromDatabase< ALLOC >::allocator_type&
+          alloc) const {
+      ALLOC< AprioriDirichletFromDatabase< ALLOC > > allocator(alloc);
+      AprioriDirichletFromDatabase< ALLOC >* apriori = allocator.allocate(1);
+      try {
+        allocator.construct(apriori, *this, alloc);
+      } catch (...) {
+        allocator.deallocate(apriori, 1);
+        throw;
+      }
+
+      return apriori;
     }
 
+
+    /// virtual copy constructor
+    template < template < typename > class ALLOC >
+    INLINE AprioriDirichletFromDatabase< ALLOC >*
+           AprioriDirichletFromDatabase< ALLOC >::clone() const {
+      return clone(this->getAllocator());
+    }
+
+
     /// destructor
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE
-      AprioriDirichletFromDatabase< IdSetAlloc,
-                                    CountAlloc >::~AprioriDirichletFromDatabase() {
+    template < template < typename > class ALLOC >
+    INLINE AprioriDirichletFromDatabase< ALLOC >::~AprioriDirichletFromDatabase() {
       GUM_DESTRUCTOR(AprioriDirichletFromDatabase);
     }
 
-    /// include the apriori into a given set of counts
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE void AprioriDirichletFromDatabase< IdSetAlloc, CountAlloc >::compute() {
-      if (this->_weight != 0) {
-        // perform the countings
-        Counter< IdSetAlloc, CountAlloc >::clear();
-        const Size size =
-          Size(Apriori< IdSetAlloc, CountAlloc >::_target_nodesets->size());
-        for (Idx i = 0; i < size; ++i) {
-          if (Apriori< IdSetAlloc, CountAlloc >::_target_nodesets->operator[](i)
-              != nullptr) {
-            if (Apriori< IdSetAlloc, CountAlloc >::_conditioning_nodesets->
-                operator[](i)
-                != nullptr) {
-              Counter< IdSetAlloc, CountAlloc >::addNodeSet(
-                Apriori< IdSetAlloc, CountAlloc >::_target_nodesets->operator[](i)
-                  ->first.back(),
-                Apriori< IdSetAlloc, CountAlloc >::_conditioning_nodesets
-                  ->
-                operator[](i)
-                  ->first);
-            } else {
-              Counter< IdSetAlloc, CountAlloc >::addNodeSet(
-                Apriori< IdSetAlloc, CountAlloc >::_target_nodesets->operator[](i)
-                  ->first.back());
-            }
-          } else {
-            Counter< IdSetAlloc, CountAlloc >::addEmptyNodeSet();
-          }
-        }
 
-        // save the countings
-        std::vector< std::vector< double, CountAlloc > >& counts =
-          Counter< IdSetAlloc, CountAlloc >::_getCounts();
-        std::swap(this->_apriori_counts, counts);
-
-        Counter< IdSetAlloc, CountAlloc >::clear();
+    /// copy operator
+    template < template < typename > class ALLOC >
+    INLINE AprioriDirichletFromDatabase< ALLOC >&
+           AprioriDirichletFromDatabase< ALLOC >::
+           operator=(const AprioriDirichletFromDatabase< ALLOC >& from) {
+      if (this != &from) {
+        Apriori< ALLOC >::operator=(from);
+        __counter = from.__counter;
       }
+      return *this;
     }
 
+
+    /// move operator
+    template < template < typename > class ALLOC >
+    INLINE AprioriDirichletFromDatabase< ALLOC >&
+           AprioriDirichletFromDatabase< ALLOC >::
+           operator=(AprioriDirichletFromDatabase< ALLOC >&& from) {
+      if (this != &from) {
+        Apriori< ALLOC >::operator=(std::move(from));
+        __counter = std::move(from.__counter);
+      }
+      return *this;
+    }
+
+
     /// indicates whether an apriori is of a certain type
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE bool AprioriDirichletFromDatabase< IdSetAlloc, CountAlloc >::isOfType(
-      const std::string& type) {
+    template < template < typename > class ALLOC >
+    INLINE bool
+      AprioriDirichletFromDatabase< ALLOC >::isOfType(const std::string& type) {
       return AprioriDirichletType::isOfType(type);
     }
 
+
     /// returns the type of the apriori
-    template < typename IdSetAlloc, typename CountAlloc >
+    template < template < typename > class ALLOC >
     INLINE const std::string&
-                 AprioriDirichletFromDatabase< IdSetAlloc, CountAlloc >::getType() const
-      noexcept {
+                 AprioriDirichletFromDatabase< ALLOC >::getType() const {
       return AprioriDirichletType::type;
     }
+
+
+    /// indicates whether the apriori is potentially informative
+    template < template < typename > class ALLOC >
+    INLINE bool AprioriDirichletFromDatabase< ALLOC >::isInformative() const {
+      return (this->_weight != 0.0);
+    }
+
+
+    /// returns the apriori vector all the variables in the idset
+    template < template < typename > class ALLOC >
+    INLINE void AprioriDirichletFromDatabase< ALLOC >::addAllApriori(
+      const IdSet< ALLOC >&                   idset,
+      std::vector< double, ALLOC< double > >& counts) {
+      if (this->_weight == 0.0) return;
+
+      const auto&       apriori = __counter.counts(idset);
+      const std::size_t size = apriori.size();
+      if (this->_weight != 1.0) {
+        for (std::size_t i = std::size_t(0); i < size; ++i) {
+          counts[i] += apriori[i] * this->_weight;
+        }
+      } else {
+        for (std::size_t i = std::size_t(0); i < size; ++i) {
+          counts[i] += apriori[i];
+        }
+      }
+    }
+
+
+    /// returns the apriori vector over only the conditioning set of an idset
+    template < template < typename > class ALLOC >
+    void AprioriDirichletFromDatabase< ALLOC >::addConditioningApriori(
+      const IdSet< ALLOC >&                   idset,
+      std::vector< double, ALLOC< double > >& counts) {
+      if (this->_weight == 0.0) return;
+
+      const auto&       apriori = __counter.counts(idset.conditionalIdSet());
+      const std::size_t size = apriori.size();
+      if (this->_weight != 1.0) {
+        for (std::size_t i = std::size_t(0); i < size; ++i) {
+          counts[i] += apriori[i] * this->_weight;
+        }
+      } else {
+        for (std::size_t i = std::size_t(0); i < size; ++i) {
+          counts[i] += apriori[i];
+        }
+      }
+    }
+
 
   } /* namespace learning */
 

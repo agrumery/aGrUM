@@ -1,4 +1,3 @@
-
 /***************************************************************************
  *   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
  *   {prenom.nom}_at_lip6.fr                                               *

@@ -18,284 +18,235 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the abstract class for all the independence tests
- *
- * The class should be used as follows: first, to speed-up computations, you
- * should consider computing all the independence tests you need in one pass. To
- * do so, use the appropriate addNodeSet methods. These will compute everything
- * you need. The addNodeSet methods where you do not specify a set of
- *conditioning
- * nodes assume that this set is empty. Once the computations have been
- * performed, use method _getAllCounts and _getConditioningCounts to get the
- * observed countings if you are developping a new independence test class, or
- *use
- * method score to get the computed score of the test if you are an end user.
+ * @brief the base class for all the independence tests used for learning
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #ifndef GUM_LEARNING_INDEPENDENCE_TEST_H
 #define GUM_LEARNING_INDEPENDENCE_TEST_H
 
-#include <agrum/learning/scores_and_tests/cache4IndepTest.h>
-#include <agrum/learning/scores_and_tests/counter.h>
+#include <utility>
+
+#include <agrum/agrum.h>
+#include <agrum/core/math/math.h>
+#include <agrum/core/thread.h>
+
+#include <agrum/learning/scores_and_tests/recordCounter.h>
+#include <agrum/learning/scores_and_tests/scoringCache.h>
+#include <agrum/learning/aprioris/apriori.h>
+#include <agrum/learning/structureUtils/graphChange.h>
 
 namespace gum {
 
   namespace learning {
 
-    /* =========================================================================
-     */
-    /* ===                      INDEPENDENCE TEST CLASS                      ===
-     */
-    /* =========================================================================
-     */
     /** @class IndependenceTest
-     * @brief the abstract class for all the independence tests
-     * @ingroup learning_group
-     *
-     * The class should be used as follows: first, to speed-up computations, you
-     * should consider computing all the independence tests you need in one
-     *pass.
-     * To do so, use the appropriate addNodeSet methods. These will compute
-     * everything you need. The addNodeSet methods where you do not specify a
-     *set
-     * of conditioning nodes assume that this set is empty. Once the
-     *computations
-     * have been performed, use method _getAllCounts and _getConditioningCounts
-     * to get the observed countings if you are developping a new independence
-     * test class, or use method score to get the computed score of the test if
-     * you are an end user. */
-    template < typename IdSetAlloc = std::allocator< Idx >,
-               typename CountAlloc = std::allocator< double > >
-    class IndependenceTest : private Counter< IdSetAlloc, CountAlloc > {
+     * @brief The base class for all the independence tests used for learning
+     * @headerfile independenceTest.h <agrum/learning/scores_and_tests/independenceTest.h>
+     * @ingroup learning_scores
+     */
+    template < template < typename > class ALLOC = std::allocator >
+    class IndependenceTest {
       public:
+      /// type for the allocators passed in arguments of methods
+      using allocator_type = ALLOC< NodeId >;
+
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// default constructor
-      /** @param filter the row filter that will be used to read the database
-       * @param var_modalities the domain sizes of the variables in the database
-       */
-      template < typename RowFilter >
-      IndependenceTest(const RowFilter&           filter,
-                       const std::vector< Size >& var_modalities);
+      /** @param parser the parser used to parse the database
+       * @param external_apriori An apriori that we add to the computation of
+       * the score (this should come from expert knowledge): this consists in
+       * adding numbers to countings in the contingency tables
+       * @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
+       * indices. The countings are then performed only on the union of the
+       * rows [Xi,Yi), i in {1,...,n}. This is useful, e.g, when performing
+       * cross validation tasks, in which part of the database should be ignored.
+       * An empty set of ranges is equivalent to an interval [X,Y) ranging over
+       * the whole database.
+       * @param nodeId2Columns a mapping from the ids of the nodes in the
+       * graphical model to the corresponding column in the DatabaseTable
+       * parsed by the parser. This enables estimating from a database in
+       * which variable A corresponds to the 2nd column the parameters of a BN
+       * in which variable A has a NodeId of 5. An empty nodeId2Columns
+       * bijection means that the mapping is an identity, i.e., the value of a
+       * NodeId is equal to the index of the column in the DatabaseTable.
+       * @param alloc the allocator used to allocate the structures within the
+       * IndependenceTest.
+       * @warning If nodeId2columns is not empty, then only the scores over the
+       * ids belonging to this bijection can be computed: applying method
+       * score() over other ids will raise exception NotFound. */
+      IndependenceTest(
+        const DBRowGeneratorParser< ALLOC >& parser,
+        const Apriori< ALLOC >&              external_apriori,
+        const std::vector< std::pair< std::size_t, std::size_t >,
+                           ALLOC< std::pair< std::size_t, std::size_t > > >&
+          ranges,
+        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+          nodeId2columns =
+            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+        const allocator_type& alloc = allocator_type());
+
+
+      /// default constructor
+      /** @param parser the parser used to parse the database
+       * @param external_apriori An apriori that we add to the computation of
+       * the score (this should come from expert knowledge): this consists in
+       * adding numbers to countings in the contingency tables
+       * @param nodeId2Columns a mapping from the ids of the nodes in the
+       * graphical model to the corresponding column in the DatabaseTable
+       * parsed by the parser. This enables estimating from a database in
+       * which variable A corresponds to the 2nd column the parameters of a BN
+       * in which variable A has a NodeId of 5. An empty nodeId2Columns
+       * bijection means that the mapping is an identity, i.e., the value of a
+       * NodeId is equal to the index of the column in the DatabaseTable.
+       * @param alloc the allocator used to allocate the structures within the
+       * IndependenceTest.
+       * @warning If nodeId2columns is not empty, then only the scores over the
+       * ids belonging to this bijection can be computed: applying method
+       * score() over other ids will raise exception NotFound. */
+      IndependenceTest(
+        const DBRowGeneratorParser< ALLOC >& parser,
+        const Apriori< ALLOC >&              external_apriori,
+        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+          nodeId2columns =
+            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+        const allocator_type& alloc = allocator_type());
+
+      /// virtual copy constructor
+      virtual IndependenceTest< ALLOC >* clone() const = 0;
+
+      /// virtual copy constructor with a given allocator
+      virtual IndependenceTest< ALLOC >*
+        clone(const allocator_type& alloc) const = 0;
 
       /// destructor
       virtual ~IndependenceTest();
 
       /// @}
 
+
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
       /// @{
 
-      /// add a new target node conditioned by another node to be counted
-      /** @param var1 represents the index of the target variable in the
-       * filtered rows produced by the database cell filters
-       * @param var2 represents the index of the conditioning variable in the
-       * filtered rows produced by the database cell filters
-       * @return the index of the produced counting vector: the user should use
-       * class IndependenceTest to compute in one pass several independence
-       * tests. These and their corresponding countings in the database are
-       * stored
-       * into a vector and the value returned by method addNodeSet is the index
-       * of the counts in this vector. The user shall pass this index as
-       * argument
-       * to methods _getAllCounts and _getConditioningCounts to get the observed
-       * countings of (var2,var1) [in this order] and var2 respectively. */
-      Idx addNodeSet(Idx var1, Idx var2);
+      /// changes the max number of threads used to parse the database
+      void setMaxNbThreads(std::size_t nb) const;
 
-      /// add a new target node conditioned by another node to be counted
-      /** @param vars contains the index of the target variable (first) in the
-       * filtered rows produced by the database cell filters, and the index
-       * of the conditioning variable (second).
-       * @return the index of the produced counting vector: the user should use
-       * class IndependenceTest to compute in one pass several independence
-       * tests. These and their corresponding countings in the database are
-       * stored into a vector and the value returned by method addNodeSet is the
-       * index of the counts in this vector. The user shall pass this index as
-       * argument to methods _getAllCounts and _getConditioningCounts to get the
-       * observed countings of (vars.second, vars.first) [in this order] and
-       * vars.second respectively. */
-      Idx addNodeSet(const std::pair< Idx, Idx >& vars);
+      /// returns the number of threads used to parse the database
+      std::size_t nbThreads() const;
 
-      /// add a target conditioned by other variables to be counted
-      /** @param var1 represents the index of the target variable in the
-       * filtered rows produced by the database cell filters
-       * @param var2 represents the index of the last conditioning variable in
-       * the
-       * filtered rows produced by the database cell filters
-       * @param conditioning_ids the indices of the variables of the
-       * conditioning
-       * set in the filtered rows (minus var2, which is subsequently
-       * apended to it).
-       * @return the index of the produced counting vector: the user should use
-       * class IndependenceTest to compute in one pass several independence
-       * tests. These and their corresponding countings in the database are
-       * stored into a vector and the value returned by method addNodeSet is the
-       * index of the counts in this vector. The user shall pass this index as
-       * argument to methods _getAllCounts and _getConditioningCounts to get the
-       * countings of (conditioning_ids, var2, var1) [in this order] and
-       * (conditioning_ids, var2) [in this order] respectively. */
-      Idx
-        addNodeSet(Idx var1, Idx var2, const std::vector< Idx >& conditioning_ids);
+      /// returns the score of a pair of nodes
+      double score(const NodeId var1, const NodeId var2);
 
-      /// add a target conditioned by other variables to be counted
-      /** @param var1 represents the index of the target variable in the
-       * filtered rows produced by the database cell filters
-       * @param var2 represents the index of the last conditioning variable in
-       * the
-       * filtered rows produced by the database cell filters
-       * @param conditioning_ids the indices of the variables of the
-       * conditioning
-       * set in the filtered rows (minus var2, which is subsequently
-       * apended to it).
-       * @return the index of the produced counting vector: the user should use
-       * class IndependenceTest to compute in one pass several independence
-       * tests. These and their corresponding countings in the database are
-       * stored into a vector and the value returned by method addNodeSet is the
-       * index of the counts in this vector. The user shall pass this index as
-       * argument to methods _getAllCounts and _getConditioningCounts to get the
-       * countings of (conditioning_ids, var2, var1) [in this order] and
-       * (conditioning_ids, var2) [in this order] respectively. */
-      Idx addNodeSet(Idx var1, Idx var2, std::vector< Idx >&& conditioning_ids);
+      /// returns the score of a pair of nodes given some other nodes
+      /** @param var1 the first variable on the left side of the conditioning bar
+       * @param var2 the second variable on the left side of the conditioning bar
+       * @param rhs_ids the set of variables on the right side of the
+       * conditioning bar */
+      double score(const NodeId                                  var1,
+                   const NodeId                                  var2,
+                   const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids);
 
-      /// add a target conditioned by other variables to be counted
-      /** @param vars represents the index of the target variable (first) in the
-       * filtered rows produced by the database cell filters, and the index
-       * of the last conditioning variable (second)
-       * @param conditioning_ids the indices of the variables of the
-       * conditioning
-       * set in the filtered rows (minus vars.second which is appended to it)
-       * @return the index of the produced counting vector: the user should use
-       * class IndependenceTest to compute in one pass several independence
-       * tests. These and their corresponding countings in the database are
-       * stored into a vector and the value returned by method addNodeSet is the
-       * index of the counts in this vector. The user shall pass this index as
-       * argument to methods _getAllCounts and _getConditioningCounts to get the
-       * observed countings of (conditioning_ids, vars.second, vars.first) [in
-       * this order] and (conditioning_ids, vars.second) [in this order]
-       * respectively. */
-      Idx addNodeSet(const std::pair< Idx, Idx >& vars,
-                     const std::vector< Idx >&    conditioning_ids);
+      /// clears all the data structures from memory, including the cache
+      virtual void clear();
 
-      /// add a target conditioned by other variables to be counted
-      /** @param vars represents the index of the target variable (first) in the
-       * filtered rows produced by the database cell filters, and the index
-       * of the last conditioning variable (second)
-       * @param conditioning_ids the indices of the variables of the
-       * conditioning
-       * set in the filtered rows (minus vars.second which is appended to it)
-       * @return the index of the produced counting vector: the user should use
-       * class IndependenceTest to compute in one pass several independence
-       * tests. These and their corresponding countings in the database are
-       * stored into a vector and the value returned by method addNodeSet is the
-       * index of the counts in this vector. The user shall pass this index as
-       * argument to methods _getAllCounts and _getConditioningCounts to get the
-       * observed countings of (conditioning_ids, vars.second, vars.first) [in
-       * this order] and (conditioning_ids, vars.second) [in this order]
-       * respectively. */
-      Idx addNodeSet(const std::pair< Idx, Idx >& vars,
-                     std::vector< Idx >&&         conditioning_ids);
-
-      /// clears all the data structures from memory
-      void clear();
-
-      /// clears the current cache (clear nodesets as well)
-      void clearCache();
+      /// clears the current cache
+      virtual void clearCache();
 
       /// turn on/off the use of a cache of the previously computed score
-      void useCache(bool on_off) noexcept;
+      virtual void useCache(const bool on_off);
 
-      /// returns the modalities of the variables
-      using Counter< IdSetAlloc, CountAlloc >::modalities;
+      /// return the mapping between the columns of the database and the node ids
+      /** @warning An empty nodeId2Columns bijection means that the mapping is
+       * an identity, i.e., the value of a NodeId is equal to the index of the
+       * column in the DatabaseTable. */
+      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+        nodeId2Columns() const;
 
-      /// returns the score corresponding to a given nodeset
-      /** Scores are computed by counting formulas (for instance, for Chi2,
-       * this formula corresponds to: sum_X sum_Y sum_Z ( @#XYZ - (@#XZ * @#YZ)
-       * / @#Z )^2 / (( @#XZ * @#YZ) / @#Z ), where @#XYZ, @#XZ, @#YZ, @#Z
-       * correspond to the number of occurences of (X,Y,Z), (X,Z), (Y,Z) and Z
-       * respectively in the database); then the critical value alpha of the
-       * test is computed. Finally, method score returns ( @#sum - alpha ) /
-       * alpha, where @#sum corresponds to the summations mentioned above.
-       * Therefore, any positive result should reflect a dependence whereas
-       * negative results should reflect independences. */
-      virtual double score(Idx nodeset_index) = 0;
+      /// return the database used by the score
+      const DatabaseTable< ALLOC >& database() const;
+
+      /// returns the allocator used by the score
+      allocator_type getAllocator() const;
 
       /// @}
+
 
       protected:
       /// 1 / log(2)
       const double _1log2{M_LOG2E};
 
-      /// returns the counting vector for a given (conditioned) target set
-      /** This method returns the observtion countings for the set of variables
-       * whose index was returned by method addNodeSet or addNodeSet. If the
-       * set was conditioned, the countings correspond to the target variables
-       * @b and the conditioning variables. If you wish to get only the
-       * countings
-       * for the conditioning variables, prefer using method countConditioning.
-       * @warning the dimensions of the vector are as follows: first come the
-       * nodes of the conditioning set (in the order in which they were
-       * specified
-       * when callind addNodeset, and then the target nodes.
-       * @warning it is assumed that, after using addNodeSet, you have executed
-       * method count() before calling method countTarget. */
-      using Counter< IdSetAlloc, CountAlloc >::_getAllCounts;
+      /// the expert knowledge a priori we add to the contongency tables
+      Apriori< ALLOC >* _apriori{nullptr};
 
-      /// returns the counting vector for a conditioning set
-      /** @warning it is assumed that, after using addNodeSet, you have executed
-       * method count() before calling method countTarget. */
-      using Counter< IdSetAlloc, CountAlloc >::_getConditioningCounts;
+      /// the record counter used for the countings over discrete variables
+      RecordCounter< ALLOC > _counter;
 
-      /// returns the set of target + conditioning nodes
-      /** conditioning nodes are always the first ones in the vector and targets
-       * are the last ones */
-      using Counter< IdSetAlloc, CountAlloc >::_getAllNodes;
-
-      /// returns the conditioning nodes (nullptr if there are no such nodes)
-      using Counter< IdSetAlloc, CountAlloc >::_getConditioningNodes;
-
-      /// indicates whether a score belongs to the cache
-      bool _isInCache(Idx nodeset_index) const noexcept;
-
-      /// inserts a new score into the cache
-      void _insertIntoCache(Idx nodeset_index, double score);
-
-      /// returns a cached score
-      double _cachedScore(Idx nodeset_index) const noexcept;
-
-      /// indicates whether we use the cache or not
-      bool _isUsingCache() const noexcept;
-
-      private:
-      /// a cache for the previously computed scores
-      Cache4IndepTest __cache;
+      /// the scoring cache
+      ScoringCache< ALLOC > _cache;
 
       /// a Boolean indicating whether we wish to use the cache
-      bool __use_cache{true};
+      bool _use_cache{true};
 
-      /// indicates whether the ith nodeset's score is in the cache or not
-      std::vector< bool > __is_cached_score;
+      /// the maximal number of threads that the score can use
+      mutable std::size_t _max_nb_threads{
+        std::size_t(thread::getMaxNumberOfThreads())};
 
-      /// the vector of scores for the current nodesets
-      std::vector< double > __cached_score;
+      /** @brief the min number of database rows that a thread should process
+       * in a multithreading context */
+      mutable std::size_t _min_nb_rows_per_thread{100};
 
-      /// an empty conditioning set
-      const std::vector< Idx > __empty_conditioning_set;
+      /// an empty vector
+      const std::vector< NodeId, ALLOC< NodeId > > _empty_ids;
 
-      // ##########################################################################
-      // ##########################################################################
 
-      /// prevent copy constructor
-      IndependenceTest(const IndependenceTest< IdSetAlloc, CountAlloc >&) = delete;
+      /// copy constructor
+      IndependenceTest(const IndependenceTest< ALLOC >& from);
 
-      /// prevent copy operator
-      IndependenceTest&
-        operator=(const IndependenceTest< IdSetAlloc, CountAlloc >&) = delete;
+      /// copy constructor with a given allocator
+      IndependenceTest(const IndependenceTest< ALLOC >& from,
+                       const allocator_type&            alloc);
+
+      /// move constructor
+      IndependenceTest(IndependenceTest< ALLOC >&& from);
+
+      /// move constructor with a given allocator
+      IndependenceTest(IndependenceTest< ALLOC >&& from,
+                       const allocator_type&       alloc);
+
+      /// copy operator
+      IndependenceTest< ALLOC >& operator=(const IndependenceTest< ALLOC >& from);
+
+      /// move operator
+      IndependenceTest< ALLOC >& operator=(IndependenceTest< ALLOC >&& from);
+
+      /// returns the score for a given IdSet
+      /** @throws OperationNotAllowed is raised if the score does not support
+       * calling method score such an idset (due to too many/too few variables
+       * in the left hand side or the right hand side of the idset). */
+      virtual double _score(const IdSet< ALLOC >& idset) = 0;
+
+      /// returns a counting vector where variables are marginalized from N_xyz
+      /** @param node_2_marginalize indicates which node(s) shall be marginalized:
+       * - 0 means that X should be marginalized
+       * - 1 means that Y should be marginalized
+       * - 2 means that Z should be marginalized
+       * @param X_size the domain size of variable X
+       * @param Y_size the domain size of variable Y
+       * @param Z_size the domain size of the set of conditioning variables Z
+       * @param N_xyz a counting vector of dimension X * Y * Z (in this order)
+       */
+      std::vector< double, ALLOC< double > >
+        _marginalize(const std::size_t node_2_marginalize,
+                     const std::size_t X_size,
+                     const std::size_t Y_size,
+                     const std::size_t Z_size,
+                     const std::vector< double, ALLOC< double > >& N_xyz) const;
     };
 
   } /* namespace learning */

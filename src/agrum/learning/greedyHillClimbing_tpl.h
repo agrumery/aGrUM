@@ -32,10 +32,9 @@ namespace gum {
 
     /// learns the structure of a Bayes net
     template < typename GRAPH_CHANGES_SELECTOR >
-    DAG GreedyHillClimbing::learnStructure(GRAPH_CHANGES_SELECTOR&    selector,
-                                           const std::vector< Size >& modal,
-                                           DAG                        dag) {
-      selector.setGraph(dag, modal);
+    DAG GreedyHillClimbing::learnStructure(GRAPH_CHANGES_SELECTOR& selector,
+                                           DAG                     dag) {
+      selector.setGraph(dag);
 
       Size   nb_changes_applied = 1;
       double delta_score;
@@ -130,22 +129,13 @@ namespace gum {
     /// learns the structure and the parameters of a BN
     template < typename GUM_SCALAR,
                typename GRAPH_CHANGES_SELECTOR,
-               typename PARAM_ESTIMATOR,
-               typename CELL_TRANSLATORS >
+               typename PARAM_ESTIMATOR >
     BayesNet< GUM_SCALAR >
-      GreedyHillClimbing::learnBN(GRAPH_CHANGES_SELECTOR&           selector,
-                                  PARAM_ESTIMATOR&                  estimator,
-                                  const std::vector< std::string >& names,
-                                  const std::vector< Idx >&         modal,
-                                  const CELL_TRANSLATORS&           translator,
-                                  DAG                               initial_dag) {
-      return DAG2BNLearner::
-        createBN< GUM_SCALAR, PARAM_ESTIMATOR, CELL_TRANSLATORS >(
-          estimator,
-          learnStructure(selector, modal, initial_dag),
-          names,
-          modal,
-          translator);
+      GreedyHillClimbing::learnBN(GRAPH_CHANGES_SELECTOR& selector,
+                                  PARAM_ESTIMATOR&        estimator,
+                                  DAG                     initial_dag) {
+      return DAG2BNLearner<>::createBN< GUM_SCALAR >(
+        estimator, learnStructure(selector, initial_dag));
     }
 
   } /* namespace learning */

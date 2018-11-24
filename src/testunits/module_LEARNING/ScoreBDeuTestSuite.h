@@ -22,184 +22,344 @@
 #include <cxxtest/testsuite_utils.h>
 #include <iostream>
 
-#include <agrum/learning/aprioris/aprioriNoApriori.h>
-#include <agrum/learning/aprioris/aprioriSmoothing.h>
+#include <agrum/core/math/gammaLog2.h>
 #include <agrum/learning/database/DBTranslator4LabelizedVariable.h>
-#include <agrum/learning/database/DBRowGeneratorParser.h>
-#include <agrum/learning/database/DBInitializerFromCSV.h>
-#include <agrum/learning/database/databaseTable.h>
 #include <agrum/learning/database/DBTranslatorSet.h>
+#include <agrum/learning/aprioris/aprioriNoApriori.h>
 #include <agrum/learning/scores_and_tests/scoreBDeu.h>
 
 namespace gum_tests {
 
   class ScoreBDeuTestSuite : public CxxTest::TestSuite {
-    public:
-    void test_BDeu() {
-      gum::learning::DBInitializerFromCSV<> initializer(
-        GET_RESSOURCES_PATH("asia.csv"));
-      const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars = var_names.size();
+    private:
+    gum::GammaLog2 __gammalog2;
+    bool           __gum_destructor_increased{false};
 
-      gum::learning::DBTranslatorSet<>                translator_set;
-      gum::learning::DBTranslator4LabelizedVariable<> translator;
-      for (std::size_t i = 0; i < nb_vars; ++i) {
-        translator_set.insertTranslator(translator, i);
+    void setUp() {}
+
+    void tearDown() {
+      if (!__gum_destructor_increased) {
+        GUM_DESTRUCTOR(GammaLog2);
+        __gum_destructor_increased = true;
+      }
+    }
+
+    double __score(const std::vector< double >& N_ijk,
+                   const std::vector< double >& N_ij) const {
+      double score = 0.0;
+      double ess = 2.0;
+
+      if (!N_ij.empty()) {
+        double ess_qi = ess / N_ij.size();
+        double ess_riqi = ess / N_ijk.size();
+        for (const auto n_ij : N_ij) {
+          score += __gammalog2(ess_qi) - __gammalog2(n_ij + ess_qi);
+        }
+        for (const auto n_ijk : N_ijk) {
+          score += __gammalog2(n_ijk + ess_riqi) - __gammalog2(ess_riqi);
+        }
+      } else {
+        double N = 0.0;
+        double ess_ri = ess / N_ijk.size();
+        for (const auto n_ijk : N_ijk) {
+          score += __gammalog2(n_ijk + ess_ri) - __gammalog2(ess_ri);
+          N += n_ijk;
+        }
+        score += __gammalog2(ess) - __gammalog2(N + ess);
       }
 
-      gum::learning::DatabaseTable<> database(translator_set);
-      database.setVariableNames(initializer.variableNames());
-      initializer.fillDatabase(database);
+      return score;
+    }
 
+
+    bool __equal(const double x, const double y) const {
+      double dev = x >= y ? (x - y) / x : (y - x) / y;
+      if (dev < 0) dev = -dev;
+      return dev <= 1e-5;
+    }
+
+
+    public:
+    void test1() {
+      // create the translator set
+      gum::LabelizedVariable var("X1", "", 0);
+      var.addLabel("0");
+      var.addLabel("1");
+      var.addLabel("2");
+
+      gum::learning::DBTranslatorSet<> trans_set;
+      {
+        const std::vector< std::string >                miss;
+        gum::learning::DBTranslator4LabelizedVariable<> translator(var, miss);
+        std::vector< std::string > names{"A", "B", "C", "D", "E", "F"};
+
+        for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
+          translator.setVariableName(names[i]);
+          trans_set.insertTranslator(translator, i);
+        }
+      }
+
+      // create the database
+      gum::learning::DatabaseTable<> database(trans_set);
+      std::vector< std::string >     row0{"0", "1", "0", "2", "1", "1"};
+      std::vector< std::string >     row1{"1", "2", "0", "1", "2", "2"};
+      std::vector< std::string >     row2{"2", "1", "0", "1", "1", "0"};
+      std::vector< std::string >     row3{"1", "0", "0", "0", "0", "0"};
+      std::vector< std::string >     row4{"0", "0", "0", "1", "1", "1"};
+      for (int i = 0; i < 1000; ++i)
+        database.insertRow(row0);
+      for (int i = 0; i < 50; ++i)
+        database.insertRow(row1);
+      for (int i = 0; i < 75; ++i)
+        database.insertRow(row2);
+      for (int i = 0; i < 75; ++i)
+        database.insertRow(row3);
+      for (int i = 0; i < 200; ++i)
+        database.insertRow(row4);
+
+      // create the parser
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
 
-      std::vector< gum::Size > modalities(nb_vars, 2);
-
-      gum::learning::AprioriNoApriori<> apriori;
-      gum::learning::AprioriSmoothing<> apriori2;
-      gum::learning::ScoreBDeu<>        score(parser, modalities, apriori);
+      gum::learning::AprioriNoApriori<> apriori(database);
+      gum::learning::ScoreBDeu<>        score(parser, apriori);
+      score.setEffectiveSampleSize(2.0);
 
       TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreBDeu<>::isAprioriCompatible(
         gum::learning::AprioriNoApriori<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(
         gum::learning::ScoreBDeu<>::isAprioriCompatible(apriori));
-      TS_ASSERT_DIFFERS(gum::learning::ScoreBDeu<>::isAprioriCompatible(apriori2),
-                        "");
-      TS_ASSERT_DIFFERS(gum::learning::ScoreBDeu<>::isAprioriCompatible(
-                          gum::learning::AprioriSmoothing<>::type::type),
-                        "");
-      apriori2.setWeight(0);
-      TS_ASSERT_DIFFERS(gum::learning::ScoreBDeu<>::isAprioriCompatible(apriori2),
-                        "");
+      TS_GUM_ASSERT_THROWS_NOTHING(
+        score.isAprioriCompatible(gum::learning::AprioriNoApriori<>::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(score.isAprioriCompatible(apriori));
 
-      // to test, we exploit the fact that if the effective sample size is
-      // equal to ri * qi, then score BDeu = score K2
+      gum::NodeId                node0 = 0;
+      gum::NodeId                node1 = 1;
+      gum::NodeId                node3 = 3;
+      std::vector< gum::NodeId > cond_empty;
+      std::vector< gum::NodeId > cond2{node1};
+      std::vector< gum::NodeId > cond3{node3};
 
-      score.setEffectiveSampleSize(2);
-      gum::Idx id1 = score.addNodeSet(3);
-      gum::Idx id2 = score.addNodeSet(1);
-      TS_ASSERT_DELTA(score.score(id1), -996.781, 0.05);
-      TS_ASSERT_DELTA(score.score(id2), -3030.73, 0.05);
+      gum::learning::IdSet<> idset1(node0, cond_empty);    // #3,#0
+      gum::learning::IdSet<> idset2(node0, cond2, true);   // #9,#3
+      gum::learning::IdSet<> idset3(node0, cond3, true);   // #9,#3
 
-      score.clear();
-      id1 = score.addNodeSet(0);
-      id2 = score.addNodeSet(2);
-      TS_ASSERT_DELTA(score.score(id1), -10006.1, 0.05);
-      TS_ASSERT_DELTA(score.score(id2), -9935.8, 0.05);
+      // idset1: node0 | emptyset
+      std::vector< double > N_ijk_1{1200.0, 125.0, 75.0};
+      std::vector< double > N_ij_1;
+      double                xscore_1 = __score(N_ijk_1, N_ij_1);
+      TS_ASSERT(__equal(xscore_1, score.score(node0)));
 
-      score.clear();
-      score.setEffectiveSampleSize(4);
-      id1 = score.addNodeSet(3, std::vector< gum::Idx >{4});
-      id2 = score.addNodeSet(1, std::vector< gum::Idx >{4});
-      TS_ASSERT_DELTA(score.score(id1), -991.062, 0.05);
-      TS_ASSERT_DELTA(score.score(id2), -3030.55, 0.05);
+      // idset2: node0 | node1
+      std::vector< double > N_ijk_2{200, 75, 0, 1000, 0, 75, 0, 50, 0};
+      std::vector< double > N_ij_2{275, 1075, 50};
+      double                xscore_2 = __score(N_ijk_2, N_ij_2);
+      TS_ASSERT(__equal(xscore_2, score.score(node0, cond2)));
 
-      score.clear();
-      score.setEffectiveSampleSize(8);
-      id1 = score.addNodeSet(3, std::vector< gum::Idx >{1, 2});
-      TS_ASSERT_DELTA(score.score(id1), -1014.4, 0.05);
+      // idset3: node0 | node3
+      std::vector< double > N_ijk_3{0, 75, 0, 200, 50, 75, 1000, 0, 0};
+      std::vector< double > N_ij_3{75, 325, 1000};
+      double                xscore_3 = __score(N_ijk_3, N_ij_3);
+      TS_ASSERT(__equal(xscore_3, score.score(node0, cond3)));
 
-      /*
-      gum::Idx id3, id4, id5, id6, id7;
-      score.clear ();
-      id1 = score.addNodeSet ( 3, 2 );
-      id2 = score.addNodeSet ( 1, 2 );
-      id3 = score.addNodeSet ( 3, std::vector<gum::Idx> { 1, 2 }, 8 );
-      id4 = score.addNodeSet ( 2, 2 );
-      id5 = score.addNodeSet ( 3, std::vector<gum::Idx> { 4 }, 4 );
-      id6 = score.addNodeSet ( 2, 2 );
-      id7 = score.addNodeSet ( 3, std::vector<gum::Idx> { 4 }, 4 );
-      TS_ASSERT_DELTA(score.score ( id1), -996.781, 0.05 );
-      TS_ASSERT_DELTA(score.score ( id2), -3030.73, 0.05 );
-      TS_ASSERT_DELTA(score.score ( id3), -1014.4 , 0.05 );
-      TS_ASSERT_DELTA(score.score ( id4), -9935.8 , 0.05 );
-      TS_ASSERT_DELTA(score.score ( id5), -991.062, 0.05 );
-      TS_ASSERT_DELTA(score.score ( id6), -9935.8 , 0.05 );
-      TS_ASSERT_DELTA(score.score ( id7), -991.062, 0.05 );
-      */
+      gum::learning::ScoreBDeu<> score2(score);
+      score2.setEffectiveSampleSize(2.0);
+      TS_GUM_ASSERT_THROWS_NOTHING(
+        score2.isAprioriCompatible(gum::learning::AprioriNoApriori<>::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(score2.isAprioriCompatible(apriori));
+
+      TS_ASSERT(__equal(xscore_1, score2.score(node0)));
+      TS_ASSERT(__equal(xscore_2, score2.score(node0, cond2)));
+      TS_ASSERT(__equal(xscore_3, score2.score(node0, cond3)));
+
+      gum::learning::ScoreBDeu<> score3(std::move(score2));
+      score3.setEffectiveSampleSize(2.0);
+      TS_GUM_ASSERT_THROWS_NOTHING(
+        score3.isAprioriCompatible(gum::learning::AprioriNoApriori<>::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(score3.isAprioriCompatible(apriori));
+
+      TS_ASSERT(__equal(xscore_1, score3.score(node0)));
+      TS_ASSERT(__equal(xscore_2, score3.score(node0, cond2)));
+      TS_ASSERT(__equal(xscore_3, score3.score(node0, cond3)));
+
+      gum::learning::ScoreBDeu<>* score4 = score3.clone();
+      score4->setEffectiveSampleSize(2.0);
+      TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
+        gum::learning::AprioriNoApriori<>::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
+
+      TS_ASSERT(__equal(xscore_1, score4->score(node0)));
+      TS_ASSERT(__equal(xscore_2, score4->score(node0, cond2)));
+      TS_ASSERT(__equal(xscore_3, score4->score(node0, cond3)));
+
+      score4->operator=(score);
+      TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
+        gum::learning::AprioriNoApriori<>::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
+
+      TS_ASSERT(__equal(xscore_1, score4->score(node0)));
+      TS_ASSERT(__equal(xscore_2, score4->score(node0, cond2)));
+      TS_ASSERT(__equal(xscore_3, score4->score(node0, cond3)));
+
+      score4->operator=(std::move(score));
+      TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
+        gum::learning::AprioriNoApriori<>::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
+
+      TS_ASSERT(__equal(xscore_1, score4->score(node0)));
+      TS_ASSERT(__equal(xscore_2, score4->score(node0, cond2)));
+      TS_ASSERT(__equal(xscore_3, score4->score(node0, cond3)));
+
+      delete score4;
     }
 
-    void test_cache() {
-      gum::learning::DBInitializerFromCSV<> initializer(
-        GET_RESSOURCES_PATH("asia.csv"));
-      const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars = var_names.size();
 
-      gum::learning::DBTranslatorSet<>                translator_set;
-      gum::learning::DBTranslator4LabelizedVariable<> translator;
-      for (std::size_t i = 0; i < nb_vars; ++i) {
-        translator_set.insertTranslator(translator, i);
+    void test2() {
+      // create the translator set
+      gum::LabelizedVariable var("X1", "", 0);
+      var.addLabel("0");
+      var.addLabel("1");
+      var.addLabel("2");
+
+      gum::learning::DBTranslatorSet<> trans_set;
+      {
+        const std::vector< std::string >                miss;
+        gum::learning::DBTranslator4LabelizedVariable<> translator(var, miss);
+        std::vector< std::string > names{"A", "B", "C", "D", "E", "F"};
+
+        for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
+          translator.setVariableName(names[i]);
+          trans_set.insertTranslator(translator, i);
+        }
       }
 
-      gum::learning::DatabaseTable<> database(translator_set);
-      database.setVariableNames(initializer.variableNames());
-      initializer.fillDatabase(database);
+      // create the database
+      gum::learning::DatabaseTable<> database(trans_set);
+      std::vector< std::string >     row0{"0", "1", "0", "2", "1", "1"};
+      std::vector< std::string >     row1{"1", "2", "0", "1", "2", "2"};
+      std::vector< std::string >     row2{"2", "1", "0", "1", "1", "0"};
+      std::vector< std::string >     row3{"1", "0", "0", "0", "0", "0"};
+      std::vector< std::string >     row4{"0", "0", "0", "1", "1", "1"};
+      for (int i = 0; i < 1000; ++i)
+        database.insertRow(row0);
+      for (int i = 0; i < 50; ++i)
+        database.insertRow(row1);
+      for (int i = 0; i < 75; ++i)
+        database.insertRow(row2);
+      for (int i = 0; i < 75; ++i)
+        database.insertRow(row3);
+      for (int i = 0; i < 200; ++i)
+        database.insertRow(row4);
 
+      // create the parser
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
 
-      std::vector< gum::Size > modalities(nb_vars, 2);
+      gum::Bijection< gum::NodeId, std::size_t > nodeId2columns;
+      gum::NodeId                                node0 = 0;
+      gum::NodeId                                node1 = 1;
+      gum::NodeId                                node2 = 2;
+      gum::NodeId                                node3 = 3;
+      gum::NodeId                                node4 = 4;
+      gum::NodeId                                node5 = 5;
+      nodeId2columns.insert(node0, std::size_t(4));
+      nodeId2columns.insert(node1, std::size_t(3));
+      nodeId2columns.insert(node2, std::size_t(0));
+      nodeId2columns.insert(node3, std::size_t(2));
+      nodeId2columns.insert(node4, std::size_t(5));
+      nodeId2columns.insert(node5, std::size_t(1));
 
-      gum::learning::AprioriSmoothing<> apriori;
-      apriori.setWeight(0);
-      gum::learning::ScoreBDeu<> score(parser, modalities, apriori);
-      score.setEffectiveSampleSize(2);
-      // score.useCache ( false );
+      gum::learning::AprioriNoApriori<> apriori(database, nodeId2columns);
+      gum::learning::ScoreBDeu<>        score(parser, apriori, nodeId2columns);
+      score.setEffectiveSampleSize(2.0);
 
-      gum::Idx id1, id2, id4, id6;
-      for (gum::Idx i = 0; i < 1000; ++i) {
-        score.clear();
-        id1 = score.addNodeSet(3);
-        id2 = score.addNodeSet(1);
-        id4 = score.addNodeSet(2);
-        id6 = score.addNodeSet(2);
-        TS_ASSERT_DELTA(score.score(id1), -996.781, 0.05);
-        TS_ASSERT_DELTA(score.score(id2), -3030.73, 0.05);
-        TS_ASSERT_DELTA(score.score(id4), -9935.8, 0.05);
-        TS_ASSERT_DELTA(score.score(id6), -9935.8, 0.05);
-      }
-    }
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreBDeu<>::isAprioriCompatible(
+        gum::learning::AprioriNoApriori<>::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+        gum::learning::ScoreBDeu<>::isAprioriCompatible(apriori));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+        score.isAprioriCompatible(gum::learning::AprioriNoApriori<>::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(score.isAprioriCompatible(apriori));
 
-    void test_clearcache() {
-      gum::learning::DBInitializerFromCSV<> initializer(
-        GET_RESSOURCES_PATH("asia.csv"));
-      const auto&       var_names = initializer.variableNames();
-      const std::size_t nb_vars = var_names.size();
+      std::vector< gum::NodeId > cond_empty;
+      std::vector< gum::NodeId > cond2{node5};
+      std::vector< gum::NodeId > cond3{node1};
 
-      gum::learning::DBTranslatorSet<>                translator_set;
-      gum::learning::DBTranslator4LabelizedVariable<> translator;
-      for (std::size_t i = 0; i < nb_vars; ++i) {
-        translator_set.insertTranslator(translator, i);
-      }
+      gum::learning::IdSet<> idset1(node2, cond_empty);    // #3,#0
+      gum::learning::IdSet<> idset2(node2, cond2, true);   // #9,#3
+      gum::learning::IdSet<> idset3(node2, cond3, true);   // #9,#3
 
-      gum::learning::DatabaseTable<> database(translator_set);
-      database.setVariableNames(initializer.variableNames());
-      initializer.fillDatabase(database);
+      // idset1: node2 | emptyset
+      std::vector< double > N_ijk_1{1200.0, 125.0, 75.0};
+      std::vector< double > N_ij_1;
+      double                xscore_1 = __score(N_ijk_1, N_ij_1);
+      TS_ASSERT(__equal(xscore_1, score.score(node2)));
 
-      gum::learning::DBRowGeneratorSet<>    genset;
-      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
 
-      std::vector< gum::Size > modalities(nb_vars, 2);
+      // idset2: node2 | node5
+      std::vector< double > N_ijk_2{200, 75, 0, 1000, 0, 75, 0, 50, 0};
+      std::vector< double > N_ij_2{275, 1075, 50};
+      double                xscore_2 = __score(N_ijk_2, N_ij_2);
+      TS_ASSERT(__equal(xscore_2, score.score(node2, cond2)));
 
-      gum::learning::AprioriNoApriori<> apriori;
-      gum::learning::ScoreBDeu<>        score(parser, modalities, apriori);
-      score.setEffectiveSampleSize(2);
-      // score.useCache ( false );
+      // idset3: node2 | node1
+      std::vector< double > N_ijk_3{0, 75, 0, 200, 50, 75, 1000, 0, 0};
+      std::vector< double > N_ij_3{75, 325, 1000};
+      double                xscore_3 = __score(N_ijk_3, N_ij_3);
+      TS_ASSERT(__equal(xscore_3, score.score(node2, cond3)));
 
-      gum::Idx id1, id2, id4, id6;
-      for (gum::Idx i = 0; i < 4; ++i) {
-        score.clearCache();
-        id1 = score.addNodeSet(3);
-        id2 = score.addNodeSet(1);
-        id4 = score.addNodeSet(2);
-        id6 = score.addNodeSet(2);
-        TS_ASSERT_DELTA(score.score(id1), -996.781, 0.05);
-        TS_ASSERT_DELTA(score.score(id2), -3030.73, 0.05);
-        TS_ASSERT_DELTA(score.score(id4), -9935.8, 0.05);
-        TS_ASSERT_DELTA(score.score(id6), -9935.8, 0.05);
-      }
+
+      gum::learning::ScoreBDeu<> score2(score);
+      score2.setEffectiveSampleSize(2.0);
+      TS_GUM_ASSERT_THROWS_NOTHING(
+        score2.isAprioriCompatible(gum::learning::AprioriNoApriori<>::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(score2.isAprioriCompatible(apriori));
+
+      TS_ASSERT(__equal(xscore_1, score2.score(node2)));
+      TS_ASSERT(__equal(xscore_2, score2.score(node2, cond2)));
+      TS_ASSERT(__equal(xscore_3, score2.score(node2, cond3)));
+
+      gum::learning::ScoreBDeu<> score3(std::move(score2));
+      score3.setEffectiveSampleSize(2.0);
+      TS_GUM_ASSERT_THROWS_NOTHING(
+        score3.isAprioriCompatible(gum::learning::AprioriNoApriori<>::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(score3.isAprioriCompatible(apriori));
+
+      TS_ASSERT(__equal(xscore_1, score3.score(node2)));
+      TS_ASSERT(__equal(xscore_2, score3.score(node2, cond2)));
+      TS_ASSERT(__equal(xscore_3, score3.score(node2, cond3)));
+
+      gum::learning::ScoreBDeu<>* score4 = score3.clone();
+      score4->setEffectiveSampleSize(2.0);
+      TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
+        gum::learning::AprioriNoApriori<>::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
+
+      TS_ASSERT(__equal(xscore_1, score4->score(node2)));
+      TS_ASSERT(__equal(xscore_2, score4->score(node2, cond2)));
+      TS_ASSERT(__equal(xscore_3, score4->score(node2, cond3)));
+
+      score4->operator=(score);
+      TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
+        gum::learning::AprioriNoApriori<>::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
+
+      TS_ASSERT(__equal(xscore_1, score4->score(node2)));
+      TS_ASSERT(__equal(xscore_2, score4->score(node2, cond2)));
+      TS_ASSERT(__equal(xscore_3, score4->score(node2, cond3)));
+
+      score4->operator=(std::move(score));
+      TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
+        gum::learning::AprioriNoApriori<>::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
+
+      TS_ASSERT(__equal(xscore_1, score4->score(node2)));
+      TS_ASSERT(__equal(xscore_2, score4->score(node2, cond2)));
+      TS_ASSERT(__equal(xscore_3, score4->score(node2, cond3)));
+
+      delete score4;
     }
   };
+
 
 } /* namespace gum_tests */

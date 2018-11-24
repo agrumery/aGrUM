@@ -18,14 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the class for computing Bayesian Dirichlet (BD) log2 scores
+ * @brief the class for computing BD scores
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#  include <cmath>
+#  include <agrum/learning/scores_and_tests/scoreBD.h>
 #  include <sstream>
 
 namespace gum {
@@ -33,67 +33,134 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    template < typename IdSetAlloc, typename CountAlloc >
-    template < typename RowFilter >
-    INLINE ScoreBD< IdSetAlloc, CountAlloc >::ScoreBD(
-      const RowFilter&                   filter,
-      const std::vector< Size >&         var_modalities,
-      Apriori< IdSetAlloc, CountAlloc >& apriori,
-      Size                               min_range,
-      Size                               max_range) :
-        Score< IdSetAlloc, CountAlloc >(
-          filter, var_modalities, apriori, min_range, max_range) {
-      // for debugging purposes
+    template < template < typename > class ALLOC >
+    INLINE ScoreBD< ALLOC >::ScoreBD(
+      const DBRowGeneratorParser< ALLOC >&                                 parser,
+      const Apriori< ALLOC >&                                              apriori,
+      const std::vector< std::pair< std::size_t, std::size_t >,
+                         ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
+      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
+      const typename ScoreBD< ALLOC >::allocator_type&              alloc) :
+        Score< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
+        __internal_apriori(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreBD);
     }
 
-    /// copy constructor
-    template < typename IdSetAlloc, typename CountAlloc >
-    ScoreBD< IdSetAlloc, CountAlloc >::ScoreBD(
-      const ScoreBD< IdSetAlloc, CountAlloc >& from) :
-        Score< IdSetAlloc, CountAlloc >(from),
-        __gammalog2(from.__gammalog2),
-        __internal_apriori(from.__internal_apriori) {
-      // for debugging purposes
+
+    /// default constructor
+    template < template < typename > class ALLOC >
+    INLINE ScoreBD< ALLOC >::ScoreBD(
+      const DBRowGeneratorParser< ALLOC >&                          parser,
+      const Apriori< ALLOC >&                                       apriori,
+      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
+      const typename ScoreBD< ALLOC >::allocator_type&              alloc) :
+        Score< ALLOC >(parser, apriori, nodeId2columns, alloc),
+        __internal_apriori(parser.database(), nodeId2columns) {
+      GUM_CONSTRUCTOR(ScoreBD);
+    }
+
+
+    /// copy constructor with a given allocator
+    template < template < typename > class ALLOC >
+    INLINE ScoreBD< ALLOC >::ScoreBD(
+      const ScoreBD< ALLOC >&                          from,
+      const typename ScoreBD< ALLOC >::allocator_type& alloc) :
+        Score< ALLOC >(from, alloc),
+        __internal_apriori(from.__internal_apriori, alloc),
+        __gammalog2(from.__gammalog2) {
       GUM_CONS_CPY(ScoreBD);
     }
 
-    /// move constructor
-    template < typename IdSetAlloc, typename CountAlloc >
-    ScoreBD< IdSetAlloc, CountAlloc >::ScoreBD(
-      ScoreBD< IdSetAlloc, CountAlloc >&& from) :
-        Score< IdSetAlloc, CountAlloc >(std::move(from)),
-        __gammalog2(std::move(from.__gammalog2)),
-        __internal_apriori(std::move(from.__internal_apriori)) {
-      // for debugging purposes
+
+    /// copy constructor
+    template < template < typename > class ALLOC >
+    INLINE ScoreBD< ALLOC >::ScoreBD(const ScoreBD< ALLOC >& from) :
+        ScoreBD< ALLOC >(from, from.getAllocator()) {}
+
+
+    /// move constructor with a given allocator
+    template < template < typename > class ALLOC >
+    INLINE ScoreBD< ALLOC >::ScoreBD(
+      ScoreBD< ALLOC >&&                               from,
+      const typename ScoreBD< ALLOC >::allocator_type& alloc) :
+        Score< ALLOC >(std::move(from), alloc),
+        __internal_apriori(std::move(from.__internal_apriori), alloc),
+        __gammalog2(std::move(from.__gammalog2)) {
       GUM_CONS_MOV(ScoreBD);
     }
 
-    /// virtual copy factory
-    template < typename IdSetAlloc, typename CountAlloc >
-    ScoreBD< IdSetAlloc, CountAlloc >*
-      ScoreBD< IdSetAlloc, CountAlloc >::copyFactory() const {
-      return new ScoreBD< IdSetAlloc, CountAlloc >(*this);
+
+    /// move constructor
+    template < template < typename > class ALLOC >
+    INLINE ScoreBD< ALLOC >::ScoreBD(ScoreBD< ALLOC >&& from) :
+        ScoreBD< ALLOC >(std::move(from), from.getAllocator()) {}
+
+
+    /// virtual copy constructor with a given allocator
+    template < template < typename > class ALLOC >
+    ScoreBD< ALLOC >* ScoreBD< ALLOC >::clone(
+      const typename ScoreBD< ALLOC >::allocator_type& alloc) const {
+      ALLOC< ScoreBD< ALLOC > > allocator(alloc);
+      ScoreBD< ALLOC >*         new_score = allocator.allocate(1);
+      try {
+        allocator.construct(new_score, *this, alloc);
+      } catch (...) {
+        allocator.deallocate(new_score, 1);
+        throw;
+      }
+
+      return new_score;
     }
 
+
+    /// virtual copy constructor
+    template < template < typename > class ALLOC >
+    ScoreBD< ALLOC >* ScoreBD< ALLOC >::clone() const {
+      return clone(this->getAllocator());
+    }
+
+
     /// destructor
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE ScoreBD< IdSetAlloc, CountAlloc >::~ScoreBD() {
-      // for debugging purposes
+    template < template < typename > class ALLOC >
+    ScoreBD< ALLOC >::~ScoreBD< ALLOC >() {
       GUM_DESTRUCTOR(ScoreBD);
     }
 
+
+    /// copy operator
+    template < template < typename > class ALLOC >
+    ScoreBD< ALLOC >& ScoreBD< ALLOC >::operator=(const ScoreBD< ALLOC >& from) {
+      if (this != &from) {
+        Score< ALLOC >::operator=(from);
+        __internal_apriori = from.__internal_apriori;
+      }
+      return *this;
+    }
+
+
+    /// move operator
+    template < template < typename > class ALLOC >
+    ScoreBD< ALLOC >& ScoreBD< ALLOC >::operator=(ScoreBD< ALLOC >&& from) {
+      if (this != &from) {
+        Score< ALLOC >::operator=(std::move(from));
+        __internal_apriori = std::move(from.__internal_apriori);
+      }
+      return *this;
+    }
+
+
     /// indicates whether the apriori is compatible (meaningful) with the score
-    template < typename IdSetAlloc, typename CountAlloc >
-    std::string ScoreBD< IdSetAlloc, CountAlloc >::isAprioriCompatible(
-      const std::string& apriori_type, double weight) {
+    template < template < typename > class ALLOC >
+    std::string
+      ScoreBD< ALLOC >::isAprioriCompatible(const std::string& apriori_type,
+                                            double             weight) {
       if (apriori_type == AprioriNoAprioriType::type) {
         return "The BD score requires an apriori";
       }
 
-      if (weight != 0) {
+      if (weight != 0.0) {
         return "The apriori is currently compatible with the BD score but if "
-               "you change the weight, it may become incompatible";
+               "you change the weight, it may become biased";
       }
 
       // apriori types unsupported by the type checker
@@ -103,84 +170,77 @@ namespace gum {
       return msg.str();
     }
 
+
     /// indicates whether the apriori is compatible (meaningful) with the score
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE std::string ScoreBD< IdSetAlloc, CountAlloc >::isAprioriCompatible(
-      const Apriori< IdSetAlloc, CountAlloc >& apriori) {
+    template < template < typename > class ALLOC >
+    INLINE std::string
+           ScoreBD< ALLOC >::isAprioriCompatible(const Apriori< ALLOC >& apriori) {
       return isAprioriCompatible(apriori.getType(), apriori.weight());
     }
 
+
     /// indicates whether the apriori is compatible (meaningful) with the score
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE std::string
-           ScoreBD< IdSetAlloc, CountAlloc >::isAprioriCompatible() const {
-      return isAprioriCompatible(*this->_apriori);
+    template < template < typename > class ALLOC >
+    INLINE std::string ScoreBD< ALLOC >::isAprioriCompatible() const {
+      return isAprioriCompatible(*(this->_apriori));
     }
 
+
     /// returns the internal apriori of the score
-    template < typename IdSetAlloc, typename CountAlloc >
-    INLINE const ScoreInternalApriori< IdSetAlloc, CountAlloc >&
-                 ScoreBD< IdSetAlloc, CountAlloc >::internalApriori() const noexcept {
+    template < template < typename > class ALLOC >
+    INLINE const Apriori< ALLOC >& ScoreBD< ALLOC >::internalApriori() const {
       return __internal_apriori;
     }
 
+
     /// returns the score corresponding to a given nodeset
-    template < typename IdSetAlloc, typename CountAlloc >
-    double ScoreBD< IdSetAlloc, CountAlloc >::score(Idx nodeset_index) {
-      // if the score has already been computed, get its value
-      if (this->_isInCache(nodeset_index)) {
-        return this->_cachedScore(nodeset_index);
-      }
-
+    template < template < typename > class ALLOC >
+    double ScoreBD< ALLOC >::_score(const IdSet< ALLOC >& idset) {
       // if the weight of the apriori is 0, then gammaLog2 will fail
-      if (this->_apriori->weight() == 0) {
+      if (!this->_apriori->isInformative()) {
         GUM_ERROR(OutOfBounds,
-                  "The BD score requires the apriori to be strictly positive");
+                  "The BD score requires its external apriori to "
+                    << "be strictly positive");
       }
 
-      // get the counts for all the targets and the conditioning nodes
-      const std::vector< double, CountAlloc >& N_ijk =
-        this->_getAllCounts(nodeset_index);
-      const Size targets_modal = Size(N_ijk.size());
-      double     score = 0;
+      // get the counts for all the nodes in the idset and add the apriori
+      std::vector< double, ALLOC< double > > N_ijk(
+        this->_counter.counts(idset, true));
+      const double                           all_size = (N_ijk.size());
+      std::vector< double, ALLOC< double > > N_prime_ijk(all_size, 0.0);
+      this->_apriori->addAllApriori(idset, N_prime_ijk);
 
-      // here, we distinguish nodesets with conditioning nodes from those
+      double score = 0.0;
+
+      // here, we distinguish idsets with conditioning nodes from those
       // without conditioning nodes
-      if (this->_getConditioningNodes(nodeset_index)) {
-        // get the count of the conditioning nodes
-        const std::vector< double, CountAlloc >& N_ij =
-          this->_getConditioningCounts(nodeset_index);
-        const Idx conditioning_modal = Size(N_ij.size());
-
-        const std::vector< double, CountAlloc >& N_prime_ijk =
-          this->_getAllApriori(nodeset_index);
-        const std::vector< double, CountAlloc >& N_prime_ij =
-          this->_getConditioningApriori(nodeset_index);
+      if (idset.hasConditioningSet()) {
+        // get the counts for the conditioning nodes
+        std::vector< double, ALLOC< double > > N_ij =
+          this->_counter.counts(idset.conditionalIdSet(), false);
+        const double conditioning_size = double(N_ij.size());
+        std::vector< double, ALLOC< double > > N_prime_ij(N_ij.size(), 0.0);
+        this->_apriori->addConditioningApriori(idset, N_prime_ij);
 
         // the BD score can be computed as follows:
         // sum_j=1^qi [ gammalog2 ( N'_ij ) - gammalog2 ( N_ij + N'_ij )
         //              + sum_k=1^ri { gammlog2 ( N_ijk + N'_ijk ) -
         //                             gammalog2 ( N'_ijk ) } ]
-
-        for (Idx j = 0; j < conditioning_modal; ++j) {
+        for (std::size_t j = std::size_t(0); j < conditioning_size; ++j) {
           score +=
             __gammalog2(N_prime_ij[j]) - __gammalog2(N_ij[j] + N_prime_ij[j]);
         }
-        for (Idx k = 0; k < targets_modal; ++k) {
+        for (std::size_t k = std::size_t(0); k < all_size; ++k) {
           score +=
             __gammalog2(N_ijk[k] + N_prime_ijk[k]) - __gammalog2(N_prime_ijk[k]);
         }
       } else {
-        const std::vector< double, CountAlloc >& N_prime_ijk =
-          this->_getAllApriori(nodeset_index);
-
         // the BD score can be computed as follows:
         // gammalog2 ( N' ) - gammalog2 ( N + N' )
         // + sum_k=1^ri { gammlog2 ( N_i + N'_i ) - gammalog2 ( N'_i ) }
-
-        double N = 0;
-        double N_prime = 0;
-        for (Idx k = 0; k < targets_modal; ++k) {
+        double N = 0.0;
+        double N_prime = 0.0;
+        for (std::size_t k = std::size_t(0); k < all_size; ++k) {
           score +=
             __gammalog2(N_ijk[k] + N_prime_ijk[k]) - __gammalog2(N_prime_ijk[k]);
           N += N_ijk[k];
@@ -188,9 +248,6 @@ namespace gum {
         }
         score += __gammalog2(N_prime) - __gammalog2(N + N_prime);
       }
-
-      // shall we put the score into the cache?
-      if (this->_isUsingCache()) { this->_insertIntoCache(nodeset_index, score); }
 
       return score;
     }

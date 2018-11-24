@@ -1197,6 +1197,13 @@ namespace gum {
     }
 
 
+    /// returns the number of threads used to parse the database
+    template < typename T_DATA, template < typename > class ALLOC >
+    INLINE std::size_t IDatabaseTable< T_DATA, ALLOC >::nbThreads() const {
+      return _max_nb_threads;
+    }
+
+
     /** @brief changes the number min of rows a thread should process in a
      * multithreading context */
     template < typename T_DATA, template < typename > class ALLOC >
@@ -1206,6 +1213,14 @@ namespace gum {
         _min_nb_rows_per_thread = std::size_t(1);
       else
         _min_nb_rows_per_thread = nb;
+    }
+
+
+    /// returns the minimum of rows that each thread should process
+    template < typename T_DATA, template < typename > class ALLOC >
+    INLINE std::size_t
+           IDatabaseTable< T_DATA, ALLOC >::minNbRowsPerThread() const {
+      return _min_nb_rows_per_thread;
     }
 
 

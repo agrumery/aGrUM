@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief the base class for all a prioris
+ * @brief the base class for all a priori
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -29,31 +29,54 @@
 #include <vector>
 
 #include <agrum/agrum.h>
-#include <agrum/core/exceptions.h>
+#include <agrum/core/bijection.h>
 #include <agrum/learning/aprioris/aprioriTypes.h>
+#include <agrum/learning/database/databaseTable.h>
+#include <agrum/learning/scores_and_tests/idSet.h>
 
 namespace gum {
 
   namespace learning {
 
     /** @class Apriori
-     * @brief the base class for all apriori
-     * @ingroup learning_group
+     * @brief the base class for all a priori
+     * @headerfile apriori.h <agrum/learning/database/apriori.h>
+     * @ingroup learning_apriori
      */
-    template < typename IdSetAlloc = std::allocator< Idx >,
-               typename CountAlloc = std::allocator< double > >
-    class Apriori {
+    template < template < typename > class ALLOC = std::allocator >
+    class Apriori : private ALLOC< NodeId > {
       public:
+      /// type for the allocators passed in arguments of methods
+      using allocator_type = ALLOC< NodeId >;
+
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// default constructor
-      Apriori();
+      /** @param database the database from which learning is performed. This is
+       * useful to get access to the random variables
+       * @param nodeId2Columns a mapping from the ids of the nodes in the
+       * graphical model to the corresponding column in the DatabaseTable.
+       * This enables estimating from a database in which variable A corresponds
+       * to the 2nd column the parameters of a BN in which variable A has a
+       * NodeId of 5. An empty nodeId2Columns bijection means that the mapping
+       * is an identity, i.e., the value of a NodeId is equal to the index of
+       * the column in the DatabaseTable.
+       * @param alloc the allocator used to allocate the structures within the
+       * RecordCounter.*/
+      Apriori(const DatabaseTable< ALLOC >& database,
+              const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                nodeId2columns =
+                  Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+              const allocator_type& alloc = allocator_type());
 
       /// virtual copy constructor
-      virtual Apriori< IdSetAlloc, CountAlloc >* copyFactory() const = 0;
+      virtual Apriori< ALLOC >* clone() const = 0;
+
+      /// virtual copy constructor with a given allocator
+      virtual Apriori< ALLOC >* clone(const allocator_type& alloc) const = 0;
 
       /// destructor
       virtual ~Apriori();
@@ -66,82 +89,81 @@ namespace gum {
       /// @{
 
       /// sets the weight of the a priori (kind of effective sample size)
-      virtual void setWeight(double weight);
+      virtual void setWeight(const double weight);
 
       /// returns the weight assigned to the apriori
-      double weight() const noexcept;
+      double weight() const;
 
       /// indicates whether an apriori is of a certain type
       virtual bool isOfType(const std::string& type) = 0;
 
       /// returns the type of the apriori
-      virtual const std::string& getType() const noexcept = 0;
+      virtual const std::string& getType() const = 0;
 
-      /// sets the parameters for the apriori
-      void setParameters(
-        const std::vector< Size >&                        modalities,
-        std::vector< std::vector< double, CountAlloc > >& counts,
-        const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >&
-          target_nodesets,
-        const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >&
-          conditioning_nodesets);
+      /// indicates whether the apriori is potentially informative
+      /** Basically, only the NoApriori is uninformative. However, it may happen
+       * that, under some circonstances, an apriori, which is usually not equal
+       * to the NoApriori, becomes equal to it (e.g., when the weight is equal
+       * to zero). In this case, if the apriori can detect this case, it shall
+       * inform the classes that use it that it is temporarily uninformative.
+       * These classes will then be able to speed-up their code by avoiding to
+       * take into account the apriori in their computations. */
+      virtual bool isInformative() const = 0;
 
-      /// compute the apriori into a given set of counts
-      virtual void compute() = 0;
+      /// adds the apriori to a counting vector corresponding to the idset
+      /** adds the apriori to an already created counting vector defined over
+       * the union of the variables on both the left and right hand side of the
+       * conditioning bar of the idset.
+       * @warning the method assumes that the size of the vector is exactly
+       * the domain size of the joint variables set. */
+      virtual void
+        addAllApriori(const IdSet< ALLOC >&                   idset,
+                      std::vector< double, ALLOC< double > >& counts) = 0;
 
-      /// returns the apriori vector for a given (conditioned) target set
-      const std::vector< double, CountAlloc >& getAllApriori(Idx index);
+      /** @brief adds the apriori to a counting vectordefined over the right
+       * hand side of the idset
+       *
+       * @warning the method assumes that the size of the vector is exactly
+       * the domain size of the joint RHS variables of the idset. */
+      virtual void
+        addConditioningApriori(const IdSet< ALLOC >&                   idset,
+                               std::vector< double, ALLOC< double > >& counts) = 0;
 
-      /// returns the apriori vector for a conditioning set
-      const std::vector< double, CountAlloc >& getConditioningApriori(Idx index);
+      /// returns the allocator used by the internal apriori
+      allocator_type getAllocator() const;
 
       /// @}
 
+
       protected:
       /// the weight of the apriori
-      double _weight{1.0f};
+      double _weight{1.0};
 
-      /// the modalities of the nodes
-      const std::vector< Size >* _modalities{nullptr};
+      /// a reference to the database in order to have access to its variables
+      const DatabaseTable< ALLOC >* _database;
 
-      /// the counts that were performed by the class on which we add an apriori
-      /** Say that a score needs an apriori, then _unapriori_counts corresponds
-       * to the countings performed by the score. Those are given to the apriori
-       * so that the latter can add what is needed to _unapriori_counts to take
-       * into account the so-called apriori. */
-      std::vector< std::vector< double, CountAlloc > >* _unapriori_counts{nullptr};
+      /** @brief a mapping from the NodeIds of the variables to the indices of
+       * the columns in the database */
+      Bijection< NodeId, std::size_t, ALLOC< std::size_t > > _nodeId2columns;
 
-      /// the set of target + cond nodes, and their counting indices
-      /** The first element of the pairs correspond to a nodeset and the
-       * second one to the corresponding index in _unapriori_counts. Some
-       * pointers on the pair might be nullptr. In this case, this means that
-       * the countings have already been processed and have been put into a
-       * cache.
-       * So, for these pointers, no a priori operation needs be performed. */
-      const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >*
-        _target_nodesets{nullptr};
-
-      /// the set of conditioning nodesets
-      /** for details, see _target_nodesets */
-      const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >*
-        _conditioning_nodesets{nullptr};
-
-      /// the a priori
-      std::vector< std::vector< double, CountAlloc > > _apriori_counts;
 
       /// copy constructor
-      Apriori(const Apriori< IdSetAlloc, CountAlloc >& from);
+      Apriori(const Apriori< ALLOC >& from);
+
+      /// copy constructor with a given allocator
+      Apriori(const Apriori< ALLOC >& from, const allocator_type& alloc);
 
       /// move constructor
-      Apriori(Apriori< IdSetAlloc, CountAlloc >&& from);
+      Apriori(Apriori< ALLOC >&& from);
 
-      private:
-      // ##########################################################################
-      // ##########################################################################
+      /// move constructor with a given allocator
+      Apriori(Apriori< ALLOC >&& from, const allocator_type& alloc);
 
-      /// prevent copy operator
-      Apriori< IdSetAlloc, CountAlloc >&
-        operator=(const Apriori< IdSetAlloc, CountAlloc >&) = delete;
+      /// copy operator
+      Apriori< ALLOC >& operator=(const Apriori< ALLOC >& from);
+
+      /// move operator
+      Apriori< ALLOC >& operator=(Apriori< ALLOC >&& from);
     };
 
   } /* namespace learning */

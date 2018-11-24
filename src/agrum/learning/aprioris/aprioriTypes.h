@@ -46,6 +46,12 @@ namespace gum {
       static bool              isOfType(const std::string& t) { return t == type; }
     };
 
+    struct AprioriBDeuType {
+      static const std::string type;
+      static bool              isOfType(const std::string& t) { return t == type; }
+    };
+
+
   } /* namespace learning */
 
 } /* namespace gum */

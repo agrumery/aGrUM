@@ -17,13 +17,10 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/**
- * @file
- * @brief Implementation of gum::learning::RecordCounter and others.
+/** @file
+ * @brief The class that computes countings of observations from the database.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
 #include <agrum/learning/scores_and_tests/recordCounter.h>
-
-template class gum::learning::RecordCounter<>;
