@@ -32,75 +32,70 @@
 
 namespace gum {
 
-  namespace thread {
+  /** @class ThreadData
+   * @brief A wrapper that enables to store data in a way that prevents false
+   * cacheline sharing.
+   * @headerfile threadData.h <agrum/core/threadData.h>
+   * @ingroup basicstruct_group
+   *
+   * When several threads access to some shared containers like vectors, it
+   * may be the case that they access some data within these containers that
+   * are too close, which results in false sharing of the cacheline. By
+   * wrapping the data into a ThreadData, we guarantee that no false sharing
+   * can occur.
+   *
+   * To create a wrapper data, simply use wrapped_data = ThreadData (data) and
+   * To get the data wrapped, use wrapped_data.data;
+   */
+  template < typename T_DATA >
+  // #TODO: replace by alignas(std::hardware_destructive_interference_size)
+  // when pyAgrum will be compiled in C++17
+  struct alignas(128) ThreadData {
+    // ##########################################################################
+    /// @name Constructors / Destructors
+    // ##########################################################################
+    /// @{
 
+    /// default constructor
+    ThreadData(const T_DATA& theData) : data(theData) {}
 
-    /** @class ThreadData
-     * @brief A wrapper that enables to store data in a way that prevents false
-     * cacheline sharing.
-     * @headerfile threadData.h <agrum/core/threadData.h>
-     * @ingroup basicstruct_group
-     *
-     * When several threads access to some shared containers like vectors, it
-     * may be the case that they access some data within these containers that
-     * are too close, which results in false sharing of the cacheline. By
-     * wrapping the data into a ThreadData, we guarantee that no false sharing
-     * can occur.
-     *
-     * To create a wrapper data, simply use wrapped_data = ThreadData (data) and
-     * To get the data wrapped, use wrapped_data.data;
-     */
-    template < typename T_DATA >
-    // #TODO: replace by alignas(std::hardware_destructive_interference_size)
-    // when pyAgrum will be compiled in C++17
-    struct alignas(128) ThreadData {
-      // ##########################################################################
-      /// @name Constructors / Destructors
-      // ##########################################################################
-      /// @{
+    /// default constructor
+    ThreadData(T_DATA&& theData) : data(std::move(theData)) {}
 
-      /// default constructor
-      ThreadData(const T_DATA& theData) : data(theData) {}
+    /// copy constructor
+    ThreadData(const ThreadData< T_DATA >& from) : data(from.data) {}
 
-      /// default constructor
-      ThreadData(T_DATA&& theData) : data(std::move(theData)) {}
+    /// move constructor
+    ThreadData(ThreadData< T_DATA >&& from) : data(std::move(from.data)) {}
 
-      /// copy constructor
-      ThreadData(const ThreadData< T_DATA >& from) : data(from.data) {}
+    /// destructor
+    ~ThreadData() {}
 
-      /// move constructor
-      ThreadData(ThreadData< T_DATA >&& from) : data(std::move(from.data)) {}
+    /// @}
 
-      /// destructor
-      ~ThreadData() {}
+    // ##########################################################################
+    /// @name Operators
+    // ##########################################################################
 
-      /// @}
+    /// @{
 
-      // ##########################################################################
-      /// @name Operators
-      // ##########################################################################
+    /// copy operator
+    ThreadData< T_DATA >& operator=(const ThreadData< T_DATA >& from) {
+      if (this != &from) data = from.data;
+      return *this;
+    }
 
-      /// @{
+    /// move operator
+    ThreadData< T_DATA >& operator=(ThreadData< T_DATA >&& from) {
+      data = std::move(from.data);
+      return *this;
+    }
 
-      /// copy operator
-      ThreadData< T_DATA >& operator=(const ThreadData< T_DATA >& from) {
-        if (this != &from) data = from.data;
-        return *this;
-      }
+    /// @}
 
-      /// move operator
-      ThreadData< T_DATA >& operator=(ThreadData< T_DATA >&& from) {
-        data = std::move(from.data);
-        return *this;
-      }
-
-      /// @}
-
-      /// the data we wish to store without cacheline parallel problem
-      T_DATA data;
-    };
-
-  }   // namespace thread
+    /// the data we wish to store without cacheline parallel problem
+    T_DATA data;
+  };
 
 } /* namespace gum */
 

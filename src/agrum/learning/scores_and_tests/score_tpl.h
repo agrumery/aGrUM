@@ -71,7 +71,7 @@ namespace gum {
                             const typename Score< ALLOC >::allocator_type& alloc) :
         _apriori(from._apriori->clone(alloc)),
         _counter(from._counter, alloc), _cache(from._cache, alloc),
-        _use_cache(from._use_cache), _max_nb_threads(from._max_nb_threads),
+        _use_cache(from._use_cache), 
         _min_nb_rows_per_thread(from._min_nb_rows_per_thread) {
       GUM_CONS_CPY(Score);
     }
@@ -91,7 +91,6 @@ namespace gum {
         _apriori(from._apriori),
         _counter(std::move(from._counter), alloc),
         _cache(std::move(from._cache), alloc), _use_cache(from._use_cache),
-        _max_nb_threads(from._max_nb_threads),
         _min_nb_rows_per_thread(from._min_nb_rows_per_thread) {
       from._apriori = nullptr;
       GUM_CONS_MOV(Score);
@@ -135,7 +134,6 @@ namespace gum {
         _cache = std::move(new_cache);
 
         _use_cache = from._use_cache;
-        _max_nb_threads = from._max_nb_threads;
         _min_nb_rows_per_thread = from._min_nb_rows_per_thread;
       }
       return *this;
@@ -151,7 +149,6 @@ namespace gum {
         _counter = std::move(from._counter);
         _cache = std::move(from._cache);
         _use_cache = from._use_cache;
-        _max_nb_threads = from._max_nb_threads;
         _min_nb_rows_per_thread = from._min_nb_rows_per_thread;
       }
       return *this;
@@ -161,16 +158,14 @@ namespace gum {
     /// changes the max number of threads used to parse the database
     template < template < typename > class ALLOC >
     INLINE void Score< ALLOC >::setMaxNbThreads(std::size_t nb) const {
-      if (nb == std::size_t(0)) nb = std::size_t(1);
       _counter.setMaxNbThreads(nb);
-      _max_nb_threads = nb;
     }
 
 
     /// returns the number of threads used to parse the database
     template < template < typename > class ALLOC >
     INLINE std::size_t Score< ALLOC >::nbThreads() const {
-      return _max_nb_threads;
+      return _counter.nbThreads();
     }
 
 

@@ -29,7 +29,7 @@
 
 #include <agrum/agrum.h>
 #include <agrum/core/math/math.h>
-#include <agrum/core/thread.h>
+#include <agrum/core/OMPThreads.h>
 
 #include <agrum/learning/scores_and_tests/recordCounter.h>
 #include <agrum/learning/scores_and_tests/scoringCache.h>
@@ -225,10 +225,6 @@ namespace gum {
 
       /// a Boolean indicating whether we wish to use the cache
       bool _use_cache{true};
-
-      /// the maximal number of threads that the score can use
-      mutable std::size_t _max_nb_threads{
-        std::size_t(thread::getMaxNumberOfThreads())};
 
       /** @brief the min number of database rows that a thread should process
        * in a multithreading context */

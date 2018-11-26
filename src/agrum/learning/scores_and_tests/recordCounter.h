@@ -36,7 +36,7 @@
 #include <agrum/agrum.h>
 #include <agrum/core/bijection.h>
 #include <agrum/core/sequence.h>
-#include <agrum/core/thread.h>
+#include <agrum/core/OMPThreads.h>
 #include <agrum/core/threadData.h>
 #include <agrum/graphs/DAG.h>
 #include <agrum/learning/database/DBRowGeneratorParser.h>
@@ -310,8 +310,8 @@ namespace gum {
 
       private:
       // the parsers used by the threads
-      std::vector< thread::ThreadData< DBRowGeneratorParser< ALLOC > >,
-                   ALLOC< thread::ThreadData< DBRowGeneratorParser< ALLOC > > > >
+      std::vector< ThreadData< DBRowGeneratorParser< ALLOC > >,
+                   ALLOC< ThreadData< DBRowGeneratorParser< ALLOC > > > >
         __parsers;
 
       // the set of ranges of the database's rows indices over which we
@@ -338,7 +338,7 @@ namespace gum {
 
       // the maximal number of threads that the record counter can use
       mutable std::size_t __max_nb_threads{
-        std::size_t(thread::getMaxNumberOfThreads())};
+        std::size_t(gum::getMaxNumberOfThreads())};
 
       // the min number of rows that a thread should process in a
       // multithreading context

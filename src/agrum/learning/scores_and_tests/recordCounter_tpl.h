@@ -24,7 +24,6 @@
  */
 
 #include <agrum/learning/scores_and_tests/recordCounter.h>
-#include <agrum/core/OMPThreads.h>
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -226,7 +225,7 @@ namespace gum {
     /// changes the max number of threads used to parse the database
     template < template < typename > class ALLOC >
     void RecordCounter< ALLOC >::setMaxNbThreads(const std::size_t nb) const {
-      if (nb == std::size_t(0))
+      if (nb == std::size_t(0) || ! isOMP())
         __max_nb_threads = std::size_t(1);
       else
         __max_nb_threads = nb;
@@ -709,10 +708,10 @@ namespace gum {
       const std::size_t nb_threads =
         nb_ranges <= __max_nb_threads ? nb_ranges : __max_nb_threads;
       while (__parsers.size() < nb_threads) {
-        thread::ThreadData< DBRowGeneratorParser< ALLOC > > new_parser(
-          __parsers[0]);
+        ThreadData< DBRowGeneratorParser< ALLOC > > new_parser(__parsers[0]);
         __parsers.push_back(std::move(new_parser));
       }
+
 
       // allocate all the counting vectors, including that which will add
       // all the results provided by the threads. We initialize once and
@@ -720,12 +719,11 @@ namespace gum {
       std::vector< double, ALLOC< double > > counting_vect(counting_vect_size,
                                                            0.0);
       std::vector<
-        thread::ThreadData< std::vector< double, ALLOC< double > > >,
-        ALLOC< thread::ThreadData< std::vector< double, ALLOC< double > > > > >
+        ThreadData< std::vector< double, ALLOC< double > > >,
+        ALLOC< ThreadData< std::vector< double, ALLOC< double > > > > >
         thread_countings(
           nb_threads,
-          thread::ThreadData< std::vector< double, ALLOC< double > > >(
-            counting_vect));
+          ThreadData< std::vector< double, ALLOC< double > > >(counting_vect));
 
       // launch the threads
       // here we use openMP for launching the threads because, experimentally,
@@ -765,6 +763,7 @@ namespace gum {
         }
       }
 
+      
       // add the counts to counting_vect
       for (std::size_t k = std::size_t(0); k < nb_threads; ++k) {
         const auto& thread_counting = thread_countings[k].data;
