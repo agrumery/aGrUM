@@ -290,9 +290,8 @@ namespace gum_tests {
       TS_ASSERT ( cols_of_interest == acols1 );
 
       parser2 = std::move ( parser9 );
-       return;
       
-     parser2.reset ();
+      parser2.reset ();
       nb_rows = std::size_t(0);
       while ( parser2.hasRows () ) {
         const auto& row = parser2.row().row();
