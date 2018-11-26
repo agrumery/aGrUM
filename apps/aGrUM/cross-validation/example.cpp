@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
     k = atoi(argv[1]);
   }
 
-  std::string                            csvfilename("asia.csv");
+  std::string                           csvfilename("asia.csv");
   gum::learning::DBInitializerFromCSV<> initializer(csvfilename);
   const auto&       var_names = initializer.variableNames();
   const std::size_t nb_vars = var_names.size();
@@ -66,7 +66,7 @@ int main(int argc, char* argv[]) {
 
     gum::learning::DBRowGeneratorSet<>    genset;
     gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
-    gum::learning::AprioriSmoothing2<>    apriori(database);
+    gum::learning::AprioriSmoothing<>     apriori(database);
 
     gum::learning::StructuralConstraintSetStatic<
       gum::learning::StructuralConstraintDAG >
@@ -101,11 +101,11 @@ int main(int argc, char* argv[]) {
       std::cout << "+ LEARNING on " << ranges << " : ";
 
       // LEARNING
-      gum::learning::ScoreBDeu2<> score(parser, apriori, ranges);
-      gum::learning::ParamEstimatorML2<> estimator(
+      gum::learning::ScoreBDeu<> score(parser, apriori, ranges);
+      gum::learning::ParamEstimatorML<> estimator(
            parser, apriori, score.internalApriori(), ranges);
-      gum::learning::GraphChangesSelector4DiGraph2< decltype(struct_constraint),
-                                                    decltype(op_set) >
+      gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint),
+                                                   decltype(op_set) >
                               selector(score, struct_constraint, op_set);
       gum::Timer              timer;
       gum::BayesNet< double > bn = search.learnBN<double>(selector, estimator);
