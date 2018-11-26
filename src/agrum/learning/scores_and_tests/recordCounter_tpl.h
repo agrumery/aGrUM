@@ -225,7 +225,7 @@ namespace gum {
     /// changes the max number of threads used to parse the database
     template < template < typename > class ALLOC >
     void RecordCounter< ALLOC >::setMaxNbThreads(const std::size_t nb) const {
-      if (nb == std::size_t(0) || ! isOMP())
+      if (nb == std::size_t(0) || !isOMP())
         __max_nb_threads = std::size_t(1);
       else
         __max_nb_threads = nb;
@@ -628,7 +628,7 @@ namespace gum {
       for (const auto& range : __ranges) {
         if (range.second > range.first) {
           const std::size_t range_size = range.second - range.first;
-          std::size_t nb_threads = range_size / __min_nb_rows_per_thread;
+          std::size_t       nb_threads = range_size / __min_nb_rows_per_thread;
           if (nb_threads < 1)
             nb_threads = 1;
           else if (nb_threads > __max_nb_threads)
@@ -718,9 +718,8 @@ namespace gum {
       // for all these vectors with zeroes
       std::vector< double, ALLOC< double > > counting_vect(counting_vect_size,
                                                            0.0);
-      std::vector<
-        ThreadData< std::vector< double, ALLOC< double > > >,
-        ALLOC< ThreadData< std::vector< double, ALLOC< double > > > > >
+      std::vector< ThreadData< std::vector< double, ALLOC< double > > >,
+                   ALLOC< ThreadData< std::vector< double, ALLOC< double > > > > >
         thread_countings(
           nb_threads,
           ThreadData< std::vector< double, ALLOC< double > > >(counting_vect));
@@ -734,7 +733,7 @@ namespace gum {
         {
           // get the number of the thread
           const std::size_t this_thread = getThreadNumber();
-          if ( this_thread + i < nb_ranges ) {
+          if (this_thread + i < nb_ranges) {
             DBRowGeneratorParser< ALLOC >& parser = __parsers[this_thread].data;
             parser.setRange(ranges[this_thread + i].first,
                             ranges[this_thread + i].second);
@@ -753,7 +752,7 @@ namespace gum {
                   offset +=
                     row[cols_offsets[i].first].discr_val * cols_offsets[i].second;
                 }
-                
+
                 countings[offset] += row.weight();
               }
             } catch (NotFound&) {}   // this exception is raised by the row filter
@@ -763,7 +762,7 @@ namespace gum {
         }
       }
 
-      
+
       // add the counts to counting_vect
       for (std::size_t k = std::size_t(0); k < nb_threads; ++k) {
         const auto& thread_counting = thread_countings[k].data;

@@ -37,10 +37,8 @@ namespace gum {
   // Default constructor.
   // Use the SimpleCPTGenerator for generating the BNs CPT.
   template < typename GUM_SCALAR,
-             template < class >
-             class ICPTGenerator,
-             template < class >
-             class ICPTDisturber >
+             template < class > class ICPTGenerator,
+             template < class > class ICPTDisturber >
   INLINE
     MaxParentsMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
       MaxParentsMCBayesNetGenerator(Size nbrNodes,
@@ -60,10 +58,8 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR,
-             template < class >
-             class ICPTGenerator,
-             template < class >
-             class ICPTDisturber >
+             template < class > class ICPTGenerator,
+             template < class > class ICPTDisturber >
   INLINE
     MaxParentsMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
       MaxParentsMCBayesNetGenerator(BayesNet< GUM_SCALAR > bayesNet,
@@ -78,10 +74,8 @@ namespace gum {
 
   // Destructor.
   template < typename GUM_SCALAR,
-             template < class >
-             class ICPTGenerator,
-             template < class >
-             class ICPTDisturber >
+             template < class > class ICPTGenerator,
+             template < class > class ICPTDisturber >
   INLINE
     MaxParentsMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
       ~MaxParentsMCBayesNetGenerator() {
@@ -89,10 +83,8 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR,
-             template < class >
-             class ICPTGenerator,
-             template < class >
-             class ICPTDisturber >
+             template < class > class ICPTGenerator,
+             template < class > class ICPTDisturber >
   bool MaxParentsMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
     __checkConditions() {
     for (auto node : this->_bayesNet.nodes())
@@ -102,20 +94,16 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR,
-             template < class >
-             class ICPTGenerator,
-             template < class >
-             class ICPTDisturber >
+             template < class > class ICPTGenerator,
+             template < class > class ICPTDisturber >
   INLINE Size MaxParentsMCBayesNetGenerator< GUM_SCALAR,
                                              ICPTGenerator,
                                              ICPTDisturber >::maxParents() const {
     return _maxParents;
   }
   template < typename GUM_SCALAR,
-             template < class >
-             class ICPTGenerator,
-             template < class >
-             class ICPTDisturber >
+             template < class > class ICPTGenerator,
+             template < class > class ICPTDisturber >
   INLINE void
     MaxParentsMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
       setMaxParents(Size maxParents) {

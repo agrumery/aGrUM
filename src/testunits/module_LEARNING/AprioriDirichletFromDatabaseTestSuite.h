@@ -98,7 +98,7 @@ namespace gum_tests {
       TS_ASSERT(vect[0] == 2401.0);
       TS_ASSERT(vect[1] == 251.0);
       TS_ASSERT(vect[2] == 151.0);
-      
+
       vect.clear();
       apriori.addConditioningApriori(idset1, vect);
 

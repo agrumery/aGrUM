@@ -381,8 +381,8 @@ namespace gum_tests {
 
       std::vector< std::pair< std::size_t, std::size_t > > ranges{{800, 1000},
                                                                   {1050, 1400}};
-      gum::learning::AprioriSmoothing<> apriori(database);
-      gum::learning::ScoreAIC<>         score(parser, apriori, ranges);
+      gum::learning::AprioriSmoothing<>                    apriori(database);
+      gum::learning::ScoreAIC<> score(parser, apriori, ranges);
 
       TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreAIC<>::isAprioriCompatible(
         gum::learning::AprioriSmoothing<>::type::type));
@@ -417,7 +417,7 @@ namespace gum_tests {
       double                xscore_2 = __score(N_ijk_2, N_ij_2, penalty_2);
       TS_ASSERT(__equal(xscore_2, score.score(node0, cond2)));
 
-     // idset3: node0 | node3
+      // idset3: node0 | node3
       double                penalty_3 = 6;
       std::vector< double > N_ijk_3{1, 76, 1, 201, 1, 76, 201, 1, 1};
       std::vector< double > N_ij_3{78, 278, 203};
@@ -533,8 +533,7 @@ namespace gum_tests {
       nodeId2columns.insert(node5, std::size_t(1));
 
       gum::learning::AprioriSmoothing<> apriori(database, nodeId2columns);
-      gum::learning::ScoreAIC<>         score(parser, apriori,
-                                              ranges, nodeId2columns);
+      gum::learning::ScoreAIC<> score(parser, apriori, ranges, nodeId2columns);
 
       TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreAIC<>::isAprioriCompatible(
         gum::learning::AprioriSmoothing<>::type::type));
@@ -666,19 +665,20 @@ namespace gum_tests {
 
       std::vector< std::pair< std::size_t, std::size_t > > ranges{{800, 1000},
                                                                   {1050, 1400}};
-      gum::learning::AprioriSmoothing<> apriori(database);
+      gum::learning::AprioriSmoothing<>                    apriori(database);
 
 
-      for ( std::size_t i = std::size_t(1); i < std::size_t(24); ++i ) {
+      for (std::size_t i = std::size_t(1); i < std::size_t(24); ++i) {
         gum::learning::ScoreAIC<> score(parser, apriori, ranges);
         score.setMaxNbThreads(i);
 
-        TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreAIC<>::isAprioriCompatible(
-          gum::learning::AprioriSmoothing<>::type::type));
+        TS_GUM_ASSERT_THROWS_NOTHING(
+          gum::learning::ScoreAIC<>::isAprioriCompatible(
+            gum::learning::AprioriSmoothing<>::type::type));
         TS_GUM_ASSERT_THROWS_NOTHING(
           gum::learning::ScoreAIC<>::isAprioriCompatible(apriori));
-        TS_GUM_ASSERT_THROWS_NOTHING(
-          score.isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+        TS_GUM_ASSERT_THROWS_NOTHING(score.isAprioriCompatible(
+          gum::learning::AprioriSmoothing<>::type::type));
         TS_GUM_ASSERT_THROWS_NOTHING(score.isAprioriCompatible(apriori));
 
         gum::NodeId                node0 = 0;
@@ -715,17 +715,17 @@ namespace gum_tests {
 
 
         gum::learning::ScoreAIC<> score2(score);
-        TS_GUM_ASSERT_THROWS_NOTHING(
-          score2.isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+        TS_GUM_ASSERT_THROWS_NOTHING(score2.isAprioriCompatible(
+          gum::learning::AprioriSmoothing<>::type::type));
         TS_GUM_ASSERT_THROWS_NOTHING(score2.isAprioriCompatible(apriori));
 
         TS_ASSERT(__equal(xscore_1, score2.score(node0)));
         TS_ASSERT(__equal(xscore_2, score2.score(node0, cond2)));
         TS_ASSERT(__equal(xscore_3, score2.score(node0, cond3)));
-        
+
         gum::learning::ScoreAIC<> score3(std::move(score2));
-        TS_GUM_ASSERT_THROWS_NOTHING(
-          score3.isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+        TS_GUM_ASSERT_THROWS_NOTHING(score3.isAprioriCompatible(
+          gum::learning::AprioriSmoothing<>::type::type));
         TS_GUM_ASSERT_THROWS_NOTHING(score3.isAprioriCompatible(apriori));
 
         TS_ASSERT(__equal(xscore_1, score3.score(node0)));
@@ -734,16 +734,16 @@ namespace gum_tests {
 
         gum::learning::ScoreAIC<>* score4 = score3.clone();
         TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
-        gum::learning::AprioriSmoothing<>::type::type));
+          gum::learning::AprioriSmoothing<>::type::type));
         TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
         TS_ASSERT(__equal(xscore_1, score4->score(node0)));
         TS_ASSERT(__equal(xscore_2, score4->score(node0, cond2)));
         TS_ASSERT(__equal(xscore_3, score4->score(node0, cond3)));
-        
+
         score4->operator=(score);
         TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
-        gum::learning::AprioriSmoothing<>::type::type));
+          gum::learning::AprioriSmoothing<>::type::type));
         TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
         TS_ASSERT(__equal(xscore_1, score4->score(node0)));
@@ -752,7 +752,7 @@ namespace gum_tests {
 
         score4->operator=(std::move(score));
         TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(
-        gum::learning::AprioriSmoothing<>::type::type));
+          gum::learning::AprioriSmoothing<>::type::type));
         TS_GUM_ASSERT_THROWS_NOTHING(score4->isAprioriCompatible(apriori));
 
         TS_ASSERT(__equal(xscore_1, score4->score(node0)));
@@ -762,7 +762,6 @@ namespace gum_tests {
         delete score4;
       }
     }
-    
   };
 
 

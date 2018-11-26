@@ -71,7 +71,7 @@ namespace gum {
                             const typename Score< ALLOC >::allocator_type& alloc) :
         _apriori(from._apriori->clone(alloc)),
         _counter(from._counter, alloc), _cache(from._cache, alloc),
-        _use_cache(from._use_cache), 
+        _use_cache(from._use_cache),
         _min_nb_rows_per_thread(from._min_nb_rows_per_thread) {
       GUM_CONS_CPY(Score);
     }
