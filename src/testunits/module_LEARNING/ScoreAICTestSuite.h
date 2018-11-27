@@ -762,6 +762,149 @@ namespace gum_tests {
         delete score4;
       }
     }
+
+    void testChangeRanges() {
+      // create the translator set
+      gum::LabelizedVariable var("X1", "", 0);
+      var.addLabel("0");
+      var.addLabel("1");
+      var.addLabel("2");
+
+      gum::learning::DBTranslatorSet<> trans_set;
+      {
+        const std::vector< std::string >                miss;
+        gum::learning::DBTranslator4LabelizedVariable<> translator(var, miss);
+        std::vector< std::string > names{"A", "B", "C", "D", "E", "F"};
+
+        for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
+          translator.setVariableName(names[i]);
+          trans_set.insertTranslator(translator, i);
+        }
+      }
+
+      // create the database
+      gum::learning::DatabaseTable<> database(trans_set);
+      std::vector< std::string >     row0{"0", "1", "0", "2", "1", "1"};
+      std::vector< std::string >     row1{"1", "2", "0", "1", "2", "2"};
+      std::vector< std::string >     row2{"2", "1", "0", "1", "1", "0"};
+      std::vector< std::string >     row3{"1", "0", "0", "0", "0", "0"};
+      std::vector< std::string >     row4{"0", "0", "0", "1", "1", "1"};
+      for (int i = 0; i < 1000; ++i)
+        database.insertRow(row0);
+      for (int i = 0; i < 50; ++i)
+        database.insertRow(row1);
+      for (int i = 0; i < 75; ++i)
+        database.insertRow(row2);
+      for (int i = 0; i < 75; ++i)
+        database.insertRow(row3);
+      for (int i = 0; i < 200; ++i)
+        database.insertRow(row4);
+
+      // create the parser
+      gum::learning::DBRowGeneratorSet<>    genset;
+      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
+
+      gum::learning::AprioriSmoothing<> apriori(database);
+      gum::learning::ScoreAIC<>         score(parser, apriori);
+
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreAIC<>::isAprioriCompatible(
+        gum::learning::AprioriSmoothing<>::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+        gum::learning::ScoreAIC<>::isAprioriCompatible(apriori));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+        score.isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(score.isAprioriCompatible(apriori));
+
+      gum::NodeId                node0 = 0;
+      gum::NodeId                node1 = 1;
+      gum::NodeId                node3 = 3;
+      std::vector< gum::NodeId > cond_empty;
+      std::vector< gum::NodeId > cond2{node1};
+      std::vector< gum::NodeId > cond3{node3};
+
+      gum::learning::IdSet<> idset1(node0, cond_empty);    // #3,#0
+      gum::learning::IdSet<> idset2(node0, cond2, true);   // #9,#3
+      gum::learning::IdSet<> idset3(node0, cond3, true);   // #9,#3
+
+      // idset1: node0 | emptyset
+      double                penalty_1 = 2;
+      std::vector< double > N_ijk_1{1201.0, 126.0, 76.0};
+      std::vector< double > N_ij_1;
+      double                xscore_1 = __score(N_ijk_1, N_ij_1, penalty_1);
+      TS_ASSERT(__equal(xscore_1, score.score(node0)));
+
+      // idset2: node0 | node1
+      double                penalty_2 = 6;
+      std::vector< double > N_ijk_2{201, 76, 1, 1001, 1, 76, 1, 51, 1};
+      std::vector< double > N_ij_2{278, 1078, 53};
+      double                xscore_2 = __score(N_ijk_2, N_ij_2, penalty_2);
+      TS_ASSERT(__equal(xscore_2, score.score(node0, cond2)));
+
+      // idset3: node0 | node3
+      double                penalty_3 = 6;
+      std::vector< double > N_ijk_3{1, 76, 1, 201, 51, 76, 1001, 1, 1};
+      std::vector< double > N_ij_3{78, 328, 1003};
+      double                xscore_3 = __score(N_ijk_3, N_ij_3, penalty_3);
+      TS_ASSERT(__equal(xscore_3, score.score(node0, cond3)));
+
+      gum::learning::ScoreAIC<> score2(score);
+      TS_GUM_ASSERT_THROWS_NOTHING(
+        score2.isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(score2.isAprioriCompatible(apriori));
+
+      TS_ASSERT(__equal(xscore_1, score2.score(node0)));
+      TS_ASSERT(__equal(xscore_2, score2.score(node0, cond2)));
+      TS_ASSERT(__equal(xscore_3, score2.score(node0, cond3)));
+
+      std::vector< std::pair< std::size_t, std::size_t > > ranges{{800, 1000},
+                                                                  {1050, 1400}};
+
+      score.setRanges(ranges);
+
+      // idset1: node0 | emptyset
+      double                xpenalty_1 = 2;
+      std::vector< double > xN_ijk_1{401.0, 76.0, 76.0};
+      std::vector< double > xN_ij_1;
+      double                xxscore_1 = __score(xN_ijk_1, xN_ij_1, xpenalty_1);
+      TS_ASSERT(__equal(xxscore_1, score.score(node0)));
+
+      // idset2: node0 | node1
+      double                xpenalty_2 = 6;
+      std::vector< double > xN_ijk_2{201, 76, 1, 201, 1, 76, 1, 1, 1};
+      std::vector< double > xN_ij_2{278, 278, 3};
+      double                xxscore_2 = __score(xN_ijk_2, xN_ij_2, xpenalty_2);
+      TS_ASSERT(__equal(xxscore_2, score.score(node0, cond2)));
+
+      // idset3: node0 | node3
+      double                xpenalty_3 = 6;
+      std::vector< double > xN_ijk_3{1, 76, 1, 201, 1, 76, 201, 1, 1};
+      std::vector< double > xN_ij_3{78, 278, 203};
+      double                xxscore_3 = __score(xN_ijk_3, xN_ij_3, xpenalty_3);
+      TS_ASSERT(__equal(xxscore_3, score.score(node0, cond3)));
+
+      TS_ASSERT(__equal(xscore_1, score2.score(node0)));
+      TS_ASSERT(__equal(xscore_2, score2.score(node0, cond2)));
+      TS_ASSERT(__equal(xscore_3, score2.score(node0, cond3)));
+
+      score2.setRanges(ranges);
+
+      TS_ASSERT(__equal(xxscore_1, score2.score(node0)));
+      TS_ASSERT(__equal(xxscore_2, score2.score(node0, cond2)));
+      TS_ASSERT(__equal(xxscore_3, score2.score(node0, cond3)));
+
+      score2.setRanges(ranges);
+
+      TS_ASSERT(__equal(xxscore_1, score2.score(node0)));
+      TS_ASSERT(__equal(xxscore_2, score2.score(node0, cond2)));
+      TS_ASSERT(__equal(xxscore_3, score2.score(node0, cond3)));
+
+      TS_ASSERT(score2.ranges() == ranges);
+
+      score2.clearRanges();
+      TS_ASSERT(__equal(xscore_1, score2.score(node0)));
+      TS_ASSERT(__equal(xscore_2, score2.score(node0, cond2)));
+      TS_ASSERT(__equal(xscore_3, score2.score(node0, cond3)));
+    }
   };
 
 

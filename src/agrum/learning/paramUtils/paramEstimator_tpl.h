@@ -208,6 +208,63 @@ namespace gum {
     }
 
 
+    /** @brief changes the number min of rows a thread should process in a
+     * multithreading context */
+    template < template < typename > class ALLOC >
+    INLINE void
+      ParamEstimator< ALLOC >::setMinNbRowsPerThread(const std::size_t nb) const {
+      _counter.setMinNbRowsPerThread(nb);
+    }
+
+
+    /// returns the minimum of rows that each thread should process
+    template < template < typename > class ALLOC >
+    INLINE std::size_t ParamEstimator< ALLOC >::minNbRowsPerThread() const {
+      return _counter.minNbRowsPerThread();
+    }
+
+
+    /// sets new ranges to perform the countings used by the score
+    /** @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
+     * indices. The countings are then performed only on the union of the
+     * rows [Xi,Yi), i in {1,...,n}. This is useful, e.g, when performing
+     * cross validation tasks, in which part of the database should be ignored.
+     * An empty set of ranges is equivalent to an interval [X,Y) ranging over
+     * the whole database. */
+    template < template < typename > class ALLOC >
+    template < template < typename > class XALLOC >
+    void ParamEstimator< ALLOC >::setRanges(
+      const std::vector< std::pair< std::size_t, std::size_t >,
+                         XALLOC< std::pair< std::size_t, std::size_t > > >&
+        new_ranges) {
+      std::vector< std::pair< std::size_t, std::size_t >,
+                   ALLOC< std::pair< std::size_t, std::size_t > > >
+        old_ranges = ranges();
+      _counter.setRanges(new_ranges);
+      if (old_ranges != ranges()) clear();
+    }
+
+
+    /// reset the ranges to the one range corresponding to the whole database
+    template < template < typename > class ALLOC >
+    void ParamEstimator< ALLOC >::clearRanges() {
+      std::vector< std::pair< std::size_t, std::size_t >,
+                   ALLOC< std::pair< std::size_t, std::size_t > > >
+        old_ranges = ranges();
+      _counter.clearRanges();
+      if (old_ranges != ranges()) clear();
+    }
+
+
+    /// returns the current ranges
+    template < template < typename > class ALLOC >
+    INLINE const std::vector< std::pair< std::size_t, std::size_t >,
+                              ALLOC< std::pair< std::size_t, std::size_t > > >&
+                 ParamEstimator< ALLOC >::ranges() const {
+      return _counter.ranges();
+    }
+
+
     /// returns the CPT's parameters corresponding to a given target node
     template < template < typename > class ALLOC >
     INLINE std::vector< double, ALLOC< double > >

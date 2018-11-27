@@ -150,12 +150,17 @@ namespace gum {
 
       /// @}
 
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
       private:
       /// the scores stored into the cache
       HashTable< IdSet< ALLOC >,
                  double,
                  ALLOC< std::pair< IdSet< ALLOC >, double > > >
         __scores;
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 
   } /* namespace learning */

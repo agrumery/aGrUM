@@ -155,6 +155,8 @@ namespace gum {
        * in the left hand side or the right hand side of the idset). */
       virtual double _score(const IdSet< ALLOC >& idset) final;
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
       private:
       /// the domain sizes of the variables
       std::vector< std::size_t, ALLOC< std::size_t > > __domain_sizes;
@@ -164,6 +166,8 @@ namespace gum {
 
       /// an empty vector of ids
       const std::vector< Idx > __empty_set;
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 
   } /* namespace learning */

@@ -157,6 +157,9 @@ namespace gum {
 
       /// @}
 
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
       private:
       /// a pointer on the sequence stored in the IdSet
       const Sequence< NodeId, ALLOC< NodeId > >* __seq{nullptr};
@@ -169,6 +172,8 @@ namespace gum {
       void __gotoEnd();
 
       friend class IdSet< ALLOC >;
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 
 
@@ -397,6 +402,9 @@ namespace gum {
 
       /// @}
 
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
       private:
       /// the ordered set of ids on the right side of the conditioning bar
       Sequence< NodeId, ALLOC< NodeId > > __ids;
@@ -406,6 +414,8 @@ namespace gum {
 
       /// Stores the end iterator for fast access.
       IdSetIterator< ALLOC > __end_safe;
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 
 

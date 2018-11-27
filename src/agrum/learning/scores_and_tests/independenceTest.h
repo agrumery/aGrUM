@@ -135,10 +135,46 @@ namespace gum {
       /// @{
 
       /// changes the max number of threads used to parse the database
-      void setMaxNbThreads(std::size_t nb) const;
+      virtual void setMaxNbThreads(std::size_t nb) const;
 
       /// returns the number of threads used to parse the database
-      std::size_t nbThreads() const;
+      virtual std::size_t nbThreads() const;
+
+      /** @brief changes the number min of rows a thread should process in a
+       * multithreading context
+       *
+       * When computing score, several threads are used by record counters to
+       * perform countings on the rows of the database, the MinNbRowsPerThread
+       * method indicates how many rows each thread should at least process.
+       * This is used to compute the number of threads actually run. This number
+       * is equal to the min between the max number of threads allowed and the
+       * number of records in the database divided by nb. */
+      virtual void setMinNbRowsPerThread(const std::size_t nb) const;
+
+      /// returns the minimum of rows that each thread should process
+      virtual std::size_t minNbRowsPerThread() const;
+
+      /// sets new ranges to perform the countings used by the independence test
+      /** @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
+       * indices. The countings are then performed only on the union of the
+       * rows [Xi,Yi), i in {1,...,n}. This is useful, e.g, when performing
+       * cross validation tasks, in which part of the database should be ignored.
+       * An empty set of ranges is equivalent to an interval [X,Y) ranging over
+       * the whole database. */
+      template < template < typename > class XALLOC >
+      void setRanges(
+        const std::vector< std::pair< std::size_t, std::size_t >,
+                           XALLOC< std::pair< std::size_t, std::size_t > > >&
+          new_ranges);
+
+      /// reset the ranges to the one range corresponding to the whole database
+      void clearRanges();
+
+      /// returns the current ranges
+      const std::vector< std::pair< std::size_t, std::size_t >,
+                         ALLOC< std::pair< std::size_t, std::size_t > > >&
+        ranges() const;
+
 
       /// returns the score of a pair of nodes
       double score(const NodeId var1, const NodeId var2);
@@ -192,10 +228,6 @@ namespace gum {
 
       /// a Boolean indicating whether we wish to use the cache
       bool _use_cache{true};
-
-      /** @brief the min number of database rows that a thread should process
-       * in a multithreading context */
-      mutable std::size_t _min_nb_rows_per_thread{100};
 
       /// an empty vector
       const std::vector< NodeId, ALLOC< NodeId > > _empty_ids;

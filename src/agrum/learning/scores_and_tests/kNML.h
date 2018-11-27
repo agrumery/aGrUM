@@ -197,9 +197,13 @@ namespace gum {
       virtual double _score(const IdSet< ALLOC >& idset) final;
 
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
       private:
       /// the CTable computation
       VariableLog2ParamComplexity< ALLOC > __param_complexity;
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 
   } /* namespace learning */

@@ -78,6 +78,9 @@ namespace gum {
       for (const auto& range : ranges)
         __ranges.push_back(range);
 
+      // dispatch the ranges for the threads
+      __dispatchRangesToThreads();
+
       GUM_CONSTRUCTOR(RecordCounter);
     }
 
@@ -102,7 +105,9 @@ namespace gum {
       const RecordCounter< ALLOC >&                          from,
       const typename RecordCounter< ALLOC >::allocator_type& alloc) :
         __parsers(from.__parsers, alloc),
-        __ranges(from.__ranges, alloc), __nodeId2columns(from.__nodeId2columns),
+        __ranges(from.__ranges, alloc),
+        __thread_ranges(from.__thread_ranges, alloc),
+        __nodeId2columns(from.__nodeId2columns),
         __last_DB_countings(from.__last_DB_countings, alloc),
         __last_DB_ids(from.__last_DB_ids),
         __last_nonDB_countings(from.__last_nonDB_countings, alloc),
@@ -126,6 +131,7 @@ namespace gum {
       const typename RecordCounter< ALLOC >::allocator_type& alloc) :
         __parsers(std::move(from.__parsers), alloc),
         __ranges(std::move(from.__ranges), alloc),
+        __thread_ranges(std::move(from.__thread_ranges), alloc),
         __nodeId2columns(std::move(from.__nodeId2columns)),
         __last_DB_countings(std::move(from.__last_DB_countings), alloc),
         __last_DB_ids(std::move(from.__last_DB_ids)),
@@ -181,6 +187,7 @@ namespace gum {
       if (this != &from) {
         __parsers = from.__parsers;
         __ranges = from.__ranges;
+        __thread_ranges = from.__thread_ranges;
         __nodeId2columns = from.__nodeId2columns;
         __last_DB_countings = from.__last_DB_countings;
         __last_DB_ids = from.__last_DB_ids;
@@ -200,6 +207,7 @@ namespace gum {
       if (this != &from) {
         __parsers = std::move(from.__parsers);
         __ranges = std::move(from.__ranges);
+        __thread_ranges = std::move(from.__thread_ranges);
         __nodeId2columns = std::move(from.__nodeId2columns);
         __last_DB_countings = std::move(from.__last_DB_countings);
         __last_DB_ids = std::move(from.__last_DB_ids);
@@ -610,65 +618,11 @@ namespace gum {
       // if the ids vector is empty or the database is empty, return an
       // empty vector
       const auto& database = __parsers[0].data.database();
-      if (ids.empty() || database.empty()) {
+      if (ids.empty() || database.empty() || __thread_ranges.empty()) {
         __last_nonDB_countings.clear();
         __last_nonDB_ids.clear();
         return __last_nonDB_countings;
       }
-
-      // get the set of ranges within which each thread should perform its
-      // computations
-      std::vector< std::pair< std::size_t, std::size_t > > ranges;
-      bool                                                 add_range = false;
-      if (__ranges.empty()) {
-        __ranges.push_back(std::pair< std::size_t, std::size_t >(
-          std::size_t(0), database.nbRows()));
-        add_range = true;
-      }
-      for (const auto& range : __ranges) {
-        if (range.second > range.first) {
-          const std::size_t range_size = range.second - range.first;
-          std::size_t       nb_threads = range_size / __min_nb_rows_per_thread;
-          if (nb_threads < 1)
-            nb_threads = 1;
-          else if (nb_threads > __max_nb_threads)
-            nb_threads = __max_nb_threads;
-          std::size_t nb_rows_par_thread = range_size / nb_threads;
-          std::size_t rest_rows = range_size - nb_rows_par_thread * nb_threads;
-
-          std::size_t begin_index = range.first;
-          for (std::size_t i = std::size_t(0); i < nb_threads; ++i) {
-            std::size_t end_index = begin_index + nb_rows_par_thread;
-            if (rest_rows != std::size_t(0)) {
-              ++end_index;
-              --rest_rows;
-            }
-            ranges.push_back(
-              std::pair< std::size_t, std::size_t >(begin_index, end_index));
-            begin_index = end_index;
-          }
-        }
-      }
-      if (add_range) __ranges.clear();
-
-      // if ranges is empty, return the empty vector
-      if (ranges.empty()) {
-        __last_nonDB_countings.clear();
-        __last_nonDB_ids.clear();
-        return __last_nonDB_countings;
-      }
-
-      // sort ranges by decreasing range size, so that if the number of
-      // ranges exceeds the number of threads allowed, we start a first round of
-      // threads with the highest range, then another round with lower ranges,
-      // and so on until all the ranges have been processed
-      std::sort(ranges.begin(),
-                ranges.end(),
-                [](const std::pair< std::size_t, std::size_t >& a,
-                   const std::pair< std::size_t, std::size_t >& b) -> bool {
-                  return (a.second - a.first) > (b.second - b.first);
-                });
-
 
       // we translate the ids into their corresponding columns in the
       // DatabaseTable
@@ -704,7 +658,7 @@ namespace gum {
                 });
 
       // create parsers if needed
-      const std::size_t nb_ranges = ranges.size();
+      const std::size_t nb_ranges = __thread_ranges.size();
       const std::size_t nb_threads =
         nb_ranges <= __max_nb_threads ? nb_ranges : __max_nb_threads;
       while (__parsers.size() < nb_threads) {
@@ -712,6 +666,16 @@ namespace gum {
         __parsers.push_back(std::move(new_parser));
       }
 
+      // set the columns of interest for each parser. This specifies to the
+      // parser which columns are used for the countings. This is important
+      // for parsers like the EM parser that complete unobserved variables.
+      std::vector< std::size_t, ALLOC< std::size_t > > cols_of_interest(ids_size);
+      for (std::size_t i = std::size_t(0); i < ids_size; ++i) {
+        cols_of_interest[i] = cols_offsets[i].first;
+      }
+      for (auto& parser : __parsers) {
+        parser.data.setColumnsOfInterest(cols_of_interest);
+      }
 
       // allocate all the counting vectors, including that which will add
       // all the results provided by the threads. We initialize once and
@@ -735,8 +699,8 @@ namespace gum {
           const std::size_t this_thread = getThreadNumber();
           if (this_thread + i < nb_ranges) {
             DBRowGeneratorParser< ALLOC >& parser = __parsers[this_thread].data;
-            parser.setRange(ranges[this_thread + i].first,
-                            ranges[this_thread + i].second);
+            parser.setRange(__thread_ranges[this_thread + i].first,
+                            __thread_ranges[this_thread + i].second);
             std::vector< double, ALLOC< double > >& countings =
               thread_countings[this_thread].data;
 
@@ -849,6 +813,60 @@ namespace gum {
     }
 
 
+    /// sets the ranges within which each thread should perform its computations
+    template < template < typename > class ALLOC >
+    void RecordCounter< ALLOC >::__dispatchRangesToThreads() {
+      __thread_ranges.clear();
+
+      // ensure that __ranges contains the ranges asked by the user
+      bool add_range = false;
+      if (__ranges.empty()) {
+        const auto& database = __parsers[0].data.database();
+        __ranges.push_back(std::pair< std::size_t, std::size_t >(
+          std::size_t(0), database.nbRows()));
+        add_range = true;
+      }
+
+      // dispatch the ranges
+      for (const auto& range : __ranges) {
+        if (range.second > range.first) {
+          const std::size_t range_size = range.second - range.first;
+          std::size_t       nb_threads = range_size / __min_nb_rows_per_thread;
+          if (nb_threads < 1)
+            nb_threads = 1;
+          else if (nb_threads > __max_nb_threads)
+            nb_threads = __max_nb_threads;
+          std::size_t nb_rows_par_thread = range_size / nb_threads;
+          std::size_t rest_rows = range_size - nb_rows_par_thread * nb_threads;
+
+          std::size_t begin_index = range.first;
+          for (std::size_t i = std::size_t(0); i < nb_threads; ++i) {
+            std::size_t end_index = begin_index + nb_rows_par_thread;
+            if (rest_rows != std::size_t(0)) {
+              ++end_index;
+              --rest_rows;
+            }
+            __thread_ranges.push_back(
+              std::pair< std::size_t, std::size_t >(begin_index, end_index));
+            begin_index = end_index;
+          }
+        }
+      }
+      if (add_range) __ranges.clear();
+
+      // sort ranges by decreasing range size, so that if the number of
+      // ranges exceeds the number of threads allowed, we start a first round of
+      // threads with the highest range, then another round with lower ranges,
+      // and so on until all the ranges have been processed
+      std::sort(__thread_ranges.begin(),
+                __thread_ranges.end(),
+                [](const std::pair< std::size_t, std::size_t >& a,
+                   const std::pair< std::size_t, std::size_t >& b) -> bool {
+                  return (a.second - a.first) > (b.second - b.first);
+                });
+    }
+
+
     /// sets new ranges to perform the countings
     template < template < typename > class ALLOC >
     template < template < typename > class XALLOC >
@@ -871,6 +889,9 @@ namespace gum {
 
       clear();
       __ranges = std::move(ranges);
+
+      // dispatch the ranges to the threads
+      __dispatchRangesToThreads();
     }
 
 
@@ -880,6 +901,16 @@ namespace gum {
       if (__ranges.empty()) return;
       clear();
       __ranges.clear();
+      __dispatchRangesToThreads();
+    }
+
+
+    /// returns the current ranges
+    template < template < typename > class ALLOC >
+    INLINE const std::vector< std::pair< std::size_t, std::size_t >,
+                              ALLOC< std::pair< std::size_t, std::size_t > > >&
+                 RecordCounter< ALLOC >::ranges() const {
+      return __ranges;
     }
 
 

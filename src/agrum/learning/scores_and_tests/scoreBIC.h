@@ -212,9 +212,13 @@ namespace gum {
       virtual double _score(const IdSet< ALLOC >& idset) final;
 
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
       private:
       /// the internal apriori of the score
       AprioriNoApriori< ALLOC > __internal_apriori;
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 
   } /* namespace learning */

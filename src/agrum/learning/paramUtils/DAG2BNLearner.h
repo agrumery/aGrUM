@@ -111,6 +111,8 @@ namespace gum {
 
       /// @}
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
       private:
       /// copy a potential into another whose variables' sequence differs
       /** The variables of both potential should be the same, only their
@@ -119,6 +121,8 @@ namespace gum {
       static void
         __probaVarReordering(gum::Potential< GUM_SCALAR >&       pot,
                              const gum::Potential< GUM_SCALAR >& other_pot);
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 
   } /* namespace learning */

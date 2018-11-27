@@ -71,8 +71,7 @@ namespace gum {
                             const typename Score< ALLOC >::allocator_type& alloc) :
         _apriori(from._apriori->clone(alloc)),
         _counter(from._counter, alloc), _cache(from._cache, alloc),
-        _use_cache(from._use_cache),
-        _min_nb_rows_per_thread(from._min_nb_rows_per_thread) {
+        _use_cache(from._use_cache) {
       GUM_CONS_CPY(Score);
     }
 
@@ -90,8 +89,7 @@ namespace gum {
                             const typename Score< ALLOC >::allocator_type& alloc) :
         _apriori(from._apriori),
         _counter(std::move(from._counter), alloc),
-        _cache(std::move(from._cache), alloc), _use_cache(from._use_cache),
-        _min_nb_rows_per_thread(from._min_nb_rows_per_thread) {
+        _cache(std::move(from._cache), alloc), _use_cache(from._use_cache) {
       from._apriori = nullptr;
       GUM_CONS_MOV(Score);
     }
@@ -134,7 +132,6 @@ namespace gum {
         _cache = std::move(new_cache);
 
         _use_cache = from._use_cache;
-        _min_nb_rows_per_thread = from._min_nb_rows_per_thread;
       }
       return *this;
     }
@@ -149,7 +146,6 @@ namespace gum {
         _counter = std::move(from._counter);
         _cache = std::move(from._cache);
         _use_cache = from._use_cache;
-        _min_nb_rows_per_thread = from._min_nb_rows_per_thread;
       }
       return *this;
     }
@@ -181,6 +177,47 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE std::size_t Score< ALLOC >::minNbRowsPerThread() const {
       return _counter.minNbRowsPerThread();
+    }
+
+
+    /// sets new ranges to perform the countings used by the score
+    /** @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
+     * indices. The countings are then performed only on the union of the
+     * rows [Xi,Yi), i in {1,...,n}. This is useful, e.g, when performing
+     * cross validation tasks, in which part of the database should be ignored.
+     * An empty set of ranges is equivalent to an interval [X,Y) ranging over
+     * the whole database. */
+    template < template < typename > class ALLOC >
+    template < template < typename > class XALLOC >
+    void Score< ALLOC >::setRanges(
+      const std::vector< std::pair< std::size_t, std::size_t >,
+                         XALLOC< std::pair< std::size_t, std::size_t > > >&
+        new_ranges) {
+      std::vector< std::pair< std::size_t, std::size_t >,
+                   ALLOC< std::pair< std::size_t, std::size_t > > >
+        old_ranges = ranges();
+      _counter.setRanges(new_ranges);
+      if (old_ranges != ranges()) clear();
+    }
+
+
+    /// reset the ranges to the one range corresponding to the whole database
+    template < template < typename > class ALLOC >
+    void Score< ALLOC >::clearRanges() {
+      std::vector< std::pair< std::size_t, std::size_t >,
+                   ALLOC< std::pair< std::size_t, std::size_t > > >
+        old_ranges = ranges();
+      _counter.clearRanges();
+      if (old_ranges != ranges()) clear();
+    }
+
+
+    /// returns the current ranges
+    template < template < typename > class ALLOC >
+    INLINE const std::vector< std::pair< std::size_t, std::size_t >,
+                              ALLOC< std::pair< std::size_t, std::size_t > > >&
+                 Score< ALLOC >::ranges() const {
+      return _counter.ranges();
     }
 
 

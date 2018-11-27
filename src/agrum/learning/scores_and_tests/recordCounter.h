@@ -293,6 +293,11 @@ namespace gum {
       /// reset the ranges to the one range corresponding to the whole database
       void clearRanges();
 
+      /// returns the current ranges
+      const std::vector< std::pair< std::size_t, std::size_t >,
+                         ALLOC< std::pair< std::size_t, std::size_t > > >&
+        ranges() const;
+
       /// returns the allocator used
       allocator_type getAllocator() const;
 
@@ -308,17 +313,29 @@ namespace gum {
 
       /// @}
 
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
       private:
       // the parsers used by the threads
       std::vector< ThreadData< DBRowGeneratorParser< ALLOC > >,
                    ALLOC< ThreadData< DBRowGeneratorParser< ALLOC > > > >
         __parsers;
 
-      // the set of ranges of the database's rows indices over which we
-      // perform the countings
+      // the set of ranges of the database's rows indices over which the user
+      // wishes to perform the countings
       std::vector< std::pair< std::size_t, std::size_t >,
                    ALLOC< std::pair< std::size_t, std::size_t > > >
         __ranges;
+
+      // the ranges actually used by the threads: there is a hopefully clever
+      // algorithm that split the rows ranges into another set of ranges that
+      // are assigned to the threads. For instance, if the database has 1000
+      // rows and there are 10 threads, each one will be assed a set of 100
+      // rows. These sets are precisely what are stored in the field below
+      mutable std::vector< std::pair< std::size_t, std::size_t >,
+                           ALLOC< std::pair< std::size_t, std::size_t > > >
+        __thread_ranges;
 
       // the mapping from the NodeIds of the variables to the indices of the
       // columns in the database
@@ -342,8 +359,7 @@ namespace gum {
 
       // the min number of rows that a thread should process in a
       // multithreading context
-      mutable std::size_t __min_nb_rows_per_thread{50};
-
+      mutable std::size_t __min_nb_rows_per_thread{100};
 
       // returns a mapping from the nodes ids to the columns of the database
       // for a given sequence of ids. This is especially convenient when
@@ -392,6 +408,11 @@ namespace gum {
        * some variables over which we should perform countings are continuous. */
       void __raiseCheckException(
         const std::vector< std::string, ALLOC< std::string > >& bad_vars) const;
+
+      /// sets the ranges within which each thread will perform its computations
+      void __dispatchRangesToThreads();
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 
   } /* namespace learning */

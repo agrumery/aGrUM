@@ -77,6 +77,11 @@ int main(int argc, char* argv[]) {
 
     gum::learning::GreedyHillClimbing search;
 
+    gum::learning::ScoreBDeu<> score(parser, apriori);
+    gum::learning::ParamEstimatorML<> estimator(parser, apriori,
+                                                score.internalApriori());
+
+    
     std::size_t foldSize = database.nbRows() / k;
 
     for (std::size_t fold = 0; fold < k; fold++) {
@@ -101,9 +106,8 @@ int main(int argc, char* argv[]) {
       std::cout << "+ LEARNING on " << ranges << " : ";
 
       // LEARNING
-      gum::learning::ScoreBDeu<> score(parser, apriori, ranges);
-      gum::learning::ParamEstimatorML<> estimator(
-           parser, apriori, score.internalApriori(), ranges);
+      score.setRanges(ranges);
+      estimator.setRanges(ranges);
       gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint),
                                                    decltype(op_set) >
                               selector(score, struct_constraint, op_set);
@@ -132,29 +136,6 @@ int main(int argc, char* argv[]) {
 
         LL += bn.log2JointProbability(I) * row.weight();
       }
-    
-
-      /*
-      if (fold_end + 1 < database.content().size() - 1) {
-        if (LL != 0.0) {
-          std::cout << " U ";
-        }
-
-        std::cout << "[" << fold_end + 1 << "," << database.content().size() - 1
-                  << "]";
-        filter.handler().setRange(fold_end + 1, database.content().size() - 1);
-        filter.reset();
-
-        while (filter.hasRows()) {
-          int i = 0;
-
-          for (auto item : filter.row().row())
-            I.chgVal(i++, item);
-
-          LL += bn.log2JointProbability(I);
-        }
-      }
-      */
 
       std::cout << " : LL=" << LL << std::endl << std::endl;
     }

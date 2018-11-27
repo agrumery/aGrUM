@@ -275,6 +275,8 @@ namespace gum {
       enum class KModeTypes { MDL, NML, NoCorr };
 
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
       private:
       /// The object to compute N times Entropy H used by mutual information I
       /* Note that the log2-likelihood is equal to N times the entropy H */
@@ -351,6 +353,8 @@ namespace gum {
                        NodeId                                        var_y,
                        NodeId                                        var_z,
                        const std::vector< NodeId, ALLOC< NodeId > >& vars_ui);
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 
   } /* namespace learning */
