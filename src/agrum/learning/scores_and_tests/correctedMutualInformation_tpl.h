@@ -259,6 +259,73 @@ namespace gum {
     }
 
 
+
+    /** @brief changes the number min of rows a thread should process in a
+     * multithreading context */
+    template < template < typename > class ALLOC >
+    void CorrectedMutualInformation< ALLOC >::setMinNbRowsPerThread(
+         const std::size_t nb) const {
+      __NH.setMinNbRowsPerThread(nb);
+      __k_NML.setMinNbRowsPerThread(nb);
+      __score_MDL.setMinNbRowsPerThread(nb);
+    }
+
+
+    /// returns the minimum of rows that each thread should process
+    template < template < typename > class ALLOC >
+    INLINE std::size_t
+    CorrectedMutualInformation< ALLOC >::minNbRowsPerThread() const {
+      return __NH.minNbRowsPerThread();
+    }
+
+
+    /// sets new ranges to perform the countings used by the score
+    /** @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
+     * indices. The countings are then performed only on the union of the
+     * rows [Xi,Yi), i in {1,...,n}. This is useful, e.g, when performing
+     * cross validation tasks, in which part of the database should be ignored.
+     * An empty set of ranges is equivalent to an interval [X,Y) ranging over
+     * the whole database. */
+    template < template < typename > class ALLOC >
+    template < template < typename > class XALLOC >
+    void CorrectedMutualInformation< ALLOC >::setRanges(
+      const std::vector< std::pair< std::size_t, std::size_t >,
+                         XALLOC< std::pair< std::size_t, std::size_t > > >&
+        new_ranges) {
+      std::vector< std::pair< std::size_t, std::size_t >,
+                   ALLOC< std::pair< std::size_t, std::size_t > > >
+        old_ranges = ranges();
+
+      __NH.setRanges(new_ranges);
+      __k_NML.setRanges(new_ranges);
+      __score_MDL.setRanges(new_ranges);
+      
+      if (old_ranges != ranges()) clear();
+    }
+
+
+    /// reset the ranges to the one range corresponding to the whole database
+    template < template < typename > class ALLOC >
+    void CorrectedMutualInformation< ALLOC >::clearRanges() {
+      std::vector< std::pair< std::size_t, std::size_t >,
+                   ALLOC< std::pair< std::size_t, std::size_t > > >
+        old_ranges = ranges();
+      __NH.clearRanges();
+      __k_NML.clearRanges();
+      __score_MDL.clearRanges();
+      if (old_ranges != ranges()) clear();
+    }
+
+
+    /// returns the current ranges
+    template < template < typename > class ALLOC >
+    INLINE const std::vector< std::pair< std::size_t, std::size_t >,
+                              ALLOC< std::pair< std::size_t, std::size_t > > >&
+                 CorrectedMutualInformation< ALLOC >::ranges() const {
+      return __NH.ranges();
+    }
+
+
     /// use the MDL penalty function
     template < template < typename > class ALLOC >
     void CorrectedMutualInformation< ALLOC >::useMDL() {

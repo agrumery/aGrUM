@@ -97,10 +97,11 @@ int main(int argc, char* argv[]) {
       else {
         ranges.push_back ( std::pair< std::size_t, std::size_t >
                            (std::size_t(0),unfold_deb) );
-      }
-      if ( fold != k-1) {
-        ranges.push_back ( std::pair< std::size_t, std::size_t >
-                           (unfold_end,n) );
+        
+        if (fold != k-1) {
+          ranges.push_back ( std::pair< std::size_t, std::size_t >
+                             (unfold_end,n) );
+        }
       }
       
       std::cout << "+ LEARNING on " << ranges << " : ";

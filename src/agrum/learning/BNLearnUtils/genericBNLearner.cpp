@@ -219,6 +219,7 @@ namespace gum {
         __greedy_hill_climbing(from.__greedy_hill_climbing),
         __local_search_with_tabu_list(from.__local_search_with_tabu_list),
         __score_database(from.__score_database),
+        __ranges(from.__ranges),
         __apriori_dbname(from.__apriori_dbname),
         __initial_dag(from.__initial_dag) {
       __no_apriori = new AprioriNoApriori<>(__score_database.databaseTable());
@@ -244,6 +245,7 @@ namespace gum {
         __local_search_with_tabu_list(
           std::move(from.__local_search_with_tabu_list)),
         __score_database(std::move(from.__score_database)),
+        __ranges(std::move(from.__ranges)),
         __apriori_dbname(std::move(from.__apriori_dbname)),
         __initial_dag(std::move(from.__initial_dag)) {
       __no_apriori = new AprioriNoApriori<>(__score_database.databaseTable());
@@ -311,6 +313,7 @@ namespace gum {
         __greedy_hill_climbing = from.__greedy_hill_climbing;
         __local_search_with_tabu_list = from.__local_search_with_tabu_list;
         __score_database = from.__score_database;
+        __ranges = from.__ranges;
         __apriori_dbname = from.__apriori_dbname;
         __initial_dag = from.__initial_dag;
         __current_algorithm = nullptr;
@@ -363,6 +366,7 @@ namespace gum {
         __local_search_with_tabu_list =
           std::move(from.__local_search_with_tabu_list);
         __score_database = std::move(from.__score_database);
+        __ranges = std::move(from.__ranges);
         __apriori_dbname = std::move(from.__apriori_dbname);
         __initial_dag = std::move(from.__initial_dag);
         __current_algorithm = nullptr;
@@ -564,6 +568,9 @@ namespace gum {
                     "genericBNLearner does not support yet this score");
       }
 
+      // assign the set of ranges
+      __score->setRanges(__ranges);
+
       // remove the old score, if any
       if (old_score != nullptr) delete old_score;
     }
@@ -590,6 +597,9 @@ namespace gum {
                     "genericBNLearner does not support "
                     "yet this parameter estimator");
       }
+
+      // assign the set of ranges
+      __param_estimator->setRanges(__ranges);
 
       // remove the old estimator, if any
       if (old_estimator != nullptr) delete old_estimator;
@@ -665,6 +675,9 @@ namespace gum {
                     "The BNLearner's corrected mutual information class does "
                       << "not support yet penalty mode " << int(__3off2_kmode));
       }
+
+      // assign the set of ranges
+      __mutual_info->setRanges(__ranges);
     }
 
     DAG genericBNLearner::__learnDAG() {
@@ -855,6 +868,55 @@ namespace gum {
         default: return "genericBNLearner does not support yet this score";
       }
     }
+
+
+    /// sets the ranges of rows to be used for cross-validation learning
+    std::pair<std::size_t,std::size_t>
+    genericBNLearner::setCrossValidationFold (const std::size_t learning_fold,
+                                              const std::size_t k_fold ) {
+      if (k_fold == 0) {
+        GUM_ERROR(OutOfBounds, "K-fold cross validation with k=0 is forbidden");
+      }
+      
+      if (learning_fold >= k_fold) {
+        GUM_ERROR(OutOfBounds,
+                  "In " << k_fold << "-fold cross validation, the learning "
+                  << "fold should be strictly lower than " << k_fold
+                  << " but, here, it is equal to " << learning_fold);
+      }
+
+     const std::size_t db_size    = __score_database.databaseTable().nbRows();
+     if (k_fold >= db_size) {
+       GUM_ERROR(OutOfBounds,
+                 "In " << k_fold << "-fold cross validation, the database's "
+                 << "size should be strictly greater than " << k_fold
+                 << " but, here, the database has only " << db_size
+                 << "rows");
+     }
+      
+      // create the ranges of rows of the test database
+      const std::size_t foldSize   = db_size / k_fold;
+      const std::size_t unfold_deb = learning_fold * foldSize;
+      const std::size_t unfold_end = unfold_deb + foldSize;
+
+      __ranges.clear();
+      if ( learning_fold == std::size_t(0) ) {
+        __ranges.push_back ( std::pair< std::size_t, std::size_t >
+                             (unfold_end,db_size) );
+      }
+      else {
+        __ranges.push_back ( std::pair< std::size_t, std::size_t >
+                             (std::size_t(0),unfold_deb) );
+        
+        if (learning_fold != k_fold - 1) {
+          __ranges.push_back ( std::pair< std::size_t, std::size_t >
+                               (unfold_end,db_size) );
+        }
+      }
+        
+      return std::pair<std::size_t,std::size_t> (unfold_deb,unfold_end);
+    }
+    
 
   } /* namespace learning */
 

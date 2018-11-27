@@ -373,6 +373,54 @@ namespace gum {
       /// returns the variable name corresponding to a given node id
       const std::string& nameFromId(NodeId id) const;
 
+      /// use a new set of database rows' ranges to perform learning
+      /** @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
+       * indices. The subsequent learnings are then performed only on the union
+       * of the rows [Xi,Yi), i in {1,...,n}. This is useful, e.g, when
+       * performing cross validation tasks, in which part of the database should
+       * be ignored. An empty set of ranges is equivalent to an interval [X,Y)
+       * ranging over the whole database. */
+      template < template < typename > class XALLOC >
+      void setDatabaseRanges(
+        const std::vector< std::pair< std::size_t, std::size_t >,
+                           XALLOC< std::pair< std::size_t, std::size_t > > >&
+          new_ranges);
+
+      /// reset the ranges to the one range corresponding to the whole database
+      void clearDatabaseRanges();
+
+      /// returns the current database rows' ranges used for learning
+      /** @return The method returns a vector of pairs [Xi,Yi) of indices of
+       * rows in the database. The learning is performed on these set of rows.
+       * @warning an empty set of ranges means the whole database. */
+      const std::vector< std::pair< std::size_t, std::size_t > >&
+      databaseRanges () const;
+
+      /// sets the ranges of rows to be used for cross-validation learning
+      /** When applied on (x,k), the method indicates to the subsequent learnings
+       * that they should be performed on the xth fold in a k-fold
+       * cross-validation context. For instance, if a database has 1000 rows,
+       * and if we perform a 10-fold cross-validation, then, the first learning
+       * fold (learning_fold=0) corresponds to rows interval [100,1000) and the
+       * test dataset corresponds to [0,100). The second learning fold
+       * (learning_fold=1) is [0,100) U [200,1000) and the corresponding test
+       * dataset is [100,200).
+       * @param learning_fold a number indicating the set of rows used for
+       * learning. If N denotes the size of the database, and k_fold represents
+       * the number of folds in the cross validation, then the set of rows
+       * used for testing is [learning_fold * N / k_fold,
+       * (learning_fold+1) * N / k_fold) and the learning database is the
+       * complement in the database
+       * @param k_fold the value of "k" in k-fold cross validation
+       * @return a pair [x,y) of rows' indices that corresponds to the indices
+       * of rows in the original database that constitute the test dataset
+       * @throws OutOfBounds is raised if k_fold is equal to 0 or learning_fold
+       * is greater than or eqal to k_fold, or if k_fold is greater than
+       * or equal to the size of the database. */
+      std::pair<std::size_t,std::size_t>
+      setCrossValidationFold (const std::size_t learning_fold,
+                              const std::size_t k_fold );
+
       /// @}
 
       // ##########################################################################
@@ -600,6 +648,9 @@ namespace gum {
 
       /// the database to be used by the scores and parameter estimators
       Database __score_database;
+
+      /// the set of rows' ranges within the database in which learning is done 
+      std::vector< std::pair< std::size_t, std::size_t > > __ranges;
 
       /// the database used by the Dirichlet a priori
       Database* __apriori_database{nullptr};

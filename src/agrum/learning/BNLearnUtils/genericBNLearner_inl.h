@@ -378,6 +378,18 @@ namespace gum {
       return __score_database.domainSizes();
     }
 
+    /// returns the current database rows' ranges used for learning
+    INLINE const std::vector< std::pair< std::size_t, std::size_t > >&
+    genericBNLearner::databaseRanges () const {
+      return __ranges;
+    }
+ 
+    /// reset the ranges to the one range corresponding to the whole database
+    INLINE void genericBNLearner::clearDatabaseRanges() {
+      __ranges.clear ();
+    }
+
+    
   } /* namespace learning */
 
 } /* namespace gum */
