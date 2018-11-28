@@ -95,6 +95,16 @@ ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::EssentialGraph);
     return q;
   };
 
+  PyObject* separator(const gum::NodeId cliq1,const gum::NodeId cliq2) const {
+    PyObject* q=PySet_New(0);
+
+    for(auto node : self->separator(cliq1,cliq2)) {
+          PySet_Add(q,PyInt_FromLong(node));
+        }
+
+    return q;
+  };
+
   %pythoncode {
   def toDotWithNames(self,bn):
       """
@@ -117,6 +127,7 @@ ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::EssentialGraph);
     }
 };
 %ignore gum::CliqueGraph::clique;
+%ignore gum::CliqueGraph::separator;
 %ignore gum::CliqueGraph::addNodeWithId;
 %ignore gum::CliqueGraph::addEdge(const gum::NodeId,const gum::NodeId);
 
