@@ -872,7 +872,7 @@ namespace gum {
 
     /// sets the ranges of rows to be used for cross-validation learning
     std::pair<std::size_t,std::size_t>
-    genericBNLearner::setCrossValidationFold (const std::size_t learning_fold,
+    genericBNLearner::useCrossValidationFold (const std::size_t learning_fold,
                                               const std::size_t k_fold ) {
       if (k_fold == 0) {
         GUM_ERROR(OutOfBounds, "K-fold cross validation with k=0 is forbidden");

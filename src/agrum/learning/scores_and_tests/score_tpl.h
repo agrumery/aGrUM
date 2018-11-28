@@ -302,6 +302,33 @@ namespace gum {
       return _counter.database();
     }
 
+    /// returns a counting vector where variables are marginalized from N_xyz
+      /** @param X_size the domain size of the variable to marginalize (this
+       * is the first variable in table N_xyz
+       * @param N_xyz a counting vector of dimension X * cond_vars (in this order)
+       */
+    template < template < typename > class ALLOC >
+    std::vector< double, ALLOC< double > >
+    Score< ALLOC >::_marginalize(
+                    const std::size_t X_size,
+                    const std::vector< double, ALLOC< double > >& N_xyz) const {
+      // determine the size of the output vector
+      std::size_t out_size = N_xyz.size() / X_size;
+
+      // allocate the output vector
+      std::vector< double, ALLOC< double > > res(out_size, 0.0);
+
+      // fill the vector:
+      std::size_t xyz = std::size_t(0);
+      for (std::size_t z = std::size_t(0); z < out_size; ++z) {
+        for (std::size_t x = std::size_t(0); x < X_size; ++x, ++xyz) {
+          res[z] += N_xyz[xyz];
+        }
+      }
+
+      return res;
+    }
+
 
   } /* namespace learning */
 

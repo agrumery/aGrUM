@@ -274,6 +274,16 @@ namespace gum {
        * calling method score such an idset (due to too many/too few variables
        * in the left hand side or the right hand side of the idset). */
       virtual double _score(const IdSet< ALLOC >& idset) = 0;
+
+      /// returns a counting vector where variables are marginalized from N_xyz
+      /** @param X_size the domain size of the variable to marginalize (this
+       * is the first variable in table N_xyz
+       * @param N_xyz a counting vector of dimension X * cond_vars (in this order)
+       */
+      std::vector< double, ALLOC< double > >
+        _marginalize(const std::size_t X_size,
+                     const std::vector< double, ALLOC< double > >& N_xyz) const;
+
     };
 
   } /* namespace learning */

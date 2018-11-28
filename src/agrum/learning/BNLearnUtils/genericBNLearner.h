@@ -370,6 +370,9 @@ namespace gum {
        */
       NodeId idFromName(const std::string& var_name) const;
 
+      /// returns the database used by the BNLearner
+      const DatabaseTable<>& database () const;
+
       /// returns the variable name corresponding to a given node id
       const std::string& nameFromId(NodeId id) const;
 
@@ -381,7 +384,7 @@ namespace gum {
        * be ignored. An empty set of ranges is equivalent to an interval [X,Y)
        * ranging over the whole database. */
       template < template < typename > class XALLOC >
-      void setDatabaseRanges(
+      void useDatabaseRanges(
         const std::vector< std::pair< std::size_t, std::size_t >,
                            XALLOC< std::pair< std::size_t, std::size_t > > >&
           new_ranges);
@@ -418,7 +421,7 @@ namespace gum {
        * is greater than or eqal to k_fold, or if k_fold is greater than
        * or equal to the size of the database. */
       std::pair<std::size_t,std::size_t>
-      setCrossValidationFold (const std::size_t learning_fold,
+      useCrossValidationFold (const std::size_t learning_fold,
                               const std::size_t k_fold );
 
       /// @}

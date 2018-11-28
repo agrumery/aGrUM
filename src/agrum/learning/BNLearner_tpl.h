@@ -113,7 +113,7 @@ namespace gum {
       }
       __createApriori();
       __createScore();
-      __createParamEstimator();
+      __createParamEstimator(true);
 
       return DAG2BNLearner<>::createBN< GUM_SCALAR >(*__param_estimator,
                                                      __learnDAG());

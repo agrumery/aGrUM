@@ -389,6 +389,11 @@ namespace gum {
       __ranges.clear ();
     }
 
+    /// returns the database used by the BNLearner
+    INLINE const DatabaseTable<>& genericBNLearner::database () const {
+      return __score_database.databaseTable();
+    }
+
     
   } /* namespace learning */
 

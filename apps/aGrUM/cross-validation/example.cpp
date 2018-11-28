@@ -8,6 +8,7 @@
 #include <agrum/learning/database/DBTranslatorSet.h>
 
 #include <agrum/learning/scores_and_tests/scoreBDeu.h>
+#include <agrum/learning/scores_and_tests/scoreBIC.h>
 
 #include <agrum/learning/aprioris/aprioriSmoothing.h>
 
@@ -77,7 +78,7 @@ int main(int argc, char* argv[]) {
 
     gum::learning::GreedyHillClimbing search;
 
-    gum::learning::ScoreBDeu<> score(parser, apriori);
+    gum::learning::ScoreBIC<> score(parser, apriori);
     gum::learning::ParamEstimatorML<> estimator(parser, apriori,
                                                 score.internalApriori());
 

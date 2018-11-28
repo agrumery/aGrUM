@@ -107,12 +107,12 @@ namespace gum {
     
     /// use a new set of database rows' ranges to perform learning
     template < template < typename > class XALLOC >
-    void genericBNLearner::setDatabaseRanges(
+    void genericBNLearner::useDatabaseRanges(
         const std::vector< std::pair< std::size_t, std::size_t >,
                            XALLOC< std::pair< std::size_t, std::size_t > > >&
         new_ranges) {
       // use a score to detect whether the ranges are ok
-      ScoreLog2Likelihood<> score (__score_database.parser(), __no_apriori);
+      ScoreLog2Likelihood<> score (__score_database.parser(), *__no_apriori);
       score.setRanges(new_ranges);
       __ranges = score.ranges();
     }
