@@ -204,10 +204,8 @@ namespace gum {
       // without conditioning nodes
       if (idset.hasConditioningSet()) {
         // get the counts for the conditioning nodes
-        std::vector< double, ALLOC< double > > N_ij =
-          this->_counter.counts(idset.conditionalIdSet(), false);
-        if (informative_external_apriori)
-          this->_apriori->addConditioningApriori(idset, N_ij);
+        std::vector< double, ALLOC< double > >
+          N_ij (this->_marginalize(idset[0],N_ijk));
         const double      conditioning_size = double(N_ij.size());
         const std::size_t target_domsize = all_size / conditioning_size;
 
