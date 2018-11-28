@@ -43,6 +43,10 @@ class TopologyFeatureTestCase(JunctionTreeTestCase):
                     or
                     self.jt.clique(0).intersection(self.jt.clique(1)) == set([0, 3])
                     )
+    self.assertTrue(self.jt.separator(0,1) == set([1, 2])
+                    or
+                    self.jt.separator(0,1) == set([0, 3])
+                    )
 
   def testUnorientedGraph(self):
     self.assertEqual(self.jt.neighbours(0), {1})

@@ -55,6 +55,26 @@ gum.NotFound
   If the clique does not belong to the clique graph
 "
 
+%feature("docstring") gum::CliqueGraph::separator
+"
+        Parameters
+        ----------
+        clique1 : int 
+          one extremity of the edge
+        clique : int 
+          the other extremity of the edge
+
+        Returns
+        -------
+        Set
+          the separator included in a given edge
+
+        Raises
+        ------
+        gum.NotFound
+          If the edge does not belong to the clique graph
+"
+
 %feature("docstring") gum::CliqueGraph::container
 "
 Parameters

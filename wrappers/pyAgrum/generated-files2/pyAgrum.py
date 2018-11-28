@@ -5332,34 +5332,6 @@ class CliqueGraph(UndiGraph):
         return _pyAgrum.CliqueGraph_eraseFromClique(self, clique_id, node_id)
 
 
-    def separator(self, *args):
-        r"""
-        separator(self, edge) -> gum::NodeSet const
-        separator(self, clique1, clique) -> gum::NodeSet const &
-
-        Parameters
-        ----------
-        edge : pyAgrum.Edge
-          the edge to be checked
-        clique1 : int 
-          one extremity of the edge
-        clique : int 
-          the other extremity of the edge
-
-        Returns
-        -------
-        Set
-          the separator included in a given edge
-
-        Raises
-        ------
-        gum.NotFound
-          If the edge does not belong to the clique graph
-
-        """
-        return _pyAgrum.CliqueGraph_separator(self, *args)
-
-
     def containerPath(self, node1, node2):
         r"""
         containerPath(self, node1, node2) -> Vector_int
@@ -5455,6 +5427,33 @@ class CliqueGraph(UndiGraph):
 
         """
         return _pyAgrum.CliqueGraph_clique(self, clique)
+
+
+    def separator(self, cliq1, cliq2):
+        r"""
+        separator(self, cliq1, cliq2) -> PyObject *
+
+        Parameters
+        ----------
+        edge : pyAgrum.Edge
+          the edge to be checked
+        clique1 : int 
+          one extremity of the edge
+        clique : int 
+          the other extremity of the edge
+
+        Returns
+        -------
+        Set
+          the separator included in a given edge
+
+        Raises
+        ------
+        gum.NotFound
+          If the edge does not belong to the clique graph
+
+        """
+        return _pyAgrum.CliqueGraph_separator(self, cliq1, cliq2)
 
 
     def toDotWithNames(self,bn):

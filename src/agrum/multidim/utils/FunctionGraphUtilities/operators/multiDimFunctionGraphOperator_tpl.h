@@ -30,8 +30,10 @@
 namespace gum {
 
   template < typename GUM_SCALAR,
-             template < typename > class FUNCTOR,
-             template < typename > class TerminalNodePolicy >
+             template < typename >
+             class FUNCTOR,
+             template < typename >
+             class TerminalNodePolicy >
   MultiDimFunctionGraphOperator< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
     MultiDimFunctionGraphOperator(
       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* DG1,
@@ -53,8 +55,10 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR,
-             template < typename > class FUNCTOR,
-             template < typename > class TerminalNodePolicy >
+             template < typename >
+             class FUNCTOR,
+             template < typename >
+             class TerminalNodePolicy >
   MultiDimFunctionGraphOperator< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
     ~MultiDimFunctionGraphOperator() {
     GUM_DESTRUCTOR(MultiDimFunctionGraphOperator);
@@ -77,8 +81,10 @@ namespace gum {
   // This function is the main function. To be call every time an operation
   // between the two given Function Graphs is required
   template < typename GUM_SCALAR,
-             template < typename > class FUNCTOR,
-             template < typename > class TerminalNodePolicy >
+             template < typename >
+             class FUNCTOR,
+             template < typename >
+             class TerminalNodePolicy >
   MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
     MultiDimFunctionGraphOperator< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
       compute() {
@@ -108,8 +114,10 @@ namespace gum {
   // This function computes an efficient order for the final decision diagrams.
   // Its main criterion to do so is the number of re-exploration to be done.
   template < typename GUM_SCALAR,
-             template < typename > class FUNCTOR,
-             template < typename > class TerminalNodePolicy >
+             template < typename >
+             class FUNCTOR,
+             template < typename >
+             class TerminalNodePolicy >
   void MultiDimFunctionGraphOperator< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
     __establishVarOrder() {
     SequenceIteratorSafe< const DiscreteVariable* > fite =
@@ -203,8 +211,10 @@ namespace gum {
   // This function computes the number of re-exploration needed whenever to
   // retrograde variables collides
   template < typename GUM_SCALAR,
-             template < typename > class FUNCTOR,
-             template < typename > class TerminalNodePolicy >
+             template < typename >
+             class FUNCTOR,
+             template < typename >
+             class TerminalNodePolicy >
   INLINE Idx
          MultiDimFunctionGraphOperator< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
       __distance(const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* d,
@@ -225,8 +235,10 @@ namespace gum {
   // This function computes for every nodes if any retrograde variable is
   // present below
   template < typename GUM_SCALAR,
-             template < typename > class FUNCTOR,
-             template < typename > class TerminalNodePolicy >
+             template < typename >
+             class FUNCTOR,
+             template < typename >
+             class TerminalNodePolicy >
   INLINE void
     MultiDimFunctionGraphOperator< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
       __findRetrogradeVariables(
@@ -322,8 +334,10 @@ namespace gum {
   // algorithm ( meaning each time we explore a node we go trought
   // this function ), check only have to be at the beginning of that function.
   template < typename GUM_SCALAR,
-             template < typename > class FUNCTOR,
-             template < typename > class TerminalNodePolicy >
+             template < typename >
+             class FUNCTOR,
+             template < typename >
+             class TerminalNodePolicy >
   NodeId MultiDimFunctionGraphOperator< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
     __compute(O4DGContext& currentSituation, Idx lastInstVarPos) {
     __nbCall += 1;
@@ -534,8 +548,10 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR,
-             template < typename > class FUNCTOR,
-             template < typename > class TerminalNodePolicy >
+             template < typename >
+             class FUNCTOR,
+             template < typename >
+             class TerminalNodePolicy >
   INLINE Idx MultiDimFunctionGraphOperator< GUM_SCALAR,
                                             FUNCTOR,
                                             TerminalNodePolicy >::nbCall() {
@@ -543,8 +559,10 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR,
-             template < typename > class FUNCTOR,
-             template < typename > class TerminalNodePolicy >
+             template < typename >
+             class FUNCTOR,
+             template < typename >
+             class TerminalNodePolicy >
   INLINE Idx MultiDimFunctionGraphOperator< GUM_SCALAR,
                                             FUNCTOR,
                                             TerminalNodePolicy >::nbVarRetro() {
@@ -552,8 +570,10 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR,
-             template < typename > class FUNCTOR,
-             template < typename > class TerminalNodePolicy >
+             template < typename >
+             class FUNCTOR,
+             template < typename >
+             class TerminalNodePolicy >
   INLINE Idx
          MultiDimFunctionGraphOperator< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
       sizeVarRetroDomain() {
