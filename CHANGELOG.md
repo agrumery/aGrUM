@@ -1,5 +1,21 @@
 # aGrUM Changelog
 
+## Changelog for 0.13.4
+* pyAgrum
+  * minor API changes 
+  * BNLearner follows the new learning framework
+* aGrUM
+  * several internal improvements
+  * learning: major update of the scores, independence tests and record counters:
+    They can now be used on subsets of databases (e.g., for cross validation), the ids of the nodes need not correspond to indices of columns in the database. The interfaces of these classes have been simplified.
+  * learning: all the scores have been speeded-up
+  * learning: new score fNML has been introduced
+  * learning: Dirichlet apriori has been improved: the variables in its database need not be in the same order as those of the learning database
+  * learning: all the score-related testunits have been improved
+  * learning: the documentations of the scores have been improved
+  * learning: the corrected mutual information of 3off2 has been improved
+  * BNLearner: now supports cross validation
+
 ## Changelog for 0.13.3
 * pyAgrum
   * **pip** : wheels for mac/windows/linux for python 2.7,3.{4-7}
