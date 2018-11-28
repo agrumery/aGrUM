@@ -259,12 +259,11 @@ namespace gum {
     }
 
 
-
     /** @brief changes the number min of rows a thread should process in a
      * multithreading context */
     template < template < typename > class ALLOC >
     void CorrectedMutualInformation< ALLOC >::setMinNbRowsPerThread(
-         const std::size_t nb) const {
+      const std::size_t nb) const {
       __NH.setMinNbRowsPerThread(nb);
       __k_NML.setMinNbRowsPerThread(nb);
       __score_MDL.setMinNbRowsPerThread(nb);
@@ -274,7 +273,7 @@ namespace gum {
     /// returns the minimum of rows that each thread should process
     template < template < typename > class ALLOC >
     INLINE std::size_t
-    CorrectedMutualInformation< ALLOC >::minNbRowsPerThread() const {
+           CorrectedMutualInformation< ALLOC >::minNbRowsPerThread() const {
       return __NH.minNbRowsPerThread();
     }
 
@@ -299,7 +298,7 @@ namespace gum {
       __NH.setRanges(new_ranges);
       __k_NML.setRanges(new_ranges);
       __score_MDL.setRanges(new_ranges);
-      
+
       if (old_ranges != ranges()) clear();
     }
 

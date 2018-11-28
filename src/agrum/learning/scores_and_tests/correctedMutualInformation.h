@@ -264,7 +264,7 @@ namespace gum {
 
       /// returns the number of threads used to parse the database
       virtual std::size_t nbThreads() const;
-      
+
       /** @brief changes the number min of rows a thread should process in a
        * multithreading context
        *
@@ -300,7 +300,7 @@ namespace gum {
                          ALLOC< std::pair< std::size_t, std::size_t > > >&
         ranges() const;
 
-      
+
       /// returns the allocator used by the score
       allocator_type getAllocator() const;
 

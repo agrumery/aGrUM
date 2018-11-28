@@ -101,7 +101,7 @@ namespace gum_tests {
     }
 
 
-    void test_ranges () {
+    void test_ranges() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("asia3.csv"));
 
       learner.useGreedyHillClimbing();
@@ -109,9 +109,9 @@ namespace gum_tests {
       learner.useAprioriSmoothing();
 
       const std::size_t k = 5;
-      const auto& database = learner.database();
+      const auto&       database = learner.database();
       const std::size_t dbsize = database.nbRows();
-      std::size_t foldSize = dbsize / k;
+      std::size_t       foldSize = dbsize / k;
 
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
@@ -127,26 +127,25 @@ namespace gum_tests {
 
       gum::learning::GreedyHillClimbing search;
 
-      gum::learning::ScoreBIC<> score(parser, apriori);
-      gum::learning::ParamEstimatorML<> estimator(parser, apriori,
-                                                  score.internalApriori());
+      gum::learning::ScoreBIC<>         score(parser, apriori);
+      gum::learning::ParamEstimatorML<> estimator(
+        parser, apriori, score.internalApriori());
       for (std::size_t fold = 0; fold < k; fold++) {
         // create the ranges of rows over which we perform the learning
         const std::size_t unfold_deb = fold * foldSize;
         const std::size_t unfold_end = unfold_deb + foldSize;
 
         std::vector< std::pair< std::size_t, std::size_t > > ranges;
-        if ( fold == std::size_t(0) ) {
-          ranges.push_back ( std::pair< std::size_t, std::size_t >
-                             (unfold_end,dbsize) );
-        }
-        else {
-          ranges.push_back ( std::pair< std::size_t, std::size_t >
-                             (std::size_t(0),unfold_deb) );
-        
-          if (fold != k-1) {
-            ranges.push_back ( std::pair< std::size_t, std::size_t >
-                               (unfold_end,dbsize) );
+        if (fold == std::size_t(0)) {
+          ranges.push_back(
+            std::pair< std::size_t, std::size_t >(unfold_end, dbsize));
+        } else {
+          ranges.push_back(
+            std::pair< std::size_t, std::size_t >(std::size_t(0), unfold_deb));
+
+          if (fold != k - 1) {
+            ranges.push_back(
+              std::pair< std::size_t, std::size_t >(unfold_end, dbsize));
           }
         }
 
@@ -156,34 +155,35 @@ namespace gum_tests {
         learner.clearDatabaseRanges();
         TS_ASSERT(learner.databaseRanges() != ranges);
 
-        learner.useCrossValidationFold(fold,k);
+        learner.useCrossValidationFold(fold, k);
         TS_ASSERT(learner.databaseRanges() == ranges);
 
         gum::BayesNet< double > bn1 = learner.learnBN();
 
-        
+
         score.setRanges(ranges);
         estimator.setRanges(ranges);
         gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint),
                                                      decltype(op_set) >
-          selector(score, struct_constraint, op_set);
-        gum::BayesNet< double > bn2 = search.learnBN<double>(selector, estimator);
+                                selector(score, struct_constraint, op_set);
+        gum::BayesNet< double > bn2 =
+          search.learnBN< double >(selector, estimator);
 
         TS_ASSERT(bn1.dag() == bn2.dag());
 
-        gum::Instantiation I1,I2;
+        gum::Instantiation I1, I2;
 
         for (auto& name : database.variableNames()) {
           I1.add(bn1.variableFromName(name));
           I2.add(bn2.variableFromName(name));
         }
 
-        double LL1 = 0.0, LL2 = 0.0;
-        const std::size_t nbCol =  database.nbVariables ();
-        parser.setRange(unfold_deb, unfold_end);      
+        double            LL1 = 0.0, LL2 = 0.0;
+        const std::size_t nbCol = database.nbVariables();
+        parser.setRange(unfold_deb, unfold_end);
         while (parser.hasRows()) {
-          const gum::learning::DBRow< gum::learning::DBTranslatedValue >&
-            row = parser.row();
+          const gum::learning::DBRow< gum::learning::DBTranslatedValue >& row =
+            parser.row();
           for (std::size_t i = 0; i < nbCol; ++i) {
             I1.chgVal(i, row[i].discr_val);
             I2.chgVal(i, row[i].discr_val);
@@ -197,7 +197,7 @@ namespace gum_tests {
       }
     }
 
-    
+
     void test_asia_3off2() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("asia.csv"));
 
@@ -293,24 +293,23 @@ namespace gum_tests {
 
     void test_asia_with_domain_sizes() {
       gum::learning::BNLearner< double > learn(GET_RESSOURCES_PATH("asia3.csv"));
-      const auto& database = learn.database();
+      const auto&                        database = learn.database();
 
-      gum::BayesNet<double> bn;
+      gum::BayesNet< double > bn;
       for (auto& name : database.variableNames()) {
-        gum::LabelizedVariable var (name, name, { "false", "true", "big" } );
+        gum::LabelizedVariable var(name, name, {"false", "true", "big"});
         bn.add(var);
       }
-      
-      gum::learning::BNLearner< double >
-        learner(GET_RESSOURCES_PATH("asia3.csv"), bn);
+
+      gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("asia3.csv"),
+                                                 bn);
       learner.useScoreBIC();
       learner.useAprioriSmoothing();
-      
-      gum::BayesNet<double> bn2 = learner.learnBN();
+
+      gum::BayesNet< double > bn2 = learner.learnBN();
       for (auto& name : database.variableNames()) {
         TS_ASSERT(bn2.variableFromName(name).domainSize() == 3);
       }
-      
     }
 
     void xtest_asia_with_user_modalities_string_min() {
@@ -515,7 +514,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
- 
+
     void test_asia_param_float() {
       gum::learning::BNLearner< float > learner(GET_RESSOURCES_PATH("asia3.csv"));
 

@@ -208,8 +208,8 @@ namespace gum {
       // without conditioning nodes
       if (idset.hasConditioningSet()) {
         // get the counts for the conditioning nodes
-        std::vector< double, ALLOC< double > >
-          N_ij (this->_marginalize(idset[0],N_ijk));
+        std::vector< double, ALLOC< double > > N_ij(
+          this->_marginalize(idset[0], N_ijk));
 
         // compute the score: it remains to compute the log likelihood, i.e.,
         // sum_k=1^r_i sum_j=1^q_i N_ijk log (N_ijk / N_ij), which is also

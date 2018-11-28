@@ -303,22 +303,21 @@ namespace gum {
     }
 
     /// returns a counting vector where variables are marginalized from N_xyz
-      /** @param X_size the domain size of the variable to marginalize (this
-       * is the first variable in table N_xyz
-       * @param N_xyz a counting vector of dimension X * cond_vars (in this order)
-       */
+    /** @param X_size the domain size of the variable to marginalize (this
+     * is the first variable in table N_xyz
+     * @param N_xyz a counting vector of dimension X * cond_vars (in this order)
+     */
     template < template < typename > class ALLOC >
-    std::vector< double, ALLOC< double > >
-    Score< ALLOC >::_marginalize(
-                    const NodeId X_id,
-                    const std::vector< double, ALLOC< double > >& N_xyz) const {
+    std::vector< double, ALLOC< double > > Score< ALLOC >::_marginalize(
+      const NodeId                                  X_id,
+      const std::vector< double, ALLOC< double > >& N_xyz) const {
       // compute the domain sizes of the varible on the left hand side
       // of the conditioning bar
-      const auto& nodeId2cols = this->_counter.nodeId2Columns();
-      const auto& database = this->_counter.database();
-      const std::size_t X_size = database.domainSize(
-                        nodeId2cols.empty() ? X_id : nodeId2cols.second(X_id));
-        
+      const auto&       nodeId2cols = this->_counter.nodeId2Columns();
+      const auto&       database = this->_counter.database();
+      const std::size_t X_size =
+        database.domainSize(nodeId2cols.empty() ? X_id : nodeId2cols.second(X_id));
+
       // determine the size of the output vector
       std::size_t out_size = N_xyz.size() / X_size;
 

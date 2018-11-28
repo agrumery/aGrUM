@@ -380,21 +380,19 @@ namespace gum {
 
     /// returns the current database rows' ranges used for learning
     INLINE const std::vector< std::pair< std::size_t, std::size_t > >&
-    genericBNLearner::databaseRanges () const {
+                 genericBNLearner::databaseRanges() const {
       return __ranges;
     }
- 
+
     /// reset the ranges to the one range corresponding to the whole database
-    INLINE void genericBNLearner::clearDatabaseRanges() {
-      __ranges.clear ();
-    }
+    INLINE void genericBNLearner::clearDatabaseRanges() { __ranges.clear(); }
 
     /// returns the database used by the BNLearner
-    INLINE const DatabaseTable<>& genericBNLearner::database () const {
+    INLINE const DatabaseTable<>& genericBNLearner::database() const {
       return __score_database.databaseTable();
     }
 
-    
+
   } /* namespace learning */
 
 } /* namespace gum */

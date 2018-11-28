@@ -281,9 +281,8 @@ namespace gum {
        * @param N_xyz a counting vector of dimension X * cond_vars (in this order)
        */
       std::vector< double, ALLOC< double > >
-        _marginalize(const NodeId X_id,
+        _marginalize(const NodeId                                  X_id,
                      const std::vector< double, ALLOC< double > >& N_xyz) const;
-
     };
 
   } /* namespace learning */

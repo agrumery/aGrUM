@@ -371,7 +371,7 @@ namespace gum {
       NodeId idFromName(const std::string& var_name) const;
 
       /// returns the database used by the BNLearner
-      const DatabaseTable<>& database () const;
+      const DatabaseTable<>& database() const;
 
       /// returns the variable name corresponding to a given node id
       const std::string& nameFromId(NodeId id) const;
@@ -397,7 +397,7 @@ namespace gum {
        * rows in the database. The learning is performed on these set of rows.
        * @warning an empty set of ranges means the whole database. */
       const std::vector< std::pair< std::size_t, std::size_t > >&
-      databaseRanges () const;
+        databaseRanges() const;
 
       /// sets the ranges of rows to be used for cross-validation learning
       /** When applied on (x,k), the method indicates to the subsequent learnings
@@ -420,9 +420,9 @@ namespace gum {
        * @throws OutOfBounds is raised if k_fold is equal to 0 or learning_fold
        * is greater than or eqal to k_fold, or if k_fold is greater than
        * or equal to the size of the database. */
-      std::pair<std::size_t,std::size_t>
-      useCrossValidationFold (const std::size_t learning_fold,
-                              const std::size_t k_fold );
+      std::pair< std::size_t, std::size_t >
+        useCrossValidationFold(const std::size_t learning_fold,
+                               const std::size_t k_fold);
 
       /// @}
 
@@ -652,7 +652,7 @@ namespace gum {
       /// the database to be used by the scores and parameter estimators
       Database __score_database;
 
-      /// the set of rows' ranges within the database in which learning is done 
+      /// the set of rows' ranges within the database in which learning is done
       std::vector< std::pair< std::size_t, std::size_t > > __ranges;
 
       /// the database used by the Dirichlet a priori

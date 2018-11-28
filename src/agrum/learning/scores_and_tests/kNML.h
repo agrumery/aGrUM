@@ -172,7 +172,7 @@ namespace gum {
        * is equal to the min between the max number of threads allowed and the
        * number of records in the database divided by nb. */
       using IndependenceTest< ALLOC >::setMinNbRowsPerThread;
-      
+
       /// returns the minimum of rows that each thread should process
       using IndependenceTest< ALLOC >::minNbRowsPerThread;
 
@@ -184,13 +184,13 @@ namespace gum {
        * An empty set of ranges is equivalent to an interval [X,Y) ranging over
        * the whole database. */
       using IndependenceTest< ALLOC >::setRanges;
-      
+
       /// reset the ranges to the one range corresponding to the whole database
       using IndependenceTest< ALLOC >::clearRanges;
 
       /// returns the current ranges
       using IndependenceTest< ALLOC >::ranges;
-      
+
       /// the scores
       using IndependenceTest< ALLOC >::score;
 

@@ -664,7 +664,7 @@ namespace gum_tests {
       delete param_estimator4;
     }
 
-    void testChangeRanges () {
+    void testChangeRanges() {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
       var.addLabel("0");
@@ -764,7 +764,7 @@ namespace gum_tests {
       std::vector< std::pair< std::size_t, std::size_t > > ranges{{800, 1000},
                                                                   {1050, 1400}};
       param_estimator.setRanges(ranges);
-      
+
       std::vector< double > ar0 = param_estimator.parameters(gum::NodeId(0));
       std::vector< double > axr0 = __normalize({401, 76, 76});
       TS_ASSERT(ar0 == axr0);
@@ -784,7 +784,8 @@ namespace gum_tests {
 
       std::vector< double > ar01 =
         param_estimator.parameters(gum::NodeId(0), {gum::NodeId(1)});
-      std::vector< double > axr01 = __xnormalize({201, 76, 1, 201, 1, 76, 1, 1, 1});
+      std::vector< double > axr01 =
+        __xnormalize({201, 76, 1, 201, 1, 76, 1, 1, 1});
       TS_ASSERT(ar01 == axr01);
 
       std::vector< double > ar21 =
@@ -793,7 +794,7 @@ namespace gum_tests {
       TS_ASSERT(ar21 == axr21);
 
       param_estimator2.setRanges(ranges);
-      
+
       std::vector< double > av0 = param_estimator2.parameters(gum::NodeId(0));
       TS_ASSERT(av0 == axr0);
 
@@ -839,7 +840,6 @@ namespace gum_tests {
       std::vector< double > bv21 =
         param_estimator2.parameters(gum::NodeId(2), {gum::NodeId(1)});
       TS_ASSERT(bv21 == xv21);
-      
     }
   };
 

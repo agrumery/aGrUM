@@ -205,10 +205,10 @@ namespace gum {
       // without conditioning nodes
       if (idset.hasConditioningSet()) {
         // get the counts for the conditioning nodes
-        std::vector< double, ALLOC< double > >
-          N_ij (this->_marginalize(idset[0],N_ijk));
+        std::vector< double, ALLOC< double > > N_ij(
+          this->_marginalize(idset[0], N_ijk));
         const double conditioning_size = double(N_ij.size());
-       
+
         // initialize the score: this should be the penalty of the BIC score,
         // i.e., -(ri-1 ) * qi * .5 * log ( N + N' )
         const std::size_t target_domsize = all_size / conditioning_size;
