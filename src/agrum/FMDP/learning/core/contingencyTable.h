@@ -28,8 +28,7 @@
 #ifndef GUM_CONTINGENCY_TABLE_H
 #define GUM_CONTINGENCY_TABLE_H
 
-#include <cmath>
-
+#include <agrum/core/math/math.h>
 #include <agrum/core/hashTable.h>
 #include <agrum/core/set.h>
 #include <agrum/core/smallobjectallocator/smallObjectAllocator.h>

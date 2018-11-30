@@ -27,12 +27,12 @@
 #ifndef GUM_RATIONAL_H
 #define GUM_RATIONAL_H
 
-#include <cmath>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
 #include <stdlib.h>
 #include <vector>
+#include <agrum/core/math/math.h>
 
 // 64 bits for windows (long is 32 bits)
 #ifdef _MSC_VER

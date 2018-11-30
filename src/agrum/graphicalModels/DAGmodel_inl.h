@@ -25,8 +25,7 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
-#include <cmath>
-
+#include <agrum/core/math/math.h>
 #include <agrum/graphicalModels/DAGmodel.h>
 
 namespace gum {

@@ -23,7 +23,6 @@
 // =============================================================================
 
 #include <algorithm>
-#include <cmath>
 #include <fstream>
 #include <list>
 #include <memory>
@@ -32,6 +31,7 @@
 #include <string>
 #include <vector>
 
+#include <agrum/core/math/math.h>
 #include <agrum/core/utils_dir.h>
 #include <agrum/core/math/formula.h>
 

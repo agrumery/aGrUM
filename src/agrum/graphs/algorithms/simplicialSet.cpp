@@ -22,10 +22,9 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
+#include <agrum/core/math/math.h>
 #include <agrum/graphs/algorithms/simplicialSet.h>
 #include <agrum/graphs/graphElements.h>
-#include <cmath>
-#include <cmath>
 #include <limits>
 #include <limits>
 #include <sstream>

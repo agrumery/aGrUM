@@ -40,7 +40,6 @@
 
 //#include <sys/wait.h>
 #include <algorithm>
-#include <cmath>
 #include <cstdlib>
 #include <fcntl.h>
 #include <fstream>
@@ -51,6 +50,7 @@
 
 #include <utility>   /// c++11 stuff, like declval ( decltype from prototype without a default constructor )
 
+#include <agrum/core/math/math.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/BN/io/BIF/BIFWriter.h>

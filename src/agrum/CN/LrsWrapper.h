@@ -30,8 +30,9 @@
 #define __LRSWrapper_WRAPPER__H__
 
 #include <agrum/agrum.h>
+#include <agrum/core/math/math.h>
 
-#include <cmath>
+
 #ifdef HAVE_UNISTD_H
 #  include <unistd.h>
 #else

@@ -27,11 +27,11 @@
 
 // =========================================================================
 #include <algorithm>
-#include <cmath>
 #include <queue>
 #include <utility>
 #include <vector>
 // =========================================================================
+#include <agrum/core/math/math.h>
 #include <agrum/multidim/instantiation.h>
 // =========================================================================
 #include <agrum/FMDP/planning/treeOperatorStrategy.h>

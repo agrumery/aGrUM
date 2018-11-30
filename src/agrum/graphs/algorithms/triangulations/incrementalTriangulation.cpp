@@ -24,11 +24,11 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <cmath>
 #include <limits>
 #include <utility>
 
 #include <agrum/agrum.h>
+#include <agrum/core/math/math.h>
 
 #include <agrum/core/list.h>
 #include <agrum/graphs/algorithms/triangulations/incrementalTriangulation.h>

@@ -25,9 +25,9 @@
 #ifndef GUM_SHAFER_SHENOY_INFERENCE_H
 #define GUM_SHAFER_SHENOY_INFERENCE_H
 
-#include <cmath>
 #include <utility>
 
+#include <agrum/core/math/math.h>
 #include <agrum/BN/algorithms/barrenNodesFinder.h>
 #include <agrum/BN/inference/tools/evidenceInference.h>
 #include <agrum/BN/inference/tools/jointTargetedInference.h>

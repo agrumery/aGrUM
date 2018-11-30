@@ -26,12 +26,12 @@
 
 // =========================================================================
 #include <algorithm>
-#include <cmath>
 #include <queue>
 #include <thread>
 #include <utility>
 #include <vector>
 // =========================================================================
+#include <agrum/core/math/math.h>
 #include <agrum/core/functors.h>
 // =========================================================================
 #include <agrum/multidim/potential.h>

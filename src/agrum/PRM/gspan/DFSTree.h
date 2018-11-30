@@ -27,12 +27,12 @@
 #ifndef GUM_DFS_TREE_H
 #define GUM_DFS_TREE_H
 
-#include <cmath>
 #include <list>
 #include <ostream>
 #include <utility>
 #include <vector>
 
+#include <agrum/core/math/math.h>
 #include <agrum/core/bijection.h>
 #include <agrum/core/sequence.h>
 #include <agrum/core/set.h>

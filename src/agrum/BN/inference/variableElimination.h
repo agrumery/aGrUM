@@ -27,9 +27,9 @@
 #ifndef GUM_VARIABLE_ELIMINATION_H
 #define GUM_VARIABLE_ELIMINATION_H
 
-#include <cmath>
 #include <utility>
 
+#include <agrum/core/math/math.h>
 #include <agrum/BN/algorithms/barrenNodesFinder.h>
 #include <agrum/BN/inference/tools/jointTargetedInference.h>
 #include <agrum/BN/inference/tools/relevantPotentialsFinderType.h>

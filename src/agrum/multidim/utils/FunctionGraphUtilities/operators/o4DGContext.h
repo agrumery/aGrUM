@@ -28,9 +28,8 @@
 #ifndef O4DGCONTEXT_H
 #define O4DGCONTEXT_H
 
-#include <cmath>
-
 #include <agrum/agrum.h>
+#include <agrum/core/math/math.h>
 #include <agrum/multidim/implementations/multiDimFunctionGraph.h>
 
 namespace gum {

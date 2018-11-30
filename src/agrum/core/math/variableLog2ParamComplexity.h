@@ -28,11 +28,11 @@
 #define GUM_VARIABLE_LOG2_PARAM_COMPLEXITY_H
 
 #include <cstddef>
-#include <cmath>
 #include <string>
 #include <fstream>
 
 #include <agrum/agrum.h>
+#include <agrum/core/math/math.h>
 #include <agrum/core/hashTable.h>
 
 namespace gum {

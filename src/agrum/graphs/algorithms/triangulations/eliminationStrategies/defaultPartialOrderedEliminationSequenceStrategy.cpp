@@ -23,9 +23,8 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <cmath>
-
 #include <agrum/agrum.h>
+#include <agrum/core/math/math.h>
 
 #include <agrum/graphs/algorithms/triangulations/eliminationStrategies/defaultPartialOrderedEliminationSequenceStrategy.h>
 #include <agrum/graphs/undiGraph.h>

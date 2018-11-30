@@ -27,13 +27,13 @@
 #ifndef GUM_MULTIDIM_CONTAINER_H
 #define GUM_MULTIDIM_CONTAINER_H
 
-#include <cmath>
 #include <functional>
 #include <initializer_list>
 #include <iostream>
 #include <vector>
 
 #include <agrum/agrum.h>
+#include <agrum/core/math/math.h>
 
 #include <agrum/multidim/implementations/multiDimAdressable.h>
 

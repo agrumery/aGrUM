@@ -36,7 +36,6 @@ Coco/R itself) does not fall under the GNU General Public License.
 #define gum_formula_COCO_PARSER_H__
 
 #include <algorithm>
-#include <cmath>
 #include <fstream>
 #include <list>
 #include <memory>
@@ -45,6 +44,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <string>
 #include <vector>
 
+#include <agrum/core/math/math.h>
 #include <agrum/core/utils_dir.h>
 #include <agrum/core/math/formula.h>
 

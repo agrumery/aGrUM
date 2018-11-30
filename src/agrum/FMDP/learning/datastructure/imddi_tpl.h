@@ -24,8 +24,7 @@
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 // =======================================================
-#include <cmath>
-// =======================================================
+#include <agrum/core/math/math.h>
 #include <agrum/core/priorityQueue.h>
 #include <agrum/core/types.h>
 // =======================================================

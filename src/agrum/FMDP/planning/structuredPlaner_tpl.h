@@ -25,12 +25,12 @@
  */
 
 // =========================================================================
-#include <cmath>
 #include <queue>
 #include <vector>
 //#include <algorithm>
 //#include <utility>
 // =========================================================================
+#include <agrum/core/math/math.h>
 #include <agrum/core/functors.h>
 // =========================================================================
 #include <agrum/multidim/implementations/multiDimFunctionGraph.h>

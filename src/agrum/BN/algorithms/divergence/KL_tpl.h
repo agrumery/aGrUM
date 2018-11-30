@@ -24,9 +24,9 @@
  * @author Pierre-Henri WUILLEMIN
  */
 
-#include <cmath>
 #include <complex>
 
+#include <agrum/core/math/math.h>
 #include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/algorithms/divergence/KL.h>
 

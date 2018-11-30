@@ -24,8 +24,8 @@
  * @author Pierre-Henri WUILLEMIN
  */
 
+#include <agrum/core/math/math.h>
 #include <agrum/BN/algorithms/divergence/bruteForceKL.h>
-#include <cmath>
 
 template class gum::BruteForceKL< float >;
 template class gum::BruteForceKL< double >;

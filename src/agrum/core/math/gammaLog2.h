@@ -27,7 +27,6 @@
 #define GUM_GAMMA_LOG2_H
 
 #define _USE_MATH_DEFINES   // for Visual C++
-#include <cmath>
 
 #include <limits>
 #include <vector>
