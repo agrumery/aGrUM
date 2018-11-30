@@ -118,7 +118,7 @@ namespace gum {
 
     /// destructor
     template < template < typename > class ALLOC >
-    KNML< ALLOC >::~KNML< ALLOC >() {
+    KNML< ALLOC >::~KNML() {
       GUM_DESTRUCTOR(KNML);
     }
 
@@ -128,7 +128,7 @@ namespace gum {
     KNML< ALLOC >& KNML< ALLOC >::operator=(const KNML< ALLOC >& from) {
       if (this != &from) {
         IndependenceTest< ALLOC >::operator=(from);
-        __param_complexity = from.__param_complexityi;
+        __param_complexity = from.__param_complexity;
       }
       return *this;
     }

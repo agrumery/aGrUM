@@ -122,7 +122,7 @@ namespace gum {
 
     /// destructor
     template < template < typename > class ALLOC >
-    ScoreLog2Likelihood< ALLOC >::~ScoreLog2Likelihood< ALLOC >() {
+    ScoreLog2Likelihood< ALLOC >::~ScoreLog2Likelihood() {
       GUM_DESTRUCTOR(ScoreLog2Likelihood);
     }
 

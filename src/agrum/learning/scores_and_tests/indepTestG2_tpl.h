@@ -117,7 +117,7 @@ namespace gum {
 
     /// destructor
     template < template < typename > class ALLOC >
-    IndepTestG2< ALLOC >::~IndepTestG2< ALLOC >() {
+    IndepTestG2< ALLOC >::~IndepTestG2() {
       GUM_DESTRUCTOR(IndepTestG2);
     }
 

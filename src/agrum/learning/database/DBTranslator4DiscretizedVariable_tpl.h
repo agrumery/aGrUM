@@ -132,8 +132,8 @@ namespace gum {
       }
 
       // the the bounds of the discretized variable
-      const float lower_bound = ticks[0];
-      const float upper_bound = ticks.back();
+      const float lower_bound = float(ticks[0]);
+      const float upper_bound = float(ticks.back());
 
       // remove all the missing symbols corresponding to a number between
       // lower_bound and upper_bound
