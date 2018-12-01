@@ -187,20 +187,20 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertEquals(len(learner.latentVariables()), 2)
 
   def test_setSliceOrder_with_names(self):
-    learner=gum.BNLearner(self.agrumSrcDir(
-      'src/testunits/ressources/asia3.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir(
+        'src/testunits/ressources/asia3.csv'))
     learner.setSliceOrder([["smoking?", "lung_cancer?"],
                            ["bronchitis?", "visit_to_Asia?"],
                            ["tuberculosis?"]])
 
-    learner=gum.BNLearner(self.agrumSrcDir(
-      'src/testunits/ressources/asia3.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir(
+        'src/testunits/ressources/asia3.csv'))
     learner.setSliceOrder([[0, "lung_cancer?"],
                            [2, "visit_to_Asia?"],
                            ["tuberculosis?"]])
 
-    learner=gum.BNLearner(self.agrumSrcDir(
-      'src/testunits/ressources/asia3.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir(
+        'src/testunits/ressources/asia3.csv'))
 
     with self.assertRaises(gum.DuplicateElement):
       learner.setSliceOrder([["smoking?", "lung_cancer?"],
@@ -209,8 +209,24 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
     with self.assertRaises(gum.MissingVariableInDatabase):
       learner.setSliceOrder([["smoking?", "lung_cancer?"],
-                             ["bronchitis?",  "CRUCRU?"],
-                             ["tuberculosis?"]])    
+                             ["bronchitis?", "CRUCRU?"],
+                             ["tuberculosis?"]])
+
+  def test_dirichlet(self):
+    bn = gum.fastBN("A->B<-C->D->E<-B")
+    gum.generateCSV(bn, "dirichlet.csv", 2000, with_labels=True)
+
+    bn2 = gum.fastBN("A->B->C->D->E")
+    gum.generateCSV(bn2, "database.csv", 2000, with_labels=True)
+
+    learner = gum.BNLearner("database.csv", bn)  # bn is used to give the variables and their domains
+    learner.setAprioriWeight(10)
+    learner.useAprioriDirichlet("dirichlet.csv")
+    learner.useScoreAIC()  # or another score with no included prior such as BDeu
+
+    bn3 = learner.learnBN()
+
+    self.assertEquals(bn.size(),5)
 
 
 ts = unittest.TestSuite()
