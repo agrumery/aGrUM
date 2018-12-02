@@ -35,12 +35,9 @@
 namespace gum {
 
   template < typename GUM_SCALAR,
-             template < typename >
-             class COMBINEOPERATOR,
-             template < typename >
-             class PROJECTOPERATOR,
-             template < typename >
-             class TerminalNodePolicy >
+             template < typename > class COMBINEOPERATOR,
+             template < typename > class PROJECTOPERATOR,
+             template < typename > class TerminalNodePolicy >
   TreeRegress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::
     TreeRegress(
       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* qAction,
@@ -53,12 +50,9 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR,
-             template < typename >
-             class COMBINEOPERATOR,
-             template < typename >
-             class PROJECTOPERATOR,
-             template < typename >
-             class TerminalNodePolicy >
+             template < typename > class COMBINEOPERATOR,
+             template < typename > class PROJECTOPERATOR,
+             template < typename > class TerminalNodePolicy >
   TreeRegress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::
     ~TreeRegress() {
     GUM_DESTRUCTOR(TreeRegress);
@@ -67,12 +61,9 @@ namespace gum {
   // This function is the main function. To be call every time an operation
   // between the two given Function Graphs is required
   template < typename GUM_SCALAR,
-             template < typename >
-             class COMBINEOPERATOR,
-             template < typename >
-             class PROJECTOPERATOR,
-             template < typename >
-             class TerminalNodePolicy >
+             template < typename > class COMBINEOPERATOR,
+             template < typename > class PROJECTOPERATOR,
+             template < typename > class TerminalNodePolicy >
   MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
     TreeRegress< GUM_SCALAR,
                  COMBINEOPERATOR,
@@ -90,12 +81,9 @@ namespace gum {
 
 
   template < typename GUM_SCALAR,
-             template < typename >
-             class COMBINEOPERATOR,
-             template < typename >
-             class PROJECTOPERATOR,
-             template < typename >
-             class TerminalNodePolicy >
+             template < typename > class COMBINEOPERATOR,
+             template < typename > class PROJECTOPERATOR,
+             template < typename > class TerminalNodePolicy >
   MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
     TreeRegress< GUM_SCALAR,
                  COMBINEOPERATOR,

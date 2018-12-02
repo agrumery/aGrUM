@@ -206,7 +206,7 @@ namespace gum {
       // get the counts for all the nodes in the idset and add the apriori
       std::vector< double, ALLOC< double > > N_ijk(
         this->_counter.counts(idset, true));
-      const std::size_t all_size = N_ijk.size();
+      const std::size_t                      all_size = N_ijk.size();
       std::vector< double, ALLOC< double > > N_prime_ijk(all_size, 0.0);
       this->_apriori->addAllApriori(idset, N_prime_ijk);
 

@@ -206,8 +206,8 @@ namespace gum {
       std::vector< double, ALLOC< double > > N_ijk(
         this->_counter.counts(idset, true));
       const std::size_t all_size = N_ijk.size();
-      const bool        informative_external_apriori = this->_apriori->isInformative();
-      double            score = 0.0;
+      const bool informative_external_apriori = this->_apriori->isInformative();
+      double     score = 0.0;
 
       // here, we distinguish idsets with conditioning nodes from those
       // without conditioning nodes
@@ -216,7 +216,7 @@ namespace gum {
         std::vector< double, ALLOC< double > > N_ij(
           this->_marginalize(idset[0], N_ijk));
         const std::size_t conditioning_size = N_ij.size();
-        const double ri = double(all_size / conditioning_size);
+        const double      ri = double(all_size / conditioning_size);
 
         if (informative_external_apriori) {
           // the score to compute is that of BD with aprioris N'_ijk + 1

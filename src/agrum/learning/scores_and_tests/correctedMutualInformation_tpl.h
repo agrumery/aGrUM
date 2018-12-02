@@ -152,41 +152,39 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    CorrectedMutualInformation< ALLOC >&
-    CorrectedMutualInformation< ALLOC >::operator=(
-         const CorrectedMutualInformation< ALLOC >& from) {
+    CorrectedMutualInformation< ALLOC >& CorrectedMutualInformation< ALLOC >::
+                                         operator=(const CorrectedMutualInformation< ALLOC >& from) {
       if (this != &from) {
-        __NH           = from.__NH;
-        __k_NML        = from.__k_NML;
-        __score_MDL    = from.__score_MDL;
-        __kmode        = from.__kmode;
-        __use_ICache   = from.__use_ICache;
-        __use_HCache   = from.__use_HCache;
-        __use_KCache   = from.__use_KCache;
+        __NH = from.__NH;
+        __k_NML = from.__k_NML;
+        __score_MDL = from.__score_MDL;
+        __kmode = from.__kmode;
+        __use_ICache = from.__use_ICache;
+        __use_HCache = from.__use_HCache;
+        __use_KCache = from.__use_KCache;
         __use_CnrCache = from.__use_CnrCache;
-        __ICache       = from.__ICache;
-        __KCache       = from.__KCache;
+        __ICache = from.__ICache;
+        __KCache = from.__KCache;
       }
       return *this;
     }
 
-    
+
     /// move operator
     template < template < typename > class ALLOC >
-    CorrectedMutualInformation< ALLOC >&
-    CorrectedMutualInformation< ALLOC >::operator=(
-         CorrectedMutualInformation< ALLOC >&& from) {
+    CorrectedMutualInformation< ALLOC >& CorrectedMutualInformation< ALLOC >::
+                                         operator=(CorrectedMutualInformation< ALLOC >&& from) {
       if (this != &from) {
-        __NH           = std::move(from.__NH);
-        __k_NML        = std::move(from.__k_NML);
-        __score_MDL    = std::move(from.__score_MDL);
-        __kmode        = from.__kmode;
-        __use_ICache   = from.__use_ICache;
-        __use_HCache   = from.__use_HCache;
-        __use_KCache   = from.__use_KCache;
+        __NH = std::move(from.__NH);
+        __k_NML = std::move(from.__k_NML);
+        __score_MDL = std::move(from.__score_MDL);
+        __kmode = from.__kmode;
+        __use_ICache = from.__use_ICache;
+        __use_HCache = from.__use_HCache;
+        __use_KCache = from.__use_KCache;
         __use_CnrCache = from.__use_CnrCache;
-        __ICache       = std::move(from.__ICache);
-        __KCache       = std::move(from.__KCache);
+        __ICache = std::move(from.__ICache);
+        __KCache = std::move(from.__KCache);
       }
       return *this;
     }
