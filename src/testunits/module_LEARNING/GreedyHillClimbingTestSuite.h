@@ -83,129 +83,124 @@ namespace gum_tests {
 
 
   class GreedyHillClimbingTestSuite : public CxxTest::TestSuite {
-  private:
-    double __score ( gum::learning::ScoreBIC<>& score,
-                     const gum::NodeId& node,
-                     const gum::DAG& dag ) {
-      std::vector<gum::NodeId> cond_set;
-      for ( const auto par : dag.parents(node) ) {
-        cond_set.push_back (par);
+    private:
+    double __score(gum::learning::ScoreBIC<>& score,
+                   const gum::NodeId&         node,
+                   const gum::DAG&            dag) {
+      std::vector< gum::NodeId > cond_set;
+      for (const auto par : dag.parents(node)) {
+        cond_set.push_back(par);
       }
-      return score.score (node, cond_set);
+      return score.score(node, cond_set);
     }
 
     bool __applyNextChange(gum::learning::ScoreBIC<>& score,
-                           std::vector<double>& current_scores,
-                           gum::DAG& dag ) {
+                           std::vector< double >&     current_scores,
+                           gum::DAG&                  dag) {
       const int nb_vars = int(dag.size());
-      
-      std::vector<std::pair<gum::learning::GraphChange,double>> changes;
 
-      for ( int i = 0; i < nb_vars; ++i ) {
-        for ( int j = 0; j < nb_vars; ++j ) {
-          if ( i != j ) {
+      std::vector< std::pair< gum::learning::GraphChange, double > > changes;
+
+      for (int i = 0; i < nb_vars; ++i) {
+        for (int j = 0; j < nb_vars; ++j) {
+          if (i != j) {
             // check add arc
-            if ( ! dag.existsArc ( gum::Arc(i,j) ) ) {
+            if (!dag.existsArc(gum::Arc(i, j))) {
               try {
-                dag.addArc(gum::NodeId(i),gum::NodeId(j));
+                dag.addArc(gum::NodeId(i), gum::NodeId(j));
                 double new_score = __score(score, j, dag) - current_scores[j];
-                if ( new_score > 0 ) {
-                  changes.push_back(std::pair<gum::learning::GraphChange,double>(
-                          gum::learning::GraphChange(
-                               gum::learning::GraphChangeType::ARC_ADDITION,
-                               gum::NodeId(i),gum::NodeId(j)),
-                          new_score));
+                if (new_score > 0) {
+                  changes.push_back(
+                    std::pair< gum::learning::GraphChange, double >(
+                      gum::learning::GraphChange(
+                        gum::learning::GraphChangeType::ARC_ADDITION,
+                        gum::NodeId(i),
+                        gum::NodeId(j)),
+                      new_score));
                 }
-                dag.eraseArc (gum::Arc(i,j));
-              }
-              catch ( ... ) {}
+                dag.eraseArc(gum::Arc(i, j));
+              } catch (...) {}
             }
 
             // check remove arc
-            if ( dag.existsArc ( gum::Arc(i,j) ) ) {
-              dag.eraseArc (gum::Arc(i,j));
+            if (dag.existsArc(gum::Arc(i, j))) {
+              dag.eraseArc(gum::Arc(i, j));
               double new_score = __score(score, j, dag) - current_scores[j];
-              if ( new_score > 0 ) {
-                changes.push_back(std::pair<gum::learning::GraphChange,double>(
-                        gum::learning::GraphChange(
-                             gum::learning::GraphChangeType::ARC_DELETION,
-                             gum::NodeId(i),gum::NodeId(j)),
-                        new_score));
+              if (new_score > 0) {
+                changes.push_back(std::pair< gum::learning::GraphChange, double >(
+                  gum::learning::GraphChange(
+                    gum::learning::GraphChangeType::ARC_DELETION,
+                    gum::NodeId(i),
+                    gum::NodeId(j)),
+                  new_score));
               }
-              dag.addArc(gum::NodeId(i),gum::NodeId(j));
+              dag.addArc(gum::NodeId(i), gum::NodeId(j));
             }
 
             // check reverse arc
-            if ( dag.existsArc ( gum::Arc(i,j) ) ) {
-              dag.eraseArc (gum::Arc(i,j));
+            if (dag.existsArc(gum::Arc(i, j))) {
+              dag.eraseArc(gum::Arc(i, j));
               try {
-                dag.addArc (j,i);
+                dag.addArc(j, i);
                 double new_score_i = __score(score, i, dag) - current_scores[i];
                 double new_score_j = __score(score, j, dag) - current_scores[j];
                 double new_score = new_score_i + new_score_j;
-                if ( new_score > 0 ) {
-                  changes.push_back(std::pair<gum::learning::GraphChange,double>(
-                        gum::learning::GraphChange(
-                             gum::learning::GraphChangeType::ARC_REVERSAL,
-                             gum::NodeId(i),gum::NodeId(j)),
-                        new_score));
+                if (new_score > 0) {
+                  changes.push_back(
+                    std::pair< gum::learning::GraphChange, double >(
+                      gum::learning::GraphChange(
+                        gum::learning::GraphChangeType::ARC_REVERSAL,
+                        gum::NodeId(i),
+                        gum::NodeId(j)),
+                      new_score));
                 }
-                dag.eraseArc (gum::Arc(j,i));
-                dag.addArc (i,j);
-              } catch ( ... ) {
-                dag.addArc (i,j);
-              }
+                dag.eraseArc(gum::Arc(j, i));
+                dag.addArc(i, j);
+              } catch (...) { dag.addArc(i, j); }
             }
           }
         }
       }
 
-      if ( changes.empty() ) return false;
+      if (changes.empty()) return false;
 
       // get the best change
       std::size_t best_i = std::size_t(0);
-      for ( std::size_t i = std::size_t(0); i < changes.size(); ++i ) {
-        if ( changes[i].second > changes[best_i].second )
-          best_i = i;
+      for (std::size_t i = std::size_t(0); i < changes.size(); ++i) {
+        if (changes[i].second > changes[best_i].second) best_i = i;
       }
 
       // apply the best change
-      switch ( changes[best_i].first.type() ) {
-      case gum::learning::GraphChangeType::ARC_ADDITION:
-        dag.addArc(changes[best_i].first.node1(),
-                   changes[best_i].first.node2());
-        current_scores[changes[best_i].first.node2()] +=
-          changes[best_i].second;
-        break;
-        
-      case gum::learning::GraphChangeType::ARC_DELETION:
-        dag.eraseArc(gum::Arc(changes[best_i].first.node1(),
-                              changes[best_i].first.node2()));
-        current_scores[changes[best_i].first.node2()] +=
-          changes[best_i].second;
-        break;
-          
-      case gum::learning::GraphChangeType::ARC_REVERSAL:
-        dag.eraseArc(gum::Arc(changes[best_i].first.node1(),
-                              changes[best_i].first.node2()));
-        dag.addArc(changes[best_i].first.node2(),
-                   changes[best_i].first.node1());
-        current_scores[changes[best_i].first.node1()] =
-          __score(score, changes[best_i].first.node1(), dag);
-        current_scores[changes[best_i].first.node2()] =
-          __score(score, changes[best_i].first.node2(), dag);
-        break;
+      switch (changes[best_i].first.type()) {
+        case gum::learning::GraphChangeType::ARC_ADDITION:
+          dag.addArc(changes[best_i].first.node1(), changes[best_i].first.node2());
+          current_scores[changes[best_i].first.node2()] += changes[best_i].second;
+          break;
 
-      default:
-        break;
+        case gum::learning::GraphChangeType::ARC_DELETION:
+          dag.eraseArc(gum::Arc(changes[best_i].first.node1(),
+                                changes[best_i].first.node2()));
+          current_scores[changes[best_i].first.node2()] += changes[best_i].second;
+          break;
 
+        case gum::learning::GraphChangeType::ARC_REVERSAL:
+          dag.eraseArc(gum::Arc(changes[best_i].first.node1(),
+                                changes[best_i].first.node2()));
+          dag.addArc(changes[best_i].first.node2(), changes[best_i].first.node1());
+          current_scores[changes[best_i].first.node1()] =
+            __score(score, changes[best_i].first.node1(), dag);
+          current_scores[changes[best_i].first.node2()] =
+            __score(score, changes[best_i].first.node2(), dag);
+          break;
+
+        default: break;
       }
 
       return true;
     }
-                     
-    
-  public:
+
+
+    public:
     void test_k2_asia() {
       gum::learning::DBInitializerFromCSV<> initializer(
         GET_RESSOURCES_PATH("asia.csv"));
@@ -546,18 +541,18 @@ namespace gum_tests {
 
 
       // create the score and the apriori
-      gum::learning::DBRowGeneratorSet<> dirichlet_genset; 
-      gum::learning::DBRowGeneratorParser<>
-        dirichlet_parser(dirichlet_database.handler(), dirichlet_genset);
-      gum::learning::AprioriDirichletFromDatabase<>
-        apriori(dirichlet_database, dirichlet_parser);
+      gum::learning::DBRowGeneratorSet<>    dirichlet_genset;
+      gum::learning::DBRowGeneratorParser<> dirichlet_parser(
+        dirichlet_database.handler(), dirichlet_genset);
+      gum::learning::AprioriDirichletFromDatabase<> apriori(dirichlet_database,
+                                                            dirichlet_parser);
 
-      gum::learning::DBRowGeneratorSet<>    genset; 
+      gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
 
-      std::vector<double> weights {0, 1.0, 5.0, 10.0, 1000.0, 7000.0, 100000.0 };
+      std::vector< double > weights{0, 1.0, 5.0, 10.0, 1000.0, 7000.0, 100000.0};
 
-      for ( const auto weight : weights) {
+      for (const auto weight : weights) {
         apriori.setWeight(weight);
         gum::learning::ScoreBIC<> score(parser, apriori);
 
@@ -578,19 +573,20 @@ namespace gum_tests {
           selector(score, struct_constraint, op_set);
 
         gum::learning::GreedyHillClimbing search;
-        
+
         gum::DAG dag = search.learnStructure(selector);
-        //std::cout << dag << std::endl;
-      
+        // std::cout << dag << std::endl;
+
         gum::DAG xdag;
-        for (auto node : dag ) xdag.addNodeWithId(node);
+        for (auto node : dag)
+          xdag.addNodeWithId(node);
 
-        std::vector<double> scores (nb_vars);
-        for (auto node : xdag )
-          scores[std::size_t(node)] = __score(score, node, xdag );
+        std::vector< double > scores(nb_vars);
+        for (auto node : xdag)
+          scores[std::size_t(node)] = __score(score, node, xdag);
 
-        while ( __applyNextChange(score, scores, xdag ) ) {}
-                                        
+        while (__applyNextChange(score, scores, xdag)) {}
+
         TS_ASSERT(xdag == dag);
       }
     }

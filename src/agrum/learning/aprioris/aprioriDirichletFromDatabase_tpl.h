@@ -121,7 +121,10 @@ namespace gum {
         apriori_parser, ranges, this->_nodeId2columns, alloc);
       __counter = std::move(good_counter);
 
-      __internal_weight = this->_weight / apriori_db.nbRows();
+      if (apriori_db.nbRows() == std::size_t(0))
+        __internal_weight = 0.0;
+      else
+        __internal_weight = this->_weight / apriori_db.nbRows();
 
       GUM_CONSTRUCTOR(AprioriDirichletFromDatabase);
     }
@@ -258,7 +261,10 @@ namespace gum {
     INLINE void
       AprioriDirichletFromDatabase< ALLOC >::setWeight(const double weight) {
       Apriori< ALLOC >::setWeight(weight);
-      __internal_weight = this->_weight / __counter.database().nbRows();
+      if (__counter.database().nbRows() == 0.0)
+        __internal_weight = 0.0;
+      else
+        __internal_weight = this->_weight / __counter.database().nbRows();
     }
 
 
@@ -288,7 +294,7 @@ namespace gum {
     void AprioriDirichletFromDatabase< ALLOC >::addConditioningApriori(
       const IdSet< ALLOC >&                   idset,
       std::vector< double, ALLOC< double > >& counts) {
-      if (this->_weight == 0.0) return;
+      if (__internal_weight == 0.0) return;
 
       const auto&       apriori = __counter.counts(idset.conditionalIdSet());
       const std::size_t size = apriori.size();

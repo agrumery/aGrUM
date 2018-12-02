@@ -1072,8 +1072,8 @@ namespace gum_tests {
     }
 
 
-    void test_dirichlet2 () {
-     // read the learning database
+    void test_dirichlet2() {
+      // read the learning database
       gum::learning::DBInitializerFromCSV<> initializer(
         GET_RESSOURCES_PATH("db_dirichlet_learning.csv"));
       const auto&       var_names = initializer.variableNames();
@@ -1107,22 +1107,22 @@ namespace gum_tests {
 
 
       // create the score and the apriori
-      gum::learning::DBRowGeneratorSet<> dirichlet_genset; 
-      gum::learning::DBRowGeneratorParser<>
-        dirichlet_parser(dirichlet_database.handler(), dirichlet_genset);
-      gum::learning::AprioriDirichletFromDatabase<>
-        apriori(dirichlet_database, dirichlet_parser);
+      gum::learning::DBRowGeneratorSet<>    dirichlet_genset;
+      gum::learning::DBRowGeneratorParser<> dirichlet_parser(
+        dirichlet_database.handler(), dirichlet_genset);
+      gum::learning::AprioriDirichletFromDatabase<> apriori(dirichlet_database,
+                                                            dirichlet_parser);
 
-      gum::learning::DBRowGeneratorSet<>    genset; 
+      gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
 
-      std::vector<double> weights {0, 1.0, 5.0, 10.0, 1000.0, 7000.0, 100000.0 };
+      std::vector< double > weights{0, 1.0, 5.0, 10.0, 1000.0, 7000.0, 100000.0};
 
       gum::learning::BNLearner< double > learner(
-           GET_RESSOURCES_PATH("db_dirichlet_learning.csv"));
+        GET_RESSOURCES_PATH("db_dirichlet_learning.csv"));
       learner.useScoreBIC();
 
-      for ( const auto weight : weights) {
+      for (const auto weight : weights) {
         apriori.setWeight(weight);
         gum::learning::ScoreBIC<> score(parser, apriori);
 
@@ -1142,22 +1142,19 @@ namespace gum_tests {
           selector(score, struct_constraint, op_set);
 
         gum::learning::GreedyHillClimbing search;
-        
+
         gum::DAG dag = search.learnStructure(selector);
-        //std::cout << dag << std::endl;
+        // std::cout << dag << std::endl;
 
 
         learner.setAprioriWeight(weight);
-        learner.useAprioriDirichlet(GET_RESSOURCES_PATH("db_dirichlet_apriori.csv"));
+        learner.useAprioriDirichlet(
+          GET_RESSOURCES_PATH("db_dirichlet_apriori.csv"));
 
         gum::DAG xdag = learner.learnDAG();
-                                        
+
         TS_ASSERT(xdag == dag);
       }
     }
-
-
-      
-    
   };
 } /* namespace gum_tests */
