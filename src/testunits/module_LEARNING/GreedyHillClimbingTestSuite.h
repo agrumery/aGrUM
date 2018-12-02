@@ -580,7 +580,7 @@ namespace gum_tests {
         gum::learning::GreedyHillClimbing search;
         
         gum::DAG dag = search.learnStructure(selector);
-        std::cout << dag << std::endl;
+        //std::cout << dag << std::endl;
       
         gum::DAG xdag;
         for (auto node : dag ) xdag.addNodeWithId(node);
