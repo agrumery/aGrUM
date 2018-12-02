@@ -157,8 +157,7 @@ namespace gum {
 
       /// default constructor
       template < template < typename > class VARALLOC,
-                 template < typename >
-                 class MISSALLOC >
+                 template < typename > class MISSALLOC >
       RawDatabaseTable(
         const MissingValType< MISSALLOC >&                         missing_symbols,
         const std::vector< std::string, VARALLOC< std::string > >& var_names,

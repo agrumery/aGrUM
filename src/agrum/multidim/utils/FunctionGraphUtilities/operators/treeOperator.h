@@ -43,8 +43,7 @@ namespace gum {
    * @brief Class used to perform Decision Tree Operation in the FMDP Framework
    */
   template < typename GUM_SCALAR,
-             template < typename >
-             class COMBINEOPERATOR,
+             template < typename > class COMBINEOPERATOR,
              template < typename > class TerminalNodePolicy =
                ExactTerminalNodePolicy >
   class TreeOperator {

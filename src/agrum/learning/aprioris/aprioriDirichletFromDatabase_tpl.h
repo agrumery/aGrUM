@@ -121,6 +121,8 @@ namespace gum {
         apriori_parser, ranges, this->_nodeId2columns, alloc);
       __counter = std::move(good_counter);
 
+      __internal_weight = this->_weight / apriori_db.nbRows();
+
       GUM_CONSTRUCTOR(AprioriDirichletFromDatabase);
     }
 
@@ -132,7 +134,8 @@ namespace gum {
       const typename AprioriDirichletFromDatabase< ALLOC >::allocator_type&
         alloc) :
         Apriori< ALLOC >(from, alloc),
-        __counter(from.__counter, alloc) {
+        __counter(from.__counter, alloc),
+        __internal_weight(from.__internal_weight) {
       GUM_CONS_CPY(AprioriDirichletFromDatabase);
     }
 
@@ -151,7 +154,8 @@ namespace gum {
       const typename AprioriDirichletFromDatabase< ALLOC >::allocator_type&
         alloc) :
         Apriori< ALLOC >(std::move(from), alloc),
-        __counter(std::move(from.__counter), alloc) {
+        __counter(std::move(from.__counter), alloc),
+        __internal_weight(from.__internal_weight) {
       GUM_CONS_MOV(AprioriDirichletFromDatabase);
     }
 
@@ -206,6 +210,7 @@ namespace gum {
       if (this != &from) {
         Apriori< ALLOC >::operator=(from);
         __counter = from.__counter;
+        __internal_weight = from.__internal_weight;
       }
       return *this;
     }
@@ -219,6 +224,7 @@ namespace gum {
       if (this != &from) {
         Apriori< ALLOC >::operator=(std::move(from));
         __counter = std::move(from.__counter);
+        __internal_weight = from.__internal_weight;
       }
       return *this;
     }
@@ -247,6 +253,15 @@ namespace gum {
     }
 
 
+    /// sets the weight of the a priori (kind of effective sample size)
+    template < template < typename > class ALLOC >
+    INLINE void
+      AprioriDirichletFromDatabase< ALLOC >::setWeight(const double weight) {
+      Apriori< ALLOC >::setWeight(weight);
+      __internal_weight = this->_weight / __counter.database().nbRows();
+    }
+
+
     /// returns the apriori vector all the variables in the idset
     template < template < typename > class ALLOC >
     INLINE void AprioriDirichletFromDatabase< ALLOC >::addAllApriori(
@@ -256,9 +271,9 @@ namespace gum {
 
       const auto&       apriori = __counter.counts(idset);
       const std::size_t size = apriori.size();
-      if (this->_weight != 1.0) {
+      if (__internal_weight != 1.0) {
         for (std::size_t i = std::size_t(0); i < size; ++i) {
-          counts[i] += apriori[i] * this->_weight;
+          counts[i] += apriori[i] * __internal_weight;
         }
       } else {
         for (std::size_t i = std::size_t(0); i < size; ++i) {
@@ -277,9 +292,9 @@ namespace gum {
 
       const auto&       apriori = __counter.counts(idset.conditionalIdSet());
       const std::size_t size = apriori.size();
-      if (this->_weight != 1.0) {
+      if (__internal_weight != 1.0) {
         for (std::size_t i = std::size_t(0); i < size; ++i) {
-          counts[i] += apriori[i] * this->_weight;
+          counts[i] += apriori[i] * __internal_weight;
         }
       } else {
         for (std::size_t i = std::size_t(0); i < size; ++i) {

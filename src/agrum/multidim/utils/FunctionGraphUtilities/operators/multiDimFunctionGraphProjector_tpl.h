@@ -33,10 +33,8 @@ namespace gum {
 
   // CONSTRUCTOR
   template < typename GUM_SCALAR,
-             template < typename >
-             class FUNCTOR,
-             template < typename >
-             class TerminalNodePolicy >
+             template < typename > class FUNCTOR,
+             template < typename > class TerminalNodePolicy >
   MultiDimFunctionGraphProjector< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
     MultiDimFunctionGraphProjector(
       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* src,
@@ -51,10 +49,8 @@ namespace gum {
 
   // DESTRUCTOR
   template < typename GUM_SCALAR,
-             template < typename >
-             class FUNCTOR,
-             template < typename >
-             class TerminalNodePolicy >
+             template < typename > class FUNCTOR,
+             template < typename > class TerminalNodePolicy >
   MultiDimFunctionGraphProjector< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
     ~MultiDimFunctionGraphProjector() {
     GUM_DESTRUCTOR(MultiDimFunctionGraphProjector);
@@ -64,10 +60,8 @@ namespace gum {
   // This function is the main function. To be call every time an Projection
   // between the two given Function Graphs is required
   template < typename GUM_SCALAR,
-             template < typename >
-             class FUNCTOR,
-             template < typename >
-             class TerminalNodePolicy >
+             template < typename > class FUNCTOR,
+             template < typename > class TerminalNodePolicy >
   MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
     MultiDimFunctionGraphProjector< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
       project() {

@@ -122,7 +122,7 @@ namespace gum {
 
     /// destructor
     template < template < typename > class ALLOC >
-    ScoreBD< ALLOC >::~ScoreBD< ALLOC >() {
+    ScoreBD< ALLOC >::~ScoreBD() {
       GUM_DESTRUCTOR(ScoreBD);
     }
 
@@ -206,7 +206,7 @@ namespace gum {
       // get the counts for all the nodes in the idset and add the apriori
       std::vector< double, ALLOC< double > > N_ijk(
         this->_counter.counts(idset, true));
-      const double                           all_size = (N_ijk.size());
+      const std::size_t                      all_size = N_ijk.size();
       std::vector< double, ALLOC< double > > N_prime_ijk(all_size, 0.0);
       this->_apriori->addAllApriori(idset, N_prime_ijk);
 
@@ -218,7 +218,7 @@ namespace gum {
         // get the counts for the conditioning nodes
         std::vector< double, ALLOC< double > > N_ij(
           this->_marginalize(idset[0], N_ijk));
-        const double conditioning_size = double(N_ij.size());
+        const std::size_t conditioning_size = N_ij.size();
 
         std::vector< double, ALLOC< double > > N_prime_ij(N_ij.size(), 0.0);
         this->_apriori->addConditioningApriori(idset, N_prime_ij);

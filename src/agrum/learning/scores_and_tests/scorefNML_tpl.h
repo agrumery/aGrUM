@@ -119,7 +119,7 @@ namespace gum {
 
     /// destructor
     template < template < typename > class ALLOC >
-    ScorefNML< ALLOC >::~ScorefNML< ALLOC >() {
+    ScorefNML< ALLOC >::~ScorefNML() {
       GUM_DESTRUCTOR(ScorefNML);
     }
 
@@ -198,7 +198,7 @@ namespace gum {
       const bool informative_external_apriori = this->_apriori->isInformative();
       if (informative_external_apriori)
         this->_apriori->addAllApriori(idset, N_ijk);
-      const double all_size = (N_ijk.size());
+      const std::size_t all_size = N_ijk.size();
 
       // here, we distinguish idsets with conditioning nodes from those
       // without conditioning nodes
@@ -206,8 +206,7 @@ namespace gum {
         // get the counts for the conditioning nodes
         std::vector< double, ALLOC< double > > N_ij(
           this->_marginalize(idset[0], N_ijk));
-        const double      conditioning_size = double(N_ij.size());
-        const std::size_t target_domsize = all_size / conditioning_size;
+        const std::size_t target_domsize = all_size / N_ij.size();
 
         // compute the score: it remains to compute the log likelihood, i.e.,
         // sum_k=1^r_i sum_j=1^q_i N_ijk log (N_ijk / N_ij), which is also

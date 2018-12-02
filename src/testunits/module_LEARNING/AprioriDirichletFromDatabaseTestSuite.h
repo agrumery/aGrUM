@@ -66,6 +66,7 @@ namespace gum_tests {
         database.insertRow(row3);
       for (int i = 0; i < 200; ++i)
         database.insertRow(row4);
+      const std::size_t db_size = database.nbRows();
 
       // create the parser
       gum::learning::DBRowGeneratorSet<>    genset;
@@ -75,8 +76,8 @@ namespace gum_tests {
       gum::learning::AprioriDirichletFromDatabase<> apriori(database, parser);
 
       TS_ASSERT(apriori.weight() == 1.0);
-      apriori.setWeight(2.0);
-      TS_ASSERT(apriori.weight() == 2.0);
+      apriori.setWeight(2.0 * db_size);
+      TS_ASSERT(apriori.weight() == 2.0 * db_size);
 
       TS_ASSERT(apriori.getType() == "Dirichlet");
       TS_ASSERT(apriori.isOfType("Dirichlet"));
@@ -140,9 +141,9 @@ namespace gum_tests {
 
 
       gum::learning::AprioriDirichletFromDatabase<> apriori2(apriori);
-      TS_ASSERT(apriori2.weight() == 2.0);
-      apriori2.setWeight(1.0);
-      TS_ASSERT(apriori2.weight() == 1.0);
+      TS_ASSERT(apriori2.weight() == 2.0 * db_size);
+      apriori2.setWeight(db_size);
+      TS_ASSERT(apriori2.weight() == db_size);
 
       TS_ASSERT(apriori2.getType() == "Dirichlet");
       TS_ASSERT(apriori2.isOfType("Dirichlet"));
@@ -196,9 +197,9 @@ namespace gum_tests {
 
 
       gum::learning::AprioriDirichletFromDatabase<> apriori3(std::move(apriori2));
-      TS_ASSERT(apriori3.weight() == 1.0);
-      apriori3.setWeight(2.0);
-      TS_ASSERT(apriori3.weight() == 2.0);
+      TS_ASSERT(apriori3.weight() == db_size);
+      apriori3.setWeight(2.0 * db_size);
+      TS_ASSERT(apriori3.weight() == 2.0 * db_size);
 
       vect.clear();
       vect.resize(3, 1.0);
@@ -248,9 +249,9 @@ namespace gum_tests {
 
 
       gum::learning::AprioriDirichletFromDatabase<>* apriori4 = apriori3.clone();
-      TS_ASSERT(apriori4->weight() == 2.0);
-      apriori4->setWeight(1.0);
-      TS_ASSERT(apriori4->weight() == 1.0);
+      TS_ASSERT(apriori4->weight() == 2.0 * db_size);
+      apriori4->setWeight(1.0 * db_size);
+      TS_ASSERT(apriori4->weight() == 1.0 * db_size);
 
       TS_ASSERT(apriori4->getType() == "Dirichlet");
       TS_ASSERT(apriori4->isOfType("Dirichlet"));
@@ -304,9 +305,9 @@ namespace gum_tests {
 
 
       apriori4->operator=(apriori);
-      TS_ASSERT(apriori4->weight() == 2.0);
-      apriori4->setWeight(1.0);
-      TS_ASSERT(apriori4->weight() == 1.0);
+      TS_ASSERT(apriori4->weight() == 2.0 * db_size);
+      apriori4->setWeight(1.0 * db_size);
+      TS_ASSERT(apriori4->weight() == 1.0 * db_size);
 
       TS_ASSERT(apriori4->getType() == "Dirichlet");
       TS_ASSERT(apriori4->isOfType("Dirichlet"));
@@ -360,9 +361,9 @@ namespace gum_tests {
 
 
       apriori4->operator=(std::move(apriori));
-      TS_ASSERT(apriori4->weight() == 2.0);
-      apriori4->setWeight(1.0);
-      TS_ASSERT(apriori4->weight() == 1.0);
+      TS_ASSERT(apriori4->weight() == 2.0 * db_size);
+      apriori4->setWeight(1.0 * db_size);
+      TS_ASSERT(apriori4->weight() == 1.0 * db_size);
 
       TS_ASSERT(apriori4->getType() == "Dirichlet");
       TS_ASSERT(apriori4->isOfType("Dirichlet"));
@@ -456,6 +457,8 @@ namespace gum_tests {
       for (int i = 0; i < 200; ++i)
         database.insertRow(row4);
 
+      const std::size_t db_size = database.nbRows();
+
       // create the parser
       gum::learning::DBRowGeneratorSet<>    genset;
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
@@ -478,8 +481,8 @@ namespace gum_tests {
         database, parser, nodeId2columns);
 
       TS_ASSERT(apriori.weight() == 1.0);
-      apriori.setWeight(2.0);
-      TS_ASSERT(apriori.weight() == 2.0);
+      apriori.setWeight(2.0 * db_size);
+      TS_ASSERT(apriori.weight() == 2.0 * db_size);
 
       TS_ASSERT(apriori.getType() == "Dirichlet");
       TS_ASSERT(apriori.isOfType("Dirichlet"));
@@ -540,9 +543,9 @@ namespace gum_tests {
 
 
       gum::learning::AprioriDirichletFromDatabase<> apriori2(apriori);
-      TS_ASSERT(apriori2.weight() == 2.0);
-      apriori2.setWeight(1.0);
-      TS_ASSERT(apriori2.weight() == 1.0);
+      TS_ASSERT(apriori2.weight() == 2.0 * db_size);
+      apriori2.setWeight(1.0 * db_size);
+      TS_ASSERT(apriori2.weight() == 1.0 * db_size);
 
       TS_ASSERT(apriori2.getType() == "Dirichlet");
       TS_ASSERT(apriori2.isOfType("Dirichlet"));
@@ -596,9 +599,9 @@ namespace gum_tests {
 
 
       gum::learning::AprioriDirichletFromDatabase<> apriori3(std::move(apriori2));
-      TS_ASSERT(apriori3.weight() == 1.0);
-      apriori3.setWeight(2.0);
-      TS_ASSERT(apriori3.weight() == 2.0);
+      TS_ASSERT(apriori3.weight() == 1.0 * db_size);
+      apriori3.setWeight(2.0 * db_size);
+      TS_ASSERT(apriori3.weight() == 2.0 * db_size);
 
       vect.clear();
       vect.resize(3, 1.0);
@@ -649,9 +652,9 @@ namespace gum_tests {
 
 
       gum::learning::AprioriDirichletFromDatabase<>* apriori4 = apriori3.clone();
-      TS_ASSERT(apriori4->weight() == 2.0);
-      apriori4->setWeight(1.0);
-      TS_ASSERT(apriori4->weight() == 1.0);
+      TS_ASSERT(apriori4->weight() == 2.0 * db_size);
+      apriori4->setWeight(1.0 * db_size);
+      TS_ASSERT(apriori4->weight() == 1.0 * db_size);
 
       TS_ASSERT(apriori4->getType() == "Dirichlet");
       TS_ASSERT(apriori4->isOfType("Dirichlet"));
@@ -705,9 +708,9 @@ namespace gum_tests {
 
 
       apriori4->operator=(apriori);
-      TS_ASSERT(apriori4->weight() == 2.0);
-      apriori4->setWeight(1.0);
-      TS_ASSERT(apriori4->weight() == 1.0);
+      TS_ASSERT(apriori4->weight() == 2.0 * db_size);
+      apriori4->setWeight(1.0 * db_size);
+      TS_ASSERT(apriori4->weight() == 1.0 * db_size);
 
       TS_ASSERT(apriori4->getType() == "Dirichlet");
       TS_ASSERT(apriori4->isOfType("Dirichlet"));
@@ -761,9 +764,9 @@ namespace gum_tests {
 
 
       apriori4->operator=(std::move(apriori));
-      TS_ASSERT(apriori4->weight() == 2.0);
-      apriori4->setWeight(1.0);
-      TS_ASSERT(apriori4->weight() == 1.0);
+      TS_ASSERT(apriori4->weight() == 2.0 * db_size);
+      apriori4->setWeight(1.0 * db_size);
+      TS_ASSERT(apriori4->weight() == 1.0 * db_size);
 
       TS_ASSERT(apriori4->getType() == "Dirichlet");
       TS_ASSERT(apriori4->isOfType("Dirichlet"));

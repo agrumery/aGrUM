@@ -181,8 +181,8 @@ namespace gum {
           DBTranslatedValueType::CONTINUOUS, missing_symbols, fit_range, 1, alloc),
         __variable(var.name(), var.description()), __fit_range(fit_range) {
       // get the bounds of the range variable
-      const float lower_bound = var.lowerBoundAsDouble();
-      const float upper_bound = var.upperBoundAsDouble();
+      const float lower_bound = float(var.lowerBoundAsDouble());
+      const float upper_bound = float(var.upperBoundAsDouble());
       __variable.setLowerBound(lower_bound);
       __variable.setUpperBound(upper_bound);
 

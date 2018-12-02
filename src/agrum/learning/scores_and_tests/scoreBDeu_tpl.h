@@ -122,7 +122,7 @@ namespace gum {
 
     /// destructor
     template < template < typename > class ALLOC >
-    ScoreBDeu< ALLOC >::~ScoreBDeu< ALLOC >() {
+    ScoreBDeu< ALLOC >::~ScoreBDeu() {
       GUM_DESTRUCTOR(ScoreBDeu);
     }
 
@@ -219,7 +219,8 @@ namespace gum {
       // get the counts for all the nodes in the idset and add the apriori
       std::vector< double, ALLOC< double > > N_ijk(
         this->_counter.counts(idset, true));
-      const double all_size = (N_ijk.size());
+      const std::size_t all_size = N_ijk.size();
+
       double       score = 0.0;
       const double ess = __internal_apriori.weight();
       const bool   informative_external_apriori = this->_apriori->isInformative();
@@ -231,9 +232,9 @@ namespace gum {
         // get the counts for the conditioning nodes
         std::vector< double, ALLOC< double > > N_ij(
           this->_marginalize(idset[0], N_ijk));
-        const double conditioning_size = double(N_ij.size());
-        const double ess_qi = ess / conditioning_size;
-        const double ess_riqi = ess / all_size;
+        const std::size_t conditioning_size = N_ij.size();
+        const double      ess_qi = ess / conditioning_size;
+        const double      ess_riqi = ess / all_size;
 
         if (informative_external_apriori) {
           // the score to compute is that of BD with aprioris

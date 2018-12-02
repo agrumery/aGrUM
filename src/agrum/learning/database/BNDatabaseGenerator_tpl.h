@@ -109,8 +109,8 @@ namespace gum {
           for (auto par : dag.parents(node))
             inst.chgVal(__bn.variable(par), sample.at(par));
 
-          const float nb = distro(gen);
-          float       cumul = 0;
+          const double nb = distro(gen);
+          double       cumul = 0.0;
           for (inst.chgVal(var, 0); !inst.end(); inst.incVar(var)) {
             cumul += cpt[inst];
             if (cumul >= nb) break;

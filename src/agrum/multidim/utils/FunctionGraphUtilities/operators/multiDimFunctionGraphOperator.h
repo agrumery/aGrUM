@@ -46,8 +46,7 @@ namespace gum {
    */
   // clang-format on
   template < typename GUM_SCALAR,
-             template < typename >
-             class FUNCTOR,
+             template < typename > class FUNCTOR,
              template < typename > class TerminalNodePolicy =
                ExactTerminalNodePolicy >
   class MultiDimFunctionGraphOperator {

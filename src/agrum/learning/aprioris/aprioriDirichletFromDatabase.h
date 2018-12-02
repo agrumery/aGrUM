@@ -149,6 +149,9 @@ namespace gum {
        * take into account the apriori in their computations. */
       virtual bool isInformative() const final;
 
+      /// sets the weight of the a priori (kind of effective sample size)
+      virtual void setWeight(const double weight) final;
+
       /// adds the apriori to a counting vector corresponding to the idset
       /** adds the apriori to an already created counting vector defined over
        * the union of the variables on both the left and right hand side of the
@@ -171,9 +174,19 @@ namespace gum {
       /// @}
 
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
       private:
-      /// the record counter used to parse the apriori database
+      // the record counter used to parse the apriori database
       RecordCounter< ALLOC > __counter;
+
+      // the internal weight is equal to _weight / nb rows of apriori database
+      // this internal weight is used to ensure that assigning a weight of 1
+      // to the apriori is equivalent to adding just one row to the learning
+      // database
+      double __internal_weight;
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 
   } /* namespace learning */
