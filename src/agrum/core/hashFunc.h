@@ -71,22 +71,16 @@ namespace gum {
    * should adapt X's definition to 32 and 64 bits architectures.
    */
   struct HashFuncConst {
-    static constexpr Size gold =   sizeof(Size) == 4 ?
-      Size(2654435769UL) :
-      Size(11400714819323198486UL);
-    static constexpr Size pi =     sizeof(Size) == 4 ?
-      Size(3373259426UL) :
-      Size(14488038916154245684UL);
-    static constexpr Size mask =   sizeof(Size) == 4 ?
-      Size(4294967295UL) :
-      Size(18446744073709551615UL);
-    static constexpr Size offset = sizeof(Size) == 4 ?
-      Size(32) :
-      Size(64);
+    static constexpr Size gold =
+      sizeof(Size) == 4 ? Size(2654435769UL) : Size(11400714819323198486UL);
+    static constexpr Size pi =
+      sizeof(Size) == 4 ? Size(3373259426UL) : Size(14488038916154245684UL);
+    static constexpr Size mask =
+      sizeof(Size) == 4 ? Size(4294967295UL) : Size(18446744073709551615UL);
+    static constexpr Size offset = sizeof(Size) == 4 ? Size(32) : Size(64);
   };
 
-  
-  
+
   // ===========================================================================
   // ===             BASE CLASS SHARED BY ALL THE HASH FUNCTIONS             ===
   // ===========================================================================
@@ -221,7 +215,7 @@ namespace gum {
     /**
      * @brief performing y = x >> _right_shift guarantees that y is a slot
      * index of the hash table
-     * 
+     *
      * To transform a Size x into a slot index of the hash table, you can either
      * use x & _hash_mask or x >> _right_shift depending on whether you want
      * to exploit the least significant bits of x (&) or the most significant
@@ -231,7 +225,6 @@ namespace gum {
   };
 
 
-  
   // ===========================================================================
   // ===                GENERIC HASH FUNCTIONS FOR SIMPLE TYPES              ===
   // ===========================================================================
@@ -302,8 +295,8 @@ namespace gum {
      * An additional mask to ensure that keys with fewer bits than Size
      * are cast correctly.
      */
-    static constexpr Size _small_key_mask {(Size(1) << (8*sizeof(Key))) - Size(1)};
-    
+    static constexpr Size _small_key_mask{(Size(1) << (8 * sizeof(Key)))
+                                          - Size(1)};
   };
 
 
@@ -395,10 +388,9 @@ namespace gum {
         typename std::conditional<
           sizeof(Key) == sizeof(Size),
           HashFuncMediumCastKey< Key >,
-          typename std::conditional<
-            sizeof(Key) == 2 * sizeof(Size),
-            HashFuncLargeCastKey< Key >,
-            void >::type >::type >::type >::type;
+          typename std::conditional< sizeof(Key) == 2 * sizeof(Size),
+                                     HashFuncLargeCastKey< Key >,
+                                     void >::type >::type >::type >::type;
   };
 
 
@@ -413,7 +405,7 @@ namespace gum {
   // the general type of the recursive type to select the appropriate hash function
   template < typename... >
   struct HashFuncConditionalType;
-  
+
   // base of the recursive type to select the appropriate hash function
   template < typename Key >
   struct HashFuncConditionalType< Key > {
@@ -457,7 +449,7 @@ namespace gum {
       typename HashFuncConditionalType< KEY_TYPE, OTHER_TYPES... >::type >::type;
   };
 
-  
+
   // ===========================================================================
   // ===                  HASH FUNCTIONS FOR PAIRS OF KEYS                   ===
   // ===========================================================================
@@ -485,9 +477,9 @@ namespace gum {
    * @tparam Key2 The type hashed of the second element in the pair.
    */
   template < typename Key1, typename Key2 >
-  class HashFunc< std::pair< Key1, Key2 > > :
-    public HashFuncBase< std::pair< Key1, Key2 > > {
-  public:
+  class HashFunc< std::pair< Key1, Key2 > >
+      : public HashFuncBase< std::pair< Key1, Key2 > > {
+    public:
     /**
      * @brief Returns the value of a key as a Size.
      * @param key The value to return as a Size.
@@ -501,7 +493,7 @@ namespace gum {
      * @return Returns the hashed value of a key.
      */
     virtual Size
-    operator()(const std::pair< Key1, Key2 >& key) const override final;
+      operator()(const std::pair< Key1, Key2 >& key) const override final;
   };
 
 
@@ -585,7 +577,7 @@ namespace gum {
    */
   template < typename Type >
   class HashFunc< Type* > : public HashFuncCastKey< Type* >::type {};
-  
+
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
    * @brief Hash function for strings.
@@ -601,7 +593,7 @@ namespace gum {
      */
     static Size castToSize(const std::string& key);
 
-     /**
+    /**
      * @brief Computes the hashed value of a key.
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
@@ -609,7 +601,7 @@ namespace gum {
     virtual Size operator()(const std::string& key) const override final;
   };
 
-  
+
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
    * @brief Hash function for vectors of gum::Idx.
@@ -632,7 +624,6 @@ namespace gum {
      * @return Returns the hashed value of a key.
      */
     virtual Size operator()(const std::vector< Idx >& key) const override final;
-
   };
 
 
@@ -657,12 +648,12 @@ namespace gum {
      * @return Returns the hashed value of a key.
      */
     virtual Size operator()(const Debug& key) const override final;
-    
-    template <typename OTHER_KEY >
+
+    template < typename OTHER_KEY >
     friend class HashFunc;
   };
 
-  
+
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
    * @brief Hash function for RefPtr.

@@ -31,7 +31,7 @@
 namespace gum {
 
   INLINE Size
-  HashFunc< credal::lp::LpCol >::castToSize(const credal::lp::LpCol& key) {
+         HashFunc< credal::lp::LpCol >::castToSize(const credal::lp::LpCol& key) {
     return Size(key.id());
   }
 

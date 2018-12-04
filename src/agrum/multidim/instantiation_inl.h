@@ -805,16 +805,15 @@ namespace gum {
 
   /// returns a hashed key for hash tables the keys of which are represented
   /// by vectors of Idx
-  INLINE Size HashFunc< Instantiation >::
-              castToSize(const Instantiation& key) {
+  INLINE Size HashFunc< Instantiation >::castToSize(const Instantiation& key) {
     Size h = Size(0);
     for (const DiscreteVariable* k :
          key.variablesSequence())   // k are unique only by address (not by name)
-      h += HashFunc<const DiscreteVariable*>::castToSize(k) * Size(key.val(*k));
+      h += HashFunc< const DiscreteVariable* >::castToSize(k) * Size(key.val(*k));
 
     return h;
   }
-  
+
   /// returns a hashed key for hash tables the keys of which are represented
   /// by vectors of Idx
   INLINE Size HashFunc< Instantiation >::

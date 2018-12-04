@@ -481,8 +481,8 @@ namespace gum {
 
   /// the hash function for Graph Changes
   template <>
-  class HashFunc< learning::GraphChange > :
-    public HashFuncBase< learning::GraphChange > {
+  class HashFunc< learning::GraphChange >
+      : public HashFuncBase< learning::GraphChange > {
     public:
     /**
      * @brief Returns the value of a key as a Size.
@@ -492,14 +492,13 @@ namespace gum {
     static Size castToSize(const learning::GraphChange& key);
 
     /// computes the hashed value of a key
-    virtual Size
-    operator()(const learning::GraphChange& key) const override final;
+    virtual Size operator()(const learning::GraphChange& key) const override final;
   };
 
   /// the hash function for Arc Additions
   template <>
-  class HashFunc< learning::ArcAddition > :
-    public HashFuncBase< learning::ArcAddition > {
+  class HashFunc< learning::ArcAddition >
+      : public HashFuncBase< learning::ArcAddition > {
     public:
     /**
      * @brief Returns the value of a key as a Size.
@@ -509,14 +508,13 @@ namespace gum {
     static Size castToSize(const learning::ArcAddition& key);
 
     /// computes the hashed value of a key
-    virtual Size
-    operator()(const learning::ArcAddition& key) const override final;
+    virtual Size operator()(const learning::ArcAddition& key) const override final;
   };
 
   /// the hash function for Arc Deletions
   template <>
-  class HashFunc< learning::ArcDeletion > :
-    public HashFuncBase< learning::ArcDeletion > {
+  class HashFunc< learning::ArcDeletion >
+      : public HashFuncBase< learning::ArcDeletion > {
     public:
     /**
      * @brief Returns the value of a key as a Size.
@@ -526,14 +524,13 @@ namespace gum {
     static Size castToSize(const learning::ArcDeletion& key);
 
     /// computes the hashed value of a key
-    virtual Size
-    operator()(const learning::ArcDeletion& key) const override final;
+    virtual Size operator()(const learning::ArcDeletion& key) const override final;
   };
 
   /// the hash function for Arc Reversals
   template <>
-  class HashFunc< learning::ArcReversal > :
-    public HashFuncBase< learning::ArcReversal > {
+  class HashFunc< learning::ArcReversal >
+      : public HashFuncBase< learning::ArcReversal > {
     public:
     /**
      * @brief Returns the value of a key as a Size.
@@ -543,14 +540,13 @@ namespace gum {
     static Size castToSize(const learning::ArcReversal& key);
 
     /// computes the hashed value of a key
-    virtual Size
-    operator()(const learning::ArcReversal& key) const override final;
+    virtual Size operator()(const learning::ArcReversal& key) const override final;
   };
 
   /// the hash function for Edge Additions
   template <>
-  class HashFunc< learning::EdgeAddition > :
-  public HashFuncBase< learning::EdgeAddition > {
+  class HashFunc< learning::EdgeAddition >
+      : public HashFuncBase< learning::EdgeAddition > {
     /**
      * @brief Returns the value of a key as a Size.
      * @param key The value to return as a Size.
@@ -560,13 +556,13 @@ namespace gum {
 
     /// computes the hashed value of a key
     virtual Size
-    operator()(const learning::EdgeAddition& key) const override final;
+      operator()(const learning::EdgeAddition& key) const override final;
   };
 
   /// the hash function for Edge Deletions
   template <>
-  class HashFunc< learning::EdgeDeletion > :
-    public HashFuncBase< learning::EdgeDeletion > {
+  class HashFunc< learning::EdgeDeletion >
+      : public HashFuncBase< learning::EdgeDeletion > {
     public:
     /**
      * @brief Returns the value of a key as a Size.
@@ -577,7 +573,7 @@ namespace gum {
 
     /// computes the hashed value of a key
     virtual Size
-    operator()(const learning::EdgeDeletion& key) const override final;
+      operator()(const learning::EdgeDeletion& key) const override final;
   };
 
 } /* namespace gum */

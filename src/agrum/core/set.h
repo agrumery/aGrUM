@@ -1185,7 +1185,7 @@ namespace gum {
   template < typename Key, typename Alloc >
   std::ostream& operator<<(std::ostream&, const Set< Key, Alloc >&);
 
-  
+
   /// the hash function for sets of int
   template < typename T, typename Alloc >
   class HashFunc< Set< T, Alloc > > : public HashFuncBase< Set< T, Alloc > > {
@@ -1199,7 +1199,6 @@ namespace gum {
 
     /// computes the hashed value of a key
     virtual Size operator()(const Set< T, Alloc >& key) const override final;
-    
   };
 
 } /* namespace gum */

@@ -895,11 +895,10 @@ namespace gum {
     return list;
   }
 
-  
+
   // Returns the value of a key as a Size
   template < typename T, typename Alloc >
-  INLINE Size
-  HashFunc< Set< T, Alloc > >::castToSize(const Set< T, Alloc >& key) {
+  INLINE Size HashFunc< Set< T, Alloc > >::castToSize(const Set< T, Alloc >& key) {
     Size h = Size(0);
     Size i = Size(0);
     for (const auto& k : key) {
@@ -909,11 +908,11 @@ namespace gum {
     return h;
   }
 
-  
+
   // Returns the hashed value of a key.
   template < typename T, typename Alloc >
-  INLINE Size
-  HashFunc< Set< T, Alloc > >::operator()(const Set< T, Alloc >& key) const {
+  INLINE Size HashFunc< Set< T, Alloc > >::
+              operator()(const Set< T, Alloc >& key) const {
     return (castToSize(key) * HashFuncConst::gold) & this->_hash_mask;
   }
 

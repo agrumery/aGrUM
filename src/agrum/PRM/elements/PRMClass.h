@@ -458,7 +458,7 @@ namespace gum {
     extern template class PRMClass< double >;
 
   } /* namespace prm */
-  
+
 }   // namespace gum
 
 #include <agrum/PRM/elements/PRMClass_tpl.h>

@@ -297,19 +297,23 @@ namespace gum_tests {
       const std::vector< gum::NodeId >& elim4 = triang.eliminationOrder();
       TS_ASSERT_EQUALS(elim4.size(), 8U);
       TS_ASSERT_EQUALS(elim4[0], 60U);
-      TS_ASSERT_EQUALS(elim4[1], 80U);
-      TS_ASSERT_EQUALS(elim4[2], 30U);
-      TS_ASSERT_EQUALS(elim4[3], 10U);
-      TS_ASSERT_EQUALS(elim4[4], 70U);
+      TS_ASSERT((elim4[1] == 80U) || (elim4[1] == 70U));
+      TS_ASSERT((elim4[2] == 30U) || (elim4[2] == 80U));
+      TS_ASSERT((elim4[3] == 10U) || (elim4[3] == 30U));
+      TS_ASSERT((elim4[4] == 70U) || (elim4[4] == 10U));
       TS_ASSERT_EQUALS(elim4[5], 50U);
       TS_ASSERT_EQUALS(elim4[6], 40U);
       TS_ASSERT_EQUALS(elim4[7], 20U);
 
       TS_ASSERT_EQUALS(triang.eliminationOrder(60U), 0U);
-      TS_ASSERT_EQUALS(triang.eliminationOrder(80U), 1U);
-      TS_ASSERT_EQUALS(triang.eliminationOrder(30U), 2U);
-      TS_ASSERT_EQUALS(triang.eliminationOrder(10U), 3U);
-      TS_ASSERT_EQUALS(triang.eliminationOrder(70U), 4U);
+      TS_ASSERT((triang.eliminationOrder(80U) == 1U)
+                || (triang.eliminationOrder(80U) == 2U));
+      TS_ASSERT((triang.eliminationOrder(30U) == 2U)
+                || (triang.eliminationOrder(30U) == 3U));
+      TS_ASSERT((triang.eliminationOrder(10U) == 3U)
+                || (triang.eliminationOrder(10U) == 4U));
+      TS_ASSERT((triang.eliminationOrder(70U) == 4U)
+                || (triang.eliminationOrder(70U) == 1U));
       TS_ASSERT_EQUALS(triang.eliminationOrder(50U), 5U);
       TS_ASSERT_EQUALS(triang.eliminationOrder(40U), 6U);
       TS_ASSERT_EQUALS(triang.eliminationOrder(20U), 7U);

@@ -38,8 +38,8 @@ namespace gum {
     // things work properly only for hashtables with at least 2 elements
     if (new_size < 2) {
       GUM_ERROR(SizeError,
-                "the size of the hashtable must be at least 2 but a size of " <<
-                new_size << " was provided to the resize function." );
+                "the size of the hashtable must be at least 2 but a size of "
+                  << new_size << " was provided to the resize function.");
     }
 
     _hash_log2_size = __hashTableLog2(new_size);
@@ -75,7 +75,7 @@ namespace gum {
   INLINE Size HashFuncSmallKey< Key >::operator()(const Key& key) const {
     return (castToSize(key) * HashFuncConst::gold) >> this->_right_shift;
   }
-  
+
   // ===========================================================================
 
   // constructor
@@ -97,7 +97,7 @@ namespace gum {
   INLINE Size HashFuncSmallCastKey< Key >::operator()(const Key& key) const {
     return (castToSize(key) * HashFuncConst::gold) >> this->_right_shift;
   }
-  
+
   // ===========================================================================
 
   // constructor
@@ -129,14 +129,14 @@ namespace gum {
                   "Error: you used HashFuncLargeCastKey for a key whose size "
                   "is different from twice that of a gum::Size");
   }
-    
+
   // Returns the value of a key as a Size
   template < typename Key >
   INLINE Size HashFuncLargeCastKey< Key >::castToSize(const Key& key) {
     const Size* ptr = reinterpret_cast< const Size* >(&key);
     return ptr[0] ^ ptr[1];
   }
-  
+
   // Returns the hashed value of a key.
   template < typename Key >
   INLINE Size HashFuncLargeCastKey< Key >::operator()(const Key& key) const {
@@ -147,27 +147,24 @@ namespace gum {
 
   // Returns the value of a key as a Size
   template < typename Key1, typename Key2 >
-  INLINE Size
-  HashFunc< std::pair< Key1, Key2 > >::castToSize (
-      const std::pair< Key1, Key2 >& key) {
+  INLINE Size HashFunc< std::pair< Key1, Key2 > >::castToSize(
+    const std::pair< Key1, Key2 >& key) {
     return HashFunc< Key1 >::castToSize(key.first) * HashFuncConst::pi
-      + HashFunc< Key2 >::castToSize(key.second);
+           + HashFunc< Key2 >::castToSize(key.second);
   }
-    
+
   // Returns the hashed value of a key.
   template < typename Key1, typename Key2 >
-  INLINE Size
-  HashFunc< std::pair< Key1, Key2 > >::operator()(
-      const std::pair< Key1, Key2 >& key) const {
+  INLINE Size HashFunc< std::pair< Key1, Key2 > >::
+              operator()(const std::pair< Key1, Key2 >& key) const {
     return (castToSize(key) * HashFuncConst::gold) >> this->_right_shift;
   }
-  
+
   // ===========================================================================
 
   // Returns the hashed value of a key.
   template < typename Type >
-  INLINE Size HashFunc< RefPtr< Type > >::
-              castToSize(const RefPtr< Type >& key) {
+  INLINE Size HashFunc< RefPtr< Type > >::castToSize(const RefPtr< Type >& key) {
     return HashFunc< Type* >::castToSize(key.__refCountPtr());
   }
 
@@ -177,7 +174,7 @@ namespace gum {
               operator()(const RefPtr< Type >& key) const {
     return (castToSize(key) * HashFuncConst::gold) & this->_hash_mask;
   }
-    
+
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

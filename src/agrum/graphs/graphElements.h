@@ -346,7 +346,7 @@ namespace gum {
     virtual Size operator()(const Edge& key) const override final;
   };
 
-  
+
   template <>
   class HashFunc< Arc > : public HashFuncBase< Arc > {
     public:
@@ -356,14 +356,14 @@ namespace gum {
      * @return Returns the value of a key as a Size.
      */
     static Size castToSize(const Arc& key);
-    
+
     /**
      * @brief Computes the hashed value of a key.
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
     virtual Size operator()(const Arc& key) const override final;
-  };  
+  };
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 

@@ -30,4 +30,3 @@
 #ifdef GUM_NO_INLINE
 #  include <agrum/CN/LpInterface_inl.h>
 #endif /* GUM_NO_INLINE */
-

@@ -52,8 +52,7 @@ namespace gum {
   // ===========================================================================
 
   /// returns an unnormalized hashed key for hash tables whose keys are strings
-  INLINE Size
-  HashFunc< std::string >::castToSize(const std::string& key) {
+  INLINE Size HashFunc< std::string >::castToSize(const std::string& key) {
     Size        h = 0;
     Size        size = Size(key.size());
     const char* char_ptr = key.c_str();
@@ -76,10 +75,10 @@ namespace gum {
   }
 
   // ===========================================================================
-  
+
   /// returns a hashed key for hash tables whose keys are vectors of Idx
-  INLINE Size HashFunc< std::vector< Idx > >::castToSize(
-              const std::vector< Idx >& key) {
+  INLINE Size
+         HashFunc< std::vector< Idx > >::castToSize(const std::vector< Idx >& key) {
     Size h = Size(0);
     Size size = Size(key.size());
     for (Size i = Size(0); i < size; ++i)
@@ -89,8 +88,8 @@ namespace gum {
   }
 
   // Returns the hashed value of a key.
-  INLINE Size HashFunc< std::vector< Idx > >::operator()(
-              const std::vector< Idx >& key) const {
+  INLINE Size HashFunc< std::vector< Idx > >::
+              operator()(const std::vector< Idx >& key) const {
     return (castToSize(key) * HashFuncConst::gold) & this->_hash_mask;
   }
 
@@ -105,13 +104,13 @@ namespace gum {
 
     return h;
   }
-  
+
   // Returns the hashed value of a key.
   INLINE Size HashFunc< Debug >::operator()(const Debug& key) const {
     return (castToSize(key) * HashFuncConst::gold) & this->_hash_mask;
   }
 
-  
+
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
