@@ -895,87 +895,26 @@ namespace gum {
     return list;
   }
 
-
-  /// the hash function for sets of int
-  template < typename Alloc >
-  Size HashFunc< Set< int, Alloc > >::
-       operator()(const Set< int, Alloc >& key) const {
-    Size h = 0;
-    int  i = 0;
+  
+  // Returns the value of a key as a Size
+  template < typename T, typename Alloc >
+  INLINE Size
+  HashFunc< Set< T, Alloc > >::castToSize(const Set< T, Alloc >& key) {
+    Size h = Size(0);
+    Size i = Size(0);
     for (const auto& k : key) {
-      h += ++i * k;
+      h += ++i * HashFunc< T >::castToSize(k);
     }
 
-    return ((h * HashFuncConst::gold) & this->_hash_mask);
+    return h;
   }
 
-
-  /// the hash function for sets of unsigned int
-  template < typename Alloc >
-  Size HashFunc< Set< unsigned int, Alloc > >::
-       operator()(const Set< unsigned int, Alloc >& key) const {
-    Size         h = 0;
-    unsigned int i = 0;
-    for (const auto k : key) {
-      h += ++i * k;
-    }
-
-    return ((h * HashFuncConst::gold) & this->_hash_mask);
+  
+  // Returns the hashed value of a key.
+  template < typename T, typename Alloc >
+  INLINE Size
+  HashFunc< Set< T, Alloc > >::operator()(const Set< T, Alloc >& key) const {
+    return (castToSize(key) * HashFuncConst::gold) & this->_hash_mask;
   }
-
-
-  /// the hash function for sets of long
-  template < typename Alloc >
-  Size HashFunc< Set< long, Alloc > >::
-       operator()(const Set< long, Alloc >& key) const {
-    Size h = 0;
-    long i = 0;
-    for (const auto k : key) {
-      h += ++i * k;
-    }
-
-    return ((h * HashFuncConst::gold) & this->_hash_mask);
-  }
-
-
-  /// the hash function for sets of unsigned long
-  template < typename Alloc >
-  Size HashFunc< Set< unsigned long, Alloc > >::
-       operator()(const Set< unsigned long, Alloc >& key) const {
-    Size          h = 0;
-    unsigned long i = 0;
-    for (const auto k : key) {
-      h += ++i * k;
-    }
-
-    return ((h * HashFuncConst::gold) & this->_hash_mask);
-  }
-
-
-  /// the hash function for sets of float
-  template < typename Alloc >
-  Size HashFunc< Set< float, Alloc > >::
-       operator()(const Set< float, Alloc >& key) const {
-    Size h = 0, i = 0;
-    for (const auto k : key) {
-      h += ++i * __casting.castToSize(k);
-    }
-
-    return ((h * HashFuncConst::gold) & this->_hash_mask);
-  }
-
-
-  /// the hash function for sets of double
-  template < typename Alloc >
-  Size HashFunc< Set< double, Alloc > >::
-       operator()(const Set< double, Alloc >& key) const {
-    Size h = 0, i = 0;
-    for (const auto k : key) {
-      h += ++i * __casting.castToSize(k);
-    }
-
-    return ((h * HashFuncConst::gold) & this->_hash_mask);
-  }
-
 
 } /* namespace gum */

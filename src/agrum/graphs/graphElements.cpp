@@ -40,24 +40,6 @@ namespace gum {
   ////////////////////////////////////////////////////////////////
   // we need to provide hash functions for some Edge and Arc
 
-  /// returns a hashed key for hash tables the keys of which are represented
-  /// by a Edge
-
-  Size HashFunc< Edge >::operator()(const Edge& key) const {
-    pair.first = key.first();
-    pair.second = key.second();
-    return HashFuncSmallKeyPair< NodeId, NodeId >::operator()(pair);
-  }
-
-  /// returns a hashed key for hash tables the keys of which are represented
-  /// by a Arc
-
-  Size HashFunc< Arc >::operator()(const Arc& key) const {
-    pair.first = key.first();
-    pair.second = key.second();
-    return HashFuncSmallKeyPair< NodeId, NodeId >::operator()(pair);
-  }
-
   /// A \c << operator for edges
 
   std::ostream& operator<<(std::ostream& stream, const Edge& edge) {

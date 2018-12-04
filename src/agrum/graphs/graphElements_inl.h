@@ -109,6 +109,20 @@ namespace gum {
     return ((n1 != src.n1) || (n2 != src.n2));
   }
 
+
+  // Returns the value of a key as a Size
+  INLINE Size HashFunc< Edge >::castToSize (const Edge& key) {
+    return Size(key.first()) * HashFuncConst::pi +
+      Size(key.second()) * HashFuncConst::gold;
+  }
+  
+  // Computes the hashed value of a key.
+  INLINE Size HashFunc< Edge >::operator()(const Edge& key) const {
+    return castToSize(key) & this->_hash_mask;
+  }
+
+
+
   /* ===========================================================================
    */
   /* ===========================================================================
@@ -206,6 +220,19 @@ namespace gum {
     n1 = n2;
     n2 = n_temp;
   }
+
+
+  // Returns the value of a key as a Size
+  INLINE Size HashFunc< Arc >::castToSize (const Arc& key) {
+    return Size(key.first()) * HashFuncConst::pi +
+      Size(key.second()) * HashFuncConst::gold;
+  }
+  
+  // Computes the hashed value of a key.
+  INLINE Size HashFunc< Arc >::operator()(const Arc& key) const {
+    return castToSize(key) & this->_hash_mask;
+  }
+
 
 } /* namespace gum */
 

@@ -329,28 +329,41 @@ namespace gum {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
   template <>
-  class HashFunc< Edge > : public HashFuncSmallKeyPair< NodeId, NodeId > {
+  class HashFunc< Edge > : public HashFuncBase< Edge > {
     public:
     /**
-     * @throw SizeError
+     * @brief Returns the value of a key as a Size.
+     * @param key The value to return as a Size.
+     * @return Returns the value of a key as a Size.
      */
-    Size operator()(const Edge& key) const;
+    static Size castToSize(const Edge& key);
 
-    private:
-    mutable std::pair< NodeId, NodeId > pair;
+    /**
+     * @brief Computes the hashed value of a key.
+     * @param key The key to compute the hashed value.
+     * @return Returns the hashed value of a key.
+     */
+    virtual Size operator()(const Edge& key) const override final;
   };
 
+  
   template <>
-  class HashFunc< Arc > : public HashFuncSmallKeyPair< NodeId, NodeId > {
+  class HashFunc< Arc > : public HashFuncBase< Arc > {
     public:
     /**
-     * @throw SizeError
+     * @brief Returns the value of a key as a Size.
+     * @param key The value to return as a Size.
+     * @return Returns the value of a key as a Size.
      */
-    Size operator()(const Arc& key) const;
-
-    private:
-    mutable std::pair< NodeId, NodeId > pair;
-  };
+    static Size castToSize(const Arc& key);
+    
+    /**
+     * @brief Computes the hashed value of a key.
+     * @param key The key to compute the hashed value.
+     * @return Returns the hashed value of a key.
+     */
+    virtual Size operator()(const Arc& key) const override final;
+  };  
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 

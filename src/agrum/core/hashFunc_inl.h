@@ -41,94 +41,77 @@ namespace gum {
    * this restriction. Function __hashTableLog2 thus returns the size in
    * bits - 1 necessary to store the smallest power of 2 greater than or
    * equal nb. */
-  INLINE unsigned int __hashTableLog2(const Size& nb) {
+  INLINE unsigned int __hashTableLog2(const Size nb) {
     unsigned int i = 0;
 
-    for (Size nbb = nb; nbb > 1UL; ++i, nbb >>= 1) {};
+    for (Size nbb = nb; nbb > Size(1); ++i, nbb >>= 1) {};
 
-    return ((1UL << i) < nb ? i + 1U : i);
+    return ((Size(1) << i) < nb ? i + Size(1) : i);
   }
 
-  /// returns a hashed key for hash tables the keys of which are represented
-  /// by strings
-  INLINE Size HashFunc< std::string >::operator()(const std::string& key) const {
+  // ===========================================================================
+
+  /// returns an unnormalized hashed key for hash tables whose keys are strings
+  INLINE Size
+  HashFunc< std::string >::castToSize(const std::string& key) {
     Size        h = 0;
-    auto        size = (unsigned int)key.size();
+    Size        size = Size(key.size());
     const char* char_ptr = key.c_str();
-    auto        int_ptr = (const unsigned long*)char_ptr;
+    const Size* int_ptr = (const Size*)char_ptr;
 
-    for (; size >= sizeof(unsigned long);
-         size -= sizeof(unsigned long), ++int_ptr) {
+    for (; size >= sizeof(Size); size -= sizeof(Size), ++int_ptr) {
       h = h * HashFuncConst::gold + *int_ptr;
     }
 
-    for (char_ptr = (const char*)int_ptr; size != 0; --size, ++char_ptr) {
-      h = 19 * h + *char_ptr;
+    for (char_ptr = (const char*)int_ptr; size != Size(0); --size, ++char_ptr) {
+      h = Size(19) * h + Size(*char_ptr);
     }
 
-    return (h & _hash_mask);
+    return h;
   }
 
-  /// returns a hashed key for hash tables the keys of which are represented
-  /// by strings
-  INLINE Size HashFunc< std::pair< std::string, std::string > >::
-              operator()(const std::pair< std::string, std::string >& key) const {
-    Size h = 0;
-
-    const std::string& s1 = key.first;
-    auto               size = (unsigned int)s1.size();
-    const char*        char_ptr = s1.c_str();
-    auto               int_ptr = (const unsigned long*)char_ptr;
-
-    for (; size >= sizeof(unsigned long);
-         size -= sizeof(unsigned long), ++int_ptr) {
-      h = h * HashFuncConst::gold + *int_ptr;
-    }
-
-    for (char_ptr = (const char*)int_ptr; size != 0; --size, ++char_ptr) {
-      h = 19 * h + *char_ptr;
-    }
-
-    const std::string& s2 = key.second;
-    size = (unsigned int)s2.size();
-    char_ptr = s2.c_str();
-    int_ptr = (const unsigned long*)char_ptr;
-
-    for (; size >= sizeof(unsigned long);
-         size -= sizeof(unsigned long), ++int_ptr) {
-      h = h * HashFuncConst::gold + *int_ptr;
-    }
-
-    for (char_ptr = (const char*)int_ptr; size != 0; --size, ++char_ptr) {
-      h = 19 * h + *char_ptr;
-    }
-
-    return (h & this->_hash_mask);
+  // Returns the hashed value of a key.
+  INLINE Size HashFunc< std::string >::operator()(const std::string& key) const {
+    return castToSize(key) & this->_hash_mask;
   }
 
-  /// returns a hashed key for hash tables the keys of which are represented
-  /// by vectors of Idx
-  INLINE Size HashFunc< std::vector< Idx > >::
-              operator()(const std::vector< Idx >& key) const {
-    Size h = 0;
-    Size siz = Size(key.size());
-    for (Size i = 0; i < siz; ++i)
-      h += i * key[i];
+  // ===========================================================================
+  
+  /// returns a hashed key for hash tables whose keys are vectors of Idx
+  INLINE Size HashFunc< std::vector< Idx > >::castToSize(
+              const std::vector< Idx >& key) {
+    Size h = Size(0);
+    Size size = Size(key.size());
+    for (Size i = Size(0); i < size; ++i)
+      h += i * Size(key[i]);
 
-    return ((h * HashFuncConst::gold) & this->_hash_mask);
+    return h;
   }
 
-  /// returns a hashed key for hash tables the keys of which are represented
-  /// by Debugs
+  // Returns the hashed value of a key.
+  INLINE Size HashFunc< std::vector< Idx > >::operator()(
+              const std::vector< Idx >& key) const {
+    return (castToSize(key) * HashFuncConst::gold) & this->_hash_mask;
+  }
+
+  // ===========================================================================
+
+  /// returns a hashed key for hash tables whose keys are Debugs
+  INLINE Size HashFunc< Debug >::castToSize(const Debug& key) {
+    Size h = Size(0);
+
+    for (Size i = Size(0), j = Size(key.size()); i < j; ++i)
+      h = Size(19) * h + Size(key[i]);
+
+    return h;
+  }
+  
+  // Returns the hashed value of a key.
   INLINE Size HashFunc< Debug >::operator()(const Debug& key) const {
-    Size h = 0;
-
-    for (size_t i = 0, j = key.size(); i < j; ++i)
-      h = 19 * h + key[i];
-
-    return ((h * HashFuncConst::gold) & this->_hash_mask);
+    return (castToSize(key) * HashFuncConst::gold) & this->_hash_mask;
   }
 
+  
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

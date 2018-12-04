@@ -41,49 +41,52 @@ namespace gum {
   /**
    * @ingroup hashfunctions_group
    * @brief Returns the size in bits - 1 necessary to store the smallest power
-   * of 2 greater or equal to nb.
+   * of 2 greater than or equal to nb.
    *
    * In aGrUM, the sizes of hash tables (number of slots) are powers of 2. This
    * is not actually compulsory for the hash function we use. However, as it
    * speeds up the computations of hashed values, we chose to impose this
    * restriction.
    *
-   * @param nb The greatest number for wich this function will return a power
+   * @param nb The greatest number for which this function will return a power
    * of 2.
    * @return Returns the size in bits - 1 necessary to store the smallest power
    * of 2 greater than or equal to nb.
    */
-  unsigned int __hashTableLog2(const Size& nb);
+  unsigned int __hashTableLog2(const Size nb);
 
   /**
    * @class HashFuncConst
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
    * @ingroup hashfunctions_group
-   * @brief Constants for hash functions.
+   * @brief Useful constants for hash functions.
    *
    * Hash functions are of the form [M * ((k * A) mod 1)], where [] stands for
    * the integer part, M is equal to the number of slots in the hashtable, k is
    * the key to be hashed, and mod 1 retrieves the decimal part of (k * A). A
    * is an irrational number (currently either the gold number or pi/4). To
    * speed up computations, the hash function is implemented using only
-   * unsigned longs.  Therefore pi/4 and the gold number are encoded as X *
-   * 2^{-n} where n is the number of bits in an unsigned long. Consequently, we
+   * Size (a.k.a. std::size_t). Therefore pi/4 and the gold number are encoded
+   * as X * 2^{-n} where n is the number of bits in a Size. Consequently, we
    * should adapt X's definition to 32 and 64 bits architectures.
-   * */
+   */
   struct HashFuncConst {
-#if ULONG_MAX == 4294967295UL   // unsigned long = 32 bits
-    static constexpr unsigned long gold = 2654435769UL;
-    static constexpr unsigned long pi = 3373259426UL;
-    static constexpr unsigned long mask = 4294967295UL;
-    static constexpr size_t        offset = 32;
-#else   // unsigned long = 64 bits
-    static constexpr unsigned long gold = 11400714819323198486UL;
-    static constexpr unsigned long pi = 14488038916154245684UL;
-    static constexpr unsigned long mask = 18446744073709551615UL;
-    static constexpr size_t        offset = 64;
-#endif  /* unsigned long = 32 bits */
+    static constexpr Size gold =   sizeof(Size) == 4 ?
+      Size(2654435769UL) :
+      Size(11400714819323198486UL);
+    static constexpr Size pi =     sizeof(Size) == 4 ?
+      Size(3373259426UL) :
+      Size(14488038916154245684UL);
+    static constexpr Size mask =   sizeof(Size) == 4 ?
+      Size(4294967295UL) :
+      Size(18446744073709551615UL);
+    static constexpr Size offset = sizeof(Size) == 4 ?
+      Size(32) :
+      Size(64);
   };
 
+  
+  
   // ===========================================================================
   // ===             BASE CLASS SHARED BY ALL THE HASH FUNCTIONS             ===
   // ===========================================================================
@@ -161,97 +164,119 @@ namespace gum {
      * gum::HashTable.
      *
      * @param new_size The hashtable's size wished by the user. Actually, a
-     * hashtable
-     * of size n is an array of n lists.
+     * hashtable of size n is an array of n lists.
      * @throw SizeError Raised if s is too small.
      */
-    virtual void resize(Size new_size);
+    void resize(const Size new_size);
+
+    /**
+     * @brief Returns the hash table size as known by the hash function.
+     * @return Returns the size of the hash table, i.e., the number of slots
+     * (lists) it contains.
+     */
+    Size size() const;
 
     /**
      * @brief Computes the hashed value of a key.
+     *
+     * The classes inheriting from HashFuncBase should always declare
+     * Operator() as follows:
+     * @code
+     * Size operator()(const Key& key) const override final;
+     * @endcode
+     * and its implementation should be something like:
+     * @code
+     * INLINE Size HashFunc< Key >::operator()(const Key& key) const {
+     *   return (castToSize(key) * HashFuncConst::gold) >> this->_right_shift;
+     * }
+     * @endcode
+     * By doing this, compilers optimize the code so that it is significantly
+     * speeded-up because no virtual table will be used and everything is
+     * most certainly inlined. Of course, you need to define a static method
+     * castToSize which should take as argument a const Key& and return a Size
+     *
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
     virtual Size operator()(const Key& key) const = 0;
 
-    /**
-     * @brief Returns the hash table size as known by the hash function.
-     * @return Returns the hash table size as known by the hash function.
-     */
-    Size size() const noexcept;
-
     protected:
     /// The size of the hash table.
-    Size _hash_size{0};
+    Size _hash_size{Size(0)};
 
-    /// Log of the size of the hash table in base 2.
+    /// Log of the number of slots of the hash table in base 2.
     unsigned int _hash_log2_size{0};
 
     /**
-     * When you use this mask, you are guaranteed that hashed keys belong to
-     * the set of indexes of the hash table.
+     * @brief performing y = x & _hash_mask guarantees that y is a slot index
+     * of the hash table
+     *
+     * To transform a Size x into a slot index of the hash table, you can either
+     * use x & _hash_mask or x >> _right_shift depending on whether you want
+     * to exploit the least significant bits of x (&) or the most significant
+     * one (>>).
      */
-    Size _hash_mask{0};
+    Size _hash_mask{Size(0)};
+
+    /**
+     * @brief performing y = x >> _right_shift guarantees that y is a slot
+     * index of the hash table
+     * 
+     * To transform a Size x into a slot index of the hash table, you can either
+     * use x & _hash_mask or x >> _right_shift depending on whether you want
+     * to exploit the least significant bits of x (&) or the most significant
+     * one (>>).
+     */
+    unsigned int _right_shift{0};
   };
 
+
+  
   // ===========================================================================
-  // ===                  GENERIC MULTIPURPOSE HASH FUNCTIONS                ===
+  // ===                GENERIC HASH FUNCTIONS FOR SIMPLE TYPES              ===
   // ===========================================================================
 
   /**
    * @class HashFuncSmallKey
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
-   * @brief Generic hash functions for keys smaller than or equal to long
-   * integers.
+   * @brief Generic hash functions for numeric keys smaller than or equal to Size
    * @ingroup hashfunctions_group
    * @tparam Key The type hashed by this hash function.
    */
   template < typename Key >
-  class HashFuncSmallKey : private HashFuncBase< Key > {
+  class HashFuncSmallKey : public HashFuncBase< Key > {
     public:
-    /// This class use the HashFuncBase::size.
-    using HashFuncBase< Key >::size;
+    /**
+     * @brief Class constructor.
+     */
+    HashFuncSmallKey();
 
     /**
-     * @brief Update the hash function to take into account a resize of the
-     * hash table.
-     *
-     * When the user wishes to resize the gum::HashTable so that the array is
-     * of size s, the gum::HashTable resizes itself to the smallest power of 2
-     * greater than or equal to s. This new size is computed by function
-     * gum::HashFuncBase::resize(gum::Size). Hence, s should be the size of the
-     * array of lists, not the number of elements stored into the
-     * gum::HashTable.
-     *
-     * @param new_size The hashtable's size wished by the user. Actually, a
-     * hashtable
-     * of size n is an array of n lists.
-     * @throw SizeError Raised if s is too small.
+     * @brief Returns the value of a key as a Size.
+     * @param key The value to return as a Size.
+     * @return Returns the value of a key as a Size.
      */
-    void resize(Size new_size) override;
+    static Size castToSize(const Key& key);
 
     /**
      * @brief Computes the hashed value of a key.
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    Size operator()(const Key& key) const override;
-
-    protected:
-    /// The number of right shift to perform to get correct hashed values.
-    unsigned int _right_shift;
+    virtual Size operator()(const Key& key) const override final;
   };
+
 
   /**
    * @class HashFuncSmallCastKey
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
-   * @brief Generic hash functions for keys castable as unsigned longs and
-   * whose size is strictly smaller than that of unsigned longs.
+   * @brief Generic hash functions for keys castable as Size and
+   * whose size is strictly smaller than that of Size.
    * @ingroup hashfunctions_group
    * @tparam Key The type hashed by this hash function.
    */
   template < typename Key >
-  class HashFuncSmallCastKey : private HashFuncBase< Key > {
+  class HashFuncSmallCastKey : public HashFuncBase< Key > {
     public:
     /**
      * @brief Class constructor.
@@ -259,308 +284,148 @@ namespace gum {
     HashFuncSmallCastKey();
 
     /**
-     * @brief Update the hash function to take into account a resize of the
-     * hash table.
-     *
-     * When the user wishes to resize the gum::HashTable so that the array is
-     * of size s, the gum::HashTable resizes itself to the smallest power of 2
-     * greater than or equal to s. This new size is computed by function
-     * gum::HashFuncBase::resize(gum::Size). Hence, s should be the size of the
-     * array of lists, not the number of elements stored into the
-     * gum::HashTable.
-     *
-     * @param new_size The hashtable's size wished by the user. Actually, a
-     * hashtable
-     * of size n is an array of n lists.
-     * @throw SizeError Raised if s is too small.
+     * @brief Returns the value of a key as a Size.
+     * @param key The value to return as a Size.
+     * @return Returns the value of a key as a Size.
      */
-    void resize(Size new_size) override;
-
-    /**
-     * @brief Returns the value of a key as an unsigned long.
-     * @param key The value to return as an unsigned long.
-     * @return Returns the value of a key as an unsigned long.
-     */
-    Size castToSize(const Key& key) const;
+    static Size castToSize(const Key& key);
 
     /**
      * @brief Computes the hashed value of a key.
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    Size operator()(const Key& key) const override;
+    virtual Size operator()(const Key& key) const override final;
 
     protected:
-    /// The number of right shift to perform to get correct hashed values.
-    unsigned int _right_shift;
-
     /**
-     * An additional mask to ensure that keys with fewer bits than unsigned
-     * longs are cast correctly.
+     * An additional mask to ensure that keys with fewer bits than Size
+     * are cast correctly.
      */
-    unsigned long _small_key_mask;
+    static constexpr Size _small_key_mask {(Size(1) << (8*sizeof(Key))) - Size(1)};
+    
   };
+
 
   /**
    * @class HashFuncMediumCastKey
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
-   * @brief Generic hash functions for keys castable as unsigned longs and
-   * whose size is precisely that of unsigned longs.
+   * @brief Generic hash functions for keys castable as Size and
+   * whose size is precisely that of Size.
    * @ingroup hashfunctions_group
    * @tparam Key The type hashed by this hash function.
    */
   template < typename Key >
-  class HashFuncMediumCastKey : private HashFuncBase< Key > {
+  class HashFuncMediumCastKey : public HashFuncBase< Key > {
     public:
-    /// This class use the HashFuncBase::size.
-    using HashFuncBase< Key >::size;
+    /**
+     * @brief Class constructor.
+     */
+    HashFuncMediumCastKey();
 
     /**
-     * @brief Update the hash function to take into account a resize of the
-     * hash table.
-     *
-     * When the user wishes to resize the gum::HashTable so that the array is
-     * of size s, the gum::HashTable resizes itself to the smallest power of 2
-     * greater than or equal to s. This new size is computed by function
-     * gum::HashFuncBase::resize(gum::Size). Hence, s should be the size of the
-     * array of lists, not the number of elements stored into the
-     * gum::HashTable.
-     *
-     * @param new_size The hashtable's size wished by the user. Actually, a
-     * hashtable
-     * of size n is an array of n lists.
-     * @throw SizeError Raised if s is too small.
+     * @brief Returns the value of a key as a Size.
+     * @param key The value to return as a Size.
+     * @return Returns the value of a key as a Size.
      */
-    void resize(Size new_size) override;
+    static Size castToSize(const Key& key);
 
     /**
      * @brief Computes the hashed value of a key.
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    Size operator()(const Key& key) const override;
-
-    /**
-     * @brief Returns the value of a key as an unsigned long.
-     * @param key The value to return as an unsigned long.
-     * @return Returns the value of a key as an unsigned long.
-     */
-    Size castToSize(const Key& key) const;
-
-
-    protected:
-    /// The number of right shift to perform to get correct hashed values.
-    unsigned int _right_shift;
+    virtual Size operator()(const Key& key) const override final;
   };
+
 
   /**
    * @class HashFuncLargeCastKey
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
-   * @brief Generic hash functions for keys castable as unsigned longs and
-   * whose size is precisely twice that of unsigned longs.
+   * @brief Generic hash functions for keys castable as Size and
+   * whose size is precisely twice that of Size.
    * @ingroup hashfunctions_group
    * @tparam Key The type hashed by this hash function.
    */
   template < typename Key >
-  class HashFuncLargeCastKey : private HashFuncBase< Key > {
+  class HashFuncLargeCastKey : public HashFuncBase< Key > {
     public:
-    /// This class use the HashFuncBase::size.
-    using HashFuncBase< Key >::size;
-
     /**
-     * @brief Update the hash function to take into account a resize of the
-     * hash table.
-     *
-     * When the user wishes to resize the gum::HashTable so that the array is
-     * of size s, the gum::HashTable resizes itself to the smallest power of 2
-     * greater than or equal to s. This new size is computed by function
-     * gum::HashFuncBase::resize(gum::Size). Hence, s should be the size of the
-     * array of lists, not the number of elements stored into the
-     * gum::HashTable.
-     *
-     * @param new_size The hashtable's size wished by the user. Actually, a
-     * hashtable
-     * of size n is an array of n lists.
-     * @throw SizeError Raised if s is too small.
+     * @brief Class constructor.
      */
-    void resize(Size new_size) override;
+    HashFuncLargeCastKey();
 
     /**
-     * @brief Cast key to the exepcted type.
+     * @brief Cast key to the expected type.
      * @param key The key to cast.
-     * @return Returns the cast key to the exepcted type.
+     * @return Returns the cast key to the expected type.
      */
-    Size castToSize(const Key& key) const;
+    static Size castToSize(const Key& key);
 
     /**
      * @brief Computes the hashed value of a key.
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    Size operator()(const Key& key) const;
-
-    protected:
-    /// The number of right shift to perform to get correct hashed values.
-    unsigned int _right_shift;
+    virtual Size operator()(const Key& key) const override final;
   };
 
-
-  /**
-   * @class HashFuncSmallKeyPair
-   * @headerfile hashFunc.h <agrum/core/hashFunc.h>
-   * @brief Generic hash functions for pairs of, at most, two long integer
-   * keys.
-   * @ingroup hashfunctions_group
-   * @tparam Key1 The type hashed of the first element in the pair.
-   * @tparam Key2 The type hashed of the second element in the pair.
-   */
-  template < typename Key1, typename Key2 >
-  class HashFuncSmallKeyPair : public HashFuncBase< std::pair< Key1, Key2 > > {
-    public:
-    /**
-     * @brief Update the hash function to take into account a resize of the
-     * hash table.
-     *
-     * When the user wishes to resize the gum::HashTable so that the array is
-     * of size s, the gum::HashTable resizes itself to the smallest power of 2
-     * greater than or equal to s. This new size is computed by function
-     * gum::HashFuncBase::resize(gum::Size). Hence, s should be the size of the
-     * array of lists, not the number of elements stored into the
-     * gum::HashTable.
-     *
-     * @param new_size The hashtable's size wished by the user. Actually, a
-     * hashtable
-     * of size n is an array of n lists.
-     * @throw SizeError Raised if s is too small.
-     */
-    void resize(Size new_size) override;
-
-    /**
-     * @brief Computes the hashed value of a key.
-     * @param key The key to compute the hashed value.
-     * @return Returns the hashed value of a key.
-     */
-    Size operator()(const std::pair< Key1, Key2 >& key) const override;
-
-    protected:
-    /// The number of right shift to perform to get correct hashed values.
-    unsigned int _right_shift;
-  };
-
-  /**
-   * @class HashFuncAllCastKeyPair
-   * @headerfile hashFunc.h <agrum/core/hashFunc.h>
-   * @brief Generic hash functions for pairs of keys whose sizes are precisely
-   * twice that of unsigned longs and which can be cast into unsigned longs.
-   * @ingroup hashfunctions_group
-   * @tparam Key1 The type hashed of the first element in the pair.
-   * @tparam Key2 The type hashed of the second element in the pair.
-   * @tparam Func1 The function to hash Key1.
-   * @tparam Func2 The function to hash Key2.
-   */
-  template < typename Key1, typename Key2, typename Func1, typename Func2 >
-  class HashFuncAllCastKeyPair : public HashFuncBase< std::pair< Key1, Key2 > > {
-    public:
-    /**
-     * @brief Update the hash function to take into account a resize of the
-     * hash table.
-     *
-     * When the user wishes to resize the gum::HashTable so that the array is
-     * of size s, the gum::HashTable resizes itself to the smallest power of 2
-     * greater than or equal to s. This new size is computed by function
-     * gum::HashFuncBase::resize(gum::Size). Hence, s should be the size of the
-     * array of lists, not the number of elements stored into the
-     * gum::HashTable.
-     *
-     * @param new_size The hashtable's size wished by the user. Actually, a
-     * hashtable
-     * of size n is an array of n lists.
-     * @throw SizeError Raised if s is too small.
-     */
-    void resize(Size new_size) override;
-
-    /**
-     * @brief Computes the hashed value of a key.
-     * @param key The key to compute the hashed value.
-     * @return Returns the hashed value of a key.
-     */
-    Size operator()(const std::pair< Key1, Key2 >& key) const override;
-
-    protected:
-    /// The number of right shift to perform to get correct hashed values.
-    unsigned int _right_shift;
-
-    private:
-    /// The functions used to hash Key1.
-    Func1 __func1;
-    /// The functions used to hash Key2.
-    Func2 __func2;
-  };
-
-
-  // ===========================================================================
-  // ===         GENERAL HASH FUNCTIONS CASTING AND CONDITIONAL TYPES        ===
-  // ===========================================================================
 
   /**
    * @class HashFuncCastKey
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
-   * @brief Generic hash functions for keys castable as unsigned longs whose
-   * size is either smaller than unsigned long, or equal to that of one or two
-   * unsigned longs.
+   * @brief Generic hash functions for keys castable as Size whose
+   * size is either smaller than Size, or equal to that of one or two Size
+   *
+   * This class uses metaprogramming to select automatically which of classes
+   * HashFuncSmallCastKey, HashFuncMediumCastKey or HashFuncLargeCastKey
+   * you should inherit from.
    * @ingroup hashfunctions_group
    * @tparam Key The type hashed by this hash function.
    */
-  template < typename T >
+  template < typename Key >
   struct HashFuncCastKey {
     /// The type used by this class.
     using type = typename std::conditional<
-      sizeof(T) < sizeof(long),
-      HashFuncSmallCastKey< T >,
-      typename std::conditional< sizeof(T) == 2 * sizeof(long),
-                                 HashFuncLargeCastKey< T >,
-                                 HashFuncMediumCastKey< T > >::type >::type;
+      sizeof(Key) <= sizeof(Size) && std::is_integral< Key >::value,
+      HashFuncSmallKey< Key >,
+      typename std::conditional<
+        sizeof(Key) < sizeof(Size),
+        HashFuncSmallCastKey< Key >,
+        typename std::conditional<
+          sizeof(Key) == sizeof(Size),
+          HashFuncMediumCastKey< Key >,
+          typename std::conditional<
+            sizeof(Key) == 2 * sizeof(Size),
+            HashFuncLargeCastKey< Key >,
+            void >::type >::type >::type >::type;
   };
 
 
-  /**
-   * @class HashFuncCastKeyPair
-   * @headerfile hashFunc.h <agrum/core/hashFunc.h>
-   * @brief Generic hash functions for keys castable as unsigned longs whose
-   * size is either smaller than unsigned long, or equal to that of one or two
-   * unsigned longs.
-   * @ingroup hashfunctions_group
-   * @tparam Key The type hashed by this hash function.
-   */
-  template < typename T1, typename T2 >
-  struct HashFuncCastKeyPair {
-    /// The casting function for T1.
-    using Func1 = typename HashFuncCastKey< T1 >::type;
+  // ===========================================================================
+  // ===   CLASSES FOR NOT DEFINING SEVERAL TIMES THE SAME HASH FUNCTIONS    ===
+  // ===========================================================================
 
-    /// The casting function for T2.
-    using Func2 = typename HashFuncCastKey< T2 >::type;
-
-    /// The expected type of this class.
-    using type = HashFuncAllCastKeyPair< T1, T2, Func1, Func2 >;
-  };
-
-
-  template < typename T >
+  // a dummy hash type
+  template < typename Key >
   class dummyHash {};
 
+  // the general type of the recursive type to select the appropriate hash function
   template < typename... >
   struct HashFuncConditionalType;
-
-  template < typename HASH_TYPE >
-  struct HashFuncConditionalType< HASH_TYPE > {
-    using type = HASH_TYPE;
+  
+  // base of the recursive type to select the appropriate hash function
+  template < typename Key >
+  struct HashFuncConditionalType< Key > {
+    using type = Key;
   };
 
-  template < typename HASH_TYPE, typename TYPE >
-  struct HashFuncConditionalType< HASH_TYPE, TYPE > {
-    using type = typename std::conditional< std::is_same< HASH_TYPE, TYPE >::value,
-                                            dummyHash< HASH_TYPE >,
-                                            HASH_TYPE >::type;
+  // base of the recursive type to select the appropriate hash function
+  template < typename KEY_TYPE, typename TYPE >
+  struct HashFuncConditionalType< KEY_TYPE, TYPE > {
+    using type = typename std::conditional< std::is_same< KEY_TYPE, TYPE >::value,
+                                            dummyHash< KEY_TYPE >,
+                                            KEY_TYPE >::type;
   };
 
   /**
@@ -584,17 +449,17 @@ namespace gum {
    * corresponds neither to an unsigned int nor to an unsigned long, else it
    * will not define the HasHunc of <std::size_t> (which would redefine an
    * already defined HashFunc, hence resulting in a compilation failure). */
-  template < typename HASH_TYPE, typename FIRST_TYPE, typename... OTHER_TYPES >
-  struct HashFuncConditionalType< HASH_TYPE, FIRST_TYPE, OTHER_TYPES... > {
+  template < typename KEY_TYPE, typename FIRST_TYPE, typename... OTHER_TYPES >
+  struct HashFuncConditionalType< KEY_TYPE, FIRST_TYPE, OTHER_TYPES... > {
     using type = typename std::conditional<
-      std::is_same< HASH_TYPE, FIRST_TYPE >::value,
-      dummyHash< HASH_TYPE >,
-      typename HashFuncConditionalType< HASH_TYPE, OTHER_TYPES... >::type >::type;
+      std::is_same< KEY_TYPE, FIRST_TYPE >::value,
+      dummyHash< KEY_TYPE >,
+      typename HashFuncConditionalType< KEY_TYPE, OTHER_TYPES... >::type >::type;
   };
 
-
+  
   // ===========================================================================
-  // ===                      WIDELY USED HASH FUNCTIONS                     ===
+  // ===                  HASH FUNCTIONS FOR PAIRS OF KEYS                   ===
   // ===========================================================================
 
   /**
@@ -610,6 +475,39 @@ namespace gum {
    */
   template < typename key >
   class HashFunc {};
+
+  /**
+   * @class HashFunc
+   * @headerfile hashFunc.h <agrum/core/hashFunc.h>
+   * @brief Generic hash functions for pairs of keys.
+   * @ingroup hashfunctions_group
+   * @tparam Key1 The type hashed of the first element in the pair.
+   * @tparam Key2 The type hashed of the second element in the pair.
+   */
+  template < typename Key1, typename Key2 >
+  class HashFunc< std::pair< Key1, Key2 > > :
+    public HashFuncBase< std::pair< Key1, Key2 > > {
+  public:
+    /**
+     * @brief Returns the value of a key as a Size.
+     * @param key The value to return as a Size.
+     * @return Returns the value of a key as a Size.
+     */
+    static Size castToSize(const std::pair< Key1, Key2 >& key);
+
+    /**
+     * @brief Computes the hashed value of a key.
+     * @param key The key to compute the hashed value.
+     * @return Returns the hashed value of a key.
+     */
+    virtual Size
+    operator()(const std::pair< Key1, Key2 >& key) const override final;
+  };
+
+
+  // ===========================================================================
+  // ===                      WIDELY USED HASH FUNCTIONS                     ===
+  // ===========================================================================
 
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
@@ -687,122 +585,7 @@ namespace gum {
    */
   template < typename Type >
   class HashFunc< Type* > : public HashFuncCastKey< Type* >::type {};
-
-  /**
-   * @headerfile hashFunc.h <agrum/core/hashFunc.h>
-   * @brief Hash function for pairs of integers.
-   * @ingroup hashfunctions_group
-   */
-  template <>
-  class HashFunc< std::pair< int, int > >
-      : public HashFuncSmallKeyPair< int, int > {};
-
-  /**
-   * @headerfile hashFunc.h <agrum/core/hashFunc.h>
-   * @brief Hash function for pairs of unsigned integers.
-   * @ingroup hashfunctions_group
-   */
-  template <>
-  class HashFunc< std::pair< unsigned int, unsigned int > >
-      : public HashFuncSmallKeyPair< unsigned int, unsigned int > {};
-
-  /**
-   * @headerfile hashFunc.h <agrum/core/hashFunc.h>
-   * @brief Hash function for pairs of long integers.
-   * @ingroup hashfunctions_group
-   */
-  template <>
-  class HashFunc< std::pair< long, long > >
-      : public HashFuncSmallKeyPair< long, long > {};
-
-  /**
-   * @headerfile hashFunc.h <agrum/core/hashFunc.h>
-   * @brief Hash function for pairs of unsigned long integers.
-   * @ingroup hashfunctions_group
-   */
-  template <>
-  class HashFunc< std::pair< unsigned long, unsigned long > >
-      : public HashFuncSmallKeyPair< unsigned long, unsigned long > {};
-
-  /**
-   * @headerfile hashFunc.h <agrum/core/hashFunc.h>
-   * @brief Hash function for pairs of float.
-   * @ingroup hashfunctions_group
-   */
-  template <>
-  class HashFunc< std::pair< float, float > >
-      : public HashFuncCastKeyPair< float, float >::type {};
-
-  /**
-   * @headerfile hashFunc.h <agrum/core/hashFunc.h>
-   * @brief Hash function for pairs of double.
-   * @ingroup hashfunctions_group
-   */
-  template <>
-  class HashFunc< std::pair< double, double > >
-      : public HashFuncCastKeyPair< float, float >::type {};
-
-  /**
-   * @headerfile hashFunc.h <agrum/core/hashFunc.h>
-   * @brief Hash function for pairs of double and long unsigned int.
-   * @ingroup hashfunctions_group
-   */
-  template <>
-  class HashFunc< std::pair< double, long unsigned int > >
-      : public HashFuncCastKeyPair< double, long unsigned int >::type {};
-
-  /**
-   * @headerfile hashFunc.h <agrum/core/hashFunc.h>
-   * @brief Hash function for pairs of std::size_t and double
-   * @ingroup hashfunctions_group
-   */
-  template <>
-  class HashFunc< std::pair< typename HashFuncConditionalType< std::size_t,
-                                                               unsigned long,
-                                                               unsigned int,
-                                                               long,
-                                                               int >::type,
-                             double > >
-      : public HashFuncCastKeyPair< std::size_t, double >::type {};
-
-  /**
-   * @author JCM
-   * @brief Modification : adding mirrored pair key of the one above
-   * Though the question should be asked of whether we enforce only
-   * one version for pair key or whether we authorize mirrored version
-   * If one version is enforced sdyna.cpp must be modified!
-   * @ingroup HashF
-   */
-  template <>
-  class HashFunc< std::pair< long unsigned int, double > >
-      : public HashFuncCastKeyPair< long unsigned int, double >::type {};
-
-  /**
-   * @headerfile hashFunc.h <agrum/core/hashFunc.h>
-   * @brief Hash function for pairs of double and long int.
-   * @ingroup hashfunctions_group
-   */
-  template <>
-  class HashFunc< std::pair< double, long int > >
-      : public HashFuncCastKeyPair< double, long int >::type {};
-
-  /**
-   * @headerfile hashFunc.h <agrum/core/hashFunc.h>
-   * @brief Hash function for RefPtr.
-   * @ingroup hashfunctions_group
-   * @tparam Type The type of the RefPtr.
-   */
-  template < typename Type >
-  class HashFunc< RefPtr< Type > > : public HashFunc< unsigned int* > {
-    public:
-    /**
-     * @brief Computes the hashed value of a key.
-     * @param key The key to compute the hashed value.
-     * @return Returns the hashed value of a key.
-     */
-    Size operator()(const RefPtr< Type >& key) const;
-  };
-
+  
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
    * @brief Hash function for strings.
@@ -812,30 +595,21 @@ namespace gum {
   class HashFunc< std::string > : public HashFuncBase< std::string > {
     public:
     /**
+     * @brief Returns the value of a key as a Size.
+     * @param key The value to return as a Size.
+     * @return Returns the value of a key as a Size.
+     */
+    static Size castToSize(const std::string& key);
+
+     /**
      * @brief Computes the hashed value of a key.
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    Size operator()(const std::string& key) const override;
+    virtual Size operator()(const std::string& key) const override final;
   };
 
-  /**
-   * @headerfile hashFunc.h <agrum/core/hashFunc.h>
-   * @brief Hash function for pairs of strings.
-   * @ingroup hashfunctions_group
-   */
-  template <>
-  class HashFunc< std::pair< std::string, std::string > >
-      : public HashFuncBase< std::pair< std::string, std::string > > {
-    public:
-    /**
-     * @brief Computes the hashed value of a key.
-     * @param key The key to compute the hashed value.
-     * @return Returns the hashed value of a key.
-     */
-    Size operator()(const std::pair< std::string, std::string >& key) const;
-  };
-
+  
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
    * @brief Hash function for vectors of gum::Idx.
@@ -846,12 +620,21 @@ namespace gum {
       : public HashFuncBase< std::vector< Idx > > {
     public:
     /**
+     * @brief Returns the value of a key as a Size.
+     * @param key The value to return as a Size.
+     * @return Returns the value of a key as a Size.
+     */
+    static Size castToSize(const std::vector< Idx >& key);
+
+    /**
      * @brief Computes the hashed value of a key.
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    Size operator()(const std::vector< Idx >& key) const;
+    virtual Size operator()(const std::vector< Idx >& key) const override final;
+
   };
+
 
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
@@ -862,13 +645,50 @@ namespace gum {
   class HashFunc< Debug > : public HashFuncBase< Debug > {
     public:
     /**
+     * @brief Returns the value of a key as a Size.
+     * @param key The value to return as a Size.
+     * @return Returns the value of a key as a Size.
+     */
+    static Size castToSize(const Debug& key);
+
+    /**
      * @brief Computes the hashed value of a key.
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    Size operator()(const Debug& key) const;
+    virtual Size operator()(const Debug& key) const override final;
+    
+    template <typename OTHER_KEY >
+    friend class HashFunc;
   };
+
+  
+  /**
+   * @headerfile hashFunc.h <agrum/core/hashFunc.h>
+   * @brief Hash function for RefPtr.
+   * @ingroup hashfunctions_group
+   * @tparam Type The type of the RefPtr.
+   */
+  template < typename Type >
+  class HashFunc< RefPtr< Type > > : public HashFuncBase< RefPtr< Type > > {
+    public:
+    /**
+     * @brief Returns the value of a key as a Size.
+     * @param key The value to return as a Size.
+     * @return Returns the value of a key as a Size.
+     */
+    static Size castToSize(const RefPtr< Type >& key);
+
+    /**
+     * @brief Computes the hashed value of a key.
+     * @param key The key to compute the hashed value.
+     * @return Returns the hashed value of a key.
+     */
+    virtual Size operator()(const RefPtr< Type >& key) const override final;
+  };
+
 } /* namespace gum */
+
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE

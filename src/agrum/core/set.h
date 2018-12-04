@@ -1180,72 +1180,27 @@ namespace gum {
     HashTableConstIterator< Key, bool > __ht_iter;
   };
 
+
   /// @brief A << operator for HashTableList.
   template < typename Key, typename Alloc >
   std::ostream& operator<<(std::ostream&, const Set< Key, Alloc >&);
 
-
+  
   /// the hash function for sets of int
-  template < typename Alloc >
-  class HashFunc< Set< int, Alloc > > : public HashFuncBase< Set< int, Alloc > > {
+  template < typename T, typename Alloc >
+  class HashFunc< Set< T, Alloc > > : public HashFuncBase< Set< T, Alloc > > {
     public:
+    /**
+     * @brief Returns the value of a key as a Size.
+     * @param key The value to return as a Size.
+     * @return Returns the value of a key as a Size.
+     */
+    static Size castToSize(const Set< T, Alloc >& key);
+
     /// computes the hashed value of a key
-    Size operator()(const Set< int, Alloc >& key) const;
+    virtual Size operator()(const Set< T, Alloc >& key) const override final;
+    
   };
-
-  /// the hash function for sets of unsigned int
-  template < typename Alloc >
-  class HashFunc< Set< unsigned int, Alloc > >
-      : public HashFuncBase< Set< unsigned int, Alloc > > {
-    public:
-    /// computes the hashed value of a key
-    Size operator()(const Set< unsigned int, Alloc >& key) const;
-  };
-
-  /// the hash function for sets of long
-  template < typename Alloc >
-  class HashFunc< Set< long, Alloc > >
-      : public HashFuncBase< Set< long, Alloc > > {
-    public:
-    /// computes the hashed value of a key
-    Size operator()(const Set< long, Alloc >& key) const;
-  };
-
-  /// the hash function for sets of unsigned long
-  template < typename Alloc >
-  class HashFunc< Set< unsigned long, Alloc > >
-      : public HashFuncBase< Set< unsigned long, Alloc > > {
-    public:
-    /// computes the hashed value of a key
-    Size operator()(const Set< unsigned long, Alloc >& key) const;
-  };
-
-  /// the hash function for sets of float
-  template < typename Alloc >
-  class HashFunc< Set< float, Alloc > >
-      : public HashFuncBase< Set< float, Alloc > > {
-    public:
-    /// computes the hashed value of a key
-    Size operator()(const Set< float, Alloc >& key) const;
-
-    private:
-    /// used for casting floats to Size
-    typename HashFuncCastKey< float >::type __casting;
-  };
-
-  /// the hash function for sets of double
-  template < typename Alloc >
-  class HashFunc< Set< double, Alloc > >
-      : public HashFuncBase< Set< double, Alloc > > {
-    public:
-    /// computes the hashed value of a key
-    Size operator()(const Set< double, Alloc >& key) const;
-
-    private:
-    /// used for casting floats to Size
-    typename HashFuncCastKey< double >::type __casting;
-  };
-
 
 } /* namespace gum */
 
