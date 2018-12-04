@@ -38,9 +38,18 @@ namespace gum {
       : public HashFuncBase<
           std::tuple< unsigned int, unsigned int, unsigned int > > {
     public:
+    /**
+     * @brief Returns the value of a key as a Size.
+     * @param key The value to return as a Size.
+     * @return Returns the value of a key as a Size.
+     */
+    static Size castToSize(
+           const std::tuple< unsigned int, unsigned int, unsigned int >& key);
+
     /// computes the hashed value of a key
-    Size operator()(
-      const std::tuple< unsigned int, unsigned int, unsigned int >& key) const;
+    virtual Size operator()(
+      const std::tuple< unsigned int, unsigned int, unsigned int >& key)
+      const override final;
   };
 }   // namespace gum
 

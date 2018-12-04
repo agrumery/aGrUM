@@ -633,24 +633,31 @@ namespace gum {
   } /* namespace learning */
 
 
-  // the hash function for idSets
+  // Returns the value of a key as a Size.
   template < template < typename > class ALLOC >
   Size HashFunc< learning::IdSet< ALLOC > >::
-       operator()(const learning::IdSet< ALLOC >& key) const {
+       castToSize(const learning::IdSet< ALLOC >& key) {
     Size                                       h = Size(key.nbLHSIds());
     const Sequence< NodeId, ALLOC< NodeId > >& vect = key.ids();
     const std::size_t                          size = vect.size();
 
     std::size_t i = std::size_t(0);
     while (i < size) {
-      Size id = Size(vect[i]);
+      const Size id = Size(vect[i]);
       ++i;
       h += Size(i) * id;
     }
 
-    return ((h * HashFuncConst::gold) & this->_hash_mask);
+    return h;
   }
 
+  
+  // the hash function for idSets
+  template < template < typename > class ALLOC >
+  INLINE Size HashFunc< learning::IdSet< ALLOC > >::
+         operator()(const learning::IdSet< ALLOC >& key) const {
+    return (castToSize(key) * HashFuncConst::gold) & this->_hash_mask;
+  }
 
 } /* namespace gum */
 

@@ -1242,17 +1242,21 @@ namespace gum {
    */
   template <>
   // class HashFunc< Instantiation > : public HashFuncBase< Instantiation > {
-  class HashFunc< Instantiation > : public HashFunc< Size > {
+  class HashFunc< Instantiation > : public HashFuncBase< Instantiation > {
     public:
+    /**
+     * @brief Returns the value of a key as a Size.
+     * @param key The value to return as a Size.
+     * @return Returns the value of a key as a Size.
+     */
+    static Size castToSize(const Instantiation& key);
+
     /**
      * @brief Computes the hashed value of a key.
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    Size operator()(const Instantiation& key) const;
-
-    private:
-    static typename HashFuncCastKey< const DiscreteVariable* >::type __caster;
+    virtual Size operator()(const Instantiation& key) const override final;
   };
 } /* namespace gum */
 

@@ -350,8 +350,95 @@ namespace gum {
       return !operator==(from);
     }
 
+
   } /* namespace learning */
 
+
+  // ===========================================================================
+
+  // Returns the value of a key as a Size.
+  INLINE Size HashFunc< learning::GraphChange >::castToSize(
+         const learning::GraphChange& key) {
+    return Size(key.node1()) * HashFuncConst::gold
+      + Size(key.node2()) * HashFuncConst::pi;
+  }
+
+  /// computes the hashed value of a key
+  INLINE Size HashFunc< learning::GraphChange >::operator()(
+           const learning::GraphChange& key) const {
+    return castToSize(key) >> this->_right_shift;
+  }
+
+
+  // Returns the value of a key as a Size.
+  INLINE Size HashFunc< learning::ArcAddition >::castToSize(
+           const learning::ArcAddition& key) {
+    return Size(key.node1()) * HashFuncConst::gold
+      + Size(key.node2()) * HashFuncConst::pi;
+  }
+
+  /// computes the hashed value of a key
+  INLINE Size HashFunc< learning::ArcAddition >::operator()(
+           const learning::ArcAddition& key) const {
+    return castToSize(key) >> this->_right_shift;
+  }
+
+
+  // Returns the value of a key as a Size.
+  INLINE Size HashFunc< learning::ArcDeletion >::castToSize(
+                const learning::ArcDeletion& key) {
+    return Size(key.node1()) * HashFuncConst::gold
+      + Size(key.node2()) * HashFuncConst::pi;
+  }
+
+  /// computes the hashed value of a key
+  INLINE Size HashFunc< learning::ArcDeletion >::operator()(
+                const learning::ArcDeletion& key) const {
+    return castToSize(key) >> this->_right_shift;
+  }
+
+
+  // Returns the value of a key as a Size.
+  INLINE Size HashFunc< learning::ArcReversal >::castToSize(
+                const learning::ArcReversal& key) {
+    return Size(key.node1()) * HashFuncConst::gold
+      + Size(key.node2()) * HashFuncConst::pi;
+  }
+
+  /// computes the hashed value of a key
+  INLINE Size HashFunc< learning::ArcReversal >::operator()(
+                const learning::ArcReversal& key) const {
+    return castToSize(key) >> this->_right_shift;
+  }
+
+
+  // Returns the value of a key as a Size.
+  INLINE Size HashFunc< learning::EdgeAddition >::castToSize(
+                const learning::EdgeAddition& key) {
+    return Size(key.node1()) * HashFuncConst::gold
+      + Size(key.node2()) * HashFuncConst::pi;
+  }
+
+  /// computes the hashed value of a key
+  INLINE Size HashFunc< learning::EdgeAddition >::operator()(
+                const learning::EdgeAddition& key) const {
+    return castToSize(key) >> this->_right_shift;
+  }
+
+
+  // Returns the value of a key as a Size.
+  INLINE Size HashFunc< learning::EdgeDeletion >::castToSize(
+                const learning::EdgeDeletion& key) {
+    return Size(key.node1()) * HashFuncConst::gold
+      + Size(key.node2()) * HashFuncConst::pi;
+  }
+
+  /// computes the hashed value of a key
+  INLINE Size HashFunc< learning::EdgeDeletion >::operator()(
+                const learning::EdgeDeletion& key) const {
+    return castToSize(key) >> this->_right_shift;
+  }
+  
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

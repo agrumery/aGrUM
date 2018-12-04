@@ -481,74 +481,103 @@ namespace gum {
 
   /// the hash function for Graph Changes
   template <>
-  class HashFunc< learning::GraphChange > : public HashFuncSmallKey< NodeId > {
+  class HashFunc< learning::GraphChange > :
+    public HashFuncBase< learning::GraphChange > {
     public:
+    /**
+     * @brief Returns the value of a key as a Size.
+     * @param key The value to return as a Size.
+     * @return Returns the value of a key as a Size.
+     */
+    static Size castToSize(const learning::GraphChange& key);
+
     /// computes the hashed value of a key
-    Size operator()(const learning::GraphChange& key) const {
-      return (((unsigned long)key.node1() * HashFuncConst::gold
-               + (unsigned long)key.node2() * HashFuncConst::pi)
-              >> _right_shift);
-    }
+    virtual Size
+    operator()(const learning::GraphChange& key) const override final;
   };
 
   /// the hash function for Arc Additions
   template <>
-  class HashFunc< learning::ArcAddition > : public HashFuncSmallKey< NodeId > {
+  class HashFunc< learning::ArcAddition > :
+    public HashFuncBase< learning::ArcAddition > {
     public:
+    /**
+     * @brief Returns the value of a key as a Size.
+     * @param key The value to return as a Size.
+     * @return Returns the value of a key as a Size.
+     */
+    static Size castToSize(const learning::ArcAddition& key);
+
     /// computes the hashed value of a key
-    Size operator()(const learning::ArcAddition& key) const {
-      return (((unsigned long)key.node1() * HashFuncConst::gold
-               + (unsigned long)key.node2() * HashFuncConst::pi)
-              >> _right_shift);
-    }
+    virtual Size
+    operator()(const learning::ArcAddition& key) const override final;
   };
 
   /// the hash function for Arc Deletions
   template <>
-  class HashFunc< learning::ArcDeletion > : public HashFuncSmallKey< NodeId > {
+  class HashFunc< learning::ArcDeletion > :
+    public HashFuncBase< learning::ArcDeletion > {
     public:
+    /**
+     * @brief Returns the value of a key as a Size.
+     * @param key The value to return as a Size.
+     * @return Returns the value of a key as a Size.
+     */
+    static Size castToSize(const learning::ArcDeletion& key);
+
     /// computes the hashed value of a key
-    Size operator()(const learning::ArcDeletion& key) const {
-      return (((unsigned long)key.node1() * HashFuncConst::gold
-               + (unsigned long)key.node2() * HashFuncConst::pi)
-              >> _right_shift);
-    }
+    virtual Size
+    operator()(const learning::ArcDeletion& key) const override final;
   };
 
   /// the hash function for Arc Reversals
   template <>
-  class HashFunc< learning::ArcReversal > : public HashFuncSmallKey< NodeId > {
+  class HashFunc< learning::ArcReversal > :
+    public HashFuncBase< learning::ArcReversal > {
     public:
+    /**
+     * @brief Returns the value of a key as a Size.
+     * @param key The value to return as a Size.
+     * @return Returns the value of a key as a Size.
+     */
+    static Size castToSize(const learning::ArcReversal& key);
+
     /// computes the hashed value of a key
-    Size operator()(const learning::ArcReversal& key) const {
-      return (((unsigned long)key.node1() * HashFuncConst::gold
-               + (unsigned long)key.node2() * HashFuncConst::pi)
-              >> _right_shift);
-    }
+    virtual Size
+    operator()(const learning::ArcReversal& key) const override final;
   };
 
   /// the hash function for Edge Additions
   template <>
-  class HashFunc< learning::EdgeAddition > : public HashFuncSmallKey< NodeId > {
-    public:
+  class HashFunc< learning::EdgeAddition > :
+  public HashFuncBase< learning::EdgeAddition > {
+    /**
+     * @brief Returns the value of a key as a Size.
+     * @param key The value to return as a Size.
+     * @return Returns the value of a key as a Size.
+     */
+    static Size castToSize(const learning::EdgeAddition& key);
+
     /// computes the hashed value of a key
-    Size operator()(const learning::EdgeAddition& key) const {
-      return (((unsigned long)key.node1() * HashFuncConst::gold
-               + (unsigned long)key.node2() * HashFuncConst::pi)
-              >> _right_shift);
-    }
+    virtual Size
+    operator()(const learning::EdgeAddition& key) const override final;
   };
 
   /// the hash function for Edge Deletions
   template <>
-  class HashFunc< learning::EdgeDeletion > : public HashFuncSmallKey< NodeId > {
+  class HashFunc< learning::EdgeDeletion > :
+    public HashFuncBase< learning::EdgeDeletion > {
     public:
+    /**
+     * @brief Returns the value of a key as a Size.
+     * @param key The value to return as a Size.
+     * @return Returns the value of a key as a Size.
+     */
+    static Size castToSize(const learning::EdgeDeletion& key);
+
     /// computes the hashed value of a key
-    Size operator()(const learning::EdgeDeletion& key) const {
-      return (((unsigned long)key.node1() * HashFuncConst::gold
-               + (unsigned long)key.node2() * HashFuncConst::pi)
-              >> _right_shift);
-    }
+    virtual Size
+    operator()(const learning::EdgeDeletion& key) const override final;
   };
 
 } /* namespace gum */

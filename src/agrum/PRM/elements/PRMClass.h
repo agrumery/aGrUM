@@ -458,10 +458,7 @@ namespace gum {
     extern template class PRMClass< double >;
 
   } /* namespace prm */
-#ifdef __clang__
-  extern template class HashFuncMediumCastKey< gum::prm::PRMClass< float >* >;
-  extern template class HashFuncMediumCastKey< gum::prm::PRMClass< double >* >;
-#endif
+  
 }   // namespace gum
 
 #include <agrum/PRM/elements/PRMClass_tpl.h>

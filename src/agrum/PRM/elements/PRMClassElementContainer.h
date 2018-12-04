@@ -447,12 +447,7 @@ namespace gum {
 
 
   } /* namespace prm */
-#ifdef __clang__
-  extern template class HashFuncMediumCastKey<
-    gum::prm::PRMClassElementContainer< float >* >;
-  extern template class HashFuncMediumCastKey<
-    gum::prm::PRMClassElementContainer< double >* >;
-#endif
+
 }   // namespace gum
 
 /// @brief An << operator for PRMClassElementContainer.

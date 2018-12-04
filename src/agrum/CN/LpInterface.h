@@ -180,11 +180,18 @@ namespace gum {
   class HashFunc< credal::lp::LpCol > : public HashFuncBase< credal::lp::LpCol > {
     public:
     /**
+     * @brief Returns the value of a key as a Size.
+     * @param key The value to return as a Size.
+     * @return Returns the value of a key as a Size.
+     */
+    static Size castToSize(const credal::lp::LpCol& key);
+
+    /**
      * @brief Overload of operator () to compute hash of a variable \c LpCol.
      * @param key The constant reference to the variable whose hash we want to
      * compute.
      */
-    Size operator()(const credal::lp::LpCol& key) const;
+    virtual Size operator()(const credal::lp::LpCol& key) const override final;
   };
 }   // end of namespace gum
 
@@ -1022,5 +1029,9 @@ namespace gum {
 }   // end of namespace gum
 
 #include <agrum/CN/LpInterface_tpl.h>
+
+#ifndef GUM_NO_INLINE
+#  include <agrum/CN/LpInterface_inl.h>
+#endif /* GUM_NO_INLINE */
 
 #endif

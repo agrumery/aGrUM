@@ -806,13 +806,20 @@ namespace gum {
   /// returns a hashed key for hash tables the keys of which are represented
   /// by vectors of Idx
   INLINE Size HashFunc< Instantiation >::
-              operator()(const Instantiation& key) const {
-    Size h = 0;
-    for (const auto k :
+              castToSize(const Instantiation& key) {
+    Size h = Size(0);
+    for (const DiscreteVariable* k :
          key.variablesSequence())   // k are unique only by address (not by name)
-      h += __caster.castToSize(k) * (Size)key.val(*k);
+      h += HashFunc<const DiscreteVariable*>::castToSize(k) * Size(key.val(*k));
 
-    return HashFunc< Size >::operator()(h);
+    return h;
+  }
+  
+  /// returns a hashed key for hash tables the keys of which are represented
+  /// by vectors of Idx
+  INLINE Size HashFunc< Instantiation >::
+              operator()(const Instantiation& key) const {
+    return castToSize(key) & this->_hash_mask;
   }
 
   INLINE bool Instantiation::operator==(const Instantiation& other) const {

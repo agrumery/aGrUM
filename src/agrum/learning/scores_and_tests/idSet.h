@@ -431,8 +431,16 @@ namespace gum {
   class HashFunc< learning::IdSet< ALLOC > >
       : public HashFuncBase< learning::IdSet< ALLOC > > {
     public:
+    /**
+     * @brief Returns the value of a key as a Size.
+     * @param key The value to return as a Size.
+     * @return Returns the value of a key as a Size.
+     */
+    static Size castToSize(const learning::IdSet< ALLOC >& key);
+
     /// computes the hashed value of a key
-    Size operator()(const learning::IdSet< ALLOC >& key) const;
+    virtual Size
+    operator()(const learning::IdSet< ALLOC >& key) const override final;
   };
 
 

@@ -59,10 +59,6 @@ namespace gum {
 
   }   // namespace credal
 
-  INLINE Size HashFunc< credal::lp::LpCol >::
-              operator()(const credal::lp::LpCol& key) const {
-    return (((Size)key.id()) * gum::HashFuncConst::gold) & _hash_mask;
-  }
 
   namespace credal {
     namespace lp {
