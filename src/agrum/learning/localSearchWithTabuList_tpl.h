@@ -37,7 +37,7 @@ namespace gum {
                                                 DAG                     dag) {
       selector.setGraph(dag);
 
-      Size nb_changes_applied = 0;
+      unsigned int nb_changes_applied = 0;
       Idx  applied_change_with_positive_score = 0;
       Idx  current_N = 0;
 

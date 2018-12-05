@@ -56,7 +56,7 @@ namespace gum {
 
 
   template < typename GUM_SCALAR >
-  Instantiation WeightedSampling< GUM_SCALAR >::_draw(float*        w,
+  Instantiation WeightedSampling< GUM_SCALAR >::_draw(GUM_SCALAR*   w,
                                                       Instantiation prev) {
     *w = 1.0f;
     bool wrongValue = false;

@@ -488,7 +488,7 @@ namespace gum {
      *
      * @param new_size The internal structure new size.
      */
-    void resize(unsigned int new_size);
+    void resize(Size new_size);
 
     /// @}
 
@@ -928,7 +928,7 @@ namespace gum {
      *
      * @param new_size The internal structure new size.
      */
-    void resize(unsigned int new_size);
+    void resize(Size new_size);
 
     /// @}
 
@@ -1327,7 +1327,7 @@ namespace gum {
      * @param nb The number of steps to move the iterator.
      * @return Returns this iterator.
      */
-    SequenceIteratorSafe< Key >& operator+=(unsigned int nb) noexcept;
+    SequenceIteratorSafe< Key >& operator+=(Size nb) noexcept;
 
     /**
      * @brief Makes the iterator point to i elements further in the sequence.
@@ -1339,7 +1339,7 @@ namespace gum {
      * @param nb The number of steps to move the iterator.
      * @return Returns this iterator.
      */
-    SequenceIteratorSafe< Key >& operator-=(unsigned int nb) noexcept;
+    SequenceIteratorSafe< Key >& operator-=(Size nb) noexcept;
 
     /**
      * @brief Returns a new iterator.
@@ -1350,7 +1350,7 @@ namespace gum {
      * @param nb The number of steps the created iterator is ahead of this.
      * @return Returns a new iterator.
      */
-    SequenceIteratorSafe< Key > operator+(unsigned int nb) noexcept;
+    SequenceIteratorSafe< Key > operator+(Size nb) noexcept;
 
     /**
      * @brief Returns a new iterator.
@@ -1361,7 +1361,7 @@ namespace gum {
      * @param nb The number of steps the created iterator is behind of this.
      * @brief Returns a new iterator.
      */
-    SequenceIteratorSafe< Key > operator-(unsigned int nb) noexcept;
+    SequenceIteratorSafe< Key > operator-(Size nb) noexcept;
 
     /**
      * @brief Checks whether two iterators are pointing to different elements.

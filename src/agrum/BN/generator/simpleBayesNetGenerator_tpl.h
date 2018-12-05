@@ -77,7 +77,7 @@ namespace gum {
 
     for (Size i = 0; this->_nbrNodes > i; ++i) {
       strBuff << "n" << i;
-      int nb_mod =
+      Size nb_mod =
         (this->_maxModality == 2) ? 2 : 2 + randomValue(this->_maxModality - 1);
       map.insert(
         i, this->_bayesNet.add(LabelizedVariable(strBuff.str(), "", nb_mod)));

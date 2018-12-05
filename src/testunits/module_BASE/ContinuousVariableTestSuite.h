@@ -106,8 +106,8 @@ namespace gum_tests {
       TS_ASSERT(var2.varType() == gum::VarType::Continuous);
       TS_ASSERT(std::stof(var2.label(4.5)) == 4.5f);
       TS_ASSERT_THROWS(var2.label(10.0f), gum::OutOfBounds);
-      TS_ASSERT(var2.belongs(5.6));
-      TS_ASSERT(!var2.belongs(15.6));
+      TS_ASSERT(var2.belongs(5.6f));
+      TS_ASSERT(!var2.belongs(15.6f));
 
       auto        domain = var2.domain();
       std::string regexp = "\\[([0-9.\\-]+);([0-9.\\-]+)\\]";

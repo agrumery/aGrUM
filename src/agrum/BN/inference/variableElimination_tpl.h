@@ -171,12 +171,12 @@ namespace gum {
 
   /// fired when a new evidence is inserted
   template < typename GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::_onEvidenceAdded(NodeId, bool) {}
+  INLINE void VariableElimination< GUM_SCALAR >::_onEvidenceAdded(const NodeId, bool) {}
 
 
   /// fired when an evidence is removed
   template < typename GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::_onEvidenceErased(NodeId, bool) {}
+  INLINE void VariableElimination< GUM_SCALAR >::_onEvidenceErased(const NodeId, bool) {}
 
 
   /// fired when all the evidence are erased
@@ -186,19 +186,22 @@ namespace gum {
 
   /// fired when an evidence is changed
   template < typename GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::_onEvidenceChanged(NodeId, bool) {
+  INLINE void VariableElimination< GUM_SCALAR >::_onEvidenceChanged(const NodeId, bool) {
   }
 
 
   /// fired after a new target is inserted
   template < typename GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::_onMarginalTargetAdded(NodeId) {}
+  INLINE void VariableElimination< GUM_SCALAR >::_onMarginalTargetAdded(const NodeId) {}
 
 
   /// fired before a target is removed
   template < typename GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::_onMarginalTargetErased(NodeId) {}
+  INLINE void VariableElimination< GUM_SCALAR >::_onMarginalTargetErased(const NodeId) {}
 
+  /// fired after a new Bayes net has been assigned to the engine
+  template < typename GUM_SCALAR >
+  INLINE void VariableElimination< GUM_SCALAR >::_onBayesNetChanged(const IBayesNet< GUM_SCALAR >* bn) {}
 
   /// fired after a new set target is inserted
   template < typename GUM_SCALAR >
@@ -377,7 +380,7 @@ namespace gum {
       __clique_potentials.insert(clique, emptyset);
     const std::vector< NodeId >& JT_elim_order =
       __triangulation->eliminationOrder();
-    NodeProperty< int > elim_order(Size(JT_elim_order.size()));
+    NodeProperty< Size > elim_order(Size(JT_elim_order.size()));
     for (std::size_t i = std::size_t(0), size = JT_elim_order.size(); i < size;
          ++i)
       elim_order.insert(JT_elim_order[i], NodeId(i));
@@ -385,7 +388,7 @@ namespace gum {
     for (const auto node : __graph) {
       // get the variables in the potential of node (and its parents)
       NodeId first_eliminated_node = node;
-      int    elim_number = elim_order[first_eliminated_node];
+      Size   elim_number = elim_order[first_eliminated_node];
 
       for (const auto parent : dag.parents(node)) {
         if (__graph.existsNode(parent) && (elim_order[parent] < elim_number)) {
@@ -415,7 +418,7 @@ namespace gum {
 
       if (!pars.empty()) {
         NodeId first_eliminated_node = *(pars.begin());
-        int    elim_number = elim_order[first_eliminated_node];
+        Size   elim_number = elim_order[first_eliminated_node];
 
         for (const auto parent : pars) {
           if (elim_order[parent] < elim_number) {
@@ -447,7 +450,7 @@ namespace gum {
 
       if (!nodeset.empty()) {
         NodeId first_eliminated_node = *(nodeset.begin());
-        int    elim_number = elim_order[first_eliminated_node];
+        Size   elim_number = elim_order[first_eliminated_node];
         for (const auto node : nodeset) {
           if (elim_order[node] < elim_number) {
             elim_number = elim_order[node];

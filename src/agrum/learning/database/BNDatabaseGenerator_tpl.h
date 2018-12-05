@@ -93,7 +93,7 @@ namespace gum {
       const gum::DAG& dag = __bn.dag();
       for (Idx i = 0; i < nbSamples; ++i) {
         if (onProgress.hasListener()) {
-          int p = (i * 100) / nbSamples;
+          int p = int((i * 100) / nbSamples);
           if (p != progress) {
             progress = p;
             GUM_EMIT2(onProgress, progress, timer.step());
@@ -418,7 +418,7 @@ namespace gum {
       std::vector< std::string > header_found;
       header_found.reserve(__nbVars);
       while (std::getline(csvFile, line)) {
-        auto i = 0;
+        std::size_t i = 0;
         auto pos = line.find(csvSeparator);
         while (pos != std::string::npos) {
           header_found.push_back(line.substr(i, pos - i));

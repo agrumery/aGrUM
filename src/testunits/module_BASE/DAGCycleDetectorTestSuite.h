@@ -37,7 +37,7 @@ namespace gum_tests {
       for (gum::Idx i = 0; i < nb_nodes; ++i) {
         dag.addNodeWithId(i);
       }
-      std::uniform_int_distribution< int > distribution(0, nb_nodes - 1);
+      std::uniform_int_distribution< int > distribution(0, int(nb_nodes) - 1);
       while (nb_arcs) {
         gum::NodeId id1 = distribution(generator);
         gum::NodeId id2 = distribution(generator);
@@ -59,8 +59,8 @@ namespace gum_tests {
       gum::Size                                     length) {
       std::default_random_engine           generator = gum::getRandomGenerator();
       std::uniform_int_distribution< int > distrib_type(0, 2);
-      std::uniform_int_distribution< int > distrib_node(0, g.size() - 1);
-      std::uniform_int_distribution< int > distrib_arc(0, g.size() * g.size());
+      std::uniform_int_distribution< int > distrib_node(0, int(g.size()) - 1);
+      std::uniform_int_distribution< int > distrib_arc(0, int(g.size()*g.size()));
 
       changes.clear();
       del_add_changes.clear();

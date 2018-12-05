@@ -47,7 +47,7 @@ namespace gum_tests {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)
-        t->set(i, gum::randomProba());
+        t->set(i, float(gum::randomProba()));
     }
 
     // ==========================================================================
@@ -57,7 +57,7 @@ namespace gum_tests {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)
-        t->set(i, new float(gum::randomProba()));
+        t->set(i, new float (float(gum::randomProba())));
     }
 
     // ==========================================================================

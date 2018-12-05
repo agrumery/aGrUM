@@ -340,7 +340,7 @@ namespace gum {
     // update the elimination orders
 
     if (!__require_update) {
-      for (unsigned int i = __reverse_elimination_order[X] + 1;
+      for (Size i = __reverse_elimination_order[X] + 1;
            i < __reverse_elimination_order.size();
            ++i)
         __elimination_order[i - 1] = __elimination_order[i];
@@ -869,11 +869,11 @@ namespace gum {
 
           if (sep.size() != 0) {
             // now find the first eliminated node in the separator
-            unsigned int __elim_order = tmp_graph.bound() + 1;
-            NodeId       elim_node = 0;
+            Size    __elim_order = tmp_graph.bound() + 1;
+            NodeId  elim_node = 0;
 
             for (const auto id : sep) {
-              unsigned int new_order = __triangulation->eliminationOrder(id);
+              Size new_order = __triangulation->eliminationOrder(id);
 
               if (new_order < __elim_order) {
                 __elim_order = new_order;

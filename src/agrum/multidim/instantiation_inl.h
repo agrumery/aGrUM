@@ -377,7 +377,7 @@ namespace gum {
         } else
           ++i_cpt;
       } else {
-        int cpt = pos(v);
+        Idx cpt = pos(v);
         Idx iv = __vals[cpt];
 
         if (iv + 1 == __vars[cpt]->domainSize()) {
@@ -415,7 +415,7 @@ namespace gum {
         } else
           ++i_cpt;
       } else {
-        int cpt = pos(v);
+        Idx cpt = pos(v);
         Idx iv = __vals[cpt];
 
         if (iv == 0) {

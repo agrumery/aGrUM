@@ -142,7 +142,7 @@ namespace gum_tests {
 
       gum::learning::AprioriDirichletFromDatabase<> apriori2(apriori);
       TS_ASSERT(apriori2.weight() == 2.0 * db_size);
-      apriori2.setWeight(db_size);
+      apriori2.setWeight(1.0 * db_size);
       TS_ASSERT(apriori2.weight() == db_size);
 
       TS_ASSERT(apriori2.getType() == "Dirichlet");

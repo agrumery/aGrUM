@@ -988,7 +988,7 @@ namespace gum {
   /// moves the iterator by nb elements
   template < typename T1, typename T2 >
   INLINE BijectionIteratorSafe< T1, T2 >& BijectionIteratorSafe< T1, T2 >::
-                                          operator+=(unsigned int nb) noexcept {
+                                          operator+=(Size nb) noexcept {
     __iter += nb;
     return *this;
   }
@@ -996,7 +996,7 @@ namespace gum {
   /// returns a new iterator
   template < typename T1, typename T2 >
   INLINE BijectionIteratorSafe< T1, T2 > BijectionIteratorSafe< T1, T2 >::
-                                         operator+(unsigned int nb) noexcept {
+                                         operator+(Size nb) noexcept {
     return BijectionIteratorSafe< T1, T2 >{*this} += nb;
   }
 
@@ -1106,7 +1106,7 @@ namespace gum {
   /// moves the iterator by nb elements
   template < typename T1, typename T2 >
   INLINE BijectionIterator< T1, T2 >& BijectionIterator< T1, T2 >::
-                                      operator+=(unsigned int nb) noexcept {
+                                      operator+=(Size nb) noexcept {
     __iter += nb;
     return *this;
   }
@@ -1114,7 +1114,7 @@ namespace gum {
   /// returns a new iterator
   template < typename T1, typename T2 >
   INLINE BijectionIterator< T1, T2 > BijectionIterator< T1, T2 >::
-                                     operator+(unsigned int nb) noexcept {
+                                     operator+(Size nb) noexcept {
     return BijectionIterator< T1, T2 >{*this} += nb;
   }
 

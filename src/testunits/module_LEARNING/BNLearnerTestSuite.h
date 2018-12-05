@@ -85,10 +85,10 @@ namespace gum_tests {
       learner.setAprioriWeight(1);
       // learner.useAprioriDirichlet (  GET_RESSOURCES_PATH( "asia.csv" ) );
 
-      gum::NodeProperty< unsigned int > slice_order{
-        std::make_pair(gum::NodeId(0), 1),
-        std::make_pair(gum::NodeId(3), 0),
-        std::make_pair(gum::NodeId(1), 0)};
+      gum::NodeProperty< gum::Size > slice_order{
+        std::make_pair(gum::NodeId(0), gum::Size(1)),
+        std::make_pair(gum::NodeId(3), gum::Size(0)),
+        std::make_pair(gum::NodeId(1), gum::Size(0))};
       learner.setSliceOrder(slice_order);
 
       const std::vector< std::string >& names = learner.names();
@@ -352,10 +352,10 @@ namespace gum_tests {
       learner.setAprioriWeight(1);
       // learner.useAprioriDirichlet (  GET_RESSOURCES_PATH( "asia.csv" ) );
 
-      gum::NodeProperty< unsigned int > slice_order{
-        std::make_pair(gum::NodeId(0), 1),
-        std::make_pair(gum::NodeId(3), 0),
-        std::make_pair(gum::NodeId(1), 0)};
+      gum::NodeProperty< gum::Size > slice_order{
+        std::make_pair(gum::NodeId(0), gum::Size(1)),
+        std::make_pair(gum::NodeId(3), gum::Size(0)),
+        std::make_pair(gum::NodeId(1), gum::Size(0))};
       learner.setSliceOrder(slice_order);
 
       const std::vector< std::string >& names = learner.names();
@@ -431,10 +431,10 @@ namespace gum_tests {
       learner.setAprioriWeight(1);
       // learner.useAprioriDirichlet (  GET_RESSOURCES_PATH( "asia.csv" ) );
 
-      gum::NodeProperty< unsigned int > slice_order{
-        std::make_pair(gum::NodeId(0), 1),
-        std::make_pair(gum::NodeId(3), 0),
-        std::make_pair(gum::NodeId(1), 0)};
+      gum::NodeProperty< gum::Size > slice_order{
+        std::make_pair(gum::NodeId(0), gum::Size(1)),
+        std::make_pair(gum::NodeId(3), gum::Size(0)),
+        std::make_pair(gum::NodeId(1), gum::Size(0))};
       learner.setSliceOrder(slice_order);
 
       const std::vector< std::string >& names = learner.names();
@@ -862,7 +862,7 @@ namespace gum_tests {
           GET_RESSOURCES_PATH("asia3-faulty.csv"),
           std::vector< std::string >{"BEURK"});
         learner.useK2(std::vector< gum::NodeId >{1, 5, 2, 6, 0, 3, 4, 7});
-      } catch (gum::MissingValueInDatabase& e) { nb = 1; }
+      } catch (gum::MissingValueInDatabase&) { nb = 1; }
 
       TS_ASSERT(nb == 1);
     }

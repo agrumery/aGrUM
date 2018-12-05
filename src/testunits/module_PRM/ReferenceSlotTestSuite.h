@@ -104,7 +104,7 @@ namespace gum_tests {
         PRMReferenceSlot ref("ref", *__A);
         // Act & Assert
         __classEltTestSuite->testSafeName(ref);
-      } catch (gum::Exception& e) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
     }
 
     void testCast_NotAllowed() {

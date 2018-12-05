@@ -443,7 +443,7 @@ namespace gum_tests {
       gum::CliqueGraph g1;
       fillG1(g1);
 
-      int countEdgeG1 = g1.sizeEdges();
+      gum::Size countEdgeG1 = g1.sizeEdges();
 
       TS_GUM_ASSERT_THROWS_NOTHING(g1.eraseEdge(gum::Edge(1, 2)));
       TS_GUM_ASSERT_THROWS_NOTHING(g1.eraseEdge(gum::Edge(1, 2)));
@@ -458,7 +458,7 @@ namespace gum_tests {
       gum::CliqueGraph g2;
       fillG2(g2);
 
-      int countEdgeG2 = g2.sizeEdges();
+      gum::Size countEdgeG2 = g2.sizeEdges();
 
       TS_GUM_ASSERT_THROWS_NOTHING(g2.eraseEdge(gum::Edge(2, 4)));
       TS_GUM_ASSERT_THROWS_NOTHING(g2.eraseEdge(gum::Edge(1, 3)));
@@ -470,7 +470,7 @@ namespace gum_tests {
       gum::CliqueGraph g3;
       fillG3(g3);
 
-      int countEdgeG3 = g3.sizeEdges();
+      gum::Size countEdgeG3 = g3.sizeEdges();
 
       TS_GUM_ASSERT_THROWS_NOTHING(g3.eraseEdge(gum::Edge(2, 4)));
 

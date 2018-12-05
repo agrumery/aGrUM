@@ -321,9 +321,9 @@ namespace gum_tests {
       std::string             file = GET_RESSOURCES_PATH("asia.bif");
       gum::BayesNet< float >  bn;
       gum::BIFReader< float > reader(&bn, file);
-      int                     nbrErr = 0;
+      gum::Size               nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == 0);
+      TS_ASSERT(nbrErr == gum::Size(0));
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
 
       for (auto node : bn.dag()) {
@@ -357,9 +357,9 @@ namespace gum_tests {
       std::string             file = GET_RESSOURCES_PATH("alarm.bif");
       gum::BayesNet< float >  bn;
       gum::BIFReader< float > reader(&bn, file);
-      int                     nbrErr = 0;
+      gum::Size               nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == 0);
+      TS_ASSERT(nbrErr == gum::Size(0));
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
 
       gum::VariableElimination< float > inf1(&bn);
@@ -437,9 +437,9 @@ namespace gum_tests {
       std::string             file = GET_RESSOURCES_PATH("asia3.bif");
       gum::BayesNet< float >  bn;
       gum::BIFReader< float > reader(&bn, file);
-      int                     nbrErr = 0;
+      gum::Size               nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == 0);
+      TS_ASSERT(nbrErr == gum::Size(0));
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
 
       for (auto node : bn.dag()) {
@@ -494,9 +494,9 @@ namespace gum_tests {
       std::string             file = GET_RESSOURCES_PATH("asia3.bif");
       gum::BayesNet< float >  bn;
       gum::BIFReader< float > reader(&bn, file);
-      int                     nbrErr = 0;
+      gum::Size               nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == 0);
+      TS_ASSERT(nbrErr == gum::Size(0));
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
 
       for (auto node : bn.dag()) {
@@ -553,9 +553,9 @@ namespace gum_tests {
       std::string             file = GET_RESSOURCES_PATH("asia.bif");
       gum::BayesNet< float >  bn;
       gum::BIFReader< float > reader(&bn, file);
-      int                     nbrErr = 0;
+      gum::Size               nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == 0);
+      TS_ASSERT(nbrErr == gum::Size(0));
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
 
       for (auto node : bn.dag()) {
@@ -626,9 +626,9 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
 
-      int nbrErr = 0;
+      gum::Size nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == 0);
+      TS_ASSERT(nbrErr == gum::Size(0));
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
 
 
@@ -661,9 +661,9 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
 
-      int nbrErr = 0;
+      gum::Size nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == 0);
+      TS_ASSERT(nbrErr == gum::Size(0));
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
 
 
@@ -697,9 +697,9 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
 
-      int nbrErr = 0;
+      gum::Size nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == 0);
+      TS_ASSERT(nbrErr == gum::Size(0));
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
 
       gum::VariableElimination< double > ie_all(&bn);
@@ -737,7 +737,7 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
 
-      int nbrErr = 0;
+      gum::Size nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
       TS_ASSERT(nbrErr == 0);
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);

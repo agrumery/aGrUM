@@ -1502,7 +1502,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(bn->sizeArcs(), (gum::Size)8);
         delete prm;
         delete bn;
-      } catch (gum::Exception& e) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
     }
 
     void testFileNotFound() {
@@ -1539,7 +1539,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(reader.errors(), (gum::Size)1);
         TS_ASSERT_DIFFERS(reader.prm(), nullptr);
         delete reader.prm();
-      } catch (gum::Exception& e) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
     }
 
     void testAggOrAnd() {
@@ -1555,7 +1555,7 @@ namespace gum_tests {
         if (reader.errors()) { reader.showElegantErrorsAndWarnings(); }
         TS_ASSERT_DIFFERS(reader.prm(), nullptr);
         delete reader.prm();
-      } catch (gum::Exception& e) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
     }
 
     void testActors() {
@@ -1571,7 +1571,7 @@ namespace gum_tests {
         if (reader.errors()) { reader.showElegantErrorsAndWarnings(); }
         TS_ASSERT_DIFFERS(reader.prm(), nullptr);
         delete reader.prm();
-      } catch (gum::Exception& e) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
     }
 
     void testStudents() {
@@ -1603,7 +1603,7 @@ namespace gum_tests {
         }
 
         delete reader.prm();
-      } catch (gum::Exception& e) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
     }
 
     void testReferenceID() {
@@ -1643,7 +1643,7 @@ namespace gum_tests {
         }
 
         delete prm;
-      } catch (gum::Exception& e) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
     }
 
     void testAttributeID() {
@@ -1678,7 +1678,7 @@ namespace gum_tests {
         }
 
         delete prm;
-      } catch (gum::Exception& e) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
     }
 
     void testArrays() {
@@ -1701,7 +1701,7 @@ namespace gum_tests {
           TS_ASSERT(false);
         }
 
-      } catch (gum::Exception& e) { TS_ASSERT(false); }
+      } catch (gum::Exception&) { TS_ASSERT(false); }
     }
   };
 

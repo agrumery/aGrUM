@@ -166,9 +166,9 @@ namespace gum {
       auto ekl = static_cast< GUM_SCALAR >(0);
       try {
         ekl = __messages[Arc(X, U)].KL(newLambda);
-      } catch (InvalidArgument& e) {
+      } catch (InvalidArgument&) {
         GUM_ERROR(InvalidArgument, "Not compatible pi during computation");
-      } catch (FatalError& e) {   // 0 misplaced
+      } catch (FatalError&) {   // 0 misplaced
         ekl = std::numeric_limits< GUM_SCALAR >::infinity();
       }
       if (ekl > KL) {
@@ -185,9 +185,9 @@ namespace gum {
       GUM_SCALAR ekl = KL;
       try {
         ekl = __messages[Arc(X, Y)].KL(newPi);
-      } catch (InvalidArgument& e) {
+      } catch (InvalidArgument&) {
         GUM_ERROR(InvalidArgument, "Not compatible pi during computation");
-      } catch (FatalError& e) {   // 0 misplaced
+      } catch (FatalError&) {   // 0 misplaced
         ekl = std::numeric_limits< GUM_SCALAR >::infinity();
       }
       if (ekl > KL) {

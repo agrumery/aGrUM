@@ -94,7 +94,7 @@ namespace gum {
      * sample, given the instantiation of all other nodes. It requires computing of
      * P( x \given instantiation_markovblanket(x)).
      */
-    Instantiation _draw(float* w, Instantiation prev) override;
+    Instantiation _draw(GUM_SCALAR* w, Instantiation prev) override;
 
     /// draws a Monte Carlo sample
     /**

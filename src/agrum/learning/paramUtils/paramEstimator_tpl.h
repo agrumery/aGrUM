@@ -338,18 +338,55 @@ namespace gum {
 
     /// sets the CPT's parameters corresponding to a given nodeset
     template < template < typename > class ALLOC >
-    template < typename GUM_SCALAR >
-    INLINE void ParamEstimator< ALLOC >::setParameters(
+    template < typename GUM_SCALAR>
+    INLINE
+    typename std::enable_if< !std::is_same<GUM_SCALAR, double>::value, void >::type
+    ParamEstimator< ALLOC >::__setParameters(
       const NodeId                                  target_node,
       const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
       Potential< GUM_SCALAR >&                      pot) {
       __checkParameters(target_node, conditioning_nodes, pot);
 
-      const std::vector< double, ALLOC< double > > nc(
+      const std::vector< double, ALLOC< double > > params(
         parameters(target_node, conditioning_nodes));
-      pot.fillWith(std::vector< GUM_SCALAR >(nc.begin(), nc.end()));
+
+      // transform the vector of double into a vector of GUM_SCALAR
+      const std::size_t size = params.size();
+      std::vector< GUM_SCALAR, ALLOC< GUM_SCALAR > > xparams(size);
+      for ( std::size_t i = std::size_t(0); i < size; ++i )
+        xparams[i] = GUM_SCALAR(params[i]);
+
+      pot.fillWith(xparams);
     }
 
+
+    /// sets the CPT's parameters corresponding to a given nodeset
+    template < template < typename > class ALLOC >
+    template < typename GUM_SCALAR >
+    INLINE
+    typename std::enable_if< std::is_same<GUM_SCALAR, double>::value, void >::type
+    ParamEstimator< ALLOC >::__setParameters(
+      const NodeId                                  target_node,
+      const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
+      Potential< GUM_SCALAR >&                      pot) {
+      __checkParameters(target_node, conditioning_nodes, pot);
+
+      const std::vector< double, ALLOC< double > > params(
+        parameters(target_node, conditioning_nodes));
+      pot.fillWith(params);
+    }
+
+
+    /// sets the CPT's parameters corresponding to a given nodeset
+    template < template < typename > class ALLOC >
+    template < typename GUM_SCALAR >
+    INLINE void ParamEstimator< ALLOC >::setParameters(
+      const NodeId                                  target_node,
+      const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
+      Potential< GUM_SCALAR >&                      pot) {
+      __setParameters(target_node,conditioning_nodes,pot);
+    }
+    
 
     /// returns the mapping from ids to column positions in the database
     template < template < typename > class ALLOC >

@@ -75,7 +75,7 @@ namespace gum {
      * samples not consistent with evidence
      *
      */
-    Instantiation _draw(float* w, Instantiation prev) override;
+    Instantiation _draw(GUM_SCALAR* w, Instantiation prev) override;
   };
 
   extern template class MonteCarloSampling< float >;

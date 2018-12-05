@@ -53,7 +53,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  Instantiation ImportanceSampling< GUM_SCALAR >::_draw(float*        w,
+  Instantiation ImportanceSampling< GUM_SCALAR >::_draw(GUM_SCALAR*   w,
                                                         Instantiation prev) {
     GUM_SCALAR pSurQ;
 
@@ -107,8 +107,8 @@ namespace gum {
       // we keep the variables with hard evidence but alone
       // bn->uninstallNode( sid[i] );
     }
-    auto minParam = bn->minNonZeroParam();
-    auto minAccepted = this->epsilon() / bn->maxVarDomainSize();
-    if (minParam < minAccepted) this->_unsharpenBN(bn, minAccepted);
+    GUM_SCALAR minParam = bn->minNonZeroParam();
+    GUM_SCALAR minAccepted = GUM_SCALAR(this->epsilon() / bn->maxVarDomainSize());
+    if (minParam < minAccepted) this->_unsharpenBN(bn, float(minAccepted));
   }
 }   // namespace gum

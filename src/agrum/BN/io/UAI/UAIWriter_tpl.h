@@ -110,7 +110,7 @@ namespace gum {
       int first = -1;
       for (auto k : p.variablesSequence()) {
         if (first == -1) {
-          first = bn.idFromName(k->name());
+          first = int(bn.idFromName(k->name()));
         } else {
           str << bn.idFromName(k->name()) << " ";
         }

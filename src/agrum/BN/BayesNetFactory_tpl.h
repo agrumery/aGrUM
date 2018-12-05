@@ -436,7 +436,7 @@ namespace gum {
 
     // initializing the array
     for (NodeId i = 0; i < nbrVar; i++) {
-      modCounter.push_back(0);
+      modCounter.push_back(Idx(0));
     }
 
     Idx j = 0;

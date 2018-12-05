@@ -908,14 +908,14 @@ namespace gum {
      * @param i The number of increments.
      * @return Returns this iterator.
      */
-    SetIteratorSafe< Key >& operator+=(unsigned int i) noexcept;
+    SetIteratorSafe< Key >& operator+=(Size i) noexcept;
 
     /**
      * @brief Returns a new iterator.
      * @param i The number of increments.
      * @return Returns a new iterator.
      */
-    SetIteratorSafe< Key > operator+(unsigned int i) const;
+    SetIteratorSafe< Key > operator+(Size i) const;
 
     /**
      * @brief Indicates whether two iterators point to different elements or
@@ -1109,14 +1109,14 @@ namespace gum {
      * @param i The number of increments.
      * @return Returns this iterator.
      */
-    SetIterator< Key >& operator+=(unsigned int i) noexcept;
+    SetIterator< Key >& operator+=(Size i) noexcept;
 
     /**
      * @brief Returns a new iterator.
      * @param i The number of increments.
      * @return Returns a new iterator.
      */
-    SetIterator< Key > operator+(unsigned int i) const noexcept;
+    SetIterator< Key > operator+(Size i) const noexcept;
 
     /**
      * @brief Indicates whether two iterators point to different elements or

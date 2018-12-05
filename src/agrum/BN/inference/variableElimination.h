@@ -129,10 +129,10 @@ namespace gum {
     void _onStateChanged() final{};
 
     /// fired after a new evidence is inserted
-    void _onEvidenceAdded(NodeId id, bool isHardEvidence) final;
+    void _onEvidenceAdded(const NodeId id, bool isHardEvidence) final;
 
     /// fired before an evidence is removed
-    void _onEvidenceErased(NodeId id, bool isHardEvidence) final;
+    void _onEvidenceErased(const NodeId id, bool isHardEvidence) final;
 
     /// fired before all the evidence are erased
     void _onAllEvidenceErased(bool contains_hard_evidence) final;
@@ -144,15 +144,18 @@ namespace gum {
      * @param hasChangedSoftHard true if the evidence has changed from Soft to
      * Hard or from Hard to Soft
      */
-    void _onEvidenceChanged(NodeId id, bool hasChangedSoftHard) final;
+    void _onEvidenceChanged(const NodeId id, bool hasChangedSoftHard) final;
 
     /// fired after a new single target is inserted
     /** @param id The target variable's id. */
-    void _onMarginalTargetAdded(NodeId id) final;
+    void _onMarginalTargetAdded(const NodeId id) final;
 
     /// fired before a single target is removed
     /** @param id The target variable's id. */
-    void _onMarginalTargetErased(NodeId id) final;
+    void _onMarginalTargetErased(const NodeId id) final;
+
+    /// fired after a new Bayes net has been assigned to the engine
+    virtual void _onBayesNetChanged(const IBayesNet< GUM_SCALAR >* bn) final;
 
     /// fired after a new joint target is inserted
     /** @param set The set of target variable's ids. */

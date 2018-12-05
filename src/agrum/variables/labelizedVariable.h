@@ -61,7 +61,7 @@ namespace gum {
 
     LabelizedVariable(const std::string& aName,
                       const std::string& aDesc = "",
-                      const int          nbrLabel = 2);
+                      const Size         nbrLabel = 2);
 
     /** @brief constructor
      * @param aName the name

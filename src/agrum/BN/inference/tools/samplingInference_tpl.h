@@ -167,7 +167,7 @@ namespace gum {
 
     this->initApproximationScheme();
     gum::Instantiation Ip;
-    float              w = .0;   //
+    GUM_SCALAR         w = .0;   //
 
     // Burn in
     Ip = this->_burnIn();
@@ -197,7 +197,7 @@ namespace gum {
 
 
   template < typename GUM_SCALAR >
-  void SamplingInference< GUM_SCALAR >::_onEvidenceAdded(NodeId id,
+  void SamplingInference< GUM_SCALAR >::_onEvidenceAdded(const NodeId id,
                                                          bool   isHardEvidence) {
     if (!isHardEvidence) {
       GUM_ERROR(FatalError, "Approximated inference only accept hard evidence");
@@ -205,7 +205,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void SamplingInference< GUM_SCALAR >::_onEvidenceErased(NodeId id,
+  void SamplingInference< GUM_SCALAR >::_onEvidenceErased(const NodeId id,
                                                           bool   isHardEvidence) {}
 
   template < typename GUM_SCALAR >
@@ -214,7 +214,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void
-    SamplingInference< GUM_SCALAR >::_onEvidenceChanged(NodeId id,
+    SamplingInference< GUM_SCALAR >::_onEvidenceChanged(const NodeId id,
                                                         bool hasChangedSoftHard) {
     if (hasChangedSoftHard) {
       GUM_ERROR(FatalError, "Approximated inference only accept hard evidence");
@@ -232,10 +232,10 @@ namespace gum {
   void SamplingInference< GUM_SCALAR >::_updateOutdatedBNPotentials() {}
 
   template < typename GUM_SCALAR >
-  void SamplingInference< GUM_SCALAR >::_onMarginalTargetAdded(NodeId id) {}
+  void SamplingInference< GUM_SCALAR >::_onMarginalTargetAdded(const NodeId id) {}
 
   template < typename GUM_SCALAR >
-  void SamplingInference< GUM_SCALAR >::_onMarginalTargetErased(NodeId id) {}
+  void SamplingInference< GUM_SCALAR >::_onMarginalTargetErased(const NodeId id) {}
 
   template < typename GUM_SCALAR >
   void SamplingInference< GUM_SCALAR >::_onAllMarginalTargetsAdded() {}

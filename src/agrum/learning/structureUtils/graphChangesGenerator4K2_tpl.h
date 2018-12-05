@@ -102,7 +102,7 @@ namespace gum {
 
       // for all the pairs of nodes, consider adding, reverse and removing arcs
       std::vector< Set< GraphChange > > legal_changes;
-#  pragma omp parallel num_threads(__max_threads_number)
+#  pragma omp parallel num_threads(int(__max_threads_number))
       {
         int num_threads = getNumberOfRunningThreads();
 

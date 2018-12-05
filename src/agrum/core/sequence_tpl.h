@@ -158,7 +158,7 @@ namespace gum {
   // makes the iterator point to i elements further in the sequence
   template < typename Key >
   INLINE SequenceIteratorSafe< Key >& SequenceIteratorSafe< Key >::
-                                      operator+=(unsigned int nb) noexcept {
+                                      operator+=(Size nb) noexcept {
     if (__iterator == std::numeric_limits< Idx >::max()) return *this;
     __iterator += nb;
     if (__iterator > __seq->size()) __iterator = __seq->size();
@@ -169,7 +169,7 @@ namespace gum {
   // makes the iterator point to i elements further in the sequence
   template < typename Key >
   INLINE SequenceIteratorSafe< Key >& SequenceIteratorSafe< Key >::
-                                      operator-=(unsigned int nb) noexcept {
+                                      operator-=(Size nb) noexcept {
     if (__iterator == std::numeric_limits< Idx >::max()) return *this;
     __iterator -= nb;
     if (__iterator > __seq->size()) __iterator = std::numeric_limits< Idx >::max();
@@ -180,14 +180,14 @@ namespace gum {
   // returns a new iterator
   template < typename Key >
   INLINE SequenceIteratorSafe< Key > SequenceIteratorSafe< Key >::
-                                     operator+(unsigned int nb) noexcept {
+                                     operator+(Size nb) noexcept {
     return SequenceIteratorSafe< Key >{*this} += nb;
   }
 
   // returns a new iterator
   template < typename Key >
   INLINE SequenceIteratorSafe< Key > SequenceIteratorSafe< Key >::
-                                     operator-(unsigned int nb) noexcept {
+                                     operator-(Size nb) noexcept {
     return SequenceIteratorSafe< Key >{*this} -= nb;
   }
 
@@ -278,7 +278,7 @@ namespace gum {
     const SequenceImplementation< Key, OtherAlloc, Gen >& aSeq) {
     clear();
 
-    for (unsigned int i = 0; i < aSeq.size(); ++i) {
+    for (Size i = 0; i < aSeq.size(); ++i) {
       Key& new_key = const_cast< Key& >(__h.insert(*(aSeq.__v[i]), i).first);
       __v.push_back(&new_key);
     }
@@ -680,7 +680,7 @@ namespace gum {
   // modifies the size of the internal structures of the sequence
   template < typename Key, typename Alloc, bool Gen >
   INLINE void
-    SequenceImplementation< Key, Alloc, Gen >::resize(unsigned int new_size) {
+    SequenceImplementation< Key, Alloc, Gen >::resize(Size new_size) {
     if (new_size < __h.size()) return;
 
     __h.resize(new_size);
@@ -712,7 +712,7 @@ namespace gum {
     const SequenceImplementation< Key, OtherAlloc, true >& aSeq) {
     clear();
 
-    for (unsigned int i = 0; i < aSeq.size(); ++i) {
+    for (Size i = 0; i < aSeq.size(); ++i) {
       __h.insert(aSeq.__v[i], i);
       __v.push_back(aSeq.__v[i]);
     }
@@ -1081,7 +1081,7 @@ namespace gum {
   // modifies the size of the internal structures of the sequence
   template < typename Key, typename Alloc >
   INLINE void
-    SequenceImplementation< Key, Alloc, true >::resize(unsigned int new_size) {
+    SequenceImplementation< Key, Alloc, true >::resize(Size new_size) {
     if (new_size < __h.size()) return;
 
     __h.resize(new_size);

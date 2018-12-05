@@ -459,7 +459,7 @@ namespace gum {
             class_factory.completeAggregates();
             class_factory.completeAttributes();
             system_factory.build();
-          } catch (Exception& e) {
+          } catch (Exception&) {
             if (__errors.count() == 0) {
               __errors.addException("an unknown error occured", file);
             }

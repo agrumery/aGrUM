@@ -1520,7 +1520,7 @@ namespace gum {
 
       try {
         var->addTick(tick);
-      } catch (DefaultInLabel& e) {
+      } catch (DefaultInLabel&) {
         GUM_ERROR(OperationNotAllowed, "tick already in used for this variable");
       }
     }

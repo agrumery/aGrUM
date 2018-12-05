@@ -69,7 +69,7 @@ namespace gum {
     gum::Instantiation Ip;
     if (this->burnIn() == 0) return Ip;
 
-    float w = 1.0f;
+    GUM_SCALAR w = 1.0f;
     Ip = _monteCarloSample();
     for (Size i = 1; i < this->burnIn(); i++)
       Ip = this->_draw(&w, Ip);
@@ -80,7 +80,7 @@ namespace gum {
   /// draws next sample for gibbs sampling
 
   template < typename GUM_SCALAR >
-  Instantiation GibbsSampling< GUM_SCALAR >::_draw(float* w, Instantiation prev) {
+  Instantiation GibbsSampling< GUM_SCALAR >::_draw(GUM_SCALAR* w, Instantiation prev) {
     *w = 1.0;
     return GibbsOperator< GUM_SCALAR >::nextSample(prev);
   }

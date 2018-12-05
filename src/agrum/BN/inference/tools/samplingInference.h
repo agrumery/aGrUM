@@ -190,7 +190,7 @@ namespace gum {
      * @param prev the previous sample generated
      *
      */
-    virtual Instantiation _draw(float* w, Instantiation prev) = 0;
+    virtual Instantiation _draw(GUM_SCALAR* w, Instantiation prev) = 0;
 
     /// makes the inference by generating samples
     void _makeInference() override;
@@ -217,13 +217,13 @@ namespace gum {
      */
     virtual void _onContextualize(BayesNetFragment< GUM_SCALAR >* bn);
 
-    void _onEvidenceAdded(NodeId id, bool isHardEvidence) override;
+    void _onEvidenceAdded(const NodeId id, bool isHardEvidence) override;
 
-    void _onEvidenceErased(NodeId id, bool isHardEvidence) override;
+    void _onEvidenceErased(const NodeId id, bool isHardEvidence) override;
 
     void _onAllEvidenceErased(bool contains_hard_evidence) override;
 
-    void _onEvidenceChanged(NodeId id, bool hasChangedSoftHard) override;
+    void _onEvidenceChanged(const NodeId id, bool hasChangedSoftHard) override;
 
     void _onBayesNetChanged(const IBayesNet< GUM_SCALAR >* bn) override;
 
@@ -231,9 +231,9 @@ namespace gum {
 
     void _updateOutdatedBNPotentials() override;
 
-    void _onMarginalTargetAdded(NodeId id) override;
+    void _onMarginalTargetAdded(const NodeId id) override;
 
-    void _onMarginalTargetErased(NodeId id) override;
+    void _onMarginalTargetErased(const NodeId id) override;
 
     void _onAllMarginalTargetsAdded() override;
 

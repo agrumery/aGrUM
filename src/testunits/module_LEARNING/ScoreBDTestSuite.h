@@ -49,7 +49,7 @@ namespace gum_tests {
       double score = 0.0;
 
       if (!N_ij.empty()) {
-        const double ri = N_ijk.size() / N_ij.size();
+        const double ri = double(N_ijk.size() / N_ij.size());
         score = N_ij.size() * __gammalog2(ri);
 
         for (const auto n_ij : N_ij) {
@@ -59,7 +59,7 @@ namespace gum_tests {
           score += __gammalog2(n_ijk + 1);
         }
       } else {
-        const double ri = N_ijk.size();
+        const double ri = double(N_ijk.size());
         score = __gammalog2(ri);
         double N = 0;
         for (const auto n_ijk : N_ijk) {

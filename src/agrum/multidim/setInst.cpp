@@ -103,7 +103,7 @@ namespace gum {
 
     for (const auto var : v) {
       __add(*var);
-      __vals[__vars.pos(var)] = (1 << (aI.val(*var)));
+      __vals[__vars.pos(var)] = (Size(1) << (aI.val(*var)));
     }
   }
 

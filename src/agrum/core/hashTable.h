@@ -74,14 +74,14 @@ namespace gum {
      * increased To each slot corresponds a chained list of elements with the
      * same hashed key.
      */
-    static constexpr Size default_size{4};
+    static constexpr Size default_size{Size(4)};
 
     /**
      * The average number of elements admissible by slots. Once this number is
      * reached, the size of the hashtable is automatically doubled if we are in
      * automatic resize mode.
      */
-    static constexpr unsigned int default_mean_val_by_slot{3};
+    static constexpr Size default_mean_val_by_slot{Size(3)};
 
     /**
      * A Boolean indicating whether inserting too many values into the
@@ -310,7 +310,7 @@ namespace gum {
     using const_reference = const value_type&;
     using pointer = value_type*;
     using const_pointer = const value_type*;
-    using size_type = std::size_t;
+    using size_type = Size;
     using allocator_type = Alloc;
     using Bucket = HashTableBucket< Key, Val >;
     /// @}
@@ -428,7 +428,7 @@ namespace gum {
      * @return Returns the value at index i.
      * @throw NotFound Raised if the list has fewer than i elements.
      */
-    value_type& at(unsigned int i);
+    value_type& at(Size i);
 
     /**
      * @brief Function at returns the ith element in the current chained list.
@@ -438,7 +438,7 @@ namespace gum {
      * @return Returns the value at index i.
      * @throw NotFound Raised if the list has fewer than i elements.
      */
-    const value_type& at(unsigned int i) const;
+    const value_type& at(Size i) const;
 
     /**
      * @brief Returns the value corresponding to a given key.
@@ -534,7 +534,7 @@ namespace gum {
     HashTableBucket< Key, Val >* __end_list{nullptr};
 
     /// The number of elements in the chained list.
-    unsigned int __nb_elements{0};
+    Size __nb_elements{Size(0)};
 
     /// The allocator of the containing hashTable.
     mutable BucketAllocator* __alloc_bucket;
@@ -684,7 +684,7 @@ namespace gum {
     using const_reference = const value_type&;
     using pointer = value_type*;
     using const_pointer = const value_type*;
-    using size_type = std::size_t;
+    using size_type = Size;
     using difference_type = std::ptrdiff_t;
     using allocator_type = Alloc;
     using iterator = HashTableIterator< Key, Val >;
@@ -1593,7 +1593,7 @@ namespace gum {
                  std::pair< Key, Mount > >::other >
     HashTable< Key, Mount, OtherAlloc > map(
       Mount (*f)(Val),
-      Size size = 0,
+      Size size = Size(0),
       bool resize_pol = HashTableConst::default_resize_policy,
       bool key_uniqueness_pol = HashTableConst::default_uniqueness_policy) const;
 
@@ -1622,7 +1622,7 @@ namespace gum {
                  std::pair< Key, Mount > >::other >
     HashTable< Key, Mount, OtherAlloc > map(
       Mount (*f)(Val&),
-      Size size = 0,
+      Size size = Size(0),
       bool resize_pol = HashTableConst::default_resize_policy,
       bool key_uniqueness_pol = HashTableConst::default_uniqueness_policy) const;
 
@@ -1651,7 +1651,7 @@ namespace gum {
                  std::pair< Key, Mount > >::other >
     HashTable< Key, Mount, OtherAlloc > map(
       Mount (*f)(const Val&),
-      Size size = 0,
+      Size size = Size(0),
       bool resize_pol = HashTableConst::default_resize_policy,
       bool key_uniqueness_pol = HashTableConst::default_uniqueness_policy) const;
 
@@ -1682,7 +1682,7 @@ namespace gum {
                  std::pair< Key, Mount > >::other >
     HashTable< Key, Mount, OtherAlloc > map(
       const Mount& val,
-      Size         size = 0,
+      Size         size = Size(0),
       bool         resize_pol = HashTableConst::default_resize_policy,
       bool key_uniqueness_pol = HashTableConst::default_uniqueness_policy) const;
 
@@ -1718,7 +1718,7 @@ namespace gum {
     Size __size;
 
     /// Number of elements of type Val stored in the hash table.
-    Size __nb_elements{0};
+    Size __nb_elements{Size(0)};
 
     /// The function used to hash keys (may change when the table is resized).
     HashFunc< Key > __hash_func;
@@ -2072,7 +2072,7 @@ namespace gum {
      * gum::HashTableConstIteratorSafe.
      * @return Returns this gum::HashTableConstIteratorSafe.
      */
-    HashTableConstIteratorSafe< Key, Val >& operator+=(unsigned int i) noexcept;
+    HashTableConstIteratorSafe< Key, Val >& operator+=(Size i) noexcept;
 
     /**
      * @brief Returns a new iterator poiting to i elements further in the
@@ -2081,7 +2081,7 @@ namespace gum {
      * gum::HashTableConstIteratorSafe.
      * @return Returns a new gum::HashTableConstIteratorSafe.
      */
-    HashTableConstIteratorSafe< Key, Val > operator+(unsigned int i) const;
+    HashTableConstIteratorSafe< Key, Val > operator+(Size i) const;
 
     /**
      * @brief Checks whether two iterators are not equal.
@@ -2126,7 +2126,7 @@ namespace gum {
      * @brief the index of the chained list pointed to by the iterator in the
      * array __nodes of the hash table.
      */
-    Size __index{0};
+    Size __index{Size(0)};
 
     /// The bucket in the chained list pointed to by the iterator.
     HashTableBucket< Key, Val >* __bucket{nullptr};
@@ -2360,7 +2360,7 @@ namespace gum {
      * @param i The number of increments.
      * @return Return this gum::HashTableIteratorSafe.
      */
-    HashTableIteratorSafe< Key, Val >& operator+=(unsigned int i) noexcept;
+    HashTableIteratorSafe< Key, Val >& operator+=(Size i) noexcept;
 
     /**
      * @brief Returns a new iterator pointing to i elements further in the
@@ -2368,7 +2368,7 @@ namespace gum {
      * @param i The number of increments.
      * @return Returns this gum::HashTableIteratorSafe.
      */
-    HashTableIteratorSafe< Key, Val > operator+(unsigned int i) const;
+    HashTableIteratorSafe< Key, Val > operator+(Size i) const;
 
     /**
      * @brief Checks whether two iterators are pointing toward different
@@ -2607,7 +2607,7 @@ namespace gum {
      * @param i The number of increments.
      * @return Returns this gum::HashTableConstIterator.
      */
-    HashTableConstIterator< Key, Val >& operator+=(unsigned int i) noexcept;
+    HashTableConstIterator< Key, Val >& operator+=(Size i) noexcept;
 
     /**
      * @brief Returns a new iterator pointing to i elements further in the
@@ -2616,7 +2616,7 @@ namespace gum {
      * @return Returns a new iterator pointing to i elements further in the
      * hashtable.
      */
-    HashTableConstIterator< Key, Val > operator+(unsigned int i) const noexcept;
+    HashTableConstIterator< Key, Val > operator+(Size i) const noexcept;
 
     /**
      * @brief Checks whether two iterators are pointing toward different
@@ -2672,7 +2672,7 @@ namespace gum {
      * @brief The index of the chained list pointed by the iterator in the
      * array of nodes of the hash table.
      */
-    Size __index{0};
+    Size __index{Size(0)};
 
     /// The bucket in the chained list pointed to by the iterator.
     typename HashTable< Key, Val >::Bucket* __bucket{nullptr};
@@ -2880,14 +2880,14 @@ namespace gum {
      * @param i The number of increments.
      * @return Returns this gum::HashTableIterator.
      */
-    HashTableIterator< Key, Val >& operator+=(unsigned int i) noexcept;
+    HashTableIterator< Key, Val >& operator+=(Size i) noexcept;
 
     /**
      * @brief Returns a new iterator.
      * @param i The number of increments.
      * @return Returns this gum::HashTableIterator.
      */
-    HashTableIterator< Key, Val > operator+(unsigned int i) const noexcept;
+    HashTableIterator< Key, Val > operator+(Size i) const noexcept;
 
     /**
      * @brief Checks whether two iterators are pointing toward different

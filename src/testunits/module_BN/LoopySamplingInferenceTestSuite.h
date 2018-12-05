@@ -334,9 +334,9 @@ namespace gum_tests {
     void /*test*/ HybridAsia() {
       gum::BayesNet< float >  bn;
       gum::BIFReader< float > reader(&bn, GET_RESSOURCES_PATH("asia.bif"));
-      int                     nbrErr = 0;
+      gum::Size               nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == 0);
+      TS_ASSERT(nbrErr == gum::Size(0));
 
       try {
         gum::LazyPropagation< float > lazy(&bn);
@@ -360,9 +360,9 @@ namespace gum_tests {
     void /*test*/ HybridAlarm() {
       gum::BayesNet< float >  bn;
       gum::BIFReader< float > reader(&bn, GET_RESSOURCES_PATH("alarm.bif"));
-      int                     nbrErr = 0;
+      gum::Size               nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == 0);
+      TS_ASSERT(nbrErr == gum::Size(0));
 
       try {
         gum::LazyPropagation< float > lazy(&bn);

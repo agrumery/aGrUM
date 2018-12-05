@@ -697,7 +697,7 @@ namespace gum {
               O3PRM_CLASS_ILLEGAL_RULE_LABEL(rule, label, prnt, *__errors);
               errors = true;
             }
-          } catch (Exception& e) {
+          } catch (Exception&) {
             // parent does not exists and is already reported
           }
         }

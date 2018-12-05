@@ -211,11 +211,11 @@ namespace gum {
     protected:
     /// fired after a new marginal target is inserted
     /** @param id The target variable's id. */
-    virtual void _onMarginalTargetAdded(NodeId id) = 0;
+    virtual void _onMarginalTargetAdded(const NodeId id) = 0;
 
     /// fired before a marginal target is removed
     /** @param id The target variable's id. */
-    virtual void _onMarginalTargetErased(NodeId id) = 0;
+    virtual void _onMarginalTargetErased(const NodeId id) = 0;
 
     /// fired after all the nodes of the BN are added as marginal targets
     virtual void _onAllMarginalTargetsAdded() = 0;

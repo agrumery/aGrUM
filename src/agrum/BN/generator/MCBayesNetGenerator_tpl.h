@@ -444,7 +444,7 @@ namespace gum {
     MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::__createTree(
       Size BNSize) {
     Idx               n = 0;
-    int               nb_mod = 2 + randomValue(this->_maxModality - 1);
+    Idx               nb_mod = 2 + randomValue(this->_maxModality - 1);
     std::stringstream strBuff;
     strBuff << "n_" << n++;
     NodeId root =
@@ -465,7 +465,7 @@ namespace gum {
              template < typename > class ICPTDisturber >
   NodeId MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
     __createPartTree(Size BNSize, Idx& n) {
-    int               nb_mod = 2 + randomValue(this->_maxModality - 1);
+    Idx               nb_mod = 2 + randomValue(this->_maxModality - 1);
     std::stringstream strBuff;
     strBuff << "n_" << n++;
     NodeId root =

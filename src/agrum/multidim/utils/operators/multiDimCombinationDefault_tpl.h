@@ -438,7 +438,7 @@ namespace gum {
     std::vector< Size > table_size(set.size());
 
     {
-      unsigned int i = 0;
+      std::size_t i = std::size_t(0);
 
       for (typename Set< const Sequence< const DiscreteVariable* >* >::
              const_iterator_safe iter = set.beginSafe();
@@ -608,7 +608,7 @@ namespace gum {
 
     delete tables[k];
 
-    return std::pair< long, long >(max_memory, current_memory);
+    return std::pair< long, long >(long(max_memory), long(current_memory));
   }
 
   // returns the memory consumption used during the combination

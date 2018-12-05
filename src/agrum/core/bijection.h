@@ -1521,7 +1521,7 @@ namespace gum {
      * @param nb The number of steps by wich the iterator moves.
      * @return Returns this gum::BijectionIteratorSafe.
      */
-    BijectionIteratorSafe< T1, T2 >& operator+=(unsigned int nb) noexcept;
+    BijectionIteratorSafe< T1, T2 >& operator+=(Size nb) noexcept;
 
     /**
      * @brief Returns a new iterator.
@@ -1534,7 +1534,7 @@ namespace gum {
      * @param nb The number of steps by wich the iterator moves.
      * @return Returns this gum::BijectionIteratorSafe.
      */
-    BijectionIteratorSafe< T1, T2 > operator+(unsigned int nb) noexcept;
+    BijectionIteratorSafe< T1, T2 > operator+(Size nb) noexcept;
 
     /**
      * @brief Inequality operator.
@@ -1718,7 +1718,7 @@ namespace gum {
      * @param nb The number of steps by wich the iterator moves.
      * @return Returns this gum::BijectionIterator.
      */
-    BijectionIterator< T1, T2 >& operator+=(unsigned int nb) noexcept;
+    BijectionIterator< T1, T2 >& operator+=(Size nb) noexcept;
 
     /**
      * @brief Return a new iterator.
@@ -1728,7 +1728,7 @@ namespace gum {
      * to parse to reach the end of the gum::Bijection, then the resulting
      * iterator points to gum::Bijection::end().
      */
-    BijectionIterator< T1, T2 > operator+(unsigned int nb) noexcept;
+    BijectionIterator< T1, T2 > operator+(Size nb) noexcept;
 
     /**
      * @brief Inequality operator.

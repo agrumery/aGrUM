@@ -375,7 +375,7 @@ namespace gum {
     using const_reference = const Val&;
     using pointer = Val*;
     using const_pointer = const Val*;
-    using size_type = std::size_t;
+    using size_type = Size;
     using difference_type = std::ptrdiff_t;
     using allocator_type = Alloc;
     using iterator = ListIterator< Val >;
@@ -885,7 +885,7 @@ namespace gum {
      * @warning Note that \e val is not actually inserted into the list.
      * Rather, it is a copy of val that is inserted.
      */
-    Val& insert(unsigned int pos, const Val& val);
+    Val& insert(Size pos, const Val& val);
 
     /**
      * @brief Insert an rvalue at the ith pos of the chained list.
@@ -898,7 +898,7 @@ namespace gum {
      * @param val The value to insert.
      * @return Returns a reference on the copy inserted into the list.
      */
-    Val& insert(unsigned int pos, Val&& val);
+    Val& insert(Size pos, Val&& val);
 
     /**
      * @brief Inserts a new element before or after a given iterator.
@@ -1027,7 +1027,7 @@ namespace gum {
      *
      * @param i The position in the list of the element we wish to remove.
      */
-    void erase(unsigned int i);
+    void erase(Size i);
 
     /**
      * @brief Erases the element of the List pointed to by the safe iterator.
@@ -1276,7 +1276,7 @@ namespace gum {
      * @return Returns a reference on the element stored at the ith position in
      * the list.
      */
-    Val& operator[](const unsigned int i);
+    Val& operator[](const Size i);
 
     /**
      * @brief Returns the const ith element in the current chained list.
@@ -1290,7 +1290,7 @@ namespace gum {
      * @return Returns a reference on the element stored at the ith position in
      * the list.
      */
-    const Val& operator[](const unsigned int i) const;
+    const Val& operator[](const Size i) const;
 
     /// @}
 
@@ -1302,7 +1302,7 @@ namespace gum {
     ListBucket< Val >* __end_list{nullptr};
 
     /// The number of elements in the list.
-    unsigned int __nb_elements{0};
+    Size __nb_elements{Size(0)};
 
     /// The list of "safe" iterators attached to the list.
     mutable std::vector< const_iterator_safe* > __safe_iterators;
@@ -1331,7 +1331,7 @@ namespace gum {
      * @param i The position of the returned element.
      * @return Returns the gum::ListBucket of the ith element.
      */
-    ListBucket< Val >* __getIthBucket(unsigned int i) const noexcept;
+    ListBucket< Val >* __getIthBucket(Size i) const noexcept;
 
     /**
      * @brief Returns the bucket corresponding to a given value.
@@ -1554,7 +1554,7 @@ namespace gum {
      * @throw UndefinedIteratorValue Raised if the element does not exist in
      * the list.
      */
-    ListConstIterator(const List< Val >& theList, unsigned int ind_elt);
+    ListConstIterator(const List< Val >& theList, Size ind_elt);
 
     /**
      * @brief Class Desctructor.
@@ -1841,7 +1841,7 @@ namespace gum {
      * @throw UndefinedIteratorValue Raised if the element does not exist in
      * the list.
      */
-    ListIterator(const List< Val >& theList, unsigned int ind_elt);
+    ListIterator(const List< Val >& theList, Size ind_elt);
 
     /**
      * @brief Class destructor.
@@ -2071,7 +2071,7 @@ namespace gum {
      * the list.
      */
     template < typename Alloc >
-    ListConstIteratorSafe(const List< Val, Alloc >& theList, unsigned int ind_elt);
+    ListConstIteratorSafe(const List< Val, Alloc >& theList, Size ind_elt);
 
     /**
      * @brief Move constructor.
@@ -2270,10 +2270,10 @@ namespace gum {
     void __removeFromSafeList() const;
 
     /// Makes the iterator point to the next element in the List.
-    ListConstIteratorSafe< Val >& __opPlus(unsigned int i) noexcept;
+    ListConstIteratorSafe< Val >& __opPlus(Size i) noexcept;
 
     /// Makes the iterator point to i elements before in the List.
-    ListConstIteratorSafe< Val >& __opMinus(unsigned int i) noexcept;
+    ListConstIteratorSafe< Val >& __opMinus(Size i) noexcept;
   };
 
   /// For STL compliance, a distance operator.
@@ -2383,7 +2383,7 @@ namespace gum {
      * the list.
      */
     template < typename Alloc >
-    ListIteratorSafe(const List< Val, Alloc >& theList, unsigned int ind_elt);
+    ListIteratorSafe(const List< Val, Alloc >& theList, Size ind_elt);
 
     /**
      * @brief Move constructor.

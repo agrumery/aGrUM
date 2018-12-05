@@ -339,9 +339,9 @@ namespace gum_tests {
     void testWeightedAsia() {
       gum::BayesNet< float >  bn;
       gum::BIFReader< float > reader(&bn, GET_RESSOURCES_PATH("asia.bif"));
-      int                     nbrErr = 0;
+      gum::Size               nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == 0);
+      TS_ASSERT(nbrErr == gum::Size(0));
 
       try {
         gum::LazyPropagation< float > lazy(&bn);
@@ -364,9 +364,9 @@ namespace gum_tests {
     void testWeightedAlarm() {
       gum::BayesNet< float >  bn;
       gum::BIFReader< float > reader(&bn, GET_RESSOURCES_PATH("alarm.bif"));
-      int                     nbrErr = 0;
+      gum::Size               nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == 0);
+      TS_ASSERT(nbrErr == gum::Size(0));
 
       try {
         gum::LazyPropagation< float > lazy(&bn);
@@ -389,9 +389,9 @@ namespace gum_tests {
     void testWeightedInfListener() {
       gum::BayesNet< float >  bn;
       gum::BIFReader< float > reader(&bn, GET_RESSOURCES_PATH("alarm.bif"));
-      int                     nbrErr = 0;
+      gum::Size               nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == 0);
+      TS_ASSERT(nbrErr == gum::Size(0));
 
       gum::WeightedSampling< float > inf(&bn);
       aSimpleWeightedListener        agsl(inf);

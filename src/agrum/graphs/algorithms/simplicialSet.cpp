@@ -402,7 +402,7 @@ namespace gum {
     const NodeSet nei = __graph->neighbours(id);
 
     // check that node id is actually a clique
-    unsigned int nb_adj = nei.size();
+    Size nb_adj = nei.size();
     if (__nb_adjacent_neighbours[id] != (nb_adj * (nb_adj - 1)) / 2) {
       GUM_ERROR(NotFound, "Node " << id << " is not a clique");
     }
@@ -573,7 +573,7 @@ namespace gum {
 
     __Belong&      belong = __containing_list[id];
     const NodeSet& nei = __graph->neighbours(id);
-    unsigned int   nb_adj = nei.size();
+    Size           nb_adj = nei.size();
 
     // check if the node should belong to the simplicial set
     if (__nb_adjacent_neighbours[id] == (nb_adj * (nb_adj - 1)) / 2) {

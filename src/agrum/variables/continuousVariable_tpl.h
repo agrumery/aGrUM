@@ -64,7 +64,8 @@ namespace gum {
   INLINE ContinuousVariable< GUM_SCALAR >::ContinuousVariable(
     const ContinuousVariable< TX_VAL >& from) :
       IContinuousVariable(from),
-      __lower_bound(from.__lower_bound), __upper_bound(from.__upper_bound) {
+      __lower_bound(GUM_SCALAR(from.__lower_bound)),
+      __upper_bound(GUM_SCALAR(from.__upper_bound)) {
     GUM_CONS_CPY(ContinuousVariable);
   }
 
@@ -111,8 +112,8 @@ namespace gum {
   INLINE ContinuousVariable< GUM_SCALAR >& ContinuousVariable< GUM_SCALAR >::
                                            operator=(const ContinuousVariable< TX_VAL >& from) {
     IContinuousVariable::operator=(from);
-    __lower_bound = from.__lower_bound;
-    __upper_bound = from.__upper_bound;
+    __lower_bound = GUM_SCALAR(from.__lower_bound);
+    __upper_bound = GUM_SCALAR(from.__upper_bound);
     return *this;
   }
 

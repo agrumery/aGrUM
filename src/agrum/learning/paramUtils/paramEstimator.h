@@ -25,6 +25,8 @@
 #ifndef GUM_LEARNING_PARAM_ESTIMATOR_H
 #define GUM_LEARNING_PARAM_ESTIMATOR_H
 
+#include <type_traits>
+
 #include <agrum/agrum.h>
 #include <agrum/learning/database/databaseTable.h>
 #include <agrum/learning/aprioris/apriori.h>
@@ -248,6 +250,10 @@ namespace gum {
       /// move operator
       ParamEstimator< ALLOC >& operator=(ParamEstimator< ALLOC >&& from);
 
+    private:
+      
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
       /** @brief check the coherency between the parameters passed to
        * the setParameters functions */
       template < typename GUM_SCALAR >
@@ -255,6 +261,29 @@ namespace gum {
         const NodeId                                  target_node,
         const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
         Potential< GUM_SCALAR >&                      pot);
+
+      // sets the CPT's parameters corresponding to a given Potential
+      // when the potential belongs to a BayesNet<GUM_SCALAR> when
+      // GUM_SCALAR is different from a double
+      template < typename GUM_SCALAR >
+      typename std::enable_if< !std::is_same<GUM_SCALAR, double>::value, void >::type
+      __setParameters(
+        const NodeId                                  target_node,
+        const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
+        Potential< GUM_SCALAR >&                      pot);
+
+      // sets the CPT's parameters corresponding to a given Potential
+      // when the potential belongs to a BayesNet<GUM_SCALAR> when
+      // GUM_SCALAR is equal to double (the code is optimized for doubles)
+      template < typename GUM_SCALAR >
+      typename std::enable_if< std::is_same<GUM_SCALAR, double>::value, void >::type
+      __setParameters(
+        const NodeId                                  target_node,
+        const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
+        Potential< GUM_SCALAR >&                      pot);
+      
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+
     };
 
   } /* namespace learning */

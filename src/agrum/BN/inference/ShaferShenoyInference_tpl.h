@@ -194,7 +194,7 @@ namespace gum {
   /// fired when a new evidence is inserted
   template < typename GUM_SCALAR >
   INLINE void
-    ShaferShenoyInference< GUM_SCALAR >::_onEvidenceAdded(NodeId id,
+    ShaferShenoyInference< GUM_SCALAR >::_onEvidenceAdded(const NodeId id,
                                                           bool   isHardEvidence) {
     // if we have a new hard evidence, this modifies the undigraph over which
     // the join tree is created. This is also the case if id is not a node of
@@ -218,7 +218,7 @@ namespace gum {
   /// fired when an evidence is removed
   template < typename GUM_SCALAR >
   INLINE void
-    ShaferShenoyInference< GUM_SCALAR >::_onEvidenceErased(NodeId id,
+    ShaferShenoyInference< GUM_SCALAR >::_onEvidenceErased(const NodeId id,
                                                            bool   isHardEvidence) {
     // if we delete a hard evidence, this modifies the undigraph over which
     // the join tree is created.
@@ -271,7 +271,7 @@ namespace gum {
   /// fired when an evidence is changed
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyInference< GUM_SCALAR >::_onEvidenceChanged(
-    NodeId id, bool hasChangedSoftHard) {
+    const NodeId id, bool hasChangedSoftHard) {
     if (hasChangedSoftHard)
       __is_new_jt_needed = true;
     else {
@@ -289,13 +289,13 @@ namespace gum {
   /// fired after a new target is inserted
   template < typename GUM_SCALAR >
   INLINE void
-    ShaferShenoyInference< GUM_SCALAR >::_onMarginalTargetAdded(NodeId id) {}
+    ShaferShenoyInference< GUM_SCALAR >::_onMarginalTargetAdded(const NodeId id) {}
 
 
   /// fired before a target is removed
   template < typename GUM_SCALAR >
   INLINE void
-    ShaferShenoyInference< GUM_SCALAR >::_onMarginalTargetErased(NodeId id) {}
+    ShaferShenoyInference< GUM_SCALAR >::_onMarginalTargetErased(const NodeId id) {}
 
 
   /// fired after a new set target is inserted
@@ -320,6 +320,9 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void ShaferShenoyInference< GUM_SCALAR >::_onAllMarginalTargetsErased() {}
 
+  /// fired after a new Bayes net has been assigned to the engine
+  template < typename GUM_SCALAR >
+  INLINE void  ShaferShenoyInference< GUM_SCALAR >::_onBayesNetChanged(const IBayesNet< GUM_SCALAR >* bn) {}
 
   /// fired before a all the joint_targets are removed
   template < typename GUM_SCALAR >

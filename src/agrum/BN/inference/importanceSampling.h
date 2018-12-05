@@ -77,7 +77,7 @@ namespace gum {
      * Each node added to the sample (in a topological order) has a weight.
      * The sample's weight is the product of all weights.
      */
-    Instantiation _draw(float* w, Instantiation prev) override;
+    Instantiation _draw(GUM_SCALAR* w, Instantiation prev) override;
 
 
     /// modifies the cpts of a BN in order to tend to uniform distributions

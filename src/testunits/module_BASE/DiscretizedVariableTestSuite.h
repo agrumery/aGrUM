@@ -111,31 +111,31 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(v.toString(), "var<[1;3[,[3;5[,[5;7]>");
 
-      unsigned int vv = (unsigned int)0;
+      gum::Size vv = gum::Size(0);
 
       TS_ASSERT_THROWS(v["0"], gum::OutOfBounds);
       TS_ASSERT_THROWS(v["0"], gum::OutOfLowerBound);
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["1"]);
-      TS_ASSERT_EQUALS(vv, (unsigned int)0);
+      TS_ASSERT_EQUALS(vv, gum::Size(0));
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["2"]);
-      TS_ASSERT_EQUALS(vv, (unsigned int)0);
+      TS_ASSERT_EQUALS(vv, gum::Size(0));
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["3"]);
-      TS_ASSERT_EQUALS(vv, (unsigned int)1);
+      TS_ASSERT_EQUALS(vv, gum::Size(1));
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["4"]);
-      TS_ASSERT_EQUALS(vv, (unsigned int)1);
+      TS_ASSERT_EQUALS(vv, gum::Size(1));
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["5"]);
-      TS_ASSERT_EQUALS(vv, (unsigned int)2);
+      TS_ASSERT_EQUALS(vv, gum::Size(2));
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["6"]);
-      TS_ASSERT_EQUALS(vv, (unsigned int)2);
+      TS_ASSERT_EQUALS(vv, gum::Size(2));
 
       TS_GUM_ASSERT_THROWS_NOTHING(vv = v["7"]);
-      TS_ASSERT_EQUALS(vv, (unsigned int)2);
+      TS_ASSERT_EQUALS(vv, gum::Size(2));
 
       TS_ASSERT_THROWS(v["8"], gum::OutOfBounds);
       TS_ASSERT_THROWS(v["8"], gum::OutOfUpperBound);

@@ -72,12 +72,12 @@ namespace gum {
 
   INLINE LabelizedVariable::LabelizedVariable(const std::string& aName,
                                               const std::string& aDesc,
-                                              const int          nbrLabel) :
+                                              const Size         nbrLabel) :
       DiscreteVariable(aName, aDesc) {
     // for debugging purposes
     GUM_CONSTRUCTOR(LabelizedVariable);
 
-    for (int i = 0; i < nbrLabel; ++i) {
+    for (Size i = 0; i < nbrLabel; ++i) {
       std::ostringstream oss;
       oss << i;
       addLabel(oss.str());

@@ -41,7 +41,7 @@ namespace gum {
       __scanner = new net::Scanner(__streamName.c_str());
       __parser = new net::Parser(__scanner);
       __parser->setFactory((IBayesNetFactory*)__factory);
-    } catch (IOError& e) { __ioerror = true; }
+    } catch (IOError&) { __ioerror = true; }
   }
 
   template < typename GUM_SCALAR >

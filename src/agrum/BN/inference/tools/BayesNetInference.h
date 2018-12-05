@@ -500,10 +500,10 @@ namespace gum {
     virtual void _onStateChanged() = 0;
 
     /// fired after a new evidence is inserted
-    virtual void _onEvidenceAdded(NodeId id, bool isHardEvidence) = 0;
+    virtual void _onEvidenceAdded(const NodeId id, bool isHardEvidence) = 0;
 
     /// fired before an evidence is removed
-    virtual void _onEvidenceErased(NodeId id, bool isHardEvidence) = 0;
+    virtual void _onEvidenceErased(const NodeId id, bool isHardEvidence) = 0;
 
     /// fired before all the evidence are erased
     virtual void _onAllEvidenceErased(bool contains_hard_evidence) = 0;
@@ -516,7 +516,7 @@ namespace gum {
      * Hard or from Hard to Soft
      *
      */
-    virtual void _onEvidenceChanged(NodeId id, bool hasChangedSoftHard) = 0;
+    virtual void _onEvidenceChanged(const NodeId id, bool hasChangedSoftHard) = 0;
 
     /// fired after a new Bayes net has been assigned to the engine
     virtual void _onBayesNetChanged(const IBayesNet< GUM_SCALAR >* bn) = 0;

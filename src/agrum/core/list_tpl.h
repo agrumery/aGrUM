@@ -168,7 +168,7 @@ namespace gum {
   // List.
   template < typename Val >
   INLINE ListConstIterator< Val >::ListConstIterator(const List< Val >& theList,
-                                                     unsigned int       ind_elt) {
+                                                     Size               ind_elt) {
     // for debugging purposes
     GUM_CONSTRUCTOR(ListConstIterator);
 
@@ -393,7 +393,7 @@ namespace gum {
   // List.
   template < typename Val >
   INLINE ListIterator< Val >::ListIterator(const List< Val >& theList,
-                                           unsigned int       ind_elt) :
+                                           Size               ind_elt) :
       ListConstIterator< Val >(theList, ind_elt) {
     GUM_CONSTRUCTOR(ListIterator);
   }
@@ -526,7 +526,7 @@ namespace gum {
   template < typename Val >
   template < typename Alloc >
   ListConstIteratorSafe< Val >::ListConstIteratorSafe(
-    const List< Val, Alloc >& theList, unsigned int ind_elt) :
+    const List< Val, Alloc >& theList, Size ind_elt) :
       __list{
         reinterpret_cast< const List< Val, std::allocator< Val > >* >(&theList)} {
     // for debugging purposes
@@ -768,7 +768,7 @@ namespace gum {
   // makes the iterator point to i elements before in the List
   template < typename Val >
   INLINE ListConstIteratorSafe< Val >&
-         ListConstIteratorSafe< Val >::__opMinus(unsigned int i) noexcept {
+         ListConstIteratorSafe< Val >::__opMinus(Size i) noexcept {
     // check if we are pointing to something that has been deleted
     if (__null_pointing) {
       __null_pointing = false;
@@ -806,7 +806,7 @@ namespace gum {
   // makes the iterator point to the next element in the List
   template < typename Val >
   INLINE ListConstIteratorSafe< Val >&
-         ListConstIteratorSafe< Val >::__opPlus(unsigned int i) noexcept {
+         ListConstIteratorSafe< Val >::__opPlus(Size i) noexcept {
     // check if we are pointing to something that has been deleted
     if (__null_pointing) {
       __null_pointing = false;
@@ -1005,7 +1005,7 @@ namespace gum {
   template < typename Alloc >
   INLINE
     ListIteratorSafe< Val >::ListIteratorSafe(const List< Val, Alloc >& theList,
-                                              unsigned int              ind_elt) :
+                                              Size                      ind_elt) :
       ListConstIteratorSafe< Val >(theList, ind_elt) {
     GUM_CONSTRUCTOR(ListIteratorSafe);
   }
@@ -1626,7 +1626,7 @@ namespace gum {
   // returns the bucket corresponding to the ith position
   template < typename Val, typename Alloc >
   INLINE ListBucket< Val >*
-         List< Val, Alloc >::__getIthBucket(unsigned int i) const noexcept {
+         List< Val, Alloc >::__getIthBucket(Size i) const noexcept {
     ListBucket< Val >* ptr;
 
     if (i < __nb_elements / 2) {
@@ -1681,7 +1681,7 @@ namespace gum {
 
   // inserts a new element at the ith pos of the chained list
   template < typename Val, typename Alloc >
-  INLINE Val& List< Val, Alloc >::insert(unsigned int pos, const Val& val) {
+  INLINE Val& List< Val, Alloc >::insert(Size pos, const Val& val) {
     // if ther are fewer elements than pos, put the value at the end of the list
     if (__nb_elements <= pos) { return pushBack(val); }
 
@@ -1690,7 +1690,7 @@ namespace gum {
 
   // insert an rvalue at the ith pos of the chained list
   template < typename Val, typename Alloc >
-  INLINE Val& List< Val, Alloc >::insert(unsigned int pos, Val&& val) {
+  INLINE Val& List< Val, Alloc >::insert(Size pos, Val&& val) {
     // if ther are fewer elements than pos, put the value at the end of the list
     if (__nb_elements <= pos) { return pushBack(std::move(val)); }
 
@@ -1826,7 +1826,7 @@ namespace gum {
   // returns a reference to first element of a list
   template < typename Val, typename Alloc >
   INLINE Val& List< Val, Alloc >::front() const {
-    if (__nb_elements == 0) {
+    if (__nb_elements == Size(0)) {
       GUM_ERROR(NotFound, "not enough elements in the chained list");
     }
 
@@ -1836,7 +1836,7 @@ namespace gum {
   // returns a reference to last element of a list
   template < typename Val, typename Alloc >
   INLINE Val& List< Val, Alloc >::back() const {
-    if (__nb_elements == 0) {
+    if (__nb_elements == Size(0)) {
       GUM_ERROR(NotFound, "not enough elements in the chained list");
     }
 
@@ -1903,7 +1903,7 @@ namespace gum {
 
   // erases the ith element of the List (the first one is in position 0)
   template < typename Val, typename Alloc >
-  INLINE void List< Val, Alloc >::erase(unsigned int i) {
+  INLINE void List< Val, Alloc >::erase(Size i) {
     if (i >= __nb_elements) return;
 
     // erase the ith bucket
@@ -1965,7 +1965,7 @@ namespace gum {
   // returns a boolean indicating whether the chained list is empty
   template < typename Val, typename Alloc >
   INLINE bool List< Val, Alloc >::empty() const noexcept {
-    return (__nb_elements == 0);
+    return (__nb_elements == Size(0));
   }
 
   // displays the content of a chained list
@@ -2040,7 +2040,7 @@ namespace gum {
     List< Mount, OtherAlloc > list;
 
     // fill the new list
-    for (unsigned int i = 0; i < __nb_elements; ++i)
+    for (Size i = Size(0); i < __nb_elements; ++i)
       list.pushBack(mount);
 
     return list;
@@ -2087,7 +2087,7 @@ namespace gum {
 
   // returns the ith element in the current chained list.
   template < typename Val, typename Alloc >
-  INLINE Val& List< Val, Alloc >::operator[](const unsigned int i) {
+  INLINE Val& List< Val, Alloc >::operator[](const Size i) {
     // check if we can return the element we ask for
     if (i >= __nb_elements) {
       GUM_ERROR(NotFound, "not enough elements in the chained list");
@@ -2098,7 +2098,7 @@ namespace gum {
 
   // returns the ith element in the current chained list.
   template < typename Val, typename Alloc >
-  INLINE const Val& List< Val, Alloc >::operator[](const unsigned int i) const {
+  INLINE const Val& List< Val, Alloc >::operator[](const Size i) const {
     // check if we can return the element we ask for
     if (i >= __nb_elements) {
       GUM_ERROR(NotFound, "not enough elements in the chained list");

@@ -312,7 +312,7 @@ namespace gum_tests {
         auto                           id = asia.idFromName("Has Lung Cancer");
         const auto&                    marginal = inference.posterior(id);
         TS_FAIL("Inference should not be correct with a undefined CPT");
-      } catch (gum::IncompatibleEvidence& e) {
+      } catch (gum::IncompatibleEvidence&) {
         // OK to be here : CPT of Has Bronchitis has not been defined.
       } catch (gum::Exception& e) { TS_FAIL(e.errorContent()); }
 

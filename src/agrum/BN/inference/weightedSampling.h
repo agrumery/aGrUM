@@ -73,7 +73,7 @@ namespace gum {
      * The sample weight is the product of each node's weight.
      *
      */
-    Instantiation _draw(float* w, Instantiation prev) override;
+    Instantiation _draw(GUM_SCALAR* w, Instantiation prev) override;
   };
 
   extern template class WeightedSampling< float >;
