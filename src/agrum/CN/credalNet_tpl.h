@@ -1016,7 +1016,7 @@ namespace gum {
 
         if (var_dSize != 2) {
           unsigned long b, c;
-          superiorPow(var_dSize, b, c);
+          superiorPow((unsigned long)var_dSize, b, c);
           Size nb_bits{Size(b)};
           Size new_card{Size(c)};
 
@@ -1110,7 +1110,7 @@ namespace gum {
                   ins.pos(__bin_bn->variable(__var_bits[var][preced]));
                 auto val = ins.val(bit_pos);
 
-                Size pas = Size(int2Pow(preced));
+                Size pas = Size(int2Pow((unsigned long)preced));
                 Size elem;
 
                 if (val == 0)
@@ -1126,7 +1126,7 @@ namespace gum {
                 }
               }
 
-              Size pas = Size(int2Pow(i));
+              Size pas = Size(int2Pow((unsigned long)i));
 
               std::vector< GUM_SCALAR > distri(2, 0);
               int                       pos = 1;
@@ -1504,7 +1504,7 @@ namespace gum {
         if (entry->size() > vertices_size) vertices_size = Size(entry->size());
       }
 
-      return vertices_size;
+      return int(vertices_size);
     }
 
     template < typename GUM_SCALAR >

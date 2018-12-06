@@ -45,7 +45,7 @@ namespace gum_tests {
       gum::FMDPDatReader< float > reader(&fmdp, file);
 
       reader.trace(false);
-      int nbrErr = 0;
+      gum::Size nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
 
       TS_ASSERT(nbrErr == 0);

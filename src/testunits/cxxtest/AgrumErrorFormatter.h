@@ -125,7 +125,7 @@ namespace CxxTest {
 #endif // GUM_DEBUG_MODE
 
       ( *_o ) << endl
-              << "## Profiling : " << ( gum::Size )( 1000.0 * __totalTime )
+              << "## Profiling : " << (unsigned int)( 1000.0 * __totalTime )
               << " ms ##" << endl;
 
       ( *_o ) << "Failed " << tracker().failedTests() << " of " << totalTests

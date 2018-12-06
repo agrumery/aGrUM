@@ -71,7 +71,7 @@ namespace gum {
            valIter != __conTab.attrBEndSafe();
            ++valIter) {
         // Récupération de la valeur en cellule
-        double cell = __conTab.joint(attrIter.key(), valIter.key());
+        Idx cell = __conTab.joint(attrIter.key(), valIter.key());
         if (cell < 5) continue;
 
         // Récupération de la valeur en axe 2

@@ -1017,7 +1017,7 @@ namespace gum {
         GUM_SCALAR delta;
 
         /// int tId = getThreadNumber();
-        int nsize = _marginalMin.size();
+        int nsize = int(_marginalMin.size());
 
 #pragma omp for
 

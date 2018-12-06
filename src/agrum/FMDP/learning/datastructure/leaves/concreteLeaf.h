@@ -105,7 +105,7 @@ namespace gum {
     }
 
     public:
-    virtual double total() const { return __n1->nbObservation(); }
+    virtual double total() const { return double(__n1->nbObservation()); }
 
     Idx nbModa() const { return __nbModa(Int2Type< isScalar >()); }
 

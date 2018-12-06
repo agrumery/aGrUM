@@ -318,7 +318,7 @@ namespace gum {
        *\c __state to \c __states::Hup.
        * @param card A constant reference to the cardinality of the variable.
        */
-      void setUpH(const unsigned int& card);
+      void setUpH(const Size& card);
 
       /**
        * @brief %Sets up a V-representation.
@@ -330,7 +330,7 @@ namespace gum {
        * @param vertices A constant reference to the number of vertices of the
        *polytope.
        */
-      void setUpV(const unsigned int& card, const unsigned int& vertices);
+      void setUpV(const Size& card, const Size& vertices);
 
       /**
        * @brief Reset the wrapper as if it was built.
@@ -372,7 +372,7 @@ namespace gum {
        */
       void fillH(const GUM_SCALAR&   min,
                  const GUM_SCALAR&   max,
-                 const unsigned int& modal);
+                 const Size& modal);
 
       /**
        * @brief Fill the H-representation from the matrix given in argument.

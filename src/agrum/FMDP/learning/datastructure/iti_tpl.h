@@ -311,7 +311,7 @@ namespace gum {
     if (!this->_target->variablesSequence().exists(this->_value))
       this->_target->add(*(this->_value));
 
-    double tot = this->_nodeId2Database[currentNodeId]->nbObservation();
+    Idx tot = this->_nodeId2Database[currentNodeId]->nbObservation();
     if (!tot) return this->_target->manager()->addTerminalNode(0.0);
 
     NodeId* sonsMap = static_cast< NodeId* >(

@@ -292,7 +292,7 @@ namespace gum {
       }
 
       Size pp = pos;
-      Size pas = Size(intPow(2, pp));
+      Size pas = Size(intPow(2UL, (unsigned long)pp));
 
       Size combi_den = 0;
       Size combi_num = pp;

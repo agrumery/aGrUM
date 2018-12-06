@@ -77,7 +77,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    void LRSWrapper< GUM_SCALAR >::setUpH(const unsigned int& card) {
+    void LRSWrapper< GUM_SCALAR >::setUpH(const Size& card) {
       if (card < 2)
         GUM_ERROR(OperationNotAllowed,
                   "LRSWrapper< GUM_SCALAR >::setUpH : "
@@ -100,12 +100,12 @@ namespace gum {
 
       __state = __states::Hup;
 
-      __card = card;
+      __card = (unsigned int)card;
     }
 
     template < typename GUM_SCALAR >
-    void LRSWrapper< GUM_SCALAR >::setUpV(const unsigned int& card,
-                                          const unsigned int& vertices) {
+    void LRSWrapper< GUM_SCALAR >::setUpV(const Size& card,
+                                          const Size& vertices) {
       if (card < 2)
         GUM_ERROR(OperationNotAllowed,
                   "LRSWrapper< GUM_SCALAR >::setUpV : "
@@ -125,8 +125,8 @@ namespace gum {
 
       __state = __states::Vup;
 
-      __card = card;
-      __vertices = vertices;
+      __card = (unsigned int)card;
+      __vertices = (unsigned int) vertices;
     }
 
     template < typename GUM_SCALAR >
@@ -184,7 +184,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     void LRSWrapper< GUM_SCALAR >::fillH(const GUM_SCALAR&   min,
                                          const GUM_SCALAR&   max,
-                                         const unsigned int& modal) {
+                                         const Size& modal) {
       if (__state != __states::Hup)
         GUM_ERROR(
           OperationNotAllowed,
@@ -206,7 +206,7 @@ namespace gum {
 
       __vertex[modal] = max;
 
-      __insertedModals.insert(modal);
+      __insertedModals.insert(int(modal));
 
       if (__insertedModals.size() == __card) __state = __states::H2Vready;
     }
