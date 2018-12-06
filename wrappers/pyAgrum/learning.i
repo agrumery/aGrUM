@@ -63,7 +63,7 @@
         PyErr_SetString(PyExc_TypeError, "arg must be a sequence of int");
         return;
       }
-      v.push_back((unsigned int)PyInt_AsLong(row));
+      v.push_back((gum::NodeId)PyInt_AsLong(row));
     }
 
     $self->useK2(v);
