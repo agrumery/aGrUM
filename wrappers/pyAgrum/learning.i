@@ -13,7 +13,7 @@
 %extend gum::learning::BNLearner< double > {
 
   void setSliceOrder(PyObject * l) {
-    gum::NodeProperty< unsigned int > ranks;
+    gum::NodeProperty< gum::Size > ranks;
 
     if (PyList_Check(l) == 0) {
       PyErr_SetString(PyExc_TypeError,
@@ -50,7 +50,7 @@
   }
 
   void useK2(PyObject * l) {
-    std::vector< unsigned int > v;
+    std::vector< gum::NodeId > v;
 
     if (PyList_Check(l) == 0) {
       PyErr_SetString(PyExc_TypeError, "arg must be a sequence");
