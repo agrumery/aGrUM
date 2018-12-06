@@ -449,7 +449,7 @@ namespace gum {
       auto lastdv = __dat->lastdv;
 
       /* linearities are not considered for redundancy */
-      redineq = (int64_t*)calloc((m + 1), sizeof(int64_t));
+      redineq = (int64_t*)calloc(std::size_t(m + 1), sizeof(int64_t));
 
       for (decltype(nlinearity) i = 0; i < nlinearity; i++)
         redineq[__dat->linearity[i]] = 2L;
@@ -488,8 +488,8 @@ namespace gum {
 
       for (decltype(m) i = 1; i <= m; i++)
         if (redineq[i] == 0)
-          __output.push_back(std::vector< GUM_SCALAR >(++__input[i - 1].begin(),
-                                                       __input[i - 1].end()));
+          __output.push_back(std::vector< GUM_SCALAR >(++__input[std::size_t(i - 1)].begin(),
+                                                       __input[std::size_t(i - 1)].end()));
 
       __vertices = (unsigned int)__output.size();
 
@@ -559,7 +559,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void LRSWrapper< GUM_SCALAR >::__fill() const {
-      int64_t cols = int64_t(__input[0].size());
+      std::size_t cols = __input[0].size();
 
       int64_t* num = new int64_t[cols];   // ISO C++ forbids variable length array,
                                           // we need to do this instead
@@ -570,9 +570,9 @@ namespace gum {
       int64_t numerator, denominator;
 
       for (int64_t row = 0; row < rows; row++) {
-        for (int64_t col = 0; col < cols; col++) {
+        for (std::size_t col = 0; col < cols; col++) {
           Rational< GUM_SCALAR >::continuedFracFirst(
-            numerator, denominator, __input[row][col]);
+            numerator, denominator, __input[std::size_t(row)][col]);
 
           num[col] = numerator;
           den[col] = denominator;
@@ -582,7 +582,7 @@ namespace gum {
         /* 1L, 0L respectively */
         lrs_set_row(__dic,
                     __dat,
-                    row + 1,
+                    int64_t(row + 1),
                     num,
                     den,
                     1L);   // do NOT forget this + 1 on row
