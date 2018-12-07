@@ -154,7 +154,7 @@ def _getTitleHisto(p):
   (mu,std)=_stats(p)
   return "{}\n$\mu={:.2f}$; $\sigma={:.2f}$".format(var.name(),mu,std)
   
-def _getProbaV(p):
+def _getProbaV(p,scale=1.0):
   """
   compute the representation of an histogram for a mono-dim Potential
 
@@ -166,8 +166,8 @@ def _getProbaV(p):
   ra = np.arange(var.domainSize())
 
   fig = plt.figure()
-  fig.set_figwidth(var.domainSize() / 4.0)
-  fig.set_figheight(2)
+  fig.set_figwidth(scale*var.domainSize() / 4.0)
+  fig.set_figheight(scale*2)
 
   ax = fig.add_subplot(111)
 
@@ -179,7 +179,7 @@ def _getProbaV(p):
   ax.get_yaxis().grid(True)
   return fig
 
-def _getProbaH(p):
+def _getProbaH(p,scale=1.0):
   """
   compute the representation of an histogram for a mono-dim Potential
 
@@ -192,8 +192,8 @@ def _getProbaH(p):
   vx = ["{0}".format(var.label(int(i  ))) for i in ra_reverse]
 
   fig = plt.figure()
-  fig.set_figheight(var.domainSize() / 4.0)
-  fig.set_figwidth(2)
+  fig.set_figheight(scale*var.domainSize() / 4.0)
+  fig.set_figwidth(scale*2)
 
   ax = fig.add_subplot(111)
 
@@ -215,7 +215,7 @@ def _getProbaH(p):
   return fig
 
 
-def proba2histo(p):
+def proba2histo(p,scale=1.0):
   """
   compute the representation of an histogram for a mono-dim Potential
 
@@ -223,9 +223,9 @@ def proba2histo(p):
   :return: a matplotlib histogram for a Potential p.
   """
   if p.variable(0).domainSize() > 8:
-    return _getProbaV(p)
+    return _getProbaV(p,scale)
   else:
-    return _getProbaH(p)
+    return _getProbaH(p,scale)
 
 
 def _saveFigProba(p, filename, format="svg"):

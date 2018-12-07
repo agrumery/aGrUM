@@ -242,14 +242,14 @@ def getInfluenceDiagram(diag, size="4", format="png"):
   return getDot(diag.toDot(), size, format)
 
 
-def showProba(p):
+def showProba(p,scale=1.0):
   """
   Show a mono-dim Potential
 
   :param p: the mono-dim Potential
   :return:
   """
-  fig = proba2histo(p)
+  fig = proba2histo(p,scale)
   plt.show()
 
 
