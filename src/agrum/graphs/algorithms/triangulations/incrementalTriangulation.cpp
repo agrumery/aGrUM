@@ -340,7 +340,7 @@ namespace gum {
     // update the elimination orders
 
     if (!__require_update) {
-      for (Size i = __reverse_elimination_order[X] + 1;
+      for (Idx i = __reverse_elimination_order[X] + 1;
            i < __reverse_elimination_order.size();
            ++i)
         __elimination_order[i - 1] = __elimination_order[i];

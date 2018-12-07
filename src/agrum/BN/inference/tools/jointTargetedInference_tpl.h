@@ -324,32 +324,24 @@ namespace gum {
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
     JointTargetedInference< GUM_SCALAR >::evidenceJointImpact(
-      const std::vector< NodeId >& targets, const std::vector< NodeId >& evs) {
-    NodeSet sotargets(Size(targets.size()));
-    for (const auto& e : targets)
-      sotargets << e;
-
-    NodeSet soevs(Size(evs.size()));
-    for (const auto& e : evs)
-      soevs << e;
-
-    if (!(soevs * sotargets).empty()) {
+      const NodeSet& targets, const NodeSet& evs) {
+    if (!(evs * targets).empty()) {
       GUM_ERROR(InvalidArgument,
                 "Targets (" << targets << ") can not intersect evs (" << evs
                             << ").");
     }
-    auto condset = this->BN().minimalCondSet(sotargets, soevs);
+    auto condset = this->BN().minimalCondSet(targets, evs);
 
     this->eraseAllTargets();
     this->eraseAllEvidence();
 
     Instantiation           iTarget;
     Potential< GUM_SCALAR > res;
-    for (const auto& target : sotargets) {
+    for (const auto& target : targets) {
       res.add(this->BN().variable(target));
       iTarget.add(this->BN().variable(target));
     }
-    this->addJointTarget(sotargets);
+    this->addJointTarget(targets);
 
     for (const auto& n : condset) {
       res.add(this->BN().variable(n));
@@ -364,7 +356,7 @@ namespace gum {
       this->makeInference();
       // populate res
       for (inst.setFirstIn(iTarget); !inst.end(); inst.incIn(iTarget)) {
-        res.set(inst, this->jointPosterior(sotargets)[inst]);
+        res.set(inst, this->jointPosterior(targets)[inst]);
       }
       inst.setFirstIn(iTarget);   // remove inst.end() flag
     }
@@ -378,19 +370,16 @@ namespace gum {
       const std::vector< std::string >& targets,
       const std::vector< std::string >& evs) {
     const auto& bn = this->BN();
-    auto        transf = [&bn](const std::string& s) { return bn.idFromName(s); };
 
-    std::vector< NodeId > targetsId;
-    targetsId.reserve(targets.size());
-    std::transform(std::begin(targets),
-                   std::end(targets),
-                   std::back_inserter(targetsId),
-                   transf);
+    gum::NodeSet targetsId;
+    for (const auto& targetname : targets) {
+      targetsId.insert(bn.idFromName(targetname));
+    }
 
-    std::vector< NodeId > evsId;
-    evsId.reserve(evs.size());
-    std::transform(
-      std::begin(evs), std::end(evs), std::back_inserter(evsId), transf);
+    gum::NodeSet evsId;
+    for (const auto& evname : evs) {
+      evsId.insert(bn.idFromName(evname));
+    }
 
     return evidenceJointImpact(targetsId, evsId);
   }

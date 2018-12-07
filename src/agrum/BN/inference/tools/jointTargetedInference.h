@@ -183,8 +183,8 @@ namespace gum {
      * @return a Potential
      */
     Potential< GUM_SCALAR >
-      evidenceJointImpact(const std::vector< NodeId >& targets,
-                          const std::vector< NodeId >& evs);
+      evidenceJointImpact(const NodeSet& targets,
+                          const NodeSet& evs);
 
     /**
      * Create a gum::Potential for P(joint targets|evs) (for all instanciation of

@@ -704,11 +704,11 @@ namespace gum_tests {
 
       gum::VariableElimination< double > ie_all(&bn);
       TS_ASSERT_THROWS(
-        ie_all.evidenceImpact(gum::NodeId(0), std::vector< gum::NodeId >{0, 1, 2}),
+        ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{0, 1, 2}),
         gum::InvalidArgument);
 
       auto res =
-        ie_all.evidenceImpact(gum::NodeId(0), std::vector< gum::NodeId >{1, 2});
+        ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{1, 2});
 
       TS_ASSERT_EQUALS(res.nbrDim(), gum::Size(2));   // 2 indep 0 given 1
 
@@ -745,7 +745,7 @@ namespace gum_tests {
 
       gum::VariableElimination< double > ie_all(&bn);
       TS_ASSERT_THROWS(
-        ie_all.evidenceImpact(gum::NodeId(0), std::vector< gum::NodeId >{0, 1, 2}),
+        ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{0, 1, 2}),
         gum::InvalidArgument);
 
       TS_ASSERT_THROWS(

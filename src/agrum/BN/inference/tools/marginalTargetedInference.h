@@ -192,8 +192,7 @@ namespace gum {
      * @param evs the vector of nodeId of the observed variables
      * @return a Potential
      */
-    Potential< GUM_SCALAR > evidenceImpact(NodeId                       target,
-                                           const std::vector< NodeId >& evs);
+    Potential< GUM_SCALAR > evidenceImpact(NodeId target, const NodeSet& evs);
 
     /**
      * Create a gum::Potential for P(target|evs) (for all instanciation of target

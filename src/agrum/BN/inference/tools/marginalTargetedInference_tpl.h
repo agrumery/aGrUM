@@ -278,19 +278,17 @@ namespace gum {
 
 
   template < typename GUM_SCALAR >
-  Potential< GUM_SCALAR > MarginalTargetedInference< GUM_SCALAR >::evidenceImpact(
-    NodeId target, const std::vector< NodeId >& evs) {
+  Potential< GUM_SCALAR >
+    MarginalTargetedInference< GUM_SCALAR >::evidenceImpact(NodeId         target,
+                                                            const NodeSet& evs) {
     const auto& vtarget = this->BN().variable(target);
 
-    NodeSet soids(Size(evs.size()));
-    for (const auto& e : evs)
-      soids << e;
-    if (soids.contains(target)) {
+    if (evs.contains(target)) {
       GUM_ERROR(InvalidArgument,
                 "Target <" << vtarget.name() << "> (" << target
                            << ") can not be in evs (" << evs << ").");
     }
-    auto condset = this->BN().minimalCondSet(target, soids);
+    auto condset = this->BN().minimalCondSet(target, evs);
 
     Potential< GUM_SCALAR > res;
     this->eraseAllTargets();
@@ -324,12 +322,10 @@ namespace gum {
     const std::string& target, const std::vector< std::string >& evs) {
     const auto& bn = this->BN();
 
-    std::vector< NodeId > evsId;
-    evsId.reserve(evs.size());
-    std::transform(std::begin(evs),
-                   std::end(evs),
-                   std::back_inserter(evsId),
-                   [&bn](const std::string& s) { return bn.idFromName(s); });
+    gum::NodeSet evsId;
+    for (const auto& evname : evs) {
+      evsId.insert(bn.idFromName(evname));
+    }
 
     return evidenceImpact(bn.idFromName(target), evsId);
   }

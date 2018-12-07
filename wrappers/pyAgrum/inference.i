@@ -96,6 +96,11 @@ def setTargets(self, targets):
     PyObject* targets() {
       return PyAgrumHelper::PySetFromNodeSet(self->targets() );
     }
+    Potential<double> evidenceImpact(NodeId target,PyObject *evs) {
+      gum::NodeSet soe;
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(target,soe,self->BN());
+      return self->evidenceJointImpact(target,soe);
+    }
 }
 %enddef
 
@@ -114,6 +119,14 @@ IMPROVE_INFERENCE_API(LoopySamplingInference<double,gum::MonteCarloSampling>)
 
 %define IMPROVE_JOINT_INFERENCE_API(classname)
 %extend classname {
+
+    Potential<double> evidenceJointImpact(PyObject* targets,PyObject *evs) {
+      gum::NodeSet sot;
+      gum::NodeSet soe;
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(targets,sot,self->BN());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sot,soe,self->BN());
+      return self->evidenceJointImpact(evs,soe);
+    }
     Potential<double> jointPosterior(PyObject *list) {
       gum::NodeSet nodeset;
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BN());

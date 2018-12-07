@@ -77,7 +77,7 @@ namespace gum {
     // for debugging purposes
     GUM_CONSTRUCTOR(LabelizedVariable);
 
-    for (Size i = 0; i < nbrLabel; ++i) {
+    for (Idx i = 0; i < nbrLabel; ++i) {
       std::ostringstream oss;
       oss << i;
       addLabel(oss.str());

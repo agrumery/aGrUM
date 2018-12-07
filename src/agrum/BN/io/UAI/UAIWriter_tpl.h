@@ -107,10 +107,12 @@ namespace gum {
       str << p.nbrDim() << " ";
       // P(X|Y,Z) has to be written "Y Z X". So we need to keep the first var (X)
       // in order to print it at last
-      int first = -1;
+      NodeId first = 0;
+      bool isFirst=true;
       for (auto k : p.variablesSequence()) {
-        if (first == -1) {
-          first = int(bn.idFromName(k->name()));
+        if (isFirst) {
+          isFirst=false;
+          first = bn.idFromName(k->name());
         } else {
           str << bn.idFromName(k->name()) << " ";
         }
