@@ -49,7 +49,13 @@ namespace gum {
                  genericBNLearner::Database::names() const {
       return __database.variableNames();
     }
-
+   
+    /// assign new weight to the rows of the learning database
+    INLINE void genericBNLearner::Database::setDatabaseWeight(
+                const double new_weight) {
+      __database.setAllRowsWeight(new_weight);
+    }
+ 
     // returns the node id corresponding to a variable name
     INLINE NodeId
            genericBNLearner::Database::idFromName(const std::string& var_name) const {
@@ -94,6 +100,11 @@ namespace gum {
       return __score_database.nameFromId(id);
     }
 
+    /// assign new weight to the rows of the learning database
+    INLINE void genericBNLearner::setDatabaseWeight(const double new_weight) {
+      __score_database.setDatabaseWeight(new_weight);
+    }
+ 
     // sets an initial DAG structure
     INLINE void genericBNLearner::setInitialDAG(const DAG& dag) {
       __initial_dag = dag;

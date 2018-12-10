@@ -240,6 +240,9 @@ namespace gum {
         /// returns the internal database table
         const DatabaseTable<>& databaseTable() const;
 
+        /// assign new weight to the rows of the learning database
+        void setDatabaseWeight(const double new_weight);
+
         /// returns the mapping between node ids and their columns in the database
         const Bijection< NodeId, std::size_t >& nodeId2Columns() const;
 
@@ -372,6 +375,9 @@ namespace gum {
 
       /// returns the database used by the BNLearner
       const DatabaseTable<>& database() const;
+
+      /// assign new weight to the rows of the learning database
+      void setDatabaseWeight(const double new_weight);
 
       /// returns the variable name corresponding to a given node id
       const std::string& nameFromId(NodeId id) const;

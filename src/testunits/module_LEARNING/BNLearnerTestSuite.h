@@ -98,6 +98,12 @@ namespace gum_tests {
         gum::BayesNet< double > bn = learner.learnBN();
         TS_ASSERT(bn.dag().arcs().size() == 9);
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
+
+      learner.setDatabaseWeight( 10.0 );
+      const auto& db = learner.database();
+      for ( const auto& row : db) {
+        TS_ASSERT(row.weight() == 10.0);
+      }
     }
 
 
