@@ -99,7 +99,7 @@ def setTargets(self, targets):
     Potential<double> evidenceImpact(NodeId target,PyObject *evs) {
       gum::NodeSet soe;
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(target,soe,self->BN());
-      return self->evidenceJointImpact(target,soe);
+      return self->evidenceImpact(target,soe);
     }
 }
 %enddef
