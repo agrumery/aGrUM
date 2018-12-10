@@ -430,10 +430,10 @@ ADD_CREDALINFERENCEENGINCE_API(gum::credal::CNLoopyPropagation<double>)
      return self->gum::MarginalTargetedInference<double>::H(nodeName);
    }
 
-  Potential<double> evidenceImpact(NodeId target,const std::vector<NodeId> evs){
+  Potential<double> evidenceImpact(NodeId target,const NodeSet& evs){
     return self->gum::MarginalTargetedInference<double>::evidenceImpact(target,evs);
   }
-  Potential<double> evidenceImpact(std::string target,const std::vector<std::string> evs){
+  Potential<double> evidenceImpact(const std::string& target,const std::vector<std::string>& evs){
    return self->gum::MarginalTargetedInference<double>::evidenceImpact(target,evs);
   }
 }
@@ -497,7 +497,7 @@ ADD_SAMPLING_INFERENCE_API(gum::LoopySamplingInference<double,gum::MonteCarloSam
     return self->gum::JointTargetedInference<double>::VI(X,Y);
   }
 
-  Potential<double> evidenceJointImpact(const std::vector<NodeId>& targets,const std::vector<NodeId>& evs){
+  Potential<double> evidenceJointImpact(const NodeSet& targets,const NodeSet& evs){
     return self->gum::JointTargetedInference<double>::evidenceJointImpact(targets,evs);
   }
   Potential<double> evidenceJointImpact(const std::vector<std::string>& targets,const std::vector<std::string>& evs){

@@ -81,6 +81,8 @@ def setTargets(self, targets):
         self.addTarget(k)
 %}
 
+%ignore gum::classname::evidenceImpact(NodeId target, const NodeSet& evs);
+
 // these void class extensions are rewritten by "shadow" declarations
 %extend gum::classname {
     void setEvidence(PyObject *evidces) {}
@@ -98,7 +100,7 @@ def setTargets(self, targets):
     }
     Potential<double> evidenceImpact(NodeId target,PyObject *evs) {
       gum::NodeSet soe;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(target,soe,self->BN());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soe,evs,self->BN());
       return self->evidenceImpact(target,soe);
     }
 }
@@ -118,14 +120,15 @@ IMPROVE_INFERENCE_API(LoopySamplingInference<double,gum::WeightedSampling>)
 IMPROVE_INFERENCE_API(LoopySamplingInference<double,gum::MonteCarloSampling>)
 
 %define IMPROVE_JOINT_INFERENCE_API(classname)
+%ignore classname::evidenceJointImpact(const NodeSet& target, const NodeSet& evs);
 %extend classname {
 
     Potential<double> evidenceJointImpact(PyObject* targets,PyObject *evs) {
       gum::NodeSet sot;
       gum::NodeSet soe;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(targets,sot,self->BN());
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sot,soe,self->BN());
-      return self->evidenceJointImpact(evs,soe);
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sot,targets,self->BN());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soe,evs,self->BN());
+      return self->evidenceJointImpact(sot,soe);
     }
     Potential<double> jointPosterior(PyObject *list) {
       gum::NodeSet nodeset;

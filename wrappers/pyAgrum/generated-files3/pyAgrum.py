@@ -11643,7 +11643,6 @@ class LazyPropagation(object):
         r"""
         evidenceImpact(self, target, evs) -> Potential
         evidenceImpact(self, target, evs) -> Potential
-        evidenceImpact(self, target, evs) -> Potential
 
         Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
 
@@ -11742,7 +11741,6 @@ class LazyPropagation(object):
 
     def evidenceJointImpact(self, *args) -> "gum::Potential< double >":
         r"""
-        evidenceJointImpact(self, targets, evs) -> Potential
         evidenceJointImpact(self, targets, evs) -> Potential
         evidenceJointImpact(self, targets, evs) -> Potential
 
@@ -12534,7 +12532,6 @@ class ShaferShenoyInference(object):
         r"""
         evidenceImpact(self, target, evs) -> Potential
         evidenceImpact(self, target, evs) -> Potential
-        evidenceImpact(self, target, evs) -> Potential
 
         Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
 
@@ -12633,7 +12630,6 @@ class ShaferShenoyInference(object):
 
     def evidenceJointImpact(self, *args) -> "gum::Potential< double >":
         r"""
-        evidenceJointImpact(self, targets, evs) -> Potential
         evidenceJointImpact(self, targets, evs) -> Potential
         evidenceJointImpact(self, targets, evs) -> Potential
 
@@ -13453,7 +13449,6 @@ class VariableElimination(object):
 
     def evidenceImpact(self, *args) -> "gum::Potential< double >":
         r"""
-        evidenceImpact(self, target, evs) -> Potential
         evidenceImpact(self, target, evs) -> Potential
         evidenceImpact(self, target, evs) -> Potential
 
@@ -14333,7 +14328,6 @@ class GibbsSampling(object):
 
     def evidenceImpact(self, *args) -> "gum::Potential< double >":
         r"""
-        evidenceImpact(self, target, evs) -> Potential
         evidenceImpact(self, target, evs) -> Potential
         evidenceImpact(self, target, evs) -> Potential
 
@@ -15269,7 +15263,6 @@ class ImportanceSampling(object):
         r"""
         evidenceImpact(self, target, evs) -> Potential
         evidenceImpact(self, target, evs) -> Potential
-        evidenceImpact(self, target, evs) -> Potential
 
         Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
 
@@ -16151,7 +16144,6 @@ class WeightedSampling(object):
         r"""
         evidenceImpact(self, target, evs) -> Potential
         evidenceImpact(self, target, evs) -> Potential
-        evidenceImpact(self, target, evs) -> Potential
 
         Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
 
@@ -17031,7 +17023,6 @@ class MonteCarloSampling(object):
 
     def evidenceImpact(self, *args) -> "gum::Potential< double >":
         r"""
-        evidenceImpact(self, target, evs) -> Potential
         evidenceImpact(self, target, evs) -> Potential
         evidenceImpact(self, target, evs) -> Potential
 
@@ -17931,7 +17922,6 @@ class LoopyImportanceSampling(object):
         r"""
         evidenceImpact(self, target, evs) -> Potential
         evidenceImpact(self, target, evs) -> Potential
-        evidenceImpact(self, target, evs) -> Potential
 
         Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
 
@@ -18829,7 +18819,6 @@ class LoopyWeightedSampling(object):
         r"""
         evidenceImpact(self, target, evs) -> Potential
         evidenceImpact(self, target, evs) -> Potential
-        evidenceImpact(self, target, evs) -> Potential
 
         Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
 
@@ -19725,7 +19714,6 @@ class LoopyGibbsSampling(object):
 
     def evidenceImpact(self, *args) -> "gum::Potential< double >":
         r"""
-        evidenceImpact(self, target, evs) -> Potential
         evidenceImpact(self, target, evs) -> Potential
         evidenceImpact(self, target, evs) -> Potential
 
@@ -20691,7 +20679,6 @@ class LoopyMonteCarloSampling(object):
         r"""
         evidenceImpact(self, target, evs) -> Potential
         evidenceImpact(self, target, evs) -> Potential
-        evidenceImpact(self, target, evs) -> Potential
 
         Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
 
@@ -21571,7 +21558,6 @@ class LoopyBeliefPropagation(object):
 
     def evidenceImpact(self, *args) -> "gum::Potential< double >":
         r"""
-        evidenceImpact(self, target, evs) -> Potential
         evidenceImpact(self, target, evs) -> Potential
         evidenceImpact(self, target, evs) -> Potential
 
