@@ -42,8 +42,10 @@ namespace gum {
    * @ingroup multidim_group
    */
   template < typename GUM_SCALAR,
-             template < typename > class COMBINEOPERATOR,
-             template < typename > class PROJECTOPERATOR,
+             template < typename >
+             class COMBINEOPERATOR,
+             template < typename >
+             class PROJECTOPERATOR,
              template < typename > class TerminalNodePolicy =
                ExactTerminalNodePolicy >
   class Regress {

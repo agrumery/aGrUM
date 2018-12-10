@@ -24865,6 +24865,11 @@ class BNLearner(object):
         return _pyAgrum.BNLearner_setAprioriWeight(self, weight)
 
 
+    def setDatabaseWeight(self, new_weight: 'double const') -> "void":
+        r"""setDatabaseWeight(self, new_weight)"""
+        return _pyAgrum.BNLearner_setDatabaseWeight(self, new_weight)
+
+
     def useNoApriori(self) -> "void":
         r"""useNoApriori(self)"""
         return _pyAgrum.BNLearner_useNoApriori(self)

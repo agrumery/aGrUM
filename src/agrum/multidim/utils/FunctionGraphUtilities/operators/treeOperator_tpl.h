@@ -34,8 +34,10 @@
 namespace gum {
 
   template < typename GUM_SCALAR,
-             template < typename > class COMBINEOPERATOR,
-             template < typename > class TerminalNodePolicy >
+             template < typename >
+             class COMBINEOPERATOR,
+             template < typename >
+             class TerminalNodePolicy >
   INLINE
     TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::TreeOperator(
       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt1,
@@ -49,8 +51,10 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR,
-             template < typename > class COMBINEOPERATOR,
-             template < typename > class TerminalNodePolicy >
+             template < typename >
+             class COMBINEOPERATOR,
+             template < typename >
+             class TerminalNodePolicy >
   INLINE
     TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::TreeOperator(
       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt1,
@@ -65,8 +69,10 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR,
-             template < typename > class COMBINEOPERATOR,
-             template < typename > class TerminalNodePolicy >
+             template < typename >
+             class COMBINEOPERATOR,
+             template < typename >
+             class TerminalNodePolicy >
   INLINE TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::
     ~TreeOperator() {
     GUM_DESTRUCTOR(TreeOperator);
@@ -75,8 +81,10 @@ namespace gum {
   // This function is the main function. To be call every time an operation
   // between the two given Function Graphs is required
   template < typename GUM_SCALAR,
-             template < typename > class COMBINEOPERATOR,
-             template < typename > class TerminalNodePolicy >
+             template < typename >
+             class COMBINEOPERATOR,
+             template < typename >
+             class TerminalNodePolicy >
   INLINE MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
          TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::compute() {
     __rd->manager()->setRootNode(__xPloreDT1(__dt1->root()));
@@ -87,8 +95,10 @@ namespace gum {
   // Main recursion function, called every time we move on a node to determine
   // what we have to do
   template < typename GUM_SCALAR,
-             template < typename > class COMBINEOPERATOR,
-             template < typename > class TerminalNodePolicy >
+             template < typename >
+             class COMBINEOPERATOR,
+             template < typename >
+             class TerminalNodePolicy >
   INLINE NodeId
          TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::__xPloreDT1(
       NodeId currentNodeId) {
@@ -113,8 +123,10 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR,
-             template < typename > class COMBINEOPERATOR,
-             template < typename > class TerminalNodePolicy >
+             template < typename >
+             class COMBINEOPERATOR,
+             template < typename >
+             class TerminalNodePolicy >
   INLINE NodeId
          TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::__xPloreDT2(
       NodeId currentNodeId) {
@@ -141,8 +153,10 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR,
-             template < typename > class COMBINEOPERATOR,
-             template < typename > class TerminalNodePolicy >
+             template < typename >
+             class COMBINEOPERATOR,
+             template < typename >
+             class TerminalNodePolicy >
   INLINE NodeId TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::
     __checkRedundancy(const DiscreteVariable* var, NodeId* sonsMap) {
     bool diff = false;
