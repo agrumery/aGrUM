@@ -133,6 +133,16 @@ namespace gum_tests {
         TS_ASSERT(db6->size() == 3);
 
         delete db6;
+
+        for ( const auto& row : db) {
+          TS_ASSERT(row.weight() == 1);
+        }
+
+        db.setAllRowsWeight(10.0);
+        for ( const auto& row : db) {
+          TS_ASSERT(row.weight() == 10.0);
+        }
+
       }
 
       TS_ASSERT(MyAllocCount::hasMeroryLeak() == false);

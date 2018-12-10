@@ -38,6 +38,7 @@
 
 #include <agrum/agrum.h>
 #include <agrum/core/thread.h>
+#include <agrum/core/OMPThreads.h>
 #include <agrum/learning/database/DBCell.h>
 #include <agrum/learning/database/DBRow.h>
 #include <agrum/learning/database/DBHandler.h>
@@ -1124,6 +1125,9 @@ namespace gum {
 
       /// returns the minimum of rows that each thread should process
       std::size_t minNbRowsPerThread() const;
+
+      /// assign a given weight to all the rows of the database
+      void setAllRowsWeight(const double new_weight);
 
       /// @}
 

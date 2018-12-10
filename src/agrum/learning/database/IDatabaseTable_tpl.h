@@ -1243,6 +1243,56 @@ namespace gum {
     }
 
 
+    /// assign a given weight to all the rows of the database
+    template < typename T_DATA, template < typename > class ALLOC >
+    void IDatabaseTable<  T_DATA, ALLOC >::setAllRowsWeight(
+         const double new_weight) {
+      // determine the number of threads to use and the number of rows
+      // they should process
+      std::vector< std::pair< std::size_t, std::size_t > > ranges;
+      const std::size_t db_size = nbRows ();
+      std::size_t nb_threads = db_size / _min_nb_rows_per_thread;
+      if (nb_threads < 1)
+        nb_threads = 1;
+      else if (nb_threads > _max_nb_threads)
+        nb_threads = _max_nb_threads;
+      std::size_t nb_rows_per_thread = db_size / nb_threads;
+      std::size_t rest_rows = db_size - nb_rows_per_thread * nb_threads;
+      
+      // assign to threads the ranges over which they should change the
+      // rows weights
+      std::size_t begin_index = std::size_t(0);
+      for (std::size_t i = std::size_t(0); i < nb_threads; ++i) {
+        std::size_t end_index = begin_index + nb_rows_per_thread;
+        if (rest_rows != std::size_t(0)) {
+          ++end_index;
+          --rest_rows;
+        }
+        ranges.push_back(
+              std::pair< std::size_t, std::size_t >(begin_index, end_index));
+        begin_index = end_index;
+      }
+
+      // perform the assignment:
+      // launch the threads
+      // here we use openMP for launching the threads because, experimentally,
+      // it seems to provide results that are twice as fast as the results
+      // with the std::thread
+      for (std::size_t i = std::size_t(0); i < nb_threads; ++i) {
+#  pragma omp parallel num_threads(int(nb_threads))
+        {
+          // get the number of the thread
+          const std::size_t this_thread = getThreadNumber();
+          const std::size_t begin_index = ranges[this_thread].first;
+          const std::size_t end_index   = ranges[this_thread].second;
+
+          for ( std::size_t i = begin_index; i < end_index; ++i ) {
+            _rows[i].setWeight(new_weight);
+          }
+        }
+      }
+    }
+
   } /* namespace learning */
 
 } /* namespace gum */
