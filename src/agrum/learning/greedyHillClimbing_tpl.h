@@ -37,7 +37,7 @@ namespace gum {
       selector.setGraph(dag);
 
       unsigned int nb_changes_applied = 1;
-      double delta_score;
+      double       delta_score;
 
       initApproximationScheme();
 

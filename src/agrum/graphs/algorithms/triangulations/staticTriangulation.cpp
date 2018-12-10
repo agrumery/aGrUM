@@ -350,7 +350,7 @@ namespace gum {
     for (NodeId i = NodeId(0); i < size; ++i) {
       NodeId         clique_i_creator = __elim_order[i];
       const NodeSet& list_of_nodes = __elim_cliques[clique_i_creator];
-      Idx           child = __original_graph->bound() + 1;
+      Idx            child = __original_graph->bound() + 1;
 
       for (const auto node : list_of_nodes) {
         Idx it_elim_step = __reverse_elim_order[node];

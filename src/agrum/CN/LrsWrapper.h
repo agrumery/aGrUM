@@ -370,9 +370,7 @@ namespace gum {
        * @param max The upper value of p(X=modal | .).
        * @param modal The modality on which we put constraints.
        */
-      void fillH(const GUM_SCALAR&   min,
-                 const GUM_SCALAR&   max,
-                 const Size& modal);
+      void fillH(const GUM_SCALAR& min, const GUM_SCALAR& max, const Size& modal);
 
       /**
        * @brief Fill the H-representation from the matrix given in argument.

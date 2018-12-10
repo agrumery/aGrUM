@@ -99,9 +99,9 @@ namespace gum_tests {
         TS_ASSERT(bn.dag().arcs().size() == 9);
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
 
-      learner.setDatabaseWeight( 10.0 );
+      learner.setDatabaseWeight(10.0);
       const auto& db = learner.database();
-      for ( const auto& row : db) {
+      for (const auto& row : db) {
         TS_ASSERT(row.weight() == 10.0);
       }
     }

@@ -1625,8 +1625,8 @@ namespace gum {
 
   // returns the bucket corresponding to the ith position
   template < typename Val, typename Alloc >
-  INLINE ListBucket< Val >*
-         List< Val, Alloc >::__getIthBucket(Size i) const noexcept {
+  INLINE ListBucket< Val >* List< Val, Alloc >::__getIthBucket(Size i) const
+    noexcept {
     ListBucket< Val >* ptr;
 
     if (i < __nb_elements / 2) {

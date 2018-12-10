@@ -80,7 +80,8 @@ namespace gum {
   /// draws next sample for gibbs sampling
 
   template < typename GUM_SCALAR >
-  Instantiation GibbsSampling< GUM_SCALAR >::_draw(GUM_SCALAR* w, Instantiation prev) {
+  Instantiation GibbsSampling< GUM_SCALAR >::_draw(GUM_SCALAR*   w,
+                                                   Instantiation prev) {
     *w = 1.0;
     return GibbsOperator< GUM_SCALAR >::nextSample(prev);
   }

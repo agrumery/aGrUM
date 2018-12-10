@@ -60,7 +60,8 @@ namespace gum_tests {
       std::default_random_engine           generator = gum::getRandomGenerator();
       std::uniform_int_distribution< int > distrib_type(0, 2);
       std::uniform_int_distribution< int > distrib_node(0, int(g.size()) - 1);
-      std::uniform_int_distribution< int > distrib_arc(0, int(g.size()*g.size()));
+      std::uniform_int_distribution< int > distrib_arc(0,
+                                                       int(g.size() * g.size()));
 
       changes.clear();
       del_add_changes.clear();

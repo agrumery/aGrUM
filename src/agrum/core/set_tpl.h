@@ -120,8 +120,7 @@ namespace gum {
 
   // returns a new iterator
   template < typename Key >
-  INLINE SetIteratorSafe< Key > SetIteratorSafe< Key >::
-                                operator+(Size nb) const {
+  INLINE SetIteratorSafe< Key > SetIteratorSafe< Key >::operator+(Size nb) const {
     return SetIteratorSafe< Key >{*this} += nb;
   }
 
@@ -231,16 +230,14 @@ namespace gum {
 
   // makes the iterator point to i elements further in the set
   template < typename Key >
-  INLINE SetIterator< Key >& SetIterator< Key >::
-                             operator+=(Size nb) noexcept {
+  INLINE SetIterator< Key >& SetIterator< Key >::operator+=(Size nb) noexcept {
     __ht_iter += nb;
     return *this;
   }
 
   // returns a new iterator
   template < typename Key >
-  INLINE SetIterator< Key > SetIterator< Key >::operator+(Size nb) const
-    noexcept {
+  INLINE SetIterator< Key > SetIterator< Key >::operator+(Size nb) const noexcept {
     return SetIterator< Key >{*this} += nb;
   }
 

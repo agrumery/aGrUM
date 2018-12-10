@@ -185,8 +185,8 @@ namespace gum {
     // ###################################################################
 
     Idx effectif(Idx moda) const {
-      return __valueCount.exists(ValueType(moda)) ?
-        __valueCount[ValueType(moda)] : 0;
+      return __valueCount.exists(ValueType(moda)) ? __valueCount[ValueType(moda)]
+                                                  : 0;
     }
 
     Idx valueDomain() const { return __valueDomain(Int2Type< isScalar >()); }

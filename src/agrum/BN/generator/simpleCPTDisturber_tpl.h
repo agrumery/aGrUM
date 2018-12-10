@@ -78,7 +78,8 @@ namespace gum {
     Instantiation i(bayesNet.cpt(node));
 
     for (i.setFirst(); !i.end(); ++i)
-      bayesNet.cpt(node).set(i, src.get(i) + GUM_SCALAR(randomProba()) * variation);
+      bayesNet.cpt(node).set(i,
+                             src.get(i) + GUM_SCALAR(randomProba()) * variation);
 
     bayesNet.cpt(node).normalizeAsCPT();
   }

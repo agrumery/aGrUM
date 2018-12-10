@@ -232,7 +232,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void
     LazyPropagation< GUM_SCALAR >::_onEvidenceAdded(const NodeId id,
-                                                    bool   isHardEvidence) {
+                                                    bool         isHardEvidence) {
     // if we have a new hard evidence, this modifies the undigraph over which
     // the join tree is created. This is also the case if id is not a node of
     // of the undigraph
@@ -256,7 +256,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void
     LazyPropagation< GUM_SCALAR >::_onEvidenceErased(const NodeId id,
-                                                     bool   isHardEvidence) {
+                                                     bool         isHardEvidence) {
     // if we delete a hard evidence, this modifies the undigraph over which
     // the join tree is created.
     if (isHardEvidence)
@@ -309,7 +309,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void
     LazyPropagation< GUM_SCALAR >::_onEvidenceChanged(const NodeId id,
-                                                      bool   hasChangedSoftHard) {
+                                                      bool hasChangedSoftHard) {
     if (hasChangedSoftHard)
       __is_new_jt_needed = true;
     else {
@@ -323,20 +323,23 @@ namespace gum {
     }
   }
 
-  
+
   /// fired after a new Bayes net has been assigned to the engine
   template < typename GUM_SCALAR >
-  INLINE void LazyPropagation< GUM_SCALAR >::_onBayesNetChanged(const IBayesNet< GUM_SCALAR >* bn) {}
+  INLINE void LazyPropagation< GUM_SCALAR >::_onBayesNetChanged(
+    const IBayesNet< GUM_SCALAR >* bn) {}
 
-  
+
   /// fired after a new target is inserted
   template < typename GUM_SCALAR >
-  INLINE void LazyPropagation< GUM_SCALAR >::_onMarginalTargetAdded(const NodeId id) {}
+  INLINE void
+    LazyPropagation< GUM_SCALAR >::_onMarginalTargetAdded(const NodeId id) {}
 
 
   /// fired before a target is removed
   template < typename GUM_SCALAR >
-  INLINE void LazyPropagation< GUM_SCALAR >::_onMarginalTargetErased(const NodeId id) {}
+  INLINE void
+    LazyPropagation< GUM_SCALAR >::_onMarginalTargetErased(const NodeId id) {}
 
 
   /// fired after a new set target is inserted

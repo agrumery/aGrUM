@@ -182,9 +182,8 @@ namespace gum {
      * @param evs the vector of nodeId of observed variables
      * @return a Potential
      */
-    Potential< GUM_SCALAR >
-      evidenceJointImpact(const NodeSet& targets,
-                          const NodeSet& evs);
+    Potential< GUM_SCALAR > evidenceJointImpact(const NodeSet& targets,
+                                                const NodeSet& evs);
 
     /**
      * Create a gum::Potential for P(joint targets|evs) (for all instanciation of

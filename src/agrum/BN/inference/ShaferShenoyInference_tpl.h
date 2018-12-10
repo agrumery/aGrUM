@@ -195,7 +195,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void
     ShaferShenoyInference< GUM_SCALAR >::_onEvidenceAdded(const NodeId id,
-                                                          bool   isHardEvidence) {
+                                                          bool isHardEvidence) {
     // if we have a new hard evidence, this modifies the undigraph over which
     // the join tree is created. This is also the case if id is not a node of
     // of the undigraph
@@ -219,7 +219,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void
     ShaferShenoyInference< GUM_SCALAR >::_onEvidenceErased(const NodeId id,
-                                                           bool   isHardEvidence) {
+                                                           bool isHardEvidence) {
     // if we delete a hard evidence, this modifies the undigraph over which
     // the join tree is created.
     if (isHardEvidence)
@@ -295,7 +295,8 @@ namespace gum {
   /// fired before a target is removed
   template < typename GUM_SCALAR >
   INLINE void
-    ShaferShenoyInference< GUM_SCALAR >::_onMarginalTargetErased(const NodeId id) {}
+    ShaferShenoyInference< GUM_SCALAR >::_onMarginalTargetErased(const NodeId id) {
+  }
 
 
   /// fired after a new set target is inserted
@@ -322,7 +323,8 @@ namespace gum {
 
   /// fired after a new Bayes net has been assigned to the engine
   template < typename GUM_SCALAR >
-  INLINE void  ShaferShenoyInference< GUM_SCALAR >::_onBayesNetChanged(const IBayesNet< GUM_SCALAR >* bn) {}
+  INLINE void ShaferShenoyInference< GUM_SCALAR >::_onBayesNetChanged(
+    const IBayesNet< GUM_SCALAR >* bn) {}
 
   /// fired before a all the joint_targets are removed
   template < typename GUM_SCALAR >

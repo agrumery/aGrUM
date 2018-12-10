@@ -679,8 +679,7 @@ namespace gum {
 
   // modifies the size of the internal structures of the sequence
   template < typename Key, typename Alloc, bool Gen >
-  INLINE void
-    SequenceImplementation< Key, Alloc, Gen >::resize(Size new_size) {
+  INLINE void SequenceImplementation< Key, Alloc, Gen >::resize(Size new_size) {
     if (new_size < __h.size()) return;
 
     __h.resize(new_size);
@@ -1080,8 +1079,7 @@ namespace gum {
 
   // modifies the size of the internal structures of the sequence
   template < typename Key, typename Alloc >
-  INLINE void
-    SequenceImplementation< Key, Alloc, true >::resize(Size new_size) {
+  INLINE void SequenceImplementation< Key, Alloc, true >::resize(Size new_size) {
     if (new_size < __h.size()) return;
 
     __h.resize(new_size);

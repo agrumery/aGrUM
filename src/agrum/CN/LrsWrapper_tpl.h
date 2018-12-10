@@ -104,8 +104,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    void LRSWrapper< GUM_SCALAR >::setUpV(const Size& card,
-                                          const Size& vertices) {
+    void LRSWrapper< GUM_SCALAR >::setUpV(const Size& card, const Size& vertices) {
       if (card < 2)
         GUM_ERROR(OperationNotAllowed,
                   "LRSWrapper< GUM_SCALAR >::setUpV : "
@@ -126,7 +125,7 @@ namespace gum {
       __state = __states::Vup;
 
       __card = (unsigned int)card;
-      __vertices = (unsigned int) vertices;
+      __vertices = (unsigned int)vertices;
     }
 
     template < typename GUM_SCALAR >
@@ -182,9 +181,9 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    void LRSWrapper< GUM_SCALAR >::fillH(const GUM_SCALAR&   min,
-                                         const GUM_SCALAR&   max,
-                                         const Size& modal) {
+    void LRSWrapper< GUM_SCALAR >::fillH(const GUM_SCALAR& min,
+                                         const GUM_SCALAR& max,
+                                         const Size&       modal) {
       if (__state != __states::Hup)
         GUM_ERROR(
           OperationNotAllowed,
@@ -488,8 +487,9 @@ namespace gum {
 
       for (decltype(m) i = 1; i <= m; i++)
         if (redineq[i] == 0)
-          __output.push_back(std::vector< GUM_SCALAR >(++__input[std::size_t(i - 1)].begin(),
-                                                       __input[std::size_t(i - 1)].end()));
+          __output.push_back(
+            std::vector< GUM_SCALAR >(++__input[std::size_t(i - 1)].begin(),
+                                      __input[std::size_t(i - 1)].end()));
 
       __vertices = (unsigned int)__output.size();
 

@@ -419,7 +419,7 @@ namespace gum {
       header_found.reserve(__nbVars);
       while (std::getline(csvFile, line)) {
         std::size_t i = 0;
-        auto pos = line.find(csvSeparator);
+        auto        pos = line.find(csvSeparator);
         while (pos != std::string::npos) {
           header_found.push_back(line.substr(i, pos - i));
           pos += csvSeparator.length();

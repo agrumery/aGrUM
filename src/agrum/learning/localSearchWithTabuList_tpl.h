@@ -38,8 +38,8 @@ namespace gum {
       selector.setGraph(dag);
 
       unsigned int nb_changes_applied = 0;
-      Idx  applied_change_with_positive_score = 0;
-      Idx  current_N = 0;
+      Idx          applied_change_with_positive_score = 0;
+      Idx          current_N = 0;
 
       initApproximationScheme();
 

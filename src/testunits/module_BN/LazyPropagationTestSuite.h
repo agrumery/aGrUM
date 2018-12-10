@@ -733,8 +733,7 @@ namespace gum_tests {
         ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{0, 1, 2}),
         gum::InvalidArgument);
 
-      auto res =
-        ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{1, 2});
+      auto res = ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{1, 2});
 
       TS_ASSERT_EQUALS(res.nbrDim(), gum::Size(2));   // 2 indep 0 given 1
 

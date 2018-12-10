@@ -198,7 +198,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void SamplingInference< GUM_SCALAR >::_onEvidenceAdded(const NodeId id,
-                                                         bool   isHardEvidence) {
+                                                         bool isHardEvidence) {
     if (!isHardEvidence) {
       GUM_ERROR(FatalError, "Approximated inference only accept hard evidence");
     }
@@ -206,7 +206,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void SamplingInference< GUM_SCALAR >::_onEvidenceErased(const NodeId id,
-                                                          bool   isHardEvidence) {}
+                                                          bool isHardEvidence) {}
 
   template < typename GUM_SCALAR >
   void SamplingInference< GUM_SCALAR >::_onAllEvidenceErased(

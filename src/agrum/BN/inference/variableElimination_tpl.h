@@ -171,12 +171,14 @@ namespace gum {
 
   /// fired when a new evidence is inserted
   template < typename GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::_onEvidenceAdded(const NodeId, bool) {}
+  INLINE void VariableElimination< GUM_SCALAR >::_onEvidenceAdded(const NodeId,
+                                                                  bool) {}
 
 
   /// fired when an evidence is removed
   template < typename GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::_onEvidenceErased(const NodeId, bool) {}
+  INLINE void VariableElimination< GUM_SCALAR >::_onEvidenceErased(const NodeId,
+                                                                   bool) {}
 
 
   /// fired when all the evidence are erased
@@ -186,22 +188,25 @@ namespace gum {
 
   /// fired when an evidence is changed
   template < typename GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::_onEvidenceChanged(const NodeId, bool) {
-  }
+  INLINE void VariableElimination< GUM_SCALAR >::_onEvidenceChanged(const NodeId,
+                                                                    bool) {}
 
 
   /// fired after a new target is inserted
   template < typename GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::_onMarginalTargetAdded(const NodeId) {}
+  INLINE void
+    VariableElimination< GUM_SCALAR >::_onMarginalTargetAdded(const NodeId) {}
 
 
   /// fired before a target is removed
   template < typename GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::_onMarginalTargetErased(const NodeId) {}
+  INLINE void
+    VariableElimination< GUM_SCALAR >::_onMarginalTargetErased(const NodeId) {}
 
   /// fired after a new Bayes net has been assigned to the engine
   template < typename GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::_onBayesNetChanged(const IBayesNet< GUM_SCALAR >* bn) {}
+  INLINE void VariableElimination< GUM_SCALAR >::_onBayesNetChanged(
+    const IBayesNet< GUM_SCALAR >* bn) {}
 
   /// fired after a new set target is inserted
   template < typename GUM_SCALAR >

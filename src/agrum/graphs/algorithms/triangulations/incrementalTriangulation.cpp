@@ -869,8 +869,8 @@ namespace gum {
 
           if (sep.size() != 0) {
             // now find the first eliminated node in the separator
-            Size    __elim_order = tmp_graph.bound() + 1;
-            NodeId  elim_node = 0;
+            Size   __elim_order = tmp_graph.bound() + 1;
+            NodeId elim_node = 0;
 
             for (const auto id : sep) {
               Size new_order = __triangulation->eliminationOrder(id);

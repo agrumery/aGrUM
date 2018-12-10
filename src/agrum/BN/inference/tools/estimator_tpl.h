@@ -170,8 +170,8 @@ namespace gum {
 
     for (auto iter = _estimator.begin(); iter != _estimator.end(); ++iter) {
       for (Idx i = 0; i < iter.val().size(); i++) {
-        GUM_SCALAR ic =
-          GUM_SCALAR(2 * 1.96 * std::sqrt(variance(iter.key(),i) / (_ntotal - 1)));
+        GUM_SCALAR ic = GUM_SCALAR(
+          2 * 1.96 * std::sqrt(variance(iter.key(), i) / (_ntotal - 1)));
         if (ic > ic_max) ic_max = ic;
       }
     }
