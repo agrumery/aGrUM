@@ -29,8 +29,14 @@ def _filter(tab):
   if tab[-1] == "agrum.h":
     return False
 
-  if len(tab)>4:
+  if tab[-1] == "config.h":
+    return False
+
+  if len(tab) > 4:
     if tab[3] == "external":
+      return False
+  else:
+    if tab[0] == "external":
       return False
 
   if len(tab[-1]) > 5:
@@ -53,9 +59,7 @@ def _gumScan(file: Path):
         filename = m.group(1)
         parts = filename.split("/")
         if _filter(parts):
-          typ = parts[0]
           s.append(filename)
-          # print(f"{typ} : {filename}")
 
   return s
 
@@ -65,33 +69,25 @@ def drawGumDeps():
     "PRM"            : "aquamarine",
     "core"           : "cornflowerblue",
     "BN"             : "navajowhite",
-    "CN"             : "thiste",
+    "CN"             : "thistle",
     "learning"       : "darkorchid",
     "variables"      : "lightskyblue",
     "graphicalModels": "darkgoldenrod",
     "graphs"         : "lightpink",
     "multidim"       : "yellow",
     "FMDP"           : "darksalmon",
-    "ID"             : "deeppink"
+    "ID"             : "deeppink",
+    "legend"         : "white"
   }
-  deps = {}
-  p = Path('../src/agrum')
-  for file in p.glob('**/*.h'):
-    if _filter(file.parts):
-      key = "/".join(file.parts[3:])
-      deps[key] = _gumScan(file)
 
-  agru = pdp.Dot()
-  agru.set_name("gum")
-  agru.set_type("digraph")
-  agru.set_suppress_disconnected(True)
-  agru.set("splines", "compound")
-  agru.set("background", "transparent")
+  def _getNode(name, label=None, theme=None):
+    if label is None:
+      label = name
+    if theme is None:
+      theme = name
 
-  for k in deps.keys():
-    nod = pdp.Node(k)
-    parts = k.split("/")
-    nod.set("label", '"' + parts[-1][:-2] + '"')
+    nod = pdp.Node(name)
+
     nod.set("fontname", "Arial")
     nod.set("fontsize", 9)
     nod.set("shape", "box")
@@ -99,15 +95,53 @@ def drawGumDeps():
     nod.set("width", 0)
     nod.set("height", 0)
     nod.set("style", "filled")
-    print(parts)
-    nod.set("fillcolor", colors[parts[0]])
+
+    nod.set("label", '"' + label + '"')
+    if not theme in colors:
+      print(f"Missing (or irrelevant) type : {theme}")
+      nod.set("fillcolor", "green")
+    else:
+      nod.set("fillcolor", colors[theme])
+
+    return nod
+
+  agru = pdp.Dot()
+
+  for col in colors:
+    agru.add_node(_getNode(col))
+    if col != "legend":
+      agru.add_edge(pdp.Edge("legend", col))
+
+  arcsiz = 0
+  nodsiz = 0
+
+  deps = {}
+  p = Path('../src/agrum')
+  for file in p.glob('**/*.h'):
+    if _filter(file.parts):
+      key = "/".join(file.parts[3:])
+      deps[key] = _gumScan(file)
+
+  agru.set_name("gum")
+  agru.set_type("digraph")
+  agru.set_suppress_disconnected(True)
+  agru.set("splines", "compound")
+  agru.set("background", "transparent")
+
+  for k in deps.keys():
+    parts = k.split("/")
+    nod = _getNode(k, parts[-1][:-2], parts[0])
     agru.add_node(nod)
+    nodsiz += 1
 
   for k in deps.keys():
     for l in deps[k]:
-      agru.add_edge(pdp.Edge(k, l))
+      agru.add_edge(pdp.Edge(l, k))
+      arcsiz += 1
 
-  print(agru.to_string())
+  print("aGrUM headers map")
+  print(f" + Nbr of nodes : {nodsiz}")
+  print(f" + Nbr of arcs : {arcsiz}")
   agru.write_pdf("agrum-map.pdf", prog="fdp")
 
 
