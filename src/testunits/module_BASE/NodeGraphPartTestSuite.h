@@ -75,6 +75,24 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(ngp.size(), (gum::Size)0);
     }
 
+    void testAdd2() {
+      gum::NodeGraphPart ngp;
+      ngp.addNodeWithId(gum::NodeId(3));
+      TS_ASSERT_EQUALS(ngp.__sizeHoles(), (gum::Size)3);
+      ngp.addNodeWithId(gum::NodeId(2));
+      ngp.addNodeWithId(gum::NodeId(1));
+      ngp.addNodeWithId(gum::NodeId(0));
+      TS_ASSERT_EQUALS(ngp.__sizeHoles(), (gum::Size)0);
+
+      gum::NodeGraphPart ngp2;
+      ngp2.addNodeWithId(gum::NodeId(0));
+      ngp2.addNodeWithId(gum::NodeId(1));
+      ngp2.addNodeWithId(gum::NodeId(2));
+      ngp2.addNodeWithId(gum::NodeId(3));
+      
+      TS_ASSERT(ngp == ngp2);
+    }
+      
     void testCopy() {
       gum::NodeGraphPart ngp;
       ngp.addNode();

@@ -47,11 +47,10 @@ namespace gum {
       // get the variables names
       const auto&       var_names = __database.variableNames();
       const std::size_t nb_vars = var_names.size();
-      __domain_sizes.resize(nb_vars);
-      const auto domainSizes = __database.domainSizes();
+      for (auto dom : __database.domainSizes())
+        __domain_sizes.push_back(dom);
       for (std::size_t i = 0; i < nb_vars; ++i) {
         __nodeId2cols.insert(NodeId(i), i);
-        __domain_sizes[i] = Size(domainSizes[i]);
       }
 
       // create the parser
@@ -67,54 +66,66 @@ namespace gum {
 
 
     genericBNLearner::Database::Database(
-      const std::string&                filename,
+      const std::string&                CSV_filename,
       Database&                         score_database,
-      const std::vector< std::string >& missing_symbols) :
-        __database(genericBNLearner::__readFile(filename, missing_symbols)) {
+      const std::vector< std::string >& missing_symbols) {
+      // assign to each column name in the CSV file its column
+      genericBNLearner::__checkFileName(CSV_filename);
+      DBInitializerFromCSV<> initializer(CSV_filename);
+      const auto&            apriori_names   = initializer.variableNames();
+      std::size_t            apriori_nb_vars = apriori_names.size();
+      HashTable< std::string, std::size_t > apriori_names2col(apriori_nb_vars);
+      for (std::size_t i = std::size_t(0); i < apriori_nb_vars; ++i)
+        apriori_names2col.insert(apriori_names[i], i);
+
       // check that there are at least as many variables in the a priori
       // database as those in the score_database
-      if (__database.nbVariables() < score_database.__database.nbVariables()) {
+      if (apriori_nb_vars < score_database.__database.nbVariables()) {
         GUM_ERROR(InvalidArgument,
                   "the a apriori database has fewer variables "
                   "than the observed database");
       }
 
-      const auto& score_nodeId2cols = score_database.nodeId2Columns();
-      const std::vector< std::string >& apriori_vars = __database.variableNames();
-
-      Size size = Size(apriori_vars.size());
-      __domain_sizes.resize(size);
-      const auto domainSizes = __database.domainSizes();
-      for (Idx i = 0; i < size; ++i) {
-        std::size_t col = std::size_t(0);
+      // get the mapping from the columns of score_database to those of
+      // the CSV file
+      const std::vector< std::string >& score_names =
+        score_database.databaseTable().variableNames();
+      const std::size_t score_nb_vars = score_names.size();
+      HashTable< std::size_t, std::size_t > mapping (score_nb_vars);
+      for ( std::size_t i = std::size_t(0); i < score_nb_vars; ++i ) {
         try {
-          const auto cols =
-            score_database.__database.columnsFromVariableName(apriori_vars[i]);
-          col = cols[0];
-        } catch (...) {
-          GUM_ERROR(InvalidArgument,
-                    "A priori Variable "
-                      << apriori_vars[i]
-                      << " does not belong to the observed database");
+          mapping.insert(i,apriori_names2col[score_names[i]]);
+        } catch (Exception&) {
+          GUM_ERROR(MissingVariableInDatabase,
+                    "Variable "
+                    << score_names[i]
+                    << " of the observed database does not belong to the "
+                    << "apriori database");
         }
-
-        // check that the domain size of the variable is lower than or
-        // equal to that of the original variable
-        if (score_database.__database.domainSize(col) < __database.domainSize(i)) {
-          GUM_ERROR(InvalidArgument,
-                    "A priori Variable "
-                      << apriori_vars[i] << " has a domain size of "
-                      << __database.domainSize(i)
-                      << ", which is higher than that of the same variable in "
-                      << "the observed database, which is equal to "
-                      << score_database.__database.domainSize(col));
-        }
-
-        const NodeId id = score_nodeId2cols.first(col);
-        __nodeId2cols.insert(id, i);
-        __domain_sizes[i] = Size(domainSizes[i]);
       }
 
+      // create the translators for CSV database
+      for ( std::size_t i = std::size_t(0); i < score_nb_vars; ++i ) {
+        const Variable& var = score_database.databaseTable().variable(i);
+        __database.insertTranslator(var, mapping[i], missing_symbols);
+      }
+      
+      // fill the database
+      initializer.fillDatabase(__database);
+
+      // check that the database does not contain any missing value
+      if (__database.hasMissingValues())
+        GUM_ERROR(MissingValueInDatabase,
+                  "For the moment, the BNLearner is unable to cope "
+                  "with missing values in databases");
+
+      // get the domain sizes of the variables
+      for (auto dom : __database.domainSizes())
+        __domain_sizes.push_back(dom);
+
+      // compute the mapping from node ids to column indices
+      __nodeId2cols = score_database.nodeId2Columns();
+   
       // create the parser
       __parser =
         new DBRowGeneratorParser<>(__database.handler(), DBRowGeneratorSet<>());
@@ -440,25 +451,8 @@ namespace gum {
       const std::string&                filename,
       const std::vector< std::string >& missing_symbols) {
       // get the extension of the file
-      Size filename_size = Size(filename.size());
-
-      if (filename_size < 4) {
-        GUM_ERROR(FormatNotFound,
-                  "genericBNLearner could not determine the "
-                  "file type of the database");
-      }
-
-      std::string extension = filename.substr(filename.size() - 4);
-      std::transform(
-        extension.begin(), extension.end(), extension.begin(), ::tolower);
-
-      if (extension != ".csv") {
-        GUM_ERROR(
-          OperationNotAllowed,
-          "genericBNLearner does not support yet this type of database file");
-      }
-
-
+      __checkFileName(filename);
+      
       DBInitializerFromCSV<> initializer(filename);
 
       const auto&       var_names = initializer.variableNames();
@@ -493,11 +487,13 @@ namespace gum {
       // create the new apriori
       switch (__apriori_type) {
         case AprioriType::NO_APRIORI:
-          __apriori = new AprioriNoApriori<>(__score_database.databaseTable());
+          __apriori = new AprioriNoApriori<>(__score_database.databaseTable(),
+                                             __score_database.nodeId2Columns());
           break;
 
         case AprioriType::SMOOTHING:
-          __apriori = new AprioriSmoothing<>(__score_database.databaseTable());
+          __apriori = new AprioriSmoothing<>(__score_database.databaseTable(),
+                                             __score_database.nodeId2Columns());
           break;
 
         case AprioriType::DIRICHLET_FROM_DATABASE:
@@ -516,12 +512,13 @@ namespace gum {
           break;
 
         case AprioriType::BDEU:
-          __apriori = new AprioriBDeu<>(__score_database.databaseTable());
+          __apriori = new AprioriBDeu<>(__score_database.databaseTable(),
+                                        __score_database.nodeId2Columns());
           break;
 
         default:
           GUM_ERROR(OperationNotAllowed,
-                    "genericBNLearner does not support yet this apriori");
+                    "The BNLearner does not support yet this apriori");
       }
 
       // do not forget to assign a weight to the apriori
@@ -538,37 +535,40 @@ namespace gum {
       // create the new scoring function
       switch (__score_type) {
         case ScoreType::AIC:
-          __score = new ScoreAIC<>(__score_database.parser(), *__apriori);
+          __score = new ScoreAIC<>(__score_database.parser(), *__apriori,
+                                   __ranges, __score_database.nodeId2Columns());
           break;
 
         case ScoreType::BD:
-          __score = new ScoreBD<>(__score_database.parser(), *__apriori);
+          __score = new ScoreBD<>(__score_database.parser(), *__apriori,
+                                  __ranges, __score_database.nodeId2Columns());
           break;
 
         case ScoreType::BDeu:
-          __score = new ScoreBDeu<>(__score_database.parser(), *__apriori);
+          __score = new ScoreBDeu<>(__score_database.parser(), *__apriori,
+                                    __ranges, __score_database.nodeId2Columns());
           break;
 
         case ScoreType::BIC:
-          __score = new ScoreBIC<>(__score_database.parser(), *__apriori);
+          __score = new ScoreBIC<>(__score_database.parser(), *__apriori,
+                                   __ranges, __score_database.nodeId2Columns());
           break;
 
         case ScoreType::K2:
-          __score = new ScoreK2<>(__score_database.parser(), *__apriori);
+          __score = new ScoreK2<>(__score_database.parser(), *__apriori,
+                                  __ranges, __score_database.nodeId2Columns());
           break;
 
         case ScoreType::LOG2LIKELIHOOD:
           __score =
-            new ScoreLog2Likelihood<>(__score_database.parser(), *__apriori);
+            new ScoreLog2Likelihood<>(__score_database.parser(), *__apriori,
+                                      __ranges, __score_database.nodeId2Columns());
           break;
 
         default:
           GUM_ERROR(OperationNotAllowed,
                     "genericBNLearner does not support yet this score");
       }
-
-      // assign the set of ranges
-      __score->setRanges(__ranges);
 
       // remove the old score, if any
       if (old_score != nullptr) delete old_score;
@@ -583,10 +583,12 @@ namespace gum {
         case ParamEstimatorType::ML:
           if (take_into_account_score && (__score != nullptr)) {
             __param_estimator = new ParamEstimatorML<>(
-              __score_database.parser(), *__apriori, __score->internalApriori());
+              __score_database.parser(), *__apriori, __score->internalApriori(),
+              __ranges, __score_database.nodeId2Columns());
           } else {
             __param_estimator = new ParamEstimatorML<>(
-              __score_database.parser(), *__apriori, *__no_apriori);
+              __score_database.parser(), *__apriori, *__no_apriori,
+              __ranges, __score_database.nodeId2Columns());
           }
 
           break;
@@ -608,7 +610,7 @@ namespace gum {
     MixedGraph genericBNLearner::__prepare_miic_3off2() {
       // Initialize the mixed graph to the fully connected graph
       MixedGraph mgraph;
-      for (Size i = 0; i < __score_database.domainSizes().size(); ++i) {
+      for (Size i = 0; i < __score_database.databaseTable().nbVariables(); ++i) {
         mgraph.addNodeWithId(i);
         for (Size j = 0; j < i; ++j) {
           mgraph.addEdge(j, i);
@@ -655,7 +657,9 @@ namespace gum {
       if (__mutual_info != nullptr) delete __mutual_info;
 
       __mutual_info =
-        new CorrectedMutualInformation<>(__score_database.parser(), *__no_apriori);
+        new CorrectedMutualInformation<>(__score_database.parser(), *__no_apriori,
+                                         __ranges,
+                                         __score_database.nodeId2Columns());
       switch (__3off2_kmode) {
         case CorrectedMutualInformation<>::KModeTypes::MDL:
           __mutual_info->useMDL();
@@ -674,9 +678,6 @@ namespace gum {
                     "The BNLearner's corrected mutual information class does "
                       << "not support yet penalty mode " << int(__3off2_kmode));
       }
-
-      // assign the set of ranges
-      __mutual_info->setRanges(__ranges);
     }
 
     DAG genericBNLearner::__learnDAG() {
@@ -894,7 +895,7 @@ namespace gum {
       }
 
       // create the ranges of rows of the test database
-      const std::size_t foldSize = db_size / k_fold;
+      const std::size_t foldSize   = db_size / k_fold;
       const std::size_t unfold_deb = learning_fold * foldSize;
       const std::size_t unfold_end = unfold_deb + foldSize;
 

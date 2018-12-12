@@ -139,7 +139,7 @@ namespace gum {
     //  moves the handler by i rows
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE typename IDatabaseTable< T_DATA, ALLOC >::Handler&
-      IDatabaseTable< T_DATA, ALLOC >::Handler::operator+=(unsigned int i) {
+      IDatabaseTable< T_DATA, ALLOC >::Handler::operator+=(const std::size_t i) {
       __index += i;
       return *this;
     }
@@ -148,7 +148,7 @@ namespace gum {
     //  moves back the handler by i rows
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE typename IDatabaseTable< T_DATA, ALLOC >::Handler&
-      IDatabaseTable< T_DATA, ALLOC >::Handler::operator-=(unsigned int i) {
+      IDatabaseTable< T_DATA, ALLOC >::Handler::operator-=(const std::size_t i) {
       if (__index >= __begin_index + i)
         __index -= i;
       else

@@ -327,7 +327,7 @@ namespace gum {
             std::vector< std::string, ALLOC< std::string > > bad_vars{
               database.variable(pos).name()};
             for (++i; i < size; ++i) {
-              const std::size_t pos = __nodeId2columns.second(ids[i]);
+              pos = __nodeId2columns.second(ids[i]);
               if (database.variable(pos).varType() == VarType::Continuous)
                 bad_vars.push_back(database.variable(pos).name());
             }

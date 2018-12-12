@@ -1110,6 +1110,7 @@ namespace gum_tests {
       gum::learning::DatabaseTable<> dirichlet_database(dirichlet_translator_set);
       dirichlet_database.setVariableNames(dirichlet_initializer.variableNames());
       dirichlet_initializer.fillDatabase(dirichlet_database);
+      dirichlet_database.reorder();
 
 
       // create the score and the apriori
@@ -1146,20 +1147,19 @@ namespace gum_tests {
         gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint),
                                                      decltype(op_set) >
           selector(score, struct_constraint, op_set);
-
+        
         gum::learning::GreedyHillClimbing search;
 
-        gum::DAG dag = search.learnStructure(selector);
+        gum::BayesNet<double> bn = search.learnBN(selector,estimator);
         // std::cout << dag << std::endl;
 
 
-        learner.setAprioriWeight(weight);
         learner.useAprioriDirichlet(
-          GET_RESSOURCES_PATH("db_dirichlet_apriori.csv"));
+                GET_RESSOURCES_PATH("db_dirichlet_apriori.csv"), weight);
 
-        gum::DAG xdag = learner.learnDAG();
+        gum::BayesNet<double> xbn = learner.learnBN();
 
-        TS_ASSERT(xdag == dag);
+        TS_ASSERT(xbn.moralGraph() == bn.moralGraph());
       }
     }
   };

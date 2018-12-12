@@ -132,64 +132,41 @@ namespace gum {
         /// @{
 
         /// default constructor
+        /** @param file the name of the CSV file containing the data
+         * @param missing_symbols the set of symbols in the CSV file that
+         * correspond to missing data */
         explicit Database(const std::string&                file,
                           const std::vector< std::string >& missing_symbols);
+
+        /// default constructor
+        /** @param db an already initialized database table that is used to
+         * fill the Database */
         explicit Database(const DatabaseTable<>& db);
 
-        /// default constructor with defined modalities for some variables
-        /**
-         * @param filename The file to read.
-         * @param modalities indicate for some nodes (not necessarily all the
-         * nodes of the BN) which modalities they should have and in which
-         * order these modalities should be stored into the nodes. For instance,
-         * if modalities = { 1 -> {True, False, Big} }, then the node of id 1
-         * in the BN will have 3 modalities, the first one being True, the
-         * second one being False, and the third bein Big.
-         * @param check_database If true, the database will be checked.
-         *
+        /// constructor for the aprioris
+        /** We must ensure that the variables of the Database are identical to
+         * those of the score database (else the countings used by the
+         * scores might be erroneous). However, we allow the variables to be
+         * ordered differently in the two databases: variables with the same
+         * name in both databases are supposed to be the same.
+         * @param file the name of the CSV file containing the data
+         * @param score_database the main database used for the learning
+         * @param missing_symbols the set of symbols in the CSV file that
+         * correspond to missing data
          */
-        /*
-        Database(std::string                                    filename,
-                 const NodeProperty< Sequence< std::string > >& modalities,
-                 bool check_database = false);
-        */
-
-        /// default constructor for the aprioris
-        /** We must ensure that, when reading the apriori database, if the
-         * "apriori" rowFilter says that a given variable has value i
-         * (given by its fast translator), the corresponding "raw" value in the
-         * apriori database is the same as in the score/parameter database
-         * read before creating the apriori. This is compulsory to have
-         * aprioris that make sense. */
         Database(const std::string&                filename,
                  Database&                         score_database,
                  const std::vector< std::string >& missing_symbols);
 
-        /// default constructor for the aprioris
-        /** We must ensure that, when reading the apriori database, if the
-         * "apriori" rowFilter says that a given variable has value i (given by
-         * its fast translator), the corresponding "raw" value in the apriori
-         * database is the same as in the score/parameter database read before
-         * creating the apriori. This is compulsory to have aprioris that make
-         * sense.
-         *
-         * @param filename The fila to read.
-         * @param score_database The score database.
-         * @param modalities indicate for some nodes (not necessarily all the
-         * nodes of the BN) which modalities they should have and in which
-         * order these modalities should be stored into the nodes. For
-         * instance, if modalities = { 1 -> {True, False, Big} }, then the node
-         * of id 1 in the BN will have 3 modalities, the first one being True,
-         * the second one being False, and the third bein Big.
+        /// constructor with a BN providing the variables of interest
+         /** @param file the name of the CSV file containing the data
+         * @param bn a Bayesian network indicating which variables of the CSV
+         * file are used for learning
+         * @param missing_symbols the set of symbols in the CSV file that
+         * correspond to missing data
          */
         template < typename GUM_SCALAR >
         Database(const std::string&                 filename,
-                 const gum::BayesNet< GUM_SCALAR >& bn,
-                 const std::vector< std::string >&  missing_symbols);
-
-        template < typename GUM_SCALAR >
-        Database(const std::string&                 filename,
-                 Database&                          score_database,
                  const gum::BayesNet< GUM_SCALAR >& bn,
                  const std::vector< std::string >&  missing_symbols);
 
@@ -472,16 +449,17 @@ namespace gum {
       /** The BDeu apriori adds weight/riqi to all the cells of the countings
        * tables. In other words, it adds weight rows in the database with
        * equally probable values. */
-      void useAprioriBDeu(double weight = -1);
+      void useAprioriBDeu(double weight = 1);
 
       /// use the apriori smoothing
       /** @param weight pass in argument a weight if you wish to assign a weight
        * to the smoothing, else the current weight of the genericBNLearner will
        * be used. */
-      void useAprioriSmoothing(double weight = -1);
+      void useAprioriSmoothing(double weight = 1);
 
       /// use the Dirichlet apriori
-      void useAprioriDirichlet(const std::string& filename);
+      void useAprioriDirichlet(const std::string& filename,
+                               double weight = 1);
 
 
       /// checks whether the current score and apriori are compatible

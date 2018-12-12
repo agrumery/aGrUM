@@ -35,7 +35,7 @@ namespace gum {
   NodeGraphPart::NodeGraphPart(Size holes_size, bool holes_resize_policy) :
       __holes_size(holes_size), __holes_resize_policy(holes_resize_policy),
       __endIteratorSafe(*this), __boundVal(0) {
-    __holes = 0;
+    __holes = nullptr;
     GUM_CONSTRUCTOR(NodeGraphPart);
     __updateEndIteratorSafe();
   }
@@ -43,7 +43,7 @@ namespace gum {
   NodeGraphPart::NodeGraphPart(const NodeGraphPart& s) :
       __holes_size(s.__holes_size), __holes_resize_policy(s.__holes_resize_policy),
       __endIteratorSafe(*this), __boundVal(s.__boundVal) {
-    __holes = 0;
+    __holes = nullptr;
 
     if (s.__holes) __holes = new NodeSet(*s.__holes);
 
@@ -85,7 +85,10 @@ namespace gum {
           __holes->erase(--__boundVal);
         }
 
-        if (__holes->empty()) { __holes->resize(__holes_size); }
+        if (__holes->empty()) {
+          delete __holes;
+          __holes = nullptr;
+        }
       }
 
       __updateEndIteratorSafe();
@@ -126,7 +129,7 @@ namespace gum {
   void NodeGraphPart::addNodeWithId(const NodeId id) {
     if (id >= __boundVal) {
       if (id > __boundVal) {   // we have to add holes
-        if (!__holes) __holes = new NodeSet();
+        if (!__holes) __holes = new NodeSet(__holes_size, __holes_resize_policy);
 
         for (NodeId i = __boundVal; i < id; ++i)
           __holes->insert(i);
@@ -159,8 +162,7 @@ namespace gum {
     __updateEndIteratorSafe();
 
     delete (__holes);
-
-    __holes = 0;
+    __holes = nullptr;
   }
 
   void NodeGraphPartIteratorSafe::whenNodeDeleted(const void* src, NodeId id) {

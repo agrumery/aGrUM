@@ -236,7 +236,10 @@ namespace gum {
   INLINE void NodeGraphPart::__eraseHole(NodeId id) {
     __holes->erase(id);
 
-    if (__holes->empty()) { __holes->resize(__holes_size); }
+    if (__holes->empty()) {
+      delete __holes;
+      __holes = nullptr;
+    }
   }
 
   // warning: do not try to use function addNodeWithId ( const NodeId id ) within
@@ -334,7 +337,7 @@ namespace gum {
     return __endIteratorSafe;
   }
 
-  INLINE bool NodeGraphPart::operator==(const NodeGraphPart& p) const {
+  INLINE bool NodeGraphPart::operator==(const NodeGraphPart& p) const {  
     if (__boundVal != p.__boundVal) return false;
 
     if (__holes)

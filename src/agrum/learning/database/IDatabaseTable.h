@@ -443,13 +443,13 @@ namespace gum {
         /** if, applying this move would make the handler reach the end of
          * the area managed by the handler, then the handler is kept at the
          * end of the area, i.e., after the last element of the area. */
-        virtual Handler& operator+=(unsigned int i) final;
+        virtual Handler& operator+=(const std::size_t i) final;
 
         /// moves back the handler by i rows in the database
         /** if, applying this move would make the handler reach the beginning of
          * the area managed by the handler, then the handler is kept at the
          * beginning of the area, i.e., at the first element of the area. */
-        virtual Handler& operator-=(unsigned int i) final;
+        virtual Handler& operator-=(const std::size_t i) final;
 
         /// checks whether two handlers point to the same row in the database
         virtual bool operator==(const Handler& handler) const final;

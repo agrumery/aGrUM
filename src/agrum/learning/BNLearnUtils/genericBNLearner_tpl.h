@@ -39,10 +39,16 @@ namespace gum {
         var_names.insert(xvar_names[i], i);
 
       // we use the bn to insert the translators into the database table
+      std::vector< NodeId > nodes;
+      nodes.reserve(bn.dag().sizeNodes());
+      for (const auto node : bn.dag()) nodes.push_back(node);
+      std::sort(nodes.begin(),nodes.end());
       try {
-        for (auto node : bn.dag()) {
-          const Variable& var = bn.variable(node);
+        std::size_t i = std::size_t(0);
+        for (auto node : nodes) {
+          const Variable& var   = bn.variable(node);
           __database.insertTranslator(var, var_names[var.name()], missing_symbols);
+          __nodeId2cols.insert(NodeId(node), i++);
         }
       } catch (NotFound&) {
         GUM_ERROR(MissingVariableInDatabase,
@@ -62,23 +68,10 @@ namespace gum {
       for (auto dom : __database.domainSizes())
         __domain_sizes.push_back(dom);
 
-      nb_vars = __database.nbVariables();
-      for (std::size_t i = std::size_t(0); i < nb_vars; ++i)
-        __nodeId2cols.insert(NodeId(i), i);
-
       // create the parser
       __parser =
         new DBRowGeneratorParser<>(__database.handler(), DBRowGeneratorSet<>());
     }
-
-
-    template < typename GUM_SCALAR >
-    genericBNLearner::Database::Database(
-      const std::string&                filename,
-      Database&                         score_database,
-      const BayesNet< GUM_SCALAR >&     bn,
-      const std::vector< std::string >& missing_symbols) :
-        __database(genericBNLearner::__readFile(filename, bn, missing_symbols)) {}
 
 
     template < typename GUM_SCALAR >
