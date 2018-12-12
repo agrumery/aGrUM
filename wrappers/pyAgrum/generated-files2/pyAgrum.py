@@ -24877,15 +24877,18 @@ class BNLearner(object):
 
     def useAprioriSmoothing(self, *args):
         r"""
-        useAprioriSmoothing(self, weight=-1)
+        useAprioriSmoothing(self, weight=1)
         useAprioriSmoothing(self)
         """
         return _pyAgrum.BNLearner_useAprioriSmoothing(self, *args)
 
 
-    def useAprioriDirichlet(self, filename):
-        r"""useAprioriDirichlet(self, filename)"""
-        return _pyAgrum.BNLearner_useAprioriDirichlet(self, filename)
+    def useAprioriDirichlet(self, *args):
+        r"""
+        useAprioriDirichlet(self, filename, weight=1)
+        useAprioriDirichlet(self, filename)
+        """
+        return _pyAgrum.BNLearner_useAprioriDirichlet(self, *args)
 
 
     def useGreedyHillClimbing(self):
