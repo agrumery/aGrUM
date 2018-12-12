@@ -217,7 +217,8 @@ namespace gum {
         /// returns the internal database table
         const DatabaseTable<>& databaseTable() const;
 
-        /// assign new weight to the rows of the learning database
+        /** @brief assign a weight to all the rows of the database so
+         * that the sum of their weights is equal to new_weight */
         void setDatabaseWeight(const double new_weight);
 
         /// returns the mapping between node ids and their columns in the database
@@ -353,7 +354,8 @@ namespace gum {
       /// returns the database used by the BNLearner
       const DatabaseTable<>& database() const;
 
-      /// assign new weight to the rows of the learning database
+        /** @brief assign a weight to all the rows of the learning database so
+         * that the sum of their weights is equal to new_weight */
       void setDatabaseWeight(const double new_weight);
 
       /// returns the variable name corresponding to a given node id

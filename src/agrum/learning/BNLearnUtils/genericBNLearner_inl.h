@@ -53,7 +53,9 @@ namespace gum {
     /// assign new weight to the rows of the learning database
     INLINE void
       genericBNLearner::Database::setDatabaseWeight(const double new_weight) {
-      __database.setAllRowsWeight(new_weight);
+      if ( __database.nbRows() == std::size_t(0) ) return; 
+      const double weight = new_weight / double(__database.nbRows());
+      __database.setAllRowsWeight(weight);
     }
 
     // returns the node id corresponding to a variable name

@@ -101,8 +101,9 @@ namespace gum_tests {
 
       learner.setDatabaseWeight(10.0);
       const auto& db = learner.database();
+      const double weight = 10.0 / double(db.nbRows());
       for (const auto& row : db) {
-        TS_ASSERT(row.weight() == 10.0);
+        TS_ASSERT(row.weight() == weight);
       }
     }
 
