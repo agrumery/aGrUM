@@ -242,14 +242,14 @@ def getInfluenceDiagram(diag, size="4", format="png"):
   return getDot(diag.toDot(), size, format)
 
 
-def showProba(p,scale=1.0):
+def showProba(p, scale=1.0):
   """
   Show a mono-dim Potential
 
   :param p: the mono-dim Potential
   :return:
   """
-  fig = proba2histo(p,scale)
+  fig = proba2histo(p, scale)
   plt.show()
 
 
@@ -339,7 +339,8 @@ def showBN(bn, size="4", format="svg", nodeColor=None, arcWidth=None, arcColor=N
   :param bn: the bayesian network
   :param size: size of the rendered graph
   :param format: render as "png" or "svg"
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0
+  and 1)
   :param arcWidth: a arcMap of values to be shown as width of arcs
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
   :param cmap: color map to show the colors
@@ -359,7 +360,8 @@ def getBN(bn, size="4", format="svg", nodeColor=None, arcWidth=None, arcColor=No
   :param bn: the bayesian network
   :param size: size of the rendered graph
   :param format: render as "png" or "svg"
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0
+  and 1)
   :param arcWidth: a arcMap of values to be shown as width of arcs
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
   :param cmap: color map to show the colors
@@ -514,7 +516,8 @@ def getInference(bn, engine=None, evs=None, targets=None, size="7", format='png'
   :param set targets: set of targets
   :param string size: size of the rendered graph
   :param string format: render as "png" or "svg"
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0
+  and 1)
   :param arcWidth: a arcMap of values to be shown as width of arcs
   :param cmap: color map to show the color of nodes and arcs
   :return: the desired representation of the inference
@@ -686,14 +689,19 @@ def getSideBySide(*args, **kwargs):
   :return: a string representing the table
   """
 
-  for k in kwargs:
-    if k != "captions":
-      raise TypeError("sideBySide() got an unexpected keyword argument '{}'".format(k))
+  if not set(kwargs.keys()).issubset(set(['captions', 'valign'])):
+    raise TypeError("sideBySide() got unexpected keyword argument(s) : '{}'".format(
+        set(kwargs.keys()).difference(set(['captions', 'valign']))))
 
   if 'captions' in kwargs:
     captions = kwargs['captions']
   else:
     captions = None
+
+  if 'valign' in kwargs:
+    v_align = 'vertical-align:' + kwargs['valign'] + ';'
+  else:
+    v_align = ""
 
   s = '<table style="border-style: hidden; border-collapse: collapse;" width="100%">'
 
@@ -705,8 +713,8 @@ def getSideBySide(*args, **kwargs):
     else:
       return str(s)
 
-  s += '<tr><td style="border-top:hidden;border-bottom:hidden;"><div align="center">'
-  s += '</div></td><td style="border-top:hidden;border-bottom:hidden;"><div align="center">'.join([reprHTML(arg)
+  s += '<tr><td style="border-top:hidden;border-bottom:hidden;' + v_align + '"><div align="center" style="' + v_align + '">'
+  s += ('</div></td><td style="border-top:hidden;border-bottom:hidden;' + v_align + '"><div align="center" style="' + v_align + '">').join([reprHTML(arg)
                                                                                                    for arg in args])
   s += '</div></td></tr>'
 
@@ -727,10 +735,6 @@ def sideBySide(*args, **kwargs):
   :param args: HMTL fragments as string arg, arg._repr_html_() or str(arg)
   :param captions: list of strings (captions)
   """
-  for k in kwargs:
-    if k != "captions":
-      raise TypeError("sideBySide() got an unexpected keyword argument '{}'".format(k))
-
   display(HTML(getSideBySide(*args, **kwargs)))
 
 

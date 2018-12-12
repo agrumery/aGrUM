@@ -72,7 +72,8 @@ def BN2dot(bn, size="4", nodeColor=None, arcWidth=None, arcColor=None, cmapNode=
 
   :param pyAgrum.BayesNet bn:
   :param string size: size of the rendered graph
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0
+  and 1)
   :param arcWidth: a arcMap of values to be shown as width of arcs
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
   :param cmapNode: color map to show the vals of Nodes
@@ -115,10 +116,14 @@ def BN2dot(bn, size="4", nodeColor=None, arcWidth=None, arcColor=None, cmapNode=
       av = ""
     else:
       if a in arcWidth:
-        pw = 0.1 + 5 * (arcWidth[a] - minarcs) / (maxarcs - minarcs)
+        if maxarcs == minarcs:
+          pw = 1
+        else:
+          pw = 0.1 + 5 * (arcWidth[a] - minarcs) / (maxarcs - minarcs)
         av = arcWidth[a]
       else:
         pw = 1
+        av = 1
     if arcColor is None:
       col = "#000000"
     else:
@@ -137,24 +142,26 @@ def BN2dot(bn, size="4", nodeColor=None, arcWidth=None, arcColor=None, cmapNode=
 
 
 def _stats(p):
-    mu=0.0
-    mu2=0.0
-    v=p.variable(0)
-    for i,p in enumerate(p.tolist()):
-        x=v.numerical(i)
-        mu+=p*x
-        mu2+=p*x*x
-    return (mu,math.sqrt(mu2-mu*mu))
+  mu = 0.0
+  mu2 = 0.0
+  v = p.variable(0)
+  for i, p in enumerate(p.tolist()):
+    x = v.numerical(i)
+    mu += p * x
+    mu2 += p * x * x
+  return (mu, math.sqrt(mu2 - mu * mu))
+
 
 def _getTitleHisto(p):
   var = p.variable(0)
-  if var.varType()==1: # Labelized
+  if var.varType() == 1:  # Labelized
     return "{}".format(var.name())
 
-  (mu,std)=_stats(p)
-  return "{}\n$\mu={:.2f}$; $\sigma={:.2f}$".format(var.name(),mu,std)
-  
-def _getProbaV(p,scale=1.0):
+  (mu, std) = _stats(p)
+  return "{}\n$\mu={:.2f}$; $\sigma={:.2f}$".format(var.name(), mu, std)
+
+
+def _getProbaV(p, scale=1.0):
   """
   compute the representation of an histogram for a mono-dim Potential
 
@@ -166,20 +173,21 @@ def _getProbaV(p,scale=1.0):
   ra = np.arange(var.domainSize())
 
   fig = plt.figure()
-  fig.set_figwidth(scale*var.domainSize() / 4.0)
-  fig.set_figheight(scale*2)
+  fig.set_figwidth(scale * var.domainSize() / 4.0)
+  fig.set_figheight(scale * 2)
 
   ax = fig.add_subplot(111)
 
-  bars=ax.bar(ra, p.tolist(), align='center')
+  bars = ax.bar(ra, p.tolist(), align='center')
   ax.set_ylim(bottom=0)
   ax.set_xticks(ra)
-  ax.set_xticklabels(["{:.1%}".format(bar.get_height()) for bar in bars],rotation='vertical')
+  ax.set_xticklabels(["{:.1%}".format(bar.get_height()) for bar in bars], rotation='vertical')
   ax.set_title(_getTitleHisto(p))
   ax.get_yaxis().grid(True)
   return fig
 
-def _getProbaH(p,scale=1.0):
+
+def _getProbaH(p, scale=1.0):
   """
   compute the representation of an histogram for a mono-dim Potential
 
@@ -189,21 +197,21 @@ def _getProbaH(p,scale=1.0):
   var = p.variable(0)
   ra = np.arange(var.domainSize())
   ra_reverse = np.arange(var.domainSize() - 1, -1, -1)  # reverse order
-  vx = ["{0}".format(var.label(int(i  ))) for i in ra_reverse]
+  vx = ["{0}".format(var.label(int(i))) for i in ra_reverse]
 
   fig = plt.figure()
-  fig.set_figheight(scale*var.domainSize() / 4.0)
-  fig.set_figwidth(scale*2)
+  fig.set_figheight(scale * var.domainSize() / 4.0)
+  fig.set_figwidth(scale * 2)
 
   ax = fig.add_subplot(111)
 
   vals = p.tolist()
   vals.reverse()
-  bars=ax.barh(ra, vals, align='center')
+  bars = ax.barh(ra, vals, align='center')
 
   for bar in bars:
-    txt="{:.1%}".format(bar.get_width())
-    ax.text(1, bar.get_y() , txt, ha='right', va='bottom')
+    txt = "{:.1%}".format(bar.get_width())
+    ax.text(1, bar.get_y(), txt, ha='right', va='bottom')
 
   ax.set_xlim(0, 1)
   ax.set_yticks(np.arange(var.domainSize()))
@@ -215,7 +223,7 @@ def _getProbaH(p,scale=1.0):
   return fig
 
 
-def proba2histo(p,scale=1.0):
+def proba2histo(p, scale=1.0):
   """
   compute the representation of an histogram for a mono-dim Potential
 
@@ -223,9 +231,9 @@ def proba2histo(p,scale=1.0):
   :return: a matplotlib histogram for a Potential p.
   """
   if p.variable(0).domainSize() > 8:
-    return _getProbaV(p,scale)
+    return _getProbaV(p, scale)
   else:
-    return _getProbaH(p,scale)
+    return _getProbaH(p, scale)
 
 
 def _saveFigProba(p, filename, format="svg"):

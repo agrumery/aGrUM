@@ -67,16 +67,32 @@ def _gumScan(file: Path):
 def drawGumDeps():
   colors = {
     "PRM"            : "aquamarine",
-    "core"           : "cornflowerblue",
-    "BN"             : "navajowhite",
+    "core"           : "tomato",
+    "BN"             : "sandybrown",
     "CN"             : "thistle",
-    "learning"       : "darkorchid",
+    "learning"       : "mediumorchid",
     "variables"      : "lightskyblue",
     "graphicalModels": "darkgoldenrod",
     "graphs"         : "lightpink",
     "multidim"       : "yellow",
     "FMDP"           : "darksalmon",
-    "ID"             : "deeppink",
+    "ID"             : "deepskyblue",
+    "legend"         : "white"
+  }
+  colors = {
+    "core"           : "tomato",
+    "variables"      : "lightpink",
+    "graphicalModels": "darkgoldenrod",
+    "graphs"         : "darksalmon",
+    "multidim"       : "sandybrown",
+
+    "BN"             : "yellow",
+    "PRM"            : "orchid",
+    "CN"             : "yellowgreen",
+    "learning"       : "lightskyblue",
+    "FMDP"           : "darkseagreen",
+    "ID"             : "aquamarine",
+
     "legend"         : "white"
   }
 
@@ -107,6 +123,7 @@ def drawGumDeps():
 
   agru = pdp.Dot()
 
+  oldcol = "legend"
   for col in colors:
     agru.add_node(_getNode(col))
     if col != "legend":
