@@ -24,6 +24,8 @@
 #include <ressources/mygenerator2.h>
 #include <iostream>
 
+#include <agrum/learning/database/DBRowGeneratorIdentity.h>
+#include <agrum/learning/database/DBRowGenerator4CompleteRows.h>
 #include <agrum/learning/database/DBRowGeneratorSet.h>
 
 namespace gum_tests {
@@ -267,6 +269,69 @@ namespace gum_tests {
         TS_ASSERT(row[3].discr_val == std::size_t(7));
       }
     }
+
+
+    void test_incomplete() {
+      const std::vector< gum::learning::DBTranslatedValueType > col_types{
+        gum::learning::DBTranslatedValueType::DISCRETE,
+        gum::learning::DBTranslatedValueType::DISCRETE,
+        gum::learning::DBTranslatedValueType::CONTINUOUS,
+        gum::learning::DBTranslatedValueType::DISCRETE};
+
+      gum::learning::DBRowGeneratorIdentity<>      generator1(col_types);
+      gum::learning::DBRowGenerator4CompleteRows<> generator2(col_types);
+      
+      gum::learning::DBRowGeneratorSet<> genset;
+      genset.insertGenerator(generator1);
+      genset.insertGenerator(std::move(generator2));
+      TS_ASSERT(genset.nbGenerators() == std::size_t(2));
+      TS_ASSERT(genset.size() == std::size_t(2));
+      TS_ASSERT(!genset.hasRows());
+
+      const gum::learning::DBRow< gum::learning::DBTranslatedValue > input_row1{
+        gum::learning::DBTranslatedValue{std::size_t(0)},
+        gum::learning::DBTranslatedValue{std::size_t(4)},
+        gum::learning::DBTranslatedValue{4.5f},
+        gum::learning::DBTranslatedValue{std::size_t(7)}};
+
+      genset.setInputRow(input_row1);
+      std::size_t nb_dup = std::size_t(0);
+      while (genset.hasRows()) {
+        const auto& row = genset.generate().row();
+        ++nb_dup;
+
+        TS_ASSERT(row[0].discr_val == std::size_t(0));
+        TS_ASSERT(row[1].discr_val == std::size_t(4));
+        TS_ASSERT(row[2].cont_val == 4.5f);
+        TS_ASSERT(row[3].discr_val == std::size_t(7));
+      }
+
+      TS_ASSERT(nb_dup == std::size_t(1));
+
+      genset.reset();
+      TS_ASSERT(!genset.hasRows());
+
+      const gum::learning::DBRow< gum::learning::DBTranslatedValue > input_row2{
+        gum::learning::DBTranslatedValue{std::size_t(0)},
+        gum::learning::DBTranslatedValue{std::numeric_limits<std::size_t>::max()},
+        gum::learning::DBTranslatedValue{4.5f},
+        gum::learning::DBTranslatedValue{std::size_t(7)}};
+      const std::vector< std::size_t > cols_of_interest{std::size_t(0),
+                                                        std::size_t(2)};
+      
+      genset.setColumnsOfInterest(cols_of_interest);
+      genset.setInputRow(input_row2);
+      nb_dup = std::size_t(0);
+      while (genset.hasRows()) {
+        const auto& row = genset.generate().row();
+        ++nb_dup;
+
+        TS_ASSERT(row[0].discr_val == std::size_t(0));
+        TS_ASSERT(row[2].cont_val == 4.5f);
+      }
+
+      TS_ASSERT(nb_dup == std::size_t(1));
+    }    
   };
 
 
