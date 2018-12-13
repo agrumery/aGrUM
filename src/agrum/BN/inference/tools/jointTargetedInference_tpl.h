@@ -23,6 +23,7 @@
  * JointTargetedInference.
  */
 #include <agrum/BN/inference/tools/jointTargetedInference.h>
+#include <agrum/variables/rangeVariable.h>
 
 namespace gum {
 
@@ -382,6 +383,72 @@ namespace gum {
     }
 
     return evidenceJointImpact(targetsId, evsId);
+  }
+
+
+  template < typename GUM_SCALAR >
+  GUM_SCALAR JointTargetedInference< GUM_SCALAR >::jointMutualInformation(
+          const NodeSet &targets) {
+    const auto& bn = this->BN();
+    const Size  siz = targets.size();
+    if (siz <= 1) {
+      GUM_ERROR(InvalidArgument,
+                "jointMutualInformation needs at least 2 variables (targets="
+                  << targets << ")");
+    }
+
+    this->eraseAllTargets();
+    this->eraseAllEvidence();
+    this->addJointTarget(targets);
+    this->makeInference();
+    const auto po = this->jointPosterior(targets);
+
+    gum::Instantiation caracteristic;
+    gum::Instantiation variables;
+    for (const auto nod : targets) {
+      const auto& var = bn.variable(nod);
+      auto        pv = new gum::RangeVariable(var.name(), "", 0, 1);
+      caracteristic.add(*pv);
+      variables.add(var);
+    }
+
+    Set< const DiscreteVariable* > sov;
+
+    const GUM_SCALAR start = (siz % 2 == 0) ? GUM_SCALAR(-1.0) : GUM_SCALAR(1.0);
+    GUM_SCALAR       sign;
+    GUM_SCALAR       res = GUM_SCALAR(0.0);
+
+    caracteristic.setFirst();
+    for (caracteristic.inc(); !caracteristic.end(); caracteristic.inc()) {
+      sov.clear();
+      sign = start;
+      for (Idx i = 0; i < caracteristic.nbrDim(); i++) {
+        if (caracteristic.val(i) == 1) {
+          sign = -sign;
+          sov.insert(&variables.variable(i));
+        }
+      }
+      res += sign * po.margSumIn(sov).entropy();
+    }
+
+    for (Idx i = 0; i < caracteristic.nbrDim(); i++) {
+      delete &caracteristic.variable(i);
+    }
+
+    return res;
+  }
+
+  template < typename GUM_SCALAR >
+  GUM_SCALAR JointTargetedInference< GUM_SCALAR >::jointMutualInformation(
+    const std::vector< std::string >& targets) {
+    const auto& bn = this->BN();
+
+    gum::NodeSet targetsId;
+    for (const auto& targetname : targets) {
+      targetsId.insert(bn.idFromName(targetname));
+    }
+
+    return jointMutualInformation(targetsId);
   }
 
 } /* namespace gum */
