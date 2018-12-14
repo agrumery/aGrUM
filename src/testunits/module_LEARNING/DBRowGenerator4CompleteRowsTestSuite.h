@@ -27,7 +27,7 @@
 
 namespace gum_tests {
 
-  class DBRowGeneratorTestSuite : public CxxTest::TestSuite {
+  class DBRowGenerator4CompleteRowsTestSuite : public CxxTest::TestSuite {
     public:
     void test_identity() {
       const std::vector< gum::learning::DBTranslatedValueType > col_types{

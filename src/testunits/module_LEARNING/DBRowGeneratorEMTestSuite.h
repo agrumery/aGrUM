@@ -28,7 +28,7 @@
 
 namespace gum_tests {
 
-  class DBRowGeneratorTestSuite : public CxxTest::TestSuite {
+  class DBRowGeneratorEMTestSuite : public CxxTest::TestSuite {
   private:
     gum::Potential<double>
     __infer( const gum::BayesNet<double>& bn,
