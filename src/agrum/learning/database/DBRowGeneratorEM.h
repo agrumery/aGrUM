@@ -18,35 +18,35 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief A DBRowGenerator class that returns the rows that are complete
- * (fully observed) w.r.t. the nodes of interest
+ * @brief A DBRowGenerator class that returns incomplete rows as EM would do
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_LEARNING_DBROW_GENERATOR_4_COMPLETE_ROWS_H
-#define GUM_LEARNING_DBROW_GENERATOR_4_COMPLETE_ROWS_H
+#ifndef GUM_LEARNING_DBROW_GENERATOR_EM_H
+#define GUM_LEARNING_DBROW_GENERATOR_EM_H
+
+#include <vector>
 
 #include <agrum/agrum.h>
+#include <agrum/core/bijection.h>
+#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/inference/variableElimination.h>
 #include <agrum/learning/database/DBRowGenerator.h>
 
 namespace gum {
 
   namespace learning {
 
-    /** @class DBRowGenerator4CompleteRows
-     * @headerfile DBRowGenerator4CompleteRows.h <agrum/learning/database/DBRowGenerator4CompleteRows.h>
-     * @brief A DBRowGenerator class that returns the rows that are complete
-     * (fully observed) w.r.t. the nodes of interest
+    /** @class DBRowGeneratorEM
+     * @headerfile DBRowGeneratorEM.h <agrum/learning/database/DBRowGeneratorEM.h>
+     * @brief A DBRowGenerator class that returns incomplete rows as EM would do
      *
      * @ingroup learning_database
      *
-     * This class is a DBRowGenerator that returns all the rows that are
-     * complete (i.e., fully observed) w.r.t. the nodes of interest. In other
-     * words, whenever the values of the nodes of interest are observed in a
-     * row, this one is returned, but if at least one node is unobserved, the
-     * generator does not return anything. This class is useful for bootstraping
-     * EM algorithms.
-     *
+     * This class is a DBRowGenerator that fills the unobserved values of the
+     * nodes of interest as the EM algorithm does, i.e., by returning all the
+     * possible completed rows with a weight corresponding to the probability
+     * of the completion.
      * The standard usage of a DBRowGenerator is the following:
      * @code
      * // create a DatabaseTable and fill it
@@ -61,20 +61,21 @@ namespace gum {
      *   column_types ( 10, gum::learning::DBTranslatedValueType::DISCRETE );
      *
      * // create the generator
-     * gum::learning::DBRowGenerator4CompleteRows<> generator ( col_types );
+     * gum::learning::DBRowGeneratorEM<> generator ( col_types );
      *
      * // parse the database and produce output rows
      * for ( auto dbrow : database ) {
      *   generator.setInputRow ( dbrow );
-     *   if ( generator.hasRows() ) {
+     *   while ( generator.hasRows() ) {
      *     const auto& output_dbrow = generator.generate ();
      *     // do something with the output dbrow
      *   }
      * }
      * @endcode
      */
-    template < template < typename > class ALLOC = std::allocator >
-    class DBRowGenerator4CompleteRows : public DBRowGenerator< ALLOC > {
+    template < typename GUM_SCALAR = double,
+               template < typename > class ALLOC = std::allocator >
+    class DBRowGeneratorEM : public DBRowGenerator< ALLOC > {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< DBTranslatedValue >;
@@ -86,35 +87,38 @@ namespace gum {
       /// @{
 
       /// default constructor
-      DBRowGenerator4CompleteRows(
+      DBRowGeneratorEM(
         const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > >
-                              column_types,
-        const allocator_type& alloc = allocator_type());
+                                    column_types,
+        const BayesNet<GUM_SCALAR>& bn,
+        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+              nodeId2columns =
+                Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+        const allocator_type&       alloc = allocator_type());
 
       /// copy constructor
-      DBRowGenerator4CompleteRows(
-           const DBRowGenerator4CompleteRows< ALLOC >& from);
+      DBRowGeneratorEM(const DBRowGeneratorEM< GUM_SCALAR, ALLOC >& from);
 
       /// copy constructor with a given allocator
-      DBRowGenerator4CompleteRows(const DBRowGenerator4CompleteRows< ALLOC >& from,
-                                  const allocator_type& alloc);
+      DBRowGeneratorEM(const DBRowGeneratorEM< GUM_SCALAR, ALLOC >& from,
+                       const allocator_type&                        alloc);
 
       /// move constructor
-      DBRowGenerator4CompleteRows(DBRowGenerator4CompleteRows< ALLOC >&& from);
+      DBRowGeneratorEM(DBRowGeneratorEM< GUM_SCALAR, ALLOC >&& from);
 
       /// move constructor with a given allocator
-      DBRowGenerator4CompleteRows(DBRowGenerator4CompleteRows< ALLOC >&& from,
-                             const allocator_type& alloc);
+      DBRowGeneratorEM(DBRowGeneratorEM< GUM_SCALAR, ALLOC >&& from,
+                       const allocator_type&                   alloc);
 
       /// virtual copy constructor
-      virtual DBRowGenerator4CompleteRows< ALLOC >* clone() const;
+      virtual DBRowGeneratorEM< GUM_SCALAR, ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
-      virtual DBRowGenerator4CompleteRows< ALLOC >*
+      virtual DBRowGeneratorEM< GUM_SCALAR, ALLOC >*
         clone(const allocator_type& alloc) const;
 
       /// destructor
-      ~DBRowGenerator4CompleteRows();
+      ~DBRowGeneratorEM();
 
       /// @}
 
@@ -126,12 +130,12 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBRowGenerator4CompleteRows< ALLOC >&
-        operator=(const DBRowGenerator4CompleteRows< ALLOC >& from);
+      DBRowGeneratorEM< GUM_SCALAR, ALLOC >&
+        operator=(const DBRowGeneratorEM< GUM_SCALAR, ALLOC >& from);
 
       /// move operator
-      DBRowGenerator4CompleteRows< ALLOC >&
-        operator=(DBRowGenerator4CompleteRows< ALLOC >&& from);
+      DBRowGeneratorEM< GUM_SCALAR, ALLOC >&
+        operator=(DBRowGeneratorEM< GUM_SCALAR, ALLOC >&& from);
 
       /// @}
 
@@ -143,10 +147,7 @@ namespace gum {
       /// @{
 
       /// generates one ouput DBRow for each DBRow passed to method setInputRow
-      /** @warning if this method is applied while the row it should return is
-       * incomplete w.r.t. the nodes of interest, its behavior is uncertain
-       * and will certainly result in a segmentation fault */
-      virtual const DBRow< DBTranslatedValue, ALLOC >& generate() final;
+      virtual const DBRow< DBTranslatedValue, ALLOC >& generate() override final;
 
       /// @}
 
@@ -154,7 +155,7 @@ namespace gum {
       protected:
       /// computes the rows it will provide as output
       virtual std::size_t
-        _computeRows(const DBRow< DBTranslatedValue, ALLOC >& row) final;
+        _computeRows(const DBRow< DBTranslatedValue, ALLOC >& row) override final;
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -163,6 +164,32 @@ namespace gum {
       /// the row used as input to generate the output DBRows
       const DBRow< DBTranslatedValue, ALLOC >* __input_row{nullptr};
 
+      /// the Bayesian network used to fill the unobserved values
+      const BayesNet<GUM_SCALAR>* __bn;
+
+      /// the mapping betwen the BN's node ids and the database's columns
+      Bijection< NodeId, std::size_t, ALLOC< std::size_t > >
+      __nodeId2columns;
+
+      /// the set of missing columns of the current row
+      std::vector< std::size_t, ALLOC< std::size_t > > __missing_cols;
+
+      /// the number of missing values in the current row
+      std::size_t __nb_miss;
+
+      /// the joint probability of the missing variables of the current row
+      Potential< GUM_SCALAR > __joint_proba;
+
+      /// an instantiation over the joint proba
+      Instantiation* __joint_inst {nullptr};
+      
+      /// the row that we return if there are missing values
+      DBRow< DBTranslatedValue, ALLOC > __filled_row;
+
+      /// the weight of the original input row
+      double __original_weight;
+
+  
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 
@@ -172,6 +199,6 @@ namespace gum {
 
 
 // always include the template implementation
-#include <agrum/learning/database/DBRowGenerator4CompleteRows_tpl.h>
+#include <agrum/learning/database/DBRowGeneratorEM_tpl.h>
 
-#endif /* GUM_LEARNING_DBROW_GENERATOR_4_COMPLETE_ROWS_H */
+#endif /* GUM_LEARNING_DBROW_GENERATOR_EM_H */
