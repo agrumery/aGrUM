@@ -11057,7 +11057,7 @@ class LazyPropagation(object):
         Raises
         ------
         gum.UndefinedElement
-            If one target is not in the Bayes net 
+            If one target is not in the Bayes net
         """
         if not isinstance(targets, set):
             raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
@@ -11105,6 +11105,11 @@ class LazyPropagation(object):
 
         """
         return _pyAgrum.LazyPropagation_targets(self)
+
+
+    def jointMutualInformation(self, targets: 'PyObject *') -> "double":
+        r"""jointMutualInformation(self, targets) -> double"""
+        return _pyAgrum.LazyPropagation_jointMutualInformation(self, targets)
 
 
     def jointPosterior(self, list: 'PyObject *') -> "gum::Potential< double >":
@@ -11946,7 +11951,7 @@ class ShaferShenoyInference(object):
         Raises
         ------
         gum.UndefinedElement
-            If one target is not in the Bayes net 
+            If one target is not in the Bayes net
         """
         if not isinstance(targets, set):
             raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
@@ -11994,6 +11999,11 @@ class ShaferShenoyInference(object):
 
         """
         return _pyAgrum.ShaferShenoyInference_targets(self)
+
+
+    def jointMutualInformation(self, targets: 'PyObject *') -> "double":
+        r"""jointMutualInformation(self, targets) -> double"""
+        return _pyAgrum.ShaferShenoyInference_jointMutualInformation(self, targets)
 
 
     def jointPosterior(self, list: 'PyObject *') -> "gum::Potential< double >":
@@ -12836,7 +12846,7 @@ class VariableElimination(object):
         Raises
         ------
         gum.UndefinedElement
-            If one target is not in the Bayes net 
+            If one target is not in the Bayes net
         """
         if not isinstance(targets, set):
             raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
@@ -12884,6 +12894,11 @@ class VariableElimination(object):
 
         """
         return _pyAgrum.VariableElimination_targets(self)
+
+
+    def jointMutualInformation(self, targets: 'PyObject *') -> "double":
+        r"""jointMutualInformation(self, targets) -> double"""
+        return _pyAgrum.VariableElimination_jointMutualInformation(self, targets)
 
 
     def evidenceJointImpact(self, targets: 'PyObject *', evs: 'PyObject *') -> "gum::Potential< double >":
@@ -13604,7 +13619,7 @@ class GibbsSampling(object):
         Raises
         ------
         gum.UndefinedElement
-            If one target is not in the Bayes net 
+            If one target is not in the Bayes net
         """
         if not isinstance(targets, set):
             raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
@@ -14537,7 +14552,7 @@ class ImportanceSampling(object):
         Raises
         ------
         gum.UndefinedElement
-            If one target is not in the Bayes net 
+            If one target is not in the Bayes net
         """
         if not isinstance(targets, set):
             raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
@@ -15418,7 +15433,7 @@ class WeightedSampling(object):
         Raises
         ------
         gum.UndefinedElement
-            If one target is not in the Bayes net 
+            If one target is not in the Bayes net
         """
         if not isinstance(targets, set):
             raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
@@ -16299,7 +16314,7 @@ class MonteCarloSampling(object):
         Raises
         ------
         gum.UndefinedElement
-            If one target is not in the Bayes net 
+            If one target is not in the Bayes net
         """
         if not isinstance(targets, set):
             raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
@@ -17196,7 +17211,7 @@ class LoopyImportanceSampling(object):
         Raises
         ------
         gum.UndefinedElement
-            If one target is not in the Bayes net 
+            If one target is not in the Bayes net
         """
         if not isinstance(targets, set):
             raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
@@ -18093,7 +18108,7 @@ class LoopyWeightedSampling(object):
         Raises
         ------
         gum.UndefinedElement
-            If one target is not in the Bayes net 
+            If one target is not in the Bayes net
         """
         if not isinstance(targets, set):
             raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
@@ -18990,7 +19005,7 @@ class LoopyGibbsSampling(object):
         Raises
         ------
         gum.UndefinedElement
-            If one target is not in the Bayes net 
+            If one target is not in the Bayes net
         """
         if not isinstance(targets, set):
             raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
@@ -19953,7 +19968,7 @@ class LoopyMonteCarloSampling(object):
         Raises
         ------
         gum.UndefinedElement
-            If one target is not in the Bayes net 
+            If one target is not in the Bayes net
         """
         if not isinstance(targets, set):
             raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
@@ -20834,7 +20849,7 @@ class LoopyBeliefPropagation(object):
         Raises
         ------
         gum.UndefinedElement
-            If one target is not in the Bayes net 
+            If one target is not in the Bayes net
         """
         if not isinstance(targets, set):
             raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
