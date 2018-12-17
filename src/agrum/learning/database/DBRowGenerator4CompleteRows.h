@@ -148,6 +148,9 @@ namespace gum {
        * and will certainly result in a segmentation fault */
       virtual const DBRow< DBTranslatedValue, ALLOC >& generate() final;
 
+      /// returns the allocator used
+      allocator_type getAllocator() const;
+
       /// @}
 
 

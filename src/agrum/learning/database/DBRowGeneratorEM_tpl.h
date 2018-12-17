@@ -30,6 +30,14 @@ namespace gum {
 
   namespace learning {
 
+    /// returns the allocator used
+    template < typename GUM_SCALAR, template < typename > class ALLOC >
+    INLINE typename DBRowGeneratorEM< GUM_SCALAR, ALLOC >::allocator_type
+    DBRowGeneratorEM< GUM_SCALAR, ALLOC >::getAllocator() const {
+      return DBRowGenerator< ALLOC >::getAllocator();
+    }
+    
+
     /// default constructor
     template < typename GUM_SCALAR, template < typename > class ALLOC >
     DBRowGeneratorEM< GUM_SCALAR, ALLOC >::DBRowGeneratorEM(
@@ -38,26 +46,13 @@ namespace gum {
       const BayesNet<GUM_SCALAR>& bn,
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
       const typename DBRowGeneratorEM< GUM_SCALAR,ALLOC >::allocator_type& alloc) :
-        DBRowGenerator< ALLOC >(
-          column_types,
-          DBRowGeneratorGoal::OTHER_THINGS_THAN_REMOVE_MISSING_VALUES,
-          alloc),
-      __bn (&bn),
-      __nodeId2columns(nodeId2columns),
-      __filled_row (bn.size(), 1.0, alloc) {
-      // we determine the size of the filled rows
-      std::size_t size = std::size_t(0);
-      if ( nodeId2columns.empty() ) {
-        for (auto node : bn.dag())
-          if (std::size_t(node) > size) size = std::size_t(node);
-      }
-      else {
-        for (auto iter = __nodeId2columns.begin();
-             iter != __nodeId2columns.end(); ++iter) {
-          if (iter.second() > size) size = iter.second();
-        }
-      }
-      __filled_row.resize(size+1);
+        DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >(
+          column_types, bn,
+          DBRowGeneratorGoal::ONLY_REMOVE_MISSING_VALUES,
+          nodeId2columns, alloc),
+      __filled_row1 (bn.size(), 1.0, alloc),
+      __filled_row2 (bn.size(), 1.0, alloc) {
+      setBayesNet(bn);
       
       GUM_CONSTRUCTOR(DBRowGeneratorEM);
     }
@@ -68,14 +63,14 @@ namespace gum {
     DBRowGeneratorEM< GUM_SCALAR, ALLOC >::DBRowGeneratorEM(
       const DBRowGeneratorEM< GUM_SCALAR, ALLOC >&                         from,
       const typename DBRowGeneratorEM< GUM_SCALAR,ALLOC >::allocator_type& alloc) :
-        DBRowGenerator< ALLOC >(from, alloc),
+        DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >(from, alloc),
       __input_row(from.__input_row),
-      __bn(from.__bn),
-      __nodeId2columns(from.__nodeId2columns),
       __missing_cols(from.__missing_cols),
       __nb_miss(from.__nb_miss),
       __joint_proba(from.__joint_proba),
-      __filled_row(from.__filled_row),
+      __filled_row1(from.__filled_row1),
+      __filled_row2(from.__filled_row2),
+      __use_filled_row1(from.__use_filled_row1),
       __original_weight(from.__original_weight) {
       if (from.__joint_inst != nullptr) {
         __joint_inst = new Instantiation(__joint_proba);
@@ -102,14 +97,14 @@ namespace gum {
     DBRowGeneratorEM< GUM_SCALAR, ALLOC >::DBRowGeneratorEM(
       DBRowGeneratorEM< GUM_SCALAR, ALLOC >&&                              from,
       const typename DBRowGeneratorEM< GUM_SCALAR,ALLOC >::allocator_type& alloc) :
-        DBRowGenerator< ALLOC >(std::move(from), alloc),
+        DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >(std::move(from), alloc),
       __input_row(from.__input_row),
-      __bn(from.__bn),
-      __nodeId2columns(std::move(from.__nodeId2columns)),
       __missing_cols(std::move(from.__missing_cols)),
       __nb_miss(from.__nb_miss),
       __joint_proba(std::move(from.__joint_proba)),
-      __filled_row(std::move(from.__filled_row)),
+      __filled_row1(std::move(from.__filled_row1)),
+      __filled_row2(std::move(from.__filled_row2)),
+      __use_filled_row1(from.__use_filled_row1),
       __original_weight(from.__original_weight) {
       if (from.__joint_inst != nullptr) {
         __joint_inst = new Instantiation(__joint_proba);
@@ -172,14 +167,14 @@ namespace gum {
     DBRowGeneratorEM< GUM_SCALAR, ALLOC >::
     operator=(const DBRowGeneratorEM< GUM_SCALAR, ALLOC >& from) {
       if (this != &from) {
-        DBRowGenerator< ALLOC >::operator=(from);
+        DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::operator=(from);
         __input_row       = from.__input_row;
-        __bn              = from.__bn;
-        __nodeId2columns  = from.__nodeId2columns;
         __missing_cols    = from.__missing_cols;
         __nb_miss         = from.__nb_miss;
         __joint_proba     = from.__joint_proba;
-        __filled_row      = from.__filled_row;
+        __filled_row1     = from.__filled_row1;
+        __filled_row2     = from.__filled_row2;
+        __use_filled_row1 = from.__use_filled_row1;
         __original_weight = from.__original_weight;
         
         if (__joint_inst != nullptr) {
@@ -207,14 +202,14 @@ namespace gum {
     DBRowGeneratorEM< GUM_SCALAR, ALLOC >::
     operator=(DBRowGeneratorEM< GUM_SCALAR, ALLOC >&& from) {
       if (this != &from) {
-        DBRowGenerator< ALLOC >::operator=(std::move(from));
-        __input_row = from.__input_row;
-        __bn = from.__bn;
-        __nodeId2columns = std::move(from.__nodeId2columns);
+        DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::operator=(std::move(from));
+        __input_row       = from.__input_row;
         __missing_cols    = std::move(from.__missing_cols);
         __nb_miss         = from.__nb_miss;
         __joint_proba     = std::move(from.__joint_proba);
-        __filled_row      = std::move(from.__filled_row);
+        __filled_row1     = std::move(from.__filled_row1);
+        __filled_row2     = std::move(from.__filled_row2);
+        __use_filled_row1 = from.__use_filled_row1;
         __original_weight = from.__original_weight;
 
         if (__joint_inst != nullptr) {
@@ -245,17 +240,34 @@ namespace gum {
       // if everything is observed, return the input row
       if (__input_row != nullptr) return *__input_row;
 
-      // get the weight of the row from the joint probability
-      __filled_row.setWeight(__joint_proba.get(*__joint_inst) *
-                             __original_weight);
+      if (__use_filled_row1) {
+        // get the weight of the row from the joint probability
+        __filled_row1.setWeight(__joint_proba.get(*__joint_inst) *
+                                __original_weight);
 
-      // fill the values of the row
-      for ( std::size_t i = std::size_t(0); i < __nb_miss; ++i ) {
-        __filled_row[__missing_cols[i]].discr_val = __joint_inst->val(i);
+        // fill the values of the row
+        for ( std::size_t i = std::size_t(0); i < __nb_miss; ++i )
+          __filled_row1[__missing_cols[i]].discr_val = __joint_inst->val(i);
+
+        __joint_inst->inc();
+        __use_filled_row1 = false;
+        
+        return __filled_row1;
       }
-      __joint_inst->inc();
- 
-      return __filled_row;
+      else {
+        // get the weight of the row from the joint probability
+        __filled_row2.setWeight(__joint_proba.get(*__joint_inst) *
+                                __original_weight);
+
+        // fill the values of the row
+        for ( std::size_t i = std::size_t(0); i < __nb_miss; ++i )
+          __filled_row2[__missing_cols[i]].discr_val = __joint_inst->val(i);
+
+        __joint_inst->inc();
+        __use_filled_row1 = true;
+        
+        return __filled_row2;
+      }
     }
 
 
@@ -306,11 +318,11 @@ namespace gum {
 
       // here, there are missing symbols, so we should compute the distribution
       // of the missing values. For this purpose, we use Variable Elimination
-      VariableElimination<GUM_SCALAR> ve(__bn);
+      VariableElimination<GUM_SCALAR> ve(this->_bn);
 
       // add the targets and fill the output row with the observed values
-      NodeSet target_set (__nb_miss);
-      if (__nodeId2columns.empty()) {
+     NodeSet target_set (__nb_miss);
+      if (this->_nodeId2columns.empty()) {
         std::size_t i = std::size_t(0);
         bool end_miss = false;
         for (const auto col : this->_columns_of_interest) {
@@ -320,7 +332,8 @@ namespace gum {
             if (i == __nb_miss) end_miss = true;
           }
           else {
-            __filled_row[col].discr_val = xrow[col].discr_val;
+            __filled_row1[col].discr_val = xrow[col].discr_val;
+            __filled_row2[col].discr_val = xrow[col].discr_val;
           }
         }
       }
@@ -329,12 +342,13 @@ namespace gum {
         bool end_miss = false;
         for (const auto col : this->_columns_of_interest) {
           if (! end_miss && (col == __missing_cols[i])) {
-            target_set.insert(__nodeId2columns.first(col));
+            target_set.insert(this->_nodeId2columns.first(col));
             ++i;
             if (i == __nb_miss) end_miss = true;
           }
           else {
-            __filled_row[col].discr_val = xrow[col].discr_val;
+            __filled_row1[col].discr_val = xrow[col].discr_val;
+            __filled_row2[col].discr_val = xrow[col].discr_val;
           }
         }
       }
@@ -343,7 +357,7 @@ namespace gum {
       
       // add the evidence and the target
       const std::size_t row_size = xrow.size();
-      if (__nodeId2columns.empty()) { 
+      if (this->_nodeId2columns.empty()) { 
         for (std::size_t col = std::size_t(0); col < row_size; ++col) {
           switch (this->_column_types[col]) {
           case DBTranslatedValueType::DISCRETE:
@@ -374,7 +388,8 @@ namespace gum {
           case DBTranslatedValueType::DISCRETE:
             // only observed values are evidence
             if ( xrow[col].discr_val != std::numeric_limits<std::size_t>::max() ) {
-              ve.addEvidence(__nodeId2columns.first(col), xrow[col].discr_val);
+              ve.addEvidence(this->_nodeId2columns.first(col),
+                             xrow[col].discr_val);
             }
             break;
 
@@ -404,15 +419,15 @@ namespace gum {
       // get the mapping between variables of the joint proba and the
       // columns in the database
       const auto& var_sequence = __joint_proba.variablesSequence();
-      if (__nodeId2columns.empty()) {
+      if (this->_nodeId2columns.empty()) {
         for ( std::size_t i = std::size_t(0); i < __nb_miss; ++i ) {
-          __missing_cols[i] = std::size_t(__bn->nodeId(*(var_sequence[i])));
+          __missing_cols[i] = std::size_t(this->_bn->nodeId(*(var_sequence[i])));
         }
       }
       else {
         for ( std::size_t i = std::size_t(0); i < __nb_miss; ++i ) {
           __missing_cols[i] =
-            __nodeId2columns.second(__bn->nodeId(*(var_sequence[i])));
+            this->_nodeId2columns.second(this->_bn->nodeId(*(var_sequence[i])));
         }
       }
 
@@ -420,6 +435,44 @@ namespace gum {
 
     }
 
+    
+    /// assign a new Bayes net to the generator
+    template < typename GUM_SCALAR, template < typename > class ALLOC >
+    void DBRowGeneratorEM< GUM_SCALAR, ALLOC >::setBayesNet (
+         const BayesNet<GUM_SCALAR>& new_bn) {
+      // check that if nodeId2columns is not empty, then all the columns
+      // correspond to nodes of the BN
+      if (!this->_nodeId2columns.empty()) {
+        const DAG& dag = new_bn.dag();
+        for (auto iter = this->_nodeId2columns.begin();
+             iter != this->_nodeId2columns.end(); ++iter) {
+          if (!dag.existsNode(iter.first())) {
+            GUM_ERROR(IdError,
+                      "Column " << iter.second() <<
+                      " of the database is associated to Node ID " <<
+                      iter.first() <<
+                      ", which does not belong to the Bayesian network");
+          }
+        }
+      }
+
+      DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::setBayesNet( new_bn );
+      
+      // we determine the size of the filled rows
+      std::size_t size = std::size_t(0);
+      if ( this->_nodeId2columns.empty() ) {
+        for (auto node : new_bn.dag())
+          if (std::size_t(node) > size) size = std::size_t(node);
+      }
+      else {
+        for (auto iter = this->_nodeId2columns.begin();
+             iter != this->_nodeId2columns.end(); ++iter) {
+          if (iter.second() > size) size = iter.second();
+        }
+      }
+      __filled_row1.resize(size+1);
+      __filled_row2.resize(size+1);
+    }
 
   } /* namespace learning */
 

@@ -31,7 +31,7 @@
 #include <agrum/core/bijection.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/variableElimination.h>
-#include <agrum/learning/database/DBRowGenerator.h>
+#include <agrum/learning/database/DBRowGeneratorWithBN.h>
 
 namespace gum {
 
@@ -75,7 +75,7 @@ namespace gum {
      */
     template < typename GUM_SCALAR = double,
                template < typename > class ALLOC = std::allocator >
-    class DBRowGeneratorEM : public DBRowGenerator< ALLOC > {
+    class DBRowGeneratorEM : public DBRowGeneratorWithBN< GUM_SCALAR, ALLOC > {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< DBTranslatedValue >;
@@ -149,6 +149,12 @@ namespace gum {
       /// generates one ouput DBRow for each DBRow passed to method setInputRow
       virtual const DBRow< DBTranslatedValue, ALLOC >& generate() override final;
 
+      /// assign a new Bayes net to the generator
+      virtual void setBayesNet (const BayesNet<GUM_SCALAR>& new_bn) override final;
+     
+      /// returns the allocator used
+      allocator_type getAllocator() const;
+
       /// @}
 
 
@@ -164,13 +170,6 @@ namespace gum {
       /// the row used as input to generate the output DBRows
       const DBRow< DBTranslatedValue, ALLOC >* __input_row{nullptr};
 
-      /// the Bayesian network used to fill the unobserved values
-      const BayesNet<GUM_SCALAR>* __bn;
-
-      /// the mapping betwen the BN's node ids and the database's columns
-      Bijection< NodeId, std::size_t, ALLOC< std::size_t > >
-      __nodeId2columns;
-
       /// the set of missing columns of the current row
       std::vector< std::size_t, ALLOC< std::size_t > > __missing_cols;
 
@@ -182,10 +181,22 @@ namespace gum {
 
       /// an instantiation over the joint proba
       Instantiation* __joint_inst {nullptr};
-      
-      /// the row that we return if there are missing values
-      DBRow< DBTranslatedValue, ALLOC > __filled_row;
 
+      /// the row that we return if there are missing values
+      /** DBRowGeneratorSets produce new rows in advance. So, when they
+       * return a row, they have already computed the new row. To cope with
+       * this, the DBRowGeneratorEM should have 2 filled_row: one that will
+       * be used for the first row returned and one for the next one. Hence
+       * __filled_row1 and __filled_row2, which are filled alternatively by
+       * the content of the probabilities computed. */
+      DBRow< DBTranslatedValue, ALLOC > __filled_row1;
+
+      /// the row that we return if there are missing values
+      DBRow< DBTranslatedValue, ALLOC > __filled_row2;
+
+      /// indicates whether we should return filled_row1 or filled_row2
+      bool __use_filled_row1 {true};
+      
       /// the weight of the original input row
       double __original_weight;
 

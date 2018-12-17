@@ -31,6 +31,14 @@ namespace gum {
 
   namespace learning {
 
+    /// returns the allocator used
+    template < template < typename > class ALLOC >
+    INLINE typename DBRowGenerator4CompleteRows< ALLOC >::allocator_type
+    DBRowGenerator4CompleteRows< ALLOC >::getAllocator() const {
+      return DBRowGenerator< ALLOC >::getAllocator();
+    }
+
+    
     /// default constructor
     template < template < typename > class ALLOC >
     DBRowGenerator4CompleteRows< ALLOC >::DBRowGenerator4CompleteRows(

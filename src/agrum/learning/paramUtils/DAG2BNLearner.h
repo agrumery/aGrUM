@@ -101,10 +101,20 @@ namespace gum {
       // ##########################################################################
       /// @{
 
-      /// create a BN
+      /// create a BN from a DAG using a one pass generator (typically ML)
       template < typename GUM_SCALAR = double >
       static BayesNet< GUM_SCALAR > createBN(ParamEstimator< ALLOC >& estimator,
                                              const DAG&               dag);
+
+      /// create a BN from a DAG using a two pass generator (typically EM)
+      /** The bootstrap estimator is used once to provide an inital BN. This
+       * one is used by the second estimator. The later is exploited in a loop
+       * until the stopping condition is met () */
+      template < typename GUM_SCALAR = double >
+      static BayesNet< GUM_SCALAR >
+      createBN(ParamEstimator< ALLOC >& bootstrap_estimator,
+               ParamEstimator< ALLOC >& general_estimator,
+               const DAG&               dag);
 
       /// returns the allocator used by the score
       allocator_type getAllocator() const;

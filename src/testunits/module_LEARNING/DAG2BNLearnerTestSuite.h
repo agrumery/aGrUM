@@ -28,6 +28,8 @@
 #include <agrum/learning/aprioris/aprioriSmoothing.h>
 #include <agrum/learning/paramUtils/paramEstimatorML.h>
 #include <agrum/learning/paramUtils/DAG2BNLearner.h>
+#include <agrum/learning/database/DBRowGenerator4CompleteRows.h>
+#include <agrum/learning/database/DBRowGeneratorEM.h>
 
 namespace gum_tests {
 
@@ -131,6 +133,93 @@ namespace gum_tests {
       std::vector< double > xv02 = __xnormalize({1201, 126, 76, 1, 1, 1, 1, 1, 1});
       TS_ASSERT(v02 == xv02);
     }
+
+
+    void testEM() {
+      gum::LabelizedVariable var("x", "", 0);
+      var.addLabel("0");
+      var.addLabel("1");
+      gum::learning::DBTranslatorSet<> trans_set;
+      {
+        const std::vector<std::string> miss {"N/A","?"};
+        gum::learning::DBTranslator4LabelizedVariable<> translator(var,miss);
+        std::vector< std::string > names{"A", "B", "C", "D"};
+
+        for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
+          translator.setVariableName(names[i]);
+          trans_set.insertTranslator ( translator, i );
+        }
+      }
+
+      gum::learning::DatabaseTable<> database ( trans_set );
+      std::vector<std::string> row1 { "0", "1", "1", "0" };
+      std::vector<std::string> row2 { "0", "?", "0", "1" };
+      std::vector<std::string> row3 { "1", "?", "?", "0" };
+      std::vector<std::string> row4 { "?", "?", "1", "0" };
+      std::vector<std::string> row5 { "?", "0", "?", "?" };
+      for (int i = 0; i < 100; ++i) {
+        database.insertRow( row1 );
+        database.insertRow( row2 );
+        database.insertRow( row3 );
+        database.insertRow( row4 );
+        database.insertRow( row5 );
+      }
+
+      const std::vector< gum::learning::DBTranslatedValueType > col_types{
+        gum::learning::DBTranslatedValueType::DISCRETE,
+        gum::learning::DBTranslatedValueType::DISCRETE,
+        gum::learning::DBTranslatedValueType::DISCRETE,
+        gum::learning::DBTranslatedValueType::DISCRETE};
+
+      auto bn = gum::BayesNet< double >::fastPrototype("A;B;C;D");
+      bn.cpt("A").fillWith({0.3, 0.7});
+      bn.cpt("B").fillWith({0.3, 0.7});
+      bn.cpt("C").fillWith({0.3, 0.7});
+      bn.cpt("D").fillWith({0.3, 0.7});
+
+      // bugfix for parallel exceution of VariableElimination
+      {
+        const gum::DAG& dag = bn.dag();
+        for ( const auto node : dag ) {
+          dag.parents(node);
+          dag.children(node);
+        }
+      }
+      
+      // create the parser
+      gum::learning::DBRowGenerator4CompleteRows<> generator_id(col_types);
+      gum::learning::DBRowGeneratorSet<>           genset_id;
+      genset_id.insertGenerator(generator_id);
+      gum::learning::DBRowGeneratorParser<>   parser_id(database.handler(),
+                                                        genset_id);
+      
+      gum::learning::AprioriSmoothing<> extern_apriori(database);
+      gum::learning::AprioriNoApriori<> intern_apriori(database);
+      gum::learning::ParamEstimatorML<> param_estimator_id(
+        parser_id, extern_apriori, intern_apriori);
+
+      gum::learning::DBRowGeneratorEM<>     generator_EM(col_types,bn);
+      gum::learning::DBRowGeneratorSet<>    genset_EM;
+      genset_EM.insertGenerator(generator_EM);
+      gum::learning::DBRowGeneratorParser<> parser_EM(database.handler(),
+                                                      genset_EM);
+      gum::learning::ParamEstimatorML<> param_estimator_EM(
+        parser_EM, extern_apriori, intern_apriori);
+      
+      gum::learning::DAG2BNLearner<> learner;
+
+      gum::DAG dag;
+      for (std::size_t i = std::size_t(0); i < database.nbVariables(); ++i) {
+        dag.addNodeWithId(gum::NodeId(i));
+      }
+
+      auto bn1 = learner.createBN(param_estimator_id,
+                                  param_estimator_EM,
+                                  dag);
+
+      
+    }
+    
   };
 
 }   // namespace gum_tests

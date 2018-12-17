@@ -18,33 +18,37 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief A DBRowGenerator class that returns exactly the rows it gets in input
+ * @brief Base class for DBRowGenerator classes that use a BN for computing
+ * their outputs
  *
- * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ * @author Christophe GONZALES and Pierre-Henri WUILLWithBNIN
  */
-#ifndef GUM_LEARNING_DBROW_GENERATOR_IDENTITY_H
-#define GUM_LEARNING_DBROW_GENERATOR_IDENTITY_H
+#ifndef GUM_LEARNING_DBROW_GENERATOR_WITH_BN_H
+#define GUM_LEARNING_DBROW_GENERATOR_WITH_BN_H
+
+#include <vector>
 
 #include <agrum/agrum.h>
+#include <agrum/core/bijection.h>
+#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/inference/variableElimination.h>
 #include <agrum/learning/database/DBRowGenerator.h>
 
 namespace gum {
 
   namespace learning {
 
-    /** @class DBRowGeneratorIdentity
-     * @headerfile DBRowGeneratorIdentity.h <agrum/learning/database/DBRowGeneratorIdentity.h>
-     * @brief A DBRowGenerator class that returns exactly the rows it gets
-     * in input
+    /** @class DBRowGeneratorWithBN
+     * @headerfile DBRowGeneratorWithBN.h <agrum/learning/database/DBRowGeneratorWithBN.h>
+     * @brief Base class for DBRowGenerator classes that use a BN for computing
+     * their outputs
      *
      * @ingroup learning_database
      *
-     * This class is a dummy DBRowGenerator that can be essentially used for
-     * debugging purposes. The DBRowGeneratorIdentity class is designed to
-     * take as input DBRow instances via its method setInputRow and to ouput
-     * them without any additional processing via its method generate. See
-     * class DBRowGenerator for further details on how DBRowGenerator works.
-     *
+     * This class is a DBRowGenerator that fills the unobserved values of the
+     * nodes of interest as the WithBN algorithm does, i.e., by returning all the
+     * possible completed rows with a weight corresponding to the probability
+     * of the completion.
      * The standard usage of a DBRowGenerator is the following:
      * @code
      * // create a DatabaseTable and fill it
@@ -59,18 +63,21 @@ namespace gum {
      *   column_types ( 10, gum::learning::DBTranslatedValueType::DISCRETE );
      *
      * // create the generator
-     * gum::learning::DBRowGeneratorIdentity<> generator ( col_types );
+     * gum::learning::DBRowGeneratorWithBN<> generator ( col_types );
      *
      * // parse the database and produce output rows
      * for ( auto dbrow : database ) {
      *   generator.setInputRow ( dbrow );
-     *   const auto& output_dbrow = generator.generate ();
-     *   // do something with the output dbrow
+     *   while ( generator.hasRows() ) {
+     *     const auto& output_dbrow = generator.generate ();
+     *     // do something with the output dbrow
+     *   }
      * }
      * @endcode
      */
-    template < template < typename > class ALLOC = std::allocator >
-    class DBRowGeneratorIdentity : public DBRowGenerator< ALLOC > {
+    template < typename GUM_SCALAR = double,
+               template < typename > class ALLOC = std::allocator >
+    class DBRowGeneratorWithBN : public DBRowGenerator< ALLOC > {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< DBTranslatedValue >;
@@ -82,51 +89,32 @@ namespace gum {
       /// @{
 
       /// default constructor
-      DBRowGeneratorIdentity(
+      DBRowGeneratorWithBN(
         const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > >
-                              column_types,
-        const allocator_type& alloc = allocator_type());
+                                    column_types,
+        const BayesNet<GUM_SCALAR>& bn,
+        const DBRowGeneratorGoal goal,
+        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+              nodeId2columns =
+                Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+        const allocator_type&       alloc = allocator_type());
 
       /// copy constructor
-      DBRowGeneratorIdentity(const DBRowGeneratorIdentity< ALLOC >& from);
+      DBRowGeneratorWithBN(const DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >& from);
 
       /// copy constructor with a given allocator
-      DBRowGeneratorIdentity(const DBRowGeneratorIdentity< ALLOC >& from,
-                             const allocator_type&                  alloc);
+      DBRowGeneratorWithBN(const DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >& from,
+                       const allocator_type&                        alloc);
 
       /// move constructor
-      DBRowGeneratorIdentity(DBRowGeneratorIdentity< ALLOC >&& from);
+      DBRowGeneratorWithBN(DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >&& from);
 
       /// move constructor with a given allocator
-      DBRowGeneratorIdentity(DBRowGeneratorIdentity< ALLOC >&& from,
-                             const allocator_type&             alloc);
-
-      /// virtual copy constructor
-      virtual DBRowGeneratorIdentity< ALLOC >* clone() const;
-
-      /// virtual copy constructor with a given allocator
-      virtual DBRowGeneratorIdentity< ALLOC >*
-        clone(const allocator_type& alloc) const;
+      DBRowGeneratorWithBN(DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >&& from,
+                       const allocator_type&                   alloc);
 
       /// destructor
-      ~DBRowGeneratorIdentity();
-
-      /// @}
-
-
-      // ##########################################################################
-      /// @name Operators
-      // ##########################################################################
-
-      /// @{
-
-      /// copy operator
-      DBRowGeneratorIdentity< ALLOC >&
-        operator=(const DBRowGeneratorIdentity< ALLOC >& from);
-
-      /// move operator
-      DBRowGeneratorIdentity< ALLOC >&
-        operator=(DBRowGeneratorIdentity< ALLOC >&& from);
+      ~DBRowGeneratorWithBN();
 
       /// @}
 
@@ -137,28 +125,36 @@ namespace gum {
 
       /// @{
 
-      /// generates one ouput DBRow for each DBRow passed to method setInputRow
-      virtual const DBRow< DBTranslatedValue, ALLOC >& generate() final;
+      /// assign a new Bayes net to the generator
+      virtual void setBayesNet (const BayesNet< GUM_SCALAR >& new_bn);
 
+      /// returns the Bayes net used by the generator
+      const BayesNet< GUM_SCALAR >& getBayesNet() const;
+     
       /// returns the allocator used
       allocator_type getAllocator() const;
 
       /// @}
 
 
-      protected:
-      /// computes the rows it will provide as output
-      virtual std::size_t
-        _computeRows(const DBRow< DBTranslatedValue, ALLOC >& row) final;
+    protected:
 
+      /// the Bayesian network used to fill the unobserved values
+      const BayesNet<GUM_SCALAR>* _bn;
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
+      /// the mapping betwen the BN's node ids and the database's columns
+      Bijection< NodeId, std::size_t, ALLOC< std::size_t > >
+      _nodeId2columns;
 
-      private:
-      /// the row used as input to generate the output DBRows
-      const DBRow< DBTranslatedValue, ALLOC >* __input_row{nullptr};
+      
+      /// copy operator
+      DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >&
+        operator=(const DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >& from);
 
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+      /// move operator
+      DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >&
+        operator=(DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >&& from);
+
     };
 
   } /* namespace learning */
@@ -167,6 +163,6 @@ namespace gum {
 
 
 // always include the template implementation
-#include <agrum/learning/database/DBRowGeneratorIdentity_tpl.h>
+#include <agrum/learning/database/DBRowGeneratorWithBN_tpl.h>
 
-#endif /* GUM_LEARNING_DBROW_GENERATOR_IDENTITY_H */
+#endif /* GUM_LEARNING_DBROW_GENERATOR_WITH_BN_H */

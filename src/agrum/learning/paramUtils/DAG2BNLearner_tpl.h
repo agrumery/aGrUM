@@ -198,22 +198,57 @@ namespace gum {
           conditioning_ids[i - 1] = varmap.get(*(vars[i]));
         }
         estimator.setParameters(id, conditioning_ids, pot);
-
-        /*
-        // create a potential with the appropriate size
-        Potential< GUM_SCALAR > ordered_pot;
-        ordered_pot.beginMultipleChanges();
-        for (const auto var : vars) {
-          ordered_pot.add(*var);
-        }
-        ordered_pot.endMultipleChanges();
-
-
-        // assign the potential to the BN
-        __probaVarReordering(pot, ordered_pot);
-        */
       }
 
+      return bn;
+    }
+
+    /// create a BN
+    template < template < typename > class ALLOC >
+    template < typename GUM_SCALAR >
+    BayesNet< GUM_SCALAR >
+    DAG2BNLearner< ALLOC >::createBN(ParamEstimator< ALLOC >& bootstrap_estimator,
+                                     ParamEstimator< ALLOC >& general_estimator,
+                                     const DAG&               dag) {
+      BayesNet< GUM_SCALAR > bn = createBN(bootstrap_estimator, dag);
+      
+      general_estimator.setBayesNet(bn);
+
+      double epsilon = 1e-6;
+
+      GUM_SCALAR delta;
+      do {
+        // bugfix for parallel execution of VariableElimination
+        const auto& xdag = bn.dag();
+        for ( const auto node : xdag ) {
+          xdag.parents(node);
+          xdag.children(node);
+        }
+
+        BayesNet< GUM_SCALAR > new_bn = createBN(general_estimator, dag);
+
+        delta = GUM_SCALAR(0.0);
+        for ( const auto node : dag ) {
+          const auto& old_cpt = bn.cpt(node);
+          const auto& new_cpt = new_bn.cpt(node);
+
+          Instantiation old_inst(old_cpt);
+          Instantiation new_inst(new_cpt);
+
+          for (; !old_inst.end(); ++old_inst, ++new_inst) {
+            const GUM_SCALAR old_val = old_cpt.get(old_inst);
+            const GUM_SCALAR new_val = new_cpt.get(new_inst);
+            const GUM_SCALAR xdelta  = old_val - new_val; 
+            const GUM_SCALAR max_val = old_val > new_val ? old_val : new_val;
+            if (max_val != 0.0)
+              delta += (xdelta * xdelta) / max_val;
+          }
+        }
+
+        bn = std::move(new_bn);
+
+      } while ( delta > epsilon );
+      
       return bn;
     }
 
