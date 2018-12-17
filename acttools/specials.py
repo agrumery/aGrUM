@@ -65,14 +65,15 @@ def specialActions(current):
 
   if current["action"] == "guideline":
     # trace(current,"Special action [guideline]")
-    nbrError=guideline(current,current['correction'])
-    if nbrError>0:
+    nbrError = guideline(current, current['correction'])
+    if nbrError > 0:
       if not current['correction']:
-        critic(("{} Guideline error(s) found.\n"+
-              "Please consider using [act guideline --correction] in order to correct those errors.").format(nbrError),
-              None,nbrError)
+        critic(("{} Guideline error(s) found.\n" +
+                "Please consider using [act guideline --correction] in order to correct those errors.").format(
+            nbrError),
+            None, nbrError)
       else:
-        critic(("{} Guideline error(s) found.").format(nbrError),None,nbrError)
+        critic(("{} Guideline error(s) found.").format(nbrError), None, nbrError)
     else:
       notif("No guideline error found.")
 

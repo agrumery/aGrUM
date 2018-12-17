@@ -1,172 +1,165 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
-# ***************************************************************************
-# *   Copyright (C) 2015 by Pierre-Henri WUILLEMIN                          *
-# *   {prenom.nom}_at_lip6.fr                                               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU General Public License as published by  *
-# *   the Free Software Foundation; either version 2 of the License, or     *
-# *   (at your option) any later version.                                   *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU General Public License for more details.                          *
-# *                                                                         *
-# *   You should have received a copy of the GNU General Public License     *
-# *   along with this program; if not, write to the                         *
-# *   Free Software Foundation, Inc.,                                       *
-# *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-# ***************************************************************************
-
-import re
+import types
+import inspect
 import sys
+from os.path import join, dirname
 
-from .utils import trace, notif, critic, warn, error, recglob, srcAgrum
+gumPath=join(dirname(sys.argv[0]), "build/release/wrappers")
 
-pathtopyAgrum = "./wrappers/pyAgrum/generated-files3/pyAgrum.py"
+class PyAgrumDocCoverage:
+  def __init__(self, verbose):
+    self._verbose = verbose
+    self.nbClass = 0
+    self.nbMeth = 0
+    self.nbFunc = 0
 
-classesToSkip = ['Vector_int','Vector_double','Vector_string','SwigPyIterator','GumException','SyntaxError'
-           ,'MultiDimContainer_double','Potential_double','BayesNetInference_double']
+    self.undocClass = []
+    self.undocFunc = []
+    self.undocMeth = []
 
-methodsToSkip = ['swig_import_helper','setTriangulation','statsObj','whenNodeAdded','whenNodeDeleted','whenArcAdded','whenArcDeleted','whenLoading','whenProgress','whenStop']
+    self.partialDocClass = []
+    self.partialDocFunc = []
+    self.partialDocMeth = []
 
-def noDocstring2(lines,dic):
-    for i, line in enumerate(lines):
-        if re.match("^def [^_].*",line, flags = 0) :
-            nextline = lines[i+1]
-            methodName = getMethodName(line)
-            if not(re.match("^[ ]{4}\"\"\".*",nextline, flags = 0)) and not(methodName) in methodsToSkip :
-                if not("" in dic):
-                    dic[""]=[]
-                dic[""].append(getMethodName(line)+" does not have any doc")
-        if re.match("^[ ]{4}def [^_].*",line, flags = 0) :
-            i+=1
-            nextline = lines[i]
-            if not(re.match("^[ ]{8}\"\"\"",nextline, flags = 0)) :
-                methodClass = getClass(lines,i)
-                methodName = getMethodName(line)
-                if not(methodClass) in classesToSkip and not(methodName) in methodsToSkip:
-                    if not(methodClass in dic) :
-                        dic[methodClass]=[]
-                    dic[methodClass].append(getMethodName(line)+" does not have any doc")
+  def _prefix(self, name):
+    return " " * (4 * (name.count(".") - 1)) + "- "
 
-def signatureOnly2(lines,dic):
-    for i, line in enumerate(lines):
-        if re.match("^def [^_].*",line, flags = 0) :
-            nextline = lines[i+1]
-            methodName = getMethodName(line)
-            if re.match("^\ {4}\"\"\".*\"\"\"",nextline, flags = 0) and not(methodName) in methodsToSkip :
-                if not("" in dic):
-                    dic[""]=[]
-                dic[""].append(getMethodName(line)+" only has a signature")
-        if re.match("^[ ]{4}def [^_].*",line, flags = 0) :
-            nextline = lines[i+1]
-            if re.match("^[ ]{8}\"\"\".*\"\"\"",nextline, flags = 0) :
-                methodClass = getClass(lines,i)
-                methodName = getMethodName(line)
-                if not(methodClass) in classesToSkip and not(methodName) in methodsToSkip:
-                    if not(methodClass in dic) :
-                        dic[methodClass]=[]
-                    dic[methodClass].append(methodName+" only has a signature")
+  def _checkFunctionDoc(self, name, func):
+    res = "check"
+    is_meth = name.count(".") > 1
 
-def multipleSignatureOnly2(lines,dic):
-    for i, line in enumerate(lines):
-        if re.match("^def [^_].*",line, flags = 0):
-            i+=1
-            nextline = lines[i]
-            methodName = getMethodName(line)
-            if re.match("^[ ]{4}\"\"\"\n",nextline, flags = 0) and not(methodName) in methodsToSkip :
-                isOnlySignatures = True
-                i+=1
-                nextline = lines[i]
-                while not(re.match("^[ ]{4}\"\"\"",nextline, flags = 0)):
-                    pattern = "^[ ]{,}"+getMethodName(line)+"\(.*"
-                    if not(re.match(pattern,nextline, flags = 0)):
-                        isOnlySignatures = False
-                        break
-                    else :
-                        i+=1
-                        nextline = lines[i]
-                if isOnlySignatures :
-                    if not("" in dic):
-                        dic[""]=[]
-                    dic[""].append(getMethodName(line)+" only has multiple signatures")
-        if re.match("^[ ]{4}def [^_].*",line, flags = 0) :
-            i+=1
-            nextline = lines[i]
-            if re.match("^[ ]{8}\"\"\"\n",nextline, flags = 0) :
-                isOnlySignatures = True
-                i+=1
-                nextline = lines[i]
-                while not(re.match("^[ ]{8}\"\"\"",nextline, flags = 0)):
-                    pattern = "^[ ]{8}"+getMethodName(line)+"\(.*"
-                    if not(re.match(pattern,nextline, flags = 0)):
-                        isOnlySignatures = False
-                        break
-                    else :
-                        i+=1
-                        nextline = lines[i]
-                if isOnlySignatures :
-                    methodClass = getClass(lines,i)
-                    methodName = getMethodName(line)
-                    if not(methodClass) in classesToSkip:
-                        if not(methodClass in dic) :
-                            dic[methodClass]=[]
-                        dic[methodClass].append(methodName+" only has multiple signatures")
+    if is_meth:
+      self.nbMeth += 1
+    else:
+      self.nbFunc += 1
 
-def getClass(lines,i):
-    previousline = lines[i-1]
-    while not(re.match("^class",previousline, flags = 0)):
-        i-=1
-        previousline = lines[i]
-    return re.search('class (.+?)\(.*', previousline).group(1)
+    if not hasattr(func, "__doc__") or func.__doc__ is None:
+      if is_meth:
+        self.undocMeth.append(name)
+      else:
+        self.undocFunc.append(name)
+      res = "no doc"
+    else:
+      if func.__doc__.count("\n") <= 3:
+        if is_meth:
+          self.partialDocMeth.append(name)
+        else:
+          self.partialDocFunc.append(name)
 
-def getMethodName(line):
-    return re.search('def (.+?)\(.*', line).group(1)
+        res = "partial"
 
-def prettyprint(dic):
-    for key in sorted(dic.keys()):
-        if key=="":
-            for value in dic[key]:
-                notif(value)
-            notif('')
-        else :
-            notif('      '+key)
-            notif('      '+''.join(["="]*len(key)))
-            for value in dic[key]:
-                notif("          "+value)
-            notif('')
+    if self._verbose:
+      print(self._prefix(name) + name + " : " + res)
 
-def numberOfMethods(lines):
-    nb = 0
-    for i, line in enumerate(lines):
-        if re.match("^def [^_].*",line, flags = 0):
-            nb += 1
-        if re.match("^[ ]{4}def [^_].*",line, flags = 0):
-            nb += 1
-    return nb
+  def _checkClassDoc(self, name, clas):
+    res = "check"
 
-def numberOfUndocumentedMethods(dic):
-    i = 0
-    for key in dic.keys():
-        for val in dic[key]:
-            i+=1
-    return i
+    self.nbClass += 1
+
+    if not hasattr(clas, "__doc__") or clas.__doc__ is None:
+      self.undocClass.append(name)
+      res = "no doc"
+    else:
+      if clas.__doc__.count("\n") <= 3:
+        self.partialDocClass.append(name)
+        res = "partial"
+
+    if self._verbose:
+      print(self._prefix(name) + name + " : " + res)
+
+  def _ignoredClass(self, name, clas):
+    if not gumPath in sys.path:
+      sys.path.insert(0, gumPath)
+    import pyAgrum as gum
+
+    if issubclass(clas, gum.GumException):
+      return True
+    return False
+
+  def _traversal(self, entities, container):
+    if not gumPath in sys.path:
+      sys.path.insert(0, gumPath)
+    import pyAgrum as gum
+
+    for entity in entities:
+      if entity[0] != '_':
+        completeEntityName = container + "." + entity
+        instEntity = eval(completeEntityName)
+        if type(instEntity) is types.FunctionType:
+          self._checkFunctionDoc(completeEntityName, instEntity)
+        elif inspect.isclass(instEntity):
+          if not self._ignoredClass(completeEntityName, instEntity):
+            self._checkClassDoc(completeEntityName, instEntity)
+            self._traversal(dir(instEntity), completeEntityName)
+
+  def checkMissingDocs(self):
+    if not gumPath in sys.path:
+      sys.path.insert(0, gumPath)
+    import pyAgrum as gum
+
+    self.nbClass = 0
+    self.nbMeth = 0
+    self.nbFunc = 0
+
+    self.undocClass = []
+    self.undocFunc = []
+    self.undocMeth = []
+
+    self.partialDocClass = []
+    self.partialDocFunc = []
+    self.partialDocMeth = []
+
+    self._traversal(dir(gum), "gum")
+
+
+    pc = 1 - (len(self.undocClass) + len(self.partialDocClass)) / (1.0 * self.nbClass)
+    pm = 1 - (len(self.undocMeth) + len(self.partialDocMeth)) / (1.0 * self.nbMeth)
+    pf = 1 - (len(self.undocFunc) + len(self.partialDocFunc)) / (1.0 * self.nbFunc)
+
+    print()
+    print(f'Documentation in pyAgrum {gum.__version__}')
+
+    print(f"  Classes   : coverage={pc * 100:6.2f}%")
+    if self._verbose:
+      print("---------")
+      print("  - nbr of classes : " + str(self.nbClass))
+      print("  - nbr of partially documented classes : " + str(len(self.partialDocClass)))
+      print("\n    + ".join([""] + self.partialDocClass))
+      print()
+      print("  - nbr of undocumented classes : " + str(len(self.undocClass)))
+      print("\n    + ".join([""] + self.undocClass))
+
+    print(f"  Methods   : coverage={pm * 100:6.2f}%")
+    if self._verbose:
+      print("---------")
+      print("  - nbr of methods: " + str(self.nbMeth))
+      print("  - nbr of partially documented methods : " + str(len(self.partialDocMeth)))
+      print("\n    + ".join([""] + self.partialDocMeth))
+      print()
+      print("  - nbr of undocumented methods : " + str(len(self.undocMeth)))
+      print("\n    + ".join([""] + self.undocMeth))
+
+    print(f"  Functions : coverage={pf * 100:6.2f}%")
+    if self._verbose:
+      print("-----------")
+      print("  - nbr of functions: " + str(self.nbFunc))
+      print("  - nbr of partially documented functions : " + str(len(self.partialDocFunc)))
+      print("\n    + ".join([""] + self.partialDocFunc))
+      print()
+      print("  - nbr of undocumented functions : " + str(len(self.undocFunc)))
+      print("\n    + ".join([""] + self.undocFunc))
+    print()
+
+    return len(self.undocClass) + len(self.partialDocClass) + \
+           len(self.undocMeth) + len(self.partialDocMeth) + \
+           len(self.undocFunc) + len(self.partialDocFunc)
+
 
 def computeNbrError(showFunct):
-    with open(pathtopyAgrum, "r") as ins:
-        lines = []
-        for line in ins:
-            lines.append(line)
+  parser = PyAgrumDocCoverage(verbose=showFunct)
+  return parser.checkMissingDocs()
 
-    dic = dict()
-    noDocstring2(lines,dic)
-    signatureOnly2(lines,dic)
-    multipleSignatureOnly2(lines,dic)
-    if showFunct:
-        prettyprint(dic)
 
-    return numberOfUndocumentedMethods(dic)
+if __name__ == "__main__":
+  # execute only if run as a script
+  parser = PyAgrumDocCoverage(verbose=True)
+  print(f"\nNbr of documentation errors: {parser.checkMissingDocs()}")
