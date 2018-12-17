@@ -227,7 +227,7 @@ namespace gum {
      * @see https://en.wikipedia.org/wiki/Interaction_information
      * @param targets  the NodeSet of the targeted variables
      */
-    GUM_SCALAR jointMutualInformation(const NodeSet &targets);
+    GUM_SCALAR jointMutualInformation(const NodeSet& targets);
 
     /** Mutual information between targets
      * @see https://en.wikipedia.org/wiki/Interaction_information

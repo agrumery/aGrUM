@@ -53,36 +53,34 @@ namespace gum {
     /// assign new weight to the rows of the learning database
     INLINE void
       genericBNLearner::Database::setDatabaseWeight(const double new_weight) {
-      if ( __database.nbRows() == std::size_t(0) ) return; 
+      if (__database.nbRows() == std::size_t(0)) return;
       const double weight = new_weight / double(__database.nbRows());
       __database.setAllRowsWeight(weight);
     }
 
     // returns the node id corresponding to a variable name
     INLINE NodeId
-           genericBNLearner::Database::idFromName(const std::string& var_name)
-      const {
+           genericBNLearner::Database::idFromName(const std::string& var_name) const {
       try {
         const auto cols = __database.columnsFromVariableName(var_name);
         return __nodeId2cols.first(cols[0]);
       } catch (...) {
         GUM_ERROR(MissingVariableInDatabase,
-                  "Variable " << var_name <<
-                  " could not be found in the database");
+                  "Variable " << var_name
+                              << " could not be found in the database");
       }
     }
 
-    
+
     // returns the variable name corresponding to a given node id
     INLINE const std::string&
                  genericBNLearner::Database::nameFromId(NodeId id) const {
       try {
         return __database.variableName(__nodeId2cols.second(id));
-      }
-      catch (...) {
+      } catch (...) {
         GUM_ERROR(MissingVariableInDatabase,
-                  "Variable of Id " << id <<
-                  " could not be found in the database");
+                  "Variable of Id " << id
+                                    << " could not be found in the database");
       }
     }
 
@@ -180,8 +178,8 @@ namespace gum {
     INLINE void genericBNLearner::useNML() {
       if (__selected_algo != AlgoType::MIIC_THREE_OFF_TWO) {
         GUM_ERROR(OperationNotAllowed,
-                  "You must use the 3off2 algorithm before selecting " <<
-                  "the NML score" );
+                  "You must use the 3off2 algorithm before selecting "
+                    << "the NML score");
       }
       __3off2_kmode = CorrectedMutualInformation<>::KModeTypes::NML;
     }
@@ -189,9 +187,9 @@ namespace gum {
     /// indicate that we wish to use the MDL correction for 3off2
     INLINE void genericBNLearner::useMDL() {
       if (__selected_algo != AlgoType::MIIC_THREE_OFF_TWO) {
-        GUM_ERROR(OperationNotAllowed, 
-                  "You must use the 3off2 algorithm before selecting " <<
-                  "the MDL score" );
+        GUM_ERROR(OperationNotAllowed,
+                  "You must use the 3off2 algorithm before selecting "
+                    << "the MDL score");
       }
       __3off2_kmode = CorrectedMutualInformation<>::KModeTypes::MDL;
     }
@@ -199,9 +197,9 @@ namespace gum {
     /// indicate that we wish to use the NoCorr correction for 3off2
     INLINE void genericBNLearner::useNoCorr() {
       if (__selected_algo != AlgoType::MIIC_THREE_OFF_TWO) {
-        GUM_ERROR(OperationNotAllowed, 
-                  "You must use the 3off2 algorithm before selecting " <<
-                  "the NoCorr score" );
+        GUM_ERROR(OperationNotAllowed,
+                  "You must use the 3off2 algorithm before selecting "
+                    << "the NoCorr score");
       }
       __3off2_kmode = CorrectedMutualInformation<>::KModeTypes::NoCorr;
     }
@@ -210,8 +208,8 @@ namespace gum {
     INLINE const std::vector< Arc > genericBNLearner::latentVariables() const {
       if (__selected_algo != AlgoType::MIIC_THREE_OFF_TWO) {
         GUM_ERROR(OperationNotAllowed,
-                  "You must use the 3off2 algorithm before selecting " <<
-                  "the latentVariables method" );
+                  "You must use the 3off2 algorithm before selecting "
+                    << "the latentVariables method");
       }
       return __miic_3off2.latentVariables();
     }
@@ -359,7 +357,7 @@ namespace gum {
       if (weight < 0) {
         GUM_ERROR(OutOfBounds, "the weight of the apriori must be positive");
       }
-      
+
       __apriori_type = AprioriType::SMOOTHING;
       setAprioriWeight(weight);
 
@@ -367,9 +365,8 @@ namespace gum {
     }
 
     // use the Dirichlet apriori
-    INLINE void
-    genericBNLearner::useAprioriDirichlet(const std::string& filename,
-                                          double weight) {
+    INLINE void genericBNLearner::useAprioriDirichlet(const std::string& filename,
+                                                      double             weight) {
       if (weight < 0) {
         GUM_ERROR(OutOfBounds, "the weight of the apriori must be positive");
       }
@@ -377,7 +374,7 @@ namespace gum {
       __apriori_dbname = filename;
       __apriori_type = AprioriType::DIRICHLET_FROM_DATABASE;
       setAprioriWeight(weight);
-      
+
       checkScoreAprioriCompatibility();
     }
 

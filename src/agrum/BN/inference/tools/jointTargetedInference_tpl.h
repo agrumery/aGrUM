@@ -388,7 +388,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   GUM_SCALAR JointTargetedInference< GUM_SCALAR >::jointMutualInformation(
-          const NodeSet &targets) {
+    const NodeSet& targets) {
     const auto& bn = this->BN();
     const Size  siz = targets.size();
     if (siz <= 1) {

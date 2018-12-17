@@ -72,7 +72,7 @@ namespace gum {
       // assign to each column name in the CSV file its column
       genericBNLearner::__checkFileName(CSV_filename);
       DBInitializerFromCSV<> initializer(CSV_filename);
-      const auto&            apriori_names   = initializer.variableNames();
+      const auto&            apriori_names = initializer.variableNames();
       std::size_t            apriori_nb_vars = apriori_names.size();
       HashTable< std::string, std::size_t > apriori_names2col(apriori_nb_vars);
       for (std::size_t i = std::size_t(0); i < apriori_nb_vars; ++i)
@@ -90,26 +90,26 @@ namespace gum {
       // the CSV file
       const std::vector< std::string >& score_names =
         score_database.databaseTable().variableNames();
-      const std::size_t score_nb_vars = score_names.size();
-      HashTable< std::size_t, std::size_t > mapping (score_nb_vars);
-      for ( std::size_t i = std::size_t(0); i < score_nb_vars; ++i ) {
+      const std::size_t                     score_nb_vars = score_names.size();
+      HashTable< std::size_t, std::size_t > mapping(score_nb_vars);
+      for (std::size_t i = std::size_t(0); i < score_nb_vars; ++i) {
         try {
-          mapping.insert(i,apriori_names2col[score_names[i]]);
+          mapping.insert(i, apriori_names2col[score_names[i]]);
         } catch (Exception&) {
           GUM_ERROR(MissingVariableInDatabase,
                     "Variable "
-                    << score_names[i]
-                    << " of the observed database does not belong to the "
-                    << "apriori database");
+                      << score_names[i]
+                      << " of the observed database does not belong to the "
+                      << "apriori database");
         }
       }
 
       // create the translators for CSV database
-      for ( std::size_t i = std::size_t(0); i < score_nb_vars; ++i ) {
+      for (std::size_t i = std::size_t(0); i < score_nb_vars; ++i) {
         const Variable& var = score_database.databaseTable().variable(i);
         __database.insertTranslator(var, mapping[i], missing_symbols);
       }
-      
+
       // fill the database
       initializer.fillDatabase(__database);
 
@@ -125,7 +125,7 @@ namespace gum {
 
       // compute the mapping from node ids to column indices
       __nodeId2cols = score_database.nodeId2Columns();
-   
+
       // create the parser
       __parser =
         new DBRowGeneratorParser<>(__database.handler(), DBRowGeneratorSet<>());
@@ -452,7 +452,7 @@ namespace gum {
       const std::vector< std::string >& missing_symbols) {
       // get the extension of the file
       __checkFileName(filename);
-      
+
       DBInitializerFromCSV<> initializer(filename);
 
       const auto&       var_names = initializer.variableNames();
@@ -535,34 +535,45 @@ namespace gum {
       // create the new scoring function
       switch (__score_type) {
         case ScoreType::AIC:
-          __score = new ScoreAIC<>(__score_database.parser(), *__apriori,
-                                   __ranges, __score_database.nodeId2Columns());
+          __score = new ScoreAIC<>(__score_database.parser(),
+                                   *__apriori,
+                                   __ranges,
+                                   __score_database.nodeId2Columns());
           break;
 
         case ScoreType::BD:
-          __score = new ScoreBD<>(__score_database.parser(), *__apriori,
-                                  __ranges, __score_database.nodeId2Columns());
+          __score = new ScoreBD<>(__score_database.parser(),
+                                  *__apriori,
+                                  __ranges,
+                                  __score_database.nodeId2Columns());
           break;
 
         case ScoreType::BDeu:
-          __score = new ScoreBDeu<>(__score_database.parser(), *__apriori,
-                                    __ranges, __score_database.nodeId2Columns());
+          __score = new ScoreBDeu<>(__score_database.parser(),
+                                    *__apriori,
+                                    __ranges,
+                                    __score_database.nodeId2Columns());
           break;
 
         case ScoreType::BIC:
-          __score = new ScoreBIC<>(__score_database.parser(), *__apriori,
-                                   __ranges, __score_database.nodeId2Columns());
+          __score = new ScoreBIC<>(__score_database.parser(),
+                                   *__apriori,
+                                   __ranges,
+                                   __score_database.nodeId2Columns());
           break;
 
         case ScoreType::K2:
-          __score = new ScoreK2<>(__score_database.parser(), *__apriori,
-                                  __ranges, __score_database.nodeId2Columns());
+          __score = new ScoreK2<>(__score_database.parser(),
+                                  *__apriori,
+                                  __ranges,
+                                  __score_database.nodeId2Columns());
           break;
 
         case ScoreType::LOG2LIKELIHOOD:
-          __score =
-            new ScoreLog2Likelihood<>(__score_database.parser(), *__apriori,
-                                      __ranges, __score_database.nodeId2Columns());
+          __score = new ScoreLog2Likelihood<>(__score_database.parser(),
+                                              *__apriori,
+                                              __ranges,
+                                              __score_database.nodeId2Columns());
           break;
 
         default:
@@ -582,13 +593,19 @@ namespace gum {
       switch (__param_estimator_type) {
         case ParamEstimatorType::ML:
           if (take_into_account_score && (__score != nullptr)) {
-            __param_estimator = new ParamEstimatorML<>(
-              __score_database.parser(), *__apriori, __score->internalApriori(),
-              __ranges, __score_database.nodeId2Columns());
+            __param_estimator =
+              new ParamEstimatorML<>(__score_database.parser(),
+                                     *__apriori,
+                                     __score->internalApriori(),
+                                     __ranges,
+                                     __score_database.nodeId2Columns());
           } else {
-            __param_estimator = new ParamEstimatorML<>(
-              __score_database.parser(), *__apriori, *__no_apriori,
-              __ranges, __score_database.nodeId2Columns());
+            __param_estimator =
+              new ParamEstimatorML<>(__score_database.parser(),
+                                     *__apriori,
+                                     *__no_apriori,
+                                     __ranges,
+                                     __score_database.nodeId2Columns());
           }
 
           break;
@@ -657,7 +674,8 @@ namespace gum {
       if (__mutual_info != nullptr) delete __mutual_info;
 
       __mutual_info =
-        new CorrectedMutualInformation<>(__score_database.parser(), *__no_apriori,
+        new CorrectedMutualInformation<>(__score_database.parser(),
+                                         *__no_apriori,
                                          __ranges,
                                          __score_database.nodeId2Columns());
       switch (__3off2_kmode) {
@@ -895,7 +913,7 @@ namespace gum {
       }
 
       // create the ranges of rows of the test database
-      const std::size_t foldSize   = db_size / k_fold;
+      const std::size_t foldSize = db_size / k_fold;
       const std::size_t unfold_deb = learning_fold * foldSize;
       const std::size_t unfold_end = unfold_deb + foldSize;
 

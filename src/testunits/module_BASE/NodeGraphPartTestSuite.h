@@ -89,10 +89,10 @@ namespace gum_tests {
       ngp2.addNodeWithId(gum::NodeId(1));
       ngp2.addNodeWithId(gum::NodeId(2));
       ngp2.addNodeWithId(gum::NodeId(3));
-      
+
       TS_ASSERT(ngp == ngp2);
     }
-      
+
     void testCopy() {
       gum::NodeGraphPart ngp;
       ngp.addNode();

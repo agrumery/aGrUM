@@ -20,6 +20,20 @@ class PyAgrumDocCoverage:
     self.partialDocFunc = []
     self.partialDocMeth = []
 
+  def _isNotValid(self,msg):
+    # deprecated does not follow the rules of validity for documentation
+    if msg.strip().startswith("Deprecated"):
+      return False
+
+    # msg les than 3 lines are not valid
+    if msg.count("\n")<3:
+      return True
+
+    if "'PyObject *'" in msg:
+      return True
+
+    return False
+
   def _prefix(self, name):
     return " " * (4 * (name.count(".") - 1)) + "- "
 
@@ -39,7 +53,8 @@ class PyAgrumDocCoverage:
         self.undocFunc.append(name)
       res = "no doc"
     else:
-      if func.__doc__.count("\n") <= 3:
+      
+      if self._isNotValid(func.__doc__):
         if is_meth:
           self.partialDocMeth.append(name)
         else:
@@ -59,7 +74,7 @@ class PyAgrumDocCoverage:
       self.undocClass.append(name)
       res = "no doc"
     else:
-      if clas.__doc__.count("\n") <= 3:
+      if self._isNotValid(clas.__doc__):
         self.partialDocClass.append(name)
         res = "partial"
 
