@@ -105,6 +105,3 @@ wrappers/pyAgrum/sphinx/sphinx_warnings.txt
 # Pipenv files
 Pipfile
 Pipfile.lock
-
-#virtual env
-.venv
