@@ -28,6 +28,9 @@
 
 #include <vector>
 
+#include <agrum/agrum.h>
+#include <agrum/core/approximations/approximationScheme.h>
+#include <agrum/core/approximations/approximationSchemeListener.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/graphs/DAG.h>
 #include <agrum/learning/paramUtils/paramEstimator.h>
@@ -43,7 +46,8 @@ namespace gum {
      * @ingroup learning_param_utils
      */
     template < template < typename > class ALLOC = std::allocator >
-    class DAG2BNLearner : private ALLOC< NodeId > {
+    class DAG2BNLearner : public ApproximationScheme,
+                          private ALLOC< NodeId > {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;
@@ -111,10 +115,13 @@ namespace gum {
        * one is used by the second estimator. The later is exploited in a loop
        * until the stopping condition is met () */
       template < typename GUM_SCALAR = double >
-      static BayesNet< GUM_SCALAR >
+      BayesNet< GUM_SCALAR >
       createBN(ParamEstimator< ALLOC >& bootstrap_estimator,
                ParamEstimator< ALLOC >& general_estimator,
                const DAG&               dag);
+
+      /// returns the approximation policy of the learning algorithm
+      ApproximationScheme& approximationScheme();
 
       /// returns the allocator used by the score
       allocator_type getAllocator() const;

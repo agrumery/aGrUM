@@ -212,11 +212,17 @@ namespace gum_tests {
       for (std::size_t i = std::size_t(0); i < database.nbVariables(); ++i) {
         dag.addNodeWithId(gum::NodeId(i));
       }
+      dag.addArc(gum::NodeId(1),gum::NodeId(0));
+      dag.addArc(gum::NodeId(2),gum::NodeId(1));
+      dag.addArc(gum::NodeId(3),gum::NodeId(2));
 
+      learner.approximationScheme().setEpsilon(1e-3);
+      
       auto bn1 = learner.createBN(param_estimator_id,
                                   param_estimator_EM,
                                   dag);
 
+      TS_ASSERT(learner.approximationScheme().nbrIterations() == 18);
       
     }
     
