@@ -31,6 +31,7 @@
 #define GUM_LEARNING_GENERIC_BN_LEARNER_H
 
 #include <sstream>
+#include <memory>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/agrum.h>
@@ -43,6 +44,8 @@
 #include <agrum/learning/database/DBInitializerFromCSV.h>
 #include <agrum/learning/database/databaseTable.h>
 #include <agrum/learning/database/DBRowGeneratorParser.h>
+#include <agrum/learning/database/DBRowGenerator4CompleteRows.h>
+#include <agrum/learning/database/DBRowGeneratorEM.h>
 
 #include <agrum/learning/scores_and_tests/scoreAIC.h>
 #include <agrum/learning/scores_and_tests/scoreBD.h>
@@ -409,6 +412,9 @@ namespace gum {
         useCrossValidationFold(const std::size_t learning_fold,
                                const std::size_t k_fold);
 
+      /// use The EM algorithm to learn paramters
+      void useEM(bool on_off = true);
+
       /// @}
 
       // ##########################################################################
@@ -584,8 +590,8 @@ namespace gum {
       /// the type of the parameter estimator
       ParamEstimatorType __param_estimator_type{ParamEstimatorType::ML};
 
-      /// the parameter estimator to use
-      ParamEstimator<>* __param_estimator{nullptr};
+      /// whether we should use the EM param estimator
+      bool __useEM {false};
 
       /// the selected correction for 3off2 and miic
       CorrectedMutualInformation<>* __mutual_info{nullptr};
@@ -668,7 +674,9 @@ namespace gum {
       void __createScore();
 
       /// create the parameter estimator used for learning
-      void __createParamEstimator(bool take_into_account_score = true);
+      ParamEstimator<>*
+      __createParamEstimator(DBRowGeneratorParser<>& parser,
+                             bool take_into_account_score = true);
 
       /// returns the DAG learnt
       DAG __learnDAG();

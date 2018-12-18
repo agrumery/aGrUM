@@ -215,7 +215,7 @@ namespace gum {
                                      ParamEstimator< ALLOC >& general_estimator,
                                      const DAG&               dag) {
       // bootstrap EM by learning an initial model
-      BayesNet< GUM_SCALAR > bn = createBN(bootstrap_estimator, dag);
+      BayesNet< GUM_SCALAR > bn = createBN< GUM_SCALAR >(bootstrap_estimator, dag);
       general_estimator.setBayesNet(bn);
 
       // perform EM
@@ -230,7 +230,8 @@ namespace gum {
           xdag.children(node);
         }
 
-        BayesNet< GUM_SCALAR > new_bn = createBN(general_estimator, dag);
+        BayesNet< GUM_SCALAR > new_bn =
+          createBN< GUM_SCALAR >(general_estimator, dag);
         updateApproximationScheme();
         
         delta = GUM_SCALAR(0.0);

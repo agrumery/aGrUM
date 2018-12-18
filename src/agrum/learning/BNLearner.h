@@ -147,7 +147,8 @@ namespace gum {
        * score, else we just take into account the apriori specified by
        * useAprioriXXX () */
       BayesNet< GUM_SCALAR > learnParameters(const DAG& dag,
-                                             bool take_into_account_score = true);
+                                             bool take_into_account_score = true,
+                                             const double epsilon = 1e-3);
 
       // learns a BN (its parameters) when its structure is known
       /** @param take_into_account_score The dag of the BN which was passed in

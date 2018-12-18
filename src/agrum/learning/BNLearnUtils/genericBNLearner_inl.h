@@ -100,6 +100,13 @@ namespace gum {
       return __database.missingSymbols();
     }
 
+    
+    /// returns the mapping between node ids and their columns in the database
+    INLINE const Bijection< NodeId, std::size_t >&
+      genericBNLearner::Database::nodeId2Columns() const {
+      return __nodeId2cols;
+    }
+
 
     // ===========================================================================
 
@@ -239,6 +246,11 @@ namespace gum {
       __selected_algo = AlgoType::LOCAL_SEARCH_WITH_TABU_LIST;
       __constraint_TabuList.setTabuListSize(tabu_size);
       __local_search_with_tabu_list.setMaxNbDecreasingChanges(nb_decrease);
+    }
+
+    /// use The EM algorithm to learn paramters
+    INLINE void genericBNLearner::useEM(bool on_off) {
+      __useEM = on_off;
     }
 
     // assign a set of forbidden arcs
