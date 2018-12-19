@@ -126,14 +126,14 @@ class PyAgrumDocCoverage:
     self._traversal(dir(gum), "gum")
 
 
-    pc = 1 - (len(self.undocClass) + len(self.partialDocClass)) / (1.0 * self.nbClass)
-    pm = 1 - (len(self.undocMeth) + len(self.partialDocMeth)) / (1.0 * self.nbMeth)
-    pf = 1 - (len(self.undocFunc) + len(self.partialDocFunc)) / (1.0 * self.nbFunc)
+    pc = 1.0 - (len(self.undocClass) + len(self.partialDocClass)) / (1.0 * self.nbClass)
+    pm = 1.0 - (len(self.undocMeth) + len(self.partialDocMeth)) / (1.0 * self.nbMeth)
+    pf = 1.0 - (len(self.undocFunc) + len(self.partialDocFunc)) / (1.0 * self.nbFunc)
 
     print()
-    print(f'Documentation in pyAgrum {gum.__version__}')
+    print('Documentation in pyAgrum {}'.format(gum.__version__))
 
-    print(f"  Classes   : coverage={pc * 100:6.2f}%")
+    print("  Classes   : coverage={:6.2f}% [{}]".format(pc * 100.0,self.nbClass))
     if self._verbose:
       print("---------")
       print("  - nbr of classes : " + str(self.nbClass))
@@ -143,7 +143,7 @@ class PyAgrumDocCoverage:
       print("  - nbr of undocumented classes : " + str(len(self.undocClass)))
       print("\n    + ".join([""] + self.undocClass))
 
-    print(f"  Methods   : coverage={pm * 100:6.2f}%")
+    print("  Methods   : coverage={:6.2f}% [{}]".format(pm * 100.0,self.nbMeth))
     if self._verbose:
       print("---------")
       print("  - nbr of methods: " + str(self.nbMeth))
@@ -153,7 +153,7 @@ class PyAgrumDocCoverage:
       print("  - nbr of undocumented methods : " + str(len(self.undocMeth)))
       print("\n    + ".join([""] + self.undocMeth))
 
-    print(f"  Functions : coverage={pf * 100:6.2f}%")
+    print("  Functions : coverage={:6.2f}% [{}]".format(pf * 100.0,self.nbFunc))
     if self._verbose:
       print("-----------")
       print("  - nbr of functions: " + str(self.nbFunc))
@@ -177,4 +177,4 @@ def computeNbrError(showFunct):
 if __name__ == "__main__":
   # execute only if run as a script
   parser = PyAgrumDocCoverage(verbose=True)
-  print(f"\nNbr of documentation errors: {parser.checkMissingDocs()}")
+  print("\nNbr of documentation errors: {}".format(parser.checkMissingDocs()))
