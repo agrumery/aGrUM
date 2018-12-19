@@ -1186,6 +1186,7 @@ namespace gum_tests {
       learner.useAprioriSmoothing();
 
       TS_GUM_ASSERT_THROWS_NOTHING(learner.learnParameters(dag, false));
+      TS_GUM_ASSERT_THROWS_NOTHING(learner.nbrIterations());
     }
   };
 } /* namespace gum_tests */

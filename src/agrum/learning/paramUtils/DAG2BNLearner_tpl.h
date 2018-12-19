@@ -189,7 +189,7 @@ namespace gum {
       // estimate the parameters
       const VariableNodeMap& varmap = bn.variableNodeMap();
       for (const auto id : dag) {
-        if (estimator.database().nbRows() > 0) {
+        try {
           // get the sequence of variables and make the targets be the last
           Potential< GUM_SCALAR >& pot =
             const_cast< Potential< GUM_SCALAR >& >(bn.cpt(id));
@@ -204,10 +204,7 @@ namespace gum {
             conditioning_ids[i - 1] = varmap.get(*(vars[i]));
           }
           estimator.setParameters(id, conditioning_ids, pot);
-        } else {
-          // no data : we generate randomly
-          bn.generateCPT(id);
-        }
+        } catch (DatabaseError&) { bn.generateCPT(id); }
       }
 
       return bn;

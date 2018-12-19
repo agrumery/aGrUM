@@ -117,8 +117,8 @@ namespace gum {
       std::unique_ptr< ParamEstimator<> > param_estimator(
         __createParamEstimator(__score_database.parser(), true));
 
-      return DAG2BNLearner<>::createBN< GUM_SCALAR >(*(param_estimator.get()),
-                                                     __learnDAG());
+      return __Dag2BN.createBN< GUM_SCALAR >(*(param_estimator.get()),
+                                             __learnDAG());
     }
 
     /// learns a BN (its parameters) when its structure is known
@@ -179,9 +179,11 @@ namespace gum {
         std::unique_ptr< ParamEstimator<> > param_estimator(
           __createParamEstimator(parser, take_into_account_score));
 
-        return DAG2BNLearner<>::createBN< GUM_SCALAR >(*(param_estimator.get()),
-                                                       dag);
+        return __Dag2BN.createBN< GUM_SCALAR >(*(param_estimator.get()), dag);
       } else {
+        // EM !
+        BNLearnerListener listener(this, __Dag2BN);
+
         // get the column types
         const auto&       database = __score_database.databaseTable();
         const std::size_t nb_vars = database.nbVariables();
@@ -206,9 +208,8 @@ namespace gum {
         std::unique_ptr< ParamEstimator<> > param_estimator_EM(
           __createParamEstimator(parser_EM, take_into_account_score));
 
-        DAG2BNLearner<> learner;
-        learner.approximationScheme().setEpsilon(__EMepsilon);
-        return learner.createBN< GUM_SCALAR >(
+        __Dag2BN.setEpsilon(__EMepsilon);
+        return __Dag2BN.createBN< GUM_SCALAR >(
           *(param_estimator_bootstrap.get()), *(param_estimator_EM.get()), dag);
       }
     }

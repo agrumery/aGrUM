@@ -216,12 +216,11 @@ namespace gum_tests {
       dag.addArc(gum::NodeId(2), gum::NodeId(1));
       dag.addArc(gum::NodeId(3), gum::NodeId(2));
 
-      learner.approximationScheme().setEpsilon(1e-3);
+      learner.setEpsilon(1e-3);
 
       auto bn1 = learner.createBN(param_estimator_id, param_estimator_EM, dag);
 
-      TS_ASSERT_EQUALS(learner.approximationScheme().nbrIterations(),
-                       gum::Size(7));
+      TS_ASSERT_EQUALS(learner.nbrIterations(), gum::Size(7));
     }
   };
 

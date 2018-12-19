@@ -639,6 +639,9 @@ namespace gum {
       typename CorrectedMutualInformation<>::KModeTypes __3off2_kmode{
         CorrectedMutualInformation<>::KModeTypes::MDL};
 
+      /// the parametric EM
+      DAG2BNLearner<> __Dag2BN;
+
       /// the greedy hill climbing algorithm
       GreedyHillClimbing __greedy_hill_climbing;
 
@@ -737,6 +740,7 @@ namespace gum {
         __K2.approximationScheme().setEpsilon(eps);
         __greedy_hill_climbing.setEpsilon(eps);
         __local_search_with_tabu_list.setEpsilon(eps);
+        __Dag2BN.setEpsilon(eps);
       };
 
       /// Get the value of epsilon
@@ -752,6 +756,7 @@ namespace gum {
         __K2.approximationScheme().disableEpsilon();
         __greedy_hill_climbing.disableEpsilon();
         __local_search_with_tabu_list.disableEpsilon();
+        __Dag2BN.disableEpsilon();
       };
 
       /// Enable stopping criterion on epsilon
@@ -759,6 +764,7 @@ namespace gum {
         __K2.approximationScheme().enableEpsilon();
         __greedy_hill_climbing.enableEpsilon();
         __local_search_with_tabu_list.enableEpsilon();
+        __Dag2BN.enableEpsilon();
       };
 
       /// @return true if stopping criterion on epsilon is enabled, false
@@ -780,6 +786,7 @@ namespace gum {
         __K2.approximationScheme().setMinEpsilonRate(rate);
         __greedy_hill_climbing.setMinEpsilonRate(rate);
         __local_search_with_tabu_list.setMinEpsilonRate(rate);
+        __Dag2BN.setMinEpsilonRate(rate);
       };
 
       /// Get the value of the minimal epsilon rate
@@ -795,12 +802,14 @@ namespace gum {
         __K2.approximationScheme().disableMinEpsilonRate();
         __greedy_hill_climbing.disableMinEpsilonRate();
         __local_search_with_tabu_list.disableMinEpsilonRate();
+        __Dag2BN.disableMinEpsilonRate();
       };
       /// Enable stopping criterion on epsilon rate
       void enableMinEpsilonRate() {
         __K2.approximationScheme().enableMinEpsilonRate();
         __greedy_hill_climbing.enableMinEpsilonRate();
         __local_search_with_tabu_list.enableMinEpsilonRate();
+        __Dag2BN.enableMinEpsilonRate();
       };
       /// @return true if stopping criterion on epsilon rate is enabled, false
       /// otherwise
@@ -821,6 +830,7 @@ namespace gum {
         __K2.approximationScheme().setMaxIter(max);
         __greedy_hill_climbing.setMaxIter(max);
         __local_search_with_tabu_list.setMaxIter(max);
+        __Dag2BN.setMaxIter(max);
       };
 
       /// @return the criterion on number of iterations
@@ -836,12 +846,14 @@ namespace gum {
         __K2.approximationScheme().disableMaxIter();
         __greedy_hill_climbing.disableMaxIter();
         __local_search_with_tabu_list.disableMaxIter();
+        __Dag2BN.disableMaxIter();
       };
       /// Enable stopping criterion on max iterations
       void enableMaxIter() {
         __K2.approximationScheme().enableMaxIter();
         __greedy_hill_climbing.enableMaxIter();
         __local_search_with_tabu_list.enableMaxIter();
+        __Dag2BN.enableMaxIter();
       };
       /// @return true if stopping criterion on max iterations is enabled, false
       /// otherwise
@@ -863,6 +875,7 @@ namespace gum {
         __K2.approximationScheme().setMaxTime(timeout);
         __greedy_hill_climbing.setMaxTime(timeout);
         __local_search_with_tabu_list.setMaxTime(timeout);
+        __Dag2BN.setMaxTime(timeout);
       }
 
       /// returns the timeout (in seconds)
@@ -886,11 +899,13 @@ namespace gum {
         __K2.approximationScheme().disableMaxTime();
         __greedy_hill_climbing.disableMaxTime();
         __local_search_with_tabu_list.disableMaxTime();
+        __Dag2BN.disableMaxTime();
       };
       void enableMaxTime() {
         __K2.approximationScheme().enableMaxTime();
         __greedy_hill_climbing.enableMaxTime();
         __local_search_with_tabu_list.enableMaxTime();
+        __Dag2BN.enableMaxTime();
       };
       /// @return true if stopping criterion on timeout is enabled, false
       /// otherwise
@@ -909,6 +924,7 @@ namespace gum {
         __K2.approximationScheme().setPeriodSize(p);
         __greedy_hill_climbing.setPeriodSize(p);
         __local_search_with_tabu_list.setPeriodSize(p);
+        __Dag2BN.setPeriodSize(p);
       };
 
       Size periodSize() const {
@@ -925,6 +941,7 @@ namespace gum {
         __K2.approximationScheme().setVerbosity(v);
         __greedy_hill_climbing.setVerbosity(v);
         __local_search_with_tabu_list.setVerbosity(v);
+        __Dag2BN.setVerbosity(v);
       };
 
       bool verbosity() const {
