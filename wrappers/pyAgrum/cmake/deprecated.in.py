@@ -9,14 +9,14 @@ from .pyAgrum import BayesNet, EssentialGraph, MarkovBlanket
 
 def GibbsInference(bn):
   """
-  Deprecated class. Use pyAgrum.GibsSampling instead.
+  Deprecated class. Use pyAgrum.GibbsSampling instead.
   """
   print("** pyAgrum.GibbsInference is deprecated in pyAgrum>0.12.0.")
   print("** A pyAgrum.GibbsSampling has been created.")
   return GibbsSampling(bn)
 
 
-def addDeprecatedMethods():
+def _addDeprecatedMethods():
   def deprecated_populate(pot, v):
     """
     Deprecated method in pyAgrum>0.12.0. See fillWith instead.
@@ -51,4 +51,4 @@ def addDeprecatedMethods():
 
 
 
-addDeprecatedMethods()
+_addDeprecatedMethods()

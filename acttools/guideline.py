@@ -43,10 +43,10 @@ def guideline(current, modif=False):
   nbrError += _checkCppFileExists(current, modif)
   notif("  (2) check for GPL license")
   nbrError += _checkForGPLlicense(current, modif)
-  notif("  (3) check for format")
-  nbrError += _checkForFormat(current, modif)
-  notif("  (4) check for missing documentation in pyAgrum")
+  notif("  (3) check for missing documentation in pyAgrum")
   nbrError += _checkForMissingDocs(modif)
+  notif("  (4) check for format")
+  nbrError += _checkForFormat(current, modif)
 
   return nbrError
 
@@ -142,12 +142,12 @@ def _checkCppFileExists(current, modif):
   return nbrError
 
 def _checkForMissingDocs(modif):
-  nbrError = computeNbrError(True)
+  nbrError = computeNbrError(modif)
   if(nbrError>0):
     if(nbrError==1):
-      error(str(nbrError)+" undocumented method")
+      error(str(nbrError)+" documentation error")
     else:
-      error(str(nbrError)+" undocumented methods")
+      error(str(nbrError)+" documentation errors")
   return nbrError
 
 _template_license = """

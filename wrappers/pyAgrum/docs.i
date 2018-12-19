@@ -46,6 +46,7 @@
 %include "doc_IApproximationSchemeConfiguration.i"
 %include "doc_ApproximationScheme.i"
 
+%include "doc_BNDatabaseGenerator.i"
 %include "doc_BNLearner.i"
 
 %include "doc_PRMexplorer.i"

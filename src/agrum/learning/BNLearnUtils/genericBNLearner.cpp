@@ -551,7 +551,7 @@ namespace gum {
     genericBNLearner::__createParamEstimator(DBRowGeneratorParser<>& parser,
                                              bool take_into_account_score) {
       ParamEstimator<>* param_estimator = nullptr;
-        
+
       // create the new estimator
       switch (__param_estimator_type) {
         case ParamEstimatorType::ML:
@@ -578,7 +578,6 @@ namespace gum {
 
       return param_estimator;
     }
-
 
     /// prepares the initial graph for 3off2 or miic
     MixedGraph genericBNLearner::__prepare_miic_3off2() {
@@ -613,14 +612,12 @@ namespace gum {
       if (__selected_algo != AlgoType::MIIC_THREE_OFF_TWO) {
         GUM_ERROR(OperationNotAllowed, "Must be using the miic/3off2 algorithm");
       }
-
       // check that the database does not contain any missing value
       if (__score_database.databaseTable().hasMissingValues()) {
         GUM_ERROR(MissingValueInDatabase,
                   "For the moment, the BNLearner is unable to learn " <<
                   "structures with missing values in databases");
       }
-      
       BNLearnerListener listener(this, __miic_3off2);
       // create the mixedGraph_constraint_MandatoryArcs.arcs();
       MixedGraph mgraph = this->__prepare_miic_3off2();
@@ -672,7 +669,6 @@ namespace gum {
                   "For the moment, the BNLearner is unable to cope "
                   "with missing values in databases");
       }
-      
       // add the mandatory arcs to the initial dag and remove the forbidden ones
       // from the initial graph
       DAG init_graph = __initial_dag;

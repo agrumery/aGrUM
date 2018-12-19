@@ -337,7 +337,7 @@ namespace gum {
     return __endIteratorSafe;
   }
 
-  INLINE bool NodeGraphPart::operator==(const NodeGraphPart& p) const {  
+  INLINE bool NodeGraphPart::operator==(const NodeGraphPart& p) const {
     if (__boundVal != p.__boundVal) return false;
 
     if (__holes)

@@ -41,12 +41,13 @@ namespace gum {
       // we use the bn to insert the translators into the database table
       std::vector< NodeId > nodes;
       nodes.reserve(bn.dag().sizeNodes());
-      for (const auto node : bn.dag()) nodes.push_back(node);
-      std::sort(nodes.begin(),nodes.end());
+      for (const auto node : bn.dag())
+        nodes.push_back(node);
+      std::sort(nodes.begin(), nodes.end());
       try {
         std::size_t i = std::size_t(0);
         for (auto node : nodes) {
-          const Variable& var   = bn.variable(node);
+          const Variable& var = bn.variable(node);
           __database.insertTranslator(var, var_names[var.name()], missing_symbols);
           __nodeId2cols.insert(NodeId(node), i++);
         }

@@ -178,8 +178,8 @@ namespace gum {
      *
      * @warning If some evs are d-separated, they are not included in the Potential
      *
-     * @param targets  the vector of nodeId of the targetted variables
-     * @param evs the vector of nodeId of observed variables
+     * @param targets  the NodeSet of the targeted variables
+     * @param evs the NodeSet of observed variables
      * @return a Potential
      */
     Potential< GUM_SCALAR > evidenceJointImpact(const NodeSet& targets,
@@ -192,7 +192,7 @@ namespace gum {
      *
      * @warning If some evs are d-separated, they are not included in the Potential
      *
-     * @param targets  the vector of std::string of the targetted variables
+     * @param targets  the vector of std::string of the targeted variables
      * @param evs the vector of std::string of observed variables
      * @return a Potential
      */
@@ -222,6 +222,18 @@ namespace gum {
      * @throw OperationNotAllowed in these cases
      */
     GUM_SCALAR VI(NodeId X, NodeId Y);
+
+    /** Mutual information between targets
+     * @see https://en.wikipedia.org/wiki/Interaction_information
+     * @param targets  the NodeSet of the targeted variables
+     */
+    GUM_SCALAR jointMutualInformation(const NodeSet& targets);
+
+    /** Mutual information between targets
+     * @see https://en.wikipedia.org/wiki/Interaction_information
+     * @param targets the vector of std::string of the targeted variables
+     */
+    GUM_SCALAR jointMutualInformation(const std::vector< std::string >& targets);
 
     /// @}
 

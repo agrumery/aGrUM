@@ -26,7 +26,6 @@
 #include <agrum/core/math/math.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
-#include <agrum/config.h>
 
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
@@ -887,6 +886,59 @@ namespace gum_tests {
           pADCE.margSumOut({&bn.variableFromName("D"), &bn.variableFromName("E")});
         TS_ASSERT_EQUALS(res, pADCE / pAC);
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
+    }
+
+    void testJointMutualInformation() {
+      auto bn =
+        gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
+
+      gum::LazyPropagation< double > ie(&bn);
+      ie.makeInference();
+
+      TS_ASSERT_THROWS(ie.jointMutualInformation(gum::NodeSet{0}),
+                       gum::InvalidArgument);
+      TS_ASSERT_DELTA(
+        ie.I(0, 1), ie.jointMutualInformation(gum::NodeSet{0, 1}), 1e-7);
+
+      ie.addJointTarget({1, 4, 3});
+      ie.makeInference();
+      double byHandJMI;
+      double JMI;
+
+      byHandJMI = -ie.jointPosterior({1, 3, 4}).entropy();
+      byHandJMI += ie.jointPosterior({1, 4}).entropy()
+                   + ie.jointPosterior({1, 3}).entropy()
+                   + ie.jointPosterior({4, 3}).entropy();
+      byHandJMI -= ie.posterior(1).entropy() + ie.posterior(4).entropy()
+                   + ie.posterior(3).entropy();
+
+      //@todo why do I need to create a new LazyPropagation ?
+      gum::LazyPropagation< double > ie2(&bn);
+      JMI = ie2.jointMutualInformation({1, 3, 4});
+
+      TS_ASSERT_DELTA(JMI, byHandJMI, 1e-7);
+
+      ie.clear();
+      ie.addJointTarget({0, 1, 2, 3});
+      ie.makeInference();
+      byHandJMI = -ie.jointPosterior({0, 1, 2, 3}).entropy();
+      byHandJMI += ie.jointPosterior({0, 1, 2}).entropy()
+                   + ie.jointPosterior({0, 1, 3}).entropy()
+                   + ie.jointPosterior({0, 2, 3}).entropy()
+                   + ie.jointPosterior({1, 2, 3}).entropy();
+      byHandJMI -=
+        ie.jointPosterior({0, 1}).entropy() + ie.jointPosterior({0, 2}).entropy()
+        + ie.jointPosterior({0, 3}).entropy() + ie.jointPosterior({1, 2}).entropy()
+        + ie.jointPosterior({1, 3}).entropy()
+        + ie.jointPosterior({2, 3}).entropy();
+      byHandJMI += ie.posterior(0).entropy() + ie.posterior(1).entropy()
+                   + ie.posterior(2).entropy() + ie.posterior(3).entropy();
+
+      //@todo why do I need to create a new LazyPropagation ?
+      gum::LazyPropagation< double > ie3(&bn);
+      JMI = ie3.jointMutualInformation({0, 1, 2, 3});
+
+      TS_ASSERT_DELTA(JMI, byHandJMI, 1e-7);
     }
 
     private:

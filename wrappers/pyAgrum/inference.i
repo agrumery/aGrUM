@@ -71,7 +71,7 @@ def setTargets(self, targets):
     Raises
     ------
     gum.UndefinedElement
-        If one target is not in the Bayes net 
+        If one target is not in the Bayes net
     """
     if not isinstance(targets, set):
         raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
@@ -121,8 +121,13 @@ IMPROVE_INFERENCE_API(LoopySamplingInference<double,gum::MonteCarloSampling>)
 
 %define IMPROVE_JOINT_INFERENCE_API(classname)
 %ignore classname::evidenceJointImpact(const NodeSet& target, const NodeSet& evs);
+%ignore classname::jointMutualInformation(const NodeSet &targets);
 %extend classname {
-
+    double jointMutualInformation(PyObject* targets) {
+      gum::NodeSet sot;
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sot,targets,self->BN());
+      return self->jointMutualInformation(sot);
+    }
     Potential<double> evidenceJointImpact(PyObject* targets,PyObject *evs) {
       gum::NodeSet sot;
       gum::NodeSet soe;

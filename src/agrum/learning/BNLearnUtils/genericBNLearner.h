@@ -162,7 +162,7 @@ namespace gum {
                  const std::vector< std::string >& missing_symbols);
 
         /// constructor with a BN providing the variables of interest
-         /** @param file the name of the CSV file containing the data
+        /** @param file the name of the CSV file containing the data
          * @param bn a Bayesian network indicating which variables of the CSV
          * file are used for learning
          * @param missing_symbols the set of symbols in the CSV file that
@@ -357,8 +357,8 @@ namespace gum {
       /// returns the database used by the BNLearner
       const DatabaseTable<>& database() const;
 
-        /** @brief assign a weight to all the rows of the learning database so
-         * that the sum of their weights is equal to new_weight */
+      /** @brief assign a weight to all the rows of the learning database so
+       * that the sum of their weights is equal to new_weight */
       void setDatabaseWeight(const double new_weight);
 
       /// returns the variable name corresponding to a given node id
@@ -469,8 +469,7 @@ namespace gum {
       void useAprioriSmoothing(double weight = 1);
 
       /// use the Dirichlet apriori
-      void useAprioriDirichlet(const std::string& filename,
-                               double weight = 1);
+      void useAprioriDirichlet(const std::string& filename, double weight = 1);
 
 
       /// checks whether the current score and apriori are compatible

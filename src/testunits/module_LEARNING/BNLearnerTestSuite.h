@@ -100,7 +100,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
 
       learner.setDatabaseWeight(10.0);
-      const auto& db = learner.database();
+      const auto&  db = learner.database();
       const double weight = 10.0 / double(db.nbRows());
       for (const auto& row : db) {
         TS_ASSERT(row.weight() == weight);
@@ -1149,17 +1149,17 @@ namespace gum_tests {
         gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint),
                                                      decltype(op_set) >
           selector(score, struct_constraint, op_set);
-        
+
         gum::learning::GreedyHillClimbing search;
 
-        gum::BayesNet<double> bn = search.learnBN(selector,estimator);
+        gum::BayesNet< double > bn = search.learnBN(selector, estimator);
         // std::cout << dag << std::endl;
 
 
         learner.useAprioriDirichlet(
-                GET_RESSOURCES_PATH("db_dirichlet_apriori.csv"), weight);
+          GET_RESSOURCES_PATH("db_dirichlet_apriori.csv"), weight);
 
-        gum::BayesNet<double> xbn = learner.learnBN();
+        gum::BayesNet< double > xbn = learner.learnBN();
 
         TS_ASSERT(xbn.moralGraph() == bn.moralGraph());
       }
