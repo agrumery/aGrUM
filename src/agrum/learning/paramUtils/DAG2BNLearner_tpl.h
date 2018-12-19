@@ -189,19 +189,25 @@ namespace gum {
       // estimate the parameters
       const VariableNodeMap& varmap = bn.variableNodeMap();
       for (const auto id : dag) {
-        // get the sequence of variables and make the targets be the last
-        Potential< GUM_SCALAR >& pot =
-          const_cast< Potential< GUM_SCALAR >& >(bn.cpt(id));
+        if (estimator.database().nbRows() > 0) {
+          // get the sequence of variables and make the targets be the last
+          Potential< GUM_SCALAR >& pot =
+            const_cast< Potential< GUM_SCALAR >& >(bn.cpt(id));
 
-        // get the variables of the CPT of id in the correct order
-        const Sequence< const DiscreteVariable* >& vars = pot.variablesSequence();
+          // get the variables of the CPT of id in the correct order
+          const Sequence< const DiscreteVariable* >& vars =
+            pot.variablesSequence();
 
-        // setup the estimation
-        std::vector< NodeId > conditioning_ids(vars.size() - 1);
-        for (std::size_t i = std::size_t(1); i < vars.size(); ++i) {
-          conditioning_ids[i - 1] = varmap.get(*(vars[i]));
+          // setup the estimation
+          std::vector< NodeId > conditioning_ids(vars.size() - 1);
+          for (std::size_t i = std::size_t(1); i < vars.size(); ++i) {
+            conditioning_ids[i - 1] = varmap.get(*(vars[i]));
+          }
+          estimator.setParameters(id, conditioning_ids, pot);
+        } else {
+          // no data : we generate randomly
+          bn.generateCPT(id);
         }
-        estimator.setParameters(id, conditioning_ids, pot);
       }
 
       return bn;
@@ -244,12 +250,12 @@ namespace gum {
 
           for (; !old_inst.end(); ++old_inst, ++new_inst) {
             const GUM_SCALAR old_val = old_cpt.get(old_inst);
-            const GUM_SCALAR new_val = new_cpt.get(new_inst);
-            const GUM_SCALAR xdelta = old_val - new_val;
-            const GUM_SCALAR max_val = old_val > new_val ? old_val : new_val;
-            if (max_val != 0.0) {
-              const auto& d = (xdelta * xdelta) / max_val;
-              if (delta < d) delta = d;
+            if (old_val > 0.0) {
+              const GUM_SCALAR new_val = new_cpt.get(new_inst);
+              const GUM_SCALAR diff = new_val - old_val;
+              const auto       diffrel =
+                (diff < 0.0) ? (-diff / old_val) : (diff / old_val);
+              if (delta < diffrel) delta = diffrel;
             }
           }
         }
