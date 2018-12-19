@@ -220,7 +220,8 @@ namespace gum_tests {
 
       auto bn1 = learner.createBN(param_estimator_id, param_estimator_EM, dag);
 
-      TS_ASSERT(learner.approximationScheme().nbrIterations() == 18);
+      TS_ASSERT_EQUALS(learner.approximationScheme().nbrIterations(),
+                       gum::Size(7));
     }
   };
 
