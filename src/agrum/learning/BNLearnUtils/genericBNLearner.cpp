@@ -205,7 +205,7 @@ namespace gum {
     genericBNLearner::genericBNLearner(const genericBNLearner& from) :
         __score_type(from.__score_type),
         __param_estimator_type(from.__param_estimator_type),
-        __useEM(from.__useEM),
+        __EMepsilon(from.__EMepsilon),
         __apriori_type(from.__apriori_type),
         __apriori_weight(from.__apriori_weight),
         __constraint_SliceOrder(from.__constraint_SliceOrder),
@@ -229,7 +229,7 @@ namespace gum {
     genericBNLearner::genericBNLearner(genericBNLearner&& from) :
         __score_type(from.__score_type),
         __param_estimator_type(from.__param_estimator_type),
-        __useEM(from.__useEM),
+        __EMepsilon(from.__EMepsilon),
         __apriori_type(from.__apriori_type),
         __apriori_weight(from.__apriori_weight),
         __constraint_SliceOrder(std::move(from.__constraint_SliceOrder)),
@@ -291,7 +291,7 @@ namespace gum {
 
         __score_type = from.__score_type;
         __param_estimator_type = from.__param_estimator_type;
-        __useEM = from.__useEM;
+        __EMepsilon = from.__EMepsilon;
         __apriori_type = from.__apriori_type;
         __apriori_weight = from.__apriori_weight;
         __constraint_SliceOrder = from.__constraint_SliceOrder;
@@ -339,7 +339,7 @@ namespace gum {
 
         __score_type = from.__score_type;
         __param_estimator_type = from.__param_estimator_type;
-        __useEM = from.__useEM;
+        __EMepsilon = from.__EMepsilon;
         __apriori_type = from.__apriori_type;
         __apriori_weight = from.__apriori_weight;
         __constraint_SliceOrder = std::move(from.__constraint_SliceOrder);

@@ -125,8 +125,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     BayesNet< GUM_SCALAR >
       BNLearner< GUM_SCALAR >::learnParameters(const DAG& dag,
-                                               bool take_into_account_score,
-                                               const double epsilon ) {
+                                               bool take_into_account_score) {
       // if the dag contains no node, return an empty BN
       if (dag.size() == 0) return BayesNet< GUM_SCALAR >();
 
@@ -161,7 +160,7 @@ namespace gum {
       // create the apriori
       __createApriori();
 
-      if (__useEM == false) {
+      if (__EMepsilon == 0.0) {
         // check that the database does not contain any missing value
         if (__score_database.databaseTable().hasMissingValues() ||
             ((__apriori_database != nullptr) && 
@@ -209,7 +208,7 @@ namespace gum {
           __createParamEstimator(parser_EM, take_into_account_score));
 
         DAG2BNLearner<> learner;
-        learner.approximationScheme().setEpsilon(epsilon);
+        learner.approximationScheme().setEpsilon(__EMepsilon);
         return learner.createBN< GUM_SCALAR >(*(param_estimator_bootstrap.get()),
                                               *(param_estimator_EM.get()),
                                               dag);

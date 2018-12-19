@@ -249,8 +249,8 @@ namespace gum {
     }
 
     /// use The EM algorithm to learn paramters
-    INLINE void genericBNLearner::useEM(bool on_off) {
-      __useEM = on_off;
+    INLINE void genericBNLearner::useEM(const double epsilon) {
+      __EMepsilon = epsilon;
     }
 
     // assign a set of forbidden arcs

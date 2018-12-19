@@ -412,8 +412,11 @@ namespace gum {
         useCrossValidationFold(const std::size_t learning_fold,
                                const std::size_t k_fold);
 
-      /// use The EM algorithm to learn paramters
-      void useEM(bool on_off = true);
+      /** use The EM algorithm to learn paramters
+      *
+      * if epsilon=0, EM is not used
+      */
+      void useEM(const double epsilon);
 
       /// @}
 
@@ -590,8 +593,8 @@ namespace gum {
       /// the type of the parameter estimator
       ParamEstimatorType __param_estimator_type{ParamEstimatorType::ML};
 
-      /// whether we should use the EM param estimator
-      bool __useEM {false};
+      /// epsilon for EM. if espilon=0.0 : no EM
+      double __EMepsilon {0.0};
 
       /// the selected correction for 3off2 and miic
       CorrectedMutualInformation<>* __mutual_info{nullptr};

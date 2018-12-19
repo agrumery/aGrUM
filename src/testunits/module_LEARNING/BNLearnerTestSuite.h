@@ -1183,10 +1183,10 @@ namespace gum_tests {
       TS_ASSERT_THROWS(learner.learnParameters(dag),
                        gum::MissingValueInDatabase);
       
-      learner.useEM();
+      learner.useEM(1e-3);
       learner.useAprioriSmoothing();
 
-      TS_GUM_ASSERT_THROWS_NOTHING(learner.learnParameters(dag, false, 1e-3));
+      TS_GUM_ASSERT_THROWS_NOTHING(learner.learnParameters(dag, false));
     }
 
     
