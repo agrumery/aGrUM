@@ -68,6 +68,17 @@ dag : pyAgrum.DAG
 	an initial DAG structure
 "
 
+%feature("docstring") gum::learning::BNLearner::useEM
+"
+Indicates if we use EM for parameter learning.
+
+Parameters
+----------
+epsilon : double
+	if epsilon=0.0 then EM is not used
+	if epsilon>0 then EM is used and stops when the sum of the cumulative squared error on parameters is les than epsilon.
+"
+
 %feature("docstring") gum::learning::BNLearner::useMIIC
 "
 Indicate that we wish to use MIIC.

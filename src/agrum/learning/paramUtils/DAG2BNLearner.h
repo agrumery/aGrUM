@@ -46,8 +46,9 @@ namespace gum {
      * @ingroup learning_param_utils
      */
     template < template < typename > class ALLOC = std::allocator >
-    class DAG2BNLearner : public ApproximationScheme,
-                          private ALLOC< NodeId > {
+    class DAG2BNLearner
+        : public ApproximationScheme
+        , private ALLOC< NodeId > {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;
@@ -115,10 +116,9 @@ namespace gum {
        * one is used by the second estimator. The later is exploited in a loop
        * until the stopping condition is met () */
       template < typename GUM_SCALAR = double >
-      BayesNet< GUM_SCALAR >
-      createBN(ParamEstimator< ALLOC >& bootstrap_estimator,
-               ParamEstimator< ALLOC >& general_estimator,
-               const DAG&               dag);
+      BayesNet< GUM_SCALAR > createBN(ParamEstimator< ALLOC >& bootstrap_estimator,
+                                      ParamEstimator< ALLOC >& general_estimator,
+                                      const DAG&               dag);
 
       /// returns the approximation policy of the learning algorithm
       ApproximationScheme& approximationScheme();

@@ -226,7 +226,26 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
     bn3 = learner.learnBN()
 
-    self.assertEquals(bn.size(),5)
+    self.assertEquals(bn.size(), 5)
+
+  def test_EM(self):
+    learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/EM.csv'), ["?"])
+    self.assertTrue(learner.hasMissingValues())
+
+    dag = gum.DAG()
+    for i in range(len(learner.names())):
+      dag.addNodeWithId(i)
+
+    dag.addArc(1, 0)
+    dag.addArc(2, 1)
+    dag.addArc(3, 2)
+
+    with self.assertRaises(gum.MissingValueInDatabase):
+      learner.learnParameters(dag)
+
+    learner.useEM(1e-3)
+    learner.useAprioriSmoothing()
+    learner.learnParameters(dag, False)
 
 
 ts = unittest.TestSuite()

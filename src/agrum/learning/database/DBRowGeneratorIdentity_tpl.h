@@ -34,10 +34,10 @@ namespace gum {
     /// returns the allocator used
     template < template < typename > class ALLOC >
     INLINE typename DBRowGeneratorIdentity< ALLOC >::allocator_type
-    DBRowGeneratorIdentity< ALLOC >::getAllocator() const {
+      DBRowGeneratorIdentity< ALLOC >::getAllocator() const {
       return DBRowGenerator< ALLOC >::getAllocator();
     }
-    
+
 
     /// default constructor
     template < template < typename > class ALLOC >

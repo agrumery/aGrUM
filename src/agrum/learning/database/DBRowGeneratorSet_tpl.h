@@ -263,27 +263,26 @@ namespace gum {
     /// assign a new Bayes net to all the generators that depend on a BN
     template < template < typename > class ALLOC >
     template < typename GUM_SCALAR >
-    void DBRowGeneratorSet< ALLOC >::setBayesNet (
-         const BayesNet<GUM_SCALAR>& new_bn) {
+    void DBRowGeneratorSet< ALLOC >::setBayesNet(
+      const BayesNet< GUM_SCALAR >& new_bn) {
       HashTable< DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >*,
-                 const BayesNet<GUM_SCALAR>* > old_bns;
-      
+                 const BayesNet< GUM_SCALAR >* >
+        old_bns;
+
       for (auto xgen : __generators) {
         // check if the generator relies on a Bayes net
         DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >* gen = nullptr;
         try {
-          gen = dynamic_cast<DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >*> (xgen);
-        }
-        catch (std::bad_cast&) {}
+          gen = dynamic_cast< DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >* >(xgen);
+        } catch (std::bad_cast&) {}
 
         if (gen != nullptr) {
           // try to assign the new BN to the generator
           try {
-            const BayesNet<GUM_SCALAR>* bn = &(gen->getBayesNet());
+            const BayesNet< GUM_SCALAR >* bn = &(gen->getBayesNet());
             old_bns.insert(gen, bn);
             gen->setBayesNet(new_bn);
-          }
-          catch (...) {
+          } catch (...) {
             // if we could not assign the new BN to the generator, then
             // make all the generators that were successfully assigned this
             // BN revert to the old BN they had
@@ -295,7 +294,7 @@ namespace gum {
         }
       }
     }
-          
+
 
     /// returns the number of generators (alias for nbGenerators)
     template < template < typename > class ALLOC >
@@ -370,7 +369,7 @@ namespace gum {
           if (generator->hasRows()) {
             // get the new row
             row = &(generator->generate());
-           
+
             // pass to the next generator
             ++i;
           } else {
@@ -404,7 +403,7 @@ namespace gum {
       if (hasRows())
         for (auto& performed : __setInputRow_performed)
           performed = 0;
-      
+
       // now, parse the row generation tree
       return __produceNextRow(&input_row, std::size_t(0));
     }
@@ -416,7 +415,7 @@ namespace gum {
                  DBRowGeneratorSet< ALLOC >::generate() {
       // get the row that we should return
       const auto row = __output_row;
-      
+
       // we should ask the last generator to produce the next output row
       __produceNextRow(__output_row, __nb_generators - 1);
 

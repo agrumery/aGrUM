@@ -55,8 +55,8 @@ namespace gum {
     DAG2BNLearner< ALLOC >::DAG2BNLearner(
       const DAG2BNLearner< ALLOC >&                          from,
       const typename DAG2BNLearner< ALLOC >::allocator_type& alloc) :
-      ApproximationScheme(from),
-      ALLOC< NodeId >(alloc) {
+        ApproximationScheme(from),
+        ALLOC< NodeId >(alloc) {
       GUM_CONS_CPY(DAG2BNLearner);
     }
 
@@ -72,8 +72,8 @@ namespace gum {
     DAG2BNLearner< ALLOC >::DAG2BNLearner(
       DAG2BNLearner< ALLOC >&&                               from,
       const typename DAG2BNLearner< ALLOC >::allocator_type& alloc) :
-      ApproximationScheme(std::move(from)),
-      ALLOC< NodeId >(alloc) {
+        ApproximationScheme(std::move(from)),
+        ALLOC< NodeId >(alloc) {
       GUM_CONS_MOV(DAG2BNLearner);
     }
 
@@ -210,10 +210,10 @@ namespace gum {
     /// create a BN
     template < template < typename > class ALLOC >
     template < typename GUM_SCALAR >
-    BayesNet< GUM_SCALAR >
-    DAG2BNLearner< ALLOC >::createBN(ParamEstimator< ALLOC >& bootstrap_estimator,
-                                     ParamEstimator< ALLOC >& general_estimator,
-                                     const DAG&               dag) {
+    BayesNet< GUM_SCALAR > DAG2BNLearner< ALLOC >::createBN(
+      ParamEstimator< ALLOC >& bootstrap_estimator,
+      ParamEstimator< ALLOC >& general_estimator,
+      const DAG&               dag) {
       // bootstrap EM by learning an initial model
       BayesNet< GUM_SCALAR > bn = createBN< GUM_SCALAR >(bootstrap_estimator, dag);
       general_estimator.setBayesNet(bn);
@@ -225,7 +225,7 @@ namespace gum {
       do {
         // bugfix for parallel execution of VariableElimination
         const auto& xdag = bn.dag();
-        for ( const auto node : xdag ) {
+        for (const auto node : xdag) {
           xdag.parents(node);
           xdag.children(node);
         }
@@ -233,9 +233,9 @@ namespace gum {
         BayesNet< GUM_SCALAR > new_bn =
           createBN< GUM_SCALAR >(general_estimator, dag);
         updateApproximationScheme();
-        
+
         delta = GUM_SCALAR(0.0);
-        for ( const auto node : dag ) {
+        for (const auto node : dag) {
           const auto& old_cpt = bn.cpt(node);
           const auto& new_cpt = new_bn.cpt(node);
 
@@ -245,31 +245,32 @@ namespace gum {
           for (; !old_inst.end(); ++old_inst, ++new_inst) {
             const GUM_SCALAR old_val = old_cpt.get(old_inst);
             const GUM_SCALAR new_val = new_cpt.get(new_inst);
-            const GUM_SCALAR xdelta  = old_val - new_val; 
+            const GUM_SCALAR xdelta = old_val - new_val;
             const GUM_SCALAR max_val = old_val > new_val ? old_val : new_val;
-            if (max_val != 0.0)
-              delta += (xdelta * xdelta) / max_val;
+            if (max_val != 0.0) {
+              const auto& d = (xdelta * xdelta) / max_val;
+              if (delta < d) delta = d;
+            }
           }
         }
 
         bn = std::move(new_bn);
-
-      } while ( continueApproximationScheme(double(delta)));
+      } while (continueApproximationScheme(double(delta)));
 
       stopApproximationScheme();   // just to be sure of the approximationScheme
                                    // has been notified of the end of loop
-      
-      return bn;
-    }
 
-    
+      return bn;
+    }   // namespace learning
+
+
     /// returns the approximation policy of the learning algorithm
     template < template < typename > class ALLOC >
     INLINE ApproximationScheme& DAG2BNLearner< ALLOC >::approximationScheme() {
       return *this;
     }
-    
 
-  } /* namespace learning */
+
+  }   // namespace learning
 
 } /* namespace gum */

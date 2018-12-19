@@ -93,7 +93,7 @@ namespace gum {
 
       /// copy constructor
       DBRowGenerator4CompleteRows(
-           const DBRowGenerator4CompleteRows< ALLOC >& from);
+        const DBRowGenerator4CompleteRows< ALLOC >& from);
 
       /// copy constructor with a given allocator
       DBRowGenerator4CompleteRows(const DBRowGenerator4CompleteRows< ALLOC >& from,
@@ -104,7 +104,7 @@ namespace gum {
 
       /// move constructor with a given allocator
       DBRowGenerator4CompleteRows(DBRowGenerator4CompleteRows< ALLOC >&& from,
-                             const allocator_type& alloc);
+                                  const allocator_type&                  alloc);
 
       /// virtual copy constructor
       virtual DBRowGenerator4CompleteRows< ALLOC >* clone() const;

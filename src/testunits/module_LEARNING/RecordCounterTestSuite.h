@@ -31,30 +31,31 @@
 namespace gum_tests {
 
   class RecordCounterTestSuite : public CxxTest::TestSuite {
-  private:
-    gum::Potential<double>
-    __infer( const gum::BayesNet<double>& bn,
-             const std::vector<std::size_t>& targets,
-             const gum::learning::DBRow< gum::learning::DBTranslatedValue >& row) {
-      gum::LazyPropagation<double> ve(&bn);
-      
+    private:
+    gum::Potential< double > __infer(
+      const gum::BayesNet< double >&                                  bn,
+      const std::vector< std::size_t >&                               targets,
+      const gum::learning::DBRow< gum::learning::DBTranslatedValue >& row) {
+      gum::LazyPropagation< double > ve(&bn);
+
       gum::NodeSet target_set;
-      for (auto target : targets) target_set.insert(gum::NodeId(target));
+      for (auto target : targets)
+        target_set.insert(gum::NodeId(target));
       ve.addJointTarget(target_set);
 
       const auto xrow = row.row();
       const auto row_size = xrow.size();
       for (std::size_t col = std::size_t(0); col < row_size; ++col) {
-        if ( xrow[col].discr_val != std::numeric_limits<std::size_t>::max() ) {
+        if (xrow[col].discr_val != std::numeric_limits< std::size_t >::max()) {
           ve.addEvidence(gum::NodeId(col), xrow[col].discr_val);
         }
       }
 
-      gum::Potential<double> prob = ve.jointPosterior(target_set);
+      gum::Potential< double > prob = ve.jointPosterior(target_set);
       return prob;
     }
 
-  public:
+    public:
     void test_no_range__no_nodeId2col() {
       // create the translator set
       gum::LabelizedVariable var("X1", "", 0);
@@ -1020,29 +1021,29 @@ namespace gum_tests {
       gum::LabelizedVariable var("x", "", 0);
       var.addLabel("0");
       var.addLabel("1");
-      const std::vector<std::string> miss {"N/A","?"};
-      gum::learning::DBTranslator4LabelizedVariable<> translator(var,miss);
-      gum::learning::DBTranslatorSet<> set;
-      for ( std::size_t i = std::size_t(0); i < std::size_t(4); ++i)
-        set.insertTranslator ( translator, i );
+      const std::vector< std::string >                miss{"N/A", "?"};
+      gum::learning::DBTranslator4LabelizedVariable<> translator(var, miss);
+      gum::learning::DBTranslatorSet<>                set;
+      for (std::size_t i = std::size_t(0); i < std::size_t(4); ++i)
+        set.insertTranslator(translator, i);
 
-      set[0].setVariableName ( "A" );
-      set[1].setVariableName ( "B" );
-      set[2].setVariableName ( "C" );
-      set[3].setVariableName ( "D" );
+      set[0].setVariableName("A");
+      set[1].setVariableName("B");
+      set[2].setVariableName("C");
+      set[3].setVariableName("D");
 
-      gum::learning::DatabaseTable<> database ( set );
-      std::vector<std::string> row1 { "0", "1", "1", "0" };
-      std::vector<std::string> row2 { "0", "?", "1", "0" };
-      std::vector<std::string> row3 { "0", "?", "?", "0" };
-      std::vector<std::string> row4 { "?", "?", "1", "0" };
-      std::vector<std::string> row5 { "?", "?", "?", "?" };
+      gum::learning::DatabaseTable<> database(set);
+      std::vector< std::string >     row1{"0", "1", "1", "0"};
+      std::vector< std::string >     row2{"0", "?", "1", "0"};
+      std::vector< std::string >     row3{"0", "?", "?", "0"};
+      std::vector< std::string >     row4{"?", "?", "1", "0"};
+      std::vector< std::string >     row5{"?", "?", "?", "?"};
       for (int i = 0; i < 100; ++i) {
-        database.insertRow( row1 );
-        database.insertRow( row2 );
-        database.insertRow( row3 );
-        database.insertRow( row4 );
-        database.insertRow( row5 );
+        database.insertRow(row1);
+        database.insertRow(row2);
+        database.insertRow(row3);
+        database.insertRow(row4);
+        database.insertRow(row5);
       }
 
       const std::vector< gum::learning::DBTranslatedValueType > col_types{
@@ -1058,9 +1059,9 @@ namespace gum_tests {
       bn0.cpt("D").fillWith({0.3, 0.7});
 
       gum::learning::DBRowGeneratorIdentity<> generator1(col_types);
-      gum::learning::DBRowGeneratorEM<>       generator2(col_types,bn0);
+      gum::learning::DBRowGeneratorEM<>       generator2(col_types, bn0);
       gum::learning::DBRowGeneratorIdentity<> generator3(col_types);
-      gum::learning::DBRowGeneratorEM<>       generator4(col_types,bn0);
+      gum::learning::DBRowGeneratorEM<>       generator4(col_types, bn0);
 
       gum::learning::DBRowGeneratorSet<> genset;
       genset.insertGenerator(generator1);
@@ -1068,8 +1069,7 @@ namespace gum_tests {
       genset.insertGenerator(generator3);
       genset.insertGenerator(generator4);
 
-      gum::learning::DBRowGeneratorParser<>
-        parser ( database.handler (), genset );
+      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
 
       // create the record counter
       gum::learning::RecordCounter<> counter(parser);
@@ -1084,39 +1084,38 @@ namespace gum_tests {
 
       // bugfix for parallel exceution of VariableElimination
       const gum::DAG& dag = bn.dag();
-      for ( const auto node : dag ) {
+      for (const auto node : dag) {
         dag.parents(node);
         dag.children(node);
       }
 
       gum::learning::IdSet<> ids(0, std::vector< gum::NodeId >{1}, true);
-      //gum::learning::IdSet<> ids(0, {}, true);
-      std::vector< double >  counts = counter.counts(ids);
-           
-      std::vector< double >  xcounts(4,0.0);
-      int nb_row = 0;
-      for(const auto& row : database ) {
-        gum::Potential<double> proba =
-          __infer(bn, {std::size_t(0),std::size_t(1)}, row);
+      // gum::learning::IdSet<> ids(0, {}, true);
+      std::vector< double > counts = counter.counts(ids);
+
+      std::vector< double > xcounts(4, 0.0);
+      int                   nb_row = 0;
+      for (const auto& row : database) {
+        gum::Potential< double > proba =
+          __infer(bn, {std::size_t(0), std::size_t(1)}, row);
 
         std::size_t idx;
         for (gum::Instantiation inst(proba); !inst.end(); ++inst) {
-         if (proba.variablesSequence()[0]->name() == "A")
-           idx = inst.val(0) + std::size_t(2) * inst.val(1);
-         else
-           idx = inst.val(1) + std::size_t(2) * inst.val(0);
-         xcounts[idx] += proba.get(inst) * 100;
+          if (proba.variablesSequence()[0]->name() == "A")
+            idx = inst.val(0) + std::size_t(2) * inst.val(1);
+          else
+            idx = inst.val(1) + std::size_t(2) * inst.val(0);
+          xcounts[idx] += proba.get(inst) * 100;
         }
 
         ++nb_row;
-        if ( nb_row == 5) break;
+        if (nb_row == 5) break;
       }
 
-      for ( std::size_t i = std::size_t(0); i < std::size_t(4); ++i) {
+      for (std::size_t i = std::size_t(0); i < std::size_t(4); ++i) {
         TS_ASSERT_DELTA(counts[i], xcounts[i], 0.001);
       }
     }
-    
   };
 
 

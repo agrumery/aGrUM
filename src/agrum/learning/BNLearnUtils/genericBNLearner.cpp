@@ -72,7 +72,7 @@ namespace gum {
       // assign to each column name in the CSV file its column
       genericBNLearner::__checkFileName(CSV_filename);
       DBInitializerFromCSV<> initializer(CSV_filename);
-      const auto&            apriori_names   = initializer.variableNames();
+      const auto&            apriori_names = initializer.variableNames();
       std::size_t            apriori_nb_vars = apriori_names.size();
       HashTable< std::string, std::size_t > apriori_names2col(apriori_nb_vars);
       for (std::size_t i = std::size_t(0); i < apriori_nb_vars; ++i)
@@ -90,26 +90,26 @@ namespace gum {
       // the CSV file
       const std::vector< std::string >& score_names =
         score_database.databaseTable().variableNames();
-      const std::size_t score_nb_vars = score_names.size();
-      HashTable< std::size_t, std::size_t > mapping (score_nb_vars);
-      for ( std::size_t i = std::size_t(0); i < score_nb_vars; ++i ) {
+      const std::size_t                     score_nb_vars = score_names.size();
+      HashTable< std::size_t, std::size_t > mapping(score_nb_vars);
+      for (std::size_t i = std::size_t(0); i < score_nb_vars; ++i) {
         try {
-          mapping.insert(i,apriori_names2col[score_names[i]]);
+          mapping.insert(i, apriori_names2col[score_names[i]]);
         } catch (Exception&) {
           GUM_ERROR(MissingVariableInDatabase,
                     "Variable "
-                    << score_names[i]
-                    << " of the observed database does not belong to the "
-                    << "apriori database");
+                      << score_names[i]
+                      << " of the observed database does not belong to the "
+                      << "apriori database");
         }
       }
 
       // create the translators for CSV database
-      for ( std::size_t i = std::size_t(0); i < score_nb_vars; ++i ) {
+      for (std::size_t i = std::size_t(0); i < score_nb_vars; ++i) {
         const Variable& var = score_database.databaseTable().variable(i);
         __database.insertTranslator(var, mapping[i], missing_symbols);
       }
-      
+
       // fill the database
       initializer.fillDatabase(__database);
 
@@ -119,7 +119,7 @@ namespace gum {
 
       // compute the mapping from node ids to column indices
       __nodeId2cols = score_database.nodeId2Columns();
-   
+
       // create the parser
       __parser =
         new DBRowGeneratorParser<>(__database.handler(), DBRowGeneratorSet<>());
@@ -205,8 +205,7 @@ namespace gum {
     genericBNLearner::genericBNLearner(const genericBNLearner& from) :
         __score_type(from.__score_type),
         __param_estimator_type(from.__param_estimator_type),
-        __EMepsilon(from.__EMepsilon),
-        __apriori_type(from.__apriori_type),
+        __EMepsilon(from.__EMepsilon), __apriori_type(from.__apriori_type),
         __apriori_weight(from.__apriori_weight),
         __constraint_SliceOrder(from.__constraint_SliceOrder),
         __constraint_Indegree(from.__constraint_Indegree),
@@ -229,8 +228,7 @@ namespace gum {
     genericBNLearner::genericBNLearner(genericBNLearner&& from) :
         __score_type(from.__score_type),
         __param_estimator_type(from.__param_estimator_type),
-        __EMepsilon(from.__EMepsilon),
-        __apriori_type(from.__apriori_type),
+        __EMepsilon(from.__EMepsilon), __apriori_type(from.__apriori_type),
         __apriori_weight(from.__apriori_weight),
         __constraint_SliceOrder(std::move(from.__constraint_SliceOrder)),
         __constraint_Indegree(std::move(from.__constraint_Indegree)),
@@ -431,7 +429,7 @@ namespace gum {
       const std::vector< std::string >& missing_symbols) {
       // get the extension of the file
       __checkFileName(filename);
-      
+
       DBInitializerFromCSV<> initializer(filename);
 
       const auto&       var_names = initializer.variableNames();
@@ -508,34 +506,45 @@ namespace gum {
       // create the new scoring function
       switch (__score_type) {
         case ScoreType::AIC:
-          __score = new ScoreAIC<>(__score_database.parser(), *__apriori,
-                                   __ranges, __score_database.nodeId2Columns());
+          __score = new ScoreAIC<>(__score_database.parser(),
+                                   *__apriori,
+                                   __ranges,
+                                   __score_database.nodeId2Columns());
           break;
 
         case ScoreType::BD:
-          __score = new ScoreBD<>(__score_database.parser(), *__apriori,
-                                  __ranges, __score_database.nodeId2Columns());
+          __score = new ScoreBD<>(__score_database.parser(),
+                                  *__apriori,
+                                  __ranges,
+                                  __score_database.nodeId2Columns());
           break;
 
         case ScoreType::BDeu:
-          __score = new ScoreBDeu<>(__score_database.parser(), *__apriori,
-                                    __ranges, __score_database.nodeId2Columns());
+          __score = new ScoreBDeu<>(__score_database.parser(),
+                                    *__apriori,
+                                    __ranges,
+                                    __score_database.nodeId2Columns());
           break;
 
         case ScoreType::BIC:
-          __score = new ScoreBIC<>(__score_database.parser(), *__apriori,
-                                   __ranges, __score_database.nodeId2Columns());
+          __score = new ScoreBIC<>(__score_database.parser(),
+                                   *__apriori,
+                                   __ranges,
+                                   __score_database.nodeId2Columns());
           break;
 
         case ScoreType::K2:
-          __score = new ScoreK2<>(__score_database.parser(), *__apriori,
-                                  __ranges, __score_database.nodeId2Columns());
+          __score = new ScoreK2<>(__score_database.parser(),
+                                  *__apriori,
+                                  __ranges,
+                                  __score_database.nodeId2Columns());
           break;
 
         case ScoreType::LOG2LIKELIHOOD:
-          __score =
-            new ScoreLog2Likelihood<>(__score_database.parser(), *__apriori,
-                                      __ranges, __score_database.nodeId2Columns());
+          __score = new ScoreLog2Likelihood<>(__score_database.parser(),
+                                              *__apriori,
+                                              __ranges,
+                                              __score_database.nodeId2Columns());
           break;
 
         default:
@@ -548,29 +557,35 @@ namespace gum {
     }
 
     ParamEstimator<>*
-    genericBNLearner::__createParamEstimator(DBRowGeneratorParser<>& parser,
-                                             bool take_into_account_score) {
+      genericBNLearner::__createParamEstimator(DBRowGeneratorParser<>& parser,
+                                               bool take_into_account_score) {
       ParamEstimator<>* param_estimator = nullptr;
 
       // create the new estimator
       switch (__param_estimator_type) {
         case ParamEstimatorType::ML:
           if (take_into_account_score && (__score != nullptr)) {
-            param_estimator = new ParamEstimatorML<>(
-              parser, *__apriori, __score->internalApriori(),
-              __ranges, __score_database.nodeId2Columns());
+            param_estimator =
+              new ParamEstimatorML<>(parser,
+                                     *__apriori,
+                                     __score->internalApriori(),
+                                     __ranges,
+                                     __score_database.nodeId2Columns());
           } else {
-            param_estimator = new ParamEstimatorML<>(
-              parser, *__apriori, *__no_apriori,
-              __ranges, __score_database.nodeId2Columns());
+            param_estimator =
+              new ParamEstimatorML<>(parser,
+                                     *__apriori,
+                                     *__no_apriori,
+                                     __ranges,
+                                     __score_database.nodeId2Columns());
           }
 
           break;
 
         default:
           GUM_ERROR(OperationNotAllowed,
-                    "genericBNLearner does not support " <<
-                    "yet this parameter estimator");
+                    "genericBNLearner does not support "
+                      << "yet this parameter estimator");
       }
 
       // assign the set of ranges
@@ -615,8 +630,8 @@ namespace gum {
       // check that the database does not contain any missing value
       if (__score_database.databaseTable().hasMissingValues()) {
         GUM_ERROR(MissingValueInDatabase,
-                  "For the moment, the BNLearner is unable to learn " <<
-                  "structures with missing values in databases");
+                  "For the moment, the BNLearner is unable to learn "
+                    << "structures with missing values in databases");
       }
       BNLearnerListener listener(this, __miic_3off2);
       // create the mixedGraph_constraint_MandatoryArcs.arcs();
@@ -636,7 +651,8 @@ namespace gum {
       if (__mutual_info != nullptr) delete __mutual_info;
 
       __mutual_info =
-        new CorrectedMutualInformation<>(__score_database.parser(), *__no_apriori,
+        new CorrectedMutualInformation<>(__score_database.parser(),
+                                         *__no_apriori,
                                          __ranges,
                                          __score_database.nodeId2Columns());
       switch (__3off2_kmode) {
@@ -661,10 +677,10 @@ namespace gum {
 
     DAG genericBNLearner::__learnDAG() {
       // check that the database does not contain any missing value
-      if (__score_database.databaseTable().hasMissingValues() ||
-          ((__apriori_database != nullptr) &&
-           (__apriori_type == AprioriType::DIRICHLET_FROM_DATABASE) &&
-           __apriori_database->databaseTable().hasMissingValues())) {
+      if (__score_database.databaseTable().hasMissingValues()
+          || ((__apriori_database != nullptr)
+              && (__apriori_type == AprioriType::DIRICHLET_FROM_DATABASE)
+              && __apriori_database->databaseTable().hasMissingValues())) {
         GUM_ERROR(MissingValueInDatabase,
                   "For the moment, the BNLearner is unable to cope "
                   "with missing values in databases");
@@ -883,7 +899,7 @@ namespace gum {
       }
 
       // create the ranges of rows of the test database
-      const std::size_t foldSize   = db_size / k_fold;
+      const std::size_t foldSize = db_size / k_fold;
       const std::size_t unfold_deb = learning_fold * foldSize;
       const std::size_t unfold_end = unfold_deb + foldSize;
 

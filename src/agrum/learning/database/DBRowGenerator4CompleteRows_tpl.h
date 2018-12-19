@@ -34,21 +34,19 @@ namespace gum {
     /// returns the allocator used
     template < template < typename > class ALLOC >
     INLINE typename DBRowGenerator4CompleteRows< ALLOC >::allocator_type
-    DBRowGenerator4CompleteRows< ALLOC >::getAllocator() const {
+      DBRowGenerator4CompleteRows< ALLOC >::getAllocator() const {
       return DBRowGenerator< ALLOC >::getAllocator();
     }
 
-    
+
     /// default constructor
     template < template < typename > class ALLOC >
     DBRowGenerator4CompleteRows< ALLOC >::DBRowGenerator4CompleteRows(
       const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > >
-                                                                      column_types,
+                                                                           column_types,
       const typename DBRowGenerator4CompleteRows< ALLOC >::allocator_type& alloc) :
         DBRowGenerator< ALLOC >(
-          column_types,
-          DBRowGeneratorGoal::ONLY_REMOVE_MISSING_VALUES,
-          alloc) {
+          column_types, DBRowGeneratorGoal::ONLY_REMOVE_MISSING_VALUES, alloc) {
       GUM_CONSTRUCTOR(DBRowGenerator4CompleteRows);
     }
 
@@ -93,9 +91,9 @@ namespace gum {
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
     DBRowGenerator4CompleteRows< ALLOC >*
-    DBRowGenerator4CompleteRows< ALLOC >::clone(
-      const typename DBRowGenerator4CompleteRows< ALLOC >::allocator_type& alloc)
-      const {
+      DBRowGenerator4CompleteRows< ALLOC >::clone(
+        const typename DBRowGenerator4CompleteRows< ALLOC >::allocator_type& alloc)
+        const {
       ALLOC< DBRowGenerator4CompleteRows< ALLOC > > allocator(alloc);
       DBRowGenerator4CompleteRows< ALLOC >* generator = allocator.allocate(1);
       try {
@@ -126,7 +124,7 @@ namespace gum {
     /// copy operator
     template < template < typename > class ALLOC >
     DBRowGenerator4CompleteRows< ALLOC >& DBRowGenerator4CompleteRows< ALLOC >::
-    operator=(const DBRowGenerator4CompleteRows< ALLOC >& from) {
+                                          operator=(const DBRowGenerator4CompleteRows< ALLOC >& from) {
       DBRowGenerator< ALLOC >::operator=(from);
       __input_row = from.__input_row;
       return *this;
@@ -136,7 +134,7 @@ namespace gum {
     /// move operator
     template < template < typename > class ALLOC >
     DBRowGenerator4CompleteRows< ALLOC >& DBRowGenerator4CompleteRows< ALLOC >::
-    operator=(DBRowGenerator4CompleteRows< ALLOC >&& from) {
+                                          operator=(DBRowGenerator4CompleteRows< ALLOC >&& from) {
       DBRowGenerator< ALLOC >::operator=(std::move(from));
       __input_row = from.__input_row;
       return *this;
@@ -160,26 +158,25 @@ namespace gum {
       const auto& xrow = row.row();
       for (const auto col : this->_columns_of_interest) {
         switch (this->_column_types[col]) {
-        case DBTranslatedValueType::DISCRETE:
-          if ( xrow[col].discr_val == std::numeric_limits<std::size_t>::max() ) {
-            __input_row = nullptr;
-            return std::size_t(0);
-          }
-          break;
+          case DBTranslatedValueType::DISCRETE:
+            if (xrow[col].discr_val == std::numeric_limits< std::size_t >::max()) {
+              __input_row = nullptr;
+              return std::size_t(0);
+            }
+            break;
 
-        case DBTranslatedValueType::CONTINUOUS:
-          if ( xrow[col].cont_val == std::numeric_limits<float>::max() ) {
-            __input_row = nullptr;
-            return std::size_t(0);
-          }
-          break;
+          case DBTranslatedValueType::CONTINUOUS:
+            if (xrow[col].cont_val == std::numeric_limits< float >::max()) {
+              __input_row = nullptr;
+              return std::size_t(0);
+            }
+            break;
 
-        default:
-          GUM_ERROR(NotImplementedYet,
-                    "DBTranslatedValueType " <<
-                    int(this->_column_types[col]) <<
-                    " is not supported yet");
-          break;
+          default:
+            GUM_ERROR(NotImplementedYet,
+                      "DBTranslatedValueType " << int(this->_column_types[col])
+                                               << " is not supported yet");
+            break;
         }
       }
       __input_row = &row;

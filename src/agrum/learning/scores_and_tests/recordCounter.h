@@ -303,7 +303,7 @@ namespace gum {
        * compute correctly their outputs. Method setBayesNet enables to
        * update their BN model. */
       template < typename GUM_SCALAR >
-      void setBayesNet (const BayesNet<GUM_SCALAR>& new_bn);
+      void setBayesNet(const BayesNet< GUM_SCALAR >& new_bn);
 
       /// returns the allocator used
       allocator_type getAllocator() const;

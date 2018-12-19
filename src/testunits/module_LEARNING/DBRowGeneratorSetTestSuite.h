@@ -33,31 +33,32 @@
 namespace gum_tests {
 
   class DBRowGeneratorSetTestSuite : public CxxTest::TestSuite {
-  private:
-    gum::Potential<double>
-    __infer( const gum::BayesNet<double>& bn,
-             const std::vector<std::size_t>& targets,
-             const gum::learning::DBRow< gum::learning::DBTranslatedValue >& row) {
-      gum::LazyPropagation<double> ve(&bn);
-      
+    private:
+    gum::Potential< double > __infer(
+      const gum::BayesNet< double >&                                  bn,
+      const std::vector< std::size_t >&                               targets,
+      const gum::learning::DBRow< gum::learning::DBTranslatedValue >& row) {
+      gum::LazyPropagation< double > ve(&bn);
+
       gum::NodeSet target_set;
-      for (auto target : targets) target_set.insert(gum::NodeId(target));
+      for (auto target : targets)
+        target_set.insert(gum::NodeId(target));
       ve.addJointTarget(target_set);
 
       const auto xrow = row.row();
       const auto row_size = xrow.size();
       for (std::size_t col = std::size_t(0); col < row_size; ++col) {
-        if ( xrow[col].discr_val != std::numeric_limits<std::size_t>::max() ) {
+        if (xrow[col].discr_val != std::numeric_limits< std::size_t >::max()) {
           ve.addEvidence(gum::NodeId(col), xrow[col].discr_val);
         }
       }
 
-      gum::Potential<double> prob = ve.jointPosterior(target_set);
+      gum::Potential< double > prob = ve.jointPosterior(target_set);
       return prob;
     }
 
-    
-  public:
+
+    public:
     void test_simple() {
       const std::vector< gum::learning::DBTranslatedValueType > col_types{
         gum::learning::DBTranslatedValueType::DISCRETE,
@@ -306,7 +307,7 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorIdentity<>      generator1(col_types);
       gum::learning::DBRowGenerator4CompleteRows<> generator2(col_types);
-      
+
       gum::learning::DBRowGeneratorSet<> genset;
       genset.insertGenerator(generator1);
       genset.insertGenerator(std::move(generator2));
@@ -339,12 +340,13 @@ namespace gum_tests {
 
       const gum::learning::DBRow< gum::learning::DBTranslatedValue > input_row2{
         gum::learning::DBTranslatedValue{std::size_t(0)},
-        gum::learning::DBTranslatedValue{std::numeric_limits<std::size_t>::max()},
+        gum::learning::DBTranslatedValue{
+          std::numeric_limits< std::size_t >::max()},
         gum::learning::DBTranslatedValue{4.5f},
         gum::learning::DBTranslatedValue{std::size_t(7)}};
       const std::vector< std::size_t > cols_of_interest{std::size_t(0),
                                                         std::size_t(2)};
-      
+
       genset.setColumnsOfInterest(cols_of_interest);
       genset.setInputRow(input_row2);
       nb_dup = std::size_t(0);
@@ -358,8 +360,6 @@ namespace gum_tests {
 
       TS_ASSERT(nb_dup == std::size_t(1));
     }
-
-
 
 
     void test_basic() {
@@ -383,34 +383,43 @@ namespace gum_tests {
 
       const gum::learning::DBRow< gum::learning::DBTranslatedValue > input_row2{
         gum::learning::DBTranslatedValue{std::size_t(0)},
-        gum::learning::DBTranslatedValue{std::numeric_limits<std::size_t>::max()},
+        gum::learning::DBTranslatedValue{
+          std::numeric_limits< std::size_t >::max()},
         gum::learning::DBTranslatedValue{std::size_t(1)},
         gum::learning::DBTranslatedValue{std::size_t(0)}};
 
       const gum::learning::DBRow< gum::learning::DBTranslatedValue > input_row3{
         gum::learning::DBTranslatedValue{std::size_t(0)},
-        gum::learning::DBTranslatedValue{std::numeric_limits<std::size_t>::max()},
-        gum::learning::DBTranslatedValue{std::numeric_limits<std::size_t>::max()},
+        gum::learning::DBTranslatedValue{
+          std::numeric_limits< std::size_t >::max()},
+        gum::learning::DBTranslatedValue{
+          std::numeric_limits< std::size_t >::max()},
         gum::learning::DBTranslatedValue{std::size_t(0)}};
 
       const gum::learning::DBRow< gum::learning::DBTranslatedValue > input_row4{
-        gum::learning::DBTranslatedValue{std::numeric_limits<std::size_t>::max()},
-        gum::learning::DBTranslatedValue{std::numeric_limits<std::size_t>::max()},
+        gum::learning::DBTranslatedValue{
+          std::numeric_limits< std::size_t >::max()},
+        gum::learning::DBTranslatedValue{
+          std::numeric_limits< std::size_t >::max()},
         gum::learning::DBTranslatedValue{std::size_t(1)},
         gum::learning::DBTranslatedValue{std::size_t(0)}};
 
       const gum::learning::DBRow< gum::learning::DBTranslatedValue > input_row5{
-        gum::learning::DBTranslatedValue{std::numeric_limits<std::size_t>::max()},
-        gum::learning::DBTranslatedValue{std::numeric_limits<std::size_t>::max()},
-        gum::learning::DBTranslatedValue{std::numeric_limits<std::size_t>::max()},
-        gum::learning::DBTranslatedValue{std::numeric_limits<std::size_t>::max()}};
+        gum::learning::DBTranslatedValue{
+          std::numeric_limits< std::size_t >::max()},
+        gum::learning::DBTranslatedValue{
+          std::numeric_limits< std::size_t >::max()},
+        gum::learning::DBTranslatedValue{
+          std::numeric_limits< std::size_t >::max()},
+        gum::learning::DBTranslatedValue{
+          std::numeric_limits< std::size_t >::max()}};
 
 
       gum::learning::DBRowGeneratorIdentity<> generator1(col_types);
-      gum::learning::DBRowGeneratorEM<>       generator2(col_types,bn0);
+      gum::learning::DBRowGeneratorEM<>       generator2(col_types, bn0);
       gum::learning::DBRowGeneratorIdentity<> generator3(col_types);
-      gum::learning::DBRowGeneratorEM<>       generator4(col_types,bn0);
-      
+      gum::learning::DBRowGeneratorEM<>       generator4(col_types, bn0);
+
       gum::learning::DBRowGeneratorSet<> genset;
       genset.insertGenerator(generator1);
       genset.insertGenerator(generator2);
@@ -439,11 +448,11 @@ namespace gum_tests {
       TS_ASSERT(genset.size() == std::size_t(4));
       TS_ASSERT(!genset.hasRows());
 
- 
+
       genset.setInputRow(input_row1);
       TS_ASSERT(genset.hasRows());
       {
-        const auto& row = genset.generate().row();        
+        const auto& row = genset.generate().row();
         TS_ASSERT(row[0].discr_val == std::size_t(0));
         TS_ASSERT(row[1].discr_val == std::size_t(1));
         TS_ASSERT(row[2].discr_val == std::size_t(1));
@@ -470,7 +479,7 @@ namespace gum_tests {
 
         genset.setInputRow(input_row1);
         TS_ASSERT(genset.hasRows());
-        
+
         genset.setInputRow(input_row2);
         TS_ASSERT(genset.hasRows());
         const auto& row2 = genset.generate().row();
@@ -480,20 +489,20 @@ namespace gum_tests {
 
       genset.setColumnsOfInterest(cols_of_interest2);
       {
-        gum::Potential<double> proba = __infer(bn, {std::size_t(1)}, input_row2);
-        gum::Instantiation inst(proba);
+        gum::Potential< double > proba = __infer(bn, {std::size_t(1)}, input_row2);
+        gum::Instantiation       inst(proba);
 
         genset.setInputRow(input_row2);
         TS_ASSERT(genset.hasRows());
 
-        const auto& fill_row1  = genset.generate();
+        const auto& fill_row1 = genset.generate();
         const auto& xfill_row1 = fill_row1.row();
-        TS_ASSERT_EQUALS(xfill_row1[0].discr_val,std::size_t(0));
+        TS_ASSERT_EQUALS(xfill_row1[0].discr_val, std::size_t(0));
         TS_ASSERT_EQUALS(xfill_row1[1].discr_val, std::size_t(0));
         TS_ASSERT_EQUALS(fill_row1.weight(), proba.get(inst));
 
         ++inst;
-        const auto& fill_row2  = genset.generate();
+        const auto& fill_row2 = genset.generate();
         const auto& xfill_row2 = fill_row2.row();
         TS_ASSERT_EQUALS(xfill_row2[0].discr_val, std::size_t(0));
         TS_ASSERT_EQUALS(xfill_row2[1].discr_val, std::size_t(1));
@@ -505,13 +514,13 @@ namespace gum_tests {
         TS_ASSERT(xcols.size() == std::size_t(2));
         TS_ASSERT(xcols[0] == std::size_t(0));
         TS_ASSERT(xcols[1] == std::size_t(1));
-        
-        gum::Potential<double> proba = __infer(bn, {std::size_t(1)}, input_row3);
-        gum::Instantiation inst(proba);
+
+        gum::Potential< double > proba = __infer(bn, {std::size_t(1)}, input_row3);
+        gum::Instantiation       inst(proba);
 
         genset.setInputRow(input_row3);
         TS_ASSERT(genset.hasRows());
-        
+
         const auto& fill_row1 = genset.generate();
         const auto& xfill_row1 = fill_row1.row();
         TS_ASSERT_EQUALS(xfill_row1[0].discr_val, std::size_t(0));
@@ -531,9 +540,9 @@ namespace gum_tests {
         TS_ASSERT(xcols.size() == std::size_t(2));
         TS_ASSERT(xcols[0] == std::size_t(0));
         TS_ASSERT(xcols[1] == std::size_t(1));
-        
-        gum::Potential<double> proba =
-          __infer(bn, {std::size_t(1),std::size_t(0)}, input_row4);
+
+        gum::Potential< double > proba =
+          __infer(bn, {std::size_t(1), std::size_t(0)}, input_row4);
         gum::Instantiation inst(proba);
 
         genset.setInputRow(input_row4);
@@ -559,9 +568,9 @@ namespace gum_tests {
         TS_ASSERT(xcols.size() == std::size_t(2));
         TS_ASSERT(xcols[0] == std::size_t(0));
         TS_ASSERT(xcols[1] == std::size_t(1));
-        
-        gum::Potential<double> proba =
-          __infer(bn, {std::size_t(1),std::size_t(0)}, input_row5);
+
+        gum::Potential< double > proba =
+          __infer(bn, {std::size_t(1), std::size_t(0)}, input_row5);
         gum::Instantiation inst(proba);
 
         genset.setInputRow(input_row5);
@@ -583,8 +592,8 @@ namespace gum_tests {
       }
 
       {
-        gum::Potential<double> proba = __infer(bn, {std::size_t(1)}, input_row2);
-        gum::Instantiation inst(proba);
+        gum::Potential< double > proba = __infer(bn, {std::size_t(1)}, input_row2);
+        gum::Instantiation       inst(proba);
 
         genset.setInputRow(input_row2);
         TS_ASSERT(genset.hasRows());
@@ -602,9 +611,7 @@ namespace gum_tests {
         TS_ASSERT(xfill_row2[1].discr_val == std::size_t(1));
         TS_ASSERT(fill_row2.weight() == proba.get(inst));
       }
-      
     }
-    
   };
 
 

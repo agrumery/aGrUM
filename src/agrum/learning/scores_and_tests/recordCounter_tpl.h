@@ -913,12 +913,12 @@ namespace gum {
       return __ranges;
     }
 
-    
+
     /// assign a new Bayes net to all the counter's generators depending on a BN
     template < template < typename > class ALLOC >
     template < typename GUM_SCALAR >
-    INLINE void RecordCounter< ALLOC >::setBayesNet (
-                const BayesNet<GUM_SCALAR>& new_bn) {
+    INLINE void
+      RecordCounter< ALLOC >::setBayesNet(const BayesNet< GUM_SCALAR >& new_bn) {
       // remove the caches
       clear();
 

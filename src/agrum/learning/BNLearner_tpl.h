@@ -114,9 +114,9 @@ namespace gum {
       __createApriori();
       __createScore();
 
-      std::unique_ptr<ParamEstimator<>> param_estimator (
+      std::unique_ptr< ParamEstimator<> > param_estimator(
         __createParamEstimator(__score_database.parser(), true));
-      
+
       return DAG2BNLearner<>::createBN< GUM_SCALAR >(*(param_estimator.get()),
                                                      __learnDAG());
     }
@@ -162,56 +162,54 @@ namespace gum {
 
       if (__EMepsilon == 0.0) {
         // check that the database does not contain any missing value
-        if (__score_database.databaseTable().hasMissingValues() ||
-            ((__apriori_database != nullptr) && 
-             (__apriori_type == AprioriType::DIRICHLET_FROM_DATABASE) &&
-             __apriori_database->databaseTable().hasMissingValues())) {
+        if (__score_database.databaseTable().hasMissingValues()
+            || ((__apriori_database != nullptr)
+                && (__apriori_type == AprioriType::DIRICHLET_FROM_DATABASE)
+                && __apriori_database->databaseTable().hasMissingValues())) {
           GUM_ERROR(MissingValueInDatabase,
-                    "In general, the BNLearner is unable to cope with " <<
-                    "missing values in databases. To learn parameters in " <<
-                    "such situations, you should first use method " <<
-                    "useEM()");
+                    "In general, the BNLearner is unable to cope with "
+                      << "missing values in databases. To learn parameters in "
+                      << "such situations, you should first use method "
+                      << "useEM()");
         }
-        
+
         // create the usual estimator
-        DBRowGeneratorParser<> parser (__score_database.databaseTable().handler(),
-                                       DBRowGeneratorSet<>());
-        std::unique_ptr<ParamEstimator<>> param_estimator (
+        DBRowGeneratorParser<> parser(__score_database.databaseTable().handler(),
+                                      DBRowGeneratorSet<>());
+        std::unique_ptr< ParamEstimator<> > param_estimator(
           __createParamEstimator(parser, take_into_account_score));
-      
+
         return DAG2BNLearner<>::createBN< GUM_SCALAR >(*(param_estimator.get()),
                                                        dag);
-      }
-      else {
+      } else {
         // get the column types
-        const auto& database = __score_database.databaseTable();
+        const auto&       database = __score_database.databaseTable();
         const std::size_t nb_vars = database.nbVariables();
-        const std::vector< gum::learning::DBTranslatedValueType >
-          col_types(nb_vars, gum::learning::DBTranslatedValueType::DISCRETE);
+        const std::vector< gum::learning::DBTranslatedValueType > col_types(
+          nb_vars, gum::learning::DBTranslatedValueType::DISCRETE);
 
         // create the bootstrap estimator
         DBRowGenerator4CompleteRows<> generator_bootstrap(col_types);
-        DBRowGeneratorSet<> genset_bootstrap;
+        DBRowGeneratorSet<>           genset_bootstrap;
         genset_bootstrap.insertGenerator(generator_bootstrap);
-        DBRowGeneratorParser<> parser_bootstrap(database.handler(),
+        DBRowGeneratorParser<>              parser_bootstrap(database.handler(),
                                                 genset_bootstrap);
-        std::unique_ptr<ParamEstimator<>> param_estimator_bootstrap (
+        std::unique_ptr< ParamEstimator<> > param_estimator_bootstrap(
           __createParamEstimator(parser_bootstrap, take_into_account_score));
 
         // create the EM estimator
-        BayesNet< GUM_SCALAR > dummy_bn;
+        BayesNet< GUM_SCALAR >         dummy_bn;
         DBRowGeneratorEM< GUM_SCALAR > generator_EM(col_types, dummy_bn);
-        DBRowGeneratorSet<> genset_EM;
+        DBRowGeneratorSet<>            genset_EM;
         genset_EM.insertGenerator(generator_EM);
         DBRowGeneratorParser<> parser_EM(database.handler(), genset_EM);
-        std::unique_ptr<ParamEstimator<>> param_estimator_EM (
+        std::unique_ptr< ParamEstimator<> > param_estimator_EM(
           __createParamEstimator(parser_EM, take_into_account_score));
 
         DAG2BNLearner<> learner;
         learner.approximationScheme().setEpsilon(__EMepsilon);
-        return learner.createBN< GUM_SCALAR >(*(param_estimator_bootstrap.get()),
-                                              *(param_estimator_EM.get()),
-                                              dag);
+        return learner.createBN< GUM_SCALAR >(
+          *(param_estimator_bootstrap.get()), *(param_estimator_EM.get()), dag);
       }
     }
 

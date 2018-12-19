@@ -229,7 +229,6 @@ namespace gum {
 
         /// returns the set of missing symbols taken into account
         const std::vector< std::string >& missingSymbols() const;
-
         /// @}
 
         protected:
@@ -413,10 +412,13 @@ namespace gum {
                                const std::size_t k_fold);
 
       /** use The EM algorithm to learn paramters
-      *
-      * if epsilon=0, EM is not used
-      */
+       *
+       * if epsilon=0, EM is not used
+       */
       void useEM(const double epsilon);
+
+      /// returns true if the learner's database has missing values
+      bool hasMissingValues() const;
 
       /// @}
 
@@ -593,7 +595,7 @@ namespace gum {
       ParamEstimatorType __param_estimator_type{ParamEstimatorType::ML};
 
       /// epsilon for EM. if espilon=0.0 : no EM
-      double __EMepsilon {0.0};
+      double __EMepsilon{0.0};
 
       /// the selected correction for 3off2 and miic
       CorrectedMutualInformation<>* __mutual_info{nullptr};
@@ -677,8 +679,8 @@ namespace gum {
 
       /// create the parameter estimator used for learning
       ParamEstimator<>*
-      __createParamEstimator(DBRowGeneratorParser<>& parser,
-                             bool take_into_account_score = true);
+        __createParamEstimator(DBRowGeneratorParser<>& parser,
+                               bool take_into_account_score = true);
 
       /// returns the DAG learnt
       DAG __learnDAG();

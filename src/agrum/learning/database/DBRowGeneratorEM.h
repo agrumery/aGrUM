@@ -89,12 +89,12 @@ namespace gum {
       /// default constructor
       DBRowGeneratorEM(
         const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > >
-                                    column_types,
-        const BayesNet<GUM_SCALAR>& bn,
+                                      column_types,
+        const BayesNet< GUM_SCALAR >& bn,
         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-              nodeId2columns =
-                Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-        const allocator_type&       alloc = allocator_type());
+          nodeId2columns =
+            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+        const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       DBRowGeneratorEM(const DBRowGeneratorEM< GUM_SCALAR, ALLOC >& from);
@@ -150,8 +150,9 @@ namespace gum {
       virtual const DBRow< DBTranslatedValue, ALLOC >& generate() override final;
 
       /// assign a new Bayes net to the generator
-      virtual void setBayesNet (const BayesNet<GUM_SCALAR>& new_bn) override final;
-     
+      virtual void
+        setBayesNet(const BayesNet< GUM_SCALAR >& new_bn) override final;
+
       /// returns the allocator used
       allocator_type getAllocator() const;
 
@@ -180,7 +181,7 @@ namespace gum {
       Potential< GUM_SCALAR > __joint_proba;
 
       /// an instantiation over the joint proba
-      Instantiation* __joint_inst {nullptr};
+      Instantiation* __joint_inst{nullptr};
 
       /// the row that we return if there are missing values
       /** DBRowGeneratorSets produce new rows in advance. So, when they
@@ -195,12 +196,12 @@ namespace gum {
       DBRow< DBTranslatedValue, ALLOC > __filled_row2;
 
       /// indicates whether we should return filled_row1 or filled_row2
-      bool __use_filled_row1 {true};
-      
+      bool __use_filled_row1{true};
+
       /// the weight of the original input row
       double __original_weight;
 
-  
+
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };
 

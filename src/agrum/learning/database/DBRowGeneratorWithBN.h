@@ -91,27 +91,27 @@ namespace gum {
       /// default constructor
       DBRowGeneratorWithBN(
         const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > >
-                                    column_types,
-        const BayesNet<GUM_SCALAR>& bn,
-        const DBRowGeneratorGoal goal,
+                                      column_types,
+        const BayesNet< GUM_SCALAR >& bn,
+        const DBRowGeneratorGoal      goal,
         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-              nodeId2columns =
-                Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-        const allocator_type&       alloc = allocator_type());
+          nodeId2columns =
+            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+        const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       DBRowGeneratorWithBN(const DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >& from);
 
       /// copy constructor with a given allocator
       DBRowGeneratorWithBN(const DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >& from,
-                       const allocator_type&                        alloc);
+                           const allocator_type&                            alloc);
 
       /// move constructor
       DBRowGeneratorWithBN(DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >&& from);
 
       /// move constructor with a given allocator
       DBRowGeneratorWithBN(DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >&& from,
-                       const allocator_type&                   alloc);
+                           const allocator_type&                       alloc);
 
       /// destructor
       ~DBRowGeneratorWithBN();
@@ -126,27 +126,25 @@ namespace gum {
       /// @{
 
       /// assign a new Bayes net to the generator
-      virtual void setBayesNet (const BayesNet< GUM_SCALAR >& new_bn);
+      virtual void setBayesNet(const BayesNet< GUM_SCALAR >& new_bn);
 
       /// returns the Bayes net used by the generator
       const BayesNet< GUM_SCALAR >& getBayesNet() const;
-     
+
       /// returns the allocator used
       allocator_type getAllocator() const;
 
       /// @}
 
 
-    protected:
-
+      protected:
       /// the Bayesian network used to fill the unobserved values
-      const BayesNet<GUM_SCALAR>* _bn;
+      const BayesNet< GUM_SCALAR >* _bn;
 
       /// the mapping betwen the BN's node ids and the database's columns
-      Bijection< NodeId, std::size_t, ALLOC< std::size_t > >
-      _nodeId2columns;
+      Bijection< NodeId, std::size_t, ALLOC< std::size_t > > _nodeId2columns;
 
-      
+
       /// copy operator
       DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >&
         operator=(const DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >& from);
@@ -154,7 +152,6 @@ namespace gum {
       /// move operator
       DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >&
         operator=(DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >&& from);
-
     };
 
   } /* namespace learning */

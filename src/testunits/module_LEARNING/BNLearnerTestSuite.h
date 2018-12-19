@@ -1166,29 +1166,26 @@ namespace gum_tests {
     }
 
     void testEM() {
-      gum::learning::BNLearner< double >
-        learner(GET_RESSOURCES_PATH("EM.csv"), std::vector< std::string >{"?"});
+      gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("EM.csv"),
+                                                 std::vector< std::string >{"?"});
 
-      TS_ASSERT(learner.database().hasMissingValues());
+      TS_ASSERT(learner.hasMissingValues());
 
       gum::DAG dag;
-      for (std::size_t i = std::size_t(0);
-           i < learner.database().nbVariables(); ++i) {
+      for (std::size_t i = std::size_t(0); i < learner.database().nbVariables();
+           ++i) {
         dag.addNodeWithId(gum::NodeId(i));
       }
-      dag.addArc(gum::NodeId(1),gum::NodeId(0));
-      dag.addArc(gum::NodeId(2),gum::NodeId(1));
-      dag.addArc(gum::NodeId(3),gum::NodeId(2));
-      
-      TS_ASSERT_THROWS(learner.learnParameters(dag),
-                       gum::MissingValueInDatabase);
-      
+      dag.addArc(gum::NodeId(1), gum::NodeId(0));
+      dag.addArc(gum::NodeId(2), gum::NodeId(1));
+      dag.addArc(gum::NodeId(3), gum::NodeId(2));
+
+      TS_ASSERT_THROWS(learner.learnParameters(dag), gum::MissingValueInDatabase);
+
       learner.useEM(1e-3);
       learner.useAprioriSmoothing();
 
       TS_GUM_ASSERT_THROWS_NOTHING(learner.learnParameters(dag, false));
     }
-
-    
   };
 } /* namespace gum_tests */
