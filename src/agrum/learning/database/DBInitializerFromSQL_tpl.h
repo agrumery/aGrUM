@@ -25,6 +25,7 @@
  */
 
 #ifdef _ODBC
+#include <clocale>
 
 #  ifndef DOXYGEN_SHOULD_SKIP_THIS
 
