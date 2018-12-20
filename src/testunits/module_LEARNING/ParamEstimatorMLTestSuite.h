@@ -912,14 +912,16 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorIdentity<> generator1(col_types);
       gum::learning::DBRowGeneratorEM<>       generator2(col_types, bn0);
+      gum::learning::DBRowGenerator<>&        gen2 = generator2; // fix for g++-4.8
       gum::learning::DBRowGeneratorIdentity<> generator3(col_types);
       gum::learning::DBRowGeneratorEM<>       generator4(col_types, bn0);
+      gum::learning::DBRowGenerator<>&        gen4 = generator4; // fix for g++-4.8
 
       gum::learning::DBRowGeneratorSet<> genset;
       genset.insertGenerator(generator1);
-      genset.insertGenerator(generator2);
+      genset.insertGenerator(gen2);
       genset.insertGenerator(generator3);
-      genset.insertGenerator(generator4);
+      genset.insertGenerator(gen4);
 
       gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
       gum::learning::AprioriNoApriori<>     extern_apriori(database);

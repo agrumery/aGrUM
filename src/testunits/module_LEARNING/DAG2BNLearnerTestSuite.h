@@ -198,9 +198,10 @@ namespace gum_tests {
       gum::learning::ParamEstimatorML<> param_estimator_id(
         parser_id, extern_apriori, intern_apriori);
 
-      gum::learning::DBRowGeneratorEM<>  generator_EM(col_types, bn);
+      gum::learning::DBRowGeneratorEM<> generator_EM(col_types, bn);
+      gum::learning::DBRowGenerator<>&  gen_EM = generator_EM;  // fix for g++-4.8
       gum::learning::DBRowGeneratorSet<> genset_EM;
-      genset_EM.insertGenerator(generator_EM);
+      genset_EM.insertGenerator(gen_EM);
       gum::learning::DBRowGeneratorParser<> parser_EM(database.handler(),
                                                       genset_EM);
       gum::learning::ParamEstimatorML<>     param_estimator_EM(

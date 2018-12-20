@@ -46,6 +46,7 @@
 #include <agrum/learning/database/DBRowGeneratorParser.h>
 #include <agrum/learning/database/DBRowGenerator4CompleteRows.h>
 #include <agrum/learning/database/DBRowGeneratorEM.h>
+#include <agrum/learning/database/DBRowGeneratorSet.h>
 
 #include <agrum/learning/scores_and_tests/scoreAIC.h>
 #include <agrum/learning/scores_and_tests/scoreBD.h>
