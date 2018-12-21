@@ -1,10 +1,20 @@
 # aGrUM Changelog
 
+## Changelog for 0.13.5
+* aGrUM
+  * fix errors for gcc 4.8.2
+  * fix issue https://gitlab.com/agrumery/aGrUM/issues/23
+  * fix act error for python<3.6
+  
 ## Changelog for 0.13.4
 * pyAgrum
   * minor API changes 
+  * minor changes in documentation
   * BNLearner follows the new learning framework
+  * parametric EM !! See notebook <http://www-desir.lip6.fr/~phw/aGrUM/docs/last/notebooks/16-ParametriceEM.ipynb>
+  * New method : JointTargetedInference.jointMutualInformation for any set of variables in the BN
 * aGrUM
+  * parametric EM !!
   * several internal improvements
   * learning: major update of the scores, independence tests and record counters:
     They can now be used on subsets of databases (e.g., for cross validation), the ids of the nodes need not correspond to indices of columns in the database. The interfaces of these classes have been simplified.
@@ -15,6 +25,7 @@
   * learning: the documentations of the scores have been improved
   * learning: the corrected mutual information of 3off2 has been improved
   * BNLearner: now supports cross validation
+  * New method : JointTargetedInference::jointMutualInformation for any set of variables in the BN
 
 ## Changelog for 0.13.3
 * pyAgrum

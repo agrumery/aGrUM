@@ -140,6 +140,9 @@ namespace gum {
       /// generates one ouput DBRow for each DBRow passed to method setInputRow
       virtual const DBRow< DBTranslatedValue, ALLOC >& generate() final;
 
+      /// returns the allocator used
+      allocator_type getAllocator() const;
+
       /// @}
 
 

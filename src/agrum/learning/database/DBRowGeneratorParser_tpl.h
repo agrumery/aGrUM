@@ -244,6 +244,15 @@ namespace gum {
       __generator_set.setColumnsOfInterest ( std::move ( cols_of_interest ) );
     }
 
+
+    /// assign a new Bayes net to all the generators that depend on a BN
+    template <template<typename> class ALLOC>
+    template < typename GUM_SCALAR >
+    INLINE void DBRowGeneratorParser<ALLOC>::setBayesNet (
+                const BayesNet<GUM_SCALAR>& new_bn) {
+      __generator_set.setBayesNet(new_bn);
+    }
+    
       
     /// returns the allocator used
     template <template<typename> class ALLOC>

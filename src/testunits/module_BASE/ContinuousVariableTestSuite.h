@@ -110,13 +110,16 @@ namespace gum_tests {
       TS_ASSERT(!var2.belongs(15.6f));
 
       auto        domain = var2.domain();
+      /*
       std::string regexp = "\\[([0-9.\\-]+);([0-9.\\-]+)\\]";
       std::regex  reg(regexp);
       std::smatch match;
       TS_ASSERT(std::regex_match(domain, match, reg));
       TS_ASSERT(std::stof(match[1]) == 4.0f);
       TS_ASSERT(std::stof(match[2]) == 8.5f);
-
+      */
+      TS_ASSERT( domain == "[4;8.5]");
+      
       TS_ASSERT(var2.toString() == ("x2" + domain));
       TS_ASSERT(var2.toStringWithDescription() == var2.description() + domain);
     }

@@ -31,6 +31,7 @@
 #define GUM_LEARNING_GENERIC_BN_LEARNER_H
 
 #include <sstream>
+#include <memory>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/agrum.h>
@@ -43,6 +44,9 @@
 #include <agrum/learning/database/DBInitializerFromCSV.h>
 #include <agrum/learning/database/databaseTable.h>
 #include <agrum/learning/database/DBRowGeneratorParser.h>
+#include <agrum/learning/database/DBRowGenerator4CompleteRows.h>
+#include <agrum/learning/database/DBRowGeneratorEM.h>
+#include <agrum/learning/database/DBRowGeneratorSet.h>
 
 #include <agrum/learning/scores_and_tests/scoreAIC.h>
 #include <agrum/learning/scores_and_tests/scoreBD.h>
@@ -226,7 +230,6 @@ namespace gum {
 
         /// returns the set of missing symbols taken into account
         const std::vector< std::string >& missingSymbols() const;
-
         /// @}
 
         protected:
@@ -409,6 +412,15 @@ namespace gum {
         useCrossValidationFold(const std::size_t learning_fold,
                                const std::size_t k_fold);
 
+      /** use The EM algorithm to learn paramters
+       *
+       * if epsilon=0, EM is not used
+       */
+      void useEM(const double epsilon);
+
+      /// returns true if the learner's database has missing values
+      bool hasMissingValues() const;
+
       /// @}
 
       // ##########################################################################
@@ -583,8 +595,8 @@ namespace gum {
       /// the type of the parameter estimator
       ParamEstimatorType __param_estimator_type{ParamEstimatorType::ML};
 
-      /// the parameter estimator to use
-      ParamEstimator<>* __param_estimator{nullptr};
+      /// epsilon for EM. if espilon=0.0 : no EM
+      double __EMepsilon{0.0};
 
       /// the selected correction for 3off2 and miic
       CorrectedMutualInformation<>* __mutual_info{nullptr};
@@ -628,6 +640,9 @@ namespace gum {
       typename CorrectedMutualInformation<>::KModeTypes __3off2_kmode{
         CorrectedMutualInformation<>::KModeTypes::MDL};
 
+      /// the parametric EM
+      DAG2BNLearner<> __Dag2BN;
+
       /// the greedy hill climbing algorithm
       GreedyHillClimbing __greedy_hill_climbing;
 
@@ -667,7 +682,9 @@ namespace gum {
       void __createScore();
 
       /// create the parameter estimator used for learning
-      void __createParamEstimator(bool take_into_account_score = true);
+      ParamEstimator<>*
+        __createParamEstimator(DBRowGeneratorParser<>& parser,
+                               bool take_into_account_score = true);
 
       /// returns the DAG learnt
       DAG __learnDAG();
@@ -724,6 +741,7 @@ namespace gum {
         __K2.approximationScheme().setEpsilon(eps);
         __greedy_hill_climbing.setEpsilon(eps);
         __local_search_with_tabu_list.setEpsilon(eps);
+        __Dag2BN.setEpsilon(eps);
       };
 
       /// Get the value of epsilon
@@ -739,6 +757,7 @@ namespace gum {
         __K2.approximationScheme().disableEpsilon();
         __greedy_hill_climbing.disableEpsilon();
         __local_search_with_tabu_list.disableEpsilon();
+        __Dag2BN.disableEpsilon();
       };
 
       /// Enable stopping criterion on epsilon
@@ -746,6 +765,7 @@ namespace gum {
         __K2.approximationScheme().enableEpsilon();
         __greedy_hill_climbing.enableEpsilon();
         __local_search_with_tabu_list.enableEpsilon();
+        __Dag2BN.enableEpsilon();
       };
 
       /// @return true if stopping criterion on epsilon is enabled, false
@@ -767,6 +787,7 @@ namespace gum {
         __K2.approximationScheme().setMinEpsilonRate(rate);
         __greedy_hill_climbing.setMinEpsilonRate(rate);
         __local_search_with_tabu_list.setMinEpsilonRate(rate);
+        __Dag2BN.setMinEpsilonRate(rate);
       };
 
       /// Get the value of the minimal epsilon rate
@@ -782,12 +803,14 @@ namespace gum {
         __K2.approximationScheme().disableMinEpsilonRate();
         __greedy_hill_climbing.disableMinEpsilonRate();
         __local_search_with_tabu_list.disableMinEpsilonRate();
+        __Dag2BN.disableMinEpsilonRate();
       };
       /// Enable stopping criterion on epsilon rate
       void enableMinEpsilonRate() {
         __K2.approximationScheme().enableMinEpsilonRate();
         __greedy_hill_climbing.enableMinEpsilonRate();
         __local_search_with_tabu_list.enableMinEpsilonRate();
+        __Dag2BN.enableMinEpsilonRate();
       };
       /// @return true if stopping criterion on epsilon rate is enabled, false
       /// otherwise
@@ -808,6 +831,7 @@ namespace gum {
         __K2.approximationScheme().setMaxIter(max);
         __greedy_hill_climbing.setMaxIter(max);
         __local_search_with_tabu_list.setMaxIter(max);
+        __Dag2BN.setMaxIter(max);
       };
 
       /// @return the criterion on number of iterations
@@ -823,12 +847,14 @@ namespace gum {
         __K2.approximationScheme().disableMaxIter();
         __greedy_hill_climbing.disableMaxIter();
         __local_search_with_tabu_list.disableMaxIter();
+        __Dag2BN.disableMaxIter();
       };
       /// Enable stopping criterion on max iterations
       void enableMaxIter() {
         __K2.approximationScheme().enableMaxIter();
         __greedy_hill_climbing.enableMaxIter();
         __local_search_with_tabu_list.enableMaxIter();
+        __Dag2BN.enableMaxIter();
       };
       /// @return true if stopping criterion on max iterations is enabled, false
       /// otherwise
@@ -850,6 +876,7 @@ namespace gum {
         __K2.approximationScheme().setMaxTime(timeout);
         __greedy_hill_climbing.setMaxTime(timeout);
         __local_search_with_tabu_list.setMaxTime(timeout);
+        __Dag2BN.setMaxTime(timeout);
       }
 
       /// returns the timeout (in seconds)
@@ -873,11 +900,13 @@ namespace gum {
         __K2.approximationScheme().disableMaxTime();
         __greedy_hill_climbing.disableMaxTime();
         __local_search_with_tabu_list.disableMaxTime();
+        __Dag2BN.disableMaxTime();
       };
       void enableMaxTime() {
         __K2.approximationScheme().enableMaxTime();
         __greedy_hill_climbing.enableMaxTime();
         __local_search_with_tabu_list.enableMaxTime();
+        __Dag2BN.enableMaxTime();
       };
       /// @return true if stopping criterion on timeout is enabled, false
       /// otherwise
@@ -896,6 +925,7 @@ namespace gum {
         __K2.approximationScheme().setPeriodSize(p);
         __greedy_hill_climbing.setPeriodSize(p);
         __local_search_with_tabu_list.setPeriodSize(p);
+        __Dag2BN.setPeriodSize(p);
       };
 
       Size periodSize() const {
@@ -912,6 +942,7 @@ namespace gum {
         __K2.approximationScheme().setVerbosity(v);
         __greedy_hill_climbing.setVerbosity(v);
         __local_search_with_tabu_list.setVerbosity(v);
+        __Dag2BN.setVerbosity(v);
       };
 
       bool verbosity() const {

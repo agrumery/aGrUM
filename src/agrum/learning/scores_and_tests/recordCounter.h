@@ -298,6 +298,13 @@ namespace gum {
                          ALLOC< std::pair< std::size_t, std::size_t > > >&
         ranges() const;
 
+      /// assign a new Bayes net to all the counter's generators depending on a BN
+      /** Typically, generators based on EM or K-means depend on a model to
+       * compute correctly their outputs. Method setBayesNet enables to
+       * update their BN model. */
+      template < typename GUM_SCALAR >
+      void setBayesNet(const BayesNet< GUM_SCALAR >& new_bn);
+
       /// returns the allocator used
       allocator_type getAllocator() const;
 

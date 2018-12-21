@@ -58,9 +58,9 @@ namespace gum_tests {
       var1.setMaxVal(9);
       TS_ASSERT(!var1.empty());
       TS_ASSERT_EQUALS(var1.domainSize(), (gum::Size)9);
-      TS_ASSERT(var1.belongs((gum::Idx)3));
-      TS_ASSERT(!var1.belongs((gum::Idx)0));
-      TS_ASSERT(!var1.belongs((gum::Idx)10));
+      TS_ASSERT(var1.belongs(3L));
+      TS_ASSERT(!var1.belongs(0L));
+      TS_ASSERT(!var1.belongs(10L));
 
       var1.setMinVal(3);
 

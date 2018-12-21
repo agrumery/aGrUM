@@ -24978,6 +24978,16 @@ class BNLearner(object):
         return _pyAgrum.BNLearner_eraseMandatoryArc(self, *args)
 
 
+    def useEM(self, epsilon):
+        r"""useEM(self, epsilon)"""
+        return _pyAgrum.BNLearner_useEM(self, epsilon)
+
+
+    def hasMissingValues(self):
+        r"""hasMissingValues(self) -> bool"""
+        return _pyAgrum.BNLearner_hasMissingValues(self)
+
+
     def setInitialDAG(self, g):
         r"""
         setInitialDAG(self, g)

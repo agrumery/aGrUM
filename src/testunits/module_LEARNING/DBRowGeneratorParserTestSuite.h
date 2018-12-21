@@ -25,13 +25,39 @@
 #include <ressources/mygenerator.h>
 #include <ressources/mygenerator2.h>
 
+#include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/learning/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/learning/database/DBTranslator4ContinuousVariable.h>
 #include <agrum/learning/database/DBRowGeneratorParser.h>
+#include <agrum/learning/database/DBRowGeneratorEM.h>
 
 namespace gum_tests {
 
   class DBRowGeneratorParserTestSuite : public CxxTest::TestSuite {
+  private:
+    gum::Potential<double>
+    __infer( const gum::BayesNet<double>& bn,
+             const std::vector<std::size_t>& targets,
+             const gum::learning::DBRow< gum::learning::DBTranslatedValue >& row) {
+      gum::LazyPropagation<double> ve(&bn);
+      
+      gum::NodeSet target_set;
+      for (auto target : targets) target_set.insert(gum::NodeId(target));
+      ve.addJointTarget(target_set);
+
+      const auto xrow = row.row();
+      const auto row_size = xrow.size();
+      for (std::size_t col = std::size_t(0); col < row_size; ++col) {
+        if ( xrow[col].discr_val != std::numeric_limits<std::size_t>::max() ) {
+          ve.addEvidence(gum::NodeId(col), xrow[col].discr_val);
+        }
+      }
+
+      gum::Potential<double> prob = ve.jointPosterior(target_set);
+      return prob;
+    }
+
+    
     public:
     void test_simple() {
       gum::learning::DBTranslator4LabelizedVariable<>  translator_lab;
@@ -304,6 +330,158 @@ namespace gum_tests {
       TS_ASSERT ( nb_rows == std::size_t( 4 ) );
       TS_ASSERT( parser2.generatorSet().size() == std::size_t(0) );
 
+    }
+
+
+    void testEM () {
+      const std::vector< gum::learning::DBTranslatedValueType > col_types{
+        gum::learning::DBTranslatedValueType::DISCRETE,
+        gum::learning::DBTranslatedValueType::DISCRETE,
+        gum::learning::DBTranslatedValueType::DISCRETE,
+        gum::learning::DBTranslatedValueType::DISCRETE};
+
+      auto bn0 = gum::BayesNet< double >::fastPrototype("A;B;C;D");
+      bn0.cpt("A").fillWith({0.3, 0.7});
+      bn0.cpt("B").fillWith({0.3, 0.7});
+      bn0.cpt("C").fillWith({0.3, 0.7});
+      bn0.cpt("D").fillWith({0.3, 0.7});
+
+      gum::LabelizedVariable var("x", "", 0);
+      var.addLabel("0");
+      var.addLabel("1");
+      const std::vector<std::string> miss {"N/A","?"};
+      gum::learning::DBTranslator4LabelizedVariable<> translator(var,miss);
+      gum::learning::DBTranslatorSet<> set;
+      for ( std::size_t i = std::size_t(0); i < std::size_t(4); ++i)
+        set.insertTranslator ( translator, i );
+
+      set[0].setVariableName ( "v0" );
+      set[1].setVariableName ( "v1" );
+      set[2].setVariableName ( "v2" );
+      set[3].setVariableName ( "v3" );
+
+      gum::learning::DatabaseTable<> database ( set );
+      std::vector<std::string> row1 { "0", "1", "1", "0" };
+      std::vector<std::string> row2 { "0", "?", "1", "0" };
+      std::vector<std::string> row3 { "0", "?", "?", "0" };
+      std::vector<std::string> row4 { "?", "?", "1", "0" };
+      std::vector<std::string> row5 { "?", "?", "?", "?" };
+      database.insertRow( row1 );
+      database.insertRow( row2 );
+      database.insertRow( row3 );
+      database.insertRow( row4 );
+      database.insertRow( row5 );
+
+      auto handler = database.handler();
+
+      gum::learning::DBRowGeneratorIdentity<> generator1(col_types);
+      gum::learning::DBRowGeneratorEM<>       generator2(col_types,bn0);
+      gum::learning::DBRowGenerator<>&        gen2 = generator2; // fix for g++-4.8
+      gum::learning::DBRowGeneratorIdentity<> generator3(col_types);
+      gum::learning::DBRowGeneratorEM<>       generator4(col_types,bn0);
+      gum::learning::DBRowGenerator<>&        gen4 = generator4; // fix for g++-4.8
+     
+      gum::learning::DBRowGeneratorSet<> genset;
+      genset.insertGenerator(generator1);
+      genset.insertGenerator(gen2);
+      genset.insertGenerator(generator3);
+      genset.insertGenerator(gen4);
+
+      gum::learning::DBRowGeneratorParser<>
+        parser ( database.handler (), genset );
+
+      auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D");
+      bn.cpt("A").fillWith({0.3, 0.7});
+      bn.cpt("B").fillWith({0.4, 0.6, 0.7, 0.3});
+      bn.cpt("C").fillWith({0.2, 0.8, 0.3, 0.7, 0.4, 0.6, 0.5, 0.5});
+      bn.cpt("D").fillWith({0.8, 0.2});
+
+      parser.setBayesNet(bn);
+      
+      const std::vector< std::size_t > cols_of_interest{std::size_t(0),
+                                                        std::size_t(1)};
+
+      parser.setColumnsOfInterest(cols_of_interest);
+      TS_ASSERT(parser.hasRows());
+      {
+        const auto& row = parser.row();
+        const auto& xrow = row.row();
+
+        TS_ASSERT_EQUALS(row.weight(), 1.0);
+        TS_ASSERT_EQUALS(xrow[0].discr_val, std::size_t(0));
+        TS_ASSERT_EQUALS(xrow[1].discr_val, std::size_t(1));
+      }
+
+      for (int i = 0; i < 2; ++i ) {
+        ++handler;
+        TS_ASSERT(parser.hasRows());
+      
+        gum::Potential<double> proba = __infer(bn, {std::size_t(1)},
+                                               handler.row());
+        gum::Instantiation inst(proba);
+
+        const auto& fill_row1  = parser.row();
+        const auto& xfill_row1 = fill_row1.row();
+        TS_ASSERT_EQUALS(xfill_row1[0].discr_val,std::size_t(0));
+        TS_ASSERT_EQUALS(xfill_row1[1].discr_val, std::size_t(0));
+        TS_ASSERT_DELTA(fill_row1.weight(), proba.get(inst),0.001);
+
+        ++inst;
+        const auto& fill_row2  = parser.row();
+        const auto& xfill_row2 = fill_row2.row();
+        TS_ASSERT_EQUALS(xfill_row2[0].discr_val, std::size_t(0));
+        TS_ASSERT_EQUALS(xfill_row2[1].discr_val, std::size_t(1));
+        TS_ASSERT_DELTA(fill_row2.weight(), proba.get(inst), 0.001);
+      }
+
+      for (int i = 0; i < 2; ++i ) {
+        ++handler;
+        TS_ASSERT(parser.hasRows());
+      
+        gum::Potential<double> proba = __infer(bn, {std::size_t(0),std::size_t(1)},
+                                               handler.row());
+
+        std::vector<double> xproba (4);
+        std::vector<bool> observed(4, false);
+        std::size_t idx;
+       for (gum::Instantiation inst(proba); !inst.end(); ++inst) {
+         if ( proba.variablesSequence()[0]->name() == "A")
+           idx = inst.val(0) + std::size_t(2) * inst.val(1);
+         else
+           idx = inst.val(1) + std::size_t(2) * inst.val(0);
+          xproba[idx] = proba.get(inst);
+        }
+        
+        const auto& fill_row1  = parser.row();
+        const auto& xfill_row1 = fill_row1.row();
+        idx = xfill_row1[0].discr_val + std::size_t(2) * xfill_row1[1].discr_val;
+        observed[idx] = true;
+        TS_ASSERT_DELTA(fill_row1.weight(), xproba[idx], 0.001);
+
+        const auto& fill_row2  = parser.row();
+        const auto& xfill_row2 = fill_row2.row();
+        idx = xfill_row2[0].discr_val + std::size_t(2) * xfill_row2[1].discr_val;
+        observed[idx] = true;
+        TS_ASSERT_DELTA(fill_row2.weight(), xproba[idx], 0.001);
+
+        const auto& fill_row3  = parser.row();
+        const auto& xfill_row3 = fill_row3.row();
+        idx = xfill_row3[0].discr_val + std::size_t(2) * xfill_row3[1].discr_val;
+        observed[idx] = true;
+        TS_ASSERT_DELTA(fill_row3.weight(), xproba[idx],0.001);
+
+        const auto& fill_row4  = parser.row();
+        const auto& xfill_row4 = fill_row4.row();
+        idx = xfill_row4[0].discr_val + std::size_t(2) * xfill_row4[1].discr_val;
+        observed[idx] = true;
+        TS_ASSERT_DELTA(fill_row4.weight(), xproba[idx],0.001);
+
+        int nb_observed = 0;
+        for ( auto obs : observed)
+          if (obs) ++nb_observed;
+        TS_ASSERT_EQUALS(nb_observed, 4);
+      }
+      
     }
     
   };

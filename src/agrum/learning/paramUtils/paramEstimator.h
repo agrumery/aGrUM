@@ -224,6 +224,13 @@ namespace gum {
       /// returns the database on which we perform the counts
       const DatabaseTable< ALLOC >& database() const;
 
+      /// assign a new Bayes net to all the counter's generators depending on a BN
+      /** Typically, generators based on EM or K-means depend on a model to
+       * compute correctly their outputs. Method setBayesNet enables to
+       * update their BN model. */
+      template < typename GUM_SCALAR >
+      void setBayesNet(const BayesNet< GUM_SCALAR >& new_bn);
+
       /// returns the allocator used by the score
       allocator_type getAllocator() const;
 

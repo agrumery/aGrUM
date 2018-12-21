@@ -113,12 +113,6 @@ namespace gum {
       // fill the database
       initializer.fillDatabase(__database);
 
-      // check that the database does not contain any missing value
-      if (__database.hasMissingValues())
-        GUM_ERROR(MissingValueInDatabase,
-                  "For the moment, the BNLearner is unable to cope "
-                  "with missing values in databases");
-
       // get the domain sizes of the variables
       for (auto dom : __database.domainSizes())
         __domain_sizes.push_back(dom);
@@ -186,13 +180,6 @@ namespace gum {
     }
 
 
-    /// returns the mapping between node ids and their columns in the database
-    const Bijection< NodeId, std::size_t >&
-      genericBNLearner::Database::nodeId2Columns() const {
-      return __nodeId2cols;
-    }
-
-
     // ===========================================================================
 
     genericBNLearner::genericBNLearner(
@@ -218,7 +205,7 @@ namespace gum {
     genericBNLearner::genericBNLearner(const genericBNLearner& from) :
         __score_type(from.__score_type),
         __param_estimator_type(from.__param_estimator_type),
-        __apriori_type(from.__apriori_type),
+        __EMepsilon(from.__EMepsilon), __apriori_type(from.__apriori_type),
         __apriori_weight(from.__apriori_weight),
         __constraint_SliceOrder(from.__constraint_SliceOrder),
         __constraint_Indegree(from.__constraint_Indegree),
@@ -241,7 +228,7 @@ namespace gum {
     genericBNLearner::genericBNLearner(genericBNLearner&& from) :
         __score_type(from.__score_type),
         __param_estimator_type(from.__param_estimator_type),
-        __apriori_type(from.__apriori_type),
+        __EMepsilon(from.__EMepsilon), __apriori_type(from.__apriori_type),
         __apriori_weight(from.__apriori_weight),
         __constraint_SliceOrder(std::move(from.__constraint_SliceOrder)),
         __constraint_Indegree(std::move(from.__constraint_Indegree)),
@@ -267,8 +254,6 @@ namespace gum {
     genericBNLearner::~genericBNLearner() {
       if (__score) delete __score;
 
-      if (__param_estimator) delete __param_estimator;
-
       if (__apriori) delete __apriori;
 
       if (__no_apriori) delete __no_apriori;
@@ -285,11 +270,6 @@ namespace gum {
         if (__score) {
           delete __score;
           __score = nullptr;
-        }
-
-        if (__param_estimator) {
-          delete __param_estimator;
-          __param_estimator = nullptr;
         }
 
         if (__apriori) {
@@ -309,6 +289,7 @@ namespace gum {
 
         __score_type = from.__score_type;
         __param_estimator_type = from.__param_estimator_type;
+        __EMepsilon = from.__EMepsilon;
         __apriori_type = from.__apriori_type;
         __apriori_weight = from.__apriori_weight;
         __constraint_SliceOrder = from.__constraint_SliceOrder;
@@ -339,11 +320,6 @@ namespace gum {
           __score = nullptr;
         }
 
-        if (__param_estimator) {
-          delete __param_estimator;
-          __param_estimator = nullptr;
-        }
-
         if (__apriori) {
           delete __apriori;
           __apriori = nullptr;
@@ -361,6 +337,7 @@ namespace gum {
 
         __score_type = from.__score_type;
         __param_estimator_type = from.__param_estimator_type;
+        __EMepsilon = from.__EMepsilon;
         __apriori_type = from.__apriori_type;
         __apriori_weight = from.__apriori_weight;
         __constraint_SliceOrder = std::move(from.__constraint_SliceOrder);
@@ -467,12 +444,6 @@ namespace gum {
       DatabaseTable<> database(missing_symbols, translator_set);
       database.setVariableNames(initializer.variableNames());
       initializer.fillDatabase(database);
-
-      // check that the database does not contain any missing value
-      if (database.hasMissingValues())
-        GUM_ERROR(MissingValueInDatabase,
-                  "For the moment, the BNLearaner is unable to cope "
-                  "with missing values in databases");
 
       database.reorder();
 
@@ -585,23 +556,24 @@ namespace gum {
       if (old_score != nullptr) delete old_score;
     }
 
-    void genericBNLearner::__createParamEstimator(bool take_into_account_score) {
-      // first, save the old estimator, to be delete if everything is ok
-      ParamEstimator<>* old_estimator = __param_estimator;
+    ParamEstimator<>*
+      genericBNLearner::__createParamEstimator(DBRowGeneratorParser<>& parser,
+                                               bool take_into_account_score) {
+      ParamEstimator<>* param_estimator = nullptr;
 
       // create the new estimator
       switch (__param_estimator_type) {
         case ParamEstimatorType::ML:
           if (take_into_account_score && (__score != nullptr)) {
-            __param_estimator =
-              new ParamEstimatorML<>(__score_database.parser(),
+            param_estimator =
+              new ParamEstimatorML<>(parser,
                                      *__apriori,
                                      __score->internalApriori(),
                                      __ranges,
                                      __score_database.nodeId2Columns());
           } else {
-            __param_estimator =
-              new ParamEstimatorML<>(__score_database.parser(),
+            param_estimator =
+              new ParamEstimatorML<>(parser,
                                      *__apriori,
                                      *__no_apriori,
                                      __ranges,
@@ -613,14 +585,13 @@ namespace gum {
         default:
           GUM_ERROR(OperationNotAllowed,
                     "genericBNLearner does not support "
-                    "yet this parameter estimator");
+                      << "yet this parameter estimator");
       }
 
       // assign the set of ranges
-      __param_estimator->setRanges(__ranges);
+      param_estimator->setRanges(__ranges);
 
-      // remove the old estimator, if any
-      if (old_estimator != nullptr) delete old_estimator;
+      return param_estimator;
     }
 
     /// prepares the initial graph for 3off2 or miic
@@ -655,6 +626,12 @@ namespace gum {
     MixedGraph genericBNLearner::learnMixedStructure() {
       if (__selected_algo != AlgoType::MIIC_THREE_OFF_TWO) {
         GUM_ERROR(OperationNotAllowed, "Must be using the miic/3off2 algorithm");
+      }
+      // check that the database does not contain any missing value
+      if (__score_database.databaseTable().hasMissingValues()) {
+        GUM_ERROR(MissingValueInDatabase,
+                  "For the moment, the BNLearner is unable to learn "
+                    << "structures with missing values in databases");
       }
       BNLearnerListener listener(this, __miic_3off2);
       // create the mixedGraph_constraint_MandatoryArcs.arcs();
@@ -699,6 +676,15 @@ namespace gum {
     }
 
     DAG genericBNLearner::__learnDAG() {
+      // check that the database does not contain any missing value
+      if (__score_database.databaseTable().hasMissingValues()
+          || ((__apriori_database != nullptr)
+              && (__apriori_type == AprioriType::DIRICHLET_FROM_DATABASE)
+              && __apriori_database->databaseTable().hasMissingValues())) {
+        GUM_ERROR(MissingValueInDatabase,
+                  "For the moment, the BNLearner is unable to cope "
+                  "with missing values in databases");
+      }
       // add the mandatory arcs to the initial dag and remove the forbidden ones
       // from the initial graph
       DAG init_graph = __initial_dag;

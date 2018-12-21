@@ -31,6 +31,7 @@
 #include <agrum/learning/database/DBRow.h>
 #include <agrum/learning/database/DBTranslatedValue.h>
 #include <agrum/learning/database/DBRowGenerator.h>
+#include <agrum/learning/database/DBRowGeneratorWithBN.h>
 
 namespace gum {
 
@@ -214,6 +215,13 @@ namespace gum {
 
       /// generates a new output row from the input row
       const DBRow< DBTranslatedValue, ALLOC >& generate();
+
+      /// assign a new Bayes net to all the generators that depend on a BN
+      /** Typically, generators based on EM or K-means depend on a model to
+       * compute correctly their outputs. Method setBayesNet enables to
+       * update their BN model. */
+      template < typename GUM_SCALAR >
+      void setBayesNet(const BayesNet< GUM_SCALAR >& new_bn);
 
       /// resets all the generators
       void reset();

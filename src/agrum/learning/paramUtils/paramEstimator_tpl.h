@@ -404,6 +404,15 @@ namespace gum {
     }
 
 
+    /// assign a new Bayes net to all the counter's generators depending on a BN
+    template < template < typename > class ALLOC >
+    template < typename GUM_SCALAR >
+    INLINE void
+      ParamEstimator< ALLOC >::setBayesNet(const BayesNet< GUM_SCALAR >& new_bn) {
+      _counter.setBayesNet(new_bn);
+    }
+
+
   } /* namespace learning */
 
 } /* namespace gum */

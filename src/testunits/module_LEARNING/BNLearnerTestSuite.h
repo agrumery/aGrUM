@@ -869,6 +869,7 @@ namespace gum_tests {
           GET_RESSOURCES_PATH("asia3-faulty.csv"),
           std::vector< std::string >{"BEURK"});
         learner.useK2(std::vector< gum::NodeId >{1, 5, 2, 6, 0, 3, 4, 7});
+        learner.learnBN();
       } catch (gum::MissingValueInDatabase&) { nb = 1; }
 
       TS_ASSERT(nb == 1);
@@ -1162,6 +1163,30 @@ namespace gum_tests {
 
         TS_ASSERT(xbn.moralGraph() == bn.moralGraph());
       }
+    }
+
+    void testEM() {
+      gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("EM.csv"),
+                                                 std::vector< std::string >{"?"});
+
+      TS_ASSERT(learner.hasMissingValues());
+
+      gum::DAG dag;
+      for (std::size_t i = std::size_t(0); i < learner.database().nbVariables();
+           ++i) {
+        dag.addNodeWithId(gum::NodeId(i));
+      }
+      dag.addArc(gum::NodeId(1), gum::NodeId(0));
+      dag.addArc(gum::NodeId(2), gum::NodeId(1));
+      dag.addArc(gum::NodeId(3), gum::NodeId(2));
+
+      TS_ASSERT_THROWS(learner.learnParameters(dag), gum::MissingValueInDatabase);
+
+      learner.useEM(1e-3);
+      learner.useAprioriSmoothing();
+
+      TS_GUM_ASSERT_THROWS_NOTHING(learner.learnParameters(dag, false));
+      TS_GUM_ASSERT_THROWS_NOTHING(learner.nbrIterations());
     }
   };
 } /* namespace gum_tests */

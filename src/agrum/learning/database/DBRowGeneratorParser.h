@@ -259,6 +259,15 @@ namespace gum {
       void setColumnsOfInterest (
         std::vector<std::size_t,ALLOC<std::size_t>>&& cols_of_interest );
 
+      /// assign a new Bayes net to all the generators that depend on a BN
+      /** Typically, generators based on EM or K-means depend on a model to
+       * compute correctly their outputs. Method setBayesNet enables to
+       * update their BN model.
+       * @warning if one generator that relies on Bayes nets cannot be assigned
+       * new_bn, then no generator is updated and an exception is raised. */
+      template < typename GUM_SCALAR >
+      void setBayesNet (const BayesNet<GUM_SCALAR>& new_bn);
+
       /// returns the allocator used
       allocator_type getAllocator () const;
 
