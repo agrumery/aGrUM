@@ -1,5 +1,11 @@
 # aGrUM Changelog
 
+## Changelog for 0.13.5
+* aGrUM
+  * fix errors for gcc 4.8.2
+  * fix issue https://gitlab.com/agrumery/aGrUM/issues/23
+  * fix act error for python<3.6
+  
 ## Changelog for 0.13.4
 * pyAgrum
   * minor API changes 
