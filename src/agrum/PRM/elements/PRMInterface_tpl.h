@@ -25,10 +25,7 @@
  */
 #include <agrum/PRM/elements/PRMInterface.h>
 
-#include <agrum/PRM/elements/PRMAttribute.h>
 #include <agrum/PRM/elements/PRMClass.h>
-#include <agrum/PRM/elements/PRMReferenceSlot.h>
-#include <agrum/PRM/elements/PRMScalarAttribute.h>
 
 namespace gum {
   namespace prm {
@@ -256,7 +253,7 @@ namespace gum {
     void PRMInterface< GUM_SCALAR >::__addCastDescendants(
       PRMAttribute< GUM_SCALAR >* start, PRMAttribute< GUM_SCALAR >* end) {
       PRMAttribute< GUM_SCALAR >* parent = start;
-      PRMAttribute< GUM_SCALAR >* child = 0;
+      PRMAttribute< GUM_SCALAR >* child = nullptr;
 
       while (parent->type().superType() != end->type()) {
         child = parent->getCastDescendant();
@@ -392,7 +389,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE void PRMInterface< GUM_SCALAR >::__addExtension(PRMInterface* i) {
+    INLINE void PRMInterface< GUM_SCALAR >::__addExtension(PRMInterface< GUM_SCALAR >* i) {
       __extensions.insert(i);
     }
 

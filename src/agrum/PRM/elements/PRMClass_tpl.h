@@ -29,9 +29,7 @@
 
 #include <agrum/PRM/elements/PRMClass.h>
 
-#include <agrum/PRM/elements/PRMAggregate.h>
 #include <agrum/PRM/elements/PRMInterface.h>
-#include <agrum/PRM/elements/PRMSlotChain.h>
 
 namespace gum {
   namespace prm {
@@ -967,6 +965,9 @@ namespace gum {
     void PRMClass< GUM_SCALAR >::_findAllSubtypes(
       Set< PRMClassElementContainer< GUM_SCALAR >* >& set) {
       for (const auto ext : __extensions) {
+        std::cout << HashFuncMediumCastKey<PRMClassElementContainer< GUM_SCALAR >* >::castToSize(ext) << std::endl;
+        HashFuncMediumCastKey<PRMClassElementContainer< GUM_SCALAR >* > xx;
+        std::cout << xx((PRMClassElementContainer< GUM_SCALAR >*)ext);
         set.insert(ext);
         ext->_findAllSubtypes(set);
       }

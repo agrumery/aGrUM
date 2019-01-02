@@ -36,7 +36,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    PRMClassElement< GUM_SCALAR >::PRMClassElement(const PRMClassElement& source) :
+    PRMClassElement< GUM_SCALAR >::PRMClassElement(const PRMClassElement< GUM_SCALAR >& source) :
         PRMObject(source.name()), __id(source.id()) {
       GUM_CONS_CPY(PRMClassElement);
     }
@@ -68,7 +68,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE std::string
-           PRMClassElement< GUM_SCALAR >::cast(const PRMType< GUM_SCALAR >& t) const {
+           PRMClassElement< GUM_SCALAR >::cast(const PRMType& t) const {
       if (type().isSubTypeOf(t)) {
         return PRMObject::LEFT_CAST() + t.name() + PRMObject::RIGHT_CAST()
                + name();

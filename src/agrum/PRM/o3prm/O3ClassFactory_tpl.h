@@ -283,7 +283,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE bool O3ClassFactory< GUM_SCALAR >::__checkImplementation(
-        O3Label& o3_type, const PRMType< GUM_SCALAR >& type) {
+        O3Label& o3_type, const PRMType& type) {
         if (!__solver->resolveType(o3_type)) { return false; }
 
         return __prm->type(o3_type.label()).isSubTypeOf(type);
@@ -928,11 +928,11 @@ namespace gum {
       }
 
       template < typename GUM_SCALAR >
-      INLINE const PRMType< GUM_SCALAR >*
+      INLINE const PRMType*
                    O3ClassFactory< GUM_SCALAR >::__checkAggParents(O3Class&     o3class,
                                                         O3Aggregate& agg) {
         const auto& c = __prm->getClass(o3class.name().label());
-        auto        t = (const PRMType< GUM_SCALAR >*)nullptr;
+        auto        t = (const PRMType*)nullptr;
 
         for (const auto& prnt : agg.parents()) {
           auto elt = __resolveSlotChain(c, prnt);
@@ -983,7 +983,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE bool O3ClassFactory< GUM_SCALAR >::__checkAggParameters(
-        O3Class& o3class, O3Aggregate& agg, const PRMType< GUM_SCALAR >* t) {
+        O3Class& o3class, O3Aggregate& agg, const PRMType* t) {
         bool ok = false;
 
         switch (gum::prm::PRMAggregate< GUM_SCALAR >::str2enum(
@@ -1042,7 +1042,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE bool O3ClassFactory< GUM_SCALAR >::__checkParameterValue(
-        O3Aggregate& agg, const gum::prm::PRMType< GUM_SCALAR >& t) {
+        O3Aggregate& agg, const gum::prm::PRMType& t) {
         const auto& param = agg.parameters().front();
         bool        found = false;
         for (Size idx = 0; idx < t.variable().domainSize(); ++idx) {

@@ -27,8 +27,11 @@
 #ifndef GUM_FUNC_ATTRIBUTE_H
 #define GUM_FUNC_ATTRIBUTE_H
 
+#include <agrum/PRM/elements/PRMType.h>
+
 #include <agrum/PRM/elements/PRMScalarAttribute.h>
 #include <agrum/multidim/implementations/multiDimImplementation.h>
+#include <agrum/multidim/potential.h>
 
 namespace gum {
   namespace prm {
@@ -65,7 +68,7 @@ namespace gum {
        *             it will be deleted after the call of ~PRMFuncAttribute.
        */
       PRMFuncAttribute(const std::string&                    name,
-                       const PRMType< GUM_SCALAR >&          type,
+                       const PRMType&                        type,
                        MultiDimImplementation< GUM_SCALAR >* impl =
                          new MultiDimArray< GUM_SCALAR >());
 
@@ -80,10 +83,10 @@ namespace gum {
 
       protected:
       /// Copy constructor. Don't use it.
-      PRMFuncAttribute(const PRMFuncAttribute& source);
+      PRMFuncAttribute(const PRMFuncAttribute< GUM_SCALAR >& source);
 
       /// Copy operator. Don't use it.
-      PRMFuncAttribute& operator=(const PRMFuncAttribute& from);
+      PRMFuncAttribute< GUM_SCALAR >& operator=(const PRMFuncAttribute< GUM_SCALAR >& from);
 
       virtual void _setCpf(Potential< GUM_SCALAR >* cpf);
     };

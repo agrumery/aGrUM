@@ -29,15 +29,25 @@
 
 #include <set>
 #include <utility>
+#include <string>
 
+#include <agrum/agrum.h>
 #include <agrum/core/sequence.h>
 #include <agrum/core/set.h>
 
+#include <agrum/PRM/elements/PRMClassElement.h>
 #include <agrum/PRM/elements/PRMClassElementContainer.h>
+#include <agrum/PRM/elements/PRMAttribute.h>
+#include <agrum/PRM/elements/PRMReferenceSlot.h>
+#include <agrum/PRM/elements/PRMScalarAttribute.h>
+
 
 namespace gum {
   namespace prm {
 
+    template <typename GUM_SCALAR >
+    class PRMClass;
+    
     /**
      * @class PRMInterface
      * @headerfile interface.h <agrum/PRM/interface.h>
@@ -73,12 +83,12 @@ namespace gum {
        * @param super The super PRMInterface of this.
        * @param delayInheritance If true, inheritance will be delayed.
        */
-      PRMInterface(const std::string& name,
-                   PRMInterface&      super,
-                   bool               delayInheritance = false);
+      PRMInterface(const std::string&          name,
+                   PRMInterface< GUM_SCALAR >& super,
+                   bool                        delayInheritance = false);
 
       /// Copy constructor.
-      PRMInterface(const PRMInterface& source);
+      PRMInterface(const PRMInterface< GUM_SCALAR >& source);
 
       /// Destructor.
       virtual ~PRMInterface();
@@ -214,14 +224,14 @@ namespace gum {
        * @return Returns the super PRMInterface of this PRMInterface.
        * @throw NotFound Raised if this has no super PRMInterface.
        */
-      PRMInterface& super();
+      PRMInterface< GUM_SCALAR >& super();
 
       /**
        * @brief Returns the superInterface of this PRMInterface.
        * @return Returns the super PRMInterface of this PRMInterface.
        * @throw NotFound Raised if this has no super PRMInterface.
        */
-      const PRMInterface& super() const;
+      const PRMInterface< GUM_SCALAR >& super() const;
 
       /**
        * Returns the set of Class<GUM_SCALAR> implementing this PRMInterface.
@@ -298,10 +308,10 @@ namespace gum {
 
       private:
       /// Copy operator. Don't use it.
-      PRMInterface& operator=(const PRMInterface& source);
+      PRMInterface< GUM_SCALAR >& operator=(const PRMInterface< GUM_SCALAR >& source);
 
       /// Proceed with the copy of i in this.
-      void __inheritInterface(const PRMInterface& i);
+      void __inheritInterface(const PRMInterface< GUM_SCALAR >& i);
 
       // ========================================================================
       /// @name Graphical model members
@@ -342,7 +352,7 @@ namespace gum {
       /// elements defined in
       ///        this.
       /// Note that this is first searched for gum::PRMClassElement<GUM_SCALAR>.
-      PRMInterface* __superInterface;
+      PRMInterface< GUM_SCALAR >* __superInterface;
 
       /// The set of Class<GUM_SCALAR> which implements this PRMInterface.
       Set< PRMClass< GUM_SCALAR >* > __implementations;
@@ -353,12 +363,12 @@ namespace gum {
       void __addImplementation(PRMClass< GUM_SCALAR >* c);
 
       /// The set of Class<GUM_SCALAR> which implements this PRMInterface.
-      Set< PRMInterface* > __extensions;
+      Set< PRMInterface< GUM_SCALAR >* > __extensions;
 
       /// Add an Class<GUM_SCALAR> to the set of Class<GUM_SCALAR> which
       /// implements
       /// this PRMInterface.
-      void __addExtension(PRMInterface* c);
+      void __addExtension(PRMInterface< GUM_SCALAR >* c);
 
       bool
         __checkOverloadLegality(const PRMClassElement< GUM_SCALAR >* overloaded,

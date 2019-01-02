@@ -23,9 +23,6 @@
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
-#include <agrum/PRM/elements/PRMAggregate.h>
-#include <agrum/PRM/elements/PRMAttribute.h>
-#include <agrum/PRM/elements/PRMReferenceSlot.h>
 #include <agrum/PRM/elements/PRMSlotChain.h>
 
 namespace gum {
@@ -97,7 +94,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void PRMSlotChain< GUM_SCALAR >::__copyLastElt() {
-      PRMClassElement< GUM_SCALAR >* new_elt = 0;
+      PRMClassElement< GUM_SCALAR >* new_elt = nullptr;
 
       switch (__chain->back()->elt_type()) {
         case PRMClassElement< GUM_SCALAR >::prm_attribute: {
@@ -162,12 +159,12 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE PRMType< GUM_SCALAR >& PRMSlotChain< GUM_SCALAR >::type() {
+    INLINE PRMType& PRMSlotChain< GUM_SCALAR >::type() {
       return __chain->back()->type();
     }
 
     template < typename GUM_SCALAR >
-    INLINE const PRMType< GUM_SCALAR >& PRMSlotChain< GUM_SCALAR >::type() const {
+    INLINE const PRMType& PRMSlotChain< GUM_SCALAR >::type() const {
       return __chain->back()->type();
     }
 

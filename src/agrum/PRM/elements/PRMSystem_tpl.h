@@ -26,8 +26,6 @@
  */
 #include <agrum/PRM/elements/PRMSystem.h>
 
-#include <agrum/PRM/elements/PRMInstance.h>
-
 #include <agrum/multidim/aggregators/exists.h>
 #include <agrum/multidim/aggregators/forall.h>
 #include <agrum/multidim/aggregators/max.h>

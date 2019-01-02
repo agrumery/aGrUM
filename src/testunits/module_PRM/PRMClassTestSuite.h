@@ -39,7 +39,7 @@ namespace gum_tests {
     private:
     typedef gum::prm::PRMClass< double >           PRMClass;
     typedef gum::prm::PRMInterface< double >       PRMInterface;
-    typedef gum::prm::PRMType< double >            PRMType;
+    typedef gum::prm::PRMType                      PRMType;
     typedef gum::prm::PRMAggregate< double >       PRMAggregate;
     typedef gum::prm::PRMScalarAttribute< double > PRMAttribute;
     typedef gum::prm::PRMReferenceSlot< double >   Reference;
@@ -50,7 +50,7 @@ namespace gum_tests {
 
     public:
     void setUp() {
-      __boolean = gum::prm::PRMType< double >::boolean();
+      __boolean = gum::prm::PRMType::boolean();
       gum::LabelizedVariable state{"state", "A state variable", 0};
       state.addLabel("OK");
       state.addLabel("NOK");
@@ -277,7 +277,7 @@ namespace gum_tests {
       c.add(attr);
       PRMClass                    sub_c("sub_c", c);
       gum::LabelizedVariable      var("foo", "bar", 2);
-      gum::prm::PRMType< double > type(var);
+      gum::prm::PRMType           type(var);
       PRMAttribute*               bttr = new PRMAttribute("attr", type);
       // Act & Assert
       TS_ASSERT_THROWS(sub_c.overload(bttr), gum::OperationNotAllowed);

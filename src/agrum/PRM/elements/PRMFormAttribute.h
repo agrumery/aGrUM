@@ -48,7 +48,7 @@ namespace gum {
       public:
       PRMFormAttribute(const PRMClass< GUM_SCALAR >&          c,
                        const std::string&                     name,
-                       const PRMType< GUM_SCALAR >&           type,
+                       const PRMType&                         type,
                        MultiDimImplementation< std::string >* impl =
                          new MultiDimArray< std::string >());
 
@@ -72,10 +72,10 @@ namespace gum {
         elt_type() const;
 
       /// See gum::prm::PRMAttribute.
-      virtual PRMType< GUM_SCALAR >& type();
+      virtual PRMType& type();
 
       /// See gum::prm::PRMAttribute.
-      virtual const PRMType< GUM_SCALAR >& type() const;
+      virtual const PRMType& type() const;
 
       /// See gum::prm::PRMAttribute.
       virtual const Potential< GUM_SCALAR >& cpf() const;
@@ -91,25 +91,25 @@ namespace gum {
 
       /// See gum::prm::PRMAttribute.
       virtual void setAsCastDescendant(PRMAttribute< GUM_SCALAR >* attr);
-      virtual void becomeCastDescendant(PRMType< GUM_SCALAR >& subtype);
+      virtual void becomeCastDescendant(PRMType& subtype);
 
       virtual MultiDimImplementation< std::string >&       formulas();
       virtual const MultiDimImplementation< std::string >& formulas() const;
 
       /// Swap old_type with new_type in the PRMClassElement cpt.
-      virtual void swap(const PRMType< GUM_SCALAR >& old_type,
-                        const PRMType< GUM_SCALAR >& new_type);
+      virtual void swap(const PRMType& old_type,
+                        const PRMType& new_type);
 
       protected:
-      virtual PRMType< GUM_SCALAR >* _type();
-      virtual void                   _type(PRMType< GUM_SCALAR >* t);
+      virtual PRMType* _type();
+      virtual void     _type(PRMType* t);
 
       private:
       PRMFormAttribute(const PRMFormAttribute& source);
       PRMFormAttribute& operator=(const PRMFormAttribute& source);
 
       /// The random variable type of this attribute
-      PRMType< GUM_SCALAR >* __type;
+      PRMType* __type;
 
       /// A pointer on the Potential of this attribute
       mutable Potential< GUM_SCALAR >* __cpf;

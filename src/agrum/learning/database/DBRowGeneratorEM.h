@@ -111,11 +111,11 @@ namespace gum {
                        const allocator_type&                   alloc);
 
       /// virtual copy constructor
-      virtual DBRowGeneratorEM< GUM_SCALAR, ALLOC >* clone() const;
+      virtual DBRowGeneratorEM< GUM_SCALAR, ALLOC >* clone() const override final;
 
       /// virtual copy constructor with a given allocator
       virtual DBRowGeneratorEM< GUM_SCALAR, ALLOC >*
-        clone(const allocator_type& alloc) const;
+        clone(const allocator_type& alloc) const override final;
 
       /// destructor
       ~DBRowGeneratorEM();

@@ -86,8 +86,8 @@ namespace gum {
       /// @{
 
       /**
-       * @param name The name of a possible PRMType<GUM_SCALAR> in this PRM.
-       * @return Returns true if name names a PRMType<GUM_SCALAR> in this PRM.
+       * @param name The name of a possible PRMType in this PRM.
+       * @return Returns true if name names a PRMType in this PRM.
        */
       bool isType(const std::string& name) const;
 
@@ -112,21 +112,21 @@ namespace gum {
       bool isSystem(const std::string& name) const;
 
       /**
-       * Returns a constant reference on a PRMType<GUM_SCALAR> given it's name.
+       * Returns a constant reference on a PRMType given it's name.
        * @throw NotFound Raised if no type is found with the given name.
        */
-      PRMType< GUM_SCALAR >& type(const std::string& name);
+      PRMType& type(const std::string& name);
 
       /**
-       * Returns a constant reference on a PRMType<GUM_SCALAR> given it's name.
+       * Returns a constant reference on a PRMType given it's name.
        * @throw NotFound Raised if no type is found with the given name.
        */
-      const PRMType< GUM_SCALAR >& type(const std::string& name) const;
+      const PRMType& type(const std::string& name) const;
 
       /**
-       * Returns the Set of all PRMType<GUM_SCALAR> in this PRM.
+       * Returns the Set of all PRMType in this PRM.
        */
-      const Set< PRMType< GUM_SCALAR >* >& types() const;
+      const Set< PRMType* >& types() const;
 
       /**
        * Returns a constant reference on a Class<GUM_SCALAR> given it's name.
@@ -220,11 +220,11 @@ namespace gum {
       /// Set of all Class<GUM_SCALAR> in this PRM.
       Set< PRMInterface< GUM_SCALAR >* > __interfaces;
 
-      /// Mapping of all PRMType<GUM_SCALAR> given their name.
-      HashTable< std::string, PRMType< GUM_SCALAR >* > __typeMap;
+      /// Mapping of all PRMType given their name.
+      HashTable< std::string, PRMType* > __typeMap;
 
-      /// Set of all PRMType<GUM_SCALAR> in this PRM.
-      Set< PRMType< GUM_SCALAR >* > __types;
+      /// Set of all PRMType in this PRM.
+      Set< PRMType* > __types;
 
       /// Mapping of all Systems given their name.
       HashTable< std::string, PRMSystem< GUM_SCALAR >* > __systemMap;

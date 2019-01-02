@@ -452,7 +452,7 @@ namespace gum {
       /// @}
       private:
       /// Copy constructor.
-      PRMInstance< GUM_SCALAR >(const PRMInstance< GUM_SCALAR >& source);
+      PRMInstance(const PRMInstance< GUM_SCALAR >& source);
 
       /// Copy operator. Don't use it.
       PRMInstance< GUM_SCALAR >& operator=(const PRMClass< GUM_SCALAR >& from);

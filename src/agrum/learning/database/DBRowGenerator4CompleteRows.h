@@ -107,11 +107,11 @@ namespace gum {
                                   const allocator_type&                  alloc);
 
       /// virtual copy constructor
-      virtual DBRowGenerator4CompleteRows< ALLOC >* clone() const;
+      virtual DBRowGenerator4CompleteRows< ALLOC >* clone() const  override final;
 
       /// virtual copy constructor with a given allocator
       virtual DBRowGenerator4CompleteRows< ALLOC >*
-        clone(const allocator_type& alloc) const;
+        clone(const allocator_type& alloc) const override final;
 
       /// destructor
       ~DBRowGenerator4CompleteRows();

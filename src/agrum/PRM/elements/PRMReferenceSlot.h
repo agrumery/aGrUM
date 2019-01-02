@@ -28,6 +28,7 @@
 #define GUM_REFERENCE_SLOT_H
 
 #include <agrum/PRM/elements/PRMClassElement.h>
+#include <agrum/PRM/elements/PRMClassElementContainer.h>
 
 namespace gum {
   namespace prm {
@@ -120,11 +121,11 @@ namespace gum {
 
       /// @brief Raise an OperationNotAllowed.
       /// See gum::PRMClassElement::type().
-      virtual PRMType< GUM_SCALAR >& type();
+      virtual PRMType& type();
 
       /// @brief Raise an OperationNotAllowed.
       /// See gum::PRMClassElement::type().
-      virtual const PRMType< GUM_SCALAR >& type() const;
+      virtual const PRMType& type() const;
 
       /// @brief Raise an OperationNotAllowed.
       /// See gum::PRMClassElement::cpf().
@@ -146,10 +147,10 @@ namespace gum {
       // @{
 
       /// Copy constructor. Don't use it.
-      PRMReferenceSlot(const PRMReferenceSlot& source);
+      PRMReferenceSlot(const PRMReferenceSlot< GUM_SCALAR >& source);
 
       /// Copy operator. Don't use it.
-      PRMReferenceSlot& operator=(const PRMReferenceSlot& from);
+      PRMReferenceSlot& operator=(const PRMReferenceSlot< GUM_SCALAR >& from);
 
       /// @}
       // ========================================================================

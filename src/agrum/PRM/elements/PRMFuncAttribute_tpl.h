@@ -24,7 +24,6 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/PRM/elements/PRMType.h>
 
 namespace gum {
   namespace prm {
@@ -32,7 +31,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE PRMFuncAttribute< GUM_SCALAR >::PRMFuncAttribute(
       const std::string&                    name,
-      const PRMType< GUM_SCALAR >&          type,
+      const PRMType&                        type,
       MultiDimImplementation< GUM_SCALAR >* impl) :
         PRMScalarAttribute< GUM_SCALAR >(name, type, impl) {
       std::stringstream str;

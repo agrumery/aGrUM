@@ -25,11 +25,6 @@
  */
 
 #include <climits>
-#include <memory>
-
-#include <agrum/PRM/elements/PRMAggregate.h>
-#include <agrum/PRM/elements/PRMScalarAttribute.h>
-#include <agrum/PRM/elements/PRMType.h>
 
 #include <agrum/multidim/aggregators/amplitude.h>
 #include <agrum/multidim/aggregators/and.h>
@@ -45,11 +40,11 @@ namespace gum {
   namespace prm {
 
     template < typename GUM_SCALAR >
-    PRMAggregate< GUM_SCALAR >::PRMAggregate(const std::string&           name,
-                                             AggregateType                aggType,
-                                             const PRMType< GUM_SCALAR >& rvType) :
+    PRMAggregate< GUM_SCALAR >::PRMAggregate(const std::string& name,
+                                             AggregateType      aggType,
+                                             const PRMType&     rvType) :
         PRMClassElement< GUM_SCALAR >(name),
-        __agg_type(aggType), __type(new PRMType< GUM_SCALAR >(rvType)),
+        __agg_type(aggType), __type(new PRMType(rvType)),
         __label(std::shared_ptr< Idx >(new Idx(INT_MAX))) {
       GUM_CONSTRUCTOR(PRMAggregate);
       this->_safeName =
@@ -58,12 +53,12 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    PRMAggregate< GUM_SCALAR >::PRMAggregate(const std::string&           name,
-                                             AggregateType                aggType,
-                                             const PRMType< GUM_SCALAR >& rvType,
-                                             Idx                          label) :
+    PRMAggregate< GUM_SCALAR >::PRMAggregate(const std::string& name,
+                                             AggregateType      aggType,
+                                             const PRMType&     rvType,
+                                             Idx                label) :
         PRMClassElement< GUM_SCALAR >(name),
-        __agg_type(aggType), __type(new PRMType< GUM_SCALAR >(rvType)),
+        __agg_type(aggType), __type(new PRMType(rvType)),
         __label(std::shared_ptr< Idx >(new Idx(label))) {
       GUM_CONSTRUCTOR(PRMAggregate);
       this->_safeName =
@@ -130,12 +125,12 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE PRMType< GUM_SCALAR >& PRMAggregate< GUM_SCALAR >::type() {
+    INLINE PRMType& PRMAggregate< GUM_SCALAR >::type() {
       return *__type;
     }
 
     template < typename GUM_SCALAR >
-    INLINE const PRMType< GUM_SCALAR >& PRMAggregate< GUM_SCALAR >::type() const {
+    INLINE const PRMType& PRMAggregate< GUM_SCALAR >::type() const {
       return *__type;
     }
 

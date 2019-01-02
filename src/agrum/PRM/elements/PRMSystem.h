@@ -28,6 +28,7 @@
 #define GUM_SYSTEM_H
 
 #include <utility>
+#include <string>
 
 #include <agrum/core/hashTable.h>
 #include <agrum/core/sequence.h>
@@ -38,6 +39,8 @@
 #include <agrum/BN/BayesNetFactory.h>
 
 #include <agrum/PRM/elements/PRMObject.h>
+#include <agrum/PRM/elements/PRMInstance.h>
+#include <agrum/PRM/elements/PRMClass.h>
 
 namespace gum {
   namespace prm {
@@ -256,10 +259,10 @@ namespace gum {
       /// @}
       private:
       /// Copy constructor. Don't use it.
-      PRMSystem(const PRMSystem& from);
+      PRMSystem(const PRMSystem< GUM_SCALAR >& from);
 
       /// Copy operator. Don't use it.
-      PRMSystem& operator=(const PRMSystem& from);
+      PRMSystem< GUM_SCALAR >& operator=(const PRMSystem< GUM_SCALAR >& from);
 
       // ========================================================================
       /// @name Private PRMInstance handling methods and members.

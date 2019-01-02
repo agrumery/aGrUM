@@ -41,14 +41,14 @@ namespace gum_tests {
     ClassElementTestSuiteAbstract*               __classEltTestSuite;
     gum::prm::PRMClass< double >*                __A;
     gum::prm::PRMClass< double >*                __B;
-    gum::prm::PRMType< double >*                 __boolean;
+    gum::prm::PRMType*                           __boolean;
 
     public:
     void setUp() {
       __classEltTestSuite = new ClassElementTestSuiteAbstract();
       __A = new gum::prm::PRMClass< double >("A");
       __B = new gum::prm::PRMClass< double >("B");
-      __boolean = gum::prm::PRMType< double >::boolean();
+      __boolean = gum::prm::PRMType::boolean();
     }
 
     void tearDown() {

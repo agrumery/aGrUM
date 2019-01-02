@@ -691,7 +691,7 @@ namespace gum {
       // (see below)
       bool hasSC = __retrieveInputs(c, chains, inputs);
 
-      // Checking that all inputs shares the same PRMType<GUM_SCALAR> (trivial
+      // Checking that all inputs shares the same PRMType (trivial
       // if
       // inputs.size() == 1)
       if (inputs.size() > 1) {
@@ -1007,7 +1007,7 @@ namespace gum {
         }
       }
 
-      PRMType< GUM_SCALAR >* t = __retrieveCommonType(inputs);
+      PRMType* t = __retrieveCommonType(inputs);
 
       std::vector< std::pair< PRMClassElement< GUM_SCALAR >*,
                               PRMClassElement< GUM_SCALAR >* > >
@@ -1044,9 +1044,9 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE PRMType< GUM_SCALAR >* PRMFactory< GUM_SCALAR >::__retrieveCommonType(
+    INLINE PRMType* PRMFactory< GUM_SCALAR >::__retrieveCommonType(
       const std::vector< PRMClassElement< GUM_SCALAR >* >& elts) {
-      const PRMType< GUM_SCALAR >*   current = nullptr;
+      const PRMType*   current = nullptr;
       HashTable< std::string, Size > counters;
       // Finding all types and super types
 
@@ -1093,7 +1093,7 @@ namespace gum {
         }
       }
 
-      if (current) { return const_cast< PRMType< GUM_SCALAR >* >(current); }
+      if (current) { return const_cast< PRMType* >(current); }
 
       GUM_ERROR(NotFound, "could not find a common type");
     }
@@ -1117,7 +1117,7 @@ namespace gum {
       for (const auto& elt : chains)
         parents.push_back(&(c->get(elt)));
 
-      PRMType< GUM_SCALAR >* common_type = __retrieveCommonType(parents);
+      PRMType* common_type = __retrieveCommonType(parents);
 
       for (size_t idx = 0; idx < parents.size(); ++idx) {
         if (parents[idx]->type() != (*common_type)) {
@@ -1168,9 +1168,9 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE PRMType< GUM_SCALAR >*
+    INLINE PRMType*
            PRMFactory< GUM_SCALAR >::__retrieveType(const std::string& name) const {
-      PRMType< GUM_SCALAR >* type = nullptr;
+      PRMType* type = nullptr;
       std::string            full_name;
 
       // Looking for the type using its name
@@ -1413,10 +1413,10 @@ namespace gum {
         GUM_ERROR(DuplicateElement, "'" << real_name << "' is already used.");
       }
       if (super == "") {
-        auto t = new PRMType< GUM_SCALAR >(LabelizedVariable(real_name, "", 0));
+        auto t = new PRMType(LabelizedVariable(real_name, "", 0));
         __stack.push_back(t);
       } else {
-        auto t = new PRMType< GUM_SCALAR >(LabelizedVariable(real_name, "", 0));
+        auto t = new PRMType(LabelizedVariable(real_name, "", 0));
         t->__superType = __retrieveType(super);
         t->__label_map = new std::vector< Idx >();
         __stack.push_back(t);
@@ -1427,7 +1427,7 @@ namespace gum {
     INLINE void PRMFactory< GUM_SCALAR >::addLabel(const std::string& l,
                                                    std::string        extends) {
       if (extends == "") {
-        PRMType< GUM_SCALAR >* t = static_cast< PRMType< GUM_SCALAR >* >(
+        PRMType* t = static_cast< PRMType* >(
           __checkStack(1, PRMObject::prm_type::TYPE));
         LabelizedVariable* var = dynamic_cast< LabelizedVariable* >(t->__var);
 
@@ -1444,7 +1444,7 @@ namespace gum {
           GUM_ERROR(DuplicateElement, "a label '" << l << "' already exists");
         }
       } else {
-        PRMType< GUM_SCALAR >* t = static_cast< PRMType< GUM_SCALAR >* >(
+        PRMType* t = static_cast< PRMType* >(
           __checkStack(1, PRMObject::prm_type::TYPE));
         LabelizedVariable* var = dynamic_cast< LabelizedVariable* >(t->__var);
 
@@ -1478,7 +1478,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMFactory< GUM_SCALAR >::endDiscreteType() {
-      PRMType< GUM_SCALAR >* t = static_cast< PRMType< GUM_SCALAR >* >(
+      PRMType* t = static_cast< PRMType* >(
         __checkStack(1, PRMObject::prm_type::TYPE));
 
       if (!t->__isValid()) {
@@ -1502,13 +1502,13 @@ namespace gum {
         GUM_ERROR(DuplicateElement, "'" << real_name << "' is already used.");
       }
       auto var = DiscretizedVariable< double >(real_name, "");
-      auto t = new PRMType< GUM_SCALAR >(var);
+      auto t = new PRMType(var);
       __stack.push_back(t);
     }
 
     template < typename GUM_SCALAR >
     INLINE void PRMFactory< GUM_SCALAR >::addTick(double tick) {
-      PRMType< GUM_SCALAR >* t = static_cast< PRMType< GUM_SCALAR >* >(
+      PRMType* t = static_cast< PRMType* >(
         __checkStack(1, PRMObject::prm_type::TYPE));
       DiscretizedVariable< double >* var =
         dynamic_cast< DiscretizedVariable< double >* >(t->__var);
@@ -1527,7 +1527,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMFactory< GUM_SCALAR >::endDiscretizedType() {
-      PRMType< GUM_SCALAR >* t = static_cast< PRMType< GUM_SCALAR >* >(
+      PRMType* t = static_cast< PRMType* >(
         __checkStack(1, PRMObject::prm_type::TYPE));
 
       if (t->variable().domainSize() < 2) {
@@ -1553,7 +1553,7 @@ namespace gum {
       }
 
       auto var = RangeVariable(real_name, "", minVal, maxVal);
-      auto t = new PRMType< GUM_SCALAR >(var);
+      auto t = new PRMType(var);
 
       if (t->variable().domainSize() < 2) {
         GUM_ERROR(OperationNotAllowed,
@@ -1817,9 +1817,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE int
-      PRMFactory< GUM_SCALAR >::__typeDepth(const PRMType< GUM_SCALAR >* t) {
+      PRMFactory< GUM_SCALAR >::__typeDepth(const PRMType* t) {
       int                          depth = 0;
-      const PRMType< GUM_SCALAR >* current = t;
+      const PRMType* current = t;
 
       while (current->isSubType()) {
         ++depth;
@@ -1885,13 +1885,13 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE PRMType< GUM_SCALAR >&
+    INLINE PRMType&
            PRMFactory< GUM_SCALAR >::retrieveType(const std::string& name) {
       return *__retrieveType(name);
     }
 
     template < typename GUM_SCALAR >
-    INLINE PRMType< GUM_SCALAR >& PRMFactory< GUM_SCALAR >::retrieveCommonType(
+    INLINE PRMType& PRMFactory< GUM_SCALAR >::retrieveCommonType(
       const std::vector< PRMClassElement< GUM_SCALAR >* >& elts) {
       return *(__retrieveCommonType(elts));
     }

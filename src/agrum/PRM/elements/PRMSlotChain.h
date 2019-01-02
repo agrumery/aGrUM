@@ -27,13 +27,21 @@
 #ifndef GUM_SLOT_CHAIN_H
 #define GUM_SLOT_CHAIN_H
 
+#include <string>
+
 #include <agrum/core/sequence.h>
 
 #include <agrum/multidim/ICIModels/multiDimNoisyORCompound.h>
 #include <agrum/multidim/ICIModels/multiDimNoisyORNet.h>
 #include <agrum/multidim/implementations/multiDimBijArray.h>
+#include <agrum/multidim/potential.h>
 
+#include <agrum/PRM/elements/PRMType.h>
 #include <agrum/PRM/elements/PRMClassElement.h>
+#include <agrum/PRM/elements/PRMClassElementContainer.h>
+#include <agrum/PRM/elements/PRMAttribute.h>
+#include <agrum/PRM/elements/PRMAggregate.h>
+#include <agrum/PRM/elements/PRMReferenceSlot.h>
 
 namespace gum {
   namespace prm {
@@ -121,7 +129,7 @@ namespace gum {
        *
        * This creates a copy of the slot chain.
        */
-      PRMSlotChain(const PRMSlotChain& source);
+      PRMSlotChain(const PRMSlotChain< GUM_SCALAR >& source);
 
       /// Destructor.
       virtual ~PRMSlotChain();
@@ -137,10 +145,10 @@ namespace gum {
         elt_type() const;
 
       /// This is similar to the following call: this->lastElt().type()
-      virtual PRMType< GUM_SCALAR >& type();
+      virtual PRMType& type();
 
       /// This is similar to the following call: this->lastElt().type()
-      virtual const PRMType< GUM_SCALAR >& type() const;
+      virtual const PRMType& type() const;
 
       // /// This is similar to the following call: this->lastElt().cpf()
       // virtual Potential<GUM_SCALAR>& cpf();

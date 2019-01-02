@@ -37,10 +37,10 @@ namespace gum {
     template < typename GUM_SCALAR >
     PRMScalarAttribute< GUM_SCALAR >::PRMScalarAttribute(
       const std::string&                    name,
-      const PRMType< GUM_SCALAR >&          type,
+      const PRMType&                        type,
       MultiDimImplementation< GUM_SCALAR >* impl) :
         PRMAttribute< GUM_SCALAR >(name),
-        __type(new PRMType< GUM_SCALAR >(type)),
+        __type(new PRMType(type)),
         __cpf(new Potential< GUM_SCALAR >(impl)) {
       GUM_CONSTRUCTOR(PRMScalarAttribute);
       __cpf->add(__type->variable());
@@ -127,12 +127,12 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE PRMType< GUM_SCALAR >& PRMScalarAttribute< GUM_SCALAR >::type() {
+    INLINE PRMType& PRMScalarAttribute< GUM_SCALAR >::type() {
       return *__type;
     }
 
     template < typename GUM_SCALAR >
-    INLINE const PRMType< GUM_SCALAR >&
+    INLINE const PRMType&
                  PRMScalarAttribute< GUM_SCALAR >::type() const {
       return *__type;
     }
@@ -209,7 +209,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void PRMScalarAttribute< GUM_SCALAR >::becomeCastDescendant(
-      PRMType< GUM_SCALAR >& subtype) {
+      PRMType& subtype) {
       delete __cpf;
       __cpf = new Potential< GUM_SCALAR >();
       __cpf->add(type().variable());
@@ -229,8 +229,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void PRMScalarAttribute< GUM_SCALAR >::swap(
-      const PRMType< GUM_SCALAR >& old_type,
-      const PRMType< GUM_SCALAR >& new_type) {
+      const PRMType& old_type,
+      const PRMType& new_type) {
       if (&(old_type) == __type) {
         GUM_ERROR(OperationNotAllowed, "Cannot replace attribute own type");
       }
@@ -270,12 +270,12 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    PRMType< GUM_SCALAR >* PRMScalarAttribute< GUM_SCALAR >::_type() {
+    PRMType* PRMScalarAttribute< GUM_SCALAR >::_type() {
       return __type;
     }
 
     template < typename GUM_SCALAR >
-    void PRMScalarAttribute< GUM_SCALAR >::_type(PRMType< GUM_SCALAR >* t) {
+    void PRMScalarAttribute< GUM_SCALAR >::_type(PRMType* t) {
       if (__type->variable().domainSize() != t->variable().domainSize()) {
         GUM_ERROR(OperationNotAllowed,
                   "Cannot replace types with difference domain size");

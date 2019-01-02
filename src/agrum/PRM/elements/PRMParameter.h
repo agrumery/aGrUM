@@ -27,7 +27,12 @@
 #ifndef GUM_PARAMETER_H
 #define GUM_PARAMETER_H
 
+#include <agrum/multidim/potential.h>
+
+#include <agrum/PRM/elements/PRMType.h>
 #include <agrum/PRM/elements/PRMClassElement.h>
+#include <agrum/PRM/elements/PRMAttribute.h>
+
 
 namespace gum {
   namespace prm {
@@ -79,10 +84,10 @@ namespace gum {
       ParameterType valueType() const;
 
       /// See gum::PRMClassElement::type().
-      virtual PRMType< GUM_SCALAR >& type();
+      virtual PRMType& type();
 
       /// See gum::PRMClassElement::type().
-      virtual const PRMType< GUM_SCALAR >& type() const;
+      virtual const PRMType& type() const;
 
       /// See gum::PRMClassElement::cpf().
       virtual Potential< GUM_SCALAR >& cpf();
@@ -106,7 +111,8 @@ namespace gum {
       PRMParameter(const PRMParameter< GUM_SCALAR >& source);
 
       /// Copy operator. Don't use it.
-      PRMParameter& operator=(const PRMParameter< GUM_SCALAR >& from);
+      PRMParameter< GUM_SCALAR >&
+      operator=(const PRMParameter< GUM_SCALAR >& from);
 
       private:
       // ========================================================================

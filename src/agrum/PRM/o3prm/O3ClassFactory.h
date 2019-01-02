@@ -120,7 +120,7 @@ namespace gum {
           HashTable< std::string, O3ReferenceSlot* >& refMap);
 
         bool __checkImplementation(O3Label&                     o3_type,
-                                   const PRMType< GUM_SCALAR >& type);
+                                   const PRMType& type);
 
         bool __checkImplementation(
           O3Label& o3_type, const PRMClassElementContainer< GUM_SCALAR >& type);
@@ -198,7 +198,7 @@ namespace gum {
         bool __checkAggregateForDeclaration(O3Class& o3class, O3Aggregate& agg);
         bool __checkAggregateForCompletion(O3Class& o3class, O3Aggregate& agg);
 
-        const PRMType< GUM_SCALAR >* __checkAggParents(O3Class&     o3class,
+        const PRMType* __checkAggParents(O3Class&     o3class,
                                                        O3Aggregate& agg);
 
         bool __checkAggTypeLegality(O3Class& o3class, O3Aggregate& agg);
@@ -206,12 +206,12 @@ namespace gum {
 
         bool __checkAggParameters(O3Class&                     o3class,
                                   O3Aggregate&                 agg,
-                                  const PRMType< GUM_SCALAR >* t);
+                                  const PRMType* t);
 
         bool __checkParametersNumber(O3Aggregate& agg, Size n);
 
         bool __checkParameterValue(O3Aggregate&                           agg,
-                                   const gum::prm::PRMType< GUM_SCALAR >& t);
+                                   const gum::prm::PRMType& t);
 
         // @}
       };

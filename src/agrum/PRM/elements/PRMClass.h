@@ -30,21 +30,26 @@
 #include <set>
 #include <utility>
 
+#include <agrum/agrum.h>
+#include <agrum/core/bijection.h>
+#include <agrum/core/sequence.h>
+#include <agrum/core/set.h>
+#include <agrum/multidim/implementations/multiDimImplementation.h>
+#include <agrum/multidim/implementations/multiDimSparse.h>
 #include <agrum/PRM/elements/PRMAggregate.h>
 #include <agrum/PRM/elements/PRMAttribute.h>
 #include <agrum/PRM/elements/PRMClassElementContainer.h>
 #include <agrum/PRM/elements/PRMParameter.h>
 #include <agrum/PRM/elements/PRMReferenceSlot.h>
 #include <agrum/PRM/elements/PRMSlotChain.h>
-#include <agrum/core/bijection.h>
-#include <agrum/core/sequence.h>
-#include <agrum/core/set.h>
-#include <agrum/multidim/implementations/multiDimImplementation.h>
-#include <agrum/multidim/implementations/multiDimSparse.h>
+
 
 namespace gum {
   namespace prm {
 
+    template <typename GUM_SCALAR >
+    class PRMInterface;
+    
     /**
      * @class PRMClass
      * @headerfile PRMClass.h <agrum/PRM/elements/PRMClass.h>
@@ -453,9 +458,12 @@ namespace gum {
       /// @}
     };
 
+    
+    // The following 2 lines must be commented so that aGrUM can be
+    // compiled with clange 4.0:
+    // extern template class PRMClass< float >;
+    // extern template class PRMClass< double >;
 
-    extern template class PRMClass< float >;
-    extern template class PRMClass< double >;
 
   } /* namespace prm */
 
