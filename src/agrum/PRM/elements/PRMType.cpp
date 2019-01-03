@@ -35,7 +35,7 @@ namespace gum {
 
   namespace prm {
 
-    
+
     void PRMType::__updateName() {
       const void*       address = static_cast< const void* >(this);
       std::stringstream ss;
@@ -43,17 +43,17 @@ namespace gum {
       this->__var->setName(ss.str());
     }
 
-    
+
     PRMType::PRMType(const DiscreteVariable& var) :
         PRMObject(var.name()), __var(var.clone()), __superType(0), __label_map(0) {
       GUM_CONSTRUCTOR(PRMType);
       this->__updateName();
     }
 
-    
-    PRMType::PRMType(PRMType&    super_type,
-                                   const std::vector< Idx >& label_map,
-                                   const DiscreteVariable&   var) :
+
+    PRMType::PRMType(PRMType&                  super_type,
+                     const std::vector< Idx >& label_map,
+                     const DiscreteVariable&   var) :
         PRMObject(var.name()),
         __var(var.clone()), __superType(&super_type),
         __label_map(new std::vector< Idx >(label_map)) {
@@ -67,7 +67,7 @@ namespace gum {
       }
     }
 
-    
+
     PRMType::PRMType(const PRMType& from) :
         PRMObject(from), __var(from.__var->clone()), __superType(from.__superType),
         __label_map(0) {
@@ -77,33 +77,31 @@ namespace gum {
       if (__superType) { __label_map = new std::vector< Idx >(from.label_map()); }
     }
 
-    
-    PRMType::PRMType(PRMType&& from) :
-        PRMObject(from) {
+
+    PRMType::PRMType(PRMType&& from) : PRMObject(from) {
       GUM_CONS_MOV(PRMType);
       GUM_ERROR(FatalError, "Move constructor must not be used");
     }
 
-    
+
     PRMType::~PRMType() {
       GUM_DESTRUCTOR(PRMType);
       delete __var;
       if (__label_map) { delete __label_map; }
     }
 
-    
+
     PRMType& PRMType::operator=(const PRMType& from) {
       GUM_ERROR(FatalError, "Copy operator must not be used");
     }
 
-    
+
     PRMType& PRMType::operator=(PRMType&& from) {
       GUM_ERROR(FatalError, "Move operator must not be used");
     }
 
-    
-    bool PRMType::isSubTypeOf(
-      const PRMType& super) const {
+
+    bool PRMType::isSubTypeOf(const PRMType& super) const {
       if ((*this) == super) {
         return true;
       } else if (__superType) {
@@ -113,7 +111,7 @@ namespace gum {
       }
     }
 
-    
+
     bool PRMType::__isValid() const {
       if (!__superType) { return __var->domainSize() > 1; }
 

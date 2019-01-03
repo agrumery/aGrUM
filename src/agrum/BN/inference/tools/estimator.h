@@ -155,7 +155,7 @@ namespace gum {
     HashTable< std::string, Potential< GUM_SCALAR >* > __target_posteriors;
   };
 
-  extern template class Estimator< float >;
+
   extern template class Estimator< double >;
 }   // namespace gum
 

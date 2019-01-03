@@ -129,7 +129,7 @@ namespace gum_tests {
     }
 
     void testNoisyORNetInBN() {
-      gum::BayesNet< float > bn;
+      gum::BayesNet< double > bn;
 
       gum::LabelizedVariable cold("Cold", "", 2);
       gum::LabelizedVariable flu("Flu", "", 2);
@@ -154,34 +154,34 @@ namespace gum_tests {
       TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8f),
                        gum::InvalidArc);
 
-      const gum::Potential< float >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
-      pOneMoreParent1.fillWith(std::vector< float >{0.2f, 0.8f});
+      const gum::Potential< double >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
+      pOneMoreParent1.fillWith(std::vector< double >{0.2f, 0.8f});
 
-      const gum::Potential< float >& pOneMoreParent2 = bn.cpt(idOneMoreParent2);
-      pOneMoreParent2.fillWith(std::vector< float >{0.3f, 0.7f});
+      const gum::Potential< double >& pOneMoreParent2 = bn.cpt(idOneMoreParent2);
+      pOneMoreParent2.fillWith(std::vector< double >{0.3f, 0.7f});
 
       bn.addArc(idOneMoreParent1, idOneMore);
       bn.addArc(idFever, idOneMore);
       bn.addArc(idOneMoreParent2, idOneMore);
-      const gum::Potential< float >& pOneMore = bn.cpt(idOneMore);
-      pOneMore.fillWith(std::vector< float >{0.1f,
-                                             0.9f,
-                                             0.8f,
-                                             0.2f,
-                                             0.1f,
-                                             0.9f,
-                                             0.8f,
-                                             0.2f,
-                                             0.1f,
-                                             0.9f,
-                                             0.8f,
-                                             0.2f,
-                                             0.1f,
-                                             0.9f,
-                                             0.8f,
-                                             0.2f});
+      const gum::Potential< double >& pOneMore = bn.cpt(idOneMore);
+      pOneMore.fillWith(std::vector< double >{0.1f,
+                                              0.9f,
+                                              0.8f,
+                                              0.2f,
+                                              0.1f,
+                                              0.9f,
+                                              0.8f,
+                                              0.2f,
+                                              0.1f,
+                                              0.9f,
+                                              0.8f,
+                                              0.2f,
+                                              0.1f,
+                                              0.9f,
+                                              0.8f,
+                                              0.2f});
 
-      const gum::Potential< float >& p = bn.cpt(idFever);
+      const gum::Potential< double >& p = bn.cpt(idFever);
 
       gum::Instantiation i(p);
       float              witness[] = {1.0f,
@@ -207,13 +207,13 @@ namespace gum_tests {
         TS_ASSERT_DELTA(p[i], witness[j], 1e-6);
       }
 
-      gum::LazyPropagation< float > inf_LazyProp(&bn);
+      gum::LazyPropagation< double > inf_LazyProp(&bn);
 
       inf_LazyProp.makeInference();
     }
 
     void testNoisyORCompoundInBN() {
-      gum::BayesNet< float > bn;
+      gum::BayesNet< double > bn;
 
       gum::LabelizedVariable cold("Cold", "", 2);
       gum::LabelizedVariable flu("Flu", "", 2);
@@ -238,37 +238,37 @@ namespace gum_tests {
       TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8f),
                        gum::InvalidArc);
 
-      const gum::Potential< float >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
+      const gum::Potential< double >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
       // FILLING PARAMS
-      pOneMoreParent1.fillWith(std::vector< float >{0.2f, 0.8f});
+      pOneMoreParent1.fillWith(std::vector< double >{0.2f, 0.8f});
 
-      const gum::Potential< float >& pOneMoreParent2 = bn.cpt(idOneMoreParent2);
+      const gum::Potential< double >& pOneMoreParent2 = bn.cpt(idOneMoreParent2);
       // FILLING PARAMS
-      pOneMoreParent2.fillWith(std::vector< float >{0.3f, 0.7f});
+      pOneMoreParent2.fillWith(std::vector< double >{0.3f, 0.7f});
 
       bn.addArc(idOneMoreParent1, idOneMore);
       bn.addArc(idFever, idOneMore);
       bn.addArc(idOneMoreParent2, idOneMore);
-      const gum::Potential< float >& pOneMore = bn.cpt(idOneMore);
+      const gum::Potential< double >& pOneMore = bn.cpt(idOneMore);
       // FILLING PARAMS
-      pOneMore.fillWith(std::vector< float >{0.1f,
-                                             0.9f,
-                                             0.8f,
-                                             0.2f,
-                                             0.1f,
-                                             0.9f,
-                                             0.8f,
-                                             0.2f,
-                                             0.1f,
-                                             0.9f,
-                                             0.8f,
-                                             0.2f,
-                                             0.1f,
-                                             0.9f,
-                                             0.8f,
-                                             0.2f});
+      pOneMore.fillWith(std::vector< double >{0.1f,
+                                              0.9f,
+                                              0.8f,
+                                              0.2f,
+                                              0.1f,
+                                              0.9f,
+                                              0.8f,
+                                              0.2f,
+                                              0.1f,
+                                              0.9f,
+                                              0.8f,
+                                              0.2f,
+                                              0.1f,
+                                              0.9f,
+                                              0.8f,
+                                              0.2f});
 
-      const gum::Potential< float >& p = bn.cpt(idFever);
+      const gum::Potential< double >& p = bn.cpt(idFever);
 
       gum::Instantiation i(p);
       float              witness[] = {1.0f,
@@ -294,13 +294,13 @@ namespace gum_tests {
         TS_ASSERT_DELTA(p[i], witness[j], 1e-6);
       }
 
-      gum::LazyPropagation< float > inf_LazyProp(&bn);
+      gum::LazyPropagation< double > inf_LazyProp(&bn);
 
       inf_LazyProp.makeInference();
     }
 
     void testNoisyANDInBN() {
-      gum::BayesNet< float > bn;
+      gum::BayesNet< double > bn;
 
       gum::LabelizedVariable cold("Cold", "", 2);
       gum::LabelizedVariable flu("Flu", "", 2);
@@ -328,37 +328,37 @@ namespace gum_tests {
       TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8f),
                        gum::InvalidArc);
 
-      const gum::Potential< float >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
+      const gum::Potential< double >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
       // FILLING PARAMS
-      pOneMoreParent1.fillWith(std::vector< float >{0.2f, 0.8f});
+      pOneMoreParent1.fillWith(std::vector< double >{0.2f, 0.8f});
 
-      const gum::Potential< float >& pOneMoreParent2 = bn.cpt(idOneMoreParent2);
+      const gum::Potential< double >& pOneMoreParent2 = bn.cpt(idOneMoreParent2);
       // FILLING PARAMS
-      pOneMoreParent2.fillWith(std::vector< float >{0.3f, 0.7f});
+      pOneMoreParent2.fillWith(std::vector< double >{0.3f, 0.7f});
 
       bn.addArc(idOneMoreParent1, idOneMore);
       bn.addArc(idFever, idOneMore);
       bn.addArc(idOneMoreParent2, idOneMore);
-      const gum::Potential< float >& pOneMore = bn.cpt(idOneMore);
+      const gum::Potential< double >& pOneMore = bn.cpt(idOneMore);
       // FILLING PARAMS
-      pOneMore.fillWith(std::vector< float >{0.1f,
-                                             0.9f,
-                                             0.8f,
-                                             0.2f,
-                                             0.1f,
-                                             0.9f,
-                                             0.8f,
-                                             0.2f,
-                                             0.1f,
-                                             0.9f,
-                                             0.8f,
-                                             0.2f,
-                                             0.1f,
-                                             0.9f,
-                                             0.8f,
-                                             0.2f});
+      pOneMore.fillWith(std::vector< double >{0.1f,
+                                              0.9f,
+                                              0.8f,
+                                              0.2f,
+                                              0.1f,
+                                              0.9f,
+                                              0.8f,
+                                              0.2f,
+                                              0.1f,
+                                              0.9f,
+                                              0.8f,
+                                              0.2f,
+                                              0.1f,
+                                              0.9f,
+                                              0.8f,
+                                              0.2f});
 
-      const gum::Potential< float >& p = bn.cpt(idFever);
+      const gum::Potential< double >& p = bn.cpt(idFever);
 
       gum::Instantiation i(p);
       float              witness[] = {0.988012f,
@@ -384,7 +384,7 @@ namespace gum_tests {
         TS_ASSERT_DELTA(p[i], witness[j], 1e-6);
       }
 
-      gum::LazyPropagation< float > inf_LazyProp(&bn);
+      gum::LazyPropagation< double > inf_LazyProp(&bn);
 
       inf_LazyProp.makeInference();
     }

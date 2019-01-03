@@ -33,14 +33,14 @@ namespace gum_tests {
     public:
     void test_row1() {
       {
-        gum::learning::DBRow< float > row;
+        gum::learning::DBRow< double > row;
         TS_ASSERT(row.weight() == 1.0f);
 
-        gum::learning::DBRow< float > xrow1(3, 2.0);
+        gum::learning::DBRow< double > xrow1(3, 2.0);
         TS_ASSERT(xrow1.weight() == 2.0f);
         TS_ASSERT(xrow1.size() == std::size_t(3));
 
-        gum::learning::DBRow< float > xrow2(3, 4, 2.0);
+        gum::learning::DBRow< double > xrow2(3, 4, 2.0);
         TS_ASSERT(xrow2.weight() == 2.0f);
         TS_ASSERT(xrow2.size() == std::size_t(3));
         TS_ASSERT(xrow2[1] == 4.0f);
@@ -48,19 +48,19 @@ namespace gum_tests {
         row.setWeight(3);
         TS_ASSERT(row.weight() == 3.0f);
 
-        std::vector< float > xrow{1, 2, 3};
+        std::vector< double > xrow{1, 2, 3};
         row.setRow(xrow);
         TS_ASSERT(row.row() == xrow);
         TS_ASSERT(row.size() == 3);
 
-        gum::learning::DBRow< float > row2(row);
+        gum::learning::DBRow< double > row2(row);
         TS_ASSERT(row2.size() == 3);
 
-        std::allocator< float >       alloc;
-        gum::learning::DBRow< float > row2bis(row, alloc);
+        std::allocator< double >       alloc;
+        gum::learning::DBRow< double > row2bis(row, alloc);
         TS_ASSERT(row2bis.size() == 3);
 
-        gum::learning::DBRow< float > row3(std::move(row2));
+        gum::learning::DBRow< double > row3(std::move(row2));
         TS_ASSERT(row3.size() == 3);
         TS_ASSERT(row3[2] == 3.0f);
 
@@ -71,33 +71,33 @@ namespace gum_tests {
         TS_ASSERT(row2.size() == 5);
         TS_ASSERT(row3.row() == row2.row());
 
-        gum::learning::DBRow< float, MyAlloc > row4(4, 1, 2);
+        gum::learning::DBRow< double, MyAlloc > row4(4, 1, 2);
         TS_ASSERT(row4.size() == 4);
         TS_ASSERT(row4[3] == 1);
         TS_ASSERT(row4.weight() == 2);
 
-        gum::learning::DBRow< float, MyAlloc > row5{2, 3, 1, 4};
+        gum::learning::DBRow< double, MyAlloc > row5{2, 3, 1, 4};
         TS_ASSERT(row5.size() == 4);
         TS_ASSERT(row5[2] == 1);
         TS_ASSERT(row5.weight() == 1);
 
-        std::vector< float >                   vect{1, 2, 3};
-        gum::learning::DBRow< float, MyAlloc > row6(vect, 4);
+        std::vector< double >                   vect{1, 2, 3};
+        gum::learning::DBRow< double, MyAlloc > row6(vect, 4);
         TS_ASSERT(row6.size() == 3);
         TS_ASSERT(row6[1] == 2);
         TS_ASSERT(row6.weight() == 4);
 
-        gum::learning::DBRow< float > row7(vect, 4);
+        gum::learning::DBRow< double > row7(vect, 4);
         TS_ASSERT(row7.size() == 3);
         TS_ASSERT(row7[1] == 2);
         TS_ASSERT(row7.weight() == 4);
 
-        gum::learning::DBRow< float > row8(std::vector< float >{1, 2, 3}, 4);
+        gum::learning::DBRow< double > row8(std::vector< double >{1, 2, 3}, 4);
         TS_ASSERT(row8.size() == 3);
         TS_ASSERT(row8[1] == 2);
         TS_ASSERT(row8.weight() == 4);
 
-        gum::learning::DBRow< float, MyAlloc > row9(row4, MyAlloc< float >());
+        gum::learning::DBRow< double, MyAlloc > row9(row4, MyAlloc< double >());
         TS_ASSERT(row9.size() == 4);
         TS_ASSERT(row9[3] == 1);
         TS_ASSERT(row9.weight() == 2);

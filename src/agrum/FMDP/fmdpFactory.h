@@ -311,7 +311,6 @@ namespace gum {
   };
 
 
-  extern template class FMDPFactory< float >;
   extern template class FMDPFactory< double >;
 
 } /* namespace gum */

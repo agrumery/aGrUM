@@ -184,7 +184,6 @@ namespace gum {
     };
 
 
-    extern template class MultiDimAggregator< float >;
     extern template class MultiDimAggregator< double >;
 
     /// For friendly displaying the content of the array.

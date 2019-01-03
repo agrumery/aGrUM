@@ -177,7 +177,6 @@ namespace gum {
   };
 
 
-  extern template class MultiDimICIModel< float >;
   extern template class MultiDimICIModel< double >;
 
 } /* namespace gum */

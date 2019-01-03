@@ -129,7 +129,7 @@ namespace gum_tests {
 
     void test_trans2() {
       {
-        gum::DiscretizedVariable< float > var("X1", "");
+        gum::DiscretizedVariable< double > var("X1", "");
         var.addTick(1);
         var.addTick(4);
         var.addTick(2);
@@ -155,7 +155,7 @@ namespace gum_tests {
             .discr_val
           == 0);
 
-        gum::DiscretizedVariable< float > var2("X2", "");
+        gum::DiscretizedVariable< double > var2("X2", "");
         var2.addTick(1);
         var2.addTick(2);
         var2.addTick(3);
@@ -314,13 +314,13 @@ namespace gum_tests {
 
     void xtest_trans5() {
       {
-        gum::DiscretizedVariable< float > var("X1", "");
+        gum::DiscretizedVariable< double > var("X1", "");
         var.addTick(1);
         var.addTick(2);
         var.addTick(3);
         var.addTick(4);
 
-        LearningAlloc< float > alloc(10000);
+        LearningAlloc< double > alloc(10000);
 
         gum::learning::DBTranslator4DiscretizedVariable< LearningAlloc >
           translator(var, 1000, alloc);
@@ -346,7 +346,7 @@ namespace gum_tests {
         std::cout << (allocator == alloc) << std::endl;
         std::cout << alloc.toString() << std::endl;
 
-        gum::DiscretizedVariable< float > var2("X2", "");
+        gum::DiscretizedVariable< double > var2("X2", "");
         var2.addTick(1);
         var2.addTick(2);
         var2.addTick(3);
@@ -505,7 +505,7 @@ namespace gum_tests {
 
 
     void test_trans6() {
-      gum::DiscretizedVariable< float > var("X1", "");
+      gum::DiscretizedVariable< double > var("X1", "");
       var.addTick(1);
       var.addTick(3);
       var.addTick(7);

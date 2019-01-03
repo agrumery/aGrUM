@@ -26,5 +26,5 @@
 
 #include <agrum/learning/database/BNDatabaseGenerator.h>
 
-template class gum::learning::BNDatabaseGenerator< float >;
+
 template class gum::learning::BNDatabaseGenerator< double >;

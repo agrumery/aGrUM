@@ -548,7 +548,7 @@ namespace gum_tests {
         t1.insert(nb, i * 1000 + i);
       }
 
-      std::vector< float > vect(size + 1);
+      std::vector< double > vect(size + 1);
 
       for (gum::Idx i = 0; i < vect.size(); ++i) {
         vect[i] = i + i * 0.01f;
@@ -570,7 +570,7 @@ namespace gum_tests {
         t1.insert(std::pair< float, float >(nb1, nb2), i * 1000 + i);
       }
 
-      std::vector< float > vect(size + 1);
+      std::vector< double > vect(size + 1);
 
       for (gum::Idx i = 0; i < vect.size(); ++i) {
         vect[i] = i + i * 0.01f;

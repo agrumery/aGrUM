@@ -256,42 +256,11 @@ namespace gum_tests {
     // =========================================================================
     /// initialize randomly a table
     // =========================================================================
-    void randomInitP(gum::Potential< float >& t) {
-      gum::Instantiation i(t);
-
-      for (i.setFirst(); !i.end(); ++i)
-        t.set(i, 1.0f + rand() * 50.0f / RAND_MAX);
-    }
-
-    // the function used to combine two tables
-    static gum::Potential< float >* addPot(const gum::Potential< float >& t1,
-                                           const gum::Potential< float >& t2) {
-      return new gum::Potential< float >(t1 + t2);
-    }
-
-    // the function used to combine two tables
-    static gum::Potential< float >* multPot(const gum::Potential< float >& t1,
-                                            const gum::Potential< float >& t2) {
-      return new gum::Potential< float >(t1 * t2);
-    }
-
-    static gum::Potential< float >*
-      mySum(const gum::Potential< float >&                  table,
-            const gum::Set< const gum::DiscreteVariable* >& del_vars) {
-      return new gum::Potential< float >(table.margSumOut(del_vars));
-    }
-
-    static gum::Potential< float >*
-      myMax(const gum::Potential< float >&                  table,
-            const gum::Set< const gum::DiscreteVariable* >& del_vars) {
-      return new gum::Potential< float >(table.margMaxOut(del_vars));
-    }
-
     void randomInitP(gum::Potential< double >& t) {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)
-        t.set(i, 1.0f + rand() * 50.0 / RAND_MAX);
+        t.set(i, 1.0f + rand() * 50.0f / RAND_MAX);
     }
 
     // the function used to combine two tables
@@ -316,6 +285,37 @@ namespace gum_tests {
       myMax(const gum::Potential< double >&                 table,
             const gum::Set< const gum::DiscreteVariable* >& del_vars) {
       return new gum::Potential< double >(table.margMaxOut(del_vars));
+    }
+
+    void randomInitP(gum::Potential< float >& t) {
+      gum::Instantiation i(t);
+
+      for (i.setFirst(); !i.end(); ++i)
+        t.set(i, 1.0f + rand() * 50.0 / RAND_MAX);
+    }
+
+    // the function used to combine two tables
+    static gum::Potential< float >* addPot(const gum::Potential< float >& t1,
+                                           const gum::Potential< float >& t2) {
+      return new gum::Potential< float >(t1 + t2);
+    }
+
+    // the function used to combine two tables
+    static gum::Potential< float >* multPot(const gum::Potential< float >& t1,
+                                            const gum::Potential< float >& t2) {
+      return new gum::Potential< float >(t1 * t2);
+    }
+
+    static gum::Potential< float >*
+      mySum(const gum::Potential< float >&                  table,
+            const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+      return new gum::Potential< float >(table.margSumOut(del_vars));
+    }
+
+    static gum::Potential< float >*
+      myMax(const gum::Potential< float >&                  table,
+            const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+      return new gum::Potential< float >(table.margMaxOut(del_vars));
     }
   };
 

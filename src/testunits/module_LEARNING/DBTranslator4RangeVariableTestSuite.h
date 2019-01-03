@@ -658,7 +658,7 @@ namespace gum_tests {
 
 
     void xtest_trans5() {
-      LearningAlloc< float >                                     alloc(10000);
+      LearningAlloc< double >                                    alloc(10000);
       gum::learning::DBTranslator4RangeVariable< LearningAlloc > translator(1000,
                                                                             alloc);
       TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("3"));

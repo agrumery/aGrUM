@@ -86,7 +86,7 @@ namespace gum {
                        const IBayesNet< GUM_SCALAR >& bn) = 0;
   };
 
-  extern template class BNWriter< float >;
+
   extern template class BNWriter< double >;
 } /* namespace gum */
 

@@ -96,7 +96,6 @@ namespace gum {
     };
 
 
-    extern template class Median< float >;
     extern template class Median< double >;
 
 

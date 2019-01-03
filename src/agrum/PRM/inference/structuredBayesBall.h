@@ -166,7 +166,6 @@ namespace gum {
     };
 
 
-    extern template class StructuredBayesBall< float >;
     extern template class StructuredBayesBall< double >;
 
 

@@ -385,7 +385,7 @@ namespace gum {
 
 extern template class gum::Heap< int >;
 extern template class gum::Heap< long >;
-extern template class gum::Heap< float >;
+
 extern template class gum::Heap< double >;
 
 

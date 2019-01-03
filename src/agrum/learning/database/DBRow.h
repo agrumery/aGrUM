@@ -74,7 +74,7 @@ namespace gum {
       /// constructor with a given size for the row
       DBRow(const std::size_t      size,
             const T_DATA           default_value,
-            const double           weight = 1.0,
+            const double           weight,
             const ALLOC< T_DATA >& alloc = ALLOC< T_DATA >());
 
       /// initializer list constructor

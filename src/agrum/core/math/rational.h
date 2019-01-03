@@ -137,7 +137,6 @@ namespace gum {
 }   // namespace gum
 
 
-extern template class gum::Rational< float >;
 extern template class gum::Rational< double >;
 extern template class gum::Rational< long double >;
 

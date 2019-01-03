@@ -202,7 +202,7 @@ namespace gum {
         // create the EM estimator
         BayesNet< GUM_SCALAR >         dummy_bn;
         DBRowGeneratorEM< GUM_SCALAR > generator_EM(col_types, dummy_bn);
-        DBRowGenerator<>&              gen_EM = generator_EM;  // fix for g++-4.8
+        DBRowGenerator<>&              gen_EM = generator_EM;   // fix for g++-4.8
         DBRowGeneratorSet<>            genset_EM;
         genset_EM.insertGenerator(gen_EM);
         DBRowGeneratorParser<> parser_EM(database.handler(), genset_EM);

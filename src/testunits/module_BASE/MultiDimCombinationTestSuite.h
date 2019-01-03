@@ -37,7 +37,7 @@ namespace gum_tests {
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    void randomInitP(gum::Potential< float >& t) {
+    void randomInitP(gum::Potential< double >& t) {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)
@@ -45,17 +45,17 @@ namespace gum_tests {
     }
 
     // the function used to combine two tables
-    static gum::Potential< float >*
-      addPotential(const gum::Potential< float >& t1,
-                   const gum::Potential< float >& t2) {
-      return new gum::Potential< float >(t1 + t2);
+    static gum::Potential< double >*
+      addPotential(const gum::Potential< double >& t1,
+                   const gum::Potential< double >& t2) {
+      return new gum::Potential< double >(t1 + t2);
     }
 
     // the function used to combine two tables
-    static gum::Potential< float >*
-      multPotential(const gum::Potential< float >& t1,
-                    const gum::Potential< float >& t2) {
-      return new gum::Potential< float >(t1 * t2);
+    static gum::Potential< double >*
+      multPotential(const gum::Potential< double >& t1,
+                    const gum::Potential< double >& t2) {
+      return new gum::Potential< double >(t1 * t2);
     }
 
     public:
@@ -69,7 +69,7 @@ namespace gum_tests {
         vars[i] = new gum::LabelizedVariable(s, s, 4);
       }
 
-      gum::Potential< float > t1, t2, t3;
+      gum::Potential< double > t1, t2, t3;
 
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
       t2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
@@ -79,14 +79,14 @@ namespace gum_tests {
       randomInitP(t2);
       randomInitP(t3);
 
-      gum::Potential< float >*t4, *t5, *t6;
-      t4 = new gum::Potential< float >(t1 + t2);
-      t5 = new gum::Potential< float >(t3 + *t4);
+      gum::Potential< double >*t4, *t5, *t6;
+      t4 = new gum::Potential< double >(t1 + t2);
+      t5 = new gum::Potential< double >(t3 + *t4);
 
-      gum::Set< const gum::Potential< float >* > set;
+      gum::Set< const gum::Potential< double >* > set;
       set << &t1 << &t2 << &t3;
 
-      gum::MultiDimCombinationDefault< float, gum::Potential > xxx(addPotential);
+      gum::MultiDimCombinationDefault< double, gum::Potential > xxx(addPotential);
       t6 = xxx.combine(set);
       TS_ASSERT(t6);
       TS_ASSERT(*t6 == *t5);
@@ -100,8 +100,8 @@ namespace gum_tests {
       TS_ASSERT(yyy.first == 16640);
       TS_ASSERT(yyy.second == 16384);
 
-      t4 = new gum::Potential< float >(t1 * t2);
-      t5 = new gum::Potential< float >(t3 * (*t4));
+      t4 = new gum::Potential< double >(t1 * t2);
+      t5 = new gum::Potential< double >(t3 * (*t4));
       xxx.setCombineFunction(multPotential);
       t6 = xxx.combine(set);
       TS_ASSERT(t6);

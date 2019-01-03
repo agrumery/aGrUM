@@ -90,7 +90,6 @@ namespace gum {
   };
 
 
-  extern template class SimpleCPTDisturber< float >;
   extern template class SimpleCPTDisturber< double >;
 
 } /* namespace gum */

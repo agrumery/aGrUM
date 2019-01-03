@@ -28,7 +28,7 @@
 namespace gum {
   namespace prm {
 
-    template class ClassDependencyGraph< float >;
+
     template class ClassDependencyGraph< double >;
 
   } /* namespace prm */

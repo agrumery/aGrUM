@@ -184,7 +184,6 @@ namespace gum {
   };
 
 
-  extern template class MultiDimBijArray< float >;
   extern template class MultiDimBijArray< double >;
 
 }   // namespace gum

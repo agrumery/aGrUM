@@ -453,7 +453,6 @@ namespace gum {
   };
 
 
-  extern template class LazyPropagation< float >;
   extern template class LazyPropagation< double >;
 
 

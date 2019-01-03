@@ -338,7 +338,6 @@ namespace gum {
     };
 
 
-    extern template class PRMSystem< float >;
     extern template class PRMSystem< double >;
 
 

@@ -518,7 +518,6 @@ namespace gum {
     };
 
 
-    extern template class InferenceEngine< float >;
     extern template class InferenceEngine< double >;
   }   // namespace credal
 }   // namespace gum

@@ -97,7 +97,6 @@ namespace gum {
   };
 
 
-  extern template class FactorisedValuesCNFWriter< float >;
   extern template class FactorisedValuesCNFWriter< double >;
 
 } /* namespace gum */

@@ -40,7 +40,7 @@ namespace gum_tests {
     void testCreationLogit() {
       gum::LabelizedVariable a("a", "", 2), b("b", "", 2), c("c", "", 2),
         d("d", "", 2);
-      gum::MultiDimLogit< float > p(0.2f);
+      gum::MultiDimLogit< double > p(0.2f);
 
       // trying to change weight for a non cause
       TS_ASSERT_THROWS(p.causalWeight(b, 0.4f), gum::InvalidArgument);
@@ -59,7 +59,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(p.nbrDim(), (gum::Size)4);
       TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4);
 
-      gum::MultiDimLogit< float > q(p);
+      gum::MultiDimLogit< double > q(p);
       TS_ASSERT_EQUALS(q.toString(), "a<0,1>=logit(0.2 +0.4*b<0,1> +0.7*d<0,1>)");
       TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4);
 
@@ -76,7 +76,7 @@ namespace gum_tests {
       gum::LabelizedVariable coeur("coeur", "", 0);
       coeur.addLabel("NON").addLabel("OUI");
 
-      gum::MultiDimLogit< float > p(14.4937f);
+      gum::MultiDimLogit< double > p(14.4937f);
       // taux, angine and coeur are causes of coeur
       p << coeur << age << taux << angine;
       p.causalWeight(age, -0.1256f);
@@ -113,8 +113,8 @@ namespace gum_tests {
         } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
       }
 
-      gum::MultiDimLogit< float > q(p);
-      gum::Instantiation          j(p);
+      gum::MultiDimLogit< double > q(p);
+      gum::Instantiation           j(p);
       for (i.setFirst(), j.setFirst(); !i.end(); ++i, ++j) {
         TS_ASSERT_DELTA(q[i], p[j], 1e-6);
       }
@@ -128,7 +128,7 @@ namespace gum_tests {
       gum::LabelizedVariable competition("competition", "", 2);
       gum::LabelizedVariable unemployment("unemployment", "", 2);
 
-      gum::MultiDimLogit< float > p(1 - 0.0001f);
+      gum::MultiDimLogit< double > p(1 - 0.0001f);
       p << unemployment << competition << requirement << motivation << degree
         << lazy;
       p.causalWeight(lazy, 0.8f);
@@ -180,7 +180,7 @@ namespace gum_tests {
         TS_ASSERT_DELTA(p[i], witness[j], 1e-6);
       }
 
-      gum::MultiDimLogit< float > q(p);
+      gum::MultiDimLogit< double > q(p);
 
       j = 0;
 
@@ -190,7 +190,7 @@ namespace gum_tests {
     }
 
     void testLogitInBN() {
-      gum::BayesNet< float > bn;
+      gum::BayesNet< double > bn;
 
       gum::LabelizedVariable cold("Cold", "", 2);
       gum::LabelizedVariable flu("Flu", "", 2);
@@ -216,20 +216,25 @@ namespace gum_tests {
       TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8f),
                        gum::InvalidArc);
 
-      const gum::Potential< float >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
+      const gum::Potential< double >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
       // FILLING PARAMS
       pOneMoreParent1.fillWith({0.2f, 0.8f});
 
-      const gum::Potential< float >& pOneMoreParent2 = bn.cpt(idOneMoreParent2);
+      const gum::Potential< double >& pOneMoreParent2 = bn.cpt(idOneMoreParent2);
       // FILLING PARAMS
       pOneMoreParent2.fillWith({0.3f, 0.7f});
 
       bn.addArc(idOneMoreParent1, idOneMore);
       bn.addArc(idFever, idOneMore);
       bn.addArc(idOneMoreParent2, idOneMore);
-      const gum::Potential< float >& pOneMore = bn.cpt(idOneMore);
+      const gum::Potential< double >& pOneMore = bn.cpt(idOneMore);
+      const gum::Potential< double >& p = bn.cpt(idFever);
+
+      gum::Instantiation i(p);
+
       // FILLING PARAMS
-      pOneMore.fillWith(   // clang-format off
+      // clang-format off
+      pOneMore.fillWith(
                         {0.1f,0.9f,
                          0.8f,0.2f,
                          0.1f,0.9f,
@@ -237,12 +242,9 @@ namespace gum_tests {
                          0.1f,0.9f,
                          0.8f,0.2f,
                          0.1f,0.9f,
-                         0.8f,0.2f}); //clang-format on
+                         0.8f,0.2f});
 
-      const gum::Potential<float>& p = bn.cpt( idFever );
-
-      gum::Instantiation i( p );
-      float witness[] = //clang-format off
+      float witness[] =
                         {0.42555748318834097f,0.574442516811659f,
                          0.23147521650098246f,0.7685247834990175f,
                          0.2497398944048823f,0.7502601055951177f,
@@ -250,17 +252,18 @@ namespace gum_tests {
                          0.33181222783183384f,0.6681877721681662f,
                          0.16798161486607555f,0.8320183851339245f,
                          0.18242552380635635f,0.8175744761936437f,
-                         0.08317269649392234f,0.9168273035060777f}; // clang-format off
+                         0.08317269649392234f,0.9168273035060777f};
+      // clang-format on
 
       int j = 0;
 
-      for ( i.setFirst(); !i.end(); ++i, j++ ) {
-        TS_ASSERT_DELTA( p[i], witness[j], 1e-6 );
+      for (i.setFirst(); !i.end(); ++i, j++) {
+        TS_ASSERT_DELTA(p[i], witness[j], 1e-6);
       }
 
-      gum::LazyPropagation<float> inf_LazyProp( &bn );
+      gum::LazyPropagation< double > inf_LazyProp(&bn);
 
       inf_LazyProp.makeInference();
     }
   };
-}
+}   // namespace gum_tests

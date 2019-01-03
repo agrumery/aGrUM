@@ -450,7 +450,6 @@ namespace gum {
   };
 
 
-  extern template class BayesNetFactory< float >;
   extern template class BayesNetFactory< double >;
 
 } /* namespace gum */

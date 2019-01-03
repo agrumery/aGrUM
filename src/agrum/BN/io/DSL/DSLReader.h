@@ -126,7 +126,6 @@ namespace gum {
   };
 
 
-  extern template class DSLReader< float >;
   extern template class DSLReader< double >;
 
 } /* namespace gum */

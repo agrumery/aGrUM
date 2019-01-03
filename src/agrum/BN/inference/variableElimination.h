@@ -347,7 +347,6 @@ namespace gum {
   };
 
 
-  extern template class VariableElimination< float >;
   extern template class VariableElimination< double >;
 
 

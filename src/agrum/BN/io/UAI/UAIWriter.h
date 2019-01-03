@@ -101,7 +101,6 @@ namespace gum {
   };
 
 
-  extern template class UAIWriter< float >;
   extern template class UAIWriter< double >;
 
 } /* namespace gum */

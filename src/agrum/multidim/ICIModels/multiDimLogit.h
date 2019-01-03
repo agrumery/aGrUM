@@ -122,7 +122,6 @@ namespace gum {
   };
 
 
-  extern template class MultiDimLogit< float >;
   extern template class MultiDimLogit< double >;
 
   /// For friendly displaying the content of the array.

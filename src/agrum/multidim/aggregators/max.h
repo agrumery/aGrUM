@@ -85,7 +85,6 @@ namespace gum {
     };
 
 
-    extern template class Max< float >;
     extern template class Max< double >;
 
 

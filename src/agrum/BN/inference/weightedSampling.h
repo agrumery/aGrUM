@@ -76,7 +76,6 @@ namespace gum {
     Instantiation _draw(GUM_SCALAR* w, Instantiation prev) override;
   };
 
-  extern template class WeightedSampling< float >;
 
   extern template class WeightedSampling< double >;
 }   // namespace gum

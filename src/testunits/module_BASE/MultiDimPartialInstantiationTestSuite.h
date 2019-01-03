@@ -43,21 +43,21 @@ namespace gum_tests {
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    void randomInit(gum::MultiDimArray< float >* t) {
+    void randomInit(gum::MultiDimArray< double >* t) {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)
-        t->set(i, float(gum::randomProba()));
+        t->set(i, double(gum::randomProba()));
     }
 
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    void randomInitPointer(gum::MultiDimArray< float* >* t) {
+    void randomInitPointer(gum::MultiDimArray< double* >* t) {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)
-        t->set(i, new float(float(gum::randomProba())));
+        t->set(i, new double(double(gum::randomProba())));
     }
 
     // ==========================================================================
@@ -331,7 +331,7 @@ namespace gum_tests {
         vars[i] = new gum::LabelizedVariable(s, s, 4);
       }
 
-      gum::MultiDimArray< float > t1;
+      gum::MultiDimArray< double > t1;
 
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4])
          << *(vars[5]) << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
@@ -344,10 +344,10 @@ namespace gum_tests {
       inst_set.insert(vars[8], 3);
       inst_set.insert(vars[9], 2);
 
-      gum::MultiDimArray< float >* t2 =
+      gum::MultiDimArray< double >* t2 =
         partialInstantiationMultiDimArray(&t1, inst_set);
 
-      gum::MultiDimArray< float >* t3 = manual_instantiate(t1, inst_set);
+      gum::MultiDimArray< double >* t3 = manual_instantiate(t1, inst_set);
 
       TS_ASSERT(*t2 == *t3);
       delete t2;
@@ -389,7 +389,7 @@ namespace gum_tests {
         vars[i] = new gum::LabelizedVariable(s, s, 4);
       }
 
-      gum::MultiDimArray< float > t1;
+      gum::MultiDimArray< double > t1;
 
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4])
          << *(vars[5]) << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
@@ -402,10 +402,10 @@ namespace gum_tests {
       inst_set.insert(vars[8], 3);
       inst_set.insert(vars[9], 2);
 
-      gum::MultiDimImplementation< float >* t2 =
+      gum::MultiDimImplementation< double >* t2 =
         partialInstantiationMultiDimImplementation(&t1, inst_set);
 
-      gum::MultiDimArray< float >* t3 = manual_instantiate(t1, inst_set);
+      gum::MultiDimArray< double >* t3 = manual_instantiate(t1, inst_set);
 
       TS_ASSERT(*t2 == *t3);
       delete t2;
@@ -447,7 +447,7 @@ namespace gum_tests {
         vars[i] = new gum::LabelizedVariable(s, s, 4);
       }
 
-      gum::MultiDimArray< float* > t1;
+      gum::MultiDimArray< double* > t1;
 
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4])
          << *(vars[5]) << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
@@ -460,10 +460,10 @@ namespace gum_tests {
       inst_set.insert(vars[8], 3);
       inst_set.insert(vars[9], 2);
 
-      gum::MultiDimArray< float* >* t2 =
+      gum::MultiDimArray< double* >* t2 =
         partialInstantiationMultiDimArray4Pointers(&t1, inst_set);
 
-      gum::MultiDimArray< float* >* t3 = manual_instantiate(t1, inst_set);
+      gum::MultiDimArray< double* >* t3 = manual_instantiate(t1, inst_set);
 
       TS_ASSERT(equal(*t2, *t3));
       pointerDelete(t2);
@@ -505,7 +505,7 @@ namespace gum_tests {
         vars[i] = new gum::LabelizedVariable(s, s, 4);
       }
 
-      gum::MultiDimArray< float* > t1;
+      gum::MultiDimArray< double* > t1;
 
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4])
          << *(vars[5]) << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
@@ -518,10 +518,10 @@ namespace gum_tests {
       inst_set.insert(vars[8], 3);
       inst_set.insert(vars[9], 2);
 
-      gum::MultiDimImplementation< float* >* t2 =
+      gum::MultiDimImplementation< double* >* t2 =
         partialInstantiationMultiDimImplementation4Pointers(&t1, inst_set);
 
-      gum::MultiDimArray< float* >* t3 = manual_instantiate(t1, inst_set);
+      gum::MultiDimArray< double* >* t3 = manual_instantiate(t1, inst_set);
 
       TS_ASSERT(equal(*t2, *t3));
       pointerDelete(t2);
@@ -554,7 +554,7 @@ namespace gum_tests {
     }
 
     void test_partialInstantiation_init() {
-      gum::partialInstantiation4MultiDimInit< float >();
+      gum::partialInstantiation4MultiDimInit< double >();
 
       std::vector< gum::LabelizedVariable* > vars(10);
 
@@ -565,7 +565,7 @@ namespace gum_tests {
         vars[i] = new gum::LabelizedVariable(s, s, 4);
       }
 
-      gum::MultiDimArray< float > t1;
+      gum::MultiDimArray< double > t1;
 
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4])
          << *(vars[5]) << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
@@ -578,9 +578,9 @@ namespace gum_tests {
       inst_set.insert(vars[8], 3);
       inst_set.insert(vars[9], 2);
 
-      gum::MultiDimImplementation< float >* t2 =
+      gum::MultiDimImplementation< double >* t2 =
         partialInstantiation(t1, inst_set);
-      gum::MultiDimArray< float >* t3 = manual_instantiate(t1, inst_set);
+      gum::MultiDimArray< double >* t3 = manual_instantiate(t1, inst_set);
 
       TS_ASSERT(*t2 == *t3);
       delete t2;
@@ -613,7 +613,7 @@ namespace gum_tests {
     }
 
     void test_partialInstantiationPointer_init() {
-      gum::pointerPartialInstantiation4MultiDimInit< float >();
+      gum::pointerPartialInstantiation4MultiDimInit< double >();
 
       std::vector< gum::LabelizedVariable* > vars(10);
 
@@ -624,7 +624,7 @@ namespace gum_tests {
         vars[i] = new gum::LabelizedVariable(s, s, 4);
       }
 
-      gum::MultiDimArray< float* > t1;
+      gum::MultiDimArray< double* > t1;
 
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4])
          << *(vars[5]) << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
@@ -637,9 +637,9 @@ namespace gum_tests {
       inst_set.insert(vars[8], 3);
       inst_set.insert(vars[9], 2);
 
-      gum::MultiDimImplementation< float* >* t2 =
+      gum::MultiDimImplementation< double* >* t2 =
         partialInstantiation(t1, inst_set);
-      gum::MultiDimArray< float* >* t3 = manual_instantiate(t1, inst_set);
+      gum::MultiDimArray< double* >* t3 = manual_instantiate(t1, inst_set);
 
       TS_ASSERT(equal(*t2, *t3));
       pointerDelete(t2);

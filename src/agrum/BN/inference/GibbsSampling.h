@@ -110,7 +110,7 @@ namespace gum {
     Instantiation _monteCarloSample();
   };
 
-  extern template class GibbsSampling< float >;
+
   extern template class GibbsSampling< double >;
 }   // namespace gum
 

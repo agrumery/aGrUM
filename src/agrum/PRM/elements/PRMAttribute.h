@@ -73,7 +73,7 @@ namespace gum {
       /// @{
 
       virtual PRMAttribute< GUM_SCALAR >*
-      newFactory(const PRMClass< GUM_SCALAR >& c) const = 0;
+        newFactory(const PRMClass< GUM_SCALAR >& c) const = 0;
       virtual PRMAttribute< GUM_SCALAR >*
         copy(Bijection< const DiscreteVariable*, const DiscreteVariable* > bij)
           const = 0;
@@ -161,8 +161,7 @@ namespace gum {
       virtual void becomeCastDescendant(PRMType& subtype) = 0;
 
       /// Swap old_type with new_type in the PRMClassElement cpt.
-      virtual void swap(const PRMType& old_type,
-                        const PRMType& new_type) = 0;
+      virtual void swap(const PRMType& old_type, const PRMType& new_type) = 0;
 
       /// Set this as overload of source (necessayr to preserver internal
       /// pointers for MultiDims).
@@ -178,7 +177,6 @@ namespace gum {
     };
 
 
-    extern template class PRMAttribute< float >;
     extern template class PRMAttribute< double >;
 
 

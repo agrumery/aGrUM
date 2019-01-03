@@ -53,9 +53,6 @@ namespace gum {
         return (id != from.id) && (l != from.l) && (tree_width != from.tree_width);
       }
 
-      template class NodeData< float >;
-      template class EdgeData< float >;
-      template class InterfaceGraph< float >;
 
       template class NodeData< double >;
       template class EdgeData< double >;

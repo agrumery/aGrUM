@@ -78,7 +78,6 @@ namespace gum {
     Instantiation _draw(GUM_SCALAR* w, Instantiation prev) override;
   };
 
-  extern template class MonteCarloSampling< float >;
 
   extern template class MonteCarloSampling< double >;
 }   // namespace gum

@@ -27,5 +27,5 @@
 #include <agrum/core/math/math.h>
 #include <agrum/BN/algorithms/divergence/KL.h>
 
-template class gum::KL< float >;
+
 template class gum::KL< double >;

@@ -529,7 +529,6 @@ namespace gum {
     };
 
 
-    extern template class PRMInstance< float >;
     extern template class PRMInstance< double >;
 
 

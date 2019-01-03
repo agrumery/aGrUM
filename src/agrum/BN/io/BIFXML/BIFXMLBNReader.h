@@ -149,7 +149,6 @@ namespace gum {
   };
 
 
-  extern template class BIFXMLBNReader< float >;
   extern template class BIFXMLBNReader< double >;
 
 } /* namespace gum */

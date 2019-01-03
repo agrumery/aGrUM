@@ -34,9 +34,9 @@ namespace gum_tests {
     void testComparaisonMin() {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3),
         d("d", "", 0, 3);
-      gum::MultiDimArray< float >   full;
-      gum::MultiDimSparse< float >  sparse((float)0);
-      gum::aggregator::Min< float > agg;
+      gum::MultiDimArray< double >   full;
+      gum::MultiDimSparse< double >  sparse((float)0);
+      gum::aggregator::Min< double > agg;
       agg << a << b << c << d;
       full << a << b << c << d;
       sparse << a << b << c << d;

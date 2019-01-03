@@ -238,7 +238,6 @@ namespace gum {
     };
 
 
-    extern template class PRMInference< float >;
     extern template class PRMInference< double >;
 
 

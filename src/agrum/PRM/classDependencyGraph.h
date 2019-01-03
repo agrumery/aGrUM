@@ -142,7 +142,6 @@ namespace gum {
     };
 
 
-    extern template class ClassDependencyGraph< float >;
     extern template class ClassDependencyGraph< double >;
 
   } /* namespace prm */

@@ -185,7 +185,6 @@ namespace gum {
   };
 
 
-  extern template class BIFReader< float >;
   extern template class BIFReader< double >;
 
 }   // namespace gum

@@ -71,7 +71,6 @@ namespace gum {
   };
 
 
-  extern template class SimpleCPTGenerator< float >;
   extern template class SimpleCPTGenerator< double >;
 
 } /* namespace gum */

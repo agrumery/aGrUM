@@ -135,7 +135,6 @@ namespace gum {
   };
 
 
-  extern template class MultiDimSparse< float >;
   extern template class MultiDimSparse< double >;
 
 

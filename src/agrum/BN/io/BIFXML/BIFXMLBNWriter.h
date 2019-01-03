@@ -119,7 +119,6 @@ namespace gum {
   };
 
 
-  extern template class BIFXMLBNWriter< float >;
   extern template class BIFXMLBNWriter< double >;
 
 } /* namespace gum */

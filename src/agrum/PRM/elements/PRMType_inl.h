@@ -29,7 +29,7 @@
 namespace gum {
   namespace prm {
 
-    
+
     INLINE PRMType& PRMType::superType() {
       if (__superType) {
         return *__superType;
@@ -38,47 +38,33 @@ namespace gum {
       }
     }
 
-    
-    INLINE DiscreteVariable& PRMType::variable() {
-      return *__var;
-    }
 
-    
-    INLINE const DiscreteVariable& PRMType::variable() const {
-      return *__var;
-    }
+    INLINE DiscreteVariable& PRMType::variable() { return *__var; }
 
-    
-    INLINE DiscreteVariable& PRMType::operator*() {
-      return *__var;
-    }
 
-    
-    INLINE const DiscreteVariable& PRMType::operator*() const {
-      return *__var;
-    }
+    INLINE const DiscreteVariable& PRMType::variable() const { return *__var; }
 
-    
-    INLINE DiscreteVariable* PRMType::operator->() {
-      return __var;
-    }
 
-    
-    INLINE DiscreteVariable const* PRMType::operator->() const {
-      return __var;
-    }
+    INLINE DiscreteVariable& PRMType::operator*() { return *__var; }
 
-    
+
+    INLINE const DiscreteVariable& PRMType::operator*() const { return *__var; }
+
+
+    INLINE DiscreteVariable* PRMType::operator->() { return __var; }
+
+
+    INLINE DiscreteVariable const* PRMType::operator->() const { return __var; }
+
+
     INLINE PRMObject::prm_type PRMType::obj_type() const {
       return PRMObject::prm_type::TYPE;
     }
 
-    
-    INLINE const std::string& PRMType::name() const {
-      return PRMObject::name();
-    }
 
-    
+    INLINE const std::string& PRMType::name() const { return PRMObject::name(); }
+
+
     INLINE const PRMType& PRMType::superType() const {
       if (__superType) {
         return *__superType;
@@ -87,7 +73,7 @@ namespace gum {
       }
     }
 
-    
+
     INLINE void PRMType::setSuper(PRMType& t) {
       try {
         if (t != superType()) {
@@ -101,7 +87,7 @@ namespace gum {
       __superType = &t;
     }
 
-    
+
     INLINE const std::vector< Idx >& PRMType::label_map() const {
       if (__label_map) {
         return *__label_map;
@@ -110,23 +96,20 @@ namespace gum {
       }
     }
 
-    
-    INLINE bool PRMType::isSubType() const {
-      return __superType != nullptr;
-    }
 
-    
-    INLINE bool
-      PRMType::isSuperTypeOf(const PRMType& t) const {
+    INLINE bool PRMType::isSubType() const { return __superType != nullptr; }
+
+
+    INLINE bool PRMType::isSuperTypeOf(const PRMType& t) const {
       return t.isSubTypeOf(*this);
     }
 
-    
+
     INLINE bool PRMType::operator==(const PRMObject& obj) const {
       return name() == obj.name();
     }
 
-    
+
     INLINE bool PRMType::operator!=(const PRMObject& obj) const {
       return name() != obj.name();
     }

@@ -1046,7 +1046,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE PRMType* PRMFactory< GUM_SCALAR >::__retrieveCommonType(
       const std::vector< PRMClassElement< GUM_SCALAR >* >& elts) {
-      const PRMType*   current = nullptr;
+      const PRMType*                 current = nullptr;
       HashTable< std::string, Size > counters;
       // Finding all types and super types
 
@@ -1170,8 +1170,8 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE PRMType*
            PRMFactory< GUM_SCALAR >::__retrieveType(const std::string& name) const {
-      PRMType* type = nullptr;
-      std::string            full_name;
+      PRMType*    type = nullptr;
+      std::string full_name;
 
       // Looking for the type using its name
       if (__prm->__typeMap.exists(name)) {
@@ -1427,8 +1427,8 @@ namespace gum {
     INLINE void PRMFactory< GUM_SCALAR >::addLabel(const std::string& l,
                                                    std::string        extends) {
       if (extends == "") {
-        PRMType* t = static_cast< PRMType* >(
-          __checkStack(1, PRMObject::prm_type::TYPE));
+        PRMType* t =
+          static_cast< PRMType* >(__checkStack(1, PRMObject::prm_type::TYPE));
         LabelizedVariable* var = dynamic_cast< LabelizedVariable* >(t->__var);
 
         if (!var) {
@@ -1444,8 +1444,8 @@ namespace gum {
           GUM_ERROR(DuplicateElement, "a label '" << l << "' already exists");
         }
       } else {
-        PRMType* t = static_cast< PRMType* >(
-          __checkStack(1, PRMObject::prm_type::TYPE));
+        PRMType* t =
+          static_cast< PRMType* >(__checkStack(1, PRMObject::prm_type::TYPE));
         LabelizedVariable* var = dynamic_cast< LabelizedVariable* >(t->__var);
 
         if (!var) {
@@ -1478,8 +1478,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMFactory< GUM_SCALAR >::endDiscreteType() {
-      PRMType* t = static_cast< PRMType* >(
-        __checkStack(1, PRMObject::prm_type::TYPE));
+      PRMType* t =
+        static_cast< PRMType* >(__checkStack(1, PRMObject::prm_type::TYPE));
 
       if (!t->__isValid()) {
         GUM_ERROR(OperationNotAllowed, "current type is not a valid subtype");
@@ -1508,8 +1508,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMFactory< GUM_SCALAR >::addTick(double tick) {
-      PRMType* t = static_cast< PRMType* >(
-        __checkStack(1, PRMObject::prm_type::TYPE));
+      PRMType* t =
+        static_cast< PRMType* >(__checkStack(1, PRMObject::prm_type::TYPE));
       DiscretizedVariable< double >* var =
         dynamic_cast< DiscretizedVariable< double >* >(t->__var);
 
@@ -1527,8 +1527,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMFactory< GUM_SCALAR >::endDiscretizedType() {
-      PRMType* t = static_cast< PRMType* >(
-        __checkStack(1, PRMObject::prm_type::TYPE));
+      PRMType* t =
+        static_cast< PRMType* >(__checkStack(1, PRMObject::prm_type::TYPE));
 
       if (t->variable().domainSize() < 2) {
         GUM_ERROR(OperationNotAllowed,
@@ -1816,9 +1816,8 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE int
-      PRMFactory< GUM_SCALAR >::__typeDepth(const PRMType* t) {
-      int                          depth = 0;
+    INLINE int PRMFactory< GUM_SCALAR >::__typeDepth(const PRMType* t) {
+      int            depth = 0;
       const PRMType* current = t;
 
       while (current->isSubType()) {

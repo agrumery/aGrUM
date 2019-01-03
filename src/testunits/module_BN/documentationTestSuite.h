@@ -228,17 +228,12 @@ namespace gum_tests {
         factory.startRawProbabilityDeclaration("Tuberculosis or Cancer");
         variables = std::vector< std::string >{
           "Tuberculosis or Cancer", "Has Tuberculosis", "Has Lung Cancer"};
-        values = std::vector< float >
+        values = std::vector< float >   // clang-format off
           //      True     ||    False        => Has Lung Cancer
           //  True | False || True | False    => Has Tuberculosis
-          {0.00f,
-           0.00f,
-           0.00f,
-           1.00f,   // False
-           1.00f,
-           1.00f,
-           1.00f,
-           0.00f};   // True
+          {0.00f,0.00f,0.00f,1.00f,   // False
+           1.00f,1.00f,1.00f,0.00f};   // True
+        // clang-format on
         factory.rawConditionalTable(variables, values);
         factory.endRawProbabilityDeclaration();
 

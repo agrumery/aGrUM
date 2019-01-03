@@ -30,6 +30,6 @@
 
 template class gum::Sequence< int >;
 template class gum::Sequence< long >;
-template class gum::Sequence< float >;
+
 template class gum::Sequence< double >;
 template class gum::Sequence< std::string >;

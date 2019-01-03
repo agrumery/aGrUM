@@ -275,10 +275,10 @@ namespace gum_tests {
       PRMClass      c("class");
       PRMAttribute* attr = new PRMAttribute("attr", *__boolean);
       c.add(attr);
-      PRMClass                    sub_c("sub_c", c);
-      gum::LabelizedVariable      var("foo", "bar", 2);
-      gum::prm::PRMType           type(var);
-      PRMAttribute*               bttr = new PRMAttribute("attr", type);
+      PRMClass               sub_c("sub_c", c);
+      gum::LabelizedVariable var("foo", "bar", 2);
+      gum::prm::PRMType      type(var);
+      PRMAttribute*          bttr = new PRMAttribute("attr", type);
       // Act & Assert
       TS_ASSERT_THROWS(sub_c.overload(bttr), gum::OperationNotAllowed);
       // Cleanup

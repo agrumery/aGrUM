@@ -242,7 +242,7 @@ namespace gum_tests {
     void testCreationMin() {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3),
         d("d", "", 0, 3);
-      gum::aggregator::Min< float > p;
+      gum::aggregator::Min< double > p;
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
       TS_ASSERT_EQUALS(p.toString(), "a[0-3]=min(b[0-3],c[0-3],d[0-3])");
 
@@ -256,7 +256,7 @@ namespace gum_tests {
     void testCreationMax() {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3),
         d("d", "", 0, 3);
-      gum::aggregator::Max< float > p;
+      gum::aggregator::Max< double > p;
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
       TS_ASSERT_EQUALS(p.toString(), "a[0-3]=max(b[0-3],c[0-3],d[0-3])");
 
@@ -270,7 +270,7 @@ namespace gum_tests {
     void testCreationCount() {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3),
         d("d", "", 0, 3);
-      gum::aggregator::Count< float > p((gum::Idx)2);
+      gum::aggregator::Count< double > p((gum::Idx)2);
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
       TS_ASSERT_EQUALS(p.toString(), "a[0-3]=count[2](b[0-3],c[0-3],d[0-3])");
 
@@ -285,7 +285,7 @@ namespace gum_tests {
     void testCreationForall() {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3),
         d("d", "", 0, 3);
-      gum::aggregator::Forall< float > p((gum::Idx)2);
+      gum::aggregator::Forall< double > p((gum::Idx)2);
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
       TS_ASSERT_EQUALS(p.toString(), "a[0-3]=forall[2](b[0-3],c[0-3],d[0-3])");
 
@@ -300,7 +300,7 @@ namespace gum_tests {
     void testCreationExists() {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3),
         d("d", "", 0, 3);
-      gum::aggregator::Exists< float > p((gum::Idx)2);
+      gum::aggregator::Exists< double > p((gum::Idx)2);
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
       TS_ASSERT_EQUALS(p.toString(), "a[0-3]=exists[2](b[0-3],c[0-3],d[0-3])");
 
@@ -315,7 +315,7 @@ namespace gum_tests {
     void testCreationOR() {
       gum::LabelizedVariable a("a", "", 2), b("b", "", 4), c("c", "", 2),
         d("d", "", 2);
-      gum::aggregator::Or< float > p;
+      gum::aggregator::Or< double > p;
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
       TS_ASSERT_EQUALS(p.toString(), "a<0,1>=or(b<0,1,2,3>,c<0,1>,d<0,1>)");
 
@@ -329,7 +329,7 @@ namespace gum_tests {
     void testCreationAND() {
       gum::LabelizedVariable a("a", "", 2), b("b", "", 4), c("c", "", 2),
         d("d", "", 2);
-      gum::aggregator::And< float > p;
+      gum::aggregator::And< double > p;
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
       TS_ASSERT_EQUALS(p.toString(), "a<0,1>=and(b<0,1,2,3>,c<0,1>,d<0,1>)");
 
@@ -343,7 +343,7 @@ namespace gum_tests {
     void testCreationMedian3() {
       gum::LabelizedVariable a("a", "", 4), b("b", "", 4), c("c", "", 4),
         d("d", "", 4);
-      gum::aggregator::Median< float > p;
+      gum::aggregator::Median< double > p;
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
       TS_ASSERT_EQUALS(p.toString(),
                        "a<0,1,2,3>=median(b<0,1,2,3>,c<0,1,2,3>,d<0,1,2,3>)");
@@ -359,7 +359,7 @@ namespace gum_tests {
     void testCreationMedian4() {
       gum::LabelizedVariable a("a", "", 4), b("b", "", 4), c("c", "", 4),
         d("d", "", 4), e("e", "", 4);
-      gum::aggregator::Median< float > p;
+      gum::aggregator::Median< double > p;
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d << e);
       TS_ASSERT_EQUALS(
         p.toString(),
@@ -376,7 +376,7 @@ namespace gum_tests {
     void testCreationAmplitude() {
       gum::LabelizedVariable a("a", "", 4), b("b", "", 4), c("c", "", 4),
         d("d", "", 4), e("e", "", 4);
-      gum::aggregator::Amplitude< float > p;
+      gum::aggregator::Amplitude< double > p;
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d << e);
       TS_ASSERT_EQUALS(
         p.toString(),
@@ -414,7 +414,7 @@ namespace gum_tests {
     }
 
     private:
-    std::string _pot2arr(const gum::aggregator::MultiDimAggregator< float >& p) {
+    std::string _pot2arr(const gum::aggregator::MultiDimAggregator< double >& p) {
       std::stringstream v;
       bool              first = true;
 
@@ -435,9 +435,9 @@ namespace gum_tests {
     void testOr_ZeroParent() {
       gum::LabelizedVariable a("a", "", 2), b("b", "", 2);
 
-      std::string                  res0 = "1-0";
-      std::string                  res1 = "1-0-0-1";
-      gum::aggregator::Or< float > p;
+      std::string                   res0 = "1-0";
+      std::string                   res1 = "1-0-0-1";
+      gum::aggregator::Or< double > p;
 
       gum::Instantiation ind(p);
       std::string        s;
@@ -457,9 +457,9 @@ namespace gum_tests {
     void testAnd_ZeroParent() {
       gum::LabelizedVariable a("a", "", 2), b("b", "", 2);
 
-      std::string                   res0 = "0-1";
-      std::string                   res1 = "1-0-0-1";
-      gum::aggregator::And< float > p;
+      std::string                    res0 = "0-1";
+      std::string                    res1 = "1-0-0-1";
+      gum::aggregator::And< double > p;
 
       gum::Instantiation ind(p);
       std::string        s;
@@ -479,9 +479,9 @@ namespace gum_tests {
     void testExists_ZeroParent() {
       gum::LabelizedVariable a("a", "", 2), b("b", "", 4);
 
-      std::string                      res0 = "1-0";
-      std::string                      res1 = "1-0-1-0-0-1-1-0";
-      gum::aggregator::Exists< float > p(2);
+      std::string                       res0 = "1-0";
+      std::string                       res1 = "1-0-1-0-0-1-1-0";
+      gum::aggregator::Exists< double > p(2);
 
       gum::Instantiation ind(p);
       std::string        s;
@@ -501,9 +501,9 @@ namespace gum_tests {
     void testForall_ZeroParent() {
       gum::LabelizedVariable a("a", "", 2), b("b", "", 4);
 
-      std::string                      res0 = "0-1";
-      std::string                      res1 = "1-0-1-0-0-1-1-0";
-      gum::aggregator::Forall< float > p(2);
+      std::string                       res0 = "0-1";
+      std::string                       res1 = "1-0-1-0-0-1-1-0";
+      gum::aggregator::Forall< double > p(2);
 
       gum::Instantiation ind(p);
       std::string        s;
@@ -525,7 +525,7 @@ namespace gum_tests {
 
       std::string res0 = "0-0-0-1";   // min of zero value is +infinity
       std::string res1 = "1-0-0-0-0-1-0-0-0-0-1-0-0-0-0-1";
-      gum::aggregator::Min< float > p;
+      gum::aggregator::Min< double > p;
 
       gum::Instantiation ind(p);
       std::string        s;
@@ -547,7 +547,7 @@ namespace gum_tests {
 
       std::string res0 = "1-0-0-0";   // max of zero value is -infinity
       std::string res1 = "1-0-0-0-0-1-0-0-0-0-1-0-0-0-0-1";
-      gum::aggregator::Max< float > p;
+      gum::aggregator::Max< double > p;
 
       gum::Instantiation ind(p);
       std::string        s;
@@ -567,9 +567,9 @@ namespace gum_tests {
     void testCount_ZeroParent() {
       gum::LabelizedVariable a("a", "", 4), b("b", "", 2);
 
-      std::string                     res0 = "1-0-0-0";
-      std::string                     res1 = "1-0-0-0-0-1-0-0";
-      gum::aggregator::Count< float > p(1);
+      std::string                      res0 = "1-0-0-0";
+      std::string                      res1 = "1-0-0-0-0-1-0-0";
+      gum::aggregator::Count< double > p(1);
 
       gum::Instantiation ind(p);
       std::string        s;
@@ -589,9 +589,9 @@ namespace gum_tests {
     void testAmplitude_ZeroParent() {
       gum::LabelizedVariable a("a", "", 4), b("b", "", 2);
 
-      std::string                         res0 = "1-0-0-0";
-      std::string                         res1 = "1-0-0-0-1-0-0-0";
-      gum::aggregator::Amplitude< float > p;
+      std::string                          res0 = "1-0-0-0";
+      std::string                          res1 = "1-0-0-0-1-0-0-0";
+      gum::aggregator::Amplitude< double > p;
 
       gum::Instantiation ind(p);
       std::string        s;
@@ -611,9 +611,9 @@ namespace gum_tests {
     void testMedian_ZeroParent() {
       gum::LabelizedVariable a("a", "", 4), b("b", "", 2);
 
-      std::string                      res0 = "1-0-0-0";
-      std::string                      res1 = "1-0-0-0-0-1-0-0";
-      gum::aggregator::Median< float > p;
+      std::string                       res0 = "1-0-0-0";
+      std::string                       res1 = "1-0-0-0-0-1-0-0";
+      gum::aggregator::Median< double > p;
 
       gum::Instantiation ind(p);
       std::string        s;

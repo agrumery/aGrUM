@@ -28,5 +28,5 @@
 #ifdef GUM_NO_INLINE
 #endif /* GUM_NO_INLINE */
 
-template class gum::MultiDimLogit< float >;
+
 template class gum::MultiDimLogit< double >;

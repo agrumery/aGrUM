@@ -383,7 +383,6 @@ namespace gum {
     };
 
 
-    extern template class CNLoopyPropagation< float >;
     extern template class CNLoopyPropagation< double >;
   }   // namespace credal
 }   // namespace gum

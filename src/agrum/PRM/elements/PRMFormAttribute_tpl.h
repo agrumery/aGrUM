@@ -43,8 +43,7 @@ namespace gum {
       const PRMType&                         type,
       MultiDimImplementation< std::string >* impl) :
         PRMAttribute< GUM_SCALAR >(name),
-        __type(new PRMType(type)), __cpf(0), __formulas(impl),
-        __class(&c) {
+        __type(new PRMType(type)), __cpf(0), __formulas(impl), __class(&c) {
       GUM_CONSTRUCTOR(PRMFormAttribute);
       __formulas->add(__type->variable());
       this->_safeName =
@@ -64,7 +63,8 @@ namespace gum {
       const PRMClass< GUM_SCALAR >& c) const {
       auto impl = static_cast< MultiDimImplementation< std::string >* >(
         this->__formulas->newFactory());
-      return new PRMFormAttribute< GUM_SCALAR >(c, this->name(), this->type(), impl);
+      return new PRMFormAttribute< GUM_SCALAR >(
+        c, this->name(), this->type(), impl);
     }
 
     template < typename GUM_SCALAR >
@@ -98,7 +98,8 @@ namespace gum {
       }
 
       if (dynamic_cast< const PRMFormAttribute< GUM_SCALAR >* >(&source)) {
-        const auto& src = static_cast< const PRMFormAttribute< GUM_SCALAR >& >(source);
+        const auto& src =
+          static_cast< const PRMFormAttribute< GUM_SCALAR >& >(source);
 
         Instantiation inst(__formulas), jnst(src.__formulas);
 
@@ -225,8 +226,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    void PRMFormAttribute< GUM_SCALAR >::becomeCastDescendant(
-      PRMType& subtype) {
+    void PRMFormAttribute< GUM_SCALAR >::becomeCastDescendant(PRMType& subtype) {
       delete __formulas;
 
       __formulas = new MultiDimArray< std::string >();
@@ -318,9 +318,8 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    void
-      PRMFormAttribute< GUM_SCALAR >::swap(const PRMType& old_type,
-                                           const PRMType& new_type) {
+    void PRMFormAttribute< GUM_SCALAR >::swap(const PRMType& old_type,
+                                              const PRMType& new_type) {
       if (&(old_type) == __type) {
         GUM_ERROR(OperationNotAllowed, "Cannot replace attribute own type");
       }

@@ -137,7 +137,6 @@ namespace gum {
   };
 
 
-  extern template class UAIReader< float >;
   extern template class UAIReader< double >;
 
 } /* namespace gum */

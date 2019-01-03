@@ -29,7 +29,7 @@
 namespace gum {
   namespace prm {
 
-    template class InstanceBayesNet< float >;
+
     template class InstanceBayesNet< double >;
 
   } /* namespace prm */

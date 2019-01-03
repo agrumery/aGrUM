@@ -115,7 +115,7 @@ namespace gum {
 
       /// Returns true if obj_ptr is of type PRMReferenceSlot.
       static INLINE bool
-      isReferenceSlot(const PRMClassElement< GUM_SCALAR >& elt) {
+        isReferenceSlot(const PRMClassElement< GUM_SCALAR >& elt) {
         return elt.elt_type() == prm_refslot;
       }
 
@@ -262,7 +262,6 @@ namespace gum {
     };
 
 
-    extern template class PRMClassElement< float >;
     extern template class PRMClassElement< double >;
 
   } /* namespace prm */

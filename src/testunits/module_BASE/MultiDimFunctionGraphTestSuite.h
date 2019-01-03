@@ -40,8 +40,8 @@ namespace gum_tests {
 
   class MultiDimFunctionGraphTestSuite : public CxxTest::TestSuite {
     private:
-    void __fillFactory(gum::MultiDimFunctionGraph< float >* factory,
-                       gum::List< gum::NodeId >*            idList) {
+    void __fillFactory(gum::MultiDimFunctionGraph< double >* factory,
+                       gum::List< gum::NodeId >*             idList) {
       factory->add(*Cprimevar);
       factory->add(*Cvar);
       factory->add(*PLvar);
@@ -146,11 +146,11 @@ namespace gum_tests {
       // *********************************************************************
       // Création of the Function Graph
       // *********************************************************************
-      gum::MultiDimFunctionGraph< float >* functionGraph = NULL;
+      gum::MultiDimFunctionGraph< double >* functionGraph = NULL;
 
       TS_GUM_ASSERT_THROWS_NOTHING(
         functionGraph =
-          gum::MultiDimFunctionGraph< float >::getReducedAndOrderedInstance());
+          gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance());
 
       // *********************************************************************
       // Testing the insertion of nodes and arcs in the graph
@@ -175,8 +175,8 @@ namespace gum_tests {
       // *********************************************************************
       // Création du multidim
       // *********************************************************************
-      gum::MultiDimFunctionGraph< float >* functionGraph =
-        gum::MultiDimFunctionGraph< float >::getReducedAndOrderedInstance();
+      gum::MultiDimFunctionGraph< double >* functionGraph =
+        gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
       gum::List< gum::NodeId > idList;
       __fillFactory(functionGraph, &idList);
 
@@ -231,8 +231,8 @@ namespace gum_tests {
       // *********************************************************************
       // Création du multidim
       // *********************************************************************
-      gum::MultiDimFunctionGraph< float >* functionGraph =
-        gum::MultiDimFunctionGraph< float >::getReducedAndOrderedInstance();
+      gum::MultiDimFunctionGraph< double >* functionGraph =
+        gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
       gum::List< gum::NodeId > idList;
       __fillFactory(functionGraph, &idList);
 
@@ -267,8 +267,8 @@ namespace gum_tests {
       // *********************************************************************
       // Creation of the multidim
       // *********************************************************************
-      gum::MultiDimFunctionGraph< float >* functionGraph =
-        gum::MultiDimFunctionGraph< float >::getReducedAndOrderedInstance();
+      gum::MultiDimFunctionGraph< double >* functionGraph =
+        gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
       gum::List< gum::NodeId > idList;
       __fillFactory(functionGraph, &idList);
 
@@ -342,8 +342,8 @@ namespace gum_tests {
       // *********************************************************************
       // Creation of multidim
       // *********************************************************************
-      gum::MultiDimFunctionGraph< float >* functionGraph =
-        gum::MultiDimFunctionGraph< float >::getReducedAndOrderedInstance();
+      gum::MultiDimFunctionGraph< double >* functionGraph =
+        gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
       gum::List< gum::NodeId > idList;
       __fillFactory(functionGraph, &idList);
 
@@ -380,7 +380,7 @@ namespace gum_tests {
 
       TS_ASSERT_THROWS(functionGraph->fill(14.0), gum::OperationNotAllowed);
 
-      std::vector< float > v;
+      std::vector< double > v;
 
       for (float i = 0; i < 128; i++)
         v.push_back(i);
@@ -527,8 +527,8 @@ namespace gum_tests {
       // *********************************************************************
       // Creation of the multidim
       // *********************************************************************
-      gum::MultiDimFunctionGraph< float >* functionGraph =
-        gum::MultiDimFunctionGraph< float >::getReducedAndOrderedInstance();
+      gum::MultiDimFunctionGraph< double >* functionGraph =
+        gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
       gum::List< gum::NodeId > idList;
       __fillFactory(functionGraph, &idList);
       gum::LabelizedVariable* lv =
@@ -581,8 +581,8 @@ namespace gum_tests {
       // *********************************************************************
       // Création du multidim
       // *********************************************************************
-      gum::MultiDimFunctionGraph< float >* functionGraph =
-        gum::MultiDimFunctionGraph< float >::getReducedAndOrderedInstance();
+      gum::MultiDimFunctionGraph< double >* functionGraph =
+        gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
       gum::List< gum::NodeId > idList;
       __fillFactory(functionGraph, &idList);
 
@@ -590,13 +590,13 @@ namespace gum_tests {
       // *********************************************************************
       // Creation of the multidim that we use to make the copy
       // *********************************************************************
-      gum::MultiDimFunctionGraph< float >* functionGraph2 =
-        gum::MultiDimFunctionGraph< float >::getReducedAndOrderedInstance();
+      gum::MultiDimFunctionGraph< double >* functionGraph2 =
+        gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
 
       // *********************************************************************
       // Test on copy of other multidim (must raise OperationNotAllowed)
       // *********************************************************************
-      gum::MultiDimArray< float >* array = new gum::MultiDimArray< float >();
+      gum::MultiDimArray< double >* array = new gum::MultiDimArray< double >();
 
       TS_ASSERT_THROWS(functionGraph2->copy(*array), gum::OperationNotAllowed)
       TS_ASSERT_THROWS(functionGraph2->copyFrom(*array), gum::OperationNotAllowed)
@@ -689,12 +689,12 @@ namespace gum_tests {
       // *********************************************************************
       // Creation of severals multidims
       // *********************************************************************
-      gum::MultiDimFunctionGraph< float >* dg1 =
-        gum::MultiDimFunctionGraph< float >::getReducedAndOrderedInstance();
-      gum::MultiDimFunctionGraph< float >* dg2 =
-        gum::MultiDimFunctionGraph< float >::getReducedAndOrderedInstance();
-      gum::MultiDimFunctionGraph< float >* dg3 =
-        gum::MultiDimFunctionGraph< float >::getReducedAndOrderedInstance();
+      gum::MultiDimFunctionGraph< double >* dg1 =
+        gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
+      gum::MultiDimFunctionGraph< double >* dg2 =
+        gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
+      gum::MultiDimFunctionGraph< double >* dg3 =
+        gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
       gum::List< gum::NodeId > idList;
       __fillFactory(dg1, &idList);
       __fillFactory(dg2, &idList);
@@ -736,8 +736,8 @@ namespace gum_tests {
       // *********************************************************************
       // Creation of the multidim
       // *********************************************************************
-      gum::MultiDimFunctionGraph< float >* functionGraph =
-        gum::MultiDimFunctionGraph< float >::getReducedAndOrderedInstance();
+      gum::MultiDimFunctionGraph< double >* functionGraph =
+        gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance();
       gum::List< gum::NodeId > idList;
       __fillFactory(functionGraph, &idList);
 

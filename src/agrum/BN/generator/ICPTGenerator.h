@@ -70,7 +70,7 @@ namespace gum {
     /// @}
   };
 
-  extern template class ICPTGenerator< float >;
+
   extern template class ICPTGenerator< double >;
 
 } /* namespace gum */

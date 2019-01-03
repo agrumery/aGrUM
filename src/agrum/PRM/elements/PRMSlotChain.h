@@ -217,7 +217,6 @@ namespace gum {
     };
 
 
-    extern template class PRMSlotChain< float >;
     extern template class PRMSlotChain< double >;
 
 

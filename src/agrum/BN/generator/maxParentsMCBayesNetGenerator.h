@@ -186,7 +186,6 @@ namespace gum {
   };
 
 
-  extern template class MaxParentsMCBayesNetGenerator< float >;
   extern template class MaxParentsMCBayesNetGenerator< double >;
 
 } /*namespace gum*/

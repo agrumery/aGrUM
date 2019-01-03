@@ -132,7 +132,6 @@ namespace gum {
     };
 
 
-    extern template class GroundedInference< float >;
     extern template class GroundedInference< double >;
 
 

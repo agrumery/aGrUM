@@ -43,12 +43,12 @@ namespace gum_tests {
     void testConstuctor() {
       std::string file = GET_RESSOURCES_PATH("test1.net");
 
-      gum::BayesNet< float > net;
+      gum::BayesNet< double > net;
 
-      gum::NetReader< float >* reader = 0;
+      gum::NetReader< double >* reader = 0;
 
       TS_GUM_ASSERT_THROWS_NOTHING(reader =
-                                     new gum::NetReader< float >(&net, file));
+                                     new gum::NetReader< double >(&net, file));
 
       TS_GUM_ASSERT_THROWS_NOTHING(delete reader);
     }
@@ -56,9 +56,9 @@ namespace gum_tests {
     void testRead_not_existing_file() {
       std::string file = GET_RESSOURCES_PATH("test.net");
 
-      gum::BayesNet< float >* net = new gum::BayesNet< float >();
+      gum::BayesNet< double >* net = new gum::BayesNet< double >();
 
-      gum::NetReader< float > reader(net, file);
+      gum::NetReader< double > reader(net, file);
 
       TS_ASSERT_THROWS(reader.trace(false), gum::IOError);
 
@@ -83,9 +83,9 @@ namespace gum_tests {
     void testRead_file1() {
       std::string file = GET_RESSOURCES_PATH("test1.net");
 
-      gum::BayesNet< float >* net = new gum::BayesNet< float >();
+      gum::BayesNet< double >* net = new gum::BayesNet< double >();
 
-      gum::NetReader< float > reader(net, file);
+      gum::NetReader< double > reader(net, file);
 
       reader.trace(false);
 
@@ -110,9 +110,9 @@ namespace gum_tests {
     void testRead_file2() {
       std::string file = GET_RESSOURCES_PATH("test2.net");
 
-      gum::BayesNet< float >* net = new gum::BayesNet< float >();
+      gum::BayesNet< double >* net = new gum::BayesNet< double >();
 
-      gum::NetReader< float > reader(net, file);
+      gum::NetReader< double > reader(net, file);
 
       reader.trace(false);
 
@@ -137,9 +137,9 @@ namespace gum_tests {
     void testRead_file3() {
       std::string file = GET_RESSOURCES_PATH("test3.net");
 
-      gum::BayesNet< float >* net = new gum::BayesNet< float >();
+      gum::BayesNet< double >* net = new gum::BayesNet< double >();
 
-      gum::NetReader< float > reader(net, file);
+      gum::NetReader< double > reader(net, file);
 
       reader.trace(false);
 
@@ -164,9 +164,9 @@ namespace gum_tests {
     void testRead_file_with_xp() {
       std::string file = GET_RESSOURCES_PATH("bn_with_xp.net");
 
-      gum::BayesNet< float >* net = new gum::BayesNet< float >();
+      gum::BayesNet< double >* net = new gum::BayesNet< double >();
 
-      gum::NetReader< float > reader(net, file);
+      gum::NetReader< double > reader(net, file);
 
       reader.trace(false);
 

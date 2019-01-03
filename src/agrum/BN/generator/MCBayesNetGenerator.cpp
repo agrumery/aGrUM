@@ -26,5 +26,5 @@
 
 #include <agrum/BN/generator/MCBayesNetGenerator.h>
 
-template class gum::MCBayesNetGenerator< float >;
+
 template class gum::MCBayesNetGenerator< double >;

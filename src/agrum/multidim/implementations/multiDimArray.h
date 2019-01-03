@@ -250,7 +250,6 @@ namespace gum {
   };
 
 
-  extern template class MultiDimArray< float >;
   extern template class MultiDimArray< double >;
 
 

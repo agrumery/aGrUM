@@ -88,7 +88,7 @@ namespace gum {
       Idx __value;
     };
 
-    extern template class Or< float >;
+
     extern template class Or< double >;
 
   }   // namespace aggregator

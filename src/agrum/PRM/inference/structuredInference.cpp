@@ -29,7 +29,7 @@
 namespace gum {
   namespace prm {
 
-    template class StructuredInference< float >;
+
     template class StructuredInference< double >;
 
   } /* namespace prm */

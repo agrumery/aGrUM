@@ -45,18 +45,18 @@ namespace gum_tests {
         vars[i] = new gum::LabelizedVariable(s, s, 2);
       }
 
-      gum::Potential< float > pot1;
+      gum::Potential< double > pot1;
       pot1 << *(vars[0]) << *(vars[2]) << *(vars[3]) << *(vars[4]);
       randomInit(pot1);
-      gum::ScheduleMultiDim< float >           f1(pot1);
+      gum::ScheduleMultiDim< double >          f1(pot1);
       gum::Set< const gum::DiscreteVariable* > del_vars;
       del_vars << vars[0] << vars[3];
-      gum::ScheduleProject< float >         myproj(f1, del_vars, gum::projectMax);
-      const gum::ScheduleMultiDim< float >& res = myproj.result();
+      gum::ScheduleProject< double >         myproj(f1, del_vars, gum::projectMax);
+      const gum::ScheduleMultiDim< double >& res = myproj.result();
 
-      gum::ScheduleDeleteMultiDim< float > del1(f1);
-      gum::ScheduleDeleteMultiDim< float > del2(res);
-      gum::ScheduleDeleteMultiDim< float > del3(del2);
+      gum::ScheduleDeleteMultiDim< double > del1(f1);
+      gum::ScheduleDeleteMultiDim< double > del2(res);
+      gum::ScheduleDeleteMultiDim< double > del3(del2);
       TS_ASSERT(!(del1 == del2));
       TS_ASSERT(del1 != del2);
       TS_ASSERT_THROWS(del2.execute(), gum::NotFound);
@@ -69,7 +69,7 @@ namespace gum_tests {
       TS_ASSERT(xxx.first == -16);
       TS_ASSERT(xxx.second == -16);
 
-      gum::Sequence< const gum::ScheduleMultiDim< float >* > seq =
+      gum::Sequence< const gum::ScheduleMultiDim< double >* > seq =
         del2.multiDimArgs();
       TS_ASSERT(seq.size() == 1);
       TS_ASSERT(*(seq.atPos(0)) == res);
@@ -82,7 +82,7 @@ namespace gum_tests {
       s << "delete ( " << f1.toString() << " )";
       TS_ASSERT(s.str() == del1.toString());
 
-      gum::ScheduleDeleteMultiDim< float >* del4 = del3.newFactory();
+      gum::ScheduleDeleteMultiDim< double >* del4 = del3.newFactory();
       TS_ASSERT(*del4 == del3);
       delete del4;
 
@@ -94,7 +94,7 @@ namespace gum_tests {
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    void randomInit(gum::Potential< float >& t) {
+    void randomInit(gum::Potential< double >& t) {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)

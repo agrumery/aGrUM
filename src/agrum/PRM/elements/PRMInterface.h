@@ -45,9 +45,9 @@
 namespace gum {
   namespace prm {
 
-    template <typename GUM_SCALAR >
+    template < typename GUM_SCALAR >
     class PRMClass;
-    
+
     /**
      * @class PRMInterface
      * @headerfile interface.h <agrum/PRM/interface.h>
@@ -308,7 +308,8 @@ namespace gum {
 
       private:
       /// Copy operator. Don't use it.
-      PRMInterface< GUM_SCALAR >& operator=(const PRMInterface< GUM_SCALAR >& source);
+      PRMInterface< GUM_SCALAR >&
+        operator=(const PRMInterface< GUM_SCALAR >& source);
 
       /// Proceed with the copy of i in this.
       void __inheritInterface(const PRMInterface< GUM_SCALAR >& i);
@@ -387,7 +388,6 @@ namespace gum {
     };
 
 
-    extern template class PRMInterface< float >;
     extern template class PRMInterface< double >;
 
 

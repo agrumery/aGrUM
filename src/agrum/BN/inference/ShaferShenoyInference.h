@@ -407,7 +407,6 @@ namespace gum {
   };
 
 
-  extern template class ShaferShenoyInference< float >;
   extern template class ShaferShenoyInference< double >;
 
 

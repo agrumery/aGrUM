@@ -300,7 +300,6 @@ namespace gum {
       };
 
 
-      extern template class DFSTree< float >;
       extern template class DFSTree< double >;
 
 

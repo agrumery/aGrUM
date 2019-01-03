@@ -144,7 +144,6 @@ namespace gum {
   };
 
 
-  extern template class KL< float >;
   extern template class KL< double >;
 
 }   // namespace gum

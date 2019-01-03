@@ -102,7 +102,6 @@ namespace gum {
                                const EdgeGrowth< GUM_SCALAR >& edge);
 
 
-      extern template class EdgeGrowth< float >;
       extern template class EdgeGrowth< double >;
 
 

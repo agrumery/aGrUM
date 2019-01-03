@@ -89,7 +89,6 @@ namespace gum {
   };
 
 
-  extern template class gum::DSLWriter< float >;
   extern template class gum::DSLWriter< double >;
 
 } /* namespace gum */

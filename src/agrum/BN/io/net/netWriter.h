@@ -107,7 +107,6 @@ namespace gum {
   };
 
 
-  extern template class NetWriter< float >;
   extern template class NetWriter< double >;
 
 } /* namespace gum */

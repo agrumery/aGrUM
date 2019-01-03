@@ -36,8 +36,8 @@ namespace gum_tests {
     public:
     void test_constructors() {
       gum::ContinuousVariable<> var1("x1", "");
-      TS_ASSERT(var1.upperBound() == std::numeric_limits< float >::infinity());
-      TS_ASSERT(var1.lowerBound() == -std::numeric_limits< float >::infinity());
+      TS_ASSERT(var1.upperBound() == std::numeric_limits< double >::infinity());
+      TS_ASSERT(var1.lowerBound() == -std::numeric_limits< double >::infinity());
 
       gum::ContinuousVariable<> var2("x2", "", -10, 10);
       TS_ASSERT(var2.lowerBound() == -10.0f);
@@ -61,8 +61,8 @@ namespace gum_tests {
       delete var6;
 
       var3 = var1;
-      TS_ASSERT(var3.upperBound() == std::numeric_limits< float >::infinity());
-      TS_ASSERT(var3.lowerBound() == -std::numeric_limits< float >::infinity());
+      TS_ASSERT(var3.upperBound() == std::numeric_limits< double >::infinity());
+      TS_ASSERT(var3.lowerBound() == -std::numeric_limits< double >::infinity());
 
       var3 = var5;
       TS_ASSERT(var3.lowerBound() == -10.0f);
@@ -80,8 +80,8 @@ namespace gum_tests {
 
     void test_methods() {
       gum::ContinuousVariable<> var1("x1", "");
-      TS_ASSERT(var1.upperBound() == std::numeric_limits< float >::infinity());
-      TS_ASSERT(var1.lowerBound() == -std::numeric_limits< float >::infinity());
+      TS_ASSERT(var1.upperBound() == std::numeric_limits< double >::infinity());
+      TS_ASSERT(var1.lowerBound() == -std::numeric_limits< double >::infinity());
 
       gum::ContinuousVariable<> var2("x2", "xxx", -10, 10);
       TS_ASSERT(var2.lowerBound() == -10.0f);
@@ -109,7 +109,7 @@ namespace gum_tests {
       TS_ASSERT(var2.belongs(5.6f));
       TS_ASSERT(!var2.belongs(15.6f));
 
-      auto        domain = var2.domain();
+      auto domain = var2.domain();
       /*
       std::string regexp = "\\[([0-9.\\-]+);([0-9.\\-]+)\\]";
       std::regex  reg(regexp);
@@ -118,8 +118,8 @@ namespace gum_tests {
       TS_ASSERT(std::stof(match[1]) == 4.0f);
       TS_ASSERT(std::stof(match[2]) == 8.5f);
       */
-      TS_ASSERT( domain == "[4;8.5]");
-      
+      TS_ASSERT(domain == "[4;8.5]");
+
       TS_ASSERT(var2.toString() == ("x2" + domain));
       TS_ASSERT(var2.toStringWithDescription() == var2.description() + domain);
     }

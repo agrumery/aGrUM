@@ -288,10 +288,6 @@ namespace gum {
       };
 
 
-      extern template class NodeData< float >;
-      extern template class EdgeData< float >;
-      extern template class InterfaceGraph< float >;
-
       extern template class NodeData< double >;
       extern template class EdgeData< double >;
       extern template class InterfaceGraph< double >;

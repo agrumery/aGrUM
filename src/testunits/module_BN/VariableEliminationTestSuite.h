@@ -48,14 +48,14 @@ namespace gum_tests {
 
   class VariableElimination : public CxxTest::TestSuite {
     public:
-    gum::BayesNet< float >* bn;
-    gum::NodeId             i1, i2, i3, i4, i5;
-    gum::Potential< float >*e_i1, *e_i4;
+    gum::BayesNet< double >* bn;
+    gum::NodeId              i1, i2, i3, i4, i5;
+    gum::Potential< double >*e_i1, *e_i4;
 
     float __epsilon{1e-6f};
 
     void setUp() {
-      bn = new gum::BayesNet< float >();
+      bn = new gum::BayesNet< double >();
 
       gum::LabelizedVariable n1("1", "", 2), n2("2", "", 2), n3("3", "", 2),
         n4("4", "", 2), n5("5", "", 3);
@@ -73,14 +73,14 @@ namespace gum_tests {
       bn->addArc(i2, i4);
       bn->addArc(i2, i5);
 
-      e_i1 = new gum::Potential< float >();
+      e_i1 = new gum::Potential< double >();
       (*e_i1) << bn->variable(i1);
       e_i1->fill((float)0);
       gum::Instantiation inst_1(*e_i1);
       inst_1.chgVal(bn->variable(i1), 0);
       e_i1->set(inst_1, (float)1);
 
-      e_i4 = new gum::Potential< float >();
+      e_i4 = new gum::Potential< double >();
       (*e_i4) << bn->variable(i4);
       e_i4->fill((float)0);
       gum::Instantiation inst_4(*e_i4);
@@ -94,8 +94,8 @@ namespace gum_tests {
       delete e_i4;
     }
 
-    bool equalPotentials(const gum::Potential< float >& p1,
-                         const gum::Potential< float >& p2) {
+    bool equalPotentials(const gum::Potential< double >& p1,
+                         const gum::Potential< double >& p2) {
       gum::Instantiation i1(p1);
       gum::Instantiation i2(p2);
 
@@ -115,9 +115,9 @@ namespace gum_tests {
     void testMakeInference() {
       fill(*bn);
       // Testing the inference
-      gum::VariableElimination< float >* inf = 0;
+      gum::VariableElimination< double >* inf = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(inf =
-                                     new gum::VariableElimination< float >(bn));
+                                     new gum::VariableElimination< double >(bn));
 
       if (inf != 0) {
         TS_GUM_ASSERT_THROWS_NOTHING(inf->makeInference());
@@ -127,37 +127,37 @@ namespace gum_tests {
 
     void testVariableElimination() {
       fill(*bn);
-      gum::VariableElimination< float >* inf = 0;
+      gum::VariableElimination< double >* inf = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(inf =
-                                     new gum::VariableElimination< float >(bn));
+                                     new gum::VariableElimination< double >(bn));
 
-      if (inf != 0) {
+      if (inf != nullptr) {
         TS_GUM_ASSERT_THROWS_NOTHING(inf->makeInference());
 
-        const gum::Potential< float >* posterior_1 = 0;
+        const gum::Potential< double >* posterior_1 = 0;
         TS_GUM_ASSERT_THROWS_NOTHING(posterior_1 = &(inf->posterior(i1)));
 
         if (posterior_1 != 0) printProba(*posterior_1);
 
-        const gum::Potential< float >* posterior_2 = 0;
+        const gum::Potential< double >* posterior_2 = 0;
 
         TS_GUM_ASSERT_THROWS_NOTHING(posterior_2 = &(inf->posterior(i2)));
 
         if (posterior_2 != 0) printProba(*posterior_2);
 
-        const gum::Potential< float >* posterior_3 = 0;
+        const gum::Potential< double >* posterior_3 = 0;
 
         TS_GUM_ASSERT_THROWS_NOTHING(posterior_3 = &(inf->posterior(i3)));
 
         if (posterior_3 != 0) printProba(*posterior_3);
 
-        const gum::Potential< float >* posterior_4 = 0;
+        const gum::Potential< double >* posterior_4 = 0;
 
         TS_GUM_ASSERT_THROWS_NOTHING(posterior_4 = &(inf->posterior(i4)));
 
         if (posterior_4 != 0) printProba(*posterior_4);
 
-        const gum::Potential< float >* posterior_5 = 0;
+        const gum::Potential< double >* posterior_5 = 0;
 
         TS_GUM_ASSERT_THROWS_NOTHING(posterior_5 = &(inf->posterior(i5)));
 
@@ -169,41 +169,41 @@ namespace gum_tests {
 
     void testShaferShenoyInf_3() {
       fill(*bn);
-      gum::List< const gum::Potential< float >* > e_list;
+      gum::List< const gum::Potential< double >* > e_list;
       e_list.insert(e_i1);
       e_list.insert(e_i4);
 
-      gum::VariableElimination< float >* inf = 0;
+      gum::VariableElimination< double >* inf = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(inf =
-                                     new gum::VariableElimination< float >(bn));
+                                     new gum::VariableElimination< double >(bn));
 
       if (inf != 0) {
         TS_GUM_ASSERT_THROWS_NOTHING(inf->addListOfEvidence(e_list));
 
-        const gum::Potential< float >* posterior_1 = 0;
+        const gum::Potential< double >* posterior_1 = 0;
         TS_GUM_ASSERT_THROWS_NOTHING(posterior_1 = &(inf->posterior(i1)));
 
         if (posterior_1 != 0) printProba(*posterior_1);
 
-        const gum::Potential< float >* posterior_2 = 0;
+        const gum::Potential< double >* posterior_2 = 0;
 
         TS_GUM_ASSERT_THROWS_NOTHING(posterior_2 = &(inf->posterior(i2)));
 
         if (posterior_2 != 0) printProba(*posterior_2);
 
-        const gum::Potential< float >* posterior_3 = 0;
+        const gum::Potential< double >* posterior_3 = 0;
 
         TS_GUM_ASSERT_THROWS_NOTHING(posterior_3 = &(inf->posterior(i3)));
 
         if (posterior_3 != 0) printProba(*posterior_3);
 
-        const gum::Potential< float >* posterior_4 = 0;
+        const gum::Potential< double >* posterior_4 = 0;
 
         TS_GUM_ASSERT_THROWS_NOTHING(posterior_4 = &(inf->posterior(i4)));
 
         if (posterior_4 != 0) printProba(*posterior_4);
 
-        const gum::Potential< float >* posterior_5 = 0;
+        const gum::Potential< double >* posterior_5 = 0;
 
         TS_GUM_ASSERT_THROWS_NOTHING(posterior_5 = &(inf->posterior(i5)));
 
@@ -218,8 +218,8 @@ namespace gum_tests {
     void testInformationMethods() {
       fill(*bn);
 
-      gum::VariableElimination< float > inf(bn);
-      gum::NodeSet                      nodeset;
+      gum::VariableElimination< double > inf(bn);
+      gum::NodeSet                       nodeset;
       nodeset.insert(0);
       nodeset.insert(4);
       inf.addJointTarget(nodeset);
@@ -251,8 +251,8 @@ namespace gum_tests {
     void testJoint() {
       fill(*bn);
       // Testing the inference
-      gum::VariableElimination< float > inf(bn);
-      gum::NodeSet                      nodeset;
+      gum::VariableElimination< double > inf(bn);
+      gum::NodeSet                       nodeset;
       nodeset.insert(2);
       nodeset.insert(4);
       inf.addJointTarget(nodeset);
@@ -264,8 +264,8 @@ namespace gum_tests {
     void testJoint2() {
       fill(*bn);
       // Testing the inference
-      gum::VariableElimination< float > inf(bn);
-      gum::NodeSet                      nodeset;
+      gum::VariableElimination< double > inf(bn);
+      gum::NodeSet                       nodeset;
       nodeset.insert(1);
       nodeset.insert(2);
       nodeset.insert(3);
@@ -282,17 +282,17 @@ namespace gum_tests {
     }
 
     void testAlarm() {
-      std::string             file = GET_RESSOURCES_PATH("alarm.bif");
-      gum::BayesNet< float >  alarm;
-      gum::BIFReader< float > reader(&alarm, file);
+      std::string              file = GET_RESSOURCES_PATH("alarm.bif");
+      gum::BayesNet< double >  alarm;
+      gum::BIFReader< double > reader(&alarm, file);
       reader.proceed();
-      gum::VariableElimination< float >   ve(&alarm);
-      gum::ShaferShenoyInference< float > shafer(&alarm);
+      gum::VariableElimination< double >   ve(&alarm);
+      gum::ShaferShenoyInference< double > shafer(&alarm);
       TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
       for (const auto node : alarm.dag()) {
-        const gum::Potential< float >* pot_1 = nullptr;
+        const gum::Potential< double >* pot_1 = nullptr;
         TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.posterior(node)));
-        const gum::Potential< float >* pot_2 = nullptr;
+        const gum::Potential< double >* pot_2 = nullptr;
         TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.posterior(node)));
         if ((*pot_1) != (*pot_2)) { TS_ASSERT(false); }
       }
@@ -302,7 +302,7 @@ namespace gum_tests {
     void testSmartManagementOfJointTarget() {
       fill(*bn);
 
-      gum::VariableElimination< float > inf(bn);
+      gum::VariableElimination< double > inf(bn);
       inf.addJointTarget(gum::NodeSet{0, 1, 2});
       inf.addJointTarget(gum::NodeSet{2, 3});
       TS_ASSERT_EQUALS(inf.nbrJointTargets(), (gum::Size)2);
@@ -318,27 +318,27 @@ namespace gum_tests {
 
 
     void testAsia() {
-      std::string             file = GET_RESSOURCES_PATH("asia.bif");
-      gum::BayesNet< float >  bn;
-      gum::BIFReader< float > reader(&bn, file);
-      gum::Size               nbrErr = gum::Size(0);
+      std::string              file = GET_RESSOURCES_PATH("asia.bif");
+      gum::BayesNet< double >  bn;
+      gum::BIFReader< double > reader(&bn, file);
+      gum::Size                nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
       TS_ASSERT(nbrErr == gum::Size(0));
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
 
       for (auto node : bn.dag()) {
-        const auto&             variable = bn.variable(node);
-        gum::Potential< float > ev_pot;
+        const auto&              variable = bn.variable(node);
+        gum::Potential< double > ev_pot;
         ev_pot << variable;
         ev_pot.fill(0.0f);
-        gum::List< const gum::Potential< float >* > evidences;
+        gum::List< const gum::Potential< double >* > evidences;
         evidences.insert(&ev_pot);
 
         gum::Instantiation inst(ev_pot);
         for (inst.setFirst(); !inst.end(); ++inst) {
           ev_pot.set(inst, 1.0f);
-          gum::VariableElimination< float >   inf1(&bn);
-          gum::ShaferShenoyInference< float > inf2(&bn);
+          gum::VariableElimination< double >   inf1(&bn);
+          gum::ShaferShenoyInference< double > inf2(&bn);
           for (auto pot : evidences) {
             TS_ASSERT_THROWS_NOTHING(inf1.addEvidence(*pot));
             TS_ASSERT_THROWS_NOTHING(inf2.addEvidence(*pot));
@@ -354,16 +354,16 @@ namespace gum_tests {
     }
 
     void testAlarm2() {
-      std::string             file = GET_RESSOURCES_PATH("alarm.bif");
-      gum::BayesNet< float >  bn;
-      gum::BIFReader< float > reader(&bn, file);
-      gum::Size               nbrErr = gum::Size(0);
+      std::string              file = GET_RESSOURCES_PATH("alarm.bif");
+      gum::BayesNet< double >  bn;
+      gum::BIFReader< double > reader(&bn, file);
+      gum::Size                nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
       TS_ASSERT(nbrErr == gum::Size(0));
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
 
-      gum::VariableElimination< float > inf1(&bn);
-      gum::VariableElimination< float > inf2(&bn);
+      gum::VariableElimination< double > inf1(&bn);
+      gum::VariableElimination< double > inf2(&bn);
 
       TS_ASSERT_THROWS_NOTHING(inf1.makeInference());
       TS_ASSERT_THROWS_NOTHING(inf2.makeInference());
@@ -375,9 +375,10 @@ namespace gum_tests {
       }
 
       std::vector< gum::NodeId > ev_nodes{2, 6, 7, 10, 12, 14, 16};
-      gum::List< const gum::Potential< float >* > evidences;
+      gum::List< const gum::Potential< double >* > evidences;
       for (const auto node : ev_nodes) {
-        gum::Potential< float >* ev_pot = new gum::Potential< float >;
+        gum::Potential< double >* ev_pot = new gum::Potential< double >;
+
         (*ev_pot) << bn.variable(node);
         ev_pot->fill(0.0f);
         gum::Instantiation inst(*ev_pot);
@@ -393,8 +394,8 @@ namespace gum_tests {
         evidences.insert(ev_pot);
       }
 
-      gum::VariableElimination< float >   inf3(&bn);
-      gum::ShaferShenoyInference< float > inf4(&bn);
+      gum::VariableElimination< double >   inf3(&bn);
+      gum::ShaferShenoyInference< double > inf4(&bn);
       for (auto pot : evidences) {
         TS_ASSERT_THROWS_NOTHING(inf1.addEvidence(*pot));
         TS_ASSERT_THROWS_NOTHING(inf2.addEvidence(*pot));
@@ -417,7 +418,7 @@ namespace gum_tests {
         TS_ASSERT(equalPotentials(inf1.posterior(node), inf4.posterior(node)));
       }
 
-      gum::VariableElimination< float > inf5(&bn);
+      gum::VariableElimination< double > inf5(&bn);
       inf5.setRelevantPotentialsFinderType(
         gum::RelevantPotentialsFinderType::DSEP_BAYESBALL_NODES);
       for (auto pot : evidences) {
@@ -434,17 +435,17 @@ namespace gum_tests {
     }
 
     void testAsia2() {
-      std::string             file = GET_RESSOURCES_PATH("asia3.bif");
-      gum::BayesNet< float >  bn;
-      gum::BIFReader< float > reader(&bn, file);
-      gum::Size               nbrErr = gum::Size(0);
+      std::string              file = GET_RESSOURCES_PATH("asia3.bif");
+      gum::BayesNet< double >  bn;
+      gum::BIFReader< double > reader(&bn, file);
+      gum::Size                nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
       TS_ASSERT(nbrErr == gum::Size(0));
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
 
       for (auto node : bn.dag()) {
-        const auto&             variable = bn.variable(node);
-        gum::Potential< float > ev_pot;
+        const auto&              variable = bn.variable(node);
+        gum::Potential< double > ev_pot;
         ev_pot << variable;
         ev_pot.fill(0.0f);
 
@@ -454,12 +455,12 @@ namespace gum_tests {
 
           for (auto node2 : bn.dag()) {
             if (node2 > node) {
-              const auto&             variable2 = bn.variable(node2);
-              gum::Potential< float > ev_pot2;
+              const auto&              variable2 = bn.variable(node2);
+              gum::Potential< double > ev_pot2;
               ev_pot2 << variable2;
               ev_pot2.fill(0.0f);
 
-              gum::List< const gum::Potential< float >* > evidences;
+              gum::List< const gum::Potential< double >* > evidences;
               evidences.insert(&ev_pot);
               evidences.insert(&ev_pot2);
 
@@ -467,8 +468,8 @@ namespace gum_tests {
               for (inst2.setFirst(); !inst2.end(); ++inst2) {
                 ev_pot2.set(inst2, 1.0f);
 
-                gum::VariableElimination< float >   inf1(&bn);
-                gum::ShaferShenoyInference< float > inf2(&bn);
+                gum::VariableElimination< double >   inf1(&bn);
+                gum::ShaferShenoyInference< double > inf2(&bn);
                 for (auto pot : evidences) {
                   TS_ASSERT_THROWS_NOTHING(inf1.addEvidence(*pot));
                   TS_ASSERT_THROWS_NOTHING(inf2.addEvidence(*pot));
@@ -491,17 +492,17 @@ namespace gum_tests {
     }
 
     void testAsia3() {
-      std::string             file = GET_RESSOURCES_PATH("asia3.bif");
-      gum::BayesNet< float >  bn;
-      gum::BIFReader< float > reader(&bn, file);
-      gum::Size               nbrErr = gum::Size(0);
+      std::string              file = GET_RESSOURCES_PATH("asia3.bif");
+      gum::BayesNet< double >  bn;
+      gum::BIFReader< double > reader(&bn, file);
+      gum::Size                nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
       TS_ASSERT(nbrErr == gum::Size(0));
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
 
       for (auto node : bn.dag()) {
-        const auto&             variable = bn.variable(node);
-        gum::Potential< float > ev_pot;
+        const auto&              variable = bn.variable(node);
+        gum::Potential< double > ev_pot;
         ev_pot << variable;
         ev_pot.fill(0.0f);
 
@@ -511,12 +512,12 @@ namespace gum_tests {
 
           for (auto node2 : bn.dag()) {
             if (node2 > node) {
-              const auto&             variable2 = bn.variable(node2);
-              gum::Potential< float > ev_pot2;
+              const auto&              variable2 = bn.variable(node2);
+              gum::Potential< double > ev_pot2;
               ev_pot2 << variable2;
               ev_pot2.fill(0.0f);
 
-              gum::List< const gum::Potential< float >* > evidences;
+              gum::List< const gum::Potential< double >* > evidences;
               evidences.insert(&ev_pot);
               evidences.insert(&ev_pot2);
 
@@ -524,10 +525,10 @@ namespace gum_tests {
               for (inst2.setFirst(); !inst2.end(); ++inst2) {
                 ev_pot2.set(inst2, 1.0f);
 
-                gum::VariableElimination< float > inf1(&bn);
+                gum::VariableElimination< double > inf1(&bn);
                 inf1.setRelevantPotentialsFinderType(
                   gum::RelevantPotentialsFinderType::DSEP_BAYESBALL_NODES);
-                gum::ShaferShenoyInference< float > inf2(&bn);
+                gum::ShaferShenoyInference< double > inf2(&bn);
                 for (auto pot : evidences) {
                   TS_ASSERT_THROWS_NOTHING(inf1.addEvidence(*pot));
                   TS_ASSERT_THROWS_NOTHING(inf2.addEvidence(*pot));
@@ -550,17 +551,17 @@ namespace gum_tests {
     }
 
     void testAsia4() {
-      std::string             file = GET_RESSOURCES_PATH("asia.bif");
-      gum::BayesNet< float >  bn;
-      gum::BIFReader< float > reader(&bn, file);
-      gum::Size               nbrErr = gum::Size(0);
+      std::string              file = GET_RESSOURCES_PATH("asia.bif");
+      gum::BayesNet< double >  bn;
+      gum::BIFReader< double > reader(&bn, file);
+      gum::Size                nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
       TS_ASSERT(nbrErr == gum::Size(0));
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
 
       for (auto node : bn.dag()) {
-        const auto&             variable = bn.variable(node);
-        gum::Potential< float > ev_pot;
+        const auto&              variable = bn.variable(node);
+        gum::Potential< double > ev_pot;
         ev_pot << variable;
         ev_pot.fill(0.0f);
 
@@ -571,12 +572,12 @@ namespace gum_tests {
 
           for (auto node2 : bn.dag()) {
             if (node2 > node) {
-              const auto&             variable2 = bn.variable(node2);
-              gum::Potential< float > ev_pot2;
+              const auto&              variable2 = bn.variable(node2);
+              gum::Potential< double > ev_pot2;
               ev_pot2 << variable2;
               ev_pot2.fill(0.0f);
 
-              gum::List< const gum::Potential< float >* > evidences;
+              gum::List< const gum::Potential< double >* > evidences;
               evidences.insert(&ev_pot);
               evidences.insert(&ev_pot2);
 
@@ -585,10 +586,10 @@ namespace gum_tests {
               for (inst2.setFirst(); !inst2.end(); ++inst2, ++inst2_index) {
                 ev_pot2.set(inst2, 1.0f);
 
-                gum::VariableElimination< float > inf1(&bn);
+                gum::VariableElimination< double > inf1(&bn);
                 inf1.setRelevantPotentialsFinderType(
                   gum::RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS);
-                gum::VariableElimination< float > inf2(&bn);
+                gum::VariableElimination< double > inf2(&bn);
                 for (auto pot : evidences) {
                   TS_ASSERT_THROWS_NOTHING(inf1.addEvidence(*pot));
                   TS_ASSERT_THROWS_NOTHING(inf2.addEvidence(*pot));
@@ -826,7 +827,7 @@ namespace gum_tests {
 
     private:
     // Builds a BN to test the inference
-    void fill(gum::BayesNet< float >& bn) {
+    void fill(gum::BayesNet< double >& bn) {
       // FILLING PARAMS
       bn.cpt(i1).fillWith({0.2f, 0.8f});
       bn.cpt(i2).fillWith({0.3f, 0.7f});
@@ -851,7 +852,7 @@ namespace gum_tests {
     }
 
     // Uncomment this to have some outputs.
-    void printProba( const gum::Potential<float>& p ) {
+    void printProba( const gum::Potential<double>& p ) {
       /*gum::Instantiation inst( p );
       for ( inst.setFirst(); !inst.end(); ++inst ) {
         std::cerr << inst << " : " << p[inst] << std::endl;

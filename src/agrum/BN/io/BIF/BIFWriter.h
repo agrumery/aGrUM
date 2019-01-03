@@ -110,7 +110,6 @@ namespace gum {
   };
 
 
-  extern template class BIFWriter< float >;
   extern template class BIFWriter< double >;
 
 } /* namespace gum */

@@ -389,7 +389,8 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE void PRMInterface< GUM_SCALAR >::__addExtension(PRMInterface< GUM_SCALAR >* i) {
+    INLINE void
+      PRMInterface< GUM_SCALAR >::__addExtension(PRMInterface< GUM_SCALAR >* i) {
       __extensions.insert(i);
     }
 

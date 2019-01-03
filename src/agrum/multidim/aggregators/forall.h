@@ -88,7 +88,6 @@ namespace gum {
     };
 
 
-    extern template class Forall< float >;
     extern template class Forall< double >;
 
 

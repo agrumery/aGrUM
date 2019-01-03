@@ -106,7 +106,6 @@ namespace gum {
     void _onContextualize(BayesNetFragment< GUM_SCALAR >* bn) override;
   };
 
-  extern template class ImportanceSampling< float >;
 
   extern template class ImportanceSampling< double >;
 }   // namespace gum

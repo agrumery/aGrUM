@@ -282,8 +282,9 @@ namespace gum {
       }
 
       template < typename GUM_SCALAR >
-      INLINE bool O3ClassFactory< GUM_SCALAR >::__checkImplementation(
-        O3Label& o3_type, const PRMType& type) {
+      INLINE bool
+        O3ClassFactory< GUM_SCALAR >::__checkImplementation(O3Label&       o3_type,
+                                                            const PRMType& type) {
         if (!__solver->resolveType(o3_type)) { return false; }
 
         return __prm->type(o3_type.label()).isSubTypeOf(type);

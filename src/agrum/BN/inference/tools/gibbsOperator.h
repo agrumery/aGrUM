@@ -94,7 +94,7 @@ namespace gum {
     void __GibbsSample(NodeId id, Instantiation* I);
   };
 
-  extern template class GibbsOperator< float >;
+
   extern template class GibbsOperator< double >;
 }   // namespace gum
 

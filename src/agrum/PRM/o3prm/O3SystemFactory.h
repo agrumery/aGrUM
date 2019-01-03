@@ -103,7 +103,6 @@ namespace gum {
 #  include <agrum/PRM/o3prm/O3SystemFactory_tpl.h>
 
 
-extern template class gum::prm::o3prm::O3SystemFactory< float >;
 extern template class gum::prm::o3prm::O3SystemFactory< double >;
 
 

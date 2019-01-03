@@ -965,8 +965,10 @@ namespace gum {
     void PRMClass< GUM_SCALAR >::_findAllSubtypes(
       Set< PRMClassElementContainer< GUM_SCALAR >* >& set) {
       for (const auto ext : __extensions) {
-        std::cout << HashFuncMediumCastKey<PRMClassElementContainer< GUM_SCALAR >* >::castToSize(ext) << std::endl;
-        HashFuncMediumCastKey<PRMClassElementContainer< GUM_SCALAR >* > xx;
+        std::cout << HashFuncMediumCastKey<
+                       PRMClassElementContainer< GUM_SCALAR >* >::castToSize(ext)
+                  << std::endl;
+        HashFuncMediumCastKey< PRMClassElementContainer< GUM_SCALAR >* > xx;
         std::cout << xx((PRMClassElementContainer< GUM_SCALAR >*)ext);
         set.insert(ext);
         ext->_findAllSubtypes(set);

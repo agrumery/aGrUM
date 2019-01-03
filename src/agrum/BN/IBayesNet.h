@@ -241,7 +241,6 @@ namespace gum {
   };
 
 
-  extern template class IBayesNet< float >;
   extern template class IBayesNet< double >;
 
 

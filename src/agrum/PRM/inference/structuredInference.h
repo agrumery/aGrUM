@@ -384,7 +384,6 @@ namespace gum {
     };
 
 
-    extern template class StructuredInference< float >;
     extern template class StructuredInference< double >;
 
 

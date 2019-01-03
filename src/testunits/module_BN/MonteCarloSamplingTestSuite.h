@@ -67,17 +67,17 @@ namespace gum_tests {
   class MonteCarloSamplingTestSuite : public CxxTest::TestSuite {
     public:
     void testMCbasic() {
-      auto bn = gum::BayesNet< float >::fastPrototype("a->h->c");
+      auto bn = gum::BayesNet< double >::fastPrototype("a->h->c");
       bn.cpt("a").fillWith({0.2f, 0.8f});
       bn.cpt("h").fillWith({0.4f, 0.6f, 0.7f, 0.3f});
       bn.cpt("c").fillWith({0.2f, 0.8f, 0.9f, 0.1f});
 
-      gum::LazyPropagation< float > lazy(&bn);
+      gum::LazyPropagation< double > lazy(&bn);
       lazy.makeInference();
 
       try {
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::MonteCarloSampling< float > inf(&bn);
+        gum::MonteCarloSampling< double > inf(&bn);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
         inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
@@ -88,16 +88,16 @@ namespace gum_tests {
     }
 
     void testMCBinaryTreeWithoutEvidence() {
-      auto bn = gum::BayesNet< float >::fastPrototype(
+      auto bn = gum::BayesNet< double >::fastPrototype(
         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
 
-      gum::LazyPropagation< float > lazy(&bn);
+      gum::LazyPropagation< double > lazy(&bn);
       lazy.makeInference();
 
       try {
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::MonteCarloSampling< float > inf(&bn);
+        gum::MonteCarloSampling< double > inf(&bn);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
         inf.makeInference();
         GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
@@ -108,19 +108,19 @@ namespace gum_tests {
     }
 
     void testMCBinaryTreeWithEvidenceOnRoot() {
-      auto bn = gum::BayesNet< float >::fastPrototype(
+      auto bn = gum::BayesNet< double >::fastPrototype(
         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
 
       std::string ev = "b";
 
       try {
-        gum::LazyPropagation< float > lazy(&bn);
+        gum::LazyPropagation< double > lazy(&bn);
         lazy.addEvidence(bn.idFromName(ev), 0);
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::MonteCarloSampling< float > inf(&bn);
+        gum::MonteCarloSampling< double > inf(&bn);
         inf.addEvidence(bn.idFromName(ev), 0);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
         inf.makeInference();
@@ -132,18 +132,18 @@ namespace gum_tests {
     }
 
     void testMCBinaryTreeWithEvidenceOnLeaf() {
-      auto bn = gum::BayesNet< float >::fastPrototype(
+      auto bn = gum::BayesNet< double >::fastPrototype(
         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "h";
 
       try {
-        gum::LazyPropagation< float > lazy(&bn);
+        gum::LazyPropagation< double > lazy(&bn);
         lazy.addEvidence(bn.idFromName(ev), 0);
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::MonteCarloSampling< float > inf(&bn);
+        gum::MonteCarloSampling< double > inf(&bn);
         inf.addEvidence(bn.idFromName(ev), 0);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
         inf.setVerbosity(false);
@@ -157,18 +157,18 @@ namespace gum_tests {
     }
 
     void testMCBinaryTreeWithEvidenceOnMid() {
-      auto bn = gum::BayesNet< float >::fastPrototype(
+      auto bn = gum::BayesNet< double >::fastPrototype(
         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "e";
 
       try {
-        gum::LazyPropagation< float > lazy(&bn);
+        gum::LazyPropagation< double > lazy(&bn);
         lazy.addEvidence(bn.idFromName(ev), 0);
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::MonteCarloSampling< float > inf(&bn);
+        gum::MonteCarloSampling< double > inf(&bn);
         inf.addEvidence(bn.idFromName(ev), 0);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
         inf.setVerbosity(false);
@@ -182,19 +182,19 @@ namespace gum_tests {
     }
 
     void testMCBinaryTreeWithMultipleEvidence() {
-      auto bn = gum::BayesNet< float >::fastPrototype(
+      auto bn = gum::BayesNet< double >::fastPrototype(
         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
 
       try {
-        gum::LazyPropagation< float > lazy(&bn);
+        gum::LazyPropagation< double > lazy(&bn);
         lazy.addEvidence(bn.idFromName("e"), 0);
         lazy.addEvidence(bn.idFromName("b"), 1);
         lazy.addEvidence(bn.idFromName("h"), 0);
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::MonteCarloSampling< float > inf(&bn);
+        gum::MonteCarloSampling< double > inf(&bn);
         inf.addEvidence(bn.idFromName("e"), 0);
         inf.addEvidence(bn.idFromName("b"), 1);
         inf.addEvidence(bn.idFromName("h"), 0);
@@ -210,19 +210,19 @@ namespace gum_tests {
     }
 
     void testMCNaryTreeWithMultipleEvidence() {
-      auto bn = gum::BayesNet< float >::fastPrototype(
+      auto bn = gum::BayesNet< double >::fastPrototype(
         "a[4]->d[8]->f[3];b->d->g[5];b->e[4]->h;c->e;i[10]->j[3]->h");
       unsharpen(bn);
 
       try {
-        gum::LazyPropagation< float > lazy(&bn);
+        gum::LazyPropagation< double > lazy(&bn);
         lazy.addEvidence(bn.idFromName("e"), 0);
         lazy.addEvidence(bn.idFromName("b"), 1);
         lazy.addEvidence(bn.idFromName("h"), 0);
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::MonteCarloSampling< float > inf(&bn);
+        gum::MonteCarloSampling< double > inf(&bn);
         inf.addEvidence(bn.idFromName("e"), 0);
         inf.addEvidence(bn.idFromName("b"), 1);
         inf.addEvidence(bn.idFromName("h"), 0);
@@ -239,15 +239,15 @@ namespace gum_tests {
 
 
     void testMCSimpleBN() {
-      auto bn = gum::BayesNet< float >::fastPrototype("a->b->c;a->d->c", 3);
+      auto bn = gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
       unsharpen(bn);
 
       try {
-        gum::LazyPropagation< float > lazy(&bn);
+        gum::LazyPropagation< double > lazy(&bn);
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::MonteCarloSampling< float > inf(&bn);
+        gum::MonteCarloSampling< double > inf(&bn);
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
         inf.makeInference();
@@ -259,12 +259,12 @@ namespace gum_tests {
       }
 
       try {
-        gum::LazyPropagation< float > lazy(&bn);
+        gum::LazyPropagation< double > lazy(&bn);
         lazy.addEvidence(bn.idFromName("a"), 0);
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::MonteCarloSampling< float > inf(&bn);
+        gum::MonteCarloSampling< double > inf(&bn);
         inf.addEvidence(bn.idFromName("a"), 0);
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
@@ -277,12 +277,12 @@ namespace gum_tests {
       }
 
       try {
-        gum::LazyPropagation< float > lazy(&bn);
+        gum::LazyPropagation< double > lazy(&bn);
         lazy.addEvidence(bn.idFromName("d"), 0);
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::MonteCarloSampling< float > inf(&bn);
+        gum::MonteCarloSampling< double > inf(&bn);
         inf.addEvidence(bn.idFromName("d"), 0);
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
@@ -297,15 +297,15 @@ namespace gum_tests {
 
 
     void testMCCplxBN() {
-      auto bn = gum::BayesNet< float >::fastPrototype(
+      auto bn = gum::BayesNet< double >::fastPrototype(
         "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;", 3);
 
       try {
-        gum::LazyPropagation< float > lazy(&bn);
+        gum::LazyPropagation< double > lazy(&bn);
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::MonteCarloSampling< float > inf(&bn);
+        gum::MonteCarloSampling< double > inf(&bn);
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
         inf.makeInference();
@@ -317,12 +317,12 @@ namespace gum_tests {
       }
 
       try {
-        gum::LazyPropagation< float > lazy(&bn);
+        gum::LazyPropagation< double > lazy(&bn);
         lazy.addEvidence(bn.idFromName("a"), 0);
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::MonteCarloSampling< float > inf(&bn);
+        gum::MonteCarloSampling< double > inf(&bn);
         inf.addEvidence(bn.idFromName("a"), 0);
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
@@ -335,12 +335,12 @@ namespace gum_tests {
       }
 
       try {
-        gum::LazyPropagation< float > lazy(&bn);
+        gum::LazyPropagation< double > lazy(&bn);
         lazy.addEvidence(bn.idFromName("d"), 0);
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::MonteCarloSampling< float > inf(&bn);
+        gum::MonteCarloSampling< double > inf(&bn);
         inf.addEvidence(bn.idFromName("d"), 0);
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
@@ -354,18 +354,18 @@ namespace gum_tests {
     }
 
     void testMCAsia() {
-      gum::BayesNet< float >  bn;
-      gum::BIFReader< float > reader(&bn, GET_RESSOURCES_PATH("asia.bif"));
-      gum::Size               nbrErr = gum::Size(0);
+      gum::BayesNet< double >  bn;
+      gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("asia.bif"));
+      gum::Size                nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
       TS_ASSERT(nbrErr == gum::Size(0));
 
       try {
-        gum::LazyPropagation< float > lazy(&bn);
+        gum::LazyPropagation< double > lazy(&bn);
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::MonteCarloSampling< float > inf(&bn);
+        gum::MonteCarloSampling< double > inf(&bn);
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
         inf.makeInference();
@@ -379,18 +379,18 @@ namespace gum_tests {
 
 
     void testMCAlarm() {
-      gum::BayesNet< float >  bn;
-      gum::BIFReader< float > reader(&bn, GET_RESSOURCES_PATH("alarm.bif"));
-      gum::Size               nbrErr = gum::Size(0);
+      gum::BayesNet< double >  bn;
+      gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("alarm.bif"));
+      gum::Size                nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
       TS_ASSERT(nbrErr == gum::Size(0));
 
       try {
-        gum::LazyPropagation< float > lazy(&bn);
+        gum::LazyPropagation< double > lazy(&bn);
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::MonteCarloSampling< float > inf(&bn);
+        gum::MonteCarloSampling< double > inf(&bn);
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
         inf.makeInference();
@@ -404,14 +404,14 @@ namespace gum_tests {
 
 
     void testMCInfListener() {
-      gum::BayesNet< float >  bn;
-      gum::BIFReader< float > reader(&bn, GET_RESSOURCES_PATH("alarm.bif"));
-      gum::Size               nbrErr = gum::Size(0);
+      gum::BayesNet< double >  bn;
+      gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("alarm.bif"));
+      gum::Size                nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
       TS_ASSERT(nbrErr == 0);
 
-      gum::MonteCarloSampling< float > inf(&bn);
-      aSimpleMCListener                agsl(inf);
+      gum::MonteCarloSampling< double > inf(&bn);
+      aSimpleMCListener                 agsl(inf);
       inf.setVerbosity(true);
 
       try {
@@ -430,13 +430,13 @@ namespace gum_tests {
     }
 
     void testConstructor() {
-      gum::BayesNet< float >  bn;
-      gum::BIFReader< float > reader(&bn, GET_RESSOURCES_PATH("alarm.bif"));
-      gum::Size               nbrErr = gum::Size(0);
+      gum::BayesNet< double >  bn;
+      gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("alarm.bif"));
+      gum::Size                nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
       TS_ASSERT(nbrErr == 0);
       try {
-        gum::MonteCarloSampling< float > inf(&bn);
+        gum::MonteCarloSampling< double > inf(&bn);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
       } catch (gum::Exception e) {
         GUM_SHOWERROR(e);
@@ -446,12 +446,12 @@ namespace gum_tests {
 
 
     void testEvidenceAsTargetOnCplxBN() {
-      auto bn = gum::BayesNet< float >::fastPrototype(
+      auto bn = gum::BayesNet< double >::fastPrototype(
         "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;", 3);
       unsharpen(bn);
 
       try {
-        gum::MonteCarloSampling< float > inf(&bn);
+        gum::MonteCarloSampling< double > inf(&bn);
         inf.addEvidence(bn.idFromName("d"), 0);
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);

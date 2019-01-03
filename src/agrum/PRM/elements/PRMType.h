@@ -287,7 +287,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/PRM/elements/PRMType_inl.h>
+#  include <agrum/PRM/elements/PRMType_inl.h>
 #endif   // GUM_NO_INLINE
 
 #endif /* GUM_CLASS_H */

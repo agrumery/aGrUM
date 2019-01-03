@@ -275,7 +275,7 @@ namespace gum {
     void _uninstallCPT(NodeId id) noexcept;
   };
 
-  extern template class BayesNetFragment< float >;
+
   extern template class BayesNetFragment< double >;
 
 }   // namespace gum

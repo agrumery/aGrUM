@@ -212,7 +212,6 @@ namespace gum {
     };
 
 
-    extern template class SVE< float >;
     extern template class SVE< double >;
 
 

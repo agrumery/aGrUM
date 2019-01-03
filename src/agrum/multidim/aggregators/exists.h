@@ -87,7 +87,6 @@ namespace gum {
     };
 
 
-    extern template class Exists< float >;
     extern template class Exists< double >;
 
 

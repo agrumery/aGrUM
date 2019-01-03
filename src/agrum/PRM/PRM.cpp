@@ -29,7 +29,7 @@
 namespace gum {
   namespace prm {
 
-    template class PRM< float >;
+
     template class PRM< double >;
 
   } /* namespace prm */

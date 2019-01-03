@@ -523,7 +523,7 @@ namespace gum_tests {
 
 
     void test_asia_param_float() {
-      gum::learning::BNLearner< float > learner(GET_RESSOURCES_PATH("asia3.csv"));
+      gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("asia3.csv"));
 
       gum::DAG dag;
 
@@ -543,19 +543,19 @@ namespace gum_tests {
       learner.useNoApriori();
 
       try {
-        gum::BayesNet< float > bn = learner.learnParameters(dag);
+        gum::BayesNet< double > bn = learner.learnParameters(dag);
         TS_ASSERT(bn.dim() == 25);
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
     void test_asia_param_from_bn_float() {
-      gum::learning::BNLearner< float > learner(GET_RESSOURCES_PATH("asia3.csv"));
+      gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("asia3.csv"));
 
       learner.useK2(std::vector< gum::NodeId >{1, 5, 2, 6, 0, 3, 4, 7});
-      gum::BayesNet< float > bn = learner.learnBN();
+      gum::BayesNet< double > bn = learner.learnBN();
 
       try {
-        gum::BayesNet< float > bn2 = learner.learnParameters(bn.dag());
+        gum::BayesNet< double > bn2 = learner.learnParameters(bn.dag());
         TS_ASSERT(bn2.dag().arcs().size() == bn.dag().arcs().size());
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }

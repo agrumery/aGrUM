@@ -34,7 +34,7 @@ namespace gum_tests {
     void testCreationNoisyOr() {
       gum::LabelizedVariable a("a", "", 2), b("b", "", 2), c("c", "", 2),
         d("d", "", 2);
-      gum::MultiDimNoisyORNet< float > p(0.2f);
+      gum::MultiDimNoisyORNet< double > p(0.2f);
 
       // trying to change weight for a non cause
       TS_ASSERT_THROWS(p.causalWeight(b, 0.4f), gum::InvalidArgument);
@@ -54,7 +54,7 @@ namespace gum_tests {
                        "a<0,1>=noisyORNet([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])");
       TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4);
 
-      gum::MultiDimNoisyORNet< float > q(p);
+      gum::MultiDimNoisyORNet< double > q(p);
       TS_ASSERT_EQUALS(q.toString(),
                        "a<0,1>=noisyORNet([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])");
       TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4);
@@ -66,7 +66,7 @@ namespace gum_tests {
       gum::LabelizedVariable malaria("Malaria", "", 2);
       gum::LabelizedVariable fever("Fever", "", 2);
 
-      gum::MultiDimNoisyORNet< float > p(0.0f);
+      gum::MultiDimNoisyORNet< double > p(0.0f);
       p << fever << malaria << flu << cold;
       p.causalWeight(cold, 1.0f);
       p.causalWeight(flu, 1.0f);
@@ -103,7 +103,7 @@ namespace gum_tests {
       gum::LabelizedVariable malaria("Malaria", "", 2);
       gum::LabelizedVariable fever("Fever", "", 2);
 
-      gum::MultiDimNoisyORNet< float > p(0.0f);
+      gum::MultiDimNoisyORNet< double > p(0.0f);
       p << fever << malaria << flu << cold;
       p.causalWeight(cold, 0.4f);
       p.causalWeight(flu, 0.8f);
@@ -133,7 +133,7 @@ namespace gum_tests {
         TS_ASSERT_DELTA(p[i], witness[j], 1e-6);
       }
 
-      gum::MultiDimNoisyORNet< float > q(p);
+      gum::MultiDimNoisyORNet< double > q(p);
 
       j = 0;
 
@@ -150,7 +150,7 @@ namespace gum_tests {
       gum::LabelizedVariable competition("competition", "", 2);
       gum::LabelizedVariable unemployment("unemployment", "", 2);
 
-      gum::MultiDimNoisyORNet< float > p(0.0001f);
+      gum::MultiDimNoisyORNet< double > p(0.0001f);
       p << unemployment << competition << requirement << motivation << degree
         << lazy;
       p.causalWeight(lazy, 0.1f);
@@ -179,7 +179,7 @@ namespace gum_tests {
         TS_ASSERT_DELTA(p[i], witness[j], 1e-6);
       }
 
-      gum::MultiDimNoisyORNet< float > q(p);
+      gum::MultiDimNoisyORNet< double > q(p);
 
       j = 0;
 

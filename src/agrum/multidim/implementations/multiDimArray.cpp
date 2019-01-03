@@ -26,5 +26,5 @@
 
 #include <agrum/multidim/implementations/multiDimArray.h>
 
-template class gum::MultiDimArray< float >;
+
 template class gum::MultiDimArray< double >;

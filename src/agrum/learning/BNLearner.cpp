@@ -20,5 +20,5 @@
 
 #include <agrum/learning/BNLearner.h>
 
-template class gum::learning::BNLearner< float >;
+
 template class gum::learning::BNLearner< double >;

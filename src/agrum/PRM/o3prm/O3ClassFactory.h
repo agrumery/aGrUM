@@ -119,8 +119,7 @@ namespace gum {
           HashTable< std::string, O3Aggregate* >&     aggMap,
           HashTable< std::string, O3ReferenceSlot* >& refMap);
 
-        bool __checkImplementation(O3Label&                     o3_type,
-                                   const PRMType& type);
+        bool __checkImplementation(O3Label& o3_type, const PRMType& type);
 
         bool __checkImplementation(
           O3Label& o3_type, const PRMClassElementContainer< GUM_SCALAR >& type);
@@ -198,20 +197,18 @@ namespace gum {
         bool __checkAggregateForDeclaration(O3Class& o3class, O3Aggregate& agg);
         bool __checkAggregateForCompletion(O3Class& o3class, O3Aggregate& agg);
 
-        const PRMType* __checkAggParents(O3Class&     o3class,
-                                                       O3Aggregate& agg);
+        const PRMType* __checkAggParents(O3Class& o3class, O3Aggregate& agg);
 
         bool __checkAggTypeLegality(O3Class& o3class, O3Aggregate& agg);
 
 
-        bool __checkAggParameters(O3Class&                     o3class,
-                                  O3Aggregate&                 agg,
+        bool __checkAggParameters(O3Class&       o3class,
+                                  O3Aggregate&   agg,
                                   const PRMType* t);
 
         bool __checkParametersNumber(O3Aggregate& agg, Size n);
 
-        bool __checkParameterValue(O3Aggregate&                           agg,
-                                   const gum::prm::PRMType& t);
+        bool __checkParameterValue(O3Aggregate& agg, const gum::prm::PRMType& t);
 
         // @}
       };
@@ -224,7 +221,6 @@ namespace gum {
 #  include <agrum/PRM/o3prm/O3ClassFactory_tpl.h>
 
 
-extern template class gum::prm::o3prm::O3ClassFactory< float >;
 extern template class gum::prm::o3prm::O3ClassFactory< double >;
 
 

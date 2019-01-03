@@ -200,7 +200,6 @@ namespace gum {
     };
 
 
-    extern template class SVED< float >;
     extern template class SVED< double >;
 
 

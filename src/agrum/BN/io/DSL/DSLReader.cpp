@@ -20,5 +20,5 @@
 
 #include <agrum/BN/io/DSL/DSLReader.h>
 
-template class gum::DSLReader< float >;
+
 template class gum::DSLReader< double >;

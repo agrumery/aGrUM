@@ -62,7 +62,7 @@ namespace gum_tests {
     };
 
     void testtriangulatedGraph() {
-      gum::BayesNet< float >   topo;
+      gum::BayesNet< double >  topo;
       gum::List< gum::NodeId > idList;
 
       fill(topo, idList);
@@ -89,7 +89,7 @@ namespace gum_tests {
     };
 
     void testjunctionTree() {
-      gum::BayesNet< float >   topo;
+      gum::BayesNet< double >  topo;
       gum::List< gum::NodeId > idList;
 
       fill(topo, idList);
@@ -283,18 +283,18 @@ namespace gum_tests {
     }
 
     void __triangulate_bif(std::string file) {
-      gum::BayesNet< float >* bn = new gum::BayesNet< float >();
-      gum::BIFReader< float > reader(bn, file);
+      gum::BayesNet< double >* bn = new gum::BayesNet< double >();
+      gum::BIFReader< double > reader(bn, file);
       reader.trace(false);
 
       TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());
 
-      gum::LazyPropagation< float > inf(bn);
+      gum::LazyPropagation< double > inf(bn);
 
       if (bn != 0) delete (bn);
     };
 
-    void fill(gum::BayesNet< float >& topo, gum::List< gum::NodeId >& idList) {
+    void fill(gum::BayesNet< double >& topo, gum::List< gum::NodeId >& idList) {
       idList.clear();
       idList.insert(topo.add(*var1));
       idList.insert(topo.add(*var2));

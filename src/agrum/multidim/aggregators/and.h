@@ -88,7 +88,6 @@ namespace gum {
     };
 
 
-    extern template class And< float >;
     extern template class And< double >;
 
 

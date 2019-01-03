@@ -125,7 +125,6 @@ namespace gum {
   };
 
 
-  extern template class GibbsKL< float >;
   extern template class GibbsKL< double >;
 
 

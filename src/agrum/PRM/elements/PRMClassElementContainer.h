@@ -442,7 +442,6 @@ namespace gum {
     };
 
 
-    extern template class PRMClassElementContainer< float >;
     extern template class PRMClassElementContainer< double >;
 
 

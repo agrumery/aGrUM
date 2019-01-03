@@ -96,7 +96,7 @@ namespace gum_tests {
       k2.approximationScheme().setEpsilon(1000);
 
       try {
-        gum::BayesNet< float > bn = k2.learnBN< float >(selector, estimator);
+        gum::BayesNet< double > bn = k2.learnBN< double >(selector, estimator);
 
         gum::BayesNet< double > bn2 = k2.learnBN< double >(selector, estimator);
         TS_ASSERT(bn.dag().arcs().size() == 8);

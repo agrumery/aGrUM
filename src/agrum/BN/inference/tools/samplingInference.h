@@ -246,7 +246,6 @@ namespace gum {
   };
 
 
-  extern template class SamplingInference< float >;
   extern template class SamplingInference< double >;
 }   // namespace gum
 

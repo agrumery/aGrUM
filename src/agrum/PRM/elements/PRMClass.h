@@ -47,9 +47,9 @@
 namespace gum {
   namespace prm {
 
-    template <typename GUM_SCALAR >
+    template < typename GUM_SCALAR >
     class PRMInterface;
-    
+
     /**
      * @class PRMClass
      * @headerfile PRMClass.h <agrum/PRM/elements/PRMClass.h>
@@ -458,10 +458,9 @@ namespace gum {
       /// @}
     };
 
-    
-    // The following 2 lines must be commented so that aGrUM can be
-    // compiled with clange 4.0:
-    // extern template class PRMClass< float >;
+
+    // The following line must be commented so that aGrUM can be
+    // compiled with clang 4.0:
     // extern template class PRMClass< double >;
 
 

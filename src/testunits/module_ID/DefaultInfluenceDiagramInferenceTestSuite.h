@@ -72,8 +72,8 @@ namespace gum_tests {
 
   class InfluenceDiagramInferenceTestSuite : public CxxTest::TestSuite {
     private:
-    void fillTopoOilWildcater(gum::InfluenceDiagram< float >& id,
-                              gum::List< gum::NodeId >&       idList) {
+    void fillTopoOilWildcater(gum::InfluenceDiagram< double >& id,
+                              gum::List< gum::NodeId >&        idList) {
       try {
         idList.insert(id.addDecisionNode(*TestVar));             // 0
         idList.insert(id.addDecisionNode(*DrillVar));            // 1
@@ -96,8 +96,8 @@ namespace gum_tests {
       }
     }
 
-    void populateOilWildcater(gum::InfluenceDiagram< float >& id,
-                              gum::List< gum::NodeId >&       idList) {
+    void populateOilWildcater(gum::InfluenceDiagram< double >& id,
+                              gum::List< gum::NodeId >&        idList) {
       fillTopoOilWildcater(id, idList);
 
       try {
@@ -117,7 +117,7 @@ namespace gum_tests {
       }
     }
 
-    void fillTopoDecAsia( gum::InfluenceDiagram<float>& id,
+    void fillTopoDecAsia( gum::InfluenceDiagram<double>& id,
                           gum::List<gum::NodeId>& idList ) {
       try {
         idList.insert( id.addDecisionNode( *HospitalizeVar ) );            // 0
@@ -162,7 +162,7 @@ namespace gum_tests {
       }
     }
 
-    void populateDecAsia( gum::InfluenceDiagram<float>& id,
+    void populateDecAsia( gum::InfluenceDiagram<double>& id,
                           gum::List<gum::NodeId>& idList ) {
       fillTopoDecAsia( id, idList );
 
@@ -292,21 +292,21 @@ namespace gum_tests {
     }
 
     void testConstructor() {
-      gum::InfluenceDiagram<float>* topology = nullptr;
+      gum::InfluenceDiagram<double>* topology = nullptr;
       gum::List<gum::NodeId> idList;
       TS_GUM_ASSERT_THROWS_NOTHING( topology =
-                                        new gum::InfluenceDiagram<float>() );
+                                        new gum::InfluenceDiagram<double>() );
       TS_GUM_ASSERT_THROWS_NOTHING( populateDecAsia( *topology, idList ) );
 
-      gum::InfluenceDiagramInference<float>* dIDI = nullptr;
+      gum::InfluenceDiagramInference<double>* dIDI = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
-          dIDI = new gum::InfluenceDiagramInference<float>( *topology ) );
+          dIDI = new gum::InfluenceDiagramInference<double>( *topology ) );
       TS_GUM_ASSERT_THROWS_NOTHING( delete dIDI );
       delete topology;
     }
 
     void testStrongJunctionTree() {
-      gum::InfluenceDiagram<float> id;
+      gum::InfluenceDiagram<double> id;
       gum::List<gum::NodeId> idList;
 
       gum::LabelizedVariable dVar1( "decisionVar1", "D1", 2 );
@@ -380,18 +380,18 @@ namespace gum_tests {
       id.addArc( idList[15], idList[19] );
 
       gum::NullStream devnull;
-      gum::InfluenceDiagramInference<float> dIDI( id );
+      gum::InfluenceDiagramInference<double> dIDI( id );
       dIDI.displayStrongJunctionTree( devnull );
     }
 
     void testInferenceWithOilWildCater() {
-      gum::InfluenceDiagram<float>* topology = nullptr;
+      gum::InfluenceDiagram<double>* topology = nullptr;
       gum::List<gum::NodeId> idList;
-      topology = new gum::InfluenceDiagram<float>();
+      topology = new gum::InfluenceDiagram<double>();
       populateOilWildcater( *topology, idList );
 
-      gum::InfluenceDiagramInference<float>* dIDI = nullptr;
-      dIDI = new gum::InfluenceDiagramInference<float>( *topology );
+      gum::InfluenceDiagramInference<double>* dIDI = nullptr;
+      dIDI = new gum::InfluenceDiagramInference<double>( *topology );
 
       TS_GUM_ASSERT_THROWS_NOTHING( dIDI->makeInference() );
 
@@ -400,15 +400,15 @@ namespace gum_tests {
     }
 
     void testInferenceWithDecAsia() {
-      gum::InfluenceDiagram<float>* topology = nullptr;
+      gum::InfluenceDiagram<double>* topology = nullptr;
       gum::List<gum::NodeId> idList;
-      topology = new gum::InfluenceDiagram<float>();
+      topology = new gum::InfluenceDiagram<double>();
       populateDecAsia( *topology, idList );
       gum::NullStream devnull;
 
-      gum::InfluenceDiagramInference<float>* dIDI = nullptr;
+      gum::InfluenceDiagramInference<double>* dIDI = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
-          dIDI = new gum::InfluenceDiagramInference<float>( *topology ) );
+          dIDI = new gum::InfluenceDiagramInference<double>( *topology ) );
 
       TS_ASSERT_THROWS( dIDI->getMEU(), gum::OperationNotAllowed );
       TS_ASSERT_THROWS( dIDI->getBestDecisionChoice( idList[0] ),
@@ -429,19 +429,19 @@ namespace gum_tests {
     }
 
     void testInferenceWithOilWildCaterAndEvidence() {
-      gum::InfluenceDiagram<float>* topology =
-          new gum::InfluenceDiagram<float>();
+      gum::InfluenceDiagram<double>* topology =
+          new gum::InfluenceDiagram<double>();
       gum::List<gum::NodeId> idList;
       populateOilWildcater( *topology, idList );
 
-      gum::Potential<float>* evidence1 = new gum::Potential<float>();
-      gum::Potential<float>* evidence2 = new gum::Potential<float>();
+      gum::Potential<double>* evidence1 = new gum::Potential<double>();
+      gum::Potential<double>* evidence2 = new gum::Potential<double>();
 
-      gum::List<const gum::Potential<float>*> e_list;
+      gum::List<const gum::Potential<double>*> e_list;
       e_list.insert( evidence1 );
       e_list.insert( evidence2 );
 
-      gum::InfluenceDiagramInference<float> inf( *topology );
+      gum::InfluenceDiagramInference<double> inf( *topology );
 
       evidence1->add( topology->variable( idList[2] ) );
       evidence1->add( topology->variable( idList[3] ) );

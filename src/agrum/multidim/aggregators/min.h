@@ -83,7 +83,6 @@ namespace gum {
     };
 
 
-    extern template class Min< float >;
     extern template class Min< double >;
 
 

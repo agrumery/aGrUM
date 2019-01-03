@@ -37,8 +37,8 @@ namespace gum_tests {
 
 
     void testRequisiteNodes() {
-      gum::SimpleBayesNetGenerator< float > gen(50, 200, 2);
-      gum::BayesNet< float >                bn;
+      gum::SimpleBayesNetGenerator< double > gen(50, 200, 2);
+      gum::BayesNet< double >                bn;
       gen.generateBN(bn);
       gum::Set< gum::NodeId > requisite;
 

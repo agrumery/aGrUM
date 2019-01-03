@@ -349,7 +349,6 @@ namespace gum {
     };
 
 
-    extern template class GSpan< float >;
     extern template class GSpan< double >;
 
 

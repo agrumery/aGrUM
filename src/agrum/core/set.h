@@ -1208,7 +1208,7 @@ extern template class gum::Set< int >;
 extern template class gum::Set< long >;
 extern template class gum::Set< unsigned int >;
 extern template class gum::Set< unsigned long >;
-extern template class gum::Set< float >;
+
 extern template class gum::Set< double >;
 extern template class gum::Set< std::string >;
 

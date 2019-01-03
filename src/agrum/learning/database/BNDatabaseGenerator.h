@@ -182,7 +182,7 @@ namespace gum {
       BNDatabaseGenerator& operator=(BNDatabaseGenerator&&) = delete;
     };
 
-    extern template class BNDatabaseGenerator< float >;
+
     extern template class BNDatabaseGenerator< double >;
 
   } /* namespace learning */

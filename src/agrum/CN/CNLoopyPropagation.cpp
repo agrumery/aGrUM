@@ -27,5 +27,4 @@
 #include <agrum/CN/CNLoopyPropagation.h>
 
 
-template class gum::credal::CNLoopyPropagation< float >;
 template class gum::credal::CNLoopyPropagation< double >;

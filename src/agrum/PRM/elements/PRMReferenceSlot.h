@@ -168,7 +168,6 @@ namespace gum {
     };
 
 
-    extern template class PRMReferenceSlot< float >;
     extern template class PRMReferenceSlot< double >;
 
 

@@ -421,7 +421,6 @@ namespace gum {
   };
 
 
-  extern template class MCBayesNetGenerator< float >;
   extern template class MCBayesNetGenerator< double >;
 
 } /*namespace gum*/

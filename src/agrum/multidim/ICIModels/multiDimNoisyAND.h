@@ -127,7 +127,7 @@ namespace gum {
     /// @}
   };
 
-  extern template class MultiDimNoisyAND< float >;
+
   extern template class MultiDimNoisyAND< double >;
 
   /// For friendly displaying the content of the array.

@@ -445,7 +445,7 @@ namespace gum_tests {
       var.addLabel("4");
       var.addLabel("2");
 
-      LearningAlloc< float > alloc(10000);
+      LearningAlloc< double > alloc(10000);
 
       gum::learning::DBTranslator4LabelizedVariable< LearningAlloc > translator(
         var, false, 1000, alloc);

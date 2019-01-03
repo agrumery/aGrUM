@@ -61,7 +61,7 @@ namespace gum_tests {
 
     void testIllegalCallsInNONE() {
       std::vector< float >            aSequence;
-      gum::BayesNetFactory< double >* factory = 0;
+      gum::BayesNetFactory< double >* factory = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(factory =
                                      new gum::BayesNetFactory< double >(__bn_d));
 

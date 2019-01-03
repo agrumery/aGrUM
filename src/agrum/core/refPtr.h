@@ -349,7 +349,7 @@ namespace gum {
 
 extern template class gum::RefPtr< int >;
 extern template class gum::RefPtr< long >;
-extern template class gum::RefPtr< float >;
+
 extern template class gum::RefPtr< double >;
 
 

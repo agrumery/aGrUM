@@ -21,5 +21,4 @@
 #include <agrum/FMDP/io/dat/fmdpDatReader.h>
 
 
-template class gum::FMDPDatReader< float >;
 template class gum::FMDPDatReader< double >;

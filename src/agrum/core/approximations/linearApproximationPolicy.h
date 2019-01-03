@@ -236,7 +236,6 @@ namespace gum {
 }   // namespace gum
 
 
-extern template class gum::LinearApproximationPolicy< float >;
 extern template class gum::LinearApproximationPolicy< double >;
 
 

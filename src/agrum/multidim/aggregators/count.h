@@ -90,7 +90,6 @@ namespace gum {
     };
 
 
-    extern template class Count< float >;
     extern template class Count< double >;
 
 

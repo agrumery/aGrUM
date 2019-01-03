@@ -87,7 +87,6 @@ namespace gum {
   };
 
 
-  extern template class ICPTDisturber< float >;
   extern template class ICPTDisturber< double >;
 
 

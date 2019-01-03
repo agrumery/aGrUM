@@ -104,7 +104,7 @@ namespace gum_tests {
       search.setMaxNbDecreasingChanges(2);
 
       try {
-        gum::BayesNet< float >  bn = search.learnBN< float >(selector, estimator);
+        gum::BayesNet< double > bn = search.learnBN< double >(selector, estimator);
         gum::BayesNet< double > bn2 =
           search.learnBN< double >(selector, estimator);
         TS_ASSERT(bn.dag().arcs().size() == 10);

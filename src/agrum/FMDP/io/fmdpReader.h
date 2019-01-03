@@ -81,7 +81,6 @@ namespace gum {
   };
 
 
-  extern template class FMDPReader< float >;
   extern template class FMDPReader< double >;
 
 

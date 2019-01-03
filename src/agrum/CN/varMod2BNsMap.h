@@ -191,7 +191,6 @@ namespace gum {
     };   // end of OptBN
 
 
-    extern template class VarMod2BNsMap< float >;
     extern template class VarMod2BNsMap< double >;
 
   }   // namespace credal

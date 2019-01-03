@@ -26,5 +26,5 @@
 
 #include <agrum/multidim/aggregators/amplitude.h>
 
-template class gum::aggregator::Amplitude< float >;
+
 template class gum::aggregator::Amplitude< double >;

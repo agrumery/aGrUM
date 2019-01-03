@@ -739,7 +739,6 @@ namespace gum {
     };   // CredalNet
 
 
-    extern template class CredalNet< float >;
     extern template class CredalNet< double >;
 
   }   // namespace credal

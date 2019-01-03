@@ -88,14 +88,12 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE PRMType&
-           PRM< GUM_SCALAR >::type(const std::string& name) {
+    INLINE PRMType& PRM< GUM_SCALAR >::type(const std::string& name) {
       return *(__typeMap[name]);
     }
 
     template < typename GUM_SCALAR >
-    INLINE const PRMType&
-                 PRM< GUM_SCALAR >::type(const std::string& name) const {
+    INLINE const PRMType& PRM< GUM_SCALAR >::type(const std::string& name) const {
       return *(__typeMap[name]);
     }
 

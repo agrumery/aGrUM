@@ -127,7 +127,6 @@ namespace gum {
   };
 
 
-  extern template class NetReader< float >;
   extern template class NetReader< double >;
 
 } /* namespace gum */

@@ -25,5 +25,5 @@
  */
 #include <agrum/BN/io/BIFXML/BIFXMLBNWriter.h>
 
-template class gum::BIFXMLBNWriter< float >;
+
 template class gum::BIFXMLBNWriter< double >;

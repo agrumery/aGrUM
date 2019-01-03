@@ -25,5 +25,5 @@
  */
 #include <agrum/PRM/o3prm/O3prmBNWriter.h>
 
-template class gum::O3prmBNWriter< float >;
+
 template class gum::O3prmBNWriter< double >;

@@ -98,7 +98,6 @@ namespace gum {
   };
 
 
-  extern template class ContextualDependenciesCNFWriter< float >;
   extern template class ContextualDependenciesCNFWriter< double >;
 
 } /* namespace gum */

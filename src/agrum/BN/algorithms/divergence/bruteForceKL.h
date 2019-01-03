@@ -96,7 +96,6 @@ namespace gum {
   };
 
 
-  extern template class BruteForceKL< float >;
   extern template class BruteForceKL< double >;
 
 }   // namespace gum

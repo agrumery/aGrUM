@@ -30,10 +30,7 @@ namespace gum {
   namespace prm {
     namespace gspan {
 
-      template class SearchStrategy< float >;
-      template class FrequenceSearch< float >;
-      template class StrictSearch< float >;
-      template class TreeWidthSearch< float >;
+
       template class SearchStrategy< double >;
       template class FrequenceSearch< double >;
       template class StrictSearch< double >;

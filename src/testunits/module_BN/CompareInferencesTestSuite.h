@@ -283,7 +283,7 @@ namespace gum_tests {
 
   void testMultipleInference() {
       try {
-        gum::BayesNet< float > bn;
+        gum::BayesNet< double > bn;
         gum::NodeId            c, s, r, w;
 
         gum::LabelizedVariable vc("c", "cloudy", 2), vs("s", "sprinklet", 2);
@@ -304,23 +304,23 @@ namespace gum_tests {
         bn.cpt(r).fillWith({0.8f, 0.2f, 0.2f, 0.8f});
         bn.cpt(w).fillWith({1.0f, 0.0f, 0.1f, 0.9f, 0.1f, 0.9f, 0.01f, 0.99f});
 
-        gum::Potential< float > e_i1;
+        gum::Potential< double > e_i1;
         e_i1 << bn.variable(c);
         e_i1.fillWith({1, 0});
 
-        gum::Potential< float > e_i4;
+        gum::Potential< double > e_i4;
         e_i4 << bn.variable(s);
         e_i4.fillWith({0, 1});
 
-        gum::List< gum::Potential< float > const* > list_pot;
+        gum::List< gum::Potential< double > const* > list_pot;
         list_pot.insert(&e_i1);
         list_pot.insert(&e_i4);
 
         {
-          gum::LazyPropagation< float > inf(&bn);
+          gum::LazyPropagation< double > inf(&bn);
           inf.makeInference();
           {
-            const gum::Potential< float >& p = inf.posterior(w);
+            const gum::Potential< double >& p = inf.posterior(w);
             gum::Instantiation             I(p);
             TS_ASSERT_DELTA(p[I], 0.3529f, 1e-7f);
             ++I;
@@ -332,7 +332,7 @@ namespace gum_tests {
             inf.addEvidence(*pot);
           inf.makeInference();
           {
-            const gum::Potential< float >& p = inf.posterior(w);
+            const gum::Potential< double >& p = inf.posterior(w);
             gum::Instantiation             I(p);
             TS_ASSERT_DELTA(p[I], 0.082f, 1e-7f);
             ++I;
@@ -341,10 +341,10 @@ namespace gum_tests {
         }
 
         {
-          gum::ShaferShenoyInference< float > inf(&bn);
+          gum::ShaferShenoyInference< double > inf(&bn);
           inf.makeInference();
           {
-            const gum::Potential< float >& p = inf.posterior(w);
+            const gum::Potential< double >& p = inf.posterior(w);
             gum::Instantiation             I(p);
             TS_ASSERT_DELTA(p[I], 0.3529f, 1e-5f);
             ++I;
@@ -356,7 +356,7 @@ namespace gum_tests {
             inf.addEvidence(*pot);
           inf.makeInference();
           {
-            const gum::Potential< float >& p = inf.posterior(w);
+            const gum::Potential< double >& p = inf.posterior(w);
             gum::Instantiation             I(p);
             TS_ASSERT_DELTA(p[I], 0.082f, 1e-7f);
             ++I;
@@ -365,10 +365,10 @@ namespace gum_tests {
         }
 
         {
-          gum::VariableElimination< float > inf(&bn);
+          gum::VariableElimination< double > inf(&bn);
           inf.makeInference();
           {
-            const gum::Potential< float >& p = inf.posterior(w);
+            const gum::Potential< double >& p = inf.posterior(w);
             gum::Instantiation             I(p);
             TS_ASSERT_DELTA(p[I], 0.3529f, 1e-5f);
             ++I;
@@ -380,7 +380,7 @@ namespace gum_tests {
             inf.addEvidence(*pot);
           inf.makeInference();
           {
-            const gum::Potential< float >& p = inf.posterior(w);
+            const gum::Potential< double >& p = inf.posterior(w);
             gum::Instantiation             I(p);
             TS_ASSERT_DELTA(p[I], 0.082f, 1e-7f);
             ++I;

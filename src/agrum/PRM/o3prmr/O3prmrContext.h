@@ -249,12 +249,6 @@ namespace gum {
       };
 
 
-      extern template class ObserveCommand< float >;
-      extern template class UnobserveCommand< float >;
-      extern template class QueryCommand< float >;
-      extern template class O3prmrSession< float >;
-      extern template class O3prmrContext< float >;
-
       extern template class ObserveCommand< double >;
       extern template class UnobserveCommand< double >;
       extern template class QueryCommand< double >;

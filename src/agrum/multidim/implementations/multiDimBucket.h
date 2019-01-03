@@ -348,7 +348,6 @@ namespace gum {
   };
 
 
-  extern template class MultiDimBucket< float >;
   extern template class MultiDimBucket< double >;
 
 

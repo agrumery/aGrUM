@@ -40,8 +40,7 @@ namespace gum {
       const PRMType&                        type,
       MultiDimImplementation< GUM_SCALAR >* impl) :
         PRMAttribute< GUM_SCALAR >(name),
-        __type(new PRMType(type)),
-        __cpf(new Potential< GUM_SCALAR >(impl)) {
+        __type(new PRMType(type)), __cpf(new Potential< GUM_SCALAR >(impl)) {
       GUM_CONSTRUCTOR(PRMScalarAttribute);
       __cpf->add(__type->variable());
 
@@ -132,8 +131,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE const PRMType&
-                 PRMScalarAttribute< GUM_SCALAR >::type() const {
+    INLINE const PRMType& PRMScalarAttribute< GUM_SCALAR >::type() const {
       return *__type;
     }
 
@@ -208,8 +206,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    void PRMScalarAttribute< GUM_SCALAR >::becomeCastDescendant(
-      PRMType& subtype) {
+    void PRMScalarAttribute< GUM_SCALAR >::becomeCastDescendant(PRMType& subtype) {
       delete __cpf;
       __cpf = new Potential< GUM_SCALAR >();
       __cpf->add(type().variable());
@@ -228,9 +225,8 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    void PRMScalarAttribute< GUM_SCALAR >::swap(
-      const PRMType& old_type,
-      const PRMType& new_type) {
+    void PRMScalarAttribute< GUM_SCALAR >::swap(const PRMType& old_type,
+                                                const PRMType& new_type) {
       if (&(old_type) == __type) {
         GUM_ERROR(OperationNotAllowed, "Cannot replace attribute own type");
       }

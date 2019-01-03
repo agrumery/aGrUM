@@ -246,7 +246,7 @@ namespace gum {
 
       /// Copy operator. Don't use it.
       PRMAggregate< GUM_SCALAR >&
-      operator=(const PRMAggregate< GUM_SCALAR >& source);
+        operator=(const PRMAggregate< GUM_SCALAR >& source);
 
       /// @}
       // ========================================================================
@@ -272,7 +272,6 @@ namespace gum {
     };
 
 
-    extern template class PRMAggregate< float >;
     extern template class PRMAggregate< double >;
 
   } /* namespace prm */

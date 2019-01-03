@@ -292,7 +292,6 @@ namespace gum {
   };
 
 
-  extern template class FMDP< float >;
   extern template class FMDP< double >;
 
 

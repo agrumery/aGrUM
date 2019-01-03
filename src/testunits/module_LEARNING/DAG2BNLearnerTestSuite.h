@@ -199,7 +199,7 @@ namespace gum_tests {
         parser_id, extern_apriori, intern_apriori);
 
       gum::learning::DBRowGeneratorEM<> generator_EM(col_types, bn);
-      gum::learning::DBRowGenerator<>&  gen_EM = generator_EM;  // fix for g++-4.8
+      gum::learning::DBRowGenerator<>&  gen_EM = generator_EM;   // fix for g++-4.8
       gum::learning::DBRowGeneratorSet<> genset_EM;
       genset_EM.insertGenerator(gen_EM);
       gum::learning::DBRowGeneratorParser<> parser_EM(database.handler(),

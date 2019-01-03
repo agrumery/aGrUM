@@ -97,8 +97,7 @@ namespace gum {
       virtual const MultiDimImplementation< std::string >& formulas() const;
 
       /// Swap old_type with new_type in the PRMClassElement cpt.
-      virtual void swap(const PRMType& old_type,
-                        const PRMType& new_type);
+      virtual void swap(const PRMType& old_type, const PRMType& new_type);
 
       protected:
       virtual PRMType* _type();
@@ -124,7 +123,6 @@ namespace gum {
     };
 
 
-    extern template class PRMFormAttribute< float >;
     extern template class PRMFormAttribute< double >;
 
 
