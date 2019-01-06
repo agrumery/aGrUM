@@ -27,10 +27,10 @@
 #ifndef GUM_CLASS_H
 #define GUM_CLASS_H
 
-#include <set>
 #include <utility>
 
 #include <agrum/agrum.h>
+#include <agrum/core/hashFunc.h>
 #include <agrum/core/bijection.h>
 #include <agrum/core/sequence.h>
 #include <agrum/core/set.h>
@@ -391,8 +391,7 @@ namespace gum {
       Set< PRMInterface< GUM_SCALAR >* >* __implements;
 
       /// The set of Class<GUM_SCALAR> which are extension of this
-      /// Class<GUM_SCALAR> (i.e. direct
-      /// subtypes).
+      /// Class<GUM_SCALAR> (i.e. direct subtypes).
       Set< PRMClass< GUM_SCALAR >* > __extensions;
 
       /// The bijection between variables in super and variables in this
@@ -400,6 +399,10 @@ namespace gum {
       /// attributes in c.
       Bijection< const DiscreteVariable*, const DiscreteVariable* >* __bijection;
 
+      /// a dummy member used to fix a compilation issue in clang4
+      HashFunc< PRMClassElementContainer< GUM_SCALAR >* > __dummy_hashfunc;
+ 
+      
       /// Proceed with the copy when this inherits c.
       void __inheritClass(const PRMClass< GUM_SCALAR >& c);
 
@@ -459,9 +462,7 @@ namespace gum {
     };
 
 
-    // The following line must be commented so that aGrUM can be
-    // compiled with clang 4.0:
-    // extern template class PRMClass< double >;
+    extern template class PRMClass< double >;
 
 
   } /* namespace prm */
@@ -469,5 +470,16 @@ namespace gum {
 }   // namespace gum
 
 #include <agrum/PRM/elements/PRMClass_tpl.h>
+
+
+
+namespace gum {
+
+  namespace prm {
+
+  } /* namespace prm */
+
+}   // namespace gum
+
 
 #endif /* GUM_CLASS_H */

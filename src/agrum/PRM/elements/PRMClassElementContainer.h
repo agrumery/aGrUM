@@ -367,7 +367,8 @@ namespace gum {
        * @return return true if this PRMClassElementContainer is a subtype of
        * cec.
        */
-      virtual bool isSubTypeOf(const PRMClassElementContainer& cec) const = 0;
+      virtual bool
+      isSubTypeOf(const PRMClassElementContainer< GUM_SCALAR >& cec) const = 0;
 
       /**
        * @brief Test if this PRMClassElementContainer is a super type of cec.
@@ -378,16 +379,18 @@ namespace gum {
        * @return return true if this PRMClassElementContainer is a super type of
        *cec.
        */
-      virtual bool isSuperTypeOf(const PRMClassElementContainer& cec) const;
+      virtual bool
+      isSuperTypeOf(const PRMClassElementContainer< GUM_SCALAR >& cec) const;
 
       /// @}
 
       protected:
       /// Copy operator. Don't use it.
-      PRMClassElementContainer& operator=(const PRMClassElementContainer& source);
+      PRMClassElementContainer< GUM_SCALAR >&
+      operator=(const PRMClassElementContainer< GUM_SCALAR >& source);
 
       /// Copy constructor. Don't use it.
-      PRMClassElementContainer(const PRMClassElementContainer& source);
+      PRMClassElementContainer(const PRMClassElementContainer< GUM_SCALAR >& source);
 
       virtual const DAG& _dag() const = 0;
 
@@ -398,7 +401,7 @@ namespace gum {
       /// Fills set with all the subtypes of this PRMInterface, this includes
       /// extensions
       /// and implementations.
-      virtual void _findAllSubtypes(Set< PRMClassElementContainer* >& set) = 0;
+      virtual void _findAllSubtypes(Set< PRMClassElementContainer< GUM_SCALAR >* >& set) = 0;
 
       /// Returns the IO flags of a PRMClassElement<GUM_SCALAR>.
       /// @param elt The PRMClassElement<GUM_SCALAR>.
@@ -424,7 +427,7 @@ namespace gum {
 
       /// Copy the IO Flags of c in this PRMClassElementContainer.
       /// @param c A PRMClassElementContainer.
-      virtual void _copyIOFlags(const PRMClassElementContainer& c);
+      virtual void _copyIOFlags(const PRMClassElementContainer< GUM_SCALAR >& c);
 
       /// When a PRMClassElement<GUM_SCALAR> becomes an Output node we must
       /// update

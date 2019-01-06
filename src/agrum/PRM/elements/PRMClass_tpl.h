@@ -964,12 +964,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     void PRMClass< GUM_SCALAR >::_findAllSubtypes(
       Set< PRMClassElementContainer< GUM_SCALAR >* >& set) {
-      for (const auto ext : __extensions) {
-        std::cout << HashFuncMediumCastKey<
-                       PRMClassElementContainer< GUM_SCALAR >* >::castToSize(ext)
-                  << std::endl;
-        HashFuncMediumCastKey< PRMClassElementContainer< GUM_SCALAR >* > xx;
-        std::cout << xx((PRMClassElementContainer< GUM_SCALAR >*)ext);
+      for (auto ext : __extensions) {
         set.insert(ext);
         ext->_findAllSubtypes(set);
       }
