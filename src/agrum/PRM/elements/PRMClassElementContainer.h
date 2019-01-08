@@ -368,7 +368,7 @@ namespace gum {
        * cec.
        */
       virtual bool
-      isSubTypeOf(const PRMClassElementContainer< GUM_SCALAR >& cec) const = 0;
+        isSubTypeOf(const PRMClassElementContainer< GUM_SCALAR >& cec) const = 0;
 
       /**
        * @brief Test if this PRMClassElementContainer is a super type of cec.
@@ -380,17 +380,18 @@ namespace gum {
        *cec.
        */
       virtual bool
-      isSuperTypeOf(const PRMClassElementContainer< GUM_SCALAR >& cec) const;
+        isSuperTypeOf(const PRMClassElementContainer< GUM_SCALAR >& cec) const;
 
       /// @}
 
       protected:
       /// Copy operator. Don't use it.
       PRMClassElementContainer< GUM_SCALAR >&
-      operator=(const PRMClassElementContainer< GUM_SCALAR >& source);
+        operator=(const PRMClassElementContainer< GUM_SCALAR >& source);
 
       /// Copy constructor. Don't use it.
-      PRMClassElementContainer(const PRMClassElementContainer< GUM_SCALAR >& source);
+      PRMClassElementContainer(
+        const PRMClassElementContainer< GUM_SCALAR >& source);
 
       virtual const DAG& _dag() const = 0;
 
@@ -401,7 +402,8 @@ namespace gum {
       /// Fills set with all the subtypes of this PRMInterface, this includes
       /// extensions
       /// and implementations.
-      virtual void _findAllSubtypes(Set< PRMClassElementContainer< GUM_SCALAR >* >& set) = 0;
+      virtual void
+        _findAllSubtypes(Set< PRMClassElementContainer< GUM_SCALAR >* >& set) = 0;
 
       /// Returns the IO flags of a PRMClassElement<GUM_SCALAR>.
       /// @param elt The PRMClassElement<GUM_SCALAR>.

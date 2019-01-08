@@ -401,8 +401,8 @@ namespace gum {
 
       /// a dummy member used to fix a compilation issue in clang4
       HashFunc< PRMClassElementContainer< GUM_SCALAR >* > __dummy_hashfunc;
- 
-      
+
+
       /// Proceed with the copy when this inherits c.
       void __inheritClass(const PRMClass< GUM_SCALAR >& c);
 
@@ -472,12 +472,9 @@ namespace gum {
 #include <agrum/PRM/elements/PRMClass_tpl.h>
 
 
-
 namespace gum {
 
-  namespace prm {
-
-  } /* namespace prm */
+  namespace prm {} /* namespace prm */
 
 }   // namespace gum
 
