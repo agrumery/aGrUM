@@ -12,15 +12,15 @@ Please follow as much as possible this template :
 >
 >(Describe your issue in detail. Provide as much as possible steps to reproduce.)
 >
->#### Environment
+>### Environment
 >
 >(describe your os, you CC compiler, your python version, the agrum version, etc.)
 >
->#### Expected Behavior
+>### Expected Behavior
 >
 >(Write what you thought would happen.)
 >
->#### Actual Behavior
+>### Actual Behavior
 >
 >(Write what happened. Include screenshots if needed.)
 
@@ -31,7 +31,6 @@ You can contribute to aGrUM in the following domains:
 * Code
 * Documentation
 * Packaging and distributing
-
 
 ## Before contributing
 
