@@ -52,11 +52,12 @@ macos_build:
     paths:
       - build/
   script:
-    - source activate py37
+    - . /Users/agrum/miniconda3/etc/profile.d/conda.sh
+    - conda activate py37
     - if ! python3 act --no-fun lib release aGrUM --python=3 -j 3; then python3 act clean && python3 act --no-fun lib release aGrUM --python=3 -j 3; fi
     - python act --no-fun test release aGrUM --python=3 -j 3
     - python act --no-fun test release pyAgrum --python=3 -t quick -j 3
-    - source deactivate
+    - conda deactivate
   retry: 2
 
 ################################################################################
