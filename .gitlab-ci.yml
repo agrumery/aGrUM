@@ -100,5 +100,5 @@ linux_build:
   stage: deploy
   script:
     - apt-get install -y curl
-    - curl -X POST -F token=${AGRUM_DEPLOY_TOKEN} -F ref=master -F "variables[AGRUM_TAG]=${CI_COMMIT_TAG}" -F "variables[AGRUM_BUILD]=1" -F "variables[DEPLOY_TO_PYPI]=TRUE" https://gitlab.com/api/v4/projects/4935470/trigger/pipeline
+    - curl -X POST -F token=${AGRUM_DEPLOY_TOKEN} -F ref=master -F "variables[AGRUM_TAG]=${CI_COMMIT_TAG}" -F "variables[AGRUM_BUILD]=1" -F "variables[DEPLOY_TO_PYPI]=TRUE" -F "variables[DEPLOY_DOC]=TRUE"  https://gitlab.com/api/v4/projects/4935470/trigger/pipeline
   retry: 1
