@@ -66,20 +66,6 @@ def _gumScan(file: Path):
 
 def drawGumDeps():
   colors = {
-    "PRM"            : "aquamarine",
-    "core"           : "tomato",
-    "BN"             : "sandybrown",
-    "CN"             : "thistle",
-    "learning"       : "mediumorchid",
-    "variables"      : "lightskyblue",
-    "graphicalModels": "darkgoldenrod",
-    "graphs"         : "lightpink",
-    "multidim"       : "yellow",
-    "FMDP"           : "darksalmon",
-    "ID"             : "deepskyblue",
-    "legend"         : "white"
-  }
-  colors = {
     "core"           : "tomato",
     "variables"      : "lightpink",
     "graphicalModels": "darkgoldenrod",
@@ -125,7 +111,12 @@ def drawGumDeps():
 
   oldcol = "legend"
   for col in colors:
-    agru.add_node(_getNode(col))
+    if col != "legend":
+      agru.add_node(_getNode(col))
+    else:
+      agru.add_node(_getNode(col,"pyAgrum"))
+
+  for col in colors:
     if col != "legend":
       agru.add_edge(pdp.Edge("legend", col))
 
@@ -137,7 +128,7 @@ def drawGumDeps():
   for file in p.glob('**/*.h'):
     if _filter(file.parts):
       key = "/".join(file.parts[3:])
-      deps[key] = _gumScan(file)
+      #deps[key] = _gumScan(file)
 
   agru.set_name("gum")
   agru.set_type("digraph")
