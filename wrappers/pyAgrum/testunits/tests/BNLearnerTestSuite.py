@@ -53,7 +53,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
     f = gum.BruteForceKL(bn, ref)
     res = f.compute()
-    self.assertDelta(res['klPQ'], 0, 1)
+    self.assertAlmostEqual(res['klPQ'], 0.5, delta=0.5)
 
   def testLocalSearchWithTabu(self):
     with self.assertRaises(gum.IOError):
@@ -79,7 +79,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
     f = gum.BruteForceKL(bn, ref)
     res = f.compute()
-    self.assertDelta(res['klPQ'], 0, 1)
+    self.assertAlmostEqual(res['klPQ'], 0.5, delta=0.5)
 
   def testParameterLearning(self):
     bn = gum.loadBN(self.agrumSrcDir(

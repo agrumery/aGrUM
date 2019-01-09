@@ -43,11 +43,22 @@ class BNDatabaseGeneratorTestCase(pyAgrumTestCase):
     nbsamples = [nbsample * i for i in [1, 100, 1000]]
 
     ns1, ns2, ns3 = nbsamples
-    ll1, ll2, ll3 = [dbgen.drawSamples(n) for n in nbsamples]
 
-    self.assertAlmostEqual(ns1 / ns2, ll1 / ll2, delta=0.1)
-    self.assertAlmostEqual(ns3 / ns2, ll3 / ll2, delta=0.1)
-    self.assertAlmostEqual(ns1 / ns3, ll1 / ll3, delta=0.1)
+    isOK=False
+    for i in range(self.nbLoopForApproximatedTest):
+      try:
+        ll1, ll2, ll3 = [dbgen.drawSamples(n) for n in nbsamples]
+
+        self.assertAlmostEqual(ns1 / ns2, ll1 / ll2, delta=0.1)
+        self.assertAlmostEqual(ns3 / ns2, ll3 / ll2, delta=0.1)
+        self.assertAlmostEqual(ns1 / ns3, ll1 / ll3, delta=0.1)
+        isOK=True
+        break
+      except AssertionError:
+        pass
+    self.assertEqual(isOK,True," Error in loop for Approximated tests")
+
+
 
     jointe = gum.Potential().fillWith(1)
     for i in bn.nodes():
