@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 # (c) Copyright by Pierre-Henri Wuillemin, UPMC, 2017

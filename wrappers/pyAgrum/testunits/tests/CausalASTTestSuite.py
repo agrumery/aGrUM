@@ -4,6 +4,7 @@ import unittest
 
 import pyAgrum as gum
 from pyAgrumTestSuite import pyAgrumTestCase, addTests
+import pyAgrum.causal
 import pyAgrum.causal._doAST as ast
 
 
