@@ -44,6 +44,15 @@ pyAgrum library
   miscellaneous
   exceptions
 
+Causality in pyAgrum
+====================
+
+.. toctree::
+  :maxdepth: 2
+  :titlesonly:
+
+  Causal
+
 Python helpers : pyAgrum.lib
 ============================
 

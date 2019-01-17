@@ -36,6 +36,14 @@ from tests import PRMexplorerTestSuite
 from tests import SamplingTestSuite
 from tests import VariablesTestSuite
 
+if sys.version_info >= (3,0):
+  from tests import CausalASTTestSuite
+  from tests import CausalDSepTestSuite
+  from tests import CausalModelTestSuite
+  from tests import CausalNonRegressionTestSuite
+else:
+  print("[pyAgrum] Causality needs python 3")
+
 import time
 
 tests = list()
@@ -58,6 +66,13 @@ tests.append(PotentialTestSuite.ts)
 tests.append(PRMexplorerTestSuite.ts)
 tests.append(SamplingTestSuite.ts)
 tests.append(VariablesTestSuite.ts)
+
+if sys.version_info >= (3,0):
+  tests.append(CausalASTTestSuite.ts)
+  tests.append(CausalDSepTestSuite.ts)
+  tests.append(CausalModelTestSuite.ts)
+  tests.append(CausalNonRegressionTestSuite.ts)
+
 
 tests = unittest.TestSuite(tests)
 
