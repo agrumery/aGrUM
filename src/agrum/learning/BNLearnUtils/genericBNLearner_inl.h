@@ -451,8 +451,5 @@ namespace gum {
     INLINE const DatabaseTable<>& genericBNLearner::database() const {
       return __score_database.databaseTable();
     }
-
-
   } /* namespace learning */
-
 } /* namespace gum */

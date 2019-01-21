@@ -18,7 +18,9 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include <algorithm>
 
+#include <agrum/learning/BNLearnUtils/genericBNLearner.h>
 
 namespace gum {
 
@@ -104,8 +106,5 @@ namespace gum {
       score.setRanges(new_ranges);
       __ranges = score.ranges();
     }
-
-
   }   // namespace learning
-
 }   // namespace gum
