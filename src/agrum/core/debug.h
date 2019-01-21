@@ -122,17 +122,17 @@
 #  endif   // GUM_DEBUG_MODE
 
 #  ifdef GUM_TRACE_ON
-#    define GUM__PRINT(file, line, x)                                       \
-      {                                                                     \
-        std::cout << std::endl                                              \
-                  << file << ":" << line << ": trace : " << x << std::endl; \
-      }
+#    define GUM__PRINT(file, line, x) \
+      { std::cout << std::endl << file << ":" << line << x << std::endl; }
 
-#    define GUM_CHECKPOINT \
-      GUM__PRINT(__FILE__, __LINE__, ": warning : aGrUM checkpoint")
-#    define GUM_TRACE(x) GUM__PRINT(__FILE__, __LINE__, ": trace : " << x)
+#    define GUM_CHECKPOINT GUM__PRINT(__FILE__, __LINE__, " GUMcheckpoint")
+#    define GUM_TRACE(x) \
+      GUM__PRINT(__FILE__, __LINE__, std::endl << "   --> GUMtrace: " << x)
 #    define GUM_TRACE_VAR(x) \
-      GUM__PRINT(__FILE__, __LINE__, ": trace " << #x << ": " << x)
+      GUM__PRINT(__FILE__,   \
+                 __LINE__,   \
+                 std::endl   \
+                   << "   --> GUMtrace of <" << #x << ">: " << x)
 
 #    define GUM_TRACE_NEWLINE \
       { std::cout << std::endl; }
