@@ -60,6 +60,7 @@ namespace gum_tests {
 
     public:
     void test_op_multidimArray() {
+      try{
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {
@@ -113,6 +114,7 @@ namespace gum_tests {
 
       for (gum::Idx i = 0; i < vars.size(); ++i)
         delete vars[i];
+      } catch ( gum::Exception& e) { GUM_SHOWERROR(e);}
     }
   };
 

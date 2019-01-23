@@ -56,7 +56,7 @@ namespace gum_tests {
       TS_ASSERT(net != nullptr);
 
       gum::UAIReader< double > reader(net, file);
-      auto                     err = reader.proceed();
+      reader.proceed();
 
       if (net != nullptr) {
         TS_ASSERT(net->empty());

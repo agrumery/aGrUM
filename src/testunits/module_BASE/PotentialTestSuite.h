@@ -302,6 +302,7 @@ namespace gum_tests {
     }
 
     void testMargOutFunctions() {
+      try {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
       auto c = gum::LabelizedVariable("c", "cfoo", 3);
@@ -338,7 +339,7 @@ namespace gum_tests {
                        "<b:0> :: 6 /<b:1> :: 120 /<b:2> :: 504");
       TS_ASSERT_EQUALS(p.margProdOut({&b}).toString(),
                        "<a:0> :: 28 /<a:1> :: 80 /<a:2> :: 162");
-
+      
       TS_ASSERT_EQUALS(p.margMaxOut({&a}).toString(),
                        "<b:0> :: 3 /<b:1> :: 6 /<b:2> :: 9");
       TS_ASSERT_EQUALS(p.margMaxOut({&b}).toString(),
@@ -348,6 +349,7 @@ namespace gum_tests {
                        "<b:0> :: 1 /<b:1> :: 4 /<b:2> :: 7");
       TS_ASSERT_EQUALS(p.margMinOut({&b}).toString(),
                        "<a:0> :: 1 /<a:1> :: 2 /<a:2> :: 3");
+      } catch ( gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
     void testMargInFunctions() {

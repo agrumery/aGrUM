@@ -174,7 +174,7 @@ namespace gum {
      *
      * Note that this constructor prevents the famous init order fiasco.
      */
-    static OperatorRegister4MultiDim& Register();
+    static OperatorRegister4MultiDim<GUM_SCALAR>& Register();
 
     /// @}
 
@@ -188,7 +188,7 @@ namespace gum {
     OperatorRegister4MultiDim();
 
     /// Copy operator: never to be used
-    OperatorRegister4MultiDim(const OperatorRegister4MultiDim&);
+    OperatorRegister4MultiDim(const OperatorRegister4MultiDim<GUM_SCALAR>&);
 
     /// Destructor
     ~OperatorRegister4MultiDim();
@@ -219,6 +219,17 @@ namespace gum {
     const std::string&                                            type2,
     typename OperatorRegister4MultiDim< GUM_SCALAR >::OperatorPtr function);
 
+
+  // to fix temporarily a bug with mingw, we defined explicitly the registers
+  // for the floats and doubles 
+  template <>
+  OperatorRegister4MultiDim< double >&
+  OperatorRegister4MultiDim< double >::Register();
+
+  template <>
+  OperatorRegister4MultiDim< double >&
+  OperatorRegister4MultiDim< double >::Register();
+  
 } /* namespace gum */
 
 // always include the implementations

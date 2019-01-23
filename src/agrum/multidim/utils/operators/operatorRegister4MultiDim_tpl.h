@@ -102,8 +102,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   OperatorRegister4MultiDim< GUM_SCALAR >&
     OperatorRegister4MultiDim< GUM_SCALAR >::Register() {
-    static OperatorRegister4MultiDim container;
-
+    static OperatorRegister4MultiDim< GUM_SCALAR > container;
+        
 #  ifdef GUM_DEBUG_MODE
     static bool first = true;
 
@@ -121,6 +121,10 @@ namespace gum {
     return container;
   }
 
+
+
+
+  
   // Default constructor: creates an empty register
   template < typename GUM_SCALAR >
   OperatorRegister4MultiDim< GUM_SCALAR >::OperatorRegister4MultiDim() {}

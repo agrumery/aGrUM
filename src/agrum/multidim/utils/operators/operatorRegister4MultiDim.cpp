@@ -26,3 +26,57 @@
  */
 
 #include <agrum/multidim/utils/operators/operatorRegister4MultiDim.h>
+
+
+namespace gum {
+
+
+  // a named constructor that constructs one and only one Register per data type
+  template <>
+  OperatorRegister4MultiDim< float >&
+    OperatorRegister4MultiDim< float >::Register() {
+    static OperatorRegister4MultiDim< float > container;
+    
+#  ifdef GUM_DEBUG_MODE
+    static bool first = true;
+
+    if (first) {
+      first = false;
+      // for debugging purposes, we should inform the aGrUM's debugger that
+      // the hashtable contained within the OperatorRegister4MultiDim will be
+      // removed at the end of the program's execution.
+      __debug__::__inc_deletion(
+        "HashTable", __FILE__, __LINE__, "destructor of", (void*)&container.__set);
+    }
+
+#  endif /* GUM_DEBUG_MODE */
+
+    return container;
+  }
+
+
+  // a named constructor that constructs one and only one Register per data type
+  template <>
+  OperatorRegister4MultiDim< double >&
+    OperatorRegister4MultiDim< double >::Register() {
+    static OperatorRegister4MultiDim< double > container;
+    
+#  ifdef GUM_DEBUG_MODE
+    static bool first = true;
+
+    if (first) {
+      first = false;
+      // for debugging purposes, we should inform the aGrUM's debugger that
+      // the hashtable contained within the OperatorRegister4MultiDim will be
+      // removed at the end of the program's execution.
+      __debug__::__inc_deletion(
+        "HashTable", __FILE__, __LINE__, "destructor of", (void*)&container.__set);
+    }
+
+#  endif /* GUM_DEBUG_MODE */
+
+    return container;
+  }
+
+} /* namespace gum */
+

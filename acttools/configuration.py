@@ -79,6 +79,7 @@ def initParams():
   cfg.default['withSQL'] = True
   cfg.default['mvsc'] = False
   cfg.default['mvsc32'] = False
+  cfg.default['mingw64'] = False
   cfg.default['build'] = "all"
   cfg.default['noSaveParams'] = False
   cfg.default['correction'] = False
@@ -199,6 +200,11 @@ def configureOptions(current):
                         help="use Microsoft Visual Studio C++ compiler 32bits (Windows only).",
                         action="store_true",
                         dest="mvsc32",
+                        default=False)
+  cfg.parser.add_option("", "--mingw64",
+                        help="use minGW64 (Windows only).",
+                        action="store_true",
+                        dest="mingw64",
                         default=False)
   cfg.parser.add_option("", "--build",
                         help="build options : {all|no-cmake|no-make}.",
