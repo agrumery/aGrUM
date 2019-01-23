@@ -941,8 +941,8 @@ namespace gum {
       std::transform(knowing.begin(),
                      knowing.end(),
                      std::back_inserter(knowingIds),
-                     [self = this](const std::string& c) -> NodeId {
-                       return self->idFromName(c);
+                     [this](const std::string& c) -> NodeId {
+                       return this->idFromName(c);
                      });
       return chi2(idFromName(name1), idFromName(name2), knowingIds);
     }
