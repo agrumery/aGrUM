@@ -24569,6 +24569,14 @@ class BNLearner(object):
         return _pyAgrum.BNLearner_learnParameters(self, *args)
 
 
+    def chi2(self, *args):
+        r"""
+        chi2(BNLearner self, std::string const & var1, std::string const & var2, Vector_string knw) -> PyObject
+        chi2(BNLearner self, std::string const & var1, std::string const & var2) -> PyObject *
+        """
+        return _pyAgrum.BNLearner_chi2(self, *args)
+
+
     def setVerbosity(self, v):
         r"""
         setVerbosity(BNLearner self, bool v)
