@@ -922,24 +922,21 @@ namespace gum {
     }
 
 
-    double genericBNLearner::chi2(const NodeId                 id1,
-                                  const NodeId                 id2,
-                                  const std::vector< NodeId >& knowing) {
+    std::pair< double, double > genericBNLearner::chi2(
+      const NodeId id1, const NodeId id2, const std::vector< NodeId >& knowing) {
       __createApriori();
       DBRowGeneratorParser<> parser(__score_database.databaseTable().handler(),
                                     DBRowGeneratorSet<>());
-      gum::learning::IndepTestChi2<> score(parser, *__apriori, databaseRanges());
+      gum::learning::IndepTestChi2<> chi2score(
+        parser, *__apriori, databaseRanges());
 
-      if (knowing.size() == 0) {
-        return score.score(id1, id2);
-      } else {
-        return score.score(id1, id2, knowing);
-      }
+      return chi2score.statistics(id1, id2, knowing);
     }
 
-    double genericBNLearner::chi2(const std::string&                name1,
-                                  const std::string&                name2,
-                                  const std::vector< std::string >& knowing) {
+    std::pair< double, double >
+      genericBNLearner::chi2(const std::string&                name1,
+                             const std::string&                name2,
+                             const std::vector< std::string >& knowing) {
       std::vector< NodeId > knowingIds;
       std::transform(knowing.begin(),
                      knowing.end(),

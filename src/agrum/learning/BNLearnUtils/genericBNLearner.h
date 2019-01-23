@@ -412,12 +412,28 @@ namespace gum {
         useCrossValidationFold(const std::size_t learning_fold,
                                const std::size_t k_fold);
 
-      double chi2(const NodeId                 id1,
-                  const NodeId                 id2,
-                  const std::vector< NodeId >& knowing = {});
-      double chi2(const std::string&                name1,
-                  const std::string&                name2,
-                  const std::vector< std::string >& knowing = {});
+
+      /**
+       * Return the <statistic,pvalue> pair for the BNLearner
+       * @param id1 first variable
+       * @param id2 second variable
+       * @param knowing list of observed variables
+       * @return a std::pair<double,double>
+       */
+      std::pair< double, double > chi2(const NodeId                 id1,
+                                       const NodeId                 id2,
+                                       const std::vector< NodeId >& knowing = {});
+      /**
+       * Return the <statistic,pvalue> pair for the BNLearner
+       * @param id1 first variable
+       * @param id2 second variable
+       * @param knowing list of observed variables
+       * @return a std::pair<double,double>
+       */
+      std::pair< double, double >
+        chi2(const std::string&                name1,
+             const std::string&                name2,
+             const std::vector< std::string >& knowing = {});
 
       /** use The EM algorithm to learn paramters
        *
