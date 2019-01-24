@@ -25,6 +25,7 @@
 #ifndef GUM_DAG_H
 #define GUM_DAG_H
 
+#include <agrum/graphs/undiGraph.h>
 #include <agrum/graphs/diGraph.h>
 
 namespace gum {
@@ -153,6 +154,8 @@ namespace gum {
      */
     virtual void addArc(const NodeId tail, const NodeId head);
     /// @}
+
+    UndiGraph moralGraph() const;
 
     private:
     /// checks whether there exists a directed path from \e from to \e to
