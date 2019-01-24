@@ -216,9 +216,9 @@ namespace std {
 %import <agrum/graphs/parts/arcGraphPart.h>
 %import <agrum/graphs/parts/nodeGraphPart.h>
 
+%include <agrum/graphs/undiGraph.h>
 %include <agrum/graphs/diGraph.h>
 %include <agrum/graphs/DAG.h>
-%include <agrum/graphs/undiGraph.h>
 %include <agrum/graphs/mixedGraph.h>
 %include <agrum/graphs/cliqueGraph.h>
 %import <agrum/graphs/algorithms/triangulations/defaultTriangulation.h>
