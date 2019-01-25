@@ -1018,7 +1018,6 @@ namespace gum {
           unsigned long b, c;
           superiorPow((unsigned long)var_dSize, b, c);
           Size nb_bits{Size(b)};
-          Size new_card{Size(c)};
 
           std::string           bit_name;
           std::vector< NodeId > bits(nb_bits);

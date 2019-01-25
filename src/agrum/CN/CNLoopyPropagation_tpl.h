@@ -186,9 +186,6 @@ namespace gum {
                                                      GUM_SCALAR& num_max,
                                                      GUM_SCALAR& den_min,
                                                      GUM_SCALAR& den_max) {
-      GUM_SCALAR old_msg_min = msg_l_min;
-      GUM_SCALAR old_msg_max = msg_l_max;
-
       GUM_SCALAR num_min_tmp = 1.;
       GUM_SCALAR den_min_tmp = 1.;
       GUM_SCALAR num_max_tmp = 1.;
@@ -292,7 +289,6 @@ namespace gum {
       }
 
       Size pp = pos;
-      Size pas = Size(intPow(2UL, (unsigned long)pp));
 
       Size combi_den = 0;
       Size combi_num = pp;
