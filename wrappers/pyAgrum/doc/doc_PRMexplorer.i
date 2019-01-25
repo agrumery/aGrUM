@@ -3,7 +3,7 @@
 PRMexplorer helps navigate through probabilistic relational models.
 
 Available constructors:
-	``JTGenerator() -> JTGenerator``
+	``PRMexplorer() -> PRMexplorer``
 "
 
 %feature("docstring") PRMexplorer::classAggregates

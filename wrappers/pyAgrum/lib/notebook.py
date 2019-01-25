@@ -191,7 +191,7 @@ def showJunctionTree(bn, withNames=True, size="4", format="png"):
   :param format: render as "png" or "svg"
   :return: the representation of the graph
   """
-  jtg = gum.JTGenerator()
+  jtg = gum.JunctionTreeGenerator()
   jt = jtg.junctionTree(bn)
   if withNames:
     return showDot(jt.toDotWithNames(bn), size, format)
@@ -209,7 +209,7 @@ def getJunctionTree(bn, withNames=True, size="4", format="png"):
   :param format: render as "png" or "svg"
   :return: the HTML representation of the graph
   """
-  jtg = gum.JTGenerator()
+  jtg = gum.JunctionTreeGenerator()
   jt = jtg.junctionTree(bn)
   if withNames:
     return getDot(jt.toDotWithNames(bn), size, format)

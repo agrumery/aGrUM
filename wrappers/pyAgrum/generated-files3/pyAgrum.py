@@ -206,13 +206,13 @@ _pyAgrum.SwigPyIterator_swigregister(SwigPyIterator)
 
 import numpy
 
-class JTGenerator(object):
+class JunctionTreeGenerator(object):
     r"""
 
-    JTGenerator is use to generate junction tree or binary junction tree from bayesian networks.
+    JunctionTreeGenerator is use to generate junction tree or binary junction tree from bayesian networks.
 
     Available constructors:
-    	``JTGenerator() -> JTGenerator``
+    	``JunctionTreeGenerator() -> JunctionTreeGenerator``
 
     """
 
@@ -221,72 +221,121 @@ class JTGenerator(object):
 
     def junctionTree(self, *args) -> "gum::JunctionTree":
         r"""
-        junctionTree(JTGenerator self, UndiGraph g) -> CliqueGraph
-        junctionTree(JTGenerator self, DAG dag) -> CliqueGraph
-        junctionTree(JTGenerator self, BayesNet bn) -> CliqueGraph
+        junctionTree(JunctionTreeGenerator self, UndiGraph g, PyObject * partial_order=None) -> CliqueGraph
+        junctionTree(JunctionTreeGenerator self, UndiGraph g) -> CliqueGraph
+        junctionTree(JunctionTreeGenerator self, DAG dag, PyObject * partial_order=None) -> CliqueGraph
+        junctionTree(JunctionTreeGenerator self, DAG dag) -> CliqueGraph
+        junctionTree(JunctionTreeGenerator self, BayesNet bn, PyObject * partial_order=None) -> CliqueGraph
+        junctionTree(JunctionTreeGenerator self, BayesNet bn) -> CliqueGraph
+
+        Computes the junction tree for its parameters. If the first parameter is a graph, the heurisitcs assume that all the node have the same domain size (2). If given, the heuristic takes into account the partial order for its elimination order.
 
         Parameters
         ----------
         g : pyAgrum.UndiGraph
-        	an Undirected graph
-        bn : pyAgrum.BayesNet
-        	a Bayesian network
+        	a undirected graph
+
+        dag : pyAgrum::DAG
+        	a dag
+
+        bn : pyAgrum::BayesNet
+        	a BayesianNetwork
+
+        partial_order: List[List[int]]
+        	a partial order among the nodeIDs
 
         Returns
         -------
         pyAgrum.CliqueGraph
-        	the current junction tree
+        	the current junction tree. 
 
         """
-        return _pyAgrum.JTGenerator_junctionTree(self, *args)
+        return _pyAgrum.JunctionTreeGenerator_junctionTree(self, *args)
 
 
     def eliminationOrder(self, *args) -> "PyObject *":
         r"""
-        eliminationOrder(JTGenerator self, UndiGraph g) -> PyObject
-        eliminationOrder(JTGenerator self, DAG dag) -> PyObject
-        eliminationOrder(JTGenerator self, BayesNet bn) -> PyObject *
-        """
-        return _pyAgrum.JTGenerator_eliminationOrder(self, *args)
+        eliminationOrder(JunctionTreeGenerator self, UndiGraph g, PyObject * partial_order=None) -> PyObject
+        eliminationOrder(JunctionTreeGenerator self, UndiGraph g) -> PyObject
+        eliminationOrder(JunctionTreeGenerator self, DAG dag, PyObject * partial_order=None) -> PyObject
+        eliminationOrder(JunctionTreeGenerator self, DAG dag) -> PyObject
+        eliminationOrder(JunctionTreeGenerator self, BayesNet bn, PyObject * partial_order=None) -> PyObject
+        eliminationOrder(JunctionTreeGenerator self, BayesNet bn) -> PyObject *
 
-
-    def binaryJoinTree(self, *args) -> "gum::JunctionTree":
-        r"""
-        binaryJoinTree(JTGenerator self, UndiGraph g) -> CliqueGraph
-        binaryJoinTree(JTGenerator self, DAG dag) -> CliqueGraph
-        binaryJoinTree(JTGenerator self, BayesNet bn) -> CliqueGraph
+        Computes the elimination for its parameters. If the first parameter is a graph, the heurisitcs assume that all the node have the same domain size (2). If given, the heuristic takes into account the partial order for its elimination order.
 
         Parameters
         ----------
         g : pyAgrum.UndiGraph
-        	an Undirected graph
-        bn : pyAgrum.BayesNet
-        	a Bayesian network
+        	a undirected graph
+
+        dag : pyAgrum::DAG
+        	a dag
+
+        bn : pyAgrum::BayesNet
+        	a BayesianNetwork
+
+        partial_order: List[List[int]]
+        	a partial order among the nodeIDs
 
         Returns
         -------
         pyAgrum.CliqueGraph
-        	the binary join tree
+        	the current elimination order.
 
         """
-        return _pyAgrum.JTGenerator_binaryJoinTree(self, *args)
+        return _pyAgrum.JunctionTreeGenerator_eliminationOrder(self, *args)
+
+
+    def binaryJoinTree(self, *args) -> "gum::JunctionTree":
+        r"""
+        binaryJoinTree(JunctionTreeGenerator self, UndiGraph g, PyObject * partial_order=None) -> CliqueGraph
+        binaryJoinTree(JunctionTreeGenerator self, UndiGraph g) -> CliqueGraph
+        binaryJoinTree(JunctionTreeGenerator self, DAG dag, PyObject * partial_order=None) -> CliqueGraph
+        binaryJoinTree(JunctionTreeGenerator self, DAG dag) -> CliqueGraph
+        binaryJoinTree(JunctionTreeGenerator self, BayesNet bn, PyObject * partial_order=None) -> CliqueGraph
+        binaryJoinTree(JunctionTreeGenerator self, BayesNet bn) -> CliqueGraph
+
+        Computes the binary joint tree for its parameters. If the first parameter is a graph, the heurisitcs assume that all the node have the same domain size (2). If given, the heuristic takes into account the partial order for its elimination order.
+
+        Parameters
+        ----------
+        g : pyAgrum.UndiGraph
+        	a undirected graph
+
+        dag : pyAgrum::DAG
+        	a dag
+
+        bn : pyAgrum::BayesNet
+        	a BayesianNetwork
+
+        partial_order: List[List[int]]
+        	a partial order among the nodeIDs
+
+        Returns
+        -------
+        pyAgrum.CliqueGraph
+        	the current binary joint tree 
+
+        """
+        return _pyAgrum.JunctionTreeGenerator_binaryJoinTree(self, *args)
 
 
     def __init__(self):
         r"""
-        __init__(JTGenerator self) -> JTGenerator
+        __init__(JunctionTreeGenerator self) -> JunctionTreeGenerator
 
-        JTGenerator is use to generate junction tree or binary junction tree from bayesian networks.
+        JunctionTreeGenerator is use to generate junction tree or binary junction tree from bayesian networks.
 
         Available constructors:
-        	``JTGenerator() -> JTGenerator``
+        	``JunctionTreeGenerator() -> JunctionTreeGenerator``
 
         """
-        _pyAgrum.JTGenerator_swiginit(self, _pyAgrum.new_JTGenerator())
-    __swig_destroy__ = _pyAgrum.delete_JTGenerator
+        _pyAgrum.JunctionTreeGenerator_swiginit(self, _pyAgrum.new_JunctionTreeGenerator())
+    __swig_destroy__ = _pyAgrum.delete_JunctionTreeGenerator
 
-# Register JTGenerator in _pyAgrum:
-_pyAgrum.JTGenerator_swigregister(JTGenerator)
+# Register JunctionTreeGenerator in _pyAgrum:
+_pyAgrum.JunctionTreeGenerator_swigregister(JunctionTreeGenerator)
 
 class PythonBNListener(object):
     r"""Proxy of C++ PythonBNListener class."""
@@ -629,7 +678,7 @@ class PRMexplorer(object):
     PRMexplorer helps navigate through probabilistic relational models.
 
     Available constructors:
-    	``JTGenerator() -> JTGenerator``
+    	``PRMexplorer() -> PRMexplorer``
 
     """
 
@@ -643,7 +692,7 @@ class PRMexplorer(object):
         PRMexplorer helps navigate through probabilistic relational models.
 
         Available constructors:
-        	``JTGenerator() -> JTGenerator``
+        	``PRMexplorer() -> PRMexplorer``
 
         """
         _pyAgrum.PRMexplorer_swiginit(self, _pyAgrum.new_PRMexplorer())
