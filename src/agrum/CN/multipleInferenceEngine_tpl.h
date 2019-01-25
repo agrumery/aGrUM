@@ -385,7 +385,6 @@ namespace gum {
 
         for (long i = 0; i < long(nsize); i++) {
           Size tsize = Size(_l_marginalMin.size());
-          Size dSize = Size(_l_marginalMin[threadId][i].size());
 
           // go through all threads
           for (long tId = 0; tId < long(tsize); tId++) {
@@ -430,8 +429,6 @@ namespace gum {
               var_name = var_name.substr(0, delim);
 
               if (!_l_modal[threadId].exists(var_name)) continue;
-
-              Size setsize = Size(__infE::_marginalSets[i].size());
 
               for (const auto& vertex : __infE::_marginalSets[i]) {
                 GUM_SCALAR exp = 0;

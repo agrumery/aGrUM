@@ -535,7 +535,6 @@ namespace gum {
             m_log << "# Loading system '" << import_name << "' => '" << std::flush;
           }
 
-          size_t      last_dot = import_name.find_last_of('.');
           std::string import_package = import_name;
 
           std::replace(import_name.begin(), import_name.end(), '.', '/');
