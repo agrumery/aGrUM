@@ -167,7 +167,7 @@ namespace gum {
     _klPQ = -_klPQ / (nbrIterations());
     _klQP = -_klQP / (nbrIterations());
     _hellinger = std::sqrt(_hellinger / nbrIterations());
-    _bhattacharya = -std::log(_bhattacharya);
+    _bhattacharya = -std::log(_bhattacharya / (nbrIterations()));
   }
 
   template < typename GUM_SCALAR >
