@@ -209,6 +209,9 @@ namespace gum {
      * function to combine them (the OperatorPtr).
      */
     HashTable< std::string, OperatorSet* > __set;
+
+    // patch for compiling with minw
+    static OperatorRegister4MultiDim<GUM_SCALAR>* P_instance_;
   };
 
   /// A function to more easily register new operators in MultiDims
@@ -218,17 +221,6 @@ namespace gum {
     const std::string&                                            type1,
     const std::string&                                            type2,
     typename OperatorRegister4MultiDim< GUM_SCALAR >::OperatorPtr function);
-
-
-  // to fix temporarily a bug with mingw, we defined explicitly the registers
-  // for the floats and doubles 
-  template <>
-  OperatorRegister4MultiDim< float >&
-  OperatorRegister4MultiDim< float >::Register();
-
-  template <>
-  OperatorRegister4MultiDim< double >&
-  OperatorRegister4MultiDim< double >::Register();
   
 } /* namespace gum */
 
