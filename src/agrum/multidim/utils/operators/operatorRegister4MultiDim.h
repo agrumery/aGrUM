@@ -223,8 +223,8 @@ namespace gum {
   // to fix temporarily a bug with mingw, we defined explicitly the registers
   // for the floats and doubles 
   template <>
-  OperatorRegister4MultiDim< double >&
-  OperatorRegister4MultiDim< double >::Register();
+  OperatorRegister4MultiDim< float >&
+  OperatorRegister4MultiDim< float >::Register();
 
   template <>
   OperatorRegister4MultiDim< double >&

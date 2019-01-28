@@ -24,6 +24,8 @@
 
 #include <agrum/core/exceptions.h>
 
+
+/*
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
@@ -37,7 +39,7 @@ namespace gum_tests {
 
   class MultiDimLogitTestSuite : public CxxTest::TestSuite {
     public:
-    void testCreationLogit() {
+    void xtestCreationLogit() {
       gum::LabelizedVariable a("a", "", 2), b("b", "", 2), c("c", "", 2),
         d("d", "", 2);
       gum::MultiDimLogit< double > p(0.2f);
@@ -68,7 +70,7 @@ namespace gum_tests {
                        "a<0,1>=logit(0.2 +0.4*b<0,1> -1.3*c<0,1> +0.7*d<0,1>)");
     }
 
-    void testComputationInLogit() {
+    void xtestComputationInLogit() {
       // from "Pratique de la Régression Logique" / Ricco Rakotomalala / p33
       gum::RangeVariable     age("age", "", 35, 67);
       gum::RangeVariable     taux("taux", "", 115, 171);
@@ -120,7 +122,7 @@ namespace gum_tests {
       }
     }
 
-    void testComputationInLogit2() {
+    void xtestComputationInLogit2() {
       gum::LabelizedVariable lazy("lazy", "", 2);
       gum::LabelizedVariable degree("degree", "", 2);
       gum::LabelizedVariable motivation("motivation", "", 2);
@@ -189,7 +191,7 @@ namespace gum_tests {
       }
     }
 
-    void testLogitInBN() {
+    void xtestLogitInBN() {
       gum::BayesNet< double > bn;
 
       gum::LabelizedVariable cold("Cold", "", 2);
@@ -267,3 +269,5 @@ namespace gum_tests {
     }
   };
 }   // namespace gum_tests
+
+*/

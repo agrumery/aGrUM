@@ -81,8 +81,8 @@ namespace gum {
     const std::string& type1,
     const std::string& type2) const {
     if (!__set.exists(operation_name)) return false;
-
-    return __set[operation_name].exists(
+    OperatorSet* theset = __set[operation_name];
+    return theset->exists(
       std::pair< std::string, std::string >(type1, type2));
   }
 
@@ -102,23 +102,23 @@ namespace gum {
   template < typename GUM_SCALAR >
   OperatorRegister4MultiDim< GUM_SCALAR >&
     OperatorRegister4MultiDim< GUM_SCALAR >::Register() {
-    static OperatorRegister4MultiDim< GUM_SCALAR > container;
-        
-#  ifdef GUM_DEBUG_MODE
+    static OperatorRegister4MultiDim< GUM_SCALAR >* container = nullptr;
     static bool first = true;
 
     if (first) {
       first = false;
+      container = new OperatorRegister4MultiDim< GUM_SCALAR >;
+    
+#  ifdef GUM_DEBUG_MODE
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the OperatorRegister4MultiDim will be
       // removed at the end of the program's execution.
       __debug__::__inc_deletion(
         "HashTable", __FILE__, __LINE__, "destructor of", (void*)&container.__set);
+#  endif /* GUM_DEBUG_MODE */
     }
 
-#  endif /* GUM_DEBUG_MODE */
-
-    return container;
+    return *container;
   }
 
 

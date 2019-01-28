@@ -42,6 +42,7 @@ namespace gum_tests {
     private:
     void __fillFactory(gum::MultiDimFunctionGraph< double >* factory,
                        gum::List< gum::NodeId >*             idList) {
+      try {
       factory->add(*Cprimevar);
       factory->add(*Cvar);
       factory->add(*PLvar);
@@ -109,6 +110,8 @@ namespace gum_tests {
       factory->manager()->setSon((*idList)[13], 0, (*idList)[16]);
       factory->manager()->setSon((*idList)[14], 1, (*idList)[18]);
       factory->manager()->setSon((*idList)[14], 0, (*idList)[16]);
+      }
+      catch (gum::Exception& e) {GUM_SHOWERROR(e);}
     }
 
     public:
@@ -116,6 +119,7 @@ namespace gum_tests {
       *BOvar, *Cprimevar;
 
     void setUp() {
+      try {
       Cvar = new gum::LabelizedVariable("C", "C", 2);
       PLvar = new gum::LabelizedVariable("PL", "PL", 2);
       APUvar = new gum::LabelizedVariable("APU", "APU", 2);
@@ -124,7 +128,10 @@ namespace gum_tests {
       BDRvar = new gum::LabelizedVariable("BDR", "BDR", 2);
       BOvar = new gum::LabelizedVariable("BO", "BO", 2);
       Cprimevar = new gum::LabelizedVariable("C'", "C'", 2);
+      }
+      catch (gum::Exception& e) {GUM_SHOWERROR(e);}
     }
+
 
     void tearDown() {
       delete Cvar;
@@ -143,6 +150,7 @@ namespace gum_tests {
     /**
      * **********************************************************************************/
     void test_Simple_Creation() {
+      try {
       // *********************************************************************
       // Création of the Function Graph
       // *********************************************************************
@@ -163,6 +171,8 @@ namespace gum_tests {
       // Destruction of the multidim
       // *********************************************************************
       TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph);
+      }
+      catch( gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
 
@@ -172,6 +182,7 @@ namespace gum_tests {
     /**
      * **********************************************************************************/
     void test_MultiDimFunctionGraph_Diagram_Handlers_Methods() {
+      try {
       // *********************************************************************
       // Création du multidim
       // *********************************************************************
@@ -220,7 +231,10 @@ namespace gum_tests {
       // *********************************************************************
       TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph);
       delete Banditovar;
+      }
+      catch( gum::Exception& e) { GUM_SHOWERROR(e); }
     }
+
 
     /**
      * **********************************************************************************/
@@ -228,6 +242,7 @@ namespace gum_tests {
     /**
      * **********************************************************************************/
     void test_toDot() {
+      try {
       // *********************************************************************
       // Création du multidim
       // *********************************************************************
@@ -255,6 +270,8 @@ namespace gum_tests {
       }
 
       delete functionGraph;
+      }
+      catch( gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
 
@@ -264,6 +281,7 @@ namespace gum_tests {
     /**
      * *******************************************************************************/
     void test_Manager_Graphical_Functions() {
+      try {
       // *********************************************************************
       // Creation of the multidim
       // *********************************************************************
@@ -330,6 +348,8 @@ namespace gum_tests {
                        gum::OperationNotAllowed);
 
       TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph);
+      }
+      catch( gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
 
@@ -339,6 +359,7 @@ namespace gum_tests {
     /**
      * **********************************************************************************/
     void test_MultiDimFunctionGraph_Accessors_Modifiers_Methods() {
+      try {
       // *********************************************************************
       // Creation of multidim
       // *********************************************************************
@@ -515,6 +536,8 @@ namespace gum_tests {
       delete lv;
 
       TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph);
+      }
+      catch( gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
 
@@ -524,6 +547,7 @@ namespace gum_tests {
     /**
      * **********************************************************************************/
     void test_MultiDimFunctionGraph_Implementation_Methods() {
+      try {
       // *********************************************************************
       // Creation of the multidim
       // *********************************************************************
@@ -569,7 +593,10 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph);
       delete lv;
+      }
+      catch( gum::Exception& e) { GUM_SHOWERROR(e); }
     }
+
 
 
     /**
@@ -578,6 +605,7 @@ namespace gum_tests {
     /**
      * **********************************************************************************/
     void test_MultiDimFunctionGraph_Copy_Methods() {
+      try {
       // *********************************************************************
       // Création du multidim
       // *********************************************************************
@@ -678,7 +706,10 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph);
 
       TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph2);
+      }
+      catch( gum::Exception& e) { GUM_SHOWERROR(e); }
     }
+
 
     /**
      * **********************************************************************************/
@@ -686,6 +717,7 @@ namespace gum_tests {
     /**
      * **********************************************************************************/
     void test_MultiDimFunctionGraph_Various_Methods() {
+      try {
       // *********************************************************************
       // Creation of severals multidims
       // *********************************************************************
@@ -725,7 +757,10 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(delete dg1);
       TS_GUM_ASSERT_THROWS_NOTHING(delete dg2);
       TS_GUM_ASSERT_THROWS_NOTHING(delete dg3);
+      }
+      catch ( gum::Exception& e) { GUM_SHOWERROR(e); }
     }
+    
 
     /**
      * **********************************************************************************/
@@ -733,6 +768,7 @@ namespace gum_tests {
     /**
      * **********************************************************************************/
     void test_MoveTo() {
+      try {
       // *********************************************************************
       // Creation of the multidim
       // *********************************************************************
@@ -768,10 +804,13 @@ namespace gum_tests {
 
       delete functionGraph;
       delete phantomvar;
+      }
+      catch ( gum::Exception& e ) { GUM_SHOWERROR(e); } 
     }
 
     void est_Generator() {
-      for (gum::Idx i = 0; i < 100; i++) {
+      try {
+        for (gum::Idx i = 0; i < 100; i++) {
         gum::Sequence< const gum::DiscreteVariable* >* varList =
           new gum::Sequence< const gum::DiscreteVariable* >();
 
@@ -814,6 +853,9 @@ namespace gum_tests {
           delete *ite;
         delete varList;
       }
+      }
+      catch( gum::Exception& e) { GUM_SHOWERROR(e); }
     }
+
   };
 }   // namespace gum_tests
