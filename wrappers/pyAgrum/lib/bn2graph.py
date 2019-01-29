@@ -26,6 +26,7 @@ from __future__ import print_function
 
 import time
 import math
+import hashlib
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -296,7 +297,7 @@ def BNinference2dot(bn, size="4", engine=None, evs={}, targets={}, format='png',
 
     colorattribute = 'fillcolor="{}", fontcolor="{}", color="#000000"'.format(bgcol, fgcol)
     if len(targets) == 0 or name in targets or nid in targets:
-      filename = temp_dir + name + "." + format
+      filename = temp_dir + hashlib.md5(name.encode()).hexdigest() + "." + format
       _saveFigProba(ie.posterior(name), filename, format=format)
       dotstr += ' "{0}" [shape=rectangle,image="{1}",label="", {2}];\n'.format(name, filename, colorattribute)
     else:
