@@ -114,7 +114,7 @@ namespace gum {
       // the hashtable contained within the OperatorRegister4MultiDim will be
       // removed at the end of the program's execution.
       __debug__::__inc_deletion(
-        "HashTable", __FILE__, __LINE__, "destructor of", (void*)&container.__set);
+        "HashTable", __FILE__, __LINE__, "destructor of", (void*)&container->__set);
 #  endif /* GUM_DEBUG_MODE */
     }
     
