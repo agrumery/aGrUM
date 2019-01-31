@@ -58,8 +58,8 @@ namespace gum {
       inst.init();
     }
   }
+  
   // constructors
-
   template < typename GUM_SCALAR >
   INLINE MultiDimDecorator< GUM_SCALAR >::MultiDimDecorator(
     MultiDimImplementation< GUM_SCALAR >* aContent, GUM_SCALAR empty_value) :
