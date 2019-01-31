@@ -292,7 +292,7 @@ The arc in parameters won't be added.
 
 Parameters
 ----------
-arc : pyAgrum
+arc : pyAgrum.Arc
 	an arc
 head :
 	a variable's id (int)
@@ -310,7 +310,7 @@ Allow to add prior structural knowledge.
 
 Parameters
 ----------
-arc : pyAgrum
+arc : pyAgrum.Arc
 	an arc
 head :
 	a variable's id (int)
@@ -373,4 +373,26 @@ Parameters
 ----------
 weight : double
 	the apriori weight
+"
+
+%feature("docstring") gum::learning::BNLearner::chi2
+"
+chi2 computes the chi2 statistic and pvalue for two columns, given a list of other columns. 
+
+
+Parameters
+----------
+name1: str
+	the name of the first column
+
+name2 : str
+	the name of the second column
+
+knowing : [str]
+	the list of names of conditioning columns
+	
+Returns
+-------
+statistic,pvalue
+	the chi2 statistic and the associated p-value as a Tuple
 "

@@ -29,7 +29,9 @@ namespace gum {
   namespace prm {
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
     template class ClassDependencyGraph< double >;
+#endif
 
   } /* namespace prm */
 } /* namespace gum */

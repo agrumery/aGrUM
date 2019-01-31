@@ -92,7 +92,9 @@ namespace gum {
     HashTable< const DiscreteVariable*, Idx > __context;
   };
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class TreeRegress< double, std::multiplies, std::plus >;
+#endif
 
 }   // namespace gum
 

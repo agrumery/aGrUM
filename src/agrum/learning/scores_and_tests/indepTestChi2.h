@@ -148,14 +148,31 @@ namespace gum {
 
       /// @}
 
+      // ##########################################################################
+      /// @name Statistics
+      // ##########################################################################
+
+      /// @{
+
+      /// get the pair <chi2 statistic,pvalue> for a test var1 indep var2 given
+      /// rhs_ids
+      std::pair< double, double >
+        statistics(NodeId                                        var1,
+                   NodeId                                        var2,
+                   const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids={});
+
+      /// @}
+
 
       protected:
       /// returns the score for a given IdSet
       /** @throws OperationNotAllowed is raised if the score does not support
        * calling method score such an idset (due to too many/too few variables
        * in the left hand side or the right hand side of the idset). */
-      virtual double _score(const IdSet< ALLOC >& idset) final;
+      virtual double              _score(const IdSet< ALLOC >& idset) final;
 
+      /// compute the pair <chi2 statistic,pvalue>
+      std::pair< double, double > _statistics(const IdSet< ALLOC >& idset);
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -177,7 +194,9 @@ namespace gum {
 } /* namespace gum */
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::learning::IndepTestChi2<>;
+#endif
 
 
 // always include the template implementation

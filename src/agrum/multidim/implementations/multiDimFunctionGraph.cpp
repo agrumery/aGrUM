@@ -29,8 +29,16 @@
 
 namespace gum {
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   // template class MultiDimFunctionGraph<float>;
+#endif
+#endif
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   // template class MultiDimFunctionGraph<double>;
+#endif
+#endif
 
   template <>
   const float MultiDimFunctionGraph< float >::defaultValue = 0.0f;

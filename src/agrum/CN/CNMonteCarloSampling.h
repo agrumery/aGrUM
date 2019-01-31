@@ -131,8 +131,16 @@ namespace gum {
     };
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
     extern template class CNMonteCarloSampling< float, LazyPropagation< float > >;
+#endif
+#endif
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
     extern template class CNMonteCarloSampling< double,
+#endif
+#endif
                                                 LazyPropagation< double > >;
 
 

@@ -191,7 +191,9 @@ namespace gum {
     };   // end of OptBN
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
     extern template class VarMod2BNsMap< double >;
+#endif
 
   }   // namespace credal
 }   // namespace gum

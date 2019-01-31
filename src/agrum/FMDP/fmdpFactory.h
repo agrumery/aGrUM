@@ -311,7 +311,9 @@ namespace gum {
   };
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class FMDPFactory< double >;
+#endif
 
 } /* namespace gum */
 

@@ -9,11 +9,6 @@
 // analog to std::ostream.
 //
 
-// in order to force GUM_CHECKPOINT / GUM_TRACE / GUM_TRACE_VAR to works even in
-// release mode
-#ifdef GUM_DEBUG_MODE
-#define GUM_TRACE_ON
-#endif  // GUM_DEBUG_MODE
 #include <cstdlib>
 
 #include <agrum/config.h>

@@ -228,7 +228,9 @@ namespace gum {
 } /* namespace gum */
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::learning::ScoreK2<>;
+#endif
 
 
 // always include the template implementation

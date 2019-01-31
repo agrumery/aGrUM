@@ -31,10 +31,42 @@ namespace gum {
     namespace gspan {
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
       template class SearchStrategy< double >;
+#endif
+#endif
+#endif
+#endif
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
       template class FrequenceSearch< double >;
+#endif
+#endif
+#endif
+#endif
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
       template class StrictSearch< double >;
+#endif
+#endif
+#endif
+#endif
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
       template class TreeWidthSearch< double >;
+#endif
+#endif
+#endif
+#endif
 
     } /* namespace gspan */
   }   /* namespace prm */

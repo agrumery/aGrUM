@@ -98,7 +98,9 @@ namespace gum {
 }   // namespace gum
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::prm::o3prm::O3NameSolver< double >;
+#endif
 
 
 // always include the implementation of the templates

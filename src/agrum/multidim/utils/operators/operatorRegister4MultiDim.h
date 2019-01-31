@@ -209,9 +209,6 @@ namespace gum {
      * function to combine them (the OperatorPtr).
      */
     HashTable< std::string, OperatorSet* > __set;
-
-    // patch for compiling with minw
-    static OperatorRegister4MultiDim<GUM_SCALAR>* P_instance_;
   };
 
   /// A function to more easily register new operators in MultiDims

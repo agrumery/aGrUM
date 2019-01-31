@@ -21,4 +21,6 @@
 #include <agrum/BN/io/cnf/ContextualDependenciesCNFWriter.h>
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::ContextualDependenciesCNFWriter< double >;
+#endif

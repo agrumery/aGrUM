@@ -70,8 +70,9 @@ namespace gum {
                      const Potential< GUM_SCALAR >& cpt) override;
   };
 
-
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class SimpleCPTGenerator< double >;
+#endif
 
 } /* namespace gum */
 

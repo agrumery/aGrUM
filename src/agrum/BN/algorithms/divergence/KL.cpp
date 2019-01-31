@@ -28,4 +28,6 @@
 #include <agrum/BN/algorithms/divergence/KL.h>
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::KL< double >;
+#endif

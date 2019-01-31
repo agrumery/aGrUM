@@ -30,7 +30,9 @@ namespace gum {
   namespace prm {
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
     template class SVE< double >;
+#endif
 
   } /* namespace prm */
 } /* namespace gum */

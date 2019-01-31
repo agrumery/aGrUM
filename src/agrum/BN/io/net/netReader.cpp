@@ -21,4 +21,6 @@
 #include <agrum/BN/io/net/netReader.h>
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::NetReader< double >;
+#endif

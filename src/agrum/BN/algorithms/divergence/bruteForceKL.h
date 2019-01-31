@@ -87,6 +87,7 @@ namespace gum {
     using KL< GUM_SCALAR >::_q;
     using KL< GUM_SCALAR >::_hellinger;
     using KL< GUM_SCALAR >::_bhattacharya;
+    using KL< GUM_SCALAR >::_jsd;
 
     using KL< GUM_SCALAR >::_klPQ;
     using KL< GUM_SCALAR >::_klQP;
@@ -95,8 +96,9 @@ namespace gum {
     using KL< GUM_SCALAR >::_errorQP;
   };
 
-
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class BruteForceKL< double >;
+#endif
 
 }   // namespace gum
 

@@ -89,8 +89,9 @@ namespace gum {
                         GUM_SCALAR               variation) override;
   };
 
-
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class SimpleCPTDisturber< double >;
+#endif
 
 } /* namespace gum */
 

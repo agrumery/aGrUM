@@ -668,7 +668,9 @@ namespace gum {
   std::ostream& operator<<(std::ostream& output, const BayesNet< GUM_SCALAR >& bn);
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class BayesNet< double >;
+#endif
 
 } /* namespace gum */
 

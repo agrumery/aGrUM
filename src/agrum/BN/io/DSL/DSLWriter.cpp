@@ -21,4 +21,6 @@
 #include <agrum/BN/io/DSL/DSLWriter.h>
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::DSLWriter< double >;
+#endif

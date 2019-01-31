@@ -489,8 +489,16 @@ namespace gum {
 } /* namespace gum */
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::MultiPriorityQueue< std::string >;
+#endif
+#endif
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::MultiPriorityQueue< int, int >;
+#endif
+#endif
 
 
 // always include the implementation of the templates

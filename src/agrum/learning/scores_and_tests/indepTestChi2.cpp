@@ -26,4 +26,6 @@
 
 #include <agrum/learning/scores_and_tests/indepTestChi2.h>
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::learning::IndepTestChi2<>;
+#endif

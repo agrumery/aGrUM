@@ -27,4 +27,6 @@
 
 #include <agrum/multidim/utils/FunctionGraphUtilities/operators/multiDimFunctionGraphOperator.h>
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::MultiDimFunctionGraphOperator< double, std::plus >;
+#endif

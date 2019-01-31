@@ -91,8 +91,9 @@ namespace gum {
   }; /* class SimpleBayesNetGenerator */
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class SimpleBayesNetGenerator< double >;
-
+#endif
 
 } /* namespace gum */
 

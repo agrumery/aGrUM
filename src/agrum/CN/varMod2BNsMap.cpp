@@ -27,4 +27,6 @@
 #include <agrum/CN/varMod2BNsMap.h>
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::credal::VarMod2BNsMap< double >;
+#endif

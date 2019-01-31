@@ -124,7 +124,9 @@ namespace gum {
   };
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class MultiDimNoisyORCompound< double >;
+#endif
 
   /// For friendly displaying the content of the array.
   template < typename GUM_SCALAR >

@@ -27,5 +27,13 @@
 #include <agrum/core/math/rational.h>
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::Rational< double >;
+#endif
+#endif
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::Rational< long double >;
+#endif
+#endif

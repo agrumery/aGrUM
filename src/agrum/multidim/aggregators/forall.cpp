@@ -27,4 +27,6 @@
 #include <agrum/multidim/aggregators/forall.h>
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::aggregator::Forall< double >;
+#endif

@@ -21,4 +21,6 @@
 #include <agrum/BN/inference/tools/estimator.h>
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::Estimator< double >;
+#endif

@@ -395,8 +395,16 @@ namespace gum {
   };
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   // extern template class MultiDimFunctionGraph<float>;
+#endif
+#endif
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   // extern template class MultiDimFunctionGraph<double>;
+#endif
+#endif
 }   // namespace gum
 
 #include <agrum/multidim/implementations/multiDimFunctionGraph_tpl.h>

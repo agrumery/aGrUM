@@ -27,4 +27,6 @@
 #include <agrum/core/binSearchTree.h>
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::BinSearchTree< int >;
+#endif

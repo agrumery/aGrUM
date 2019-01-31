@@ -27,4 +27,6 @@
 #include <agrum/CN/credalNet.h>
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::credal::CredalNet< double >;
+#endif

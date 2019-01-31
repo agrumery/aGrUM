@@ -59,7 +59,6 @@ namespace gum {
           unsigned long b, c;   // needed by superiorPow
           superiorPow(static_cast< unsigned long >(nVertices), b, c);
           Size nBits = Size(b);
-          Size newCard = Size(c);
           _sampleDef[node][pconf].resize(nBits);
         }
       }

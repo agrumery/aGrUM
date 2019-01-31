@@ -23,4 +23,6 @@
 #endif /* GUM_NO_INLINE */
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::MultiDimICIModel< double >;
+#endif

@@ -100,7 +100,9 @@ namespace gum {
     const GUM_SCALAR __neutral;
   };
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class MultiDimFunctionGraphProjector< double, std::plus >;
+#endif
 
 }   // namespace gum
 

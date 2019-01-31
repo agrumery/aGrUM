@@ -142,7 +142,9 @@ namespace gum {
     short int* __default;
   };
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class MultiDimFunctionGraphOperator< double, std::plus >;
+#endif
 
 }   // namespace gum
 

@@ -1933,8 +1933,16 @@ namespace gum {
 } /* namespace gum */
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::Bijection< int, int >;
+#endif
+#endif
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::Bijection< std::string, std::string >;
+#endif
+#endif
 
 
 // always include the template implementations

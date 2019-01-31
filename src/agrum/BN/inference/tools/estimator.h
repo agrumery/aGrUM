@@ -155,8 +155,10 @@ namespace gum {
     HashTable< std::string, Potential< GUM_SCALAR >* > __target_posteriors;
   };
 
-
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class Estimator< double >;
+#endif
+
 }   // namespace gum
 
 #include <agrum/BN/inference/tools/estimator_tpl.h>

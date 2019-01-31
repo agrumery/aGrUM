@@ -83,4 +83,27 @@ namespace gum {
     return false;
   }
 
+  UndiGraph DAG::moralGraph() const {
+    UndiGraph moralgraph;
+    moralgraph.populateNodes(*this);
+    // transform the arcs into edges
+    for (const auto arc : arcs())
+      moralgraph.addEdge(arc.first(), arc.second());
+
+    // marry the parents
+    for (const auto node : nodes()) {
+      const auto& par = parents(node);
+
+      for (auto it1 = par.begin(); it1 != par.end(); ++it1) {
+        auto it2 = it1;
+
+        for (++it2; it2 != par.end(); ++it2) {
+          // will automatically check if this edge already exists
+          moralgraph.addEdge(*it1, *it2);
+        }
+      }
+    }
+    return moralgraph;
+  }
+
 } /* namespace gum */

@@ -102,23 +102,23 @@ namespace gum {
   template < typename GUM_SCALAR >
   OperatorRegister4MultiDim< GUM_SCALAR >&
     OperatorRegister4MultiDim< GUM_SCALAR >::Register() {
-    if (P_instance_ == nullptr)
-      P_instance_ = new OperatorRegister4MultiDim<GUM_SCALAR>;
-
-#  ifdef GUM_DEBUG_MODE
+    static OperatorRegister4MultiDim< GUM_SCALAR >* container = nullptr;
     static bool first = true;
 
     if (first) {
       first = false;
+      container = new OperatorRegister4MultiDim< GUM_SCALAR >;
+
+#  ifdef GUM_DEBUG_MODE
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the OperatorRegister4MultiDim will be
       // removed at the end of the program's execution.
       __debug__::__inc_deletion(
-        "HashTable", __FILE__, __LINE__, "destructor of", (void*)P_instance_->__set);
-    }
+        "HashTable", __FILE__, __LINE__, "destructor of", (void*)&container.__set);
 #  endif /* GUM_DEBUG_MODE */
-
-    return *P_instance_;
+    }
+    
+    return *container;
   }
 
 

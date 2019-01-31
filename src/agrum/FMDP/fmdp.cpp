@@ -21,4 +21,6 @@
 #include <agrum/FMDP/fmdp.h>
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::FMDP< double >;
+#endif

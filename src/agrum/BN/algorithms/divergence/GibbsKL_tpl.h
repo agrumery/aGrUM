@@ -51,10 +51,10 @@ namespace gum {
       KL< GUM_SCALAR >(P, Q),
       ApproximationScheme(),
       GibbsOperator< GUM_SCALAR >(
-        P,
-        nullptr,
-        1 + (P.size() * GIBBSKL_POURCENT_DRAWN_SAMPLE / 100),
-        GIBBSKL_DRAWN_AT_RANDOM) {
+         P,
+         nullptr,
+         1 + (P.size() * GIBBSKL_POURCENT_DRAWN_SAMPLE / 100),
+         GIBBSKL_DRAWN_AT_RANDOM) {
     GUM_CONSTRUCTOR(GibbsKL);
 
     setEpsilon(GIBBSKL_DEFAULT_EPSILON);
@@ -72,10 +72,10 @@ namespace gum {
       // Gibbs operator with 10% of nodes changes at random between each samples
       ,
       GibbsOperator< GUM_SCALAR >(
-        kl.p(),
-        nullptr,
-        1 + (kl.p().size() * GIBBSKL_POURCENT_DRAWN_SAMPLE / 100),
-        true) {
+         kl.p(),
+         nullptr,
+         1 + (kl.p().size() * GIBBSKL_POURCENT_DRAWN_SAMPLE / 100),
+         true) {
     GUM_CONSTRUCTOR(GibbsKL);
 
     setEpsilon(GIBBSKL_DEFAULT_EPSILON);
@@ -111,13 +111,13 @@ namespace gum {
       I = this->nextSample(I);
 
     // SAMPLING
-    _klPQ = _klQP = _hellinger = (GUM_SCALAR)0.0;
+    _klPQ = _klQP = _hellinger = _jsd = (GUM_SCALAR)0.0;
     _errorPQ = _errorQP = 0;
     /// bool check_rate;
     GUM_SCALAR delta, ratio, error;
     delta = ratio = error = (GUM_SCALAR)-1;
     GUM_SCALAR oldPQ = 0.0;
-    GUM_SCALAR pp, pq;
+    GUM_SCALAR pp, pq, pmid;
 
     do {
       this->disableMinEpsilonRate();
@@ -129,6 +129,7 @@ namespace gum {
 
       pp = _p.jointProbability(I);
       pq = _q.jointProbability(Iq);
+      pmid = (pp + pq) / 2.0;
 
       if (pp != (GUM_SCALAR)0.0) {
         _hellinger += std::pow(std::sqrt(pp) - std::sqrt(pq), 2) / pp;
@@ -140,6 +141,9 @@ namespace gum {
           ratio = pq / pp;
           delta = (GUM_SCALAR)log2(ratio);
           _klPQ += delta;
+
+          // pmid!=0
+          _jsd -= log2(pp / pmid) + ratio * log2(pq / pmid);
         } else {
           _errorPQ++;
         }
@@ -166,8 +170,9 @@ namespace gum {
 
     _klPQ = -_klPQ / (nbrIterations());
     _klQP = -_klQP / (nbrIterations());
+    _jsd = -0.5 * _jsd / (nbrIterations());
     _hellinger = std::sqrt(_hellinger / nbrIterations());
-    _bhattacharya = -std::log(_bhattacharya);
+    _bhattacharya = -std::log(_bhattacharya / (nbrIterations()));
   }
 
   template < typename GUM_SCALAR >

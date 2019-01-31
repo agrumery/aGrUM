@@ -111,7 +111,9 @@ namespace gum {
 }   // namespace gum
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::ExactPolicy< double >;
+#endif
 
 
 // Always include inlined implementation of template class

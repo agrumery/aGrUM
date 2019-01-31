@@ -25,7 +25,7 @@ AlwaysBreakBeforeMultilineStrings: false
 AlwaysBreakTemplateDeclarations: true
 
 IndentWidth: 2
-ContinuationIndentWidth: 2
+ContinuationIndentWidth: 3
 UseTab: Never
 AccessModifierOffset: 0
 IndentCaseLabels: true

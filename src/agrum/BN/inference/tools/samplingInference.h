@@ -246,7 +246,10 @@ namespace gum {
   };
 
 
-  extern template class SamplingInference< double >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+ extern template class SamplingInference< double >;
+#endif
+
 }   // namespace gum
 
 #include <agrum/BN/inference/tools/samplingInference_tpl.h>

@@ -95,7 +95,10 @@ namespace gum {
   };
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class GibbsOperator< double >;
+#endif
+
 }   // namespace gum
 
 #include <agrum/BN/inference/tools/gibbsOperator_tpl.h>

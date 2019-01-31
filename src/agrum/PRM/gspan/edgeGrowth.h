@@ -102,7 +102,9 @@ namespace gum {
                                const EdgeGrowth< GUM_SCALAR >& edge);
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
       extern template class EdgeGrowth< double >;
+#endif
 
 
     } /* namespace gspan */

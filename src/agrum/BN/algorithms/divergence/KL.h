@@ -113,6 +113,10 @@ namespace gum {
     /// http://en.wikipedia.org/wiki/Bhattacharya_distance)
     double bhattacharya();
 
+    /// @return Jensen-Shannon divergence(@see
+    /// https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence)
+    double jsd();
+
     /// @return p
     const IBayesNet< GUM_SCALAR >& p() const;
 
@@ -133,6 +137,7 @@ namespace gum {
     GUM_SCALAR _klQP;
     GUM_SCALAR _hellinger;
     GUM_SCALAR _bhattacharya;
+    GUM_SCALAR _jsd;
 
     Size _errorPQ;
     Size _errorQP;
@@ -144,7 +149,9 @@ namespace gum {
   };
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class KL< double >;
+#endif
 
 }   // namespace gum
 

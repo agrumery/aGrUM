@@ -127,7 +127,7 @@ namespace gum {
   }
 
   // computes the probability of chi2 value (used by the cache)
-  double Chi2::__probaChi2(double x, Size df) {
+  double Chi2::probaChi2(double x, Size df) {
     double a, y = 0, s;
     double e, c, z;
     int    even; /* true if df is an even number */
@@ -187,7 +187,7 @@ namespace gum {
     chisqval = df / std::sqrt(proba); /* fair first value */
 
     while (maxchisq - minchisq > GUM_CHI_EPSILON) {
-      if (__probaChi2(chisqval, df) < proba)
+      if (probaChi2(chisqval, df) < proba)
         maxchisq = chisqval;
       else
         minchisq = chisqval;

@@ -221,7 +221,9 @@ namespace gum {
 #  include <agrum/PRM/o3prm/O3ClassFactory_tpl.h>
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::prm::o3prm::O3ClassFactory< double >;
+#endif
 
 
 #endif   // GUM_PRM_O3PRM_O3CLASS_FACTORY_H

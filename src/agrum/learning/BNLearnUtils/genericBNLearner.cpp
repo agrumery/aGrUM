@@ -31,6 +31,7 @@
 #include <agrum/agrum.h>
 #include <agrum/learning/BNLearnUtils/BNLearnerListener.h>
 #include <agrum/learning/BNLearnUtils/genericBNLearner.h>
+#include <agrum/learning/scores_and_tests/indepTestChi2.h>
 
 // include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
@@ -920,6 +921,31 @@ namespace gum {
       return std::pair< std::size_t, std::size_t >(unfold_deb, unfold_end);
     }
 
+
+    std::pair< double, double > genericBNLearner::chi2(
+      const NodeId id1, const NodeId id2, const std::vector< NodeId >& knowing) {
+      __createApriori();
+      DBRowGeneratorParser<> parser(__score_database.databaseTable().handler(),
+                                    DBRowGeneratorSet<>());
+      gum::learning::IndepTestChi2<> chi2score(
+        parser, *__apriori, databaseRanges());
+
+      return chi2score.statistics(id1, id2, knowing);
+    }
+
+    std::pair< double, double >
+      genericBNLearner::chi2(const std::string&                name1,
+                             const std::string&                name2,
+                             const std::vector< std::string >& knowing) {
+      std::vector< NodeId > knowingIds;
+      std::transform(knowing.begin(),
+                     knowing.end(),
+                     std::back_inserter(knowingIds),
+                     [this](const std::string& c) -> NodeId {
+                       return this->idFromName(c);
+                     });
+      return chi2(idFromName(name1), idFromName(name2), knowingIds);
+    }
 
   } /* namespace learning */
 

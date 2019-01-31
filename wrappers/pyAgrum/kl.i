@@ -8,6 +8,7 @@ PyObject* compute(void) {
   PyDict_SetItemString(q,"errorQP",PyInt_FromLong(self->errorQP()));
   PyDict_SetItemString(q,"hellinger",PyFloat_FromDouble(self->hellinger()));
   PyDict_SetItemString(q,"bhattacharya",PyFloat_FromDouble(self->bhattacharya()));
+  PyDict_SetItemString(q,"jensen-shannon",PyFloat_FromDouble(self->jsd()));
 
   return q;
 }
@@ -24,6 +25,7 @@ PyObject* compute(void) {
   PyDict_SetItemString(q,"errorQP",PyInt_FromLong(self->errorQP()));
   PyDict_SetItemString(q,"hellinger",PyFloat_FromDouble(self->hellinger()));
   PyDict_SetItemString(q,"bhattacharya",PyFloat_FromDouble(self->bhattacharya()));
+  PyDict_SetItemString(q,"jensen-shannon",PyFloat_FromDouble(self->jsd()));
 
   return q;
 }

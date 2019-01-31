@@ -319,7 +319,6 @@ namespace gum_tests {
     }
 
     void test_op_multidimArray4Pointers() {
-      GUM_CHECKPOINT;
       std::vector< gum::LabelizedVariable* > vars(10);
 
       for (gum::Idx i = 0; i < 10; ++i) {

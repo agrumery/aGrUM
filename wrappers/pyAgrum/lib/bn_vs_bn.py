@@ -24,300 +24,320 @@
 from __future__ import print_function
 
 import sys
-
 import os
+import math
+
 import pyAgrum as gum
 import pydotplus as dot
+from itertools import product
 
 from ._utils.pyAgrum_header import pyAgrum_header
 
 
-def parents_name(bn, n):
+class BNComparator:
   """
+  BNComparator allows to compare in multiple way 2 BNs...The smallest assumption is that the names of the variables
+  are the same in the 2 BNs.
+  But some comparisons will have also to check the type and domainSize of the variables. The bns have not exactly the
+  same role :
+  _bn1 is rather the referent model for the comparison whereas _bn2 is the compared one to the referent model
+
   Parameters
   ----------
-  bn : pyAgrum.BayesNet
-  	a Bayesian network
-  n :
-  	(str) the name of the node
-  n :
-	(int) the id of the node
-
-  Returns
-  -------
-  map
-  	a list of name of parents of node n
-
-  Raises
-  ------
-  gum.IndexError
-    If the node is not in the Bayesian network	
+  name1 : str or pyAgrum.BayesNet
+  	a BN or a filename for reference
+  name2 : str or pyAgrum.BayesNet
+  	another BN or antoher filename for comparison
   """
-  return map(lambda n: bn.variable(n).name(), bn.parents(nodeId(bn, n)))
-  return l
+
+  def __init__(self, name1, name2, delta=1e-6):
+    self.DELTA_ERROR = delta
+    if isinstance(name1, str):
+      self._bn1 = gum.loadBN(name1)
+      self._bn1.setProperty('name', '"' + os.path.basename(self._bn1.property('name') + '"'))
+    else:
+      self._bn1 = name1
+
+    if isinstance(name2, str):
+      self._bn2 = gum.loadBN(name2)
+      self._bn2.setProperty('name', '"' + os.path.basename(self._bn2.property('name') + '"'))
+    else:
+      self._bn2 = name2
+
+    s1 = set(self._bn1.names())
+    s2 = set(self._bn2.names())
+
+    if s1 != s2:
+      raise ValueError(
+          "The 2 BNs are not comparable! There are names not present in the 2 BNs : " + str(
+              s1.symmetric_difference(s2)))
+
+  def _compareBNVariables(self):
+    """
+    Returns
+    -------
+    str
+      'OK' if BN are composed of the same variables, indicates problematic variables otherwise
+  
+    """
+    # it is assumed (checked by the constructor) that _bn1 and _bn2 share the same set of variable names
+    for i in self._bn1.nodes():
+      v1 = self._bn1.variable(i)
+      v2 = self._bn2.variableFromName(v1.name())
+      if v2.domainSize() != v1.domainSize():
+        return v1.name() + " has not the same domain size in the two bns"
+
+    return "OK"
+
+  def _compareBNParents(self):
+    """
+    Returns
+    -------
+    str
+      'OK' if _bn2 have (at least) the same variable as b1 and their parents are the same.
+
+    """
+    for id1 in self._bn1.nodes():
+      id2 = self._bn2.idFromName(self._bn1.variable(id1).name())
+
+      p1 = _parents_name(self._bn1, id1)
+      p2 = _parents_name(self._bn2, id2)
+      if p1 != p2:
+        return self._bn1.variable(id1).name() + " has different parents in the two bns whose names are in " + str(
+            p1.symmetric_difference(p2))
+
+    return "OK"
+
+  def _comparePotentials(self, pot1, pot2):
+
+    """
+    Parameters
+    ----------
+    _bn1 : pyAgrum.BayesNet
+      a Bayesian network
+    pot1 : pyAgrum.Potential
+      one of b1's cpts
+    _bn2 : pyAgrum.BayesNet
+      another Bayesian network
+    pot2 : pyAgrum.Potential
+      one of _bn2's cpts
+
+    Returns
+    -------
+    str
+      'OK' if CPTs are the same
+
+    Raises
+    ------
+    gum.KeyError
+      If cpts are not from the same variable
+    """
+    I1 = gum.Instantiation(pot1)
+    I2 = gum.Instantiation(pot2)
+    I1.setFirst()
+    while not I1.end():
+      I2.fromdict(I1.todict())  # copy value on the base of names
+      if abs(pot1.get(I1) - pot2.get(I2)) > self.DELTA_ERROR:
+        return "Different CPTs for " + pot1.variable(0).name()
+      I1 += 1
+    return "OK"
+
+  def _compareBNCPT(self):
+    """
+    Returns
+    -------
+    str
+      'OK' if _bn2 have (at least) the same variable as b1 and their cpts are the same
+    """
+    for i in self._bn1.nodes():
+      res = self._comparePotentials(self._bn1.cpt(i), self._bn2.cpt(self._bn1.variable(i).name()))
+      if res != "OK":
+        return res
+    return "OK"
+
+  def equivalentBNs(self):
+    """
+    Parameters
+    ----------
+    name1 : str or pyAgrum.BayesNet
+      a BN or a filename
+    name2 : str or pyAgrum.BayesNet
+      another BN or antoher filename
+
+    Returns
+    -------
+    str
+      "OK" if bn are the same, a description of the error otherwise
+
+    """
+
+    ret = self._compareBNVariables()
+    if ret != "OK":
+      return ret
+
+    ret = self._compareBNParents()
+    if ret != "OK":
+      return ret
+
+    ret = self._compareBNCPT()
+    return ret
+
+  def dotDiff(self):
+    """ Return a pydotplus graph that compares the arcs of _bn1 (reference) with those of self._bn2.
+    full black line: the arc is common for both
+    full red line: the arc is common but inverted in _bn2
+    dotted black line: the arc is added in _bn2
+    dotted red line: the arc is removed in _bn2
+        
+    @author : Mélanie Munch
+
+    Returns
+    -------
+    pydotplus.Dot
+      the result dot graph
+    """
+    graph = dot.Dot(graph_type='digraph', bgcolor="transparent")
+
+    # Nodes
+    for n in self._bn1.names():
+      node = dot.Node('"' + n + '"', style="filled",
+                      bgcol="#444444",
+                      fgcol="#FFFFFF",
+                      tooltip='"({0}) {1}{2}"'.format(self._bn1.idFromName(n), n, ""))
+      graph.add_node(node)
+
+    # Arcs
+    for n1 in self._bn2.names():
+      for n2 in self._bn2.names():
+        id1in2 = self._bn2.idFromName(n1)
+        id2in2 = self._bn2.idFromName(n2)
+        id1in1 = self._bn1.idFromName(n1)
+        id2in1 = self._bn1.idFromName(n2)
+
+        if self._bn1.dag().existsArc(id1in1, id2in1):
+          if self._bn2.dag().existsArc(id1in2, id2in2):
+            # If present in both
+            edge = dot.Edge('"' + n1 + '"', '"' + n2 + '"')
+            graph.add_edge(edge)
+          elif self._bn2.dag().existsArc(id2in2, id1in2):
+            # If inversed in _bn2
+            edge = dot.Edge('"' + n2 + '"', '"' + n1 + '"')
+            edge.set_color("red")
+            graph.add_edge(edge)
+          else:
+            # If removed from _bn2
+            edge = dot.Edge('"' + n1 + '"', '"' + n2 + '"', style='dashed')
+            edge.set_color("red")
+            graph.add_edge(edge)
+        else:
+          if not self._bn1.dag().existsArc(id2in1, id1in1) and self._bn2.dag().existsArc(id1in2, id2in2):
+            # If added to _bn2
+            edge = dot.Edge('"' + n1 + '"', '"' + n2 + '"', style='dashed')
+            graph.add_edge(edge)
+
+    return graph
+
+  def scores(self):
+    """
+    Compute Precision, Recall, F-score for self._bn2 compared to self._bn1
+
+    precision and recall are computed considering BN1 as the reference
+
+    $Fscore=\frac{2\cdot recall\cdot precision}{recall+precision}$ and is the weighted average of Precision and Recall.
+
+    $dist2opt=\sqrt{(1-precision)^2+(1-recall)^2}$ and represents the euclidian distance to the ideal(precision=1,
+    recall=1)
+
+    @author : Mélanie Munch
+
+    Returns
+    -------
+      dict[str,double]
+      A dictionnary containing 'precision', 'recall', 'fscore', 'dist2opt' and so on.
+    """
+    # t: True, f: False, p: Positive, n: Negative
+    count = {"tp": 0, "tn": 0, "fp": 0, "fn": 0}
+
+    # We look at all combination
+    listVariables = self._bn1.names()
+    for head, tail in product(listVariables, listVariables):
+      if head != tail:
+        idHead_1 = self._bn1.idFromName(head)
+        idTail_1 = self._bn1.idFromName(tail)
+
+        idHead_2 = self._bn2.idFromName(head)
+        idTail_2 = self._bn2.idFromName(tail)
+
+        if self._bn1.dag().existsArc(idHead_1, idTail_1):  # Check arcs head->tail
+          if self._bn2.dag().existsArc(idHead_2, idTail_2):  # if arc: Good Direction
+            count["tp"] += 1
+          elif self._bn2.dag().existsArc(idTail_2, idHead_2):  # If arc: Bad Direction
+            count["fn"] += 1
+          else:  # If no arc:
+            count["fn"] += 1
+        elif self._bn1.dag().existsArc(idTail_1, idHead_1):  # Check arcs n2->n1
+          if self._bn2.dag().existsArc(idHead_2, idTail_2):  # if arc: Bad Direction
+            count["fn"] += 1
+          elif self._bn2.dag().existsArc(idTail_2, idHead_2):  # If arc: Good Direction
+            count["tp"] += 1
+          else:  # If no arc:
+            count["fn"] += 1
+        else:  # Check if no arc
+          if self._bn2.dag().existsArc(idHead_2, idTail_2) or self._bn2.dag().existsArc(idTail_2, idHead_2):  # If arc
+            count["fp"] += 1
+          else:  # If no arc
+            count["tn"] += 1
+
+    # Compute the scores
+    if count["tp"] + count["fn"] != 0:
+      recall = (1.0 * count["tp"]) / (count["tp"] + count["fn"])
+    else:
+      recall = 0.0
+
+    if count["tp"] + count["fp"] != 0:
+      precision = (1.0 * count["tp"]) / (count["tp"] + count["fp"])
+    else:
+      precision = 0.0
+
+    if precision + recall != 0.0:
+      Fscore = (2 * recall * precision) / (recall + precision)
+    else:
+      Fscore = 0.0
+
+    return {
+      'count'    : count,
+      'recall'   : recall,
+      'precision': precision,
+      'fscore'   : Fscore,
+      'dist2opt' : math.sqrt((1 - precision) ** 2 + (1 - recall) ** 2)
+    }
 
 
-def nodeId(bn, n):
-  """
-  Parameters
-  ----------
-  bn : pyAgrum.BayesNet
-  	a Bayesian network
-  n : str
-  	the name of the node
-
-  Returns
-  -------
-  int
-  	the id of the node
-
-  Raises
-  ------
-  gum.IndexError
-    If the node is not in the Bayesian network	
-  """
+def _nodeId(bn, n):
   if type(n) == str:
     return bn.idFromName(n)
   else:
     return n
 
 
-DELTA_ERROR = 1e-6
-
-
-def compareBNVariables(b1, b2):
-  """
-  Parameters
-  ----------
-  bn1 : pyAgrum.BayesNet
-  	a Bayesian network
-  bn2 : pyAgrum.BayesNet
-  	another Bayesian network
-
-  Returns
-  -------
-  str
-  	'OK' if BN are composed of the same variables, indicates a non-existing variable otherwise
-
-  """
-  for i in range(b1.size()):
-    try:
-      v1 = b1.variable(i)
-      v2 = b2.variable(b2.idFromName(v1.name()))
-      if (v2.domainSize() != v1.domainSize()):
-        return v1.name() + " has not the same domain size in the two bns"
-    except IndexError:
-      return b1.variable(i).name() + " does not exist in " + b2.property('name')
-
-    for i in range(b2.size()):
-      try:
-        v2 = b2.variable(i)
-        v1 = b1.variable(b1.idFromName(v2.name()))
-        if (v2.domainSize() != v1.domainSize()):
-          return v2.name() + " has not the same domain size in the two bns"
-      except IndexError:
-        return b2.variable(i).name() + " does not exist in " + b1.property('name')
-
-  return "OK"
-
-
-def compareBNParents(b1, b2):
-  """
-  Parameters
-  ----------
-  b1 : pyAgrum.BayesNet
-  	a Bayesian network
-  b2 : pyAgrum.BayesNet
-  	another Bayesian network
-
-  Returns
-  -------
-  str
-  	'OK' if b2 have (at least) the same variable as b1 and their parents are the same.
-
-  """
-  for i in range(b1.size()):
-    id1 = i
-    id2 = b2.idFromName(b1.variable(id1).name())
-
-    if not set(parents_name(b1, id1)) == set(parents_name(b2, id2)):
-      return b1.variable(id1).name() + " has not the same parents in the two bns"
-
-  return "OK"
-
-
-def compareCPT(b1, cpt1, b2, cpt2):
-  """
-  Parameters
-  ----------
-  b1 : pyAgrum.BayesNet
-  	a Bayesian network
-  cpt1 : pyAgrum.Potential
-  	one of b1's cpts
-  b2 : pyAgrum.BayesNet
-  	another Bayesian network
-  cpt2 : pyAgrum.Potential
-  	one of b2's cpts
-
-  Returns
-  -------
-  str
-  	'OK' if CPTs are the same
-
-  Raises
-  ------
-  gum.KeyError
-    If cpts are not from the same variable
-  """
-
-  dico2 = {}
-  for i in range(cpt2.nbrDim()):
-    dico2[cpt2.variable(i).name()] = i
-
-  I1 = gum.Instantiation(cpt1)
-  I2 = gum.Instantiation(cpt2)
-  I1.setFirst()
-  while not I1.end():
-    for i in range(I1.nbrDim()):
-      I2.chgVal(dico2[I1.variable(i).name()], I1.val(i))
-
-    if abs(cpt1.get(I1) - cpt2.get(I2)) > DELTA_ERROR:
-      return "For " + cpt1.variable(0).name() + ", cpt[" + str(I1) + "] (=" + str(cpt1.get(I1)) + ", in " + b1.property(
-          'name') + ") !=cpt2[" + str(I2) + "] (=" + str(cpt2.get(I2)) + ", in " + b2.property('name') + ")"
-    I1 += 1
-  return "OK"
-
-
-def compareBNCPT(b1, b2):
-  """
-  Parameters
-  ----------
-  b1 : pyAgrum.BayesNet
-  	a Bayesian network
-  b2 : pyAgrum.BayesNet
-  	another Bayesian network
-
-  Returns
-  -------
-  str
-  	'OK' if b2 have (at least) the same variable as b1 and their cpts are the same
-  """
-  for i in range(b1.size()):
-    res = compareCPT(b1, b1.cpt(i), b2, b2.cpt(b2.idFromName(b1.variable(i).name())))
-    if res != "OK":
-      return res
-  return "OK"
-
-
-def compareBN(name1, name2):
-  """
-  Parameters
-  ----------
-  name1 : str
-  	a BN filename
-  name2 : str
-  	another BN filename
-
-  Returns
-  -------
-  str
-  	"OK" if bn are the same, a description of the error otherwise
-
-  """
-  if isinstance(name1, str):
-    b1 = gum.loadBN(name1)
-    b1.setProperty('name', '"' + os.path.basename(b1.property('name') + '"'))
-  else:
-    b1 = name1
-
-  if isinstance(name2, str):
-    b2 = gum.loadBN(name2)
-    b2.setProperty('name', '"' + os.path.basename(b2.property('name') + '"'))
-  else:
-    b2 = name2
-
-  ret = compareBNVariables(b1, b2)
-  if ret != "OK":
-    return ret
-
-  ret = compareBNParents(b1, b2)
-  if ret != "OK":
-    return ret
-
-  ret = compareBNCPT(b1, b2)
-  return ret
-
-
-def graphicalBNDiff(bn1, bn2):
-  """ Return a pydotplus graph that compares the arcs of bn1 (reference) with those of bn2.
-  full black line: the arc is common for both
-  full red line: the arc is common but inverted in bn2
-  dotted black line: the arc is added in bn2
-  dotted red line: the arc is removed in bn2
-
-  :param BayesNet bn1: referent model for the comparison
-  :param BayesNet bn2: bn compared to the referent model
-  :return: the result dot graph
-  """
-
-  if set([i for i in bn1.names()]) == set([i for i in bn2.names()]):
-
-    graph = dot.Dot(graph_type='digraph', bgcolor="transparent")
-
-    # Nodes
-    for n in bn1.names():
-      node = dot.Node('"' + n + '"', style="filled",
-                      bgcol="#444444",
-                      fgcol="#FFFFFF",
-                      tooltip='"({0}) {1}{2}"'.format(bn1.idFromName(n), n, ""))
-      graph.add_node(node)
-
-    # Arcs
-    for n1 in bn2.names():
-      for n2 in bn2.names():
-        id1 = bn2.idFromName(n1)
-        id2 = bn2.idFromName(n2)
-        ID1 = bn1.idFromName(n1)
-        ID2 = bn1.idFromName(n2)
-
-        if bn1.dag().existsArc(ID1, ID2) and bn2.dag().existsArc(id1, id2):
-          # If present in both
-          edge = dot.Edge('"' + n1 + '"', '"' + n2 + '"')
-          graph.add_edge(edge)
-        elif bn1.dag().existsArc(ID1, ID2) and bn2.dag().existsArc(id2, id1):
-          # If inversed in bn2
-          edge = dot.Edge('"' + n2 + '"', '"' + n1 + '"')
-          edge.set_color("red")
-          graph.add_edge(edge)
-        elif bn1.dag().existsArc(ID1, ID2):
-          # If removed from bn2
-          edge = dot.Edge('"' + n1 + '"', '"' + n2 + '"', style='dashed')
-          edge.set_color("red")
-          graph.add_edge(edge)
-        elif not bn1.dag().existsArc(ID1, ID2) and not bn1.dag().existsArc(ID2, ID1) and bn2.dag().existsArc(id1,
-                                                                                                             id2):
-          # If added to bn2
-          edge = dot.Edge('"' + n1 + '"', '"' + n2 + '"', style='dashed')
-          graph.add_edge(edge)
-
-  else:
-    raise ValueError('Not the same variables in the BNs')
-
-  return (graph)
+def _parents_name(bn, n):
+  return {bn.variable(n).name() for n in bn.parents(_nodeId(bn, n))}
 
 
 def module_help(exit_value=1):
   """
   defines help viewed if args are not OK on command line, and exit with exit_value
   """
-  print(os.path.basename(sys.argv[0]), "bn1.{" + gum.availableBNExts() + "} bn2.{" + gum.availableBNExts() + "}")
+  print(os.path.basename(sys.argv[0]),
+        "_bn1.{" + gum.availableBNExts() + "} self._bn2.{" + gum.availableBNExts() + "}")
   sys.exit(exit_value)
 
 
 if __name__ == "__main__":
-  pyAgrum_header("2011-17")
+  pyAgrum_header("2011-19")
 
   if len(sys.argv) != 3:
     module_help()
 
-  print(compareBN(sys.argv[1], sys.argv[2]))
+  cmp = BNComparator(sys.argv[1], sys.argv[2])
+  print(cmp.equivalentBNs())

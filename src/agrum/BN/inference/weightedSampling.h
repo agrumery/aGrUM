@@ -77,7 +77,9 @@ namespace gum {
   };
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class WeightedSampling< double >;
+#endif
 }   // namespace gum
 
 #include <agrum/BN/inference/weightedSampling_tpl.h>

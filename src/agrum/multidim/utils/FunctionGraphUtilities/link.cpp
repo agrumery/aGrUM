@@ -29,6 +29,8 @@
 
 namespace gum {
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   template class Link< Idx >;
+#endif
 
 }   // namespace gum

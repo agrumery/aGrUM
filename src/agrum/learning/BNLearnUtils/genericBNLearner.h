@@ -97,7 +97,7 @@ namespace gum {
      * @brief A pack of learning algorithms that can easily be used
      *
      * The pack currently contains K2, GreedyHillClimbing and
-     * LocalSearchWithTabuList
+     * LocalSearchWithTabuList also 3off2/miic
      * @ingroup learning_group
      */
     class genericBNLearner : public gum::IApproximationSchemeConfiguration {
@@ -411,6 +411,29 @@ namespace gum {
       std::pair< std::size_t, std::size_t >
         useCrossValidationFold(const std::size_t learning_fold,
                                const std::size_t k_fold);
+
+
+      /**
+       * Return the <statistic,pvalue> pair for the BNLearner
+       * @param id1 first variable
+       * @param id2 second variable
+       * @param knowing list of observed variables
+       * @return a std::pair<double,double>
+       */
+      std::pair< double, double > chi2(const NodeId                 id1,
+                                       const NodeId                 id2,
+                                       const std::vector< NodeId >& knowing = {});
+      /**
+       * Return the <statistic,pvalue> pair for the BNLearner
+       * @param id1 first variable
+       * @param id2 second variable
+       * @param knowing list of observed variables
+       * @return a std::pair<double,double>
+       */
+      std::pair< double, double >
+        chi2(const std::string&                name1,
+             const std::string&                name2,
+             const std::vector< std::string >& knowing = {});
 
       /** use The EM algorithm to learn paramters
        *

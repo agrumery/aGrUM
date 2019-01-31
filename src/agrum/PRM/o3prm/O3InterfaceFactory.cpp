@@ -29,4 +29,6 @@
 #include <agrum/PRM/o3prm/O3InterfaceFactory.h>
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::prm::o3prm::O3InterfaceFactory< double >;
+#endif

@@ -69,7 +69,7 @@ namespace gum {
       else {
         name = node.substr(0, posBrack);
         ds = static_cast< Size >(
-          std::stoi(node.substr(posBrack + 1, node.size() - posBrack - 2)));
+           std::stoi(node.substr(posBrack + 1, node.size() - posBrack - 2)));
       }
     }
 
@@ -112,8 +112,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   BayesNet< GUM_SCALAR >
-    BayesNet< GUM_SCALAR >::fastPrototype(const std::string& dotlike,
-                                          Size               domainSize) {
+     BayesNet< GUM_SCALAR >::fastPrototype(const std::string& dotlike,
+                                           Size               domainSize) {
     gum::BayesNet< GUM_SCALAR > bn;
 
 
@@ -140,6 +140,7 @@ namespace gum {
       }
     }
     bn.generateCPTs();
+    bn.setProperty("name", dotlike);
     return bn;
   }
 
@@ -192,19 +193,19 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void
-    BayesNet< GUM_SCALAR >::changeVariableName(NodeId             id,
-                                               const std::string& new_name) {
+     BayesNet< GUM_SCALAR >::changeVariableName(NodeId             id,
+                                                const std::string& new_name) {
     __varMap.changeName(id, new_name);
   }
 
   template < typename GUM_SCALAR >
   INLINE void BayesNet< GUM_SCALAR >::changeVariableLabel(
-    NodeId id, const std::string& old_label, const std::string& new_label) {
+     NodeId id, const std::string& old_label, const std::string& new_label) {
     if (variable(id).varType() != VarType::Labelized) {
       GUM_ERROR(NotFound, "Variable " << id << " is not a LabelizedVariable.");
     }
     LabelizedVariable* var = dynamic_cast< LabelizedVariable* >(
-      const_cast< DiscreteVariable* >(&variable(id)));
+       const_cast< DiscreteVariable* >(&variable(id)));
 
     var->changeLabel(var->posLabel(old_label), new_label);
   }
@@ -246,7 +247,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE NodeId BayesNet< GUM_SCALAR >::add(
-    const DiscreteVariable& var, MultiDimImplementation< GUM_SCALAR >* aContent) {
+     const DiscreteVariable& var, MultiDimImplementation< GUM_SCALAR >* aContent) {
     NodeId proposedId = dag().nextNodeId();
     NodeId res = 0;
 
@@ -274,9 +275,9 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   NodeId
-    BayesNet< GUM_SCALAR >::add(const DiscreteVariable&               var,
-                                MultiDimImplementation< GUM_SCALAR >* aContent,
-                                NodeId                                id) {
+     BayesNet< GUM_SCALAR >::add(const DiscreteVariable&               var,
+                                 MultiDimImplementation< GUM_SCALAR >* aContent,
+                                 NodeId                                id) {
     __varMap.insert(id, var);
     this->_dag.addNodeWithId(id);
 
@@ -493,7 +494,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE NodeId BayesNet< GUM_SCALAR >::addNoisyORCompound(
-    const DiscreteVariable& var, GUM_SCALAR external_weight) {
+     const DiscreteVariable& var, GUM_SCALAR external_weight) {
     return add(var, new MultiDimNoisyORCompound< GUM_SCALAR >(external_weight));
   }
 
@@ -538,9 +539,9 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE NodeId BayesNet< GUM_SCALAR >::addNoisyORCompound(
-    const DiscreteVariable& var, GUM_SCALAR external_weight, NodeId id) {
+     const DiscreteVariable& var, GUM_SCALAR external_weight, NodeId id) {
     return add(
-      var, new MultiDimNoisyORCompound< GUM_SCALAR >(external_weight), id);
+       var, new MultiDimNoisyORCompound< GUM_SCALAR >(external_weight), id);
   }
 
   template < typename GUM_SCALAR >
@@ -555,7 +556,7 @@ namespace gum {
                                               NodeId     head,
                                               GUM_SCALAR causalWeight) {
     auto* CImodel =
-      dynamic_cast< const MultiDimICIModel< GUM_SCALAR >* >(cpt(head).content());
+       dynamic_cast< const MultiDimICIModel< GUM_SCALAR >* >(cpt(head).content());
 
     if (CImodel != 0) {
       // or is OK
@@ -604,7 +605,7 @@ namespace gum {
   /// copy of potentials from a BN to another, using names of vars as ref.
   template < typename GUM_SCALAR >
   void BayesNet< GUM_SCALAR >::__copyPotentials(
-    const BayesNet< GUM_SCALAR >& source) {
+     const BayesNet< GUM_SCALAR >& source) {
     // Copying potentials
 
     for (const auto src : source.__probaMap) {
@@ -641,14 +642,14 @@ namespace gum {
       GUM_ERROR(OperationNotAllowed,
                 "cannot exchange potentials with different "
                 "dimensions for variable with id "
-                  << id);
+                   << id);
     }
 
     for (Idx i = 0; i < cpt(id).nbrDim(); i++) {
       if (&cpt(id).variable(i) != &(newPot->variable(i))) {
         GUM_ERROR(OperationNotAllowed,
                   "cannot exchange potentials because, for variable with id "
-                    << id << ", dimension " << i << " differs. ");
+                     << id << ", dimension " << i << " differs. ");
       }
     }
 
@@ -657,7 +658,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void BayesNet< GUM_SCALAR >::_unsafeChangePotential(
-    NodeId id, Potential< GUM_SCALAR >* newPot) {
+     NodeId id, Potential< GUM_SCALAR >* newPot) {
     delete __probaMap[id];
     __probaMap[id] = newPot;
   }

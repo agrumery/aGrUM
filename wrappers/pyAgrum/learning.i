@@ -9,8 +9,13 @@
 %ignore gum::learning::BNLearner::eraseForbiddenArc(const gum::Arc& arc);
 %ignore gum::learning::BNLearner::eraseMandatoryArc(const gum::Arc& arc);
 %ignore gum::learning::BNLearner::learnParameters(const gum::DAG& dag);
+%ignore gum::learning::BNLearner::learnParameters(const gum::DAG& dag);
 
 %extend gum::learning::BNLearner< double > {
+  PyObject *chi2(const std::string& var1,const std::string& var2,const std::vector<std::string>& knw={}) {
+    std::pair<double,double> res=$self->chi2(var1,var2,knw);
+    return Py_BuildValue("(dd)",res.first,res.second);
+  }
 
   void setSliceOrder(PyObject * l) {
     gum::NodeProperty< gum::Size > ranks;

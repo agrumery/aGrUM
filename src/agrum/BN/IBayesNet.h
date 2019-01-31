@@ -241,7 +241,9 @@ namespace gum {
   };
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class IBayesNet< double >;
+#endif
 
 
   /// Prints map's DAG in output using the Graphviz-dot format.

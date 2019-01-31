@@ -27,4 +27,6 @@
 #include <agrum/CN/inferenceEngine.h>
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::credal::InferenceEngine< double >;
+#endif

@@ -100,5 +100,13 @@ namespace gum {
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::Bijection< int, int >;
+#endif
+#endif
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::Bijection< std::string, std::string >;
+#endif
+#endif

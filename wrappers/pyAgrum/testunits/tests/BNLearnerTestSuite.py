@@ -250,6 +250,49 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     learner.useAprioriSmoothing()
     learner.learnParameters(dag, False)
 
+  def test_chi2(self):
+    learner=gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/asia3.csv'))
+
+    stat,pvalue = learner.chi2("smoking?", "lung_cancer?")
+    self.assertAlmostEqual(stat, 36.2256, delta=1e-4)
+    self.assertAlmostEqual(pvalue, 0, delta=1e-4)
+
+    stat,pvalue= learner.chi2("smoking?", "visit_to_Asia?")
+    self.assertAlmostEqual(stat, 1.1257, delta=1e-4)
+    self.assertAlmostEqual(pvalue, 0.2886, delta=1e-4)
+
+    stat,pvalue= learner.chi2("lung_cancer?", "tuberculosis?")
+    self.assertAlmostEqual(stat, 0.6297, delta=1e-4)
+    self.assertAlmostEqual(pvalue, 0.4274, delta=1e-4)
+
+    stat,pvalue =learner.chi2("lung_cancer?", "tuberculosis?", ["tuberculos_or_cancer?"])
+    self.assertAlmostEqual(stat, 58.0, delta=1e-4)
+    self.assertAlmostEqual(pvalue, 0.0, delta=1e-4)
+
+    learner2=gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/chi2.csv'))
+
+    stat,pvalue = learner2.chi2("A", "C")
+    self.assertAlmostEqual(stat, 0.0007, delta=1e-3)
+    self.assertAlmostEqual(pvalue, 0.978, delta=1e-3)
+
+    stat,pvalue = learner2.chi2("A", "B")
+    self.assertAlmostEqual(stat, 21.4348, delta=1e-3)
+    self.assertAlmostEqual(pvalue, 3.6e-6, delta=1e-5)
+
+    stat,pvalue = learner2.chi2("B", "A")
+    self.assertAlmostEqual(stat, 21.4348, delta=1e-3)
+    self.assertAlmostEqual(pvalue, 3.6e-6,delta= 1e-5)
+
+    stat,pvalue = learner2.chi2("B", "D")
+    self.assertAlmostEqual(stat, 0.903, delta=1e-3)
+    self.assertAlmostEqual(pvalue, 0.341, delta=1e-3)
+
+    stat,pvalue = learner2.chi2("A", "C", ["B"])
+    self.assertAlmostEqual(stat, 15.2205, delta=1e-3)
+    self.assertAlmostEqual(pvalue, 0.0005, delta=1e-4)
+
+
+
 
 ts = unittest.TestSuite()
 addTests(ts, BNLearnerCSVTestCase)

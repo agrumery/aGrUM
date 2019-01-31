@@ -27,4 +27,6 @@
 
 #include <agrum/multidim/utils/FunctionGraphUtilities/operators/multiDimFunctionGraphProjector.h>
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::MultiDimFunctionGraphProjector< double, std::plus >;
+#endif

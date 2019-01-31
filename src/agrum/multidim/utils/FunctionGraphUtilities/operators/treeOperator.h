@@ -109,7 +109,9 @@ namespace gum {
     NodeId                                    __curDT1Leaf;
   };
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class TreeOperator< double, std::plus >;
+#endif
 
 }   // namespace gum
 

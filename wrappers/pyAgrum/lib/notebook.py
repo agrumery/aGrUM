@@ -37,7 +37,7 @@ from IPython.core.pylabtools import print_figure
 from IPython.display import display, HTML, SVG
 from matplotlib.backends.backend_agg import FigureCanvasAgg as fc
 from pyAgrum.lib.bn2graph import BN2dot, proba2histo, BNinference2dot, _proba2bgcolor
-from pyAgrum.lib.bn_vs_bn import graphicalBNDiff
+from pyAgrum.lib.bn_vs_bn import BNComparator
 
 _cdict = {
   'red'  : ((0.0, 0.1, 0.3),
@@ -150,35 +150,37 @@ def getDot(dotstring, size="4", format="png"):
 
 
 def getBNDiff(bn1, bn2, size="4", format="png"):
-  """ get a HTML string representation of a graphical diff between the arcs of bn1 (reference) with those of bn2.
+  """ get a HTML string representation of a graphical diff between the arcs of _bn1 (reference) with those of _bn2.
 
   * full black line: the arc is common for both
-  * full red line: the arc is common but inverted in bn2
-  * dotted black line: the arc is added in bn2
-  * dotted red line: the arc is removed in bn2
+  * full red line: the arc is common but inverted in _bn2
+  * dotted black line: the arc is added in _bn2
+  * dotted red line: the arc is removed in _bn2
 
   :param BayesNet bn1: referent model for the comparison
   :param BayesNet bn2: bn compared to the referent model
   :param size: size of the rendered graph
   :param format: render as "png" or "svg"
   """
-  return getGraph(graphicalBNDiff(bn1, bn2), size, format)
+  cmp = BNComparator(bn1, bn2)
+  return getGraph(cmp.dotDiff(), size, format)
 
 
 def showBNDiff(bn1, bn2, size="4", format="png"):
-  """ show a graphical diff between the arcs of bn1 (reference) with those of bn2.
+  """ show a graphical diff between the arcs of _bn1 (reference) with those of _bn2.
 
   * full black line: the arc is common for both
-  * full red line: the arc is common but inverted in bn2
-  * dotted black line: the arc is added in bn2
-  * dotted red line: the arc is removed in bn2
+  * full red line: the arc is common but inverted in _bn2
+  * dotted black line: the arc is added in _bn2
+  * dotted red line: the arc is removed in _bn2
 
   :param BayesNet bn1: referent model for the comparison
   :param BayesNet bn2: bn compared to the referent model
   :param size: size of the rendered graph
   :param format: render as "png" or "svg"
   """
-  showGraph(graphicalBNDiff(bn1, bn2), size, format)
+  cmp = BNComparator(bn1, bn2)
+  showGraph(cmp.dotDiff(), size, format)
 
 
 def showJunctionTree(bn, withNames=True, size="4", format="png"):
@@ -191,7 +193,7 @@ def showJunctionTree(bn, withNames=True, size="4", format="png"):
   :param format: render as "png" or "svg"
   :return: the representation of the graph
   """
-  jtg = gum.JTGenerator()
+  jtg = gum.JunctionTreeGenerator()
   jt = jtg.junctionTree(bn)
   if withNames:
     return showDot(jt.toDotWithNames(bn), size, format)
@@ -209,7 +211,7 @@ def getJunctionTree(bn, withNames=True, size="4", format="png"):
   :param format: render as "png" or "svg"
   :return: the HTML representation of the graph
   """
-  jtg = gum.JTGenerator()
+  jtg = gum.JunctionTreeGenerator()
   jt = jtg.junctionTree(bn)
   if withNames:
     return getDot(jt.toDotWithNames(bn), size, format)
@@ -712,9 +714,13 @@ def getSideBySide(*args, **kwargs):
     else:
       return str(s)
 
-  s += '<tr><td style="border-top:hidden;border-bottom:hidden;' + v_align + '"><div align="center" style="' + v_align + '">'
-  s += ('</div></td><td style="border-top:hidden;border-bottom:hidden;' + v_align + '"><div align="center" style="' + v_align + '">').join([reprHTML(arg)
-                                                                                                   for arg in args])
+  s += '<tr><td style="border-top:hidden;border-bottom:hidden;' + v_align + '"><div align="center" style="' + v_align \
+       + '">'
+  s += (
+      '</div></td><td style="border-top:hidden;border-bottom:hidden;' + v_align + '"><div align="center" style="' +
+      v_align + '">').join(
+      [reprHTML(arg)
+       for arg in args])
   s += '</div></td></tr>'
 
   if captions is not None:

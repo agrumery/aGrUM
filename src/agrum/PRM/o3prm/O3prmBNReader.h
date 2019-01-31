@@ -121,7 +121,9 @@ namespace gum {
 #include <agrum/PRM/o3prm/O3prmBNReader_tpl.h>
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::O3prmBNReader< double >;
+#endif
 
 
 #endif   // GUM_PRM_O3PRM_BNREADER_H

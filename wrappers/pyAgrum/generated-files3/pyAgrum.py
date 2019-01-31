@@ -206,13 +206,13 @@ _pyAgrum.SwigPyIterator_swigregister(SwigPyIterator)
 
 import numpy
 
-class JTGenerator(object):
+class JunctionTreeGenerator(object):
     r"""
 
-    JTGenerator is use to generate junction tree or binary junction tree from bayesian networks.
+    JunctionTreeGenerator is use to generate junction tree or binary junction tree from bayesian networks.
 
     Available constructors:
-    	``JTGenerator() -> JTGenerator``
+    	``JunctionTreeGenerator() -> JunctionTreeGenerator``
 
     """
 
@@ -221,61 +221,121 @@ class JTGenerator(object):
 
     def junctionTree(self, *args) -> "gum::JunctionTree":
         r"""
-        junctionTree(JTGenerator self, UndiGraph g) -> CliqueGraph
-        junctionTree(JTGenerator self, BayesNet bn) -> CliqueGraph
+        junctionTree(JunctionTreeGenerator self, UndiGraph g, PyObject * partial_order=None) -> CliqueGraph
+        junctionTree(JunctionTreeGenerator self, UndiGraph g) -> CliqueGraph
+        junctionTree(JunctionTreeGenerator self, DAG dag, PyObject * partial_order=None) -> CliqueGraph
+        junctionTree(JunctionTreeGenerator self, DAG dag) -> CliqueGraph
+        junctionTree(JunctionTreeGenerator self, BayesNet bn, PyObject * partial_order=None) -> CliqueGraph
+        junctionTree(JunctionTreeGenerator self, BayesNet bn) -> CliqueGraph
+
+        Computes the junction tree for its parameters. If the first parameter is a graph, the heurisitcs assume that all the node have the same domain size (2). If given, the heuristic takes into account the partial order for its elimination order.
 
         Parameters
         ----------
         g : pyAgrum.UndiGraph
-        	an Undirected graph
-        bn : pyAgrum.BayesNet
-        	a Bayesian network
+        	a undirected graph
+
+        dag : pyAgrum::DAG
+        	a dag
+
+        bn : pyAgrum::BayesNet
+        	a BayesianNetwork
+
+        partial_order: List[List[int]]
+        	a partial order among the nodeIDs
 
         Returns
         -------
         pyAgrum.CliqueGraph
-        	the current junction tree
+        	the current junction tree. 
 
         """
-        return _pyAgrum.JTGenerator_junctionTree(self, *args)
+        return _pyAgrum.JunctionTreeGenerator_junctionTree(self, *args)
+
+
+    def eliminationOrder(self, *args) -> "PyObject *":
+        r"""
+        eliminationOrder(JunctionTreeGenerator self, UndiGraph g, PyObject * partial_order=None) -> PyObject
+        eliminationOrder(JunctionTreeGenerator self, UndiGraph g) -> PyObject
+        eliminationOrder(JunctionTreeGenerator self, DAG dag, PyObject * partial_order=None) -> PyObject
+        eliminationOrder(JunctionTreeGenerator self, DAG dag) -> PyObject
+        eliminationOrder(JunctionTreeGenerator self, BayesNet bn, PyObject * partial_order=None) -> PyObject
+        eliminationOrder(JunctionTreeGenerator self, BayesNet bn) -> PyObject *
+
+        Computes the elimination for its parameters. If the first parameter is a graph, the heurisitcs assume that all the node have the same domain size (2). If given, the heuristic takes into account the partial order for its elimination order.
+
+        Parameters
+        ----------
+        g : pyAgrum.UndiGraph
+        	a undirected graph
+
+        dag : pyAgrum::DAG
+        	a dag
+
+        bn : pyAgrum::BayesNet
+        	a BayesianNetwork
+
+        partial_order: List[List[int]]
+        	a partial order among the nodeIDs
+
+        Returns
+        -------
+        pyAgrum.CliqueGraph
+        	the current elimination order.
+
+        """
+        return _pyAgrum.JunctionTreeGenerator_eliminationOrder(self, *args)
 
 
     def binaryJoinTree(self, *args) -> "gum::JunctionTree":
         r"""
-        binaryJoinTree(JTGenerator self, UndiGraph g) -> CliqueGraph
-        binaryJoinTree(JTGenerator self, BayesNet bn) -> CliqueGraph
+        binaryJoinTree(JunctionTreeGenerator self, UndiGraph g, PyObject * partial_order=None) -> CliqueGraph
+        binaryJoinTree(JunctionTreeGenerator self, UndiGraph g) -> CliqueGraph
+        binaryJoinTree(JunctionTreeGenerator self, DAG dag, PyObject * partial_order=None) -> CliqueGraph
+        binaryJoinTree(JunctionTreeGenerator self, DAG dag) -> CliqueGraph
+        binaryJoinTree(JunctionTreeGenerator self, BayesNet bn, PyObject * partial_order=None) -> CliqueGraph
+        binaryJoinTree(JunctionTreeGenerator self, BayesNet bn) -> CliqueGraph
+
+        Computes the binary joint tree for its parameters. If the first parameter is a graph, the heurisitcs assume that all the node have the same domain size (2). If given, the heuristic takes into account the partial order for its elimination order.
 
         Parameters
         ----------
         g : pyAgrum.UndiGraph
-        	an Undirected graph
-        bn : pyAgrum.BayesNet
-        	a Bayesian network
+        	a undirected graph
+
+        dag : pyAgrum::DAG
+        	a dag
+
+        bn : pyAgrum::BayesNet
+        	a BayesianNetwork
+
+        partial_order: List[List[int]]
+        	a partial order among the nodeIDs
 
         Returns
         -------
         pyAgrum.CliqueGraph
-        	the binary join tree
+        	the current binary joint tree 
 
         """
-        return _pyAgrum.JTGenerator_binaryJoinTree(self, *args)
+        return _pyAgrum.JunctionTreeGenerator_binaryJoinTree(self, *args)
 
 
     def __init__(self):
         r"""
-        __init__(JTGenerator self) -> JTGenerator
+        __init__(JunctionTreeGenerator self) -> JunctionTreeGenerator
 
-        JTGenerator is use to generate junction tree or binary junction tree from bayesian networks.
+        JunctionTreeGenerator is use to generate junction tree or binary junction tree from bayesian networks.
 
         Available constructors:
-        	``JTGenerator() -> JTGenerator``
+        	``JunctionTreeGenerator() -> JunctionTreeGenerator``
 
         """
-        _pyAgrum.JTGenerator_swiginit(self, _pyAgrum.new_JTGenerator())
-    __swig_destroy__ = _pyAgrum.delete_JTGenerator
+        _pyAgrum.JunctionTreeGenerator_swiginit(self, _pyAgrum.new_JunctionTreeGenerator())
+    __swig_destroy__ = _pyAgrum.delete_JunctionTreeGenerator
 
-# Register JTGenerator in _pyAgrum:
-_pyAgrum.JTGenerator_swigregister(JTGenerator)
+# Register JunctionTreeGenerator in _pyAgrum:
+_pyAgrum.JunctionTreeGenerator_swigregister(JunctionTreeGenerator)
 
 class PythonBNListener(object):
     r"""Proxy of C++ PythonBNListener class."""
@@ -618,7 +678,7 @@ class PRMexplorer(object):
     PRMexplorer helps navigate through probabilistic relational models.
 
     Available constructors:
-    	``JTGenerator() -> JTGenerator``
+    	``PRMexplorer() -> PRMexplorer``
 
     """
 
@@ -632,7 +692,7 @@ class PRMexplorer(object):
         PRMexplorer helps navigate through probabilistic relational models.
 
         Available constructors:
-        	``JTGenerator() -> JTGenerator``
+        	``PRMexplorer() -> PRMexplorer``
 
         """
         _pyAgrum.PRMexplorer_swiginit(self, _pyAgrum.new_PRMexplorer())
@@ -4134,6 +4194,381 @@ class Arc(object):
 # Register Arc in _pyAgrum:
 _pyAgrum.Arc_swigregister(Arc)
 
+class UndiGraph(object):
+    r"""
+
+    UndiGraph represents an Undirected Graph.
+
+    Available constructors:
+        ``UndiGraph() -> UndiGraph``
+
+        ``UndiGraph(src) -> UndiGraph``
+
+    Parameters
+    ----------
+    src : :class: UndiGraph
+      the UndiGraph to copy
+
+
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+
+    def __init__(self, *args):
+        r"""
+        __init__(UndiGraph self, gum::Size nodes_size, bool nodes_resize_policy=True, gum::Size edges_size, bool edges_resize_policy=True) -> UndiGraph
+        __init__(UndiGraph self, gum::Size nodes_size, bool nodes_resize_policy=True, gum::Size edges_size) -> UndiGraph
+        __init__(UndiGraph self, gum::Size nodes_size, bool nodes_resize_policy=True) -> UndiGraph
+        __init__(UndiGraph self, gum::Size nodes_size) -> UndiGraph
+        __init__(UndiGraph self) -> UndiGraph
+        __init__(UndiGraph self, UndiGraph g) -> UndiGraph
+        """
+        _pyAgrum.UndiGraph_swiginit(self, _pyAgrum.new_UndiGraph(*args))
+    __swig_destroy__ = _pyAgrum.delete_UndiGraph
+
+    def __eq__(self, g: 'UndiGraph') -> "bool":
+        r"""__eq__(UndiGraph self, UndiGraph g) -> bool"""
+        return _pyAgrum.UndiGraph___eq__(self, g)
+
+
+    def __ne__(self, g: 'UndiGraph') -> "bool":
+        r"""__ne__(UndiGraph self, UndiGraph g) -> bool"""
+        return _pyAgrum.UndiGraph___ne__(self, g)
+
+
+    def eraseNode(self, id: 'gum::NodeId const') -> "void":
+        r"""
+        eraseNode(UndiGraph self, gum::NodeId const id)
+
+        Erase the node and all the adjacent edges.
+
+        Parameters
+        ----------
+        id : int
+          the id of the node
+
+        """
+        return _pyAgrum.UndiGraph_eraseNode(self, id)
+
+
+    def clear(self) -> "void":
+        r"""
+        clear(UndiGraph self)
+
+        Remove all the nodes and edges from the graph.
+
+        """
+        return _pyAgrum.UndiGraph_clear(self)
+
+
+    def toDot(self) -> "std::string const":
+        r"""
+        toDot(UndiGraph self) -> std::string const
+
+        Returns
+        -------
+        str
+            a friendly display of the graph in DOT format
+
+        """
+        return _pyAgrum.UndiGraph_toDot(self)
+
+
+    def hasUndirectedCycle(self) -> "bool":
+        r"""
+        hasUndirectedCycle(UndiGraph self) -> bool
+
+        Checks whether the graph contains cycles.
+
+        Returns
+        -------
+        bool
+            True if the graph contains a cycle
+
+        """
+        return _pyAgrum.UndiGraph_hasUndirectedCycle(self)
+
+
+    def partialUndiGraph(self, nodesSet: 'gum::NodeSet') -> "gum::UndiGraph":
+        r"""
+        partialUndiGraph(UndiGraph self, gum::NodeSet nodesSet) -> UndiGraph
+
+        Parameters
+        ----------
+        nodesSet : Set
+            The set of nodes composing the partial graph
+
+        Returns
+        -------
+        pyAgrum.UndiGraph
+            The partial graph formed by the nodes given in parameter
+
+        """
+        return _pyAgrum.UndiGraph_partialUndiGraph(self, nodesSet)
+
+
+    def __repr__(self) -> "std::string":
+        r"""__repr__(UndiGraph self) -> std::string"""
+        return _pyAgrum.UndiGraph___repr__(self)
+
+
+    def __str__(self) -> "std::string":
+        r"""__str__(UndiGraph self) -> std::string"""
+        return _pyAgrum.UndiGraph___str__(self)
+
+
+    def nodes(self) -> "PyObject *":
+        r"""
+        nodes(UndiGraph self) -> PyObject *
+
+        Returns
+        -------
+        set
+            the set of ids
+
+        """
+        return _pyAgrum.UndiGraph_nodes(self)
+
+
+    def addNodes(self, n: 'gum::Size') -> "PyObject *":
+        r"""
+        addNodes(UndiGraph self, gum::Size n) -> PyObject *
+
+        Add n nodes.
+
+        Parameters
+        ----------
+        n : int
+          the number of nodes to add.
+
+        Returns
+        -------
+        Set of int
+          the new ids
+
+        """
+        return _pyAgrum.UndiGraph_addNodes(self, n)
+
+
+    def edges(self) -> "PyObject *":
+        r"""
+        edges(UndiGraph self) -> PyObject *
+
+        Returns
+        -------
+        List
+          the list of the edges
+
+        """
+        return _pyAgrum.UndiGraph_edges(self)
+
+
+    def neighbours(self, id: 'gum::NodeId') -> "PyObject *":
+        r"""
+        neighbours(UndiGraph self, gum::NodeId id) -> PyObject *
+
+        Parameters
+        ----------
+        id : int
+            the id of the checked node
+
+        Returns
+        -------
+        Set
+            The set of edges adjacent to the given node
+
+        """
+        return _pyAgrum.UndiGraph_neighbours(self, id)
+
+
+    def addNode(self) -> "gum::NodeId":
+        r"""
+        addNode(UndiGraph self) -> gum::NodeId
+
+        Returns
+        -------
+        int
+          the new NodeId
+
+        """
+        return _pyAgrum.UndiGraph_addNode(self)
+
+
+    def addNodeWithId(self, id: 'gum::NodeId const') -> "void":
+        r"""
+        addNodeWithId(UndiGraph self, gum::NodeId const id)
+
+        Add a node by choosing a new NodeId.
+
+        Parameters
+        ----------
+        id : int
+          The id of the new node
+
+        Raises
+        ------
+        gum.DuplicateElement
+          If the given id is already used
+
+        """
+        return _pyAgrum.UndiGraph_addNodeWithId(self, id)
+
+
+    def existsNode(self, id: 'gum::NodeId const') -> "bool":
+        r"""
+        existsNode(UndiGraph self, gum::NodeId const id) -> bool
+
+        Check if a node with a certain id exists in the graph.
+
+        Parameters
+        ----------
+        id : int
+            the checked id
+
+        Returns
+        -------
+        bool
+            True if the node exists
+
+        """
+        return _pyAgrum.UndiGraph_existsNode(self, id)
+
+
+    def size(self) -> "gum::Size":
+        r"""
+        size(UndiGraph self) -> gum::Size
+
+        Returns
+        -------
+        int
+            the number of nodes in the graph
+
+        """
+        return _pyAgrum.UndiGraph_size(self)
+
+
+    def empty(self) -> "bool":
+        r"""
+        empty(UndiGraph self) -> bool
+
+        Check if the graph is empty.
+
+        Returns
+        -------
+        bool
+            True if the graph is empty
+
+        """
+        return _pyAgrum.UndiGraph_empty(self)
+
+
+    def addEdge(self, n1: 'gum::NodeId const', n2: 'gum::NodeId const') -> "void":
+        r"""
+        addEdge(UndiGraph self, gum::NodeId const n1, gum::NodeId const n2)
+
+        Insert a new edge into the graph.
+
+        Parameters
+        ----------
+        n1 : int
+          the id of one node of the new inserted edge
+        n2 : int
+          the id of the other node of the new inserted edge
+
+        Raises
+        ------
+        gum.InvalidNode
+          If n1 or n2 does not belong to the graph nodes.
+
+        """
+        return _pyAgrum.UndiGraph_addEdge(self, n1, n2)
+
+
+    def eraseEdge(self, n1: 'gum::NodeId const', n2: 'gum::NodeId const') -> "void":
+        r"""
+        eraseEdge(UndiGraph self, gum::NodeId const n1, gum::NodeId const n2)
+
+        Erase the edge between n1 and n2.
+
+        Parameters
+        ----------
+        n1 : int
+          the id of the tail node
+        n2 : int
+          the id of the head node
+
+        """
+        return _pyAgrum.UndiGraph_eraseEdge(self, n1, n2)
+
+
+    def existsEdge(self, n1: 'gum::NodeId const', n2: 'gum::NodeId const') -> "bool":
+        r"""
+        existsEdge(UndiGraph self, gum::NodeId const n1, gum::NodeId const n2) -> bool
+
+        Check if an edge exists bewteen n1 and n2.
+
+        Parameters
+        ----------
+        n1 : int
+          the id of one extremity of the edge
+        n2 : int
+          the id of the other extremity if tge edge
+
+        Returns
+        -------
+        bool
+            True if the arc exists
+
+        """
+        return _pyAgrum.UndiGraph_existsEdge(self, n1, n2)
+
+
+    def sizeEdges(self) -> "gum::Size":
+        r"""
+        sizeEdges(UndiGraph self) -> gum::Size
+
+        Returns
+        -------
+        int
+            the number of edges in the graph
+
+        """
+        return _pyAgrum.UndiGraph_sizeEdges(self)
+
+
+    def emptyEdges(self) -> "bool":
+        r"""
+        emptyEdges(UndiGraph self) -> bool
+
+        Check if the graph doesn't contains edges.
+
+        Returns
+        -------
+        bool
+            True if the graph doesn't contains edges
+
+        """
+        return _pyAgrum.UndiGraph_emptyEdges(self)
+
+
+    def eraseNeighbours(self, n: 'gum::NodeId const') -> "void":
+        r"""
+        eraseNeighbours(UndiGraph self, gum::NodeId const n)
+
+        Erase all the edges adjacent to a given node.
+
+        Parameters
+        ----------
+        n : int
+          the id of the node
+
+        """
+        return _pyAgrum.UndiGraph_eraseNeighbours(self, n)
+
+
+# Register UndiGraph in _pyAgrum:
+_pyAgrum.UndiGraph_swigregister(UndiGraph)
+
 class DiGraph(object):
     r"""
 
@@ -4561,6 +4996,11 @@ class DAG(DiGraph):
         _pyAgrum.DAG_swiginit(self, _pyAgrum.new_DAG(*args))
     __swig_destroy__ = _pyAgrum.delete_DAG
 
+    def moralGraph(self) -> "gum::UndiGraph":
+        r"""moralGraph(DAG self) -> UndiGraph"""
+        return _pyAgrum.DAG_moralGraph(self)
+
+
     def addNodes(self, n: 'gum::Size') -> "PyObject *":
         r"""addNodes(DAG self, gum::Size n) -> PyObject *"""
         return _pyAgrum.DAG_addNodes(self, n)
@@ -4593,381 +5033,6 @@ class DAG(DiGraph):
 
 # Register DAG in _pyAgrum:
 _pyAgrum.DAG_swigregister(DAG)
-
-class UndiGraph(object):
-    r"""
-
-    UndiGraph represents an Undirected Graph.
-
-    Available constructors:
-        ``UndiGraph() -> UndiGraph``
-
-        ``UndiGraph(src) -> UndiGraph``
-
-    Parameters
-    ----------
-    src : :class: UndiGraph
-      the UndiGraph to copy
-
-
-    """
-
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
-
-    def __init__(self, *args):
-        r"""
-        __init__(UndiGraph self, gum::Size nodes_size, bool nodes_resize_policy=True, gum::Size edges_size, bool edges_resize_policy=True) -> UndiGraph
-        __init__(UndiGraph self, gum::Size nodes_size, bool nodes_resize_policy=True, gum::Size edges_size) -> UndiGraph
-        __init__(UndiGraph self, gum::Size nodes_size, bool nodes_resize_policy=True) -> UndiGraph
-        __init__(UndiGraph self, gum::Size nodes_size) -> UndiGraph
-        __init__(UndiGraph self) -> UndiGraph
-        __init__(UndiGraph self, UndiGraph g) -> UndiGraph
-        """
-        _pyAgrum.UndiGraph_swiginit(self, _pyAgrum.new_UndiGraph(*args))
-    __swig_destroy__ = _pyAgrum.delete_UndiGraph
-
-    def __eq__(self, g: 'UndiGraph') -> "bool":
-        r"""__eq__(UndiGraph self, UndiGraph g) -> bool"""
-        return _pyAgrum.UndiGraph___eq__(self, g)
-
-
-    def __ne__(self, g: 'UndiGraph') -> "bool":
-        r"""__ne__(UndiGraph self, UndiGraph g) -> bool"""
-        return _pyAgrum.UndiGraph___ne__(self, g)
-
-
-    def eraseNode(self, id: 'gum::NodeId const') -> "void":
-        r"""
-        eraseNode(UndiGraph self, gum::NodeId const id)
-
-        Erase the node and all the adjacent edges.
-
-        Parameters
-        ----------
-        id : int
-          the id of the node
-
-        """
-        return _pyAgrum.UndiGraph_eraseNode(self, id)
-
-
-    def clear(self) -> "void":
-        r"""
-        clear(UndiGraph self)
-
-        Remove all the nodes and edges from the graph.
-
-        """
-        return _pyAgrum.UndiGraph_clear(self)
-
-
-    def toDot(self) -> "std::string const":
-        r"""
-        toDot(UndiGraph self) -> std::string const
-
-        Returns
-        -------
-        str
-            a friendly display of the graph in DOT format
-
-        """
-        return _pyAgrum.UndiGraph_toDot(self)
-
-
-    def hasUndirectedCycle(self) -> "bool":
-        r"""
-        hasUndirectedCycle(UndiGraph self) -> bool
-
-        Checks whether the graph contains cycles.
-
-        Returns
-        -------
-        bool
-            True if the graph contains a cycle
-
-        """
-        return _pyAgrum.UndiGraph_hasUndirectedCycle(self)
-
-
-    def partialUndiGraph(self, nodesSet: 'gum::NodeSet') -> "gum::UndiGraph":
-        r"""
-        partialUndiGraph(UndiGraph self, gum::NodeSet nodesSet) -> UndiGraph
-
-        Parameters
-        ----------
-        nodesSet : Set
-            The set of nodes composing the partial graph
-
-        Returns
-        -------
-        pyAgrum.UndiGraph
-            The partial graph formed by the nodes given in parameter
-
-        """
-        return _pyAgrum.UndiGraph_partialUndiGraph(self, nodesSet)
-
-
-    def __repr__(self) -> "std::string":
-        r"""__repr__(UndiGraph self) -> std::string"""
-        return _pyAgrum.UndiGraph___repr__(self)
-
-
-    def __str__(self) -> "std::string":
-        r"""__str__(UndiGraph self) -> std::string"""
-        return _pyAgrum.UndiGraph___str__(self)
-
-
-    def nodes(self) -> "PyObject *":
-        r"""
-        nodes(UndiGraph self) -> PyObject *
-
-        Returns
-        -------
-        set
-            the set of ids
-
-        """
-        return _pyAgrum.UndiGraph_nodes(self)
-
-
-    def addNodes(self, n: 'gum::Size') -> "PyObject *":
-        r"""
-        addNodes(UndiGraph self, gum::Size n) -> PyObject *
-
-        Add n nodes.
-
-        Parameters
-        ----------
-        n : int
-          the number of nodes to add.
-
-        Returns
-        -------
-        Set of int
-          the new ids
-
-        """
-        return _pyAgrum.UndiGraph_addNodes(self, n)
-
-
-    def edges(self) -> "PyObject *":
-        r"""
-        edges(UndiGraph self) -> PyObject *
-
-        Returns
-        -------
-        List
-          the list of the edges
-
-        """
-        return _pyAgrum.UndiGraph_edges(self)
-
-
-    def neighbours(self, id: 'gum::NodeId') -> "PyObject *":
-        r"""
-        neighbours(UndiGraph self, gum::NodeId id) -> PyObject *
-
-        Parameters
-        ----------
-        id : int
-            the id of the checked node
-
-        Returns
-        -------
-        Set
-            The set of edges adjacent to the given node
-
-        """
-        return _pyAgrum.UndiGraph_neighbours(self, id)
-
-
-    def addNode(self) -> "gum::NodeId":
-        r"""
-        addNode(UndiGraph self) -> gum::NodeId
-
-        Returns
-        -------
-        int
-          the new NodeId
-
-        """
-        return _pyAgrum.UndiGraph_addNode(self)
-
-
-    def addNodeWithId(self, id: 'gum::NodeId const') -> "void":
-        r"""
-        addNodeWithId(UndiGraph self, gum::NodeId const id)
-
-        Add a node by choosing a new NodeId.
-
-        Parameters
-        ----------
-        id : int
-          The id of the new node
-
-        Raises
-        ------
-        gum.DuplicateElement
-          If the given id is already used
-
-        """
-        return _pyAgrum.UndiGraph_addNodeWithId(self, id)
-
-
-    def existsNode(self, id: 'gum::NodeId const') -> "bool":
-        r"""
-        existsNode(UndiGraph self, gum::NodeId const id) -> bool
-
-        Check if a node with a certain id exists in the graph.
-
-        Parameters
-        ----------
-        id : int
-            the checked id
-
-        Returns
-        -------
-        bool
-            True if the node exists
-
-        """
-        return _pyAgrum.UndiGraph_existsNode(self, id)
-
-
-    def size(self) -> "gum::Size":
-        r"""
-        size(UndiGraph self) -> gum::Size
-
-        Returns
-        -------
-        int
-            the number of nodes in the graph
-
-        """
-        return _pyAgrum.UndiGraph_size(self)
-
-
-    def empty(self) -> "bool":
-        r"""
-        empty(UndiGraph self) -> bool
-
-        Check if the graph is empty.
-
-        Returns
-        -------
-        bool
-            True if the graph is empty
-
-        """
-        return _pyAgrum.UndiGraph_empty(self)
-
-
-    def addEdge(self, n1: 'gum::NodeId const', n2: 'gum::NodeId const') -> "void":
-        r"""
-        addEdge(UndiGraph self, gum::NodeId const n1, gum::NodeId const n2)
-
-        Insert a new edge into the graph.
-
-        Parameters
-        ----------
-        n1 : int
-          the id of one node of the new inserted edge
-        n2 : int
-          the id of the other node of the new inserted edge
-
-        Raises
-        ------
-        gum.InvalidNode
-          If n1 or n2 does not belong to the graph nodes.
-
-        """
-        return _pyAgrum.UndiGraph_addEdge(self, n1, n2)
-
-
-    def eraseEdge(self, n1: 'gum::NodeId const', n2: 'gum::NodeId const') -> "void":
-        r"""
-        eraseEdge(UndiGraph self, gum::NodeId const n1, gum::NodeId const n2)
-
-        Erase the edge between n1 and n2.
-
-        Parameters
-        ----------
-        n1 : int
-          the id of the tail node
-        n2 : int
-          the id of the head node
-
-        """
-        return _pyAgrum.UndiGraph_eraseEdge(self, n1, n2)
-
-
-    def existsEdge(self, n1: 'gum::NodeId const', n2: 'gum::NodeId const') -> "bool":
-        r"""
-        existsEdge(UndiGraph self, gum::NodeId const n1, gum::NodeId const n2) -> bool
-
-        Check if an edge exists bewteen n1 and n2.
-
-        Parameters
-        ----------
-        n1 : int
-          the id of one extremity of the edge
-        n2 : int
-          the id of the other extremity if tge edge
-
-        Returns
-        -------
-        bool
-            True if the arc exists
-
-        """
-        return _pyAgrum.UndiGraph_existsEdge(self, n1, n2)
-
-
-    def sizeEdges(self) -> "gum::Size":
-        r"""
-        sizeEdges(UndiGraph self) -> gum::Size
-
-        Returns
-        -------
-        int
-            the number of edges in the graph
-
-        """
-        return _pyAgrum.UndiGraph_sizeEdges(self)
-
-
-    def emptyEdges(self) -> "bool":
-        r"""
-        emptyEdges(UndiGraph self) -> bool
-
-        Check if the graph doesn't contains edges.
-
-        Returns
-        -------
-        bool
-            True if the graph doesn't contains edges
-
-        """
-        return _pyAgrum.UndiGraph_emptyEdges(self)
-
-
-    def eraseNeighbours(self, n: 'gum::NodeId const') -> "void":
-        r"""
-        eraseNeighbours(UndiGraph self, gum::NodeId const n)
-
-        Erase all the edges adjacent to a given node.
-
-        Parameters
-        ----------
-        n : int
-          the id of the node
-
-        """
-        return _pyAgrum.UndiGraph_eraseNeighbours(self, n)
-
-
-# Register UndiGraph in _pyAgrum:
-_pyAgrum.UndiGraph_swigregister(UndiGraph)
 
 class MixedGraph(UndiGraph, DiGraph):
     r"""
@@ -24567,6 +24632,34 @@ class BNLearner(object):
 
         """
         return _pyAgrum.BNLearner_learnParameters(self, *args)
+
+
+    def chi2(self, *args) -> "PyObject *":
+        r"""
+        chi2(BNLearner self, std::string const & var1, std::string const & var2, Vector_string knw) -> PyObject
+        chi2(BNLearner self, std::string const & var1, std::string const & var2) -> PyObject *
+
+        chi2 computes the chi2 statistic and pvalue for two columns, given a list of other columns. 
+
+
+        Parameters
+        ----------
+        name1: str
+        	the name of the first column
+
+        name2 : str
+        	the name of the second column
+
+        knowing : [str]
+        	the list of names of conditioning columns
+
+        Returns
+        -------
+        statistic,pvalue
+        	the chi2 statistic and the associated p-value as a Tuple
+
+        """
+        return _pyAgrum.BNLearner_chi2(self, *args)
 
 
     def setVerbosity(self, v: 'bool') -> "void":

@@ -133,7 +133,9 @@ namespace gum {
     short int* __default;
   };
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class Regress< double, std::multiplies, std::plus >;
+#endif
 
 }   // namespace gum
 

@@ -35,7 +35,7 @@
 namespace gum {
   // instrumental and non-API function
   template < typename GUM_SCALAR >
-  static void ___initPotentialOperators() {
+  void ___initPotentialOperators() {
     static bool first = true;
 
     if (first) {

@@ -129,7 +129,6 @@
 namespace std {
     %template ( Vector) vector<double>;
     %template ( Vector_int) vector<unsigned int>;
-    %template ( Vector_size) vector<gum::Size>;
     %template ( Vector_string) vector<string>;
 }
 
@@ -217,9 +216,9 @@ namespace std {
 %import <agrum/graphs/parts/arcGraphPart.h>
 %import <agrum/graphs/parts/nodeGraphPart.h>
 
+%include <agrum/graphs/undiGraph.h>
 %include <agrum/graphs/diGraph.h>
 %include <agrum/graphs/DAG.h>
-%include <agrum/graphs/undiGraph.h>
 %include <agrum/graphs/mixedGraph.h>
 %include <agrum/graphs/cliqueGraph.h>
 %import <agrum/graphs/algorithms/triangulations/defaultTriangulation.h>
@@ -230,7 +229,106 @@ namespace std {
 %import <agrum/multidim/implementations/multiDimContainer.h>
 %import <agrum/multidim/implementations/multiDimDecorator.h>
 %import <agrum/multidim/implementations/multiDimImplementation.h>
-%import <agrum/multidim/imple                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 gum::credal::CredalNet<double>;
+%import <agrum/multidim/implementations/multiDimWithOffset.h>
+%import <agrum/multidim/implementations/multiDimReadOnly.h>
+%import <agrum/multidim/implementations/multiDimArray.h>
+
+%include <agrum/multidim/ICIModels/multiDimNoisyORCompound.h>
+%include <agrum/multidim/ICIModels/multiDimNoisyAND.h>
+
+%include <agrum/multidim/instantiation.h>
+%include <agrum/multidim/potential.h>
+
+%import <agrum/core/refPtr.h>
+%include <agrum/core/list.h>
+
+%import <agrum/graphicalModels/variableNodeMap.h>
+%include <agrum/graphicalModels/DAGmodel.h>
+%include <agrum/BN/IBayesNet.h>
+%include <agrum/BN/BayesNet.h>
+
+%include <agrum/BN/algorithms/essentialGraph.h>
+%include <agrum/BN/algorithms/MarkovBlanket.h>
+%include <agrum/BN/algorithms/structuralComparator.h>
+
+%import <agrum/core/approximations/IApproximationSchemeConfiguration.h>
+%include <agrum/core/approximations/approximationScheme.h>
+
+%import <agrum/BN/inference/tools/relevantPotentialsFinderType.h>
+%include <agrum/BN/inference/tools/BayesNetInference.h>
+%include <agrum/BN/inference/lazyPropagation.h>
+%include <agrum/BN/inference/ShaferShenoyInference.h>
+%include <agrum/BN/inference/variableElimination.h>
+
+%include <agrum/BN/inference/GibbsSampling.h>
+%include <agrum/BN/inference/importanceSampling.h>
+%include <agrum/BN/inference/weightedSampling.h>
+%include <agrum/BN/inference/MonteCarloSampling.h>
+%include <agrum/BN/inference/loopySamplingInference.h>
+
+%include <agrum/BN/inference/loopyBeliefPropagation.h>
+
+%import <agrum/BN/algorithms/divergence/KL.h>
+%include <agrum/BN/algorithms/divergence/bruteForceKL.h>
+%include <agrum/BN/algorithms/divergence/GibbsKL.h>
+
+%import <agrum/core/signal/listener.h>
+%import <agrum/graphs/parts/listeners/diGraphListener.h>
+%import <agrum/BN/io/BIF/BIFReader.h>
+
+%import <agrum/learning/database/databaseTable.h>
+%import <agrum/learning/BNLearnUtils/genericBNLearner.h>
+%include <agrum/learning/BNLearner.h>
+%include <agrum/learning/database/BNDatabaseGenerator.h>
+
+%include <agrum/CN/credalNet.h>
+%include <agrum/CN/varMod2BNsMap.h>
+%include <agrum/CN/inferenceEngine.h>
+%include <agrum/CN/multipleInferenceEngine.h>
+%include <agrum/CN/CNMonteCarloSampling.h>
+%include <agrum/CN/CNLoopyPropagation.h>
+
+%include <agrum/ID/influenceDiagram.h>
+%include <agrum/ID/inference/influenceDiagramInference.h>
+
+
+/* TEMPLATES INSTANTIATIONS */
+
+%template ( randomDistribution ) gum::randomDistribution<double>;
+
+%template ( DiscretizedVariable ) gum::DiscretizedVariable<double>;
+
+%template ( MultiDimContainer ) gum::MultiDimContainer<double>;
+%template ( MultiDimImplementation ) gum::MultiDimImplementation<double>;
+%template ( MultiDimDecorator ) gum::MultiDimDecorator<double>;
+%template ( MultiDimWithOffset ) gum::MultiDimWithOffset<double>;
+%template ( MultiDimArray ) gum::MultiDimArray<double>;
+
+%template ( Potential ) gum::Potential<double>;
+
+%template (IBayesNet ) gum::IBayesNet<double>;
+%template ( BayesNet ) gum::BayesNet<double>;
+
+%template ( BayesNetInference ) gum::BayesNetInference<double>;
+%template ( LazyPropagation ) gum::LazyPropagation<double>;
+%template ( ShaferShenoyInference ) gum::ShaferShenoyInference<double>;
+%template ( VariableElimination ) gum::VariableElimination<double>;
+
+%template ( GibbsSampling ) gum::GibbsSampling<double>;
+%template ( ImportanceSampling ) gum::ImportanceSampling<double>;
+%template ( WeightedSampling ) gum::WeightedSampling<double>;
+%template ( MonteCarloSampling ) gum::MonteCarloSampling<double>;
+%template ( LoopyImportanceSampling ) gum::LoopySamplingInference<double,gum::ImportanceSampling>;
+%template ( LoopyWeightedSampling ) gum::LoopySamplingInference<double,gum::WeightedSampling>;
+%template ( LoopyGibbsSampling ) gum::LoopySamplingInference<double,gum::GibbsSampling>;
+%template ( LoopyMonteCarloSampling ) gum::LoopySamplingInference<double,gum::MonteCarloSampling>;
+
+%template ( LoopyBeliefPropagation ) gum::LoopyBeliefPropagation<double>;
+
+%template ( BruteForceKL ) gum::BruteForceKL<double>;
+%template ( GibbsKL ) gum::GibbsKL<double>;
+
+%template ( CredalNet ) gum::credal::CredalNet<double>;
 %template ( CNMonteCarloSampling ) gum::credal::CNMonteCarloSampling<double>;
 %template ( CNLoopyPropagation ) gum::credal::CNLoopyPropagation<double>;
 

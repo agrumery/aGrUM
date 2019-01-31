@@ -21,4 +21,6 @@
 #include <agrum/learning/BNLearner.h>
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::learning::BNLearner< double >;
+#endif

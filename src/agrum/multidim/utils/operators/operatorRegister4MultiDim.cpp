@@ -26,18 +26,3 @@
  */
 
 #include <agrum/multidim/utils/operators/operatorRegister4MultiDim.h>
-
-
-namespace gum {
-
-  // patch for compiling with mingw64
-  template <>
-  OperatorRegister4MultiDim< double > *
-  OperatorRegister4MultiDim< double >::P_instance_ = nullptr;
-
-  template <>
-  OperatorRegister4MultiDim< float > *
-  OperatorRegister4MultiDim< float >::P_instance_ = nullptr;
- 
-} /* namespace gum */
-

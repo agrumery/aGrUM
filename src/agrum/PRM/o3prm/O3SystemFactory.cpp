@@ -29,4 +29,6 @@
 #include <agrum/PRM/o3prm/O3SystemFactory.h>
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::prm::o3prm::O3SystemFactory< double >;
+#endif

@@ -21,4 +21,6 @@
 #include <agrum/BN/io/UAI/UAIReader.h>
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::UAIReader< double >;
+#endif
