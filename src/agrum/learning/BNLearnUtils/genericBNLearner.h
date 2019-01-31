@@ -456,6 +456,18 @@ namespace gum {
                 const std::vector< std::string >& knowing = {});
 
 
+      /**
+       *
+       * @return the number of cols in the database
+       */
+      Size nbCols() const;
+
+      /**
+       *
+       * @return the number of rows in the database
+       */
+      Size nbRows() const;
+
       /** use The EM algorithm to learn paramters
        *
        * if epsilon=0, EM is not used
