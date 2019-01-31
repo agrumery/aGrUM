@@ -1,6 +1,5 @@
 // this file is for giving access to methods defined in ancestor.
 
-
 %define ADD_APPROXIMATIONSCHEME_API(parent,classname...)
 %extend classname {
   using parent::setVerbosity;
@@ -78,6 +77,9 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
   using gum::learning::genericBNLearner::eraseMandatoryArc;
   using gum::learning::genericBNLearner::useEM;
   using gum::learning::genericBNLearner::hasMissingValues;
+  using gum::learning::genericBNLearner::LL;
+  using gum::learning::genericBNLearner::nbRows;
+  using gum::learning::genericBNLearner::nbCols;
 }
 
 #####################################

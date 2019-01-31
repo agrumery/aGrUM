@@ -25076,6 +25076,26 @@ class BNLearner(object):
         return _pyAgrum.BNLearner_hasMissingValues(self)
 
 
+    def LL(self, *args):
+        r"""
+        LL(BNLearner self, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const & vars, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const & knowing) -> double
+        LL(BNLearner self, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const & vars) -> double
+        LL(BNLearner self, Vector_string vars, Vector_string knowing) -> double
+        LL(BNLearner self, Vector_string vars) -> double
+        """
+        return _pyAgrum.BNLearner_LL(self, *args)
+
+
+    def nbRows(self):
+        r"""nbRows(BNLearner self) -> gum::Size"""
+        return _pyAgrum.BNLearner_nbRows(self)
+
+
+    def nbCols(self):
+        r"""nbCols(BNLearner self) -> gum::Size"""
+        return _pyAgrum.BNLearner_nbCols(self)
+
+
     def setInitialDAG(self, g):
         r"""
         setInitialDAG(BNLearner self, DAG g)
