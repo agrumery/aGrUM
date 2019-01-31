@@ -93,6 +93,12 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
+  INLINE double KL< GUM_SCALAR >::jsd() {
+    _process();
+    return _jsd;
+  }
+
+  template < typename GUM_SCALAR >
   INLINE Size KL< GUM_SCALAR >::errorPQ() {
     _process();
     return _errorPQ;
@@ -127,7 +133,7 @@ namespace gum {
           GUM_ERROR(OperationNotAllowed,
                     "KL : the 2 BNs are not compatible "
                     "(not the same domainSize for "
-                      + vp.name() + ")");
+                       + vp.name() + ")");
 
         for (Idx i = 0; i < vp.domainSize(); i++) {
           try {
@@ -136,15 +142,15 @@ namespace gum {
 
           } catch (OutOfBounds&) {
             GUM_ERROR(
-              OperationNotAllowed,
-              "KL : the 2 BNs are not compatible F(not the same labels for "
-                + vp.name() + ")");
+               OperationNotAllowed,
+               "KL : the 2 BNs are not compatible F(not the same labels for "
+                  + vp.name() + ")");
           }
         }
       } catch (NotFound&) {
         GUM_ERROR(OperationNotAllowed,
                   "KL : the 2 BNs are not compatible (not the same vars : "
-                    + vp.name() + ")");
+                     + vp.name() + ")");
       }
     }
 
@@ -156,8 +162,8 @@ namespace gum {
     if (std::fabs(_p.log10DomainSize() - _q.log10DomainSize()) > 1e-14) {
       GUM_ERROR(OperationNotAllowed,
                 "KL : the 2 BNs are not compatible (not the same domainSize) : p="
-                  << _p.log10DomainSize() << " q=" << _q.log10DomainSize()
-                  << " => " << _p.log10DomainSize() - _q.log10DomainSize());
+                   << _p.log10DomainSize() << " q=" << _q.log10DomainSize()
+                   << " => " << _p.log10DomainSize() - _q.log10DomainSize());
     }
 
     return true;

@@ -50,7 +50,7 @@ namespace gum_tests {
       gum::BayesNet< double > net1;
       {
         gum::BIFReader< double > reader(
-          &net1, GET_RESSOURCES_PATH("BIFReader_file2.bif"));
+           &net1, GET_RESSOURCES_PATH("BIFReader_file2.bif"));
         reader.trace(false);
         reader.proceed();
       }
@@ -58,7 +58,7 @@ namespace gum_tests {
       gum::BayesNet< double > net2;
       {
         gum::BIFReader< double > reader(
-          &net2, GET_RESSOURCES_PATH("BIFReader_file3.bif"));
+           &net2, GET_RESSOURCES_PATH("BIFReader_file3.bif"));
         reader.trace(false);
         reader.proceed();
       }
@@ -66,7 +66,7 @@ namespace gum_tests {
       gum::BayesNet< double > net3;
       {
         gum::BIFReader< double > reader(
-          &net3, GET_RESSOURCES_PATH("BIFReader_file4.bif"));
+           &net3, GET_RESSOURCES_PATH("BIFReader_file4.bif"));
         reader.trace(false);
         reader.proceed();
       }
@@ -81,7 +81,7 @@ namespace gum_tests {
       gum::BayesNet< double > net2;
       {
         gum::BIFReader< double > reader(
-          &net2, GET_RESSOURCES_PATH("BIFReader_file3.bif"));
+           &net2, GET_RESSOURCES_PATH("BIFReader_file3.bif"));
         reader.trace(false);
         reader.proceed();
       }
@@ -105,7 +105,7 @@ namespace gum_tests {
       gum::BayesNet< double > net3;
       {
         gum::BIFReader< double > reader(
-          &net3, GET_RESSOURCES_PATH("BIFReader_file3.bif"));
+           &net3, GET_RESSOURCES_PATH("BIFReader_file3.bif"));
         reader.trace(false);
         reader.proceed();
       }
@@ -121,7 +121,7 @@ namespace gum_tests {
       gum::BayesNet< double > net4;
       {
         gum::BIFReader< double > reader(
-          &net4, GET_RESSOURCES_PATH("BIFReader_file4.bif"));
+           &net4, GET_RESSOURCES_PATH("BIFReader_file4.bif"));
         reader.trace(false);
         reader.proceed();
       }
@@ -174,6 +174,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(kl.errorPQ(), (gum::Size)0);
       TS_ASSERT_EQUALS(kl.errorQP(), (gum::Size)0);
       TS_ASSERT_DELTA(kl.hellinger(), 0.321089688, 1e-7);
+      TS_ASSERT_DELTA(kl.jsd(), 0.0696153, 1e-7);
+      TS_ASSERT_DELTA(kl.bhattacharya(), 0.0529255, 1e-7);
     }
 
     void testGibbsValues() {
@@ -204,8 +206,10 @@ namespace gum_tests {
           TS_ASSERT_EQUALS(kl.errorPQ(), (gum::Size)0);
           TS_ASSERT_EQUALS(kl.errorQP(), (gum::Size)0);
           TS_ASSERT_DELTA(kl.hellinger(), 0.321089688, 1e-1);
+          TS_ASSERT_DELTA(kl.jsd(), 0.0696153, 1e-1);
+          TS_ASSERT_DELTA(kl.bhattacharya(), 0.0529255, 1e-1);
           TS_ASSERT(kl.history().size()
-                      - (kl.nbrIterations() - kl.burnIn()) / kl.periodSize()
+                       - (kl.nbrIterations() - kl.burnIn()) / kl.periodSize()
                     < 2);
           break;
         } else {
@@ -226,8 +230,10 @@ namespace gum_tests {
           TS_ASSERT_EQUALS(kl.errorPQ(), (gum::Size)0);
           TS_ASSERT_EQUALS(kl.errorQP(), (gum::Size)0);
           TS_ASSERT_DELTA(kl.hellinger(), 0.321089688, 1e-1);
+          TS_ASSERT_DELTA(kl.jsd(), 0.0696153, 1e-1);
+          TS_ASSERT_DELTA(kl.bhattacharya(), 0.0529255, 1e-1);
           TS_ASSERT(kl.history().size()
-                      - (kl.nbrIterations() - kl.burnIn()) / kl.periodSize()
+                       - (kl.nbrIterations() - kl.burnIn()) / kl.periodSize()
                     < 2);
           break;
         } else {

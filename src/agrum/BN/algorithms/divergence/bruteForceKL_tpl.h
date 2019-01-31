@@ -50,7 +50,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void BruteForceKL< GUM_SCALAR >::_computeKL() {
-    _klPQ = _klQP = _hellinger = _bhattacharya = (GUM_SCALAR)0.0;
+    _klPQ = _klQP = _hellinger = _bhattacharya = _jsd = (GUM_SCALAR)0.0;
     _errorPQ = _errorQP = 0;
 
     auto Ip = _p.completeInstantiation();
@@ -62,18 +62,24 @@ namespace gum {
     for (Idx ite = 0; ite < Ip.nbrDim(); ++ite) {
       map.insert(&Ip.variable(ite), &_q.variableFromName(Ip.variable(ite).name()));
     }
-
+    GUM_SCALAR pp, pq, pmid, lpp, lpq, lpmid;
     for (Ip.setFirst(); !Ip.end(); ++Ip) {
       Iq.setValsFrom(map, Ip);
-      GUM_SCALAR pp = _p.jointProbability(Ip);
-      GUM_SCALAR pq = _q.jointProbability(Iq);
+      pp = _p.jointProbability(Ip);
+      pq = _q.jointProbability(Iq);
+      pmid = (pp + pq) / 2.0;
+      lpmid = lpq = lpp = (GUM_SCALAR)0.0;
+      if (pmid != (GUM_SCALAR)0.0) lpmid = log2(pmid);
+      if (pp != (GUM_SCALAR)0.0) lpp = log2(pp);
+      if (pq != (GUM_SCALAR)0.0) lpq = log2(pq);
+
 
       _hellinger += std::pow(std::sqrt(pp) - std::sqrt(pq), 2);
       _bhattacharya += std::sqrt(pp * pq);
 
       if (pp != (GUM_SCALAR)0.0) {
         if (pq != (GUM_SCALAR)0.0) {
-          _klPQ -= pp * log2(pq / pp);
+          _klPQ -= pp * (lpq - lpp);   // log2(pq / pp);
         } else {
           _errorPQ++;
         }
@@ -81,13 +87,18 @@ namespace gum {
 
       if (pq != (GUM_SCALAR)0.0) {
         if (pp != (GUM_SCALAR)0.0) {
-          _klQP -= pq * log2(pp / pq);
+          _klQP -= pq * (lpp - lpq);   // log2(pp / pq);
         } else {
           _errorQP++;
         }
       }
+      if (pmid != (GUM_SCALAR)0.0) {
+        _jsd +=
+           pp * lpp + pq * lpq
+           - (pp + pq) * lpmid;   // pp* log2(pp / pmid) + pq * log2(pq / pmid);
+      }
     }
-
+    _jsd /= 2.0;
     _hellinger = std::sqrt(_hellinger);
     _bhattacharya = -std::log(_bhattacharya);
   }

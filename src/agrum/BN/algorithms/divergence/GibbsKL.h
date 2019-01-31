@@ -116,6 +116,7 @@ namespace gum {
     using KL< GUM_SCALAR >::_q;
     using KL< GUM_SCALAR >::_hellinger;
     using KL< GUM_SCALAR >::_bhattacharya;
+    using KL< GUM_SCALAR >::_jsd;
 
     using KL< GUM_SCALAR >::_klPQ;
     using KL< GUM_SCALAR >::_klQP;
