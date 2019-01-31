@@ -228,18 +228,13 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
     extern template class MultipleInferenceEngine<
-#endif
-#endif
       double,
       gum::LazyPropagation< double > >;
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+
     extern template class MultipleInferenceEngine< float,
-#endif
-#endif
                                                    gum::LazyPropagation< float > >;
+#endif
 
   }   // namespace credal
 }   // namespace gum

@@ -28,14 +28,9 @@
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::credal::CNMonteCarloSampling< float,
-#endif
-#endif
                                                   gum::LazyPropagation< float > >;
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+
 template class gum::credal::CNMonteCarloSampling< double,
-#endif
-#endif
                                                   gum::LazyPropagation< double > >;
+#endif
