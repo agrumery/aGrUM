@@ -353,7 +353,7 @@ str
 "
 Returns
 -------
-str
+List[str]
 	the names of the variables in the database
 "
 
@@ -396,3 +396,39 @@ Returns
 statistic,pvalue
 	the chi2 statistic and the associated p-value as a Tuple
 "
+
+%feature("docstring") gum::learning::BNLearner::LL
+"
+LL computes the log-likelihood for the columns in vars, given the columns in the list knowing (optional)
+
+Parameters
+----------
+vars: List[str]
+	the name of the columns of interest
+
+knowing : List[str]
+	the (optional) list of names of conditioning columns
+	
+
+Returns
+-------
+	the log-likelihood (base 2)
+"
+
+%feature("docstring") gum::learning::BNLearner::nbRows
+"
+Returns
+-------
+int
+	the number of rows in the database 
+"
+
+
+%feature("docstring") gum::learning::BNLearner::nbCols
+"
+Returns
+-------
+int
+	the number of columns in the database 
+"
+
