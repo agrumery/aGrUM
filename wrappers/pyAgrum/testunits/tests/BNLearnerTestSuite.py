@@ -292,6 +292,30 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertAlmostEqual(pvalue, 0.0005, delta=1e-4)
 
 
+  def test_loglikelihood(self):
+    learner=gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/chi2.csv'))
+    self.assertEqual(learner.nbRows(), 500)
+    self.assertEqual(learner.nbCols(), 4)
+
+    siz = -1.0 * learner.nbRows();
+
+    stat = learner.LL(["A"]) / siz  # LL=-N.H
+    self.assertAlmostEqual(stat, 0.99943499, delta=1e-5)
+    stat = learner.LL(["B"]) / siz  # LL=-N.H
+    self.assertAlmostEqual(stat, 0.9986032, delta=1e-5)
+    stat = learner.LL(["A", "B"]) / siz  # LL=-N.H
+    self.assertAlmostEqual(stat, 1.9668973, delta=1e-5)
+    stat = learner.LL(["A"], ["B"]) / siz  # LL=-N.H
+    self.assertAlmostEqual(stat, 1.9668973 - 0.9986032, delta=1e-5)
+
+    stat = learner.LL(["C"]) / siz  # LL=-N.H
+    self.assertAlmostEqual(stat, 0.99860302, delta=1e-5)
+    stat = learner.LL(["D"]) / siz  # LL=-N.H
+    self.assertAlmostEqual(stat, 0.40217919, delta=1e-5)
+    stat = learner.LL(["C", "D"]) / siz  # LL=-N.H
+    self.assertAlmostEqual(stat, 1.40077995, delta=1e-5)
+    stat = learner.LL(["C"], ["D"]) / siz  # LL=-N.H
+    self.assertAlmostEqual(stat, 1.40077995 - 0.40217919, delta=1e-5)
 
 
 ts = unittest.TestSuite()

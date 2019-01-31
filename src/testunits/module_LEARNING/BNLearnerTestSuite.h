@@ -1237,27 +1237,29 @@ namespace gum_tests {
     }
 
     void test_loglikelihood() {
-      gum::learning::BNLearner< double > learner2(GET_RESSOURCES_PATH("chi2.csv"));
+      gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("chi2.csv"));
+      TS_ASSERT_EQUALS(learner.nbRows(), (gum::Size)500);
+      TS_ASSERT_EQUALS(learner.nbCols(), (gum::Size)4);
 
-      double siz = -1.0 * learner2.database().size();
-      learner2.useNoApriori();
+      double siz = -1.0 * learner.database().size();
+      learner.useNoApriori();
 
-      auto stat = learner2.LL({"A"}) / siz;   // LL=-N.H
+      auto stat = learner.LL({"A"}) / siz;   // LL=-N.H
       TS_ASSERT_DELTA(stat, 0.99943499, 1e-5);
-      stat = learner2.LL({"B"}) / siz;   // LL=-N.H
+      stat = learner.LL({"B"}) / siz;   // LL=-N.H
       TS_ASSERT_DELTA(stat, 0.9986032, 1e-5);
-      stat = learner2.LL({std::string("A"), "B"}) / siz;   // LL=-N.H
+      stat = learner.LL({std::string("A"), "B"}) / siz;   // LL=-N.H
       TS_ASSERT_DELTA(stat, 1.9668973, 1e-5);
-      stat = learner2.LL({std::string("A")}, {"B"}) / siz;   // LL=-N.H
+      stat = learner.LL({std::string("A")}, {"B"}) / siz;   // LL=-N.H
       TS_ASSERT_DELTA(stat, 1.9668973 - 0.9986032, 1e-5);
 
-      stat = learner2.LL({"C"}) / siz;   // LL=-N.H
+      stat = learner.LL({"C"}) / siz;   // LL=-N.H
       TS_ASSERT_DELTA(stat, 0.99860302, 1e-5);
-      stat = learner2.LL({"D"}) / siz;   // LL=-N.H
+      stat = learner.LL({"D"}) / siz;   // LL=-N.H
       TS_ASSERT_DELTA(stat, 0.40217919, 1e-5);
-      stat = learner2.LL({std::string("C"), "D"}) / siz;   // LL=-N.H
+      stat = learner.LL({std::string("C"), "D"}) / siz;   // LL=-N.H
       TS_ASSERT_DELTA(stat, 1.40077995, 1e-5);
-      stat = learner2.LL({std::string("C")}, {"D"}) / siz;   // LL=-N.H
+      stat = learner.LL({std::string("C")}, {"D"}) / siz;   // LL=-N.H
       TS_ASSERT_DELTA(stat, 1.40077995 - 0.40217919, 1e-5);
     }
   };
