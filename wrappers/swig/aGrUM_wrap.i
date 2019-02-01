@@ -95,9 +95,9 @@
 
 #include <agrum/BN/inference/loopyBeliefPropagation.h>
 
-#include <agrum/BN/algorithms/divergence/KL.h>
-#include <agrum/BN/algorithms/divergence/bruteForceKL.h>
-#include <agrum/BN/algorithms/divergence/GibbsKL.h>
+#include <agrum/BN/algorithms/divergence/BNdistance.h>
+#include <agrum/BN/algorithms/divergence/exactBNdistance.h>
+#include <agrum/BN/algorithms/divergence/GibbsBNdistance.h>
 
 #include <agrum/core/signal/listener.h>
 #include <agrum/graphs/parts/listeners/diGraphListener.h>
@@ -268,9 +268,9 @@ namespace std {
 
 %include <agrum/BN/inference/loopyBeliefPropagation.h>
 
-%import <agrum/BN/algorithms/divergence/KL.h>
-%include <agrum/BN/algorithms/divergence/bruteForceKL.h>
-%include <agrum/BN/algorithms/divergence/GibbsKL.h>
+%import <agrum/BN/algorithms/divergence/BNdistance.h>
+%include <agrum/BN/algorithms/divergence/exactBNdistance.h>
+%include <agrum/BN/algorithms/divergence/GibbsBNdistance.h>
 
 %import <agrum/core/signal/listener.h>
 %import <agrum/graphs/parts/listeners/diGraphListener.h>
@@ -325,8 +325,8 @@ namespace std {
 
 %template ( LoopyBeliefPropagation ) gum::LoopyBeliefPropagation<double>;
 
-%template ( BruteForceKL ) gum::BruteForceKL<double>;
-%template ( GibbsKL ) gum::GibbsKL<double>;
+%template ( ExactBNdistance ) gum::ExactBNdistance<double>;
+%template ( GibbsBNdistance ) gum::GibbsBNdistance<double>;
 
 %template ( CredalNet ) gum::credal::CredalNet<double>;
 %template ( CNMonteCarloSampling ) gum::credal::CNMonteCarloSampling<double>;

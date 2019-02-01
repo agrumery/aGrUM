@@ -51,7 +51,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     ref = gum.loadBN(self.agrumSrcDir(
         'src/testunits/ressources/asia2.bif'), verbose=False)
 
-    f = gum.BruteForceKL(bn, ref)
+    f = gum.ExactBNdistance(bn, ref)
     res = f.compute()
     self.assertAlmostEqual(res['klPQ'], 0.5, delta=0.5)
 
@@ -77,7 +77,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     ref = gum.loadBN(self.agrumSrcDir(
         'src/testunits/ressources/asia2.bif'), verbose=False)
 
-    f = gum.BruteForceKL(bn, ref)
+    f = gum.ExactBNdistance(bn, ref)
     res = f.compute()
     self.assertAlmostEqual(res['klPQ'], 0.5, delta=0.5)
 

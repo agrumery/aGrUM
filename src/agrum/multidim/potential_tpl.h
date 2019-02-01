@@ -303,7 +303,7 @@ namespace gum {
          Potential< GUM_SCALAR >::KL(const Potential< GUM_SCALAR >& p) const {
     if (this->nbrDim() != p.nbrDim())
       GUM_ERROR(InvalidArgument,
-                "KL between potentials with different numbers of dimensions");
+                "BNdistance between potentials with different numbers of dimensions");
     for (const auto var : p.variablesSequence()) {
       if (!this->contains(*var))
         GUM_ERROR(InvalidArgument,

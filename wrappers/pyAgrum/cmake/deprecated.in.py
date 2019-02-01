@@ -5,6 +5,7 @@ Deprecated for older pyAgrum
 from .pyAgrum import GibbsSampling, Potential
 from .pyAgrum import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, CliqueGraph
 from .pyAgrum import BayesNet, EssentialGraph, MarkovBlanket
+from .pyAgrum import ExactBNdistance,GibbsBNdistance
 
 
 def GibbsInference(bn):
@@ -15,6 +16,29 @@ def GibbsInference(bn):
   print("** A pyAgrum.GibbsSampling has been created.")
   return GibbsSampling(bn)
 
+def JTGenerator():
+  """
+  Deprecated class. Use pyAgrum.JunctionTreeGenerator instead.
+  """
+  print("** pyAgrum.JTGenerator is deprecated in pyAgrum>0.12.6.")
+  print("** A pyAgrum.JunctionTreeGenerator has been created.")
+  return JunctionTreeGenerator()
+
+def GibbsKL(p,q):
+  """
+  Deprecated class. Use pyAgrum.GibbsBNdistance instead.
+  """
+  print("** pyAgrum.GibbsKL is deprecated in pyAgrum>0.12.6.")
+  print("** A pyAgrum.GibbsBNdistance has been created.")
+  return GibbsBNdistance(p,q)
+
+def BruteForceKL(p,q):
+  """
+  Deprecated class. Use pyAgrum.ExactBNdistance instead.
+  """
+  print("** pyAgrum.BruteForceKL is deprecated in pyAgrum>0.12.6.")
+  print("** A pyAgrum.ExactBNdistance has been created.")
+  return ExactBNdistance(p,q)
 
 def _addDeprecatedMethods():
   def deprecated_populate(pot, v):

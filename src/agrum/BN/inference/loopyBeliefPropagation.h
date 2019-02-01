@@ -92,7 +92,7 @@ namespace gum {
     Potential< GUM_SCALAR > __computeProdLambda(NodeId X);
     Potential< GUM_SCALAR > __computeProdLambda(NodeId X, NodeId except);
 
-    // return the max differential KL for this node
+    // return the max differential BNdistance for this node
     GUM_SCALAR __updateNodeMessage(NodeId X);
   };
 

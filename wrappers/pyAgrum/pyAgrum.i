@@ -57,7 +57,7 @@ interface generator."
 %include "bayesnet.i"
 %include "inference.i"
 %include "learning.i"
-%include "kl.i"
+%include "bndistance.i"
 
 %include "credalnet.i"
 

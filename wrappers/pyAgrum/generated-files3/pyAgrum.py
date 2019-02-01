@@ -21660,18 +21660,18 @@ class LoopyBeliefPropagation(object):
 # Register LoopyBeliefPropagation in _pyAgrum:
 _pyAgrum.LoopyBeliefPropagation_swigregister(LoopyBeliefPropagation)
 
-class BruteForceKL(object):
+class ExactBNdistance(object):
     r"""
 
 
 
-    Class representing an exact KL-divergence
+    Class representing exacte computation of divergence and distance between BNs
 
     Available constructors :
 
-    	``BruteForceKL(P,Q) -> BruteForceKL``
+    	``ExactBNdistance(P,Q) -> ExactBNdistance``
 
-    	``BruteForceKL(kl) -> BruteForceKL``
+    	``ExactBNdistance(ebnd) -> ExactBNdistance``
 
     Parameters
     ----------
@@ -21679,8 +21679,8 @@ class BruteForceKL(object):
     	a Bayesian network
     Q : pyAgrum.IBayesNet
     	anotre Bayesian network
-    kl : pyAgrum.KL
-    	the KL to copy
+    ebnd : pyAgrum.ExactBNdistance
+    	the exact BNdistance to copy
 
     Raises
     ------
@@ -21694,15 +21694,15 @@ class BruteForceKL(object):
 
     def __init__(self, *args):
         r"""
-        __init__(BruteForceKL self, IBayesNet P, IBayesNet Q) -> BruteForceKL
-        __init__(BruteForceKL self, gum::KL< double > const & kl) -> BruteForceKL
+        __init__(ExactBNdistance self, IBayesNet P, IBayesNet Q) -> ExactBNdistance
+        __init__(ExactBNdistance self, gum::BNdistance< double > const & kl) -> ExactBNdistance
         """
-        _pyAgrum.BruteForceKL_swiginit(self, _pyAgrum.new_BruteForceKL(*args))
-    __swig_destroy__ = _pyAgrum.delete_BruteForceKL
+        _pyAgrum.ExactBNdistance_swiginit(self, _pyAgrum.new_ExactBNdistance(*args))
+    __swig_destroy__ = _pyAgrum.delete_ExactBNdistance
 
     def compute(self) -> "PyObject *":
         r"""
-        compute(BruteForceKL self) -> PyObject *
+        compute(ExactBNdistance self) -> PyObject *
 
         Returns
         -------
@@ -21710,24 +21710,24 @@ class BruteForceKL(object):
         	a dictionnary containing the different values after the computation.
 
         """
-        return _pyAgrum.BruteForceKL_compute(self)
+        return _pyAgrum.ExactBNdistance_compute(self)
 
 
-# Register BruteForceKL in _pyAgrum:
-_pyAgrum.BruteForceKL_swigregister(BruteForceKL)
+# Register ExactBNdistance in _pyAgrum:
+_pyAgrum.ExactBNdistance_swigregister(ExactBNdistance)
 
-class GibbsKL(ApproximationScheme):
+class GibbsBNdistance(ApproximationScheme):
     r"""
 
 
 
-    Class representing a Gibbs-Approximated KL-divergence 
+    Class representing a Gibbs-Approximated computation of divergence and distance between BNs
 
     Available constructors :
 
-    	``GibbsKL(P,Q) -> GibbsKL``
+    	``GibbsBNdistance(P,Q) -> GibbsBNdistance``
 
-    	``GibbsKL(kl) -> GibbsKL``
+    	``GibbsBNdistance(gbnd) -> GibbsBNdistance``
 
     Parameters
     ----------
@@ -21735,12 +21735,12 @@ class GibbsKL(ApproximationScheme):
     	a Bayesian network
     Q : pyAgrum.IBayesNet
     	anotre Bayesian network
-    kl : pyAgrum.KL
-    	the KL to copy
+    gbnd : pyAgrum.GibbsBNdistance
+    	the Gibbs BNdistance to copy
 
     Raises
     ------
-    gum.OperationNotAllowed 
+    gum.OperationNotAllowed
     	If the 2BNs have not the same domain size of compatible node sets
 
     """
@@ -21750,15 +21750,15 @@ class GibbsKL(ApproximationScheme):
 
     def __init__(self, *args):
         r"""
-        __init__(GibbsKL self, IBayesNet P, IBayesNet Q) -> GibbsKL
-        __init__(GibbsKL self, gum::KL< double > const & kl) -> GibbsKL
+        __init__(GibbsBNdistance self, IBayesNet P, IBayesNet Q) -> GibbsBNdistance
+        __init__(GibbsBNdistance self, gum::BNdistance< double > const & kl) -> GibbsBNdistance
         """
-        _pyAgrum.GibbsKL_swiginit(self, _pyAgrum.new_GibbsKL(*args))
-    __swig_destroy__ = _pyAgrum.delete_GibbsKL
+        _pyAgrum.GibbsBNdistance_swiginit(self, _pyAgrum.new_GibbsBNdistance(*args))
+    __swig_destroy__ = _pyAgrum.delete_GibbsBNdistance
 
     def setBurnIn(self, b: 'gum::Size') -> "void":
         r"""
-        setBurnIn(GibbsKL self, gum::Size b)
+        setBurnIn(GibbsBNdistance self, gum::Size b)
 
         Parameters
         ----------
@@ -21766,12 +21766,12 @@ class GibbsKL(ApproximationScheme):
         	size of burn in on number of iteration
 
         """
-        return _pyAgrum.GibbsKL_setBurnIn(self, b)
+        return _pyAgrum.GibbsBNdistance_setBurnIn(self, b)
 
 
     def burnIn(self) -> "gum::Size":
         r"""
-        burnIn(GibbsKL self) -> gum::Size
+        burnIn(GibbsBNdistance self) -> gum::Size
 
         Returns
         -------
@@ -21779,12 +21779,12 @@ class GibbsKL(ApproximationScheme):
         	size of burn in on number of iteration
 
         """
-        return _pyAgrum.GibbsKL_burnIn(self)
+        return _pyAgrum.GibbsBNdistance_burnIn(self)
 
 
     def compute(self) -> "PyObject *":
         r"""
-        compute(GibbsKL self) -> PyObject *
+        compute(GibbsBNdistance self) -> PyObject *
 
         Returns
         -------
@@ -21792,12 +21792,12 @@ class GibbsKL(ApproximationScheme):
         	a dictionnary containing the different values after the computation.
 
         """
-        return _pyAgrum.GibbsKL_compute(self)
+        return _pyAgrum.GibbsBNdistance_compute(self)
 
 
     def setVerbosity(self, v: 'bool') -> "void":
         r"""
-        setVerbosity(GibbsKL self, bool v)
+        setVerbosity(GibbsBNdistance self, bool v)
 
         Parameters
         ----------
@@ -21805,12 +21805,12 @@ class GibbsKL(ApproximationScheme):
                 verbosity
 
         """
-        return _pyAgrum.GibbsKL_setVerbosity(self, v)
+        return _pyAgrum.GibbsBNdistance_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps: 'double') -> "void":
         r"""
-        setEpsilon(GibbsKL self, double eps)
+        setEpsilon(GibbsBNdistance self, double eps)
 
         Parameters
         ----------
@@ -21823,12 +21823,12 @@ class GibbsKL(ApproximationScheme):
         	If eps<0
 
         """
-        return _pyAgrum.GibbsKL_setEpsilon(self, eps)
+        return _pyAgrum.GibbsBNdistance_setEpsilon(self, eps)
 
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
         r"""
-        setMinEpsilonRate(GibbsKL self, double rate)
+        setMinEpsilonRate(GibbsBNdistance self, double rate)
 
         Parameters
         ----------
@@ -21836,12 +21836,12 @@ class GibbsKL(ApproximationScheme):
         	the minimal epsilon rate
 
         """
-        return _pyAgrum.GibbsKL_setMinEpsilonRate(self, rate)
+        return _pyAgrum.GibbsBNdistance_setMinEpsilonRate(self, rate)
 
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
         r"""
-        setMaxIter(GibbsKL self, gum::Size max)
+        setMaxIter(GibbsBNdistance self, gum::Size max)
 
         Parameters
         ----------
@@ -21854,12 +21854,12 @@ class GibbsKL(ApproximationScheme):
         	If max <= 1
 
         """
-        return _pyAgrum.GibbsKL_setMaxIter(self, max)
+        return _pyAgrum.GibbsBNdistance_setMaxIter(self, max)
 
 
     def setMaxTime(self, timeout: 'double') -> "void":
         r"""
-        setMaxTime(GibbsKL self, double timeout)
+        setMaxTime(GibbsBNdistance self, double timeout)
 
         Parameters
         ----------
@@ -21872,12 +21872,12 @@ class GibbsKL(ApproximationScheme):
         	If timeout<=0.0
 
         """
-        return _pyAgrum.GibbsKL_setMaxTime(self, timeout)
+        return _pyAgrum.GibbsBNdistance_setMaxTime(self, timeout)
 
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
         r"""
-        setPeriodSize(GibbsKL self, gum::Size p)
+        setPeriodSize(GibbsBNdistance self, gum::Size p)
 
         Parameters
         ----------
@@ -21890,12 +21890,12 @@ class GibbsKL(ApproximationScheme):
         	If p<1
 
         """
-        return _pyAgrum.GibbsKL_setPeriodSize(self, p)
+        return _pyAgrum.GibbsBNdistance_setPeriodSize(self, p)
 
 
     def verbosity(self) -> "bool":
         r"""
-        verbosity(GibbsKL self) -> bool
+        verbosity(GibbsBNdistance self) -> bool
 
         Returns
         -------
@@ -21903,12 +21903,12 @@ class GibbsKL(ApproximationScheme):
         	True if the verbosity is enabled
 
         """
-        return _pyAgrum.GibbsKL_verbosity(self)
+        return _pyAgrum.GibbsBNdistance_verbosity(self)
 
 
     def epsilon(self) -> "double":
         r"""
-        epsilon(GibbsKL self) -> double
+        epsilon(GibbsBNdistance self) -> double
 
         Returns
         -------
@@ -21916,12 +21916,12 @@ class GibbsKL(ApproximationScheme):
         	the value of epsilon
 
         """
-        return _pyAgrum.GibbsKL_epsilon(self)
+        return _pyAgrum.GibbsBNdistance_epsilon(self)
 
 
     def minEpsilonRate(self) -> "double":
         r"""
-        minEpsilonRate(GibbsKL self) -> double
+        minEpsilonRate(GibbsBNdistance self) -> double
 
         Returns
         -------
@@ -21929,12 +21929,12 @@ class GibbsKL(ApproximationScheme):
         	the value of the minimal epsilon rate
 
         """
-        return _pyAgrum.GibbsKL_minEpsilonRate(self)
+        return _pyAgrum.GibbsBNdistance_minEpsilonRate(self)
 
 
     def maxIter(self) -> "gum::Size":
         r"""
-        maxIter(GibbsKL self) -> gum::Size
+        maxIter(GibbsBNdistance self) -> gum::Size
 
         Returns
         -------
@@ -21942,12 +21942,12 @@ class GibbsKL(ApproximationScheme):
         	the criterion on number of iterations
 
         """
-        return _pyAgrum.GibbsKL_maxIter(self)
+        return _pyAgrum.GibbsBNdistance_maxIter(self)
 
 
     def maxTime(self) -> "double":
         r"""
-        maxTime(GibbsKL self) -> double
+        maxTime(GibbsBNdistance self) -> double
 
         Returns
         -------
@@ -21955,12 +21955,12 @@ class GibbsKL(ApproximationScheme):
         	the timeout(in seconds)
 
         """
-        return _pyAgrum.GibbsKL_maxTime(self)
+        return _pyAgrum.GibbsBNdistance_maxTime(self)
 
 
     def periodSize(self) -> "gum::Size":
         r"""
-        periodSize(GibbsKL self) -> gum::Size
+        periodSize(GibbsBNdistance self) -> gum::Size
 
         Returns
         -------
@@ -21973,12 +21973,12 @@ class GibbsKL(ApproximationScheme):
         	If p<1
 
         """
-        return _pyAgrum.GibbsKL_periodSize(self)
+        return _pyAgrum.GibbsBNdistance_periodSize(self)
 
 
     def nbrIterations(self) -> "gum::Size":
         r"""
-        nbrIterations(GibbsKL self) -> gum::Size
+        nbrIterations(GibbsBNdistance self) -> gum::Size
 
         Returns
         -------
@@ -21986,12 +21986,12 @@ class GibbsKL(ApproximationScheme):
         	the number of iterations
 
         """
-        return _pyAgrum.GibbsKL_nbrIterations(self)
+        return _pyAgrum.GibbsBNdistance_nbrIterations(self)
 
 
     def currentTime(self) -> "double":
         r"""
-        currentTime(GibbsKL self) -> double
+        currentTime(GibbsBNdistance self) -> double
 
         Returns
         -------
@@ -21999,12 +21999,12 @@ class GibbsKL(ApproximationScheme):
         	get the current running time in second (double)
 
         """
-        return _pyAgrum.GibbsKL_currentTime(self)
+        return _pyAgrum.GibbsBNdistance_currentTime(self)
 
 
     def messageApproximationScheme(self) -> "std::string":
         r"""
-        messageApproximationScheme(GibbsKL self) -> std::string
+        messageApproximationScheme(GibbsBNdistance self) -> std::string
 
         Returns
         -------
@@ -22012,12 +22012,12 @@ class GibbsKL(ApproximationScheme):
         	the approximation scheme message
 
         """
-        return _pyAgrum.GibbsKL_messageApproximationScheme(self)
+        return _pyAgrum.GibbsBNdistance_messageApproximationScheme(self)
 
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
         r"""
-        history(GibbsKL self) -> Vector
+        history(GibbsBNdistance self) -> Vector
 
         Returns
         -------
@@ -22030,24 +22030,24 @@ class GibbsKL(ApproximationScheme):
         	If the scheme did not performed or if verbosity is set to false
 
         """
-        return _pyAgrum.GibbsKL_history(self)
+        return _pyAgrum.GibbsBNdistance_history(self)
 
 
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
         r"""
-        asIApproximationSchemeConfiguration(GibbsKL self) -> IApproximationSchemeConfiguration
+        asIApproximationSchemeConfiguration(GibbsBNdistance self) -> IApproximationSchemeConfiguration
 
         Returns
         -------
         asIApproximationSchemeConfiguration
 
         """
-        return _pyAgrum.GibbsKL_asIApproximationSchemeConfiguration(self)
+        return _pyAgrum.GibbsBNdistance_asIApproximationSchemeConfiguration(self)
 
 
     def nbrDrawnVar(self) -> "gum::Size":
         r"""
-        nbrDrawnVar(GibbsKL self) -> gum::Size
+        nbrDrawnVar(GibbsBNdistance self) -> gum::Size
 
         Returns
         -------
@@ -22055,12 +22055,12 @@ class GibbsKL(ApproximationScheme):
           the number of variable drawn at each iteration
 
         """
-        return _pyAgrum.GibbsKL_nbrDrawnVar(self)
+        return _pyAgrum.GibbsBNdistance_nbrDrawnVar(self)
 
 
     def setNbrDrawnVar(self, _nbr: 'gum::Size') -> "void":
         r"""
-        setNbrDrawnVar(GibbsKL self, gum::Size _nbr)
+        setNbrDrawnVar(GibbsBNdistance self, gum::Size _nbr)
 
         Parameters
         ----------
@@ -22068,12 +22068,12 @@ class GibbsKL(ApproximationScheme):
           the number of variables to be drawn at each iteration
 
         """
-        return _pyAgrum.GibbsKL_setNbrDrawnVar(self, _nbr)
+        return _pyAgrum.GibbsBNdistance_setNbrDrawnVar(self, _nbr)
 
 
     def isDrawnAtRandom(self) -> "bool":
         r"""
-        isDrawnAtRandom(GibbsKL self) -> bool
+        isDrawnAtRandom(GibbsBNdistance self) -> bool
 
         Returns
         -------
@@ -22081,12 +22081,12 @@ class GibbsKL(ApproximationScheme):
           True if variables are drawn at random
 
         """
-        return _pyAgrum.GibbsKL_isDrawnAtRandom(self)
+        return _pyAgrum.GibbsBNdistance_isDrawnAtRandom(self)
 
 
     def setDrawnAtRandom(self, _atRandom: 'bool') -> "void":
         r"""
-        setDrawnAtRandom(GibbsKL self, bool _atRandom)
+        setDrawnAtRandom(GibbsBNdistance self, bool _atRandom)
 
         Parameters
         ----------
@@ -22094,11 +22094,11 @@ class GibbsKL(ApproximationScheme):
           indicates if variables should be drawn at random
 
         """
-        return _pyAgrum.GibbsKL_setDrawnAtRandom(self, _atRandom)
+        return _pyAgrum.GibbsBNdistance_setDrawnAtRandom(self, _atRandom)
 
 
-# Register GibbsKL in _pyAgrum:
-_pyAgrum.GibbsKL_swigregister(GibbsKL)
+# Register GibbsBNdistance in _pyAgrum:
+_pyAgrum.GibbsBNdistance_swigregister(GibbsBNdistance)
 
 class CredalNet(object):
     r"""

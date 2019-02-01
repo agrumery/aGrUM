@@ -42,7 +42,7 @@ from .pyAgrum import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, CliqueGraph
 from .pyAgrum import BayesNet, EssentialGraph, MarkovBlanket
 from .pyAgrum import DiscretizedVariable, LabelizedVariable, RangeVariable, DiscreteVariable
 from .pyAgrum import Potential, Instantiation, Potential
-from .pyAgrum import BruteForceKL, GibbsKL, StructuralComparator
+from .pyAgrum import ExactBNdistance, GibbsBNdistance, StructuralComparator
 from .pyAgrum import LazyPropagation, ShaferShenoyInference, VariableElimination
 from .pyAgrum import LoopyBeliefPropagation, GibbsSampling, MonteCarloSampling, ImportanceSampling, WeightedSampling
 from .pyAgrum import LoopyImportanceSampling,LoopyGibbsSampling,LoopyWeightedSampling,LoopyMonteCarloSampling
@@ -72,7 +72,7 @@ __all__=[
   'BayesNet','EssentialGraph'
   'DiscretizedVariable','LabelizedVariable','RangeVariable','DiscreteVariable',
   'Potential','Instantiation','Potential',
-  'BruteForceKL','GibbsKL','StructuralComparator',
+  'ExactBNdistance','GibbsBNdistance','StructuralComparator',
   'LoopyBeliefPropagation','GibbsSampling','MonteCarloSampling', 'ImportanceSampling', 'WeightedSampling',
   'LoopyImportanceSampling','LoopyGibbsSampling','LoopyWeightedSampling','LoopyMonteCarloSampling'
   'LazyPropagation','ShaferShenoyInference','VariableElimination',
