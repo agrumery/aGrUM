@@ -202,7 +202,7 @@ def configureOptions(current):
                         dest="mvsc32",
                         default=False)
   cfg.parser.add_option("", "--mingw64",
-                        help="use minGW64 (Windows only).",
+                        help="use minGW64 C++ Compiler (Windows only).",
                         action="store_true",
                         dest="mingw64",
                         default=False)

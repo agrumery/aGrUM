@@ -42,6 +42,11 @@ def main():
     options.no_fun=True
     msvcForced=True
 
+  mingwForced=False
+  if options.mingw64:
+    options.no_fun=True
+    mingwForced=True
+    
   pyAgrumForced=False
   if "pyAgrum" in args:
     options.static_lib=True
@@ -54,6 +59,10 @@ def main():
 
   if msvcForced:
     notif("Options [static] and [no-fun] forced by option [mvsc] or [mvsc32]")
+    print()
+
+  if mingwForced:
+    notif("Options [no-fun] forced by option [mingw64]")
     print()
 
   if pyAgrumForced:

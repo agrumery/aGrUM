@@ -15,7 +15,8 @@ linux_agrum:
       - build/
   stage: build
   script:
-    - if ! python3 act --no-fun test release aGrUM --python=3 -j 4; then python3 act clean && python3 act --no-fun test release aGrUM --python=3 -j 4; fi
+    - python3 act clean
+    - python3 act --no-fun test release aGrUM --python=3 -j $(expr $(nproc --all) / 2 - 1)
   retry: 2
 
 linux_pyagrum:
@@ -28,7 +29,8 @@ linux_pyagrum:
       - build/
   stage: build
   script:
-    - if ! python3 act --no-fun test release pyAgrum --python=3 -j 4 -t quick; then python3 act clean && python3 act --no-fun test release pyAgrum --python=3 -j 4 -t quick; fi
+    - python3 act clean
+    - python3 act --no-fun test release pyAgrum --python=3 -j $(expr $(nproc --all) / 2 - 1) -t quick
   retry: 2
 
 ################################################################################
@@ -52,8 +54,8 @@ macos_agrum:
   script:
     - . /Users/agrum/miniconda3/etc/profile.d/conda.sh
     - conda activate py37
-    - if ! python3 act --no-fun lib release aGrUM --python=3 -j 3; then python3 act clean && python3 act --no-fun lib release aGrUM --python=3 -j 3; fi
-    - python act --no-fun test release aGrUM --python=3 -j 3
+    - python act clean
+    - python act --no-fun test release aGrUM --python=3 -j $(expr $(sysctl -n hw.ncpu) - 1)
     - conda deactivate
   retry: 2
 
@@ -75,8 +77,8 @@ macos_pyagrum:
   script:
     - . /Users/agrum/miniconda3/etc/profile.d/conda.sh
     - conda activate py37
-    - if ! python3 act --no-fun lib release aGrUM --python=3 -j 3; then python3 act clean && python3 act --no-fun lib release aGrUM --python=3 -j 3; fi
-    - python act --no-fun test release pyAgrum --python=3 -t quick -j 3
+    - python act clean
+    - python act --no-fun test release pyAgrum --python=3 -t quick -j $(expr $(sysctl -n hw.ncpu) - 1)
     - conda deactivate
   retry: 2
 
@@ -100,7 +102,7 @@ windows_agrum:
   stage: build
   script:
     - python act clean
-    - python act --no-fun test release aGrUM --no-fun --mvsc -d build -j 3
+    - python act --no-fun test release aGrUM --no-fun --mvsc -d build -j 7
   retry: 2
 
 windows_pyagrum:
@@ -120,7 +122,7 @@ windows_pyagrum:
   stage: build
   script:
     - python act clean
-    - python act --no-fun test release pyAgrum --no-fun --mvsc -d build -j 3 -t quick
+    - python act --no-fun test release pyAgrum --no-fun --mvsc -d build -j 7 -t quick
   retry: 2
 
 ################################################################################

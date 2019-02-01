@@ -24,12 +24,6 @@
 
 #include <agrum/core/exceptions.h>
 
-
-/*
-#include <agrum/BN/BayesNet.h>
-#include <agrum/BN/inference/ShaferShenoyInference.h>
-#include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/BN/inference/loopyBeliefPropagation.h>
 #include <agrum/multidim/ICIModels/multiDimLogit.h>
 #include <agrum/multidim/potential.h>
 #include <agrum/variables/labelizedVariable.h>
@@ -39,7 +33,7 @@ namespace gum_tests {
 
   class MultiDimLogitTestSuite : public CxxTest::TestSuite {
     public:
-    void xtestCreationLogit() {
+    void testCreationLogit() {
       gum::LabelizedVariable a("a", "", 2), b("b", "", 2), c("c", "", 2),
         d("d", "", 2);
       gum::MultiDimLogit< double > p(0.2f);
@@ -70,7 +64,7 @@ namespace gum_tests {
                        "a<0,1>=logit(0.2 +0.4*b<0,1> -1.3*c<0,1> +0.7*d<0,1>)");
     }
 
-    void xtestComputationInLogit() {
+    void testComputationInLogit() {
       // from "Pratique de la Régression Logique" / Ricco Rakotomalala / p33
       gum::RangeVariable     age("age", "", 35, 67);
       gum::RangeVariable     taux("taux", "", 115, 171);
@@ -122,7 +116,7 @@ namespace gum_tests {
       }
     }
 
-    void xtestComputationInLogit2() {
+    void testComputationInLogit2() {
       gum::LabelizedVariable lazy("lazy", "", 2);
       gum::LabelizedVariable degree("degree", "", 2);
       gum::LabelizedVariable motivation("motivation", "", 2);
@@ -191,83 +185,7 @@ namespace gum_tests {
       }
     }
 
-    void xtestLogitInBN() {
-      gum::BayesNet< double > bn;
-
-      gum::LabelizedVariable cold("Cold", "", 2);
-      gum::LabelizedVariable flu("Flu", "", 2);
-      gum::LabelizedVariable malaria("Malaria", "", 2);
-      gum::LabelizedVariable fever("Fever", "", 2);
-      gum::LabelizedVariable oneMore("OneMore", "", 2);
-      gum::LabelizedVariable oneMoreParent1("OneMoreParent1", "", 2);
-      gum::LabelizedVariable oneMoreParent2("OneMoreParent2", "", 2);
-
-      gum::NodeId idCold = bn.add(cold);
-      gum::NodeId idFlu = bn.add(flu);
-      gum::NodeId idMalaria = bn.add(malaria);
-      gum::NodeId idFever = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(idFever = bn.addLogit(fever, 0.3f));
-      gum::NodeId idOneMore = bn.add(oneMore);
-      gum::NodeId idOneMoreParent1 = bn.add(oneMoreParent1);
-      gum::NodeId idOneMoreParent2 = bn.add(oneMoreParent2);
-
-      bn.addWeightedArc(idMalaria, idFever, 0.9f);
-      bn.addWeightedArc(idFlu, idFever, 0.8f);
-      bn.addWeightedArc(idCold, idFever, 0.4f);
-
-      TS_ASSERT_THROWS(bn.addWeightedArc(idMalaria, idCold, 0.8f),
-                       gum::InvalidArc);
-
-      const gum::Potential< double >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
-      // FILLING PARAMS
-      pOneMoreParent1.fillWith({0.2f, 0.8f});
-
-      const gum::Potential< double >& pOneMoreParent2 = bn.cpt(idOneMoreParent2);
-      // FILLING PARAMS
-      pOneMoreParent2.fillWith({0.3f, 0.7f});
-
-      bn.addArc(idOneMoreParent1, idOneMore);
-      bn.addArc(idFever, idOneMore);
-      bn.addArc(idOneMoreParent2, idOneMore);
-      const gum::Potential< double >& pOneMore = bn.cpt(idOneMore);
-      const gum::Potential< double >& p = bn.cpt(idFever);
-
-      gum::Instantiation i(p);
-
-      // FILLING PARAMS
-      // clang-format off
-      pOneMore.fillWith(
-                        {0.1f,0.9f,
-                         0.8f,0.2f,
-                         0.1f,0.9f,
-                         0.8f,0.2f,
-                         0.1f,0.9f,
-                         0.8f,0.2f,
-                         0.1f,0.9f,
-                         0.8f,0.2f});
-
-      float witness[] =
-                        {0.42555748318834097f,0.574442516811659f,
-                         0.23147521650098246f,0.7685247834990175f,
-                         0.2497398944048823f,0.7502601055951177f,
-                         0.11920292202211769f,0.8807970779778823f,
-                         0.33181222783183384f,0.6681877721681662f,
-                         0.16798161486607555f,0.8320183851339245f,
-                         0.18242552380635635f,0.8175744761936437f,
-                         0.08317269649392234f,0.9168273035060777f};
-      // clang-format on
-
-      int j = 0;
-
-      for (i.setFirst(); !i.end(); ++i, j++) {
-        TS_ASSERT_DELTA(p[i], witness[j], 1e-6);
-      }
-
-      gum::LazyPropagation< double > inf_LazyProp(&bn);
-
-      inf_LazyProp.makeInference();
-    }
   };
 }   // namespace gum_tests
 
-*/
+
