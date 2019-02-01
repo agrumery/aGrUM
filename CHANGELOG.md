@@ -1,5 +1,22 @@
 # aGrUM Changelog
 
+## Changelog for 0.14.0
+
+* aGrUM
+  * support for mingw64 + bugfix for mingw
+  * Access to scores from BNLearner : BNLearner::Chi2 and BNLearner::loglikelihood
+  * bug fix in KL[...]::bhattacharya
+  * add KL[...]::jsd (Jensen-Shannon divergence)
+  * renaming gum::[...]]KL classes into gum::[...]distance because they provide acces to KL but also to Hellinger, Bhattacharya distances and Jensen-Shanon divergence.
+* pyAgrum
+  * gum.causality (do-calculus and causal identification !)
+  * JunctionTreeGenerator (formerly JTGenerator) can now expose the eliminationOrder and can drive the triangulation with a partial order of the nodes.
+  * bug fix in pyAgrum.lib.notebook
+  * bug fix in KL[...]::bhattacharya
+  * add KL[...]::jsd (Jensen-Shannon divergence)
+  * renaming gum::[...]]KL classes into gum::[...]distance because they provide acces to KL but also to Hellinger, Bhattacharya distances and Jensen-Shanon divergence. 
+  * fix some scratches in pyAgrum documentation
+
 ## Changelog for 0.13.6
 
 * aGrUM
