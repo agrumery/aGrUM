@@ -53,8 +53,8 @@ Causality in pyAgrum
 
   Causal
 
-Python helpers : pyAgrum.lib
-============================
+pyAgrum.lib
+===========
 
 pyAgrum.lib is a set of python tools.
 
