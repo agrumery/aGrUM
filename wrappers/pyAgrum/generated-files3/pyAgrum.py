@@ -24913,22 +24913,71 @@ class BNLearner(object):
 
 
     def learnDAG(self) -> "gum::DAG":
-        r"""learnDAG(BNLearner self) -> DAG"""
+        r"""
+        learnDAG(BNLearner self) -> DAG
+
+        learn a structure from a file
+
+        Returns
+        -------
+        pyAgrum.DAG
+        	the learned DAG
+
+        """
         return _pyAgrum.BNLearner_learnDAG(self)
 
 
     def names(self) -> "std::vector< std::string,std::allocator< std::string > > const &":
-        r"""names(BNLearner self) -> Vector_string"""
+        r"""
+        names(BNLearner self) -> Vector_string
+
+        Returns
+        -------
+        List[str]
+        	the names of the variables in the database
+
+        """
         return _pyAgrum.BNLearner_names(self)
 
 
     def idFromName(self, var_name: 'std::string const &') -> "gum::NodeId":
-        r"""idFromName(BNLearner self, std::string const & var_name) -> gum::NodeId"""
+        r"""
+        idFromName(BNLearner self, std::string const & var_name) -> gum::NodeId
+
+        Parameters
+        ----------
+        var_names : str
+        	a variable's name
+
+        Returns
+        -------
+        int
+        	the column id corresponding to a variable name
+
+        Raises
+        ------
+        gum.MissingVariableInDatabase
+        	If a variable of the BN is not found in the database.
+
+        """
         return _pyAgrum.BNLearner_idFromName(self, var_name)
 
 
     def nameFromId(self, id: 'gum::NodeId') -> "std::string const &":
-        r"""nameFromId(BNLearner self, gum::NodeId id) -> std::string const &"""
+        r"""
+        nameFromId(BNLearner self, gum::NodeId id) -> std::string const &
+
+        Parameters
+        ----------
+        id
+        	a node id
+
+        Returns
+        -------
+        str
+        	the variable's name
+
+        """
         return _pyAgrum.BNLearner_nameFromId(self, id)
 
 
@@ -24963,12 +25012,32 @@ class BNLearner(object):
 
 
     def setAprioriWeight(self, weight: 'double') -> "void":
-        r"""setAprioriWeight(BNLearner self, double weight)"""
+        r"""
+        setAprioriWeight(BNLearner self, double weight)
+
+        Set the weigth of the prior
+
+        Parameters
+        ----------
+        weight : double
+        	the apriori weight
+
+        """
         return _pyAgrum.BNLearner_setAprioriWeight(self, weight)
 
 
     def setDatabaseWeight(self, new_weight: 'double const') -> "void":
-        r"""setDatabaseWeight(BNLearner self, double const new_weight)"""
+        r"""
+        setDatabaseWeight(BNLearner self, double const new_weight)
+
+        Set the database weight.
+
+        Parameters
+        ----------
+        weight : double
+        	the database weight
+
+        """
         return _pyAgrum.BNLearner_setDatabaseWeight(self, new_weight)
 
 
@@ -25003,6 +25072,17 @@ class BNLearner(object):
         useLocalSearchWithTabuList(BNLearner self, gum::Size tabu_size=100, gum::Size nb_decrease=2)
         useLocalSearchWithTabuList(BNLearner self, gum::Size tabu_size=100)
         useLocalSearchWithTabuList(BNLearner self)
+
+        Indicate that we wish to use a local search with tabu list
+
+        Parameters
+        ----------
+        tabu_size : int
+                The size of the tabu list
+
+        nb_decrease : int
+                The max number of changes decreasing the score consecutively that we allow to apply
+
         """
         return _pyAgrum.BNLearner_useLocalSearchWithTabuList(self, *args)
 
@@ -25012,6 +25092,14 @@ class BNLearner(object):
         useK2(BNLearner self, PyObject * l)
         useK2(BNLearner self, gum::Sequence< gum::NodeId > const & order)
         useK2(BNLearner self, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const & order)
+
+        Indicate that we wish to use K2.
+
+        Parameters
+        ----------
+        order : list
+                a list of ids
+
         """
         return _pyAgrum.BNLearner_useK2(self, *args)
 
@@ -25026,6 +25114,14 @@ class BNLearner(object):
         setSliceOrder(BNLearner self, PyObject * l)
         setSliceOrder(BNLearner self, gum::NodeProperty< gum::NodeId > const & slice_order)
         setSliceOrder(BNLearner self, std::vector< std::vector< std::string,std::allocator< std::string > >,std::allocator< std::vector< std::string,std::allocator< std::string > > > > const & slices)
+
+        Set a partial order on the nodes.
+
+        Parameters
+        ----------
+        l : list
+                a list of sequences (composed of ids of rows or string)
+
         """
         return _pyAgrum.BNLearner_setSliceOrder(self, *args)
 
@@ -25035,6 +25131,22 @@ class BNLearner(object):
         addForbiddenArc(BNLearner self, Arc arc)
         addForbiddenArc(BNLearner self, gum::NodeId const tail, gum::NodeId const head)
         addForbiddenArc(BNLearner self, std::string const & tail, std::string const & head)
+
+        The arc in parameters won't be added.
+
+        Parameters
+        ----------
+        arc : pyAgrum.Arc
+        	an arc
+        head :
+        	a variable's id (int)
+        tail :
+        	a variable's id (int)
+        head :
+        	a variable's name (str)
+        tail :
+        	a variable's name (str)
+
         """
         return _pyAgrum.BNLearner_addForbiddenArc(self, *args)
 
@@ -25044,6 +25156,22 @@ class BNLearner(object):
         eraseForbiddenArc(BNLearner self, Arc arc)
         eraseForbiddenArc(BNLearner self, gum::NodeId const tail, gum::NodeId const head)
         eraseForbiddenArc(BNLearner self, std::string const & tail, std::string const & head)
+
+        Allow the arc in parameter to be added if necessary.
+
+        Parameters
+        ----------
+        arc : pyAgrum
+        	an arc
+        head :
+        	a variable's id (int)
+        tail :
+        	a variable's id (int)
+        head :
+        	a variable's name (str)
+        tail :
+        	a variable's name (str)
+
         """
         return _pyAgrum.BNLearner_eraseForbiddenArc(self, *args)
 
@@ -25053,6 +25181,27 @@ class BNLearner(object):
         addMandatoryArc(BNLearner self, Arc arc)
         addMandatoryArc(BNLearner self, gum::NodeId const tail, gum::NodeId const head)
         addMandatoryArc(BNLearner self, std::string const & tail, std::string const & head)
+
+        Allow to add prior structural knowledge.
+
+        Parameters
+        ----------
+        arc : pyAgrum.Arc
+        	an arc
+        head :
+        	a variable's id (int)
+        tail :
+        	a variable's id (int)
+        head :
+        	a variable's name (str)
+        tail :
+        	a variable's name (str)
+
+        Raises
+        ------
+        gum.InvalidDirectedCycle
+        	If the added arc creates a directed cycle in the DAG
+
         """
         return _pyAgrum.BNLearner_addMandatoryArc(self, *args)
 
@@ -25062,37 +25211,111 @@ class BNLearner(object):
         eraseMandatoryArc(BNLearner self, Arc arc)
         eraseMandatoryArc(BNLearner self, gum::NodeId const tail, gum::NodeId const head)
         eraseMandatoryArc(BNLearner self, std::string const & tail, std::string const & head)
+
+        Parameters
+        ----------
+        arc : pyAgrum
+        	an arc
+        head :
+        	a variable's id (int)
+        tail :
+        	a variable's id (int)
+        head :
+        	a variable's name (str)
+        tail :
+        	a variable's name (str)
+
         """
         return _pyAgrum.BNLearner_eraseMandatoryArc(self, *args)
 
 
     def useEM(self, epsilon: 'double const') -> "void":
-        r"""useEM(BNLearner self, double const epsilon)"""
+        r"""
+        useEM(BNLearner self, double const epsilon)
+
+        Indicates if we use EM for parameter learning.
+
+        Parameters
+        ----------
+        epsilon : double
+        	if epsilon=0.0 then EM is not used
+        	if epsilon>0 then EM is used and stops when the sum of the cumulative squared error on parameters is les than epsilon.
+
+        """
         return _pyAgrum.BNLearner_useEM(self, epsilon)
 
 
     def hasMissingValues(self) -> "bool":
-        r"""hasMissingValues(BNLearner self) -> bool"""
+        r"""
+        hasMissingValues(BNLearner self) -> bool
+
+        Indicates wether there are missing values in the database.
+
+        Returns
+        -------
+        bool
+            True if there are some missing values in the database.
+
+        """
         return _pyAgrum.BNLearner_hasMissingValues(self)
 
 
-    def LL(self, *args) -> "double":
+    def logLikelihood(self, *args) -> "double":
         r"""
-        LL(BNLearner self, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const & vars, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const & knowing) -> double
-        LL(BNLearner self, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const & vars) -> double
-        LL(BNLearner self, Vector_string vars, Vector_string knowing) -> double
-        LL(BNLearner self, Vector_string vars) -> double
+        logLikelihood(BNLearner self, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const & vars, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const & knowing) -> double
+        logLikelihood(BNLearner self, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const & vars) -> double
+        logLikelihood(BNLearner self, Vector_string vars, Vector_string knowing) -> double
+        logLikelihood(BNLearner self, Vector_string vars) -> double
+
+        logLikelihood computes the log-likelihood for the columns in vars, given the columns in the list knowing (optional)
+
+
+        Parameters
+        ----------
+        vars: List[str]
+        	the name of the columns of interest
+
+        knowing : List[str]
+        	the (optional) list of names of conditioning columns
+
+        Returns
+        -------
+        double
+        	the log-likelihood (base 2)
+
         """
-        return _pyAgrum.BNLearner_LL(self, *args)
+        return _pyAgrum.BNLearner_logLikelihood(self, *args)
 
 
     def nbRows(self) -> "gum::Size":
-        r"""nbRows(BNLearner self) -> gum::Size"""
+        r"""
+        nbRows(BNLearner self) -> gum::Size
+
+        Return the number of row in the database
+
+
+        Returns
+        -------
+        int
+        	the number of rows in the database 
+
+        """
         return _pyAgrum.BNLearner_nbRows(self)
 
 
     def nbCols(self) -> "gum::Size":
-        r"""nbCols(BNLearner self) -> gum::Size"""
+        r"""
+        nbCols(BNLearner self) -> gum::Size
+
+        Return the nimber of columns in the database
+
+
+        Returns
+        -------
+        int
+        	the number of columns in the database 
+
+        """
         return _pyAgrum.BNLearner_nbCols(self)
 
 
