@@ -948,8 +948,8 @@ namespace gum {
       return chi2(idFromName(name1), idFromName(name2), knowingIds);
     }
 
-    double genericBNLearner::LL(const std::vector< NodeId >& vars,
-                                const std::vector< NodeId >& knowing) {
+    double genericBNLearner::logLikelihood(const std::vector< NodeId >& vars,
+                                           const std::vector< NodeId >& knowing) {
       __createApriori();
       DBRowGeneratorParser<> parser(__score_database.databaseTable().handler(),
                                     DBRowGeneratorSet<>());
@@ -967,8 +967,9 @@ namespace gum {
       }
     }
 
-    double genericBNLearner::LL(const std::vector< std::string >& vars,
-                                const std::vector< std::string >& knowing) {
+    double
+       genericBNLearner::logLikelihood(const std::vector< std::string >& vars,
+                                       const std::vector< std::string >& knowing) {
       std::vector< NodeId > ids;
       std::vector< NodeId > knowingIds;
 
@@ -980,7 +981,7 @@ namespace gum {
       std::transform(
          knowing.begin(), knowing.end(), std::back_inserter(knowingIds), mapper);
 
-      return LL(ids, knowingIds);
+      return logLikelihood(ids, knowingIds);
     }
 
 

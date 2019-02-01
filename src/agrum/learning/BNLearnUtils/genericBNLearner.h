@@ -442,8 +442,8 @@ namespace gum {
        * @param knowing an optional vector of conditioning NodeIds
        * @return a std::pair<double,double>
        */
-      double LL(const std::vector< NodeId >& vars,
-                const std::vector< NodeId >& knowing = {});
+      double logLikelihood(const std::vector< NodeId >& vars,
+                           const std::vector< NodeId >& knowing = {});
 
       /**
        * Return the loglikelihood of vars in the base, conditioned by knowing for
@@ -452,8 +452,8 @@ namespace gum {
        * @param knowing an optional vector of conditioning rows
        * @return a std::pair<double,double>
        */
-      double LL(const std::vector< std::string >& vars,
-                const std::vector< std::string >& knowing = {});
+      double logLikelihood(const std::vector< std::string >& vars,
+                           const std::vector< std::string >& knowing = {});
 
 
       /**

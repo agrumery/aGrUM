@@ -299,22 +299,22 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
     siz = -1.0 * learner.nbRows();
 
-    stat = learner.LL(["A"]) / siz  # LL=-N.H
+    stat = learner.logLikelihood(["A"]) / siz  # LL=-N.H
     self.assertAlmostEqual(stat, 0.99943499, delta=1e-5)
-    stat = learner.LL(["B"]) / siz  # LL=-N.H
+    stat = learner.logLikelihood(["B"]) / siz  # LL=-N.H
     self.assertAlmostEqual(stat, 0.9986032, delta=1e-5)
-    stat = learner.LL(["A", "B"]) / siz  # LL=-N.H
+    stat = learner.logLikelihood(["A", "B"]) / siz  # LL=-N.H
     self.assertAlmostEqual(stat, 1.9668973, delta=1e-5)
-    stat = learner.LL(["A"], ["B"]) / siz  # LL=-N.H
+    stat = learner.logLikelihood(["A"], ["B"]) / siz  # LL=-N.H
     self.assertAlmostEqual(stat, 1.9668973 - 0.9986032, delta=1e-5)
 
-    stat = learner.LL(["C"]) / siz  # LL=-N.H
+    stat = learner.logLikelihood(["C"]) / siz  # LL=-N.H
     self.assertAlmostEqual(stat, 0.99860302, delta=1e-5)
-    stat = learner.LL(["D"]) / siz  # LL=-N.H
+    stat = learner.logLikelihood(["D"]) / siz  # LL=-N.H
     self.assertAlmostEqual(stat, 0.40217919, delta=1e-5)
-    stat = learner.LL(["C", "D"]) / siz  # LL=-N.H
+    stat = learner.logLikelihood(["C", "D"]) / siz  # LL=-N.H
     self.assertAlmostEqual(stat, 1.40077995, delta=1e-5)
-    stat = learner.LL(["C"], ["D"]) / siz  # LL=-N.H
+    stat = learner.logLikelihood(["C"], ["D"]) / siz  # LL=-N.H
     self.assertAlmostEqual(stat, 1.40077995 - 0.40217919, delta=1e-5)
 
 

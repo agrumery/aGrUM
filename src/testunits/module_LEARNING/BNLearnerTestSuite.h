@@ -1244,22 +1244,22 @@ namespace gum_tests {
       double siz = -1.0 * learner.database().size();
       learner.useNoApriori();
 
-      auto stat = learner.LL({"A"}) / siz;   // LL=-N.H
+      auto stat = learner.logLikelihood({"A"}) / siz;   // LL=-N.H
       TS_ASSERT_DELTA(stat, 0.99943499, 1e-5);
-      stat = learner.LL({"B"}) / siz;   // LL=-N.H
+      stat = learner.logLikelihood({"B"}) / siz;   // LL=-N.H
       TS_ASSERT_DELTA(stat, 0.9986032, 1e-5);
-      stat = learner.LL({std::string("A"), "B"}) / siz;   // LL=-N.H
+      stat = learner.logLikelihood({std::string("A"), "B"}) / siz;   // LL=-N.H
       TS_ASSERT_DELTA(stat, 1.9668973, 1e-5);
-      stat = learner.LL({std::string("A")}, {"B"}) / siz;   // LL=-N.H
+      stat = learner.logLikelihood({std::string("A")}, {"B"}) / siz;   // LL=-N.H
       TS_ASSERT_DELTA(stat, 1.9668973 - 0.9986032, 1e-5);
 
-      stat = learner.LL({"C"}) / siz;   // LL=-N.H
+      stat = learner.logLikelihood({"C"}) / siz;   // LL=-N.H
       TS_ASSERT_DELTA(stat, 0.99860302, 1e-5);
-      stat = learner.LL({"D"}) / siz;   // LL=-N.H
+      stat = learner.logLikelihood({"D"}) / siz;   // LL=-N.H
       TS_ASSERT_DELTA(stat, 0.40217919, 1e-5);
-      stat = learner.LL({std::string("C"), "D"}) / siz;   // LL=-N.H
+      stat = learner.logLikelihood({std::string("C"), "D"}) / siz;   // LL=-N.H
       TS_ASSERT_DELTA(stat, 1.40077995, 1e-5);
-      stat = learner.LL({std::string("C")}, {"D"}) / siz;   // LL=-N.H
+      stat = learner.logLikelihood({std::string("C")}, {"D"}) / siz;   // LL=-N.H
       TS_ASSERT_DELTA(stat, 1.40077995 - 0.40217919, 1e-5);
     }
   };
