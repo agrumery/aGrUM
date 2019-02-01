@@ -89,7 +89,7 @@ namespace gum_tests {
 
     void testMCBinaryTreeWithoutEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype(
-        "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
 
       gum::LazyPropagation< double > lazy(&bn);
@@ -109,7 +109,7 @@ namespace gum_tests {
 
     void testMCBinaryTreeWithEvidenceOnRoot() {
       auto bn = gum::BayesNet< double >::fastPrototype(
-        "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
 
       std::string ev = "b";
@@ -133,7 +133,7 @@ namespace gum_tests {
 
     void testMCBinaryTreeWithEvidenceOnLeaf() {
       auto bn = gum::BayesNet< double >::fastPrototype(
-        "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "h";
 
@@ -158,7 +158,7 @@ namespace gum_tests {
 
     void testMCBinaryTreeWithEvidenceOnMid() {
       auto bn = gum::BayesNet< double >::fastPrototype(
-        "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "e";
 
@@ -183,7 +183,7 @@ namespace gum_tests {
 
     void testMCBinaryTreeWithMultipleEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype(
-        "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
 
       try {
@@ -211,7 +211,7 @@ namespace gum_tests {
 
     void testMCNaryTreeWithMultipleEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype(
-        "a[4]->d[8]->f[3];b->d->g[5];b->e[4]->h;c->e;i[10]->j[3]->h");
+         "a[4]->d[8]->f[3];b->d->g[5];b->e[4]->h;c->e;i[10]->j[3]->h");
       unsharpen(bn);
 
       try {
@@ -298,7 +298,7 @@ namespace gum_tests {
 
     void testMCCplxBN() {
       auto bn = gum::BayesNet< double >::fastPrototype(
-        "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;", 3);
+         "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;", 3);
 
       try {
         gum::LazyPropagation< double > lazy(&bn);
@@ -447,7 +447,7 @@ namespace gum_tests {
 
     void testEvidenceAsTargetOnCplxBN() {
       auto bn = gum::BayesNet< double >::fastPrototype(
-        "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;", 3);
+         "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;", 3);
       unsharpen(bn);
 
       try {

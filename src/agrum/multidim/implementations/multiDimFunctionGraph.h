@@ -74,7 +74,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR,
              template < typename > class TerminalNodePolicy =
-               ExactTerminalNodePolicy >
+                ExactTerminalNodePolicy >
   class MultiDimFunctionGraph
       : public MultiDimImplementation< GUM_SCALAR >
       , public TerminalNodePolicy< GUM_SCALAR > {
@@ -101,7 +101,7 @@ namespace gum {
      * @param from The MultiDimFunctionGraph to copy.
      */
     MultiDimFunctionGraph(
-      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >& from);
+       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >& from);
 
     /**
      * @brief Copy Operator.
@@ -109,7 +109,7 @@ namespace gum {
      * @return Returns this MultiDimFunctionGraph.
      */
     MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >& operator=(
-      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >& from);
+       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >& from);
 
     /**
      * @brief Class destructor.
@@ -221,9 +221,9 @@ namespace gum {
      * @param reassign A Bijection form variables in src to variables in this.
      */
     void copyAndReassign(
-      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >& src,
-      const Bijection< const DiscreteVariable*, const DiscreteVariable* >&
-        reassign);
+       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >& src,
+       const Bijection< const DiscreteVariable*, const DiscreteVariable* >&
+          reassign);
 
     /**
      * @brief Copies src diagrams and multiply every value by the given scalar.
@@ -232,8 +232,8 @@ namespace gum {
      * @param gamma The scalar used to multiply every value with.
      */
     void copyAndMultiplyByScalar(
-      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >& src,
-      GUM_SCALAR                                                     gamma);
+       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >& src,
+       GUM_SCALAR                                                     gamma);
 
     /**
      * @brief Clears the function graph
@@ -341,14 +341,14 @@ namespace gum {
      * @return Returns a reduced and ordered instance.
      */
     static MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
-      getReducedAndOrderedInstance();
+       getReducedAndOrderedInstance();
 
     /**
      * @brief Returns an arborescent instance
      * @return Returns an arborescent instance
      */
     static MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
-      getTreeInstance();
+       getTreeInstance();
 
     /// @}
 
@@ -396,14 +396,14 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   // extern template class MultiDimFunctionGraph<float>;
-#endif
+#  endif
 #endif
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   // extern template class MultiDimFunctionGraph<double>;
-#endif
+#  endif
 #endif
 }   // namespace gum
 

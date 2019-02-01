@@ -40,7 +40,7 @@ namespace gum {
     INLINE
     void BasicSignaler0::detach(Listener* target) {
       auto it = std::find_if(
-        _connectors.begin(), _connectors.end(), __find_target(target));
+         _connectors.begin(), _connectors.end(), __find_target(target));
 
       while (it != _connectors.end()) {
         delete *it;
@@ -54,7 +54,7 @@ namespace gum {
     INLINE
     void BasicSignaler0::_detachFromTarget(Listener* target) {
       auto it = std::find_if(
-        _connectors.begin(), _connectors.end(), __find_target(target));
+         _connectors.begin(), _connectors.end(), __find_target(target));
 
       while (it != _connectors.end()) {
         delete *it;
@@ -68,7 +68,7 @@ namespace gum {
     void BasicSignaler0::_duplicateTarget(const Listener* oldtarget,
                                           Listener*       newtarget) {
       auto it = std::find_if(
-        _connectors.begin(), _connectors.end(), __find_target(oldtarget));
+         _connectors.begin(), _connectors.end(), __find_target(oldtarget));
 
       while (it != _connectors.end()) {
         _connectors.push_back((*it)->duplicate(newtarget));
@@ -80,7 +80,7 @@ namespace gum {
 
     INLINE
     std::function< bool(IConnector0* el) >
-      BasicSignaler0::__find_target(const gum::Listener* l) {
+       BasicSignaler0::__find_target(const gum::Listener* l) {
       return [=](IConnector0* el) -> bool { return el->target() == l; };
     }
 

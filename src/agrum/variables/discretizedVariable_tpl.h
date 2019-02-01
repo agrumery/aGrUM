@@ -25,7 +25,7 @@
 namespace gum {
   template < typename T_TICKS >
   INLINE void DiscretizedVariable< T_TICKS >::_copy(
-    const DiscretizedVariable< T_TICKS >& aDRV) {
+     const DiscretizedVariable< T_TICKS >& aDRV) {
     eraseTicks();
     IDiscretizedVariable::_copy(aDRV);
 
@@ -80,9 +80,8 @@ namespace gum {
   }
 
   template < typename T_TICKS >
-  INLINE
-    DiscretizedVariable< T_TICKS >::DiscretizedVariable(const std::string& aName,
-                                                        const std::string& aDesc) :
+  INLINE DiscretizedVariable< T_TICKS >::DiscretizedVariable(
+     const std::string& aName, const std::string& aDesc) :
       IDiscretizedVariable(aName, aDesc),
       __ticks_size((Size)0) {
     GUM_CONSTRUCTOR(DiscretizedVariable);
@@ -91,9 +90,9 @@ namespace gum {
 
   template < typename T_TICKS >
   INLINE DiscretizedVariable< T_TICKS >::DiscretizedVariable(
-    const std::string&            aName,
-    const std::string&            aDesc,
-    const std::vector< T_TICKS >& ticks) :
+     const std::string&            aName,
+     const std::string&            aDesc,
+     const std::vector< T_TICKS >& ticks) :
       IDiscretizedVariable(aName, aDesc),
       __ticks_size((Size)0) {
     GUM_CONSTRUCTOR(DiscretizedVariable);
@@ -104,7 +103,7 @@ namespace gum {
 
   template < typename T_TICKS >
   DiscretizedVariable< T_TICKS >::DiscretizedVariable(
-    const DiscretizedVariable< T_TICKS >& aDRV) :
+     const DiscretizedVariable< T_TICKS >& aDRV) :
       IDiscretizedVariable(aDRV) {
     GUM_CONS_CPY(DiscretizedVariable);
     __ticks.reserve(1);
@@ -146,7 +145,7 @@ namespace gum {
 
   template < typename T_TICKS >
   DiscretizedVariable< T_TICKS >&
-    DiscretizedVariable< T_TICKS >::addTick(const T_TICKS& aTick) {
+     DiscretizedVariable< T_TICKS >::addTick(const T_TICKS& aTick) {
     if (isTick(aTick)) {
       GUM_ERROR(DefaultInLabel,
                 "Tick '" << aTick << "' already used for variable " << name());
@@ -168,7 +167,7 @@ namespace gum {
     } else {
       try {
         Idx zeIdx =
-          _pos(aTick);   // aTick is in [ __ticks[zeIdx],__ticks[zeIdx+1] [
+           _pos(aTick);   // aTick is in [ __ticks[zeIdx],__ticks[zeIdx+1] [
 
         for (Idx i = __ticks_size - 1; i > zeIdx; --i) {
           __ticks[i + 1] = __ticks[i];

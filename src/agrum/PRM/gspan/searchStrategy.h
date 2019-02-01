@@ -85,7 +85,7 @@ namespace gum {
 
         /// Copy operator.
         SearchStrategy< GUM_SCALAR >&
-          operator=(const SearchStrategy< GUM_SCALAR >& from);
+           operator=(const SearchStrategy< GUM_SCALAR >& from);
 
         /// @}
         // =========================================================================
@@ -238,13 +238,13 @@ namespace gum {
                           const PRMAttribute< GUM_SCALAR >& a) const;
         std::string __str(const PRMInstance< GUM_SCALAR >*  i,
                           const PRMSlotChain< GUM_SCALAR >& a) const;
-        void
-          __buildPatternGraph(typename StrictSearch< GUM_SCALAR >::PData&   data,
-                              Set< Potential< GUM_SCALAR >* >&              pool,
-                              const Sequence< PRMInstance< GUM_SCALAR >* >& match);
+        void        __buildPatternGraph(
+                  typename StrictSearch< GUM_SCALAR >::PData&   data,
+                  Set< Potential< GUM_SCALAR >* >&              pool,
+                  const Sequence< PRMInstance< GUM_SCALAR >* >& match);
         std::pair< Size, Size >
-          __elimination_cost(typename StrictSearch< GUM_SCALAR >::PData& data,
-                             Set< Potential< GUM_SCALAR >* >&            pool);
+           __elimination_cost(typename StrictSearch< GUM_SCALAR >::PData& data,
+                              Set< Potential< GUM_SCALAR >* >&            pool);
       };
 
       /**
@@ -300,40 +300,40 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
       extern template class SearchStrategy< double >;
-#endif
-#endif
-#endif
+#      endif
+#    endif
+#  endif
 #endif
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
       extern template class FrequenceSearch< double >;
-#endif
-#endif
-#endif
+#      endif
+#    endif
+#  endif
 #endif
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
       extern template class StrictSearch< double >;
-#endif
-#endif
-#endif
+#      endif
+#    endif
+#  endif
 #endif
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
       extern template class TreeWidthSearch< double >;
-#endif
-#endif
-#endif
+#      endif
+#    endif
+#  endif
 #endif
 
 

@@ -67,11 +67,11 @@ namespace gum_tests {
 
       evidence = new gum::List< gum::Potential< double >* >();
       gum::Potential< double >* e1 =
-        new gum::Potential< double >(new gum::MultiDimArray< double >());
+         new gum::Potential< double >(new gum::MultiDimArray< double >());
       gum::Potential< double >* e2 =
-        new gum::Potential< double >(new gum::MultiDimArray< double >());
+         new gum::Potential< double >(new gum::MultiDimArray< double >());
       gum::Potential< double >* e3 =
-        new gum::Potential< double >(new gum::MultiDimArray< double >());
+         new gum::Potential< double >(new gum::MultiDimArray< double >());
 
       try {
         (*e1) << bn->variable(idMap[node1]);

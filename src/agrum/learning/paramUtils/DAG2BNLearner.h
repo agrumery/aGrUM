@@ -137,8 +137,8 @@ namespace gum {
        * order differs */
       template < typename GUM_SCALAR = double >
       static void
-        __probaVarReordering(gum::Potential< GUM_SCALAR >&       pot,
-                             const gum::Potential< GUM_SCALAR >& other_pot);
+         __probaVarReordering(gum::Potential< GUM_SCALAR >&       pot,
+                              const gum::Potential< GUM_SCALAR >& other_pot);
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

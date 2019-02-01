@@ -29,17 +29,17 @@
 namespace gum {
 
   ApproximationSchemeListener::ApproximationSchemeListener(
-    IApproximationSchemeConfiguration& sch) :
+     IApproximationSchemeConfiguration& sch) :
       __sch(sch) {
     GUM_CONSTRUCTOR(ApproximationSchemeListener);
 
     GUM_CONNECT(
-      (__sch), onProgress, (*this), ApproximationSchemeListener::whenProgress);
+       (__sch), onProgress, (*this), ApproximationSchemeListener::whenProgress);
     GUM_CONNECT((__sch), onStop, (*this), ApproximationSchemeListener::whenStop);
   }
 
   ApproximationSchemeListener::ApproximationSchemeListener(
-    const ApproximationSchemeListener& other) :
+     const ApproximationSchemeListener& other) :
       __sch(other.__sch) {
     GUM_CONS_CPY(ApproximationSchemeListener);
     GUM_ERROR(OperationNotAllowed,

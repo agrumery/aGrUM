@@ -41,7 +41,7 @@ namespace gum_tests {
       gum::InfluenceDiagramGenerator< double >* gen = nullptr;
 
       TS_GUM_ASSERT_THROWS_NOTHING(
-        gen = new gum::InfluenceDiagramGenerator< double >());
+         gen = new gum::InfluenceDiagramGenerator< double >());
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
     }
 
@@ -49,9 +49,9 @@ namespace gum_tests {
       gum::InfluenceDiagramGenerator< double >* gen = nullptr;
 
       gum::SimpleCPTGenerator< double >* cptGen =
-        new gum::SimpleCPTGenerator< double >();
+         new gum::SimpleCPTGenerator< double >();
       TS_GUM_ASSERT_THROWS_NOTHING(
-        gen = new gum::InfluenceDiagramGenerator< double >(cptGen));
+         gen = new gum::InfluenceDiagramGenerator< double >(cptGen));
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
     }
 
@@ -60,7 +60,7 @@ namespace gum_tests {
 
       gum::SimpleUTGenerator* utGen = new gum::SimpleUTGenerator();
       TS_GUM_ASSERT_THROWS_NOTHING(
-        gen = new gum::InfluenceDiagramGenerator< double >(utGen));
+         gen = new gum::InfluenceDiagramGenerator< double >(utGen));
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
     }
 
@@ -68,10 +68,10 @@ namespace gum_tests {
       gum::InfluenceDiagramGenerator< double >* gen = nullptr;
 
       gum::SimpleCPTGenerator< double >* cptGen =
-        new gum::SimpleCPTGenerator< double >();
+         new gum::SimpleCPTGenerator< double >();
       gum::SimpleUTGenerator* utGen = new gum::SimpleUTGenerator();
       TS_GUM_ASSERT_THROWS_NOTHING(
-        gen = new gum::InfluenceDiagramGenerator< double >(cptGen, utGen));
+         gen = new gum::InfluenceDiagramGenerator< double >(cptGen, utGen));
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
     }
 
@@ -90,7 +90,7 @@ namespace gum_tests {
       gum::InfluenceDiagramGenerator< double > gen;
 
       gum::InfluenceDiagram< double >* id =
-        gen.generateID(25, 0.3f, 0.3f, 0.1f, 4);
+         gen.generateID(25, 0.3f, 0.3f, 0.1f, 4);
       // Test for cicuits
       std::vector< gum::NodeId > stack;
       gum::Set< gum::NodeId >    passed;
@@ -118,7 +118,7 @@ namespace gum_tests {
       gum::InfluenceDiagramGenerator< double > gen;
 
       gum::InfluenceDiagram< double >* id =
-        gen.generateID(25, 0.3f, 0.3f, 0.1f, 4);
+         gen.generateID(25, 0.3f, 0.3f, 0.1f, 4);
       // Test for cicuits
       std::vector< gum::NodeId > stack;
       gum::Set< gum::NodeId >    passed;

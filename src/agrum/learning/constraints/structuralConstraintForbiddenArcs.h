@@ -56,7 +56,7 @@ namespace gum {
 
       /// copy constructor
       StructuralConstraintForbiddenArcs(
-        const StructuralConstraintForbiddenArcs& from);
+         const StructuralConstraintForbiddenArcs& from);
 
       /// move constructor
       StructuralConstraintForbiddenArcs(StructuralConstraintForbiddenArcs&& from);
@@ -73,11 +73,11 @@ namespace gum {
 
       /// copy operator
       StructuralConstraintForbiddenArcs&
-        operator=(const StructuralConstraintForbiddenArcs& from);
+         operator=(const StructuralConstraintForbiddenArcs& from);
 
       /// move operator
       StructuralConstraintForbiddenArcs&
-        operator=(StructuralConstraintForbiddenArcs&& from);
+         operator=(StructuralConstraintForbiddenArcs&& from);
 
       /// @}
 

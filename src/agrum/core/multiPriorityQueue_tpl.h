@@ -32,7 +32,7 @@ namespace gum {
   // basic constructor
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   MultiPriorityQueue< Val, Priority, Cmp, Alloc >::MultiPriorityQueue(
-    Cmp compare, Size capacity) :
+     Cmp compare, Size capacity) :
       __indices(capacity >> 1, true, false),
       __cmp(compare) {
     __heap.reserve(capacity);
@@ -44,7 +44,7 @@ namespace gum {
   // initializer list constructor
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   MultiPriorityQueue< Val, Priority, Cmp, Alloc >::MultiPriorityQueue(
-    std::initializer_list< std::pair< Val, Priority > > list) :
+     std::initializer_list< std::pair< Val, Priority > > list) :
       __indices(Size(list.size()) / 2, true, false) {
     // fill the queue
     __heap.reserve(list.size());
@@ -59,7 +59,7 @@ namespace gum {
   // copy constructor
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   MultiPriorityQueue< Val, Priority, Cmp, Alloc >::MultiPriorityQueue(
-    const MultiPriorityQueue< Val, Priority, Cmp, Alloc >& from) :
+     const MultiPriorityQueue< Val, Priority, Cmp, Alloc >& from) :
       __heap(from.__heap),
       __indices(from.__indices), __nb_elements(from.__nb_elements),
       __cmp(from.__cmp) {
@@ -80,7 +80,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   template < typename OtherAlloc >
   MultiPriorityQueue< Val, Priority, Cmp, Alloc >::MultiPriorityQueue(
-    const MultiPriorityQueue< Val, Priority, Cmp, OtherAlloc >& from) :
+     const MultiPriorityQueue< Val, Priority, Cmp, OtherAlloc >& from) :
       __indices(from.__indices),
       __nb_elements(from.__nb_elements), __cmp(from.__cmp) {
     // for debugging purposes
@@ -105,7 +105,7 @@ namespace gum {
   // move constructor
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   MultiPriorityQueue< Val, Priority, Cmp, Alloc >::MultiPriorityQueue(
-    MultiPriorityQueue< Val, Priority, Cmp, Alloc >&& from) :
+     MultiPriorityQueue< Val, Priority, Cmp, Alloc >&& from) :
       __heap(std::move(from.__heap)),
       __indices(std::move(from.__indices)),
       __nb_elements(std::move(from.__nb_elements)), __cmp(std::move(from.__cmp)) {
@@ -123,8 +123,8 @@ namespace gum {
   // copy operator
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   MultiPriorityQueue< Val, Priority, Cmp, Alloc >&
-      MultiPriorityQueue< Val, Priority, Cmp, Alloc >::
-      operator=(const MultiPriorityQueue< Val, Priority, Cmp, Alloc >& from) {
+        MultiPriorityQueue< Val, Priority, Cmp, Alloc >::
+        operator=(const MultiPriorityQueue< Val, Priority, Cmp, Alloc >& from) {
     // for debugging purposes
     GUM_OP_CPY(MultiPriorityQueue);
 
@@ -160,8 +160,8 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   template < typename OtherAlloc >
   MultiPriorityQueue< Val, Priority, Cmp, Alloc >&
-      MultiPriorityQueue< Val, Priority, Cmp, Alloc >::
-      operator=(const MultiPriorityQueue< Val, Priority, Cmp, OtherAlloc >& from) {
+     MultiPriorityQueue< Val, Priority, Cmp, Alloc >::operator=(
+        const MultiPriorityQueue< Val, Priority, Cmp, OtherAlloc >& from) {
     // for debugging purposes
     GUM_OP_CPY(MultiPriorityQueue);
 
@@ -200,8 +200,8 @@ namespace gum {
   // move operator
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   MultiPriorityQueue< Val, Priority, Cmp, Alloc >&
-      MultiPriorityQueue< Val, Priority, Cmp, Alloc >::
-      operator=(MultiPriorityQueue< Val, Priority, Cmp, Alloc >&& from) {
+        MultiPriorityQueue< Val, Priority, Cmp, Alloc >::
+        operator=(MultiPriorityQueue< Val, Priority, Cmp, Alloc >&& from) {
     // avoid self assignment
     if (this != &from) {
       // for debugging purposes
@@ -236,21 +236,21 @@ namespace gum {
   // returns the number of elements in the priority queue
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE Size MultiPriorityQueue< Val, Priority, Cmp, Alloc >::size() const
-    noexcept {
+     noexcept {
     return __nb_elements;
   }
 
   // return the size of the array storing the priority queue
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE Size MultiPriorityQueue< Val, Priority, Cmp, Alloc >::capacity() const
-    noexcept {
+     noexcept {
     return Size(__heap.capacity());
   }
 
   // changes the size of the array storing the priority queue
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE void
-    MultiPriorityQueue< Val, Priority, Cmp, Alloc >::resize(Size new_size) {
+     MultiPriorityQueue< Val, Priority, Cmp, Alloc >::resize(Size new_size) {
     if (new_size < __nb_elements) return;
 
     __heap.reserve(new_size);
@@ -328,7 +328,7 @@ namespace gum {
   // removes a given element from the priority queue (but does not return it)
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE void
-    MultiPriorityQueue< Val, Priority, Cmp, Alloc >::erase(const Val& val) {
+     MultiPriorityQueue< Val, Priority, Cmp, Alloc >::erase(const Val& val) {
     try {
       eraseByPos(__indices[val][0]);
     } catch (NotFound&) {}
@@ -356,13 +356,13 @@ namespace gum {
   INLINE const HashTable< Val, std::vector< Size > >&
                MultiPriorityQueue< Val, Priority, Cmp, Alloc >::allValues() const {
     return reinterpret_cast< const HashTable< Val, std::vector< Size > >& >(
-      __indices);
+       __indices);
   }
 
   // inserts a new (a copy) element in the priority queue
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   Size MultiPriorityQueue< Val, Priority, Cmp, Alloc >::insert(
-    const Val& val, const Priority& priority) {
+     const Val& val, const Priority& priority) {
     // create the entry in the indices hashtable
     const Val*           new_val;
     std::vector< Size >* new_vect;
@@ -390,7 +390,7 @@ namespace gum {
     }
 
     std::pair< Priority, const Val* > new_heap_val =
-      std::move(__heap[__nb_elements]);
+       std::move(__heap[__nb_elements]);
     ++__nb_elements;
 
     // restore the heap property
@@ -419,8 +419,8 @@ namespace gum {
   // inserts a new (a copy) element in the priority queue
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   Size
-    MultiPriorityQueue< Val, Priority, Cmp, Alloc >::insert(Val&&      val,
-                                                            Priority&& priority) {
+     MultiPriorityQueue< Val, Priority, Cmp, Alloc >::insert(Val&&      val,
+                                                             Priority&& priority) {
     // create the entry in the indices hashtable
     const Val*           new_val;
     std::vector< Size >* new_vect;
@@ -442,14 +442,14 @@ namespace gum {
 
     try {
       __heap.push_back(
-        std::pair< Priority, const Val* >(std::move(priority), new_val));
+         std::pair< Priority, const Val* >(std::move(priority), new_val));
     } catch (...) {
       if (new_vect->size() == 1) { __indices.erase(*new_val); }
       throw;
     }
 
     std::pair< Priority, const Val* > new_heap_val =
-      std::move(__heap[__nb_elements]);
+       std::move(__heap[__nb_elements]);
     ++__nb_elements;
 
     // restore the heap property
@@ -481,21 +481,21 @@ namespace gum {
   INLINE Size
          MultiPriorityQueue< Val, Priority, Cmp, Alloc >::emplace(Args&&... args) {
     std::pair< Val, Priority > new_elt =
-      std::make_pair< Val, Priority >(std::forward< Args >(args)...);
+       std::make_pair< Val, Priority >(std::forward< Args >(args)...);
     return insert(std::move(new_elt.first), std::move(new_elt.second));
   }
 
   // indicates whether the priority queue is empty
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE bool MultiPriorityQueue< Val, Priority, Cmp, Alloc >::empty() const
-    noexcept {
+     noexcept {
     return (__nb_elements == 0);
   }
 
   // indicates whether the priority queue contains a given value
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE bool MultiPriorityQueue< Val, Priority, Cmp, Alloc >::contains(
-    const Val& val) const {
+     const Val& val) const {
     return __indices.exists(val);
   }
 
@@ -531,7 +531,7 @@ namespace gum {
   // changes the size of the internal structure storing the priority queue
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   Size MultiPriorityQueue< Val, Priority, Cmp, Alloc >::setPriorityByPos(
-    Size index, const Priority& new_priority) {
+     Size index, const Priority& new_priority) {
     // check whether the element the priority of which should be changed exists
     if (index >= __nb_elements) {
       GUM_ERROR(NotFound, "not enough elements in the MultiPriorityQueue");
@@ -593,7 +593,7 @@ namespace gum {
   // changes the size of the internal structure storing the priority queue
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   Size MultiPriorityQueue< Val, Priority, Cmp, Alloc >::setPriorityByPos(
-    Size index, Priority&& new_priority) {
+     Size index, Priority&& new_priority) {
     // check whether the element the priority of which should be changed exists
     if (index >= __nb_elements) {
       GUM_ERROR(NotFound, "not enough elements in the MultiPriorityQueue");
@@ -655,7 +655,7 @@ namespace gum {
   // modifies the priority of each instance of a given element
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   void MultiPriorityQueue< Val, Priority, Cmp, Alloc >::setPriority(
-    const Val& elt, const Priority& new_priority) {
+     const Val& elt, const Priority& new_priority) {
     std::vector< Size >& vect_index = __indices[elt];
 
     for (auto index : vect_index) {
@@ -666,7 +666,7 @@ namespace gum {
   // modifies the priority of each instance of a given element
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE const Priority& MultiPriorityQueue< Val, Priority, Cmp, Alloc >::priority(
-    const Val& elt) const {
+     const Val& elt) const {
     return __heap[__indices[elt][0]].first;
   }
 
@@ -674,7 +674,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   INLINE std::ostream&
          operator<<(std::ostream&                                          stream,
-               const MultiPriorityQueue< Val, Priority, Cmp, Alloc >& queue) {
+                const MultiPriorityQueue< Val, Priority, Cmp, Alloc >& queue) {
     stream << queue.toString();
     return stream;
   }

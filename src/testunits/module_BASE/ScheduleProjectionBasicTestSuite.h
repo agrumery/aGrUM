@@ -33,15 +33,15 @@
 
 namespace gum_tests {
 
-  static gum::MultiDimImplementation< double >*
-    schedule_proj_mysum(const gum::MultiDimImplementation< double >&    t,
-                        const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+  static gum::MultiDimImplementation< double >* schedule_proj_mysum(
+     const gum::MultiDimImplementation< double >&    t,
+     const gum::Set< const gum::DiscreteVariable* >& del_vars) {
     return projectSumMultiDimArray(&t, del_vars);
   }
 
-  static gum::MultiDimImplementation< double >*
-    schedule_proj_mymin(const gum::MultiDimImplementation< double >&    t,
-                        const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+  static gum::MultiDimImplementation< double >* schedule_proj_mymin(
+     const gum::MultiDimImplementation< double >&    t,
+     const gum::Set< const gum::DiscreteVariable* >& del_vars) {
     return projectMinMultiDimArray(&t, del_vars);
   }
 
@@ -75,9 +75,9 @@ namespace gum_tests {
       del_vars.insert(vars[1]);
 
       gum::MultiDimProjection< double, gum::MultiDimImplementation > mymultiproj(
-        schedule_proj_mysum);
+         schedule_proj_mysum);
       gum::MultiDimImplementation< double >* t2 =
-        mymultiproj.project(*(t1.content()), del_vars);
+         mymultiproj.project(*(t1.content()), del_vars);
 
       gum::ScheduleProjectionBasic< double > myproj(schedule_proj_mysum);
       gum::Schedule< double >                schedule;
@@ -86,7 +86,7 @@ namespace gum_tests {
 
       while (!available.empty()) {
         for (gum::NodeSet::const_iterator_safe iter =
-               available.beginSafe();   // safe iterator needed here
+                available.beginSafe();   // safe iterator needed here
              iter != available.endSafe();
              ++iter) {
           schedule.execute(*iter);
@@ -108,7 +108,7 @@ namespace gum_tests {
 
       while (!available.empty()) {
         for (gum::NodeSet::const_iterator_safe iter =
-               available.beginSafe();   // safe iterator needed here
+                available.beginSafe();   // safe iterator needed here
              iter != available.endSafe();
              ++iter) {
           schedule.execute(*iter);
@@ -124,7 +124,7 @@ namespace gum_tests {
 
       while (!available.empty()) {
         for (gum::NodeSet::const_iterator_safe iter =
-               available.beginSafe();   // safe iterator needed here
+                available.beginSafe();   // safe iterator needed here
              iter != available.endSafe();
              ++iter) {
           schedule.execute(*iter);
@@ -141,7 +141,7 @@ namespace gum_tests {
 
       while (!available.empty()) {
         for (gum::NodeSet::const_iterator_safe iter =
-               available.beginSafe();   // safe iterator needed here
+                available.beginSafe();   // safe iterator needed here
              iter != available.endSafe();
              ++iter) {
           schedule.execute(*iter);
@@ -158,7 +158,7 @@ namespace gum_tests {
 
       while (!available.empty()) {
         for (gum::NodeSet::const_iterator_safe iter =
-               available.beginSafe();   // safe iterator needed here
+                available.beginSafe();   // safe iterator needed here
              iter != available.endSafe();
              ++iter) {
           schedule.execute(*iter);

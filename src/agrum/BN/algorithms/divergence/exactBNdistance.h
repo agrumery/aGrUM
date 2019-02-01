@@ -39,7 +39,8 @@ namespace gum {
    *) of the needed time.
    * KL.process() computes KL(P||Q) using klPQ() and KL(Q||P) using klQP(). The
    *computations are made once. The second is for free :)
-   * ExactBNdistance allows as well to compute in the same time the Hellinger distance
+   * ExactBNdistance allows as well to compute in the same time the Hellinger
+   *distance
    *(\f$
    *\sqrt{\sum_i (\sqrt{p_i}-\sqrt{q_i})^2}\f$) (Kokolakis and Nanopoulos, 2001).
    *
@@ -71,7 +72,7 @@ namespace gum {
      * compatible node sets.
      */
     ExactBNdistance(const IBayesNet< GUM_SCALAR >& P,
-                 const IBayesNet< GUM_SCALAR >& Q);
+                    const IBayesNet< GUM_SCALAR >& Q);
 
     /** copy constructor
      */

@@ -236,20 +236,20 @@ namespace gum {
     void __performAddNode(const NodeId node);
 
     /// set-up the connected subgraph that needs be retriangulated
-    void
-      __setUpConnectedTriangulation(NodeId               Mx,
-                                    NodeId               Mfrom,
-                                    UndiGraph&           theGraph,
-                                    std::vector< Edge >& notAffectedneighborClique,
-                                    HashTable< NodeId, bool >& cliques_affected);
+    void __setUpConnectedTriangulation(
+       NodeId                     Mx,
+       NodeId                     Mfrom,
+       UndiGraph&                 theGraph,
+       std::vector< Edge >&       notAffectedneighborClique,
+       HashTable< NodeId, bool >& cliques_affected);
 
     /// used for computing the junction tree of the maximal prime subgraphs
     void __computeMaxPrimeMergings(
-      const NodeId                                node,
-      const NodeId                                from,
-      std::vector< std::pair< NodeId, NodeId > >& merged_cliques,
-      NodeProperty< bool >&                       mark,
-      const NodeSet& new_nodes_in_junction_tree) const;
+       const NodeId                                node,
+       const NodeId                                from,
+       std::vector< std::pair< NodeId, NodeId > >& merged_cliques,
+       NodeProperty< bool >&                       mark,
+       const NodeSet& new_nodes_in_junction_tree) const;
 
     /// update the junction tree
     void __updateJunctionTree(NodeProperty< bool >& all_cliques_affected,

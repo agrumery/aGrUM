@@ -95,10 +95,10 @@ namespace gum {
 
     Idx joint(GUM_SCALAR_A valueA, GUM_SCALAR_B valueB) const {
       return __jointTable.exists(
-               std::pair< GUM_SCALAR_A, GUM_SCALAR_B >(valueA, valueB))
-               ? __jointTable[std::pair< GUM_SCALAR_A, GUM_SCALAR_B >(valueA,
-                                                                      valueB)]
-               : 0;
+                std::pair< GUM_SCALAR_A, GUM_SCALAR_B >(valueA, valueB))
+                ? __jointTable[std::pair< GUM_SCALAR_A, GUM_SCALAR_B >(valueA,
+                                                                       valueB)]
+                : 0;
     }
 
 
@@ -154,7 +154,7 @@ namespace gum {
     /// @}
 
     ContingencyTable< GUM_SCALAR_A, GUM_SCALAR_B >&
-      operator+=(const ContingencyTable< GUM_SCALAR_A, GUM_SCALAR_B >& src);
+       operator+=(const ContingencyTable< GUM_SCALAR_A, GUM_SCALAR_B >& src);
 
     std::string toString() const {
       std::stringstream ss;

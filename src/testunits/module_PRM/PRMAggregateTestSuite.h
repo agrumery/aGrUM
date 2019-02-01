@@ -166,12 +166,12 @@ namespace gum_tests {
     void testCast() {
       // Arrange
       gum::LabelizedVariable boolean_var{
-        "boolean", "A boolean discrete variable", 0};
+         "boolean", "A boolean discrete variable", 0};
       boolean_var.addLabel("False");
       boolean_var.addLabel("True");
 
       gum::LabelizedVariable state_var{
-        "state", "A binary discete variable to represent a state", 0};
+         "state", "A binary discete variable to represent a state", 0};
       state_var.addLabel("OK");
       state_var.addLabel("NOK");
 
@@ -207,7 +207,7 @@ namespace gum_tests {
       for (auto t : *__types) {
         // Act
         TS_ASSERT_THROWS_NOTHING(agg =
-                                   new PRMAggregate("my_agg", t, *__boolean, 0));
+                                    new PRMAggregate("my_agg", t, *__boolean, 0));
         // Assert
         TS_ASSERT_THROWS_NOTHING(delete agg);
       }

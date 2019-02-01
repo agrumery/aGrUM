@@ -32,11 +32,11 @@ namespace gum {
   // query variables given evidence
   template < typename GUM_SCALAR, template < typename > class TABLE >
   void dSeparation::relevantPotentials(
-    const IBayesNet< GUM_SCALAR >&     bn,
-    const NodeSet&                     query,
-    const NodeSet&                     hardEvidence,
-    const NodeSet&                     softEvidence,
-    Set< const TABLE< GUM_SCALAR >* >& potentials) {
+     const IBayesNet< GUM_SCALAR >&     bn,
+     const NodeSet&                     query,
+     const NodeSet&                     hardEvidence,
+     const NodeSet&                     softEvidence,
+     Set< const TABLE< GUM_SCALAR >* >& potentials) {
     const DAG& dag = bn.dag();
 
     // mark the set of ancestors of the evidence

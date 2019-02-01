@@ -126,7 +126,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE std::string
          UAIWriter< GUM_SCALAR >::__cptBloc(const IBayesNet< GUM_SCALAR >& bn,
-                                       NodeId                         node) {
+                                        NodeId                         node) {
     std::stringstream str;
 
     const auto& p = bn.cpt(node);

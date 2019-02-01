@@ -33,7 +33,7 @@ namespace gum {
     /// returns the allocator used
     template < typename GUM_SCALAR, template < typename > class ALLOC >
     INLINE typename DBRowGeneratorEM< GUM_SCALAR, ALLOC >::allocator_type
-      DBRowGeneratorEM< GUM_SCALAR, ALLOC >::getAllocator() const {
+       DBRowGeneratorEM< GUM_SCALAR, ALLOC >::getAllocator() const {
       return DBRowGenerator< ALLOC >::getAllocator();
     }
 
@@ -41,18 +41,19 @@ namespace gum {
     /// default constructor
     template < typename GUM_SCALAR, template < typename > class ALLOC >
     DBRowGeneratorEM< GUM_SCALAR, ALLOC >::DBRowGeneratorEM(
-      const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > >
-                                                                    column_types,
-      const BayesNet< GUM_SCALAR >&                                 bn,
-      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename DBRowGeneratorEM< GUM_SCALAR, ALLOC >::allocator_type&
-        alloc) :
-        DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >(
-          column_types,
-          bn,
-          DBRowGeneratorGoal::ONLY_REMOVE_MISSING_VALUES,
+       const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > >
+                                     column_types,
+       const BayesNet< GUM_SCALAR >& bn,
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
           nodeId2columns,
-          alloc),
+       const typename DBRowGeneratorEM< GUM_SCALAR, ALLOC >::allocator_type&
+          alloc) :
+        DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >(
+           column_types,
+           bn,
+           DBRowGeneratorGoal::ONLY_REMOVE_MISSING_VALUES,
+           nodeId2columns,
+           alloc),
         __filled_row1(bn.size(), 1.0, alloc),
         __filled_row2(bn.size(), 1.0, alloc) {
       setBayesNet(bn);
@@ -64,9 +65,9 @@ namespace gum {
     /// copy constructor with a given allocator
     template < typename GUM_SCALAR, template < typename > class ALLOC >
     DBRowGeneratorEM< GUM_SCALAR, ALLOC >::DBRowGeneratorEM(
-      const DBRowGeneratorEM< GUM_SCALAR, ALLOC >& from,
-      const typename DBRowGeneratorEM< GUM_SCALAR, ALLOC >::allocator_type&
-        alloc) :
+       const DBRowGeneratorEM< GUM_SCALAR, ALLOC >& from,
+       const typename DBRowGeneratorEM< GUM_SCALAR, ALLOC >::allocator_type&
+          alloc) :
         DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >(from, alloc),
         __input_row(from.__input_row), __missing_cols(from.__missing_cols),
         __nb_miss(from.__nb_miss), __joint_proba(from.__joint_proba),
@@ -89,16 +90,16 @@ namespace gum {
     /// copy constructor
     template < typename GUM_SCALAR, template < typename > class ALLOC >
     DBRowGeneratorEM< GUM_SCALAR, ALLOC >::DBRowGeneratorEM(
-      const DBRowGeneratorEM< GUM_SCALAR, ALLOC >& from) :
+       const DBRowGeneratorEM< GUM_SCALAR, ALLOC >& from) :
         DBRowGeneratorEM< GUM_SCALAR, ALLOC >(from, from.getAllocator()) {}
 
 
     /// move constructor with a given allocator
     template < typename GUM_SCALAR, template < typename > class ALLOC >
     DBRowGeneratorEM< GUM_SCALAR, ALLOC >::DBRowGeneratorEM(
-      DBRowGeneratorEM< GUM_SCALAR, ALLOC >&& from,
-      const typename DBRowGeneratorEM< GUM_SCALAR, ALLOC >::allocator_type&
-        alloc) :
+       DBRowGeneratorEM< GUM_SCALAR, ALLOC >&& from,
+       const typename DBRowGeneratorEM< GUM_SCALAR, ALLOC >::allocator_type&
+          alloc) :
         DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >(std::move(from), alloc),
         __input_row(from.__input_row),
         __missing_cols(std::move(from.__missing_cols)), __nb_miss(from.__nb_miss),
@@ -123,7 +124,7 @@ namespace gum {
     /// move constructor
     template < typename GUM_SCALAR, template < typename > class ALLOC >
     DBRowGeneratorEM< GUM_SCALAR, ALLOC >::DBRowGeneratorEM(
-      DBRowGeneratorEM< GUM_SCALAR, ALLOC >&& from) :
+       DBRowGeneratorEM< GUM_SCALAR, ALLOC >&& from) :
         DBRowGeneratorEM< GUM_SCALAR, ALLOC >(std::move(from),
                                               from.getAllocator()) {}
 
@@ -131,9 +132,9 @@ namespace gum {
     /// virtual copy constructor with a given allocator
     template < typename GUM_SCALAR, template < typename > class ALLOC >
     DBRowGeneratorEM< GUM_SCALAR, ALLOC >*
-      DBRowGeneratorEM< GUM_SCALAR, ALLOC >::clone(
-        const typename DBRowGeneratorEM< GUM_SCALAR, ALLOC >::allocator_type&
-          alloc) const {
+       DBRowGeneratorEM< GUM_SCALAR, ALLOC >::clone(
+          const typename DBRowGeneratorEM< GUM_SCALAR, ALLOC >::allocator_type&
+             alloc) const {
       ALLOC< DBRowGeneratorEM< GUM_SCALAR, ALLOC > > allocator(alloc);
       DBRowGeneratorEM< GUM_SCALAR, ALLOC >* generator = allocator.allocate(1);
       try {
@@ -149,7 +150,7 @@ namespace gum {
     /// virtual copy constructor
     template < typename GUM_SCALAR, template < typename > class ALLOC >
     DBRowGeneratorEM< GUM_SCALAR, ALLOC >*
-      DBRowGeneratorEM< GUM_SCALAR, ALLOC >::clone() const {
+       DBRowGeneratorEM< GUM_SCALAR, ALLOC >::clone() const {
       return clone(this->getAllocator());
     }
 
@@ -272,7 +273,7 @@ namespace gum {
     /// computes the rows it will provide in output
     template < typename GUM_SCALAR, template < typename > class ALLOC >
     INLINE std::size_t DBRowGeneratorEM< GUM_SCALAR, ALLOC >::_computeRows(
-      const DBRow< DBTranslatedValue, ALLOC >& row) {
+       const DBRow< DBTranslatedValue, ALLOC >& row) {
       // check if there are unobserved values among the columns of interest.
       // If this is the case, set them as targets
       bool        found_unobserved = false;
@@ -292,8 +293,8 @@ namespace gum {
           case DBTranslatedValueType::CONTINUOUS:
             GUM_ERROR(NotImplementedYet,
                       "The BDRowGeneratorEM does not handle yet continuous "
-                        << "variables. But the variable in column" << col
-                        << " is continuous.");
+                         << "variables. But the variable in column" << col
+                         << " is continuous.");
             break;
 
           default:
@@ -365,8 +366,8 @@ namespace gum {
             case DBTranslatedValueType::CONTINUOUS:
               GUM_ERROR(NotImplementedYet,
                         "The BDRowGeneratorEM does not handle yet continuous "
-                          << "variables. But the variable in column" << col
-                          << " is continuous.");
+                           << "variables. But the variable in column" << col
+                           << " is continuous.");
               break;
 
             default:
@@ -390,8 +391,8 @@ namespace gum {
             case DBTranslatedValueType::CONTINUOUS:
               GUM_ERROR(NotImplementedYet,
                         "The BDRowGeneratorEM does not handle yet continuous "
-                          << "variables. But the variable in column" << col
-                          << " is continuous.");
+                           << "variables. But the variable in column" << col
+                           << " is continuous.");
               break;
 
             default:
@@ -404,7 +405,7 @@ namespace gum {
 
       // get the potential of the target set
       Potential< GUM_SCALAR >& pot =
-        const_cast< Potential< GUM_SCALAR >& >(ve.jointPosterior(target_set));
+         const_cast< Potential< GUM_SCALAR >& >(ve.jointPosterior(target_set));
       __joint_proba = std::move(pot);
       if (__joint_inst != nullptr) delete __joint_inst;
       __joint_inst = new Instantiation(__joint_proba);
@@ -419,7 +420,7 @@ namespace gum {
       } else {
         for (std::size_t i = std::size_t(0); i < __nb_miss; ++i) {
           __missing_cols[i] =
-            this->_nodeId2columns.second(this->_bn->nodeId(*(var_sequence[i])));
+             this->_nodeId2columns.second(this->_bn->nodeId(*(var_sequence[i])));
         }
       }
 
@@ -430,7 +431,7 @@ namespace gum {
     /// assign a new Bayes net to the generator
     template < typename GUM_SCALAR, template < typename > class ALLOC >
     void DBRowGeneratorEM< GUM_SCALAR, ALLOC >::setBayesNet(
-      const BayesNet< GUM_SCALAR >& new_bn) {
+       const BayesNet< GUM_SCALAR >& new_bn) {
       // check that if nodeId2columns is not empty, then all the columns
       // correspond to nodes of the BN
       if (!this->_nodeId2columns.empty()) {
@@ -441,10 +442,10 @@ namespace gum {
           if (!dag.existsNode(iter.first())) {
             GUM_ERROR(IdError,
                       "Column "
-                        << iter.second()
-                        << " of the database is associated to Node ID "
-                        << iter.first()
-                        << ", which does not belong to the Bayesian network");
+                         << iter.second()
+                         << " of the database is associated to Node ID "
+                         << iter.first()
+                         << ", which does not belong to the Bayesian network");
           }
         }
       }

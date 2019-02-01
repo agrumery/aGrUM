@@ -138,7 +138,7 @@ namespace gum_tests {
     double local_projmax(const gum::Potential< double >& table,
                          gum::Instantiation&             instantiation) {
       const gum::MultiDimArray< double >& impl =
-        dynamic_cast< const gum::MultiDimArray< double >& >(*(table.content()));
+         dynamic_cast< const gum::MultiDimArray< double >& >(*(table.content()));
       return local_projmax(impl, instantiation);
     }
 
@@ -164,7 +164,7 @@ namespace gum_tests {
     double* local_projmax(const gum::Potential< double* >& table,
                           gum::Instantiation&              instantiation) {
       const gum::MultiDimArray< double* >& impl =
-        dynamic_cast< const gum::MultiDimArray< double* >& >(*(table.content()));
+         dynamic_cast< const gum::MultiDimArray< double* >& >(*(table.content()));
       return local_projmax(impl, instantiation);
     }
 
@@ -181,7 +181,7 @@ namespace gum_tests {
     bool local_equal(const gum::Instantiation& inst1,
                      const gum::Instantiation& inst2) {
       const gum::Sequence< const gum::DiscreteVariable* >& vars =
-        inst1.variablesSequence();
+         inst1.variablesSequence();
 
       for (const auto var : vars)
         if (inst1.val(*var) != inst2.val(*var)) return false;

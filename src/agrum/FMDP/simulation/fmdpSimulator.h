@@ -112,8 +112,8 @@ namespace gum {
                                           const Instantiation&    transit,
                                           Idx                     actionId) {
       return reinterpret_cast< const MultiDimFunctionGraph< double >* >(
-               __fmdp->transition(actionId, var))
-        ->get(transit);
+                __fmdp->transition(actionId, var))
+         ->get(transit);
     }
 
     private:

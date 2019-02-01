@@ -50,26 +50,26 @@ namespace gum {
                        const std::string&                     name,
                        const PRMType&                         type,
                        MultiDimImplementation< std::string >* impl =
-                         new MultiDimArray< std::string >());
+                          new MultiDimArray< std::string >());
 
       virtual ~PRMFormAttribute();
 
       /// See gum::prm::PRMAttribute.
       virtual PRMAttribute< GUM_SCALAR >*
-        newFactory(const PRMClass< GUM_SCALAR >& c) const;
+         newFactory(const PRMClass< GUM_SCALAR >& c) const;
 
       /// See gum::prm::PRMAttribute.
       virtual PRMAttribute< GUM_SCALAR >* copy(
-        Bijection< const DiscreteVariable*, const DiscreteVariable* > bij) const;
+         Bijection< const DiscreteVariable*, const DiscreteVariable* > bij) const;
 
       /// See gum::prm::PRMAttribute.
       virtual void copyCpf(
-        const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bif,
-        const PRMAttribute< GUM_SCALAR >& source);
+         const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bif,
+         const PRMAttribute< GUM_SCALAR >& source);
 
       /// See gum::prm::PRMAttribute.
       virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType
-        elt_type() const;
+         elt_type() const;
 
       /// See gum::prm::PRMAttribute.
       virtual PRMType& type();

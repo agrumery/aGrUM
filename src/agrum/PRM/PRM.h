@@ -156,7 +156,7 @@ namespace gum {
        * @throw NotFound Raised if no class is found with the given name.
        */
       const PRMInterface< GUM_SCALAR >&
-        getInterface(const std::string& name) const;
+         getInterface(const std::string& name) const;
 
       /**
        * Returns the Set of all Class<GUM_SCALAR> in this PRM.

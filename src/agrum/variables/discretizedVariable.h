@@ -130,7 +130,7 @@ namespace gum {
      * @return a reference to *this
      **/
     DiscretizedVariable< T_TICKS >&
-      operator=(const DiscretizedVariable< T_TICKS >& aDRV);
+       operator=(const DiscretizedVariable< T_TICKS >& aDRV);
 
     /**
      *

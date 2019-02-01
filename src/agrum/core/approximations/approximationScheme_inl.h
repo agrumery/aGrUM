@@ -239,7 +239,7 @@ namespace gum {
     if (_current_state != ApproximationSchemeSTATE::Continue) {
       GUM_ERROR(OperationNotAllowed,
                 "state of the approximation scheme is not correct : "
-                  + messageApproximationScheme());
+                   + messageApproximationScheme());
     }
 
     if (verbosity()) { _history.push_back(error); }
@@ -267,7 +267,7 @@ namespace gum {
         // ! _current_epsilon can be 0. AND epsilon
         // isEnabled can be disabled !
         _current_rate =
-          std::fabs((_current_epsilon - _last_epsilon) / _current_epsilon);
+           std::fabs((_current_epsilon - _last_epsilon) / _current_epsilon);
       }
       // limit with current eps ---> 0 is | 1 - ( last_eps / 0 ) | --->
       // infinity the else means a return false if we isEnabled the rate below,
@@ -296,7 +296,7 @@ namespace gum {
   }
 
   INLINE void
-    ApproximationScheme::_stopScheme(ApproximationSchemeSTATE new_state) {
+     ApproximationScheme::_stopScheme(ApproximationSchemeSTATE new_state) {
     if (new_state == ApproximationSchemeSTATE::Continue) { return; }
 
     if (new_state == ApproximationSchemeSTATE::Undefined) { return; }

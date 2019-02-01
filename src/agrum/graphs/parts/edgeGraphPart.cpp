@@ -121,7 +121,7 @@ namespace gum {
   }
 
   const std::vector< NodeId >
-    EdgeGraphPart::undirectedPath(const NodeId n1, const NodeId n2) const {
+     EdgeGraphPart::undirectedPath(const NodeId n1, const NodeId n2) const {
     // not recursive version => use a FIFO for simulating the recursion
     List< NodeId > nodeFIFO;
     nodeFIFO.pushBack(n2);

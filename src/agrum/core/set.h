@@ -712,8 +712,8 @@ namespace gum {
      * consumption and efficiency of new elements insertions.
      */
     template <
-      typename NewKey,
-      typename NewAlloc = typename Alloc::template rebind< NewKey >::other >
+       typename NewKey,
+       typename NewAlloc = typename Alloc::template rebind< NewKey >::other >
     HashTable< Key, NewKey, NewAlloc > hashMap(NewKey (*f)(const Key&),
                                                Size capacity = 0) const;
 
@@ -731,8 +731,8 @@ namespace gum {
      * consumption and efficiency of new elements insertions.
      */
     template <
-      typename NewKey,
-      typename NewAlloc = typename Alloc::template rebind< NewKey >::other >
+       typename NewKey,
+       typename NewAlloc = typename Alloc::template rebind< NewKey >::other >
     HashTable< Key, NewKey, NewAlloc > hashMap(const NewKey& val,
                                                Size          size = 0) const;
 
@@ -745,8 +745,8 @@ namespace gum {
      * @param f A function that maps a Key into a NewKey
      */
     template <
-      typename NewKey,
-      typename NewAlloc = typename Alloc::template rebind< NewKey >::other >
+       typename NewKey,
+       typename NewAlloc = typename Alloc::template rebind< NewKey >::other >
     List< NewKey, NewAlloc > listMap(NewKey (*f)(const Key&)) const;
 
     /// @}
@@ -1205,83 +1205,83 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#        ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#          ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::Set< int >;
-#endif
-#endif
-#endif
-#endif
-#endif
+#          endif
+#        endif
+#      endif
+#    endif
+#  endif
 #endif
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#        ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#          ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::Set< long >;
-#endif
-#endif
-#endif
-#endif
-#endif
+#          endif
+#        endif
+#      endif
+#    endif
+#  endif
 #endif
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#        ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#          ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::Set< unsigned int >;
-#endif
-#endif
-#endif
-#endif
-#endif
+#          endif
+#        endif
+#      endif
+#    endif
+#  endif
 #endif
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#        ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#          ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::Set< unsigned long >;
-#endif
-#endif
-#endif
-#endif
-#endif
+#          endif
+#        endif
+#      endif
+#    endif
+#  endif
 #endif
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#        ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#          ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::Set< double >;
-#endif
-#endif
-#endif
-#endif
-#endif
+#          endif
+#        endif
+#      endif
+#    endif
+#  endif
 #endif
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#        ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#          ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::Set< std::string >;
-#endif
-#endif
-#endif
-#endif
-#endif
+#          endif
+#        endif
+#      endif
+#    endif
+#  endif
 #endif
 
 

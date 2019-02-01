@@ -30,14 +30,14 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     PRMReferenceSlot< GUM_SCALAR >::PRMReferenceSlot(
-      const std::string&                      name,
-      PRMClassElementContainer< GUM_SCALAR >& type,
-      bool                                    isArray) :
+       const std::string&                      name,
+       PRMClassElementContainer< GUM_SCALAR >& type,
+       bool                                    isArray) :
         PRMClassElement< GUM_SCALAR >(name),
         __slotType(type), __isArray(isArray) {
       GUM_CONSTRUCTOR(PRMReferenceSlot);
       this->_safeName =
-        PRMObject::LEFT_CAST() + type.name() + PRMObject::RIGHT_CAST() + name;
+         PRMObject::LEFT_CAST() + type.name() + PRMObject::RIGHT_CAST() + name;
     }
 
     // Destructor.
@@ -48,7 +48,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     PRMReferenceSlot< GUM_SCALAR >::PRMReferenceSlot(
-      const PRMReferenceSlot< GUM_SCALAR >& source) :
+       const PRMReferenceSlot< GUM_SCALAR >& source) :
         PRMClassElement< GUM_SCALAR >(source),
         __slotType(source.__slotType), __isArray(source.__isArray) {
       GUM_CONS_CPY(PRMReferenceSlot);
@@ -65,7 +65,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE typename PRMClassElement< GUM_SCALAR >::ClassElementType
-      PRMReferenceSlot< GUM_SCALAR >::elt_type() const {
+       PRMReferenceSlot< GUM_SCALAR >::elt_type() const {
       return this->prm_refslot;
     }
 
@@ -116,11 +116,11 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMReferenceSlot< GUM_SCALAR >::addParent(
-      const PRMClassElement< GUM_SCALAR >& elt) {}
+       const PRMClassElement< GUM_SCALAR >& elt) {}
 
     template < typename GUM_SCALAR >
     INLINE void PRMReferenceSlot< GUM_SCALAR >::addChild(
-      const PRMClassElement< GUM_SCALAR >& elt) {}
+       const PRMClassElement< GUM_SCALAR >& elt) {}
 
   } /* namespace prm */
 } /* namespace gum */

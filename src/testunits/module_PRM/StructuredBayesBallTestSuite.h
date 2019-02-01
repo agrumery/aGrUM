@@ -65,10 +65,10 @@ namespace gum_tests {
     void testConstructors() {
       gum::prm::StructuredBayesBall< double >* bb = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(
-        bb = new gum::prm::StructuredBayesBall< double >(*prm_inf));
+         bb = new gum::prm::StructuredBayesBall< double >(*prm_inf));
       TS_GUM_ASSERT_THROWS_NOTHING(delete bb);
       TS_GUM_ASSERT_THROWS_NOTHING(
-        bb = new gum::prm::StructuredBayesBall< double >(*small_inf));
+         bb = new gum::prm::StructuredBayesBall< double >(*small_inf));
       TS_GUM_ASSERT_THROWS_NOTHING(delete bb);
     }
 
@@ -77,15 +77,15 @@ namespace gum_tests {
     void testRootsNoObs() {
       gum::prm::StructuredBayesBall< double >* bb = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(
-        bb = new gum::prm::StructuredBayesBall< double >(*prm_inf));
+         bb = new gum::prm::StructuredBayesBall< double >(*prm_inf));
 
       for (auto i = sys->begin(); i != sys->end(); ++i) {
         for (auto a = (*(i.val())).begin(); a != (*(i.val())).end(); ++a) {
           if ((*(i.val()))
-                .type()
-                .containerDag()
-                .parents((*(a.val())).id())
-                .empty()) {
+                 .type()
+                 .containerDag()
+                 .parents((*(a.val())).id())
+                 .empty()) {
             TS_GUM_ASSERT_THROWS_NOTHING(bb->compute(i.val(), (*(a.val())).id()));
 
             for (auto j = sys->begin(); j != sys->end(); ++j) {
@@ -110,15 +110,15 @@ namespace gum_tests {
     void testRootsNoObsSmall() {
       gum::prm::StructuredBayesBall< double >* bb = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(
-        bb = new gum::prm::StructuredBayesBall< double >(*small_inf));
+         bb = new gum::prm::StructuredBayesBall< double >(*small_inf));
 
       for (auto i = small_sys->begin(); i != small_sys->end(); ++i) {
         for (auto a = (*(i.val())).begin(); a != (*(i.val())).end(); ++a) {
           if ((*(i.val()))
-                .type()
-                .containerDag()
-                .parents((*(a.val())).id())
-                .empty()) {
+                 .type()
+                 .containerDag()
+                 .parents((*(a.val())).id())
+                 .empty()) {
             TS_GUM_ASSERT_THROWS_NOTHING(bb->compute(i.val(), (*(a.val())).id()));
 
             for (gum::prm::PRMSystem< double >::iterator j = small_sys->begin();

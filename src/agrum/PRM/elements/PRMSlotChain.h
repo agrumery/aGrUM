@@ -142,7 +142,7 @@ namespace gum {
 
       /// See gum::PRMClassElement<GUM_SCALAR>::elt_type().
       virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType
-        elt_type() const;
+         elt_type() const;
 
       /// This is similar to the following call: this->lastElt().type()
       virtual PRMType& type();

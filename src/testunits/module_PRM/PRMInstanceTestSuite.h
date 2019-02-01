@@ -47,7 +47,7 @@ namespace gum_tests {
     typedef gum::prm::PRMObject                    PRMObject;
     typedef gum::Bijection< const gum::DiscreteVariable*,
                             const gum::DiscreteVariable* >
-      Bijection;
+       Bijection;
 
     PRMType*  __boolean;
     PRMType*  __state;

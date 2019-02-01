@@ -35,7 +35,7 @@ namespace gum {
 
     if (from.__propertiesMap) {
       __propertiesMap =
-        new HashTable< std::string, std::string >(*(from.__propertiesMap));
+         new HashTable< std::string, std::string >(*(from.__propertiesMap));
     }
   }
 
@@ -87,7 +87,7 @@ namespace gum {
 
       if (source.__propertiesMap != 0) {
         __propertiesMap =
-          new HashTable< std::string, std::string >(*(source.__propertiesMap));
+           new HashTable< std::string, std::string >(*(source.__propertiesMap));
       }
 
       _dag = source._dag;

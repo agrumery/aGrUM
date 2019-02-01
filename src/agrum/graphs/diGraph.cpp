@@ -46,7 +46,7 @@ namespace gum {
     GUM_CONS_CPY(DiGraph);
     if (g.__mutableTopologicalOrder != nullptr) {
       __mutableTopologicalOrder =
-        new Sequence< NodeId >(*(g.__mutableTopologicalOrder));
+         new Sequence< NodeId >(*(g.__mutableTopologicalOrder));
     }
   }
 

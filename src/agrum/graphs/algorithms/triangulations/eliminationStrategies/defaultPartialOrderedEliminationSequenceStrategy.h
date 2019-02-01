@@ -90,8 +90,8 @@ namespace gum {
      * @param theThreshold the weight threshhold of the SimplicialSet included
      * in the DefaultEliminationSequenceStrategy */
     DefaultPartialOrderedEliminationSequenceStrategy(
-      double theRatio = GUM_QUASI_RATIO,
-      double theThreshold = GUM_WEIGHT_THRESHOLD);
+       double theRatio = GUM_QUASI_RATIO,
+       double theThreshold = GUM_WEIGHT_THRESHOLD);
 
     /// constructor for an a priori non empty graph
     /** @param graph the graph to be triangulated, i.e., the nodes of which will
@@ -110,11 +110,11 @@ namespace gum {
      * the sequence are not copied but only referenced by the elimination
      * sequence algorithm. */
     DefaultPartialOrderedEliminationSequenceStrategy(
-      UndiGraph*                  graph,
-      const NodeProperty< Size >* dom_sizes,
-      const List< NodeSet >*      subsets,
-      double                      ratio = GUM_QUASI_RATIO,
-      double                      threshold = GUM_WEIGHT_THRESHOLD);
+       UndiGraph*                  graph,
+       const NodeProperty< Size >* dom_sizes,
+       const List< NodeSet >*      subsets,
+       double                      ratio = GUM_QUASI_RATIO,
+       double                      threshold = GUM_WEIGHT_THRESHOLD);
 
     /// copy constructor
     /** @warning The newly created elimination sequence strategy points toward
@@ -127,11 +127,11 @@ namespace gum {
      * triangulation but not both. This will necessarily be OK in
      * DefaultTriangulations. */
     DefaultPartialOrderedEliminationSequenceStrategy(
-      const DefaultPartialOrderedEliminationSequenceStrategy& from);
+       const DefaultPartialOrderedEliminationSequenceStrategy& from);
 
     /// move constructor
     DefaultPartialOrderedEliminationSequenceStrategy(
-      DefaultPartialOrderedEliminationSequenceStrategy&& from);
+       DefaultPartialOrderedEliminationSequenceStrategy&& from);
 
     /// destructor
     virtual ~DefaultPartialOrderedEliminationSequenceStrategy();
@@ -141,7 +141,7 @@ namespace gum {
      * @warning you must deallocate by yourself the object returned
      * @return an empty clone of the current object with the same type */
     virtual DefaultPartialOrderedEliminationSequenceStrategy*
-      newFactory() const final;
+       newFactory() const final;
 
     /// virtual copy constructor
     /** @warning The newly created elimination sequence strategy points toward
@@ -154,7 +154,7 @@ namespace gum {
      * created strategy is used for a triangulation but not both. This will
      * necessarily be OK in DefaultTriangulations. */
     virtual DefaultPartialOrderedEliminationSequenceStrategy*
-      copyFactory() const final;
+       copyFactory() const final;
 
     /// @}
 

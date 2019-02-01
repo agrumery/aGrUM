@@ -125,7 +125,7 @@ namespace gum {
      * @param del_vars is the set of vars to eliminate
      */
     Potential< GUM_SCALAR >
-      margSumOut(const Set< const DiscreteVariable* >& del_vars) const;
+       margSumOut(const Set< const DiscreteVariable* >& del_vars) const;
 
     /**
      * Projection using sum as operation (and implementation-optimized
@@ -133,7 +133,7 @@ namespace gum {
      * @param kept_vars is the set of vars to keep
      */
     Potential< GUM_SCALAR >
-      margSumIn(const Set< const DiscreteVariable* >& kept_vars) const;
+       margSumIn(const Set< const DiscreteVariable* >& kept_vars) const;
 
     /**
      * Projection using multiplication as operation (and
@@ -141,7 +141,7 @@ namespace gum {
      * @param del_vars is the set of vars to eliminate
      */
     Potential< GUM_SCALAR >
-      margProdOut(const Set< const DiscreteVariable* >& del_vars) const;
+       margProdOut(const Set< const DiscreteVariable* >& del_vars) const;
 
     /**
      * Projection using multiplication as operation (and
@@ -149,7 +149,7 @@ namespace gum {
      * @param kept_vars is the set of vars to keep
      */
     Potential< GUM_SCALAR >
-      margProdIn(const Set< const DiscreteVariable* >& kept_vars) const;
+       margProdIn(const Set< const DiscreteVariable* >& kept_vars) const;
 
     /**
      * Projection using min as operation (and implementation-optimized
@@ -157,7 +157,7 @@ namespace gum {
      * @param del_vars is the set of vars to eliminate
      */
     Potential< GUM_SCALAR >
-      margMinOut(const Set< const DiscreteVariable* >& del_vars) const;
+       margMinOut(const Set< const DiscreteVariable* >& del_vars) const;
 
     /**
      * Projection using min as operation (and implementation-optimized
@@ -165,7 +165,7 @@ namespace gum {
      * @param kept_vars is the set of vars to keep
      */
     Potential< GUM_SCALAR >
-      margMinIn(const Set< const DiscreteVariable* >& kept_vars) const;
+       margMinIn(const Set< const DiscreteVariable* >& kept_vars) const;
 
     /**
      * Projection using max as operation (and implementation-optimized
@@ -173,7 +173,7 @@ namespace gum {
      * @param del_vars is the set of vars to eliminate
      */
     Potential< GUM_SCALAR >
-      margMaxOut(const Set< const DiscreteVariable* >& del_vars) const;
+       margMaxOut(const Set< const DiscreteVariable* >& del_vars) const;
 
     /**
      * Projection using max as operation (and implementation-optimized
@@ -181,7 +181,7 @@ namespace gum {
      * @param kept_vars is the set of vars to keep
      */
     Potential< GUM_SCALAR >
-      margMaxIn(const Set< const DiscreteVariable* >& kept_vars) const;
+       margMaxIn(const Set< const DiscreteVariable* >& kept_vars) const;
 
     /**
      * create a boolean-like potential using the predicate isNonZero
@@ -218,7 +218,7 @@ namespace gum {
      * in vars
      */
     Potential< GUM_SCALAR >
-      reorganize(const std::vector< const DiscreteVariable* >& vars) const;
+       reorganize(const std::vector< const DiscreteVariable* >& vars) const;
 
     /** create a new Potential extracted from *this given a partial
      * instantiation
@@ -239,7 +239,7 @@ namespace gum {
      * @throw InvalidArgument if the Potential is not compatible with this
      */
     const Potential< GUM_SCALAR >&
-      fillWith(const Potential< GUM_SCALAR >& src) const;
+       fillWith(const Potential< GUM_SCALAR >& src) const;
 
     /**
      * @brief copy a Potential data using the sequence of names in mapSrc to find
@@ -258,8 +258,8 @@ namespace gum {
      * @throw InvalidArgument if the Potential is not compatible with this
      * */
     const Potential< GUM_SCALAR >&
-      fillWith(const Potential< GUM_SCALAR >&    src,
-               const std::vector< std::string >& mapSrc) const;
+       fillWith(const Potential< GUM_SCALAR >&    src,
+                const std::vector< std::string >& mapSrc) const;
 
     /**
      * @brief Automatically fills the potential with the values in
@@ -270,7 +270,7 @@ namespace gum {
      * MultiDimContainer domain size.
      */
     const Potential< GUM_SCALAR >&
-      fillWith(const std::vector< GUM_SCALAR >& v) const;
+       fillWith(const std::vector< GUM_SCALAR >& v) const;
 
     /**
      * @brief Automatically fills this MultiDimContainer with the value v
@@ -423,7 +423,7 @@ namespace gum {
 
     protected:
     Set< const DiscreteVariable* >
-      _complementVars(const Set< const DiscreteVariable* >& del_vars) const;
+       _complementVars(const Set< const DiscreteVariable* >& del_vars) const;
   };
 
 

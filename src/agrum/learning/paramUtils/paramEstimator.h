@@ -79,16 +79,16 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       ParamEstimator(
-        const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori< ALLOC >&              external_apriori,
-        const Apriori< ALLOC >&              score_internal__apriori,
-        const std::vector< std::pair< std::size_t, std::size_t >,
-                           ALLOC< std::pair< std::size_t, std::size_t > > >&
-          ranges,
-        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-          nodeId2columns =
-            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-        const allocator_type& alloc = allocator_type());
+         const DBRowGeneratorParser< ALLOC >& parser,
+         const Apriori< ALLOC >&              external_apriori,
+         const Apriori< ALLOC >&              score_internal__apriori,
+         const std::vector< std::pair< std::size_t, std::size_t >,
+                            ALLOC< std::pair< std::size_t, std::size_t > > >&
+            ranges,
+         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+            nodeId2columns =
+               Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+         const allocator_type& alloc = allocator_type());
 
       /// default constructor
       /** @param parser the parser used to parse the database
@@ -108,13 +108,14 @@ namespace gum {
        * @warning If nodeId2columns is not empty, then only the scores over the
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
-      ParamEstimator(const DBRowGeneratorParser< ALLOC >& parser,
-                     const Apriori< ALLOC >&              external_apriori,
-                     const Apriori< ALLOC >&              score_internal__apriori,
-                     const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                       nodeId2columns =
-                         Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-                     const allocator_type& alloc = allocator_type());
+      ParamEstimator(
+         const DBRowGeneratorParser< ALLOC >& parser,
+         const Apriori< ALLOC >&              external_apriori,
+         const Apriori< ALLOC >&              score_internal__apriori,
+         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+            nodeId2columns =
+               Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+         const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       ParamEstimator(const ParamEstimator< ALLOC >& from);
@@ -134,7 +135,7 @@ namespace gum {
 
       /// virtual copy constructor with a given allocator
       virtual ParamEstimator< ALLOC >*
-        clone(const allocator_type& alloc) const = 0;
+         clone(const allocator_type& alloc) const = 0;
 
       /// destructor
       virtual ~ParamEstimator();
@@ -179,9 +180,9 @@ namespace gum {
        * the whole database. */
       template < template < typename > class XALLOC >
       void setRanges(
-        const std::vector< std::pair< std::size_t, std::size_t >,
-                           XALLOC< std::pair< std::size_t, std::size_t > > >&
-          new_ranges);
+         const std::vector< std::pair< std::size_t, std::size_t >,
+                            XALLOC< std::pair< std::size_t, std::size_t > > >&
+            new_ranges);
 
       /// reset the ranges to the one range corresponding to the whole database
       void clearRanges();
@@ -189,7 +190,7 @@ namespace gum {
       /// returns the current ranges
       const std::vector< std::pair< std::size_t, std::size_t >,
                          ALLOC< std::pair< std::size_t, std::size_t > > >&
-        ranges() const;
+         ranges() const;
 
       /// returns the CPT's parameters corresponding to a given target node
       std::vector< double, ALLOC< double > > parameters(const NodeId target_node);
@@ -201,8 +202,8 @@ namespace gum {
        * first, there is the target node, then the conditioning nodes (in the
        * order in which they were specified). */
       virtual std::vector< double, ALLOC< double > > parameters(
-        const NodeId                                  target_node,
-        const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes) = 0;
+         const NodeId                                  target_node,
+         const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes) = 0;
 
       /// sets the CPT's parameters corresponding to a given Potential
       /** The potential is assumed to be a conditional probability, the first
@@ -210,16 +211,16 @@ namespace gum {
        * other ones being on the right side of the conditioning bar. */
       template < typename GUM_SCALAR >
       void setParameters(
-        const NodeId                                  target_node,
-        const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
-        Potential< GUM_SCALAR >&                      pot);
+         const NodeId                                  target_node,
+         const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
+         Potential< GUM_SCALAR >&                      pot);
 
       /// returns the mapping from ids to column positions in the database
       /** @warning An empty nodeId2Columns bijection means that the mapping is
        * an identity, i.e., the value of a NodeId is equal to the index of the
        * column in the DatabaseTable. */
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-        nodeId2Columns() const;
+         nodeId2Columns() const;
 
       /// returns the database on which we perform the counts
       const DatabaseTable< ALLOC >& database() const;
@@ -264,9 +265,9 @@ namespace gum {
        * the setParameters functions */
       template < typename GUM_SCALAR >
       void __checkParameters(
-        const NodeId                                  target_node,
-        const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
-        Potential< GUM_SCALAR >&                      pot);
+         const NodeId                                  target_node,
+         const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
+         Potential< GUM_SCALAR >&                      pot);
 
       // sets the CPT's parameters corresponding to a given Potential
       // when the potential belongs to a BayesNet<GUM_SCALAR> when
@@ -274,10 +275,10 @@ namespace gum {
       template < typename GUM_SCALAR >
       typename std::enable_if< !std::is_same< GUM_SCALAR, double >::value,
                                void >::type
-        __setParameters(
-          const NodeId                                  target_node,
-          const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
-          Potential< GUM_SCALAR >&                      pot);
+         __setParameters(
+            const NodeId                                  target_node,
+            const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
+            Potential< GUM_SCALAR >&                      pot);
 
       // sets the CPT's parameters corresponding to a given Potential
       // when the potential belongs to a BayesNet<GUM_SCALAR> when
@@ -285,10 +286,10 @@ namespace gum {
       template < typename GUM_SCALAR >
       typename std::enable_if< std::is_same< GUM_SCALAR, double >::value,
                                void >::type
-        __setParameters(
-          const NodeId                                  target_node,
-          const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
-          Potential< GUM_SCALAR >&                      pot);
+         __setParameters(
+            const NodeId                                  target_node,
+            const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
+            Potential< GUM_SCALAR >&                      pot);
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

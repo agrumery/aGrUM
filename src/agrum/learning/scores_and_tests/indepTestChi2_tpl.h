@@ -33,12 +33,13 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE IndepTestChi2< ALLOC >::IndepTestChi2(
-      const DBRowGeneratorParser< ALLOC >&                                 parser,
-      const Apriori< ALLOC >&                                              apriori,
-      const std::vector< std::pair< std::size_t, std::size_t >,
-                         ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
-      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename IndepTestChi2< ALLOC >::allocator_type&        alloc) :
+       const DBRowGeneratorParser< ALLOC >& parser,
+       const Apriori< ALLOC >&              apriori,
+       const std::vector< std::pair< std::size_t, std::size_t >,
+                          ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                                                              nodeId2columns,
+       const typename IndepTestChi2< ALLOC >::allocator_type& alloc) :
         IndependenceTest< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
         __domain_sizes(parser.database().domainSizes()), __chi2(__domain_sizes) {
       GUM_CONSTRUCTOR(IndepTestChi2);
@@ -48,10 +49,11 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE IndepTestChi2< ALLOC >::IndepTestChi2(
-      const DBRowGeneratorParser< ALLOC >&                          parser,
-      const Apriori< ALLOC >&                                       apriori,
-      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename IndepTestChi2< ALLOC >::allocator_type&        alloc) :
+       const DBRowGeneratorParser< ALLOC >& parser,
+       const Apriori< ALLOC >&              apriori,
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                                                              nodeId2columns,
+       const typename IndepTestChi2< ALLOC >::allocator_type& alloc) :
         IndependenceTest< ALLOC >(parser, apriori, nodeId2columns, alloc),
         __domain_sizes(parser.database().domainSizes()), __chi2(__domain_sizes) {
       GUM_CONSTRUCTOR(IndepTestChi2);
@@ -61,8 +63,8 @@ namespace gum {
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE IndepTestChi2< ALLOC >::IndepTestChi2(
-      const IndepTestChi2< ALLOC >&                          from,
-      const typename IndepTestChi2< ALLOC >::allocator_type& alloc) :
+       const IndepTestChi2< ALLOC >&                          from,
+       const typename IndepTestChi2< ALLOC >::allocator_type& alloc) :
         IndependenceTest< ALLOC >(from, alloc),
         __domain_sizes(from.__domain_sizes), __chi2(__domain_sizes) {
       GUM_CONS_CPY(IndepTestChi2);
@@ -72,15 +74,15 @@ namespace gum {
     /// copy constructor
     template < template < typename > class ALLOC >
     INLINE
-      IndepTestChi2< ALLOC >::IndepTestChi2(const IndepTestChi2< ALLOC >& from) :
+       IndepTestChi2< ALLOC >::IndepTestChi2(const IndepTestChi2< ALLOC >& from) :
         IndepTestChi2< ALLOC >(from, from.getAllocator()) {}
 
 
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE IndepTestChi2< ALLOC >::IndepTestChi2(
-      IndepTestChi2< ALLOC >&&                               from,
-      const typename IndepTestChi2< ALLOC >::allocator_type& alloc) :
+       IndepTestChi2< ALLOC >&&                               from,
+       const typename IndepTestChi2< ALLOC >::allocator_type& alloc) :
         IndependenceTest< ALLOC >(std::move(from), alloc),
         __domain_sizes(from.__domain_sizes), __chi2(__domain_sizes) {
       GUM_CONS_MOV(IndepTestChi2);
@@ -96,7 +98,7 @@ namespace gum {
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
     IndepTestChi2< ALLOC >* IndepTestChi2< ALLOC >::clone(
-      const typename IndepTestChi2< ALLOC >::allocator_type& alloc) const {
+       const typename IndepTestChi2< ALLOC >::allocator_type& alloc) const {
       ALLOC< IndepTestChi2< ALLOC > > allocator(alloc);
       IndepTestChi2< ALLOC >*         new_score = allocator.allocate(1);
       try {
@@ -150,19 +152,19 @@ namespace gum {
     /// returns the pair <statistics,pvalue> corresponding to a given IdSet
     template < template < typename > class ALLOC >
     std::pair< double, double > IndepTestChi2< ALLOC >::statistics(
-      NodeId                                        var1,
-      NodeId                                        var2,
-      const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids) {
+       NodeId                                        var1,
+       NodeId                                        var2,
+       const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids) {
       return _statistics(IdSet< ALLOC >(var1, var2, rhs_ids, false));
     }
 
     /// returns the pair <statistics,pvalue> corresponding to a given IdSet
     template < template < typename > class ALLOC >
     std::pair< double, double >
-      IndepTestChi2< ALLOC >::_statistics(const IdSet< ALLOC >& idset) {
+       IndepTestChi2< ALLOC >::_statistics(const IdSet< ALLOC >& idset) {
       // get the countings
       std::vector< double, ALLOC< double > > N_xyz(
-        this->_counter.counts(idset, true));
+         this->_counter.counts(idset, true));
       const bool informative_external_apriori = this->_apriori->isInformative();
       if (informative_external_apriori)
         this->_apriori->addAllApriori(idset, N_xyz);
@@ -192,11 +194,11 @@ namespace gum {
 
         // get the counts for the conditioning nodes
         std::vector< double, ALLOC< double > > N_xz =
-          this->_marginalize(std::size_t(1), X_size, Y_size, Z_size, N_xyz);
+           this->_marginalize(std::size_t(1), X_size, Y_size, Z_size, N_xyz);
         std::vector< double, ALLOC< double > > N_yz =
-          this->_marginalize(std::size_t(0), X_size, Y_size, Z_size, N_xyz);
+           this->_marginalize(std::size_t(0), X_size, Y_size, Z_size, N_xyz);
         std::vector< double, ALLOC< double > > N_z =
-          this->_marginalize(std::size_t(2), X_size, Y_size, Z_size, N_xyz);
+           this->_marginalize(std::size_t(2), X_size, Y_size, Z_size, N_xyz);
 
         // indicate to the chi2 distribution the set of conditioning nodes
         std::vector< Idx > cond_nodes;
@@ -247,9 +249,9 @@ namespace gum {
 
         // get the counts for all the targets and for the conditioning nodes
         std::vector< double, ALLOC< double > > N_x = this->_marginalize(
-          std::size_t(1), X_size, Y_size, std::size_t(1), N_xyz);
+           std::size_t(1), X_size, Y_size, std::size_t(1), N_xyz);
         std::vector< double, ALLOC< double > > N_y = this->_marginalize(
-          std::size_t(0), X_size, Y_size, std::size_t(1), N_xyz);
+           std::size_t(0), X_size, Y_size, std::size_t(1), N_xyz);
 
         // count N
         double N = 0.0;

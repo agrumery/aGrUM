@@ -44,33 +44,33 @@ namespace gum {
   // @brief Combine using addition with the given gum::ApproximationPolicy.
   template < typename GUM_SCALAR >
   void ExactPolicy< GUM_SCALAR >::combineAdd(
-    const ApproximationPolicy< GUM_SCALAR >* ap) {}
+     const ApproximationPolicy< GUM_SCALAR >* ap) {}
 
   // @brief Combine using substraction with the given
   // gum::ApproximationPolicy.
   template < typename GUM_SCALAR >
   void ExactPolicy< GUM_SCALAR >::combineSub(
-    const ApproximationPolicy< GUM_SCALAR >* ap) {}
+     const ApproximationPolicy< GUM_SCALAR >* ap) {}
 
   // @brief Combine using multiplication with the given
   // gum::ApproximationPolicy.
   template < typename GUM_SCALAR >
   void ExactPolicy< GUM_SCALAR >::combineMult(
-    const ApproximationPolicy< GUM_SCALAR >* ap) {}
+     const ApproximationPolicy< GUM_SCALAR >* ap) {}
 
   // @brief Combine using division with the given gum::ApproximationPolicy.
   template < typename GUM_SCALAR >
   void ExactPolicy< GUM_SCALAR >::combineDiv(
-    const ApproximationPolicy< GUM_SCALAR >* ap) {}
+     const ApproximationPolicy< GUM_SCALAR >* ap) {}
 
   // @brief Combine using max with the given gum::ApproximationPolicy.
   template < typename GUM_SCALAR >
   void ExactPolicy< GUM_SCALAR >::combineMax(
-    const ApproximationPolicy< GUM_SCALAR >* ap) {}
+     const ApproximationPolicy< GUM_SCALAR >* ap) {}
 
   // @brief Combine using min with the given gum::ApproximationPolicy.
   template < typename GUM_SCALAR >
   void ExactPolicy< GUM_SCALAR >::combineMin(
-    const ApproximationPolicy< GUM_SCALAR >* ap) {}
+     const ApproximationPolicy< GUM_SCALAR >* ap) {}
 
 }   // namespace gum

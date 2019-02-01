@@ -70,7 +70,7 @@ namespace gum_tests {
       TS_ASSERT(xxx.second == -16);
 
       gum::Sequence< const gum::ScheduleMultiDim< double >* > seq =
-        del2.multiDimArgs();
+         del2.multiDimArgs();
       TS_ASSERT(seq.size() == 1);
       TS_ASSERT(*(seq.atPos(0)) == res);
 

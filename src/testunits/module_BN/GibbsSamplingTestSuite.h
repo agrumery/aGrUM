@@ -66,7 +66,7 @@ namespace gum_tests {
     public:
     void testGibbsSimpleBN() {
       auto bn =
-        gum::BayesNet< double >::fastPrototype("a->b->c->f;d->b->e->f;e->g");
+         gum::BayesNet< double >::fastPrototype("a->b->c->f;d->b->e->f;e->g");
       unsharpen(bn);
 
       gum::LazyPropagation< double > lazy(&bn);
@@ -86,7 +86,7 @@ namespace gum_tests {
     }
     void testGibbsApproxBinaryTreeWithoutEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype(
-        "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
 
       gum::LazyPropagation< double > lazy(&bn);
@@ -111,7 +111,7 @@ namespace gum_tests {
 
     void testGibbsApproxBinaryTreeWithEvidenceOnRoot() {
       auto bn = gum::BayesNet< double >::fastPrototype(
-        "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "b";
 
@@ -136,7 +136,7 @@ namespace gum_tests {
 
     void testGibbsApproxBinaryTreeWithEvidenceOnLeaf() {
       auto bn = gum::BayesNet< double >::fastPrototype(
-        "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "h";
 
@@ -160,7 +160,7 @@ namespace gum_tests {
 
     void testGibbsApproxBinaryTreeWithEvidenceOnMid() {
       auto bn = gum::BayesNet< double >::fastPrototype(
-        "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
       std::string ev = "e";
 
@@ -184,7 +184,7 @@ namespace gum_tests {
 
     void testGibbsApproxBinaryTreeWithMultipleEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype(
-        "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       unsharpen(bn);
 
       try {
@@ -211,7 +211,7 @@ namespace gum_tests {
 
     void testGibbsApproxNaryTreeWithMultipleEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype(
-        "a[4]->d[8]->f[3];b->d->g[5];b->e[4]->h;c->e;i[10]->j[3]->h");
+         "a[4]->d[8]->f[3];b->d->g[5];b->e[4]->h;c->e;i[10]->j[3]->h");
       unsharpen(bn);
 
       try {
@@ -292,7 +292,7 @@ namespace gum_tests {
 
     void testGibbsApproxCplxBN() {
       auto bn = gum::BayesNet< double >::fastPrototype(
-        "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;", 3);
+         "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;", 3);
       unsharpen(bn);
 
       try {
@@ -393,7 +393,7 @@ namespace gum_tests {
 
     void testEvidenceAsTargetOnCplxBN() {
       auto bn = gum::BayesNet< double >::fastPrototype(
-        "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;", 3);
+         "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;", 3);
       unsharpen(bn);
 
       try {

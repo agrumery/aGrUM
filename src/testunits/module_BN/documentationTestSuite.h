@@ -44,7 +44,7 @@ namespace gum_tests {
         // Variables are added by copy to the BayesNet, so you can use a single
         // gum::LabelizedVariable to add all varaibles with the same domain
         auto var = gum::LabelizedVariable(
-          "template", "A variable of the Asia Bayesian Network", 0);
+           "template", "A variable of the Asia Bayesian Network", 0);
         var.addLabel("True");
         var.addLabel("False");
 
@@ -75,50 +75,50 @@ namespace gum_tests {
         bn.cpt(visitToAsia).fillWith({0.1f, 0.9f});
         bn.cpt(smoker).fillWith({0.7f, 0.3f});
         bn.cpt(hasTuberculosis)
-          .fillWith({
-            // True | False  == hasTuberculosis
-            0.05f,
-            0.01f,   // visitToAsia == True
-            0.95f,
-            0.99f   // visitToAsia == False
-          });
+           .fillWith({
+              // True | False  == hasTuberculosis
+              0.05f,
+              0.01f,   // visitToAsia == True
+              0.95f,
+              0.99f   // visitToAsia == False
+           });
         bn.cpt(hasLungCancer)
-          .fillWith({
-            // True | False  == hasLungCancer
-            0.10f,
-            0.90f,   // smoker == True
-            0.01f,
-            0.99f   // smoker == False
-          });
+           .fillWith({
+              // True | False  == hasLungCancer
+              0.10f,
+              0.90f,   // smoker == True
+              0.01f,
+              0.99f   // smoker == False
+           });
         bn.cpt(tubOrCancer)
-          .fillWith({
-            // True | False  == tubOrCancer
-            1.00f,
-            0.00f,   // hasTuberculosis == True,  hasLungCancer == True
-            1.00f,
-            0.00f,   // hasTuberculosis == False, hasLungCancer == True
-            1.00f,
-            0.00f,   // hasTuberculosis == True,  hasLungCancer == False
-            0.00f,
-            1.00f   // hasTuberculosis == False, hasLungCancer == False
-          });
+           .fillWith({
+              // True | False  == tubOrCancer
+              1.00f,
+              0.00f,   // hasTuberculosis == True,  hasLungCancer == True
+              1.00f,
+              0.00f,   // hasTuberculosis == False, hasLungCancer == True
+              1.00f,
+              0.00f,   // hasTuberculosis == True,  hasLungCancer == False
+              0.00f,
+              1.00f   // hasTuberculosis == False, hasLungCancer == False
+           });
         bn.cpt(xray).fillWith({
-          // True | False  == xray
-          0.98f,
-          0.02f,   // tubOrCancer == 0
-          0.05f,
-          0.95f   // tubOrCancer == 1
+           // True | False  == xray
+           0.98f,
+           0.02f,   // tubOrCancer == 0
+           0.05f,
+           0.95f   // tubOrCancer == 1
         });
         bn.cpt(dyspnea).fillWith({
-          // True | False  == dyspnea
-          0.90f,
-          0.10f,   // tubOrCancer == True,  hasBronchitis == True
-          0.70f,
-          0.30f,   // tubOrCancer == False, hasBronchitis == True
-          0.80f,
-          0.20f,   // tubOrCancer == True,  hasBronchitis == False
-          0.10f,
-          0.90f   // tubOrCancer == False, hasBronchitis == False
+           // True | False  == dyspnea
+           0.90f,
+           0.10f,   // tubOrCancer == True,  hasBronchitis == True
+           0.70f,
+           0.30f,   // tubOrCancer == False, hasBronchitis == True
+           0.80f,
+           0.20f,   // tubOrCancer == True,  hasBronchitis == False
+           0.10f,
+           0.90f   // tubOrCancer == False, hasBronchitis == False
         });
       } catch (gum::Exception& e) { TS_FAIL(e.errorContent()); }
     }
@@ -131,7 +131,7 @@ namespace gum_tests {
         factory.startVariableDeclaration();
         factory.variableName("Visit To Asia");
         factory.variableDescription(
-          "True if patient visited Asia in the past months");
+           "True if patient visited Asia in the past months");
         factory.addModality("True");
         factory.addModality("False");
         factory.endVariableDeclaration();
@@ -227,7 +227,7 @@ namespace gum_tests {
         // CPT of Tuberculosis or Cancer
         factory.startRawProbabilityDeclaration("Tuberculosis or Cancer");
         variables = std::vector< std::string >{
-          "Tuberculosis or Cancer", "Has Tuberculosis", "Has Lung Cancer"};
+           "Tuberculosis or Cancer", "Has Tuberculosis", "Has Lung Cancer"};
         values = std::vector< float >   // clang-format off
           //      True     ||    False        => Has Lung Cancer
           //  True | False || True | False    => Has Tuberculosis
@@ -261,7 +261,7 @@ namespace gum_tests {
       // Constructing the BayesNet...
       {
         auto var = gum::LabelizedVariable(
-          "template", "A variable of the Asia Bayesian Network", 0);
+           "template", "A variable of the Asia Bayesian Network", 0);
         var.addLabel("True");
         var.addLabel("False");
 
@@ -294,12 +294,12 @@ namespace gum_tests {
         asia.cpt(hasTuberculosis).fillWith({0.05f, 0.01f, 0.95f, 0.99f});
         asia.cpt(hasLungCancer).fillWith({0.10f, 0.90f, 0.01f, 0.99f});
         asia.cpt(tubOrCancer)
-          .fillWith({1.00f, 0.00f, 1.00f, 0.00f, 1.00f, 0.00f, 0.00f, 1.00f})
-          .translate(1e-5)
-          .normalizeAsCPT();
+           .fillWith({1.00f, 0.00f, 1.00f, 0.00f, 1.00f, 0.00f, 0.00f, 1.00f})
+           .translate(1e-5)
+           .normalizeAsCPT();
         asia.cpt(xray).fillWith({0.98f, 0.02f, 0.05f, 0.95f});
         asia.cpt(dyspnea).fillWith(
-          {0.90f, 0.10f, 0.70f, 0.30f, 0.80f, 0.20f, 0.10f, 0.90f});
+           {0.90f, 0.10f, 0.70f, 0.30f, 0.80f, 0.20f, 0.10f, 0.90f});
       }
 
       try {
@@ -351,7 +351,7 @@ namespace gum_tests {
         // Constructing BayesNet...
         {
           auto var = gum::LabelizedVariable(
-            "template", "A variable of the Asia Bayesian Network", 0);
+             "template", "A variable of the Asia Bayesian Network", 0);
           var.addLabel("True");
           var.addLabel("False");
 
@@ -384,10 +384,10 @@ namespace gum_tests {
           asia.cpt(hasTuberculosis).fillWith({0.05f, 0.01f, 0.95f, 0.99f});
           asia.cpt(hasLungCancer).fillWith({0.10f, 0.90f, 0.01f, 0.99f});
           asia.cpt(tubOrCancer)
-            .fillWith({1.00f, 0.00f, 1.00f, 0.00f, 1.00f, 0.00f, 0.00f, 1.00f});
+             .fillWith({1.00f, 0.00f, 1.00f, 0.00f, 1.00f, 0.00f, 0.00f, 1.00f});
           asia.cpt(xray).fillWith({0.98f, 0.02f, 0.05f, 0.95f});
           asia.cpt(dyspnea).fillWith(
-            {0.90f, 0.10f, 0.70f, 0.30f, 0.80f, 0.20f, 0.10f, 0.90f});
+             {0.90f, 0.10f, 0.70f, 0.30f, 0.80f, 0.20f, 0.10f, 0.90f});
         }
         // One implementation of the gum::BNWriter class
         auto writer = gum::BIFWriter< double >();

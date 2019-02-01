@@ -71,13 +71,13 @@ namespace gum_tests {
            actIter != fmdp.endActions();
            ++actIter)
         for (gum::SequenceIteratorSafe< const gum::DiscreteVariable* > varIter =
-               fmdp.beginVariables();
+                fmdp.beginVariables();
              varIter != fmdp.endVariables();
              ++varIter) {
           gum::MultiDimFunctionGraph< double >* hey =
-            new gum::MultiDimFunctionGraph< double >(
-              *static_cast< const gum::MultiDimFunctionGraph< double >* >(
-                fmdp.transition(*actIter, *varIter)));
+             new gum::MultiDimFunctionGraph< double >(
+                *static_cast< const gum::MultiDimFunctionGraph< double >* >(
+                   fmdp.transition(*actIter, *varIter)));
           delete hey;
         }
     }
@@ -90,7 +90,7 @@ namespace gum_tests {
       gum::FMDPDatReader< double >* reader = nullptr;
 
       TS_GUM_ASSERT_THROWS_NOTHING(
-        reader = new gum::FMDPDatReader< double >(&fmdp, file));
+         reader = new gum::FMDPDatReader< double >(&fmdp, file));
 
       TS_GUM_ASSERT_THROWS_NOTHING(if (reader != nullptr) delete reader);
     }

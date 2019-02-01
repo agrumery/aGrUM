@@ -32,7 +32,7 @@ namespace gum {
     /// default constructor
     template < typename STRUCT_CONSTRAINT >
     GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::GraphChangesGenerator4K2(
-      STRUCT_CONSTRAINT& constraint) :
+       STRUCT_CONSTRAINT& constraint) :
         _constraint(&constraint) {
       GUM_CONSTRUCTOR(GraphChangesGenerator4K2);
     }
@@ -40,7 +40,7 @@ namespace gum {
     /// copy constructor
     template < typename STRUCT_CONSTRAINT >
     GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::GraphChangesGenerator4K2(
-      const GraphChangesGenerator4K2& from) :
+       const GraphChangesGenerator4K2& from) :
         _graph(from._graph),
         _constraint(from._constraint), _order(from._order),
         _legal_changes(from._legal_changes),
@@ -51,7 +51,7 @@ namespace gum {
     /// move operator
     template < typename STRUCT_CONSTRAINT >
     GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::GraphChangesGenerator4K2(
-      GraphChangesGenerator4K2&& from) :
+       GraphChangesGenerator4K2&& from) :
         _graph(std::move(from._graph)),
         _constraint(from._constraint), _order(std::move(from._order)),
         _legal_changes(std::move(from._legal_changes)),
@@ -68,8 +68,8 @@ namespace gum {
     /// copy operator
     template < typename STRUCT_CONSTRAINT >
     GraphChangesGenerator4K2< STRUCT_CONSTRAINT >&
-        GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::
-        operator=(const GraphChangesGenerator4K2< STRUCT_CONSTRAINT >& from) {
+          GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::
+          operator=(const GraphChangesGenerator4K2< STRUCT_CONSTRAINT >& from) {
       if (this != &from) {
         _graph = from._graph;
         _constraint = from._constraint;
@@ -83,8 +83,8 @@ namespace gum {
     /// move operator
     template < typename STRUCT_CONSTRAINT >
     GraphChangesGenerator4K2< STRUCT_CONSTRAINT >&
-        GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::
-        operator=(GraphChangesGenerator4K2< STRUCT_CONSTRAINT >&& from) {
+          GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::
+          operator=(GraphChangesGenerator4K2< STRUCT_CONSTRAINT >&& from) {
       if (this != &from) {
         _graph = std::move(from._graph);
         _constraint = std::move(from._constraint);
@@ -140,7 +140,7 @@ namespace gum {
     /// sets a new graph from which the operator will compute possible changes
     template < typename STRUCT_CONSTRAINT >
     void GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::setGraph(
-      const DiGraph& graph) {
+       const DiGraph& graph) {
       // sets the current graph
       _graph = graph;
 
@@ -161,14 +161,14 @@ namespace gum {
     /// set a new order on the random variables
     template < typename STRUCT_CONSTRAINT >
     INLINE void GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::setOrder(
-      const Sequence< NodeId >& order) {
+       const Sequence< NodeId >& order) {
       _order = order;
     }
 
     /// set a new order on the random variables
     template < typename STRUCT_CONSTRAINT >
     INLINE void GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::setOrder(
-      const std::vector< NodeId >& order) {
+       const std::vector< NodeId >& order) {
       _order.clear();
       for (const auto node : order) {
         _order.insert(node);
@@ -178,55 +178,55 @@ namespace gum {
     /// empty the set of possible change operators that can be applied
     template < typename STRUCT_CONSTRAINT >
     INLINE void
-      GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::clearChanges() noexcept {
+       GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::clearChanges() noexcept {
       _legal_changes.clear();
     }
 
     /// returns an (unsafe) iterator on the beginning of the list of operators
     template < typename STRUCT_CONSTRAINT >
     INLINE typename GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::iterator
-      GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::begin() const {
+       GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::begin() const {
       return _legal_changes.cbegin();
     }
 
     /// returns an (unsafe) iterator on the end of the list of operators
     template < typename STRUCT_CONSTRAINT >
     INLINE const typename GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::iterator&
-      GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::end() const {
+       GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::end() const {
       return _legal_changes.cend();
     }
 
     /// notify the operator set of a change applied to the graph
     template < typename STRUCT_CONSTRAINT >
     INLINE void GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::modifyGraph(
-      const ArcAddition& change) {}
+       const ArcAddition& change) {}
 
     /// notify the operator set of a change applied to the graph
     template < typename STRUCT_CONSTRAINT >
     INLINE void GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::modifyGraph(
-      const ArcDeletion& change) {}
+       const ArcDeletion& change) {}
 
     /// notify the operator set of a change applied to the graph
     template < typename STRUCT_CONSTRAINT >
     INLINE void GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::modifyGraph(
-      const ArcReversal& change) {}
+       const ArcReversal& change) {}
 
     /// notify the operator set of a change applied to the graph
     template < typename STRUCT_CONSTRAINT >
     INLINE void GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::modifyGraph(
-      const GraphChange& change) {}
+       const GraphChange& change) {}
 
     /// notifies the generator that we have parsed all its legal changes
     template < typename STRUCT_CONSTRAINT >
     INLINE void
-      GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::notifyGetCompleted() {
+       GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::notifyGetCompleted() {
       if (_legal_changes.size()) _legal_changes.clear();
     }
 
     /// sets the maximum number of threads used to perform countings
     template < typename STRUCT_CONSTRAINT >
     INLINE void GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::setMaxNbThreads(
-      Size nb) noexcept {
+       Size nb) noexcept {
 #  if defined(_OPENMP) && !defined(GUM_DEBUG_MODE)
       if (nb == 0) nb = getMaxNumberOfThreads();
       __max_threads_number = nb;

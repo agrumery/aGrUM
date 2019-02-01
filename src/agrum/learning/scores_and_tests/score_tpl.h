@@ -31,7 +31,7 @@ namespace gum {
     /// returns the allocator used by the translator
     template < template < typename > class ALLOC >
     INLINE typename Score< ALLOC >::allocator_type
-      Score< ALLOC >::getAllocator() const {
+       Score< ALLOC >::getAllocator() const {
       return _counter.getAllocator();
     }
 
@@ -39,12 +39,13 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE Score< ALLOC >::Score(
-      const DBRowGeneratorParser< ALLOC >&                                 parser,
-      const Apriori< ALLOC >&                                              apriori,
-      const std::vector< std::pair< std::size_t, std::size_t >,
-                         ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
-      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename Score< ALLOC >::allocator_type&                alloc) :
+       const DBRowGeneratorParser< ALLOC >& parser,
+       const Apriori< ALLOC >&              apriori,
+       const std::vector< std::pair< std::size_t, std::size_t >,
+                          ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                                                      nodeId2columns,
+       const typename Score< ALLOC >::allocator_type& alloc) :
         _apriori(apriori.clone(alloc)),
         _counter(parser, ranges, nodeId2columns, alloc), _cache(alloc) {
       GUM_CONSTRUCTOR(Score);
@@ -54,10 +55,11 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE Score< ALLOC >::Score(
-      const DBRowGeneratorParser< ALLOC >&                          parser,
-      const Apriori< ALLOC >&                                       apriori,
-      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename Score< ALLOC >::allocator_type&                alloc) :
+       const DBRowGeneratorParser< ALLOC >& parser,
+       const Apriori< ALLOC >&              apriori,
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                                                      nodeId2columns,
+       const typename Score< ALLOC >::allocator_type& alloc) :
         _apriori(apriori.clone(alloc)),
         _counter(parser, nodeId2columns, alloc), _cache(alloc) {
       GUM_CONSTRUCTOR(Score);
@@ -66,9 +68,9 @@ namespace gum {
 
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
-    INLINE
-      Score< ALLOC >::Score(const Score< ALLOC >&                          from,
-                            const typename Score< ALLOC >::allocator_type& alloc) :
+    INLINE Score< ALLOC >::Score(
+       const Score< ALLOC >&                          from,
+       const typename Score< ALLOC >::allocator_type& alloc) :
         _apriori(from._apriori->clone(alloc)),
         _counter(from._counter, alloc), _cache(from._cache, alloc),
         _use_cache(from._use_cache) {
@@ -84,9 +86,9 @@ namespace gum {
 
     /// move constructor
     template < template < typename > class ALLOC >
-    INLINE
-      Score< ALLOC >::Score(Score< ALLOC >&&                               from,
-                            const typename Score< ALLOC >::allocator_type& alloc) :
+    INLINE Score< ALLOC >::Score(
+       Score< ALLOC >&&                               from,
+       const typename Score< ALLOC >::allocator_type& alloc) :
         _apriori(from._apriori),
         _counter(std::move(from._counter), alloc),
         _cache(std::move(from._cache), alloc), _use_cache(from._use_cache) {
@@ -190,12 +192,12 @@ namespace gum {
     template < template < typename > class ALLOC >
     template < template < typename > class XALLOC >
     void Score< ALLOC >::setRanges(
-      const std::vector< std::pair< std::size_t, std::size_t >,
-                         XALLOC< std::pair< std::size_t, std::size_t > > >&
-        new_ranges) {
+       const std::vector< std::pair< std::size_t, std::size_t >,
+                          XALLOC< std::pair< std::size_t, std::size_t > > >&
+          new_ranges) {
       std::vector< std::pair< std::size_t, std::size_t >,
                    ALLOC< std::pair< std::size_t, std::size_t > > >
-        old_ranges = ranges();
+         old_ranges = ranges();
       _counter.setRanges(new_ranges);
       if (old_ranges != ranges()) clear();
     }
@@ -206,7 +208,7 @@ namespace gum {
     void Score< ALLOC >::clearRanges() {
       std::vector< std::pair< std::size_t, std::size_t >,
                    ALLOC< std::pair< std::size_t, std::size_t > > >
-        old_ranges = ranges();
+         old_ranges = ranges();
       _counter.clearRanges();
       if (old_ranges != ranges()) clear();
     }
@@ -244,7 +246,7 @@ namespace gum {
      * conditioning bar */
     template < template < typename > class ALLOC >
     INLINE double Score< ALLOC >::score(
-      const NodeId var, const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids) {
+       const NodeId var, const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids) {
       IdSet< ALLOC > idset(var, rhs_ids, false, this->getAllocator());
       if (_use_cache) {
         try {
@@ -309,14 +311,14 @@ namespace gum {
      */
     template < template < typename > class ALLOC >
     std::vector< double, ALLOC< double > > Score< ALLOC >::_marginalize(
-      const NodeId                                  X_id,
-      const std::vector< double, ALLOC< double > >& N_xyz) const {
+       const NodeId                                  X_id,
+       const std::vector< double, ALLOC< double > >& N_xyz) const {
       // compute the domain sizes of the varible on the left hand side
       // of the conditioning bar
       const auto&       nodeId2cols = this->_counter.nodeId2Columns();
       const auto&       database = this->_counter.database();
-      const std::size_t X_size =
-        database.domainSize(nodeId2cols.empty() ? X_id : nodeId2cols.second(X_id));
+      const std::size_t X_size = database.domainSize(
+         nodeId2cols.empty() ? X_id : nodeId2cols.second(X_id));
 
       // determine the size of the output vector
       std::size_t out_size = N_xyz.size() / X_size;

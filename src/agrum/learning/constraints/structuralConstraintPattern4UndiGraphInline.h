@@ -69,19 +69,19 @@ INLINE bool GUM_CONSTRAINT_CLASS_NAME::isAlwaysInvalid(const GraphChange&) const
 
 /// checks whether the constraints enable to add an edge
 INLINE bool
-  GUM_CONSTRAINT_CLASS_NAME::checkModification(const EdgeAddition& change) const {
+   GUM_CONSTRAINT_CLASS_NAME::checkModification(const EdgeAddition& change) const {
   return checkEdgeAddition(change.node1(), change.node2());
 }
 
 /// checks whether the constraints enable to remove an edge
 INLINE bool
-  GUM_CONSTRAINT_CLASS_NAME::checkModification(const EdgeDeletion& change) const {
+   GUM_CONSTRAINT_CLASS_NAME::checkModification(const EdgeDeletion& change) const {
   return checkEdgeDeletion(change.node1(), change.node2());
 }
 
 /// checks whether the constraints enable to perform a graph change
 INLINE bool
-  GUM_CONSTRAINT_CLASS_NAME::checkModification(const GraphChange& change) const {
+   GUM_CONSTRAINT_CLASS_NAME::checkModification(const GraphChange& change) const {
   switch (change.type()) {
     case GraphChangeType::EDGE_ADDITION:
       return checkEdgeAddition(change.node1(), change.node2());

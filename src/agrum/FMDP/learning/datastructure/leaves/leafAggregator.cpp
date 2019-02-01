@@ -55,7 +55,7 @@ namespace gum {
     delete __initialContext;
 
     for (HashTableIteratorSafe< AbstractLeaf*, Set< LeafPair* >* > leafIter =
-           __leaf2Pair.beginSafe();
+            __leaf2Pair.beginSafe();
          leafIter != __leaf2Pair.endSafe();
          ++leafIter) {
       for (SetIteratorSafe< LeafPair* > pairIter = leafIter.val()->beginSafe();
@@ -87,7 +87,7 @@ namespace gum {
     // ****************************************************************************************
     // Création et ajout des pairs de base (Feuille de base + nouvelle Feuille)
     for (HashTableConstIteratorSafe< AbstractLeaf*, Set< LeafPair* >* > leafIter =
-           __leaf2Pair.cbeginSafe();
+            __leaf2Pair.cbeginSafe();
          leafIter != __leaf2Pair.cendSafe();
          ++leafIter) {
       // Création de la pair et ajout dans les listes de pair des feuilles de
@@ -111,7 +111,7 @@ namespace gum {
     // Ajout de la feuille aux FusionContext
 
     for (SequenceIteratorSafe< FusionContext< false >* > fusIter =
-           __fusionSeq.beginSafe();
+            __fusionSeq.beginSafe();
          fusIter != __fusionSeq.endSafe();
          ++fusIter) {
       // Ajout de la nouvelle pair composée de la feuille de FusIter et de la
@@ -154,7 +154,7 @@ namespace gum {
     // The we have top update FusionContext pairs associated to that leaf
     AbstractLeaf* curLeaf = l;
     for (SequenceIteratorSafe< FusionContext< false >* > fusIter =
-           __fusionSeq.beginSafe();
+            __fusionSeq.beginSafe();
          fusIter != __fusionSeq.endSafe();
          ++fusIter) {
       if ((*fusIter)->leaf()->contains(curLeaf->id())) {
@@ -204,7 +204,7 @@ namespace gum {
     // The we have top update FusionContext pairs associated to that leaf
     Set< LeafPair* > toBeDeleted;
     for (SequenceIteratorSafe< FusionContext< false >* > fusIter =
-           __fusionSeq.beginSafe();
+            __fusionSeq.beginSafe();
          fusIter != __fusionSeq.endSafe();
          ++fusIter) {
       for (SetIteratorSafe< LeafPair* > pairIter = bag.beginSafe();
@@ -285,12 +285,12 @@ namespace gum {
   HashTable< NodeId, AbstractLeaf* > LeafAggregator::leavesMap() {
     HashTable< NodeId, AbstractLeaf* > retMap;
     for (SequenceIteratorSafe< FusionContext< false >* > fusIter =
-           __fusionSeq.rbeginSafe();
+            __fusionSeq.rbeginSafe();
          fusIter != __fusionSeq.rendSafe();
          --fusIter) {
       bool alreadyIn = false;
       for (HashTableIteratorSafe< NodeId, AbstractLeaf* > mapIter =
-             retMap.beginSafe();
+              retMap.beginSafe();
            mapIter != retMap.endSafe();
            ++mapIter)
         if (mapIter.val()->contains((*fusIter)->leaf()->id())) {
@@ -301,11 +301,11 @@ namespace gum {
     }
 
     for (HashTableIteratorSafe< AbstractLeaf*, Set< LeafPair* >* > leafIter =
-           __leaf2Pair.beginSafe();
+            __leaf2Pair.beginSafe();
          leafIter != __leaf2Pair.endSafe();
          ++leafIter) {
       for (HashTableIteratorSafe< NodeId, AbstractLeaf* > mapIter =
-             retMap.beginSafe();
+              retMap.beginSafe();
            mapIter != retMap.endSafe();
            ++mapIter)
         if (mapIter.val()->contains(leafIter.key()->id())) {

@@ -33,12 +33,12 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     DBInitializerFromCSV< ALLOC >::DBInitializerFromCSV(
-      const std::string filename,
-      bool              fileContainsNames,
-      const std::string delimiter,
-      const char        commentmarker,
-      const char        quoteMarker,
-      const typename DBInitializerFromCSV< ALLOC >::allocator_type& alloc) :
+       const std::string filename,
+       bool              fileContainsNames,
+       const std::string delimiter,
+       const char        commentmarker,
+       const char        quoteMarker,
+       const typename DBInitializerFromCSV< ALLOC >::allocator_type& alloc) :
         IDBInitializer< ALLOC >(IDBInitializer< ALLOC >::InputType::STRING, alloc),
         __filename(filename), __delimiter(delimiter),
         __comment_marker(commentmarker), __quote_marker(quoteMarker),
@@ -64,8 +64,8 @@ namespace gum {
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
     DBInitializerFromCSV< ALLOC >::DBInitializerFromCSV(
-      const DBInitializerFromCSV< ALLOC >&                          from,
-      const typename DBInitializerFromCSV< ALLOC >::allocator_type& alloc) :
+       const DBInitializerFromCSV< ALLOC >&                          from,
+       const typename DBInitializerFromCSV< ALLOC >::allocator_type& alloc) :
         DBInitializerFromCSV< ALLOC >(from.__filename,
                                       from.__first_row_has_names,
                                       from.__delimiter,
@@ -76,14 +76,14 @@ namespace gum {
     /// copy constructor
     template < template < typename > class ALLOC >
     DBInitializerFromCSV< ALLOC >::DBInitializerFromCSV(
-      const DBInitializerFromCSV< ALLOC >& from) :
+       const DBInitializerFromCSV< ALLOC >& from) :
         DBInitializerFromCSV< ALLOC >(from, from.getAllocator()) {}
 
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
     DBInitializerFromCSV< ALLOC >::DBInitializerFromCSV(
-      DBInitializerFromCSV< ALLOC >&&                               from,
-      const typename DBInitializerFromCSV< ALLOC >::allocator_type& alloc) :
+       DBInitializerFromCSV< ALLOC >&&                               from,
+       const typename DBInitializerFromCSV< ALLOC >::allocator_type& alloc) :
         DBInitializerFromCSV< ALLOC >(from.__filename,
                                       from.__first_row_has_names,
                                       from.__delimiter,
@@ -95,14 +95,14 @@ namespace gum {
     /// move constructor
     template < template < typename > class ALLOC >
     DBInitializerFromCSV< ALLOC >::DBInitializerFromCSV(
-      DBInitializerFromCSV< ALLOC >&& from) :
+       DBInitializerFromCSV< ALLOC >&& from) :
         DBInitializerFromCSV< ALLOC >(std::move(from), from.getAllocator()) {}
 
 
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
     DBInitializerFromCSV< ALLOC >* DBInitializerFromCSV< ALLOC >::clone(
-      const typename DBInitializerFromCSV< ALLOC >::allocator_type& alloc) const {
+       const typename DBInitializerFromCSV< ALLOC >::allocator_type& alloc) const {
       ALLOC< DBInitializerFromCSV< ALLOC > > allocator(alloc);
       DBInitializerFromCSV< ALLOC >* new_initializer = allocator.allocate(1);
       try {
@@ -153,7 +153,7 @@ namespace gum {
 
         // make the parser use the new input stream
         __parser.useNewStream(
-          __input_stream, __delimiter, __comment_marker, __quote_marker);
+           __input_stream, __delimiter, __comment_marker, __quote_marker);
 
         // if the first line contains names, store them into the intializer
         if (__first_row_has_names) {

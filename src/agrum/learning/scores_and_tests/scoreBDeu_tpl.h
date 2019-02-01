@@ -35,12 +35,13 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE ScoreBDeu< ALLOC >::ScoreBDeu(
-      const DBRowGeneratorParser< ALLOC >&                                 parser,
-      const Apriori< ALLOC >&                                              apriori,
-      const std::vector< std::pair< std::size_t, std::size_t >,
-                         ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
-      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename ScoreBDeu< ALLOC >::allocator_type&            alloc) :
+       const DBRowGeneratorParser< ALLOC >& parser,
+       const Apriori< ALLOC >&              apriori,
+       const std::vector< std::pair< std::size_t, std::size_t >,
+                          ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                                                          nodeId2columns,
+       const typename ScoreBDeu< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
         __internal_apriori(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreBDeu);
@@ -50,10 +51,11 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE ScoreBDeu< ALLOC >::ScoreBDeu(
-      const DBRowGeneratorParser< ALLOC >&                          parser,
-      const Apriori< ALLOC >&                                       apriori,
-      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename ScoreBDeu< ALLOC >::allocator_type&            alloc) :
+       const DBRowGeneratorParser< ALLOC >& parser,
+       const Apriori< ALLOC >&              apriori,
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                                                          nodeId2columns,
+       const typename ScoreBDeu< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(parser, apriori, nodeId2columns, alloc),
         __internal_apriori(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreBDeu);
@@ -63,8 +65,8 @@ namespace gum {
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE ScoreBDeu< ALLOC >::ScoreBDeu(
-      const ScoreBDeu< ALLOC >&                          from,
-      const typename ScoreBDeu< ALLOC >::allocator_type& alloc) :
+       const ScoreBDeu< ALLOC >&                          from,
+       const typename ScoreBDeu< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(from, alloc),
         __internal_apriori(from.__internal_apriori, alloc),
         __gammalog2(from.__gammalog2) {
@@ -81,8 +83,8 @@ namespace gum {
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE ScoreBDeu< ALLOC >::ScoreBDeu(
-      ScoreBDeu< ALLOC >&&                               from,
-      const typename ScoreBDeu< ALLOC >::allocator_type& alloc) :
+       ScoreBDeu< ALLOC >&&                               from,
+       const typename ScoreBDeu< ALLOC >::allocator_type& alloc) :
         Score< ALLOC >(std::move(from), alloc),
         __internal_apriori(std::move(from.__internal_apriori), alloc),
         __gammalog2(std::move(from.__gammalog2)) {
@@ -99,7 +101,7 @@ namespace gum {
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
     ScoreBDeu< ALLOC >* ScoreBDeu< ALLOC >::clone(
-      const typename ScoreBDeu< ALLOC >::allocator_type& alloc) const {
+       const typename ScoreBDeu< ALLOC >::allocator_type& alloc) const {
       ALLOC< ScoreBDeu< ALLOC > > allocator(alloc);
       ScoreBDeu< ALLOC >*         new_score = allocator.allocate(1);
       try {
@@ -153,8 +155,8 @@ namespace gum {
     /// indicates whether the apriori is compatible (meaningful) with the score
     template < template < typename > class ALLOC >
     std::string
-      ScoreBDeu< ALLOC >::isAprioriCompatible(const std::string& apriori_type,
-                                              double             weight) {
+       ScoreBDeu< ALLOC >::isAprioriCompatible(const std::string& apriori_type,
+                                               double             weight) {
       // check that the apriori is compatible with the score
       if (apriori_type == AprioriNoAprioriType::type) { return ""; }
 
@@ -218,7 +220,7 @@ namespace gum {
     double ScoreBDeu< ALLOC >::_score(const IdSet< ALLOC >& idset) {
       // get the counts for all the nodes in the idset and add the apriori
       std::vector< double, ALLOC< double > > N_ijk(
-        this->_counter.counts(idset, true));
+         this->_counter.counts(idset, true));
       const std::size_t all_size = N_ijk.size();
 
       double       score = 0.0;
@@ -231,7 +233,7 @@ namespace gum {
       if (idset.hasConditioningSet()) {
         // get the counts for the conditioning nodes
         std::vector< double, ALLOC< double > > N_ij(
-          this->_marginalize(idset[0], N_ijk));
+           this->_marginalize(idset[0], N_ijk));
         const std::size_t conditioning_size = N_ij.size();
         const double      ess_qi = ess / conditioning_size;
         const double      ess_riqi = ess / all_size;

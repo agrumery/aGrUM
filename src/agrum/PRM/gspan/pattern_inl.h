@@ -118,7 +118,7 @@ namespace gum {
         }
 
         EdgeCode* edge =
-          new EdgeCode(i, j, __node_map[i]->id, l.id, __node_map[j]->id);
+           new EdgeCode(i, j, __node_map[i]->id, l.id, __node_map[j]->id);
 
         if ((code().codes.size() == 0)
             || (DFSCode::validNeighbors(code().codes.back(), edge))) {

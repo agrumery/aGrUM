@@ -34,13 +34,13 @@ namespace gum {
   /// default constructor
   template < typename GUM_SCALAR >
   ScheduleCombine< GUM_SCALAR >::ScheduleCombine(
-    const ScheduleMultiDim< GUM_SCALAR >& table1,
-    const ScheduleMultiDim< GUM_SCALAR >& table2,
-    MultiDimImplementation< GUM_SCALAR >* (*combine)(
-      const MultiDimImplementation< GUM_SCALAR >&,
-      const MultiDimImplementation< GUM_SCALAR >&)) :
+     const ScheduleMultiDim< GUM_SCALAR >& table1,
+     const ScheduleMultiDim< GUM_SCALAR >& table2,
+     MultiDimImplementation< GUM_SCALAR >* (*combine)(
+        const MultiDimImplementation< GUM_SCALAR >&,
+        const MultiDimImplementation< GUM_SCALAR >&)) :
       ScheduleOperation< GUM_SCALAR >(
-        ScheduleOperation< GUM_SCALAR >::Type::COMBINE_MULTIDIM),
+         ScheduleOperation< GUM_SCALAR >::Type::COMBINE_MULTIDIM),
       __table1(table1), __table2(table2), __args(0), __results(0),
       __combine(combine) {
     // for debugging purposes
@@ -49,10 +49,10 @@ namespace gum {
     // compute the variables of the resulting table
     Sequence< const DiscreteVariable* >        vars = __table1.variablesSequence();
     const Sequence< const DiscreteVariable* >& vars2 =
-      __table2.variablesSequence();
+       __table2.variablesSequence();
 
     for (typename Sequence< const DiscreteVariable* >::const_iterator_safe iter =
-           vars2.beginSafe();
+            vars2.beginSafe();
          iter != vars2.endSafe();
          ++iter) {
       if (!vars.exists(*iter)) { vars.insert(*iter); }
@@ -66,7 +66,7 @@ namespace gum {
   /// copy constructor
   template < typename GUM_SCALAR >
   ScheduleCombine< GUM_SCALAR >::ScheduleCombine(
-    const ScheduleCombine< GUM_SCALAR >& from) :
+     const ScheduleCombine< GUM_SCALAR >& from) :
       ScheduleOperation< GUM_SCALAR >(from),
       __table1(from.__table1), __table2(from.__table2),
       __result(new ScheduleMultiDim< GUM_SCALAR >(*(from.__result))), __args(0),
@@ -78,7 +78,7 @@ namespace gum {
   /// virtual copy constructor: creates a clone of the operation
   template < typename GUM_SCALAR >
   ScheduleCombine< GUM_SCALAR >*
-    ScheduleCombine< GUM_SCALAR >::newFactory() const {
+     ScheduleCombine< GUM_SCALAR >::newFactory() const {
     return new ScheduleCombine< GUM_SCALAR >(*this);
   }
 
@@ -129,7 +129,7 @@ namespace gum {
     if (this->type() != op.type()) return false;
 
     const ScheduleCombine< GUM_SCALAR >& real_op =
-      static_cast< const ScheduleCombine< GUM_SCALAR >& >(op);
+       static_cast< const ScheduleCombine< GUM_SCALAR >& >(op);
     return ((((__table1 == real_op.__table1) && (__table2 == real_op.__table2))
              || ((__table1 == real_op.__table2) && (__table2 == real_op.__table1)))
             && (__combine == real_op.__combine));

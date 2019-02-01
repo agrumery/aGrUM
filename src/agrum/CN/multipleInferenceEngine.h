@@ -66,9 +66,9 @@ namespace gum {
       typedef std::vector< __credalSet >              __credalSets;
       typedef std::vector< std::vector< __cluster > > __clusters;
 
-      typedef
-        typename std::vector< HashTable< std::string, std::vector< GUM_SCALAR > > >
-          __modals;
+      typedef typename std::vector<
+         HashTable< std::string, std::vector< GUM_SCALAR > > >
+         __modals;
 
       /**
        * @brief Ask for redundancy elimination of a node credal set of a calling
@@ -229,8 +229,8 @@ namespace gum {
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
     extern template class MultipleInferenceEngine<
-      double,
-      gum::LazyPropagation< double > >;
+       double,
+       gum::LazyPropagation< double > >;
 
     extern template class MultipleInferenceEngine< float,
                                                    gum::LazyPropagation< float > >;

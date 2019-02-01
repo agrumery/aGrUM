@@ -42,7 +42,7 @@ namespace gum {
   // @param cptGenerator The policy used to generate CPT.
   template < typename GUM_SCALAR >
   InfluenceDiagramGenerator< GUM_SCALAR >::InfluenceDiagramGenerator(
-    ICPTGenerator< GUM_SCALAR >* cptGenerator) {
+     ICPTGenerator< GUM_SCALAR >* cptGenerator) {
     GUM_CONSTRUCTOR(InfluenceDiagramGenerator);
     __cptGenerator = cptGenerator;
     __utGenerator = new SimpleUTGenerator();
@@ -54,7 +54,7 @@ namespace gum {
   // @param utGenerator The policy used to generate UT.
   template < typename GUM_SCALAR >
   InfluenceDiagramGenerator< GUM_SCALAR >::InfluenceDiagramGenerator(
-    UTGenerator* utGenerator) {
+     UTGenerator* utGenerator) {
     GUM_CONSTRUCTOR(InfluenceDiagramGenerator);
     __cptGenerator = new SimpleCPTGenerator< GUM_SCALAR >();
     __utGenerator = utGenerator;
@@ -68,7 +68,7 @@ namespace gum {
   // @param utGenerator The policy used to generate UT.
   template < typename GUM_SCALAR >
   InfluenceDiagramGenerator< GUM_SCALAR >::InfluenceDiagramGenerator(
-    ICPTGenerator< GUM_SCALAR >* cptGenerator, UTGenerator* utGenerator) {
+     ICPTGenerator< GUM_SCALAR >* cptGenerator, UTGenerator* utGenerator) {
     GUM_CONSTRUCTOR(InfluenceDiagramGenerator);
     __cptGenerator = cptGenerator;
     __utGenerator = utGenerator;
@@ -91,14 +91,14 @@ namespace gum {
   // @return A IDs randomly generated.
   template < typename GUM_SCALAR >
   InfluenceDiagram< GUM_SCALAR >*
-    InfluenceDiagramGenerator< GUM_SCALAR >::generateID(
-      Size       nbrNodes,
-      GUM_SCALAR arcDensity,
-      GUM_SCALAR chanceNodeDensity,
-      GUM_SCALAR utilityNodeDensity,
-      Size       max_modality) {
+     InfluenceDiagramGenerator< GUM_SCALAR >::generateID(
+        Size       nbrNodes,
+        GUM_SCALAR arcDensity,
+        GUM_SCALAR chanceNodeDensity,
+        GUM_SCALAR utilityNodeDensity,
+        Size       max_modality) {
     InfluenceDiagram< GUM_SCALAR >* influenceDiagram =
-      new InfluenceDiagram< GUM_SCALAR >();
+       new InfluenceDiagram< GUM_SCALAR >();
     // First we add nodes
     HashTable< Size, NodeId > map;
     std::stringstream         strBuff;
@@ -116,15 +116,15 @@ namespace gum {
       if (d < cnd)
         map.insert(i,
                    influenceDiagram->addChanceNode(
-                     LabelizedVariable(strBuff.str(), "", nb_mod)));
+                      LabelizedVariable(strBuff.str(), "", nb_mod)));
       else if (d < (cnd + und))
         map.insert(i,
                    influenceDiagram->addUtilityNode(
-                     LabelizedVariable(strBuff.str(), "", 1)));
+                      LabelizedVariable(strBuff.str(), "", 1)));
       else
         map.insert(i,
                    influenceDiagram->addDecisionNode(
-                     LabelizedVariable(strBuff.str(), "", nb_mod)));
+                      LabelizedVariable(strBuff.str(), "", nb_mod)));
 
       strBuff.str("");
     }
@@ -143,11 +143,11 @@ namespace gum {
     for (Size i = 0; i < nbrNodes; ++i)
       if (influenceDiagram->isChanceNode(map[i]))
         __cptGenerator->generateCPT(
-          influenceDiagram->cpt(map[i]).pos(influenceDiagram->variable(map[i])),
-          influenceDiagram->cpt(map[i]));
+           influenceDiagram->cpt(map[i]).pos(influenceDiagram->variable(map[i])),
+           influenceDiagram->cpt(map[i]));
       else if (influenceDiagram->isUtilityNode(map[i]))
         __utGenerator->generateUT(influenceDiagram->utility(map[i]).pos(
-                                    influenceDiagram->variable(map[i])),
+                                     influenceDiagram->variable(map[i])),
                                   influenceDiagram->utility(map[i]));
 
     __checkTemporalOrder(influenceDiagram);
@@ -157,7 +157,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void InfluenceDiagramGenerator< GUM_SCALAR >::__checkTemporalOrder(
-    InfluenceDiagram< GUM_SCALAR >* infdiag) {
+     InfluenceDiagram< GUM_SCALAR >* infdiag) {
     if (!infdiag->decisionOrderExists()) {
       Sequence< NodeId > order = infdiag->topologicalOrder(true);
 

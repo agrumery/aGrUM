@@ -177,7 +177,7 @@ namespace gum {
 
       /// virtual copy constructor with a given allocator
       virtual DBInitializerFromCSV< ALLOC >*
-        clone(const allocator_type& alloc) const;
+         clone(const allocator_type& alloc) const;
 
       /// destructor
       virtual ~DBInitializerFromCSV();
@@ -195,13 +195,13 @@ namespace gum {
       /** the initializer points to the same file as from, but it reparses
        * it from scratch. */
       DBInitializerFromCSV< ALLOC >&
-        operator=(const DBInitializerFromCSV< ALLOC >& from);
+         operator=(const DBInitializerFromCSV< ALLOC >& from);
 
       /// move operator
       /** the initializer points to the same file as from, but it reparses
        * it from scratch. */
       DBInitializerFromCSV< ALLOC >&
-        operator=(DBInitializerFromCSV< ALLOC >&& from);
+         operator=(DBInitializerFromCSV< ALLOC >&& from);
 
       /// @}
 
@@ -209,11 +209,11 @@ namespace gum {
       protected:
       /// returns the names of the variables
       virtual std::vector< std::string, ALLOC< std::string > >
-        _variableNames() final;
+         _variableNames() final;
 
       /// returns the content of the current row using strings
       virtual const std::vector< std::string, ALLOC< std::string > >&
-        _currentStringRow() final;
+         _currentStringRow() final;
 
       /// indicates whether there is a next row to read (and point on it)
       virtual bool _nextRow() final;

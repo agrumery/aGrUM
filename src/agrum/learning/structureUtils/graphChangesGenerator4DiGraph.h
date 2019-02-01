@@ -129,11 +129,11 @@ namespace gum {
 
       /// copy constructor
       GraphChangesGenerator4DiGraph(
-        const GraphChangesGenerator4DiGraph< STRUCT_CONSTRAINT >& from);
+         const GraphChangesGenerator4DiGraph< STRUCT_CONSTRAINT >& from);
 
       /// move operator
       GraphChangesGenerator4DiGraph(
-        GraphChangesGenerator4DiGraph< STRUCT_CONSTRAINT >&& from);
+         GraphChangesGenerator4DiGraph< STRUCT_CONSTRAINT >&& from);
 
       /// destructor
       virtual ~GraphChangesGenerator4DiGraph();
@@ -147,11 +147,11 @@ namespace gum {
 
       /// copy operator
       GraphChangesGenerator4DiGraph< STRUCT_CONSTRAINT >&
-        operator=(const GraphChangesGenerator4DiGraph< STRUCT_CONSTRAINT >& from);
+         operator=(const GraphChangesGenerator4DiGraph< STRUCT_CONSTRAINT >& from);
 
       /// move operator
       GraphChangesGenerator4DiGraph< STRUCT_CONSTRAINT >&
-        operator=(GraphChangesGenerator4DiGraph< STRUCT_CONSTRAINT >&& from);
+         operator=(GraphChangesGenerator4DiGraph< STRUCT_CONSTRAINT >&& from);
 
       /// @}
 

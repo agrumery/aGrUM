@@ -88,13 +88,13 @@ namespace gum {
 
       /// default constructor
       DBRowGeneratorEM(
-        const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > >
-                                      column_types,
-        const BayesNet< GUM_SCALAR >& bn,
-        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-          nodeId2columns =
-            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-        const allocator_type& alloc = allocator_type());
+         const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > >
+                                       column_types,
+         const BayesNet< GUM_SCALAR >& bn,
+         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+            nodeId2columns =
+               Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+         const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       DBRowGeneratorEM(const DBRowGeneratorEM< GUM_SCALAR, ALLOC >& from);
@@ -115,7 +115,7 @@ namespace gum {
 
       /// virtual copy constructor with a given allocator
       virtual DBRowGeneratorEM< GUM_SCALAR, ALLOC >*
-        clone(const allocator_type& alloc) const override final;
+         clone(const allocator_type& alloc) const override final;
 
       /// destructor
       ~DBRowGeneratorEM();
@@ -131,11 +131,11 @@ namespace gum {
 
       /// copy operator
       DBRowGeneratorEM< GUM_SCALAR, ALLOC >&
-        operator=(const DBRowGeneratorEM< GUM_SCALAR, ALLOC >& from);
+         operator=(const DBRowGeneratorEM< GUM_SCALAR, ALLOC >& from);
 
       /// move operator
       DBRowGeneratorEM< GUM_SCALAR, ALLOC >&
-        operator=(DBRowGeneratorEM< GUM_SCALAR, ALLOC >&& from);
+         operator=(DBRowGeneratorEM< GUM_SCALAR, ALLOC >&& from);
 
       /// @}
 
@@ -151,7 +151,7 @@ namespace gum {
 
       /// assign a new Bayes net to the generator
       virtual void
-        setBayesNet(const BayesNet< GUM_SCALAR >& new_bn) override final;
+         setBayesNet(const BayesNet< GUM_SCALAR >& new_bn) override final;
 
       /// returns the allocator used
       allocator_type getAllocator() const;
@@ -162,7 +162,7 @@ namespace gum {
       protected:
       /// computes the rows it will provide as output
       virtual std::size_t
-        _computeRows(const DBRow< DBTranslatedValue, ALLOC >& row) override final;
+         _computeRows(const DBRow< DBTranslatedValue, ALLOC >& row) override final;
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

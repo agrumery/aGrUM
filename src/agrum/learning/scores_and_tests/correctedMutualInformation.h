@@ -84,15 +84,15 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       CorrectedMutualInformation(
-        const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori< ALLOC >&              apriori,
-        const std::vector< std::pair< std::size_t, std::size_t >,
-                           ALLOC< std::pair< std::size_t, std::size_t > > >&
-          ranges,
-        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-          nodeId2columns =
-            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-        const allocator_type& alloc = allocator_type());
+         const DBRowGeneratorParser< ALLOC >& parser,
+         const Apriori< ALLOC >&              apriori,
+         const std::vector< std::pair< std::size_t, std::size_t >,
+                            ALLOC< std::pair< std::size_t, std::size_t > > >&
+            ranges,
+         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+            nodeId2columns =
+               Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+         const allocator_type& alloc = allocator_type());
 
       /// default constructor
       /** @param parser the parser used to parse the database
@@ -112,12 +112,12 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       CorrectedMutualInformation(
-        const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori< ALLOC >&              apriori,
-        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-          nodeId2columns =
-            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-        const allocator_type& alloc = allocator_type());
+         const DBRowGeneratorParser< ALLOC >& parser,
+         const Apriori< ALLOC >&              apriori,
+         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+            nodeId2columns =
+               Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+         const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       CorrectedMutualInformation(const CorrectedMutualInformation< ALLOC >& from);
@@ -138,7 +138,7 @@ namespace gum {
 
       /// virtual copy constructor with a given allocator
       virtual CorrectedMutualInformation< ALLOC >*
-        clone(const allocator_type& alloc) const;
+         clone(const allocator_type& alloc) const;
 
       /// destructor
       virtual ~CorrectedMutualInformation();
@@ -154,11 +154,11 @@ namespace gum {
 
       /// copy operator
       CorrectedMutualInformation< ALLOC >&
-        operator=(const CorrectedMutualInformation< ALLOC >& from);
+         operator=(const CorrectedMutualInformation< ALLOC >& from);
 
       /// move operator
       CorrectedMutualInformation< ALLOC >&
-        operator=(CorrectedMutualInformation< ALLOC >&& from);
+         operator=(CorrectedMutualInformation< ALLOC >&& from);
 
       /// @}
 
@@ -288,9 +288,9 @@ namespace gum {
        * the whole database. */
       template < template < typename > class XALLOC >
       void setRanges(
-        const std::vector< std::pair< std::size_t, std::size_t >,
-                           XALLOC< std::pair< std::size_t, std::size_t > > >&
-          new_ranges);
+         const std::vector< std::pair< std::size_t, std::size_t >,
+                            XALLOC< std::pair< std::size_t, std::size_t > > >&
+            new_ranges);
 
       /// reset the ranges to the one range corresponding to the whole database
       void clearRanges();
@@ -298,7 +298,7 @@ namespace gum {
       /// returns the current ranges
       const std::vector< std::pair< std::size_t, std::size_t >,
                          ALLOC< std::pair< std::size_t, std::size_t > > >&
-        ranges() const;
+         ranges() const;
 
 
       /// returns the allocator used by the score

@@ -386,7 +386,7 @@ namespace gum {
 
     /// Type of the allocator for ListBuckets.
     using BucketAllocator =
-      typename Alloc::template rebind< ListBucket< Val > >::other;
+       typename Alloc::template rebind< ListBucket< Val > >::other;
 
     /// Locations around iterators where insertions of new elements can take /
     /// place.
@@ -1604,7 +1604,7 @@ namespace gum {
      * @return Returns this gum::ListConstIterator.
      */
     ListConstIterator< Val >&
-      operator=(const ListConstIterator< Val >& src) noexcept;
+       operator=(const ListConstIterator< Val >& src) noexcept;
 
     /**
      * @brief Move operator.
@@ -1731,8 +1731,8 @@ namespace gum {
   /// For STL compliance, a distance operator.
   template < typename Val >
   typename ListConstIterator< Val >::difference_type
-    operator-(const ListConstIterator< Val >& iter1,
-              const ListConstIterator< Val >& iter2);
+     operator-(const ListConstIterator< Val >& iter1,
+               const ListConstIterator< Val >& iter2);
 
   // ===========================================================================
   // ===                         UNSAFE LIST ITERATORS                       ===
@@ -2128,7 +2128,7 @@ namespace gum {
      * @return Returns this gum::ListConstIteratorSafe.
      */
     ListConstIteratorSafe< Val >&
-      operator=(const ListConstIteratorSafe< Val >& src);
+       operator=(const ListConstIteratorSafe< Val >& src);
 
     /**
      * @brief Move operator.
@@ -2279,8 +2279,8 @@ namespace gum {
   /// For STL compliance, a distance operator.
   template < typename Val >
   typename ListConstIteratorSafe< Val >::difference_type
-    operator-(const ListConstIteratorSafe< Val >& iter1,
-              const ListConstIteratorSafe< Val >& iter2);
+     operator-(const ListConstIteratorSafe< Val >& iter1,
+               const ListConstIteratorSafe< Val >& iter2);
 
   // ===========================================================================
   // ===                             LIST ITERATORS                          ===
@@ -2530,25 +2530,25 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::List< bool >;
-#endif
-#endif
+#    endif
+#  endif
 #endif
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::List< int >;
-#endif
-#endif
+#    endif
+#  endif
 #endif
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::List< unsigned int >;
-#endif
-#endif
+#    endif
+#  endif
 #endif
 
 

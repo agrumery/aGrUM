@@ -100,8 +100,8 @@ namespace gum_tests {
       TS_ASSERT(vals.size() == 4);
 
       gum::PriorityQueue< std::string > queue10{
-        std::pair< std::string, int >("aa", 3),
-        std::pair< std::string, int >("bb", 2)};
+         std::pair< std::string, int >("aa", 3),
+         std::pair< std::string, int >("bb", 2)};
       TS_ASSERT(queue10.size() == 2);
       TS_ASSERT(queue10.top() == "bb");
     }
@@ -118,7 +118,7 @@ namespace gum_tests {
       TS_ASSERT(queue3.size() == 3);
 
       gum::PriorityQueue< int, int, std::less< int >, MyAlloc< int > > queue4(
-        queue1);
+         queue1);
       TS_ASSERT(queue4.top() == 2);
       TS_ASSERT(queue4.topPriority() == 1);
       TS_ASSERT(queue4.size() == 3);
@@ -129,7 +129,7 @@ namespace gum_tests {
       TS_ASSERT(queue2.size() == 3);
 
       gum::PriorityQueue< int, int, std::less< int >, MyAlloc< int > > queue5(
-        std::move(queue4));
+         std::move(queue4));
       TS_ASSERT(queue5.top() == 2);
       TS_ASSERT(queue5.topPriority() == 1);
       TS_ASSERT(queue5.size() == 3);
@@ -143,19 +143,19 @@ namespace gum_tests {
 
     void testMoveGen() {
       gum::PriorityQueue< std::string > queue1{
-        std::pair< std::string, int >("a", 3),
-        std::pair< std::string, int >("b", 1),
-        std::pair< std::string, int >("c", 10)};
+         std::pair< std::string, int >("a", 3),
+         std::pair< std::string, int >("b", 1),
+         std::pair< std::string, int >("c", 10)};
 
       gum::PriorityQueue< std::string, int, std::less< int >, MyAlloc< int > >
-        queue3;
+         queue3;
       queue3 = queue1;
       TS_ASSERT(queue3.top() == "b");
       TS_ASSERT(queue3.topPriority() == 1);
       TS_ASSERT(queue3.size() == 3);
 
       gum::PriorityQueue< std::string, int, std::less< int >, MyAlloc< int > >
-        queue4(queue1);
+         queue4(queue1);
       TS_ASSERT(queue4.top() == "b");
       TS_ASSERT(queue4.topPriority() == 1);
       TS_ASSERT(queue4.size() == 3);
@@ -166,13 +166,13 @@ namespace gum_tests {
       TS_ASSERT(queue2.size() == 3);
 
       gum::PriorityQueue< std::string, int, std::less< int >, MyAlloc< int > >
-        queue5(std::move(queue4));
+         queue5(std::move(queue4));
       TS_ASSERT(queue5.top() == "b");
       TS_ASSERT(queue5.topPriority() == 1);
       TS_ASSERT(queue5.size() == 3);
 
       gum::PriorityQueue< std::string > queue6{
-        std::pair< std::string, int >("a", 1)};
+         std::pair< std::string, int >("a", 1)};
       queue6 = std::move(queue2);
       TS_ASSERT(queue6.top() == "b");
       TS_ASSERT(queue6.topPriority() == 1);
@@ -334,7 +334,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(queue1.insert(set1, 10), gum::DuplicateElement);
 
       const gum::HashTable< gum::Set< int >, gum::Size >& vals =
-        queue1.allValues();
+         queue1.allValues();
       TS_ASSERT(vals.size() == 4);
 
       queue1.clear();
@@ -421,7 +421,7 @@ namespace gum_tests {
       TS_ASSERT(queue1.capacity() == 10);
 
       const gum::HashTable< std::string, std::vector< gum::Size > >& vals =
-        queue1.allValues();
+         queue1.allValues();
       TS_ASSERT(vals.size() == 4);
     }
 
@@ -527,7 +527,7 @@ namespace gum_tests {
       TS_ASSERT(queue1.capacity() == 10);
 
       const gum::HashTable< gum::Set< int >, std::vector< gum::Size > >& vals =
-        queue1.allValues();
+         queue1.allValues();
       TS_ASSERT(vals.size() == 4);
 
       queue1.clear();
@@ -580,7 +580,7 @@ namespace gum_tests {
       TS_ASSERT(queue3.size() == 3);
 
       gum::MultiPriorityQueue< int, int, std::less< int >, MyAlloc< int > > queue4(
-        queue1);
+         queue1);
       TS_ASSERT(queue4.top() == 2);
       TS_ASSERT(queue4.topPriority() == 1);
       TS_ASSERT(queue4.size() == 3);
@@ -591,7 +591,7 @@ namespace gum_tests {
       TS_ASSERT(queue2.size() == 3);
 
       gum::MultiPriorityQueue< int, int, std::less< int >, MyAlloc< int > > queue5(
-        std::move(queue4));
+         std::move(queue4));
       TS_ASSERT(queue5.top() == 2);
       TS_ASSERT(queue5.topPriority() == 1);
       TS_ASSERT(queue5.size() == 3);

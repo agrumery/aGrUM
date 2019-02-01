@@ -43,7 +43,7 @@ namespace gum_tests {
       gum::SimpleBayesNetGenerator< double >* gen = nullptr;
 
       TS_GUM_ASSERT_THROWS_NOTHING(
-        gen = new gum::SimpleBayesNetGenerator< double >(10, 20));
+         gen = new gum::SimpleBayesNetGenerator< double >(10, 20));
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
     }
 
@@ -51,7 +51,7 @@ namespace gum_tests {
       gum::SimpleBayesNetGenerator< double >* gen = nullptr;
 
       TS_GUM_ASSERT_THROWS_NOTHING(
-        gen = new gum::SimpleBayesNetGenerator< double >(10, 20));
+         gen = new gum::SimpleBayesNetGenerator< double >(10, 20));
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
     }
 

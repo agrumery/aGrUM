@@ -180,7 +180,7 @@ namespace gum {
         /// A sequence of commands.
         std::vector< O3prmrCommand* > m_commands;
         std::map< const PRMSystem< GUM_SCALAR >*, PRMInference< GUM_SCALAR >* >
-          m_infEngineMap;
+           m_infEngineMap;
 
         public:
         explicit O3prmrSession(const std::string& name = std::string());
@@ -232,8 +232,9 @@ namespace gum {
 
         std::string                   aliasToImport(const std::string& alias);
         std::vector< ImportCommand* > imports() const;
-        void
-             addImport(int line, const std::string& import, const std::string& alias);
+        void                          addImport(int                line,
+                                                const std::string& import,
+                                                const std::string& alias);
         void addImport(int line, const std::string& import, bool ismain);
         void addImport(const ImportCommand& i) {
           m_imports.push_back(new ImportCommand(i.line, i.value, i.alias));
@@ -250,59 +251,59 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#        ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
       extern template class ObserveCommand< double >;
-#endif
-#endif
-#endif
-#endif
+#        endif
+#      endif
+#    endif
+#  endif
 #endif
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#        ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
       extern template class UnobserveCommand< double >;
-#endif
-#endif
-#endif
-#endif
+#        endif
+#      endif
+#    endif
+#  endif
 #endif
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#        ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
       extern template class QueryCommand< double >;
-#endif
-#endif
-#endif
-#endif
+#        endif
+#      endif
+#    endif
+#  endif
 #endif
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#        ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
       extern template class O3prmrSession< double >;
-#endif
-#endif
-#endif
-#endif
+#        endif
+#      endif
+#    endif
+#  endif
 #endif
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#        ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
       extern template class O3prmrContext< double >;
-#endif
-#endif
-#endif
-#endif
+#        endif
+#      endif
+#    endif
+#  endif
 #endif
 
 

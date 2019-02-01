@@ -33,7 +33,7 @@ namespace gum {
     /// returns the allocator used
     template < template < typename > class ALLOC >
     INLINE typename IDBInitializer< ALLOC >::allocator_type
-      IDBInitializer< ALLOC >::getAllocator() const {
+       IDBInitializer< ALLOC >::getAllocator() const {
       return __var_names.get_allocator();
     }
 
@@ -41,8 +41,8 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE IDBInitializer< ALLOC >::IDBInitializer(
-      typename IDBInitializer< ALLOC >::InputType             type,
-      const typename IDBInitializer< ALLOC >::allocator_type& alloc) :
+       typename IDBInitializer< ALLOC >::InputType             type,
+       const typename IDBInitializer< ALLOC >::allocator_type& alloc) :
         __var_names(alloc),
         __input_type(type) {
       GUM_CONSTRUCTOR(IDBInitializer);
@@ -52,8 +52,8 @@ namespace gum {
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE IDBInitializer< ALLOC >::IDBInitializer(
-      const IDBInitializer< ALLOC >&                          from,
-      const typename IDBInitializer< ALLOC >::allocator_type& alloc) :
+       const IDBInitializer< ALLOC >&                          from,
+       const typename IDBInitializer< ALLOC >::allocator_type& alloc) :
         __var_names(from.__var_names, alloc),
         __input_type(from.__input_type) {
       GUM_CONS_CPY(IDBInitializer);
@@ -63,15 +63,15 @@ namespace gum {
     /// copy constructor
     template < template < typename > class ALLOC >
     INLINE IDBInitializer< ALLOC >::IDBInitializer(
-      const IDBInitializer< ALLOC >& from) :
+       const IDBInitializer< ALLOC >& from) :
         IDBInitializer(from, from.getAllocator()) {}
 
 
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE IDBInitializer< ALLOC >::IDBInitializer(
-      IDBInitializer< ALLOC >&&                               from,
-      const typename IDBInitializer< ALLOC >::allocator_type& alloc) :
+       IDBInitializer< ALLOC >&&                               from,
+       const typename IDBInitializer< ALLOC >::allocator_type& alloc) :
         __var_names(std::move(from.__var_names), alloc),
         __input_type(from.__input_type) {
       GUM_CONS_MOV(IDBInitializer);
@@ -81,7 +81,7 @@ namespace gum {
     /// move constructor
     template < template < typename > class ALLOC >
     INLINE
-      IDBInitializer< ALLOC >::IDBInitializer(IDBInitializer< ALLOC >&& from) :
+       IDBInitializer< ALLOC >::IDBInitializer(IDBInitializer< ALLOC >&& from) :
         IDBInitializer(std::move(from), from.getAllocator()) {}
 
 
@@ -95,7 +95,7 @@ namespace gum {
     /// returns the names of the variables in the input database
     template < template < typename > class ALLOC >
     const std::vector< std::string, ALLOC< std::string > >&
-      IDBInitializer< ALLOC >::variableNames() {
+       IDBInitializer< ALLOC >::variableNames() {
       if (__var_names.empty()) __var_names = this->_variableNames();
       return __var_names;
     }
@@ -153,7 +153,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     template < template < template < typename > class > class DATABASE >
     void IDBInitializer< ALLOC >::__fillDatabaseFromStrings(
-      DATABASE< ALLOC >& database, const bool retry_insertion) {
+       DATABASE< ALLOC >& database, const bool retry_insertion) {
       // if need be, try to reinsert the row that could not be inserted
       if (retry_insertion && __last_insertion_failed) {
         database.insertRow(_currentStringRow());
@@ -177,7 +177,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     template < template < template < typename > class > class DATABASE >
     void IDBInitializer< ALLOC >::__fillDatabaseFromDBCells(
-      DATABASE< ALLOC >& database, const bool retry_insertion) {
+       DATABASE< ALLOC >& database, const bool retry_insertion) {
       // if need be, try to reinsert the row that could not be inserted
       if (retry_insertion && __last_insertion_failed) {
         database.insertRow(_currentDBCellRow());
@@ -200,7 +200,7 @@ namespace gum {
     /// asks the child class for the content of the current row using strings
     template < template < typename > class ALLOC >
     const std::vector< std::string, ALLOC< std::string > >&
-      IDBInitializer< ALLOC >::_currentStringRow() {
+       IDBInitializer< ALLOC >::_currentStringRow() {
       GUM_ERROR(FatalError,
                 "Method _currentStringRow should not be used or it should be "
                 "overloaded in children classes.");

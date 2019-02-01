@@ -154,7 +154,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void
-    BIFReader< GUM_SCALAR >::showElegantErrorsAndWarnings(std::ostream& o) {
+     BIFReader< GUM_SCALAR >::showElegantErrorsAndWarnings(std::ostream& o) {
     if (__parseDone)
       __parser->errors().elegantErrorsAndWarnings(o);
     else {

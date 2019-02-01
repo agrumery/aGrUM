@@ -56,10 +56,10 @@ namespace gum {
      * @param minimality a Boolean indicating whether we should enforce that
      * the triangulation is minimal w.r.t. inclusion */
     OrderedTriangulation(
-      const OrderedEliminationSequenceStrategy& elimSeq =
-        OrderedEliminationSequenceStrategy(),
-      const JunctionTreeStrategy& JTStrategy = DefaultJunctionTreeStrategy(),
-      bool                        minimality = false);
+       const OrderedEliminationSequenceStrategy& elimSeq =
+          OrderedEliminationSequenceStrategy(),
+       const JunctionTreeStrategy& JTStrategy = DefaultJunctionTreeStrategy(),
+       bool                        minimality = false);
 
     /// constructor with a given graph
     /** @param graph the graph to be triangulated, i.e., the nodes of which will
@@ -80,13 +80,13 @@ namespace gum {
      * elimination sequence are not copied but only referenced by the
      * triangulation algorithm. */
     OrderedTriangulation(
-      const UndiGraph*                          graph,
-      const NodeProperty< Size >*               domsizes,
-      const std::vector< NodeId >*              sequence,
-      const OrderedEliminationSequenceStrategy& elimSeq =
-        OrderedEliminationSequenceStrategy(),
-      const JunctionTreeStrategy& JTStrategy = DefaultJunctionTreeStrategy(),
-      bool                        minimality = false);
+       const UndiGraph*                          graph,
+       const NodeProperty< Size >*               domsizes,
+       const std::vector< NodeId >*              sequence,
+       const OrderedEliminationSequenceStrategy& elimSeq =
+          OrderedEliminationSequenceStrategy(),
+       const JunctionTreeStrategy& JTStrategy = DefaultJunctionTreeStrategy(),
+       bool                        minimality = false);
 
     /// copy constructor
     OrderedTriangulation(const OrderedTriangulation& from);

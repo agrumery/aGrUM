@@ -175,8 +175,8 @@ namespace gum {
      * @return Returns the root of the created tree.
      */
     SplayBinaryNode< Element >*
-      join(const SplayBinaryNode< Element >*                  e,
-           HashTable< Element, SplayBinaryNode< Element >* >& addr);
+       join(const SplayBinaryNode< Element >*                  e,
+            HashTable< Element, SplayBinaryNode< Element >* >& addr);
 
     /// @}
     // ============================================================================

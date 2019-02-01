@@ -211,7 +211,7 @@ namespace gum_tests {
       }
 
       gum::NodeGraphPartIteratorSafe safe_iter =
-        ngp.beginSafe();   // safe iterator needed here
+         ngp.beginSafe();   // safe iterator needed here
 
       for (gum::NodeGraphPartIterator iter = ngp.begin(); iter != ngp.end();
            ++iter, ++safe_iter) {
@@ -238,7 +238,7 @@ namespace gum_tests {
       gum::Size cpt = 0;
 
       for (gum::NodeGraphPartIteratorSafe iter =
-             nodeset.beginSafe();   // safe iterator needed here
+              nodeset.beginSafe();   // safe iterator needed here
            iter != nodeset.endSafe();
            ++iter) {
         if (cpt == 0) {
@@ -263,7 +263,7 @@ namespace gum_tests {
       gum::Size cpt = 0;
 
       for (gum::NodeGraphPartIteratorSafe iter =
-             nodeset.beginSafe();   // safe iterator needed here
+              nodeset.beginSafe();   // safe iterator needed here
            iter != nodeset.endSafe();
            ++iter, ++cpt) {
         TS_GUM_ASSERT_THROWS_NOTHING(nodeset.eraseNode(*iter));

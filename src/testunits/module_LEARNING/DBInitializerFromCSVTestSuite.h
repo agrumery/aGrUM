@@ -41,7 +41,7 @@ namespace gum_tests {
     public:
     void test_init1() {
       gum::learning::DBInitializerFromCSV<> initializer(
-        GET_RESSOURCES_PATH("asia.csv"));
+         GET_RESSOURCES_PATH("asia.csv"));
 
       const auto&       var_names = initializer.variableNames();
       const std::size_t nb_vars = var_names.size();
@@ -89,7 +89,7 @@ namespace gum_tests {
       TS_ASSERT(row1[2].cont_val == 1.0f);
 
       gum::learning::DBInitializerFromCSV<> initializer3(
-        initializer, std::allocator< std::string >());
+         initializer, std::allocator< std::string >());
       gum::learning::DatabaseTable<> database3;
       database3.ignoreColumn(0);
       database3.ignoreColumn(2);
@@ -133,7 +133,7 @@ namespace gum_tests {
       TS_ASSERT(row31[4].cont_val == 1.0f);
 
       gum::learning::DBInitializerFromCSV<> initializer4(
-        std::move(initializer), std::allocator< std::string >());
+         std::move(initializer), std::allocator< std::string >());
       gum::learning::DatabaseTable<> database4;
       database4.insertTranslator(translator, 1);
       database4.insertTranslator(translator, 3);

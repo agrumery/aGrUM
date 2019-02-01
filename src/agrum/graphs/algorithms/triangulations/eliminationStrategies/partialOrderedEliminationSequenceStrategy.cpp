@@ -38,17 +38,17 @@ namespace gum {
 
   /// default constructor
   PartialOrderedEliminationSequenceStrategy::
-    PartialOrderedEliminationSequenceStrategy() {
+     PartialOrderedEliminationSequenceStrategy() {
     // for debugging purposes
     GUM_CONSTRUCTOR(PartialOrderedEliminationSequenceStrategy);
   }
 
   /// constructor for an a priori non empty graph
   PartialOrderedEliminationSequenceStrategy::
-    PartialOrderedEliminationSequenceStrategy(
-      UndiGraph*                  graph,
-      const NodeProperty< Size >* dom_sizes,
-      const List< NodeSet >*      subsets) {
+     PartialOrderedEliminationSequenceStrategy(
+        UndiGraph*                  graph,
+        const NodeProperty< Size >* dom_sizes,
+        const List< NodeSet >*      subsets) {
     setGraph(graph, dom_sizes);
     setPartialOrder(subsets);
 
@@ -58,8 +58,8 @@ namespace gum {
 
   /// copy constructor
   PartialOrderedEliminationSequenceStrategy::
-    PartialOrderedEliminationSequenceStrategy(
-      const PartialOrderedEliminationSequenceStrategy& from) :
+     PartialOrderedEliminationSequenceStrategy(
+        const PartialOrderedEliminationSequenceStrategy& from) :
       EliminationSequenceStrategy(from),
       _subsets(from._subsets), _subset_iter(from._subset_iter),
       _nodeset(from._nodeset), _partial_order_needed(from._partial_order_needed) {
@@ -69,8 +69,8 @@ namespace gum {
 
   /// move constructor
   PartialOrderedEliminationSequenceStrategy::
-    PartialOrderedEliminationSequenceStrategy(
-      PartialOrderedEliminationSequenceStrategy&& from) :
+     PartialOrderedEliminationSequenceStrategy(
+        PartialOrderedEliminationSequenceStrategy&& from) :
       EliminationSequenceStrategy(std::move(from)),
       _subsets(from._subsets), _subset_iter(from._subset_iter),
       _nodeset(std::move(from._nodeset)),
@@ -83,14 +83,14 @@ namespace gum {
 
   /// destructor
   PartialOrderedEliminationSequenceStrategy::
-    ~PartialOrderedEliminationSequenceStrategy() {
+     ~PartialOrderedEliminationSequenceStrategy() {
     // for debugging purposes
     GUM_DESTRUCTOR(PartialOrderedEliminationSequenceStrategy);
   }
 
   /// sets a new graph to be triangulated
   bool PartialOrderedEliminationSequenceStrategy::setGraph(
-    UndiGraph* graph, const NodeProperty< Size >* domain_sizes) {
+     UndiGraph* graph, const NodeProperty< Size >* domain_sizes) {
     if (EliminationSequenceStrategy::setGraph(graph, domain_sizes)) {
       setPartialOrder(_subsets);
       return true;
@@ -100,7 +100,7 @@ namespace gum {
 
   /// indicate whether a partial ordering is compatible with the current graph
   bool PartialOrderedEliminationSequenceStrategy::_isPartialOrderNeeded(
-    const List< NodeSet >* subsets) const {
+     const List< NodeSet >* subsets) const {
     if ((_graph == nullptr) || (subsets == nullptr)) return true;
 
     // determine the set of nodes in the subsets that belong to the graph
@@ -117,7 +117,7 @@ namespace gum {
 
   /// sets a new partial order
   bool PartialOrderedEliminationSequenceStrategy::setPartialOrder(
-    const List< NodeSet >* subsets) {
+     const List< NodeSet >* subsets) {
     // check that the partial order contains all the nodes of the graph
     _partial_order_needed = _isPartialOrderNeeded(subsets);
 

@@ -67,7 +67,7 @@ namespace gum {
 
     /// copy constructor
     OrderedEliminationSequenceStrategy(
-      const OrderedEliminationSequenceStrategy& from);
+       const OrderedEliminationSequenceStrategy& from);
 
     /// move constructor
     OrderedEliminationSequenceStrategy(OrderedEliminationSequenceStrategy&& from);

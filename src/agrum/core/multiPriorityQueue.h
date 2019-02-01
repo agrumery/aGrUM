@@ -140,11 +140,11 @@ namespace gum {
 
     /// The allocator for the indices.
     using IndexAlloc = typename Alloc::template rebind<
-      std::pair< Val, std::vector< Size > > >::other;
+       std::pair< Val, std::vector< Size > > >::other;
 
     /// The allocator for the heap.
     using HeapAlloc =
-      typename Alloc::template rebind< std::pair< Priority, const Val* > >::other;
+       typename Alloc::template rebind< std::pair< Priority, const Val* > >::other;
 
     // ============================================================================
     /// @name Constructors / Destructors
@@ -161,8 +161,8 @@ namespace gum {
      * elements (could be for instance vectors or hashtables).
      */
     explicit MultiPriorityQueue(
-      Cmp  compare = Cmp(),
-      Size capacity = GUM_MULTIPLE_PRIORITY_QUEUE_DEFAULT_CAPACITY);
+       Cmp  compare = Cmp(),
+       Size capacity = GUM_MULTIPLE_PRIORITY_QUEUE_DEFAULT_CAPACITY);
 
     /**
      * @brief Initializer list constructor.
@@ -173,14 +173,14 @@ namespace gum {
      * @param list The initializer list.
      */
     explicit MultiPriorityQueue(
-      std::initializer_list< std::pair< Val, Priority > > list);
+       std::initializer_list< std::pair< Val, Priority > > list);
 
     /**
      * @brief Copy constructor.
      * @param from The gum::MultiPriorityQueue to copy.
      */
     MultiPriorityQueue(
-      const MultiPriorityQueue< Val, Priority, Cmp, Alloc >& from);
+       const MultiPriorityQueue< Val, Priority, Cmp, Alloc >& from);
 
     /// generalized copy constructor
     /**
@@ -190,7 +190,7 @@ namespace gum {
      */
     template < typename OtherAlloc >
     MultiPriorityQueue(
-      const MultiPriorityQueue< Val, Priority, Cmp, OtherAlloc >& from);
+       const MultiPriorityQueue< Val, Priority, Cmp, OtherAlloc >& from);
 
     /**
      * @brief Move constructor.
@@ -220,7 +220,7 @@ namespace gum {
      * @param from The gum::MultiPriorityQueue to copy.
      */
     MultiPriorityQueue< Val, Priority, Cmp, Alloc >&
-      operator=(const MultiPriorityQueue< Val, Priority, Cmp, Alloc >& from);
+       operator=(const MultiPriorityQueue< Val, Priority, Cmp, Alloc >& from);
 
     /**
      * @brief Generalized copy operator.
@@ -235,14 +235,14 @@ namespace gum {
      */
     template < typename OtherAlloc >
     MultiPriorityQueue< Val, Priority, Cmp, Alloc >&
-      operator=(const MultiPriorityQueue< Val, Priority, Cmp, OtherAlloc >& from);
+       operator=(const MultiPriorityQueue< Val, Priority, Cmp, OtherAlloc >& from);
 
     /**
      * @brief Move operator.
      * @param from The gum::MultiPriorityQueue to copy.
      */
     MultiPriorityQueue< Val, Priority, Cmp, Alloc >&
-      operator=(MultiPriorityQueue< Val, Priority, Cmp, Alloc >&& from);
+       operator=(MultiPriorityQueue< Val, Priority, Cmp, Alloc >&& from);
 
     /**
      * @brief Returns the element at index "index_elt" from the priority queue.
@@ -490,14 +490,14 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::MultiPriorityQueue< std::string >;
-#endif
+#  endif
 #endif
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::MultiPriorityQueue< int, int >;
-#endif
+#  endif
 #endif
 
 

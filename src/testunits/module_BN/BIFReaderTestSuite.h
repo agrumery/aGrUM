@@ -47,7 +47,7 @@ namespace gum_tests {
       gum::BIFReader< double >* reader = 0;
 
       TS_GUM_ASSERT_THROWS_NOTHING(reader =
-                                     new gum::BIFReader< double >(&net, file));
+                                      new gum::BIFReader< double >(&net, file));
       TS_GUM_ASSERT_THROWS_NOTHING(delete reader);
     }
 
@@ -626,7 +626,7 @@ namespace gum_tests {
 
       if (idMap.exists("ERRLOWOUTPUT") && idMap.exists("HRBP")) {
         const gum::DiscreteVariable& errlowoutput =
-          net->variable(idMap["ERRLOWOUTPUT"]);
+           net->variable(idMap["ERRLOWOUTPUT"]);
 
         TS_ASSERT_EQUALS(errlowoutput.domainSize(), (gum::Size)2);
 
@@ -637,7 +637,7 @@ namespace gum_tests {
         TS_ASSERT(net->dag().existsArc(idMap["ERRLOWOUTPUT"], idMap["HRBP"]));
 
         const gum::Potential< double >& errlowoutputCPT =
-          net->cpt(idMap["ERRLOWOUTPUT"]);
+           net->cpt(idMap["ERRLOWOUTPUT"]);
 
         TS_ASSERT_EQUALS(errlowoutputCPT.domainSize(), (gum::Size)2);
 
@@ -665,10 +665,10 @@ namespace gum_tests {
       if (idMap.exists("LVEDVOLUME") && idMap.exists("HYPOVOLEMIA")
           && idMap.exists("LVFAILURE")) {
         const gum::DiscreteVariable& lvedvolume =
-          net->variable(idMap["LVEDVOLUME"]);
+           net->variable(idMap["LVEDVOLUME"]);
 
         const gum::DiscreteVariable& hypovolemia =
-          net->variable(idMap["HYPOVOLEMIA"]);
+           net->variable(idMap["HYPOVOLEMIA"]);
 
         const gum::DiscreteVariable& lvfailure = net->variable(idMap["LVFAILURE"]);
 
@@ -898,14 +898,14 @@ namespace gum_tests {
       {
         gum::BayesNet< double >  net;
         gum::BIFReader< double > reader(
-          &net, std::string(GET_RESSOURCES_PATH("dBN_with_errors.bif")));
+           &net, std::string(GET_RESSOURCES_PATH("dBN_with_errors.bif")));
         TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)3);
         TS_ASSERT_EQUALS(reader.errors(), (gum::Size)3);
       }
       {
         gum::BayesNet< double >  net;
         gum::BIFReader< double > reader(
-          &net, std::string(GET_RESSOURCES_PATH("dBN.bif")));
+           &net, std::string(GET_RESSOURCES_PATH("dBN.bif")));
         TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)2);
         TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
       }

@@ -43,9 +43,9 @@ namespace gum {
       for (NodeId i = 0; i < GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE;
            ++i) {
         _TabuList__changes.insert(
-          ArcAddition(std::numeric_limits< NodeId >::max() - i,
-                      std::numeric_limits< NodeId >::max()),
-          i);
+           ArcAddition(std::numeric_limits< NodeId >::max() - i,
+                       std::numeric_limits< NodeId >::max()),
+           i);
       }
 
       GUM_CONSTRUCTOR(StructuralConstraintTabuList);
@@ -53,16 +53,16 @@ namespace gum {
 
     /// constructor starting with a given graph
     StructuralConstraintTabuList::StructuralConstraintTabuList(
-      const DiGraph& graph) :
+       const DiGraph& graph) :
         _TabuList__changes(GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE) {
       // put dummy elements into the list (this avoids having tests to do
       // afterwards)
       for (NodeId i = 0; i < GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE;
            ++i) {
         _TabuList__changes.insert(
-          ArcAddition(std::numeric_limits< NodeId >::max() - i,
-                      std::numeric_limits< NodeId >::max()),
-          i);
+           ArcAddition(std::numeric_limits< NodeId >::max() - i,
+                       std::numeric_limits< NodeId >::max()),
+           i);
       }
 
       GUM_CONSTRUCTOR(StructuralConstraintTabuList);
@@ -70,7 +70,7 @@ namespace gum {
 
     /// copy constructor
     StructuralConstraintTabuList::StructuralConstraintTabuList(
-      const StructuralConstraintTabuList& from) :
+       const StructuralConstraintTabuList& from) :
         _TabuList__changes(from._TabuList__changes),
         _TabuList__offset(from._TabuList__offset) {
       GUM_CONS_CPY(StructuralConstraintTabuList);
@@ -78,7 +78,7 @@ namespace gum {
 
     /// move constructor
     StructuralConstraintTabuList::StructuralConstraintTabuList(
-      StructuralConstraintTabuList&& from) :
+       StructuralConstraintTabuList&& from) :
         _TabuList__changes(std::move(from._TabuList__changes)),
         _TabuList__offset(std::move(from._TabuList__offset)) {
       GUM_CONS_MOV(StructuralConstraintTabuList);

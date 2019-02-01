@@ -32,8 +32,8 @@
 namespace gum_tests {
 
   static gum::MultiDimImplementation< double >*
-    myadd(const gum::MultiDimImplementation< double >& f1,
-          const gum::MultiDimImplementation< double >& f2) {
+     myadd(const gum::MultiDimImplementation< double >& f1,
+           const gum::MultiDimImplementation< double >& f2) {
     return f1 + f2;
   }
 
@@ -92,9 +92,9 @@ namespace gum_tests {
       TS_ASSERT(result2.multiDim() == *pot5.content());
 
       gum::Sequence< const gum::ScheduleMultiDim< double >* > seq =
-        comb2.multiDimArgs();
+         comb2.multiDimArgs();
       gum::SequenceIteratorSafe< const gum::ScheduleMultiDim< double >* > iter =
-        seq.begin();
+         seq.begin();
       TS_ASSERT(**iter == result1);
       ++iter;
       TS_ASSERT(**iter == f3);

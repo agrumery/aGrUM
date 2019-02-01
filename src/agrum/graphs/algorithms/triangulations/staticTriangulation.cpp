@@ -36,11 +36,11 @@ namespace gum {
 
   // default constructor
   StaticTriangulation::StaticTriangulation(
-    const UndiGraph*                   theGraph,
-    const NodeProperty< Size >*        domsizes,
-    const EliminationSequenceStrategy& elimSeq,
-    const JunctionTreeStrategy&        JTStrategy,
-    bool                               minimality) :
+     const UndiGraph*                   theGraph,
+     const NodeProperty< Size >*        domsizes,
+     const EliminationSequenceStrategy& elimSeq,
+     const JunctionTreeStrategy&        JTStrategy,
+     bool                               minimality) :
       Triangulation(domsizes),
       _elimination_sequence_strategy(elimSeq.newFactory()),
       _junction_tree_strategy(JTStrategy.newFactory()), __original_graph(theGraph),
@@ -64,9 +64,9 @@ namespace gum {
 
   // default constructor
   StaticTriangulation::StaticTriangulation(
-    const EliminationSequenceStrategy& elimSeq,
-    const JunctionTreeStrategy&        JTStrategy,
-    bool                               minimality) :
+     const EliminationSequenceStrategy& elimSeq,
+     const JunctionTreeStrategy&        JTStrategy,
+     bool                               minimality) :
       _elimination_sequence_strategy(elimSeq.newFactory()),
       _junction_tree_strategy(JTStrategy.newFactory()),
       __minimality_required(minimality) {
@@ -97,7 +97,7 @@ namespace gum {
       __we_want_fill_ins(from.__we_want_fill_ins) {
     // copy the strategies
     _elimination_sequence_strategy =
-      from._elimination_sequence_strategy->copyFactory();
+       from._elimination_sequence_strategy->copyFactory();
     _junction_tree_strategy = from._junction_tree_strategy->copyFactory(this);
 
     // if from has a junction tree, copy it
@@ -214,7 +214,7 @@ namespace gum {
           // node belongs to an extremal edge in R
           for (std::size_t k = 0; k < __elim_order.size(); ++k)
             R[__elim_order[k]] =
-              0;   // WARNING: do not replace R[__elim_order[k]] by
+               0;   // WARNING: do not replace R[__elim_order[k]] by
 
           // R[k] because the node ids may not be
           // consecutive numbers
@@ -296,8 +296,8 @@ namespace gum {
 
     // a structure storing the number of neighbours previously processed
     PriorityQueue< NodeId, unsigned int, std::greater< unsigned int > >
-      numbered_neighbours(std::greater< unsigned int >(),
-                          __triangulated_graph.size());
+       numbered_neighbours(std::greater< unsigned int >(),
+                           __triangulated_graph.size());
 
     for (Size i = 0; i < __elim_order.size(); ++i)
       numbered_neighbours.insert(__elim_order[i], 0);
@@ -313,7 +313,7 @@ namespace gum {
         for (const auto neighbour : __triangulated_graph.neighbours(node)) {
           try {
             numbered_neighbours.setPriority(
-              neighbour, 1 + numbered_neighbours.priority(neighbour));
+               neighbour, 1 + numbered_neighbours.priority(neighbour));
           } catch (NotFound&) {}
         }
       }
@@ -371,10 +371,10 @@ namespace gum {
 
   /// used for computing the junction tree of the maximal prime subgraphs
   void StaticTriangulation::__computeMaxPrimeMergings(
-    const NodeId        node,
-    const NodeId        from,
-    std::vector< Arc >& merged_cliques,
-    NodeSet&            mark) const {
+     const NodeId        node,
+     const NodeId        from,
+     std::vector< Arc >& merged_cliques,
+     NodeSet&            mark) const {
     mark << node;
 
     for (const auto other_node : __junction_tree->neighbours(node))
@@ -438,7 +438,7 @@ namespace gum {
     // Actually clique X will be inserted into clique Y.
     for (unsigned int i = 0; i < merged_cliques.size(); ++i) {
       T_mpd_cliques[merged_cliques[i].tail()] =
-        T_mpd_cliques[merged_cliques[i].head()];
+         T_mpd_cliques[merged_cliques[i].head()];
     }
 
     // now we can create the max prime junction tree. First, create the cliques
@@ -472,7 +472,7 @@ namespace gum {
     // compute for each node which clique of the max prime junction tree was
     // created by the elimination of the node
     const NodeProperty< NodeId >& node_2_junction_clique =
-      _junction_tree_strategy->createdCliques();
+       _junction_tree_strategy->createdCliques();
 
     for (const auto& elt : node_2_junction_clique)
       __node_2_max_prime_clique.insert(elt.first, T_mpd_cliques[elt.second]);

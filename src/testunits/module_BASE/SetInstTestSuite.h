@@ -39,14 +39,14 @@ namespace gum_tests {
       gum::SetInst       i;
       TS_ASSERT_EQUALS(i.nbrDim(), (gum::Size)0);
       gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
-        c("c", "third var", 5);
+         c("c", "third var", 5);
       in << a << c << b;
       TS_GUM_ASSERT_THROWS_NOTHING(gum::SetInst i2(in));
     }
 
     void testInsertSupprVariables() {
       gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
-        c("c", "third var", 5);
+         c("c", "third var", 5);
       gum::SetInst i;
 
       TS_GUM_ASSERT_THROWS_NOTHING(i << a << b << c);
@@ -74,7 +74,7 @@ namespace gum_tests {
 
     void testRemValues() {
       gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
-        c("c", "third var", 5);
+         c("c", "third var", 5);
       gum::SetInst i;
 
       TS_GUM_ASSERT_THROWS_NOTHING(i << a << b << c);
@@ -89,7 +89,7 @@ namespace gum_tests {
 
     void test_ou_et_Values() {
       gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
-        c("c", "third var", 5);
+         c("c", "third var", 5);
       gum::SetInst i, j;
 
       i << a << b << c;
@@ -116,7 +116,7 @@ namespace gum_tests {
 
     void testReordering() {
       gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
-        c("c", "third var", 5);
+         c("c", "third var", 5);
       gum::SetInst i;
       i << a << b << c;
       gum::SetInst j;
@@ -131,7 +131,7 @@ namespace gum_tests {
 
     void testChgValIn() {
       gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
-        c("c", "third var", 5), d("d", "fourth var", 2);
+         c("c", "third var", 5), d("d", "fourth var", 2);
 
       gum::SetInst i;
       i << b << c << d;
@@ -149,7 +149,7 @@ namespace gum_tests {
 
     void testOperatorEgal() {
       gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
-        c("c", "third var", 5), d("d", "fourth var", 2);
+         c("c", "third var", 5), d("d", "fourth var", 2);
       gum::MultiDimArray< char > p, q;
       p << a << b << c;
       q << c << d;

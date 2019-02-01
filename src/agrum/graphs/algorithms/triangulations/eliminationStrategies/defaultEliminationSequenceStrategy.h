@@ -116,7 +116,7 @@ namespace gum {
      * triangulation but not both. This will necessarily be OK in
      * DefaultTriangulations. */
     DefaultEliminationSequenceStrategy(
-      const DefaultEliminationSequenceStrategy& from);
+       const DefaultEliminationSequenceStrategy& from);
 
     /// move constructor
     DefaultEliminationSequenceStrategy(DefaultEliminationSequenceStrategy&&);

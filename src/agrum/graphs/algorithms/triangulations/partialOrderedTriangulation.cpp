@@ -32,9 +32,9 @@ namespace gum {
 
   // default constructor
   PartialOrderedTriangulation::PartialOrderedTriangulation(
-    const PartialOrderedEliminationSequenceStrategy& elimSeq,
-    const JunctionTreeStrategy&                      JTStrategy,
-    bool                                             minimality) :
+     const PartialOrderedEliminationSequenceStrategy& elimSeq,
+     const JunctionTreeStrategy&                      JTStrategy,
+     bool                                             minimality) :
       StaticTriangulation(elimSeq, JTStrategy, minimality) {
     // for debugging purposes
     GUM_CONSTRUCTOR(PartialOrderedTriangulation);
@@ -42,17 +42,17 @@ namespace gum {
 
   // constructor with a given graph
   PartialOrderedTriangulation::PartialOrderedTriangulation(
-    const UndiGraph*                                 theGraph,
-    const NodeProperty< Size >*                      dom,
-    const List< NodeSet >*                           partial_order,
-    const PartialOrderedEliminationSequenceStrategy& elimSeq,
-    const JunctionTreeStrategy&                      JTStrategy,
-    bool                                             minimality) :
+     const UndiGraph*                                 theGraph,
+     const NodeProperty< Size >*                      dom,
+     const List< NodeSet >*                           partial_order,
+     const PartialOrderedEliminationSequenceStrategy& elimSeq,
+     const JunctionTreeStrategy&                      JTStrategy,
+     bool                                             minimality) :
       StaticTriangulation(theGraph, dom, elimSeq, JTStrategy, minimality),
       __partial_order(partial_order) {
     static_cast< PartialOrderedEliminationSequenceStrategy* >(
-      _elimination_sequence_strategy)
-      ->setPartialOrder(__partial_order);
+       _elimination_sequence_strategy)
+       ->setPartialOrder(__partial_order);
 
     // for debugging purposes
     GUM_CONSTRUCTOR(PartialOrderedTriangulation);
@@ -60,7 +60,7 @@ namespace gum {
 
   // copy constructor
   PartialOrderedTriangulation::PartialOrderedTriangulation(
-    const PartialOrderedTriangulation& from) :
+     const PartialOrderedTriangulation& from) :
       StaticTriangulation(from),
       __partial_order(from.__partial_order) {
     // for debugging purposes
@@ -69,7 +69,7 @@ namespace gum {
 
   // move constructor
   PartialOrderedTriangulation::PartialOrderedTriangulation(
-    PartialOrderedTriangulation&& from) :
+     PartialOrderedTriangulation&& from) :
       StaticTriangulation(std::move(from)),
       __partial_order(from.__partial_order) {
     // for debugging purposes
@@ -79,9 +79,9 @@ namespace gum {
   /// virtual copy constructor
   PartialOrderedTriangulation* PartialOrderedTriangulation::newFactory() const {
     return new PartialOrderedTriangulation(
-      static_cast< const PartialOrderedEliminationSequenceStrategy& >(
-        *_elimination_sequence_strategy),
-      *_junction_tree_strategy);
+       static_cast< const PartialOrderedEliminationSequenceStrategy& >(
+          *_elimination_sequence_strategy),
+       *_junction_tree_strategy);
   }
 
   /// virtual copy constructor
@@ -97,28 +97,28 @@ namespace gum {
 
   /// initialize the triangulation data structures for a new graph
   void
-    PartialOrderedTriangulation::setGraph(const UndiGraph*            graph,
-                                          const NodeProperty< Size >* domsizes) {
+     PartialOrderedTriangulation::setGraph(const UndiGraph*            graph,
+                                           const NodeProperty< Size >* domsizes) {
     StaticTriangulation::setGraph(graph, domsizes);
     static_cast< PartialOrderedEliminationSequenceStrategy* >(
-      _elimination_sequence_strategy)
-      ->setPartialOrder(__partial_order);
+       _elimination_sequence_strategy)
+       ->setPartialOrder(__partial_order);
   }
 
   /// sets the sequence of elimination
   void PartialOrderedTriangulation::setPartialOrder(
-    const List< NodeSet >* partial_order) {
+     const List< NodeSet >* partial_order) {
     __partial_order = partial_order;
     static_cast< PartialOrderedEliminationSequenceStrategy* >(
-      _elimination_sequence_strategy)
-      ->setPartialOrder(__partial_order);
+       _elimination_sequence_strategy)
+       ->setPartialOrder(__partial_order);
   }
 
   /// the function called to initialize the triangulation process
   void PartialOrderedTriangulation::_initTriangulation(UndiGraph& graph) {
     PartialOrderedEliminationSequenceStrategy* elim =
-      static_cast< PartialOrderedEliminationSequenceStrategy* >(
-        _elimination_sequence_strategy);
+       static_cast< PartialOrderedEliminationSequenceStrategy* >(
+          _elimination_sequence_strategy);
     elim->setGraph(&graph, _domain_sizes);
     elim->setPartialOrder(__partial_order);
   }

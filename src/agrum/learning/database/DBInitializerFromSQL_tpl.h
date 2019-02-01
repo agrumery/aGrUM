@@ -40,7 +40,7 @@ namespace gum {
     /// perform a connection from a connection string
     template < template < typename > class ALLOC >
     void DBInitializerFromSQL< ALLOC >::__connect(
-      const std::string& connection_string, long timeout) {
+       const std::string& connection_string, long timeout) {
       // analyze the connection string: either this is a user-defined connection
       // string or this is an aGrUM-constructed one derived from a datasource,
       // a login and a password
@@ -58,43 +58,43 @@ namespace gum {
         if (deb_index == std::string::npos)
           GUM_ERROR(DatabaseError,
                     "could not determine the datasource from string "
-                      << connection_string);
+                       << connection_string);
         deb_index += std::size_t(1);
         end_index = connection_string.find(delimiter, deb_index);
         if (end_index == std::string::npos)
           GUM_ERROR(DatabaseError,
                     "could not determine the datasource from string "
-                      << connection_string);
+                       << connection_string);
         std::string dataSource =
-          connection_string.substr(deb_index, end_index - deb_index);
+           connection_string.substr(deb_index, end_index - deb_index);
 
         deb_index = connection_string.find(delimiter, end_index + std::size_t(1));
         if (deb_index == std::string::npos)
           GUM_ERROR(DatabaseError,
                     "could not determine the database login from string "
-                      << connection_string);
+                       << connection_string);
         deb_index += std::size_t(1);
         end_index = connection_string.find(delimiter, deb_index);
         if (end_index == std::string::npos)
           GUM_ERROR(DatabaseError,
                     "could not determine the database login from string "
-                      << connection_string);
+                       << connection_string);
         std::string login =
-          connection_string.substr(deb_index, end_index - deb_index);
+           connection_string.substr(deb_index, end_index - deb_index);
 
         deb_index = connection_string.find(delimiter, end_index + std::size_t(1));
         if (deb_index == std::string::npos)
           GUM_ERROR(DatabaseError,
                     "could not determine the database password from string "
-                      << connection_string);
+                       << connection_string);
         deb_index += std::size_t(1);
         end_index = connection_string.find(delimiter, deb_index);
         if (end_index == std::string::npos)
           GUM_ERROR(DatabaseError,
                     "could not determine the database password from string "
-                      << connection_string);
+                       << connection_string);
         std::string password =
-          connection_string.substr(deb_index, end_index - deb_index);
+           connection_string.substr(deb_index, end_index - deb_index);
 
         __connection.connect(dataSource, login, password, timeout);
       }
@@ -104,10 +104,10 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     DBInitializerFromSQL< ALLOC >::DBInitializerFromSQL(
-      const std::string& connection_string,
-      const std::string& query,
-      long               timeout,
-      const typename DBInitializerFromSQL< ALLOC >::allocator_type& alloc) :
+       const std::string& connection_string,
+       const std::string& query,
+       long               timeout,
+       const typename DBInitializerFromSQL< ALLOC >::allocator_type& alloc) :
         IDBInitializer< ALLOC >(IDBInitializer< ALLOC >::InputType::STRING, alloc),
         __connection_string(connection_string), __query(query), __timeout(timeout),
         __var_names(alloc), __parser(alloc) {
@@ -137,15 +137,15 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     DBInitializerFromSQL< ALLOC >::DBInitializerFromSQL(
-      const std::string&                                            dataSource,
-      const std::string&                                            login,
-      const std::string&                                            password,
-      const std::string&                                            query,
-      long                                                          timeout,
-      const typename DBInitializerFromSQL< ALLOC >::allocator_type& alloc) :
+       const std::string&                                            dataSource,
+       const std::string&                                            login,
+       const std::string&                                            password,
+       const std::string&                                            query,
+       long                                                          timeout,
+       const typename DBInitializerFromSQL< ALLOC >::allocator_type& alloc) :
         DBInitializerFromSQL< ALLOC >("gum datasource=|" + dataSource
-                                        + "|; login=|" + login + "|; password=|"
-                                        + password + "|",
+                                         + "|; login=|" + login + "|; password=|"
+                                         + password + "|",
                                       query,
                                       timeout,
                                       alloc) {}
@@ -154,38 +154,38 @@ namespace gum {
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
     DBInitializerFromSQL< ALLOC >::DBInitializerFromSQL(
-      const DBInitializerFromSQL< ALLOC >&                          from,
-      const typename DBInitializerFromSQL< ALLOC >::allocator_type& alloc) :
+       const DBInitializerFromSQL< ALLOC >&                          from,
+       const typename DBInitializerFromSQL< ALLOC >::allocator_type& alloc) :
         DBInitializerFromSQL< ALLOC >(
-          from.__connection_string, from.__query, from.__timeout, alloc) {}
+           from.__connection_string, from.__query, from.__timeout, alloc) {}
 
 
     /// copy constructor
     template < template < typename > class ALLOC >
     DBInitializerFromSQL< ALLOC >::DBInitializerFromSQL(
-      const DBInitializerFromSQL< ALLOC >& from) :
+       const DBInitializerFromSQL< ALLOC >& from) :
         DBInitializerFromSQL< ALLOC >(from, from.getAllocator()) {}
 
 
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
     DBInitializerFromSQL< ALLOC >::DBInitializerFromSQL(
-      DBInitializerFromSQL< ALLOC >&&                               from,
-      const typename DBInitializerFromSQL< ALLOC >::allocator_type& alloc) :
+       DBInitializerFromSQL< ALLOC >&&                               from,
+       const typename DBInitializerFromSQL< ALLOC >::allocator_type& alloc) :
         DBInitializerFromSQL< ALLOC >(
-          from.__connection_string, from.__query, from.__timeout, alloc) {}
+           from.__connection_string, from.__query, from.__timeout, alloc) {}
 
     /// move constructor
     template < template < typename > class ALLOC >
     DBInitializerFromSQL< ALLOC >::DBInitializerFromSQL(
-      DBInitializerFromSQL< ALLOC >&& from) :
+       DBInitializerFromSQL< ALLOC >&& from) :
         DBInitializerFromSQL< ALLOC >(std::move(from), from.getAllocator()) {}
 
 
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
     DBInitializerFromSQL< ALLOC >* DBInitializerFromSQL< ALLOC >::clone(
-      const typename DBInitializerFromSQL< ALLOC >::allocator_type& alloc) const {
+       const typename DBInitializerFromSQL< ALLOC >::allocator_type& alloc) const {
       ALLOC< DBInitializerFromSQL< ALLOC > > allocator(alloc);
       DBInitializerFromSQL< ALLOC >* new_initializer = allocator.allocate(1);
       try {
@@ -221,7 +221,7 @@ namespace gum {
         IDBInitializer< ALLOC >::operator=(from);
         // check if the connection parameters have changed
         const bool connexion_changed =
-          (__connection_string != from.__connection_string);
+           (__connection_string != from.__connection_string);
 
         // save the new connection parameters
         __connection_string = from.__connection_string;

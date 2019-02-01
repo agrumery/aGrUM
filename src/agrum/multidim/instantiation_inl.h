@@ -740,7 +740,7 @@ namespace gum {
   // reordering
   INLINE
   void
-    Instantiation::reorder(const Sequence< const DiscreteVariable* >& original) {
+     Instantiation::reorder(const Sequence< const DiscreteVariable* >& original) {
     if (__master != nullptr) {
       GUM_ERROR(OperationNotAllowed,
                 "Reordering impossible in slave instantiation");
@@ -750,8 +750,8 @@ namespace gum {
   }
 
   INLINE
-  void
-    Instantiation::__reorder(const Sequence< const DiscreteVariable* >& original) {
+  void Instantiation::__reorder(
+     const Sequence< const DiscreteVariable* >& original) {
     Idx max = original.size();
     Idx position = 0;
     for (Idx i = 0; i < max; ++i) {

@@ -123,7 +123,7 @@ namespace gum_tests {
       initCNet();
 
       gum::credal::CNLoopyPropagation< double > lp =
-        gum::credal::CNLoopyPropagation< double >(*cn);
+         gum::credal::CNLoopyPropagation< double >(*cn);
 
       // evidence from file
       try {
@@ -193,7 +193,7 @@ namespace gum_tests {
       initDCNet();
 
       gum::credal::CNLoopyPropagation< double > lp =
-        gum::credal::CNLoopyPropagation< double >(*cn);
+         gum::credal::CNLoopyPropagation< double >(*cn);
 
       //////////////////////////////////////////////////////
       // strong independence
@@ -255,7 +255,7 @@ namespace gum_tests {
     void testL2UListener() {
       initDCNet();
       gum::credal::CNLoopyPropagation< double > lp =
-        gum::credal::CNLoopyPropagation< double >(*cn);
+         gum::credal::CNLoopyPropagation< double >(*cn);
 
       // evidence from file
       try {

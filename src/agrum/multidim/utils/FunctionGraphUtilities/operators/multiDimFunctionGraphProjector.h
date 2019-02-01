@@ -48,7 +48,7 @@ namespace gum {
              template < typename >
              class FUNCTOR,
              template < typename > class TerminalNodePolicy =
-               ExactTerminalNodePolicy >
+                ExactTerminalNodePolicy >
   class MultiDimFunctionGraphProjector {
     public:
     // ============================================================================
@@ -60,9 +60,9 @@ namespace gum {
      * @brief Default constructor.
      */
     MultiDimFunctionGraphProjector(
-      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* src,
-      const Set< const DiscreteVariable* >&                          delVars,
-      const GUM_SCALAR                                               neutral);
+       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* src,
+       const Set< const DiscreteVariable* >&                          delVars,
+       const GUM_SCALAR                                               neutral);
 
     /**
      * @brief Default destructor.

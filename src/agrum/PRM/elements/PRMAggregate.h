@@ -161,7 +161,7 @@ namespace gum {
 
       /// See gum::PRMClassElement::elt_type().
       virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType
-        elt_type() const;
+         elt_type() const;
 
       /// Returns the aggregate of *this.
       AggregateType agg_type() const;
@@ -246,7 +246,7 @@ namespace gum {
 
       /// Copy operator. Don't use it.
       PRMAggregate< GUM_SCALAR >&
-        operator=(const PRMAggregate< GUM_SCALAR >& source);
+         operator=(const PRMAggregate< GUM_SCALAR >& source);
 
       /// @}
       // ========================================================================

@@ -129,7 +129,7 @@ namespace gum {
      * @throw NotFound if no such name exists in the graph.
      */
     virtual const DiscreteVariable&
-      variableFromName(const std::string& name) const = 0;
+       variableFromName(const std::string& name) const = 0;
     /// @}
 
     // ===========================================================================

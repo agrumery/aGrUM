@@ -36,7 +36,7 @@ namespace gum_tests {
     public:
     void test1() {
       gum::learning::DBInitializerFromCSV<> initializer(
-        GET_RESSOURCES_PATH("asia.csv"));
+         GET_RESSOURCES_PATH("asia.csv"));
       const auto&       var_names = initializer.variableNames();
       const std::size_t nb_vars = var_names.size();
 
@@ -67,13 +67,13 @@ namespace gum_tests {
       TS_ASSERT_DELTA(score.score(3, 4), 3.87288, 1e-2);
       TS_ASSERT_DELTA(score.score(2, 6), 5.97477, 1e-2);
       TS_ASSERT_DELTA(
-        score.score(4, 7, std::vector< gum::NodeId >{5}), 5.43007, 1e-2);
+         score.score(4, 7, std::vector< gum::NodeId >{5}), 5.43007, 1e-2);
 
       score.clear();
       // id1 = score.addNodeSet(6, 7, std::vector< gum::Idx >{5, 1, 4});
       // id2 = score.addNodeSet(6, 7, std::vector< gum::Idx >{1, 4});
       TS_ASSERT_DELTA(score.score(6, 7, std::vector< gum::NodeId >{5, 1, 4})
-                        - score.score(6, 7, std::vector< gum::NodeId >{1, 4}),
+                         - score.score(6, 7, std::vector< gum::NodeId >{1, 4}),
                       0.0,
                       1e-2);
     }

@@ -85,7 +85,7 @@ namespace gum {
   /// virtual clone constructor
   DefaultTriangulation* DefaultTriangulation::newFactory() const {
     return new DefaultTriangulation(
-      isMinimalityRequired(), __quasi_ratio, __threshold);
+       isMinimalityRequired(), __quasi_ratio, __threshold);
   }
 
   /// virtual copy constructor

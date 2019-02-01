@@ -108,7 +108,7 @@ namespace gum {
      * @return Returns this gum::BinSearchTree.
      */
     BinSearchTree< Val, Cmp, Node >&
-      operator=(const BinSearchTree< Val, Cmp, Node >& from);
+       operator=(const BinSearchTree< Val, Cmp, Node >& from);
 
     /// @}
     // ============================================================================
@@ -477,7 +477,7 @@ namespace gum {
      * @return Returns this gum::BinSearchTreeIterator.
      */
     BinSearchTreeIterator< Val, Cmp, Node >&
-      operator=(const BinSearchTreeIterator< Val, Cmp, Node >& from);
+       operator=(const BinSearchTreeIterator< Val, Cmp, Node >& from);
 
     /**
      * @brief Returns the value pointed to by the iterator.

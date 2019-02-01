@@ -134,7 +134,7 @@ namespace gum {
     /// variables in this observation
     // ###################################################################
     HashTableConstIteratorSafe< const DiscreteVariable*, Idx >
-      cbeginVariablesSafe() const {
+       cbeginVariablesSafe() const {
       return __varInst.cbeginSafe();
     }
 
@@ -143,7 +143,7 @@ namespace gum {
     /// variables in this observation
     // ###################################################################
     HashTableConstIteratorSafe< const DiscreteVariable*, Idx >
-      cendVariablesSafe() const {
+       cendVariablesSafe() const {
       return __varInst.cendSafe();
     }
 

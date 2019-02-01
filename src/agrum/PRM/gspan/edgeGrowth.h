@@ -83,8 +83,8 @@ namespace gum {
         /// The mapping between the u and v for each match in the interface
         /// graph.
         NodeProperty<
-          std::pair< PRMInstance< GUM_SCALAR >*, PRMInstance< GUM_SCALAR >* > >
-          matches;
+           std::pair< PRMInstance< GUM_SCALAR >*, PRMInstance< GUM_SCALAR >* > >
+           matches;
         /// Return a string representation of this
         std::string toString();
 

@@ -112,7 +112,7 @@ namespace gum {
   }
 
   wchar_t*
-    coco_string_create_lower(const wchar_t* data, int startIndex, int dataLen) {
+     coco_string_create_lower(const wchar_t* data, int startIndex, int dataLen) {
     if (!data) { return nullptr; }
 
     wchar_t* newData = new wchar_t[dataLen + 1];

@@ -240,9 +240,9 @@ namespace gum {
      */
     // ==========================================================================
     virtual NodeId
-      _insertInternalNode(NodeDatabase< AttributeSelection, isScalar >* nDB,
-                          const DiscreteVariable*                       boundVar,
-                          NodeId*                                       sonsMap);
+       _insertInternalNode(NodeDatabase< AttributeSelection, isScalar >* nDB,
+                           const DiscreteVariable*                       boundVar,
+                           NodeId*                                       sonsMap);
 
     // ==========================================================================
     /**
@@ -254,9 +254,9 @@ namespace gum {
      */
     // ==========================================================================
     virtual NodeId
-      _insertLeafNode(NodeDatabase< AttributeSelection, isScalar >* nDB,
-                      const DiscreteVariable*                       boundVar,
-                      Set< const Observation* >*                    obsSet);
+       _insertLeafNode(NodeDatabase< AttributeSelection, isScalar >* nDB,
+                       const DiscreteVariable*                       boundVar,
+                       Set< const Observation* >*                    obsSet);
 
     // ==========================================================================
     /**
@@ -340,7 +340,7 @@ namespace gum {
     // ==========================================================================
     virtual void insertSetOfVars(MultiDimFunctionGraph< double >* ret) const {
       for (SetIteratorSafe< const DiscreteVariable* > varIter =
-             _setOfVars.beginSafe();
+              _setOfVars.beginSafe();
            varIter != _setOfVars.endSafe();
            ++varIter)
         ret->add(**varIter);
@@ -387,7 +387,7 @@ namespace gum {
     /// which handles every observation that concerns that node
     // ==========================================================================
     HashTable< NodeId, NodeDatabase< AttributeSelection, isScalar >* >
-      _nodeId2Database;
+       _nodeId2Database;
 
     // ==========================================================================
     /// This hashtable binds to every leaf an associated set of all

@@ -134,7 +134,7 @@ namespace gum {
       /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::get(const
       /// std::string&).
       virtual const PRMClassElement< GUM_SCALAR >&
-        get(const std::string& name) const;
+         get(const std::string& name) const;
 
       /**
        * Returns the set of PRMAttribute<GUM_SCALAR> of this Class<GUM_SCALAR>.
@@ -217,7 +217,7 @@ namespace gum {
        * @return Returns true if this Class<GUM_SCALAR> is a subclass of cec.
        */
       virtual bool
-        isSubTypeOf(const PRMClassElementContainer< GUM_SCALAR >& cec) const;
+         isSubTypeOf(const PRMClassElementContainer< GUM_SCALAR >& cec) const;
 
       /**
        * @brief Returns the superInterface of this PRMInterface.
@@ -270,7 +270,7 @@ namespace gum {
       /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::operator[](const
       /// std::string&).
       const PRMClassElement< GUM_SCALAR >&
-        operator[](const std::string& name) const;
+         operator[](const std::string& name) const;
 
       /// @}
       // ========================================================================
@@ -284,7 +284,7 @@ namespace gum {
       const ClassEltIterator& end();
 
       typedef
-        typename NodeProperty< PRMClassElement< GUM_SCALAR >* >::const_iterator
+         typename NodeProperty< PRMClassElement< GUM_SCALAR >* >::const_iterator
                                     const_ClassEltIterator;
       const_ClassEltIterator        begin() const;
       const const_ClassEltIterator& end() const;
@@ -309,7 +309,7 @@ namespace gum {
       private:
       /// Copy operator. Don't use it.
       PRMInterface< GUM_SCALAR >&
-        operator=(const PRMInterface< GUM_SCALAR >& source);
+         operator=(const PRMInterface< GUM_SCALAR >& source);
 
       /// Proceed with the copy of i in this.
       void __inheritInterface(const PRMInterface< GUM_SCALAR >& i);
@@ -372,8 +372,8 @@ namespace gum {
       void __addExtension(PRMInterface< GUM_SCALAR >* c);
 
       bool
-        __checkOverloadLegality(const PRMClassElement< GUM_SCALAR >* overloaded,
-                                const PRMClassElement< GUM_SCALAR >* overloader);
+         __checkOverloadLegality(const PRMClassElement< GUM_SCALAR >* overloaded,
+                                 const PRMClassElement< GUM_SCALAR >* overloader);
 
       void __overloadAttribute(PRMAttribute< GUM_SCALAR >* overloader,
                                PRMAttribute< GUM_SCALAR >* overloaded);

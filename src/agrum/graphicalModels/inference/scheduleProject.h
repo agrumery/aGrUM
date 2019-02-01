@@ -53,8 +53,8 @@ namespace gum {
     ScheduleProject(const ScheduleMultiDim< GUM_SCALAR >& table,
                     const Set< const DiscreteVariable* >& del_vars,
                     MultiDimImplementation< GUM_SCALAR >* (*project)(
-                      const MultiDimImplementation< GUM_SCALAR >&,
-                      const Set< const DiscreteVariable* >&));
+                       const MultiDimImplementation< GUM_SCALAR >&,
+                       const Set< const DiscreteVariable* >&));
 
     /// copy constructor
     ScheduleProject(const ScheduleProject< GUM_SCALAR >&);
@@ -119,7 +119,7 @@ namespace gum {
 
     /// returns the set of multidims that should be the result of the operation
     const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >&
-      multiDimResults() const;
+       multiDimResults() const;
 
     /// displays the content of the operation
     std::string toString() const;
@@ -144,8 +144,8 @@ namespace gum {
 
     /// the projection operator
     MultiDimImplementation< GUM_SCALAR >* (*__project)(
-      const MultiDimImplementation< GUM_SCALAR >&,
-      const Set< const DiscreteVariable* >&);
+       const MultiDimImplementation< GUM_SCALAR >&,
+       const Set< const DiscreteVariable* >&);
   };
 
 } /* namespace gum */

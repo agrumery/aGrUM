@@ -30,14 +30,14 @@
 namespace gum {
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   // template class MultiDimFunctionGraph<float>;
-#endif
+#  endif
 #endif
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   // template class MultiDimFunctionGraph<double>;
-#endif
+#  endif
 #endif
 
   template <>

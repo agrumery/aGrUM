@@ -76,15 +76,15 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       IndepTestChi2(
-        const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori< ALLOC >&              external_apriori,
-        const std::vector< std::pair< std::size_t, std::size_t >,
-                           ALLOC< std::pair< std::size_t, std::size_t > > >&
-          ranges,
-        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-          nodeId2columns =
-            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-        const allocator_type& alloc = allocator_type());
+         const DBRowGeneratorParser< ALLOC >& parser,
+         const Apriori< ALLOC >&              external_apriori,
+         const std::vector< std::pair< std::size_t, std::size_t >,
+                            ALLOC< std::pair< std::size_t, std::size_t > > >&
+            ranges,
+         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+            nodeId2columns =
+               Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+         const allocator_type& alloc = allocator_type());
 
 
       /// default constructor
@@ -105,8 +105,8 @@ namespace gum {
       IndepTestChi2(const DBRowGeneratorParser< ALLOC >& parser,
                     const Apriori< ALLOC >&              apriori,
                     const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-                      nodeId2columns =
-                        Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+                       nodeId2columns =
+                          Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
                     const allocator_type& alloc = allocator_type());
 
       /// copy constructor
@@ -157,9 +157,9 @@ namespace gum {
       /// get the pair <chi2 statistic,pvalue> for a test var1 indep var2 given
       /// rhs_ids
       std::pair< double, double >
-        statistics(NodeId                                        var1,
-                   NodeId                                        var2,
-                   const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids={});
+         statistics(NodeId                                        var1,
+                    NodeId                                        var2,
+                    const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids = {});
 
       /// @}
 
@@ -169,7 +169,7 @@ namespace gum {
       /** @throws OperationNotAllowed is raised if the score does not support
        * calling method score such an idset (due to too many/too few variables
        * in the left hand side or the right hand side of the idset). */
-      virtual double              _score(const IdSet< ALLOC >& idset) final;
+      virtual double _score(const IdSet< ALLOC >& idset) final;
 
       /// compute the pair <chi2 statistic,pvalue>
       std::pair< double, double > _statistics(const IdSet< ALLOC >& idset);

@@ -40,7 +40,7 @@ namespace gum {
 #    define GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE GUM_SCALAR
   template < typename GUM_SCALAR >
   GUM_SCALAR GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME(
-    const MultiDimArray< GUM_SCALAR >* table, Instantiation* instantiation)
+     const MultiDimArray< GUM_SCALAR >* table, Instantiation* instantiation)
 #  endif
 
   // clang-format off
@@ -99,12 +99,12 @@ namespace gum {
 
 #  ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_IMPL2ARRAY_NAME
     const auto table =
-      reinterpret_cast< const MultiDimArray< GUM_SCALAR >* >(ttable);
+       reinterpret_cast< const MultiDimArray< GUM_SCALAR >* >(ttable);
 #  endif
 
 #  ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_IMPL2ARRAY_NAME
     const auto table =
-      reinterpret_cast< const MultiDimArray< GUM_SCALAR* >* >(ttable);
+       reinterpret_cast< const MultiDimArray< GUM_SCALAR* >* >(ttable);
 #  endif
 
     // first, compute the domain size of the table:
@@ -113,8 +113,8 @@ namespace gum {
     // now, parse the table and compute the projection. Start with the
     // neutral element
     GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE* ptable =
-      const_cast< GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE* >(
-        &(table->unsafeGet(0)));
+       const_cast< GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE* >(
+          &(table->unsafeGet(0)));
     GUM_SCALAR current_val = GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL;
 
     if (instantiation) {
@@ -139,7 +139,7 @@ namespace gum {
       instantiation->forgetMaster();
       instantiation->clear();
       const Sequence< const DiscreteVariable* >& table_vars =
-        table->variablesSequence();
+         table->variablesSequence();
 
       for (const auto var : table_vars)
         instantiation->add(*var);

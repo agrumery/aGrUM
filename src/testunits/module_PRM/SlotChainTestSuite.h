@@ -71,7 +71,7 @@ namespace gum_tests {
 
       __boolean = gum::prm::PRMType::boolean();
       __boolAttr =
-        new gum::prm::PRMScalarAttribute< double >("myBool", *__boolean);
+         new gum::prm::PRMScalarAttribute< double >("myBool", *__boolean);
       __C->add(__boolAttr);
 
       gum::LabelizedVariable state{"state", "A state variable", 0};
@@ -82,7 +82,7 @@ namespace gum_tests {
       map.push_back(0);
       __state = new gum::prm::PRMType(*__boolean, map, state);
       __stateAttr =
-        new gum::prm::PRMScalarAttribute< double >("myState", *__state);
+         new gum::prm::PRMScalarAttribute< double >("myState", *__state);
       __C->add(__stateAttr);
 
       __booleanChain = new gum::Sequence< gum::prm::PRMClassElement< double >* >();

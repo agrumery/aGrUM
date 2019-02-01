@@ -108,14 +108,14 @@ namespace gum {
      * @param from the id of tail of the new arc inserted into the graph
      * @param to the id of head of the new arc inserted into the graph */
     virtual void
-      whenArcAdded(const void* src, NodeId from, NodeId to) noexcept override;
+       whenArcAdded(const void* src, NodeId from, NodeId to) noexcept override;
 
     /// the action to take when an arc has just been removed from the graph
     /** @param src the object that sent the signal
      * @param from the id of tail of the arc removed from the graph
      * @param to the id of head of the arc removed from the graph */
     virtual void
-      whenArcDeleted(const void* src, NodeId from, NodeId to) noexcept override;
+       whenArcDeleted(const void* src, NodeId from, NodeId to) noexcept override;
     /// @}
 
     /// @name IBayesNet interface
@@ -160,7 +160,7 @@ namespace gum {
      * @throw NotFound if no such name exists in the graph.
      */
     virtual const DiscreteVariable&
-      variableFromName(const std::string& name) const override;
+       variableFromName(const std::string& name) const override;
 
     /**
      * creates a dot representing the whole referred BN hilighting the fragment.

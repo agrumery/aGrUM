@@ -46,7 +46,7 @@ namespace gum {
              template < typename >
              class COMBINEOPERATOR,
              template < typename > class TerminalNodePolicy =
-               ExactTerminalNodePolicy >
+                ExactTerminalNodePolicy >
   class TreeOperator {
     public:
     // ============================================================================
@@ -58,16 +58,16 @@ namespace gum {
      * @brief Default constructor.
      */
     TreeOperator(
-      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt1,
-      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt2);
+       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt1,
+       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt2);
 
     /**
      * @brief Default constructor.
      */
     TreeOperator(
-      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt1,
-      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt2,
-      const HashTable< const DiscreteVariable*, Idx >                givenContext);
+       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt1,
+       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt2,
+       const HashTable< const DiscreteVariable*, Idx > givenContext);
 
     /**
      * @brief Default destructor.

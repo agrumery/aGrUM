@@ -57,8 +57,8 @@ namespace gum {
     public:
     /// The type of functions used by the register
     typedef MultiDimImplementation< GUM_SCALAR >* (*OperatorPtr)(
-      const MultiDimImplementation< GUM_SCALAR >*,
-      const MultiDimImplementation< GUM_SCALAR >*);
+       const MultiDimImplementation< GUM_SCALAR >*,
+       const MultiDimImplementation< GUM_SCALAR >*);
 
     // ========================================================================
     /// @name Accessors / Modifiers
@@ -174,7 +174,7 @@ namespace gum {
      *
      * Note that this constructor prevents the famous init order fiasco.
      */
-    static OperatorRegister4MultiDim<GUM_SCALAR>& Register();
+    static OperatorRegister4MultiDim< GUM_SCALAR >& Register();
 
     /// @}
 
@@ -188,7 +188,7 @@ namespace gum {
     OperatorRegister4MultiDim();
 
     /// Copy operator: never to be used
-    OperatorRegister4MultiDim(const OperatorRegister4MultiDim<GUM_SCALAR>&);
+    OperatorRegister4MultiDim(const OperatorRegister4MultiDim< GUM_SCALAR >&);
 
     /// Destructor
     ~OperatorRegister4MultiDim();
@@ -197,7 +197,7 @@ namespace gum {
 
     /// The set of associations for a given operation type
     typedef HashTable< std::pair< std::string, std::string >, OperatorPtr >
-      OperatorSet;
+       OperatorSet;
 
     /**
      * @brief A mapping from pairs of types of MultiDimImplementations to
@@ -214,11 +214,11 @@ namespace gum {
   /// A function to more easily register new operators in MultiDims
   template < typename GUM_SCALAR >
   void registerOperator(
-    const std::string&                                            operation_name,
-    const std::string&                                            type1,
-    const std::string&                                            type2,
-    typename OperatorRegister4MultiDim< GUM_SCALAR >::OperatorPtr function);
-  
+     const std::string&                                            operation_name,
+     const std::string&                                            type1,
+     const std::string&                                            type2,
+     typename OperatorRegister4MultiDim< GUM_SCALAR >::OperatorPtr function);
+
 } /* namespace gum */
 
 // always include the implementations

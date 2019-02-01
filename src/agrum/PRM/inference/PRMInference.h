@@ -51,19 +51,19 @@ namespace gum {
       /// Code alias.
       typedef std::pair< const PRMInstance< GUM_SCALAR >*,
                          const PRMAttribute< GUM_SCALAR >* >
-        Chain;
+         Chain;
 
       /// Code alias.
       typedef NodeProperty< const Potential< GUM_SCALAR >* > EMap;
 
       /// Code alias.
       typedef
-        typename NodeProperty< const Potential< GUM_SCALAR >* >::iterator_safe
-          EMapIterator;
+         typename NodeProperty< const Potential< GUM_SCALAR >* >::iterator_safe
+            EMapIterator;
 
       /// Code alias.
       typedef typename NodeProperty<
-        const Potential< GUM_SCALAR >* >::const_iterator_safe EMapConstIterator;
+         const Potential< GUM_SCALAR >* >::const_iterator_safe EMapConstIterator;
 
       // ========================================================================
       /// @name Constructor & destructor.
@@ -225,8 +225,8 @@ namespace gum {
                                   EMap* >::iterator_safe EvidenceIterator;
       /// Code alias.
       typedef
-        typename HashTable< const PRMInstance< GUM_SCALAR >*,
-                            EMap* >::const_iterator_safe EvidenceConstIterator;
+         typename HashTable< const PRMInstance< GUM_SCALAR >*,
+                             EMap* >::const_iterator_safe EvidenceConstIterator;
 
       /// Mapping of evidence over PRMInstance<GUM_SCALAR>'s nodes.
       HashTable< const PRMInstance< GUM_SCALAR >*, EMap* > __evidences;

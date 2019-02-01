@@ -112,11 +112,11 @@ namespace gum {
      * passed in argument.
      */
     MultiDimCombinationDefault(TABLE< GUM_SCALAR >* (*combine)(
-      const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&));
+       const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&));
 
     /// Copy constructor
     MultiDimCombinationDefault(
-      const MultiDimCombinationDefault< GUM_SCALAR, TABLE >&);
+       const MultiDimCombinationDefault< GUM_SCALAR, TABLE >&);
 
     /// Destructor
     virtual ~MultiDimCombinationDefault();
@@ -152,7 +152,7 @@ namespace gum {
 
     /// Changes the function used for combining two TABLES.
     virtual void setCombineFunction(TABLE< GUM_SCALAR >* (*combine)(
-      const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&));
+       const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&));
 
     /// Returns the combination function currently used by the combinator.
     virtual TABLE< GUM_SCALAR >* (*combineFunction())(const TABLE< GUM_SCALAR >&,
@@ -164,7 +164,7 @@ namespace gum {
      */
     virtual float nbOperations(const Set< const TABLE< GUM_SCALAR >* >& set) const;
     virtual float nbOperations(
-      const Set< const Sequence< const DiscreteVariable* >* >& set) const;
+       const Set< const Sequence< const DiscreteVariable* >* >& set) const;
 
     /**
      * @brief Returns the additional memory consumption used during the
@@ -180,7 +180,7 @@ namespace gum {
     virtual std::pair< long, long >
                                     memoryUsage(const Set< const TABLE< GUM_SCALAR >* >& set) const;
     virtual std::pair< long, long > memoryUsage(
-      const Set< const Sequence< const DiscreteVariable* >* >& set) const;
+       const Set< const Sequence< const DiscreteVariable* >* >& set) const;
 
     /// @}
 

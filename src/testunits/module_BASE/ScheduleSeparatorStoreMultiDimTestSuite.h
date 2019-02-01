@@ -52,14 +52,14 @@ namespace gum_tests {
       gum::ScheduleMultiDim< double > f2(pot2);
 
       gum::ArcProperty< gum::Set< const gum::MultiDimImplementation< double >* > >
-        set;
+         set;
       TS_ASSERT(set.size() == 0);
       gum::ScheduleSeparatorStoreMultiDim< double > store1(
-        f1, set, gum::Arc(3, 2));
+         f1, set, gum::Arc(3, 2));
       gum::ScheduleSeparatorStoreMultiDim< double > store2(
-        f2, set, gum::Arc(3, 2));
+         f2, set, gum::Arc(3, 2));
       gum::ScheduleSeparatorStoreMultiDim< double > store3(
-        f2, set, gum::Arc(2, 3));
+         f2, set, gum::Arc(2, 3));
       TS_ASSERT(store1 != store2);
       TS_ASSERT(store2 != store3);
       TS_ASSERT(!(store2 == store3));
@@ -69,7 +69,7 @@ namespace gum_tests {
       TS_ASSERT(xxx.first == 0);
 
       gum::Sequence< const gum::ScheduleMultiDim< double >* > seq =
-        store1.multiDimArgs();
+         store1.multiDimArgs();
       TS_ASSERT(seq.size() == 1);
       TS_ASSERT(*(seq.atPos(0)) == f1);
 
@@ -90,8 +90,8 @@ namespace gum_tests {
       TS_ASSERT(store4 == store1);
 
       TS_ASSERT(
-        store4.type()
-        == gum::ScheduleOperation< double >::Type::SEPARATOR_STORE_MULTIDIM);
+         store4.type()
+         == gum::ScheduleOperation< double >::Type::SEPARATOR_STORE_MULTIDIM);
 
       gum::ScheduleSeparatorStoreMultiDim< double >* store5 = store4.newFactory();
       TS_ASSERT(*store5 == store4);

@@ -121,9 +121,9 @@ namespace gum {
                                + " - VARIABLE : " + (*varIter)->name());
         __fmdp->addTransitionForAction(*actionIter, *varIter, varTrans);
         __actionLearners[*actionIter]->insert(
-          (*varIter),
-          __instantiateVarLearner(
-            varTrans, mainVariables, __fmdp->main2prime(*varIter)));
+           (*varIter),
+           __instantiateVarLearner(
+              varTrans, mainVariables, __fmdp->main2prime(*varIter)));
       }
 
       if (__actionReward) {
@@ -132,7 +132,7 @@ namespace gum {
                              + __fmdp->actionName(*actionIter));
         __fmdp->addRewardForAction(*actionIter, reward);
         __actionRewardLearners.insert(
-          *actionIter, __instantiateRewardLearner(reward, mainVariables));
+           *actionIter, __instantiateRewardLearner(reward, mainVariables));
       }
     }
 
@@ -155,12 +155,12 @@ namespace gum {
                     LearnerSelection >::addObservation(Idx                actionId,
                                                        const Observation* newObs) {
     for (SequenceIteratorSafe< const DiscreteVariable* > varIter =
-           __fmdp->beginVariables();
+            __fmdp->beginVariables();
          varIter != __fmdp->endVariables();
          ++varIter) {
       __actionLearners[actionId]
-        ->getWithDefault(*varIter, nullptr)
-        ->addObservation(newObs);
+         ->getWithDefault(*varIter, nullptr)
+         ->addObservation(newObs);
       __actionLearners[actionId]->getWithDefault(*varIter, nullptr)->updateGraph();
     }
 
@@ -173,7 +173,7 @@ namespace gum {
     }
 
     __rmax =
-      __rmax < std::abs(newObs->reward()) ? std::abs(newObs->reward()) : __rmax;
+       __rmax < std::abs(newObs->reward()) ? std::abs(newObs->reward()) : __rmax;
 
     return false;
   }
@@ -192,11 +192,12 @@ namespace gum {
          actionIter != __fmdp->endActions();
          ++actionIter) {
       for (SequenceIteratorSafe< const DiscreteVariable* > varIter =
-             __fmdp->beginVariables();
+              __fmdp->beginVariables();
            varIter != __fmdp->endVariables();
            ++varIter)
-        s +=
-          __actionLearners[*actionIter]->getWithDefault(*varIter, nullptr)->size();
+        s += __actionLearners[*actionIter]
+                ->getWithDefault(*varIter, nullptr)
+                ->size();
       if (__actionReward) s += __actionRewardLearners[*actionIter]->size();
     }
 
@@ -219,12 +220,12 @@ namespace gum {
          actionIter != __fmdp->endActions();
          ++actionIter) {
       for (SequenceIteratorSafe< const DiscreteVariable* > varIter =
-             __fmdp->beginVariables();
+              __fmdp->beginVariables();
            varIter != __fmdp->endVariables();
            ++varIter)
         __actionLearners[*actionIter]
-          ->getWithDefault(*varIter, nullptr)
-          ->updateFunctionGraph();
+           ->getWithDefault(*varIter, nullptr)
+           ->updateFunctionGraph();
       if (__actionReward)
         __actionRewardLearners[*actionIter]->updateFunctionGraph();
     }

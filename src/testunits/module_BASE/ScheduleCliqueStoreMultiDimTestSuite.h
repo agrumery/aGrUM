@@ -52,7 +52,7 @@ namespace gum_tests {
       gum::ScheduleMultiDim< double > f2(pot2);
 
       gum::NodeProperty< gum::Set< const gum::MultiDimImplementation< double >* > >
-        set;
+         set;
       TS_ASSERT(set.size() == 0);
       gum::ScheduleCliqueStoreMultiDim< double > store1(f1, set, 3);
       gum::ScheduleCliqueStoreMultiDim< double > store2(f2, set, 3);
@@ -66,7 +66,7 @@ namespace gum_tests {
       TS_ASSERT(xxx.first == 0);
 
       gum::Sequence< const gum::ScheduleMultiDim< double >* > seq =
-        store1.multiDimArgs();
+         store1.multiDimArgs();
       TS_ASSERT(seq.size() == 1);
       TS_ASSERT(*(seq.atPos(0)) == f1);
 

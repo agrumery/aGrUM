@@ -46,7 +46,7 @@ namespace gum {
       /// Association between a class element and it's holding class.
       typedef std::pair< const PRMClassElementContainer< GUM_SCALAR >*,
                          const PRMClassElement< GUM_SCALAR >* >
-        EltPair;
+         EltPair;
 
       // ========================================================================
       /// @name Constructors and Destructor.
@@ -108,9 +108,9 @@ namespace gum {
 
       /// Add arcs in __graph.
       void
-        __addArcs(const PRMClassElementContainer< GUM_SCALAR >&              c,
-                  NodeId                                                     node,
-                  HashTable< const PRMClassElement< GUM_SCALAR >*, NodeId >& map);
+         __addArcs(const PRMClassElementContainer< GUM_SCALAR >&              c,
+                   NodeId                                                     node,
+                   HashTable< const PRMClassElement< GUM_SCALAR >*, NodeId >& map);
 
       /// The graph itself.
       DAG __graph;
@@ -131,9 +131,9 @@ namespace gum {
 
       /// Code shortcut.
       typedef HashTable<
-        const PRMClassElementContainer< GUM_SCALAR >*,
-        HashTable< const PRMClassElement< GUM_SCALAR >*, NodeId >* >
-        NodeMap;
+         const PRMClassElementContainer< GUM_SCALAR >*,
+         HashTable< const PRMClassElement< GUM_SCALAR >*, NodeId >* >
+         NodeMap;
 
       /// Map each Class to a HashTable mapping the Class's ClassElements to
       /// their

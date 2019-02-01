@@ -40,7 +40,7 @@ namespace gum {
     // Default constructor
     template < typename GUM_SCALAR >
     INLINE MultiDimAggregator< GUM_SCALAR >::MultiDimAggregator(
-      const MultiDimAggregator< GUM_SCALAR >& from) :
+       const MultiDimAggregator< GUM_SCALAR >& from) :
         MultiDimReadOnly< GUM_SCALAR >(from) {
       GUM_CONS_CPY(MultiDimAggregator);
     }
@@ -52,8 +52,8 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    Idx
-      MultiDimAggregator< GUM_SCALAR >::_buildValue(const Instantiation& i) const {
+    Idx MultiDimAggregator< GUM_SCALAR >::_buildValue(
+       const Instantiation& i) const {
       if (this->nbrDim() == 1) return _neutralElt();
 
       // is i equal to f(f(f(f...(j_,neutral_elt))))
@@ -63,7 +63,7 @@ namespace gum {
 
       for (Idx j = 1; j < this->nbrDim(); j++) {
         current = _fold(
-          this->variable(j), i.val(this->variable(j)), current, stop_iteration);
+           this->variable(j), i.val(this->variable(j)), current, stop_iteration);
 
         if (stop_iteration) break;
       }
@@ -73,7 +73,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     GUM_SCALAR
-      MultiDimAggregator< GUM_SCALAR >::get(const Instantiation& i) const {
+       MultiDimAggregator< GUM_SCALAR >::get(const Instantiation& i) const {
       if (this->nbrDim() < 1) {
         GUM_ERROR(OperationNotAllowed,
                   "Not enough variable for an aggregator : " << *this);
@@ -105,7 +105,7 @@ namespace gum {
     }
     template < typename GUM_SCALAR >
     void MultiDimAggregator< GUM_SCALAR >::copyFrom(
-      const MultiDimContainer< GUM_SCALAR >& src) const {
+       const MultiDimContainer< GUM_SCALAR >& src) const {
       auto p = dynamic_cast< const MultiDimAggregator< GUM_SCALAR >* >(&src);
       if (p == nullptr) {
         MultiDimReadOnly< GUM_SCALAR >::copyFrom(src);

@@ -71,7 +71,7 @@ namespace gum {
                                              const std::vector< Size >& key) {
       _currentHash = Size(_vectHash(bn));
       std::list< Size >& nets =
-        _myVarHashs.getWithDefault(key, std::list< Size >());   //[ key ];
+         _myVarHashs.getWithDefault(key, std::list< Size >());   //[ key ];
 
       for (std::list< Size >::iterator it = nets.begin(); it != nets.end(); ++it) {
         if (*it == _currentHash) return false;
@@ -83,8 +83,8 @@ namespace gum {
       nets.push_back(_currentHash);
       // insert out key in the hash key list
       _myHashVars
-        .getWithDefault(_currentHash,
-                        std::list< varKey >()) /*[_currentHash]*/.push_back(key);
+         .getWithDefault(_currentHash,
+                         std::list< varKey >()) /*[_currentHash]*/.push_back(key);
       return true;
     }
 
@@ -94,7 +94,7 @@ namespace gum {
       if (isBetter) {
         // get all nets of this key (maybe entry does not exists)
         std::list< Size >& old_nets =
-          _myVarHashs.getWithDefault(key, std::list< Size >());   //[ key ];
+           _myVarHashs.getWithDefault(key, std::list< Size >());   //[ key ];
 
         // for each one
         for (std::list< Size >::iterator it = old_nets.begin();
@@ -102,7 +102,7 @@ namespace gum {
              ++it) {
           // get all keys associated to this net
           std::list< varKey >& netKeys =
-            _myHashVars.getWithDefault(*it, std::list< varKey >());   //[ *it ];
+             _myHashVars.getWithDefault(*it, std::list< varKey >());   //[ *it ];
 
           // if we are the sole user, delete the net entry
           if (netKeys.size() == 1) {
@@ -130,8 +130,8 @@ namespace gum {
         old_nets.push_back(_currentHash);
         // insert out key in the hash key list
         _myHashVars
-          .getWithDefault(_currentHash, std::list< varKey >()) /*[_currentHash]*/
-          .push_back(key);
+           .getWithDefault(_currentHash, std::list< varKey >()) /*[_currentHash]*/
+           .push_back(key);
         return true;
 
       }   // end of isBetter
@@ -139,7 +139,7 @@ namespace gum {
       else {
         // check that we didn't add it for this key
         std::list< Size >& nets =
-          _myVarHashs.getWithDefault(key, std::list< Size >());   //[ key ];
+           _myVarHashs.getWithDefault(key, std::list< Size >());   //[ key ];
 
         for (std::list< Size >::iterator it = nets.begin(); it != nets.end();
              ++it) {
@@ -152,7 +152,7 @@ namespace gum {
         nets.push_back(_currentHash);
         // insert out key in the hash key list
         _myHashVars.getWithDefault(_currentHash, std::list< varKey >())
-          .push_back(key);
+           .push_back(key);
 
         /*
               // add it
@@ -168,7 +168,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void VarMod2BNsMap< GUM_SCALAR >::setCurrentSample(
-      const std::vector< std::vector< std::vector< bool > > >& sample) {
+       const std::vector< std::vector< std::vector< bool > > >& sample) {
       _currentSample.clear();
 
       for (Size i = 0; i < sample.size(); i++)
@@ -189,14 +189,14 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     const std::vector< std::vector< std::vector< bool > > >&
-      VarMod2BNsMap< GUM_SCALAR >::getSampleDef() {
+       VarMod2BNsMap< GUM_SCALAR >::getSampleDef() {
       return _sampleDef;
     }
 
     template < typename GUM_SCALAR >
     const std::vector< std::vector< bool >* >
-      VarMod2BNsMap< GUM_SCALAR >::getBNOptsFromKey(
-        const std::vector< Size >& key) {
+       VarMod2BNsMap< GUM_SCALAR >::getBNOptsFromKey(
+          const std::vector< Size >& key) {
       // return something even if key does not exist
       if (!_myVarHashs.exists(key)) return std::vector< std::vector< bool >* >();
 
@@ -216,12 +216,12 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     std::vector< std::vector< std::vector< std::vector< bool > > > >
-      VarMod2BNsMap< GUM_SCALAR >::getFullBNOptsFromKey(
-        const std::vector< Size >& key) {
+       VarMod2BNsMap< GUM_SCALAR >::getFullBNOptsFromKey(
+          const std::vector< Size >& key) {
       if (cnet == nullptr)
-        GUM_ERROR(
-          OperationNotAllowed,
-          "No CredalNet associated to me ! Can't get FullBNOptsFromKey : " << key);
+        GUM_ERROR(OperationNotAllowed,
+                  "No CredalNet associated to me ! Can't get FullBNOptsFromKey : "
+                     << key);
 
       if (!_myVarHashs.exists(key))
         return std::vector< std::vector< std::vector< std::vector< bool > > > >();

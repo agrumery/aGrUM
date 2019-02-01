@@ -32,8 +32,8 @@
 namespace gum_tests {
 
   static gum::MultiDimImplementation< double >*
-    schedule_comb_myadd(const gum::MultiDimImplementation< double >& f1,
-                        const gum::MultiDimImplementation< double >& f2) {
+     schedule_comb_myadd(const gum::MultiDimImplementation< double >& f1,
+                         const gum::MultiDimImplementation< double >& f2) {
     return f1 + f2;
   }
 
@@ -82,7 +82,7 @@ namespace gum_tests {
 
       while (!available.empty()) {
         for (gum::NodeSet::const_iterator_safe iter =
-               available.beginSafe();   // safe iterator needed here
+                available.beginSafe();   // safe iterator needed here
              iter != available.endSafe();
              ++iter) {
           schedule.execute(*iter);
@@ -99,7 +99,7 @@ namespace gum_tests {
       comb13.execute();
       const gum::ScheduleMultiDim< double >& result13 = comb13.result();
       gum::ScheduleCombine< double >         comb14(
-        result11, result13, schedule_comb_myadd);
+         result11, result13, schedule_comb_myadd);
       comb14.execute();
       const gum::ScheduleMultiDim< double >& result14 = comb14.result();
 
@@ -158,7 +158,7 @@ namespace gum_tests {
 
       while (!available.empty()) {
         for (gum::NodeSet::const_iterator_safe iter =
-               available.beginSafe();   // safe iterator needed here
+                available.beginSafe();   // safe iterator needed here
              iter != available.endSafe();
              ++iter) {
           schedule.execute(*iter);
@@ -217,7 +217,7 @@ namespace gum_tests {
 
       while (!available.empty()) {
         for (gum::NodeSet::const_iterator_safe iter =
-               available.beginSafe();   // safe iterator needed here
+                available.beginSafe();   // safe iterator needed here
              iter != available.endSafe();
              ++iter) {
           schedule.execute(*iter);

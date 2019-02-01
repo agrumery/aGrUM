@@ -38,9 +38,9 @@ namespace gum_tests {
     void setUp() {}
 
     void generateLayer1(
-      gum::Size                                                     nb_class,
-      gum::Size                                                     depth,
-      std::vector< gum::prm::LayerGenerator< double >::LayerData >& v) {
+       gum::Size                                                     nb_class,
+       gum::Size                                                     depth,
+       std::vector< gum::prm::LayerGenerator< double >::LayerData >& v) {
       try {
         for (gum::Size lvl = 0; lvl < depth; ++lvl) {
           v.push_back(gum::prm::LayerGenerator< double >::LayerData());
@@ -55,9 +55,9 @@ namespace gum_tests {
     }
 
     void generateLayer2(
-      gum::Size                                                     nb_class,
-      gum::Size                                                     depth,
-      std::vector< gum::prm::LayerGenerator< double >::LayerData >& v) {
+       gum::Size                                                     nb_class,
+       gum::Size                                                     depth,
+       std::vector< gum::prm::LayerGenerator< double >::LayerData >& v) {
       try {
         for (gum::Size lvl = 0; lvl < depth; ++lvl) {
           v.push_back(gum::prm::LayerGenerator< double >::LayerData());
@@ -72,9 +72,9 @@ namespace gum_tests {
     }
 
     void generateLayer3(
-      gum::Size                                                     nb_class,
-      gum::Size                                                     depth,
-      std::vector< gum::prm::LayerGenerator< double >::LayerData >& v) {
+       gum::Size                                                     nb_class,
+       gum::Size                                                     depth,
+       std::vector< gum::prm::LayerGenerator< double >::LayerData >& v) {
       try {
         for (gum::Size lvl = 0; lvl < depth; ++lvl) {
           v.push_back(gum::prm::LayerGenerator< double >::LayerData());
@@ -89,7 +89,7 @@ namespace gum_tests {
     }
 
     const gum::prm::PRMInstance< double >&
-      pickInstance(const gum::prm::PRMSystem< double >& sys) {
+       pickInstance(const gum::prm::PRMSystem< double >& sys) {
       gum::Sequence< const gum::prm::PRMInstance< double >* > seq;
 
       for (gum::prm::PRMSystem< double >::const_iterator iter = sys.begin();
@@ -101,7 +101,7 @@ namespace gum_tests {
     }
 
     const gum::prm::PRMAttribute< double >&
-      pickAttribute(const gum::prm::PRMInstance< double >& i) {
+       pickAttribute(const gum::prm::PRMInstance< double >& i) {
       gum::Sequence< const gum::prm::PRMAttribute< double >* > seq;
 
       for (gum::prm::PRMInstance< double >::const_iterator iter = i.begin();
@@ -123,7 +123,7 @@ namespace gum_tests {
         generator.setMaxParents(5);
         gum::prm::PRM< double >*       prm = generator.generate();
         gum::prm::PRMSystem< double >& sys =
-          prm->getSystem((**(prm->systems().begin())).name());
+           prm->getSystem((**(prm->systems().begin())).name());
         gum::prm::StructuredInference< double > inf(*prm, sys);
         inf.setPatternMining(false);
         const gum::prm::PRMInstance< double >&  i = pickInstance(sys);
@@ -153,7 +153,7 @@ namespace gum_tests {
         generator.setMaxParents(5);
         gum::prm::PRM< double >*       prm = generator.generate();
         gum::prm::PRMSystem< double >& sys =
-          prm->getSystem((**(prm->systems().begin())).name());
+           prm->getSystem((**(prm->systems().begin())).name());
         gum::prm::StructuredInference< double > inf(*prm, sys);
         inf.setPatternMining(false);
         const gum::prm::PRMInstance< double >&  i = pickInstance(sys);
@@ -183,7 +183,7 @@ namespace gum_tests {
         generator.setMaxParents(5);
         gum::prm::PRM< double >*       prm = generator.generate();
         gum::prm::PRMSystem< double >& sys =
-          prm->getSystem((**(prm->systems().begin())).name());
+           prm->getSystem((**(prm->systems().begin())).name());
         gum::prm::StructuredInference< double > inf(*prm, sys);
         inf.setPatternMining(false);
         const gum::prm::PRMInstance< double >&  i = pickInstance(sys);

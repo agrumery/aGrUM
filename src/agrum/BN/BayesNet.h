@@ -539,8 +539,9 @@ namespace gum {
      *!!!
      * @return the id of the added variable.
      */
-    NodeId
-      addLogit(const DiscreteVariable& var, GUM_SCALAR external_weight, NodeId id);
+    NodeId addLogit(const DiscreteVariable& var,
+                    GUM_SCALAR              external_weight,
+                    NodeId                  id);
 
     /**
      * Add a variable, its associate node and a Logit implementation. The id of

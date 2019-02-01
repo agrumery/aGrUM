@@ -42,7 +42,7 @@ namespace gum_tests {
       TS_ASSERT(p.empty());
 
       gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
-        c("c", "third var", 5), other_a("a", "first var", 2);
+         c("c", "third var", 5), other_a("a", "first var", 2);
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c);
       TS_ASSERT_THROWS(p << a << a, gum::DuplicateElement);
       TS_ASSERT_THROWS(p << a << other_a, gum::DuplicateElement);
@@ -52,7 +52,7 @@ namespace gum_tests {
       gum::Potential< double > p(new gum::MultiDimArray< double >());
 
       gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
-        c("c", "third var", 5);
+         c("c", "third var", 5);
 
       p << a << b << c;
 
@@ -81,18 +81,18 @@ namespace gum_tests {
     void testDomainSizeChanges() {
       gum::Potential< double > p1(new gum::MultiDimArray< double >());
       gum::LabelizedVariable   var1("var1", "first var", 2),
-        var2("var2", "second var", 2), var3("var3", "third var", 2);
+         var2("var2", "second var", 2), var3("var3", "third var", 2);
       p1 << var1 << var2 << var3;
 
       TS_ASSERT_EQUALS(
-        p1.domainSize(),
-        (var1.domainSize() * var2.domainSize() * var3.domainSize()));
+         p1.domainSize(),
+         (var1.domainSize() * var2.domainSize() * var3.domainSize()));
     }
 
     void testAddAnyNumber() {
       gum::Potential< double > proba(new gum::MultiDimArray< double >());
       gum::LabelizedVariable   a("a", "first var", 2), b("b", "second var", 4),
-        c("c", "third var", 5);
+         c("c", "third var", 5);
       proba << a << b << c;
 
       gum::Instantiation i(proba);
@@ -104,7 +104,7 @@ namespace gum_tests {
     void testCopyProba() {
       gum::Potential< double > m(new gum::MultiDimArray< double >());
       gum::LabelizedVariable   a("a", "first var", 2), b("b", "second var", 4),
-        c("c", "third var", 5);
+         c("c", "third var", 5);
 
       m << a << b << c;
       gum::Instantiation i(m);
@@ -119,7 +119,7 @@ namespace gum_tests {
       gum::Potential< double > mm(new gum::MultiDimArray< double >());
 
       gum::LabelizedVariable x("x", "first var", 2), y("y", "second var", 4),
-        z("z", "third var", 5);
+         z("z", "third var", 5);
       mm << x << z;
       TS_ASSERT_THROWS_ANYTHING(mm.copyFrom(m));
       mm << y;
@@ -133,7 +133,7 @@ namespace gum_tests {
 
     void testRegressionCopy() {
       gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
-        c("c", "third var", 5);
+         c("c", "third var", 5);
 
       {
         gum::Potential< double > P1, P2;
@@ -303,53 +303,53 @@ namespace gum_tests {
 
     void testMargOutFunctions() {
       try {
-      auto a = gum::LabelizedVariable("a", "afoo", 3);
-      auto b = gum::LabelizedVariable("b", "bfoo", 3);
-      auto c = gum::LabelizedVariable("c", "cfoo", 3);
-      auto d = gum::LabelizedVariable("d", "dfoo", 3);
+        auto a = gum::LabelizedVariable("a", "afoo", 3);
+        auto b = gum::LabelizedVariable("b", "bfoo", 3);
+        auto c = gum::LabelizedVariable("c", "cfoo", 3);
+        auto d = gum::LabelizedVariable("d", "dfoo", 3);
 
-      gum::Potential< double > p;
-      p << a << b;
-      p.fillWith({1, 2, 3, 4, 5, 6, 7, 8, 9});
-      p.normalize();
+        gum::Potential< double > p;
+        p << a << b;
+        p.fillWith({1, 2, 3, 4, 5, 6, 7, 8, 9});
+        p.normalize();
 
-      gum::Potential< double > q;
-      q << c << d;
-      q.fillWith({1, 2, 3, 4, 5, 6, 7, 8, 9});
-      q.normalize();
+        gum::Potential< double > q;
+        q << c << d;
+        q.fillWith({1, 2, 3, 4, 5, 6, 7, 8, 9});
+        q.normalize();
 
-      TS_ASSERT(p != q);
+        TS_ASSERT(p != q);
 
-      gum::Potential< double > r;
-      r << c << d;
-      r.fillWith({1, 2, 3, 4, 5, 6, 7, 8, 9});
-      TS_ASSERT(q != r);
-      r.normalize();
-      TS_ASSERT(q == r);
+        gum::Potential< double > r;
+        r << c << d;
+        r.fillWith({1, 2, 3, 4, 5, 6, 7, 8, 9});
+        TS_ASSERT(q != r);
+        r.normalize();
+        TS_ASSERT(q == r);
 
-      auto joint = p * q;
+        auto joint = p * q;
 
-      auto margAB = joint.margSumOut({&c, &d});
-      TS_ASSERT((p == margAB));
-      auto margCD = joint.margSumOut({&b, &a});
-      TS_ASSERT((q == margCD));
+        auto margAB = joint.margSumOut({&c, &d});
+        TS_ASSERT((p == margAB));
+        auto margCD = joint.margSumOut({&b, &a});
+        TS_ASSERT((q == margCD));
 
-      p.fillWith({1, 2, 3, 4, 5, 6, 7, 8, 9});
-      TS_ASSERT_EQUALS(p.margProdOut({&a}).toString(),
-                       "<b:0> :: 6 /<b:1> :: 120 /<b:2> :: 504");
-      TS_ASSERT_EQUALS(p.margProdOut({&b}).toString(),
-                       "<a:0> :: 28 /<a:1> :: 80 /<a:2> :: 162");
-      
-      TS_ASSERT_EQUALS(p.margMaxOut({&a}).toString(),
-                       "<b:0> :: 3 /<b:1> :: 6 /<b:2> :: 9");
-      TS_ASSERT_EQUALS(p.margMaxOut({&b}).toString(),
-                       "<a:0> :: 7 /<a:1> :: 8 /<a:2> :: 9");
+        p.fillWith({1, 2, 3, 4, 5, 6, 7, 8, 9});
+        TS_ASSERT_EQUALS(p.margProdOut({&a}).toString(),
+                         "<b:0> :: 6 /<b:1> :: 120 /<b:2> :: 504");
+        TS_ASSERT_EQUALS(p.margProdOut({&b}).toString(),
+                         "<a:0> :: 28 /<a:1> :: 80 /<a:2> :: 162");
 
-      TS_ASSERT_EQUALS(p.margMinOut({&a}).toString(),
-                       "<b:0> :: 1 /<b:1> :: 4 /<b:2> :: 7");
-      TS_ASSERT_EQUALS(p.margMinOut({&b}).toString(),
-                       "<a:0> :: 1 /<a:1> :: 2 /<a:2> :: 3");
-      } catch ( gum::Exception& e) { GUM_SHOWERROR(e); }
+        TS_ASSERT_EQUALS(p.margMaxOut({&a}).toString(),
+                         "<b:0> :: 3 /<b:1> :: 6 /<b:2> :: 9");
+        TS_ASSERT_EQUALS(p.margMaxOut({&b}).toString(),
+                         "<a:0> :: 7 /<a:1> :: 8 /<a:2> :: 9");
+
+        TS_ASSERT_EQUALS(p.margMinOut({&a}).toString(),
+                         "<b:0> :: 1 /<b:1> :: 4 /<b:2> :: 7");
+        TS_ASSERT_EQUALS(p.margMinOut({&b}).toString(),
+                         "<a:0> :: 1 /<a:1> :: 2 /<a:2> :: 3");
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
     void testMargInFunctions() {
@@ -630,12 +630,12 @@ namespace gum_tests {
                        gum::SizeError)
 
       TS_GUM_ASSERT_THROWS_NOTHING(
-        p.apply([](double x) { return x * 2.0f + 1.0f; }););
+         p.apply([](double x) { return x * 2.0f + 1.0f; }););
       TS_ASSERT_EQUALS(p[inst], 5.0f);
 
       a = 0.3f;
       TS_GUM_ASSERT_THROWS_NOTHING(
-        a = p.reduce([](double x, double y) { return x + y; }, 0.0f););
+         a = p.reduce([](double x, double y) { return x + y; }, 0.0f););
       TS_ASSERT_EQUALS(a, 0.0f);
 
       TS_GUM_ASSERT_THROWS_NOTHING(p.populate({33.0f}));

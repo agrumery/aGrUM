@@ -64,9 +64,9 @@ namespace gum {
         O3ClassFactory(O3ClassFactory< GUM_SCALAR >&& src);
         ~O3ClassFactory();
         O3ClassFactory< GUM_SCALAR >&
-          operator=(const O3ClassFactory< GUM_SCALAR >& src);
+           operator=(const O3ClassFactory< GUM_SCALAR >& src);
         O3ClassFactory< GUM_SCALAR >&
-          operator=(O3ClassFactory< GUM_SCALAR >&& src);
+           operator=(O3ClassFactory< GUM_SCALAR >&& src);
 
         void buildClasses();
 
@@ -113,16 +113,16 @@ namespace gum {
         bool __checkImplementation(O3Class& c);
 
         bool __checkImplementation(
-          O3Class&                                    c,
-          O3Label&                                    i,
-          HashTable< std::string, O3Attribute* >&     attrMap,
-          HashTable< std::string, O3Aggregate* >&     aggMap,
-          HashTable< std::string, O3ReferenceSlot* >& refMap);
+           O3Class&                                    c,
+           O3Label&                                    i,
+           HashTable< std::string, O3Attribute* >&     attrMap,
+           HashTable< std::string, O3Aggregate* >&     aggMap,
+           HashTable< std::string, O3ReferenceSlot* >& refMap);
 
         bool __checkImplementation(O3Label& o3_type, const PRMType& type);
 
         bool __checkImplementation(
-          O3Label& o3_type, const PRMClassElementContainer< GUM_SCALAR >& type);
+           O3Label& o3_type, const PRMClassElementContainer< GUM_SCALAR >& type);
         /// @}
 
         /// @name Checking and Adding Paramteters
@@ -169,8 +169,9 @@ namespace gum {
                                  const O3RuleCPT::O3Rule&      rule);
 
         void __addParamsToForms(
-          const HashTable< std::string, const PRMParameter< GUM_SCALAR >* >& scope,
-          O3RuleCPT::O3Rule&                                                 rule);
+           const HashTable< std::string, const PRMParameter< GUM_SCALAR >* >&
+                              scope,
+           O3RuleCPT::O3Rule& rule);
 
         bool __checkRuleCPTSumsTo1(const PRMClass< GUM_SCALAR >& c,
                                    const O3RuleCPT&              attr,
@@ -181,8 +182,8 @@ namespace gum {
         /// @name Utility methods
         /// @{
         const PRMClassElement< GUM_SCALAR >*
-          __resolveSlotChain(const PRMClassElementContainer< GUM_SCALAR >& c,
-                             const O3Label&                                chain);
+           __resolveSlotChain(const PRMClassElementContainer< GUM_SCALAR >& c,
+                              const O3Label&                                chain);
 
         bool __checkSlotChainLink(const PRMClassElementContainer< GUM_SCALAR >& c,
                                   const O3Label&     chain,
@@ -221,9 +222,9 @@ namespace gum {
 #  include <agrum/PRM/o3prm/O3ClassFactory_tpl.h>
 
 
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::prm::o3prm::O3ClassFactory< double >;
-#endif
+#  endif
 
 
 #endif   // GUM_PRM_O3PRM_O3CLASS_FACTORY_H

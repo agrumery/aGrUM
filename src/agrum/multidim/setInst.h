@@ -829,9 +829,9 @@ namespace gum {
      * in j or if a variable in i is missing in bij.
      */
     static void assign_values(
-      Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-      const SetInst&                                                 i,
-      SetInst&                                                       j);
+       Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
+       const SetInst&                                                 i,
+       SetInst&                                                       j);
 
     /// @}
 

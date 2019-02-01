@@ -78,15 +78,15 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       ScoreLog2Likelihood(
-        const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori< ALLOC >&              apriori,
-        const std::vector< std::pair< std::size_t, std::size_t >,
-                           ALLOC< std::pair< std::size_t, std::size_t > > >&
-          ranges,
-        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-          nodeId2columns =
-            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-        const allocator_type& alloc = allocator_type());
+         const DBRowGeneratorParser< ALLOC >& parser,
+         const Apriori< ALLOC >&              apriori,
+         const std::vector< std::pair< std::size_t, std::size_t >,
+                            ALLOC< std::pair< std::size_t, std::size_t > > >&
+            ranges,
+         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+            nodeId2columns =
+               Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+         const allocator_type& alloc = allocator_type());
 
 
       /// default constructor
@@ -105,12 +105,12 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       ScoreLog2Likelihood(
-        const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori< ALLOC >&              apriori,
-        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-          nodeId2columns =
-            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-        const allocator_type& alloc = allocator_type());
+         const DBRowGeneratorParser< ALLOC >& parser,
+         const Apriori< ALLOC >&              apriori,
+         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+            nodeId2columns =
+               Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+         const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       ScoreLog2Likelihood(const ScoreLog2Likelihood< ALLOC >& from);
@@ -131,7 +131,7 @@ namespace gum {
 
       /// virtual copy constructor with a given allocator
       virtual ScoreLog2Likelihood< ALLOC >*
-        clone(const allocator_type& alloc) const;
+         clone(const allocator_type& alloc) const;
 
       /// destructor
       virtual ~ScoreLog2Likelihood();
@@ -147,7 +147,7 @@ namespace gum {
 
       /// copy operator
       ScoreLog2Likelihood< ALLOC >&
-        operator=(const ScoreLog2Likelihood< ALLOC >& from);
+         operator=(const ScoreLog2Likelihood< ALLOC >& from);
 
       /// move operator
       ScoreLog2Likelihood< ALLOC >& operator=(ScoreLog2Likelihood< ALLOC >&& from);

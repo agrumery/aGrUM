@@ -144,14 +144,14 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(if (p_seq2) delete (p_seq2));
 
       TS_GUM_ASSERT_THROWS_NOTHING(
-        gum::Sequence< int > seq2(seq);
-        if (seq2.toString()
-            != "[0:1 - 1:3 - 2:5 - 3:2 - 4:4]") throw(gum::Exception("oups")););
+         gum::Sequence< int > seq2(seq);
+         if (seq2.toString()
+             != "[0:1 - 1:3 - 2:5 - 3:2 - 4:4]") throw(gum::Exception("oups")););
 
       TS_GUM_ASSERT_THROWS_NOTHING(
-        gum::Sequence< int > seq3 = seq;
-        if (seq3.toString()
-            != "[0:1 - 1:3 - 2:5 - 3:2 - 4:4]") throw(gum::Exception("oups")););
+         gum::Sequence< int > seq3 = seq;
+         if (seq3.toString()
+             != "[0:1 - 1:3 - 2:5 - 3:2 - 4:4]") throw(gum::Exception("oups")););
     }
 
     void testEquality() {
@@ -384,7 +384,7 @@ namespace gum_tests {
       n = 0;
 
       for (gum::Sequence< std::string >::iterator_safe it =
-             seq.rbeginSafe();   // safe iterator needed here
+              seq.rbeginSafe();   // safe iterator needed here
            it != seq.rendSafe();
            --it)
         n++;
@@ -401,7 +401,7 @@ namespace gum_tests {
       n = 0;
 
       for (gum::Sequence< std::string >::iterator_safe it =
-             seq.beginSafe();   // safe iterator needed here
+              seq.beginSafe();   // safe iterator needed here
            it != seq.endSafe();
            ++it)
         n++;

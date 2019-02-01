@@ -59,7 +59,7 @@ namespace gum_tests {
       TS_ASSERT(xxx.first == 4);
 
       gum::Sequence< const gum::ScheduleMultiDim< double >* > multidims =
-        myproj.multiDimArgs();
+         myproj.multiDimArgs();
       TS_ASSERT(multidims.size() == 1);
       TS_ASSERT(*(multidims.atPos(0)) == f1);
 
@@ -111,12 +111,12 @@ namespace gum_tests {
 
     // projection of a table over a set
     gum::Potential< double >*
-      proj(const gum::Potential< double >&                 table,
-           const gum::Set< const gum::DiscreteVariable* >& del_vars,
-           float                                           neutral_elt) {
+       proj(const gum::Potential< double >&                 table,
+            const gum::Set< const gum::DiscreteVariable* >& del_vars,
+            float                                           neutral_elt) {
       gum::Potential< double >* result = new gum::Potential< double >;
       const gum::Sequence< const gum::DiscreteVariable* >& vars =
-        table.variablesSequence();
+         table.variablesSequence();
       result->beginMultipleChanges();
 
       for (const auto var : vars)

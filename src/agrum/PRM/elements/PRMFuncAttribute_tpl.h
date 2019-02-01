@@ -30,9 +30,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMFuncAttribute< GUM_SCALAR >::PRMFuncAttribute(
-      const std::string&                    name,
-      const PRMType&                        type,
-      MultiDimImplementation< GUM_SCALAR >* impl) :
+       const std::string&                    name,
+       const PRMType&                        type,
+       MultiDimImplementation< GUM_SCALAR >* impl) :
         PRMScalarAttribute< GUM_SCALAR >(name, type, impl) {
       std::stringstream str;
       str << "In FuncAttribute(" << name << ", " << type.name() << ", " << impl
@@ -47,15 +47,15 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMFuncAttribute< GUM_SCALAR >::addParent(
-      const PRMClassElement< GUM_SCALAR >& elt) {}
+       const PRMClassElement< GUM_SCALAR >& elt) {}
 
     template < typename GUM_SCALAR >
     INLINE void PRMFuncAttribute< GUM_SCALAR >::addChild(
-      const PRMClassElement< GUM_SCALAR >& elt) {}
+       const PRMClassElement< GUM_SCALAR >& elt) {}
 
     template < typename GUM_SCALAR >
     INLINE PRMFuncAttribute< GUM_SCALAR >::PRMFuncAttribute(
-      const PRMFuncAttribute< GUM_SCALAR >& source) :
+       const PRMFuncAttribute< GUM_SCALAR >& source) :
         PRMScalarAttribute< GUM_SCALAR >(source) {
       GUM_CONS_CPY(PRMFuncAttribute);
       GUM_ERROR(FatalError, "illegal call to copy constructor");
@@ -69,7 +69,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void
-      PRMFuncAttribute< GUM_SCALAR >::_setCpf(Potential< GUM_SCALAR >* cpf) {
+       PRMFuncAttribute< GUM_SCALAR >::_setCpf(Potential< GUM_SCALAR >* cpf) {
       GUM_ERROR(OperationNotAllowed,
                 "Cannot change CPF of a functional attribute");
     }

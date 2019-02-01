@@ -94,7 +94,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       InterfaceGraph< GUM_SCALAR >::InterfaceGraph(
-        const PRMSystem< GUM_SCALAR >& sys) :
+         const PRMSystem< GUM_SCALAR >& sys) :
           __sys(&sys),
           __labels(new Bijection< Idx, LabelData* >()), __counter(0),
           __erase_flag(true) {
@@ -140,7 +140,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       InterfaceGraph< GUM_SCALAR >::InterfaceGraph(
-        const InterfaceGraph< GUM_SCALAR >& source) :
+         const InterfaceGraph< GUM_SCALAR >& source) :
           __sys(source.__sys),
           __graph(source.__graph), __nodes(source.__nodes),
           __idMap(source.__idMap), __edges(source.__edges),
@@ -183,8 +183,8 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       void InterfaceGraph< GUM_SCALAR >::__label(
-        NodeData< GUM_SCALAR >*               node,
-        HashTable< std::string, LabelData* >& label_map) {
+         NodeData< GUM_SCALAR >*               node,
+         HashTable< std::string, LabelData* >& label_map) {
         Size              size = Size(1);
         std::stringstream sBuff;
         sBuff << node->n->type().name();
@@ -231,8 +231,8 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       void InterfaceGraph< GUM_SCALAR >::__label(
-        EdgeData< GUM_SCALAR >*               edge,
-        HashTable< std::string, LabelData* >& label_map) {
+         EdgeData< GUM_SCALAR >*               edge,
+         HashTable< std::string, LabelData* >& label_map) {
         Size              size = Size(1);
         std::stringstream sBuff;
         sBuff << edge->u->type().name() << "-" << edge->v->type().name();
@@ -330,13 +330,13 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE NodeId InterfaceGraph< GUM_SCALAR >::id(
-        const PRMInstance< GUM_SCALAR >& i) const {
+         const PRMInstance< GUM_SCALAR >& i) const {
         return __idMap[const_cast< PRMInstance< GUM_SCALAR >* >(&i)];
       }
 
       template < typename GUM_SCALAR >
       INLINE NodeId InterfaceGraph< GUM_SCALAR >::id(
-        const PRMInstance< GUM_SCALAR >* i) const {
+         const PRMInstance< GUM_SCALAR >* i) const {
         return __idMap[const_cast< PRMInstance< GUM_SCALAR >* >(i)];
       }
 
@@ -348,7 +348,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE const NodeData< GUM_SCALAR >& InterfaceGraph< GUM_SCALAR >::node(
-        const PRMInstance< GUM_SCALAR >* i) const {
+         const PRMInstance< GUM_SCALAR >* i) const {
         return node(id(i));
       }
 

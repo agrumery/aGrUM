@@ -99,7 +99,7 @@ namespace gum {
     LeafPair* ptop = __pairsHeap.empty() ? nullptr : __pairsHeap.top();
     ;
     for (HashTableConstIteratorSafe< AbstractLeaf*, LeafPair* > pairIter =
-           __leaf2Pair.cbeginSafe();
+            __leaf2Pair.cbeginSafe();
          pairIter != __leaf2Pair.cendSafe();
          ++pairIter) {
       pairIter.val()->updateLikelyhood();
@@ -175,7 +175,7 @@ namespace gum {
   // ============================================================================
   template < bool isInitial >
   Set< LeafPair* >
-    FusionContext< isInitial >::__associatedPairs(Int2Type< false >) {
+     FusionContext< isInitial >::__associatedPairs(Int2Type< false >) {
     Set< LeafPair* > retBag;
     for (auto pairIter = __leaf2Pair.beginSafe();
          pairIter != __leaf2Pair.endSafe();

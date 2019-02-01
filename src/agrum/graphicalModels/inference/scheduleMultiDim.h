@@ -137,7 +137,7 @@ namespace gum {
 
     /// copy operator
     ScheduleMultiDim< GUM_SCALAR >&
-      operator=(const ScheduleMultiDim< GUM_SCALAR >&);
+       operator=(const ScheduleMultiDim< GUM_SCALAR >&);
 
     /// checks whether two ScheduleMultiDim are related to the same table
     bool operator==(const ScheduleMultiDim< GUM_SCALAR >&) const;
@@ -207,20 +207,20 @@ namespace gum {
 
     /// returns a mapping from id to multidimImplementations
     static HashTable< Idx, const MultiDimImplementation< GUM_SCALAR >* >&
-      __id2multidim();
+       __id2multidim();
 
     /// returns the id corresponding to a given multidim
     /** useful to assign the same id every time a given MultiDimImplementation
      * is wrapped into a ScheduleMultiDim */
     static HashTable< const MultiDimImplementation< GUM_SCALAR >*, Idx >&
-      __multidim2id();
+       __multidim2id();
 
     /// returns a table indicating how many ScheduleMultiDim have the same id
     static HashTable< Idx, Idx >& __id2refs();
 
     /// returns a table with the variables of the table corresponding to id
     static HashTable< Idx, const Sequence< const DiscreteVariable* >* >&
-      __id2vars();
+       __id2vars();
 
     /// returns a table with the domain size of the table corresponding to id
     static HashTable< Idx, Size >& __id2size();

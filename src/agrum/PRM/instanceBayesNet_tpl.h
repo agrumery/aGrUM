@@ -31,7 +31,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void
-      InstanceBayesNet< GUM_SCALAR >::__init(const PRMInstance< GUM_SCALAR >& i) {
+       InstanceBayesNet< GUM_SCALAR >::__init(const PRMInstance< GUM_SCALAR >& i) {
       for (const auto node : i.type().containerDag().nodes()) {
         try {
           // Adding the attribute
@@ -54,7 +54,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE InstanceBayesNet< GUM_SCALAR >::InstanceBayesNet(
-      const PRMInstance< GUM_SCALAR >& i) :
+       const PRMInstance< GUM_SCALAR >& i) :
         IBayesNet< GUM_SCALAR >(),
         __inst(&i) {
       GUM_CONSTRUCTOR(InstanceBayesNet);
@@ -63,7 +63,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE InstanceBayesNet< GUM_SCALAR >::InstanceBayesNet(
-      const InstanceBayesNet& from) :
+       const InstanceBayesNet& from) :
         IBayesNet< GUM_SCALAR >(from),
         __varNodeMap(from.__varNodeMap), __inst(from.__inst) {
       GUM_CONS_CPY(InstanceBayesNet);
@@ -119,7 +119,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE const DiscreteVariable&
                  InstanceBayesNet< GUM_SCALAR >::variableFromName(
-        const std::string& name) const {
+          const std::string& name) const {
       return __get(name).type().variable();
     }
 

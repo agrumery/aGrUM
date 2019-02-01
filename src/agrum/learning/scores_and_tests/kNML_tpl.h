@@ -33,12 +33,13 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE KNML< ALLOC >::KNML(
-      const DBRowGeneratorParser< ALLOC >&                                 parser,
-      const Apriori< ALLOC >&                                              apriori,
-      const std::vector< std::pair< std::size_t, std::size_t >,
-                         ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
-      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename KNML< ALLOC >::allocator_type&                 alloc) :
+       const DBRowGeneratorParser< ALLOC >& parser,
+       const Apriori< ALLOC >&              apriori,
+       const std::vector< std::pair< std::size_t, std::size_t >,
+                          ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                                                     nodeId2columns,
+       const typename KNML< ALLOC >::allocator_type& alloc) :
         IndependenceTest< ALLOC >(parser, apriori, ranges, nodeId2columns, alloc),
         __param_complexity(alloc) {
       GUM_CONSTRUCTOR(KNML);
@@ -48,10 +49,11 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE KNML< ALLOC >::KNML(
-      const DBRowGeneratorParser< ALLOC >&                          parser,
-      const Apriori< ALLOC >&                                       apriori,
-      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename KNML< ALLOC >::allocator_type&                 alloc) :
+       const DBRowGeneratorParser< ALLOC >& parser,
+       const Apriori< ALLOC >&              apriori,
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                                                     nodeId2columns,
+       const typename KNML< ALLOC >::allocator_type& alloc) :
         IndependenceTest< ALLOC >(parser, apriori, nodeId2columns, alloc),
         __param_complexity(alloc) {
       GUM_CONSTRUCTOR(KNML);
@@ -61,8 +63,8 @@ namespace gum {
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE
-      KNML< ALLOC >::KNML(const KNML< ALLOC >&                          from,
-                          const typename KNML< ALLOC >::allocator_type& alloc) :
+       KNML< ALLOC >::KNML(const KNML< ALLOC >&                          from,
+                           const typename KNML< ALLOC >::allocator_type& alloc) :
         IndependenceTest< ALLOC >(from, alloc),
         __param_complexity(from.__param_complexity, alloc) {
       GUM_CONS_CPY(KNML);
@@ -78,8 +80,8 @@ namespace gum {
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE
-      KNML< ALLOC >::KNML(KNML< ALLOC >&&                               from,
-                          const typename KNML< ALLOC >::allocator_type& alloc) :
+       KNML< ALLOC >::KNML(KNML< ALLOC >&&                               from,
+                           const typename KNML< ALLOC >::allocator_type& alloc) :
         IndependenceTest< ALLOC >(std::move(from), alloc),
         __param_complexity(std::move(from.__param_complexity), alloc) {
       GUM_CONS_MOV(KNML);
@@ -95,7 +97,7 @@ namespace gum {
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
     KNML< ALLOC >* KNML< ALLOC >::clone(
-      const typename KNML< ALLOC >::allocator_type& alloc) const {
+       const typename KNML< ALLOC >::allocator_type& alloc) const {
       ALLOC< KNML< ALLOC > > allocator(alloc);
       KNML< ALLOC >*         new_score = allocator.allocate(1);
       try {
@@ -202,11 +204,11 @@ namespace gum {
         idset_yui.erase(idset[0]);
 
         std::vector< double, ALLOC< double > > N_ui =
-          this->_counter.counts(idset.conditionalIdSet(), false);
+           this->_counter.counts(idset.conditionalIdSet(), false);
         std::vector< double, ALLOC< double > > N_xui =
-          this->_counter.counts(idset_xui, false);
+           this->_counter.counts(idset_xui, false);
         std::vector< double, ALLOC< double > > N_yui =
-          this->_counter.counts(idset_yui, false);
+           this->_counter.counts(idset_yui, false);
 
         if (informative_external_apriori) {
           this->_apriori->addConditioningApriori(idset, N_ui);
@@ -238,9 +240,9 @@ namespace gum {
         IdSet< ALLOC > idset_yui(idset[1], this->_empty_ids, true);
 
         std::vector< double, ALLOC< double > > N_xui =
-          this->_counter.counts(idset_xui, false);
+           this->_counter.counts(idset_xui, false);
         std::vector< double, ALLOC< double > > N_yui =
-          this->_counter.counts(idset_yui, false);
+           this->_counter.counts(idset_yui, false);
 
         if (informative_external_apriori) {
           this->_apriori->addAllApriori(idset, N_xui);

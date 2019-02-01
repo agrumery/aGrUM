@@ -164,17 +164,17 @@ namespace gum {
      * the sequence are not copied but only referenced by the elimination
      * sequence algorithm. */
     PartialOrderedEliminationSequenceStrategy(
-      UndiGraph*                  graph,
-      const NodeProperty< Size >* dom_sizes,
-      const List< NodeSet >*      subsets);
+       UndiGraph*                  graph,
+       const NodeProperty< Size >* dom_sizes,
+       const List< NodeSet >*      subsets);
 
     /// copy constructor
     PartialOrderedEliminationSequenceStrategy(
-      const PartialOrderedEliminationSequenceStrategy&);
+       const PartialOrderedEliminationSequenceStrategy&);
 
     /// move constructor
     PartialOrderedEliminationSequenceStrategy(
-      PartialOrderedEliminationSequenceStrategy&&);
+       PartialOrderedEliminationSequenceStrategy&&);
 
     /// @}
   };

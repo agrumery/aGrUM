@@ -125,7 +125,7 @@ namespace gum_tests {
 
       // evidence from file
       TS_GUM_ASSERT_THROWS_NOTHING(
-        mcs.insertEvidenceFile(GET_CN_PATH_STR(L2U.evi)););
+         mcs.insertEvidenceFile(GET_CN_PATH_STR(L2U.evi)););
 
       TS_GUM_ASSERT_THROWS_NOTHING(mcs.eraseAllEvidence(););
 
@@ -210,14 +210,14 @@ namespace gum_tests {
       // evidence from file
 
       TS_GUM_ASSERT_THROWS_NOTHING(
-        mcs.insertEvidenceFile(GET_CN_PATH_STR(f_3.evi)););
+         mcs.insertEvidenceFile(GET_CN_PATH_STR(f_3.evi)););
 
       mcs.setRepetitiveInd(false);
       mcs.setMaxTime(1);
 
       // modalities from file
       TS_GUM_ASSERT_THROWS_NOTHING(
-        mcs.insertModalsFile(GET_CN_PATH_STR(modalities.modal)););
+         mcs.insertModalsFile(GET_CN_PATH_STR(modalities.modal)););
 
       TS_GUM_ASSERT_THROWS_NOTHING(mcs.makeInference(););
 
@@ -266,14 +266,14 @@ namespace gum_tests {
 
       // evidence from file
       TS_GUM_ASSERT_THROWS_NOTHING(
-        mcs.insertEvidenceFile(GET_CN_PATH_STR(f_3.evi)););
+         mcs.insertEvidenceFile(GET_CN_PATH_STR(f_3.evi)););
 
       mcs.setRepetitiveInd(true);
       mcs.setMaxTime(1);
 
       // modalities from file
       TS_GUM_ASSERT_THROWS_NOTHING(
-        mcs.insertModalsFile(GET_CN_PATH_STR(modalities.modal)););
+         mcs.insertModalsFile(GET_CN_PATH_STR(modalities.modal)););
 
       TS_GUM_ASSERT_THROWS_NOTHING(mcs.makeInference(););
 
@@ -315,7 +315,7 @@ namespace gum_tests {
 
       // evidence from file
       TS_GUM_ASSERT_THROWS_NOTHING(
-        mcs.insertEvidenceFile(GET_CN_PATH_STR(f_3.evi)););
+         mcs.insertEvidenceFile(GET_CN_PATH_STR(f_3.evi)););
 
       mcs.setRepetitiveInd(false);
       mcs.setMaxTime(1);

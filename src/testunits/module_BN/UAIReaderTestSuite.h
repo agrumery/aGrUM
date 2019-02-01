@@ -45,7 +45,7 @@ namespace gum_tests {
 
       gum::UAIReader< double >* reader = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(reader =
-                                     new gum::UAIReader< double >(&net, file));
+                                      new gum::UAIReader< double >(&net, file));
       TS_GUM_ASSERT_THROWS_NOTHING(delete reader);
     }
 

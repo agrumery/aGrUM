@@ -257,7 +257,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE void
-        O3prmReader< GUM_SCALAR >::showElegantErrors(std::ostream& o) const {
+         O3prmReader< GUM_SCALAR >::showElegantErrors(std::ostream& o) const {
         for (Idx i = 0; i < __errors.count(); ++i) {
           auto err = __errors.error(i);
           if (err.is_error) { o << __print(err) << std::endl; }
@@ -266,7 +266,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE void O3prmReader< GUM_SCALAR >::showElegantErrorsAndWarnings(
-        std::ostream& o) const {
+         std::ostream& o) const {
         for (Idx i = 0; i < __errors.count(); ++i) {
           auto err = __errors.error(i);
           o << __print(err) << std::endl;
@@ -275,7 +275,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE void
-        O3prmReader< GUM_SCALAR >::showErrorCounts(std::ostream& o) const {
+         O3prmReader< GUM_SCALAR >::showErrorCounts(std::ostream& o) const {
         __errors.syntheticResults(o);
       }
 
@@ -348,12 +348,12 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE void
-        O3prmReader< GUM_SCALAR >::__parseStream(std::istream&      input,
-                                                 const std::string& filename,
-                                                 const std::string& module) {
+         O3prmReader< GUM_SCALAR >::__parseStream(std::istream&      input,
+                                                  const std::string& filename,
+                                                  const std::string& module) {
         auto sBuff = __readStream(input);
         auto buffer = std::unique_ptr< unsigned char[] >(
-          new unsigned char[sBuff.length() + 1]);
+           new unsigned char[sBuff.length() + 1]);
         strcpy((char*)buffer.get(), sBuff.c_str());
         auto s = o3prm_scanner(buffer.get(), int(sBuff.length() + 1), filename);
         auto p = o3prm_parser(&s);
@@ -365,8 +365,8 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE void
-        O3prmReader< GUM_SCALAR >::__parseImport(const O3Import&    i,
-                                                 const std::string& module) {
+         O3prmReader< GUM_SCALAR >::__parseImport(const O3Import&    i,
+                                                  const std::string& module) {
         if (!__imported.exists(i.import().label())) {
           __imported.insert(i.import().label());
 
@@ -436,15 +436,15 @@ namespace gum {
         if (__errors.error_count == 0) {
           auto solver = O3NameSolver< GUM_SCALAR >(*__prm, *__o3_prm, __errors);
           auto type_factory =
-            O3TypeFactory< GUM_SCALAR >(*__prm, *__o3_prm, solver, __errors);
+             O3TypeFactory< GUM_SCALAR >(*__prm, *__o3_prm, solver, __errors);
 
           auto interface_factory =
-            O3InterfaceFactory< GUM_SCALAR >(*__prm, *__o3_prm, solver, __errors);
+             O3InterfaceFactory< GUM_SCALAR >(*__prm, *__o3_prm, solver, __errors);
           auto class_factory =
-            O3ClassFactory< GUM_SCALAR >(*__prm, *__o3_prm, solver, __errors);
+             O3ClassFactory< GUM_SCALAR >(*__prm, *__o3_prm, solver, __errors);
 
           auto system_factory =
-            O3SystemFactory< GUM_SCALAR >(*__prm, *__o3_prm, solver, __errors);
+             O3SystemFactory< GUM_SCALAR >(*__prm, *__o3_prm, solver, __errors);
 
           try {
             type_factory.build();

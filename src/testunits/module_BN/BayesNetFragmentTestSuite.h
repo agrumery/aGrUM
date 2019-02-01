@@ -110,7 +110,7 @@ namespace gum_tests {
           if (node != bn.idFromName("v5")) {
             const gum::Potential< double >& pot = bn.cpt(node);
             const gum::Potential< double >& src =
-              source.cpt(source.idFromName(bn.variable(node).name()));
+               source.cpt(source.idFromName(bn.variable(node).name()));
             gum::Instantiation I(pot);
             gum::Instantiation J(src);
 
@@ -134,7 +134,7 @@ namespace gum_tests {
 
       gum::BayesNetFragment< double > frag(bn);
       gum::BayesNetFragment< double > frag2(
-        static_cast< const gum::IBayesNet< double >& >(frag));
+         static_cast< const gum::IBayesNet< double >& >(frag));
     }
 
     void testInstallNodes() {
@@ -285,11 +285,11 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag.dag().parents(bn.idFromName("v5")).size(),
                        (gum::Size)2);
       TS_ASSERT(
-        !frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v1")));
+         !frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v1")));
       TS_ASSERT(
-        frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v2")));
+         frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v2")));
       TS_ASSERT(
-        frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v3")));
+         frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v3")));
 
       bn.eraseArc(gum::Arc(bn.idFromName("v2"), bn.idFromName("v5")));
 
@@ -299,11 +299,11 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag.dag().parents(bn.idFromName("v5")).size(),
                        (gum::Size)1);
       TS_ASSERT(
-        !frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v1")));
+         !frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v1")));
       TS_ASSERT(
-        !frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v2")));
+         !frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v2")));
       TS_ASSERT(
-        frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v3")));
+         frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v3")));
 
       // nothing should change here
       gum::BayesNet< double > bn2;
@@ -330,7 +330,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag2.toString(), tostr2);
 
       TS_GUM_ASSERT_THROWS_NOTHING(
-        bn2.addArc(bn2.idFromName("v6"), bn2.idFromName("v7")));
+         bn2.addArc(bn2.idFromName("v6"), bn2.idFromName("v7")));
 
       TS_ASSERT_EQUALS(frag2.toString(), tostr2);
     }
@@ -356,7 +356,7 @@ namespace gum_tests {
         auto p = inf_complete.posterior(bn.idFromName("v6"));
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
       const gum::Potential< double >& p1 =
-        inf_complete.posterior(bn.idFromName("v6"));
+         inf_complete.posterior(bn.idFromName("v6"));
 
       // propagation in the fragment
       gum::BayesNetFragment< double > frag(bn);

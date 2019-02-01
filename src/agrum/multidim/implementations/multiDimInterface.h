@@ -114,7 +114,7 @@ namespace gum {
      * @return Returns a const ref to the sequence of DiscreteVariable*.
      */
     virtual const Sequence< const DiscreteVariable* >&
-      variablesSequence() const = 0;
+       variablesSequence() const = 0;
 
     /**
      * @brief Returns a const ref to the ith var.

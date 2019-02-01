@@ -110,7 +110,7 @@ namespace gum {
 
   /// indicates whether a set of modifications would create a cycle
   bool DAGCycleDetector::hasCycleFromModifications(
-    const std::vector< Change >& modifs) const {
+     const std::vector< Change >& modifs) const {
     // first, we separate deletions and insertions (reversals are cut into
     // a deletion + an insertion) and we check that no insertion also exists
     // as a deletion (if so, we remove both operations). In addition, if
@@ -195,21 +195,21 @@ namespace gum {
     for (const auto& modif : modifs) {
       if (!ancestors.exists(modif.tail())) {
         NodeProperty< Size >& anc =
-          ancestors.insert(modif.tail(), NodeProperty< Size >()).second;
+           ancestors.insert(modif.tail(), NodeProperty< Size >()).second;
         __restrictWeightedSet(anc, __ancestors[modif.tail()], extremities);
 
         NodeProperty< Size >& desc =
-          descendants.insert(modif.tail(), NodeProperty< Size >()).second;
+           descendants.insert(modif.tail(), NodeProperty< Size >()).second;
         __restrictWeightedSet(desc, __descendants[modif.tail()], extremities);
       }
 
       if (!ancestors.exists(modif.head())) {
         NodeProperty< Size >& anc =
-          ancestors.insert(modif.head(), NodeProperty< Size >()).second;
+           ancestors.insert(modif.head(), NodeProperty< Size >()).second;
         __restrictWeightedSet(anc, __ancestors[modif.head()], extremities);
 
         NodeProperty< Size >& desc =
-          descendants.insert(modif.head(), NodeProperty< Size >()).second;
+           descendants.insert(modif.head(), NodeProperty< Size >()).second;
         __restrictWeightedSet(desc, __descendants[modif.head()], extremities);
       }
     }
@@ -239,7 +239,7 @@ namespace gum {
 
       for (auto iter = anc_tail.cbegin(); iter != anc_tail.cend(); ++iter) {
         __delWeightedSet(
-          descendants[iter.key()], set_to_del, descendants[iter.key()][tail]);
+           descendants[iter.key()], set_to_del, descendants[iter.key()][tail]);
       }
 
       // update the set of ancestors
@@ -249,7 +249,7 @@ namespace gum {
 
       for (auto iter = desc_head.cbegin(); iter != desc_head.cend(); ++iter) {
         __delWeightedSet(
-          ancestors[iter.key()], set_to_del, ancestors[iter.key()][head]);
+           ancestors[iter.key()], set_to_del, ancestors[iter.key()][head]);
       }
     }
 
@@ -282,7 +282,7 @@ namespace gum {
 
       for (auto iter = desc_head.cbegin(); iter != desc_head.cend(); ++iter) {
         __addWeightedSet(
-          ancestors[iter.key()], set_to_add, ancestors[iter.key()][head]);
+           ancestors[iter.key()], set_to_add, ancestors[iter.key()][head]);
       }
 
       // update the set of descendants
@@ -292,7 +292,7 @@ namespace gum {
 
       for (auto iter = anc_tail.cbegin(); iter != anc_tail.cend(); ++iter) {
         __addWeightedSet(
-          descendants[iter.key()], set_to_add, descendants[iter.key()][tail]);
+           descendants[iter.key()], set_to_add, descendants[iter.key()][tail]);
       }
     }
 
@@ -324,7 +324,7 @@ namespace gum {
 
     for (auto iter = desc_head.cbegin(); iter != desc_head.cend(); ++iter) {
       __addWeightedSet(
-        __ancestors[iter.key()], set_to_add, __ancestors[iter.key()][head]);
+         __ancestors[iter.key()], set_to_add, __ancestors[iter.key()][head]);
     }
 
     // update the set of descendants
@@ -334,7 +334,7 @@ namespace gum {
 
     for (auto iter = anc_tail.cbegin(); iter != anc_tail.cend(); ++iter) {
       __addWeightedSet(
-        __descendants[iter.key()], set_to_add, __descendants[iter.key()][tail]);
+         __descendants[iter.key()], set_to_add, __descendants[iter.key()][tail]);
     }
   }
 
@@ -357,7 +357,7 @@ namespace gum {
 
     for (auto iter = anc_tail.cbegin(); iter != anc_tail.cend(); ++iter) {
       __delWeightedSet(
-        __descendants[iter.key()], set_to_del, __descendants[iter.key()][tail]);
+         __descendants[iter.key()], set_to_del, __descendants[iter.key()][tail]);
     }
 
     // update the set of ancestors
@@ -367,7 +367,7 @@ namespace gum {
 
     for (auto iter = desc_head.cbegin(); iter != desc_head.cend(); ++iter) {
       __delWeightedSet(
-        __ancestors[iter.key()], set_to_del, __ancestors[iter.key()][head]);
+         __ancestors[iter.key()], set_to_del, __ancestors[iter.key()][head]);
     }
   }
 

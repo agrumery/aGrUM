@@ -75,7 +75,7 @@ namespace gum {
 
       /// See gum::PRMClassElement::elt_type().
       virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType
-        elt_type() const;
+         elt_type() const;
 
       GUM_SCALAR value() const;
 
@@ -112,7 +112,7 @@ namespace gum {
 
       /// Copy operator. Don't use it.
       PRMParameter< GUM_SCALAR >&
-        operator=(const PRMParameter< GUM_SCALAR >& from);
+         operator=(const PRMParameter< GUM_SCALAR >& from);
 
       private:
       // ========================================================================

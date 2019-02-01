@@ -69,8 +69,8 @@ namespace gum {
      * @param from the copied instance
      */
     MultiDimNoisyORNet(
-      const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-      const MultiDimNoisyORNet< GUM_SCALAR >&                              from);
+       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
+       const MultiDimNoisyORNet< GUM_SCALAR >&                              from);
 
     /// Destructor.
     virtual ~MultiDimNoisyORNet();

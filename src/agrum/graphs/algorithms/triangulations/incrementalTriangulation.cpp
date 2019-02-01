@@ -44,9 +44,9 @@ namespace gum {
 
   /// constructor
   IncrementalTriangulation::IncrementalTriangulation(
-    const UnconstrainedTriangulation& triang_algo,
-    const UndiGraph*                  theGraph,
-    const NodeProperty< Size >*       domsizes) :
+     const UnconstrainedTriangulation& triang_algo,
+     const UndiGraph*                  theGraph,
+     const NodeProperty< Size >*       domsizes) :
       Triangulation(domsizes),
       __triangulation(triang_algo.newFactory()) {
     // for debugging purposes
@@ -69,7 +69,7 @@ namespace gum {
 
   /// default constructor
   IncrementalTriangulation::IncrementalTriangulation(
-    const UnconstrainedTriangulation& triang_algo) :
+     const UnconstrainedTriangulation& triang_algo) :
       __triangulation(triang_algo.newFactory()) {
     // for debugging purposes
     GUM_CONSTRUCTOR(IncrementalTriangulation);
@@ -80,7 +80,7 @@ namespace gum {
 
   /// copy operator
   IncrementalTriangulation::IncrementalTriangulation(
-    const IncrementalTriangulation& from) :
+     const IncrementalTriangulation& from) :
       Triangulation(from),
       __graph(from.__graph), __junction_tree(from.__junction_tree),
       __T_mpd(from.__T_mpd), __mps_of_node(from.__mps_of_node),
@@ -169,12 +169,12 @@ namespace gum {
 
     // indicate in which MPS node belongs
     List< NodeId >& list_of_mps =
-      __mps_of_node.insert(node, List< NodeId >()).second;
+       __mps_of_node.insert(node, List< NodeId >()).second;
     list_of_mps.insert(MPS);
 
     // indicate in which MPS the clique added to the junction tree belongs
     std::vector< NodeId >& cliquesMPS =
-      __cliques_of_mps.insert(MPS, std::vector< NodeId >()).second;
+       __cliques_of_mps.insert(MPS, std::vector< NodeId >()).second;
 
     cliquesMPS.push_back(new_clique);
     __mps_of_clique.insert(new_clique, MPS);
@@ -264,7 +264,7 @@ namespace gum {
       const NodeSet& neighbours = __graph.neighbours(X);
 
       for (auto neighbour_edge =
-             neighbours.beginSafe();   // safe iterator needed here
+              neighbours.beginSafe();   // safe iterator needed here
            neighbour_edge != neighbours.endSafe();
            ++neighbour_edge) {
         eraseEdge(Edge(*neighbour_edge, X));
@@ -486,7 +486,7 @@ namespace gum {
         __mps_of_node[Y].insert(newMPS);
 
       std::vector< NodeId >& cl =
-        __cliques_of_mps.insert(newMPS, std::vector< NodeId >()).second;
+         __cliques_of_mps.insert(newMPS, std::vector< NodeId >()).second;
 
       cl.push_back(newNode);
 
@@ -733,11 +733,11 @@ namespace gum {
   /// set up a connected subgraph to be triangulated
 
   void IncrementalTriangulation::__setUpConnectedTriangulation(
-    NodeId                     Mx,
-    NodeId                     Mfrom,
-    UndiGraph&                 theGraph,
-    std::vector< Edge >&       notAffectedneighbourCliques,
-    HashTable< NodeId, bool >& cliques_affected) {
+     NodeId                     Mx,
+     NodeId                     Mfrom,
+     UndiGraph&                 theGraph,
+     std::vector< Edge >&       notAffectedneighbourCliques,
+     HashTable< NodeId, bool >& cliques_affected) {
     // mark the clique so that we won't try to update it several times
     cliques_affected[Mx] = false;
 
@@ -765,8 +765,8 @@ namespace gum {
   /// update the junction tree
 
   void IncrementalTriangulation::__updateJunctionTree(
-    NodeProperty< bool >& all_cliques_affected,
-    NodeSet&              new_nodes_in_junction_tree) {
+     NodeProperty< bool >& all_cliques_affected,
+     NodeSet&              new_nodes_in_junction_tree) {
     // a temporary subgraph in which we actually perform the triangulation
     UndiGraph tmp_graph;
 
@@ -817,7 +817,7 @@ namespace gum {
           List< NodeId >& mps = __mps_of_node[node];
 
           for (HashTableConstIteratorSafe< NodeId, bool > iter_mps =
-                 __mps_affected.beginSafe();   // safe iterator needed here
+                  __mps_affected.beginSafe();   // safe iterator needed here
                iter_mps != __mps_affected.endSafe();
                ++iter_mps) {
             if (iter_mps.val()) mps.eraseByVal(iter_mps.key());
@@ -865,7 +865,7 @@ namespace gum {
           // check that the separator is not empty. If this is the case, do not
           // link the new junction tree to the old one
           const NodeSet& sep =
-            __junction_tree.separator(notAffectedneighbourCliques[i]);
+             __junction_tree.separator(notAffectedneighbourCliques[i]);
 
           if (sep.size() != 0) {
             // now find the first eliminated node in the separator
@@ -887,13 +887,13 @@ namespace gum {
             // was
             // not affected
             NodeId& to_connect =
-              tmp2global_junction_tree[__triangulation->createdJunctionTreeClique(
-                elim_node)];
+               tmp2global_junction_tree[__triangulation->createdJunctionTreeClique(
+                  elim_node)];
 
             NodeId not_affected =
-              all_cliques_affected.exists(notAffectedneighbourCliques[i].first())
-                ? notAffectedneighbourCliques[i].second()
-                : notAffectedneighbourCliques[i].first();
+               all_cliques_affected.exists(notAffectedneighbourCliques[i].first())
+                  ? notAffectedneighbourCliques[i].second()
+                  : notAffectedneighbourCliques[i].first();
 
             __junction_tree.addEdge(not_affected, to_connect);
 
@@ -942,18 +942,18 @@ namespace gum {
   /// used for computing the junction tree of the maximal prime subgraphs
 
   void IncrementalTriangulation::__computeMaxPrimeMergings(
-    const NodeId                                node,
-    const NodeId                                from,
-    std::vector< std::pair< NodeId, NodeId > >& merged_cliques,
-    HashTable< NodeId, bool >&                  mark,
-    const NodeSet&                              new_nodes_in_junction_tree) const {
+     const NodeId                                node,
+     const NodeId                                from,
+     std::vector< std::pair< NodeId, NodeId > >& merged_cliques,
+     HashTable< NodeId, bool >&                  mark,
+     const NodeSet& new_nodes_in_junction_tree) const {
     mark[node] = true;
 
     // check the separators on all the adjacent edges of Mx
     for (const auto other_node : __junction_tree.neighbours(node))
       if (other_node != from) {
         const NodeSet& separator =
-          __junction_tree.separator(Edge(other_node, node));
+           __junction_tree.separator(Edge(other_node, node));
 
         // check that the separator between node and other_node is complete
         bool complete = true;
@@ -977,15 +977,15 @@ namespace gum {
 
         if (new_nodes_in_junction_tree.contains(other_node))
           __computeMaxPrimeMergings(
-            other_node, node, merged_cliques, mark, new_nodes_in_junction_tree);
+             other_node, node, merged_cliques, mark, new_nodes_in_junction_tree);
       }
   }
 
   /// update the max prime subgraph
 
   void IncrementalTriangulation::__updateMaxPrimeSubgraph(
-    NodeProperty< bool >& all_cliques_affected,
-    const NodeSet&        new_nodes_in_junction_tree) {
+     NodeProperty< bool >& all_cliques_affected,
+     const NodeSet&        new_nodes_in_junction_tree) {
     // the maximal prime subgraph join tree is created by aggregation of some
     // cliques. More precisely, when the separator between 2 cliques is not
     // complete in the original graph, then the two cliques must be merged.
@@ -1009,7 +1009,7 @@ namespace gum {
     for (const auto& elt : mark)
       if (!elt.second)
         __computeMaxPrimeMergings(
-          elt.first, elt.first, merged_cliques, mark, new_nodes_in_junction_tree);
+           elt.first, elt.first, merged_cliques, mark, new_nodes_in_junction_tree);
 
     // compute the transitive closure of merged_cliques. This one will contain
     // pairs (X,Y) indicating that clique X must be merged with clique Y.
@@ -1017,10 +1017,10 @@ namespace gum {
     for (unsigned int i = 0; i < merged_cliques.size(); ++i) {
       if (T_mpd_cliques.exists(merged_cliques[i].second))
         T_mpd_cliques[merged_cliques[i].first] =
-          T_mpd_cliques[merged_cliques[i].second];
+           T_mpd_cliques[merged_cliques[i].second];
       else
         T_mpd_cliques[merged_cliques[i].first] =
-          __mps_of_clique[merged_cliques[i].second];
+           __mps_of_clique[merged_cliques[i].second];
     }
 
     // now we can create the max prime junction tree.
@@ -1036,7 +1036,7 @@ namespace gum {
         NodeId newId = __T_mpd.addNode(__junction_tree.clique(elt.second));
         clique2MPS.insert(elt.second, newId);
         std::vector< NodeId >& vect_of_cliques =
-          __cliques_of_mps.insert(newId, std::vector< NodeId >()).second;
+           __cliques_of_mps.insert(newId, std::vector< NodeId >()).second;
         vect_of_cliques.push_back(elt.second);
       }
 
@@ -1140,7 +1140,7 @@ namespace gum {
   /// a collect algorithm to compute, for each node, one container JT's clique
 
   void IncrementalTriangulation::__collectJTCliques(
-    const NodeId clique, const NodeId from, NodeProperty< bool >& examined) {
+     const NodeId clique, const NodeId from, NodeProperty< bool >& examined) {
     // apply collect to all the neighbours except from
     for (const auto otherclique : __junction_tree.neighbours(clique))
       if (otherclique != from) __collectJTCliques(otherclique, clique, examined);
@@ -1165,7 +1165,7 @@ namespace gum {
    * elimination of the nodes */
 
   const NodeProperty< NodeId >&
-    IncrementalTriangulation::createdJunctionTreeCliques() {
+     IncrementalTriangulation::createdJunctionTreeCliques() {
     // check if we already computed the containing cliques
     if (!__require_created_JT_cliques) return __created_JT_cliques;
 
@@ -1232,10 +1232,10 @@ namespace gum {
   /// a collect algorithm to compute elimination orderings
 
   void IncrementalTriangulation::__collectEliminationOrder(
-    const NodeId          node,
-    const NodeId          from,
-    NodeProperty< bool >& examined,
-    Idx&                  index) {
+     const NodeId          node,
+     const NodeId          from,
+     NodeProperty< bool >& examined,
+     Idx&                  index) {
     // apply collect to all the neighbours except from
     for (const auto othernode : __junction_tree.neighbours(node))
       if (othernode != from)

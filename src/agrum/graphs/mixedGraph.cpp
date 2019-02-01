@@ -68,7 +68,7 @@ namespace gum {
   }
 
   const std::vector< NodeId >
-    MixedGraph::mixedOrientedPath(const NodeId n1, const NodeId n2) const {
+     MixedGraph::mixedOrientedPath(const NodeId n1, const NodeId n2) const {
     // not recursive version => use a FIFO for simulating the recursion
     List< NodeId > nodeFIFO;
     nodeFIFO.pushBack(n2);
@@ -130,7 +130,7 @@ namespace gum {
   }
 
   const std::vector< NodeId >
-    MixedGraph::mixedUnorientedPath(const NodeId n1, const NodeId n2) const {
+     MixedGraph::mixedUnorientedPath(const NodeId n1, const NodeId n2) const {
     // not recursive version => use a FIFO for simulating the recursion
     List< NodeId > nodeFIFO;
     nodeFIFO.pushBack(n2);

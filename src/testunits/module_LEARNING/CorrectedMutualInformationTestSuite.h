@@ -78,7 +78,7 @@ namespace gum_tests {
       gum::learning::RecordCounter<> counter(parser);
       return __entropy(counter.counts(gum::learning::IdSet<>(id, cond, true)))
              - __entropy(
-                 counter.counts(gum::learning::IdSet<>(cond, false, true)));
+                  counter.counts(gum::learning::IdSet<>(cond, false, true)));
     }
 
     double __H(const gum::learning::DBRowGeneratorParser<>& parser,
@@ -87,9 +87,9 @@ namespace gum_tests {
                const std::vector< gum::NodeId >&            cond) {
       gum::learning::RecordCounter<> counter(parser);
       return __entropy(
-               counter.counts(gum::learning::IdSet<>(id1, id2, cond, true, true)))
+                counter.counts(gum::learning::IdSet<>(id1, id2, cond, true, true)))
              - __entropy(
-                 counter.counts(gum::learning::IdSet<>(cond, false, true)));
+                  counter.counts(gum::learning::IdSet<>(cond, false, true)));
     }
 
     double __I(const gum::learning::DBRowGeneratorParser<>& parser,
@@ -122,7 +122,7 @@ namespace gum_tests {
     public:
     void test_Ixy_NoCorr() {
       gum::learning::DBInitializerFromCSV<> initializer(
-        GET_RESSOURCES_PATH("asia.csv"));
+         GET_RESSOURCES_PATH("asia.csv"));
       const auto&       var_names = initializer.variableNames();
       const std::size_t nb_vars = var_names.size();
 
@@ -148,8 +148,9 @@ namespace gum_tests {
       TS_ASSERT_DELTA(score.score(1, 6, std::vector< gum::NodeId >{0}),
                       __I(parser, 1, 6, std::vector< gum::NodeId >{0}),
                       0.001);
-      TS_ASSERT_DELTA(
-        score.score(2, 6, std::vector< gum::NodeId >{}), __I(parser, 2, 6), 0.001);
+      TS_ASSERT_DELTA(score.score(2, 6, std::vector< gum::NodeId >{}),
+                      __I(parser, 2, 6),
+                      0.001);
 
       score.clear();
       TS_ASSERT_DELTA(score.score(6, 2), __I(parser, 6, 2), 0.001);
@@ -181,7 +182,7 @@ namespace gum_tests {
 
     void test_Ixy_Kmdl() {
       gum::learning::DBInitializerFromCSV<> initializer(
-        GET_RESSOURCES_PATH("asia.csv"));
+         GET_RESSOURCES_PATH("asia.csv"));
       const auto&       var_names = initializer.variableNames();
       const std::size_t nb_vars = var_names.size();
 
@@ -226,7 +227,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(score.score(0, 1, 5), __I(parser, 0, 1, 5) + cst, 1e-4);
       TS_ASSERT_DELTA(score.score(2, 6, 5, std::vector< gum::NodeId >{1}),
                       __I(parser, 2, 6, 5, std::vector< gum::NodeId >{1})
-                        + 2 * cst,
+                         + 2 * cst,
                       1e-4);
 
 

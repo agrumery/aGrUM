@@ -42,7 +42,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE
-      Amplitude< GUM_SCALAR >::Amplitude(const Amplitude< GUM_SCALAR >& from) :
+       Amplitude< GUM_SCALAR >::Amplitude(const Amplitude< GUM_SCALAR >& from) :
         MultiDimAggregator< GUM_SCALAR >(from) {
       GUM_CONS_CPY(Amplitude);
     }

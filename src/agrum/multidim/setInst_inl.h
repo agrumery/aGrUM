@@ -707,7 +707,7 @@ namespace gum {
   // reordering
 
   INLINE void
-    SetInst::reorder(const Sequence< const DiscreteVariable* >& original) {
+     SetInst::reorder(const Sequence< const DiscreteVariable* >& original) {
     Idx max = original.size();
     Idx position = 0;
 

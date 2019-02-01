@@ -99,9 +99,9 @@ namespace gum_tests {
 
         try {
           TS_ASSERT_EQUALS(
-            inf.posterior(idList[0]).toString(),
-            "<var1:0> :: 0.468559 /<var1:1> :: 0.269297 /<var1:2> :: "
-            "0.144495 /<var1:3> :: 0.117649");
+             inf.posterior(idList[0]).toString(),
+             "<var1:0> :: 0.468559 /<var1:1> :: 0.269297 /<var1:2> :: "
+             "0.144495 /<var1:3> :: 0.117649");
           TS_ASSERT_EQUALS(inf.posterior(idList[1]).toString(),
                            "<var2:0> :: 0.1 /<var2:1> :: 0.1 /<var2:2> :: 0.1 "
                            "/<var2:3> :: 0.7");
@@ -118,9 +118,9 @@ namespace gum_tests {
 
         try {
           TS_ASSERT_EQUALS(
-            inf.posterior(idList[0]).toString(),
-            "<var1:0> :: 0.468559 /<var1:1> :: 0.269297 /<var1:2> :: "
-            "0.144495 /<var1:3> :: 0.117649");
+             inf.posterior(idList[0]).toString(),
+             "<var1:0> :: 0.468559 /<var1:1> :: 0.269297 /<var1:2> :: "
+             "0.144495 /<var1:3> :: 0.117649");
           TS_ASSERT_EQUALS(inf.posterior(idList[1]).toString(),
                            "<var2:0> :: 0.1 /<var2:1> :: 0.1 /<var2:2> :: 0.1 "
                            "/<var2:3> :: 0.7");

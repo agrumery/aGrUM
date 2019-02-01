@@ -71,7 +71,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       std::string
-        O3prmrContext< GUM_SCALAR >::aliasToImport(const std::string& alias) {
+         O3prmrContext< GUM_SCALAR >::aliasToImport(const std::string& alias) {
         for (Idx i = Size(m_imports.size()); i > 0; i--)
           if (m_imports[i - 1]->alias == alias) return m_imports[i - 1]->value;
 
@@ -103,13 +103,13 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       std::vector< O3prmrSession< GUM_SCALAR >* >
-        O3prmrContext< GUM_SCALAR >::sessions() const {
+         O3prmrContext< GUM_SCALAR >::sessions() const {
         return m_sessions;
       }
 
       template < typename GUM_SCALAR >
       void O3prmrContext< GUM_SCALAR >::addSession(
-        const O3prmrSession< GUM_SCALAR >& session) {
+         const O3prmrSession< GUM_SCALAR >& session) {
         m_sessions.push_back(new O3prmrSession< GUM_SCALAR >(session));
       }
 
@@ -163,7 +163,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       O3prmrSession< GUM_SCALAR >::O3prmrSession(
-        const O3prmrSession< GUM_SCALAR >& s) {
+         const O3prmrSession< GUM_SCALAR >& s) {
         m_name = s.m_name;
         *this += s;
       }
@@ -227,27 +227,27 @@ namespace gum {
         switch (command->type()) {
           case O3prmrCommand::RequestType::SetEngine:
             m_commands.push_back(
-              new SetEngineCommand(*(SetEngineCommand*)command));
+               new SetEngineCommand(*(SetEngineCommand*)command));
             break;
 
           case O3prmrCommand::RequestType::SetGndEngine:
             m_commands.push_back(
-              new SetGndEngineCommand(*(SetGndEngineCommand*)command));
+               new SetGndEngineCommand(*(SetGndEngineCommand*)command));
             break;
 
           case O3prmrCommand::RequestType::Observe:
             m_commands.push_back(new ObserveCommand< GUM_SCALAR >(
-              *(ObserveCommand< GUM_SCALAR >*)command));
+               *(ObserveCommand< GUM_SCALAR >*)command));
             break;
 
           case O3prmrCommand::RequestType::Unobserve:
             m_commands.push_back(new UnobserveCommand< GUM_SCALAR >(
-              *(UnobserveCommand< GUM_SCALAR >*)command));
+               *(UnobserveCommand< GUM_SCALAR >*)command));
             break;
 
           case O3prmrCommand::RequestType::Query:
             m_commands.push_back(new QueryCommand< GUM_SCALAR >(
-              *(QueryCommand< GUM_SCALAR >*)command));
+               *(QueryCommand< GUM_SCALAR >*)command));
             break;
         }
       }
@@ -272,7 +272,7 @@ namespace gum {
       O3prmrSession< GUM_SCALAR >& O3prmrSession< GUM_SCALAR >::
                                    operator+=(const O3prmrSession< GUM_SCALAR >& c) {
         for (std::vector< O3prmrCommand* >::const_iterator i =
-               c.m_commands.begin();
+                c.m_commands.begin();
              i < c.m_commands.end();
              i++)
           addCommand(*i);

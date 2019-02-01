@@ -354,8 +354,8 @@ namespace gum {
      * @param base the initial value
      */
     virtual GUM_SCALAR
-      reduce(std::function< GUM_SCALAR(GUM_SCALAR, GUM_SCALAR) > f,
-             GUM_SCALAR                                          base) const;
+       reduce(std::function< GUM_SCALAR(GUM_SCALAR, GUM_SCALAR) > f,
+              GUM_SCALAR                                          base) const;
 
 
     /// @}

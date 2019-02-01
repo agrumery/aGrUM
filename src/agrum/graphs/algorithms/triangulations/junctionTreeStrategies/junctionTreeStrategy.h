@@ -60,7 +60,7 @@ namespace gum {
      * becomes the new triangulation algorithm associated with the junction tree
      * strategy */
     virtual JunctionTreeStrategy*
-      copyFactory(StaticTriangulation* triangulation = nullptr) const = 0;
+       copyFactory(StaticTriangulation* triangulation = nullptr) const = 0;
 
     /// @}
 

@@ -29,8 +29,8 @@
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::credal::
-  MultipleInferenceEngine< float, gum::LazyPropagation< float > >;
+   MultipleInferenceEngine< float, gum::LazyPropagation< float > >;
 
 template class gum::credal::
-  MultipleInferenceEngine< double, gum::LazyPropagation< double > >;
+   MultipleInferenceEngine< double, gum::LazyPropagation< double > >;
 #endif

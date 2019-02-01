@@ -42,23 +42,23 @@ namespace gum {
 
     /// constructor starting with a given graph
     StructuralConstraintMandatoryArcs::StructuralConstraintMandatoryArcs(
-      const DiGraph& graph) {
+       const DiGraph& graph) {
       setGraph(graph);
       GUM_CONSTRUCTOR(StructuralConstraintMandatoryArcs);
     }
 
     /// copy constructor
     StructuralConstraintMandatoryArcs::StructuralConstraintMandatoryArcs(
-      const StructuralConstraintMandatoryArcs& from) :
+       const StructuralConstraintMandatoryArcs& from) :
         _MandatoryArcs__mandatory_arcs(from._MandatoryArcs__mandatory_arcs) {
       GUM_CONS_CPY(StructuralConstraintMandatoryArcs);
     }
 
     /// move constructor
     StructuralConstraintMandatoryArcs::StructuralConstraintMandatoryArcs(
-      StructuralConstraintMandatoryArcs&& from) :
+       StructuralConstraintMandatoryArcs&& from) :
         _MandatoryArcs__mandatory_arcs(
-          std::move(from._MandatoryArcs__mandatory_arcs)) {
+           std::move(from._MandatoryArcs__mandatory_arcs)) {
       GUM_CONS_MOV(StructuralConstraintMandatoryArcs);
     }
 
@@ -81,7 +81,7 @@ namespace gum {
                                        operator=(StructuralConstraintMandatoryArcs&& from) {
       if (this != &from) {
         _MandatoryArcs__mandatory_arcs =
-          std::move(from._MandatoryArcs__mandatory_arcs);
+           std::move(from._MandatoryArcs__mandatory_arcs);
       }
       return *this;
     }

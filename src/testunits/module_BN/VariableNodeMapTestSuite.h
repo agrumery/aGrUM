@@ -81,7 +81,7 @@ namespace gum_tests {
 
       gum::NodeId ind = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(const gum::DiscreteVariable& varPtr =
-                                     topo.variable(idList[0]);
+                                      topo.variable(idList[0]);
                                    ind = topo.nodeId(varPtr););
       TS_ASSERT_EQUALS(idList[0], ind);
 

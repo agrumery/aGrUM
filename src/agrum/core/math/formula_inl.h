@@ -144,7 +144,7 @@ namespace gum {
   /// Args are backwards !
   INLINE
   double
-    FormulaPart::__operator_eval(const std::vector< FormulaPart >& args) const {
+     FormulaPart::__operator_eval(const std::vector< FormulaPart >& args) const {
     switch (character) {
       case '+': {
         return args[1].number + args[0].number;
@@ -177,7 +177,7 @@ namespace gum {
   /// Args are backwards !
   INLINE
   double
-    FormulaPart::__function_eval(const std::vector< FormulaPart >& args) const {
+     FormulaPart::__function_eval(const std::vector< FormulaPart >& args) const {
     switch (function) {
       case FormulaPart::token_function::exp: {
         return std::exp(args[0].number);
@@ -339,8 +339,8 @@ namespace gum {
 
   INLINE
   void
-    Formula::__reduceOperatorOrFunction(FormulaPart                item,
-                                        std::stack< FormulaPart >& stack) const {
+     Formula::__reduceOperatorOrFunction(FormulaPart                item,
+                                         std::stack< FormulaPart >& stack) const {
     std::vector< FormulaPart > args;
 
     if (stack.size() < item.argc()) {

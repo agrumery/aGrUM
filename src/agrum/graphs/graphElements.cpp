@@ -54,8 +54,8 @@ namespace gum {
 
 } /* namespace gum */
 
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::HashFunc< gum::NodeSet >;
-#endif
+#  endif
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

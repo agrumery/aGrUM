@@ -51,8 +51,8 @@ namespace gum {
 #    define GUM_MULTI_DIM_OPERATOR_TYPE GUM_SCALAR
   template < typename GUM_SCALAR >
   MultiDimFunctionGraph< GUM_SCALAR >* GUM_MULTI_DIM_OPERATOR_NAME(
-    const MultiDimFunctionGraph< GUM_SCALAR >* dg1,
-    const MultiDimFunctionGraph< GUM_SCALAR >* dg2)
+     const MultiDimFunctionGraph< GUM_SCALAR >* dg1,
+     const MultiDimFunctionGraph< GUM_SCALAR >* dg2)
 #  endif
 
   // clang-format off
@@ -72,13 +72,13 @@ namespace gum {
 
 #  ifdef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME
     const MultiDimFunctionGraph< GUM_SCALAR >* dg1 =
-      reinterpret_cast< const MultiDimFunctionGraph< GUM_SCALAR >* >(tt1);
+       reinterpret_cast< const MultiDimFunctionGraph< GUM_SCALAR >* >(tt1);
     const MultiDimFunctionGraph< GUM_SCALAR >* dg2 =
-      reinterpret_cast< const MultiDimFunctionGraph< GUM_SCALAR >* >(tt2);
+       reinterpret_cast< const MultiDimFunctionGraph< GUM_SCALAR >* >(tt2);
 #  endif
     MultiDimFunctionGraphOperator< GUM_MULTI_DIM_OPERATOR_TYPE,
                                    GUM_MULTI_DIM_OPERATOR >
-      ope(dg1, dg2);
+       ope(dg1, dg2);
 
     return ope.compute();
   }

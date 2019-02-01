@@ -53,10 +53,10 @@ namespace gum_tests {
     }
 
     void __createChanges(
-      const gum::DAG&                               g,
-      std::vector< gum::DAGCycleDetector::Change >& changes,
-      std::vector< gum::DAGCycleDetector::Change >& del_add_changes,
-      gum::Size                                     length) {
+       const gum::DAG&                               g,
+       std::vector< gum::DAGCycleDetector::Change >& changes,
+       std::vector< gum::DAGCycleDetector::Change >& del_add_changes,
+       gum::Size                                     length) {
       std::default_random_engine           generator = gum::getRandomGenerator();
       std::uniform_int_distribution< int > distrib_type(0, 2);
       std::uniform_int_distribution< int > distrib_node(0, int(g.size()) - 1);
@@ -85,7 +85,7 @@ namespace gum_tests {
                  ++iter, --nb_del_arc) {
               if (!nb_del_arc) {
                 changes.push_back(
-                  gum::DAGCycleDetector::ArcDel(iter->tail(), iter->head()));
+                   gum::DAGCycleDetector::ArcDel(iter->tail(), iter->head()));
                 gg.eraseArc(gum::Arc(iter->tail(), iter->head()));
                 break;
               }
@@ -186,11 +186,11 @@ namespace gum_tests {
 
       for (auto iter = deletions.cbegin(); iter != deletions.cend(); ++iter) {
         del_add_changes.push_back(
-          gum::DAGCycleDetector::ArcDel(iter.key().tail(), iter.key().head()));
+           gum::DAGCycleDetector::ArcDel(iter.key().tail(), iter.key().head()));
       }
       for (auto iter = additions.cbegin(); iter != additions.cend(); ++iter) {
         del_add_changes.push_back(
-          gum::DAGCycleDetector::ArcAdd(iter.key().tail(), iter.key().head()));
+           gum::DAGCycleDetector::ArcAdd(iter.key().tail(), iter.key().head()));
       }
     }
 

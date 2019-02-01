@@ -63,12 +63,12 @@
                   << (e).errorContent() << std::endl;                      \
       }
 #  else
-#    define GUM_ERROR(type, msg)                                   \
-      {                                                            \
-        std::ostringstream __error__str;                           \
-        __error__str << msg;                                       \
-        throw(type(gum::__createMsg(                               \
-          __FILE__, __FUNCTION__, __LINE__, __error__str.str()))); \
+#    define GUM_ERROR(type, msg)                                    \
+      {                                                             \
+        std::ostringstream __error__str;                            \
+        __error__str << msg;                                        \
+        throw(type(gum::__createMsg(                                \
+           __FILE__, __FUNCTION__, __LINE__, __error__str.str()))); \
       }
 #    define GUM_SHOWERROR(e)                                               \
       {                                                                    \

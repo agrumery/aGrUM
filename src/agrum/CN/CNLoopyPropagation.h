@@ -167,8 +167,8 @@ namespace gum {
        * message.
        */
       void _msgL(
-        const NodeId X,
-        const NodeId demanding_parent);   // allways sent from X to demanding_X
+         const NodeId X,
+         const NodeId demanding_parent);   // allways sent from X to demanding_X
 
       /**
        * Used by _msgL. Compute the final message for the given parent's message
@@ -239,12 +239,12 @@ namespace gum {
        * of the one sending the message ( first parent, second ... ).
        */
       void _enum_combi(
-        std::vector< std::vector< std::vector< GUM_SCALAR > > >& msgs_p,
-        const NodeId&                                            id,
-        GUM_SCALAR&                                              msg_l_min,
-        GUM_SCALAR&                                              msg_l_max,
-        std::vector< GUM_SCALAR >&                               lx,
-        const Idx&                                               pos);
+         std::vector< std::vector< std::vector< GUM_SCALAR > > >& msgs_p,
+         const NodeId&                                            id,
+         GUM_SCALAR&                                              msg_l_min,
+         GUM_SCALAR&                                              msg_l_max,
+         std::vector< GUM_SCALAR >&                               lx,
+         const Idx&                                               pos);
 
       /**
        * Sends a message to one's child, i.e. X is sending a message to a
@@ -268,10 +268,10 @@ namespace gum {
        * be sent.
        */
       void _enum_combi(
-        std::vector< std::vector< std::vector< GUM_SCALAR > > >& msgs_p,
-        const NodeId&                                            id,
-        GUM_SCALAR&                                              msg_p_min,
-        GUM_SCALAR&                                              msg_p_max);
+         std::vector< std::vector< std::vector< GUM_SCALAR > > >& msgs_p,
+         const NodeId&                                            id,
+         GUM_SCALAR&                                              msg_p_min,
+         GUM_SCALAR&                                              msg_p_max);
 
       /**
        * Used by _msgP. Marginalisation.

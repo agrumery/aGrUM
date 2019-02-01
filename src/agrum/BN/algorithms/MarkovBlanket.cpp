@@ -88,8 +88,8 @@ namespace gum {
 
     for (const auto& arc : arcs()) {
       if (!other.arcs().exists(
-            Arc(other.idFromName(__model.variable(arc.tail()).name()),
-                other.idFromName(__model.variable(arc.head()).name()))))
+             Arc(other.idFromName(__model.variable(arc.tail()).name()),
+                 other.idFromName(__model.variable(arc.head()).name()))))
         return false;
     }
 

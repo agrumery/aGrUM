@@ -125,8 +125,8 @@ namespace gum {
     /// @}
 
     protected:
-    // should be pure virtual but using BNdistance directly is a way to delay the choice
-    // between different computation scheme (@see ExactBNdistance)
+    // should be pure virtual but using BNdistance directly is a way to delay the
+    // choice between different computation scheme (@see ExactBNdistance)
     virtual void _computeKL();
     void         _process();
 

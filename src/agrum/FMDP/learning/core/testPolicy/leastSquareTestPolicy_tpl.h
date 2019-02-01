@@ -98,7 +98,7 @@ namespace gum {
       }
 
       sumErrorAttr +=
-        ((double)__nbObsTable[key] / (double)this->nbObservation()) * errorAttr;
+         ((double)__nbObsTable[key] / (double)this->nbObservation()) * errorAttr;
     }
     __score = errorO - sumErrorAttr;
   }

@@ -57,10 +57,10 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     using TestPolicy =
-      typename TestSelect< AttributeSelection,
-                           GTestPolicy< GUM_SCALAR >,
-                           Chi2TestPolicy< GUM_SCALAR >,
-                           LeastSquareTestPolicy< GUM_SCALAR > >::type;
+       typename TestSelect< AttributeSelection,
+                            GTestPolicy< GUM_SCALAR >,
+                            Chi2TestPolicy< GUM_SCALAR >,
+                            LeastSquareTestPolicy< GUM_SCALAR > >::type;
 
     public:
     // ==========================================================================
@@ -158,7 +158,7 @@ namespace gum {
     /// Merges given NodeDatabase informations into current nDB.
     // ###################################################################
     NodeDatabase< AttributeSelection, isScalar >&
-      operator+=(const NodeDatabase< AttributeSelection, isScalar >& src);
+       operator+=(const NodeDatabase< AttributeSelection, isScalar >& src);
 
     // ###################################################################
     /// Returns a reference to nDB test policy for given variable

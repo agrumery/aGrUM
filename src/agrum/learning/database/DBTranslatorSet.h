@@ -213,10 +213,10 @@ namespace gum {
        */
       template < template < typename > class XALLOC >
       std::size_t insertTranslator(
-        const Variable&                                          var,
-        const std::size_t                                        column,
-        const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
-        const bool unique_column = true);
+         const Variable&                                          var,
+         const std::size_t                                        column,
+         const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
+         const bool unique_column = true);
 
       /** @brief inserts a new translator for a given variable at the end of
        * the translator set
@@ -284,8 +284,8 @@ namespace gum {
        * this is the index of a translator within the set */
       template < template < typename > class OTHER_ALLOC >
       DBTranslatedValue translate(
-        const std::vector< std::string, OTHER_ALLOC< std::string > >& row,
-        const std::size_t                                             k) const;
+         const std::vector< std::string, OTHER_ALLOC< std::string > >& row,
+         const std::size_t                                             k) const;
 
       /** @brief similar to method translate, except that it checks that the kth
        * translator exists
@@ -300,8 +300,8 @@ namespace gum {
        * this is the index of a translator within the set */
       template < template < typename > class OTHER_ALLOC >
       DBTranslatedValue translateSafe(
-        const std::vector< std::string, OTHER_ALLOC< std::string > >& row,
-        const std::size_t                                             k) const;
+         const std::vector< std::string, OTHER_ALLOC< std::string > >& row,
+         const std::size_t                                             k) const;
 
       /// returns the original string that was translated into translated_val
       /** @param translated_val the value from which we look for the
@@ -425,7 +425,7 @@ namespace gum {
       HashTable< std::size_t,
                  std::size_t,
                  ALLOC< std::pair< std::size_t, std::size_t > > >
-        reorder(const std::size_t k);
+         reorder(const std::size_t k);
 
       /// same as method reorder but checks that the kth translator exists
       /** @throw UndefinedElement is raised if there are fewer than k
@@ -433,7 +433,7 @@ namespace gum {
       HashTable< std::size_t,
                  std::size_t,
                  ALLOC< std::pair< std::size_t, std::size_t > > >
-        reorderSafe(const std::size_t k);
+         reorderSafe(const std::size_t k);
 
       /** @brief returns the column of the input database that will be read
        * by the kth translator
@@ -466,7 +466,7 @@ namespace gum {
 
       /// returns the set of translators
       const std::vector< DBTranslator< ALLOC >*, ALLOC< DBTranslator< ALLOC >* > >&
-        translators() const;
+         translators() const;
 
       /// @}
 
@@ -475,7 +475,7 @@ namespace gum {
       private:
       // the set of all the translators
       std::vector< DBTranslator< ALLOC >*, ALLOC< DBTranslator< ALLOC >* > >
-        __translators;
+         __translators;
 
       // a vector indicating which column of the original database each
       // translator should translate

@@ -291,7 +291,7 @@ namespace gum {
      * @param msg The error's message.
      */
     void
-      Error(const std::wstring& filename, Idx line, Idx col, const wchar_t* msg);
+       Error(const std::wstring& filename, Idx line, Idx col, const wchar_t* msg);
 
     /**
      * @brief For adding warnings.
@@ -300,8 +300,10 @@ namespace gum {
      * @param col The warning's column.
      * @param msg The warning's message.
      */
-    void
-      Warning(const std::wstring& filename, Idx line, Idx col, const wchar_t* msg);
+    void Warning(const std::wstring& filename,
+                 Idx                 line,
+                 Idx                 col,
+                 const wchar_t*      msg);
 
     /**
      * @brief For adding exceptions.

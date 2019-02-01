@@ -94,28 +94,28 @@ namespace gum {
       /// This method is called whenever an evidence is added, but AFTER
       /// any processing made by PRMInference.
       virtual void
-        _evidenceAdded(const typename PRMInference< GUM_SCALAR >::Chain& chain);
+         _evidenceAdded(const typename PRMInference< GUM_SCALAR >::Chain& chain);
 
       /// This method is called whenever an evidence is removed, but BEFORE
       /// any processing made by PRMInference.
       virtual void
-        _evidenceRemoved(const typename PRMInference< GUM_SCALAR >::Chain& chain);
+         _evidenceRemoved(const typename PRMInference< GUM_SCALAR >::Chain& chain);
 
       /// @brief Generic method to compute the marginal of given element.
       /// @param chain
       /// @param m CPF filled with the marginal of elt. It is initialized
       ///          properly.
       virtual void
-        _marginal(const typename PRMInference< GUM_SCALAR >::Chain& chain,
-                  Potential< GUM_SCALAR >&                          m);
+         _marginal(const typename PRMInference< GUM_SCALAR >::Chain& chain,
+                   Potential< GUM_SCALAR >&                          m);
 
       /// @brief Generic method to compute the marginal of given element.
       /// @param queries Set of pairs of PRMInstance and PRMAttribute.
       /// @param j CPF filled with the joint probability of queries. It is
       ///          initialized properly.
       virtual void _joint(
-        const std::vector< typename PRMInference< GUM_SCALAR >::Chain >& queries,
-        Potential< GUM_SCALAR >&                                         j);
+         const std::vector< typename PRMInference< GUM_SCALAR >::Chain >& queries,
+         Potential< GUM_SCALAR >&                                         j);
 
       /// @}
       private:

@@ -32,7 +32,7 @@ namespace gum {
     /// returns the allocator used by the translator
     template < template < typename > class ALLOC >
     INLINE typename ScoringCache< ALLOC >::allocator_type
-      ScoringCache< ALLOC >::getAllocator() const {
+       ScoringCache< ALLOC >::getAllocator() const {
       return *this;
     }
 
@@ -40,7 +40,7 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE ScoringCache< ALLOC >::ScoringCache(
-      const typename ScoringCache< ALLOC >::allocator_type& alloc) :
+       const typename ScoringCache< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc) {
       GUM_CONSTRUCTOR(ScoringCache);
     }
@@ -49,8 +49,8 @@ namespace gum {
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE ScoringCache< ALLOC >::ScoringCache(
-      const ScoringCache< ALLOC >&                          from,
-      const typename ScoringCache< ALLOC >::allocator_type& alloc) :
+       const ScoringCache< ALLOC >&                          from,
+       const typename ScoringCache< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc),
         __scores(from.__scores) {
       GUM_CONS_CPY(ScoringCache);
@@ -66,8 +66,8 @@ namespace gum {
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE ScoringCache< ALLOC >::ScoringCache(
-      ScoringCache< ALLOC >&&                               from,
-      const typename ScoringCache< ALLOC >::allocator_type& alloc) :
+       ScoringCache< ALLOC >&&                               from,
+       const typename ScoringCache< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc),
         __scores(std::move(from.__scores)) {
       GUM_CONS_MOV(ScoringCache);
@@ -83,7 +83,7 @@ namespace gum {
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
     ScoringCache< ALLOC >* ScoringCache< ALLOC >::clone(
-      const typename ScoringCache< ALLOC >::allocator_type& alloc) const {
+       const typename ScoringCache< ALLOC >::allocator_type& alloc) const {
       ALLOC< ScoringCache< ALLOC > > allocator(alloc);
       ScoringCache< ALLOC >*         cache = allocator.allocate(1);
       try {

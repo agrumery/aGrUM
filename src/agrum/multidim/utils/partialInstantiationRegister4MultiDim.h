@@ -66,8 +66,8 @@ namespace gum {
     public:
     /// The type of functions used by the register
     typedef MultiDimImplementation< GUM_SCALAR >* (*PartialInstantiationPtr)(
-      const MultiDimImplementation< GUM_SCALAR >*,
-      const HashTable< const DiscreteVariable*, Idx >&);
+       const MultiDimImplementation< GUM_SCALAR >*,
+       const HashTable< const DiscreteVariable*, Idx >&);
 
     // ========================================================================
     /// @name Accessors / Modifiers
@@ -181,7 +181,7 @@ namespace gum {
      * @brief Copy operator: never to be used.
      */
     PartialInstantiationRegister4MultiDim(
-      const PartialInstantiationRegister4MultiDim&);
+       const PartialInstantiationRegister4MultiDim&);
 
     /**
      * @brief Class destructor.
@@ -192,7 +192,7 @@ namespace gum {
 
     /// The set of associations for a given partial instantiation type
     typedef HashTable< std::string, PartialInstantiationPtr >
-      PartialInstantiationSet;
+       PartialInstantiationSet;
 
     /**
      * @brief A mapping from the types of MultiDimImplementations to partial
@@ -209,11 +209,11 @@ namespace gum {
   /// A function to more easily register new instantiation functions in
   /// MultiDims
   template < typename GUM_SCALAR >
-  void
-    registerPartialInstantiation(const std::string& instantiation_func_name,
-                                 const std::string& type_multidim,
-                                 typename PartialInstantiationRegister4MultiDim<
-                                   GUM_SCALAR >::PartialInstantiationPtr function);
+  void registerPartialInstantiation(
+     const std::string& instantiation_func_name,
+     const std::string& type_multidim,
+     typename PartialInstantiationRegister4MultiDim<
+        GUM_SCALAR >::PartialInstantiationPtr function);
 
 } /* namespace gum */
 

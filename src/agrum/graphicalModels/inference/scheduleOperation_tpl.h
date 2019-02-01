@@ -42,7 +42,7 @@ namespace gum {
   /// copy constructor
   template < typename GUM_SCALAR >
   ScheduleOperation< GUM_SCALAR >::ScheduleOperation(
-    const ScheduleOperation< GUM_SCALAR >& from) :
+     const ScheduleOperation< GUM_SCALAR >& from) :
       __type(from.__type),
       __id(from.__id) {
     // for debugging purposes
@@ -68,7 +68,7 @@ namespace gum {
   /// returns the name of the operation
   template < typename GUM_SCALAR >
   INLINE typename ScheduleOperation< GUM_SCALAR >::Type
-    ScheduleOperation< GUM_SCALAR >::type() const {
+     ScheduleOperation< GUM_SCALAR >::type() const {
     return __type;
   }
 

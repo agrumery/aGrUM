@@ -31,50 +31,50 @@ namespace gum {
 
     /// sets a new graph from which we will perform checkings
     INLINE void
-      StructuralConstraintMandatoryArcs::setGraphAlone(const DiGraph& graph) {}
+       StructuralConstraintMandatoryArcs::setGraphAlone(const DiGraph& graph) {}
 
     /// checks whether the constraints enable to add arc (x,y)
     INLINE bool
-      StructuralConstraintMandatoryArcs::checkArcAdditionAlone(NodeId x,
-                                                               NodeId y) const {
+       StructuralConstraintMandatoryArcs::checkArcAdditionAlone(NodeId x,
+                                                                NodeId y) const {
       return true;
     }
 
     /// checks whether the constraints enable to remove arc (x,y)
     INLINE bool
-      StructuralConstraintMandatoryArcs::checkArcDeletionAlone(NodeId x,
-                                                               NodeId y) const {
+       StructuralConstraintMandatoryArcs::checkArcDeletionAlone(NodeId x,
+                                                                NodeId y) const {
       return !_MandatoryArcs__mandatory_arcs.exists(Arc(x, y));
     }
 
     /// checks whether the constraints enable to reverse arc (x,y)
     INLINE bool
-      StructuralConstraintMandatoryArcs::checkArcReversalAlone(NodeId x,
-                                                               NodeId y) const {
+       StructuralConstraintMandatoryArcs::checkArcReversalAlone(NodeId x,
+                                                                NodeId y) const {
       return !_MandatoryArcs__mandatory_arcs.exists(Arc(x, y));
     }
 
     /// checks whether the constraints enable to add an arc
     INLINE bool StructuralConstraintMandatoryArcs::checkModificationAlone(
-      const ArcAddition& change) const {
+       const ArcAddition& change) const {
       return checkArcAdditionAlone(change.node1(), change.node2());
     }
 
     /// checks whether the constraints enable to remove an arc
     INLINE bool StructuralConstraintMandatoryArcs::checkModificationAlone(
-      const ArcDeletion& change) const {
+       const ArcDeletion& change) const {
       return checkArcDeletionAlone(change.node1(), change.node2());
     }
 
     /// checks whether the constraints enable to reverse an arc
     INLINE bool StructuralConstraintMandatoryArcs::checkModificationAlone(
-      const ArcReversal& change) const {
+       const ArcReversal& change) const {
       return checkArcReversalAlone(change.node1(), change.node2());
     }
 
     /// checks whether the constraints enable to perform a graph change
     INLINE bool StructuralConstraintMandatoryArcs::checkModificationAlone(
-      const GraphChange& change) const {
+       const GraphChange& change) const {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION:
           return checkArcAdditionAlone(change.node1(), change.node2());
@@ -94,23 +94,23 @@ namespace gum {
 
     /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintMandatoryArcs::modifyGraphAlone(
-      const ArcAddition& change) {}
+       const ArcAddition& change) {}
 
     /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintMandatoryArcs::modifyGraphAlone(
-      const ArcDeletion& change) {}
+       const ArcDeletion& change) {}
 
     /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintMandatoryArcs::modifyGraphAlone(
-      const ArcReversal& change) {}
+       const ArcReversal& change) {}
 
     /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintMandatoryArcs::modifyGraphAlone(
-      const GraphChange& change) {}
+       const GraphChange& change) {}
 
     /// indicates whether a change will always violate the constraint
     INLINE bool StructuralConstraintMandatoryArcs::isAlwaysInvalidAlone(
-      const GraphChange& change) const {
+       const GraphChange& change) const {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION: return false;
 

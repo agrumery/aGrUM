@@ -65,7 +65,7 @@ namespace gum {
         ~O3NameSolver();
 
         O3NameSolver< GUM_SCALAR >&
-          operator=(const O3NameSolver< GUM_SCALAR >& src);
+           operator=(const O3NameSolver< GUM_SCALAR >& src);
 
         O3NameSolver< GUM_SCALAR >& operator=(O3NameSolver< GUM_SCALAR >&& src);
 
@@ -98,9 +98,9 @@ namespace gum {
 }   // namespace gum
 
 
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::prm::o3prm::O3NameSolver< double >;
-#endif
+#  endif
 
 
 // always include the implementation of the templates

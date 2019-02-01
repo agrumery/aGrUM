@@ -136,7 +136,7 @@ namespace gum {
     /// If so, the node is updated
     // ==========================================================================
     void
-      __updateNodeSet(Set< NodeId >&, const DiscreteVariable*, VariableSelector&);
+       __updateNodeSet(Set< NodeId >&, const DiscreteVariable*, VariableSelector&);
 
 
     public:
@@ -155,7 +155,7 @@ namespace gum {
     public:
     void insertSetOfVars(MultiDimFunctionGraph< double >* ret) const {
       for (SequenceIteratorSafe< const DiscreteVariable* > varIter =
-             __varOrder.beginSafe();
+              __varOrder.beginSafe();
            varIter != __varOrder.endSafe();
            ++varIter)
         ret->add(**varIter);

@@ -36,21 +36,21 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     PRMScalarAttribute< GUM_SCALAR >::PRMScalarAttribute(
-      const std::string&                    name,
-      const PRMType&                        type,
-      MultiDimImplementation< GUM_SCALAR >* impl) :
+       const std::string&                    name,
+       const PRMType&                        type,
+       MultiDimImplementation< GUM_SCALAR >* impl) :
         PRMAttribute< GUM_SCALAR >(name),
         __type(new PRMType(type)), __cpf(new Potential< GUM_SCALAR >(impl)) {
       GUM_CONSTRUCTOR(PRMScalarAttribute);
       __cpf->add(__type->variable());
 
       this->_safeName =
-        PRMObject::LEFT_CAST() + __type->name() + PRMObject::RIGHT_CAST() + name;
+         PRMObject::LEFT_CAST() + __type->name() + PRMObject::RIGHT_CAST() + name;
     }
 
     template < typename GUM_SCALAR >
     PRMScalarAttribute< GUM_SCALAR >::PRMScalarAttribute(
-      const PRMScalarAttribute< GUM_SCALAR >& source) :
+       const PRMScalarAttribute< GUM_SCALAR >& source) :
         PRMAttribute< GUM_SCALAR >(source),
         __type(0), __cpf(0) {
       GUM_CONS_CPY(PRMScalarAttribute);
@@ -67,16 +67,16 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     PRMAttribute< GUM_SCALAR >* PRMScalarAttribute< GUM_SCALAR >::newFactory(
-      const PRMClass< GUM_SCALAR >& c) const {
+       const PRMClass< GUM_SCALAR >& c) const {
       auto impl = static_cast< MultiDimImplementation< GUM_SCALAR >* >(
-        this->cpf().content()->newFactory());
+         this->cpf().content()->newFactory());
       return new PRMScalarAttribute< GUM_SCALAR >(
-        this->name(), this->type(), impl);
+         this->name(), this->type(), impl);
     }
 
     template < typename GUM_SCALAR >
     PRMAttribute< GUM_SCALAR >* PRMScalarAttribute< GUM_SCALAR >::copy(
-      Bijection< const DiscreteVariable*, const DiscreteVariable* > bij) const {
+       Bijection< const DiscreteVariable*, const DiscreteVariable* > bij) const {
       auto copy = new PRMScalarAttribute< GUM_SCALAR >(this->name(), this->type());
 
       if (!bij.existsFirst(&(type().variable()))) {
@@ -91,8 +91,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void PRMScalarAttribute< GUM_SCALAR >::copyCpf(
-      const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-      const PRMAttribute< GUM_SCALAR >& source) {
+       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
+       const PRMAttribute< GUM_SCALAR >& source) {
       delete __cpf;
       __cpf = new Potential< GUM_SCALAR >();
 
@@ -121,7 +121,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE typename PRMClassElement< GUM_SCALAR >::ClassElementType
-      PRMScalarAttribute< GUM_SCALAR >::elt_type() const {
+       PRMScalarAttribute< GUM_SCALAR >::elt_type() const {
       return this->prm_attribute;
     }
 
@@ -143,7 +143,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMScalarAttribute< GUM_SCALAR >::addParent(
-      const PRMClassElement< GUM_SCALAR >& elt) {
+       const PRMClassElement< GUM_SCALAR >& elt) {
       try {
         __cpf->add(elt.type().variable());
       } catch (DuplicateElement&) {
@@ -158,16 +158,16 @@ namespace gum {
     // See gum::PRMClassElement<GUM_SCALAR>::_addChild().
     template < typename GUM_SCALAR >
     INLINE void PRMScalarAttribute< GUM_SCALAR >::addChild(
-      const PRMClassElement< GUM_SCALAR >& elt) {}
+       const PRMClassElement< GUM_SCALAR >& elt) {}
 
     template < typename GUM_SCALAR >
     PRMAttribute< GUM_SCALAR >*
-      PRMScalarAttribute< GUM_SCALAR >::getCastDescendant() const {
+       PRMScalarAttribute< GUM_SCALAR >::getCastDescendant() const {
       PRMScalarAttribute< GUM_SCALAR >* cast = 0;
 
       try {
         cast =
-          new PRMScalarAttribute< GUM_SCALAR >(this->name(), type().superType());
+           new PRMScalarAttribute< GUM_SCALAR >(this->name(), type().superType());
       } catch (NotFound&) {
         GUM_ERROR(OperationNotAllowed,
                   "this ScalarAttribute can not have cast descendant");
@@ -191,7 +191,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void PRMScalarAttribute< GUM_SCALAR >::setAsCastDescendant(
-      PRMAttribute< GUM_SCALAR >* cast) {
+       PRMAttribute< GUM_SCALAR >* cast) {
       try {
         type().setSuper(cast->type());
       } catch (OperationNotAllowed&) {

@@ -44,7 +44,7 @@ namespace gum_tests {
       gum::MCBayesNetGenerator< double >* gen = nullptr;
 
       TS_GUM_ASSERT_THROWS_NOTHING(
-        gen = new gum::MCBayesNetGenerator< double >(30, 60, 3, 30, 40, 50));
+         gen = new gum::MCBayesNetGenerator< double >(30, 60, 3, 30, 40, 50));
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
     }
 
@@ -52,7 +52,7 @@ namespace gum_tests {
       gum::MCBayesNetGenerator< double >* gen = nullptr;
 
       TS_GUM_ASSERT_THROWS_NOTHING(
-        gen = new gum::MCBayesNetGenerator< double >(30, 60, 3, 30, 40, 50));
+         gen = new gum::MCBayesNetGenerator< double >(30, 60, 3, 30, 40, 50));
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
     }
 
@@ -60,7 +60,7 @@ namespace gum_tests {
       gum::MCBayesNetGenerator< double >* gen = nullptr;
 
       TS_GUM_ASSERT_THROWS_NOTHING(
-        gen = new gum::MCBayesNetGenerator< double >(30, 60, 3, 30, 40, 50));
+         gen = new gum::MCBayesNetGenerator< double >(30, 60, 3, 30, 40, 50));
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
     }
 
@@ -68,7 +68,7 @@ namespace gum_tests {
       gum::MCBayesNetGenerator< double >* gen = nullptr;
 
       TS_GUM_ASSERT_THROWS_NOTHING(
-        gen = new gum::MCBayesNetGenerator< double >(30, 60, 3, 30, 40, 50));
+         gen = new gum::MCBayesNetGenerator< double >(30, 60, 3, 30, 40, 50));
       TS_GUM_ASSERT_THROWS_NOTHING(delete gen);
     }
 
@@ -89,7 +89,7 @@ namespace gum_tests {
       gum::BayesNet< double >            bn;
       gen.generateBN(bn);
       TS_GUM_ASSERT_THROWS_NOTHING(
-        gum::MCBayesNetGenerator< double > gen2(bn, 30, 40, 50));
+         gum::MCBayesNetGenerator< double > gen2(bn, 30, 40, 50));
     }
 
     void testGenerationfromBNDouble() {
@@ -97,7 +97,7 @@ namespace gum_tests {
       gum::BayesNet< double >            bn;
       gen.generateBN(bn);
       TS_GUM_ASSERT_THROWS_NOTHING(
-        gum::MCBayesNetGenerator< double > gen2(bn, 30, 40, 50));
+         gum::MCBayesNetGenerator< double > gen2(bn, 30, 40, 50));
     }
 
     void testDisturbBNFloatCPT() {

@@ -48,21 +48,21 @@ namespace gum {
 
     /// constructor starting with a given graph
     StructuralConstraintDiGraph::StructuralConstraintDiGraph(
-      const DiGraph& graph) {
+       const DiGraph& graph) {
       setGraph(graph);
       GUM_CONSTRUCTOR(StructuralConstraintDiGraph);
     }
 
     /// copy constructor
     StructuralConstraintDiGraph::StructuralConstraintDiGraph(
-      const StructuralConstraintDiGraph& from) :
+       const StructuralConstraintDiGraph& from) :
         _DiGraph__graph(from._DiGraph__graph) {
       GUM_CONS_CPY(StructuralConstraintDiGraph);
     }
 
     /// move constructor
     StructuralConstraintDiGraph::StructuralConstraintDiGraph(
-      StructuralConstraintDiGraph&& from) :
+       StructuralConstraintDiGraph&& from) :
         _DiGraph__graph(std::move(from._DiGraph__graph)) {
       GUM_CONS_MOV(StructuralConstraintDiGraph);
     }

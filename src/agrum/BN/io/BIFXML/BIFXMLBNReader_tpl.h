@@ -29,8 +29,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE
-    BIFXMLBNReader< GUM_SCALAR >::BIFXMLBNReader(BayesNet< GUM_SCALAR >* bn,
-                                                 const std::string& filePath) :
+     BIFXMLBNReader< GUM_SCALAR >::BIFXMLBNReader(BayesNet< GUM_SCALAR >* bn,
+                                                  const std::string& filePath) :
       BNReader< GUM_SCALAR >(bn, filePath) {
     GUM_CONSTRUCTOR(BIFXMLBNReader);
     __bn = bn;
@@ -102,7 +102,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void BIFXMLBNReader< GUM_SCALAR >::__parsingVariables(
-    ticpp::Element* parentNetwork) {
+     ticpp::Element* parentNetwork) {
     // Counting the number of variable for the signal
     int                               nbVar = 0;
     ticpp::Iterator< ticpp::Element > varIte("VARIABLE");
@@ -141,7 +141,7 @@ namespace gum {
 
       // Emitting progress.
       std::string status =
-        "Network found. Now proceedind variables instanciation...";
+         "Network found. Now proceedind variables instanciation...";
       int progress = (int)((float)nbIte / (float)nbVar * 45) + 10;
       GUM_EMIT2(onProceed, progress, status);
       nbIte++;
@@ -169,7 +169,7 @@ namespace gum {
 
       // Considered Node
       std::string currentVarName =
-        currentVar->FirstChildElement("FOR")->GetTextOrDefault("");
+         currentVar->FirstChildElement("FOR")->GetTextOrDefault("");
       NodeId currentVarId = __bn->idFromName(currentVarName);
 
       // Get Node's parents
@@ -206,7 +206,7 @@ namespace gum {
 
       // Emitting progress.
       std::string status =
-        "All variables have been instancied. Now filling up diagram...";
+         "All variables have been instancied. Now filling up diagram...";
       int progress = (int)((float)nbIte / (float)nbDef * 45) + 55;
       GUM_EMIT2(onProceed, progress, status);
       nbIte++;

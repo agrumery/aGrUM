@@ -58,7 +58,7 @@ namespace gum_tests {
       bn = new gum::BayesNet< double >();
 
       gum::LabelizedVariable n1("1", "", 2), n2("2", "", 2), n3("3", "", 2),
-        n4("4", "", 2), n5("5", "", 3);
+         n4("4", "", 2), n5("5", "", 3);
 
       i1 = bn->add(n1);
       i2 = bn->add(n2);
@@ -117,7 +117,7 @@ namespace gum_tests {
       // Testing the inference
       gum::VariableElimination< double >* inf = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(inf =
-                                     new gum::VariableElimination< double >(bn));
+                                      new gum::VariableElimination< double >(bn));
 
       if (inf != 0) {
         TS_GUM_ASSERT_THROWS_NOTHING(inf->makeInference());
@@ -129,7 +129,7 @@ namespace gum_tests {
       fill(*bn);
       gum::VariableElimination< double >* inf = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(inf =
-                                     new gum::VariableElimination< double >(bn));
+                                      new gum::VariableElimination< double >(bn));
 
       if (inf != nullptr) {
         TS_GUM_ASSERT_THROWS_NOTHING(inf->makeInference());
@@ -175,7 +175,7 @@ namespace gum_tests {
 
       gum::VariableElimination< double >* inf = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(inf =
-                                     new gum::VariableElimination< double >(bn));
+                                      new gum::VariableElimination< double >(bn));
 
       if (inf != 0) {
         TS_GUM_ASSERT_THROWS_NOTHING(inf->addListOfEvidence(e_list));
@@ -420,7 +420,7 @@ namespace gum_tests {
 
       gum::VariableElimination< double > inf5(&bn);
       inf5.setRelevantPotentialsFinderType(
-        gum::RelevantPotentialsFinderType::DSEP_BAYESBALL_NODES);
+         gum::RelevantPotentialsFinderType::DSEP_BAYESBALL_NODES);
       for (auto pot : evidences) {
         TS_ASSERT_THROWS_NOTHING(inf5.addEvidence(*pot));
       }
@@ -478,8 +478,8 @@ namespace gum_tests {
                 TS_ASSERT_THROWS_NOTHING(inf2.makeInference());
 
                 for (auto xnode : bn.dag()) {
-                  TS_ASSERT(
-                    equalPotentials(inf1.posterior(xnode), inf2.posterior(xnode)));
+                  TS_ASSERT(equalPotentials(inf1.posterior(xnode),
+                                            inf2.posterior(xnode)));
                 }
                 ev_pot2.set(inst2, 0.0f);
               }
@@ -527,7 +527,7 @@ namespace gum_tests {
 
                 gum::VariableElimination< double > inf1(&bn);
                 inf1.setRelevantPotentialsFinderType(
-                  gum::RelevantPotentialsFinderType::DSEP_BAYESBALL_NODES);
+                   gum::RelevantPotentialsFinderType::DSEP_BAYESBALL_NODES);
                 gum::ShaferShenoyInference< double > inf2(&bn);
                 for (auto pot : evidences) {
                   TS_ASSERT_THROWS_NOTHING(inf1.addEvidence(*pot));
@@ -537,8 +537,8 @@ namespace gum_tests {
                 TS_ASSERT_THROWS_NOTHING(inf2.makeInference());
 
                 for (auto xnode : bn.dag()) {
-                  TS_ASSERT(
-                    equalPotentials(inf1.posterior(xnode), inf2.posterior(xnode)));
+                  TS_ASSERT(equalPotentials(inf1.posterior(xnode),
+                                            inf2.posterior(xnode)));
                 }
                 ev_pot2.set(inst2, 0.0f);
               }
@@ -588,7 +588,7 @@ namespace gum_tests {
 
                 gum::VariableElimination< double > inf1(&bn);
                 inf1.setRelevantPotentialsFinderType(
-                  gum::RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS);
+                   gum::RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS);
                 gum::VariableElimination< double > inf2(&bn);
                 for (auto pot : evidences) {
                   TS_ASSERT_THROWS_NOTHING(inf1.addEvidence(*pot));
@@ -705,8 +705,8 @@ namespace gum_tests {
 
       gum::VariableElimination< double > ie_all(&bn);
       TS_ASSERT_THROWS(
-        ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{0, 1, 2}),
-        gum::InvalidArgument);
+         ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{0, 1, 2}),
+         gum::InvalidArgument);
 
       auto res = ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{1, 2});
 
@@ -745,12 +745,12 @@ namespace gum_tests {
 
       gum::VariableElimination< double > ie_all(&bn);
       TS_ASSERT_THROWS(
-        ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{0, 1, 2}),
-        gum::InvalidArgument);
+         ie_all.evidenceImpact(gum::NodeId(0), gum::NodeSet{0, 1, 2}),
+         gum::InvalidArgument);
 
       TS_ASSERT_THROWS(
-        ie_all.evidenceImpact("visit_to_asia?", {"tuberculoisis?", "toto"}),
-        gum::NotFound);
+         ie_all.evidenceImpact("visit_to_asia?", {"tuberculoisis?", "toto"}),
+         gum::NotFound);
 
       auto res = ie_all.evidenceImpact("visit_to_Asia?",
                                        {"tuberculosis?", "tuberculos_or_cancer?"});
@@ -788,12 +788,12 @@ namespace gum_tests {
       H  D
       */
       auto bn =
-        gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
+         gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
 
       gum::VariableElimination< double > ie(&bn);
       gum::Potential< double >           res;
       TS_GUM_ASSERT_THROWS_NOTHING(
-        res = ie.evidenceImpact("E", {"A", "B", "C", "D", "F"}));
+         res = ie.evidenceImpact("E", {"A", "B", "C", "D", "F"}));
       TS_ASSERT_EQUALS(res.nbrDim(), gum::Size(4));   // MarkovBlanket(E)=(A,D,C)
     }
     void testJointWithHardEvidence() {
@@ -807,12 +807,12 @@ namespace gum_tests {
       H  D
       */
       auto bn =
-        gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
+         gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
 
       gum::VariableElimination< double > ie(&bn);
       ie.addEvidence("B", 0);
       gum::NodeSet joint{
-        bn.idFromName("A"), bn.idFromName("B"), bn.idFromName("D")};
+         bn.idFromName("A"), bn.idFromName("B"), bn.idFromName("D")};
 
       ie.addJointTarget(joint);
       ie.makeInference();
@@ -839,7 +839,7 @@ namespace gum_tests {
                               1.0f, 0.0f}   // clang-format on
       );
       bn.cpt(i5).fillWith(
-        {// clang-format off
+         {// clang-format off
                 0.3f, 0.6f, 0.1f,
                 0.5f, 0.5f, 0.0f,
                 0.5f, 0.5f, 0.0f,

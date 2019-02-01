@@ -48,7 +48,7 @@ namespace gum {
   void StatesCounter::reset(const Instantiation& initialState) {
     __counter->clear();
     for (SequenceIteratorSafe< const DiscreteVariable* > varIter =
-           initialState.variablesSequence().beginSafe();
+            initialState.variablesSequence().beginSafe();
          varIter != initialState.variablesSequence().endSafe();
          ++varIter)
       __counter->add(**varIter);
@@ -85,7 +85,7 @@ namespace gum {
     Idx varIter = 0;
     if (parentId)
       varIter =
-        state.variablesSequence().pos(__counter->node(parentId)->nodeVar()) + 1;
+         state.variablesSequence().pos(__counter->node(parentId)->nodeVar()) + 1;
 
 
     for (; varIter < state.variablesSequence().size(); ++varIter) {
@@ -100,11 +100,11 @@ namespace gum {
           parentModa = moda;
         else
           __counter->manager()->setSon(
-            varId, moda, __counter->terminalNodeId(nbVisits));
+             varId, moda, __counter->terminalNodeId(nbVisits));
       }
       parentId = varId;
     }
     __counter->manager()->setSon(
-      parentId, parentModa, __counter->manager()->addTerminalNode(nbVisits + 1));
+       parentId, parentModa, __counter->manager()->addTerminalNode(nbVisits + 1));
   }
 }   // End of namespace gum

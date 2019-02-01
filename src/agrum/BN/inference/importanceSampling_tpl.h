@@ -33,7 +33,7 @@ namespace gum {
   ///  default constructor
   template < typename GUM_SCALAR >
   ImportanceSampling< GUM_SCALAR >::ImportanceSampling(
-    const IBayesNet< GUM_SCALAR >* bn) :
+     const IBayesNet< GUM_SCALAR >* bn) :
       SamplingInference< GUM_SCALAR >(bn) {
     GUM_CONSTRUCTOR(ImportanceSampling);
   }
@@ -89,7 +89,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void ImportanceSampling< GUM_SCALAR >::_unsharpenBN(
-    BayesNetFragment< GUM_SCALAR >* bn, float epsilon) {
+     BayesNetFragment< GUM_SCALAR >* bn, float epsilon) {
     for (const auto nod : bn->nodes().asNodeSet()) {
       auto p = new Potential< GUM_SCALAR >();
       *p = bn->cpt(nod).isNonZeroMap().scale(epsilon) + bn->cpt(nod);
@@ -100,7 +100,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void ImportanceSampling< GUM_SCALAR >::_onContextualize(
-    BayesNetFragment< GUM_SCALAR >* bn) {
+     BayesNetFragment< GUM_SCALAR >* bn) {
     for (const auto ev : this->hardEvidenceNodes()) {
       bn->uninstallCPT(ev);
       bn->installCPT(ev, new Potential< GUM_SCALAR >(*this->evidence()[ev]));

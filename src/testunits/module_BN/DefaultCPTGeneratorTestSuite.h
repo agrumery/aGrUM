@@ -136,7 +136,7 @@ namespace gum_tests {
     void testCreationDeletion() {
       gum::SimpleCPTGenerator< double >* aCptGen = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(aCptGen =
-                                     new gum::SimpleCPTGenerator< double >());
+                                      new gum::SimpleCPTGenerator< double >());
       TS_GUM_ASSERT_THROWS_NOTHING(delete aCptGen);
     }
 
@@ -144,7 +144,7 @@ namespace gum_tests {
     void testRootVariablesFloat() {
       gum::SimpleCPTGenerator< double > aCPTGen;
       TS_GUM_ASSERT_THROWS_NOTHING(
-        aCPTGen.generateCPT(rootPot1F->pos(*binVar1), *rootPot1F));
+         aCPTGen.generateCPT(rootPot1F->pos(*binVar1), *rootPot1F));
 
       gum::Instantiation inst(*rootPot1F);
       float              sum = (float)0;
@@ -161,7 +161,7 @@ namespace gum_tests {
     void testRootVariablesDouble() {
       gum::SimpleCPTGenerator< double > aCPTGen;
       TS_GUM_ASSERT_THROWS_NOTHING(
-        aCPTGen.generateCPT(rootPot1F->pos(*binVar1), *rootPot1D));
+         aCPTGen.generateCPT(rootPot1F->pos(*binVar1), *rootPot1D));
 
       gum::Instantiation inst(*rootPot1D);
       double             sum = (double)0;
@@ -179,7 +179,7 @@ namespace gum_tests {
     void testBinaryVariableFloat_1() {
       gum::SimpleCPTGenerator< double > aCPTGen;
       TS_GUM_ASSERT_THROWS_NOTHING(
-        aCPTGen.generateCPT(pot1F->pos(*binVar1), *pot1F));
+         aCPTGen.generateCPT(pot1F->pos(*binVar1), *pot1F));
 
       gum::Instantiation inst(*pot1F);
       gum::Instantiation instVar1;
@@ -208,7 +208,7 @@ namespace gum_tests {
     void testBinaryVariableFloat_2() {
       gum::SimpleCPTGenerator< double > aCPTGen;
       TS_GUM_ASSERT_THROWS_NOTHING(
-        aCPTGen.generateCPT(pot2F->pos(*binVar3), *pot2F));
+         aCPTGen.generateCPT(pot2F->pos(*binVar3), *pot2F));
 
       gum::Instantiation inst(*pot2F);
       gum::Instantiation instVar1;
@@ -237,7 +237,7 @@ namespace gum_tests {
     void testBinaryVariableDouble_1() {
       gum::SimpleCPTGenerator< double > aCPTGen;
       TS_GUM_ASSERT_THROWS_NOTHING(
-        aCPTGen.generateCPT(pot1D->pos(*binVar1), *pot1D));
+         aCPTGen.generateCPT(pot1D->pos(*binVar1), *pot1D));
 
       gum::Instantiation inst(*pot1D);
       gum::Instantiation instVar1;
@@ -261,7 +261,7 @@ namespace gum_tests {
     void testBinaryVariableDouble_2() {
       gum::SimpleCPTGenerator< double > aCPTGen;
       TS_GUM_ASSERT_THROWS_NOTHING(
-        aCPTGen.generateCPT(pot2D->pos(*binVar4), *pot2D));
+         aCPTGen.generateCPT(pot2D->pos(*binVar4), *pot2D));
 
       gum::Instantiation inst(*pot2D);
       gum::Instantiation instVar1;

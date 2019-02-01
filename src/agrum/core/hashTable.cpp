@@ -58,13 +58,13 @@ namespace gum {
   }
 
   const HashTableConstIterator< int, int >*
-    HashTableIteratorStaticEnd::constEnd4Statics() {
+     HashTableIteratorStaticEnd::constEnd4Statics() {
     return reinterpret_cast< const HashTableConstIterator< int, int >* >(
-      end4Statics());
+       end4Statics());
   }
 
   const HashTableIteratorSafe< int, int >*
-    HashTableIteratorStaticEnd::endSafe4Statics() {
+     HashTableIteratorStaticEnd::endSafe4Statics() {
     static bool first_time = true;
 
     if (first_time) {
@@ -88,18 +88,18 @@ namespace gum {
   }
 
   const HashTableConstIteratorSafe< int, int >*
-    HashTableIteratorStaticEnd::constEndSafe4Statics() {
+     HashTableIteratorStaticEnd::constEndSafe4Statics() {
     return reinterpret_cast< const HashTableConstIteratorSafe< int, int >* >(
-      endSafe4Statics());
+       endSafe4Statics());
   }
 
   const HashTableIterator< int, int >*
-    HashTableIteratorStaticEnd::__HashTableIterEnd =
-      HashTableIteratorStaticEnd::end4Statics();
+     HashTableIteratorStaticEnd::__HashTableIterEnd =
+        HashTableIteratorStaticEnd::end4Statics();
 
   const HashTableIteratorSafe< int, int >*
-    HashTableIteratorStaticEnd::__HashTableIterEndSafe =
-      HashTableIteratorStaticEnd::endSafe4Statics();
+     HashTableIteratorStaticEnd::__HashTableIterEndSafe =
+        HashTableIteratorStaticEnd::endSafe4Statics();
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 
@@ -107,38 +107,38 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::HashTable< int, int >;
-#endif
-#endif
-#endif
+#      endif
+#    endif
+#  endif
 #endif
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::HashTable< int, std::string >;
-#endif
-#endif
-#endif
+#      endif
+#    endif
+#  endif
 #endif
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::HashTable< std::string, std::string >;
-#endif
-#endif
-#endif
+#      endif
+#    endif
+#  endif
 #endif
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::HashTable< std::string, int >;
-#endif
-#endif
-#endif
+#      endif
+#    endif
+#  endif
 #endif

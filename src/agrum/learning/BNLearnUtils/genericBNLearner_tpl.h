@@ -28,9 +28,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     genericBNLearner::Database::Database(
-      const std::string&                filename,
-      const BayesNet< GUM_SCALAR >&     bn,
-      const std::vector< std::string >& missing_symbols) {
+       const std::string&                filename,
+       const BayesNet< GUM_SCALAR >&     bn,
+       const std::vector< std::string >& missing_symbols) {
       // assign to each column name in the database its position
       genericBNLearner::__checkFileName(filename);
       DBInitializerFromCSV<> initializer(filename);
@@ -67,7 +67,7 @@ namespace gum {
 
       // create the parser
       __parser =
-        new DBRowGeneratorParser<>(__database.handler(), DBRowGeneratorSet<>());
+         new DBRowGeneratorParser<>(__database.handler(), DBRowGeneratorSet<>());
     }
 
 
@@ -77,7 +77,7 @@ namespace gum {
       const std::size_t      nb_vars = __database.nbVariables();
       for (std::size_t i = 0; i < nb_vars; ++i) {
         const DiscreteVariable& var =
-          dynamic_cast< const DiscreteVariable& >(__database.variable(i));
+           dynamic_cast< const DiscreteVariable& >(__database.variable(i));
         bn.add(var);
       }
       return bn;
@@ -86,9 +86,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     genericBNLearner::genericBNLearner(
-      const std::string&                 filename,
-      const gum::BayesNet< GUM_SCALAR >& bn,
-      const std::vector< std::string >&  missing_symbols) :
+       const std::string&                 filename,
+       const gum::BayesNet< GUM_SCALAR >& bn,
+       const std::vector< std::string >&  missing_symbols) :
         __score_database(filename, bn, missing_symbols) {
       __no_apriori = new AprioriNoApriori<>(__score_database.databaseTable());
       GUM_CONSTRUCTOR(genericBNLearner);
@@ -98,9 +98,9 @@ namespace gum {
     /// use a new set of database rows' ranges to perform learning
     template < template < typename > class XALLOC >
     void genericBNLearner::useDatabaseRanges(
-      const std::vector< std::pair< std::size_t, std::size_t >,
-                         XALLOC< std::pair< std::size_t, std::size_t > > >&
-        new_ranges) {
+       const std::vector< std::pair< std::size_t, std::size_t >,
+                          XALLOC< std::pair< std::size_t, std::size_t > > >&
+          new_ranges) {
       // use a score to detect whether the ranges are ok
       ScoreLog2Likelihood<> score(__score_database.parser(), *__no_apriori);
       score.setRanges(new_ranges);

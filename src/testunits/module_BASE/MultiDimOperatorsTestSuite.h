@@ -827,12 +827,12 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     gum::MultiDimArray< double >*
-      add_test_arrays(const gum::MultiDimArray< double >* t1,
-                      const gum::MultiDimArray< double >* t2) {
+       add_test_arrays(const gum::MultiDimArray< double >* t1,
+                       const gum::MultiDimArray< double >* t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* > seq = t1->variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
-        t2->variablesSequence();
+         t2->variablesSequence();
 
       for (const auto var : seq2)
         if (!seq.exists(var)) seq << var;
@@ -861,12 +861,12 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     gum::MultiDimArray< double >*
-      sub_test_arrays(const gum::MultiDimArray< double >* t1,
-                      const gum::MultiDimArray< double >* t2) {
+       sub_test_arrays(const gum::MultiDimArray< double >* t1,
+                       const gum::MultiDimArray< double >* t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* > seq = t1->variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
-        t2->variablesSequence();
+         t2->variablesSequence();
 
       for (const auto var : seq2)
         if (!seq.exists(var)) seq << var;
@@ -892,12 +892,12 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     gum::MultiDimArray< double >*
-      mult_test_arrays(const gum::MultiDimArray< double >* t1,
-                       const gum::MultiDimArray< double >* t2) {
+       mult_test_arrays(const gum::MultiDimArray< double >* t1,
+                        const gum::MultiDimArray< double >* t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* > seq = t1->variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
-        t2->variablesSequence();
+         t2->variablesSequence();
 
       for (const auto var : seq2)
         if (!seq.exists(var)) seq << var;
@@ -923,12 +923,12 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     gum::MultiDimArray< double >*
-      div_test_arrays(const gum::MultiDimArray< double >* t1,
-                      const gum::MultiDimArray< double >* t2) {
+       div_test_arrays(const gum::MultiDimArray< double >* t1,
+                       const gum::MultiDimArray< double >* t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* > seq = t1->variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
-        t2->variablesSequence();
+         t2->variablesSequence();
 
       for (const auto var : seq2)
         if (!seq.exists(var)) seq << var;
@@ -955,12 +955,12 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     gum::MultiDimArray< double* >*
-      add_test_arrays4Pointers(const gum::MultiDimArray< double* >* t1,
-                               const gum::MultiDimArray< double* >* t2) {
+       add_test_arrays4Pointers(const gum::MultiDimArray< double* >* t1,
+                                const gum::MultiDimArray< double* >* t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* > seq = t1->variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
-        t2->variablesSequence();
+         t2->variablesSequence();
 
       for (const auto var : seq2)
         if (!seq.exists(var)) seq << var;
@@ -989,12 +989,12 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     gum::MultiDimArray< double* >*
-      sub_test_arrays4Pointers(const gum::MultiDimArray< double* >* t1,
-                               const gum::MultiDimArray< double* >* t2) {
+       sub_test_arrays4Pointers(const gum::MultiDimArray< double* >* t1,
+                                const gum::MultiDimArray< double* >* t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* > seq = t1->variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
-        t2->variablesSequence();
+         t2->variablesSequence();
 
       for (const auto var : seq2)
         if (!seq.exists(var)) seq << var;
@@ -1023,12 +1023,12 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     gum::MultiDimArray< double* >*
-      mult_test_arrays4Pointers(const gum::MultiDimArray< double* >* t1,
-                                const gum::MultiDimArray< double* >* t2) {
+       mult_test_arrays4Pointers(const gum::MultiDimArray< double* >* t1,
+                                 const gum::MultiDimArray< double* >* t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* > seq = t1->variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
-        t2->variablesSequence();
+         t2->variablesSequence();
 
       for (const auto var : seq2)
         if (!seq.exists(var)) seq << var;
@@ -1057,12 +1057,12 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     gum::MultiDimArray< double* >*
-      div_test_arrays4Pointers(const gum::MultiDimArray< double* >* t1,
-                               const gum::MultiDimArray< double* >* t2) {
+       div_test_arrays4Pointers(const gum::MultiDimArray< double* >* t1,
+                                const gum::MultiDimArray< double* >* t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* > seq = t1->variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
-        t2->variablesSequence();
+         t2->variablesSequence();
 
       for (const auto var : seq2)
         if (!seq.exists(var)) seq << var;
@@ -1091,12 +1091,12 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     gum::Potential< double >*
-      add_test_potentials(const gum::Potential< double >& t1,
-                          const gum::Potential< double >& t2) {
+       add_test_potentials(const gum::Potential< double >& t1,
+                           const gum::Potential< double >& t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* > seq = t1.variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
-        t2.variablesSequence();
+         t2.variablesSequence();
 
       for (const auto var : seq2)
         if (!seq.exists(var)) seq << var;
@@ -1125,12 +1125,12 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     gum::Potential< double >*
-      sub_test_potentials(const gum::Potential< double >& t1,
-                          const gum::Potential< double >& t2) {
+       sub_test_potentials(const gum::Potential< double >& t1,
+                           const gum::Potential< double >& t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* > seq = t1.variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
-        t2.variablesSequence();
+         t2.variablesSequence();
 
       for (const auto var : seq2)
         if (!seq.exists(var)) seq << var;
@@ -1159,12 +1159,12 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     gum::Potential< double >*
-      mult_test_potentials(const gum::Potential< double >& t1,
-                           const gum::Potential< double >& t2) {
+       mult_test_potentials(const gum::Potential< double >& t1,
+                            const gum::Potential< double >& t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* > seq = t1.variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
-        t2.variablesSequence();
+         t2.variablesSequence();
 
       for (const auto var : seq2)
         if (!seq.exists(var)) seq << var;
@@ -1193,12 +1193,12 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     gum::Potential< double >*
-      div_test_potentials(const gum::Potential< double >& t1,
-                          const gum::Potential< double >& t2) {
+       div_test_potentials(const gum::Potential< double >& t1,
+                           const gum::Potential< double >& t2) {
       // creation of the resulting variable list
       gum::Sequence< const gum::DiscreteVariable* > seq = t1.variablesSequence();
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
-        t2.variablesSequence();
+         t2.variablesSequence();
 
       for (const auto var : seq2)
         if (!seq.exists(var)) seq << var;

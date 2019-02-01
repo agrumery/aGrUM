@@ -101,11 +101,11 @@ namespace gum {
 
     // The allocator for the indices.
     using IndexAllocator =
-      typename Alloc::template rebind< std::pair< Val, Size > >::other;
+       typename Alloc::template rebind< std::pair< Val, Size > >::other;
 
     // The allocator for the heap.
     using HeapAllocator =
-      typename Alloc::template rebind< std::pair< Priority, const Val* > >::other;
+       typename Alloc::template rebind< std::pair< Priority, const Val* > >::other;
 
     private:
     // ============================================================================
@@ -133,14 +133,14 @@ namespace gum {
      * @param list The initializer list.
      */
     explicit PriorityQueueImplementation(
-      std::initializer_list< std::pair< Val, Priority > > list);
+       std::initializer_list< std::pair< Val, Priority > > list);
 
     /**
      * @brief Copy constructor.
      * @param from The gum::PriorityQueueImplementation to copy.
      */
     PriorityQueueImplementation(
-      const PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >& from);
+       const PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >& from);
 
     /**
      * @brief Generalized copy constructor.
@@ -149,15 +149,15 @@ namespace gum {
      */
     template < typename OtherAlloc >
     PriorityQueueImplementation(
-      const PriorityQueueImplementation< Val, Priority, Cmp, OtherAlloc, Gen >&
-        from);
+       const PriorityQueueImplementation< Val, Priority, Cmp, OtherAlloc, Gen >&
+          from);
 
     /**
      * @brief Move constructor.
      * @param from The gum::PriorityQueueImplementation to move.
      */
     PriorityQueueImplementation(
-      PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >&& from);
+       PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >&& from);
 
     /**
      * @brief Class destructor.
@@ -184,7 +184,7 @@ namespace gum {
      * @return Returns this gum::PriorityQueueImplementation.
      */
     PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >& operator=(
-      const PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >& from);
+       const PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >& from);
 
     /**
      * @brief Generalized copy operator.
@@ -200,8 +200,8 @@ namespace gum {
      */
     template < typename OtherAlloc >
     PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >& operator=(
-      const PriorityQueueImplementation< Val, Priority, Cmp, OtherAlloc, Gen >&
-        from);
+       const PriorityQueueImplementation< Val, Priority, Cmp, OtherAlloc, Gen >&
+          from);
 
     /**
      * @brief Move operator.
@@ -210,7 +210,7 @@ namespace gum {
      * @return Returns this gum::PriorityQueueImplementation.
      */
     PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >& operator=(
-      PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >&& from);
+       PriorityQueueImplementation< Val, Priority, Cmp, Alloc, Gen >&& from);
 
     /**
      * @brief Returns the element at index "index_elt" from the priority queue.
@@ -458,7 +458,7 @@ namespace gum {
 
     /// A hashtable for quickly finding the elements by their value.
     HashTable< Val, Size, IndexAllocator > __indices{
-      HashTableConst::default_size, true, true};
+       HashTableConst::default_size, true, true};
 
     /// The number of elements in the heap.
     Size __nb_elements{0};
@@ -516,11 +516,11 @@ namespace gum {
 
     // The allocator for the indices.
     using IndexAllocator =
-      typename Alloc::template rebind< std::pair< Val, Size > >::other;
+       typename Alloc::template rebind< std::pair< Val, Size > >::other;
 
     // The allocator for the heap.
     using HeapAllocator =
-      typename Alloc::template rebind< std::pair< Priority, Val > >::other;
+       typename Alloc::template rebind< std::pair< Priority, Val > >::other;
 
     private:
     // ============================================================================
@@ -548,14 +548,14 @@ namespace gum {
      * @param list The initializer list.
      */
     explicit PriorityQueueImplementation(
-      std::initializer_list< std::pair< Val, Priority > > list);
+       std::initializer_list< std::pair< Val, Priority > > list);
 
     /**
      * @brief Copy constructor.
      * @param from The gum::PriorityQueueImplementation to copy.
      */
     PriorityQueueImplementation(
-      const PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >& from);
+       const PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >& from);
 
     /**
      * @brief Generalized copy constructor.
@@ -564,15 +564,15 @@ namespace gum {
      */
     template < typename OtherAlloc >
     PriorityQueueImplementation(
-      const PriorityQueueImplementation< Val, Priority, Cmp, OtherAlloc, true >&
-        from);
+       const PriorityQueueImplementation< Val, Priority, Cmp, OtherAlloc, true >&
+          from);
 
     /**
      * @brief Move constructor.
      * @param from The gum::PriorityQueueImplementation to move.
      */
     PriorityQueueImplementation(
-      PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >&& from);
+       PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >&& from);
 
     /**
      * @brief Class destructor.
@@ -599,7 +599,7 @@ namespace gum {
      * @return Returns this gum::PriorityQueueImplementation.
      */
     PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >& operator=(
-      const PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >& from);
+       const PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >& from);
 
     /**
      * @brief Generalized copy operator.
@@ -615,8 +615,8 @@ namespace gum {
      */
     template < typename OtherAlloc >
     PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >& operator=(
-      const PriorityQueueImplementation< Val, Priority, Cmp, OtherAlloc, true >&
-        from);
+       const PriorityQueueImplementation< Val, Priority, Cmp, OtherAlloc, true >&
+          from);
 
     /**
      * @brief Move operator.
@@ -625,7 +625,7 @@ namespace gum {
      * @return Returns this gum::PriorityQueueImplementation.
      */
     PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >& operator=(
-      PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >&& from);
+       PriorityQueueImplementation< Val, Priority, Cmp, Alloc, true >&& from);
 
     /**
      * @brief Returns the element at index "index_elt" from the priority queue.
@@ -873,7 +873,7 @@ namespace gum {
 
     /// A hashtable for quickly finding the elements by their value.
     HashTable< Val, Size, IndexAllocator > __indices{
-      HashTableConst::default_size, true, true};
+       HashTableConst::default_size, true, true};
 
     /// The number of elements in the heap.
     Size __nb_elements{0};
@@ -973,11 +973,11 @@ namespace gum {
     /// @}
 
     using Implementation =
-      PriorityQueueImplementation< Val,
-                                   Priority,
-                                   Cmp,
-                                   Alloc,
-                                   std::is_scalar< Val >::value >;
+       PriorityQueueImplementation< Val,
+                                    Priority,
+                                    Cmp,
+                                    Alloc,
+                                    std::is_scalar< Val >::value >;
 
     // ============================================================================
     /// @name Constructors / Destructors
@@ -1005,7 +1005,7 @@ namespace gum {
      * @param list The initializer list.
      */
     explicit PriorityQueue(
-      std::initializer_list< std::pair< Val, Priority > > list);
+       std::initializer_list< std::pair< Val, Priority > > list);
 
     /**
      * @brief Copy constructor.
@@ -1049,7 +1049,7 @@ namespace gum {
      * @return Returns this gum::PriorityQueue.
      */
     PriorityQueue< Val, Priority, Cmp, Alloc >&
-      operator=(const PriorityQueue< Val, Priority, Cmp, Alloc >& from);
+       operator=(const PriorityQueue< Val, Priority, Cmp, Alloc >& from);
 
     /**
      * @brief Generalized opy operator.
@@ -1064,7 +1064,7 @@ namespace gum {
      */
     template < typename OtherAlloc >
     PriorityQueue< Val, Priority, Cmp, Alloc >&
-      operator=(const PriorityQueue< Val, Priority, Cmp, OtherAlloc >& from);
+       operator=(const PriorityQueue< Val, Priority, Cmp, OtherAlloc >& from);
 
     /**
      * @brief Move operator.
@@ -1072,7 +1072,7 @@ namespace gum {
      * @return Returns this gum::PriorityQueue.
      */
     PriorityQueue< Val, Priority, Cmp, Alloc >&
-      operator=(PriorityQueue< Val, Priority, Cmp, Alloc >&& from);
+       operator=(PriorityQueue< Val, Priority, Cmp, Alloc >&& from);
 
     /// @}
   };
@@ -1080,14 +1080,14 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::PriorityQueue< std::string >;
-#endif
+#  endif
 #endif
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::PriorityQueue< int, int >;
-#endif
+#  endif
 #endif
 
 // always include the implementation of the templates

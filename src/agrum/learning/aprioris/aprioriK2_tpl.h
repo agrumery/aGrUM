@@ -32,9 +32,10 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE AprioriK2< ALLOC >::AprioriK2(
-      const DatabaseTable< ALLOC >&                                 database,
-      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename AprioriK2< ALLOC >::allocator_type&            alloc) :
+       const DatabaseTable< ALLOC >& database,
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                                                          nodeId2columns,
+       const typename AprioriK2< ALLOC >::allocator_type& alloc) :
         AprioriSmoothing< ALLOC >(database, nodeId2columns, alloc) {
       GUM_CONSTRUCTOR(AprioriK2);
     }
@@ -43,8 +44,8 @@ namespace gum {
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE AprioriK2< ALLOC >::AprioriK2(
-      const AprioriK2< ALLOC >&                          from,
-      const typename AprioriK2< ALLOC >::allocator_type& alloc) :
+       const AprioriK2< ALLOC >&                          from,
+       const typename AprioriK2< ALLOC >::allocator_type& alloc) :
         AprioriSmoothing< ALLOC >(from, alloc) {
       GUM_CONS_CPY(AprioriK2);
     }
@@ -59,8 +60,8 @@ namespace gum {
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE AprioriK2< ALLOC >::AprioriK2(
-      AprioriK2< ALLOC >&&                               from,
-      const typename AprioriK2< ALLOC >::allocator_type& alloc) :
+       AprioriK2< ALLOC >&&                               from,
+       const typename AprioriK2< ALLOC >::allocator_type& alloc) :
         AprioriSmoothing< ALLOC >(std::move(from), alloc) {
       GUM_CONS_MOV(AprioriK2);
     }
@@ -75,7 +76,7 @@ namespace gum {
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
     AprioriK2< ALLOC >* AprioriK2< ALLOC >::clone(
-      const typename AprioriK2< ALLOC >::allocator_type& alloc) const {
+       const typename AprioriK2< ALLOC >::allocator_type& alloc) const {
       ALLOC< AprioriK2< ALLOC > > allocator(alloc);
       AprioriK2< ALLOC >*         apriori = allocator.allocate(1);
       try {

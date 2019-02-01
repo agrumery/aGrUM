@@ -79,7 +79,7 @@ namespace gum {
 
       /// copy operator
       StructuralConstraintDiGraph&
-        operator=(const StructuralConstraintDiGraph& from);
+         operator=(const StructuralConstraintDiGraph& from);
 
       /// move operator
       StructuralConstraintDiGraph& operator=(StructuralConstraintDiGraph&& from);

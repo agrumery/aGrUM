@@ -43,16 +43,16 @@ namespace gum {
   // the function used to combine two tables
   template < typename GUM_SCALAR >
   INLINE static Potential< GUM_SCALAR >*
-    LPNewmultiPotential(const Potential< GUM_SCALAR >& t1,
-                        const Potential< GUM_SCALAR >& t2) {
+     LPNewmultiPotential(const Potential< GUM_SCALAR >& t1,
+                         const Potential< GUM_SCALAR >& t2) {
     return new Potential< GUM_SCALAR >(t1 * t2);
   }
 
   // the function used to combine two tables
   template < typename GUM_SCALAR >
   INLINE static Potential< GUM_SCALAR >*
-    LPNewprojPotential(const Potential< GUM_SCALAR >&        t1,
-                       const Set< const DiscreteVariable* >& del_vars) {
+     LPNewprojPotential(const Potential< GUM_SCALAR >&        t1,
+                        const Set< const DiscreteVariable* >& del_vars) {
     return new Potential< GUM_SCALAR >(t1.margSumOut(del_vars));
   }
 
@@ -76,18 +76,18 @@ namespace gum {
 
     /// default constructor
     explicit LazyPropagation(
-      const IBayesNet< GUM_SCALAR >* BN,
-      RelevantPotentialsFinderType =
-        RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS,
-      FindBarrenNodesType = FindBarrenNodesType::FIND_BARREN_NODES,
-      bool use_binary_join_tree = true);
+       const IBayesNet< GUM_SCALAR >* BN,
+       RelevantPotentialsFinderType =
+          RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS,
+       FindBarrenNodesType = FindBarrenNodesType::FIND_BARREN_NODES,
+       bool use_binary_join_tree = true);
 
     /// avoid copy constructors
     LazyPropagation(const LazyPropagation< GUM_SCALAR >&) = delete;
 
     /// avoid copy operators
     LazyPropagation< GUM_SCALAR >&
-      operator=(const LazyPropagation< GUM_SCALAR >&) = delete;
+       operator=(const LazyPropagation< GUM_SCALAR >&) = delete;
 
     /// destructor
     ~LazyPropagation() final;
@@ -228,8 +228,8 @@ namespace gum {
      * @param declared_target the joint target declared by the user that contains
      * set */
     const Potential< GUM_SCALAR >&
-      _jointPosterior(const NodeSet& wanted_target,
-                      const NodeSet& declared_target) final;
+       _jointPosterior(const NodeSet& wanted_target,
+                       const NodeSet& declared_target) final;
 
     /// returns a fresh potential equal to P(argument,evidence)
     Potential< GUM_SCALAR >* _unnormalizedJointPosterior(NodeId id) final;
@@ -241,7 +241,7 @@ namespace gum {
     private:
     typedef Set< const Potential< GUM_SCALAR >* > __PotentialSet;
     typedef SetIteratorSafe< const Potential< GUM_SCALAR >* >
-      __PotentialSetIterator;
+       __PotentialSetIterator;
 
 
     /// the type of relevant potential finding algorithm to be used
@@ -250,21 +250,21 @@ namespace gum {
     /** @brief update a set of potentials: the remaining are those to be
      * combined to produce a message on a separator */
     void (LazyPropagation< GUM_SCALAR >::*__findRelevantPotentials)(
-      Set< const Potential< GUM_SCALAR >* >& pot_list,
-      Set< const DiscreteVariable* >&        kept_vars);
+       Set< const Potential< GUM_SCALAR >* >& pot_list,
+       Set< const DiscreteVariable* >&        kept_vars);
 
     /// the type of barren nodes computation we wish
     FindBarrenNodesType __barren_nodes_type;
 
     /// the operator for performing the projections
     Potential< GUM_SCALAR >* (*__projection_op)(
-      const Potential< GUM_SCALAR >&,
-      const Set< const DiscreteVariable* >&){LPNewprojPotential};
+       const Potential< GUM_SCALAR >&,
+       const Set< const DiscreteVariable* >&){LPNewprojPotential};
 
     /// the operator for performing the combinations
     Potential< GUM_SCALAR >* (*__combination_op)(const Potential< GUM_SCALAR >&,
                                                  const Potential< GUM_SCALAR >&){
-      LPNewmultiPotential};
+       LPNewmultiPotential};
 
     /// the triangulation class creating the junction tree used for inference
     Triangulation* __triangulation;
@@ -387,11 +387,11 @@ namespace gum {
     void __createNewJT();
     /// sets the operator for performing the projections
     void __setProjectionFunction(Potential< GUM_SCALAR >* (*proj)(
-      const Potential< GUM_SCALAR >&, const Set< const DiscreteVariable* >&));
+       const Potential< GUM_SCALAR >&, const Set< const DiscreteVariable* >&));
 
     /// sets the operator for performing the combinations
     void __setCombinationFunction(Potential< GUM_SCALAR >* (*comb)(
-      const Potential< GUM_SCALAR >&, const Potential< GUM_SCALAR >&));
+       const Potential< GUM_SCALAR >&, const Potential< GUM_SCALAR >&));
 
     /// invalidate all the messages sent from a given clique
     void __diffuseMessageInvalidations(NodeId   from_id,
@@ -408,19 +408,19 @@ namespace gum {
      * combined
      * to produce a message on a separator */
     void __findRelevantPotentialsWithdSeparation(
-      __PotentialSet& pot_list, Set< const DiscreteVariable* >& kept_vars);
+       __PotentialSet& pot_list, Set< const DiscreteVariable* >& kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
     void __findRelevantPotentialsWithdSeparation2(
-      __PotentialSet& pot_list, Set< const DiscreteVariable* >& kept_vars);
+       __PotentialSet& pot_list, Set< const DiscreteVariable* >& kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
     void __findRelevantPotentialsWithdSeparation3(
-      __PotentialSet& pot_list, Set< const DiscreteVariable* >& kept_vars);
+       __PotentialSet& pot_list, Set< const DiscreteVariable* >& kept_vars);
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
@@ -436,8 +436,8 @@ namespace gum {
 
     // remove barren variables and return the newly created projected potentials
     __PotentialSet
-      __removeBarrenVariables(__PotentialSet&                 pot_list,
-                              Set< const DiscreteVariable* >& del_vars);
+       __removeBarrenVariables(__PotentialSet&                 pot_list,
+                               Set< const DiscreteVariable* >& del_vars);
 
     /** @brief removes variables del_vars from a list of potentials and
      * returns the resulting list */

@@ -40,7 +40,7 @@ namespace gum {
 
   // copy constructor
   DefaultJunctionTreeStrategy::DefaultJunctionTreeStrategy(
-    const DefaultJunctionTreeStrategy& from) :
+     const DefaultJunctionTreeStrategy& from) :
       JunctionTreeStrategy(from),
       __has_junction_tree(from.__has_junction_tree),
       __junction_tree(from.__junction_tree),
@@ -51,7 +51,7 @@ namespace gum {
 
   // move constructor
   DefaultJunctionTreeStrategy::DefaultJunctionTreeStrategy(
-    DefaultJunctionTreeStrategy&& from) :
+     DefaultJunctionTreeStrategy&& from) :
       JunctionTreeStrategy(std::move(from)),
       __has_junction_tree(from.__has_junction_tree),
       __junction_tree(std::move(from.__junction_tree)),
@@ -73,7 +73,7 @@ namespace gum {
 
   // virtual copy constructor
   DefaultJunctionTreeStrategy*
-    DefaultJunctionTreeStrategy::copyFactory(StaticTriangulation* tr) const {
+     DefaultJunctionTreeStrategy::copyFactory(StaticTriangulation* tr) const {
     if (tr == nullptr) {
       return new DefaultJunctionTreeStrategy(*this);
     } else {

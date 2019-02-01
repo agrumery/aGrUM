@@ -34,7 +34,7 @@ namespace gum {
     /// returns the allocator used
     template < typename GUM_SCALAR, template < typename > class ALLOC >
     INLINE typename DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::allocator_type
-      DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::getAllocator() const {
+       DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::getAllocator() const {
       return DBRowGenerator< ALLOC >::getAllocator();
     }
 
@@ -42,13 +42,14 @@ namespace gum {
     /// default constructor
     template < typename GUM_SCALAR, template < typename > class ALLOC >
     DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::DBRowGeneratorWithBN(
-      const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > >
-                                                                    column_types,
-      const BayesNet< GUM_SCALAR >&                                 bn,
-      const DBRowGeneratorGoal                                      goal,
-      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::allocator_type&
-        alloc) :
+       const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > >
+                                     column_types,
+       const BayesNet< GUM_SCALAR >& bn,
+       const DBRowGeneratorGoal      goal,
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+          nodeId2columns,
+       const typename DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::allocator_type&
+          alloc) :
         DBRowGenerator< ALLOC >(column_types, goal, alloc),
         _bn(&bn), _nodeId2columns(nodeId2columns) {
       GUM_CONSTRUCTOR(DBRowGeneratorWithBN);
@@ -58,9 +59,9 @@ namespace gum {
     /// copy constructor with a given allocator
     template < typename GUM_SCALAR, template < typename > class ALLOC >
     DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::DBRowGeneratorWithBN(
-      const DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >& from,
-      const typename DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::allocator_type&
-        alloc) :
+       const DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >& from,
+       const typename DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::allocator_type&
+          alloc) :
         DBRowGenerator< ALLOC >(from, alloc),
         _bn(from._bn), _nodeId2columns(from._nodeId2columns) {
       GUM_CONS_CPY(DBRowGeneratorWithBN);
@@ -70,16 +71,16 @@ namespace gum {
     /// copy constructor
     template < typename GUM_SCALAR, template < typename > class ALLOC >
     DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::DBRowGeneratorWithBN(
-      const DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >& from) :
+       const DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >& from) :
         DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >(from, from.getAllocator()) {}
 
 
     /// move constructor with a given allocator
     template < typename GUM_SCALAR, template < typename > class ALLOC >
     DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::DBRowGeneratorWithBN(
-      DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >&& from,
-      const typename DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::allocator_type&
-        alloc) :
+       DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >&& from,
+       const typename DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::allocator_type&
+          alloc) :
         DBRowGenerator< ALLOC >(std::move(from), alloc),
         _bn(from._bn), _nodeId2columns(std::move(from._nodeId2columns)) {
       GUM_CONS_MOV(DBRowGeneratorWithBN);
@@ -89,7 +90,7 @@ namespace gum {
     /// move constructor
     template < typename GUM_SCALAR, template < typename > class ALLOC >
     DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::DBRowGeneratorWithBN(
-      DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >&& from) :
+       DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >&& from) :
         DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >(std::move(from),
                                                   from.getAllocator()) {}
 
@@ -104,8 +105,8 @@ namespace gum {
     /// copy operator
     template < typename GUM_SCALAR, template < typename > class ALLOC >
     DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >&
-        DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::
-        operator=(const DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >& from) {
+          DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::
+          operator=(const DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >& from) {
       if (this != &from) {
         DBRowGenerator< ALLOC >::operator=(from);
         _bn = from._bn;
@@ -119,8 +120,8 @@ namespace gum {
     /// move operator
     template < typename GUM_SCALAR, template < typename > class ALLOC >
     DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >&
-        DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::
-        operator=(DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >&& from) {
+          DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::
+          operator=(DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >&& from) {
       if (this != &from) {
         DBRowGenerator< ALLOC >::operator=(std::move(from));
         _bn = from._bn;
@@ -134,7 +135,7 @@ namespace gum {
     /// assign a new Bayes net to the generator
     template < typename GUM_SCALAR, template < typename > class ALLOC >
     INLINE void DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::setBayesNet(
-      const BayesNet< GUM_SCALAR >& new_bn) {
+       const BayesNet< GUM_SCALAR >& new_bn) {
       _bn = &new_bn;
     }
 

@@ -85,7 +85,7 @@ namespace gum {
     template < typename T_DATA, template < typename > class ALLOC >
     template < template < typename > class OTHER_ALLOC >
     INLINE void DBRow< T_DATA, ALLOC >::setRow(
-      const std::vector< T_DATA, OTHER_ALLOC< T_DATA > >& new_row) {
+       const std::vector< T_DATA, OTHER_ALLOC< T_DATA > >& new_row) {
       const std::size_t size = new_row.size();
       if (size) {
         _row.resize(size);
@@ -99,7 +99,7 @@ namespace gum {
     /// sets a new row
     template < typename T_DATA, template < typename > class ALLOC >
     INLINE void DBRow< T_DATA, ALLOC >::setRow(
-      std::vector< T_DATA, ALLOC< T_DATA > >&& new_row) {
+       std::vector< T_DATA, ALLOC< T_DATA > >&& new_row) {
       _row = std::move(new_row);
     }
 
@@ -108,9 +108,9 @@ namespace gum {
     template < typename T_DATA, template < typename > class ALLOC >
     template < template < typename > class OTHER_ALLOC >
     INLINE DBRow< T_DATA, ALLOC >::DBRow(
-      const std::vector< T_DATA, OTHER_ALLOC< T_DATA > >& cells,
-      const double                                        weight,
-      const ALLOC< T_DATA >&                              alloc) :
+       const std::vector< T_DATA, OTHER_ALLOC< T_DATA > >& cells,
+       const double                                        weight,
+       const ALLOC< T_DATA >&                              alloc) :
         _row(alloc),
         _weight(weight) {
       setRow(cells);
@@ -120,10 +120,10 @@ namespace gum {
 
     /// initializer from a vector of cells
     template < typename T_DATA, template < typename > class ALLOC >
-    INLINE
-      DBRow< T_DATA, ALLOC >::DBRow(std::vector< T_DATA, ALLOC< T_DATA > >&& cells,
-                                    const double           weight,
-                                    const ALLOC< T_DATA >& alloc) :
+    INLINE DBRow< T_DATA, ALLOC >::DBRow(
+       std::vector< T_DATA, ALLOC< T_DATA > >&& cells,
+       const double                             weight,
+       const ALLOC< T_DATA >&                   alloc) :
         _row(std::move(cells), alloc),
         _weight(weight) {
       GUM_CONSTRUCTOR(DBRow);
@@ -165,7 +165,7 @@ namespace gum {
     /// virtual copy constructor with a given allocator
     template < typename T_DATA, template < typename > class ALLOC >
     DBRow< T_DATA, ALLOC >*
-      DBRow< T_DATA, ALLOC >::clone(const ALLOC< T_DATA >& alloc) const {
+       DBRow< T_DATA, ALLOC >::clone(const ALLOC< T_DATA >& alloc) const {
       ALLOC< DBRow< T_DATA, ALLOC > > allocator(alloc);
       DBRow< T_DATA, ALLOC >*         row = allocator.allocate(1);
       try {

@@ -56,54 +56,62 @@
 
 // FOR EXPANSION OF MACRO IN ARGS OF GUM_CONSTRUCTOR, WE NEED TO USE A 2-LEVEL
 // DEFINITION OF GUM_CONSTRUCTOR
-#    define GUM_CONSTRUCTOR_BASIC(x)                                         \
-      {                                                                      \
-        gum::__debug__::__inc_creation(                                      \
-          #x, __FILE__, __LINE__, "constructor of", (void*)this, sizeof(x)); \
+#    define GUM_CONSTRUCTOR_BASIC(x)                                          \
+      {                                                                       \
+        gum::__debug__::__inc_creation(                                       \
+           #x, __FILE__, __LINE__, "constructor of", (void*)this, sizeof(x)); \
       }
 #    define GUM_CONSTRUCTOR(x) GUM_CONSTRUCTOR_BASIC(x)
 
 // FOR EXPANSION OF MACRO IN ARGS OF GUM_DESTRUCTOR, WE NEED TO USE A 2-LEVEL
 // DEFINITION OF GUM_DESTRUCTOR
-#    define GUM_DESTRUCTOR_BASIC(x)                              \
-      {                                                          \
-        gum::__debug__::__inc_deletion(                          \
-          #x, __FILE__, __LINE__, "destructor of", (void*)this); \
+#    define GUM_DESTRUCTOR_BASIC(x)                               \
+      {                                                           \
+        gum::__debug__::__inc_deletion(                           \
+           #x, __FILE__, __LINE__, "destructor of", (void*)this); \
       }
 #    define GUM_DESTRUCTOR(x) GUM_DESTRUCTOR_BASIC(x)
 
 // FOR EXPANSION OF MACRO IN ARGS OF GUM_CONS_CPY, WE NEED TO USE A 2-LEVEL
 // DEFINITION OF GUM_CONS_CPY
-#    define GUM_CONS_CPY_BASIC(x)                                                 \
-      {                                                                           \
-        gum::__debug__::__inc_creation(                                           \
-          #x, __FILE__, __LINE__, "copy constructor of", (void*)this, sizeof(x)); \
+#    define GUM_CONS_CPY_BASIC(x)                             \
+      {                                                       \
+        gum::__debug__::__inc_creation(#x,                    \
+                                       __FILE__,              \
+                                       __LINE__,              \
+                                       "copy constructor of", \
+                                       (void*)this,           \
+                                       sizeof(x));            \
       }
 #    define GUM_CONS_CPY(x) GUM_CONS_CPY_BASIC(x)
 
 // FOR EXPANSION OF MACRO IN ARGS OF GUM_CONS_MOV, WE NEED TO USE A 2-LEVEL
 // DEFINITION OF GUM_CONS_MOV
-#    define GUM_CONS_MOV_BASIC(x)                                                 \
-      {                                                                           \
-        gum::__debug__::__inc_creation(                                           \
-          #x, __FILE__, __LINE__, "move constructor of", (void*)this, sizeof(x)); \
+#    define GUM_CONS_MOV_BASIC(x)                             \
+      {                                                       \
+        gum::__debug__::__inc_creation(#x,                    \
+                                       __FILE__,              \
+                                       __LINE__,              \
+                                       "move constructor of", \
+                                       (void*)this,           \
+                                       sizeof(x));            \
       }
 #    define GUM_CONS_MOV(x) GUM_CONS_MOV_BASIC(x)
 
 // FOR EXPANSION OF MACRO IN ARGS OF GUM_CONSTRUCTOR, WE NEED TO USE A 2-LEVEL
 // DEFINITION OF GUM_CONSTRUCTOR
-#    define GUM_OP_CPY_BASIC(x)                                     \
-      {                                                             \
-        gum::__debug__::__show_trace(                               \
-          #x, __FILE__, __LINE__, "copy operator of", (void*)this); \
+#    define GUM_OP_CPY_BASIC(x)                                      \
+      {                                                              \
+        gum::__debug__::__show_trace(                                \
+           #x, __FILE__, __LINE__, "copy operator of", (void*)this); \
       }
 #    define GUM_OP_CPY(x) GUM_OP_CPY_BASIC(x)
 // FOR EXPANSION OF MACRO IN ARGS OF GUM_CONSTRUCTOR, WE NEED TO USE A 2-LEVEL
 // DEFINITION OF GUM_CONSTRUCTOR
-#    define GUM_OP_MOV_BASIC(x)                                     \
-      {                                                             \
-        gum::__debug__::__show_trace(                               \
-          #x, __FILE__, __LINE__, "move operator of", (void*)this); \
+#    define GUM_OP_MOV_BASIC(x)                                      \
+      {                                                              \
+        gum::__debug__::__show_trace(                                \
+           #x, __FILE__, __LINE__, "move operator of", (void*)this); \
       }
 #    define GUM_OP_MOV(x) GUM_OP_MOV_BASIC(x)
 /////////////////////////////////////////////////////////////
@@ -132,7 +140,7 @@
       GUM__PRINT(__FILE__,   \
                  __LINE__,   \
                  std::endl   \
-                   << "   --> GUMtrace of <" << #x << ">: " << x)
+                    << "   --> GUMtrace of <" << #x << ">: " << x)
 
 #    define GUM_TRACE_NEWLINE \
       { std::cout << std::endl; }

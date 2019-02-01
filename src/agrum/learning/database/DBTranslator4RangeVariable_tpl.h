@@ -42,9 +42,9 @@ namespace gum {
     template < template < typename > class ALLOC >
     template < template < typename > class XALLOC >
     DBTranslator4RangeVariable< ALLOC >::DBTranslator4RangeVariable(
-      const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
-      std::size_t                                              max_dico_entries,
-      const typename DBTranslator4RangeVariable< ALLOC >::allocator_type& alloc) :
+       const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
+       std::size_t                                              max_dico_entries,
+       const typename DBTranslator4RangeVariable< ALLOC >::allocator_type& alloc) :
         DBTranslator< ALLOC >(DBTranslatedValueType::DISCRETE,
                               missing_symbols,
                               true,
@@ -72,10 +72,10 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     DBTranslator4RangeVariable< ALLOC >::DBTranslator4RangeVariable(
-      std::size_t max_dico_entries,
-      const typename DBTranslator4RangeVariable< ALLOC >::allocator_type& alloc) :
+       std::size_t max_dico_entries,
+       const typename DBTranslator4RangeVariable< ALLOC >::allocator_type& alloc) :
         DBTranslator< ALLOC >(
-          DBTranslatedValueType::DISCRETE, true, max_dico_entries, alloc),
+           DBTranslatedValueType::DISCRETE, true, max_dico_entries, alloc),
         __variable("var", "", 1, 0) {
       GUM_CONSTRUCTOR(DBTranslator4RangeVariable);
     }
@@ -85,11 +85,11 @@ namespace gum {
     template < template < typename > class ALLOC >
     template < template < typename > class XALLOC >
     DBTranslator4RangeVariable< ALLOC >::DBTranslator4RangeVariable(
-      const RangeVariable&                                     var,
-      const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
-      const bool                                               editable_dictionary,
-      std::size_t                                              max_dico_entries,
-      const typename DBTranslator4RangeVariable< ALLOC >::allocator_type& alloc) :
+       const RangeVariable&                                     var,
+       const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
+       const bool  editable_dictionary,
+       std::size_t max_dico_entries,
+       const typename DBTranslator4RangeVariable< ALLOC >::allocator_type& alloc) :
         DBTranslator< ALLOC >(DBTranslatedValueType::DISCRETE,
                               missing_symbols,
                               editable_dictionary,
@@ -153,10 +153,10 @@ namespace gum {
     /// default constructor with a range variable as translator
     template < template < typename > class ALLOC >
     DBTranslator4RangeVariable< ALLOC >::DBTranslator4RangeVariable(
-      const RangeVariable& var,
-      const bool           editable_dictionary,
-      std::size_t          max_dico_entries,
-      const typename DBTranslator4RangeVariable< ALLOC >::allocator_type& alloc) :
+       const RangeVariable& var,
+       const bool           editable_dictionary,
+       std::size_t          max_dico_entries,
+       const typename DBTranslator4RangeVariable< ALLOC >::allocator_type& alloc) :
         DBTranslator< ALLOC >(DBTranslatedValueType::DISCRETE,
                               editable_dictionary,
                               max_dico_entries,
@@ -189,8 +189,8 @@ namespace gum {
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
     DBTranslator4RangeVariable< ALLOC >::DBTranslator4RangeVariable(
-      const DBTranslator4RangeVariable< ALLOC >&                          from,
-      const typename DBTranslator4RangeVariable< ALLOC >::allocator_type& alloc) :
+       const DBTranslator4RangeVariable< ALLOC >&                          from,
+       const typename DBTranslator4RangeVariable< ALLOC >::allocator_type& alloc) :
         DBTranslator< ALLOC >(from, alloc),
         __variable(from.__variable),
         __status_int_missing_symbols(from.__status_int_missing_symbols),
@@ -203,20 +203,20 @@ namespace gum {
     /// copy constructor
     template < template < typename > class ALLOC >
     DBTranslator4RangeVariable< ALLOC >::DBTranslator4RangeVariable(
-      const DBTranslator4RangeVariable< ALLOC >& from) :
+       const DBTranslator4RangeVariable< ALLOC >& from) :
         DBTranslator4RangeVariable< ALLOC >(from, from.getAllocator()) {}
 
 
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
     DBTranslator4RangeVariable< ALLOC >::DBTranslator4RangeVariable(
-      DBTranslator4RangeVariable< ALLOC >&&                               from,
-      const typename DBTranslator4RangeVariable< ALLOC >::allocator_type& alloc) :
+       DBTranslator4RangeVariable< ALLOC >&&                               from,
+       const typename DBTranslator4RangeVariable< ALLOC >::allocator_type& alloc) :
         DBTranslator< ALLOC >(std::move(from), alloc),
         __variable(std::move(from.__variable)),
         __status_int_missing_symbols(std::move(from.__status_int_missing_symbols)),
         __translated_int_missing_symbols(
-          std::move(from.__translated_int_missing_symbols)),
+           std::move(from.__translated_int_missing_symbols)),
         __nonint_missing_symbol(std::move(from.__nonint_missing_symbol)) {
       GUM_CONS_MOV(DBTranslator4RangeVariable);
     }
@@ -225,7 +225,7 @@ namespace gum {
     /// move constructor
     template < template < typename > class ALLOC >
     DBTranslator4RangeVariable< ALLOC >::DBTranslator4RangeVariable(
-      DBTranslator4RangeVariable< ALLOC >&& from) :
+       DBTranslator4RangeVariable< ALLOC >&& from) :
         DBTranslator4RangeVariable< ALLOC >(std::move(from), from.getAllocator()) {
     }
 
@@ -233,9 +233,9 @@ namespace gum {
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
     DBTranslator4RangeVariable< ALLOC >*
-      DBTranslator4RangeVariable< ALLOC >::clone(
-        const typename DBTranslator4RangeVariable< ALLOC >::allocator_type& alloc)
-        const {
+       DBTranslator4RangeVariable< ALLOC >::clone(
+          const typename DBTranslator4RangeVariable< ALLOC >::allocator_type&
+             alloc) const {
       ALLOC< DBTranslator4RangeVariable< ALLOC > > allocator(alloc);
       DBTranslator4RangeVariable< ALLOC >* translator = allocator.allocate(1);
       try {
@@ -287,9 +287,9 @@ namespace gum {
         DBTranslator< ALLOC >::operator=(std::move(from));
         __variable = std::move(from.__variable);
         __status_int_missing_symbols =
-          std::move(from.__status_int_missing_symbols);
+           std::move(from.__status_int_missing_symbols);
         __translated_int_missing_symbols =
-          std::move(from.__translated_int_missing_symbols);
+           std::move(from.__translated_int_missing_symbols);
         __nonint_missing_symbol = std::move(from.__nonint_missing_symbol);
       }
 
@@ -300,7 +300,7 @@ namespace gum {
     /// returns the translation of a string, as found in the current dictionary
     template < template < typename > class ALLOC >
     DBTranslatedValue
-      DBTranslator4RangeVariable< ALLOC >::translate(const std::string& str) {
+       DBTranslator4RangeVariable< ALLOC >::translate(const std::string& str) {
       // try to get the index of str within the labelized variable. If this
       // cannot be found, try to find if this corresponds to a missing value.
       // Finally, if this is still not a missing value and, if enabled, try
@@ -338,10 +338,11 @@ namespace gum {
         // if str corresponds to a missing symbol that we already
         // translated, raise an exception
         if (__translated_int_missing_symbols.exists(new_value)) {
-          GUM_ERROR(OperationNotAllowed,
-                    "String \""
-                      << str << "\" cannot be translated because "
-                      << "it corresponds to an already translated missing symbol");
+          GUM_ERROR(
+             OperationNotAllowed,
+             "String \""
+                << str << "\" cannot be translated because "
+                << "it corresponds to an already translated missing symbol");
         }
 
         // now, we can try to add str as a new bound of the range variable
@@ -384,9 +385,9 @@ namespace gum {
             if ((missing >= new_value) && (missing <= upper_bound)) {
               GUM_ERROR(OperationNotAllowed,
                         "String \""
-                          << str << "\" cannot be translated "
-                          << "because it would induce a new range containing "
-                          << "an already translated missing symbol");
+                           << str << "\" cannot be translated "
+                           << "because it would induce a new range containing "
+                           << "an already translated missing symbol");
             }
           }
 
@@ -425,9 +426,9 @@ namespace gum {
             if ((missing <= new_value) && (missing >= lower_bound)) {
               GUM_ERROR(OperationNotAllowed,
                         "String \""
-                          << str << "\" cannot be translated "
-                          << "because it would induce a new range containing "
-                          << "an already translated missing symbol");
+                           << str << "\" cannot be translated "
+                           << "because it would induce a new range containing "
+                           << "an already translated missing symbol");
             }
           }
 
@@ -461,7 +462,7 @@ namespace gum {
     /// returns the original value for a given translation
     template < template < typename > class ALLOC >
     INLINE std::string DBTranslator4RangeVariable< ALLOC >::translateBack(
-      const DBTranslatedValue translated_val) const {
+       const DBTranslatedValue translated_val) const {
       try {
         return this->_back_dico.second(translated_val.discr_val);
       } catch (Exception&) {
@@ -508,7 +509,7 @@ namespace gum {
       const std::size_t size = labels.size();
       std::vector< std::pair< std::size_t, std::string >,
                    ALLOC< std::pair< std::size_t, std::string > > >
-        xlabels;
+         xlabels;
       xlabels.reserve(size);
       bool modifications = false;
       for (std::size_t i = std::size_t(0); i < size; ++i) {
@@ -531,7 +532,7 @@ namespace gum {
       HashTable< std::size_t,
                  std::size_t,
                  ALLOC< std::pair< std::size_t, std::size_t > > >
-        mapping((Size)size);
+         mapping((Size)size);
       for (std::size_t i = std::size_t(0); i < size; ++i) {
         mapping.insert(xlabels[i].first, i);
         this->_back_dico.insert(i, xlabels[i].second);

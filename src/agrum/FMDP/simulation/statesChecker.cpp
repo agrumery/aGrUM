@@ -38,7 +38,7 @@ namespace gum {
   void StatesChecker::reset(const Instantiation& initialState) {
     __checker->clear();
     for (SequenceIteratorSafe< const DiscreteVariable* > varIter =
-           initialState.variablesSequence().beginSafe();
+            initialState.variablesSequence().beginSafe();
          varIter != initialState.variablesSequence().endSafe();
          ++varIter)
       __checker->add(**varIter);
@@ -68,7 +68,7 @@ namespace gum {
     Idx varIter = 0;
     if (parentId)
       varIter =
-        state.variablesSequence().pos(__checker->node(parentId)->nodeVar()) + 1;
+         state.variablesSequence().pos(__checker->node(parentId)->nodeVar()) + 1;
 
 
     for (; varIter < state.variablesSequence().size(); ++varIter) {

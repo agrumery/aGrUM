@@ -414,7 +414,7 @@ namespace gum {
 
     /// Copy operator is illegal, use only copy constructor.
     BayesNetFactory< GUM_SCALAR >&
-      operator=(const BayesNetFactory< GUM_SCALAR >& source);
+       operator=(const BayesNetFactory< GUM_SCALAR >& source);
 
     /// Raise an OperationNotAllowed with the message "Illegal state."
     void __illegalStateError(const std::string& s);

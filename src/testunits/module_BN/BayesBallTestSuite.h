@@ -54,7 +54,7 @@ namespace gum_tests {
         query.insert(nodes_seq.atPos(j));
 
       TS_ASSERT_THROWS_NOTHING(gum::BayesBall::requisiteNodes(
-        bn.dag(), query, hardEvidence, softEvidence, requisite));
+         bn.dag(), query, hardEvidence, softEvidence, requisite));
 
       TS_ASSERT(requisite.size() >= 5);
     }

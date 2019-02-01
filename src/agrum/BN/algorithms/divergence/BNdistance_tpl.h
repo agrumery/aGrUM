@@ -33,7 +33,7 @@
 namespace gum {
   template < typename GUM_SCALAR >
   BNdistance< GUM_SCALAR >::BNdistance(const IBayesNet< GUM_SCALAR >& P,
-                       const IBayesNet< GUM_SCALAR >& Q) :
+                                       const IBayesNet< GUM_SCALAR >& Q) :
       _p(P),
       _q(Q), _klPQ(0.0), _klQP(0.0), _errorPQ(0), _errorQP(0),
       __difficulty(Complexity::Heavy), __done(false) {
@@ -141,10 +141,10 @@ namespace gum {
             vp[vq.label(i)];
 
           } catch (OutOfBounds&) {
-            GUM_ERROR(
-               OperationNotAllowed,
-               "BNdistance : the 2 BNs are not compatible F(not the same labels for "
-                  + vp.name() + ")");
+            GUM_ERROR(OperationNotAllowed,
+                      "BNdistance : the 2 BNs are not compatible F(not the same "
+                      "labels for "
+                         + vp.name() + ")");
           }
         }
       } catch (NotFound&) {
@@ -160,10 +160,11 @@ namespace gum {
                 "BNdistance : the 2 BNs are not compatible (not the same size)");
 
     if (std::fabs(_p.log10DomainSize() - _q.log10DomainSize()) > 1e-14) {
-      GUM_ERROR(OperationNotAllowed,
-                "BNdistance : the 2 BNs are not compatible (not the same domainSize) : p="
-                   << _p.log10DomainSize() << " q=" << _q.log10DomainSize()
-                   << " => " << _p.log10DomainSize() - _q.log10DomainSize());
+      GUM_ERROR(
+         OperationNotAllowed,
+         "BNdistance : the 2 BNs are not compatible (not the same domainSize) : p="
+            << _p.log10DomainSize() << " q=" << _q.log10DomainSize() << " => "
+            << _p.log10DomainSize() - _q.log10DomainSize());
     }
 
     return true;

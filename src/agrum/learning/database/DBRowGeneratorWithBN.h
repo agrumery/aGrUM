@@ -90,14 +90,14 @@ namespace gum {
 
       /// default constructor
       DBRowGeneratorWithBN(
-        const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > >
-                                      column_types,
-        const BayesNet< GUM_SCALAR >& bn,
-        const DBRowGeneratorGoal      goal,
-        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-          nodeId2columns =
-            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-        const allocator_type& alloc = allocator_type());
+         const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > >
+                                       column_types,
+         const BayesNet< GUM_SCALAR >& bn,
+         const DBRowGeneratorGoal      goal,
+         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+            nodeId2columns =
+               Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+         const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       DBRowGeneratorWithBN(const DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >& from);
@@ -147,11 +147,11 @@ namespace gum {
 
       /// copy operator
       DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >&
-        operator=(const DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >& from);
+         operator=(const DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >& from);
 
       /// move operator
       DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >&
-        operator=(DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >&& from);
+         operator=(DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >&& from);
     };
 
   } /* namespace learning */

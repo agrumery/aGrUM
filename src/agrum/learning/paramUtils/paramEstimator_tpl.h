@@ -32,7 +32,7 @@ namespace gum {
     /// returns the allocator used by the score
     template < template < typename > class ALLOC >
     INLINE typename ParamEstimator< ALLOC >::allocator_type
-      ParamEstimator< ALLOC >::getAllocator() const {
+       ParamEstimator< ALLOC >::getAllocator() const {
       return _counter.getAllocator();
     }
 
@@ -40,13 +40,14 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     ParamEstimator< ALLOC >::ParamEstimator(
-      const DBRowGeneratorParser< ALLOC >& parser,
-      const Apriori< ALLOC >&              external_apriori,
-      const Apriori< ALLOC >&              score_internal_apriori,
-      const std::vector< std::pair< std::size_t, std::size_t >,
-                         ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
-      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename ParamEstimator< ALLOC >::allocator_type&       alloc) :
+       const DBRowGeneratorParser< ALLOC >& parser,
+       const Apriori< ALLOC >&              external_apriori,
+       const Apriori< ALLOC >&              score_internal_apriori,
+       const std::vector< std::pair< std::size_t, std::size_t >,
+                          ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                                                               nodeId2columns,
+       const typename ParamEstimator< ALLOC >::allocator_type& alloc) :
         _counter(parser, ranges, nodeId2columns, alloc) {
       // copy the a prioris
       _external_apriori = external_apriori.clone(alloc);
@@ -66,11 +67,12 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     ParamEstimator< ALLOC >::ParamEstimator(
-      const DBRowGeneratorParser< ALLOC >& parser,
-      const Apriori< ALLOC >&              external_apriori,
-      const Apriori< ALLOC >&              score_internal_apriori,
-      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename ParamEstimator< ALLOC >::allocator_type&       alloc) :
+       const DBRowGeneratorParser< ALLOC >& parser,
+       const Apriori< ALLOC >&              external_apriori,
+       const Apriori< ALLOC >&              score_internal_apriori,
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                                                               nodeId2columns,
+       const typename ParamEstimator< ALLOC >::allocator_type& alloc) :
         _counter(parser, nodeId2columns, alloc) {
       // copy the a prioris
       _external_apriori = external_apriori.clone(alloc);
@@ -90,8 +92,8 @@ namespace gum {
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE ParamEstimator< ALLOC >::ParamEstimator(
-      const ParamEstimator< ALLOC >&                          from,
-      const typename ParamEstimator< ALLOC >::allocator_type& alloc) :
+       const ParamEstimator< ALLOC >&                          from,
+       const typename ParamEstimator< ALLOC >::allocator_type& alloc) :
         _external_apriori(from._external_apriori->clone(alloc)),
         _score_internal_apriori(from._score_internal_apriori->clone(alloc)),
         _counter(from._counter, alloc) {
@@ -102,15 +104,15 @@ namespace gum {
     /// copy constructor
     template < template < typename > class ALLOC >
     INLINE ParamEstimator< ALLOC >::ParamEstimator(
-      const ParamEstimator< ALLOC >& from) :
+       const ParamEstimator< ALLOC >& from) :
         ParamEstimator< ALLOC >(from, from.getAllocator()) {}
 
 
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE ParamEstimator< ALLOC >::ParamEstimator(
-      ParamEstimator< ALLOC >&&                               from,
-      const typename ParamEstimator< ALLOC >::allocator_type& alloc) :
+       ParamEstimator< ALLOC >&&                               from,
+       const typename ParamEstimator< ALLOC >::allocator_type& alloc) :
         _external_apriori(from._external_apriori),
         _score_internal_apriori(from._score_internal_apriori),
         _counter(std::move(from._counter), alloc) {
@@ -123,7 +125,7 @@ namespace gum {
     /// move constructor
     template < template < typename > class ALLOC >
     INLINE
-      ParamEstimator< ALLOC >::ParamEstimator(ParamEstimator< ALLOC >&& from) :
+       ParamEstimator< ALLOC >::ParamEstimator(ParamEstimator< ALLOC >&& from) :
         ParamEstimator< ALLOC >(std::move(from), from.getAllocator()) {}
 
 
@@ -164,7 +166,7 @@ namespace gum {
           _external_apriori = nullptr;
         }
         _score_internal_apriori =
-          from._score_internal_apriori->clone(this->getAllocator());
+           from._score_internal_apriori->clone(this->getAllocator());
 
         _counter = from._counter;
       }
@@ -212,7 +214,7 @@ namespace gum {
      * multithreading context */
     template < template < typename > class ALLOC >
     INLINE void
-      ParamEstimator< ALLOC >::setMinNbRowsPerThread(const std::size_t nb) const {
+       ParamEstimator< ALLOC >::setMinNbRowsPerThread(const std::size_t nb) const {
       _counter.setMinNbRowsPerThread(nb);
     }
 
@@ -234,12 +236,12 @@ namespace gum {
     template < template < typename > class ALLOC >
     template < template < typename > class XALLOC >
     void ParamEstimator< ALLOC >::setRanges(
-      const std::vector< std::pair< std::size_t, std::size_t >,
-                         XALLOC< std::pair< std::size_t, std::size_t > > >&
-        new_ranges) {
+       const std::vector< std::pair< std::size_t, std::size_t >,
+                          XALLOC< std::pair< std::size_t, std::size_t > > >&
+          new_ranges) {
       std::vector< std::pair< std::size_t, std::size_t >,
                    ALLOC< std::pair< std::size_t, std::size_t > > >
-        old_ranges = ranges();
+         old_ranges = ranges();
       _counter.setRanges(new_ranges);
       if (old_ranges != ranges()) clear();
     }
@@ -250,7 +252,7 @@ namespace gum {
     void ParamEstimator< ALLOC >::clearRanges() {
       std::vector< std::pair< std::size_t, std::size_t >,
                    ALLOC< std::pair< std::size_t, std::size_t > > >
-        old_ranges = ranges();
+         old_ranges = ranges();
       _counter.clearRanges();
       if (old_ranges != ranges()) clear();
     }
@@ -277,9 +279,9 @@ namespace gum {
     template < template < typename > class ALLOC >
     template < typename GUM_SCALAR >
     void ParamEstimator< ALLOC >::__checkParameters(
-      const NodeId                                  target_node,
-      const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
-      Potential< GUM_SCALAR >&                      pot) {
+       const NodeId                                  target_node,
+       const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
+       Potential< GUM_SCALAR >&                      pot) {
       // check that the nodes passed in arguments correspond to those of pot
       const Sequence< const DiscreteVariable* >& vars = pot.variablesSequence();
       if (vars.size() == 0) {
@@ -292,22 +294,22 @@ namespace gum {
         if (database.domainSize(target_node) != vars[0]->domainSize()) {
           GUM_ERROR(SizeError,
                     "Variable "
-                      << vars[0]->name() << "of the potential to be filled "
-                      << "has a domain size of " << vars[0]->domainSize()
-                      << ", which is different from that of node " << target_node
-                      << " which is equal to "
-                      << database.domainSize(target_node));
+                       << vars[0]->name() << "of the potential to be filled "
+                       << "has a domain size of " << vars[0]->domainSize()
+                       << ", which is different from that of node " << target_node
+                       << " which is equal to "
+                       << database.domainSize(target_node));
         }
         for (std::size_t i = 1; i < vars.size(); ++i) {
           if (database.domainSize(conditioning_nodes[i - 1])
               != vars[i]->domainSize()) {
             GUM_ERROR(SizeError,
                       "Variable "
-                        << vars[i]->name() << "of the potential to be filled "
-                        << "has a domain size of " << vars[i]->domainSize()
-                        << ", which is different from that of node "
-                        << conditioning_nodes[i - 1] << " which is equal to "
-                        << database.domainSize(conditioning_nodes[i - 1]));
+                         << vars[i]->name() << "of the potential to be filled "
+                         << "has a domain size of " << vars[i]->domainSize()
+                         << ", which is different from that of node "
+                         << conditioning_nodes[i - 1] << " which is equal to "
+                         << database.domainSize(conditioning_nodes[i - 1]));
           }
         }
       } else {
@@ -315,21 +317,21 @@ namespace gum {
         if (database.domainSize(col) != vars[0]->domainSize()) {
           GUM_ERROR(SizeError,
                     "Variable "
-                      << vars[0]->name() << "of the potential to be filled "
-                      << "has a domain size of " << vars[0]->domainSize()
-                      << ", which is different from that of node " << target_node
-                      << " which is equal to " << database.domainSize(col));
+                       << vars[0]->name() << "of the potential to be filled "
+                       << "has a domain size of " << vars[0]->domainSize()
+                       << ", which is different from that of node " << target_node
+                       << " which is equal to " << database.domainSize(col));
         }
         for (std::size_t i = 1; i < vars.size(); ++i) {
           col = node2cols.second(conditioning_nodes[i - 1]);
           if (database.domainSize(col) != vars[i]->domainSize()) {
             GUM_ERROR(SizeError,
                       "Variable "
-                        << vars[i]->name() << "of the potential to be filled "
-                        << "has a domain size of " << vars[i]->domainSize()
-                        << ", which is different from that of node "
-                        << conditioning_nodes[i - 1] << " which is equal to "
-                        << database.domainSize(col));
+                         << vars[i]->name() << "of the potential to be filled "
+                         << "has a domain size of " << vars[i]->domainSize()
+                         << ", which is different from that of node "
+                         << conditioning_nodes[i - 1] << " which is equal to "
+                         << database.domainSize(col));
           }
         }
       }
@@ -341,14 +343,14 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE typename std::enable_if< !std::is_same< GUM_SCALAR, double >::value,
                                     void >::type
-      ParamEstimator< ALLOC >::__setParameters(
-        const NodeId                                  target_node,
-        const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
-        Potential< GUM_SCALAR >&                      pot) {
+       ParamEstimator< ALLOC >::__setParameters(
+          const NodeId                                  target_node,
+          const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
+          Potential< GUM_SCALAR >&                      pot) {
       __checkParameters(target_node, conditioning_nodes, pot);
 
       const std::vector< double, ALLOC< double > > params(
-        parameters(target_node, conditioning_nodes));
+         parameters(target_node, conditioning_nodes));
 
       // transform the vector of double into a vector of GUM_SCALAR
       const std::size_t                              size = params.size();
@@ -365,14 +367,14 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE typename std::enable_if< std::is_same< GUM_SCALAR, double >::value,
                                     void >::type
-      ParamEstimator< ALLOC >::__setParameters(
-        const NodeId                                  target_node,
-        const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
-        Potential< GUM_SCALAR >&                      pot) {
+       ParamEstimator< ALLOC >::__setParameters(
+          const NodeId                                  target_node,
+          const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
+          Potential< GUM_SCALAR >&                      pot) {
       __checkParameters(target_node, conditioning_nodes, pot);
 
       const std::vector< double, ALLOC< double > > params(
-        parameters(target_node, conditioning_nodes));
+         parameters(target_node, conditioning_nodes));
       pot.fillWith(params);
     }
 
@@ -381,9 +383,9 @@ namespace gum {
     template < template < typename > class ALLOC >
     template < typename GUM_SCALAR >
     INLINE void ParamEstimator< ALLOC >::setParameters(
-      const NodeId                                  target_node,
-      const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
-      Potential< GUM_SCALAR >&                      pot) {
+       const NodeId                                  target_node,
+       const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes,
+       Potential< GUM_SCALAR >&                      pot) {
       __setParameters(target_node, conditioning_nodes, pot);
     }
 
@@ -408,7 +410,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     template < typename GUM_SCALAR >
     INLINE void
-      ParamEstimator< ALLOC >::setBayesNet(const BayesNet< GUM_SCALAR >& new_bn) {
+       ParamEstimator< ALLOC >::setBayesNet(const BayesNet< GUM_SCALAR >& new_bn) {
       _counter.setBayesNet(new_bn);
     }
 

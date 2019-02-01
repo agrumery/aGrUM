@@ -42,15 +42,15 @@ namespace gum {
              template < typename >
              class ICPTDisturber >
   INLINE MaxInducedWidthMCBayesNetGenerator<
-    GUM_SCALAR,
-    ICPTGenerator,
-    ICPTDisturber >::MaxInducedWidthMCBayesNetGenerator(Size nbrNodes,
-                                                        Size maxArcs,
-                                                        Size maxModality,
-                                                        Size maxInducedWidth,
-                                                        Idx  iteration,
-                                                        Idx  p,
-                                                        Idx  q) :
+     GUM_SCALAR,
+     ICPTGenerator,
+     ICPTDisturber >::MaxInducedWidthMCBayesNetGenerator(Size nbrNodes,
+                                                         Size maxArcs,
+                                                         Size maxModality,
+                                                         Size maxInducedWidth,
+                                                         Idx  iteration,
+                                                         Idx  p,
+                                                         Idx  q) :
       MCBG(nbrNodes, maxArcs, maxModality, iteration, p, q) {
     if (maxInducedWidth == 0)
       GUM_ERROR(OperationNotAllowed,
@@ -69,11 +69,11 @@ namespace gum {
   INLINE MaxInducedWidthMCBayesNetGenerator< GUM_SCALAR,
                                              ICPTGenerator,
                                              ICPTDisturber >::
-    MaxInducedWidthMCBayesNetGenerator(BayesNet< GUM_SCALAR > bayesNet,
-                                       Size                   maxInducedWidth,
-                                       Idx                    iteration,
-                                       Idx                    p,
-                                       Idx                    q) :
+     MaxInducedWidthMCBayesNetGenerator(BayesNet< GUM_SCALAR > bayesNet,
+                                        Size                   maxInducedWidth,
+                                        Idx                    iteration,
+                                        Idx                    p,
+                                        Idx                    q) :
       MCBG(bayesNet, iteration, p, q) {
     _maxlog10InducedWidth = maxInducedWidth;
     GUM_CONSTRUCTOR(MaxInducedWidthMCBayesNetGenerator);
@@ -100,9 +100,9 @@ namespace gum {
              template < typename >
              class ICPTDisturber >
   INLINE MaxInducedWidthMCBayesNetGenerator<
-    GUM_SCALAR,
-    ICPTGenerator,
-    ICPTDisturber >::~MaxInducedWidthMCBayesNetGenerator() {
+     GUM_SCALAR,
+     ICPTGenerator,
+     ICPTDisturber >::~MaxInducedWidthMCBayesNetGenerator() {
     GUM_DESTRUCTOR(MaxInducedWidthMCBayesNetGenerator);
     //    delete BayesNetGenerator<GUM_SCALAR>::_cptGenerator;
   }
@@ -136,7 +136,7 @@ namespace gum {
          MaxInducedWidthMCBayesNetGenerator< GUM_SCALAR,
                                              ICPTGenerator,
                                              ICPTDisturber >::maxlog10InducedWidth()
-      const {
+        const {
     return _maxlog10InducedWidth;
   }
   template < typename GUM_SCALAR,
@@ -145,9 +145,9 @@ namespace gum {
              template < typename >
              class ICPTDisturber >
   INLINE void MaxInducedWidthMCBayesNetGenerator<
-    GUM_SCALAR,
-    ICPTGenerator,
-    ICPTDisturber >::setMaxlog10InducedWidth(Size maxlog10InducedWidth) {
+     GUM_SCALAR,
+     ICPTGenerator,
+     ICPTDisturber >::setMaxlog10InducedWidth(Size maxlog10InducedWidth) {
     if (maxlog10InducedWidth == 0)
       GUM_ERROR(OperationNotAllowed,
                 "maxInducedWidth must be at least equal "

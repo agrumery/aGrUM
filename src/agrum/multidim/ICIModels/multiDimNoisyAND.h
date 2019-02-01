@@ -72,8 +72,8 @@ namespace gum {
      * @param from the copied instance
      */
     MultiDimNoisyAND(
-      const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-      const MultiDimNoisyAND< GUM_SCALAR >&                                from);
+       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
+       const MultiDimNoisyAND< GUM_SCALAR >&                                from);
 
     /**
      * Destructor.

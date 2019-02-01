@@ -64,7 +64,7 @@ namespace gum_tests {
       randomInitP(t6);
 
       gum::MultiDimCombineAndProjectDefault< double, gum::Potential > projcomb(
-        multPot, mySum);
+         multPot, mySum);
 
       gum::Set< const gum::Potential< double >* > to_comb;
       to_comb << &t1 << &t2 << &t3 << &t4 << &t5 << &t6;
@@ -73,7 +73,7 @@ namespace gum_tests {
 
       try {
         gum::Set< const gum::Potential< double >* > res =
-          projcomb.combineAndProject(to_comb, del_vars);
+           projcomb.combineAndProject(to_comb, del_vars);
 
         double nb_ops = projcomb.nbOperations(to_comb, del_vars);
 
@@ -86,7 +86,7 @@ namespace gum_tests {
         TS_ASSERT(res.size() == 3);
 
         gum::Set< const gum::Potential< double >* >::const_iterator iter =
-          res.begin();
+           res.begin();
         const gum::Potential< double >* res1 = *iter;
         ++iter;
         const gum::Potential< double >* res2 = *iter;
@@ -123,12 +123,12 @@ namespace gum_tests {
         delete tt2;
 
         gum::MultiDimCombineAndProjectDefault< double, gum::Potential > projcomb2 =
-          projcomb;
+           projcomb;
         projcomb2.setCombineFunction(addPot);
         projcomb2.setProjectFunction(myMax);
 
         gum::MultiDimCombineAndProjectDefault< double, gum::Potential >*
-          projcomb3 = projcomb.newFactory();
+           projcomb3 = projcomb.newFactory();
 
         delete projcomb3;
 
@@ -171,7 +171,7 @@ namespace gum_tests {
       randomInitP(t6);
 
       gum::MultiDimCombineAndProjectDefault< float, gum::Potential > projcomb(
-        multPot, mySum);
+         multPot, mySum);
 
       gum::Set< const gum::Potential< float >* > to_comb;
       to_comb << &t1 << &t2 << &t3 << &t4 << &t5 << &t6;
@@ -180,7 +180,7 @@ namespace gum_tests {
 
       try {
         gum::Set< const gum::Potential< float >* > res =
-          projcomb.combineAndProject(to_comb, del_vars);
+           projcomb.combineAndProject(to_comb, del_vars);
 
         float nb_ops = projcomb.nbOperations(to_comb, del_vars);
 
@@ -193,7 +193,7 @@ namespace gum_tests {
         TS_ASSERT(res.size() == 3);
 
         gum::Set< const gum::Potential< float >* >::const_iterator iter =
-          res.begin();
+           res.begin();
         const gum::Potential< float >* res1 = *iter;
         ++iter;
         const gum::Potential< float >* res2 = *iter;
@@ -231,12 +231,12 @@ namespace gum_tests {
         delete tt2;
 
         gum::MultiDimCombineAndProjectDefault< float, gum::Potential > projcomb2 =
-          projcomb;
+           projcomb;
         projcomb2.setCombineFunction(addPot);
         projcomb2.setProjectFunction(myMax);
 
         gum::MultiDimCombineAndProjectDefault< float, gum::Potential >* projcomb3 =
-          projcomb.newFactory();
+           projcomb.newFactory();
 
         delete projcomb3;
 
@@ -276,14 +276,14 @@ namespace gum_tests {
     }
 
     static gum::Potential< double >*
-      mySum(const gum::Potential< double >&                 table,
-            const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+       mySum(const gum::Potential< double >&                 table,
+             const gum::Set< const gum::DiscreteVariable* >& del_vars) {
       return new gum::Potential< double >(table.margSumOut(del_vars));
     }
 
     static gum::Potential< double >*
-      myMax(const gum::Potential< double >&                 table,
-            const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+       myMax(const gum::Potential< double >&                 table,
+             const gum::Set< const gum::DiscreteVariable* >& del_vars) {
       return new gum::Potential< double >(table.margMaxOut(del_vars));
     }
 
@@ -307,14 +307,14 @@ namespace gum_tests {
     }
 
     static gum::Potential< float >*
-      mySum(const gum::Potential< float >&                  table,
-            const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+       mySum(const gum::Potential< float >&                  table,
+             const gum::Set< const gum::DiscreteVariable* >& del_vars) {
       return new gum::Potential< float >(table.margSumOut(del_vars));
     }
 
     static gum::Potential< float >*
-      myMax(const gum::Potential< float >&                  table,
-            const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+       myMax(const gum::Potential< float >&                  table,
+             const gum::Set< const gum::DiscreteVariable* >& del_vars) {
       return new gum::Potential< float >(table.margMaxOut(del_vars));
     }
   };

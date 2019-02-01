@@ -35,7 +35,7 @@ namespace gum_tests {
     public:
     void testCreationLogit() {
       gum::LabelizedVariable a("a", "", 2), b("b", "", 2), c("c", "", 2),
-        d("d", "", 2);
+         d("d", "", 2);
       gum::MultiDimLogit< double > p(0.2f);
 
       // trying to change weight for a non cause
@@ -82,12 +82,12 @@ namespace gum_tests {
       gum::Instantiation i(p);
 
       std::string witness_age[] = {
-        "50", "49", "46", "49", "62", "35", "67", "65", "47"};
+         "50", "49", "46", "49", "62", "35", "67", "65", "47"};
       std::string witness_taux[] = {
-        "126", "126", "144", "139", "154", "156", "160", "140", "143"};
+         "126", "126", "144", "139", "154", "156", "160", "140", "143"};
       std::string witness_angine[] = {"1", "0", "0", "0", "1", "1", "0", "0", "0"};
       std::string witness_coeur[] = {
-        "OUI", "OUI", "OUI", "OUI", "OUI", "OUI", "NON", "NON", "NON"};
+         "OUI", "OUI", "OUI", "OUI", "OUI", "OUI", "NON", "NON", "NON"};
       float witness_proba[] = {0.8786f,
                                0.5807f,
                                0.3912f,
@@ -135,7 +135,7 @@ namespace gum_tests {
 
       gum::Instantiation i(p);
       float              witness[] = {
-        // clang-format off
+         // clang-format off
               0.26896108301760213f,0.7310389169823979f,
               0.13011979280757435f,0.8698802071924256f,
               0.14186323827049419f,0.8581367617295058f,
@@ -184,8 +184,5 @@ namespace gum_tests {
         TS_ASSERT_DELTA(q[i], witness[j], 1e-6);
       }
     }
-
   };
 }   // namespace gum_tests
-
-

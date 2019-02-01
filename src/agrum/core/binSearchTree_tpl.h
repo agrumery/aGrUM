@@ -49,7 +49,7 @@ namespace gum {
 
   template < typename Val, class Cmp, class Node >
   INLINE BinSearchTreeIterator< Val, Cmp, Node >::BinSearchTreeIterator(
-    const BinSearchTreeIterator< Val, Cmp, Node >& from) :
+     const BinSearchTreeIterator< Val, Cmp, Node >& from) :
       _node(from._node),
       _next_node(from._next_node), _prev_node(from._prev_node),
       _parent(from._parent), _left_child(from._left_child),
@@ -65,9 +65,9 @@ namespace gum {
 
   template < typename Val, class Cmp, class Node >
   INLINE void BinSearchTreeIterator< Val, Cmp, Node >::_initialize(
-    const BinSearchTree< Val, Cmp, Node >* tree,
-    const Node*                            current_node,
-    bool                                   add_to_iterator_list) {
+     const BinSearchTree< Val, Cmp, Node >* tree,
+     const Node*                            current_node,
+     bool                                   add_to_iterator_list) {
     // remember: we do not check here whether the iterator already belongs to
     // a tree. We assume that it is not so.
 
@@ -214,7 +214,7 @@ namespace gum {
 
   template < typename Val, class Cmp, class Node >
   INLINE BinSearchTreeIterator< Val, Cmp, Node >&
-    BinSearchTreeIterator< Val, Cmp, Node >::operator++() {
+     BinSearchTreeIterator< Val, Cmp, Node >::operator++() {
     // if there is a current node, use it to compute the next node, else use
     // directly _next_node (this case obtains when the iterator was pointing
     // toward a node that has been deleted before we use operator++)
@@ -233,7 +233,7 @@ namespace gum {
 
   template < typename Val, class Cmp, class Node >
   INLINE BinSearchTreeIterator< Val, Cmp, Node >&
-    BinSearchTreeIterator< Val, Cmp, Node >::operator--() {
+     BinSearchTreeIterator< Val, Cmp, Node >::operator--() {
     // if there is a current node, use it to compute the preceding node, else
     // use
     // directly _prev_node (this case obtains when the iterator was pointing
@@ -348,7 +348,7 @@ namespace gum {
 
   template < typename Val, class Cmp, class Node >
   BinSearchTree< Val, Cmp, Node >::BinSearchTree(
-    const BinSearchTree< Val, Cmp, Node >& from) :
+     const BinSearchTree< Val, Cmp, Node >& from) :
       _root(0),
       _iterator_list(0), _uniqueness_policy(from._uniqueness_policy) {
     // for debugging purposes
@@ -581,7 +581,7 @@ namespace gum {
 
   template < typename Val, class Cmp, class Node >
   INLINE void
-    BinSearchTree< Val, Cmp, Node >::setUniquenessPolicy(const bool new_policy) {
+     BinSearchTree< Val, Cmp, Node >::setUniquenessPolicy(const bool new_policy) {
     _uniqueness_policy = new_policy;
   }
 

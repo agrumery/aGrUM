@@ -71,8 +71,8 @@ namespace gum {
      * @param from the copied instance
      */
     MultiDimLogit(
-      const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-      const MultiDimLogit< GUM_SCALAR >&                                   from);
+       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
+       const MultiDimLogit< GUM_SCALAR >&                                   from);
 
     /// Destructor.
     virtual ~MultiDimLogit();

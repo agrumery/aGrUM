@@ -83,7 +83,7 @@ namespace gum {
     Size proceed() final;
 
     void buildFromQuartets(
-      std::vector< std::tuple< float, int, int, int > > quartets);
+       std::vector< std::tuple< float, int, int, int > > quartets);
 
     /// @{
     /// publishing Errors API

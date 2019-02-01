@@ -87,7 +87,8 @@ namespace gum {
      */
 
 
-    GibbsBNdistance(const IBayesNet< GUM_SCALAR >& P, const IBayesNet< GUM_SCALAR >& Q);
+    GibbsBNdistance(const IBayesNet< GUM_SCALAR >& P,
+                    const IBayesNet< GUM_SCALAR >& Q);
 
     /** copy constructor
      */

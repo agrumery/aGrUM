@@ -83,9 +83,9 @@ namespace gum {
 
       /// default constructor
       DBRowGeneratorIdentity(
-        const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > >
-                              column_types,
-        const allocator_type& alloc = allocator_type());
+         const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > >
+                               column_types,
+         const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       DBRowGeneratorIdentity(const DBRowGeneratorIdentity< ALLOC >& from);
@@ -106,7 +106,7 @@ namespace gum {
 
       /// virtual copy constructor with a given allocator
       virtual DBRowGeneratorIdentity< ALLOC >*
-        clone(const allocator_type& alloc) const override final;
+         clone(const allocator_type& alloc) const override final;
 
       /// destructor
       ~DBRowGeneratorIdentity();
@@ -122,11 +122,11 @@ namespace gum {
 
       /// copy operator
       DBRowGeneratorIdentity< ALLOC >&
-        operator=(const DBRowGeneratorIdentity< ALLOC >& from);
+         operator=(const DBRowGeneratorIdentity< ALLOC >& from);
 
       /// move operator
       DBRowGeneratorIdentity< ALLOC >&
-        operator=(DBRowGeneratorIdentity< ALLOC >&& from);
+         operator=(DBRowGeneratorIdentity< ALLOC >&& from);
 
       /// @}
 
@@ -149,7 +149,7 @@ namespace gum {
       protected:
       /// computes the rows it will provide as output
       virtual std::size_t
-        _computeRows(const DBRow< DBTranslatedValue, ALLOC >& row) final;
+         _computeRows(const DBRow< DBTranslatedValue, ALLOC >& row) final;
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

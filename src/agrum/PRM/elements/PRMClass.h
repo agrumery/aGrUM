@@ -116,11 +116,11 @@ namespace gum {
 
       /// Copy operator. Don't use it.
       PRMClass< GUM_SCALAR >&
-        operator=(const PRMClass< GUM_SCALAR >& source) = delete;
+         operator=(const PRMClass< GUM_SCALAR >& source) = delete;
 
       /// Move operator. Don't use it.
       PRMClass< GUM_SCALAR >&
-        operator=(const PRMClass< GUM_SCALAR >&& source) = delete;
+         operator=(const PRMClass< GUM_SCALAR >&& source) = delete;
 
       /// Destructor.
       virtual ~PRMClass();
@@ -251,7 +251,7 @@ namespace gum {
        * @return Returns true if this Class<GUM_SCALAR> is a subclass of cec.
        */
       virtual bool
-        isSubTypeOf(const PRMClassElementContainer< GUM_SCALAR >& cec) const;
+         isSubTypeOf(const PRMClassElementContainer< GUM_SCALAR >& cec) const;
 
       /**
        * @brief Returns the super Class<GUM_SCALAR> of this Class<GUM_SCALAR>.
@@ -295,7 +295,7 @@ namespace gum {
       /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::operator[](const
       /// std::string&).
       const PRMClassElement< GUM_SCALAR >&
-        operator[](const std::string& name) const;
+         operator[](const std::string& name) const;
 
       /// @}
 
@@ -439,8 +439,8 @@ namespace gum {
 
       /// Return true of overloaded can be overload by overloader.
       bool
-        __checkOverloadLegality(const PRMClassElement< GUM_SCALAR >* overloaded,
-                                const PRMClassElement< GUM_SCALAR >* overloader);
+         __checkOverloadLegality(const PRMClassElement< GUM_SCALAR >* overloaded,
+                                 const PRMClassElement< GUM_SCALAR >* overloader);
 
       /// Overloads an attribute.
       void __overloadAttribute(PRMAttribute< GUM_SCALAR >* overloader,

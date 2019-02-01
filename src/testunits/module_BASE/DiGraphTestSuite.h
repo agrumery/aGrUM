@@ -285,7 +285,7 @@ namespace gum_tests {
       gum::DiGraph graph = buildGraph();
 
       gum::NodeProperty< gum::Size > hashmap =
-        graph.nodesProperty(&simpleDoubleFunction);
+         graph.nodesProperty(&simpleDoubleFunction);
       TS_ASSERT_EQUALS(hashmap.size(), graph.size());
 
       gum::Size sk = 0;
@@ -304,7 +304,7 @@ namespace gum_tests {
 
       gum::NodeProperty< gum::Size > hashmap;
       TS_ASSERT_THROWS_ANYTHING(hashmap =
-                                  graph.nodesProperty(&twistedMapFunction));
+                                   graph.nodesProperty(&twistedMapFunction));
 
       TS_ASSERT_EQUALS(hashmap.size(), (gum::Size)0);
     }
@@ -331,7 +331,7 @@ namespace gum_tests {
       gum::DiGraph graph = buildGraph();
 
       gum::ArcProperty< gum::Size > hashmap =
-        graph.arcsProperty(&simpleArcMapFunction);
+         graph.arcsProperty(&simpleArcMapFunction);
       TS_ASSERT_EQUALS(hashmap.size(), graph.sizeArcs());
 
       gum::Size sk = 0;

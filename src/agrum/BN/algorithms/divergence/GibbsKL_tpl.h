@@ -46,8 +46,8 @@ namespace gum {
 
 
   template < typename GUM_SCALAR >
-  GibbsBNdistance< GUM_SCALAR >::GibbsBNdistance(const IBayesNet< GUM_SCALAR >& P,
-                                 const IBayesNet< GUM_SCALAR >& Q) :
+  GibbsBNdistance< GUM_SCALAR >::GibbsBNdistance(
+     const IBayesNet< GUM_SCALAR >& P, const IBayesNet< GUM_SCALAR >& Q) :
       BNdistance< GUM_SCALAR >(P, Q),
       ApproximationScheme(),
       GibbsOperator< GUM_SCALAR >(
@@ -67,8 +67,10 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  GibbsBNdistance< GUM_SCALAR >::GibbsBNdistance(const BNdistance< GUM_SCALAR >& kl) :
-      BNdistance< GUM_SCALAR >(kl), ApproximationScheme()
+  GibbsBNdistance< GUM_SCALAR >::GibbsBNdistance(
+     const BNdistance< GUM_SCALAR >& kl) :
+      BNdistance< GUM_SCALAR >(kl),
+      ApproximationScheme()
       // Gibbs operator with 10% of nodes changes at random between each samples
       ,
       GibbsOperator< GUM_SCALAR >(

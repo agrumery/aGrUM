@@ -56,7 +56,7 @@ namespace gum_tests {
     public:
     void test_asia() {
       gum::learning::DBInitializerFromCSV<> initializer(
-        GET_RESSOURCES_PATH("asia.csv"));
+         GET_RESSOURCES_PATH("asia.csv"));
       const auto&       var_names = initializer.variableNames();
       const std::size_t nb_vars = var_names.size();
 
@@ -76,11 +76,11 @@ namespace gum_tests {
       gum::learning::ScoreK2<>              score(parser, apriori);
 
       gum::learning::StructuralConstraintSetStatic<
-        gum::learning::StructuralConstraintDAG,
-        gum::learning::StructuralConstraintIndegree,
-        gum::learning::StructuralConstraintSliceOrder,
-        gum::learning::StructuralConstraintTabuList >
-        struct_constraint;
+         gum::learning::StructuralConstraintDAG,
+         gum::learning::StructuralConstraintIndegree,
+         gum::learning::StructuralConstraintSliceOrder,
+         gum::learning::StructuralConstraintTabuList >
+         struct_constraint;
 
       struct_constraint.setMaxIndegree(2);
       struct_constraint.setTabuListSize(100);
@@ -91,14 +91,14 @@ namespace gum_tests {
       struct_constraint.setDefaultSlice(1);
 
       gum::learning::ParamEstimatorML<> estimator(
-        parser, apriori, score.internalApriori());
+         parser, apriori, score.internalApriori());
 
       gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
-        op_set(struct_constraint);
+         op_set(struct_constraint);
 
       gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint),
                                                    decltype(op_set) >
-        selector(score, struct_constraint, op_set);
+         selector(score, struct_constraint, op_set);
 
       gum::learning::LocalSearchWithTabuList search;
       search.setMaxNbDecreasingChanges(2);
@@ -106,7 +106,7 @@ namespace gum_tests {
       try {
         gum::BayesNet< double > bn = search.learnBN< double >(selector, estimator);
         gum::BayesNet< double > bn2 =
-          search.learnBN< double >(selector, estimator);
+           search.learnBN< double >(selector, estimator);
         TS_ASSERT(bn.dag().arcs().size() == 10);
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }

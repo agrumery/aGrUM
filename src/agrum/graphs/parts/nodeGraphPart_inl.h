@@ -50,7 +50,7 @@ namespace gum {
   /// default constructor
   INLINE
   NodeGraphPartIterator::NodeGraphPartIterator(
-    const NodeGraphPart& nodes) noexcept :
+     const NodeGraphPart& nodes) noexcept :
       _nodes(&nodes) {
     GUM_CONSTRUCTOR(NodeGraphPartIterator);
   }
@@ -58,7 +58,7 @@ namespace gum {
   /// copy constructor
   INLINE
   NodeGraphPartIterator::NodeGraphPartIterator(
-    const NodeGraphPartIterator& it) noexcept :
+     const NodeGraphPartIterator& it) noexcept :
       _nodes(it._nodes),
       _pos(it._pos), _valid(it._valid) {
     GUM_CONS_CPY(NodeGraphPartIterator);
@@ -67,7 +67,7 @@ namespace gum {
   /// move constructor
   INLINE
   NodeGraphPartIterator::NodeGraphPartIterator(
-    NodeGraphPartIterator&& it) noexcept :
+     NodeGraphPartIterator&& it) noexcept :
       _nodes(it._nodes),
       _pos(it._pos), _valid(it._valid) {
     GUM_CONS_MOV(NodeGraphPartIterator);
@@ -103,14 +103,14 @@ namespace gum {
   /// checks whether two iterators point toward the same node
   INLINE
   bool NodeGraphPartIterator::operator==(const NodeGraphPartIterator& it) const
-    noexcept {
+     noexcept {
     return ((_pos == it._pos) && (_valid == it._valid) && (_nodes == it._nodes));
   }
 
   /// checks whether two iterators point toward different nodes
   INLINE
   bool NodeGraphPartIterator::operator!=(const NodeGraphPartIterator& it) const
-    noexcept {
+     noexcept {
     return !(operator==(it));
   }
 
@@ -147,7 +147,7 @@ namespace gum {
   /// default constructor
   INLINE
   NodeGraphPartIteratorSafe::NodeGraphPartIteratorSafe(
-    const NodeGraphPart& nodes) :
+     const NodeGraphPart& nodes) :
       NodeGraphPartIterator(nodes) {
     GUM_CONNECT(*const_cast< NodeGraphPart* >(&nodes),
                 onNodeDeleted,
@@ -159,7 +159,7 @@ namespace gum {
   /// copy constructor
   INLINE
   NodeGraphPartIteratorSafe::NodeGraphPartIteratorSafe(
-    const NodeGraphPartIteratorSafe& it) :
+     const NodeGraphPartIteratorSafe& it) :
       NodeGraphPartIterator(it) {
     GUM_CONNECT(*const_cast< NodeGraphPart* >(_nodes),
                 onNodeDeleted,
@@ -171,7 +171,7 @@ namespace gum {
   /// move constructor
   INLINE
   NodeGraphPartIteratorSafe::NodeGraphPartIteratorSafe(
-    NodeGraphPartIteratorSafe&& it) :
+     NodeGraphPartIteratorSafe&& it) :
       NodeGraphPartIterator(std::move(it)) {
     GUM_CONNECT(*const_cast< NodeGraphPart* >(_nodes),
                 onNodeDeleted,

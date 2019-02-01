@@ -70,7 +70,7 @@ namespace gum {
       PRMFuncAttribute(const std::string&                    name,
                        const PRMType&                        type,
                        MultiDimImplementation< GUM_SCALAR >* impl =
-                         new MultiDimArray< GUM_SCALAR >());
+                          new MultiDimArray< GUM_SCALAR >());
 
       /// Destructor.
       virtual ~PRMFuncAttribute();
@@ -87,7 +87,7 @@ namespace gum {
 
       /// Copy operator. Don't use it.
       PRMFuncAttribute< GUM_SCALAR >&
-        operator=(const PRMFuncAttribute< GUM_SCALAR >& from);
+         operator=(const PRMFuncAttribute< GUM_SCALAR >& from);
 
       virtual void _setCpf(Potential< GUM_SCALAR >* cpf);
     };

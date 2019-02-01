@@ -217,8 +217,8 @@ namespace gum {
        * the returned EltType represents a missing value. */
       template < template < typename > class ALLOC = std::allocator >
       static EltType bestType(
-        const std::string&                                      str,
-        const std::vector< std::string, ALLOC< std::string > >& missingVals);
+         const std::string&                                      str,
+         const std::vector< std::string, ALLOC< std::string > >& missingVals);
 
       /// returns the DBCell with the best type for an element encoded as a string
       /** @param str the string to convert into a DBCell
@@ -227,16 +227,16 @@ namespace gum {
        * the returned DBCell represents a missing value. */
       template < template < typename > class ALLOC = std::allocator >
       static DBCell bestDBCell(
-        const std::string&                                      str,
-        const std::vector< std::string, ALLOC< std::string > >& missingVals);
+         const std::string&                                      str,
+         const std::vector< std::string, ALLOC< std::string > >& missingVals);
 
       /// returns the content of the DBCell as a string, whatever its type
       /** @throw UndefinedElement is raised if the DBCell corresponds to a
        * missing value but the set of missing values passed in argument is
        * empty. */
       template < template < typename > class ALLOC = std::allocator >
-      std::string toString(
-        const std::vector< std::string, ALLOC< std::string > >& missingVals) const;
+      std::string toString(const std::vector< std::string, ALLOC< std::string > >&
+                              missingVals) const;
 
       /// determines whether a string corresponds precisely to an integer
       static bool isInteger(const std::string& str);
@@ -247,8 +247,8 @@ namespace gum {
       /// checks whether a string correspond to a missing value
       template < template < typename > class ALLOC = std::allocator >
       static bool isMissing(
-        const std::string&                                      str,
-        const std::vector< std::string, ALLOC< std::string > >& missingVals);
+         const std::string&                                      str,
+         const std::vector< std::string, ALLOC< std::string > >& missingVals);
 
       /// @}
 
@@ -269,8 +269,8 @@ namespace gum {
 
       // determine the longest type of the union. This is used for fast
       // copying/moving DBCells
-      using UnionType =
-        typename std::conditional< sizeof(int) < sizeof(float), float, int >::type;
+      using UnionType = typename std::
+         conditional< sizeof(int) < sizeof(float), float, int >::type;
 
       // raises an appropriate exception when encountering a type error
       std::string __typeErrorMsg(const std::string& real_type) const;

@@ -135,11 +135,11 @@ namespace gum {
 
       /// copy constructor
       GraphChangesGenerator4K2(
-        const GraphChangesGenerator4K2< STRUCT_CONSTRAINT >& from);
+         const GraphChangesGenerator4K2< STRUCT_CONSTRAINT >& from);
 
       /// move operator
       GraphChangesGenerator4K2(
-        GraphChangesGenerator4K2< STRUCT_CONSTRAINT >&& from);
+         GraphChangesGenerator4K2< STRUCT_CONSTRAINT >&& from);
 
       /// destructor
       virtual ~GraphChangesGenerator4K2();
@@ -153,11 +153,11 @@ namespace gum {
 
       /// copy operator
       GraphChangesGenerator4K2< STRUCT_CONSTRAINT >&
-        operator=(const GraphChangesGenerator4K2< STRUCT_CONSTRAINT >& from);
+         operator=(const GraphChangesGenerator4K2< STRUCT_CONSTRAINT >& from);
 
       /// move operator
       GraphChangesGenerator4K2< STRUCT_CONSTRAINT >&
-        operator=(GraphChangesGenerator4K2< STRUCT_CONSTRAINT >&& from);
+         operator=(GraphChangesGenerator4K2< STRUCT_CONSTRAINT >&& from);
 
       /// @}
 

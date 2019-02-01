@@ -41,8 +41,8 @@ namespace gum {
 #    define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
   template < typename GUM_SCALAR >
   MultiDimArray< GUM_SCALAR >* GUM_MULTI_DIM_PROJECTION_NAME(
-    const MultiDimArray< GUM_SCALAR >*    table,
-    const Set< const DiscreteVariable* >& del_vars)
+     const MultiDimArray< GUM_SCALAR >*    table,
+     const Set< const DiscreteVariable* >& del_vars)
 #  endif
 
   // clang-format off
@@ -101,12 +101,12 @@ namespace gum {
 
 #  ifdef GUM_MULTI_DIM_PROJECTION_IMPL2ARRAY_NAME
     const MultiDimArray< GUM_SCALAR >* table =
-      reinterpret_cast< const MultiDimArray< GUM_SCALAR >* >(ttable);
+       reinterpret_cast< const MultiDimArray< GUM_SCALAR >* >(ttable);
 #  endif
 
 #  ifdef GUM_MULTI_DIM_PROJECTION_POINTER_IMPL2ARRAY_NAME
     const MultiDimArray< GUM_SCALAR* >* table =
-      reinterpret_cast< const MultiDimArray< GUM_SCALAR* >* >(ttable);
+       reinterpret_cast< const MultiDimArray< GUM_SCALAR* >* >(ttable);
 #  endif
 
     // create the neutral element used to fill the result upon its
@@ -116,7 +116,7 @@ namespace gum {
     // first, compute whether we should loop over table or over the projected
     // table first to get a faster algorithm.
     const Sequence< const DiscreteVariable* >& table_vars =
-      table->variablesSequence();
+       table->variablesSequence();
     bool need_swapping = table_vars.size() >= 2 * del_vars.size();
 
     if (!need_swapping) {
@@ -178,7 +178,7 @@ namespace gum {
       // in "table" Hence, ++ operations on an instantiation on table will more
       // or less correspond to a ++ operation on an instantiation on result
       MultiDimArray< GUM_MULTI_DIM_PROJECTION_TYPE >* result =
-        new MultiDimArray< GUM_MULTI_DIM_PROJECTION_TYPE >;
+         new MultiDimArray< GUM_MULTI_DIM_PROJECTION_TYPE >;
 
       if (!result_varSeq.size()) { return result; }
 
@@ -212,9 +212,9 @@ namespace gum {
       // but before doing so, check whether there exist positive_before_incr.
       // If this is not the case, optimize by not using before_incr at all
       GUM_MULTI_DIM_PROJECTION_TYPE* pt =
-        const_cast< GUM_MULTI_DIM_PROJECTION_TYPE* >(&(table->unsafeGet(0)));
+         const_cast< GUM_MULTI_DIM_PROJECTION_TYPE* >(&(table->unsafeGet(0)));
       GUM_MULTI_DIM_PROJECTION_TYPE* pres =
-        const_cast< GUM_MULTI_DIM_PROJECTION_TYPE* >(&(result->unsafeGet(0)));
+         const_cast< GUM_MULTI_DIM_PROJECTION_TYPE* >(&(result->unsafeGet(0)));
       GUM_MULTI_DIM_PROJECTION_TYPE* pres_deb = pres;
 
       if (!nb_positive_before_incr) {
@@ -249,7 +249,7 @@ namespace gum {
 #  else
 #    ifdef GUM_MULTI_DIM_PROJECTION_POINTER
           *(pres[result_offset]) =
-            GUM_MULTI_DIM_PROJECTION(pres[result_offset], *pt);
+             GUM_MULTI_DIM_PROJECTION(pres[result_offset], *pt);
 #    else
           pres[result_offset] = GUM_MULTI_DIM_PROJECTION(pres[result_offset], *pt);
 #    endif
@@ -357,7 +357,7 @@ namespace gum {
       // in "table" Hence, ++ operations on an instantiation on table will more
       // or less correspond to a ++ operation on an instantiation on result
       MultiDimArray< GUM_MULTI_DIM_PROJECTION_TYPE >* result =
-        new MultiDimArray< GUM_MULTI_DIM_PROJECTION_TYPE >;
+         new MultiDimArray< GUM_MULTI_DIM_PROJECTION_TYPE >;
       result->beginMultipleChanges();
 
       for (const auto var : result_varSeq)
@@ -388,9 +388,9 @@ namespace gum {
       // we shall do these operations only when before_incr[xxx] steps in the
       // loop have already been made.
       GUM_MULTI_DIM_PROJECTION_TYPE* pt =
-        const_cast< GUM_MULTI_DIM_PROJECTION_TYPE* >(&(table->unsafeGet(0)));
+         const_cast< GUM_MULTI_DIM_PROJECTION_TYPE* >(&(table->unsafeGet(0)));
       GUM_MULTI_DIM_PROJECTION_TYPE* pres =
-        const_cast< GUM_MULTI_DIM_PROJECTION_TYPE* >(&(result->unsafeGet(0)));
+         const_cast< GUM_MULTI_DIM_PROJECTION_TYPE* >(&(result->unsafeGet(0)));
 
       // but before doing so, check whether there exist positive_before_incr.
       // If this is not the case, optimize by not using before_incr at all

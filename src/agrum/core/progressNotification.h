@@ -73,7 +73,7 @@ namespace gum {
      * @param time The time.
      */
     virtual void
-      whenProgress(const void* src, const Size step, const double time) = 0;
+       whenProgress(const void* src, const Size step, const double time) = 0;
 
     /**
      * @brief When it stops.

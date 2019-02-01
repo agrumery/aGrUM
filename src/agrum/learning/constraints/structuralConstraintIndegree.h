@@ -45,7 +45,7 @@ namespace gum {
      */
     class StructuralConstraintIndegree
         : protected virtual StructuralConstraintSetStatic<
-            StructuralConstraintDiGraph > {
+             StructuralConstraintDiGraph > {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -79,7 +79,7 @@ namespace gum {
 
       /// copy operator
       StructuralConstraintIndegree&
-        operator=(const StructuralConstraintIndegree& from);
+         operator=(const StructuralConstraintIndegree& from);
 
       /// move operator
       StructuralConstraintIndegree& operator=(StructuralConstraintIndegree&& from);

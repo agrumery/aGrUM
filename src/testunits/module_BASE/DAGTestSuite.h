@@ -324,7 +324,7 @@ namespace gum_tests {
 
       gum::NodeProperty< gum::Size > hashmap;
       TS_ASSERT_THROWS_ANYTHING(hashmap =
-                                  graph.nodesProperty(&twistedMapFunction));
+                                   graph.nodesProperty(&twistedMapFunction));
 
       TS_ASSERT_EQUALS(hashmap.size(), (gum::Size)0);
     }

@@ -88,7 +88,7 @@ namespace gum {
        * Implementation of the pure virtual method of PRMObject.
        */
       virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType
-        elt_type() const;
+         elt_type() const;
 
       /**
        * Returns the type of this slot, which is a PRMClassElementContainer

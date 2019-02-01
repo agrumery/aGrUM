@@ -160,9 +160,9 @@ namespace gum {
                  template < typename >
                  class MISSALLOC >
       RawDatabaseTable(
-        const MissingValType< MISSALLOC >&                         missing_symbols,
-        const std::vector< std::string, VARALLOC< std::string > >& var_names,
-        const allocator_type& alloc = allocator_type());
+         const MissingValType< MISSALLOC >& missing_symbols,
+         const std::vector< std::string, VARALLOC< std::string > >& var_names,
+         const allocator_type& alloc = allocator_type());
 
       /// default constructor
       template < template < typename > class MISSALLOC >
@@ -191,7 +191,7 @@ namespace gum {
 
       /// virtual copy constructor with a given allocator
       virtual RawDatabaseTable< ALLOC >*
-        clone(const allocator_type& alloc) const final;
+         clone(const allocator_type& alloc) const final;
 
       /// destructor
       virtual ~RawDatabaseTable();
@@ -247,8 +247,8 @@ namespace gum {
        * assigned to the columns of the RawDatabaseTable because the size of their
        * vector is inadequate. */
       virtual void setVariableNames(
-        const std::vector< std::string, ALLOC< std::string > >& names,
-        const bool from_external_object = true) final;
+         const std::vector< std::string, ALLOC< std::string > >& names,
+         const bool from_external_object = true) final;
 
       /// makes the database table ignore from now on the kth column
       /** This method can be called in two different ways: either k refers to
@@ -300,7 +300,7 @@ namespace gum {
        * the columns of the RawDatabaseTable (taking into account the ignored
        * columns) */
       virtual void insertRow(
-        const std::vector< std::string, ALLOC< std::string > >& new_row) final;
+         const std::vector< std::string, ALLOC< std::string > >& new_row) final;
 
       /// erase the content of the database, including the names of the variables
       virtual void clear() final;

@@ -63,7 +63,7 @@ namespace gum_tests {
         // TRUE  TRUE  TRUE  TRUE TRUE "true"  "toto titi"  4
 
         gum::learning::DBInitializerFromSQL<> initializer(
-          dataSource, login, password, query);
+           dataSource, login, password, query);
 
         const auto&       var_names = initializer.variableNames();
         const std::size_t nb_vars = var_names.size();
@@ -133,7 +133,7 @@ namespace gum_tests {
 
 
         gum::learning::DBInitializerFromSQL<> initializer3(
-          initializer, std::allocator< std::string >());
+           initializer, std::allocator< std::string >());
         gum::learning::DatabaseTable<> database3;
         database3.ignoreColumn(0);
         database3.ignoreColumn(2);
@@ -179,7 +179,7 @@ namespace gum_tests {
         TS_ASSERT(row31[4].cont_val == 2.45f);
 
         gum::learning::DBInitializerFromSQL<> initializer4(
-          std::move(initializer), std::allocator< std::string >());
+           std::move(initializer), std::allocator< std::string >());
         gum::learning::DatabaseTable<> database4;
         database4.insertTranslator(translator_lab, std::size_t(1));
         database4.insertTranslator(translator_lab, std::size_t(3));
@@ -260,8 +260,8 @@ namespace gum_tests {
 
       try {
         const std::string connection_string =
-          "Driver=" + driver_name
-          + ";Database=" + GET_RESSOURCES_PATH("asia.sqlite") + ";";
+           "Driver=" + driver_name
+           + ";Database=" + GET_RESSOURCES_PATH("asia.sqlite") + ";";
         const std::string query = "select * from asia";
 
         // the database contains the following rows:

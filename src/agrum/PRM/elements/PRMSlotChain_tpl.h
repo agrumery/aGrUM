@@ -30,8 +30,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     PRMSlotChain< GUM_SCALAR >::PRMSlotChain(
-      const std::string&                                name,
-      const Sequence< PRMClassElement< GUM_SCALAR >* >& chain) :
+       const std::string&                                name,
+       const Sequence< PRMClassElement< GUM_SCALAR >* >& chain) :
         PRMClassElement< GUM_SCALAR >(name),
         __chain(new Sequence< PRMClassElement< GUM_SCALAR >* >(chain)),
         __isMultiple(false) {
@@ -48,9 +48,9 @@ namespace gum {
           GUM_ERROR(WrongClassElement, "illegal ClassElement in chain");
         } else {
           __isMultiple =
-            __isMultiple
-            || static_cast< PRMReferenceSlot< GUM_SCALAR >* >(__chain->atPos(i))
-                 ->isArray();
+             __isMultiple
+             || static_cast< PRMReferenceSlot< GUM_SCALAR >* >(__chain->atPos(i))
+                   ->isArray();
         }
       }
 
@@ -65,7 +65,8 @@ namespace gum {
     // happened)
     template < typename GUM_SCALAR >
     PRMSlotChain< GUM_SCALAR >::PRMSlotChain(
-      Sequence< PRMClassElement< GUM_SCALAR >* >* chain, const std::string& name) :
+       Sequence< PRMClassElement< GUM_SCALAR >* >* chain,
+       const std::string&                          name) :
         PRMSlotChain(name, *chain) {
       // No need to
       // GUM_CONSTRUCTOR(PRMSlotChain);
@@ -99,7 +100,7 @@ namespace gum {
       switch (__chain->back()->elt_type()) {
         case PRMClassElement< GUM_SCALAR >::prm_attribute: {
           auto old_attr =
-            static_cast< const PRMAttribute< GUM_SCALAR >* >(__chain->back());
+             static_cast< const PRMAttribute< GUM_SCALAR >* >(__chain->back());
 
           Bijection< const DiscreteVariable*, const DiscreteVariable* > bij;
           for (auto var : old_attr->cpf().variablesSequence()) {
@@ -112,9 +113,9 @@ namespace gum {
 
         case PRMClassElement< GUM_SCALAR >::prm_aggregate: {
           const PRMAggregate< GUM_SCALAR >* c_agg =
-            static_cast< const PRMAggregate< GUM_SCALAR >* >(__chain->back());
+             static_cast< const PRMAggregate< GUM_SCALAR >* >(__chain->back());
           PRMAggregate< GUM_SCALAR >* agg = new PRMAggregate< GUM_SCALAR >(
-            c_agg->name(), c_agg->agg_type(), c_agg->type(), c_agg->id());
+             c_agg->name(), c_agg->agg_type(), c_agg->type(), c_agg->id());
           new_elt = agg;
           break;
         }
@@ -137,7 +138,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     PRMSlotChain< GUM_SCALAR >::PRMSlotChain(
-      const PRMSlotChain< GUM_SCALAR >& source) :
+       const PRMSlotChain< GUM_SCALAR >& source) :
         PRMClassElement< GUM_SCALAR >(source.name()),
         __chain(new Sequence< PRMClassElement< GUM_SCALAR >* >(source.chain())),
         __isMultiple(source.isMultiple()) {
@@ -154,7 +155,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE typename PRMClassElement< GUM_SCALAR >::ClassElementType
-      PRMSlotChain< GUM_SCALAR >::elt_type() const {
+       PRMSlotChain< GUM_SCALAR >::elt_type() const {
       return this->prm_slotchain;
     }
 
@@ -177,16 +178,16 @@ namespace gum {
     INLINE PRMClassElementContainer< GUM_SCALAR >&
            PRMSlotChain< GUM_SCALAR >::end() {
       return static_cast< PRMReferenceSlot< GUM_SCALAR >* >(
-               __chain->atPos(__chain->size() - 2))
-        ->slotType();
+                __chain->atPos(__chain->size() - 2))
+         ->slotType();
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMClassElementContainer< GUM_SCALAR >&
                  PRMSlotChain< GUM_SCALAR >::end() const {
       return static_cast< PRMReferenceSlot< GUM_SCALAR >* >(
-               __chain->atPos(__chain->size() - 2))
-        ->slotType();
+                __chain->atPos(__chain->size() - 2))
+         ->slotType();
     }
 
     template < typename GUM_SCALAR >
@@ -214,11 +215,11 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMSlotChain< GUM_SCALAR >::addParent(
-      const PRMClassElement< GUM_SCALAR >& elt) {}
+       const PRMClassElement< GUM_SCALAR >& elt) {}
 
     template < typename GUM_SCALAR >
     INLINE void PRMSlotChain< GUM_SCALAR >::addChild(
-      const PRMClassElement< GUM_SCALAR >& elt) {}
+       const PRMClassElement< GUM_SCALAR >& elt) {}
 
     template < typename GUM_SCALAR >
     INLINE bool PRMSlotChain< GUM_SCALAR >::isMultiple() const {

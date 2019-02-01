@@ -32,7 +32,7 @@ namespace gum {
 
   // sets the conditioning nodes (useful for computing degrees of freedom)
   INLINE void
-    Chi2::setConditioningNodes(const std::vector< Idx >& db_conditioning_ids) {
+     Chi2::setConditioningNodes(const std::vector< Idx >& db_conditioning_ids) {
     __conditioning_size = 1;
     for (Idx i = 0; i < db_conditioning_ids.size(); ++i) {
       __conditioning_size *= __modalities[db_conditioning_ids[i]];

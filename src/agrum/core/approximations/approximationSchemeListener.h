@@ -87,7 +87,7 @@ namespace gum {
      * Copy operator.
      */
     ApproximationSchemeListener&
-      operator=(const ApproximationSchemeListener& other);
+       operator=(const ApproximationSchemeListener& other);
 
     private:
     /// The scheme configuration.

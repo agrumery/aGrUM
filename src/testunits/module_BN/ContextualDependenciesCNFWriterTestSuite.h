@@ -71,7 +71,7 @@ namespace gum_tests {
     void testConstuctor() {
       gum::ContextualDependenciesCNFWriter< double >* writer = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
-        writer = new gum::ContextualDependenciesCNFWriter< double >());
+         writer = new gum::ContextualDependenciesCNFWriter< double >());
       delete writer;
     }
 
@@ -96,7 +96,7 @@ namespace gum_tests {
     void testWriter_ostream_With_Approximation() {
       gum::ContextualDependenciesCNFWriter< double,
                                             gum::LinearApproximationPolicy >
-        writer;
+         writer;
       writer.setEpsilon(0.2);
       writer.setLowLimit(0);
       writer.setHighLimit(1);
@@ -108,11 +108,11 @@ namespace gum_tests {
     void testWriter_string() {
       gum::ContextualDependenciesCNFWriter< double > writer;
       std::string                                    file =
-        GET_RESSOURCES_PATH("ContextualDependenciesCNFWriter_TestFile.cnf");
+         GET_RESSOURCES_PATH("ContextualDependenciesCNFWriter_TestFile.cnf");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
 
       file =
-        GET_RESSOURCES_PATH("ContextualDependenciesCNFWriter_RO_TestFile.cnf");
+         GET_RESSOURCES_PATH("ContextualDependenciesCNFWriter_RO_TestFile.cnf");
 
       try {
         writer.write(file, *bn);
@@ -123,18 +123,18 @@ namespace gum_tests {
     void testWriter_string_With_Approximation() {
       gum::ContextualDependenciesCNFWriter< double,
                                             gum::LinearApproximationPolicy >
-        writer;
+         writer;
 
       writer.setEpsilon(0.2);
       writer.setLowLimit(0);
       writer.setHighLimit(1);
       std::string file = GET_RESSOURCES_PATH(
-        "ContextualDependenciesCNFWriter_TestFile_Approximation.cnf");
+         "ContextualDependenciesCNFWriter_TestFile_Approximation.cnf");
 
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
 
       file = GET_RESSOURCES_PATH(
-        "ContextualDependenciesCNFWriter_RO_TestFile_Approximation.cnf");
+         "ContextualDependenciesCNFWriter_RO_TestFile_Approximation.cnf");
 
       try {
         writer.write(file, *bn);

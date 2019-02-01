@@ -37,7 +37,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     PRMClassElement< GUM_SCALAR >::PRMClassElement(
-      const PRMClassElement< GUM_SCALAR >& source) :
+       const PRMClassElement< GUM_SCALAR >& source) :
         PRMObject(source.name()),
         __id(source.id()) {
       GUM_CONS_CPY(PRMClassElement);
