@@ -34,7 +34,7 @@ else()
 endif()
 
 if (MINGW)
-   set(MINGW_FLAGS "-O2 -D_FORTIFY_SOURCE=2 -pipe -fno-plt -fexceptions --param=ssp-buffer-size=4 -DGUM_NO_INLINE -DGUM_NO_EXTERN_TEMPLATE_CLASS")
+   set(MINGW_FLAGS "-O2 -D_FORTIFY_SOURCE=2 -pipe -fno-plt -fexceptions --param=ssp-buffer-size=4 -DGUM_NO_INLINE")
 else()
    set(MINGW_FLAGS "")
 endif()
