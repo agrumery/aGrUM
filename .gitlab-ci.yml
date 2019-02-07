@@ -85,27 +85,55 @@ macos_pyagrum:
 ################################################################################
 # Windows / MVSC
 ################################################################################
-windows_agrum:
+windows_agrum_2015:
   only:
-    - master@agrumery/aGrUM
-    - web@agrumery/aGrUM
+   - master@agrumery/aGrUM
+   - web@agrumery/aGrUM
   tags:
     - windows
     - conda
   variables:
-    PATH: "C:\\Program Files\\Git\\bin;C:\\ProgramData\\Anaconda3\\envs\\py37;C:\\ProgramData\\Anaconda3\\envs\\py37\\Library\\bin;C:\\ProgramData\\Anaconda3\\envs\\py37\\Scripts;C:\\Program Files\\CMake\\bin;C:\\Program Files (x86)\\MSBuild\\14.0\\Bin;%PATH%;"
-    ACT_OPTIONS: ""
+    PATH: "C:\\ProgramData\\Anaconda3\\Scripts;C:\\ProgramData\\Anaconda3;C:\\Program Files (x86)\\MSBuild\\14.0\\Bin;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Git\\cmd;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Program Files\\dotnet\\;C:\\Users\\aGrUM\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Program Files (x86)\\Windows Kits\\8.1\\bin\\x64;"
   cache:
     key: mvsc
     paths:
       - build/
   stage: build
   script:
+    - conda create -n "gitlab-ci-%CI_JOB_ID%" python=3.7
+    - call activate "gitlab-ci-%CI_JOB_ID%"
+    - conda install -y numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
     - python act clean
-    - python act --no-fun test release aGrUM --no-fun --mvsc -d build -j 7
+    - python act --no-fun --mvsc -d build -j 7 test release aGrUM 
+    - deactivate
+    - conda remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
   retry: 2
 
-windows_pyagrum:
+windows_pyagrum_2015:
+  only:
+   - master@agrumery/aGrUM
+   - web@agrumery/aGrUM
+  tags:
+    - windows
+    - conda
+  variables:
+    PATH: "C:\\ProgramData\\Anaconda3\\Scripts;C:\\ProgramData\\Anaconda3;C:\\Program Files (x86)\\MSBuild\\14.0\\Bin;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Git\\cmd;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Program Files\\dotnet\\;C:\\Users\\aGrUM\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Program Files (x86)\\Windows Kits\\8.1\\bin\\x64;"
+  cache:
+    key: mvsc
+    paths:
+      - build/
+  stage: build
+  script:
+    - conda create -n "gitlab-ci-%CI_JOB_ID%" python=3.7
+    - call activate "gitlab-ci-%CI_JOB_ID%"
+    - conda install -y numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
+    - python act clean
+    - python act --no-fun test release pyAgrum --no-fun --mvsc -d build -j 7 -t quick
+    - deactivate
+    - conda remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
+  retry: 2
+
+windows_agrum_2017:
   only:
     - master@agrumery/aGrUM
     - web@agrumery/aGrUM
@@ -113,16 +141,44 @@ windows_pyagrum:
     - windows
     - conda
   variables:
-    PATH: "C:\\Program Files\\Git\\bin;C:\\ProgramData\\Anaconda3\\envs\\py37;C:\\ProgramData\\Anaconda3\\envs\\py37\\Library\\bin;C:\\ProgramData\\Anaconda3\\envs\\py37\\Scripts;C:\\Program Files\\CMake\\bin;C:\\Program Files (x86)\\MSBuild\\14.0\\Bin;%PATH%;"
-    ACT_OPTIONS: ""
+    PATH: "C:\\ProgramData\\Anaconda3\\Scripts;C:\\ProgramData\\Anaconda3;C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\MSBuild\\15.0\\Bin;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Git\\cmd;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Program Files\\dotnet\\;C:\\Users\\aGrUM\\AppData\\Local\\Microsoft\\WindowsApps;"
   cache:
-    key: mvsc
+    key: mvsc17
     paths:
       - build/
   stage: build
   script:
+    - conda create -n "gitlab-ci-%CI_JOB_ID%" python=3.7
+    - call activate "gitlab-ci-%CI_JOB_ID%"
+    - conda install -y numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
     - python act clean
-    - python act --no-fun test release pyAgrum --no-fun --mvsc -d build -j 7 -t quick
+    - python act --no-fun test release aGrUM --no-fun --mvsc17 -d build -j 7
+    - deactivate
+    - conda remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
+  retry: 2
+
+windows_pyagrum_2017:
+  only:
+   - master@agrumery/aGrUM
+   - web@agrumery/aGrUM
+  tags:
+    - windows
+    - conda
+  variables:
+    PATH: "C:\\ProgramData\\Anaconda3\\Scripts;C:\\ProgramData\\Anaconda3;C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\MSBuild\\15.0\\Bin;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Git\\cmd;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Program Files\\dotnet\\;C:\\Users\\aGrUM\\AppData\\Local\\Microsoft\\WindowsApps;"
+  cache:
+    key: mvsc17
+    paths:
+      - build/
+  stage: build
+  script:
+    - conda create -n "gitlab-ci-%CI_JOB_ID%" python=3.7
+    - call activate "gitlab-ci-%CI_JOB_ID%"
+    - conda install -y numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
+    - python act clean
+    - python act --no-fun test release pyAgrum --no-fun --mvsc17 -d build -j 7 -t quick
+    - deactivate
+    - conda remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
   retry: 2
 
 ################################################################################

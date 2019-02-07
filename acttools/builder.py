@@ -82,6 +82,10 @@ def getCmake(current, target):
       line += ' -G "Visual Studio 14 2015 Win64"'
     elif current["mvsc32"]:
       line += ' -G "Visual Studio 14 2015"'
+    elif current["mvsc17"]:
+      line += ' -G "Visual Studio 15 2017 Win64"'
+    elif current["mvsc17_32"]:
+      line += ' -G "Visual Studio 15 2017"'
     elif current["mingw64"]:
       line += ' -G "MinGW Makefiles"'
 
@@ -94,7 +98,7 @@ def buildCmake(current, target):
 
 
 def getMake(current, target):
-  if current["mvsc"] or current["mvsc32"]:
+  if current["mvsc"] or current["mvsc32"] or current["mvsc17"] or current["mvsc17_32"]:
     return getForMsBuildSystem(current, target)
   else:
     return getForMakeSystem(current, target)

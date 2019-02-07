@@ -302,7 +302,33 @@ namespace gum {
        */
       std::size_t insertTranslator(const DBTranslator< ALLOC >& translator,
                                    const std::size_t            input_column,
-                                   const bool unique_column = true);
+                                   const bool                   unique_column = true);
+
+      /// insert a new translator into the database table
+      /** @param var the variable that will be contained into the translator
+       * @param input_column indicates which column in the original dataset
+       * (usually a CSV file) the translator will read
+       * @param unique_column indicates whether the input column can be read by
+       * several translators
+       * @param missing_symbols the set of symbols in the database
+       * representing missing values
+       * @return the index of the translator within the set of translators
+       * @throws OperationNotAllowed if the input column is marked as ignored
+       * @throws DuplicateElement if there already exists a translator
+       * reading the input column passed in argument, and if the unique_column
+       * is set to true
+       * @throws if the database is not empty, i.e., it contains some records,
+       * all the columns of the database corresponding to the new translator
+       * should be filled with missing values, which is impossible since we do
+       * not know which symbols correspond to missing values. Therefore, we
+       * raise a MissingValueInDatabase exception. If you do not want such a
+       * behavior, use method insertTranslator in which you specify the set of
+       * missing symbols.
+       */
+      std::size_t insertTranslator(
+         const Variable&   var,
+         const std::size_t input_column,
+         const bool        unique_column = true);
 
       /// insert a new translator into the database table
       /** @param var the variable that will be contained into the translator
@@ -321,13 +347,12 @@ namespace gum {
        * all the column of the database corresponding to the new translator is
        * filled with missing values.
        */
-      template < template < typename > class XALLOC = ALLOC >
+      template < template < typename > class XALLOC >
       std::size_t insertTranslator(
          const Variable&                                   var,
          const std::size_t                                 input_column,
-         std::vector< std::string, XALLOC< std::string > > missing_symbols =
-            std::vector< std::string, XALLOC< std::string > >(),
-         const bool unique_column = true);
+         std::vector< std::string, XALLOC< std::string > > missing_symbols,
+         const bool                                        unique_column = true);
 
       /** @brief erases either the kth translator or all those parsing the kth
        * column of the input dataset
