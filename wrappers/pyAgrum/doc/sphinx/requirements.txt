@@ -1,4 +1,4 @@
-sphinx==1.8.2
+sphinx==1.8.4
 matplotlib
 pyAgrum
 pydotplus
