@@ -80,6 +80,9 @@ napoleon_use_ivar = False
 napoleon_use_param = True
 napoleon_use_rtype = True
 
+mathjax_path="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js"
+
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
@@ -558,7 +561,7 @@ autodoc_default_options = {'members' : None,
                           'inherited-members':None, 
                           #'show-inheritance':None, 
                           #'ignore-module-all',
-                          #'exclude-members' : ['DiscretizedVariabl_double'],
+                          'exclude-members' : 'thisown',
                          }
 
 

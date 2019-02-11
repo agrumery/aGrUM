@@ -235,10 +235,10 @@ class JunctionTreeGenerator(object):
         g : pyAgrum.UndiGraph
         	a undirected graph
 
-        dag : pyAgrum::DAG
+        dag : pyAgrum.DAG
         	a dag
 
-        bn : pyAgrum::BayesNet
+        bn : pyAgrum.BayesNet
         	a BayesianNetwork
 
         partial_order: List[List[int]]
@@ -269,10 +269,10 @@ class JunctionTreeGenerator(object):
         g : pyAgrum.UndiGraph
         	a undirected graph
 
-        dag : pyAgrum::DAG
+        dag : pyAgrum.DAG
         	a dag
 
-        bn : pyAgrum::BayesNet
+        bn : pyAgrum.BayesNet
         	a BayesianNetwork
 
         partial_order: List[List[int]]
@@ -303,10 +303,10 @@ class JunctionTreeGenerator(object):
         g : pyAgrum.UndiGraph
         	a undirected graph
 
-        dag : pyAgrum::DAG
+        dag : pyAgrum.DAG
         	a dag
 
-        bn : pyAgrum::BayesNet
+        bn : pyAgrum.BayesNet
         	a BayesianNetwork
 
         partial_order: List[List[int]]

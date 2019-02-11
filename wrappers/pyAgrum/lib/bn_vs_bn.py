@@ -34,10 +34,9 @@ from itertools import product
 from ._utils.pyAgrum_header import pyAgrum_header
 
 
-class BNComparator:
+class GraphicalBNComparator:
   """
-  BNComparator allows to compare in multiple way 2 BNs...The smallest assumption is that the names of the variables
-  are the same in the 2 BNs.
+  BNGraphicalComparator allows to compare in multiple way 2 BNs...The smallest assumption is that the names of the variables are the same in the 2 BNs.
   But some comparisons will have also to check the type and domainSize of the variables. The bns have not exactly the
   same role :
   _bn1 is rather the referent model for the comparison whereas _bn2 is the compared one to the referent model
@@ -74,10 +73,12 @@ class BNComparator:
 
   def _compareBNVariables(self):
     """
+    Checks if the two BNs have the same set of variables
+
     Returns
     -------
     str
-      'OK' if BN are composed of the same variables, indicates problematic variables otherwise
+      'OK' if the BNs have composed of the same variables, indicates problematic variables otherwise
   
     """
     # it is assumed (checked by the constructor) that _bn1 and _bn2 share the same set of variable names
@@ -111,14 +112,12 @@ class BNComparator:
   def _comparePotentials(self, pot1, pot2):
 
     """
+    Compare 2 potentials one in each Bayesian network
+
     Parameters
     ----------
-    _bn1 : pyAgrum.BayesNet
-      a Bayesian network
     pot1 : pyAgrum.Potential
       one of b1's cpts
-    _bn2 : pyAgrum.BayesNet
-      another Bayesian network
     pot2 : pyAgrum.Potential
       one of _bn2's cpts
 
@@ -157,13 +156,12 @@ class BNComparator:
 
   def equivalentBNs(self):
     """
-    Parameters
-    ----------
-    name1 : str or pyAgrum.BayesNet
-      a BN or a filename
-    name2 : str or pyAgrum.BayesNet
-      another BN or antoher filename
+    Check if the 2 BNs are equivalent :
 
+    * same variables
+    * same graphical structure
+    * same parmaeters 
+    
     Returns
     -------
     str
@@ -188,8 +186,6 @@ class BNComparator:
     full red line: the arc is common but inverted in _bn2
     dotted black line: the arc is added in _bn2
     dotted red line: the arc is removed in _bn2
-        
-    @author : Mélanie Munch
 
     Returns
     -------
@@ -243,16 +239,13 @@ class BNComparator:
 
     precision and recall are computed considering BN1 as the reference
 
-    $Fscore=\frac{2\cdot recall\cdot precision}{recall+precision}$ and is the weighted average of Precision and Recall.
+    Fscor is 2*(recall* precision)/(recall+precision) and is the weighted average of Precision and Recall.
 
-    $dist2opt=\sqrt{(1-precision)^2+(1-recall)^2}$ and represents the euclidian distance to the ideal(precision=1,
-    recall=1)
-
-    @author : Mélanie Munch
+    dist2opt=square root of (1-precision)^2+(1-recall)^2 and represents the euclidian distance to the ideal point (precision=1, recall=1)
 
     Returns
     -------
-      dict[str,double]
+    dict[str,double]
       A dictionnary containing 'precision', 'recall', 'fscore', 'dist2opt' and so on.
     """
     # t: True, f: False, p: Positive, n: Negative
@@ -339,5 +332,5 @@ if __name__ == "__main__":
   if len(sys.argv) != 3:
     module_help()
 
-  cmp = BNComparator(sys.argv[1], sys.argv[2])
+  cmp = GraphicalBNComparator(sys.argv[1], sys.argv[2])
   print(cmp.equivalentBNs())

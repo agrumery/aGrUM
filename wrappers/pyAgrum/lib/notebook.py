@@ -37,7 +37,7 @@ from IPython.core.pylabtools import print_figure
 from IPython.display import display, HTML, SVG
 from matplotlib.backends.backend_agg import FigureCanvasAgg as fc
 from pyAgrum.lib.bn2graph import BN2dot, proba2histo, BNinference2dot, _proba2bgcolor
-from pyAgrum.lib.bn_vs_bn import BNComparator
+from pyAgrum.lib.bn_vs_bn import GraphicalBNComparator
 
 _cdict = {
   'red'  : ((0.0, 0.1, 0.3),
@@ -162,7 +162,7 @@ def getBNDiff(bn1, bn2, size="4", format="png"):
   :param size: size of the rendered graph
   :param format: render as "png" or "svg"
   """
-  cmp = BNComparator(bn1, bn2)
+  cmp = GraphicalBNComparator(bn1, bn2)
   return getGraph(cmp.dotDiff(), size, format)
 
 
@@ -179,7 +179,7 @@ def showBNDiff(bn1, bn2, size="4", format="png"):
   :param size: size of the rendered graph
   :param format: render as "png" or "svg"
   """
-  cmp = BNComparator(bn1, bn2)
+  cmp = GraphicalBNComparator(bn1, bn2)
   showGraph(cmp.dotDiff(), size, format)
 
 
