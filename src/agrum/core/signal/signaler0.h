@@ -126,7 +126,7 @@ namespace gum {
     template < class TargetClass >
     void attach(TargetClass* target, void (TargetClass::*action)(const void*)) {
       __sig__::Connector0< TargetClass >* conn =
-        new __sig__::Connector0< TargetClass >(target, action);
+         new __sig__::Connector0< TargetClass >(target, action);
       this->_connectors.push_back(conn);
       target->attachSignal__(this);
     }

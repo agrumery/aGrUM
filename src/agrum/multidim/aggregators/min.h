@@ -83,8 +83,9 @@ namespace gum {
     };
 
 
-    extern template class Min< float >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
     extern template class Min< double >;
+#endif
 
 
   }   // namespace aggregator

@@ -329,7 +329,7 @@ namespace gum {
         for (const auto session : context->sessions()) {
           std::string              sessionName = session->name();
           O3prmrSession< double >* new_session =
-            new O3prmrSession< double >(sessionName);
+             new O3prmrSession< double >(sessionName);
 
           if (m_verbose)
             m_log << "## Start session '" << sessionName << "'..." << std::endl
@@ -436,11 +436,11 @@ namespace gum {
           // Contruct the pair (instance,attribut)
           const PRMSystem< double >&   sys = system(left_val);
           const PRMInstance< double >& instance =
-            sys.get(findInstanceName(left_val, sys));
+             sys.get(findInstanceName(left_val, sys));
           const PRMAttribute< double >& attr =
-            instance.get(findAttributeName(left_val, instance));
+             instance.get(findAttributeName(left_val, instance));
           typename PRMInference< double >::Chain chain =
-            std::make_pair(&instance, &attr);
+             std::make_pair(&instance, &attr);
 
           command->system = &sys;
           command->chain = std::make_pair(&instance, &attr);
@@ -453,7 +453,7 @@ namespace gum {
 
           for (i.setFirst(); !i.end(); i.inc()) {
             if (chain.second->type().variable().label(
-                  i.val(chain.second->type().variable()))
+                   i.val(chain.second->type().variable()))
                 == right_val) {
               command->potentiel.set(i, (double)1.0);
               found = true;
@@ -482,9 +482,9 @@ namespace gum {
           // Contruct the pair (instance,attribut)
           const PRMSystem< double >&   sys = system(name);
           const PRMInstance< double >& instance =
-            sys.get(findInstanceName(name, sys));
+             sys.get(findInstanceName(name, sys));
           const PRMAttribute< double >& attr =
-            instance.get(findAttributeName(name, instance));
+             instance.get(findAttributeName(name, instance));
           // PRMInference<double>::Chain chain = std::make_pair(&instance,
           // &attr);
 
@@ -507,9 +507,9 @@ namespace gum {
           // Contruct the pair (instance,attribut)
           const PRMSystem< double >&   sys = system(name);
           const PRMInstance< double >& instance =
-            sys.get(findInstanceName(name, sys));
+             sys.get(findInstanceName(name, sys));
           const PRMAttribute< double >& attr =
-            instance.get(findAttributeName(name, instance));
+             instance.get(findAttributeName(name, instance));
           // PRMInference<double>::Chain chain = std::make_pair(&instance,
           // &attr);
 
@@ -535,7 +535,6 @@ namespace gum {
             m_log << "# Loading system '" << import_name << "' => '" << std::flush;
           }
 
-          size_t      last_dot = import_name.find_last_of('.');
           std::string import_package = import_name;
 
           std::replace(import_name.begin(), import_name.end(), '.', '/');
@@ -716,25 +715,25 @@ namespace gum {
       }
 
       std::string
-        O3prmrInterpreter::findInstanceName(std::string&               s,
-                                            const PRMSystem< double >& sys) {
+         O3prmrInterpreter::findInstanceName(std::string&               s,
+                                             const PRMSystem< double >& sys) {
         // We have found system before, so 's' has been stripped.
         size_t      dot = s.find_first_of('.');
         std::string name = s.substr(0, dot);
 
         if (!sys.exists(name))
           throw "'" + name + "' is not an instance of system '" + sys.name()
-            + "'.";
+             + "'.";
 
         s = s.substr(dot + 1);
         return name;
       }
 
       std::string O3prmrInterpreter::findAttributeName(
-        const std::string& s, const PRMInstance< double >& instance) {
+         const std::string& s, const PRMInstance< double >& instance) {
         if (!instance.exists(s))
           throw "'" + s + "' is not an attribute of instance '" + instance.name()
-            + "'.";
+             + "'.";
 
         return s;
       }
@@ -750,13 +749,13 @@ namespace gum {
           return prm()->getSystem(m_context->mainImport()->value);
 
         throw "could not find any system or alias in '" + ident
-          + "' and no default alias has been set.";
+           + "' and no default alias has been set.";
       }
 
       ///
 
       bool
-        O3prmrInterpreter::observe(const ObserveCommand< double >* command) try {
+         O3prmrInterpreter::observe(const ObserveCommand< double >* command) try {
         const typename PRMInference< double >::Chain& chain = command->chain;
 
         // Generate the inference engine if it doesn't exist.
@@ -787,7 +786,7 @@ namespace gum {
       ///
 
       bool O3prmrInterpreter::unobserve(
-        const UnobserveCommand< double >* command) try {
+         const UnobserveCommand< double >* command) try {
         std::string                            name = command->value;
         typename PRMInference< double >::Chain chain = command->chain;
 

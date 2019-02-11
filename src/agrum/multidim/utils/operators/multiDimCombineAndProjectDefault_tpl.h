@@ -37,11 +37,11 @@ namespace gum {
   // default constructor
   template < typename GUM_SCALAR, template < typename > class TABLE >
   MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::
-    MultiDimCombineAndProjectDefault(
-      TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&,
-                                      const TABLE< GUM_SCALAR >&),
-      TABLE< GUM_SCALAR >* (*project)(const TABLE< GUM_SCALAR >&,
-                                      const Set< const DiscreteVariable* >&)) :
+     MultiDimCombineAndProjectDefault(
+        TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&,
+                                        const TABLE< GUM_SCALAR >&),
+        TABLE< GUM_SCALAR >* (*project)(const TABLE< GUM_SCALAR >&,
+                                        const Set< const DiscreteVariable* >&)) :
       MultiDimCombineAndProject< GUM_SCALAR, TABLE >(),
       __combination(new MultiDimCombinationDefault< GUM_SCALAR, TABLE >(combine)),
       __projection(new MultiDimProjection< GUM_SCALAR, TABLE >(project)) {
@@ -52,8 +52,8 @@ namespace gum {
   // copy constructor
   template < typename GUM_SCALAR, template < typename > class TABLE >
   MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::
-    MultiDimCombineAndProjectDefault(
-      const MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >& from) :
+     MultiDimCombineAndProjectDefault(
+        const MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >& from) :
       MultiDimCombineAndProject< GUM_SCALAR, TABLE >(),
       __combination(from.__combination->newFactory()),
       __projection(from.__projection->newFactory()) {
@@ -74,16 +74,16 @@ namespace gum {
   // virtual constructor
   template < typename GUM_SCALAR, template < typename > class TABLE >
   MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >*
-    MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::newFactory() const {
+     MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::newFactory() const {
     return new MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >(*this);
   }
 
   // combine and project
   template < typename GUM_SCALAR, template < typename > class TABLE >
   Set< const TABLE< GUM_SCALAR >* >
-    MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::combineAndProject(
-      Set< const TABLE< GUM_SCALAR >* > table_set,
-      Set< const DiscreteVariable* >    del_vars) {
+     MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::combineAndProject(
+        Set< const TABLE< GUM_SCALAR >* > table_set,
+        Set< const DiscreteVariable* >    del_vars) {
     // when we remove a variable, we need to combine all the tables containing
     // this
     // variable in order to produce a new unique table containing this variable.
@@ -100,14 +100,14 @@ namespace gum {
       Set< const DiscreteVariable* > all_vars;
 
       for (typename Set< const TABLE< GUM_SCALAR >* >::const_iterator_safe iter =
-             table_set.beginSafe();
+              table_set.beginSafe();
            iter != table_set.endSafe();
            ++iter) {
         const Sequence< const DiscreteVariable* >& iter_vars =
-          (*iter)->variablesSequence();
+           (*iter)->variablesSequence();
 
         for (typename Sequence< const DiscreteVariable* >::const_iterator_safe it =
-               iter_vars.beginSafe();
+                iter_vars.beginSafe();
              it != iter_vars.endSafe();
              ++it) {
           all_vars.insert(*it);
@@ -119,7 +119,7 @@ namespace gum {
 
     // the tables containing a given variable
     HashTable< const DiscreteVariable*, Set< const TABLE< GUM_SCALAR >* > >
-      tables_per_var(nb_vars);
+       tables_per_var(nb_vars);
     // for a given variable X to be deleted, the list of all the variables of
     // the tables containing X (actually, we count the number of tables
     // containing the variable. This is more efficient for computing and
@@ -127,7 +127,7 @@ namespace gum {
     // the product_size priority queue (see below) when some tables are removed)
     HashTable< const DiscreteVariable*,
                HashTable< const DiscreteVariable*, unsigned int > >
-      tables_vars_per_var(nb_vars);
+       tables_vars_per_var(nb_vars);
 
     // initialize tables_vars_per_var and tables_per_var
     {
@@ -135,7 +135,7 @@ namespace gum {
       HashTable< const DiscreteVariable*, unsigned int > empty_hash(nb_vars);
 
       for (typename Set< const DiscreteVariable* >::const_iterator_safe iter =
-             del_vars.beginSafe();
+              del_vars.beginSafe();
            iter != del_vars.endSafe();
            ++iter) {
         tables_per_var.insert(*iter, empty_set);
@@ -144,11 +144,11 @@ namespace gum {
 
       // update properly tables_per_var and tables_vars_per_var
       for (typename Set< const TABLE< GUM_SCALAR >* >::const_iterator_safe iter =
-             table_set.beginSafe();
+              table_set.beginSafe();
            iter != table_set.endSafe();
            ++iter) {
         const Sequence< const DiscreteVariable* >& vars =
-          (*iter)->variablesSequence();
+           (*iter)->variablesSequence();
 
         for (unsigned int i = 0; i < vars.size(); ++i) {
           if (del_vars.contains(vars[i])) {
@@ -156,7 +156,7 @@ namespace gum {
             tables_per_var[vars[i]].insert(*iter);
             // add the variables of the table to tables_vars_per_var[vars[i]]
             HashTable< const DiscreteVariable*, unsigned int >& iter_vars =
-              tables_vars_per_var[vars[i]];
+               tables_vars_per_var[vars[i]];
 
             for (unsigned int j = 0; j < vars.size(); ++j) {
               try {
@@ -175,7 +175,7 @@ namespace gum {
 
     for (typename HashTable< const DiscreteVariable*,
                              HashTable< const DiscreteVariable*, unsigned int > >::
-           const_iterator_safe iter = tables_vars_per_var.beginSafe();
+            const_iterator_safe iter = tables_vars_per_var.beginSafe();
          iter != tables_vars_per_var.endSafe();
          ++iter) {
       float                                                     size = 1.0f;
@@ -184,7 +184,7 @@ namespace gum {
       if (vars.size()) {
         for (typename HashTable< const DiscreteVariable*,
                                  unsigned int >::const_iterator_safe iter2 =
-               vars.beginSafe();
+                vars.beginSafe();
              iter2 != vars.endSafe();
              ++iter2) {
           size *= iter2.key()->domainSize();
@@ -208,7 +208,7 @@ namespace gum {
 
       // get the set of tables to combine
       Set< const TABLE< GUM_SCALAR >* >& tables_to_combine =
-        tables_per_var[del_var];
+         tables_per_var[del_var];
 
       // if there is no tables to combine, do nothing
 
@@ -223,7 +223,7 @@ namespace gum {
 
       if (tables_to_combine.size() == 1) {
         joint =
-          const_cast< TABLE< GUM_SCALAR >* >(*(tables_to_combine.beginSafe()));
+           const_cast< TABLE< GUM_SCALAR >* >(*(tables_to_combine.beginSafe()));
         joint_to_delete = false;
       } else {
         joint = __combination->combine(tables_to_combine);
@@ -247,11 +247,11 @@ namespace gum {
       // any TABLE, divide product_size by its domain size
 
       for (typename Set< const TABLE< GUM_SCALAR >* >::const_iterator_safe iter =
-             tables_to_combine.beginSafe();
+              tables_to_combine.beginSafe();
            iter != tables_to_combine.endSafe();
            ++iter) {
         const Sequence< const DiscreteVariable* >& table_vars =
-          (*iter)->variablesSequence();
+           (*iter)->variablesSequence();
 
         for (unsigned int i = 0; i < table_vars.size(); ++i) {
           if (del_vars.contains(table_vars[i])) {
@@ -274,7 +274,7 @@ namespace gum {
 
             if (div_size != 1) {
               product_size.setPriority(
-                table_vars[i], product_size.priority(table_vars[i]) / div_size);
+                 table_vars[i], product_size.priority(table_vars[i]) / div_size);
             }
           }
         }
@@ -291,7 +291,7 @@ namespace gum {
 
       // add the new projected marginal to the list of TABLES
       const Sequence< const DiscreteVariable* >& marginal_vars =
-        marginal->variablesSequence();
+         marginal->variablesSequence();
 
       for (unsigned int i = 0; i < marginal_vars.size(); ++i) {
         if (del_vars.contains(marginal_vars[i])) {
@@ -300,7 +300,7 @@ namespace gum {
 
           // add the variables of the table to tables_vars_per_var[vars[i]]
           HashTable< const DiscreteVariable*, unsigned int >& iter_vars =
-            tables_vars_per_var[marginal_vars[i]];
+             tables_vars_per_var[marginal_vars[i]];
           float mult_size = 1.0f;
 
           for (unsigned int j = 0; j < marginal_vars.size(); ++j) {
@@ -315,7 +315,7 @@ namespace gum {
           if (mult_size != 1) {
             product_size.setPriority(marginal_vars[i],
                                      product_size.priority(marginal_vars[i])
-                                       * mult_size);
+                                        * mult_size);
           }
         }
       }
@@ -336,25 +336,25 @@ namespace gum {
   // changes the function used for combining two TABLES
   template < typename GUM_SCALAR, template < typename > class TABLE >
   INLINE void
-    MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setCombineFunction(
-      TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&,
-                                      const TABLE< GUM_SCALAR >&)) {
+     MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setCombineFunction(
+        TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&,
+                                        const TABLE< GUM_SCALAR >&)) {
     __combination->setCombineFunction(combine);
   }
 
   // returns the current combination function
   template < typename GUM_SCALAR, template < typename > class TABLE >
   INLINE TABLE< GUM_SCALAR >* (
-    *MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::combineFunction())(
-    const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&) {
+     *MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::combineFunction())(
+     const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&) {
     return __combination->combineFunction();
   }
 
   // changes the class that performs the combinations
   template < typename GUM_SCALAR, template < typename > class TABLE >
   INLINE void
-    MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setCombinationClass(
-      const MultiDimCombination< GUM_SCALAR, TABLE >& comb_class) {
+     MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setCombinationClass(
+        const MultiDimCombination< GUM_SCALAR, TABLE >& comb_class) {
     delete __combination;
     __combination = comb_class.newFactory();
   }
@@ -362,25 +362,25 @@ namespace gum {
   // changes the function used for projecting TABLES
   template < typename GUM_SCALAR, template < typename > class TABLE >
   INLINE void
-    MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setProjectFunction(
-      TABLE< GUM_SCALAR >* (*proj)(const TABLE< GUM_SCALAR >&,
-                                   const Set< const DiscreteVariable* >&)) {
+     MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setProjectFunction(
+        TABLE< GUM_SCALAR >* (*proj)(const TABLE< GUM_SCALAR >&,
+                                     const Set< const DiscreteVariable* >&)) {
     __projection->setProjectFunction(proj);
   }
 
   // returns the current projection function
   template < typename GUM_SCALAR, template < typename > class TABLE >
   INLINE TABLE< GUM_SCALAR >* (
-    *MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::projectFunction())(
-    const TABLE< GUM_SCALAR >&, const Set< const DiscreteVariable* >&) {
+     *MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::projectFunction())(
+     const TABLE< GUM_SCALAR >&, const Set< const DiscreteVariable* >&) {
     return __projection->projectFunction();
   }
 
   // changes the class that performs the projections
   template < typename GUM_SCALAR, template < typename > class TABLE >
   INLINE void
-    MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setProjectionClass(
-      const MultiDimProjection< GUM_SCALAR, TABLE >& proj_class) {
+     MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::setProjectionClass(
+        const MultiDimProjection< GUM_SCALAR, TABLE >& proj_class) {
     delete __projection;
     __projection = proj_class.newFactory();
   }
@@ -389,8 +389,8 @@ namespace gum {
    * performed to compute the combination */
   template < typename GUM_SCALAR, template < typename > class TABLE >
   float MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::nbOperations(
-    const Set< const Sequence< const DiscreteVariable* >* >& table_set,
-    Set< const DiscreteVariable* >                           del_vars) const {
+     const Set< const Sequence< const DiscreteVariable* >* >& table_set,
+     Set< const DiscreteVariable* >                           del_vars) const {
     // when we remove a variable, we need to combine all the tables containing
     // this
     // variable in order to produce a new unique table containing this variable.
@@ -409,13 +409,13 @@ namespace gum {
       Set< const DiscreteVariable* > all_vars;
 
       for (typename Set< const Sequence< const DiscreteVariable* >* >::
-             const_iterator_safe iter = table_set.beginSafe();
+              const_iterator_safe iter = table_set.beginSafe();
            iter != table_set.endSafe();
            ++iter) {
         const Sequence< const DiscreteVariable* >& iter_vars = **iter;
 
         for (typename Sequence< const DiscreteVariable* >::const_iterator_safe it =
-               iter_vars.beginSafe();
+                iter_vars.beginSafe();
              it != iter_vars.endSafe();
              ++it) {
           all_vars.insert(*it);
@@ -428,7 +428,7 @@ namespace gum {
     // the tables (actually their variables) containing a given variable
     HashTable< const DiscreteVariable*,
                Set< const Sequence< const DiscreteVariable* >* > >
-      tables_per_var(nb_vars);
+       tables_per_var(nb_vars);
     // for a given variable X to be deleted, the list of all the variables of
     // the tables containing X (actually, we count the number of tables
     // containing the variable. This is more efficient for computing and
@@ -436,16 +436,16 @@ namespace gum {
     // the product_size priority queue (see below) when some tables are removed)
     HashTable< const DiscreteVariable*,
                HashTable< const DiscreteVariable*, unsigned int > >
-      tables_vars_per_var(nb_vars);
+       tables_vars_per_var(nb_vars);
 
     // initialize tables_vars_per_var and tables_per_var
     {
       Set< const Sequence< const DiscreteVariable* >* > empty_set(
-        table_set.size());
+         table_set.size());
       HashTable< const DiscreteVariable*, unsigned int > empty_hash(nb_vars);
 
       for (typename Set< const DiscreteVariable* >::const_iterator_safe iter =
-             del_vars.beginSafe();
+              del_vars.beginSafe();
            iter != del_vars.endSafe();
            ++iter) {
         tables_per_var.insert(*iter, empty_set);
@@ -454,7 +454,7 @@ namespace gum {
 
       // update properly tables_per_var and tables_vars_per_var
       for (typename Set< const Sequence< const DiscreteVariable* >* >::
-             const_iterator_safe iter = table_set.beginSafe();
+              const_iterator_safe iter = table_set.beginSafe();
            iter != table_set.endSafe();
            ++iter) {
         const Sequence< const DiscreteVariable* >& vars = **iter;
@@ -465,7 +465,7 @@ namespace gum {
             tables_per_var[vars[i]].insert(*iter);
             // add the variables of the table to tables_vars_per_var[vars[i]]
             HashTable< const DiscreteVariable*, unsigned int >& iter_vars =
-              tables_vars_per_var[vars[i]];
+               tables_vars_per_var[vars[i]];
 
             for (unsigned int j = 0; j < vars.size(); ++j) {
               try {
@@ -484,7 +484,7 @@ namespace gum {
 
     for (typename HashTable< const DiscreteVariable*,
                              HashTable< const DiscreteVariable*, unsigned int > >::
-           const_iterator_safe iter = tables_vars_per_var.beginSafe();
+            const_iterator_safe iter = tables_vars_per_var.beginSafe();
          iter != tables_vars_per_var.endSafe();
          ++iter) {
       float                                                     size = 1.0f;
@@ -493,7 +493,7 @@ namespace gum {
       if (vars.size()) {
         for (typename HashTable< const DiscreteVariable*,
                                  unsigned int >::const_iterator_safe iter2 =
-               vars.beginSafe();
+                vars.beginSafe();
              iter2 != vars.endSafe();
              ++iter2) {
           size *= iter2.key()->domainSize();
@@ -509,7 +509,7 @@ namespace gum {
     // create a set of the temporary table's variables created during the
     // marginalization process (useful for deallocating temporary tables)
     Set< const Sequence< const DiscreteVariable* >* > tmp_marginals(
-      table_set.size());
+       table_set.size());
 
     // now, remove all the variables in del_vars, starting from those that
     // produce
@@ -521,7 +521,7 @@ namespace gum {
 
       // get the set of tables to combine
       Set< const Sequence< const DiscreteVariable* >* >& tables_to_combine =
-        tables_per_var[del_var];
+         tables_per_var[del_var];
 
       // if there is no tables to combine, do nothing
 
@@ -536,20 +536,20 @@ namespace gum {
 
       if (tables_to_combine.size() == 1) {
         joint = const_cast< Sequence< const DiscreteVariable* >* >(
-          *(tables_to_combine.beginSafe()));
+           *(tables_to_combine.beginSafe()));
         joint_to_delete = false;
       } else {
         // here, compute the union of all the variables of the tables to combine
         joint = new Sequence< const DiscreteVariable* >;
 
         for (typename Set< const Sequence< const DiscreteVariable* >* >::
-               const_iterator_safe iter = tables_to_combine.beginSafe();
+                const_iterator_safe iter = tables_to_combine.beginSafe();
              iter != tables_to_combine.endSafe();
              ++iter) {
           const Sequence< const DiscreteVariable* >& vars = **iter;
 
           for (typename Sequence< const DiscreteVariable* >::const_iterator_safe
-                 iter2 = vars.beginSafe();
+                  iter2 = vars.beginSafe();
                iter2 != vars.endSafe();
                ++iter2) {
             if (!joint->exists(*iter2)) { joint->insert(*iter2); }
@@ -587,7 +587,7 @@ namespace gum {
       // any TABLE, divide product_size by its domain size
 
       for (typename Set< const Sequence< const DiscreteVariable* >* >::
-             const_iterator_safe iter = tables_to_combine.beginSafe();
+              const_iterator_safe iter = tables_to_combine.beginSafe();
            iter != tables_to_combine.endSafe();
            ++iter) {
         const Sequence< const DiscreteVariable* >& table_vars = **iter;
@@ -613,7 +613,7 @@ namespace gum {
 
             if (div_size != 1) {
               product_size.setPriority(
-                table_vars[i], product_size.priority(table_vars[i]) / div_size);
+                 table_vars[i], product_size.priority(table_vars[i]) / div_size);
             }
           }
         }
@@ -637,7 +637,7 @@ namespace gum {
 
           // add the variables of the table to tables_vars_per_var[vars[i]]
           HashTable< const DiscreteVariable*, unsigned int >& iter_vars =
-            tables_vars_per_var[var_i];
+             tables_vars_per_var[var_i];
           float mult_size = 1.0f;
 
           for (unsigned int j = 0; j < marginal->size(); ++j) {
@@ -661,9 +661,8 @@ namespace gum {
 
     // here, tmp_marginals contains all the newly created tables
 
-    for (typename Set<
-           const Sequence< const DiscreteVariable* >* >::const_iterator_safe iter =
-           tmp_marginals.beginSafe();
+    for (typename Set< const Sequence< const DiscreteVariable* >* >::
+            const_iterator_safe iter = tmp_marginals.beginSafe();
          iter != tmp_marginals.endSafe();
          ++iter) {
       delete *iter;
@@ -676,13 +675,13 @@ namespace gum {
    * performed to compute the combination */
   template < typename GUM_SCALAR, template < typename > class TABLE >
   float MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::nbOperations(
-    const Set< const TABLE< GUM_SCALAR >* >& set,
-    const Set< const DiscreteVariable* >&    del_vars) const {
+     const Set< const TABLE< GUM_SCALAR >* >& set,
+     const Set< const DiscreteVariable* >&    del_vars) const {
     // create the set of sets of discrete variables involved in the tables
     Set< const Sequence< const DiscreteVariable* >* > var_set(set.size());
 
     for (typename Set< const TABLE< GUM_SCALAR >* >::const_iterator_safe iter =
-           set.beginSafe();
+            set.beginSafe();
          iter != set.endSafe();
          ++iter) {
       var_set << &((*iter)->variablesSequence());
@@ -695,9 +694,9 @@ namespace gum {
   // projections
   template < typename GUM_SCALAR, template < typename > class TABLE >
   std::pair< long, long >
-    MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::memoryUsage(
-      const Set< const Sequence< const DiscreteVariable* >* >& table_set,
-      Set< const DiscreteVariable* >                           del_vars) const {
+     MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::memoryUsage(
+        const Set< const Sequence< const DiscreteVariable* >* >& table_set,
+        Set< const DiscreteVariable* >                           del_vars) const {
     // when we remove a variable, we need to combine all the tables containing
     // this
     // variable in order to produce a new unique table containing this variable.
@@ -716,13 +715,13 @@ namespace gum {
       Set< const DiscreteVariable* > all_vars;
 
       for (typename Set< const Sequence< const DiscreteVariable* >* >::
-             const_iterator_safe iter = table_set.beginSafe();
+              const_iterator_safe iter = table_set.beginSafe();
            iter != table_set.endSafe();
            ++iter) {
         const Sequence< const DiscreteVariable* >& iter_vars = **iter;
 
         for (typename Sequence< const DiscreteVariable* >::const_iterator_safe it =
-               iter_vars.beginSafe();
+                iter_vars.beginSafe();
              it != iter_vars.endSafe();
              ++it) {
           all_vars.insert(*it);
@@ -735,7 +734,7 @@ namespace gum {
     // the tables (actually their variables) containing a given variable
     HashTable< const DiscreteVariable*,
                Set< const Sequence< const DiscreteVariable* >* > >
-      tables_per_var(nb_vars);
+       tables_per_var(nb_vars);
     // for a given variable X to be deleted, the list of all the variables of
     // the tables containing X (actually, we count the number of tables
     // containing the variable. This is more efficient for computing and
@@ -743,16 +742,16 @@ namespace gum {
     // the product_size priority queue (see below) when some tables are removed)
     HashTable< const DiscreteVariable*,
                HashTable< const DiscreteVariable*, unsigned int > >
-      tables_vars_per_var(nb_vars);
+       tables_vars_per_var(nb_vars);
 
     // initialize tables_vars_per_var and tables_per_var
     {
       Set< const Sequence< const DiscreteVariable* >* > empty_set(
-        table_set.size());
+         table_set.size());
       HashTable< const DiscreteVariable*, unsigned int > empty_hash(nb_vars);
 
       for (typename Set< const DiscreteVariable* >::const_iterator_safe iter =
-             del_vars.beginSafe();
+              del_vars.beginSafe();
            iter != del_vars.endSafe();
            ++iter) {
         tables_per_var.insert(*iter, empty_set);
@@ -761,7 +760,7 @@ namespace gum {
 
       // update properly tables_per_var and tables_vars_per_var
       for (typename Set< const Sequence< const DiscreteVariable* >* >::
-             const_iterator_safe iter = table_set.beginSafe();
+              const_iterator_safe iter = table_set.beginSafe();
            iter != table_set.endSafe();
            ++iter) {
         const Sequence< const DiscreteVariable* >& vars = **iter;
@@ -772,7 +771,7 @@ namespace gum {
             tables_per_var[vars[i]].insert(*iter);
             // add the variables of the table to tables_vars_per_var[vars[i]]
             HashTable< const DiscreteVariable*, unsigned int >& iter_vars =
-              tables_vars_per_var[vars[i]];
+               tables_vars_per_var[vars[i]];
 
             for (unsigned int j = 0; j < vars.size(); ++j) {
               try {
@@ -791,7 +790,7 @@ namespace gum {
 
     for (typename HashTable< const DiscreteVariable*,
                              HashTable< const DiscreteVariable*, unsigned int > >::
-           const_iterator_safe iter = tables_vars_per_var.beginSafe();
+            const_iterator_safe iter = tables_vars_per_var.beginSafe();
          iter != tables_vars_per_var.endSafe();
          ++iter) {
       float                                                     size = 1.0f;
@@ -800,7 +799,7 @@ namespace gum {
       if (vars.size()) {
         for (typename HashTable< const DiscreteVariable*,
                                  unsigned int >::const_iterator_safe iter2 =
-               vars.beginSafe();
+                vars.beginSafe();
              iter2 != vars.endSafe();
              ++iter2) {
           size *= iter2.key()->domainSize();
@@ -818,7 +817,7 @@ namespace gum {
     // create a set of the temporary table's variables created during the
     // marginalization process (useful for deallocating temporary tables)
     Set< const Sequence< const DiscreteVariable* >* > tmp_marginals(
-      table_set.size());
+       table_set.size());
 
     // now, remove all the variables in del_vars, starting from those that
     // produce
@@ -830,7 +829,7 @@ namespace gum {
 
       // get the set of tables to combine
       Set< const Sequence< const DiscreteVariable* >* >& tables_to_combine =
-        tables_per_var[del_var];
+         tables_per_var[del_var];
 
       // if there is no tables to combine, do nothing
 
@@ -845,20 +844,20 @@ namespace gum {
 
       if (tables_to_combine.size() == 1) {
         joint = const_cast< Sequence< const DiscreteVariable* >* >(
-          *(tables_to_combine.beginSafe()));
+           *(tables_to_combine.beginSafe()));
         joint_to_delete = false;
       } else {
         // here, compute the union of all the variables of the tables to combine
         joint = new Sequence< const DiscreteVariable* >;
 
         for (typename Set< const Sequence< const DiscreteVariable* >* >::
-               const_iterator_safe iter = tables_to_combine.beginSafe();
+                const_iterator_safe iter = tables_to_combine.beginSafe();
              iter != tables_to_combine.endSafe();
              ++iter) {
           const Sequence< const DiscreteVariable* >& vars = **iter;
 
           for (typename Sequence< const DiscreteVariable* >::const_iterator_safe
-                 iter2 = vars.beginSafe();
+                  iter2 = vars.beginSafe();
                iter2 != vars.endSafe();
                ++iter2) {
             if (!joint->exists(*iter2)) { joint->insert(*iter2); }
@@ -869,7 +868,7 @@ namespace gum {
 
         // update the number of operations performed
         std::pair< long, long > comb_memory =
-          __combination->memoryUsage(tables_to_combine);
+           __combination->memoryUsage(tables_to_combine);
 
         if ((std::numeric_limits< long >::max() - current_memory
              < comb_memory.first)
@@ -891,7 +890,7 @@ namespace gum {
       del_one_var << del_var;
 
       std::pair< long, long > comb_memory =
-        __projection->memoryUsage(*joint, del_one_var);
+         __projection->memoryUsage(*joint, del_one_var);
 
       if ((std::numeric_limits< long >::max() - current_memory < comb_memory.first)
           || (std::numeric_limits< long >::max() - current_memory
@@ -923,7 +922,7 @@ namespace gum {
       // any TABLE, divide product_size by its domain size
 
       for (typename Set< const Sequence< const DiscreteVariable* >* >::
-             const_iterator_safe iter = tables_to_combine.beginSafe();
+              const_iterator_safe iter = tables_to_combine.beginSafe();
            iter != tables_to_combine.endSafe();
            ++iter) {
         const Sequence< const DiscreteVariable* >& table_vars = **iter;
@@ -949,7 +948,7 @@ namespace gum {
 
             if (div_size != 1) {
               product_size.setPriority(
-                table_vars[i], product_size.priority(table_vars[i]) / div_size);
+                 table_vars[i], product_size.priority(table_vars[i]) / div_size);
             }
           }
         }
@@ -959,7 +958,7 @@ namespace gum {
           const Sequence< const DiscreteVariable* >& del = **iter;
 
           for (typename Sequence< const DiscreteVariable* >::const_iterator_safe
-                 iter_del = del.beginSafe();
+                  iter_del = del.beginSafe();
                iter_del != del.endSafe();
                ++iter_del) {
             del_size *= (*iter_del)->domainSize();
@@ -985,7 +984,7 @@ namespace gum {
 
           // add the variables of the table to tables_vars_per_var[vars[i]]
           HashTable< const DiscreteVariable*, unsigned int >& iter_vars =
-            tables_vars_per_var[var_i];
+             tables_vars_per_var[var_i];
           float mult_size = 1.0f;
 
           for (unsigned int j = 0; j < marginal->size(); ++j) {
@@ -1008,9 +1007,8 @@ namespace gum {
     }
 
     // here, tmp_marginals contains all the newly created tables
-    for (typename Set<
-           const Sequence< const DiscreteVariable* >* >::const_iterator_safe iter =
-           tmp_marginals.beginSafe();
+    for (typename Set< const Sequence< const DiscreteVariable* >* >::
+            const_iterator_safe iter = tmp_marginals.beginSafe();
          iter != tmp_marginals.endSafe();
          ++iter) {
       delete *iter;
@@ -1023,14 +1021,14 @@ namespace gum {
   // projections
   template < typename GUM_SCALAR, template < typename > class TABLE >
   std::pair< long, long >
-    MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::memoryUsage(
-      const Set< const TABLE< GUM_SCALAR >* >& set,
-      const Set< const DiscreteVariable* >&    del_vars) const {
+     MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >::memoryUsage(
+        const Set< const TABLE< GUM_SCALAR >* >& set,
+        const Set< const DiscreteVariable* >&    del_vars) const {
     // create the set of sets of discrete variables involved in the tables
     Set< const Sequence< const DiscreteVariable* >* > var_set(set.size());
 
     for (typename Set< const TABLE< GUM_SCALAR >* >::const_iterator_safe iter =
-           set.beginSafe();
+            set.beginSafe();
          iter != set.endSafe();
          ++iter) {
       var_set << &((*iter)->variablesSequence());

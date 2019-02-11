@@ -21,5 +21,7 @@
 #include <agrum/BN/inference/loopyBeliefPropagation.h>
 #include <agrum/agrum.h>
 
-template class gum::LoopyBeliefPropagation< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::LoopyBeliefPropagation< double >;
+#endif

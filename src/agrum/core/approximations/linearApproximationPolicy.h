@@ -236,8 +236,9 @@ namespace gum {
 }   // namespace gum
 
 
-extern template class gum::LinearApproximationPolicy< float >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::LinearApproximationPolicy< double >;
+#endif
 
 
 // Always inline template classes implementation.

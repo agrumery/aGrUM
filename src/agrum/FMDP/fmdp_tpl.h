@@ -152,14 +152,14 @@ namespace gum {
     if (actionId == 0) GUM_ERROR(DuplicateElement, " Action Id 0 is reserved.");
 
     for (BijectionIteratorSafe< Idx, const std::string* > actIter =
-           __actionMap.beginSafe();
+            __actionMap.beginSafe();
          actIter != __actionMap.endSafe();
          ++actIter)
       if (*(actIter.second()) == action)
         GUM_ERROR(DuplicateElement,
                   " Action "
-                    << action
-                    << " has already been inserted in FMDP with this name.");
+                     << action
+                     << " has already been inserted in FMDP with this name.");
 
     if (__actionMap.existsFirst(actionId))
       GUM_ERROR(DuplicateElement,
@@ -193,9 +193,9 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   INLINE void FMDP< GUM_SCALAR >::addTransitionForAction(
-    Idx                                         actionId,
-    const DiscreteVariable*                     var,
-    const MultiDimImplementation< GUM_SCALAR >* transition) {
+     Idx                                         actionId,
+     const DiscreteVariable*                     var,
+     const MultiDimImplementation< GUM_SCALAR >* transition) {
     if (!__varSeq.exists(var))
       GUM_ERROR(NotFound,
                 " Variable " << var->name() << " has not been declared before.");
@@ -221,7 +221,8 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   INLINE const MultiDimImplementation< GUM_SCALAR >*
-               FMDP< GUM_SCALAR >::transition(Idx actionId, const DiscreteVariable* v) const {
+               FMDP< GUM_SCALAR >::transition(Idx                     actionId,
+                                    const DiscreteVariable* v) const {
     if (!__actionTransitionTable.exists(actionId))
       GUM_ERROR(NotFound,
                 " Action " << actionName(actionId)
@@ -231,8 +232,8 @@ namespace gum {
       return (*__actionTransitionTable[actionId])[v];
     else
       return (*__actionTransitionTable[0]).exists(v)
-               ? (*__actionTransitionTable[0])[v]
-               : nullptr;
+                ? (*__actionTransitionTable[0])[v]
+                : nullptr;
   }
 
 
@@ -251,7 +252,7 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   INLINE void FMDP< GUM_SCALAR >::addCostForAction(
-    Idx actionId, const MultiDimImplementation< GUM_SCALAR >* cost) {
+     Idx actionId, const MultiDimImplementation< GUM_SCALAR >* cost) {
     if (!__actionCostTable.exists(actionId))
       GUM_ERROR(NotFound,
                 " Action " << actionName(actionId)
@@ -296,7 +297,7 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_SCALAR >
   INLINE void FMDP< GUM_SCALAR >::addRewardForAction(
-    Idx actionId, const MultiDimImplementation< GUM_SCALAR >* reward) {
+     Idx actionId, const MultiDimImplementation< GUM_SCALAR >* reward) {
     if (!__actionRewardTable.exists(actionId))
       GUM_ERROR(NotFound,
                 " Action " << actionName(actionId)
@@ -353,7 +354,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE Idx FMDP< GUM_SCALAR >::actionId(const std::string& action) const {
     for (BijectionIterator< Idx, const std::string* > actIter =
-           __actionMap.begin();
+            __actionMap.begin();
          actIter != __actionMap.end();
          ++actIter)
       if (*(actIter.second()) == action) { return actIter.first(); }

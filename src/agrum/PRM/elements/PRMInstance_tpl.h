@@ -104,10 +104,10 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void PRMInstance< GUM_SCALAR >::__instantiateSlotChain(
-      PRMSlotChain< GUM_SCALAR >* sc) {
+       PRMSlotChain< GUM_SCALAR >* sc) {
       auto first_id = sc->chain()[0]->id();
       auto set =
-        new Set< PRMInstance< GUM_SCALAR >* >(*(__referenceMap[first_id]));
+         new Set< PRMInstance< GUM_SCALAR >* >(*(__referenceMap[first_id]));
       // We proceed with a width-first run of the slot chain
       for (Size idx = 1; idx < sc->chain().size() - 1; ++idx) {
         auto temp = new Set< PRMInstance< GUM_SCALAR >* >();
@@ -160,7 +160,7 @@ namespace gum {
       switch (elt->elt_type()) {
         case PRMClassElement< GUM_SCALAR >::prm_refslot: {
           PRMReferenceSlot< GUM_SCALAR >* ref =
-            static_cast< PRMReferenceSlot< GUM_SCALAR >* >(elt);
+             static_cast< PRMReferenceSlot< GUM_SCALAR >* >(elt);
 
           // Checking if instance's type is legal
           if (!instance.type().isSubTypeOf(ref->slotType())) {
@@ -172,7 +172,7 @@ namespace gum {
           // Checking the reference's size limit
           if (__referenceMap.exists(id)
               && (!static_cast< PRMReferenceSlot< GUM_SCALAR >& >(type().get(id))
-                     .isArray())
+                      .isArray())
               && (__referenceMap[id]->size() == 1)) {
             GUM_ERROR(OutOfUpperBound,
                       "ReferenceSlot<GUM_SCALAR> size limit reached");
@@ -183,7 +183,7 @@ namespace gum {
 
         case PRMClassElement< GUM_SCALAR >::prm_slotchain: {
           PRMSlotChain< GUM_SCALAR >& sc =
-            static_cast< PRMSlotChain< GUM_SCALAR >& >(type().get(id));
+             static_cast< PRMSlotChain< GUM_SCALAR >& >(type().get(id));
 
           // Checking if instance's type is legal
           if (!instance.type().isSubTypeOf(sc.end())) {
@@ -196,7 +196,7 @@ namespace gum {
           // Checking the reference's size limit
           if (__referenceMap.exists(id)
               && (!static_cast< PRMSlotChain< GUM_SCALAR >& >(type().get(id))
-                     .isMultiple())
+                      .isMultiple())
               && (__referenceMap[id]->size() == 1)) {
             GUM_ERROR(OutOfUpperBound, "SlotChain<GUM_SCALAR> size limit reached");
           }
@@ -226,9 +226,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMInstance< GUM_SCALAR >::__copyAggregates(
-      PRMAggregate< GUM_SCALAR >* source) {
+       PRMAggregate< GUM_SCALAR >* source) {
       auto attr = new PRMScalarAttribute< GUM_SCALAR >(
-        source->name(), source->type(), source->buildImpl());
+         source->name(), source->type(), source->buildImpl());
       GUM_ASSERT(&(attr->type().variable()) != &(source->type().variable()));
       attr->setId(source->id());
       __nodeIdMap.insert(attr->id(), attr);
@@ -237,9 +237,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMInstance< GUM_SCALAR >::__copyAttribute(
-      PRMAttribute< GUM_SCALAR >* source) {
+       PRMAttribute< GUM_SCALAR >* source) {
       auto attr =
-        new PRMScalarAttribute< GUM_SCALAR >(source->name(), source->type());
+         new PRMScalarAttribute< GUM_SCALAR >(source->name(), source->type());
       GUM_ASSERT(&(attr->type().variable()) != &(source->type().variable()));
       // The potential is copied when instantiate() is called
       attr->cpf().fill((GUM_SCALAR)0);
@@ -250,7 +250,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMInstance< GUM_SCALAR >::PRMInstance(
-      const PRMInstance< GUM_SCALAR >& source) :
+       const PRMInstance< GUM_SCALAR >& source) :
         PRMObject(source),
         __type(source.__type) {
       GUM_CONS_CPY(PRMInstance);
@@ -259,7 +259,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMInstance< GUM_SCALAR >& /**/
-      PRMInstance< GUM_SCALAR >::operator=(const PRMClass< GUM_SCALAR >& from) {
+       PRMInstance< GUM_SCALAR >::operator=(const PRMClass< GUM_SCALAR >& from) {
       GUM_ERROR(FatalError, "do not copy Instance");
     }
 
@@ -329,20 +329,20 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMInstance< GUM_SCALAR >::__addReferingInstance(
-      PRMSlotChain< GUM_SCALAR >* sc, PRMInstance< GUM_SCALAR >* i) {
+       PRMSlotChain< GUM_SCALAR >* sc, PRMInstance< GUM_SCALAR >* i) {
       NodeId      id = i->get(sc->lastElt().safeName()).id();
       std::string name = sc->lastElt().safeName();
 
       try {
         i->__referenceMap[id]->insert(this);
         i->__referingAttr[id]->push_back(
-          std::make_pair(this, sc->lastElt().safeName()));
+           std::make_pair(this, sc->lastElt().safeName()));
       } catch (NotFound&) {
         i->__referenceMap.insert(id, new Set< PRMInstance< GUM_SCALAR >* >());
         i->__referenceMap[id]->insert(this);
         i->__referingAttr.insert(id, new std::vector< pair >());
         i->__referingAttr[id]->push_back(
-          std::make_pair(this, sc->lastElt().safeName()));
+           std::make_pair(this, sc->lastElt().safeName()));
       }
     }
 
@@ -383,31 +383,31 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE typename PRMInstance< GUM_SCALAR >::iterator
-      PRMInstance< GUM_SCALAR >::begin() {
+       PRMInstance< GUM_SCALAR >::begin() {
       return __nodeIdMap.begin();
     }
 
     template < typename GUM_SCALAR >
     INLINE const typename PRMInstance< GUM_SCALAR >::iterator&
-      PRMInstance< GUM_SCALAR >::end() {
+       PRMInstance< GUM_SCALAR >::end() {
       return __nodeIdMap.end();
     }
 
     template < typename GUM_SCALAR >
     INLINE typename PRMInstance< GUM_SCALAR >::const_iterator
-      PRMInstance< GUM_SCALAR >::begin() const {
+       PRMInstance< GUM_SCALAR >::begin() const {
       return __nodeIdMap.begin();
     }
 
     template < typename GUM_SCALAR >
     INLINE const typename PRMInstance< GUM_SCALAR >::const_iterator&
-      PRMInstance< GUM_SCALAR >::end() const {
+       PRMInstance< GUM_SCALAR >::end() const {
       return __nodeIdMap.end();
     }
 
     template < typename GUM_SCALAR >
     INLINE typename PRMInstance< GUM_SCALAR >::RefIterator
-      PRMInstance< GUM_SCALAR >::begin(NodeId id) {
+       PRMInstance< GUM_SCALAR >::begin(NodeId id) {
       try {
         return PRMInstance< GUM_SCALAR >::RefIterator(*(__referenceMap[id]));
       } catch (NotFound&) {
@@ -417,7 +417,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE typename PRMInstance< GUM_SCALAR >::RefConstIterator
-      PRMInstance< GUM_SCALAR >::begin(NodeId id) const {
+       PRMInstance< GUM_SCALAR >::begin(NodeId id) const {
       try {
         return PRMInstance< GUM_SCALAR >::RefConstIterator(*(__referenceMap[id]));
       } catch (NotFound&) {
@@ -427,7 +427,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMInstance< GUM_SCALAR >::RefIterator::RefIterator(
-      Set< PRMInstance< GUM_SCALAR >* >& set) :
+       Set< PRMInstance< GUM_SCALAR >* >& set) :
         __set(set),
         __iter(set.begin()) {
       GUM_CONSTRUCTOR(PRMInstance< GUM_SCALAR >::RefIterator);
@@ -435,7 +435,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMInstance< GUM_SCALAR >::RefIterator::RefIterator(
-      const RefIterator& from) :
+       const RefIterator& from) :
         __set(const_cast< Set< PRMInstance< GUM_SCALAR >* >& >(from.__set)),
         __iter(from.__iter) {
       GUM_CONS_CPY(PRMInstance< GUM_SCALAR >::RefIterator);
@@ -448,14 +448,14 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE typename PRMInstance< GUM_SCALAR >::RefIterator&
-      PRMInstance< GUM_SCALAR >::RefIterator::operator=(const RefIterator& from) {
+       PRMInstance< GUM_SCALAR >::RefIterator::operator=(const RefIterator& from) {
       __iter = from.__iter;
       return *this;
     }
 
     template < typename GUM_SCALAR >
     INLINE typename PRMInstance< GUM_SCALAR >::RefIterator&
-      PRMInstance< GUM_SCALAR >::RefIterator::operator++() {
+       PRMInstance< GUM_SCALAR >::RefIterator::operator++() {
       ++__iter;
       return *this;
     }
@@ -491,7 +491,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMInstance< GUM_SCALAR >::RefConstIterator::RefConstIterator(
-      const Set< PRMInstance< GUM_SCALAR >* >& set) :
+       const Set< PRMInstance< GUM_SCALAR >* >& set) :
         __set(set),
         __iter(set.begin()) {
       GUM_CONSTRUCTOR(PRMInstance< GUM_SCALAR >::RefConstIterator);
@@ -499,7 +499,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMInstance< GUM_SCALAR >::RefConstIterator::RefConstIterator(
-      const RefConstIterator& from) :
+       const RefConstIterator& from) :
         __set(from.__set),
         __iter(from.__iter) {
       GUM_CONS_CPY(PRMInstance< GUM_SCALAR >::RefConstIterator);
@@ -512,15 +512,15 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE typename PRMInstance< GUM_SCALAR >::RefConstIterator&
-        PRMInstance< GUM_SCALAR >::RefConstIterator::
-        operator=(const RefConstIterator& from) {
+          PRMInstance< GUM_SCALAR >::RefConstIterator::
+          operator=(const RefConstIterator& from) {
       __iter = from.__iter;
       return *this;
     }
 
     template < typename GUM_SCALAR >
     INLINE typename PRMInstance< GUM_SCALAR >::RefConstIterator&
-      PRMInstance< GUM_SCALAR >::RefConstIterator::operator++() {
+       PRMInstance< GUM_SCALAR >::RefConstIterator::operator++() {
       ++__iter;
       return *this;
     }
@@ -544,37 +544,37 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const PRMInstance< GUM_SCALAR >&
-      PRMInstance< GUM_SCALAR >::RefConstIterator::operator*() const {
+       PRMInstance< GUM_SCALAR >::RefConstIterator::operator*() const {
       return **__iter;
     }
 
     template < typename GUM_SCALAR >
     INLINE const PRMInstance< GUM_SCALAR >*
-      PRMInstance< GUM_SCALAR >::RefConstIterator::operator->() const {
+       PRMInstance< GUM_SCALAR >::RefConstIterator::operator->() const {
       return *__iter;
     }
 
     template < typename GUM_SCALAR >
     INLINE typename PRMInstance< GUM_SCALAR >::InvRefIterator
-      PRMInstance< GUM_SCALAR >::beginInvRef() {
+       PRMInstance< GUM_SCALAR >::beginInvRef() {
       return __referingAttr.begin();
     }
 
     template < typename GUM_SCALAR >
     INLINE const typename PRMInstance< GUM_SCALAR >::InvRefIterator&
-      PRMInstance< GUM_SCALAR >::endInvRef() {
+       PRMInstance< GUM_SCALAR >::endInvRef() {
       return __referingAttr.end();
     }
 
     template < typename GUM_SCALAR >
     INLINE typename PRMInstance< GUM_SCALAR >::InvRefConstIterator
-      PRMInstance< GUM_SCALAR >::beginInvRef() const {
+       PRMInstance< GUM_SCALAR >::beginInvRef() const {
       return __referingAttr.begin();
     }
 
     template < typename GUM_SCALAR >
     INLINE const typename PRMInstance< GUM_SCALAR >::InvRefConstIterator&
-      PRMInstance< GUM_SCALAR >::endInvRef() const {
+       PRMInstance< GUM_SCALAR >::endInvRef() const {
       return __referingAttr.end();
     }
 
@@ -586,8 +586,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const
-      std::vector< std::pair< PRMInstance< GUM_SCALAR >*, std::string > >&
-      PRMInstance< GUM_SCALAR >::getRefAttr(NodeId id) const {
+       std::vector< std::pair< PRMInstance< GUM_SCALAR >*, std::string > >&
+       PRMInstance< GUM_SCALAR >::getRefAttr(NodeId id) const {
       return *(__referingAttr[id]);
     }
 
@@ -598,9 +598,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMInstance< GUM_SCALAR >::__copyAttributeCPF(
-      PRMAttribute< GUM_SCALAR >* attr) {
+       PRMAttribute< GUM_SCALAR >* attr) {
       const auto& type_attr = static_cast< const PRMAttribute< GUM_SCALAR >& >(
-        type().get(attr->safeName()));
+         type().get(attr->safeName()));
       attr->copyCpf(bijection(), type_attr);
       GUM_ASSERT(attr->cpf().contains(attr->type().variable()));
     }

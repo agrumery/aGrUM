@@ -82,7 +82,11 @@ def getCmake(current, target):
       line += ' -G "Visual Studio 14 2015 Win64"'
     elif current["mvsc32"]:
       line += ' -G "Visual Studio 14 2015"'
-    else:
+    elif current["mvsc17"]:
+      line += ' -G "Visual Studio 15 2017 Win64"'
+    elif current["mvsc17_32"]:
+      line += ' -G "Visual Studio 15 2017"'
+    elif current["mingw64"]:
       line += ' -G "MinGW Makefiles"'
 
   return line
@@ -94,7 +98,7 @@ def buildCmake(current, target):
 
 
 def getMake(current, target):
-  if current["mvsc"] or current["mvsc32"]:
+  if current["mvsc"] or current["mvsc32"] or current["mvsc17"] or current["mvsc17_32"]:
     return getForMsBuildSystem(current, target)
   else:
     return getForMakeSystem(current, target)
@@ -157,7 +161,10 @@ def getPost(current, target):
   if current["action"] == "test":
     if target == "aGrUM":
       if cfg.os_platform == "win32":
-        line = "src\\Release\\gumTest.exe"  # debug or release create Release folder
+        if current["mingw64"]:
+          line = "src\\gumTest.exe"
+        else:
+          line = "src\\Release\\gumTest.exe"  # debug or release create Release folder
       else:
         line = "src/gumTest"
       return line, True

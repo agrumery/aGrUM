@@ -73,14 +73,14 @@ namespace gum_tests {
         std::stringstream sBuff;
         sBuff << "var_" << i;
         __variables->push_back(
-          new gum::LabelizedVariable(sBuff.str(), "A binary variable", 2));
+           new gum::LabelizedVariable(sBuff.str(), "A binary variable", 2));
       }
 
       __potentials = new std::vector< gum::Potential< double >* >();
 
       for (gum::Size i = 0; i < 5; ++i) {
         __potentials->push_back(
-          new gum::Potential< double >(new gum::MultiDimArray< double >()));
+           new gum::Potential< double >(new gum::MultiDimArray< double >()));
       }
 
       // Creating a table of 2 elements

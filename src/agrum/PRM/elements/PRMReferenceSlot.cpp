@@ -32,8 +32,10 @@
 namespace gum {
   namespace prm {
 
-    template class PRMReferenceSlot< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
     template class PRMReferenceSlot< double >;
+#endif
 
   } /* namespace prm */
 } /* namespace gum */

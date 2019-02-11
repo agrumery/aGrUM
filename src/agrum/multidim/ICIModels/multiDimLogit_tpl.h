@@ -39,7 +39,7 @@ namespace gum {
   // Default constructor
   template < typename GUM_SCALAR >
   INLINE MultiDimLogit< GUM_SCALAR >::MultiDimLogit(
-    const MultiDimLogit< GUM_SCALAR >& from) :
+     const MultiDimLogit< GUM_SCALAR >& from) :
       MultiDimICIModel< GUM_SCALAR >(from) {
     GUM_CONS_CPY(MultiDimLogit);
   }
@@ -47,8 +47,8 @@ namespace gum {
   // Copy constructor using a bijection to replace variables from source.
   template < typename GUM_SCALAR >
   INLINE MultiDimLogit< GUM_SCALAR >::MultiDimLogit(
-    const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-    const MultiDimLogit< GUM_SCALAR >&                                   from) :
+     const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
+     const MultiDimLogit< GUM_SCALAR >&                                   from) :
       MultiDimICIModel< GUM_SCALAR >(bij, from) {
     GUM_CONSTRUCTOR(MultiDimLogit);
   }
@@ -74,7 +74,7 @@ namespace gum {
     for (Idx j = 1; j < this->nbrDim(); j++) {
       const DiscreteVariable& v = this->variable(j);
       fact +=
-        GUM_SCALAR(this->causalWeight(v) * this->variable(j).numerical(i.val(v)));
+         GUM_SCALAR(this->causalWeight(v) * this->variable(j).numerical(i.val(v)));
     }
 
     fact = 1 / (1 + std::exp(-fact));   // or std::exp(fact)/(1+std::exp(fact))

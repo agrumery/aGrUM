@@ -72,7 +72,7 @@ namespace gum {
      * @param infDiag the influence diagram we want to perform inference upon
      */
     explicit InfluenceDiagramInference(
-      const InfluenceDiagram< GUM_SCALAR >& infDiag);
+       const InfluenceDiagram< GUM_SCALAR >& infDiag);
 
     /**
      * Destructor.
@@ -106,7 +106,7 @@ namespace gum {
 
     /// @see gum::IInfluenceDiagramInference::insertEvidence().
     virtual void
-      insertEvidence(const List< const Potential< GUM_SCALAR >* >& evidenceList);
+       insertEvidence(const List< const Potential< GUM_SCALAR >* >& evidenceList);
 
     /// @see gum::IInfluenceDiagramInference::eraseEvidence().
     virtual void eraseEvidence(const Potential< GUM_SCALAR >* evidence);
@@ -286,15 +286,15 @@ namespace gum {
     /// @return Returns the mapping of evidences on the variables in this
     /// clique.
     const HashTable< const DiscreteVariable*, const Potential< GUM_SCALAR >* >&
-      evidences() const;
+       evidences() const;
 
     /// @return Returns the bucket of this Clique
     const HashTable< const Potential< GUM_SCALAR >*, Instantiation* >&
-      potentialBucket();
+       potentialBucket();
 
     /// @return Returns the bucket of this Clique
     const HashTable< const Potential< GUM_SCALAR >*, Instantiation* >&
-      utilityBucket();
+       utilityBucket();
 
     /// @return returns the elimination sequence for this clique
     const Sequence< NodeId >& cliqueEliminationOrder();
@@ -308,7 +308,7 @@ namespace gum {
     private:
     /// Evidences on the variables in this clique
     HashTable< const DiscreteVariable*, const Potential< GUM_SCALAR >* >
-      __evidences;
+       __evidences;
 
     /// The potential bucket of this clique with evidences
     HashTable< const Potential< GUM_SCALAR >*, Instantiation* > __potentialBucket;

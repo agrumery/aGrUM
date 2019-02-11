@@ -35,7 +35,7 @@ namespace gum {
 
   INLINE
   std::string
-    IApproximationSchemeConfiguration::messageApproximationScheme() const {
+     IApproximationSchemeConfiguration::messageApproximationScheme() const {
     std::stringstream s;
 
     switch (stateApproximationScheme()) {

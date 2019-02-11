@@ -62,10 +62,10 @@ namespace gum {
      * @param minimality a Boolean indicating whether we should enforce that
      * the triangulation is minimal w.r.t. inclusion */
     PartialOrderedTriangulation(
-      const PartialOrderedEliminationSequenceStrategy& elimSeq =
-        DefaultPartialOrderedEliminationSequenceStrategy(),
-      const JunctionTreeStrategy& JTStrategy = DefaultJunctionTreeStrategy(),
-      bool                        minimality = false);
+       const PartialOrderedEliminationSequenceStrategy& elimSeq =
+          DefaultPartialOrderedEliminationSequenceStrategy(),
+       const JunctionTreeStrategy& JTStrategy = DefaultJunctionTreeStrategy(),
+       bool                        minimality = false);
 
     /// constructor with a given graph
     /** @param graph the graph to be triangulated, i.e., the nodes of which will
@@ -85,13 +85,13 @@ namespace gum {
      * partial ordering are not copied but only referenced by the
      * triangulation algorithm. */
     PartialOrderedTriangulation(
-      const UndiGraph*                                 graph,
-      const NodeProperty< Size >*                      domsizes,
-      const List< NodeSet >*                           partial_order,
-      const PartialOrderedEliminationSequenceStrategy& elimSeq =
-        DefaultPartialOrderedEliminationSequenceStrategy(),
-      const JunctionTreeStrategy& JTStrategy = DefaultJunctionTreeStrategy(),
-      bool                        minimality = false);
+       const UndiGraph*                                 graph,
+       const NodeProperty< Size >*                      domsizes,
+       const List< NodeSet >*                           partial_order,
+       const PartialOrderedEliminationSequenceStrategy& elimSeq =
+          DefaultPartialOrderedEliminationSequenceStrategy(),
+       const JunctionTreeStrategy& JTStrategy = DefaultJunctionTreeStrategy(),
+       bool                        minimality = false);
 
     /// copy constructor
     PartialOrderedTriangulation(const PartialOrderedTriangulation& from);

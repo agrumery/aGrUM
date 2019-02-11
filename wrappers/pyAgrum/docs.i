@@ -22,9 +22,9 @@
 
 %include "doc_MarkovBlanket.i"
 
-%include "doc_KL.i"
-%include "doc_GibbsKL.i"
-%include "doc_BruteForceKL.i"
+%include "doc_BNdistance.i"
+%include "doc_GibbsBNdistance.i"
+%include "doc_ExactBNdistance.i"
 
 %include "doc_GenericInference.i"
 
@@ -60,7 +60,7 @@
 %include "doc_InfluenceDiagramInference.i"
 
 %include "doc_miscellaneous.i"
-%include "doc_JTGenerator.i"
+%include "doc_JunctionTreeGenerator.i"
 %include "doc_IDGenerator.i"
 %include "doc_BNGenerator.i"
 

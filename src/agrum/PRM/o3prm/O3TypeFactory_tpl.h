@@ -34,10 +34,10 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE O3TypeFactory< GUM_SCALAR >::O3TypeFactory(
-        PRM< GUM_SCALAR >&          prm,
-        O3PRM&                      o3_prm,
-        O3NameSolver< GUM_SCALAR >& solver,
-        ErrorsContainer&            errors) :
+         PRM< GUM_SCALAR >&          prm,
+         O3PRM&                      o3_prm,
+         O3NameSolver< GUM_SCALAR >& solver,
+         ErrorsContainer&            errors) :
           __prm(&prm),
           __o3_prm(&o3_prm), __solver(&solver), __errors(&errors), __build(false) {
         GUM_CONSTRUCTOR(O3TypeFactory);
@@ -45,7 +45,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE O3TypeFactory< GUM_SCALAR >::O3TypeFactory(
-        const O3TypeFactory< GUM_SCALAR >& src) :
+         const O3TypeFactory< GUM_SCALAR >& src) :
           __prm(src.__prm),
           __o3_prm(src.__o3_prm), __solver(src.__solver), __errors(src.__errors),
           __build(src.__build) {
@@ -54,7 +54,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE O3TypeFactory< GUM_SCALAR >::O3TypeFactory(
-        O3TypeFactory< GUM_SCALAR >&& src) :
+         O3TypeFactory< GUM_SCALAR >&& src) :
           __prm(std::move(src.__prm)),
           __o3_prm(std::move(src.__o3_prm)), __solver(std::move(src.__solver)),
           __errors(std::move(src.__errors)), __build(std::move(src.__build)) {
@@ -161,7 +161,7 @@ namespace gum {
           PRMFactory< GUM_SCALAR > factory(__prm);
           for (auto type : __o3IntTypes) {
             factory.addRangeType(
-              type->name().label(), type->start().value(), type->end().value());
+               type->name().label(), type->start().value(), type->end().value());
           }
         }
       }
@@ -257,7 +257,7 @@ namespace gum {
             } catch (InvalidDirectedCycle&) {
               // Cyclic inheritance
               O3PRM_TYPE_CYCLIC_INHERITANCE(
-                type->name(), type->superLabel(), *__errors);
+                 type->name(), type->superLabel(), *__errors);
               return false;
             }
 

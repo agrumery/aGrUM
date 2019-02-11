@@ -39,7 +39,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   MultiDimSparse< GUM_SCALAR >::MultiDimSparse(
-    const MultiDimSparse< GUM_SCALAR >& from) :
+     const MultiDimSparse< GUM_SCALAR >& from) :
       MultiDimWithOffset< GUM_SCALAR >(from),
       _params(from._params), _default(from._default) {
     // for debugging purposes

@@ -103,7 +103,7 @@ namespace gum {
 
     // So that first available block points to it
     __firstAvailableBlock =
-      static_cast< unsigned char >((toRelease - __pData) / blockSize);
+       static_cast< unsigned char >((toRelease - __pData) / blockSize);
 
     // Truncation check
     GUM_ASSERT(__firstAvailableBlock == (toRelease - __pData) / blockSize);
@@ -184,7 +184,7 @@ namespace gum {
   INLINE void FixedAllocator::deallocate(void* pDeallocatedBlock) {
     if (__deallocChunk->__pData > pDeallocatedBlock
         || pDeallocatedBlock
-             > (__deallocChunk->__pData + (__numBlocks * __blockSize))) {
+              > (__deallocChunk->__pData + (__numBlocks * __blockSize))) {
       // If not things get ugly
       // We have to find where the Chunk containing this pointer is
       std::ptrdiff_t offset = 0;

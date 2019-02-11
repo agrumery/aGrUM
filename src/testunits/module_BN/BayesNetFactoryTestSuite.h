@@ -55,15 +55,15 @@ namespace gum_tests {
     void testCreation() {
       gum::BayesNetFactory< double >* factory = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(factory =
-                                     new gum::BayesNetFactory< double >(__bn_d));
+                                      new gum::BayesNetFactory< double >(__bn_d));
       TS_GUM_ASSERT_THROWS_NOTHING(delete factory);
     }
 
     void testIllegalCallsInNONE() {
       std::vector< float >            aSequence;
-      gum::BayesNetFactory< double >* factory = 0;
+      gum::BayesNetFactory< double >* factory = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(factory =
-                                     new gum::BayesNetFactory< double >(__bn_d));
+                                      new gum::BayesNetFactory< double >(__bn_d));
 
       //        TS_ASSERT_THROWS(factory->startVariableDeclaration(),
       //        gum::OperationNotAllowed);
@@ -102,16 +102,16 @@ namespace gum_tests {
     void testLegalsCallsInNONE() {
       gum::BayesNetFactory< double >* factory = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(factory =
-                                     new gum::BayesNetFactory< double >(__bn_d));
+                                      new gum::BayesNetFactory< double >(__bn_d));
 
       TS_ASSERT_THROWS(__bn_d->property("name"), gum::NotFound);
       TS_ASSERT_THROWS(__bn_d->property("author"), gum::NotFound);
 
       TS_GUM_ASSERT_THROWS_NOTHING(factory->startNetworkDeclaration());
       TS_GUM_ASSERT_THROWS_NOTHING(
-        factory->addNetworkProperty("name", "TestSuite BayesNet"));
+         factory->addNetworkProperty("name", "TestSuite BayesNet"));
       TS_GUM_ASSERT_THROWS_NOTHING(
-        factory->addNetworkProperty("author", "Lionel"));
+         factory->addNetworkProperty("author", "Lionel"));
       TS_GUM_ASSERT_THROWS_NOTHING(factory->endNetworkDeclaration());
 
       TS_ASSERT_EQUALS(__bn_d->property("name"), "TestSuite BayesNet");
@@ -124,13 +124,13 @@ namespace gum_tests {
       std::vector< float >            aSequence;
       gum::BayesNetFactory< double >* factory = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(factory =
-                                     new gum::BayesNetFactory< double >(__bn_d));
+                                      new gum::BayesNetFactory< double >(__bn_d));
 
       TS_GUM_ASSERT_THROWS_NOTHING(factory->startNetworkDeclaration());
       TS_GUM_ASSERT_THROWS_NOTHING(
-        factory->addNetworkProperty("name", "TestSuite BayesNet"));
+         factory->addNetworkProperty("name", "TestSuite BayesNet"));
       TS_GUM_ASSERT_THROWS_NOTHING(
-        factory->addNetworkProperty("author", "Lionel"));
+         factory->addNetworkProperty("author", "Lionel"));
 
       TS_ASSERT_THROWS(factory->variableName("foo"), gum::OperationNotAllowed);
       TS_ASSERT_THROWS(factory->variableDescription("bar"),
@@ -162,14 +162,14 @@ namespace gum_tests {
     void testBayesNetCreation() {
       gum::BayesNetFactory< double >* factory = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(factory =
-                                     new gum::BayesNetFactory< double >(__bn_d));
+                                      new gum::BayesNetFactory< double >(__bn_d));
 
       // defining network
       TS_GUM_ASSERT_THROWS_NOTHING(factory->startNetworkDeclaration());
       TS_GUM_ASSERT_THROWS_NOTHING(
-        factory->addNetworkProperty("name", "TestSuite BayesNet"));
+         factory->addNetworkProperty("name", "TestSuite BayesNet"));
       TS_GUM_ASSERT_THROWS_NOTHING(
-        factory->addNetworkProperty("author", "Lionel"));
+         factory->addNetworkProperty("author", "Lionel"));
       TS_GUM_ASSERT_THROWS_NOTHING(factory->endNetworkDeclaration());
 
       // defining variables
@@ -263,7 +263,7 @@ namespace gum_tests {
 
       std::vector< float > values_5;
       TS_GUM_ASSERT_THROWS_NOTHING(
-        factory->startFactorizedProbabilityDeclaration("5"));
+         factory->startFactorizedProbabilityDeclaration("5"));
       TS_GUM_ASSERT_THROWS_NOTHING(factory->startFactorizedEntry());
       values_5.push_back((float)0.5);   // 5 == true  | *
       values_5.push_back((float)0.5);   // 5 == false | *
@@ -283,9 +283,9 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(factory->setParentModality("3", "false"));
       TS_GUM_ASSERT_THROWS_NOTHING(factory->setParentModality("4", "true"));
       values_5.push_back(
-        (float)0);   // 5 == true  | 2 == false, 3 == false, 4 == true
+         (float)0);   // 5 == true  | 2 == false, 3 == false, 4 == true
       values_5.push_back(
-        (float)1);   // 5 == false | 2 == false, 3 == false, 4 == true
+         (float)1);   // 5 == false | 2 == false, 3 == false, 4 == true
       TS_GUM_ASSERT_THROWS_NOTHING(factory->setVariableValues(values_5));
       values_5.clear();
       TS_GUM_ASSERT_THROWS_NOTHING(factory->endFactorizedEntry());
@@ -297,14 +297,14 @@ namespace gum_tests {
     void testDefiningWithCPT() {
       gum::BayesNetFactory< double >* factory = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(factory =
-                                     new gum::BayesNetFactory< double >(__bn_d));
+                                      new gum::BayesNetFactory< double >(__bn_d));
 
       // defining network
       TS_GUM_ASSERT_THROWS_NOTHING(factory->startNetworkDeclaration());
       TS_GUM_ASSERT_THROWS_NOTHING(
-        factory->addNetworkProperty("name", "TestSuite BayesNet"));
+         factory->addNetworkProperty("name", "TestSuite BayesNet"));
       TS_GUM_ASSERT_THROWS_NOTHING(
-        factory->addNetworkProperty("author", "Lionel"));
+         factory->addNetworkProperty("author", "Lionel"));
       TS_GUM_ASSERT_THROWS_NOTHING(factory->endNetworkDeclaration());
 
       // defining variables
@@ -346,7 +346,7 @@ namespace gum_tests {
       // Defining CPT
       gum::Potential< double >*    cpt_1 = new gum::Potential< double >();
       const gum::DiscreteVariable& var_1 =
-        factory->bayesNet()->variable(factory->variableId("1"));
+         factory->bayesNet()->variable(factory->variableId("1"));
       cpt_1->add(var_1);
       gum::Instantiation inst_1(*cpt_1);
       inst_1.chgVal(var_1, 0);
@@ -357,7 +357,7 @@ namespace gum_tests {
 
       gum::Potential< double >*    cpt_2 = new gum::Potential< double >();
       const gum::DiscreteVariable& var_2 =
-        factory->bayesNet()->variable(factory->variableId("2"));
+         factory->bayesNet()->variable(factory->variableId("2"));
       cpt_2->add(var_2);
       gum::Instantiation inst_2(*cpt_2);
       inst_2.chgVal(var_2, 0);
@@ -368,7 +368,7 @@ namespace gum_tests {
 
       gum::Potential< double >*    cpt_3 = new gum::Potential< double >();
       const gum::DiscreteVariable& var_3 =
-        factory->bayesNet()->variable(factory->variableId("3"));
+         factory->bayesNet()->variable(factory->variableId("3"));
       cpt_3->add(var_3);
       cpt_3->add(var_1);
       gum::Instantiation inst_3(*cpt_3);
@@ -388,7 +388,7 @@ namespace gum_tests {
 
       gum::Potential< double >*    cpt_4 = new gum::Potential< double >();
       const gum::DiscreteVariable& var_4 =
-        factory->bayesNet()->variable(factory->variableId("4"));
+         factory->bayesNet()->variable(factory->variableId("4"));
       cpt_4->add(var_4);
       cpt_4->add(var_1);
       cpt_4->add(var_2);
@@ -428,9 +428,9 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(factory->setVariableCPT("4", cpt_4, true));
 
       gum::Potential< double >* cpt_5 = new gum::Potential< double >(
-        new gum::MultiDimSparse< double >((double)0.5));
+         new gum::MultiDimSparse< double >((double)0.5));
       const gum::DiscreteVariable& var_5 =
-        factory->bayesNet()->variable(factory->variableId("5"));
+         factory->bayesNet()->variable(factory->variableId("5"));
       cpt_5->add(var_5);
       cpt_5->add(var_2);
       cpt_5->add(var_3);

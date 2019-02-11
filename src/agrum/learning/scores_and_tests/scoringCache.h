@@ -158,7 +158,7 @@ namespace gum {
       HashTable< IdSet< ALLOC >,
                  double,
                  ALLOC< std::pair< IdSet< ALLOC >, double > > >
-        __scores;
+         __scores;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

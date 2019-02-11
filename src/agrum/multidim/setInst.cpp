@@ -187,10 +187,10 @@ namespace gum {
   }
 
   void gum::SetInst::assign_values(
-    gum::Bijection< const gum::DiscreteVariable*, const gum::DiscreteVariable* >&
-                        bij,
-    const gum::SetInst& i,
-    gum::SetInst&       j) {
+     gum::Bijection< const gum::DiscreteVariable*, const gum::DiscreteVariable* >&
+                         bij,
+     const gum::SetInst& i,
+     gum::SetInst&       j) {
     try {
       for (const auto var : i.variablesSequence())
         j.chgVal(bij.second(var), i.val(var));

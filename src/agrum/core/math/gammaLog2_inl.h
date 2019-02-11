@@ -37,7 +37,7 @@ namespace gum {
         Idx index = int(x * 100);
         return __small_values[index]
                + (__small_values[index + 1] - __small_values[index])
-                   * double(x * 100 - index);
+                    * double(x * 100 - index);
       } else {
         Idx index = int(x * 100 + 0.5);
         return __small_values[index];

@@ -62,7 +62,7 @@ namespace gum {
       using expe = NodeProperty< GUM_SCALAR >;
 
       using dynExpe =
-        typename gum::HashTable< std::string, std::vector< GUM_SCALAR > >;
+         typename gum::HashTable< std::string, std::vector< GUM_SCALAR > >;
 
       using query = NodeProperty< std::vector< bool > >;
       using cluster = NodeProperty< std::vector< NodeId > >;
@@ -333,7 +333,7 @@ namespace gum {
        * @param modals The map variable name - modalities.
        */
       void insertModals(
-        const std::map< std::string, std::vector< GUM_SCALAR > >& modals);
+         const std::map< std::string, std::vector< GUM_SCALAR > >& modals);
 
       /**
        * Insert evidence from file.
@@ -346,14 +346,14 @@ namespace gum {
        * @param eviMap The map variable name - likelihood.
        */
       void insertEvidence(
-        const std::map< std::string, std::vector< GUM_SCALAR > >& eviMap);
+         const std::map< std::string, std::vector< GUM_SCALAR > >& eviMap);
 
       /**
        * Insert evidence from Property.
        * @param evidence The on nodes Property containing likelihoods.
        */
       void
-        insertEvidence(const NodeProperty< std::vector< GUM_SCALAR > >& evidence);
+         insertEvidence(const NodeProperty< std::vector< GUM_SCALAR > >& evidence);
 
       /**
        * Insert query variables states from file.
@@ -400,7 +400,7 @@ namespace gum {
        * @return A constant reference to this variable lower marginals.
        */
       const std::vector< GUM_SCALAR >&
-        marginalMin(const std::string& varName) const;
+         marginalMin(const std::string& varName) const;
 
       /**
        * Get the upper marginals of a given variable name.
@@ -408,7 +408,7 @@ namespace gum {
        * @return A constant reference to this variable upper marginals.
        */
       const std::vector< GUM_SCALAR >&
-        marginalMax(const std::string& varName) const;
+         marginalMax(const std::string& varName) const;
 
       /**
        * Get the lower expectation of a given node id.
@@ -450,7 +450,7 @@ namespace gum {
        * steps.
        */
       const std::vector< GUM_SCALAR >&
-        dynamicExpMin(const std::string& varName) const;
+         dynamicExpMin(const std::string& varName) const;
 
       /**
        * Get the upper dynamic expectation of a given variable prefix (without
@@ -464,7 +464,7 @@ namespace gum {
        * steps.
        */
       const std::vector< GUM_SCALAR >&
-        dynamicExpMax(const std::string& varName) const;
+         dynamicExpMax(const std::string& varName) const;
 
       /**
        * Get the vertice of a given node id.
@@ -472,7 +472,7 @@ namespace gum {
        * @return A constant reference to this node vertice.
        */
       const std::vector< std::vector< GUM_SCALAR > >&
-        vertices(const NodeId id) const;
+         vertices(const NodeId id) const;
 
       /**
        * Saves marginals to file.
@@ -518,8 +518,9 @@ namespace gum {
     };
 
 
-    extern template class InferenceEngine< float >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
     extern template class InferenceEngine< double >;
+#endif
   }   // namespace credal
 }   // namespace gum
 

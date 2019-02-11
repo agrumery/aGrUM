@@ -214,7 +214,7 @@ namespace gum {
   /// of the vars)
   template < typename GUM_SCALAR >
   GUM_SCALAR
-    IBayesNet< GUM_SCALAR >::jointProbability(const Instantiation& i) const {
+     IBayesNet< GUM_SCALAR >::jointProbability(const Instantiation& i) const {
     auto value = (GUM_SCALAR)1.0;
 
     GUM_SCALAR tmp;
@@ -233,7 +233,7 @@ namespace gum {
   /// of the vars)
   template < typename GUM_SCALAR >
   GUM_SCALAR
-    IBayesNet< GUM_SCALAR >::log2JointProbability(const Instantiation& i) const {
+     IBayesNet< GUM_SCALAR >::log2JointProbability(const Instantiation& i) const {
     auto value = (GUM_SCALAR)0.0;
 
     GUM_SCALAR tmp;
@@ -304,11 +304,11 @@ namespace gum {
   // visit the nodes and add some of node from soids in minimal
   template < typename GUM_SCALAR >
   void IBayesNet< GUM_SCALAR >::__minimalCondSetVisitUp(
-    NodeId         node,
-    const NodeSet& soids,
-    NodeSet&       minimal,
-    NodeSet&       alreadyVisitedUp,
-    NodeSet&       alreadyVisitedDn) const {
+     NodeId         node,
+     const NodeSet& soids,
+     NodeSet&       minimal,
+     NodeSet&       alreadyVisitedUp,
+     NodeSet&       alreadyVisitedDn) const {
     if (alreadyVisitedUp.contains(node)) return;
     alreadyVisitedUp << node;
 
@@ -317,21 +317,21 @@ namespace gum {
     } else {
       for (auto fath : _dag.parents(node))
         __minimalCondSetVisitUp(
-          fath, soids, minimal, alreadyVisitedUp, alreadyVisitedDn);
+           fath, soids, minimal, alreadyVisitedUp, alreadyVisitedDn);
       for (auto chil : _dag.children(node))
         __minimalCondSetVisitDn(
-          chil, soids, minimal, alreadyVisitedUp, alreadyVisitedDn);
+           chil, soids, minimal, alreadyVisitedUp, alreadyVisitedDn);
     }
   }
 
   // visit the nodes and add some of node from soids in minimal
   template < typename GUM_SCALAR >
   void IBayesNet< GUM_SCALAR >::__minimalCondSetVisitDn(
-    NodeId         node,
-    const NodeSet& soids,
-    NodeSet&       minimal,
-    NodeSet&       alreadyVisitedUp,
-    NodeSet&       alreadyVisitedDn) const {
+     NodeId         node,
+     const NodeSet& soids,
+     NodeSet&       minimal,
+     NodeSet&       alreadyVisitedUp,
+     NodeSet&       alreadyVisitedDn) const {
     if (alreadyVisitedDn.contains(node)) return;
     alreadyVisitedDn << node;
 
@@ -339,11 +339,11 @@ namespace gum {
       minimal << node;
       for (auto fath : _dag.parents(node))
         __minimalCondSetVisitUp(
-          fath, soids, minimal, alreadyVisitedUp, alreadyVisitedDn);
+           fath, soids, minimal, alreadyVisitedUp, alreadyVisitedDn);
     } else {
       for (auto chil : _dag.children(node))
         __minimalCondSetVisitDn(
-          chil, soids, minimal, alreadyVisitedUp, alreadyVisitedDn);
+           chil, soids, minimal, alreadyVisitedUp, alreadyVisitedDn);
     }
   }
 
@@ -361,10 +361,10 @@ namespace gum {
 
     for (auto fath : _dag.parents(target))
       __minimalCondSetVisitUp(
-        fath, soids, res, alreadyVisitedUp, alreadyVisitedDn);
+         fath, soids, res, alreadyVisitedUp, alreadyVisitedDn);
     for (auto chil : _dag.children(target))
       __minimalCondSetVisitDn(
-        chil, soids, res, alreadyVisitedUp, alreadyVisitedDn);
+         chil, soids, res, alreadyVisitedUp, alreadyVisitedDn);
     return res;
   }
 

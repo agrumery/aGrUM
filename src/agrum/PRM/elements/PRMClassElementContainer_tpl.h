@@ -32,14 +32,14 @@ namespace gum {
   namespace prm {
     template < typename GUM_SCALAR >
     void PRMClassElementContainer< GUM_SCALAR >::_copyIOFlags(
-      const PRMClassElementContainer< GUM_SCALAR >& c) {
+       const PRMClassElementContainer< GUM_SCALAR >& c) {
       for (const auto& flag : c.__IOFlags)
         _setIOFlag(get(flag.first), flag.second);
     }
 
     template < typename GUM_SCALAR >
     INLINE PRMClassElementContainer< GUM_SCALAR >::PRMClassElementContainer(
-      const std::string& name) :
+       const std::string& name) :
         PRMObject(name) {
       GUM_CONSTRUCTOR(PRMClassElementContainer);
     }
@@ -58,7 +58,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMClassElementContainer< GUM_SCALAR >::PRMClassElementContainer(
-      const PRMClassElementContainer< GUM_SCALAR >& source) :
+       const PRMClassElementContainer< GUM_SCALAR >& source) :
         PRMObject(source) {
       GUM_CONS_CPY(PRMClassElementContainer);
       GUM_ERROR(FatalError,
@@ -67,7 +67,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE bool PRMClassElementContainer< GUM_SCALAR >::isInputNode(
-      const PRMClassElement< GUM_SCALAR >& elt) const {
+       const PRMClassElement< GUM_SCALAR >& elt) const {
       try {
         return _getIOFlag(elt).first;
       } catch (NotFound&) { return false; }
@@ -75,7 +75,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMClassElementContainer< GUM_SCALAR >::setInputNode(
-      const PRMClassElement< GUM_SCALAR >& elt, bool b) {
+       const PRMClassElement< GUM_SCALAR >& elt, bool b) {
       if (!exists(elt.safeName())) {
         GUM_ERROR(NotFound,
                   ": <" + elt.safeName() + "> is not in <" + name() + ">");
@@ -92,7 +92,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMClassElementContainer< GUM_SCALAR >::setOutputNode(
-      const PRMClassElement< GUM_SCALAR >& elt, bool b) {
+       const PRMClassElement< GUM_SCALAR >& elt, bool b) {
       if (!exists(elt.safeName())) {
         GUM_ERROR(NotFound, "<" + elt.safeName() + "> is not in <" + name() + ">");
       } else if (PRMClassElement< GUM_SCALAR >::isAttribute(elt)
@@ -111,7 +111,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE bool PRMClassElementContainer< GUM_SCALAR >::isInnerNode(
-      const PRMClassElement< GUM_SCALAR >& elt) const {
+       const PRMClassElement< GUM_SCALAR >& elt) const {
       try {
         return !(_getIOFlag(elt).first || _getIOFlag(elt).second);
       } catch (NotFound&) { return true; }
@@ -119,14 +119,14 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE bool PRMClassElementContainer< GUM_SCALAR >::isSuperTypeOf(
-      const PRMClassElementContainer< GUM_SCALAR >& cec) const {
+       const PRMClassElementContainer< GUM_SCALAR >& cec) const {
       return cec.isSubTypeOf(*this);
     }
 
     template < typename GUM_SCALAR >
     INLINE std::pair< bool, bool >&
            PRMClassElementContainer< GUM_SCALAR >::_getIOFlag(
-        const PRMClassElement< GUM_SCALAR >& elt) {
+          const PRMClassElement< GUM_SCALAR >& elt) {
       try {
         return __IOFlags[elt.safeName()];
       } catch (NotFound&) {
@@ -138,7 +138,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE const std::pair< bool, bool >&
                  PRMClassElementContainer< GUM_SCALAR >::_getIOFlag(
-        const PRMClassElement< GUM_SCALAR >& elt) const {
+          const PRMClassElement< GUM_SCALAR >& elt) const {
       try {
         return __IOFlags[elt.safeName()];
       } catch (NotFound&) {
@@ -149,8 +149,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMClassElementContainer< GUM_SCALAR >::_setIOFlag(
-      const PRMClassElement< GUM_SCALAR >& elt,
-      const std::pair< bool, bool >&       flags) {
+       const PRMClassElement< GUM_SCALAR >& elt,
+       const std::pair< bool, bool >&       flags) {
       try {
         __IOFlags[elt.safeName()] = flags;
       } catch (NotFound&) { __IOFlags.insert(elt.safeName(), flags); }
@@ -163,7 +163,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE bool PRMClassElementContainer< GUM_SCALAR >::exists(
-      const std::string& name) const {
+       const std::string& name) const {
       try {
         get(name);
         return true;
@@ -172,7 +172,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE bool PRMClassElementContainer< GUM_SCALAR >::belongsTo(
-      const PRMClassElement< GUM_SCALAR >& elt) const {
+       const PRMClassElement< GUM_SCALAR >& elt) const {
       try {
         return &elt == &(get(elt.safeName()));
       } catch (NotFound&) { return false; }
@@ -189,8 +189,8 @@ namespace gum {
 
 template < typename GUM_SCALAR >
 std::ostream&
-  operator<<(std::ostream&                                           output,
-             const gum::prm::PRMClassElementContainer< GUM_SCALAR >& container) {
+   operator<<(std::ostream&                                           output,
+              const gum::prm::PRMClassElementContainer< GUM_SCALAR >& container) {
   std::string tab = "  ";
   output << "digraph \"" << container.name() << "\" {" << std::endl;
 

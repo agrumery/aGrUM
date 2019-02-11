@@ -34,7 +34,7 @@ namespace gum_tests {
 
   class TorcsTestSuite : public CxxTest::TestSuite {
     public:
-    gum::BayesNet< float >* bn;
+    gum::BayesNet< double >* bn;
 
     gum::LabelizedVariable* node1;
     gum::LabelizedVariable* node2;
@@ -42,11 +42,11 @@ namespace gum_tests {
     gum::LabelizedVariable* node4;
     gum::LabelizedVariable* node5;
 
-    gum::List< gum::Potential< float >* >* evidence;
+    gum::List< gum::Potential< double >* >* evidence;
 
     void setUp() {
       gum::HashTable< gum::LabelizedVariable*, gum::NodeId > idMap;
-      bn = new gum::BayesNet< float >();
+      bn = new gum::BayesNet< double >();
 
       node1 = new gum::LabelizedVariable("TgR", "", 72);
       node2 = new gum::LabelizedVariable("DirV", "", 72);
@@ -65,13 +65,13 @@ namespace gum_tests {
       bn->addArc(idMap[node3], idMap[node5]);
       bn->addArc(idMap[node4], idMap[node5]);
 
-      evidence = new gum::List< gum::Potential< float >* >();
-      gum::Potential< float >* e1 =
-        new gum::Potential< float >(new gum::MultiDimArray< float >());
-      gum::Potential< float >* e2 =
-        new gum::Potential< float >(new gum::MultiDimArray< float >());
-      gum::Potential< float >* e3 =
-        new gum::Potential< float >(new gum::MultiDimArray< float >());
+      evidence = new gum::List< gum::Potential< double >* >();
+      gum::Potential< double >* e1 =
+         new gum::Potential< double >(new gum::MultiDimArray< double >());
+      gum::Potential< double >* e2 =
+         new gum::Potential< double >(new gum::MultiDimArray< double >());
+      gum::Potential< double >* e3 =
+         new gum::Potential< double >(new gum::MultiDimArray< double >());
 
       try {
         (*e1) << bn->variable(idMap[node1]);
@@ -120,7 +120,7 @@ namespace gum_tests {
     }
 
     void testInference() {
-      gum::LazyPropagation< float > inf(bn);
+      gum::LazyPropagation< double > inf(bn);
 
       try {
         inf.makeInference();

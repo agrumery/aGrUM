@@ -29,8 +29,10 @@
 namespace gum {
   namespace prm {
 
-    template class StructuredInference< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
     template class StructuredInference< double >;
+#endif
 
   } /* namespace prm */
 } /* namespace gum */

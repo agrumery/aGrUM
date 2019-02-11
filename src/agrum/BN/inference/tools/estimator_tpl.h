@@ -45,8 +45,8 @@ namespace gum {
          iter != bn->nodes().end();
          ++iter)
       _estimator.insert(
-        bn->variable(*iter).name(),
-        std::vector< GUM_SCALAR >(bn->variable(*iter).domainSize(), 0.0));
+         bn->variable(*iter).name(),
+         std::vector< GUM_SCALAR >(bn->variable(*iter).domainSize(), 0.0));
 
     GUM_CONSTRUCTOR(Estimator);
   }
@@ -73,11 +73,11 @@ namespace gum {
       if (!hardEvidence.contains(*iter)) {
         if (_estimator.exists(v))
           _estimator[v] = std::vector< GUM_SCALAR >(
-            bn->variable(*iter).domainSize(), (GUM_SCALAR)0.0);
+             bn->variable(*iter).domainSize(), (GUM_SCALAR)0.0);
         else
           _estimator.insert(v,
                             std::vector< GUM_SCALAR >(
-                              bn->variable(*iter).domainSize(), (GUM_SCALAR)0.0));
+                               bn->variable(*iter).domainSize(), (GUM_SCALAR)0.0));
       }
     }
   }
@@ -86,9 +86,9 @@ namespace gum {
   // number of iterations
   template < typename GUM_SCALAR >
   void
-    Estimator< GUM_SCALAR >::setFromLBP(LoopyBeliefPropagation< GUM_SCALAR >* lbp,
-                                        const NodeSet& hardEvidence,
-                                        GUM_SCALAR     virtualLBPSize) {
+     Estimator< GUM_SCALAR >::setFromLBP(LoopyBeliefPropagation< GUM_SCALAR >* lbp,
+                                         const NodeSet& hardEvidence,
+                                         GUM_SCALAR     virtualLBPSize) {
     for (const auto& node : lbp->BN().nodes()) {
       if (!hardEvidence.contains(node)) {
         std::vector< GUM_SCALAR > v;
@@ -123,7 +123,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
-    Estimator< GUM_SCALAR >::posterior(const DiscreteVariable& var) {
+     Estimator< GUM_SCALAR >::posterior(const DiscreteVariable& var) {
     Potential< GUM_SCALAR >* p = nullptr;
 
     if (!_estimator.exists(var.name()))
@@ -171,7 +171,7 @@ namespace gum {
     for (auto iter = _estimator.begin(); iter != _estimator.end(); ++iter) {
       for (Idx i = 0; i < iter.val().size(); i++) {
         GUM_SCALAR ic = GUM_SCALAR(
-          2 * 1.96 * std::sqrt(variance(iter.key(), i) / (_ntotal - 1)));
+           2 * 1.96 * std::sqrt(variance(iter.key(), i) / (_ntotal - 1)));
         if (ic > ic_max) ic_max = ic;
       }
     }

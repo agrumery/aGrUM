@@ -46,7 +46,7 @@ namespace gum {
      * Default constructor
      */
     explicit IInfluenceDiagramInference(
-      const InfluenceDiagram< GUM_SCALAR >& infDiag);
+       const InfluenceDiagram< GUM_SCALAR >& infDiag);
 
     /**
      * Destructor.
@@ -66,7 +66,7 @@ namespace gum {
      * variable.
      */
     virtual void insertEvidence(
-      const List< const Potential< GUM_SCALAR >* >& evidenceList) = 0;
+       const List< const Potential< GUM_SCALAR >* >& evidenceList) = 0;
 
     /**
      * Remove a given evidence from the graph.

@@ -41,8 +41,8 @@ namespace gum {
 #    define GUM_MULTI_DIM_OPERATOR_TYPE T
   template < typename T >
   MultiDimImplementation< T >*
-    GUM_MULTI_DIM_OPERATOR_NAME(const MultiDimImplementation< T >* t1,
-                                const MultiDimImplementation< T >* t2)
+     GUM_MULTI_DIM_OPERATOR_NAME(const MultiDimImplementation< T >* t1,
+                                 const MultiDimImplementation< T >* t2)
 #  endif
 
   // clang-format off
@@ -183,7 +183,7 @@ namespace gum {
     // are those that belong to t1 but not t2. This order will be used in the
     // next for loops.
     MultiDimArray< GUM_MULTI_DIM_OPERATOR_TYPE >* result =
-      new MultiDimArray< GUM_MULTI_DIM_OPERATOR_TYPE >;
+       new MultiDimArray< GUM_MULTI_DIM_OPERATOR_TYPE >;
     result->beginMultipleChanges();
 
     for (const auto var : t1_vars)
@@ -219,8 +219,8 @@ namespace gum {
 
           for (Idx z = 0; z < t1_and_t2_domain_size; ++z) {
             result->unsafeSet(
-              result_offset,
-              GUM_MULTI_DIM_OPERATOR(t1->get(t1_inst), t2->get(t2_inst)));
+               result_offset,
+               GUM_MULTI_DIM_OPERATOR(t1->get(t1_inst), t2->get(t2_inst)));
 
             ++result_offset;
 
@@ -240,8 +240,8 @@ namespace gum {
 
           for (Idx z = 0; z < t1_and_t2_domain_size; ++z) {
             result->unsafeSet(
-              result_offset,
-              GUM_MULTI_DIM_OPERATOR(t1->get(t1_inst), t2->get(t2_inst)));
+               result_offset,
+               GUM_MULTI_DIM_OPERATOR(t1->get(t1_inst), t2->get(t2_inst)));
 
             ++result_offset;
 

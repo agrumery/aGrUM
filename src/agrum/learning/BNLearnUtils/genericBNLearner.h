@@ -97,7 +97,7 @@ namespace gum {
      * @brief A pack of learning algorithms that can easily be used
      *
      * The pack currently contains K2, GreedyHillClimbing and
-     * LocalSearchWithTabuList
+     * LocalSearchWithTabuList also 3off2/miic
      * @ingroup learning_group
      */
     class genericBNLearner : public gum::IApproximationSchemeConfiguration {
@@ -373,9 +373,9 @@ namespace gum {
        * ranging over the whole database. */
       template < template < typename > class XALLOC >
       void useDatabaseRanges(
-        const std::vector< std::pair< std::size_t, std::size_t >,
-                           XALLOC< std::pair< std::size_t, std::size_t > > >&
-          new_ranges);
+         const std::vector< std::pair< std::size_t, std::size_t >,
+                            XALLOC< std::pair< std::size_t, std::size_t > > >&
+            new_ranges);
 
       /// reset the ranges to the one range corresponding to the whole database
       void clearDatabaseRanges();
@@ -385,7 +385,7 @@ namespace gum {
        * rows in the database. The learning is performed on these set of rows.
        * @warning an empty set of ranges means the whole database. */
       const std::vector< std::pair< std::size_t, std::size_t > >&
-        databaseRanges() const;
+         databaseRanges() const;
 
       /// sets the ranges of rows to be used for cross-validation learning
       /** When applied on (x,k), the method indicates to the subsequent learnings
@@ -409,8 +409,64 @@ namespace gum {
        * is greater than or eqal to k_fold, or if k_fold is greater than
        * or equal to the size of the database. */
       std::pair< std::size_t, std::size_t >
-        useCrossValidationFold(const std::size_t learning_fold,
-                               const std::size_t k_fold);
+         useCrossValidationFold(const std::size_t learning_fold,
+                                const std::size_t k_fold);
+
+
+      /**
+       * Return the <statistic,pvalue> pair for the BNLearner
+       * @param id1 first variable
+       * @param id2 second variable
+       * @param knowing list of observed variables
+       * @return a std::pair<double,double>
+       */
+      std::pair< double, double > chi2(const NodeId                 id1,
+                                       const NodeId                 id2,
+                                       const std::vector< NodeId >& knowing = {});
+      /**
+       * Return the <statistic,pvalue> pair for the BNLearner
+       * @param id1 first variable
+       * @param id2 second variable
+       * @param knowing list of observed variables
+       * @return a std::pair<double,double>
+       */
+      std::pair< double, double >
+         chi2(const std::string&                name1,
+              const std::string&                name2,
+              const std::vector< std::string >& knowing = {});
+
+      /**
+       * Return the loglikelihood of vars in the base, conditioned by knowing for
+       * the BNLearner
+       * @param vars a vector of NodeIds
+       * @param knowing an optional vector of conditioning NodeIds
+       * @return a std::pair<double,double>
+       */
+      double logLikelihood(const std::vector< NodeId >& vars,
+                           const std::vector< NodeId >& knowing = {});
+
+      /**
+       * Return the loglikelihood of vars in the base, conditioned by knowing for
+       * the BNLearner
+       * @param vars a vector of name of rows
+       * @param knowing an optional vector of conditioning rows
+       * @return a std::pair<double,double>
+       */
+      double logLikelihood(const std::vector< std::string >& vars,
+                           const std::vector< std::string >& knowing = {});
+
+
+      /**
+       *
+       * @return the number of cols in the database
+       */
+      Size nbCols() const;
+
+      /**
+       *
+       * @return the number of rows in the database
+       */
+      Size nbRows() const;
 
       /** use The EM algorithm to learn paramters
        *
@@ -638,7 +694,7 @@ namespace gum {
 
       /// the penalty used in 3off2
       typename CorrectedMutualInformation<>::KModeTypes __3off2_kmode{
-        CorrectedMutualInformation<>::KModeTypes::MDL};
+         CorrectedMutualInformation<>::KModeTypes::MDL};
 
       /// the parametric EM
       DAG2BNLearner<> __Dag2BN;
@@ -669,8 +725,8 @@ namespace gum {
 
       /// reads a file and returns a databaseVectInRam
       static DatabaseTable<>
-        __readFile(const std::string&                filename,
-                   const std::vector< std::string >& missing_symbols);
+         __readFile(const std::string&                filename,
+                    const std::vector< std::string >& missing_symbols);
 
       /// checks whether the extension of a CSV filename is correct
       static void __checkFileName(const std::string& filename);
@@ -683,8 +739,8 @@ namespace gum {
 
       /// create the parameter estimator used for learning
       ParamEstimator<>*
-        __createParamEstimator(DBRowGeneratorParser<>& parser,
-                               bool take_into_account_score = true);
+         __createParamEstimator(DBRowGeneratorParser<>& parser,
+                                bool take_into_account_score = true);
 
       /// returns the DAG learnt
       DAG __learnDAG();
@@ -710,15 +766,15 @@ namespace gum {
       // very simples methods here.
       /// {@    /// distribute signals
       INLINE void setCurrentApproximationScheme(
-        const ApproximationScheme* approximationScheme) {
+         const ApproximationScheme* approximationScheme) {
         __current_algorithm = approximationScheme;
       }
 
       INLINE void
-        distributeProgress(const ApproximationScheme* approximationScheme,
-                           Size                       pourcent,
-                           double                     error,
-                           double                     time) {
+         distributeProgress(const ApproximationScheme* approximationScheme,
+                            Size                       pourcent,
+                            double                     error,
+                            double                     time) {
         setCurrentApproximationScheme(approximationScheme);
 
         if (onProgress.hasListener()) GUM_EMIT3(onProgress, pourcent, error, time);

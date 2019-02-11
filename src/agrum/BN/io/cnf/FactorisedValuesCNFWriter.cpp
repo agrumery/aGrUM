@@ -20,5 +20,7 @@
 
 #include <agrum/BN/io/cnf/FactorisedValuesCNFWriter.h>
 
-template class gum::FactorisedValuesCNFWriter< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::FactorisedValuesCNFWriter< double >;
+#endif

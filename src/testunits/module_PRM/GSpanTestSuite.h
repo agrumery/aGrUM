@@ -41,7 +41,7 @@ namespace gum_tests {
 
       if (__driver->errors() == 0) {
         ig = new gum::prm::gspan::InterfaceGraph< double >(
-          __driver->prm()->getSystem("m"));
+           __driver->prm()->getSystem("m"));
       } else {
         __driver->showElegantErrorsAndWarnings();
         TS_ASSERT(false);
@@ -80,8 +80,8 @@ namespace gum_tests {
       local__setUp();
       gum::prm::GSpan< double >* gspan = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
-        gspan = new gum::prm::GSpan< double >(*(__driver->prm()),
-                                              __driver->prm()->getSystem("m")));
+         gspan = new gum::prm::GSpan< double >(*(__driver->prm()),
+                                               __driver->prm()->getSystem("m")));
       TS_ASSERT(gspan != nullptr);
 
       if (gspan != nullptr) {

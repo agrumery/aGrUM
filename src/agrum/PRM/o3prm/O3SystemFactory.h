@@ -63,9 +63,9 @@ namespace gum {
         O3SystemFactory(O3SystemFactory< GUM_SCALAR >&& src);
         ~O3SystemFactory();
         O3SystemFactory< GUM_SCALAR >&
-          operator=(const O3SystemFactory< GUM_SCALAR >& src);
+           operator=(const O3SystemFactory< GUM_SCALAR >& src);
         O3SystemFactory< GUM_SCALAR >&
-          operator=(O3SystemFactory< GUM_SCALAR >&& src);
+           operator=(O3SystemFactory< GUM_SCALAR >&& src);
 
         void build();
 
@@ -103,8 +103,9 @@ namespace gum {
 #  include <agrum/PRM/o3prm/O3SystemFactory_tpl.h>
 
 
-extern template class gum::prm::o3prm::O3SystemFactory< float >;
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::prm::o3prm::O3SystemFactory< double >;
+#  endif
 
 
 #endif   // GUM_PRM_O3PRM_O3SYSTEM_FACTORY_H

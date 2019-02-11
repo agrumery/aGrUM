@@ -167,13 +167,13 @@ namespace gum {
 
       /// returns varOrder from a csv file
       std::vector< Idx >
-        __varOrderFromCSV(const std::string& csvFileURL,
-                          const std::string& csvSeparator = ",") const;
+         __varOrderFromCSV(const std::string& csvFileURL,
+                           const std::string& csvSeparator = ",") const;
 
       /// returns varOrder from a csv file
       std::vector< Idx >
-        __varOrderFromCSV(std::ifstream&     csvFile,
-                          const std::string& csvSeparator = ",") const;
+         __varOrderFromCSV(std::ifstream&     csvFile,
+                           const std::string& csvSeparator = ",") const;
 
       // forbidden copies / moves
       BNDatabaseGenerator(const BNDatabaseGenerator&) = delete;
@@ -182,8 +182,10 @@ namespace gum {
       BNDatabaseGenerator& operator=(BNDatabaseGenerator&&) = delete;
     };
 
-    extern template class BNDatabaseGenerator< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
     extern template class BNDatabaseGenerator< double >;
+#endif
 
   } /* namespace learning */
 } /* namespace gum */

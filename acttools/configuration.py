@@ -79,6 +79,9 @@ def initParams():
   cfg.default['withSQL'] = True
   cfg.default['mvsc'] = False
   cfg.default['mvsc32'] = False
+  cfg.default['mvsc17'] = False
+  cfg.default['mvsc17_32'] = False
+  cfg.default['mingw64'] = False
   cfg.default['build'] = "all"
   cfg.default['noSaveParams'] = False
   cfg.default['correction'] = False
@@ -191,14 +194,29 @@ def configureOptions(current):
                         dest="coverage",
                         default=False)
   cfg.parser.add_option("", "--mvsc",
-                        help="use Microsoft Visual Studio C++ compiler 64bits (Windows only).",
+                        help="use Microsoft Visual Studio15 C++ compiler 64bits (Windows only).",
                         action="store_true",
                         dest="mvsc",
                         default=False)
   cfg.parser.add_option("", "--mvsc32",
-                        help="use Microsoft Visual Studio C++ compiler 32bits (Windows only).",
+                        help="use Microsoft Visual Studio15 C++ compiler 32bits (Windows only).",
                         action="store_true",
                         dest="mvsc32",
+                        default=False)
+  cfg.parser.add_option("", "--mvsc17",
+                        help="use Microsoft Visual Studio17 C++ compiler 64bits (Windows only).",
+                        action="store_true",
+                        dest="mvsc17",
+                        default=False)
+  cfg.parser.add_option("", "--mvsc17_32",
+                        help="use Microsoft Visual Studio17 C++ compiler 32bits (Windows only).",
+                        action="store_true",
+                        dest="mvsc17_32",
+                        default=False)
+  cfg.parser.add_option("", "--mingw64",
+                        help="use minGW64 C++ Compiler (Windows only).",
+                        action="store_true",
+                        dest="mingw64",
                         default=False)
   cfg.parser.add_option("", "--build",
                         help="build options : {all|no-cmake|no-make}.",

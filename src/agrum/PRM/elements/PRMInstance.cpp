@@ -30,8 +30,10 @@
 namespace gum {
   namespace prm {
 
-    template class PRMInstance< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
     template class PRMInstance< double >;
+#endif
 
   } /* namespace prm */
 } /* namespace gum */

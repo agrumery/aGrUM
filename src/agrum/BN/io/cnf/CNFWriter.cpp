@@ -20,5 +20,7 @@
 
 #include <agrum/BN/io/cnf/CNFWriter.h>
 
-template class gum::CNFWriter< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::CNFWriter< double >;
+#endif

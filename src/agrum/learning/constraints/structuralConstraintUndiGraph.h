@@ -79,11 +79,11 @@ namespace gum {
 
       /// copy operator
       StructuralConstraintUndiGraph&
-        operator=(const StructuralConstraintUndiGraph& from);
+         operator=(const StructuralConstraintUndiGraph& from);
 
       /// move operator
       StructuralConstraintUndiGraph&
-        operator=(StructuralConstraintUndiGraph&& from);
+         operator=(StructuralConstraintUndiGraph&& from);
 
       /// @}
 

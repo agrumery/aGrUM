@@ -16,6 +16,10 @@
 
 #include <cxxtest/StdValueTraits.h>
 
+// in order to force GUM_CHECKPOINT / GUM_TRACE / GUM_TRACE_VAR to works even in
+// release mode
+#define GUM_TRACE_ON
+
 #include <cxxtest/AgrumErrorFormatter.h>
 
 #ifdef _CXXTEST_OLD_STD

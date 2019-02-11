@@ -52,8 +52,8 @@ namespace gum {
     ScheduleCombine(const ScheduleMultiDim< GUM_SCALAR >& table1,
                     const ScheduleMultiDim< GUM_SCALAR >& table2,
                     MultiDimImplementation< GUM_SCALAR >* (*combine)(
-                      const MultiDimImplementation< GUM_SCALAR >&,
-                      const MultiDimImplementation< GUM_SCALAR >&));
+                       const MultiDimImplementation< GUM_SCALAR >&,
+                       const MultiDimImplementation< GUM_SCALAR >&));
 
     /// copy constructor
     ScheduleCombine(const ScheduleCombine< GUM_SCALAR >&);
@@ -118,7 +118,7 @@ namespace gum {
 
     /// returns the set of multidims that should be the result of the operation
     const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >&
-      multiDimResults() const;
+       multiDimResults() const;
 
     /// displays the content of the operation
     std::string toString() const;
@@ -144,8 +144,8 @@ namespace gum {
 
     /// the function actually used to perform the combination
     MultiDimImplementation< GUM_SCALAR >* (*__combine)(
-      const MultiDimImplementation< GUM_SCALAR >&,
-      const MultiDimImplementation< GUM_SCALAR >&);
+       const MultiDimImplementation< GUM_SCALAR >&,
+       const MultiDimImplementation< GUM_SCALAR >&);
   };
 
 } /* namespace gum */

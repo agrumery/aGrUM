@@ -28,6 +28,9 @@ class pyAgrumTestCase(unittest.TestCase):
 
   def __init__(self, *args, **kwargs):
     super(pyAgrumTestCase, self).__init__(*args, **kwargs)
+
+    self.nbLoopForApproximatedTest=10
+
     if pyAgrumTestCase.log is None:
       pyAgrumTestCase.log = logging.getLogger("pyAgrumTestSuite")
       pyAgrumTestCase.log.warning("Initializing logger")
@@ -39,28 +42,15 @@ class pyAgrumTestCase(unittest.TestCase):
     t = s.split("ressources/")
     return os.path.dirname(__file__) + "/resources/" + t[1]
 
-  def assertListsAlmostEqual(self, seq1, seq2, places=7):
+  def assertListsAlmostEqual(self, seq1, seq2, places=7, delta=None):
     sequence = (tuple, list, ndarray)
     if len(seq1) != len(seq2):
       raise AssertionError("%s != %s" % (str(seq1), str(seq2)))
     for i, j in zip(seq1, seq2):
-      if isinstance(i, sequence) and isinstance(j, (list, sequence)):
-        self.assertListsAlmostEqual(i, j, places)
+      if isinstance(i, sequence) and isinstance(j, sequence):
+        self.assertListsAlmostEqual(i, j, delta)
       else:
-        self.assertAlmostEqual(i, j, places)
-
-  def assertDelta(self, x, y, delta=0.05):
-    number = (int, float)
-    sequence = (list, tuple)
-
-    if isinstance(x, number) and isinstance(y, number):
-      if not ((max(x, y) - min(x, y)) <= delta):
-        raise AssertionError("%s != %s" % (str(x), str(y)))
-
-    elif isinstance(x, sequence) and isinstance(y, sequence):
-      if len(x) != len(y):
-        raise AssertionError("%s != %s" % (str(x), str(y)))
-      for i, j in zip(x, y):
-        self.assertDelta(i, j, delta)
-    else:
-      raise TypeError("assertDelta parameters must have the same type")
+        if delta is None:
+          self.assertAlmostEqual(i, j, places=places)
+        else:
+          self.assertAlmostEqual(i, j, delta=delta)

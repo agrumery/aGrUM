@@ -106,9 +106,10 @@ namespace gum {
     void _onContextualize(BayesNetFragment< GUM_SCALAR >* bn) override;
   };
 
-  extern template class ImportanceSampling< float >;
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class ImportanceSampling< double >;
+#endif
 }   // namespace gum
 
 #include <agrum/BN/inference/importanceSampling_tpl.h>

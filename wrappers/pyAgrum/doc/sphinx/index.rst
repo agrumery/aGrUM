@@ -44,8 +44,17 @@ pyAgrum library
   miscellaneous
   exceptions
 
-Python helpers : pyAgrum.lib
-============================
+Causality in pyAgrum
+====================
+
+.. toctree::
+  :maxdepth: 2
+  :titlesonly:
+
+  Causal
+
+pyAgrum.lib
+===========
 
 pyAgrum.lib is a set of python tools.
 

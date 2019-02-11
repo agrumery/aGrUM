@@ -32,20 +32,21 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     AprioriDirichletFromDatabase< ALLOC >::AprioriDirichletFromDatabase(
-      const DatabaseTable< ALLOC >&                                 learning_db,
-      const DBRowGeneratorParser< ALLOC >&                          apriori_parser,
-      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename AprioriDirichletFromDatabase< ALLOC >::allocator_type&
-        alloc) :
+       const DatabaseTable< ALLOC >&        learning_db,
+       const DBRowGeneratorParser< ALLOC >& apriori_parser,
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+          nodeId2columns,
+       const typename AprioriDirichletFromDatabase< ALLOC >::allocator_type&
+          alloc) :
         Apriori< ALLOC >(apriori_parser.database(),
                          Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
                          alloc),
         __counter(
-          apriori_parser,
-          std::vector< std::pair< std::size_t, std::size_t >,
-                       ALLOC< std::pair< std::size_t, std::size_t > > >(alloc),
-          nodeId2columns,
-          alloc) {
+           apriori_parser,
+           std::vector< std::pair< std::size_t, std::size_t >,
+                        ALLOC< std::pair< std::size_t, std::size_t > > >(alloc),
+           nodeId2columns,
+           alloc) {
       // we check that the variables in the learning database also exist in the
       // apriori database and that they are precisely equal.
       const DatabaseTable< ALLOC >& apriori_db = apriori_parser.database();
@@ -76,9 +77,9 @@ namespace gum {
         if (learning_var.varType() != apriori_var.varType()) {
           GUM_ERROR(DatabaseError,
                     "Variable "
-                      << learning_names[i]
-                      << " has not the same type in the learning database "
-                         " and the apriori database");
+                       << learning_names[i]
+                       << " has not the same type in the learning database "
+                          " and the apriori database");
         }
         if (learning_var.domain() != apriori_var.domain()) {
           GUM_ERROR(DatabaseError,
@@ -118,7 +119,7 @@ namespace gum {
                    ALLOC< std::pair< std::size_t, std::size_t > > >
                              ranges(alloc);
       RecordCounter< ALLOC > good_counter(
-        apriori_parser, ranges, this->_nodeId2columns, alloc);
+         apriori_parser, ranges, this->_nodeId2columns, alloc);
       __counter = std::move(good_counter);
 
       if (apriori_db.nbRows() == std::size_t(0))
@@ -133,9 +134,9 @@ namespace gum {
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE AprioriDirichletFromDatabase< ALLOC >::AprioriDirichletFromDatabase(
-      const AprioriDirichletFromDatabase< ALLOC >& from,
-      const typename AprioriDirichletFromDatabase< ALLOC >::allocator_type&
-        alloc) :
+       const AprioriDirichletFromDatabase< ALLOC >& from,
+       const typename AprioriDirichletFromDatabase< ALLOC >::allocator_type&
+          alloc) :
         Apriori< ALLOC >(from, alloc),
         __counter(from.__counter, alloc),
         __internal_weight(from.__internal_weight) {
@@ -146,16 +147,16 @@ namespace gum {
     /// copy constructor
     template < template < typename > class ALLOC >
     INLINE AprioriDirichletFromDatabase< ALLOC >::AprioriDirichletFromDatabase(
-      const AprioriDirichletFromDatabase< ALLOC >& from) :
+       const AprioriDirichletFromDatabase< ALLOC >& from) :
         AprioriDirichletFromDatabase< ALLOC >(from, from.getAllocator()) {}
 
 
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE AprioriDirichletFromDatabase< ALLOC >::AprioriDirichletFromDatabase(
-      AprioriDirichletFromDatabase< ALLOC >&& from,
-      const typename AprioriDirichletFromDatabase< ALLOC >::allocator_type&
-        alloc) :
+       AprioriDirichletFromDatabase< ALLOC >&& from,
+       const typename AprioriDirichletFromDatabase< ALLOC >::allocator_type&
+          alloc) :
         Apriori< ALLOC >(std::move(from), alloc),
         __counter(std::move(from.__counter), alloc),
         __internal_weight(from.__internal_weight) {
@@ -166,7 +167,7 @@ namespace gum {
     /// move constructor
     template < template < typename > class ALLOC >
     INLINE AprioriDirichletFromDatabase< ALLOC >::AprioriDirichletFromDatabase(
-      AprioriDirichletFromDatabase< ALLOC >&& from) :
+       AprioriDirichletFromDatabase< ALLOC >&& from) :
         AprioriDirichletFromDatabase< ALLOC >(std::move(from),
                                               from.getAllocator()) {}
 
@@ -174,9 +175,9 @@ namespace gum {
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
     AprioriDirichletFromDatabase< ALLOC >*
-      AprioriDirichletFromDatabase< ALLOC >::clone(
-        const typename AprioriDirichletFromDatabase< ALLOC >::allocator_type&
-          alloc) const {
+       AprioriDirichletFromDatabase< ALLOC >::clone(
+          const typename AprioriDirichletFromDatabase< ALLOC >::allocator_type&
+             alloc) const {
       ALLOC< AprioriDirichletFromDatabase< ALLOC > > allocator(alloc);
       AprioriDirichletFromDatabase< ALLOC >* apriori = allocator.allocate(1);
       try {
@@ -236,7 +237,7 @@ namespace gum {
     /// indicates whether an apriori is of a certain type
     template < template < typename > class ALLOC >
     INLINE bool
-      AprioriDirichletFromDatabase< ALLOC >::isOfType(const std::string& type) {
+       AprioriDirichletFromDatabase< ALLOC >::isOfType(const std::string& type) {
       return AprioriDirichletType::isOfType(type);
     }
 
@@ -259,7 +260,7 @@ namespace gum {
     /// sets the weight of the a priori (kind of effective sample size)
     template < template < typename > class ALLOC >
     INLINE void
-      AprioriDirichletFromDatabase< ALLOC >::setWeight(const double weight) {
+       AprioriDirichletFromDatabase< ALLOC >::setWeight(const double weight) {
       Apriori< ALLOC >::setWeight(weight);
       if (__counter.database().nbRows() == 0.0)
         __internal_weight = 0.0;
@@ -271,8 +272,8 @@ namespace gum {
     /// returns the apriori vector all the variables in the idset
     template < template < typename > class ALLOC >
     INLINE void AprioriDirichletFromDatabase< ALLOC >::addAllApriori(
-      const IdSet< ALLOC >&                   idset,
-      std::vector< double, ALLOC< double > >& counts) {
+       const IdSet< ALLOC >&                   idset,
+       std::vector< double, ALLOC< double > >& counts) {
       if (this->_weight == 0.0) return;
 
       const auto&       apriori = __counter.counts(idset);
@@ -292,8 +293,8 @@ namespace gum {
     /// returns the apriori vector over only the conditioning set of an idset
     template < template < typename > class ALLOC >
     void AprioriDirichletFromDatabase< ALLOC >::addConditioningApriori(
-      const IdSet< ALLOC >&                   idset,
-      std::vector< double, ALLOC< double > >& counts) {
+       const IdSet< ALLOC >&                   idset,
+       std::vector< double, ALLOC< double > >& counts) {
       if (__internal_weight == 0.0) return;
 
       const auto&       apriori = __counter.counts(idset.conditionalIdSet());

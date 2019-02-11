@@ -27,10 +27,19 @@
 #ifndef GUM_AGGREGATE_H
 #define GUM_AGGREGATE_H
 
+#include <memory>
+#include <string>
+
 #include <agrum/multidim/aggregators/multiDimAggregator.h>
 #include <agrum/multidim/implementations/multiDimImplementation.h>
+#include <agrum/multidim/potential.h>
 
+#include <agrum/PRM/elements/PRMType.h>
 #include <agrum/PRM/elements/PRMClassElement.h>
+#include <agrum/PRM/elements/PRMAttribute.h>
+#include <agrum/PRM/elements/PRMAggregate.h>
+#include <agrum/PRM/elements/PRMScalarAttribute.h>
+
 
 namespace gum {
   namespace prm {
@@ -124,9 +133,9 @@ namespace gum {
        * @param rvType The random variable type of this aggregate, which is
        * copied.
        */
-      PRMAggregate(const std::string&           name,
-                   AggregateType                aggType,
-                   const PRMType< GUM_SCALAR >& rvType);
+      PRMAggregate(const std::string& name,
+                   AggregateType      aggType,
+                   const PRMType&     rvType);
 
       /**
        * Default constructor.
@@ -136,10 +145,10 @@ namespace gum {
        * copied.
        * @param label The index of the label on which this aggregate applies.
        */
-      PRMAggregate(const std::string&           name,
-                   AggregateType                aggType,
-                   const PRMType< GUM_SCALAR >& rvType,
-                   Idx                          label);
+      PRMAggregate(const std::string& name,
+                   AggregateType      aggType,
+                   const PRMType&     rvType,
+                   Idx                label);
 
       /// Destructor.
       virtual ~PRMAggregate();
@@ -152,7 +161,7 @@ namespace gum {
 
       /// See gum::PRMClassElement::elt_type().
       virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType
-        elt_type() const;
+         elt_type() const;
 
       /// Returns the aggregate of *this.
       AggregateType agg_type() const;
@@ -197,10 +206,10 @@ namespace gum {
       virtual void addChild(const PRMClassElement< GUM_SCALAR >& elt);
 
       /// See gum::PRMClassElement::type().
-      virtual PRMType< GUM_SCALAR >& type();
+      virtual PRMType& type();
 
       /// See gum::PRMClassElement::type().
-      virtual const PRMType< GUM_SCALAR >& type() const;
+      virtual const PRMType& type() const;
 
       /**
        * @brief Aggregates don't have Potential until they are instantiated as
@@ -233,10 +242,11 @@ namespace gum {
       /// @{
 
       /// Copy constructor. Don't use it.
-      PRMAggregate(const PRMAggregate& source);
+      PRMAggregate< GUM_SCALAR >(const PRMAggregate< GUM_SCALAR >& source);
 
       /// Copy operator. Don't use it.
-      PRMAggregate& operator=(const PRMAggregate& source);
+      PRMAggregate< GUM_SCALAR >&
+         operator=(const PRMAggregate< GUM_SCALAR >& source);
 
       /// @}
       // ========================================================================
@@ -249,7 +259,7 @@ namespace gum {
 
       /// The random variable type of this aggregate
       /// It is deleted with the aggregate.
-      PRMType< GUM_SCALAR >* __type;
+      PRMType* __type;
 
       /// Some aggregators applies only on a given label. This attribute must
       /// have the concerned Idx. If not initialized the pointer equals 0.
@@ -262,8 +272,9 @@ namespace gum {
     };
 
 
-    extern template class PRMAggregate< float >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
     extern template class PRMAggregate< double >;
+#endif
 
   } /* namespace prm */
 }   // namespace gum

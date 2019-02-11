@@ -62,7 +62,7 @@ namespace gum {
    *keeps working but trace this error (errorPQ() and errorQP())?
    */
   template < typename GUM_SCALAR >
-  class KL {
+  class BNdistance {
 // difficulty is chosen w.r.t the log10DomainSize of the BN
 #define GAP_COMPLEXITY_KL_HEAVY_DIFFICULT double(12.0)
 #define GAP_COMPLEXITY_KL_DIFFICULT_CORRECT double(7.0)
@@ -72,14 +72,14 @@ namespace gum {
      * or
      * compatible node sets.
      */
-    KL(const IBayesNet< GUM_SCALAR >& P, const IBayesNet< GUM_SCALAR >& Q);
+    BNdistance(const IBayesNet< GUM_SCALAR >& P, const IBayesNet< GUM_SCALAR >& Q);
 
     /** copy constructor
      */
-    KL(const KL< GUM_SCALAR >& kl);
+    BNdistance(const BNdistance< GUM_SCALAR >& kl);
 
     /** destructor */
-    virtual ~KL();
+    virtual ~BNdistance();
 
     /**
      * return
@@ -113,6 +113,10 @@ namespace gum {
     /// http://en.wikipedia.org/wiki/Bhattacharya_distance)
     double bhattacharya();
 
+    /// @return Jensen-Shannon divergence(@see
+    /// https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence)
+    double jsd();
+
     /// @return p
     const IBayesNet< GUM_SCALAR >& p() const;
 
@@ -121,8 +125,8 @@ namespace gum {
     /// @}
 
     protected:
-    // should be pure virtual but using KL directly is a way to delay the choice
-    // between different computation scheme (@see BruteForceKL)
+    // should be pure virtual but using BNdistance directly is a way to delay the
+    // choice between different computation scheme (@see ExactBNdistance)
     virtual void _computeKL();
     void         _process();
 
@@ -133,6 +137,7 @@ namespace gum {
     GUM_SCALAR _klQP;
     GUM_SCALAR _hellinger;
     GUM_SCALAR _bhattacharya;
+    GUM_SCALAR _jsd;
 
     Size _errorPQ;
     Size _errorQP;
@@ -144,11 +149,12 @@ namespace gum {
   };
 
 
-  extern template class KL< float >;
-  extern template class KL< double >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+  extern template class BNdistance< double >;
+#endif
 
 }   // namespace gum
 
-#include <agrum/BN/algorithms/divergence/KL_tpl.h>
+#include <agrum/BN/algorithms/divergence/BNdistance_tpl.h>
 
 #endif   // GUM_KL_H

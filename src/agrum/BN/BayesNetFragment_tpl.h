@@ -30,7 +30,7 @@
 namespace gum {
   template < typename GUM_SCALAR >
   BayesNetFragment< GUM_SCALAR >::BayesNetFragment(
-    const IBayesNet< GUM_SCALAR >& bn) :
+     const IBayesNet< GUM_SCALAR >& bn) :
       DiGraphListener(&bn.dag()),
       __bn(bn) {
     GUM_CONSTRUCTOR(BayesNetFragment);
@@ -122,7 +122,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE const DiscreteVariable& BayesNetFragment< GUM_SCALAR >::variableFromName(
-    const std::string& name) const {
+     const std::string& name) const {
     NodeId id = __bn.idFromName(name);
 
     if (!isInstalledNode(id))
@@ -135,7 +135,7 @@ namespace gum {
   // specific API for BayesNetFragment
   template < typename GUM_SCALAR >
   INLINE bool BayesNetFragment< GUM_SCALAR >::isInstalledNode(NodeId id) const
-    noexcept {
+     noexcept {
     return dag().existsNode(id);
   }
 
@@ -189,7 +189,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void BayesNetFragment< GUM_SCALAR >::_installCPT(
-    NodeId id, const Potential< GUM_SCALAR >* pot) noexcept {
+     NodeId id, const Potential< GUM_SCALAR >* pot) noexcept {
     // topology
     const auto& parents = this->parents(id);
     for (auto node_it = parents.beginSafe(); node_it != parents.endSafe();
@@ -210,14 +210,14 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void BayesNetFragment< GUM_SCALAR >::installCPT(
-    NodeId id, const Potential< GUM_SCALAR >* pot) {
+     NodeId id, const Potential< GUM_SCALAR >* pot) {
     if (!dag().existsNode(id))
       GUM_ERROR(NotFound, "Node " << id << " is not installed in the fragment");
 
     if (&(pot->variable(0)) != &(variable(id))) {
       GUM_ERROR(OperationNotAllowed,
                 "The potential is not a marginal for __bn.variable <"
-                  << variable(id).name() << ">");
+                   << variable(id).name() << ">");
     }
 
     const NodeSet& parents = __bn.parents(id);
@@ -256,7 +256,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void BayesNetFragment< GUM_SCALAR >::installMarginal(
-    NodeId id, const Potential< GUM_SCALAR >* pot) {
+     NodeId id, const Potential< GUM_SCALAR >* pot) {
     if (!isInstalledNode(id)) {
       GUM_ERROR(NotFound, "The node " << id << " is not part of this fragment");
     }
@@ -268,7 +268,7 @@ namespace gum {
     if (&(pot->variable(0)) != &(__bn.variable(id))) {
       GUM_ERROR(OperationNotAllowed,
                 "The potential is not a marginal for __bn.variable <"
-                  << __bn.variable(id).name() << ">");
+                   << __bn.variable(id).name() << ">");
     }
 
     _installCPT(id, pot);

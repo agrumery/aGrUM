@@ -1,6 +1,3 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
 # (c) Copyright by Pierre-Henri Wuillemin, UPMC,
 # 2017  (pierre-henri.wuillemin@lip6.fr)
 

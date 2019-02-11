@@ -37,8 +37,8 @@ namespace gum_tests {
 
 
     void testRequisiteNodes() {
-      gum::SimpleBayesNetGenerator< float > gen(50, 200, 2);
-      gum::BayesNet< float >                bn;
+      gum::SimpleBayesNetGenerator< double > gen(50, 200, 2);
+      gum::BayesNet< double >                bn;
       gen.generateBN(bn);
       gum::Set< gum::NodeId > requisite;
 
@@ -54,7 +54,7 @@ namespace gum_tests {
         query.insert(nodes_seq.atPos(j));
 
       TS_ASSERT_THROWS_NOTHING(gum::BayesBall::requisiteNodes(
-        bn.dag(), query, hardEvidence, softEvidence, requisite));
+         bn.dag(), query, hardEvidence, softEvidence, requisite));
 
       TS_ASSERT(requisite.size() >= 5);
     }

@@ -54,8 +54,8 @@ namespace gum {
   class FMDP {
     template < typename GUM_SCALAR_O >
     using VarTransitionTable =
-      HashTable< const DiscreteVariable*,
-                 const MultiDimImplementation< GUM_SCALAR_O >* >;
+       HashTable< const DiscreteVariable*,
+                  const MultiDimImplementation< GUM_SCALAR_O >* >;
 
     public:
     // ===========================================================================
@@ -156,9 +156,9 @@ namespace gum {
      * action
      */
     void addTransitionForAction(
-      Idx                                         actionId,
-      const DiscreteVariable*                     var,
-      const MultiDimImplementation< GUM_SCALAR >* transition);
+       Idx                                         actionId,
+       const DiscreteVariable*                     var,
+       const MultiDimImplementation< GUM_SCALAR >* transition);
 
     /**
      * Adds a default variable transition
@@ -175,7 +175,7 @@ namespace gum {
      * given action
      */
     const MultiDimImplementation< GUM_SCALAR >*
-      transition(Idx actionId, const DiscreteVariable* v) const;
+       transition(Idx actionId, const DiscreteVariable* v) const;
 
     /// @}
 
@@ -279,11 +279,11 @@ namespace gum {
 
     /// Table which give for each action cost table
     HashTable< Idx, const MultiDimImplementation< GUM_SCALAR >* >
-      __actionCostTable;
+       __actionCostTable;
 
     /// Table which give for each action reward table
     HashTable< Idx, const MultiDimImplementation< GUM_SCALAR >* >
-      __actionRewardTable;
+       __actionRewardTable;
 
     /// Boolean indicates whether or not main variables should be deleted on
     /// destruction of this instance
@@ -292,8 +292,9 @@ namespace gum {
   };
 
 
-  extern template class FMDP< float >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class FMDP< double >;
+#endif
 
 
 } /* namespace gum */

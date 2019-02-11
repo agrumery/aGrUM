@@ -32,7 +32,7 @@ namespace gum {
     /// default constructor
     template < typename STRUCT_CONSTRAINT >
     GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::
-      GraphChangesGenerator4UndiGraph(STRUCT_CONSTRAINT& constraint) :
+       GraphChangesGenerator4UndiGraph(STRUCT_CONSTRAINT& constraint) :
         _constraint(&constraint) {
       GUM_CONSTRUCTOR(GraphChangesGenerator4UndiGraph);
     }
@@ -40,8 +40,8 @@ namespace gum {
     /// copy constructor
     template < typename STRUCT_CONSTRAINT >
     GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::
-      GraphChangesGenerator4UndiGraph(
-        const GraphChangesGenerator4UndiGraph& from) :
+       GraphChangesGenerator4UndiGraph(
+          const GraphChangesGenerator4UndiGraph& from) :
         _graph(from._graph),
         _constraint(from._constraint), _legal_changes(from._legal_changes),
         __max_threads_number(from.__max_threads_number) {
@@ -51,7 +51,7 @@ namespace gum {
     /// move operator
     template < typename STRUCT_CONSTRAINT >
     GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::
-      GraphChangesGenerator4UndiGraph(GraphChangesGenerator4UndiGraph&& from) :
+       GraphChangesGenerator4UndiGraph(GraphChangesGenerator4UndiGraph&& from) :
         _graph(std::move(from._graph)),
         _constraint(from._constraint),
         _legal_changes(std::move(from._legal_changes)),
@@ -62,15 +62,15 @@ namespace gum {
     /// destructor
     template < typename STRUCT_CONSTRAINT >
     GraphChangesGenerator4UndiGraph<
-      STRUCT_CONSTRAINT >::~GraphChangesGenerator4UndiGraph() {
+       STRUCT_CONSTRAINT >::~GraphChangesGenerator4UndiGraph() {
       GUM_DESTRUCTOR(GraphChangesGenerator4UndiGraph);
     }
 
     /// copy operator
     template < typename STRUCT_CONSTRAINT >
     GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >&
-      GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::operator=(
-        const GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >& from) {
+       GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::operator=(
+          const GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >& from) {
       if (this != &from) {
         _graph = from._graph;
         _constraint = from._constraint;
@@ -83,8 +83,8 @@ namespace gum {
     /// move operator
     template < typename STRUCT_CONSTRAINT >
     GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >&
-        GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::
-        operator=(GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >&& from) {
+          GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::
+          operator=(GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >&& from) {
       if (this != &from) {
         _graph = std::move(from._graph);
         _constraint = std::move(from._constraint);
@@ -150,7 +150,7 @@ namespace gum {
     /// sets a new graph from which the operator will compute possible changes
     template < typename STRUCT_CONSTRAINT >
     INLINE void GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::setGraph(
-      const UndiGraph& graph) {
+       const UndiGraph& graph) {
       // sets the current graph
       _graph = graph;
 
@@ -161,52 +161,52 @@ namespace gum {
     /// empty the set of possible change operators that can be applied
     template < typename STRUCT_CONSTRAINT >
     INLINE void GraphChangesGenerator4UndiGraph<
-      STRUCT_CONSTRAINT >::clearChanges() noexcept {
+       STRUCT_CONSTRAINT >::clearChanges() noexcept {
       _legal_changes.clear();
     }
 
     /// returns an (unsafe) iterator on the beginning of the list of operators
     template < typename STRUCT_CONSTRAINT >
     INLINE typename GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::iterator
-      GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::begin() const {
+       GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::begin() const {
       return _legal_changes.cbegin();
     }
 
     /// returns an (unsafe) iterator on the end of the list of operators
     template < typename STRUCT_CONSTRAINT >
     INLINE const typename GraphChangesGenerator4UndiGraph<
-      STRUCT_CONSTRAINT >::iterator&
-      GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::end() const {
+       STRUCT_CONSTRAINT >::iterator&
+       GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::end() const {
       return _legal_changes.cend();
     }
 
     /// notify the operator set of a change applied to the graph
     template < typename STRUCT_CONSTRAINT >
     INLINE void GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::modifyGraph(
-      const EdgeAddition& change) {}
+       const EdgeAddition& change) {}
 
     /// notify the operator set of a change applied to the graph
     template < typename STRUCT_CONSTRAINT >
     INLINE void GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::modifyGraph(
-      const EdgeDeletion& change) {}
+       const EdgeDeletion& change) {}
 
     /// notify the operator set of a change applied to the graph
     template < typename STRUCT_CONSTRAINT >
     INLINE void GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::modifyGraph(
-      const GraphChange& change) {}
+       const GraphChange& change) {}
 
     /// notifies the generator that we have parsed all its legal changes
     template < typename STRUCT_CONSTRAINT >
     INLINE void
-      GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::notifyGetCompleted() {
+       GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::notifyGetCompleted() {
       if (_legal_changes.size()) _legal_changes.clear();
     }
 
     /// sets the maximum number of threads used to perform countings
     template < typename STRUCT_CONSTRAINT >
     INLINE void
-      GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::setMaxNbThreads(
-        Size nb) noexcept {
+       GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::setMaxNbThreads(
+          Size nb) noexcept {
 #  if defined(_OPENMP) && !defined(GUM_DEBUG_MODE)
       if (nb == 0) nb = getMaxNumberOfThreads();
       __max_threads_number = nb;
@@ -219,7 +219,7 @@ namespace gum {
     template < typename STRUCT_CONSTRAINT >
     INLINE STRUCT_CONSTRAINT&
            GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::constraint() const
-      noexcept {
+       noexcept {
       return *_constraint;
     }
 

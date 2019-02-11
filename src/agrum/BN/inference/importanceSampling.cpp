@@ -20,5 +20,7 @@
 
 #include <agrum/BN/inference/importanceSampling.h>
 
-template class gum::ImportanceSampling< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::ImportanceSampling< double >;
+#endif

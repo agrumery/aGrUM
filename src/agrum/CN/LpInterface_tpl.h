@@ -307,8 +307,8 @@ namespace gum {
       LpExpr& LpExpr::operator-=(const LpExpr& rhs) {
         if (__ileft || __iright || rhs.__ileft || rhs.__iright)
           GUM_ERROR(
-            OperationNotAllowed,
-            "expr::operator-= (rhs) : <= present in one of rhs and/or expr");
+             OperationNotAllowed,
+             "expr::operator-= (rhs) : <= present in one of rhs and/or expr");
 
         if (!__imiddle) __imiddle = true;
 
@@ -755,7 +755,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       LpInterface< GUM_SCALAR >::LpInterface(
-        const LpInterface< GUM_SCALAR >& from) :
+         const LpInterface< GUM_SCALAR >& from) :
           __cols(from.__cols),
           __positivity(from.__positivity), __sumIsOne(from.__sumIsOne) {
         __rows.resize(from.__rows.size());
@@ -833,12 +833,12 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       std::vector< LpCol >
-        LpInterface< GUM_SCALAR >::addCols(const unsigned int& cols) {
+         LpInterface< GUM_SCALAR >::addCols(const unsigned int& cols) {
         if (cols < 1)
           GUM_ERROR(OperationNotAllowed,
                     "LpInterface::addCols ( cols ) : cols "
                     "needs must be equal or greater than 1 : "
-                      << cols << " < 1");
+                       << cols << " < 1");
 
         for (unsigned int i = 0; i < cols; i++) {
           __cols.push_back(LpCol((unsigned int)__cols.size()));
@@ -852,7 +852,7 @@ namespace gum {
         if (!expr.__ileft && !expr.__iright)
           GUM_ERROR(OperationNotAllowed,
                     "addRow ( const LpExpr & expr ) : expr : "
-                      << expr.toString() << "is not an inequality.");
+                       << expr.toString() << "is not an inequality.");
 
         if ((expr.__ileft && !expr.__iright) || (!expr.__ileft && expr.__iright)) {
           __rows.push_back(new LpRow(expr, __cols));
@@ -861,11 +861,11 @@ namespace gum {
           LpExpr rexpr(expr, false, true, true);
 
           __rows.push_back(
-            new LpRow(std::move(lexpr),
-                      __cols));   /// lexpr not used anymore, use move constructor
+             new LpRow(std::move(lexpr),
+                       __cols));   /// lexpr not used anymore, use move constructor
           __rows.push_back(
-            new LpRow(std::move(rexpr),
-                      __cols));   /// rexpr not used anymore, use move constructor
+             new LpRow(std::move(rexpr),
+                       __cols));   /// rexpr not used anymore, use move constructor
         }
       }
 
@@ -874,7 +874,7 @@ namespace gum {
         if (!expr.__ileft && !expr.__iright)
           GUM_ERROR(OperationNotAllowed,
                     "addRow ( const LpExpr & expr ) : expr : "
-                      << expr.toString() << "is not an inequality.");
+                       << expr.toString() << "is not an inequality.");
 
         if ((expr.__ileft && !expr.__iright) || (!expr.__ileft && expr.__iright)) {
           __rows.push_back(new LpRow(std::move(expr), __cols));
@@ -891,11 +891,11 @@ namespace gum {
           rexpr.__imiddle = true;
 
           __rows.push_back(
-            new LpRow(std::move(lexpr),
-                      __cols));   /// lexpr not used anymore, use move constructor
+             new LpRow(std::move(lexpr),
+                       __cols));   /// lexpr not used anymore, use move constructor
           __rows.push_back(
-            new LpRow(std::move(rexpr),
-                      __cols));   /// rexpr not used anymore, use move constructor
+             new LpRow(std::move(rexpr),
+                       __cols));   /// rexpr not used anymore, use move constructor
         }
       }
 

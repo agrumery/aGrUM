@@ -155,7 +155,7 @@ namespace gum {
 
       /// copy operator
       DBRowGeneratorSet< ALLOC >&
-        operator=(const DBRowGeneratorSet< ALLOC >& from);
+         operator=(const DBRowGeneratorSet< ALLOC >& from);
 
       /// move operator
       DBRowGeneratorSet< ALLOC >& operator=(DBRowGeneratorSet< ALLOC >&& from);
@@ -249,7 +249,7 @@ namespace gum {
        * generation is not completed yet (i.e., we still need to call the
        * generate() method to complete it). */
       void setColumnsOfInterest(
-        const std::vector< std::size_t, ALLOC< std::size_t > >& cols_of_interest);
+         const std::vector< std::size_t, ALLOC< std::size_t > >& cols_of_interest);
 
       /** @brief sets the columns of interest: the output DBRow needs only
        * contain correct values fot these columns
@@ -271,11 +271,11 @@ namespace gum {
        * generation is not completed yet (i.e., we still need to call the
        * generate() method to complete it). */
       void setColumnsOfInterest(
-        std::vector< std::size_t, ALLOC< std::size_t > >&& cols_of_interest);
+         std::vector< std::size_t, ALLOC< std::size_t > >&& cols_of_interest);
 
       /// returns the current set of columns of interest
       const std::vector< std::size_t, ALLOC< std::size_t > >&
-        columnsOfInterest() const;
+         columnsOfInterest() const;
 
       /// returns the allocator used
       allocator_type getAllocator() const;
@@ -288,7 +288,7 @@ namespace gum {
       private:
       // the vector of all the generators
       std::vector< DBRowGenerator< ALLOC >*, ALLOC< DBRowGenerator< ALLOC >* > >
-        __generators;
+         __generators;
 
       // the number of generators
       std::size_t __nb_generators{std::size_t(0)};

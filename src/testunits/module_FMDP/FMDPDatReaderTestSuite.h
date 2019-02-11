@@ -41,8 +41,8 @@ namespace gum_tests {
     std::string file;
 
     void run() {
-      gum::FMDP< float >          fmdp(true);
-      gum::FMDPDatReader< float > reader(&fmdp, file);
+      gum::FMDP< double >          fmdp(true);
+      gum::FMDPDatReader< double > reader(&fmdp, file);
 
       reader.trace(false);
       gum::Size nbrErr = gum::Size(0);
@@ -71,13 +71,13 @@ namespace gum_tests {
            actIter != fmdp.endActions();
            ++actIter)
         for (gum::SequenceIteratorSafe< const gum::DiscreteVariable* > varIter =
-               fmdp.beginVariables();
+                fmdp.beginVariables();
              varIter != fmdp.endVariables();
              ++varIter) {
-          gum::MultiDimFunctionGraph< float >* hey =
-            new gum::MultiDimFunctionGraph< float >(
-              *static_cast< const gum::MultiDimFunctionGraph< float >* >(
-                fmdp.transition(*actIter, *varIter)));
+          gum::MultiDimFunctionGraph< double >* hey =
+             new gum::MultiDimFunctionGraph< double >(
+                *static_cast< const gum::MultiDimFunctionGraph< double >* >(
+                   fmdp.transition(*actIter, *varIter)));
           delete hey;
         }
     }
@@ -86,11 +86,11 @@ namespace gum_tests {
     void testConstuctor() {
       std::string file = GET_RESSOURCES_PATH("");
 
-      gum::FMDP< float >           fmdp(true);
-      gum::FMDPDatReader< float >* reader = nullptr;
+      gum::FMDP< double >           fmdp(true);
+      gum::FMDPDatReader< double >* reader = nullptr;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(reader =
-                                     new gum::FMDPDatReader< float >(&fmdp, file));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+         reader = new gum::FMDPDatReader< double >(&fmdp, file));
 
       TS_GUM_ASSERT_THROWS_NOTHING(if (reader != nullptr) delete reader);
     }

@@ -68,7 +68,7 @@ dag : pyAgrum.DAG
 	an initial DAG structure
 "
 
-%feature("docstring") gum::learning::BNLearner::useEM
+%feature("docstring") gum::learning::genericBNLearner::useEM
 "
 Indicates if we use EM for parameter learning.
 
@@ -129,7 +129,7 @@ list
 "
 
 
-%feature("docstring") gum::learning::BNLearner::setSliceOrder
+%feature("docstring") gum::learning::genericBNLearner::setSliceOrder
 "
 Set a partial order on the nodes.
 
@@ -165,7 +165,7 @@ weight : double
 Indicate that we wish to use a greedy hill climbing algorithm.
 "
 
-%feature("docstring") gum::learning::BNLearner::useK2
+%feature("docstring") gum::learning::genericBNLearner::useK2
 "
 Indicate that we wish to use K2.
 
@@ -175,7 +175,7 @@ order : list
         a list of ids
 "
 
-%feature("docstring") gum::learning::BNLearner::useLocalSearchWithTabuList
+%feature("docstring") gum::learning::genericBNLearner::useLocalSearchWithTabuList
 "
 Indicate that we wish to use a local search with tabu list
 
@@ -183,8 +183,19 @@ Parameters
 ----------
 tabu_size : int
         The size of the tabu list
-        nb_decrease : int
+
+nb_decrease : int
         The max number of changes decreasing the score consecutively that we allow to apply
+"
+
+%feature("docstring") gum::learning::genericBNLearner::hasMissingValues
+"
+Indicates wether there are missing values in the database.
+
+Returns
+-------
+bool
+    True if there are some missing values in the database.
 "
 
 %feature("docstring") gum::learning::BNLearner::useNoApriori
@@ -223,7 +234,7 @@ Indicate that we wish to use a Log2Likelihood score.
 "
 
 
-%feature("docstring") gum::learning::BNLearner::idFromName
+%feature("docstring") gum::learning::genericBNLearner::idFromName
 "
 Parameters
 ----------
@@ -233,7 +244,7 @@ var_names : str
 Returns
 -------
 int
-	the node id corresponding to a variable name
+	the column id corresponding to a variable name
 
 Raises
 ------
@@ -241,9 +252,9 @@ gum.MissingVariableInDatabase
 	If a variable of the BN is not found in the database.
 "
 
-%feature("docstring") gum::learning::BNLearner::learnDAG
+%feature("docstring") gum::learning::genericBNLearner::learnDAG
 "
-learn a structure from a file (must have read the db before)
+learn a structure from a file
 
 Returns
 -------
@@ -252,7 +263,7 @@ pyAgrum.DAG
 "
 
 
-%feature("docstring") gum::learning::BNLearner::eraseForbiddenArc
+%feature("docstring") gum::learning::genericBNLearner::eraseForbiddenArc
 "
 Allow the arc in parameter to be added if necessary.
 
@@ -270,7 +281,7 @@ tail :
 	a variable's name (str)
 "
 
-%feature("docstring") gum::learning::BNLearner::eraseMandatoryArc
+%feature("docstring") gum::learning::genericBNLearner::eraseMandatoryArc
 "
 Parameters
 ----------
@@ -286,13 +297,13 @@ tail :
 	a variable's name (str)
 "
 
-%feature("docstring") gum::learning::BNLearner::addForbiddenArc
+%feature("docstring") gum::learning::genericBNLearner::addForbiddenArc
 "
 The arc in parameters won't be added.
 
 Parameters
 ----------
-arc : pyAgrum
+arc : pyAgrum.Arc
 	an arc
 head :
 	a variable's id (int)
@@ -304,13 +315,13 @@ tail :
 	a variable's name (str)
 "
 
-%feature("docstring") gum::learning::BNLearner::addMandatoryArc
+%feature("docstring") gum::learning::genericBNLearner::addMandatoryArc
 "
 Allow to add prior structural knowledge.
 
 Parameters
 ----------
-arc : pyAgrum
+arc : pyAgrum.Arc
 	an arc
 head :
 	a variable's id (int)
@@ -336,7 +347,7 @@ vector<pos,size>
 	the number of modalities of the database's variables.
 "
 
-%feature("docstring") gum::learning::BNLearner::nameFromId
+%feature("docstring") gum::learning::genericBNLearner::nameFromId
 "
 Parameters
 ----------
@@ -349,11 +360,11 @@ str
 	the variable's name
 "
 
-%feature("docstring") gum::learning::BNLearner::names
+%feature("docstring") gum::learning::genericBNLearner::names
 "
 Returns
 -------
-str
+List[str]
 	the names of the variables in the database
 "
 
@@ -367,10 +378,88 @@ max_indegree : int
 "
 
 
-%feature("docstring") gum::learning::BNLearner::setAprioriWeight
+%feature("docstring") gum::learning::genericBNLearner::setAprioriWeight
 "
+Set the weigth of the prior
+
 Parameters
 ----------
 weight : double
 	the apriori weight
 "
+
+
+%feature("docstring") gum::learning::genericBNLearner::setDatabaseWeight
+"
+Set the database weight.
+
+Parameters
+----------
+weight : double
+	the database weight
+"
+
+%feature("docstring") gum::learning::BNLearner::chi2
+"
+chi2 computes the chi2 statistic and pvalue for two columns, given a list of other columns. 
+
+
+Parameters
+----------
+name1: str
+	the name of the first column
+
+name2 : str
+	the name of the second column
+
+knowing : [str]
+	the list of names of conditioning columns
+	
+Returns
+-------
+statistic,pvalue
+	the chi2 statistic and the associated p-value as a Tuple
+"
+
+%feature("docstring") gum::learning::genericBNLearner::logLikelihood
+"
+logLikelihood computes the log-likelihood for the columns in vars, given the columns in the list knowing (optional)
+
+
+Parameters
+----------
+vars: List[str]
+	the name of the columns of interest
+
+knowing : List[str]
+	the (optional) list of names of conditioning columns
+	
+Returns
+-------
+double
+	the log-likelihood (base 2)
+"
+
+%feature("docstring") gum::learning::genericBNLearner::nbRows
+"
+Return the number of row in the database
+
+
+Returns
+-------
+int
+	the number of rows in the database 
+"
+
+
+%feature("docstring") gum::learning::genericBNLearner::nbCols
+"
+Return the nimber of columns in the database
+
+
+Returns
+-------
+int
+	the number of columns in the database 
+"
+

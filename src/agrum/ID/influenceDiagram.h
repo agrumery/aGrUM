@@ -77,7 +77,7 @@ namespace gum {
      * Copy Operator
      */
     InfluenceDiagram< GUM_SCALAR >&
-      operator=(const InfluenceDiagram< GUM_SCALAR >& source);
+       operator=(const InfluenceDiagram< GUM_SCALAR >& source);
 
     /// @}
 
@@ -159,7 +159,7 @@ namespace gum {
     /// Getter by name
     /// @throw NotFound if no such name exists in the graph.
     virtual const DiscreteVariable&
-      variableFromName(const std::string& name) const;
+       variableFromName(const std::string& name) const;
 
     /**
      * Add a chance variable, it's associate node and it's CPT. The id of the

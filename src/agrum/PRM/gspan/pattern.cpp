@@ -40,14 +40,14 @@ namespace gum {
 
         for (NodeId node = 1; node <= source.size(); ++node) {
           node_map.insert(
-            node, addNodeWithLabel(const_cast< LabelData& >(source.label(node))));
+             node, addNodeWithLabel(const_cast< LabelData& >(source.label(node))));
         }
 
         for (const auto edge : source.code().codes)
           addArc(node_map[edge->i],
                  node_map[edge->j],
                  const_cast< LabelData& >(
-                   source.label(node_map[edge->i], node_map[edge->j])));
+                    source.label(node_map[edge->i], node_map[edge->j])));
       }
 
       bool Pattern::isMinimal() {

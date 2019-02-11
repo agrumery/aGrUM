@@ -51,7 +51,7 @@ namespace gum {
   // copy constructor
   template < typename Key >
   INLINE
-    SetIteratorSafe< Key >::SetIteratorSafe(const SetIteratorSafe< Key >& iter) :
+     SetIteratorSafe< Key >::SetIteratorSafe(const SetIteratorSafe< Key >& iter) :
       __ht_iter{iter.__ht_iter} {
     GUM_CONS_CPY(SetIteratorSafe);
   }
@@ -244,7 +244,7 @@ namespace gum {
   // indicates whether two iterators point to different elements or sets
   template < typename Key >
   INLINE bool SetIterator< Key >::operator!=(const SetIterator< Key >& from) const
-    noexcept {
+     noexcept {
     return __ht_iter != from.__ht_iter;
   }
 
@@ -252,7 +252,7 @@ namespace gum {
   // set
   template < typename Key >
   INLINE bool SetIterator< Key >::operator==(const SetIterator< Key >& from) const
-    noexcept {
+     noexcept {
     return __ht_iter == from.__ht_iter;
   }
 
@@ -287,28 +287,28 @@ namespace gum {
   template < typename Key, typename Alloc >
   INLINE const SetIteratorSafe< Key >& Set< Key, Alloc >::endSafe4Statics() {
     return *(reinterpret_cast< const SetIteratorSafe< Key >* >(
-      SetIteratorStaticEnd::endSafe4Statics()));
+       SetIteratorStaticEnd::endSafe4Statics()));
   }
 
   // returns the end iterator for other classes' statics
   template < typename Key, typename Alloc >
   INLINE const SetIteratorSafe< Key >& Set< Key, Alloc >::constEndSafe4Statics() {
     return *(reinterpret_cast< const SetIteratorSafe< Key >* >(
-      SetIteratorStaticEnd::constEndSafe4Statics()));
+       SetIteratorStaticEnd::constEndSafe4Statics()));
   }
 
   // returns the end iterator for other classes' statics
   template < typename Key, typename Alloc >
   INLINE const SetIterator< Key >& Set< Key, Alloc >::end4Statics() {
     return *(reinterpret_cast< const SetIterator< Key >* >(
-      SetIteratorStaticEnd::end4Statics()));
+       SetIteratorStaticEnd::end4Statics()));
   }
 
   // returns the end iterator for other classes' statics
   template < typename Key, typename Alloc >
   INLINE const SetIterator< Key >& Set< Key, Alloc >::constEnd4Statics() {
     return *(reinterpret_cast< const SetIterator< Key >* >(
-      SetIteratorStaticEnd::constEnd4Statics()));
+       SetIteratorStaticEnd::constEnd4Statics()));
   }
 
   // default constructor
@@ -482,31 +482,31 @@ namespace gum {
   // the usual begin iterator to parse the set
   template < typename Key, typename Alloc >
   INLINE typename Set< Key, Alloc >::iterator_safe
-    Set< Key, Alloc >::beginSafe() const {
+     Set< Key, Alloc >::beginSafe() const {
     return SetIteratorSafe< Key >{*this};
   }
 
   // the usual begin iterator to parse the set
   template < typename Key, typename Alloc >
   INLINE typename Set< Key, Alloc >::const_iterator_safe
-    Set< Key, Alloc >::cbeginSafe() const {
+     Set< Key, Alloc >::cbeginSafe() const {
     return SetIteratorSafe< Key >{*this};
   }
 
   // the usual end iterator to parse the set
   template < typename Key, typename Alloc >
   INLINE const typename Set< Key, Alloc >::iterator_safe&
-    Set< Key, Alloc >::endSafe() const noexcept {
+     Set< Key, Alloc >::endSafe() const noexcept {
     return *(reinterpret_cast< const SetIteratorSafe< Key >* >(
-      SetIteratorStaticEnd::__SetIterEndSafe));
+       SetIteratorStaticEnd::__SetIterEndSafe));
   }
 
   // the usual end iterator to parse the set
   template < typename Key, typename Alloc >
   INLINE const typename Set< Key, Alloc >::const_iterator_safe&
-    Set< Key, Alloc >::cendSafe() const noexcept {
+     Set< Key, Alloc >::cendSafe() const noexcept {
     return *(reinterpret_cast< const SetIteratorSafe< Key >* >(
-      SetIteratorStaticEnd::__SetIterEndSafe));
+       SetIteratorStaticEnd::__SetIterEndSafe));
   }
 
   // the usual begin iterator to parse the set
@@ -518,24 +518,24 @@ namespace gum {
   // the usual begin iterator to parse the set
   template < typename Key, typename Alloc >
   INLINE typename Set< Key, Alloc >::const_iterator
-    Set< Key, Alloc >::cbegin() const {
+     Set< Key, Alloc >::cbegin() const {
     return SetIterator< Key >{*this};
   }
 
   // the usual end iterator to parse the set
   template < typename Key, typename Alloc >
   INLINE const typename Set< Key, Alloc >::iterator& Set< Key, Alloc >::end() const
-    noexcept {
+     noexcept {
     return *(reinterpret_cast< const SetIterator< Key >* >(
-      SetIteratorStaticEnd::__SetIterEnd));
+       SetIteratorStaticEnd::__SetIterEnd));
   }
 
   // the usual end iterator to parse the set
   template < typename Key, typename Alloc >
   INLINE const typename Set< Key, Alloc >::const_iterator&
-    Set< Key, Alloc >::cend() const noexcept {
+     Set< Key, Alloc >::cend() const noexcept {
     return *(reinterpret_cast< const SetIterator< Key >* >(
-      SetIteratorStaticEnd::__SetIterEnd));
+       SetIteratorStaticEnd::__SetIterEnd));
   }
 
   // returns the size of the underlying hashtable containing the set
@@ -583,7 +583,7 @@ namespace gum {
   template < typename Key, typename Alloc >
   template < typename OtherAlloc >
   INLINE bool
-    Set< Key, Alloc >::isSubsetOf(const Set< Key, OtherAlloc >& s) const {
+     Set< Key, Alloc >::isSubsetOf(const Set< Key, OtherAlloc >& s) const {
     if (this->size() >= s.size()) { return false; }
 
     for (const auto& elt : *this) {
@@ -595,7 +595,7 @@ namespace gum {
   template < typename Key, typename Alloc >
   template < typename OtherAlloc >
   INLINE bool
-    Set< Key, Alloc >::isSupersetOf(const Set< Key, OtherAlloc >& s) const {
+     Set< Key, Alloc >::isSupersetOf(const Set< Key, OtherAlloc >& s) const {
     return s.isSubsetOf(*this);
   }
 
@@ -832,7 +832,7 @@ namespace gum {
   template < typename Key, typename Alloc >
   template < typename NewKey, typename NewAlloc >
   HashTable< Key, NewKey, NewAlloc >
-    Set< Key, Alloc >::hashMap(NewKey (*f)(const Key&), Size size) const {
+     Set< Key, Alloc >::hashMap(NewKey (*f)(const Key&), Size size) const {
     // determine the proper size of the hashtable
     // by default, the size of the table is set so that the table does not take
     // too much space while allowing to add a few elements without resizing
@@ -878,7 +878,7 @@ namespace gum {
   template < typename Key, typename Alloc >
   template < typename NewKey, typename NewAlloc >
   List< NewKey, NewAlloc >
-    Set< Key, Alloc >::listMap(NewKey (*f)(const Key&)) const {
+     Set< Key, Alloc >::listMap(NewKey (*f)(const Key&)) const {
     // create a new list
     List< NewKey, NewAlloc > list;
 

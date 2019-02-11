@@ -129,7 +129,7 @@ namespace gum {
      * @throw NotFound if no such name exists in the graph.
      */
     virtual const DiscreteVariable&
-      variableFromName(const std::string& name) const = 0;
+       variableFromName(const std::string& name) const = 0;
     /// @}
 
     // ===========================================================================
@@ -241,8 +241,9 @@ namespace gum {
   };
 
 
-  extern template class IBayesNet< float >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class IBayesNet< double >;
+#endif
 
 
   /// Prints map's DAG in output using the Graphviz-dot format.

@@ -65,15 +65,15 @@ namespace gum {
 
       /// copy constructor
       GraphChangesSelector4DiGraph(
-        const GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                            GRAPH_CHANGES_GENERATOR,
-                                            ALLOC >& from);
+         const GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
+                                             GRAPH_CHANGES_GENERATOR,
+                                             ALLOC >& from);
 
       /// move constructor
       GraphChangesSelector4DiGraph(
-        GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                      GRAPH_CHANGES_GENERATOR,
-                                      ALLOC >&& from);
+         GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
+                                       GRAPH_CHANGES_GENERATOR,
+                                       ALLOC >&& from);
 
       /// destructor
       ~GraphChangesSelector4DiGraph();
@@ -89,17 +89,17 @@ namespace gum {
       GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
                                     GRAPH_CHANGES_GENERATOR,
                                     ALLOC >&
-        operator=(const GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                                      GRAPH_CHANGES_GENERATOR,
-                                                      ALLOC >& from);
+         operator=(const GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
+                                                       GRAPH_CHANGES_GENERATOR,
+                                                       ALLOC >& from);
 
       /// move operator
       GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
                                     GRAPH_CHANGES_GENERATOR,
                                     ALLOC >&
-        operator=(GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                                GRAPH_CHANGES_GENERATOR,
-                                                ALLOC >&& from);
+         operator=(GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
+                                                 GRAPH_CHANGES_GENERATOR,
+                                                 ALLOC >&& from);
 
       /// @}
 
@@ -197,7 +197,7 @@ namespace gum {
       /** within each queue, the changes are determined by their index in
        * sequence __changes. */
       NodeProperty< PriorityQueue< std::size_t, double, std::greater< double > > >
-        __change_queue_per_node;
+         __change_queue_per_node;
 
       /// a global priority queue indicating for each node its best score
       PriorityQueue< NodeId, double, std::greater< double > > __node_queue;
@@ -230,8 +230,8 @@ namespace gum {
 
       /// finds the changes that are affected by a given node modification
       void
-        __findLegalChangesNeedingUpdate(Set< std::size_t >& changes_to_recompute,
-                                        const NodeId        target_node);
+         __findLegalChangesNeedingUpdate(Set< std::size_t >& changes_to_recompute,
+                                         const NodeId        target_node);
 
       /// perform the necessary updates of the scores
       void __updateScores(const Set< std::size_t >& changes_to_recompute);

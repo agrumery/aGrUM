@@ -36,9 +36,9 @@ namespace gum {
   /// default constructor
   template < typename GUM_SCALAR >
   ScheduleDeleteMultiDim< GUM_SCALAR >::ScheduleDeleteMultiDim(
-    const ScheduleMultiDim< GUM_SCALAR >& table) :
+     const ScheduleMultiDim< GUM_SCALAR >& table) :
       ScheduleOperation< GUM_SCALAR >(
-        ScheduleOperation< GUM_SCALAR >::Type::DELETE_MULTIDIM),
+         ScheduleOperation< GUM_SCALAR >::Type::DELETE_MULTIDIM),
       __table(table), __args(0) {
     // for debugging purposes
     GUM_CONSTRUCTOR(ScheduleDeleteMultiDim);
@@ -47,7 +47,7 @@ namespace gum {
   /// copy constructor
   template < typename GUM_SCALAR >
   ScheduleDeleteMultiDim< GUM_SCALAR >::ScheduleDeleteMultiDim(
-    const ScheduleDeleteMultiDim< GUM_SCALAR >& from) :
+     const ScheduleDeleteMultiDim< GUM_SCALAR >& from) :
       ScheduleOperation< GUM_SCALAR >(from),
       __table(from.__table), __args(0) {
     // for debugging purposes
@@ -57,7 +57,7 @@ namespace gum {
   /// virtual copy constructor: creates a clone of the operation
   template < typename GUM_SCALAR >
   ScheduleDeleteMultiDim< GUM_SCALAR >*
-    ScheduleDeleteMultiDim< GUM_SCALAR >::newFactory() const {
+     ScheduleDeleteMultiDim< GUM_SCALAR >::newFactory() const {
     return new ScheduleDeleteMultiDim< GUM_SCALAR >(*this);
   }
 
@@ -95,7 +95,7 @@ namespace gum {
     if (this->type() != op.type()) return false;
 
     const ScheduleDeleteMultiDim< GUM_SCALAR >& real_op =
-      static_cast< const ScheduleDeleteMultiDim< GUM_SCALAR >& >(op);
+       static_cast< const ScheduleDeleteMultiDim< GUM_SCALAR >& >(op);
     return __table == real_op.__table;
   }
 
@@ -106,7 +106,7 @@ namespace gum {
     if (this->type() != op.type()) return true;
 
     const ScheduleDeleteMultiDim< GUM_SCALAR >& real_op =
-      static_cast< const ScheduleDeleteMultiDim< GUM_SCALAR >& >(op);
+       static_cast< const ScheduleDeleteMultiDim< GUM_SCALAR >& >(op);
     return __table != real_op.__table;
   }
 
@@ -165,14 +165,14 @@ namespace gum {
     if (first_time) {
       first_time = false;
       __debug__::__inc_deletion(
-        "Sequence", __FILE__, __LINE__, "destructor of", (void*)&empty_seq);
+         "Sequence", __FILE__, __LINE__, "destructor of", (void*)&empty_seq);
       __debug__::__inc_deletion("SequenceImplementation",
                                 __FILE__,
                                 __LINE__,
                                 "destructor of",
                                 (void*)&empty_seq);
       __debug__::__inc_deletion(
-        "HashTable", __FILE__, __LINE__, "destructor of", (void*)&empty_seq);
+         "HashTable", __FILE__, __LINE__, "destructor of", (void*)&empty_seq);
       __debug__::__inc_deletion("SequenceIteratorSafe",
                                 __FILE__,
                                 __LINE__,

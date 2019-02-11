@@ -27,4 +27,6 @@
 
 #include <agrum/multidim/utils/FunctionGraphUtilities/operators/regress.h>
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::Regress< double, std::multiplies, std::plus >;
+#endif

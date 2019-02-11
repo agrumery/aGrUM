@@ -20,5 +20,7 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/agrum.h>
 
-template class gum::BayesNet< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::BayesNet< double >;
+#endif

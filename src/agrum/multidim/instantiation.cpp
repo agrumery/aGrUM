@@ -171,8 +171,8 @@ namespace gum {
   }
 
   void Instantiation::setValsFrom(
-    const HashTable< const DiscreteVariable*, const DiscreteVariable* >& map,
-    const Instantiation& external) {
+     const HashTable< const DiscreteVariable*, const DiscreteVariable* >& map,
+     const Instantiation& external) {
     for (const auto& elt : map) {
       const DiscreteVariable& var = *elt.second;
 

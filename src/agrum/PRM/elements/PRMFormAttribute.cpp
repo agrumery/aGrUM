@@ -30,8 +30,10 @@
 namespace gum {
   namespace prm {
 
-    template class PRMFormAttribute< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
     template class PRMFormAttribute< double >;
+#endif
 
   } /* namespace prm */
 } /* namespace gum */

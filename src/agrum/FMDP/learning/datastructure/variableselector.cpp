@@ -41,7 +41,7 @@ namespace gum {
     GUM_CONSTRUCTOR(VariableSelector);
     __remainingScores.insert(0.0, 0.0);
     __remainingVarsByScore.insert(
-      0.0, new Set< const DiscreteVariable* >(__remainingVars));
+       0.0, new Set< const DiscreteVariable* >(__remainingVars));
 
     for (auto varIter = __remainingVars.cbeginSafe();
          varIter != __remainingVars.cendSafe();
@@ -95,9 +95,9 @@ namespace gum {
          ++varIter) {
       if (bestVar == nullptr
           || __remainingVarsOtherScore[bestVar]
-               < __remainingVarsOtherScore[*varIter]
+                < __remainingVarsOtherScore[*varIter]
           || (__remainingVarsOtherScore[bestVar]
-                == __remainingVarsOtherScore[*varIter]
+                 == __remainingVarsOtherScore[*varIter]
               && bestVar->domainSize() < (*varIter)->domainSize()))
         bestVar = *varIter;
     }

@@ -38,8 +38,8 @@ namespace gum {
   // Use the SimpleCPTGenerator for generating the BNs CPT.
   template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
   INLINE
-    SimpleBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::SimpleBayesNetGenerator(
-      Size nbrNodes, Size maxArcs, Size maxModality) :
+     SimpleBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::SimpleBayesNetGenerator(
+        Size nbrNodes, Size maxArcs, Size maxModality) :
       IBNG(nbrNodes, maxArcs, maxModality) {
     GUM_CONSTRUCTOR(SimpleBayesNetGenerator);
   }
@@ -70,7 +70,7 @@ namespace gum {
 
   template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
   void SimpleBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::generateBN(
-    BayesNet< GUM_SCALAR >& bayesNet) {
+     BayesNet< GUM_SCALAR >& bayesNet) {
     this->_bayesNet = bayesNet;
     HashTable< Size, NodeId > map;
     std::stringstream         strBuff;
@@ -78,9 +78,9 @@ namespace gum {
     for (Size i = 0; this->_nbrNodes > i; ++i) {
       strBuff << "n" << i;
       Size nb_mod =
-        (this->_maxModality == 2) ? 2 : 2 + randomValue(this->_maxModality - 1);
+         (this->_maxModality == 2) ? 2 : 2 + randomValue(this->_maxModality - 1);
       map.insert(
-        i, this->_bayesNet.add(LabelizedVariable(strBuff.str(), "", nb_mod)));
+         i, this->_bayesNet.add(LabelizedVariable(strBuff.str(), "", nb_mod)));
       strBuff.str("");
     }
 

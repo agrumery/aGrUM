@@ -39,7 +39,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     PRMParameter< GUM_SCALAR >::PRMParameter(
-      const PRMParameter< GUM_SCALAR >& source) :
+       const PRMParameter< GUM_SCALAR >& source) :
         PRMClassElement< GUM_SCALAR >(source.name()),
         __type(source.valueType()), __value(source.value()) {
       GUM_ERROR(OperationNotAllowed, "cannot copy Paramter<GUM_SCALAR");
@@ -58,7 +58,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     typename PRMClassElement< GUM_SCALAR >::ClassElementType
-      PRMParameter< GUM_SCALAR >::elt_type() const {
+       PRMParameter< GUM_SCALAR >::elt_type() const {
       return PRMClassElement< GUM_SCALAR >::ClassElementType::prm_parameter;
     }
 
@@ -74,17 +74,17 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     typename PRMParameter< GUM_SCALAR >::ParameterType
-      PRMParameter< GUM_SCALAR >::valueType() const {
+       PRMParameter< GUM_SCALAR >::valueType() const {
       return __type;
     }
 
     template < typename GUM_SCALAR >
-    PRMType< GUM_SCALAR >& PRMParameter< GUM_SCALAR >::type() {
+    PRMType& PRMParameter< GUM_SCALAR >::type() {
       GUM_ERROR(OperationNotAllowed, "Parameters do not have a type");
     }
 
     template < typename GUM_SCALAR >
-    const PRMType< GUM_SCALAR >& PRMParameter< GUM_SCALAR >::type() const {
+    const PRMType& PRMParameter< GUM_SCALAR >::type() const {
       GUM_ERROR(OperationNotAllowed, "Parameters do not have a type");
     }
 
@@ -100,19 +100,19 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void PRMParameter< GUM_SCALAR >::addParent(
-      const gum::prm::PRMClassElement< GUM_SCALAR >&) {
+       const gum::prm::PRMClassElement< GUM_SCALAR >&) {
       GUM_ERROR(OperationNotAllowed, "Parameters can not have parents");
     }
 
     template < typename GUM_SCALAR >
     void PRMParameter< GUM_SCALAR >::addChild(
-      const gum::prm::PRMClassElement< GUM_SCALAR >&) {
+       const gum::prm::PRMClassElement< GUM_SCALAR >&) {
       GUM_ERROR(OperationNotAllowed, "Parameters can not have children");
     }
 
     template < typename GUM_SCALAR >
     PRMAttribute< GUM_SCALAR >*
-      PRMParameter< GUM_SCALAR >::getCastDescendant() const {
+       PRMParameter< GUM_SCALAR >::getCastDescendant() const {
       GUM_ERROR(OperationNotAllowed, "Parameters can have cast descendants");
     }
 

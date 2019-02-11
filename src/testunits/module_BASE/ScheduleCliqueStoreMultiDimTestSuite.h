@@ -44,19 +44,19 @@ namespace gum_tests {
         vars[i] = new gum::LabelizedVariable(s, s, 2);
       }
 
-      gum::Potential< float > pot1;
+      gum::Potential< double > pot1;
       pot1 << *(vars[0]) << *(vars[2]) << *(vars[3]) << *(vars[4]);
-      gum::ScheduleMultiDim< float > f1(pot1);
-      gum::Potential< float >        pot2;
+      gum::ScheduleMultiDim< double > f1(pot1);
+      gum::Potential< double >        pot2;
       pot2 << *(vars[0]) << *(vars[2]) << *(vars[3]) << *(vars[4]);
-      gum::ScheduleMultiDim< float > f2(pot2);
+      gum::ScheduleMultiDim< double > f2(pot2);
 
-      gum::NodeProperty< gum::Set< const gum::MultiDimImplementation< float >* > >
-        set;
+      gum::NodeProperty< gum::Set< const gum::MultiDimImplementation< double >* > >
+         set;
       TS_ASSERT(set.size() == 0);
-      gum::ScheduleCliqueStoreMultiDim< float > store1(f1, set, 3);
-      gum::ScheduleCliqueStoreMultiDim< float > store2(f2, set, 3);
-      gum::ScheduleCliqueStoreMultiDim< float > store3(f2, set, 2);
+      gum::ScheduleCliqueStoreMultiDim< double > store1(f1, set, 3);
+      gum::ScheduleCliqueStoreMultiDim< double > store2(f2, set, 3);
+      gum::ScheduleCliqueStoreMultiDim< double > store3(f2, set, 2);
       TS_ASSERT(store1 != store2);
       TS_ASSERT(store2 != store3);
       TS_ASSERT(!(store2 == store3));
@@ -65,8 +65,8 @@ namespace gum_tests {
       std::pair< long, long > xxx = store1.memoryUsage();
       TS_ASSERT(xxx.first == 0);
 
-      gum::Sequence< const gum::ScheduleMultiDim< float >* > seq =
-        store1.multiDimArgs();
+      gum::Sequence< const gum::ScheduleMultiDim< double >* > seq =
+         store1.multiDimArgs();
       TS_ASSERT(seq.size() == 1);
       TS_ASSERT(*(seq.atPos(0)) == f1);
 
@@ -80,16 +80,16 @@ namespace gum_tests {
       s << "store ( " << f1.toString() << ", clique " << 3 << " )";
       TS_ASSERT(store1.toString() == s.str());
 
-      gum::ScheduleCliqueStoreMultiDim< float > store4(store3);
+      gum::ScheduleCliqueStoreMultiDim< double > store4(store3);
       TS_ASSERT(store4 == store3);
       TS_ASSERT(store4 != store1);
       store4 = store1;
       TS_ASSERT(store4 == store1);
 
       TS_ASSERT(store4.type()
-                == gum::ScheduleOperation< float >::Type::CLIQUE_STORE_MULTIDIM);
+                == gum::ScheduleOperation< double >::Type::CLIQUE_STORE_MULTIDIM);
 
-      gum::ScheduleCliqueStoreMultiDim< float >* store5 = store4.newFactory();
+      gum::ScheduleCliqueStoreMultiDim< double >* store5 = store4.newFactory();
       TS_ASSERT(*store5 == store4);
       delete store5;
 

@@ -155,9 +155,9 @@ namespace gum {
        */
       template < template < typename > class XALLOC >
       DBTranslator4RangeVariable(
-        const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
-        std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
-        const allocator_type& alloc = allocator_type());
+         const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
+         std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
+         const allocator_type& alloc = allocator_type());
 
       /// default constructor without any initial variable nor missing symbols
       /** When using this constructor, it is assumed implicitly that the
@@ -172,8 +172,8 @@ namespace gum {
        * fields of the DBTranslator4RangeVariable
        */
       DBTranslator4RangeVariable(
-        std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
-        const allocator_type& alloc = allocator_type());
+         std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
+         const allocator_type& alloc = allocator_type());
 
       /// default constructor with a range variable as translator
       /** @param var a range variable which will be used for translations.
@@ -197,11 +197,11 @@ namespace gum {
        */
       template < template < typename > class XALLOC >
       DBTranslator4RangeVariable(
-        const RangeVariable&                                     var,
-        const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
-        const bool  editable_dictionary = false,
-        std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
-        const allocator_type& alloc = allocator_type());
+         const RangeVariable&                                     var,
+         const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
+         const bool  editable_dictionary = false,
+         std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
+         const allocator_type& alloc = allocator_type());
 
       /** @brief default constructor with a range variable as translator
        * but without missing symbols
@@ -224,10 +224,10 @@ namespace gum {
        * be taken into account in the translations, not the missing value.
        */
       DBTranslator4RangeVariable(
-        const RangeVariable& var,
-        const bool           editable_dictionary = false,
-        std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
-        const allocator_type& alloc = allocator_type());
+         const RangeVariable& var,
+         const bool           editable_dictionary = false,
+         std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
+         const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       DBTranslator4RangeVariable(const DBTranslator4RangeVariable< ALLOC >& from);
@@ -248,7 +248,7 @@ namespace gum {
 
       /// virtual copy constructor with a given allocator
       virtual DBTranslator4RangeVariable< ALLOC >*
-        clone(const allocator_type& alloc) const;
+         clone(const allocator_type& alloc) const;
 
       /// destructor
       virtual ~DBTranslator4RangeVariable();
@@ -264,11 +264,11 @@ namespace gum {
 
       /// copy operator
       DBTranslator4RangeVariable< ALLOC >&
-        operator=(const DBTranslator4RangeVariable< ALLOC >& from);
+         operator=(const DBTranslator4RangeVariable< ALLOC >& from);
 
       /// move operator
       DBTranslator4RangeVariable< ALLOC >&
-        operator=(DBTranslator4RangeVariable< ALLOC >&& from);
+         operator=(DBTranslator4RangeVariable< ALLOC >&& from);
 
       /// @}
 
@@ -327,7 +327,7 @@ namespace gum {
        * @throws UnknownLabelInDatabase is raised if this original value cannot
        * be found */
       virtual std::string
-        translateBack(const DBTranslatedValue translated_val) const final;
+         translateBack(const DBTranslatedValue translated_val) const final;
 
       /// returns the domain size of a variable corresponding to the translations
       /** Returns the size of the range of the variable. */
@@ -361,7 +361,7 @@ namespace gum {
       virtual HashTable< std::size_t,
                          std::size_t,
                          ALLOC< std::pair< std::size_t, std::size_t > > >
-        reorder() final;
+         reorder() final;
 
       /// returns the variable stored into the translator
       virtual const RangeVariable* variable() const final;
@@ -382,7 +382,7 @@ namespace gum {
       // we already translated it or not. If we translated it, then we cannot
       // change the range of the variable so that this range contains the symbol.
       HashTable< std::string, bool, ALLOC< std::pair< std::string, bool > > >
-        __status_int_missing_symbols;
+         __status_int_missing_symbols;
 
       // the set of translations of the integer missing symbols found so far
       Set< long, ALLOC< long > > __translated_int_missing_symbols;

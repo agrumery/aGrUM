@@ -76,21 +76,21 @@ namespace gum {
        * (they have the same names) are exactly identical. If this is not the
        * case, then a DatabaseError exception is raised. */
       AprioriDirichletFromDatabase(
-        const DatabaseTable< ALLOC >&        learning_db,
-        const DBRowGeneratorParser< ALLOC >& apriori_parser,
-        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-          nodeId2columns =
-            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-        const allocator_type& alloc = allocator_type());
+         const DatabaseTable< ALLOC >&        learning_db,
+         const DBRowGeneratorParser< ALLOC >& apriori_parser,
+         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+            nodeId2columns =
+               Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+         const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       AprioriDirichletFromDatabase(
-        const AprioriDirichletFromDatabase< ALLOC >& from);
+         const AprioriDirichletFromDatabase< ALLOC >& from);
 
       /// copy constructor with a given allocator
       AprioriDirichletFromDatabase(
-        const AprioriDirichletFromDatabase< ALLOC >& from,
-        const allocator_type&                        alloc);
+         const AprioriDirichletFromDatabase< ALLOC >& from,
+         const allocator_type&                        alloc);
 
       /// move constructor
       AprioriDirichletFromDatabase(AprioriDirichletFromDatabase< ALLOC >&& from);
@@ -104,7 +104,7 @@ namespace gum {
 
       /// virtual copy constructor with a given allocator
       virtual AprioriDirichletFromDatabase< ALLOC >*
-        clone(const allocator_type& alloc) const;
+         clone(const allocator_type& alloc) const;
 
       /// destructor
       virtual ~AprioriDirichletFromDatabase();
@@ -119,11 +119,11 @@ namespace gum {
 
       /// copy operator
       AprioriDirichletFromDatabase< ALLOC >&
-        operator=(const AprioriDirichletFromDatabase< ALLOC >& from);
+         operator=(const AprioriDirichletFromDatabase< ALLOC >& from);
 
       /// move operator
       AprioriDirichletFromDatabase< ALLOC >&
-        operator=(AprioriDirichletFromDatabase< ALLOC >&& from);
+         operator=(AprioriDirichletFromDatabase< ALLOC >&& from);
 
       /// @}
 
@@ -159,8 +159,8 @@ namespace gum {
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint variables set. */
       virtual void
-        addAllApriori(const IdSet< ALLOC >&                   idset,
-                      std::vector< double, ALLOC< double > >& counts) final;
+         addAllApriori(const IdSet< ALLOC >&                   idset,
+                       std::vector< double, ALLOC< double > >& counts) final;
 
       /** @brief adds the apriori to a counting vectordefined over the right
        * hand side of the idset
@@ -168,8 +168,8 @@ namespace gum {
        * @warning the method assumes that the size of the vector is exactly
        * the domain size of the joint RHS variables of the idset. */
       virtual void addConditioningApriori(
-        const IdSet< ALLOC >&                   idset,
-        std::vector< double, ALLOC< double > >& counts) final;
+         const IdSet< ALLOC >&                   idset,
+         std::vector< double, ALLOC< double > >& counts) final;
 
       /// @}
 

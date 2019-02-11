@@ -42,8 +42,8 @@ namespace gum {
 
   INLINE
   const std::string&
-    DAGmodel::propertyWithDefault(const std::string& name,
-                                  const std::string& byDefault) const {
+     DAGmodel::propertyWithDefault(const std::string& name,
+                                   const std::string& byDefault) const {
     try {
       return __properties()[name];
     } catch (NotFound&) { return byDefault; }

@@ -52,7 +52,7 @@ namespace gum {
 
     /// constructor starting with an empty graph with a given number of nodes
     StructuralConstraintSliceOrder::StructuralConstraintSliceOrder(
-      const NodeProperty< NodeId >& order) {
+       const NodeProperty< NodeId >& order) {
       for (auto iter = order.cbegin(); iter != order.cend(); ++iter) {
         _DiGraph__graph.addNodeWithId(iter.key());
       }
@@ -63,7 +63,7 @@ namespace gum {
 
     /// constructor starting with a given graph
     StructuralConstraintSliceOrder::StructuralConstraintSliceOrder(
-      const DiGraph& graph, const NodeProperty< NodeId >& order) :
+       const DiGraph& graph, const NodeProperty< NodeId >& order) :
         StructuralConstraintDiGraph(graph),
         _SliceOrder__order(order) {
       GUM_CONSTRUCTOR(StructuralConstraintSliceOrder);
@@ -71,7 +71,7 @@ namespace gum {
 
     /// copy constructor
     StructuralConstraintSliceOrder::StructuralConstraintSliceOrder(
-      const StructuralConstraintSliceOrder& from) :
+       const StructuralConstraintSliceOrder& from) :
         StructuralConstraintDiGraph(from),
         _SliceOrder__order(from._SliceOrder__order) {
       GUM_CONS_CPY(StructuralConstraintSliceOrder);
@@ -79,7 +79,7 @@ namespace gum {
 
     /// move constructor
     StructuralConstraintSliceOrder::StructuralConstraintSliceOrder(
-      StructuralConstraintSliceOrder&& from) :
+       StructuralConstraintSliceOrder&& from) :
         StructuralConstraintDiGraph(std::move(from)),
         _SliceOrder__order(std::move(from._SliceOrder__order)) {
       GUM_CONS_MOV(StructuralConstraintSliceOrder);

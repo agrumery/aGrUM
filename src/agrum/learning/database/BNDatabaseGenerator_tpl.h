@@ -35,7 +35,7 @@ namespace gum {
     /// default constructor
     template < typename GUM_SCALAR >
     BNDatabaseGenerator< GUM_SCALAR >::BNDatabaseGenerator(
-      const BayesNet< GUM_SCALAR >& bn) :
+       const BayesNet< GUM_SCALAR >& bn) :
         __bn(bn) {
       // for debugging purposes
       GUM_CONSTRUCTOR(BNDatabaseGenerator);
@@ -158,11 +158,11 @@ namespace gum {
           auto varOrder = __varOrderFromCSV(csvFile, csvSeparator);
           if (checkOnAppend && varOrder != __varOrder) {
             GUM_ERROR(
-              OperationNotAllowed,
-              "Inconsistent variable order in csvFile when appending. You "
-              "can use setVarOrderFromCSV(url) function to get the right "
-              "order. You could also set parameter checkOnAppend=false if you "
-              "know what you are doing.");
+               OperationNotAllowed,
+               "Inconsistent variable order in csvFile when appending. You "
+               "can use setVarOrderFromCSV(url) function to get the right "
+               "order. You could also set parameter checkOnAppend=false if you "
+               "know what you are doing.");
           }
           includeHeader = false;
         }
@@ -214,7 +214,7 @@ namespace gum {
     /// generates a DatabaseVectInRAM
     template < typename GUM_SCALAR >
     DatabaseTable<>
-      BNDatabaseGenerator< GUM_SCALAR >::toDatabaseTable(bool useLabels) const {
+       BNDatabaseGenerator< GUM_SCALAR >::toDatabaseTable(bool useLabels) const {
       if (!__drawnSamples)
         GUM_ERROR(OperationNotAllowed, "proceed() must be called first.");
 
@@ -271,7 +271,7 @@ namespace gum {
     /// returns database using specified data order
     template < typename GUM_SCALAR >
     std::vector< std::vector< Idx > >
-      BNDatabaseGenerator< GUM_SCALAR >::database() const {
+       BNDatabaseGenerator< GUM_SCALAR >::database() const {
       if (!__drawnSamples)
         GUM_ERROR(OperationNotAllowed, "drawSamples() must be called first.");
 
@@ -287,7 +287,7 @@ namespace gum {
     /// change columns order
     template < typename GUM_SCALAR >
     void BNDatabaseGenerator< GUM_SCALAR >::setVarOrder(
-      const std::vector< Idx >& varOrder) {
+       const std::vector< Idx >& varOrder) {
       if (varOrder.size() != __nbVars) {
         GUM_ERROR(FatalError,
                   "varOrder's size must be equal to the number of variables");
@@ -312,7 +312,7 @@ namespace gum {
     /// change columns order using variable names
     template < typename GUM_SCALAR >
     void BNDatabaseGenerator< GUM_SCALAR >::setVarOrder(
-      const std::vector< std::string >& varOrder) {
+       const std::vector< std::string >& varOrder) {
       std::vector< Idx > varOrderIdx;
       varOrderIdx.reserve(varOrder.size());
       for (const auto& vname : varOrder) {
@@ -324,7 +324,7 @@ namespace gum {
     /// change columns order according to a csv file
     template < typename GUM_SCALAR >
     void BNDatabaseGenerator< GUM_SCALAR >::setVarOrderFromCSV(
-      const std::string& csvFileURL, const std::string& csvSeparator) {
+       const std::string& csvFileURL, const std::string& csvSeparator) {
       setVarOrder(__varOrderFromCSV(csvFileURL, csvSeparator));
     }
 
@@ -375,7 +375,7 @@ namespace gum {
     /// returns variable order.
     template < typename GUM_SCALAR >
     std::vector< std::string >
-      BNDatabaseGenerator< GUM_SCALAR >::varOrderNames() const {
+       BNDatabaseGenerator< GUM_SCALAR >::varOrderNames() const {
       std::vector< std::string > varNames;
       varNames.reserve(__nbVars);
       for (const auto& i : __varOrder) {
@@ -397,7 +397,7 @@ namespace gum {
     /// returns varOrder from a csv file
     template < typename GUM_SCALAR >
     std::vector< Idx > BNDatabaseGenerator< GUM_SCALAR >::__varOrderFromCSV(
-      const std::string& csvFileURL, const std::string& csvSeparator) const {
+       const std::string& csvFileURL, const std::string& csvSeparator) const {
       std::ifstream      csvFile(csvFileURL);
       std::vector< Idx > varOrder;
       if (csvFile) {
@@ -413,7 +413,7 @@ namespace gum {
     /// returns varOrder from a csv file
     template < typename GUM_SCALAR >
     std::vector< Idx > BNDatabaseGenerator< GUM_SCALAR >::__varOrderFromCSV(
-      std::ifstream& csvFile, const std::string& csvSeparator) const {
+       std::ifstream& csvFile, const std::string& csvSeparator) const {
       std::string                line;
       std::vector< std::string > header_found;
       header_found.reserve(__nbVars);

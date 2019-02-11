@@ -43,7 +43,7 @@ namespace gum {
   /// default constructor
   template < typename GUM_SCALAR >
   LoopyBeliefPropagation< GUM_SCALAR >::LoopyBeliefPropagation(
-    const IBayesNet< GUM_SCALAR >* bn) :
+     const IBayesNet< GUM_SCALAR >* bn) :
       ApproximateInference< GUM_SCALAR >(bn) {
     // for debugging purposes
     GUM_CONSTRUCTOR(LoopyBeliefPropagation);
@@ -87,7 +87,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-    LoopyBeliefPropagation< GUM_SCALAR >::__computeProdPi(NodeId X) {
+     LoopyBeliefPropagation< GUM_SCALAR >::__computeProdPi(NodeId X) {
     const auto& varX = this->BN().variable(X);
 
     auto piX = this->BN().cpt(X);
@@ -101,8 +101,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-    LoopyBeliefPropagation< GUM_SCALAR >::__computeProdPi(NodeId X,
-                                                          NodeId except) {
+     LoopyBeliefPropagation< GUM_SCALAR >::__computeProdPi(NodeId X,
+                                                           NodeId except) {
     const auto& varX = this->BN().variable(X);
     const auto& varExcept = this->BN().variable(except);
     auto        piXexcept = this->BN().cpt(X);
@@ -116,7 +116,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-    LoopyBeliefPropagation< GUM_SCALAR >::__computeProdLambda(NodeId X) {
+     LoopyBeliefPropagation< GUM_SCALAR >::__computeProdLambda(NodeId X) {
     Potential< GUM_SCALAR > lamX;
     if (this->hasEvidence(X)) {
       lamX = *(this->evidence()[X]);
@@ -133,8 +133,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-    LoopyBeliefPropagation< GUM_SCALAR >::__computeProdLambda(NodeId X,
-                                                              NodeId except) {
+     LoopyBeliefPropagation< GUM_SCALAR >::__computeProdLambda(NodeId X,
+                                                               NodeId except) {
     Potential< GUM_SCALAR > lamXexcept;
     if (this->hasEvidence(X)) {   //
       lamXexcept = *this->evidence()[X];
@@ -161,7 +161,7 @@ namespace gum {
     // update lambda_par (for arc U->x)
     for (const auto& U : this->BN().parents(X)) {
       auto newLambda =
-        (__computeProdPi(X, U) * lamX).margSumIn({&this->BN().variable(U)});
+         (__computeProdPi(X, U) * lamX).margSumIn({&this->BN().variable(U)});
       newLambda.normalize();
       auto ekl = static_cast< GUM_SCALAR >(0);
       try {

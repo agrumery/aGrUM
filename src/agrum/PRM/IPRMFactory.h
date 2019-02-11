@@ -61,8 +61,8 @@ namespace gum {
       virtual PRMObject*          closeCurrent() = 0;
       virtual std::string         currentPackage() const = 0;
       // Class<GUM_SCALAR>& retrieveClass ( const std::string& name )=0;
-      // PRMType<GUM_SCALAR>& retrieveType ( const std::string& name )=0;
-      // PRMType<GUM_SCALAR>& retrieveCommonType ( const
+      // PRMType& retrieveType ( const std::string& name )=0;
+      // PRMType& retrieveCommonType ( const
       // std::vector<PRMClassElement<GUM_SCALAR>*>& elts )=0;
       virtual void        pushPackage(const std::string& name) = 0;
       virtual std::string popPackage() = 0;

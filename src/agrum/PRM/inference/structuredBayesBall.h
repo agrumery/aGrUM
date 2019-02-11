@@ -72,11 +72,11 @@ namespace gum {
 
       /// Returns the set of requisite nodes w.r.t. d-separation for i.
       const Set< NodeId >&
-        requisiteNodes(const PRMInstance< GUM_SCALAR >* i) const;
+         requisiteNodes(const PRMInstance< GUM_SCALAR >* i) const;
 
       /// Returns the set of requisite nodes w.r.t. d-separation for i.
       const Set< NodeId >&
-        requisiteNodes(const PRMInstance< GUM_SCALAR >& i) const;
+         requisiteNodes(const PRMInstance< GUM_SCALAR >& i) const;
 
       /// Returns the number of occurrence of the given key, which is the number
       /// of PRMInstance<GUM_SCALAR> sharing the same set of requisite nodes.
@@ -158,7 +158,7 @@ namespace gum {
       /// set of requisite nodes deduced from d-separation analysis.
       HashTable< const PRMInstance< GUM_SCALAR >*,
                  std::pair< std::string, Set< NodeId >* > >
-        __keyMap;
+         __keyMap;
 
       /// Associate a Key with the set of requisite nodes associated with it.
       /// The Size value is the number of instance with the same key.
@@ -166,8 +166,9 @@ namespace gum {
     };
 
 
-    extern template class StructuredBayesBall< float >;
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
     extern template class StructuredBayesBall< double >;
+#  endif
 
 
   } /* namespace prm */

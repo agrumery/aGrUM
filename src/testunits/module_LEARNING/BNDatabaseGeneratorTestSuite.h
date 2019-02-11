@@ -73,7 +73,7 @@ namespace gum_tests {
     void testConstuctor() {
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
-        dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
+         dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
 
       auto varOrder = dbgen->varOrder();
       TS_ASSERT_EQUALS(varOrder.size(), (gum::Size)6);
@@ -98,7 +98,7 @@ namespace gum_tests {
     void testSetVarOrder() {
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
-        dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
+         dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
 
       std::vector< gum::Idx >    goodOrder1 = {1, 0, 3, 2, 5, 4};
       std::vector< std::string > goodOrder2 = {"A", "E", "O", "R", "S", "T"};
@@ -160,7 +160,7 @@ namespace gum_tests {
 
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
-        dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
+         dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
 
       TS_ASSERT_THROWS(dbgen->database(), gum::OperationNotAllowed);
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
@@ -213,7 +213,7 @@ namespace gum_tests {
 
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
-        dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
+         dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
       TS_ASSERT_THROWS(dbgen->database(), gum::OperationNotAllowed);
       TS_GUM_ASSERT_THROWS_NOTHING(ll_1 = dbgen->drawSamples(nbSamples1));
       TS_GUM_ASSERT_THROWS_NOTHING(ll_2 = dbgen->drawSamples(nbSamples2));
@@ -221,16 +221,16 @@ namespace gum_tests {
 
       // log2likehood must proportional to number of samples
       TS_ASSERT_LESS_THAN(
-        std::abs(1 - (double)nbSamples2 / (double)nbSamples1 * ll_1 / ll_2),
-        tolerance);
+         std::abs(1 - (double)nbSamples2 / (double)nbSamples1 * ll_1 / ll_2),
+         tolerance);
       TS_ASSERT_LESS_THAN(
-        std::abs(1 - (double)nbSamples3 / (double)nbSamples1 * ll_1 / ll_3),
-        tolerance);
+         std::abs(1 - (double)nbSamples3 / (double)nbSamples1 * ll_1 / ll_3),
+         tolerance);
 
       // log2likelihood must be aprox nbSamples * entropy (theorical result)
       double entropy = (bn->cpt(0) * bn->cpt(1) * bn->cpt(2) * bn->cpt(3)
                         * bn->cpt(4) * bn->cpt(5))
-                         .entropy();
+                          .entropy();
       TS_ASSERT_LESS_THAN(std::abs(1 + entropy * nbSamples1 / ll_1), tolerance);
       TS_ASSERT_LESS_THAN(std::abs(1 + entropy * nbSamples2 / ll_2), tolerance);
       TS_ASSERT_LESS_THAN(std::abs(1 + entropy * nbSamples3 / ll_3), tolerance);
@@ -250,7 +250,7 @@ namespace gum_tests {
 
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
-        dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
+         dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
 
       std::vector< std::string > vOrder1 = {"S", "E", "T", "R", "A", "O"};
       TS_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(vOrder1));
@@ -261,24 +261,24 @@ namespace gum_tests {
       bool        checkOnAppend = true;
 
       TS_ASSERT_THROWS(
-        dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend),
-        gum::OperationNotAllowed);
+         dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend),
+         gum::OperationNotAllowed);
 
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
       TS_GUM_ASSERT_THROWS_NOTHING(
-        dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
+         dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
 
       std::vector< std::string > vOrder2 = {"S", "T", "E", "R", "O", "A"};
       TS_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(vOrder2));
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
       append = true;
       TS_ASSERT_THROWS(
-        dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend),
-        gum::OperationNotAllowed);
+         dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend),
+         gum::OperationNotAllowed);
       TS_GUM_ASSERT_THROWS_NOTHING(
-        dbgen->setVarOrderFromCSV(csvFileURL, csvSeparator));
+         dbgen->setVarOrderFromCSV(csvFileURL, csvSeparator));
       TS_GUM_ASSERT_THROWS_NOTHING(
-        dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
+         dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
 
       std::ifstream              csvFile(csvFileURL);
       std::string                line;
@@ -325,7 +325,7 @@ namespace gum_tests {
 
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
-        dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
+         dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
 
       std::vector< std::string > vOrder1 = {"S", "E", "T", "R", "A", "O"};
       TS_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(vOrder1));
@@ -336,24 +336,24 @@ namespace gum_tests {
       bool        checkOnAppend = true;
 
       TS_ASSERT_THROWS(
-        dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend),
-        gum::OperationNotAllowed);
+         dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend),
+         gum::OperationNotAllowed);
 
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
       TS_GUM_ASSERT_THROWS_NOTHING(
-        dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
+         dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
 
       std::vector< std::string > vOrder2 = {"S", "T", "E", "R", "O", "A"};
       TS_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(vOrder2));
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
       append = true;
       TS_ASSERT_THROWS(
-        dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend),
-        gum::OperationNotAllowed);
+         dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend),
+         gum::OperationNotAllowed);
       TS_GUM_ASSERT_THROWS_NOTHING(
-        dbgen->setVarOrderFromCSV(csvFileURL, csvSeparator));
+         dbgen->setVarOrderFromCSV(csvFileURL, csvSeparator));
       TS_GUM_ASSERT_THROWS_NOTHING(
-        dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
+         dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
 
       std::ifstream              csvFile(csvFileURL);
       std::string                line;
@@ -407,7 +407,7 @@ namespace gum_tests {
 
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
-        dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
+         dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
       TS_ASSERT_THROWS(dbgen->toDatabaseTable(), gum::OperationNotAllowed);
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
       gum::learning::DatabaseTable<> db;

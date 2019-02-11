@@ -27,23 +27,28 @@
 #ifndef GUM_CLASS_H
 #define GUM_CLASS_H
 
-#include <set>
 #include <utility>
 
+#include <agrum/agrum.h>
+#include <agrum/core/hashFunc.h>
+#include <agrum/core/bijection.h>
+#include <agrum/core/sequence.h>
+#include <agrum/core/set.h>
+#include <agrum/multidim/implementations/multiDimImplementation.h>
+#include <agrum/multidim/implementations/multiDimSparse.h>
 #include <agrum/PRM/elements/PRMAggregate.h>
 #include <agrum/PRM/elements/PRMAttribute.h>
 #include <agrum/PRM/elements/PRMClassElementContainer.h>
 #include <agrum/PRM/elements/PRMParameter.h>
 #include <agrum/PRM/elements/PRMReferenceSlot.h>
 #include <agrum/PRM/elements/PRMSlotChain.h>
-#include <agrum/core/bijection.h>
-#include <agrum/core/sequence.h>
-#include <agrum/core/set.h>
-#include <agrum/multidim/implementations/multiDimImplementation.h>
-#include <agrum/multidim/implementations/multiDimSparse.h>
+
 
 namespace gum {
   namespace prm {
+
+    template < typename GUM_SCALAR >
+    class PRMInterface;
 
     /**
      * @class PRMClass
@@ -111,11 +116,11 @@ namespace gum {
 
       /// Copy operator. Don't use it.
       PRMClass< GUM_SCALAR >&
-        operator=(const PRMClass< GUM_SCALAR >& source) = delete;
+         operator=(const PRMClass< GUM_SCALAR >& source) = delete;
 
       /// Move operator. Don't use it.
       PRMClass< GUM_SCALAR >&
-        operator=(const PRMClass< GUM_SCALAR >&& source) = delete;
+         operator=(const PRMClass< GUM_SCALAR >&& source) = delete;
 
       /// Destructor.
       virtual ~PRMClass();
@@ -246,7 +251,7 @@ namespace gum {
        * @return Returns true if this Class<GUM_SCALAR> is a subclass of cec.
        */
       virtual bool
-        isSubTypeOf(const PRMClassElementContainer< GUM_SCALAR >& cec) const;
+         isSubTypeOf(const PRMClassElementContainer< GUM_SCALAR >& cec) const;
 
       /**
        * @brief Returns the super Class<GUM_SCALAR> of this Class<GUM_SCALAR>.
@@ -290,7 +295,7 @@ namespace gum {
       /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::operator[](const
       /// std::string&).
       const PRMClassElement< GUM_SCALAR >&
-        operator[](const std::string& name) const;
+         operator[](const std::string& name) const;
 
       /// @}
 
@@ -386,14 +391,17 @@ namespace gum {
       Set< PRMInterface< GUM_SCALAR >* >* __implements;
 
       /// The set of Class<GUM_SCALAR> which are extension of this
-      /// Class<GUM_SCALAR> (i.e. direct
-      /// subtypes).
+      /// Class<GUM_SCALAR> (i.e. direct subtypes).
       Set< PRMClass< GUM_SCALAR >* > __extensions;
 
       /// The bijection between variables in super and variables in this
       /// The bijection's firsts are attributes in this and its seconds are
       /// attributes in c.
       Bijection< const DiscreteVariable*, const DiscreteVariable* >* __bijection;
+
+      /// a dummy member used to fix a compilation issue in clang4
+      HashFunc< PRMClassElementContainer< GUM_SCALAR >* > __dummy_hashfunc;
+
 
       /// Proceed with the copy when this inherits c.
       void __inheritClass(const PRMClass< GUM_SCALAR >& c);
@@ -431,8 +439,8 @@ namespace gum {
 
       /// Return true of overloaded can be overload by overloader.
       bool
-        __checkOverloadLegality(const PRMClassElement< GUM_SCALAR >* overloaded,
-                                const PRMClassElement< GUM_SCALAR >* overloader);
+         __checkOverloadLegality(const PRMClassElement< GUM_SCALAR >* overloaded,
+                                 const PRMClassElement< GUM_SCALAR >* overloader);
 
       /// Overloads an attribute.
       void __overloadAttribute(PRMAttribute< GUM_SCALAR >* overloader,
@@ -454,13 +462,23 @@ namespace gum {
     };
 
 
-    extern template class PRMClass< float >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
     extern template class PRMClass< double >;
+#endif
+
 
   } /* namespace prm */
 
 }   // namespace gum
 
 #include <agrum/PRM/elements/PRMClass_tpl.h>
+
+
+namespace gum {
+
+  namespace prm {} /* namespace prm */
+
+}   // namespace gum
+
 
 #endif /* GUM_CLASS_H */

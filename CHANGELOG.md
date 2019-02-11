@@ -1,14 +1,51 @@
 # aGrUM Changelog
 
+## Changelog for 0.14.1
+
+* aGrUM
+  * chaintool for compilation with microsfot visual C++ 17 (`act --msvc17` and `act --msvc17_32`)
+* pyAgrum
+  * fixing a missing importation of the `pyAgrum.causal` module in pypi packages
+  * updating sphynx version for pyAgrum's ReadTheDoc
+  
+## Changelog for 0.14.0
+
+* aGrUM
+  * support for mingw64 + bugfix for mingw (`act --mingw64`)
+  * Access to scores from BNLearner : `BNLearner::Chi2` and `BNLearner::logLikelihood`
+  * bug fix in `KL[...]::bhattacharya`
+  * add `KL[...]::jsd` (Jensen-Shannon divergence)
+  * renaming `gum::[...]]KL` classes into `gum::[...]distance` because they provide access to KL but also to Hellinger, Bhattacharya distances and Jensen-Shanon divergence.
+* pyAgrum
+  * `gum.causality` (do-calculus and causal identification !)
+  * `JunctionTreeGenerator` (formerly `JTGenerator`) can now expose the eliminationOrder and can drive the triangulation with a partial order of the nodes.
+  * Access to scores from BNLearner : `BNLearner::Chi2` and `BNLearner::logLikelihood`
+  * bug fix in `pyAgrum.lib.notebook`
+  * bug fix in `KL[...]::bhattacharya`
+  * add `KL[...]::jsd` (Jensen-Shannon divergence)
+  * renaming `pyAgrum.[...]]KL` classes into `pyAgrum::[...]distance` because they provide acces to KL but also to Hellinger, Bhattacharya distances and Jensen-Shanon divergence. 
+  * fix some scratches in pyAgrum documentation
+
+## Changelog for 0.13.6
+
+* aGrUM
+  * Compilation issue for clang4 fixed
+  * remove all pre-compiled `float` instanciations of aGrUM's templates (and significantly reduce the size of all libraries)
+  * add the configuration files needed for interactive notebooks on mybinder.org
+* pyAgrum
+  * minor changes in notebooks
+
 ## Changelog for 0.13.5
+
 * aGrUM
   * fix errors for gcc 4.8.2
-  * fix issue https://gitlab.com/agrumery/aGrUM/issues/23
+  * fix issue <https://gitlab.com/agrumery/aGrUM/issues/23>
   * fix act error for python<3.6
   
 ## Changelog for 0.13.4
+
 * pyAgrum
-  * minor API changes 
+  * minor API changes
   * minor changes in documentation
   * BNLearner follows the new learning framework
   * parametric EM !! See notebook <http://www-desir.lip6.fr/~phw/aGrUM/docs/last/notebooks/16-ParametriceEM.ipynb>
@@ -28,6 +65,7 @@
   * New method : JointTargetedInference::jointMutualInformation for any set of variables in the BN
 
 ## Changelog for 0.13.3
+
 * pyAgrum
   * **pip** : wheels for mac/windows/linux for python 2.7,3.{4-7}
   * **anaconda** : compilation for maxOS/anaconda64/python3 should be fixed
@@ -47,11 +85,13 @@
   * multi-thread support for learning
 
 ## Changelog for 0.13.2
+
 * aGrUM/pyAgrum
   * fixed bugs in `Potential::fillWith`
   * removed unsafe and ambiguous `Potential::fastKL` and kept safe `Potential::KL`
 
 ## Changelog for 0.13.1
+
 * aGrUM
   * variable: new methods to set bounds with doubles in `ContinuousVariable`
   * Changed the code of `Instantiation`'s hash functions to make it compliant with windows mingw implementation

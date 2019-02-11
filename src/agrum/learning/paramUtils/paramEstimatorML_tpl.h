@@ -31,13 +31,14 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE ParamEstimatorML< ALLOC >::ParamEstimatorML(
-      const DBRowGeneratorParser< ALLOC >& parser,
-      const Apriori< ALLOC >&              external_apriori,
-      const Apriori< ALLOC >&              score_internal_apriori,
-      const std::vector< std::pair< std::size_t, std::size_t >,
-                         ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
-      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename ParamEstimatorML< ALLOC >::allocator_type&     alloc) :
+       const DBRowGeneratorParser< ALLOC >& parser,
+       const Apriori< ALLOC >&              external_apriori,
+       const Apriori< ALLOC >&              score_internal_apriori,
+       const std::vector< std::pair< std::size_t, std::size_t >,
+                          ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                                                                 nodeId2columns,
+       const typename ParamEstimatorML< ALLOC >::allocator_type& alloc) :
         ParamEstimator< ALLOC >(parser,
                                 external_apriori,
                                 score_internal_apriori,
@@ -51,11 +52,12 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE ParamEstimatorML< ALLOC >::ParamEstimatorML(
-      const DBRowGeneratorParser< ALLOC >& parser,
-      const Apriori< ALLOC >&              external_apriori,
-      const Apriori< ALLOC >&              score_internal_apriori,
-      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename ParamEstimatorML< ALLOC >::allocator_type&     alloc) :
+       const DBRowGeneratorParser< ALLOC >& parser,
+       const Apriori< ALLOC >&              external_apriori,
+       const Apriori< ALLOC >&              score_internal_apriori,
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                                                                 nodeId2columns,
+       const typename ParamEstimatorML< ALLOC >::allocator_type& alloc) :
         ParamEstimator< ALLOC >(parser,
                                 external_apriori,
                                 score_internal_apriori,
@@ -68,8 +70,8 @@ namespace gum {
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE ParamEstimatorML< ALLOC >::ParamEstimatorML(
-      const ParamEstimatorML< ALLOC >&                          from,
-      const typename ParamEstimatorML< ALLOC >::allocator_type& alloc) :
+       const ParamEstimatorML< ALLOC >&                          from,
+       const typename ParamEstimatorML< ALLOC >::allocator_type& alloc) :
         ParamEstimator< ALLOC >(from, alloc) {
       GUM_CONS_CPY(ParamEstimatorML);
     }
@@ -78,15 +80,15 @@ namespace gum {
     /// copy constructor
     template < template < typename > class ALLOC >
     INLINE ParamEstimatorML< ALLOC >::ParamEstimatorML(
-      const ParamEstimatorML< ALLOC >& from) :
+       const ParamEstimatorML< ALLOC >& from) :
         ParamEstimatorML< ALLOC >(from, this->getAllocator()) {}
 
 
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE ParamEstimatorML< ALLOC >::ParamEstimatorML(
-      ParamEstimatorML< ALLOC >&&                               from,
-      const typename ParamEstimatorML< ALLOC >::allocator_type& alloc) :
+       ParamEstimatorML< ALLOC >&&                               from,
+       const typename ParamEstimatorML< ALLOC >::allocator_type& alloc) :
         ParamEstimator< ALLOC >(std::move(from), alloc) {
       GUM_CONS_MOV(ParamEstimatorML);
     }
@@ -95,14 +97,14 @@ namespace gum {
     /// move constructor
     template < template < typename > class ALLOC >
     INLINE ParamEstimatorML< ALLOC >::ParamEstimatorML(
-      ParamEstimatorML< ALLOC >&& from) :
+       ParamEstimatorML< ALLOC >&& from) :
         ParamEstimatorML< ALLOC >(std::move(from), this->getAllocator()) {}
 
 
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
     ParamEstimatorML< ALLOC >* ParamEstimatorML< ALLOC >::clone(
-      const typename ParamEstimatorML< ALLOC >::allocator_type& alloc) const {
+       const typename ParamEstimatorML< ALLOC >::allocator_type& alloc) const {
       ALLOC< ParamEstimatorML< ALLOC > > allocator(alloc);
       ParamEstimatorML< ALLOC >*         new_score = allocator.allocate(1);
       try {
@@ -151,8 +153,8 @@ namespace gum {
     /// returns the CPT's parameters corresponding to a given set of nodes
     template < template < typename > class ALLOC >
     std::vector< double, ALLOC< double > > ParamEstimatorML< ALLOC >::parameters(
-      const NodeId                                  target_node,
-      const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes) {
+       const NodeId                                  target_node,
+       const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes) {
       // create an idset that contains all the nodes in the following order:
       // first, the target node, then all the conditioning nodes
       IdSet< ALLOC > idset(target_node, conditioning_nodes, true);
@@ -160,11 +162,11 @@ namespace gum {
       // get the counts for all the nodes in the idset and add the external and
       // score internal aprioris
       std::vector< double, ALLOC< double > > N_ijk(
-        this->_counter.counts(idset, true));
+         this->_counter.counts(idset, true));
       const bool informative_external_apriori =
-        this->_external_apriori->isInformative();
+         this->_external_apriori->isInformative();
       const bool informative_score_internal_apriori =
-        this->_score_internal_apriori->isInformative();
+         this->_score_internal_apriori->isInformative();
       if (informative_external_apriori)
         this->_external_apriori->addAllApriori(idset, N_ijk);
       if (informative_score_internal_apriori)
@@ -179,7 +181,7 @@ namespace gum {
         // get the counts for all the conditioning nodes, and add them the
         // external and score internal aprioris
         std::vector< double, ALLOC< double > > N_ij(
-          this->_counter.counts(idset.conditionalIdSet(), false));
+           this->_counter.counts(idset.conditionalIdSet(), false));
         if (informative_external_apriori)
           this->_external_apriori->addConditioningApriori(idset, N_ij);
         if (informative_score_internal_apriori)
@@ -204,7 +206,7 @@ namespace gum {
             } else {
               for (std::size_t i = std::size_t(0); i < cond_nb; ++i) {
                 cond_domsize[i] =
-                  database.domainSize(node2cols.second(conditioning_nodes[i]));
+                   database.domainSize(node2cols.second(conditioning_nodes[i]));
               }
             }
 
@@ -234,14 +236,14 @@ namespace gum {
               else
                 deja = true;
               std::size_t col = node2cols.empty()
-                                  ? conditioning_nodes[i]
-                                  : node2cols.second(conditioning_nodes[i]);
+                                   ? conditioning_nodes[i]
+                                   : node2cols.second(conditioning_nodes[i]);
               const DiscreteVariable& var =
-                dynamic_cast< const DiscreteVariable& >(database.variable(col));
+                 dynamic_cast< const DiscreteVariable& >(database.variable(col));
               str << var.name() << "=" << var.labels()[values[i]];
             }
             auto target_col =
-              node2cols.empty() ? target_node : node2cols.second(target_node);
+               node2cols.empty() ? target_node : node2cols.second(target_node);
             const Variable& var = database.variable(target_col);
             str << "> for target node " << var.name()
                 << " never appears in the database. Please consider using "

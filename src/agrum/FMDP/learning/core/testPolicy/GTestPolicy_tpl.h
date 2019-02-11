@@ -64,7 +64,7 @@ namespace gum {
          ++attrIter) {
       // Mise en cache de valeur utile
       double semiExpected =
-        (double)(attrIter.val()) / (double)this->nbObservation();
+         (double)(attrIter.val()) / (double)this->nbObservation();
 
       // Itération sur l'axe 2 du tableau
       for (auto valIter = __conTab.attrBBeginSafe();
@@ -90,9 +90,9 @@ namespace gum {
     if (this->_isModified()) computeScore();
     //      std::cout << this->toString() << std::endl;
     double score =
-      1
-      - ChiSquare::probaChi2(
-          __GStat, (__conTab.attrASize() - 1) * (__conTab.attrBSize() - 1));
+       1
+       - ChiSquare::probaChi2(
+            __GStat, (__conTab.attrASize() - 1) * (__conTab.attrBSize() - 1));
     return score;
   }
 

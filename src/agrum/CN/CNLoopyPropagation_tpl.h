@@ -36,7 +36,7 @@ namespace gum {
         GUM_ERROR(NotFound,
                   "CNLoopyPropagation<GUM_SCALAR>::saveInference(std::"
                   "string & path) : could not open file : "
-                    + path_name);
+                     + path_name);
       }
 
       std::string ext = path.substr(path.size() - 3, path.size());
@@ -49,7 +49,7 @@ namespace gum {
           GUM_ERROR(NotFound,
                     "CNLoopyPropagation<GUM_SCALAR>::saveInference(std::"
                     "string & path) : could not open file : "
-                      + ext);
+                       + ext);
         }
 
         while (evi.good()) {
@@ -178,17 +178,14 @@ namespace gum {
      * une fois les cpts marginalises sur X et Ui, on calcul le min/max,
      */
     template < typename GUM_SCALAR >
-    void
-      CNLoopyPropagation< GUM_SCALAR >::_compute_ext(GUM_SCALAR& msg_l_min,
-                                                     GUM_SCALAR& msg_l_max,
-                                                     std::vector< GUM_SCALAR >& lx,
-                                                     GUM_SCALAR& num_min,
-                                                     GUM_SCALAR& num_max,
-                                                     GUM_SCALAR& den_min,
-                                                     GUM_SCALAR& den_max) {
-      GUM_SCALAR old_msg_min = msg_l_min;
-      GUM_SCALAR old_msg_max = msg_l_max;
-
+    void CNLoopyPropagation< GUM_SCALAR >::_compute_ext(
+       GUM_SCALAR&                msg_l_min,
+       GUM_SCALAR&                msg_l_max,
+       std::vector< GUM_SCALAR >& lx,
+       GUM_SCALAR&                num_min,
+       GUM_SCALAR&                num_max,
+       GUM_SCALAR&                den_min,
+       GUM_SCALAR&                den_max) {
       GUM_SCALAR num_min_tmp = 1.;
       GUM_SCALAR den_min_tmp = 1.;
       GUM_SCALAR num_max_tmp = 1.;
@@ -272,12 +269,12 @@ namespace gum {
      */
     template < typename GUM_SCALAR >
     void CNLoopyPropagation< GUM_SCALAR >::_compute_ext(
-      std::vector< std::vector< GUM_SCALAR > >& combi_msg_p,
-      const NodeId&                             id,
-      GUM_SCALAR&                               msg_l_min,
-      GUM_SCALAR&                               msg_l_max,
-      std::vector< GUM_SCALAR >&                lx,
-      const Idx&                                pos) {
+       std::vector< std::vector< GUM_SCALAR > >& combi_msg_p,
+       const NodeId&                             id,
+       GUM_SCALAR&                               msg_l_min,
+       GUM_SCALAR&                               msg_l_max,
+       std::vector< GUM_SCALAR >&                lx,
+       const Idx&                                pos) {
       GUM_SCALAR num_min = 0.;
       GUM_SCALAR num_max = 0.;
       GUM_SCALAR den_min = 0.;
@@ -292,7 +289,6 @@ namespace gum {
       }
 
       Size pp = pos;
-      Size pas = Size(intPow(2UL, (unsigned long)pp));
 
       Size combi_den = 0;
       Size combi_num = pp;
@@ -339,10 +335,10 @@ namespace gum {
      */
     template < typename GUM_SCALAR >
     void CNLoopyPropagation< GUM_SCALAR >::_compute_ext(
-      std::vector< std::vector< GUM_SCALAR > >& combi_msg_p,
-      const NodeId&                             id,
-      GUM_SCALAR&                               msg_p_min,
-      GUM_SCALAR&                               msg_p_max) {
+       std::vector< std::vector< GUM_SCALAR > >& combi_msg_p,
+       const NodeId&                             id,
+       GUM_SCALAR&                               msg_p_min,
+       GUM_SCALAR&                               msg_p_max) {
       GUM_SCALAR min = 0.;
       GUM_SCALAR max = 0.;
 
@@ -390,10 +386,10 @@ namespace gum {
      */
     template < typename GUM_SCALAR >
     void CNLoopyPropagation< GUM_SCALAR >::_enum_combi(
-      std::vector< std::vector< std::vector< GUM_SCALAR > > >& msgs_p,
-      const NodeId&                                            id,
-      GUM_SCALAR&                                              msg_p_min,
-      GUM_SCALAR&                                              msg_p_max) {
+       std::vector< std::vector< std::vector< GUM_SCALAR > > >& msgs_p,
+       const NodeId&                                            id,
+       GUM_SCALAR&                                              msg_p_min,
+       GUM_SCALAR&                                              msg_p_max) {
       auto taille = msgs_p.size();
 
       // source node
@@ -423,7 +419,7 @@ namespace gum {
         msgPerm *= confs;
 #pragma omp barrier
 #pragma omp \
-  flush   // ( msgPerm ) let the compiler choose what to flush (due to mvsc)
+   flush   // ( msgPerm ) let the compiler choose what to flush (due to mvsc)
 
 #pragma omp for
 
@@ -466,12 +462,12 @@ namespace gum {
      */
     template < typename GUM_SCALAR >
     void CNLoopyPropagation< GUM_SCALAR >::_enum_combi(
-      std::vector< std::vector< std::vector< GUM_SCALAR > > >& msgs_p,
-      const NodeId&                                            id,
-      GUM_SCALAR&                                              real_msg_l_min,
-      GUM_SCALAR&                                              real_msg_l_max,
-      std::vector< GUM_SCALAR >&                               lx,
-      const Idx&                                               pos) {
+       std::vector< std::vector< std::vector< GUM_SCALAR > > >& msgs_p,
+       const NodeId&                                            id,
+       GUM_SCALAR&                                              real_msg_l_min,
+       GUM_SCALAR&                                              real_msg_l_max,
+       std::vector< GUM_SCALAR >&                               lx,
+       const Idx&                                               pos) {
       GUM_SCALAR msg_l_min = real_msg_l_min;
       GUM_SCALAR msg_l_max = real_msg_l_max;
 
@@ -804,9 +800,9 @@ namespace gum {
 
         for (const auto it : seq) {
           if (__cn->currentNodeType(it->tail())
-                == CredalNet< GUM_SCALAR >::NodeType::Indic
+                 == CredalNet< GUM_SCALAR >::NodeType::Indic
               || __cn->currentNodeType(it->head())
-                   == CredalNet< GUM_SCALAR >::NodeType::Indic) {
+                    == CredalNet< GUM_SCALAR >::NodeType::Indic) {
             continue;
           }
 
@@ -842,9 +838,9 @@ namespace gum {
       do {
         for (const auto it : seq) {
           if (__cn->currentNodeType(it->tail())
-                == CredalNet< GUM_SCALAR >::NodeType::Indic
+                 == CredalNet< GUM_SCALAR >::NodeType::Indic
               || __cn->currentNodeType(it->head())
-                   == CredalNet< GUM_SCALAR >::NodeType::Indic) {
+                    == CredalNet< GUM_SCALAR >::NodeType::Indic) {
             continue;
           }
 
@@ -1259,7 +1255,7 @@ namespace gum {
       for (auto node : __bnet->nodes()) {
         if ((!refreshIndic)
             && __cn->currentNodeType(node)
-                 == CredalNet< GUM_SCALAR >::NodeType::Indic) {
+                  == CredalNet< GUM_SCALAR >::NodeType::Indic) {
           continue;
         }
 
@@ -1288,9 +1284,9 @@ namespace gum {
 
             if (lmax != lmax && lmin != lmin) {
               std::cout
-                << "pas de vraisemblance definie [lmin, lmax] (observations "
-                   "incompatibles ?)"
-                << std::endl;
+                 << "pas de vraisemblance definie [lmin, lmax] (observations "
+                    "incompatibles ?)"
+                 << std::endl;
               return;
             }
 
@@ -1487,7 +1483,7 @@ namespace gum {
       if (__infE::_modal.empty()) { return; }
 
       std::vector< std::vector< GUM_SCALAR > > vertices(
-        2, std::vector< GUM_SCALAR >(2));
+         2, std::vector< GUM_SCALAR >(2));
 
       for (auto node : __bnet->nodes()) {
         vertices[0][0] = __infE::_marginalMin[node][0];
@@ -1502,15 +1498,15 @@ namespace gum {
           // remove with L2U since variables are binary
           // but does the user know that ?
           __infE::_updateCredalSets(
-            node,
-            vertices[vertex]);   // no redundancy elimination with 2 vertices
+             node,
+             vertices[vertex]);   // no redundancy elimination with 2 vertices
         }
       }
     }
 
     template < typename GUM_SCALAR >
     CNLoopyPropagation< GUM_SCALAR >::CNLoopyPropagation(
-      const CredalNet< GUM_SCALAR >& cnet) :
+       const CredalNet< GUM_SCALAR >& cnet) :
         InferenceEngine< GUM_SCALAR >::InferenceEngine(cnet) {
       if (!cnet.isSeparatelySpecified()) {
         GUM_ERROR(OperationNotAllowed,
@@ -1567,7 +1563,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     typename CNLoopyPropagation< GUM_SCALAR >::InferenceType
-      CNLoopyPropagation< GUM_SCALAR >::inferenceType() {
+       CNLoopyPropagation< GUM_SCALAR >::inferenceType() {
       return __inferenceType;
     }
   }   // namespace credal

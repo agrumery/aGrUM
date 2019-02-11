@@ -211,7 +211,7 @@ namespace gum {
        *         in this->type() and the second are in this.
        */
       const Bijection< const DiscreteVariable*, const DiscreteVariable* >&
-        bijection() const;
+         bijection() const;
 
       /// @}
       // ========================================================================
@@ -292,13 +292,13 @@ namespace gum {
        * @brief Returns a vector of pairs of refering attributes of id.
        */
       std::vector< std::pair< PRMInstance< GUM_SCALAR >*, std::string > >&
-        getRefAttr(NodeId id);
+         getRefAttr(NodeId id);
 
       /**
        * @brief Returns a vector of pairs of refering attributes of id.
        */
       const std::vector< std::pair< PRMInstance< GUM_SCALAR >*, std::string > >&
-        getRefAttr(NodeId id) const;
+         getRefAttr(NodeId id) const;
 
       /// @}
       // ========================================================================
@@ -309,7 +309,7 @@ namespace gum {
       /// Alias to iterate over the gum::prm::PRMAttribute<GUM_SCALAR> in this
       /// PRMInstance<GUM_SCALAR>.
       typedef
-        typename NodeProperty< PRMAttribute< GUM_SCALAR >* >::iterator iterator;
+         typename NodeProperty< PRMAttribute< GUM_SCALAR >* >::iterator iterator;
 
       /// Returns an iterator at the begining of the list of
       /// gum::prm::PRMAttribute<GUM_SCALAR> in
@@ -323,7 +323,7 @@ namespace gum {
       /// Alias to iterate over the gum::prm::PRMAttribute<GUM_SCALAR> in this
       /// PRMInstance<GUM_SCALAR>.
       typedef typename NodeProperty< PRMAttribute< GUM_SCALAR >* >::const_iterator
-        const_iterator;
+         const_iterator;
 
       /// Returns an iterator at the beginning of the list of
       /// gum::prm::PRMAttribute<GUM_SCALAR> in
@@ -437,11 +437,11 @@ namespace gum {
       RefConstIterator begin(NodeId id) const;
 
       typedef typename NodeProperty< std::vector<
-        std::pair< PRMInstance< GUM_SCALAR >*, std::string > >* >::iterator
-        InvRefIterator;
+         std::pair< PRMInstance< GUM_SCALAR >*, std::string > >* >::iterator
+         InvRefIterator;
       typedef typename NodeProperty< std::vector<
-        std::pair< PRMInstance< GUM_SCALAR >*, std::string > >* >::const_iterator
-        InvRefConstIterator;
+         std::pair< PRMInstance< GUM_SCALAR >*, std::string > >* >::const_iterator
+         InvRefConstIterator;
 
       InvRefIterator        beginInvRef();
       const InvRefIterator& endInvRef();
@@ -452,7 +452,7 @@ namespace gum {
       /// @}
       private:
       /// Copy constructor.
-      PRMInstance< GUM_SCALAR >(const PRMInstance< GUM_SCALAR >& source);
+      PRMInstance(const PRMInstance< GUM_SCALAR >& source);
 
       /// Copy operator. Don't use it.
       PRMInstance< GUM_SCALAR >& operator=(const PRMClass< GUM_SCALAR >& from);
@@ -529,8 +529,9 @@ namespace gum {
     };
 
 
-    extern template class PRMInstance< float >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
     extern template class PRMInstance< double >;
+#endif
 
 
   } /* namespace prm */

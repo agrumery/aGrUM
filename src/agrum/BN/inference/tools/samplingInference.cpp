@@ -20,5 +20,7 @@
 
 #include <agrum/BN/inference/tools/samplingInference.h>
 
-template class gum::SamplingInference< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::SamplingInference< double >;
+#endif

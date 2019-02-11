@@ -55,7 +55,7 @@ namespace gum_tests {
     public:
     void test_k2_asia() {
       gum::learning::DBInitializerFromCSV<> initializer(
-        GET_RESSOURCES_PATH("asia.csv"));
+         GET_RESSOURCES_PATH("asia.csv"));
       const auto&       var_names = initializer.variableNames();
       const std::size_t nb_vars = var_names.size();
 
@@ -77,7 +77,7 @@ namespace gum_tests {
       gum::learning::StructuralConstraintDAG struct_constraint;
 
       gum::learning::ParamEstimatorML<> estimator(
-        parser, apriori, score.internalApriori());
+         parser, apriori, score.internalApriori());
 
       std::vector< gum::NodeId > order(database.nbVariables());
       for (gum::NodeId i = 0; i < order.size(); ++i) {
@@ -85,18 +85,18 @@ namespace gum_tests {
       }
 
       gum::learning::GraphChangesGenerator4K2< decltype(struct_constraint) >
-        op_set(struct_constraint);
+         op_set(struct_constraint);
 
       gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint),
                                                    decltype(op_set) >
-        selector(score, struct_constraint, op_set);
+         selector(score, struct_constraint, op_set);
 
       gum::learning::K2 k2;
       k2.setOrder(order);
       k2.approximationScheme().setEpsilon(1000);
 
       try {
-        gum::BayesNet< float > bn = k2.learnBN< float >(selector, estimator);
+        gum::BayesNet< double > bn = k2.learnBN< double >(selector, estimator);
 
         gum::BayesNet< double > bn2 = k2.learnBN< double >(selector, estimator);
         TS_ASSERT(bn.dag().arcs().size() == 8);

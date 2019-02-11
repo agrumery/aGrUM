@@ -55,8 +55,8 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE
-      ClassBayesNet< GUM_SCALAR >::ClassBayesNet(const PRMClass< GUM_SCALAR >& c) :
+    INLINE ClassBayesNet< GUM_SCALAR >::ClassBayesNet(
+       const PRMClass< GUM_SCALAR >& c) :
         IBayesNet< GUM_SCALAR >(),
         __class(&c) {
       GUM_CONSTRUCTOR(ClassBayesNet);
@@ -65,7 +65,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE ClassBayesNet< GUM_SCALAR >::ClassBayesNet(
-      const ClassBayesNet< GUM_SCALAR >& from) :
+       const ClassBayesNet< GUM_SCALAR >& from) :
         IBayesNet< GUM_SCALAR >(from),
         __class(from.__class) {
       GUM_CONS_CPY(ClassBayesNet);
@@ -120,7 +120,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const DiscreteVariable& ClassBayesNet< GUM_SCALAR >::variableFromName(
-      const std::string& name) const {
+       const std::string& name) const {
       return __get(name).type().variable();
     }
 

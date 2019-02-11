@@ -98,8 +98,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   std::string
-    DSLWriter< GUM_SCALAR >::__variableBloc(const IBayesNet< GUM_SCALAR >& bn,
-                                            const DiscreteVariable&        var) {
+     DSLWriter< GUM_SCALAR >::__variableBloc(const IBayesNet< GUM_SCALAR >& bn,
+                                             const DiscreteVariable&        var) {
     NodeId             id;
     std::ostringstream oss;
 
@@ -116,7 +116,7 @@ namespace gum {
 
     oss << "\t\tPARENTS = (";
     const Sequence< const DiscreteVariable* >& tmp_vars =
-      bn.cpt(id).variablesSequence();
+       bn.cpt(id).variablesSequence();
 
     for (Idx i = tmp_vars.size() - 1; i > 0; i--) {
       if (i < tmp_vars.size() - 1) oss << ", ";

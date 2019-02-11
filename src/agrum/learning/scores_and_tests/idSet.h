@@ -440,7 +440,7 @@ namespace gum {
 
     /// computes the hashed value of a key
     virtual Size
-      operator()(const learning::IdSet< ALLOC >& key) const override final;
+       operator()(const learning::IdSet< ALLOC >& key) const override final;
   };
 
 

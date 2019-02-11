@@ -31,7 +31,7 @@ namespace gum {
     /// returns the allocator used by the translator set
     template < template < typename > class ALLOC >
     typename DBTranslatorSet< ALLOC >::allocator_type
-      DBTranslatorSet< ALLOC >::getAllocator() const {
+       DBTranslatorSet< ALLOC >::getAllocator() const {
       return __columns.get_allocator();
     }
 
@@ -54,8 +54,8 @@ namespace gum {
     /// copy the content of another translator set that uses another allocator
     template < template < typename > class ALLOC >
     void DBTranslatorSet< ALLOC >::__copy(
-      const DBTranslatorSet< ALLOC >&                          from,
-      const typename DBTranslatorSet< ALLOC >::allocator_type& alloc) {
+       const DBTranslatorSet< ALLOC >&                          from,
+       const typename DBTranslatorSet< ALLOC >::allocator_type& alloc) {
       if (__translators.size() != 0) clear();
 
       // resize the vectors used in the set. First, we reserve new memory. This
@@ -86,7 +86,7 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE DBTranslatorSet< ALLOC >::DBTranslatorSet(
-      const typename DBTranslatorSet< ALLOC >::allocator_type& alloc) :
+       const typename DBTranslatorSet< ALLOC >::allocator_type& alloc) :
         __translators(alloc),
         __columns(allocator_type(alloc)) {
       GUM_CONSTRUCTOR(DBTranslatorSet);
@@ -96,8 +96,8 @@ namespace gum {
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE DBTranslatorSet< ALLOC >::DBTranslatorSet(
-      const DBTranslatorSet< ALLOC >&                          from,
-      const typename DBTranslatorSet< ALLOC >::allocator_type& alloc) :
+       const DBTranslatorSet< ALLOC >&                          from,
+       const typename DBTranslatorSet< ALLOC >::allocator_type& alloc) :
         __translators(alloc),
         __columns(alloc) {
       __copy(from, alloc);
@@ -109,15 +109,15 @@ namespace gum {
     /// copy constructor
     template < template < typename > class ALLOC >
     INLINE DBTranslatorSet< ALLOC >::DBTranslatorSet(
-      const DBTranslatorSet< ALLOC >& from) :
+       const DBTranslatorSet< ALLOC >& from) :
         DBTranslatorSet< ALLOC >(from, from.getAllocator()) {}
 
 
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE DBTranslatorSet< ALLOC >::DBTranslatorSet(
-      DBTranslatorSet< ALLOC >&&                               from,
-      const typename DBTranslatorSet< ALLOC >::allocator_type& alloc) :
+       DBTranslatorSet< ALLOC >&&                               from,
+       const typename DBTranslatorSet< ALLOC >::allocator_type& alloc) :
         __translators(std::move(from.__translators), alloc),
         __columns(std::move(from.__columns), alloc),
         __highest_column(from.__highest_column) {
@@ -128,14 +128,14 @@ namespace gum {
     /// move constructor
     template < template < typename > class ALLOC >
     INLINE
-      DBTranslatorSet< ALLOC >::DBTranslatorSet(DBTranslatorSet< ALLOC >&& from) :
+       DBTranslatorSet< ALLOC >::DBTranslatorSet(DBTranslatorSet< ALLOC >&& from) :
         DBTranslatorSet< ALLOC >(from, from.getAllocator()) {}
 
 
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
     DBTranslatorSet< ALLOC >* DBTranslatorSet< ALLOC >::clone(
-      const typename DBTranslatorSet< ALLOC >::allocator_type& alloc) const {
+       const typename DBTranslatorSet< ALLOC >::allocator_type& alloc) const {
       ALLOC< DBTranslatorSet< ALLOC > > allocator(alloc);
       DBTranslatorSet< ALLOC >*         set = allocator.allocate(1);
       try {
@@ -211,9 +211,9 @@ namespace gum {
     template < template < typename > class ALLOC >
     template < template < template < typename > class > class Translator >
     std::size_t DBTranslatorSet< ALLOC >::insertTranslator(
-      const Translator< ALLOC >& translator,
-      const std::size_t          column,
-      const bool                 unique_column) {
+       const Translator< ALLOC >& translator,
+       const std::size_t          column,
+       const bool                 unique_column) {
       // if the unique_column parameter is set to true and there exists already
       // another translator that parses the column, raise a DuplicateElement
       // exception
@@ -223,7 +223,7 @@ namespace gum {
           if (__columns[i] == column)
             GUM_ERROR(DuplicateElement,
                       "There already exists a DBTranslator that parses Column"
-                        << column);
+                         << column);
         }
       }
 
@@ -251,15 +251,15 @@ namespace gum {
     template < template < typename > class ALLOC >
     template < template < typename > class XALLOC >
     std::size_t DBTranslatorSet< ALLOC >::insertTranslator(
-      const Variable&                                          var,
-      const std::size_t                                        column,
-      const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
-      const bool                                               unique_column) {
+       const Variable&                                          var,
+       const std::size_t                                        column,
+       const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
+       const bool                                               unique_column) {
       // create the translatator, depending on the type of the variable
       switch (var.varType()) {
         case VarType::Labelized: {
           const LabelizedVariable& xvar =
-            static_cast< const LabelizedVariable& >(var);
+             static_cast< const LabelizedVariable& >(var);
           DBTranslator4LabelizedVariable< ALLOC > translator(xvar,
                                                              missing_symbols);
           return insertTranslator(translator, column, unique_column);
@@ -267,7 +267,7 @@ namespace gum {
 
         case VarType::Discretized: {
           const IDiscretizedVariable& xvar =
-            static_cast< const IDiscretizedVariable& >(var);
+             static_cast< const IDiscretizedVariable& >(var);
           DBTranslator4DiscretizedVariable< ALLOC > translator(xvar,
                                                                missing_symbols);
           return insertTranslator(translator, column, unique_column);
@@ -281,7 +281,7 @@ namespace gum {
 
         case VarType::Continuous: {
           const IContinuousVariable& xvar =
-            static_cast< const IContinuousVariable& >(var);
+             static_cast< const IContinuousVariable& >(var);
           DBTranslator4ContinuousVariable< ALLOC > translator(xvar,
                                                               missing_symbols);
           return insertTranslator(translator, column, unique_column);
@@ -290,9 +290,9 @@ namespace gum {
         default:
           GUM_ERROR(NotImplementedYet,
                     "The insertion of the translator for Variable "
-                      << var.name()
-                      << " is impossible because a translator "
-                         "for such variable is not implemented yet");
+                       << var.name()
+                       << " is impossible because a translator "
+                          "for such variable is not implemented yet");
       }
     }
 
@@ -300,7 +300,7 @@ namespace gum {
     /// inserts a new translator for a given variable in the translator set
     template < template < typename > class ALLOC >
     INLINE std::size_t DBTranslatorSet< ALLOC >::insertTranslator(
-      const Variable& var, const std::size_t column, const bool unique_column) {
+       const Variable& var, const std::size_t column, const bool unique_column) {
       const std::vector< std::string, ALLOC< std::string > > missing;
       return this->insertTranslator(var, column, missing, unique_column);
     }
@@ -363,8 +363,8 @@ namespace gum {
     template < template < typename > class ALLOC >
     template < template < typename > class OTHER_ALLOC >
     INLINE DBTranslatedValue DBTranslatorSet< ALLOC >::translate(
-      const std::vector< std::string, OTHER_ALLOC< std::string > >& row,
-      const std::size_t                                             k) const {
+       const std::vector< std::string, OTHER_ALLOC< std::string > >& row,
+       const std::size_t                                             k) const {
       return __translators[k]->translate(row[__columns[k]]);
     }
 
@@ -373,8 +373,8 @@ namespace gum {
     template < template < typename > class ALLOC >
     template < template < typename > class OTHER_ALLOC >
     INLINE DBTranslatedValue DBTranslatorSet< ALLOC >::translateSafe(
-      const std::vector< std::string, OTHER_ALLOC< std::string > >& row,
-      const std::size_t                                             k) const {
+       const std::vector< std::string, OTHER_ALLOC< std::string > >& row,
+       const std::size_t                                             k) const {
       if (__translators.size() <= k)
         GUM_ERROR(UndefinedElement, "Translator #" << k << " could not be found");
       return __translators[k]->translate(row[__columns[k]]);
@@ -384,7 +384,7 @@ namespace gum {
     /// returns the original string that was translated into translated_val
     template < template < typename > class ALLOC >
     INLINE std::string DBTranslatorSet< ALLOC >::translateBack(
-      const DBTranslatedValue translated_val, const std::size_t k) const {
+       const DBTranslatedValue translated_val, const std::size_t k) const {
       return __translators[k]->translateBack(translated_val);
     }
 
@@ -392,7 +392,7 @@ namespace gum {
     /// returns the original string that was translated into translated_val
     template < template < typename > class ALLOC >
     INLINE std::string DBTranslatorSet< ALLOC >::translateBackSafe(
-      const DBTranslatedValue translated_val, const std::size_t k) const {
+       const DBTranslatedValue translated_val, const std::size_t k) const {
       if (__translators.size() <= k)
         GUM_ERROR(UndefinedElement, "Translator #" << k << "could not be found");
       return __translators[k]->translateBack(translated_val);
@@ -403,7 +403,7 @@ namespace gum {
     // as a missing value
     template < template < typename > class ALLOC >
     INLINE bool DBTranslatorSet< ALLOC >::isMissingValue(
-      const DBTranslatedValue translated_val, const std::size_t k) const {
+       const DBTranslatedValue translated_val, const std::size_t k) const {
       return __translators[k]->isMissingValue(translated_val);
     }
 
@@ -412,7 +412,7 @@ namespace gum {
     // as a missing value
     template < template < typename > class ALLOC >
     INLINE bool DBTranslatorSet< ALLOC >::isMissingValueSafe(
-      const DBTranslatedValue translated_val, const std::size_t k) const {
+       const DBTranslatedValue translated_val, const std::size_t k) const {
       if (__translators.size() <= k)
         GUM_ERROR(UndefinedElement, "Translator #" << k << "could not be found");
       return __translators[k]->isMissingValue(translated_val);
@@ -495,7 +495,7 @@ namespace gum {
     // sorted by lexicographical order
     template < template < typename > class ALLOC >
     INLINE bool
-      DBTranslatorSet< ALLOC >::needsReordering(const std::size_t k) const {
+       DBTranslatorSet< ALLOC >::needsReordering(const std::size_t k) const {
       return __translators[k]->needsReordering();
     }
 
@@ -504,7 +504,7 @@ namespace gum {
     // sorted by lexicographical order
     template < template < typename > class ALLOC >
     INLINE bool
-      DBTranslatorSet< ALLOC >::needsReorderingSafe(const std::size_t k) const {
+       DBTranslatorSet< ALLOC >::needsReorderingSafe(const std::size_t k) const {
       if (__translators.size() <= k)
         GUM_ERROR(UndefinedElement, "Variable #" << k << "could not be found");
       return __translators[k]->needsReordering();
@@ -578,8 +578,8 @@ namespace gum {
     /// returns the set of translators
     template < template < typename > class ALLOC >
     INLINE const
-      std::vector< DBTranslator< ALLOC >*, ALLOC< DBTranslator< ALLOC >* > >&
-      DBTranslatorSet< ALLOC >::translators() const {
+       std::vector< DBTranslator< ALLOC >*, ALLOC< DBTranslator< ALLOC >* > >&
+       DBTranslatorSet< ALLOC >::translators() const {
       return __translators;
     }
 

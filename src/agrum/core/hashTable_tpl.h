@@ -40,7 +40,7 @@ namespace gum {
   template < typename Key, typename Val, typename Alloc >
   template < typename OtherAlloc >
   void HashTableList< Key, Val, Alloc >::__copy(
-    const HashTableList< Key, Val, OtherAlloc >& from) {
+     const HashTableList< Key, Val, OtherAlloc >& from) {
     Bucket *ptr, *old_ptr{nullptr}, *new_elt{nullptr};
     // set the defaults
     __deb_list = nullptr;
@@ -104,7 +104,7 @@ namespace gum {
 
   template < typename Key, typename Val, typename Alloc >
   INLINE void
-    HashTableList< Key, Val, Alloc >::erase(HashTableBucket< Key, Val >* ptr) {
+     HashTableList< Key, Val, Alloc >::erase(HashTableBucket< Key, Val >* ptr) {
     // check that the pointer is not nullptr
     if (ptr == nullptr) {
       GUM_ERROR(NullElement, "trying to erase a nullptr bucket");
@@ -130,20 +130,20 @@ namespace gum {
 
   template < typename Key, typename Val, typename Alloc >
   INLINE HashTableList< Key, Val, Alloc >::HashTableList(
-    typename HashTableList< Key, Val, Alloc >::BucketAllocator*
-      allocator) noexcept :
+     typename HashTableList< Key, Val, Alloc >::BucketAllocator*
+        allocator) noexcept :
       __alloc_bucket{allocator} {}
 
   template < typename Key, typename Val, typename Alloc >
   INLINE HashTableList< Key, Val, Alloc >::HashTableList(
-    const HashTableList< Key, Val, Alloc >& from) :
+     const HashTableList< Key, Val, Alloc >& from) :
       __alloc_bucket{from.__alloc_bucket} {
     __copy(from);
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE HashTableList< Key, Val, Alloc >::HashTableList(
-    HashTableList< Key, Val, Alloc >&& from) noexcept :
+     HashTableList< Key, Val, Alloc >&& from) noexcept :
       __deb_list{from.__deb_list},
       __end_list{from.__end_list}, __nb_elements{from.__nb_elements},
       __alloc_bucket{from.__alloc_bucket} {
@@ -214,13 +214,13 @@ namespace gum {
 
   template < typename Key, typename Val, typename Alloc >
   INLINE void HashTableList< Key, Val, Alloc >::setAllocator(
-    typename HashTableList< Key, Val, Alloc >::BucketAllocator& alloc) {
+     typename HashTableList< Key, Val, Alloc >::BucketAllocator& alloc) {
     __alloc_bucket = &alloc;
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE typename HashTableList< Key, Val, Alloc >::value_type&
-    HashTableList< Key, Val, Alloc >::at(Size i) {
+     HashTableList< Key, Val, Alloc >::at(Size i) {
     if (i >= __nb_elements) {
       GUM_ERROR(NotFound, "not enough elements in the chained list");
     }
@@ -234,7 +234,7 @@ namespace gum {
 
   template < typename Key, typename Val, typename Alloc >
   INLINE const typename HashTableList< Key, Val, Alloc >::value_type&
-    HashTableList< Key, Val, Alloc >::at(Size i) const {
+     HashTableList< Key, Val, Alloc >::at(Size i) const {
     if (i >= __nb_elements) {
       GUM_ERROR(NotFound, "not enough elements in the chained list");
     }
@@ -248,24 +248,24 @@ namespace gum {
 
   template < typename Key, typename Val, typename Alloc >
   INLINE const typename HashTableList< Key, Val, Alloc >::mapped_type&
-    HashTableList< Key, Val, Alloc >::operator[](const Key& key) const {
+     HashTableList< Key, Val, Alloc >::operator[](const Key& key) const {
     for (Bucket* ptr = __deb_list; ptr != nullptr; ptr = ptr->next)
       if (ptr->key() == key) return ptr->val();
 
     GUM_ERROR(NotFound,
               "hashtable's chained list contains no element with this key <"
-                << key << ">");
+                 << key << ">");
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE typename HashTableList< Key, Val, Alloc >::mapped_type&
-    HashTableList< Key, Val, Alloc >::operator[](const Key& key) {
+     HashTableList< Key, Val, Alloc >::operator[](const Key& key) {
     for (Bucket* ptr = __deb_list; ptr != nullptr; ptr = ptr->next)
       if (ptr->key() == key) return ptr->val();
 
     GUM_ERROR(NotFound,
               "hashtable's chained list contains no element with this key <"
-                << key << ">");
+                 << key << ">");
   }
 
   template < typename Key, typename Val, typename Alloc >
@@ -284,7 +284,7 @@ namespace gum {
 
   template < typename Key, typename Val, typename Alloc >
   INLINE void HashTableList< Key, Val, Alloc >::insert(
-    HashTableBucket< Key, Val >* new_elt) noexcept {
+     HashTableBucket< Key, Val >* new_elt) noexcept {
     // place the bucket at the beginning of the list
     new_elt->prev = nullptr;
     new_elt->next = __deb_list;
@@ -306,7 +306,7 @@ namespace gum {
   template < typename Key, typename Val, typename Alloc >
   template < typename OtherAlloc >
   void HashTable< Key, Val, Alloc >::__copy(
-    const HashTable< Key, Val, OtherAlloc >& table) {
+     const HashTable< Key, Val, OtherAlloc >& table) {
     // in debug mode, check that this and table have '__nodes' arrays of the
     // same size
     GUM_ASSERT(table.__size == __size);
@@ -333,30 +333,30 @@ namespace gum {
 
   template < typename Key, typename Val, typename Alloc >
   INLINE const typename HashTable< Key, Val, Alloc >::iterator&
-    HashTable< Key, Val, Alloc >::end4Statics() {
+     HashTable< Key, Val, Alloc >::end4Statics() {
     return *(reinterpret_cast< const iterator* >(
-      HashTableIteratorStaticEnd::end4Statics()));
+       HashTableIteratorStaticEnd::end4Statics()));
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE const typename HashTable< Key, Val, Alloc >::const_iterator&
-    HashTable< Key, Val, Alloc >::constEnd4Statics() {
+     HashTable< Key, Val, Alloc >::constEnd4Statics() {
     return *(reinterpret_cast< const const_iterator* >(
-      HashTableIteratorStaticEnd::constEnd4Statics()));
+       HashTableIteratorStaticEnd::constEnd4Statics()));
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE const typename HashTable< Key, Val, Alloc >::iterator_safe&
-    HashTable< Key, Val, Alloc >::endSafe4Statics() {
+     HashTable< Key, Val, Alloc >::endSafe4Statics() {
     return *(reinterpret_cast< const iterator_safe* >(
-      HashTableIteratorStaticEnd::endSafe4Statics()));
+       HashTableIteratorStaticEnd::endSafe4Statics()));
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE const typename HashTable< Key, Val, Alloc >::const_iterator_safe&
-    HashTable< Key, Val, Alloc >::constEndSafe4Statics() {
+     HashTable< Key, Val, Alloc >::constEndSafe4Statics() {
     return *(reinterpret_cast< const const_iterator_safe* >(
-      HashTableIteratorStaticEnd::constEndSafe4Statics()));
+       HashTableIteratorStaticEnd::constEndSafe4Statics()));
   }
 
   template < typename Key, typename Val, typename Alloc >
@@ -392,10 +392,10 @@ namespace gum {
 
   template < typename Key, typename Val, typename Alloc >
   HashTable< Key, Val, Alloc >::HashTable(
-    std::initializer_list< std::pair< Key, Val > > list) :
+     std::initializer_list< std::pair< Key, Val > > list) :
       // size must be >= 2 else we lose all the bits of the hash function
       __size{Size(1) << __hashTableLog2(
-               std::max< Size >(Size(2), Size(list.size()) / 2))} {
+                std::max< Size >(Size(2), Size(list.size()) / 2))} {
     // for debugging purposes
     GUM_CONSTRUCTOR(HashTable);
 
@@ -410,7 +410,7 @@ namespace gum {
 
   template < typename Key, typename Val, typename Alloc >
   HashTable< Key, Val, Alloc >::HashTable(
-    const HashTable< Key, Val, Alloc >& table) :
+     const HashTable< Key, Val, Alloc >& table) :
       __size{table.__size},
       __resize_policy{table.__resize_policy},
       __key_uniqueness_policy{table.__key_uniqueness_policy},
@@ -428,7 +428,7 @@ namespace gum {
   template < typename Key, typename Val, typename Alloc >
   template < typename OtherAlloc >
   HashTable< Key, Val, Alloc >::HashTable(
-    const HashTable< Key, Val, OtherAlloc >& table) :
+     const HashTable< Key, Val, OtherAlloc >& table) :
       __size{table.__size},
       __resize_policy{table.__resize_policy},
       __key_uniqueness_policy{table.__key_uniqueness_policy},
@@ -600,37 +600,37 @@ namespace gum {
 
   template < typename Key, typename Val, typename Alloc >
   INLINE const typename HashTable< Key, Val, Alloc >::iterator&
-    HashTable< Key, Val, Alloc >::end() noexcept {
+     HashTable< Key, Val, Alloc >::end() noexcept {
     // note that, here, we know for sure that HashTableIterEnd has been properly
     // initialized as it is initialized by end4Statics, which is called by
     // all hashtables' constructors
     return *(reinterpret_cast< const iterator* >(
-      HashTableIteratorStaticEnd::__HashTableIterEnd));
+       HashTableIteratorStaticEnd::__HashTableIterEnd));
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE const typename HashTable< Key, Val, Alloc >::const_iterator&
-    HashTable< Key, Val, Alloc >::end() const noexcept {
+     HashTable< Key, Val, Alloc >::end() const noexcept {
     // note that, here, we know for sure that HashTableIterEnd has been properly
     // initialized as it is initialized by end4Statics, which is called by
     // all hashtables' constructors
     return *(reinterpret_cast< const const_iterator* >(
-      HashTableIteratorStaticEnd::__HashTableIterEnd));
+       HashTableIteratorStaticEnd::__HashTableIterEnd));
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE const typename HashTable< Key, Val, Alloc >::const_iterator&
-    HashTable< Key, Val, Alloc >::cend() const noexcept {
+     HashTable< Key, Val, Alloc >::cend() const noexcept {
     // note that, here, we know for sure that HashTableIterEnd has been properly
     // initialized as it is initialized by end4Statics, which is called by
     // all hashtables' constructors
     return *(reinterpret_cast< const const_iterator* >(
-      HashTableIteratorStaticEnd::__HashTableIterEnd));
+       HashTableIteratorStaticEnd::__HashTableIterEnd));
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE typename HashTable< Key, Val, Alloc >::iterator
-    HashTable< Key, Val, Alloc >::begin() {
+     HashTable< Key, Val, Alloc >::begin() {
     // if the table is empty, make the begin and end point to the same element
     if (__nb_elements == Size(0))
       return iterator{end()};
@@ -640,7 +640,7 @@ namespace gum {
 
   template < typename Key, typename Val, typename Alloc >
   INLINE typename HashTable< Key, Val, Alloc >::const_iterator
-    HashTable< Key, Val, Alloc >::begin() const {
+     HashTable< Key, Val, Alloc >::begin() const {
     // if the table is empty, make the begin and end point to the same element
     if (__nb_elements == Size(0))
       return const_iterator{end()};
@@ -650,7 +650,7 @@ namespace gum {
 
   template < typename Key, typename Val, typename Alloc >
   INLINE typename HashTable< Key, Val, Alloc >::const_iterator
-    HashTable< Key, Val, Alloc >::cbegin() const {
+     HashTable< Key, Val, Alloc >::cbegin() const {
     // if the table is empty, make the begin and end point to the same element
     if (__nb_elements == Size(0))
       return const_iterator{cend()};
@@ -660,37 +660,37 @@ namespace gum {
 
   template < typename Key, typename Val, typename Alloc >
   INLINE const typename HashTable< Key, Val, Alloc >::iterator_safe&
-    HashTable< Key, Val, Alloc >::endSafe() noexcept {
+     HashTable< Key, Val, Alloc >::endSafe() noexcept {
     // note that, here, we know for sure that HashTableIterEnd has been properly
     // initialized as it is initialized by end4Statics, which is called by
     // all hashtables' constructors
     return *(reinterpret_cast< const iterator_safe* >(
-      HashTableIteratorStaticEnd::__HashTableIterEndSafe));
+       HashTableIteratorStaticEnd::__HashTableIterEndSafe));
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE const typename HashTable< Key, Val, Alloc >::const_iterator_safe&
-    HashTable< Key, Val, Alloc >::endSafe() const noexcept {
+     HashTable< Key, Val, Alloc >::endSafe() const noexcept {
     // note that, here, we know for sure that HashTableIterEnd has been properly
     // initialized as it is initialized by end4Statics, which is called by
     // all hashtables' constructors
     return *(reinterpret_cast< const const_iterator_safe* >(
-      HashTableIteratorStaticEnd::__HashTableIterEndSafe));
+       HashTableIteratorStaticEnd::__HashTableIterEndSafe));
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE const typename HashTable< Key, Val, Alloc >::const_iterator_safe&
-    HashTable< Key, Val, Alloc >::cendSafe() const noexcept {
+     HashTable< Key, Val, Alloc >::cendSafe() const noexcept {
     // note that, here, we know for sure that HashTableIterEnd has been properly
     // initialized as it is initialized by end4Statics, which is called by
     // all hashtables' constructors
     return *(reinterpret_cast< const const_iterator_safe* >(
-      HashTableIteratorStaticEnd::__HashTableIterEndSafe));
+       HashTableIteratorStaticEnd::__HashTableIterEndSafe));
   }
 
   template < typename Key, typename Val, typename Alloc >
   INLINE typename HashTable< Key, Val, Alloc >::iterator_safe
-    HashTable< Key, Val, Alloc >::beginSafe() {
+     HashTable< Key, Val, Alloc >::beginSafe() {
     // if the table is empty, make the begin and end point to the same element
     if (__nb_elements == Size(0))
       return iterator_safe{endSafe()};
@@ -700,7 +700,7 @@ namespace gum {
 
   template < typename Key, typename Val, typename Alloc >
   INLINE typename HashTable< Key, Val, Alloc >::const_iterator_safe
-    HashTable< Key, Val, Alloc >::beginSafe() const {
+     HashTable< Key, Val, Alloc >::beginSafe() const {
     // if the table is empty, make the begin and end point to the same element
     if (__nb_elements == Size(0))
       return const_iterator_safe{endSafe()};
@@ -710,7 +710,7 @@ namespace gum {
 
   template < typename Key, typename Val, typename Alloc >
   INLINE typename HashTable< Key, Val, Alloc >::const_iterator_safe
-    HashTable< Key, Val, Alloc >::cbeginSafe() const {
+     HashTable< Key, Val, Alloc >::cbeginSafe() const {
     // if the table is empty, make the begin and end point to the same element
     if (__nb_elements == Size(0))
       return const_iterator_safe{cendSafe()};
@@ -745,8 +745,8 @@ namespace gum {
   }
 
   template < typename Key, typename Val, typename Alloc >
-  INLINE void
-    HashTable< Key, Val, Alloc >::setResizePolicy(const bool new_policy) noexcept {
+  INLINE void HashTable< Key, Val, Alloc >::setResizePolicy(
+     const bool new_policy) noexcept {
     __resize_policy = new_policy;
   }
 
@@ -757,7 +757,7 @@ namespace gum {
 
   template < typename Key, typename Val, typename Alloc >
   INLINE void HashTable< Key, Val, Alloc >::setKeyUniquenessPolicy(
-    const bool new_policy) noexcept {
+     const bool new_policy) noexcept {
     __key_uniqueness_policy = new_policy;
   }
 
@@ -835,7 +835,7 @@ namespace gum {
 
   template < typename Key, typename Val, typename Alloc >
   void
-    HashTable< Key, Val, Alloc >::__insert(HashTableBucket< Key, Val >* bucket) {
+     HashTable< Key, Val, Alloc >::__insert(HashTableBucket< Key, Val >* bucket) {
     Size hash_key = __hash_func(bucket->key());
 
     // check that there does not already exist an element with the same key
@@ -871,7 +871,7 @@ namespace gum {
 
   template < typename Key, typename Val, typename Alloc >
   INLINE typename HashTable< Key, Val, Alloc >::value_type&
-    HashTable< Key, Val, Alloc >::insert(const Key& thekey, const Val& theval) {
+     HashTable< Key, Val, Alloc >::insert(const Key& thekey, const Val& theval) {
     Bucket* bucket = __alloc.allocate(1);
 
     try {
@@ -887,7 +887,7 @@ namespace gum {
 
   template < typename Key, typename Val, typename Alloc >
   INLINE typename HashTable< Key, Val, Alloc >::value_type&
-    HashTable< Key, Val, Alloc >::insert(Key&& thekey, Val&& theval) {
+     HashTable< Key, Val, Alloc >::insert(Key&& thekey, Val&& theval) {
     Bucket* bucket = __alloc.allocate(1);
 
     try {
@@ -903,7 +903,7 @@ namespace gum {
 
   template < typename Key, typename Val, typename Alloc >
   INLINE typename HashTable< Key, Val, Alloc >::value_type&
-    HashTable< Key, Val, Alloc >::insert(const std::pair< Key, Val >& elt) {
+     HashTable< Key, Val, Alloc >::insert(const std::pair< Key, Val >& elt) {
     Bucket* bucket = __alloc.allocate(1);
 
     try {
@@ -919,7 +919,7 @@ namespace gum {
 
   template < typename Key, typename Val, typename Alloc >
   INLINE typename HashTable< Key, Val, Alloc >::value_type&
-    HashTable< Key, Val, Alloc >::insert(std::pair< Key, Val >&& elt) {
+     HashTable< Key, Val, Alloc >::insert(std::pair< Key, Val >&& elt) {
     Bucket* bucket = __alloc.allocate(1);
 
     try {
@@ -936,7 +936,7 @@ namespace gum {
   template < typename Key, typename Val, typename Alloc >
   template < typename... Args >
   INLINE typename HashTable< Key, Val, Alloc >::value_type&
-    HashTable< Key, Val, Alloc >::emplace(Args&&... args) {
+     HashTable< Key, Val, Alloc >::emplace(Args&&... args) {
     Bucket* bucket = __alloc.allocate(1);
 
     try {
@@ -954,8 +954,8 @@ namespace gum {
 
   template < typename Key, typename Val, typename Alloc >
   INLINE typename HashTable< Key, Val, Alloc >::mapped_type&
-    HashTable< Key, Val, Alloc >::getWithDefault(const Key& key,
-                                                 const Val& default_value) {
+     HashTable< Key, Val, Alloc >::getWithDefault(const Key& key,
+                                                  const Val& default_value) {
     Bucket* bucket = __nodes[__hash_func(key)].bucket(key);
 
     if (bucket == nullptr)
@@ -966,7 +966,7 @@ namespace gum {
 
   template < typename Key, typename Val, typename Alloc >
   INLINE typename HashTable< Key, Val, Alloc >::mapped_type&
-    HashTable< Key, Val, Alloc >::getWithDefault(Key&& key, Val&& default_value) {
+     HashTable< Key, Val, Alloc >::getWithDefault(Key&& key, Val&& default_value) {
     Bucket* bucket = __nodes[__hash_func(key)].bucket(key);
 
     if (bucket == nullptr)
@@ -1032,7 +1032,7 @@ namespace gum {
 
   template < typename Key, typename Val, typename Alloc >
   INLINE void
-    HashTable< Key, Val, Alloc >::erase(const const_iterator_safe& iter) {
+     HashTable< Key, Val, Alloc >::erase(const const_iterator_safe& iter) {
     __erase(iter.__getBucket(), iter.__getIndex());
   }
 
@@ -1087,7 +1087,7 @@ namespace gum {
   template < typename Key, typename Val, typename Alloc >
   template < typename Mount, typename OtherAlloc >
   HashTable< Key, Mount, OtherAlloc > INLINE HashTable< Key, Val, Alloc >::map(
-    Mount (*f)(Val), Size size, bool resize_pol, bool key_uniqueness_pol) const {
+     Mount (*f)(Val), Size size, bool resize_pol, bool key_uniqueness_pol) const {
     // determine the proper size of the hashtable
     // by default, the size of the table is set so that the table does not take
     // too much space while allowing to add a few elements without needing to
@@ -1096,7 +1096,7 @@ namespace gum {
 
     // create a new table
     HashTable< Key, Mount, OtherAlloc > table(
-      size, resize_pol, key_uniqueness_pol);
+       size, resize_pol, key_uniqueness_pol);
 
     // fill the new hash table
     for (auto iter = begin(); iter != end(); ++iter) {
@@ -1109,7 +1109,7 @@ namespace gum {
   template < typename Key, typename Val, typename Alloc >
   template < typename Mount, typename OtherAlloc >
   HashTable< Key, Mount, OtherAlloc > INLINE HashTable< Key, Val, Alloc >::map(
-    Mount (*f)(Val&), Size size, bool resize_pol, bool key_uniqueness_pol) const {
+     Mount (*f)(Val&), Size size, bool resize_pol, bool key_uniqueness_pol) const {
     // determine the proper size of the hashtable
     // by default, the size of the table is set so that the table does not take
     // too much space while allowing to add a few elements without needing to
@@ -1118,7 +1118,7 @@ namespace gum {
 
     // create a new table
     HashTable< Key, Mount, OtherAlloc > table(
-      size, resize_pol, key_uniqueness_pol);
+       size, resize_pol, key_uniqueness_pol);
 
     // fill the new hash table
     for (auto iter = begin(); iter != end(); ++iter) {
@@ -1131,10 +1131,10 @@ namespace gum {
   template < typename Key, typename Val, typename Alloc >
   template < typename Mount, typename OtherAlloc >
   HashTable< Key, Mount, OtherAlloc >
-    INLINE HashTable< Key, Val, Alloc >::map(Mount (*f)(const Val&),
-                                             Size size,
-                                             bool resize_pol,
-                                             bool key_uniqueness_pol) const {
+     INLINE HashTable< Key, Val, Alloc >::map(Mount (*f)(const Val&),
+                                              Size size,
+                                              bool resize_pol,
+                                              bool key_uniqueness_pol) const {
     // determine the proper size of the hashtable
     // by default, the size of the table is set so that the table does not take
     // too much space while allowing to add a few elements without needing to
@@ -1143,7 +1143,7 @@ namespace gum {
 
     // create a new table
     HashTable< Key, Mount, OtherAlloc > table(
-      size, resize_pol, key_uniqueness_pol);
+       size, resize_pol, key_uniqueness_pol);
 
     // fill the new hash table
     for (auto iter = begin(); iter != end(); ++iter) {
@@ -1156,7 +1156,7 @@ namespace gum {
   template < typename Key, typename Val, typename Alloc >
   template < typename Mount, typename OtherAlloc >
   HashTable< Key, Mount, OtherAlloc > INLINE HashTable< Key, Val, Alloc >::map(
-    const Mount& val, Size size, bool resize_pol, bool key_uniqueness_pol) const {
+     const Mount& val, Size size, bool resize_pol, bool key_uniqueness_pol) const {
     // determine the proper size of the hashtable
     // by default, the size of the table is set so that the table does not take
     // too much space while allowing to add a few elements without needing to
@@ -1165,7 +1165,7 @@ namespace gum {
 
     // create a new table
     HashTable< Key, Mount, OtherAlloc > table(
-      size, resize_pol, key_uniqueness_pol);
+       size, resize_pol, key_uniqueness_pol);
 
     // fill the new hash table
     for (auto iter = begin(); iter != end(); ++iter) {
@@ -1281,19 +1281,19 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE void
-    HashTableConstIteratorSafe< Key, Val >::__insertIntoSafeList() const {
+     HashTableConstIteratorSafe< Key, Val >::__insertIntoSafeList() const {
     __table->__safe_iterators.push_back(
-      const_cast< HashTableConstIteratorSafe< Key, Val >* >(this));
+       const_cast< HashTableConstIteratorSafe< Key, Val >* >(this));
   }
 
   template < typename Key, typename Val >
   INLINE void
-    HashTableConstIteratorSafe< Key, Val >::__removeFromSafeList() const {
+     HashTableConstIteratorSafe< Key, Val >::__removeFromSafeList() const {
     if (__table == nullptr) return;
 
     // find where the iterator is
     std::vector< HashTableConstIteratorSafe< Key, Val >* >& iter_vect =
-      __table->__safe_iterators;
+       __table->__safe_iterators;
 
     auto len = iter_vect.size();
     for (Size i = Size(0); i < len; ++i) {
@@ -1313,7 +1313,7 @@ namespace gum {
   template < typename Key, typename Val >
   template < typename Alloc >
   INLINE HashTableConstIteratorSafe< Key, Val >::HashTableConstIteratorSafe(
-    const HashTable< Key, Val, Alloc >& tab) :
+     const HashTable< Key, Val, Alloc >& tab) :
       __table{reinterpret_cast< const HashTable< Key, Val >* >(&tab)} {
     // for debugging purposes
     GUM_CONSTRUCTOR(HashTableConstIteratorSafe);
@@ -1343,7 +1343,7 @@ namespace gum {
   template < typename Key, typename Val >
   template < typename Alloc >
   HashTableConstIteratorSafe< Key, Val >::HashTableConstIteratorSafe(
-    const HashTable< Key, Val, Alloc >& tab, Size ind_elt) :
+     const HashTable< Key, Val, Alloc >& tab, Size ind_elt) :
       __table{reinterpret_cast< const HashTable< Key, Val >* >(&tab)} {
     Size i;
 
@@ -1405,10 +1405,10 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE HashTableConstIteratorSafe< Key, Val >::HashTableConstIteratorSafe(
-    const HashTableConstIteratorSafe< Key, Val >& from) :
+     const HashTableConstIteratorSafe< Key, Val >& from) :
       __table{from.__table},
       __index{from.__index}, __bucket{from.__bucket}, __next_bucket{
-                                                        from.__next_bucket} {
+                                                         from.__next_bucket} {
     // make the hashtable keep track of this iterator
     if (__table != nullptr) { __insertIntoSafeList(); }
 
@@ -1418,7 +1418,7 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE HashTableConstIteratorSafe< Key, Val >::HashTableConstIteratorSafe(
-    const HashTableConstIterator< Key, Val >& from) :
+     const HashTableConstIterator< Key, Val >& from) :
       __table{from.__table},
       __index{from.__index}, __bucket{from.__bucket} {
     // make the hashtable keep track of this iterator
@@ -1430,17 +1430,17 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE HashTableConstIteratorSafe< Key, Val >::HashTableConstIteratorSafe(
-    HashTableConstIteratorSafe< Key, Val >&& from) :
+     HashTableConstIteratorSafe< Key, Val >&& from) :
       __table{from.__table},
       __index{from.__index}, __bucket{from.__bucket}, __next_bucket{
-                                                        from.__next_bucket} {
+                                                         from.__next_bucket} {
     GUM_CONS_MOV(HashTableConstIteratorSafe);
 
     // find "from" in the hashtable's list of safe iterators and substitute
     // it by this
     if (__table != nullptr) {
       std::vector< HashTableConstIteratorSafe< Key, Val >* >& vect =
-        __table->__safe_iterators;
+         __table->__safe_iterators;
 
       for (auto ptr = vect.rbegin(); ptr != vect.rend(); ++ptr) {
         if (*ptr == &from) {
@@ -1454,8 +1454,8 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE
-    HashTableConstIteratorSafe< Key,
-                                Val >::~HashTableConstIteratorSafe() noexcept {
+     HashTableConstIteratorSafe< Key,
+                                 Val >::~HashTableConstIteratorSafe() noexcept {
     // for debugging purposes
     GUM_DESTRUCTOR(HashTableConstIteratorSafe);
 
@@ -1535,7 +1535,7 @@ namespace gum {
       if (from.__table != nullptr) {
         // substitute from by this in the list of safe iterators
         std::vector< HashTableConstIteratorSafe< Key, Val >* >& vect =
-          from.__table->__safe_iterators;
+           from.__table->__safe_iterators;
 
         for (auto ptr = vect.rbegin(); ptr != vect.rend(); ++ptr) {
           if (*ptr == &from) {
@@ -1558,7 +1558,7 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE const typename HashTableConstIteratorSafe< Key, Val >::key_type&
-    HashTableConstIteratorSafe< Key, Val >::key() const {
+     HashTableConstIteratorSafe< Key, Val >::key() const {
     if (__bucket != nullptr)
       return __bucket->key();
     else {
@@ -1568,7 +1568,7 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE const typename HashTableConstIteratorSafe< Key, Val >::mapped_type&
-    HashTableConstIteratorSafe< Key, Val >::val() const {
+     HashTableConstIteratorSafe< Key, Val >::val() const {
     if (__bucket != nullptr)
       return __bucket->val();
     else {
@@ -1699,25 +1699,27 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE HashTableConstIteratorSafe< Key, Val >
-    HashTableConstIteratorSafe< Key, Val >::operator+(Size nb) const {
+     HashTableConstIteratorSafe< Key, Val >::operator+(Size nb) const {
     return HashTableConstIteratorSafe< Key, Val >{*this} += nb;
   }
 
   template < typename Key, typename Val >
   INLINE bool HashTableConstIteratorSafe< Key, Val >::
-              operator!=(const HashTableConstIteratorSafe< Key, Val >& from) const noexcept {
+              operator!=(const HashTableConstIteratorSafe< Key, Val >& from) const
+     noexcept {
     return ((__bucket != from.__bucket) || (__index != from.__index));
   }
 
   template < typename Key, typename Val >
   INLINE bool HashTableConstIteratorSafe< Key, Val >::
-              operator==(const HashTableConstIteratorSafe< Key, Val >& from) const noexcept {
+              operator==(const HashTableConstIteratorSafe< Key, Val >& from) const
+     noexcept {
     return ((__bucket == from.__bucket) && (__index == from.__index));
   }
 
   template < typename Key, typename Val >
   INLINE const typename HashTableConstIteratorSafe< Key, Val >::value_type&
-    HashTableConstIteratorSafe< Key, Val >::operator*() const {
+     HashTableConstIteratorSafe< Key, Val >::operator*() const {
     if (__bucket)
       return __bucket->elt();
     else {
@@ -1749,7 +1751,7 @@ namespace gum {
   template < typename Key, typename Val >
   template < typename Alloc >
   INLINE HashTableIteratorSafe< Key, Val >::HashTableIteratorSafe(
-    const HashTable< Key, Val, Alloc >& tab) :
+     const HashTable< Key, Val, Alloc >& tab) :
       HashTableConstIteratorSafe< Key, Val >(tab) {
     GUM_CONSTRUCTOR(HashTableIteratorSafe);
   }
@@ -1757,28 +1759,28 @@ namespace gum {
   template < typename Key, typename Val >
   template < typename Alloc >
   INLINE HashTableIteratorSafe< Key, Val >::HashTableIteratorSafe(
-    const HashTable< Key, Val, Alloc >& tab, Size ind_elt) :
+     const HashTable< Key, Val, Alloc >& tab, Size ind_elt) :
       HashTableConstIteratorSafe< Key, Val >(tab, ind_elt) {
     GUM_CONSTRUCTOR(HashTableIteratorSafe);
   }
 
   template < typename Key, typename Val >
   INLINE HashTableIteratorSafe< Key, Val >::HashTableIteratorSafe(
-    const HashTableIteratorSafe< Key, Val >& from) :
+     const HashTableIteratorSafe< Key, Val >& from) :
       HashTableConstIteratorSafe< Key, Val >(from) {
     GUM_CONS_CPY(HashTableIteratorSafe);
   }
 
   template < typename Key, typename Val >
   INLINE HashTableIteratorSafe< Key, Val >::HashTableIteratorSafe(
-    const HashTableIterator< Key, Val >& from) :
+     const HashTableIterator< Key, Val >& from) :
       HashTableConstIteratorSafe< Key, Val >(from) {
     GUM_CONS_CPY(HashTableIteratorSafe);
   }
 
   template < typename Key, typename Val >
   INLINE HashTableIteratorSafe< Key, Val >::HashTableIteratorSafe(
-    HashTableIteratorSafe< Key, Val >&& from) noexcept :
+     HashTableIteratorSafe< Key, Val >&& from) noexcept :
       HashTableConstIteratorSafe< Key, Val >(std::move(from)) {
     GUM_CONS_MOV(HashTableIteratorSafe);
   }
@@ -1790,7 +1792,7 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE typename HashTableIteratorSafe< Key, Val >::mapped_type&
-    HashTableIteratorSafe< Key, Val >::val() {
+     HashTableIteratorSafe< Key, Val >::val() {
     return const_cast< Val& >(HashTableConstIteratorSafe< Key, Val >::val());
   }
 
@@ -1853,13 +1855,13 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE typename HashTableIteratorSafe< Key, Val >::value_type&
-    HashTableIteratorSafe< Key, Val >::operator*() {
+     HashTableIteratorSafe< Key, Val >::operator*() {
     return const_cast< Val& >(HashTableConstIteratorSafe< Key, Val >::operator*());
   }
 
   template < typename Key, typename Val >
   INLINE const typename HashTableIteratorSafe< Key, Val >::value_type&
-    HashTableIteratorSafe< Key, Val >::operator*() const {
+     HashTableIteratorSafe< Key, Val >::operator*() const {
     return HashTableConstIteratorSafe< Key, Val >::operator*();
   }
 
@@ -1875,7 +1877,7 @@ namespace gum {
   template < typename Key, typename Val >
   template < typename Alloc >
   INLINE HashTableConstIterator< Key, Val >::HashTableConstIterator(
-    const HashTable< Key, Val, Alloc >& tab) noexcept :
+     const HashTable< Key, Val, Alloc >& tab) noexcept :
       __table{reinterpret_cast< const HashTable< Key, Val >* >(&tab)} {
     // for debugging purposes
     GUM_CONSTRUCTOR(HashTableConstIterator);
@@ -1902,7 +1904,7 @@ namespace gum {
   template < typename Key, typename Val >
   template < typename Alloc >
   HashTableConstIterator< Key, Val >::HashTableConstIterator(
-    const HashTable< Key, Val, Alloc >& tab, Size ind_elt) :
+     const HashTable< Key, Val, Alloc >& tab, Size ind_elt) :
       __table{reinterpret_cast< const HashTable< Key, Val >* >(&tab)} {
     Size i;
 
@@ -1961,7 +1963,7 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE HashTableConstIterator< Key, Val >::HashTableConstIterator(
-    const HashTableConstIterator< Key, Val >& from) noexcept :
+     const HashTableConstIterator< Key, Val >& from) noexcept :
       __table{from.__table},
       __index{from.__index}, __bucket{from.__bucket} {
     GUM_CONS_CPY(HashTableConstIterator);
@@ -1969,7 +1971,7 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE HashTableConstIterator< Key, Val >::HashTableConstIterator(
-    HashTableConstIterator< Key, Val >&& from) noexcept :
+     HashTableConstIterator< Key, Val >&& from) noexcept :
       __table{from.__table},
       __index{from.__index}, __bucket{from.__bucket} {
     GUM_CONS_MOV(HashTableConstIterator);
@@ -2009,7 +2011,7 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE const typename HashTableConstIterator< Key, Val >::key_type&
-    HashTableConstIterator< Key, Val >::key() const {
+     HashTableConstIterator< Key, Val >::key() const {
     if (__bucket)
       return __bucket->pair.first;
     else {
@@ -2019,7 +2021,7 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE const typename HashTableConstIterator< Key, Val >::mapped_type&
-    HashTableConstIterator< Key, Val >::val() const {
+     HashTableConstIterator< Key, Val >::val() const {
     if (__bucket)
       return __bucket->val();
     else {
@@ -2136,7 +2138,7 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE const typename HashTableConstIterator< Key, Val >::value_type&
-    HashTableConstIterator< Key, Val >::operator*() const {
+     HashTableConstIterator< Key, Val >::operator*() const {
     if (__bucket)
       return __bucket->elt();
     else {
@@ -2146,7 +2148,7 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE typename HashTable< Key, Val >::Bucket*
-    HashTableConstIterator< Key, Val >::__getBucket() const noexcept {
+     HashTableConstIterator< Key, Val >::__getBucket() const noexcept {
     return __bucket;
   }
 
@@ -2168,7 +2170,7 @@ namespace gum {
   template < typename Key, typename Val >
   template < typename Alloc >
   INLINE HashTableIterator< Key, Val >::HashTableIterator(
-    const HashTable< Key, Val, Alloc >& tab) noexcept :
+     const HashTable< Key, Val, Alloc >& tab) noexcept :
       HashTableConstIterator< Key, Val >(tab) {
     GUM_CONSTRUCTOR(HashTableIterator);
   }
@@ -2176,21 +2178,21 @@ namespace gum {
   template < typename Key, typename Val >
   template < typename Alloc >
   INLINE HashTableIterator< Key, Val >::HashTableIterator(
-    const HashTable< Key, Val, Alloc >& tab, Size ind_elt) :
+     const HashTable< Key, Val, Alloc >& tab, Size ind_elt) :
       HashTableConstIterator< Key, Val >(tab, ind_elt) {
     GUM_CONSTRUCTOR(HashTableIterator);
   }
 
   template < typename Key, typename Val >
   INLINE HashTableIterator< Key, Val >::HashTableIterator(
-    const HashTableIterator< Key, Val >& from) noexcept :
+     const HashTableIterator< Key, Val >& from) noexcept :
       HashTableConstIterator< Key, Val >(from) {
     GUM_CONS_CPY(HashTableIterator);
   }
 
   template < typename Key, typename Val >
   INLINE HashTableIterator< Key, Val >::HashTableIterator(
-    HashTableIterator< Key, Val >&& from) noexcept :
+     HashTableIterator< Key, Val >&& from) noexcept :
       HashTableConstIterator< Key, Val >(std::move(from)) {
     GUM_CONS_MOV(HashTableIterator);
   }
@@ -2202,7 +2204,7 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE typename HashTableIterator< Key, Val >::mapped_type&
-    HashTableIterator< Key, Val >::val() {
+     HashTableIterator< Key, Val >::val() {
     if (this->__bucket)
       return this->__bucket->val();
     else {
@@ -2260,14 +2262,14 @@ namespace gum {
 
   template < typename Key, typename Val >
   INLINE typename HashTableIterator< Key, Val >::value_type&
-    HashTableIterator< Key, Val >::operator*() {
+     HashTableIterator< Key, Val >::operator*() {
     return const_cast< value_type& >(
-      HashTableConstIterator< Key, Val >::operator*());
+       HashTableConstIterator< Key, Val >::operator*());
   }
 
   template < typename Key, typename Val >
   INLINE const typename HashTableIterator< Key, Val >::value_type&
-    HashTableIterator< Key, Val >::operator*() const {
+     HashTableIterator< Key, Val >::operator*() const {
     return HashTableConstIterator< Key, Val >::operator*();
   }
 

@@ -38,17 +38,16 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     PRMFormAttribute< GUM_SCALAR >::PRMFormAttribute(
-      const PRMClass< GUM_SCALAR >&          c,
-      const std::string&                     name,
-      const PRMType< GUM_SCALAR >&           type,
-      MultiDimImplementation< std::string >* impl) :
+       const PRMClass< GUM_SCALAR >&          c,
+       const std::string&                     name,
+       const PRMType&                         type,
+       MultiDimImplementation< std::string >* impl) :
         PRMAttribute< GUM_SCALAR >(name),
-        __type(new PRMType< GUM_SCALAR >(type)), __cpf(0), __formulas(impl),
-        __class(&c) {
+        __type(new PRMType(type)), __cpf(0), __formulas(impl), __class(&c) {
       GUM_CONSTRUCTOR(PRMFormAttribute);
       __formulas->add(__type->variable());
       this->_safeName =
-        PRMObject::LEFT_CAST() + __type->name() + PRMObject::RIGHT_CAST() + name;
+         PRMObject::LEFT_CAST() + __type->name() + PRMObject::RIGHT_CAST() + name;
     }
 
     template < typename GUM_SCALAR >
@@ -61,17 +60,18 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     PRMAttribute< GUM_SCALAR >* PRMFormAttribute< GUM_SCALAR >::newFactory(
-      const PRMClass< GUM_SCALAR >& c) const {
+       const PRMClass< GUM_SCALAR >& c) const {
       auto impl = static_cast< MultiDimImplementation< std::string >* >(
-        this->__formulas->newFactory());
-      return new PRMFormAttribute(c, this->name(), this->type(), impl);
+         this->__formulas->newFactory());
+      return new PRMFormAttribute< GUM_SCALAR >(
+         c, this->name(), this->type(), impl);
     }
 
     template < typename GUM_SCALAR >
     PRMAttribute< GUM_SCALAR >* PRMFormAttribute< GUM_SCALAR >::copy(
-      Bijection< const DiscreteVariable*, const DiscreteVariable* > bij) const {
+       Bijection< const DiscreteVariable*, const DiscreteVariable* > bij) const {
       auto copy =
-        new PRMFormAttribute< GUM_SCALAR >(*__class, this->name(), this->type());
+         new PRMFormAttribute< GUM_SCALAR >(*__class, this->name(), this->type());
       for (auto var : __formulas->variablesSequence()) {
         if (var != &(__type->variable())) { copy->__formulas->add(*var); }
       }
@@ -88,8 +88,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void PRMFormAttribute< GUM_SCALAR >::copyCpf(
-      const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-      const PRMAttribute< GUM_SCALAR >& source) {
+       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
+       const PRMAttribute< GUM_SCALAR >& source) {
       delete __formulas;
       __formulas = new MultiDimArray< std::string >();
 
@@ -97,8 +97,9 @@ namespace gum {
         __formulas->add(*(bij.second(var)));
       }
 
-      if (dynamic_cast< const PRMFormAttribute* >(&source)) {
-        const auto& src = static_cast< const PRMFormAttribute& >(source);
+      if (dynamic_cast< const PRMFormAttribute< GUM_SCALAR >* >(&source)) {
+        const auto& src =
+           static_cast< const PRMFormAttribute< GUM_SCALAR >& >(source);
 
         Instantiation inst(__formulas), jnst(src.__formulas);
 
@@ -132,17 +133,17 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     typename PRMClassElement< GUM_SCALAR >::ClassElementType
-      PRMFormAttribute< GUM_SCALAR >::elt_type() const {
+       PRMFormAttribute< GUM_SCALAR >::elt_type() const {
       return this->prm_attribute;
     }
 
     template < typename GUM_SCALAR >
-    PRMType< GUM_SCALAR >& PRMFormAttribute< GUM_SCALAR >::type() {
+    PRMType& PRMFormAttribute< GUM_SCALAR >::type() {
       return *__type;
     }
 
     template < typename GUM_SCALAR >
-    const PRMType< GUM_SCALAR >& PRMFormAttribute< GUM_SCALAR >::type() const {
+    const PRMType& PRMFormAttribute< GUM_SCALAR >::type() const {
       return *__type;
     }
 
@@ -154,7 +155,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void PRMFormAttribute< GUM_SCALAR >::addParent(
-      const PRMClassElement< GUM_SCALAR >& elt) {
+       const PRMClassElement< GUM_SCALAR >& elt) {
       try {
         if (__cpf) {
           delete __cpf;
@@ -174,16 +175,16 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void PRMFormAttribute< GUM_SCALAR >::addChild(
-      const PRMClassElement< GUM_SCALAR >& elt) {}
+       const PRMClassElement< GUM_SCALAR >& elt) {}
 
     template < typename GUM_SCALAR >
     PRMAttribute< GUM_SCALAR >*
-      PRMFormAttribute< GUM_SCALAR >::getCastDescendant() const {
+       PRMFormAttribute< GUM_SCALAR >::getCastDescendant() const {
       PRMScalarAttribute< GUM_SCALAR >* cast = 0;
 
       try {
         cast =
-          new PRMScalarAttribute< GUM_SCALAR >(this->name(), type().superType());
+           new PRMScalarAttribute< GUM_SCALAR >(this->name(), type().superType());
       } catch (NotFound&) {
         GUM_ERROR(OperationNotAllowed,
                   "this ScalarAttribute can not have cast descendant");
@@ -209,7 +210,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void PRMFormAttribute< GUM_SCALAR >::setAsCastDescendant(
-      PRMAttribute< GUM_SCALAR >* cast) {
+       PRMAttribute< GUM_SCALAR >* cast) {
       try {
         type().setSuper(cast->type());
       } catch (OperationNotAllowed&) {
@@ -225,8 +226,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    void PRMFormAttribute< GUM_SCALAR >::becomeCastDescendant(
-      PRMType< GUM_SCALAR >& subtype) {
+    void PRMFormAttribute< GUM_SCALAR >::becomeCastDescendant(PRMType& subtype) {
       delete __formulas;
 
       __formulas = new MultiDimArray< std::string >();
@@ -252,7 +252,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     PRMFormAttribute< GUM_SCALAR >::PRMFormAttribute(
-      const PRMFormAttribute& source) :
+       const PRMFormAttribute& source) :
         PRMAttribute< GUM_SCALAR >(source.name()) {
       GUM_CONS_CPY(PRMFormAttribute);
       GUM_ERROR(OperationNotAllowed, "Cannot copy FormAttribute");
@@ -260,7 +260,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     PRMFormAttribute< GUM_SCALAR >& PRMFormAttribute< GUM_SCALAR >::
-                                    operator=(const PRMFormAttribute& source) {
+                                    operator=(const PRMFormAttribute< GUM_SCALAR >& source) {
       GUM_ERROR(OperationNotAllowed, "Cannot copy FormAttribute");
     }
 
@@ -303,7 +303,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     MultiDimImplementation< std::string >&
-      PRMFormAttribute< GUM_SCALAR >::formulas() {
+       PRMFormAttribute< GUM_SCALAR >::formulas() {
       if (__cpf) {
         delete __cpf;
         __cpf = 0;
@@ -313,14 +313,13 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     const MultiDimImplementation< std::string >&
-      PRMFormAttribute< GUM_SCALAR >::formulas() const {
+       PRMFormAttribute< GUM_SCALAR >::formulas() const {
       return *__formulas;
     }
 
     template < typename GUM_SCALAR >
-    void
-      PRMFormAttribute< GUM_SCALAR >::swap(const PRMType< GUM_SCALAR >& old_type,
-                                           const PRMType< GUM_SCALAR >& new_type) {
+    void PRMFormAttribute< GUM_SCALAR >::swap(const PRMType& old_type,
+                                              const PRMType& new_type) {
       if (&(old_type) == __type) {
         GUM_ERROR(OperationNotAllowed, "Cannot replace attribute own type");
       }
@@ -365,12 +364,12 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    PRMType< GUM_SCALAR >* PRMFormAttribute< GUM_SCALAR >::_type() {
+    PRMType* PRMFormAttribute< GUM_SCALAR >::_type() {
       return __type;
     }
 
     template < typename GUM_SCALAR >
-    void PRMFormAttribute< GUM_SCALAR >::_type(PRMType< GUM_SCALAR >* t) {
+    void PRMFormAttribute< GUM_SCALAR >::_type(PRMType* t) {
       if (__type->variable().domainSize() != t->variable().domainSize()) {
         GUM_ERROR(OperationNotAllowed,
                   "Cannot replace types with difference domain size");

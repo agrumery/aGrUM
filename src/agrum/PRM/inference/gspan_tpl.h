@@ -75,7 +75,7 @@ namespace gum {
       }
 
       Bijection< Idx, gspan::LabelData* >* new_labels =
-        new Bijection< Idx, gspan::LabelData* >();
+         new Bijection< Idx, gspan::LabelData* >();
       GSpan< GUM_SCALAR >::LabelSort my_sort(this);
       std::sort(__nodes.begin(), __nodes.end(), my_sort);
       std::sort(__edges.begin(), __edges.end(), my_sort);
@@ -98,13 +98,13 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void GSpan< GUM_SCALAR >::__subgraph_mining(
-      gspan::InterfaceGraph< GUM_SCALAR >& ig, gspan::Pattern& pat) {
+       gspan::InterfaceGraph< GUM_SCALAR >& ig, gspan::Pattern& pat) {
       std::vector< gspan::Pattern* > stack;
       stack.push_back(&pat);
       // Pointers used in the following while
       gspan::Pattern*                                             p = nullptr;
       HashTable< std::string, gspan::EdgeGrowth< GUM_SCALAR >* >* edge_count =
-        nullptr;
+         nullptr;
       gspan::EdgeGrowth< GUM_SCALAR >*        edge_growth = nullptr;
       Sequence< PRMInstance< GUM_SCALAR >* >* seq = nullptr;
       PRMInstance< GUM_SCALAR >*              current = nullptr;
@@ -135,12 +135,12 @@ namespace gum {
           // vector
           // matches the one in the rightmost path
           std::vector<
-            HashTable< std::string, gspan::EdgeGrowth< GUM_SCALAR >* >* >
-            count_vector;
+             HashTable< std::string, gspan::EdgeGrowth< GUM_SCALAR >* >* >
+             count_vector;
 
           for (size_t i = 0; i < r_path.size(); ++i)
             count_vector.push_back(
-              new HashTable< std::string, gspan::EdgeGrowth< GUM_SCALAR >* >());
+               new HashTable< std::string, gspan::EdgeGrowth< GUM_SCALAR >* >());
 
           // For each subgraph represented by p, we look for a valid edge growth
           // for
@@ -168,19 +168,19 @@ namespace gum {
                   // if it's a backward edge, its node id in the rightmost path
                   edge_data = &(ig.edge(current_id, neighbor_id));
                   neighbor_label =
-                    (neighbor == edge_data->u) ? edge_data->l_u : edge_data->l_v;
+                     (neighbor == edge_data->u) ? edge_data->l_u : edge_data->l_v;
                   neighbor_node =
-                    (seq->exists(neighbor)) ? seq->pos(neighbor) + 1 : 0;
+                     (seq->exists(neighbor)) ? seq->pos(neighbor) + 1 : 0;
                   // Adding the edge growth to the edge_growth hashtable
                   gspan::EdgeGrowth< GUM_SCALAR > temp_growth(
-                    node, edge_data->l, neighbor_label, neighbor_node);
+                     node, edge_data->l, neighbor_label, neighbor_node);
 
                   try {
                     edge_growth = (*edge_count)[temp_growth.toString()];
                     edge_growth->insert(current, neighbor);
                   } catch (NotFound&) {
                     edge_growth = new gspan::EdgeGrowth< GUM_SCALAR >(
-                      node, edge_data->l, neighbor_label, neighbor_node);
+                       node, edge_data->l, neighbor_label, neighbor_node);
                     edge_growth->insert(current, neighbor);
                     edge_count->insert(edge_growth->toString(), edge_growth);
                   }
@@ -210,7 +210,7 @@ namespace gum {
           children = &(__tree.children(*p));
 
           for (std::list< NodeId >::const_reverse_iterator child =
-                 children->rbegin();
+                  children->rbegin();
                child != children->rend();
                ++child)
             stack.push_back(&(__tree.pattern(*child)));
@@ -251,7 +251,7 @@ namespace gum {
         // We start by the best Pattern and add it's maximal independent set to
         // __chosen
         GSpan< GUM_SCALAR >::MatchedInstances* matches =
-          new GSpan< GUM_SCALAR >::MatchedInstances();
+           new GSpan< GUM_SCALAR >::MatchedInstances();
         Sequence< PRMInstance< GUM_SCALAR >* >* match = nullptr;
 
         for (const auto node : tree().max_indep_set(*(__patterns.front()))) {
@@ -304,7 +304,7 @@ namespace gum {
           // We can compute the max independent set and the matches belonging to
           // it
           typename gspan::DFSTree< GUM_SCALAR >::NeighborDegreeSort my_sort(
-            reduced_iso_graph);
+             reduced_iso_graph);
           std::sort(degree_list.begin(), degree_list.end(), my_sort);
           Set< NodeId > removed;
 
@@ -349,9 +349,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE
-      GSpan< GUM_SCALAR >::GSpan(const PRM< GUM_SCALAR >&             prm,
-                                 const PRMSystem< GUM_SCALAR >&       sys,
-                                 gspan::SearchStrategy< GUM_SCALAR >* strategy) :
+       GSpan< GUM_SCALAR >::GSpan(const PRM< GUM_SCALAR >&             prm,
+                                  const PRMSystem< GUM_SCALAR >&       sys,
+                                  gspan::SearchStrategy< GUM_SCALAR >* strategy) :
         __graph(new gspan::InterfaceGraph< GUM_SCALAR >(sys)),
         __tree(*__graph, strategy), __depth_stop(INT_MAX) {
       GUM_CONSTRUCTOR(GSpan);
@@ -406,13 +406,13 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE typename GSpan< GUM_SCALAR >::MatchedInstances&
-      GSpan< GUM_SCALAR >::matches(const gspan::Pattern& p) {
+       GSpan< GUM_SCALAR >::matches(const gspan::Pattern& p) {
       return *(__matched_instances[const_cast< gspan::Pattern* >(&p)]);
     }
 
     template < typename GUM_SCALAR >
     INLINE const typename GSpan< GUM_SCALAR >::MatchedInstances&
-      GSpan< GUM_SCALAR >::matches(const gspan::Pattern& p) const {
+       GSpan< GUM_SCALAR >::matches(const gspan::Pattern& p) const {
       return *(__matched_instances[const_cast< gspan::Pattern* >(&p)]);
     }
 
@@ -430,7 +430,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE bool
-      GSpan< GUM_SCALAR >::__isEdgeEligible(gspan::EdgeData< GUM_SCALAR >* e) {
+       GSpan< GUM_SCALAR >::__isEdgeEligible(gspan::EdgeData< GUM_SCALAR >* e) {
       return (__graph->edges(e->l).size() >= 2)
              && (__graph->nodes(e->l_u).size() >= 2)
              && (__graph->nodes(e->l_v).size() >= 2);
@@ -473,7 +473,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE
-      GSpan< GUM_SCALAR >::PatternSort::PatternSort(const PatternSort& source) :
+       GSpan< GUM_SCALAR >::PatternSort::PatternSort(const PatternSort& source) :
         gspan(source.gspan) {
       GUM_CONS_CPY(GSpan< GUM_SCALAR >::PatternSort);
     }

@@ -33,8 +33,8 @@
   namespace gum {                                                         \
     template < typename GUM_SCALAR >                                      \
     MultiDimImplementation< GUM_SCALAR >*                                 \
-      NAME(const MultiDimDecorator< GUM_SCALAR >&           table,        \
-           const HashTable< const DiscreteVariable*, Idx >& inst_vars) {  \
+       NAME(const MultiDimDecorator< GUM_SCALAR >&           table,       \
+            const HashTable< const DiscreteVariable*, Idx >& inst_vars) { \
       const MultiDimImplementation< GUM_SCALAR >* impl = table.content(); \
       return NAME(*impl, inst_vars);                                      \
     }                                                                     \
@@ -104,11 +104,11 @@ namespace gum {
 
       // register base functions for multiDimArrays
       registerPartialInstantiation< GUM_SCALAR >(
-        "i", MultiDimArrayString, &partialInstantiationMultiDimArray);
+         "i", MultiDimArrayString, &partialInstantiationMultiDimArray);
 
       // register default basename functions
       registerPartialInstantiation< GUM_SCALAR >(
-        "i", BaseNameString, &partialInstantiationMultiDimImplementation);
+         "i", BaseNameString, &partialInstantiationMultiDimImplementation);
     }
   }
 
@@ -125,11 +125,13 @@ namespace gum {
 
       // register base functions for multiDimArrays
       registerPartialInstantiation< GUM_SCALAR* >(
-        "i", MultiDimArrayString, &partialInstantiationMultiDimArray4Pointers);
+         "i", MultiDimArrayString, &partialInstantiationMultiDimArray4Pointers);
 
       // register default basename functions
       registerPartialInstantiation< GUM_SCALAR* >(
-        "i", BaseNameString, &partialInstantiationMultiDimImplementation4Pointers);
+         "i",
+         BaseNameString,
+         &partialInstantiationMultiDimImplementation4Pointers);
     }
   }
 

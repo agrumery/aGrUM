@@ -20,5 +20,7 @@
 
 #include <agrum/BN/inference/GibbsSampling.h>
 
-template class gum::GibbsSampling< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::GibbsSampling< double >;
+#endif

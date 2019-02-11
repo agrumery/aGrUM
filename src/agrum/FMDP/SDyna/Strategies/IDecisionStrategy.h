@@ -85,10 +85,10 @@ namespace gum {
     virtual void checkState(const Instantiation& newState, Idx actionId) = 0;
 
     void setOptimalStrategy(
-      const MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* optPol) {
+       const MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* optPol) {
       _optPol =
-        const_cast< MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* >(
-          optPol);
+         const_cast< MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* >(
+            optPol);
     }
 
     virtual ActionSet stateOptimalPolicy(const Instantiation& curState) {

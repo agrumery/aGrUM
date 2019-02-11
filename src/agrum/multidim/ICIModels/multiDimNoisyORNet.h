@@ -69,8 +69,8 @@ namespace gum {
      * @param from the copied instance
      */
     MultiDimNoisyORNet(
-      const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-      const MultiDimNoisyORNet< GUM_SCALAR >&                              from);
+       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
+       const MultiDimNoisyORNet< GUM_SCALAR >&                              from);
 
     /// Destructor.
     virtual ~MultiDimNoisyORNet();
@@ -123,8 +123,10 @@ namespace gum {
     /// @}
   };
 
-  extern template class MultiDimNoisyORNet< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class MultiDimNoisyORNet< double >;
+#endif
 
   /// For friendly displaying the content of the array.
   template < typename GUM_SCALAR >

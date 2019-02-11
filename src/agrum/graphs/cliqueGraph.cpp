@@ -80,7 +80,7 @@ namespace gum {
     // get a path from a __clique containing node1 to a __clique containing
     // node2
     std::vector< NodeId > path =
-      undirectedPath(container(node1), container(node2));
+       undirectedPath(container(node1), container(node2));
 
     // it may happen that the path contains several nodes containing node1 and
     // node2. Hence we shall remove the superfluous nodes
@@ -138,9 +138,9 @@ namespace gum {
   /// DFS function for computing whether the running intersection property holds
 
   bool CliqueGraph::__runningIntersectionDFS(
-    const NodeId                     clique,
-    const NodeId                     from,
-    CliqueGraph::__RunningIntersect& infos_DFS) const {
+     const NodeId                     clique,
+     const NodeId                     from,
+     CliqueGraph::__RunningIntersect& infos_DFS) const {
     // check that no node in the clique belongs to the set of nodes belonging to
     // other connected components of the cliqueGraph
     const NodeSet& nodes_clique = __cliques[clique];

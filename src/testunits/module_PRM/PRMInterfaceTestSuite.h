@@ -38,7 +38,7 @@ namespace gum_tests {
   class PRMInterfaceTestSuite : public CxxTest::TestSuite {
     private:
     typedef gum::prm::PRMInterface< double >       PRMInterface;
-    typedef gum::prm::PRMType< double >            PRMType;
+    typedef gum::prm::PRMType                      PRMType;
     typedef gum::prm::PRMScalarAttribute< double > PRMAttribute;
     typedef gum::prm::PRMReferenceSlot< double >   Reference;
     typedef gum::prm::PRMSlotChain< double >       PRMSlotChain;
@@ -48,7 +48,7 @@ namespace gum_tests {
 
     public:
     void setUp() {
-      __boolean = gum::prm::PRMType< double >::boolean();
+      __boolean = gum::prm::PRMType::boolean();
       gum::LabelizedVariable state{"state", "A state variable", 0};
       state.addLabel("OK");
       state.addLabel("NOK");
@@ -242,10 +242,10 @@ namespace gum_tests {
       PRMInterface  c("class");
       PRMAttribute* attr = new PRMAttribute("attr", *__boolean);
       c.add(attr);
-      PRMInterface                sub_c("sub_c", c);
-      gum::LabelizedVariable      var("foo", "bar", 2);
-      gum::prm::PRMType< double > type(var);
-      PRMAttribute*               bttr = new PRMAttribute("attr", type);
+      PRMInterface           sub_c("sub_c", c);
+      gum::LabelizedVariable var("foo", "bar", 2);
+      gum::prm::PRMType      type(var);
+      PRMAttribute*          bttr = new PRMAttribute("attr", type);
       // Act & Assert
       TS_ASSERT_THROWS(sub_c.overload(bttr), gum::OperationNotAllowed);
       // Cleanup

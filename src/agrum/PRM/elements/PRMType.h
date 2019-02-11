@@ -30,6 +30,8 @@
 #include <sstream>
 #include <vector>
 
+#include <agrum/agrum.h>
+
 #include <agrum/multidim/implementations/multiDimArray.h>
 #include <agrum/multidim/implementations/multiDimImplementation.h>
 #include <agrum/variables/discreteVariable.h>
@@ -55,7 +57,6 @@ namespace gum {
      * Since MultiDim use pointers to handle DiscreteVariables, it is necessary
      * to create a new instance of a type for each PRMAttribute.
      */
-    template < typename GUM_SCALAR >
     class PRMType : public PRMObject {
       public:
       // ==========================================================================
@@ -63,7 +64,8 @@ namespace gum {
       // ==========================================================================
       /// @{
 
-      friend class PRMFactory< GUM_SCALAR >;
+      template < typename GUM_SCALAR >
+      friend class PRMFactory;
 
       /// @}
       // ==========================================================================
@@ -280,15 +282,12 @@ namespace gum {
       /// @}
     };
 
-
-    extern template class PRMType< float >;
-    extern template class PRMType< double >;
-
-
   } /* namespace prm */
 
 } /* namespace gum */
 
-#include <agrum/PRM/elements/PRMType_tpl.h>
+#ifndef GUM_NO_INLINE
+#  include <agrum/PRM/elements/PRMType_inl.h>
+#endif   // GUM_NO_INLINE
 
 #endif /* GUM_CLASS_H */

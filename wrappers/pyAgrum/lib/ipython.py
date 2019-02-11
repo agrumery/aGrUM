@@ -71,7 +71,7 @@ def showJunctionTree(bn, withNames=True, size="4", format="png"):
   :param size: size of the rendered graph
   :param format: render as "png" or "svg"
   """
-  jtg = gum.JTGenerator()
+  jtg = gum.JunctionTreeGenerator()
   jt = jtg.junctionTree(bn)
   if withNames:
     return showDot(jt.toDotWithNames(bn), size, format)

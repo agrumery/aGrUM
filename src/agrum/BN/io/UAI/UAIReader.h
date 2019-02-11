@@ -83,7 +83,7 @@ namespace gum {
     Size proceed() final;
 
     void buildFromQuartets(
-      std::vector< std::tuple< float, int, int, int > > quartets);
+       std::vector< std::tuple< float, int, int, int > > quartets);
 
     /// @{
     /// publishing Errors API
@@ -137,8 +137,9 @@ namespace gum {
   };
 
 
-  extern template class UAIReader< float >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class UAIReader< double >;
+#endif
 
 } /* namespace gum */
 

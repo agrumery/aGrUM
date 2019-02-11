@@ -40,7 +40,7 @@ namespace gum {
   // copy constructor
   template < typename GUM_SCALAR >
   MultiDimArray< GUM_SCALAR >::MultiDimArray(
-    const MultiDimArray< GUM_SCALAR >& src) :
+     const MultiDimArray< GUM_SCALAR >& src) :
       MultiDimWithOffset< GUM_SCALAR >(src),
       _values(src._values) {
     // for debugging purposes
@@ -57,7 +57,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void MultiDimArray< GUM_SCALAR >::copyFrom(
-    const MultiDimContainer< GUM_SCALAR >& src) const {
+     const MultiDimContainer< GUM_SCALAR >& src) const {
     auto mda = dynamic_cast< const MultiDimArray< GUM_SCALAR >* >(&src);
 
     if (mda == nullptr) {
@@ -69,13 +69,14 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void MultiDimArray< GUM_SCALAR >::apply(
-    std::function< GUM_SCALAR(GUM_SCALAR) > f) const {
+     std::function< GUM_SCALAR(GUM_SCALAR) > f) const {
     std::transform(_values.begin(), _values.end(), _values.begin(), f);
   }
 
   template < typename GUM_SCALAR >
   GUM_SCALAR MultiDimArray< GUM_SCALAR >::reduce(
-    std::function< GUM_SCALAR(GUM_SCALAR, GUM_SCALAR) > f, GUM_SCALAR base) const {
+     std::function< GUM_SCALAR(GUM_SCALAR, GUM_SCALAR) > f,
+     GUM_SCALAR                                          base) const {
     return std::accumulate(_values.begin(), _values.end(), base, f);
   }
 
@@ -158,7 +159,7 @@ namespace gum {
   // synchronise content after MultipleChanges
   template < typename GUM_SCALAR >
   INLINE void
-    MultiDimArray< GUM_SCALAR >::_commitMultipleChanges(const GUM_SCALAR& x) {
+     MultiDimArray< GUM_SCALAR >::_commitMultipleChanges(const GUM_SCALAR& x) {
     if (MultiDimWithOffset< GUM_SCALAR >::domainSize() != _values.size()) {
       _values.resize(MultiDimWithOffset< GUM_SCALAR >::domainSize(), x);
     }

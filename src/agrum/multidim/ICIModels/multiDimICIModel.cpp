@@ -22,5 +22,7 @@
 #ifdef GUM_NO_INLINE
 #endif /* GUM_NO_INLINE */
 
-template class gum::MultiDimICIModel< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::MultiDimICIModel< double >;
+#endif

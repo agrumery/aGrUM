@@ -59,7 +59,7 @@ namespace gum {
     // update the tree accordingly to the removal of this
     if (_parent)
       _parent->_children[static_cast< int >(_parent_dir)] =
-        nullptr;   // parent_dir can not be NO_PARENT (... sure ?)
+         nullptr;   // parent_dir can not be NO_PARENT (... sure ?)
 
     if (_children[0]) {
       _children[0]->_parent = nullptr;
@@ -225,7 +225,7 @@ namespace gum {
     if (_children[static_cast< int >(BinTreeDir::LEFT_CHILD)]) {
       _children[static_cast< int >(BinTreeDir::LEFT_CHILD)]->_parent = nullptr;
       _children[static_cast< int >(BinTreeDir::LEFT_CHILD)]->_parent_dir =
-        BinTreeDir::NO_PARENT;
+         BinTreeDir::NO_PARENT;
       _children[static_cast< int >(BinTreeDir::LEFT_CHILD)] = nullptr;
     }
   }
@@ -235,7 +235,7 @@ namespace gum {
     if (_children[static_cast< int >(BinTreeDir::RIGHT_CHILD)]) {
       _children[static_cast< int >(BinTreeDir::RIGHT_CHILD)]->_parent = nullptr;
       _children[static_cast< int >(BinTreeDir::RIGHT_CHILD)]->_parent_dir =
-        BinTreeDir::NO_PARENT;
+         BinTreeDir::NO_PARENT;
       _children[static_cast< int >(BinTreeDir::RIGHT_CHILD)] = nullptr;
     }
   }

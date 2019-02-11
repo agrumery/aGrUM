@@ -26,7 +26,25 @@
 #include <agrum/core/refPtr.h>
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::RefPtr< int >;
+#    endif
+#  endif
+#endif
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::RefPtr< long >;
-template class gum::RefPtr< float >;
+#    endif
+#  endif
+#endif
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::RefPtr< double >;
+#    endif
+#  endif
+#endif

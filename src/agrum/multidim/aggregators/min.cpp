@@ -26,5 +26,7 @@
 
 #include <agrum/multidim/aggregators/min.h>
 
-template class gum::aggregator::Min< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::aggregator::Min< double >;
+#endif

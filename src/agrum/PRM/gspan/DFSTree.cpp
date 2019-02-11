@@ -30,8 +30,10 @@ namespace gum {
   namespace prm {
     namespace gspan {
 
-      template class DFSTree< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
       template class DFSTree< double >;
+#endif
 
     } /* namespace gspan */
   }   /* namespace prm */

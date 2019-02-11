@@ -146,7 +146,7 @@ namespace gum {
      */
     template < typename OtherAlloc >
     SequenceImplementation(
-      const SequenceImplementation< Key, OtherAlloc, Gen >& aSeq);
+       const SequenceImplementation< Key, OtherAlloc, Gen >& aSeq);
 
     /**
      * @brief Move constructor.
@@ -235,7 +235,7 @@ namespace gum {
      * @return Returns a ref to this.
      */
     SequenceImplementation< Key, Alloc, Gen >&
-      operator=(const SequenceImplementation< Key, Alloc, Gen >& aSeq);
+       operator=(const SequenceImplementation< Key, Alloc, Gen >& aSeq);
 
     /**
      * @brief Generalized opy operator.
@@ -245,7 +245,7 @@ namespace gum {
      */
     template < typename OtherAlloc >
     SequenceImplementation< Key, Alloc, Gen >&
-      operator=(const SequenceImplementation< Key, OtherAlloc, Gen >& aSeq);
+       operator=(const SequenceImplementation< Key, OtherAlloc, Gen >& aSeq);
 
     /**
      * @brief Move operator.
@@ -253,7 +253,7 @@ namespace gum {
      * @return Returns a ref to this.
      */
     SequenceImplementation< Key, Alloc, Gen >&
-      operator=(SequenceImplementation< Key, Alloc, Gen >&& aSeq);
+       operator=(SequenceImplementation< Key, Alloc, Gen >&& aSeq);
 
     /// @}
 
@@ -613,7 +613,7 @@ namespace gum {
      */
     template < typename OtherAlloc >
     SequenceImplementation(
-      const SequenceImplementation< Key, OtherAlloc, true >& aSeq);
+       const SequenceImplementation< Key, OtherAlloc, true >& aSeq);
 
     /**
      * @brief Move constructor.
@@ -701,7 +701,7 @@ namespace gum {
      * @return Returns a ref to this.
      */
     SequenceImplementation< Key, Alloc, true >&
-      operator=(const SequenceImplementation< Key, Alloc, true >& aSeq);
+       operator=(const SequenceImplementation< Key, Alloc, true >& aSeq);
 
     /**
      * @brief generalized opy operator.
@@ -711,7 +711,7 @@ namespace gum {
      */
     template < typename OtherAlloc >
     SequenceImplementation< Key, Alloc, true >&
-      operator=(const SequenceImplementation< Key, OtherAlloc, true >& aSeq);
+       operator=(const SequenceImplementation< Key, OtherAlloc, true >& aSeq);
 
     /**
      * @brief Move operator.
@@ -719,7 +719,7 @@ namespace gum {
      * @return Returns a ref to this.
      */
     SequenceImplementation< Key, Alloc, true >&
-      operator=(SequenceImplementation< Key, Alloc, true >&& aSeq);
+       operator=(SequenceImplementation< Key, Alloc, true >&& aSeq);
 
     /// @}
 
@@ -768,7 +768,7 @@ namespace gum {
      */
     template < typename OtherAlloc >
     bool
-      operator==(const SequenceImplementation< Key, OtherAlloc, true >& k) const;
+       operator==(const SequenceImplementation< Key, OtherAlloc, true >& k) const;
 
     /**
      * @brief Returns true if the content of k is different from that of *this.
@@ -782,7 +782,7 @@ namespace gum {
      */
     template < typename OtherAlloc >
     bool
-      operator!=(const SequenceImplementation< Key, OtherAlloc, true >& k) const;
+       operator!=(const SequenceImplementation< Key, OtherAlloc, true >& k) const;
 
     /// @}
     // ============================================================================
@@ -1037,7 +1037,7 @@ namespace gum {
 
     /// The gum::Sequence implementation.
     using Implementation =
-      SequenceImplementation< Key, Alloc, std::is_scalar< Key >::value >;
+       SequenceImplementation< Key, Alloc, std::is_scalar< Key >::value >;
 
     // ============================================================================
     /// @name Constructors / Destructors
@@ -1290,7 +1290,7 @@ namespace gum {
      * @return Returns this iterator.
      */
     SequenceIteratorSafe< Key >&
-      operator=(const SequenceIteratorSafe< Key >& source) noexcept;
+       operator=(const SequenceIteratorSafe< Key >& source) noexcept;
 
     /**
      * @brief Move operator.
@@ -1298,7 +1298,7 @@ namespace gum {
      * @return Returns this iterator.
      */
     SequenceIteratorSafe< Key >&
-      operator=(SequenceIteratorSafe< Key >&& source) noexcept;
+       operator=(SequenceIteratorSafe< Key >&& source) noexcept;
 
     /**
      * @brief Point the iterator to the next value in the sequence.
@@ -1436,11 +1436,43 @@ namespace gum {
 } /* namespace gum */
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::Sequence< int >;
+#      endif
+#    endif
+#  endif
+#endif
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::Sequence< long >;
-extern template class gum::Sequence< float >;
+#      endif
+#    endif
+#  endif
+#endif
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::Sequence< double >;
+#      endif
+#    endif
+#  endif
+#endif
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::Sequence< std::string >;
+#      endif
+#    endif
+#  endif
+#endif
 
 
 // always include the implementation of the templates

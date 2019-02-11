@@ -25,5 +25,7 @@
 #include <agrum/agrum.h>
 #include <agrum/multidim/potential.h>
 
-template class gum::Potential< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::Potential< double >;
+#endif

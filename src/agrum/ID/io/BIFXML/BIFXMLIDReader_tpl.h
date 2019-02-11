@@ -33,7 +33,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE BIFXMLIDReader< GUM_SCALAR >::BIFXMLIDReader(
-    InfluenceDiagram< GUM_SCALAR >* infdiag, const std::string& filePath) :
+     InfluenceDiagram< GUM_SCALAR >* infdiag, const std::string& filePath) :
       IDReader< GUM_SCALAR >(infdiag, filePath) {
     GUM_CONSTRUCTOR(BIFXMLIDReader);
     __infdiag = infdiag;
@@ -103,7 +103,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void BIFXMLIDReader< GUM_SCALAR >::__parsingVariables(
-    ticpp::Element* parentNetwork) {
+     ticpp::Element* parentNetwork) {
     // Counting the number of variable for the signal
     int                               nbVar = 0;
     ticpp::Iterator< ticpp::Element > varIte("VARIABLE");
@@ -149,7 +149,7 @@ namespace gum {
 
       // Emitting progress.
       std::string status =
-        "Network found. Now proceedind variables instanciation...";
+         "Network found. Now proceedind variables instanciation...";
       int progress = (int)((float)nbIte / (float)nbVar * 45) + 10;
       GUM_EMIT2(onProceed, progress, status);
       nbIte++;
@@ -157,8 +157,8 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void
-    BIFXMLIDReader< GUM_SCALAR >::__fillingDiagram(ticpp::Element* parentNetwork) {
+  void BIFXMLIDReader< GUM_SCALAR >::__fillingDiagram(
+     ticpp::Element* parentNetwork) {
     // Counting the number of variable for the signal
     int                               nbDef = 0;
     ticpp::Iterator< ticpp::Element > definitionIte("DEFINITION");
@@ -178,7 +178,7 @@ namespace gum {
 
       // Considered Node
       std::string currentVarName =
-        currentVar->FirstChildElement("FOR")->GetTextOrDefault("");
+         currentVar->FirstChildElement("FOR")->GetTextOrDefault("");
       NodeId currentVarId = __infdiag->idFromName(currentVarName);
 
       // Get Node's parents
@@ -223,7 +223,7 @@ namespace gum {
 
       // Emitting progress.
       std::string status =
-        "All variables have been instancied. Now filling up diagram...";
+         "All variables have been instancied. Now filling up diagram...";
       int progress = (int)((float)nbIte / (float)nbDef * 45) + 55;
       GUM_EMIT2(onProceed, progress, status);
       nbIte++;

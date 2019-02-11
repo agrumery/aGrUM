@@ -203,7 +203,6 @@ namespace gum {
     std::ostream& operator<<(std::ostream& out, PRMObject::prm_type obj_type);
 
     // list of declarations of PRMObjects
-    template < typename GUM_SCALAR >
     class PRMType;
     template < typename GUM_SCALAR >
     class PRMClassElement;

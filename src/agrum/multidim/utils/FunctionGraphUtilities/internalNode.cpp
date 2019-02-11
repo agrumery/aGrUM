@@ -65,7 +65,7 @@ namespace gum {
   // ============================================================================
   NodeId* InternalNode::allocateNodeSons(const DiscreteVariable* v) {
     NodeId* sons =
-      static_cast< NodeId* >(ALLOCATE(sizeof(NodeId) * v->domainSize()));
+       static_cast< NodeId* >(ALLOCATE(sizeof(NodeId) * v->domainSize()));
     for (gum::Idx i = 0; i < v->domainSize(); ++i)
       sons[i] = 0;
     return sons;

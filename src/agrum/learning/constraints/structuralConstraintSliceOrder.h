@@ -63,7 +63,7 @@ namespace gum {
      */
     class StructuralConstraintSliceOrder
         : protected virtual StructuralConstraintSetStatic<
-            StructuralConstraintDiGraph > {
+             StructuralConstraintDiGraph > {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -99,11 +99,11 @@ namespace gum {
 
       /// copy operator
       StructuralConstraintSliceOrder&
-        operator=(const StructuralConstraintSliceOrder& from);
+         operator=(const StructuralConstraintSliceOrder& from);
 
       /// move operator
       StructuralConstraintSliceOrder&
-        operator=(StructuralConstraintSliceOrder&& from);
+         operator=(StructuralConstraintSliceOrder&& from);
 
       /// @}
 

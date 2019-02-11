@@ -25,5 +25,7 @@
  */
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 
-template class gum::SimpleCPTGenerator< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::SimpleCPTGenerator< double >;
+#endif

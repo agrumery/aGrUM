@@ -26,7 +26,7 @@
 
 #include <agrum/core/math/math.h>
 #include <agrum/BN/IBayesNet.h>
-#include <agrum/BN/algorithms/divergence/GibbsKL.h>
+#include <agrum/BN/algorithms/divergence/GibbsBNdistance.h>
 #include <agrum/BN/inference/tools/gibbsOperator.h>
 #include <agrum/core/approximations/approximationScheme.h>
 #include <agrum/core/hashTable.h>
@@ -46,16 +46,16 @@ namespace gum {
 
 
   template < typename GUM_SCALAR >
-  GibbsKL< GUM_SCALAR >::GibbsKL(const IBayesNet< GUM_SCALAR >& P,
-                                 const IBayesNet< GUM_SCALAR >& Q) :
-      KL< GUM_SCALAR >(P, Q),
+  GibbsBNdistance< GUM_SCALAR >::GibbsBNdistance(
+     const IBayesNet< GUM_SCALAR >& P, const IBayesNet< GUM_SCALAR >& Q) :
+      BNdistance< GUM_SCALAR >(P, Q),
       ApproximationScheme(),
       GibbsOperator< GUM_SCALAR >(
-        P,
-        nullptr,
-        1 + (P.size() * GIBBSKL_POURCENT_DRAWN_SAMPLE / 100),
-        GIBBSKL_DRAWN_AT_RANDOM) {
-    GUM_CONSTRUCTOR(GibbsKL);
+         P,
+         nullptr,
+         1 + (P.size() * GIBBSKL_POURCENT_DRAWN_SAMPLE / 100),
+         GIBBSKL_DRAWN_AT_RANDOM) {
+    GUM_CONSTRUCTOR(GibbsBNdistance);
 
     setEpsilon(GIBBSKL_DEFAULT_EPSILON);
     setMinEpsilonRate(GIBBSKL_DEFAULT_MIN_EPSILON_RATE);
@@ -67,16 +67,18 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  GibbsKL< GUM_SCALAR >::GibbsKL(const KL< GUM_SCALAR >& kl) :
-      KL< GUM_SCALAR >(kl), ApproximationScheme()
+  GibbsBNdistance< GUM_SCALAR >::GibbsBNdistance(
+     const BNdistance< GUM_SCALAR >& kl) :
+      BNdistance< GUM_SCALAR >(kl),
+      ApproximationScheme()
       // Gibbs operator with 10% of nodes changes at random between each samples
       ,
       GibbsOperator< GUM_SCALAR >(
-        kl.p(),
-        nullptr,
-        1 + (kl.p().size() * GIBBSKL_POURCENT_DRAWN_SAMPLE / 100),
-        true) {
-    GUM_CONSTRUCTOR(GibbsKL);
+         kl.p(),
+         nullptr,
+         1 + (kl.p().size() * GIBBSKL_POURCENT_DRAWN_SAMPLE / 100),
+         true) {
+    GUM_CONSTRUCTOR(GibbsBNdistance);
 
     setEpsilon(GIBBSKL_DEFAULT_EPSILON);
     setMinEpsilonRate(GIBBSKL_DEFAULT_MIN_EPSILON_RATE);
@@ -88,12 +90,12 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  GibbsKL< GUM_SCALAR >::~GibbsKL() {
-    GUM_DESTRUCTOR(GibbsKL);
+  GibbsBNdistance< GUM_SCALAR >::~GibbsBNdistance() {
+    GUM_DESTRUCTOR(GibbsBNdistance);
   }
 
   template < typename GUM_SCALAR >
-  void GibbsKL< GUM_SCALAR >::_computeKL() {
+  void GibbsBNdistance< GUM_SCALAR >::_computeKL() {
     auto Iq = _q.completeInstantiation();
 
     gum::Instantiation I = this->monteCarloSample();
@@ -111,13 +113,13 @@ namespace gum {
       I = this->nextSample(I);
 
     // SAMPLING
-    _klPQ = _klQP = _hellinger = (GUM_SCALAR)0.0;
+    _klPQ = _klQP = _hellinger = _jsd = (GUM_SCALAR)0.0;
     _errorPQ = _errorQP = 0;
     /// bool check_rate;
     GUM_SCALAR delta, ratio, error;
     delta = ratio = error = (GUM_SCALAR)-1;
     GUM_SCALAR oldPQ = 0.0;
-    GUM_SCALAR pp, pq;
+    GUM_SCALAR pp, pq, pmid;
 
     do {
       this->disableMinEpsilonRate();
@@ -129,6 +131,7 @@ namespace gum {
 
       pp = _p.jointProbability(I);
       pq = _q.jointProbability(Iq);
+      pmid = (pp + pq) / 2.0;
 
       if (pp != (GUM_SCALAR)0.0) {
         _hellinger += std::pow(std::sqrt(pp) - std::sqrt(pq), 2) / pp;
@@ -140,6 +143,9 @@ namespace gum {
           ratio = pq / pp;
           delta = (GUM_SCALAR)log2(ratio);
           _klPQ += delta;
+
+          // pmid!=0
+          _jsd -= log2(pp / pmid) + ratio * log2(pq / pmid);
         } else {
           _errorPQ++;
         }
@@ -166,17 +172,18 @@ namespace gum {
 
     _klPQ = -_klPQ / (nbrIterations());
     _klQP = -_klQP / (nbrIterations());
+    _jsd = -0.5 * _jsd / (nbrIterations());
     _hellinger = std::sqrt(_hellinger / nbrIterations());
-    _bhattacharya = -std::log(_bhattacharya);
+    _bhattacharya = -std::log(_bhattacharya / (nbrIterations()));
   }
 
   template < typename GUM_SCALAR >
-  void GibbsKL< GUM_SCALAR >::setBurnIn(Size b) {
+  void GibbsBNdistance< GUM_SCALAR >::setBurnIn(Size b) {
     this->_burn_in = b;
   }
 
   template < typename GUM_SCALAR >
-  Size GibbsKL< GUM_SCALAR >::burnIn() const {
+  Size GibbsBNdistance< GUM_SCALAR >::burnIn() const {
     return this->_burn_in;
   }
 }   // namespace gum

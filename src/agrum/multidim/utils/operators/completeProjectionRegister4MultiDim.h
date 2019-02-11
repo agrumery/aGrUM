@@ -64,7 +64,7 @@ namespace gum {
     public:
     /// the type of functions used by the register
     typedef GUM_SCALAR (*CompleteProjectionPtr)(
-      const MultiDimImplementation< GUM_SCALAR >*, Instantiation* instantiation);
+       const MultiDimImplementation< GUM_SCALAR >*, Instantiation* instantiation);
 
     // =========================================================================
     /// @name Accessors / Modifiers
@@ -178,7 +178,7 @@ namespace gum {
 
     /// copy operator: never to be used
     CompleteProjectionRegister4MultiDim(
-      const CompleteProjectionRegister4MultiDim&);
+       const CompleteProjectionRegister4MultiDim&);
 
     /// Destructor
     ~CompleteProjectionRegister4MultiDim();
@@ -206,7 +206,7 @@ namespace gum {
   void registerCompleteProjection(const std::string& projection_name,
                                   const std::string& type_multidim,
                                   typename CompleteProjectionRegister4MultiDim<
-                                    GUM_SCALAR >::CompleteProjectionPtr function);
+                                     GUM_SCALAR >::CompleteProjectionPtr function);
 
 } /* namespace gum */
 

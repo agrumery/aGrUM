@@ -121,7 +121,7 @@ namespace gum {
    */
   template < typename T1, typename T2 >
   using forbidden_type =
-    typename std::enable_if< !std::is_same< T1, T2 >::value, int >::type;
+     typename std::enable_if< !std::is_same< T1, T2 >::value, int >::type;
 
   /**
    * @brief Implements a stream with the same behaviour as /dev/null.

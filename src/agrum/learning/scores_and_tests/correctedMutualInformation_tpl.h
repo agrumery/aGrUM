@@ -33,7 +33,7 @@ namespace gum {
     /// returns the allocator used by the score
     template < template < typename > class ALLOC >
     typename CorrectedMutualInformation< ALLOC >::allocator_type
-      CorrectedMutualInformation< ALLOC >::getAllocator() const {
+       CorrectedMutualInformation< ALLOC >::getAllocator() const {
       return __NH.getAllocator();
     }
 
@@ -41,12 +41,13 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     CorrectedMutualInformation< ALLOC >::CorrectedMutualInformation(
-      const DBRowGeneratorParser< ALLOC >&                                 parser,
-      const Apriori< ALLOC >&                                              apriori,
-      const std::vector< std::pair< std::size_t, std::size_t >,
-                         ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
-      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename CorrectedMutualInformation< ALLOC >::allocator_type& alloc) :
+       const DBRowGeneratorParser< ALLOC >& parser,
+       const Apriori< ALLOC >&              apriori,
+       const std::vector< std::pair< std::size_t, std::size_t >,
+                          ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                                                                           nodeId2columns,
+       const typename CorrectedMutualInformation< ALLOC >::allocator_type& alloc) :
         __NH(parser, apriori, ranges, nodeId2columns, alloc),
         __k_NML(parser, apriori, ranges, nodeId2columns, alloc),
         __score_MDL(parser, apriori, ranges, nodeId2columns, alloc),
@@ -58,10 +59,11 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     CorrectedMutualInformation< ALLOC >::CorrectedMutualInformation(
-      const DBRowGeneratorParser< ALLOC >&                          parser,
-      const Apriori< ALLOC >&                                       apriori,
-      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename CorrectedMutualInformation< ALLOC >::allocator_type& alloc) :
+       const DBRowGeneratorParser< ALLOC >& parser,
+       const Apriori< ALLOC >&              apriori,
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                                                                           nodeId2columns,
+       const typename CorrectedMutualInformation< ALLOC >::allocator_type& alloc) :
         __NH(parser, apriori, nodeId2columns, alloc),
         __k_NML(parser, apriori, nodeId2columns, alloc),
         __score_MDL(parser, apriori, nodeId2columns, alloc), __ICache(alloc),
@@ -73,8 +75,8 @@ namespace gum {
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
     CorrectedMutualInformation< ALLOC >::CorrectedMutualInformation(
-      const CorrectedMutualInformation< ALLOC >&                          from,
-      const typename CorrectedMutualInformation< ALLOC >::allocator_type& alloc) :
+       const CorrectedMutualInformation< ALLOC >&                          from,
+       const typename CorrectedMutualInformation< ALLOC >::allocator_type& alloc) :
         __NH(from.__NH, alloc),
         __k_NML(from.__k_NML, alloc), __score_MDL(from.__score_MDL, alloc),
         __kmode(from.__kmode), __use_ICache(from.__use_ICache),
@@ -88,15 +90,15 @@ namespace gum {
     /// copy constructor
     template < template < typename > class ALLOC >
     CorrectedMutualInformation< ALLOC >::CorrectedMutualInformation(
-      const CorrectedMutualInformation< ALLOC >& from) :
+       const CorrectedMutualInformation< ALLOC >& from) :
         CorrectedMutualInformation(from, from.getAllocator()) {}
 
 
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
     CorrectedMutualInformation< ALLOC >::CorrectedMutualInformation(
-      CorrectedMutualInformation< ALLOC >&&                               from,
-      const typename CorrectedMutualInformation< ALLOC >::allocator_type& alloc) :
+       CorrectedMutualInformation< ALLOC >&&                               from,
+       const typename CorrectedMutualInformation< ALLOC >::allocator_type& alloc) :
         __NH(std::move(from.__NH), alloc),
         __k_NML(std::move(from.__k_NML), alloc),
         __score_MDL(std::move(from.__score_MDL), alloc), __kmode(from.__kmode),
@@ -111,16 +113,16 @@ namespace gum {
     /// move constructor
     template < template < typename > class ALLOC >
     CorrectedMutualInformation< ALLOC >::CorrectedMutualInformation(
-      CorrectedMutualInformation< ALLOC >&& from) :
+       CorrectedMutualInformation< ALLOC >&& from) :
         CorrectedMutualInformation(std::move(from), from.getAllocator()) {}
 
 
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
     CorrectedMutualInformation< ALLOC >*
-      CorrectedMutualInformation< ALLOC >::clone(
-        const typename CorrectedMutualInformation< ALLOC >::allocator_type& alloc)
-        const {
+       CorrectedMutualInformation< ALLOC >::clone(
+          const typename CorrectedMutualInformation< ALLOC >::allocator_type&
+             alloc) const {
       ALLOC< CorrectedMutualInformation< ALLOC > > allocator(alloc);
       CorrectedMutualInformation< ALLOC >* new_score = allocator.allocate(1);
       try {
@@ -137,7 +139,7 @@ namespace gum {
     /// virtual copy constructor
     template < template < typename > class ALLOC >
     CorrectedMutualInformation< ALLOC >*
-      CorrectedMutualInformation< ALLOC >::clone() const {
+       CorrectedMutualInformation< ALLOC >::clone() const {
       return clone(this->getAllocator());
     }
 
@@ -285,7 +287,7 @@ namespace gum {
     /// changes the max number of threads used to parse the database
     template < template < typename > class ALLOC >
     void
-      CorrectedMutualInformation< ALLOC >::setMaxNbThreads(std::size_t nb) const {
+       CorrectedMutualInformation< ALLOC >::setMaxNbThreads(std::size_t nb) const {
       __NH.setMaxNbThreads(nb);
       __k_NML.setMaxNbThreads(nb);
       __score_MDL.setMaxNbThreads(nb);
@@ -303,7 +305,7 @@ namespace gum {
      * multithreading context */
     template < template < typename > class ALLOC >
     void CorrectedMutualInformation< ALLOC >::setMinNbRowsPerThread(
-      const std::size_t nb) const {
+       const std::size_t nb) const {
       __NH.setMinNbRowsPerThread(nb);
       __k_NML.setMinNbRowsPerThread(nb);
       __score_MDL.setMinNbRowsPerThread(nb);
@@ -328,12 +330,12 @@ namespace gum {
     template < template < typename > class ALLOC >
     template < template < typename > class XALLOC >
     void CorrectedMutualInformation< ALLOC >::setRanges(
-      const std::vector< std::pair< std::size_t, std::size_t >,
-                         XALLOC< std::pair< std::size_t, std::size_t > > >&
-        new_ranges) {
+       const std::vector< std::pair< std::size_t, std::size_t >,
+                          XALLOC< std::pair< std::size_t, std::size_t > > >&
+          new_ranges) {
       std::vector< std::pair< std::size_t, std::size_t >,
                    ALLOC< std::pair< std::size_t, std::size_t > > >
-        old_ranges = ranges();
+         old_ranges = ranges();
 
       __NH.setRanges(new_ranges);
       __k_NML.setRanges(new_ranges);
@@ -348,7 +350,7 @@ namespace gum {
     void CorrectedMutualInformation< ALLOC >::clearRanges() {
       std::vector< std::pair< std::size_t, std::size_t >,
                    ALLOC< std::pair< std::size_t, std::size_t > > >
-        old_ranges = ranges();
+         old_ranges = ranges();
       __NH.clearRanges();
       __k_NML.clearRanges();
       __score_MDL.clearRanges();
@@ -400,9 +402,9 @@ namespace gum {
     /// returns the 2-point mutual information corresponding to a given nodeset
     template < template < typename > class ALLOC >
     INLINE double CorrectedMutualInformation< ALLOC >::score(
-      NodeId                                        var1,
-      NodeId                                        var2,
-      const std::vector< NodeId, ALLOC< NodeId > >& conditioning_ids) {
+       NodeId                                        var1,
+       NodeId                                        var2,
+       const std::vector< NodeId, ALLOC< NodeId > >& conditioning_ids) {
       return __NI_score(var1, var2, conditioning_ids)
              - __K_score(var1, var2, conditioning_ids);
     }
@@ -420,10 +422,10 @@ namespace gum {
     /// returns the 3-point mutual information corresponding to a given nodeset
     template < template < typename > class ALLOC >
     INLINE double CorrectedMutualInformation< ALLOC >::score(
-      NodeId                                        var1,
-      NodeId                                        var2,
-      NodeId                                        var3,
-      const std::vector< NodeId, ALLOC< NodeId > >& conditioning_ids) {
+       NodeId                                        var1,
+       NodeId                                        var2,
+       NodeId                                        var3,
+       const std::vector< NodeId, ALLOC< NodeId > >& conditioning_ids) {
       return __NI_score(var1, var2, var3, conditioning_ids)
              + __K_score(var1, var2, var3, conditioning_ids);
     }
@@ -432,9 +434,9 @@ namespace gum {
     /// return N times the mutual information for conditioned pairs of variables
     template < template < typename > class ALLOC >
     double CorrectedMutualInformation< ALLOC >::__NI_score(
-      NodeId                                        var_x,
-      NodeId                                        var_y,
-      const std::vector< NodeId, ALLOC< NodeId > >& vars_z) {
+       NodeId                                        var_x,
+       NodeId                                        var_y,
+       const std::vector< NodeId, ALLOC< NodeId > >& vars_z) {
       /*
        * We have a few partial entropies to compute in order to have the
        * 2-point mutual information:
@@ -498,7 +500,7 @@ namespace gum {
         score = NHxz_NHyz - NHz_NHxyz;
       } else {
         const double NHxy = -__NH.score(
-          IdSet< ALLOC >(var_x, var_y, __empty_conditioning_set, true, false));
+           IdSet< ALLOC >(var_x, var_y, __empty_conditioning_set, true, false));
         const double NHx = -__NH.score(var_x);
         const double NHy = -__NH.score(var_y);
 
@@ -530,10 +532,10 @@ namespace gum {
     /// return N times the mutual information for conditioned triples of variables
     template < template < typename > class ALLOC >
     INLINE double CorrectedMutualInformation< ALLOC >::__NI_score(
-      NodeId                                        var_x,
-      NodeId                                        var_y,
-      NodeId                                        var_z,
-      const std::vector< NodeId, ALLOC< NodeId > >& ui_ids) {
+       NodeId                                        var_x,
+       NodeId                                        var_y,
+       NodeId                                        var_z,
+       const std::vector< NodeId, ALLOC< NodeId > >& ui_ids) {
       // conditional 3-point mutual information formula:
       // I(x;y;z|{ui}) = I(x;y|{ui}) - I(x;y|z,{ui})
       std::vector< NodeId, ALLOC< NodeId > > uiz_ids = ui_ids;
@@ -545,9 +547,9 @@ namespace gum {
     /// 2pt penalty
     template < template < typename > class ALLOC >
     double CorrectedMutualInformation< ALLOC >::__K_score(
-      NodeId                                        var1,
-      NodeId                                        var2,
-      const std::vector< NodeId, ALLOC< NodeId > >& conditioning_ids) {
+       NodeId                                        var1,
+       NodeId                                        var2,
+       const std::vector< NodeId, ALLOC< NodeId > >& conditioning_ids) {
       // if no penalty, return 0
       if (__kmode == KModeTypes::NoCorr) return 0.0;
 
@@ -612,10 +614,10 @@ namespace gum {
     /// 3pt penalty
     template < template < typename > class ALLOC >
     INLINE double CorrectedMutualInformation< ALLOC >::__K_score(
-      NodeId                                        var1,
-      NodeId                                        var2,
-      NodeId                                        var3,
-      const std::vector< NodeId, ALLOC< NodeId > >& ui_ids) {
+       NodeId                                        var1,
+       NodeId                                        var2,
+       NodeId                                        var3,
+       const std::vector< NodeId, ALLOC< NodeId > >& ui_ids) {
       // k(x;y;z|ui) = k(x;y|ui,z) - k(x;y|ui)
       std::vector< NodeId, ALLOC< NodeId > > uiz_ids = ui_ids;
       uiz_ids.push_back(var3);

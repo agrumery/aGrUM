@@ -192,7 +192,7 @@ namespace gum {
   }
 
   const std::vector< NodeId >
-    ArcGraphPart::directedUnorientedPath(const NodeId n1, const NodeId n2) const {
+     ArcGraphPart::directedUnorientedPath(const NodeId n1, const NodeId n2) const {
     // not recursive version => use a FIFO for simulating the recursion
     List< NodeId > nodeFIFO;
     nodeFIFO.pushBack(n2);

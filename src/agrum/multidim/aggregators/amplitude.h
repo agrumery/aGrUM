@@ -92,8 +92,10 @@ namespace gum {
       Idx __value;
     };
 
-    extern template class Amplitude< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
     extern template class Amplitude< double >;
+#endif
 
   }   // namespace aggregator
 }   // namespace gum

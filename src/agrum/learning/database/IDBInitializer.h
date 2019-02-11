@@ -149,7 +149,7 @@ namespace gum {
 
       /// virtual copy constructor with a given allocator
       virtual IDBInitializer< ALLOC >*
-        clone(const allocator_type& alloc) const = 0;
+         clone(const allocator_type& alloc) const = 0;
 
       /// destructor
       virtual ~IDBInitializer();
@@ -191,12 +191,12 @@ namespace gum {
 
       /// ask the child class for the names of the variables
       virtual std::vector< std::string, ALLOC< std::string > >
-        _variableNames() = 0;
+         _variableNames() = 0;
 
       /// asks the child class for the content of the current row using strings
       /** If the child class parses strings, this method should be overloaded */
       virtual const std::vector< std::string, ALLOC< std::string > >&
-        _currentStringRow();
+         _currentStringRow();
 
       /// asks the child class for the content of the current row using dbcells
       /** If the child class parses DBRows, this method should be overloaded */

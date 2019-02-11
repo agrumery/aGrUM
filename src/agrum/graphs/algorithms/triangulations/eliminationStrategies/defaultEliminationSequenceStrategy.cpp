@@ -31,7 +31,7 @@ namespace gum {
 
   /// default constructor (uses an empty graph)
   DefaultEliminationSequenceStrategy::DefaultEliminationSequenceStrategy(
-    double theRatio, double theThreshold) :
+     double theRatio, double theThreshold) :
       __simplicial_ratio(theRatio),
       __simplicial_threshold(theThreshold) {
     // for debugging purposes
@@ -40,10 +40,10 @@ namespace gum {
 
   /// constructor for an a priori non empty graph
   DefaultEliminationSequenceStrategy::DefaultEliminationSequenceStrategy(
-    UndiGraph*                  graph,
-    const NodeProperty< Size >* domain_sizes,
-    double                      ratio,
-    double                      threshold) :
+     UndiGraph*                  graph,
+     const NodeProperty< Size >* domain_sizes,
+     double                      ratio,
+     double                      threshold) :
       __simplicial_ratio(ratio),
       __simplicial_threshold(threshold) {
     setGraph(graph, domain_sizes);
@@ -54,7 +54,7 @@ namespace gum {
 
   /// copy constructor
   DefaultEliminationSequenceStrategy::DefaultEliminationSequenceStrategy(
-    const DefaultEliminationSequenceStrategy& from) :
+     const DefaultEliminationSequenceStrategy& from) :
       UnconstrainedEliminationSequenceStrategy(from),
       // no need to set __log_weights because the copy of the simplicial set
       // will set it properly
@@ -72,7 +72,7 @@ namespace gum {
 
   /// move constructor
   DefaultEliminationSequenceStrategy::DefaultEliminationSequenceStrategy(
-    DefaultEliminationSequenceStrategy&& from) :
+     DefaultEliminationSequenceStrategy&& from) :
       UnconstrainedEliminationSequenceStrategy(std::move(from)),
       __log_weights(std::move(from.__log_weights)),
       __simplicial_set(from.__simplicial_set),
@@ -97,14 +97,14 @@ namespace gum {
   /** @brief creates a new elimination sequence of the same type as the current
    * object, but this sequence contains only an empty graph */
   DefaultEliminationSequenceStrategy*
-    DefaultEliminationSequenceStrategy::newFactory() const {
+     DefaultEliminationSequenceStrategy::newFactory() const {
     return new DefaultEliminationSequenceStrategy(__simplicial_ratio,
                                                   __simplicial_threshold);
   }
 
   /// virtual copy constructor
   DefaultEliminationSequenceStrategy*
-    DefaultEliminationSequenceStrategy::copyFactory() const {
+     DefaultEliminationSequenceStrategy::copyFactory() const {
     return new DefaultEliminationSequenceStrategy(*this);
   }
 
@@ -130,7 +130,7 @@ namespace gum {
 
   /// sets a new graph to be triangulated
   bool DefaultEliminationSequenceStrategy::setGraph(
-    UndiGraph* graph, const NodeProperty< Size >* domain_sizes) {
+     UndiGraph* graph, const NodeProperty< Size >* domain_sizes) {
     if (UnconstrainedEliminationSequenceStrategy::setGraph(graph, domain_sizes)) {
       __createSimplicialSet();
       return true;

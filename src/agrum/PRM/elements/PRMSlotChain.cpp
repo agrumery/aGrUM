@@ -30,8 +30,10 @@
 namespace gum {
   namespace prm {
 
-    template class PRMSlotChain< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
     template class PRMSlotChain< double >;
+#endif
 
   } /* namespace prm */
 } /* namespace gum */

@@ -132,7 +132,7 @@ namespace gum {
     /** @brief adds a constraint indicating that an operation must be performed
      * before a set of operations */
     void
-         forceBefore(const ScheduleOperation< GUM_SCALAR >&               op_to_force,
+         forceBefore(const ScheduleOperation< GUM_SCALAR >& op_to_force,
                      const Set< const ScheduleOperation< GUM_SCALAR >* >& ops_after);
     void forceBefore(NodeId op_to_force, const NodeSet& ops_after);
 
@@ -153,7 +153,7 @@ namespace gum {
 
     /// resturns the association between operations anf nodeIds
     const NodeProperty< const ScheduleOperation< GUM_SCALAR >* >&
-      operations() const;
+       operations() const;
 
     /// returns the set of operations involving a given multidim table
     const NodeSet&

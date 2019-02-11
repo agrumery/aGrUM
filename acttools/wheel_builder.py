@@ -107,6 +107,12 @@ def install_pyAgrum(current, tmp):
       options = "{0} --mvsc".format(options)
     elif current['mvsc32']:
       options = "{0} --mvsc32".format(options)
+    elif current['mvsc17']:
+      options = "{0} --mvsc17".format(options)
+    elif current['mvsc17_32']:
+      options = "{0} --mvsc17_32".format(options)
+    elif current['mingw64']:
+      options = "{0} --mingw64".format(options)
   else:
     cmd = sys.executable
   cmd = '{0} act {1} {2}'.format(cmd, targets, options)

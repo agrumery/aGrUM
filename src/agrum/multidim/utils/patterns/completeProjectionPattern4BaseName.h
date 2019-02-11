@@ -41,8 +41,8 @@ namespace gum {
 #    define GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE GUM_SCALAR
   template < typename GUM_SCALAR >
   GUM_SCALAR GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME(
-    const MultiDimImplementation< GUM_SCALAR >* table,
-    Instantiation*                              instantiation = 0)
+     const MultiDimImplementation< GUM_SCALAR >* table,
+     Instantiation*                              instantiation = 0)
 #  endif
 
   // clang-format off
@@ -112,7 +112,7 @@ namespace gum {
       instantiation->forgetMaster();
       instantiation->clear();
       const Sequence< const DiscreteVariable* >& table_vars =
-        table->variablesSequence();
+         table->variablesSequence();
 
       for (const auto var : table_vars)
         instantiation->add(*var);

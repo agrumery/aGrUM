@@ -113,7 +113,7 @@ namespace gum {
 
   INLINE
   const DiscreteVariable&
-    VariableNodeMap::variableFromName(const std::string& name) const {
+     VariableNodeMap::variableFromName(const std::string& name) const {
     return *__nodes2vars.second(idFromName(name));
   }
 
@@ -127,7 +127,7 @@ namespace gum {
     }
 
     DiscreteVariable* var =
-      const_cast< DiscreteVariable* >(__nodes2vars.second(id));
+       const_cast< DiscreteVariable* >(__nodes2vars.second(id));
 
     __names2nodes.eraseFirst(var->name());
     var->setName(new_name);

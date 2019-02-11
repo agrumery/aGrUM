@@ -90,8 +90,9 @@ namespace gum {
     };
 
 
-    extern template class Count< float >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
     extern template class Count< double >;
+#endif
 
 
   }   // namespace aggregator

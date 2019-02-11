@@ -15,16 +15,11 @@ from sys import version_info as _swig_python_version_info
 if _swig_python_version_info < (2, 7, 0):
     raise RuntimeError('Python 2.7 or later required')
 
-def swig_import_helper():
-    import importlib
-    pkg = __package__ if __package__ else __name__.rpartition('.')[0]
-    mname = '.'.join((pkg, '_pyAgrum')).lstrip('.')
-    try:
-        return importlib.import_module(mname)
-    except ImportError:
-        return importlib.import_module('_pyAgrum')
-_pyAgrum = swig_import_helper()
-del swig_import_helper
+# Import the low-level C/C++ module
+if __package__ or '.' in __name__:
+    from . import _pyAgrum
+else:
+    import _pyAgrum
 
 try:
     import builtins as __builtin__
@@ -115,90 +110,90 @@ class SwigPyIterator(object):
     __swig_destroy__ = _pyAgrum.delete_SwigPyIterator
 
     def value(self) -> "PyObject *":
-        r"""value(self) -> PyObject *"""
+        r"""value(SwigPyIterator self) -> PyObject *"""
         return _pyAgrum.SwigPyIterator_value(self)
 
 
     def incr(self, n: 'size_t'=1) -> "swig::SwigPyIterator *":
         r"""
-        incr(self, n=1) -> SwigPyIterator
-        incr(self) -> SwigPyIterator
+        incr(SwigPyIterator self, size_t n=1) -> SwigPyIterator
+        incr(SwigPyIterator self) -> SwigPyIterator
         """
         return _pyAgrum.SwigPyIterator_incr(self, n)
 
 
     def decr(self, n: 'size_t'=1) -> "swig::SwigPyIterator *":
         r"""
-        decr(self, n=1) -> SwigPyIterator
-        decr(self) -> SwigPyIterator
+        decr(SwigPyIterator self, size_t n=1) -> SwigPyIterator
+        decr(SwigPyIterator self) -> SwigPyIterator
         """
         return _pyAgrum.SwigPyIterator_decr(self, n)
 
 
     def distance(self, x: 'SwigPyIterator') -> "ptrdiff_t":
-        r"""distance(self, x) -> ptrdiff_t"""
+        r"""distance(SwigPyIterator self, SwigPyIterator x) -> ptrdiff_t"""
         return _pyAgrum.SwigPyIterator_distance(self, x)
 
 
     def equal(self, x: 'SwigPyIterator') -> "bool":
-        r"""equal(self, x) -> bool"""
+        r"""equal(SwigPyIterator self, SwigPyIterator x) -> bool"""
         return _pyAgrum.SwigPyIterator_equal(self, x)
 
 
     def copy(self) -> "swig::SwigPyIterator *":
-        r"""copy(self) -> SwigPyIterator"""
+        r"""copy(SwigPyIterator self) -> SwigPyIterator"""
         return _pyAgrum.SwigPyIterator_copy(self)
 
 
     def next(self) -> "PyObject *":
-        r"""next(self) -> PyObject *"""
+        r"""next(SwigPyIterator self) -> PyObject *"""
         return _pyAgrum.SwigPyIterator_next(self)
 
 
     def __next__(self) -> "PyObject *":
-        r"""__next__(self) -> PyObject *"""
+        r"""__next__(SwigPyIterator self) -> PyObject *"""
         return _pyAgrum.SwigPyIterator___next__(self)
 
 
     def previous(self) -> "PyObject *":
-        r"""previous(self) -> PyObject *"""
+        r"""previous(SwigPyIterator self) -> PyObject *"""
         return _pyAgrum.SwigPyIterator_previous(self)
 
 
     def advance(self, n: 'ptrdiff_t') -> "swig::SwigPyIterator *":
-        r"""advance(self, n) -> SwigPyIterator"""
+        r"""advance(SwigPyIterator self, ptrdiff_t n) -> SwigPyIterator"""
         return _pyAgrum.SwigPyIterator_advance(self, n)
 
 
     def __eq__(self, x: 'SwigPyIterator') -> "bool":
-        r"""__eq__(self, x) -> bool"""
+        r"""__eq__(SwigPyIterator self, SwigPyIterator x) -> bool"""
         return _pyAgrum.SwigPyIterator___eq__(self, x)
 
 
     def __ne__(self, x: 'SwigPyIterator') -> "bool":
-        r"""__ne__(self, x) -> bool"""
+        r"""__ne__(SwigPyIterator self, SwigPyIterator x) -> bool"""
         return _pyAgrum.SwigPyIterator___ne__(self, x)
 
 
     def __iadd__(self, n: 'ptrdiff_t') -> "swig::SwigPyIterator &":
-        r"""__iadd__(self, n) -> SwigPyIterator"""
+        r"""__iadd__(SwigPyIterator self, ptrdiff_t n) -> SwigPyIterator"""
         return _pyAgrum.SwigPyIterator___iadd__(self, n)
 
 
     def __isub__(self, n: 'ptrdiff_t') -> "swig::SwigPyIterator &":
-        r"""__isub__(self, n) -> SwigPyIterator"""
+        r"""__isub__(SwigPyIterator self, ptrdiff_t n) -> SwigPyIterator"""
         return _pyAgrum.SwigPyIterator___isub__(self, n)
 
 
     def __add__(self, n: 'ptrdiff_t') -> "swig::SwigPyIterator *":
-        r"""__add__(self, n) -> SwigPyIterator"""
+        r"""__add__(SwigPyIterator self, ptrdiff_t n) -> SwigPyIterator"""
         return _pyAgrum.SwigPyIterator___add__(self, n)
 
 
     def __sub__(self, *args) -> "ptrdiff_t":
         r"""
-        __sub__(self, n) -> SwigPyIterator
-        __sub__(self, x) -> ptrdiff_t
+        __sub__(SwigPyIterator self, ptrdiff_t n) -> SwigPyIterator
+        __sub__(SwigPyIterator self, SwigPyIterator x) -> ptrdiff_t
         """
         return _pyAgrum.SwigPyIterator___sub__(self, *args)
 
@@ -211,13 +206,13 @@ _pyAgrum.SwigPyIterator_swigregister(SwigPyIterator)
 
 import numpy
 
-class JTGenerator(object):
+class JunctionTreeGenerator(object):
     r"""
 
-    JTGenerator is use to generate junction tree or binary junction tree from bayesian networks.
+    JunctionTreeGenerator is use to generate junction tree or binary junction tree from bayesian networks.
 
     Available constructors:
-    	``JTGenerator() -> JTGenerator``
+    	``JunctionTreeGenerator() -> JunctionTreeGenerator``
 
     """
 
@@ -226,61 +221,121 @@ class JTGenerator(object):
 
     def junctionTree(self, *args) -> "gum::JunctionTree":
         r"""
-        junctionTree(self, g) -> CliqueGraph
-        junctionTree(self, bn) -> CliqueGraph
+        junctionTree(JunctionTreeGenerator self, UndiGraph g, PyObject * partial_order=None) -> CliqueGraph
+        junctionTree(JunctionTreeGenerator self, UndiGraph g) -> CliqueGraph
+        junctionTree(JunctionTreeGenerator self, DAG dag, PyObject * partial_order=None) -> CliqueGraph
+        junctionTree(JunctionTreeGenerator self, DAG dag) -> CliqueGraph
+        junctionTree(JunctionTreeGenerator self, BayesNet bn, PyObject * partial_order=None) -> CliqueGraph
+        junctionTree(JunctionTreeGenerator self, BayesNet bn) -> CliqueGraph
+
+        Computes the junction tree for its parameters. If the first parameter is a graph, the heurisitcs assume that all the node have the same domain size (2). If given, the heuristic takes into account the partial order for its elimination order.
 
         Parameters
         ----------
         g : pyAgrum.UndiGraph
-        	an Undirected graph
-        bn : pyAgrum.BayesNet
-        	a Bayesian network
+        	a undirected graph
+
+        dag : pyAgrum::DAG
+        	a dag
+
+        bn : pyAgrum::BayesNet
+        	a BayesianNetwork
+
+        partial_order: List[List[int]]
+        	a partial order among the nodeIDs
 
         Returns
         -------
         pyAgrum.CliqueGraph
-        	the current junction tree
+        	the current junction tree. 
 
         """
-        return _pyAgrum.JTGenerator_junctionTree(self, *args)
+        return _pyAgrum.JunctionTreeGenerator_junctionTree(self, *args)
+
+
+    def eliminationOrder(self, *args) -> "PyObject *":
+        r"""
+        eliminationOrder(JunctionTreeGenerator self, UndiGraph g, PyObject * partial_order=None) -> PyObject
+        eliminationOrder(JunctionTreeGenerator self, UndiGraph g) -> PyObject
+        eliminationOrder(JunctionTreeGenerator self, DAG dag, PyObject * partial_order=None) -> PyObject
+        eliminationOrder(JunctionTreeGenerator self, DAG dag) -> PyObject
+        eliminationOrder(JunctionTreeGenerator self, BayesNet bn, PyObject * partial_order=None) -> PyObject
+        eliminationOrder(JunctionTreeGenerator self, BayesNet bn) -> PyObject *
+
+        Computes the elimination for its parameters. If the first parameter is a graph, the heurisitcs assume that all the node have the same domain size (2). If given, the heuristic takes into account the partial order for its elimination order.
+
+        Parameters
+        ----------
+        g : pyAgrum.UndiGraph
+        	a undirected graph
+
+        dag : pyAgrum::DAG
+        	a dag
+
+        bn : pyAgrum::BayesNet
+        	a BayesianNetwork
+
+        partial_order: List[List[int]]
+        	a partial order among the nodeIDs
+
+        Returns
+        -------
+        pyAgrum.CliqueGraph
+        	the current elimination order.
+
+        """
+        return _pyAgrum.JunctionTreeGenerator_eliminationOrder(self, *args)
 
 
     def binaryJoinTree(self, *args) -> "gum::JunctionTree":
         r"""
-        binaryJoinTree(self, g) -> CliqueGraph
-        binaryJoinTree(self, bn) -> CliqueGraph
+        binaryJoinTree(JunctionTreeGenerator self, UndiGraph g, PyObject * partial_order=None) -> CliqueGraph
+        binaryJoinTree(JunctionTreeGenerator self, UndiGraph g) -> CliqueGraph
+        binaryJoinTree(JunctionTreeGenerator self, DAG dag, PyObject * partial_order=None) -> CliqueGraph
+        binaryJoinTree(JunctionTreeGenerator self, DAG dag) -> CliqueGraph
+        binaryJoinTree(JunctionTreeGenerator self, BayesNet bn, PyObject * partial_order=None) -> CliqueGraph
+        binaryJoinTree(JunctionTreeGenerator self, BayesNet bn) -> CliqueGraph
+
+        Computes the binary joint tree for its parameters. If the first parameter is a graph, the heurisitcs assume that all the node have the same domain size (2). If given, the heuristic takes into account the partial order for its elimination order.
 
         Parameters
         ----------
         g : pyAgrum.UndiGraph
-        	an Undirected graph
-        bn : pyAgrum.BayesNet
-        	a Bayesian network
+        	a undirected graph
+
+        dag : pyAgrum::DAG
+        	a dag
+
+        bn : pyAgrum::BayesNet
+        	a BayesianNetwork
+
+        partial_order: List[List[int]]
+        	a partial order among the nodeIDs
 
         Returns
         -------
         pyAgrum.CliqueGraph
-        	the binary join tree
+        	the current binary joint tree 
 
         """
-        return _pyAgrum.JTGenerator_binaryJoinTree(self, *args)
+        return _pyAgrum.JunctionTreeGenerator_binaryJoinTree(self, *args)
 
 
     def __init__(self):
         r"""
-        __init__(self) -> JTGenerator
+        __init__(JunctionTreeGenerator self) -> JunctionTreeGenerator
 
-        JTGenerator is use to generate junction tree or binary junction tree from bayesian networks.
+        JunctionTreeGenerator is use to generate junction tree or binary junction tree from bayesian networks.
 
         Available constructors:
-        	``JTGenerator() -> JTGenerator``
+        	``JunctionTreeGenerator() -> JunctionTreeGenerator``
 
         """
-        _pyAgrum.JTGenerator_swiginit(self, _pyAgrum.new_JTGenerator())
-    __swig_destroy__ = _pyAgrum.delete_JTGenerator
+        _pyAgrum.JunctionTreeGenerator_swiginit(self, _pyAgrum.new_JunctionTreeGenerator())
+    __swig_destroy__ = _pyAgrum.delete_JunctionTreeGenerator
 
-# Register JTGenerator in _pyAgrum:
-_pyAgrum.JTGenerator_swigregister(JTGenerator)
+# Register JunctionTreeGenerator in _pyAgrum:
+_pyAgrum.JunctionTreeGenerator_swigregister(JunctionTreeGenerator)
 
 class PythonBNListener(object):
     r"""Proxy of C++ PythonBNListener class."""
@@ -289,33 +344,33 @@ class PythonBNListener(object):
     __repr__ = _swig_repr
 
     def __init__(self, bn: 'BayesNet', vnm: 'VariableNodeMap'):
-        r"""__init__(self, bn, vnm) -> PythonBNListener"""
+        r"""__init__(PythonBNListener self, BayesNet bn, VariableNodeMap vnm) -> PythonBNListener"""
         _pyAgrum.PythonBNListener_swiginit(self, _pyAgrum.new_PythonBNListener(bn, vnm))
     __swig_destroy__ = _pyAgrum.delete_PythonBNListener
 
     def whenNodeAdded(self, source: 'void const *', id: 'gum::NodeId') -> "void":
-        r"""whenNodeAdded(self, source, id)"""
+        r"""whenNodeAdded(PythonBNListener self, void const * source, gum::NodeId id)"""
         return _pyAgrum.PythonBNListener_whenNodeAdded(self, source, id)
 
 
     def whenNodeDeleted(self, arg2: 'void const *', id: 'gum::NodeId') -> "void":
-        r"""whenNodeDeleted(self, arg2, id)"""
+        r"""whenNodeDeleted(PythonBNListener self, void const * arg2, gum::NodeId id)"""
         return _pyAgrum.PythonBNListener_whenNodeDeleted(self, arg2, id)
 
 
     def whenArcAdded(self, arg2: 'void const *', src: 'gum::NodeId', dst: 'gum::NodeId') -> "void":
-        r"""whenArcAdded(self, arg2, src, dst)"""
+        r"""whenArcAdded(PythonBNListener self, void const * arg2, gum::NodeId src, gum::NodeId dst)"""
         return _pyAgrum.PythonBNListener_whenArcAdded(self, arg2, src, dst)
 
 
     def whenArcDeleted(self, arg2: 'void const *', src: 'gum::NodeId', dst: 'gum::NodeId') -> "void":
-        r"""whenArcDeleted(self, arg2, src, dst)"""
+        r"""whenArcDeleted(PythonBNListener self, void const * arg2, gum::NodeId src, gum::NodeId dst)"""
         return _pyAgrum.PythonBNListener_whenArcDeleted(self, arg2, src, dst)
 
 
     def setWhenArcAdded(self, pyfunc: 'PyObject *') -> "void":
         r"""
-        setWhenArcAdded(self, pyfunc)
+        setWhenArcAdded(PythonBNListener self, PyObject * pyfunc)
 
 
 
@@ -325,7 +380,7 @@ class PythonBNListener(object):
 
     def setWhenArcDeleted(self, pyfunc: 'PyObject *') -> "void":
         r"""
-        setWhenArcDeleted(self, pyfunc)
+        setWhenArcDeleted(PythonBNListener self, PyObject * pyfunc)
 
 
 
@@ -335,7 +390,7 @@ class PythonBNListener(object):
 
     def setWhenNodeAdded(self, pyfunc: 'PyObject *') -> "void":
         r"""
-        setWhenNodeAdded(self, pyfunc)
+        setWhenNodeAdded(PythonBNListener self, PyObject * pyfunc)
 
 
 
@@ -345,7 +400,7 @@ class PythonBNListener(object):
 
     def setWhenNodeDeleted(self, pyfunc: 'PyObject *') -> "void":
         r"""
-        setWhenNodeDeleted(self, pyfunc)
+        setWhenNodeDeleted(PythonBNListener self, PyObject * pyfunc)
 
 
 
@@ -363,13 +418,13 @@ class PythonLoadListener(object):
     __repr__ = _swig_repr
 
     def whenLoading(self, buffer: 'void const *', percent: 'int') -> "void":
-        r"""whenLoading(self, buffer, percent)"""
+        r"""whenLoading(PythonLoadListener self, void const * buffer, int percent)"""
         return _pyAgrum.PythonLoadListener_whenLoading(self, buffer, percent)
 
 
     def setPythonListener(self, l: 'PyObject *') -> "bool":
         r"""
-        setPythonListener(self, l) -> bool
+        setPythonListener(PythonLoadListener self, PyObject * l) -> bool
 
 
 
@@ -378,7 +433,7 @@ class PythonLoadListener(object):
 
 
     def __init__(self):
-        r"""__init__(self) -> PythonLoadListener"""
+        r"""__init__(PythonLoadListener self) -> PythonLoadListener"""
         _pyAgrum.PythonLoadListener_swiginit(self, _pyAgrum.new_PythonLoadListener())
     __swig_destroy__ = _pyAgrum.delete_PythonLoadListener
 
@@ -387,7 +442,7 @@ _pyAgrum.PythonLoadListener_swigregister(PythonLoadListener)
 
 
 def __fillLoadListeners(py_listener: 'std::vector< PythonLoadListener,std::allocator< PythonLoadListener > > &', l: 'PyObject *') -> "int":
-    r"""__fillLoadListeners(py_listener, l) -> int"""
+    r"""__fillLoadListeners(std::vector< PythonLoadListener,std::allocator< PythonLoadListener > > & py_listener, PyObject * l) -> int"""
     return _pyAgrum.__fillLoadListeners(py_listener, l)
 class PythonApproximationListener(object):
     r"""
@@ -404,7 +459,7 @@ class PythonApproximationListener(object):
 
     def __init__(self, algo: 'IApproximationSchemeConfiguration'):
         r"""
-        __init__(self, algo) -> PythonApproximationListener
+        __init__(PythonApproximationListener self, IApproximationSchemeConfiguration algo) -> PythonApproximationListener
 
         Parameters
         ----------
@@ -416,18 +471,18 @@ class PythonApproximationListener(object):
     __swig_destroy__ = _pyAgrum.delete_PythonApproximationListener
 
     def whenProgress(self, src: 'void const *', step: 'gum::Size const', error: 'double const', duration: 'double const') -> "void":
-        r"""whenProgress(self, src, step, error, duration)"""
+        r"""whenProgress(PythonApproximationListener self, void const * src, gum::Size const step, double const error, double const duration)"""
         return _pyAgrum.PythonApproximationListener_whenProgress(self, src, step, error, duration)
 
 
     def whenStop(self, src: 'void const *', message: 'std::string const') -> "void":
-        r"""whenStop(self, src, message)"""
+        r"""whenStop(PythonApproximationListener self, void const * src, std::string const message)"""
         return _pyAgrum.PythonApproximationListener_whenStop(self, src, message)
 
 
     def setWhenProgress(self, pyfunc: 'PyObject *') -> "void":
         r"""
-        setWhenProgress(self, pyfunc)
+        setWhenProgress(PythonApproximationListener self, PyObject * pyfunc)
 
         Parameters
         ----------
@@ -440,7 +495,7 @@ class PythonApproximationListener(object):
 
     def setWhenStop(self, pyfunc: 'PyObject *') -> "void":
         r"""
-        setWhenStop(self, pyfunc)
+        setWhenStop(PythonApproximationListener self, PyObject * pyfunc)
 
         Parameters
         ----------
@@ -461,27 +516,27 @@ class PythonDatabaseGeneratorListener(object):
     __repr__ = _swig_repr
 
     def __init__(self, notif: 'BNDatabaseGenerator'):
-        r"""__init__(self, notif) -> PythonDatabaseGeneratorListener"""
+        r"""__init__(PythonDatabaseGeneratorListener self, BNDatabaseGenerator notif) -> PythonDatabaseGeneratorListener"""
         _pyAgrum.PythonDatabaseGeneratorListener_swiginit(self, _pyAgrum.new_PythonDatabaseGeneratorListener(notif))
     __swig_destroy__ = _pyAgrum.delete_PythonDatabaseGeneratorListener
 
     def whenProgress(self, src: 'void const *', step: 'gum::Size const', duration: 'double const') -> "void":
-        r"""whenProgress(self, src, step, duration)"""
+        r"""whenProgress(PythonDatabaseGeneratorListener self, void const * src, gum::Size const step, double const duration)"""
         return _pyAgrum.PythonDatabaseGeneratorListener_whenProgress(self, src, step, duration)
 
 
     def whenStop(self, src: 'void const *', message: 'std::string const &') -> "void":
-        r"""whenStop(self, src, message)"""
+        r"""whenStop(PythonDatabaseGeneratorListener self, void const * src, std::string const & message)"""
         return _pyAgrum.PythonDatabaseGeneratorListener_whenStop(self, src, message)
 
 
     def setWhenProgress(self, pyfunc: 'PyObject *') -> "void":
-        r"""setWhenProgress(self, pyfunc)"""
+        r"""setWhenProgress(PythonDatabaseGeneratorListener self, PyObject * pyfunc)"""
         return _pyAgrum.PythonDatabaseGeneratorListener_setWhenProgress(self, pyfunc)
 
 
     def setWhenStop(self, pyfunc: 'PyObject *') -> "void":
-        r"""setWhenStop(self, pyfunc)"""
+        r"""setWhenStop(PythonDatabaseGeneratorListener self, PyObject * pyfunc)"""
         return _pyAgrum.PythonDatabaseGeneratorListener_setWhenStop(self, pyfunc)
 
 
@@ -504,10 +559,10 @@ class BNGenerator(object):
 
     def generate(self, n_nodes: 'gum::Size'=10, n_arcs: 'gum::Size'=15, n_modmax: 'gum::Size'=4) -> "gum::BayesNet< double >":
         r"""
-        generate(self, n_nodes=10, n_arcs=15, n_modmax=4) -> BayesNet
-        generate(self, n_nodes=10, n_arcs=15) -> BayesNet
-        generate(self, n_nodes=10) -> BayesNet
-        generate(self) -> BayesNet
+        generate(BNGenerator self, gum::Size n_nodes=10, gum::Size n_arcs=15, gum::Size n_modmax=4) -> BayesNet
+        generate(BNGenerator self, gum::Size n_nodes=10, gum::Size n_arcs=15) -> BayesNet
+        generate(BNGenerator self, gum::Size n_nodes=10) -> BayesNet
+        generate(BNGenerator self) -> BayesNet
 
         Generate a new Bayesian network 
 
@@ -538,7 +593,7 @@ class BNGenerator(object):
 
     def __init__(self):
         r"""
-        __init__(self) -> BNGenerator
+        __init__(BNGenerator self) -> BNGenerator
 
         BNGenerator is used to easily generate Bayesian networks.
 
@@ -569,12 +624,12 @@ class IDGenerator(object):
 
     def generate(self, nbrNodes: 'gum::Size'=10, arcDensity: 'double'=0.2, chanceNodeDensity: 'double'=0.8, utilityNodeDensity: 'double'=0.1, max_modality: 'int'=2) -> "gum::InfluenceDiagram< double >":
         r"""
-        generate(self, nbrNodes=10, arcDensity=0.2, chanceNodeDensity=0.8, utilityNodeDensity=0.1, max_modality=2) -> InfluenceDiagram
-        generate(self, nbrNodes=10, arcDensity=0.2, chanceNodeDensity=0.8, utilityNodeDensity=0.1) -> InfluenceDiagram
-        generate(self, nbrNodes=10, arcDensity=0.2, chanceNodeDensity=0.8) -> InfluenceDiagram
-        generate(self, nbrNodes=10, arcDensity=0.2) -> InfluenceDiagram
-        generate(self, nbrNodes=10) -> InfluenceDiagram
-        generate(self) -> InfluenceDiagram
+        generate(IDGenerator self, gum::Size nbrNodes=10, double arcDensity=0.2, double chanceNodeDensity=0.8, double utilityNodeDensity=0.1, int max_modality=2) -> InfluenceDiagram
+        generate(IDGenerator self, gum::Size nbrNodes=10, double arcDensity=0.2, double chanceNodeDensity=0.8, double utilityNodeDensity=0.1) -> InfluenceDiagram
+        generate(IDGenerator self, gum::Size nbrNodes=10, double arcDensity=0.2, double chanceNodeDensity=0.8) -> InfluenceDiagram
+        generate(IDGenerator self, gum::Size nbrNodes=10, double arcDensity=0.2) -> InfluenceDiagram
+        generate(IDGenerator self, gum::Size nbrNodes=10) -> InfluenceDiagram
+        generate(IDGenerator self) -> InfluenceDiagram
 
         Generate a new influence diagram given the parameters.
 
@@ -602,7 +657,7 @@ class IDGenerator(object):
 
     def __init__(self):
         r"""
-        __init__(self) -> IDGenerator
+        __init__(IDGenerator self) -> IDGenerator
 
         IDGenerator is used to easily generate influence diagrams.
 
@@ -623,7 +678,7 @@ class PRMexplorer(object):
     PRMexplorer helps navigate through probabilistic relational models.
 
     Available constructors:
-    	``JTGenerator() -> JTGenerator``
+    	``PRMexplorer() -> PRMexplorer``
 
     """
 
@@ -632,12 +687,12 @@ class PRMexplorer(object):
 
     def __init__(self):
         r"""
-        __init__(self) -> PRMexplorer
+        __init__(PRMexplorer self) -> PRMexplorer
 
         PRMexplorer helps navigate through probabilistic relational models.
 
         Available constructors:
-        	``JTGenerator() -> JTGenerator``
+        	``PRMexplorer() -> PRMexplorer``
 
         """
         _pyAgrum.PRMexplorer_swiginit(self, _pyAgrum.new_PRMexplorer())
@@ -645,9 +700,9 @@ class PRMexplorer(object):
 
     def load(self, *args) -> "void":
         r"""
-        load(self, filename, classpath, verbose=False)
-        load(self, filename, classpath)
-        load(self, filename)
+        load(PRMexplorer self, std::string filename, std::string classpath, bool verbose=False)
+        load(PRMexplorer self, std::string filename, std::string classpath)
+        load(PRMexplorer self, std::string filename)
 
         Load a PRM into the explorer.
 
@@ -669,7 +724,7 @@ class PRMexplorer(object):
 
     def isType(self, name: 'std::string') -> "PyObject *":
         r"""
-        isType(self, name) -> PyObject *
+        isType(PRMexplorer self, std::string name) -> PyObject *
 
         Parameters
         ----------
@@ -687,7 +742,7 @@ class PRMexplorer(object):
 
     def isClass(self, name: 'std::string') -> "PyObject *":
         r"""
-        isClass(self, name) -> PyObject *
+        isClass(PRMexplorer self, std::string name) -> PyObject *
 
         Parameters
         ----------
@@ -705,7 +760,7 @@ class PRMexplorer(object):
 
     def isInterface(self, name: 'std::string') -> "PyObject *":
         r"""
-        isInterface(self, name) -> PyObject *
+        isInterface(PRMexplorer self, std::string name) -> PyObject *
 
         Parameters
         ----------
@@ -723,7 +778,7 @@ class PRMexplorer(object):
 
     def classes(self) -> "PyObject *":
         r"""
-        classes(self) -> PyObject *
+        classes(PRMexplorer self) -> PyObject *
 
         Returns
         -------
@@ -736,7 +791,7 @@ class PRMexplorer(object):
 
     def classAttributes(self, class_name: 'std::string') -> "PyObject *":
         r"""
-        classAttributes(self, class_name) -> PyObject *
+        classAttributes(PRMexplorer self, std::string class_name) -> PyObject *
 
         Parameters
         ----------
@@ -759,7 +814,7 @@ class PRMexplorer(object):
 
     def isAttribute(self, class_name: 'std::string', att_name: 'std::string') -> "PyObject *":
         r"""
-        isAttribute(self, class_name, att_name) -> PyObject *
+        isAttribute(PRMexplorer self, std::string class_name, std::string att_name) -> PyObject *
 
         Parameters
         ----------
@@ -786,7 +841,7 @@ class PRMexplorer(object):
 
     def classReferences(self, class_name: 'std::string') -> "PyObject *":
         r"""
-        classReferences(self, class_name) -> PyObject *
+        classReferences(PRMexplorer self, std::string class_name) -> PyObject *
 
         Parameters
         ----------
@@ -809,7 +864,7 @@ class PRMexplorer(object):
 
     def classParameters(self, class_name: 'std::string') -> "PyObject *":
         r"""
-        classParameters(self, class_name) -> PyObject *
+        classParameters(PRMexplorer self, std::string class_name) -> PyObject *
 
         Parameters
         ----------
@@ -832,7 +887,7 @@ class PRMexplorer(object):
 
     def classImplements(self, class_name: 'std::string') -> "PyObject *":
         r"""
-        classImplements(self, class_name) -> PyObject *
+        classImplements(PRMexplorer self, std::string class_name) -> PyObject *
 
         Parameters
         ----------
@@ -851,7 +906,7 @@ class PRMexplorer(object):
 
     def classAggregates(self, class_name: 'std::string') -> "PyObject *":
         r"""
-        classAggregates(self, class_name) -> PyObject *
+        classAggregates(PRMexplorer self, std::string class_name) -> PyObject *
 
         Parameters
         ----------
@@ -874,7 +929,7 @@ class PRMexplorer(object):
 
     def classSlotChains(self, class_name: 'std::string') -> "PyObject *":
         r"""
-        classSlotChains(self, class_name) -> PyObject *
+        classSlotChains(PRMexplorer self, std::string class_name) -> PyObject *
 
         Parameters
         ----------
@@ -897,7 +952,7 @@ class PRMexplorer(object):
 
     def classDag(self, class_name: 'std::string') -> "PyObject *":
         r"""
-        classDag(self, class_name) -> PyObject *
+        classDag(PRMexplorer self, std::string class_name) -> PyObject *
 
         Parameters
         ----------
@@ -920,7 +975,7 @@ class PRMexplorer(object):
 
     def getalltheSystems(self) -> "PyObject *":
         r"""
-        getalltheSystems(self) -> PyObject *
+        getalltheSystems(PRMexplorer self) -> PyObject *
 
         Returns
         -------
@@ -933,7 +988,7 @@ class PRMexplorer(object):
 
     def getSuperClass(self, class_name: 'std::string') -> "PyObject *":
         r"""
-        getSuperClass(self, class_name) -> PyObject *
+        getSuperClass(PRMexplorer self, std::string class_name) -> PyObject *
 
         Parameters
         ----------
@@ -956,7 +1011,7 @@ class PRMexplorer(object):
 
     def getDirectSubClass(self, class_name: 'std::string') -> "PyObject *":
         r"""
-        getDirectSubClass(self, class_name) -> PyObject *
+        getDirectSubClass(PRMexplorer self, std::string class_name) -> PyObject *
 
         Parameters
         ----------
@@ -979,7 +1034,7 @@ class PRMexplorer(object):
 
     def cpf(self, class_name: 'std::string', attribute: 'std::string') -> "gum::Potential< double > const &":
         r"""
-        cpf(self, class_name, attribute) -> Potential
+        cpf(PRMexplorer self, std::string class_name, std::string attribute) -> Potential
 
         Parameters
         ----------
@@ -1009,7 +1064,7 @@ class PRMexplorer(object):
 
     def types(self) -> "PyObject *":
         r"""
-        types(self) -> PyObject *
+        types(PRMexplorer self) -> PyObject *
 
         Returns
         -------
@@ -1022,7 +1077,7 @@ class PRMexplorer(object):
 
     def getSuperType(self, type_name: 'std::string') -> "PyObject *":
         r"""
-        getSuperType(self, type_name) -> PyObject *
+        getSuperType(PRMexplorer self, std::string type_name) -> PyObject *
 
         Parameters
         ----------
@@ -1045,7 +1100,7 @@ class PRMexplorer(object):
 
     def getDirectSubTypes(self, type_name: 'std::string') -> "PyObject *":
         r"""
-        getDirectSubTypes(self, type_name) -> PyObject *
+        getDirectSubTypes(PRMexplorer self, std::string type_name) -> PyObject *
 
         Parameters
         ----------
@@ -1068,7 +1123,7 @@ class PRMexplorer(object):
 
     def getLabels(self, type_name: 'std::string') -> "PyObject *":
         r"""
-        getLabels(self, type_name) -> PyObject *
+        getLabels(PRMexplorer self, std::string type_name) -> PyObject *
 
         Parameters
         ----------
@@ -1091,7 +1146,7 @@ class PRMexplorer(object):
 
     def getLabelMap(self, type_name: 'std::string') -> "PyObject *":
         r"""
-        getLabelMap(self, type_name) -> PyObject *
+        getLabelMap(PRMexplorer self, std::string type_name) -> PyObject *
 
         Parameters
         ----------
@@ -1114,7 +1169,7 @@ class PRMexplorer(object):
 
     def interfaces(self) -> "PyObject *":
         r"""
-        interfaces(self) -> PyObject *
+        interfaces(PRMexplorer self) -> PyObject *
 
         Returns
         -------
@@ -1127,8 +1182,8 @@ class PRMexplorer(object):
 
     def interAttributes(self, interface_name: 'std::string', allAttributes: 'bool'=False) -> "PyObject *":
         r"""
-        interAttributes(self, interface_name, allAttributes=False) -> PyObject
-        interAttributes(self, interface_name) -> PyObject *
+        interAttributes(PRMexplorer self, std::string interface_name, bool allAttributes=False) -> PyObject
+        interAttributes(PRMexplorer self, std::string interface_name) -> PyObject *
 
         Parameters
         ----------
@@ -1154,7 +1209,7 @@ class PRMexplorer(object):
 
     def interReferences(self, interface_name: 'std::string') -> "PyObject *":
         r"""
-        interReferences(self, interface_name) -> PyObject *
+        interReferences(PRMexplorer self, std::string interface_name) -> PyObject *
 
         Parameters
         ----------
@@ -1177,7 +1232,7 @@ class PRMexplorer(object):
 
     def getSuperInterface(self, interface_name: 'std::string') -> "PyObject *":
         r"""
-        getSuperInterface(self, interface_name) -> PyObject *
+        getSuperInterface(PRMexplorer self, std::string interface_name) -> PyObject *
 
         Parameters
         ----------
@@ -1200,7 +1255,7 @@ class PRMexplorer(object):
 
     def getDirectSubInterfaces(self, interface_name: 'std::string') -> "PyObject *":
         r"""
-        getDirectSubInterfaces(self, interface_name) -> PyObject *
+        getDirectSubInterfaces(PRMexplorer self, std::string interface_name) -> PyObject *
 
         Parameters
         ----------
@@ -1223,7 +1278,7 @@ class PRMexplorer(object):
 
     def getImplementations(self, interface_name: 'std::string') -> "PyObject *":
         r"""
-        getImplementations(self, interface_name) -> PyObject *
+        getImplementations(PRMexplorer self, std::string interface_name) -> PyObject *
 
         Parameters
         ----------
@@ -1254,190 +1309,190 @@ class Vector(object):
     __repr__ = _swig_repr
 
     def iterator(self) -> "swig::SwigPyIterator *":
-        r"""iterator(self) -> SwigPyIterator"""
+        r"""iterator(Vector self) -> SwigPyIterator"""
         return _pyAgrum.Vector_iterator(self)
 
     def __iter__(self):
         return self.iterator()
 
     def __nonzero__(self) -> "bool":
-        r"""__nonzero__(self) -> bool"""
+        r"""__nonzero__(Vector self) -> bool"""
         return _pyAgrum.Vector___nonzero__(self)
 
 
     def __bool__(self) -> "bool":
-        r"""__bool__(self) -> bool"""
+        r"""__bool__(Vector self) -> bool"""
         return _pyAgrum.Vector___bool__(self)
 
 
     def __len__(self) -> "std::vector< double >::size_type":
-        r"""__len__(self) -> std::vector< double >::size_type"""
+        r"""__len__(Vector self) -> std::vector< double >::size_type"""
         return _pyAgrum.Vector___len__(self)
 
 
     def __getslice__(self, i: 'std::vector< double >::difference_type', j: 'std::vector< double >::difference_type') -> "std::vector< double,std::allocator< double > > *":
-        r"""__getslice__(self, i, j) -> Vector"""
+        r"""__getslice__(Vector self, std::vector< double >::difference_type i, std::vector< double >::difference_type j) -> Vector"""
         return _pyAgrum.Vector___getslice__(self, i, j)
 
 
     def __setslice__(self, *args) -> "void":
         r"""
-        __setslice__(self, i, j)
-        __setslice__(self, i, j, v)
+        __setslice__(Vector self, std::vector< double >::difference_type i, std::vector< double >::difference_type j)
+        __setslice__(Vector self, std::vector< double >::difference_type i, std::vector< double >::difference_type j, Vector v)
         """
         return _pyAgrum.Vector___setslice__(self, *args)
 
 
     def __delslice__(self, i: 'std::vector< double >::difference_type', j: 'std::vector< double >::difference_type') -> "void":
-        r"""__delslice__(self, i, j)"""
+        r"""__delslice__(Vector self, std::vector< double >::difference_type i, std::vector< double >::difference_type j)"""
         return _pyAgrum.Vector___delslice__(self, i, j)
 
 
     def __delitem__(self, *args) -> "void":
         r"""
-        __delitem__(self, i)
-        __delitem__(self, slice)
+        __delitem__(Vector self, std::vector< double >::difference_type i)
+        __delitem__(Vector self, PySliceObject * slice)
         """
         return _pyAgrum.Vector___delitem__(self, *args)
 
 
     def __getitem__(self, *args) -> "std::vector< double >::value_type const &":
         r"""
-        __getitem__(self, slice) -> Vector
-        __getitem__(self, i) -> std::vector< double >::value_type const &
+        __getitem__(Vector self, PySliceObject * slice) -> Vector
+        __getitem__(Vector self, std::vector< double >::difference_type i) -> std::vector< double >::value_type const &
         """
         return _pyAgrum.Vector___getitem__(self, *args)
 
 
     def __setitem__(self, *args) -> "void":
         r"""
-        __setitem__(self, slice, v)
-        __setitem__(self, slice)
-        __setitem__(self, i, x)
+        __setitem__(Vector self, PySliceObject * slice, Vector v)
+        __setitem__(Vector self, PySliceObject * slice)
+        __setitem__(Vector self, std::vector< double >::difference_type i, std::vector< double >::value_type const & x)
         """
         return _pyAgrum.Vector___setitem__(self, *args)
 
 
     def pop(self) -> "std::vector< double >::value_type":
-        r"""pop(self) -> std::vector< double >::value_type"""
+        r"""pop(Vector self) -> std::vector< double >::value_type"""
         return _pyAgrum.Vector_pop(self)
 
 
     def append(self, x: 'std::vector< double >::value_type const &') -> "void":
-        r"""append(self, x)"""
+        r"""append(Vector self, std::vector< double >::value_type const & x)"""
         return _pyAgrum.Vector_append(self, x)
 
 
     def empty(self) -> "bool":
-        r"""empty(self) -> bool"""
+        r"""empty(Vector self) -> bool"""
         return _pyAgrum.Vector_empty(self)
 
 
     def size(self) -> "std::vector< double >::size_type":
-        r"""size(self) -> std::vector< double >::size_type"""
+        r"""size(Vector self) -> std::vector< double >::size_type"""
         return _pyAgrum.Vector_size(self)
 
 
     def swap(self, v: 'Vector') -> "void":
-        r"""swap(self, v)"""
+        r"""swap(Vector self, Vector v)"""
         return _pyAgrum.Vector_swap(self, v)
 
 
     def begin(self) -> "std::vector< double >::iterator":
-        r"""begin(self) -> std::vector< double >::iterator"""
+        r"""begin(Vector self) -> std::vector< double >::iterator"""
         return _pyAgrum.Vector_begin(self)
 
 
     def end(self) -> "std::vector< double >::iterator":
-        r"""end(self) -> std::vector< double >::iterator"""
+        r"""end(Vector self) -> std::vector< double >::iterator"""
         return _pyAgrum.Vector_end(self)
 
 
     def rbegin(self) -> "std::vector< double >::reverse_iterator":
-        r"""rbegin(self) -> std::vector< double >::reverse_iterator"""
+        r"""rbegin(Vector self) -> std::vector< double >::reverse_iterator"""
         return _pyAgrum.Vector_rbegin(self)
 
 
     def rend(self) -> "std::vector< double >::reverse_iterator":
-        r"""rend(self) -> std::vector< double >::reverse_iterator"""
+        r"""rend(Vector self) -> std::vector< double >::reverse_iterator"""
         return _pyAgrum.Vector_rend(self)
 
 
     def clear(self) -> "void":
-        r"""clear(self)"""
+        r"""clear(Vector self)"""
         return _pyAgrum.Vector_clear(self)
 
 
     def get_allocator(self) -> "std::vector< double >::allocator_type":
-        r"""get_allocator(self) -> std::vector< double >::allocator_type"""
+        r"""get_allocator(Vector self) -> std::vector< double >::allocator_type"""
         return _pyAgrum.Vector_get_allocator(self)
 
 
     def pop_back(self) -> "void":
-        r"""pop_back(self)"""
+        r"""pop_back(Vector self)"""
         return _pyAgrum.Vector_pop_back(self)
 
 
     def erase(self, *args) -> "std::vector< double >::iterator":
         r"""
-        erase(self, pos) -> std::vector< double >::iterator
-        erase(self, first, last) -> std::vector< double >::iterator
+        erase(Vector self, std::vector< double >::iterator pos) -> std::vector< double >::iterator
+        erase(Vector self, std::vector< double >::iterator first, std::vector< double >::iterator last) -> std::vector< double >::iterator
         """
         return _pyAgrum.Vector_erase(self, *args)
 
 
     def __init__(self, *args):
         r"""
-        __init__(self) -> Vector
-        __init__(self, arg2) -> Vector
-        __init__(self, size) -> Vector
-        __init__(self, size, value) -> Vector
+        __init__(Vector self) -> Vector
+        __init__(Vector self, Vector arg2) -> Vector
+        __init__(Vector self, std::vector< double >::size_type size) -> Vector
+        __init__(Vector self, std::vector< double >::size_type size, std::vector< double >::value_type const & value) -> Vector
         """
         _pyAgrum.Vector_swiginit(self, _pyAgrum.new_Vector(*args))
 
     def push_back(self, x: 'std::vector< double >::value_type const &') -> "void":
-        r"""push_back(self, x)"""
+        r"""push_back(Vector self, std::vector< double >::value_type const & x)"""
         return _pyAgrum.Vector_push_back(self, x)
 
 
     def front(self) -> "std::vector< double >::value_type const &":
-        r"""front(self) -> std::vector< double >::value_type const &"""
+        r"""front(Vector self) -> std::vector< double >::value_type const &"""
         return _pyAgrum.Vector_front(self)
 
 
     def back(self) -> "std::vector< double >::value_type const &":
-        r"""back(self) -> std::vector< double >::value_type const &"""
+        r"""back(Vector self) -> std::vector< double >::value_type const &"""
         return _pyAgrum.Vector_back(self)
 
 
     def assign(self, n: 'std::vector< double >::size_type', x: 'std::vector< double >::value_type const &') -> "void":
-        r"""assign(self, n, x)"""
+        r"""assign(Vector self, std::vector< double >::size_type n, std::vector< double >::value_type const & x)"""
         return _pyAgrum.Vector_assign(self, n, x)
 
 
     def resize(self, *args) -> "void":
         r"""
-        resize(self, new_size)
-        resize(self, new_size, x)
+        resize(Vector self, std::vector< double >::size_type new_size)
+        resize(Vector self, std::vector< double >::size_type new_size, std::vector< double >::value_type const & x)
         """
         return _pyAgrum.Vector_resize(self, *args)
 
 
     def insert(self, *args) -> "void":
         r"""
-        insert(self, pos, x) -> std::vector< double >::iterator
-        insert(self, pos, n, x)
+        insert(Vector self, std::vector< double >::iterator pos, std::vector< double >::value_type const & x) -> std::vector< double >::iterator
+        insert(Vector self, std::vector< double >::iterator pos, std::vector< double >::size_type n, std::vector< double >::value_type const & x)
         """
         return _pyAgrum.Vector_insert(self, *args)
 
 
     def reserve(self, n: 'std::vector< double >::size_type') -> "void":
-        r"""reserve(self, n)"""
+        r"""reserve(Vector self, std::vector< double >::size_type n)"""
         return _pyAgrum.Vector_reserve(self, n)
 
 
     def capacity(self) -> "std::vector< double >::size_type":
-        r"""capacity(self) -> std::vector< double >::size_type"""
+        r"""capacity(Vector self) -> std::vector< double >::size_type"""
         return _pyAgrum.Vector_capacity(self)
 
     __swig_destroy__ = _pyAgrum.delete_Vector
@@ -1452,190 +1507,190 @@ class Vector_int(object):
     __repr__ = _swig_repr
 
     def iterator(self) -> "swig::SwigPyIterator *":
-        r"""iterator(self) -> SwigPyIterator"""
+        r"""iterator(Vector_int self) -> SwigPyIterator"""
         return _pyAgrum.Vector_int_iterator(self)
 
     def __iter__(self):
         return self.iterator()
 
     def __nonzero__(self) -> "bool":
-        r"""__nonzero__(self) -> bool"""
+        r"""__nonzero__(Vector_int self) -> bool"""
         return _pyAgrum.Vector_int___nonzero__(self)
 
 
     def __bool__(self) -> "bool":
-        r"""__bool__(self) -> bool"""
+        r"""__bool__(Vector_int self) -> bool"""
         return _pyAgrum.Vector_int___bool__(self)
 
 
     def __len__(self) -> "std::vector< unsigned int >::size_type":
-        r"""__len__(self) -> std::vector< unsigned int >::size_type"""
+        r"""__len__(Vector_int self) -> std::vector< unsigned int >::size_type"""
         return _pyAgrum.Vector_int___len__(self)
 
 
     def __getslice__(self, i: 'std::vector< unsigned int >::difference_type', j: 'std::vector< unsigned int >::difference_type') -> "std::vector< unsigned int,std::allocator< unsigned int > > *":
-        r"""__getslice__(self, i, j) -> Vector_int"""
+        r"""__getslice__(Vector_int self, std::vector< unsigned int >::difference_type i, std::vector< unsigned int >::difference_type j) -> Vector_int"""
         return _pyAgrum.Vector_int___getslice__(self, i, j)
 
 
     def __setslice__(self, *args) -> "void":
         r"""
-        __setslice__(self, i, j)
-        __setslice__(self, i, j, v)
+        __setslice__(Vector_int self, std::vector< unsigned int >::difference_type i, std::vector< unsigned int >::difference_type j)
+        __setslice__(Vector_int self, std::vector< unsigned int >::difference_type i, std::vector< unsigned int >::difference_type j, Vector_int v)
         """
         return _pyAgrum.Vector_int___setslice__(self, *args)
 
 
     def __delslice__(self, i: 'std::vector< unsigned int >::difference_type', j: 'std::vector< unsigned int >::difference_type') -> "void":
-        r"""__delslice__(self, i, j)"""
+        r"""__delslice__(Vector_int self, std::vector< unsigned int >::difference_type i, std::vector< unsigned int >::difference_type j)"""
         return _pyAgrum.Vector_int___delslice__(self, i, j)
 
 
     def __delitem__(self, *args) -> "void":
         r"""
-        __delitem__(self, i)
-        __delitem__(self, slice)
+        __delitem__(Vector_int self, std::vector< unsigned int >::difference_type i)
+        __delitem__(Vector_int self, PySliceObject * slice)
         """
         return _pyAgrum.Vector_int___delitem__(self, *args)
 
 
     def __getitem__(self, *args) -> "std::vector< unsigned int >::value_type const &":
         r"""
-        __getitem__(self, slice) -> Vector_int
-        __getitem__(self, i) -> std::vector< unsigned int >::value_type const &
+        __getitem__(Vector_int self, PySliceObject * slice) -> Vector_int
+        __getitem__(Vector_int self, std::vector< unsigned int >::difference_type i) -> std::vector< unsigned int >::value_type const &
         """
         return _pyAgrum.Vector_int___getitem__(self, *args)
 
 
     def __setitem__(self, *args) -> "void":
         r"""
-        __setitem__(self, slice, v)
-        __setitem__(self, slice)
-        __setitem__(self, i, x)
+        __setitem__(Vector_int self, PySliceObject * slice, Vector_int v)
+        __setitem__(Vector_int self, PySliceObject * slice)
+        __setitem__(Vector_int self, std::vector< unsigned int >::difference_type i, std::vector< unsigned int >::value_type const & x)
         """
         return _pyAgrum.Vector_int___setitem__(self, *args)
 
 
     def pop(self) -> "std::vector< unsigned int >::value_type":
-        r"""pop(self) -> std::vector< unsigned int >::value_type"""
+        r"""pop(Vector_int self) -> std::vector< unsigned int >::value_type"""
         return _pyAgrum.Vector_int_pop(self)
 
 
     def append(self, x: 'std::vector< unsigned int >::value_type const &') -> "void":
-        r"""append(self, x)"""
+        r"""append(Vector_int self, std::vector< unsigned int >::value_type const & x)"""
         return _pyAgrum.Vector_int_append(self, x)
 
 
     def empty(self) -> "bool":
-        r"""empty(self) -> bool"""
+        r"""empty(Vector_int self) -> bool"""
         return _pyAgrum.Vector_int_empty(self)
 
 
     def size(self) -> "std::vector< unsigned int >::size_type":
-        r"""size(self) -> std::vector< unsigned int >::size_type"""
+        r"""size(Vector_int self) -> std::vector< unsigned int >::size_type"""
         return _pyAgrum.Vector_int_size(self)
 
 
     def swap(self, v: 'Vector_int') -> "void":
-        r"""swap(self, v)"""
+        r"""swap(Vector_int self, Vector_int v)"""
         return _pyAgrum.Vector_int_swap(self, v)
 
 
     def begin(self) -> "std::vector< unsigned int >::iterator":
-        r"""begin(self) -> std::vector< unsigned int >::iterator"""
+        r"""begin(Vector_int self) -> std::vector< unsigned int >::iterator"""
         return _pyAgrum.Vector_int_begin(self)
 
 
     def end(self) -> "std::vector< unsigned int >::iterator":
-        r"""end(self) -> std::vector< unsigned int >::iterator"""
+        r"""end(Vector_int self) -> std::vector< unsigned int >::iterator"""
         return _pyAgrum.Vector_int_end(self)
 
 
     def rbegin(self) -> "std::vector< unsigned int >::reverse_iterator":
-        r"""rbegin(self) -> std::vector< unsigned int >::reverse_iterator"""
+        r"""rbegin(Vector_int self) -> std::vector< unsigned int >::reverse_iterator"""
         return _pyAgrum.Vector_int_rbegin(self)
 
 
     def rend(self) -> "std::vector< unsigned int >::reverse_iterator":
-        r"""rend(self) -> std::vector< unsigned int >::reverse_iterator"""
+        r"""rend(Vector_int self) -> std::vector< unsigned int >::reverse_iterator"""
         return _pyAgrum.Vector_int_rend(self)
 
 
     def clear(self) -> "void":
-        r"""clear(self)"""
+        r"""clear(Vector_int self)"""
         return _pyAgrum.Vector_int_clear(self)
 
 
     def get_allocator(self) -> "std::vector< unsigned int >::allocator_type":
-        r"""get_allocator(self) -> std::vector< unsigned int >::allocator_type"""
+        r"""get_allocator(Vector_int self) -> std::vector< unsigned int >::allocator_type"""
         return _pyAgrum.Vector_int_get_allocator(self)
 
 
     def pop_back(self) -> "void":
-        r"""pop_back(self)"""
+        r"""pop_back(Vector_int self)"""
         return _pyAgrum.Vector_int_pop_back(self)
 
 
     def erase(self, *args) -> "std::vector< unsigned int >::iterator":
         r"""
-        erase(self, pos) -> std::vector< unsigned int >::iterator
-        erase(self, first, last) -> std::vector< unsigned int >::iterator
+        erase(Vector_int self, std::vector< unsigned int >::iterator pos) -> std::vector< unsigned int >::iterator
+        erase(Vector_int self, std::vector< unsigned int >::iterator first, std::vector< unsigned int >::iterator last) -> std::vector< unsigned int >::iterator
         """
         return _pyAgrum.Vector_int_erase(self, *args)
 
 
     def __init__(self, *args):
         r"""
-        __init__(self) -> Vector_int
-        __init__(self, arg2) -> Vector_int
-        __init__(self, size) -> Vector_int
-        __init__(self, size, value) -> Vector_int
+        __init__(Vector_int self) -> Vector_int
+        __init__(Vector_int self, Vector_int arg2) -> Vector_int
+        __init__(Vector_int self, std::vector< unsigned int >::size_type size) -> Vector_int
+        __init__(Vector_int self, std::vector< unsigned int >::size_type size, std::vector< unsigned int >::value_type const & value) -> Vector_int
         """
         _pyAgrum.Vector_int_swiginit(self, _pyAgrum.new_Vector_int(*args))
 
     def push_back(self, x: 'std::vector< unsigned int >::value_type const &') -> "void":
-        r"""push_back(self, x)"""
+        r"""push_back(Vector_int self, std::vector< unsigned int >::value_type const & x)"""
         return _pyAgrum.Vector_int_push_back(self, x)
 
 
     def front(self) -> "std::vector< unsigned int >::value_type const &":
-        r"""front(self) -> std::vector< unsigned int >::value_type const &"""
+        r"""front(Vector_int self) -> std::vector< unsigned int >::value_type const &"""
         return _pyAgrum.Vector_int_front(self)
 
 
     def back(self) -> "std::vector< unsigned int >::value_type const &":
-        r"""back(self) -> std::vector< unsigned int >::value_type const &"""
+        r"""back(Vector_int self) -> std::vector< unsigned int >::value_type const &"""
         return _pyAgrum.Vector_int_back(self)
 
 
     def assign(self, n: 'std::vector< unsigned int >::size_type', x: 'std::vector< unsigned int >::value_type const &') -> "void":
-        r"""assign(self, n, x)"""
+        r"""assign(Vector_int self, std::vector< unsigned int >::size_type n, std::vector< unsigned int >::value_type const & x)"""
         return _pyAgrum.Vector_int_assign(self, n, x)
 
 
     def resize(self, *args) -> "void":
         r"""
-        resize(self, new_size)
-        resize(self, new_size, x)
+        resize(Vector_int self, std::vector< unsigned int >::size_type new_size)
+        resize(Vector_int self, std::vector< unsigned int >::size_type new_size, std::vector< unsigned int >::value_type const & x)
         """
         return _pyAgrum.Vector_int_resize(self, *args)
 
 
     def insert(self, *args) -> "void":
         r"""
-        insert(self, pos, x) -> std::vector< unsigned int >::iterator
-        insert(self, pos, n, x)
+        insert(Vector_int self, std::vector< unsigned int >::iterator pos, std::vector< unsigned int >::value_type const & x) -> std::vector< unsigned int >::iterator
+        insert(Vector_int self, std::vector< unsigned int >::iterator pos, std::vector< unsigned int >::size_type n, std::vector< unsigned int >::value_type const & x)
         """
         return _pyAgrum.Vector_int_insert(self, *args)
 
 
     def reserve(self, n: 'std::vector< unsigned int >::size_type') -> "void":
-        r"""reserve(self, n)"""
+        r"""reserve(Vector_int self, std::vector< unsigned int >::size_type n)"""
         return _pyAgrum.Vector_int_reserve(self, n)
 
 
     def capacity(self) -> "std::vector< unsigned int >::size_type":
-        r"""capacity(self) -> std::vector< unsigned int >::size_type"""
+        r"""capacity(Vector_int self) -> std::vector< unsigned int >::size_type"""
         return _pyAgrum.Vector_int_capacity(self)
 
     __swig_destroy__ = _pyAgrum.delete_Vector_int
@@ -1650,190 +1705,190 @@ class Vector_string(object):
     __repr__ = _swig_repr
 
     def iterator(self) -> "swig::SwigPyIterator *":
-        r"""iterator(self) -> SwigPyIterator"""
+        r"""iterator(Vector_string self) -> SwigPyIterator"""
         return _pyAgrum.Vector_string_iterator(self)
 
     def __iter__(self):
         return self.iterator()
 
     def __nonzero__(self) -> "bool":
-        r"""__nonzero__(self) -> bool"""
+        r"""__nonzero__(Vector_string self) -> bool"""
         return _pyAgrum.Vector_string___nonzero__(self)
 
 
     def __bool__(self) -> "bool":
-        r"""__bool__(self) -> bool"""
+        r"""__bool__(Vector_string self) -> bool"""
         return _pyAgrum.Vector_string___bool__(self)
 
 
     def __len__(self) -> "std::vector< std::string >::size_type":
-        r"""__len__(self) -> std::vector< std::string >::size_type"""
+        r"""__len__(Vector_string self) -> std::vector< std::string >::size_type"""
         return _pyAgrum.Vector_string___len__(self)
 
 
     def __getslice__(self, i: 'std::vector< std::string >::difference_type', j: 'std::vector< std::string >::difference_type') -> "std::vector< std::string,std::allocator< std::string > > *":
-        r"""__getslice__(self, i, j) -> Vector_string"""
+        r"""__getslice__(Vector_string self, std::vector< std::string >::difference_type i, std::vector< std::string >::difference_type j) -> Vector_string"""
         return _pyAgrum.Vector_string___getslice__(self, i, j)
 
 
     def __setslice__(self, *args) -> "void":
         r"""
-        __setslice__(self, i, j)
-        __setslice__(self, i, j, v)
+        __setslice__(Vector_string self, std::vector< std::string >::difference_type i, std::vector< std::string >::difference_type j)
+        __setslice__(Vector_string self, std::vector< std::string >::difference_type i, std::vector< std::string >::difference_type j, Vector_string v)
         """
         return _pyAgrum.Vector_string___setslice__(self, *args)
 
 
     def __delslice__(self, i: 'std::vector< std::string >::difference_type', j: 'std::vector< std::string >::difference_type') -> "void":
-        r"""__delslice__(self, i, j)"""
+        r"""__delslice__(Vector_string self, std::vector< std::string >::difference_type i, std::vector< std::string >::difference_type j)"""
         return _pyAgrum.Vector_string___delslice__(self, i, j)
 
 
     def __delitem__(self, *args) -> "void":
         r"""
-        __delitem__(self, i)
-        __delitem__(self, slice)
+        __delitem__(Vector_string self, std::vector< std::string >::difference_type i)
+        __delitem__(Vector_string self, PySliceObject * slice)
         """
         return _pyAgrum.Vector_string___delitem__(self, *args)
 
 
     def __getitem__(self, *args) -> "std::vector< std::string >::value_type const &":
         r"""
-        __getitem__(self, slice) -> Vector_string
-        __getitem__(self, i) -> std::vector< std::string >::value_type const &
+        __getitem__(Vector_string self, PySliceObject * slice) -> Vector_string
+        __getitem__(Vector_string self, std::vector< std::string >::difference_type i) -> std::vector< std::string >::value_type const &
         """
         return _pyAgrum.Vector_string___getitem__(self, *args)
 
 
     def __setitem__(self, *args) -> "void":
         r"""
-        __setitem__(self, slice, v)
-        __setitem__(self, slice)
-        __setitem__(self, i, x)
+        __setitem__(Vector_string self, PySliceObject * slice, Vector_string v)
+        __setitem__(Vector_string self, PySliceObject * slice)
+        __setitem__(Vector_string self, std::vector< std::string >::difference_type i, std::vector< std::string >::value_type const & x)
         """
         return _pyAgrum.Vector_string___setitem__(self, *args)
 
 
     def pop(self) -> "std::vector< std::string >::value_type":
-        r"""pop(self) -> std::vector< std::string >::value_type"""
+        r"""pop(Vector_string self) -> std::vector< std::string >::value_type"""
         return _pyAgrum.Vector_string_pop(self)
 
 
     def append(self, x: 'std::vector< std::string >::value_type const &') -> "void":
-        r"""append(self, x)"""
+        r"""append(Vector_string self, std::vector< std::string >::value_type const & x)"""
         return _pyAgrum.Vector_string_append(self, x)
 
 
     def empty(self) -> "bool":
-        r"""empty(self) -> bool"""
+        r"""empty(Vector_string self) -> bool"""
         return _pyAgrum.Vector_string_empty(self)
 
 
     def size(self) -> "std::vector< std::string >::size_type":
-        r"""size(self) -> std::vector< std::string >::size_type"""
+        r"""size(Vector_string self) -> std::vector< std::string >::size_type"""
         return _pyAgrum.Vector_string_size(self)
 
 
     def swap(self, v: 'Vector_string') -> "void":
-        r"""swap(self, v)"""
+        r"""swap(Vector_string self, Vector_string v)"""
         return _pyAgrum.Vector_string_swap(self, v)
 
 
     def begin(self) -> "std::vector< std::string >::iterator":
-        r"""begin(self) -> std::vector< std::string >::iterator"""
+        r"""begin(Vector_string self) -> std::vector< std::string >::iterator"""
         return _pyAgrum.Vector_string_begin(self)
 
 
     def end(self) -> "std::vector< std::string >::iterator":
-        r"""end(self) -> std::vector< std::string >::iterator"""
+        r"""end(Vector_string self) -> std::vector< std::string >::iterator"""
         return _pyAgrum.Vector_string_end(self)
 
 
     def rbegin(self) -> "std::vector< std::string >::reverse_iterator":
-        r"""rbegin(self) -> std::vector< std::string >::reverse_iterator"""
+        r"""rbegin(Vector_string self) -> std::vector< std::string >::reverse_iterator"""
         return _pyAgrum.Vector_string_rbegin(self)
 
 
     def rend(self) -> "std::vector< std::string >::reverse_iterator":
-        r"""rend(self) -> std::vector< std::string >::reverse_iterator"""
+        r"""rend(Vector_string self) -> std::vector< std::string >::reverse_iterator"""
         return _pyAgrum.Vector_string_rend(self)
 
 
     def clear(self) -> "void":
-        r"""clear(self)"""
+        r"""clear(Vector_string self)"""
         return _pyAgrum.Vector_string_clear(self)
 
 
     def get_allocator(self) -> "std::vector< std::string >::allocator_type":
-        r"""get_allocator(self) -> std::vector< std::string >::allocator_type"""
+        r"""get_allocator(Vector_string self) -> std::vector< std::string >::allocator_type"""
         return _pyAgrum.Vector_string_get_allocator(self)
 
 
     def pop_back(self) -> "void":
-        r"""pop_back(self)"""
+        r"""pop_back(Vector_string self)"""
         return _pyAgrum.Vector_string_pop_back(self)
 
 
     def erase(self, *args) -> "std::vector< std::string >::iterator":
         r"""
-        erase(self, pos) -> std::vector< std::string >::iterator
-        erase(self, first, last) -> std::vector< std::string >::iterator
+        erase(Vector_string self, std::vector< std::string >::iterator pos) -> std::vector< std::string >::iterator
+        erase(Vector_string self, std::vector< std::string >::iterator first, std::vector< std::string >::iterator last) -> std::vector< std::string >::iterator
         """
         return _pyAgrum.Vector_string_erase(self, *args)
 
 
     def __init__(self, *args):
         r"""
-        __init__(self) -> Vector_string
-        __init__(self, arg2) -> Vector_string
-        __init__(self, size) -> Vector_string
-        __init__(self, size, value) -> Vector_string
+        __init__(Vector_string self) -> Vector_string
+        __init__(Vector_string self, Vector_string arg2) -> Vector_string
+        __init__(Vector_string self, std::vector< std::string >::size_type size) -> Vector_string
+        __init__(Vector_string self, std::vector< std::string >::size_type size, std::vector< std::string >::value_type const & value) -> Vector_string
         """
         _pyAgrum.Vector_string_swiginit(self, _pyAgrum.new_Vector_string(*args))
 
     def push_back(self, x: 'std::vector< std::string >::value_type const &') -> "void":
-        r"""push_back(self, x)"""
+        r"""push_back(Vector_string self, std::vector< std::string >::value_type const & x)"""
         return _pyAgrum.Vector_string_push_back(self, x)
 
 
     def front(self) -> "std::vector< std::string >::value_type const &":
-        r"""front(self) -> std::vector< std::string >::value_type const &"""
+        r"""front(Vector_string self) -> std::vector< std::string >::value_type const &"""
         return _pyAgrum.Vector_string_front(self)
 
 
     def back(self) -> "std::vector< std::string >::value_type const &":
-        r"""back(self) -> std::vector< std::string >::value_type const &"""
+        r"""back(Vector_string self) -> std::vector< std::string >::value_type const &"""
         return _pyAgrum.Vector_string_back(self)
 
 
     def assign(self, n: 'std::vector< std::string >::size_type', x: 'std::vector< std::string >::value_type const &') -> "void":
-        r"""assign(self, n, x)"""
+        r"""assign(Vector_string self, std::vector< std::string >::size_type n, std::vector< std::string >::value_type const & x)"""
         return _pyAgrum.Vector_string_assign(self, n, x)
 
 
     def resize(self, *args) -> "void":
         r"""
-        resize(self, new_size)
-        resize(self, new_size, x)
+        resize(Vector_string self, std::vector< std::string >::size_type new_size)
+        resize(Vector_string self, std::vector< std::string >::size_type new_size, std::vector< std::string >::value_type const & x)
         """
         return _pyAgrum.Vector_string_resize(self, *args)
 
 
     def insert(self, *args) -> "void":
         r"""
-        insert(self, pos, x) -> std::vector< std::string >::iterator
-        insert(self, pos, n, x)
+        insert(Vector_string self, std::vector< std::string >::iterator pos, std::vector< std::string >::value_type const & x) -> std::vector< std::string >::iterator
+        insert(Vector_string self, std::vector< std::string >::iterator pos, std::vector< std::string >::size_type n, std::vector< std::string >::value_type const & x)
         """
         return _pyAgrum.Vector_string_insert(self, *args)
 
 
     def reserve(self, n: 'std::vector< std::string >::size_type') -> "void":
-        r"""reserve(self, n)"""
+        r"""reserve(Vector_string self, std::vector< std::string >::size_type n)"""
         return _pyAgrum.Vector_string_reserve(self, n)
 
 
     def capacity(self) -> "std::vector< std::string >::size_type":
-        r"""capacity(self) -> std::vector< std::string >::size_type"""
+        r"""capacity(Vector_string self) -> std::vector< std::string >::size_type"""
         return _pyAgrum.Vector_string_capacity(self)
 
     __swig_destroy__ = _pyAgrum.delete_Vector_string
@@ -1848,7 +1903,7 @@ class SetIteratorStaticEnd(object):
     __repr__ = _swig_repr
 
     def __init__(self):
-        r"""__init__(self) -> SetIteratorStaticEnd"""
+        r"""__init__(SetIteratorStaticEnd self) -> SetIteratorStaticEnd"""
         _pyAgrum.SetIteratorStaticEnd_swiginit(self, _pyAgrum.new_SetIteratorStaticEnd())
     __swig_destroy__ = _pyAgrum.delete_SetIteratorStaticEnd
 
@@ -1863,22 +1918,22 @@ class GumException(Exception):
 
     def __init__(self, *args):
         r"""
-        Exception(aMsg, aType) -> GumException
-        Exception(aMsg) -> GumException
+        Exception(std::string const aMsg, std::string const aType) -> GumException
+        Exception(std::string const aMsg) -> GumException
         Exception() -> GumException
-        __init__(self, e) -> GumException
+        __init__(GumException self, GumException e) -> GumException
         """
         _pyAgrum.GumException_swiginit(self, _pyAgrum.new_GumException(*args))
     __swig_destroy__ = _pyAgrum.delete_GumException
 
     def what(self) -> "std::string const":
-        r"""what(self) -> std::string const"""
+        r"""what(GumException self) -> std::string const"""
         return _pyAgrum.GumException_what(self)
 
 
     def errorContent(self) -> "std::string const":
         r"""
-        errorContent(self) -> std::string const
+        errorContent(GumException self) -> std::string const
 
         Returns
         -------
@@ -1891,7 +1946,7 @@ class GumException(Exception):
 
     def errorType(self) -> "std::string const":
         r"""
-        errorType(self) -> std::string const
+        errorType(GumException self) -> std::string const
 
         Returns
         -------
@@ -1904,7 +1959,7 @@ class GumException(Exception):
 
     def errorCallStack(self) -> "std::string const":
         r"""
-        errorCallStack(self) -> std::string const
+        errorCallStack(GumException self) -> std::string const
 
         Returns
         -------
@@ -1920,7 +1975,7 @@ _pyAgrum.GumException_swigregister(GumException)
 
 
 def __createMsg(filename: 'std::string const &', function: 'std::string const &', line: 'int const', msg: 'std::string const &') -> "std::string const":
-    r"""__createMsg(filename, function, line, msg) -> std::string const"""
+    r"""__createMsg(std::string const & filename, std::string const & function, int const line, std::string const & msg) -> std::string const"""
     return _pyAgrum.__createMsg(filename, function, line, msg)
 class IdError(GumException):
     r"""Proxy of C++ gum::IdError class."""
@@ -1930,9 +1985,9 @@ class IdError(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> IdError
-        __init__(self, aMsg) -> IdError
-        __init__(self, src) -> IdError
+        __init__(IdError self, std::string aMsg, std::string aType) -> IdError
+        __init__(IdError self, std::string aMsg) -> IdError
+        __init__(IdError self, IdError src) -> IdError
         """
         _pyAgrum.IdError_swiginit(self, _pyAgrum.new_IdError(*args))
     __swig_destroy__ = _pyAgrum.delete_IdError
@@ -1948,9 +2003,9 @@ class FatalError(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> FatalError
-        __init__(self, aMsg) -> FatalError
-        __init__(self, src) -> FatalError
+        __init__(FatalError self, std::string aMsg, std::string aType) -> FatalError
+        __init__(FatalError self, std::string aMsg) -> FatalError
+        __init__(FatalError self, FatalError src) -> FatalError
         """
         _pyAgrum.FatalError_swiginit(self, _pyAgrum.new_FatalError(*args))
     __swig_destroy__ = _pyAgrum.delete_FatalError
@@ -1966,9 +2021,9 @@ class NotImplementedYet(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> NotImplementedYet
-        __init__(self, aMsg) -> NotImplementedYet
-        __init__(self, src) -> NotImplementedYet
+        __init__(NotImplementedYet self, std::string aMsg, std::string aType) -> NotImplementedYet
+        __init__(NotImplementedYet self, std::string aMsg) -> NotImplementedYet
+        __init__(NotImplementedYet self, NotImplementedYet src) -> NotImplementedYet
         """
         _pyAgrum.NotImplementedYet_swiginit(self, _pyAgrum.new_NotImplementedYet(*args))
     __swig_destroy__ = _pyAgrum.delete_NotImplementedYet
@@ -1984,9 +2039,9 @@ class UndefinedIteratorValue(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> UndefinedIteratorValue
-        __init__(self, aMsg) -> UndefinedIteratorValue
-        __init__(self, src) -> UndefinedIteratorValue
+        __init__(UndefinedIteratorValue self, std::string aMsg, std::string aType) -> UndefinedIteratorValue
+        __init__(UndefinedIteratorValue self, std::string aMsg) -> UndefinedIteratorValue
+        __init__(UndefinedIteratorValue self, UndefinedIteratorValue src) -> UndefinedIteratorValue
         """
         _pyAgrum.UndefinedIteratorValue_swiginit(self, _pyAgrum.new_UndefinedIteratorValue(*args))
     __swig_destroy__ = _pyAgrum.delete_UndefinedIteratorValue
@@ -2002,9 +2057,9 @@ class UndefinedIteratorKey(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> UndefinedIteratorKey
-        __init__(self, aMsg) -> UndefinedIteratorKey
-        __init__(self, src) -> UndefinedIteratorKey
+        __init__(UndefinedIteratorKey self, std::string aMsg, std::string aType) -> UndefinedIteratorKey
+        __init__(UndefinedIteratorKey self, std::string aMsg) -> UndefinedIteratorKey
+        __init__(UndefinedIteratorKey self, UndefinedIteratorKey src) -> UndefinedIteratorKey
         """
         _pyAgrum.UndefinedIteratorKey_swiginit(self, _pyAgrum.new_UndefinedIteratorKey(*args))
     __swig_destroy__ = _pyAgrum.delete_UndefinedIteratorKey
@@ -2020,9 +2075,9 @@ class NullElement(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> NullElement
-        __init__(self, aMsg) -> NullElement
-        __init__(self, src) -> NullElement
+        __init__(NullElement self, std::string aMsg, std::string aType) -> NullElement
+        __init__(NullElement self, std::string aMsg) -> NullElement
+        __init__(NullElement self, NullElement src) -> NullElement
         """
         _pyAgrum.NullElement_swiginit(self, _pyAgrum.new_NullElement(*args))
     __swig_destroy__ = _pyAgrum.delete_NullElement
@@ -2038,9 +2093,9 @@ class UndefinedElement(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> UndefinedElement
-        __init__(self, aMsg) -> UndefinedElement
-        __init__(self, src) -> UndefinedElement
+        __init__(UndefinedElement self, std::string aMsg, std::string aType) -> UndefinedElement
+        __init__(UndefinedElement self, std::string aMsg) -> UndefinedElement
+        __init__(UndefinedElement self, UndefinedElement src) -> UndefinedElement
         """
         _pyAgrum.UndefinedElement_swiginit(self, _pyAgrum.new_UndefinedElement(*args))
     __swig_destroy__ = _pyAgrum.delete_UndefinedElement
@@ -2056,9 +2111,9 @@ class SizeError(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> SizeError
-        __init__(self, aMsg) -> SizeError
-        __init__(self, src) -> SizeError
+        __init__(SizeError self, std::string aMsg, std::string aType) -> SizeError
+        __init__(SizeError self, std::string aMsg) -> SizeError
+        __init__(SizeError self, SizeError src) -> SizeError
         """
         _pyAgrum.SizeError_swiginit(self, _pyAgrum.new_SizeError(*args))
     __swig_destroy__ = _pyAgrum.delete_SizeError
@@ -2074,9 +2129,9 @@ class EmptySet(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> EmptySet
-        __init__(self, aMsg) -> EmptySet
-        __init__(self, src) -> EmptySet
+        __init__(EmptySet self, std::string aMsg, std::string aType) -> EmptySet
+        __init__(EmptySet self, std::string aMsg) -> EmptySet
+        __init__(EmptySet self, EmptySet src) -> EmptySet
         """
         _pyAgrum.EmptySet_swiginit(self, _pyAgrum.new_EmptySet(*args))
     __swig_destroy__ = _pyAgrum.delete_EmptySet
@@ -2092,9 +2147,9 @@ class InvalidArgumentsNumber(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> InvalidArgumentsNumber
-        __init__(self, aMsg) -> InvalidArgumentsNumber
-        __init__(self, src) -> InvalidArgumentsNumber
+        __init__(InvalidArgumentsNumber self, std::string aMsg, std::string aType) -> InvalidArgumentsNumber
+        __init__(InvalidArgumentsNumber self, std::string aMsg) -> InvalidArgumentsNumber
+        __init__(InvalidArgumentsNumber self, InvalidArgumentsNumber src) -> InvalidArgumentsNumber
         """
         _pyAgrum.InvalidArgumentsNumber_swiginit(self, _pyAgrum.new_InvalidArgumentsNumber(*args))
     __swig_destroy__ = _pyAgrum.delete_InvalidArgumentsNumber
@@ -2110,9 +2165,9 @@ class InvalidArgument(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> InvalidArgument
-        __init__(self, aMsg) -> InvalidArgument
-        __init__(self, src) -> InvalidArgument
+        __init__(InvalidArgument self, std::string aMsg, std::string aType) -> InvalidArgument
+        __init__(InvalidArgument self, std::string aMsg) -> InvalidArgument
+        __init__(InvalidArgument self, InvalidArgument src) -> InvalidArgument
         """
         _pyAgrum.InvalidArgument_swiginit(self, _pyAgrum.new_InvalidArgument(*args))
     __swig_destroy__ = _pyAgrum.delete_InvalidArgument
@@ -2128,9 +2183,9 @@ class IOError(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> IOError
-        __init__(self, aMsg) -> IOError
-        __init__(self, src) -> IOError
+        __init__(IOError self, std::string aMsg, std::string aType) -> IOError
+        __init__(IOError self, std::string aMsg) -> IOError
+        __init__(IOError self, IOError src) -> IOError
         """
         _pyAgrum.IOError_swiginit(self, _pyAgrum.new_IOError(*args))
     __swig_destroy__ = _pyAgrum.delete_IOError
@@ -2146,9 +2201,9 @@ class FormatNotFound(IOError):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> FormatNotFound
-        __init__(self, aMsg) -> FormatNotFound
-        __init__(self, src) -> FormatNotFound
+        __init__(FormatNotFound self, std::string aMsg, std::string aType) -> FormatNotFound
+        __init__(FormatNotFound self, std::string aMsg) -> FormatNotFound
+        __init__(FormatNotFound self, FormatNotFound src) -> FormatNotFound
         """
         _pyAgrum.FormatNotFound_swiginit(self, _pyAgrum.new_FormatNotFound(*args))
     __swig_destroy__ = _pyAgrum.delete_FormatNotFound
@@ -2164,9 +2219,9 @@ class OperationNotAllowed(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> OperationNotAllowed
-        __init__(self, aMsg) -> OperationNotAllowed
-        __init__(self, src) -> OperationNotAllowed
+        __init__(OperationNotAllowed self, std::string aMsg, std::string aType) -> OperationNotAllowed
+        __init__(OperationNotAllowed self, std::string aMsg) -> OperationNotAllowed
+        __init__(OperationNotAllowed self, OperationNotAllowed src) -> OperationNotAllowed
         """
         _pyAgrum.OperationNotAllowed_swiginit(self, _pyAgrum.new_OperationNotAllowed(*args))
     __swig_destroy__ = _pyAgrum.delete_OperationNotAllowed
@@ -2182,9 +2237,9 @@ class NotFound(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> NotFound
-        __init__(self, aMsg) -> NotFound
-        __init__(self, src) -> NotFound
+        __init__(NotFound self, std::string aMsg, std::string aType) -> NotFound
+        __init__(NotFound self, std::string aMsg) -> NotFound
+        __init__(NotFound self, NotFound src) -> NotFound
         """
         _pyAgrum.NotFound_swiginit(self, _pyAgrum.new_NotFound(*args))
     __swig_destroy__ = _pyAgrum.delete_NotFound
@@ -2200,9 +2255,9 @@ class ReferenceError(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> ReferenceError
-        __init__(self, aMsg) -> ReferenceError
-        __init__(self, src) -> ReferenceError
+        __init__(ReferenceError self, std::string aMsg, std::string aType) -> ReferenceError
+        __init__(ReferenceError self, std::string aMsg) -> ReferenceError
+        __init__(ReferenceError self, ReferenceError src) -> ReferenceError
         """
         _pyAgrum.ReferenceError_swiginit(self, _pyAgrum.new_ReferenceError(*args))
     __swig_destroy__ = _pyAgrum.delete_ReferenceError
@@ -2218,9 +2273,9 @@ class OutOfBounds(ReferenceError):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> OutOfBounds
-        __init__(self, aMsg) -> OutOfBounds
-        __init__(self, src) -> OutOfBounds
+        __init__(OutOfBounds self, std::string aMsg, std::string aType) -> OutOfBounds
+        __init__(OutOfBounds self, std::string aMsg) -> OutOfBounds
+        __init__(OutOfBounds self, OutOfBounds src) -> OutOfBounds
         """
         _pyAgrum.OutOfBounds_swiginit(self, _pyAgrum.new_OutOfBounds(*args))
     __swig_destroy__ = _pyAgrum.delete_OutOfBounds
@@ -2236,9 +2291,9 @@ class OutOfLowerBound(OutOfBounds):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> OutOfLowerBound
-        __init__(self, aMsg) -> OutOfLowerBound
-        __init__(self, src) -> OutOfLowerBound
+        __init__(OutOfLowerBound self, std::string aMsg, std::string aType) -> OutOfLowerBound
+        __init__(OutOfLowerBound self, std::string aMsg) -> OutOfLowerBound
+        __init__(OutOfLowerBound self, OutOfLowerBound src) -> OutOfLowerBound
         """
         _pyAgrum.OutOfLowerBound_swiginit(self, _pyAgrum.new_OutOfLowerBound(*args))
     __swig_destroy__ = _pyAgrum.delete_OutOfLowerBound
@@ -2254,9 +2309,9 @@ class OutOfUpperBound(OutOfBounds):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> OutOfUpperBound
-        __init__(self, aMsg) -> OutOfUpperBound
-        __init__(self, src) -> OutOfUpperBound
+        __init__(OutOfUpperBound self, std::string aMsg, std::string aType) -> OutOfUpperBound
+        __init__(OutOfUpperBound self, std::string aMsg) -> OutOfUpperBound
+        __init__(OutOfUpperBound self, OutOfUpperBound src) -> OutOfUpperBound
         """
         _pyAgrum.OutOfUpperBound_swiginit(self, _pyAgrum.new_OutOfUpperBound(*args))
     __swig_destroy__ = _pyAgrum.delete_OutOfUpperBound
@@ -2272,9 +2327,9 @@ class DuplicateElement(ReferenceError):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> DuplicateElement
-        __init__(self, aMsg) -> DuplicateElement
-        __init__(self, src) -> DuplicateElement
+        __init__(DuplicateElement self, std::string aMsg, std::string aType) -> DuplicateElement
+        __init__(DuplicateElement self, std::string aMsg) -> DuplicateElement
+        __init__(DuplicateElement self, DuplicateElement src) -> DuplicateElement
         """
         _pyAgrum.DuplicateElement_swiginit(self, _pyAgrum.new_DuplicateElement(*args))
     __swig_destroy__ = _pyAgrum.delete_DuplicateElement
@@ -2290,9 +2345,9 @@ class DuplicateLabel(ReferenceError):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> DuplicateLabel
-        __init__(self, aMsg) -> DuplicateLabel
-        __init__(self, src) -> DuplicateLabel
+        __init__(DuplicateLabel self, std::string aMsg, std::string aType) -> DuplicateLabel
+        __init__(DuplicateLabel self, std::string aMsg) -> DuplicateLabel
+        __init__(DuplicateLabel self, DuplicateLabel src) -> DuplicateLabel
         """
         _pyAgrum.DuplicateLabel_swiginit(self, _pyAgrum.new_DuplicateLabel(*args))
     __swig_destroy__ = _pyAgrum.delete_DuplicateLabel
@@ -2308,9 +2363,9 @@ class GraphError(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> GraphError
-        __init__(self, aMsg) -> GraphError
-        __init__(self, src) -> GraphError
+        __init__(GraphError self, std::string aMsg, std::string aType) -> GraphError
+        __init__(GraphError self, std::string aMsg) -> GraphError
+        __init__(GraphError self, GraphError src) -> GraphError
         """
         _pyAgrum.GraphError_swiginit(self, _pyAgrum.new_GraphError(*args))
     __swig_destroy__ = _pyAgrum.delete_GraphError
@@ -2326,9 +2381,9 @@ class NoNeighbour(GraphError):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> NoNeighbour
-        __init__(self, aMsg) -> NoNeighbour
-        __init__(self, src) -> NoNeighbour
+        __init__(NoNeighbour self, std::string aMsg, std::string aType) -> NoNeighbour
+        __init__(NoNeighbour self, std::string aMsg) -> NoNeighbour
+        __init__(NoNeighbour self, NoNeighbour src) -> NoNeighbour
         """
         _pyAgrum.NoNeighbour_swiginit(self, _pyAgrum.new_NoNeighbour(*args))
     __swig_destroy__ = _pyAgrum.delete_NoNeighbour
@@ -2344,9 +2399,9 @@ class NoParent(GraphError):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> NoParent
-        __init__(self, aMsg) -> NoParent
-        __init__(self, src) -> NoParent
+        __init__(NoParent self, std::string aMsg, std::string aType) -> NoParent
+        __init__(NoParent self, std::string aMsg) -> NoParent
+        __init__(NoParent self, NoParent src) -> NoParent
         """
         _pyAgrum.NoParent_swiginit(self, _pyAgrum.new_NoParent(*args))
     __swig_destroy__ = _pyAgrum.delete_NoParent
@@ -2362,9 +2417,9 @@ class NoChild(GraphError):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> NoChild
-        __init__(self, aMsg) -> NoChild
-        __init__(self, src) -> NoChild
+        __init__(NoChild self, std::string aMsg, std::string aType) -> NoChild
+        __init__(NoChild self, std::string aMsg) -> NoChild
+        __init__(NoChild self, NoChild src) -> NoChild
         """
         _pyAgrum.NoChild_swiginit(self, _pyAgrum.new_NoChild(*args))
     __swig_destroy__ = _pyAgrum.delete_NoChild
@@ -2380,9 +2435,9 @@ class InvalidEdge(GraphError):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> InvalidEdge
-        __init__(self, aMsg) -> InvalidEdge
-        __init__(self, src) -> InvalidEdge
+        __init__(InvalidEdge self, std::string aMsg, std::string aType) -> InvalidEdge
+        __init__(InvalidEdge self, std::string aMsg) -> InvalidEdge
+        __init__(InvalidEdge self, InvalidEdge src) -> InvalidEdge
         """
         _pyAgrum.InvalidEdge_swiginit(self, _pyAgrum.new_InvalidEdge(*args))
     __swig_destroy__ = _pyAgrum.delete_InvalidEdge
@@ -2398,9 +2453,9 @@ class InvalidArc(GraphError):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> InvalidArc
-        __init__(self, aMsg) -> InvalidArc
-        __init__(self, src) -> InvalidArc
+        __init__(InvalidArc self, std::string aMsg, std::string aType) -> InvalidArc
+        __init__(InvalidArc self, std::string aMsg) -> InvalidArc
+        __init__(InvalidArc self, InvalidArc src) -> InvalidArc
         """
         _pyAgrum.InvalidArc_swiginit(self, _pyAgrum.new_InvalidArc(*args))
     __swig_destroy__ = _pyAgrum.delete_InvalidArc
@@ -2416,9 +2471,9 @@ class InvalidNode(GraphError):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> InvalidNode
-        __init__(self, aMsg) -> InvalidNode
-        __init__(self, src) -> InvalidNode
+        __init__(InvalidNode self, std::string aMsg, std::string aType) -> InvalidNode
+        __init__(InvalidNode self, std::string aMsg) -> InvalidNode
+        __init__(InvalidNode self, InvalidNode src) -> InvalidNode
         """
         _pyAgrum.InvalidNode_swiginit(self, _pyAgrum.new_InvalidNode(*args))
     __swig_destroy__ = _pyAgrum.delete_InvalidNode
@@ -2434,9 +2489,9 @@ class EmptyBSTree(GraphError):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> EmptyBSTree
-        __init__(self, aMsg) -> EmptyBSTree
-        __init__(self, src) -> EmptyBSTree
+        __init__(EmptyBSTree self, std::string aMsg, std::string aType) -> EmptyBSTree
+        __init__(EmptyBSTree self, std::string aMsg) -> EmptyBSTree
+        __init__(EmptyBSTree self, EmptyBSTree src) -> EmptyBSTree
         """
         _pyAgrum.EmptyBSTree_swiginit(self, _pyAgrum.new_EmptyBSTree(*args))
     __swig_destroy__ = _pyAgrum.delete_EmptyBSTree
@@ -2452,9 +2507,9 @@ class DefaultInLabel(GraphError):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> DefaultInLabel
-        __init__(self, aMsg) -> DefaultInLabel
-        __init__(self, src) -> DefaultInLabel
+        __init__(DefaultInLabel self, std::string aMsg, std::string aType) -> DefaultInLabel
+        __init__(DefaultInLabel self, std::string aMsg) -> DefaultInLabel
+        __init__(DefaultInLabel self, DefaultInLabel src) -> DefaultInLabel
         """
         _pyAgrum.DefaultInLabel_swiginit(self, _pyAgrum.new_DefaultInLabel(*args))
     __swig_destroy__ = _pyAgrum.delete_DefaultInLabel
@@ -2470,9 +2525,9 @@ class InvalidDirectedCycle(GraphError):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> InvalidDirectedCycle
-        __init__(self, aMsg) -> InvalidDirectedCycle
-        __init__(self, src) -> InvalidDirectedCycle
+        __init__(InvalidDirectedCycle self, std::string aMsg, std::string aType) -> InvalidDirectedCycle
+        __init__(InvalidDirectedCycle self, std::string aMsg) -> InvalidDirectedCycle
+        __init__(InvalidDirectedCycle self, InvalidDirectedCycle src) -> InvalidDirectedCycle
         """
         _pyAgrum.InvalidDirectedCycle_swiginit(self, _pyAgrum.new_InvalidDirectedCycle(*args))
     __swig_destroy__ = _pyAgrum.delete_InvalidDirectedCycle
@@ -2488,9 +2543,9 @@ class CPTError(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> CPTError
-        __init__(self, aMsg) -> CPTError
-        __init__(self, src) -> CPTError
+        __init__(CPTError self, std::string aMsg, std::string aType) -> CPTError
+        __init__(CPTError self, std::string aMsg) -> CPTError
+        __init__(CPTError self, CPTError src) -> CPTError
         """
         _pyAgrum.CPTError_swiginit(self, _pyAgrum.new_CPTError(*args))
     __swig_destroy__ = _pyAgrum.delete_CPTError
@@ -2506,9 +2561,9 @@ class CPTNoSumTo1(CPTError):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> CPTNoSumTo1
-        __init__(self, aMsg) -> CPTNoSumTo1
-        __init__(self, src) -> CPTNoSumTo1
+        __init__(CPTNoSumTo1 self, std::string aMsg, std::string aType) -> CPTNoSumTo1
+        __init__(CPTNoSumTo1 self, std::string aMsg) -> CPTNoSumTo1
+        __init__(CPTNoSumTo1 self, CPTNoSumTo1 src) -> CPTNoSumTo1
         """
         _pyAgrum.CPTNoSumTo1_swiginit(self, _pyAgrum.new_CPTNoSumTo1(*args))
     __swig_destroy__ = _pyAgrum.delete_CPTNoSumTo1
@@ -2524,9 +2579,9 @@ class IncompatibleEvidence(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> IncompatibleEvidence
-        __init__(self, aMsg) -> IncompatibleEvidence
-        __init__(self, src) -> IncompatibleEvidence
+        __init__(IncompatibleEvidence self, std::string aMsg, std::string aType) -> IncompatibleEvidence
+        __init__(IncompatibleEvidence self, std::string aMsg) -> IncompatibleEvidence
+        __init__(IncompatibleEvidence self, IncompatibleEvidence src) -> IncompatibleEvidence
         """
         _pyAgrum.IncompatibleEvidence_swiginit(self, _pyAgrum.new_IncompatibleEvidence(*args))
     __swig_destroy__ = _pyAgrum.delete_IncompatibleEvidence
@@ -2542,9 +2597,9 @@ class FactoryError(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> FactoryError
-        __init__(self, aMsg) -> FactoryError
-        __init__(self, src) -> FactoryError
+        __init__(FactoryError self, std::string aMsg, std::string aType) -> FactoryError
+        __init__(FactoryError self, std::string aMsg) -> FactoryError
+        __init__(FactoryError self, FactoryError src) -> FactoryError
         """
         _pyAgrum.FactoryError_swiginit(self, _pyAgrum.new_FactoryError(*args))
     __swig_destroy__ = _pyAgrum.delete_FactoryError
@@ -2560,9 +2615,9 @@ class FactoryInvalidState(FactoryError):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> FactoryInvalidState
-        __init__(self, aMsg) -> FactoryInvalidState
-        __init__(self, src) -> FactoryInvalidState
+        __init__(FactoryInvalidState self, std::string aMsg, std::string aType) -> FactoryInvalidState
+        __init__(FactoryInvalidState self, std::string aMsg) -> FactoryInvalidState
+        __init__(FactoryInvalidState self, FactoryInvalidState src) -> FactoryInvalidState
         """
         _pyAgrum.FactoryInvalidState_swiginit(self, _pyAgrum.new_FactoryInvalidState(*args))
     __swig_destroy__ = _pyAgrum.delete_FactoryInvalidState
@@ -2578,9 +2633,9 @@ class WrongType(FactoryError):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> WrongType
-        __init__(self, aMsg) -> WrongType
-        __init__(self, src) -> WrongType
+        __init__(WrongType self, std::string aMsg, std::string aType) -> WrongType
+        __init__(WrongType self, std::string aMsg) -> WrongType
+        __init__(WrongType self, WrongType src) -> WrongType
         """
         _pyAgrum.WrongType_swiginit(self, _pyAgrum.new_WrongType(*args))
     __swig_destroy__ = _pyAgrum.delete_WrongType
@@ -2596,9 +2651,9 @@ class WrongClassElement(FactoryError):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> WrongClassElement
-        __init__(self, aMsg) -> WrongClassElement
-        __init__(self, src) -> WrongClassElement
+        __init__(WrongClassElement self, std::string aMsg, std::string aType) -> WrongClassElement
+        __init__(WrongClassElement self, std::string aMsg) -> WrongClassElement
+        __init__(WrongClassElement self, WrongClassElement src) -> WrongClassElement
         """
         _pyAgrum.WrongClassElement_swiginit(self, _pyAgrum.new_WrongClassElement(*args))
     __swig_destroy__ = _pyAgrum.delete_WrongClassElement
@@ -2614,9 +2669,9 @@ class TypeError(FactoryError):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> TypeError
-        __init__(self, aMsg) -> TypeError
-        __init__(self, src) -> TypeError
+        __init__(TypeError self, std::string aMsg, std::string aType) -> TypeError
+        __init__(TypeError self, std::string aMsg) -> TypeError
+        __init__(TypeError self, TypeError src) -> TypeError
         """
         _pyAgrum.TypeError_swiginit(self, _pyAgrum.new_TypeError(*args))
     __swig_destroy__ = _pyAgrum.delete_TypeError
@@ -2632,9 +2687,9 @@ class LearningError(GumException):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> LearningError
-        __init__(self, aMsg) -> LearningError
-        __init__(self, src) -> LearningError
+        __init__(LearningError self, std::string aMsg, std::string aType) -> LearningError
+        __init__(LearningError self, std::string aMsg) -> LearningError
+        __init__(LearningError self, LearningError src) -> LearningError
         """
         _pyAgrum.LearningError_swiginit(self, _pyAgrum.new_LearningError(*args))
     __swig_destroy__ = _pyAgrum.delete_LearningError
@@ -2650,9 +2705,9 @@ class IncompatibleScoreApriori(LearningError):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> IncompatibleScoreApriori
-        __init__(self, aMsg) -> IncompatibleScoreApriori
-        __init__(self, src) -> IncompatibleScoreApriori
+        __init__(IncompatibleScoreApriori self, std::string aMsg, std::string aType) -> IncompatibleScoreApriori
+        __init__(IncompatibleScoreApriori self, std::string aMsg) -> IncompatibleScoreApriori
+        __init__(IncompatibleScoreApriori self, IncompatibleScoreApriori src) -> IncompatibleScoreApriori
         """
         _pyAgrum.IncompatibleScoreApriori_swiginit(self, _pyAgrum.new_IncompatibleScoreApriori(*args))
     __swig_destroy__ = _pyAgrum.delete_IncompatibleScoreApriori
@@ -2668,9 +2723,9 @@ class PossiblyIncompatibleScoreApriori(LearningError):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> PossiblyIncompatibleScoreApriori
-        __init__(self, aMsg) -> PossiblyIncompatibleScoreApriori
-        __init__(self, src) -> PossiblyIncompatibleScoreApriori
+        __init__(PossiblyIncompatibleScoreApriori self, std::string aMsg, std::string aType) -> PossiblyIncompatibleScoreApriori
+        __init__(PossiblyIncompatibleScoreApriori self, std::string aMsg) -> PossiblyIncompatibleScoreApriori
+        __init__(PossiblyIncompatibleScoreApriori self, PossiblyIncompatibleScoreApriori src) -> PossiblyIncompatibleScoreApriori
         """
         _pyAgrum.PossiblyIncompatibleScoreApriori_swiginit(self, _pyAgrum.new_PossiblyIncompatibleScoreApriori(*args))
     __swig_destroy__ = _pyAgrum.delete_PossiblyIncompatibleScoreApriori
@@ -2686,9 +2741,9 @@ class DatabaseError(LearningError):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> DatabaseError
-        __init__(self, aMsg) -> DatabaseError
-        __init__(self, src) -> DatabaseError
+        __init__(DatabaseError self, std::string aMsg, std::string aType) -> DatabaseError
+        __init__(DatabaseError self, std::string aMsg) -> DatabaseError
+        __init__(DatabaseError self, DatabaseError src) -> DatabaseError
         """
         _pyAgrum.DatabaseError_swiginit(self, _pyAgrum.new_DatabaseError(*args))
     __swig_destroy__ = _pyAgrum.delete_DatabaseError
@@ -2704,9 +2759,9 @@ class MissingVariableInDatabase(LearningError):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> MissingVariableInDatabase
-        __init__(self, aMsg) -> MissingVariableInDatabase
-        __init__(self, src) -> MissingVariableInDatabase
+        __init__(MissingVariableInDatabase self, std::string aMsg, std::string aType) -> MissingVariableInDatabase
+        __init__(MissingVariableInDatabase self, std::string aMsg) -> MissingVariableInDatabase
+        __init__(MissingVariableInDatabase self, MissingVariableInDatabase src) -> MissingVariableInDatabase
         """
         _pyAgrum.MissingVariableInDatabase_swiginit(self, _pyAgrum.new_MissingVariableInDatabase(*args))
     __swig_destroy__ = _pyAgrum.delete_MissingVariableInDatabase
@@ -2722,9 +2777,9 @@ class MissingValueInDatabase(LearningError):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> MissingValueInDatabase
-        __init__(self, aMsg) -> MissingValueInDatabase
-        __init__(self, src) -> MissingValueInDatabase
+        __init__(MissingValueInDatabase self, std::string aMsg, std::string aType) -> MissingValueInDatabase
+        __init__(MissingValueInDatabase self, std::string aMsg) -> MissingValueInDatabase
+        __init__(MissingValueInDatabase self, MissingValueInDatabase src) -> MissingValueInDatabase
         """
         _pyAgrum.MissingValueInDatabase_swiginit(self, _pyAgrum.new_MissingValueInDatabase(*args))
     __swig_destroy__ = _pyAgrum.delete_MissingValueInDatabase
@@ -2740,9 +2795,9 @@ class UnknownLabelInDatabase(LearningError):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, aType) -> UnknownLabelInDatabase
-        __init__(self, aMsg) -> UnknownLabelInDatabase
-        __init__(self, src) -> UnknownLabelInDatabase
+        __init__(UnknownLabelInDatabase self, std::string aMsg, std::string aType) -> UnknownLabelInDatabase
+        __init__(UnknownLabelInDatabase self, std::string aMsg) -> UnknownLabelInDatabase
+        __init__(UnknownLabelInDatabase self, UnknownLabelInDatabase src) -> UnknownLabelInDatabase
         """
         _pyAgrum.UnknownLabelInDatabase_swiginit(self, _pyAgrum.new_UnknownLabelInDatabase(*args))
     __swig_destroy__ = _pyAgrum.delete_UnknownLabelInDatabase
@@ -2758,14 +2813,14 @@ class SyntaxError(IOError):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aMsg, nol, noc, aType) -> SyntaxError
-        __init__(self, aMsg, nol, noc) -> SyntaxError
+        __init__(SyntaxError self, std::string const & aMsg, gum::Size nol, gum::Size noc, std::string aType) -> SyntaxError
+        __init__(SyntaxError self, std::string const & aMsg, gum::Size nol, gum::Size noc) -> SyntaxError
         """
         _pyAgrum.SyntaxError_swiginit(self, _pyAgrum.new_SyntaxError(*args))
 
     def col(self) -> "gum::Size":
         r"""
-        col(self) -> gum::Size
+        col(SyntaxError self) -> gum::Size
 
         Returns
         -------
@@ -2778,7 +2833,7 @@ class SyntaxError(IOError):
 
     def line(self) -> "gum::Size":
         r"""
-        line(self) -> gum::Size
+        line(SyntaxError self) -> gum::Size
 
         Returns
         -------
@@ -2796,7 +2851,7 @@ _pyAgrum.SyntaxError_swigregister(SyntaxError)
 
 def randomValue(max: 'gum::Size const'=2) -> "gum::Idx":
     r"""
-    randomValue(max=2) -> gum::Idx
+    randomValue(gum::Size const max=2) -> gum::Idx
     randomValue() -> gum::Idx
 
     Returns
@@ -2833,7 +2888,7 @@ def randomGeneratorSeed() -> "unsigned int":
 
 def initRandom(seed: 'unsigned int'=0) -> "void":
     r"""
-    initRandom(seed=0)
+    initRandom(unsigned int seed=0)
     initRandom()
 
     Initialize random generator seed.
@@ -2848,7 +2903,7 @@ def initRandom(seed: 'unsigned int'=0) -> "void":
 
 def getRandomGenerator(seed: 'unsigned int'=0) -> "std::default_random_engine":
     r"""
-    getRandomGenerator(seed=0) -> std::default_random_engine
+    getRandomGenerator(unsigned int seed=0) -> std::default_random_engine
     getRandomGenerator() -> std::default_random_engine
 
     Returns
@@ -2873,7 +2928,7 @@ def isOMP() -> "bool":
 
 def setNumberOfThreads(number: 'unsigned int') -> "void":
     r"""
-    setNumberOfThreads(number)
+    setNumberOfThreads(unsigned int number)
 
     To avoid spare cycles (less then 100% CPU occupied), use more threads than logical processors (x2 is a good all-around value). 
 
@@ -2935,7 +2990,7 @@ def getNumberOfLogicalProcessors() -> "unsigned int":
 
 def setNestedParallelism(value: 'bool') -> "void":
     r"""
-    setNestedParallelism(value)
+    setNestedParallelism(bool value)
 
     Parameters
     ----------
@@ -2959,7 +3014,7 @@ def getNestedParallelism() -> "bool":
 
 def setDynamicThreadsNumber(value: 'bool') -> "void":
     r"""
-    setDynamicThreadsNumber(value)
+    setDynamicThreadsNumber(bool value)
 
     Parameters
     ----------
@@ -3004,7 +3059,7 @@ class Variable(object):
 
     def clone(self) -> "gum::Variable *":
         r"""
-        clone(self) -> Variable
+        clone(Variable self) -> Variable
 
         Copy factory
 
@@ -3018,18 +3073,18 @@ class Variable(object):
 
 
     def __eq__(self, aRV: 'Variable') -> "bool":
-        r"""__eq__(self, aRV) -> bool"""
+        r"""__eq__(Variable self, Variable aRV) -> bool"""
         return _pyAgrum.Variable___eq__(self, aRV)
 
 
     def __ne__(self, aRV: 'Variable') -> "bool":
-        r"""__ne__(self, aRV) -> bool"""
+        r"""__ne__(Variable self, Variable aRV) -> bool"""
         return _pyAgrum.Variable___ne__(self, aRV)
 
 
     def setName(self, theValue: 'std::string const &') -> "void":
         r"""
-        setName(self, theValue)
+        setName(Variable self, std::string const & theValue)
 
         sets the name of the variable.
 
@@ -3044,7 +3099,7 @@ class Variable(object):
 
     def name(self) -> "std::string const &":
         r"""
-        name(self) -> std::string const &
+        name(Variable self) -> std::string const &
 
         Returns
         -------
@@ -3057,7 +3112,7 @@ class Variable(object):
 
     def setDescription(self, theValue: 'std::string const &') -> "void":
         r"""
-        setDescription(self, theValue)
+        setDescription(Variable self, std::string const & theValue)
 
         set the description of the variable.
 
@@ -3072,7 +3127,7 @@ class Variable(object):
 
     def description(self) -> "std::string const &":
         r"""
-        description(self) -> std::string const &
+        description(Variable self) -> std::string const &
 
         Returns
         -------
@@ -3084,12 +3139,12 @@ class Variable(object):
 
 
     def varType(self) -> "gum::VarType":
-        r"""varType(self) -> gum::VarType"""
+        r"""varType(Variable self) -> gum::VarType"""
         return _pyAgrum.Variable_varType(self)
 
 
     def domain(self) -> "std::string const":
-        r"""domain(self) -> std::string const"""
+        r"""domain(Variable self) -> std::string const"""
         return _pyAgrum.Variable_domain(self)
 
 
@@ -3126,7 +3181,7 @@ class DiscreteVariable(Variable):
 
     def clone(self) -> "gum::DiscreteVariable *":
         r"""
-        clone(self) -> DiscreteVariable
+        clone(DiscreteVariable self) -> DiscreteVariable
 
         Returns
         -------
@@ -3139,7 +3194,7 @@ class DiscreteVariable(Variable):
 
     def empty(self) -> "bool":
         r"""
-        empty(self) -> bool
+        empty(DiscreteVariable self) -> bool
 
         Returns
         -------
@@ -3152,7 +3207,7 @@ class DiscreteVariable(Variable):
 
     def domainSize(self) -> "gum::Size":
         r"""
-        domainSize(self) -> gum::Size
+        domainSize(DiscreteVariable self) -> gum::Size
 
         Returns
         -------
@@ -3165,7 +3220,7 @@ class DiscreteVariable(Variable):
 
     def labels(self) -> "std::vector< std::string,std::allocator< std::string > >":
         r"""
-        labels(self) -> Vector_string
+        labels(DiscreteVariable self) -> Vector_string
 
         Returns
         -------
@@ -3178,7 +3233,7 @@ class DiscreteVariable(Variable):
 
     def numerical(self, indice: 'gum::Idx') -> "double":
         r"""
-        numerical(self, indice) -> double
+        numerical(DiscreteVariable self, gum::Idx indice) -> double
 
         Parameters
         ----------
@@ -3196,7 +3251,7 @@ class DiscreteVariable(Variable):
 
     def varType(self) -> "gum::VarType":
         r"""
-        varType(self) -> gum::VarType
+        varType(DiscreteVariable self) -> gum::VarType
 
         returns the type of variable
 
@@ -3210,18 +3265,18 @@ class DiscreteVariable(Variable):
 
 
     def __eq__(self, aRV: 'DiscreteVariable') -> "bool":
-        r"""__eq__(self, aRV) -> bool"""
+        r"""__eq__(DiscreteVariable self, DiscreteVariable aRV) -> bool"""
         return _pyAgrum.DiscreteVariable___eq__(self, aRV)
 
 
     def __ne__(self, aRV: 'DiscreteVariable') -> "bool":
-        r"""__ne__(self, aRV) -> bool"""
+        r"""__ne__(DiscreteVariable self, DiscreteVariable aRV) -> bool"""
         return _pyAgrum.DiscreteVariable___ne__(self, aRV)
 
 
     def index(self, label: 'std::string const &') -> "gum::Idx":
         r"""
-        index(self, label) -> gum::Idx
+        index(DiscreteVariable self, std::string const & label) -> gum::Idx
 
         Parameters
         ----------
@@ -3239,7 +3294,7 @@ class DiscreteVariable(Variable):
 
     def label(self, i: 'gum::Idx') -> "std::string":
         r"""
-        label(self, i) -> std::string
+        label(DiscreteVariable self, gum::Idx i) -> std::string
 
         Parameters
         ----------
@@ -3262,7 +3317,7 @@ class DiscreteVariable(Variable):
 
     def toStringWithDescription(self) -> "std::string const":
         r"""
-        toStringWithDescription(self) -> std::string const
+        toStringWithDescription(DiscreteVariable self) -> std::string const
 
         Returns
         -------
@@ -3275,7 +3330,7 @@ class DiscreteVariable(Variable):
 
     def domain(self) -> "std::string const":
         r"""
-        domain(self) -> std::string const
+        domain(DiscreteVariable self) -> std::string const
 
         Returns
         -------
@@ -3287,12 +3342,12 @@ class DiscreteVariable(Variable):
 
 
     def __repr__(self) -> "std::string":
-        r"""__repr__(self) -> std::string"""
+        r"""__repr__(DiscreteVariable self) -> std::string"""
         return _pyAgrum.DiscreteVariable___repr__(self)
 
 
     def __str__(self) -> "std::string":
-        r"""__str__(self) -> std::string"""
+        r"""__str__(DiscreteVariable self) -> std::string"""
         return _pyAgrum.DiscreteVariable___str__(self)
 
 
@@ -3302,7 +3357,7 @@ class DiscreteVariable(Variable):
 
     def toLabelizedVar(self) -> "gum::LabelizedVariable":
         r"""
-        toLabelizedVar(self) -> LabelizedVariable
+        toLabelizedVar(DiscreteVariable self) -> LabelizedVariable
 
         Returns
         -------
@@ -3320,7 +3375,7 @@ class DiscreteVariable(Variable):
 
     def toRangeVar(self) -> "gum::RangeVariable":
         r"""
-        toRangeVar(self) -> RangeVariable
+        toRangeVar(DiscreteVariable self) -> RangeVariable
 
         Returns
         -------
@@ -3338,7 +3393,7 @@ class DiscreteVariable(Variable):
 
     def toDiscretizedVar(self) -> "gum::DiscretizedVariable< double >":
         r"""
-        toDiscretizedVar(self) -> DiscretizedVariable
+        toDiscretizedVar(DiscreteVariable self) -> DiscretizedVariable
 
         Returns
         -------
@@ -3417,18 +3472,18 @@ class LabelizedVariable(DiscreteVariable):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aName, aDesc, nbrLabel=2) -> LabelizedVariable
-        __init__(self, aName, aDesc) -> LabelizedVariable
-        __init__(self, aName) -> LabelizedVariable
-        __init__(self, aName, aDesc, labels) -> LabelizedVariable
-        __init__(self, aLDRV) -> LabelizedVariable
+        __init__(LabelizedVariable self, std::string const & aName, std::string const & aDesc, gum::Size const nbrLabel=2) -> LabelizedVariable
+        __init__(LabelizedVariable self, std::string const & aName, std::string const & aDesc) -> LabelizedVariable
+        __init__(LabelizedVariable self, std::string const & aName) -> LabelizedVariable
+        __init__(LabelizedVariable self, std::string const & aName, std::string const & aDesc, Vector_string labels) -> LabelizedVariable
+        __init__(LabelizedVariable self, LabelizedVariable aLDRV) -> LabelizedVariable
         """
         _pyAgrum.LabelizedVariable_swiginit(self, _pyAgrum.new_LabelizedVariable(*args))
     __swig_destroy__ = _pyAgrum.delete_LabelizedVariable
 
     def clone(self) -> "gum::LabelizedVariable *":
         r"""
-        clone(self) -> LabelizedVariable
+        clone(LabelizedVariable self) -> LabelizedVariable
 
         Returns
         -------
@@ -3441,7 +3496,7 @@ class LabelizedVariable(DiscreteVariable):
 
     def index(self, label: 'std::string const &') -> "gum::Idx":
         r"""
-        index(self, label) -> gum::Idx
+        index(LabelizedVariable self, std::string const & label) -> gum::Idx
 
         Parameters
         ----------
@@ -3459,7 +3514,7 @@ class LabelizedVariable(DiscreteVariable):
 
     def isLabel(self, aLabel: 'std::string const &') -> "bool":
         r"""
-        isLabel(self, aLabel) -> bool
+        isLabel(LabelizedVariable self, std::string const & aLabel) -> bool
 
         Indicates whether the variable already has the label passed in argument
 
@@ -3503,7 +3558,7 @@ class LabelizedVariable(DiscreteVariable):
 
     def changeLabel(self, pos: 'gum::Idx', aLabel: 'std::string const &') -> "void":
         r"""
-        changeLabel(self, pos, aLabel)
+        changeLabel(LabelizedVariable self, gum::Idx pos, std::string const & aLabel)
 
         Change the label at the specified index
 
@@ -3527,7 +3582,7 @@ class LabelizedVariable(DiscreteVariable):
 
     def eraseLabels(self) -> "void":
         r"""
-        eraseLabels(self)
+        eraseLabels(LabelizedVariable self)
 
         Erase all the labels from the variable.
 
@@ -3537,7 +3592,7 @@ class LabelizedVariable(DiscreteVariable):
 
     def label(self, i: 'gum::Idx') -> "std::string":
         r"""
-        label(self, i) -> std::string
+        label(LabelizedVariable self, gum::Idx i) -> std::string
 
         Parameters
         ----------
@@ -3559,13 +3614,13 @@ class LabelizedVariable(DiscreteVariable):
 
 
     def posLabel(self, label: 'std::string const &') -> "gum::Idx":
-        r"""posLabel(self, label) -> gum::Idx"""
+        r"""posLabel(LabelizedVariable self, std::string const & label) -> gum::Idx"""
         return _pyAgrum.LabelizedVariable_posLabel(self, label)
 
 
     def numerical(self, indice: 'gum::Idx') -> "double":
         r"""
-        numerical(self, indice) -> double
+        numerical(LabelizedVariable self, gum::Idx indice) -> double
 
         Parameters
         ----------
@@ -3583,7 +3638,7 @@ class LabelizedVariable(DiscreteVariable):
 
     def domainSize(self) -> "gum::Size":
         r"""
-        domainSize(self) -> gum::Size
+        domainSize(LabelizedVariable self) -> gum::Size
 
         Returns
         -------
@@ -3596,7 +3651,7 @@ class LabelizedVariable(DiscreteVariable):
 
     def varType(self) -> "gum::VarType":
         r"""
-        varType(self) -> gum::VarType
+        varType(LabelizedVariable self) -> gum::VarType
 
         returns the type of variable
 
@@ -3611,7 +3666,7 @@ class LabelizedVariable(DiscreteVariable):
 
     def domain(self) -> "std::string const":
         r"""
-        domain(self) -> std::string const
+        domain(LabelizedVariable self) -> std::string const
 
         Returns
         -------
@@ -3623,12 +3678,12 @@ class LabelizedVariable(DiscreteVariable):
 
 
     def __repr__(self) -> "std::string":
-        r"""__repr__(self) -> std::string"""
+        r"""__repr__(LabelizedVariable self) -> std::string"""
         return _pyAgrum.LabelizedVariable___repr__(self)
 
 
     def __str__(self) -> "std::string":
-        r"""__str__(self) -> std::string"""
+        r"""__str__(LabelizedVariable self) -> std::string"""
         return _pyAgrum.LabelizedVariable___str__(self)
 
 
@@ -3690,17 +3745,17 @@ class RangeVariable(DiscreteVariable):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aName, aDesc, minVal=0, maxVal=1) -> RangeVariable
-        __init__(self, aName, aDesc, minVal=0) -> RangeVariable
-        __init__(self, aName, aDesc) -> RangeVariable
-        __init__(self, aDRV) -> RangeVariable
+        __init__(RangeVariable self, std::string const & aName, std::string const & aDesc, long minVal=0, long maxVal=1) -> RangeVariable
+        __init__(RangeVariable self, std::string const & aName, std::string const & aDesc, long minVal=0) -> RangeVariable
+        __init__(RangeVariable self, std::string const & aName, std::string const & aDesc) -> RangeVariable
+        __init__(RangeVariable self, RangeVariable aDRV) -> RangeVariable
         """
         _pyAgrum.RangeVariable_swiginit(self, _pyAgrum.new_RangeVariable(*args))
     __swig_destroy__ = _pyAgrum.delete_RangeVariable
 
     def clone(self) -> "gum::DiscreteVariable *":
         r"""
-        clone(self) -> DiscreteVariable
+        clone(RangeVariable self) -> DiscreteVariable
 
         Returns
         -------
@@ -3713,7 +3768,7 @@ class RangeVariable(DiscreteVariable):
 
     def domainSize(self) -> "gum::Size":
         r"""
-        domainSize(self) -> gum::Size
+        domainSize(RangeVariable self) -> gum::Size
 
         Returns
         -------
@@ -3726,7 +3781,7 @@ class RangeVariable(DiscreteVariable):
 
     def varType(self) -> "gum::VarType":
         r"""
-        varType(self) -> gum::VarType
+        varType(RangeVariable self) -> gum::VarType
 
         returns the type of variable
 
@@ -3741,7 +3796,7 @@ class RangeVariable(DiscreteVariable):
 
     def label(self, indice: 'gum::Idx') -> "std::string":
         r"""
-        label(self, indice) -> std::string
+        label(RangeVariable self, gum::Idx indice) -> std::string
 
         Parameters
         ----------
@@ -3764,7 +3819,7 @@ class RangeVariable(DiscreteVariable):
 
     def numerical(self, indice: 'gum::Idx') -> "double":
         r"""
-        numerical(self, indice) -> double
+        numerical(RangeVariable self, gum::Idx indice) -> double
 
         Parameters
         ----------
@@ -3782,7 +3837,7 @@ class RangeVariable(DiscreteVariable):
 
     def minVal(self) -> "long":
         r"""
-        minVal(self) -> long
+        minVal(RangeVariable self) -> long
 
         Returns
         -------
@@ -3795,7 +3850,7 @@ class RangeVariable(DiscreteVariable):
 
     def setMinVal(self, minVal: 'long') -> "void":
         r"""
-        setMinVal(self, minVal)
+        setMinVal(RangeVariable self, long minVal)
 
         Set a new value of the lower bound
 
@@ -3814,7 +3869,7 @@ class RangeVariable(DiscreteVariable):
 
     def maxVal(self) -> "long":
         r"""
-        maxVal(self) -> long
+        maxVal(RangeVariable self) -> long
 
         Returns
         -------
@@ -3827,7 +3882,7 @@ class RangeVariable(DiscreteVariable):
 
     def setMaxVal(self, maxVal: 'long') -> "void":
         r"""
-        setMaxVal(self, maxVal)
+        setMaxVal(RangeVariable self, long maxVal)
 
         Set a new value of the upper bound
 
@@ -3846,7 +3901,7 @@ class RangeVariable(DiscreteVariable):
 
     def belongs(self, val: 'long') -> "bool":
         r"""
-        belongs(self, val) -> bool
+        belongs(RangeVariable self, long val) -> bool
 
         Parameters
         ----------
@@ -3864,7 +3919,7 @@ class RangeVariable(DiscreteVariable):
 
     def index(self, arg2: 'std::string const &') -> "gum::Idx":
         r"""
-        index(self, arg2) -> gum::Idx
+        index(RangeVariable self, std::string const & arg2) -> gum::Idx
 
         Parameters
         ----------
@@ -3882,7 +3937,7 @@ class RangeVariable(DiscreteVariable):
 
     def domain(self) -> "std::string const":
         r"""
-        domain(self) -> std::string const
+        domain(RangeVariable self) -> std::string const
 
         Returns
         -------
@@ -3894,12 +3949,12 @@ class RangeVariable(DiscreteVariable):
 
 
     def __repr__(self) -> "std::string":
-        r"""__repr__(self) -> std::string"""
+        r"""__repr__(RangeVariable self) -> std::string"""
         return _pyAgrum.RangeVariable___repr__(self)
 
 
     def __str__(self) -> "std::string":
-        r"""__str__(self) -> std::string"""
+        r"""__str__(RangeVariable self) -> std::string"""
         return _pyAgrum.RangeVariable___str__(self)
 
 
@@ -3918,7 +3973,7 @@ class IDiscretizedVariable(DiscreteVariable):
 
     def clone(self) -> "gum::IDiscretizedVariable *":
         r"""
-        clone(self) -> IDiscretizedVariable
+        clone(IDiscretizedVariable self) -> IDiscretizedVariable
 
         Returns
         -------
@@ -3958,15 +4013,15 @@ class Edge(object):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aN1, aN2) -> Edge
-        __init__(self, src) -> Edge
+        __init__(Edge self, gum::NodeId aN1, gum::NodeId aN2) -> Edge
+        __init__(Edge self, Edge src) -> Edge
         """
         _pyAgrum.Edge_swiginit(self, _pyAgrum.new_Edge(*args))
     __swig_destroy__ = _pyAgrum.delete_Edge
 
     def other(self, id: 'gum::NodeId') -> "gum::NodeId":
         r"""
-        other(self, id) -> gum::NodeId
+        other(Edge self, gum::NodeId id) -> gum::NodeId
 
         Parameters
         ----------
@@ -3985,7 +4040,7 @@ class Edge(object):
 
     def first(self) -> "gum::NodeId":
         r"""
-        first(self) -> gum::NodeId
+        first(Edge self) -> gum::NodeId
 
         Returns
         ------
@@ -3998,7 +4053,7 @@ class Edge(object):
 
     def second(self) -> "gum::NodeId":
         r"""
-        second(self) -> gum::NodeId
+        second(Edge self) -> gum::NodeId
 
         Returns
         ------
@@ -4010,12 +4065,12 @@ class Edge(object):
 
 
     def __eq__(self, src: 'Edge') -> "bool":
-        r"""__eq__(self, src) -> bool"""
+        r"""__eq__(Edge self, Edge src) -> bool"""
         return _pyAgrum.Edge___eq__(self, src)
 
 
     def __ne__(self, src: 'Edge') -> "bool":
-        r"""__ne__(self, src) -> bool"""
+        r"""__ne__(Edge self, Edge src) -> bool"""
         return _pyAgrum.Edge___ne__(self, src)
 
 
@@ -4049,15 +4104,15 @@ class Arc(object):
 
     def __init__(self, *args):
         r"""
-        __init__(self, tail, head) -> Arc
-        __init__(self, src) -> Arc
+        __init__(Arc self, gum::NodeId tail, gum::NodeId head) -> Arc
+        __init__(Arc self, Arc src) -> Arc
         """
         _pyAgrum.Arc_swiginit(self, _pyAgrum.new_Arc(*args))
     __swig_destroy__ = _pyAgrum.delete_Arc
 
     def tail(self) -> "gum::NodeId":
         r"""
-        tail(self) -> gum::NodeId
+        tail(Arc self) -> gum::NodeId
 
         Returns
         -------
@@ -4070,7 +4125,7 @@ class Arc(object):
 
     def head(self) -> "gum::NodeId":
         r"""
-        head(self) -> gum::NodeId
+        head(Arc self) -> gum::NodeId
 
         Returns
         ------
@@ -4083,7 +4138,7 @@ class Arc(object):
 
     def other(self, id: 'gum::NodeId') -> "gum::NodeId":
         r"""
-        other(self, id) -> gum::NodeId
+        other(Arc self, gum::NodeId id) -> gum::NodeId
 
         Parameters
         ----------
@@ -4102,7 +4157,7 @@ class Arc(object):
 
     def first(self) -> "gum::NodeId":
         r"""
-        first(self) -> gum::NodeId
+        first(Arc self) -> gum::NodeId
 
         Returns
         -------
@@ -4115,7 +4170,7 @@ class Arc(object):
 
     def second(self) -> "gum::NodeId":
         r"""
-        second(self) -> gum::NodeId
+        second(Arc self) -> gum::NodeId
 
         Returns
         -------
@@ -4127,17 +4182,392 @@ class Arc(object):
 
 
     def __eq__(self, src: 'Arc') -> "bool":
-        r"""__eq__(self, src) -> bool"""
+        r"""__eq__(Arc self, Arc src) -> bool"""
         return _pyAgrum.Arc___eq__(self, src)
 
 
     def __ne__(self, src: 'Arc') -> "bool":
-        r"""__ne__(self, src) -> bool"""
+        r"""__ne__(Arc self, Arc src) -> bool"""
         return _pyAgrum.Arc___ne__(self, src)
 
 
 # Register Arc in _pyAgrum:
 _pyAgrum.Arc_swigregister(Arc)
+
+class UndiGraph(object):
+    r"""
+
+    UndiGraph represents an Undirected Graph.
+
+    Available constructors:
+        ``UndiGraph() -> UndiGraph``
+
+        ``UndiGraph(src) -> UndiGraph``
+
+    Parameters
+    ----------
+    src : :class: UndiGraph
+      the UndiGraph to copy
+
+
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+
+    def __init__(self, *args):
+        r"""
+        __init__(UndiGraph self, gum::Size nodes_size, bool nodes_resize_policy=True, gum::Size edges_size, bool edges_resize_policy=True) -> UndiGraph
+        __init__(UndiGraph self, gum::Size nodes_size, bool nodes_resize_policy=True, gum::Size edges_size) -> UndiGraph
+        __init__(UndiGraph self, gum::Size nodes_size, bool nodes_resize_policy=True) -> UndiGraph
+        __init__(UndiGraph self, gum::Size nodes_size) -> UndiGraph
+        __init__(UndiGraph self) -> UndiGraph
+        __init__(UndiGraph self, UndiGraph g) -> UndiGraph
+        """
+        _pyAgrum.UndiGraph_swiginit(self, _pyAgrum.new_UndiGraph(*args))
+    __swig_destroy__ = _pyAgrum.delete_UndiGraph
+
+    def __eq__(self, g: 'UndiGraph') -> "bool":
+        r"""__eq__(UndiGraph self, UndiGraph g) -> bool"""
+        return _pyAgrum.UndiGraph___eq__(self, g)
+
+
+    def __ne__(self, g: 'UndiGraph') -> "bool":
+        r"""__ne__(UndiGraph self, UndiGraph g) -> bool"""
+        return _pyAgrum.UndiGraph___ne__(self, g)
+
+
+    def eraseNode(self, id: 'gum::NodeId const') -> "void":
+        r"""
+        eraseNode(UndiGraph self, gum::NodeId const id)
+
+        Erase the node and all the adjacent edges.
+
+        Parameters
+        ----------
+        id : int
+          the id of the node
+
+        """
+        return _pyAgrum.UndiGraph_eraseNode(self, id)
+
+
+    def clear(self) -> "void":
+        r"""
+        clear(UndiGraph self)
+
+        Remove all the nodes and edges from the graph.
+
+        """
+        return _pyAgrum.UndiGraph_clear(self)
+
+
+    def toDot(self) -> "std::string const":
+        r"""
+        toDot(UndiGraph self) -> std::string const
+
+        Returns
+        -------
+        str
+            a friendly display of the graph in DOT format
+
+        """
+        return _pyAgrum.UndiGraph_toDot(self)
+
+
+    def hasUndirectedCycle(self) -> "bool":
+        r"""
+        hasUndirectedCycle(UndiGraph self) -> bool
+
+        Checks whether the graph contains cycles.
+
+        Returns
+        -------
+        bool
+            True if the graph contains a cycle
+
+        """
+        return _pyAgrum.UndiGraph_hasUndirectedCycle(self)
+
+
+    def partialUndiGraph(self, nodesSet: 'gum::NodeSet') -> "gum::UndiGraph":
+        r"""
+        partialUndiGraph(UndiGraph self, gum::NodeSet nodesSet) -> UndiGraph
+
+        Parameters
+        ----------
+        nodesSet : Set
+            The set of nodes composing the partial graph
+
+        Returns
+        -------
+        pyAgrum.UndiGraph
+            The partial graph formed by the nodes given in parameter
+
+        """
+        return _pyAgrum.UndiGraph_partialUndiGraph(self, nodesSet)
+
+
+    def __repr__(self) -> "std::string":
+        r"""__repr__(UndiGraph self) -> std::string"""
+        return _pyAgrum.UndiGraph___repr__(self)
+
+
+    def __str__(self) -> "std::string":
+        r"""__str__(UndiGraph self) -> std::string"""
+        return _pyAgrum.UndiGraph___str__(self)
+
+
+    def nodes(self) -> "PyObject *":
+        r"""
+        nodes(UndiGraph self) -> PyObject *
+
+        Returns
+        -------
+        set
+            the set of ids
+
+        """
+        return _pyAgrum.UndiGraph_nodes(self)
+
+
+    def addNodes(self, n: 'gum::Size') -> "PyObject *":
+        r"""
+        addNodes(UndiGraph self, gum::Size n) -> PyObject *
+
+        Add n nodes.
+
+        Parameters
+        ----------
+        n : int
+          the number of nodes to add.
+
+        Returns
+        -------
+        Set of int
+          the new ids
+
+        """
+        return _pyAgrum.UndiGraph_addNodes(self, n)
+
+
+    def edges(self) -> "PyObject *":
+        r"""
+        edges(UndiGraph self) -> PyObject *
+
+        Returns
+        -------
+        List
+          the list of the edges
+
+        """
+        return _pyAgrum.UndiGraph_edges(self)
+
+
+    def neighbours(self, id: 'gum::NodeId') -> "PyObject *":
+        r"""
+        neighbours(UndiGraph self, gum::NodeId id) -> PyObject *
+
+        Parameters
+        ----------
+        id : int
+            the id of the checked node
+
+        Returns
+        -------
+        Set
+            The set of edges adjacent to the given node
+
+        """
+        return _pyAgrum.UndiGraph_neighbours(self, id)
+
+
+    def addNode(self) -> "gum::NodeId":
+        r"""
+        addNode(UndiGraph self) -> gum::NodeId
+
+        Returns
+        -------
+        int
+          the new NodeId
+
+        """
+        return _pyAgrum.UndiGraph_addNode(self)
+
+
+    def addNodeWithId(self, id: 'gum::NodeId const') -> "void":
+        r"""
+        addNodeWithId(UndiGraph self, gum::NodeId const id)
+
+        Add a node by choosing a new NodeId.
+
+        Parameters
+        ----------
+        id : int
+          The id of the new node
+
+        Raises
+        ------
+        gum.DuplicateElement
+          If the given id is already used
+
+        """
+        return _pyAgrum.UndiGraph_addNodeWithId(self, id)
+
+
+    def existsNode(self, id: 'gum::NodeId const') -> "bool":
+        r"""
+        existsNode(UndiGraph self, gum::NodeId const id) -> bool
+
+        Check if a node with a certain id exists in the graph.
+
+        Parameters
+        ----------
+        id : int
+            the checked id
+
+        Returns
+        -------
+        bool
+            True if the node exists
+
+        """
+        return _pyAgrum.UndiGraph_existsNode(self, id)
+
+
+    def size(self) -> "gum::Size":
+        r"""
+        size(UndiGraph self) -> gum::Size
+
+        Returns
+        -------
+        int
+            the number of nodes in the graph
+
+        """
+        return _pyAgrum.UndiGraph_size(self)
+
+
+    def empty(self) -> "bool":
+        r"""
+        empty(UndiGraph self) -> bool
+
+        Check if the graph is empty.
+
+        Returns
+        -------
+        bool
+            True if the graph is empty
+
+        """
+        return _pyAgrum.UndiGraph_empty(self)
+
+
+    def addEdge(self, n1: 'gum::NodeId const', n2: 'gum::NodeId const') -> "void":
+        r"""
+        addEdge(UndiGraph self, gum::NodeId const n1, gum::NodeId const n2)
+
+        Insert a new edge into the graph.
+
+        Parameters
+        ----------
+        n1 : int
+          the id of one node of the new inserted edge
+        n2 : int
+          the id of the other node of the new inserted edge
+
+        Raises
+        ------
+        gum.InvalidNode
+          If n1 or n2 does not belong to the graph nodes.
+
+        """
+        return _pyAgrum.UndiGraph_addEdge(self, n1, n2)
+
+
+    def eraseEdge(self, n1: 'gum::NodeId const', n2: 'gum::NodeId const') -> "void":
+        r"""
+        eraseEdge(UndiGraph self, gum::NodeId const n1, gum::NodeId const n2)
+
+        Erase the edge between n1 and n2.
+
+        Parameters
+        ----------
+        n1 : int
+          the id of the tail node
+        n2 : int
+          the id of the head node
+
+        """
+        return _pyAgrum.UndiGraph_eraseEdge(self, n1, n2)
+
+
+    def existsEdge(self, n1: 'gum::NodeId const', n2: 'gum::NodeId const') -> "bool":
+        r"""
+        existsEdge(UndiGraph self, gum::NodeId const n1, gum::NodeId const n2) -> bool
+
+        Check if an edge exists bewteen n1 and n2.
+
+        Parameters
+        ----------
+        n1 : int
+          the id of one extremity of the edge
+        n2 : int
+          the id of the other extremity if tge edge
+
+        Returns
+        -------
+        bool
+            True if the arc exists
+
+        """
+        return _pyAgrum.UndiGraph_existsEdge(self, n1, n2)
+
+
+    def sizeEdges(self) -> "gum::Size":
+        r"""
+        sizeEdges(UndiGraph self) -> gum::Size
+
+        Returns
+        -------
+        int
+            the number of edges in the graph
+
+        """
+        return _pyAgrum.UndiGraph_sizeEdges(self)
+
+
+    def emptyEdges(self) -> "bool":
+        r"""
+        emptyEdges(UndiGraph self) -> bool
+
+        Check if the graph doesn't contains edges.
+
+        Returns
+        -------
+        bool
+            True if the graph doesn't contains edges
+
+        """
+        return _pyAgrum.UndiGraph_emptyEdges(self)
+
+
+    def eraseNeighbours(self, n: 'gum::NodeId const') -> "void":
+        r"""
+        eraseNeighbours(UndiGraph self, gum::NodeId const n)
+
+        Erase all the edges adjacent to a given node.
+
+        Parameters
+        ----------
+        n : int
+          the id of the node
+
+        """
+        return _pyAgrum.UndiGraph_eraseNeighbours(self, n)
+
+
+# Register UndiGraph in _pyAgrum:
+_pyAgrum.UndiGraph_swigregister(UndiGraph)
 
 class DiGraph(object):
     r"""
@@ -4161,29 +4591,29 @@ class DiGraph(object):
 
     def __init__(self, *args):
         r"""
-        __init__(self, nodes_size, nodes_resize_policy=True, arcs_size, arcs_resize_policy=True) -> DiGraph
-        __init__(self, nodes_size, nodes_resize_policy=True, arcs_size) -> DiGraph
-        __init__(self, nodes_size, nodes_resize_policy=True) -> DiGraph
-        __init__(self, nodes_size) -> DiGraph
-        __init__(self) -> DiGraph
-        __init__(self, g) -> DiGraph
+        __init__(DiGraph self, gum::Size nodes_size, bool nodes_resize_policy=True, gum::Size arcs_size, bool arcs_resize_policy=True) -> DiGraph
+        __init__(DiGraph self, gum::Size nodes_size, bool nodes_resize_policy=True, gum::Size arcs_size) -> DiGraph
+        __init__(DiGraph self, gum::Size nodes_size, bool nodes_resize_policy=True) -> DiGraph
+        __init__(DiGraph self, gum::Size nodes_size) -> DiGraph
+        __init__(DiGraph self) -> DiGraph
+        __init__(DiGraph self, DiGraph g) -> DiGraph
         """
         _pyAgrum.DiGraph_swiginit(self, _pyAgrum.new_DiGraph(*args))
     __swig_destroy__ = _pyAgrum.delete_DiGraph
 
     def __eq__(self, g: 'DiGraph') -> "bool":
-        r"""__eq__(self, g) -> bool"""
+        r"""__eq__(DiGraph self, DiGraph g) -> bool"""
         return _pyAgrum.DiGraph___eq__(self, g)
 
 
     def __ne__(self, g: 'DiGraph') -> "bool":
-        r"""__ne__(self, g) -> bool"""
+        r"""__ne__(DiGraph self, DiGraph g) -> bool"""
         return _pyAgrum.DiGraph___ne__(self, g)
 
 
     def eraseNode(self, id: 'gum::NodeId const') -> "void":
         r"""
-        eraseNode(self, id)
+        eraseNode(DiGraph self, gum::NodeId const id)
 
         Erase the node and all the related arcs.
 
@@ -4198,7 +4628,7 @@ class DiGraph(object):
 
     def clear(self) -> "void":
         r"""
-        clear(self)
+        clear(DiGraph self)
 
         Remove all the nodes and arcs from the graph.
 
@@ -4208,7 +4638,7 @@ class DiGraph(object):
 
     def toDot(self) -> "std::string const":
         r"""
-        toDot(self) -> std::string const
+        toDot(DiGraph self) -> std::string const
 
         Returns
         -------
@@ -4221,8 +4651,8 @@ class DiGraph(object):
 
     def topologicalOrder(self, clear: 'bool'=True) -> "gum::Sequence< gum::NodeId > const &":
         r"""
-        topologicalOrder(self, clear=True) -> gum::Sequence< gum::NodeId > const
-        topologicalOrder(self) -> gum::Sequence< gum::NodeId > const &
+        topologicalOrder(DiGraph self, bool clear=True) -> gum::Sequence< gum::NodeId > const
+        topologicalOrder(DiGraph self) -> gum::Sequence< gum::NodeId > const &
 
         Returns
         -------
@@ -4239,18 +4669,18 @@ class DiGraph(object):
 
 
     def __repr__(self) -> "std::string":
-        r"""__repr__(self) -> std::string"""
+        r"""__repr__(DiGraph self) -> std::string"""
         return _pyAgrum.DiGraph___repr__(self)
 
 
     def __str__(self) -> "std::string":
-        r"""__str__(self) -> std::string"""
+        r"""__str__(DiGraph self) -> std::string"""
         return _pyAgrum.DiGraph___str__(self)
 
 
     def nodes(self) -> "PyObject *":
         r"""
-        nodes(self) -> PyObject *
+        nodes(DiGraph self) -> PyObject *
 
         Returns
         -------
@@ -4263,7 +4693,7 @@ class DiGraph(object):
 
     def addNodes(self, n: 'gum::Size') -> "PyObject *":
         r"""
-        addNodes(self, n) -> PyObject *
+        addNodes(DiGraph self, gum::Size n) -> PyObject *
 
         Add n nodes.
 
@@ -4283,7 +4713,7 @@ class DiGraph(object):
 
     def arcs(self) -> "PyObject *":
         r"""
-        arcs(self) -> PyObject *
+        arcs(DiGraph self) -> PyObject *
 
         Returns
         -------
@@ -4296,7 +4726,7 @@ class DiGraph(object):
 
     def parents(self, id: 'gum::NodeId') -> "PyObject *":
         r"""
-        parents(self, id) -> PyObject *
+        parents(DiGraph self, gum::NodeId id) -> PyObject *
 
         Parameters
         ----------
@@ -4314,7 +4744,7 @@ class DiGraph(object):
 
     def children(self, id: 'gum::NodeId') -> "PyObject *":
         r"""
-        children(self, id) -> PyObject *
+        children(DiGraph self, gum::NodeId id) -> PyObject *
 
         Parameters
         ----------
@@ -4332,7 +4762,7 @@ class DiGraph(object):
 
     def addNode(self) -> "gum::NodeId":
         r"""
-        addNode(self) -> gum::NodeId
+        addNode(DiGraph self) -> gum::NodeId
 
         Returns
         -------
@@ -4345,7 +4775,7 @@ class DiGraph(object):
 
     def addNodeWithId(self, id: 'gum::NodeId const') -> "void":
         r"""
-        addNodeWithId(self, id)
+        addNodeWithId(DiGraph self, gum::NodeId const id)
 
         Add a node by choosing a new NodeId.
 
@@ -4365,7 +4795,7 @@ class DiGraph(object):
 
     def existsNode(self, id: 'gum::NodeId const') -> "bool":
         r"""
-        existsNode(self, id) -> bool
+        existsNode(DiGraph self, gum::NodeId const id) -> bool
 
         Check if a node with a certain id exists in the graph.
 
@@ -4385,7 +4815,7 @@ class DiGraph(object):
 
     def size(self) -> "gum::Size":
         r"""
-        size(self) -> gum::Size
+        size(DiGraph self) -> gum::Size
 
         Returns
         -------
@@ -4398,7 +4828,7 @@ class DiGraph(object):
 
     def empty(self) -> "bool":
         r"""
-        empty(self) -> bool
+        empty(DiGraph self) -> bool
 
         Check if the graph is empty.
 
@@ -4413,8 +4843,8 @@ class DiGraph(object):
 
     def addArc(self, *args) -> "void":
         r"""
-        addArc(self, tail, head)
-        addArc(self, n1, n2)
+        addArc(DiGraph self, gum::NodeId const tail, gum::NodeId const head)
+        addArc(DiGraph self, gum::NodeId const n1, gum::NodeId const n2)
 
         Add an arc from tail to head.
 
@@ -4436,7 +4866,7 @@ class DiGraph(object):
 
     def eraseArc(self, n1: 'gum::NodeId const', n2: 'gum::NodeId const') -> "void":
         r"""
-        eraseArc(self, n1, n2)
+        eraseArc(DiGraph self, gum::NodeId const n1, gum::NodeId const n2)
 
         Erase the arc between n1 and n2.
 
@@ -4453,7 +4883,7 @@ class DiGraph(object):
 
     def existsArc(self, n1: 'gum::NodeId const', n2: 'gum::NodeId const') -> "bool":
         r"""
-        existsArc(self, n1, n2) -> bool
+        existsArc(DiGraph self, gum::NodeId const n1, gum::NodeId const n2) -> bool
 
         Check if an arc exists bewteen n1 and n2.
 
@@ -4475,7 +4905,7 @@ class DiGraph(object):
 
     def eraseParents(self, n: 'gum::NodeId const') -> "void":
         r"""
-        eraseParents(self, n)
+        eraseParents(DiGraph self, gum::NodeId const n)
 
         Erase the arcs coming to the node.
 
@@ -4490,7 +4920,7 @@ class DiGraph(object):
 
     def eraseChildren(self, n: 'gum::NodeId const') -> "void":
         r"""
-        eraseChildren(self, n)
+        eraseChildren(DiGraph self, gum::NodeId const n)
 
         Erase the arcs heading through the node's children.
 
@@ -4505,7 +4935,7 @@ class DiGraph(object):
 
     def sizeArcs(self) -> "gum::Size":
         r"""
-        sizeArcs(self) -> gum::Size
+        sizeArcs(DiGraph self) -> gum::Size
 
         Returns
         -------
@@ -4518,7 +4948,7 @@ class DiGraph(object):
 
     def emptyArcs(self) -> "bool":
         r"""
-        emptyArcs(self) -> bool
+        emptyArcs(DiGraph self) -> bool
 
         Check if the graph doesn't contains arcs.
 
@@ -4556,25 +4986,30 @@ class DAG(DiGraph):
 
     def __init__(self, *args):
         r"""
-        __init__(self, nodes_size, nodes_resize_policy=True, arcs_size, arcs_resize_policy=True) -> DAG
-        __init__(self, nodes_size, nodes_resize_policy=True, arcs_size) -> DAG
-        __init__(self, nodes_size, nodes_resize_policy=True) -> DAG
-        __init__(self, nodes_size) -> DAG
-        __init__(self) -> DAG
-        __init__(self, g) -> DAG
+        __init__(DAG self, gum::Size nodes_size, bool nodes_resize_policy=True, gum::Size arcs_size, bool arcs_resize_policy=True) -> DAG
+        __init__(DAG self, gum::Size nodes_size, bool nodes_resize_policy=True, gum::Size arcs_size) -> DAG
+        __init__(DAG self, gum::Size nodes_size, bool nodes_resize_policy=True) -> DAG
+        __init__(DAG self, gum::Size nodes_size) -> DAG
+        __init__(DAG self) -> DAG
+        __init__(DAG self, DAG g) -> DAG
         """
         _pyAgrum.DAG_swiginit(self, _pyAgrum.new_DAG(*args))
     __swig_destroy__ = _pyAgrum.delete_DAG
 
+    def moralGraph(self) -> "gum::UndiGraph":
+        r"""moralGraph(DAG self) -> UndiGraph"""
+        return _pyAgrum.DAG_moralGraph(self)
+
+
     def addNodes(self, n: 'gum::Size') -> "PyObject *":
-        r"""addNodes(self, n) -> PyObject *"""
+        r"""addNodes(DAG self, gum::Size n) -> PyObject *"""
         return _pyAgrum.DAG_addNodes(self, n)
 
 
     def addArc(self, *args) -> "void":
         r"""
-        addArc(self, tail, head)
-        addArc(self, n1, n2)
+        addArc(DAG self, gum::NodeId const tail, gum::NodeId const head)
+        addArc(DAG self, gum::NodeId const n1, gum::NodeId const n2)
 
         Add an arc from tail to head.
 
@@ -4599,381 +5034,6 @@ class DAG(DiGraph):
 # Register DAG in _pyAgrum:
 _pyAgrum.DAG_swigregister(DAG)
 
-class UndiGraph(object):
-    r"""
-
-    UndiGraph represents an Undirected Graph.
-
-    Available constructors:
-        ``UndiGraph() -> UndiGraph``
-
-        ``UndiGraph(src) -> UndiGraph``
-
-    Parameters
-    ----------
-    src : :class: UndiGraph
-      the UndiGraph to copy
-
-
-    """
-
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
-
-    def __init__(self, *args):
-        r"""
-        __init__(self, nodes_size, nodes_resize_policy=True, edges_size, edges_resize_policy=True) -> UndiGraph
-        __init__(self, nodes_size, nodes_resize_policy=True, edges_size) -> UndiGraph
-        __init__(self, nodes_size, nodes_resize_policy=True) -> UndiGraph
-        __init__(self, nodes_size) -> UndiGraph
-        __init__(self) -> UndiGraph
-        __init__(self, g) -> UndiGraph
-        """
-        _pyAgrum.UndiGraph_swiginit(self, _pyAgrum.new_UndiGraph(*args))
-    __swig_destroy__ = _pyAgrum.delete_UndiGraph
-
-    def __eq__(self, g: 'UndiGraph') -> "bool":
-        r"""__eq__(self, g) -> bool"""
-        return _pyAgrum.UndiGraph___eq__(self, g)
-
-
-    def __ne__(self, g: 'UndiGraph') -> "bool":
-        r"""__ne__(self, g) -> bool"""
-        return _pyAgrum.UndiGraph___ne__(self, g)
-
-
-    def eraseNode(self, id: 'gum::NodeId const') -> "void":
-        r"""
-        eraseNode(self, id)
-
-        Erase the node and all the adjacent edges.
-
-        Parameters
-        ----------
-        id : int
-          the id of the node
-
-        """
-        return _pyAgrum.UndiGraph_eraseNode(self, id)
-
-
-    def clear(self) -> "void":
-        r"""
-        clear(self)
-
-        Remove all the nodes and edges from the graph.
-
-        """
-        return _pyAgrum.UndiGraph_clear(self)
-
-
-    def toDot(self) -> "std::string const":
-        r"""
-        toDot(self) -> std::string const
-
-        Returns
-        -------
-        str
-            a friendly display of the graph in DOT format
-
-        """
-        return _pyAgrum.UndiGraph_toDot(self)
-
-
-    def hasUndirectedCycle(self) -> "bool":
-        r"""
-        hasUndirectedCycle(self) -> bool
-
-        Checks whether the graph contains cycles.
-
-        Returns
-        -------
-        bool
-            True if the graph contains a cycle
-
-        """
-        return _pyAgrum.UndiGraph_hasUndirectedCycle(self)
-
-
-    def partialUndiGraph(self, nodesSet: 'gum::NodeSet') -> "gum::UndiGraph":
-        r"""
-        partialUndiGraph(self, nodesSet) -> UndiGraph
-
-        Parameters
-        ----------
-        nodesSet : Set
-            The set of nodes composing the partial graph
-
-        Returns
-        -------
-        pyAgrum.UndiGraph
-            The partial graph formed by the nodes given in parameter
-
-        """
-        return _pyAgrum.UndiGraph_partialUndiGraph(self, nodesSet)
-
-
-    def __repr__(self) -> "std::string":
-        r"""__repr__(self) -> std::string"""
-        return _pyAgrum.UndiGraph___repr__(self)
-
-
-    def __str__(self) -> "std::string":
-        r"""__str__(self) -> std::string"""
-        return _pyAgrum.UndiGraph___str__(self)
-
-
-    def nodes(self) -> "PyObject *":
-        r"""
-        nodes(self) -> PyObject *
-
-        Returns
-        -------
-        set
-            the set of ids
-
-        """
-        return _pyAgrum.UndiGraph_nodes(self)
-
-
-    def addNodes(self, n: 'gum::Size') -> "PyObject *":
-        r"""
-        addNodes(self, n) -> PyObject *
-
-        Add n nodes.
-
-        Parameters
-        ----------
-        n : int
-          the number of nodes to add.
-
-        Returns
-        -------
-        Set of int
-          the new ids
-
-        """
-        return _pyAgrum.UndiGraph_addNodes(self, n)
-
-
-    def edges(self) -> "PyObject *":
-        r"""
-        edges(self) -> PyObject *
-
-        Returns
-        -------
-        List
-          the list of the edges
-
-        """
-        return _pyAgrum.UndiGraph_edges(self)
-
-
-    def neighbours(self, id: 'gum::NodeId') -> "PyObject *":
-        r"""
-        neighbours(self, id) -> PyObject *
-
-        Parameters
-        ----------
-        id : int
-            the id of the checked node
-
-        Returns
-        -------
-        Set
-            The set of edges adjacent to the given node
-
-        """
-        return _pyAgrum.UndiGraph_neighbours(self, id)
-
-
-    def addNode(self) -> "gum::NodeId":
-        r"""
-        addNode(self) -> gum::NodeId
-
-        Returns
-        -------
-        int
-          the new NodeId
-
-        """
-        return _pyAgrum.UndiGraph_addNode(self)
-
-
-    def addNodeWithId(self, id: 'gum::NodeId const') -> "void":
-        r"""
-        addNodeWithId(self, id)
-
-        Add a node by choosing a new NodeId.
-
-        Parameters
-        ----------
-        id : int
-          The id of the new node
-
-        Raises
-        ------
-        gum.DuplicateElement
-          If the given id is already used
-
-        """
-        return _pyAgrum.UndiGraph_addNodeWithId(self, id)
-
-
-    def existsNode(self, id: 'gum::NodeId const') -> "bool":
-        r"""
-        existsNode(self, id) -> bool
-
-        Check if a node with a certain id exists in the graph.
-
-        Parameters
-        ----------
-        id : int
-            the checked id
-
-        Returns
-        -------
-        bool
-            True if the node exists
-
-        """
-        return _pyAgrum.UndiGraph_existsNode(self, id)
-
-
-    def size(self) -> "gum::Size":
-        r"""
-        size(self) -> gum::Size
-
-        Returns
-        -------
-        int
-            the number of nodes in the graph
-
-        """
-        return _pyAgrum.UndiGraph_size(self)
-
-
-    def empty(self) -> "bool":
-        r"""
-        empty(self) -> bool
-
-        Check if the graph is empty.
-
-        Returns
-        -------
-        bool
-            True if the graph is empty
-
-        """
-        return _pyAgrum.UndiGraph_empty(self)
-
-
-    def addEdge(self, n1: 'gum::NodeId const', n2: 'gum::NodeId const') -> "void":
-        r"""
-        addEdge(self, n1, n2)
-
-        Insert a new edge into the graph.
-
-        Parameters
-        ----------
-        n1 : int
-          the id of one node of the new inserted edge
-        n2 : int
-          the id of the other node of the new inserted edge
-
-        Raises
-        ------
-        gum.InvalidNode
-          If n1 or n2 does not belong to the graph nodes.
-
-        """
-        return _pyAgrum.UndiGraph_addEdge(self, n1, n2)
-
-
-    def eraseEdge(self, n1: 'gum::NodeId const', n2: 'gum::NodeId const') -> "void":
-        r"""
-        eraseEdge(self, n1, n2)
-
-        Erase the edge between n1 and n2.
-
-        Parameters
-        ----------
-        n1 : int
-          the id of the tail node
-        n2 : int
-          the id of the head node
-
-        """
-        return _pyAgrum.UndiGraph_eraseEdge(self, n1, n2)
-
-
-    def existsEdge(self, n1: 'gum::NodeId const', n2: 'gum::NodeId const') -> "bool":
-        r"""
-        existsEdge(self, n1, n2) -> bool
-
-        Check if an edge exists bewteen n1 and n2.
-
-        Parameters
-        ----------
-        n1 : int
-          the id of one extremity of the edge
-        n2 : int
-          the id of the other extremity if tge edge
-
-        Returns
-        -------
-        bool
-            True if the arc exists
-
-        """
-        return _pyAgrum.UndiGraph_existsEdge(self, n1, n2)
-
-
-    def sizeEdges(self) -> "gum::Size":
-        r"""
-        sizeEdges(self) -> gum::Size
-
-        Returns
-        -------
-        int
-            the number of edges in the graph
-
-        """
-        return _pyAgrum.UndiGraph_sizeEdges(self)
-
-
-    def emptyEdges(self) -> "bool":
-        r"""
-        emptyEdges(self) -> bool
-
-        Check if the graph doesn't contains edges.
-
-        Returns
-        -------
-        bool
-            True if the graph doesn't contains edges
-
-        """
-        return _pyAgrum.UndiGraph_emptyEdges(self)
-
-
-    def eraseNeighbours(self, n: 'gum::NodeId const') -> "void":
-        r"""
-        eraseNeighbours(self, n)
-
-        Erase all the edges adjacent to a given node.
-
-        Parameters
-        ----------
-        n : int
-          the id of the node
-
-        """
-        return _pyAgrum.UndiGraph_eraseNeighbours(self, n)
-
-
-# Register UndiGraph in _pyAgrum:
-_pyAgrum.UndiGraph_swigregister(UndiGraph)
-
 class MixedGraph(UndiGraph, DiGraph):
     r"""
 
@@ -4995,31 +5055,31 @@ class MixedGraph(UndiGraph, DiGraph):
 
     def __init__(self, *args):
         r"""
-        __init__(self, nodes_size, nodes_resize_policy=True, arcs_size, arcs_resize_policy=True, edges_size, edges_resize_policy=True) -> MixedGraph
-        __init__(self, nodes_size, nodes_resize_policy=True, arcs_size, arcs_resize_policy=True, edges_size) -> MixedGraph
-        __init__(self, nodes_size, nodes_resize_policy=True, arcs_size, arcs_resize_policy=True) -> MixedGraph
-        __init__(self, nodes_size, nodes_resize_policy=True, arcs_size) -> MixedGraph
-        __init__(self, nodes_size, nodes_resize_policy=True) -> MixedGraph
-        __init__(self, nodes_size) -> MixedGraph
-        __init__(self) -> MixedGraph
-        __init__(self, g) -> MixedGraph
+        __init__(MixedGraph self, gum::Size nodes_size, bool nodes_resize_policy=True, gum::Size arcs_size, bool arcs_resize_policy=True, gum::Size edges_size, bool edges_resize_policy=True) -> MixedGraph
+        __init__(MixedGraph self, gum::Size nodes_size, bool nodes_resize_policy=True, gum::Size arcs_size, bool arcs_resize_policy=True, gum::Size edges_size) -> MixedGraph
+        __init__(MixedGraph self, gum::Size nodes_size, bool nodes_resize_policy=True, gum::Size arcs_size, bool arcs_resize_policy=True) -> MixedGraph
+        __init__(MixedGraph self, gum::Size nodes_size, bool nodes_resize_policy=True, gum::Size arcs_size) -> MixedGraph
+        __init__(MixedGraph self, gum::Size nodes_size, bool nodes_resize_policy=True) -> MixedGraph
+        __init__(MixedGraph self, gum::Size nodes_size) -> MixedGraph
+        __init__(MixedGraph self) -> MixedGraph
+        __init__(MixedGraph self, MixedGraph g) -> MixedGraph
         """
         _pyAgrum.MixedGraph_swiginit(self, _pyAgrum.new_MixedGraph(*args))
     __swig_destroy__ = _pyAgrum.delete_MixedGraph
 
     def __eq__(self, g: 'MixedGraph') -> "bool":
-        r"""__eq__(self, g) -> bool"""
+        r"""__eq__(MixedGraph self, MixedGraph g) -> bool"""
         return _pyAgrum.MixedGraph___eq__(self, g)
 
 
     def __ne__(self, g: 'MixedGraph') -> "bool":
-        r"""__ne__(self, g) -> bool"""
+        r"""__ne__(MixedGraph self, MixedGraph g) -> bool"""
         return _pyAgrum.MixedGraph___ne__(self, g)
 
 
     def eraseNode(self, id: 'gum::NodeId const') -> "void":
         r"""
-        eraseNode(self, id)
+        eraseNode(MixedGraph self, gum::NodeId const id)
 
         Erase the node and all the adjacent edges.
 
@@ -5034,7 +5094,7 @@ class MixedGraph(UndiGraph, DiGraph):
 
     def clear(self) -> "void":
         r"""
-        clear(self)
+        clear(MixedGraph self)
 
         Remove all the nodes and edges from the graph.
 
@@ -5044,7 +5104,7 @@ class MixedGraph(UndiGraph, DiGraph):
 
     def mixedOrientedPath(self, node1: 'gum::NodeId const', node2: 'gum::NodeId const') -> "std::vector< gum::NodeId,std::allocator< gum::NodeId > > const":
         r"""
-        mixedOrientedPath(self, node1, node2) -> std::vector< gum::NodeId,std::allocator< gum::NodeId > > const
+        mixedOrientedPath(MixedGraph self, gum::NodeId const node1, gum::NodeId const node2) -> std::vector< gum::NodeId,std::allocator< gum::NodeId > > const
 
         Parameters
         ----------
@@ -5069,7 +5129,7 @@ class MixedGraph(UndiGraph, DiGraph):
 
     def mixedUnorientedPath(self, node1: 'gum::NodeId const', node2: 'gum::NodeId const') -> "std::vector< gum::NodeId,std::allocator< gum::NodeId > > const":
         r"""
-        mixedUnorientedPath(self, node1, node2) -> std::vector< gum::NodeId,std::allocator< gum::NodeId > > const
+        mixedUnorientedPath(MixedGraph self, gum::NodeId const node1, gum::NodeId const node2) -> std::vector< gum::NodeId,std::allocator< gum::NodeId > > const
 
         Parameters
         ----------
@@ -5094,7 +5154,7 @@ class MixedGraph(UndiGraph, DiGraph):
 
     def toDot(self) -> "std::string const":
         r"""
-        toDot(self) -> std::string const
+        toDot(MixedGraph self) -> std::string const
 
         Returns
         -------
@@ -5106,12 +5166,12 @@ class MixedGraph(UndiGraph, DiGraph):
 
 
     def __repr__(self) -> "std::string":
-        r"""__repr__(self) -> std::string"""
+        r"""__repr__(MixedGraph self) -> std::string"""
         return _pyAgrum.MixedGraph___repr__(self)
 
 
     def __str__(self) -> "std::string":
-        r"""__str__(self) -> std::string"""
+        r"""__str__(MixedGraph self) -> std::string"""
         return _pyAgrum.MixedGraph___str__(self)
 
 
@@ -5140,19 +5200,19 @@ class CliqueGraph(UndiGraph):
 
     def __init__(self, *args):
         r"""
-        __init__(self, nodes_size, nodes_resize_policy=True, edges_size, edges_resize_policy=True) -> CliqueGraph
-        __init__(self, nodes_size, nodes_resize_policy=True, edges_size) -> CliqueGraph
-        __init__(self, nodes_size, nodes_resize_policy=True) -> CliqueGraph
-        __init__(self, nodes_size) -> CliqueGraph
-        __init__(self) -> CliqueGraph
-        __init__(self, arg2) -> CliqueGraph
+        __init__(CliqueGraph self, gum::Size nodes_size, bool nodes_resize_policy=True, gum::Size edges_size, bool edges_resize_policy=True) -> CliqueGraph
+        __init__(CliqueGraph self, gum::Size nodes_size, bool nodes_resize_policy=True, gum::Size edges_size) -> CliqueGraph
+        __init__(CliqueGraph self, gum::Size nodes_size, bool nodes_resize_policy=True) -> CliqueGraph
+        __init__(CliqueGraph self, gum::Size nodes_size) -> CliqueGraph
+        __init__(CliqueGraph self) -> CliqueGraph
+        __init__(CliqueGraph self, CliqueGraph arg2) -> CliqueGraph
         """
         _pyAgrum.CliqueGraph_swiginit(self, _pyAgrum.new_CliqueGraph(*args))
     __swig_destroy__ = _pyAgrum.delete_CliqueGraph
 
     def addEdge(self, first: 'gum::NodeId const', second: 'gum::NodeId const') -> "void":
         r"""
-        addEdge(self, first, second)
+        addEdge(CliqueGraph self, gum::NodeId const first, gum::NodeId const second)
 
         Insert a new edge into the graph.
 
@@ -5174,7 +5234,7 @@ class CliqueGraph(UndiGraph):
 
     def eraseEdge(self, edge: 'Edge') -> "void":
         r"""
-        eraseEdge(self, edge)
+        eraseEdge(CliqueGraph self, Edge edge)
 
         Erase the edge between n1 and n2.
 
@@ -5191,7 +5251,7 @@ class CliqueGraph(UndiGraph):
 
     def clearEdges(self) -> "void":
         r"""
-        clearEdges(self)
+        clearEdges(CliqueGraph self)
 
         Remove all edges and their separators 
 
@@ -5201,10 +5261,10 @@ class CliqueGraph(UndiGraph):
 
     def addNode(self, *args) -> "void":
         r"""
-        addNode(self, clique) -> gum::NodeId
-        addNode(self) -> gum::NodeId
-        addNode(self, id, clique)
-        addNode(self, id)
+        addNode(CliqueGraph self, gum::NodeSet const & clique) -> gum::NodeId
+        addNode(CliqueGraph self) -> gum::NodeId
+        addNode(CliqueGraph self, gum::NodeId const id, gum::NodeSet const & clique)
+        addNode(CliqueGraph self, gum::NodeId const id)
 
         Returns
         -------
@@ -5217,7 +5277,7 @@ class CliqueGraph(UndiGraph):
 
     def eraseNode(self, node: 'gum::NodeId const') -> "void":
         r"""
-        eraseNode(self, node)
+        eraseNode(CliqueGraph self, gum::NodeId const node)
 
         Erase the node and all the adjacent edges.
 
@@ -5232,7 +5292,7 @@ class CliqueGraph(UndiGraph):
 
     def clear(self) -> "void":
         r"""
-        clear(self)
+        clear(CliqueGraph self)
 
         Remove all the nodes and edges from the graph.
 
@@ -5242,7 +5302,7 @@ class CliqueGraph(UndiGraph):
 
     def container(self, idNode: 'gum::NodeId const') -> "gum::NodeId":
         r"""
-        container(self, idNode) -> gum::NodeId
+        container(CliqueGraph self, gum::NodeId const idNode) -> gum::NodeId
 
         Parameters
         ----------
@@ -5265,7 +5325,7 @@ class CliqueGraph(UndiGraph):
 
     def setClique(self, idClique: 'gum::NodeId const', new_clique: 'gum::NodeSet const &') -> "void":
         r"""
-        setClique(self, idClique, new_clique)
+        setClique(CliqueGraph self, gum::NodeId const idClique, gum::NodeSet const & new_clique)
 
         changes the set of nodes included into a given clique
 
@@ -5287,7 +5347,7 @@ class CliqueGraph(UndiGraph):
 
     def addToClique(self, clique_id: 'gum::NodeId const', node_id: 'gum::NodeId const') -> "void":
         r"""
-        addToClique(self, clique_id, node_id)
+        addToClique(CliqueGraph self, gum::NodeId const clique_id, gum::NodeId const node_id)
 
         Change the set of nodes included into a given clique and returns the new set 
 
@@ -5311,7 +5371,7 @@ class CliqueGraph(UndiGraph):
 
     def eraseFromClique(self, clique_id: 'gum::NodeId const', node_id: 'gum::NodeId const') -> "void":
         r"""
-        eraseFromClique(self, clique_id, node_id)
+        eraseFromClique(CliqueGraph self, gum::NodeId const clique_id, gum::NodeId const node_id)
 
         Remove a node from a clique
 
@@ -5333,7 +5393,7 @@ class CliqueGraph(UndiGraph):
 
     def containerPath(self, node1: 'gum::NodeId const', node2: 'gum::NodeId const') -> "std::vector< gum::NodeId,std::allocator< gum::NodeId > >":
         r"""
-        containerPath(self, node1, node2) -> std::vector< gum::NodeId,std::allocator< gum::NodeId > >
+        containerPath(CliqueGraph self, gum::NodeId const node1, gum::NodeId const node2) -> std::vector< gum::NodeId,std::allocator< gum::NodeId > >
 
         Parameters
         ----------
@@ -5358,7 +5418,7 @@ class CliqueGraph(UndiGraph):
 
     def hasRunningIntersection(self) -> "bool":
         r"""
-        hasRunningIntersection(self) -> bool
+        hasRunningIntersection(CliqueGraph self) -> bool
 
         Returns
         -------
@@ -5371,7 +5431,7 @@ class CliqueGraph(UndiGraph):
 
     def isJoinTree(self) -> "bool":
         r"""
-        isJoinTree(self) -> bool
+        isJoinTree(CliqueGraph self) -> bool
 
         Returns
         -------
@@ -5384,7 +5444,7 @@ class CliqueGraph(UndiGraph):
 
     def toDot(self) -> "std::string const":
         r"""
-        toDot(self) -> std::string const
+        toDot(CliqueGraph self) -> std::string const
 
         Returns
         -------
@@ -5396,18 +5456,18 @@ class CliqueGraph(UndiGraph):
 
 
     def __ne__(self, arg2: 'CliqueGraph') -> "bool":
-        r"""__ne__(self, arg2) -> bool"""
+        r"""__ne__(CliqueGraph self, CliqueGraph arg2) -> bool"""
         return _pyAgrum.CliqueGraph___ne__(self, arg2)
 
 
     def __eq__(self, arg2: 'CliqueGraph') -> "bool":
-        r"""__eq__(self, arg2) -> bool"""
+        r"""__eq__(CliqueGraph self, CliqueGraph arg2) -> bool"""
         return _pyAgrum.CliqueGraph___eq__(self, arg2)
 
 
     def clique(self, clique: 'gum::NodeId const') -> "PyObject *":
         r"""
-        clique(self, clique) -> PyObject *
+        clique(CliqueGraph self, gum::NodeId const clique) -> PyObject *
 
         Parameters
         ----------
@@ -5430,7 +5490,7 @@ class CliqueGraph(UndiGraph):
 
     def separator(self, cliq1: 'gum::NodeId const', cliq2: 'gum::NodeId const') -> "PyObject *":
         r"""
-        separator(self, cliq1, cliq2) -> PyObject *
+        separator(CliqueGraph self, gum::NodeId const cliq1, gum::NodeId const cliq2) -> PyObject *
 
         Parameters
         ----------
@@ -5516,20 +5576,20 @@ class Instantiation(object):
 
     def __init__(self, *args):
         r"""
-        __init__(self) -> Instantiation
-        __init__(self, aI, notifyMaster=True) -> Instantiation
-        __init__(self, aI) -> Instantiation
-        __init__(self, aMD) -> Instantiation
-        __init__(self, aMD) -> Instantiation
-        __init__(self, aMD) -> Instantiation
-        __init__(self, aMD) -> Instantiation
+        __init__(Instantiation self) -> Instantiation
+        __init__(Instantiation self, Instantiation aI, bool const notifyMaster=True) -> Instantiation
+        __init__(Instantiation self, Instantiation aI) -> Instantiation
+        __init__(Instantiation self, MultiDimAdressable aMD) -> Instantiation
+        __init__(Instantiation self, MultiDimAdressable aMD) -> Instantiation
+        __init__(Instantiation self, MultiDimAdressable aMD) -> Instantiation
+        __init__(Instantiation self, MultiDimAdressable aMD) -> Instantiation
         """
         _pyAgrum.Instantiation_swiginit(self, _pyAgrum.new_Instantiation(*args))
     __swig_destroy__ = _pyAgrum.delete_Instantiation
 
     def nbrDim(self) -> "gum::Idx":
         r"""
-        nbrDim(self) -> gum::Idx
+        nbrDim(Instantiation self) -> gum::Idx
 
         Returns
         -------
@@ -5542,7 +5602,7 @@ class Instantiation(object):
 
     def add(self, v: 'DiscreteVariable') -> "void":
         r"""
-        add(self, v)
+        add(Instantiation self, DiscreteVariable v)
 
         Adds a new variable in the Instantiation.
 
@@ -5563,7 +5623,7 @@ class Instantiation(object):
 
     def erase(self, v: 'DiscreteVariable') -> "void":
         r"""
-        erase(self, v)
+        erase(Instantiation self, DiscreteVariable v)
 
         Parameters
         ----------
@@ -5581,7 +5641,7 @@ class Instantiation(object):
 
     def clear(self) -> "void":
         r"""
-        clear(self)
+        clear(Instantiation self)
 
         Erase all variables from an Instantiation.
 
@@ -5591,7 +5651,7 @@ class Instantiation(object):
 
     def domainSize(self) -> "gum::Size":
         r"""
-        domainSize(self) -> gum::Size
+        domainSize(Instantiation self) -> gum::Size
 
         Returns
         -------
@@ -5604,7 +5664,7 @@ class Instantiation(object):
 
     def pos(self, v: 'DiscreteVariable') -> "gum::Idx":
         r"""
-        pos(self, v) -> gum::Idx
+        pos(Instantiation self, DiscreteVariable v) -> gum::Idx
 
         Returns
         -------
@@ -5627,8 +5687,8 @@ class Instantiation(object):
 
     def val(self, *args) -> "gum::Idx":
         r"""
-        val(self, i) -> gum::Idx
-        val(self, var) -> gum::Idx
+        val(Instantiation self, gum::Idx i) -> gum::Idx
+        val(Instantiation self, DiscreteVariable var) -> gum::Idx
 
         Parameters
         ----------
@@ -5653,8 +5713,8 @@ class Instantiation(object):
 
     def variable(self, *args) -> "gum::DiscreteVariable const &":
         r"""
-        variable(self, i) -> DiscreteVariable
-        variable(self, name) -> DiscreteVariable
+        variable(Instantiation self, gum::Idx i) -> DiscreteVariable
+        variable(Instantiation self, std::string const & name) -> DiscreteVariable
 
         Parameters
         ----------
@@ -5677,11 +5737,11 @@ class Instantiation(object):
 
     def chgVal(self, *args) -> "gum::Instantiation &":
         r"""
-        chgVal(self, v, newval) -> Instantiation
-        chgVal(self, v, newval) -> Instantiation
-        chgVal(self, varPos, newval) -> Instantiation
-        chgVal(self, var, newval) -> Instantiation
-        chgVal(self, var, newval) -> Instantiation
+        chgVal(Instantiation self, DiscreteVariable v, gum::Idx newval) -> Instantiation
+        chgVal(Instantiation self, DiscreteVariable v, gum::Idx newval) -> Instantiation
+        chgVal(Instantiation self, gum::Idx varPos, gum::Idx newval) -> Instantiation
+        chgVal(Instantiation self, std::string const & var, gum::Idx newval) -> Instantiation
+        chgVal(Instantiation self, std::string const & var, std::string const & newval) -> Instantiation
 
         Assign newval to v (or to the variable at position varPos) in the Instantiation.
 
@@ -5712,7 +5772,7 @@ class Instantiation(object):
 
     def setVals(self, i: 'Instantiation') -> "gum::Instantiation &":
         r"""
-        setVals(self, i) -> Instantiation
+        setVals(Instantiation self, Instantiation i) -> Instantiation
 
         Assign the values from i in the Instantiation.
 
@@ -5732,8 +5792,8 @@ class Instantiation(object):
 
     def contains(self, *args) -> "bool":
         r"""
-        contains(self, v) -> bool
-        contains(self, v) -> bool
+        contains(Instantiation self, DiscreteVariable v) -> bool
+        contains(Instantiation self, DiscreteVariable v) -> bool
 
         Indicates whether a given variable belongs to the Instantiation.
 
@@ -5753,7 +5813,7 @@ class Instantiation(object):
 
     def variablesSequence(self) -> "gum::Sequence< gum::DiscreteVariable const * > const &":
         r"""
-        variablesSequence(self) -> gum::Sequence< gum::DiscreteVariable const * > const &
+        variablesSequence(Instantiation self) -> gum::Sequence< gum::DiscreteVariable const * > const &
 
         Returns
         -------
@@ -5766,7 +5826,7 @@ class Instantiation(object):
 
     def empty(self) -> "bool":
         r"""
-        empty(self) -> bool
+        empty(Instantiation self) -> bool
 
         Returns
         -------
@@ -5779,7 +5839,7 @@ class Instantiation(object):
 
     def inOverflow(self) -> "bool":
         r"""
-        inOverflow(self) -> bool
+        inOverflow(Instantiation self) -> bool
 
         Returns
         -------
@@ -5792,7 +5852,7 @@ class Instantiation(object):
 
     def unsetOverflow(self) -> "void":
         r"""
-        unsetOverflow(self)
+        unsetOverflow(Instantiation self)
 
         Removes the flag overflow.
 
@@ -5802,7 +5862,7 @@ class Instantiation(object):
 
     def unsetEnd(self) -> "void":
         r"""
-        unsetEnd(self)
+        unsetEnd(Instantiation self)
 
         Alias for unsetOverflow().
 
@@ -5812,7 +5872,7 @@ class Instantiation(object):
 
     def end(self) -> "bool":
         r"""
-        end(self) -> bool
+        end(Instantiation self) -> bool
 
         Returns
         -------
@@ -5825,7 +5885,7 @@ class Instantiation(object):
 
     def rend(self) -> "bool":
         r"""
-        rend(self) -> bool
+        rend(Instantiation self) -> bool
 
         Returns
         -------
@@ -5838,7 +5898,7 @@ class Instantiation(object):
 
     def inc(self) -> "void":
         r"""
-        inc(self)
+        inc(Instantiation self)
 
         Operator ++.
 
@@ -5848,7 +5908,7 @@ class Instantiation(object):
 
     def dec(self) -> "void":
         r"""
-        dec(self)
+        dec(Instantiation self)
 
         Operator --.
 
@@ -5858,7 +5918,7 @@ class Instantiation(object):
 
     def incIn(self, i: 'Instantiation') -> "void":
         r"""
-        incIn(self, i)
+        incIn(Instantiation self, Instantiation i)
 
         Operator ++ for the variables in i.
 
@@ -5873,7 +5933,7 @@ class Instantiation(object):
 
     def decIn(self, i: 'Instantiation') -> "void":
         r"""
-        decIn(self, i)
+        decIn(Instantiation self, Instantiation i)
 
         Operator -- for the variables in i.
 
@@ -5888,7 +5948,7 @@ class Instantiation(object):
 
     def incOut(self, i: 'Instantiation') -> "void":
         r"""
-        incOut(self, i)
+        incOut(Instantiation self, Instantiation i)
 
         Operator ++ for the variables not in i.
 
@@ -5903,7 +5963,7 @@ class Instantiation(object):
 
     def decOut(self, i: 'Instantiation') -> "void":
         r"""
-        decOut(self, i)
+        decOut(Instantiation self, Instantiation i)
 
         Operator -- for the variables not in i.
 
@@ -5918,7 +5978,7 @@ class Instantiation(object):
 
     def incNotVar(self, v: 'DiscreteVariable') -> "void":
         r"""
-        incNotVar(self, v)
+        incNotVar(Instantiation self, DiscreteVariable v)
 
         Operator ++ for vars which are not v.
 
@@ -5933,7 +5993,7 @@ class Instantiation(object):
 
     def decNotVar(self, v: 'DiscreteVariable') -> "void":
         r"""
-        decNotVar(self, v)
+        decNotVar(Instantiation self, DiscreteVariable v)
 
         Operator -- for vars which are not v.
 
@@ -5948,7 +6008,7 @@ class Instantiation(object):
 
     def incVar(self, v: 'DiscreteVariable') -> "void":
         r"""
-        incVar(self, v)
+        incVar(Instantiation self, DiscreteVariable v)
 
         Operator ++ for variable v only.
 
@@ -5968,7 +6028,7 @@ class Instantiation(object):
 
     def decVar(self, v: 'DiscreteVariable') -> "void":
         r"""
-        decVar(self, v)
+        decVar(Instantiation self, DiscreteVariable v)
 
         Operator -- for variable v only.
 
@@ -5988,7 +6048,7 @@ class Instantiation(object):
 
     def setFirst(self) -> "void":
         r"""
-        setFirst(self)
+        setFirst(Instantiation self)
 
         Assign the first values to the tuple of the Instantiation.
 
@@ -5998,7 +6058,7 @@ class Instantiation(object):
 
     def setLast(self) -> "void":
         r"""
-        setLast(self)
+        setLast(Instantiation self)
 
         Assign the last values in the Instantiation.
 
@@ -6008,7 +6068,7 @@ class Instantiation(object):
 
     def setFirstIn(self, i: 'Instantiation') -> "void":
         r"""
-        setFirstIn(self, i)
+        setFirstIn(Instantiation self, Instantiation i)
 
         Assign the first values in the Instantiation for the variables in i.
 
@@ -6023,7 +6083,7 @@ class Instantiation(object):
 
     def setLastIn(self, i: 'Instantiation') -> "void":
         r"""
-        setLastIn(self, i)
+        setLastIn(Instantiation self, Instantiation i)
 
         Assign the last values in the Instantiation for the variables in i.
 
@@ -6038,7 +6098,7 @@ class Instantiation(object):
 
     def setFirstOut(self, i: 'Instantiation') -> "void":
         r"""
-        setFirstOut(self, i)
+        setFirstOut(Instantiation self, Instantiation i)
 
         Assign the first values in the Instantiation for the variables not in i.
 
@@ -6053,7 +6113,7 @@ class Instantiation(object):
 
     def setLastOut(self, i: 'Instantiation') -> "void":
         r"""
-        setLastOut(self, i)
+        setLastOut(Instantiation self, Instantiation i)
 
         Assign the last values in the Instantiation for the variables not in i.
 
@@ -6068,7 +6128,7 @@ class Instantiation(object):
 
     def setFirstNotVar(self, v: 'DiscreteVariable') -> "void":
         r"""
-        setFirstNotVar(self, v)
+        setFirstNotVar(Instantiation self, DiscreteVariable v)
 
         Assign the first values to variables different of v.
 
@@ -6083,7 +6143,7 @@ class Instantiation(object):
 
     def setLastNotVar(self, v: 'DiscreteVariable') -> "void":
         r"""
-        setLastNotVar(self, v)
+        setLastNotVar(Instantiation self, DiscreteVariable v)
 
         Assign the last values to variables different of v.
 
@@ -6098,7 +6158,7 @@ class Instantiation(object):
 
     def setFirstVar(self, v: 'DiscreteVariable') -> "void":
         r"""
-        setFirstVar(self, v)
+        setFirstVar(Instantiation self, DiscreteVariable v)
 
         Assign the first value in the Instantiation for var v.
 
@@ -6113,7 +6173,7 @@ class Instantiation(object):
 
     def setLastVar(self, v: 'DiscreteVariable') -> "void":
         r"""
-        setLastVar(self, v)
+        setLastVar(Instantiation self, DiscreteVariable v)
 
         Assign the last value in the Instantiation for var v.
 
@@ -6127,23 +6187,23 @@ class Instantiation(object):
 
 
     def __eq__(self, other: 'Instantiation') -> "bool":
-        r"""__eq__(self, other) -> bool"""
+        r"""__eq__(Instantiation self, Instantiation other) -> bool"""
         return _pyAgrum.Instantiation___eq__(self, other)
 
 
     def __iadd__(self, depl: 'gum::Size') -> "gum::Instantiation &":
-        r"""__iadd__(self, depl) -> Instantiation"""
+        r"""__iadd__(Instantiation self, gum::Size depl) -> Instantiation"""
         return _pyAgrum.Instantiation___iadd__(self, depl)
 
 
     def __isub__(self, depl: 'gum::Size') -> "gum::Instantiation &":
-        r"""__isub__(self, depl) -> Instantiation"""
+        r"""__isub__(Instantiation self, gum::Size depl) -> Instantiation"""
         return _pyAgrum.Instantiation___isub__(self, depl)
 
 
     def hamming(self) -> "gum::Idx":
         r"""
-        hamming(self) -> gum::Idx
+        hamming(Instantiation self) -> gum::Idx
 
         Returns
         -------
@@ -6156,8 +6216,8 @@ class Instantiation(object):
 
     def reorder(self, *args) -> "void":
         r"""
-        reorder(self, v)
-        reorder(self, i)
+        reorder(Instantiation self, gum::Sequence< gum::DiscreteVariable const * > const & v)
+        reorder(Instantiation self, Instantiation i)
 
         Reorder vars of this instantiation giving the order in v (or i).
 
@@ -6173,19 +6233,19 @@ class Instantiation(object):
 
 
     def __repr__(self) -> "std::string":
-        r"""__repr__(self) -> std::string"""
+        r"""__repr__(Instantiation self) -> std::string"""
         return _pyAgrum.Instantiation___repr__(self)
 
 
     def __str__(self) -> "std::string":
-        r"""__str__(self) -> std::string"""
+        r"""__str__(Instantiation self) -> std::string"""
         return _pyAgrum.Instantiation___str__(self)
 
 
     def todict(self, withLabels: 'bool'=False) -> "PyObject *":
         r"""
-        todict(self, withLabels=False) -> PyObject
-        todict(self) -> PyObject *
+        todict(Instantiation self, bool withLabels=False) -> PyObject
+        todict(Instantiation self) -> PyObject *
 
         Create a dict (variable_name:value) from an instantiation
 
@@ -6205,7 +6265,7 @@ class Instantiation(object):
 
     def fromdict(self, dict: 'PyObject *') -> "void":
         r"""
-        fromdict(self, dict)
+        fromdict(Instantiation self, PyObject * dict)
 
         Change the values in an instantiation from a dict (variable_name:value) where value can be a position (int) or a label (string).
 
@@ -6247,7 +6307,7 @@ class DAGmodel(object):
 
     def property(self, name: 'std::string const &') -> "std::string const &":
         r"""
-        property(self, name) -> std::string const &
+        property(DAGmodel self, std::string const & name) -> std::string const &
 
         Warnings
         --------
@@ -6259,7 +6319,7 @@ class DAGmodel(object):
 
     def propertyWithDefault(self, name: 'std::string const &', byDefault: 'std::string const &') -> "std::string const &":
         r"""
-        propertyWithDefault(self, name, byDefault) -> std::string const &
+        propertyWithDefault(DAGmodel self, std::string const & name, std::string const & byDefault) -> std::string const &
 
         Warnings
         --------
@@ -6271,7 +6331,7 @@ class DAGmodel(object):
 
     def setProperty(self, name: 'std::string const &', value: 'std::string const &') -> "void":
         r"""
-        setProperty(self, name, value)
+        setProperty(DAGmodel self, std::string const & name, std::string const & value)
 
         Warnings
         --------
@@ -6283,7 +6343,7 @@ class DAGmodel(object):
 
     def dag(self) -> "gum::DAG const &":
         r"""
-        dag(self) -> DAG
+        dag(DAGmodel self) -> DAG
 
         Returns
         -------
@@ -6301,7 +6361,7 @@ class DAGmodel(object):
 
     def variableNodeMap(self) -> "gum::VariableNodeMap const &":
         r"""
-        variableNodeMap(self) -> VariableNodeMap
+        variableNodeMap(DAGmodel self) -> VariableNodeMap
 
         Returns
         -------
@@ -6314,7 +6374,7 @@ class DAGmodel(object):
 
     def size(self) -> "gum::Size":
         r"""
-        size(self) -> gum::Size
+        size(DAGmodel self) -> gum::Size
 
         Returns
         -------
@@ -6327,7 +6387,7 @@ class DAGmodel(object):
 
     def sizeArcs(self) -> "gum::Size":
         r"""
-        sizeArcs(self) -> gum::Size
+        sizeArcs(DAGmodel self) -> gum::Size
 
         Returns
         -------
@@ -6340,7 +6400,7 @@ class DAGmodel(object):
 
     def empty(self) -> "bool":
         r"""
-        empty(self) -> bool
+        empty(DAGmodel self) -> bool
 
         Returns
         -------
@@ -6353,7 +6413,7 @@ class DAGmodel(object):
 
     def nodes(self) -> "gum::NodeGraphPart const &":
         r"""
-        nodes(self) -> NodeGraphPart
+        nodes(DAGmodel self) -> NodeGraphPart
 
         Returns
         -------
@@ -6366,7 +6426,7 @@ class DAGmodel(object):
 
     def variable(self, id: 'gum::NodeId') -> "gum::DiscreteVariable const &":
         r"""
-        variable(self, id) -> DiscreteVariable
+        variable(DAGmodel self, gum::NodeId id) -> DiscreteVariable
 
         Parameters
         ----------
@@ -6391,7 +6451,7 @@ class DAGmodel(object):
 
     def nodeId(self, var: 'DiscreteVariable') -> "gum::NodeId":
         r"""
-        nodeId(self, var) -> gum::NodeId
+        nodeId(DAGmodel self, DiscreteVariable var) -> gum::NodeId
 
         Parameters
         ----------
@@ -6414,7 +6474,7 @@ class DAGmodel(object):
 
     def idFromName(self, name: 'std::string const &') -> "gum::NodeId":
         r"""
-        idFromName(self, name) -> gum::NodeId
+        idFromName(DAGmodel self, std::string const & name) -> gum::NodeId
 
         Returns a variable's id given its name in the graph.
 
@@ -6439,7 +6499,7 @@ class DAGmodel(object):
 
     def variableFromName(self, name: 'std::string const &') -> "gum::DiscreteVariable const &":
         r"""
-        variableFromName(self, name) -> DiscreteVariable
+        variableFromName(DAGmodel self, std::string const & name) -> DiscreteVariable
 
         Parameters
         ----------
@@ -6462,7 +6522,7 @@ class DAGmodel(object):
 
     def completeInstantiation(self) -> "gum::Instantiation":
         r"""
-        completeInstantiation(self) -> Instantiation
+        completeInstantiation(DAGmodel self) -> Instantiation
 
         Get an instantiation over all the variables of the model.
 
@@ -6477,7 +6537,7 @@ class DAGmodel(object):
 
     def arcs(self) -> "gum::ArcSet const &":
         r"""
-        arcs(self) -> gum::ArcSet const &
+        arcs(DAGmodel self) -> gum::ArcSet const &
 
         Returns
         -------
@@ -6490,24 +6550,24 @@ class DAGmodel(object):
 
     def parents(self, *args) -> "gum::NodeSet const &":
         r"""
-        parents(self, id) -> gum::NodeSet const
-        parents(self, name) -> gum::NodeSet const &
+        parents(DAGmodel self, gum::NodeId const id) -> gum::NodeSet const
+        parents(DAGmodel self, std::string const & name) -> gum::NodeSet const &
         """
         return _pyAgrum.DAGmodel_parents(self, *args)
 
 
     def children(self, *args) -> "gum::NodeSet const &":
         r"""
-        children(self, id) -> gum::NodeSet const
-        children(self, name) -> gum::NodeSet const &
+        children(DAGmodel self, gum::NodeId const id) -> gum::NodeSet const
+        children(DAGmodel self, std::string const & name) -> gum::NodeSet const &
         """
         return _pyAgrum.DAGmodel_children(self, *args)
 
 
     def moralGraph(self, clear: 'bool'=True) -> "gum::UndiGraph const &":
         r"""
-        moralGraph(self, clear=True) -> UndiGraph
-        moralGraph(self) -> UndiGraph
+        moralGraph(DAGmodel self, bool clear=True) -> UndiGraph
+        moralGraph(DAGmodel self) -> UndiGraph
 
         Returns the moral graph of the BayesNet, formed by adding edges between all pairs of nodes that have a common child, and then making all edges in the graph undirected.
 
@@ -6522,8 +6582,8 @@ class DAGmodel(object):
 
     def topologicalOrder(self, clear: 'bool'=True) -> "gum::Sequence< gum::NodeId > const &":
         r"""
-        topologicalOrder(self, clear=True) -> gum::Sequence< gum::NodeId > const
-        topologicalOrder(self) -> gum::Sequence< gum::NodeId > const &
+        topologicalOrder(DAGmodel self, bool clear=True) -> gum::Sequence< gum::NodeId > const
+        topologicalOrder(DAGmodel self) -> gum::Sequence< gum::NodeId > const &
 
         Returns
         -------
@@ -6541,7 +6601,7 @@ class DAGmodel(object):
 
     def log10DomainSize(self) -> "double":
         r"""
-        log10DomainSize(self) -> double
+        log10DomainSize(DAGmodel self) -> double
 
         Returns
         -------
@@ -6554,7 +6614,7 @@ class DAGmodel(object):
 
     def hasSameStructure(self, other: 'DAGmodel') -> "bool":
         r"""
-        hasSameStructure(self, other) -> bool
+        hasSameStructure(DAGmodel self, DAGmodel other) -> bool
 
         Parameters
         ----------
@@ -6584,17 +6644,17 @@ class EssentialGraph(object):
 
     def __init__(self, *args):
         r"""
-        __init__(self) -> EssentialGraph
-        __init__(self, m) -> EssentialGraph
-        __init__(self, m, mg) -> EssentialGraph
-        __init__(self, g) -> EssentialGraph
+        __init__(EssentialGraph self) -> EssentialGraph
+        __init__(EssentialGraph self, DAGmodel m) -> EssentialGraph
+        __init__(EssentialGraph self, DAGmodel m, MixedGraph mg) -> EssentialGraph
+        __init__(EssentialGraph self, EssentialGraph g) -> EssentialGraph
         """
         _pyAgrum.EssentialGraph_swiginit(self, _pyAgrum.new_EssentialGraph(*args))
     __swig_destroy__ = _pyAgrum.delete_EssentialGraph
 
     def mixedGraph(self) -> "gum::MixedGraph":
         r"""
-        mixedGraph(self) -> MixedGraph
+        mixedGraph(EssentialGraph self) -> MixedGraph
 
         Returns
         -------
@@ -6607,7 +6667,7 @@ class EssentialGraph(object):
 
     def toDot(self) -> "std::string":
         r"""
-        toDot(self) -> std::string
+        toDot(EssentialGraph self) -> std::string
 
         Returns
         -------
@@ -6620,7 +6680,7 @@ class EssentialGraph(object):
 
     def sizeArcs(self) -> "gum::Size":
         r"""
-        sizeArcs(self) -> gum::Size
+        sizeArcs(EssentialGraph self) -> gum::Size
 
         Returns
         -------
@@ -6633,7 +6693,7 @@ class EssentialGraph(object):
 
     def sizeEdges(self) -> "gum::Size":
         r"""
-        sizeEdges(self) -> gum::Size
+        sizeEdges(EssentialGraph self) -> gum::Size
 
         Returns
         -------
@@ -6646,7 +6706,7 @@ class EssentialGraph(object):
 
     def sizeNodes(self) -> "gum::Size":
         r"""
-        sizeNodes(self) -> gum::Size
+        sizeNodes(EssentialGraph self) -> gum::Size
 
         Returns
         -------
@@ -6659,7 +6719,7 @@ class EssentialGraph(object):
 
     def size(self) -> "gum::Size":
         r"""
-        size(self) -> gum::Size
+        size(EssentialGraph self) -> gum::Size
 
         Returns
         -------
@@ -6671,13 +6731,13 @@ class EssentialGraph(object):
 
 
     def nodes(self) -> "PyObject *":
-        r"""nodes(self) -> PyObject *"""
+        r"""nodes(EssentialGraph self) -> PyObject *"""
         return _pyAgrum.EssentialGraph_nodes(self)
 
 
     def arcs(self) -> "PyObject *":
         r"""
-        arcs(self) -> PyObject *
+        arcs(EssentialGraph self) -> PyObject *
 
         Returns
         -------
@@ -6690,7 +6750,7 @@ class EssentialGraph(object):
 
     def parents(self, id: 'gum::NodeId') -> "PyObject *":
         r"""
-        parents(self, id) -> PyObject *
+        parents(EssentialGraph self, gum::NodeId id) -> PyObject *
 
         Parameters
         ----------
@@ -6708,7 +6768,7 @@ class EssentialGraph(object):
 
     def children(self, id: 'gum::NodeId') -> "PyObject *":
         r"""
-        children(self, id) -> PyObject *
+        children(EssentialGraph self, gum::NodeId id) -> PyObject *
 
         Parameters
         ----------
@@ -6726,7 +6786,7 @@ class EssentialGraph(object):
 
     def edges(self) -> "PyObject *":
         r"""
-        edges(self) -> PyObject *
+        edges(EssentialGraph self) -> PyObject *
 
         Returns
         -------
@@ -6739,7 +6799,7 @@ class EssentialGraph(object):
 
     def neighbours(self, id: 'gum::NodeId') -> "PyObject *":
         r"""
-        neighbours(self, id) -> PyObject *
+        neighbours(EssentialGraph self, gum::NodeId id) -> PyObject *
 
         Parameters
         ----------
@@ -6766,15 +6826,15 @@ class MarkovBlanket(object):
 
     def __init__(self, *args):
         r"""
-        __init__(self, m, n) -> MarkovBlanket
-        __init__(self, m, name) -> MarkovBlanket
+        __init__(MarkovBlanket self, DAGmodel m, gum::NodeId n) -> MarkovBlanket
+        __init__(MarkovBlanket self, DAGmodel m, std::string const & name) -> MarkovBlanket
         """
         _pyAgrum.MarkovBlanket_swiginit(self, _pyAgrum.new_MarkovBlanket(*args))
     __swig_destroy__ = _pyAgrum.delete_MarkovBlanket
 
     def mb(self) -> "gum::DiGraph":
         r"""
-        mb(self) -> DiGraph
+        mb(MarkovBlanket self) -> DiGraph
 
         Returns
         -------
@@ -6787,7 +6847,7 @@ class MarkovBlanket(object):
 
     def toDot(self) -> "std::string":
         r"""
-        toDot(self) -> std::string
+        toDot(MarkovBlanket self) -> std::string
 
         Returns
         -------
@@ -6800,7 +6860,7 @@ class MarkovBlanket(object):
 
     def sizeArcs(self) -> "gum::Size":
         r"""
-        sizeArcs(self) -> gum::Size
+        sizeArcs(MarkovBlanket self) -> gum::Size
 
         Returns
         -------
@@ -6813,7 +6873,7 @@ class MarkovBlanket(object):
 
     def sizeNodes(self) -> "gum::Size":
         r"""
-        sizeNodes(self) -> gum::Size
+        sizeNodes(MarkovBlanket self) -> gum::Size
 
         Returns
         -------
@@ -6826,7 +6886,7 @@ class MarkovBlanket(object):
 
     def size(self) -> "gum::Size":
         r"""
-        size(self) -> gum::Size
+        size(MarkovBlanket self) -> gum::Size
 
         Returns
         -------
@@ -6839,7 +6899,7 @@ class MarkovBlanket(object):
 
     def hasSameStructure(self, other: 'DAGmodel') -> "bool":
         r"""
-        hasSameStructure(self, other) -> bool
+        hasSameStructure(MarkovBlanket self, DAGmodel other) -> bool
 
         Parameters
         ----------
@@ -6857,7 +6917,7 @@ class MarkovBlanket(object):
 
     def nodes(self) -> "PyObject *":
         r"""
-        nodes(self) -> PyObject *
+        nodes(MarkovBlanket self) -> PyObject *
 
         Returns
         -------
@@ -6870,7 +6930,7 @@ class MarkovBlanket(object):
 
     def arcs(self) -> "PyObject *":
         r"""
-        arcs(self) -> PyObject *
+        arcs(MarkovBlanket self) -> PyObject *
 
         Returns
         -------
@@ -6883,7 +6943,7 @@ class MarkovBlanket(object):
 
     def parents(self, id: 'gum::NodeId') -> "PyObject *":
         r"""
-        parents(self, id) -> PyObject *
+        parents(MarkovBlanket self, gum::NodeId id) -> PyObject *
 
         Parameters
         ----------
@@ -6901,7 +6961,7 @@ class MarkovBlanket(object):
 
     def children(self, id: 'gum::NodeId') -> "PyObject *":
         r"""
-        children(self, id) -> PyObject *
+        children(MarkovBlanket self, gum::NodeId id) -> PyObject *
 
         Parameters
         ----------
@@ -6927,15 +6987,15 @@ class StructuralComparator(object):
     __repr__ = _swig_repr
 
     def __init__(self):
-        r"""__init__(self) -> StructuralComparator"""
+        r"""__init__(StructuralComparator self) -> StructuralComparator"""
         _pyAgrum.StructuralComparator_swiginit(self, _pyAgrum.new_StructuralComparator())
     __swig_destroy__ = _pyAgrum.delete_StructuralComparator
 
     def compare(self, *args) -> "void":
         r"""
-        compare(self, ref, test)
-        compare(self, ref, test)
-        compare(self, ref, test)
+        compare(StructuralComparator self, DiGraph ref, DiGraph test)
+        compare(StructuralComparator self, UndiGraph ref, UndiGraph test)
+        compare(StructuralComparator self, MixedGraph ref, MixedGraph test)
 
         Use to compare the edges/arcs of two structure of the same type and same sizes (either DiGraph, UndiGraph or MixedGraph).
 
@@ -6954,7 +7014,7 @@ class StructuralComparator(object):
 
     def precision_skeleton(self) -> "double":
         r"""
-        precision_skeleton(self) -> double
+        precision_skeleton(StructuralComparator self) -> double
 
         Rate of true postive over labelized edges.
 
@@ -6969,7 +7029,7 @@ class StructuralComparator(object):
 
     def recall_skeleton(self) -> "double":
         r"""
-        recall_skeleton(self) -> double
+        recall_skeleton(StructuralComparator self) -> double
 
         Rate of true postive over labelized edges.
 
@@ -6984,7 +7044,7 @@ class StructuralComparator(object):
 
     def f_score_skeleton(self) -> "double":
         r"""
-        f_score_skeleton(self) -> double
+        f_score_skeleton(StructuralComparator self) -> double
 
         Harmonic mean between recall and precision.
 
@@ -6999,7 +7059,7 @@ class StructuralComparator(object):
 
     def precision(self) -> "double":
         r"""
-        precision(self) -> double
+        precision(StructuralComparator self) -> double
 
         Rate of true postive over postively labelized arcs/edges.
 
@@ -7014,7 +7074,7 @@ class StructuralComparator(object):
 
     def recall(self) -> "double":
         r"""
-        recall(self) -> double
+        recall(StructuralComparator self) -> double
 
         Rate of true postive over labelized arcs/edges.
 
@@ -7029,7 +7089,7 @@ class StructuralComparator(object):
 
     def f_score(self) -> "double":
         r"""
-        f_score(self) -> double
+        f_score(StructuralComparator self) -> double
 
         Harmonic mean between recall and precision.
 
@@ -7066,15 +7126,15 @@ class ApproximationScheme(object):
 
     def __init__(self, v: 'bool'=False):
         r"""
-        __init__(self, v=False) -> ApproximationScheme
-        __init__(self) -> ApproximationScheme
+        __init__(ApproximationScheme self, bool v=False) -> ApproximationScheme
+        __init__(ApproximationScheme self) -> ApproximationScheme
         """
         _pyAgrum.ApproximationScheme_swiginit(self, _pyAgrum.new_ApproximationScheme(v))
     __swig_destroy__ = _pyAgrum.delete_ApproximationScheme
 
     def setEpsilon(self, eps: 'double') -> "void":
         r"""
-        setEpsilon(self, eps)
+        setEpsilon(ApproximationScheme self, double eps)
 
         Parameters
         ----------
@@ -7092,7 +7152,7 @@ class ApproximationScheme(object):
 
     def epsilon(self) -> "double":
         r"""
-        epsilon(self) -> double
+        epsilon(ApproximationScheme self) -> double
 
         Returns
         -------
@@ -7105,7 +7165,7 @@ class ApproximationScheme(object):
 
     def disableEpsilon(self) -> "void":
         r"""
-        disableEpsilon(self)
+        disableEpsilon(ApproximationScheme self)
 
         Disable epsilon as a stopping criterion.
 
@@ -7115,7 +7175,7 @@ class ApproximationScheme(object):
 
     def enableEpsilon(self) -> "void":
         r"""
-        enableEpsilon(self)
+        enableEpsilon(ApproximationScheme self)
 
         Enable epsilon as a stopping criterion.
 
@@ -7125,7 +7185,7 @@ class ApproximationScheme(object):
 
     def isEnabledEpsilon(self) -> "bool":
         r"""
-        isEnabledEpsilon(self) -> bool
+        isEnabledEpsilon(ApproximationScheme self) -> bool
 
         Returns
         -------
@@ -7138,7 +7198,7 @@ class ApproximationScheme(object):
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
         r"""
-        setMinEpsilonRate(self, rate)
+        setMinEpsilonRate(ApproximationScheme self, double rate)
 
         Parameters
         ----------
@@ -7151,7 +7211,7 @@ class ApproximationScheme(object):
 
     def minEpsilonRate(self) -> "double":
         r"""
-        minEpsilonRate(self) -> double
+        minEpsilonRate(ApproximationScheme self) -> double
 
         Returns
         -------
@@ -7164,7 +7224,7 @@ class ApproximationScheme(object):
 
     def disableMinEpsilonRate(self) -> "void":
         r"""
-        disableMinEpsilonRate(self)
+        disableMinEpsilonRate(ApproximationScheme self)
 
         Disable a min epsilon rate as a stopping criterion.
 
@@ -7174,7 +7234,7 @@ class ApproximationScheme(object):
 
     def enableMinEpsilonRate(self) -> "void":
         r"""
-        enableMinEpsilonRate(self)
+        enableMinEpsilonRate(ApproximationScheme self)
 
         Enable a min epsilon rate as a stopping criterion.
 
@@ -7184,7 +7244,7 @@ class ApproximationScheme(object):
 
     def isEnabledMinEpsilonRate(self) -> "bool":
         r"""
-        isEnabledMinEpsilonRate(self) -> bool
+        isEnabledMinEpsilonRate(ApproximationScheme self) -> bool
 
         Returns
         -------
@@ -7197,7 +7257,7 @@ class ApproximationScheme(object):
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
         r"""
-        setMaxIter(self, max)
+        setMaxIter(ApproximationScheme self, gum::Size max)
 
         Parameters
         ----------
@@ -7215,7 +7275,7 @@ class ApproximationScheme(object):
 
     def maxIter(self) -> "gum::Size":
         r"""
-        maxIter(self) -> gum::Size
+        maxIter(ApproximationScheme self) -> gum::Size
 
         Returns
         -------
@@ -7228,7 +7288,7 @@ class ApproximationScheme(object):
 
     def disableMaxIter(self) -> "void":
         r"""
-        disableMaxIter(self)
+        disableMaxIter(ApproximationScheme self)
 
         Disable max iterations as a stopping criterion.
 
@@ -7238,7 +7298,7 @@ class ApproximationScheme(object):
 
     def enableMaxIter(self) -> "void":
         r"""
-        enableMaxIter(self)
+        enableMaxIter(ApproximationScheme self)
 
         Enable max iterations as a stopping criterion.
 
@@ -7248,7 +7308,7 @@ class ApproximationScheme(object):
 
     def isEnabledMaxIter(self) -> "bool":
         r"""
-        isEnabledMaxIter(self) -> bool
+        isEnabledMaxIter(ApproximationScheme self) -> bool
 
         Returns
         -------
@@ -7261,7 +7321,7 @@ class ApproximationScheme(object):
 
     def setMaxTime(self, timeout: 'double') -> "void":
         r"""
-        setMaxTime(self, timeout)
+        setMaxTime(ApproximationScheme self, double timeout)
 
         Parameters
         ----------
@@ -7279,7 +7339,7 @@ class ApproximationScheme(object):
 
     def maxTime(self) -> "double":
         r"""
-        maxTime(self) -> double
+        maxTime(ApproximationScheme self) -> double
 
         Returns
         -------
@@ -7292,7 +7352,7 @@ class ApproximationScheme(object):
 
     def currentTime(self) -> "double":
         r"""
-        currentTime(self) -> double
+        currentTime(ApproximationScheme self) -> double
 
         Returns
         -------
@@ -7305,7 +7365,7 @@ class ApproximationScheme(object):
 
     def disableMaxTime(self) -> "void":
         r"""
-        disableMaxTime(self)
+        disableMaxTime(ApproximationScheme self)
 
         Disable max time as a stopping criterion.
 
@@ -7315,7 +7375,7 @@ class ApproximationScheme(object):
 
     def enableMaxTime(self) -> "void":
         r"""
-        enableMaxTime(self)
+        enableMaxTime(ApproximationScheme self)
 
         Enable max time as a stopping criterion.
 
@@ -7325,7 +7385,7 @@ class ApproximationScheme(object):
 
     def isEnabledMaxTime(self) -> "bool":
         r"""
-        isEnabledMaxTime(self) -> bool
+        isEnabledMaxTime(ApproximationScheme self) -> bool
 
         Returns
         -------
@@ -7338,7 +7398,7 @@ class ApproximationScheme(object):
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
         r"""
-        setPeriodSize(self, p)
+        setPeriodSize(ApproximationScheme self, gum::Size p)
 
         Parameters
         ----------
@@ -7356,7 +7416,7 @@ class ApproximationScheme(object):
 
     def periodSize(self) -> "gum::Size":
         r"""
-        periodSize(self) -> gum::Size
+        periodSize(ApproximationScheme self) -> gum::Size
 
         Returns
         -------
@@ -7374,7 +7434,7 @@ class ApproximationScheme(object):
 
     def setVerbosity(self, v: 'bool') -> "void":
         r"""
-        setVerbosity(self, v)
+        setVerbosity(ApproximationScheme self, bool v)
 
         Parameters
         ----------
@@ -7387,7 +7447,7 @@ class ApproximationScheme(object):
 
     def verbosity(self) -> "bool":
         r"""
-        verbosity(self) -> bool
+        verbosity(ApproximationScheme self) -> bool
 
         Returns
         -------
@@ -7400,7 +7460,7 @@ class ApproximationScheme(object):
 
     def stateApproximationScheme(self) -> "gum::IApproximationSchemeConfiguration::ApproximationSchemeSTATE":
         r"""
-        stateApproximationScheme(self) -> gum::IApproximationSchemeConfiguration::ApproximationSchemeSTATE
+        stateApproximationScheme(ApproximationScheme self) -> gum::IApproximationSchemeConfiguration::ApproximationSchemeSTATE
 
         Returns
         -------
@@ -7413,7 +7473,7 @@ class ApproximationScheme(object):
 
     def nbrIterations(self) -> "gum::Size":
         r"""
-        nbrIterations(self) -> gum::Size
+        nbrIterations(ApproximationScheme self) -> gum::Size
 
         Returns
         -------
@@ -7426,7 +7486,7 @@ class ApproximationScheme(object):
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
         r"""
-        history(self) -> Vector
+        history(ApproximationScheme self) -> Vector
 
         Returns
         -------
@@ -7444,7 +7504,7 @@ class ApproximationScheme(object):
 
     def initApproximationScheme(self) -> "void":
         r"""
-        initApproximationScheme(self)
+        initApproximationScheme(ApproximationScheme self)
 
         Initiate the approximation scheme.
 
@@ -7454,7 +7514,7 @@ class ApproximationScheme(object):
 
     def startOfPeriod(self) -> "bool":
         r"""
-        startOfPeriod(self) -> bool
+        startOfPeriod(ApproximationScheme self) -> bool
 
         Returns
         -------
@@ -7467,8 +7527,8 @@ class ApproximationScheme(object):
 
     def updateApproximationScheme(self, incr: 'unsigned int'=1) -> "void":
         r"""
-        updateApproximationScheme(self, incr=1)
-        updateApproximationScheme(self)
+        updateApproximationScheme(ApproximationScheme self, unsigned int incr=1)
+        updateApproximationScheme(ApproximationScheme self)
 
         Update the approximation scheme.
 
@@ -7478,7 +7538,7 @@ class ApproximationScheme(object):
 
     def remainingBurnIn(self) -> "gum::Size":
         r"""
-        remainingBurnIn(self) -> gum::Size
+        remainingBurnIn(ApproximationScheme self) -> gum::Size
 
         Returns
         -------
@@ -7491,7 +7551,7 @@ class ApproximationScheme(object):
 
     def stopApproximationScheme(self) -> "void":
         r"""
-        stopApproximationScheme(self)
+        stopApproximationScheme(ApproximationScheme self)
 
         Stop the approximation scheme.
 
@@ -7501,7 +7561,7 @@ class ApproximationScheme(object):
 
     def continueApproximationScheme(self, error: 'double') -> "bool":
         r"""
-        continueApproximationScheme(self, error) -> bool
+        continueApproximationScheme(ApproximationScheme self, double error) -> bool
 
         Continue the approximation scheme.
 
@@ -7523,7 +7583,7 @@ FindBarrenNodesType_FIND_BARREN_NODES = _pyAgrum.FindBarrenNodesType_FIND_BARREN
 
 def randomDistribution(n: 'gum::Size') -> "std::vector< double,std::allocator< double > >":
     r"""
-    randomDistribution(n) -> Vector
+    randomDistribution(gum::Size n) -> Vector
 
     Parameters
     ----------
@@ -7584,16 +7644,16 @@ class DiscretizedVariable(IDiscretizedVariable):
 
     def __init__(self, *args):
         r"""
-        __init__(self, aName, aDesc) -> DiscretizedVariable
-        __init__(self, aName, aDesc, ticks) -> DiscretizedVariable
-        __init__(self, aDRV) -> DiscretizedVariable
+        __init__(DiscretizedVariable self, std::string const & aName, std::string const & aDesc) -> DiscretizedVariable
+        __init__(DiscretizedVariable self, std::string const & aName, std::string const & aDesc, Vector ticks) -> DiscretizedVariable
+        __init__(DiscretizedVariable self, DiscretizedVariable aDRV) -> DiscretizedVariable
         """
         _pyAgrum.DiscretizedVariable_swiginit(self, _pyAgrum.new_DiscretizedVariable(*args))
     __swig_destroy__ = _pyAgrum.delete_DiscretizedVariable
 
     def clone(self) -> "gum::DiscretizedVariable< double > *":
         r"""
-        clone(self) -> DiscretizedVariable
+        clone(DiscretizedVariable self) -> DiscretizedVariable
 
         Returns
         -------
@@ -7606,7 +7666,7 @@ class DiscretizedVariable(IDiscretizedVariable):
 
     def varType(self) -> "gum::VarType":
         r"""
-        varType(self) -> gum::VarType
+        varType(DiscretizedVariable self) -> gum::VarType
 
         returns the type of variable
 
@@ -7621,7 +7681,7 @@ class DiscretizedVariable(IDiscretizedVariable):
 
     def isTick(self, aTick: 'double const &') -> "bool":
         r"""
-        isTick(self, aTick) -> bool
+        isTick(DiscretizedVariable self, double const & aTick) -> bool
 
         Parameters
         ----------
@@ -7661,7 +7721,7 @@ class DiscretizedVariable(IDiscretizedVariable):
 
     def eraseTicks(self) -> "void":
         r"""
-        eraseTicks(self)
+        eraseTicks(DiscretizedVariable self)
 
         erase all the Ticks 
 
@@ -7671,7 +7731,7 @@ class DiscretizedVariable(IDiscretizedVariable):
 
     def label(self, i: 'gum::Idx') -> "std::string":
         r"""
-        label(self, i) -> std::string
+        label(DiscretizedVariable self, gum::Idx i) -> std::string
 
         Parameters
         ----------
@@ -7694,7 +7754,7 @@ class DiscretizedVariable(IDiscretizedVariable):
 
     def numerical(self, indice: 'gum::Idx') -> "double":
         r"""
-        numerical(self, indice) -> double
+        numerical(DiscretizedVariable self, gum::Idx indice) -> double
 
         Parameters
         ----------
@@ -7712,7 +7772,7 @@ class DiscretizedVariable(IDiscretizedVariable):
 
     def index(self, label: 'std::string const &') -> "gum::Idx":
         r"""
-        index(self, label) -> gum::Idx
+        index(DiscretizedVariable self, std::string const & label) -> gum::Idx
 
         Parameters
         ----------
@@ -7730,7 +7790,7 @@ class DiscretizedVariable(IDiscretizedVariable):
 
     def domainSize(self) -> "gum::Size":
         r"""
-        domainSize(self) -> gum::Size
+        domainSize(DiscretizedVariable self) -> gum::Size
 
         Returns
         -------
@@ -7743,7 +7803,7 @@ class DiscretizedVariable(IDiscretizedVariable):
 
     def domain(self) -> "std::string const":
         r"""
-        domain(self) -> std::string const
+        domain(DiscretizedVariable self) -> std::string const
 
         Returns
         -------
@@ -7756,7 +7816,7 @@ class DiscretizedVariable(IDiscretizedVariable):
 
     def tick(self, i: 'gum::Idx') -> "double const &":
         r"""
-        tick(self, i) -> double const &
+        tick(DiscretizedVariable self, gum::Idx i) -> double const &
 
         Indicate the index of the Tick
 
@@ -7781,7 +7841,7 @@ class DiscretizedVariable(IDiscretizedVariable):
 
     def ticks(self) -> "std::vector< double,std::allocator< double > > const &":
         r"""
-        ticks(self) -> Vector
+        ticks(DiscretizedVariable self) -> Vector
 
         Returns
         -------
@@ -7793,12 +7853,12 @@ class DiscretizedVariable(IDiscretizedVariable):
 
 
     def __repr__(self) -> "std::string":
-        r"""__repr__(self) -> std::string"""
+        r"""__repr__(DiscretizedVariable self) -> std::string"""
         return _pyAgrum.DiscretizedVariable___repr__(self)
 
 
     def __str__(self) -> "std::string":
-        r"""__str__(self) -> std::string"""
+        r"""__str__(DiscretizedVariable self) -> std::string"""
         return _pyAgrum.DiscretizedVariable___str__(self)
 
 
@@ -7819,104 +7879,104 @@ class MultiDimContainer(object):
     __swig_destroy__ = _pyAgrum.delete_MultiDimContainer
 
     def set(self, i: 'Instantiation', value: 'double const &') -> "void":
-        r"""set(self, i, value)"""
+        r"""set(MultiDimContainer self, Instantiation i, double const & value)"""
         return _pyAgrum.MultiDimContainer_set(self, i, value)
 
 
     def get(self, i: 'Instantiation') -> "double":
-        r"""get(self, i) -> double"""
+        r"""get(MultiDimContainer self, Instantiation i) -> double"""
         return _pyAgrum.MultiDimContainer_get(self, i)
 
 
     def fill(self, d: 'double const &') -> "void":
-        r"""fill(self, d)"""
+        r"""fill(MultiDimContainer self, double const & d)"""
         return _pyAgrum.MultiDimContainer_fill(self, d)
 
 
     def populate(self, *args) -> "void":
         r"""
-        populate(self, v)
-        populate(self, l)
+        populate(MultiDimContainer self, Vector v)
+        populate(MultiDimContainer self, std::initializer_list< double > l)
         """
         return _pyAgrum.MultiDimContainer_populate(self, *args)
 
 
     def copyFrom(self, *args) -> "void":
         r"""
-        copyFrom(self, src)
-        copyFrom(self, src, p_i)
+        copyFrom(MultiDimContainer self, MultiDimContainer src)
+        copyFrom(MultiDimContainer self, MultiDimContainer src, Instantiation p_i)
         """
         return _pyAgrum.MultiDimContainer_copyFrom(self, *args)
 
 
     def extractFrom(self, src: 'MultiDimContainer', mask: 'Instantiation') -> "void":
-        r"""extractFrom(self, src, mask)"""
+        r"""extractFrom(MultiDimContainer self, MultiDimContainer src, Instantiation mask)"""
         return _pyAgrum.MultiDimContainer_extractFrom(self, src, mask)
 
 
     def content(self, *args) -> "gum::MultiDimImplementation< double > *":
         r"""
-        content(self) -> gum::MultiDimImplementation< double > const
-        content(self) -> gum::MultiDimImplementation< double > *
+        content(MultiDimContainer self) -> gum::MultiDimImplementation< double > const
+        content(MultiDimContainer self) -> gum::MultiDimImplementation< double > *
         """
         return _pyAgrum.MultiDimContainer_content(self, *args)
 
 
     def getMasterRef(self, *args) -> "gum::MultiDimAdressable const &":
         r"""
-        getMasterRef(self) -> MultiDimAdressable
-        getMasterRef(self) -> MultiDimAdressable
+        getMasterRef(MultiDimContainer self) -> MultiDimAdressable
+        getMasterRef(MultiDimContainer self) -> MultiDimAdressable
         """
         return _pyAgrum.MultiDimContainer_getMasterRef(self, *args)
 
 
     def copy(self, src: 'MultiDimContainer') -> "void":
-        r"""copy(self, src)"""
+        r"""copy(MultiDimContainer self, MultiDimContainer src)"""
         return _pyAgrum.MultiDimContainer_copy(self, src)
 
 
     def newFactory(self) -> "gum::MultiDimContainer< double > *":
-        r"""newFactory(self) -> MultiDimContainer"""
+        r"""newFactory(MultiDimContainer self) -> MultiDimContainer"""
         return _pyAgrum.MultiDimContainer_newFactory(self)
 
 
     def toString(self, *args) -> "std::string const":
         r"""
-        toString(self) -> std::string const
-        toString(self, i) -> std::string const
+        toString(MultiDimContainer self) -> std::string const
+        toString(MultiDimContainer self, Instantiation i) -> std::string const
         """
         return _pyAgrum.MultiDimContainer_toString(self, *args)
 
 
     def __eq__(self, p: 'MultiDimContainer') -> "bool":
-        r"""__eq__(self, p) -> bool"""
+        r"""__eq__(MultiDimContainer self, MultiDimContainer p) -> bool"""
         return _pyAgrum.MultiDimContainer___eq__(self, p)
 
 
     def __ne__(self, p: 'MultiDimContainer') -> "bool":
-        r"""__ne__(self, p) -> bool"""
+        r"""__ne__(MultiDimContainer self, MultiDimContainer p) -> bool"""
         return _pyAgrum.MultiDimContainer___ne__(self, p)
 
 
     def apply(self, f: 'std::function< double (double) >') -> "void":
-        r"""apply(self, f)"""
+        r"""apply(MultiDimContainer self, std::function< double (double) > f)"""
         return _pyAgrum.MultiDimContainer_apply(self, f)
 
 
     def reduce(self, f: 'std::function< double (double,double) >', base: 'double') -> "double":
-        r"""reduce(self, f, base) -> double"""
+        r"""reduce(MultiDimContainer self, std::function< double (double,double) > f, double base) -> double"""
         return _pyAgrum.MultiDimContainer_reduce(self, f, base)
 
 
     def beginMultipleChanges(self) -> "void":
-        r"""beginMultipleChanges(self)"""
+        r"""beginMultipleChanges(MultiDimContainer self)"""
         return _pyAgrum.MultiDimContainer_beginMultipleChanges(self)
 
 
     def endMultipleChanges(self, *args) -> "void":
         r"""
-        endMultipleChanges(self)
-        endMultipleChanges(self, v)
+        endMultipleChanges(MultiDimContainer self)
+        endMultipleChanges(MultiDimContainer self, double const & v)
         """
         return _pyAgrum.MultiDimContainer_endMultipleChanges(self, *args)
 
@@ -7954,11 +8014,11 @@ class Potential(object):
 
     def __init__(self, *args):
         r"""
-        __init__(self) -> Potential
-        __init__(self, aContent) -> Potential
-        __init__(self, aContent, src) -> Potential
-        __init__(self, src) -> Potential
-        __init__(self, arg2) -> Potential
+        __init__(Potential self) -> Potential
+        __init__(Potential self, gum::MultiDimImplementation< double > * aContent) -> Potential
+        __init__(Potential self, gum::MultiDimImplementation< double > * aContent, MultiDimContainer src) -> Potential
+        __init__(Potential self, Potential src) -> Potential
+        __init__(Potential self, Potential arg2) -> Potential
         """
         _pyAgrum.Potential_swiginit(self, _pyAgrum.new_Potential(*args))
 
@@ -7971,7 +8031,7 @@ class Potential(object):
 
     def newFactory(self) -> "gum::Potential< double > *":
         r"""
-        newFactory(self) -> Potential
+        newFactory(Potential self) -> Potential
 
         Erase the Potential content and create a new empty one.
 
@@ -7986,7 +8046,7 @@ class Potential(object):
 
     def isNonZeroMap(self) -> "gum::Potential< double >":
         r"""
-        isNonZeroMap(self) -> Potential
+        isNonZeroMap(Potential self) -> Potential
 
         Returns
         -------
@@ -7999,7 +8059,7 @@ class Potential(object):
 
     def sum(self) -> "double":
         r"""
-        sum(self) -> double
+        sum(Potential self) -> double
 
         Returns
         -------
@@ -8012,7 +8072,7 @@ class Potential(object):
 
     def product(self) -> "double":
         r"""
-        product(self) -> double
+        product(Potential self) -> double
 
         Returns
         -------
@@ -8025,7 +8085,7 @@ class Potential(object):
 
     def max(self) -> "double":
         r"""
-        max(self) -> double
+        max(Potential self) -> double
 
         Returns
         -------
@@ -8038,7 +8098,7 @@ class Potential(object):
 
     def min(self) -> "double":
         r"""
-        min(self) -> double
+        min(Potential self) -> double
 
         Returns
         -------
@@ -8051,7 +8111,7 @@ class Potential(object):
 
     def maxNonOne(self) -> "double":
         r"""
-        maxNonOne(self) -> double
+        maxNonOne(Potential self) -> double
 
         Returns
         -------
@@ -8069,7 +8129,7 @@ class Potential(object):
 
     def minNonZero(self) -> "double":
         r"""
-        minNonZero(self) -> double
+        minNonZero(Potential self) -> double
 
         Returns
         -------
@@ -8086,23 +8146,23 @@ class Potential(object):
 
 
     def findAll(self, v: 'double') -> "gum::Set< gum::Instantiation >":
-        r"""findAll(self, v) -> gum::Set< gum::Instantiation >"""
+        r"""findAll(Potential self, double v) -> gum::Set< gum::Instantiation >"""
         return _pyAgrum.Potential_findAll(self, v)
 
 
     def argmax(self) -> "gum::Set< gum::Instantiation >":
-        r"""argmax(self) -> gum::Set< gum::Instantiation >"""
+        r"""argmax(Potential self) -> gum::Set< gum::Instantiation >"""
         return _pyAgrum.Potential_argmax(self)
 
 
     def argmin(self) -> "gum::Set< gum::Instantiation >":
-        r"""argmin(self) -> gum::Set< gum::Instantiation >"""
+        r"""argmin(Potential self) -> gum::Set< gum::Instantiation >"""
         return _pyAgrum.Potential_argmin(self)
 
 
     def entropy(self) -> "double":
         r"""
-        entropy(self) -> double
+        entropy(Potential self) -> double
 
         Returns
         -------
@@ -8115,10 +8175,10 @@ class Potential(object):
 
     def fillWith(self, *args) -> "gum::Potential< double > const &":
         r"""
-        fillWith(self, src) -> Potential
-        fillWith(self, src, mapSrc) -> Potential
-        fillWith(self, v) -> Potential
-        fillWith(self, v) -> Potential
+        fillWith(Potential self, Potential src) -> Potential
+        fillWith(Potential self, Potential src, Vector_string mapSrc) -> Potential
+        fillWith(Potential self, Vector v) -> Potential
+        fillWith(Potential self, double const & v) -> Potential
 
         Automatically fills the potential with v.
 
@@ -8154,7 +8214,7 @@ class Potential(object):
 
     def abs(self) -> "gum::Potential< double > const &":
         r"""
-        abs(self) -> Potential
+        abs(Potential self) -> Potential
 
         Apply abs on every element of the container
 
@@ -8175,7 +8235,7 @@ class Potential(object):
 
     def normalize(self) -> "gum::Potential< double > const &":
         r"""
-        normalize(self) -> Potential
+        normalize(Potential self) -> Potential
 
         Normalize the Potential (do nothing if sum is 0)
 
@@ -8196,7 +8256,7 @@ class Potential(object):
 
     def sq(self) -> "gum::Potential< double > const &":
         r"""
-        sq(self) -> Potential
+        sq(Potential self) -> Potential
 
         Square all the values in the Potential
 
@@ -8212,7 +8272,7 @@ class Potential(object):
 
     def KL(self, p: 'Potential') -> "double":
         r"""
-        KL(self, p) -> double
+        KL(Potential self, Potential p) -> double
 
         Check the compatibility and compute the Kullback-Leibler divergence between the potential and.
 
@@ -8239,7 +8299,7 @@ class Potential(object):
 
     def normalizeAsCPT(self) -> "void":
         r"""
-        normalizeAsCPT(self)
+        normalizeAsCPT(Potential self)
 
         Normalize the Potential as a CPT
 
@@ -8265,7 +8325,7 @@ class Potential(object):
 
     def scale(self, v: 'double') -> "gum::Potential< double > const &":
         r"""
-        scale(self, v) -> Potential
+        scale(Potential self, double v) -> Potential
 
         Create a new potential multiplied by v.
 
@@ -8290,7 +8350,7 @@ class Potential(object):
 
     def translate(self, v: 'double') -> "gum::Potential< double > const &":
         r"""
-        translate(self, v) -> Potential
+        translate(Potential self, double v) -> Potential
 
         Create a new potential added with v.
 
@@ -8315,7 +8375,7 @@ class Potential(object):
 
     def draw(self) -> "gum::Idx":
         r"""
-        draw(self) -> gum::Idx
+        draw(Potential self) -> gum::Idx
 
         draw a value using the potential as a probability table.
 
@@ -8329,32 +8389,32 @@ class Potential(object):
 
 
     def __add__(self, p2: 'Potential') -> "gum::Potential< double >":
-        r"""__add__(self, p2) -> Potential"""
+        r"""__add__(Potential self, Potential p2) -> Potential"""
         return _pyAgrum.Potential___add__(self, p2)
 
 
     def __sub__(self, p2: 'Potential') -> "gum::Potential< double >":
-        r"""__sub__(self, p2) -> Potential"""
+        r"""__sub__(Potential self, Potential p2) -> Potential"""
         return _pyAgrum.Potential___sub__(self, p2)
 
 
     def __mul__(self, p2: 'Potential') -> "gum::Potential< double >":
-        r"""__mul__(self, p2) -> Potential"""
+        r"""__mul__(Potential self, Potential p2) -> Potential"""
         return _pyAgrum.Potential___mul__(self, p2)
 
 
     def __iadd__(self, r: 'Potential') -> "gum::Potential< double > &":
-        r"""__iadd__(self, r) -> Potential"""
+        r"""__iadd__(Potential self, Potential r) -> Potential"""
         return _pyAgrum.Potential___iadd__(self, r)
 
 
     def __imul__(self, r: 'Potential') -> "gum::Potential< double > &":
-        r"""__imul__(self, r) -> Potential"""
+        r"""__imul__(Potential self, Potential r) -> Potential"""
         return _pyAgrum.Potential___imul__(self, r)
 
 
     def __isub__(self, r: 'Potential') -> "gum::Potential< double > &":
-        r"""__isub__(self, r) -> Potential"""
+        r"""__isub__(Potential self, Potential r) -> Potential"""
         return _pyAgrum.Potential___isub__(self, r)
 
 
@@ -8365,19 +8425,19 @@ class Potential(object):
 
 
     def __repr__(self) -> "std::string":
-        r"""__repr__(self) -> std::string"""
+        r"""__repr__(Potential self) -> std::string"""
         return _pyAgrum.Potential___repr__(self)
 
 
     def __str__(self) -> "std::string":
-        r"""__str__(self) -> std::string"""
+        r"""__str__(Potential self) -> std::string"""
         return _pyAgrum.Potential___str__(self)
 
 
     def extract(self, *args) -> "gum::Potential< double >":
         r"""
-        extract(self, inst) -> Potential
-        extract(self, dict) -> Potential
+        extract(Potential self, Instantiation inst) -> Potential
+        extract(Potential self, PyObject * dict) -> Potential
 
         create a new Potential extracted from self given a partial instantiation.
 
@@ -8399,8 +8459,8 @@ class Potential(object):
 
     def reorganize(self, *args) -> "gum::Potential< double >":
         r"""
-        reorganize(self, vars) -> Potential
-        reorganize(self, varnames) -> Potential
+        reorganize(Potential self, std::vector< gum::DiscreteVariable const *,std::allocator< gum::DiscreteVariable const * > > const & vars) -> Potential
+        reorganize(Potential self, PyObject * varnames) -> Potential
 
         Create a new Potential with another order.
 
@@ -8420,7 +8480,7 @@ class Potential(object):
 
     def putFirst(self, varname: 'PyObject *') -> "gum::Potential< double >":
         r"""
-        putFirst(self, varname) -> Potential
+        putFirst(Potential self, PyObject * varname) -> Potential
 
         Parameters
         ----------
@@ -8443,7 +8503,7 @@ class Potential(object):
 
     def margSumOut(self, varnames: 'PyObject *') -> "gum::Potential< double >":
         r"""
-        margSumOut(self, varnames) -> Potential
+        margSumOut(Potential self, PyObject * varnames) -> Potential
 
         Projection using sum as operation.
 
@@ -8468,7 +8528,7 @@ class Potential(object):
 
     def margProdOut(self, varnames: 'PyObject *') -> "gum::Potential< double >":
         r"""
-        margProdOut(self, varnames) -> Potential
+        margProdOut(Potential self, PyObject * varnames) -> Potential
 
         Projection using multiplication as operation.
 
@@ -8493,7 +8553,7 @@ class Potential(object):
 
     def margMaxOut(self, varnames: 'PyObject *') -> "gum::Potential< double >":
         r"""
-        margMaxOut(self, varnames) -> Potential
+        margMaxOut(Potential self, PyObject * varnames) -> Potential
 
         Projection using max as operation.
 
@@ -8518,7 +8578,7 @@ class Potential(object):
 
     def margMinOut(self, varnames: 'PyObject *') -> "gum::Potential< double >":
         r"""
-        margMinOut(self, varnames) -> Potential
+        margMinOut(Potential self, PyObject * varnames) -> Potential
 
         Projection using min as operation.
 
@@ -8542,7 +8602,7 @@ class Potential(object):
 
     def margSumIn(self, varnames: 'PyObject *') -> "gum::Potential< double >":
         r"""
-        margSumIn(self, varnames) -> Potential
+        margSumIn(Potential self, PyObject * varnames) -> Potential
 
         Projection using sum as operation.
 
@@ -8562,7 +8622,7 @@ class Potential(object):
 
     def margProdIn(self, varnames: 'PyObject *') -> "gum::Potential< double >":
         r"""
-        margProdIn(self, varnames) -> Potential
+        margProdIn(Potential self, PyObject * varnames) -> Potential
 
         Projection using multiplication as operation.
 
@@ -8582,7 +8642,7 @@ class Potential(object):
 
     def margMaxIn(self, varnames: 'PyObject *') -> "gum::Potential< double >":
         r"""
-        margMaxIn(self, varnames) -> Potential
+        margMaxIn(Potential self, PyObject * varnames) -> Potential
 
         Projection using max as operation.
 
@@ -8602,7 +8662,7 @@ class Potential(object):
 
     def margMinIn(self, varnames: 'PyObject *') -> "gum::Potential< double >":
         r"""
-        margMinIn(self, varnames) -> Potential
+        margMinIn(Potential self, PyObject * varnames) -> Potential
 
         Projection using min as operation.
 
@@ -8622,29 +8682,29 @@ class Potential(object):
 
     def __truediv__(self, *args) -> "gum::Potential< double >":
         r"""
-        __truediv__(self, p2) -> Potential
-        __truediv__(self, b) -> Potential
+        __truediv__(Potential self, Potential p2) -> Potential
+        __truediv__(Potential self, Potential b) -> Potential
         """
         return _pyAgrum.Potential___truediv__(self, *args)
 
 
     def __div__(self, b: 'Potential') -> "gum::Potential< double >":
-        r"""__div__(self, b) -> Potential"""
+        r"""__div__(Potential self, Potential b) -> Potential"""
         return _pyAgrum.Potential___div__(self, b)
 
 
     def __eq__(self, *args) -> "bool":
         r"""
-        __eq__(self, r) -> bool
-        __eq__(self, b) -> bool
+        __eq__(Potential self, Potential r) -> bool
+        __eq__(Potential self, Potential b) -> bool
         """
         return _pyAgrum.Potential___eq__(self, *args)
 
 
     def __ne__(self, *args) -> "bool":
         r"""
-        __ne__(self, r) -> bool
-        __ne__(self, b) -> bool
+        __ne__(Potential self, Potential r) -> bool
+        __ne__(Potential self, Potential b) -> bool
         """
         return _pyAgrum.Potential___ne__(self, *args)
 
@@ -8796,7 +8856,7 @@ class Potential(object):
 
     def get(self, i: 'Instantiation') -> "double":
         r"""
-        get(self, i) -> double
+        get(Potential self, Instantiation i) -> double
 
         Parameters
         ----------
@@ -8814,7 +8874,7 @@ class Potential(object):
 
     def set(self, i: 'Instantiation', value: 'double const &') -> "void":
         r"""
-        set(self, i, value)
+        set(Potential self, Instantiation i, double const & value)
 
         Change the value pointed by i
 
@@ -8836,7 +8896,7 @@ class Potential(object):
 
     def empty(self) -> "bool":
         r"""
-        empty(self) -> bool
+        empty(Potential self) -> bool
 
         Returns
         -------
@@ -8849,7 +8909,7 @@ class Potential(object):
 
     def pos(self, v: 'DiscreteVariable') -> "gum::Idx":
         r"""
-        pos(self, v) -> gum::Idx
+        pos(Potential self, DiscreteVariable v) -> gum::Idx
 
         Parameters
         ----------
@@ -8871,7 +8931,7 @@ class Potential(object):
 
     def contains(self, v: 'DiscreteVariable') -> "bool":
         r"""
-        contains(self, v) -> bool
+        contains(Potential self, DiscreteVariable v) -> bool
 
         Parameters
         ----------
@@ -8889,7 +8949,7 @@ class Potential(object):
 
     def nbrDim(self) -> "gum::Idx":
         r"""
-        nbrDim(self) -> gum::Idx
+        nbrDim(Potential self) -> gum::Idx
 
         Returns
         -------
@@ -8902,8 +8962,8 @@ class Potential(object):
 
     def variable(self, *args) -> "gum::DiscreteVariable const &":
         r"""
-        variable(self, i) -> DiscreteVariable
-        variable(self, name) -> DiscreteVariable
+        variable(Potential self, gum::Idx i) -> DiscreteVariable
+        variable(Potential self, std::string const & name) -> DiscreteVariable
 
         Parameters
         ----------
@@ -8925,7 +8985,7 @@ class Potential(object):
 
     def remove(self, var: 'DiscreteVariable') -> "void":
         r"""
-        remove(self, var)
+        remove(Potential self, DiscreteVariable var)
 
         Parameters
         ----------
@@ -8953,7 +9013,7 @@ class Potential(object):
 
     def add(self, v: 'DiscreteVariable') -> "void":
         r"""
-        add(self, v)
+        add(Potential self, DiscreteVariable v)
 
         Add a discrete variable to the potential.
 
@@ -9000,7 +9060,7 @@ class IBayesNet(DAGmodel):
 
     def cpt(self, varId: 'gum::NodeId') -> "gum::Potential< double > const &":
         r"""
-        cpt(self, varId) -> Potential
+        cpt(IBayesNet self, gum::NodeId varId) -> Potential
 
         Returns the CPT of a variable.
 
@@ -9027,7 +9087,7 @@ class IBayesNet(DAGmodel):
 
     def variableNodeMap(self) -> "gum::VariableNodeMap const &":
         r"""
-        variableNodeMap(self) -> VariableNodeMap
+        variableNodeMap(IBayesNet self) -> VariableNodeMap
 
         Returns
         -------
@@ -9040,7 +9100,7 @@ class IBayesNet(DAGmodel):
 
     def variable(self, id: 'gum::NodeId') -> "gum::DiscreteVariable const &":
         r"""
-        variable(self, id) -> DiscreteVariable
+        variable(IBayesNet self, gum::NodeId id) -> DiscreteVariable
 
         Parameters
         ----------
@@ -9065,7 +9125,7 @@ class IBayesNet(DAGmodel):
 
     def nodeId(self, var: 'DiscreteVariable') -> "gum::NodeId":
         r"""
-        nodeId(self, var) -> gum::NodeId
+        nodeId(IBayesNet self, DiscreteVariable var) -> gum::NodeId
 
         Parameters
         ----------
@@ -9088,7 +9148,7 @@ class IBayesNet(DAGmodel):
 
     def idFromName(self, name: 'std::string const &') -> "gum::NodeId":
         r"""
-        idFromName(self, name) -> gum::NodeId
+        idFromName(IBayesNet self, std::string const & name) -> gum::NodeId
 
         Returns a variable's id given its name in the graph.
 
@@ -9113,7 +9173,7 @@ class IBayesNet(DAGmodel):
 
     def variableFromName(self, name: 'std::string const &') -> "gum::DiscreteVariable const &":
         r"""
-        variableFromName(self, name) -> DiscreteVariable
+        variableFromName(IBayesNet self, std::string const & name) -> DiscreteVariable
 
         Parameters
         ----------
@@ -9136,7 +9196,7 @@ class IBayesNet(DAGmodel):
 
     def jointProbability(self, i: 'Instantiation') -> "double":
         r"""
-        jointProbability(self, i) -> double
+        jointProbability(IBayesNet self, Instantiation i) -> double
 
         Parameters
         ----------
@@ -9158,7 +9218,7 @@ class IBayesNet(DAGmodel):
 
     def log2JointProbability(self, i: 'Instantiation') -> "double":
         r"""
-        log2JointProbability(self, i) -> double
+        log2JointProbability(IBayesNet self, Instantiation i) -> double
 
         Parameters
         ----------
@@ -9179,18 +9239,18 @@ class IBayesNet(DAGmodel):
 
 
     def __eq__(self, arg2: 'IBayesNet') -> "bool":
-        r"""__eq__(self, arg2) -> bool"""
+        r"""__eq__(IBayesNet self, IBayesNet arg2) -> bool"""
         return _pyAgrum.IBayesNet___eq__(self, arg2)
 
 
     def __ne__(self, arg2: 'IBayesNet') -> "bool":
-        r"""__ne__(self, arg2) -> bool"""
+        r"""__ne__(IBayesNet self, IBayesNet arg2) -> bool"""
         return _pyAgrum.IBayesNet___ne__(self, arg2)
 
 
     def dim(self) -> "gum::Size":
         r"""
-        dim(self) -> gum::Size
+        dim(IBayesNet self) -> gum::Size
 
         Returns the dimension (the number of free parameters) in this BayesNet.
 
@@ -9205,7 +9265,7 @@ class IBayesNet(DAGmodel):
 
     def maxVarDomainSize(self) -> "gum::Size":
         r"""
-        maxVarDomainSize(self) -> gum::Size
+        maxVarDomainSize(IBayesNet self) -> gum::Size
 
         Returns
         -------
@@ -9218,7 +9278,7 @@ class IBayesNet(DAGmodel):
 
     def minParam(self) -> "double":
         r"""
-        minParam(self) -> double
+        minParam(IBayesNet self) -> double
 
         Returns
         -------
@@ -9231,7 +9291,7 @@ class IBayesNet(DAGmodel):
 
     def maxParam(self) -> "double":
         r"""
-        maxParam(self) -> double
+        maxParam(IBayesNet self) -> double
 
         Returns
         -------
@@ -9244,7 +9304,7 @@ class IBayesNet(DAGmodel):
 
     def minNonZeroParam(self) -> "double":
         r"""
-        minNonZeroParam(self) -> double
+        minNonZeroParam(IBayesNet self) -> double
 
         Returns
         -------
@@ -9257,7 +9317,7 @@ class IBayesNet(DAGmodel):
 
     def maxNonOneParam(self) -> "double":
         r"""
-        maxNonOneParam(self) -> double
+        maxNonOneParam(IBayesNet self) -> double
 
         Returns
         -------
@@ -9270,7 +9330,7 @@ class IBayesNet(DAGmodel):
 
     def toDot(self) -> "std::string":
         r"""
-        toDot(self) -> std::string
+        toDot(IBayesNet self) -> std::string
 
         Returns
         -------
@@ -9283,7 +9343,7 @@ class IBayesNet(DAGmodel):
 
     def nodes(self) -> "PyObject *":
         r"""
-        nodes(self) -> PyObject *
+        nodes(IBayesNet self) -> PyObject *
 
         Returns
         -------
@@ -9296,7 +9356,7 @@ class IBayesNet(DAGmodel):
 
     def names(self) -> "PyObject *":
         r"""
-        names(self) -> PyObject *
+        names(IBayesNet self) -> PyObject *
 
         Returns
         -------
@@ -9309,10 +9369,10 @@ class IBayesNet(DAGmodel):
 
     def minimalCondSet(self, *args) -> "PyObject *":
         r"""
-        minimalCondSet(self, target, soids) -> gum::NodeSet
-        minimalCondSet(self, targets, soids) -> gum::NodeSet
-        minimalCondSet(self, target, list) -> PyObject
-        minimalCondSet(self, targets, list) -> PyObject *
+        minimalCondSet(IBayesNet self, gum::NodeId target, gum::NodeSet const & soids) -> gum::NodeSet
+        minimalCondSet(IBayesNet self, gum::NodeSet const & targets, gum::NodeSet const & soids) -> gum::NodeSet
+        minimalCondSet(IBayesNet self, gum::NodeId target, PyObject * list) -> PyObject
+        minimalCondSet(IBayesNet self, PyObject * targets, PyObject * list) -> PyObject *
 
         Returns, given one or many targets and a list of variables, the minimal set of those needed to calculate the target/targets.
 
@@ -9335,18 +9395,18 @@ class IBayesNet(DAGmodel):
 
 
     def __repr__(self) -> "std::string":
-        r"""__repr__(self) -> std::string"""
+        r"""__repr__(IBayesNet self) -> std::string"""
         return _pyAgrum.IBayesNet___repr__(self)
 
 
     def __str__(self) -> "std::string":
-        r"""__str__(self) -> std::string"""
+        r"""__str__(IBayesNet self) -> std::string"""
         return _pyAgrum.IBayesNet___str__(self)
 
 
     def arcs(self) -> "PyObject *":
         r"""
-        arcs(self) -> PyObject *
+        arcs(IBayesNet self) -> PyObject *
 
         Returns
         -------
@@ -9359,7 +9419,7 @@ class IBayesNet(DAGmodel):
 
     def parents(self, id: 'gum::NodeId') -> "PyObject *":
         r"""
-        parents(self, id) -> PyObject *
+        parents(IBayesNet self, gum::NodeId id) -> PyObject *
 
         Parameters
         ----------
@@ -9377,7 +9437,7 @@ class IBayesNet(DAGmodel):
 
     def children(self, id: 'gum::NodeId') -> "PyObject *":
         r"""
-        children(self, id) -> PyObject *
+        children(IBayesNet self, gum::NodeId id) -> PyObject *
 
         Parameters
         ----------
@@ -9422,8 +9482,8 @@ class BayesNet(IBayesNet):
 
     def fastPrototype(dotlike: 'std::string const &', domainSize: 'gum::Size'=2) -> "gum::BayesNet< double >":
         r"""
-        fastPrototype(dotlike, domainSize=2) -> BayesNet
-        fastPrototype(dotlike) -> BayesNet
+        fastPrototype(std::string const & dotlike, gum::Size domainSize=2) -> BayesNet
+        fastPrototype(std::string const & dotlike) -> BayesNet
 
         Create a bn with a dotlike syntax : 'a->b->c;b->d;'.
 
@@ -9451,16 +9511,16 @@ class BayesNet(IBayesNet):
 
     def __init__(self, *args):
         r"""
-        __init__(self) -> BayesNet
-        __init__(self, name) -> BayesNet
-        __init__(self, source) -> BayesNet
+        __init__(BayesNet self) -> BayesNet
+        __init__(BayesNet self, std::string name) -> BayesNet
+        __init__(BayesNet self, BayesNet source) -> BayesNet
         """
         _pyAgrum.BayesNet_swiginit(self, _pyAgrum.new_BayesNet(*args))
 
     def cpt(self, *args) -> "gum::Potential< double > const &":
         r"""
-        cpt(self, varId) -> Potential
-        cpt(self, name) -> Potential
+        cpt(BayesNet self, gum::NodeId varId) -> Potential
+        cpt(BayesNet self, std::string const & name) -> Potential
 
         Returns the CPT of a variable.
 
@@ -9492,7 +9552,7 @@ class BayesNet(IBayesNet):
 
     def variableNodeMap(self) -> "gum::VariableNodeMap const &":
         r"""
-        variableNodeMap(self) -> VariableNodeMap
+        variableNodeMap(BayesNet self) -> VariableNodeMap
 
         Returns
         -------
@@ -9505,11 +9565,11 @@ class BayesNet(IBayesNet):
 
     def add(self, *args) -> "gum::NodeId":
         r"""
-        add(self, var) -> gum::NodeId
-        add(self, name, nbrmod) -> gum::NodeId
-        add(self, var, aContent) -> gum::NodeId
-        add(self, var, id) -> gum::NodeId
-        add(self, var, aContent, id) -> gum::NodeId
+        add(BayesNet self, DiscreteVariable var) -> gum::NodeId
+        add(BayesNet self, std::string const & name, unsigned int nbrmod) -> gum::NodeId
+        add(BayesNet self, DiscreteVariable var, gum::MultiDimImplementation< double > * aContent) -> gum::NodeId
+        add(BayesNet self, DiscreteVariable var, gum::NodeId id) -> gum::NodeId
+        add(BayesNet self, DiscreteVariable var, gum::MultiDimImplementation< double > * aContent, gum::NodeId id) -> gum::NodeId
 
         Add a variable to the pyAgrum.BayesNet. 
 
@@ -9544,9 +9604,9 @@ class BayesNet(IBayesNet):
 
     def erase(self, *args) -> "void":
         r"""
-        erase(self, varId)
-        erase(self, name)
-        erase(self, var)
+        erase(BayesNet self, gum::NodeId varId)
+        erase(BayesNet self, std::string const & name)
+        erase(BayesNet self, DiscreteVariable var)
 
         Remove a variable from the gum::BayesNet.
 
@@ -9569,8 +9629,8 @@ class BayesNet(IBayesNet):
 
     def variable(self, *args) -> "gum::DiscreteVariable const &":
         r"""
-        variable(self, id) -> DiscreteVariable
-        variable(self, name) -> DiscreteVariable
+        variable(BayesNet self, gum::NodeId id) -> DiscreteVariable
+        variable(BayesNet self, std::string const & name) -> DiscreteVariable
 
         Parameters
         ----------
@@ -9595,8 +9655,8 @@ class BayesNet(IBayesNet):
 
     def changeVariableName(self, *args) -> "void":
         r"""
-        changeVariableName(self, id, new_name)
-        changeVariableName(self, name, new_name)
+        changeVariableName(BayesNet self, gum::NodeId id, std::string const & new_name)
+        changeVariableName(BayesNet self, std::string const & name, std::string const & new_name)
 
         Changes a variable's name in the gum::BayesNet.
 
@@ -9624,8 +9684,8 @@ class BayesNet(IBayesNet):
 
     def changeVariableLabel(self, *args) -> "void":
         r"""
-        changeVariableLabel(self, id, old_label, new_label)
-        changeVariableLabel(self, name, old_label, new_label)
+        changeVariableLabel(BayesNet self, gum::NodeId id, std::string const & old_label, std::string const & new_label)
+        changeVariableLabel(BayesNet self, std::string const & name, std::string const & old_label, std::string const & new_label)
 
         change the label of the variable associated to nodeId to the new value.
 
@@ -9651,7 +9711,7 @@ class BayesNet(IBayesNet):
 
     def nodeId(self, var: 'DiscreteVariable') -> "gum::NodeId":
         r"""
-        nodeId(self, var) -> gum::NodeId
+        nodeId(BayesNet self, DiscreteVariable var) -> gum::NodeId
 
         Parameters
         ----------
@@ -9674,7 +9734,7 @@ class BayesNet(IBayesNet):
 
     def idFromName(self, name: 'std::string const &') -> "gum::NodeId":
         r"""
-        idFromName(self, name) -> gum::NodeId
+        idFromName(BayesNet self, std::string const & name) -> gum::NodeId
 
         Returns a variable's id given its name in the graph.
 
@@ -9699,7 +9759,7 @@ class BayesNet(IBayesNet):
 
     def variableFromName(self, name: 'std::string const &') -> "gum::DiscreteVariable const &":
         r"""
-        variableFromName(self, name) -> DiscreteVariable
+        variableFromName(BayesNet self, std::string const & name) -> DiscreteVariable
 
         Parameters
         ----------
@@ -9722,8 +9782,8 @@ class BayesNet(IBayesNet):
 
     def addArc(self, *args) -> "void":
         r"""
-        addArc(self, tail, head)
-        addArc(self, tail, head)
+        addArc(BayesNet self, gum::NodeId tail, gum::NodeId head)
+        addArc(BayesNet self, std::string const & tail, std::string const & head)
 
         Add an arc in the BN, and update arc.head's CPT.
 
@@ -9749,9 +9809,9 @@ class BayesNet(IBayesNet):
 
     def eraseArc(self, *args) -> "void":
         r"""
-        eraseArc(self, arc)
-        eraseArc(self, tail, head)
-        eraseArc(self, tail, head)
+        eraseArc(BayesNet self, Arc arc)
+        eraseArc(BayesNet self, gum::NodeId tail, gum::NodeId head)
+        eraseArc(BayesNet self, std::string const & tail, std::string const & head)
 
         Removes an arc in the BN, and update head's CTP.
 
@@ -9776,7 +9836,7 @@ class BayesNet(IBayesNet):
 
     def beginTopologyTransformation(self) -> "void":
         r"""
-        beginTopologyTransformation(self)
+        beginTopologyTransformation(BayesNet self)
 
         When inserting/removing arcs, node CPTs change their dimension with a cost in time.
         begin Multiple Change for all CPTs
@@ -9788,7 +9848,7 @@ class BayesNet(IBayesNet):
 
     def endTopologyTransformation(self) -> "void":
         r"""
-        endTopologyTransformation(self)
+        endTopologyTransformation(BayesNet self)
 
         Terminates a sequence of insertions/deletions of arcs by adjusting all CPTs dimensions.
         End Multiple Change for all CPTs.
@@ -9803,9 +9863,9 @@ class BayesNet(IBayesNet):
 
     def reverseArc(self, *args) -> "void":
         r"""
-        reverseArc(self, tail, head)
-        reverseArc(self, tail, head)
-        reverseArc(self, arc)
+        reverseArc(BayesNet self, gum::NodeId tail, gum::NodeId head)
+        reverseArc(BayesNet self, std::string const & tail, std::string const & head)
+        reverseArc(BayesNet self, Arc arc)
 
         Reverses an arc while preserving the same joint distribution. 
 
@@ -9833,8 +9893,8 @@ class BayesNet(IBayesNet):
 
     def addNoisyOR(self, *args) -> "gum::NodeId":
         r"""
-        addNoisyOR(self, var, external_weight) -> gum::NodeId
-        addNoisyOR(self, var, external_weight, id) -> gum::NodeId
+        addNoisyOR(BayesNet self, DiscreteVariable var, double external_weight) -> gum::NodeId
+        addNoisyOR(BayesNet self, DiscreteVariable var, double external_weight, gum::NodeId id) -> gum::NodeId
 
         Add a variable, it's associate node and a noisyOR implementation.
 
@@ -9867,8 +9927,8 @@ class BayesNet(IBayesNet):
 
     def addNoisyORNet(self, *args) -> "gum::NodeId":
         r"""
-        addNoisyORNet(self, var, external_weight) -> gum::NodeId
-        addNoisyORNet(self, var, external_weight, id) -> gum::NodeId
+        addNoisyORNet(BayesNet self, DiscreteVariable var, double external_weight) -> gum::NodeId
+        addNoisyORNet(BayesNet self, DiscreteVariable var, double external_weight, gum::NodeId id) -> gum::NodeId
 
         Add a variable, its associate node and a noisyOR implementation.
 
@@ -9896,8 +9956,8 @@ class BayesNet(IBayesNet):
 
     def addNoisyORCompound(self, *args) -> "gum::NodeId":
         r"""
-        addNoisyORCompound(self, var, external_weight) -> gum::NodeId
-        addNoisyORCompound(self, var, external_weight, id) -> gum::NodeId
+        addNoisyORCompound(BayesNet self, DiscreteVariable var, double external_weight) -> gum::NodeId
+        addNoisyORCompound(BayesNet self, DiscreteVariable var, double external_weight, gum::NodeId id) -> gum::NodeId
 
         Add a variable, it's associate node and a noisyOR implementation.
 
@@ -9930,8 +9990,8 @@ class BayesNet(IBayesNet):
 
     def addNoisyAND(self, *args) -> "gum::NodeId":
         r"""
-        addNoisyAND(self, var, external_weight, id) -> gum::NodeId
-        addNoisyAND(self, var, external_weight) -> gum::NodeId
+        addNoisyAND(BayesNet self, DiscreteVariable var, double external_weight, gum::NodeId id) -> gum::NodeId
+        addNoisyAND(BayesNet self, DiscreteVariable var, double external_weight) -> gum::NodeId
 
         Add a variable, its associate node and a noisyAND implementation.
 
@@ -9962,8 +10022,8 @@ class BayesNet(IBayesNet):
 
     def addLogit(self, *args) -> "gum::NodeId":
         r"""
-        addLogit(self, var, external_weight, id) -> gum::NodeId
-        addLogit(self, var, external_weight) -> gum::NodeId
+        addLogit(BayesNet self, DiscreteVariable var, double external_weight, gum::NodeId id) -> gum::NodeId
+        addLogit(BayesNet self, DiscreteVariable var, double external_weight) -> gum::NodeId
 
         Add a variable, its associate node and a Logit implementation.
 
@@ -9993,7 +10053,7 @@ class BayesNet(IBayesNet):
 
     def addOR(self, var: 'DiscreteVariable') -> "gum::NodeId":
         r"""
-        addOR(self, var) -> gum::NodeId
+        addOR(BayesNet self, DiscreteVariable var) -> gum::NodeId
 
         Add a variable, it's associate node and an OR implementation.
 
@@ -10024,7 +10084,7 @@ class BayesNet(IBayesNet):
 
     def addAND(self, var: 'DiscreteVariable') -> "gum::NodeId":
         r"""
-        addAND(self, var) -> gum::NodeId
+        addAND(BayesNet self, DiscreteVariable var) -> gum::NodeId
 
         Add a variable, it's associate node and an AND implementation.
 
@@ -10051,7 +10111,7 @@ class BayesNet(IBayesNet):
 
     def addAMPLITUDE(self, var: 'DiscreteVariable') -> "gum::NodeId":
         r"""
-        addAMPLITUDE(self, var) -> gum::NodeId
+        addAMPLITUDE(BayesNet self, DiscreteVariable var) -> gum::NodeId
 
         Others aggregators
 
@@ -10071,8 +10131,8 @@ class BayesNet(IBayesNet):
 
     def addCOUNT(self, var: 'DiscreteVariable', value: 'gum::Idx'=1) -> "gum::NodeId":
         r"""
-        addCOUNT(self, var, value=1) -> gum::NodeId
-        addCOUNT(self, var) -> gum::NodeId
+        addCOUNT(BayesNet self, DiscreteVariable var, gum::Idx value=1) -> gum::NodeId
+        addCOUNT(BayesNet self, DiscreteVariable var) -> gum::NodeId
 
         Others aggregators
 
@@ -10092,8 +10152,8 @@ class BayesNet(IBayesNet):
 
     def addEXISTS(self, var: 'DiscreteVariable', value: 'gum::Idx'=1) -> "gum::NodeId":
         r"""
-        addEXISTS(self, var, value=1) -> gum::NodeId
-        addEXISTS(self, var) -> gum::NodeId
+        addEXISTS(BayesNet self, DiscreteVariable var, gum::Idx value=1) -> gum::NodeId
+        addEXISTS(BayesNet self, DiscreteVariable var) -> gum::NodeId
 
         Others aggregators
 
@@ -10113,8 +10173,8 @@ class BayesNet(IBayesNet):
 
     def addFORALL(self, var: 'DiscreteVariable', value: 'gum::Idx'=1) -> "gum::NodeId":
         r"""
-        addFORALL(self, var, value=1) -> gum::NodeId
-        addFORALL(self, var) -> gum::NodeId
+        addFORALL(BayesNet self, DiscreteVariable var, gum::Idx value=1) -> gum::NodeId
+        addFORALL(BayesNet self, DiscreteVariable var) -> gum::NodeId
 
         Others aggregators
 
@@ -10134,7 +10194,7 @@ class BayesNet(IBayesNet):
 
     def addMAX(self, var: 'DiscreteVariable') -> "gum::NodeId":
         r"""
-        addMAX(self, var) -> gum::NodeId
+        addMAX(BayesNet self, DiscreteVariable var) -> gum::NodeId
 
         Others aggregators
 
@@ -10154,7 +10214,7 @@ class BayesNet(IBayesNet):
 
     def addMEDIAN(self, var: 'DiscreteVariable') -> "gum::NodeId":
         r"""
-        addMEDIAN(self, var) -> gum::NodeId
+        addMEDIAN(BayesNet self, DiscreteVariable var) -> gum::NodeId
 
         Others aggregators
 
@@ -10174,7 +10234,7 @@ class BayesNet(IBayesNet):
 
     def addMIN(self, var: 'DiscreteVariable') -> "gum::NodeId":
         r"""
-        addMIN(self, var) -> gum::NodeId
+        addMIN(BayesNet self, DiscreteVariable var) -> gum::NodeId
 
         Others aggregators
 
@@ -10194,8 +10254,8 @@ class BayesNet(IBayesNet):
 
     def addWeightedArc(self, *args) -> "void":
         r"""
-        addWeightedArc(self, tail, head, causalWeight)
-        addWeightedArc(self, tail, head, causalWeight)
+        addWeightedArc(BayesNet self, gum::NodeId tail, gum::NodeId head, double causalWeight)
+        addWeightedArc(BayesNet self, std::string const & tail, std::string const & head, double causalWeight)
 
         Add an arc in the BN, and update arc.head's CPT.
 
@@ -10225,7 +10285,7 @@ class BayesNet(IBayesNet):
 
     def generateCPTs(self) -> "void":
         r"""
-        generateCPTs(self)
+        generateCPTs(BayesNet self)
 
         Randomly generates CPTs for a given structure.
 
@@ -10235,8 +10295,8 @@ class BayesNet(IBayesNet):
 
     def generateCPT(self, *args) -> "void":
         r"""
-        generateCPT(self, node)
-        generateCPT(self, name)
+        generateCPT(BayesNet self, gum::NodeId node)
+        generateCPT(BayesNet self, std::string const & name)
 
         Randomly generate CPT for a given node in a given structure.
 
@@ -10253,8 +10313,8 @@ class BayesNet(IBayesNet):
 
     def changePotential(self, *args) -> "void":
         r"""
-        changePotential(self, id, newPot)
-        changePotential(self, name, newPot)
+        changePotential(BayesNet self, gum::NodeId id, Potential newPot)
+        changePotential(BayesNet self, std::string const & name, Potential newPot)
 
         change the CPT associated to nodeId to newPot delete the old CPT associated to nodeId.
 
@@ -10278,7 +10338,7 @@ class BayesNet(IBayesNet):
 
     def dag(self) -> "gum::DAG const &":
         r"""
-        dag(self) -> DAG
+        dag(BayesNet self) -> DAG
 
         Returns
         -------
@@ -10296,7 +10356,7 @@ class BayesNet(IBayesNet):
 
     def size(self) -> "gum::Size":
         r"""
-        size(self) -> gum::Size
+        size(BayesNet self) -> gum::Size
 
         Returns
         -------
@@ -10309,7 +10369,7 @@ class BayesNet(IBayesNet):
 
     def nodes(self) -> "PyObject *":
         r"""
-        nodes(self) -> PyObject *
+        nodes(BayesNet self) -> PyObject *
 
         Returns
         -------
@@ -10322,7 +10382,7 @@ class BayesNet(IBayesNet):
 
     def log10DomainSize(self) -> "double":
         r"""
-        log10DomainSize(self) -> double
+        log10DomainSize(BayesNet self) -> double
 
         Returns
         -------
@@ -10369,8 +10429,8 @@ class BayesNet(IBayesNet):
 
     def loadBIF(self, *args) -> "std::string":
         r"""
-        loadBIF(self, name, l) -> std::string
-        loadBIF(self, name) -> std::string
+        loadBIF(BayesNet self, std::string name, PyObject * l) -> std::string
+        loadBIF(BayesNet self, std::string name) -> std::string
 
         Load a BIF file.
 
@@ -10394,7 +10454,7 @@ class BayesNet(IBayesNet):
 
     def saveBIF(self, name: 'std::string') -> "void":
         r"""
-        saveBIF(self, name)
+        saveBIF(BayesNet self, std::string name)
 
         Save the BayesNet in a BIF file.
 
@@ -10409,8 +10469,8 @@ class BayesNet(IBayesNet):
 
     def loadDSL(self, *args) -> "std::string":
         r"""
-        loadDSL(self, name, l) -> std::string
-        loadDSL(self, name) -> std::string
+        loadDSL(BayesNet self, std::string name, PyObject * l) -> std::string
+        loadDSL(BayesNet self, std::string name) -> std::string
 
         Load a DSL file.
 
@@ -10434,7 +10494,7 @@ class BayesNet(IBayesNet):
 
     def saveDSL(self, name: 'std::string') -> "void":
         r"""
-        saveDSL(self, name)
+        saveDSL(BayesNet self, std::string name)
 
         Save the BayesNet in a DSL file.
 
@@ -10449,8 +10509,8 @@ class BayesNet(IBayesNet):
 
     def loadNET(self, *args) -> "std::string":
         r"""
-        loadNET(self, name, l) -> std::string
-        loadNET(self, name) -> std::string
+        loadNET(BayesNet self, std::string name, PyObject * l) -> std::string
+        loadNET(BayesNet self, std::string name) -> std::string
 
         Load a NET file.
 
@@ -10474,7 +10534,7 @@ class BayesNet(IBayesNet):
 
     def saveNET(self, name: 'std::string') -> "void":
         r"""
-        saveNET(self, name)
+        saveNET(BayesNet self, std::string name)
 
         Save the BayesNet in a NET file.
 
@@ -10489,10 +10549,10 @@ class BayesNet(IBayesNet):
 
     def loadO3PRM(self, *args) -> "std::string":
         r"""
-        loadO3PRM(self, name, system, classpath, l) -> std::string
-        loadO3PRM(self, name, system, classpath) -> std::string
-        loadO3PRM(self, name, system) -> std::string
-        loadO3PRM(self, name) -> std::string
+        loadO3PRM(BayesNet self, std::string name, std::string system, std::string classpath, PyObject * l) -> std::string
+        loadO3PRM(BayesNet self, std::string name, std::string system, std::string classpath) -> std::string
+        loadO3PRM(BayesNet self, std::string name, std::string system) -> std::string
+        loadO3PRM(BayesNet self, std::string name) -> std::string
 
         Load an O3PRM file.
 
@@ -10524,7 +10584,7 @@ class BayesNet(IBayesNet):
 
     def saveO3PRM(self, name: 'std::string') -> "void":
         r"""
-        saveO3PRM(self, name)
+        saveO3PRM(BayesNet self, std::string name)
 
         Save the BayesNet in an O3PRM file.
 
@@ -10543,8 +10603,8 @@ class BayesNet(IBayesNet):
 
     def loadBIFXML(self, *args) -> "std::string":
         r"""
-        loadBIFXML(self, name, l) -> std::string
-        loadBIFXML(self, name) -> std::string
+        loadBIFXML(BayesNet self, std::string name, PyObject * l) -> std::string
+        loadBIFXML(BayesNet self, std::string name) -> std::string
 
         Load a BIFXML file.
 
@@ -10568,7 +10628,7 @@ class BayesNet(IBayesNet):
 
     def saveBIFXML(self, name: 'std::string') -> "void":
         r"""
-        saveBIFXML(self, name)
+        saveBIFXML(BayesNet self, std::string name)
 
         Save the BayesNet in a BIFXML file.
 
@@ -10583,8 +10643,8 @@ class BayesNet(IBayesNet):
 
     def loadUAI(self, *args) -> "std::string":
         r"""
-        loadUAI(self, name, l) -> std::string
-        loadUAI(self, name) -> std::string
+        loadUAI(BayesNet self, std::string name, PyObject * l) -> std::string
+        loadUAI(BayesNet self, std::string name) -> std::string
 
         Load an UAI file.
 
@@ -10608,7 +10668,7 @@ class BayesNet(IBayesNet):
 
     def saveUAI(self, name: 'std::string') -> "void":
         r"""
-        saveUAI(self, name)
+        saveUAI(BayesNet self, std::string name)
 
         Save the BayesNet in an UAI file.
 
@@ -10622,12 +10682,12 @@ class BayesNet(IBayesNet):
 
 
     def __repr__(self) -> "std::string":
-        r"""__repr__(self) -> std::string"""
+        r"""__repr__(BayesNet self) -> std::string"""
         return _pyAgrum.BayesNet___repr__(self)
 
 
     def __str__(self) -> "std::string":
-        r"""__str__(self) -> std::string"""
+        r"""__str__(BayesNet self) -> std::string"""
         return _pyAgrum.BayesNet___str__(self)
 
 
@@ -10636,8 +10696,8 @@ _pyAgrum.BayesNet_swigregister(BayesNet)
 
 def BayesNet_fastPrototype(dotlike: 'std::string const &', domainSize: 'gum::Size'=2) -> "gum::BayesNet< double >":
     r"""
-    fastPrototype(dotlike, domainSize=2) -> BayesNet
-    BayesNet_fastPrototype(dotlike) -> BayesNet
+    fastPrototype(std::string const & dotlike, gum::Size domainSize=2) -> BayesNet
+    BayesNet_fastPrototype(std::string const & dotlike) -> BayesNet
 
     Create a bn with a dotlike syntax : 'a->b->c;b->d;'.
 
@@ -10682,172 +10742,172 @@ class BayesNetInference(object):
     __swig_destroy__ = _pyAgrum.delete_BayesNetInference
 
     def setBN(self, bn: 'IBayesNet') -> "void":
-        r"""setBN(self, bn)"""
+        r"""setBN(BayesNetInference self, IBayesNet bn)"""
         return _pyAgrum.BayesNetInference_setBN(self, bn)
 
 
     def BN(self) -> "gum::IBayesNet< double > const &":
-        r"""BN(self) -> IBayesNet"""
+        r"""BN(BayesNetInference self) -> IBayesNet"""
         return _pyAgrum.BayesNetInference_BN(self)
 
 
     def domainSizes(self) -> "gum::NodeProperty< gum::Size > const &":
-        r"""domainSizes(self) -> gum::NodeProperty< gum::Size > const &"""
+        r"""domainSizes(BayesNetInference self) -> gum::NodeProperty< gum::Size > const &"""
         return _pyAgrum.BayesNetInference_domainSizes(self)
 
 
     def isInferenceReady(self) -> "bool":
-        r"""isInferenceReady(self) -> bool"""
+        r"""isInferenceReady(BayesNetInference self) -> bool"""
         return _pyAgrum.BayesNetInference_isInferenceReady(self)
 
 
     def isInferenceOutdatedBNStructure(self) -> "bool":
-        r"""isInferenceOutdatedBNStructure(self) -> bool"""
+        r"""isInferenceOutdatedBNStructure(BayesNetInference self) -> bool"""
         return _pyAgrum.BayesNetInference_isInferenceOutdatedBNStructure(self)
 
 
     def isInferenceOutdatedBNPotentials(self) -> "bool":
-        r"""isInferenceOutdatedBNPotentials(self) -> bool"""
+        r"""isInferenceOutdatedBNPotentials(BayesNetInference self) -> bool"""
         return _pyAgrum.BayesNetInference_isInferenceOutdatedBNPotentials(self)
 
 
     def isInferenceDone(self) -> "bool":
-        r"""isInferenceDone(self) -> bool"""
+        r"""isInferenceDone(BayesNetInference self) -> bool"""
         return _pyAgrum.BayesNetInference_isInferenceDone(self)
 
 
     def isDone(self) -> "bool":
-        r"""isDone(self) -> bool"""
+        r"""isDone(BayesNetInference self) -> bool"""
         return _pyAgrum.BayesNetInference_isDone(self)
 
 
     def prepareInference(self) -> "void":
-        r"""prepareInference(self)"""
+        r"""prepareInference(BayesNetInference self)"""
         return _pyAgrum.BayesNetInference_prepareInference(self)
 
 
     def makeInference(self) -> "void":
-        r"""makeInference(self)"""
+        r"""makeInference(BayesNetInference self)"""
         return _pyAgrum.BayesNetInference_makeInference(self)
 
 
     def clear(self) -> "void":
-        r"""clear(self)"""
+        r"""clear(BayesNetInference self)"""
         return _pyAgrum.BayesNetInference_clear(self)
 
 
     def state(self) -> "gum::BayesNetInference< double >::StateOfInference":
-        r"""state(self) -> gum::BayesNetInference< double >::StateOfInference"""
+        r"""state(BayesNetInference self) -> gum::BayesNetInference< double >::StateOfInference"""
         return _pyAgrum.BayesNetInference_state(self)
 
 
     def addEvidence(self, *args) -> "void":
         r"""
-        addEvidence(self, id, val)
-        addEvidence(self, nodeName, val)
-        addEvidence(self, id, label)
-        addEvidence(self, nodeName, label)
-        addEvidence(self, id, vals)
-        addEvidence(self, nodeName, vals)
-        addEvidence(self, pot)
-        addEvidence(self, pot)
+        addEvidence(BayesNetInference self, gum::NodeId id, gum::Idx const val)
+        addEvidence(BayesNetInference self, std::string const & nodeName, gum::Idx const val)
+        addEvidence(BayesNetInference self, gum::NodeId id, std::string const & label)
+        addEvidence(BayesNetInference self, std::string const & nodeName, std::string const & label)
+        addEvidence(BayesNetInference self, gum::NodeId id, Vector vals)
+        addEvidence(BayesNetInference self, std::string const & nodeName, Vector vals)
+        addEvidence(BayesNetInference self, Potential pot)
+        addEvidence(BayesNetInference self, Potential pot)
         """
         return _pyAgrum.BayesNetInference_addEvidence(self, *args)
 
 
     def addSetOfEvidence(self, potset: 'gum::Set< gum::Potential< double > const * > const &') -> "void":
-        r"""addSetOfEvidence(self, potset)"""
+        r"""addSetOfEvidence(BayesNetInference self, gum::Set< gum::Potential< double > const * > const & potset)"""
         return _pyAgrum.BayesNetInference_addSetOfEvidence(self, potset)
 
 
     def addListOfEvidence(self, potlist: 'gum::List< gum::Potential< double > const * > const &') -> "void":
-        r"""addListOfEvidence(self, potlist)"""
+        r"""addListOfEvidence(BayesNetInference self, gum::List< gum::Potential< double > const * > const & potlist)"""
         return _pyAgrum.BayesNetInference_addListOfEvidence(self, potlist)
 
 
     def chgEvidence(self, *args) -> "void":
         r"""
-        chgEvidence(self, id, val)
-        chgEvidence(self, nodeName, val)
-        chgEvidence(self, id, label)
-        chgEvidence(self, nodeName, label)
-        chgEvidence(self, id, vals)
-        chgEvidence(self, nodeName, vals)
-        chgEvidence(self, pot)
+        chgEvidence(BayesNetInference self, gum::NodeId id, gum::Idx const val)
+        chgEvidence(BayesNetInference self, std::string const & nodeName, gum::Idx const val)
+        chgEvidence(BayesNetInference self, gum::NodeId id, std::string const & label)
+        chgEvidence(BayesNetInference self, std::string const & nodeName, std::string const & label)
+        chgEvidence(BayesNetInference self, gum::NodeId id, Vector vals)
+        chgEvidence(BayesNetInference self, std::string const & nodeName, Vector vals)
+        chgEvidence(BayesNetInference self, Potential pot)
         """
         return _pyAgrum.BayesNetInference_chgEvidence(self, *args)
 
 
     def eraseAllEvidence(self) -> "void":
-        r"""eraseAllEvidence(self)"""
+        r"""eraseAllEvidence(BayesNetInference self)"""
         return _pyAgrum.BayesNetInference_eraseAllEvidence(self)
 
 
     def eraseEvidence(self, *args) -> "void":
         r"""
-        eraseEvidence(self, id)
-        eraseEvidence(self, nodeName)
+        eraseEvidence(BayesNetInference self, gum::NodeId id)
+        eraseEvidence(BayesNetInference self, std::string const & nodeName)
         """
         return _pyAgrum.BayesNetInference_eraseEvidence(self, *args)
 
 
     def hasEvidence(self, *args) -> "bool":
         r"""
-        hasEvidence(self) -> bool
-        hasEvidence(self, id) -> bool
-        hasEvidence(self, nodeName) -> bool
+        hasEvidence(BayesNetInference self) -> bool
+        hasEvidence(BayesNetInference self, gum::NodeId id) -> bool
+        hasEvidence(BayesNetInference self, std::string const & nodeName) -> bool
         """
         return _pyAgrum.BayesNetInference_hasEvidence(self, *args)
 
 
     def hasHardEvidence(self, *args) -> "bool":
         r"""
-        hasHardEvidence(self, id) -> bool
-        hasHardEvidence(self, nodeName) -> bool
+        hasHardEvidence(BayesNetInference self, gum::NodeId id) -> bool
+        hasHardEvidence(BayesNetInference self, std::string const & nodeName) -> bool
         """
         return _pyAgrum.BayesNetInference_hasHardEvidence(self, *args)
 
 
     def hasSoftEvidence(self, *args) -> "bool":
         r"""
-        hasSoftEvidence(self, id) -> bool
-        hasSoftEvidence(self, nodeName) -> bool
+        hasSoftEvidence(BayesNetInference self, gum::NodeId id) -> bool
+        hasSoftEvidence(BayesNetInference self, std::string const & nodeName) -> bool
         """
         return _pyAgrum.BayesNetInference_hasSoftEvidence(self, *args)
 
 
     def nbrEvidence(self) -> "gum::Size":
-        r"""nbrEvidence(self) -> gum::Size"""
+        r"""nbrEvidence(BayesNetInference self) -> gum::Size"""
         return _pyAgrum.BayesNetInference_nbrEvidence(self)
 
 
     def nbrHardEvidence(self) -> "gum::Size":
-        r"""nbrHardEvidence(self) -> gum::Size"""
+        r"""nbrHardEvidence(BayesNetInference self) -> gum::Size"""
         return _pyAgrum.BayesNetInference_nbrHardEvidence(self)
 
 
     def nbrSoftEvidence(self) -> "gum::Size":
-        r"""nbrSoftEvidence(self) -> gum::Size"""
+        r"""nbrSoftEvidence(BayesNetInference self) -> gum::Size"""
         return _pyAgrum.BayesNetInference_nbrSoftEvidence(self)
 
 
     def evidence(self) -> "gum::NodeProperty< gum::Potential< double > const * > const &":
-        r"""evidence(self) -> gum::NodeProperty< gum::Potential< double > const * > const &"""
+        r"""evidence(BayesNetInference self) -> gum::NodeProperty< gum::Potential< double > const * > const &"""
         return _pyAgrum.BayesNetInference_evidence(self)
 
 
     def softEvidenceNodes(self) -> "gum::NodeSet const &":
-        r"""softEvidenceNodes(self) -> gum::NodeSet const &"""
+        r"""softEvidenceNodes(BayesNetInference self) -> gum::NodeSet const &"""
         return _pyAgrum.BayesNetInference_softEvidenceNodes(self)
 
 
     def hardEvidenceNodes(self) -> "gum::NodeSet const &":
-        r"""hardEvidenceNodes(self) -> gum::NodeSet const &"""
+        r"""hardEvidenceNodes(BayesNetInference self) -> gum::NodeSet const &"""
         return _pyAgrum.BayesNetInference_hardEvidenceNodes(self)
 
 
     def hardEvidence(self) -> "gum::NodeProperty< gum::Idx > const &":
-        r"""hardEvidence(self) -> gum::NodeProperty< gum::Idx > const &"""
+        r"""hardEvidence(BayesNetInference self) -> gum::NodeProperty< gum::Idx > const &"""
         return _pyAgrum.BayesNetInference_hardEvidence(self)
 
 
@@ -10876,10 +10936,10 @@ class LazyPropagation(object):
 
     def __init__(self, *args):
         r"""
-        __init__(self, BN, arg3, arg4, use_binary_join_tree=True) -> LazyPropagation
-        __init__(self, BN, arg3, arg4) -> LazyPropagation
-        __init__(self, BN, arg3) -> LazyPropagation
-        __init__(self, BN) -> LazyPropagation
+        __init__(LazyPropagation self, IBayesNet BN, gum::RelevantPotentialsFinderType arg3, gum::FindBarrenNodesType arg4, bool use_binary_join_tree=True) -> LazyPropagation
+        __init__(LazyPropagation self, IBayesNet BN, gum::RelevantPotentialsFinderType arg3, gum::FindBarrenNodesType arg4) -> LazyPropagation
+        __init__(LazyPropagation self, IBayesNet BN, gum::RelevantPotentialsFinderType arg3) -> LazyPropagation
+        __init__(LazyPropagation self, IBayesNet BN) -> LazyPropagation
         """
         _pyAgrum.LazyPropagation_swiginit(self, _pyAgrum.new_LazyPropagation(*args))
 
@@ -10890,13 +10950,13 @@ class LazyPropagation(object):
     __swig_destroy__ = _pyAgrum.delete_LazyPropagation
 
     def setTriangulation(self, new_triangulation: 'Triangulation') -> "void":
-        r"""setTriangulation(self, new_triangulation)"""
+        r"""setTriangulation(LazyPropagation self, Triangulation new_triangulation)"""
         return _pyAgrum.LazyPropagation_setTriangulation(self, new_triangulation)
 
 
     def setRelevantPotentialsFinderType(self, type: 'gum::RelevantPotentialsFinderType') -> "void":
         r"""
-        setRelevantPotentialsFinderType(self, type)
+        setRelevantPotentialsFinderType(LazyPropagation self, gum::RelevantPotentialsFinderType type)
 
         sets how we determine the relevant potentials to combine
 
@@ -10923,7 +10983,7 @@ class LazyPropagation(object):
 
     def setFindBarrenNodesType(self, type: 'gum::FindBarrenNodesType') -> "void":
         r"""
-        setFindBarrenNodesType(self, type)
+        setFindBarrenNodesType(LazyPropagation self, gum::FindBarrenNodesType type)
 
         sets how we determine barren nodes
 
@@ -10948,7 +11008,7 @@ class LazyPropagation(object):
 
     def joinTree(self) -> "gum::JoinTree const *":
         r"""
-        joinTree(self) -> CliqueGraph
+        joinTree(LazyPropagation self) -> CliqueGraph
 
         Returns
         -------
@@ -10961,7 +11021,7 @@ class LazyPropagation(object):
 
     def junctionTree(self) -> "gum::JunctionTree const *":
         r"""
-        junctionTree(self) -> CliqueGraph
+        junctionTree(LazyPropagation self) -> CliqueGraph
 
         Returns
         -------
@@ -10974,7 +11034,7 @@ class LazyPropagation(object):
 
     def evidenceProbability(self) -> "double":
         r"""
-        evidenceProbability(self) -> double
+        evidenceProbability(LazyPropagation self) -> double
 
         Returns
         -------
@@ -11069,7 +11129,7 @@ class LazyPropagation(object):
 
     def hardEvidenceNodes(self) -> "PyObject *":
         r"""
-        hardEvidenceNodes(self) -> PyObject *
+        hardEvidenceNodes(LazyPropagation self) -> PyObject *
 
         Returns
         -------
@@ -11082,7 +11142,7 @@ class LazyPropagation(object):
 
     def softEvidenceNodes(self) -> "PyObject *":
         r"""
-        softEvidenceNodes(self) -> PyObject *
+        softEvidenceNodes(LazyPropagation self) -> PyObject *
 
         Returns
         -------
@@ -11095,7 +11155,7 @@ class LazyPropagation(object):
 
     def targets(self) -> "PyObject *":
         r"""
-        targets(self) -> PyObject *
+        targets(LazyPropagation self) -> PyObject *
 
         Returns
         -------
@@ -11107,13 +11167,13 @@ class LazyPropagation(object):
 
 
     def jointMutualInformation(self, targets: 'PyObject *') -> "double":
-        r"""jointMutualInformation(self, targets) -> double"""
+        r"""jointMutualInformation(LazyPropagation self, PyObject * targets) -> double"""
         return _pyAgrum.LazyPropagation_jointMutualInformation(self, targets)
 
 
     def jointPosterior(self, list: 'PyObject *') -> "gum::Potential< double >":
         r"""
-        jointPosterior(self, list) -> Potential
+        jointPosterior(LazyPropagation self, PyObject * list) -> Potential
 
         Compute the joint posterior of a set of nodes.
 
@@ -11143,7 +11203,7 @@ class LazyPropagation(object):
 
     def addJointTarget(self, list: 'PyObject *') -> "void":
         r"""
-        addJointTarget(self, list)
+        addJointTarget(LazyPropagation self, PyObject * list)
 
         Add a list of nodes as a new joint target. As a collateral effect, every node is added as a marginal target.
 
@@ -11163,7 +11223,7 @@ class LazyPropagation(object):
 
     def eraseJointTarget(self, list: 'PyObject *') -> "void":
         r"""
-        eraseJointTarget(self, list)
+        eraseJointTarget(LazyPropagation self, PyObject * list)
 
         Remove, if existing, the joint target.
 
@@ -11185,7 +11245,7 @@ class LazyPropagation(object):
 
     def isJointTarget(self, list: 'PyObject *') -> "bool":
         r"""
-        isJointTarget(self, list) -> bool
+        isJointTarget(LazyPropagation self, PyObject * list) -> bool
 
         Parameters
         ----------
@@ -11210,7 +11270,7 @@ class LazyPropagation(object):
 
     def jointTargets(self) -> "PyObject *":
         r"""
-        jointTargets(self) -> PyObject *
+        jointTargets(LazyPropagation self) -> PyObject *
 
         Returns
         -------
@@ -11223,7 +11283,7 @@ class LazyPropagation(object):
 
     def makeInference(self) -> "void":
         r"""
-        makeInference(self)
+        makeInference(LazyPropagation self)
 
         Perform the heavy computations needed to compute the targets' posteriors
 
@@ -11236,8 +11296,8 @@ class LazyPropagation(object):
 
     def posterior(self, *args) -> "gum::Potential< double > const":
         r"""
-        posterior(self, var) -> Potential
-        posterior(self, nodeName) -> Potential
+        posterior(LazyPropagation self, gum::NodeId const var) -> Potential
+        posterior(LazyPropagation self, std::string const nodeName) -> Potential
 
         Computes and returns the posterior of a node.
 
@@ -11264,7 +11324,7 @@ class LazyPropagation(object):
 
     def BN(self) -> "gum::IBayesNet< double > const &":
         r"""
-        BN(self) -> IBayesNet
+        BN(LazyPropagation self) -> IBayesNet
 
         Returns
         -------
@@ -11282,12 +11342,12 @@ class LazyPropagation(object):
 
     def addEvidence(self, *args) -> "void":
         r"""
-        addEvidence(self, id, val)
-        addEvidence(self, nodeName, val)
-        addEvidence(self, id, val)
-        addEvidence(self, nodeName, val)
-        addEvidence(self, id, vals)
-        addEvidence(self, nodeName, vals)
+        addEvidence(LazyPropagation self, gum::NodeId const id, gum::Idx const val)
+        addEvidence(LazyPropagation self, std::string const & nodeName, gum::Idx const val)
+        addEvidence(LazyPropagation self, gum::NodeId const id, std::string const & val)
+        addEvidence(LazyPropagation self, std::string const & nodeName, std::string const & val)
+        addEvidence(LazyPropagation self, gum::NodeId const id, Vector vals)
+        addEvidence(LazyPropagation self, std::string const & nodeName, Vector vals)
 
         Adds a new evidence on a node (might be soft or hard).
 
@@ -11323,12 +11383,12 @@ class LazyPropagation(object):
 
     def chgEvidence(self, *args) -> "void":
         r"""
-        chgEvidence(self, id, val)
-        chgEvidence(self, nodeName, val)
-        chgEvidence(self, id, val)
-        chgEvidence(self, nodeName, val)
-        chgEvidence(self, id, vals)
-        chgEvidence(self, nodeName, vals)
+        chgEvidence(LazyPropagation self, gum::NodeId const id, gum::Idx const val)
+        chgEvidence(LazyPropagation self, std::string const & nodeName, gum::Idx const val)
+        chgEvidence(LazyPropagation self, gum::NodeId const id, std::string const & val)
+        chgEvidence(LazyPropagation self, std::string const & nodeName, std::string const & val)
+        chgEvidence(LazyPropagation self, gum::NodeId const id, Vector vals)
+        chgEvidence(LazyPropagation self, std::string const & nodeName, Vector vals)
 
         Change the value of an already existing evidence on a node (might be soft or hard).
 
@@ -11364,8 +11424,8 @@ class LazyPropagation(object):
 
     def hasEvidence(self, *args) -> "bool":
         r"""
-        hasEvidence(self, id) -> bool
-        hasEvidence(self, nodeName) -> bool
+        hasEvidence(LazyPropagation self, gum::NodeId const id) -> bool
+        hasEvidence(LazyPropagation self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -11390,7 +11450,7 @@ class LazyPropagation(object):
 
     def eraseAllEvidence(self) -> "void":
         r"""
-        eraseAllEvidence(self)
+        eraseAllEvidence(LazyPropagation self)
 
         Removes all the evidence entered into the network.
 
@@ -11400,8 +11460,8 @@ class LazyPropagation(object):
 
     def eraseEvidence(self, *args) -> "void":
         r"""
-        eraseEvidence(self, id)
-        eraseEvidence(self, nodeName)
+        eraseEvidence(LazyPropagation self, gum::NodeId const id)
+        eraseEvidence(LazyPropagation self, std::string const & nodeName)
 
         Remove the evidence, if any, corresponding to the node Id or name.
 
@@ -11423,7 +11483,7 @@ class LazyPropagation(object):
 
     def hasHardEvidence(self, nodeName: 'std::string const &') -> "bool":
         r"""
-        hasHardEvidence(self, nodeName) -> bool
+        hasHardEvidence(LazyPropagation self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -11448,8 +11508,8 @@ class LazyPropagation(object):
 
     def hasSoftEvidence(self, *args) -> "bool":
         r"""
-        hasSoftEvidence(self, id) -> bool
-        hasSoftEvidence(self, nodeName) -> bool
+        hasSoftEvidence(LazyPropagation self, gum::NodeId const id) -> bool
+        hasSoftEvidence(LazyPropagation self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -11474,7 +11534,7 @@ class LazyPropagation(object):
 
     def nbrEvidence(self) -> "gum::Size":
         r"""
-        nbrEvidence(self) -> gum::Size
+        nbrEvidence(LazyPropagation self) -> gum::Size
 
         Returns
         -------
@@ -11487,7 +11547,7 @@ class LazyPropagation(object):
 
     def nbrHardEvidence(self) -> "gum::Size":
         r"""
-        nbrHardEvidence(self) -> gum::Size
+        nbrHardEvidence(LazyPropagation self) -> gum::Size
 
         Returns
         -------
@@ -11500,7 +11560,7 @@ class LazyPropagation(object):
 
     def nbrSoftEvidence(self) -> "gum::Size":
         r"""
-        nbrSoftEvidence(self) -> gum::Size
+        nbrSoftEvidence(LazyPropagation self) -> gum::Size
 
         Returns
         -------
@@ -11513,7 +11573,7 @@ class LazyPropagation(object):
 
     def eraseAllTargets(self) -> "void":
         r"""
-        eraseAllTargets(self)
+        eraseAllTargets(LazyPropagation self)
 
         Clear all previously defined targets (marginal and joint targets).
 
@@ -11525,7 +11585,7 @@ class LazyPropagation(object):
 
     def addAllTargets(self) -> "void":
         r"""
-        addAllTargets(self)
+        addAllTargets(LazyPropagation self)
 
         Add all the nodes as targets.
 
@@ -11535,8 +11595,8 @@ class LazyPropagation(object):
 
     def addTarget(self, *args) -> "void":
         r"""
-        addTarget(self, target)
-        addTarget(self, nodeName)
+        addTarget(LazyPropagation self, gum::NodeId const target)
+        addTarget(LazyPropagation self, std::string const & nodeName)
 
         Add a marginal target to the list of targets.
 
@@ -11558,8 +11618,8 @@ class LazyPropagation(object):
 
     def eraseTarget(self, *args) -> "void":
         r"""
-        eraseTarget(self, target)
-        eraseTarget(self, nodeName)
+        eraseTarget(LazyPropagation self, gum::NodeId const target)
+        eraseTarget(LazyPropagation self, std::string const & nodeName)
 
         Remove, if existing, the marginal target.
 
@@ -11583,8 +11643,8 @@ class LazyPropagation(object):
 
     def isTarget(self, *args) -> "bool":
         r"""
-        isTarget(self, variable) -> bool
-        isTarget(self, nodeName) -> bool
+        isTarget(LazyPropagation self, gum::NodeId const variable) -> bool
+        isTarget(LazyPropagation self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -11611,7 +11671,7 @@ class LazyPropagation(object):
 
     def nbrTargets(self) -> "gum::Size":
         r"""
-        nbrTargets(self) -> gum::Size
+        nbrTargets(LazyPropagation self) -> gum::Size
 
         Returns
         -------
@@ -11624,8 +11684,8 @@ class LazyPropagation(object):
 
     def H(self, *args) -> "double":
         r"""
-        H(self, X) -> double
-        H(self, nodeName) -> double
+        H(LazyPropagation self, gum::NodeId const X) -> double
+        H(LazyPropagation self, std::string const & nodeName) -> double
 
         Parameters
         ----------
@@ -11645,8 +11705,8 @@ class LazyPropagation(object):
 
     def evidenceImpact(self, *args) -> "gum::Potential< double >":
         r"""
-        evidenceImpact(self, target, evs) -> Potential
-        evidenceImpact(self, target, evs) -> Potential
+        evidenceImpact(LazyPropagation self, gum::NodeId target, PyObject * evs) -> Potential
+        evidenceImpact(LazyPropagation self, std::string const & target, Vector_string evs) -> Potential
 
         Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
 
@@ -11672,7 +11732,7 @@ class LazyPropagation(object):
 
     def eraseAllJointTargets(self) -> "void":
         r"""
-        eraseAllJointTargets(self)
+        eraseAllJointTargets(LazyPropagation self)
 
         Clear all previously defined joint targets.
 
@@ -11682,7 +11742,7 @@ class LazyPropagation(object):
 
     def eraseAllMarginalTargets(self) -> "void":
         r"""
-        eraseAllMarginalTargets(self)
+        eraseAllMarginalTargets(LazyPropagation self)
 
         Clear all the previously defined marginal targets.
 
@@ -11692,7 +11752,7 @@ class LazyPropagation(object):
 
     def nbrJointTargets(self) -> "gum::Size":
         r"""
-        nbrJointTargets(self) -> gum::Size
+        nbrJointTargets(LazyPropagation self) -> gum::Size
 
         Returns
         -------
@@ -11705,7 +11765,7 @@ class LazyPropagation(object):
 
     def I(self, X: 'gum::NodeId const', Y: 'gum::NodeId const') -> "double":
         r"""
-        I(self, X, Y) -> double
+        I(LazyPropagation self, gum::NodeId const X, gum::NodeId const Y) -> double
 
         Parameters
         ----------
@@ -11725,7 +11785,7 @@ class LazyPropagation(object):
 
     def VI(self, X: 'gum::NodeId const', Y: 'gum::NodeId const') -> "double":
         r"""
-        VI(self, X, Y) -> double
+        VI(LazyPropagation self, gum::NodeId const X, gum::NodeId const Y) -> double
 
         Parameters
         ----------
@@ -11745,8 +11805,8 @@ class LazyPropagation(object):
 
     def evidenceJointImpact(self, *args) -> "gum::Potential< double >":
         r"""
-        evidenceJointImpact(self, targets, evs) -> Potential
-        evidenceJointImpact(self, targets, evs) -> Potential
+        evidenceJointImpact(LazyPropagation self, PyObject * targets, PyObject * evs) -> Potential
+        evidenceJointImpact(LazyPropagation self, Vector_string targets, Vector_string evs) -> Potential
 
         Create a pyAgrum.Potential for P(joint targets|evs) (for all instanciation of targets and evs)
 
@@ -11798,9 +11858,9 @@ class ShaferShenoyInference(object):
 
     def __init__(self, *args):
         r"""
-        __init__(self, BN, barren_type, use_binary_join_tree=True) -> ShaferShenoyInference
-        __init__(self, BN, barren_type) -> ShaferShenoyInference
-        __init__(self, BN) -> ShaferShenoyInference
+        __init__(ShaferShenoyInference self, IBayesNet BN, gum::FindBarrenNodesType barren_type, bool use_binary_join_tree=True) -> ShaferShenoyInference
+        __init__(ShaferShenoyInference self, IBayesNet BN, gum::FindBarrenNodesType barren_type) -> ShaferShenoyInference
+        __init__(ShaferShenoyInference self, IBayesNet BN) -> ShaferShenoyInference
         """
         _pyAgrum.ShaferShenoyInference_swiginit(self, _pyAgrum.new_ShaferShenoyInference(*args))
 
@@ -11811,13 +11871,13 @@ class ShaferShenoyInference(object):
     __swig_destroy__ = _pyAgrum.delete_ShaferShenoyInference
 
     def setTriangulation(self, new_triangulation: 'Triangulation') -> "void":
-        r"""setTriangulation(self, new_triangulation)"""
+        r"""setTriangulation(ShaferShenoyInference self, Triangulation new_triangulation)"""
         return _pyAgrum.ShaferShenoyInference_setTriangulation(self, new_triangulation)
 
 
     def setFindBarrenNodesType(self, type: 'gum::FindBarrenNodesType') -> "void":
         r"""
-        setFindBarrenNodesType(self, type)
+        setFindBarrenNodesType(ShaferShenoyInference self, gum::FindBarrenNodesType type)
 
         sets how we determine barren nodes
 
@@ -11842,7 +11902,7 @@ class ShaferShenoyInference(object):
 
     def joinTree(self) -> "gum::JoinTree const *":
         r"""
-        joinTree(self) -> CliqueGraph
+        joinTree(ShaferShenoyInference self) -> CliqueGraph
 
         Returns
         -------
@@ -11855,7 +11915,7 @@ class ShaferShenoyInference(object):
 
     def junctionTree(self) -> "gum::JunctionTree const *":
         r"""
-        junctionTree(self) -> CliqueGraph
+        junctionTree(ShaferShenoyInference self) -> CliqueGraph
 
         Returns
         -------
@@ -11868,7 +11928,7 @@ class ShaferShenoyInference(object):
 
     def evidenceProbability(self) -> "double":
         r"""
-        evidenceProbability(self) -> double
+        evidenceProbability(ShaferShenoyInference self) -> double
 
         Returns
         -------
@@ -11963,7 +12023,7 @@ class ShaferShenoyInference(object):
 
     def hardEvidenceNodes(self) -> "PyObject *":
         r"""
-        hardEvidenceNodes(self) -> PyObject *
+        hardEvidenceNodes(ShaferShenoyInference self) -> PyObject *
 
         Returns
         -------
@@ -11976,7 +12036,7 @@ class ShaferShenoyInference(object):
 
     def softEvidenceNodes(self) -> "PyObject *":
         r"""
-        softEvidenceNodes(self) -> PyObject *
+        softEvidenceNodes(ShaferShenoyInference self) -> PyObject *
 
         Returns
         -------
@@ -11989,7 +12049,7 @@ class ShaferShenoyInference(object):
 
     def targets(self) -> "PyObject *":
         r"""
-        targets(self) -> PyObject *
+        targets(ShaferShenoyInference self) -> PyObject *
 
         Returns
         -------
@@ -12001,13 +12061,13 @@ class ShaferShenoyInference(object):
 
 
     def jointMutualInformation(self, targets: 'PyObject *') -> "double":
-        r"""jointMutualInformation(self, targets) -> double"""
+        r"""jointMutualInformation(ShaferShenoyInference self, PyObject * targets) -> double"""
         return _pyAgrum.ShaferShenoyInference_jointMutualInformation(self, targets)
 
 
     def jointPosterior(self, list: 'PyObject *') -> "gum::Potential< double >":
         r"""
-        jointPosterior(self, list) -> Potential
+        jointPosterior(ShaferShenoyInference self, PyObject * list) -> Potential
 
         Compute the joint posterior of a set of nodes.
 
@@ -12037,7 +12097,7 @@ class ShaferShenoyInference(object):
 
     def addJointTarget(self, list: 'PyObject *') -> "void":
         r"""
-        addJointTarget(self, list)
+        addJointTarget(ShaferShenoyInference self, PyObject * list)
 
         Add a list of nodes as a new joint target. As a collateral effect, every node is added as a marginal target.
 
@@ -12057,7 +12117,7 @@ class ShaferShenoyInference(object):
 
     def eraseJointTarget(self, list: 'PyObject *') -> "void":
         r"""
-        eraseJointTarget(self, list)
+        eraseJointTarget(ShaferShenoyInference self, PyObject * list)
 
         Remove, if existing, the joint target.
 
@@ -12079,7 +12139,7 @@ class ShaferShenoyInference(object):
 
     def isJointTarget(self, list: 'PyObject *') -> "bool":
         r"""
-        isJointTarget(self, list) -> bool
+        isJointTarget(ShaferShenoyInference self, PyObject * list) -> bool
 
         Parameters
         ----------
@@ -12104,7 +12164,7 @@ class ShaferShenoyInference(object):
 
     def jointTargets(self) -> "PyObject *":
         r"""
-        jointTargets(self) -> PyObject *
+        jointTargets(ShaferShenoyInference self) -> PyObject *
 
         Returns
         -------
@@ -12117,7 +12177,7 @@ class ShaferShenoyInference(object):
 
     def makeInference(self) -> "void":
         r"""
-        makeInference(self)
+        makeInference(ShaferShenoyInference self)
 
         Perform the heavy computations needed to compute the targets' posteriors
 
@@ -12130,8 +12190,8 @@ class ShaferShenoyInference(object):
 
     def posterior(self, *args) -> "gum::Potential< double > const":
         r"""
-        posterior(self, var) -> Potential
-        posterior(self, nodeName) -> Potential
+        posterior(ShaferShenoyInference self, gum::NodeId const var) -> Potential
+        posterior(ShaferShenoyInference self, std::string const nodeName) -> Potential
 
         Computes and returns the posterior of a node.
 
@@ -12158,7 +12218,7 @@ class ShaferShenoyInference(object):
 
     def BN(self) -> "gum::IBayesNet< double > const &":
         r"""
-        BN(self) -> IBayesNet
+        BN(ShaferShenoyInference self) -> IBayesNet
 
         Returns
         -------
@@ -12176,12 +12236,12 @@ class ShaferShenoyInference(object):
 
     def addEvidence(self, *args) -> "void":
         r"""
-        addEvidence(self, id, val)
-        addEvidence(self, nodeName, val)
-        addEvidence(self, id, val)
-        addEvidence(self, nodeName, val)
-        addEvidence(self, id, vals)
-        addEvidence(self, nodeName, vals)
+        addEvidence(ShaferShenoyInference self, gum::NodeId const id, gum::Idx const val)
+        addEvidence(ShaferShenoyInference self, std::string const & nodeName, gum::Idx const val)
+        addEvidence(ShaferShenoyInference self, gum::NodeId const id, std::string const & val)
+        addEvidence(ShaferShenoyInference self, std::string const & nodeName, std::string const & val)
+        addEvidence(ShaferShenoyInference self, gum::NodeId const id, Vector vals)
+        addEvidence(ShaferShenoyInference self, std::string const & nodeName, Vector vals)
 
         Adds a new evidence on a node (might be soft or hard).
 
@@ -12217,12 +12277,12 @@ class ShaferShenoyInference(object):
 
     def chgEvidence(self, *args) -> "void":
         r"""
-        chgEvidence(self, id, val)
-        chgEvidence(self, nodeName, val)
-        chgEvidence(self, id, val)
-        chgEvidence(self, nodeName, val)
-        chgEvidence(self, id, vals)
-        chgEvidence(self, nodeName, vals)
+        chgEvidence(ShaferShenoyInference self, gum::NodeId const id, gum::Idx const val)
+        chgEvidence(ShaferShenoyInference self, std::string const & nodeName, gum::Idx const val)
+        chgEvidence(ShaferShenoyInference self, gum::NodeId const id, std::string const & val)
+        chgEvidence(ShaferShenoyInference self, std::string const & nodeName, std::string const & val)
+        chgEvidence(ShaferShenoyInference self, gum::NodeId const id, Vector vals)
+        chgEvidence(ShaferShenoyInference self, std::string const & nodeName, Vector vals)
 
         Change the value of an already existing evidence on a node (might be soft or hard).
 
@@ -12258,8 +12318,8 @@ class ShaferShenoyInference(object):
 
     def hasEvidence(self, *args) -> "bool":
         r"""
-        hasEvidence(self, id) -> bool
-        hasEvidence(self, nodeName) -> bool
+        hasEvidence(ShaferShenoyInference self, gum::NodeId const id) -> bool
+        hasEvidence(ShaferShenoyInference self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -12284,7 +12344,7 @@ class ShaferShenoyInference(object):
 
     def eraseAllEvidence(self) -> "void":
         r"""
-        eraseAllEvidence(self)
+        eraseAllEvidence(ShaferShenoyInference self)
 
         Removes all the evidence entered into the network.
 
@@ -12294,8 +12354,8 @@ class ShaferShenoyInference(object):
 
     def eraseEvidence(self, *args) -> "void":
         r"""
-        eraseEvidence(self, id)
-        eraseEvidence(self, nodeName)
+        eraseEvidence(ShaferShenoyInference self, gum::NodeId const id)
+        eraseEvidence(ShaferShenoyInference self, std::string const & nodeName)
 
         Remove the evidence, if any, corresponding to the node Id or name.
 
@@ -12317,7 +12377,7 @@ class ShaferShenoyInference(object):
 
     def hasHardEvidence(self, nodeName: 'std::string const &') -> "bool":
         r"""
-        hasHardEvidence(self, nodeName) -> bool
+        hasHardEvidence(ShaferShenoyInference self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -12342,8 +12402,8 @@ class ShaferShenoyInference(object):
 
     def hasSoftEvidence(self, *args) -> "bool":
         r"""
-        hasSoftEvidence(self, id) -> bool
-        hasSoftEvidence(self, nodeName) -> bool
+        hasSoftEvidence(ShaferShenoyInference self, gum::NodeId const id) -> bool
+        hasSoftEvidence(ShaferShenoyInference self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -12368,7 +12428,7 @@ class ShaferShenoyInference(object):
 
     def nbrEvidence(self) -> "gum::Size":
         r"""
-        nbrEvidence(self) -> gum::Size
+        nbrEvidence(ShaferShenoyInference self) -> gum::Size
 
         Returns
         -------
@@ -12381,7 +12441,7 @@ class ShaferShenoyInference(object):
 
     def nbrHardEvidence(self) -> "gum::Size":
         r"""
-        nbrHardEvidence(self) -> gum::Size
+        nbrHardEvidence(ShaferShenoyInference self) -> gum::Size
 
         Returns
         -------
@@ -12394,7 +12454,7 @@ class ShaferShenoyInference(object):
 
     def nbrSoftEvidence(self) -> "gum::Size":
         r"""
-        nbrSoftEvidence(self) -> gum::Size
+        nbrSoftEvidence(ShaferShenoyInference self) -> gum::Size
 
         Returns
         -------
@@ -12407,7 +12467,7 @@ class ShaferShenoyInference(object):
 
     def eraseAllTargets(self) -> "void":
         r"""
-        eraseAllTargets(self)
+        eraseAllTargets(ShaferShenoyInference self)
 
         Clear all previously defined targets (marginal and joint targets).
 
@@ -12419,7 +12479,7 @@ class ShaferShenoyInference(object):
 
     def addAllTargets(self) -> "void":
         r"""
-        addAllTargets(self)
+        addAllTargets(ShaferShenoyInference self)
 
         Add all the nodes as targets.
 
@@ -12429,8 +12489,8 @@ class ShaferShenoyInference(object):
 
     def addTarget(self, *args) -> "void":
         r"""
-        addTarget(self, target)
-        addTarget(self, nodeName)
+        addTarget(ShaferShenoyInference self, gum::NodeId const target)
+        addTarget(ShaferShenoyInference self, std::string const & nodeName)
 
         Add a marginal target to the list of targets.
 
@@ -12452,8 +12512,8 @@ class ShaferShenoyInference(object):
 
     def eraseTarget(self, *args) -> "void":
         r"""
-        eraseTarget(self, target)
-        eraseTarget(self, nodeName)
+        eraseTarget(ShaferShenoyInference self, gum::NodeId const target)
+        eraseTarget(ShaferShenoyInference self, std::string const & nodeName)
 
         Remove, if existing, the marginal target.
 
@@ -12477,8 +12537,8 @@ class ShaferShenoyInference(object):
 
     def isTarget(self, *args) -> "bool":
         r"""
-        isTarget(self, variable) -> bool
-        isTarget(self, nodeName) -> bool
+        isTarget(ShaferShenoyInference self, gum::NodeId const variable) -> bool
+        isTarget(ShaferShenoyInference self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -12505,7 +12565,7 @@ class ShaferShenoyInference(object):
 
     def nbrTargets(self) -> "gum::Size":
         r"""
-        nbrTargets(self) -> gum::Size
+        nbrTargets(ShaferShenoyInference self) -> gum::Size
 
         Returns
         -------
@@ -12518,8 +12578,8 @@ class ShaferShenoyInference(object):
 
     def H(self, *args) -> "double":
         r"""
-        H(self, X) -> double
-        H(self, nodeName) -> double
+        H(ShaferShenoyInference self, gum::NodeId const X) -> double
+        H(ShaferShenoyInference self, std::string const & nodeName) -> double
 
         Parameters
         ----------
@@ -12539,8 +12599,8 @@ class ShaferShenoyInference(object):
 
     def evidenceImpact(self, *args) -> "gum::Potential< double >":
         r"""
-        evidenceImpact(self, target, evs) -> Potential
-        evidenceImpact(self, target, evs) -> Potential
+        evidenceImpact(ShaferShenoyInference self, gum::NodeId target, PyObject * evs) -> Potential
+        evidenceImpact(ShaferShenoyInference self, std::string const & target, Vector_string evs) -> Potential
 
         Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
 
@@ -12566,7 +12626,7 @@ class ShaferShenoyInference(object):
 
     def eraseAllJointTargets(self) -> "void":
         r"""
-        eraseAllJointTargets(self)
+        eraseAllJointTargets(ShaferShenoyInference self)
 
         Clear all previously defined joint targets.
 
@@ -12576,7 +12636,7 @@ class ShaferShenoyInference(object):
 
     def eraseAllMarginalTargets(self) -> "void":
         r"""
-        eraseAllMarginalTargets(self)
+        eraseAllMarginalTargets(ShaferShenoyInference self)
 
         Clear all the previously defined marginal targets.
 
@@ -12586,7 +12646,7 @@ class ShaferShenoyInference(object):
 
     def nbrJointTargets(self) -> "gum::Size":
         r"""
-        nbrJointTargets(self) -> gum::Size
+        nbrJointTargets(ShaferShenoyInference self) -> gum::Size
 
         Returns
         -------
@@ -12599,7 +12659,7 @@ class ShaferShenoyInference(object):
 
     def I(self, X: 'gum::NodeId const', Y: 'gum::NodeId const') -> "double":
         r"""
-        I(self, X, Y) -> double
+        I(ShaferShenoyInference self, gum::NodeId const X, gum::NodeId const Y) -> double
 
         Parameters
         ----------
@@ -12619,7 +12679,7 @@ class ShaferShenoyInference(object):
 
     def VI(self, X: 'gum::NodeId const', Y: 'gum::NodeId const') -> "double":
         r"""
-        VI(self, X, Y) -> double
+        VI(ShaferShenoyInference self, gum::NodeId const X, gum::NodeId const Y) -> double
 
         Parameters
         ----------
@@ -12639,8 +12699,8 @@ class ShaferShenoyInference(object):
 
     def evidenceJointImpact(self, *args) -> "gum::Potential< double >":
         r"""
-        evidenceJointImpact(self, targets, evs) -> Potential
-        evidenceJointImpact(self, targets, evs) -> Potential
+        evidenceJointImpact(ShaferShenoyInference self, PyObject * targets, PyObject * evs) -> Potential
+        evidenceJointImpact(ShaferShenoyInference self, Vector_string targets, Vector_string evs) -> Potential
 
         Create a pyAgrum.Potential for P(joint targets|evs) (for all instanciation of targets and evs)
 
@@ -12692,9 +12752,9 @@ class VariableElimination(object):
 
     def __init__(self, *args):
         r"""
-        __init__(self, BN, relevant_type, arg4) -> VariableElimination
-        __init__(self, BN, relevant_type) -> VariableElimination
-        __init__(self, BN) -> VariableElimination
+        __init__(VariableElimination self, IBayesNet BN, gum::RelevantPotentialsFinderType relevant_type, gum::FindBarrenNodesType arg4) -> VariableElimination
+        __init__(VariableElimination self, IBayesNet BN, gum::RelevantPotentialsFinderType relevant_type) -> VariableElimination
+        __init__(VariableElimination self, IBayesNet BN) -> VariableElimination
         """
         _pyAgrum.VariableElimination_swiginit(self, _pyAgrum.new_VariableElimination(*args))
 
@@ -12705,13 +12765,13 @@ class VariableElimination(object):
     __swig_destroy__ = _pyAgrum.delete_VariableElimination
 
     def setTriangulation(self, new_triangulation: 'Triangulation') -> "void":
-        r"""setTriangulation(self, new_triangulation)"""
+        r"""setTriangulation(VariableElimination self, Triangulation new_triangulation)"""
         return _pyAgrum.VariableElimination_setTriangulation(self, new_triangulation)
 
 
     def setRelevantPotentialsFinderType(self, type: 'gum::RelevantPotentialsFinderType') -> "void":
         r"""
-        setRelevantPotentialsFinderType(self, type)
+        setRelevantPotentialsFinderType(VariableElimination self, gum::RelevantPotentialsFinderType type)
 
         sets how we determine the relevant potentials to combine
 
@@ -12738,7 +12798,7 @@ class VariableElimination(object):
 
     def setFindBarrenNodesType(self, type: 'gum::FindBarrenNodesType') -> "void":
         r"""
-        setFindBarrenNodesType(self, type)
+        setFindBarrenNodesType(VariableElimination self, gum::FindBarrenNodesType type)
 
         sets how we determine barren nodes
 
@@ -12763,7 +12823,7 @@ class VariableElimination(object):
 
     def junctionTree(self, id: 'gum::NodeId') -> "gum::JunctionTree const *":
         r"""
-        junctionTree(self, id) -> CliqueGraph
+        junctionTree(VariableElimination self, gum::NodeId id) -> CliqueGraph
 
         Returns
         -------
@@ -12858,7 +12918,7 @@ class VariableElimination(object):
 
     def hardEvidenceNodes(self) -> "PyObject *":
         r"""
-        hardEvidenceNodes(self) -> PyObject *
+        hardEvidenceNodes(VariableElimination self) -> PyObject *
 
         Returns
         -------
@@ -12871,7 +12931,7 @@ class VariableElimination(object):
 
     def softEvidenceNodes(self) -> "PyObject *":
         r"""
-        softEvidenceNodes(self) -> PyObject *
+        softEvidenceNodes(VariableElimination self) -> PyObject *
 
         Returns
         -------
@@ -12884,7 +12944,7 @@ class VariableElimination(object):
 
     def targets(self) -> "PyObject *":
         r"""
-        targets(self) -> PyObject *
+        targets(VariableElimination self) -> PyObject *
 
         Returns
         -------
@@ -12896,13 +12956,13 @@ class VariableElimination(object):
 
 
     def jointMutualInformation(self, targets: 'PyObject *') -> "double":
-        r"""jointMutualInformation(self, targets) -> double"""
+        r"""jointMutualInformation(VariableElimination self, PyObject * targets) -> double"""
         return _pyAgrum.VariableElimination_jointMutualInformation(self, targets)
 
 
     def evidenceJointImpact(self, targets: 'PyObject *', evs: 'PyObject *') -> "gum::Potential< double >":
         r"""
-        evidenceJointImpact(self, targets, evs) -> Potential
+        evidenceJointImpact(VariableElimination self, PyObject * targets, PyObject * evs) -> Potential
 
         Create a pyAgrum.Potential for P(joint targets|evs) (for all instanciation of targets and evs)
 
@@ -12931,7 +12991,7 @@ class VariableElimination(object):
 
     def jointPosterior(self, list: 'PyObject *') -> "gum::Potential< double >":
         r"""
-        jointPosterior(self, list) -> Potential
+        jointPosterior(VariableElimination self, PyObject * list) -> Potential
 
         Compute the joint posterior of a set of nodes.
 
@@ -12961,7 +13021,7 @@ class VariableElimination(object):
 
     def addJointTarget(self, list: 'PyObject *') -> "void":
         r"""
-        addJointTarget(self, list)
+        addJointTarget(VariableElimination self, PyObject * list)
 
         Add a list of nodes as a new joint target. As a collateral effect, every node is added as a marginal target.
 
@@ -12981,7 +13041,7 @@ class VariableElimination(object):
 
     def eraseJointTarget(self, list: 'PyObject *') -> "void":
         r"""
-        eraseJointTarget(self, list)
+        eraseJointTarget(VariableElimination self, PyObject * list)
 
         Remove, if existing, the joint target.
 
@@ -13003,7 +13063,7 @@ class VariableElimination(object):
 
     def isJointTarget(self, list: 'PyObject *') -> "bool":
         r"""
-        isJointTarget(self, list) -> bool
+        isJointTarget(VariableElimination self, PyObject * list) -> bool
 
         Parameters
         ----------
@@ -13028,7 +13088,7 @@ class VariableElimination(object):
 
     def jointTargets(self) -> "PyObject *":
         r"""
-        jointTargets(self) -> PyObject *
+        jointTargets(VariableElimination self) -> PyObject *
 
         Returns
         -------
@@ -13041,7 +13101,7 @@ class VariableElimination(object):
 
     def makeInference(self) -> "void":
         r"""
-        makeInference(self)
+        makeInference(VariableElimination self)
 
         Perform the heavy computations needed to compute the targets' posteriors
 
@@ -13054,8 +13114,8 @@ class VariableElimination(object):
 
     def posterior(self, *args) -> "gum::Potential< double > const":
         r"""
-        posterior(self, var) -> Potential
-        posterior(self, nodeName) -> Potential
+        posterior(VariableElimination self, gum::NodeId const var) -> Potential
+        posterior(VariableElimination self, std::string const nodeName) -> Potential
 
         Computes and returns the posterior of a node.
 
@@ -13082,7 +13142,7 @@ class VariableElimination(object):
 
     def BN(self) -> "gum::IBayesNet< double > const &":
         r"""
-        BN(self) -> IBayesNet
+        BN(VariableElimination self) -> IBayesNet
 
         Returns
         -------
@@ -13100,12 +13160,12 @@ class VariableElimination(object):
 
     def addEvidence(self, *args) -> "void":
         r"""
-        addEvidence(self, id, val)
-        addEvidence(self, nodeName, val)
-        addEvidence(self, id, val)
-        addEvidence(self, nodeName, val)
-        addEvidence(self, id, vals)
-        addEvidence(self, nodeName, vals)
+        addEvidence(VariableElimination self, gum::NodeId const id, gum::Idx const val)
+        addEvidence(VariableElimination self, std::string const & nodeName, gum::Idx const val)
+        addEvidence(VariableElimination self, gum::NodeId const id, std::string const & val)
+        addEvidence(VariableElimination self, std::string const & nodeName, std::string const & val)
+        addEvidence(VariableElimination self, gum::NodeId const id, Vector vals)
+        addEvidence(VariableElimination self, std::string const & nodeName, Vector vals)
 
         Adds a new evidence on a node (might be soft or hard).
 
@@ -13141,12 +13201,12 @@ class VariableElimination(object):
 
     def chgEvidence(self, *args) -> "void":
         r"""
-        chgEvidence(self, id, val)
-        chgEvidence(self, nodeName, val)
-        chgEvidence(self, id, val)
-        chgEvidence(self, nodeName, val)
-        chgEvidence(self, id, vals)
-        chgEvidence(self, nodeName, vals)
+        chgEvidence(VariableElimination self, gum::NodeId const id, gum::Idx const val)
+        chgEvidence(VariableElimination self, std::string const & nodeName, gum::Idx const val)
+        chgEvidence(VariableElimination self, gum::NodeId const id, std::string const & val)
+        chgEvidence(VariableElimination self, std::string const & nodeName, std::string const & val)
+        chgEvidence(VariableElimination self, gum::NodeId const id, Vector vals)
+        chgEvidence(VariableElimination self, std::string const & nodeName, Vector vals)
 
         Change the value of an already existing evidence on a node (might be soft or hard).
 
@@ -13182,8 +13242,8 @@ class VariableElimination(object):
 
     def hasEvidence(self, *args) -> "bool":
         r"""
-        hasEvidence(self, id) -> bool
-        hasEvidence(self, nodeName) -> bool
+        hasEvidence(VariableElimination self, gum::NodeId const id) -> bool
+        hasEvidence(VariableElimination self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -13208,7 +13268,7 @@ class VariableElimination(object):
 
     def eraseAllEvidence(self) -> "void":
         r"""
-        eraseAllEvidence(self)
+        eraseAllEvidence(VariableElimination self)
 
         Removes all the evidence entered into the network.
 
@@ -13218,8 +13278,8 @@ class VariableElimination(object):
 
     def eraseEvidence(self, *args) -> "void":
         r"""
-        eraseEvidence(self, id)
-        eraseEvidence(self, nodeName)
+        eraseEvidence(VariableElimination self, gum::NodeId const id)
+        eraseEvidence(VariableElimination self, std::string const & nodeName)
 
         Remove the evidence, if any, corresponding to the node Id or name.
 
@@ -13241,7 +13301,7 @@ class VariableElimination(object):
 
     def hasHardEvidence(self, nodeName: 'std::string const &') -> "bool":
         r"""
-        hasHardEvidence(self, nodeName) -> bool
+        hasHardEvidence(VariableElimination self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -13266,8 +13326,8 @@ class VariableElimination(object):
 
     def hasSoftEvidence(self, *args) -> "bool":
         r"""
-        hasSoftEvidence(self, id) -> bool
-        hasSoftEvidence(self, nodeName) -> bool
+        hasSoftEvidence(VariableElimination self, gum::NodeId const id) -> bool
+        hasSoftEvidence(VariableElimination self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -13292,7 +13352,7 @@ class VariableElimination(object):
 
     def nbrEvidence(self) -> "gum::Size":
         r"""
-        nbrEvidence(self) -> gum::Size
+        nbrEvidence(VariableElimination self) -> gum::Size
 
         Returns
         -------
@@ -13305,7 +13365,7 @@ class VariableElimination(object):
 
     def nbrHardEvidence(self) -> "gum::Size":
         r"""
-        nbrHardEvidence(self) -> gum::Size
+        nbrHardEvidence(VariableElimination self) -> gum::Size
 
         Returns
         -------
@@ -13318,7 +13378,7 @@ class VariableElimination(object):
 
     def nbrSoftEvidence(self) -> "gum::Size":
         r"""
-        nbrSoftEvidence(self) -> gum::Size
+        nbrSoftEvidence(VariableElimination self) -> gum::Size
 
         Returns
         -------
@@ -13331,7 +13391,7 @@ class VariableElimination(object):
 
     def eraseAllTargets(self) -> "void":
         r"""
-        eraseAllTargets(self)
+        eraseAllTargets(VariableElimination self)
 
         Clear all previously defined targets (marginal and joint targets).
 
@@ -13343,7 +13403,7 @@ class VariableElimination(object):
 
     def addAllTargets(self) -> "void":
         r"""
-        addAllTargets(self)
+        addAllTargets(VariableElimination self)
 
         Add all the nodes as targets.
 
@@ -13353,8 +13413,8 @@ class VariableElimination(object):
 
     def addTarget(self, *args) -> "void":
         r"""
-        addTarget(self, target)
-        addTarget(self, nodeName)
+        addTarget(VariableElimination self, gum::NodeId const target)
+        addTarget(VariableElimination self, std::string const & nodeName)
 
         Add a marginal target to the list of targets.
 
@@ -13376,8 +13436,8 @@ class VariableElimination(object):
 
     def eraseTarget(self, *args) -> "void":
         r"""
-        eraseTarget(self, target)
-        eraseTarget(self, nodeName)
+        eraseTarget(VariableElimination self, gum::NodeId const target)
+        eraseTarget(VariableElimination self, std::string const & nodeName)
 
         Remove, if existing, the marginal target.
 
@@ -13401,8 +13461,8 @@ class VariableElimination(object):
 
     def isTarget(self, *args) -> "bool":
         r"""
-        isTarget(self, variable) -> bool
-        isTarget(self, nodeName) -> bool
+        isTarget(VariableElimination self, gum::NodeId const variable) -> bool
+        isTarget(VariableElimination self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -13429,7 +13489,7 @@ class VariableElimination(object):
 
     def nbrTargets(self) -> "gum::Size":
         r"""
-        nbrTargets(self) -> gum::Size
+        nbrTargets(VariableElimination self) -> gum::Size
 
         Returns
         -------
@@ -13442,8 +13502,8 @@ class VariableElimination(object):
 
     def H(self, *args) -> "double":
         r"""
-        H(self, X) -> double
-        H(self, nodeName) -> double
+        H(VariableElimination self, gum::NodeId const X) -> double
+        H(VariableElimination self, std::string const & nodeName) -> double
 
         Parameters
         ----------
@@ -13463,8 +13523,8 @@ class VariableElimination(object):
 
     def evidenceImpact(self, *args) -> "gum::Potential< double >":
         r"""
-        evidenceImpact(self, target, evs) -> Potential
-        evidenceImpact(self, target, evs) -> Potential
+        evidenceImpact(VariableElimination self, gum::NodeId target, PyObject * evs) -> Potential
+        evidenceImpact(VariableElimination self, std::string const & target, Vector_string evs) -> Potential
 
         Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
 
@@ -13512,7 +13572,7 @@ class GibbsSampling(object):
     __repr__ = _swig_repr
 
     def __init__(self, bn: 'IBayesNet'):
-        r"""__init__(self, bn) -> GibbsSampling"""
+        r"""__init__(GibbsSampling self, IBayesNet bn) -> GibbsSampling"""
         _pyAgrum.GibbsSampling_swiginit(self, _pyAgrum.new_GibbsSampling(bn))
 
         self._bn=bn#BN
@@ -13523,7 +13583,7 @@ class GibbsSampling(object):
 
     def setBurnIn(self, b: 'gum::Size') -> "void":
         r"""
-        setBurnIn(self, b)
+        setBurnIn(GibbsSampling self, gum::Size b)
 
         Parameters
         ----------
@@ -13536,7 +13596,7 @@ class GibbsSampling(object):
 
     def burnIn(self) -> "gum::Size":
         r"""
-        burnIn(self) -> gum::Size
+        burnIn(GibbsSampling self) -> gum::Size
 
         Returns
         -------
@@ -13631,7 +13691,7 @@ class GibbsSampling(object):
 
     def hardEvidenceNodes(self) -> "PyObject *":
         r"""
-        hardEvidenceNodes(self) -> PyObject *
+        hardEvidenceNodes(GibbsSampling self) -> PyObject *
 
         Returns
         -------
@@ -13644,7 +13704,7 @@ class GibbsSampling(object):
 
     def softEvidenceNodes(self) -> "PyObject *":
         r"""
-        softEvidenceNodes(self) -> PyObject *
+        softEvidenceNodes(GibbsSampling self) -> PyObject *
 
         Returns
         -------
@@ -13657,7 +13717,7 @@ class GibbsSampling(object):
 
     def targets(self) -> "PyObject *":
         r"""
-        targets(self) -> PyObject *
+        targets(GibbsSampling self) -> PyObject *
 
         Returns
         -------
@@ -13670,7 +13730,7 @@ class GibbsSampling(object):
 
     def setVerbosity(self, v: 'bool') -> "void":
         r"""
-        setVerbosity(self, v)
+        setVerbosity(GibbsSampling self, bool v)
 
         Parameters
         ----------
@@ -13683,7 +13743,7 @@ class GibbsSampling(object):
 
     def setEpsilon(self, eps: 'double') -> "void":
         r"""
-        setEpsilon(self, eps)
+        setEpsilon(GibbsSampling self, double eps)
 
         Parameters
         ----------
@@ -13701,7 +13761,7 @@ class GibbsSampling(object):
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
         r"""
-        setMinEpsilonRate(self, rate)
+        setMinEpsilonRate(GibbsSampling self, double rate)
 
         Parameters
         ----------
@@ -13714,7 +13774,7 @@ class GibbsSampling(object):
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
         r"""
-        setMaxIter(self, max)
+        setMaxIter(GibbsSampling self, gum::Size max)
 
         Parameters
         ----------
@@ -13732,7 +13792,7 @@ class GibbsSampling(object):
 
     def setMaxTime(self, timeout: 'double') -> "void":
         r"""
-        setMaxTime(self, timeout)
+        setMaxTime(GibbsSampling self, double timeout)
 
         Parameters
         ----------
@@ -13750,7 +13810,7 @@ class GibbsSampling(object):
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
         r"""
-        setPeriodSize(self, p)
+        setPeriodSize(GibbsSampling self, gum::Size p)
 
         Parameters
         ----------
@@ -13768,7 +13828,7 @@ class GibbsSampling(object):
 
     def verbosity(self) -> "bool":
         r"""
-        verbosity(self) -> bool
+        verbosity(GibbsSampling self) -> bool
 
         Returns
         -------
@@ -13781,7 +13841,7 @@ class GibbsSampling(object):
 
     def epsilon(self) -> "double":
         r"""
-        epsilon(self) -> double
+        epsilon(GibbsSampling self) -> double
 
         Returns
         -------
@@ -13794,7 +13854,7 @@ class GibbsSampling(object):
 
     def minEpsilonRate(self) -> "double":
         r"""
-        minEpsilonRate(self) -> double
+        minEpsilonRate(GibbsSampling self) -> double
 
         Returns
         -------
@@ -13807,7 +13867,7 @@ class GibbsSampling(object):
 
     def maxIter(self) -> "gum::Size":
         r"""
-        maxIter(self) -> gum::Size
+        maxIter(GibbsSampling self) -> gum::Size
 
         Returns
         -------
@@ -13820,7 +13880,7 @@ class GibbsSampling(object):
 
     def maxTime(self) -> "double":
         r"""
-        maxTime(self) -> double
+        maxTime(GibbsSampling self) -> double
 
         Returns
         -------
@@ -13833,7 +13893,7 @@ class GibbsSampling(object):
 
     def periodSize(self) -> "gum::Size":
         r"""
-        periodSize(self) -> gum::Size
+        periodSize(GibbsSampling self) -> gum::Size
 
         Returns
         -------
@@ -13851,7 +13911,7 @@ class GibbsSampling(object):
 
     def nbrIterations(self) -> "gum::Size":
         r"""
-        nbrIterations(self) -> gum::Size
+        nbrIterations(GibbsSampling self) -> gum::Size
 
         Returns
         -------
@@ -13864,7 +13924,7 @@ class GibbsSampling(object):
 
     def currentTime(self) -> "double":
         r"""
-        currentTime(self) -> double
+        currentTime(GibbsSampling self) -> double
 
         Returns
         -------
@@ -13877,7 +13937,7 @@ class GibbsSampling(object):
 
     def messageApproximationScheme(self) -> "std::string":
         r"""
-        messageApproximationScheme(self) -> std::string
+        messageApproximationScheme(GibbsSampling self) -> std::string
 
         Returns
         -------
@@ -13890,7 +13950,7 @@ class GibbsSampling(object):
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
         r"""
-        history(self) -> Vector
+        history(GibbsSampling self) -> Vector
 
         Returns
         -------
@@ -13908,7 +13968,7 @@ class GibbsSampling(object):
 
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
         r"""
-        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+        asIApproximationSchemeConfiguration(GibbsSampling self) -> IApproximationSchemeConfiguration
 
         Returns
         -------
@@ -13920,7 +13980,7 @@ class GibbsSampling(object):
 
     def makeInference(self) -> "void":
         r"""
-        makeInference(self)
+        makeInference(GibbsSampling self)
 
         Perform the heavy computations needed to compute the targets' posteriors
 
@@ -13933,8 +13993,8 @@ class GibbsSampling(object):
 
     def posterior(self, *args) -> "gum::Potential< double > const":
         r"""
-        posterior(self, var) -> Potential
-        posterior(self, nodeName) -> Potential
+        posterior(GibbsSampling self, gum::NodeId const var) -> Potential
+        posterior(GibbsSampling self, std::string const nodeName) -> Potential
 
         Computes and returns the posterior of a node.
 
@@ -13961,7 +14021,7 @@ class GibbsSampling(object):
 
     def BN(self) -> "gum::IBayesNet< double > const &":
         r"""
-        BN(self) -> IBayesNet
+        BN(GibbsSampling self) -> IBayesNet
 
         Returns
         -------
@@ -13979,12 +14039,12 @@ class GibbsSampling(object):
 
     def addEvidence(self, *args) -> "void":
         r"""
-        addEvidence(self, id, val)
-        addEvidence(self, nodeName, val)
-        addEvidence(self, id, val)
-        addEvidence(self, nodeName, val)
-        addEvidence(self, id, vals)
-        addEvidence(self, nodeName, vals)
+        addEvidence(GibbsSampling self, gum::NodeId const id, gum::Idx const val)
+        addEvidence(GibbsSampling self, std::string const & nodeName, gum::Idx const val)
+        addEvidence(GibbsSampling self, gum::NodeId const id, std::string const & val)
+        addEvidence(GibbsSampling self, std::string const & nodeName, std::string const & val)
+        addEvidence(GibbsSampling self, gum::NodeId const id, Vector vals)
+        addEvidence(GibbsSampling self, std::string const & nodeName, Vector vals)
 
         Adds a new evidence on a node (might be soft or hard).
 
@@ -14020,12 +14080,12 @@ class GibbsSampling(object):
 
     def chgEvidence(self, *args) -> "void":
         r"""
-        chgEvidence(self, id, val)
-        chgEvidence(self, nodeName, val)
-        chgEvidence(self, id, val)
-        chgEvidence(self, nodeName, val)
-        chgEvidence(self, id, vals)
-        chgEvidence(self, nodeName, vals)
+        chgEvidence(GibbsSampling self, gum::NodeId const id, gum::Idx const val)
+        chgEvidence(GibbsSampling self, std::string const & nodeName, gum::Idx const val)
+        chgEvidence(GibbsSampling self, gum::NodeId const id, std::string const & val)
+        chgEvidence(GibbsSampling self, std::string const & nodeName, std::string const & val)
+        chgEvidence(GibbsSampling self, gum::NodeId const id, Vector vals)
+        chgEvidence(GibbsSampling self, std::string const & nodeName, Vector vals)
 
         Change the value of an already existing evidence on a node (might be soft or hard).
 
@@ -14061,8 +14121,8 @@ class GibbsSampling(object):
 
     def hasEvidence(self, *args) -> "bool":
         r"""
-        hasEvidence(self, id) -> bool
-        hasEvidence(self, nodeName) -> bool
+        hasEvidence(GibbsSampling self, gum::NodeId const id) -> bool
+        hasEvidence(GibbsSampling self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -14087,7 +14147,7 @@ class GibbsSampling(object):
 
     def eraseAllEvidence(self) -> "void":
         r"""
-        eraseAllEvidence(self)
+        eraseAllEvidence(GibbsSampling self)
 
         Removes all the evidence entered into the network.
 
@@ -14097,8 +14157,8 @@ class GibbsSampling(object):
 
     def eraseEvidence(self, *args) -> "void":
         r"""
-        eraseEvidence(self, id)
-        eraseEvidence(self, nodeName)
+        eraseEvidence(GibbsSampling self, gum::NodeId const id)
+        eraseEvidence(GibbsSampling self, std::string const & nodeName)
 
         Remove the evidence, if any, corresponding to the node Id or name.
 
@@ -14120,7 +14180,7 @@ class GibbsSampling(object):
 
     def hasHardEvidence(self, nodeName: 'std::string const &') -> "bool":
         r"""
-        hasHardEvidence(self, nodeName) -> bool
+        hasHardEvidence(GibbsSampling self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -14145,8 +14205,8 @@ class GibbsSampling(object):
 
     def hasSoftEvidence(self, *args) -> "bool":
         r"""
-        hasSoftEvidence(self, id) -> bool
-        hasSoftEvidence(self, nodeName) -> bool
+        hasSoftEvidence(GibbsSampling self, gum::NodeId const id) -> bool
+        hasSoftEvidence(GibbsSampling self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -14171,7 +14231,7 @@ class GibbsSampling(object):
 
     def nbrEvidence(self) -> "gum::Size":
         r"""
-        nbrEvidence(self) -> gum::Size
+        nbrEvidence(GibbsSampling self) -> gum::Size
 
         Returns
         -------
@@ -14184,7 +14244,7 @@ class GibbsSampling(object):
 
     def nbrHardEvidence(self) -> "gum::Size":
         r"""
-        nbrHardEvidence(self) -> gum::Size
+        nbrHardEvidence(GibbsSampling self) -> gum::Size
 
         Returns
         -------
@@ -14197,7 +14257,7 @@ class GibbsSampling(object):
 
     def nbrSoftEvidence(self) -> "gum::Size":
         r"""
-        nbrSoftEvidence(self) -> gum::Size
+        nbrSoftEvidence(GibbsSampling self) -> gum::Size
 
         Returns
         -------
@@ -14210,7 +14270,7 @@ class GibbsSampling(object):
 
     def eraseAllTargets(self) -> "void":
         r"""
-        eraseAllTargets(self)
+        eraseAllTargets(GibbsSampling self)
 
         Clear all previously defined targets (marginal and joint targets).
 
@@ -14222,7 +14282,7 @@ class GibbsSampling(object):
 
     def addAllTargets(self) -> "void":
         r"""
-        addAllTargets(self)
+        addAllTargets(GibbsSampling self)
 
         Add all the nodes as targets.
 
@@ -14232,8 +14292,8 @@ class GibbsSampling(object):
 
     def addTarget(self, *args) -> "void":
         r"""
-        addTarget(self, target)
-        addTarget(self, nodeName)
+        addTarget(GibbsSampling self, gum::NodeId const target)
+        addTarget(GibbsSampling self, std::string const & nodeName)
 
         Add a marginal target to the list of targets.
 
@@ -14255,8 +14315,8 @@ class GibbsSampling(object):
 
     def eraseTarget(self, *args) -> "void":
         r"""
-        eraseTarget(self, target)
-        eraseTarget(self, nodeName)
+        eraseTarget(GibbsSampling self, gum::NodeId const target)
+        eraseTarget(GibbsSampling self, std::string const & nodeName)
 
         Remove, if existing, the marginal target.
 
@@ -14280,8 +14340,8 @@ class GibbsSampling(object):
 
     def isTarget(self, *args) -> "bool":
         r"""
-        isTarget(self, variable) -> bool
-        isTarget(self, nodeName) -> bool
+        isTarget(GibbsSampling self, gum::NodeId const variable) -> bool
+        isTarget(GibbsSampling self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -14308,7 +14368,7 @@ class GibbsSampling(object):
 
     def nbrTargets(self) -> "gum::Size":
         r"""
-        nbrTargets(self) -> gum::Size
+        nbrTargets(GibbsSampling self) -> gum::Size
 
         Returns
         -------
@@ -14321,8 +14381,8 @@ class GibbsSampling(object):
 
     def H(self, *args) -> "double":
         r"""
-        H(self, X) -> double
-        H(self, nodeName) -> double
+        H(GibbsSampling self, gum::NodeId const X) -> double
+        H(GibbsSampling self, std::string const & nodeName) -> double
 
         Parameters
         ----------
@@ -14342,8 +14402,8 @@ class GibbsSampling(object):
 
     def evidenceImpact(self, *args) -> "gum::Potential< double >":
         r"""
-        evidenceImpact(self, target, evs) -> Potential
-        evidenceImpact(self, target, evs) -> Potential
+        evidenceImpact(GibbsSampling self, gum::NodeId target, PyObject * evs) -> Potential
+        evidenceImpact(GibbsSampling self, std::string const & target, Vector_string evs) -> Potential
 
         Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
 
@@ -14369,8 +14429,8 @@ class GibbsSampling(object):
 
     def currentPosterior(self, *args) -> "gum::Potential< double > const &":
         r"""
-        currentPosterior(self, id) -> Potential
-        currentPosterior(self, name) -> Potential
+        currentPosterior(GibbsSampling self, gum::NodeId const id) -> Potential
+        currentPosterior(GibbsSampling self, std::string const & name) -> Potential
 
         Computes and returns the current posterior of a node.
 
@@ -14397,7 +14457,7 @@ class GibbsSampling(object):
 
     def nbrDrawnVar(self) -> "gum::Size":
         r"""
-        nbrDrawnVar(self) -> gum::Size
+        nbrDrawnVar(GibbsSampling self) -> gum::Size
 
         Returns
         -------
@@ -14410,7 +14470,7 @@ class GibbsSampling(object):
 
     def setNbrDrawnVar(self, _nbr: 'gum::Size') -> "void":
         r"""
-        setNbrDrawnVar(self, _nbr)
+        setNbrDrawnVar(GibbsSampling self, gum::Size _nbr)
 
         Parameters
         ----------
@@ -14423,7 +14483,7 @@ class GibbsSampling(object):
 
     def isDrawnAtRandom(self) -> "bool":
         r"""
-        isDrawnAtRandom(self) -> bool
+        isDrawnAtRandom(GibbsSampling self) -> bool
 
         Returns
         -------
@@ -14436,7 +14496,7 @@ class GibbsSampling(object):
 
     def setDrawnAtRandom(self, _atRandom: 'bool') -> "void":
         r"""
-        setDrawnAtRandom(self, _atRandom)
+        setDrawnAtRandom(GibbsSampling self, bool _atRandom)
 
         Parameters
         ----------
@@ -14471,7 +14531,7 @@ class ImportanceSampling(object):
     __repr__ = _swig_repr
 
     def __init__(self, bn: 'IBayesNet'):
-        r"""__init__(self, bn) -> ImportanceSampling"""
+        r"""__init__(ImportanceSampling self, IBayesNet bn) -> ImportanceSampling"""
         _pyAgrum.ImportanceSampling_swiginit(self, _pyAgrum.new_ImportanceSampling(bn))
 
         self._bn=bn#BN
@@ -14564,7 +14624,7 @@ class ImportanceSampling(object):
 
     def hardEvidenceNodes(self) -> "PyObject *":
         r"""
-        hardEvidenceNodes(self) -> PyObject *
+        hardEvidenceNodes(ImportanceSampling self) -> PyObject *
 
         Returns
         -------
@@ -14577,7 +14637,7 @@ class ImportanceSampling(object):
 
     def softEvidenceNodes(self) -> "PyObject *":
         r"""
-        softEvidenceNodes(self) -> PyObject *
+        softEvidenceNodes(ImportanceSampling self) -> PyObject *
 
         Returns
         -------
@@ -14590,7 +14650,7 @@ class ImportanceSampling(object):
 
     def targets(self) -> "PyObject *":
         r"""
-        targets(self) -> PyObject *
+        targets(ImportanceSampling self) -> PyObject *
 
         Returns
         -------
@@ -14603,7 +14663,7 @@ class ImportanceSampling(object):
 
     def setVerbosity(self, v: 'bool') -> "void":
         r"""
-        setVerbosity(self, v)
+        setVerbosity(ImportanceSampling self, bool v)
 
         Parameters
         ----------
@@ -14616,7 +14676,7 @@ class ImportanceSampling(object):
 
     def setEpsilon(self, eps: 'double') -> "void":
         r"""
-        setEpsilon(self, eps)
+        setEpsilon(ImportanceSampling self, double eps)
 
         Parameters
         ----------
@@ -14634,7 +14694,7 @@ class ImportanceSampling(object):
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
         r"""
-        setMinEpsilonRate(self, rate)
+        setMinEpsilonRate(ImportanceSampling self, double rate)
 
         Parameters
         ----------
@@ -14647,7 +14707,7 @@ class ImportanceSampling(object):
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
         r"""
-        setMaxIter(self, max)
+        setMaxIter(ImportanceSampling self, gum::Size max)
 
         Parameters
         ----------
@@ -14665,7 +14725,7 @@ class ImportanceSampling(object):
 
     def setMaxTime(self, timeout: 'double') -> "void":
         r"""
-        setMaxTime(self, timeout)
+        setMaxTime(ImportanceSampling self, double timeout)
 
         Parameters
         ----------
@@ -14683,7 +14743,7 @@ class ImportanceSampling(object):
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
         r"""
-        setPeriodSize(self, p)
+        setPeriodSize(ImportanceSampling self, gum::Size p)
 
         Parameters
         ----------
@@ -14701,7 +14761,7 @@ class ImportanceSampling(object):
 
     def verbosity(self) -> "bool":
         r"""
-        verbosity(self) -> bool
+        verbosity(ImportanceSampling self) -> bool
 
         Returns
         -------
@@ -14714,7 +14774,7 @@ class ImportanceSampling(object):
 
     def epsilon(self) -> "double":
         r"""
-        epsilon(self) -> double
+        epsilon(ImportanceSampling self) -> double
 
         Returns
         -------
@@ -14727,7 +14787,7 @@ class ImportanceSampling(object):
 
     def minEpsilonRate(self) -> "double":
         r"""
-        minEpsilonRate(self) -> double
+        minEpsilonRate(ImportanceSampling self) -> double
 
         Returns
         -------
@@ -14740,7 +14800,7 @@ class ImportanceSampling(object):
 
     def maxIter(self) -> "gum::Size":
         r"""
-        maxIter(self) -> gum::Size
+        maxIter(ImportanceSampling self) -> gum::Size
 
         Returns
         -------
@@ -14753,7 +14813,7 @@ class ImportanceSampling(object):
 
     def maxTime(self) -> "double":
         r"""
-        maxTime(self) -> double
+        maxTime(ImportanceSampling self) -> double
 
         Returns
         -------
@@ -14766,7 +14826,7 @@ class ImportanceSampling(object):
 
     def periodSize(self) -> "gum::Size":
         r"""
-        periodSize(self) -> gum::Size
+        periodSize(ImportanceSampling self) -> gum::Size
 
         Returns
         -------
@@ -14784,7 +14844,7 @@ class ImportanceSampling(object):
 
     def nbrIterations(self) -> "gum::Size":
         r"""
-        nbrIterations(self) -> gum::Size
+        nbrIterations(ImportanceSampling self) -> gum::Size
 
         Returns
         -------
@@ -14797,7 +14857,7 @@ class ImportanceSampling(object):
 
     def currentTime(self) -> "double":
         r"""
-        currentTime(self) -> double
+        currentTime(ImportanceSampling self) -> double
 
         Returns
         -------
@@ -14810,7 +14870,7 @@ class ImportanceSampling(object):
 
     def messageApproximationScheme(self) -> "std::string":
         r"""
-        messageApproximationScheme(self) -> std::string
+        messageApproximationScheme(ImportanceSampling self) -> std::string
 
         Returns
         -------
@@ -14823,7 +14883,7 @@ class ImportanceSampling(object):
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
         r"""
-        history(self) -> Vector
+        history(ImportanceSampling self) -> Vector
 
         Returns
         -------
@@ -14841,7 +14901,7 @@ class ImportanceSampling(object):
 
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
         r"""
-        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+        asIApproximationSchemeConfiguration(ImportanceSampling self) -> IApproximationSchemeConfiguration
 
         Returns
         -------
@@ -14853,7 +14913,7 @@ class ImportanceSampling(object):
 
     def makeInference(self) -> "void":
         r"""
-        makeInference(self)
+        makeInference(ImportanceSampling self)
 
         Perform the heavy computations needed to compute the targets' posteriors
 
@@ -14866,8 +14926,8 @@ class ImportanceSampling(object):
 
     def posterior(self, *args) -> "gum::Potential< double > const":
         r"""
-        posterior(self, var) -> Potential
-        posterior(self, nodeName) -> Potential
+        posterior(ImportanceSampling self, gum::NodeId const var) -> Potential
+        posterior(ImportanceSampling self, std::string const nodeName) -> Potential
 
         Computes and returns the posterior of a node.
 
@@ -14894,7 +14954,7 @@ class ImportanceSampling(object):
 
     def BN(self) -> "gum::IBayesNet< double > const &":
         r"""
-        BN(self) -> IBayesNet
+        BN(ImportanceSampling self) -> IBayesNet
 
         Returns
         -------
@@ -14912,12 +14972,12 @@ class ImportanceSampling(object):
 
     def addEvidence(self, *args) -> "void":
         r"""
-        addEvidence(self, id, val)
-        addEvidence(self, nodeName, val)
-        addEvidence(self, id, val)
-        addEvidence(self, nodeName, val)
-        addEvidence(self, id, vals)
-        addEvidence(self, nodeName, vals)
+        addEvidence(ImportanceSampling self, gum::NodeId const id, gum::Idx const val)
+        addEvidence(ImportanceSampling self, std::string const & nodeName, gum::Idx const val)
+        addEvidence(ImportanceSampling self, gum::NodeId const id, std::string const & val)
+        addEvidence(ImportanceSampling self, std::string const & nodeName, std::string const & val)
+        addEvidence(ImportanceSampling self, gum::NodeId const id, Vector vals)
+        addEvidence(ImportanceSampling self, std::string const & nodeName, Vector vals)
 
         Adds a new evidence on a node (might be soft or hard).
 
@@ -14953,12 +15013,12 @@ class ImportanceSampling(object):
 
     def chgEvidence(self, *args) -> "void":
         r"""
-        chgEvidence(self, id, val)
-        chgEvidence(self, nodeName, val)
-        chgEvidence(self, id, val)
-        chgEvidence(self, nodeName, val)
-        chgEvidence(self, id, vals)
-        chgEvidence(self, nodeName, vals)
+        chgEvidence(ImportanceSampling self, gum::NodeId const id, gum::Idx const val)
+        chgEvidence(ImportanceSampling self, std::string const & nodeName, gum::Idx const val)
+        chgEvidence(ImportanceSampling self, gum::NodeId const id, std::string const & val)
+        chgEvidence(ImportanceSampling self, std::string const & nodeName, std::string const & val)
+        chgEvidence(ImportanceSampling self, gum::NodeId const id, Vector vals)
+        chgEvidence(ImportanceSampling self, std::string const & nodeName, Vector vals)
 
         Change the value of an already existing evidence on a node (might be soft or hard).
 
@@ -14994,8 +15054,8 @@ class ImportanceSampling(object):
 
     def hasEvidence(self, *args) -> "bool":
         r"""
-        hasEvidence(self, id) -> bool
-        hasEvidence(self, nodeName) -> bool
+        hasEvidence(ImportanceSampling self, gum::NodeId const id) -> bool
+        hasEvidence(ImportanceSampling self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -15020,7 +15080,7 @@ class ImportanceSampling(object):
 
     def eraseAllEvidence(self) -> "void":
         r"""
-        eraseAllEvidence(self)
+        eraseAllEvidence(ImportanceSampling self)
 
         Removes all the evidence entered into the network.
 
@@ -15030,8 +15090,8 @@ class ImportanceSampling(object):
 
     def eraseEvidence(self, *args) -> "void":
         r"""
-        eraseEvidence(self, id)
-        eraseEvidence(self, nodeName)
+        eraseEvidence(ImportanceSampling self, gum::NodeId const id)
+        eraseEvidence(ImportanceSampling self, std::string const & nodeName)
 
         Remove the evidence, if any, corresponding to the node Id or name.
 
@@ -15053,7 +15113,7 @@ class ImportanceSampling(object):
 
     def hasHardEvidence(self, nodeName: 'std::string const &') -> "bool":
         r"""
-        hasHardEvidence(self, nodeName) -> bool
+        hasHardEvidence(ImportanceSampling self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -15078,8 +15138,8 @@ class ImportanceSampling(object):
 
     def hasSoftEvidence(self, *args) -> "bool":
         r"""
-        hasSoftEvidence(self, id) -> bool
-        hasSoftEvidence(self, nodeName) -> bool
+        hasSoftEvidence(ImportanceSampling self, gum::NodeId const id) -> bool
+        hasSoftEvidence(ImportanceSampling self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -15104,7 +15164,7 @@ class ImportanceSampling(object):
 
     def nbrEvidence(self) -> "gum::Size":
         r"""
-        nbrEvidence(self) -> gum::Size
+        nbrEvidence(ImportanceSampling self) -> gum::Size
 
         Returns
         -------
@@ -15117,7 +15177,7 @@ class ImportanceSampling(object):
 
     def nbrHardEvidence(self) -> "gum::Size":
         r"""
-        nbrHardEvidence(self) -> gum::Size
+        nbrHardEvidence(ImportanceSampling self) -> gum::Size
 
         Returns
         -------
@@ -15130,7 +15190,7 @@ class ImportanceSampling(object):
 
     def nbrSoftEvidence(self) -> "gum::Size":
         r"""
-        nbrSoftEvidence(self) -> gum::Size
+        nbrSoftEvidence(ImportanceSampling self) -> gum::Size
 
         Returns
         -------
@@ -15143,7 +15203,7 @@ class ImportanceSampling(object):
 
     def eraseAllTargets(self) -> "void":
         r"""
-        eraseAllTargets(self)
+        eraseAllTargets(ImportanceSampling self)
 
         Clear all previously defined targets (marginal and joint targets).
 
@@ -15155,7 +15215,7 @@ class ImportanceSampling(object):
 
     def addAllTargets(self) -> "void":
         r"""
-        addAllTargets(self)
+        addAllTargets(ImportanceSampling self)
 
         Add all the nodes as targets.
 
@@ -15165,8 +15225,8 @@ class ImportanceSampling(object):
 
     def addTarget(self, *args) -> "void":
         r"""
-        addTarget(self, target)
-        addTarget(self, nodeName)
+        addTarget(ImportanceSampling self, gum::NodeId const target)
+        addTarget(ImportanceSampling self, std::string const & nodeName)
 
         Add a marginal target to the list of targets.
 
@@ -15188,8 +15248,8 @@ class ImportanceSampling(object):
 
     def eraseTarget(self, *args) -> "void":
         r"""
-        eraseTarget(self, target)
-        eraseTarget(self, nodeName)
+        eraseTarget(ImportanceSampling self, gum::NodeId const target)
+        eraseTarget(ImportanceSampling self, std::string const & nodeName)
 
         Remove, if existing, the marginal target.
 
@@ -15213,8 +15273,8 @@ class ImportanceSampling(object):
 
     def isTarget(self, *args) -> "bool":
         r"""
-        isTarget(self, variable) -> bool
-        isTarget(self, nodeName) -> bool
+        isTarget(ImportanceSampling self, gum::NodeId const variable) -> bool
+        isTarget(ImportanceSampling self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -15241,7 +15301,7 @@ class ImportanceSampling(object):
 
     def nbrTargets(self) -> "gum::Size":
         r"""
-        nbrTargets(self) -> gum::Size
+        nbrTargets(ImportanceSampling self) -> gum::Size
 
         Returns
         -------
@@ -15254,8 +15314,8 @@ class ImportanceSampling(object):
 
     def H(self, *args) -> "double":
         r"""
-        H(self, X) -> double
-        H(self, nodeName) -> double
+        H(ImportanceSampling self, gum::NodeId const X) -> double
+        H(ImportanceSampling self, std::string const & nodeName) -> double
 
         Parameters
         ----------
@@ -15275,8 +15335,8 @@ class ImportanceSampling(object):
 
     def evidenceImpact(self, *args) -> "gum::Potential< double >":
         r"""
-        evidenceImpact(self, target, evs) -> Potential
-        evidenceImpact(self, target, evs) -> Potential
+        evidenceImpact(ImportanceSampling self, gum::NodeId target, PyObject * evs) -> Potential
+        evidenceImpact(ImportanceSampling self, std::string const & target, Vector_string evs) -> Potential
 
         Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
 
@@ -15302,8 +15362,8 @@ class ImportanceSampling(object):
 
     def currentPosterior(self, *args) -> "gum::Potential< double > const &":
         r"""
-        currentPosterior(self, id) -> Potential
-        currentPosterior(self, name) -> Potential
+        currentPosterior(ImportanceSampling self, gum::NodeId const id) -> Potential
+        currentPosterior(ImportanceSampling self, std::string const & name) -> Potential
 
         Computes and returns the current posterior of a node.
 
@@ -15352,7 +15412,7 @@ class WeightedSampling(object):
     __repr__ = _swig_repr
 
     def __init__(self, bn: 'IBayesNet'):
-        r"""__init__(self, bn) -> WeightedSampling"""
+        r"""__init__(WeightedSampling self, IBayesNet bn) -> WeightedSampling"""
         _pyAgrum.WeightedSampling_swiginit(self, _pyAgrum.new_WeightedSampling(bn))
 
         self._bn=bn#BN
@@ -15445,7 +15505,7 @@ class WeightedSampling(object):
 
     def hardEvidenceNodes(self) -> "PyObject *":
         r"""
-        hardEvidenceNodes(self) -> PyObject *
+        hardEvidenceNodes(WeightedSampling self) -> PyObject *
 
         Returns
         -------
@@ -15458,7 +15518,7 @@ class WeightedSampling(object):
 
     def softEvidenceNodes(self) -> "PyObject *":
         r"""
-        softEvidenceNodes(self) -> PyObject *
+        softEvidenceNodes(WeightedSampling self) -> PyObject *
 
         Returns
         -------
@@ -15471,7 +15531,7 @@ class WeightedSampling(object):
 
     def targets(self) -> "PyObject *":
         r"""
-        targets(self) -> PyObject *
+        targets(WeightedSampling self) -> PyObject *
 
         Returns
         -------
@@ -15484,7 +15544,7 @@ class WeightedSampling(object):
 
     def setVerbosity(self, v: 'bool') -> "void":
         r"""
-        setVerbosity(self, v)
+        setVerbosity(WeightedSampling self, bool v)
 
         Parameters
         ----------
@@ -15497,7 +15557,7 @@ class WeightedSampling(object):
 
     def setEpsilon(self, eps: 'double') -> "void":
         r"""
-        setEpsilon(self, eps)
+        setEpsilon(WeightedSampling self, double eps)
 
         Parameters
         ----------
@@ -15515,7 +15575,7 @@ class WeightedSampling(object):
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
         r"""
-        setMinEpsilonRate(self, rate)
+        setMinEpsilonRate(WeightedSampling self, double rate)
 
         Parameters
         ----------
@@ -15528,7 +15588,7 @@ class WeightedSampling(object):
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
         r"""
-        setMaxIter(self, max)
+        setMaxIter(WeightedSampling self, gum::Size max)
 
         Parameters
         ----------
@@ -15546,7 +15606,7 @@ class WeightedSampling(object):
 
     def setMaxTime(self, timeout: 'double') -> "void":
         r"""
-        setMaxTime(self, timeout)
+        setMaxTime(WeightedSampling self, double timeout)
 
         Parameters
         ----------
@@ -15564,7 +15624,7 @@ class WeightedSampling(object):
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
         r"""
-        setPeriodSize(self, p)
+        setPeriodSize(WeightedSampling self, gum::Size p)
 
         Parameters
         ----------
@@ -15582,7 +15642,7 @@ class WeightedSampling(object):
 
     def verbosity(self) -> "bool":
         r"""
-        verbosity(self) -> bool
+        verbosity(WeightedSampling self) -> bool
 
         Returns
         -------
@@ -15595,7 +15655,7 @@ class WeightedSampling(object):
 
     def epsilon(self) -> "double":
         r"""
-        epsilon(self) -> double
+        epsilon(WeightedSampling self) -> double
 
         Returns
         -------
@@ -15608,7 +15668,7 @@ class WeightedSampling(object):
 
     def minEpsilonRate(self) -> "double":
         r"""
-        minEpsilonRate(self) -> double
+        minEpsilonRate(WeightedSampling self) -> double
 
         Returns
         -------
@@ -15621,7 +15681,7 @@ class WeightedSampling(object):
 
     def maxIter(self) -> "gum::Size":
         r"""
-        maxIter(self) -> gum::Size
+        maxIter(WeightedSampling self) -> gum::Size
 
         Returns
         -------
@@ -15634,7 +15694,7 @@ class WeightedSampling(object):
 
     def maxTime(self) -> "double":
         r"""
-        maxTime(self) -> double
+        maxTime(WeightedSampling self) -> double
 
         Returns
         -------
@@ -15647,7 +15707,7 @@ class WeightedSampling(object):
 
     def periodSize(self) -> "gum::Size":
         r"""
-        periodSize(self) -> gum::Size
+        periodSize(WeightedSampling self) -> gum::Size
 
         Returns
         -------
@@ -15665,7 +15725,7 @@ class WeightedSampling(object):
 
     def nbrIterations(self) -> "gum::Size":
         r"""
-        nbrIterations(self) -> gum::Size
+        nbrIterations(WeightedSampling self) -> gum::Size
 
         Returns
         -------
@@ -15678,7 +15738,7 @@ class WeightedSampling(object):
 
     def currentTime(self) -> "double":
         r"""
-        currentTime(self) -> double
+        currentTime(WeightedSampling self) -> double
 
         Returns
         -------
@@ -15691,7 +15751,7 @@ class WeightedSampling(object):
 
     def messageApproximationScheme(self) -> "std::string":
         r"""
-        messageApproximationScheme(self) -> std::string
+        messageApproximationScheme(WeightedSampling self) -> std::string
 
         Returns
         -------
@@ -15704,7 +15764,7 @@ class WeightedSampling(object):
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
         r"""
-        history(self) -> Vector
+        history(WeightedSampling self) -> Vector
 
         Returns
         -------
@@ -15722,7 +15782,7 @@ class WeightedSampling(object):
 
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
         r"""
-        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+        asIApproximationSchemeConfiguration(WeightedSampling self) -> IApproximationSchemeConfiguration
 
         Returns
         -------
@@ -15734,7 +15794,7 @@ class WeightedSampling(object):
 
     def makeInference(self) -> "void":
         r"""
-        makeInference(self)
+        makeInference(WeightedSampling self)
 
         Perform the heavy computations needed to compute the targets' posteriors
 
@@ -15747,8 +15807,8 @@ class WeightedSampling(object):
 
     def posterior(self, *args) -> "gum::Potential< double > const":
         r"""
-        posterior(self, var) -> Potential
-        posterior(self, nodeName) -> Potential
+        posterior(WeightedSampling self, gum::NodeId const var) -> Potential
+        posterior(WeightedSampling self, std::string const nodeName) -> Potential
 
         Computes and returns the posterior of a node.
 
@@ -15775,7 +15835,7 @@ class WeightedSampling(object):
 
     def BN(self) -> "gum::IBayesNet< double > const &":
         r"""
-        BN(self) -> IBayesNet
+        BN(WeightedSampling self) -> IBayesNet
 
         Returns
         -------
@@ -15793,12 +15853,12 @@ class WeightedSampling(object):
 
     def addEvidence(self, *args) -> "void":
         r"""
-        addEvidence(self, id, val)
-        addEvidence(self, nodeName, val)
-        addEvidence(self, id, val)
-        addEvidence(self, nodeName, val)
-        addEvidence(self, id, vals)
-        addEvidence(self, nodeName, vals)
+        addEvidence(WeightedSampling self, gum::NodeId const id, gum::Idx const val)
+        addEvidence(WeightedSampling self, std::string const & nodeName, gum::Idx const val)
+        addEvidence(WeightedSampling self, gum::NodeId const id, std::string const & val)
+        addEvidence(WeightedSampling self, std::string const & nodeName, std::string const & val)
+        addEvidence(WeightedSampling self, gum::NodeId const id, Vector vals)
+        addEvidence(WeightedSampling self, std::string const & nodeName, Vector vals)
 
         Adds a new evidence on a node (might be soft or hard).
 
@@ -15834,12 +15894,12 @@ class WeightedSampling(object):
 
     def chgEvidence(self, *args) -> "void":
         r"""
-        chgEvidence(self, id, val)
-        chgEvidence(self, nodeName, val)
-        chgEvidence(self, id, val)
-        chgEvidence(self, nodeName, val)
-        chgEvidence(self, id, vals)
-        chgEvidence(self, nodeName, vals)
+        chgEvidence(WeightedSampling self, gum::NodeId const id, gum::Idx const val)
+        chgEvidence(WeightedSampling self, std::string const & nodeName, gum::Idx const val)
+        chgEvidence(WeightedSampling self, gum::NodeId const id, std::string const & val)
+        chgEvidence(WeightedSampling self, std::string const & nodeName, std::string const & val)
+        chgEvidence(WeightedSampling self, gum::NodeId const id, Vector vals)
+        chgEvidence(WeightedSampling self, std::string const & nodeName, Vector vals)
 
         Change the value of an already existing evidence on a node (might be soft or hard).
 
@@ -15875,8 +15935,8 @@ class WeightedSampling(object):
 
     def hasEvidence(self, *args) -> "bool":
         r"""
-        hasEvidence(self, id) -> bool
-        hasEvidence(self, nodeName) -> bool
+        hasEvidence(WeightedSampling self, gum::NodeId const id) -> bool
+        hasEvidence(WeightedSampling self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -15901,7 +15961,7 @@ class WeightedSampling(object):
 
     def eraseAllEvidence(self) -> "void":
         r"""
-        eraseAllEvidence(self)
+        eraseAllEvidence(WeightedSampling self)
 
         Removes all the evidence entered into the network.
 
@@ -15911,8 +15971,8 @@ class WeightedSampling(object):
 
     def eraseEvidence(self, *args) -> "void":
         r"""
-        eraseEvidence(self, id)
-        eraseEvidence(self, nodeName)
+        eraseEvidence(WeightedSampling self, gum::NodeId const id)
+        eraseEvidence(WeightedSampling self, std::string const & nodeName)
 
         Remove the evidence, if any, corresponding to the node Id or name.
 
@@ -15934,7 +15994,7 @@ class WeightedSampling(object):
 
     def hasHardEvidence(self, nodeName: 'std::string const &') -> "bool":
         r"""
-        hasHardEvidence(self, nodeName) -> bool
+        hasHardEvidence(WeightedSampling self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -15959,8 +16019,8 @@ class WeightedSampling(object):
 
     def hasSoftEvidence(self, *args) -> "bool":
         r"""
-        hasSoftEvidence(self, id) -> bool
-        hasSoftEvidence(self, nodeName) -> bool
+        hasSoftEvidence(WeightedSampling self, gum::NodeId const id) -> bool
+        hasSoftEvidence(WeightedSampling self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -15985,7 +16045,7 @@ class WeightedSampling(object):
 
     def nbrEvidence(self) -> "gum::Size":
         r"""
-        nbrEvidence(self) -> gum::Size
+        nbrEvidence(WeightedSampling self) -> gum::Size
 
         Returns
         -------
@@ -15998,7 +16058,7 @@ class WeightedSampling(object):
 
     def nbrHardEvidence(self) -> "gum::Size":
         r"""
-        nbrHardEvidence(self) -> gum::Size
+        nbrHardEvidence(WeightedSampling self) -> gum::Size
 
         Returns
         -------
@@ -16011,7 +16071,7 @@ class WeightedSampling(object):
 
     def nbrSoftEvidence(self) -> "gum::Size":
         r"""
-        nbrSoftEvidence(self) -> gum::Size
+        nbrSoftEvidence(WeightedSampling self) -> gum::Size
 
         Returns
         -------
@@ -16024,7 +16084,7 @@ class WeightedSampling(object):
 
     def eraseAllTargets(self) -> "void":
         r"""
-        eraseAllTargets(self)
+        eraseAllTargets(WeightedSampling self)
 
         Clear all previously defined targets (marginal and joint targets).
 
@@ -16036,7 +16096,7 @@ class WeightedSampling(object):
 
     def addAllTargets(self) -> "void":
         r"""
-        addAllTargets(self)
+        addAllTargets(WeightedSampling self)
 
         Add all the nodes as targets.
 
@@ -16046,8 +16106,8 @@ class WeightedSampling(object):
 
     def addTarget(self, *args) -> "void":
         r"""
-        addTarget(self, target)
-        addTarget(self, nodeName)
+        addTarget(WeightedSampling self, gum::NodeId const target)
+        addTarget(WeightedSampling self, std::string const & nodeName)
 
         Add a marginal target to the list of targets.
 
@@ -16069,8 +16129,8 @@ class WeightedSampling(object):
 
     def eraseTarget(self, *args) -> "void":
         r"""
-        eraseTarget(self, target)
-        eraseTarget(self, nodeName)
+        eraseTarget(WeightedSampling self, gum::NodeId const target)
+        eraseTarget(WeightedSampling self, std::string const & nodeName)
 
         Remove, if existing, the marginal target.
 
@@ -16094,8 +16154,8 @@ class WeightedSampling(object):
 
     def isTarget(self, *args) -> "bool":
         r"""
-        isTarget(self, variable) -> bool
-        isTarget(self, nodeName) -> bool
+        isTarget(WeightedSampling self, gum::NodeId const variable) -> bool
+        isTarget(WeightedSampling self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -16122,7 +16182,7 @@ class WeightedSampling(object):
 
     def nbrTargets(self) -> "gum::Size":
         r"""
-        nbrTargets(self) -> gum::Size
+        nbrTargets(WeightedSampling self) -> gum::Size
 
         Returns
         -------
@@ -16135,8 +16195,8 @@ class WeightedSampling(object):
 
     def H(self, *args) -> "double":
         r"""
-        H(self, X) -> double
-        H(self, nodeName) -> double
+        H(WeightedSampling self, gum::NodeId const X) -> double
+        H(WeightedSampling self, std::string const & nodeName) -> double
 
         Parameters
         ----------
@@ -16156,8 +16216,8 @@ class WeightedSampling(object):
 
     def evidenceImpact(self, *args) -> "gum::Potential< double >":
         r"""
-        evidenceImpact(self, target, evs) -> Potential
-        evidenceImpact(self, target, evs) -> Potential
+        evidenceImpact(WeightedSampling self, gum::NodeId target, PyObject * evs) -> Potential
+        evidenceImpact(WeightedSampling self, std::string const & target, Vector_string evs) -> Potential
 
         Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
 
@@ -16183,8 +16243,8 @@ class WeightedSampling(object):
 
     def currentPosterior(self, *args) -> "gum::Potential< double > const &":
         r"""
-        currentPosterior(self, id) -> Potential
-        currentPosterior(self, name) -> Potential
+        currentPosterior(WeightedSampling self, gum::NodeId const id) -> Potential
+        currentPosterior(WeightedSampling self, std::string const & name) -> Potential
 
         Computes and returns the current posterior of a node.
 
@@ -16233,7 +16293,7 @@ class MonteCarloSampling(object):
     __repr__ = _swig_repr
 
     def __init__(self, bn: 'IBayesNet'):
-        r"""__init__(self, bn) -> MonteCarloSampling"""
+        r"""__init__(MonteCarloSampling self, IBayesNet bn) -> MonteCarloSampling"""
         _pyAgrum.MonteCarloSampling_swiginit(self, _pyAgrum.new_MonteCarloSampling(bn))
 
         self._bn=bn#BN
@@ -16326,7 +16386,7 @@ class MonteCarloSampling(object):
 
     def hardEvidenceNodes(self) -> "PyObject *":
         r"""
-        hardEvidenceNodes(self) -> PyObject *
+        hardEvidenceNodes(MonteCarloSampling self) -> PyObject *
 
         Returns
         -------
@@ -16339,7 +16399,7 @@ class MonteCarloSampling(object):
 
     def softEvidenceNodes(self) -> "PyObject *":
         r"""
-        softEvidenceNodes(self) -> PyObject *
+        softEvidenceNodes(MonteCarloSampling self) -> PyObject *
 
         Returns
         -------
@@ -16352,7 +16412,7 @@ class MonteCarloSampling(object):
 
     def targets(self) -> "PyObject *":
         r"""
-        targets(self) -> PyObject *
+        targets(MonteCarloSampling self) -> PyObject *
 
         Returns
         -------
@@ -16365,7 +16425,7 @@ class MonteCarloSampling(object):
 
     def setVerbosity(self, v: 'bool') -> "void":
         r"""
-        setVerbosity(self, v)
+        setVerbosity(MonteCarloSampling self, bool v)
 
         Parameters
         ----------
@@ -16378,7 +16438,7 @@ class MonteCarloSampling(object):
 
     def setEpsilon(self, eps: 'double') -> "void":
         r"""
-        setEpsilon(self, eps)
+        setEpsilon(MonteCarloSampling self, double eps)
 
         Parameters
         ----------
@@ -16396,7 +16456,7 @@ class MonteCarloSampling(object):
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
         r"""
-        setMinEpsilonRate(self, rate)
+        setMinEpsilonRate(MonteCarloSampling self, double rate)
 
         Parameters
         ----------
@@ -16409,7 +16469,7 @@ class MonteCarloSampling(object):
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
         r"""
-        setMaxIter(self, max)
+        setMaxIter(MonteCarloSampling self, gum::Size max)
 
         Parameters
         ----------
@@ -16427,7 +16487,7 @@ class MonteCarloSampling(object):
 
     def setMaxTime(self, timeout: 'double') -> "void":
         r"""
-        setMaxTime(self, timeout)
+        setMaxTime(MonteCarloSampling self, double timeout)
 
         Parameters
         ----------
@@ -16445,7 +16505,7 @@ class MonteCarloSampling(object):
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
         r"""
-        setPeriodSize(self, p)
+        setPeriodSize(MonteCarloSampling self, gum::Size p)
 
         Parameters
         ----------
@@ -16463,7 +16523,7 @@ class MonteCarloSampling(object):
 
     def verbosity(self) -> "bool":
         r"""
-        verbosity(self) -> bool
+        verbosity(MonteCarloSampling self) -> bool
 
         Returns
         -------
@@ -16476,7 +16536,7 @@ class MonteCarloSampling(object):
 
     def epsilon(self) -> "double":
         r"""
-        epsilon(self) -> double
+        epsilon(MonteCarloSampling self) -> double
 
         Returns
         -------
@@ -16489,7 +16549,7 @@ class MonteCarloSampling(object):
 
     def minEpsilonRate(self) -> "double":
         r"""
-        minEpsilonRate(self) -> double
+        minEpsilonRate(MonteCarloSampling self) -> double
 
         Returns
         -------
@@ -16502,7 +16562,7 @@ class MonteCarloSampling(object):
 
     def maxIter(self) -> "gum::Size":
         r"""
-        maxIter(self) -> gum::Size
+        maxIter(MonteCarloSampling self) -> gum::Size
 
         Returns
         -------
@@ -16515,7 +16575,7 @@ class MonteCarloSampling(object):
 
     def maxTime(self) -> "double":
         r"""
-        maxTime(self) -> double
+        maxTime(MonteCarloSampling self) -> double
 
         Returns
         -------
@@ -16528,7 +16588,7 @@ class MonteCarloSampling(object):
 
     def periodSize(self) -> "gum::Size":
         r"""
-        periodSize(self) -> gum::Size
+        periodSize(MonteCarloSampling self) -> gum::Size
 
         Returns
         -------
@@ -16546,7 +16606,7 @@ class MonteCarloSampling(object):
 
     def nbrIterations(self) -> "gum::Size":
         r"""
-        nbrIterations(self) -> gum::Size
+        nbrIterations(MonteCarloSampling self) -> gum::Size
 
         Returns
         -------
@@ -16559,7 +16619,7 @@ class MonteCarloSampling(object):
 
     def currentTime(self) -> "double":
         r"""
-        currentTime(self) -> double
+        currentTime(MonteCarloSampling self) -> double
 
         Returns
         -------
@@ -16572,7 +16632,7 @@ class MonteCarloSampling(object):
 
     def messageApproximationScheme(self) -> "std::string":
         r"""
-        messageApproximationScheme(self) -> std::string
+        messageApproximationScheme(MonteCarloSampling self) -> std::string
 
         Returns
         -------
@@ -16585,7 +16645,7 @@ class MonteCarloSampling(object):
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
         r"""
-        history(self) -> Vector
+        history(MonteCarloSampling self) -> Vector
 
         Returns
         -------
@@ -16603,7 +16663,7 @@ class MonteCarloSampling(object):
 
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
         r"""
-        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+        asIApproximationSchemeConfiguration(MonteCarloSampling self) -> IApproximationSchemeConfiguration
 
         Returns
         -------
@@ -16615,7 +16675,7 @@ class MonteCarloSampling(object):
 
     def makeInference(self) -> "void":
         r"""
-        makeInference(self)
+        makeInference(MonteCarloSampling self)
 
         Perform the heavy computations needed to compute the targets' posteriors
 
@@ -16628,8 +16688,8 @@ class MonteCarloSampling(object):
 
     def posterior(self, *args) -> "gum::Potential< double > const":
         r"""
-        posterior(self, var) -> Potential
-        posterior(self, nodeName) -> Potential
+        posterior(MonteCarloSampling self, gum::NodeId const var) -> Potential
+        posterior(MonteCarloSampling self, std::string const nodeName) -> Potential
 
         Computes and returns the posterior of a node.
 
@@ -16656,7 +16716,7 @@ class MonteCarloSampling(object):
 
     def BN(self) -> "gum::IBayesNet< double > const &":
         r"""
-        BN(self) -> IBayesNet
+        BN(MonteCarloSampling self) -> IBayesNet
 
         Returns
         -------
@@ -16674,12 +16734,12 @@ class MonteCarloSampling(object):
 
     def addEvidence(self, *args) -> "void":
         r"""
-        addEvidence(self, id, val)
-        addEvidence(self, nodeName, val)
-        addEvidence(self, id, val)
-        addEvidence(self, nodeName, val)
-        addEvidence(self, id, vals)
-        addEvidence(self, nodeName, vals)
+        addEvidence(MonteCarloSampling self, gum::NodeId const id, gum::Idx const val)
+        addEvidence(MonteCarloSampling self, std::string const & nodeName, gum::Idx const val)
+        addEvidence(MonteCarloSampling self, gum::NodeId const id, std::string const & val)
+        addEvidence(MonteCarloSampling self, std::string const & nodeName, std::string const & val)
+        addEvidence(MonteCarloSampling self, gum::NodeId const id, Vector vals)
+        addEvidence(MonteCarloSampling self, std::string const & nodeName, Vector vals)
 
         Adds a new evidence on a node (might be soft or hard).
 
@@ -16715,12 +16775,12 @@ class MonteCarloSampling(object):
 
     def chgEvidence(self, *args) -> "void":
         r"""
-        chgEvidence(self, id, val)
-        chgEvidence(self, nodeName, val)
-        chgEvidence(self, id, val)
-        chgEvidence(self, nodeName, val)
-        chgEvidence(self, id, vals)
-        chgEvidence(self, nodeName, vals)
+        chgEvidence(MonteCarloSampling self, gum::NodeId const id, gum::Idx const val)
+        chgEvidence(MonteCarloSampling self, std::string const & nodeName, gum::Idx const val)
+        chgEvidence(MonteCarloSampling self, gum::NodeId const id, std::string const & val)
+        chgEvidence(MonteCarloSampling self, std::string const & nodeName, std::string const & val)
+        chgEvidence(MonteCarloSampling self, gum::NodeId const id, Vector vals)
+        chgEvidence(MonteCarloSampling self, std::string const & nodeName, Vector vals)
 
         Change the value of an already existing evidence on a node (might be soft or hard).
 
@@ -16756,8 +16816,8 @@ class MonteCarloSampling(object):
 
     def hasEvidence(self, *args) -> "bool":
         r"""
-        hasEvidence(self, id) -> bool
-        hasEvidence(self, nodeName) -> bool
+        hasEvidence(MonteCarloSampling self, gum::NodeId const id) -> bool
+        hasEvidence(MonteCarloSampling self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -16782,7 +16842,7 @@ class MonteCarloSampling(object):
 
     def eraseAllEvidence(self) -> "void":
         r"""
-        eraseAllEvidence(self)
+        eraseAllEvidence(MonteCarloSampling self)
 
         Removes all the evidence entered into the network.
 
@@ -16792,8 +16852,8 @@ class MonteCarloSampling(object):
 
     def eraseEvidence(self, *args) -> "void":
         r"""
-        eraseEvidence(self, id)
-        eraseEvidence(self, nodeName)
+        eraseEvidence(MonteCarloSampling self, gum::NodeId const id)
+        eraseEvidence(MonteCarloSampling self, std::string const & nodeName)
 
         Remove the evidence, if any, corresponding to the node Id or name.
 
@@ -16815,7 +16875,7 @@ class MonteCarloSampling(object):
 
     def hasHardEvidence(self, nodeName: 'std::string const &') -> "bool":
         r"""
-        hasHardEvidence(self, nodeName) -> bool
+        hasHardEvidence(MonteCarloSampling self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -16840,8 +16900,8 @@ class MonteCarloSampling(object):
 
     def hasSoftEvidence(self, *args) -> "bool":
         r"""
-        hasSoftEvidence(self, id) -> bool
-        hasSoftEvidence(self, nodeName) -> bool
+        hasSoftEvidence(MonteCarloSampling self, gum::NodeId const id) -> bool
+        hasSoftEvidence(MonteCarloSampling self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -16866,7 +16926,7 @@ class MonteCarloSampling(object):
 
     def nbrEvidence(self) -> "gum::Size":
         r"""
-        nbrEvidence(self) -> gum::Size
+        nbrEvidence(MonteCarloSampling self) -> gum::Size
 
         Returns
         -------
@@ -16879,7 +16939,7 @@ class MonteCarloSampling(object):
 
     def nbrHardEvidence(self) -> "gum::Size":
         r"""
-        nbrHardEvidence(self) -> gum::Size
+        nbrHardEvidence(MonteCarloSampling self) -> gum::Size
 
         Returns
         -------
@@ -16892,7 +16952,7 @@ class MonteCarloSampling(object):
 
     def nbrSoftEvidence(self) -> "gum::Size":
         r"""
-        nbrSoftEvidence(self) -> gum::Size
+        nbrSoftEvidence(MonteCarloSampling self) -> gum::Size
 
         Returns
         -------
@@ -16905,7 +16965,7 @@ class MonteCarloSampling(object):
 
     def eraseAllTargets(self) -> "void":
         r"""
-        eraseAllTargets(self)
+        eraseAllTargets(MonteCarloSampling self)
 
         Clear all previously defined targets (marginal and joint targets).
 
@@ -16917,7 +16977,7 @@ class MonteCarloSampling(object):
 
     def addAllTargets(self) -> "void":
         r"""
-        addAllTargets(self)
+        addAllTargets(MonteCarloSampling self)
 
         Add all the nodes as targets.
 
@@ -16927,8 +16987,8 @@ class MonteCarloSampling(object):
 
     def addTarget(self, *args) -> "void":
         r"""
-        addTarget(self, target)
-        addTarget(self, nodeName)
+        addTarget(MonteCarloSampling self, gum::NodeId const target)
+        addTarget(MonteCarloSampling self, std::string const & nodeName)
 
         Add a marginal target to the list of targets.
 
@@ -16950,8 +17010,8 @@ class MonteCarloSampling(object):
 
     def eraseTarget(self, *args) -> "void":
         r"""
-        eraseTarget(self, target)
-        eraseTarget(self, nodeName)
+        eraseTarget(MonteCarloSampling self, gum::NodeId const target)
+        eraseTarget(MonteCarloSampling self, std::string const & nodeName)
 
         Remove, if existing, the marginal target.
 
@@ -16975,8 +17035,8 @@ class MonteCarloSampling(object):
 
     def isTarget(self, *args) -> "bool":
         r"""
-        isTarget(self, variable) -> bool
-        isTarget(self, nodeName) -> bool
+        isTarget(MonteCarloSampling self, gum::NodeId const variable) -> bool
+        isTarget(MonteCarloSampling self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -17003,7 +17063,7 @@ class MonteCarloSampling(object):
 
     def nbrTargets(self) -> "gum::Size":
         r"""
-        nbrTargets(self) -> gum::Size
+        nbrTargets(MonteCarloSampling self) -> gum::Size
 
         Returns
         -------
@@ -17016,8 +17076,8 @@ class MonteCarloSampling(object):
 
     def H(self, *args) -> "double":
         r"""
-        H(self, X) -> double
-        H(self, nodeName) -> double
+        H(MonteCarloSampling self, gum::NodeId const X) -> double
+        H(MonteCarloSampling self, std::string const & nodeName) -> double
 
         Parameters
         ----------
@@ -17037,8 +17097,8 @@ class MonteCarloSampling(object):
 
     def evidenceImpact(self, *args) -> "gum::Potential< double >":
         r"""
-        evidenceImpact(self, target, evs) -> Potential
-        evidenceImpact(self, target, evs) -> Potential
+        evidenceImpact(MonteCarloSampling self, gum::NodeId target, PyObject * evs) -> Potential
+        evidenceImpact(MonteCarloSampling self, std::string const & target, Vector_string evs) -> Potential
 
         Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
 
@@ -17064,8 +17124,8 @@ class MonteCarloSampling(object):
 
     def currentPosterior(self, *args) -> "gum::Potential< double > const &":
         r"""
-        currentPosterior(self, id) -> Potential
-        currentPosterior(self, name) -> Potential
+        currentPosterior(MonteCarloSampling self, gum::NodeId const id) -> Potential
+        currentPosterior(MonteCarloSampling self, std::string const & name) -> Potential
 
         Computes and returns the current posterior of a node.
 
@@ -17112,7 +17172,7 @@ class LoopyImportanceSampling(object):
     __repr__ = _swig_repr
 
     def __init__(self, bn: 'IBayesNet'):
-        r"""__init__(self, bn) -> LoopyImportanceSampling"""
+        r"""__init__(LoopyImportanceSampling self, IBayesNet bn) -> LoopyImportanceSampling"""
         _pyAgrum.LoopyImportanceSampling_swiginit(self, _pyAgrum.new_LoopyImportanceSampling(bn))
 
         self._bn=bn#BN
@@ -17122,13 +17182,13 @@ class LoopyImportanceSampling(object):
     __swig_destroy__ = _pyAgrum.delete_LoopyImportanceSampling
 
     def _makeInference(self) -> "void":
-        r"""_makeInference(self)"""
+        r"""_makeInference(LoopyImportanceSampling self)"""
         return _pyAgrum.LoopyImportanceSampling__makeInference(self)
 
 
     def setVirtualLBPSize(self, vlbpsize: 'double') -> "void":
         r"""
-        setVirtualLBPSize(self, vlbpsize)
+        setVirtualLBPSize(LoopyImportanceSampling self, double vlbpsize)
 
         Parameters
         ----------
@@ -17223,7 +17283,7 @@ class LoopyImportanceSampling(object):
 
     def hardEvidenceNodes(self) -> "PyObject *":
         r"""
-        hardEvidenceNodes(self) -> PyObject *
+        hardEvidenceNodes(LoopyImportanceSampling self) -> PyObject *
 
         Returns
         -------
@@ -17236,7 +17296,7 @@ class LoopyImportanceSampling(object):
 
     def softEvidenceNodes(self) -> "PyObject *":
         r"""
-        softEvidenceNodes(self) -> PyObject *
+        softEvidenceNodes(LoopyImportanceSampling self) -> PyObject *
 
         Returns
         -------
@@ -17249,7 +17309,7 @@ class LoopyImportanceSampling(object):
 
     def targets(self) -> "PyObject *":
         r"""
-        targets(self) -> PyObject *
+        targets(LoopyImportanceSampling self) -> PyObject *
 
         Returns
         -------
@@ -17262,7 +17322,7 @@ class LoopyImportanceSampling(object):
 
     def setVerbosity(self, v: 'bool') -> "void":
         r"""
-        setVerbosity(self, v)
+        setVerbosity(LoopyImportanceSampling self, bool v)
 
         Parameters
         ----------
@@ -17275,7 +17335,7 @@ class LoopyImportanceSampling(object):
 
     def setEpsilon(self, eps: 'double') -> "void":
         r"""
-        setEpsilon(self, eps)
+        setEpsilon(LoopyImportanceSampling self, double eps)
 
         Parameters
         ----------
@@ -17293,7 +17353,7 @@ class LoopyImportanceSampling(object):
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
         r"""
-        setMinEpsilonRate(self, rate)
+        setMinEpsilonRate(LoopyImportanceSampling self, double rate)
 
         Parameters
         ----------
@@ -17306,7 +17366,7 @@ class LoopyImportanceSampling(object):
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
         r"""
-        setMaxIter(self, max)
+        setMaxIter(LoopyImportanceSampling self, gum::Size max)
 
         Parameters
         ----------
@@ -17324,7 +17384,7 @@ class LoopyImportanceSampling(object):
 
     def setMaxTime(self, timeout: 'double') -> "void":
         r"""
-        setMaxTime(self, timeout)
+        setMaxTime(LoopyImportanceSampling self, double timeout)
 
         Parameters
         ----------
@@ -17342,7 +17402,7 @@ class LoopyImportanceSampling(object):
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
         r"""
-        setPeriodSize(self, p)
+        setPeriodSize(LoopyImportanceSampling self, gum::Size p)
 
         Parameters
         ----------
@@ -17360,7 +17420,7 @@ class LoopyImportanceSampling(object):
 
     def verbosity(self) -> "bool":
         r"""
-        verbosity(self) -> bool
+        verbosity(LoopyImportanceSampling self) -> bool
 
         Returns
         -------
@@ -17373,7 +17433,7 @@ class LoopyImportanceSampling(object):
 
     def epsilon(self) -> "double":
         r"""
-        epsilon(self) -> double
+        epsilon(LoopyImportanceSampling self) -> double
 
         Returns
         -------
@@ -17386,7 +17446,7 @@ class LoopyImportanceSampling(object):
 
     def minEpsilonRate(self) -> "double":
         r"""
-        minEpsilonRate(self) -> double
+        minEpsilonRate(LoopyImportanceSampling self) -> double
 
         Returns
         -------
@@ -17399,7 +17459,7 @@ class LoopyImportanceSampling(object):
 
     def maxIter(self) -> "gum::Size":
         r"""
-        maxIter(self) -> gum::Size
+        maxIter(LoopyImportanceSampling self) -> gum::Size
 
         Returns
         -------
@@ -17412,7 +17472,7 @@ class LoopyImportanceSampling(object):
 
     def maxTime(self) -> "double":
         r"""
-        maxTime(self) -> double
+        maxTime(LoopyImportanceSampling self) -> double
 
         Returns
         -------
@@ -17425,7 +17485,7 @@ class LoopyImportanceSampling(object):
 
     def periodSize(self) -> "gum::Size":
         r"""
-        periodSize(self) -> gum::Size
+        periodSize(LoopyImportanceSampling self) -> gum::Size
 
         Returns
         -------
@@ -17443,7 +17503,7 @@ class LoopyImportanceSampling(object):
 
     def nbrIterations(self) -> "gum::Size":
         r"""
-        nbrIterations(self) -> gum::Size
+        nbrIterations(LoopyImportanceSampling self) -> gum::Size
 
         Returns
         -------
@@ -17456,7 +17516,7 @@ class LoopyImportanceSampling(object):
 
     def currentTime(self) -> "double":
         r"""
-        currentTime(self) -> double
+        currentTime(LoopyImportanceSampling self) -> double
 
         Returns
         -------
@@ -17469,7 +17529,7 @@ class LoopyImportanceSampling(object):
 
     def messageApproximationScheme(self) -> "std::string":
         r"""
-        messageApproximationScheme(self) -> std::string
+        messageApproximationScheme(LoopyImportanceSampling self) -> std::string
 
         Returns
         -------
@@ -17482,7 +17542,7 @@ class LoopyImportanceSampling(object):
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
         r"""
-        history(self) -> Vector
+        history(LoopyImportanceSampling self) -> Vector
 
         Returns
         -------
@@ -17500,7 +17560,7 @@ class LoopyImportanceSampling(object):
 
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
         r"""
-        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+        asIApproximationSchemeConfiguration(LoopyImportanceSampling self) -> IApproximationSchemeConfiguration
 
         Returns
         -------
@@ -17512,7 +17572,7 @@ class LoopyImportanceSampling(object):
 
     def makeInference(self) -> "void":
         r"""
-        makeInference(self)
+        makeInference(LoopyImportanceSampling self)
 
         Perform the heavy computations needed to compute the targets' posteriors
 
@@ -17525,8 +17585,8 @@ class LoopyImportanceSampling(object):
 
     def posterior(self, *args) -> "gum::Potential< double > const":
         r"""
-        posterior(self, var) -> Potential
-        posterior(self, nodeName) -> Potential
+        posterior(LoopyImportanceSampling self, gum::NodeId const var) -> Potential
+        posterior(LoopyImportanceSampling self, std::string const nodeName) -> Potential
 
         Computes and returns the posterior of a node.
 
@@ -17553,7 +17613,7 @@ class LoopyImportanceSampling(object):
 
     def BN(self) -> "gum::IBayesNet< double > const &":
         r"""
-        BN(self) -> IBayesNet
+        BN(LoopyImportanceSampling self) -> IBayesNet
 
         Returns
         -------
@@ -17571,12 +17631,12 @@ class LoopyImportanceSampling(object):
 
     def addEvidence(self, *args) -> "void":
         r"""
-        addEvidence(self, id, val)
-        addEvidence(self, nodeName, val)
-        addEvidence(self, id, val)
-        addEvidence(self, nodeName, val)
-        addEvidence(self, id, vals)
-        addEvidence(self, nodeName, vals)
+        addEvidence(LoopyImportanceSampling self, gum::NodeId const id, gum::Idx const val)
+        addEvidence(LoopyImportanceSampling self, std::string const & nodeName, gum::Idx const val)
+        addEvidence(LoopyImportanceSampling self, gum::NodeId const id, std::string const & val)
+        addEvidence(LoopyImportanceSampling self, std::string const & nodeName, std::string const & val)
+        addEvidence(LoopyImportanceSampling self, gum::NodeId const id, Vector vals)
+        addEvidence(LoopyImportanceSampling self, std::string const & nodeName, Vector vals)
 
         Adds a new evidence on a node (might be soft or hard).
 
@@ -17612,12 +17672,12 @@ class LoopyImportanceSampling(object):
 
     def chgEvidence(self, *args) -> "void":
         r"""
-        chgEvidence(self, id, val)
-        chgEvidence(self, nodeName, val)
-        chgEvidence(self, id, val)
-        chgEvidence(self, nodeName, val)
-        chgEvidence(self, id, vals)
-        chgEvidence(self, nodeName, vals)
+        chgEvidence(LoopyImportanceSampling self, gum::NodeId const id, gum::Idx const val)
+        chgEvidence(LoopyImportanceSampling self, std::string const & nodeName, gum::Idx const val)
+        chgEvidence(LoopyImportanceSampling self, gum::NodeId const id, std::string const & val)
+        chgEvidence(LoopyImportanceSampling self, std::string const & nodeName, std::string const & val)
+        chgEvidence(LoopyImportanceSampling self, gum::NodeId const id, Vector vals)
+        chgEvidence(LoopyImportanceSampling self, std::string const & nodeName, Vector vals)
 
         Change the value of an already existing evidence on a node (might be soft or hard).
 
@@ -17653,8 +17713,8 @@ class LoopyImportanceSampling(object):
 
     def hasEvidence(self, *args) -> "bool":
         r"""
-        hasEvidence(self, id) -> bool
-        hasEvidence(self, nodeName) -> bool
+        hasEvidence(LoopyImportanceSampling self, gum::NodeId const id) -> bool
+        hasEvidence(LoopyImportanceSampling self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -17679,7 +17739,7 @@ class LoopyImportanceSampling(object):
 
     def eraseAllEvidence(self) -> "void":
         r"""
-        eraseAllEvidence(self)
+        eraseAllEvidence(LoopyImportanceSampling self)
 
         Removes all the evidence entered into the network.
 
@@ -17689,8 +17749,8 @@ class LoopyImportanceSampling(object):
 
     def eraseEvidence(self, *args) -> "void":
         r"""
-        eraseEvidence(self, id)
-        eraseEvidence(self, nodeName)
+        eraseEvidence(LoopyImportanceSampling self, gum::NodeId const id)
+        eraseEvidence(LoopyImportanceSampling self, std::string const & nodeName)
 
         Remove the evidence, if any, corresponding to the node Id or name.
 
@@ -17712,7 +17772,7 @@ class LoopyImportanceSampling(object):
 
     def hasHardEvidence(self, nodeName: 'std::string const &') -> "bool":
         r"""
-        hasHardEvidence(self, nodeName) -> bool
+        hasHardEvidence(LoopyImportanceSampling self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -17737,8 +17797,8 @@ class LoopyImportanceSampling(object):
 
     def hasSoftEvidence(self, *args) -> "bool":
         r"""
-        hasSoftEvidence(self, id) -> bool
-        hasSoftEvidence(self, nodeName) -> bool
+        hasSoftEvidence(LoopyImportanceSampling self, gum::NodeId const id) -> bool
+        hasSoftEvidence(LoopyImportanceSampling self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -17763,7 +17823,7 @@ class LoopyImportanceSampling(object):
 
     def nbrEvidence(self) -> "gum::Size":
         r"""
-        nbrEvidence(self) -> gum::Size
+        nbrEvidence(LoopyImportanceSampling self) -> gum::Size
 
         Returns
         -------
@@ -17776,7 +17836,7 @@ class LoopyImportanceSampling(object):
 
     def nbrHardEvidence(self) -> "gum::Size":
         r"""
-        nbrHardEvidence(self) -> gum::Size
+        nbrHardEvidence(LoopyImportanceSampling self) -> gum::Size
 
         Returns
         -------
@@ -17789,7 +17849,7 @@ class LoopyImportanceSampling(object):
 
     def nbrSoftEvidence(self) -> "gum::Size":
         r"""
-        nbrSoftEvidence(self) -> gum::Size
+        nbrSoftEvidence(LoopyImportanceSampling self) -> gum::Size
 
         Returns
         -------
@@ -17802,7 +17862,7 @@ class LoopyImportanceSampling(object):
 
     def eraseAllTargets(self) -> "void":
         r"""
-        eraseAllTargets(self)
+        eraseAllTargets(LoopyImportanceSampling self)
 
         Clear all previously defined targets (marginal and joint targets).
 
@@ -17814,7 +17874,7 @@ class LoopyImportanceSampling(object):
 
     def addAllTargets(self) -> "void":
         r"""
-        addAllTargets(self)
+        addAllTargets(LoopyImportanceSampling self)
 
         Add all the nodes as targets.
 
@@ -17824,8 +17884,8 @@ class LoopyImportanceSampling(object):
 
     def addTarget(self, *args) -> "void":
         r"""
-        addTarget(self, target)
-        addTarget(self, nodeName)
+        addTarget(LoopyImportanceSampling self, gum::NodeId const target)
+        addTarget(LoopyImportanceSampling self, std::string const & nodeName)
 
         Add a marginal target to the list of targets.
 
@@ -17847,8 +17907,8 @@ class LoopyImportanceSampling(object):
 
     def eraseTarget(self, *args) -> "void":
         r"""
-        eraseTarget(self, target)
-        eraseTarget(self, nodeName)
+        eraseTarget(LoopyImportanceSampling self, gum::NodeId const target)
+        eraseTarget(LoopyImportanceSampling self, std::string const & nodeName)
 
         Remove, if existing, the marginal target.
 
@@ -17872,8 +17932,8 @@ class LoopyImportanceSampling(object):
 
     def isTarget(self, *args) -> "bool":
         r"""
-        isTarget(self, variable) -> bool
-        isTarget(self, nodeName) -> bool
+        isTarget(LoopyImportanceSampling self, gum::NodeId const variable) -> bool
+        isTarget(LoopyImportanceSampling self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -17900,7 +17960,7 @@ class LoopyImportanceSampling(object):
 
     def nbrTargets(self) -> "gum::Size":
         r"""
-        nbrTargets(self) -> gum::Size
+        nbrTargets(LoopyImportanceSampling self) -> gum::Size
 
         Returns
         -------
@@ -17913,8 +17973,8 @@ class LoopyImportanceSampling(object):
 
     def H(self, *args) -> "double":
         r"""
-        H(self, X) -> double
-        H(self, nodeName) -> double
+        H(LoopyImportanceSampling self, gum::NodeId const X) -> double
+        H(LoopyImportanceSampling self, std::string const & nodeName) -> double
 
         Parameters
         ----------
@@ -17934,8 +17994,8 @@ class LoopyImportanceSampling(object):
 
     def evidenceImpact(self, *args) -> "gum::Potential< double >":
         r"""
-        evidenceImpact(self, target, evs) -> Potential
-        evidenceImpact(self, target, evs) -> Potential
+        evidenceImpact(LoopyImportanceSampling self, gum::NodeId target, PyObject * evs) -> Potential
+        evidenceImpact(LoopyImportanceSampling self, std::string const & target, Vector_string evs) -> Potential
 
         Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
 
@@ -17961,8 +18021,8 @@ class LoopyImportanceSampling(object):
 
     def currentPosterior(self, *args) -> "gum::Potential< double > const &":
         r"""
-        currentPosterior(self, id) -> Potential
-        currentPosterior(self, name) -> Potential
+        currentPosterior(LoopyImportanceSampling self, gum::NodeId const id) -> Potential
+        currentPosterior(LoopyImportanceSampling self, std::string const & name) -> Potential
 
         Computes and returns the current posterior of a node.
 
@@ -18009,7 +18069,7 @@ class LoopyWeightedSampling(object):
     __repr__ = _swig_repr
 
     def __init__(self, bn: 'IBayesNet'):
-        r"""__init__(self, bn) -> LoopyWeightedSampling"""
+        r"""__init__(LoopyWeightedSampling self, IBayesNet bn) -> LoopyWeightedSampling"""
         _pyAgrum.LoopyWeightedSampling_swiginit(self, _pyAgrum.new_LoopyWeightedSampling(bn))
 
         self._bn=bn#BN
@@ -18019,13 +18079,13 @@ class LoopyWeightedSampling(object):
     __swig_destroy__ = _pyAgrum.delete_LoopyWeightedSampling
 
     def _makeInference(self) -> "void":
-        r"""_makeInference(self)"""
+        r"""_makeInference(LoopyWeightedSampling self)"""
         return _pyAgrum.LoopyWeightedSampling__makeInference(self)
 
 
     def setVirtualLBPSize(self, vlbpsize: 'double') -> "void":
         r"""
-        setVirtualLBPSize(self, vlbpsize)
+        setVirtualLBPSize(LoopyWeightedSampling self, double vlbpsize)
 
         Parameters
         ----------
@@ -18120,7 +18180,7 @@ class LoopyWeightedSampling(object):
 
     def hardEvidenceNodes(self) -> "PyObject *":
         r"""
-        hardEvidenceNodes(self) -> PyObject *
+        hardEvidenceNodes(LoopyWeightedSampling self) -> PyObject *
 
         Returns
         -------
@@ -18133,7 +18193,7 @@ class LoopyWeightedSampling(object):
 
     def softEvidenceNodes(self) -> "PyObject *":
         r"""
-        softEvidenceNodes(self) -> PyObject *
+        softEvidenceNodes(LoopyWeightedSampling self) -> PyObject *
 
         Returns
         -------
@@ -18146,7 +18206,7 @@ class LoopyWeightedSampling(object):
 
     def targets(self) -> "PyObject *":
         r"""
-        targets(self) -> PyObject *
+        targets(LoopyWeightedSampling self) -> PyObject *
 
         Returns
         -------
@@ -18159,7 +18219,7 @@ class LoopyWeightedSampling(object):
 
     def setVerbosity(self, v: 'bool') -> "void":
         r"""
-        setVerbosity(self, v)
+        setVerbosity(LoopyWeightedSampling self, bool v)
 
         Parameters
         ----------
@@ -18172,7 +18232,7 @@ class LoopyWeightedSampling(object):
 
     def setEpsilon(self, eps: 'double') -> "void":
         r"""
-        setEpsilon(self, eps)
+        setEpsilon(LoopyWeightedSampling self, double eps)
 
         Parameters
         ----------
@@ -18190,7 +18250,7 @@ class LoopyWeightedSampling(object):
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
         r"""
-        setMinEpsilonRate(self, rate)
+        setMinEpsilonRate(LoopyWeightedSampling self, double rate)
 
         Parameters
         ----------
@@ -18203,7 +18263,7 @@ class LoopyWeightedSampling(object):
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
         r"""
-        setMaxIter(self, max)
+        setMaxIter(LoopyWeightedSampling self, gum::Size max)
 
         Parameters
         ----------
@@ -18221,7 +18281,7 @@ class LoopyWeightedSampling(object):
 
     def setMaxTime(self, timeout: 'double') -> "void":
         r"""
-        setMaxTime(self, timeout)
+        setMaxTime(LoopyWeightedSampling self, double timeout)
 
         Parameters
         ----------
@@ -18239,7 +18299,7 @@ class LoopyWeightedSampling(object):
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
         r"""
-        setPeriodSize(self, p)
+        setPeriodSize(LoopyWeightedSampling self, gum::Size p)
 
         Parameters
         ----------
@@ -18257,7 +18317,7 @@ class LoopyWeightedSampling(object):
 
     def verbosity(self) -> "bool":
         r"""
-        verbosity(self) -> bool
+        verbosity(LoopyWeightedSampling self) -> bool
 
         Returns
         -------
@@ -18270,7 +18330,7 @@ class LoopyWeightedSampling(object):
 
     def epsilon(self) -> "double":
         r"""
-        epsilon(self) -> double
+        epsilon(LoopyWeightedSampling self) -> double
 
         Returns
         -------
@@ -18283,7 +18343,7 @@ class LoopyWeightedSampling(object):
 
     def minEpsilonRate(self) -> "double":
         r"""
-        minEpsilonRate(self) -> double
+        minEpsilonRate(LoopyWeightedSampling self) -> double
 
         Returns
         -------
@@ -18296,7 +18356,7 @@ class LoopyWeightedSampling(object):
 
     def maxIter(self) -> "gum::Size":
         r"""
-        maxIter(self) -> gum::Size
+        maxIter(LoopyWeightedSampling self) -> gum::Size
 
         Returns
         -------
@@ -18309,7 +18369,7 @@ class LoopyWeightedSampling(object):
 
     def maxTime(self) -> "double":
         r"""
-        maxTime(self) -> double
+        maxTime(LoopyWeightedSampling self) -> double
 
         Returns
         -------
@@ -18322,7 +18382,7 @@ class LoopyWeightedSampling(object):
 
     def periodSize(self) -> "gum::Size":
         r"""
-        periodSize(self) -> gum::Size
+        periodSize(LoopyWeightedSampling self) -> gum::Size
 
         Returns
         -------
@@ -18340,7 +18400,7 @@ class LoopyWeightedSampling(object):
 
     def nbrIterations(self) -> "gum::Size":
         r"""
-        nbrIterations(self) -> gum::Size
+        nbrIterations(LoopyWeightedSampling self) -> gum::Size
 
         Returns
         -------
@@ -18353,7 +18413,7 @@ class LoopyWeightedSampling(object):
 
     def currentTime(self) -> "double":
         r"""
-        currentTime(self) -> double
+        currentTime(LoopyWeightedSampling self) -> double
 
         Returns
         -------
@@ -18366,7 +18426,7 @@ class LoopyWeightedSampling(object):
 
     def messageApproximationScheme(self) -> "std::string":
         r"""
-        messageApproximationScheme(self) -> std::string
+        messageApproximationScheme(LoopyWeightedSampling self) -> std::string
 
         Returns
         -------
@@ -18379,7 +18439,7 @@ class LoopyWeightedSampling(object):
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
         r"""
-        history(self) -> Vector
+        history(LoopyWeightedSampling self) -> Vector
 
         Returns
         -------
@@ -18397,7 +18457,7 @@ class LoopyWeightedSampling(object):
 
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
         r"""
-        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+        asIApproximationSchemeConfiguration(LoopyWeightedSampling self) -> IApproximationSchemeConfiguration
 
         Returns
         -------
@@ -18409,7 +18469,7 @@ class LoopyWeightedSampling(object):
 
     def makeInference(self) -> "void":
         r"""
-        makeInference(self)
+        makeInference(LoopyWeightedSampling self)
 
         Perform the heavy computations needed to compute the targets' posteriors
 
@@ -18422,8 +18482,8 @@ class LoopyWeightedSampling(object):
 
     def posterior(self, *args) -> "gum::Potential< double > const":
         r"""
-        posterior(self, var) -> Potential
-        posterior(self, nodeName) -> Potential
+        posterior(LoopyWeightedSampling self, gum::NodeId const var) -> Potential
+        posterior(LoopyWeightedSampling self, std::string const nodeName) -> Potential
 
         Computes and returns the posterior of a node.
 
@@ -18450,7 +18510,7 @@ class LoopyWeightedSampling(object):
 
     def BN(self) -> "gum::IBayesNet< double > const &":
         r"""
-        BN(self) -> IBayesNet
+        BN(LoopyWeightedSampling self) -> IBayesNet
 
         Returns
         -------
@@ -18468,12 +18528,12 @@ class LoopyWeightedSampling(object):
 
     def addEvidence(self, *args) -> "void":
         r"""
-        addEvidence(self, id, val)
-        addEvidence(self, nodeName, val)
-        addEvidence(self, id, val)
-        addEvidence(self, nodeName, val)
-        addEvidence(self, id, vals)
-        addEvidence(self, nodeName, vals)
+        addEvidence(LoopyWeightedSampling self, gum::NodeId const id, gum::Idx const val)
+        addEvidence(LoopyWeightedSampling self, std::string const & nodeName, gum::Idx const val)
+        addEvidence(LoopyWeightedSampling self, gum::NodeId const id, std::string const & val)
+        addEvidence(LoopyWeightedSampling self, std::string const & nodeName, std::string const & val)
+        addEvidence(LoopyWeightedSampling self, gum::NodeId const id, Vector vals)
+        addEvidence(LoopyWeightedSampling self, std::string const & nodeName, Vector vals)
 
         Adds a new evidence on a node (might be soft or hard).
 
@@ -18509,12 +18569,12 @@ class LoopyWeightedSampling(object):
 
     def chgEvidence(self, *args) -> "void":
         r"""
-        chgEvidence(self, id, val)
-        chgEvidence(self, nodeName, val)
-        chgEvidence(self, id, val)
-        chgEvidence(self, nodeName, val)
-        chgEvidence(self, id, vals)
-        chgEvidence(self, nodeName, vals)
+        chgEvidence(LoopyWeightedSampling self, gum::NodeId const id, gum::Idx const val)
+        chgEvidence(LoopyWeightedSampling self, std::string const & nodeName, gum::Idx const val)
+        chgEvidence(LoopyWeightedSampling self, gum::NodeId const id, std::string const & val)
+        chgEvidence(LoopyWeightedSampling self, std::string const & nodeName, std::string const & val)
+        chgEvidence(LoopyWeightedSampling self, gum::NodeId const id, Vector vals)
+        chgEvidence(LoopyWeightedSampling self, std::string const & nodeName, Vector vals)
 
         Change the value of an already existing evidence on a node (might be soft or hard).
 
@@ -18550,8 +18610,8 @@ class LoopyWeightedSampling(object):
 
     def hasEvidence(self, *args) -> "bool":
         r"""
-        hasEvidence(self, id) -> bool
-        hasEvidence(self, nodeName) -> bool
+        hasEvidence(LoopyWeightedSampling self, gum::NodeId const id) -> bool
+        hasEvidence(LoopyWeightedSampling self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -18576,7 +18636,7 @@ class LoopyWeightedSampling(object):
 
     def eraseAllEvidence(self) -> "void":
         r"""
-        eraseAllEvidence(self)
+        eraseAllEvidence(LoopyWeightedSampling self)
 
         Removes all the evidence entered into the network.
 
@@ -18586,8 +18646,8 @@ class LoopyWeightedSampling(object):
 
     def eraseEvidence(self, *args) -> "void":
         r"""
-        eraseEvidence(self, id)
-        eraseEvidence(self, nodeName)
+        eraseEvidence(LoopyWeightedSampling self, gum::NodeId const id)
+        eraseEvidence(LoopyWeightedSampling self, std::string const & nodeName)
 
         Remove the evidence, if any, corresponding to the node Id or name.
 
@@ -18609,7 +18669,7 @@ class LoopyWeightedSampling(object):
 
     def hasHardEvidence(self, nodeName: 'std::string const &') -> "bool":
         r"""
-        hasHardEvidence(self, nodeName) -> bool
+        hasHardEvidence(LoopyWeightedSampling self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -18634,8 +18694,8 @@ class LoopyWeightedSampling(object):
 
     def hasSoftEvidence(self, *args) -> "bool":
         r"""
-        hasSoftEvidence(self, id) -> bool
-        hasSoftEvidence(self, nodeName) -> bool
+        hasSoftEvidence(LoopyWeightedSampling self, gum::NodeId const id) -> bool
+        hasSoftEvidence(LoopyWeightedSampling self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -18660,7 +18720,7 @@ class LoopyWeightedSampling(object):
 
     def nbrEvidence(self) -> "gum::Size":
         r"""
-        nbrEvidence(self) -> gum::Size
+        nbrEvidence(LoopyWeightedSampling self) -> gum::Size
 
         Returns
         -------
@@ -18673,7 +18733,7 @@ class LoopyWeightedSampling(object):
 
     def nbrHardEvidence(self) -> "gum::Size":
         r"""
-        nbrHardEvidence(self) -> gum::Size
+        nbrHardEvidence(LoopyWeightedSampling self) -> gum::Size
 
         Returns
         -------
@@ -18686,7 +18746,7 @@ class LoopyWeightedSampling(object):
 
     def nbrSoftEvidence(self) -> "gum::Size":
         r"""
-        nbrSoftEvidence(self) -> gum::Size
+        nbrSoftEvidence(LoopyWeightedSampling self) -> gum::Size
 
         Returns
         -------
@@ -18699,7 +18759,7 @@ class LoopyWeightedSampling(object):
 
     def eraseAllTargets(self) -> "void":
         r"""
-        eraseAllTargets(self)
+        eraseAllTargets(LoopyWeightedSampling self)
 
         Clear all previously defined targets (marginal and joint targets).
 
@@ -18711,7 +18771,7 @@ class LoopyWeightedSampling(object):
 
     def addAllTargets(self) -> "void":
         r"""
-        addAllTargets(self)
+        addAllTargets(LoopyWeightedSampling self)
 
         Add all the nodes as targets.
 
@@ -18721,8 +18781,8 @@ class LoopyWeightedSampling(object):
 
     def addTarget(self, *args) -> "void":
         r"""
-        addTarget(self, target)
-        addTarget(self, nodeName)
+        addTarget(LoopyWeightedSampling self, gum::NodeId const target)
+        addTarget(LoopyWeightedSampling self, std::string const & nodeName)
 
         Add a marginal target to the list of targets.
 
@@ -18744,8 +18804,8 @@ class LoopyWeightedSampling(object):
 
     def eraseTarget(self, *args) -> "void":
         r"""
-        eraseTarget(self, target)
-        eraseTarget(self, nodeName)
+        eraseTarget(LoopyWeightedSampling self, gum::NodeId const target)
+        eraseTarget(LoopyWeightedSampling self, std::string const & nodeName)
 
         Remove, if existing, the marginal target.
 
@@ -18769,8 +18829,8 @@ class LoopyWeightedSampling(object):
 
     def isTarget(self, *args) -> "bool":
         r"""
-        isTarget(self, variable) -> bool
-        isTarget(self, nodeName) -> bool
+        isTarget(LoopyWeightedSampling self, gum::NodeId const variable) -> bool
+        isTarget(LoopyWeightedSampling self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -18797,7 +18857,7 @@ class LoopyWeightedSampling(object):
 
     def nbrTargets(self) -> "gum::Size":
         r"""
-        nbrTargets(self) -> gum::Size
+        nbrTargets(LoopyWeightedSampling self) -> gum::Size
 
         Returns
         -------
@@ -18810,8 +18870,8 @@ class LoopyWeightedSampling(object):
 
     def H(self, *args) -> "double":
         r"""
-        H(self, X) -> double
-        H(self, nodeName) -> double
+        H(LoopyWeightedSampling self, gum::NodeId const X) -> double
+        H(LoopyWeightedSampling self, std::string const & nodeName) -> double
 
         Parameters
         ----------
@@ -18831,8 +18891,8 @@ class LoopyWeightedSampling(object):
 
     def evidenceImpact(self, *args) -> "gum::Potential< double >":
         r"""
-        evidenceImpact(self, target, evs) -> Potential
-        evidenceImpact(self, target, evs) -> Potential
+        evidenceImpact(LoopyWeightedSampling self, gum::NodeId target, PyObject * evs) -> Potential
+        evidenceImpact(LoopyWeightedSampling self, std::string const & target, Vector_string evs) -> Potential
 
         Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
 
@@ -18858,8 +18918,8 @@ class LoopyWeightedSampling(object):
 
     def currentPosterior(self, *args) -> "gum::Potential< double > const &":
         r"""
-        currentPosterior(self, id) -> Potential
-        currentPosterior(self, name) -> Potential
+        currentPosterior(LoopyWeightedSampling self, gum::NodeId const id) -> Potential
+        currentPosterior(LoopyWeightedSampling self, std::string const & name) -> Potential
 
         Computes and returns the current posterior of a node.
 
@@ -18906,7 +18966,7 @@ class LoopyGibbsSampling(object):
     __repr__ = _swig_repr
 
     def __init__(self, bn: 'IBayesNet'):
-        r"""__init__(self, bn) -> LoopyGibbsSampling"""
+        r"""__init__(LoopyGibbsSampling self, IBayesNet bn) -> LoopyGibbsSampling"""
         _pyAgrum.LoopyGibbsSampling_swiginit(self, _pyAgrum.new_LoopyGibbsSampling(bn))
 
         self._bn=bn#BN
@@ -18916,13 +18976,13 @@ class LoopyGibbsSampling(object):
     __swig_destroy__ = _pyAgrum.delete_LoopyGibbsSampling
 
     def _makeInference(self) -> "void":
-        r"""_makeInference(self)"""
+        r"""_makeInference(LoopyGibbsSampling self)"""
         return _pyAgrum.LoopyGibbsSampling__makeInference(self)
 
 
     def setVirtualLBPSize(self, vlbpsize: 'double') -> "void":
         r"""
-        setVirtualLBPSize(self, vlbpsize)
+        setVirtualLBPSize(LoopyGibbsSampling self, double vlbpsize)
 
         Parameters
         ----------
@@ -19017,7 +19077,7 @@ class LoopyGibbsSampling(object):
 
     def hardEvidenceNodes(self) -> "PyObject *":
         r"""
-        hardEvidenceNodes(self) -> PyObject *
+        hardEvidenceNodes(LoopyGibbsSampling self) -> PyObject *
 
         Returns
         -------
@@ -19030,7 +19090,7 @@ class LoopyGibbsSampling(object):
 
     def softEvidenceNodes(self) -> "PyObject *":
         r"""
-        softEvidenceNodes(self) -> PyObject *
+        softEvidenceNodes(LoopyGibbsSampling self) -> PyObject *
 
         Returns
         -------
@@ -19043,7 +19103,7 @@ class LoopyGibbsSampling(object):
 
     def targets(self) -> "PyObject *":
         r"""
-        targets(self) -> PyObject *
+        targets(LoopyGibbsSampling self) -> PyObject *
 
         Returns
         -------
@@ -19056,7 +19116,7 @@ class LoopyGibbsSampling(object):
 
     def setVerbosity(self, v: 'bool') -> "void":
         r"""
-        setVerbosity(self, v)
+        setVerbosity(LoopyGibbsSampling self, bool v)
 
         Parameters
         ----------
@@ -19069,7 +19129,7 @@ class LoopyGibbsSampling(object):
 
     def setEpsilon(self, eps: 'double') -> "void":
         r"""
-        setEpsilon(self, eps)
+        setEpsilon(LoopyGibbsSampling self, double eps)
 
         Parameters
         ----------
@@ -19087,7 +19147,7 @@ class LoopyGibbsSampling(object):
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
         r"""
-        setMinEpsilonRate(self, rate)
+        setMinEpsilonRate(LoopyGibbsSampling self, double rate)
 
         Parameters
         ----------
@@ -19100,7 +19160,7 @@ class LoopyGibbsSampling(object):
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
         r"""
-        setMaxIter(self, max)
+        setMaxIter(LoopyGibbsSampling self, gum::Size max)
 
         Parameters
         ----------
@@ -19118,7 +19178,7 @@ class LoopyGibbsSampling(object):
 
     def setMaxTime(self, timeout: 'double') -> "void":
         r"""
-        setMaxTime(self, timeout)
+        setMaxTime(LoopyGibbsSampling self, double timeout)
 
         Parameters
         ----------
@@ -19136,7 +19196,7 @@ class LoopyGibbsSampling(object):
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
         r"""
-        setPeriodSize(self, p)
+        setPeriodSize(LoopyGibbsSampling self, gum::Size p)
 
         Parameters
         ----------
@@ -19154,7 +19214,7 @@ class LoopyGibbsSampling(object):
 
     def verbosity(self) -> "bool":
         r"""
-        verbosity(self) -> bool
+        verbosity(LoopyGibbsSampling self) -> bool
 
         Returns
         -------
@@ -19167,7 +19227,7 @@ class LoopyGibbsSampling(object):
 
     def epsilon(self) -> "double":
         r"""
-        epsilon(self) -> double
+        epsilon(LoopyGibbsSampling self) -> double
 
         Returns
         -------
@@ -19180,7 +19240,7 @@ class LoopyGibbsSampling(object):
 
     def minEpsilonRate(self) -> "double":
         r"""
-        minEpsilonRate(self) -> double
+        minEpsilonRate(LoopyGibbsSampling self) -> double
 
         Returns
         -------
@@ -19193,7 +19253,7 @@ class LoopyGibbsSampling(object):
 
     def maxIter(self) -> "gum::Size":
         r"""
-        maxIter(self) -> gum::Size
+        maxIter(LoopyGibbsSampling self) -> gum::Size
 
         Returns
         -------
@@ -19206,7 +19266,7 @@ class LoopyGibbsSampling(object):
 
     def maxTime(self) -> "double":
         r"""
-        maxTime(self) -> double
+        maxTime(LoopyGibbsSampling self) -> double
 
         Returns
         -------
@@ -19219,7 +19279,7 @@ class LoopyGibbsSampling(object):
 
     def periodSize(self) -> "gum::Size":
         r"""
-        periodSize(self) -> gum::Size
+        periodSize(LoopyGibbsSampling self) -> gum::Size
 
         Returns
         -------
@@ -19237,7 +19297,7 @@ class LoopyGibbsSampling(object):
 
     def nbrIterations(self) -> "gum::Size":
         r"""
-        nbrIterations(self) -> gum::Size
+        nbrIterations(LoopyGibbsSampling self) -> gum::Size
 
         Returns
         -------
@@ -19250,7 +19310,7 @@ class LoopyGibbsSampling(object):
 
     def currentTime(self) -> "double":
         r"""
-        currentTime(self) -> double
+        currentTime(LoopyGibbsSampling self) -> double
 
         Returns
         -------
@@ -19263,7 +19323,7 @@ class LoopyGibbsSampling(object):
 
     def messageApproximationScheme(self) -> "std::string":
         r"""
-        messageApproximationScheme(self) -> std::string
+        messageApproximationScheme(LoopyGibbsSampling self) -> std::string
 
         Returns
         -------
@@ -19276,7 +19336,7 @@ class LoopyGibbsSampling(object):
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
         r"""
-        history(self) -> Vector
+        history(LoopyGibbsSampling self) -> Vector
 
         Returns
         -------
@@ -19294,7 +19354,7 @@ class LoopyGibbsSampling(object):
 
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
         r"""
-        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+        asIApproximationSchemeConfiguration(LoopyGibbsSampling self) -> IApproximationSchemeConfiguration
 
         Returns
         -------
@@ -19306,7 +19366,7 @@ class LoopyGibbsSampling(object):
 
     def makeInference(self) -> "void":
         r"""
-        makeInference(self)
+        makeInference(LoopyGibbsSampling self)
 
         Perform the heavy computations needed to compute the targets' posteriors
 
@@ -19319,8 +19379,8 @@ class LoopyGibbsSampling(object):
 
     def posterior(self, *args) -> "gum::Potential< double > const":
         r"""
-        posterior(self, var) -> Potential
-        posterior(self, nodeName) -> Potential
+        posterior(LoopyGibbsSampling self, gum::NodeId const var) -> Potential
+        posterior(LoopyGibbsSampling self, std::string const nodeName) -> Potential
 
         Computes and returns the posterior of a node.
 
@@ -19347,7 +19407,7 @@ class LoopyGibbsSampling(object):
 
     def BN(self) -> "gum::IBayesNet< double > const &":
         r"""
-        BN(self) -> IBayesNet
+        BN(LoopyGibbsSampling self) -> IBayesNet
 
         Returns
         -------
@@ -19365,12 +19425,12 @@ class LoopyGibbsSampling(object):
 
     def addEvidence(self, *args) -> "void":
         r"""
-        addEvidence(self, id, val)
-        addEvidence(self, nodeName, val)
-        addEvidence(self, id, val)
-        addEvidence(self, nodeName, val)
-        addEvidence(self, id, vals)
-        addEvidence(self, nodeName, vals)
+        addEvidence(LoopyGibbsSampling self, gum::NodeId const id, gum::Idx const val)
+        addEvidence(LoopyGibbsSampling self, std::string const & nodeName, gum::Idx const val)
+        addEvidence(LoopyGibbsSampling self, gum::NodeId const id, std::string const & val)
+        addEvidence(LoopyGibbsSampling self, std::string const & nodeName, std::string const & val)
+        addEvidence(LoopyGibbsSampling self, gum::NodeId const id, Vector vals)
+        addEvidence(LoopyGibbsSampling self, std::string const & nodeName, Vector vals)
 
         Adds a new evidence on a node (might be soft or hard).
 
@@ -19406,12 +19466,12 @@ class LoopyGibbsSampling(object):
 
     def chgEvidence(self, *args) -> "void":
         r"""
-        chgEvidence(self, id, val)
-        chgEvidence(self, nodeName, val)
-        chgEvidence(self, id, val)
-        chgEvidence(self, nodeName, val)
-        chgEvidence(self, id, vals)
-        chgEvidence(self, nodeName, vals)
+        chgEvidence(LoopyGibbsSampling self, gum::NodeId const id, gum::Idx const val)
+        chgEvidence(LoopyGibbsSampling self, std::string const & nodeName, gum::Idx const val)
+        chgEvidence(LoopyGibbsSampling self, gum::NodeId const id, std::string const & val)
+        chgEvidence(LoopyGibbsSampling self, std::string const & nodeName, std::string const & val)
+        chgEvidence(LoopyGibbsSampling self, gum::NodeId const id, Vector vals)
+        chgEvidence(LoopyGibbsSampling self, std::string const & nodeName, Vector vals)
 
         Change the value of an already existing evidence on a node (might be soft or hard).
 
@@ -19447,8 +19507,8 @@ class LoopyGibbsSampling(object):
 
     def hasEvidence(self, *args) -> "bool":
         r"""
-        hasEvidence(self, id) -> bool
-        hasEvidence(self, nodeName) -> bool
+        hasEvidence(LoopyGibbsSampling self, gum::NodeId const id) -> bool
+        hasEvidence(LoopyGibbsSampling self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -19473,7 +19533,7 @@ class LoopyGibbsSampling(object):
 
     def eraseAllEvidence(self) -> "void":
         r"""
-        eraseAllEvidence(self)
+        eraseAllEvidence(LoopyGibbsSampling self)
 
         Removes all the evidence entered into the network.
 
@@ -19483,8 +19543,8 @@ class LoopyGibbsSampling(object):
 
     def eraseEvidence(self, *args) -> "void":
         r"""
-        eraseEvidence(self, id)
-        eraseEvidence(self, nodeName)
+        eraseEvidence(LoopyGibbsSampling self, gum::NodeId const id)
+        eraseEvidence(LoopyGibbsSampling self, std::string const & nodeName)
 
         Remove the evidence, if any, corresponding to the node Id or name.
 
@@ -19506,7 +19566,7 @@ class LoopyGibbsSampling(object):
 
     def hasHardEvidence(self, nodeName: 'std::string const &') -> "bool":
         r"""
-        hasHardEvidence(self, nodeName) -> bool
+        hasHardEvidence(LoopyGibbsSampling self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -19531,8 +19591,8 @@ class LoopyGibbsSampling(object):
 
     def hasSoftEvidence(self, *args) -> "bool":
         r"""
-        hasSoftEvidence(self, id) -> bool
-        hasSoftEvidence(self, nodeName) -> bool
+        hasSoftEvidence(LoopyGibbsSampling self, gum::NodeId const id) -> bool
+        hasSoftEvidence(LoopyGibbsSampling self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -19557,7 +19617,7 @@ class LoopyGibbsSampling(object):
 
     def nbrEvidence(self) -> "gum::Size":
         r"""
-        nbrEvidence(self) -> gum::Size
+        nbrEvidence(LoopyGibbsSampling self) -> gum::Size
 
         Returns
         -------
@@ -19570,7 +19630,7 @@ class LoopyGibbsSampling(object):
 
     def nbrHardEvidence(self) -> "gum::Size":
         r"""
-        nbrHardEvidence(self) -> gum::Size
+        nbrHardEvidence(LoopyGibbsSampling self) -> gum::Size
 
         Returns
         -------
@@ -19583,7 +19643,7 @@ class LoopyGibbsSampling(object):
 
     def nbrSoftEvidence(self) -> "gum::Size":
         r"""
-        nbrSoftEvidence(self) -> gum::Size
+        nbrSoftEvidence(LoopyGibbsSampling self) -> gum::Size
 
         Returns
         -------
@@ -19596,7 +19656,7 @@ class LoopyGibbsSampling(object):
 
     def eraseAllTargets(self) -> "void":
         r"""
-        eraseAllTargets(self)
+        eraseAllTargets(LoopyGibbsSampling self)
 
         Clear all previously defined targets (marginal and joint targets).
 
@@ -19608,7 +19668,7 @@ class LoopyGibbsSampling(object):
 
     def addAllTargets(self) -> "void":
         r"""
-        addAllTargets(self)
+        addAllTargets(LoopyGibbsSampling self)
 
         Add all the nodes as targets.
 
@@ -19618,8 +19678,8 @@ class LoopyGibbsSampling(object):
 
     def addTarget(self, *args) -> "void":
         r"""
-        addTarget(self, target)
-        addTarget(self, nodeName)
+        addTarget(LoopyGibbsSampling self, gum::NodeId const target)
+        addTarget(LoopyGibbsSampling self, std::string const & nodeName)
 
         Add a marginal target to the list of targets.
 
@@ -19641,8 +19701,8 @@ class LoopyGibbsSampling(object):
 
     def eraseTarget(self, *args) -> "void":
         r"""
-        eraseTarget(self, target)
-        eraseTarget(self, nodeName)
+        eraseTarget(LoopyGibbsSampling self, gum::NodeId const target)
+        eraseTarget(LoopyGibbsSampling self, std::string const & nodeName)
 
         Remove, if existing, the marginal target.
 
@@ -19666,8 +19726,8 @@ class LoopyGibbsSampling(object):
 
     def isTarget(self, *args) -> "bool":
         r"""
-        isTarget(self, variable) -> bool
-        isTarget(self, nodeName) -> bool
+        isTarget(LoopyGibbsSampling self, gum::NodeId const variable) -> bool
+        isTarget(LoopyGibbsSampling self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -19694,7 +19754,7 @@ class LoopyGibbsSampling(object):
 
     def nbrTargets(self) -> "gum::Size":
         r"""
-        nbrTargets(self) -> gum::Size
+        nbrTargets(LoopyGibbsSampling self) -> gum::Size
 
         Returns
         -------
@@ -19707,8 +19767,8 @@ class LoopyGibbsSampling(object):
 
     def H(self, *args) -> "double":
         r"""
-        H(self, X) -> double
-        H(self, nodeName) -> double
+        H(LoopyGibbsSampling self, gum::NodeId const X) -> double
+        H(LoopyGibbsSampling self, std::string const & nodeName) -> double
 
         Parameters
         ----------
@@ -19728,8 +19788,8 @@ class LoopyGibbsSampling(object):
 
     def evidenceImpact(self, *args) -> "gum::Potential< double >":
         r"""
-        evidenceImpact(self, target, evs) -> Potential
-        evidenceImpact(self, target, evs) -> Potential
+        evidenceImpact(LoopyGibbsSampling self, gum::NodeId target, PyObject * evs) -> Potential
+        evidenceImpact(LoopyGibbsSampling self, std::string const & target, Vector_string evs) -> Potential
 
         Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
 
@@ -19755,8 +19815,8 @@ class LoopyGibbsSampling(object):
 
     def currentPosterior(self, *args) -> "gum::Potential< double > const &":
         r"""
-        currentPosterior(self, id) -> Potential
-        currentPosterior(self, name) -> Potential
+        currentPosterior(LoopyGibbsSampling self, gum::NodeId const id) -> Potential
+        currentPosterior(LoopyGibbsSampling self, std::string const & name) -> Potential
 
         Computes and returns the current posterior of a node.
 
@@ -19783,7 +19843,7 @@ class LoopyGibbsSampling(object):
 
     def nbrDrawnVar(self) -> "gum::Size":
         r"""
-        nbrDrawnVar(self) -> gum::Size
+        nbrDrawnVar(LoopyGibbsSampling self) -> gum::Size
 
         Returns
         -------
@@ -19796,7 +19856,7 @@ class LoopyGibbsSampling(object):
 
     def setNbrDrawnVar(self, _nbr: 'gum::Size') -> "void":
         r"""
-        setNbrDrawnVar(self, _nbr)
+        setNbrDrawnVar(LoopyGibbsSampling self, gum::Size _nbr)
 
         Parameters
         ----------
@@ -19809,7 +19869,7 @@ class LoopyGibbsSampling(object):
 
     def isDrawnAtRandom(self) -> "bool":
         r"""
-        isDrawnAtRandom(self) -> bool
+        isDrawnAtRandom(LoopyGibbsSampling self) -> bool
 
         Returns
         -------
@@ -19822,7 +19882,7 @@ class LoopyGibbsSampling(object):
 
     def setDrawnAtRandom(self, _atRandom: 'bool') -> "void":
         r"""
-        setDrawnAtRandom(self, _atRandom)
+        setDrawnAtRandom(LoopyGibbsSampling self, bool _atRandom)
 
         Parameters
         ----------
@@ -19835,7 +19895,7 @@ class LoopyGibbsSampling(object):
 
     def burnIn(self) -> "gum::Size":
         r"""
-        burnIn(self) -> gum::Size
+        burnIn(LoopyGibbsSampling self) -> gum::Size
 
         Returns
         -------
@@ -19848,7 +19908,7 @@ class LoopyGibbsSampling(object):
 
     def setBurnIn(self, b: 'gum::Size') -> "void":
         r"""
-        setBurnIn(self, b)
+        setBurnIn(LoopyGibbsSampling self, gum::Size b)
 
         Parameters
         ----------
@@ -19869,7 +19929,7 @@ class LoopyMonteCarloSampling(object):
     __repr__ = _swig_repr
 
     def __init__(self, bn: 'IBayesNet'):
-        r"""__init__(self, bn) -> LoopyMonteCarloSampling"""
+        r"""__init__(LoopyMonteCarloSampling self, IBayesNet bn) -> LoopyMonteCarloSampling"""
         _pyAgrum.LoopyMonteCarloSampling_swiginit(self, _pyAgrum.new_LoopyMonteCarloSampling(bn))
 
         self._bn=bn#BN
@@ -19879,13 +19939,13 @@ class LoopyMonteCarloSampling(object):
     __swig_destroy__ = _pyAgrum.delete_LoopyMonteCarloSampling
 
     def _makeInference(self) -> "void":
-        r"""_makeInference(self)"""
+        r"""_makeInference(LoopyMonteCarloSampling self)"""
         return _pyAgrum.LoopyMonteCarloSampling__makeInference(self)
 
 
     def setVirtualLBPSize(self, vlbpsize: 'double') -> "void":
         r"""
-        setVirtualLBPSize(self, vlbpsize)
+        setVirtualLBPSize(LoopyMonteCarloSampling self, double vlbpsize)
 
         Parameters
         ----------
@@ -19980,7 +20040,7 @@ class LoopyMonteCarloSampling(object):
 
     def hardEvidenceNodes(self) -> "PyObject *":
         r"""
-        hardEvidenceNodes(self) -> PyObject *
+        hardEvidenceNodes(LoopyMonteCarloSampling self) -> PyObject *
 
         Returns
         -------
@@ -19993,7 +20053,7 @@ class LoopyMonteCarloSampling(object):
 
     def softEvidenceNodes(self) -> "PyObject *":
         r"""
-        softEvidenceNodes(self) -> PyObject *
+        softEvidenceNodes(LoopyMonteCarloSampling self) -> PyObject *
 
         Returns
         -------
@@ -20006,7 +20066,7 @@ class LoopyMonteCarloSampling(object):
 
     def targets(self) -> "PyObject *":
         r"""
-        targets(self) -> PyObject *
+        targets(LoopyMonteCarloSampling self) -> PyObject *
 
         Returns
         -------
@@ -20019,7 +20079,7 @@ class LoopyMonteCarloSampling(object):
 
     def setVerbosity(self, v: 'bool') -> "void":
         r"""
-        setVerbosity(self, v)
+        setVerbosity(LoopyMonteCarloSampling self, bool v)
 
         Parameters
         ----------
@@ -20032,7 +20092,7 @@ class LoopyMonteCarloSampling(object):
 
     def setEpsilon(self, eps: 'double') -> "void":
         r"""
-        setEpsilon(self, eps)
+        setEpsilon(LoopyMonteCarloSampling self, double eps)
 
         Parameters
         ----------
@@ -20050,7 +20110,7 @@ class LoopyMonteCarloSampling(object):
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
         r"""
-        setMinEpsilonRate(self, rate)
+        setMinEpsilonRate(LoopyMonteCarloSampling self, double rate)
 
         Parameters
         ----------
@@ -20063,7 +20123,7 @@ class LoopyMonteCarloSampling(object):
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
         r"""
-        setMaxIter(self, max)
+        setMaxIter(LoopyMonteCarloSampling self, gum::Size max)
 
         Parameters
         ----------
@@ -20081,7 +20141,7 @@ class LoopyMonteCarloSampling(object):
 
     def setMaxTime(self, timeout: 'double') -> "void":
         r"""
-        setMaxTime(self, timeout)
+        setMaxTime(LoopyMonteCarloSampling self, double timeout)
 
         Parameters
         ----------
@@ -20099,7 +20159,7 @@ class LoopyMonteCarloSampling(object):
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
         r"""
-        setPeriodSize(self, p)
+        setPeriodSize(LoopyMonteCarloSampling self, gum::Size p)
 
         Parameters
         ----------
@@ -20117,7 +20177,7 @@ class LoopyMonteCarloSampling(object):
 
     def verbosity(self) -> "bool":
         r"""
-        verbosity(self) -> bool
+        verbosity(LoopyMonteCarloSampling self) -> bool
 
         Returns
         -------
@@ -20130,7 +20190,7 @@ class LoopyMonteCarloSampling(object):
 
     def epsilon(self) -> "double":
         r"""
-        epsilon(self) -> double
+        epsilon(LoopyMonteCarloSampling self) -> double
 
         Returns
         -------
@@ -20143,7 +20203,7 @@ class LoopyMonteCarloSampling(object):
 
     def minEpsilonRate(self) -> "double":
         r"""
-        minEpsilonRate(self) -> double
+        minEpsilonRate(LoopyMonteCarloSampling self) -> double
 
         Returns
         -------
@@ -20156,7 +20216,7 @@ class LoopyMonteCarloSampling(object):
 
     def maxIter(self) -> "gum::Size":
         r"""
-        maxIter(self) -> gum::Size
+        maxIter(LoopyMonteCarloSampling self) -> gum::Size
 
         Returns
         -------
@@ -20169,7 +20229,7 @@ class LoopyMonteCarloSampling(object):
 
     def maxTime(self) -> "double":
         r"""
-        maxTime(self) -> double
+        maxTime(LoopyMonteCarloSampling self) -> double
 
         Returns
         -------
@@ -20182,7 +20242,7 @@ class LoopyMonteCarloSampling(object):
 
     def periodSize(self) -> "gum::Size":
         r"""
-        periodSize(self) -> gum::Size
+        periodSize(LoopyMonteCarloSampling self) -> gum::Size
 
         Returns
         -------
@@ -20200,7 +20260,7 @@ class LoopyMonteCarloSampling(object):
 
     def nbrIterations(self) -> "gum::Size":
         r"""
-        nbrIterations(self) -> gum::Size
+        nbrIterations(LoopyMonteCarloSampling self) -> gum::Size
 
         Returns
         -------
@@ -20213,7 +20273,7 @@ class LoopyMonteCarloSampling(object):
 
     def currentTime(self) -> "double":
         r"""
-        currentTime(self) -> double
+        currentTime(LoopyMonteCarloSampling self) -> double
 
         Returns
         -------
@@ -20226,7 +20286,7 @@ class LoopyMonteCarloSampling(object):
 
     def messageApproximationScheme(self) -> "std::string":
         r"""
-        messageApproximationScheme(self) -> std::string
+        messageApproximationScheme(LoopyMonteCarloSampling self) -> std::string
 
         Returns
         -------
@@ -20239,7 +20299,7 @@ class LoopyMonteCarloSampling(object):
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
         r"""
-        history(self) -> Vector
+        history(LoopyMonteCarloSampling self) -> Vector
 
         Returns
         -------
@@ -20257,7 +20317,7 @@ class LoopyMonteCarloSampling(object):
 
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
         r"""
-        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+        asIApproximationSchemeConfiguration(LoopyMonteCarloSampling self) -> IApproximationSchemeConfiguration
 
         Returns
         -------
@@ -20269,7 +20329,7 @@ class LoopyMonteCarloSampling(object):
 
     def makeInference(self) -> "void":
         r"""
-        makeInference(self)
+        makeInference(LoopyMonteCarloSampling self)
 
         Perform the heavy computations needed to compute the targets' posteriors
 
@@ -20282,8 +20342,8 @@ class LoopyMonteCarloSampling(object):
 
     def posterior(self, *args) -> "gum::Potential< double > const":
         r"""
-        posterior(self, var) -> Potential
-        posterior(self, nodeName) -> Potential
+        posterior(LoopyMonteCarloSampling self, gum::NodeId const var) -> Potential
+        posterior(LoopyMonteCarloSampling self, std::string const nodeName) -> Potential
 
         Computes and returns the posterior of a node.
 
@@ -20310,7 +20370,7 @@ class LoopyMonteCarloSampling(object):
 
     def BN(self) -> "gum::IBayesNet< double > const &":
         r"""
-        BN(self) -> IBayesNet
+        BN(LoopyMonteCarloSampling self) -> IBayesNet
 
         Returns
         -------
@@ -20328,12 +20388,12 @@ class LoopyMonteCarloSampling(object):
 
     def addEvidence(self, *args) -> "void":
         r"""
-        addEvidence(self, id, val)
-        addEvidence(self, nodeName, val)
-        addEvidence(self, id, val)
-        addEvidence(self, nodeName, val)
-        addEvidence(self, id, vals)
-        addEvidence(self, nodeName, vals)
+        addEvidence(LoopyMonteCarloSampling self, gum::NodeId const id, gum::Idx const val)
+        addEvidence(LoopyMonteCarloSampling self, std::string const & nodeName, gum::Idx const val)
+        addEvidence(LoopyMonteCarloSampling self, gum::NodeId const id, std::string const & val)
+        addEvidence(LoopyMonteCarloSampling self, std::string const & nodeName, std::string const & val)
+        addEvidence(LoopyMonteCarloSampling self, gum::NodeId const id, Vector vals)
+        addEvidence(LoopyMonteCarloSampling self, std::string const & nodeName, Vector vals)
 
         Adds a new evidence on a node (might be soft or hard).
 
@@ -20369,12 +20429,12 @@ class LoopyMonteCarloSampling(object):
 
     def chgEvidence(self, *args) -> "void":
         r"""
-        chgEvidence(self, id, val)
-        chgEvidence(self, nodeName, val)
-        chgEvidence(self, id, val)
-        chgEvidence(self, nodeName, val)
-        chgEvidence(self, id, vals)
-        chgEvidence(self, nodeName, vals)
+        chgEvidence(LoopyMonteCarloSampling self, gum::NodeId const id, gum::Idx const val)
+        chgEvidence(LoopyMonteCarloSampling self, std::string const & nodeName, gum::Idx const val)
+        chgEvidence(LoopyMonteCarloSampling self, gum::NodeId const id, std::string const & val)
+        chgEvidence(LoopyMonteCarloSampling self, std::string const & nodeName, std::string const & val)
+        chgEvidence(LoopyMonteCarloSampling self, gum::NodeId const id, Vector vals)
+        chgEvidence(LoopyMonteCarloSampling self, std::string const & nodeName, Vector vals)
 
         Change the value of an already existing evidence on a node (might be soft or hard).
 
@@ -20410,8 +20470,8 @@ class LoopyMonteCarloSampling(object):
 
     def hasEvidence(self, *args) -> "bool":
         r"""
-        hasEvidence(self, id) -> bool
-        hasEvidence(self, nodeName) -> bool
+        hasEvidence(LoopyMonteCarloSampling self, gum::NodeId const id) -> bool
+        hasEvidence(LoopyMonteCarloSampling self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -20436,7 +20496,7 @@ class LoopyMonteCarloSampling(object):
 
     def eraseAllEvidence(self) -> "void":
         r"""
-        eraseAllEvidence(self)
+        eraseAllEvidence(LoopyMonteCarloSampling self)
 
         Removes all the evidence entered into the network.
 
@@ -20446,8 +20506,8 @@ class LoopyMonteCarloSampling(object):
 
     def eraseEvidence(self, *args) -> "void":
         r"""
-        eraseEvidence(self, id)
-        eraseEvidence(self, nodeName)
+        eraseEvidence(LoopyMonteCarloSampling self, gum::NodeId const id)
+        eraseEvidence(LoopyMonteCarloSampling self, std::string const & nodeName)
 
         Remove the evidence, if any, corresponding to the node Id or name.
 
@@ -20469,7 +20529,7 @@ class LoopyMonteCarloSampling(object):
 
     def hasHardEvidence(self, nodeName: 'std::string const &') -> "bool":
         r"""
-        hasHardEvidence(self, nodeName) -> bool
+        hasHardEvidence(LoopyMonteCarloSampling self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -20494,8 +20554,8 @@ class LoopyMonteCarloSampling(object):
 
     def hasSoftEvidence(self, *args) -> "bool":
         r"""
-        hasSoftEvidence(self, id) -> bool
-        hasSoftEvidence(self, nodeName) -> bool
+        hasSoftEvidence(LoopyMonteCarloSampling self, gum::NodeId const id) -> bool
+        hasSoftEvidence(LoopyMonteCarloSampling self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -20520,7 +20580,7 @@ class LoopyMonteCarloSampling(object):
 
     def nbrEvidence(self) -> "gum::Size":
         r"""
-        nbrEvidence(self) -> gum::Size
+        nbrEvidence(LoopyMonteCarloSampling self) -> gum::Size
 
         Returns
         -------
@@ -20533,7 +20593,7 @@ class LoopyMonteCarloSampling(object):
 
     def nbrHardEvidence(self) -> "gum::Size":
         r"""
-        nbrHardEvidence(self) -> gum::Size
+        nbrHardEvidence(LoopyMonteCarloSampling self) -> gum::Size
 
         Returns
         -------
@@ -20546,7 +20606,7 @@ class LoopyMonteCarloSampling(object):
 
     def nbrSoftEvidence(self) -> "gum::Size":
         r"""
-        nbrSoftEvidence(self) -> gum::Size
+        nbrSoftEvidence(LoopyMonteCarloSampling self) -> gum::Size
 
         Returns
         -------
@@ -20559,7 +20619,7 @@ class LoopyMonteCarloSampling(object):
 
     def eraseAllTargets(self) -> "void":
         r"""
-        eraseAllTargets(self)
+        eraseAllTargets(LoopyMonteCarloSampling self)
 
         Clear all previously defined targets (marginal and joint targets).
 
@@ -20571,7 +20631,7 @@ class LoopyMonteCarloSampling(object):
 
     def addAllTargets(self) -> "void":
         r"""
-        addAllTargets(self)
+        addAllTargets(LoopyMonteCarloSampling self)
 
         Add all the nodes as targets.
 
@@ -20581,8 +20641,8 @@ class LoopyMonteCarloSampling(object):
 
     def addTarget(self, *args) -> "void":
         r"""
-        addTarget(self, target)
-        addTarget(self, nodeName)
+        addTarget(LoopyMonteCarloSampling self, gum::NodeId const target)
+        addTarget(LoopyMonteCarloSampling self, std::string const & nodeName)
 
         Add a marginal target to the list of targets.
 
@@ -20604,8 +20664,8 @@ class LoopyMonteCarloSampling(object):
 
     def eraseTarget(self, *args) -> "void":
         r"""
-        eraseTarget(self, target)
-        eraseTarget(self, nodeName)
+        eraseTarget(LoopyMonteCarloSampling self, gum::NodeId const target)
+        eraseTarget(LoopyMonteCarloSampling self, std::string const & nodeName)
 
         Remove, if existing, the marginal target.
 
@@ -20629,8 +20689,8 @@ class LoopyMonteCarloSampling(object):
 
     def isTarget(self, *args) -> "bool":
         r"""
-        isTarget(self, variable) -> bool
-        isTarget(self, nodeName) -> bool
+        isTarget(LoopyMonteCarloSampling self, gum::NodeId const variable) -> bool
+        isTarget(LoopyMonteCarloSampling self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -20657,7 +20717,7 @@ class LoopyMonteCarloSampling(object):
 
     def nbrTargets(self) -> "gum::Size":
         r"""
-        nbrTargets(self) -> gum::Size
+        nbrTargets(LoopyMonteCarloSampling self) -> gum::Size
 
         Returns
         -------
@@ -20670,8 +20730,8 @@ class LoopyMonteCarloSampling(object):
 
     def H(self, *args) -> "double":
         r"""
-        H(self, X) -> double
-        H(self, nodeName) -> double
+        H(LoopyMonteCarloSampling self, gum::NodeId const X) -> double
+        H(LoopyMonteCarloSampling self, std::string const & nodeName) -> double
 
         Parameters
         ----------
@@ -20691,8 +20751,8 @@ class LoopyMonteCarloSampling(object):
 
     def evidenceImpact(self, *args) -> "gum::Potential< double >":
         r"""
-        evidenceImpact(self, target, evs) -> Potential
-        evidenceImpact(self, target, evs) -> Potential
+        evidenceImpact(LoopyMonteCarloSampling self, gum::NodeId target, PyObject * evs) -> Potential
+        evidenceImpact(LoopyMonteCarloSampling self, std::string const & target, Vector_string evs) -> Potential
 
         Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
 
@@ -20718,8 +20778,8 @@ class LoopyMonteCarloSampling(object):
 
     def currentPosterior(self, *args) -> "gum::Potential< double > const &":
         r"""
-        currentPosterior(self, id) -> Potential
-        currentPosterior(self, name) -> Potential
+        currentPosterior(LoopyMonteCarloSampling self, gum::NodeId const id) -> Potential
+        currentPosterior(LoopyMonteCarloSampling self, std::string const & name) -> Potential
 
         Computes and returns the current posterior of a node.
 
@@ -20768,7 +20828,7 @@ class LoopyBeliefPropagation(object):
     __repr__ = _swig_repr
 
     def __init__(self, bn: 'IBayesNet'):
-        r"""__init__(self, bn) -> LoopyBeliefPropagation"""
+        r"""__init__(LoopyBeliefPropagation self, IBayesNet bn) -> LoopyBeliefPropagation"""
         _pyAgrum.LoopyBeliefPropagation_swiginit(self, _pyAgrum.new_LoopyBeliefPropagation(bn))
 
         self._bn=bn#BN
@@ -20861,7 +20921,7 @@ class LoopyBeliefPropagation(object):
 
     def hardEvidenceNodes(self) -> "PyObject *":
         r"""
-        hardEvidenceNodes(self) -> PyObject *
+        hardEvidenceNodes(LoopyBeliefPropagation self) -> PyObject *
 
         Returns
         -------
@@ -20874,7 +20934,7 @@ class LoopyBeliefPropagation(object):
 
     def softEvidenceNodes(self) -> "PyObject *":
         r"""
-        softEvidenceNodes(self) -> PyObject *
+        softEvidenceNodes(LoopyBeliefPropagation self) -> PyObject *
 
         Returns
         -------
@@ -20887,7 +20947,7 @@ class LoopyBeliefPropagation(object):
 
     def targets(self) -> "PyObject *":
         r"""
-        targets(self) -> PyObject *
+        targets(LoopyBeliefPropagation self) -> PyObject *
 
         Returns
         -------
@@ -20900,7 +20960,7 @@ class LoopyBeliefPropagation(object):
 
     def setVerbosity(self, v: 'bool') -> "void":
         r"""
-        setVerbosity(self, v)
+        setVerbosity(LoopyBeliefPropagation self, bool v)
 
         Parameters
         ----------
@@ -20913,7 +20973,7 @@ class LoopyBeliefPropagation(object):
 
     def setEpsilon(self, eps: 'double') -> "void":
         r"""
-        setEpsilon(self, eps)
+        setEpsilon(LoopyBeliefPropagation self, double eps)
 
         Parameters
         ----------
@@ -20931,7 +20991,7 @@ class LoopyBeliefPropagation(object):
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
         r"""
-        setMinEpsilonRate(self, rate)
+        setMinEpsilonRate(LoopyBeliefPropagation self, double rate)
 
         Parameters
         ----------
@@ -20944,7 +21004,7 @@ class LoopyBeliefPropagation(object):
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
         r"""
-        setMaxIter(self, max)
+        setMaxIter(LoopyBeliefPropagation self, gum::Size max)
 
         Parameters
         ----------
@@ -20962,7 +21022,7 @@ class LoopyBeliefPropagation(object):
 
     def setMaxTime(self, timeout: 'double') -> "void":
         r"""
-        setMaxTime(self, timeout)
+        setMaxTime(LoopyBeliefPropagation self, double timeout)
 
         Parameters
         ----------
@@ -20980,7 +21040,7 @@ class LoopyBeliefPropagation(object):
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
         r"""
-        setPeriodSize(self, p)
+        setPeriodSize(LoopyBeliefPropagation self, gum::Size p)
 
         Parameters
         ----------
@@ -20998,7 +21058,7 @@ class LoopyBeliefPropagation(object):
 
     def verbosity(self) -> "bool":
         r"""
-        verbosity(self) -> bool
+        verbosity(LoopyBeliefPropagation self) -> bool
 
         Returns
         -------
@@ -21011,7 +21071,7 @@ class LoopyBeliefPropagation(object):
 
     def epsilon(self) -> "double":
         r"""
-        epsilon(self) -> double
+        epsilon(LoopyBeliefPropagation self) -> double
 
         Returns
         -------
@@ -21024,7 +21084,7 @@ class LoopyBeliefPropagation(object):
 
     def minEpsilonRate(self) -> "double":
         r"""
-        minEpsilonRate(self) -> double
+        minEpsilonRate(LoopyBeliefPropagation self) -> double
 
         Returns
         -------
@@ -21037,7 +21097,7 @@ class LoopyBeliefPropagation(object):
 
     def maxIter(self) -> "gum::Size":
         r"""
-        maxIter(self) -> gum::Size
+        maxIter(LoopyBeliefPropagation self) -> gum::Size
 
         Returns
         -------
@@ -21050,7 +21110,7 @@ class LoopyBeliefPropagation(object):
 
     def maxTime(self) -> "double":
         r"""
-        maxTime(self) -> double
+        maxTime(LoopyBeliefPropagation self) -> double
 
         Returns
         -------
@@ -21063,7 +21123,7 @@ class LoopyBeliefPropagation(object):
 
     def periodSize(self) -> "gum::Size":
         r"""
-        periodSize(self) -> gum::Size
+        periodSize(LoopyBeliefPropagation self) -> gum::Size
 
         Returns
         -------
@@ -21081,7 +21141,7 @@ class LoopyBeliefPropagation(object):
 
     def nbrIterations(self) -> "gum::Size":
         r"""
-        nbrIterations(self) -> gum::Size
+        nbrIterations(LoopyBeliefPropagation self) -> gum::Size
 
         Returns
         -------
@@ -21094,7 +21154,7 @@ class LoopyBeliefPropagation(object):
 
     def currentTime(self) -> "double":
         r"""
-        currentTime(self) -> double
+        currentTime(LoopyBeliefPropagation self) -> double
 
         Returns
         -------
@@ -21107,7 +21167,7 @@ class LoopyBeliefPropagation(object):
 
     def messageApproximationScheme(self) -> "std::string":
         r"""
-        messageApproximationScheme(self) -> std::string
+        messageApproximationScheme(LoopyBeliefPropagation self) -> std::string
 
         Returns
         -------
@@ -21120,7 +21180,7 @@ class LoopyBeliefPropagation(object):
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
         r"""
-        history(self) -> Vector
+        history(LoopyBeliefPropagation self) -> Vector
 
         Returns
         -------
@@ -21138,7 +21198,7 @@ class LoopyBeliefPropagation(object):
 
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
         r"""
-        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+        asIApproximationSchemeConfiguration(LoopyBeliefPropagation self) -> IApproximationSchemeConfiguration
 
         Returns
         -------
@@ -21150,7 +21210,7 @@ class LoopyBeliefPropagation(object):
 
     def makeInference(self) -> "void":
         r"""
-        makeInference(self)
+        makeInference(LoopyBeliefPropagation self)
 
         Perform the heavy computations needed to compute the targets' posteriors
 
@@ -21163,8 +21223,8 @@ class LoopyBeliefPropagation(object):
 
     def posterior(self, *args) -> "gum::Potential< double > const":
         r"""
-        posterior(self, var) -> Potential
-        posterior(self, nodeName) -> Potential
+        posterior(LoopyBeliefPropagation self, gum::NodeId const var) -> Potential
+        posterior(LoopyBeliefPropagation self, std::string const nodeName) -> Potential
 
         Computes and returns the posterior of a node.
 
@@ -21191,7 +21251,7 @@ class LoopyBeliefPropagation(object):
 
     def BN(self) -> "gum::IBayesNet< double > const &":
         r"""
-        BN(self) -> IBayesNet
+        BN(LoopyBeliefPropagation self) -> IBayesNet
 
         Returns
         -------
@@ -21209,12 +21269,12 @@ class LoopyBeliefPropagation(object):
 
     def addEvidence(self, *args) -> "void":
         r"""
-        addEvidence(self, id, val)
-        addEvidence(self, nodeName, val)
-        addEvidence(self, id, val)
-        addEvidence(self, nodeName, val)
-        addEvidence(self, id, vals)
-        addEvidence(self, nodeName, vals)
+        addEvidence(LoopyBeliefPropagation self, gum::NodeId const id, gum::Idx const val)
+        addEvidence(LoopyBeliefPropagation self, std::string const & nodeName, gum::Idx const val)
+        addEvidence(LoopyBeliefPropagation self, gum::NodeId const id, std::string const & val)
+        addEvidence(LoopyBeliefPropagation self, std::string const & nodeName, std::string const & val)
+        addEvidence(LoopyBeliefPropagation self, gum::NodeId const id, Vector vals)
+        addEvidence(LoopyBeliefPropagation self, std::string const & nodeName, Vector vals)
 
         Adds a new evidence on a node (might be soft or hard).
 
@@ -21250,12 +21310,12 @@ class LoopyBeliefPropagation(object):
 
     def chgEvidence(self, *args) -> "void":
         r"""
-        chgEvidence(self, id, val)
-        chgEvidence(self, nodeName, val)
-        chgEvidence(self, id, val)
-        chgEvidence(self, nodeName, val)
-        chgEvidence(self, id, vals)
-        chgEvidence(self, nodeName, vals)
+        chgEvidence(LoopyBeliefPropagation self, gum::NodeId const id, gum::Idx const val)
+        chgEvidence(LoopyBeliefPropagation self, std::string const & nodeName, gum::Idx const val)
+        chgEvidence(LoopyBeliefPropagation self, gum::NodeId const id, std::string const & val)
+        chgEvidence(LoopyBeliefPropagation self, std::string const & nodeName, std::string const & val)
+        chgEvidence(LoopyBeliefPropagation self, gum::NodeId const id, Vector vals)
+        chgEvidence(LoopyBeliefPropagation self, std::string const & nodeName, Vector vals)
 
         Change the value of an already existing evidence on a node (might be soft or hard).
 
@@ -21291,8 +21351,8 @@ class LoopyBeliefPropagation(object):
 
     def hasEvidence(self, *args) -> "bool":
         r"""
-        hasEvidence(self, id) -> bool
-        hasEvidence(self, nodeName) -> bool
+        hasEvidence(LoopyBeliefPropagation self, gum::NodeId const id) -> bool
+        hasEvidence(LoopyBeliefPropagation self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -21317,7 +21377,7 @@ class LoopyBeliefPropagation(object):
 
     def eraseAllEvidence(self) -> "void":
         r"""
-        eraseAllEvidence(self)
+        eraseAllEvidence(LoopyBeliefPropagation self)
 
         Removes all the evidence entered into the network.
 
@@ -21327,8 +21387,8 @@ class LoopyBeliefPropagation(object):
 
     def eraseEvidence(self, *args) -> "void":
         r"""
-        eraseEvidence(self, id)
-        eraseEvidence(self, nodeName)
+        eraseEvidence(LoopyBeliefPropagation self, gum::NodeId const id)
+        eraseEvidence(LoopyBeliefPropagation self, std::string const & nodeName)
 
         Remove the evidence, if any, corresponding to the node Id or name.
 
@@ -21350,7 +21410,7 @@ class LoopyBeliefPropagation(object):
 
     def hasHardEvidence(self, nodeName: 'std::string const &') -> "bool":
         r"""
-        hasHardEvidence(self, nodeName) -> bool
+        hasHardEvidence(LoopyBeliefPropagation self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -21375,8 +21435,8 @@ class LoopyBeliefPropagation(object):
 
     def hasSoftEvidence(self, *args) -> "bool":
         r"""
-        hasSoftEvidence(self, id) -> bool
-        hasSoftEvidence(self, nodeName) -> bool
+        hasSoftEvidence(LoopyBeliefPropagation self, gum::NodeId const id) -> bool
+        hasSoftEvidence(LoopyBeliefPropagation self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -21401,7 +21461,7 @@ class LoopyBeliefPropagation(object):
 
     def nbrEvidence(self) -> "gum::Size":
         r"""
-        nbrEvidence(self) -> gum::Size
+        nbrEvidence(LoopyBeliefPropagation self) -> gum::Size
 
         Returns
         -------
@@ -21414,7 +21474,7 @@ class LoopyBeliefPropagation(object):
 
     def nbrHardEvidence(self) -> "gum::Size":
         r"""
-        nbrHardEvidence(self) -> gum::Size
+        nbrHardEvidence(LoopyBeliefPropagation self) -> gum::Size
 
         Returns
         -------
@@ -21427,7 +21487,7 @@ class LoopyBeliefPropagation(object):
 
     def nbrSoftEvidence(self) -> "gum::Size":
         r"""
-        nbrSoftEvidence(self) -> gum::Size
+        nbrSoftEvidence(LoopyBeliefPropagation self) -> gum::Size
 
         Returns
         -------
@@ -21440,7 +21500,7 @@ class LoopyBeliefPropagation(object):
 
     def eraseAllTargets(self) -> "void":
         r"""
-        eraseAllTargets(self)
+        eraseAllTargets(LoopyBeliefPropagation self)
 
         Clear all previously defined targets (marginal and joint targets).
 
@@ -21452,7 +21512,7 @@ class LoopyBeliefPropagation(object):
 
     def addAllTargets(self) -> "void":
         r"""
-        addAllTargets(self)
+        addAllTargets(LoopyBeliefPropagation self)
 
         Add all the nodes as targets.
 
@@ -21462,8 +21522,8 @@ class LoopyBeliefPropagation(object):
 
     def addTarget(self, *args) -> "void":
         r"""
-        addTarget(self, target)
-        addTarget(self, nodeName)
+        addTarget(LoopyBeliefPropagation self, gum::NodeId const target)
+        addTarget(LoopyBeliefPropagation self, std::string const & nodeName)
 
         Add a marginal target to the list of targets.
 
@@ -21485,8 +21545,8 @@ class LoopyBeliefPropagation(object):
 
     def eraseTarget(self, *args) -> "void":
         r"""
-        eraseTarget(self, target)
-        eraseTarget(self, nodeName)
+        eraseTarget(LoopyBeliefPropagation self, gum::NodeId const target)
+        eraseTarget(LoopyBeliefPropagation self, std::string const & nodeName)
 
         Remove, if existing, the marginal target.
 
@@ -21510,8 +21570,8 @@ class LoopyBeliefPropagation(object):
 
     def isTarget(self, *args) -> "bool":
         r"""
-        isTarget(self, variable) -> bool
-        isTarget(self, nodeName) -> bool
+        isTarget(LoopyBeliefPropagation self, gum::NodeId const variable) -> bool
+        isTarget(LoopyBeliefPropagation self, std::string const & nodeName) -> bool
 
         Parameters
         ----------
@@ -21538,7 +21598,7 @@ class LoopyBeliefPropagation(object):
 
     def nbrTargets(self) -> "gum::Size":
         r"""
-        nbrTargets(self) -> gum::Size
+        nbrTargets(LoopyBeliefPropagation self) -> gum::Size
 
         Returns
         -------
@@ -21551,8 +21611,8 @@ class LoopyBeliefPropagation(object):
 
     def H(self, *args) -> "double":
         r"""
-        H(self, X) -> double
-        H(self, nodeName) -> double
+        H(LoopyBeliefPropagation self, gum::NodeId const X) -> double
+        H(LoopyBeliefPropagation self, std::string const & nodeName) -> double
 
         Parameters
         ----------
@@ -21572,8 +21632,8 @@ class LoopyBeliefPropagation(object):
 
     def evidenceImpact(self, *args) -> "gum::Potential< double >":
         r"""
-        evidenceImpact(self, target, evs) -> Potential
-        evidenceImpact(self, target, evs) -> Potential
+        evidenceImpact(LoopyBeliefPropagation self, gum::NodeId target, PyObject * evs) -> Potential
+        evidenceImpact(LoopyBeliefPropagation self, std::string const & target, Vector_string evs) -> Potential
 
         Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
 
@@ -21600,18 +21660,18 @@ class LoopyBeliefPropagation(object):
 # Register LoopyBeliefPropagation in _pyAgrum:
 _pyAgrum.LoopyBeliefPropagation_swigregister(LoopyBeliefPropagation)
 
-class BruteForceKL(object):
+class ExactBNdistance(object):
     r"""
 
 
 
-    Class representing an exact KL-divergence
+    Class representing exacte computation of divergence and distance between BNs
 
     Available constructors :
 
-    	``BruteForceKL(P,Q) -> BruteForceKL``
+    	``ExactBNdistance(P,Q) -> ExactBNdistance``
 
-    	``BruteForceKL(kl) -> BruteForceKL``
+    	``ExactBNdistance(ebnd) -> ExactBNdistance``
 
     Parameters
     ----------
@@ -21619,8 +21679,8 @@ class BruteForceKL(object):
     	a Bayesian network
     Q : pyAgrum.IBayesNet
     	anotre Bayesian network
-    kl : pyAgrum.KL
-    	the KL to copy
+    ebnd : pyAgrum.ExactBNdistance
+    	the exact BNdistance to copy
 
     Raises
     ------
@@ -21634,15 +21694,15 @@ class BruteForceKL(object):
 
     def __init__(self, *args):
         r"""
-        __init__(self, P, Q) -> BruteForceKL
-        __init__(self, kl) -> BruteForceKL
+        __init__(ExactBNdistance self, IBayesNet P, IBayesNet Q) -> ExactBNdistance
+        __init__(ExactBNdistance self, gum::BNdistance< double > const & kl) -> ExactBNdistance
         """
-        _pyAgrum.BruteForceKL_swiginit(self, _pyAgrum.new_BruteForceKL(*args))
-    __swig_destroy__ = _pyAgrum.delete_BruteForceKL
+        _pyAgrum.ExactBNdistance_swiginit(self, _pyAgrum.new_ExactBNdistance(*args))
+    __swig_destroy__ = _pyAgrum.delete_ExactBNdistance
 
     def compute(self) -> "PyObject *":
         r"""
-        compute(self) -> PyObject *
+        compute(ExactBNdistance self) -> PyObject *
 
         Returns
         -------
@@ -21650,24 +21710,24 @@ class BruteForceKL(object):
         	a dictionnary containing the different values after the computation.
 
         """
-        return _pyAgrum.BruteForceKL_compute(self)
+        return _pyAgrum.ExactBNdistance_compute(self)
 
 
-# Register BruteForceKL in _pyAgrum:
-_pyAgrum.BruteForceKL_swigregister(BruteForceKL)
+# Register ExactBNdistance in _pyAgrum:
+_pyAgrum.ExactBNdistance_swigregister(ExactBNdistance)
 
-class GibbsKL(ApproximationScheme):
+class GibbsBNdistance(ApproximationScheme):
     r"""
 
 
 
-    Class representing a Gibbs-Approximated KL-divergence 
+    Class representing a Gibbs-Approximated computation of divergence and distance between BNs
 
     Available constructors :
 
-    	``GibbsKL(P,Q) -> GibbsKL``
+    	``GibbsBNdistance(P,Q) -> GibbsBNdistance``
 
-    	``GibbsKL(kl) -> GibbsKL``
+    	``GibbsBNdistance(gbnd) -> GibbsBNdistance``
 
     Parameters
     ----------
@@ -21675,12 +21735,12 @@ class GibbsKL(ApproximationScheme):
     	a Bayesian network
     Q : pyAgrum.IBayesNet
     	anotre Bayesian network
-    kl : pyAgrum.KL
-    	the KL to copy
+    gbnd : pyAgrum.GibbsBNdistance
+    	the Gibbs BNdistance to copy
 
     Raises
     ------
-    gum.OperationNotAllowed 
+    gum.OperationNotAllowed
     	If the 2BNs have not the same domain size of compatible node sets
 
     """
@@ -21690,15 +21750,15 @@ class GibbsKL(ApproximationScheme):
 
     def __init__(self, *args):
         r"""
-        __init__(self, P, Q) -> GibbsKL
-        __init__(self, kl) -> GibbsKL
+        __init__(GibbsBNdistance self, IBayesNet P, IBayesNet Q) -> GibbsBNdistance
+        __init__(GibbsBNdistance self, gum::BNdistance< double > const & kl) -> GibbsBNdistance
         """
-        _pyAgrum.GibbsKL_swiginit(self, _pyAgrum.new_GibbsKL(*args))
-    __swig_destroy__ = _pyAgrum.delete_GibbsKL
+        _pyAgrum.GibbsBNdistance_swiginit(self, _pyAgrum.new_GibbsBNdistance(*args))
+    __swig_destroy__ = _pyAgrum.delete_GibbsBNdistance
 
     def setBurnIn(self, b: 'gum::Size') -> "void":
         r"""
-        setBurnIn(self, b)
+        setBurnIn(GibbsBNdistance self, gum::Size b)
 
         Parameters
         ----------
@@ -21706,12 +21766,12 @@ class GibbsKL(ApproximationScheme):
         	size of burn in on number of iteration
 
         """
-        return _pyAgrum.GibbsKL_setBurnIn(self, b)
+        return _pyAgrum.GibbsBNdistance_setBurnIn(self, b)
 
 
     def burnIn(self) -> "gum::Size":
         r"""
-        burnIn(self) -> gum::Size
+        burnIn(GibbsBNdistance self) -> gum::Size
 
         Returns
         -------
@@ -21719,12 +21779,12 @@ class GibbsKL(ApproximationScheme):
         	size of burn in on number of iteration
 
         """
-        return _pyAgrum.GibbsKL_burnIn(self)
+        return _pyAgrum.GibbsBNdistance_burnIn(self)
 
 
     def compute(self) -> "PyObject *":
         r"""
-        compute(self) -> PyObject *
+        compute(GibbsBNdistance self) -> PyObject *
 
         Returns
         -------
@@ -21732,12 +21792,12 @@ class GibbsKL(ApproximationScheme):
         	a dictionnary containing the different values after the computation.
 
         """
-        return _pyAgrum.GibbsKL_compute(self)
+        return _pyAgrum.GibbsBNdistance_compute(self)
 
 
     def setVerbosity(self, v: 'bool') -> "void":
         r"""
-        setVerbosity(self, v)
+        setVerbosity(GibbsBNdistance self, bool v)
 
         Parameters
         ----------
@@ -21745,12 +21805,12 @@ class GibbsKL(ApproximationScheme):
                 verbosity
 
         """
-        return _pyAgrum.GibbsKL_setVerbosity(self, v)
+        return _pyAgrum.GibbsBNdistance_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps: 'double') -> "void":
         r"""
-        setEpsilon(self, eps)
+        setEpsilon(GibbsBNdistance self, double eps)
 
         Parameters
         ----------
@@ -21763,12 +21823,12 @@ class GibbsKL(ApproximationScheme):
         	If eps<0
 
         """
-        return _pyAgrum.GibbsKL_setEpsilon(self, eps)
+        return _pyAgrum.GibbsBNdistance_setEpsilon(self, eps)
 
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
         r"""
-        setMinEpsilonRate(self, rate)
+        setMinEpsilonRate(GibbsBNdistance self, double rate)
 
         Parameters
         ----------
@@ -21776,12 +21836,12 @@ class GibbsKL(ApproximationScheme):
         	the minimal epsilon rate
 
         """
-        return _pyAgrum.GibbsKL_setMinEpsilonRate(self, rate)
+        return _pyAgrum.GibbsBNdistance_setMinEpsilonRate(self, rate)
 
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
         r"""
-        setMaxIter(self, max)
+        setMaxIter(GibbsBNdistance self, gum::Size max)
 
         Parameters
         ----------
@@ -21794,12 +21854,12 @@ class GibbsKL(ApproximationScheme):
         	If max <= 1
 
         """
-        return _pyAgrum.GibbsKL_setMaxIter(self, max)
+        return _pyAgrum.GibbsBNdistance_setMaxIter(self, max)
 
 
     def setMaxTime(self, timeout: 'double') -> "void":
         r"""
-        setMaxTime(self, timeout)
+        setMaxTime(GibbsBNdistance self, double timeout)
 
         Parameters
         ----------
@@ -21812,12 +21872,12 @@ class GibbsKL(ApproximationScheme):
         	If timeout<=0.0
 
         """
-        return _pyAgrum.GibbsKL_setMaxTime(self, timeout)
+        return _pyAgrum.GibbsBNdistance_setMaxTime(self, timeout)
 
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
         r"""
-        setPeriodSize(self, p)
+        setPeriodSize(GibbsBNdistance self, gum::Size p)
 
         Parameters
         ----------
@@ -21830,12 +21890,12 @@ class GibbsKL(ApproximationScheme):
         	If p<1
 
         """
-        return _pyAgrum.GibbsKL_setPeriodSize(self, p)
+        return _pyAgrum.GibbsBNdistance_setPeriodSize(self, p)
 
 
     def verbosity(self) -> "bool":
         r"""
-        verbosity(self) -> bool
+        verbosity(GibbsBNdistance self) -> bool
 
         Returns
         -------
@@ -21843,12 +21903,12 @@ class GibbsKL(ApproximationScheme):
         	True if the verbosity is enabled
 
         """
-        return _pyAgrum.GibbsKL_verbosity(self)
+        return _pyAgrum.GibbsBNdistance_verbosity(self)
 
 
     def epsilon(self) -> "double":
         r"""
-        epsilon(self) -> double
+        epsilon(GibbsBNdistance self) -> double
 
         Returns
         -------
@@ -21856,12 +21916,12 @@ class GibbsKL(ApproximationScheme):
         	the value of epsilon
 
         """
-        return _pyAgrum.GibbsKL_epsilon(self)
+        return _pyAgrum.GibbsBNdistance_epsilon(self)
 
 
     def minEpsilonRate(self) -> "double":
         r"""
-        minEpsilonRate(self) -> double
+        minEpsilonRate(GibbsBNdistance self) -> double
 
         Returns
         -------
@@ -21869,12 +21929,12 @@ class GibbsKL(ApproximationScheme):
         	the value of the minimal epsilon rate
 
         """
-        return _pyAgrum.GibbsKL_minEpsilonRate(self)
+        return _pyAgrum.GibbsBNdistance_minEpsilonRate(self)
 
 
     def maxIter(self) -> "gum::Size":
         r"""
-        maxIter(self) -> gum::Size
+        maxIter(GibbsBNdistance self) -> gum::Size
 
         Returns
         -------
@@ -21882,12 +21942,12 @@ class GibbsKL(ApproximationScheme):
         	the criterion on number of iterations
 
         """
-        return _pyAgrum.GibbsKL_maxIter(self)
+        return _pyAgrum.GibbsBNdistance_maxIter(self)
 
 
     def maxTime(self) -> "double":
         r"""
-        maxTime(self) -> double
+        maxTime(GibbsBNdistance self) -> double
 
         Returns
         -------
@@ -21895,12 +21955,12 @@ class GibbsKL(ApproximationScheme):
         	the timeout(in seconds)
 
         """
-        return _pyAgrum.GibbsKL_maxTime(self)
+        return _pyAgrum.GibbsBNdistance_maxTime(self)
 
 
     def periodSize(self) -> "gum::Size":
         r"""
-        periodSize(self) -> gum::Size
+        periodSize(GibbsBNdistance self) -> gum::Size
 
         Returns
         -------
@@ -21913,12 +21973,12 @@ class GibbsKL(ApproximationScheme):
         	If p<1
 
         """
-        return _pyAgrum.GibbsKL_periodSize(self)
+        return _pyAgrum.GibbsBNdistance_periodSize(self)
 
 
     def nbrIterations(self) -> "gum::Size":
         r"""
-        nbrIterations(self) -> gum::Size
+        nbrIterations(GibbsBNdistance self) -> gum::Size
 
         Returns
         -------
@@ -21926,12 +21986,12 @@ class GibbsKL(ApproximationScheme):
         	the number of iterations
 
         """
-        return _pyAgrum.GibbsKL_nbrIterations(self)
+        return _pyAgrum.GibbsBNdistance_nbrIterations(self)
 
 
     def currentTime(self) -> "double":
         r"""
-        currentTime(self) -> double
+        currentTime(GibbsBNdistance self) -> double
 
         Returns
         -------
@@ -21939,12 +21999,12 @@ class GibbsKL(ApproximationScheme):
         	get the current running time in second (double)
 
         """
-        return _pyAgrum.GibbsKL_currentTime(self)
+        return _pyAgrum.GibbsBNdistance_currentTime(self)
 
 
     def messageApproximationScheme(self) -> "std::string":
         r"""
-        messageApproximationScheme(self) -> std::string
+        messageApproximationScheme(GibbsBNdistance self) -> std::string
 
         Returns
         -------
@@ -21952,12 +22012,12 @@ class GibbsKL(ApproximationScheme):
         	the approximation scheme message
 
         """
-        return _pyAgrum.GibbsKL_messageApproximationScheme(self)
+        return _pyAgrum.GibbsBNdistance_messageApproximationScheme(self)
 
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
         r"""
-        history(self) -> Vector
+        history(GibbsBNdistance self) -> Vector
 
         Returns
         -------
@@ -21970,24 +22030,24 @@ class GibbsKL(ApproximationScheme):
         	If the scheme did not performed or if verbosity is set to false
 
         """
-        return _pyAgrum.GibbsKL_history(self)
+        return _pyAgrum.GibbsBNdistance_history(self)
 
 
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
         r"""
-        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+        asIApproximationSchemeConfiguration(GibbsBNdistance self) -> IApproximationSchemeConfiguration
 
         Returns
         -------
         asIApproximationSchemeConfiguration
 
         """
-        return _pyAgrum.GibbsKL_asIApproximationSchemeConfiguration(self)
+        return _pyAgrum.GibbsBNdistance_asIApproximationSchemeConfiguration(self)
 
 
     def nbrDrawnVar(self) -> "gum::Size":
         r"""
-        nbrDrawnVar(self) -> gum::Size
+        nbrDrawnVar(GibbsBNdistance self) -> gum::Size
 
         Returns
         -------
@@ -21995,12 +22055,12 @@ class GibbsKL(ApproximationScheme):
           the number of variable drawn at each iteration
 
         """
-        return _pyAgrum.GibbsKL_nbrDrawnVar(self)
+        return _pyAgrum.GibbsBNdistance_nbrDrawnVar(self)
 
 
     def setNbrDrawnVar(self, _nbr: 'gum::Size') -> "void":
         r"""
-        setNbrDrawnVar(self, _nbr)
+        setNbrDrawnVar(GibbsBNdistance self, gum::Size _nbr)
 
         Parameters
         ----------
@@ -22008,12 +22068,12 @@ class GibbsKL(ApproximationScheme):
           the number of variables to be drawn at each iteration
 
         """
-        return _pyAgrum.GibbsKL_setNbrDrawnVar(self, _nbr)
+        return _pyAgrum.GibbsBNdistance_setNbrDrawnVar(self, _nbr)
 
 
     def isDrawnAtRandom(self) -> "bool":
         r"""
-        isDrawnAtRandom(self) -> bool
+        isDrawnAtRandom(GibbsBNdistance self) -> bool
 
         Returns
         -------
@@ -22021,12 +22081,12 @@ class GibbsKL(ApproximationScheme):
           True if variables are drawn at random
 
         """
-        return _pyAgrum.GibbsKL_isDrawnAtRandom(self)
+        return _pyAgrum.GibbsBNdistance_isDrawnAtRandom(self)
 
 
     def setDrawnAtRandom(self, _atRandom: 'bool') -> "void":
         r"""
-        setDrawnAtRandom(self, _atRandom)
+        setDrawnAtRandom(GibbsBNdistance self, bool _atRandom)
 
         Parameters
         ----------
@@ -22034,11 +22094,11 @@ class GibbsKL(ApproximationScheme):
           indicates if variables should be drawn at random
 
         """
-        return _pyAgrum.GibbsKL_setDrawnAtRandom(self, _atRandom)
+        return _pyAgrum.GibbsBNdistance_setDrawnAtRandom(self, _atRandom)
 
 
-# Register GibbsKL in _pyAgrum:
-_pyAgrum.GibbsKL_swigregister(GibbsKL)
+# Register GibbsBNdistance in _pyAgrum:
+_pyAgrum.GibbsBNdistance_swigregister(GibbsBNdistance)
 
 class CredalNet(object):
     r"""
@@ -22079,18 +22139,18 @@ class CredalNet(object):
 
     def __init__(self, *args):
         r"""
-        __init__(self) -> CredalNet
-        __init__(self, src_min_num, src_max_den) -> CredalNet
-        __init__(self, src_min_num) -> CredalNet
-        __init__(self, src_min_num, src_max_den) -> CredalNet
-        __init__(self, src_min_num) -> CredalNet
+        __init__(CredalNet self) -> CredalNet
+        __init__(CredalNet self, std::string const & src_min_num, std::string const & src_max_den) -> CredalNet
+        __init__(CredalNet self, std::string const & src_min_num) -> CredalNet
+        __init__(CredalNet self, BayesNet src_min_num, BayesNet src_max_den) -> CredalNet
+        __init__(CredalNet self, BayesNet src_min_num) -> CredalNet
         """
         _pyAgrum.CredalNet_swiginit(self, _pyAgrum.new_CredalNet(*args))
     __swig_destroy__ = _pyAgrum.delete_CredalNet
 
     def addVariable(self, name: 'std::string const &', card: 'gum::Size const &') -> "gum::NodeId":
         r"""
-        addVariable(self, name, card) -> gum::NodeId
+        addVariable(CredalNet self, std::string const & name, gum::Size const & card) -> gum::NodeId
 
         Parameters
         ----------
@@ -22110,7 +22170,7 @@ class CredalNet(object):
 
     def addArc(self, tail: 'gum::NodeId const &', head: 'gum::NodeId const &') -> "void":
         r"""
-        addArc(self, tail, head)
+        addArc(CredalNet self, gum::NodeId const & tail, gum::NodeId const & head)
 
         Adds an arc between two nodes
 
@@ -22136,7 +22196,7 @@ class CredalNet(object):
 
     def setCPTs(self, id: 'gum::NodeId const &', cpt: 'std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > const &') -> "void":
         r"""
-        setCPTs(self, id, cpt)
+        setCPTs(CredalNet self, gum::NodeId const & id, std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > const & cpt)
 
         Warnings
         --------
@@ -22162,8 +22222,8 @@ class CredalNet(object):
 
     def setCPT(self, *args) -> "void":
         r"""
-        setCPT(self, id, entry, cpt)
-        setCPT(self, id, ins, cpt)
+        setCPT(CredalNet self, gum::NodeId const & id, gum::Size & entry, std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const & cpt)
+        setCPT(CredalNet self, gum::NodeId const & id, Instantiation ins, std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const & cpt)
 
         Warnings
         --------
@@ -22193,7 +22253,7 @@ class CredalNet(object):
 
     def fillConstraints(self, id: 'gum::NodeId const &', lower: 'Vector', upper: 'Vector') -> "void":
         r"""
-        fillConstraints(self, id, lower, upper)
+        fillConstraints(CredalNet self, gum::NodeId const & id, Vector lower, Vector upper)
 
         Set the interval constraints of the credal sets of a given node (all instantiations) 
 
@@ -22220,8 +22280,8 @@ class CredalNet(object):
 
     def fillConstraint(self, *args) -> "void":
         r"""
-        fillConstraint(self, id, entry, lower, upper)
-        fillConstraint(self, id, ins, lower, upper)
+        fillConstraint(CredalNet self, gum::NodeId const & id, gum::Idx const & entry, Vector lower, Vector upper)
+        fillConstraint(CredalNet self, gum::NodeId const & id, Instantiation ins, Vector lower, Vector upper)
 
         Set the interval constraints of a credal set of a given node (from an instantiation index)
 
@@ -22252,7 +22312,7 @@ class CredalNet(object):
 
     def instantiation(self, id: 'gum::NodeId const &') -> "gum::Instantiation":
         r"""
-        instantiation(self, id) -> Instantiation
+        instantiation(CredalNet self, gum::NodeId const & id) -> Instantiation
 
         Get an Instantiation from a node id, usefull to fill the constraints of the network.
 
@@ -22274,7 +22334,7 @@ class CredalNet(object):
 
     def domainSize(self, id: 'gum::NodeId const &') -> "gum::Size":
         r"""
-        domainSize(self, id) -> gum::Size
+        domainSize(CredalNet self, gum::NodeId const & id) -> gum::Size
 
         Parameters
         ----------
@@ -22292,8 +22352,8 @@ class CredalNet(object):
 
     def bnToCredal(self, beta: 'double const', oneNet: 'bool const', keepZeroes: 'bool const'=False) -> "void":
         r"""
-        bnToCredal(self, beta, oneNet, keepZeroes=False)
-        bnToCredal(self, beta, oneNet)
+        bnToCredal(CredalNet self, double const beta, bool const oneNet, bool const keepZeroes=False)
+        bnToCredal(CredalNet self, double const beta, bool const oneNet)
 
         Perturbates the BayesNet provided as input for this CredalNet by generating intervals instead of point probabilities and then computes each vertex of each credal set.
 
@@ -22312,7 +22372,7 @@ class CredalNet(object):
 
     def intervalToCredalWithFiles(self) -> "void":
         r"""
-        intervalToCredalWithFiles(self)
+        intervalToCredalWithFiles(CredalNet self)
 
         Warnings
         --------
@@ -22329,7 +22389,7 @@ class CredalNet(object):
 
     def intervalToCredal(self) -> "void":
         r"""
-        intervalToCredal(self)
+        intervalToCredal(CredalNet self)
 
         Computes the vertices of each credal set according to their interval definition (uses lrs).
 
@@ -22341,7 +22401,7 @@ class CredalNet(object):
 
     def lagrangeNormalization(self) -> "void":
         r"""
-        lagrangeNormalization(self)
+        lagrangeNormalization(CredalNet self)
 
         Normalize counts of a BayesNet storing counts of each events such that no probability is 0.
 
@@ -22355,9 +22415,9 @@ class CredalNet(object):
 
     def idmLearning(self, s: 'gum::Idx const'=0, keepZeroes: 'bool const'=False) -> "void":
         r"""
-        idmLearning(self, s=0, keepZeroes=False)
-        idmLearning(self, s=0)
-        idmLearning(self)
+        idmLearning(CredalNet self, gum::Idx const s=0, bool const keepZeroes=False)
+        idmLearning(CredalNet self, gum::Idx const s=0)
+        idmLearning(CredalNet self)
 
         Learns parameters from a BayesNet storing counts of events.
 
@@ -22376,7 +22436,7 @@ class CredalNet(object):
 
     def approximatedBinarization(self) -> "void":
         r"""
-        approximatedBinarization(self)
+        approximatedBinarization(CredalNet self)
 
         Approximate binarization.
 
@@ -22392,7 +22452,7 @@ class CredalNet(object):
 
     def saveBNsMinMax(self, min_path: 'std::string const &', max_path: 'std::string const &') -> "void":
         r"""
-        saveBNsMinMax(self, min_path, max_path)
+        saveBNsMinMax(CredalNet self, std::string const & min_path, std::string const & max_path)
 
         If this CredalNet was built over a perturbed BayesNet, one can save the intervals as two BayesNet.
 
@@ -22411,7 +22471,7 @@ class CredalNet(object):
 
     def computeCPTMinMax(self) -> "void":
         r"""
-        computeCPTMinMax(self)
+        computeCPTMinMax(CredalNet self)
 
         Used with binary networks to speed-up L2U inference.
 
@@ -22423,7 +22483,7 @@ class CredalNet(object):
 
     def src_bn(self) -> "gum::BayesNet< double > const &":
         r"""
-        src_bn(self) -> BayesNet
+        src_bn(CredalNet self) -> BayesNet
 
         Returns
         -------
@@ -22436,7 +22496,7 @@ class CredalNet(object):
 
     def current_bn(self) -> "gum::BayesNet< double > const &":
         r"""
-        current_bn(self) -> BayesNet
+        current_bn(CredalNet self) -> BayesNet
 
         Returns
         -------
@@ -22449,7 +22509,7 @@ class CredalNet(object):
 
     def credalNet_currentCpt(self) -> "gum::NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > const &":
         r"""
-        credalNet_currentCpt(self) -> gum::NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > const &
+        credalNet_currentCpt(CredalNet self) -> gum::NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > const &
 
         Warnings
         --------
@@ -22466,7 +22526,7 @@ class CredalNet(object):
 
     def credalNet_srcCpt(self) -> "gum::NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > const &":
         r"""
-        credalNet_srcCpt(self) -> gum::NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > const &
+        credalNet_srcCpt(CredalNet self) -> gum::NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > const &
 
         Warnings
         --------
@@ -22483,7 +22543,7 @@ class CredalNet(object):
 
     def currentNodeType(self, id: 'gum::NodeId const &') -> "gum::credal::CredalNet< double >::NodeType":
         r"""
-        currentNodeType(self, id) -> gum::credal::CredalNet< double >::NodeType
+        currentNodeType(CredalNet self, gum::NodeId const & id) -> gum::credal::CredalNet< double >::NodeType
 
         Parameters
         ----------
@@ -22501,7 +22561,7 @@ class CredalNet(object):
 
     def nodeType(self, id: 'gum::NodeId const &') -> "gum::credal::CredalNet< double >::NodeType":
         r"""
-        nodeType(self, id) -> gum::credal::CredalNet< double >::NodeType
+        nodeType(CredalNet self, gum::NodeId const & id) -> gum::credal::CredalNet< double >::NodeType
 
         Parameters
         ----------
@@ -22519,7 +22579,7 @@ class CredalNet(object):
 
     def epsilonMin(self) -> "double const &":
         r"""
-        epsilonMin(self) -> double const &
+        epsilonMin(CredalNet self) -> double const &
 
         Returns
         -------
@@ -22532,7 +22592,7 @@ class CredalNet(object):
 
     def epsilonMax(self) -> "double const &":
         r"""
-        epsilonMax(self) -> double const &
+        epsilonMax(CredalNet self) -> double const &
 
         Returns
         -------
@@ -22545,7 +22605,7 @@ class CredalNet(object):
 
     def epsilonMean(self) -> "double const &":
         r"""
-        epsilonMean(self) -> double const &
+        epsilonMean(CredalNet self) -> double const &
 
         Returns
         -------
@@ -22558,7 +22618,7 @@ class CredalNet(object):
 
     def isSeparatelySpecified(self) -> "bool const":
         r"""
-        isSeparatelySpecified(self) -> bool const
+        isSeparatelySpecified(CredalNet self) -> bool const
 
         Returns
         -------
@@ -22571,7 +22631,7 @@ class CredalNet(object):
 
     def hasComputedCPTMinMax(self) -> "bool const":
         r"""
-        hasComputedCPTMinMax(self) -> bool const
+        hasComputedCPTMinMax(CredalNet self) -> bool const
 
         Returns
         -------
@@ -22584,7 +22644,7 @@ class CredalNet(object):
 
     def get_CPT_min(self) -> "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &":
         r"""
-        get_CPT_min(self) -> std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &
+        get_CPT_min(CredalNet self) -> std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &
 
         Warnings
         --------
@@ -22601,7 +22661,7 @@ class CredalNet(object):
 
     def get_CPT_max(self) -> "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &":
         r"""
-        get_CPT_max(self) -> std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &
+        get_CPT_max(CredalNet self) -> std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &
 
         Warnings
         --------
@@ -22617,12 +22677,12 @@ class CredalNet(object):
 
 
     def __repr__(self) -> "std::string":
-        r"""__repr__(self) -> std::string"""
+        r"""__repr__(CredalNet self) -> std::string"""
         return _pyAgrum.CredalNet___repr__(self)
 
 
     def __str__(self) -> "std::string":
-        r"""__str__(self) -> std::string"""
+        r"""__str__(CredalNet self) -> std::string"""
         return _pyAgrum.CredalNet___str__(self)
 
 
@@ -22651,13 +22711,13 @@ class CNMonteCarloSampling(object):
     __repr__ = _swig_repr
 
     def __init__(self, credalNet: 'CredalNet'):
-        r"""__init__(self, credalNet) -> CNMonteCarloSampling"""
+        r"""__init__(CNMonteCarloSampling self, CredalNet credalNet) -> CNMonteCarloSampling"""
         _pyAgrum.CNMonteCarloSampling_swiginit(self, _pyAgrum.new_CNMonteCarloSampling(credalNet))
     __swig_destroy__ = _pyAgrum.delete_CNMonteCarloSampling
 
     def makeInference(self) -> "void":
         r"""
-        makeInference(self)
+        makeInference(CNMonteCarloSampling self)
 
         Starts the inference.
 
@@ -22667,7 +22727,7 @@ class CNMonteCarloSampling(object):
 
     def insertEvidenceFile(self, path: 'std::string const &') -> "void":
         r"""
-        insertEvidenceFile(self, path)
+        insertEvidenceFile(CNMonteCarloSampling self, std::string const & path)
 
         Insert evidence from file.
 
@@ -22682,7 +22742,7 @@ class CNMonteCarloSampling(object):
 
     def setVerbosity(self, v: 'bool') -> "void":
         r"""
-        setVerbosity(self, v)
+        setVerbosity(CNMonteCarloSampling self, bool v)
 
         Parameters
         ----------
@@ -22695,7 +22755,7 @@ class CNMonteCarloSampling(object):
 
     def setEpsilon(self, eps: 'double') -> "void":
         r"""
-        setEpsilon(self, eps)
+        setEpsilon(CNMonteCarloSampling self, double eps)
 
         Parameters
         ----------
@@ -22713,7 +22773,7 @@ class CNMonteCarloSampling(object):
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
         r"""
-        setMinEpsilonRate(self, rate)
+        setMinEpsilonRate(CNMonteCarloSampling self, double rate)
 
         Parameters
         ----------
@@ -22726,7 +22786,7 @@ class CNMonteCarloSampling(object):
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
         r"""
-        setMaxIter(self, max)
+        setMaxIter(CNMonteCarloSampling self, gum::Size max)
 
         Parameters
         ----------
@@ -22744,7 +22804,7 @@ class CNMonteCarloSampling(object):
 
     def setMaxTime(self, timeout: 'double') -> "void":
         r"""
-        setMaxTime(self, timeout)
+        setMaxTime(CNMonteCarloSampling self, double timeout)
 
         Parameters
         ----------
@@ -22762,7 +22822,7 @@ class CNMonteCarloSampling(object):
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
         r"""
-        setPeriodSize(self, p)
+        setPeriodSize(CNMonteCarloSampling self, gum::Size p)
 
         Parameters
         ----------
@@ -22780,7 +22840,7 @@ class CNMonteCarloSampling(object):
 
     def verbosity(self) -> "bool":
         r"""
-        verbosity(self) -> bool
+        verbosity(CNMonteCarloSampling self) -> bool
 
         Returns
         -------
@@ -22793,7 +22853,7 @@ class CNMonteCarloSampling(object):
 
     def epsilon(self) -> "double":
         r"""
-        epsilon(self) -> double
+        epsilon(CNMonteCarloSampling self) -> double
 
         Returns
         -------
@@ -22806,7 +22866,7 @@ class CNMonteCarloSampling(object):
 
     def minEpsilonRate(self) -> "double":
         r"""
-        minEpsilonRate(self) -> double
+        minEpsilonRate(CNMonteCarloSampling self) -> double
 
         Returns
         -------
@@ -22819,7 +22879,7 @@ class CNMonteCarloSampling(object):
 
     def maxIter(self) -> "gum::Size":
         r"""
-        maxIter(self) -> gum::Size
+        maxIter(CNMonteCarloSampling self) -> gum::Size
 
         Returns
         -------
@@ -22832,7 +22892,7 @@ class CNMonteCarloSampling(object):
 
     def maxTime(self) -> "double":
         r"""
-        maxTime(self) -> double
+        maxTime(CNMonteCarloSampling self) -> double
 
         Returns
         -------
@@ -22845,7 +22905,7 @@ class CNMonteCarloSampling(object):
 
     def periodSize(self) -> "gum::Size":
         r"""
-        periodSize(self) -> gum::Size
+        periodSize(CNMonteCarloSampling self) -> gum::Size
 
         Returns
         -------
@@ -22863,7 +22923,7 @@ class CNMonteCarloSampling(object):
 
     def nbrIterations(self) -> "gum::Size":
         r"""
-        nbrIterations(self) -> gum::Size
+        nbrIterations(CNMonteCarloSampling self) -> gum::Size
 
         Returns
         -------
@@ -22876,7 +22936,7 @@ class CNMonteCarloSampling(object):
 
     def currentTime(self) -> "double":
         r"""
-        currentTime(self) -> double
+        currentTime(CNMonteCarloSampling self) -> double
 
         Returns
         -------
@@ -22889,7 +22949,7 @@ class CNMonteCarloSampling(object):
 
     def messageApproximationScheme(self) -> "std::string":
         r"""
-        messageApproximationScheme(self) -> std::string
+        messageApproximationScheme(CNMonteCarloSampling self) -> std::string
 
         Returns
         -------
@@ -22902,7 +22962,7 @@ class CNMonteCarloSampling(object):
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
         r"""
-        history(self) -> Vector
+        history(CNMonteCarloSampling self) -> Vector
 
         Returns
         -------
@@ -22920,7 +22980,7 @@ class CNMonteCarloSampling(object):
 
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
         r"""
-        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+        asIApproximationSchemeConfiguration(CNMonteCarloSampling self) -> IApproximationSchemeConfiguration
 
         Returns
         -------
@@ -22932,7 +22992,7 @@ class CNMonteCarloSampling(object):
 
     def setRepetitiveInd(self, flag: 'bool const') -> "void":
         r"""
-        setRepetitiveInd(self, flag)
+        setRepetitiveInd(CNMonteCarloSampling self, bool const flag)
 
         Parameters
         ----------
@@ -22945,8 +23005,8 @@ class CNMonteCarloSampling(object):
 
     def marginalMax(self, *args) -> "std::vector< double,std::allocator< double > > const &":
         r"""
-        marginalMax(self, id) -> Vector
-        marginalMax(self, name) -> Vector
+        marginalMax(CNMonteCarloSampling self, gum::NodeId const id) -> Vector
+        marginalMax(CNMonteCarloSampling self, std::string const name) -> Vector
 
         Get the upper marginals of a given node id.
 
@@ -22973,8 +23033,8 @@ class CNMonteCarloSampling(object):
 
     def marginalMin(self, *args) -> "std::vector< double,std::allocator< double > > const &":
         r"""
-        marginalMin(self, id) -> Vector
-        marginalMin(self, name) -> Vector
+        marginalMin(CNMonteCarloSampling self, gum::NodeId const id) -> Vector
+        marginalMin(CNMonteCarloSampling self, std::string const name) -> Vector
 
         Get the lower marginals of a given node id.
 
@@ -23001,7 +23061,7 @@ class CNMonteCarloSampling(object):
 
     def insertModalsFile(self, path: 'std::string const &') -> "void":
         r"""
-        insertModalsFile(self, path)
+        insertModalsFile(CNMonteCarloSampling self, std::string const & path)
 
         Insert variables modalities from file to compute expectations.
 
@@ -23016,7 +23076,7 @@ class CNMonteCarloSampling(object):
 
     def dynamicExpMax(self, varName: 'std::string const &') -> "std::vector< double,std::allocator< double > > const &":
         r"""
-        dynamicExpMax(self, varName) -> Vector
+        dynamicExpMax(CNMonteCarloSampling self, std::string const & varName) -> Vector
 
         Get the upper dynamic expectation of a given variable prefix.
 
@@ -23036,7 +23096,7 @@ class CNMonteCarloSampling(object):
 
     def dynamicExpMin(self, varName: 'std::string const &') -> "std::vector< double,std::allocator< double > > const &":
         r"""
-        dynamicExpMin(self, varName) -> Vector
+        dynamicExpMin(CNMonteCarloSampling self, std::string const & varName) -> Vector
 
         Get the lower dynamic expectation of a given variable prefix.
 
@@ -23086,7 +23146,7 @@ class CNLoopyPropagation(object):
 
     def makeInference(self) -> "void":
         r"""
-        makeInference(self)
+        makeInference(CNLoopyPropagation self)
 
         Starts the inference.
 
@@ -23096,8 +23156,8 @@ class CNLoopyPropagation(object):
 
     def inferenceType(self, *args) -> "gum::credal::CNLoopyPropagation< double >::InferenceType":
         r"""
-        inferenceType(self, inft)
-        inferenceType(self) -> gum::credal::CNLoopyPropagation< double >::InferenceType
+        inferenceType(CNLoopyPropagation self, gum::credal::CNLoopyPropagation< double >::InferenceType inft)
+        inferenceType(CNLoopyPropagation self) -> gum::credal::CNLoopyPropagation< double >::InferenceType
 
         Returns
         -------
@@ -23110,7 +23170,7 @@ class CNLoopyPropagation(object):
 
     def eraseAllEvidence(self) -> "void":
         r"""
-        eraseAllEvidence(self)
+        eraseAllEvidence(CNLoopyPropagation self)
 
         Erase all inference related data to perform another one.
 
@@ -23122,7 +23182,7 @@ class CNLoopyPropagation(object):
 
     def saveInference(self, path: 'std::string const &') -> "void":
         r"""
-        saveInference(self, path)
+        saveInference(CNLoopyPropagation self, std::string const & path)
 
         Saves marginals.
 
@@ -23136,13 +23196,13 @@ class CNLoopyPropagation(object):
 
 
     def __init__(self, cnet: 'CredalNet'):
-        r"""__init__(self, cnet) -> CNLoopyPropagation"""
+        r"""__init__(CNLoopyPropagation self, CredalNet cnet) -> CNLoopyPropagation"""
         _pyAgrum.CNLoopyPropagation_swiginit(self, _pyAgrum.new_CNLoopyPropagation(cnet))
     __swig_destroy__ = _pyAgrum.delete_CNLoopyPropagation
 
     def insertEvidenceFile(self, path: 'std::string const &') -> "void":
         r"""
-        insertEvidenceFile(self, path)
+        insertEvidenceFile(CNLoopyPropagation self, std::string const & path)
 
         Insert evidence from file.
 
@@ -23157,7 +23217,7 @@ class CNLoopyPropagation(object):
 
     def setVerbosity(self, v: 'bool') -> "void":
         r"""
-        setVerbosity(self, v)
+        setVerbosity(CNLoopyPropagation self, bool v)
 
         Parameters
         ----------
@@ -23170,7 +23230,7 @@ class CNLoopyPropagation(object):
 
     def setEpsilon(self, eps: 'double') -> "void":
         r"""
-        setEpsilon(self, eps)
+        setEpsilon(CNLoopyPropagation self, double eps)
 
         Parameters
         ----------
@@ -23188,7 +23248,7 @@ class CNLoopyPropagation(object):
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
         r"""
-        setMinEpsilonRate(self, rate)
+        setMinEpsilonRate(CNLoopyPropagation self, double rate)
 
         Parameters
         ----------
@@ -23201,7 +23261,7 @@ class CNLoopyPropagation(object):
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
         r"""
-        setMaxIter(self, max)
+        setMaxIter(CNLoopyPropagation self, gum::Size max)
 
         Parameters
         ----------
@@ -23219,7 +23279,7 @@ class CNLoopyPropagation(object):
 
     def setMaxTime(self, timeout: 'double') -> "void":
         r"""
-        setMaxTime(self, timeout)
+        setMaxTime(CNLoopyPropagation self, double timeout)
 
         Parameters
         ----------
@@ -23237,7 +23297,7 @@ class CNLoopyPropagation(object):
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
         r"""
-        setPeriodSize(self, p)
+        setPeriodSize(CNLoopyPropagation self, gum::Size p)
 
         Parameters
         ----------
@@ -23255,7 +23315,7 @@ class CNLoopyPropagation(object):
 
     def verbosity(self) -> "bool":
         r"""
-        verbosity(self) -> bool
+        verbosity(CNLoopyPropagation self) -> bool
 
         Returns
         -------
@@ -23268,7 +23328,7 @@ class CNLoopyPropagation(object):
 
     def epsilon(self) -> "double":
         r"""
-        epsilon(self) -> double
+        epsilon(CNLoopyPropagation self) -> double
 
         Returns
         -------
@@ -23281,7 +23341,7 @@ class CNLoopyPropagation(object):
 
     def minEpsilonRate(self) -> "double":
         r"""
-        minEpsilonRate(self) -> double
+        minEpsilonRate(CNLoopyPropagation self) -> double
 
         Returns
         -------
@@ -23294,7 +23354,7 @@ class CNLoopyPropagation(object):
 
     def maxIter(self) -> "gum::Size":
         r"""
-        maxIter(self) -> gum::Size
+        maxIter(CNLoopyPropagation self) -> gum::Size
 
         Returns
         -------
@@ -23307,7 +23367,7 @@ class CNLoopyPropagation(object):
 
     def maxTime(self) -> "double":
         r"""
-        maxTime(self) -> double
+        maxTime(CNLoopyPropagation self) -> double
 
         Returns
         -------
@@ -23320,7 +23380,7 @@ class CNLoopyPropagation(object):
 
     def periodSize(self) -> "gum::Size":
         r"""
-        periodSize(self) -> gum::Size
+        periodSize(CNLoopyPropagation self) -> gum::Size
 
         Returns
         -------
@@ -23338,7 +23398,7 @@ class CNLoopyPropagation(object):
 
     def nbrIterations(self) -> "gum::Size":
         r"""
-        nbrIterations(self) -> gum::Size
+        nbrIterations(CNLoopyPropagation self) -> gum::Size
 
         Returns
         -------
@@ -23351,7 +23411,7 @@ class CNLoopyPropagation(object):
 
     def currentTime(self) -> "double":
         r"""
-        currentTime(self) -> double
+        currentTime(CNLoopyPropagation self) -> double
 
         Returns
         -------
@@ -23364,7 +23424,7 @@ class CNLoopyPropagation(object):
 
     def messageApproximationScheme(self) -> "std::string":
         r"""
-        messageApproximationScheme(self) -> std::string
+        messageApproximationScheme(CNLoopyPropagation self) -> std::string
 
         Returns
         -------
@@ -23377,7 +23437,7 @@ class CNLoopyPropagation(object):
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
         r"""
-        history(self) -> Vector
+        history(CNLoopyPropagation self) -> Vector
 
         Returns
         -------
@@ -23395,7 +23455,7 @@ class CNLoopyPropagation(object):
 
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
         r"""
-        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+        asIApproximationSchemeConfiguration(CNLoopyPropagation self) -> IApproximationSchemeConfiguration
 
         Returns
         -------
@@ -23407,7 +23467,7 @@ class CNLoopyPropagation(object):
 
     def setRepetitiveInd(self, flag: 'bool const') -> "void":
         r"""
-        setRepetitiveInd(self, flag)
+        setRepetitiveInd(CNLoopyPropagation self, bool const flag)
 
         Parameters
         ----------
@@ -23420,8 +23480,8 @@ class CNLoopyPropagation(object):
 
     def marginalMax(self, *args) -> "std::vector< double,std::allocator< double > > const &":
         r"""
-        marginalMax(self, id) -> Vector
-        marginalMax(self, name) -> Vector
+        marginalMax(CNLoopyPropagation self, gum::NodeId const id) -> Vector
+        marginalMax(CNLoopyPropagation self, std::string const name) -> Vector
 
         Get the upper marginals of a given node id.
 
@@ -23448,8 +23508,8 @@ class CNLoopyPropagation(object):
 
     def marginalMin(self, *args) -> "std::vector< double,std::allocator< double > > const &":
         r"""
-        marginalMin(self, id) -> Vector
-        marginalMin(self, name) -> Vector
+        marginalMin(CNLoopyPropagation self, gum::NodeId const id) -> Vector
+        marginalMin(CNLoopyPropagation self, std::string const name) -> Vector
 
         Get the lower marginals of a given node id.
 
@@ -23476,7 +23536,7 @@ class CNLoopyPropagation(object):
 
     def insertModalsFile(self, path: 'std::string const &') -> "void":
         r"""
-        insertModalsFile(self, path)
+        insertModalsFile(CNLoopyPropagation self, std::string const & path)
 
         Insert variables modalities from file to compute expectations.
 
@@ -23491,7 +23551,7 @@ class CNLoopyPropagation(object):
 
     def dynamicExpMax(self, varName: 'std::string const &') -> "std::vector< double,std::allocator< double > > const &":
         r"""
-        dynamicExpMax(self, varName) -> Vector
+        dynamicExpMax(CNLoopyPropagation self, std::string const & varName) -> Vector
 
         Get the upper dynamic expectation of a given variable prefix.
 
@@ -23511,7 +23571,7 @@ class CNLoopyPropagation(object):
 
     def dynamicExpMin(self, varName: 'std::string const &') -> "std::vector< double,std::allocator< double > > const &":
         r"""
-        dynamicExpMin(self, varName) -> Vector
+        dynamicExpMin(CNLoopyPropagation self, std::string const & varName) -> Vector
 
         Get the lower dynamic expectation of a given variable prefix.
 
@@ -23556,14 +23616,14 @@ class InfluenceDiagram(DAGmodel):
 
     def __init__(self, *args):
         r"""
-        __init__(self) -> InfluenceDiagram
-        __init__(self, source) -> InfluenceDiagram
+        __init__(InfluenceDiagram self) -> InfluenceDiagram
+        __init__(InfluenceDiagram self, InfluenceDiagram source) -> InfluenceDiagram
         """
         _pyAgrum.InfluenceDiagram_swiginit(self, _pyAgrum.new_InfluenceDiagram(*args))
 
     def toDot(self) -> "std::string":
         r"""
-        toDot(self) -> std::string
+        toDot(InfluenceDiagram self) -> std::string
 
         Returns
         -------
@@ -23576,7 +23636,7 @@ class InfluenceDiagram(DAGmodel):
 
     def cpt(self, varId: 'gum::NodeId') -> "gum::Potential< double > const &":
         r"""
-        cpt(self, varId) -> Potential
+        cpt(InfluenceDiagram self, gum::NodeId varId) -> Potential
 
         Returns the CPT of a variable.
 
@@ -23606,7 +23666,7 @@ class InfluenceDiagram(DAGmodel):
 
     def utility(self, varId: 'gum::NodeId') -> "gum::Potential< double > const &":
         r"""
-        utility(self, varId) -> Potential
+        utility(InfluenceDiagram self, gum::NodeId varId) -> Potential
 
         Parameters
         ----------
@@ -23634,7 +23694,7 @@ class InfluenceDiagram(DAGmodel):
 
     def isUtilityNode(self, varId: 'gum::NodeId') -> "bool":
         r"""
-        isUtilityNode(self, varId) -> bool
+        isUtilityNode(InfluenceDiagram self, gum::NodeId varId) -> bool
 
         Parameters
         ----------
@@ -23652,7 +23712,7 @@ class InfluenceDiagram(DAGmodel):
 
     def isDecisionNode(self, varId: 'gum::NodeId') -> "bool":
         r"""
-        isDecisionNode(self, varId) -> bool
+        isDecisionNode(InfluenceDiagram self, gum::NodeId varId) -> bool
 
         Parameters
         ----------
@@ -23670,7 +23730,7 @@ class InfluenceDiagram(DAGmodel):
 
     def isChanceNode(self, varId: 'gum::NodeId') -> "bool":
         r"""
-        isChanceNode(self, varId) -> bool
+        isChanceNode(InfluenceDiagram self, gum::NodeId varId) -> bool
 
         Parameters
         ----------
@@ -23688,7 +23748,7 @@ class InfluenceDiagram(DAGmodel):
 
     def utilityNodeSize(self) -> "gum::Size":
         r"""
-        utilityNodeSize(self) -> gum::Size
+        utilityNodeSize(InfluenceDiagram self) -> gum::Size
 
         Returns
         -------
@@ -23701,7 +23761,7 @@ class InfluenceDiagram(DAGmodel):
 
     def chanceNodeSize(self) -> "gum::Size":
         r"""
-        chanceNodeSize(self) -> gum::Size
+        chanceNodeSize(InfluenceDiagram self) -> gum::Size
 
         Returns
         -------
@@ -23714,7 +23774,7 @@ class InfluenceDiagram(DAGmodel):
 
     def decisionNodeSize(self) -> "gum::Size":
         r"""
-        decisionNodeSize(self) -> gum::Size
+        decisionNodeSize(InfluenceDiagram self) -> gum::Size
 
         Returns
         -------
@@ -23727,7 +23787,7 @@ class InfluenceDiagram(DAGmodel):
 
     def variable(self, id: 'gum::NodeId') -> "gum::DiscreteVariable const &":
         r"""
-        variable(self, id) -> DiscreteVariable
+        variable(InfluenceDiagram self, gum::NodeId id) -> DiscreteVariable
 
         Parameters
         ----------
@@ -23750,7 +23810,7 @@ class InfluenceDiagram(DAGmodel):
 
     def nodeId(self, var: 'DiscreteVariable') -> "gum::NodeId":
         r"""
-        nodeId(self, var) -> gum::NodeId
+        nodeId(InfluenceDiagram self, DiscreteVariable var) -> gum::NodeId
 
         Parameters
         ----------
@@ -23773,7 +23833,7 @@ class InfluenceDiagram(DAGmodel):
 
     def idFromName(self, name: 'std::string const &') -> "gum::NodeId":
         r"""
-        idFromName(self, name) -> gum::NodeId
+        idFromName(InfluenceDiagram self, std::string const & name) -> gum::NodeId
 
         Returns a variable's id given its name.
 
@@ -23798,7 +23858,7 @@ class InfluenceDiagram(DAGmodel):
 
     def variableFromName(self, name: 'std::string const &') -> "gum::DiscreteVariable const &":
         r"""
-        variableFromName(self, name) -> DiscreteVariable
+        variableFromName(InfluenceDiagram self, std::string const & name) -> DiscreteVariable
 
         Parameters
         ----------
@@ -23821,8 +23881,8 @@ class InfluenceDiagram(DAGmodel):
 
     def add(self, variable: 'DiscreteVariable', id: 'gum::NodeId'=0) -> "gum::NodeId":
         r"""
-        add(self, variable, id=0) -> gum::NodeId
-        add(self, variable) -> gum::NodeId
+        add(InfluenceDiagram self, DiscreteVariable variable, gum::NodeId id=0) -> gum::NodeId
+        add(InfluenceDiagram self, DiscreteVariable variable) -> gum::NodeId
 
         Add a chance variable, it's associate node and it's CPT.
 
@@ -23855,8 +23915,8 @@ class InfluenceDiagram(DAGmodel):
 
     def addDecisionNode(self, variable: 'DiscreteVariable', id: 'gum::NodeId'=0) -> "gum::NodeId":
         r"""
-        addDecisionNode(self, variable, id=0) -> gum::NodeId
-        addDecisionNode(self, variable) -> gum::NodeId
+        addDecisionNode(InfluenceDiagram self, DiscreteVariable variable, gum::NodeId id=0) -> gum::NodeId
+        addDecisionNode(InfluenceDiagram self, DiscreteVariable variable) -> gum::NodeId
 
         Add a decision variable.
 
@@ -23889,10 +23949,10 @@ class InfluenceDiagram(DAGmodel):
 
     def addChanceNode(self, *args) -> "gum::NodeId":
         r"""
-        addChanceNode(self, variable, id=0) -> gum::NodeId
-        addChanceNode(self, variable) -> gum::NodeId
-        addChanceNode(self, variable, aContent, id=0) -> gum::NodeId
-        addChanceNode(self, variable, aContent) -> gum::NodeId
+        addChanceNode(InfluenceDiagram self, DiscreteVariable variable, gum::NodeId id=0) -> gum::NodeId
+        addChanceNode(InfluenceDiagram self, DiscreteVariable variable) -> gum::NodeId
+        addChanceNode(InfluenceDiagram self, DiscreteVariable variable, gum::MultiDimImplementation< double > * aContent, gum::NodeId id=0) -> gum::NodeId
+        addChanceNode(InfluenceDiagram self, DiscreteVariable variable, gum::MultiDimImplementation< double > * aContent) -> gum::NodeId
 
         Add a chance variable, it's associate node and it's CPT.
 
@@ -23925,10 +23985,10 @@ class InfluenceDiagram(DAGmodel):
 
     def addUtilityNode(self, *args) -> "gum::NodeId":
         r"""
-        addUtilityNode(self, variable, id=0) -> gum::NodeId
-        addUtilityNode(self, variable) -> gum::NodeId
-        addUtilityNode(self, variable, aContent, id=0) -> gum::NodeId
-        addUtilityNode(self, variable, aContent) -> gum::NodeId
+        addUtilityNode(InfluenceDiagram self, DiscreteVariable variable, gum::NodeId id=0) -> gum::NodeId
+        addUtilityNode(InfluenceDiagram self, DiscreteVariable variable) -> gum::NodeId
+        addUtilityNode(InfluenceDiagram self, DiscreteVariable variable, gum::MultiDimImplementation< double > * aContent, gum::NodeId id=0) -> gum::NodeId
+        addUtilityNode(InfluenceDiagram self, DiscreteVariable variable, gum::MultiDimImplementation< double > * aContent) -> gum::NodeId
 
         Add a utility variable, it's associate node and it's UT. 
 
@@ -23963,8 +24023,8 @@ class InfluenceDiagram(DAGmodel):
 
     def erase(self, *args) -> "void":
         r"""
-        erase(self, id)
-        erase(self, var)
+        erase(InfluenceDiagram self, gum::NodeId id)
+        erase(InfluenceDiagram self, DiscreteVariable var)
 
         Erase a Variable from the network and remove the variable from all his childs.
 
@@ -23983,7 +24043,7 @@ class InfluenceDiagram(DAGmodel):
 
     def changeVariableName(self, id: 'gum::NodeId', new_name: 'std::string const &') -> "void":
         r"""
-        changeVariableName(self, id, new_name)
+        changeVariableName(InfluenceDiagram self, gum::NodeId id, std::string const & new_name)
 
         Parameters
         ----------
@@ -24005,7 +24065,7 @@ class InfluenceDiagram(DAGmodel):
 
     def addArc(self, tail: 'gum::NodeId', head: 'gum::NodeId') -> "void":
         r"""
-        addArc(self, tail, head)
+        addArc(InfluenceDiagram self, gum::NodeId tail, gum::NodeId head)
 
         Add an arc in the ID, and update diagram's potential nodes cpt if necessary.
 
@@ -24029,8 +24089,8 @@ class InfluenceDiagram(DAGmodel):
 
     def eraseArc(self, *args) -> "void":
         r"""
-        eraseArc(self, arc)
-        eraseArc(self, tail, head)
+        eraseArc(InfluenceDiagram self, Arc arc)
+        eraseArc(InfluenceDiagram self, gum::NodeId tail, gum::NodeId head)
 
         Removes an arc in the ID, and update diagram's potential nodes cpt if necessary.
 
@@ -24051,7 +24111,7 @@ class InfluenceDiagram(DAGmodel):
 
     def decisionOrderExists(self) -> "bool":
         r"""
-        decisionOrderExists(self) -> bool
+        decisionOrderExists(InfluenceDiagram self) -> bool
 
         Returns
         -------
@@ -24064,7 +24124,7 @@ class InfluenceDiagram(DAGmodel):
 
     def getDecisionGraph(self) -> "gum::DAG *":
         r"""
-        getDecisionGraph(self) -> DAG
+        getDecisionGraph(InfluenceDiagram self) -> DAG
 
         Returns
         -------
@@ -24077,7 +24137,7 @@ class InfluenceDiagram(DAGmodel):
 
     def getDecisionOrder(self) -> "std::vector< gum::NodeId,std::allocator< gum::NodeId > > *":
         r"""
-        getDecisionOrder(self) -> std::vector< gum::NodeId,std::allocator< gum::NodeId > > *
+        getDecisionOrder(InfluenceDiagram self) -> std::vector< gum::NodeId,std::allocator< gum::NodeId > > *
 
         Returns
         -------
@@ -24095,7 +24155,7 @@ class InfluenceDiagram(DAGmodel):
 
     def existsPathBetween(self, src: 'gum::NodeId', dest: 'gum::NodeId') -> "bool":
         r"""
-        existsPathBetween(self, src, dest) -> bool
+        existsPathBetween(InfluenceDiagram self, gum::NodeId src, gum::NodeId dest) -> bool
 
         Returns
         -------
@@ -24108,7 +24168,7 @@ class InfluenceDiagram(DAGmodel):
 
     def names(self) -> "PyObject *":
         r"""
-        names(self) -> PyObject *
+        names(InfluenceDiagram self) -> PyObject *
 
         Returns
         -------
@@ -24121,7 +24181,7 @@ class InfluenceDiagram(DAGmodel):
 
     def ids(self) -> "PyObject *":
         r"""
-        ids(self) -> PyObject *
+        ids(InfluenceDiagram self) -> PyObject *
 
         .. note:: Deprecated in pyAgrum>0.13.0
             Please use nodes() instead
@@ -24132,7 +24192,7 @@ class InfluenceDiagram(DAGmodel):
 
     def arcs(self) -> "PyObject *":
         r"""
-        arcs(self) -> PyObject *
+        arcs(InfluenceDiagram self) -> PyObject *
 
         Returns
         -------
@@ -24145,7 +24205,7 @@ class InfluenceDiagram(DAGmodel):
 
     def parents(self, id: 'gum::NodeId const') -> "PyObject *":
         r"""
-        parents(self, id) -> PyObject *
+        parents(InfluenceDiagram self, gum::NodeId const id) -> PyObject *
 
         Parameters
         ----------
@@ -24163,7 +24223,7 @@ class InfluenceDiagram(DAGmodel):
 
     def children(self, id: 'gum::NodeId const') -> "PyObject *":
         r"""
-        children(self, id) -> PyObject *
+        children(InfluenceDiagram self, gum::NodeId const id) -> PyObject *
 
         Parameters
         ----------
@@ -24181,8 +24241,8 @@ class InfluenceDiagram(DAGmodel):
 
     def loadBIFXML(self, *args) -> "bool":
         r"""
-        loadBIFXML(self, name, l) -> bool
-        loadBIFXML(self, name) -> bool
+        loadBIFXML(InfluenceDiagram self, std::string name, PyObject * l) -> bool
+        loadBIFXML(InfluenceDiagram self, std::string name) -> bool
 
         Load a BIFXML file.
 
@@ -24204,7 +24264,7 @@ class InfluenceDiagram(DAGmodel):
 
     def saveBIFXML(self, name: 'std::string') -> "void":
         r"""
-        saveBIFXML(self, name)
+        saveBIFXML(InfluenceDiagram self, std::string name)
 
         Save the BayesNet in a BIFXML file.
 
@@ -24218,12 +24278,12 @@ class InfluenceDiagram(DAGmodel):
 
 
     def __repr__(self) -> "std::string":
-        r"""__repr__(self) -> std::string"""
+        r"""__repr__(InfluenceDiagram self) -> std::string"""
         return _pyAgrum.InfluenceDiagram___repr__(self)
 
 
     def __str__(self) -> "std::string":
-        r"""__str__(self) -> std::string"""
+        r"""__str__(InfluenceDiagram self) -> std::string"""
         return _pyAgrum.InfluenceDiagram___str__(self)
 
 
@@ -24240,13 +24300,13 @@ class InfluenceDiagramInference(object):
     __repr__ = _swig_repr
 
     def __init__(self, infDiag: 'InfluenceDiagram'):
-        r"""__init__(self, infDiag) -> InfluenceDiagramInference"""
+        r"""__init__(InfluenceDiagramInference self, InfluenceDiagram infDiag) -> InfluenceDiagramInference"""
         _pyAgrum.InfluenceDiagramInference_swiginit(self, _pyAgrum.new_InfluenceDiagramInference(infDiag))
     __swig_destroy__ = _pyAgrum.delete_InfluenceDiagramInference
 
     def makeInference(self) -> "void":
         r"""
-        makeInference(self)
+        makeInference(InfluenceDiagramInference self)
 
         Makes the inference. 
 
@@ -24256,7 +24316,7 @@ class InfluenceDiagramInference(object):
 
     def getMEU(self) -> "double":
         r"""
-        getMEU(self) -> double
+        getMEU(InfluenceDiagramInference self) -> double
 
         Returns maximum expected utility obtained from inference.
 
@@ -24271,7 +24331,7 @@ class InfluenceDiagramInference(object):
 
     def getBestDecisionChoice(self, decisionId: 'gum::NodeId') -> "gum::Idx":
         r"""
-        getBestDecisionChoice(self, decisionId) -> gum::Idx
+        getBestDecisionChoice(InfluenceDiagramInference self, gum::NodeId decisionId) -> gum::Idx
 
         Returns best choice for decision variable given in parameter ( based upon MEU criteria )
 
@@ -24293,7 +24353,7 @@ class InfluenceDiagramInference(object):
 
     def displayResult(self) -> "std::string":
         r"""
-        displayResult(self) -> std::string
+        displayResult(InfluenceDiagramInference self) -> std::string
 
         Displays the result of an inference.
 
@@ -24303,7 +24363,7 @@ class InfluenceDiagramInference(object):
 
     def insertEvidence(self, evidenceList: 'gum::List< gum::Potential< double > const * > const &') -> "void":
         r"""
-        insertEvidence(self, evidenceList)
+        insertEvidence(InfluenceDiagramInference self, gum::List< gum::Potential< double > const * > const & evidenceList)
 
         Insert new evidence in the graph.
 
@@ -24327,7 +24387,7 @@ class InfluenceDiagramInference(object):
 
     def eraseEvidence(self, evidence: 'Potential') -> "void":
         r"""
-        eraseEvidence(self, evidence)
+        eraseEvidence(InfluenceDiagramInference self, Potential evidence)
 
         Parameters
         ----------
@@ -24345,7 +24405,7 @@ class InfluenceDiagramInference(object):
 
     def eraseAllEvidence(self) -> "void":
         r"""
-        eraseAllEvidence(self)
+        eraseAllEvidence(InfluenceDiagramInference self)
 
         Removes all the evidence entered into the diagram.
 
@@ -24355,7 +24415,7 @@ class InfluenceDiagramInference(object):
 
     def displayStrongJunctionTree(self, *args) -> "void":
         r"""
-        displayStrongJunctionTree(self, stream)
+        displayStrongJunctionTree(InfluenceDiagramInference self, std::ostream & stream)
 
         Displays on terminal the result of strong junction tree computation for test purpose only.
 
@@ -24369,7 +24429,7 @@ class InfluenceDiagramInference(object):
 
     def influenceDiagram(self) -> "gum::InfluenceDiagram< double > const &":
         r"""
-        influenceDiagram(self) -> InfluenceDiagram
+        influenceDiagram(InfluenceDiagramInference self) -> InfluenceDiagram
 
         Returns a constant reference over the InfluenceDiagram on which this class work.
 
@@ -24466,13 +24526,13 @@ class InfluenceDiagramInference(object):
 
 
     def _setEvidence(self, evidences: 'PyObject *') -> "void":
-        r"""_setEvidence(self, evidences)"""
+        r"""_setEvidence(InfluenceDiagramInference self, PyObject * evidences)"""
         return _pyAgrum.InfluenceDiagramInference__setEvidence(self, evidences)
 
 
     def junctionTreeToDot(self) -> "std::string const":
         r"""
-        junctionTreeToDot(self) -> std::string const
+        junctionTreeToDot(InfluenceDiagramInference self) -> std::string const
 
         Returns
         -------
@@ -24516,20 +24576,20 @@ class BNLearner(object):
 
     def __init__(self, *args):
         r"""
-        __init__(self, filename, missing_symbols) -> BNLearner
-        __init__(self, filename) -> BNLearner
-        __init__(self, db) -> BNLearner
-        __init__(self, filename, src, missing_symbols) -> BNLearner
-        __init__(self, filename, src) -> BNLearner
-        __init__(self, arg2) -> BNLearner
-        __init__(self, arg2) -> BNLearner
+        __init__(BNLearner self, std::string const & filename, Vector_string missing_symbols) -> BNLearner
+        __init__(BNLearner self, std::string const & filename) -> BNLearner
+        __init__(BNLearner self, gum::learning::DatabaseTable< > const & db) -> BNLearner
+        __init__(BNLearner self, std::string const & filename, BayesNet src, Vector_string missing_symbols) -> BNLearner
+        __init__(BNLearner self, std::string const & filename, BayesNet src) -> BNLearner
+        __init__(BNLearner self, BNLearner arg2) -> BNLearner
+        __init__(BNLearner self, BNLearner arg2) -> BNLearner
         """
         _pyAgrum.BNLearner_swiginit(self, _pyAgrum.new_BNLearner(*args))
     __swig_destroy__ = _pyAgrum.delete_BNLearner
 
     def learnBN(self) -> "gum::BayesNet< double >":
         r"""
-        learnBN(self) -> BayesNet
+        learnBN(BNLearner self) -> BayesNet
 
         learn a BayesNet from a file (must have read the db before)
 
@@ -24544,10 +24604,10 @@ class BNLearner(object):
 
     def learnParameters(self, *args) -> "gum::BayesNet< double >":
         r"""
-        learnParameters(self, dag, take_into_account_score=True) -> BayesNet
-        learnParameters(self, dag) -> BayesNet
-        learnParameters(self, take_into_account_score=True) -> BayesNet
-        learnParameters(self) -> BayesNet
+        learnParameters(BNLearner self, DAG dag, bool take_into_account_score=True) -> BayesNet
+        learnParameters(BNLearner self, DAG dag) -> BayesNet
+        learnParameters(BNLearner self, bool take_into_account_score=True) -> BayesNet
+        learnParameters(BNLearner self) -> BayesNet
 
         learns a BN (its parameters) when its structure is known.
 
@@ -24574,9 +24634,37 @@ class BNLearner(object):
         return _pyAgrum.BNLearner_learnParameters(self, *args)
 
 
+    def chi2(self, *args) -> "PyObject *":
+        r"""
+        chi2(BNLearner self, std::string const & var1, std::string const & var2, Vector_string knw) -> PyObject
+        chi2(BNLearner self, std::string const & var1, std::string const & var2) -> PyObject *
+
+        chi2 computes the chi2 statistic and pvalue for two columns, given a list of other columns. 
+
+
+        Parameters
+        ----------
+        name1: str
+        	the name of the first column
+
+        name2 : str
+        	the name of the second column
+
+        knowing : [str]
+        	the list of names of conditioning columns
+
+        Returns
+        -------
+        statistic,pvalue
+        	the chi2 statistic and the associated p-value as a Tuple
+
+        """
+        return _pyAgrum.BNLearner_chi2(self, *args)
+
+
     def setVerbosity(self, v: 'bool') -> "void":
         r"""
-        setVerbosity(self, v)
+        setVerbosity(BNLearner self, bool v)
 
         Parameters
         ----------
@@ -24589,7 +24677,7 @@ class BNLearner(object):
 
     def setEpsilon(self, eps: 'double') -> "void":
         r"""
-        setEpsilon(self, eps)
+        setEpsilon(BNLearner self, double eps)
 
         Parameters
         ----------
@@ -24607,7 +24695,7 @@ class BNLearner(object):
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
         r"""
-        setMinEpsilonRate(self, rate)
+        setMinEpsilonRate(BNLearner self, double rate)
 
         Parameters
         ----------
@@ -24620,7 +24708,7 @@ class BNLearner(object):
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
         r"""
-        setMaxIter(self, max)
+        setMaxIter(BNLearner self, gum::Size max)
 
         Parameters
         ----------
@@ -24638,7 +24726,7 @@ class BNLearner(object):
 
     def setMaxTime(self, timeout: 'double') -> "void":
         r"""
-        setMaxTime(self, timeout)
+        setMaxTime(BNLearner self, double timeout)
 
         Parameters
         ----------
@@ -24656,7 +24744,7 @@ class BNLearner(object):
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
         r"""
-        setPeriodSize(self, p)
+        setPeriodSize(BNLearner self, gum::Size p)
 
         Parameters
         ----------
@@ -24674,7 +24762,7 @@ class BNLearner(object):
 
     def verbosity(self) -> "bool":
         r"""
-        verbosity(self) -> bool
+        verbosity(BNLearner self) -> bool
 
         Returns
         -------
@@ -24687,7 +24775,7 @@ class BNLearner(object):
 
     def epsilon(self) -> "double":
         r"""
-        epsilon(self) -> double
+        epsilon(BNLearner self) -> double
 
         Returns
         -------
@@ -24700,7 +24788,7 @@ class BNLearner(object):
 
     def minEpsilonRate(self) -> "double":
         r"""
-        minEpsilonRate(self) -> double
+        minEpsilonRate(BNLearner self) -> double
 
         Returns
         -------
@@ -24713,7 +24801,7 @@ class BNLearner(object):
 
     def maxIter(self) -> "gum::Size":
         r"""
-        maxIter(self) -> gum::Size
+        maxIter(BNLearner self) -> gum::Size
 
         Returns
         -------
@@ -24726,7 +24814,7 @@ class BNLearner(object):
 
     def maxTime(self) -> "double":
         r"""
-        maxTime(self) -> double
+        maxTime(BNLearner self) -> double
 
         Returns
         -------
@@ -24739,7 +24827,7 @@ class BNLearner(object):
 
     def periodSize(self) -> "gum::Size":
         r"""
-        periodSize(self) -> gum::Size
+        periodSize(BNLearner self) -> gum::Size
 
         Returns
         -------
@@ -24757,7 +24845,7 @@ class BNLearner(object):
 
     def nbrIterations(self) -> "gum::Size":
         r"""
-        nbrIterations(self) -> gum::Size
+        nbrIterations(BNLearner self) -> gum::Size
 
         Returns
         -------
@@ -24770,7 +24858,7 @@ class BNLearner(object):
 
     def currentTime(self) -> "double":
         r"""
-        currentTime(self) -> double
+        currentTime(BNLearner self) -> double
 
         Returns
         -------
@@ -24783,7 +24871,7 @@ class BNLearner(object):
 
     def messageApproximationScheme(self) -> "std::string":
         r"""
-        messageApproximationScheme(self) -> std::string
+        messageApproximationScheme(BNLearner self) -> std::string
 
         Returns
         -------
@@ -24796,7 +24884,7 @@ class BNLearner(object):
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
         r"""
-        history(self) -> Vector
+        history(BNLearner self) -> Vector
 
         Returns
         -------
@@ -24814,7 +24902,7 @@ class BNLearner(object):
 
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
         r"""
-        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+        asIApproximationSchemeConfiguration(BNLearner self) -> IApproximationSchemeConfiguration
 
         Returns
         -------
@@ -24825,172 +24913,415 @@ class BNLearner(object):
 
 
     def learnDAG(self) -> "gum::DAG":
-        r"""learnDAG(self) -> DAG"""
+        r"""
+        learnDAG(BNLearner self) -> DAG
+
+        learn a structure from a file
+
+        Returns
+        -------
+        pyAgrum.DAG
+        	the learned DAG
+
+        """
         return _pyAgrum.BNLearner_learnDAG(self)
 
 
     def names(self) -> "std::vector< std::string,std::allocator< std::string > > const &":
-        r"""names(self) -> Vector_string"""
+        r"""
+        names(BNLearner self) -> Vector_string
+
+        Returns
+        -------
+        List[str]
+        	the names of the variables in the database
+
+        """
         return _pyAgrum.BNLearner_names(self)
 
 
     def idFromName(self, var_name: 'std::string const &') -> "gum::NodeId":
-        r"""idFromName(self, var_name) -> gum::NodeId"""
+        r"""
+        idFromName(BNLearner self, std::string const & var_name) -> gum::NodeId
+
+        Parameters
+        ----------
+        var_names : str
+        	a variable's name
+
+        Returns
+        -------
+        int
+        	the column id corresponding to a variable name
+
+        Raises
+        ------
+        gum.MissingVariableInDatabase
+        	If a variable of the BN is not found in the database.
+
+        """
         return _pyAgrum.BNLearner_idFromName(self, var_name)
 
 
     def nameFromId(self, id: 'gum::NodeId') -> "std::string const &":
-        r"""nameFromId(self, id) -> std::string const &"""
+        r"""
+        nameFromId(BNLearner self, gum::NodeId id) -> std::string const &
+
+        Parameters
+        ----------
+        id
+        	a node id
+
+        Returns
+        -------
+        str
+        	the variable's name
+
+        """
         return _pyAgrum.BNLearner_nameFromId(self, id)
 
 
     def useScoreAIC(self) -> "void":
-        r"""useScoreAIC(self)"""
+        r"""useScoreAIC(BNLearner self)"""
         return _pyAgrum.BNLearner_useScoreAIC(self)
 
 
     def useScoreBD(self) -> "void":
-        r"""useScoreBD(self)"""
+        r"""useScoreBD(BNLearner self)"""
         return _pyAgrum.BNLearner_useScoreBD(self)
 
 
     def useScoreBDeu(self) -> "void":
-        r"""useScoreBDeu(self)"""
+        r"""useScoreBDeu(BNLearner self)"""
         return _pyAgrum.BNLearner_useScoreBDeu(self)
 
 
     def useScoreBIC(self) -> "void":
-        r"""useScoreBIC(self)"""
+        r"""useScoreBIC(BNLearner self)"""
         return _pyAgrum.BNLearner_useScoreBIC(self)
 
 
     def useScoreK2(self) -> "void":
-        r"""useScoreK2(self)"""
+        r"""useScoreK2(BNLearner self)"""
         return _pyAgrum.BNLearner_useScoreK2(self)
 
 
     def useScoreLog2Likelihood(self) -> "void":
-        r"""useScoreLog2Likelihood(self)"""
+        r"""useScoreLog2Likelihood(BNLearner self)"""
         return _pyAgrum.BNLearner_useScoreLog2Likelihood(self)
 
 
     def setAprioriWeight(self, weight: 'double') -> "void":
-        r"""setAprioriWeight(self, weight)"""
+        r"""
+        setAprioriWeight(BNLearner self, double weight)
+
+        Set the weigth of the prior
+
+        Parameters
+        ----------
+        weight : double
+        	the apriori weight
+
+        """
         return _pyAgrum.BNLearner_setAprioriWeight(self, weight)
 
 
     def setDatabaseWeight(self, new_weight: 'double const') -> "void":
-        r"""setDatabaseWeight(self, new_weight)"""
+        r"""
+        setDatabaseWeight(BNLearner self, double const new_weight)
+
+        Set the database weight.
+
+        Parameters
+        ----------
+        weight : double
+        	the database weight
+
+        """
         return _pyAgrum.BNLearner_setDatabaseWeight(self, new_weight)
 
 
     def useNoApriori(self) -> "void":
-        r"""useNoApriori(self)"""
+        r"""useNoApriori(BNLearner self)"""
         return _pyAgrum.BNLearner_useNoApriori(self)
 
 
     def useAprioriSmoothing(self, *args) -> "void":
         r"""
-        useAprioriSmoothing(self, weight=1)
-        useAprioriSmoothing(self)
+        useAprioriSmoothing(BNLearner self, double weight=1)
+        useAprioriSmoothing(BNLearner self)
         """
         return _pyAgrum.BNLearner_useAprioriSmoothing(self, *args)
 
 
     def useAprioriDirichlet(self, *args) -> "void":
         r"""
-        useAprioriDirichlet(self, filename, weight=1)
-        useAprioriDirichlet(self, filename)
+        useAprioriDirichlet(BNLearner self, std::string const & filename, double weight=1)
+        useAprioriDirichlet(BNLearner self, std::string const & filename)
         """
         return _pyAgrum.BNLearner_useAprioriDirichlet(self, *args)
 
 
     def useGreedyHillClimbing(self) -> "void":
-        r"""useGreedyHillClimbing(self)"""
+        r"""useGreedyHillClimbing(BNLearner self)"""
         return _pyAgrum.BNLearner_useGreedyHillClimbing(self)
 
 
     def useLocalSearchWithTabuList(self, *args) -> "void":
         r"""
-        useLocalSearchWithTabuList(self, tabu_size=100, nb_decrease=2)
-        useLocalSearchWithTabuList(self, tabu_size=100)
-        useLocalSearchWithTabuList(self)
+        useLocalSearchWithTabuList(BNLearner self, gum::Size tabu_size=100, gum::Size nb_decrease=2)
+        useLocalSearchWithTabuList(BNLearner self, gum::Size tabu_size=100)
+        useLocalSearchWithTabuList(BNLearner self)
+
+        Indicate that we wish to use a local search with tabu list
+
+        Parameters
+        ----------
+        tabu_size : int
+                The size of the tabu list
+
+        nb_decrease : int
+                The max number of changes decreasing the score consecutively that we allow to apply
+
         """
         return _pyAgrum.BNLearner_useLocalSearchWithTabuList(self, *args)
 
 
     def useK2(self, *args) -> "void":
         r"""
-        useK2(self, l)
-        useK2(self, order)
-        useK2(self, order)
+        useK2(BNLearner self, PyObject * l)
+        useK2(BNLearner self, gum::Sequence< gum::NodeId > const & order)
+        useK2(BNLearner self, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const & order)
+
+        Indicate that we wish to use K2.
+
+        Parameters
+        ----------
+        order : list
+                a list of ids
+
         """
         return _pyAgrum.BNLearner_useK2(self, *args)
 
 
     def setMaxIndegree(self, max_indegree: 'gum::Size') -> "void":
-        r"""setMaxIndegree(self, max_indegree)"""
+        r"""setMaxIndegree(BNLearner self, gum::Size max_indegree)"""
         return _pyAgrum.BNLearner_setMaxIndegree(self, max_indegree)
 
 
     def setSliceOrder(self, *args) -> "void":
         r"""
-        setSliceOrder(self, l)
-        setSliceOrder(self, slice_order)
-        setSliceOrder(self, slices)
+        setSliceOrder(BNLearner self, PyObject * l)
+        setSliceOrder(BNLearner self, gum::NodeProperty< gum::NodeId > const & slice_order)
+        setSliceOrder(BNLearner self, std::vector< std::vector< std::string,std::allocator< std::string > >,std::allocator< std::vector< std::string,std::allocator< std::string > > > > const & slices)
+
+        Set a partial order on the nodes.
+
+        Parameters
+        ----------
+        l : list
+                a list of sequences (composed of ids of rows or string)
+
         """
         return _pyAgrum.BNLearner_setSliceOrder(self, *args)
 
 
     def addForbiddenArc(self, *args) -> "void":
         r"""
-        addForbiddenArc(self, arc)
-        addForbiddenArc(self, tail, head)
-        addForbiddenArc(self, tail, head)
+        addForbiddenArc(BNLearner self, Arc arc)
+        addForbiddenArc(BNLearner self, gum::NodeId const tail, gum::NodeId const head)
+        addForbiddenArc(BNLearner self, std::string const & tail, std::string const & head)
+
+        The arc in parameters won't be added.
+
+        Parameters
+        ----------
+        arc : pyAgrum.Arc
+        	an arc
+        head :
+        	a variable's id (int)
+        tail :
+        	a variable's id (int)
+        head :
+        	a variable's name (str)
+        tail :
+        	a variable's name (str)
+
         """
         return _pyAgrum.BNLearner_addForbiddenArc(self, *args)
 
 
     def eraseForbiddenArc(self, *args) -> "void":
         r"""
-        eraseForbiddenArc(self, arc)
-        eraseForbiddenArc(self, tail, head)
-        eraseForbiddenArc(self, tail, head)
+        eraseForbiddenArc(BNLearner self, Arc arc)
+        eraseForbiddenArc(BNLearner self, gum::NodeId const tail, gum::NodeId const head)
+        eraseForbiddenArc(BNLearner self, std::string const & tail, std::string const & head)
+
+        Allow the arc in parameter to be added if necessary.
+
+        Parameters
+        ----------
+        arc : pyAgrum
+        	an arc
+        head :
+        	a variable's id (int)
+        tail :
+        	a variable's id (int)
+        head :
+        	a variable's name (str)
+        tail :
+        	a variable's name (str)
+
         """
         return _pyAgrum.BNLearner_eraseForbiddenArc(self, *args)
 
 
     def addMandatoryArc(self, *args) -> "void":
         r"""
-        addMandatoryArc(self, arc)
-        addMandatoryArc(self, tail, head)
-        addMandatoryArc(self, tail, head)
+        addMandatoryArc(BNLearner self, Arc arc)
+        addMandatoryArc(BNLearner self, gum::NodeId const tail, gum::NodeId const head)
+        addMandatoryArc(BNLearner self, std::string const & tail, std::string const & head)
+
+        Allow to add prior structural knowledge.
+
+        Parameters
+        ----------
+        arc : pyAgrum.Arc
+        	an arc
+        head :
+        	a variable's id (int)
+        tail :
+        	a variable's id (int)
+        head :
+        	a variable's name (str)
+        tail :
+        	a variable's name (str)
+
+        Raises
+        ------
+        gum.InvalidDirectedCycle
+        	If the added arc creates a directed cycle in the DAG
+
         """
         return _pyAgrum.BNLearner_addMandatoryArc(self, *args)
 
 
     def eraseMandatoryArc(self, *args) -> "void":
         r"""
-        eraseMandatoryArc(self, arc)
-        eraseMandatoryArc(self, tail, head)
-        eraseMandatoryArc(self, tail, head)
+        eraseMandatoryArc(BNLearner self, Arc arc)
+        eraseMandatoryArc(BNLearner self, gum::NodeId const tail, gum::NodeId const head)
+        eraseMandatoryArc(BNLearner self, std::string const & tail, std::string const & head)
+
+        Parameters
+        ----------
+        arc : pyAgrum
+        	an arc
+        head :
+        	a variable's id (int)
+        tail :
+        	a variable's id (int)
+        head :
+        	a variable's name (str)
+        tail :
+        	a variable's name (str)
+
         """
         return _pyAgrum.BNLearner_eraseMandatoryArc(self, *args)
 
 
     def useEM(self, epsilon: 'double const') -> "void":
-        r"""useEM(self, epsilon)"""
+        r"""
+        useEM(BNLearner self, double const epsilon)
+
+        Indicates if we use EM for parameter learning.
+
+        Parameters
+        ----------
+        epsilon : double
+        	if epsilon=0.0 then EM is not used
+        	if epsilon>0 then EM is used and stops when the sum of the cumulative squared error on parameters is les than epsilon.
+
+        """
         return _pyAgrum.BNLearner_useEM(self, epsilon)
 
 
     def hasMissingValues(self) -> "bool":
-        r"""hasMissingValues(self) -> bool"""
+        r"""
+        hasMissingValues(BNLearner self) -> bool
+
+        Indicates wether there are missing values in the database.
+
+        Returns
+        -------
+        bool
+            True if there are some missing values in the database.
+
+        """
         return _pyAgrum.BNLearner_hasMissingValues(self)
+
+
+    def logLikelihood(self, *args) -> "double":
+        r"""
+        logLikelihood(BNLearner self, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const & vars, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const & knowing) -> double
+        logLikelihood(BNLearner self, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const & vars) -> double
+        logLikelihood(BNLearner self, Vector_string vars, Vector_string knowing) -> double
+        logLikelihood(BNLearner self, Vector_string vars) -> double
+
+        logLikelihood computes the log-likelihood for the columns in vars, given the columns in the list knowing (optional)
+
+
+        Parameters
+        ----------
+        vars: List[str]
+        	the name of the columns of interest
+
+        knowing : List[str]
+        	the (optional) list of names of conditioning columns
+
+        Returns
+        -------
+        double
+        	the log-likelihood (base 2)
+
+        """
+        return _pyAgrum.BNLearner_logLikelihood(self, *args)
+
+
+    def nbRows(self) -> "gum::Size":
+        r"""
+        nbRows(BNLearner self) -> gum::Size
+
+        Return the number of row in the database
+
+
+        Returns
+        -------
+        int
+        	the number of rows in the database 
+
+        """
+        return _pyAgrum.BNLearner_nbRows(self)
+
+
+    def nbCols(self) -> "gum::Size":
+        r"""
+        nbCols(BNLearner self) -> gum::Size
+
+        Return the nimber of columns in the database
+
+
+        Returns
+        -------
+        int
+        	the number of columns in the database 
+
+        """
+        return _pyAgrum.BNLearner_nbCols(self)
 
 
     def setInitialDAG(self, g: 'DAG') -> "void":
         r"""
-        setInitialDAG(self, g)
+        setInitialDAG(BNLearner self, DAG g)
 
         Parameters
         ----------
@@ -25003,7 +25334,7 @@ class BNLearner(object):
 
     def use3off2(self) -> "void":
         r"""
-        use3off2(self)
+        use3off2(BNLearner self)
 
         Indicate that we wish to use 3off2.
 
@@ -25013,7 +25344,7 @@ class BNLearner(object):
 
     def useMIIC(self) -> "void":
         r"""
-        useMIIC(self)
+        useMIIC(BNLearner self)
 
         Indicate that we wish to use MIIC.
 
@@ -25023,7 +25354,7 @@ class BNLearner(object):
 
     def useNML(self) -> "void":
         r"""
-        useNML(self)
+        useNML(BNLearner self)
 
         Indicate that we wish to use the NML correction for 3off2 or MIIC
 
@@ -25033,7 +25364,7 @@ class BNLearner(object):
 
     def useMDL(self) -> "void":
         r"""
-        useMDL(self)
+        useMDL(BNLearner self)
 
         Indicate that we wish to use the MDL correction for 3off2 or MIIC
 
@@ -25043,7 +25374,7 @@ class BNLearner(object):
 
     def useNoCorr(self) -> "void":
         r"""
-        useNoCorr(self)
+        useNoCorr(BNLearner self)
 
         Indicate that we wish to use the NoCorr correction for 3off2 or MIIC
 
@@ -25053,8 +25384,8 @@ class BNLearner(object):
 
     def latentVariables(self, *args) -> "std::vector< gum::Arc,std::allocator< gum::Arc > > const":
         r"""
-        latentVariables(self) -> PyObject
-        latentVariables(self) -> std::vector< gum::Arc,std::allocator< gum::Arc > > const
+        latentVariables(BNLearner self) -> PyObject
+        latentVariables(BNLearner self) -> std::vector< gum::Arc,std::allocator< gum::Arc > > const
 
         Warnings
         --------
@@ -25071,7 +25402,7 @@ class BNLearner(object):
 
     def learnMixedStructure(self) -> "gum::MixedGraph":
         r"""
-        learnMixedStructure(self) -> MixedGraph
+        learnMixedStructure(BNLearner self) -> MixedGraph
 
         Warnings
         --------
@@ -25122,7 +25453,7 @@ class BNDatabaseGenerator(object):
 
     def __init__(self, bn: 'BayesNet'):
         r"""
-        __init__(self, bn) -> BNDatabaseGenerator
+        __init__(BNDatabaseGenerator self, BayesNet bn) -> BNDatabaseGenerator
 
         BNGenerator is used to easily generate databases from a gum.BayesNet.
 
@@ -25140,77 +25471,77 @@ class BNDatabaseGenerator(object):
     __swig_destroy__ = _pyAgrum.delete_BNDatabaseGenerator
 
     def drawSamples(self, nbSamples: 'gum::Size') -> "double":
-        r"""drawSamples(self, nbSamples) -> double"""
+        r"""drawSamples(BNDatabaseGenerator self, gum::Size nbSamples) -> double"""
         return _pyAgrum.BNDatabaseGenerator_drawSamples(self, nbSamples)
 
 
     def toCSV(self, *args) -> "void":
         r"""
-        toCSV(self, csvFileURL, useLabels=True, append=False, csvSeparator, checkOnAppend=False)
-        toCSV(self, csvFileURL, useLabels=True, append=False, csvSeparator)
-        toCSV(self, csvFileURL, useLabels=True, append=False)
-        toCSV(self, csvFileURL, useLabels=True)
-        toCSV(self, csvFileURL)
+        toCSV(BNDatabaseGenerator self, std::string const & csvFileURL, bool useLabels=True, bool append=False, std::string csvSeparator, bool checkOnAppend=False)
+        toCSV(BNDatabaseGenerator self, std::string const & csvFileURL, bool useLabels=True, bool append=False, std::string csvSeparator)
+        toCSV(BNDatabaseGenerator self, std::string const & csvFileURL, bool useLabels=True, bool append=False)
+        toCSV(BNDatabaseGenerator self, std::string const & csvFileURL, bool useLabels=True)
+        toCSV(BNDatabaseGenerator self, std::string const & csvFileURL)
         """
         return _pyAgrum.BNDatabaseGenerator_toCSV(self, *args)
 
 
     def toDatabaseTable(self, useLabels: 'bool'=True) -> "gum::learning::DatabaseTable< >":
         r"""
-        toDatabaseTable(self, useLabels=True) -> gum::learning::DatabaseTable< >
-        toDatabaseTable(self) -> gum::learning::DatabaseTable< >
+        toDatabaseTable(BNDatabaseGenerator self, bool useLabels=True) -> gum::learning::DatabaseTable< >
+        toDatabaseTable(BNDatabaseGenerator self) -> gum::learning::DatabaseTable< >
         """
         return _pyAgrum.BNDatabaseGenerator_toDatabaseTable(self, useLabels)
 
 
     def database(self) -> "std::vector< std::vector< gum::Idx,std::allocator< gum::Idx > >,std::allocator< std::vector< gum::Idx,std::allocator< gum::Idx > > > >":
-        r"""database(self) -> std::vector< std::vector< gum::Idx,std::allocator< gum::Idx > >,std::allocator< std::vector< gum::Idx,std::allocator< gum::Idx > > > >"""
+        r"""database(BNDatabaseGenerator self) -> std::vector< std::vector< gum::Idx,std::allocator< gum::Idx > >,std::allocator< std::vector< gum::Idx,std::allocator< gum::Idx > > > >"""
         return _pyAgrum.BNDatabaseGenerator_database(self)
 
 
     def setVarOrder(self, *args) -> "void":
         r"""
-        setVarOrder(self, varOrder)
-        setVarOrder(self, varOrder)
+        setVarOrder(BNDatabaseGenerator self, std::vector< gum::Idx,std::allocator< gum::Idx > > const & varOrder)
+        setVarOrder(BNDatabaseGenerator self, Vector_string varOrder)
         """
         return _pyAgrum.BNDatabaseGenerator_setVarOrder(self, *args)
 
 
     def setVarOrderFromCSV(self, *args) -> "void":
         r"""
-        setVarOrderFromCSV(self, csvFileURL, csvSeparator)
-        setVarOrderFromCSV(self, csvFileURL)
+        setVarOrderFromCSV(BNDatabaseGenerator self, std::string const & csvFileURL, std::string const & csvSeparator)
+        setVarOrderFromCSV(BNDatabaseGenerator self, std::string const & csvFileURL)
         """
         return _pyAgrum.BNDatabaseGenerator_setVarOrderFromCSV(self, *args)
 
 
     def setTopologicalVarOrder(self) -> "void":
-        r"""setTopologicalVarOrder(self)"""
+        r"""setTopologicalVarOrder(BNDatabaseGenerator self)"""
         return _pyAgrum.BNDatabaseGenerator_setTopologicalVarOrder(self)
 
 
     def setAntiTopologicalVarOrder(self) -> "void":
-        r"""setAntiTopologicalVarOrder(self)"""
+        r"""setAntiTopologicalVarOrder(BNDatabaseGenerator self)"""
         return _pyAgrum.BNDatabaseGenerator_setAntiTopologicalVarOrder(self)
 
 
     def setRandomVarOrder(self) -> "void":
-        r"""setRandomVarOrder(self)"""
+        r"""setRandomVarOrder(BNDatabaseGenerator self)"""
         return _pyAgrum.BNDatabaseGenerator_setRandomVarOrder(self)
 
 
     def varOrder(self) -> "std::vector< gum::Idx,std::allocator< gum::Idx > >":
-        r"""varOrder(self) -> std::vector< gum::Idx,std::allocator< gum::Idx > >"""
+        r"""varOrder(BNDatabaseGenerator self) -> std::vector< gum::Idx,std::allocator< gum::Idx > >"""
         return _pyAgrum.BNDatabaseGenerator_varOrder(self)
 
 
     def varOrderNames(self) -> "std::vector< std::string,std::allocator< std::string > >":
-        r"""varOrderNames(self) -> Vector_string"""
+        r"""varOrderNames(BNDatabaseGenerator self) -> Vector_string"""
         return _pyAgrum.BNDatabaseGenerator_varOrderNames(self)
 
 
     def log2likelihood(self) -> "double":
-        r"""log2likelihood(self) -> double"""
+        r"""log2likelihood(BNDatabaseGenerator self) -> double"""
         return _pyAgrum.BNDatabaseGenerator_log2likelihood(self)
 
 

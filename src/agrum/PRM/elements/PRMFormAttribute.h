@@ -48,34 +48,34 @@ namespace gum {
       public:
       PRMFormAttribute(const PRMClass< GUM_SCALAR >&          c,
                        const std::string&                     name,
-                       const PRMType< GUM_SCALAR >&           type,
+                       const PRMType&                         type,
                        MultiDimImplementation< std::string >* impl =
-                         new MultiDimArray< std::string >());
+                          new MultiDimArray< std::string >());
 
       virtual ~PRMFormAttribute();
 
       /// See gum::prm::PRMAttribute.
       virtual PRMAttribute< GUM_SCALAR >*
-        newFactory(const PRMClass< GUM_SCALAR >& c) const;
+         newFactory(const PRMClass< GUM_SCALAR >& c) const;
 
       /// See gum::prm::PRMAttribute.
       virtual PRMAttribute< GUM_SCALAR >* copy(
-        Bijection< const DiscreteVariable*, const DiscreteVariable* > bij) const;
+         Bijection< const DiscreteVariable*, const DiscreteVariable* > bij) const;
 
       /// See gum::prm::PRMAttribute.
       virtual void copyCpf(
-        const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bif,
-        const PRMAttribute< GUM_SCALAR >& source);
+         const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bif,
+         const PRMAttribute< GUM_SCALAR >& source);
 
       /// See gum::prm::PRMAttribute.
       virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType
-        elt_type() const;
+         elt_type() const;
 
       /// See gum::prm::PRMAttribute.
-      virtual PRMType< GUM_SCALAR >& type();
+      virtual PRMType& type();
 
       /// See gum::prm::PRMAttribute.
-      virtual const PRMType< GUM_SCALAR >& type() const;
+      virtual const PRMType& type() const;
 
       /// See gum::prm::PRMAttribute.
       virtual const Potential< GUM_SCALAR >& cpf() const;
@@ -91,25 +91,24 @@ namespace gum {
 
       /// See gum::prm::PRMAttribute.
       virtual void setAsCastDescendant(PRMAttribute< GUM_SCALAR >* attr);
-      virtual void becomeCastDescendant(PRMType< GUM_SCALAR >& subtype);
+      virtual void becomeCastDescendant(PRMType& subtype);
 
       virtual MultiDimImplementation< std::string >&       formulas();
       virtual const MultiDimImplementation< std::string >& formulas() const;
 
       /// Swap old_type with new_type in the PRMClassElement cpt.
-      virtual void swap(const PRMType< GUM_SCALAR >& old_type,
-                        const PRMType< GUM_SCALAR >& new_type);
+      virtual void swap(const PRMType& old_type, const PRMType& new_type);
 
       protected:
-      virtual PRMType< GUM_SCALAR >* _type();
-      virtual void                   _type(PRMType< GUM_SCALAR >* t);
+      virtual PRMType* _type();
+      virtual void     _type(PRMType* t);
 
       private:
       PRMFormAttribute(const PRMFormAttribute& source);
       PRMFormAttribute& operator=(const PRMFormAttribute& source);
 
       /// The random variable type of this attribute
-      PRMType< GUM_SCALAR >* __type;
+      PRMType* __type;
 
       /// A pointer on the Potential of this attribute
       mutable Potential< GUM_SCALAR >* __cpf;
@@ -124,8 +123,9 @@ namespace gum {
     };
 
 
-    extern template class PRMFormAttribute< float >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
     extern template class PRMFormAttribute< double >;
+#endif
 
 
   } /* namespace prm */

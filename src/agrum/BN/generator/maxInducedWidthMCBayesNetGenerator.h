@@ -172,8 +172,9 @@ namespace gum {
   };
 
 
-  extern template class MaxInducedWidthMCBayesNetGenerator< float >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class MaxInducedWidthMCBayesNetGenerator< double >;
+#endif
 
 } /*namespace gum*/
 

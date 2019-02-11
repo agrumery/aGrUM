@@ -24,5 +24,7 @@
  */
 #include <agrum/BN/io/BNWriter.h>
 
-template class gum::BNWriter< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::BNWriter< double >;
+#endif

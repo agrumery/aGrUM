@@ -92,12 +92,20 @@ namespace gum {
     Potential< GUM_SCALAR > __computeProdLambda(NodeId X);
     Potential< GUM_SCALAR > __computeProdLambda(NodeId X, NodeId except);
 
-    // return the max differential KL for this node
+    // return the max differential BNdistance for this node
     GUM_SCALAR __updateNodeMessage(NodeId X);
   };
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   // extern template class LoopyBeliefPropagation<float>;
+#  endif
+#endif
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   // extern template class LoopyBeliefPropagation<double>;
+#  endif
+#endif
 } /* namespace gum */
 
 #include <agrum/BN/inference/loopyBeliefPropagation_tpl.h>

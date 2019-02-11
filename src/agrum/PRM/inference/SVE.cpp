@@ -29,8 +29,10 @@
 namespace gum {
   namespace prm {
 
-    template class SVE< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
     template class SVE< double >;
+#endif
 
   } /* namespace prm */
 } /* namespace gum */

@@ -414,7 +414,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(c2.arcs(), 2 + 3);
 
       g1.eraseEdge(gum::Edge(
-        id1, id3));   // THIS EDGE DOES NOT EXISTS !!!! => 6 nodes, 2 edges
+         id1, id3));   // THIS EDGE DOES NOT EXISTS !!!! => 6 nodes, 2 edges
 
       TS_ASSERT_EQUALS(c1.nodes(), 6);
       TS_ASSERT_EQUALS(c1.edges(), 2);

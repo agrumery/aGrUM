@@ -51,7 +51,7 @@ namespace gum_tests {
     }
     void testCaseD() {
       auto bn =
-        gum::BayesNet< int >::fastPrototype("a->b;c1->b;c2->b;a->c1;a->c2");
+         gum::BayesNet< int >::fastPrototype("a->b;c1->b;c2->b;a->c1;a->c2");
       auto eg = gum::EssentialGraph(bn);
 
       TS_ASSERT_EQUALS(eg.size(), 4u);
@@ -61,7 +61,7 @@ namespace gum_tests {
 
     void testNotebook1() {
       auto bn = gum::BayesNet< int >::fastPrototype(
-        "A->B->C->D;E->B;F->G->D;F->H->I;E->J->K->I->M;K->L");
+         "A->B->C->D;E->B;F->G->D;F->H->I;E->J->K->I->M;K->L");
       auto eg = gum::EssentialGraph(bn);
 
       TS_ASSERT_EQUALS(eg.size(), 13u);

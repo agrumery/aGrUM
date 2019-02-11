@@ -76,9 +76,10 @@ namespace gum {
     Instantiation _draw(GUM_SCALAR* w, Instantiation prev) override;
   };
 
-  extern template class WeightedSampling< float >;
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class WeightedSampling< double >;
+#endif
 }   // namespace gum
 
 #include <agrum/BN/inference/weightedSampling_tpl.h>

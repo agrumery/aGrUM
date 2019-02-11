@@ -38,7 +38,7 @@ namespace gum {
 
   // creates (if needed) and returns the safe iterator __BijectionIterEndSafe
   const BijectionIteratorSafe< int, int >*
-    BijectionIteratorStaticEnd::endSafe4Statics() {
+     BijectionIteratorStaticEnd::endSafe4Statics() {
     static bool first_time = true;
 
     if (first_time) {
@@ -87,18 +87,26 @@ namespace gum {
 
   // create the end iterator for all Bijections
   const BijectionIteratorSafe< int, int >*
-    BijectionIteratorStaticEnd::__BijectionIterEndSafe =
-      BijectionIteratorStaticEnd::endSafe4Statics();
+     BijectionIteratorStaticEnd::__BijectionIterEndSafe =
+        BijectionIteratorStaticEnd::endSafe4Statics();
 
   // create the end iterator for all Bijections
   const BijectionIterator< int, int >*
-    BijectionIteratorStaticEnd::__BijectionIterEnd =
-      BijectionIteratorStaticEnd::end4Statics();
+     BijectionIteratorStaticEnd::__BijectionIterEnd =
+        BijectionIteratorStaticEnd::end4Statics();
 
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::Bijection< int, int >;
+#  endif
+#endif
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::Bijection< std::string, std::string >;
+#  endif
+#endif

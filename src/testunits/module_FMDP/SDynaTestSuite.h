@@ -72,7 +72,7 @@ namespace gum_tests {
           nbDec++;
 
           TS_GUM_ASSERT_THROWS_NOTHING(
-            sdyna->feedback(sim.currentState(), sim.reward()););
+             sdyna->feedback(sim.currentState(), sim.reward()););
         }
         TS_GUM_ASSERT_THROWS_NOTHING(sim.setInitialStateRandomly());
       }
@@ -92,7 +92,7 @@ namespace gum_tests {
       // Définition of final states
       gum::Instantiation theEnd;
       for (gum::SequenceIteratorSafe< const gum::DiscreteVariable* > varIter =
-             sim.beginVariables();
+              sim.beginVariables();
            varIter != sim.endVariables();
            ++varIter) {
         if ((*varIter)->name().compare("huc")) {

@@ -40,9 +40,9 @@ namespace gum {
     if (first_use) {
       first_use = false;
       __debug__::__dec_creation(
-        "Set", "__empty_edge_set", 0, "static variable correction", 0);
+         "Set", "__empty_edge_set", 0, "static variable correction", 0);
       __debug__::__dec_creation(
-        "HashTable", "__empty_edge_set", 0, "static variable correction", 0);
+         "HashTable", "__empty_edge_set", 0, "static variable correction", 0);
     }
 #endif
     static EdgeSet empty_fill_ins;
@@ -57,7 +57,7 @@ namespace gum {
 
   // constructor for an a priori non empty graph
   EliminationSequenceStrategy::EliminationSequenceStrategy(
-    UndiGraph* graph, const NodeProperty< Size >* domain_sizes) {
+     UndiGraph* graph, const NodeProperty< Size >* domain_sizes) {
     EliminationSequenceStrategy::setGraph(graph, domain_sizes);
 
     // for debugging purposes
@@ -66,7 +66,7 @@ namespace gum {
 
   // copy constructor
   EliminationSequenceStrategy::EliminationSequenceStrategy(
-    const EliminationSequenceStrategy& from) :
+     const EliminationSequenceStrategy& from) :
       _graph(from._graph),
       _domain_sizes(from._domain_sizes),
       _log_domain_sizes(from._log_domain_sizes) {
@@ -76,7 +76,7 @@ namespace gum {
 
   /// move constructor
   EliminationSequenceStrategy::EliminationSequenceStrategy(
-    EliminationSequenceStrategy&& from) :
+     EliminationSequenceStrategy&& from) :
       _graph(from._graph),
       _domain_sizes(from._domain_sizes),
       _log_domain_sizes(std::move(from._log_domain_sizes)) {
@@ -108,8 +108,8 @@ namespace gum {
 
   // sets a new graph to be triangulated
   bool
-    EliminationSequenceStrategy::setGraph(UndiGraph*                  graph,
-                                          const NodeProperty< Size >* dom_sizes) {
+     EliminationSequenceStrategy::setGraph(UndiGraph*                  graph,
+                                           const NodeProperty< Size >* dom_sizes) {
     // check that both the graph and the domain sizes are different from nullptr
     // or else that both are equal to nullptr
     if (((graph != nullptr) && (dom_sizes == nullptr))

@@ -25,5 +25,7 @@
  */
 #include <agrum/BN/io/UAI/UAIWriter.h>
 
-template class gum::UAIWriter< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::UAIWriter< double >;
+#endif

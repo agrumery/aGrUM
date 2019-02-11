@@ -72,8 +72,8 @@ namespace gum {
      * @param from the copied instance
      */
     MultiDimNoisyAND(
-      const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-      const MultiDimNoisyAND< GUM_SCALAR >&                                from);
+       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
+       const MultiDimNoisyAND< GUM_SCALAR >&                                from);
 
     /**
      * Destructor.
@@ -127,8 +127,10 @@ namespace gum {
     /// @}
   };
 
-  extern template class MultiDimNoisyAND< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class MultiDimNoisyAND< double >;
+#endif
 
   /// For friendly displaying the content of the array.
   template < typename GUM_SCALAR >

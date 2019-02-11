@@ -31,7 +31,7 @@ namespace gum {
   // Default Constructor
   template < typename GUM_SCALAR >
   JointTargetedInference< GUM_SCALAR >::JointTargetedInference(
-    const IBayesNet< GUM_SCALAR >* bn) :
+     const IBayesNet< GUM_SCALAR >* bn) :
       MarginalTargetedInference< GUM_SCALAR >(bn) {
     // assign a BN if this has not been done before (due to virtual inheritance)
     if (this->__bn == nullptr) {
@@ -51,7 +51,7 @@ namespace gum {
   // assigns a new BN to the inference engine
   template < typename GUM_SCALAR >
   void JointTargetedInference< GUM_SCALAR >::_onBayesNetChanged(
-    const IBayesNet< GUM_SCALAR >* bn) {
+     const IBayesNet< GUM_SCALAR >* bn) {
     MarginalTargetedInference< GUM_SCALAR >::_onBayesNetChanged(bn);
     _onAllJointTargetsErased();
     __joint_targets.clear();
@@ -65,7 +65,7 @@ namespace gum {
   // return true if target is a nodeset target.
   template < typename GUM_SCALAR >
   INLINE bool JointTargetedInference< GUM_SCALAR >::isJointTarget(
-    const NodeSet& vars) const {
+     const NodeSet& vars) const {
     if (this->__bn == nullptr)
       GUM_ERROR(NullElement,
                 "No Bayes net has been assigned to the "
@@ -97,7 +97,7 @@ namespace gum {
       _onAllJointTargetsErased();
       __joint_targets.clear();
       this->__setState(
-        BayesNetInference< GUM_SCALAR >::StateOfInference::OutdatedBNStructure);
+         BayesNetInference< GUM_SCALAR >::StateOfInference::OutdatedBNStructure);
     }
   }
 
@@ -113,7 +113,7 @@ namespace gum {
   // Add a set of nodes as a new target
   template < typename GUM_SCALAR >
   void JointTargetedInference< GUM_SCALAR >::addJointTarget(
-    const NodeSet& joint_target) {
+     const NodeSet& joint_target) {
     // check if the nodes in the target belong to the Bayesian network
     if (this->__bn == nullptr)
       GUM_ERROR(NullElement,
@@ -149,14 +149,14 @@ namespace gum {
     __joint_targets.insert(joint_target);
     _onJointTargetAdded(joint_target);
     this->__setState(
-      BayesNetInference< GUM_SCALAR >::StateOfInference::OutdatedBNStructure);
+       BayesNetInference< GUM_SCALAR >::StateOfInference::OutdatedBNStructure);
   }
 
 
   // removes an existing set target
   template < typename GUM_SCALAR >
   void JointTargetedInference< GUM_SCALAR >::eraseJointTarget(
-    const NodeSet& joint_target) {
+     const NodeSet& joint_target) {
     // check if the nodes in the target belong to the Bayesian network
     if (this->__bn == nullptr)
       GUM_ERROR(NullElement,
@@ -179,7 +179,7 @@ namespace gum {
       _onJointTargetErased(joint_target);
       __joint_targets.erase(joint_target);
       this->__setState(
-        BayesNetInference< GUM_SCALAR >::StateOfInference::OutdatedBNStructure);
+         BayesNetInference< GUM_SCALAR >::StateOfInference::OutdatedBNStructure);
     }
   }
 
@@ -194,7 +194,7 @@ namespace gum {
   /// returns the number of target sets
   template < typename GUM_SCALAR >
   INLINE Size JointTargetedInference< GUM_SCALAR >::nbrJointTargets() const
-    noexcept {
+     noexcept {
     return __joint_targets.size();
   }
 
@@ -206,7 +206,7 @@ namespace gum {
   // Compute the posterior of a nodeset.
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
-    JointTargetedInference< GUM_SCALAR >::jointPosterior(const NodeSet& nodes) {
+     JointTargetedInference< GUM_SCALAR >::jointPosterior(const NodeSet& nodes) {
     // try to get the smallest set of targets that contains "nodes"
     NodeSet set;
     bool    found_exact_target = false;
@@ -240,7 +240,7 @@ namespace gum {
   // Compute the posterior of a node
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
-    JointTargetedInference< GUM_SCALAR >::posterior(NodeId node) {
+     JointTargetedInference< GUM_SCALAR >::posterior(NodeId node) {
     if (this->isTarget(node))
       return MarginalTargetedInference< GUM_SCALAR >::posterior(node);
     else
@@ -250,7 +250,7 @@ namespace gum {
   // Compute the posterior of a node
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
-    JointTargetedInference< GUM_SCALAR >::posterior(const std::string& nodeName) {
+     JointTargetedInference< GUM_SCALAR >::posterior(const std::string& nodeName) {
     return posterior(this->BN().idFromName(nodeName));
   }
 
@@ -324,8 +324,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-    JointTargetedInference< GUM_SCALAR >::evidenceJointImpact(
-      const NodeSet& targets, const NodeSet& evs) {
+     JointTargetedInference< GUM_SCALAR >::evidenceJointImpact(
+        const NodeSet& targets, const NodeSet& evs) {
     if (!(evs * targets).empty()) {
       GUM_ERROR(InvalidArgument,
                 "Targets (" << targets << ") can not intersect evs (" << evs
@@ -367,9 +367,9 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-    JointTargetedInference< GUM_SCALAR >::evidenceJointImpact(
-      const std::vector< std::string >& targets,
-      const std::vector< std::string >& evs) {
+     JointTargetedInference< GUM_SCALAR >::evidenceJointImpact(
+        const std::vector< std::string >& targets,
+        const std::vector< std::string >& evs) {
     const auto& bn = this->BN();
 
     gum::NodeSet targetsId;
@@ -388,13 +388,13 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   GUM_SCALAR JointTargetedInference< GUM_SCALAR >::jointMutualInformation(
-    const NodeSet& targets) {
+     const NodeSet& targets) {
     const auto& bn = this->BN();
     const Size  siz = targets.size();
     if (siz <= 1) {
       GUM_ERROR(InvalidArgument,
                 "jointMutualInformation needs at least 2 variables (targets="
-                  << targets << ")");
+                   << targets << ")");
     }
 
     this->eraseAllTargets();
@@ -440,7 +440,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   GUM_SCALAR JointTargetedInference< GUM_SCALAR >::jointMutualInformation(
-    const std::vector< std::string >& targets) {
+     const std::vector< std::string >& targets) {
     const auto& bn = this->BN();
 
     gum::NodeSet targetsId;

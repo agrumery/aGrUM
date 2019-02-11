@@ -148,7 +148,7 @@ namespace gum {
        * @param sample The constant reference to the sample with structure.
        */
       void setCurrentSample(
-        const std::vector< std::vector< std::vector< bool > > >& sample);
+         const std::vector< std::vector< std::vector< bool > > >& sample);
 
       /**
        * Get the current sample as a vector of bits without structure.
@@ -181,7 +181,7 @@ namespace gum {
        * @return The vector of not yet constant pointers to the nets.
        */
       std::vector< std::vector< std::vector< std::vector< bool > > > >
-        getFullBNOptsFromKey(const std::vector< Size >& key);
+         getFullBNOptsFromKey(const std::vector< Size >& key);
 
       /** Get the number of IBayesNet stored. */
       Size getEntrySize() const;
@@ -191,8 +191,9 @@ namespace gum {
     };   // end of OptBN
 
 
-    extern template class VarMod2BNsMap< float >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
     extern template class VarMod2BNsMap< double >;
+#endif
 
   }   // namespace credal
 }   // namespace gum

@@ -43,7 +43,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE EdgeGrowth< GUM_SCALAR >::EdgeGrowth(
-        const EdgeGrowth< GUM_SCALAR >& from) :
+         const EdgeGrowth< GUM_SCALAR >& from) :
           u(from.u),
           edge(from.edge), v(from.v), matches(from.matches),
           iso_graph(from.iso_graph), degree_list(0),

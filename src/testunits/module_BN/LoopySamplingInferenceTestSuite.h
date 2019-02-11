@@ -66,19 +66,19 @@ namespace gum_tests {
   class loopySamplingInferenceTestSuite : public CxxTest::TestSuite {
     public:
     void /*test*/ HybridBinaryTreeWithoutEvidence() {
-      auto bn = gum::BayesNet< float >::fastPrototype(
-        "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+      auto bn = gum::BayesNet< double >::fastPrototype(
+         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
 
       try {
-        gum::LazyPropagation< float > lazy(&bn);
+        gum::LazyPropagation< double > lazy(&bn);
         lazy.makeInference();
 
-        gum::LoopyBeliefPropagation< float > lbp(&bn);
+        gum::LoopyBeliefPropagation< double > lbp(&bn);
         lbp.makeInference();
         compareInference(__FILE__, __LINE__, bn, lazy, lbp);
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::LoopySamplingInference< float, gum::WeightedSampling > inf(&bn);
+        gum::LoopySamplingInference< double, gum::WeightedSampling > inf(&bn);
         inf.setEpsilon(EPSILON_FOR_HYBRID);
         inf.setVerbosity(false);
         inf.makeInference();
@@ -91,17 +91,17 @@ namespace gum_tests {
 
 
     void /*test*/ HybridBinaryTreeWithEvidenceOnRoot() {
-      auto bn = gum::BayesNet< float >::fastPrototype(
-        "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+      auto bn = gum::BayesNet< double >::fastPrototype(
+         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       std::string ev = "b";
 
       try {
-        gum::LazyPropagation< float > lazy(&bn);
+        gum::LazyPropagation< double > lazy(&bn);
         lazy.addEvidence(bn.idFromName(ev), 0);
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::LoopySamplingInference< float, gum::ImportanceSampling > inf(&bn);
+        gum::LoopySamplingInference< double, gum::ImportanceSampling > inf(&bn);
         inf.addEvidence(bn.idFromName(ev), 0);
         inf.setEpsilon(EPSILON_FOR_HYBRID);
         inf.makeInference();
@@ -113,17 +113,17 @@ namespace gum_tests {
     }
 
     void /*test*/ HybridBinaryTreeWithEvidenceOnLeaf() {
-      auto bn = gum::BayesNet< float >::fastPrototype(
-        "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+      auto bn = gum::BayesNet< double >::fastPrototype(
+         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       std::string ev = "h";
 
       try {
-        gum::LazyPropagation< float > lazy(&bn);
+        gum::LazyPropagation< double > lazy(&bn);
         lazy.addEvidence(bn.idFromName(ev), 0);
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::LoopySamplingInference< float, gum::MonteCarloSampling > inf(&bn);
+        gum::LoopySamplingInference< double, gum::MonteCarloSampling > inf(&bn);
         inf.addEvidence(bn.idFromName(ev), 0);
         inf.setEpsilon(EPSILON_FOR_HYBRID);
         inf.setVerbosity(false);
@@ -137,17 +137,17 @@ namespace gum_tests {
     }
 
     void /*test*/ HybridBinaryTreeWithEvidenceOnMid() {
-      auto bn = gum::BayesNet< float >::fastPrototype(
-        "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+      auto bn = gum::BayesNet< double >::fastPrototype(
+         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       std::string ev = "e";
 
       try {
-        gum::LazyPropagation< float > lazy(&bn);
+        gum::LazyPropagation< double > lazy(&bn);
         lazy.addEvidence(bn.idFromName(ev), 0);
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::LoopySamplingInference< float, gum::WeightedSampling > inf(&bn);
+        gum::LoopySamplingInference< double, gum::WeightedSampling > inf(&bn);
         inf.addEvidence(bn.idFromName(ev), 0);
         inf.setEpsilon(EPSILON_FOR_HYBRID);
         inf.setVerbosity(false);
@@ -161,18 +161,18 @@ namespace gum_tests {
     }
 
     void /*test*/ HybridBinaryTreeWithMultipleEvidence() {
-      auto bn = gum::BayesNet< float >::fastPrototype(
-        "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+      auto bn = gum::BayesNet< double >::fastPrototype(
+         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
 
       try {
-        gum::LazyPropagation< float > lazy(&bn);
+        gum::LazyPropagation< double > lazy(&bn);
         lazy.addEvidence(bn.idFromName("e"), 0);
         lazy.addEvidence(bn.idFromName("b"), 1);
         lazy.addEvidence(bn.idFromName("h"), 0);
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::LoopySamplingInference< float, gum::ImportanceSampling > inf(&bn);
+        gum::LoopySamplingInference< double, gum::ImportanceSampling > inf(&bn);
         inf.addEvidence(bn.idFromName("e"), 0);
         inf.addEvidence(bn.idFromName("b"), 1);
         inf.addEvidence(bn.idFromName("h"), 0);
@@ -189,18 +189,18 @@ namespace gum_tests {
 
 
     void /*test*/ HybridNaryTreeWithMultipleEvidence() {
-      auto bn = gum::BayesNet< float >::fastPrototype(
-        "a[4]->d[8]->f[3];b->d->g[5];b->e[4]->h;c->e;i[10]->j[3]->h");
+      auto bn = gum::BayesNet< double >::fastPrototype(
+         "a[4]->d[8]->f[3];b->d->g[5];b->e[4]->h;c->e;i[10]->j[3]->h");
 
       try {
-        gum::LazyPropagation< float > lazy(&bn);
+        gum::LazyPropagation< double > lazy(&bn);
         lazy.addEvidence(bn.idFromName("e"), 0);
         lazy.addEvidence(bn.idFromName("b"), 1);
         lazy.addEvidence(bn.idFromName("h"), 0);
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::LoopySamplingInference< float, gum::ImportanceSampling > inf(&bn);
+        gum::LoopySamplingInference< double, gum::ImportanceSampling > inf(&bn);
         inf.addEvidence(bn.idFromName("e"), 0);
         inf.addEvidence(bn.idFromName("b"), 1);
         inf.addEvidence(bn.idFromName("h"), 0);
@@ -217,14 +217,14 @@ namespace gum_tests {
 
 
     void /*test*/ HybridSimpleBN() {
-      auto bn = gum::BayesNet< float >::fastPrototype("a->b->c;a->d->c", 3);
+      auto bn = gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
 
       try {
-        gum::LazyPropagation< float > lazy(&bn);
+        gum::LazyPropagation< double > lazy(&bn);
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION;
-        gum::LoopySamplingInference< float, gum::GibbsSampling > inf(&bn);
+        gum::LoopySamplingInference< double, gum::GibbsSampling > inf(&bn);
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_HYBRID);
         inf.makeInference();
@@ -236,12 +236,12 @@ namespace gum_tests {
       }
 
       try {
-        gum::LazyPropagation< float > lazy(&bn);
+        gum::LazyPropagation< double > lazy(&bn);
         lazy.addEvidence(bn.idFromName("a"), 0);
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION;
-        gum::LoopySamplingInference< float, gum::ImportanceSampling > inf(&bn);
+        gum::LoopySamplingInference< double, gum::ImportanceSampling > inf(&bn);
         inf.addEvidence(bn.idFromName("a"), 0);
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_HYBRID);
@@ -254,12 +254,12 @@ namespace gum_tests {
       }
 
       try {
-        gum::LazyPropagation< float > lazy(&bn);
+        gum::LazyPropagation< double > lazy(&bn);
         lazy.addEvidence(bn.idFromName("d"), 0);
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION;
-        gum::LoopySamplingInference< float, gum::ImportanceSampling > inf(&bn);
+        gum::LoopySamplingInference< double, gum::ImportanceSampling > inf(&bn);
         inf.addEvidence(bn.idFromName("d"), 0);
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_HYBRID);
@@ -274,15 +274,15 @@ namespace gum_tests {
 
 
     void /*test*/ HybridCplxBN() {
-      auto bn = gum::BayesNet< float >::fastPrototype(
-        "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;", 3);
+      auto bn = gum::BayesNet< double >::fastPrototype(
+         "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;", 3);
 
       try {
-        gum::LazyPropagation< float > lazy(&bn);
+        gum::LazyPropagation< double > lazy(&bn);
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION;
-        gum::LoopySamplingInference< float, gum::WeightedSampling > inf(&bn);
+        gum::LoopySamplingInference< double, gum::WeightedSampling > inf(&bn);
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_HYBRID);
         inf.makeInference();
@@ -294,12 +294,12 @@ namespace gum_tests {
       }
 
       try {
-        gum::LazyPropagation< float > lazy(&bn);
+        gum::LazyPropagation< double > lazy(&bn);
         lazy.addEvidence(bn.idFromName("a"), 0);
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION;
-        gum::LoopySamplingInference< float, gum::ImportanceSampling > inf(&bn);
+        gum::LoopySamplingInference< double, gum::ImportanceSampling > inf(&bn);
         inf.addEvidence(bn.idFromName("a"), 0);
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_HYBRID);
@@ -312,12 +312,12 @@ namespace gum_tests {
       }
 
       try {
-        gum::LazyPropagation< float > lazy(&bn);
+        gum::LazyPropagation< double > lazy(&bn);
         lazy.addEvidence(bn.idFromName("d"), 0);
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION;
-        gum::LoopySamplingInference< float, gum::GibbsSampling > inf(&bn);
+        gum::LoopySamplingInference< double, gum::GibbsSampling > inf(&bn);
         inf.addEvidence(bn.idFromName("d"), 0);
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_HARD_HYBRID);
@@ -332,18 +332,18 @@ namespace gum_tests {
 
 
     void /*test*/ HybridAsia() {
-      gum::BayesNet< float >  bn;
-      gum::BIFReader< float > reader(&bn, GET_RESSOURCES_PATH("asia.bif"));
-      gum::Size               nbrErr = gum::Size(0);
+      gum::BayesNet< double >  bn;
+      gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("asia.bif"));
+      gum::Size                nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
       TS_ASSERT(nbrErr == gum::Size(0));
 
       try {
-        gum::LazyPropagation< float > lazy(&bn);
+        gum::LazyPropagation< double > lazy(&bn);
         lazy.makeInference();
 
         GUM_APPROX_TEST_BEGIN_ITERATION;
-        gum::LoopySamplingInference< float, gum::GibbsSampling > inf(&bn);
+        gum::LoopySamplingInference< double, gum::GibbsSampling > inf(&bn);
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_HARD_HYBRID);
         inf.makeInference();
@@ -358,19 +358,19 @@ namespace gum_tests {
 
 
     void /*test*/ HybridAlarm() {
-      gum::BayesNet< float >  bn;
-      gum::BIFReader< float > reader(&bn, GET_RESSOURCES_PATH("alarm.bif"));
-      gum::Size               nbrErr = gum::Size(0);
+      gum::BayesNet< double >  bn;
+      gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("alarm.bif"));
+      gum::Size                nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
       TS_ASSERT(nbrErr == gum::Size(0));
 
       try {
-        gum::LazyPropagation< float > lazy(&bn);
+        gum::LazyPropagation< double > lazy(&bn);
         lazy.makeInference();
 
 
         GUM_APPROX_TEST_BEGIN_ITERATION;
-        gum::LoopySamplingInference< float, gum::WeightedSampling > inf(&bn);
+        gum::LoopySamplingInference< double, gum::WeightedSampling > inf(&bn);
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_HARD_HYBRID);
         inf.makeInference();
@@ -383,11 +383,11 @@ namespace gum_tests {
     }
 
     void testMultipleInferenceWithSameEngine() {
-      auto bn = gum::BayesNet< float >::fastPrototype("a->b->c;a->d->c", 3);
+      auto bn = gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
       unsharpen(bn);
 
       try {
-        gum::LoopySamplingInference< float, gum::WeightedSampling > inf(&bn);
+        gum::LoopySamplingInference< double, gum::WeightedSampling > inf(&bn);
         inf.addEvidence(bn.idFromName("d"), 0);
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_HARD_HYBRID);

@@ -71,8 +71,8 @@ namespace gum {
      * @param from the copied instance
      */
     MultiDimLogit(
-      const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-      const MultiDimLogit< GUM_SCALAR >&                                   from);
+       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
+       const MultiDimLogit< GUM_SCALAR >&                                   from);
 
     /// Destructor.
     virtual ~MultiDimLogit();
@@ -122,8 +122,9 @@ namespace gum {
   };
 
 
-  extern template class MultiDimLogit< float >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class MultiDimLogit< double >;
+#endif
 
   /// For friendly displaying the content of the array.
   template < typename GUM_SCALAR >

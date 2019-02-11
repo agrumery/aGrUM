@@ -87,13 +87,13 @@ namespace gum {
 
       /// default constructor
       DBRowGenerator4CompleteRows(
-        const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > >
-                              column_types,
-        const allocator_type& alloc = allocator_type());
+         const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > >
+                               column_types,
+         const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       DBRowGenerator4CompleteRows(
-        const DBRowGenerator4CompleteRows< ALLOC >& from);
+         const DBRowGenerator4CompleteRows< ALLOC >& from);
 
       /// copy constructor with a given allocator
       DBRowGenerator4CompleteRows(const DBRowGenerator4CompleteRows< ALLOC >& from,
@@ -107,11 +107,11 @@ namespace gum {
                                   const allocator_type&                  alloc);
 
       /// virtual copy constructor
-      virtual DBRowGenerator4CompleteRows< ALLOC >* clone() const;
+      virtual DBRowGenerator4CompleteRows< ALLOC >* clone() const override final;
 
       /// virtual copy constructor with a given allocator
       virtual DBRowGenerator4CompleteRows< ALLOC >*
-        clone(const allocator_type& alloc) const;
+         clone(const allocator_type& alloc) const override final;
 
       /// destructor
       ~DBRowGenerator4CompleteRows();
@@ -127,11 +127,11 @@ namespace gum {
 
       /// copy operator
       DBRowGenerator4CompleteRows< ALLOC >&
-        operator=(const DBRowGenerator4CompleteRows< ALLOC >& from);
+         operator=(const DBRowGenerator4CompleteRows< ALLOC >& from);
 
       /// move operator
       DBRowGenerator4CompleteRows< ALLOC >&
-        operator=(DBRowGenerator4CompleteRows< ALLOC >&& from);
+         operator=(DBRowGenerator4CompleteRows< ALLOC >&& from);
 
       /// @}
 
@@ -157,7 +157,7 @@ namespace gum {
       protected:
       /// computes the rows it will provide as output
       virtual std::size_t
-        _computeRows(const DBRow< DBTranslatedValue, ALLOC >& row) final;
+         _computeRows(const DBRow< DBTranslatedValue, ALLOC >& row) final;
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

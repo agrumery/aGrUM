@@ -38,10 +38,10 @@ namespace gum {
              template < typename >
              class TerminalNodePolicy >
   MultiDimFunctionGraphProjector< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
-    MultiDimFunctionGraphProjector(
-      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* src,
-      const Set< const DiscreteVariable* >&                          delVars,
-      const GUM_SCALAR                                               neutral) :
+     MultiDimFunctionGraphProjector(
+        const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* src,
+        const Set< const DiscreteVariable* >&                          delVars,
+        const GUM_SCALAR                                               neutral) :
       __src(src),
       __delVars(delVars), __function(), __neutral(neutral) {
     GUM_CONSTRUCTOR(MultiDimFunctionGraphProjector);
@@ -56,7 +56,7 @@ namespace gum {
              template < typename >
              class TerminalNodePolicy >
   MultiDimFunctionGraphProjector< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
-    ~MultiDimFunctionGraphProjector() {
+     ~MultiDimFunctionGraphProjector() {
     GUM_DESTRUCTOR(MultiDimFunctionGraphProjector);
   }
 
@@ -69,12 +69,12 @@ namespace gum {
              template < typename >
              class TerminalNodePolicy >
   MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
-    MultiDimFunctionGraphProjector< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
-      project() {
+     MultiDimFunctionGraphProjector< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
+        project() {
     __rd->copy(*__src);
 
     for (SetIteratorSafe< const DiscreteVariable* > varIter =
-           __delVars.beginSafe();
+            __delVars.beginSafe();
          varIter != __delVars.endSafe();
          ++varIter) {
       const DiscreteVariable* curVar = *varIter;
@@ -106,7 +106,7 @@ namespace gum {
         for (Idx curVarModality = 0; curVarModality < curVar->domainSize();
              ++curVarModality)
           newVal =
-            __function(newVal, __rd->nodeValue(curVarNode->son(curVarModality)));
+             __function(newVal, __rd->nodeValue(curVarNode->son(curVarModality)));
 
         NodeId newSonId = __rd->manager()->addTerminalNode(newVal);
 
@@ -143,7 +143,7 @@ namespace gum {
                 for (Idx curVarModality = 0; curVarModality < curVar->domainSize();
                      ++curVarModality)
                   newVal = __function(
-                    newVal, __rd->nodeValue(curVarNode->son(curVarModality)));
+                     newVal, __rd->nodeValue(curVarNode->son(curVarModality)));
 
                 newSonId = __rd->manager()->addTerminalNode(newVal);
 

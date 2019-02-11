@@ -34,7 +34,7 @@ namespace gum {
     /// returns the allocator used
     template < template < typename > class ALLOC >
     INLINE typename DBRowGenerator4CompleteRows< ALLOC >::allocator_type
-      DBRowGenerator4CompleteRows< ALLOC >::getAllocator() const {
+       DBRowGenerator4CompleteRows< ALLOC >::getAllocator() const {
       return DBRowGenerator< ALLOC >::getAllocator();
     }
 
@@ -42,11 +42,12 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     DBRowGenerator4CompleteRows< ALLOC >::DBRowGenerator4CompleteRows(
-      const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > >
-                                                                           column_types,
-      const typename DBRowGenerator4CompleteRows< ALLOC >::allocator_type& alloc) :
+       const std::vector< DBTranslatedValueType, ALLOC< DBTranslatedValueType > >
+          column_types,
+       const typename DBRowGenerator4CompleteRows< ALLOC >::allocator_type&
+          alloc) :
         DBRowGenerator< ALLOC >(
-          column_types, DBRowGeneratorGoal::ONLY_REMOVE_MISSING_VALUES, alloc) {
+           column_types, DBRowGeneratorGoal::ONLY_REMOVE_MISSING_VALUES, alloc) {
       GUM_CONSTRUCTOR(DBRowGenerator4CompleteRows);
     }
 
@@ -54,8 +55,9 @@ namespace gum {
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
     DBRowGenerator4CompleteRows< ALLOC >::DBRowGenerator4CompleteRows(
-      const DBRowGenerator4CompleteRows< ALLOC >&                          from,
-      const typename DBRowGenerator4CompleteRows< ALLOC >::allocator_type& alloc) :
+       const DBRowGenerator4CompleteRows< ALLOC >& from,
+       const typename DBRowGenerator4CompleteRows< ALLOC >::allocator_type&
+          alloc) :
         DBRowGenerator< ALLOC >(from, alloc),
         __input_row(from.__input_row) {
       GUM_CONS_CPY(DBRowGenerator4CompleteRows);
@@ -65,15 +67,16 @@ namespace gum {
     /// copy constructor
     template < template < typename > class ALLOC >
     DBRowGenerator4CompleteRows< ALLOC >::DBRowGenerator4CompleteRows(
-      const DBRowGenerator4CompleteRows< ALLOC >& from) :
+       const DBRowGenerator4CompleteRows< ALLOC >& from) :
         DBRowGenerator4CompleteRows< ALLOC >(from, from.getAllocator()) {}
 
 
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
     DBRowGenerator4CompleteRows< ALLOC >::DBRowGenerator4CompleteRows(
-      DBRowGenerator4CompleteRows< ALLOC >&&                               from,
-      const typename DBRowGenerator4CompleteRows< ALLOC >::allocator_type& alloc) :
+       DBRowGenerator4CompleteRows< ALLOC >&& from,
+       const typename DBRowGenerator4CompleteRows< ALLOC >::allocator_type&
+          alloc) :
         DBRowGenerator< ALLOC >(std::move(from), alloc),
         __input_row(from.__input_row) {
       GUM_CONS_MOV(DBRowGenerator4CompleteRows);
@@ -83,7 +86,7 @@ namespace gum {
     /// move constructor
     template < template < typename > class ALLOC >
     DBRowGenerator4CompleteRows< ALLOC >::DBRowGenerator4CompleteRows(
-      DBRowGenerator4CompleteRows< ALLOC >&& from) :
+       DBRowGenerator4CompleteRows< ALLOC >&& from) :
         DBRowGenerator4CompleteRows< ALLOC >(std::move(from),
                                              from.getAllocator()) {}
 
@@ -91,9 +94,9 @@ namespace gum {
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
     DBRowGenerator4CompleteRows< ALLOC >*
-      DBRowGenerator4CompleteRows< ALLOC >::clone(
-        const typename DBRowGenerator4CompleteRows< ALLOC >::allocator_type& alloc)
-        const {
+       DBRowGenerator4CompleteRows< ALLOC >::clone(
+          const typename DBRowGenerator4CompleteRows< ALLOC >::allocator_type&
+             alloc) const {
       ALLOC< DBRowGenerator4CompleteRows< ALLOC > > allocator(alloc);
       DBRowGenerator4CompleteRows< ALLOC >* generator = allocator.allocate(1);
       try {
@@ -109,7 +112,7 @@ namespace gum {
     /// virtual copy constructor
     template < template < typename > class ALLOC >
     DBRowGenerator4CompleteRows< ALLOC >*
-      DBRowGenerator4CompleteRows< ALLOC >::clone() const {
+       DBRowGenerator4CompleteRows< ALLOC >::clone() const {
       return clone(this->getAllocator());
     }
 
@@ -153,7 +156,7 @@ namespace gum {
     /// computes the rows it will provide in output
     template < template < typename > class ALLOC >
     INLINE std::size_t DBRowGenerator4CompleteRows< ALLOC >::_computeRows(
-      const DBRow< DBTranslatedValue, ALLOC >& row) {
+       const DBRow< DBTranslatedValue, ALLOC >& row) {
       // check that all the values are observed
       const auto& xrow = row.row();
       for (const auto col : this->_columns_of_interest) {

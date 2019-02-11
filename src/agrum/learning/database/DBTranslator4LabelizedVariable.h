@@ -156,9 +156,9 @@ namespace gum {
        */
       template < template < typename > class XALLOC >
       DBTranslator4LabelizedVariable(
-        const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
-        std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
-        const allocator_type& alloc = allocator_type());
+         const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
+         std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
+         const allocator_type& alloc = allocator_type());
 
       /// default constructor without any initial variable nor missing symbols
       /** When using this constructor, it is assumed implicitly that the
@@ -173,8 +173,8 @@ namespace gum {
        * fields of the DBTranslator4LabelizedVariable
        */
       DBTranslator4LabelizedVariable(
-        std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
-        const allocator_type& alloc = allocator_type());
+         std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
+         const allocator_type& alloc = allocator_type());
 
       /// default constructor with a labelized variable as translator
       /** @param var a labelized variable whose labels will be used for
@@ -197,11 +197,11 @@ namespace gum {
        */
       template < template < typename > class XALLOC >
       DBTranslator4LabelizedVariable(
-        const LabelizedVariable&                                 var,
-        const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
-        const bool  editable_dictionary = false,
-        std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
-        const allocator_type& alloc = allocator_type());
+         const LabelizedVariable&                                 var,
+         const std::vector< std::string, XALLOC< std::string > >& missing_symbols,
+         const bool  editable_dictionary = false,
+         std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
+         const allocator_type& alloc = allocator_type());
 
       /** @brief default constructor with a labelized variable as translator
        * but without missing symbols
@@ -223,35 +223,35 @@ namespace gum {
        * account in the translations, not the missing value.
        */
       DBTranslator4LabelizedVariable(
-        const LabelizedVariable& var,
-        const bool               editable_dictionary = false,
-        std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
-        const allocator_type& alloc = allocator_type());
+         const LabelizedVariable& var,
+         const bool               editable_dictionary = false,
+         std::size_t max_dico_entries = std::numeric_limits< std::size_t >::max(),
+         const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       DBTranslator4LabelizedVariable(
-        const DBTranslator4LabelizedVariable< ALLOC >& from);
+         const DBTranslator4LabelizedVariable< ALLOC >& from);
 
       /// copy constructor with a given allocator
       DBTranslator4LabelizedVariable(
-        const DBTranslator4LabelizedVariable< ALLOC >& from,
-        const allocator_type&                          alloc);
+         const DBTranslator4LabelizedVariable< ALLOC >& from,
+         const allocator_type&                          alloc);
 
       /// move constructor
       DBTranslator4LabelizedVariable(
-        DBTranslator4LabelizedVariable< ALLOC >&& from);
+         DBTranslator4LabelizedVariable< ALLOC >&& from);
 
       /// move constructor with a given allocator
       DBTranslator4LabelizedVariable(
-        DBTranslator4LabelizedVariable< ALLOC >&& from,
-        const allocator_type&                     alloc);
+         DBTranslator4LabelizedVariable< ALLOC >&& from,
+         const allocator_type&                     alloc);
 
       /// virtual copy constructor
       virtual DBTranslator4LabelizedVariable< ALLOC >* clone() const;
 
       /// virtual copy constructor with a given allocator
       virtual DBTranslator4LabelizedVariable< ALLOC >*
-        clone(const allocator_type& alloc) const;
+         clone(const allocator_type& alloc) const;
 
       /// destructor
       virtual ~DBTranslator4LabelizedVariable();
@@ -267,11 +267,11 @@ namespace gum {
 
       /// copy operator
       DBTranslator4LabelizedVariable< ALLOC >&
-        operator=(const DBTranslator4LabelizedVariable< ALLOC >& from);
+         operator=(const DBTranslator4LabelizedVariable< ALLOC >& from);
 
       /// move operator
       DBTranslator4LabelizedVariable< ALLOC >&
-        operator=(DBTranslator4LabelizedVariable< ALLOC >&& from);
+         operator=(DBTranslator4LabelizedVariable< ALLOC >&& from);
 
       /// @}
 
@@ -319,7 +319,7 @@ namespace gum {
        * @throws UnknownLabelInDatabase is raised if this original value
        * cannot be found */
       virtual std::string
-        translateBack(const DBTranslatedValue translated_val) const final;
+         translateBack(const DBTranslatedValue translated_val) const final;
 
       /// returns the domain size of a variable corresponding to the translations
       /** Assume that the translator has been fed with the observed values of
@@ -365,7 +365,7 @@ namespace gum {
       virtual HashTable< std::size_t,
                          std::size_t,
                          ALLOC< std::pair< std::size_t, std::size_t > > >
-        reorder() final;
+         reorder() final;
 
       /// returns the variable stored into the translator
       virtual const LabelizedVariable* variable() const final;

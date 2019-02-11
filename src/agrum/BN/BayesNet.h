@@ -539,8 +539,9 @@ namespace gum {
      *!!!
      * @return the id of the added variable.
      */
-    NodeId
-      addLogit(const DiscreteVariable& var, GUM_SCALAR external_weight, NodeId id);
+    NodeId addLogit(const DiscreteVariable& var,
+                    GUM_SCALAR              external_weight,
+                    NodeId                  id);
 
     /**
      * Add a variable, its associate node and a Logit implementation. The id of
@@ -667,8 +668,10 @@ namespace gum {
   template < typename GUM_SCALAR >
   std::ostream& operator<<(std::ostream& output, const BayesNet< GUM_SCALAR >& bn);
 
-  extern template class BayesNet< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class BayesNet< double >;
+#endif
 
 } /* namespace gum */
 

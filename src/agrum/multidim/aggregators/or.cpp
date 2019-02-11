@@ -26,5 +26,7 @@
 
 #include <agrum/multidim/aggregators/or.h>
 
-template class gum::aggregator::Or< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::aggregator::Or< double >;
+#endif

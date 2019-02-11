@@ -58,7 +58,7 @@ namespace gum {
      * @brief Default constructor.
      */
     MultiDimFunctionGraphGenerator(
-      Idx maxVar, Idx minVar, const Sequence< const DiscreteVariable* >& varSeq);
+       Idx maxVar, Idx minVar, const Sequence< const DiscreteVariable* >& varSeq);
 
     /**
      * @brief Class destructor.

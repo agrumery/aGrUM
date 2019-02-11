@@ -33,7 +33,7 @@ namespace gum {
       double SearchStrategy< GUM_SCALAR >::_computeCost(const Pattern& p) {
         double                                        cost = 0;
         const Sequence< PRMInstance< GUM_SCALAR >* >& seq =
-          *(this->_tree->data(p).iso_map.begin().val());
+           *(this->_tree->data(p).iso_map.begin().val());
         Sequence< PRMClassElement< GUM_SCALAR >* > input_set;
 
         for (const auto inst : seq) {
@@ -41,7 +41,7 @@ namespace gum {
             for (const auto inst2 : inst->getInstances(input->id()))
               if ((!seq.exists(inst2))
                   && (!input_set.exists(
-                       &(inst2->get(input->lastElt().safeName()))))) {
+                        &(inst2->get(input->lastElt().safeName()))))) {
                 cost += std::log(input->type().variable().domainSize());
                 input_set.insert(&(inst2->get(input->lastElt().safeName())));
               }
@@ -50,7 +50,7 @@ namespace gum {
             for (const auto inverse : *vec.val())
               if (!seq.exists(inverse.first)) {
                 cost +=
-                  std::log(inst->get(vec.key()).type().variable().domainSize());
+                   std::log(inst->get(vec.key()).type().variable().domainSize());
                 break;
               }
         }
@@ -60,9 +60,9 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       void StrictSearch< GUM_SCALAR >::__buildPatternGraph(
-        typename StrictSearch< GUM_SCALAR >::PData&   data,
-        Set< Potential< GUM_SCALAR >* >&              pool,
-        const Sequence< PRMInstance< GUM_SCALAR >* >& match) {
+         typename StrictSearch< GUM_SCALAR >::PData&   data,
+         Set< Potential< GUM_SCALAR >* >&              pool,
+         const Sequence< PRMInstance< GUM_SCALAR >* >& match) {
         for (const auto inst : match) {
           for (const auto& elt : *inst) {
             // Adding the node
@@ -71,7 +71,7 @@ namespace gum {
             data.mod.insert(id, elt.second->type()->domainSize());
             data.vars.insert(id, &elt.second->type().variable());
             pool.insert(
-              const_cast< Potential< GUM_SCALAR >* >(&(elt.second->cpf())));
+               const_cast< Potential< GUM_SCALAR >* >(&(elt.second->cpf())));
           }
         }
 
@@ -80,13 +80,13 @@ namespace gum {
           for (const auto& elt : *inst) {
             NodeId node = data.node2attr.first(__str(inst, elt.second));
             bool   found =
-              false;   // If this is set at true, then node is an outer node
+               false;   // If this is set at true, then node is an outer node
 
             // Children existing in the instance type's DAG
             for (const auto chld :
                  inst->type().containerDag().children(elt.second->id())) {
               data.graph.addEdge(
-                node, data.node2attr.first(__str(inst, inst->get(chld))));
+                 node, data.node2attr.first(__str(inst, inst->get(chld))));
             }
 
             // Parents existing in the instance type's DAG
@@ -96,7 +96,7 @@ namespace gum {
                 case PRMClassElement< GUM_SCALAR >::prm_attribute:
                 case PRMClassElement< GUM_SCALAR >::prm_aggregate: {
                   data.graph.addEdge(
-                    node, data.node2attr.first(__str(inst, inst->get(par))));
+                     node, data.node2attr.first(__str(inst, inst->get(par))));
                   break;
                 }
 
@@ -104,11 +104,11 @@ namespace gum {
                   for (const auto inst2 : inst->getInstances(par))
                     if (match.exists(inst2))
                       data.graph.addEdge(
-                        node,
-                        data.node2attr.first(
-                          __str(inst2,
-                                static_cast< const PRMSlotChain< GUM_SCALAR >& >(
-                                  inst->type().get(par)))));
+                         node,
+                         data.node2attr.first(
+                            __str(inst2,
+                                  static_cast< const PRMSlotChain< GUM_SCALAR >& >(
+                                     inst->type().get(par)))));
 
                   break;
                 }
@@ -121,8 +121,8 @@ namespace gum {
             // Referring PRMAttribute<GUM_SCALAR>
             if (inst->hasRefAttr(elt.second->id())) {
               const std::vector<
-                std::pair< PRMInstance< GUM_SCALAR >*, std::string > >& ref_attr =
-                inst->getRefAttr(elt.second->id());
+                 std::pair< PRMInstance< GUM_SCALAR >*, std::string > >& ref_attr =
+                 inst->getRefAttr(elt.second->id());
 
               for (auto pair = ref_attr.begin(); pair != ref_attr.end(); ++pair) {
                 if (match.exists(pair->first)) {
@@ -132,7 +132,7 @@ namespace gum {
                        pair->first->type().containerDag().children(id))
                     data.graph.addEdge(node,
                                        data.node2attr.first(__str(
-                                         pair->first, pair->first->get(child))));
+                                          pair->first, pair->first->get(child))));
                 } else {
                   found = true;
                 }
@@ -148,8 +148,8 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       std::pair< Size, Size > StrictSearch< GUM_SCALAR >::__elimination_cost(
-        typename StrictSearch< GUM_SCALAR >::PData& data,
-        Set< Potential< GUM_SCALAR >* >&            pool) {
+         typename StrictSearch< GUM_SCALAR >::PData& data,
+         Set< Potential< GUM_SCALAR >* >&            pool) {
         List< NodeSet > partial_order;
 
         if (data.inners.size()) partial_order.insert(data.inners);
@@ -208,7 +208,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE SearchStrategy< GUM_SCALAR >::SearchStrategy(
-        const SearchStrategy< GUM_SCALAR >& from) :
+         const SearchStrategy< GUM_SCALAR >& from) :
           _tree(from._tree) {
         GUM_CONS_CPY(SearchStrategy);
       }
@@ -227,7 +227,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE void
-        SearchStrategy< GUM_SCALAR >::setTree(DFSTree< GUM_SCALAR >* tree) {
+         SearchStrategy< GUM_SCALAR >::setTree(DFSTree< GUM_SCALAR >* tree) {
         this->_tree = tree;
       }
 
@@ -242,7 +242,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE FrequenceSearch< GUM_SCALAR >::FrequenceSearch(
-        const FrequenceSearch< GUM_SCALAR >& from) :
+         const FrequenceSearch< GUM_SCALAR >& from) :
           SearchStrategy< GUM_SCALAR >(from),
           __freq(from.__freq) {
         GUM_CONS_CPY(FrequenceSearch);
@@ -267,9 +267,9 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE bool FrequenceSearch< GUM_SCALAR >::accept_growth(
-        const Pattern*                  parent,
-        const Pattern*                  child,
-        const EdgeGrowth< GUM_SCALAR >& growh) {
+         const Pattern*                  parent,
+         const Pattern*                  child,
+         const EdgeGrowth< GUM_SCALAR >& growh) {
         return this->_tree->frequency(*child) >= __freq;
       }
 
@@ -297,7 +297,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE StrictSearch< GUM_SCALAR >::StrictSearch(
-        const StrictSearch< GUM_SCALAR >& from) :
+         const StrictSearch< GUM_SCALAR >& from) :
           SearchStrategy< GUM_SCALAR >(from),
           __freq(from.__freq) {
         GUM_CONS_CPY(StrictSearch);
@@ -322,11 +322,11 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE bool StrictSearch< GUM_SCALAR >::accept_growth(
-        const Pattern*                  parent,
-        const Pattern*                  child,
-        const EdgeGrowth< GUM_SCALAR >& growth) {
+         const Pattern*                  parent,
+         const Pattern*                  child,
+         const EdgeGrowth< GUM_SCALAR >& growth) {
         return __inner_cost(child)
-                 + this->_tree->frequency(*child) * __outer_cost(child)
+                  + this->_tree->frequency(*child) * __outer_cost(child)
                < this->_tree->frequency(*child) * __outer_cost(parent);
       }
 
@@ -366,22 +366,22 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE std::string StrictSearch< GUM_SCALAR >::__str(
-        const PRMInstance< GUM_SCALAR >*  i,
-        const PRMAttribute< GUM_SCALAR >* a) const {
+         const PRMInstance< GUM_SCALAR >*  i,
+         const PRMAttribute< GUM_SCALAR >* a) const {
         return i->name() + __dot + a->safeName();
       }
 
       template < typename GUM_SCALAR >
       INLINE std::string StrictSearch< GUM_SCALAR >::__str(
-        const PRMInstance< GUM_SCALAR >*  i,
-        const PRMAttribute< GUM_SCALAR >& a) const {
+         const PRMInstance< GUM_SCALAR >*  i,
+         const PRMAttribute< GUM_SCALAR >& a) const {
         return i->name() + __dot + a.safeName();
       }
 
       template < typename GUM_SCALAR >
       INLINE std::string StrictSearch< GUM_SCALAR >::__str(
-        const PRMInstance< GUM_SCALAR >*  i,
-        const PRMSlotChain< GUM_SCALAR >& a) const {
+         const PRMInstance< GUM_SCALAR >*  i,
+         const PRMSlotChain< GUM_SCALAR >& a) const {
         return i->name() + __dot + a.lastElt().safeName();
       }
 
@@ -390,7 +390,7 @@ namespace gum {
         typename StrictSearch< GUM_SCALAR >::PData data;
         Set< Potential< GUM_SCALAR >* >            pool;
         __buildPatternGraph(
-          data, pool, *(this->_tree->data(*p).iso_map.begin().val()));
+           data, pool, *(this->_tree->data(*p).iso_map.begin().val()));
         double inner = std::log(__elimination_cost(data, pool).first);
         double outer = this->_computeCost(*p);
         __map.insert(p, std::make_pair(inner, outer));
@@ -406,7 +406,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE TreeWidthSearch< GUM_SCALAR >::TreeWidthSearch(
-        const TreeWidthSearch< GUM_SCALAR >& from) :
+         const TreeWidthSearch< GUM_SCALAR >& from) :
           SearchStrategy< GUM_SCALAR >(from) {
         GUM_CONS_CPY(TreeWidthSearch);
       }
@@ -444,9 +444,9 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE bool TreeWidthSearch< GUM_SCALAR >::accept_growth(
-        const Pattern*                  parent,
-        const Pattern*                  child,
-        const EdgeGrowth< GUM_SCALAR >& growth) {
+         const Pattern*                  parent,
+         const Pattern*                  child,
+         const EdgeGrowth< GUM_SCALAR >& growth) {
         return cost(*parent) >= cost(*child);
       }
 

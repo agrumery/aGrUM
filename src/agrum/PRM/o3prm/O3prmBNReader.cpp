@@ -26,5 +26,7 @@
 
 #include <agrum/PRM/o3prm/O3prmBNReader.h>
 
-template class gum::O3prmBNReader< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::O3prmBNReader< double >;
+#endif

@@ -32,9 +32,9 @@ namespace gum {
 
   /// default constructor
   OrderedTriangulation::OrderedTriangulation(
-    const OrderedEliminationSequenceStrategy& elimSeq,
-    const JunctionTreeStrategy&               JTStrategy,
-    bool                                      minimality) :
+     const OrderedEliminationSequenceStrategy& elimSeq,
+     const JunctionTreeStrategy&               JTStrategy,
+     bool                                      minimality) :
       StaticTriangulation(elimSeq, JTStrategy, minimality) {
     // for debugging purposes
     GUM_CONSTRUCTOR(OrderedTriangulation);
@@ -42,17 +42,17 @@ namespace gum {
 
   /// constructor with a given graph
   OrderedTriangulation::OrderedTriangulation(
-    const UndiGraph*                          theGraph,
-    const NodeProperty< Size >*               dom,
-    const std::vector< NodeId >*              order,
-    const OrderedEliminationSequenceStrategy& elimSeq,
-    const JunctionTreeStrategy&               JTStrategy,
-    bool                                      minimality) :
+     const UndiGraph*                          theGraph,
+     const NodeProperty< Size >*               dom,
+     const std::vector< NodeId >*              order,
+     const OrderedEliminationSequenceStrategy& elimSeq,
+     const JunctionTreeStrategy&               JTStrategy,
+     bool                                      minimality) :
       StaticTriangulation(theGraph, dom, elimSeq, JTStrategy, minimality),
       __order(order) {
     static_cast< OrderedEliminationSequenceStrategy* >(
-      _elimination_sequence_strategy)
-      ->setOrder(__order);
+       _elimination_sequence_strategy)
+       ->setOrder(__order);
 
     // for debugging purposes
     GUM_CONSTRUCTOR(OrderedTriangulation);
@@ -75,9 +75,9 @@ namespace gum {
   /// virtual copy constructor
   OrderedTriangulation* OrderedTriangulation::newFactory() const {
     return new OrderedTriangulation(
-      static_cast< const OrderedEliminationSequenceStrategy& >(
-        *_elimination_sequence_strategy),
-      *_junction_tree_strategy);
+       static_cast< const OrderedEliminationSequenceStrategy& >(
+          *_elimination_sequence_strategy),
+       *_junction_tree_strategy);
   }
 
   /// virtual copy constructor
@@ -96,23 +96,23 @@ namespace gum {
                                       const NodeProperty< Size >* domsizes) {
     StaticTriangulation::setGraph(graph, domsizes);
     static_cast< OrderedEliminationSequenceStrategy* >(
-      _elimination_sequence_strategy)
-      ->setOrder(__order);
+       _elimination_sequence_strategy)
+       ->setOrder(__order);
   }
 
   /// sets the sequence of elimination
   void OrderedTriangulation::setOrder(const std::vector< NodeId >* order) {
     __order = order;
     static_cast< OrderedEliminationSequenceStrategy* >(
-      _elimination_sequence_strategy)
-      ->setOrder(__order);
+       _elimination_sequence_strategy)
+       ->setOrder(__order);
   }
 
   /// the function called to initialize the triangulation process
   void OrderedTriangulation::_initTriangulation(UndiGraph& graph) {
     OrderedEliminationSequenceStrategy* elim =
-      static_cast< OrderedEliminationSequenceStrategy* >(
-        _elimination_sequence_strategy);
+       static_cast< OrderedEliminationSequenceStrategy* >(
+          _elimination_sequence_strategy);
     elim->setGraph(&graph, _domain_sizes);
     elim->setOrder(__order);
   }

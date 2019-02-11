@@ -74,25 +74,28 @@ namespace gum {
     ///
     // ==========================================================================
     static StructuredPlaner< GUM_SCALAR >*
-      spumddInstance(GUM_SCALAR discountFactor = 0.9,
-                     GUM_SCALAR epsilon = 0.00001,
-                     bool       verbose = true) {
+       spumddInstance(GUM_SCALAR discountFactor = 0.9,
+                      GUM_SCALAR epsilon = 0.00001,
+                      bool       verbose = true) {
       return new StructuredPlaner< GUM_SCALAR >(
-        new MDDOperatorStrategy< GUM_SCALAR >(), discountFactor, epsilon, verbose);
+         new MDDOperatorStrategy< GUM_SCALAR >(),
+         discountFactor,
+         epsilon,
+         verbose);
     }
 
     // ==========================================================================
     ///
     // ==========================================================================
     static StructuredPlaner< GUM_SCALAR >*
-      sviInstance(GUM_SCALAR discountFactor = 0.9,
-                  GUM_SCALAR epsilon = 0.00001,
-                  bool       verbose = true) {
+       sviInstance(GUM_SCALAR discountFactor = 0.9,
+                   GUM_SCALAR epsilon = 0.00001,
+                   bool       verbose = true) {
       return new StructuredPlaner< GUM_SCALAR >(
-        new TreeOperatorStrategy< GUM_SCALAR >(),
-        discountFactor,
-        epsilon,
-        verbose);
+         new TreeOperatorStrategy< GUM_SCALAR >(),
+         discountFactor,
+         epsilon,
+         verbose);
     }
 
     /// @}
@@ -220,28 +223,28 @@ namespace gum {
     /// Performs the P(s'|s,a).V^{t-1}(s') part of the value itération
     // ==========================================================================
     virtual MultiDimFunctionGraph< GUM_SCALAR >*
-      _evalQaction(const MultiDimFunctionGraph< GUM_SCALAR >*, Idx);
+       _evalQaction(const MultiDimFunctionGraph< GUM_SCALAR >*, Idx);
 
     // ==========================================================================
     /// Performs max_a Q(s,a)
     /// @warning Performs also the deallocation of the QActions
     // ==========================================================================
     virtual MultiDimFunctionGraph< GUM_SCALAR >*
-      _maximiseQactions(std::vector< MultiDimFunctionGraph< GUM_SCALAR >* >&);
+       _maximiseQactions(std::vector< MultiDimFunctionGraph< GUM_SCALAR >* >&);
 
     // ==========================================================================
     /// Performs min_i F_i
     /// @warning Performs also the deallocation of the F_i
     // ==========================================================================
     virtual MultiDimFunctionGraph< GUM_SCALAR >*
-      _minimiseFunctions(std::vector< MultiDimFunctionGraph< GUM_SCALAR >* >&);
+       _minimiseFunctions(std::vector< MultiDimFunctionGraph< GUM_SCALAR >* >&);
 
     // ==========================================================================
     /// Perform the R(s) + gamma . function
     /// @warning function is deleted, new one is returned
     // ==========================================================================
     virtual MultiDimFunctionGraph< GUM_SCALAR >*
-      _addReward(MultiDimFunctionGraph< GUM_SCALAR >* function, Idx actionId = 0);
+       _addReward(MultiDimFunctionGraph< GUM_SCALAR >* function, Idx actionId = 0);
 
     /// @}
 
@@ -270,8 +273,8 @@ namespace gum {
      */
     // ==========================================================================
     MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >, SetTerminalNodePolicy >*
-      _makeArgMax(const MultiDimFunctionGraph< GUM_SCALAR >* Qaction,
-                  Idx                                        actionId);
+       _makeArgMax(const MultiDimFunctionGraph< GUM_SCALAR >* Qaction,
+                   Idx                                        actionId);
 
     private:
     // ==========================================================================
@@ -291,9 +294,9 @@ namespace gum {
     // ==========================================================================
     virtual MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
                                    SetTerminalNodePolicy >*
-      _argmaximiseQactions(
-        std::vector< MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
-                                            SetTerminalNodePolicy >* >&);
+       _argmaximiseQactions(
+          std::vector< MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
+                                              SetTerminalNodePolicy >* >&);
 
     // ==========================================================================
     /// From V(s)* = argmax_a Q*(s,a), this function extract pi*(s)
@@ -302,18 +305,18 @@ namespace gum {
     /// @warning deallocate the argmax optimal value function
     // ==========================================================================
     void _extractOptimalPolicy(
-      const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
-                                   SetTerminalNodePolicy >* optimalValueFunction);
+       const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
+                                    SetTerminalNodePolicy >* optimalValueFunction);
 
     private:
     // ==========================================================================
     /// Recursion part for the createArgMaxCopy
     // ==========================================================================
     NodeId __recurExtractOptPol(
-      NodeId,
-      const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
-                                   SetTerminalNodePolicy >*,
-      HashTable< NodeId, NodeId >&);
+       NodeId,
+       const MultiDimFunctionGraph< ArgMaxSet< GUM_SCALAR, Idx >,
+                                    SetTerminalNodePolicy >*,
+       HashTable< NodeId, NodeId >&);
 
     // ==========================================================================
     /// Extract from an ArgMaxSet the associated ActionSet

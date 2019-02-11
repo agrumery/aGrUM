@@ -80,7 +80,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(var2.toString(), "var1<4,y,2,1>");
 
       TS_GUM_ASSERT_THROWS_NOTHING(
-        var1.changeLabel(1, "x"));   // should be OK since label 1 is already "x"
+         var1.changeLabel(1, "x"));   // should be OK since label 1 is already "x"
       TS_ASSERT_THROWS(var1.changeLabel(0, "x"), gum::DuplicateElement);
       TS_ASSERT_THROWS(var1.changeLabel(1000, "x"), gum::OutOfBounds);
     }
@@ -98,7 +98,7 @@ namespace gum_tests {
 
     void testAndConstructorWithLabels() {
       gum::LabelizedVariable var1(
-        "var1", "this is var1", {"rouge", "vert", "bleu"});
+         "var1", "this is var1", {"rouge", "vert", "bleu"});
       TS_ASSERT_EQUALS(var1.toString(), "var1<rouge,vert,bleu>");
       TS_ASSERT_EQUALS(var1.posLabel("vert"), gum::Idx(1));
     }

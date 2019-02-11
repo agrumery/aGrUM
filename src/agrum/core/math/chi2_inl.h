@@ -32,7 +32,7 @@ namespace gum {
 
   // sets the conditioning nodes (useful for computing degrees of freedom)
   INLINE void
-    Chi2::setConditioningNodes(const std::vector< Idx >& db_conditioning_ids) {
+     Chi2::setConditioningNodes(const std::vector< Idx >& db_conditioning_ids) {
     __conditioning_size = 1;
     for (Idx i = 0; i < db_conditioning_ids.size(); ++i) {
       __conditioning_size *= __modalities[db_conditioning_ids[i]];
@@ -41,8 +41,7 @@ namespace gum {
 
   // returns the number of degrees of freedom
   INLINE Size Chi2::degreesOfFreedom(const std::pair< Idx, Idx >& pair) {
-    return (__conditioning_size * (__modalities[pair.first] - 1)
-            * (__modalities[pair.second] - 1));
+    return degreesOfFreedom(pair.first, pair.second);
   }
 
   // returns the number of degrees of freedom
@@ -53,18 +52,7 @@ namespace gum {
 
   // computes the critical value according to the number of degrees of freedom
   ALWAYS_INLINE double Chi2::criticalValue(const std::pair< Idx, Idx >& pair) {
-    Idx DF = degreesOfFreedom(pair);
-
-    // try to see if the threshold is not already in cache
-    try {
-      return __critical_values[DF];
-    } catch (const Exception&) {
-      // here we have to compute the threshold of the chi2
-      // we use Gary Perlman's algorithm
-      double value = __criticalValue(__confidence_proba, DF);
-      __critical_values.insert(DF, value);
-      return value;
-    }
+    return criticalValue(pair.first, pair.second);
   }
 
   // computes the critical value according to the number of degrees of freedom

@@ -40,20 +40,20 @@ namespace gum_tests {
     private:
     typedef gum::prm::PRMFuncAttribute< double > PRMAttribute;
     ClassElementTestSuiteAbstract*               __classEltTestSuite;
-    gum::prm::PRMType< double >*                 __boolean;
-    gum::prm::PRMType< double >*                 __state;
+    gum::prm::PRMType*                           __boolean;
+    gum::prm::PRMType*                           __state;
 
     public:
     void setUp() {
       __classEltTestSuite = new ClassElementTestSuiteAbstract;
-      __boolean = gum::prm::PRMType< double >::boolean();
+      __boolean = gum::prm::PRMType::boolean();
       gum::LabelizedVariable state{"state", "A state variable", 0};
       state.addLabel("OK");
       state.addLabel("NOK");
       std::vector< gum::Idx > map;
       map.push_back(1);
       map.push_back(0);
-      __state = new gum::prm::PRMType< double >{*__boolean, map, state};
+      __state = new gum::prm::PRMType{*__boolean, map, state};
     }
 
     void tearDown() {
@@ -69,9 +69,9 @@ namespace gum_tests {
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
       var.addLabel("False");
       var.addLabel("True");
-      gum::prm::PRMType< double > type{var};
-      PRMAttribute                attr("my_attr", type);
-      bool                        expected = false;
+      gum::prm::PRMType type{var};
+      PRMAttribute      attr("my_attr", type);
+      bool              expected = false;
       // Act & Assert
       __classEltTestSuite->testIsReferenceSlot(attr, expected);
     }
@@ -81,9 +81,9 @@ namespace gum_tests {
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
       var.addLabel("False");
       var.addLabel("True");
-      gum::prm::PRMType< double > type{var};
-      PRMAttribute                attr("my_attr", type);
-      bool                        expected = true;
+      gum::prm::PRMType type{var};
+      PRMAttribute      attr("my_attr", type);
+      bool              expected = true;
       // Act & Assert
       __classEltTestSuite->testIsAttribute(attr, expected);
     }
@@ -93,9 +93,9 @@ namespace gum_tests {
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
       var.addLabel("False");
       var.addLabel("True");
-      gum::prm::PRMType< double > type{var};
-      PRMAttribute                attr("my_attr", type);
-      bool                        expected = false;
+      gum::prm::PRMType type{var};
+      PRMAttribute      attr("my_attr", type);
+      bool              expected = false;
       // Act & Assert
       __classEltTestSuite->testIsSlotChain(attr, expected);
     }
@@ -105,8 +105,8 @@ namespace gum_tests {
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
       var.addLabel("False");
       var.addLabel("True");
-      gum::prm::PRMType< double > type{var};
-      PRMAttribute                attr("my_attr", type);
+      gum::prm::PRMType type{var};
+      PRMAttribute      attr("my_attr", type);
       // Act & Assert
       __classEltTestSuite->testSetNodeId(attr);
     }
@@ -116,8 +116,8 @@ namespace gum_tests {
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
       var.addLabel("False");
       var.addLabel("True");
-      gum::prm::PRMType< double > type{var};
-      PRMAttribute                attr("my_attr", type);
+      gum::prm::PRMType type{var};
+      PRMAttribute      attr("my_attr", type);
       // Act & Assert
       __classEltTestSuite->test_obj_type(attr);
     }
@@ -127,8 +127,8 @@ namespace gum_tests {
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
       var.addLabel("False");
       var.addLabel("True");
-      gum::prm::PRMType< double > type{var};
-      PRMAttribute                attr("my_attr", type);
+      gum::prm::PRMType type{var};
+      PRMAttribute      attr("my_attr", type);
 
       // Act & Assert
       __classEltTestSuite->testSafeName(attr);
@@ -139,8 +139,8 @@ namespace gum_tests {
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
       var.addLabel("False");
       var.addLabel("True");
-      gum::prm::PRMType< double > type{var};
-      PRMAttribute                attr("my_attr", type);
+      gum::prm::PRMType type{var};
+      PRMAttribute      attr("my_attr", type);
 
       // Act & Assert
       __classEltTestSuite->testCast_NotAllowed(attr);
@@ -149,12 +149,12 @@ namespace gum_tests {
     void testCast() {
       // Arrange
       gum::LabelizedVariable boolean_var{
-        "boolean", "A boolean discrete variable", 0};
+         "boolean", "A boolean discrete variable", 0};
       boolean_var.addLabel("False");
       boolean_var.addLabel("True");
 
       gum::LabelizedVariable state_var{
-        "state", "A binary discete variable to represent a state", 0};
+         "state", "A binary discete variable to represent a state", 0};
       state_var.addLabel("OK");
       state_var.addLabel("NOK");
 
@@ -162,9 +162,9 @@ namespace gum_tests {
       map.push_back(1);
       map.push_back(0);
 
-      gum::prm::PRMType< double > boolean{boolean_var};
-      gum::prm::PRMType< double > state{boolean, map, state_var};
-      PRMAttribute                attr("my_attr", state);
+      gum::prm::PRMType boolean{boolean_var};
+      gum::prm::PRMType state{boolean, map, state_var};
+      PRMAttribute      attr("my_attr", state);
 
       // Act & Assert
       __classEltTestSuite->testCast(attr, boolean);
@@ -337,7 +337,7 @@ namespace gum_tests {
     void testSetAsCastDescendantTypeError() {
       // Arrange
       gum::LabelizedVariable foovar{"Foo", "Bar", 5};
-      PRMAttribute           foo("foobar", gum::prm::PRMType< double >(foovar));
+      PRMAttribute           foo("foobar", gum::prm::PRMType(foovar));
       PRMAttribute           state("state", *__state);
       auto                   before = foo.cpf().variablesSequence().size();
       // Act

@@ -26,8 +26,6 @@
  */
 #include <agrum/PRM/elements/PRMSystem.h>
 
-#include <agrum/PRM/elements/PRMInstance.h>
-
 #include <agrum/multidim/aggregators/exists.h>
 #include <agrum/multidim/aggregators/forall.h>
 #include <agrum/multidim/aggregators/max.h>
@@ -58,8 +56,8 @@ namespace gum {
     NodeId PRMSystem< GUM_SCALAR >::add(PRMInstance< GUM_SCALAR >* i) {
       if (__nameMap.exists(i->name())) {
         GUM_ERROR(
-          DuplicateElement,
-          "an Instance<GUM_SCALAR> with the same is already in this System");
+           DuplicateElement,
+           "an Instance<GUM_SCALAR> with the same is already in this System");
       }
 
       NodeId id = __skeleton.addNode();
@@ -79,7 +77,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void PRMSystem< GUM_SCALAR >::groundedBN(
-      BayesNetFactory< GUM_SCALAR >& factory) const {
+       BayesNetFactory< GUM_SCALAR >& factory) const {
       factory.startNetworkDeclaration();
       factory.addNetworkProperty("name", name());
       factory.endNetworkDeclaration();
@@ -99,8 +97,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void PRMSystem< GUM_SCALAR >::__groundAttr(
-      const PRMInstance< GUM_SCALAR >& instance,
-      BayesNetFactory< GUM_SCALAR >&   factory) const {
+       const PRMInstance< GUM_SCALAR >& instance,
+       BayesNetFactory< GUM_SCALAR >&   factory) const {
       for (const auto node : instance.type().containerDag()) {
         // Working a Class<GUM_SCALAR> level because PRMAggregate<GUM_SCALAR>
         // are
@@ -136,9 +134,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void PRMSystem< GUM_SCALAR >::__groundAgg(
-      const PRMClassElement< GUM_SCALAR >& elt,
-      const std::string&                   name,
-      BayesNetFactory< GUM_SCALAR >&       factory) const {
+       const PRMClassElement< GUM_SCALAR >& elt,
+       const std::string&                   name,
+       BayesNetFactory< GUM_SCALAR >&       factory) const {
       factory.startVariableDeclaration();
       factory.variableName(name);
       const DiscreteVariable& agg_var = elt.type().variable();
@@ -148,48 +146,48 @@ namespace gum {
       }
 
       const PRMAggregate< GUM_SCALAR >& agg =
-        static_cast< const PRMAggregate< GUM_SCALAR >& >(elt);
+         static_cast< const PRMAggregate< GUM_SCALAR >& >(elt);
 
       switch (agg.agg_type()) {
         case PRMAggregate< GUM_SCALAR >::AggregateType::MIN: {
           factory.setVariableCPTImplementation(
-            new aggregator::Min< GUM_SCALAR >());
+             new aggregator::Min< GUM_SCALAR >());
           break;
         }
 
         case PRMAggregate< GUM_SCALAR >::AggregateType::MAX: {
           factory.setVariableCPTImplementation(
-            new aggregator::Max< GUM_SCALAR >());
+             new aggregator::Max< GUM_SCALAR >());
           break;
         }
 
         case PRMAggregate< GUM_SCALAR >::AggregateType::EXISTS: {
           factory.setVariableCPTImplementation(
-            new aggregator::Exists< GUM_SCALAR >(agg.label()));
+             new aggregator::Exists< GUM_SCALAR >(agg.label()));
           break;
         }
 
         case PRMAggregate< GUM_SCALAR >::AggregateType::FORALL: {
           factory.setVariableCPTImplementation(
-            new aggregator::Forall< GUM_SCALAR >(agg.label()));
+             new aggregator::Forall< GUM_SCALAR >(agg.label()));
           break;
         }
 
         case PRMAggregate< GUM_SCALAR >::AggregateType::COUNT: {
           factory.setVariableCPTImplementation(
-            new aggregator::Count< GUM_SCALAR >(agg.label()));
+             new aggregator::Count< GUM_SCALAR >(agg.label()));
           break;
         }
 
         case PRMAggregate< GUM_SCALAR >::AggregateType::MEDIAN: {
           factory.setVariableCPTImplementation(
-            new aggregator::Median< GUM_SCALAR >());
+             new aggregator::Median< GUM_SCALAR >());
           break;
         }
 
         case PRMAggregate< GUM_SCALAR >::AggregateType::AMPLITUDE: {
           factory.setVariableCPTImplementation(
-            new aggregator::Amplitude< GUM_SCALAR >());
+             new aggregator::Amplitude< GUM_SCALAR >());
           break;
         }
 
@@ -200,7 +198,7 @@ namespace gum {
 
         case PRMAggregate< GUM_SCALAR >::AggregateType::AND: {
           factory.setVariableCPTImplementation(
-            new aggregator::And< GUM_SCALAR >());
+             new aggregator::And< GUM_SCALAR >());
           break;
         }
 
@@ -215,8 +213,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void PRMSystem< GUM_SCALAR >::__groundRef(
-      const PRMInstance< GUM_SCALAR >& instance,
-      BayesNetFactory< GUM_SCALAR >&   factory) const {
+       const PRMInstance< GUM_SCALAR >& instance,
+       BayesNetFactory< GUM_SCALAR >&   factory) const {
       for (const auto& elt : instance) {
         std::stringstream elt_name;
         elt_name << instance.name() << "." << elt.second->safeName();
@@ -236,10 +234,10 @@ namespace gum {
 
             case PRMClassElement< GUM_SCALAR >::prm_slotchain: {
               std::string parent_name =
-                static_cast< const PRMSlotChain< GUM_SCALAR >& >(
-                  instance.type().get(par))
-                  .lastElt()
-                  .safeName();
+                 static_cast< const PRMSlotChain< GUM_SCALAR >& >(
+                    instance.type().get(par))
+                    .lastElt()
+                    .safeName();
 
               for (const auto ref : instance.getInstances(par)) {
                 std::stringstream sBuff;
@@ -262,16 +260,16 @@ namespace gum {
         // attributes since
         // aggregates Potentials are generated)
         if (PRMClassElement< GUM_SCALAR >::isAttribute(
-              instance.type().get(elt.second->safeName())))
+               instance.type().get(elt.second->safeName())))
           __groundPotential(instance, *elt.second, factory);
       }
     }
 
     template < typename GUM_SCALAR >
     void PRMSystem< GUM_SCALAR >::__groundPotential(
-      const PRMInstance< GUM_SCALAR >&  instance,
-      const PRMAttribute< GUM_SCALAR >& attr,
-      BayesNetFactory< GUM_SCALAR >&    factory) const {
+       const PRMInstance< GUM_SCALAR >&  instance,
+       const PRMAttribute< GUM_SCALAR >& attr,
+       BayesNetFactory< GUM_SCALAR >&    factory) const {
       Bijection< const DiscreteVariable*, const DiscreteVariable* > bijection;
       std::stringstream                                             var_name;
       var_name << instance.name() << "." << attr.safeName();
@@ -293,14 +291,14 @@ namespace gum {
           case PRMClassElement< GUM_SCALAR >::prm_slotchain: {
             std::stringstream                 parent_name;
             const PRMSlotChain< GUM_SCALAR >& sc =
-              static_cast< const PRMSlotChain< GUM_SCALAR >& >(
-                instance.type().get(parent));
+               static_cast< const PRMSlotChain< GUM_SCALAR >& >(
+                  instance.type().get(parent));
             parent_name << instance.getInstance(sc.id()).name() << "."
                         << sc.lastElt().safeName();
             bijection.insert(&(instance.getInstance(sc.id())
-                                 .get(sc.lastElt().safeName())
-                                 .type()
-                                 .variable()),
+                                  .get(sc.lastElt().safeName())
+                                  .type()
+                                  .variable()),
                              &(factory.variable(parent_name.str())));
             break;
           }
@@ -381,13 +379,13 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE bool PRMSystem< GUM_SCALAR >::isInstantiated(
-      const PRMClass< GUM_SCALAR >& c) const {
+       const PRMClass< GUM_SCALAR >& c) const {
       return __instanceMap.exists(const_cast< PRMClass< GUM_SCALAR >* >(&c));
     }
 
     template < typename GUM_SCALAR >
     INLINE bool
-      PRMSystem< GUM_SCALAR >::isInstance(const std::string& name) const {
+       PRMSystem< GUM_SCALAR >::isInstance(const std::string& name) const {
       return __nameMap.exists(name);
     }
 
@@ -432,8 +430,8 @@ namespace gum {
         return *(__instanceMap[const_cast< PRMClass< GUM_SCALAR >* >(&type)]);
       } catch (NotFound&) {
         GUM_ERROR(
-          NotFound,
-          "the given Class<GUM_SCALAR> has no instantiation in this System");
+           NotFound,
+           "the given Class<GUM_SCALAR> has no instantiation in this System");
       }
     }
 
@@ -487,7 +485,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMSystem< GUM_SCALAR >::addArray(
-      const std::string& array, PRMClassElementContainer< GUM_SCALAR >& type) {
+       const std::string& array, PRMClassElementContainer< GUM_SCALAR >& type) {
       if (__arrayMap.exists(array)) {
         GUM_ERROR(DuplicateElement,
                   "an array '" << array << "' is already in this System");
@@ -495,36 +493,36 @@ namespace gum {
 
       __arrayMap.insert(array,
                         PRMSystem< GUM_SCALAR >::model_pair(
-                          &type, new Sequence< PRMInstance< GUM_SCALAR >* >()));
+                           &type, new Sequence< PRMInstance< GUM_SCALAR >* >()));
     }
 
     template < typename GUM_SCALAR >
     INLINE typename PRMSystem< GUM_SCALAR >::iterator
-      PRMSystem< GUM_SCALAR >::begin() {
+       PRMSystem< GUM_SCALAR >::begin() {
       return __nodeIdMap.begin();
     }
 
     template < typename GUM_SCALAR >
     INLINE const typename PRMSystem< GUM_SCALAR >::iterator&
-      PRMSystem< GUM_SCALAR >::end() {
+       PRMSystem< GUM_SCALAR >::end() {
       return __nodeIdMap.end();
     }
 
     template < typename GUM_SCALAR >
     INLINE typename PRMSystem< GUM_SCALAR >::const_iterator
-      PRMSystem< GUM_SCALAR >::begin() const {
+       PRMSystem< GUM_SCALAR >::begin() const {
       return __nodeIdMap.begin();
     }
 
     template < typename GUM_SCALAR >
     INLINE const typename PRMSystem< GUM_SCALAR >::const_iterator&
-      PRMSystem< GUM_SCALAR >::end() const {
+       PRMSystem< GUM_SCALAR >::end() const {
       return __nodeIdMap.end();
     }
 
     template < typename GUM_SCALAR >
     INLINE typename PRMSystem< GUM_SCALAR >::array_iterator
-      PRMSystem< GUM_SCALAR >::begin(const std::string& a) {
+       PRMSystem< GUM_SCALAR >::begin(const std::string& a) {
       try {
         return __arrayMap[a].second->begin();
       } catch (NotFound&) {
@@ -534,7 +532,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const typename PRMSystem< GUM_SCALAR >::array_iterator&
-      PRMSystem< GUM_SCALAR >::end(const std::string& a) {
+       PRMSystem< GUM_SCALAR >::end(const std::string& a) {
       try {
         return __arrayMap[a].second->end();
       } catch (NotFound&) {
@@ -544,7 +542,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE typename PRMSystem< GUM_SCALAR >::const_array_iterator
-      PRMSystem< GUM_SCALAR >::begin(const std::string& a) const {
+       PRMSystem< GUM_SCALAR >::begin(const std::string& a) const {
       try {
         return __arrayMap[a].second->begin();
       } catch (NotFound&) {
@@ -554,7 +552,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE const typename PRMSystem< GUM_SCALAR >::const_array_iterator&
-      PRMSystem< GUM_SCALAR >::end(const std::string& a) const {
+       PRMSystem< GUM_SCALAR >::end(const std::string& a) const {
       try {
         return __arrayMap[a].second->end();
       } catch (NotFound&) {

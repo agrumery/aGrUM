@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #(c) Copyright by Pierre-Henri Wuillemin, UPMC, 2011  (pierre-henri.wuillemin@lip6.fr)
 
@@ -21,5 +20,7 @@
 #OR PERFORMANCE OF THIS SOFTWARE!
 
 """
-This file allows python to use this folder as a library (when installed in some site-packages).
+pyAgrum.lib is a set of python tools for pyAgrum.
 """
+__author__      = "Pierre-Henri Wuillemin"
+__copyright__   = "(c) 2016-2019 PARIS"

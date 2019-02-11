@@ -43,7 +43,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   SamplingInference< GUM_SCALAR >::SamplingInference(
-    const IBayesNet< GUM_SCALAR >* bn) :
+     const IBayesNet< GUM_SCALAR >* bn) :
       ApproximateInference< GUM_SCALAR >(bn),
       __estimator(), __samplingBN(nullptr) {
     this->setEpsilon(DEFAULT_EPSILON);
@@ -83,7 +83,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void SamplingInference< GUM_SCALAR >::_setEstimatorFromLBP(
-    LoopyBeliefPropagation< GUM_SCALAR >* lbp, GUM_SCALAR virtualLBPSize) {
+     LoopyBeliefPropagation< GUM_SCALAR >* lbp, GUM_SCALAR virtualLBPSize) {
     __estimator.setFromLBP(lbp, this->hardEvidenceNodes(), virtualLBPSize);
     this->isSetEstimator = true;
   }
@@ -91,19 +91,19 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
-    SamplingInference< GUM_SCALAR >::currentPosterior(NodeId id) {
+     SamplingInference< GUM_SCALAR >::currentPosterior(NodeId id) {
     return __estimator.posterior(this->BN().variable(id));
   }
 
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
-    SamplingInference< GUM_SCALAR >::currentPosterior(const std::string& name) {
+     SamplingInference< GUM_SCALAR >::currentPosterior(const std::string& name) {
     return currentPosterior(this->BN().idFromName(name));
   }
 
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
-    SamplingInference< GUM_SCALAR >::_posterior(NodeId id) {
+     SamplingInference< GUM_SCALAR >::_posterior(NodeId id) {
     return __estimator.posterior(this->BN().variable(id));
   }
 
@@ -126,11 +126,11 @@ namespace gum {
     dSeparation dsep = gum::dSeparation();
     NodeSet     requisite;
     dsep.requisiteNodes(
-      this->BN().dag(),
-      this->BN().nodes().asNodeSet(),   // no target for approximateInference
-      this->hardEvidenceNodes(),
-      this->softEvidenceNodes(),   // should be empty
-      requisite);
+       this->BN().dag(),
+       this->BN().nodes().asNodeSet(),   // no target for approximateInference
+       this->hardEvidenceNodes(),
+       this->softEvidenceNodes(),   // should be empty
+       requisite);
     requisite += this->hardEvidenceNodes();
 
     auto nonRequisite = this->BN().dag().asNodeSet() - requisite;
@@ -193,7 +193,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void SamplingInference< GUM_SCALAR >::_onContextualize(
-    BayesNetFragment< GUM_SCALAR >* bn) {}
+     BayesNetFragment< GUM_SCALAR >* bn) {}
 
 
   template < typename GUM_SCALAR >
@@ -210,12 +210,12 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void SamplingInference< GUM_SCALAR >::_onAllEvidenceErased(
-    bool contains_hard_evidence) {}
+     bool contains_hard_evidence) {}
 
   template < typename GUM_SCALAR >
   void
-    SamplingInference< GUM_SCALAR >::_onEvidenceChanged(const NodeId id,
-                                                        bool hasChangedSoftHard) {
+     SamplingInference< GUM_SCALAR >::_onEvidenceChanged(const NodeId id,
+                                                         bool hasChangedSoftHard) {
     if (hasChangedSoftHard) {
       GUM_ERROR(FatalError, "Approximated inference only accept hard evidence");
     }
@@ -223,7 +223,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void SamplingInference< GUM_SCALAR >::_onBayesNetChanged(
-    const IBayesNet< GUM_SCALAR >* bn) {}
+     const IBayesNet< GUM_SCALAR >* bn) {}
 
   template < typename GUM_SCALAR >
   void SamplingInference< GUM_SCALAR >::_updateOutdatedBNStructure() {}

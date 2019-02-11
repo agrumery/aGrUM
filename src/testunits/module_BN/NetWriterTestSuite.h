@@ -96,9 +96,9 @@ namespace gum_tests {
 
     void test_isreadable() {
       std::string file = GET_RESSOURCES_PATH("NetWriter_RO_TestFile.net");
-      gum::BayesNet< float >* net = new gum::BayesNet< float >();
+      gum::BayesNet< double >* net = new gum::BayesNet< double >();
 
-      gum::NetReader< float > reader(net, file);
+      gum::NetReader< double > reader(net, file);
       TS_GUM_ASSERT_THROWS_NOTHING(reader.trace(false));
 
       gum::Size nbrErr = 0;

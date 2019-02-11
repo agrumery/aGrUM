@@ -52,7 +52,7 @@ namespace gum {
 
     /// assign new weight to the rows of the learning database
     INLINE void
-      genericBNLearner::Database::setDatabaseWeight(const double new_weight) {
+       genericBNLearner::Database::setDatabaseWeight(const double new_weight) {
       if (__database.nbRows() == std::size_t(0)) return;
       const double weight = new_weight / double(__database.nbRows());
       __database.setAllRowsWeight(weight);
@@ -185,7 +185,7 @@ namespace gum {
       if (__selected_algo != AlgoType::MIIC_THREE_OFF_TWO) {
         GUM_ERROR(OperationNotAllowed,
                   "You must use the 3off2 algorithm before selecting "
-                    << "the NML score");
+                     << "the NML score");
       }
       __3off2_kmode = CorrectedMutualInformation<>::KModeTypes::NML;
     }
@@ -195,7 +195,7 @@ namespace gum {
       if (__selected_algo != AlgoType::MIIC_THREE_OFF_TWO) {
         GUM_ERROR(OperationNotAllowed,
                   "You must use the 3off2 algorithm before selecting "
-                    << "the MDL score");
+                     << "the MDL score");
       }
       __3off2_kmode = CorrectedMutualInformation<>::KModeTypes::MDL;
     }
@@ -205,7 +205,7 @@ namespace gum {
       if (__selected_algo != AlgoType::MIIC_THREE_OFF_TWO) {
         GUM_ERROR(OperationNotAllowed,
                   "You must use the 3off2 algorithm before selecting "
-                    << "the NoCorr score");
+                     << "the NoCorr score");
       }
       __3off2_kmode = CorrectedMutualInformation<>::KModeTypes::NoCorr;
     }
@@ -215,7 +215,7 @@ namespace gum {
       if (__selected_algo != AlgoType::MIIC_THREE_OFF_TWO) {
         GUM_ERROR(OperationNotAllowed,
                   "You must use the 3off2 algorithm before selecting "
-                    << "the latentVariables method");
+                     << "the latentVariables method");
       }
       return __miic_3off2.latentVariables();
     }
@@ -335,12 +335,12 @@ namespace gum {
 
     // sets a partial order on the nodes
     INLINE void
-      genericBNLearner::setSliceOrder(const NodeProperty< NodeId >& slice_order) {
+       genericBNLearner::setSliceOrder(const NodeProperty< NodeId >& slice_order) {
       __constraint_SliceOrder = StructuralConstraintSliceOrder(slice_order);
     }
 
     INLINE void genericBNLearner::setSliceOrder(
-      const std::vector< std::vector< std::string > >& slices) {
+       const std::vector< std::vector< std::string > >& slices) {
       NodeProperty< NodeId > slice_order;
       NodeId                 rank = 0;
       for (const auto& slice : slices) {
@@ -452,7 +452,12 @@ namespace gum {
       return __score_database.databaseTable();
     }
 
+    INLINE Size genericBNLearner::nbCols() const {
+      return __score_database.domainSizes().size();
+    }
 
+    INLINE Size genericBNLearner::nbRows() const {
+      return __score_database.databaseTable().size();
+    }
   } /* namespace learning */
-
 } /* namespace gum */

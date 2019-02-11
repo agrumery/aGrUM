@@ -26,5 +26,7 @@
 
 #include <agrum/multidim/aggregators/and.h>
 
-template class gum::aggregator::And< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::aggregator::And< double >;
+#endif

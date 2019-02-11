@@ -25,7 +25,9 @@
  */
 
 #include <agrum/core/math/math.h>
-#include <agrum/BN/algorithms/divergence/bruteForceKL.h>
+#include <agrum/BN/algorithms/divergence/BNdistance.h>
 
-template class gum::BruteForceKL< float >;
-template class gum::BruteForceKL< double >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+template class gum::BNdistance< double >;
+#endif

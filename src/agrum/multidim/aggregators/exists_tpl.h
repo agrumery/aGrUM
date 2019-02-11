@@ -70,8 +70,8 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE
 
-      std::string
-      Exists< GUM_SCALAR >::aggregatorName() const {
+       std::string
+       Exists< GUM_SCALAR >::aggregatorName() const {
       std::stringstream ss;
       ss << "exists[" << __value << "]";
       return ss.str();

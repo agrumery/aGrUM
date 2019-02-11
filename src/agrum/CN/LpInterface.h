@@ -141,11 +141,11 @@ namespace gum {
          * @return The address of the caller.
          */
         friend std::ostream&
-          operator<<(std::ostream& out,
-                     const LpCol&  col);   // calls col.toString(),
-                                          // friend is useless but
-                                          // good for documentation
-                                          // purpose
+           operator<<(std::ostream& out,
+                      const LpCol&  col);   // calls col.toString(),
+                                           // friend is useless but
+                                           // good for documentation
+                                           // purpose
 
         /// @}
 
@@ -569,11 +569,11 @@ namespace gum {
          * @return The address of the caller.
          */
         friend std::ostream&
-          operator<<(std::ostream& out,
-                     const LpRow&  row);   // calls row.toString(),
-                                          // friend is useless but
-                                          // good for documentation
-                                          // purpose
+           operator<<(std::ostream& out,
+                      const LpRow&  row);   // calls row.toString(),
+                                           // friend is useless but
+                                           // good for documentation
+                                           // purpose
 
         /**
          * @brief Get the string representation of a calling row.
@@ -632,7 +632,7 @@ namespace gum {
          * @param from The LpInterface to be copied.
          */
         LpInterface< GUM_SCALAR >&
-          operator=(const LpInterface< GUM_SCALAR >& from);
+           operator=(const LpInterface< GUM_SCALAR >& from);
 
         /**
          * @brief Move coumpound assignment.
@@ -653,10 +653,10 @@ namespace gum {
          */
         template < typename T >
         friend std::ostream&
-          operator<<(std::ostream&           out,
-                     const LpInterface< T >& lpi);   // calls lpi.toString(),
-                                                     // friend is useless but good
-                                                     // for documentation purpose
+           operator<<(std::ostream&           out,
+                      const LpInterface< T >& lpi);   // calls lpi.toString(),
+                                                      // friend is useless but good
+                                                      // for documentation purpose
 
         /**
          * @brief Insert a new column, i.e. a new variable.

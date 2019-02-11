@@ -84,7 +84,7 @@ namespace gum {
      * See class description for more info.
      */
     friend MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >*
-      MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::manager();
+       MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::manager();
 
     /**
      * @brief Default constructor.
@@ -94,7 +94,7 @@ namespace gum {
      */
     protected:
     explicit MultiDimFunctionGraphManager(
-      MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* master);
+       MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* master);
 
     public:
     /**
@@ -335,7 +335,7 @@ namespace gum {
     /// This friend methods from is the only way to get an instance of a
     /// manager.
     friend MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >*
-      MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::manager();
+       MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::manager();
 
     // ========================================================================
     /// @name Constructor and destructor
@@ -345,7 +345,7 @@ namespace gum {
      * @brief Class constructor.
      */
     MultiDimFunctionGraphTreeManager(
-      MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* master);
+       MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* master);
 
     public:
     /**
@@ -389,14 +389,14 @@ namespace gum {
     /// This friend methods from is the only way to get an instance of a
     /// manager.
     friend MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >*
-      MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::manager();
+       MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::manager();
 
     // ========================================================================
     /// @name Constructor and destructor
     // ========================================================================
     /// @{
     MultiDimFunctionGraphROManager(
-      MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* master);
+       MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* master);
 
     public:
     ~MultiDimFunctionGraphROManager();

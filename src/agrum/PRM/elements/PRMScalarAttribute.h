@@ -27,7 +27,11 @@
 #ifndef GUM_SCALAR_ATTRIBUTE_H
 #define GUM_SCALAR_ATTRIBUTE_H
 
+#include <agrum/agrum.h>
+#include <agrum/core/bijection.h>
+#include <agrum/multidim/potential.h>
 #include <agrum/PRM/elements/PRMAttribute.h>
+
 
 namespace gum {
   namespace prm {
@@ -53,7 +57,7 @@ namespace gum {
      * Built-in copies (copy constructor and copy operator) are illegal due to
      * various problems raised by redondant information.
      *
-     * @see PRM PRMFactory Class PRMClassElement PRMType<GUM_SCALAR> Potential
+     * @see PRM PRMFactory Class PRMClassElement PRMType Potential
      * @ingroup prm_group
      */
     template < typename GUM_SCALAR >
@@ -77,9 +81,9 @@ namespace gum {
        *             it will be deleted after the call of ~PRMAttribute.
        */
       PRMScalarAttribute(const std::string&                    name,
-                         const PRMType< GUM_SCALAR >&          type,
+                         const PRMType&                        type,
                          MultiDimImplementation< GUM_SCALAR >* impl =
-                           new MultiDimArray< GUM_SCALAR >());
+                            new MultiDimArray< GUM_SCALAR >());
 
       /// Destructor.
       virtual ~PRMScalarAttribute();
@@ -93,21 +97,21 @@ namespace gum {
       virtual PRMAttribute< GUM_SCALAR >*
                                           newFactory(const PRMClass< GUM_SCALAR >& c) const;
       virtual PRMAttribute< GUM_SCALAR >* copy(
-        Bijection< const DiscreteVariable*, const DiscreteVariable* > bij) const;
+         Bijection< const DiscreteVariable*, const DiscreteVariable* > bij) const;
 
       virtual void copyCpf(
-        const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bif,
-        const PRMAttribute< GUM_SCALAR >& source);
+         const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bif,
+         const PRMAttribute< GUM_SCALAR >& source);
 
       /// See gum::PRMClassElement::elt_type().
       virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType
-        elt_type() const;
+         elt_type() const;
 
       /// See gum::PRMClassElement::type().
-      virtual PRMType< GUM_SCALAR >& type();
+      virtual PRMType& type();
 
       /// See gum::PRMClassElement::type().
-      virtual const PRMType< GUM_SCALAR >& type() const;
+      virtual const PRMType& type() const;
 
       /// See gum::PRMClassElement::cpf().
       virtual const Potential< GUM_SCALAR >& cpf() const;
@@ -120,11 +124,10 @@ namespace gum {
 
       virtual PRMAttribute< GUM_SCALAR >* getCastDescendant() const;
       virtual void setAsCastDescendant(PRMAttribute< GUM_SCALAR >* attr);
-      virtual void becomeCastDescendant(PRMType< GUM_SCALAR >& subtype);
+      virtual void becomeCastDescendant(PRMType& subtype);
 
       /// Swap old_type with new_type in the PRMClassElement cpt.
-      virtual void swap(const PRMType< GUM_SCALAR >& old_type,
-                        const PRMType< GUM_SCALAR >& new_type);
+      virtual void swap(const PRMType& old_type, const PRMType& new_type);
 
       /// @}
       protected:
@@ -134,8 +137,8 @@ namespace gum {
       /// Copy operator. Don't use it.
       PRMScalarAttribute& operator=(const PRMScalarAttribute& from);
 
-      virtual PRMType< GUM_SCALAR >* _type();
-      virtual void                   _type(PRMType< GUM_SCALAR >* t);
+      virtual PRMType* _type();
+      virtual void     _type(PRMType* t);
 
       private:
       // ========================================================================
@@ -144,7 +147,7 @@ namespace gum {
       /// @{
 
       /// The random variable type of this attribute
-      PRMType< GUM_SCALAR >* __type;
+      PRMType* __type;
 
       /// A pointer on the Potential of this attribute
       Potential< GUM_SCALAR >* __cpf;
@@ -153,8 +156,9 @@ namespace gum {
     };
 
 
-    extern template class PRMScalarAttribute< float >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
     extern template class PRMScalarAttribute< double >;
+#endif
 
 
   } /* namespace prm */

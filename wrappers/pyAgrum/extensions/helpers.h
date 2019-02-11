@@ -34,13 +34,13 @@ namespace PyAgrumHelper {
 
   std::string stringFromPyObject(PyObject* o) {
     std::string name = "";
-    if (PyUnicode_Check(o)) {  // python3 string
+    if (PyUnicode_Check(o)) {   // python3 string
       PyObject* asbytes = PyUnicode_AsASCIIString(o);
       name = PyBytes_AsString(asbytes);
       Py_DECREF(asbytes);
-    } else if (PyString_Check(o)) {  // python2 string
+    } else if (PyString_Check(o)) {   // python2 string
       name = PyString_AsString(o);
-    } else if (PyBytes_Check(o)) {  // other python3 string
+    } else if (PyBytes_Check(o)) {   // other python3 string
       name = PyBytes_AsString(o);
     }
     return name;
@@ -50,7 +50,7 @@ namespace PyAgrumHelper {
   // potential.
   void fillDVSetFromPyObject(const gum::Potential< double >*           pot,
                              gum::Set< const gum::DiscreteVariable* >& s,
-                             PyObject*                                 varnames) {
+                             PyObject* varnames) {
     if (PyList_Check(varnames)) {
       gum::Set< std::string > names;
       auto                    siz = PyList_Size(varnames);
@@ -106,7 +106,7 @@ namespace PyAgrumHelper {
   void fillDVFromPyObject(const gum::Potential< double >* pot,
                           const gum::DiscreteVariable*&   pvar,
                           PyObject*                       varname) {
-    std::string name = stringFromPyObject(varname);
+    const std::string name = stringFromPyObject(varname);
     if (name == "") {
       GUM_ERROR(gum::InvalidArgument, "Argument is not a string");
     }
@@ -143,14 +143,11 @@ namespace PyAgrumHelper {
     inst.clear();
     while (PyDict_Next(dict, &pos, &key, &value)) {
       std::string name = stringFromPyObject(key);
-      if (name == "") {
-        GUM_ERROR(gum::InvalidArgument, "A key is not a string");
-      }
+      if (name == "") { GUM_ERROR(gum::InvalidArgument, "A key is not a string"); }
       if (!namesToVars.exists(name)) {
         GUM_ERROR(gum::InvalidArgument,
                   "The key "
-                    << name
-                    << " is a not a name of a variable in this potential");
+                    << name << " is a not a name of a variable in this potential");
       }
       if (!PyInt_Check(value)) {
         GUM_ERROR(gum::InvalidArgument, "A value is not an int");
@@ -167,7 +164,7 @@ namespace PyAgrumHelper {
 
   gum::NodeId nodeIdFromNameOrIndex(PyObject*                       n,
                                     const gum::IBayesNet< double >& bn) {
-    std::string name = PyAgrumHelper::stringFromPyObject(n);
+    const std::string name = PyAgrumHelper::stringFromPyObject(n);
     if (name != "") {
       return bn.idFromName(name);
     } else {
@@ -181,7 +178,9 @@ namespace PyAgrumHelper {
   }
 
   void populateNodeSetFromPySequenceOfIntOrString(
-    gum::NodeSet& nodeset, PyObject* seq, const gum::IBayesNet< double >& bn) {
+    gum::NodeSet&                   nodeset,
+    PyObject*                       seq,
+    const gum::IBayesNet< double >& bn) {
     PyObject* iter = PyObject_GetIter(seq);
     if (iter != NULL) {
       PyObject* item;
@@ -192,6 +191,16 @@ namespace PyAgrumHelper {
       GUM_ERROR(gum::InvalidArgument,
                 "Argument <list> is not a sequence nor a set");
     }
+  }
+
+  PyObject* PyListFromNodeVect(const std::vector< gum::NodeId >& nodevect) {
+    PyObject* q = PyList_New(0);
+
+    for (auto node : nodevect) {
+      PyList_Append(q, PyLong_FromUnsignedLong((unsigned long)node));
+    }
+
+    return q;
   }
 
   PyObject* PyListFromNodeSet(const gum::NodeSet& nodeset) {
@@ -213,6 +222,7 @@ namespace PyAgrumHelper {
 
     return q;
   }
+
   PyObject* PySetFromNodeSet(const gum::NodeGraphPart& nodeset) {
     PyObject* q = PySet_New(0);
 
@@ -256,12 +266,13 @@ namespace PyAgrumHelper {
     }
     return q;
   }
+
   PyObject*
-  PySeqFromSetOfInstantiation(const gum::Set< gum::Instantiation >& soi) {
+    PySeqFromSetOfInstantiation(const gum::Set< gum::Instantiation >& soi) {
     PyObject* q = PyList_New(0);
     for (const auto& inst : soi) {
       PyList_Append(q, PyDictFromInstantiation(inst));
     }
     return q;
   }
-}  // namespace PyAgrumHelper
+}   // namespace PyAgrumHelper

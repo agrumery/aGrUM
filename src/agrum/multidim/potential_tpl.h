@@ -41,7 +41,7 @@ namespace gum {
   // constructor using aContent as content
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR >::Potential(
-    MultiDimImplementation< GUM_SCALAR >* aContent) :
+     MultiDimImplementation< GUM_SCALAR >* aContent) :
       MultiDimDecorator< GUM_SCALAR >(aContent, GUM_SCALAR(1)) {
     // for debugging purposes
     GUM_CONSTRUCTOR(Potential);
@@ -50,7 +50,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR >::Potential(const Potential< GUM_SCALAR >& src) :
       Potential< GUM_SCALAR >(static_cast< MultiDimImplementation< GUM_SCALAR >* >(
-                                src.content()->newFactory()),
+                                 src.content()->newFactory()),
                               *(src.content())) {
     this->_empty_value = src._empty_value;
     // todo how to optimize copy of content ?
@@ -62,15 +62,15 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR >::Potential(Potential< GUM_SCALAR >&& from) :
       MultiDimDecorator< GUM_SCALAR >(
-        std::forward< MultiDimDecorator< GUM_SCALAR > >(from)) {
+         std::forward< MultiDimDecorator< GUM_SCALAR > >(from)) {
     GUM_CONS_MOV(Potential);
   }
 
   // complex copy constructor : we choose the implementation
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >::Potential(
-    MultiDimImplementation< GUM_SCALAR >*  aContent,
-    const MultiDimContainer< GUM_SCALAR >& src) :
+     MultiDimImplementation< GUM_SCALAR >*  aContent,
+     const MultiDimContainer< GUM_SCALAR >& src) :
       MultiDimDecorator< GUM_SCALAR >(aContent) {
     // for debugging purposes
     GUM_CONSTRUCTOR(Potential);
@@ -101,7 +101,7 @@ namespace gum {
   Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::
                            operator=(Potential< GUM_SCALAR >&& src) {
     MultiDimDecorator< GUM_SCALAR >::operator=(
-      std::forward< MultiDimDecorator< GUM_SCALAR > >(src));
+       std::forward< MultiDimDecorator< GUM_SCALAR > >(src));
     GUM_OP_MOV(Potential);
     return *this;
   }
@@ -117,8 +117,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR >* Potential< GUM_SCALAR >::newFactory() const {
     return new Potential< GUM_SCALAR >(
-      static_cast< MultiDimImplementation< GUM_SCALAR >* >(
-        this->content()->newFactory()));
+       static_cast< MultiDimImplementation< GUM_SCALAR >* >(
+          this->content()->newFactory()));
   }
 
   // sum of all elements in this
@@ -163,12 +163,12 @@ namespace gum {
       res = this->_empty_value;
     } else {
       res = this->reduce(
-        [](GUM_SCALAR z, GUM_SCALAR p) {
-          return (p == static_cast< GUM_SCALAR >(1))
-                   ? z
-                   : (z == static_cast< GUM_SCALAR >(1)) ? p : (p > z ? p : z);
-        },
-        static_cast< GUM_SCALAR >(1));
+         [](GUM_SCALAR z, GUM_SCALAR p) {
+           return (p == static_cast< GUM_SCALAR >(1))
+                     ? z
+                     : (z == static_cast< GUM_SCALAR >(1)) ? p : (p > z ? p : z);
+         },
+         static_cast< GUM_SCALAR >(1));
     }
 
     if (res == static_cast< GUM_SCALAR >(1))
@@ -186,12 +186,12 @@ namespace gum {
       res = this->_empty_value;
     } else {
       res = this->reduce(
-        [](GUM_SCALAR z, GUM_SCALAR p) {
-          return (p == static_cast< GUM_SCALAR >(0))
-                   ? z
-                   : (z == static_cast< GUM_SCALAR >(0)) ? p : (p < z ? p : z);
-        },
-        static_cast< GUM_SCALAR >(0));
+         [](GUM_SCALAR z, GUM_SCALAR p) {
+           return (p == static_cast< GUM_SCALAR >(0))
+                     ? z
+                     : (z == static_cast< GUM_SCALAR >(0)) ? p : (p < z ? p : z);
+         },
+         static_cast< GUM_SCALAR >(0));
     }
 
     if (res == static_cast< GUM_SCALAR >(0))
@@ -208,10 +208,10 @@ namespace gum {
     }
 
     return this->reduce(
-      [](GUM_SCALAR z, GUM_SCALAR p) {
-        return (p == 0.0) ? z : (z - p * log2(p));
-      },
-      0.0);
+       [](GUM_SCALAR z, GUM_SCALAR p) {
+         return (p == 0.0) ? z : (z - p * log2(p));
+       },
+       0.0);
   }
 
   template < typename GUM_SCALAR >
@@ -264,8 +264,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::fillWith(
-    const Potential< GUM_SCALAR >&    src,
-    const std::vector< std::string >& mapSrc) const {
+     const Potential< GUM_SCALAR >&    src,
+     const std::vector< std::string >& mapSrc) const {
     if (src.nbrDim() != this->nbrDim()) {
       GUM_ERROR(InvalidArgument, "Potential to copy has not the same dimension.");
     }
@@ -302,8 +302,9 @@ namespace gum {
   INLINE GUM_SCALAR
          Potential< GUM_SCALAR >::KL(const Potential< GUM_SCALAR >& p) const {
     if (this->nbrDim() != p.nbrDim())
-      GUM_ERROR(InvalidArgument,
-                "KL between potentials with different numbers of dimensions");
+      GUM_ERROR(
+         InvalidArgument,
+         "BNdistance between potentials with different numbers of dimensions");
     for (const auto var : p.variablesSequence()) {
       if (!this->contains(*var))
         GUM_ERROR(InvalidArgument,
@@ -408,7 +409,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR > Potential< GUM_SCALAR >::margSumOut(
-    const Set< const DiscreteVariable* >& del_vars) const {
+     const Set< const DiscreteVariable* >& del_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->_content)->empty()) {
       return Potential< GUM_SCALAR >().fillWith(this->_empty_value);
     }
@@ -417,17 +418,17 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR > Potential< GUM_SCALAR >::margProdOut(
-    const Set< const DiscreteVariable* >& del_vars) const {
+     const Set< const DiscreteVariable* >& del_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->_content)->empty()) {
       return Potential< GUM_SCALAR >().fillWith(this->_empty_value);
     }
     return Potential< GUM_SCALAR >(
-      gum::projectProduct(*this->content(), del_vars));
+       gum::projectProduct(*this->content(), del_vars));
   }
 
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR > Potential< GUM_SCALAR >::margMinOut(
-    const Set< const DiscreteVariable* >& del_vars) const {
+     const Set< const DiscreteVariable* >& del_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->_content)->empty()) {
       return Potential< GUM_SCALAR >().fillWith(this->_empty_value);
     }
@@ -436,7 +437,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR > Potential< GUM_SCALAR >::margMaxOut(
-    const Set< const DiscreteVariable* >& del_vars) const {
+     const Set< const DiscreteVariable* >& del_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->_content)->empty()) {
       return Potential< GUM_SCALAR >().fillWith(this->_empty_value);
     }
@@ -444,42 +445,42 @@ namespace gum {
   }
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR > Potential< GUM_SCALAR >::margSumIn(
-    const Set< const DiscreteVariable* >& kept_vars) const {
+     const Set< const DiscreteVariable* >& kept_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->_content)->empty()) {
       return Potential< GUM_SCALAR >().fillWith(this->_empty_value);
     }
     return Potential< GUM_SCALAR >(
-      gum::projectSum(*this->content(), _complementVars(kept_vars)));
+       gum::projectSum(*this->content(), _complementVars(kept_vars)));
   }
 
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR > Potential< GUM_SCALAR >::margProdIn(
-    const Set< const DiscreteVariable* >& kept_vars) const {
+     const Set< const DiscreteVariable* >& kept_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->_content)->empty()) {
       return Potential< GUM_SCALAR >().fillWith(this->_empty_value);
     }
     return Potential< GUM_SCALAR >(
-      gum::projectProduct(*this->content(), _complementVars(kept_vars)));
+       gum::projectProduct(*this->content(), _complementVars(kept_vars)));
   }
 
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR > Potential< GUM_SCALAR >::margMinIn(
-    const Set< const DiscreteVariable* >& kept_vars) const {
+     const Set< const DiscreteVariable* >& kept_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->_content)->empty()) {
       return Potential< GUM_SCALAR >().fillWith(this->_empty_value);
     }
     return Potential< GUM_SCALAR >(
-      gum::projectMin(*this->content(), _complementVars(kept_vars)));
+       gum::projectMin(*this->content(), _complementVars(kept_vars)));
   }
 
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR > Potential< GUM_SCALAR >::margMaxIn(
-    const Set< const DiscreteVariable* >& kept_vars) const {
+     const Set< const DiscreteVariable* >& kept_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->_content)->empty()) {
       return Potential< GUM_SCALAR >().fillWith(this->_empty_value);
     }
     return Potential< GUM_SCALAR >(
-      gum::projectMax(*this->content(), _complementVars(kept_vars)));
+       gum::projectMax(*this->content(), _complementVars(kept_vars)));
   }
 
   template < typename GUM_SCALAR >
@@ -496,7 +497,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Set< const DiscreteVariable* > Potential< GUM_SCALAR >::_complementVars(
-    const Set< const DiscreteVariable* >& vars) const {
+     const Set< const DiscreteVariable* >& vars) const {
     Set< const DiscreteVariable* > cplt;
 
     for (const auto x : this->variablesSequence())
@@ -507,7 +508,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR > Potential< GUM_SCALAR >::reorganize(
-    const std::vector< const DiscreteVariable* >& vars) const {
+     const std::vector< const DiscreteVariable* >& vars) const {
     if (vars.size() != this->nbrDim())
       GUM_ERROR(InvalidArgument,
                 "The vector contains " << vars.size() << " variables instead of "
@@ -530,7 +531,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-    Potential< GUM_SCALAR >::putFirst(const DiscreteVariable* var) const {
+     Potential< GUM_SCALAR >::putFirst(const DiscreteVariable* var) const {
     if (!this->contains(*var)) {
       GUM_ERROR(InvalidArgument,
                 "The variable to put first does not belong to the potential");
@@ -546,7 +547,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-    Potential< GUM_SCALAR >::extract(const Instantiation& inst) const {
+     Potential< GUM_SCALAR >::extract(const Instantiation& inst) const {
     Potential< GUM_SCALAR > p;
     p.extractFrom(*this, inst);
 

@@ -1,6 +1,5 @@
 // this file is for giving access to methods defined in ancestor.
 
-
 %define ADD_APPROXIMATIONSCHEME_API(parent,classname...)
 %extend classname {
   using parent::setVerbosity;
@@ -39,7 +38,7 @@ ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::LoopySamplingInference
 
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::LoopyBeliefPropagation<double>)
 
-ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::GibbsKL<double>)
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::GibbsBNdistance<double>)
 
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::credal::CNMonteCarloSampling<double>)
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::credal::CNLoopyPropagation<double>)
@@ -78,6 +77,9 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
   using gum::learning::genericBNLearner::eraseMandatoryArc;
   using gum::learning::genericBNLearner::useEM;
   using gum::learning::genericBNLearner::hasMissingValues;
+  using gum::learning::genericBNLearner::logLikelihood;
+  using gum::learning::genericBNLearner::nbRows;
+  using gum::learning::genericBNLearner::nbCols;
 }
 
 #####################################
@@ -523,7 +525,7 @@ ADD_JOINT_INFERENCE_API(gum::ShaferShenoyInference<double>)
 %enddef
 ADD_GIBBS_OPERATOR_API(gum::GibbsSampling<double>)
 ADD_GIBBS_OPERATOR_API(gum::LoopySamplingInference<double,gum::GibbsSampling>)
-ADD_GIBBS_OPERATOR_API(gum::GibbsKL<double>)
+ADD_GIBBS_OPERATOR_API(gum::GibbsBNdistance<double>)
 
 %extend gum::LoopySamplingInference<double,gum::GibbsSampling> {
   gum::Size burnIn() const { return self->gum::GibbsSampling<double>::burnIn();}

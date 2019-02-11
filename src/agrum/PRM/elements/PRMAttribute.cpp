@@ -30,8 +30,10 @@
 namespace gum {
   namespace prm {
 
-    template class PRMAttribute< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
     template class PRMAttribute< double >;
+#endif
 
   } /* namespace prm */
 } /* namespace gum */

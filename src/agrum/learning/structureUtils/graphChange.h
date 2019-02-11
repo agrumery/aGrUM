@@ -556,7 +556,7 @@ namespace gum {
 
     /// computes the hashed value of a key
     virtual Size
-      operator()(const learning::EdgeAddition& key) const override final;
+       operator()(const learning::EdgeAddition& key) const override final;
   };
 
   /// the hash function for Edge Deletions
@@ -573,7 +573,7 @@ namespace gum {
 
     /// computes the hashed value of a key
     virtual Size
-      operator()(const learning::EdgeDeletion& key) const override final;
+       operator()(const learning::EdgeDeletion& key) const override final;
   };
 
 } /* namespace gum */

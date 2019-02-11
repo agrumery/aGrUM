@@ -52,14 +52,14 @@ namespace gum {
 
     /// Default constructor
     MultiDimCombineAndProjectDefault(
-      TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&,
-                                      const TABLE< GUM_SCALAR >&),
-      TABLE< GUM_SCALAR >* (*project)(const TABLE< GUM_SCALAR >&,
-                                      const Set< const DiscreteVariable* >&));
+       TABLE< GUM_SCALAR >* (*combine)(const TABLE< GUM_SCALAR >&,
+                                       const TABLE< GUM_SCALAR >&),
+       TABLE< GUM_SCALAR >* (*project)(const TABLE< GUM_SCALAR >&,
+                                       const Set< const DiscreteVariable* >&));
 
     /// Copy constructor
     MultiDimCombineAndProjectDefault(
-      const MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >&);
+       const MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >&);
 
     /// Destructor
     virtual ~MultiDimCombineAndProjectDefault();
@@ -71,7 +71,7 @@ namespace gum {
      * combination and projection functions.
      */
     virtual MultiDimCombineAndProjectDefault< GUM_SCALAR, TABLE >*
-      newFactory() const;
+       newFactory() const;
 
     /// @}
     // ========================================================================
@@ -90,12 +90,12 @@ namespace gum {
      * argument contains less than two elements.
      */
     virtual Set< const TABLE< GUM_SCALAR >* >
-      combineAndProject(Set< const TABLE< GUM_SCALAR >* > set,
-                        Set< const DiscreteVariable* >    del_vars);
+       combineAndProject(Set< const TABLE< GUM_SCALAR >* > set,
+                         Set< const DiscreteVariable* >    del_vars);
 
     /// changes the function used for combining two TABLES
     virtual void setCombineFunction(TABLE< GUM_SCALAR >* (*combine)(
-      const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&));
+       const TABLE< GUM_SCALAR >&, const TABLE< GUM_SCALAR >&));
 
     /**
      * @brief changes the class that performs the combinations
@@ -112,7 +112,7 @@ namespace gum {
      * combinationClass and, thus, the way all those tables will be combined.
      */
     virtual void setCombinationClass(
-      const MultiDimCombination< GUM_SCALAR, TABLE >& comb_class);
+       const MultiDimCombination< GUM_SCALAR, TABLE >& comb_class);
 
     /// Returns the current combination function
     virtual TABLE< GUM_SCALAR >* (*combineFunction())(const TABLE< GUM_SCALAR >&,
@@ -120,7 +120,7 @@ namespace gum {
 
     /// Changes the function used for projecting TABLES
     virtual void setProjectFunction(TABLE< GUM_SCALAR >* (*proj)(
-      const TABLE< GUM_SCALAR >&, const Set< const DiscreteVariable* >&));
+       const TABLE< GUM_SCALAR >&, const Set< const DiscreteVariable* >&));
 
     /**
      * @brief Changes the class that performs the projections.
@@ -129,61 +129,61 @@ namespace gum {
      * class, thus defining a new projection behaviour.
      */
     virtual void setProjectionClass(
-      const MultiDimProjection< GUM_SCALAR, TABLE >& proj_class);
+       const MultiDimProjection< GUM_SCALAR, TABLE >& proj_class);
 
     /// returns the current projection function
     virtual TABLE< GUM_SCALAR >* (*projectFunction())(
-      const TABLE< GUM_SCALAR >&, const Set< const DiscreteVariable* >&);
+       const TABLE< GUM_SCALAR >&, const Set< const DiscreteVariable* >&);
 
     /**
      * @brief returns a rough estimate of the number of operations that will be
      * performed to compute the combination.
      */
     virtual float
-      nbOperations(const Set< const TABLE< GUM_SCALAR >* >& set,
+       nbOperations(const Set< const TABLE< GUM_SCALAR >* >& set,
+                    const Set< const DiscreteVariable* >&    del_vars) const;
+
+    /**
+     * @brief returns a rough estimate of the number of operations that will be
+     * performed to compute the combination.
+     */
+    virtual float
+       nbOperations(const Set< const Sequence< const DiscreteVariable* >* >& set,
+                    Set< const DiscreteVariable* > del_vars) const;
+
+    /**
+     * @brief returns the memory consumption used during the combinations and
+     * projections
+     *
+     * Actually, this function does not return a precise account of the memory
+     * used by the MultiDimCombineAndProject but a rough estimate based on the
+     * size of the tables involved in the combinations and projections.
+     *
+     * @return a pair of memory consumption: the first one is the maximum
+     * amount of memory used during the set of combinations and projections
+     * performed, and the second one is the amount of memory still used at the
+     * end of the function ( the memory used by the resulting tables )
+     */
+    virtual std::pair< long, long >
+       memoryUsage(const Set< const TABLE< GUM_SCALAR >* >& set,
                    const Set< const DiscreteVariable* >&    del_vars) const;
 
     /**
-     * @brief returns a rough estimate of the number of operations that will be
-     * performed to compute the combination.
+     * @brief returns the memory consumption used during the combinations and
+     * projections
+     *
+     * Actually, this function does not return a precise account of the memory
+     * used by the MultiDimCombineAndProject but a rough estimate based on the
+     * size of the tables involved in the combinations and projections.
+     *
+     * @return a pair of memory consumption: the first one is the maximum
+     * amount of memory used during the set of combinations and projections
+     * performed, and the second one is the amount of memory still used at the
+     * end of the function ( the memory used by the resulting tables )
      */
-    virtual float
-      nbOperations(const Set< const Sequence< const DiscreteVariable* >* >& set,
+    virtual std::pair< long, long >
+       memoryUsage(const Set< const Sequence< const DiscreteVariable* >* >& set,
                    Set< const DiscreteVariable* > del_vars) const;
-
-    /**
-     * @brief returns the memory consumption used during the combinations and
-     * projections
-     *
-     * Actually, this function does not return a precise account of the memory
-     * used by the MultiDimCombineAndProject but a rough estimate based on the
-     * size of the tables involved in the combinations and projections.
-     *
-     * @return a pair of memory consumption: the first one is the maximum
-     * amount of memory used during the set of combinations and projections
-     * performed, and the second one is the amount of memory still used at the
-     * end of the function ( the memory used by the resulting tables )
-     */
-    virtual std::pair< long, long >
-      memoryUsage(const Set< const TABLE< GUM_SCALAR >* >& set,
-                  const Set< const DiscreteVariable* >&    del_vars) const;
-
-    /**
-     * @brief returns the memory consumption used during the combinations and
-     * projections
-     *
-     * Actually, this function does not return a precise account of the memory
-     * used by the MultiDimCombineAndProject but a rough estimate based on the
-     * size of the tables involved in the combinations and projections.
-     *
-     * @return a pair of memory consumption: the first one is the maximum
-     * amount of memory used during the set of combinations and projections
-     * performed, and the second one is the amount of memory still used at the
-     * end of the function ( the memory used by the resulting tables )
-     */
-    virtual std::pair< long, long >
-      memoryUsage(const Set< const Sequence< const DiscreteVariable* >* >& set,
-                  Set< const DiscreteVariable* > del_vars) const;
 
     /// @}
 

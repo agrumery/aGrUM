@@ -27,5 +27,13 @@
 // to help IDE parser
 #include <agrum/core/priorityQueue.h>
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::PriorityQueue< std::string >;
+#  endif
+#endif
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::PriorityQueue< int, int >;
+#  endif
+#endif

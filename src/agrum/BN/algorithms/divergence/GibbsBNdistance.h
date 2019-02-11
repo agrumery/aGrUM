@@ -19,88 +19,120 @@
  ***************************************************************************/
 /**
  * @file
- * @brief algorithm for exact computation KL divergence between BNs
+ * @brief algorithm for approximated computation KL divergence between BNs using
+ *GIBBS
+ *sampling
  *
- * @author Pierre-Henri WUILLEMIN
+ * @author Paul ALAM & Pierre-Henri WUILLEMIN
  *
  */
-#ifndef GUM_BRUTE_FORCE_KL_H
-#define GUM_BRUTE_FORCE_KL_H
 
-#include <agrum/BN/algorithms/divergence/KL.h>
+
+#ifndef GUM_GIBBS_KL2_H
+#define GUM_GIBBS_KL2_H
+
+#include <agrum/BN/algorithms/divergence/BNdistance.h>
+#include <agrum/BN/inference/tools/gibbsOperator.h>
+#include <agrum/core/approximations/approximationScheme.h>
+
+#include <agrum/core/signal/signaler.h>
 
 namespace gum {
 
   /**
-   * BruteForceKL computes exactly the KL divergence betweens 2 BNs.
+   * GibbsKL computes the KL divergence betweens 2 BNs using an approximation
+   *pattern:  GIBBS sampling.
    *
-   * BruteForceKL should be used only if difficulty() gives an estimation (
-   *KL_CORRECT
-   *) of the needed time.
    * KL.process() computes KL(P||Q) using klPQ() and KL(Q||P) using klQP(). The
    *computations are made once. The second is for free :)
-   * BruteForce allows as well to compute in the same time the Hellinger distance
+   * GibbsKL allows as well to compute in the same time the Hellinger distance
    *(\f$
-   *\sqrt{\sum_i (\sqrt{p_i}-\sqrt{q_i})^2}\f$) (Kokolakis and Nanopoulos, 2001).
+   *\sqrt{\sum_i (\sqrt{p_i}-\sqrt{q_i})^2}\f$) (Kokolakis and Nanopoulos, 2001)
+   * and Bhattacharya distance (Kaylath,T. 1967)
    *
    * It may happen that P*ln(P/Q) is not computable (Q=0 and P!=0). In such a
    *case, KL
-   *keeps working but trace this error (errorPQ() and errorQP())?  *
+   *keeps working but trace this error (errorPQ() and errorQP()). In those cases,
+   *Hellinger distance approximation is under-evaluated.
    *
-   * @warning This BruteForceKL should be use only if
-   *difficulty()==complexity::CORRECT or at most complexity::DIFFICULT ...
+   * @warning : convergence and stop criteria are designed w.r.t the main
+   *computation
+   *: KL(P||Q). The 3 others have no guarantee.
+   *
    * snippets :
    * @code
    * gum::KL base_kl(net1,net2);
    * if (base_kl.difficulty()!=KL::HEAVY) {
-   *  gum::BruteForceKL kl(base_kl);
+   *  gum::ExactBNdistance kl(base_kl);
    *  std::cout<<"KL net1||net2 :"<<kl.klPQ()<<std::endl;
    * } else {
-   *  gum::GibbsKL kl(base_kl);
+   *  gum::GibbsBNdistance kl(base_kl);
    *  std::cout<<"KL net1||net2 :"<<kl.klPQ()<<std::endl;
    * }
    * @endcode
    */
 
   template < typename GUM_SCALAR >
-  class BruteForceKL : public KL< GUM_SCALAR > {
+  class GibbsBNdistance
+      : public BNdistance< GUM_SCALAR >
+      , public ApproximationScheme
+      , public GibbsOperator< GUM_SCALAR > {
     public:
+    /* no default constructor */
+
     /** constructor must give 2 BNs
      * @throw gum::OperationNotAllowed if the 2 BNs have not the same domainSize
      * or
      * compatible node sets.
      */
-    BruteForceKL(const IBayesNet< GUM_SCALAR >& P,
-                 const IBayesNet< GUM_SCALAR >& Q);
+
+
+    GibbsBNdistance(const IBayesNet< GUM_SCALAR >& P,
+                    const IBayesNet< GUM_SCALAR >& Q);
 
     /** copy constructor
      */
-    explicit BruteForceKL(const KL< GUM_SCALAR >& kl);
+    explicit GibbsBNdistance(const BNdistance< GUM_SCALAR >& kl);
 
     /** destructor */
-    virtual ~BruteForceKL();
+    ~GibbsBNdistance();
+
+    /**
+     * @brief Number of burn in for one iteration.
+     * @param b The number of burn in.
+     * @throw OutOfLowerBound Raised if b < 1.
+     */
+    void setBurnIn(Size b);
+
+    /**
+     * @brief Returns the number of burn in.
+     * @return Returns the number of burn in.
+     */
+    Size burnIn() const;
 
     protected:
     void _computeKL() final;
 
-    using KL< GUM_SCALAR >::_p;
-    using KL< GUM_SCALAR >::_q;
-    using KL< GUM_SCALAR >::_hellinger;
-    using KL< GUM_SCALAR >::_bhattacharya;
+    using BNdistance< GUM_SCALAR >::_p;
+    using BNdistance< GUM_SCALAR >::_q;
+    using BNdistance< GUM_SCALAR >::_hellinger;
+    using BNdistance< GUM_SCALAR >::_bhattacharya;
+    using BNdistance< GUM_SCALAR >::_jsd;
 
-    using KL< GUM_SCALAR >::_klPQ;
-    using KL< GUM_SCALAR >::_klQP;
+    using BNdistance< GUM_SCALAR >::_klPQ;
+    using BNdistance< GUM_SCALAR >::_klQP;
 
-    using KL< GUM_SCALAR >::_errorPQ;
-    using KL< GUM_SCALAR >::_errorQP;
+    using BNdistance< GUM_SCALAR >::_errorPQ;
+    using BNdistance< GUM_SCALAR >::_errorQP;
   };
 
 
-  extern template class BruteForceKL< float >;
-  extern template class BruteForceKL< double >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+  extern template class GibbsBNdistance< double >;
+#endif
 
 }   // namespace gum
 
-#include <agrum/BN/algorithms/divergence/bruteForceKL_tpl.h>
+#include <agrum/BN/algorithms/divergence/GibbsKL_tpl.h>
 
-#endif   // GUM_BRUTE_FORCE_KL_H
+#endif

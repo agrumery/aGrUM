@@ -222,7 +222,7 @@ namespace gum {
         /// Returns data about a node.
         /// @throw NotFound
         const NodeData< GUM_SCALAR >&
-          node(const PRMInstance< GUM_SCALAR >* i) const;
+           node(const PRMInstance< GUM_SCALAR >* i) const;
 
         /// Returns data about a node.
         /// @throw NotFound
@@ -288,13 +288,27 @@ namespace gum {
       };
 
 
-      extern template class NodeData< float >;
-      extern template class EdgeData< float >;
-      extern template class InterfaceGraph< float >;
-
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
       extern template class NodeData< double >;
+#    endif
+#  endif
+#endif
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
       extern template class EdgeData< double >;
+#    endif
+#  endif
+#endif
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
       extern template class InterfaceGraph< double >;
+#    endif
+#  endif
+#endif
 
 
     } /* namespace gspan */

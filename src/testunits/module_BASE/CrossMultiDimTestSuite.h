@@ -33,10 +33,10 @@ namespace gum_tests {
     public:
     void testComparaisonMin() {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3),
-        d("d", "", 0, 3);
-      gum::MultiDimArray< float >   full;
-      gum::MultiDimSparse< float >  sparse((float)0);
-      gum::aggregator::Min< float > agg;
+         d("d", "", 0, 3);
+      gum::MultiDimArray< double >   full;
+      gum::MultiDimSparse< double >  sparse((float)0);
+      gum::aggregator::Min< double > agg;
       agg << a << b << c << d;
       full << a << b << c << d;
       sparse << a << b << c << d;
@@ -71,8 +71,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(agg.compressionRate(), (float)1.0);   // 100% de compression
 
       TS_ASSERT_EQUALS(
-        sparse.compressionRate(),
-        (float)0.75);   // deterministic as a sparse : 75% parameters are 0...
+         sparse.compressionRate(),
+         (float)0.75);   // deterministic as a sparse : 75% parameters are 0...
       TS_ASSERT_EQUALS(full.compressionRate(), (float)0);   // 0% de compression...
     }
   };

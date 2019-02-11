@@ -40,7 +40,7 @@ namespace gum {
   // Copy constructor
   template < typename GUM_SCALAR, template < typename > class TABLE >
   MultiDimCombination< GUM_SCALAR, TABLE >::MultiDimCombination(
-    const MultiDimCombination< GUM_SCALAR, TABLE >& from) {
+     const MultiDimCombination< GUM_SCALAR, TABLE >& from) {
     // for debugging purposes
     GUM_CONS_CPY(MultiDimCombination);
   }

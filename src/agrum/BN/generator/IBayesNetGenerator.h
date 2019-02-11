@@ -39,7 +39,7 @@
 
 #include <agrum/variables/labelizedVariable.h>
 
-#include <agrum/BN/algorithms/divergence/KL.h>
+#include <agrum/BN/algorithms/divergence/BNdistance.h>
 
 namespace gum {
 

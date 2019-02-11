@@ -62,7 +62,7 @@ namespace gum_tests {
     };
 
     void testtriangulatedGraph() {
-      gum::BayesNet< float >   topo;
+      gum::BayesNet< double >  topo;
       gum::List< gum::NodeId > idList;
 
       fill(topo, idList);
@@ -78,7 +78,7 @@ namespace gum_tests {
       gum::DefaultTriangulation* triangle = nullptr;
 
       TS_GUM_ASSERT_THROWS_NOTHING(
-        triangle = new gum::DefaultTriangulation(&undiGraph, &modalities));
+         triangle = new gum::DefaultTriangulation(&undiGraph, &modalities));
 
       TS_GUM_ASSERT_THROWS_NOTHING(triangle->triangulatedGraph());
 
@@ -89,7 +89,7 @@ namespace gum_tests {
     };
 
     void testjunctionTree() {
-      gum::BayesNet< float >   topo;
+      gum::BayesNet< double >  topo;
       gum::List< gum::NodeId > idList;
 
       fill(topo, idList);
@@ -107,7 +107,7 @@ namespace gum_tests {
       gum::DefaultTriangulation* triangle = nullptr;
 
       TS_GUM_ASSERT_THROWS_NOTHING(
-        triangle = new gum::DefaultTriangulation(&undiGraph, &modalities));
+         triangle = new gum::DefaultTriangulation(&undiGraph, &modalities));
       TS_GUM_ASSERT_THROWS_NOTHING(triangle->junctionTree());
 
       // TODO : problem here !!
@@ -118,57 +118,57 @@ namespace gum_tests {
 
     void xxtestBIFtriangulation1() {
       TS_GUM_ASSERT_THROWS_NOTHING(
-        __triangulate_bif(GET_RESSOURCES_PATH("Barley.bif")));
+         __triangulate_bif(GET_RESSOURCES_PATH("Barley.bif")));
     };
 
     void xxtestBIFtriangulation1bis() {
       TS_GUM_ASSERT_THROWS_NOTHING(
-        __triangulate_bif(GET_RESSOURCES_PATH("alarm.bif")));
+         __triangulate_bif(GET_RESSOURCES_PATH("alarm.bif")));
     };
 
     void xxtestBIFtriangulation2() {
       TS_GUM_ASSERT_THROWS_NOTHING(
-        __triangulate_bif(GET_RESSOURCES_PATH("carpo.bif")));
+         __triangulate_bif(GET_RESSOURCES_PATH("carpo.bif")));
     };
 
     void xxtestBIFtriangulation3() {
       TS_GUM_ASSERT_THROWS_NOTHING(
-        __triangulate_bif(GET_RESSOURCES_PATH("Pigs.bif")));
+         __triangulate_bif(GET_RESSOURCES_PATH("Pigs.bif")));
     };
 
     void xxtestBIFtriangulation4() {
       TS_GUM_ASSERT_THROWS_NOTHING(
-        __triangulate_bif(GET_RESSOURCES_PATH("Water.bif")));
+         __triangulate_bif(GET_RESSOURCES_PATH("Water.bif")));
     };
 
     void xxtestBIFtriangulation5() {
       TS_GUM_ASSERT_THROWS_NOTHING(
-        __triangulate_bif(GET_RESSOURCES_PATH("Link.bif")));
+         __triangulate_bif(GET_RESSOURCES_PATH("Link.bif")));
     };
 
     void xxtestBIFtriangulation6() {
       TS_GUM_ASSERT_THROWS_NOTHING(
-        __triangulate_bif(GET_RESSOURCES_PATH("Mildew.bif")));
+         __triangulate_bif(GET_RESSOURCES_PATH("Mildew.bif")));
     };
 
     void xxtestBIFtriangulation7() {
       TS_GUM_ASSERT_THROWS_NOTHING(
-        __triangulate_bif(GET_RESSOURCES_PATH("Munin1.bif")));
+         __triangulate_bif(GET_RESSOURCES_PATH("Munin1.bif")));
     };
 
     void xxtestBIFtriangulation8() {
       TS_GUM_ASSERT_THROWS_NOTHING(
-        __triangulate_bif(GET_RESSOURCES_PATH("hailfinder.bif")));
+         __triangulate_bif(GET_RESSOURCES_PATH("hailfinder.bif")));
     };
 
     void xxtestBIFtriangulation9() {
       TS_GUM_ASSERT_THROWS_NOTHING(
-        __triangulate_bif(GET_RESSOURCES_PATH("Diabetes.bif")));
+         __triangulate_bif(GET_RESSOURCES_PATH("Diabetes.bif")));
     };
 
     void xxtestBIFtriangulation10() {
       TS_GUM_ASSERT_THROWS_NOTHING(
-        __triangulate_bif(GET_RESSOURCES_PATH("insurance.bif")));
+         __triangulate_bif(GET_RESSOURCES_PATH("insurance.bif")));
     };
 
     void testTriangulatedGraph1() {
@@ -283,18 +283,18 @@ namespace gum_tests {
     }
 
     void __triangulate_bif(std::string file) {
-      gum::BayesNet< float >* bn = new gum::BayesNet< float >();
-      gum::BIFReader< float > reader(bn, file);
+      gum::BayesNet< double >* bn = new gum::BayesNet< double >();
+      gum::BIFReader< double > reader(bn, file);
       reader.trace(false);
 
       TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());
 
-      gum::LazyPropagation< float > inf(bn);
+      gum::LazyPropagation< double > inf(bn);
 
       if (bn != 0) delete (bn);
     };
 
-    void fill(gum::BayesNet< float >& topo, gum::List< gum::NodeId >& idList) {
+    void fill(gum::BayesNet< double >& topo, gum::List< gum::NodeId >& idList) {
       idList.clear();
       idList.insert(topo.add(*var1));
       idList.insert(topo.add(*var2));

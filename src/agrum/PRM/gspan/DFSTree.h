@@ -285,8 +285,8 @@ namespace gum {
 
         /// Check if an instance match is redundant.
         bool __is_new_seq(
-          Sequence< PRMInstance< GUM_SCALAR >* >&                  seq,
-          NodeProperty< Sequence< PRMInstance< GUM_SCALAR >* >* >& iso_map);
+           Sequence< PRMInstance< GUM_SCALAR >* >&                  seq,
+           NodeProperty< Sequence< PRMInstance< GUM_SCALAR >* >* >& iso_map);
 
         /// This initialize the DSFTree with a new root.
         /// @param p A Pattern.
@@ -300,8 +300,9 @@ namespace gum {
       };
 
 
-      extern template class DFSTree< float >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
       extern template class DFSTree< double >;
+#endif
 
 
     } /* namespace gspan */

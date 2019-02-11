@@ -26,5 +26,7 @@
 
 #include <agrum/multidim/ICIModels/multiDimNoisyAND.h>
 
-template class gum::MultiDimNoisyAND< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::MultiDimNoisyAND< double >;
+#endif

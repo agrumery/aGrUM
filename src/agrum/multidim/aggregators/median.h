@@ -96,8 +96,9 @@ namespace gum {
     };
 
 
-    extern template class Median< float >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
     extern template class Median< double >;
+#endif
 
 
   }   // namespace aggregator

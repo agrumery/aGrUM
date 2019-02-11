@@ -76,7 +76,7 @@ namespace gum {
     while (sum == 0.0f) {
       for (Idx i = 0; i < size; ++i) {
         __gamma.param(
-          std::gamma_distribution< float >::param_type(__params[i], 1));
+           std::gamma_distribution< float >::param_type(__params[i], 1));
         res[i] = __gamma(__generator);
         sum += res[i];
       }

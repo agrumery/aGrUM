@@ -20,5 +20,7 @@
 
 #include <agrum/BN/inference/MonteCarloSampling.h>
 
-template class gum::MonteCarloSampling< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::MonteCarloSampling< double >;
+#endif

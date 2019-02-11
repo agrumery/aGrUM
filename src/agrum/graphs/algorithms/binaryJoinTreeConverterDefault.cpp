@@ -44,7 +44,7 @@ namespace gum {
   /** @brief a function used to mark the nodes belonging to a given
    * connected component */
   void BinaryJoinTreeConverterDefault::__markConnectedComponent(
-    const CliqueGraph& JT, NodeId root, NodeProperty< bool >& mark) const {
+     const CliqueGraph& JT, NodeId root, NodeProperty< bool >& mark) const {
     // we mark the nodes in a depth first search manner. To avoid a recursive
     // algorithm, use a vector to simulate a stack of nodes to inspect.
     // stack => depth first search
@@ -77,9 +77,9 @@ namespace gum {
 
   /// returns the domain size of the union of two cliques
   float BinaryJoinTreeConverterDefault::__combinedSize(
-    const NodeSet&              nodes1,
-    const NodeSet&              nodes2,
-    const NodeProperty< Size >& domain_sizes) const {
+     const NodeSet&              nodes1,
+     const NodeSet&              nodes2,
+     const NodeProperty< Size >& domain_sizes) const {
     float result = 1;
 
     for (const auto node : nodes1)
@@ -96,10 +96,10 @@ namespace gum {
 
   /// convert a clique and its adjacent cliques into a binary join tree
   void BinaryJoinTreeConverterDefault::__convertClique(
-    CliqueGraph&                JT,
-    NodeId                      clique,
-    NodeId                      from,
-    const NodeProperty< Size >& domain_sizes) const {
+     CliqueGraph&                JT,
+     NodeId                      clique,
+     NodeId                      from,
+     const NodeProperty< Size >& domain_sizes) const {
     // get the neighbors of clique. If there are fewer than 3 neighbors,
     // there is nothing to do
     const NodeSet& neighbors = JT.neighbours(clique);
@@ -137,8 +137,8 @@ namespace gum {
       for (NodeId j = i + 1; j < cliques.size(); ++j) {
         pair.second = j;
         queue.insert(
-          pair,
-          __combinedSize(nodes1, JT.separator(cliques[j], clique), domain_sizes));
+           pair,
+           __combinedSize(nodes1, JT.separator(cliques[j], clique), domain_sizes));
       }
     }
 
@@ -196,7 +196,7 @@ namespace gum {
           if (is_cliques_relevant[ind]) {
             pair.first = ind;
             newsize = __combinedSize(
-              nodes1, JT.separator(cliques[ind], clique), domain_sizes);
+               nodes1, JT.separator(cliques[ind], clique), domain_sizes);
             queue.setPriority(pair, newsize);
           }
         }
@@ -207,7 +207,7 @@ namespace gum {
           if (is_cliques_relevant[ind]) {
             pair.second = ind;
             newsize = __combinedSize(
-              nodes1, JT.separator(cliques[ind], clique), domain_sizes);
+               nodes1, JT.separator(cliques[ind], clique), domain_sizes);
             queue.setPriority(pair, newsize);
           }
         }
@@ -217,11 +217,11 @@ namespace gum {
 
   /// convert a whole connected component into a binary join tree
   void BinaryJoinTreeConverterDefault::__convertConnectedComponent(
-    CliqueGraph&                JT,
-    NodeId                      current_node,
-    NodeId                      from,
-    const NodeProperty< Size >& domain_sizes,
-    NodeProperty< bool >&       mark) const {
+     CliqueGraph&                JT,
+     NodeId                      current_node,
+     NodeId                      from,
+     const NodeProperty< Size >& domain_sizes,
+     NodeProperty< bool >&       mark) const {
     // first, indicate that the node has been marked (this avoids looping
     // if JT is not a tree
     mark[current_node] = true;
@@ -239,9 +239,9 @@ namespace gum {
 
   /// computes the binary join tree
   CliqueGraph BinaryJoinTreeConverterDefault::convert(
-    const CliqueGraph&          JT,
-    const NodeProperty< Size >& domain_sizes,
-    const NodeSet&              specified_roots) {
+     const CliqueGraph&          JT,
+     const NodeProperty< Size >& domain_sizes,
+     const NodeSet&              specified_roots) {
     // first, we copy the current clique graph. By default, this is what we
     // will return
     CliqueGraph binJT = JT;

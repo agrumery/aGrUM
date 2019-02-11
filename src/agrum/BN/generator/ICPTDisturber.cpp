@@ -26,5 +26,7 @@
  */
 #include <agrum/BN/generator/ICPTDisturber.h>
 
-template class gum::ICPTDisturber< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::ICPTDisturber< double >;
+#endif

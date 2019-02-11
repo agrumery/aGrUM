@@ -56,19 +56,19 @@ namespace gum {
                                double                        theRatio,
                                double                        theThreshold) :
       __graph(graph != nullptr
-                ? graph
-                : GUM_ERROR_IN_EXPR(OperationNotAllowed,
-                                    "SimplicialSet requires a valid graph")),
+                 ? graph
+                 : GUM_ERROR_IN_EXPR(OperationNotAllowed,
+                                     "SimplicialSet requires a valid graph")),
       __log_weights(log_weights != nullptr
-                      ? log_weights
-                      : GUM_ERROR_IN_EXPR(OperationNotAllowed,
-                                          "SimplicialSet "
-                                          "requires non-null log weights")),
+                       ? log_weights
+                       : GUM_ERROR_IN_EXPR(OperationNotAllowed,
+                                           "SimplicialSet "
+                                           "requires non-null log weights")),
       __log_domain_sizes(log_domain_sizes != nullptr
-                           ? log_domain_sizes
-                           : GUM_ERROR_IN_EXPR(OperationNotAllowed,
-                                               "SimplicialSet "
-                                               "requires non-null domain sizes")),
+                            ? log_domain_sizes
+                            : GUM_ERROR_IN_EXPR(OperationNotAllowed,
+                                                "SimplicialSet "
+                                                "requires non-null domain sizes")),
       __simplicial_nodes(std::less< double >(), __graph->size()),
       __almost_simplicial_nodes(std::less< double >(), __graph->size()),
       __quasi_simplicial_nodes(std::less< double >(), __graph->size()),
@@ -93,19 +93,20 @@ namespace gum {
                                NodeProperty< double >*       log_weights,
                                bool                          avoid_check) :
       __graph(graph != nullptr
-                ? graph
-                : GUM_ERROR_IN_EXPR(OperationNotAllowed,
-                                    "SimplicialSet requires a valid graph")),
+                 ? graph
+                 : GUM_ERROR_IN_EXPR(OperationNotAllowed,
+                                     "SimplicialSet requires a valid graph")),
       __log_weights(log_weights != nullptr
-                      ? log_weights
-                      : GUM_ERROR_IN_EXPR(OperationNotAllowed,
-                                          "SimplicialSet "
-                                          "requires non-null log weights")),
-      __log_domain_sizes(log_domain_sizes != nullptr
-                           ? log_domain_sizes
-                           : GUM_ERROR_IN_EXPR(OperationNotAllowed,
-                                               "SimplicialSet "
-                                               "requires non-null domain sizes")) {
+                       ? log_weights
+                       : GUM_ERROR_IN_EXPR(OperationNotAllowed,
+                                           "SimplicialSet "
+                                           "requires non-null log weights")),
+      __log_domain_sizes(
+         log_domain_sizes != nullptr
+            ? log_domain_sizes
+            : GUM_ERROR_IN_EXPR(OperationNotAllowed,
+                                "SimplicialSet "
+                                "requires non-null domain sizes")) {
     if (!avoid_check) {
       // check whether the graph, the log weights and the log_modalities
       // are similar to those of from

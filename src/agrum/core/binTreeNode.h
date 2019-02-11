@@ -328,7 +328,9 @@ namespace gum {
 } /* namespace gum */
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::BinTreeNode< int >;
+#endif
 
 
 // always include the implementation of the templates

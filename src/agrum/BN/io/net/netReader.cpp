@@ -20,5 +20,7 @@
 
 #include <agrum/BN/io/net/netReader.h>
 
-template class gum::NetReader< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::NetReader< double >;
+#endif

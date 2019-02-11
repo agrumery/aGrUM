@@ -480,8 +480,8 @@ namespace gum {
      * variable in *this or in external.
      */
     void setValsFrom(
-      const HashTable< const DiscreteVariable*, const DiscreteVariable* >& map,
-      const Instantiation& external);
+       const HashTable< const DiscreteVariable*, const DiscreteVariable* >& map,
+       const Instantiation& external);
 
     /**
      * Indicates whether a given variable belongs to the Instantiation.

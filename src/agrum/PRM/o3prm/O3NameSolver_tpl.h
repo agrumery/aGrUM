@@ -43,7 +43,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE O3NameSolver< GUM_SCALAR >::O3NameSolver(
-        const O3NameSolver< GUM_SCALAR >& src) :
+         const O3NameSolver< GUM_SCALAR >& src) :
           __prm(src.__prm),
           __o3_prm(src.__o3_prm), __errors(src.__errors),
           __typeName(src.__typeName), __eltName(src.__eltName),
@@ -54,7 +54,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE O3NameSolver< GUM_SCALAR >::O3NameSolver(
-        O3NameSolver< GUM_SCALAR >&& src) :
+         O3NameSolver< GUM_SCALAR >&& src) :
           __prm(std::move(src.__prm)),
           __o3_prm(std::move(src.__o3_prm)), __errors(std::move(src.__errors)),
           __typeName(std::move(src.__typeName)),

@@ -94,8 +94,9 @@ namespace gum {
   };
 
 
-  extern template class GeneralizedCNFWriter< float >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class GeneralizedCNFWriter< double >;
+#endif
 
 } /* namespace gum */
 

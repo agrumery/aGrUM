@@ -40,14 +40,14 @@ namespace gum_tests {
     typedef gum::prm::PRMInstance< double >        PRMInstance;
     typedef gum::prm::PRMClass< double >           PRMClass;
     typedef gum::prm::PRMInterface< double >       PRMInterface;
-    typedef gum::prm::PRMType< double >            PRMType;
+    typedef gum::prm::PRMType                      PRMType;
     typedef gum::prm::PRMScalarAttribute< double > PRMAttribute;
     typedef gum::prm::PRMReferenceSlot< double >   Reference;
     typedef gum::prm::PRMSlotChain< double >       PRMSlotChain;
     typedef gum::prm::PRMObject                    PRMObject;
     typedef gum::Bijection< const gum::DiscreteVariable*,
                             const gum::DiscreteVariable* >
-      Bijection;
+       Bijection;
 
     PRMType*  __boolean;
     PRMType*  __state;
@@ -56,7 +56,7 @@ namespace gum_tests {
 
     public:
     void setUp() {
-      __boolean = gum::prm::PRMType< double >::boolean();
+      __boolean = gum::prm::PRMType::boolean();
       gum::LabelizedVariable state{"state", "A state variable", 0};
       state.addLabel("OK");
       state.addLabel("NOK");

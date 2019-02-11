@@ -123,10 +123,12 @@ target_sources (${_PYAGRUMLIB} PUBLIC ${AGRUM_SOURCES})
 # for additionnal rule such test pyAgrum
 add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SWIG_OUTDIR}/pyAgrum.py" "${CMAKE_CURRENT_BINARY_DIR}/.")
 add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/lib" "${CMAKE_CURRENT_BINARY_DIR}/lib")
+add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/causal" "${CMAKE_CURRENT_BINARY_DIR}/causal")
 
 
 file(GLOB GUMLIB_FILES "${CMAKE_CURRENT_SOURCE_DIR}/lib/*.py")
 file(GLOB GUMLIB_UTILS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/lib/_utils/*.py")
+file(GLOB GUMCAUSAL_FILES "${CMAKE_CURRENT_SOURCE_DIR}/causal/*.py")
 
 #include("${CMAKE_CURRENT_SOURCE_DIR}/../../VERSION.txt")
 set(PYAGRUM_VERSION "${AGRUM_VERSION_MAJOR}.${AGRUM_VERSION_MINOR}.${AGRUM_VERSION_PATCH}")
@@ -157,6 +159,7 @@ install(TARGETS ${_PYAGRUMLIB} DESTINATION ${PYTHON_INSTALL}/pyAgrum)
 
 install(FILES ${GUMLIB_FILES} DESTINATION ${PYTHON_INSTALL}/pyAgrum/lib)
 install(FILES ${GUMLIB_UTILS_FILES} DESTINATION ${PYTHON_INSTALL}/pyAgrum/lib/_utils)
+install(FILES ${GUMCAUSAL_FILES} DESTINATION ${PYTHON_INSTALL}/pyAgrum/causal)
 
 # # show all cmake variables
 # get_cmake_property(_variableNames VARIABLES)

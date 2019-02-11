@@ -35,7 +35,7 @@ namespace gum {
 
     if (from.__propertiesMap) {
       __propertiesMap =
-        new HashTable< std::string, std::string >(*(from.__propertiesMap));
+         new HashTable< std::string, std::string >(*(from.__propertiesMap));
     }
   }
 
@@ -49,6 +49,7 @@ namespace gum {
   }
 
   void DAGmodel::__moralGraph() const {
+    // @todo : this is a copy of DAG::moralGraph ... we should do better
     __mutableMoralGraph->populateNodes(dag());
     // transform the arcs into edges
 
@@ -86,7 +87,7 @@ namespace gum {
 
       if (source.__propertiesMap != 0) {
         __propertiesMap =
-          new HashTable< std::string, std::string >(*(source.__propertiesMap));
+           new HashTable< std::string, std::string >(*(source.__propertiesMap));
       }
 
       _dag = source._dag;

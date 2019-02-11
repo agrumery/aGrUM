@@ -185,9 +185,9 @@ namespace gum {
     bool __checkConditions() final;
   };
 
-
-  extern template class MaxParentsMCBayesNetGenerator< float >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class MaxParentsMCBayesNetGenerator< double >;
+#endif
 
 } /*namespace gum*/
 

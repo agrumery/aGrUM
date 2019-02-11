@@ -198,7 +198,7 @@ namespace gum {
 
       /// virtual copy constructor with a given allocator
       virtual DBInitializerFromSQL< ALLOC >*
-        clone(const allocator_type& alloc) const;
+         clone(const allocator_type& alloc) const;
 
       /// destructor
       virtual ~DBInitializerFromSQL();
@@ -216,13 +216,13 @@ namespace gum {
       /** the new initializer points to the same SQL query as from, but
        * it reparses the result from scratch. */
       DBInitializerFromSQL< ALLOC >&
-        operator=(const DBInitializerFromSQL< ALLOC >& from);
+         operator=(const DBInitializerFromSQL< ALLOC >& from);
 
       /// move operator
       /** the new initializer points to the same SQL query as from, but
        * it reparses the result from scratch. */
       DBInitializerFromSQL< ALLOC >&
-        operator=(DBInitializerFromSQL< ALLOC >&& from);
+         operator=(DBInitializerFromSQL< ALLOC >&& from);
 
       /// @}
 
@@ -230,11 +230,11 @@ namespace gum {
       protected:
       /// returns the names of the variables
       virtual std::vector< std::string, ALLOC< std::string > >
-        _variableNames() final;
+         _variableNames() final;
 
       /// returns the content of the current row using strings
       virtual const std::vector< std::string, ALLOC< std::string > >&
-        _currentStringRow() final;
+         _currentStringRow() final;
 
       /// indicates whether there is a next row to read (and point on it)
       virtual bool _nextRow() final;

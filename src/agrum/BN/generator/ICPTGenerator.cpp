@@ -25,5 +25,7 @@
  */
 #include <agrum/BN/generator/ICPTGenerator.h>
 
-template class gum::ICPTGenerator< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::ICPTGenerator< double >;
+#endif

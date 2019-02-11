@@ -70,7 +70,7 @@ namespace gum_tests {
     void testConstuctor() {
       gum::FactorisedValuesCNFWriter< double >* writer = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
-        writer = new gum::FactorisedValuesCNFWriter< double >());
+         writer = new gum::FactorisedValuesCNFWriter< double >());
       delete writer;
     }
 
@@ -81,7 +81,7 @@ namespace gum_tests {
     }
     void testWriter_ostream_With_Approximation() {
       gum::FactorisedValuesCNFWriter< double, gum::LinearApproximationPolicy >
-        writer;
+         writer;
       writer.setEpsilon(0.2);
       writer.setLowLimit(0);
       writer.setHighLimit(1);
@@ -93,7 +93,7 @@ namespace gum_tests {
     void testWriter_string() {
       gum::FactorisedValuesCNFWriter< double > writer;
       std::string                              file =
-        GET_RESSOURCES_PATH("FactorisedValuesCNFWriter_TestFile.cnf");
+         GET_RESSOURCES_PATH("FactorisedValuesCNFWriter_TestFile.cnf");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
 
       file = GET_RESSOURCES_PATH("FactorisedValuesCNFWriter_RO_TestFile.cnf");
@@ -106,15 +106,15 @@ namespace gum_tests {
 
     void testWriter_string_With_Approximation() {
       gum::FactorisedValuesCNFWriter< double, gum::LinearApproximationPolicy >
-        writer;
+         writer;
       writer.setEpsilon(0.2);
       writer.setLowLimit(0);
       writer.setHighLimit(1);
       std::string file = GET_RESSOURCES_PATH(
-        "FactorisedValuesCNFWriter_TestFile_Approximation.cnf");
+         "FactorisedValuesCNFWriter_TestFile_Approximation.cnf");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
       file = GET_RESSOURCES_PATH(
-        "FactorisedValuesCNFWriter_RO_TestFile_Approximation.cnf");
+         "FactorisedValuesCNFWriter_RO_TestFile_Approximation.cnf");
 
       try {
         writer.write(file, *bn);
@@ -133,7 +133,7 @@ namespace gum_tests {
                0.5, 0.5,
                0.5, 0.5,
                1.0, 0.0} );   // clang-format on
-      bn.cpt(i5).fillWith(                           // clang-format off
+      bn.cpt(i5).fillWith(                            // clang-format off
               {0.3, 0.6, 0.1,
                0.5, 0.5, 0.0,
                0.5, 0.5, 0.0,

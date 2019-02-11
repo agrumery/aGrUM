@@ -124,6 +124,24 @@ namespace gum {
      */
     void setConfidenceProba(double new_proba);
 
+    /**
+     * @brief Computes the probability of chi2 value.
+     *
+     * This code has been written by Gary Perlman.
+     *
+     * ALGORITHM Compute probability of chi square value.
+     * Adapted from:
+     * Hill, I. D. and Pike, M. C.  Algorithm 299
+     * Collected Algorithms for the CACM 1967 p. 243
+     * Updated for rounding errors based on remark in
+     * ACM TOMS June 1985, page 185
+     *
+     * @param x The chi2 value.
+     * @param df The number of degrees of freedom.
+     * @return The probability of x given df degrees of freedom.
+     */
+
+    static double probaChi2(double x, Size df);
     /// @}
 
     private:
@@ -151,23 +169,6 @@ namespace gum {
      */
     static double __criticalValue(double proba, Size df);
 
-    /**
-     * @brief Computes the probability of chi2 value.
-     *
-     * This code has been written by Gary Perlman.
-     *
-     * ALGORITHM Compute probability of chi square value.
-     * Adapted from:
-     * Hill, I. D. and Pike, M. C.  Algorithm 299
-     * Collected Algorithms for the CACM 1967 p. 243
-     * Updated for rounding errors based on remark in
-     * ACM TOMS June 1985, page 185
-     *
-     * @param x The chi2 value.
-     * @param df The number of degrees of freedom.
-     * @return The probability of x given df degrees of freedom.
-     */
-    static double __probaChi2(double x, Size df);
 
     /**
      * @brief Computes the probability of normal z value.

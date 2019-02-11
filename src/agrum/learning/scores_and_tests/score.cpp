@@ -26,4 +26,6 @@
 
 #include <agrum/learning/scores_and_tests/score.h>
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::learning::Score<>;
+#endif

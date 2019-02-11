@@ -137,9 +137,16 @@ namespace gum {
 }   // namespace gum
 
 
-extern template class gum::Rational< float >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::Rational< double >;
+#  endif
+#endif
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::Rational< long double >;
+#  endif
+#endif
 
 
 // Always include template implementation in header file

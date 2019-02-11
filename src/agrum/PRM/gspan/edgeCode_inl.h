@@ -30,7 +30,7 @@ namespace gum {
 
       INLINE
       EdgeCode::EdgeCode(
-        NodeId my_i, NodeId my_j, Size my_l_i, Size my_l_ij, Size my_l_j) :
+         NodeId my_i, NodeId my_j, Size my_l_i, Size my_l_ij, Size my_l_j) :
           i(my_i),
           j(my_j), l_i(my_l_i), l_ij(my_l_ij), l_j(my_l_j) {
         GUM_CONSTRUCTOR(EdgeCode);

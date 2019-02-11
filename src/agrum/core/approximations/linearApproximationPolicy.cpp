@@ -28,5 +28,6 @@
 #include <agrum/core/approximations/linearApproximationPolicy.h>
 
 
-template class gum::LinearApproximationPolicy< float >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::LinearApproximationPolicy< double >;
+#endif

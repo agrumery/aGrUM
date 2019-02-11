@@ -122,7 +122,7 @@ namespace gum_tests {
       /// hardcoded lps to check solutions
       std::vector< std::vector< gum::credal::lp::LpInterface< double > > > lps(3);
       std::vector< std::vector< std::vector< std::vector< double > > > > lps_sols(
-        3);
+         3);
 
       lps[0] = std::vector< gum::credal::lp::LpInterface< double > >(1);   // A lp
       lps_sols[0] = std::vector< std::vector< std::vector< double > > >(1);
@@ -201,7 +201,7 @@ namespace gum_tests {
       lps[2][3].addProba();
 
       lps_sols[2][3] = {
-        {1, 0, 0}, {0, 1, 0}, {0, 0, 1}};   // C lp solution A:0 B:1
+         {1, 0, 0}, {0, 1, 0}, {0, 0, 1}};   // C lp solution A:0 B:1
 
       /// C : ins idx = 4, A:1 B:1
       /// x0 <= x1 <= x2
@@ -244,7 +244,7 @@ namespace gum_tests {
       lps[2][7].addProba();
 
       lps_sols[2][7] = {
-        {1, 0, 0}, {0, 1, 0}, {0, 0, 1}};   // C lp solution A:1 B:2
+         {1, 0, 0}, {0, 1, 0}, {0, 0, 1}};   // C lp solution A:1 B:2
 
       /// C : ins idx = 8, A:2 B:2
       /// x2 = 1 / 3 * x0 + 2 / 3 * x1
@@ -265,7 +265,7 @@ namespace gum_tests {
 
         while (!ins.end()) {
           std::vector< std::vector< double > > vertices(
-            lps[id][entry].solve());   // we solve the lp
+             lps[id][entry].solve());   // we solve the lp
 
           gum::Size sols_size = gum::Size(lps_sols[id][entry].size());
           TS_ASSERT_EQUALS(vertices.size(), sols_size);

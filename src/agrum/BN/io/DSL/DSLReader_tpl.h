@@ -147,7 +147,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void
-    DSLReader< GUM_SCALAR >::showElegantErrorsAndWarnings(std::ostream& o) {
+     DSLReader< GUM_SCALAR >::showElegantErrorsAndWarnings(std::ostream& o) {
     if (__parseDone)
       __parser->errors().elegantErrorsAndWarnings(o);
     else {

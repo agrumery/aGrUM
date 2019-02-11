@@ -18,11 +18,11 @@
  * with dirent.h.
  */
 #  if !defined(_68K_) && !defined(_MPPC_) && !defined(_X86_) && !defined(_IA64_) \
-    && !defined(_AMD64_) && defined(_M_IX86)
+     && !defined(_AMD64_) && defined(_M_IX86)
 #    define _X86_
 #  endif
 #  if !defined(_68K_) && !defined(_MPPC_) && !defined(_X86_) && !defined(_IA64_) \
-    && !defined(_AMD64_) && defined(_M_AMD64)
+     && !defined(_AMD64_) && defined(_M_AMD64)
 #    define _AMD64_
 #  endif
 
@@ -370,8 +370,8 @@ static _WDIR* _wopendir(const wchar_t* dirname) {
             case '\\':
             case '/':
             case ':':
-              /* Directory ends in path separator, e.g. c:\temp\ */
-              /*NOP*/;
+               /* Directory ends in path separator, e.g. c:\temp\ */
+               /*NOP*/;
               break;
 
             default:
@@ -649,7 +649,7 @@ static struct dirent* readdir(DIR* dirp) {
 
     /* Attempt to convert file name to multi-byte string */
     error = dirent_wcstombs_s(
-      &n, dirp->ent.d_name, PATH_MAX, datap->cFileName, PATH_MAX);
+       &n, dirp->ent.d_name, PATH_MAX, datap->cFileName, PATH_MAX);
 
     /*
      * If the file name cannot be represented by a multi-byte string,
@@ -663,7 +663,7 @@ static struct dirent* readdir(DIR* dirp) {
      */
     if (error && datap->cAlternateFileName[0] != '\0') {
       error = dirent_wcstombs_s(
-        &n, dirp->ent.d_name, PATH_MAX, datap->cAlternateFileName, PATH_MAX);
+         &n, dirp->ent.d_name, PATH_MAX, datap->cAlternateFileName, PATH_MAX);
     }
 
     if (!error) {

@@ -51,18 +51,18 @@ namespace gum {
     for (Idx moda = 0; moda < __l1->nbModa(); ++moda) {
       if (__l1->effectif(moda)) {
         double add =
-          __l1->effectif(moda)
-          * std::log(
-              __l1->effectif(moda)
-              / (scaleFactor1 * (__l1->effectif(moda) + __l2->effectif(moda))));
+           __l1->effectif(moda)
+           * std::log(
+                __l1->effectif(moda)
+                / (scaleFactor1 * (__l1->effectif(moda) + __l2->effectif(moda))));
         __likelyhood1 += add;
       }
       if (__l2->effectif(moda)) {
         double add =
-          __l2->effectif(moda)
-          * std::log(
-              __l2->effectif(moda)
-              / (scaleFactor2 * (__l1->effectif(moda) + __l2->effectif(moda))));
+           __l2->effectif(moda)
+           * std::log(
+                __l2->effectif(moda)
+                / (scaleFactor2 * (__l1->effectif(moda) + __l2->effectif(moda))));
         __likelyhood2 += add;
       }
     }

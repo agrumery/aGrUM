@@ -32,9 +32,10 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE AprioriNoApriori< ALLOC >::AprioriNoApriori(
-      const DatabaseTable< ALLOC >&                                 database,
-      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename AprioriNoApriori< ALLOC >::allocator_type&     alloc) :
+       const DatabaseTable< ALLOC >& database,
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                                                                 nodeId2columns,
+       const typename AprioriNoApriori< ALLOC >::allocator_type& alloc) :
         Apriori< ALLOC >(database, nodeId2columns, alloc) {
       Apriori< ALLOC >::setWeight(0.0);
       GUM_CONSTRUCTOR(AprioriNoApriori);
@@ -44,8 +45,8 @@ namespace gum {
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE AprioriNoApriori< ALLOC >::AprioriNoApriori(
-      const AprioriNoApriori< ALLOC >&                          from,
-      const typename AprioriNoApriori< ALLOC >::allocator_type& alloc) :
+       const AprioriNoApriori< ALLOC >&                          from,
+       const typename AprioriNoApriori< ALLOC >::allocator_type& alloc) :
         Apriori< ALLOC >(from, alloc) {
       GUM_CONS_CPY(AprioriNoApriori);
     }
@@ -54,15 +55,15 @@ namespace gum {
     /// copy constructor
     template < template < typename > class ALLOC >
     INLINE AprioriNoApriori< ALLOC >::AprioriNoApriori(
-      const AprioriNoApriori< ALLOC >& from) :
+       const AprioriNoApriori< ALLOC >& from) :
         AprioriNoApriori< ALLOC >(from, from.getAllocator()) {}
 
 
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE AprioriNoApriori< ALLOC >::AprioriNoApriori(
-      AprioriNoApriori< ALLOC >&&                               from,
-      const typename AprioriNoApriori< ALLOC >::allocator_type& alloc) :
+       AprioriNoApriori< ALLOC >&&                               from,
+       const typename AprioriNoApriori< ALLOC >::allocator_type& alloc) :
         Apriori< ALLOC >(std::move(from), alloc) {
       GUM_CONS_MOV(AprioriNoApriori);
     }
@@ -71,14 +72,14 @@ namespace gum {
     /// move constructor
     template < template < typename > class ALLOC >
     INLINE AprioriNoApriori< ALLOC >::AprioriNoApriori(
-      AprioriNoApriori< ALLOC >&& from) :
+       AprioriNoApriori< ALLOC >&& from) :
         AprioriNoApriori< ALLOC >(std::move(from), from.getAllocator()) {}
 
 
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
     AprioriNoApriori< ALLOC >* AprioriNoApriori< ALLOC >::clone(
-      const typename AprioriNoApriori< ALLOC >::allocator_type& alloc) const {
+       const typename AprioriNoApriori< ALLOC >::allocator_type& alloc) const {
       ALLOC< AprioriNoApriori< ALLOC > > allocator(alloc);
       AprioriNoApriori< ALLOC >*         apriori = allocator.allocate(1);
       try {
@@ -153,15 +154,15 @@ namespace gum {
     /// returns the apriori vector all the variables in the idset
     template < template < typename > class ALLOC >
     INLINE void AprioriNoApriori< ALLOC >::addAllApriori(
-      const IdSet< ALLOC >&                   idset,
-      std::vector< double, ALLOC< double > >& counts) {}
+       const IdSet< ALLOC >&                   idset,
+       std::vector< double, ALLOC< double > >& counts) {}
 
 
     /// returns the apriori vector over only the conditioning set of an idset
     template < template < typename > class ALLOC >
     INLINE void AprioriNoApriori< ALLOC >::addConditioningApriori(
-      const IdSet< ALLOC >&                   idset,
-      std::vector< double, ALLOC< double > >& counts) {}
+       const IdSet< ALLOC >&                   idset,
+       std::vector< double, ALLOC< double > >& counts) {}
 
 
   } /* namespace learning */

@@ -110,8 +110,10 @@ namespace gum {
     Instantiation _monteCarloSample();
   };
 
-  extern template class GibbsSampling< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class GibbsSampling< double >;
+#endif
 }   // namespace gum
 
 #include <agrum/BN/inference/GibbsSampling_tpl.h>

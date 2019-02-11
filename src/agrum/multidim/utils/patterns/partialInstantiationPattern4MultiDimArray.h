@@ -44,8 +44,8 @@ namespace gum {
 #    define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE GUM_SCALAR
   template < typename GUM_SCALAR >
   MultiDimArray< GUM_SCALAR >* GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME(
-    const MultiDimArray< GUM_SCALAR >*               table,
-    const HashTable< const DiscreteVariable*, Idx >& inst_vars)
+     const MultiDimArray< GUM_SCALAR >*               table,
+     const HashTable< const DiscreteVariable*, Idx >& inst_vars)
 #  endif
 
   // clang-format off
@@ -84,16 +84,16 @@ namespace gum {
   {
 #  ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_IMPL2ARRAY_NAME
     const MultiDimArray< GUM_SCALAR >* table =
-      reinterpret_cast< const MultiDimArray< GUM_SCALAR >* >(ttable);
+       reinterpret_cast< const MultiDimArray< GUM_SCALAR >* >(ttable);
 #  endif
 
 #  ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER_IMPL2ARRAY_NAME
     const MultiDimArray< GUM_SCALAR* >* table =
-      reinterpret_cast< const MultiDimArray< GUM_SCALAR* >* >(ttable);
+       reinterpret_cast< const MultiDimArray< GUM_SCALAR* >* >(ttable);
 #  endif
     // get the variables of the uninstantiated table
     const Sequence< const DiscreteVariable* >& table_vars =
-      table->variablesSequence();
+       table->variablesSequence();
 
     // Compute the offset of the variables. In addition, get the offset in
     // table induced by the instantiation inst_var
@@ -156,7 +156,7 @@ namespace gum {
     // in "table". Hence, ++ operations on an instantiation on table will more
     // or less correspond to a ++ operation on an instantiation on result
     MultiDimArray< GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE >* result =
-      new MultiDimArray< GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE >;
+       new MultiDimArray< GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE >;
     result->beginMultipleChanges();
 
     for (const auto var : result_varSeq)
@@ -179,11 +179,11 @@ namespace gum {
     // were not instantiated. ptable and presult are pointers on the arrays
     // that are directly used for this loop
     GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE* ptable =
-      const_cast< GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE* >(
-        &(table->unsafeGet(table_alone_offset)));
+       const_cast< GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE* >(
+          &(table->unsafeGet(table_alone_offset)));
     GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE* presult =
-      const_cast< GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE* >(
-        &(result->unsafeGet(0)));
+       const_cast< GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE* >(
+          &(result->unsafeGet(0)));
 
     // but before doing so, check whether the instantiated variables are the
     // last ones or not. If so, we can optimize the parsing of ptable and

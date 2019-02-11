@@ -50,14 +50,14 @@ namespace gum {
 
     /// default constructor
     ScheduleSeparatorStoreMultiDim(
-      const ScheduleMultiDim< GUM_SCALAR >& table,
-      ArcProperty< Set< const MultiDimImplementation< GUM_SCALAR >* > >&
-          separator_tables,
-      Arc separator);
+       const ScheduleMultiDim< GUM_SCALAR >& table,
+       ArcProperty< Set< const MultiDimImplementation< GUM_SCALAR >* > >&
+           separator_tables,
+       Arc separator);
 
     /// copy constructor
     ScheduleSeparatorStoreMultiDim(
-      const ScheduleSeparatorStoreMultiDim< GUM_SCALAR >&);
+       const ScheduleSeparatorStoreMultiDim< GUM_SCALAR >&);
 
     /// virtual copy constructor: creates a clone of the operation
     virtual ScheduleSeparatorStoreMultiDim< GUM_SCALAR >* newFactory() const;
@@ -74,7 +74,7 @@ namespace gum {
 
     /// copy operator
     ScheduleSeparatorStoreMultiDim< GUM_SCALAR >&
-      operator=(const ScheduleSeparatorStoreMultiDim< GUM_SCALAR >&);
+       operator=(const ScheduleSeparatorStoreMultiDim< GUM_SCALAR >&);
 
     /// operator ==
     /** Two operations are identical if and only if they have the same
@@ -116,7 +116,7 @@ namespace gum {
 
     /// returns the set of multidims that should be the result of the operation
     const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >&
-      multiDimResults() const;
+       multiDimResults() const;
 
     /// displays the content of the operation
     std::string toString() const;

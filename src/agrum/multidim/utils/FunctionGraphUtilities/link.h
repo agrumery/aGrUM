@@ -193,7 +193,9 @@ namespace gum {
     Link< T >* __firstLink;
   };
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class Link< Idx >;
+#endif
 
 }   // End of namespace gum
 

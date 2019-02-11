@@ -62,17 +62,17 @@ namespace std {
   struct __auxiliary_print_tuple {
     template < typename... T >
     static typename std::enable_if< (N < sizeof...(T)) >::type
-      print(std::ostream& os, const std::tuple< T... >& t) {
+       print(std::ostream& os, const std::tuple< T... >& t) {
       char quote =
-        (std::is_convertible< decltype(std::get< N >(t)), std::string >::value)
-          ? '"'
-          : 0;
+         (std::is_convertible< decltype(std::get< N >(t)), std::string >::value)
+            ? '"'
+            : 0;
       os << ", " << quote << std::get< N >(t) << quote;
       __auxiliary_print_tuple< N + 1 >::print(os, t);
     }
     template < typename... T >
     static typename std::enable_if< !(N < sizeof...(T)) >::type
-      print(std::ostream&, const std::tuple< T... >&) {}
+       print(std::ostream&, const std::tuple< T... >&) {}
   };
 
   template < typename T0, typename... T >

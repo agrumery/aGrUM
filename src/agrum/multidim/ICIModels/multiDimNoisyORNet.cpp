@@ -29,5 +29,7 @@
 #ifdef GUM_NO_INLINE
 #endif /* GUM_NO_INLINE */
 
-template class gum::MultiDimNoisyORNet< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::MultiDimNoisyORNet< double >;
+#endif

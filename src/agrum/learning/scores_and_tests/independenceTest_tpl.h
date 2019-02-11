@@ -31,7 +31,7 @@ namespace gum {
     /// returns the allocator used by the independence test
     template < template < typename > class ALLOC >
     INLINE typename IndependenceTest< ALLOC >::allocator_type
-      IndependenceTest< ALLOC >::getAllocator() const {
+       IndependenceTest< ALLOC >::getAllocator() const {
       return _counter.getAllocator();
     }
 
@@ -39,12 +39,13 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE IndependenceTest< ALLOC >::IndependenceTest(
-      const DBRowGeneratorParser< ALLOC >&                                 parser,
-      const Apriori< ALLOC >&                                              apriori,
-      const std::vector< std::pair< std::size_t, std::size_t >,
-                         ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
-      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename IndependenceTest< ALLOC >::allocator_type&     alloc) :
+       const DBRowGeneratorParser< ALLOC >& parser,
+       const Apriori< ALLOC >&              apriori,
+       const std::vector< std::pair< std::size_t, std::size_t >,
+                          ALLOC< std::pair< std::size_t, std::size_t > > >& ranges,
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                                                                 nodeId2columns,
+       const typename IndependenceTest< ALLOC >::allocator_type& alloc) :
         _apriori(apriori.clone(alloc)),
         _counter(parser, ranges, nodeId2columns, alloc), _cache(alloc) {
       GUM_CONSTRUCTOR(IndependenceTest);
@@ -54,10 +55,11 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE IndependenceTest< ALLOC >::IndependenceTest(
-      const DBRowGeneratorParser< ALLOC >&                          parser,
-      const Apriori< ALLOC >&                                       apriori,
-      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename IndependenceTest< ALLOC >::allocator_type&     alloc) :
+       const DBRowGeneratorParser< ALLOC >& parser,
+       const Apriori< ALLOC >&              apriori,
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                                                                 nodeId2columns,
+       const typename IndependenceTest< ALLOC >::allocator_type& alloc) :
         _apriori(apriori.clone(alloc)),
         _counter(parser, nodeId2columns, alloc), _cache(alloc) {
       GUM_CONSTRUCTOR(IndependenceTest);
@@ -67,8 +69,8 @@ namespace gum {
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE IndependenceTest< ALLOC >::IndependenceTest(
-      const IndependenceTest< ALLOC >&                          from,
-      const typename IndependenceTest< ALLOC >::allocator_type& alloc) :
+       const IndependenceTest< ALLOC >&                          from,
+       const typename IndependenceTest< ALLOC >::allocator_type& alloc) :
         _apriori(from._apriori->clone(alloc)),
         _counter(from._counter, alloc), _cache(from._cache, alloc),
         _use_cache(from._use_cache) {
@@ -79,15 +81,15 @@ namespace gum {
     /// copy constructor
     template < template < typename > class ALLOC >
     INLINE IndependenceTest< ALLOC >::IndependenceTest(
-      const IndependenceTest< ALLOC >& from) :
+       const IndependenceTest< ALLOC >& from) :
         IndependenceTest(from, from.getAllocator()) {}
 
 
     /// move constructor
     template < template < typename > class ALLOC >
     INLINE IndependenceTest< ALLOC >::IndependenceTest(
-      IndependenceTest< ALLOC >&&                               from,
-      const typename IndependenceTest< ALLOC >::allocator_type& alloc) :
+       IndependenceTest< ALLOC >&&                               from,
+       const typename IndependenceTest< ALLOC >::allocator_type& alloc) :
         _apriori(from._apriori),
         _counter(std::move(from._counter), alloc),
         _cache(std::move(from._cache), alloc), _use_cache(from._use_cache) {
@@ -99,7 +101,7 @@ namespace gum {
     /// move constructor
     template < template < typename > class ALLOC >
     INLINE IndependenceTest< ALLOC >::IndependenceTest(
-      IndependenceTest< ALLOC >&& from) :
+       IndependenceTest< ALLOC >&& from) :
         IndependenceTest(std::move(from), from.getAllocator()) {}
 
 
@@ -173,7 +175,7 @@ namespace gum {
      * multithreading context */
     template < template < typename > class ALLOC >
     INLINE void IndependenceTest< ALLOC >::setMinNbRowsPerThread(
-      const std::size_t nb) const {
+       const std::size_t nb) const {
       _counter.setMinNbRowsPerThread(nb);
     }
 
@@ -195,12 +197,12 @@ namespace gum {
     template < template < typename > class ALLOC >
     template < template < typename > class XALLOC >
     void IndependenceTest< ALLOC >::setRanges(
-      const std::vector< std::pair< std::size_t, std::size_t >,
-                         XALLOC< std::pair< std::size_t, std::size_t > > >&
-        new_ranges) {
+       const std::vector< std::pair< std::size_t, std::size_t >,
+                          XALLOC< std::pair< std::size_t, std::size_t > > >&
+          new_ranges) {
       std::vector< std::pair< std::size_t, std::size_t >,
                    ALLOC< std::pair< std::size_t, std::size_t > > >
-        old_ranges = ranges();
+         old_ranges = ranges();
       _counter.setRanges(new_ranges);
       if (old_ranges != ranges()) clear();
     }
@@ -211,7 +213,7 @@ namespace gum {
     void IndependenceTest< ALLOC >::clearRanges() {
       std::vector< std::pair< std::size_t, std::size_t >,
                    ALLOC< std::pair< std::size_t, std::size_t > > >
-        old_ranges = ranges();
+         old_ranges = ranges();
       _counter.clearRanges();
       if (old_ranges != ranges()) clear();
     }
@@ -231,7 +233,7 @@ namespace gum {
     INLINE double IndependenceTest< ALLOC >::score(const NodeId var1,
                                                    const NodeId var2) {
       IdSet< ALLOC > idset(
-        var1, var2, _empty_ids, false, true, this->getAllocator());
+         var1, var2, _empty_ids, false, true, this->getAllocator());
       if (_use_cache) {
         try {
           return _cache.score(idset);
@@ -248,11 +250,11 @@ namespace gum {
     /// returns the score of a pair of nodes given some other nodes
     template < template < typename > class ALLOC >
     INLINE double IndependenceTest< ALLOC >::score(
-      const NodeId                                  var1,
-      const NodeId                                  var2,
-      const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids) {
+       const NodeId                                  var1,
+       const NodeId                                  var2,
+       const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids) {
       IdSet< ALLOC > idset(
-        var1, var2, rhs_ids, false, false, this->getAllocator());
+         var1, var2, rhs_ids, false, false, this->getAllocator());
       if (_use_cache) {
         try {
           return _cache.score(idset);
@@ -312,11 +314,11 @@ namespace gum {
      */
     template < template < typename > class ALLOC >
     std::vector< double, ALLOC< double > > IndependenceTest< ALLOC >::_marginalize(
-      const std::size_t                             node_2_marginalize,
-      const std::size_t                             X_size,
-      const std::size_t                             Y_size,
-      const std::size_t                             Z_size,
-      const std::vector< double, ALLOC< double > >& N_xyz) const {
+       const std::size_t                             node_2_marginalize,
+       const std::size_t                             X_size,
+       const std::size_t                             Y_size,
+       const std::size_t                             Z_size,
+       const std::vector< double, ALLOC< double > >& N_xyz) const {
       // determine the size of the output vector
       std::size_t out_size = Z_size;
       if (node_2_marginalize == std::size_t(0))
@@ -359,7 +361,7 @@ namespace gum {
       } else {
         GUM_ERROR(NotImplementedYet,
                   "_marginalize not implemented for nodeset "
-                    << node_2_marginalize);
+                     << node_2_marginalize);
       }
 
       return res;

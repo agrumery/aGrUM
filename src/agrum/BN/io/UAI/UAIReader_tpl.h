@@ -94,7 +94,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void UAIReader< GUM_SCALAR >::buildFromQuartets(
-    std::vector< std::tuple< float, int, int, int > > quartets) {
+     std::vector< std::tuple< float, int, int, int > > quartets) {
     Idx  current;
     Size max = quartets.size();
     if (max == 0) {
@@ -137,7 +137,7 @@ namespace gum {
     Size nbrPot = (Size)getInt();
     if (nbrPot != nbrNode)
       __addWarning(
-        lig(), col(), "Number of CPTs should be the same as number of nodes");
+         lig(), col(), "Number of CPTs should be the same as number of nodes");
 
     Set< NodeId > s;
     for (NodeId i = 0; i < nbrPot; i++) {
@@ -172,7 +172,7 @@ namespace gum {
       Size nbrParam = (Size)getInt();
       if (nbrParam != __bn->cpt(i).domainSize())
         __addFatalError(
-          lig(), col(), "Size does not fit between parents and parameters");
+           lig(), col(), "Size does not fit between parents and parameters");
       for (Idx j = 0; j < nbrParam; j++) {
         incCurrent();
         v.push_back(getVal());
@@ -233,7 +233,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void
-    UAIReader< GUM_SCALAR >::showElegantErrorsAndWarnings(std::ostream& o) {
+     UAIReader< GUM_SCALAR >::showElegantErrorsAndWarnings(std::ostream& o) {
     if (__parseDone)
       __parser->errors().elegantErrorsAndWarnings(o);
     else {
@@ -278,12 +278,13 @@ namespace gum {
   }
   template < typename GUM_SCALAR >
   INLINE void
-    UAIReader< GUM_SCALAR >::__addError(Idx lig, Idx col, const std::string& s) {
+     UAIReader< GUM_SCALAR >::__addError(Idx lig, Idx col, const std::string& s) {
     __parser->errors().addError(s, __streamName, lig, col);
   }
   template < typename GUM_SCALAR >
-  INLINE void
-    UAIReader< GUM_SCALAR >::__addWarning(Idx lig, Idx col, const std::string& s) {
+  INLINE void UAIReader< GUM_SCALAR >::__addWarning(Idx                lig,
+                                                    Idx                col,
+                                                    const std::string& s) {
     __parser->errors().addWarning(s, __streamName, lig, col);
   }
 

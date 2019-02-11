@@ -80,15 +80,15 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       IndependenceTest(
-        const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori< ALLOC >&              external_apriori,
-        const std::vector< std::pair< std::size_t, std::size_t >,
-                           ALLOC< std::pair< std::size_t, std::size_t > > >&
-          ranges,
-        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-          nodeId2columns =
-            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-        const allocator_type& alloc = allocator_type());
+         const DBRowGeneratorParser< ALLOC >& parser,
+         const Apriori< ALLOC >&              external_apriori,
+         const std::vector< std::pair< std::size_t, std::size_t >,
+                            ALLOC< std::pair< std::size_t, std::size_t > > >&
+            ranges,
+         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+            nodeId2columns =
+               Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+         const allocator_type& alloc = allocator_type());
 
 
       /// default constructor
@@ -109,19 +109,19 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       IndependenceTest(
-        const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori< ALLOC >&              external_apriori,
-        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-          nodeId2columns =
-            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-        const allocator_type& alloc = allocator_type());
+         const DBRowGeneratorParser< ALLOC >& parser,
+         const Apriori< ALLOC >&              external_apriori,
+         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+            nodeId2columns =
+               Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+         const allocator_type& alloc = allocator_type());
 
       /// virtual copy constructor
       virtual IndependenceTest< ALLOC >* clone() const = 0;
 
       /// virtual copy constructor with a given allocator
       virtual IndependenceTest< ALLOC >*
-        clone(const allocator_type& alloc) const = 0;
+         clone(const allocator_type& alloc) const = 0;
 
       /// destructor
       virtual ~IndependenceTest();
@@ -163,9 +163,9 @@ namespace gum {
        * the whole database. */
       template < template < typename > class XALLOC >
       void setRanges(
-        const std::vector< std::pair< std::size_t, std::size_t >,
-                           XALLOC< std::pair< std::size_t, std::size_t > > >&
-          new_ranges);
+         const std::vector< std::pair< std::size_t, std::size_t >,
+                            XALLOC< std::pair< std::size_t, std::size_t > > >&
+            new_ranges);
 
       /// reset the ranges to the one range corresponding to the whole database
       void clearRanges();
@@ -173,7 +173,7 @@ namespace gum {
       /// returns the current ranges
       const std::vector< std::pair< std::size_t, std::size_t >,
                          ALLOC< std::pair< std::size_t, std::size_t > > >&
-        ranges() const;
+         ranges() const;
 
 
       /// returns the score of a pair of nodes
@@ -202,7 +202,7 @@ namespace gum {
        * an identity, i.e., the value of a NodeId is equal to the index of the
        * column in the DatabaseTable. */
       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-        nodeId2Columns() const;
+         nodeId2Columns() const;
 
       /// return the database used by the score
       const DatabaseTable< ALLOC >& database() const;
@@ -270,11 +270,11 @@ namespace gum {
        * @param N_xyz a counting vector of dimension X * Y * Z (in this order)
        */
       std::vector< double, ALLOC< double > >
-        _marginalize(const std::size_t node_2_marginalize,
-                     const std::size_t X_size,
-                     const std::size_t Y_size,
-                     const std::size_t Z_size,
-                     const std::vector< double, ALLOC< double > >& N_xyz) const;
+         _marginalize(const std::size_t node_2_marginalize,
+                      const std::size_t X_size,
+                      const std::size_t Y_size,
+                      const std::size_t Z_size,
+                      const std::vector< double, ALLOC< double > >& N_xyz) const;
     };
 
   } /* namespace learning */
@@ -282,7 +282,9 @@ namespace gum {
 } /* namespace gum */
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::learning::IndependenceTest<>;
+#endif
 
 
 /// include the template implementation

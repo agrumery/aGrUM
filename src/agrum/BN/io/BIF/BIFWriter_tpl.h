@@ -194,8 +194,8 @@ namespace gum {
   // Returns the modalities labels of the variables in varsSeq
   template < typename GUM_SCALAR >
   INLINE std::string BIFWriter< GUM_SCALAR >::__variablesLabels(
-    const Sequence< const DiscreteVariable* >& varsSeq,
-    const Instantiation&                       inst) {
+     const Sequence< const DiscreteVariable* >& varsSeq,
+     const Instantiation&                       inst) {
     std::stringstream       str;
     const DiscreteVariable* varPtr = nullptr;
 

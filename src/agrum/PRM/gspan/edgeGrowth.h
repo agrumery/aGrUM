@@ -83,8 +83,8 @@ namespace gum {
         /// The mapping between the u and v for each match in the interface
         /// graph.
         NodeProperty<
-          std::pair< PRMInstance< GUM_SCALAR >*, PRMInstance< GUM_SCALAR >* > >
-          matches;
+           std::pair< PRMInstance< GUM_SCALAR >*, PRMInstance< GUM_SCALAR >* > >
+           matches;
         /// Return a string representation of this
         std::string toString();
 
@@ -102,8 +102,9 @@ namespace gum {
                                const EdgeGrowth< GUM_SCALAR >& edge);
 
 
-      extern template class EdgeGrowth< float >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
       extern template class EdgeGrowth< double >;
+#endif
 
 
     } /* namespace gspan */

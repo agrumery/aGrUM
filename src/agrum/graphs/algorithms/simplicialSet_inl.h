@@ -111,7 +111,7 @@ namespace gum {
   /// returns all the almost simplicial nodes
   INLINE
   const PriorityQueue< NodeId, double >&
-    SimplicialSet::allAlmostSimplicialNodes() {
+     SimplicialSet::allAlmostSimplicialNodes() {
     __updateAllNodes();
     return __almost_simplicial_nodes;
   }

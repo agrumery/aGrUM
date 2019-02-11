@@ -361,7 +361,7 @@ namespace gum {
      * @throw FatalError if pot=[0,0,...,0]
      */
     virtual void
-      addSetOfEvidence(const Set< const Potential< GUM_SCALAR >* >& potset) final;
+       addSetOfEvidence(const Set< const Potential< GUM_SCALAR >* >& potset) final;
 
     /// adds a new list of evidence
     /**
@@ -373,7 +373,7 @@ namespace gum {
      * @throw FatalError if pot=[0,0,...,0]
      */
     virtual void addListOfEvidence(
-      const List< const Potential< GUM_SCALAR >* >& potlist) final;
+       const List< const Potential< GUM_SCALAR >* >& potlist) final;
 
     /// change the value of an already existing hard evidence
     /**

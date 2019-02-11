@@ -31,41 +31,41 @@ namespace gum_tests {
     public:
     void test_identity() {
       const std::vector< gum::learning::DBTranslatedValueType > col_types{
-        gum::learning::DBTranslatedValueType::DISCRETE,
-        gum::learning::DBTranslatedValueType::DISCRETE,
-        gum::learning::DBTranslatedValueType::CONTINUOUS,
-        gum::learning::DBTranslatedValueType::DISCRETE};
+         gum::learning::DBTranslatedValueType::DISCRETE,
+         gum::learning::DBTranslatedValueType::DISCRETE,
+         gum::learning::DBTranslatedValueType::CONTINUOUS,
+         gum::learning::DBTranslatedValueType::DISCRETE};
 
       gum::learning::DBRowGenerator4CompleteRows<> generator(col_types);
       TS_ASSERT(!generator.hasRows());
 
       const gum::learning::DBRow< gum::learning::DBTranslatedValue > input_row1{
-        gum::learning::DBTranslatedValue{std::size_t(0)},
-        gum::learning::DBTranslatedValue{std::size_t(4)},
-        gum::learning::DBTranslatedValue{4.5f},
-        gum::learning::DBTranslatedValue{std::size_t(7)}};
+         gum::learning::DBTranslatedValue{std::size_t(0)},
+         gum::learning::DBTranslatedValue{std::size_t(4)},
+         gum::learning::DBTranslatedValue{4.5f},
+         gum::learning::DBTranslatedValue{std::size_t(7)}};
 
       const gum::learning::DBRow< gum::learning::DBTranslatedValue > input_row2{
-        gum::learning::DBTranslatedValue{std::size_t(0)},
-        gum::learning::DBTranslatedValue{
-          std::numeric_limits< std::size_t >::max()},
-        gum::learning::DBTranslatedValue{4.5f},
-        gum::learning::DBTranslatedValue{std::size_t(7)}};
+         gum::learning::DBTranslatedValue{std::size_t(0)},
+         gum::learning::DBTranslatedValue{
+            std::numeric_limits< std::size_t >::max()},
+         gum::learning::DBTranslatedValue{4.5f},
+         gum::learning::DBTranslatedValue{std::size_t(7)}};
 
       const gum::learning::DBRow< gum::learning::DBTranslatedValue > input_row3{
-        gum::learning::DBTranslatedValue{std::size_t(0)},
-        gum::learning::DBTranslatedValue{
-          std::numeric_limits< std::size_t >::max()},
-        gum::learning::DBTranslatedValue{std::numeric_limits< float >::max()},
-        gum::learning::DBTranslatedValue{std::size_t(7)}};
+         gum::learning::DBTranslatedValue{std::size_t(0)},
+         gum::learning::DBTranslatedValue{
+            std::numeric_limits< std::size_t >::max()},
+         gum::learning::DBTranslatedValue{std::numeric_limits< float >::max()},
+         gum::learning::DBTranslatedValue{std::size_t(7)}};
 
       const gum::learning::DBRow< gum::learning::DBTranslatedValue > input_row4{
-        gum::learning::DBTranslatedValue{
-          std::numeric_limits< std::size_t >::max()},
-        gum::learning::DBTranslatedValue{
-          std::numeric_limits< std::size_t >::max()},
-        gum::learning::DBTranslatedValue{4.5f},
-        gum::learning::DBTranslatedValue{std::size_t(7)}};
+         gum::learning::DBTranslatedValue{
+            std::numeric_limits< std::size_t >::max()},
+         gum::learning::DBTranslatedValue{
+            std::numeric_limits< std::size_t >::max()},
+         gum::learning::DBTranslatedValue{4.5f},
+         gum::learning::DBTranslatedValue{std::size_t(7)}};
 
 
       generator.setInputRow(input_row1);
@@ -228,7 +228,7 @@ namespace gum_tests {
 
 
       gum::learning::DBRowGenerator4CompleteRows<> generator4(
-        std::move(generator2), alloc);
+         std::move(generator2), alloc);
       TS_ASSERT(generator4.hasRows());
       TS_ASSERT(generator4.columnsOfInterest().size() == std::size_t(2));
       TS_ASSERT(generator4.columnsOfInterest()[0] == std::size_t(0));
@@ -269,7 +269,7 @@ namespace gum_tests {
 
 
       gum::learning::DBRowGenerator4CompleteRows<> generator5(
-        std::move(generator3));
+         std::move(generator3));
       TS_ASSERT(generator5.hasRows());
       TS_ASSERT(generator5.columnsOfInterest().size() == std::size_t(2));
       TS_ASSERT(generator5.columnsOfInterest()[0] == std::size_t(0));
@@ -310,7 +310,7 @@ namespace gum_tests {
 
 
       gum::learning::DBRowGenerator4CompleteRows<>* generator6 =
-        generator4.clone(alloc);
+         generator4.clone(alloc);
       TS_ASSERT(generator6->hasRows());
       TS_ASSERT(generator6->columnsOfInterest().size() == std::size_t(2));
       TS_ASSERT(generator6->columnsOfInterest()[0] == std::size_t(0));
@@ -347,7 +347,7 @@ namespace gum_tests {
 
 
       gum::learning::DBRowGenerator4CompleteRows<>* generator7 =
-        generator5.clone();
+         generator5.clone();
       TS_ASSERT(generator7->hasRows());
       TS_ASSERT(generator7->columnsOfInterest().size() == std::size_t(2));
       TS_ASSERT(generator7->columnsOfInterest()[0] == std::size_t(0));

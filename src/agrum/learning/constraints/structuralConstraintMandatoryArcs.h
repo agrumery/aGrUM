@@ -56,7 +56,7 @@ namespace gum {
 
       /// copy constructor
       StructuralConstraintMandatoryArcs(
-        const StructuralConstraintMandatoryArcs& from);
+         const StructuralConstraintMandatoryArcs& from);
 
       /// move constructor
       StructuralConstraintMandatoryArcs(StructuralConstraintMandatoryArcs&& from);
@@ -73,11 +73,11 @@ namespace gum {
 
       /// copy operator
       StructuralConstraintMandatoryArcs&
-        operator=(const StructuralConstraintMandatoryArcs& from);
+         operator=(const StructuralConstraintMandatoryArcs& from);
 
       /// move operator
       StructuralConstraintMandatoryArcs&
-        operator=(StructuralConstraintMandatoryArcs&& from);
+         operator=(StructuralConstraintMandatoryArcs&& from);
 
       /// @}
 

@@ -70,7 +70,7 @@ namespace gum {
 
     /// copy operator
     ScheduleDeleteMultiDim< GUM_SCALAR >&
-      operator=(const ScheduleDeleteMultiDim< GUM_SCALAR >&);
+       operator=(const ScheduleDeleteMultiDim< GUM_SCALAR >&);
 
     /// operator ==
     /** Two operations are identical if and only if they have the same
@@ -112,7 +112,7 @@ namespace gum {
 
     /// returns the set of multidims that should be the result of the operation
     const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >&
-      multiDimResults() const;
+       multiDimResults() const;
 
     /// displays the content of the operation
     std::string toString() const;

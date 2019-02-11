@@ -79,8 +79,8 @@ namespace gum {
      * @param from the copied instance
      */
     MultiDimICIModel(
-      const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-      const MultiDimICIModel< GUM_SCALAR >&                                from);
+       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
+       const MultiDimICIModel< GUM_SCALAR >&                                from);
 
     /**
      * Destructor.
@@ -127,7 +127,7 @@ namespace gum {
      * size than this MultiDimContainer.
      **/
     virtual void
-      copyFrom(const MultiDimContainer< GUM_SCALAR >& src) const override;
+       copyFrom(const MultiDimContainer< GUM_SCALAR >& src) const override;
 
     /**
      * @return the real number of parameters used for this table. This function
@@ -177,8 +177,9 @@ namespace gum {
   };
 
 
-  extern template class MultiDimICIModel< float >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class MultiDimICIModel< double >;
+#endif
 
 } /* namespace gum */
 

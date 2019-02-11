@@ -32,9 +32,10 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE AprioriBDeu< ALLOC >::AprioriBDeu(
-      const DatabaseTable< ALLOC >&                                 database,
-      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename AprioriBDeu< ALLOC >::allocator_type&          alloc) :
+       const DatabaseTable< ALLOC >& database,
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                                                            nodeId2columns,
+       const typename AprioriBDeu< ALLOC >::allocator_type& alloc) :
         Apriori< ALLOC >(database, nodeId2columns, alloc) {
       GUM_CONSTRUCTOR(AprioriBDeu);
     }
@@ -43,8 +44,8 @@ namespace gum {
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE AprioriBDeu< ALLOC >::AprioriBDeu(
-      const AprioriBDeu< ALLOC >&                          from,
-      const typename AprioriBDeu< ALLOC >::allocator_type& alloc) :
+       const AprioriBDeu< ALLOC >&                          from,
+       const typename AprioriBDeu< ALLOC >::allocator_type& alloc) :
         Apriori< ALLOC >(from, alloc) {
       GUM_CONS_CPY(AprioriBDeu);
     }
@@ -59,8 +60,8 @@ namespace gum {
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE AprioriBDeu< ALLOC >::AprioriBDeu(
-      AprioriBDeu< ALLOC >&&                               from,
-      const typename AprioriBDeu< ALLOC >::allocator_type& alloc) :
+       AprioriBDeu< ALLOC >&&                               from,
+       const typename AprioriBDeu< ALLOC >::allocator_type& alloc) :
         Apriori< ALLOC >(std::move(from), alloc) {
       GUM_CONS_MOV(AprioriBDeu);
     }
@@ -75,7 +76,7 @@ namespace gum {
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
     AprioriBDeu< ALLOC >* AprioriBDeu< ALLOC >::clone(
-      const typename AprioriBDeu< ALLOC >::allocator_type& alloc) const {
+       const typename AprioriBDeu< ALLOC >::allocator_type& alloc) const {
       ALLOC< AprioriBDeu< ALLOC > > allocator(alloc);
       AprioriBDeu< ALLOC >*         apriori = allocator.allocate(1);
       try {
@@ -164,8 +165,8 @@ namespace gum {
     /// returns the apriori vector all the variables in the idset
     template < template < typename > class ALLOC >
     INLINE void AprioriBDeu< ALLOC >::addAllApriori(
-      const IdSet< ALLOC >&                   idset,
-      std::vector< double, ALLOC< double > >& counts) {
+       const IdSet< ALLOC >&                   idset,
+       std::vector< double, ALLOC< double > >& counts) {
       // if the idset is empty or the weight is zero, the apriori is also empty
       if (idset.empty() || (this->_weight == 0.0)) return;
 
@@ -179,8 +180,8 @@ namespace gum {
     /// returns the apriori vector over only the conditioning set of an idset
     template < template < typename > class ALLOC >
     void AprioriBDeu< ALLOC >::addConditioningApriori(
-      const IdSet< ALLOC >&                   idset,
-      std::vector< double, ALLOC< double > >& counts) {
+       const IdSet< ALLOC >&                   idset,
+       std::vector< double, ALLOC< double > >& counts) {
       // if the conditioning set is empty or the weight is equal to zero,
       // the apriori is also empty
       if ((idset.size() == idset.nbLHSIds()) || (this->_weight == 0.0)

@@ -74,8 +74,9 @@ namespace gum {
   };
 
 
-  extern template class BNReader< float >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class BNReader< double >;
+#endif
 
 } /* namespace gum */
 

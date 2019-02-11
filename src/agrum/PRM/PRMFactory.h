@@ -152,42 +152,42 @@ namespace gum {
       PRMClass< GUM_SCALAR >& retrieveClass(const std::string& name);
 
       /**
-       * @brief Returns a reference over a PRMType<GUM_SCALAR> given its name.
+       * @brief Returns a reference over a PRMType given its name.
        *
        * This methods adds if necessary the current package as a prefix to name.
-       * @param name The name of the PRMType<GUM_SCALAR>.
-       * @return the PRMType<GUM_SCALAR> with the given name.
-       * @throw NotFound if no PRMType<GUM_SCALAR> matches the given name.
+       * @param name The name of the PRMType.
+       * @return the PRMType with the given name.
+       * @throw NotFound if no PRMType matches the given name.
        */
-      PRMType< GUM_SCALAR >& retrieveType(const std::string& name);
+      PRMType& retrieveType(const std::string& name);
 
 
-      /* @brief Retrieve the common PRMType<GUM_SCALAR> of a vector of
+      /* @brief Retrieve the common PRMType of a vector of
        *PRMClassElement<GUM_SCALAR>.
        *
        * The vector elts must only contains PRMClassElement<GUM_SCALAR> with a
-       *PRMType<GUM_SCALAR>, i.e.
+       *PRMType, i.e.
        * PRMAttribute<GUM_SCALAR>, PRMAggregate and PRMSlotChain<GUM_SCALAR>. If
        *not, a
        *WrongClassElement is
        * raised.
        *
-       * A common PRMType<GUM_SCALAR> is PRMType<GUM_SCALAR> t such as
+       * A common PRMType is PRMType t such as
        *t.isSuperTypeOf(elts[i]) for
-       * 0 < i < elts.size(), where elts is a PRMType<GUM_SCALAR> container.
+       * 0 < i < elts.size(), where elts is a PRMType container.
        *
        * @param elts A vector of PRMClassElement<GUM_SCALAR>.
-       * @return the common super PRMType<GUM_SCALAR> of all
+       * @return the common super PRMType of all
        *PRMClassElement<GUM_SCALAR> un elts.
        *
        * @throw WrongClassElement Raised if elts contains a
        *PRMClassElement<GUM_SCALAR>
-       *                          without a PRMType<GUM_SCALAR>.
+       *                          without a PRMType.
        * @throw NotFound Raised if there exists no common super type of all
        *                 PRMClassElement<GUM_SCALAR> in elts.
        */
-      PRMType< GUM_SCALAR >& retrieveCommonType(
-        const std::vector< PRMClassElement< GUM_SCALAR >* >& elts);
+      PRMType& retrieveCommonType(
+         const std::vector< PRMClassElement< GUM_SCALAR >* >& elts);
 
       ///@}
       // ======================================================================
@@ -235,7 +235,7 @@ namespace gum {
 
       /// @}
       // ======================================================================
-      /// @name PRMType<GUM_SCALAR> construction methods.
+      /// @name PRMType construction methods.
       // ======================================================================
       /// @{
 
@@ -312,7 +312,7 @@ namespace gum {
        * discrete type.
        */
       virtual void
-        addRangeType(const std::string& name, long minVal, long maxVal) override;
+         addRangeType(const std::string& name, long minVal, long maxVal) override;
       /// @}
 
       ///@name several checks for parsers
@@ -543,7 +543,7 @@ namespace gum {
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
       virtual void
-        setRawCPFByFloatLines(const std::vector< float >& array) override;
+         setRawCPFByFloatLines(const std::vector< float >& array) override;
 
       /**
        * @brief Gives the factory the CPF in its raw form.
@@ -566,7 +566,7 @@ namespace gum {
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
       virtual void
-        setRawCPFByFloatColumns(const std::vector< float >& array) override;
+         setRawCPFByFloatColumns(const std::vector< float >& array) override;
 
       /**
        * @brief  Gives the factory the CPF in its raw form use gum::Formula.
@@ -589,7 +589,7 @@ namespace gum {
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
       virtual void
-        setRawCPFByColumns(const std::vector< std::string >& array) override;
+         setRawCPFByColumns(const std::vector< std::string >& array) override;
 
       /**
        * @brief Gives the factory the CPF in its raw form using gum::Formula.
@@ -611,7 +611,7 @@ namespace gum {
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
       virtual void
-        setRawCPFByLines(const std::vector< std::string >& array) override;
+         setRawCPFByLines(const std::vector< std::string >& array) override;
 
       /**
        * @brief Fills the CPF using a rule.
@@ -738,11 +738,11 @@ namespace gum {
        *                            invalid.
        */
       virtual void
-        addNoisyOrCompound(const std::string&                name,
-                           const std::vector< std::string >& chains,
-                           const std::vector< float >&       numbers,
-                           float                             leak,
-                           const std::vector< std::string >& label) override;
+         addNoisyOrCompound(const std::string&                name,
+                            const std::vector< std::string >& chains,
+                            const std::vector< float >&       numbers,
+                            float                             leak,
+                            const std::vector< std::string >& label) override;
       /// @}
       // ======================================================================
       /// @name PRMReferenceSlot<GUM_SCALAR> construction methods.
@@ -862,7 +862,7 @@ namespace gum {
       PRMObject* __checkStack(Idx i, PRMObject::prm_type obj_type);
 
       PRMClassElement< GUM_SCALAR >* __checkStack(
-        Idx i, typename PRMClassElement< GUM_SCALAR >::ClassElementType obj_type);
+         Idx i, typename PRMClassElement< GUM_SCALAR >::ClassElementType obj_type);
 
       PRMClassElementContainer< GUM_SCALAR >* __checkStackContainter(Idx i);
 
@@ -872,7 +872,7 @@ namespace gum {
       // ======================================================================
       /// @{
 
-      /// Returns a pointer on a PRMType<GUM_SCALAR> given it's name. Since the
+      /// Returns a pointer on a PRMType given it's name. Since the
       /// type can
       /// be given either with it's local name (without the prefix), full name
       /// (with the prefix) or can come from an import unit, or maybe one day
@@ -888,7 +888,7 @@ namespace gum {
       /// In the case a local name is used multiple time, it's preferable to
       /// use it's full name.
       /// @throw OperationNotAllowed If the type is undeclared.
-      PRMType< GUM_SCALAR >* __retrieveType(const std::string& name) const;
+      PRMType* __retrieveType(const std::string& name) const;
 
       /// Returns a pointer on a class given it's name. Used when building
       /// models, meaning that the class name can either be local (need to
@@ -903,7 +903,7 @@ namespace gum {
       /// @throw NotFound If no class matching the name is found.
       /// @see PRMFactory::__retrieveType
       PRMInterface< GUM_SCALAR >*
-        __retrieveInterface(const std::string& name) const;
+         __retrieveInterface(const std::string& name) const;
 
       /// @}
       // ======================================================================
@@ -919,8 +919,8 @@ namespace gum {
       /// PRMSlotChain<GUM_SCALAR> could be built.
       ///
       PRMSlotChain< GUM_SCALAR >*
-        __buildSlotChain(PRMClassElementContainer< GUM_SCALAR >* start,
-                         const std::string&                      name);
+         __buildSlotChain(PRMClassElementContainer< GUM_SCALAR >* start,
+                          const std::string&                      name);
 
       /// @brief Retrieve inputs for an PRMAggregate.
       ///
@@ -947,39 +947,39 @@ namespace gum {
                             const std::vector< std::string >&              chains,
                             std::vector< PRMClassElement< GUM_SCALAR >* >& inputs);
 
-      /// @brief Retrieve the common PRMType<GUM_SCALAR> of a vector of
+      /// @brief Retrieve the common PRMType of a vector of
       /// PRMClassElement<GUM_SCALAR>.
       ///
       /// The vector elts must only contains PRMClassElement<GUM_SCALAR> with a
-      /// PRMType<GUM_SCALAR>, i.e.
+      /// PRMType, i.e.
       /// PRMAttribute<GUM_SCALAR>, PRMAggregate and PRMSlotChain<GUM_SCALAR>.
       /// If not a
       /// WrongClassElement is
       /// raised.
       ///
-      /// A common PRMType<GUM_SCALAR> is PRMType<GUM_SCALAR> t such as
+      /// A common PRMType is PRMType t such as
       /// t.isSuperTypeOf(elts[i]) for
-      /// 0 < i < elts.size(), where elts is a PRMType<GUM_SCALAR> container.
+      /// 0 < i < elts.size(), where elts is a PRMType container.
       ///
       /// @param elts A vector of PRMClassElement<GUM_SCALAR>.
-      /// @return Returns the common super PRMType<GUM_SCALAR> of all
+      /// @return Returns the common super PRMType of all
       /// PRMClassElement<GUM_SCALAR> un elts.
       //
       /// @throw WrongClassElement Raised if elts contains a
-      /// PRMClassElement<GUM_SCALAR> without a PRMType<GUM_SCALAR>.
+      /// PRMClassElement<GUM_SCALAR> without a PRMType.
       /// @throw NotFound Raised if there exists no common super type of all
       ///                 PRMClassElement<GUM_SCALAR> in elts.
-      PRMType< GUM_SCALAR >* __retrieveCommonType(
-        const std::vector< PRMClassElement< GUM_SCALAR >* >& elts);
+      PRMType* __retrieveCommonType(
+         const std::vector< PRMClassElement< GUM_SCALAR >* >& elts);
 
-      /// @brief Returns the inheritance depth of a PRMType<GUM_SCALAR>.
+      /// @brief Returns the inheritance depth of a PRMType.
       ///
       /// This used by PRMFactory::__retrieveCommonType.
       /// This returns 0 if t does not have a super type.
       ///
-      /// @param t The PRMType<GUM_SCALAR> for which we compute its depth.
+      /// @param t The PRMType for which we compute its depth.
       /// @return Returns the depth of t.
-      int __typeDepth(const PRMType< GUM_SCALAR >* t);
+      int __typeDepth(const PRMType* t);
 
       /// Check if c implements correctly all his interfaces.
       void __checkInterfaceImplementation(PRMClass< GUM_SCALAR >* c);
@@ -1025,9 +1025,9 @@ namespace gum {
       /// @return Returns the name of the corresponding
       /// PRMSlotChain<GUM_SCALAR>.
       std::string
-        __retrieveInstanceSequence(PRMInstance< GUM_SCALAR >*              inst,
-                                   Sequence< PRMInstance< GUM_SCALAR >* >& seq,
-                                   PRMSlotChain< GUM_SCALAR >*             sc);
+         __retrieveInstanceSequence(PRMInstance< GUM_SCALAR >*              inst,
+                                    Sequence< PRMInstance< GUM_SCALAR >* >& seq,
+                                    PRMSlotChain< GUM_SCALAR >*             sc);
 
       /// @}
       // ======================================================================
@@ -1050,7 +1050,7 @@ namespace gum {
 
       /// A mapping between aggregators and their parameters
       HashTable< PRMAggregate< GUM_SCALAR >*, std::vector< std::string > >
-        __agg_params;
+         __agg_params;
 
       /// @}
     };

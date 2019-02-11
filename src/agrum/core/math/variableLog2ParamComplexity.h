@@ -108,7 +108,7 @@ namespace gum {
 
     /// copy operator
     VariableLog2ParamComplexity&
-      operator=(const VariableLog2ParamComplexity& from);
+       operator=(const VariableLog2ParamComplexity& from);
 
     /// move operator
     VariableLog2ParamComplexity& operator=(VariableLog2ParamComplexity&& from);

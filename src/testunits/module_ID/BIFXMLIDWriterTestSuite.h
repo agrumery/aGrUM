@@ -103,9 +103,9 @@ namespace gum_tests {
     gum::InfluenceDiagram< double >* id;
     gum::List< gum::NodeId >*        idListPtr;
     gum::LabelizedVariable *         decisionVar1, *decisionVar2, *decisionVar3,
-      *decisionVar4;
+       *decisionVar4;
     gum::LabelizedVariable *chanceVar1, *chanceVar2, *chanceVar3, *chanceVar4,
-      *chanceVar5;
+       *chanceVar5;
     gum::LabelizedVariable *utilityVar1, *utilityVar2;
 
     void setUp() {

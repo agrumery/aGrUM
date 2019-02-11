@@ -30,7 +30,7 @@ namespace gum {
   // Default Constructor
   template < typename GUM_SCALAR >
   MarginalTargetedInference< GUM_SCALAR >::MarginalTargetedInference(
-    const IBayesNet< GUM_SCALAR >* bn) :
+     const IBayesNet< GUM_SCALAR >* bn) :
       BayesNetInference< GUM_SCALAR >(bn) {
     // assign a BN if this has not been done before (due to virtual inheritance)
     if (this->__bn == nullptr) {
@@ -57,7 +57,7 @@ namespace gum {
   // fired when a new BN is assigned to the inference engine
   template < typename GUM_SCALAR >
   void MarginalTargetedInference< GUM_SCALAR >::_onBayesNetChanged(
-    const IBayesNet< GUM_SCALAR >* bn) {
+     const IBayesNet< GUM_SCALAR >* bn) {
     __targeted_mode = true;
     __setAllMarginalTargets();
   }
@@ -70,7 +70,7 @@ namespace gum {
   // return true if variable is a target
   template < typename GUM_SCALAR >
   INLINE bool
-    MarginalTargetedInference< GUM_SCALAR >::isTarget(NodeId node) const {
+     MarginalTargetedInference< GUM_SCALAR >::isTarget(NodeId node) const {
     // check that the variable belongs to the bn
     if (this->__bn == nullptr)
       GUM_ERROR(NullElement,
@@ -86,7 +86,7 @@ namespace gum {
   // Add a single target to the list of targets
   template < typename GUM_SCALAR >
   INLINE bool MarginalTargetedInference< GUM_SCALAR >::isTarget(
-    const std::string& nodeName) const {
+     const std::string& nodeName) const {
     return isTarget(this->__bn->idFromName(nodeName));
   }
 
@@ -100,7 +100,7 @@ namespace gum {
     _setTargetedMode();   // does nothing if already in targeted mode
 
     this->__setState(
-      BayesNetInference< GUM_SCALAR >::StateOfInference::OutdatedBNStructure);
+       BayesNetInference< GUM_SCALAR >::StateOfInference::OutdatedBNStructure);
   }
 
 
@@ -123,7 +123,7 @@ namespace gum {
       __targets.insert(target);
       _onMarginalTargetAdded(target);
       this->__setState(
-        BayesNetInference< GUM_SCALAR >::StateOfInference::OutdatedBNStructure);
+         BayesNetInference< GUM_SCALAR >::StateOfInference::OutdatedBNStructure);
     }
   }
 
@@ -144,7 +144,7 @@ namespace gum {
         __targets.insert(target);
         _onMarginalTargetAdded(target);
         this->__setState(
-          BayesNetInference< GUM_SCALAR >::StateOfInference::OutdatedBNStructure);
+           BayesNetInference< GUM_SCALAR >::StateOfInference::OutdatedBNStructure);
       }
     }
   }
@@ -153,7 +153,7 @@ namespace gum {
   // Add a single target to the list of targets
   template < typename GUM_SCALAR >
   void MarginalTargetedInference< GUM_SCALAR >::addTarget(
-    const std::string& nodeName) {
+     const std::string& nodeName) {
     // check if the node belongs to the Bayesian network
     if (this->__bn == nullptr)
       GUM_ERROR(NullElement,
@@ -184,7 +184,7 @@ namespace gum {
       _onMarginalTargetErased(target);
       __targets.erase(target);
       this->__setState(
-        BayesNetInference< GUM_SCALAR >::StateOfInference::OutdatedBNStructure);
+         BayesNetInference< GUM_SCALAR >::StateOfInference::OutdatedBNStructure);
     }
   }
 
@@ -192,7 +192,7 @@ namespace gum {
   // Add a single target to the list of targets
   template < typename GUM_SCALAR >
   void MarginalTargetedInference< GUM_SCALAR >::eraseTarget(
-    const std::string& nodeName) {
+     const std::string& nodeName) {
     // check if the node belongs to the Bayesian network
     if (this->__bn == nullptr)
       GUM_ERROR(NullElement,
@@ -206,14 +206,14 @@ namespace gum {
   // returns the list of single targets
   template < typename GUM_SCALAR >
   INLINE const NodeSet& MarginalTargetedInference< GUM_SCALAR >::targets() const
-    noexcept {
+     noexcept {
     return __targets;
   }
 
   // returns the list of single targets
   template < typename GUM_SCALAR >
   INLINE const Size MarginalTargetedInference< GUM_SCALAR >::nbrTargets() const
-    noexcept {
+     noexcept {
     return __targets.size();
   }
 
@@ -236,7 +236,7 @@ namespace gum {
   // Compute the posterior of a node.
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
-    MarginalTargetedInference< GUM_SCALAR >::posterior(NodeId node) {
+     MarginalTargetedInference< GUM_SCALAR >::posterior(NodeId node) {
     if (this->hardEvidenceNodes().contains(node)) {
       return *(this->evidence()[node]);
     }
@@ -254,8 +254,8 @@ namespace gum {
   // Compute the posterior of a node.
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
-    MarginalTargetedInference< GUM_SCALAR >::posterior(
-      const std::string& nodeName) {
+     MarginalTargetedInference< GUM_SCALAR >::posterior(
+        const std::string& nodeName) {
     return posterior(this->BN().idFromName(nodeName));
   }
 
@@ -279,8 +279,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >
-    MarginalTargetedInference< GUM_SCALAR >::evidenceImpact(NodeId         target,
-                                                            const NodeSet& evs) {
+     MarginalTargetedInference< GUM_SCALAR >::evidenceImpact(NodeId         target,
+                                                             const NodeSet& evs) {
     const auto& vtarget = this->BN().variable(target);
 
     if (evs.contains(target)) {
@@ -319,7 +319,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR > MarginalTargetedInference< GUM_SCALAR >::evidenceImpact(
-    const std::string& target, const std::vector< std::string >& evs) {
+     const std::string& target, const std::vector< std::string >& evs) {
     const auto& bn = this->BN();
 
     gum::NodeSet evsId;

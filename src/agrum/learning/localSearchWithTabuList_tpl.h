@@ -58,7 +58,7 @@ namespace gum {
         delta_score = 0;
 
         std::vector< std::pair< NodeId, double > > ordered_queues =
-          selector.nodesSortedByBestScore();
+           selector.nodesSortedByBestScore();
 
         for (Idx j = 0; j < dag.size(); ++j) {
           NodeId i = ordered_queues[j].first;
@@ -196,11 +196,11 @@ namespace gum {
                typename GRAPH_CHANGES_SELECTOR,
                typename PARAM_ESTIMATOR >
     BayesNet< GUM_SCALAR >
-      LocalSearchWithTabuList::learnBN(GRAPH_CHANGES_SELECTOR& selector,
-                                       PARAM_ESTIMATOR&        estimator,
-                                       DAG                     initial_dag) {
+       LocalSearchWithTabuList::learnBN(GRAPH_CHANGES_SELECTOR& selector,
+                                        PARAM_ESTIMATOR&        estimator,
+                                        DAG                     initial_dag) {
       return DAG2BNLearner<>::createBN< GUM_SCALAR >(
-        estimator, learnStructure(selector, initial_dag));
+         estimator, learnStructure(selector, initial_dag));
     }
 
   } /* namespace learning */

@@ -33,15 +33,15 @@
 
 namespace gum_tests {
 
-  static gum::MultiDimImplementation< float >*
-    schedule_proj_mysum(const gum::MultiDimImplementation< float >&     t,
-                        const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+  static gum::MultiDimImplementation< double >* schedule_proj_mysum(
+     const gum::MultiDimImplementation< double >&    t,
+     const gum::Set< const gum::DiscreteVariable* >& del_vars) {
     return projectSumMultiDimArray(&t, del_vars);
   }
 
-  static gum::MultiDimImplementation< float >*
-    schedule_proj_mymin(const gum::MultiDimImplementation< float >&     t,
-                        const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+  static gum::MultiDimImplementation< double >* schedule_proj_mymin(
+     const gum::MultiDimImplementation< double >&    t,
+     const gum::Set< const gum::DiscreteVariable* >& del_vars) {
     return projectMinMultiDimArray(&t, del_vars);
   }
 
@@ -57,7 +57,7 @@ namespace gum_tests {
         vars[i] = new gum::LabelizedVariable(s, s, 4);
       }
 
-      gum::Potential< float > t1;
+      gum::Potential< double > t1;
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4])
          << *(vars[5]) << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInit(&t1);
@@ -74,19 +74,19 @@ namespace gum_tests {
       del_vars.insert(vars[9]);
       del_vars.insert(vars[1]);
 
-      gum::MultiDimProjection< float, gum::MultiDimImplementation > mymultiproj(
-        schedule_proj_mysum);
-      gum::MultiDimImplementation< float >* t2 =
-        mymultiproj.project(*(t1.content()), del_vars);
+      gum::MultiDimProjection< double, gum::MultiDimImplementation > mymultiproj(
+         schedule_proj_mysum);
+      gum::MultiDimImplementation< double >* t2 =
+         mymultiproj.project(*(t1.content()), del_vars);
 
-      gum::ScheduleProjectionBasic< float > myproj(schedule_proj_mysum);
-      gum::Schedule< float >                schedule;
-      gum::ScheduleMultiDim< float > tt2 = myproj.project(t1, del_vars, schedule);
-      const gum::NodeSet&            available = schedule.availableOperations();
+      gum::ScheduleProjectionBasic< double > myproj(schedule_proj_mysum);
+      gum::Schedule< double >                schedule;
+      gum::ScheduleMultiDim< double > tt2 = myproj.project(t1, del_vars, schedule);
+      const gum::NodeSet&             available = schedule.availableOperations();
 
       while (!available.empty()) {
         for (gum::NodeSet::const_iterator_safe iter =
-               available.beginSafe();   // safe iterator needed here
+                available.beginSafe();   // safe iterator needed here
              iter != available.endSafe();
              ++iter) {
           schedule.execute(*iter);
@@ -94,7 +94,7 @@ namespace gum_tests {
       }
 
       TS_ASSERT(tt2.multiDim() == *t2);
-      gum::ScheduleDeleteMultiDim< float > del2(tt2);
+      gum::ScheduleDeleteMultiDim< double > del2(tt2);
       del2.execute();
       auto dom = t1.domainSize();
       TS_ASSERT(myproj.nbOperations(t1, del_vars, schedule) == dom);
@@ -103,12 +103,12 @@ namespace gum_tests {
       mymultiproj.setProjectFunction(schedule_proj_mymin);
       t2 = mymultiproj.project(*(t1.content()), del_vars);
       myproj.setProjectFunction(schedule_proj_mymin);
-      gum::ScheduleMultiDim< float > t3(*(t1.content()));
+      gum::ScheduleMultiDim< double > t3(*(t1.content()));
       tt2 = myproj.project(t3, del_vars, schedule);
 
       while (!available.empty()) {
         for (gum::NodeSet::const_iterator_safe iter =
-               available.beginSafe();   // safe iterator needed here
+                available.beginSafe();   // safe iterator needed here
              iter != available.endSafe();
              ++iter) {
           schedule.execute(*iter);
@@ -117,14 +117,14 @@ namespace gum_tests {
 
       TS_ASSERT(tt2.multiDim() == *t2);
       TS_ASSERT(myproj.nbOperations(t3, del_vars, schedule) == dom);
-      gum::ScheduleDeleteMultiDim< float > del3(tt2);
+      gum::ScheduleDeleteMultiDim< double > del3(tt2);
       del3.execute();
 
       tt2 = myproj.project(*(t1.content()), del_vars, schedule);
 
       while (!available.empty()) {
         for (gum::NodeSet::const_iterator_safe iter =
-               available.beginSafe();   // safe iterator needed here
+                available.beginSafe();   // safe iterator needed here
              iter != available.endSafe();
              ++iter) {
           schedule.execute(*iter);
@@ -133,15 +133,15 @@ namespace gum_tests {
 
       TS_ASSERT(tt2.multiDim() == *t2);
       TS_ASSERT(myproj.nbOperations(*(t1.content()), del_vars, schedule) == dom);
-      gum::ScheduleDeleteMultiDim< float > del4(tt2);
+      gum::ScheduleDeleteMultiDim< double > del4(tt2);
       del4.execute();
 
-      gum::ScheduleProjectionBasic< float > xxx = myproj;
+      gum::ScheduleProjectionBasic< double > xxx = myproj;
       tt2 = xxx.project(t3, del_vars, schedule);
 
       while (!available.empty()) {
         for (gum::NodeSet::const_iterator_safe iter =
-               available.beginSafe();   // safe iterator needed here
+                available.beginSafe();   // safe iterator needed here
              iter != available.endSafe();
              ++iter) {
           schedule.execute(*iter);
@@ -150,15 +150,15 @@ namespace gum_tests {
 
       TS_ASSERT(tt2.multiDim() == *t2);
       TS_ASSERT(xxx.nbOperations(t3, del_vars, schedule) == dom);
-      gum::ScheduleDeleteMultiDim< float > del5(tt2);
+      gum::ScheduleDeleteMultiDim< double > del5(tt2);
       del5.execute();
 
-      gum::ScheduleProjectionBasic< float >* yyy = myproj.newFactory();
+      gum::ScheduleProjectionBasic< double >* yyy = myproj.newFactory();
       tt2 = yyy->project(t3, del_vars, schedule);
 
       while (!available.empty()) {
         for (gum::NodeSet::const_iterator_safe iter =
-               available.beginSafe();   // safe iterator needed here
+                available.beginSafe();   // safe iterator needed here
              iter != available.endSafe();
              ++iter) {
           schedule.execute(*iter);
@@ -167,7 +167,7 @@ namespace gum_tests {
 
       TS_ASSERT(tt2.multiDim() == *t2);
       TS_ASSERT(yyy->nbOperations(t3, del_vars, schedule) == dom);
-      gum::ScheduleDeleteMultiDim< float > del6(tt2);
+      gum::ScheduleDeleteMultiDim< double > del6(tt2);
       del6.execute();
 
       delete t2;
@@ -187,7 +187,7 @@ namespace gum_tests {
         vars[i] = new gum::LabelizedVariable(s, s, 4);
       }
 
-      gum::Potential< float > t1;
+      gum::Potential< double > t1;
       t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4])
          << *(vars[5]) << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
       randomInit(&t1);
@@ -204,8 +204,8 @@ namespace gum_tests {
       del_vars.insert(vars[9]);
       del_vars.insert(vars[1]);
 
-      gum::ScheduleProjectionBasic< float > myproj(schedule_proj_mysum);
-      gum::Schedule< float >                schedule;
+      gum::ScheduleProjectionBasic< double > myproj(schedule_proj_mysum);
+      gum::Schedule< double >                schedule;
       std::pair< long, long > xxx = myproj.memoryUsage(t1, del_vars, schedule);
       TS_ASSERT(xxx.first == 16384);
       TS_ASSERT(xxx.second == 16384);
@@ -222,7 +222,7 @@ namespace gum_tests {
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
-    void randomInit(gum::Potential< float >* t) {
+    void randomInit(gum::Potential< double >* t) {
       gum::Instantiation i(t);
 
       for (i.setFirst(); !i.end(); ++i)

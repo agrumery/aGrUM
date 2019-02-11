@@ -133,8 +133,8 @@ namespace gum {
        *probabilities.
        */
       CredalNet(
-        const BayesNet< GUM_SCALAR >& src_min_num,
-        const BayesNet< GUM_SCALAR >& src_max_den = BayesNet< GUM_SCALAR >());
+         const BayesNet< GUM_SCALAR >& src_min_num,
+         const BayesNet< GUM_SCALAR >& src_max_den = BayesNet< GUM_SCALAR >());
 
       /**
        * Destructor.
@@ -179,8 +179,8 @@ namespace gum {
        * Third is the vertex
        */
       void setCPTs(
-        const NodeId&                                                  id,
-        const std::vector< std::vector< std::vector< GUM_SCALAR > > >& cpt);
+         const NodeId&                                                  id,
+         const std::vector< std::vector< std::vector< GUM_SCALAR > > >& cpt);
 
       /**
        * @brief %Set the vertices of one credal set of a given node ( any
@@ -487,16 +487,16 @@ namespace gum {
        * CPTs.
        */
       const NodeProperty<
-        std::vector< std::vector< std::vector< GUM_SCALAR > > > >&
-        credalNet_currentCpt() const;
+         std::vector< std::vector< std::vector< GUM_SCALAR > > > >&
+         credalNet_currentCpt() const;
 
       /**
        * @return Returns a constant reference to the ( up-to-date ) CredalNet
        * CPTs.
        */
       const NodeProperty<
-        std::vector< std::vector< std::vector< GUM_SCALAR > > > >&
-        credalNet_srcCpt() const;
+         std::vector< std::vector< std::vector< GUM_SCALAR > > > >&
+         credalNet_srcCpt() const;
 
       /**
        * @param id The constant reference to the choosen NodeId
@@ -628,11 +628,11 @@ namespace gum {
 
       /** @brief This CredalNet original CPTs. */
       NodeProperty< std::vector< std::vector< std::vector< GUM_SCALAR > > > >
-        __credalNet_src_cpt;
+         __credalNet_src_cpt;
 
       /** @brief This CredalNet up-to-date CPTs. */
       NodeProperty< std::vector< std::vector< std::vector< GUM_SCALAR > > > >*
-        __credalNet_current_cpt;   // =  nullptr;
+         __credalNet_current_cpt;   // =  nullptr;
 
       /** @deprecated @brief Corresponding bits of each variable. */
       NodeProperty< std::vector< NodeId > > __var_bits;
@@ -671,8 +671,8 @@ namespace gum {
        * @return Returns the cardinality of the Decision Node.
        */
       int __find_dNode_card(
-        const std::vector< std::vector< std::vector< GUM_SCALAR > > >& var_cpt)
-        const;
+         const std::vector< std::vector< std::vector< GUM_SCALAR > > >& var_cpt)
+         const;
 
       /**
        * Computes the vertices of each credal set according to their interval
@@ -739,8 +739,9 @@ namespace gum {
     };   // CredalNet
 
 
-    extern template class CredalNet< float >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
     extern template class CredalNet< double >;
+#endif
 
   }   // namespace credal
 }   // namespace gum

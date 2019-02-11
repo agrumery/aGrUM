@@ -24,5 +24,7 @@
  */
 #include <agrum/BN/io/BNReader.h>
 
-template class gum::BNReader< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::BNReader< double >;
+#endif

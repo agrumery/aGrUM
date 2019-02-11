@@ -94,8 +94,11 @@ namespace gum {
     void __GibbsSample(NodeId id, Instantiation* I);
   };
 
-  extern template class GibbsOperator< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class GibbsOperator< double >;
+#endif
+
 }   // namespace gum
 
 #include <agrum/BN/inference/tools/gibbsOperator_tpl.h>

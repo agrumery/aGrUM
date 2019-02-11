@@ -33,8 +33,8 @@ namespace gum_tests {
     public:
     void testCreationNoisyOr() {
       gum::LabelizedVariable a("a", "", 2), b("b", "", 2), c("c", "", 2),
-        d("d", "", 2);
-      gum::MultiDimNoisyORCompound< float > p(0.2f);
+         d("d", "", 2);
+      gum::MultiDimNoisyORCompound< double > p(0.2f);
 
       // trying to change weight for a non cause
       TS_ASSERT_THROWS(p.causalWeight(b, 0.4f), gum::InvalidArgument);
@@ -50,14 +50,14 @@ namespace gum_tests {
       p.causalWeight(b, 0.4f);
       p.causalWeight(d, 0.7f);
       TS_ASSERT_EQUALS(
-        p.toString(),
-        "a<0,1>=noisyORCompound([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])");
+         p.toString(),
+         "a<0,1>=noisyORCompound([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])");
       TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4);
 
-      gum::MultiDimNoisyORCompound< float > q(p);
+      gum::MultiDimNoisyORCompound< double > q(p);
       TS_ASSERT_EQUALS(
-        q.toString(),
-        "a<0,1>=noisyORCompound([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])");
+         q.toString(),
+         "a<0,1>=noisyORCompound([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])");
       TS_ASSERT_EQUALS(p.realSize(), (gum::Size)4);
     }
 
@@ -67,7 +67,7 @@ namespace gum_tests {
       gum::LabelizedVariable malaria("Malaria", "", 2);
       gum::LabelizedVariable fever("Fever", "", 2);
 
-      gum::MultiDimNoisyORCompound< float > p(0.0f);
+      gum::MultiDimNoisyORCompound< double > p(0.0f);
       p << fever << malaria << flu << cold;
       p.causalWeight(cold, 1.0f);
       p.causalWeight(flu, 1.0f);
@@ -104,7 +104,7 @@ namespace gum_tests {
       gum::LabelizedVariable malaria("Malaria", "", 2);
       gum::LabelizedVariable fever("Fever", "", 2);
 
-      gum::MultiDimNoisyORCompound< float > p(0.0f);
+      gum::MultiDimNoisyORCompound< double > p(0.0f);
       p << fever << malaria << flu << cold;
       p.causalWeight(cold, 0.4f);
       p.causalWeight(flu, 0.8f);
@@ -134,7 +134,7 @@ namespace gum_tests {
         TS_ASSERT_DELTA(p[i], witness[j], 1e-6);
       }
 
-      gum::MultiDimNoisyORCompound< float > q(p);
+      gum::MultiDimNoisyORCompound< double > q(p);
 
       j = 0;
 
@@ -151,7 +151,7 @@ namespace gum_tests {
       gum::LabelizedVariable competition("competition", "", 2);
       gum::LabelizedVariable unemployment("unemployment", "", 2);
 
-      gum::MultiDimNoisyORCompound< float > p(0.0001f);
+      gum::MultiDimNoisyORCompound< double > p(0.0001f);
       p << unemployment << competition << requirement << motivation << degree
         << lazy;
       p.causalWeight(lazy, 0.1f);
@@ -162,17 +162,17 @@ namespace gum_tests {
 
       gum::Instantiation i(p);
       float              witness[] = {
-        0.9999f,   0.0001f,   0.1f,      0.9f,      0.3f,      0.7f,
-        0.030003f, 0.969997f, 0.5f,      0.5f,      0.050005f, 0.949995f,
-        0.150015f, 0.849985f, 0.015003f, 0.984997f, 0.7f,      0.3f,
-        0.070007f, 0.929993f, 0.210021f, 0.789979f, 0.021004f, 0.978996f,
-        0.350035f, 0.649965f, 0.035007f, 0.964993f, 0.105021f, 0.894979f,
-        0.010503f, 0.989496f, 0.9f,      0.1f,      0.090009f, 0.909991f,
-        0.270027f, 0.729973f, 0.027005f, 0.972995f, 0.450045f, 0.549955f,
-        0.045009f, 0.954991f, 0.135027f, 0.864973f, 0.013504f, 0.986496f,
-        0.630063f, 0.369937f, 0.063013f, 0.936987f, 0.189038f, 0.810962f,
-        0.018906f, 0.981094f, 0.315063f, 0.684937f, 0.031509f, 0.968491f,
-        0.094528f, 0.905472f, 0.009454f, 0.990546f};
+         0.9999f,   0.0001f,   0.1f,      0.9f,      0.3f,      0.7f,
+         0.030003f, 0.969997f, 0.5f,      0.5f,      0.050005f, 0.949995f,
+         0.150015f, 0.849985f, 0.015003f, 0.984997f, 0.7f,      0.3f,
+         0.070007f, 0.929993f, 0.210021f, 0.789979f, 0.021004f, 0.978996f,
+         0.350035f, 0.649965f, 0.035007f, 0.964993f, 0.105021f, 0.894979f,
+         0.010503f, 0.989496f, 0.9f,      0.1f,      0.090009f, 0.909991f,
+         0.270027f, 0.729973f, 0.027005f, 0.972995f, 0.450045f, 0.549955f,
+         0.045009f, 0.954991f, 0.135027f, 0.864973f, 0.013504f, 0.986496f,
+         0.630063f, 0.369937f, 0.063013f, 0.936987f, 0.189038f, 0.810962f,
+         0.018906f, 0.981094f, 0.315063f, 0.684937f, 0.031509f, 0.968491f,
+         0.094528f, 0.905472f, 0.009454f, 0.990546f};
 
       int j = 0;
 
@@ -180,7 +180,7 @@ namespace gum_tests {
         TS_ASSERT_DELTA(p[i], witness[j], 1e-6);
       }
 
-      gum::MultiDimNoisyORCompound< float > q(p);
+      gum::MultiDimNoisyORCompound< double > q(p);
 
       j = 0;
 

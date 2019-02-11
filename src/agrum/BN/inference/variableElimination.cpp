@@ -20,5 +20,7 @@
 
 #include <agrum/BN/inference/variableElimination.h>
 
-template class gum::VariableElimination< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::VariableElimination< double >;
+#endif

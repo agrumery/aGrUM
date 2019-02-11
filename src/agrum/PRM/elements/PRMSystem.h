@@ -28,6 +28,7 @@
 #define GUM_SYSTEM_H
 
 #include <utility>
+#include <string>
 
 #include <agrum/core/hashTable.h>
 #include <agrum/core/sequence.h>
@@ -38,6 +39,8 @@
 #include <agrum/BN/BayesNetFactory.h>
 
 #include <agrum/PRM/elements/PRMObject.h>
+#include <agrum/PRM/elements/PRMInstance.h>
+#include <agrum/PRM/elements/PRMClass.h>
 
 namespace gum {
   namespace prm {
@@ -146,7 +149,7 @@ namespace gum {
       /// Returns the sequence of all instances of the given type
       /// @throw NotFound Raised if there is instantiation of type.
       const Set< PRMInstance< GUM_SCALAR >* >&
-        get(const PRMClass< GUM_SCALAR >& type) const;
+         get(const PRMClass< GUM_SCALAR >& type) const;
 
       /// Add an PRMInstance to this system.
       /// @throw DuplicateElement Raised if an PRMInstance with the same name
@@ -162,17 +165,17 @@ namespace gum {
       /// Returns the sequence of instances of a given array.
       /// @throw NotFound Raised if no array matches name.
       const Sequence< PRMInstance< GUM_SCALAR >* >&
-        getArray(const std::string& name) const;
+         getArray(const std::string& name) const;
 
       /// Returns the type of the given array.
       /// @throw NotFound Raised if no array matches name.
       PRMClassElementContainer< GUM_SCALAR >&
-        getArrayType(const std::string& name);
+         getArrayType(const std::string& name);
 
       /// Returns the type of the given array.
       /// @throw NotFound Raised if no array matches name.
       const PRMClassElementContainer< GUM_SCALAR >&
-        getArrayType(const std::string& name) const;
+         getArrayType(const std::string& name) const;
 
       /// @brief Add an PRMInstance to an array in this system.
       /// If the array doesn't exists it is created.
@@ -205,7 +208,7 @@ namespace gum {
 
       /// Iterator over the PRMInstance of this PRMSystem.
       typedef
-        typename NodeProperty< PRMInstance< GUM_SCALAR >* >::iterator iterator;
+         typename NodeProperty< PRMInstance< GUM_SCALAR >* >::iterator iterator;
 
       /// Returns an iterator over the instances in this system.
       iterator begin();
@@ -216,7 +219,7 @@ namespace gum {
 
       /// Constant Iterator over the PRMInstance of this PRMSystem.
       typedef typename NodeProperty< PRMInstance< GUM_SCALAR >* >::const_iterator
-        const_iterator;
+         const_iterator;
 
       /// Returns a constant iterator over the instances in this system.
       const_iterator begin() const;
@@ -227,7 +230,7 @@ namespace gum {
 
       /// Iterator over the PRMInstance in an array in this PRMSystem.
       typedef
-        typename Sequence< PRMInstance< GUM_SCALAR >* >::iterator array_iterator;
+         typename Sequence< PRMInstance< GUM_SCALAR >* >::iterator array_iterator;
 
       /// Returns an iterator at the beginning of the Sequence of PRMInstance
       /// in the array named a;
@@ -241,7 +244,7 @@ namespace gum {
 
       /// Iterator over the PRMInstance in an array in this PRMSystem.
       typedef typename Sequence< PRMInstance< GUM_SCALAR >* >::const_iterator
-        const_array_iterator;
+         const_array_iterator;
 
       /// Returns an iterator at the beginning of the Sequence of PRMInstance
       /// in the array named a;
@@ -256,10 +259,10 @@ namespace gum {
       /// @}
       private:
       /// Copy constructor. Don't use it.
-      PRMSystem(const PRMSystem& from);
+      PRMSystem(const PRMSystem< GUM_SCALAR >& from);
 
       /// Copy operator. Don't use it.
-      PRMSystem& operator=(const PRMSystem& from);
+      PRMSystem< GUM_SCALAR >& operator=(const PRMSystem< GUM_SCALAR >& from);
 
       // ========================================================================
       /// @name Private PRMInstance handling methods and members.
@@ -278,13 +281,13 @@ namespace gum {
 
       /// Mapping between a class and all it's PRMInstance in this system
       HashTable< PRMClass< GUM_SCALAR >*, Set< PRMInstance< GUM_SCALAR >* >* >
-        __instanceMap;
+         __instanceMap;
 
       /// Typedef of the pair of a Class<GUM_SCALAR> and the sequence of it's
       /// instantiation.
       typedef std::pair< PRMClassElementContainer< GUM_SCALAR >*,
                          Sequence< PRMInstance< GUM_SCALAR >* >* >
-        model_pair;
+         model_pair;
 
       /// Mapping between arrays and their name. The first element of the pair
       /// is the type of the array.
@@ -335,8 +338,9 @@ namespace gum {
     };
 
 
-    extern template class PRMSystem< float >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
     extern template class PRMSystem< double >;
+#endif
 
 
   } /* namespace prm */

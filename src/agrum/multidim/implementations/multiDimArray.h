@@ -117,8 +117,8 @@ namespace gum {
      * @param base the initial value
      */
     virtual GUM_SCALAR
-      reduce(std::function< GUM_SCALAR(GUM_SCALAR, GUM_SCALAR) > f,
-             GUM_SCALAR                                          base) const;
+       reduce(std::function< GUM_SCALAR(GUM_SCALAR, GUM_SCALAR) > f,
+              GUM_SCALAR                                          base) const;
 
     /**
      * @brief Adds a variable.
@@ -250,8 +250,9 @@ namespace gum {
   };
 
 
-  extern template class MultiDimArray< float >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class MultiDimArray< double >;
+#endif
 
 
 } /* namespace gum */

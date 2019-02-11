@@ -20,5 +20,7 @@
 
 #include <agrum/FMDP/fmdp.h>
 
-template class gum::FMDP< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::FMDP< double >;
+#endif

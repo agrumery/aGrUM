@@ -401,7 +401,9 @@ namespace gum {
 
 } /* namespace gum */
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class gum::HashFunc< gum::NodeSet >;
+#endif
 
 #ifndef GUM_NO_INLINE
 #  include <agrum/graphs/graphElements_inl.h>

@@ -29,6 +29,8 @@
 
 #include <sstream>
 
+#include <agrum/agrum.h>
+
 #include <agrum/graphs/graphElements.h>
 
 #include <agrum/multidim/potential.h>
@@ -74,7 +76,7 @@ namespace gum {
       /**
        * Copy constructor.
        */
-      PRMClassElement(const PRMClassElement& source);
+      PRMClassElement(const PRMClassElement< GUM_SCALAR >& source);
 
       /**
        * Destructor of this class.
@@ -112,27 +114,28 @@ namespace gum {
       }
 
       /// Returns true if obj_ptr is of type PRMReferenceSlot.
-      static INLINE bool isReferenceSlot(const PRMClassElement& elt) {
+      static INLINE bool
+         isReferenceSlot(const PRMClassElement< GUM_SCALAR >& elt) {
         return elt.elt_type() == prm_refslot;
       }
 
       /// Returns true if obj_ptr is of type PRMAttribute.
-      static INLINE bool isAttribute(const PRMClassElement& elt) {
+      static INLINE bool isAttribute(const PRMClassElement< GUM_SCALAR >& elt) {
         return elt.elt_type() == prm_attribute;
       }
 
       /// Return true if obj is of type PRMAggregate
-      static INLINE bool isAggregate(const PRMClassElement& elt) {
+      static INLINE bool isAggregate(const PRMClassElement< GUM_SCALAR >& elt) {
         return elt.elt_type() == prm_aggregate;
       }
 
       /// Return true if obj is of type PRMSlotChain
-      static INLINE bool isSlotChain(const PRMClassElement& elt) {
+      static INLINE bool isSlotChain(const PRMClassElement< GUM_SCALAR >& elt) {
         return elt.elt_type() == prm_slotchain;
       }
 
       /// Return true if obj is of type PRMParameter
-      static INLINE bool isParameter(const PRMClassElement& elt) {
+      static INLINE bool isParameter(const PRMClassElement< GUM_SCALAR >& elt) {
         return elt.elt_type() == prm_parameter;
       }
 
@@ -154,7 +157,7 @@ namespace gum {
        * This method is called by gum::Class when en parent is added
        * to this elememnt.
        */
-      virtual void addParent(const PRMClassElement& elt) = 0;
+      virtual void addParent(const PRMClassElement< GUM_SCALAR >& elt) = 0;
 
       /**
        * @brief Add a child to this element.
@@ -162,7 +165,7 @@ namespace gum {
        * This methos is called by gum::Class when a child is added
        * to this element.
        */
-      virtual void addChild(const PRMClassElement& elt) = 0;
+      virtual void addChild(const PRMClassElement< GUM_SCALAR >& elt) = 0;
 
       /// @see gum::PRMObject::obj_type().
       virtual typename PRMObject::prm_type obj_type() const;
@@ -182,7 +185,7 @@ namespace gum {
        *                            any gum::Potential (like a
        * gum::PRMReferenceSlot).
        */
-      virtual PRMType< GUM_SCALAR >& type() = 0;
+      virtual PRMType& type() = 0;
 
       /**
        * Return a constant reference over the gum::PRMType of this class
@@ -191,7 +194,7 @@ namespace gum {
        *                            any gum::Potential (like a
        * gum::PRMReferenceSlot).
        */
-      virtual const PRMType< GUM_SCALAR >& type() const = 0;
+      virtual const PRMType& type() const = 0;
 
       /**
        * @brief Returns a proper cast descendant of this PRMAttribute.
@@ -229,7 +232,7 @@ namespace gum {
        * @param t The type in which we want to cast this PRMClassElement.
        * @throw OperationNotAllowed If the cast is impossible.
        */
-      virtual std::string cast(const PRMType< GUM_SCALAR >& t) const;
+      virtual std::string cast(const PRMType& t) const;
 
       // /**
       //  * Return a reference over the gum::Potential of this class element.
@@ -259,8 +262,9 @@ namespace gum {
     };
 
 
-    extern template class PRMClassElement< float >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
     extern template class PRMClassElement< double >;
+#endif
 
   } /* namespace prm */
 }   // namespace gum

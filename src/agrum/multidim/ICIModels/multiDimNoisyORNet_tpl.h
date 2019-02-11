@@ -31,7 +31,7 @@ namespace gum {
   // Default constructor
   template < typename GUM_SCALAR >
   INLINE MultiDimNoisyORNet< GUM_SCALAR >::MultiDimNoisyORNet(
-    GUM_SCALAR external_weight, GUM_SCALAR default_weight) :
+     GUM_SCALAR external_weight, GUM_SCALAR default_weight) :
       MultiDimICIModel< GUM_SCALAR >(external_weight, default_weight) {
     GUM_CONSTRUCTOR(MultiDimNoisyORNet);
   }
@@ -39,7 +39,7 @@ namespace gum {
   // Default constructor
   template < typename GUM_SCALAR >
   INLINE MultiDimNoisyORNet< GUM_SCALAR >::MultiDimNoisyORNet(
-    const MultiDimNoisyORNet< GUM_SCALAR >& from) :
+     const MultiDimNoisyORNet< GUM_SCALAR >& from) :
       MultiDimICIModel< GUM_SCALAR >(from) {
     GUM_CONS_CPY(MultiDimNoisyORNet);
   }
@@ -47,8 +47,8 @@ namespace gum {
   // Copy constructor using a bijection to replace variables from source.
   template < typename GUM_SCALAR >
   INLINE MultiDimNoisyORNet< GUM_SCALAR >::MultiDimNoisyORNet(
-    const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-    const MultiDimNoisyORNet< GUM_SCALAR >&                              from) :
+     const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
+     const MultiDimNoisyORNet< GUM_SCALAR >&                              from) :
       MultiDimICIModel< GUM_SCALAR >(bij, from) {
     GUM_CONSTRUCTOR(MultiDimNoisyORNet);
   }

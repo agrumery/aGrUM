@@ -37,14 +37,14 @@ namespace gum_tests {
 
       TS_ASSERT(bn.hasSameStructure(bn));
       TS_ASSERT(
-        bn.hasSameStructure(gum::BayesNet< int >::fastPrototype("a->b->c;a->c")));
-      TS_ASSERT(
-        !bn.hasSameStructure(gum::BayesNet< int >::fastPrototype("b->a->c;b->c")));
+         bn.hasSameStructure(gum::BayesNet< int >::fastPrototype("a->b->c;a->c")));
+      TS_ASSERT(!bn.hasSameStructure(
+         gum::BayesNet< int >::fastPrototype("b->a->c;b->c")));
       TS_ASSERT(!bn.hasSameStructure(gum::BayesNet< int >::fastPrototype("b->a")));
       TS_ASSERT(
-        !bn.hasSameStructure(gum::BayesNet< float >::fastPrototype("b->a")));
+         !bn.hasSameStructure(gum::BayesNet< double >::fastPrototype("b->a")));
       TS_ASSERT(
-        !bn.hasSameStructure(gum::BayesNet< int >::fastPrototype("b->a->d")));
+         !bn.hasSameStructure(gum::BayesNet< int >::fastPrototype("b->a->d")));
     }
   };
 }   // namespace gum_tests

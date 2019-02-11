@@ -95,7 +95,7 @@ namespace gum {
 
       /// See gum::IBaseBayesNet::variableFromName().
       virtual const DiscreteVariable&
-        variableFromName(const std::string& name) const;
+         variableFromName(const std::string& name) const;
 
       const NodeProperty< Size >& modalities() const;
 
@@ -111,7 +111,7 @@ namespace gum {
       private:
       /// Mapping between DiscreteVariable and their NodeId
       HashTable< const DiscreteVariable*, const PRMAttribute< GUM_SCALAR >* >
-        __varNodeMap;
+         __varNodeMap;
 
       /// Private getter with type checking in case the id is not a formal
       /// PRMAttribute<GUM_SCALAR>.
@@ -129,8 +129,9 @@ namespace gum {
     };
 
 
-    extern template class InstanceBayesNet< float >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
     extern template class InstanceBayesNet< double >;
+#endif
 
 
   } /* namespace prm */

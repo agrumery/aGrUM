@@ -94,7 +94,7 @@ namespace gum {
 
       /// copy operator
       StructuralConstraintTabuList&
-        operator=(const StructuralConstraintTabuList& from);
+         operator=(const StructuralConstraintTabuList& from);
 
       /// move operator
       StructuralConstraintTabuList& operator=(StructuralConstraintTabuList&& from);

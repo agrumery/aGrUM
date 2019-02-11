@@ -45,7 +45,7 @@ namespace gum {
      */
     class StructuralConstraintDAG
         : public virtual StructuralConstraintSetStatic<
-            StructuralConstraintDiGraph > {
+             StructuralConstraintDiGraph > {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

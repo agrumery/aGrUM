@@ -36,7 +36,7 @@ namespace gum_tests {
     public:
     void testCreation() {
       TS_GUM_ASSERT_THROWS_NOTHING(
-        gum::DiscretizedVariable< int > v("var", "a var"));
+         gum::DiscretizedVariable< int > v("var", "a var"));
     }
 
     void testDiscreteVariableProperties() {
@@ -57,7 +57,7 @@ namespace gum_tests {
 
     void testConstructorWithTicks() {
       gum::DiscretizedVariable< double > d(
-        "d", "Discretized variable", {3.1, 2.0, 4.0});
+         "d", "Discretized variable", {3.1, 2.0, 4.0});
 
       TS_GUM_ASSERT_THROWS_NOTHING(d["2.5"]);
       TS_ASSERT_THROWS(d["0.5"], gum::OutOfLowerBound);
@@ -152,11 +152,11 @@ namespace gum_tests {
                       && (i * j * k * l * m * n == 720)) {
                     gum::DiscretizedVariable< int > d("d", "Discretized variable");
                     d.addTick(i)
-                      .addTick(j)
-                      .addTick(k)
-                      .addTick(l)
-                      .addTick(m)
-                      .addTick(n);
+                       .addTick(j)
+                       .addTick(k)
+                       .addTick(l)
+                       .addTick(m)
+                       .addTick(n);
                     TS_ASSERT_EQUALS(d.domainSize(), (gum::Size)5);
                     TS_ASSERT_EQUALS(d.toString(),
                                      "d<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>");

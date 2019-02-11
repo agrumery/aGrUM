@@ -57,9 +57,9 @@ namespace gum_tests {
     }
 
     gum::Potential< double > __infer(
-      const gum::BayesNet< double >&                                  bn,
-      const std::vector< std::size_t >&                               targets,
-      const gum::learning::DBRow< gum::learning::DBTranslatedValue >& row) {
+       const gum::BayesNet< double >&                                  bn,
+       const std::vector< std::size_t >&                               targets,
+       const gum::learning::DBRow< gum::learning::DBTranslatedValue >& row) {
       gum::LazyPropagation< double > ve(&bn);
 
       gum::NodeSet target_set;
@@ -125,7 +125,7 @@ namespace gum_tests {
       gum::learning::AprioriNoApriori<>     intern_apriori(database);
 
       gum::learning::ParamEstimatorML<> param_estimator(
-        parser, extern_apriori, intern_apriori);
+         parser, extern_apriori, intern_apriori);
 
       std::vector< double > v0 = param_estimator.parameters(gum::NodeId(0));
       std::vector< double > xv0 = __normalize({1201, 126, 76});
@@ -140,18 +140,18 @@ namespace gum_tests {
       TS_ASSERT(v2 == xv2);
 
       std::vector< double > v02 =
-        param_estimator.parameters(gum::NodeId(0), {gum::NodeId(2)});
+         param_estimator.parameters(gum::NodeId(0), {gum::NodeId(2)});
       std::vector< double > xv02 = __xnormalize({1201, 126, 76, 1, 1, 1, 1, 1, 1});
       TS_ASSERT(v02 == xv02);
 
       std::vector< double > v01 =
-        param_estimator.parameters(gum::NodeId(0), {gum::NodeId(1)});
+         param_estimator.parameters(gum::NodeId(0), {gum::NodeId(1)});
       std::vector< double > xv01 =
-        __xnormalize({201, 76, 1, 1001, 1, 76, 1, 51, 1});
+         __xnormalize({201, 76, 1, 1001, 1, 76, 1, 51, 1});
       TS_ASSERT(v01 == xv01);
 
       std::vector< double > v21 =
-        param_estimator.parameters(gum::NodeId(2), {gum::NodeId(1)});
+         param_estimator.parameters(gum::NodeId(2), {gum::NodeId(1)});
       std::vector< double > xv21 = __xnormalize({276, 1, 1, 1076, 1, 1, 51, 1, 1});
       TS_ASSERT(v21 == xv21);
 
@@ -167,20 +167,20 @@ namespace gum_tests {
       TS_ASSERT(w2 == xv2);
 
       std::vector< double > w02 =
-        param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(2)});
+         param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(2)});
       TS_ASSERT(w02 == xv02);
 
       std::vector< double > w01 =
-        param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(1)});
+         param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(1)});
       TS_ASSERT(w01 == xv01);
 
       std::vector< double > w21 =
-        param_estimator2.parameters(gum::NodeId(2), {gum::NodeId(1)});
+         param_estimator2.parameters(gum::NodeId(2), {gum::NodeId(1)});
       TS_ASSERT(w21 == xv21);
 
 
       gum::learning::ParamEstimatorML<> param_estimator3(
-        std::move(param_estimator2));
+         std::move(param_estimator2));
       std::vector< double > x0 = param_estimator3.parameters(gum::NodeId(0));
       TS_ASSERT(x0 == xv0);
 
@@ -191,20 +191,20 @@ namespace gum_tests {
       TS_ASSERT(x2 == xv2);
 
       std::vector< double > x02 =
-        param_estimator3.parameters(gum::NodeId(0), {gum::NodeId(2)});
+         param_estimator3.parameters(gum::NodeId(0), {gum::NodeId(2)});
       TS_ASSERT(x02 == xv02);
 
       std::vector< double > x01 =
-        param_estimator3.parameters(gum::NodeId(0), {gum::NodeId(1)});
+         param_estimator3.parameters(gum::NodeId(0), {gum::NodeId(1)});
       TS_ASSERT(x01 == xv01);
 
       std::vector< double > x21 =
-        param_estimator3.parameters(gum::NodeId(2), {gum::NodeId(1)});
+         param_estimator3.parameters(gum::NodeId(2), {gum::NodeId(1)});
       TS_ASSERT(x21 == xv21);
 
 
       gum::learning::ParamEstimatorML<>* param_estimator4 =
-        param_estimator.clone();
+         param_estimator.clone();
       std::vector< double > y0 = param_estimator4->parameters(gum::NodeId(0));
       TS_ASSERT(y0 == xv0);
 
@@ -215,15 +215,15 @@ namespace gum_tests {
       TS_ASSERT(y2 == xv2);
 
       std::vector< double > y02 =
-        param_estimator4->parameters(gum::NodeId(0), {gum::NodeId(2)});
+         param_estimator4->parameters(gum::NodeId(0), {gum::NodeId(2)});
       TS_ASSERT(y02 == xv02);
 
       std::vector< double > y01 =
-        param_estimator4->parameters(gum::NodeId(0), {gum::NodeId(1)});
+         param_estimator4->parameters(gum::NodeId(0), {gum::NodeId(1)});
       TS_ASSERT(y01 == xv01);
 
       std::vector< double > y21 =
-        param_estimator4->parameters(gum::NodeId(2), {gum::NodeId(1)});
+         param_estimator4->parameters(gum::NodeId(2), {gum::NodeId(1)});
       TS_ASSERT(y21 == xv21);
 
       delete param_estimator4;
@@ -277,7 +277,7 @@ namespace gum_tests {
                                                                   {1050, 1400}};
 
       gum::learning::ParamEstimatorML<> param_estimator(
-        parser, extern_apriori, intern_apriori, ranges);
+         parser, extern_apriori, intern_apriori, ranges);
 
       std::vector< double > r0 = param_estimator.parameters(gum::NodeId(0));
       std::vector< double > xr0 = __normalize({401, 76, 76});
@@ -292,17 +292,17 @@ namespace gum_tests {
       TS_ASSERT(r2 == xr2);
 
       std::vector< double > r02 =
-        param_estimator.parameters(gum::NodeId(0), {gum::NodeId(2)});
+         param_estimator.parameters(gum::NodeId(0), {gum::NodeId(2)});
       std::vector< double > xr02 = __xnormalize({401, 76, 76, 1, 1, 1, 1, 1, 1});
       TS_ASSERT(r02 == xr02);
 
       std::vector< double > r01 =
-        param_estimator.parameters(gum::NodeId(0), {gum::NodeId(1)});
+         param_estimator.parameters(gum::NodeId(0), {gum::NodeId(1)});
       std::vector< double > xr01 = __xnormalize({201, 76, 1, 201, 1, 76, 1, 1, 1});
       TS_ASSERT(r01 == xr01);
 
       std::vector< double > r21 =
-        param_estimator.parameters(gum::NodeId(2), {gum::NodeId(1)});
+         param_estimator.parameters(gum::NodeId(2), {gum::NodeId(1)});
       std::vector< double > xr21 = __xnormalize({276, 1, 1, 276, 1, 1, 1, 1, 1});
       TS_ASSERT(r21 == xr21);
 
@@ -318,20 +318,20 @@ namespace gum_tests {
       TS_ASSERT(v2 == xr2);
 
       std::vector< double > v02 =
-        param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(2)});
+         param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(2)});
       TS_ASSERT(v02 == xr02);
 
       std::vector< double > v01 =
-        param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(1)});
+         param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(1)});
       TS_ASSERT(v01 == xr01);
 
       std::vector< double > v21 =
-        param_estimator2.parameters(gum::NodeId(2), {gum::NodeId(1)});
+         param_estimator2.parameters(gum::NodeId(2), {gum::NodeId(1)});
       TS_ASSERT(v21 == xr21);
 
 
       gum::learning::ParamEstimatorML<> param_estimator3(
-        std::move(param_estimator2));
+         std::move(param_estimator2));
       std::vector< double > w0 = param_estimator3.parameters(gum::NodeId(0));
       TS_ASSERT(w0 == xr0);
 
@@ -342,20 +342,20 @@ namespace gum_tests {
       TS_ASSERT(w2 == xr2);
 
       std::vector< double > w02 =
-        param_estimator3.parameters(gum::NodeId(0), {gum::NodeId(2)});
+         param_estimator3.parameters(gum::NodeId(0), {gum::NodeId(2)});
       TS_ASSERT(w02 == xr02);
 
       std::vector< double > w01 =
-        param_estimator3.parameters(gum::NodeId(0), {gum::NodeId(1)});
+         param_estimator3.parameters(gum::NodeId(0), {gum::NodeId(1)});
       TS_ASSERT(w01 == xr01);
 
       std::vector< double > w21 =
-        param_estimator3.parameters(gum::NodeId(2), {gum::NodeId(1)});
+         param_estimator3.parameters(gum::NodeId(2), {gum::NodeId(1)});
       TS_ASSERT(w21 == xr21);
 
 
       gum::learning::ParamEstimatorML<>* param_estimator4 =
-        param_estimator.clone();
+         param_estimator.clone();
       std::vector< double > x0 = param_estimator4->parameters(gum::NodeId(0));
       TS_ASSERT(x0 == xr0);
 
@@ -366,15 +366,15 @@ namespace gum_tests {
       TS_ASSERT(x2 == xr2);
 
       std::vector< double > x02 =
-        param_estimator4->parameters(gum::NodeId(0), {gum::NodeId(2)});
+         param_estimator4->parameters(gum::NodeId(0), {gum::NodeId(2)});
       TS_ASSERT(x02 == xr02);
 
       std::vector< double > x01 =
-        param_estimator4->parameters(gum::NodeId(0), {gum::NodeId(1)});
+         param_estimator4->parameters(gum::NodeId(0), {gum::NodeId(1)});
       TS_ASSERT(x01 == xr01);
 
       std::vector< double > x21 =
-        param_estimator4->parameters(gum::NodeId(2), {gum::NodeId(1)});
+         param_estimator4->parameters(gum::NodeId(2), {gum::NodeId(1)});
       TS_ASSERT(x21 == xr21);
 
       delete param_estimator4;
@@ -430,7 +430,7 @@ namespace gum_tests {
       nodeId2columns.insert(2, 1);
 
       gum::learning::ParamEstimatorML<> param_estimator(
-        parser, extern_apriori, intern_apriori, nodeId2columns);
+         parser, extern_apriori, intern_apriori, nodeId2columns);
 
       std::vector< double > v0 = param_estimator.parameters(gum::NodeId(1));
       std::vector< double > xv0 = __normalize({1201, 126, 76});
@@ -445,18 +445,18 @@ namespace gum_tests {
       TS_ASSERT(v2 == xv2);
 
       std::vector< double > v02 =
-        param_estimator.parameters(gum::NodeId(1), {gum::NodeId(0)});
+         param_estimator.parameters(gum::NodeId(1), {gum::NodeId(0)});
       std::vector< double > xv02 = __xnormalize({1201, 126, 76, 1, 1, 1, 1, 1, 1});
       TS_ASSERT(v02 == xv02);
 
       std::vector< double > v01 =
-        param_estimator.parameters(gum::NodeId(1), {gum::NodeId(2)});
+         param_estimator.parameters(gum::NodeId(1), {gum::NodeId(2)});
       std::vector< double > xv01 =
-        __xnormalize({201, 76, 1, 1001, 1, 76, 1, 51, 1});
+         __xnormalize({201, 76, 1, 1001, 1, 76, 1, 51, 1});
       TS_ASSERT(v01 == xv01);
 
       std::vector< double > v21 =
-        param_estimator.parameters(gum::NodeId(0), {gum::NodeId(2)});
+         param_estimator.parameters(gum::NodeId(0), {gum::NodeId(2)});
       std::vector< double > xv21 = __xnormalize({276, 1, 1, 1076, 1, 1, 51, 1, 1});
       TS_ASSERT(v21 == xv21);
 
@@ -472,20 +472,20 @@ namespace gum_tests {
       TS_ASSERT(w2 == xv2);
 
       std::vector< double > w02 =
-        param_estimator2.parameters(gum::NodeId(1), {gum::NodeId(0)});
+         param_estimator2.parameters(gum::NodeId(1), {gum::NodeId(0)});
       TS_ASSERT(w02 == xv02);
 
       std::vector< double > w01 =
-        param_estimator2.parameters(gum::NodeId(1), {gum::NodeId(2)});
+         param_estimator2.parameters(gum::NodeId(1), {gum::NodeId(2)});
       TS_ASSERT(w01 == xv01);
 
       std::vector< double > w21 =
-        param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(2)});
+         param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(2)});
       TS_ASSERT(w21 == xv21);
 
 
       gum::learning::ParamEstimatorML<> param_estimator3(
-        std::move(param_estimator2));
+         std::move(param_estimator2));
       std::vector< double > x0 = param_estimator3.parameters(gum::NodeId(1));
       TS_ASSERT(x0 == xv0);
 
@@ -496,20 +496,20 @@ namespace gum_tests {
       TS_ASSERT(x2 == xv2);
 
       std::vector< double > x02 =
-        param_estimator3.parameters(gum::NodeId(1), {gum::NodeId(0)});
+         param_estimator3.parameters(gum::NodeId(1), {gum::NodeId(0)});
       TS_ASSERT(x02 == xv02);
 
       std::vector< double > x01 =
-        param_estimator3.parameters(gum::NodeId(1), {gum::NodeId(2)});
+         param_estimator3.parameters(gum::NodeId(1), {gum::NodeId(2)});
       TS_ASSERT(x01 == xv01);
 
       std::vector< double > x21 =
-        param_estimator3.parameters(gum::NodeId(0), {gum::NodeId(2)});
+         param_estimator3.parameters(gum::NodeId(0), {gum::NodeId(2)});
       TS_ASSERT(x21 == xv21);
 
 
       gum::learning::ParamEstimatorML<>* param_estimator4 =
-        param_estimator.clone();
+         param_estimator.clone();
       std::vector< double > y0 = param_estimator4->parameters(gum::NodeId(1));
       TS_ASSERT(y0 == xv0);
 
@@ -520,15 +520,15 @@ namespace gum_tests {
       TS_ASSERT(y2 == xv2);
 
       std::vector< double > y02 =
-        param_estimator4->parameters(gum::NodeId(1), {gum::NodeId(0)});
+         param_estimator4->parameters(gum::NodeId(1), {gum::NodeId(0)});
       TS_ASSERT(y02 == xv02);
 
       std::vector< double > y01 =
-        param_estimator4->parameters(gum::NodeId(1), {gum::NodeId(2)});
+         param_estimator4->parameters(gum::NodeId(1), {gum::NodeId(2)});
       TS_ASSERT(y01 == xv01);
 
       std::vector< double > y21 =
-        param_estimator4->parameters(gum::NodeId(0), {gum::NodeId(2)});
+         param_estimator4->parameters(gum::NodeId(0), {gum::NodeId(2)});
       TS_ASSERT(y21 == xv21);
 
       delete param_estimator4;
@@ -587,7 +587,7 @@ namespace gum_tests {
       nodeId2columns.insert(2, 1);
 
       gum::learning::ParamEstimatorML<> param_estimator(
-        parser, extern_apriori, intern_apriori, ranges, nodeId2columns);
+         parser, extern_apriori, intern_apriori, ranges, nodeId2columns);
 
       std::vector< double > r0 = param_estimator.parameters(gum::NodeId(1));
       std::vector< double > xr0 = __normalize({401, 76, 76});
@@ -602,17 +602,17 @@ namespace gum_tests {
       TS_ASSERT(r2 == xr2);
 
       std::vector< double > r02 =
-        param_estimator.parameters(gum::NodeId(1), {gum::NodeId(0)});
+         param_estimator.parameters(gum::NodeId(1), {gum::NodeId(0)});
       std::vector< double > xr02 = __xnormalize({401, 76, 76, 1, 1, 1, 1, 1, 1});
       TS_ASSERT(r02 == xr02);
 
       std::vector< double > r01 =
-        param_estimator.parameters(gum::NodeId(1), {gum::NodeId(2)});
+         param_estimator.parameters(gum::NodeId(1), {gum::NodeId(2)});
       std::vector< double > xr01 = __xnormalize({201, 76, 1, 201, 1, 76, 1, 1, 1});
       TS_ASSERT(r01 == xr01);
 
       std::vector< double > r21 =
-        param_estimator.parameters(gum::NodeId(0), {gum::NodeId(2)});
+         param_estimator.parameters(gum::NodeId(0), {gum::NodeId(2)});
       std::vector< double > xr21 = __xnormalize({276, 1, 1, 276, 1, 1, 1, 1, 1});
       TS_ASSERT(r21 == xr21);
 
@@ -628,20 +628,20 @@ namespace gum_tests {
       TS_ASSERT(v2 == xr2);
 
       std::vector< double > v02 =
-        param_estimator2.parameters(gum::NodeId(1), {gum::NodeId(0)});
+         param_estimator2.parameters(gum::NodeId(1), {gum::NodeId(0)});
       TS_ASSERT(v02 == xr02);
 
       std::vector< double > v01 =
-        param_estimator2.parameters(gum::NodeId(1), {gum::NodeId(2)});
+         param_estimator2.parameters(gum::NodeId(1), {gum::NodeId(2)});
       TS_ASSERT(v01 == xr01);
 
       std::vector< double > v21 =
-        param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(2)});
+         param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(2)});
       TS_ASSERT(v21 == xr21);
 
 
       gum::learning::ParamEstimatorML<> param_estimator3(
-        std::move(param_estimator2));
+         std::move(param_estimator2));
       std::vector< double > w0 = param_estimator3.parameters(gum::NodeId(1));
       TS_ASSERT(w0 == xr0);
 
@@ -652,20 +652,20 @@ namespace gum_tests {
       TS_ASSERT(w2 == xr2);
 
       std::vector< double > w02 =
-        param_estimator3.parameters(gum::NodeId(1), {gum::NodeId(0)});
+         param_estimator3.parameters(gum::NodeId(1), {gum::NodeId(0)});
       TS_ASSERT(w02 == xr02);
 
       std::vector< double > w01 =
-        param_estimator3.parameters(gum::NodeId(1), {gum::NodeId(2)});
+         param_estimator3.parameters(gum::NodeId(1), {gum::NodeId(2)});
       TS_ASSERT(w01 == xr01);
 
       std::vector< double > w21 =
-        param_estimator3.parameters(gum::NodeId(0), {gum::NodeId(2)});
+         param_estimator3.parameters(gum::NodeId(0), {gum::NodeId(2)});
       TS_ASSERT(w21 == xr21);
 
 
       gum::learning::ParamEstimatorML<>* param_estimator4 =
-        param_estimator.clone();
+         param_estimator.clone();
       std::vector< double > x0 = param_estimator4->parameters(gum::NodeId(1));
       TS_ASSERT(x0 == xr0);
 
@@ -676,15 +676,15 @@ namespace gum_tests {
       TS_ASSERT(x2 == xr2);
 
       std::vector< double > x02 =
-        param_estimator4->parameters(gum::NodeId(1), {gum::NodeId(0)});
+         param_estimator4->parameters(gum::NodeId(1), {gum::NodeId(0)});
       TS_ASSERT(x02 == xr02);
 
       std::vector< double > x01 =
-        param_estimator4->parameters(gum::NodeId(1), {gum::NodeId(2)});
+         param_estimator4->parameters(gum::NodeId(1), {gum::NodeId(2)});
       TS_ASSERT(x01 == xr01);
 
       std::vector< double > x21 =
-        param_estimator4->parameters(gum::NodeId(0), {gum::NodeId(2)});
+         param_estimator4->parameters(gum::NodeId(0), {gum::NodeId(2)});
       TS_ASSERT(x21 == xr21);
 
       delete param_estimator4;
@@ -734,7 +734,7 @@ namespace gum_tests {
       gum::learning::AprioriNoApriori<>     intern_apriori(database);
 
       gum::learning::ParamEstimatorML<> param_estimator(
-        parser, extern_apriori, intern_apriori);
+         parser, extern_apriori, intern_apriori);
 
       std::vector< double > v0 = param_estimator.parameters(gum::NodeId(0));
       std::vector< double > xv0 = __normalize({1201, 126, 76});
@@ -749,18 +749,18 @@ namespace gum_tests {
       TS_ASSERT(v2 == xv2);
 
       std::vector< double > v02 =
-        param_estimator.parameters(gum::NodeId(0), {gum::NodeId(2)});
+         param_estimator.parameters(gum::NodeId(0), {gum::NodeId(2)});
       std::vector< double > xv02 = __xnormalize({1201, 126, 76, 1, 1, 1, 1, 1, 1});
       TS_ASSERT(v02 == xv02);
 
       std::vector< double > v01 =
-        param_estimator.parameters(gum::NodeId(0), {gum::NodeId(1)});
+         param_estimator.parameters(gum::NodeId(0), {gum::NodeId(1)});
       std::vector< double > xv01 =
-        __xnormalize({201, 76, 1, 1001, 1, 76, 1, 51, 1});
+         __xnormalize({201, 76, 1, 1001, 1, 76, 1, 51, 1});
       TS_ASSERT(v01 == xv01);
 
       std::vector< double > v21 =
-        param_estimator.parameters(gum::NodeId(2), {gum::NodeId(1)});
+         param_estimator.parameters(gum::NodeId(2), {gum::NodeId(1)});
       std::vector< double > xv21 = __xnormalize({276, 1, 1, 1076, 1, 1, 51, 1, 1});
       TS_ASSERT(v21 == xv21);
 
@@ -776,15 +776,15 @@ namespace gum_tests {
       TS_ASSERT(w2 == xv2);
 
       std::vector< double > w02 =
-        param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(2)});
+         param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(2)});
       TS_ASSERT(w02 == xv02);
 
       std::vector< double > w01 =
-        param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(1)});
+         param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(1)});
       TS_ASSERT(w01 == xv01);
 
       std::vector< double > w21 =
-        param_estimator2.parameters(gum::NodeId(2), {gum::NodeId(1)});
+         param_estimator2.parameters(gum::NodeId(2), {gum::NodeId(1)});
       TS_ASSERT(w21 == xv21);
 
       std::vector< std::pair< std::size_t, std::size_t > > ranges{{800, 1000},
@@ -804,18 +804,18 @@ namespace gum_tests {
       TS_ASSERT(ar2 == axr2);
 
       std::vector< double > ar02 =
-        param_estimator.parameters(gum::NodeId(0), {gum::NodeId(2)});
+         param_estimator.parameters(gum::NodeId(0), {gum::NodeId(2)});
       std::vector< double > axr02 = __xnormalize({401, 76, 76, 1, 1, 1, 1, 1, 1});
       TS_ASSERT(ar02 == axr02);
 
       std::vector< double > ar01 =
-        param_estimator.parameters(gum::NodeId(0), {gum::NodeId(1)});
+         param_estimator.parameters(gum::NodeId(0), {gum::NodeId(1)});
       std::vector< double > axr01 =
-        __xnormalize({201, 76, 1, 201, 1, 76, 1, 1, 1});
+         __xnormalize({201, 76, 1, 201, 1, 76, 1, 1, 1});
       TS_ASSERT(ar01 == axr01);
 
       std::vector< double > ar21 =
-        param_estimator.parameters(gum::NodeId(2), {gum::NodeId(1)});
+         param_estimator.parameters(gum::NodeId(2), {gum::NodeId(1)});
       std::vector< double > axr21 = __xnormalize({276, 1, 1, 276, 1, 1, 1, 1, 1});
       TS_ASSERT(ar21 == axr21);
 
@@ -831,15 +831,15 @@ namespace gum_tests {
       TS_ASSERT(av2 == axr2);
 
       std::vector< double > av02 =
-        param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(2)});
+         param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(2)});
       TS_ASSERT(av02 == axr02);
 
       std::vector< double > av01 =
-        param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(1)});
+         param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(1)});
       TS_ASSERT(av01 == axr01);
 
       std::vector< double > av21 =
-        param_estimator2.parameters(gum::NodeId(2), {gum::NodeId(1)});
+         param_estimator2.parameters(gum::NodeId(2), {gum::NodeId(1)});
       TS_ASSERT(av21 == axr21);
 
       TS_ASSERT(param_estimator2.ranges() == ranges);
@@ -856,15 +856,15 @@ namespace gum_tests {
       TS_ASSERT(bv2 == xv2);
 
       std::vector< double > bv02 =
-        param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(2)});
+         param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(2)});
       TS_ASSERT(bv02 == xv02);
 
       std::vector< double > bv01 =
-        param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(1)});
+         param_estimator2.parameters(gum::NodeId(0), {gum::NodeId(1)});
       TS_ASSERT(bv01 == xv01);
 
       std::vector< double > bv21 =
-        param_estimator2.parameters(gum::NodeId(2), {gum::NodeId(1)});
+         param_estimator2.parameters(gum::NodeId(2), {gum::NodeId(1)});
       TS_ASSERT(bv21 == xv21);
     }
 
@@ -899,10 +899,10 @@ namespace gum_tests {
       }
 
       const std::vector< gum::learning::DBTranslatedValueType > col_types{
-        gum::learning::DBTranslatedValueType::DISCRETE,
-        gum::learning::DBTranslatedValueType::DISCRETE,
-        gum::learning::DBTranslatedValueType::DISCRETE,
-        gum::learning::DBTranslatedValueType::DISCRETE};
+         gum::learning::DBTranslatedValueType::DISCRETE,
+         gum::learning::DBTranslatedValueType::DISCRETE,
+         gum::learning::DBTranslatedValueType::DISCRETE,
+         gum::learning::DBTranslatedValueType::DISCRETE};
 
       auto bn0 = gum::BayesNet< double >::fastPrototype("A;B;C;D");
       bn0.cpt("A").fillWith({0.3, 0.7});
@@ -912,10 +912,10 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorIdentity<> generator1(col_types);
       gum::learning::DBRowGeneratorEM<>       generator2(col_types, bn0);
-      gum::learning::DBRowGenerator<>&        gen2 = generator2; // fix for g++-4.8
+      gum::learning::DBRowGenerator<>& gen2 = generator2;   // fix for g++-4.8
       gum::learning::DBRowGeneratorIdentity<> generator3(col_types);
       gum::learning::DBRowGeneratorEM<>       generator4(col_types, bn0);
-      gum::learning::DBRowGenerator<>&        gen4 = generator4; // fix for g++-4.8
+      gum::learning::DBRowGenerator<>& gen4 = generator4;   // fix for g++-4.8
 
       gum::learning::DBRowGeneratorSet<> genset;
       genset.insertGenerator(generator1);
@@ -928,7 +928,7 @@ namespace gum_tests {
       gum::learning::AprioriNoApriori<>     intern_apriori(database);
 
       gum::learning::ParamEstimatorML<> param_estimator(
-        parser, extern_apriori, intern_apriori);
+         parser, extern_apriori, intern_apriori);
 
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D");
       bn.cpt("A").fillWith({0.3, 0.7});
@@ -948,14 +948,14 @@ namespace gum_tests {
       gum::learning::IdSet<> ids(0, std::vector< gum::NodeId >{1}, true);
       // gum::learning::IdSet<> ids(0, {}, true);
       std::vector< double > counts =
-        param_estimator.parameters(gum::NodeId(0), {gum::NodeId(1)});
+         param_estimator.parameters(gum::NodeId(0), {gum::NodeId(1)});
 
       std::vector< double > xcounts(4, 0.0);
       std::vector< double > sum(4, 0.0);
       int                   nb_row = 0;
       for (const auto& row : database) {
         gum::Potential< double > proba =
-          __infer(bn, {std::size_t(0), std::size_t(1)}, row);
+           __infer(bn, {std::size_t(0), std::size_t(1)}, row);
 
         std::size_t idx;
         for (gum::Instantiation inst(proba); !inst.end(); ++inst) {

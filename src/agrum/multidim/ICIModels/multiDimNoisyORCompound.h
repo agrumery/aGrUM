@@ -74,8 +74,8 @@ namespace gum {
      * @param from the copied instance
      */
     MultiDimNoisyORCompound(
-      const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
-      const MultiDimNoisyORCompound< GUM_SCALAR >&                         from);
+       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
+       const MultiDimNoisyORCompound< GUM_SCALAR >&                         from);
 
     /// Destructor.
     virtual ~MultiDimNoisyORCompound();
@@ -123,8 +123,10 @@ namespace gum {
     /// @}
   };
 
-  extern template class MultiDimNoisyORCompound< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class MultiDimNoisyORCompound< double >;
+#endif
 
   /// For friendly displaying the content of the array.
   template < typename GUM_SCALAR >

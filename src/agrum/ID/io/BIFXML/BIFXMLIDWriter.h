@@ -116,8 +116,8 @@ namespace gum {
      * format.
      */
     std::string
-      __variableDefinition(const NodeId&                         varNodeId,
-                           const InfluenceDiagram< GUM_SCALAR >& infdiag);
+       __variableDefinition(const NodeId&                         varNodeId,
+                            const InfluenceDiagram< GUM_SCALAR >& infdiag);
   };
 } /* namespace gum */
 

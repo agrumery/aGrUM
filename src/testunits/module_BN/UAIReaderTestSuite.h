@@ -41,22 +41,22 @@ namespace gum_tests {
     public:
     void testConstuctor() {
       std::string file = GET_RESSOURCES_PATH("uai/BNUAIReader_file1.uai");
-      gum::BayesNet< float > net;
+      gum::BayesNet< double > net;
 
-      gum::UAIReader< float >* reader = 0;
+      gum::UAIReader< double >* reader = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(reader =
-                                     new gum::UAIReader< float >(&net, file));
+                                      new gum::UAIReader< double >(&net, file));
       TS_GUM_ASSERT_THROWS_NOTHING(delete reader);
     }
 
     void testRead_file1() {
       std::string file = GET_RESSOURCES_PATH("uai/BNUAIReader_file1.uai");
-      gum::BayesNet< float >* net = new gum::BayesNet< float >();
+      gum::BayesNet< double >* net = new gum::BayesNet< double >();
 
       TS_ASSERT(net != nullptr);
 
-      gum::UAIReader< float > reader(net, file);
-      auto                    err = reader.proceed();
+      gum::UAIReader< double > reader(net, file);
+      reader.proceed();
 
       if (net != nullptr) {
         TS_ASSERT(net->empty());
@@ -66,8 +66,8 @@ namespace gum_tests {
 
     void testRead_file2_float() {
       std::string file = GET_RESSOURCES_PATH("uai/BNUAIReader_file2.uai");
-      gum::BayesNet< float >* net = new gum::BayesNet< float >();
-      gum::UAIReader< float > reader(net, file);
+      gum::BayesNet< double >* net = new gum::BayesNet< double >();
+      gum::UAIReader< double > reader(net, file);
 
       gum::Size nbErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
@@ -88,7 +88,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(var_1.name(), "0");
         TS_ASSERT_EQUALS(var_1.domainSize(), (gum::Size)2);
 
-        const gum::Potential< float >& proba_1 = net->cpt(node_1);
+        const gum::Potential< double >& proba_1 = net->cpt(node_1);
         TS_ASSERT_EQUALS(proba_1.domainSize(), (gum::Size)2);
 
         gum::Instantiation inst_1(proba_1);
@@ -101,7 +101,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(var_2.name(), "1");
         TS_ASSERT_EQUALS(var_2.domainSize(), (gum::Size)2);
 
-        const gum::Potential< float >& proba_2 = net->cpt(node_2);
+        const gum::Potential< double >& proba_2 = net->cpt(node_2);
         TS_ASSERT_EQUALS(proba_2.domainSize(), (gum::Size)2);
 
         gum::Instantiation inst_2(proba_2);
@@ -138,8 +138,8 @@ namespace gum_tests {
 
     void testRead_file3() {
       std::string file = GET_RESSOURCES_PATH("uai/BNUAIReader_file3.uai");
-      gum::BayesNet< float >* net = new gum::BayesNet< float >();
-      gum::UAIReader< float > reader(net, file);
+      gum::BayesNet< double >* net = new gum::BayesNet< double >();
+      gum::UAIReader< double > reader(net, file);
 
       gum::Size nbErr = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
@@ -162,7 +162,7 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS(var_1.label(1), "1");
 
-        const gum::Potential< float >& proba_1 = net->cpt(idMap["4"]);
+        const gum::Potential< double >& proba_1 = net->cpt(idMap["4"]);
 
         TS_ASSERT_EQUALS(proba_1.domainSize(), (gum::Size)2);
 
@@ -186,7 +186,7 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS(var_2.label(1), "1");
 
-        const gum::Potential< float >& proba_2 = net->cpt(idMap["2"]);
+        const gum::Potential< double >& proba_2 = net->cpt(idMap["2"]);
 
         TS_ASSERT_EQUALS(proba_2.domainSize(), (gum::Size)2);
 
@@ -212,7 +212,7 @@ namespace gum_tests {
 
         TS_ASSERT(net->dag().existsArc(idMap["4"], idMap["0"]));
 
-        const gum::Potential< float >& proba_3 = net->cpt(idMap["0"]);
+        const gum::Potential< double >& proba_3 = net->cpt(idMap["0"]);
 
         TS_ASSERT_EQUALS(proba_3.domainSize(), (gum::Size)4);
 
@@ -252,7 +252,7 @@ namespace gum_tests {
 
         TS_ASSERT(net->dag().existsArc(idMap["2"], idMap["3"]));
 
-        const gum::Potential< float >& proba_4 = net->cpt(idMap["3"]);
+        const gum::Potential< double >& proba_4 = net->cpt(idMap["3"]);
 
         TS_ASSERT_EQUALS(proba_4.domainSize(), (gum::Size)8);
 
@@ -322,7 +322,7 @@ namespace gum_tests {
 
         TS_ASSERT(net->dag().existsArc(idMap["0"], idMap["1"]));
 
-        const gum::Potential< float >& proba_5 = net->cpt(idMap["1"]);
+        const gum::Potential< double >& proba_5 = net->cpt(idMap["1"]);
 
         TS_ASSERT_EQUALS(proba_5.domainSize(), (gum::Size)12);
 
@@ -406,7 +406,7 @@ namespace gum_tests {
 
         TS_ASSERT(net->dag().existsArc(idMap["1"], idMap["5"]));
 
-        const gum::Potential< float >& proba_6 = net->cpt(idMap["5"]);
+        const gum::Potential< double >& proba_6 = net->cpt(idMap["5"]);
 
         TS_ASSERT_EQUALS(proba_6.domainSize(), (gum::Size)12);
 

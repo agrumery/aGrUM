@@ -9,7 +9,7 @@ static void SetPythonizeAgrumException() {
   try {
     throw;
   }
-  catch ( std::bad_cast& e ) {
+  catch ( std::bad_cast& ) {
     PyErr_SetString ( PyExc_RuntimeError, "C++ Bad Cast" );
   }
   PYGUM_CATCH(DefaultInLabel)

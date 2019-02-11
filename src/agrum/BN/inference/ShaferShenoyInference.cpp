@@ -20,5 +20,7 @@
 
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 
-template class gum::ShaferShenoyInference< float >;
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::ShaferShenoyInference< double >;
+#endif

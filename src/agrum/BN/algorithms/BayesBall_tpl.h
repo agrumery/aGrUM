@@ -29,11 +29,11 @@ namespace gum {
   // query variables
   template < typename GUM_SCALAR, template < typename > class TABLE >
   void
-    BayesBall::relevantPotentials(const IBayesNet< GUM_SCALAR >&     bn,
-                                  const NodeSet&                     query,
-                                  const NodeSet&                     hardEvidence,
-                                  const NodeSet&                     softEvidence,
-                                  Set< const TABLE< GUM_SCALAR >* >& potentials) {
+     BayesBall::relevantPotentials(const IBayesNet< GUM_SCALAR >&     bn,
+                                   const NodeSet&                     query,
+                                   const NodeSet&                     hardEvidence,
+                                   const NodeSet&                     softEvidence,
+                                   Set< const TABLE< GUM_SCALAR >* >& potentials) {
     const DAG& dag = bn.dag();
 
     // create the marks (top = first and bottom = second)

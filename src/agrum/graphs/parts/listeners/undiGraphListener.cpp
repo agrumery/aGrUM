@@ -51,10 +51,10 @@ namespace gum {
 
     GUM_CONNECT((*_graph), onNodeAdded, (*this), UndiGraphListener::whenNodeAdded);
     GUM_CONNECT(
-      (*_graph), onNodeDeleted, (*this), UndiGraphListener::whenNodeDeleted);
+       (*_graph), onNodeDeleted, (*this), UndiGraphListener::whenNodeDeleted);
     GUM_CONNECT((*_graph), onEdgeAdded, (*this), UndiGraphListener::whenEdgeAdded);
     GUM_CONNECT(
-      (*_graph), onEdgeDeleted, (*this), UndiGraphListener::whenEdgeDeleted);
+       (*_graph), onEdgeDeleted, (*this), UndiGraphListener::whenEdgeDeleted);
   }
 
   UndiGraphListener::~UndiGraphListener() { GUM_DESTRUCTOR(UndiGraphListener); }

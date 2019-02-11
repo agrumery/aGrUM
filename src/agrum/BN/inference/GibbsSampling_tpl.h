@@ -40,10 +40,10 @@ namespace gum {
   GibbsSampling< GUM_SCALAR >::GibbsSampling(const IBayesNet< GUM_SCALAR >* bn) :
       SamplingInference< GUM_SCALAR >(bn),
       GibbsOperator< GUM_SCALAR >(
-        *bn,
-        &this->hardEvidence(),
-        1 + (bn->size() * GIBBS_SAMPLING_POURCENT_DRAWN_SAMPLE / 100),
-        GIBBS_SAMPLING_DRAWN_AT_RANDOM) {
+         *bn,
+         &this->hardEvidence(),
+         1 + (bn->size() * GIBBS_SAMPLING_POURCENT_DRAWN_SAMPLE / 100),
+         GIBBS_SAMPLING_DRAWN_AT_RANDOM) {
     GUM_CONSTRUCTOR(GibbsSampling);
 
     this->setEpsilon(GIBBS_SAMPLING_DEFAULT_EPSILON);

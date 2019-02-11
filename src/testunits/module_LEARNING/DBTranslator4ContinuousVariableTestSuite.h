@@ -36,9 +36,9 @@ namespace gum_tests {
       gum::learning::DBTranslator4ContinuousVariable<> translator;
       TS_GUM_ASSERT_THROWS_NOTHING(translator.translate("3"));
       TS_ASSERT(translator.translate("3").cont_val == 3);
-      TS_ASSERT(
-        std::stof(translator.translateBack(gum::learning::DBTranslatedValue{3.0f}))
-        == 3);
+      TS_ASSERT(std::stof(translator.translateBack(
+                   gum::learning::DBTranslatedValue{3.0f}))
+                == 3);
 
       TS_ASSERT(translator.missingValue().cont_val
                 == std::numeric_limits< float >::max());
@@ -49,13 +49,13 @@ namespace gum_tests {
       TS_ASSERT(translator.translate("-5.34e3").cont_val == -5.34e3f);
       TS_ASSERT(translator.translate("-5.34e-34").cont_val == -5.34e-34f);
       TS_ASSERT(std::stof(translator.translateBack(
-                  gum::learning::DBTranslatedValue{-5.34f}))
+                   gum::learning::DBTranslatedValue{-5.34f}))
                 == -5.34f);
       TS_ASSERT(std::stof(translator.translateBack(
-                  gum::learning::DBTranslatedValue{-5.34e3f}))
+                   gum::learning::DBTranslatedValue{-5.34e3f}))
                 == -5.34e3f);
       TS_ASSERT(std::stof(translator.translateBack(
-                  gum::learning::DBTranslatedValue{-5.34e-34f}))
+                   gum::learning::DBTranslatedValue{-5.34e-34f}))
                 == -5.34e-34f);
       TS_ASSERT_THROWS(translator.translate("4.22x"), gum::TypeError);
       TS_ASSERT_THROWS(translator.translate("0x422"), gum::TypeError);
@@ -93,7 +93,7 @@ namespace gum_tests {
       int         good_cont = 1;
       try {
         const gum::ContinuousVariable< double >& xvar_cont =
-          dynamic_cast< const gum::ContinuousVariable< double >& >(tr_var);
+           dynamic_cast< const gum::ContinuousVariable< double >& >(tr_var);
         TS_ASSERT(xvar_cont.lowerBound() == -2.0);
         TS_ASSERT(xvar_cont.upperBound() == 10.0);
       } catch (std::bad_cast&) { good_cont = 0; }
@@ -101,7 +101,7 @@ namespace gum_tests {
 
       std::vector< std::string > missing4{"2", "N/A", "20", "4", "xxx", "-10"};
       gum::learning::DBTranslator4ContinuousVariable<> translator4(
-        var, missing4, true);
+         var, missing4, true);
       TS_ASSERT(!translator4.missingSymbols().exists("2"));
       TS_ASSERT(!translator4.missingSymbols().exists("4"));
       TS_ASSERT(translator4.missingSymbols().exists("20"));
@@ -118,20 +118,20 @@ namespace gum_tests {
       TS_ASSERT(translator4.translate("-12").cont_val == -12.0f);
       TS_ASSERT(translator4.translate("-10").cont_val == -10.0f);
       TS_ASSERT(std::stof(translator4.translateBack(
-                  gum::learning::DBTranslatedValue{5.3f}))
+                   gum::learning::DBTranslatedValue{5.3f}))
                 == 5.3f);
       TS_ASSERT_THROWS(
-        translator4.translateBack(gum::learning::DBTranslatedValue{50.0f}),
-        gum::UnknownLabelInDatabase);
+         translator4.translateBack(gum::learning::DBTranslatedValue{50.0f}),
+         gum::UnknownLabelInDatabase);
       TS_ASSERT_THROWS(
-        translator4.translateBack(gum::learning::DBTranslatedValue{-50.0f}),
-        gum::UnknownLabelInDatabase);
+         translator4.translateBack(gum::learning::DBTranslatedValue{-50.0f}),
+         gum::UnknownLabelInDatabase);
       TS_ASSERT(translator4.missingSymbols().exists(translator4.translateBack(
-        gum::learning::DBTranslatedValue{std::numeric_limits< float >::max()})));
+         gum::learning::DBTranslatedValue{std::numeric_limits< float >::max()})));
 
 
       gum::learning::DBTranslator4ContinuousVariable<> translator5(
-        var, missing4, true);
+         var, missing4, true);
       TS_ASSERT(!translator5.missingSymbols().exists("2"));
       TS_ASSERT(!translator5.missingSymbols().exists("4"));
       TS_ASSERT(translator5.translate("-10").cont_val
@@ -151,83 +151,87 @@ namespace gum_tests {
         std::vector< std::string > missing{"2", "N/A", "20", "4", "xxx", "-10"};
 
         gum::learning::DBTranslator4ContinuousVariable< MyAlloc > translator(
-          var, missing, true);
+           var, missing, true);
         TS_ASSERT(!translator.missingSymbols().exists("2"));
         TS_ASSERT(!translator.missingSymbols().exists("4"));
         TS_ASSERT(translator.translate("-10").cont_val
                   == std::numeric_limits< float >::max());
 
         TS_ASSERT(std::stof(translator.translateBack(
-                    gum::learning::DBTranslatedValue{5.3f}))
+                     gum::learning::DBTranslatedValue{5.3f}))
                   == 5.3f);
         TS_ASSERT_THROWS(
-          translator.translateBack(gum::learning::DBTranslatedValue{50.0f}),
-          gum::UnknownLabelInDatabase);
+           translator.translateBack(gum::learning::DBTranslatedValue{50.0f}),
+           gum::UnknownLabelInDatabase);
         TS_ASSERT_THROWS(
-          translator.translateBack(gum::learning::DBTranslatedValue{-50.0f}),
-          gum::UnknownLabelInDatabase);
-        TS_ASSERT(translator.missingSymbols().exists(translator.translateBack(
-          gum::learning::DBTranslatedValue{std::numeric_limits< float >::max()})));
+           translator.translateBack(gum::learning::DBTranslatedValue{-50.0f}),
+           gum::UnknownLabelInDatabase);
+        TS_ASSERT(translator.missingSymbols().exists(
+           translator.translateBack(gum::learning::DBTranslatedValue{
+              std::numeric_limits< float >::max()})));
 
         gum::learning::DBTranslator4ContinuousVariable< MyAlloc > translator2(
-          translator);
+           translator);
         TS_ASSERT(!translator2.missingSymbols().exists("2"));
         TS_ASSERT(!translator2.missingSymbols().exists("4"));
         TS_ASSERT(translator2.translate("-10").cont_val
                   == std::numeric_limits< float >::max());
 
         TS_ASSERT(std::stof(translator2.translateBack(
-                    gum::learning::DBTranslatedValue{5.3f}))
+                     gum::learning::DBTranslatedValue{5.3f}))
                   == 5.3f);
         TS_ASSERT_THROWS(
-          translator2.translateBack(gum::learning::DBTranslatedValue{50.0f}),
-          gum::UnknownLabelInDatabase);
+           translator2.translateBack(gum::learning::DBTranslatedValue{50.0f}),
+           gum::UnknownLabelInDatabase);
         TS_ASSERT_THROWS(
-          translator2.translateBack(gum::learning::DBTranslatedValue{-50.0f}),
-          gum::UnknownLabelInDatabase);
-        TS_ASSERT(translator2.missingSymbols().exists(translator2.translateBack(
-          gum::learning::DBTranslatedValue{std::numeric_limits< float >::max()})));
+           translator2.translateBack(gum::learning::DBTranslatedValue{-50.0f}),
+           gum::UnknownLabelInDatabase);
+        TS_ASSERT(translator2.missingSymbols().exists(
+           translator2.translateBack(gum::learning::DBTranslatedValue{
+              std::numeric_limits< float >::max()})));
 
         gum::learning::DBTranslator4ContinuousVariable< MyAlloc > translator3(
-          translator2);
+           translator2);
         TS_ASSERT(!translator3.missingSymbols().exists("2"));
         TS_ASSERT(!translator3.missingSymbols().exists("4"));
         TS_ASSERT(translator3.translate("-10").cont_val
                   == std::numeric_limits< float >::max());
 
         TS_ASSERT(std::stof(translator3.translateBack(
-                    gum::learning::DBTranslatedValue{5.3f}))
+                     gum::learning::DBTranslatedValue{5.3f}))
                   == 5.3f);
         TS_ASSERT_THROWS(
-          translator3.translateBack(gum::learning::DBTranslatedValue{50.0f}),
-          gum::UnknownLabelInDatabase);
+           translator3.translateBack(gum::learning::DBTranslatedValue{50.0f}),
+           gum::UnknownLabelInDatabase);
         TS_ASSERT_THROWS(
-          translator3.translateBack(gum::learning::DBTranslatedValue{-50.0f}),
-          gum::UnknownLabelInDatabase);
-        TS_ASSERT(translator3.missingSymbols().exists(translator3.translateBack(
-          gum::learning::DBTranslatedValue{std::numeric_limits< float >::max()})));
+           translator3.translateBack(gum::learning::DBTranslatedValue{-50.0f}),
+           gum::UnknownLabelInDatabase);
+        TS_ASSERT(translator3.missingSymbols().exists(
+           translator3.translateBack(gum::learning::DBTranslatedValue{
+              std::numeric_limits< float >::max()})));
 
         gum::learning::DBTranslator4ContinuousVariable< MyAlloc > translator4(
-          std::move(translator3));
+           std::move(translator3));
         TS_ASSERT(!translator4.missingSymbols().exists("2"));
         TS_ASSERT(!translator4.missingSymbols().exists("4"));
         TS_ASSERT(translator4.translate("-10").cont_val
                   == std::numeric_limits< float >::max());
 
         TS_ASSERT(std::stof(translator4.translateBack(
-                    gum::learning::DBTranslatedValue{5.3f}))
+                     gum::learning::DBTranslatedValue{5.3f}))
                   == 5.3f);
         TS_ASSERT_THROWS(
-          translator4.translateBack(gum::learning::DBTranslatedValue{50.0f}),
-          gum::UnknownLabelInDatabase);
+           translator4.translateBack(gum::learning::DBTranslatedValue{50.0f}),
+           gum::UnknownLabelInDatabase);
         TS_ASSERT_THROWS(
-          translator4.translateBack(gum::learning::DBTranslatedValue{-50.0f}),
-          gum::UnknownLabelInDatabase);
-        TS_ASSERT(translator4.missingSymbols().exists(translator4.translateBack(
-          gum::learning::DBTranslatedValue{std::numeric_limits< float >::max()})));
+           translator4.translateBack(gum::learning::DBTranslatedValue{-50.0f}),
+           gum::UnknownLabelInDatabase);
+        TS_ASSERT(translator4.missingSymbols().exists(
+           translator4.translateBack(gum::learning::DBTranslatedValue{
+              std::numeric_limits< float >::max()})));
 
         gum::learning::DBTranslator4ContinuousVariable< MyAlloc >* translator5 =
-          translator4.clone();
+           translator4.clone();
 
         TS_ASSERT(!translator5->missingSymbols().exists("2"));
         TS_ASSERT(!translator5->missingSymbols().exists("4"));
@@ -235,19 +239,20 @@ namespace gum_tests {
                   == std::numeric_limits< float >::max());
 
         TS_ASSERT(std::stof(translator5->translateBack(
-                    gum::learning::DBTranslatedValue{5.3f}))
+                     gum::learning::DBTranslatedValue{5.3f}))
                   == 5.3f);
         TS_ASSERT_THROWS(
-          translator5->translateBack(gum::learning::DBTranslatedValue{50.0f}),
-          gum::UnknownLabelInDatabase);
+           translator5->translateBack(gum::learning::DBTranslatedValue{50.0f}),
+           gum::UnknownLabelInDatabase);
         TS_ASSERT_THROWS(
-          translator5->translateBack(gum::learning::DBTranslatedValue{-50.0f}),
-          gum::UnknownLabelInDatabase);
-        TS_ASSERT(translator5->missingSymbols().exists(translator5->translateBack(
-          gum::learning::DBTranslatedValue{std::numeric_limits< float >::max()})));
+           translator5->translateBack(gum::learning::DBTranslatedValue{-50.0f}),
+           gum::UnknownLabelInDatabase);
+        TS_ASSERT(translator5->missingSymbols().exists(
+           translator5->translateBack(gum::learning::DBTranslatedValue{
+              std::numeric_limits< float >::max()})));
 
         MyAlloc< gum::learning::DBTranslator4ContinuousVariable< MyAlloc > >
-          allocator(translator5->getAllocator());
+           allocator(translator5->getAllocator());
         allocator.destroy(translator5);
         allocator.deallocate(translator5, 1);
 

@@ -31,9 +31,10 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE Apriori< ALLOC >::Apriori(
-      const DatabaseTable< ALLOC >&                                 database,
-      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename Apriori< ALLOC >::allocator_type&              alloc) :
+       const DatabaseTable< ALLOC >& database,
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                                                        nodeId2columns,
+       const typename Apriori< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc),
         _database(&database), _nodeId2columns(nodeId2columns) {
       GUM_CONSTRUCTOR(Apriori);
@@ -43,8 +44,8 @@ namespace gum {
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE Apriori< ALLOC >::Apriori(
-      const Apriori< ALLOC >&                          from,
-      const typename Apriori< ALLOC >::allocator_type& alloc) :
+       const Apriori< ALLOC >&                          from,
+       const typename Apriori< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc),
         _weight(from._weight), _database(from._database),
         _nodeId2columns(from._nodeId2columns) {
@@ -61,8 +62,8 @@ namespace gum {
     /// move constructor
     template < template < typename > class ALLOC >
     INLINE Apriori< ALLOC >::Apriori(
-      Apriori< ALLOC >&&                               from,
-      const typename Apriori< ALLOC >::allocator_type& alloc) :
+       Apriori< ALLOC >&&                               from,
+       const typename Apriori< ALLOC >::allocator_type& alloc) :
         ALLOC< NodeId >(alloc),
         _weight(from._weight), _database(from._database),
         _nodeId2columns(std::move(from._nodeId2columns)) {
@@ -129,7 +130,7 @@ namespace gum {
     /// returns the allocator used by the translator
     template < template < typename > class ALLOC >
     INLINE typename Apriori< ALLOC >::allocator_type
-      Apriori< ALLOC >::getAllocator() const {
+       Apriori< ALLOC >::getAllocator() const {
       return *this;
     }
 

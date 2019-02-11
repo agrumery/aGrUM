@@ -156,11 +156,11 @@ namespace gum {
       /** @brief To print an enum field name instead of it's value. Used with
        * GUM_ERROR. */
       const char* __setUpStateNames[5] = {
-        enumStringify(__states::none),
-        enumStringify(__states::nHup),
-        enumStringify(__states::nVup),
-        enumStringify(__states::nH2Vready),
-        enumStringify(__states::nV2Hready),
+         enumStringify(__states::none),
+         enumStringify(__states::nHup),
+         enumStringify(__states::nVup),
+         enumStringify(__states::nH2Vready),
+         enumStringify(__states::nV2Hready),
       };
 
       /**

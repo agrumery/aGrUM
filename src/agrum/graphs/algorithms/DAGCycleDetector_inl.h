@@ -80,7 +80,7 @@ namespace gum {
 
   /// returns the type of the operation
   INLINE DAGCycleDetector::ChangeType DAGCycleDetector::Change::type() const
-    noexcept {
+     noexcept {
     return __type;
   }
 
@@ -99,7 +99,7 @@ namespace gum {
   /// default constructor
   INLINE DAGCycleDetector::ArcAdd::ArcAdd(NodeId tail, NodeId head) noexcept :
       DAGCycleDetector::Change(
-        DAGCycleDetector::ChangeType::ARC_ADDITION, tail, head) {
+         DAGCycleDetector::ChangeType::ARC_ADDITION, tail, head) {
     GUM_CONSTRUCTOR(DAGCycleDetector::ArcAdd);
   }
 
@@ -114,7 +114,7 @@ namespace gum {
   INLINE
   DAGCycleDetector::ArcAdd::ArcAdd(DAGCycleDetector::ArcAdd&& from) noexcept :
       DAGCycleDetector::Change(
-        std::move(from.type()), std::move(from.tail()), std::move(from.head())) {
+         std::move(from.type()), std::move(from.tail()), std::move(from.head())) {
     GUM_CONS_MOV(DAGCycleDetector::ArcAdd);
   }
 
@@ -146,7 +146,7 @@ namespace gum {
   /// default constructor
   INLINE DAGCycleDetector::ArcDel::ArcDel(NodeId tail, NodeId head) noexcept :
       DAGCycleDetector::Change(
-        DAGCycleDetector::ChangeType::ARC_DELETION, tail, head) {
+         DAGCycleDetector::ChangeType::ARC_DELETION, tail, head) {
     GUM_CONSTRUCTOR(DAGCycleDetector::ArcDel);
   }
 
@@ -161,7 +161,7 @@ namespace gum {
   INLINE
   DAGCycleDetector::ArcDel::ArcDel(DAGCycleDetector::ArcDel&& from) noexcept :
       DAGCycleDetector::Change(
-        std::move(from.type()), std::move(from.tail()), std::move(from.head())) {
+         std::move(from.type()), std::move(from.tail()), std::move(from.head())) {
     GUM_CONS_MOV(DAGCycleDetector::ArcDel);
   }
 
@@ -194,22 +194,22 @@ namespace gum {
   INLINE DAGCycleDetector::ArcReverse::ArcReverse(NodeId tail,
                                                   NodeId head) noexcept :
       DAGCycleDetector::Change(
-        DAGCycleDetector::ChangeType::ARC_REVERSAL, tail, head) {
+         DAGCycleDetector::ChangeType::ARC_REVERSAL, tail, head) {
     GUM_CONSTRUCTOR(DAGCycleDetector::ArcReverse);
   }
 
   /// copy constructor
   INLINE DAGCycleDetector::ArcReverse::ArcReverse(
-    const DAGCycleDetector::ArcReverse& from) noexcept :
+     const DAGCycleDetector::ArcReverse& from) noexcept :
       DAGCycleDetector::Change(from.type(), from.tail(), from.head()) {
     GUM_CONS_CPY(DAGCycleDetector::ArcReverse);
   }
 
   /// move constructor
   INLINE DAGCycleDetector::ArcReverse::ArcReverse(
-    DAGCycleDetector::ArcReverse&& from) noexcept :
+     DAGCycleDetector::ArcReverse&& from) noexcept :
       DAGCycleDetector::Change(
-        std::move(from.type()), std::move(from.tail()), std::move(from.head())) {
+         std::move(from.type()), std::move(from.tail()), std::move(from.head())) {
     GUM_CONS_MOV(DAGCycleDetector::ArcReverse);
   }
 
@@ -287,19 +287,19 @@ namespace gum {
 
   /// indicates whether an arc addition would create a cycle
   INLINE bool DAGCycleDetector::hasCycleFromAddition(NodeId x, NodeId y) const
-    noexcept {
+     noexcept {
     return __descendants[y].exists(x);
   }
 
   /// indicates wether an arc reversal would create a cycle
   INLINE bool DAGCycleDetector::hasCycleFromReversal(NodeId x, NodeId y) const
-    noexcept {
+     noexcept {
     return (__ancestors[y][x] > 1);
   }
 
   /// indicates whether an arc deletion would create a cycle
   INLINE bool DAGCycleDetector::hasCycleFromDeletion(NodeId x, NodeId y) const
-    noexcept {
+     noexcept {
     return false;
   }
 
@@ -336,9 +336,9 @@ namespace gum {
    * belong to a set of arc extremities */
   INLINE
   void DAGCycleDetector::__restrictWeightedSet(
-    NodeProperty< Size >&       result_set,
-    const NodeProperty< Size >& set_to_restrict,
-    const NodeSet&              extremities) const {
+     NodeProperty< Size >&       result_set,
+     const NodeProperty< Size >& set_to_restrict,
+     const NodeSet&              extremities) const {
     for (auto iter = set_to_restrict.cbegin(); iter != set_to_restrict.cend();
          ++iter) {
       if (extremities.exists(iter.key())) {
@@ -361,7 +361,7 @@ namespace gum {
   /// check the equality between two DAGCycleDetectors
   INLINE bool DAGCycleDetector::operator==(const DAGCycleDetector& from) const {
     return (   //( __dagmodel == from.__dagmodel ) &&
-      (__ancestors == from.__ancestors) && (__descendants == from.__descendants));
+       (__ancestors == from.__ancestors) && (__descendants == from.__descendants));
   }
 
   /// check the inequality between two DAGCycleDetectors

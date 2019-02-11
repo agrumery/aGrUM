@@ -42,14 +42,14 @@ namespace gum {
              template < class >
              class ICPTDisturber >
   INLINE
-    MaxParentsMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
-      MaxParentsMCBayesNetGenerator(Size nbrNodes,
-                                    Size maxArcs,
-                                    Size maxModality,
-                                    Size maxParents,
-                                    Idx  iteration,
-                                    Idx  p,
-                                    Idx  q) :
+     MaxParentsMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
+        MaxParentsMCBayesNetGenerator(Size nbrNodes,
+                                      Size maxArcs,
+                                      Size maxModality,
+                                      Size maxParents,
+                                      Idx  iteration,
+                                      Idx  p,
+                                      Idx  q) :
       MCBG(nbrNodes, maxArcs, maxModality, iteration, p, q) {
     if (maxParents == 0)
       GUM_ERROR(OperationNotAllowed,
@@ -65,12 +65,12 @@ namespace gum {
              template < class >
              class ICPTDisturber >
   INLINE
-    MaxParentsMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
-      MaxParentsMCBayesNetGenerator(BayesNet< GUM_SCALAR > bayesNet,
-                                    Size                   maxParents,
-                                    Idx                    iteration,
-                                    Idx                    p,
-                                    Idx                    q) :
+     MaxParentsMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
+        MaxParentsMCBayesNetGenerator(BayesNet< GUM_SCALAR > bayesNet,
+                                      Size                   maxParents,
+                                      Idx                    iteration,
+                                      Idx                    p,
+                                      Idx                    q) :
       MCBG(bayesNet, iteration, p, q) {
     _maxParents = maxParents;
     GUM_CONSTRUCTOR(MaxParentsMCBayesNetGenerator);
@@ -83,8 +83,8 @@ namespace gum {
              template < class >
              class ICPTDisturber >
   INLINE
-    MaxParentsMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
-      ~MaxParentsMCBayesNetGenerator() {
+     MaxParentsMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
+        ~MaxParentsMCBayesNetGenerator() {
     GUM_DESTRUCTOR(MaxParentsMCBayesNetGenerator);
   }
 
@@ -94,7 +94,7 @@ namespace gum {
              template < class >
              class ICPTDisturber >
   bool MaxParentsMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
-    __checkConditions() {
+     __checkConditions() {
     for (auto node : this->_bayesNet.nodes())
       if (this->_bayesNet.parents(node).size() > _maxParents) return false;
 
@@ -117,8 +117,8 @@ namespace gum {
              template < class >
              class ICPTDisturber >
   INLINE void
-    MaxParentsMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
-      setMaxParents(Size maxParents) {
+     MaxParentsMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
+        setMaxParents(Size maxParents) {
     if (maxParents == 0)
       GUM_ERROR(OperationNotAllowed,
                 "maxParents must be at least equal to 1 to have a connexe graph");

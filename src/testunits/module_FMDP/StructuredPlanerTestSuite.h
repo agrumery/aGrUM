@@ -40,8 +40,8 @@ namespace gum_tests {
       gum::FMDP< double >              fmdp(true);
       gum::StructuredPlaner< double >* planer = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
-        planer =
-          gum::StructuredPlaner< double >::spumddInstance(0.9, 0.01, false));
+         planer =
+            gum::StructuredPlaner< double >::spumddInstance(0.9, 0.01, false));
 
       gum::FMDPDatReader< double > reader(&fmdp, file);
       TS_GUM_ASSERT_THROWS_NOTHING(reader.trace(false));

@@ -114,8 +114,9 @@ namespace gum {
   };
 
 
-  extern template class O3prmBNWriter< float >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class O3prmBNWriter< double >;
+#endif
 
 } /* namespace gum */
 

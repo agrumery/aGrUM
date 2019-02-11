@@ -43,9 +43,9 @@ namespace gum {
 
   /// constructor for an a priori non empty graph
   OrderedEliminationSequenceStrategy::OrderedEliminationSequenceStrategy(
-    UndiGraph*                   graph,
-    const NodeProperty< Size >*  dom_sizes,
-    const std::vector< NodeId >* order) :
+     UndiGraph*                   graph,
+     const NodeProperty< Size >*  dom_sizes,
+     const std::vector< NodeId >* order) :
       EliminationSequenceStrategy(graph, dom_sizes) {
     // check that the user passed appropriate graphs and orders
     if (((graph == nullptr) && (order != nullptr))
@@ -63,7 +63,7 @@ namespace gum {
 
   /// copy constructor
   OrderedEliminationSequenceStrategy::OrderedEliminationSequenceStrategy(
-    const OrderedEliminationSequenceStrategy& from) :
+     const OrderedEliminationSequenceStrategy& from) :
       EliminationSequenceStrategy(from),
       __order(from.__order), __order_index(from.__order_index),
       __order_needed(from.__order_needed) {
@@ -73,7 +73,7 @@ namespace gum {
 
   /// move constructor
   OrderedEliminationSequenceStrategy::OrderedEliminationSequenceStrategy(
-    OrderedEliminationSequenceStrategy&& from) :
+     OrderedEliminationSequenceStrategy&& from) :
       EliminationSequenceStrategy(std::move(from)),
       __order(from.__order), __order_index(from.__order_index),
       __order_needed(from.__order_needed) {
@@ -90,19 +90,19 @@ namespace gum {
   /** @brief creates a new elimination sequence of the same type as the current
    * object, but this sequence contains only an empty graph */
   OrderedEliminationSequenceStrategy*
-    OrderedEliminationSequenceStrategy::newFactory() const {
+     OrderedEliminationSequenceStrategy::newFactory() const {
     return new OrderedEliminationSequenceStrategy();
   }
 
   /// virtual copy constructor
   OrderedEliminationSequenceStrategy*
-    OrderedEliminationSequenceStrategy::copyFactory() const {
+     OrderedEliminationSequenceStrategy::copyFactory() const {
     return new OrderedEliminationSequenceStrategy(*this);
   }
 
   /// sets a new graph to be triangulated
   bool OrderedEliminationSequenceStrategy::setGraph(
-    UndiGraph* graph, const NodeProperty< Size >* domain_sizes) {
+     UndiGraph* graph, const NodeProperty< Size >* domain_sizes) {
     if (EliminationSequenceStrategy::setGraph(graph, domain_sizes)) {
       setOrder(__order);
       return true;
@@ -113,7 +113,7 @@ namespace gum {
 
   /// indicates whether an order is compatible with the current graph
   bool OrderedEliminationSequenceStrategy::__isOrderNeeded(
-    const std::vector< NodeId >* order) const {
+     const std::vector< NodeId >* order) const {
     if ((_graph == nullptr) || (order == nullptr)) return true;
 
     // determine the set of nodes in the order that belong to the graph
@@ -128,7 +128,7 @@ namespace gum {
 
   /// sets a new complete order
   bool OrderedEliminationSequenceStrategy::setOrder(
-    const std::vector< NodeId >* order) {
+     const std::vector< NodeId >* order) {
     // check that the order contains all the nodes of the graph
     __order_needed = __isOrderNeeded(order);
 
@@ -194,8 +194,8 @@ namespace gum {
           || ((*__order)[__order_index] != node)) {
         GUM_ERROR(OutOfBounds,
                   "update impossible because node "
-                    << node
-                    << " does not correspond to the current elimination index");
+                     << node
+                     << " does not correspond to the current elimination index");
       }
 
       // now perform the update: goto the next node that belongs to _graph

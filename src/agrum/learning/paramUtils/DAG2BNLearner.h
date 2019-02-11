@@ -114,7 +114,8 @@ namespace gum {
       /// create a BN from a DAG using a two pass generator (typically EM)
       /** The bootstrap estimator is used once to provide an inital BN. This
        * one is used by the second estimator. The later is exploited in a loop
-       * until the stopping condition is met (max of relative error on every parameter<epsilon) */
+       * until the stopping condition is met (max of relative error on every
+       * parameter<epsilon) */
       template < typename GUM_SCALAR = double >
       BayesNet< GUM_SCALAR > createBN(ParamEstimator< ALLOC >& bootstrap_estimator,
                                       ParamEstimator< ALLOC >& general_estimator,
@@ -136,8 +137,8 @@ namespace gum {
        * order differs */
       template < typename GUM_SCALAR = double >
       static void
-        __probaVarReordering(gum::Potential< GUM_SCALAR >&       pot,
-                             const gum::Potential< GUM_SCALAR >& other_pot);
+         __probaVarReordering(gum::Potential< GUM_SCALAR >&       pot,
+                              const gum::Potential< GUM_SCALAR >& other_pot);
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

@@ -37,8 +37,11 @@ namespace gum {
       first_time = false;
       __SetIterEndSafe = new SetIteratorSafe< int >;
 #  ifdef GUM_DEBUG_MODE
-      __debug__::__dec_creation(
-        "SetIteratorSafe", "__set_static_end", 0, "static variable correction", 0);
+      __debug__::__dec_creation("SetIteratorSafe",
+                                "__set_static_end",
+                                0,
+                                "static variable correction",
+                                0);
       __debug__::__dec_creation("HashTableConstIteratorSafe",
                                 "__set_static_end",
                                 0,
@@ -64,7 +67,7 @@ namespace gum {
       __SetIterEnd = new SetIterator< int >;
 #  ifdef GUM_DEBUG_MODE
       __debug__::__dec_creation(
-        "SetIterator", "__set_static_end", 0, "static variable correction", 0);
+         "SetIterator", "__set_static_end", 0, "static variable correction", 0);
       __debug__::__dec_creation("HashTableConstIterator",
                                 "__set_static_end",
                                 0,
@@ -83,21 +86,93 @@ namespace gum {
 
   // create the end iterator for all Sets
   const SetIteratorSafe< int >* SetIteratorStaticEnd::__SetIterEndSafe =
-    SetIteratorStaticEnd::endSafe4Statics();
+     SetIteratorStaticEnd::endSafe4Statics();
 
   // create the end iterator for all Sets
   const SetIterator< int >* SetIteratorStaticEnd::__SetIterEnd =
-    SetIteratorStaticEnd::end4Statics();
+     SetIteratorStaticEnd::end4Statics();
 
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#        ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#          ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::Set< int >;
+#          endif
+#        endif
+#      endif
+#    endif
+#  endif
+#endif
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#        ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#          ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::Set< long >;
+#          endif
+#        endif
+#      endif
+#    endif
+#  endif
+#endif
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#        ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#          ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::Set< unsigned int >;
+#          endif
+#        endif
+#      endif
+#    endif
+#  endif
+#endif
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#        ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#          ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::Set< unsigned long >;
-template class gum::Set< float >;
+#          endif
+#        endif
+#      endif
+#    endif
+#  endif
+#endif
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#        ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#          ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::Set< double >;
+#          endif
+#        endif
+#      endif
+#    endif
+#  endif
+#endif
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#        ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#          ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 template class gum::Set< std::string >;
+#          endif
+#        endif
+#      endif
+#    endif
+#  endif
+#endif

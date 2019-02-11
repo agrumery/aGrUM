@@ -75,16 +75,16 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       ParamEstimatorML(
-        const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori< ALLOC >&              external_apriori,
-        const Apriori< ALLOC >&              score_internal__apriori,
-        const std::vector< std::pair< std::size_t, std::size_t >,
-                           ALLOC< std::pair< std::size_t, std::size_t > > >&
-          ranges,
-        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-          nodeId2columns =
-            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-        const allocator_type& alloc = allocator_type());
+         const DBRowGeneratorParser< ALLOC >& parser,
+         const Apriori< ALLOC >&              external_apriori,
+         const Apriori< ALLOC >&              score_internal__apriori,
+         const std::vector< std::pair< std::size_t, std::size_t >,
+                            ALLOC< std::pair< std::size_t, std::size_t > > >&
+            ranges,
+         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+            nodeId2columns =
+               Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+         const allocator_type& alloc = allocator_type());
 
       /// default constructor
       /** @param parser the parser used to parse the database
@@ -105,13 +105,13 @@ namespace gum {
        * ids belonging to this bijection can be computed: applying method
        * score() over other ids will raise exception NotFound. */
       ParamEstimatorML(
-        const DBRowGeneratorParser< ALLOC >& parser,
-        const Apriori< ALLOC >&              external_apriori,
-        const Apriori< ALLOC >&              score_internal__apriori,
-        const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
-          nodeId2columns =
-            Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
-        const allocator_type& alloc = allocator_type());
+         const DBRowGeneratorParser< ALLOC >& parser,
+         const Apriori< ALLOC >&              external_apriori,
+         const Apriori< ALLOC >&              score_internal__apriori,
+         const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+            nodeId2columns =
+               Bijection< NodeId, std::size_t, ALLOC< std::size_t > >(),
+         const allocator_type& alloc = allocator_type());
 
       /// copy constructor
       ParamEstimatorML(const ParamEstimatorML< ALLOC >& from);
@@ -170,8 +170,8 @@ namespace gum {
        * @throw DatabaseError is raised if some values of the conditioning sets
        * were not observed in the database. */
       virtual std::vector< double, ALLOC< double > > parameters(
-        const NodeId                                  target_node,
-        const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes);
+         const NodeId                                  target_node,
+         const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes);
 
       /// @}
     };

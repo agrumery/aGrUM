@@ -1,4 +1,4 @@
-%feature("docstring") gum::KL::compute
+%feature("docstring") gum::BNdistance::compute
 "
 Returns
 -------

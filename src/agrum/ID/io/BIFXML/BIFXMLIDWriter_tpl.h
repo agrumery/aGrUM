@@ -49,7 +49,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE void BIFXMLIDWriter< GUM_SCALAR >::write(
-    std::ostream& output, const InfluenceDiagram< GUM_SCALAR >& infdiag) {
+     std::ostream& output, const InfluenceDiagram< GUM_SCALAR >& infdiag) {
     if (!output.good()) {
       GUM_ERROR(IOError, "Stream states flags are not all unset.");
     }
@@ -91,7 +91,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE void BIFXMLIDWriter< GUM_SCALAR >::write(
-    std::string filePath, const InfluenceDiagram< GUM_SCALAR >& infdiag) {
+     std::string filePath, const InfluenceDiagram< GUM_SCALAR >& infdiag) {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
 
     write(output, infdiag);
@@ -149,7 +149,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE std::string
          BIFXMLIDWriter< GUM_SCALAR >::__variableBloc(const DiscreteVariable& var,
-                                                 int                     varType) {
+                                                  int varType) {
     //<VARIABLE TYPE="nature|decision|utility">
     //<NAME>name</NAME>
     //<OUTCOME>outcome1</OUTCOME>
@@ -194,7 +194,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE std::string BIFXMLIDWriter< GUM_SCALAR >::__variableDefinition(
-    const NodeId& varNodeId, const InfluenceDiagram< GUM_SCALAR >& infdiag) {
+     const NodeId& varNodeId, const InfluenceDiagram< GUM_SCALAR >& infdiag) {
     //<DEFINITION>
     //<FOR>var</FOR>
     //<GIVEN>conditional var</GIVEN>

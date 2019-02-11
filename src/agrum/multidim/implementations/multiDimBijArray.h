@@ -51,7 +51,7 @@ namespace gum {
   class MultiDimBijArray : public MultiDimWithOffset< GUM_SCALAR > {
     public:
     using VarBijection =
-      Bijection< const DiscreteVariable*, const DiscreteVariable* >;
+       Bijection< const DiscreteVariable*, const DiscreteVariable* >;
 
     // =========================================================================
     /// @name Constructors / Destructors
@@ -104,7 +104,7 @@ namespace gum {
      * structure.
      */
     MultiDimBijArray< GUM_SCALAR >&
-      operator=(const MultiDimBijArray< GUM_SCALAR >& from);
+       operator=(const MultiDimBijArray< GUM_SCALAR >& from);
 
     /**
      * @warning This will raise an exception: read only structure.
@@ -184,8 +184,9 @@ namespace gum {
   };
 
 
-  extern template class MultiDimBijArray< float >;
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class MultiDimBijArray< double >;
+#endif
 
 }   // namespace gum
 

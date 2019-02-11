@@ -51,9 +51,9 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     ref = gum.loadBN(self.agrumSrcDir(
         'src/testunits/ressources/asia2.bif'), verbose=False)
 
-    f = gum.BruteForceKL(bn, ref)
+    f = gum.ExactBNdistance(bn, ref)
     res = f.compute()
-    self.assertDelta(res['klPQ'], 0, 1)
+    self.assertAlmostEqual(res['klPQ'], 0.5, delta=0.5)
 
   def testLocalSearchWithTabu(self):
     with self.assertRaises(gum.IOError):
@@ -77,9 +77,9 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     ref = gum.loadBN(self.agrumSrcDir(
         'src/testunits/ressources/asia2.bif'), verbose=False)
 
-    f = gum.BruteForceKL(bn, ref)
+    f = gum.ExactBNdistance(bn, ref)
     res = f.compute()
-    self.assertDelta(res['klPQ'], 0, 1)
+    self.assertAlmostEqual(res['klPQ'], 0.5, delta=0.5)
 
   def testParameterLearning(self):
     bn = gum.loadBN(self.agrumSrcDir(
@@ -249,6 +249,73 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     learner.useEM(1e-3)
     learner.useAprioriSmoothing()
     learner.learnParameters(dag, False)
+
+  def test_chi2(self):
+    learner=gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/asia3.csv'))
+
+    stat,pvalue = learner.chi2("smoking?", "lung_cancer?")
+    self.assertAlmostEqual(stat, 36.2256, delta=1e-4)
+    self.assertAlmostEqual(pvalue, 0, delta=1e-4)
+
+    stat,pvalue= learner.chi2("smoking?", "visit_to_Asia?")
+    self.assertAlmostEqual(stat, 1.1257, delta=1e-4)
+    self.assertAlmostEqual(pvalue, 0.2886, delta=1e-4)
+
+    stat,pvalue= learner.chi2("lung_cancer?", "tuberculosis?")
+    self.assertAlmostEqual(stat, 0.6297, delta=1e-4)
+    self.assertAlmostEqual(pvalue, 0.4274, delta=1e-4)
+
+    stat,pvalue =learner.chi2("lung_cancer?", "tuberculosis?", ["tuberculos_or_cancer?"])
+    self.assertAlmostEqual(stat, 58.0, delta=1e-4)
+    self.assertAlmostEqual(pvalue, 0.0, delta=1e-4)
+
+    learner2=gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/chi2.csv'))
+
+    stat,pvalue = learner2.chi2("A", "C")
+    self.assertAlmostEqual(stat, 0.0007, delta=1e-3)
+    self.assertAlmostEqual(pvalue, 0.978, delta=1e-3)
+
+    stat,pvalue = learner2.chi2("A", "B")
+    self.assertAlmostEqual(stat, 21.4348, delta=1e-3)
+    self.assertAlmostEqual(pvalue, 3.6e-6, delta=1e-5)
+
+    stat,pvalue = learner2.chi2("B", "A")
+    self.assertAlmostEqual(stat, 21.4348, delta=1e-3)
+    self.assertAlmostEqual(pvalue, 3.6e-6,delta= 1e-5)
+
+    stat,pvalue = learner2.chi2("B", "D")
+    self.assertAlmostEqual(stat, 0.903, delta=1e-3)
+    self.assertAlmostEqual(pvalue, 0.341, delta=1e-3)
+
+    stat,pvalue = learner2.chi2("A", "C", ["B"])
+    self.assertAlmostEqual(stat, 15.2205, delta=1e-3)
+    self.assertAlmostEqual(pvalue, 0.0005, delta=1e-4)
+
+
+  def test_loglikelihood(self):
+    learner=gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/chi2.csv'))
+    self.assertEqual(learner.nbRows(), 500)
+    self.assertEqual(learner.nbCols(), 4)
+
+    siz = -1.0 * learner.nbRows();
+
+    stat = learner.logLikelihood(["A"]) / siz  # LL=-N.H
+    self.assertAlmostEqual(stat, 0.99943499, delta=1e-5)
+    stat = learner.logLikelihood(["B"]) / siz  # LL=-N.H
+    self.assertAlmostEqual(stat, 0.9986032, delta=1e-5)
+    stat = learner.logLikelihood(["A", "B"]) / siz  # LL=-N.H
+    self.assertAlmostEqual(stat, 1.9668973, delta=1e-5)
+    stat = learner.logLikelihood(["A"], ["B"]) / siz  # LL=-N.H
+    self.assertAlmostEqual(stat, 1.9668973 - 0.9986032, delta=1e-5)
+
+    stat = learner.logLikelihood(["C"]) / siz  # LL=-N.H
+    self.assertAlmostEqual(stat, 0.99860302, delta=1e-5)
+    stat = learner.logLikelihood(["D"]) / siz  # LL=-N.H
+    self.assertAlmostEqual(stat, 0.40217919, delta=1e-5)
+    stat = learner.logLikelihood(["C", "D"]) / siz  # LL=-N.H
+    self.assertAlmostEqual(stat, 1.40077995, delta=1e-5)
+    stat = learner.logLikelihood(["C"], ["D"]) / siz  # LL=-N.H
+    self.assertAlmostEqual(stat, 1.40077995 - 0.40217919, delta=1e-5)
 
 
 ts = unittest.TestSuite()

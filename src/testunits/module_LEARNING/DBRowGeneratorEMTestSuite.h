@@ -31,9 +31,9 @@ namespace gum_tests {
   class DBRowGeneratorEMTestSuite : public CxxTest::TestSuite {
     private:
     gum::Potential< double > __infer(
-      const gum::BayesNet< double >&                                  bn,
-      const std::vector< std::size_t >&                               targets,
-      const gum::learning::DBRow< gum::learning::DBTranslatedValue >& row) {
+       const gum::BayesNet< double >&                                  bn,
+       const std::vector< std::size_t >&                               targets,
+       const gum::learning::DBRow< gum::learning::DBTranslatedValue >& row) {
       gum::LazyPropagation< double > ve(&bn);
 
       gum::NodeSet target_set;
@@ -57,10 +57,10 @@ namespace gum_tests {
     public:
     void test_basic() {
       const std::vector< gum::learning::DBTranslatedValueType > col_types{
-        gum::learning::DBTranslatedValueType::DISCRETE,
-        gum::learning::DBTranslatedValueType::DISCRETE,
-        gum::learning::DBTranslatedValueType::DISCRETE,
-        gum::learning::DBTranslatedValueType::DISCRETE};
+         gum::learning::DBTranslatedValueType::DISCRETE,
+         gum::learning::DBTranslatedValueType::DISCRETE,
+         gum::learning::DBTranslatedValueType::DISCRETE,
+         gum::learning::DBTranslatedValueType::DISCRETE};
 
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D");
       bn.cpt("A").fillWith({0.3, 0.7});
@@ -72,43 +72,43 @@ namespace gum_tests {
       TS_ASSERT(!generator.hasRows());
 
       const gum::learning::DBRow< gum::learning::DBTranslatedValue > input_row1{
-        gum::learning::DBTranslatedValue{std::size_t(0)},
-        gum::learning::DBTranslatedValue{std::size_t(1)},
-        gum::learning::DBTranslatedValue{std::size_t(1)},
-        gum::learning::DBTranslatedValue{std::size_t(0)}};
+         gum::learning::DBTranslatedValue{std::size_t(0)},
+         gum::learning::DBTranslatedValue{std::size_t(1)},
+         gum::learning::DBTranslatedValue{std::size_t(1)},
+         gum::learning::DBTranslatedValue{std::size_t(0)}};
 
       const gum::learning::DBRow< gum::learning::DBTranslatedValue > input_row2{
-        gum::learning::DBTranslatedValue{std::size_t(0)},
-        gum::learning::DBTranslatedValue{
-          std::numeric_limits< std::size_t >::max()},
-        gum::learning::DBTranslatedValue{std::size_t(1)},
-        gum::learning::DBTranslatedValue{std::size_t(0)}};
+         gum::learning::DBTranslatedValue{std::size_t(0)},
+         gum::learning::DBTranslatedValue{
+            std::numeric_limits< std::size_t >::max()},
+         gum::learning::DBTranslatedValue{std::size_t(1)},
+         gum::learning::DBTranslatedValue{std::size_t(0)}};
 
       const gum::learning::DBRow< gum::learning::DBTranslatedValue > input_row3{
-        gum::learning::DBTranslatedValue{std::size_t(0)},
-        gum::learning::DBTranslatedValue{
-          std::numeric_limits< std::size_t >::max()},
-        gum::learning::DBTranslatedValue{
-          std::numeric_limits< std::size_t >::max()},
-        gum::learning::DBTranslatedValue{std::size_t(0)}};
+         gum::learning::DBTranslatedValue{std::size_t(0)},
+         gum::learning::DBTranslatedValue{
+            std::numeric_limits< std::size_t >::max()},
+         gum::learning::DBTranslatedValue{
+            std::numeric_limits< std::size_t >::max()},
+         gum::learning::DBTranslatedValue{std::size_t(0)}};
 
       const gum::learning::DBRow< gum::learning::DBTranslatedValue > input_row4{
-        gum::learning::DBTranslatedValue{
-          std::numeric_limits< std::size_t >::max()},
-        gum::learning::DBTranslatedValue{
-          std::numeric_limits< std::size_t >::max()},
-        gum::learning::DBTranslatedValue{std::size_t(1)},
-        gum::learning::DBTranslatedValue{std::size_t(0)}};
+         gum::learning::DBTranslatedValue{
+            std::numeric_limits< std::size_t >::max()},
+         gum::learning::DBTranslatedValue{
+            std::numeric_limits< std::size_t >::max()},
+         gum::learning::DBTranslatedValue{std::size_t(1)},
+         gum::learning::DBTranslatedValue{std::size_t(0)}};
 
       const gum::learning::DBRow< gum::learning::DBTranslatedValue > input_row5{
-        gum::learning::DBTranslatedValue{
-          std::numeric_limits< std::size_t >::max()},
-        gum::learning::DBTranslatedValue{
-          std::numeric_limits< std::size_t >::max()},
-        gum::learning::DBTranslatedValue{
-          std::numeric_limits< std::size_t >::max()},
-        gum::learning::DBTranslatedValue{
-          std::numeric_limits< std::size_t >::max()}};
+         gum::learning::DBTranslatedValue{
+            std::numeric_limits< std::size_t >::max()},
+         gum::learning::DBTranslatedValue{
+            std::numeric_limits< std::size_t >::max()},
+         gum::learning::DBTranslatedValue{
+            std::numeric_limits< std::size_t >::max()},
+         gum::learning::DBTranslatedValue{
+            std::numeric_limits< std::size_t >::max()}};
 
 
       {
@@ -226,7 +226,7 @@ namespace gum_tests {
         TS_ASSERT(xcols[1] == std::size_t(1));
 
         gum::Potential< double > proba =
-          __infer(bn, {std::size_t(1), std::size_t(0)}, input_row4);
+           __infer(bn, {std::size_t(1), std::size_t(0)}, input_row4);
         gum::Instantiation inst(proba);
 
         generator.setInputRow(input_row4);
@@ -254,7 +254,7 @@ namespace gum_tests {
         TS_ASSERT(xcols[1] == std::size_t(1));
 
         gum::Potential< double > proba =
-          __infer(bn, {std::size_t(1), std::size_t(0)}, input_row5);
+           __infer(bn, {std::size_t(1), std::size_t(0)}, input_row5);
         gum::Instantiation inst(proba);
 
         generator.setInputRow(input_row5);
@@ -421,7 +421,7 @@ namespace gum_tests {
         TS_ASSERT(xcols[1] == std::size_t(1));
 
         gum::Potential< double > proba =
-          __infer(bn, {std::size_t(1), std::size_t(0)}, input_row4);
+           __infer(bn, {std::size_t(1), std::size_t(0)}, input_row4);
         gum::Instantiation inst(proba);
 
         generator2.setInputRow(input_row4);
@@ -449,7 +449,7 @@ namespace gum_tests {
         TS_ASSERT(xcols[1] == std::size_t(1));
 
         gum::Potential< double > proba =
-          __infer(bn, {std::size_t(1), std::size_t(0)}, input_row5);
+           __infer(bn, {std::size_t(1), std::size_t(0)}, input_row5);
         gum::Instantiation inst(proba);
 
         generator2.setInputRow(input_row5);
@@ -594,7 +594,7 @@ namespace gum_tests {
         TS_ASSERT(xcols[1] == std::size_t(1));
 
         gum::Potential< double > proba =
-          __infer(bn, {std::size_t(1), std::size_t(0)}, input_row4);
+           __infer(bn, {std::size_t(1), std::size_t(0)}, input_row4);
         gum::Instantiation inst(proba);
 
         generator3.setInputRow(input_row4);
@@ -622,7 +622,7 @@ namespace gum_tests {
         TS_ASSERT(xcols[1] == std::size_t(1));
 
         gum::Potential< double > proba =
-          __infer(bn, {std::size_t(1), std::size_t(0)}, input_row5);
+           __infer(bn, {std::size_t(1), std::size_t(0)}, input_row5);
         gum::Instantiation inst(proba);
 
         generator3.setInputRow(input_row5);
@@ -767,7 +767,7 @@ namespace gum_tests {
         TS_ASSERT(xcols[1] == std::size_t(1));
 
         gum::Potential< double > proba =
-          __infer(bn, {std::size_t(1), std::size_t(0)}, input_row4);
+           __infer(bn, {std::size_t(1), std::size_t(0)}, input_row4);
         gum::Instantiation inst(proba);
 
         generator4.setInputRow(input_row4);
@@ -795,7 +795,7 @@ namespace gum_tests {
         TS_ASSERT(xcols[1] == std::size_t(1));
 
         gum::Potential< double > proba =
-          __infer(bn, {std::size_t(1), std::size_t(0)}, input_row5);
+           __infer(bn, {std::size_t(1), std::size_t(0)}, input_row5);
         gum::Instantiation inst(proba);
 
         generator4.setInputRow(input_row5);
@@ -940,7 +940,7 @@ namespace gum_tests {
         TS_ASSERT(xcols[1] == std::size_t(1));
 
         gum::Potential< double > proba =
-          __infer(bn, {std::size_t(1), std::size_t(0)}, input_row4);
+           __infer(bn, {std::size_t(1), std::size_t(0)}, input_row4);
         gum::Instantiation inst(proba);
 
         generator5.setInputRow(input_row4);
@@ -968,7 +968,7 @@ namespace gum_tests {
         TS_ASSERT(xcols[1] == std::size_t(1));
 
         gum::Potential< double > proba =
-          __infer(bn, {std::size_t(1), std::size_t(0)}, input_row5);
+           __infer(bn, {std::size_t(1), std::size_t(0)}, input_row5);
         gum::Instantiation inst(proba);
 
         generator5.setInputRow(input_row5);
@@ -1113,7 +1113,7 @@ namespace gum_tests {
         TS_ASSERT(xcols[1] == std::size_t(1));
 
         gum::Potential< double > proba =
-          __infer(bn, {std::size_t(1), std::size_t(0)}, input_row4);
+           __infer(bn, {std::size_t(1), std::size_t(0)}, input_row4);
         gum::Instantiation inst(proba);
 
         generator6->setInputRow(input_row4);
@@ -1141,7 +1141,7 @@ namespace gum_tests {
         TS_ASSERT(xcols[1] == std::size_t(1));
 
         gum::Potential< double > proba =
-          __infer(bn, {std::size_t(1), std::size_t(0)}, input_row5);
+           __infer(bn, {std::size_t(1), std::size_t(0)}, input_row5);
         gum::Instantiation inst(proba);
 
         generator6->setInputRow(input_row5);
@@ -1287,7 +1287,7 @@ namespace gum_tests {
         TS_ASSERT(xcols[1] == std::size_t(1));
 
         gum::Potential< double > proba =
-          __infer(bn, {std::size_t(1), std::size_t(0)}, input_row4);
+           __infer(bn, {std::size_t(1), std::size_t(0)}, input_row4);
         gum::Instantiation inst(proba);
 
         generator7->setInputRow(input_row4);
@@ -1315,7 +1315,7 @@ namespace gum_tests {
         TS_ASSERT(xcols[1] == std::size_t(1));
 
         gum::Potential< double > proba =
-          __infer(bn, {std::size_t(1), std::size_t(0)}, input_row5);
+           __infer(bn, {std::size_t(1), std::size_t(0)}, input_row5);
         gum::Instantiation inst(proba);
 
         generator7->setInputRow(input_row5);
@@ -1462,7 +1462,7 @@ namespace gum_tests {
         TS_ASSERT(xcols[1] == std::size_t(1));
 
         gum::Potential< double > proba =
-          __infer(bn, {std::size_t(1), std::size_t(0)}, input_row4);
+           __infer(bn, {std::size_t(1), std::size_t(0)}, input_row4);
         gum::Instantiation inst(proba);
 
         generator8.setInputRow(input_row4);
@@ -1490,7 +1490,7 @@ namespace gum_tests {
         TS_ASSERT(xcols[1] == std::size_t(1));
 
         gum::Potential< double > proba =
-          __infer(bn, {std::size_t(1), std::size_t(0)}, input_row5);
+           __infer(bn, {std::size_t(1), std::size_t(0)}, input_row5);
         gum::Instantiation inst(proba);
 
         generator8.setInputRow(input_row5);
@@ -1654,7 +1654,7 @@ namespace gum_tests {
         TS_ASSERT(xcols[1] == std::size_t(1));
 
         gum::Potential< double > proba =
-          __infer(bn, {std::size_t(1), std::size_t(0)}, input_row4);
+           __infer(bn, {std::size_t(1), std::size_t(0)}, input_row4);
         gum::Instantiation inst(proba);
 
         generator9.setInputRow(input_row4);
@@ -1682,7 +1682,7 @@ namespace gum_tests {
         TS_ASSERT(xcols[1] == std::size_t(1));
 
         gum::Potential< double > proba =
-          __infer(bn, {std::size_t(1), std::size_t(0)}, input_row5);
+           __infer(bn, {std::size_t(1), std::size_t(0)}, input_row5);
         gum::Instantiation inst(proba);
 
         generator9.setInputRow(input_row5);

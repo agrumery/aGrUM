@@ -48,7 +48,7 @@ namespace gum {
              template < typename >
              class PROJECTOPERATOR,
              template < typename > class TerminalNodePolicy =
-               ExactTerminalNodePolicy >
+                ExactTerminalNodePolicy >
   class TreeRegress {
     public:
     // ============================================================================
@@ -58,10 +58,10 @@ namespace gum {
 
     /// Default constructor.
     TreeRegress(
-      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* qAction,
-      const Bijection<
-        const DiscreteVariable*,
-        const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* > pxi);
+       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* qAction,
+       const Bijection<
+          const DiscreteVariable*,
+          const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* > pxi);
 
     /// Default destructor.
     ~TreeRegress();
@@ -81,18 +81,20 @@ namespace gum {
     private:
     /// The whatever 1
     MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
-      __xPloreVFunc(NodeId currentNodeId);
+       __xPloreVFunc(NodeId currentNodeId);
 
     /// The function graphs used for the operation
     const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* __vFunc;
     const Bijection<
-      const DiscreteVariable*,
-      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* >
+       const DiscreteVariable*,
+       const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* >
                                               __pxi;
     HashTable< const DiscreteVariable*, Idx > __context;
   };
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class TreeRegress< double, std::multiplies, std::plus >;
+#endif
 
 }   // namespace gum
 

@@ -42,10 +42,10 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void
-      PRMFactory< GUM_SCALAR >::startClass(const std::string&        name,
-                                           const std::string&        extends,
-                                           const Set< std::string >* implements,
-                                           bool delayInheritance) {
+       PRMFactory< GUM_SCALAR >::startClass(const std::string&        name,
+                                            const std::string&        extends,
+                                            const Set< std::string >* implements,
+                                            bool delayInheritance) {
       std::string real_name = __addPrefix(name);
       if (__prm->__classMap.exists(real_name)
           || __prm->__interfaceMap.exists(real_name)) {
@@ -92,7 +92,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE void PRMFactory< GUM_SCALAR >::endClass(bool checkImplementations) {
       PRMClass< GUM_SCALAR >* c = static_cast< PRMClass< GUM_SCALAR >* >(
-        __checkStack(1, PRMObject::prm_type::CLASS));
+         __checkStack(1, PRMObject::prm_type::CLASS));
 
       if (checkImplementations) { __checkInterfaceImplementation(c); }
 
@@ -101,7 +101,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMFactory< GUM_SCALAR >::__checkInterfaceImplementation(
-      PRMClass< GUM_SCALAR >* c) {
+       PRMClass< GUM_SCALAR >* c) {
       try {
         for (const auto& i : c->implements()) {
           try {
@@ -134,11 +134,11 @@ namespace gum {
                   if (c->get(name).elt_type()
                       == PRMClassElement< GUM_SCALAR >::prm_refslot) {
                     const PRMReferenceSlot< GUM_SCALAR >& ref_i =
-                      static_cast< const PRMReferenceSlot< GUM_SCALAR >& >(
-                        i->get(name));
+                       static_cast< const PRMReferenceSlot< GUM_SCALAR >& >(
+                          i->get(name));
                     const PRMReferenceSlot< GUM_SCALAR >& ref_this =
-                      static_cast< const PRMReferenceSlot< GUM_SCALAR >& >(
-                        c->get(name));
+                       static_cast< const PRMReferenceSlot< GUM_SCALAR >& >(
+                          c->get(name));
 
                     if (!ref_this.slotType().isSubTypeOf(ref_i.slotType())) {
                       std::stringstream msg;
@@ -162,7 +162,7 @@ namespace gum {
 
                 default: {
                   std::string msg =
-                    "unexpected ClassElement<GUM_SCALAR> in interface ";
+                     "unexpected ClassElement<GUM_SCALAR> in interface ";
                   GUM_ERROR(FatalError, msg + i->name());
                 }
               }
@@ -180,8 +180,10 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE void PRMFactory< GUM_SCALAR >::startInterface(
-      const std::string& name, const std::string& extends, bool delayInheritance) {
+    INLINE void
+       PRMFactory< GUM_SCALAR >::startInterface(const std::string& name,
+                                                const std::string& extends,
+                                                bool delayInheritance) {
       std::string real_name = __addPrefix(name);
       if (__prm->__classMap.exists(real_name)
           || __prm->__interfaceMap.exists(real_name)) {
@@ -205,7 +207,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void
-      PRMFactory< GUM_SCALAR >::continueInterface(const std::string& name) {
+       PRMFactory< GUM_SCALAR >::continueInterface(const std::string& name) {
       std::string real_name = __addPrefix(name);
       if (!__prm->__interfaceMap.exists(real_name)) {
         GUM_ERROR(DuplicateElement, "'" << real_name << "' not found.");
@@ -217,13 +219,13 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void
-      PRMFactory< GUM_SCALAR >::addAttribute(PRMAttribute< GUM_SCALAR >* attr) {
+       PRMFactory< GUM_SCALAR >::addAttribute(PRMAttribute< GUM_SCALAR >* attr) {
       PRMClass< GUM_SCALAR >* c = static_cast< PRMClass< GUM_SCALAR >* >(
-        __checkStack(1, PRMObject::prm_type::CLASS));
+         __checkStack(1, PRMObject::prm_type::CLASS));
       c->add(attr);
       Size                                       count = 0;
       const Sequence< const DiscreteVariable* >& vars =
-        attr->cpf().variablesSequence();
+         attr->cpf().variablesSequence();
 
       for (const auto& node : c->containerDag().nodes()) {
         try {
@@ -244,9 +246,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMFactory< GUM_SCALAR >::__addParent(
-      PRMClassElementContainer< GUM_SCALAR >* c,
-      PRMAttribute< GUM_SCALAR >*             a,
-      const std::string&                      name) {
+       PRMClassElementContainer< GUM_SCALAR >* c,
+       PRMAttribute< GUM_SCALAR >*             a,
+       const std::string&                      name) {
       try {
         PRMClassElement< GUM_SCALAR >& elt = c->get(name);
 
@@ -282,7 +284,7 @@ namespace gum {
 
         if (sc == nullptr) {
           std::string msg =
-            "found no ClassElement<GUM_SCALAR> with the given name ";
+             "found no ClassElement<GUM_SCALAR> with the given name ";
           GUM_ERROR(NotFound, msg + name);
         } else if (!sc->isMultiple()) {
           c->add(sc);
@@ -303,20 +305,20 @@ namespace gum {
       try {
         // Retrieving pointers
         PRMAttribute< GUM_SCALAR >* a = static_cast< PRMAttribute< GUM_SCALAR >* >(
-          __checkStack(1, PRMClassElement< GUM_SCALAR >::prm_attribute));
+           __checkStack(1, PRMClassElement< GUM_SCALAR >::prm_attribute));
         __addParent(c, a, name);
       } catch (FactoryInvalidState&) {
         auto agg = static_cast< PRMAggregate< GUM_SCALAR >* >(
-          __checkStack(1, PRMClassElement< GUM_SCALAR >::prm_aggregate));
+           __checkStack(1, PRMClassElement< GUM_SCALAR >::prm_aggregate));
         __addParent(static_cast< PRMClass< GUM_SCALAR >* >(c), agg, name);
       }
     }
 
     template < typename GUM_SCALAR >
     INLINE void PRMFactory< GUM_SCALAR >::setRawCPFByFloatLines(
-      const std::vector< float >& array) {
+       const std::vector< float >& array) {
       PRMAttribute< GUM_SCALAR >* a = static_cast< PRMAttribute< GUM_SCALAR >* >(
-        __checkStack(1, PRMClassElement< GUM_SCALAR >::prm_attribute));
+         __checkStack(1, PRMClassElement< GUM_SCALAR >::prm_attribute));
       __checkStack(2, PRMObject::prm_type::CLASS);
 
       if (a->cpf().domainSize() != array.size())
@@ -328,7 +330,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMFactory< GUM_SCALAR >::setRawCPFByLines(
-      const std::vector< GUM_SCALAR >& array) {
+       const std::vector< GUM_SCALAR >& array) {
       auto elt = __checkStack(1, PRMClassElement< GUM_SCALAR >::prm_attribute);
       auto a = static_cast< PRMAttribute< GUM_SCALAR >* >(elt);
       __checkStack(2, PRMObject::prm_type::CLASS);
@@ -342,9 +344,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMFactory< GUM_SCALAR >::setRawCPFByFloatColumns(
-      const std::vector< float >& array) {
+       const std::vector< float >& array) {
       PRMAttribute< GUM_SCALAR >* a = static_cast< PRMAttribute< GUM_SCALAR >* >(
-        __checkStack(1, PRMClassElement< GUM_SCALAR >::prm_attribute));
+         __checkStack(1, PRMClassElement< GUM_SCALAR >::prm_attribute));
 
       if (a->cpf().domainSize() != array.size()) {
         GUM_ERROR(OperationNotAllowed, "illegal CPF size");
@@ -356,9 +358,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMFactory< GUM_SCALAR >::setRawCPFByColumns(
-      const std::vector< GUM_SCALAR >& array) {
+       const std::vector< GUM_SCALAR >& array) {
       PRMAttribute< GUM_SCALAR >* a = static_cast< PRMAttribute< GUM_SCALAR >* >(
-        __checkStack(1, PRMClassElement< GUM_SCALAR >::prm_attribute));
+         __checkStack(1, PRMClassElement< GUM_SCALAR >::prm_attribute));
 
       if (a->cpf().domainSize() != array.size()) {
         GUM_ERROR(OperationNotAllowed, "illegal CPF size");
@@ -389,10 +391,10 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMFactory< GUM_SCALAR >::setCPFByFloatRule(
-      const std::vector< std::string >& parents,
-      const std::vector< float >&       values) {
+       const std::vector< std::string >& parents,
+       const std::vector< float >&       values) {
       auto a = static_cast< PRMAttribute< GUM_SCALAR >* >(
-        __checkStack(1, PRMClassElement< GUM_SCALAR >::prm_attribute));
+         __checkStack(1, PRMClassElement< GUM_SCALAR >::prm_attribute));
 
       if ((parents.size() + 1) != a->cpf().variablesSequence().size()) {
         GUM_ERROR(OperationNotAllowed, "wrong number of parents");
@@ -408,10 +410,10 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMFactory< GUM_SCALAR >::setCPFByRule(
-      const std::vector< std::string >& parents,
-      const std::vector< GUM_SCALAR >&  values) {
+       const std::vector< std::string >& parents,
+       const std::vector< GUM_SCALAR >&  values) {
       auto a = static_cast< PRMAttribute< GUM_SCALAR >* >(
-        __checkStack(1, PRMClassElement< GUM_SCALAR >::prm_attribute));
+         __checkStack(1, PRMClassElement< GUM_SCALAR >::prm_attribute));
 
       if ((parents.size() + 1) != a->cpf().variablesSequence().size()) {
         GUM_ERROR(OperationNotAllowed, "wrong number of parents");
@@ -473,10 +475,10 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMFactory< GUM_SCALAR >::setCPFByRule(
-      const std::vector< std::string >& parents,
-      const std::vector< std::string >& values) {
+       const std::vector< std::string >& parents,
+       const std::vector< std::string >& values) {
       auto a = static_cast< PRMAttribute< GUM_SCALAR >* >(
-        __checkStack(1, PRMClassElement< GUM_SCALAR >::prm_attribute));
+         __checkStack(1, PRMClassElement< GUM_SCALAR >::prm_attribute));
 
       if ((parents.size() + 1) != a->cpf().variablesSequence().size()) {
         GUM_ERROR(OperationNotAllowed, "wrong number of parents");
@@ -541,17 +543,19 @@ namespace gum {
                                                        const std::string& name,
                                                        double             value) {
       auto c = static_cast< PRMClass< GUM_SCALAR >* >(
-        __checkStack(1, PRMObject::prm_type::CLASS));
+         __checkStack(1, PRMObject::prm_type::CLASS));
 
       PRMParameter< GUM_SCALAR >* p = nullptr;
       if (type == "int") {
         p = new PRMParameter< GUM_SCALAR >(
-          name, PRMParameter< GUM_SCALAR >::ParameterType::INT, (GUM_SCALAR)value);
+           name,
+           PRMParameter< GUM_SCALAR >::ParameterType::INT,
+           (GUM_SCALAR)value);
       } else if (type == "real") {
         p = new PRMParameter< GUM_SCALAR >(
-          name,
-          PRMParameter< GUM_SCALAR >::ParameterType::REAL,
-          (GUM_SCALAR)value);
+           name,
+           PRMParameter< GUM_SCALAR >::ParameterType::REAL,
+           (GUM_SCALAR)value);
       }
 
       try {
@@ -561,17 +565,17 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMFactory< GUM_SCALAR >::startAggregator(
-      const std::string&                name,
-      const std::string&                agg_type,
-      const std::string&                rv_type,
-      const std::vector< std::string >& params) {
+       const std::string&                name,
+       const std::string&                agg_type,
+       const std::string&                rv_type,
+       const std::vector< std::string >& params) {
       PRMClass< GUM_SCALAR >* c = static_cast< PRMClass< GUM_SCALAR >* >(
-        __checkStack(1, PRMObject::prm_type::CLASS));
+         __checkStack(1, PRMObject::prm_type::CLASS));
 
       auto agg = new PRMAggregate< GUM_SCALAR >(
-        name,
-        PRMAggregate< GUM_SCALAR >::str2enum(agg_type),
-        *__retrieveType(rv_type));
+         name,
+         PRMAggregate< GUM_SCALAR >::str2enum(agg_type),
+         *__retrieveType(rv_type));
 
       try {
         c->add(agg);
@@ -596,7 +600,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void
-      PRMFactory< GUM_SCALAR >::continueAggregator(const std::string& name) {
+       PRMFactory< GUM_SCALAR >::continueAggregator(const std::string& name) {
       PRMClassElementContainer< GUM_SCALAR >* c = __checkStackContainter(1);
       if (!c->exists(name)) { GUM_ERROR(NotFound, name << "not found"); }
       auto& agg = c->get(name);
@@ -608,9 +612,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void
-      PRMFactory< GUM_SCALAR >::__addParent(PRMClass< GUM_SCALAR >*     c,
-                                            PRMAggregate< GUM_SCALAR >* agg,
-                                            const std::string&          name) {
+       PRMFactory< GUM_SCALAR >::__addParent(PRMClass< GUM_SCALAR >*     c,
+                                             PRMAggregate< GUM_SCALAR >* agg,
+                                             const std::string&          name) {
       auto chains = std::vector< std::string >{name};
       auto inputs = std::vector< PRMClassElement< GUM_SCALAR >* >();
       __retrieveInputs(c, chains, inputs);
@@ -669,13 +673,13 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMFactory< GUM_SCALAR >::addAggregator(
-      const std::string&                name,
-      const std::string&                agg_type,
-      const std::vector< std::string >& chains,
-      const std::vector< std::string >& params,
-      std::string                       type) {
+       const std::string&                name,
+       const std::string&                agg_type,
+       const std::vector< std::string >& chains,
+       const std::vector< std::string >& params,
+       std::string                       type) {
       PRMClass< GUM_SCALAR >* c = static_cast< PRMClass< GUM_SCALAR >* >(
-        __checkStack(1, PRMObject::prm_type::CLASS));
+         __checkStack(1, PRMObject::prm_type::CLASS));
       // Checking call legality
 
       if (chains.size() == 0) {
@@ -691,7 +695,7 @@ namespace gum {
       // (see below)
       bool hasSC = __retrieveInputs(c, chains, inputs);
 
-      // Checking that all inputs shares the same PRMType<GUM_SCALAR> (trivial
+      // Checking that all inputs shares the same PRMType (trivial
       // if
       // inputs.size() == 1)
       if (inputs.size() > 1) {
@@ -716,9 +720,9 @@ namespace gum {
           }
 
           agg = new PRMAggregate< GUM_SCALAR >(
-            name,
-            PRMAggregate< GUM_SCALAR >::str2enum(agg_type),
-            inputs.front()->type());
+             name,
+             PRMAggregate< GUM_SCALAR >::str2enum(agg_type),
+             inputs.front()->type());
 
           break;
         }
@@ -745,10 +749,10 @@ namespace gum {
 
           // Creating and adding the PRMAggregate<GUM_SCALAR>
           agg = new PRMAggregate< GUM_SCALAR >(
-            name,
-            PRMAggregate< GUM_SCALAR >::str2enum(agg_type),
-            *(__retrieveType("boolean")),
-            label_idx);
+             name,
+             PRMAggregate< GUM_SCALAR >::str2enum(agg_type),
+             *(__retrieveType("boolean")),
+             label_idx);
           agg->label();
 
           break;
@@ -766,7 +770,7 @@ namespace gum {
 
           // Creating and adding the PRMAggregate<GUM_SCALAR>
           agg = new PRMAggregate< GUM_SCALAR >(
-            name, PRMAggregate< GUM_SCALAR >::str2enum(agg_type), *output_type);
+             name, PRMAggregate< GUM_SCALAR >::str2enum(agg_type), *output_type);
 
           break;
         }
@@ -794,10 +798,10 @@ namespace gum {
 
           // Creating and adding the PRMAggregate<GUM_SCALAR>
           agg = new PRMAggregate< GUM_SCALAR >(
-            name,
-            PRMAggregate< GUM_SCALAR >::str2enum(agg_type),
-            *output_type,
-            label_idx);
+             name,
+             PRMAggregate< GUM_SCALAR >::str2enum(agg_type),
+             *output_type,
+             label_idx);
 
           break;
         }
@@ -815,7 +819,7 @@ namespace gum {
         } else {
           // Inner aggregators can be directly used as attributes
           auto attr = new PRMScalarAttribute< GUM_SCALAR >(
-            agg->name(), agg->type(), agg->buildImpl());
+             agg->name(), agg->type(), agg->buildImpl());
 
           try {
             c->add(attr);
@@ -851,7 +855,7 @@ namespace gum {
       }
 
       PRMReferenceSlot< GUM_SCALAR >* ref =
-        new PRMReferenceSlot< GUM_SCALAR >(name, *slotType, isArray);
+         new PRMReferenceSlot< GUM_SCALAR >(name, *slotType, isArray);
 
       try {
         owner->add(ref);
@@ -863,7 +867,7 @@ namespace gum {
                                                    const std::string& name,
                                                    Size               size) {
       PRMSystem< GUM_SCALAR >* model = static_cast< PRMSystem< GUM_SCALAR >* >(
-        __checkStack(1, PRMObject::prm_type::SYSTEM));
+         __checkStack(1, PRMObject::prm_type::SYSTEM));
       PRMClass< GUM_SCALAR >*    c = __retrieveClass(type);
       PRMInstance< GUM_SCALAR >* inst = 0;
 
@@ -889,7 +893,7 @@ namespace gum {
     INLINE void PRMFactory< GUM_SCALAR >::incArray(const std::string& l_i,
                                                    const std::string& r_i) {
       PRMSystem< GUM_SCALAR >* model = static_cast< PRMSystem< GUM_SCALAR >* >(
-        __checkStack(1, PRMObject::prm_type::SYSTEM));
+         __checkStack(1, PRMObject::prm_type::SYSTEM));
 
       if (model->isArray(l_i)) {
         if (model->isInstance(r_i)) {
@@ -904,9 +908,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMFactory< GUM_SCALAR >::setReferenceSlot(
-      const std::string& l_i, const std::string& l_ref, const std::string& r_i) {
+       const std::string& l_i, const std::string& l_ref, const std::string& r_i) {
       auto model = static_cast< PRMSystem< GUM_SCALAR >* >(
-        __checkStack(1, PRMObject::prm_type::SYSTEM));
+         __checkStack(1, PRMObject::prm_type::SYSTEM));
       std::vector< PRMInstance< GUM_SCALAR >* > lefts;
       std::vector< PRMInstance< GUM_SCALAR >* > rights;
 
@@ -943,7 +947,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMSlotChain< GUM_SCALAR >* PRMFactory< GUM_SCALAR >::__buildSlotChain(
-      PRMClassElementContainer< GUM_SCALAR >* start, const std::string& name) {
+       PRMClassElementContainer< GUM_SCALAR >* start, const std::string& name) {
       std::vector< std::string > v;
       decomposePath(name, v);
       PRMClassElementContainer< GUM_SCALAR >*    current = start;
@@ -955,10 +959,10 @@ namespace gum {
           switch (current->get(v[i]).elt_type()) {
             case PRMClassElement< GUM_SCALAR >::prm_refslot:
               ref = &(static_cast< PRMReferenceSlot< GUM_SCALAR >& >(
-                current->get(v[i])));
+                 current->get(v[i])));
               elts.insert(ref);
               current = &(/*const_cast<PRMClassElementContainer<GUM_SCALAR>&>*/ (
-                ref->slotType()));
+                 ref->slotType()));
               break;
 
             case PRMClassElement< GUM_SCALAR >::prm_aggregate:
@@ -985,16 +989,16 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE bool PRMFactory< GUM_SCALAR >::__retrieveInputs(
-      PRMClass< GUM_SCALAR >*                        c,
-      const std::vector< std::string >&              chains,
-      std::vector< PRMClassElement< GUM_SCALAR >* >& inputs) {
+       PRMClass< GUM_SCALAR >*                        c,
+       const std::vector< std::string >&              chains,
+       std::vector< PRMClassElement< GUM_SCALAR >* >& inputs) {
       bool retVal = false;
 
       for (size_t i = 0; i < chains.size(); ++i) {
         try {
           inputs.push_back(&(c->get(chains[i])));
-          retVal =
-            retVal || PRMClassElement< GUM_SCALAR >::isSlotChain(*(inputs.back()));
+          retVal = retVal
+                   || PRMClassElement< GUM_SCALAR >::isSlotChain(*(inputs.back()));
         } catch (NotFound&) {
           inputs.push_back(__buildSlotChain(c, chains[i]));
           retVal = true;
@@ -1007,17 +1011,17 @@ namespace gum {
         }
       }
 
-      PRMType< GUM_SCALAR >* t = __retrieveCommonType(inputs);
+      PRMType* t = __retrieveCommonType(inputs);
 
       std::vector< std::pair< PRMClassElement< GUM_SCALAR >*,
                               PRMClassElement< GUM_SCALAR >* > >
-        toAdd;
+         toAdd;
 
       for (const auto& elt : inputs) {
         if ((*elt).type() != (*t)) {
           if (PRMClassElement< GUM_SCALAR >::isSlotChain(*elt)) {
             PRMSlotChain< GUM_SCALAR >* sc =
-              static_cast< PRMSlotChain< GUM_SCALAR >* >(elt);
+               static_cast< PRMSlotChain< GUM_SCALAR >* >(elt);
             std::stringstream name;
 
             for (Size idx = 0; idx < sc->chain().size() - 1; ++idx) {
@@ -1030,7 +1034,7 @@ namespace gum {
               toAdd.push_back(std::make_pair(elt, &(c->get(name.str()))));
             } catch (NotFound&) {
               toAdd.push_back(
-                std::make_pair(elt, __buildSlotChain(c, name.str())));
+                 std::make_pair(elt, __buildSlotChain(c, name.str())));
             }
           } else {
             std::stringstream name;
@@ -1044,9 +1048,9 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE PRMType< GUM_SCALAR >* PRMFactory< GUM_SCALAR >::__retrieveCommonType(
-      const std::vector< PRMClassElement< GUM_SCALAR >* >& elts) {
-      const PRMType< GUM_SCALAR >*   current = nullptr;
+    INLINE PRMType* PRMFactory< GUM_SCALAR >::__retrieveCommonType(
+       const std::vector< PRMClassElement< GUM_SCALAR >* >& elts) {
+      const PRMType*                 current = nullptr;
       HashTable< std::string, Size > counters;
       // Finding all types and super types
 
@@ -1093,31 +1097,31 @@ namespace gum {
         }
       }
 
-      if (current) { return const_cast< PRMType< GUM_SCALAR >* >(current); }
+      if (current) { return const_cast< PRMType* >(current); }
 
       GUM_ERROR(NotFound, "could not find a common type");
     }
 
     template < typename GUM_SCALAR >
     INLINE void PRMFactory< GUM_SCALAR >::addNoisyOrCompound(
-      const std::string&                name,
-      const std::vector< std::string >& chains,
-      const std::vector< float >&       numbers,
-      float                             leak,
-      const std::vector< std::string >& labels) {
+       const std::string&                name,
+       const std::vector< std::string >& chains,
+       const std::vector< float >&       numbers,
+       float                             leak,
+       const std::vector< std::string >& labels) {
       if (currentType() != PRMObject::prm_type::CLASS) {
         GUM_ERROR(gum::FactoryInvalidState, "invalid state to add a noisy-or");
       }
 
       PRMClass< GUM_SCALAR >* c =
-        dynamic_cast< gum::prm::PRMClass< GUM_SCALAR >* >(getCurrent());
+         dynamic_cast< gum::prm::PRMClass< GUM_SCALAR >* >(getCurrent());
 
       std::vector< PRMClassElement< GUM_SCALAR >* > parents;
 
       for (const auto& elt : chains)
         parents.push_back(&(c->get(elt)));
 
-      PRMType< GUM_SCALAR >* common_type = __retrieveCommonType(parents);
+      PRMType* common_type = __retrieveCommonType(parents);
 
       for (size_t idx = 0; idx < parents.size(); ++idx) {
         if (parents[idx]->type() != (*common_type)) {
@@ -1141,16 +1145,16 @@ namespace gum {
 
       if (numbers.size() == 1) {
         auto impl =
-          new gum::MultiDimNoisyORCompound< GUM_SCALAR >(leak, numbers.front());
+           new gum::MultiDimNoisyORCompound< GUM_SCALAR >(leak, numbers.front());
         auto attr = new PRMScalarAttribute< GUM_SCALAR >(
-          name, retrieveType("boolean"), impl);
+           name, retrieveType("boolean"), impl);
         addAttribute(attr);
       } else if (numbers.size() == parents.size()) {
         gum::MultiDimNoisyORCompound< GUM_SCALAR >* noisy =
-          new gum::MultiDimNoisyORCompound< GUM_SCALAR >(leak);
+           new gum::MultiDimNoisyORCompound< GUM_SCALAR >(leak);
         gum::prm::PRMFuncAttribute< GUM_SCALAR >* attr =
-          new gum::prm::PRMFuncAttribute< GUM_SCALAR >(
-            name, retrieveType("boolean"), noisy);
+           new gum::prm::PRMFuncAttribute< GUM_SCALAR >(
+              name, retrieveType("boolean"), noisy);
 
         for (size_t idx = 0; idx < numbers.size(); ++idx) {
           noisy->causalWeight(parents[idx]->type().variable(), numbers[idx]);
@@ -1168,10 +1172,10 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE PRMType< GUM_SCALAR >*
+    INLINE PRMType*
            PRMFactory< GUM_SCALAR >::__retrieveType(const std::string& name) const {
-      PRMType< GUM_SCALAR >* type = nullptr;
-      std::string            full_name;
+      PRMType*    type = nullptr;
+      std::string full_name;
 
       // Looking for the type using its name
       if (__prm->__typeMap.exists(name)) {
@@ -1237,7 +1241,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     PRMClass< GUM_SCALAR >*
-      PRMFactory< GUM_SCALAR >::__retrieveClass(const std::string& name) const {
+       PRMFactory< GUM_SCALAR >::__retrieveClass(const std::string& name) const {
       PRMClass< GUM_SCALAR >* a_class = nullptr;
       std::string             full_name;
 
@@ -1288,7 +1292,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     PRMInterface< GUM_SCALAR >* PRMFactory< GUM_SCALAR >::__retrieveInterface(
-      const std::string& name) const {
+       const std::string& name) const {
       PRMInterface< GUM_SCALAR >* interface = nullptr;
       std::string                 full_name;
 
@@ -1326,7 +1330,7 @@ namespace gum {
             } else if (full_name != ns_name) {
               GUM_ERROR(DuplicateElement,
                         "Interface name '"
-                          << name << "' is ambiguous: specify full name.");
+                           << name << "' is ambiguous: specify full name.");
             }
           }
         }
@@ -1406,17 +1410,17 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void
-      PRMFactory< GUM_SCALAR >::startDiscreteType(const std::string& name,
-                                                  std::string        super) {
+       PRMFactory< GUM_SCALAR >::startDiscreteType(const std::string& name,
+                                                   std::string        super) {
       std::string real_name = __addPrefix(name);
       if (__prm->__typeMap.exists(real_name)) {
         GUM_ERROR(DuplicateElement, "'" << real_name << "' is already used.");
       }
       if (super == "") {
-        auto t = new PRMType< GUM_SCALAR >(LabelizedVariable(real_name, "", 0));
+        auto t = new PRMType(LabelizedVariable(real_name, "", 0));
         __stack.push_back(t);
       } else {
-        auto t = new PRMType< GUM_SCALAR >(LabelizedVariable(real_name, "", 0));
+        auto t = new PRMType(LabelizedVariable(real_name, "", 0));
         t->__superType = __retrieveType(super);
         t->__label_map = new std::vector< Idx >();
         __stack.push_back(t);
@@ -1427,8 +1431,8 @@ namespace gum {
     INLINE void PRMFactory< GUM_SCALAR >::addLabel(const std::string& l,
                                                    std::string        extends) {
       if (extends == "") {
-        PRMType< GUM_SCALAR >* t = static_cast< PRMType< GUM_SCALAR >* >(
-          __checkStack(1, PRMObject::prm_type::TYPE));
+        PRMType* t =
+           static_cast< PRMType* >(__checkStack(1, PRMObject::prm_type::TYPE));
         LabelizedVariable* var = dynamic_cast< LabelizedVariable* >(t->__var);
 
         if (!var) {
@@ -1444,8 +1448,8 @@ namespace gum {
           GUM_ERROR(DuplicateElement, "a label '" << l << "' already exists");
         }
       } else {
-        PRMType< GUM_SCALAR >* t = static_cast< PRMType< GUM_SCALAR >* >(
-          __checkStack(1, PRMObject::prm_type::TYPE));
+        PRMType* t =
+           static_cast< PRMType* >(__checkStack(1, PRMObject::prm_type::TYPE));
         LabelizedVariable* var = dynamic_cast< LabelizedVariable* >(t->__var);
 
         if (!var) {
@@ -1478,8 +1482,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMFactory< GUM_SCALAR >::endDiscreteType() {
-      PRMType< GUM_SCALAR >* t = static_cast< PRMType< GUM_SCALAR >* >(
-        __checkStack(1, PRMObject::prm_type::TYPE));
+      PRMType* t =
+         static_cast< PRMType* >(__checkStack(1, PRMObject::prm_type::TYPE));
 
       if (!t->__isValid()) {
         GUM_ERROR(OperationNotAllowed, "current type is not a valid subtype");
@@ -1496,22 +1500,22 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void
-      PRMFactory< GUM_SCALAR >::startDiscretizedType(const std::string& name) {
+       PRMFactory< GUM_SCALAR >::startDiscretizedType(const std::string& name) {
       std::string real_name = __addPrefix(name);
       if (__prm->__typeMap.exists(real_name)) {
         GUM_ERROR(DuplicateElement, "'" << real_name << "' is already used.");
       }
       auto var = DiscretizedVariable< double >(real_name, "");
-      auto t = new PRMType< GUM_SCALAR >(var);
+      auto t = new PRMType(var);
       __stack.push_back(t);
     }
 
     template < typename GUM_SCALAR >
     INLINE void PRMFactory< GUM_SCALAR >::addTick(double tick) {
-      PRMType< GUM_SCALAR >* t = static_cast< PRMType< GUM_SCALAR >* >(
-        __checkStack(1, PRMObject::prm_type::TYPE));
+      PRMType* t =
+         static_cast< PRMType* >(__checkStack(1, PRMObject::prm_type::TYPE));
       DiscretizedVariable< double >* var =
-        dynamic_cast< DiscretizedVariable< double >* >(t->__var);
+         dynamic_cast< DiscretizedVariable< double >* >(t->__var);
 
       if (!var) {
         GUM_ERROR(FatalError,
@@ -1527,8 +1531,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMFactory< GUM_SCALAR >::endDiscretizedType() {
-      PRMType< GUM_SCALAR >* t = static_cast< PRMType< GUM_SCALAR >* >(
-        __checkStack(1, PRMObject::prm_type::TYPE));
+      PRMType* t =
+         static_cast< PRMType* >(__checkStack(1, PRMObject::prm_type::TYPE));
 
       if (t->variable().domainSize() < 2) {
         GUM_ERROR(OperationNotAllowed,
@@ -1553,7 +1557,7 @@ namespace gum {
       }
 
       auto var = RangeVariable(real_name, "", minVal, maxVal);
-      auto t = new PRMType< GUM_SCALAR >(var);
+      auto t = new PRMType(var);
 
       if (t->variable().domainSize() < 2) {
         GUM_ERROR(OperationNotAllowed,
@@ -1587,7 +1591,9 @@ namespace gum {
 
       if (PRMObject::isClass(*c) && (!scalar_attr)) {
         a = new PRMFormAttribute< GUM_SCALAR >(
-          static_cast< PRMClass< GUM_SCALAR >& >(*c), name, *__retrieveType(type));
+           static_cast< PRMClass< GUM_SCALAR >& >(*c),
+           name,
+           *__retrieveType(type));
 
       } else {
         a = new PRMScalarAttribute< GUM_SCALAR >(name, *__retrieveType(type));
@@ -1608,7 +1614,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void
-      PRMFactory< GUM_SCALAR >::continueAttribute(const std::string& name) {
+       PRMFactory< GUM_SCALAR >::continueAttribute(const std::string& name) {
       PRMClassElementContainer< GUM_SCALAR >* c = __checkStackContainter(1);
       if (!c->exists(name)) { GUM_ERROR(NotFound, name << "not found"); }
       auto& a = c->get(name);
@@ -1630,7 +1636,7 @@ namespace gum {
         GUM_ERROR(DuplicateElement, "'" << name << "' is already used.");
       }
       PRMSystem< GUM_SCALAR >* model =
-        new PRMSystem< GUM_SCALAR >(__addPrefix(name));
+         new PRMSystem< GUM_SCALAR >(__addPrefix(name));
       __stack.push_back(model);
       __prm->__systemMap.insert(model->name(), model);
       __prm->__systems.insert(model);
@@ -1640,7 +1646,7 @@ namespace gum {
     INLINE void PRMFactory< GUM_SCALAR >::endSystem() {
       try {
         PRMSystem< GUM_SCALAR >* model = static_cast< PRMSystem< GUM_SCALAR >* >(
-          __checkStack(1, PRMObject::prm_type::SYSTEM));
+           __checkStack(1, PRMObject::prm_type::SYSTEM));
         __stack.pop_back();
         model->instantiate();
       } catch (Exception&) { GUM_ERROR(FatalError, "could not create system"); }
@@ -1663,9 +1669,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMFactory< GUM_SCALAR >::addInstance(
-      const std::string&                      type,
-      const std::string&                      name,
-      const HashTable< std::string, double >& params) {
+       const std::string&                      type,
+       const std::string&                      name,
+       const HashTable< std::string, double >& params) {
       auto c = __retrieveClass(type);
 
       if (c->parameters().empty()) {
@@ -1706,7 +1712,7 @@ namespace gum {
           // Update inherited parameters
           for (auto p : my_params) {
             auto type = static_cast< PRMParameter< GUM_SCALAR >& >(c->get(p.first))
-                          .valueType();
+                           .valueType();
             if (type == PRMParameter< GUM_SCALAR >::ParameterType::INT) {
               addParameter("int", p.first, p.second);
 
@@ -1729,12 +1735,12 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void
-      PRMFactory< GUM_SCALAR >::__addInstance(PRMClass< GUM_SCALAR >* type,
-                                              const std::string&      name) {
+       PRMFactory< GUM_SCALAR >::__addInstance(PRMClass< GUM_SCALAR >* type,
+                                               const std::string&      name) {
       PRMInstance< GUM_SCALAR >* i = nullptr;
       try {
         auto s = static_cast< PRMSystem< GUM_SCALAR >* >(
-          __checkStack(1, PRMObject::prm_type::SYSTEM));
+           __checkStack(1, PRMObject::prm_type::SYSTEM));
         i = new PRMInstance< GUM_SCALAR >(name, *type);
         s->add(i);
 
@@ -1759,7 +1765,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMObject*
-           PRMFactory< GUM_SCALAR >::__checkStack(Idx i, PRMObject::prm_type obj_type) {
+           PRMFactory< GUM_SCALAR >::__checkStack(Idx                 i,
+                                              PRMObject::prm_type obj_type) {
       // Don't forget that Idx are unsigned int
       if (__stack.size() - i > __stack.size()) {
         GUM_ERROR(FactoryInvalidState, "illegal sequence of calls");
@@ -1794,15 +1801,15 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMClassElement< GUM_SCALAR >* PRMFactory< GUM_SCALAR >::__checkStack(
-      Idx i, typename PRMClassElement< GUM_SCALAR >::ClassElementType elt_type) {
+       Idx i, typename PRMClassElement< GUM_SCALAR >::ClassElementType elt_type) {
       // Don't forget that Idx are unsigned int
       if (__stack.size() - i > __stack.size()) {
         GUM_ERROR(FactoryInvalidState, "illegal sequence of calls");
       }
 
       PRMClassElement< GUM_SCALAR >* obj =
-        dynamic_cast< PRMClassElement< GUM_SCALAR >* >(
-          __stack[__stack.size() - i]);
+         dynamic_cast< PRMClassElement< GUM_SCALAR >* >(
+            __stack[__stack.size() - i]);
 
       if (obj == 0) {
         GUM_ERROR(FactoryInvalidState, "illegal sequence of calls");
@@ -1816,10 +1823,9 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE int
-      PRMFactory< GUM_SCALAR >::__typeDepth(const PRMType< GUM_SCALAR >* t) {
-      int                          depth = 0;
-      const PRMType< GUM_SCALAR >* current = t;
+    INLINE int PRMFactory< GUM_SCALAR >::__typeDepth(const PRMType* t) {
+      int            depth = 0;
+      const PRMType* current = t;
 
       while (current->isSubType()) {
         ++depth;
@@ -1866,8 +1872,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void
-      PRMFactory< GUM_SCALAR >::setReferenceSlot(const std::string& l_i,
-                                                 const std::string& r_i) {
+       PRMFactory< GUM_SCALAR >::setReferenceSlot(const std::string& l_i,
+                                                  const std::string& r_i) {
       size_t pos = l_i.find_last_of('.');
 
       if (pos != std::string::npos) {
@@ -1885,21 +1891,21 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE PRMType< GUM_SCALAR >&
+    INLINE PRMType&
            PRMFactory< GUM_SCALAR >::retrieveType(const std::string& name) {
       return *__retrieveType(name);
     }
 
     template < typename GUM_SCALAR >
-    INLINE PRMType< GUM_SCALAR >& PRMFactory< GUM_SCALAR >::retrieveCommonType(
-      const std::vector< PRMClassElement< GUM_SCALAR >* >& elts) {
+    INLINE PRMType& PRMFactory< GUM_SCALAR >::retrieveCommonType(
+       const std::vector< PRMClassElement< GUM_SCALAR >* >& elts) {
       return *(__retrieveCommonType(elts));
     }
 
 
     template < typename GUM_SCALAR >
-    INLINE bool
-      PRMFactory< GUM_SCALAR >::isClassOrInterface(const std::string& type) const {
+    INLINE bool PRMFactory< GUM_SCALAR >::isClassOrInterface(
+       const std::string& type) const {
       try {
         __retrieveClass(type);
         return true;
@@ -1919,19 +1925,19 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE bool PRMFactory< GUM_SCALAR >::isArrayInCurrentSystem(
-      const std::string& name) const {
+       const std::string& name) const {
       const PRMSystem< GUM_SCALAR >* system =
-        static_cast< const PRMSystem< GUM_SCALAR >* >(getCurrent());
+         static_cast< const PRMSystem< GUM_SCALAR >* >(getCurrent());
       return (system && system->isArray(name));
     }
 
     template < typename GUM_SCALAR >
     INLINE void PRMFactory< GUM_SCALAR >::setRawCPFByColumns(
-      const std::vector< std::string >& array) {
+       const std::vector< std::string >& array) {
       __checkStack(2, PRMObject::prm_type::CLASS);
 
       auto a = static_cast< PRMFormAttribute< GUM_SCALAR >* >(
-        __checkStack(1, PRMClassElement< GUM_SCALAR >::prm_attribute));
+         __checkStack(1, PRMClassElement< GUM_SCALAR >::prm_attribute));
 
       if (a->formulas().domainSize() != array.size()) {
         GUM_ERROR(OperationNotAllowed, "illegal CPF size");
@@ -1965,11 +1971,11 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE void PRMFactory< GUM_SCALAR >::setRawCPFByLines(
-      const std::vector< std::string >& array) {
+       const std::vector< std::string >& array) {
       __checkStack(2, PRMObject::prm_type::CLASS);
 
       auto a = static_cast< PRMFormAttribute< GUM_SCALAR >* >(
-        __checkStack(1, PRMClassElement< GUM_SCALAR >::prm_attribute));
+         __checkStack(1, PRMClassElement< GUM_SCALAR >::prm_attribute));
 
       if (a->formulas().domainSize() != array.size()) {
         GUM_ERROR(OperationNotAllowed, "illegal CPF size");

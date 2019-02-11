@@ -32,9 +32,10 @@ namespace gum {
     /// default constructor
     template < template < typename > class ALLOC >
     INLINE AprioriSmoothing< ALLOC >::AprioriSmoothing(
-      const DatabaseTable< ALLOC >&                                 database,
-      const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >& nodeId2columns,
-      const typename AprioriSmoothing< ALLOC >::allocator_type&     alloc) :
+       const DatabaseTable< ALLOC >& database,
+       const Bijection< NodeId, std::size_t, ALLOC< std::size_t > >&
+                                                                 nodeId2columns,
+       const typename AprioriSmoothing< ALLOC >::allocator_type& alloc) :
         Apriori< ALLOC >(database, nodeId2columns, alloc) {
       GUM_CONSTRUCTOR(AprioriSmoothing);
     }
@@ -43,8 +44,8 @@ namespace gum {
     /// copy constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE AprioriSmoothing< ALLOC >::AprioriSmoothing(
-      const AprioriSmoothing< ALLOC >&                          from,
-      const typename AprioriSmoothing< ALLOC >::allocator_type& alloc) :
+       const AprioriSmoothing< ALLOC >&                          from,
+       const typename AprioriSmoothing< ALLOC >::allocator_type& alloc) :
         Apriori< ALLOC >(from, alloc) {
       GUM_CONS_CPY(AprioriSmoothing);
     }
@@ -53,15 +54,15 @@ namespace gum {
     /// copy constructor
     template < template < typename > class ALLOC >
     INLINE AprioriSmoothing< ALLOC >::AprioriSmoothing(
-      const AprioriSmoothing< ALLOC >& from) :
+       const AprioriSmoothing< ALLOC >& from) :
         AprioriSmoothing< ALLOC >(from, from.getAllocator()) {}
 
 
     /// move constructor with a given allocator
     template < template < typename > class ALLOC >
     INLINE AprioriSmoothing< ALLOC >::AprioriSmoothing(
-      AprioriSmoothing< ALLOC >&&                               from,
-      const typename AprioriSmoothing< ALLOC >::allocator_type& alloc) :
+       AprioriSmoothing< ALLOC >&&                               from,
+       const typename AprioriSmoothing< ALLOC >::allocator_type& alloc) :
         Apriori< ALLOC >(std::move(from), alloc) {
       GUM_CONS_MOV(AprioriSmoothing);
     }
@@ -70,14 +71,14 @@ namespace gum {
     /// move constructor
     template < template < typename > class ALLOC >
     INLINE AprioriSmoothing< ALLOC >::AprioriSmoothing(
-      AprioriSmoothing< ALLOC >&& from) :
+       AprioriSmoothing< ALLOC >&& from) :
         AprioriSmoothing< ALLOC >(std::move(from), from.getAllocator()) {}
 
 
     /// virtual copy constructor with a given allocator
     template < template < typename > class ALLOC >
     AprioriSmoothing< ALLOC >* AprioriSmoothing< ALLOC >::clone(
-      const typename AprioriSmoothing< ALLOC >::allocator_type& alloc) const {
+       const typename AprioriSmoothing< ALLOC >::allocator_type& alloc) const {
       ALLOC< AprioriSmoothing< ALLOC > > allocator(alloc);
       AprioriSmoothing< ALLOC >*         apriori = allocator.allocate(1);
       try {
@@ -147,8 +148,8 @@ namespace gum {
     /// returns the apriori vector all the variables in the idset
     template < template < typename > class ALLOC >
     INLINE void AprioriSmoothing< ALLOC >::addAllApriori(
-      const IdSet< ALLOC >&                   idset,
-      std::vector< double, ALLOC< double > >& counts) {
+       const IdSet< ALLOC >&                   idset,
+       std::vector< double, ALLOC< double > >& counts) {
       // if the idset is empty or the weight is zero, the apriori is also empty
       if (idset.empty() || (this->_weight == 0.0)) return;
 
@@ -161,8 +162,8 @@ namespace gum {
     /// returns the apriori vector over only the conditioning set of an idset
     template < template < typename > class ALLOC >
     void AprioriSmoothing< ALLOC >::addConditioningApriori(
-      const IdSet< ALLOC >&                   idset,
-      std::vector< double, ALLOC< double > >& counts) {
+       const IdSet< ALLOC >&                   idset,
+       std::vector< double, ALLOC< double > >& counts) {
       // if the conditioning set is empty or the weight is equal to zero,
       // the apriori is also empty
       if ((idset.size() == idset.nbLHSIds()) || (this->_weight == 0.0)
@@ -178,7 +179,7 @@ namespace gum {
       } else {
         for (std::size_t i = std::size_t(0); i < idset.nbLHSIds(); ++i) {
           weight *=
-            this->_database->domainSize(this->_nodeId2columns.second(idset[i]));
+             this->_database->domainSize(this->_nodeId2columns.second(idset[i]));
         }
       }
 

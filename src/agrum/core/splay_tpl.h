@@ -36,8 +36,8 @@ namespace gum {
 
   template < class Element >
   INLINE void SplayBinaryNode< Element >::_copy(
-    const SplayBinaryNode< Element >&                  from,
-    HashTable< Element, SplayBinaryNode< Element >* >& addr) {
+     const SplayBinaryNode< Element >&                  from,
+     HashTable< Element, SplayBinaryNode< Element >* >& addr) {
     if (addr.exists(from.elt))
       addr[from.elt] = this;
     else
@@ -68,11 +68,11 @@ namespace gum {
 
   template < class Element >
   INLINE SplayBinaryNode< Element >::SplayBinaryNode(
-    const Element&                                     e,
-    HashTable< Element, SplayBinaryNode< Element >* >& addr,
-    SplayBinaryNode*                                   g,
-    SplayBinaryNode*                                   d,
-    SplayBinaryNode*                                   p) :
+     const Element&                                     e,
+     HashTable< Element, SplayBinaryNode< Element >* >& addr,
+     SplayBinaryNode*                                   g,
+     SplayBinaryNode*                                   d,
+     SplayBinaryNode*                                   p) :
       elt(e),
       size(1), fg(g), fd(d), pere(p) {
     if (addr.exists(elt))
@@ -88,8 +88,8 @@ namespace gum {
 
   template < class Element >
   INLINE SplayBinaryNode< Element >::SplayBinaryNode(
-    const SplayBinaryNode< Element >&                  from,
-    HashTable< Element, SplayBinaryNode< Element >* >& addr) {
+     const SplayBinaryNode< Element >&                  from,
+     HashTable< Element, SplayBinaryNode< Element >* >& addr) {
     _copy(from, addr);
     // for debugging purposes
     GUM_CONSTRUCTOR(SplayBinaryNode);
@@ -258,8 +258,8 @@ namespace gum {
 
   template < class Element >
   INLINE SplayBinaryNode< Element >* SplayBinaryNode< Element >::join(
-    const SplayBinaryNode< Element >*                  e,
-    HashTable< Element, SplayBinaryNode< Element >* >& addr) {
+     const SplayBinaryNode< Element >*                  e,
+     HashTable< Element, SplayBinaryNode< Element >* >& addr) {
     SplayBinaryNode< Element >* b = new SplayBinaryNode< Element >(*e, addr);
     GUM_ASSERT(b != 0);
     SplayBinaryNode< Element >* act = this;
@@ -654,8 +654,8 @@ namespace gum {
 
   template < class Element >
   INLINE static void
-    removeInfo(const SplayBinaryNode< Element >*                  e,
-               HashTable< Element, SplayBinaryNode< Element >* >& addr) {
+     removeInfo(const SplayBinaryNode< Element >*                  e,
+                HashTable< Element, SplayBinaryNode< Element >* >& addr) {
     GUM_ASSERT(addr.exists(e->getElement()));
     addr.erase(e->getElement());
 
