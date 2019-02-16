@@ -129,7 +129,7 @@ def _causalImpact(cm: CausalModel, on: NameSet,
     explain += "(conditioning on the observed variables if any)."
     ar = CausalFormula(cm, ASTposteriorProba(cm.bn(), set(nY), set(nK)), on, doing, knowing)
     adj = ar.eval()
-    return ar, adj, explain
+    return ar, adj.reorganize([v for v in nY+nDo+nK if v in adj.var_names]), explain
 
   # Front or Back door
   if len(iDo) == 1 and len(nY) == 1 and len(nK) == 0:
@@ -137,13 +137,13 @@ def _causalImpact(cm: CausalModel, on: NameSet,
       ar = CausalFormula(cm, getBackDoorTree(cm, nDo[0], nY[0], bd), on, doing, knowing)
       adj = ar.eval()
       explain = "backdoor " + str([cm.bn().variable(i).name() for i in bd]) + " found."
-      return ar, adj, explain
+      return ar, adj.reorganize([v for v in nY+nDo+nK if v in adj.var_names]), explain
 
     for fd in frontdoor_generator(cm, iDo[0], iY[0], cm.latentVariablesIds()):
       ar = CausalFormula(cm, getFrontDoorTree(cm, nDo[0], nY[0], fd), on, doing, knowing)
       adj = ar.eval()
       explain = "frontdoor " + str([cm.bn().variable(i).name() for i in fd]) + " found."
-      return ar, adj, explain
+      return ar, adj.reorganize([v for v in nY+nDo+nK if v in adj.var_names]), explain
 
   # Go for do-calculus
   try:
@@ -157,4 +157,4 @@ def _causalImpact(cm: CausalModel, on: NameSet,
   adj = ar.eval()
   explain = "Do-calculus computations"
 
-  return ar, adj, explain
+  return ar, adj.reorganize([v for v in nY+nDo+nK if v in adj.var_names]), explain
