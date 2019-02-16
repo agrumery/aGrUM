@@ -83,7 +83,7 @@ class CausalFormula:
       if v not in values:
         return v
       else:
-        bn = self.cm.bn()
+        bn = self.cm.observationalBN()
         label = bn.variable(self.cm.idFromName(v)).label(_getLabelIdx(bn, v, values[v]))
         return v + "=" + label
 
@@ -113,8 +113,8 @@ class CausalFormula:
     """
 
     occur = defaultdict(int)
-    for n in self._cm.bn().nodes():
-      occur[self._cm.bn().variable(n).name()] = 0
+    for n in self._cm.observationalBN().nodes():
+      occur[self._cm.observationalBN().variable(n).name()] = 0
     for n in self._doing:
       occur[n] = 1
     for n in self._knowing:
@@ -153,7 +153,7 @@ class CausalFormula:
     :param bn: the BN where to infer
     :return:
     """
-    return self.root.eval(self.cm.bn())
+    return self.root.eval(self.cm.observationalBN())
 
 
 def _getLabelIdx(bn: gum.BayesNet, varname: str, val: Union[int, str]) -> int:

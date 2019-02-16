@@ -1,23 +1,23 @@
 # -*- coding: utf-8 -*-
-#(c) Copyright by Pierre-Henri Wuillemin, UPMC, 2011  (pierre-henri.wuillemin@lip6.fr)
+# (c) Copyright by Pierre-Henri Wuillemin, UPMC, 2011  (pierre-henri.wuillemin@lip6.fr)
 
-#Permission to use, copy, modify, and distribute this
-#software and its documentation for any purpose and
-#without fee or royalty is hereby granted, provided
-#that the above copyright notice appear in all copies
-#and that both that copyright notice and this permission
-#notice appear in supporting documentation or portions
-#thereof, including modifications, that you make.
+# Permission to use, copy, modify, and distribute this
+# software and its documentation for any purpose and
+# without fee or royalty is hereby granted, provided
+# that the above copyright notice appear in all copies
+# and that both that copyright notice and this permission
+# notice appear in supporting documentation or portions
+# thereof, including modifications, that you make.
 
-#THE AUTHOR P.H. WUILLEMIN  DISCLAIMS ALL WARRANTIES
-#WITH REGARD TO THIS SOFTWARE, INCLUDING ALL IMPLIED
-#WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT
-#SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, INDIRECT
-#OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER
-#RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER
-#IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
-#ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
-#OR PERFORMANCE OF THIS SOFTWARE!
+# THE AUTHOR P.H. WUILLEMIN  DISCLAIMS ALL WARRANTIES
+# WITH REGARD TO THIS SOFTWARE, INCLUDING ALL IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT
+# SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, INDIRECT
+# OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER
+# RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER
+# IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
+# ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
+# OR PERFORMANCE OF THIS SOFTWARE!
 
 """
 This file gives an API for causal inference
@@ -68,7 +68,7 @@ def causalImpact(cm: CausalModel, on: Union[str, NameSet],
   if len(sk) == 0:
     sk = set()
 
-  total = {cm.bn().variable(cm.bn().idFromName(i)).name() for i in son | sdoing | sk}
+  total = {cm.observationalBN().variable(cm.observationalBN().idFromName(i)).name() for i in son | sdoing | sk}
 
   if values is not None:
     for k in values.keys():
@@ -85,7 +85,7 @@ def causalImpact(cm: CausalModel, on: Union[str, NameSet],
     return formula, potential, explanation
 
   sv = set(potential.var_names)
-  extract_values = {k: _getLabelIdx(cm.bn(), k, v) for k, v in values.items() if k in sv}
+  extract_values = {k: _getLabelIdx(cm.observationalBN(), k, v) for k, v in values.items() if k in sv}
   potextract = potential.extract(extract_values)
   return formula, potextract, explanation
 
@@ -112,38 +112,38 @@ def _causalImpact(cm: CausalModel, on: NameSet,
   :return: the latex representation, the computation, the explanation
   """
   nY = [y for y in on]
-  iY = [cm.bn().idFromName(i) for i in nY]
+  iY = [cm.observationalBN().idFromName(i) for i in nY]
 
   nDo = [d for d in doing]
-  iDo = [cm.bn().idFromName(i) for i in nDo]
+  iDo = [cm.observationalBN().idFromName(i) for i in nDo]
 
   if knowing is None:
     nK = list()
   else:
     nK = [k for k in knowing]
-  sK = {cm.bn().idFromName(i) for i in nK}
+  sK = {cm.observationalBN().idFromName(i) for i in nK}
 
   # Null causal effect (different from non identifiable causal effect)
   if isDSep(cm, set(iDo), set(iY), sK | cm.latentVariablesIds()):
     explain = "No causal effect of X on Y, because they are d-separated "
     explain += "(conditioning on the observed variables if any)."
-    ar = CausalFormula(cm, ASTposteriorProba(cm.bn(), set(nY), set(nK)), on, doing, knowing)
+    ar = CausalFormula(cm, ASTposteriorProba(cm.causalBN(), set(nY), set(nK)), on, doing, knowing)
     adj = ar.eval()
-    return ar, adj.reorganize([v for v in nY+nDo+nK if v in adj.var_names]), explain
+    return ar, adj.reorganize([v for v in nY + nDo + nK if v in adj.var_names]), explain
 
   # Front or Back door
   if len(iDo) == 1 and len(nY) == 1 and len(nK) == 0:
     for bd in backdoor_generator(cm, iDo[0], iY[0], cm.latentVariablesIds()):
       ar = CausalFormula(cm, getBackDoorTree(cm, nDo[0], nY[0], bd), on, doing, knowing)
       adj = ar.eval()
-      explain = "backdoor " + str([cm.bn().variable(i).name() for i in bd]) + " found."
-      return ar, adj.reorganize([v for v in nY+nDo+nK if v in adj.var_names]), explain
+      explain = "backdoor " + str([cm.causalBN().variable(i).name() for i in bd]) + " found."
+      return ar, adj.reorganize([v for v in nY + nDo + nK if v in adj.var_names]), explain
 
     for fd in frontdoor_generator(cm, iDo[0], iY[0], cm.latentVariablesIds()):
       ar = CausalFormula(cm, getFrontDoorTree(cm, nDo[0], nY[0], fd), on, doing, knowing)
       adj = ar.eval()
-      explain = "frontdoor " + str([cm.bn().variable(i).name() for i in fd]) + " found."
-      return ar, adj.reorganize([v for v in nY+nDo+nK if v in adj.var_names]), explain
+      explain = "frontdoor " + str([cm.causalBN().variable(i).name() for i in fd]) + " found."
+      return ar, adj.reorganize([v for v in nY + nDo + nK if v in adj.var_names]), explain
 
   # Go for do-calculus
   try:
@@ -157,4 +157,4 @@ def _causalImpact(cm: CausalModel, on: NameSet,
   adj = ar.eval()
   explain = "Do-calculus computations"
 
-  return ar, adj.reorganize([v for v in nY+nDo+nK if v in adj.var_names]), explain
+  return ar, adj.reorganize([v for v in nY + nDo + nK if v in adj.var_names]), explain

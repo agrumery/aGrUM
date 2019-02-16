@@ -46,12 +46,15 @@ def getCausalModel(cm: CausalModel, size: str = "4") -> str:
       bgcol = "#444444"
       fgcol = "#FFFFFF"
       st = "filled"
+      shap = "ellipse"
     else:
       bgcol = "#FF0000"
       fgcol = "#000000"
       st = "dashed"
+      shap="point"
 
     graph.add_node(dot.Node(cm.names()[n],
+                            shape=shap,
                             style=st,
                             fillcolor=bgcol,
                             fontcolor=fgcol))

@@ -251,7 +251,7 @@ def identifyingIntervention(cm: CausalModel, Y: NameSet, X: NameSet, P: ASTtree 
           prb.append(ASTjointProba([v]))
         else:
           if P is None:
-            prb.append(ASTposteriorProba(cm.bn(), {v}, nvpi))
+            prb.append(ASTposteriorProba(cm.causalBN(), {v}, nvpi))
           else:
             prb.append(ASTdiv(P.copy(), ASTsum(v, P.copy())))
 
@@ -259,11 +259,10 @@ def identifyingIntervention(cm: CausalModel, Y: NameSet, X: NameSet, P: ASTtree 
 
       if len(S - Y) == 0:
         return prod
-
       else:
         lsy = list(S - Y)
         ilsy = [cm.idFromName(i) for i in lsy]
-        return ASTsum(lsy, ilsy, prod)
+        return ASTsum(ilsy, prod)
 
     # 7------------------------------------------
     for ispr in cdg:
@@ -279,7 +278,7 @@ def identifyingIntervention(cm: CausalModel, Y: NameSet, X: NameSet, P: ASTtree 
           if len(nvpi) == 0:
             prb.append(ASTjointProba([v]))
           else:
-            prb.append(ASTposteriorProba(cm.bn(), {v}, nvpi))
+            prb.append(ASTposteriorProba(cm.causalBN(), {v}, nvpi))
 
         P = productOfTrees(prb)
         return identifyingIntervention(inducedCausalSubModel(cm, ispr), Y, X & spr, P)
@@ -297,7 +296,7 @@ def getBackDoorTree(cm: CausalModel, x: str, y: str, zset: NodeSet) -> ASTtree:
   """
   zp = [cm.names()[i] for i in zset]
   return ASTsum(zp,
-                ASTmult(ASTposteriorProba(cm.bn(), {y}, set([x] + zp)),
+                ASTmult(ASTposteriorProba(cm.causalBN(), {y}, set([x] + zp)),
                         ASTjointProba(zp))
                 )
 
@@ -313,9 +312,9 @@ def getFrontDoorTree(cm: CausalModel, x: str, y: str, zset: NodeSet) -> ASTtree:
   :return: the ASTtree for the frontdoot critreroia
   """
   zp = [cm.names()[i] for i in zset]
-  return ASTsum(zp, ASTmult(ASTposteriorProba(cm.bn(), set(zp), {x}),
+  return ASTsum(zp, ASTmult(ASTposteriorProba(cm.causalBN(), set(zp), {x}),
                             ASTsum([x],
-                                   ASTmult(ASTposteriorProba(cm.bn(), {y}, set([x] + zp)),
+                                   ASTmult(ASTposteriorProba(cm.causalBN(), {y}, set([x] + zp)),
                                            ASTjointProba([x]))
                                    )
                             )
