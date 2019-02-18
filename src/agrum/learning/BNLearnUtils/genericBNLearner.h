@@ -516,7 +516,7 @@ namespace gum {
       void useNoApriori();
 
       /// use the BDeu apriori
-      /** The BDeu apriori adds weight/riqi to all the cells of the countings
+      /** The BDeu apriori adds weight to all the cells of the countings
        * tables. In other words, it adds weight rows in the database with
        * equally probable values. */
       void useAprioriBDeu(double weight = 1);

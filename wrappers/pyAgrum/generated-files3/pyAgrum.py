@@ -23131,7 +23131,7 @@ class BNLearner(object):
     filename: str
     	the file to learn from
     src : pyAgrum.BayesNet
-    	the Bayesian network used to find thoes modalities
+    	the Bayesian network used to find those modalities
     parse_database : bool
     	if true, the modalities specified by the user will be considered as a superset of the modalities of the variables.
     learner : pyAgrum.BNLearner
@@ -23200,7 +23200,7 @@ class BNLearner(object):
         r"""
         chi2(BNLearner self, std::string const & var1, std::string const & var2, Vector_string knw={}) -> PyObject
 
-        chi2 computes the chi2 statistic and pvalue for two columns, given a list of other columns. 
+        chi2 computes the chi2 statistic and pvalue for two columns, given a list of other columns.
 
 
         Parameters
@@ -23548,7 +23548,7 @@ class BNLearner(object):
         r"""
         setAprioriWeight(BNLearner self, double weight)
 
-        Set the weigth of the prior
+        Set the weight of the prior.
 
         Parameters
         ----------
@@ -23589,6 +23589,23 @@ class BNLearner(object):
         useAprioriDirichlet(BNLearner self, std::string const & filename)
         """
         return _pyAgrum.BNLearner_useAprioriDirichlet(self, *args)
+
+    def useAprioriBDeu(self, *args) -> "void":
+        r"""
+        useAprioriBDeu(BNLearner self, double weight=1)
+        useAprioriBDeu(BNLearner self)
+
+        The BDeu apriori adds weight to all the cells of the counting tables.
+        In other words, it adds weight rows in the database with equally probable
+        values.
+
+        Parameters
+        ----------
+        weight : double
+        	the apriori weight
+
+        """
+        return _pyAgrum.BNLearner_useAprioriBDeu(self, *args)
 
     def useGreedyHillClimbing(self) -> "void":
         r"""useGreedyHillClimbing(BNLearner self)"""
@@ -23767,7 +23784,7 @@ class BNLearner(object):
         r"""
         hasMissingValues(BNLearner self) -> bool
 
-        Indicates wether there are missing values in the database.
+        Indicates whether there are missing values in the database.
 
         Returns
         -------
@@ -23813,7 +23830,7 @@ class BNLearner(object):
         Returns
         -------
         int
-        	the number of rows in the database 
+        	the number of rows in the database
 
         """
         return _pyAgrum.BNLearner_nbRows(self)
@@ -23828,7 +23845,7 @@ class BNLearner(object):
         Returns
         -------
         int
-        	the number of columns in the database 
+        	the number of columns in the database
 
         """
         return _pyAgrum.BNLearner_nbCols(self)

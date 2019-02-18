@@ -65,6 +65,7 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
   using gum::learning::genericBNLearner::useNoApriori;
   using gum::learning::genericBNLearner::useAprioriSmoothing;
   using gum::learning::genericBNLearner::useAprioriDirichlet;
+  using gum::learning::genericBNLearner::useAprioriBDeu;
   using gum::learning::genericBNLearner::useGreedyHillClimbing;
   using gum::learning::genericBNLearner::useLocalSearchWithTabuList;
   using gum::learning::genericBNLearner::useK2;

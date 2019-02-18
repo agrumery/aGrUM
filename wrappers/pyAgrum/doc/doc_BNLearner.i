@@ -12,7 +12,7 @@ Parameters
 filename: str
 	the file to learn from
 src : pyAgrum.BayesNet
-	the Bayesian network used to find thoes modalities
+	the Bayesian network used to find those modalities
 parse_database : bool
 	if true, the modalities specified by the user will be considered as a superset of the modalities of the variables.
 learner : pyAgrum.BNLearner
@@ -190,7 +190,7 @@ nb_decrease : int
 
 %feature("docstring") gum::learning::genericBNLearner::hasMissingValues
 "
-Indicates wether there are missing values in the database.
+Indicates whether there are missing values in the database.
 
 Returns
 -------
@@ -201,6 +201,18 @@ bool
 %feature("docstring") gum::learning::BNLearner::useNoApriori
 "
 Use no apriori.
+"
+
+%feature("docstring") gum::learning::genericBNLearner::useAprioriBDeu
+"
+The BDeu apriori adds weight to all the cells of the counting tables.
+In other words, it adds weight rows in the database with equally probable
+values.
+
+Parameters
+----------
+weight : double
+	the apriori weight
 "
 
 %feature("docstring") gum::learning::BNLearner::useScoreAIC
@@ -380,7 +392,7 @@ max_indegree : int
 
 %feature("docstring") gum::learning::genericBNLearner::setAprioriWeight
 "
-Set the weigth of the prior
+Set the weight of the prior.
 
 Parameters
 ----------
@@ -401,7 +413,7 @@ weight : double
 
 %feature("docstring") gum::learning::BNLearner::chi2
 "
-chi2 computes the chi2 statistic and pvalue for two columns, given a list of other columns. 
+chi2 computes the chi2 statistic and pvalue for two columns, given a list of other columns.
 
 
 Parameters
@@ -414,7 +426,7 @@ name2 : str
 
 knowing : [str]
 	the list of names of conditioning columns
-	
+
 Returns
 -------
 statistic,pvalue
@@ -433,7 +445,7 @@ vars: List[str]
 
 knowing : List[str]
 	the (optional) list of names of conditioning columns
-	
+
 Returns
 -------
 double
@@ -448,7 +460,7 @@ Return the number of row in the database
 Returns
 -------
 int
-	the number of rows in the database 
+	the number of rows in the database
 "
 
 
@@ -460,6 +472,6 @@ Return the nimber of columns in the database
 Returns
 -------
 int
-	the number of columns in the database 
+	the number of columns in the database
 "
 
