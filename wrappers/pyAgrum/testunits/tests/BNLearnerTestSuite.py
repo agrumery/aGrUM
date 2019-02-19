@@ -220,8 +220,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     gum.generateCSV(bn2, "database.csv", 2000, with_labels=True)
 
     learner = gum.BNLearner("database.csv", bn)  # bn is used to give the variables and their domains
-    learner.setAprioriWeight(10)
-    learner.useAprioriDirichlet("dirichlet.csv")
+    learner.useAprioriDirichlet("dirichlet.csv",10)
     learner.useScoreAIC()  # or another score with no included prior such as BDeu
 
     bn3 = learner.learnBN()

@@ -60,7 +60,6 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
   using gum::learning::genericBNLearner::useScoreBIC;
   using gum::learning::genericBNLearner::useScoreK2;
   using gum::learning::genericBNLearner::useScoreLog2Likelihood;
-  using gum::learning::genericBNLearner::setAprioriWeight;
   using gum::learning::genericBNLearner::setDatabaseWeight;
   using gum::learning::genericBNLearner::useNoApriori;
   using gum::learning::genericBNLearner::useAprioriSmoothing;

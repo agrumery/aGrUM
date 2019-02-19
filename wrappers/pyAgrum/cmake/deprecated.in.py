@@ -6,6 +6,7 @@ from .pyAgrum import GibbsSampling, Potential
 from .pyAgrum import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, CliqueGraph
 from .pyAgrum import BayesNet, EssentialGraph, MarkovBlanket
 from .pyAgrum import ExactBNdistance,GibbsBNdistance
+from .pyAgrum import BNLearner
 
 
 def GibbsInference(bn):
@@ -70,6 +71,15 @@ def _addDeprecatedMethods():
   UndiGraph.ids=deprecated_ids # and subclasses
   EssentialGraph.ids=deprecated_ids
   BayesNet.ids=deprecated_ids
+
+  def deprecated_setAprioriWeight(learner,weight):
+    """
+    Deprecated methods in BNLearner for pyAgrum>0.14.0
+    """
+    print("** pyAgrum.BNLearner.setAprioriWeight() is removed in pyAgrum>0.14.0.")
+    print("** Please use the weight argument in `useApriori...` methods instead.")
+    return
+  BNLearner.setAprioriWeight=deprecated_setAprioriWeight
 
 #from .pyAgrum import BayesNet, EssentialGraph, MarkovBlanket
 

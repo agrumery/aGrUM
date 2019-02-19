@@ -23544,20 +23544,6 @@ class BNLearner(object):
         r"""useScoreLog2Likelihood(BNLearner self)"""
         return _pyAgrum.BNLearner_useScoreLog2Likelihood(self)
 
-    def setAprioriWeight(self, weight: 'double') -> "void":
-        r"""
-        setAprioriWeight(BNLearner self, double weight)
-
-        Set the weight of the prior.
-
-        Parameters
-        ----------
-        weight : double
-        	the apriori weight
-
-        """
-        return _pyAgrum.BNLearner_setAprioriWeight(self, weight)
-
     def setDatabaseWeight(self, new_weight: 'double const') -> "void":
         r"""
         setDatabaseWeight(BNLearner self, double const new_weight)

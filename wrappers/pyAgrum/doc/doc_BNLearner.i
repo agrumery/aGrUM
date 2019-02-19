@@ -389,18 +389,6 @@ max_indegree : int
 	the limit number of parents
 "
 
-
-%feature("docstring") gum::learning::genericBNLearner::setAprioriWeight
-"
-Set the weight of the prior.
-
-Parameters
-----------
-weight : double
-	the apriori weight
-"
-
-
 %feature("docstring") gum::learning::genericBNLearner::setDatabaseWeight
 "
 Set the database weight.
