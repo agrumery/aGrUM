@@ -262,6 +262,8 @@ namespace gum {
         BayesNet< GUM_SCALAR > __BNVars() const;
       };
 
+      /// sets the apriori weight
+      void __setAprioriWeight(double weight);
 
       public:
       // ##########################################################################
@@ -508,9 +510,6 @@ namespace gum {
       /// @name A priori selection / parameterization
       // ##########################################################################
       /// @{
-
-      /// sets the apriori weight
-      void setAprioriWeight(double weight);
 
       /// use no apriori
       void useNoApriori();

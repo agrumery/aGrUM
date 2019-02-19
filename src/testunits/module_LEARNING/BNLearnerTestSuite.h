@@ -81,7 +81,6 @@ namespace gum_tests {
       learner.addMandatoryArc("bronchitis?", "lung_cancer?");
 
       learner.useAprioriSmoothing();
-      learner.setAprioriWeight(1);
       // learner.useAprioriDirichlet (  GET_RESSOURCES_PATH( "asia.csv" ) );
 
       gum::NodeProperty< gum::Size > slice_order{
@@ -273,7 +272,6 @@ namespace gum_tests {
     //     learner.useK2( std::vector<gum::NodeId>{1, 5, 2, 6, 0, 3, 4, 7} );
     //     learner.addMandatoryArc( "bronchitis", "lung_cancer" );
     //     learner.useAprioriSmoothing();
-    //     learner.setAprioriWeight( 1 );
 
     //     gum::NodeProperty<unsigned int> slice_order{
     //         std::make_pair( gum::NodeId( 0 ), 1 ),
@@ -355,7 +353,6 @@ namespace gum_tests {
       learner.addMandatoryArc("bronchitis?", "lung_cancer?");
 
       learner.useAprioriSmoothing();
-      learner.setAprioriWeight(1);
       // learner.useAprioriDirichlet (  GET_RESSOURCES_PATH( "asia.csv" ) );
 
       gum::NodeProperty< gum::Size > slice_order{
@@ -434,7 +431,6 @@ namespace gum_tests {
       learner.addMandatoryArc("bronchitis?", "lung_cancer?");
 
       learner.useAprioriSmoothing();
-      learner.setAprioriWeight(1);
       // learner.useAprioriDirichlet (  GET_RESSOURCES_PATH( "asia.csv" ) );
 
       gum::NodeProperty< gum::Size > slice_order{
@@ -944,7 +940,6 @@ namespace gum_tests {
          GET_RESSOURCES_PATH("bugDoumenc.csv"), templ);
       learner.useScoreLog2Likelihood();
       learner.useAprioriSmoothing();
-      learner.setAprioriWeight(1);
       auto bn = learner.learnParameters(templ.dag());
     }
 
@@ -1018,7 +1013,6 @@ namespace gum_tests {
          GET_RESSOURCES_PATH("bugDoumenc.csv"), templ);
       learner.useScoreLog2Likelihood();
       learner.useAprioriSmoothing();
-      learner.setAprioriWeight(1);
 
       auto bn = learner.learnParameters(templ.dag());
 
@@ -1073,8 +1067,7 @@ namespace gum_tests {
 
       gum::learning::BNLearner< double > learner(
          GET_RESSOURCES_PATH("bnlearner_database.csv"), bn);
-      learner.setAprioriWeight(10);
-      learner.useAprioriDirichlet(GET_RESSOURCES_PATH("bnlearner_dirichlet.csv"));
+      learner.useAprioriDirichlet(GET_RESSOURCES_PATH("bnlearner_dirichlet.csv"),10);
       learner.useScoreAIC();
 
       try {

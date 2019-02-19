@@ -353,7 +353,7 @@ namespace gum {
     }
 
     // sets the apriori weight
-    INLINE void genericBNLearner::setAprioriWeight(double weight) {
+    INLINE void genericBNLearner::__setAprioriWeight(double weight) {
       if (weight < 0) {
         GUM_ERROR(OutOfBounds, "the weight of the apriori must be positive");
       }
@@ -375,7 +375,7 @@ namespace gum {
       }
 
       __apriori_type = AprioriType::SMOOTHING;
-      setAprioriWeight(weight);
+      __setAprioriWeight(weight);
 
       checkScoreAprioriCompatibility();
     }
@@ -389,7 +389,7 @@ namespace gum {
 
       __apriori_dbname = filename;
       __apriori_type = AprioriType::DIRICHLET_FROM_DATABASE;
-      setAprioriWeight(weight);
+      __setAprioriWeight(weight);
 
       checkScoreAprioriCompatibility();
     }
@@ -402,7 +402,7 @@ namespace gum {
       }
 
       __apriori_type = AprioriType::BDEU;
-      setAprioriWeight(weight);
+      __setAprioriWeight(weight);
 
       checkScoreAprioriCompatibility();
     }
