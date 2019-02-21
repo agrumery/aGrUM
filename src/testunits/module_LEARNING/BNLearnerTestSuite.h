@@ -56,6 +56,18 @@ namespace gum_tests {
 
   class BNLearnerTestSuite : public CxxTest::TestSuite {
     public:
+
+    void test_errorFromPyagrum() {
+      try {
+        gum::learning::BNLearner<double> learner(GET_RESSOURCES_PATH("sample_asia.csv"));
+        learner.use3off2();
+        learner.useNML();
+        auto ge3off2 = learner.learnMixedStructure();
+      } catch (gum::Exception& e) {
+        GUM_SHOWERROR(e);
+      }
+    }
+
     void test_asia() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("asia3.csv"));
 
