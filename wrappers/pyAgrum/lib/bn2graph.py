@@ -322,8 +322,6 @@ def BNinference2dot(bn, size="4", engine=None, evs={}, targets={}, format='png',
 
   g = dot.graph_from_dot_data(dotstr)
 
-  shutil.rmtree(temp_dir)
-
   g.set_size(size)
   return g
 
