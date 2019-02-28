@@ -42,7 +42,7 @@ if sys.version_info >= (3, 7):
   from tests import CausalModelTestSuite
   from tests import CausalNonRegressionTestSuite
 else:
-  print("[pyAgrum] Causality needs python 3")
+  print("[pyAgrum] Causality needs python>=3.7")
 
 import time
 
