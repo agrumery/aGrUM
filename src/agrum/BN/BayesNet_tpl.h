@@ -94,7 +94,7 @@ namespace gum {
 
     if (ds == 0) {
       GUM_ERROR(InvalidArgument, "No value for variable " << name << ".");
-    } else if (ds==1) {
+    } else if (ds == 1) {
       GUM_ERROR(InvalidArgument,
                 "Only one value for variable " << name
                                                << " (2 at least are needed).");

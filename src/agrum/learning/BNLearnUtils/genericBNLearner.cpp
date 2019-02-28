@@ -620,11 +620,11 @@ namespace gum {
         initial_marks.insert({arc.tail(), arc.head()}, '-');
       }
       __miic_3off2.addConstraints(initial_marks);
-      
+
       // create the mutual entropy object
-      //if (__mutual_info == nullptr) { this->useNML(); }
+      // if (__mutual_info == nullptr) { this->useNML(); }
       __createCorrectedMutualInformation();
-      
+
       return mgraph;
     }
 

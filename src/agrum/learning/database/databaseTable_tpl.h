@@ -372,10 +372,10 @@ namespace gum {
 
     /// insert a new translator into the database
     template < template < typename > class ALLOC >
-    std::size_t DatabaseTable< ALLOC >::insertTranslator(
-       const Variable&   var,
-       const std::size_t input_column,
-       const bool        unique_column) {
+    std::size_t
+       DatabaseTable< ALLOC >::insertTranslator(const Variable&   var,
+                                                const std::size_t input_column,
+                                                const bool        unique_column) {
       // check that there is no ignored_column corresponding to column
       if (__ignored_cols.exists(input_column))
         GUM_ERROR(
@@ -384,14 +384,16 @@ namespace gum {
               << input_column << " is marked as being ignored. "
               << "So it is forbidden to create a translator for that column.");
 
-      // if the databaseTable is not empty, we should fill the column of the database
-      // corresponding to the new translator with missing values. But, the current method
-      // assumes that the list of missing values is empty. Hence, it should raise an exception
+      // if the databaseTable is not empty, we should fill the column of the
+      // database corresponding to the new translator with missing values. But, the
+      // current method assumes that the list of missing values is empty. Hence, it
+      // should raise an exception
       if (!IDatabaseTable< DBTranslatedValue, ALLOC >::empty()) {
-        GUM_ERROR ( MissingValueInDatabase,
-                    "inserting a new translator into a database creates a new column " <<
-                    "with missing values. However, you did not define any symbol for " <<
-                    "such values.");
+        GUM_ERROR(
+           MissingValueInDatabase,
+           "inserting a new translator into a database creates a new column "
+              << "with missing values. However, you did not define any symbol for "
+              << "such values.");
       }
 
       // reserve some place for the new column in the records of the database
@@ -412,8 +414,8 @@ namespace gum {
       this->__threadProcessDatabase(reserve_lambda, undo_reserve_lambda);
 
       // insert the translator into the translator set
-      const std::size_t pos = __translators.insertTranslator(
-         var, input_column, unique_column);
+      const std::size_t pos =
+         __translators.insertTranslator(var, input_column, unique_column);
 
       // insert the name of the translator's variable to the set of variable names
       try {
@@ -425,7 +427,7 @@ namespace gum {
 
       return pos;
     }
-    
+
 
     /// insert a new translator into the database
     template < template < typename > class ALLOC >
