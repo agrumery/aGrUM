@@ -167,7 +167,7 @@ def _TimeSlicesToDot(dbn):
   return g
 
 
-def showTimeSlices(dbn, size="6", format="png"):
+def showTimeSlices(dbn, size="6", format="svg"):
   """
   Try to correctly display dBN and 2TBN
 
@@ -179,7 +179,7 @@ def showTimeSlices(dbn, size="6", format="png"):
   showGraph(_TimeSlicesToDot(dbn), size, format)
 
 
-def getTimeSlices(dbn, size="6", format="png"):
+def getTimeSlices(dbn, size="6", format="svg"):
   """
   Try to correctly represent dBN and 2TBN as an HTML string
 
@@ -286,7 +286,7 @@ def _plotFollowUnrolled(lovars, dbn, bn, T, evs):
       l.append(serie)
 
     fig, ax = plt.subplots()
-    plt.ylim(ymax=1, ymin=0)
+    plt.ylim(top=1, bottom=0)
     ax.xaxis.grid()
     plt.title("Following variable {0}".format(var), fontsize=20)
     plt.xlabel('time')

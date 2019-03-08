@@ -620,8 +620,10 @@ namespace gum {
         initial_marks.insert({arc.tail(), arc.head()}, '-');
       }
       __miic_3off2.addConstraints(initial_marks);
+
       // create the mutual entropy object
-      if (__mutual_info == nullptr) { this->useNML(); }
+      // if (__mutual_info == nullptr) { this->useNML(); }
+      __createCorrectedMutualInformation();
 
       return mgraph;
     }
@@ -637,8 +639,10 @@ namespace gum {
                      << "structures with missing values in databases");
       }
       BNLearnerListener listener(this, __miic_3off2);
+
       // create the mixedGraph_constraint_MandatoryArcs.arcs();
       MixedGraph mgraph = this->__prepare_miic_3off2();
+
       return __miic_3off2.learnMixedStructure(*__mutual_info, mgraph);
     }
 
@@ -712,11 +716,8 @@ namespace gum {
         // ========================================================================
         case AlgoType::MIIC_THREE_OFF_TWO: {
           BNLearnerListener listener(this, __miic_3off2);
-          // create the mixedGraph
+          // create the mixedGraph and the corrected mutual information
           MixedGraph mgraph = this->__prepare_miic_3off2();
-
-          // recreate the corrected mutual information
-          __createCorrectedMutualInformation();
 
           return __miic_3off2.learnStructure(*__mutual_info, mgraph);
         }

@@ -302,7 +302,7 @@ namespace gum {
        */
       std::size_t insertTranslator(const DBTranslator< ALLOC >& translator,
                                    const std::size_t            input_column,
-                                   const bool                   unique_column = true);
+                                   const bool unique_column = true);
 
       /// insert a new translator into the database table
       /** @param var the variable that will be contained into the translator
@@ -325,10 +325,9 @@ namespace gum {
        * behavior, use method insertTranslator in which you specify the set of
        * missing symbols.
        */
-      std::size_t insertTranslator(
-         const Variable&   var,
-         const std::size_t input_column,
-         const bool        unique_column = true);
+      std::size_t insertTranslator(const Variable&   var,
+                                   const std::size_t input_column,
+                                   const bool        unique_column = true);
 
       /// insert a new translator into the database table
       /** @param var the variable that will be contained into the translator
