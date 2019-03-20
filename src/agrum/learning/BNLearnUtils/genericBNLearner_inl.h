@@ -255,6 +255,45 @@ namespace gum {
       return __score_database.databaseTable().hasMissingValues();
     }
 
+    // assign a set of forbidden edges
+    INLINE void genericBNLearner::setPossibleEdges(const EdgeSet& set) {
+      __constraint_PossibleEdges.setEdges(set);
+    }
+
+    // assign a new forbidden edge
+    INLINE void genericBNLearner::addPossibleEdge(const Edge& edge) {
+      __constraint_PossibleEdges.addEdge(edge);
+    }
+
+    // remove a forbidden edge
+    INLINE void genericBNLearner::erasePossibleEdge(const Edge& edge) {
+      __constraint_PossibleEdges.eraseEdge(edge);
+    }
+
+    // assign a new forbidden edge
+    INLINE void genericBNLearner::addPossibleEdge(const NodeId tail,
+                                                  const NodeId head) {
+      addPossibleEdge(Edge(tail, head));
+    }
+
+    // remove a forbidden edge
+    INLINE void genericBNLearner::erasePossibleEdge(const NodeId tail,
+                                                    const NodeId head) {
+      erasePossibleEdge(Edge(tail, head));
+    }
+
+    // assign a new forbidden edge
+    INLINE void genericBNLearner::addPossibleEdge(const std::string& tail,
+                                                  const std::string& head) {
+      addPossibleEdge(Edge(idFromName(tail), idFromName(head)));
+    }
+
+    // remove a forbidden edge
+    INLINE void genericBNLearner::erasePossibleEdge(const std::string& tail,
+                                                    const std::string& head) {
+      erasePossibleEdge(Edge(idFromName(tail), idFromName(head)));
+    }
+
     // assign a set of forbidden arcs
     INLINE void genericBNLearner::setForbiddenArcs(const ArcSet& set) {
       __constraint_ForbiddenArcs.setArcs(set);

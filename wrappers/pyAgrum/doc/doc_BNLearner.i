@@ -275,9 +275,26 @@ pyAgrum.DAG
 "
 
 
+%feature("docstring") gum::learning::genericBNLearner::erasePossibleEdge
+"
+Allow the 2 arcs to be added if necessary.
+
+Parameters
+----------
+arc : pyAgrum
+	an arc
+head :
+	a variable's id (int)
+tail :
+	a variable's id (int)
+head :
+	a variable's name (str)
+tail :
+	a variable's name (str)
+"
 %feature("docstring") gum::learning::genericBNLearner::eraseForbiddenArc
 "
-Allow the arc in parameter to be added if necessary.
+Allow the arc to be added if necessary.
 
 Parameters
 ----------

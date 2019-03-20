@@ -727,12 +727,15 @@ namespace gum {
           BNLearnerListener listener(this, __greedy_hill_climbing);
           StructuralConstraintSetStatic< StructuralConstraintMandatoryArcs,
                                          StructuralConstraintForbiddenArcs,
+                                         StructuralConstraintPossibleEdges,
                                          StructuralConstraintSliceOrder >
              gen_constraint;
           static_cast< StructuralConstraintMandatoryArcs& >(gen_constraint) =
              __constraint_MandatoryArcs;
           static_cast< StructuralConstraintForbiddenArcs& >(gen_constraint) =
              __constraint_ForbiddenArcs;
+          static_cast< StructuralConstraintPossibleEdges& >(gen_constraint) =
+             __constraint_PossibleEdges;
           static_cast< StructuralConstraintSliceOrder& >(gen_constraint) =
              __constraint_SliceOrder;
 
@@ -790,12 +793,15 @@ namespace gum {
         case AlgoType::K2: {
           BNLearnerListener listener(this, __K2.approximationScheme());
           StructuralConstraintSetStatic< StructuralConstraintMandatoryArcs,
-                                         StructuralConstraintForbiddenArcs >
+                                         StructuralConstraintForbiddenArcs,
+                                         StructuralConstraintPossibleEdges >
              gen_constraint;
           static_cast< StructuralConstraintMandatoryArcs& >(gen_constraint) =
              __constraint_MandatoryArcs;
           static_cast< StructuralConstraintForbiddenArcs& >(gen_constraint) =
              __constraint_ForbiddenArcs;
+          static_cast< StructuralConstraintPossibleEdges& >(gen_constraint) =
+             __constraint_PossibleEdges;
 
           GraphChangesGenerator4K2< decltype(gen_constraint) > op_set(
              gen_constraint);
