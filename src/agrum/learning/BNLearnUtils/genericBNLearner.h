@@ -638,18 +638,20 @@ namespace gum {
       void eraseMandatoryArc(const NodeId tail, const NodeId head);
       void eraseMandatoryArc(const std::string& tail, const std::string& head);
       /// @}
-            
+
       /// assign a set of forbidden edges
+      /// @warning Once at least one possible edge is defined, all other edges are not possible anymore
       void setPossibleEdges(const EdgeSet& set);
 
-      /// @name assign a new forbidden edge
+      /// @name assign a new possible edge
+      /// @warning Once at least one possible edge is defined, all other edges are not possible anymore
       /// @{
       void addPossibleEdge(const Edge& edge);
       void addPossibleEdge(const NodeId tail, const NodeId head);
       void addPossibleEdge(const std::string& tail, const std::string& head);
       /// @}
 
-      /// @name remove a forbidden edge
+      /// @name remove a possible edge
       /// @{
       void erasePossibleEdge(const Edge& edge);
       void erasePossibleEdge(const NodeId tail, const NodeId head);
@@ -698,7 +700,7 @@ namespace gum {
       StructuralConstraintForbiddenArcs __constraint_ForbiddenArcs;
 
       /// the constraint on possible Edges
-      StructuralConstrainntPossibleEdges __constraint_PosibleEdges;
+      StructuralConstraintPossibleEdges __constraint_PossibleEdges;
 
       /// the constraint on forbidden arcs
       StructuralConstraintMandatoryArcs __constraint_MandatoryArcs;

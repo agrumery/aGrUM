@@ -56,16 +56,6 @@ namespace gum_tests {
 
   class BNLearnerTestSuite : public CxxTest::TestSuite {
     public:
-    void test_errorFromPyagrum() {
-      try {
-        gum::learning::BNLearner< double > learner(
-           GET_RESSOURCES_PATH("sample_asia.csv"));
-        learner.use3off2();
-        learner.useNML();
-        auto ge3off2 = learner.learnMixedStructure();
-      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
-    }
-
     void test_asia() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("asia3.csv"));
 
@@ -1265,6 +1255,75 @@ namespace gum_tests {
       TS_ASSERT_DELTA(stat, 1.40077995, 1e-5);
       stat = learner.logLikelihood({std::string("C")}, {"D"}) / siz;   // LL=-N.H
       TS_ASSERT_DELTA(stat, 1.40077995 - 0.40217919, 1e-5);
+    }
+    void test_errorFromPyagrum() {
+      try {
+        gum::learning::BNLearner< double > learner(
+           GET_RESSOURCES_PATH("sample_asia.csv"));
+        learner.use3off2();
+        learner.useNML();
+        auto ge3off2 = learner.learnMixedStructure();
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
+    }
+
+
+    void test_PossibleEdges() {
+      //[smoking? , lung_cancer? , bronchitis? , visit_to_Asia? , tuberculosis? ,
+      // tuberculos_or_cancer? , dyspnoea? , positive_XraY?]
+      {
+        // possible arcs are not relevant
+        gum::learning::BNLearner< double > learner(
+           GET_RESSOURCES_PATH("asia3.csv"));
+        learner.addPossibleEdge("visit_to_Asia?", "lung_cancer?");
+        learner.addPossibleEdge("visit_to_Asia?", "smoking?");
+
+        gum::BayesNet< double > bn = learner.learnBN();
+        TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(0));
+      }
+
+      {
+        // possible arcs are not relevant
+        gum::learning::BNLearner< double > learner(
+           GET_RESSOURCES_PATH("asia3.csv"));
+        learner.addPossibleEdge("smoking?", "lung_cancer?");
+        learner.addPossibleEdge("bronchitis?", "smoking?");
+
+        gum::BayesNet< double > bn = learner.learnBN();
+        TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(2));
+        TS_ASSERT(bn.parents("lung_cancer?").contains(bn.idFromName("smoking?")));
+        TS_ASSERT(bn.parents("bronchitis?").contains(bn.idFromName("smoking?")));
+      }
+
+      {
+        // possible arcs are not relevant
+        // mixed with a forbidden arcs
+        gum::learning::BNLearner< double > learner(
+           GET_RESSOURCES_PATH("asia3.csv"));
+        learner.addPossibleEdge("smoking?", "lung_cancer?");
+        learner.addPossibleEdge("bronchitis?", "smoking?");
+        learner.addForbiddenArc("smoking?", "bronchitis?");
+
+        gum::BayesNet< double > bn = learner.learnBN();
+        TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(2));
+        TS_ASSERT(bn.parents("lung_cancer?").contains(bn.idFromName("smoking?")));
+        TS_ASSERT(bn.parents("smoking?").contains(bn.idFromName("bronchitis?")));
+      }
+
+      {
+        // possible arcs are not relevant
+        // mixed with a mandatory arcs
+        gum::learning::BNLearner< double > learner(
+           GET_RESSOURCES_PATH("asia3.csv"));
+        learner.addPossibleEdge("smoking?", "lung_cancer?");
+        learner.addPossibleEdge("bronchitis?", "smoking?");
+        learner.addMandatoryArc("visit_to_Asia?", "bronchitis?");
+
+        gum::BayesNet< double > bn= learner.learnBN();
+        TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(3));
+        TS_ASSERT(bn.parents("lung_cancer?").contains(bn.idFromName("smoking?")));
+        TS_ASSERT(bn.parents("smoking?").contains(bn.idFromName("bronchitis?")));
+        TS_ASSERT(bn.parents("bronchitis?").contains(bn.idFromName("visit_to_Asia?")));
+      }
     }
   };
 } /* namespace gum_tests */

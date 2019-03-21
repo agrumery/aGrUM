@@ -37,7 +37,8 @@ namespace gum {
     INLINE bool
        StructuralConstraintPossibleEdges::checkArcAdditionAlone(NodeId x,
                                                                 NodeId y) const {
-      return __PossibleEdges__possible_edges.empty() || PossibleEdges__possible_edges.exists(Edge(x, y));
+      auto res=_PossibleEdges__possible_edges.empty() || _PossibleEdges__possible_edges.exists(Edge(x, y));
+      return res;
     }
 
     /// checks whether the constraints enable to remove arc (x,y)
@@ -51,7 +52,7 @@ namespace gum {
     INLINE bool
        StructuralConstraintPossibleEdges::checkArcReversalAlone(NodeId x,
                                                                 NodeId y) const {
-      return __PossibleEdges__possible_edges.empty() || _PossibleEdges__possible_edges.exists(Edge(y, x));
+      return _PossibleEdges__possible_edges.empty() || _PossibleEdges__possible_edges.exists(Edge(y, x));
     }
 
     /// checks whether the constraints enable to add an arc
@@ -128,7 +129,7 @@ namespace gum {
     }
 
     /// assign a set of forbidden edge
-    INLINE void StructuralConstraintPossibleEdges::setEdges(const edgeSet& set) {
+    INLINE void StructuralConstraintPossibleEdges::setEdges(const EdgeSet& set) {
       _PossibleEdges__possible_edges = set;
     }
 
