@@ -1271,7 +1271,7 @@ namespace gum_tests {
       //[smoking? , lung_cancer? , bronchitis? , visit_to_Asia? , tuberculosis? ,
       // tuberculos_or_cancer? , dyspnoea? , positive_XraY?]
       {
-        // possible arcs are not relevant
+        // possible edges are not relevant
         gum::learning::BNLearner< double > learner(
            GET_RESSOURCES_PATH("asia3.csv"));
         learner.addPossibleEdge("visit_to_Asia?", "lung_cancer?");
@@ -1282,7 +1282,7 @@ namespace gum_tests {
       }
 
       {
-        // possible arcs are not relevant
+        // possible edges are relevant
         gum::learning::BNLearner< double > learner(
            GET_RESSOURCES_PATH("asia3.csv"));
         learner.addPossibleEdge("smoking?", "lung_cancer?");
@@ -1295,7 +1295,7 @@ namespace gum_tests {
       }
 
       {
-        // possible arcs are not relevant
+        // possible edges are relevant
         // mixed with a forbidden arcs
         gum::learning::BNLearner< double > learner(
            GET_RESSOURCES_PATH("asia3.csv"));
@@ -1310,7 +1310,7 @@ namespace gum_tests {
       }
 
       {
-        // possible arcs are not relevant
+        // possible edges are relevant
         // mixed with a mandatory arcs
         gum::learning::BNLearner< double > learner(
            GET_RESSOURCES_PATH("asia3.csv"));
