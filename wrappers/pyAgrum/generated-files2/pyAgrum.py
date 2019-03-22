@@ -6240,6 +6240,10 @@ class EssentialGraph(object):
         """
         return _pyAgrum.EssentialGraph_size(self)
 
+    def skeleton(self):
+        r"""skeleton(EssentialGraph self) -> UndiGraph"""
+        return _pyAgrum.EssentialGraph_skeleton(self)
+
     def nodes(self):
         r"""nodes(EssentialGraph self) -> PyObject *"""
         return _pyAgrum.EssentialGraph_nodes(self)
@@ -23651,6 +23655,10 @@ class BNLearner(object):
 
         """
         return _pyAgrum.BNLearner_setSliceOrder(self, *args)
+
+    def setPossibleSkeleton(self, skeleton):
+        r"""setPossibleSkeleton(BNLearner self, UndiGraph skeleton)"""
+        return _pyAgrum.BNLearner_setPossibleSkeleton(self, skeleton)
 
     def addPossibleEdge(self, *args):
         r"""

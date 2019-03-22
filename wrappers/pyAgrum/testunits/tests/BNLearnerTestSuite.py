@@ -353,5 +353,21 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertEqual(bn.parents(bn.idFromName("smoking?")), {bn.idFromName("bronchitis?")})
     self.assertEqual(bn.parents(bn.idFromName("bronchitis?")), {bn.idFromName("visit_to_Asia?")})
 
+  def testHybridLearning(self):
+    learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/data1.csv'))
+    learner.useMIIC()
+    eg = learner.learnMixedStructure()
+    skel = eg.skeleton()
+
+    learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/data1.csv'))
+    learner.setPossibleSkeleton(skel)
+    bn = learner.learnBN()
+
+    self.assertEqual(bn.sizeArcs(), 4)
+    self.assertEqual(bn.parents(bn.idFromName("V")), {bn.idFromName("A")})
+    self.assertEqual(bn.parents(bn.idFromName("Y")), {bn.idFromName("X"), bn.idFromName("V")})
+    self.assertEqual(bn.parents(bn.idFromName("Z")), {bn.idFromName("Y")})
+
+
 ts = unittest.TestSuite()
 addTests(ts, BNLearnerCSVTestCase)

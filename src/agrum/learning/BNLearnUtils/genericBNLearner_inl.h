@@ -28,6 +28,7 @@
 
 // to help IDE parser
 #include <agrum/learning/BNLearnUtils/genericBNLearner.h>
+#include <agrum/graphs/undiGraph.h>
 
 namespace gum {
 
@@ -259,8 +260,12 @@ namespace gum {
     INLINE void genericBNLearner::setPossibleEdges(const EdgeSet& set) {
       __constraint_PossibleEdges.setEdges(set);
     }
+    // assign a set of forbidden edges from an UndiGraph
+    INLINE void genericBNLearner::setPossibleSkeleton(const gum::UndiGraph& g) {
+      setPossibleEdges(g.edges());
+    }
 
-    // assign a new forbidden edge
+    // assign a new possible edge
     INLINE void genericBNLearner::addPossibleEdge(const Edge& edge) {
       __constraint_PossibleEdges.addEdge(edge);
     }

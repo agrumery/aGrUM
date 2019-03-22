@@ -641,7 +641,10 @@ namespace gum {
 
       /// assign a set of forbidden edges
       /// @warning Once at least one possible edge is defined, all other edges are not possible anymore
+      /// @{
       void setPossibleEdges(const EdgeSet& set);
+      void setPossibleSkeleton(const UndiGraph& skeleton);
+      /// @}
 
       /// @name assign a new possible edge
       /// @warning Once at least one possible edge is defined, all other edges are not possible anymore
