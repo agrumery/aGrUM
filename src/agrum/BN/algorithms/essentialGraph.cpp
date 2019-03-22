@@ -139,4 +139,15 @@ namespace gum {
 
     return output.str();
   }
+
+  UndiGraph EssentialGraph::skeleton() const {
+    UndiGraph skel;
+    for (const auto& n : nodes())
+      skel.addNodeWithId(n);
+    for (const auto& edge : edges())
+      skel.addEdge(edge.first(), edge.second());
+    for (const auto& arc : arcs())
+      skel.addEdge(arc.tail(), arc.head());
+    return skel;
+  }
 }   // namespace gum

@@ -31,6 +31,7 @@
 #include <agrum/graphicalModels/DAGmodel.h>
 #include <agrum/graphs/graphElements.h>
 #include <agrum/graphs/mixedGraph.h>
+#include <agrum/graphs/undiGraph.h>
 
 namespace gum {
 
@@ -93,6 +94,8 @@ namespace gum {
     Size sizeNodes() const;
     /// wrapping @ref MixedGraph::size()
     Size size() const;
+
+    UndiGraph skeleton() const;
 
     /// wrapping @ref MixedGraph::nodes()
     const NodeGraphPart& nodes() const;

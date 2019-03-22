@@ -70,6 +70,7 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
   using gum::learning::genericBNLearner::useK2;
   using gum::learning::genericBNLearner::setMaxIndegree;
   using gum::learning::genericBNLearner::setSliceOrder;
+  using gum::learning::genericBNLearner::setPossibleSkeleton;
   using gum::learning::genericBNLearner::addPossibleEdge;
   using gum::learning::genericBNLearner::erasePossibleEdge;
   using gum::learning::genericBNLearner::addForbiddenArc;
