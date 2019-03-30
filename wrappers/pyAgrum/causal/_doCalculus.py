@@ -1,23 +1,23 @@
 # -*- coding: utf-8 -*-
-#(c) Copyright by Pierre-Henri Wuillemin, UPMC, 2011  (pierre-henri.wuillemin@lip6.fr)
+# (c) Copyright by Pierre-Henri Wuillemin, UPMC, 2011  (pierre-henri.wuillemin@lip6.fr)
 
-#Permission to use, copy, modify, and distribute this
-#software and its documentation for any purpose and
-#without fee or royalty is hereby granted, provided
-#that the above copyright notice appear in all copies
-#and that both that copyright notice and this permission
-#notice appear in supporting documentation or portions
-#thereof, including modifications, that you make.
+# Permission to use, copy, modify, and distribute this
+# software and its documentation for any purpose and
+# without fee or royalty is hereby granted, provided
+# that the above copyright notice appear in all copies
+# and that both that copyright notice and this permission
+# notice appear in supporting documentation or portions
+# thereof, including modifications, that you make.
 
-#THE AUTHOR P.H. WUILLEMIN  DISCLAIMS ALL WARRANTIES
-#WITH REGARD TO THIS SOFTWARE, INCLUDING ALL IMPLIED
-#WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT
-#SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, INDIRECT
-#OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER
-#RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER
-#IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
-#ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
-#OR PERFORMANCE OF THIS SOFTWARE!
+# THE AUTHOR P.H. WUILLEMIN  DISCLAIMS ALL WARRANTIES
+# WITH REGARD TO THIS SOFTWARE, INCLUDING ALL IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT
+# SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, INDIRECT
+# OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER
+# RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER
+# IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
+# ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
+# OR PERFORMANCE OF THIS SOFTWARE!
 
 """
 This file computes the causal impact of intervention in a causal model
@@ -32,7 +32,8 @@ from ._CausalModel import inducedCausalSubModel, CausalModel
 from ._CausalFormula import CausalFormula
 
 
-def doCalculusWithObservation(cm: CausalModel, on: str, doing: NameSet, knowing: Optional[NameSet] = None) -> CausalFormula:
+def doCalculusWithObservation(cm: CausalModel, on: str, doing: NameSet,
+                              knowing: Optional[NameSet] = None) -> CausalFormula:
   """
   Compute the CausalFormula for an impact analysis given the causal model, the observed variables and the
   variable on  which there will be intervention.
@@ -152,6 +153,7 @@ def identifyingIntervention(cm: CausalModel, Y: NameSet, X: NameSet, P: ASTtree 
   :param P: The ASTtree representing the calculus in construction
   :return: the ASTtree representing the calculus
   """
+
   iX = {cm.idFromName(i) for i in X}
   iY = {cm.idFromName(i) for i in Y}
   iV = set(cm.nodes()) - cm.latentVariablesIds()
@@ -166,8 +168,7 @@ def identifyingIntervention(cm: CausalModel, Y: NameSet, X: NameSet, P: ASTtree 
       vy = V - Y
       if len(vy) != 0:
         lvy = list(vy)
-        ilvy = [cm.idFromName(i) for i in lvy]
-        return ASTsum(lvy, ilvy, P)
+        return ASTsum(lvy, P)
       return P
 
   # 2 -------------------------------------------
@@ -177,7 +178,7 @@ def identifyingIntervention(cm: CausalModel, Y: NameSet, X: NameSet, P: ASTtree 
   iAnY |= iY
   AnY = {cm.names()[i] for i in iAnY}
   iLat = cm.latentVariablesIds()
-  Lat = {cm.names()[i] for i in iLat}
+  nLat = {cm.names()[i] for i in iLat}
 
   if len(cm.nodes()) != len(AnY):
     ivAny = list(iV - iAnY)
@@ -235,7 +236,7 @@ def identifyingIntervention(cm: CausalModel, Y: NameSet, X: NameSet, P: ASTtree 
 
     # 5-------------------------
     if len(cdg) == 1 and len(cdg[0]) == len(V):
-      raise HedgeException("Hedge Error: " + "G=" + str(V) + ",G[S]=" + str(S), V, S)
+      raise HedgeException(f"Hedge Error: G={V}, G[S]={S}",V,S)
 
     # 6--------------------------
     gs = inducedCausalSubModel(cm, iS)

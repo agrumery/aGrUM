@@ -171,9 +171,11 @@ def inducedCausalSubModel(cm: CausalModel, sns: NodeSet = None) -> CausalModel:
 
   names = cm.names()
   latentVarsDescriptor = list()
-  for latentVar in cm.latentVariablesIds():
-    if cm.children(latentVar).issubset(nodes):
+  lats=cm.latentVariablesIds()
+  for latentVar in lats:
+    inters=cm.children(latentVar) & nodes
+    if len(inters)>0:
       latentVarsDescriptor.append((names[latentVar],
-                                   list(cm.children(latentVar))))
+                                   list(inters)))
 
   return CausalModel(bn, latentVarsDescriptor, True)
