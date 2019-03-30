@@ -1,6 +1,6 @@
 # aGrUM Changelog
 
-## Changelog for 0.14.2
+## Changelog for 0.14.3
 
 * aGrUM
   * new constraint for structural learning : `possibleEdge` forces the tested edges to be taken from the sets of `possibleEdge`s
