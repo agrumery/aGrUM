@@ -46,16 +46,16 @@ namespace gum {
       for (const auto node : bn.dag())
         nodes.push_back(node);
       std::sort(nodes.begin(), nodes.end());
-      try {
-        std::size_t i = std::size_t(0);
-        for (auto node : nodes) {
-          const Variable& var = bn.variable(node);
+      std::size_t i = std::size_t(0);
+      for (auto node : nodes) {
+        const Variable& var = bn.variable(node);
+        try {
           __database.insertTranslator(var, var_names[var.name()], missing_symbols);
-          __nodeId2cols.insert(NodeId(node), i++);
+        } catch (NotFound&) {
+          GUM_ERROR(MissingVariableInDatabase,
+                    "Variable '" << var.name() << "' is missing");
         }
-      } catch (NotFound&) {
-        GUM_ERROR(MissingVariableInDatabase,
-                  "the database does not contain variable ");
+        __nodeId2cols.insert(NodeId(node), i++);
       }
 
       // fill the database
