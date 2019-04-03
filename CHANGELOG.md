@@ -5,9 +5,12 @@
 * aGrUM
   * new constraint for structural learning : `possibleEdge` forces the tested edges to be taken from the sets of `possibleEdge`s
   * new methods `BNLearner::addPossibleEdge(const gum::Edge&)` and `BNLearner::setPossibleSkeleton(const gum::UndiGraph&)`
+  * Fix a bug in `gum::IndepTestG2`
+  * Access to scores from BNLearner : `BNLearner::G2()`
 * pyAgrum
   * new methods `BNLearner.addPossibleEdge(x,y)` and `BNLearner.setPossibleSkeleton(undigraph)`
   * fix a bug in causality's identification algorithm
+  * Access to scores from BNLearner : `BNLearner.G2()`
   * add tests and fix typos in notebooks
   
 ## Changelog for 0.14.2
