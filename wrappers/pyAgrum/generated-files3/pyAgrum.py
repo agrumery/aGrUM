@@ -23226,6 +23226,32 @@ class BNLearner(object):
         """
         return _pyAgrum.BNLearner_chi2(self, *args)
 
+    def G2(self, *args) -> "PyObject *":
+        r"""
+        G2(BNLearner self, std::string const & var1, std::string const & var2, Vector_string knw={}) -> PyObject
+
+        G2 computes the G2 statistic and pvalue for two columns, given a list of other columns.
+
+
+        Parameters
+        ----------
+        name1: str
+        	the name of the first column
+
+        name2 : str
+        	the name of the second column
+
+        knowing : [str]
+        	the list of names of conditioning columns
+
+        Returns
+        -------
+        statistic,pvalue
+        	the G2 statistic and the associated p-value as a Tuple
+
+        """
+        return _pyAgrum.BNLearner_G2(self, *args)
+
     def setVerbosity(self, v: 'bool') -> "void":
         r"""
         setVerbosity(BNLearner self, bool v)

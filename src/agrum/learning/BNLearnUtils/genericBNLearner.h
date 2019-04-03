@@ -439,7 +439,7 @@ namespace gum {
               const std::vector< std::string >& knowing = {});
 
       /**
-       * Return the <statistic,pvalue> pair for for chi2 test in the database
+       * Return the <statistic,pvalue> pair for for G2 test in the database
        * @param id1 first variable
        * @param id2 second variable
        * @param knowing list of observed variables
@@ -448,6 +448,17 @@ namespace gum {
       std::pair< double, double > G2(const NodeId                 id1,
                                      const NodeId                 id2,
                                      const std::vector< NodeId >& knowing = {});
+      /**
+       * Return the <statistic,pvalue> pair for for G2 test in the database
+       * @param id1 first variable
+       * @param id2 second variable
+       * @param knowing list of observed variables
+       * @return a std::pair<double,double>
+       */
+      std::pair< double, double >
+         G2(const std::string&                name1,
+            const std::string&                name2,
+            const std::vector< std::string >& knowing = {});
 
       /**
        * Return the loglikelihood of vars in the base, conditioned by knowing for

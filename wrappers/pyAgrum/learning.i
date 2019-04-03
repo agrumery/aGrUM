@@ -19,6 +19,10 @@
     std::pair<double,double> res=$self->chi2(var1,var2,knw);
     return Py_BuildValue("(dd)",res.first,res.second);
   }
+  PyObject *G2(const std::string& var1,const std::string& var2,const std::vector<std::string>& knw={}) {
+    std::pair<double,double> res=$self->G2(var1,var2,knw);
+    return Py_BuildValue("(dd)",res.first,res.second);
+  }
 
   void setSliceOrder(PyObject * l) {
     gum::NodeProperty< gum::Size > ranks;

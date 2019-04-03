@@ -438,6 +438,29 @@ statistic,pvalue
 	the chi2 statistic and the associated p-value as a Tuple
 "
 
+
+%feature("docstring") gum::learning::BNLearner::G2
+"
+G2 computes the G2 statistic and pvalue for two columns, given a list of other columns.
+
+
+Parameters
+----------
+name1: str
+	the name of the first column
+
+name2 : str
+	the name of the second column
+
+knowing : [str]
+	the list of names of conditioning columns
+
+Returns
+-------
+statistic,pvalue
+	the G2 statistic and the associated p-value as a Tuple
+"
+
 %feature("docstring") gum::learning::genericBNLearner::logLikelihood
 "
 logLikelihood computes the log-likelihood for the columns in vars, given the columns in the list knowing (optional)

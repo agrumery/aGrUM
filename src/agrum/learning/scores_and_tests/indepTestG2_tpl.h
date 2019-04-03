@@ -258,16 +258,16 @@ namespace gum {
           const double tmp_Ny = N_y[y];
           for (std::size_t x = 0; x < X_size; ++x, ++xy) {
             const double tmp = (tmp_Ny * N_x[x]);
-            if (tmp != 0.0) {
+            if ((tmp != 0.0) && (N_xyz[xy] != 0.0)) {
               cumulStat += N_xyz[xy] * std::log((N_xyz[xy] * N) / tmp);
             }
           }
         }
       }
 
-      //used to make the G test formula asymptotically equivalent
+      // used to make the G test formula asymptotically equivalent
       // to the Pearson's chi-squared test formula
-      cumulStat*=2;
+      cumulStat *= 2;
 
       Size   df = __chi2.degreesOfFreedom(var_x, var_y);
       double pValue = __chi2.probaChi2(cumulStat, df);

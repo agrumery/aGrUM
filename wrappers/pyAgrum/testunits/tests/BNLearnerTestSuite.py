@@ -290,6 +290,58 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertAlmostEqual(stat, 15.2205, delta=1e-3)
     self.assertAlmostEqual(pvalue, 0.0005, delta=1e-4)
 
+  def test_G2(self):
+    learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/asia3.csv'))
+
+    stat, pvalue = learner.G2("smoking?", "lung_cancer?")
+    self.assertAlmostEqual(stat, 43.0321, delta=1e-4)
+    self.assertAlmostEqual(pvalue, 0, delta=1e-4)
+
+    stat, pvalue = learner.G2("smoking?", "visit_to_Asia?")
+    self.assertAlmostEqual(stat, 1.1418, delta=1e-4)
+    self.assertAlmostEqual(pvalue, 0.2852, delta=1e-4)
+
+    stat, pvalue = learner.G2("lung_cancer?", "tuberculosis?")
+    self.assertAlmostEqual(stat, 1.2201, delta=1e-4)
+    self.assertAlmostEqual(pvalue, 0.2693, delta=1e-4)
+
+    stat, pvalue = learner.G2("lung_cancer?", "tuberculosis?", ["tuberculos_or_cancer?"])
+    self.assertAlmostEqual(stat, 59.1386, delta=1e-4)
+    self.assertAlmostEqual(pvalue, 0.0, delta=1e-4)
+
+    learner2 = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/chi2.csv'))
+
+    stat, pvalue = learner2.G2("A", "C")
+    self.assertAlmostEqual(stat, 0.0007, delta=1e-3)
+    self.assertAlmostEqual(pvalue, 0.978, delta=1e-4)
+
+    stat, pvalue = learner2.G2("A", "B")
+    self.assertAlmostEqual(stat, 21.5846, delta=1e-3)
+    self.assertAlmostEqual(pvalue, 3.6e-6, delta=1e-4)
+
+    stat, pvalue = learner2.G2("B", "A")
+    self.assertAlmostEqual(stat, 21.5846, delta=1e-3)
+    self.assertAlmostEqual(pvalue, 3.6e-6, delta=1e-4)
+
+    stat, pvalue = learner2.G2("B", "D")
+    self.assertAlmostEqual(stat, 0.903, delta=1e-3)
+    self.assertAlmostEqual(pvalue, 0.342, delta=1e-4)
+
+    stat, pvalue = learner2.G2("A", "C", ["B"])
+    self.assertAlmostEqual(stat, 16.3470, delta=1e-3)
+    self.assertAlmostEqual(pvalue, 0.0002, delta=1e-4)
+
+  def test_cmpG2chi2(self):
+    learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/testXYbase.csv'))
+    
+    stat, pvalue = learner.chi2("X", "Y")
+    self.assertAlmostEqual(stat, 15.3389, delta=1e-3)
+    self.assertAlmostEqual(pvalue, 0.01777843046460533, delta=1e-6)
+
+    stat, pvalue = learner.G2("X", "Y")
+    self.assertAlmostEqual(stat, 16.6065, delta=1e-3)
+    self.assertAlmostEqual(pvalue, 0.0108433, delta=1e-6)
+
   def test_loglikelihood(self):
     learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/chi2.csv'))
     self.assertEqual(learner.nbRows(), 500)

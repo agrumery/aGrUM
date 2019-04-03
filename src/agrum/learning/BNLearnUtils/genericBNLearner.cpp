@@ -32,6 +32,7 @@
 #include <agrum/learning/BNLearnUtils/BNLearnerListener.h>
 #include <agrum/learning/BNLearnUtils/genericBNLearner.h>
 #include <agrum/learning/scores_and_tests/indepTestChi2.h>
+#include <agrum/learning/scores_and_tests/indepTestG2.h>
 #include <agrum/learning/scores_and_tests/scoreLog2Likelihood.h>
 
 // include the inlined functions if necessary
@@ -953,6 +954,29 @@ namespace gum {
          std::back_inserter(knowingIds),
          [this](const std::string& c) -> NodeId { return this->idFromName(c); });
       return chi2(idFromName(name1), idFromName(name2), knowingIds);
+    }
+
+    std::pair< double, double > genericBNLearner::G2(
+       const NodeId id1, const NodeId id2, const std::vector< NodeId >& knowing) {
+      __createApriori();
+      DBRowGeneratorParser<> parser(__score_database.databaseTable().handler(),
+                                    DBRowGeneratorSet<>());
+      gum::learning::IndepTestG2<> g2score(parser, *__apriori, databaseRanges());
+
+      return g2score.statistics(id1, id2, knowing);
+    }
+
+    std::pair< double, double >
+       genericBNLearner::G2(const std::string&                name1,
+                            const std::string&                name2,
+                            const std::vector< std::string >& knowing) {
+      std::vector< NodeId > knowingIds;
+      std::transform(
+         knowing.begin(),
+         knowing.end(),
+         std::back_inserter(knowingIds),
+         [this](const std::string& c) -> NodeId { return this->idFromName(c); });
+      return G2(idFromName(name1), idFromName(name2), knowingIds);
     }
 
     double genericBNLearner::logLikelihood(const std::vector< NodeId >& vars,

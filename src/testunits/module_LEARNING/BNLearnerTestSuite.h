@@ -249,7 +249,7 @@ namespace gum_tests {
     // with a table filled with the content of the asia.csv file. You will also
     // need a proper odbc configuration (under linux and macos you'll need
     // unixodbc and specific database odbc drivers).
-    // void /*test*/_asia_db() {
+    // void test_asia_db() {
     //   try {
     //     auto db = gum::learning::DatabaseFromSQL(
     //         "PostgreSQL",
@@ -1185,7 +1185,6 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(learner.learnParameters(dag, false));
       TS_GUM_ASSERT_THROWS_NOTHING(learner.nbrIterations());
     }
-
     void test_chi2() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("asia3.csv"));
 
@@ -1228,6 +1227,60 @@ namespace gum_tests {
       stat = learner2.chi2("A", "C", {"B"});
       TS_ASSERT_DELTA(stat.first, 15.2205, 1e-3);
       TS_ASSERT_DELTA(stat.second, 0.0005, 1e-4);
+    }
+    void test_G2() {
+      gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("asia3.csv"));
+
+      auto resg2 = learner.G2("smoking?", "lung_cancer?");
+      TS_ASSERT_DELTA(resg2.first, 43.0321, 1e-4);
+      TS_ASSERT_DELTA(resg2.second, 0, 1e-4);
+
+      resg2 = learner.G2("smoking?", "visit_to_Asia?");
+      TS_ASSERT_DELTA(resg2.first, 1.1418, 1e-4);
+      TS_ASSERT_DELTA(resg2.second, 0.2852, 1e-4);
+
+      resg2 = learner.G2("lung_cancer?", "tuberculosis?");
+      TS_ASSERT_DELTA(resg2.first, 1.2201, 1e-4);
+      TS_ASSERT_DELTA(resg2.second, 0.2693, 1e-4);
+
+      resg2 =
+         learner.G2("lung_cancer?", "tuberculosis?", {"tuberculos_or_cancer?"});
+      TS_ASSERT_DELTA(resg2.first, 59.1386, 1e-4);
+      TS_ASSERT_DELTA(resg2.second, 0.0, 1e-4);
+
+      // see IndepTestChi2TestSuite::test_statistics
+      gum::learning::BNLearner< double > learner2(GET_RESSOURCES_PATH("chi2.csv"));
+
+      auto stat = learner2.G2("A", "C");
+      TS_ASSERT_DELTA(stat.first, 0.0007, 1e-3);
+      TS_ASSERT_DELTA(stat.second, 0.978, 1e-4);
+
+      stat = learner2.G2("A", "B");
+      TS_ASSERT_DELTA(stat.first, 21.5846, 1e-3);
+      TS_ASSERT_DELTA(stat.second, 3.6e-6, 1e-4);
+
+      stat = learner2.G2("B", "A");
+      TS_ASSERT_DELTA(stat.first, 21.5846, 1e-3);
+      TS_ASSERT_DELTA(stat.second, 3.6e-6, 1e-4);
+
+      stat = learner2.G2("B", "D");
+      TS_ASSERT_DELTA(stat.first, 0.903, 1e-3);
+      TS_ASSERT_DELTA(stat.second, 0.342, 1e-4);
+
+      stat = learner2.G2("A", "C", {"B"});
+      TS_ASSERT_DELTA(stat.first, 16.3470, 1e-3);
+      TS_ASSERT_DELTA(stat.second, 0.0002, 1e-4);
+    }
+
+    void test_cmpG2Chi2() {
+      gum::learning::BNLearner< double > learner(
+         GET_RESSOURCES_PATH("testXYbase.csv"));
+      auto statChi2 = learner.chi2("X", "Y");
+      TS_ASSERT_DELTA(statChi2.first, 15.3389, 1e-3);
+      TS_ASSERT_DELTA(statChi2.second, 0.01777843046460533, 1e-6);
+      auto statG2 = learner.G2("X", "Y");
+      TS_ASSERT_DELTA(statG2.first, 16.6066, 1e-3);
+      TS_ASSERT_DELTA(statG2.second, 0.0108433, 1e-6);
     }
 
     void test_loglikelihood() {
@@ -1318,11 +1371,12 @@ namespace gum_tests {
         learner.addPossibleEdge("bronchitis?", "smoking?");
         learner.addMandatoryArc("visit_to_Asia?", "bronchitis?");
 
-        gum::BayesNet< double > bn= learner.learnBN();
+        gum::BayesNet< double > bn = learner.learnBN();
         TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(3));
         TS_ASSERT(bn.parents("lung_cancer?").contains(bn.idFromName("smoking?")));
         TS_ASSERT(bn.parents("smoking?").contains(bn.idFromName("bronchitis?")));
-        TS_ASSERT(bn.parents("bronchitis?").contains(bn.idFromName("visit_to_Asia?")));
+        TS_ASSERT(
+           bn.parents("bronchitis?").contains(bn.idFromName("visit_to_Asia?")));
       }
     }
   };
