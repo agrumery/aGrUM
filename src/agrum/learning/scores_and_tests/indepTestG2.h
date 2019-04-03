@@ -145,6 +145,13 @@ namespace gum {
       /// move operator
       IndepTestG2< ALLOC >& operator=(IndepTestG2< ALLOC >&& from);
 
+      /// get the pair <G2statistic,pvalue> for a test var1 indep var2 given
+      /// rhs_ids
+      std::pair< double, double >
+         statistics(NodeId                                        var1,
+                    NodeId                                        var2,
+                    const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids = {});
+
       /// @}
 
 
@@ -154,6 +161,9 @@ namespace gum {
        * calling method score such an idset (due to too many/too few variables
        * in the left hand side or the right hand side of the idset). */
       virtual double _score(const IdSet< ALLOC >& idset) final;
+
+      /// compute the pair <G2 statistic,pvalue>
+      std::pair< double, double > _statistics(const IdSet< ALLOC >& idset);
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
