@@ -36,8 +36,8 @@ namespace gum {
   namespace learning {
 
     /** @class StructuralConstraintPossibleEdges
-     * @brief the structural constraint for forbidding the creation of some arcs except those defined in the class
-     * during structure learning
+     * @brief the structural constraint for forbidding the creation of some arcs
+     * except those defined in the class during structure learning
      * @ingroup learning_group
      */
     class StructuralConstraintPossibleEdges

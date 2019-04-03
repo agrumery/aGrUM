@@ -218,9 +218,9 @@ namespace gum_tests {
       gum::learning::AprioriNoApriori<>     apriori(database);
       gum::learning::IndepTestChi2<>        score(parser, apriori);
 
-      auto stats=score.statistics(0, 1);
-      TS_ASSERT_DELTA(stats.first,15.3389,1e-3);
-      TS_ASSERT_DELTA(stats.second,0.0177784,1e-3);
+      auto stats = score.statistics(0, 1);
+      TS_ASSERT_DELTA(stats.first, 15.3389, 1e-3);
+      TS_ASSERT_DELTA(stats.second, 0.0177784, 1e-3);
     }
   };
 
