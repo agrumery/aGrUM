@@ -105,6 +105,7 @@ windows_agrum_2015:
     - conda install -y numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
     - python act clean
     - python act --no-fun --mvsc -d build -j 7 test release aGrUM 
+    - call activate py37
     - deactivate
     - conda remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
   retry: 2
@@ -129,7 +130,7 @@ windows_pyagrum_2015:
     - conda install -y numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
     - python act clean
     - python act --no-fun test release pyAgrum --no-fun --mvsc -d build -j 7 -t quick
-    - deactivate
+    - call activate py37
     - conda remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
   retry: 2
 
@@ -153,7 +154,7 @@ windows_agrum_2017:
     - conda install -y numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
     - python act clean
     - python act --no-fun test release aGrUM --no-fun --mvsc17 -d build -j 7
-    - deactivate
+    - call activate py37
     - conda remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
   retry: 2
 
@@ -177,7 +178,7 @@ windows_pyagrum_2017:
     - conda install -y numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
     - python act clean
     - python act --no-fun test release pyAgrum --no-fun --mvsc17 -d build -j 7 -t quick
-    - deactivate
+    - call activate py37
     - conda remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
   retry: 2
 
