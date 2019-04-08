@@ -25,6 +25,7 @@ This file defines a representation for causal model
 from __future__ import annotations
 
 import itertools as it
+import pyAgrum as gum
 
 from ._types import *
 
@@ -48,8 +49,6 @@ class CausalModel:
     if latentVarsDescriptor is None:
       latentVarsDescriptor = []
 
-    firstIdForLatentVariable = max(bn.nodes()) + 1
-
     # we have to redefine those attributes since the __observationalBN may be augmented by latent variables
     self.__causalBN = gum.BayesNet()
 
@@ -57,31 +56,29 @@ class CausalModel:
     for n in bn.nodes():
       self.__causalBN.add(bn.variable(n), n)
 
-    self.__biArcs = set()
-    # latent variables and arcs from latent variables
-    self.__lat: NodeSet = set()
-    for n, ls in latentVarsDescriptor:
-      id_latent = self.__causalBN.add(n, 2)  # simplest variable to add : only 2 modalities for latent variables
-      self.__lat.add(id_latent)
-
-      for x, y in it.combinations(ls, 2):
-        self.__biArcs.add((bn.idFromName(x) if isinstance(x, str) else x,
-                           bn.idFromName(y) if isinstance(y, str) else y))
-
-      for item in ls:
-        j = bn.idFromName(item) if isinstance(item, str) else item
-        self.__causalBN.addArc(id_latent, j)
-
     # arcs on BN
     for x, y in bn.arcs():
-      if keepArcs:
-        self.__causalBN.addArc(x, y)
-      else:
-        i, j = bn.idFromName(x) if isinstance(x, str) else x, bn.idFromName(y) if isinstance(y, str) else y
-        if (i, j) not in self.__biArcs and (j, i) not in self.__biArcs:
-          self.__causalBN.addArc(x, y)
+      self.__causalBN.addArc(x, y)
+
+    # latent variables and arcs from latent variables
+    self.__lat: NodeSet = set()
+
+    for n, ls in latentVarsDescriptor:
+      self.addLatentVariable(n, ls, keepArcs)
 
     self.__names = {nId: self.__causalBN.variable(nId).name() for nId in self.__causalBN.nodes()}
+
+  def addLatentVariable(self, name: str, ls: Tuple[str, str], keepArcs: bool):
+    id_latent = self.__causalBN.add(name, 2)  # simplest variable to add : only 2 modalities for latent variables
+    self.__lat.add(id_latent)
+
+    for item in ls:
+      j = self.__observationalBN.idFromName(item) if isinstance(item, str) else item
+      self.addCausalArc(id_latent, j)
+
+    if not keepArcs:
+      for x, y in it.combinations(ls, 2):
+        self.eraseCausalArc(x, y)
 
   def causalBN(self) -> gum.BayesNet:
     """
@@ -126,12 +123,6 @@ class CausalModel:
     """
     return self.__causalBN.idFromName(name)
 
-  def biArcs(self) -> LatentDescriptorList:
-    """
-    :return: list of descriptor of latent variables
-    """
-    return self.__biArcs
-
   def latentVariablesIds(self) -> NodeSet:
     """
     :return: the set of ids of latent variables in the causal model
@@ -139,13 +130,20 @@ class CausalModel:
     return self.__lat
 
   def eraseCausalArc(self, x, y):
-    self.__causalBN.eraseArc(x, y)
+    ix = self.__observationalBN.idFromName(x) if isinstance(x, str) else x
+    iy = self.__observationalBN.idFromName(y) if isinstance(y, str) else y
+    if ix in self.__causalBN.parents(iy):
+      self.__causalBN.eraseArc(gum.Arc(ix, iy))
 
   def addCausalArc(self, x, y):
-    self.__causalBN.addArc(x, y)
+    ix = self.__observationalBN.idFromName(x) if isinstance(x, str) else x
+    iy = self.__observationalBN.idFromName(y) if isinstance(y, str) else y
+    self.__causalBN.addArc(ix, iy)
 
-  def existsArc(self, a, b) -> bool:
-    return self.__causalBN.dag().existsArc(a, b)
+  def existsArc(self, x, y) -> bool:
+    ix = self.__observationalBN.idFromName(x) if isinstance(x, str) else x
+    iy = self.__observationalBN.idFromName(y) if isinstance(y, str) else y
+    return self.__causalBN.dag().existsArc(ix, iy)
 
   def nodes(self):
     return self.__causalBN.nodes()
@@ -171,10 +169,10 @@ def inducedCausalSubModel(cm: CausalModel, sns: NodeSet = None) -> CausalModel:
 
   names = cm.names()
   latentVarsDescriptor = list()
-  lats=cm.latentVariablesIds()
+  lats = cm.latentVariablesIds()
   for latentVar in lats:
-    inters=cm.children(latentVar) & nodes
-    if len(inters)>0:
+    inters = cm.children(latentVar) & nodes
+    if len(inters) > 0:
       latentVarsDescriptor.append((names[latentVar],
                                    list(inters)))
 

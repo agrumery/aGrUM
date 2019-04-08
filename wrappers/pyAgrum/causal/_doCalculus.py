@@ -22,6 +22,7 @@
 """
 This file computes the causal impact of intervention in a causal model
 """
+import itertools as it
 
 from ._doorCriteria import *
 from ._dSeparation import *
@@ -84,8 +85,10 @@ def _cDecomposition(cm: CausalModel) -> List[Set[int]]:
   s = set(cm.nodes()) - cm.latentVariablesIds()
   for n in s:
     undi.addNodeWithId(n)
-  for a, b in cm.biArcs():
-    undi.addEdge(a, b)
+
+  for latent in cm.latentVariablesIds():
+    for a, b in it.combinations(cm.children(latent), 2):
+      undi.addEdge(a, b)
 
   def undiCComponent(g, n, se):
     for i in g.neighbours(n):
@@ -236,7 +239,7 @@ def identifyingIntervention(cm: CausalModel, Y: NameSet, X: NameSet, P: ASTtree 
 
     # 5-------------------------
     if len(cdg) == 1 and len(cdg[0]) == len(V):
-      raise HedgeException(f"Hedge Error: G={V}, G[S]={S}",V,S)
+      raise HedgeException(f"Hedge Error: G={V}, G[S]={S}", V, S)
 
     # 6--------------------------
     gs = inducedCausalSubModel(cm, iS)
