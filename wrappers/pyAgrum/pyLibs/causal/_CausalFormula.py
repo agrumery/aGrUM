@@ -171,3 +171,4 @@ def _getLabelIdx(bn: gum.BayesNet, varname: str, val: Union[int, str]) -> int:
     return val
   else:
     return bn.variableFromName(varname).index(val)
+

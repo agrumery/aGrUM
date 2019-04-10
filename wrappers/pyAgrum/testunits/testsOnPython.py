@@ -113,5 +113,6 @@ print("Failed %d of %d tests" % (errs, result.testsRun), end='\n', file=sys.stdo
 print("Success rate: %d%%" % (((result.testsRun - errs) * 100) / result.testsRun), end='\n', file=sys.stdout)
 print("", end='\n', file=sys.stdout)
 print("pyAgrum on Python {0} - {1}".format(platform.python_version(), os_platform), end='\n', file=sys.stdout)
+print("pyAgrum on Python {0} - {1}".format(platform.python_version(), os_platform), end='\n', file=sys.stdout)
 print("pyAgrum path : {}".format(gum.__file__), end='\n', file=sys.stdout)
 print("", end='\n', file=sys.stdout)
