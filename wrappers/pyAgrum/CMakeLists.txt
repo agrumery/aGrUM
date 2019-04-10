@@ -46,9 +46,10 @@ configure_file("${AGRUM_SOURCE_DIR}/cmake/config.h.in" "${CMAKE_CURRENT_BINARY_D
 #== Adding files in build tree
 #==
 set(SWIG_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../swig")
-file(GLOB MAINSWIGFILES ${SWIG_SOURCE_DIR}/*.i)
-file(GLOB PYAGRUMFILES *.i)
 file(GLOB PYAGRUM_EXTENSIONS ${CMAKE_CURRENT_SOURCE_DIR}/extensions/*.h)
+file(GLOB MAINSWIGFILES ${SWIG_SOURCE_DIR}/*.i)
+file(GLOB PYAGRUMFILES swigsrc/*.i)
+list(APPEND MAINSWIGFILES pyAgrum.i)
 
 #==
 #== Adding agrum sources
@@ -78,8 +79,10 @@ endforeach(EXTFILE ${PYAGRUM_EXTENSIONS})
 #==
 include_directories (${PYTHON_INCLUDE_DIR})
 include_directories (${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/swigsrc)
 include_directories(${AGRUM_SOURCE_DIR})
-include_directories(BEFORE ${AGRUM_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/generated_files)
+#inutile ? 
+#include_directories(BEFORE ${AGRUM_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/generated_files)
 include_directories(BEFORE ${AGRUM_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/doc)
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR})
 include_directories (${SWIG_SOURCE_DIR})
@@ -122,13 +125,13 @@ target_sources (${_PYAGRUMLIB} PUBLIC ${AGRUM_SOURCES})
 
 # for additionnal rule such test pyAgrum
 add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SWIG_OUTDIR}/pyAgrum.py" "${CMAKE_CURRENT_BINARY_DIR}/.")
-add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/lib" "${CMAKE_CURRENT_BINARY_DIR}/lib")
-add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/causal" "${CMAKE_CURRENT_BINARY_DIR}/causal")
+add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyAgrum" "${CMAKE_CURRENT_BINARY_DIR}")
+#add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyAgrum/causal" "${CMAKE_CURRENT_BINARY_DIR}/causal")
 
 
-file(GLOB GUMLIB_FILES "${CMAKE_CURRENT_SOURCE_DIR}/lib/*.py")
-file(GLOB GUMLIB_UTILS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/lib/_utils/*.py")
-file(GLOB GUMCAUSAL_FILES "${CMAKE_CURRENT_SOURCE_DIR}/causal/*.py")
+file(GLOB GUMLIB_FILES "${CMAKE_CURRENT_SOURCE_DIR}/pyAgrum/lib/*.py")
+file(GLOB GUMLIB_UTILS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/pyAgrum/lib/_utils/*.py")
+file(GLOB GUMCAUSAL_FILES "${CMAKE_CURRENT_SOURCE_DIR}/pyAgrum/causal/*.py")
 
 #include("${CMAKE_CURRENT_SOURCE_DIR}/../../VERSION.txt")
 set(PYAGRUM_VERSION "${AGRUM_VERSION_MAJOR}.${AGRUM_VERSION_MINOR}.${AGRUM_VERSION_PATCH}")

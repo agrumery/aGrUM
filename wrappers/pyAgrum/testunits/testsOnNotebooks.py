@@ -12,6 +12,7 @@ import glob
 import os
 import traceback
 import time
+import random
 
 import nbformat
 from nbconvert.preprocessors.execute import ExecutePreprocessor, CellExecutionError
@@ -24,10 +25,12 @@ def processeNotebook(notebook_filename):
   res = "ok"
 
   try:
+    time.sleep(random.randint(1,5)/10.0)
     ep = ExecutePreprocessor(timeout=5000, kernel_name='python3')
+    ep.log_output = False
     with open(notebook_filename) as f:
       nb = nbformat.read(f, as_version=4)
-    nb['cells'].insert(0, nbformat.from_dict({
+    nb['cells'].insert(0,nbformat.from_dict({
       'outputs'        : [],
       'execution_count': 1,
       'metadata'       : {
@@ -38,14 +41,15 @@ def processeNotebook(notebook_filename):
       'cell_type'      : 'code',
       'source'         : 'import os,sys\nsys.path.insert(0, os.path.abspath("../../../build/release/wrappers"))'
     }))
-    ep.preprocess(nb, {'metadata': {'path': '../notebooks/'}})
+    ep.preprocess(nb, {'metadata': {'path': '../pyAgrum/notebooks/'}})
   except CellExecutionError as e:
-    res = ""
-    print("Error")
-    err = 1
-    print("-" * 60)
-    traceback.print_exc(file=sys.stdout)
-    print("-" * 60)
+    errorfilename=time.strftime("%Y%m%d-%H%M%S")+notebook_filename+".log"
+    res = "error logged in "+errorfilename
+    with open(errorfilename,"w") as errstream:
+      err = 1
+      traceback.print_exc(file=errstream)
+  except:
+    res="error"
 
   print(os.path.basename(notebook_filename) + " " + res)
   return err
@@ -59,7 +63,7 @@ def runNotebooks():
   errs = 0
 
   list = []
-  for filename in glob.glob("../notebooks/*.ipynb"):
+  for filename in glob.glob("../pyAgrum/notebooks/*.ipynb"):
     list.append(filename)
 
   startTime = time.time()
