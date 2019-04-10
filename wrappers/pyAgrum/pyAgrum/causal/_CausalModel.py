@@ -77,8 +77,12 @@ class CausalModel:
       self.addCausalArc(id_latent, j)
 
     if not keepArcs:
-      for x, y in it.combinations(ls, 2):
-        self.eraseCausalArc(x, y)
+      ils = {self.__observationalBN.idFromName(x) for x in ls}
+      for ix, iy in it.combinations(ils, 2):
+        if ix in self.__causalBN.parents(iy):
+          self.eraseCausalArc(ix, iy)
+        elif iy in self.__causalBN.parents(ix):
+          self.eraseCausalArc(iy, ix)
 
   def causalBN(self) -> gum.BayesNet:
     """
@@ -132,8 +136,7 @@ class CausalModel:
   def eraseCausalArc(self, x, y):
     ix = self.__observationalBN.idFromName(x) if isinstance(x, str) else x
     iy = self.__observationalBN.idFromName(y) if isinstance(y, str) else y
-    if ix in self.__causalBN.parents(iy):
-      self.__causalBN.eraseArc(gum.Arc(ix, iy))
+    self.__causalBN.eraseArc(gum.Arc(ix, iy))
 
   def addCausalArc(self, x, y):
     ix = self.__observationalBN.idFromName(x) if isinstance(x, str) else x
