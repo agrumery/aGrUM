@@ -19,13 +19,15 @@ from nbconvert.preprocessors.execute import ExecutePreprocessor, CellExecutionEr
 
 
 def processeNotebook(notebook_filename):
+  #creating some randomness
+  time.sleep(random.randint(1, 5) / 10.0)
+  
   err = 0
-
   print(os.path.basename(notebook_filename) + " ... ")
   res = "ok"
 
   try:
-    time.sleep(random.randint(1,5)/10.0)
+    starttime=time.time()
     ep = ExecutePreprocessor(timeout=5000, kernel_name='python3')
     ep.log_output = False
     with open(notebook_filename) as f:
@@ -42,16 +44,14 @@ def processeNotebook(notebook_filename):
       'source'         : 'import os,sys\nsys.path.insert(0, os.path.abspath("../../../build/release/wrappers"))'
     }))
     ep.preprocess(nb, {'metadata': {'path': '../pyAgrum/notebooks/'}})
-  except CellExecutionError as e:
-    errorfilename=time.strftime("%Y%m%d-%H%M%S")+notebook_filename+".log"
-    res = "error logged in "+errorfilename
-    with open(errorfilename,"w") as errstream:
-      err = 1
-      traceback.print_exc(file=errstream)
   except:
-    res="error"
-
-  print(os.path.basename(notebook_filename) + " " + res)
+    err = 1
+    errorfilename = "../../../"+time.strftime("%Y%m%d_%H%M_") + os.path.basename(notebook_filename) + ".log"
+    with open(errorfilename,'w') as err:
+      traceback.print_exc(file=err)
+    res="error (see "+os.path.basename(errorfilename)+")"
+  duration="{:.2f}s".format(time.time()-starttime)
+  print(os.path.basename(notebook_filename) + "... [" + duration+"] : "+res)
   return err
 
 
