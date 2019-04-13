@@ -22,7 +22,7 @@
   using parent::messageApproximationScheme;
   using parent::history;
 
-  const gum::IApproximationSchemeConfiguration& asIApproximationSchemeConfiguration() const {
+  const gum::IApproximationSchemeConfiguration& _asIApproximationSchemeConfiguration() const {
     return *(dynamic_cast<const gum::IApproximationSchemeConfiguration *>(self));
   }
 }

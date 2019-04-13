@@ -43,7 +43,7 @@ def processeNotebook(notebook_filename):
       'cell_type'      : 'code',
       'source'         : 'import os,sys\nsys.path.insert(0, os.path.abspath("../../../build/release/wrappers"))'
     }))
-    ep.preprocess(nb, {'metadata': {'path': '../pyAgrum/notebooks/'}})
+    ep.preprocess(nb, {'metadata': {'path': '../pyLibs/notebooks/'}})
   except:
     err = 1
     errorfilename = "../../../"+time.strftime("%Y%m%d_%H%M_") + os.path.basename(notebook_filename) + ".log"
@@ -63,7 +63,7 @@ def runNotebooks():
   errs = 0
 
   list = []
-  for filename in glob.glob("../pyAgrum/notebooks/*.ipynb"):
+  for filename in glob.glob("../pyLibs/notebooks/*.ipynb"):
     list.append(filename)
 
   startTime = time.time()
