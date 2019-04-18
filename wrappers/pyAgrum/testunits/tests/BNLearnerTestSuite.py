@@ -334,23 +334,53 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     learner = gum.BNLearner("dataW.csv")
     bn1 = learner.learnParameters(bn.dag())
 
-    data="""X,Y
+    data = """X,Y
 0,0
 1,0
 0,1
 1,1
 """
-    with open("dataW.csv","w") as src:
-        src.write(data)    
-    learner=gum.BNLearner("dataW.csv")
+    with open("dataW.csv", "w") as src:
+      src.write(data)
+    learner = gum.BNLearner("dataW.csv")
 
-    learner.setRecordWeight(1,2.0)
-    learner.setRecordWeight(2,4.0)
+    learner.setRecordWeight(1, 2.0)
+    learner.setRecordWeight(2, 4.0)
+
+    self.assertEquals(learner.recordWeight(0), 1.0)
+    self.assertEquals(learner.recordWeight(1), 2.0)
+    self.assertEquals(learner.recordWeight(2), 4.0)
+    self.assertEquals(learner.recordWeight(3), 1.0)
+
+    self.assertEquals(learner.databaseWeight(), 8)
+
+    learner.setDatabaseWeight(3.0 * learner.nbRows())
+
+    self.assertEquals(learner.recordWeight(0), 3.0)
+    self.assertEquals(learner.recordWeight(1), 3.0)
+    self.assertEquals(learner.recordWeight(2), 3.0)
+    self.assertEquals(learner.recordWeight(3), 3.0)
+
+    self.assertEquals(learner.databaseWeight(), 3.0 * learner.nbRows())
+
+    learner.setRecordWeight(1, 1.0)
+    learner.setRecordWeight(2, 1.0)
+
+    self.assertEquals(learner.recordWeight(0), 3.0)
+    self.assertEquals(learner.recordWeight(1), 1.0)
+    self.assertEquals(learner.recordWeight(2), 1.0)
+    self.assertEquals(learner.recordWeight(3), 3.0)
+
+    self.assertEquals(learner.databaseWeight(), 8)
+
+    learner = gum.BNLearner("dataW.csv")
+
+    learner.setRecordWeight(1, 2.0)
+    learner.setRecordWeight(2, 4.0)
 
     bn2 = learner.learnParameters(bn.dag())
-    
-    self.assertTrue(np.array_equal(bn1.cpt("X").toarray(),bn2.cpt("X").toarray()))
-    self.assertTrue(np.array_equal(bn1.cpt("Y").toarray(),bn2.cpt("Y").toarray()))
+    self.assertTrue(np.array_equal(bn1.cpt("X").toarray(), bn2.cpt("X").toarray()))
+    self.assertTrue(np.array_equal(bn1.cpt("Y").toarray(), bn2.cpt("Y").toarray()))
 
 
 ts = unittest.TestSuite()

@@ -23562,6 +23562,14 @@ class BNLearner(object):
         r"""setRecordWeight(BNLearner self, std::size_t const i, double const weight)"""
         return _pyAgrum.BNLearner_setRecordWeight(self, i, weight)
 
+    def databaseWeight(self):
+        r"""databaseWeight(BNLearner self) -> double"""
+        return _pyAgrum.BNLearner_databaseWeight(self)
+
+    def recordWeight(self, i):
+        r"""recordWeight(BNLearner self, std::size_t const i) -> double"""
+        return _pyAgrum.BNLearner_recordWeight(self, i)
+
     def useNoApriori(self):
         r"""useNoApriori(BNLearner self)"""
         return _pyAgrum.BNLearner_useNoApriori(self)
