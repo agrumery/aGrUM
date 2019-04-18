@@ -42,7 +42,7 @@ def guideline(current, modif=False):
   notif("  (1) [*.cpp] file for every [*.h] file ")
   nbrError += _checkCppFileExists(current, modif)
   notif("  (2) check for GPL license")
-  nbrError += _checkForGPLlicense(current, modif)
+  nbrError += _checkForLGPLlicense(current, modif)
   notif("  (3) check for missing documentation in pyAgrum")
   nbrError += _checkForMissingDocs(modif)
   notif("  (4) check for format")
@@ -73,15 +73,24 @@ def _checkForFormat(current, modif):
             notif("    [" + src + "] not correctly formatted")
   return nbrError
 
-def __addGPLatTop(filename):
+def __addLGPLatTop(filename):
   with open(filename, "r") as origine:
-    code = origine.read()
+    codes = origine.read().split("***********/")
+
+  # removing old license if any
+  if len(codes)==1:
+    code=codes[0]
+  elif len(codes)==2:
+    code=codes[1]
+  else:
+    code="***********/".join(codes[1:])
+
   with open(filename, "w") as dest:
     dest.write(_template_license)
     dest.write(code)
 
 
-def _checkForGPLlicense(current, modif):
+def _checkForLGPLlicense(current, modif):
   nbrError = 0
 
   exceptions = ['/mvsc/', '/external/', '/cxxtest/', 'Parser', 'Scanner']
@@ -93,18 +102,20 @@ def _checkForGPLlicense(current, modif):
     nbr = 0
     with open(agrumfile, "r") as f:
       for line in f:
-        if nbr == 4:
+        if nbr == 40:
           continue
         fragment += line
         nbr += 1
 
-    if "Copyright (C) 20" not in fragment:
+    if "GNU Lesser General Public License" not in fragment:
       nbrError += 1
       if modif:
-        __addGPLatTop(agrumfile)
-        notif("    [" + agrumfile + "] has no copyright in its first lines : [changed]")
+        __addLGPLatTop(agrumfile)
+        notif("    [" + agrumfile + "] has no LGPL copyright in its first lines : [changed]")
       else:
-        notif("    [" + agrumfile + "] has no copyright in its first lines")
+        notif("    [" + agrumfile + "] has no LGPL copyright in its first lines")
+    else:
+      notif("    [" + agrumfile + "] has LGPL copyright in its first lines")
 
   return nbrError
 
@@ -151,26 +162,25 @@ def _checkForMissingDocs(modif):
   return nbrError
 
 _template_license = """
-/**************************************************************************
-*   Copyright (C) 2017 by Pierre-Henri WUILLEMIN  and Christophe GONZALES *
-*   {prenom.nom}_at_lip6.fr                                               *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
-
+/**
+ *
+ *  Copyright 2005-2019 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
+ *   {prenom.nom}_at_lip6.fr
+ *
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public License
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 
 """
 _template_cpp = _template_license + """
