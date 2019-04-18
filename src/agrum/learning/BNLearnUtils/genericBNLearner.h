@@ -242,6 +242,15 @@ namespace gum {
          * records or if the weight is negative
          */
         void setWeight(const std::size_t i, const double weight);
+
+        /// returns the weight of the ith record
+        /** @throws OutOfBounds if i is outside the set of indices of the
+         * records */
+        double weight(const std::size_t i) const;
+
+        /// returns the weight of the whole database
+        double weight () const;
+
         
         /// @}
 
@@ -381,6 +390,14 @@ namespace gum {
        * records or if the weight is negative
        */
       void setRecordWeight(const std::size_t i, const double weight);
+
+      /// returns the weight of the ith record
+      /** @throws OutOfBounds if i is outside the set of indices of the
+       * records */
+      double recordWeight(const std::size_t i) const;
+
+      /// returns the weight of the whole database
+      double databaseWeight () const;
 
       /// returns the variable name corresponding to a given node id
       const std::string& nameFromId(NodeId id) const;

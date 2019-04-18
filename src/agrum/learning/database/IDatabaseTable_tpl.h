@@ -1296,9 +1296,7 @@ namespace gum {
       }
     }
 
-     /// assigns a given weight to the ith row of the database
-      /** @throws OutOfBounds if i is outside the set of indices of the
-       * records or if the weight is negative */
+    /// assigns a given weight to the ith row of the database
     template < typename T_DATA, template < typename > class ALLOC >
     void IDatabaseTable< T_DATA, ALLOC >::setWeight(const std::size_t i,
                                                     const double weight) {
@@ -1332,6 +1330,37 @@ namespace gum {
       }
 
       _rows[i].setWeight(weight);
+    }
+
+
+    /// returns the weight of the ith record
+    template < typename T_DATA, template < typename > class ALLOC >
+    double IDatabaseTable< T_DATA, ALLOC >::weight(const std::size_t i) const {
+      // check that i is less than the number of rows
+      const std::size_t dbsize = nbRows();
+      if ( i >= dbsize ) {
+        std::string str;
+        switch ( i ) {
+        case 1:  str = "st"; break;
+        case 2:  str = "nd"; break;
+        default: str = "th";
+        }
+        GUM_ERROR(OutOfBounds,
+                  "it is impossible to get the weight of the "
+                  << i << str << " record because the database contains only "
+                  << nbRows() << " records");
+      }
+
+      return  _rows[i].weight();
+    }
+    
+
+    /// returns the weight of the whole database
+    template < typename T_DATA, template < typename > class ALLOC >
+    double IDatabaseTable< T_DATA, ALLOC >::weight () const {
+      double w = 0.0;
+      for ( const auto& row : _rows ) w += row.weight();
+      return w;
     }
     
     
