@@ -97,12 +97,12 @@ public:
     __formula = f;
   }
 
-  gum::Formula& formula() { 
-    return *__formula; 
+  gum::Formula& formula() {
+    return *__formula;
   }
 
   const gum::Formula& formula() const {
-    return *__formula; 
+    return *__formula;
   }
 
 // =============================================================================
