@@ -1333,7 +1333,7 @@ class Vector(object):
     def __init__(self, *args):
         r"""
         __init__(Vector self) -> Vector
-        __init__(Vector self, Vector arg2) -> Vector
+        __init__(Vector self, Vector other) -> Vector
         __init__(Vector self, std::vector< double >::size_type size) -> Vector
         __init__(Vector self, std::vector< double >::size_type size, std::vector< double >::value_type const & value) -> Vector
         """
@@ -1500,7 +1500,7 @@ class Vector_int(object):
     def __init__(self, *args):
         r"""
         __init__(Vector_int self) -> Vector_int
-        __init__(Vector_int self, Vector_int arg2) -> Vector_int
+        __init__(Vector_int self, Vector_int other) -> Vector_int
         __init__(Vector_int self, std::vector< unsigned int >::size_type size) -> Vector_int
         __init__(Vector_int self, std::vector< unsigned int >::size_type size, std::vector< unsigned int >::value_type const & value) -> Vector_int
         """
@@ -1667,7 +1667,7 @@ class Vector_string(object):
     def __init__(self, *args):
         r"""
         __init__(Vector_string self) -> Vector_string
-        __init__(Vector_string self, Vector_string arg2) -> Vector_string
+        __init__(Vector_string self, Vector_string other) -> Vector_string
         __init__(Vector_string self, std::vector< std::string >::size_type size) -> Vector_string
         __init__(Vector_string self, std::vector< std::string >::size_type size, std::vector< std::string >::value_type const & value) -> Vector_string
         """
@@ -23557,6 +23557,10 @@ class BNLearner(object):
 
         """
         return _pyAgrum.BNLearner_setDatabaseWeight(self, new_weight)
+
+    def setRecordWeight(self, i: 'std::size_t const', weight: 'double const') -> "void":
+        r"""setRecordWeight(BNLearner self, std::size_t const i, double const weight)"""
+        return _pyAgrum.BNLearner_setRecordWeight(self, i, weight)
 
     def useNoApriori(self) -> "void":
         r"""useNoApriori(BNLearner self)"""

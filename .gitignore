@@ -22,6 +22,7 @@ qtcreator-build
 .venv
 
 # generated files by testunits
+**dataW.csv
 src/testunits/testList.all
 src/testunits/ressources/BNBIFXMLIO_file.txt
 src/testunits/ressources/BNUAIIO_file.uai
