@@ -1,22 +1,25 @@
-/****************************************************************************
- *    Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
- *   {prenom.nom}_at_lip6.fr                                                *
- *                                                                          *
- *   This program is free software; you can redistribute it and/or modify   *
- *   it under the terms of the GNU General Public License as published by   *
- *   the Free Software Foundation; either version 2 of the License, or      *
- *   (at your option) any later version.                                    *
- *                                                                          *
- *   This program is distributed in the hope that it will be useful,        *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of         *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
- *   GNU General Public License for more details.                           *
- *                                                                          *
- *   You should have received a copy of the GNU General Public License      *
- *   along with this program; if not, write to the                          *
- *   Free Software Foundation, Inc.,                                        *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.              *
- ****************************************************************************/
+
+/**
+ *
+ *  Copyright 2005-2019 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
+ *   {prenom.nom}_at_lip6.fr
+ *
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public License
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+
 /**
  * @file
  * @brief Class used to compute the operation between two decision diagrams
@@ -371,7 +374,7 @@ namespace gum {
        __DG1->isTerminalNode(currentSituation.DG1Node())
           ? __nbVar
           : __rd->variablesSequence().pos(
-               __DG1->node(currentSituation.DG1Node())->nodeVar());
+             __DG1->node(currentSituation.DG1Node())->nodeVar());
     short int* dg2NeededVar =
        __DG2InstantiationNeeded.exists(currentSituation.DG2Node())
           ? __DG2InstantiationNeeded[currentSituation.DG2Node()]
@@ -380,7 +383,7 @@ namespace gum {
        __DG2->isTerminalNode(currentSituation.DG2Node())
           ? __nbVar
           : __rd->variablesSequence().pos(
-               __DG2->node(currentSituation.DG2Node())->nodeVar());
+             __DG2->node(currentSituation.DG2Node())->nodeVar());
 
     short int* instNeeded =
        static_cast< short int* >(SOA_ALLOCATE(sizeof(short int) * __nbVar));
