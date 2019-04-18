@@ -32,6 +32,7 @@
 #include <agrum/learning/BNLearnUtils/BNLearnerListener.h>
 #include <agrum/learning/BNLearnUtils/genericBNLearner.h>
 #include <agrum/learning/scores_and_tests/indepTestChi2.h>
+#include <agrum/learning/scores_and_tests/indepTestG2.h>
 #include <agrum/learning/scores_and_tests/scoreLog2Likelihood.h>
 
 // include the inlined functions if necessary
@@ -620,8 +621,10 @@ namespace gum {
         initial_marks.insert({arc.tail(), arc.head()}, '-');
       }
       __miic_3off2.addConstraints(initial_marks);
+
       // create the mutual entropy object
-      if (__mutual_info == nullptr) { this->useNML(); }
+      // if (__mutual_info == nullptr) { this->useNML(); }
+      __createCorrectedMutualInformation();
 
       return mgraph;
     }
@@ -637,8 +640,10 @@ namespace gum {
                      << "structures with missing values in databases");
       }
       BNLearnerListener listener(this, __miic_3off2);
+
       // create the mixedGraph_constraint_MandatoryArcs.arcs();
       MixedGraph mgraph = this->__prepare_miic_3off2();
+
       return __miic_3off2.learnMixedStructure(*__mutual_info, mgraph);
     }
 
@@ -712,11 +717,8 @@ namespace gum {
         // ========================================================================
         case AlgoType::MIIC_THREE_OFF_TWO: {
           BNLearnerListener listener(this, __miic_3off2);
-          // create the mixedGraph
+          // create the mixedGraph and the corrected mutual information
           MixedGraph mgraph = this->__prepare_miic_3off2();
-
-          // recreate the corrected mutual information
-          __createCorrectedMutualInformation();
 
           return __miic_3off2.learnStructure(*__mutual_info, mgraph);
         }
@@ -726,12 +728,15 @@ namespace gum {
           BNLearnerListener listener(this, __greedy_hill_climbing);
           StructuralConstraintSetStatic< StructuralConstraintMandatoryArcs,
                                          StructuralConstraintForbiddenArcs,
+                                         StructuralConstraintPossibleEdges,
                                          StructuralConstraintSliceOrder >
              gen_constraint;
           static_cast< StructuralConstraintMandatoryArcs& >(gen_constraint) =
              __constraint_MandatoryArcs;
           static_cast< StructuralConstraintForbiddenArcs& >(gen_constraint) =
              __constraint_ForbiddenArcs;
+          static_cast< StructuralConstraintPossibleEdges& >(gen_constraint) =
+             __constraint_PossibleEdges;
           static_cast< StructuralConstraintSliceOrder& >(gen_constraint) =
              __constraint_SliceOrder;
 
@@ -789,12 +794,15 @@ namespace gum {
         case AlgoType::K2: {
           BNLearnerListener listener(this, __K2.approximationScheme());
           StructuralConstraintSetStatic< StructuralConstraintMandatoryArcs,
-                                         StructuralConstraintForbiddenArcs >
+                                         StructuralConstraintForbiddenArcs,
+                                         StructuralConstraintPossibleEdges >
              gen_constraint;
           static_cast< StructuralConstraintMandatoryArcs& >(gen_constraint) =
              __constraint_MandatoryArcs;
           static_cast< StructuralConstraintForbiddenArcs& >(gen_constraint) =
              __constraint_ForbiddenArcs;
+          static_cast< StructuralConstraintPossibleEdges& >(gen_constraint) =
+             __constraint_PossibleEdges;
 
           GraphChangesGenerator4K2< decltype(gen_constraint) > op_set(
              gen_constraint);
@@ -946,6 +954,29 @@ namespace gum {
          std::back_inserter(knowingIds),
          [this](const std::string& c) -> NodeId { return this->idFromName(c); });
       return chi2(idFromName(name1), idFromName(name2), knowingIds);
+    }
+
+    std::pair< double, double > genericBNLearner::G2(
+       const NodeId id1, const NodeId id2, const std::vector< NodeId >& knowing) {
+      __createApriori();
+      DBRowGeneratorParser<> parser(__score_database.databaseTable().handler(),
+                                    DBRowGeneratorSet<>());
+      gum::learning::IndepTestG2<> g2score(parser, *__apriori, databaseRanges());
+
+      return g2score.statistics(id1, id2, knowing);
+    }
+
+    std::pair< double, double >
+       genericBNLearner::G2(const std::string&                name1,
+                            const std::string&                name2,
+                            const std::vector< std::string >& knowing) {
+      std::vector< NodeId > knowingIds;
+      std::transform(
+         knowing.begin(),
+         knowing.end(),
+         std::back_inserter(knowingIds),
+         [this](const std::string& c) -> NodeId { return this->idFromName(c); });
+      return G2(idFromName(name1), idFromName(name2), knowingIds);
     }
 
     double genericBNLearner::logLikelihood(const std::vector< NodeId >& vars,

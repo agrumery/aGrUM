@@ -3,10 +3,13 @@
 %ignore gum::learning::BNLearner::useK2(const gum::Sequence< gum::NodeId >& order);
 %ignore gum::learning::BNLearner::useK2(const std::vector< gum::NodeId >& order);
 %ignore gum::learning::BNLearner::setForbiddenArcs(const gum::ArcSet& set);
-%ignore gum::learning::BNLearner::setMandatoryArcs(const gum::ArcSet& set);
 %ignore gum::learning::BNLearner::addForbiddenArc(const gum::Arc& arc);
-%ignore gum::learning::BNLearner::addMandatoryArc(const gum::Arc& arc);
 %ignore gum::learning::BNLearner::eraseForbiddenArc(const gum::Arc& arc);
+%ignore gum::learning::BNLearner::setPossibleEdges(const gum::EdgeSet& set);
+%ignore gum::learning::BNLearner::addPossibleEdge(const gum::Edge& edge);
+%ignore gum::learning::BNLearner::erasePossibleEdge(const gum::Edge& edge);
+%ignore gum::learning::BNLearner::setMandatoryArcs(const gum::ArcSet& set);
+%ignore gum::learning::BNLearner::addMandatoryArc(const gum::Arc& arc);
 %ignore gum::learning::BNLearner::eraseMandatoryArc(const gum::Arc& arc);
 %ignore gum::learning::BNLearner::learnParameters(const gum::DAG& dag);
 %ignore gum::learning::BNLearner::learnParameters(const gum::DAG& dag);
@@ -14,6 +17,10 @@
 %extend gum::learning::BNLearner< double > {
   PyObject *chi2(const std::string& var1,const std::string& var2,const std::vector<std::string>& knw={}) {
     std::pair<double,double> res=$self->chi2(var1,var2,knw);
+    return Py_BuildValue("(dd)",res.first,res.second);
+  }
+  PyObject *G2(const std::string& var1,const std::string& var2,const std::vector<std::string>& knw={}) {
+    std::pair<double,double> res=$self->G2(var1,var2,knw);
     return Py_BuildValue("(dd)",res.first,res.second);
   }
 

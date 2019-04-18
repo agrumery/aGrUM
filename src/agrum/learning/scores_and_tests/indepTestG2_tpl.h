@@ -146,11 +146,19 @@ namespace gum {
       }
       return *this;
     }
-
+    /// returns the pair <statistics,pvalue> corresponding to a given IdSet
+    template < template < typename > class ALLOC >
+    std::pair< double, double > IndepTestG2< ALLOC >::statistics(
+       NodeId                                        var1,
+       NodeId                                        var2,
+       const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids) {
+      return _statistics(IdSet< ALLOC >(var1, var2, rhs_ids, false));
+    }
 
     /// returns the score corresponding to a given nodeset
     template < template < typename > class ALLOC >
-    double IndepTestG2< ALLOC >::_score(const IdSet< ALLOC >& idset) {
+    std::pair< double, double >
+       IndepTestG2< ALLOC >::_statistics(const IdSet< ALLOC >& idset) {
       // get the countings
       std::vector< double, ALLOC< double > > N_xyz(
          this->_counter.counts(idset, true));
@@ -174,6 +182,7 @@ namespace gum {
       const std::size_t X_size = database.domainSize(var_x);
       const std::size_t Y_size = database.domainSize(var_y);
 
+      double cumulStat = 0.0;
 
       // here, we distinguish idsets with conditioning nodes from those
       // without conditioning nodes
@@ -206,8 +215,6 @@ namespace gum {
 
         // now, perform :
         // sum_X sum_Y sum_Z #XYZ * log ( ( #XYZ * #Z ) / ( #XZ * #YZ ) )
-        double score = 0.0;
-
         for (std::size_t z = std::size_t(0),
                          beg_xz = std::size_t(0),
                          beg_yz = std::size_t(0),
@@ -222,21 +229,12 @@ namespace gum {
                 const double tmp1 = N_xyz[xyz] * N_z[z];
                 const double tmp2 = N_yz[yz] * N_xz[xz];
                 if ((tmp1 != 0.0) && (tmp2 != 0.0)) {
-                  score += N_xyz[xyz] * std::log(tmp1 / tmp2);
+                  cumulStat += N_xyz[xyz] * std::log(tmp1 / tmp2);
                 }
               }
             }
           }
         }
-
-
-        // ok, here, score contains the value of the chi2 formula.
-        // To get a meaningful score, we shall compute the critical values
-        // for the Chi2 distribution and assign as the score of
-        // (score - alpha ) / alpha, where alpha is the critical value
-        const double alpha = __chi2.criticalValue(var_x, var_y);
-        score = (score - alpha) / alpha;
-        return score;
       } else {
         // here, there is no conditioning set
 
@@ -256,26 +254,51 @@ namespace gum {
         for (auto n_x : N_x)
           N += n_x;
 
-
-        double score = 0;
-
         for (std::size_t y = std::size_t(0), xy = 0; y < Y_size; ++y) {
           const double tmp_Ny = N_y[y];
           for (std::size_t x = 0; x < X_size; ++x, ++xy) {
             const double tmp = (tmp_Ny * N_x[x]);
-            if (tmp) { score += N_xyz[xy] * std::log((N_xyz[xy] * N) / tmp); }
+            if ((tmp != 0.0) && (N_xyz[xy] != 0.0)) {
+              cumulStat += N_xyz[xy] * std::log((N_xyz[xy] * N) / tmp);
+            }
           }
         }
-
-
-        // ok, here, score contains the value of the chi2 formula.
-        // To get a meaningful score, we shall compute the critical values
-        // for the Chi2 distribution and assign as the score of
-        // (score - alpha ) / alpha, where alpha is the critical value
-        const double alpha = __chi2.criticalValue(var_x, var_y);
-        score = (score - alpha) / alpha;
-        return score;
       }
+
+      // used to make the G test formula asymptotically equivalent
+      // to the Pearson's chi-squared test formula
+      cumulStat *= 2;
+
+      Size   df = __chi2.degreesOfFreedom(var_x, var_y);
+      double pValue = __chi2.probaChi2(cumulStat, df);
+      return std::pair< double, double >(cumulStat, pValue);
+    }
+
+    /// returns the score corresponding to a given nodeset
+    template < template < typename > class ALLOC >
+    double IndepTestG2< ALLOC >::_score(const IdSet< ALLOC >& idset) {
+      // compute the domain sizes of X and Y
+      const auto& nodeId2cols = this->_counter.nodeId2Columns();
+      Idx         var_x, var_y;
+      if (nodeId2cols.empty()) {
+        var_x = idset[0];
+        var_y = idset[1];
+      } else {
+        var_x = nodeId2cols.second(idset[0]);
+        var_y = nodeId2cols.second(idset[1]);
+      }
+
+      auto   stat = _statistics(idset);
+      double score = stat.first;
+
+      // ok, here, score contains the value of the chi2 formula.
+      // To get a meaningful score, we shall compute the critical values
+      // for the Chi2 distribution and assign as the score of
+      // (score - alpha ) / alpha, where alpha is the critical value
+      const double alpha = __chi2.criticalValue(var_x, var_y);
+      score = (score - alpha) / alpha;
+
+      return score;
     }
 
   } /* namespace learning */

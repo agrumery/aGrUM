@@ -275,9 +275,26 @@ pyAgrum.DAG
 "
 
 
+%feature("docstring") gum::learning::genericBNLearner::erasePossibleEdge
+"
+Allow the 2 arcs to be added if necessary.
+
+Parameters
+----------
+arc : pyAgrum
+	an arc
+head :
+	a variable's id (int)
+tail :
+	a variable's id (int)
+head :
+	a variable's name (str)
+tail :
+	a variable's name (str)
+"
 %feature("docstring") gum::learning::genericBNLearner::eraseForbiddenArc
 "
-Allow the arc in parameter to be added if necessary.
+Allow the arc to be added if necessary.
 
 Parameters
 ----------
@@ -419,6 +436,29 @@ Returns
 -------
 statistic,pvalue
 	the chi2 statistic and the associated p-value as a Tuple
+"
+
+
+%feature("docstring") gum::learning::BNLearner::G2
+"
+G2 computes the G2 statistic and pvalue for two columns, given a list of other columns.
+
+
+Parameters
+----------
+name1: str
+	the name of the first column
+
+name2 : str
+	the name of the second column
+
+knowing : [str]
+	the list of names of conditioning columns
+
+Returns
+-------
+statistic,pvalue
+	the G2 statistic and the associated p-value as a Tuple
 "
 
 %feature("docstring") gum::learning::genericBNLearner::logLikelihood

@@ -55,30 +55,30 @@ namespace gum_tests {
       gum::learning::AprioriNoApriori<>     apriori(database);
       gum::learning::IndepTestG2<>          score(parser, apriori);
 
-      TS_ASSERT(fabs(score.score(0, 1) - 61.181) <= 0.01);
-      TS_ASSERT(fabs(score.score(3, 1) + 0.617) <= 0.01);
+      TS_ASSERT_DELTA(score.score(0, 1), 123.3614, 1e-3);
+      TS_ASSERT_DELTA(score.score(3, 1), -0.2345, 1e-3);
 
-      TS_ASSERT(fabs(score.score(0, 2) - 114.873) <= 0.01);
-      TS_ASSERT(fabs(score.score(2, 0) - 114.873) <= 0.01);
+      TS_ASSERT_DELTA(score.score(0, 2), 230.7461, 1e-3);
+      TS_ASSERT_DELTA(score.score(2, 0), 230.7461, 1e-3);
 
-      TS_ASSERT(fabs(score.score(1, 3, std::vector< gum::NodeId >{4}) + 0.778)
-                <= 0.01);
-      TS_ASSERT(fabs(score.score(0, 2, std::vector< gum::NodeId >{4}) - 73.36)
-                <= 0.01);
+      TS_ASSERT_DELTA(
+         score.score(1, 3, std::vector< gum::NodeId >{4}), -0.5569, 1e-3)
+      TS_ASSERT_DELTA(
+         score.score(0, 2, std::vector< gum::NodeId >{4}), 147.7192, 1e-3);
 
-      TS_ASSERT(fabs(score.score(3, 6, std::vector< gum::NodeId >{1, 2}) + 0.808)
-                <= 0.01);
+      TS_ASSERT_DELTA(
+         score.score(3, 6, std::vector< gum::NodeId >{1, 2}), -0.6153, 1e-3);
 
-      TS_ASSERT(fabs(score.score(0, 1) - 61.181) <= 0.01);
-      TS_ASSERT(fabs(score.score(1, 3) + 0.617) <= 0.01);
-      TS_ASSERT(fabs(score.score(3, 6, std::vector< gum::NodeId >{1, 2}) + 0.808)
-                <= 0.01);
-      TS_ASSERT(fabs(score.score(2, 0) - 114.873) <= 0.01);
-      TS_ASSERT(fabs(score.score(3, 1, std::vector< gum::NodeId >{4}) + 0.778)
-                <= 0.01);
-      TS_ASSERT(fabs(score.score(2, 0) - 114.873) <= 0.01);
-      TS_ASSERT(fabs(score.score(1, 3, std::vector< gum::NodeId >{4}) + 0.778)
-                <= 0.01);
+      TS_ASSERT_DELTA(score.score(0, 1), 123.3614, 1e-3);
+      TS_ASSERT_DELTA(score.score(1, 3), -0.2345, 1e-3);
+      TS_ASSERT_DELTA(
+         score.score(3, 6, std::vector< gum::NodeId >{1, 2}), -0.6153, 1e-3);
+      TS_ASSERT_DELTA(score.score(2, 0), 230.7461, 1e-3);
+      TS_ASSERT_DELTA(
+         score.score(3, 1, std::vector< gum::NodeId >{4}), -0.5569, 1e-3);
+      TS_ASSERT_DELTA(score.score(2, 0), 230.7461, 1e-3);
+      TS_ASSERT_DELTA(
+         score.score(1, 3, std::vector< gum::NodeId >{4}), -0.5569, 1e-3);
     }
 
     void test_cache() {
@@ -104,16 +104,16 @@ namespace gum_tests {
       // score.useCache ( false );
 
       for (gum::Idx i = 0; i < 1000; ++i) {
-        TS_ASSERT(fabs(score.score(0, 1) - 61.181) <= 0.01);
-        TS_ASSERT(fabs(score.score(1, 3) + 0.617) <= 0.01);
-        TS_ASSERT(fabs(score.score(3, 6, std::vector< gum::NodeId >{1, 2}) + 0.808)
-                  <= 0.01);
-        TS_ASSERT(fabs(score.score(2, 0) - 114.873) <= 0.01);
-        TS_ASSERT(fabs(score.score(3, 1, std::vector< gum::NodeId >{4}) + 0.778)
-                  <= 0.01);
-        TS_ASSERT(fabs(score.score(2, 0) - 114.873) <= 0.01);
-        TS_ASSERT(fabs(score.score(1, 3, std::vector< gum::NodeId >{4}) + 0.778)
-                  <= 0.01);
+        TS_ASSERT_DELTA(score.score(0, 1), 123.3614, 1e-3);
+        TS_ASSERT_DELTA(score.score(1, 3), -0.2345, 1e-3);
+        TS_ASSERT_DELTA(
+           score.score(3, 6, std::vector< gum::NodeId >{1, 2}), -0.6153, 1e-3);
+        TS_ASSERT_DELTA(score.score(2, 0), 230.7461, 1e-3);
+        TS_ASSERT_DELTA(
+           score.score(3, 1, std::vector< gum::NodeId >{4}), -0.5569, 1e-3);
+        TS_ASSERT_DELTA(score.score(2, 0), 230.7461, 1e-3);
+        TS_ASSERT_DELTA(
+           score.score(1, 3, std::vector< gum::NodeId >{4}), -0.5569, 1e-3);
       }
     }
 
@@ -141,17 +141,43 @@ namespace gum_tests {
 
       for (gum::Idx i = 0; i < 4; ++i) {
         score.clearCache();
-        TS_ASSERT(fabs(score.score(0, 1) - 61.181) <= 0.01);
-        TS_ASSERT(fabs(score.score(1, 3) + 0.617) <= 0.01);
-        TS_ASSERT(fabs(score.score(3, 6, std::vector< gum::NodeId >{1, 2}) + 0.808)
-                  <= 0.01);
-        TS_ASSERT(fabs(score.score(2, 0) - 114.873) <= 0.01);
-        TS_ASSERT(fabs(score.score(3, 1, std::vector< gum::NodeId >{4}) + 0.778)
-                  <= 0.01);
-        TS_ASSERT(fabs(score.score(2, 0) - 114.873) <= 0.01);
-        TS_ASSERT(fabs(score.score(1, 3, std::vector< gum::NodeId >{4}) + 0.778)
-                  <= 0.01);
+        TS_ASSERT_DELTA(score.score(0, 1), 61.181, 1e-3);
+        TS_ASSERT_DELTA(score.score(1, 3), 0.617, 1e-3);
+        TS_ASSERT_DELTA(
+           score.score(3, 6, std::vector< gum::NodeId >{1, 2}), -0.6153, 1e-3);
+        TS_ASSERT_DELTA(score.score(2, 0), 230.7461, 1e-3);
+        TS_ASSERT_DELTA(
+           score.score(3, 1, std::vector< gum::NodeId >{4}), 0.778, 1e-3);
+        TS_ASSERT_DELTA(score.score(2, 0), 230.7461, 1e-3);
+        TS_ASSERT_DELTA(
+           score.score(1, 3, std::vector< gum::NodeId >{4}), 0.778, 1e-3);
       }
+    }
+
+    void test_statistics_2() {
+      gum::learning::DBInitializerFromCSV<> initializer(
+         GET_RESSOURCES_PATH("testXYbase.csv"));
+      const auto&       var_names = initializer.variableNames();
+      const std::size_t nb_vars = var_names.size();
+
+      gum::learning::DBTranslatorSet<>                translator_set;
+      gum::learning::DBTranslator4LabelizedVariable<> translator;
+      for (std::size_t i = 0; i < nb_vars; ++i) {
+        translator_set.insertTranslator(translator, i);
+      }
+
+      gum::learning::DatabaseTable<> database(translator_set);
+      database.setVariableNames(initializer.variableNames());
+      initializer.fillDatabase(database);
+
+      gum::learning::DBRowGeneratorSet<>    genset;
+      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
+      gum::learning::AprioriNoApriori<>     apriori(database);
+      gum::learning::IndepTestG2<>          score(parser, apriori);
+
+      auto stats = score.statistics(0, 1);
+      TS_ASSERT_DELTA(stats.first, 16.6066, 1e-3);
+      TS_ASSERT_DELTA(stats.second, 0.0108433, 1e-3);
     }
   };
 

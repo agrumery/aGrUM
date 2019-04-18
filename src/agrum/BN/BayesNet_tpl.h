@@ -31,6 +31,7 @@
 #include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/IBayesNet.h>
 
+#include <agrum/variables/rangeVariable.h>
 #include <agrum/variables/labelizedVariable.h>
 
 #include <agrum/multidim/aggregators/amplitude.h>
@@ -91,13 +92,21 @@ namespace gum {
       }
     }
 
+    if (ds == 0) {
+      GUM_ERROR(InvalidArgument, "No value for variable " << name << ".");
+    } else if (ds == 1) {
+      GUM_ERROR(InvalidArgument,
+                "Only one value for variable " << name
+                                               << " (2 at least are needed).");
+    }
+
     // now we add the node in the BN
     NodeId idVar;
     try {
       idVar = bn.idFromName(name);
     } catch (gum::NotFound&) {
       if (labels.empty()) {
-        idVar = bn.add(LabelizedVariable(name, name, ds));
+        idVar = bn.add(RangeVariable(name, name, 0, ds - 1));
       } else {
         auto l = LabelizedVariable(name, name, 0);
         for (const auto& label : labels) {

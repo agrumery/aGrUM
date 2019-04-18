@@ -45,6 +45,9 @@ target_link_libraries( ${LIBAGRUM} ${ODBC_LIBRARIES} ${GUM_COVERAGE_LINK_LIBRARY
 if (OPENMP_FOUND)
   set_target_properties (${LIBAGRUM} PROPERTIES LINK_FLAGS ${OpenMP_CXX_FLAGS})
 endif ()
+if (MINGW)
+  target_compile_definitions (${LIBAGRUM} PUBLIC GUM_NO_EXTERN_TEMPLATE_CLASS)
+endif ()
 GENERATE_EXPORT_HEADER( ${LIBAGRUM}
              BASE_NAME ${LIBAGRUM}
              EXPORT_MACRO_NAME ${LIBAGRUM}_EXPORT

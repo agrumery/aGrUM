@@ -3,9 +3,6 @@ include (TargetLinkLibrariesWithDynamicLookup)
 ## if you do not want to use swig
 option (USE_SWIG "use swig to generate bindings" ON)
 
-set(CMAKE_CXX_FLAGS_DEBUG " -DGUM_DEBUG_MODE -DGUM_NO_INLINE ${CMAKE_CXX_FLAGS_DEBUG}")
-set(CMAKE_C_FLAGS_DEBUG " -DGUM_DEBUG_MODE -DGUM_NO_INLINE ${CMAKE_C_FLAGS_DEBUG}")
-
 if (USE_SWIG)
 
   # https://github.com/swig/swig/issues/817 for NodeProperty

@@ -63,6 +63,7 @@
 #include <agrum/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/learning/constraints/structuralConstraintDiGraph.h>
 #include <agrum/learning/constraints/structuralConstraintForbiddenArcs.h>
+#include <agrum/learning/constraints/structuralConstraintPossibleEdges.h>
 #include <agrum/learning/constraints/structuralConstraintIndegree.h>
 #include <agrum/learning/constraints/structuralConstraintMandatoryArcs.h>
 #include <agrum/learning/constraints/structuralConstraintSetStatic.h>
@@ -452,7 +453,7 @@ namespace gum {
 
 
       /**
-       * Return the <statistic,pvalue> pair for the BNLearner
+       * Return the <statistic,pvalue> pair for chi2 test in the database
        * @param id1 first variable
        * @param id2 second variable
        * @param knowing list of observed variables
@@ -472,6 +473,28 @@ namespace gum {
          chi2(const std::string&                name1,
               const std::string&                name2,
               const std::vector< std::string >& knowing = {});
+
+      /**
+       * Return the <statistic,pvalue> pair for for G2 test in the database
+       * @param id1 first variable
+       * @param id2 second variable
+       * @param knowing list of observed variables
+       * @return a std::pair<double,double>
+       */
+      std::pair< double, double > G2(const NodeId                 id1,
+                                     const NodeId                 id2,
+                                     const std::vector< NodeId >& knowing = {});
+      /**
+       * Return the <statistic,pvalue> pair for for G2 test in the database
+       * @param id1 first variable
+       * @param id2 second variable
+       * @param knowing list of observed variables
+       * @return a std::pair<double,double>
+       */
+      std::pair< double, double >
+         G2(const std::string&                name1,
+            const std::string&                name2,
+            const std::vector< std::string >& knowing = {});
 
       /**
        * Return the loglikelihood of vars in the base, conditioned by knowing for
@@ -674,6 +697,30 @@ namespace gum {
       void eraseMandatoryArc(const std::string& tail, const std::string& head);
       /// @}
 
+      /// assign a set of forbidden edges
+      /// @warning Once at least one possible edge is defined, all other edges are
+      /// not possible anymore
+      /// @{
+      void setPossibleEdges(const EdgeSet& set);
+      void setPossibleSkeleton(const UndiGraph& skeleton);
+      /// @}
+
+      /// @name assign a new possible edge
+      /// @warning Once at least one possible edge is defined, all other edges are
+      /// not possible anymore
+      /// @{
+      void addPossibleEdge(const Edge& edge);
+      void addPossibleEdge(const NodeId tail, const NodeId head);
+      void addPossibleEdge(const std::string& tail, const std::string& head);
+      /// @}
+
+      /// @name remove a possible edge
+      /// @{
+      void erasePossibleEdge(const Edge& edge);
+      void erasePossibleEdge(const NodeId tail, const NodeId head);
+      void erasePossibleEdge(const std::string& tail, const std::string& head);
+      ///@}
+
       ///@}
 
       protected:
@@ -714,6 +761,9 @@ namespace gum {
 
       /// the constraint on forbidden arcs
       StructuralConstraintForbiddenArcs __constraint_ForbiddenArcs;
+
+      /// the constraint on possible Edges
+      StructuralConstraintPossibleEdges __constraint_PossibleEdges;
 
       /// the constraint on forbidden arcs
       StructuralConstraintMandatoryArcs __constraint_MandatoryArcs;

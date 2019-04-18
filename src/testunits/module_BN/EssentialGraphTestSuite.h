@@ -84,6 +84,14 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(eg.sizeArcs(), 3u);
       TS_ASSERT_EQUALS(eg.sizeEdges(), 1u);
     }
+    void testSkeleton() {
+      auto bn = gum::BayesNet< int >::fastPrototype("Z->X->U;Y->X;Y->W");
+      auto eg = gum::EssentialGraph(bn);
+      auto skel = eg.skeleton();
+
+      TS_ASSERT_EQUALS(skel.size(), 5u);
+      TS_ASSERT_EQUALS(skel.sizeEdges(), 4u);
+    }
   };
 
 }   // namespace gum_tests

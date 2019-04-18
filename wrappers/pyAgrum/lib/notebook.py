@@ -26,26 +26,31 @@ from __future__ import print_function
 import time
 
 import IPython.display
+import re
 import base64
+
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+from matplotlib.backends.backend_agg import FigureCanvasAgg as fc
+
 import numpy as np
-import pyAgrum as gum
 import pydotplus as dot
+
 from IPython.core.display import Image, display_png
 from IPython.core.pylabtools import print_figure
 from IPython.display import display, HTML, SVG
-from matplotlib.backends.backend_agg import FigureCanvasAgg as fc
+
+import pyAgrum as gum
 from pyAgrum.lib.bn2graph import BN2dot, proba2histo, BNinference2dot, _proba2bgcolor
 from pyAgrum.lib.bn_vs_bn import GraphicalBNComparator
 
 _cdict = {
-  'red'  : ((0.0, 0.1, 0.3),
+    'red': ((0.0, 0.1, 0.3),
             (1.0, 0.6, 1.0)),
-  'green': ((0.0, 0.0, 0.0),
-            (1.0, 0.6, 0.8)),
-  'blue' : ((0.0, 0.0, 0.0),
-            (1.0, 1, 0.8))
+    'green': ((0.0, 0.0, 0.0),
+              (1.0, 0.6, 0.8)),
+    'blue': ((0.0, 0.0, 0.0),
+             (1.0, 1, 0.8))
 }
 _INFOcmap = mpl.colors.LinearSegmentedColormap('my_colormap', _cdict, 256)
 
@@ -55,7 +60,8 @@ def configuration():
   Display the collection of dependance and versions
   """
   from collections import OrderedDict
-  import sys, os
+  import sys
+  import os
 
   packages = OrderedDict()
   packages["OS"] = "%s [%s]" % (os.name, sys.platform)
@@ -76,6 +82,42 @@ def configuration():
   display(HTML(res))
 
 
+def __insertLinkedSVGs(mainSvg):
+  re_images = re.compile(r"(<image [^>]*>)")
+  re_xlink = re.compile(r"xlink:href=\"([^\"]*)")
+  re_viewbox = re.compile(r"(viewBox=\"[^\"]*\")")
+
+  # analyze mainSvg (find the secondary svgs)
+  __fragments = {}
+  for img in re.finditer(re_images, mainSvg):
+    # print(img)
+    secondarySvg = re.findall(re_xlink, img.group(1))[0]
+    content = ""
+    with open(secondarySvg, encoding='utf8') as f:
+      inSvg = False
+      for line in f:
+        if line[0:4] == "<svg":
+          inSvg = True
+          viewBox = re.findall(re_viewbox, line)[0]
+          #print("VIEWBOX {}".format(viewBox))
+        elif inSvg:
+          content += line
+    __fragments[secondarySvg] = (viewBox, content)
+
+  if len(__fragments) == 0:
+    return mainSvg
+
+  # replace image tags by svg tags
+  img2svg = re.sub(r"<image ([^>]*)/>", "<svg \g<1>>", mainSvg)
+
+  # insert secondaries into main
+  def ___insertSecondarySvgs(matchObj):
+    vb, code = __fragments[matchObj.group(1)]
+    return vb+matchObj.group(2)+code
+
+  return re.sub(r'xlink:href="([^"]*)"(.*>)', ___insertSecondarySvgs, img2svg)
+
+
 def _reprGraph(gr, size, format, asString):
   """
   repr a pydot graph in a notebook
@@ -86,7 +128,7 @@ def _reprGraph(gr, size, format, asString):
   """
   gr.set_size(size)
   if format == "svg":
-    gsvg = SVG(gr.create_svg())
+    gsvg = SVG(__insertLinkedSVGs(gr.create_svg().decode('utf-8')))
     if asString:
       return gsvg.data
     else:
@@ -99,7 +141,7 @@ def _reprGraph(gr, size, format, asString):
       display_png(Image(format="png", data=gr.create_png()))
 
 
-def showGraph(gr, size="4", format="png"):
+def showGraph(gr, size="4", format='svg'):
   """
   show a pydot graph in a notebook
 
@@ -111,7 +153,7 @@ def showGraph(gr, size="4", format="png"):
   return _reprGraph(gr, size, format, asString=False)
 
 
-def getGraph(gr, size="4", format="png"):
+def getGraph(gr, size="4", format='svg'):
   """
   get a HTML string representation of pydot graph
 
@@ -123,7 +165,7 @@ def getGraph(gr, size="4", format="png"):
   return _reprGraph(gr, size, format, asString=True)
 
 
-def showDot(dotstring, size="4", format="png"):
+def showDot(dotstring, size="4", format='svg'):
   """
   show a dot string as a graph
 
@@ -135,7 +177,7 @@ def showDot(dotstring, size="4", format="png"):
   return showGraph(dot.graph_from_dot_data(dotstring), size, format)
 
 
-def getDot(dotstring, size="4", format="png"):
+def getDot(dotstring, size="4", format='svg'):
   """
   get a dot string as a HTML string
 
@@ -149,7 +191,7 @@ def getDot(dotstring, size="4", format="png"):
   return getGraph(g, size, format)
 
 
-def getBNDiff(bn1, bn2, size="4", format="png"):
+def getBNDiff(bn1, bn2, size="4", format='svg'):
   """ get a HTML string representation of a graphical diff between the arcs of _bn1 (reference) with those of _bn2.
 
   * full black line: the arc is common for both
@@ -166,7 +208,7 @@ def getBNDiff(bn1, bn2, size="4", format="png"):
   return getGraph(cmp.dotDiff(), size, format)
 
 
-def showBNDiff(bn1, bn2, size="4", format="png"):
+def showBNDiff(bn1, bn2, size="4", format='svg'):
   """ show a graphical diff between the arcs of _bn1 (reference) with those of _bn2.
 
   * full black line: the arc is common for both
@@ -183,7 +225,7 @@ def showBNDiff(bn1, bn2, size="4", format="png"):
   showGraph(cmp.dotDiff(), size, format)
 
 
-def showJunctionTree(bn, withNames=True, size="4", format="png"):
+def showJunctionTree(bn, withNames=True, size="4", format='svg'):
   """
   Show a junction tree
 
@@ -201,7 +243,7 @@ def showJunctionTree(bn, withNames=True, size="4", format="png"):
     return showDot(jt.toDot(), size, format)
 
 
-def getJunctionTree(bn, withNames=True, size="4", format="png"):
+def getJunctionTree(bn, withNames=True, size="4", format='svg'):
   """
   get a HTML string for a junction tree (more specifically a join tree)
 
@@ -219,7 +261,7 @@ def getJunctionTree(bn, withNames=True, size="4", format="png"):
     return getDot(jt.toDot(), size, format)
 
 
-def showInfluenceDiagram(diag, size="4", format="png"):
+def showInfluenceDiagram(diag, size="4", format='svg'):
   """
   show an influence diagram as a graph
 
@@ -231,7 +273,7 @@ def showInfluenceDiagram(diag, size="4", format="png"):
   return showDot(diag.toDot(), size, format)
 
 
-def getInfluenceDiagram(diag, size="4", format="png"):
+def getInfluenceDiagram(diag, size="4", format='svg'):
   """
   get a HTML string for an influence diagram as a graph
 
@@ -256,7 +298,8 @@ def showProba(p, scale=1.0):
 
 def _saveFigProba(p, filename, format="svg"):
   fig = proba2histo(p)
-  fig.savefig(filename, bbox_inches='tight', transparent=True, pad_inches=0, dpi=fig.dpi, format=format)
+  fig.savefig(filename, bbox_inches='tight', transparent=True,
+              pad_inches=0, dpi=fig.dpi, format=format)
   plt.close(fig)
 
 
@@ -296,7 +339,8 @@ def animApproximationScheme(apsc, scale=np.log10):
   from IPython.display import clear_output, display
   f = plt.gcf()
 
-  h = gum.PythonApproximationListener(apsc.asIApproximationSchemeConfiguration())
+  h = gum.PythonApproximationListener(
+      apsc.asIApproximationSchemeConfiguration())
   apsc.setVerbosity(True)
   apsc.listener = h
 
@@ -415,7 +459,8 @@ def _reprInformation(bn, evs, size, cmap, asString):
   ie.makeInference()
 
   idEvs = {bn.idFromName(name) for name in evs}
-  nodevals = {bn.variable(n).name(): ie.H(n) for n in bn.nodes() if not n in idEvs}
+  nodevals = {bn.variable(n).name(): ie.H(n)
+              for n in bn.nodes() if not n in idEvs}
   arcvals = {(x, y): ie.I(x, y) for x, y in bn.arcs()}
   gr = BN2dot(bn, size, nodeColor=_normalizeVals(nodevals, hilightExtrema=False), arcWidth=arcvals, cmapNode=cmap,
               cmapArc=cmap,
@@ -440,9 +485,11 @@ def _reprInformation(bn, evs, size, cmap, asString):
 
   sss = "<div align='center'>" + gsvg.data + "</div>"
   sss += "<div align='center'>"
-  sss += "<font color='" + _proba2bgcolor(0.01, cmap) + "'>" + str(mi) + "</font>"
+  sss += "<font color='" + \
+      _proba2bgcolor(0.01, cmap) + "'>" + str(mi) + "</font>"
   sss += png_legend
-  sss += "<font color='" + _proba2bgcolor(0.99, cmap) + "'>" + str(ma) + "</font>"
+  sss += "<font color='" + \
+      _proba2bgcolor(0.99, cmap) + "'>" + str(ma) + "</font>"
   sss += "</div>"
 
   if asString:
@@ -483,7 +530,7 @@ def showInformation(bn, evs=None, size="4", cmap=_INFOcmap):
   return _reprInformation(bn, evs, size, cmap, asString=False)
 
 
-def showInference(bn, engine=None, evs=None, targets=None, size="7", format='png', nodeColor=None, arcWidth=None,
+def showInference(bn, engine=None, evs=None, targets=None, size="7", format='svg', nodeColor=None, arcWidth=None,
                   cmap=None):
   """
   show pydot graph for an inference in a notebook
@@ -506,7 +553,7 @@ def showInference(bn, engine=None, evs=None, targets=None, size="7", format='png
   return showGraph(BNinference2dot(bn, size, engine, evs, targets, format, nodeColor, arcWidth, cmap), size, format)
 
 
-def getInference(bn, engine=None, evs=None, targets=None, size="7", format='png', nodeColor=None, arcWidth=None,
+def getInference(bn, engine=None, evs=None, targets=None, size="7", format='svg', nodeColor=None, arcWidth=None,
                  cmap=None):
   """
   get a HTML string for an inference in a notebook
@@ -591,9 +638,11 @@ def _reprPotential(pot, digits=4, withColors=True, varnames=None, asString=False
       # for parent in pot.var_names[:-1] if varnames == None else varnames[1:]:
       for par in range(nparents - 1, 0 - 1, -1):
         parent = pot.var_names[par] if varnames is None else varnames[par]
-        s += "<th style='background-color:#AAAAAA'><center>{}</center></th>".format(parent)
+        s += "<th style='background-color:#AAAAAA'><center>{}</center></th>".format(
+            parent)
     for label in var.labels():
-      s += "<th style='background-color:#BBBBBB'><center>{}</center></th>".format(label)
+      s += "<th style='background-color:#BBBBBB'><center>{}</center></th>".format(
+          label)
     s += '</tr>'
 
     html.append(s)
@@ -611,7 +660,8 @@ def _reprPotential(pot, digits=4, withColors=True, varnames=None, asString=False
       for par in range(1, nparents + 1):
         label = inst.variable(par).label(inst.val(par))
         if par == 1:
-          s += "<th style='background-color:#BBBBBB'><center>{}</center></th>".format(label)
+          s += "<th style='background-color:#BBBBBB'><center>{}</center></th>".format(
+              label)
         else:
           if sum([inst.val(i) for i in range(1, par)]) == 0:
             s += "<th style='background-color:#BBBBBB;' rowspan = '{}'><center>{}</center></th>".format(offset[par],
@@ -754,11 +804,13 @@ def getInferenceEngine(ie, inferenceCaption):
   t = '<div align="left"><ul>'
   if ie.nbrHardEvidence() > 0:
     t += "<li><b>hard evidence</b><br/>"
-    t += ", ".join([ie.BN().variable(n).name() for n in ie.hardEvidenceNodes()])
+    t += ", ".join([ie.BN().variable(n).name()
+                    for n in ie.hardEvidenceNodes()])
     t += "</li>"
   if ie.nbrSoftEvidence() > 0:
     t += "<li><b>soft evidence</b><br/>"
-    t += ", ".join([ie.BN().variable(n).name() for n in ie.softEvidenceNodes()])
+    t += ", ".join([ie.BN().variable(n).name()
+                    for n in ie.softEvidenceNodes()])
     t += "</li>"
   if ie.nbrTargets() > 0:
     t += "<li><b>target(s)</b><br/>"
@@ -772,7 +824,8 @@ def getInferenceEngine(ie, inferenceCaption):
     if ie.nbrJointTargets() > 0:
       t += "<li><b>Joint target(s)</b><br/>"
       t += ", ".join(['['
-                      + (", ".join([ie.BN().variable(n).name() for n in ns]))
+                      + (", ".join([ie.BN().variable(n).name()
+                                    for n in ns]))
                       + ']' for ns in ie.jointTargets()])
       t += "</li>"
   t += '</ul></div>'
@@ -782,7 +835,8 @@ def getInferenceEngine(ie, inferenceCaption):
 # adding _repr_html_ to some pyAgrum classes !
 gum.BayesNet._repr_html_ = lambda self: getBN(self)
 gum.Potential._repr_html_ = lambda self: getPotential(self)
-gum.LazyPropagation._repr_html_ = lambda self: getInferenceEngine(self, "Lazy Propagation on this BN")
+gum.LazyPropagation._repr_html_ = lambda self: getInferenceEngine(
+    self, "Lazy Propagation on this BN")
 
 gum.UndiGraph._repr_html_ = lambda self: getDot(self.toDot())
 gum.DiGraph._repr_html_ = lambda self: getDot(self.toDot())
@@ -791,3 +845,6 @@ gum.DAG._repr_html_ = lambda self: getDot(self.toDot())
 gum.CliqueGraph._repr_html_ = lambda self: getDot(self.toDot())
 gum.EssentialGraph._repr_html_ = lambda self: getDot(self.toDot())
 gum.MarkovBlanket._repr_html_ = lambda self: getDot(self.toDot())
+
+
+IPython.display.set_matplotlib_formats('svg')

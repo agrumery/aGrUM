@@ -6240,6 +6240,10 @@ class EssentialGraph(object):
         """
         return _pyAgrum.EssentialGraph_size(self)
 
+    def skeleton(self) -> "gum::UndiGraph":
+        r"""skeleton(EssentialGraph self) -> UndiGraph"""
+        return _pyAgrum.EssentialGraph_skeleton(self)
+
     def nodes(self) -> "PyObject *":
         r"""nodes(EssentialGraph self) -> PyObject *"""
         return _pyAgrum.EssentialGraph_nodes(self)
@@ -23222,6 +23226,32 @@ class BNLearner(object):
         """
         return _pyAgrum.BNLearner_chi2(self, *args)
 
+    def G2(self, *args) -> "PyObject *":
+        r"""
+        G2(BNLearner self, std::string const & var1, std::string const & var2, Vector_string knw={}) -> PyObject
+
+        G2 computes the G2 statistic and pvalue for two columns, given a list of other columns.
+
+
+        Parameters
+        ----------
+        name1: str
+        	the name of the first column
+
+        name2 : str
+        	the name of the second column
+
+        knowing : [str]
+        	the list of names of conditioning columns
+
+        Returns
+        -------
+        statistic,pvalue
+        	the G2 statistic and the associated p-value as a Tuple
+
+        """
+        return _pyAgrum.BNLearner_G2(self, *args)
+
     def setVerbosity(self, v: 'bool') -> "void":
         r"""
         setVerbosity(BNLearner self, bool v)
@@ -23664,6 +23694,42 @@ class BNLearner(object):
         """
         return _pyAgrum.BNLearner_setSliceOrder(self, *args)
 
+    def setPossibleSkeleton(self, skeleton: 'UndiGraph') -> "void":
+        r"""setPossibleSkeleton(BNLearner self, UndiGraph skeleton)"""
+        return _pyAgrum.BNLearner_setPossibleSkeleton(self, skeleton)
+
+    def addPossibleEdge(self, *args) -> "void":
+        r"""
+        addPossibleEdge(BNLearner self, Edge edge)
+        addPossibleEdge(BNLearner self, gum::NodeId const tail, gum::NodeId const head)
+        addPossibleEdge(BNLearner self, std::string const & tail, std::string const & head)
+        """
+        return _pyAgrum.BNLearner_addPossibleEdge(self, *args)
+
+    def erasePossibleEdge(self, *args) -> "void":
+        r"""
+        erasePossibleEdge(BNLearner self, Edge edge)
+        erasePossibleEdge(BNLearner self, gum::NodeId const tail, gum::NodeId const head)
+        erasePossibleEdge(BNLearner self, std::string const & tail, std::string const & head)
+
+        Allow the 2 arcs to be added if necessary.
+
+        Parameters
+        ----------
+        arc : pyAgrum
+        	an arc
+        head :
+        	a variable's id (int)
+        tail :
+        	a variable's id (int)
+        head :
+        	a variable's name (str)
+        tail :
+        	a variable's name (str)
+
+        """
+        return _pyAgrum.BNLearner_erasePossibleEdge(self, *args)
+
     def addForbiddenArc(self, *args) -> "void":
         r"""
         addForbiddenArc(BNLearner self, Arc arc)
@@ -23694,7 +23760,7 @@ class BNLearner(object):
         eraseForbiddenArc(BNLearner self, gum::NodeId const tail, gum::NodeId const head)
         eraseForbiddenArc(BNLearner self, std::string const & tail, std::string const & head)
 
-        Allow the arc in parameter to be added if necessary.
+        Allow the arc to be added if necessary.
 
         Parameters
         ----------

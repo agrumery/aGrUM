@@ -25,7 +25,7 @@ class TestCausalModel(pyAgrumTestCase):
 
     modele3 = csl.CausalModel(obs1, [("Genotype", ["Smoking", "Cancer"])], True)
     lat, pot, expl = csl.causalImpact(modele3, "Cancer", {"Smoking"}, values={"Smoking": 1})
-    self.assertEqual(pot, None)
+    self.assertIsNone(pot)
 
   def test_tobacco2(self):
     obs2 = gum.fastBN("Smoking->Tar->Cancer;Smoking->Cancer")
@@ -115,7 +115,7 @@ class TestCausalModel(pyAgrumTestCase):
 
     _, pot, _ = csl.causalImpact(d, on="Y", doing={"X"})
 
-    self.assertEqual(pot, None)
+    self.assertIsNone(pot)
 
   def testFromNotebooks(self):
     bn = gum.fastBN("w->x->z->y;w->z")
@@ -134,6 +134,20 @@ class TestCausalModel(pyAgrumTestCase):
     d = csl.CausalModel(bn, [("lat1", ["x", "y"])])
 
     _, pot, _ = csl.causalImpact(d, on="y", doing="x")
+    self.assertIsNotNone(pot)
+
+  def testFromWHY19(self):
+    bn = gum.fastBN("X->Y;U")
+    d = csl.CausalModel(bn, [('Z', ["X", "Y", "U"])], True)
+    _, pot, _ = csl.causalImpact(d, on="Y", doing="X")
+    self.assertIsNone(pot)  # HedgeException
+
+    # Causality, Pearl, 2009, p66
+    bn = gum.fastBN("Z1->Z2->Z3->Y<-X->Z2;Z2->Y;Z1->X->Z3<-Z1")
+    c = csl.CausalModel(bn, [("Z0", ("X", "Z1", "Z3"))], False)
+    _, pot, explanation = csl.causalImpact(c, "Y", "X")
+    self.assertIsNotNone(pot)
+    self.assertEquals(explanation,"Do-calculus computations")
 
 
 ts = unittest.TestSuite()

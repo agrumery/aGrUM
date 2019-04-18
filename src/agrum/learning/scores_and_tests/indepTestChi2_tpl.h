@@ -231,7 +231,7 @@ namespace gum {
               for (std::size_t x = std::size_t(0), xz = beg_xz; x < X_size;
                    ++xz, ++x, ++xyz) {
                 const double tmp1 = (N_yz[yz] * N_xz[xz]) / N_z[z];
-                if (tmp1) {
+                if (tmp1 != 0.0) {
                   const double tmp2 = N_xyz[xyz] - tmp1;
                   cumulStat += (tmp2 * tmp2) / tmp1;
                 }
@@ -262,7 +262,7 @@ namespace gum {
           const double tmp_Ny = N_y[y];
           for (std::size_t x = 0; x < X_size; ++x, ++xy) {
             const double tmp1 = (tmp_Ny * N_x[x]) / N;
-            if (tmp1) {
+            if (tmp1 != 0.0) {
               const double tmp2 = N_xyz[xy] - tmp1;
               cumulStat += (tmp2 * tmp2) / tmp1;
             }

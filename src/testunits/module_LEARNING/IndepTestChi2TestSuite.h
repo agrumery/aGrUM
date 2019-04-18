@@ -196,6 +196,32 @@ namespace gum_tests {
       TS_ASSERT_DELTA(stat.first, 15.2205, 1e-3);
       TS_ASSERT_DELTA(stat.second, 0.0005, 1e-4);
     }
+
+    void test_statistics_2() {
+      gum::learning::DBInitializerFromCSV<> initializer(
+         GET_RESSOURCES_PATH("testXYbase.csv"));
+      const auto&       var_names = initializer.variableNames();
+      const std::size_t nb_vars = var_names.size();
+
+      gum::learning::DBTranslatorSet<>                translator_set;
+      gum::learning::DBTranslator4LabelizedVariable<> translator;
+      for (std::size_t i = 0; i < nb_vars; ++i) {
+        translator_set.insertTranslator(translator, i);
+      }
+
+      gum::learning::DatabaseTable<> database(translator_set);
+      database.setVariableNames(initializer.variableNames());
+      initializer.fillDatabase(database);
+
+      gum::learning::DBRowGeneratorSet<>    genset;
+      gum::learning::DBRowGeneratorParser<> parser(database.handler(), genset);
+      gum::learning::AprioriNoApriori<>     apriori(database);
+      gum::learning::IndepTestChi2<>        score(parser, apriori);
+
+      auto stats = score.statistics(0, 1);
+      TS_ASSERT_DELTA(stats.first, 15.3389, 1e-3);
+      TS_ASSERT_DELTA(stats.second, 0.0177784, 1e-3);
+    }
   };
 
 } /* namespace gum_tests */

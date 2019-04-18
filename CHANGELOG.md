@@ -1,5 +1,32 @@
 # aGrUM Changelog
 
+## Changelog for 0.14.3
+
+* aGrUM
+  * new constraint for structural learning : `possibleEdge` forces the tested edges to be taken from the sets of `possibleEdge`s
+  * new methods `BNLearner::addPossibleEdge(const gum::Edge&)` and `BNLearner::setPossibleSkeleton(const gum::UndiGraph&)`
+  * Fix a bug in `gum::IndepTestG2`
+  * Access to scores from BNLearner : `BNLearner::G2()`
+* pyAgrum
+  * new methods `BNLearner.addPossibleEdge(x,y)` and `BNLearner.setPossibleSkeleton(undigraph)`
+  * fix a bug in causality's identification algorithm
+  * Access to scores from BNLearner : `BNLearner.G2()`
+  * add tests and fix typos in notebooks
+  
+## Changelog for 0.14.2
+
+* aGrUM
+  * bug fixes in learning (`3off2/miic` and `learnMixedGraph`)
+  * removing redundant `gum::BNLearner::setAprioriWeight`
+* pyAgrum
+  * `pyAgrum.lib.notebook.showInference` can now use `svg` format
+  * use of the `svg` format by default for graphs and drawings in `pyAgrum.lib.notebook`
+  * refreshing notebooks
+  * removing redundant `pyAgrum.BNLearner.setAprioriWeight`
+  * adding forgotten wrapper for `pyAgrum.BNLearner.useAprioriBDeu`
+  * changing the representation of causal model (special node for latent variable)
+  * extending documentation
+
 ## Changelog for 0.14.1
 
 * aGrUM
