@@ -98,12 +98,32 @@ namespace gum {
       return __database.missingSymbols();
     }
 
+
     /// returns the mapping between node ids and their columns in the database
     INLINE const Bijection< NodeId, std::size_t >&
                  genericBNLearner::Database::nodeId2Columns() const {
       return __nodeId2cols;
     }
 
+
+    /// returns the number of records in the database
+    INLINE std::size_t genericBNLearner::Database::nbRows() const {
+      return __database.nbRows();
+    }
+
+    
+    /// returns the number of records in the database
+    INLINE std::size_t genericBNLearner::Database::size() const {
+      return __database.size();
+    }
+    
+
+    /// sets the weight of the ith record
+    INLINE void genericBNLearner::Database::setWeight(const std::size_t i,
+                                                      const double weight) {
+      __database.setWeight(i,weight);
+    }
+      
 
     // ===========================================================================
 
@@ -120,6 +140,12 @@ namespace gum {
     /// assign new weight to the rows of the learning database
     INLINE void genericBNLearner::setDatabaseWeight(const double new_weight) {
       __score_database.setDatabaseWeight(new_weight);
+    }
+
+    /// assign new weight to the ith row of the learning database
+    INLINE void genericBNLearner::setRecordWeight(const std::size_t i,
+                                                  const double new_weight) {
+      __score_database.setWeight(i, new_weight);
     }
 
     // sets an initial DAG structure

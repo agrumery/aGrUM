@@ -1130,6 +1130,11 @@ namespace gum {
       /// assign a given weight to all the rows of the database
       void setAllRowsWeight(const double new_weight);
 
+      /// assigns a given weight to the ith row of the database
+      /** @throws OutOfBounds if i is outside the set of indices of the
+       * records or if the weight is negative */
+      void setWeight(const std::size_t i, const double weight);
+
       /// @}
 
 

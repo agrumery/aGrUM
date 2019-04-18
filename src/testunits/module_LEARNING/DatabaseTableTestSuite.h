@@ -142,6 +142,22 @@ namespace gum_tests {
         for (const auto& row : db) {
           TS_ASSERT(row.weight() == 10.0);
         }
+
+        const std::size_t nbr = db.nbRows ();
+        for (std::size_t i = std::size_t(0); i < nbr; ++i) {
+          if ( i % 2) db.setWeight(i, 2.0);
+        }
+
+        std::size_t index = std::size_t(0);
+        for (const auto& row : db) {
+          if ( index % 2 ) {
+            TS_ASSERT(row.weight() == 2.0);
+          }
+          else {
+            TS_ASSERT(row.weight() == 10.0);
+          }
+          ++index;
+        }
       }
 
       TS_ASSERT(MyAllocCount::hasMeroryLeak() == false);

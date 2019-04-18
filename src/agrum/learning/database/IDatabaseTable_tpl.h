@@ -1296,6 +1296,45 @@ namespace gum {
       }
     }
 
+     /// assigns a given weight to the ith row of the database
+      /** @throws OutOfBounds if i is outside the set of indices of the
+       * records or if the weight is negative */
+    template < typename T_DATA, template < typename > class ALLOC >
+    void IDatabaseTable< T_DATA, ALLOC >::setWeight(const std::size_t i,
+                                                    const double weight) {
+      // check that i is less than the number of rows
+      const std::size_t dbsize = nbRows();
+      if ( i >= dbsize ) {
+        std::string str;
+        switch ( i ) {
+        case 1:  str = "st"; break;
+        case 2:  str = "nd"; break;
+        default: str = "th";
+        }
+        GUM_ERROR(OutOfBounds,
+                  "it is impossible to set the weight of the "
+                  << i << str << " record because the database contains only "
+                  << nbRows() << " records");
+      }
+
+      // check that the weight is positive
+      if ( weight < 0 ) {
+        std::string str;
+        switch ( i ) {
+        case 1:  str = "st"; break;
+        case 2:  str = "nd"; break;
+        default: str = "th";
+        }
+        GUM_ERROR(OutOfBounds,
+                  "it is impossible to set " << weight
+                  << " as a weight of the " << i << str
+                  << " record because this weight is negative");
+      }
+
+      _rows[i].setWeight(weight);
+    }
+    
+    
   } /* namespace learning */
 
 } /* namespace gum */
