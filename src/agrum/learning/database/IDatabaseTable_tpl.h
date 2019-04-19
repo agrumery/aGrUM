@@ -1281,18 +1281,16 @@ namespace gum {
       // here we use openMP for launching the threads because, experimentally,
       // it seems to provide results that are twice as fast as the results
       // with the std::thread
-      for (std::size_t i = std::size_t(0); i < nb_threads; ++i) {
 #  pragma omp parallel num_threads(int(nb_threads))
-        {
-          // get the number of the thread
-          const std::size_t this_thread = getThreadNumber();
-          const std::size_t begin_index = ranges[this_thread].first;
-          const std::size_t end_index = ranges[this_thread].second;
+      {
+	// get the number of the thread
+	const std::size_t this_thread = getThreadNumber();
+	const std::size_t begin_index = ranges[this_thread].first;
+	const std::size_t end_index = ranges[this_thread].second;
 
-          for (std::size_t i = begin_index; i < end_index; ++i) {
-            _rows[i].setWeight(new_weight);
-          }
-        }
+	for (std::size_t i = begin_index; i < end_index; ++i) {
+	  _rows[i].setWeight(new_weight);
+	}
       }
     }
 
