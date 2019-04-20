@@ -234,6 +234,28 @@ namespace gum {
 
         /// returns the set of missing symbols taken into account
         const std::vector< std::string >& missingSymbols() const;
+
+        /// returns the number of records in the database
+        std::size_t nbRows() const;
+
+        /// returns the number of records in the database
+        std::size_t size() const;
+
+        /// sets the weight of the ith record
+        /** @throws OutOfBounds if i is outside the set of indices of the
+         * records or if the weight is negative
+         */
+        void setWeight(const std::size_t i, const double weight);
+
+        /// returns the weight of the ith record
+        /** @throws OutOfBounds if i is outside the set of indices of the
+         * records */
+        double weight(const std::size_t i) const;
+
+        /// returns the weight of the whole database
+        double weight () const;
+
+        
         /// @}
 
         protected:
@@ -366,6 +388,20 @@ namespace gum {
       /** @brief assign a weight to all the rows of the learning database so
        * that the sum of their weights is equal to new_weight */
       void setDatabaseWeight(const double new_weight);
+
+      /// sets the weight of the ith record of the database
+      /** @throws OutOfBounds if i is outside the set of indices of the
+       * records or if the weight is negative
+       */
+      void setRecordWeight(const std::size_t i, const double weight);
+
+      /// returns the weight of the ith record
+      /** @throws OutOfBounds if i is outside the set of indices of the
+       * records */
+      double recordWeight(const std::size_t i) const;
+
+      /// returns the weight of the whole database
+      double databaseWeight () const;
 
       /// returns the variable name corresponding to a given node id
       const std::string& nameFromId(NodeId id) const;

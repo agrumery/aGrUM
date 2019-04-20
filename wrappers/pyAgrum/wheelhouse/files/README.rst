@@ -93,3 +93,4 @@ Maintainers
 ===========
 
 - Lionel Torti
+- Gaspard Ducamp
