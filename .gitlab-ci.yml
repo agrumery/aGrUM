@@ -32,6 +32,41 @@ linux_pyagrum:
     - python3 act clean
     - python3 act --no-fun test release pyAgrum --python=3 -j $(expr $(nproc --all) / 2 - 1) -t quick
   retry: 2
+  
+################################################################################
+# Linux / gcc merge requests
+################################################################################
+linux_agrum_merge_requests:
+  image: malichief/ubuntu
+  only:
+    - merge_requests
+  tags:
+    - docker
+  cache:
+    key: linux
+    paths:
+      - build/
+  stage: build
+  script:
+    - python3 act clean
+    - python3 act --no-fun test release aGrUM --python=3 -j $(expr $(nproc --all) / 2 - 1)
+  retry: 2
+
+linux_pyagrum_merge_requests:
+  only:
+    - merge_requests
+  image: malichief/ubuntu
+  tags:
+    - docker
+  cache:
+    key: linux
+    paths:
+      - build/
+  stage: build
+  script:
+    - python3 act clean
+    - python3 act --no-fun test release pyAgrum --python=3 -j $(expr $(nproc --all) / 2 - 1) -t quick
+  retry: 2
 
 ################################################################################
 # MacOS / clang
