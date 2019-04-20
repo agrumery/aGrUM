@@ -40,6 +40,7 @@ macos_agrum:
   only:
     - master@agrumery/aGrUM
     - web@agrumery/aGrUM
+    - merge_requests
   tags:
     - macos
     - conda
@@ -63,6 +64,7 @@ macos_pyagrum:
   only:
     - master@agrumery/aGrUM
     - web@agrumery/aGrUM
+    - merge_requests
   tags:
     - macos
     - conda
@@ -89,6 +91,7 @@ windows_agrum_2015:
   only:
    - master@agrumery/aGrUM
    - web@agrumery/aGrUM
+   - merge_requests
   tags:
     - windows
     - conda
@@ -114,6 +117,7 @@ windows_pyagrum_2015:
   only:
    - master@agrumery/aGrUM
    - web@agrumery/aGrUM
+   - merge_requests
   tags:
     - windows
     - conda
@@ -138,6 +142,7 @@ windows_agrum_2017:
   only:
     - master@agrumery/aGrUM
     - web@agrumery/aGrUM
+    - merge_requests
   tags:
     - windows
     - conda
@@ -162,6 +167,7 @@ windows_pyagrum_2017:
   only:
    - master@agrumery/aGrUM
    - web@agrumery/aGrUM
+   - merge_requests
   tags:
     - windows
     - conda
