@@ -86,7 +86,7 @@ def initParams():
   cfg.default['noSaveParams'] = False
   cfg.default['correction'] = False
 
-  cfg.actions = set("lib test install doc clean show uninstall package guideline wheel".split())
+  cfg.actions = set("lib test install doc clean show uninstall package guideline wheel nightly_wheel".split())
   cfg.modes = set("debug release".split())
   cfg.targets = set("aGrUM pyAgrum jAgrum".split())
   cfg.moduleLabels = parseModulesTxt()
