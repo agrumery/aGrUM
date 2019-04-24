@@ -76,7 +76,7 @@ def nightly_wheel(current):
   else:
     critic("Please install package wheel to build wheels using act (pip install wheel).")
 
-def go(current,nightly=False):
+def go(current, nightly=False):
   """Get a temporary directory to build the wheel and cal sequentially all steps
   to build the wheel."""
   tmp = mkdtemp(prefix='act')
@@ -131,7 +131,7 @@ def install_pyAgrum(current, tmp, nightly=False):
       options = "{0} --mingw64".format(options)
   else:
     cmd = sys.executable
-  cmd = '{0} act -j 6 {1} {2}'.format(cmd, targets, options)
+  cmd = '{0} act {1} {2}'.format(cmd, targets, options)
   proc = Popen(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
   out = proc.stdout.readlines()
   return get_python_version(out)
