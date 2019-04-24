@@ -19,8 +19,6 @@
 # *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 # **************************************************************************
 import sys
-import tempfile
-import shutil
 import fileinput
 import warnings
 import re
@@ -28,8 +26,14 @@ import hashlib
 import zipfile
 import platform
 
-import os
+from shutil import move, rmtree
+
+from tempfile import mkdtemp, mkstemp
+
+from datetime import datetime
+
 from os.path import isfile, isdir, join, relpath
+from os import fdopen, remove, rename, listdir, walk
 
 from subprocess import check_call, CalledProcessError, PIPE, Popen, STDOUT
 
@@ -58,26 +62,40 @@ def wheel(current):
   else:
     critic("Please install package wheel to build wheels using act (pip install wheel).")
 
-def go(current):
+def nightly_wheel(current):
+  """If the current Python version used differs from the one asked, fork into
+  the proper Python interpreter."""
+  if FOUND_WHEEL:
+    this = sys.version_info[0]
+    target = current["python"]
+    if str(this) != str(target):
+      warn("Cannot build pyAgrum's wheel for Python{0} when invoking act with Python{1}.".format(target, this))
+      critic("Please call act with Python{0} to build pyAgrum under Python{0}.".format(target))
+
+    go(current,True)
+  else:
+    critic("Please install package wheel to build wheels using act (pip install wheel).")
+
+def go(current,nightly=False):
   """Get a temporary directory to build the wheel and cal sequentially all steps
   to build the wheel."""
-  tmp = tempfile.mkdtemp(prefix='act')
+  tmp = mkdtemp(prefix='act')
   notif('Building wheel in {0}'.format(tmp))
   try:
-    prepare(current, tmp)
+    prepare(current, tmp,nightly)
     notif("Finished building pyAgrum.")
-    install_dir, version = build_wheel(tmp)
+    install_dir, version = build_wheel(tmp,nightly)
     notif("Finished building wheel directory.")
-    zip_file = zip_wheel(tmp, install_dir, version)
+    zip_file = zip_wheel(tmp, install_dir, version,nightly)
     notif("Finished zipping wheel.")
-    shutil.move(join(tmp, zip_file), join(current['destination'], zip_file))
+    move(join(tmp, zip_file), join(current['destination'], zip_file))
     notif("Wheel moved to: {0}.".format(join(current['destination'], zip_file)))
   except CalledProcessError as err:
     critic("Failed building pyAgrum", rc=err.returncode)
   finally:
-    shutil.rmtree(tmp, True)
+    rmtree(tmp, True)
 
-def prepare(current, tmp):
+def prepare(current, tmp, nightly=False):
   """Prepare step for building the wheel: builds and install pyAgrum in the temporary
   directory and check that this script was called with the same version of Python used
   to build pyAgrum."""
@@ -94,7 +112,7 @@ def prepare(current, tmp):
 def safe_windows_path(path):
   return path.replace('\\', '/')
 
-def install_pyAgrum(current, tmp):
+def install_pyAgrum(current, tmp, nightly=False):
   """Instals pyAgrum in tmp and return the Python version used to build it."""
   targets = 'install release pyAgrum'
   version = sys.version_info[0]
@@ -113,7 +131,7 @@ def install_pyAgrum(current, tmp):
       options = "{0} --mingw64".format(options)
   else:
     cmd = sys.executable
-  cmd = '{0} act {1} {2}'.format(cmd, targets, options)
+  cmd = '{0} act -j 6 {1} {2}'.format(cmd, targets, options)
   proc = Popen(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
   out = proc.stdout.readlines()
   return get_python_version(out)
@@ -139,16 +157,28 @@ def get_python_version(out):
     notif("Could not find Python version, opting for current Python version: {0})".format(version))
   return version
 
-def build_wheel(tmp):
+def build_wheel(tmp,nightly=False):
   """Update the WHEEL file with the proper Python version, remove unnecessary
   files and generated the RECORD file. Returns the root of the wheel's
   directory."""
   install_dir = get_base_dir(tmp)
   version = get_pyAgrum_version(install_dir)
-  dist_info = join(install_dir, "pyAgrum-{0}.dist-info".format(version))
+  dist_info_dir = "pyAgrum-{0}.dist-info".format(version)
+  if(nightly):
+    dist_info_dir = "pyAgrum_nightly-{0}.dev{1}.dist-info".format(version,datetime.today().strftime('%Y%m%d'))
+
+  dist_info = join(install_dir, dist_info_dir)
+
+  if(nightly):
+    rename(join(install_dir,"pyAgrum-{0}.dist-info".format(version)),join(install_dir,"pyAgrum_nightly-{0}.dev{1}.dist-info".format(version,datetime.today().strftime('%Y%m%d'))))
+
   update_wheel_file(dist_info)
   clean_up(install_dir)
-  write_record_file(install_dir, version)
+  write_record_file(install_dir, version, nightly)
+
+  if(nightly):
+    update_metadata(join(install_dir,dist_info),version)
+
   return install_dir, version
 
 def get_base_dir(tmp):
@@ -167,7 +197,7 @@ def get_pyAgrum_version(path):
   installing pyAgrum to get pyAgrum's version."""
   pattern = '^pyAgrum-([.0-9]+).*$'
   try:
-    files = [f for f in os.listdir(path) if isfile(join(path,f))]
+    files = [f for f in listdir(path) if isfile(join(path,f))]
     for f in files:
       m = re.match(pattern, f)
       if m != None:
@@ -207,17 +237,17 @@ def get_tags():
 def clean_up(install_dir):
   """Remone unescessary files in isntall_dir (for now, only th egg-info
   file)."""
-  filelist = [ f for f in os.listdir(install_dir) if f.endswith("egg-info") ]
+  filelist = [ f for f in listdir(install_dir) if f.endswith("egg-info") ]
   for f in filelist:
     try:
-      os.remove(join(install_dir, f))
+      remove(join(install_dir, f))
     except:
       warn("Could not remove dir: {0}".format(join(install_dir, f)))
 
-def write_record_file(install_dir, version):
+def write_record_file(install_dir, version, nightly=False):
   """Writes the record file."""
   files_hash = []
-  for root, dirs, files in os.walk(install_dir):
+  for root, dirs, files in walk(install_dir):
     for f in files:
       try:
         path = join(root, f)
@@ -227,7 +257,12 @@ def write_record_file(install_dir, version):
       except:
         critic("Could not compute sha256 for file: {0}".format(join(root, f)))
   try:
-    with open(join(install_dir, "pyAgrum-{0}.dist-info".format(version), "RECORD"), 'w') as f:
+    if(nightly):
+      dist_info_dir = "pyAgrum_nightly-{0}.dev{1}.dist-info".format(version,datetime.today().strftime('%Y%m%d'))
+    else:
+      dist_info_dir = "pyAgrum-{0}.dist-info".format(version)
+
+    with open(join(install_dir, dist_info_dir, "RECORD"), 'w') as f:
       for l in files_hash:
         f.write(l)
   except:
@@ -241,14 +276,30 @@ def sha256_checksum(filename, block_size=65536):
       sha256.update(block)
   return sha256.hexdigest()
 
-def zip_wheel(tmp, install_dir, version):
+def update_metadata(dist_info_dir,version):
+  replace(join(dist_info_dir,'METADATA'),'Name: pyagrum','Name: pyagrum-nightly')
+  replace(join(dist_info_dir,'METADATA'),'Version: {0}'.format(version),'Version: {0}.dev{1}'.format(version,datetime.today().strftime('%Y%m%d')))
+
+def replace(file_path, pattern, subst):
+  fh, abs_path = mkstemp()
+  with fdopen(fh,'w') as new_file:
+    with open(file_path) as old_file:
+      for line in old_file:
+        new_file.write(line.replace(pattern,subst))
+  remove(file_path)
+  move(abs_path,file_path)
+
+def zip_wheel(tmp, install_dir, version, nightly=False):
   """Zip all files in install_dir."""
-  zip_name = "pyAgrum-{0}-{1}.whl".format(version, get_tags())
+  if(nightly):
+    zip_name = "pyAgrum_nightly-{0}.dev{1}-{2}.whl".format(version,datetime.today().strftime('%Y%m%d'),get_tags())
+  else:
+    zip_name = "pyAgrum-{0}-{1}.whl".format(version, get_tags())
   zipf = zipfile.ZipFile(join(tmp, zip_name), 'w', zipfile.ZIP_DEFLATED)
-  for root, dirs, files in os.walk(install_dir):
+  for root, dirs, files in walk(install_dir):
     for f in files:
       try:
-        zipf.write(join(install_dir, root, f), relpath(os.path.join(root, f), install_dir))
+        zipf.write(join(install_dir, root, f), relpath(join(root, f), install_dir))
       except:
         critic("Could not archive file: {0}".format(join(install_dir, root, f)))
   return zip_name

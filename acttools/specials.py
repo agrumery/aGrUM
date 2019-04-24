@@ -32,6 +32,7 @@ from .stats import profileAgrum
 from .utils import trace, notif, critic, srcAgrum
 from .callSphinx import callSphinx
 from .wheel_builder import wheel
+from .wheel_builder import nightly_wheel
 from .guideline import guideline
 
 
@@ -80,6 +81,10 @@ def specialActions(current):
 
   if current["action"] == "wheel":
     wheel(current)
+    return True
+
+  if current["action"] == "nightly_wheel":
+    nightly_wheel(current)
     return True
 
   if current["oneByOne"]:
