@@ -1,0 +1,34 @@
+#define AUTHOR "*Copyright (C) 1995,2019, David Avis   avis@cs.mcgill.ca "
+
+/* This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 51 Franklin Street, Suite 500, Boston, MA  02110-1335, USA.
+ */
+
+Used in aGrUM/pyAgrum with written permission of the author:
+David Avis
+Reiwa 1.5.6 (May 6, 2019)
+Kyoto, Japan
+
+On 06/05/2019 11:43, david avis wrote:
+> Dear Pierre-Henri,
+> Ok, you talked me into it
+> Best,
+> -david
+
+On 2019-05-06 5:00 PM, Pierre-Henri Wuillemin wrote:
+> Dear David,
+>
+> Our request is just to give a 'special permission' for our library aGrUM to 
+> include your code without being forced to be GPL but only LGPL. It is for our 
+> library and only for it and does not change anything for the rest of the world.
