@@ -5,7 +5,7 @@ Summary: Bayesian Networks in python
 Home-page: http://agrum.org
 Author: Pierre-Henri WUILLEMIN
 Author-email: pierre-henri.wuillemin@lip6.fr
-License: GPL
+License: LGPL3
 Download-URL: http://agrum.org
 Description:pyAgrum is a Python wrapper for the C++ aGrUM library.
 It provides a high-level interface to the C++ part of aGrUM allowing to create, manage and perform efficient computations with Bayesian Networks.
@@ -14,7 +14,7 @@ The module is a straightforward application of the SWIG interface generator. Cus
 
 Platform: any
 
-Classifier: License :: OSI Approved :: GPL License
+Classifier: License :: OSI Approved :: LGPL3 License
 Classifier: Operating System :: MacOS
 Classifier: Operating System :: Microsoft :: Windows
 Classifier: Operating System :: OS Independent
