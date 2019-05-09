@@ -1,5 +1,19 @@
 # aGrUM Changelog
 
+## Changelog for 0.15.0
+
+* ![LGPLV3](https://www.gnu.org/graphics/lgplv3-with-text-95x42.png "LGPLV3") new LGPL3 licence for aGrUM/pyAgrum
+* aGrUM
+  * bug fix with openMP in `BNLearner::setDatabaseWeight`
+  * new `BNLearner::recordWeight()` and `BNLearner::databaseWeight()`
+  * new `BNLearner::setRecordWeight()`
+* pyAgrum
+  * nightly builds with pip : `pip install pyAgrum-nightly`
+  * bug fix with openMP in `BNLearner::setDatabaseWeight`
+  * new `BNLearner.recordWeight()` and `BNLearner.databaseWeight()`
+  * new `BNLearner.setRecordWeight()`
+  * bug fix and minor API changes in `gum.causality`
+
 ## Changelog for 0.14.3
 
 * aGrUM
