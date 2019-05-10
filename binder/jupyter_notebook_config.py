@@ -8,5 +8,5 @@ c = get_config()
 c.IPKernelApp.pylab = 'inline' 
 c.NotebookApp.terminals_enabled = False
 c.NotebookApp.websocket_compression_options = {}
-c.NotebookApp.notebook_dir="wrappers/pyAgrum/notebooks"
+c.NotebookApp.notebook_dir="wrappers/pyAgrum/pyLibs/notebooks"
 
