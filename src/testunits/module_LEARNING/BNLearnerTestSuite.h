@@ -108,18 +108,17 @@ namespace gum_tests {
       }
       TS_ASSERT_DELTA(learner.databaseWeight(), 10.0, 1e-4);
 
-      const std::size_t nbr = db.nbRows ();
+      const std::size_t nbr = db.nbRows();
       for (std::size_t i = std::size_t(0); i < nbr; ++i) {
-        if ( i % 2) learner.setRecordWeight(i, 2.0);
+        if (i % 2) learner.setRecordWeight(i, 2.0);
       }
 
       std::size_t index = std::size_t(0);
       for (const auto& row : db) {
-        if ( index % 2 ) {
+        if (index % 2) {
           TS_ASSERT(row.weight() == 2.0);
           TS_ASSERT(learner.recordWeight(index) == 2.0);
-        }
-        else {
+        } else {
           TS_ASSERT(row.weight() == 10.0);
           TS_ASSERT(learner.recordWeight(index) == 10.0);
         }
@@ -1341,7 +1340,6 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
-
     void test_PossibleEdges() {
       //[smoking? , lung_cancer? , bronchitis? , visit_to_Asia? , tuberculosis? ,
       // tuberculos_or_cancer? , dyspnoea? , positive_XraY?]
@@ -1397,6 +1395,70 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(3));
         TS_ASSERT(bn.parents("lung_cancer?").contains(bn.idFromName("smoking?")));
         TS_ASSERT(bn.parents("smoking?").contains(bn.idFromName("bronchitis?")));
+        TS_ASSERT(
+           bn.parents("bronchitis?").contains(bn.idFromName("visit_to_Asia?")));
+      }
+    }
+
+    void test_PossibleEdgesTabu() {
+      //[smoking? , lung_cancer? , bronchitis? , visit_to_Asia? , tuberculosis? ,
+      // tuberculos_or_cancer? , dyspnoea? , positive_XraY?]
+      {
+        // possible edges are not relevant
+        gum::learning::BNLearner< double > learner(
+           GET_RESSOURCES_PATH("asia3.csv"));
+        learner.useLocalSearchWithTabuList();
+        learner.addPossibleEdge("visit_to_Asia?", "lung_cancer?");
+        learner.addPossibleEdge("visit_to_Asia?", "smoking?");
+
+        gum::BayesNet< double > bn = learner.learnBN();
+        TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(0));
+      }
+
+      {
+        // possible edges are relevant
+        gum::learning::BNLearner< double > learner(
+           GET_RESSOURCES_PATH("asia3.csv"));
+        learner.useLocalSearchWithTabuList();
+        learner.addPossibleEdge("smoking?", "lung_cancer?");
+        learner.addPossibleEdge("bronchitis?", "smoking?");
+
+        gum::BayesNet< double > bn = learner.learnBN();
+        TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(2));
+        TS_ASSERT(bn.parents("lung_cancer?").contains(bn.idFromName("smoking?")));
+        TS_ASSERT(bn.parents("bronchitis?").contains(bn.idFromName("smoking?")));
+      }
+
+      {
+        // possible edges are relevant
+        // mixed with a forbidden arcs
+        gum::learning::BNLearner< double > learner(
+           GET_RESSOURCES_PATH("asia3.csv"));
+        learner.useLocalSearchWithTabuList();
+        learner.addPossibleEdge("smoking?", "lung_cancer?");
+        learner.addPossibleEdge("bronchitis?", "smoking?");
+        learner.addForbiddenArc("smoking?", "bronchitis?");
+
+        gum::BayesNet< double > bn = learner.learnBN();
+        TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(2));
+        TS_ASSERT(bn.parents("lung_cancer?").contains(bn.idFromName("smoking?")));
+        TS_ASSERT(bn.parents("smoking?").contains(bn.idFromName("bronchitis?")));
+      }
+
+      {
+        // possible edges are relevant
+        // mixed with a mandatory arcs
+        gum::learning::BNLearner< double > learner(
+           GET_RESSOURCES_PATH("asia3.csv"));
+        learner.useLocalSearchWithTabuList();
+        learner.addPossibleEdge("smoking?", "lung_cancer?");
+        learner.addPossibleEdge("bronchitis?", "smoking?");
+        learner.addMandatoryArc("visit_to_Asia?", "bronchitis?");
+
+        gum::BayesNet< double > bn = learner.learnBN();
+        TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(3));
+        TS_ASSERT(bn.parents("lung_cancer?").contains(bn.idFromName("smoking?")));
+        TS_ASSERT(bn.parents("bronchitis?").contains(bn.idFromName("smoking?")));
         TS_ASSERT(
            bn.parents("bronchitis?").contains(bn.idFromName("visit_to_Asia?")));
       }

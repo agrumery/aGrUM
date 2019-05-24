@@ -764,12 +764,15 @@ namespace gum {
           BNLearnerListener listener(this, __local_search_with_tabu_list);
           StructuralConstraintSetStatic< StructuralConstraintMandatoryArcs,
                                          StructuralConstraintForbiddenArcs,
+                                         StructuralConstraintPossibleEdges,
                                          StructuralConstraintSliceOrder >
              gen_constraint;
           static_cast< StructuralConstraintMandatoryArcs& >(gen_constraint) =
              __constraint_MandatoryArcs;
           static_cast< StructuralConstraintForbiddenArcs& >(gen_constraint) =
              __constraint_ForbiddenArcs;
+          static_cast< StructuralConstraintPossibleEdges& >(gen_constraint) =
+             __constraint_PossibleEdges;
           static_cast< StructuralConstraintSliceOrder& >(gen_constraint) =
              __constraint_SliceOrder;
 
