@@ -25,6 +25,7 @@ import re
 import hashlib
 import zipfile
 import platform
+import os
 
 from shutil import move, rmtree
 
@@ -164,7 +165,7 @@ def build_wheel(tmp,nightly=False):
   install_dir = get_base_dir(tmp)
   version = get_pyAgrum_version(install_dir)
   dist_info_dir = "pyAgrum-{0}.dist-info".format(version)
-  commit_id = sys.popen('git rev-parse --short HEAD').split("\n")[0]
+  commit_id = os.popen('git rev-parse --short HEAD').split("\n")[0]
 
   if(nightly):
     dist_info_dir = "pyAgrum_nightly-{0}.dev{1}_{2}.dist-info".format(version,datetime.today().strftime('%Y%m%d'),commit_id)
@@ -260,7 +261,7 @@ def write_record_file(install_dir, version, nightly=False):
         critic("Could not compute sha256 for file: {0}".format(join(root, f)))
   try:
     if(nightly):
-      commit_id = sys.popen('git rev-parse --short HEAD').split("\n")[0]
+      commit_id = os.popen('git rev-parse --short HEAD').split("\n")[0]
       dist_info_dir = "pyAgrum_nightly-{0}.dev{1}_{2}.dist-info".format(version,datetime.today().strftime('%Y%m%d'),commit_id)
     else:
       dist_info_dir = "pyAgrum-{0}.dist-info".format(version)
@@ -281,7 +282,7 @@ def sha256_checksum(filename, block_size=65536):
 
 def update_metadata(dist_info_dir,version):
   replace(join(dist_info_dir,'METADATA'),'Name: pyagrum','Name: pyagrum-nightly')
-  commit_id = sys.popen('git rev-parse --short HEAD').split("\n")[0]
+  commit_id = os.popen('git rev-parse --short HEAD').split("\n")[0]
   replace(join(dist_info_dir,'METADATA'),'Version: {0}'.format(version),'Version: {0}.dev{1}_{2}'.format(version,datetime.today().strftime('%Y%m%d'),commit_id))
 
 def replace(file_path, pattern, subst):
@@ -296,7 +297,7 @@ def replace(file_path, pattern, subst):
 def zip_wheel(tmp, install_dir, version, nightly=False):
   """Zip all files in install_dir."""
   if(nightly):
-    commit_id = sys.popen('git rev-parse --short HEAD').split("\n")[0]
+    commit_id = os.popen('git rev-parse --short HEAD').split("\n")[0]
     zip_name = "pyAgrum_nightly-{0}.dev{1}_{2}-{3}.whl".format(version,datetime.today().strftime('%Y%m%d'),commit_id,get_tags())
   else:
     zip_name = "pyAgrum-{0}-{1}.whl".format(version, get_tags())
