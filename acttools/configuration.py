@@ -65,7 +65,7 @@ def initParams():
   cfg.default['mode'] = "release"
   cfg.default['verbose'] = False
   cfg.default['destination'] = "/usr"
-  cfg.default['jobs'] = 5
+  cfg.default['jobs'] = "except1"
   cfg.default['static_lib'] = False
   cfg.default['fixed_seed'] = False
   cfg.default['no_fun'] = False
@@ -157,8 +157,8 @@ def configureOptions(current):
                         dest="destination",
                         default=current['destination'])
   cfg.parser.add_option("-j", "--jobs",
-                        help="number of jobs.",
-                        type='int',
+                        help="number of jobs : {half|all|except1|1|2|...}.",
+                        type='string',
                         dest="jobs",
                         default=current['jobs'])
   cfg.parser.add_option("-t", "--tests",

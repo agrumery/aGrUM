@@ -20,16 +20,18 @@
 # *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 # **************************************************************************
 import platform
+import multiprocessing
+import os
 
 from .configuration import cfg
 from .multijobs import execCde
-from .utils import trace, setifyString, critic
+from .utils import trace, setifyString, critic,notif
 
 
 def getCmake(current, target):
   line = cfg.cmake + " ../.."  # we are in build/[release|target]
 
-  line += " -DCMAKE_EXPORT_COMPILE_COMMANDS=ON " # for clang-tidy
+  line += " -DCMAKE_EXPORT_COMPILE_COMMANDS=ON "  # for clang-tidy
 
   if current["mode"] == "release":
     line += " -DCMAKE_BUILD_TYPE=RELEASE"
@@ -73,7 +75,7 @@ def getCmake(current, target):
     line += " -DBUILD_PYTHON=ON"
 
   line += " -DPYAGRUM_REQUIRED_PYTHON_VERSION=" + current["python"]
-  
+
   line += " -DPYTHON_TARGET=" + cfg.python
 
   if platform.system() == "Windows":
@@ -103,10 +105,37 @@ def getMake(current, target):
     return getForMakeSystem(current, target)
 
 
+def getNbrOfJobs(jobrequest):
+  # number of jobs
+  nbrProc = multiprocessing.cpu_count()
+  if nbrProc == 1:
+    return "1"
+  else:
+    if jobrequest == "except1":
+      return str(nbrProc - 1)
+    elif jobrequest == "half":
+      return str(int(nbrProc / 2))  # >=1
+    elif jobrequest == "all":
+      return str(nbrProc)
+    else:
+      try:
+        nbrJob = int(jobrequest)
+        if nbrJob<1:
+          nbrJob=1
+        if nbrJob > nbrProc:
+          return str(nbrProc)
+        else:
+          return str(nbrJob)
+      except ValueError:
+        return 1
+
+
 def getForMsBuildSystem(current, target):
   if cfg.msbuild is None:
     critic("MsBuild not found")
   else:
+    nbrJobs=getNbrOfJobs(current['jobs'])
+    notif("Compilation using ["+nbrJobs+"] jobs.")
     if current["action"] == "test":
       if target == "aGrUM":
         line = cfg.msbuild + ' agrum.sln /t:gumTest /p:Configuration="Release"'
@@ -120,12 +149,15 @@ def getForMsBuildSystem(current, target):
       line = cfg.msbuild + ' INSTALL.vcxproj /p:Configuration="Release"'
     else:
       critic("Action '" + current["action"] + "' not treated for now in windows weird world.")
-    line += ' /p:BuildInParallel=true /maxcpucount:' + str(current["jobs"])
+    line += ' /p:BuildInParallel=true /maxcpucount:' + nbrJobs
   return line
 
 
 def getForMakeSystem(current, target):
   line = cfg.make
+
+  nbrJobs=getNbrOfJobs(current['jobs'])
+  notif("Compilation using  ["+nbrJobs+"] jobs.")
 
   if current["action"] == "test":
     if target == "aGrUM":
@@ -143,7 +175,7 @@ def getForMakeSystem(current, target):
   else:
     critic("Action '" + current["action"] + "' not treated for now")
 
-  line += " -j " + str(current["jobs"])
+  line += " -j " + nbrJobs
 
   if target == "pyAgrum":
     line += " -C wrappers/pyAgrum"
@@ -168,18 +200,18 @@ def getPost(current, target):
         line = "src/gumTest"
       return line, True
     elif target == "pyAgrum":
-      if current['tests']=='quick':
-        gumTest="gumTest.py"
-      elif current['tests']=='all': # all is with NOTEBOOKStest
-        gumTest="gumTest.py all"
+      if current['tests'] == 'quick':
+        gumTest = "gumTest.py"
+      elif current['tests'] == 'all':  # all is with NOTEBOOKStest
+        gumTest = "gumTest.py all"
       else:
         critic("Only [-t all] or [-t quick] for testing pyAgrum.")
 
       if cfg.os_platform == "win32":
-        line = 'copy /Y "wrappers\pyAgrum\Release\_pyAgrum.pyd" "wrappers\pyAgrum\." & ' + cfg.python + " ..\\..\\wrappers\\pyAgrum\\testunits\\"+gumTest
+        line = 'copy /Y "wrappers\pyAgrum\Release\_pyAgrum.pyd" "wrappers\pyAgrum\." & ' + cfg.python + " ..\\..\\wrappers\\pyAgrum\\testunits\\" + gumTest
       else:
-        line = cfg.python + " ../../wrappers/pyAgrum/testunits/"+gumTest
-      line+=" "+current['mode']
+        line = cfg.python + " ../../wrappers/pyAgrum/testunits/" + gumTest
+      line += " " + current['mode']
       return line, True
   return "", False
 
