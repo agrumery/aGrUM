@@ -167,15 +167,14 @@ def build_wheel(tmp,nightly=False):
   version = get_pyAgrum_version(install_dir)
   dist_info_dir = "pyAgrum-{0}.dist-info".format(version)
   commit_time = os.popen('git log -1 --format="%at"').read().split('\n')[0]
-  timestamp = time.strftime('%Y%m%d%H%M%S', time.localtime(int(commit_time)))
 
   if(nightly):
-    dist_info_dir = "pyAgrum_nightly-{0}.dev{1}{2}.dist-info".format(version,datetime.today().strftime('%Y%m%d'),timestamp)
+    dist_info_dir = "pyAgrum_nightly-{0}.dev{1}{2}.dist-info".format(version,datetime.today().strftime('%Y%m%d'),commit_time)
 
   dist_info = join(install_dir, dist_info_dir)
 
   if(nightly):
-    rename(join(install_dir,"pyAgrum-{0}.dist-info".format(version)),join(install_dir,"pyAgrum_nightly-{0}.dev{1}{2}.dist-info".format(version,datetime.today().strftime('%Y%m%d'),timestamp)))
+    rename(join(install_dir,"pyAgrum-{0}.dist-info".format(version)),join(install_dir,"pyAgrum_nightly-{0}.dev{1}{2}.dist-info".format(version,datetime.today().strftime('%Y%m%d'),commit_time)))
 
   update_wheel_file(dist_info)
   clean_up(install_dir)
@@ -264,8 +263,7 @@ def write_record_file(install_dir, version, nightly=False):
   try:
     if(nightly):
       commit_time = os.popen('git log -1 --format="%at"').read().split('\n')[0]
-      timestamp = time.strftime('%Y%m%d%H%M%S', time.localtime(int(commit_time)))
-      dist_info_dir = "pyAgrum_nightly-{0}.dev{1}{2}.dist-info".format(version,datetime.today().strftime('%Y%m%d'),timestamp)
+      dist_info_dir = "pyAgrum_nightly-{0}.dev{1}{2}.dist-info".format(version,datetime.today().strftime('%Y%m%d'),commit_time)
     else:
       dist_info_dir = "pyAgrum-{0}.dist-info".format(version)
 
@@ -286,8 +284,7 @@ def sha256_checksum(filename, block_size=65536):
 def update_metadata(dist_info_dir,version):
   replace(join(dist_info_dir,'METADATA'),'Name: pyagrum','Name: pyagrum-nightly')
   commit_time = os.popen('git log -1 --format="%at"').read().split('\n')[0]
-  timestamp = time.strftime('%Y%m%d%H%M%S', time.localtime(int(commit_time)))
-  replace(join(dist_info_dir,'METADATA'),'Version: {0}'.format(version),'Version: {0}.dev{1}{2}'.format(version,datetime.today().strftime('%Y%m%d'),timestamp))
+  replace(join(dist_info_dir,'METADATA'),'Version: {0}'.format(version),'Version: {0}.dev{1}{2}'.format(version,datetime.today().strftime('%Y%m%d'),commit_time))
 
 def replace(file_path, pattern, subst):
   fh, abs_path = mkstemp()
@@ -302,8 +299,7 @@ def zip_wheel(tmp, install_dir, version, nightly=False):
   """Zip all files in install_dir."""
   if(nightly):
     commit_time = os.popen('git log -1 --format="%at"').read().split('\n')[0]
-    timestamp = time.strftime('%Y%m%d%H%M%S', time.localtime(int(commit_time)))
-    zip_name = "pyAgrum_nightly-{0}.dev{1}{2}-{3}.whl".format(version,datetime.today().strftime('%Y%m%d'),timestamp,get_tags())
+    zip_name = "pyAgrum_nightly-{0}.dev{1}{2}-{3}.whl".format(version,datetime.today().strftime('%Y%m%d'),commit_time,get_tags())
   else:
     zip_name = "pyAgrum-{0}-{1}.whl".format(version, get_tags())
   zipf = zipfile.ZipFile(join(tmp, zip_name), 'w', zipfile.ZIP_DEFLATED)
