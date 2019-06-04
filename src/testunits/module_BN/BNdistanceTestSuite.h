@@ -20,7 +20,7 @@
  */
 
 
-#define TESTKL_MAX_ITER_GIBBS_KL 5
+#define TESTKL_MAX_ITER_GIBBS_KL 15
 #include <iostream>
 #include <string>
 #include <vector>
@@ -195,51 +195,29 @@ namespace gum_tests {
 
       // iterations for better robustness : BNdistance may fail from time to time
       for (int ii = 0; ii < TESTKL_MAX_ITER_GIBBS_KL; ii++) {
+        if (ii == TESTKL_MAX_ITER_GIBBS_KL - 1) {
+          TS_FAIL(" (GibbsBNdistance failed even with several tries.)");
+          break;
+        }
         gum::GibbsBNdistance< double > kl(netP, netQ);
         kl.setVerbosity(true);
         // very rough approximation in order to not penalize TestSuite
         kl.setEpsilon(1e-5);
         kl.setMinEpsilonRate(1e-5);
-        if (fabs(kl.klPQ() - 0.241864114) <= 1e-1) {
-          TS_ASSERT_DELTA(kl.klPQ(), 0.241864114, 1e-1);
-          TS_ASSERT_DELTA(kl.klQP(), 0.399826689, 1e-1);
-          TS_ASSERT_EQUALS(kl.errorPQ(), (gum::Size)0);
-          TS_ASSERT_EQUALS(kl.errorQP(), (gum::Size)0);
-          TS_ASSERT_DELTA(kl.hellinger(), 0.321089688, 1e-1);
-          TS_ASSERT_DELTA(kl.jsd(), 0.0696153, 1e-1);
-          TS_ASSERT_DELTA(kl.bhattacharya(), 0.0529255, 1e-1);
-          TS_ASSERT(kl.history().size()
-                       - (kl.nbrIterations() - kl.burnIn()) / kl.periodSize()
-                    < 2);
-          break;
-        } else {
-          if (ii == TESTKL_MAX_ITER_GIBBS_KL - 1) TS_FAIL("even with many tries.");
-        }
-      }
+        if (fabs(kl.klPQ() - 0.241864114) >= 1e-1) continue;         // next try
+        if (fabs(kl.klQP() - 0.399826689) >= 1e-1) continue;          // next try
+        if (kl.errorPQ() != (gum::Size)0) continue;                  // next try
+        if (kl.errorQP() != (gum::Size)0) continue;                  // next try
+        if (fabs(kl.hellinger() - 0.321089688) >= 1e-1) continue;    // next try
+        if (fabs(kl.jsd() - 0.0696153) >= 1e-1) continue;            // next try
+        if (fabs(kl.bhattacharya() - 0.0529255) >= 1e-1) continue;   // next try
+        if (kl.history().size()
+               - (kl.nbrIterations() - kl.burnIn()) / kl.periodSize()
+            >= 2)
+          continue;   // next try
 
-      // iterations for better robustness : BNdistance may fail from time to time
-      for (int ii = 0; ii < TESTKL_MAX_ITER_GIBBS_KL; ii++) {
-        gum::GibbsBNdistance< double > kl(netP, netQ);
-        kl.setVerbosity(true);
-        // very rough approximation in order to not penalize TestSuite
-        kl.setEpsilon(1e-5);
-        kl.setMinEpsilonRate(1e-5);
-        if (fabs(kl.klPQ() - 0.241864114) <= 1e-1) {
-          TS_ASSERT_DELTA(kl.klPQ(), (float)0.241864114, (float)1e-1);
-          TS_ASSERT_DELTA(kl.klQP(), 0.399826689, 1e-1);
-          TS_ASSERT_EQUALS(kl.errorPQ(), (gum::Size)0);
-          TS_ASSERT_EQUALS(kl.errorQP(), (gum::Size)0);
-          TS_ASSERT_DELTA(kl.hellinger(), 0.321089688, 1e-1);
-          TS_ASSERT_DELTA(kl.jsd(), 0.0696153, 1e-1);
-          TS_ASSERT_DELTA(kl.bhattacharya(), 0.0529255, 1e-1);
-          TS_ASSERT(kl.history().size()
-                       - (kl.nbrIterations() - kl.burnIn()) / kl.periodSize()
-                    < 2);
-          break;
-        } else {
-          if (ii == TESTKL_MAX_ITER_GIBBS_KL - 1) TS_FAIL("even with many tries.");
-        }
+        break;   // everything is ok : can stop the loop
       }
     }
-  };
+  };   // namespace gum_tests
 }   // namespace gum_tests
