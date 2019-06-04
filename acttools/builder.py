@@ -116,7 +116,10 @@ def getNbrOfJobs(jobrequest):
     elif jobrequest == "half":
       return str(int(nbrProc / 2))  # >=1
     elif jobrequest == "halfexcept1":
-      return str(int(nbrProc / 2) - 1)
+      if nbrProc <= 3:
+        return "1"
+      else:
+        return str(int(nbrProc / 2) - 1)
     elif jobrequest == "all":
       return str(nbrProc)
     else:
