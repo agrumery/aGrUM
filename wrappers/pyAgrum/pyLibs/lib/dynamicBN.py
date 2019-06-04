@@ -260,17 +260,16 @@ def unroll2TBN(dbn, nbr):
   return bn
 
 
-def _plotFollowUnrolled(lovars, dbn, bn, T, evs):
+def plotFollowUnrolled(lovars, dbn, T, evs):
   """
   plot the dynamic evolution of a list of vars with a dBN
 
   :param lovars: list of variables to follow
-  :param dbn: the dbn
-  :param bn: the unrolled dbn
+  :param dbn: the unrolled dbn
   :param T: the time range
   :param evs: observations
   """
-  ie = gum.LazyPropagation(bn)
+  ie = gum.LazyPropagation(dbn)
   ie.setEvidence(evs)
   ie.makeInference()
 
@@ -282,7 +281,7 @@ def _plotFollowUnrolled(lovars, dbn, bn, T, evs):
     for i in range(v0.domainSize()):
       serie = []
       for t in range(T):
-        serie.append(ie.posterior(bn.idFromName(var + str(t)))[i])
+        serie.append(ie.posterior(dbn.idFromName(var + str(t)))[i])
       l.append(serie)
 
     fig, ax = plt.subplots()
@@ -300,16 +299,16 @@ def _plotFollowUnrolled(lovars, dbn, bn, T, evs):
     plt.show()
 
 
-def plotFollow(lovars, dbn, T, evs):
+def plotFollow(lovars, twoTdbn, T, evs):
   """
   plots modifications of variables in a 2TDN knowing the size of the time window (T) and the evidence on the sequence.
 
   :param lovars: list of variables to follow
-  :param dbn: the dbn
+  :param twoTdbn: the two-timeslice dbn
   :param T: the time range
   :param evs: observations
   """
-  _plotFollowUnrolled(lovars, dbn, unroll2TBN(dbn, T), T, evs)
+  plotFollowUnrolled(lovars, unroll2TBN(twoTdbn, T), T, evs)
 
 
 if __name__ == '__main__':
