@@ -157,7 +157,7 @@ def configureOptions(current):
                         dest="destination",
                         default=current['destination'])
   cfg.parser.add_option("-j", "--jobs",
-                        help="number of jobs : {half|all|except1|1|2|...}.",
+                        help="number of jobs : {half|halfexcept1|all|except1|1|2|...}.",
                         type='string',
                         dest="jobs",
                         default=current['jobs'])
