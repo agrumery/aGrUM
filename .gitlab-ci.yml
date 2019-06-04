@@ -16,7 +16,7 @@ linux_agrum:
   stage: build
   script:
     - python3 act clean
-    - python3 act --no-fun test release aGrUM --python=3 -j $(expr $(nproc --all) / 2 - 1)
+    - python3 act --no-fun test release aGrUM --python=3 -j halfexcept1
   retry: 2
 
 linux_pyagrum:
@@ -30,7 +30,7 @@ linux_pyagrum:
   stage: build
   script:
     - python3 act clean
-    - python3 act --no-fun test release pyAgrum --python=3 -j $(expr $(nproc --all) / 2 - 1) -t quick
+    - python3 act --no-fun test release pyAgrum --python=3 -j halfexcept1 -t quick
   retry: 2
   
 ################################################################################
@@ -49,7 +49,7 @@ linux_agrum_merge_requests:
   stage: build
   script:
     - python3 act clean
-    - python3 act --no-fun test release aGrUM --python=3 -j $(expr $(nproc --all) / 2 - 1)
+    - python3 act --no-fun test release aGrUM --python=3 -j halfexcept1
   retry: 2
 
 linux_pyagrum_merge_requests:
@@ -65,7 +65,7 @@ linux_pyagrum_merge_requests:
   stage: build
   script:
     - python3 act clean
-    - python3 act --no-fun test release pyAgrum --python=3 -j $(expr $(nproc --all) / 2 - 1) -t quick
+    - python3 act --no-fun test release pyAgrum --python=3 -j halfexcept1 -t quick
   retry: 2
 
 ################################################################################
@@ -91,7 +91,7 @@ macos_agrum:
     - . /Users/agrum/miniconda3/etc/profile.d/conda.sh
     - conda activate py37
     - python act clean
-    - python act --no-fun test release aGrUM --python=3 -j $(expr $(sysctl -n hw.ncpu) - 1)
+    - python act --no-fun test release aGrUM --python=3 -j halfexcept1
     - conda deactivate
   retry: 2
 
@@ -115,7 +115,7 @@ macos_pyagrum:
     - . /Users/agrum/miniconda3/etc/profile.d/conda.sh
     - conda activate py37
     - python act clean
-    - python act --no-fun test release pyAgrum --python=3 -t quick -j $(expr $(sysctl -n hw.ncpu) - 1)
+    - python act --no-fun test release pyAgrum --python=3 -t quick -j halfexcept1
     - conda deactivate
   retry: 2
 
@@ -142,7 +142,7 @@ windows_agrum_2015:
     - call activate "gitlab-ci-%CI_JOB_ID%"
     - conda install -y numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
     - python act clean
-    - python act --no-fun --mvsc -d build -j 7 test release aGrUM 
+    - python act --no-fun --mvsc -d build -j halfexcept1 test release aGrUM 
     - call activate py37
     - deactivate
     - conda remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
@@ -168,7 +168,7 @@ windows_pyagrum_2015:
     - call activate "gitlab-ci-%CI_JOB_ID%"
     - conda install -y numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
     - python act clean
-    - python act --no-fun test release pyAgrum --no-fun --mvsc -d build -j 7 -t quick
+    - python act --no-fun test release pyAgrum --no-fun --mvsc -d build -j halfexcept1 -t quick
     - call activate py37
     - conda remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
   retry: 2
@@ -193,7 +193,7 @@ windows_agrum_2017:
     - call activate "gitlab-ci-%CI_JOB_ID%"
     - conda install -y numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
     - python act clean
-    - python act --no-fun test release aGrUM --no-fun --mvsc17 -d build -j 7
+    - python act --no-fun test release aGrUM --no-fun --mvsc17 -d build -j halfexcept1
     - call activate py37
     - conda remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
   retry: 2
@@ -218,7 +218,7 @@ windows_pyagrum_2017:
     - call activate "gitlab-ci-%CI_JOB_ID%"
     - conda install -y numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
     - python act clean
-    - python act --no-fun test release pyAgrum --no-fun --mvsc17 -d build -j 7 -t quick
+    - python act --no-fun test release pyAgrum --no-fun --mvsc17 -d build -j halfexcept1 -t quick
     - call activate py37
     - conda remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
   retry: 2
