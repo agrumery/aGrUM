@@ -394,18 +394,23 @@ namespace gum {
     for (const auto node : this->targets()) {
       if (!__graph.exists(node) && !hard_ev_nodes.exists(node)) return true;
     }
-    for (const auto& nodes : this->jointTargets()) {
-      // here, we need to check that at least one clique contains all the nodes.
+    for (const auto& joint_target : this->jointTargets()) {
+      // here, we need to check that at least one clique contains all the
+      // nodes of the joint target.
       bool containing_clique_found = false;
-      for (const auto node : nodes) {
-        bool           found = true;
-        const NodeSet& clique = __JT->clique(__node_to_clique[node]);
-        for (const auto xnode : nodes) {
-          if (!clique.contains(xnode) && !hard_ev_nodes.exists(xnode)) {
-            found = false;
-            break;
+      for (const auto node : joint_target) {
+        bool found = true;
+        try {
+          const NodeSet& clique = __JT->clique(__node_to_clique[node]);
+          for (const auto xnode : joint_target) {
+            if (!clique.contains(xnode) && !hard_ev_nodes.exists(xnode)) {
+              found = false;
+              break;
+            }
           }
         }
+        catch (NotFound&) { found = false; }
+        
         if (found) {
           containing_clique_found = true;
           break;
