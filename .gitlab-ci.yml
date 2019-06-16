@@ -9,6 +9,7 @@ linux_agrum:
   image: malichief/ubuntu
   tags:
     - docker
+    - linux
   cache:
     key: linux
     paths:
@@ -23,6 +24,7 @@ linux_pyagrum:
   image: malichief/ubuntu
   tags:
     - docker
+    - linux
   cache:
     key: linux
     paths:
@@ -42,6 +44,7 @@ linux_agrum_merge_requests:
     - merge_requests
   tags:
     - docker
+    - linux
   cache:
     key: linux
     paths:
@@ -58,6 +61,7 @@ linux_pyagrum_merge_requests:
   image: malichief/ubuntu
   tags:
     - docker
+    - linux
   cache:
     key: linux
     paths:
@@ -232,6 +236,7 @@ linux_build:
     - tags@agrumery/aGrUM
   tags:
     - docker
+    - linux
   cache:
     key: linux
     paths:
