@@ -1286,48 +1286,48 @@ namespace gum {
       // with the std::thread
 #  pragma omp parallel num_threads(int(nb_threads))
       {
-	// get the number of the thread
-	const std::size_t this_thread = getThreadNumber();
-	const std::size_t begin_index = ranges[this_thread].first;
-	const std::size_t end_index = ranges[this_thread].second;
+        // get the number of the thread
+        const std::size_t this_thread = getThreadNumber();
+        const std::size_t begin_index = ranges[this_thread].first;
+        const std::size_t end_index = ranges[this_thread].second;
 
-	for (std::size_t i = begin_index; i < end_index; ++i) {
-	  _rows[i].setWeight(new_weight);
-	}
+        for (std::size_t i = begin_index; i < end_index; ++i) {
+          _rows[i].setWeight(new_weight);
+        }
       }
     }
 
     /// assigns a given weight to the ith row of the database
     template < typename T_DATA, template < typename > class ALLOC >
     void IDatabaseTable< T_DATA, ALLOC >::setWeight(const std::size_t i,
-                                                    const double weight) {
+                                                    const double      weight) {
       // check that i is less than the number of rows
       const std::size_t dbsize = nbRows();
-      if ( i >= dbsize ) {
+      if (i >= dbsize) {
         std::string str;
-        switch ( i ) {
-        case 1:  str = "st"; break;
-        case 2:  str = "nd"; break;
-        default: str = "th";
+        switch (i) {
+          case 1: str = "st"; break;
+          case 2: str = "nd"; break;
+          default: str = "th";
         }
         GUM_ERROR(OutOfBounds,
                   "it is impossible to set the weight of the "
-                  << i << str << " record because the database contains only "
-                  << nbRows() << " records");
+                     << i << str << " record because the database contains only "
+                     << nbRows() << " records");
       }
 
       // check that the weight is positive
-      if ( weight < 0 ) {
+      if (weight < 0) {
         std::string str;
-        switch ( i ) {
-        case 1:  str = "st"; break;
-        case 2:  str = "nd"; break;
-        default: str = "th";
+        switch (i) {
+          case 1: str = "st"; break;
+          case 2: str = "nd"; break;
+          default: str = "th";
         }
         GUM_ERROR(OutOfBounds,
-                  "it is impossible to set " << weight
-                  << " as a weight of the " << i << str
-                  << " record because this weight is negative");
+                  "it is impossible to set "
+                     << weight << " as a weight of the " << i << str
+                     << " record because this weight is negative");
       }
 
       _rows[i].setWeight(weight);
@@ -1339,32 +1339,33 @@ namespace gum {
     double IDatabaseTable< T_DATA, ALLOC >::weight(const std::size_t i) const {
       // check that i is less than the number of rows
       const std::size_t dbsize = nbRows();
-      if ( i >= dbsize ) {
+      if (i >= dbsize) {
         std::string str;
-        switch ( i ) {
-        case 1:  str = "st"; break;
-        case 2:  str = "nd"; break;
-        default: str = "th";
+        switch (i) {
+          case 1: str = "st"; break;
+          case 2: str = "nd"; break;
+          default: str = "th";
         }
         GUM_ERROR(OutOfBounds,
                   "it is impossible to get the weight of the "
-                  << i << str << " record because the database contains only "
-                  << nbRows() << " records");
+                     << i << str << " record because the database contains only "
+                     << nbRows() << " records");
       }
 
-      return  _rows[i].weight();
+      return _rows[i].weight();
     }
-    
+
 
     /// returns the weight of the whole database
     template < typename T_DATA, template < typename > class ALLOC >
-    double IDatabaseTable< T_DATA, ALLOC >::weight () const {
+    double IDatabaseTable< T_DATA, ALLOC >::weight() const {
       double w = 0.0;
-      for ( const auto& row : _rows ) w += row.weight();
+      for (const auto& row : _rows)
+        w += row.weight();
       return w;
     }
-    
-    
+
+
   } /* namespace learning */
 
 } /* namespace gum */

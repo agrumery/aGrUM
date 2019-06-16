@@ -253,9 +253,9 @@ namespace gum {
         double weight(const std::size_t i) const;
 
         /// returns the weight of the whole database
-        double weight () const;
+        double weight() const;
 
-        
+
         /// @}
 
         protected:
@@ -401,7 +401,7 @@ namespace gum {
       double recordWeight(const std::size_t i) const;
 
       /// returns the weight of the whole database
-      double databaseWeight () const;
+      double databaseWeight() const;
 
       /// returns the variable name corresponding to a given node id
       const std::string& nameFromId(NodeId id) const;

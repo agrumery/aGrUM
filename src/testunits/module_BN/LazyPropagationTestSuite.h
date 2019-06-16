@@ -1031,9 +1031,9 @@ namespace gum_tests {
         for (const auto& a : bn.arcs()) {
           ie.eraseAllTargets();
           ie.eraseAllEvidence();
-          //GUM_TRACE_VAR(a);
+          // GUM_TRACE_VAR(a);
           ie.addJointTarget({a.first(), a.second()});
-          //GUM_TRACE_VAR(ie.jointTargets());
+          // GUM_TRACE_VAR(ie.jointTargets());
           ie.makeInference();
           const auto po = ie.jointPosterior({a.first(), a.second()});
         }

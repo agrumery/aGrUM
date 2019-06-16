@@ -115,17 +115,17 @@ namespace gum {
       return __database.nbRows();
     }
 
-    
+
     /// returns the number of records in the database
     INLINE std::size_t genericBNLearner::Database::size() const {
       return __database.size();
     }
-    
+
 
     /// sets the weight of the ith record
     INLINE void genericBNLearner::Database::setWeight(const std::size_t i,
-                                                      const double weight) {
-      __database.setWeight(i,weight);
+                                                      const double      weight) {
+      __database.setWeight(i, weight);
     }
 
 
@@ -136,11 +136,10 @@ namespace gum {
 
 
     /// returns the weight of the whole database
-    INLINE double genericBNLearner::Database::weight () const {
+    INLINE double genericBNLearner::Database::weight() const {
       return __database.weight();
     }
 
-      
 
     // ===========================================================================
 
@@ -161,7 +160,7 @@ namespace gum {
 
     /// assign new weight to the ith row of the learning database
     INLINE void genericBNLearner::setRecordWeight(const std::size_t i,
-                                                  const double new_weight) {
+                                                  const double      new_weight) {
       __score_database.setWeight(i, new_weight);
     }
 
@@ -171,10 +170,10 @@ namespace gum {
     }
 
     /// returns the weight of the whole database
-    INLINE double genericBNLearner::databaseWeight () const {
+    INLINE double genericBNLearner::databaseWeight() const {
       return __score_database.weight();
     }
-    
+
     // sets an initial DAG structure
     INLINE void genericBNLearner::setInitialDAG(const DAG& dag) {
       __initial_dag = dag;

@@ -145,20 +145,19 @@ namespace gum_tests {
           TS_ASSERT(row.weight() == 10.0);
         }
 
-        TS_ASSERT( db.weight() == 10.0 * db.size() );
+        TS_ASSERT(db.weight() == 10.0 * db.size());
 
-        const std::size_t nbr = db.nbRows ();
+        const std::size_t nbr = db.nbRows();
         for (std::size_t i = std::size_t(0); i < nbr; ++i) {
-          if ( i % 2) db.setWeight(i, 2.0);
+          if (i % 2) db.setWeight(i, 2.0);
         }
 
         std::size_t index = std::size_t(0);
         for (const auto& row : db) {
-          if ( index % 2 ) {
+          if (index % 2) {
             TS_ASSERT(row.weight() == 2.0);
             TS_ASSERT(db.weight(index) == 2.0);
-          }
-          else {
+          } else {
             TS_ASSERT(row.weight() == 10.0);
             TS_ASSERT(db.weight(index) == 10.0);
           }

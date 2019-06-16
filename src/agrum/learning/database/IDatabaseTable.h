@@ -1144,7 +1144,7 @@ namespace gum {
       double weight(const std::size_t i) const;
 
       /// returns the weight of the whole database
-      double weight () const;
+      double weight() const;
 
       /// @}
 
@@ -1164,7 +1164,7 @@ namespace gum {
 
       // the maximal number of threads that the database can use
       mutable std::size_t _max_nb_threads{
-	std::size_t(gum::getMaxNumberOfThreads())};
+         std::size_t(gum::getMaxNumberOfThreads())};
 
       // the min number of rows that a thread should process in a
       // multithreading context

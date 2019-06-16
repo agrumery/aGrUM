@@ -205,7 +205,7 @@ namespace gum_tests {
         kl.setEpsilon(1e-5);
         kl.setMinEpsilonRate(1e-5);
         if (fabs(kl.klPQ() - 0.241864114) >= 1e-1) continue;         // next try
-        if (fabs(kl.klQP() - 0.399826689) >= 1e-1) continue;          // next try
+        if (fabs(kl.klQP() - 0.399826689) >= 1e-1) continue;         // next try
         if (kl.errorPQ() != (gum::Size)0) continue;                  // next try
         if (kl.errorQP() != (gum::Size)0) continue;                  // next try
         if (fabs(kl.hellinger() - 0.321089688) >= 1e-1) continue;    // next try

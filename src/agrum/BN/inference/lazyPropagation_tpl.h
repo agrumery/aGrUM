@@ -408,9 +408,8 @@ namespace gum {
               break;
             }
           }
-        }
-        catch (NotFound&) { found = false; }
-        
+        } catch (NotFound&) { found = false; }
+
         if (found) {
           containing_clique_found = true;
           break;
