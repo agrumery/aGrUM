@@ -1,5 +1,20 @@
 # aGrUM Changelog
 
+## Changelog for 0.15.1
+* aGrUM
+  * add forgotten `addPossibleEdge` constraint for `LocalSearchWithTabuList` learning algorithm in `BNLearner`.
+  * bug fix in exact inference leading to an erroneous exception.
+  * Better iterated random test for sampling inference
+* pyAgrum
+  * update path for new notebooks location for CI and documentation
+  * nightly build with pip : use now `pip install pyAgrum-nightly`
+  * API change in `gum.lib.dynamicBN` : `plotFollowUnrolled(lovars, dbn, T, evs)`
+  * add forgotten `addPossibleEdge` constraint for `LocalSearchWithTabuList` learning algorithm  in `BNLearner`.
+  * bug fix in exact inference leading to an erroneous exception.
+* internal
+  * new values for **act** `-j` option (number of jobs for compilation) : `all`, `except1`, `half`, `halfexcept1`.
+  * several bugfixes in CI
+
 ## Changelog for 0.15.0
 
 * ![LGPLV3](https://www.gnu.org/graphics/lgplv3-with-text-95x42.png "LGPLV3") new LGPL3 licence for aGrUM/pyAgrum
