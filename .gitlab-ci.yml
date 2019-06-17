@@ -148,7 +148,6 @@ windows_agrum_2015:
     - python act clean
     - python act --no-fun --mvsc -d build -j halfexcept1 test release aGrUM 
     - call activate py37
-    - deactivate
     - conda remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
   retry: 2
 
