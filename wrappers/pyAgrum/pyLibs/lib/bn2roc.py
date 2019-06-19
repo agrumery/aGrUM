@@ -27,10 +27,19 @@ import csv
 import os
 import sys
 
+import matplotlib.pylab as pylab
+
 import pyAgrum as gum
 
-from ._utils.progress_bar import ProgressBar
-from ._utils.pyAgrum_header import pyAgrum_header
+try:
+  from ._utils.progress_bar import ProgressBar
+except ModuleNotFoundError:
+  from _utils.progress_bar import ProgressBar
+   
+try:
+  from ._utils.pyAgrum_header import pyAgrum_header
+except ModuleNotFoundError:
+  from _utils.pyAgrum_header import pyAgrum_header
 
 
 def _lines_count(filename):
@@ -102,9 +111,9 @@ def _computeAUC(points):
   # computes the integral from 0 to 1
   somme = 0
   for i in range(1, len(points)):
-    somme += (points[i - 1][0] - points[i][0]) * points[i][1]
+    somme += (points[i][0] - points[i-1][0]) * (points[i-1][1]+points[i][1])/2
 
-  return -somme
+  return somme
 
 
 def __computeROCpoints(bn, csv_name, target, label, visible=False,with_labels=True):
@@ -316,7 +325,6 @@ def _drawROC(points, zeTitle, zeFilename, visible, show_fig, save_fig=True,
     a special label to be highlighted
   """
   AUC = _computeAUC(points)
-  import pylab
 
   pylab.clf()
   pylab.grid(color='#aaaaaa', linestyle='-', linewidth=1, alpha=0.5)
@@ -360,7 +368,7 @@ def _drawROC(points, zeTitle, zeFilename, visible, show_fig, save_fig=True,
       legend_location = 'lower right'
       pylab.legend(circles, labels, loc=legend_location)
 
-  pylab.text(0.5, 0.3, 'AUC=%f' % AUC,
+  pylab.text(0.5, 0.2, 'AUC=%f' % AUC,
              horizontalalignment='center',
              verticalalignment='center',
              fontsize=18)
@@ -442,7 +450,7 @@ def _checkROCargs():
 
 
 if __name__ == "__main__":
-  pyAgrum_header("2011-17")
+  pyAgrum_header("2011-19")
 
   (bn, csv_name, variable, label) = _checkROCargs()
   showROC(bn, csv_name, variable, label, True, False)

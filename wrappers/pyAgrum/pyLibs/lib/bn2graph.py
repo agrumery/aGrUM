@@ -367,17 +367,10 @@ def pdfize(aBN, name):
 
 
 if __name__ == "__main__":
-  #  pyAgrum_header("2011-17")##
-  #
-  #  if len(sys.argv) < 2:
-  #    print(os.path.basename(sys.argv[0]), "file.{" + gum.availableBNExts() + "}")
-  #  else:
-  #    base, ext = os.path.splitext(sys.argv[1])
-  #    pngize(sys.argv[1], base)
-  bn = gum.fastBN("a->b->d;a->c->d->e;f->b")
-  g = BNinference2dot(bn,
-                      targets=['f', 'd'],
-                      nodeColor={'a': 1, 'b': 0.3, 'c': 0.3, 'd': 0.1, 'e': 0.1, 'f': 0.3},
-                      arcWidth={(0, 1): 2, (0, 2): 0.5})
-  g.write("test.pdf", format='pdf')
-  # pdfize(bn, "test")
+  pyAgrum_header("2011-19")
+  if len(sys.argv) < 2:
+    print(os.path.basename(sys.argv[0]), "file.{" + gum.availableBNExts() + "}")
+  else:
+    base, ext = os.path.splitext(sys.argv[1])
+    pdfize(sys.argv[1], base)
+
