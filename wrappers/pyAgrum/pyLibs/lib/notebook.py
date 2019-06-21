@@ -83,6 +83,7 @@ def configuration():
 
 
 def __insertLinkedSVGs(mainSvg):
+  re_buggwhitespace=re.compile(r"(<image [^>]*>)")
   re_images = re.compile(r"(<image [^>]*>)")
   re_xlink = re.compile(r"xlink:href=\"([^\"]*)")
   re_viewbox = re.compile(r"(viewBox=\"[^\"]*\")")
@@ -104,18 +105,21 @@ def __insertLinkedSVGs(mainSvg):
           content += line
     __fragments[secondarySvg] = (viewBox, content)
 
-  if len(__fragments) == 0:
-    return mainSvg
+  if len(__fragments) > 0:
+    # replace image tags by svg tags
+    img2svg = re.sub(r"<image ([^>]*)/>", "<svg \g<1>>", mainSvg)
 
-  # replace image tags by svg tags
-  img2svg = re.sub(r"<image ([^>]*)/>", "<svg \g<1>>", mainSvg)
+    # insert secondaries into main
+    def ___insertSecondarySvgs(matchObj):
+      vb, code = __fragments[matchObj.group(1)]
+      return vb+matchObj.group(2)+code
 
-  # insert secondaries into main
-  def ___insertSecondarySvgs(matchObj):
-    vb, code = __fragments[matchObj.group(1)]
-    return vb+matchObj.group(2)+code
+    mainSvg=re.sub(r'xlink:href="([^"]*)"(.*>)', ___insertSecondarySvgs, img2svg)
 
-  return re.sub(r'xlink:href="([^"]*)"(.*>)', ___insertSecondarySvgs, img2svg)
+
+  # remove buggy white-space (for notebooks)
+  mainSvg = mainSvg.replace("white-space:pre;", "")
+  return mainSvg
 
 
 def _reprGraph(gr, size, format, asString):
@@ -128,17 +132,17 @@ def _reprGraph(gr, size, format, asString):
   """
   gr.set_size(size)
   if format == "svg":
-    gsvg = SVG(__insertLinkedSVGs(gr.create_svg().decode('utf-8')))
+    gsvg = SVG(__insertLinkedSVGs(gr.create_svg().decode('utf-8')))    
     if asString:
       return gsvg.data
     else:
-      display(HTML(gsvg.data))
+      display(gsvg)
   else:
     i = Image(format="png", data=gr.create_png())
     if asString:
       return '<img style="margin:0" src="data:image/png;base64,{}"/>'.format(base64.encodebytes(i.data).decode())
     else:
-      display_png(Image(format="png", data=gr.create_png()))
+      display_png(i)
 
 
 def showGraph(gr, size="4", format='svg'):
