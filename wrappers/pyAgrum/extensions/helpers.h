@@ -51,8 +51,9 @@ namespace PyAgrumHelper {
   void fillDVSetFromPyObject(const gum::Potential< double >*           pot,
                              gum::Set< const gum::DiscreteVariable* >& s,
                              PyObject* varnames) {
+
+    gum::Set< std::string > names;
     if (PyList_Check(varnames)) {
-      gum::Set< std::string > names;
       auto                    siz = PyList_Size(varnames);
       for (int i = 0; i < siz; i++) {
         std::string name = stringFromPyObject(PyList_GetItem(varnames, i));
@@ -62,15 +63,20 @@ namespace PyAgrumHelper {
 
         names << name;
       }
-
-      for (const auto v : pot->variablesSequence())
-        if (names.contains(v->name())) s << v;
-
-      if (s.size() == 0)
-        GUM_ERROR(gum::InvalidArgument, "No relevant dimension in the argument");
     } else {
-      GUM_ERROR(gum::InvalidArgument, "Argument is not a list");
+      std::string name=stringFromPyObject(varnames);
+      if (name=="") {
+        GUM_ERROR(gum::InvalidArgument, "Argument is not a list or a string");
+      } else {
+        names<<name;
+      }
     }
+
+    for (const auto v : pot->variablesSequence())
+      if (names.contains(v->name())) s << v;
+
+    if (s.size() == 0)
+      GUM_ERROR(gum::InvalidArgument, "No relevant dimension in the argument");
   }
 
   // filling a vector of DiscreteVariable* from a list of string, in the context of
