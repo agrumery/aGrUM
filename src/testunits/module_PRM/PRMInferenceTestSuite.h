@@ -621,7 +621,7 @@ namespace gum_tests {
       delete g_ve;
     }
 
-    void /*test*/ EvidenceSioux3withSVED() {
+    void /*test*/EvidenceSioux3withSVED() {
       gum::prm::PRMInference< double >* g_ve = nullptr;
 
       TS_GUM_ASSERT_THROWS_NOTHING(

@@ -110,14 +110,14 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(gen.disturbBN(bn));
     }
 
-    void /*test*/ GenerationBNDoubleCPT() {
+    void testGenerationBNDoubleCPT() {
       gum::MCBayesNetGenerator< double > gen(30, 60, 3, 30, 40, 50);
       gum::BayesNet< double >            bn;
       gen.generateBN(bn);
       TS_GUM_ASSERT_THROWS_NOTHING(gen.disturbBN(bn));
     }
 
-    void /*test*/ InferenceFloat() {
+    void testInferenceFloat() {
       gum::MCBayesNetGenerator< double > gen(30, 60, 3, 30, 40, 50);
       gum::BayesNet< double >            bn;
       gen.generateBN(bn);
@@ -126,7 +126,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(lazyInf.makeInference());
     }
 
-    void /*test*/ InferenceDouble() {
+    void testInferenceDouble() {
       gum::MCBayesNetGenerator< double > gen(30, 60, 3, 30, 40, 50);
       gum::BayesNet< double >            bn;
       gen.generateBN(bn);

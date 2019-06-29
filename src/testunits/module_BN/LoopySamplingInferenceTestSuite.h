@@ -68,7 +68,7 @@ namespace gum_tests {
 
   class loopySamplingInferenceTestSuite : public CxxTest::TestSuite {
     public:
-    void /*test*/ HybridBinaryTreeWithoutEvidence() {
+    void testHybridBinaryTreeWithoutEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype(
          "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
 
@@ -93,7 +93,7 @@ namespace gum_tests {
     }
 
 
-    void /*test*/ HybridBinaryTreeWithEvidenceOnRoot() {
+    void testHybridBinaryTreeWithEvidenceOnRoot() {
       auto bn = gum::BayesNet< double >::fastPrototype(
          "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       std::string ev = "b";
@@ -115,7 +115,7 @@ namespace gum_tests {
       }
     }
 
-    void /*test*/ HybridBinaryTreeWithEvidenceOnLeaf() {
+    void testHybridBinaryTreeWithEvidenceOnLeaf() {
       auto bn = gum::BayesNet< double >::fastPrototype(
          "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       std::string ev = "h";
@@ -139,7 +139,7 @@ namespace gum_tests {
       }
     }
 
-    void /*test*/ HybridBinaryTreeWithEvidenceOnMid() {
+    void testHybridBinaryTreeWithEvidenceOnMid() {
       auto bn = gum::BayesNet< double >::fastPrototype(
          "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       std::string ev = "e";
@@ -163,7 +163,7 @@ namespace gum_tests {
       }
     }
 
-    void /*test*/ HybridBinaryTreeWithMultipleEvidence() {
+    void testHybridBinaryTreeWithMultipleEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype(
          "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
 
@@ -191,7 +191,7 @@ namespace gum_tests {
     }
 
 
-    void /*test*/ HybridNaryTreeWithMultipleEvidence() {
+    void testHybridNaryTreeWithMultipleEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype(
          "a[4]->d[8]->f[3];b->d->g[5];b->e[4]->h;c->e;i[10]->j[3]->h");
 
@@ -219,7 +219,7 @@ namespace gum_tests {
     }
 
 
-    void /*test*/ HybridSimpleBN() {
+    void testHybridSimpleBN() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->b->c;a->d->c", 3);
 
       try {
@@ -276,7 +276,7 @@ namespace gum_tests {
     }
 
 
-    void /*test*/ HybridCplxBN() {
+    void testHybridCplxBN() {
       auto bn = gum::BayesNet< double >::fastPrototype(
          "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;", 3);
 
@@ -334,7 +334,7 @@ namespace gum_tests {
     }
 
 
-    void /*test*/ HybridAsia() {
+    void testHybridAsia() {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("asia.bif"));
       gum::Size                nbrErr = gum::Size(0);
@@ -360,7 +360,7 @@ namespace gum_tests {
     }
 
 
-    void /*test*/ HybridAlarm() {
+    void testHybridAlarm() {
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("alarm.bif"));
       gum::Size                nbrErr = gum::Size(0);
