@@ -1,4 +1,3 @@
-
 /**
  *
  *  Copyright 2005-2019 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)

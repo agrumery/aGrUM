@@ -38,9 +38,9 @@ endif()
 if (CMAKE_BUILD_TYPE MATCHES "Debug")
   set (CMAKE_CXX_FLAGS "-DGUM_DEBUG_MODE -DGUM_NO_INLINE ${CMAKE_CXX_FLAGS}")
   if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    set(CMAKE_EXE_LINKER_FLAGS "-pg -ggdb ${CMAKE_EXE_LINKER_FLAGS}")
-    set(CMAKE_SHARED_LINKER_FLAGS "-pg -ggdb ${CMAKE_SHARED_LINKER_FLAGS}")
-    set(CMAKE_MODULE_LINKER_FLAGS "-pg -ggdb ${CMAKE_MODULE_LINKER_FLAGS}")
+    set(CMAKE_EXE_LINKER_FLAGS " -ggdb ${CMAKE_EXE_LINKER_FLAGS}") # add -pg for profiling
+    set(CMAKE_SHARED_LINKER_FLAGS " -ggdb ${CMAKE_SHARED_LINKER_FLAGS}") # add -pg for profiling
+    set(CMAKE_MODULE_LINKER_FLAGS " -ggdb ${CMAKE_MODULE_LINKER_FLAGS}") # add -pg for profiling
   endif ()
 endif ()
 
