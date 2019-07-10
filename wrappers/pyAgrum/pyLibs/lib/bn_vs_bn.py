@@ -253,6 +253,8 @@ class GraphicalBNComparator:
 
     # We look at all combination
     listVariables = self._bn1.names()
+
+    # Loop on oriented pairs of variables
     for head, tail in product(listVariables, listVariables):
       if head != tail:
         idHead_1 = self._bn1.idFromName(head)
@@ -262,21 +264,12 @@ class GraphicalBNComparator:
         idTail_2 = self._bn2.idFromName(tail)
 
         if self._bn1.dag().existsArc(idHead_1, idTail_1):  # Check arcs head->tail
-          if self._bn2.dag().existsArc(idHead_2, idTail_2):  # if arc: Good Direction
-            count["tp"] += 1
-          elif self._bn2.dag().existsArc(idTail_2, idHead_2):  # If arc: Bad Direction
-            count["fn"] += 1
-          else:  # If no arc:
-            count["fn"] += 1
-        elif self._bn1.dag().existsArc(idTail_1, idHead_1):  # Check arcs n2->n1
-          if self._bn2.dag().existsArc(idHead_2, idTail_2):  # if arc: Bad Direction
-            count["fn"] += 1
-          elif self._bn2.dag().existsArc(idTail_2, idHead_2):  # If arc: Good Direction
+          if self._bn2.dag().existsArc(idHead_2, idTail_2):  # if arc: 
             count["tp"] += 1
           else:  # If no arc:
             count["fn"] += 1
         else:  # Check if no arc
-          if self._bn2.dag().existsArc(idHead_2, idTail_2) or self._bn2.dag().existsArc(idTail_2, idHead_2):  # If arc
+          if self._bn2.dag().existsArc(idHead_2, idTail_2):  # If arc
             count["fp"] += 1
           else:  # If no arc
             count["tn"] += 1

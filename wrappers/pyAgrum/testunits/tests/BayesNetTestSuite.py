@@ -517,6 +517,29 @@ class TestSaveBN(BayesNetTestCase):
       self.assertEquals(bn.variable(n).varType(), bn2.variable(n).varType())
       self.assertEquals(bn.variable(n).domainSize(), bn2.variable(n).domainSize())
 
+import pyAgrum.lib.bn_vs_bn as bvb
+
+class TestScore(BayesNetTestCase):
+    def testPrecision(self):
+        true_bn = gum.fastBN("A->B->C")
+        bn = gum.fastBN("A->B;C->B;A->C")
+        precision = bvb.GraphicalBNComparator(true_bn, bn).scores()['precision']
+        self.assertEquals(1/3, precision)
+
+    def testRecall(self):
+        true_bn = gum.fastBN("A->B->C")
+        bn = gum.fastBN("A->B;C->B;A->C")
+        recall = bvb.GraphicalBNComparator(true_bn, bn).scores()['recall']
+        self.assertEquals(1/2, recall)
+
+    def testFscore(self):
+        true_bn = gum.fastBN("A->B->C")
+        bn = gum.fastBN("A->B;C->B;A->C")
+        fscore = bvb.GraphicalBNComparator(true_bn, bn).scores()['fscore']
+        self.assertEquals(2/5, fscore)
+
+
+
 
 ts = unittest.TestSuite()
 addTests(ts, TestConstructors)
@@ -524,3 +547,4 @@ addTests(ts, TestInsertions)
 addTests(ts, TestFeatures)
 addTests(ts, TestLoadBN)
 addTests(ts, TestSaveBN)
+addTests(ts, TestScore)
