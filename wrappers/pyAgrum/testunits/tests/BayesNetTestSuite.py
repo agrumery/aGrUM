@@ -524,19 +524,19 @@ class TestScore(BayesNetTestCase):
         true_bn = gum.fastBN("A->B->C")
         bn = gum.fastBN("A->B;C->B;A->C")
         precision = bvb.GraphicalBNComparator(true_bn, bn).scores()['precision']
-        self.assertEquals(1/3, precision)
+        self.assertEquals(1./3., precision)
 
     def testRecall(self):
         true_bn = gum.fastBN("A->B->C")
         bn = gum.fastBN("A->B;C->B;A->C")
         recall = bvb.GraphicalBNComparator(true_bn, bn).scores()['recall']
-        self.assertEquals(1/2, recall)
+        self.assertEquals(1./2., recall)
 
     def testFscore(self):
         true_bn = gum.fastBN("A->B->C")
         bn = gum.fastBN("A->B;C->B;A->C")
         fscore = bvb.GraphicalBNComparator(true_bn, bn).scores()['fscore']
-        self.assertEquals(2/5, fscore)
+        self.assertEquals(2./5., fscore)
 
 
 
