@@ -1,5 +1,14 @@
 # aGrUM Changelog
 
+## Changelog for 0.15.2
+* aGrUM
+  * fix a (rare) bug in counters for contingency tables for chi2 and G2 (bug found by Bastien Chassagnol)  
+* pyAgrum
+  * fix `fscore` in `gumlib/bn_vs_bn.py`
+  * API :  Wherever a list of strings is the type for an argument, a single string `"x"` can be used instead of `["x"]`
+  * workaround for weird bug when displaying matplotlib-generated svg in notebooks (for `gnb.showInference`)
+  * fix AUC computation in  `gumlib/bn2roc.py`
+
 ## Changelog for 0.15.1
 * aGrUM
   * add forgotten `addPossibleEdge` constraint for `LocalSearchWithTabuList` learning algorithm in `BNLearner`.
