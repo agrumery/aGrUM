@@ -245,8 +245,7 @@ namespace gum {
         // here, there is no conditioning set
 
         // indicate to the chi2 distribution the set of conditioning nodes
-        __chi2.
-            setConditioningNodes(__empty_set);
+        __chi2.setConditioningNodes(__empty_set);
 
         // now, perform sum_X sum_Y #XY * log ( ( #XY * N ) / ( #X * #Y ) )
 
@@ -260,26 +259,15 @@ namespace gum {
 
         // count N
         double N = 0.0;
-        for (
-          auto n_x
-            : N_x)
-          N +=
-              n_x;
+        for ( auto n_x : N_x)
+          N += n_x;
 
-        for (
-            std::size_t y = std::size_t(0), xy = 0;
-            y < Y_size;
-            ++y) {
+        for ( std::size_t y = std::size_t(0), xy = 0; y < Y_size; ++y) {
           const double tmp_Ny = N_y[y];
-          for (
-              std::size_t x = 0;
-              x < X_size;
-              ++x, ++xy) {
+          for ( std::size_t x = 0; x < X_size; ++x, ++xy) {
             const double tmp = (tmp_Ny * N_x[x]);
             if ((tmp != 0.0) && (N_xyz[xy] != 0.0)) {
-              cumulStat += N_xyz[xy] *
-                           std::log((N_xyz[xy]
-                                     * N) / tmp);
+              cumulStat += N_xyz[xy] * std::log((N_xyz[xy] * N) / tmp);
             }
           }
         }
@@ -291,9 +279,7 @@ namespace gum {
 
       Size df = __chi2.degreesOfFreedom(var_x, var_y);
       double pValue = __chi2.probaChi2(cumulStat, df);
-      return
-          std::pair<double, double>(cumulStat, pValue
-          );
+      return std::pair<double, double>(cumulStat, pValue);
     }
 
 /// returns the score corresponding to a given nodeset
