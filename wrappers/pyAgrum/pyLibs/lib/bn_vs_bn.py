@@ -28,7 +28,6 @@ import os
 import math
 
 import pyAgrum as gum
-import pydotplus as dot
 from itertools import product
 
 from ._utils.pyAgrum_header import pyAgrum_header
@@ -187,11 +186,21 @@ class GraphicalBNComparator:
     dotted black line: the arc is added in _bn2
     dotted red line: the arc is removed in _bn2
 
+    Warning
+    -------
+    if pydotplus is not installed, this function just returns None
+
     Returns
     -------
     pydotplus.Dot
-      the result dot graph
+      the result dot graph or None if pydotplus can not be imported
     """
+
+    try:
+      import pydotplus as dot
+    except ImportError:
+      return False
+
     graph = dot.Dot(graph_type='digraph', bgcolor="transparent")
 
     # Nodes
