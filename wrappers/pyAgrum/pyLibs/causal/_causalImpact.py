@@ -133,13 +133,18 @@ def _causalImpact(cm: CausalModel, on: NameSet,
 
   # Front or Back door
   if len(iDo) == 1 and len(nY) == 1 and len(nK) == 0:
-    for bd in backdoor_generator(cm, iDo[0], iY[0], cm.latentVariablesIds()):
+
+    # for bd in backdoor_generator(cm, iDo[0], iY[0], cm.latentVariablesIds()):
+    bd = cm.backDoor(iDo[0], iY[0], withNames=False)
+    if bd is not None:
       ar = CausalFormula(cm, getBackDoorTree(cm, nDo[0], nY[0], bd), on, doing, knowing)
       adj = ar.eval()
       explain = "backdoor " + str([cm.causalBN().variable(i).name() for i in bd]) + " found."
       return ar, adj.reorganize([v for v in nY + nDo + nK if v in adj.var_names]), explain
 
-    for fd in frontdoor_generator(cm, iDo[0], iY[0], cm.latentVariablesIds()):
+    # for fd in frontdoor_generator(cm, iDo[0], iY[0], cm.latentVariablesIds()):
+    fd = cm.frontDoor(iDo[0], iY[0], withNames=False)
+    if fd is not None:
       ar = CausalFormula(cm, getFrontDoorTree(cm, nDo[0], nY[0], fd), on, doing, knowing)
       adj = ar.eval()
       explain = "frontdoor " + str([cm.causalBN().variable(i).name() for i in fd]) + " found."
@@ -156,5 +161,4 @@ def _causalImpact(cm: CausalModel, on: NameSet,
 
   adj = ar.eval()
   explain = "Do-calculus computations"
-
   return ar, adj.reorganize([v for v in nY + nDo + nK if v in adj.var_names]), explain

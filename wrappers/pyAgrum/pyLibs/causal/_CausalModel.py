@@ -28,6 +28,7 @@ import itertools as it
 import pyAgrum as gum
 
 from ._types import *
+from ._doorCriteria import *
 
 
 class CausalModel:
@@ -153,6 +154,28 @@ class CausalModel:
 
   def arcs(self) -> ArcSet:
     return self.__causalBN.arcs()
+
+  def backDoor(self, do, y, withNames=True):
+    ido = self.__observationalBN.idFromName(do) if isinstance(do, str) else do
+    iy = self.__observationalBN.idFromName(y) if isinstance(y, str) else y
+
+    for bd in backdoor_generator(self, ido, iy, self.latentVariablesIds()):
+      if withNames:
+        return [self.__observationalBN.variable(i).name() for i in bd]
+      else:
+        return bd
+    return None
+
+  def frontDoor(self, do, y, withNames=True):
+    ido = self.__observationalBN.idFromName(do) if isinstance(do, str) else do
+    iy = self.__observationalBN.idFromName(y) if isinstance(y, str) else y
+
+    for fd in frontdoor_generator(self, ido, iy, self.latentVariablesIds()):
+      if withNames:
+        return [self.__observationalBN.variable(i).name() for i in fd]
+      else:
+        return fd
+    return None
 
 
 def inducedCausalSubModel(cm: CausalModel, sns: NodeSet = None) -> CausalModel:

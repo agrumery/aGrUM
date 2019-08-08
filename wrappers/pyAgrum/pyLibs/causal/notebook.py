@@ -1,23 +1,23 @@
 # -*- coding: utf-8 -*-
-#(c) Copyright by Pierre-Henri Wuillemin, UPMC, 2011  (pierre-henri.wuillemin@lip6.fr)
+# (c) Copyright by Pierre-Henri Wuillemin, UPMC, 2011  (pierre-henri.wuillemin@lip6.fr)
 
-#Permission to use, copy, modify, and distribute this
-#software and its documentation for any purpose and
-#without fee or royalty is hereby granted, provided
-#that the above copyright notice appear in all copies
-#and that both that copyright notice and this permission
-#notice appear in supporting documentation or portions
-#thereof, including modifications, that you make.
+# Permission to use, copy, modify, and distribute this
+# software and its documentation for any purpose and
+# without fee or royalty is hereby granted, provided
+# that the above copyright notice appear in all copies
+# and that both that copyright notice and this permission
+# notice appear in supporting documentation or portions
+# thereof, including modifications, that you make.
 
-#THE AUTHOR P.H. WUILLEMIN  DISCLAIMS ALL WARRANTIES
-#WITH REGARD TO THIS SOFTWARE, INCLUDING ALL IMPLIED
-#WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT
-#SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, INDIRECT
-#OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER
-#RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER
-#IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
-#ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
-#OR PERFORMANCE OF THIS SOFTWARE!
+# THE AUTHOR P.H. WUILLEMIN  DISCLAIMS ALL WARRANTIES
+# WITH REGARD TO THIS SOFTWARE, INCLUDING ALL IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT
+# SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, INDIRECT
+# OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER
+# RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER
+# IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
+# ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
+# OR PERFORMANCE OF THIS SOFTWARE!
 
 """
 This file defines some helpers for handling causal concepts in notebooks
@@ -51,7 +51,7 @@ def getCausalModel(cm: CausalModel, size: str = "4") -> str:
       bgcol = "#FF0000"
       fgcol = "#000000"
       st = "dashed"
-      shap="point"
+      shap = "point"
 
     graph.add_node(dot.Node(cm.names()[n],
                             shape=shap,
@@ -110,3 +110,6 @@ def showCausalImpact(model: CausalModel, on: Union[str, NameSet], doing: Union[s
   """
   html = getCausalImpact(model, on, doing, knowing, values)
   IPython.display.display(IPython.display.HTML(html))
+
+
+CausalModel._repr_html_ = lambda self: getCausalModel(self, size="10")
