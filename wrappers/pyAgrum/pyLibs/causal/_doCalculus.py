@@ -43,6 +43,7 @@ def doCalculusWithObservation(cm: CausalModel, on: str, doing: NameSet,
   :param cm: the causal model
   :param doing: the interventions
   :param knowing: the observations
+
   :return: the CausalFormula for computing this causal impact
   """
   if knowing is None or len(knowing) == 0:
@@ -74,10 +75,10 @@ def doCalculusWithObservation(cm: CausalModel, on: str, doing: NameSet,
       except HedgeException as h:
         pass
 
-  p = doCalculus(cm, lOn | Z, X)
-  q = doCalculus(cm, Z, X)
+  p = doCalculus(cm, on | knowing, doing)
+  q = doCalculus(cm, knowing, doing)
 
-  return CausalFormula(cm, ASTdiv(p.root, q.root))
+  return CausalFormula(cm, ASTdiv(p.root, q.root), on, doing, knowing)
 
 
 def _cDecomposition(cm: CausalModel) -> List[Set[int]]:
