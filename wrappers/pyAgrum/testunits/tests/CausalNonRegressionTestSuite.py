@@ -68,7 +68,7 @@ class TestFromR(pyAgrumTestCase):
 
 
 class TestsFromGumWhy(pyAgrumTestCase):
-  def test_Carousel(self):
+  def test_Carouselp115(self):
     ab = gum.fastBN('Elapsed time[11]->Bag on Carousel<-Bag on Plane')
     ab.cpt("Bag on Plane").fillWith(1).normalize()
     ab.cpt("Elapsed time").fillWith(1).normalize()
@@ -76,9 +76,15 @@ class TestsFromGumWhy(pyAgrumTestCase):
         [1.0, 0.0] * 11 + [1 - i / 20 if i % 2 == 0 else (i - 1) / 20 for i in range(22)])
     abModele = csl.CausalModel(ab)
     formula, impact, explanation = csl.causalImpact(abModele, on={"Bag on Plane"}, doing={
-                                                    "Elapsed time"}, knowing={"Bag on Carousel"}, values={"Elapsed time": 9, "Bag on Carousel": 1})
-    print(formula)
-    print(explanation)
+                                                    "Elapsed time"}, knowing={"Bag on Carousel"}, values={"Elapsed time": 7, "Bag on Carousel": 0})
+    self.assertAlmostEqual(impact[0], 0.7692, 4)
+
+  def test_DoCalculusp213(self):
+    fd = gum.fastBN("w->z->x->y")
+    fdModele = csl.CausalModel(
+        fd, [("u1", ["w", "x"]), ("u2", ["w", "y"])], True)
+    formula, impact, explanation = csl.causalImpact(
+        fdModele, on="y", doing="x")
 
 
 ts = unittest.TestSuite()
