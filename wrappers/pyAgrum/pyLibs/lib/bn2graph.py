@@ -47,6 +47,11 @@ def lightTheme():
   __GRAPHBLACK = "#202020"
 
 
+def getBlackInTheme():
+  global __GRAPHBLACK
+  return __GRAPHBLACK
+
+
 def _proba2rgb(p, cmap, withSpecialColor):
   (r, g, b, _) = cmap(p)
   r = "%02x" % int(r * 256)
@@ -109,7 +114,7 @@ def BN2dot(bn, size="4", nodeColor=None, arcWidth=None, arcColor=None, cmapNode=
 
   for n in bn.names():
     if nodeColor is None or n not in nodeColor:
-      bgcol = __GRAPHBLACK
+      bgcol = "#4A4A4A"
       fgcol = "#FFFFFF"
       res = ""
     else:
