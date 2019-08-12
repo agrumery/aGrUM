@@ -41,7 +41,7 @@ from IPython.core.pylabtools import print_figure
 from IPython.display import display, HTML, SVG
 
 import pyAgrum as gum
-from pyAgrum.lib.bn2graph import BN2dot, proba2histo, BNinference2dot, _proba2bgcolor, darkTheme,lightTheme
+from pyAgrum.lib.bn2graph import BN2dot, proba2histo, BNinference2dot, _proba2bgcolor, darkTheme, lightTheme,getBlackInTheme
 from pyAgrum.lib.bn_vs_bn import GraphicalBNComparator
 
 _cdict = {
@@ -168,6 +168,15 @@ def getGraph(gr, size="4", format='svg'):
   """
   return _reprGraph(gr, size, format, asString=True)
 
+def _from_dotstring(dotstring):
+  g = dot.graph_from_dot_data(dotstring)
+  g.set_bgcolor("transparent")
+  for n in g.get_nodes():
+    n.set_color(getBlackInTheme())
+    n.set_fontcolor(getBlackInTheme())
+  for e in g.get_edges():
+    e.set_color(getBlackInTheme())
+  return g
 
 def showDot(dotstring, size="4", format='svg'):
   """
@@ -178,7 +187,7 @@ def showDot(dotstring, size="4", format='svg'):
   :param format: render as "png" or "svg"
   :return: the representation of the graph
   """
-  return showGraph(dot.graph_from_dot_data(dotstring), size, format)
+  return showGraph(_from_dotstring(dotstring), size, format)
 
 
 def getDot(dotstring, size="4", format='svg'):
@@ -188,11 +197,10 @@ def getDot(dotstring, size="4", format='svg'):
   :param dotstring: dot string
   :param size: size of the rendered graph
   :param format: render as "png" or "svg"
+  :param bg: color for background
   :return: the HTML representation of the graph
   """
-  g = dot.graph_from_dot_data(dotstring)
-  g.set_bgcolor("transparent")
-  return getGraph(g, size, format)
+  return getGraph(_from_dotstring(dotstring), size, format)
 
 
 def getBNDiff(bn1, bn2, size="4", format='svg'):
