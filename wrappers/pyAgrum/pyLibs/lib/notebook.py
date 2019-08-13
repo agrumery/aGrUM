@@ -41,7 +41,7 @@ from IPython.core.pylabtools import print_figure
 from IPython.display import display, HTML, SVG
 
 import pyAgrum as gum
-from pyAgrum.lib.bn2graph import BN2dot, proba2histo, BNinference2dot, _proba2bgcolor, darkTheme, lightTheme,getBlackInTheme
+from pyAgrum.lib.bn2graph import BN2dot, proba2histo, BNinference2dot, _proba2bgcolor, forDarkTheme, forLightTheme,getBlackInTheme
 from pyAgrum.lib.bn_vs_bn import GraphicalBNComparator
 
 _cdict = {

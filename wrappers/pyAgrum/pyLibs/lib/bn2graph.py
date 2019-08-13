@@ -37,17 +37,23 @@ import shutil
 __GRAPHBLACK = "#4A4A4A"
 
 
-def darkTheme():
+def forDarkTheme():
+  """ change the color for arcs and text in graphs to be more visible in dark theme
+  """
   global __GRAPHBLACK
   __GRAPHBLACK = "#AAAAAA"
 
 
 def lightTheme():
+  """ change the color for arcs and text in graphs to be more visible in light theme
+  """
   global __GRAPHBLACK
   __GRAPHBLACK = "#202020"
 
 
 def getBlackInTheme():
+  """ return the color used for arc and text in graphs
+  """
   global __GRAPHBLACK
   return __GRAPHBLACK
 
