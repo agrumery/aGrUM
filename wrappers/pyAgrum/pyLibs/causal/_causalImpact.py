@@ -161,6 +161,6 @@ def _causalImpact(cm: CausalModel, on: NameSet,
 
   adj = ar.eval()
   lv = [v for v in nY + nDo + nK if v in adj.var_names]
-  adj = adj.margSumIn(lv).reorganize(lv)
+  adj = adj.reorganize(lv) #margSumIn(lv).reorganize(lv)
   explain = "Do-calculus computations"
   return ar, adj, explain

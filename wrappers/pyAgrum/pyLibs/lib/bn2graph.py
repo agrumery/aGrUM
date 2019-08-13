@@ -44,7 +44,7 @@ def forDarkTheme():
   __GRAPHBLACK = "#AAAAAA"
 
 
-def lightTheme():
+def forLightTheme():
   """ change the color for arcs and text in graphs to be more visible in light theme
   """
   global __GRAPHBLACK
