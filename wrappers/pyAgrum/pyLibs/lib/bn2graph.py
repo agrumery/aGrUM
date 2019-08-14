@@ -120,7 +120,7 @@ def BN2dot(bn, size="4", nodeColor=None, arcWidth=None, arcColor=None, cmapNode=
 
   for n in bn.names():
     if nodeColor is None or n not in nodeColor:
-      bgcol = "#444444"
+      bgcol = "#404040"
       fgcol = "#FFFFFF"
       res = ""
     else:
@@ -149,12 +149,12 @@ def BN2dot(bn, size="4", nodeColor=None, arcWidth=None, arcColor=None, cmapNode=
         pw = 1
         av = 1
     if arcColor is None:
-      col = "#000000"
+      col = getBlackInTheme()
     else:
       if a in arcColor:
         col = _proba2color(arcColor[a], cmapArc)
       else:
-        col = "#000000"
+        col = getBlackInTheme()
 
     edge = dot.Edge('"' + bn.variable(a[0]).name() + '"', '"' + bn.variable(a[1]).name() + '"',
                     penwidth=pw, color=col,
