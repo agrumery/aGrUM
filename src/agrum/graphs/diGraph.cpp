@@ -133,4 +133,35 @@ namespace gum {
     GUM_ASSERT(dag.sizeArcs() == (gum::Size)(0));
     GUM_ASSERT(__mutableTopologicalOrder->size() == dag.size());
   }
+
+  bool DiGraph::hasDirectedPath(const NodeId from, const NodeId to) {
+    if (!exists(from)) return false;
+
+    // not recursive version => use a FIFO for simulating the recursion
+    List< NodeId > nodeFIFO;
+    nodeFIFO.pushBack(from);
+
+    NodeSet marked;
+    marked.insert(from);
+
+    NodeId new_one;
+
+    while (!nodeFIFO.empty()) {
+      new_one = nodeFIFO.front();
+      // std::cout<<new_one<<std::endl;
+      nodeFIFO.popFront();
+
+      for (const auto chi : children(new_one)) {
+        if (chi == to) return true;
+
+        if (!marked.contains(chi)) {
+          nodeFIFO.pushBack(chi);
+          marked.insert(chi);
+        }
+      }
+    }
+
+    return false;
+  }
+
 } /* namespace gum */

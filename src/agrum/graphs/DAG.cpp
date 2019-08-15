@@ -49,43 +49,6 @@ namespace gum {
 
   DAG::~DAG() { GUM_DESTRUCTOR(DAG); }
 
-  /// we prefer to re-implement this (instead of using
-  /// ArcGraphPart::directedPath)
-  /// for optimisation
-  /// @warning : this version is optimized for the search of a directedPath
-  /// in a DAG !
-  bool DAG::__hasDirectedPath(const NodeId from, const NodeId to) {
-    if (!exists(from)) return false;
-
-    if (from == to) return true;
-
-    // not recursive version => use a FIFO for simulating the recursion
-    List< NodeId > nodeFIFO;
-    nodeFIFO.pushBack(from);
-
-    NodeSet marked;
-    marked.insert(from);
-
-    NodeId new_one;
-
-    while (!nodeFIFO.empty()) {
-      new_one = nodeFIFO.front();
-      // std::cout<<new_one<<std::endl;
-      nodeFIFO.popFront();
-
-      for (const auto chi : children(new_one)) {
-        if (chi == to) return true;
-
-        if (!marked.contains(chi)) {
-          nodeFIFO.pushBack(chi);
-          marked.insert(chi);
-        }
-      }
-    }
-
-    return false;
-  }
-
   UndiGraph DAG::moralGraph() const {
     UndiGraph moralgraph;
     moralgraph.populateNodes(*this);

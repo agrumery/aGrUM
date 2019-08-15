@@ -160,9 +160,6 @@ namespace gum {
 
     UndiGraph moralGraph() const;
 
-    private:
-    /// checks whether there exists a directed path from \e from to \e to
-    bool __hasDirectedPath(const NodeId from, const NodeId to);
   };
 
 } /* namespace gum */

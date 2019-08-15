@@ -41,7 +41,7 @@ namespace gum {
   }
 
   INLINE void DAG::addArc(const NodeId tail, const NodeId head) {
-    if (__hasDirectedPath(head, tail)) {
+    if (hasDirectedPath(head, tail)) {
       GUM_ERROR(InvalidDirectedCycle, "Add a directed cycle in a dag !");
     }
 

@@ -196,6 +196,16 @@ namespace gum {
     const Sequence< NodeId >& topologicalOrder(bool clear = true) const;
     /// @}
 
+    /** checks whether there exists a directed path from \e from to \e to
+     *
+     * If from==to, this function checks if a directed cycle containing \e from exists.
+     * @param from
+     * @param to
+     * @return true if a directed path exists
+     *
+     */
+    bool hasDirectedPath(const NodeId from, const NodeId to);
+
     private:
     /// The topology sequence of this Directed Graphical Model.
     mutable Sequence< NodeId >* __mutableTopologicalOrder;
