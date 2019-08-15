@@ -4284,6 +4284,10 @@ class DiGraph(object):
         """
         return _pyAgrum.DiGraph_topologicalOrder(self, clear)
 
+    def hasDirectedPath(self, _from: 'gum::NodeId const', to: 'gum::NodeId const') -> "bool":
+        r"""hasDirectedPath(DiGraph self, gum::NodeId const _from, gum::NodeId const to) -> bool"""
+        return _pyAgrum.DiGraph_hasDirectedPath(self, _from, to)
+
     def __repr__(self) -> "std::string":
         r"""__repr__(DiGraph self) -> std::string"""
         return _pyAgrum.DiGraph___repr__(self)
