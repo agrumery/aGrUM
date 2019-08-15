@@ -615,14 +615,14 @@ def _reprPotential(pot, digits=4, withColors=True, varnames=None, asString=False
       r = int(255 - val * 128)
       g = int(127 + val * 128)
       b = 100
-      s += "background-color:" + _rgb(r, g, b) + ";"
+      s += "color:black;background-color:" + _rgb(r, g, b) + ";"
     s += "text-align:right;'>{:." + str(digits) + "f}</td>"
     return s.format(val)
 
   html = list()
   html.append("<table>")
   if pot.empty():
-    html.append("<tr><th style='background-color:#AAAAAA'>&nbsp;</th></tr>")
+    html.append("<tr><th style='color:black;background-color:#AAAAAA'>&nbsp;</th></tr>")
     html.append("<tr>" + _mkCell(pot.get(gum.Instantiation())) + "</tr>")
   else:
     if varnames is not None and len(varnames) != pot.nbrDim():
@@ -636,12 +636,12 @@ def _reprPotential(pot, digits=4, withColors=True, varnames=None, asString=False
     # first line
     if nparents > 0:
       html.append(
-          "<tr><th colspan='{}'></th><th colspan='{}' style='background-color:#AAAAAA'><center>{"
+          "<tr><th colspan='{}'></th><th colspan='{}' style='color:black;background-color:#AAAAAA'><center>{"
           "}</center></th></tr>".format(
               nparents, var.domainSize(), varname))
     else:
       html.append(
-          "<tr style='background-color:#AAAAAA'><th colspan='{}'><center>{}</center></th></tr>".format(
+          "<tr style='color:black;background-color:#AAAAAA'><th colspan='{}'><center>{}</center></th></tr>".format(
               var.domainSize(),
               varname))
     # second line
@@ -650,10 +650,10 @@ def _reprPotential(pot, digits=4, withColors=True, varnames=None, asString=False
       # for parent in pot.var_names[:-1] if varnames == None else varnames[1:]:
       for par in range(nparents - 1, 0 - 1, -1):
         parent = pot.var_names[par] if varnames is None else varnames[par]
-        s += "<th style='background-color:#AAAAAA'><center>{}</center></th>".format(
+        s += "<th style='color:black;background-color:#AAAAAA'><center>{}</center></th>".format(
             parent)
     for label in var.labels():
-      s += "<th style='background-color:#BBBBBB'><center>{}</center></th>".format(
+      s += "<th style='color:black;background-color:#BBBBBB'><center>{}</center></th>".format(
           label)
     s += '</tr>'
 
@@ -672,11 +672,11 @@ def _reprPotential(pot, digits=4, withColors=True, varnames=None, asString=False
       for par in range(1, nparents + 1):
         label = inst.variable(par).label(inst.val(par))
         if par == 1:
-          s += "<th style='background-color:#BBBBBB'><center>{}</center></th>".format(
+          s += "<th style='color:black;background-color:#BBBBBB'><center>{}</center></th>".format(
               label)
         else:
           if sum([inst.val(i) for i in range(1, par)]) == 0:
-            s += "<th style='background-color:#BBBBBB;' rowspan = '{}'><center>{}</center></th>".format(offset[par],
+            s += "<th style='color:black;background-color:#BBBBBB;' rowspan = '{}'><center>{}</center></th>".format(offset[par],
                                                                                                         label)
       for j in range(pot.variable(0).domainSize()):
         s += _mkCell(pot.get(inst))
