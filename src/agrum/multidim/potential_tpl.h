@@ -539,6 +539,8 @@ namespace gum {
       GUM_ERROR(InvalidArgument,
                 "The variable to put first does not belong to the potential");
     }
+    if (&(this->variable(0))==var)
+      return Potential<GUM_SCALAR>(*this);
 
     std::vector< const DiscreteVariable* > vars;
     vars.push_back(var);
