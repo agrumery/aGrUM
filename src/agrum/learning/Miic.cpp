@@ -773,7 +773,7 @@ namespace gum {
                      double >,
           GreaterPairOn2nd >& _rank) {
       double maxP = -1.0;
-      NodeId maxZ;
+      NodeId maxZ=0;
 
       // compute N
       //__N = I.N();
