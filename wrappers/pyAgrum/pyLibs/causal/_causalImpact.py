@@ -160,7 +160,16 @@ def _causalImpact(cm: CausalModel, on: NameSet,
     return None, None, h.message
 
   adj = ar.eval()
-  lv = [v for v in nY + nDo + nK if v in adj.var_names]
+  lsum=nY + nDo + nK
+  lv = [v for v in lsum if v in adj.var_names]
+
+  # todo : check why it is possible that some variables are in var_names and
+  # not in lsum ...  (see for instance p213, book of why and
+  # https://twitter.com/analisereal/status/1022277416205475841 : should
+  # really z be in the last formula ?)
+  ssum=set(lsum)
+  lv += [v for v in adj._var_names if v not in ssum]
+
   adj = adj.reorganize(lv) #margSumIn(lv).reorganize(lv)
   explain = "Do-calculus computations"
   return ar, adj, explain

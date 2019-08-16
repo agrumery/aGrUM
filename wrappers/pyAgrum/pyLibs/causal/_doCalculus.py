@@ -157,8 +157,6 @@ def identifyingIntervention(cm: CausalModel, Y: NameSet, X: NameSet, P: ASTtree 
   :param P: The ASTtree representing the calculus in construction
   :return: the ASTtree representing the calculus
   """
-  print(f"Y={Y}, X={X}")
-
   iX = {cm.idFromName(i) for i in X}
   iY = {cm.idFromName(i) for i in Y}
   iV = set(cm.nodes()) - cm.latentVariablesIds()

@@ -79,12 +79,12 @@ class TestsFromGumWhy(pyAgrumTestCase):
                                                     "Elapsed time"}, knowing={"Bag on Carousel"}, values={"Elapsed time": 7, "Bag on Carousel": 0})
     self.assertAlmostEqual(impact[0], 0.7692, 4)
 
-#  def test_DoCalculusp213(self):
-#    fd = gum.fastBN("w->z->x->y")
-#    fdModele = csl.CausalModel(
-#        fd, [("u1", ["w", "x"]), ("u2", ["w", "y"])], True)
-#    formula, impact, explanation = csl.causalImpact(
-#        fdModele, on="y", doing="x")
+  def test_DoCalculusp213(self):
+    fd = gum.fastBN("w->z->x->y")
+    fdModele = csl.CausalModel(
+        fd, [("u1", ["w", "x"]), ("u2", ["w", "y"])], True)
+    formula, impact, explanation = csl.causalImpact(
+        fdModele, on="y", doing="x")
 
 
 ts = unittest.TestSuite()
