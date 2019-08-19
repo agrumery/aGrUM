@@ -218,6 +218,9 @@ namespace gum {
        const DAG&               dag) {
       // bootstrap EM by learning an initial model
       BayesNet< GUM_SCALAR > bn = createBN< GUM_SCALAR >(bootstrap_estimator, dag);
+      for(const auto& nod:bn.nodes()) {
+        bn.cpt(nod).noising(0.1);
+      }
       general_estimator.setBayesNet(bn);
 
       // perform EM

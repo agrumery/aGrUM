@@ -918,79 +918,81 @@ namespace gum_tests {
     }
 
     void testFastPrototype() {
-      auto bn = gum::BayesNet<int>::fastPrototype("a->b->c;a->c");
-      TS_ASSERT_EQUALS(bn.size(), gum::Size(3));
-      TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(3));
-      TS_ASSERT_EQUALS(bn.dim(),
-                       gum::Size((2 - 1) + (2 * (2 - 1)) + (2 * 2 * (2 - 1))));
+      try {
+        auto bn = gum::BayesNet< float >::fastPrototype("a->b->c;a->c");
+        TS_ASSERT_EQUALS(bn.size(), gum::Size(3));
+        TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(3));
+        TS_ASSERT_EQUALS(bn.dim(),
+                         gum::Size((2 - 1) + (2 * (2 - 1)) + (2 * 2 * (2 - 1))));
 
-      bn = gum::BayesNet<int>::fastPrototype("a->b->c;a->c", 3);
-      TS_ASSERT_EQUALS(bn.size(), gum::Size(3));
-      TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(3));
-      TS_ASSERT_EQUALS(bn.dim(),
-                       gum::Size((3 - 1) + (3 * (3 - 1)) + (3 * 3 * (3 - 1))));
+        bn = gum::BayesNet< float >::fastPrototype("a->b->c;a->c", 3);
+        TS_ASSERT_EQUALS(bn.size(), gum::Size(3));
+        TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(3));
+        TS_ASSERT_EQUALS(bn.dim(),
+                         gum::Size((3 - 1) + (3 * (3 - 1)) + (3 * 3 * (3 - 1))));
 
-      bn = gum::BayesNet<int>::fastPrototype("a->b[5]->c;a->c");
-      TS_ASSERT_EQUALS(bn.size(), gum::Size(3));
-      TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(3));
-      TS_ASSERT_EQUALS(bn.dim(),
-                       gum::Size((2 - 1) + (2 * (5 - 1)) + (5 * 2 * (2 - 1))));
+        bn = gum::BayesNet< float >::fastPrototype("a->b[5]->c;a->c");
+        TS_ASSERT_EQUALS(bn.size(), gum::Size(3));
+        TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(3));
+        TS_ASSERT_EQUALS(bn.dim(),
+                         gum::Size((2 - 1) + (2 * (5 - 1)) + (5 * 2 * (2 - 1))));
 
-      bn = gum::BayesNet<int>::fastPrototype("a->b->c;a[1000]->c");
-      TS_ASSERT_EQUALS(bn.size(), gum::Size(3));
-      TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(3));
-      TS_ASSERT_EQUALS(bn.dim(),
-                       gum::Size((2 - 1) + (2 * (2 - 1)) + (2 * 2 * (2 - 1))));
+        bn = gum::BayesNet< float >::fastPrototype("a->b->c;a[1000]->c");
+        TS_ASSERT_EQUALS(bn.size(), gum::Size(3));
+        TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(3));
+        TS_ASSERT_EQUALS(bn.dim(),
+                         gum::Size((2 - 1) + (2 * (2 - 1)) + (2 * 2 * (2 - 1))));
 
-      TS_ASSERT_THROWS(bn = gum::BayesNet<int>::fastPrototype("a->b->c->a"),
-                       gum::InvalidDirectedCycle);
+        TS_ASSERT_THROWS(bn = gum::BayesNet< float >::fastPrototype("a->b->c->a"),
+                         gum::InvalidDirectedCycle);
 
-      bn = gum::BayesNet<int>::fastPrototype("a{yes|maybe|no}->b->c;a->c");
-      TS_ASSERT_EQUALS(bn.size(), gum::Size(3));
-      TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(3));
-      TS_ASSERT_EQUALS(bn.dim(),
-                       gum::Size((3 - 1) + (3 * (2 - 1)) + (3 * 2 * (2 - 1))));
+        bn = gum::BayesNet< float >::fastPrototype("a{yes|maybe|no}->b->c;a->c");
+        TS_ASSERT_EQUALS(bn.size(), gum::Size(3));
+        TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(3));
+        TS_ASSERT_EQUALS(bn.dim(),
+                         gum::Size((3 - 1) + (3 * (2 - 1)) + (3 * 2 * (2 - 1))));
 
-      TS_ASSERT_THROWS(gum::BayesNet<int>::fastPrototype("a{yes}->b->c;a->c"),
-                       gum::InvalidArgument);
-      TS_ASSERT_THROWS(
-          gum::BayesNet<int>::fastPrototype("a{yes|no|yes}->b->c;a->c"),
-          gum::InvalidArgument);
+        TS_ASSERT_THROWS(gum::BayesNet< float >::fastPrototype("a{yes}->b->c;a->c"),
+                         gum::InvalidArgument);
+        TS_ASSERT_THROWS(
+           gum::BayesNet< float >::fastPrototype("a{yes|no|yes}->b->c;a->c"),
+           gum::InvalidArgument);
 
-      bn = gum::BayesNet<int>::fastPrototype("a->b->c->d->e->f");
-      TS_ASSERT_EQUALS(bn.size(), gum::Size(6));
-      TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(5));
-      TS_ASSERT_EQUALS(bn.dim(), gum::Size(1 + 5 * 2));
+        bn = gum::BayesNet< float >::fastPrototype("a->b->c->d->e->f");
+        TS_ASSERT_EQUALS(bn.size(), gum::Size(6));
+        TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(5));
+        TS_ASSERT_EQUALS(bn.dim(), gum::Size(1 + 5 * 2));
 
-      bn = gum::BayesNet<int>::fastPrototype("a<-b<-c<-d<-e<-f");
-      TS_ASSERT_EQUALS(bn.size(), gum::Size(6));
-      TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(5));
-      TS_ASSERT_EQUALS(bn.dim(), gum::Size(1 + 5 * 2));
+        bn = gum::BayesNet< float >::fastPrototype("a<-b<-c<-d<-e<-f");
+        TS_ASSERT_EQUALS(bn.size(), gum::Size(6));
+        TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(5));
+        TS_ASSERT_EQUALS(bn.dim(), gum::Size(1 + 5 * 2));
 
-      bn = gum::BayesNet<int>::fastPrototype("a<-b->c<-d->e<-f");
-      TS_ASSERT_EQUALS(bn.size(), gum::Size(6));
-      TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(5));
-      TS_ASSERT_EQUALS(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
+        bn = gum::BayesNet< float >::fastPrototype("a<-b->c<-d->e<-f");
+        TS_ASSERT_EQUALS(bn.size(), gum::Size(6));
+        TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(5));
+        TS_ASSERT_EQUALS(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
 
-      bn = gum::BayesNet<int>::fastPrototype("a->b<-c->d<-e->f");
-      TS_ASSERT_EQUALS(bn.size(), gum::Size(6));
-      TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(5));
-      TS_ASSERT_EQUALS(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
+        bn = gum::BayesNet< float >::fastPrototype("a->b<-c->d<-e->f");
+        TS_ASSERT_EQUALS(bn.size(), gum::Size(6));
+        TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(5));
+        TS_ASSERT_EQUALS(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
 
-      bn = gum::BayesNet<int>::fastPrototype("a->b<-c;c->d<-e->f");
-      TS_ASSERT_EQUALS(bn.size(), gum::Size(6));
-      TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(5));
-      TS_ASSERT_EQUALS(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
+        bn = gum::BayesNet< float >::fastPrototype("a->b<-c;c->d<-e->f");
+        TS_ASSERT_EQUALS(bn.size(), gum::Size(6));
+        TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(5));
+        TS_ASSERT_EQUALS(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
 
-      bn = gum::BayesNet<int>::fastPrototype("a->b<-c->d;d<-e->f");
-      TS_ASSERT_EQUALS(bn.size(), gum::Size(6));
-      TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(5));
-      TS_ASSERT_EQUALS(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
+        bn = gum::BayesNet< float >::fastPrototype("a->b<-c->d;d<-e->f");
+        TS_ASSERT_EQUALS(bn.size(), gum::Size(6));
+        TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(5));
+        TS_ASSERT_EQUALS(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
 
-      bn = gum::BayesNet<int>::fastPrototype("a->b;b<-c;c->d;d<-e;e->f");
-      TS_ASSERT_EQUALS(bn.size(), gum::Size(6));
-      TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(5));
-      TS_ASSERT_EQUALS(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
+        bn = gum::BayesNet< float >::fastPrototype("a->b;b<-c;c->d;d<-e;e->f");
+        TS_ASSERT_EQUALS(bn.size(), gum::Size(6));
+        TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(5));
+        TS_ASSERT_EQUALS(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
+      } catch (gum::Exception& e) {GUM_SHOWERROR(e);}
     }
 
     void testNonRegressionCPTinReverseArc() {

@@ -54,18 +54,17 @@ namespace gum {
      const Idx& varId, const Potential< GUM_SCALAR >& cpt) {
     cpt.random();
 
-    Instantiation varInst;
-    varInst.add(cpt.variable(varId));
+    const auto& var=cpt.variable(varId);
     Instantiation cptInst(cpt);
 
-    for (cptInst.setFirstOut(varInst); !cptInst.end(); cptInst.incOut(varInst)) {
+    for (cptInst.setFirstNotVar(var); !cptInst.end(); cptInst.incNotVar(var)) {
       GUM_SCALAR sum = (GUM_SCALAR)0;
 
-      for (cptInst.setFirstIn(varInst); !cptInst.end(); cptInst.incIn(varInst)) {
+      for (cptInst.setFirstVar(var); !cptInst.end(); cptInst.incVar(var)) {
         sum += cpt[cptInst];
       }
 
-      for (cptInst.setFirstIn(varInst); !cptInst.end(); cptInst.incIn(varInst)) {
+      for (cptInst.setFirstVar(var); !cptInst.end(); cptInst.incVar(var)) {
         cpt.set(cptInst, cpt[cptInst] / sum);
       }
 

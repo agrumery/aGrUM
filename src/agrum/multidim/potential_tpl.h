@@ -613,10 +613,17 @@ namespace gum {
   const Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::random() const {
     std::vector< GUM_SCALAR > v;
 
+    GUM_SCALAR sum;
     v.reserve(this->domainSize());
-    for (Size i = 0; i < this->domainSize(); ++i) {
-      v.push_back((GUM_SCALAR)randomProba());
-    }
+    do {
+      sum = 0.0;
+      for (Size i = 0; i < this->domainSize(); ++i) {
+        auto r = (GUM_SCALAR)randomProba();
+        v.push_back(r);
+        sum += r;
+      }
+    } while (sum == 0.0);
+
     this->fillWith(v);
     return *this;
   }

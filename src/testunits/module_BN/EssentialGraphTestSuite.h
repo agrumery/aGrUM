@@ -34,7 +34,7 @@ namespace gum_tests {
   class EssentialGraphTestSuite : public CxxTest::TestSuite {
     public:
     void testChain() {
-      auto bn = gum::BayesNet< int >::fastPrototype("a->b->c");
+      auto bn = gum::BayesNet< float >::fastPrototype("a->b->c");
       auto eg = gum::EssentialGraph(bn);
 
       TS_ASSERT_EQUALS(eg.size(), 3u);
@@ -43,7 +43,7 @@ namespace gum_tests {
     }
 
     void testVstructure() {
-      auto bn = gum::BayesNet< int >::fastPrototype("a->b;c->b");
+      auto bn = gum::BayesNet< float >::fastPrototype("a->b;c->b");
       auto eg = gum::EssentialGraph(bn);
 
       TS_ASSERT_EQUALS(eg.size(), 3u);
@@ -52,7 +52,7 @@ namespace gum_tests {
     }
     void testCaseD() {
       auto bn =
-         gum::BayesNet< int >::fastPrototype("a->b;c1->b;c2->b;a->c1;a->c2");
+         gum::BayesNet< float >::fastPrototype("a->b;c1->b;c2->b;a->c1;a->c2");
       auto eg = gum::EssentialGraph(bn);
 
       TS_ASSERT_EQUALS(eg.size(), 4u);
@@ -61,7 +61,7 @@ namespace gum_tests {
     }
 
     void testNotebook1() {
-      auto bn = gum::BayesNet< int >::fastPrototype(
+      auto bn = gum::BayesNet< float >::fastPrototype(
          "A->B->C->D;E->B;F->G->D;F->H->I;E->J->K->I->M;K->L");
       auto eg = gum::EssentialGraph(bn);
 
@@ -70,7 +70,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(eg.sizeEdges(), 5u);
     }
     void testNotebook2() {
-      auto bn = gum::BayesNet< int >::fastPrototype("A->B;C->B;C->D;B->D;A->C");
+      auto bn = gum::BayesNet< float >::fastPrototype("A->B;C->B;C->D;B->D;A->C");
       auto eg = gum::EssentialGraph(bn);
 
       TS_ASSERT_EQUALS(eg.size(), 4u);
@@ -78,7 +78,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(eg.sizeEdges(), 5u);
     }
     void testNotebook3() {
-      auto bn = gum::BayesNet< int >::fastPrototype("Z->X->U;Y->X;Y->W");
+      auto bn = gum::BayesNet< float >::fastPrototype("Z->X->U;Y->X;Y->W");
       auto eg = gum::EssentialGraph(bn);
 
       TS_ASSERT_EQUALS(eg.size(), 5u);
@@ -86,7 +86,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(eg.sizeEdges(), 1u);
     }
     void testSkeleton() {
-      auto bn = gum::BayesNet< int >::fastPrototype("Z->X->U;Y->X;Y->W");
+      auto bn = gum::BayesNet< float >::fastPrototype("Z->X->U;Y->X;Y->W");
       auto eg = gum::EssentialGraph(bn);
       auto skel = eg.skeleton();
 
