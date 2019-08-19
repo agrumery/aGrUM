@@ -120,8 +120,8 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    DAG2BNLearner< ALLOC >&
-       DAG2BNLearner< ALLOC >::operator=(const DAG2BNLearner< ALLOC >& from) {
+    DAG2BNLearner< ALLOC >& DAG2BNLearner< ALLOC >::
+                            operator=(const DAG2BNLearner< ALLOC >& from) {
       ApproximationScheme::operator=(from);
       return *this;
     }
@@ -129,8 +129,8 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    DAG2BNLearner< ALLOC >&
-       DAG2BNLearner< ALLOC >::operator=(DAG2BNLearner< ALLOC >&& from) {
+    DAG2BNLearner< ALLOC >& DAG2BNLearner< ALLOC >::
+                            operator=(DAG2BNLearner< ALLOC >&& from) {
       ApproximationScheme::operator=(std::move(from));
       return *this;
     }
@@ -218,7 +218,7 @@ namespace gum {
        const DAG&               dag) {
       // bootstrap EM by learning an initial model
       BayesNet< GUM_SCALAR > bn = createBN< GUM_SCALAR >(bootstrap_estimator, dag);
-      for(const auto& nod:bn.nodes()) {
+      for (const auto& nod : bn.nodes()) {
         bn.cpt(nod).noising(0.1);
       }
       general_estimator.setBayesNet(bn);

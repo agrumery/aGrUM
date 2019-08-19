@@ -54,7 +54,7 @@ namespace gum {
      const Idx& varId, const Potential< GUM_SCALAR >& cpt) {
     cpt.random();
 
-    const auto& var=cpt.variable(varId);
+    const auto&   var = cpt.variable(varId);
     Instantiation cptInst(cpt);
 
     for (cptInst.setFirstNotVar(var); !cptInst.end(); cptInst.incNotVar(var)) {

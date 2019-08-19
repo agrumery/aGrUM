@@ -420,12 +420,14 @@ namespace gum {
     // update the conditional distributions of head and tail
     Set< const DiscreteVariable* > del_vars;
     del_vars << &(variable(tail));
-    Potential< GUM_SCALAR > new_cpt_head = prod.margSumOut(del_vars).putFirst(&variable(head));
+    Potential< GUM_SCALAR > new_cpt_head =
+       prod.margSumOut(del_vars).putFirst(&variable(head));
 
     auto& cpt_head = const_cast< Potential< GUM_SCALAR >& >(cpt(head));
     cpt_head = std::move(new_cpt_head);
 
-    Potential< GUM_SCALAR > new_cpt_tail{(prod / cpt_head).putFirst(&variable(tail))};
+    Potential< GUM_SCALAR > new_cpt_tail{
+       (prod / cpt_head).putFirst(&variable(tail))};
     auto& cpt_tail = const_cast< Potential< GUM_SCALAR >& >(cpt(tail));
     cpt_tail = std::move(new_cpt_tail);
   }

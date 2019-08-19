@@ -366,10 +366,10 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(path[2], 4U);
       TS_ASSERT_EQUALS(path[3], 1U);
 
-      TS_ASSERT_EQUALS(graph.hasDirectedPath(0,1),true);
-      TS_ASSERT_EQUALS(graph.hasDirectedPath(0,0),false);
-      TS_ASSERT_EQUALS(graph.hasDirectedPath(0,4),true);
-      TS_ASSERT_EQUALS(graph.hasDirectedPath(1,1),true);
+      TS_ASSERT_EQUALS(graph.hasDirectedPath(0, 1), true);
+      TS_ASSERT_EQUALS(graph.hasDirectedPath(0, 0), false);
+      TS_ASSERT_EQUALS(graph.hasDirectedPath(0, 4), true);
+      TS_ASSERT_EQUALS(graph.hasDirectedPath(1, 1), true);
 
       TS_ASSERT_THROWS(graph.directedPath(1, 2), gum::NotFound);
 

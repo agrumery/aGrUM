@@ -141,8 +141,8 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    ParamEstimatorML< ALLOC >& ParamEstimatorML< ALLOC >::operator=(
-       const ParamEstimatorML< ALLOC >& from) {
+    ParamEstimatorML< ALLOC >& ParamEstimatorML< ALLOC >::
+                               operator=(const ParamEstimatorML< ALLOC >& from) {
       ParamEstimator< ALLOC >::operator=(from);
       return *this;
     }
@@ -150,8 +150,8 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    ParamEstimatorML< ALLOC >&
-       ParamEstimatorML< ALLOC >::operator=(ParamEstimatorML< ALLOC >&& from) {
+    ParamEstimatorML< ALLOC >& ParamEstimatorML< ALLOC >::
+                               operator=(ParamEstimatorML< ALLOC >&& from) {
       ParamEstimator< ALLOC >::operator=(std::move(from));
       return *this;
     }

@@ -37,11 +37,12 @@ namespace gum_tests {
       auto bn = gum::BayesNet< float >::fastPrototype("a->b->c;a->c");
 
       TS_ASSERT(bn.hasSameStructure(bn));
-      TS_ASSERT(
-         bn.hasSameStructure(gum::BayesNet< float >::fastPrototype("a->b->c;a->c")));
+      TS_ASSERT(bn.hasSameStructure(
+         gum::BayesNet< float >::fastPrototype("a->b->c;a->c")));
       TS_ASSERT(!bn.hasSameStructure(
          gum::BayesNet< float >::fastPrototype("b->a->c;b->c")));
-      TS_ASSERT(!bn.hasSameStructure(gum::BayesNet< float >::fastPrototype("b->a")));
+      TS_ASSERT(
+         !bn.hasSameStructure(gum::BayesNet< float >::fastPrototype("b->a")));
       TS_ASSERT(
          !bn.hasSameStructure(gum::BayesNet< double >::fastPrototype("b->a")));
       TS_ASSERT(

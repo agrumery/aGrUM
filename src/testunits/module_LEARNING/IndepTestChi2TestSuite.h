@@ -227,7 +227,7 @@ namespace gum_tests {
 
     void test_statistics_3() {
       gum::learning::DBInitializerFromCSV<> initializer(
-          GET_RESSOURCES_PATH("indepXYZ1Z2.csv"));
+         GET_RESSOURCES_PATH("indepXYZ1Z2.csv"));
       const auto&       var_names = initializer.variableNames();
       const std::size_t nb_vars = var_names.size();
 
@@ -246,13 +246,13 @@ namespace gum_tests {
       gum::learning::AprioriNoApriori<>     apriori(database);
       gum::learning::IndepTestChi2<>        score(parser, apriori);
 
-      auto stats = score.statistics(0, 1,{2,3});
+      auto stats = score.statistics(0, 1, {2, 3});
       TS_ASSERT_DELTA(stats.first, 2.0, 1e-3);
       TS_ASSERT_DELTA(stats.second, 0.7357588823428847, 1e-3);
     }
     void test_statistics_4() {
       gum::learning::DBInitializerFromCSV<> initializer(
-          GET_RESSOURCES_PATH("indepXYZ.csv"));
+         GET_RESSOURCES_PATH("indepXYZ.csv"));
       const auto&       var_names = initializer.variableNames();
       const std::size_t nb_vars = var_names.size();
 
@@ -271,7 +271,7 @@ namespace gum_tests {
       gum::learning::AprioriNoApriori<>     apriori(database);
       gum::learning::IndepTestChi2<>        score(parser, apriori);
 
-      auto stats = score.statistics(0, 1,{2});
+      auto stats = score.statistics(0, 1, {2});
       TS_ASSERT_DELTA(stats.first, 2.0, 1e-3);
       TS_ASSERT_DELTA(stats.second, 0.5724067044783774, 1e-3);
     }

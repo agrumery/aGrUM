@@ -159,7 +159,6 @@ namespace gum {
     /// @}
 
     UndiGraph moralGraph() const;
-
   };
 
 } /* namespace gum */

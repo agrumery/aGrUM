@@ -92,8 +92,8 @@ namespace gum {
 
   // operator = copy
   template < typename GUM_SCALAR >
-  Potential< GUM_SCALAR >&
-     Potential< GUM_SCALAR >::operator=(const Potential< GUM_SCALAR >& src) {
+  Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::
+                           operator=(const Potential< GUM_SCALAR >& src) {
     GUM_OP_CPY(Potential);
     if (&src == this) return *this;
     MultiDimDecorator< GUM_SCALAR >::operator=(src);
@@ -102,8 +102,8 @@ namespace gum {
 
   // operator = move
   template < typename GUM_SCALAR >
-  Potential< GUM_SCALAR >&
-     Potential< GUM_SCALAR >::operator=(Potential< GUM_SCALAR >&& src) {
+  Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::
+                           operator=(Potential< GUM_SCALAR >&& src) {
     GUM_OP_MOV(Potential);
     if (&src == this) return *this;
     MultiDimDecorator< GUM_SCALAR >::operator=(

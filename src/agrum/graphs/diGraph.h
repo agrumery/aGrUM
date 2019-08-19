@@ -198,7 +198,8 @@ namespace gum {
 
     /** checks whether there exists a directed path from \e from to \e to
      *
-     * If from==to, this function checks if a directed cycle containing \e from exists.
+     * If from==to, this function checks if a directed cycle containing \e from
+     * exists.
      * @param from
      * @param to
      * @return true if a directed path exists

@@ -122,18 +122,16 @@ namespace gum_tests {
     }
 
     void testDisturbBNFloatCPT() {
-      int nbrtests=0;
+      int nbrtests = 0;
       try {
-        gum::MaxInducedWidthMCBayesNetGenerator<double> gen(
-            30, 100, 8, 30, 40, 50);
-        gum::BayesNet<double> bn;
+        gum::MaxInducedWidthMCBayesNetGenerator< double > gen(
+           30, 100, 8, 30, 40, 50);
+        gum::BayesNet< double > bn;
         gen.generateBN(bn);
         gen.disturbBN(bn);
       } catch (gum::Exception& e) {
         nbrtests++;
-        if (nbrtests>10) {
-          TS_ASSERT(false);
-        }
+        if (nbrtests > 10) { TS_ASSERT(false); }
       }
     }
 

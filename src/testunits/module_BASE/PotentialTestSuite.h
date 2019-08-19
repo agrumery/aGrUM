@@ -1149,7 +1149,7 @@ namespace gum_tests {
       for (I.setFirst(); !I.end(); I.inc()) {
         TS_ASSERT_DELTA(p[I], 0.25, 1e-6);
       }
-      
+
       for (double alpha = 0.0; alpha <= 1; alpha += 0.1) {
         p.fillWith(1.0).normalizeAsCPT();   // every thing should be 0.25
         p.noising(alpha);
