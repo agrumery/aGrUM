@@ -121,6 +121,19 @@ namespace gum {
     /// @name Class operation for Potential instances
     // ========================================================================
     ///@{
+    /** generate a random Potential with each parameter in [0,1]*/
+    const Potential< GUM_SCALAR >& random() const;
+
+    /** generate a random Distribution in the Potential */
+    const Potential< GUM_SCALAR >& randomDistribution() const;
+
+    /** generate a random CPT in the Potential */
+    const Potential< GUM_SCALAR >& randomCPT() const;
+
+    /** add a noise in a CPT by mixing (1-alpha)this+alpha.randomCPT()
+     * @warning alpha in [0,1]
+     */
+    const Potential< GUM_SCALAR >& noising(GUM_SCALAR alpha) const;
 
     /**
      * Projection using sum as operation (and implementation-optimized
@@ -312,7 +325,7 @@ namespace gum {
      * @brief normalisation of this as a CPT
      * @throw FatalError it some distribution sums to 0
      */
-    void normalizeAsCPT() const;
+    const Potential< GUM_SCALAR >& normalizeAsCPT() const;
 
     /**
      * @brief create a new potential multiplied by v from *this

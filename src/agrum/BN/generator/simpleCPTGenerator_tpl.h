@@ -52,14 +52,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   void SimpleCPTGenerator< GUM_SCALAR >::generateCPT(
      const Idx& varId, const Potential< GUM_SCALAR >& cpt) {
-    std::vector< GUM_SCALAR > v;
+    cpt.random();
 
-    v.reserve(cpt.domainSize());
-    for (Size i = 0; i < cpt.domainSize(); ++i) {
-      v.push_back((GUM_SCALAR)randomValue(10000));
-    }
-
-    cpt.fillWith(v);
     Instantiation varInst;
     varInst.add(cpt.variable(varId));
     Instantiation cptInst(cpt);

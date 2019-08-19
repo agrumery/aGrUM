@@ -856,7 +856,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(total, 3);
     }
 
-    void /*test*/EliminatationOffAllVariables() {
+    void /*test*/ EliminatationOffAllVariables() {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
 
@@ -1110,6 +1110,55 @@ namespace gum_tests {
         v.addTick(3);
         TS_ASSERT_EQUALS(v.domainSize(), gum::Size(2));
         TS_GUM_ASSERT_THROWS_NOTHING(p.add(v));
+      }
+    }
+    void testRandomPotential() {
+      gum::LabelizedVariable   u("u", "u", 4), v("v", "v", 2), w("w", "w", 3);
+      gum::Potential< double > p;
+      p.add(u);
+      p.add(v);
+      p.add(w);
+      gum::Instantiation I(p);
+
+      p.random();
+      for (I.setFirst(); !I.end(); I.inc()) {
+        TS_ASSERT_LESS_THAN_EQUALS(p[I], 1.0);
+      }
+
+      p.randomDistribution();
+      double cum = 0.0;
+      for (I.setFirst(); !I.end(); I.inc()) {
+        TS_ASSERT_LESS_THAN_EQUALS(p[I], 1.0);
+        cum += p[I];
+      }
+      TS_ASSERT_DELTA(cum, 1.0, 1e-6);
+
+      p.randomCPT();
+      const gum::DiscreteVariable& var = p.variable(0);
+      for (I.setFirstNotVar(var); !I.end(); I.incNotVar(var)) {
+        cum = 0.0;
+        for (I.setFirstVar(var); !I.end(); I.incVar(var)) {
+          TS_ASSERT_LESS_THAN_EQUALS(p[I], 1.0);
+          cum += p[I];
+        }
+        TS_ASSERT_DELTA(cum, 1.0, 1e-6);
+        I.unsetEnd();
+      }
+
+      p.fillWith(1.0).normalizeAsCPT();   // every thing should be 0.25
+      for (I.setFirst(); !I.end(); I.inc()) {
+        TS_ASSERT_DELTA(p[I], 0.25, 1e-6);
+      }
+      
+      for (double alpha = 0.0; alpha <= 1; alpha += 0.1) {
+        p.fillWith(1.0).normalizeAsCPT();   // every thing should be 0.25
+        p.noising(alpha);
+        double min = (1 - alpha) * 0.25 + alpha * 0.0;
+        double max = (1 - alpha) * 0.25 + alpha * 1.0;
+        for (I.setFirst(); !I.end(); I.inc()) {
+          TS_ASSERT_LESS_THAN_EQUALS(min, p[I]);
+          TS_ASSERT_LESS_THAN_EQUALS(p[I], max);
+        }
       }
     }
   };

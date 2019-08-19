@@ -92,20 +92,22 @@ namespace gum {
 
   // operator = copy
   template < typename GUM_SCALAR >
-  Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::
-                           operator=(const Potential< GUM_SCALAR >& src) {
-    MultiDimDecorator< GUM_SCALAR >::operator=(src);
+  Potential< GUM_SCALAR >&
+     Potential< GUM_SCALAR >::operator=(const Potential< GUM_SCALAR >& src) {
     GUM_OP_CPY(Potential);
+    if (&src == this) return *this;
+    MultiDimDecorator< GUM_SCALAR >::operator=(src);
     return *this;
   }
 
   // operator = move
   template < typename GUM_SCALAR >
-  Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::
-                           operator=(Potential< GUM_SCALAR >&& src) {
+  Potential< GUM_SCALAR >&
+     Potential< GUM_SCALAR >::operator=(Potential< GUM_SCALAR >&& src) {
+    GUM_OP_MOV(Potential);
+    if (&src == this) return *this;
     MultiDimDecorator< GUM_SCALAR >::operator=(
        std::forward< MultiDimDecorator< GUM_SCALAR > >(src));
-    GUM_OP_MOV(Potential);
     return *this;
   }
 
@@ -367,7 +369,8 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE void Potential< GUM_SCALAR >::normalizeAsCPT() const {
+  INLINE const Potential< GUM_SCALAR >&
+               Potential< GUM_SCALAR >::normalizeAsCPT() const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->_content)->empty()) {
       if (this->_empty_value != static_cast< GUM_SCALAR >(0)) {
         this->_empty_value = static_cast< GUM_SCALAR >(1.0);
@@ -394,6 +397,7 @@ namespace gum {
         inst.setFirstVar(v);   // to remove inst.end()
       }
     }
+    return *this;
   }
 
   template < typename GUM_SCALAR >
@@ -539,8 +543,7 @@ namespace gum {
       GUM_ERROR(InvalidArgument,
                 "The variable to put first does not belong to the potential");
     }
-    if (&(this->variable(0))==var)
-      return Potential<GUM_SCALAR>(*this);
+    if (&(this->variable(0)) == var) return Potential< GUM_SCALAR >(*this);
 
     std::vector< const DiscreteVariable* > vars;
     vars.push_back(var);
@@ -604,6 +607,41 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE Set< Instantiation > Potential< GUM_SCALAR >::argmin() const {
     return findAll(min());
+  }
+
+  template < typename GUM_SCALAR >
+  const Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::random() const {
+    std::vector< GUM_SCALAR > v;
+
+    v.reserve(this->domainSize());
+    for (Size i = 0; i < this->domainSize(); ++i) {
+      v.push_back((GUM_SCALAR)randomProba());
+    }
+    this->fillWith(v);
+    return *this;
+  }
+
+  template < typename GUM_SCALAR >
+  INLINE const Potential< GUM_SCALAR >&
+               Potential< GUM_SCALAR >::randomDistribution() const {
+    return this->random().normalize();
+  }
+
+  template < typename GUM_SCALAR >
+  INLINE const Potential< GUM_SCALAR >&
+               Potential< GUM_SCALAR >::randomCPT() const {
+    return this->random().normalizeAsCPT();
+  }
+
+  template < typename GUM_SCALAR >
+  const Potential< GUM_SCALAR >&
+     Potential< GUM_SCALAR >::noising(GUM_SCALAR alpha) const {
+    if ((alpha < GUM_SCALAR(0.0)) || (alpha > GUM_SCALAR(1.0))) {
+      GUM_ERROR(InvalidArgument, "alpha must be in [0,1]");
+    }
+    Potential< GUM_SCALAR > noise(*this);
+    return fillWith(scale(1 - alpha) + noise.randomCPT().scale(alpha))
+       .normalizeAsCPT();
   }
 
 } /* namespace gum */
