@@ -7436,6 +7436,22 @@ class Potential(object):
         """
         return _pyAgrum.Potential_newFactory(self)
 
+    def random(self):
+        r"""random(Potential self) -> Potential"""
+        return _pyAgrum.Potential_random(self)
+
+    def randomDistribution(self):
+        r"""randomDistribution(Potential self) -> Potential"""
+        return _pyAgrum.Potential_randomDistribution(self)
+
+    def randomCPT(self):
+        r"""randomCPT(Potential self) -> Potential"""
+        return _pyAgrum.Potential_randomCPT(self)
+
+    def noising(self, alpha):
+        r"""noising(Potential self, double alpha) -> Potential"""
+        return _pyAgrum.Potential_noising(self, alpha)
+
     def isNonZeroMap(self):
         r"""
         isNonZeroMap(Potential self) -> Potential
@@ -7679,7 +7695,7 @@ class Potential(object):
 
     def normalizeAsCPT(self):
         r"""
-        normalizeAsCPT(Potential self)
+        normalizeAsCPT(Potential self) -> Potential
 
         Normalize the Potential as a CPT
 

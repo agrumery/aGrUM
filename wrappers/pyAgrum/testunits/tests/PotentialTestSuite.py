@@ -14,7 +14,7 @@ class PotentialTestCase(pyAgrumTestCase):
     self.var.update({"c": gum.LabelizedVariable("c", "nuages", 2)})
     self.var.update({"s": gum.LabelizedVariable("s", "arrosoir", 2)})
     r = gum.LabelizedVariable("r", "pluie", 0).addLabel('bof') \
-      .addLabel('carrement')
+        .addLabel('carrement')
     self.var.update({"r": r})
     self.var.update({"w": gum.LabelizedVariable("w", "herbe mouillée", 2)})
 
@@ -84,13 +84,13 @@ class TestInsertions(PotentialTestCase):
     list3 = bn.cpt(id_list[3])
     self.assertEqual(list3.var_names, ['d', 'r', 's', 'w'])
     list3[0, :, :, :] = \
-      [[[0.99, 0.1], [0.1, 0]], [[0.01, 0.9], [0.9, 1]]]
+        [[[0.99, 0.1], [0.1, 0]], [[0.01, 0.9], [0.9, 1]]]
     list3[1, :, :, :] = \
-      [[[0.99, 0.1], [0.1, 0]], [[0.01, 0.9], [0.9, 1]]]
+        [[[0.99, 0.1], [0.1, 0]], [[0.01, 0.9], [0.9, 1]]]
     list3[2, :, :, :] = \
-      [[[0.99, 0.1], [0.1, 0]], [[0.01, 0.9], [0.9, 1]]]
+        [[[0.99, 0.1], [0.1, 0]], [[0.01, 0.9], [0.9, 1]]]
     list3[3, :, :, :] = \
-      [[[0.99, 0.1], [0.1, 0]], [[0.01, 0.9], [0.9, 1]]]
+        [[[0.99, 0.1], [0.1, 0]], [[0.01, 0.9], [0.9, 1]]]
 
     list3[2, :, :, :] = 0.25
     self.assertListsAlmostEqual(list3[2, :, :, :].tolist(),
@@ -103,7 +103,7 @@ class TestInsertions(PotentialTestCase):
     id_list = []
     self.fillBN(bn, id_list)
     list3 = bn.cpt(id_list[3])
-    list3[:] = [[[1, 0], [0.1, 0.9]], \
+    list3[:] = [[[1, 0], [0.1, 0.9]],
                 [[0.1, 0.9], [0.01, 0.99]]]
     i = gum.Instantiation(list3)
     list3.set(i, 0)
@@ -198,12 +198,15 @@ class TestIndexs(PotentialTestCase):
     self.assertListsAlmostEqual(list2[{'c': 0}].tolist(), [0.1, 0.6])
     self.assertListsAlmostEqual(list2[{'c': 1}].tolist(), [0.9, 0.4])
 
-    self.assertListsAlmostEqual(list2[{'r': 'bof', 'existepas': 0}].tolist(), [0.1, 0.9])
-    self.assertListsAlmostEqual(list2[{'r': 1, 'existepas': 'et non'}].tolist(), [0.6, 0.4])
+    self.assertListsAlmostEqual(
+        list2[{'r': 'bof', 'existepas': 0}].tolist(), [0.1, 0.9])
+    self.assertListsAlmostEqual(
+        list2[{'r': 1, 'existepas': 'et non'}].tolist(), [0.6, 0.4])
 
     self.assertRaises(IndexError, list2.__getitem__, {'r': 99})
 
-    self.assertListsAlmostEqual(list2.toarray(), np.array([[0.1, 0.6], [0.9, 0.4]]))
+    self.assertListsAlmostEqual(
+        list2.toarray(), np.array([[0.1, 0.6], [0.9, 0.4]]))
 
 
 class TestOperators(pyAgrumTestCase):
@@ -220,36 +223,44 @@ class TestOperators(pyAgrumTestCase):
     self.assertEqual((p + q).var_names, ['a', 'c', 'b'])
     self.assertEqual((q + p).var_names, ['c', 'a', 'b'])
     self.assertEqual((p + q).tolist(), [[[2.0, 6.0, 10.0], [5.0, 9.0, 13.0], [8.0, 12.0, 16.0]],
-                                        [[3.0, 7.0, 11.0], [6.0, 10.0, 14.0], [9.0, 13.0, 17.0]],
+                                        [[3.0, 7.0, 11.0], [6.0, 10.0, 14.0],
+                                         [9.0, 13.0, 17.0]],
                                         [[4.0, 8.0, 12.0], [7.0, 11.0, 15.0], [10.0, 14.0, 18.0]]])
     self.assertEqual((q + p).tolist(), [[[2.0, 6.0, 10.0], [3.0, 7.0, 11.0], [4.0, 8.0, 12.0]],
-                                        [[5.0, 9.0, 13.0], [6.0, 10.0, 14.0], [7.0, 11.0, 15.0]],
+                                        [[5.0, 9.0, 13.0], [6.0, 10.0, 14.0],
+                                         [7.0, 11.0, 15.0]],
                                         [[8.0, 12.0, 16.0], [9.0, 13.0, 17.0], [10.0, 14.0, 18.0]]])
 
     self.assertEqual((p - q).var_names, ['a', 'c', 'b'])
     self.assertEqual((q - p).var_names, ['c', 'a', 'b'])
     self.assertEqual((p - q).tolist(), [[[0.0, 2.0, 4.0], [-3.0, -1.0, 1.0], [-6.0, -4.0, -2.0]],
-                                        [[1.0, 3.0, 5.0], [-2.0, 0.0, 2.0], [-5.0, -3.0, -1.0]],
+                                        [[1.0, 3.0, 5.0], [-2.0, 0.0, 2.0],
+                                         [-5.0, -3.0, -1.0]],
                                         [[2.0, 4.0, 6.0], [-1.0, 1.0, 3.0], [-4.0, -2.0, 0.0]]])
     self.assertEqual((q - p).tolist(), [[[0.0, -2.0, -4.0], [-1.0, -3.0, -5.0], [-2.0, -4.0, -6.0]],
-                                        [[3.0, 1.0, -1.0], [2.0, 0.0, -2.0], [1.0, -1.0, -3.0]],
+                                        [[3.0, 1.0, -1.0], [2.0, 0.0, -2.0],
+                                         [1.0, -1.0, -3.0]],
                                         [[6.0, 4.0, 2.0], [5.0, 3.0, 1.0], [4.0, 2.0, 0.0]]])
 
     self.assertEqual((p * q).var_names, ['a', 'c', 'b'])
     self.assertEqual((q * p).var_names, ['c', 'a', 'b'])
     self.assertEqual((p * q).tolist(), [[[1.0, 8.0, 21.0], [4.0, 20.0, 42.0], [7.0, 32.0, 63.0]],
-                                        [[2.0, 10.0, 24.0], [8.0, 25.0, 48.0], [14.0, 40.0, 72.0]],
+                                        [[2.0, 10.0, 24.0], [8.0, 25.0, 48.0],
+                                         [14.0, 40.0, 72.0]],
                                         [[3.0, 12.0, 27.0], [12.0, 30.0, 54.0], [21.0, 48.0, 81.0]]])
     self.assertEqual((q * p).tolist(), [[[1.0, 8.0, 21.0], [2.0, 10.0, 24.0], [3.0, 12.0, 27.0]],
-                                        [[4.0, 20.0, 42.0], [8.0, 25.0, 48.0], [12.0, 30.0, 54.0]],
+                                        [[4.0, 20.0, 42.0], [8.0, 25.0, 48.0],
+                                         [12.0, 30.0, 54.0]],
                                         [[7.0, 32.0, 63.0], [14.0, 40.0, 72.0], [21.0, 48.0, 81.0]]])
 
     self.assertEqual((p / q).var_names, ['a', 'c', 'b'])
     self.assertEqual((q / p).var_names, ['c', 'a', 'b'])
     self.assertEqual((p / q).tolist(), [
-      [[1.0, 2.0, 2.3333333333333335], [0.25, 0.8, 1.1666666666666667], [0.14285714285714285, 0.5, 0.7777777777777778]],
-      [[2.0, 2.5, 2.6666666666666665], [0.5, 1.0, 1.3333333333333333], [0.2857142857142857, 0.625, 0.8888888888888888]],
-      [[3.0, 3.0, 3.0], [0.75, 1.2, 1.5], [0.42857142857142855, 0.75, 1.0]]])
+        [[1.0, 2.0, 2.3333333333333335], [0.25, 0.8, 1.1666666666666667],
+         [0.14285714285714285, 0.5, 0.7777777777777778]],
+        [[2.0, 2.5, 2.6666666666666665], [0.5, 1.0, 1.3333333333333333],
+            [0.2857142857142857, 0.625, 0.8888888888888888]],
+        [[3.0, 3.0, 3.0], [0.75, 1.2, 1.5], [0.42857142857142855, 0.75, 1.0]]])
     self.assertEqual((q / p).tolist(), [[[1.0, 0.5, 0.42857142857142855], [0.5, 0.4, 0.375],
                                          [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]],
                                         [[4.0, 1.25, 0.8571428571428571], [2.0, 1.0, 0.75],
@@ -260,10 +271,11 @@ class TestOperators(pyAgrumTestCase):
     z = p * q - p / q
     self.assertEqual(z.var_names, ['a', 'c', 'b'])
     self.assertEqual(z.tolist(), [
-      [[0.0, 6.0, 18.666666666666668], [3.75, 19.2, 40.833333333333336], [6.857142857142857, 31.5, 62.22222222222222]],
-      [[0.0, 7.5, 21.333333333333332], [7.5, 24.0, 46.666666666666664],
-       [13.714285714285714, 39.375, 71.11111111111111]],
-      [[0.0, 9.0, 24.0], [11.25, 28.8, 52.5], [20.571428571428573, 47.25, 80.0]]])
+        [[0.0, 6.0, 18.666666666666668], [3.75, 19.2, 40.833333333333336],
+         [6.857142857142857, 31.5, 62.22222222222222]],
+        [[0.0, 7.5, 21.333333333333332], [7.5, 24.0, 46.666666666666664],
+            [13.714285714285714, 39.375, 71.11111111111111]],
+        [[0.0, 9.0, 24.0], [11.25, 28.8, 52.5], [20.571428571428573, 47.25, 80.0]]])
 
     self.assertEqual((p + q).sum(), 270)
     self.assertEqual((p + q).max(), 18)
@@ -271,7 +283,8 @@ class TestOperators(pyAgrumTestCase):
     # test on fillWith returning potential
     p.fillWith([1, 2, 3, 4, 5, 6, 7, 8, 9]).normalize()
     self.assertEqual(p.tolist(), [[0.022222222222222223, 0.044444444444444446, 0.06666666666666667],
-                                  [0.08888888888888889, 0.1111111111111111, 0.13333333333333333],
+                                  [0.08888888888888889, 0.1111111111111111,
+                                   0.13333333333333333],
                                   [0.15555555555555556, 0.17777777777777778, 0.2]])
 
   def testEquality(self):
@@ -405,16 +418,23 @@ class TestOperators(pyAgrumTestCase):
 
     joint = p * q
 
-    self.assertEquals(joint.margSumIn(['a', 'b']), joint.margSumOut(['c', 'd']))
-    self.assertEquals(joint.margSumIn(['b', 'a']), joint.margSumOut(['c', 'd']))
-    self.assertEquals(joint.margSumIn(['a', 'b']), joint.margSumOut(['d', 'c']))
-    self.assertEquals(joint.margSumIn(['b', 'a']), joint.margSumOut(['d', 'c']))
+    self.assertEquals(joint.margSumIn(
+        ['a', 'b']), joint.margSumOut(['c', 'd']))
+    self.assertEquals(joint.margSumIn(
+        ['b', 'a']), joint.margSumOut(['c', 'd']))
+    self.assertEquals(joint.margSumIn(
+        ['a', 'b']), joint.margSumOut(['d', 'c']))
+    self.assertEquals(joint.margSumIn(
+        ['b', 'a']), joint.margSumOut(['d', 'c']))
 
-    self.assertEquals(joint.margProdIn(['a', 'b']), joint.margProdOut(['c', 'd']))
+    self.assertEquals(joint.margProdIn(
+        ['a', 'b']), joint.margProdOut(['c', 'd']))
 
-    self.assertEquals(joint.margMaxIn(['a', 'b']), joint.margMaxOut(['c', 'd']))
+    self.assertEquals(joint.margMaxIn(
+        ['a', 'b']), joint.margMaxOut(['c', 'd']))
 
-    self.assertEquals(joint.margMinIn(['a', 'b']), joint.margMinOut(['c', 'd']))
+    self.assertEquals(joint.margMinIn(
+        ['a', 'b']), joint.margMinOut(['c', 'd']))
 
     # one can not margIn on an invalid variable
     try:
@@ -465,7 +485,8 @@ class TestOperators(pyAgrumTestCase):
 
     self.assertNotEqual(str(p * q), str(q * p))
     self.assertEqual(str(p * q), str((q * p).reorganize(['c', 'd', 'a', 'b'])))
-    self.assertNotEqual(str(p * q), str((q * p).reorganize(['c', 'a', 'd', 'b'])))
+    self.assertNotEqual(
+        str(p * q), str((q * p).reorganize(['c', 'a', 'd', 'b'])))
 
     try:
       q.reorganize(['a'])
@@ -506,7 +527,8 @@ class TestOperators(pyAgrumTestCase):
     self.assertEqual(pot.extract(I), p)
 
     I.chgVal(c, 2)
-    r = gum.Potential().add(a).add(b).fillWith([3, 6, 9, 12, 15, 18, 21, 24, 27])
+    r = gum.Potential().add(a).add(b).fillWith(
+        [3, 6, 9, 12, 15, 18, 21, 24, 27])
     self.assertEqual(pot.reorganize(['b', 'c', 'a']).extract(I), r)
 
   def testExtractionWithDict(self):
@@ -518,7 +540,8 @@ class TestOperators(pyAgrumTestCase):
 
     self.assertEqual(pot.extract({"c": 0}), p)
 
-    r = gum.Potential().add(a).add(b).fillWith([3, 6, 9, 12, 15, 18, 21, 24, 27])
+    r = gum.Potential().add(a).add(b).fillWith(
+        [3, 6, 9, 12, 15, 18, 21, 24, 27])
     self.assertEqual(pot.reorganize(['b', 'c', 'a']).extract({"c": 2}), r)
 
     try:
@@ -608,14 +631,17 @@ class TestOperators(pyAgrumTestCase):
 
     p = gum.Potential().add(a).add(b).fillWith([1, 2, 3, 4, 5, 6, 7, 8, 9])
     q = gum.Potential().fillWith([1])
-    self.assertEqual(p + q, gum.Potential().add(a).add(b).fillWith([2, 3, 4, 5, 6, 7, 8, 9, 10]))
+    self.assertEqual(
+        p + q, gum.Potential().add(a).add(b).fillWith([2, 3, 4, 5, 6, 7, 8, 9, 10]))
     tmp = p
     tmp += q
-    self.assertEqual(tmp, gum.Potential().add(a).add(b).fillWith([2, 3, 4, 5, 6, 7, 8, 9, 10]))
+    self.assertEqual(tmp, gum.Potential().add(a).add(
+        b).fillWith([2, 3, 4, 5, 6, 7, 8, 9, 10]))
     p = gum.Potential().add(a).add(b).fillWith([1, 2, 3, 4, 5, 6, 7, 8, 9])
     q = gum.Potential().fillWith([1])
     e = str(q + p)
-    self.assertEqual(tmp, gum.Potential().add(a).add(b).fillWith([2, 3, 4, 5, 6, 7, 8, 9, 10]))
+    self.assertEqual(tmp, gum.Potential().add(a).add(
+        b).fillWith([2, 3, 4, 5, 6, 7, 8, 9, 10]))
 
   def testKL(self):
     v = gum.LabelizedVariable("v", "v", 2)
@@ -645,8 +671,10 @@ class TestOperators(pyAgrumTestCase):
     with self.assertRaises(gum.FatalError):
       res = r.KL(p)
 
-    self.assertAlmostEqual(q.KL(r), 0.5 * math.log(0.5 / 0.7, 2) + 0.5 * math.log(0.5 / 0.3, 2))
-    self.assertAlmostEqual(r.KL(q), 0.7 * math.log(0.7 / 0.5, 2) + 0.3 * math.log(0.3 / 0.5, 2))
+    self.assertAlmostEqual(
+        q.KL(r), 0.5 * math.log(0.5 / 0.7, 2) + 0.5 * math.log(0.5 / 0.3, 2))
+    self.assertAlmostEqual(
+        r.KL(q), 0.7 * math.log(0.7 / 0.5, 2) + 0.3 * math.log(0.3 / 0.5, 2))
 
   def testVariableAccessor(self):
     v = gum.LabelizedVariable("v", "v", 2)
@@ -768,6 +796,62 @@ class TestOperators(pyAgrumTestCase):
     v.addTick(3)
     self.assertEquals(v.domainSize(), 2)
     p.add(v)
+
+  def testRandomPotential(self):
+    u = gum.LabelizedVariable("u", "u", 4)
+    v = gum.LabelizedVariable("v", "v", 2)
+    w = gum.LabelizedVariable("w", "w", 3)
+
+    p = gum.Potential().add(u).add(v).add(w)
+    I = gum.Instantiation(p)
+
+    p.random()
+    I.setFirst()
+    while not I.end():
+      self.assertTrue(p.get(I) <= 1.0)
+      I.inc()
+
+    p.randomDistribution()
+    I.setFirst()
+    cum = 0
+    while not I.end():
+      self.assertTrue(p.get(I) <= 1.0)
+      cum += p.get(I)
+      I.inc()
+    self.assertAlmostEqual(cum, 1.0, 6)
+
+    p.randomCPT()
+    v = p.variable(0)
+    I.setFirst()
+    while not I.end():
+      cum = 0.0
+      I.setFirstVar(v)
+      while not I.end():
+        self.assertTrue(p.get(I) <= 1.0)
+        cum += p.get(I)
+        I.incVar(v)
+      self.assertAlmostEqual(cum, 1.0, 6)
+
+      I.unsetEnd()
+      I.incNotVar(v)
+
+    p.fillWith(1).normalizeAsCPT()
+    I.setFirst()
+    while not I.end():
+      self.assertAlmostEqual(p.get(I) ,0.25,6)
+      I.inc()
+    
+    alpha = 0.0
+    while alpha <= 1.0:
+      p.fillWith(1).normalizeAsCPT()
+      p.noising(alpha)
+      min = (1 - alpha) * 0.25 + alpha * 0.0
+      max = (1 - alpha) * 0.25 + alpha * 1.0
+      I.setFirst()
+      while not I.end():
+        self.assertTrue(min <= p.get(I) <= max)
+        I.inc()      
+      alpha+=0.1
 
 
 ts = unittest.TestSuite()

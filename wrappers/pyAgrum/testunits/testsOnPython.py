@@ -66,7 +66,6 @@ tests.append(PotentialTestSuite.ts)
 tests.append(PRMexplorerTestSuite.ts)
 tests.append(SamplingTestSuite.ts)
 tests.append(VariablesTestSuite.ts)
-
 if sys.version_info >= (3, 7):
   tests.append(CausalASTTestSuite.ts)
   tests.append(CausalDSepTestSuite.ts)
