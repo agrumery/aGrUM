@@ -4,3 +4,4 @@ pyAgrum
 pydotplus
 IPython
 numpy
+ipykernel
