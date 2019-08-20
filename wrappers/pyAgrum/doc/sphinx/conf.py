@@ -62,12 +62,12 @@ needs_sphinx = '1.8.4'
 extensions = [
   'sphinx.ext.autodoc',
   'sphinx.ext.mathjax',
-  #todo 'sphinx_autodoc_typehints',
   'sphinx.ext.inheritance_diagram',
+  'sphinx.ext.napoleon',
+  # todo 'sphinx_autodoc_typehints', # may be error prone (with python<3.7)
   #'sphinx.ext.todo',
   #'sphinx.ext.viewcode',
-  #'sphinx.ext.coverage',
-  'sphinx.ext.napoleon'
+  #'sphinx.ext.coverage'
 ]  # Napoleon settings
 napoleon_google_docstring = False
 napoleon_numpy_docstring = True
@@ -487,12 +487,14 @@ inheritance_alias = {
 import re
 
 gumReplaceList = [
+  ('pyAgrum.pyAgrum.','pyAgrum.'),
   ('gum::Idx', 'int'),
   ('gum::Size', 'int'),
   ('gum::NodeId', 'int'),
   ('gum::NodeSet', 'Set'),
   ('std::string', 'str'),
   ('gum::Variable::VarType', 'int'),
+  ('gum::IBayesNet< double > const &','pyAgrum.BayesNet'),
   ('gum::', 'pyAgrum.'),
   ('_double ', ' '),
   ('_double', ''),
