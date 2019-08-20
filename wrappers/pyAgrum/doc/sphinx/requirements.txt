@@ -4,4 +4,4 @@ pyAgrum
 pydotplus
 IPython
 numpy
-sphinx-autodoc-typehints
+ipykernel

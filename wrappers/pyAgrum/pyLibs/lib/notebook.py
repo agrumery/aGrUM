@@ -396,8 +396,7 @@ def showBN(bn, size="4", format="svg", nodeColor=None, arcWidth=None, arcColor=N
   :param bn: the bayesian network
   :param size: size of the rendered graph
   :param format: render as "png" or "svg"
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0
-  and 1)
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
   :param arcWidth: a arcMap of values to be shown as width of arcs
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
   :param cmap: color map to show the colors
@@ -417,8 +416,7 @@ def getBN(bn, size="4", format="svg", nodeColor=None, arcWidth=None, arcColor=No
   :param bn: the bayesian network
   :param size: size of the rendered graph
   :param format: render as "png" or "svg"
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0
-  and 1)
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
   :param arcWidth: a arcMap of values to be shown as width of arcs
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
   :param cmap: color map to show the colors
@@ -576,8 +574,7 @@ def getInference(bn, engine=None, evs=None, targets=None, size="7", format='svg'
   :param set targets: set of targets
   :param string size: size of the rendered graph
   :param string format: render as "png" or "svg"
-  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0
-  and 1)
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
   :param arcWidth: a arcMap of values to be shown as width of arcs
   :param cmap: color map to show the color of nodes and arcs
   :return: the desired representation of the inference
