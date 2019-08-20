@@ -41,7 +41,7 @@ class CausalFormula:
   :param root: the syntax tree as the root ASTtree
   :param on: the variable or the set of variables of interest
   :param doing: the intervention variables
-  :param knowing : the observation variables
+  :param knowing: the observation variables
   """
 
   def __init__(self, cm: "CausalModel", root: ASTtree, on: Union(str, NameSet), doing: Union(str, NameSet),
