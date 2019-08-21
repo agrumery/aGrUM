@@ -3,6 +3,7 @@
 Class representing a potential.
 
 Potential() -> Potential
+    default constructor
 
 Potential(src) -> Potential
     Parameters:

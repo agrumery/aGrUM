@@ -3,6 +3,7 @@
 DiGraph represents a Directed Graph.
 
 DiGraph() -> DiGraph
+    default constructor
 
 DiGraph(src) -> DiGraph
     Parameters:

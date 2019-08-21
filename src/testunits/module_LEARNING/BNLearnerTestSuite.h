@@ -273,7 +273,7 @@ namespace gum_tests {
     // with a table filled with the content of the asia.csv file. You will also
     // need a proper odbc configuration (under linux and macos you'll need
     // unixodbc and specific database odbc drivers).
-    // void /*test*/_asia_db() {
+    // void test_asia_db() {
     //   try {
     //     auto db = gum::learning::DatabaseFromSQL(
     //         "PostgreSQL",
@@ -1256,7 +1256,6 @@ namespace gum_tests {
 
     void test_G2() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("asia3.csv"));
-
       auto resg2 = learner.G2("smoking?", "lung_cancer?");
       TS_ASSERT_DELTA(resg2.first, 43.0321, 1e-4);
       TS_ASSERT_DELTA(resg2.second, 0, 1e-4);

@@ -3,6 +3,7 @@
 UndiGraph represents an Undirected Graph.
 
 UndiGraph() -> UndiGraph
+    default constructor
 
 UndiGraph(src) -> UndiGraph
     Parameters!

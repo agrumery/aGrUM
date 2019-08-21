@@ -5,6 +5,7 @@ Class for assigning/browsing values to tuples of discrete variables.
 Instantiation is designed to assign values to tuples of variables and to efficiently loop over values of subsets of variables.
 
 Instantiation() -> Instantiation
+    default constructor
 
 Instantiation(aI) -> Instantiation
     Parameters:

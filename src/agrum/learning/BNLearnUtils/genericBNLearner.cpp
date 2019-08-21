@@ -963,10 +963,8 @@ namespace gum {
     std::pair< double, double > genericBNLearner::G2(
        const NodeId id1, const NodeId id2, const std::vector< NodeId >& knowing) {
       __createApriori();
-      std::cout << databaseRanges();
       gum::learning::IndepTestG2<> g2score(
          __score_database.parser(), *__apriori, databaseRanges());
-
       return g2score.statistics(id1, id2, knowing);
     }
 

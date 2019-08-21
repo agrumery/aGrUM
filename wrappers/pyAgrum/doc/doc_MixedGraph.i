@@ -3,6 +3,7 @@
 MixedGraph represents a Clique Graph.
 
 MixedGraph() -> MixedGraph
+    default constructor
 
 MixedGraph(src) -> MixedGraph
     Parameters:

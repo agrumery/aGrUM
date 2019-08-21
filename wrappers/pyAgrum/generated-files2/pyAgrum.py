@@ -156,7 +156,7 @@ class JunctionTreeGenerator(object):
     JunctionTreeGenerator is use to generate junction tree or binary junction tree from bayesian networks.
 
     JunctionTreeGenerator() -> JunctionTreeGenerator
-        Constructor
+        default constructor
 
     """
 
@@ -260,7 +260,7 @@ class JunctionTreeGenerator(object):
         JunctionTreeGenerator is use to generate junction tree or binary junction tree from bayesian networks.
 
         JunctionTreeGenerator() -> JunctionTreeGenerator
-            Constructor
+            default constructor
 
         """
         _pyAgrum.JunctionTreeGenerator_swiginit(self, _pyAgrum.new_JunctionTreeGenerator())
@@ -522,6 +522,7 @@ class IDGenerator(object):
     IDGenerator is used to easily generate influence diagrams.
 
     IDGenerator() -> IDGenerator
+        default constructor
 
     """
 
@@ -562,6 +563,7 @@ class IDGenerator(object):
         IDGenerator is used to easily generate influence diagrams.
 
         IDGenerator() -> IDGenerator
+            default constructor
 
         """
         _pyAgrum.IDGenerator_swiginit(self, _pyAgrum.new_IDGenerator())
@@ -3819,6 +3821,7 @@ class UndiGraph(object):
     UndiGraph represents an Undirected Graph.
 
     UndiGraph() -> UndiGraph
+        default constructor
 
     UndiGraph(src) -> UndiGraph
         Parameters!
@@ -4162,6 +4165,7 @@ class DiGraph(object):
     DiGraph represents a Directed Graph.
 
     DiGraph() -> DiGraph
+        default constructor
 
     DiGraph(src) -> DiGraph
         Parameters:
@@ -4610,6 +4614,7 @@ class MixedGraph(UndiGraph, DiGraph):
     MixedGraph represents a Clique Graph.
 
     MixedGraph() -> MixedGraph
+        default constructor
 
     MixedGraph(src) -> MixedGraph
         Parameters:
@@ -5148,6 +5153,7 @@ class Instantiation(object):
     Instantiation is designed to assign values to tuples of variables and to efficiently loop over values of subsets of variables.
 
     Instantiation() -> Instantiation
+        default constructor
 
     Instantiation(aI) -> Instantiation
         Parameters:
@@ -7414,6 +7420,7 @@ class Potential(object):
     Class representing a potential.
 
     Potential() -> Potential
+        default constructor
 
     Potential(src) -> Potential
         Parameters:
@@ -22078,6 +22085,7 @@ class InfluenceDiagram(DAGmodel):
     InfluenceDiagram represents an Influence Diagram.
 
     InfluenceDiagram() -> InfluenceDiagram
+        default constructor
 
     InfluenceDiagram(source) -> InfluenceDiagram
         Parameters:

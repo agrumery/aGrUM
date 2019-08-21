@@ -3,6 +3,7 @@
 InfluenceDiagram represents an Influence Diagram.
 
 InfluenceDiagram() -> InfluenceDiagram
+    default constructor
 
 InfluenceDiagram(source) -> InfluenceDiagram
     Parameters:
