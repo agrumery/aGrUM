@@ -2,15 +2,12 @@
 "
 CliqueGraph represents a Clique Graph.
 
-Available constructors:
-    ``CliqueGraph() -> CliqueGraph``
+CliqueGraph() -> CliqueGraph
+    default constructor
 
-    ``CliqueGraph(src) -> CliqueGraph``
-
-Parameters
-----------
-src : pyAgrum.CliqueGraph
-  the CliqueGraph to copy
+CliqueGraph(src) -> CliqueGraph
+    Parameter
+        * **src** (*pyAgrum.CliqueGraph*) -- the CliqueGraph to copy
 "
 
 %feature("docstring") gum::CliqueGraph::addToClique

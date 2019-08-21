@@ -1,34 +1,25 @@
-%ignore gum::DisceteVariable::clone;
-%ignore gum::DisceteVariable::label;
-%ignore gum::DisceteVariable::index;
-
 %feature("docstring") gum::RangeVariable
 "
 RangeVariable represents a variable with a range of integers as domain.
 
-Available constructors:
+RangeVariable(aName, aDesc,minVal, maxVal) -> RangeVariable
+    Parameters:
+        * **aName** (*str*) -- the name of the variable
+        * **aDesc** (*str*) -- the description of the variable
+        * **minVal** (*int*) -- the minimal integer of the interval
+        * **maxVal** (*int*) -- the maximal integer of the interval
+          
+RangeVariable(aName, aDesc='') -> RangeVariable
+    Parameters:
+        * **aName** (*str*) -- the name of the variable
+        * **aDesc** (*str*) -- the description of the variable
 
-	``RangeVariable(aName, aDesc='',minVal, maxVal) -> RangeVariable``
-
-	``RangeVariable(aName, aDesc='',minVal) -> RangeVariable``
-
-  ``RangeVariable(aName, aDesc='') -> RangeVariable``
-
-  ``RangeVariable(aRV) -> RangeVariable``
-
-Parameters
-----------
-aName: str
-  The name of the variable
-aDesc: str
-  The (optional) description of the variable
-minVal : int
-  The minimal integer of the interval
-maxVal : int
-  The maximal integer of the interval
-aDV: pyAgrum.RangeVariable
-  Another `RangeVariable` that will be copied
-
+    By default ``minVal=0`` and ``maxVal=1``
+    
+RangeVariable(aRV) -> RangeVariable
+    Parameters:
+        * **aDV** (*RangeVariable*) -- the pyAgrum.RangeVariable that will be copied
+    
 Examples
 --------
 >>> import pyAgrum as gum

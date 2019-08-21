@@ -8,10 +8,10 @@
 
 from sys import version_info as _swig_python_version_info
 if _swig_python_version_info < (2, 7, 0):
-    raise RuntimeError('Python 2.7 or later required')
+    raise RuntimeError("Python 2.7 or later required")
 
 # Import the low-level C/C++ module
-if __package__ or '.' in __name__:
+if __package__ or "." in __name__:
     from . import _pyAgrum
 else:
     import _pyAgrum
@@ -68,7 +68,7 @@ import weakref
 class SwigPyIterator(object):
     r"""Proxy of C++ swig::SwigPyIterator class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
 
     def __init__(self, *args, **kwargs):
         raise AttributeError("No constructor defined - class is abstract")
@@ -155,12 +155,12 @@ class JunctionTreeGenerator(object):
 
     JunctionTreeGenerator is use to generate junction tree or binary junction tree from bayesian networks.
 
-    Available constructors:
-    	``JunctionTreeGenerator() -> JunctionTreeGenerator``
+    JunctionTreeGenerator() -> JunctionTreeGenerator
+        Constructor
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def junctionTree(self, *args):
@@ -259,8 +259,8 @@ class JunctionTreeGenerator(object):
 
         JunctionTreeGenerator is use to generate junction tree or binary junction tree from bayesian networks.
 
-        Available constructors:
-        	``JunctionTreeGenerator() -> JunctionTreeGenerator``
+        JunctionTreeGenerator() -> JunctionTreeGenerator
+            Constructor
 
         """
         _pyAgrum.JunctionTreeGenerator_swiginit(self, _pyAgrum.new_JunctionTreeGenerator())
@@ -272,7 +272,7 @@ _pyAgrum.JunctionTreeGenerator_swigregister(JunctionTreeGenerator)
 class PythonBNListener(object):
     r"""Proxy of C++ PythonBNListener class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, bn, vnm):
@@ -338,7 +338,7 @@ _pyAgrum.PythonBNListener_swigregister(PythonBNListener)
 class PythonLoadListener(object):
     r"""Proxy of C++ PythonLoadListener class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def whenLoading(self, buffer, percent):
@@ -376,7 +376,7 @@ class PythonApproximationListener(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, algo):
@@ -430,7 +430,7 @@ _pyAgrum.PythonApproximationListener_swigregister(PythonApproximationListener)
 class PythonDatabaseGeneratorListener(object):
     r"""Proxy of C++ PythonDatabaseGeneratorListener class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, notif):
@@ -462,13 +462,12 @@ class BNGenerator(object):
 
     BNGenerator is used to easily generate Bayesian networks.
 
-    Available constructors:
-
-        ``BNGenerator() -> BNGenerator``
+    BNGenerator() -> BNGenerator
+        default constructor
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def generate(self, n_nodes=10, n_arcs=15, n_modmax=4):
@@ -507,9 +506,8 @@ class BNGenerator(object):
 
         BNGenerator is used to easily generate Bayesian networks.
 
-        Available constructors:
-
-            ``BNGenerator() -> BNGenerator``
+        BNGenerator() -> BNGenerator
+            default constructor
 
         """
         _pyAgrum.BNGenerator_swiginit(self, _pyAgrum.new_BNGenerator())
@@ -523,13 +521,11 @@ class IDGenerator(object):
 
     IDGenerator is used to easily generate influence diagrams.
 
-    Available constructors:
-
-        ``IDGenerator() -> IDGenerator``
+    IDGenerator() -> IDGenerator
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def generate(self, nbrNodes=10, arcDensity=0.2, chanceNodeDensity=0.8, utilityNodeDensity=0.1, max_modality=2):
@@ -565,9 +561,7 @@ class IDGenerator(object):
 
         IDGenerator is used to easily generate influence diagrams.
 
-        Available constructors:
-
-            ``IDGenerator() -> IDGenerator``
+        IDGenerator() -> IDGenerator
 
         """
         _pyAgrum.IDGenerator_swiginit(self, _pyAgrum.new_IDGenerator())
@@ -581,12 +575,12 @@ class PRMexplorer(object):
 
     PRMexplorer helps navigate through probabilistic relational models.
 
-    Available constructors:
-    	``PRMexplorer() -> PRMexplorer``
+    PRMexplorer() -> PRMexplorer
+        default constructor
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self):
@@ -595,8 +589,8 @@ class PRMexplorer(object):
 
         PRMexplorer helps navigate through probabilistic relational models.
 
-        Available constructors:
-        	``PRMexplorer() -> PRMexplorer``
+        PRMexplorer() -> PRMexplorer
+            default constructor
 
         """
         _pyAgrum.PRMexplorer_swiginit(self, _pyAgrum.new_PRMexplorer())
@@ -1183,7 +1177,7 @@ _pyAgrum.PRMexplorer_swigregister(PRMexplorer)
 class Vector(object):
     r"""Proxy of C++ std::vector< double > class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def iterator(self):
@@ -1350,7 +1344,7 @@ _pyAgrum.Vector_swigregister(Vector)
 class Vector_int(object):
     r"""Proxy of C++ std::vector< unsigned int > class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def iterator(self):
@@ -1517,7 +1511,7 @@ _pyAgrum.Vector_int_swigregister(Vector_int)
 class Vector_string(object):
     r"""Proxy of C++ std::vector< std::string > class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def iterator(self):
@@ -1684,7 +1678,7 @@ _pyAgrum.Vector_string_swigregister(Vector_string)
 class SetIteratorStaticEnd(object):
     r"""Proxy of C++ gum::SetIteratorStaticEnd class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self):
@@ -1698,7 +1692,7 @@ _pyAgrum.SetIteratorStaticEnd_swigregister(SetIteratorStaticEnd)
 class GumException(Exception):
     r"""Proxy of C++ gum::Exception class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -1759,7 +1753,7 @@ def __createMsg(filename, function, line, msg):
 class IdError(GumException):
     r"""Proxy of C++ gum::IdError class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -1776,7 +1770,7 @@ _pyAgrum.IdError_swigregister(IdError)
 class FatalError(GumException):
     r"""Proxy of C++ gum::FatalError class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -1793,7 +1787,7 @@ _pyAgrum.FatalError_swigregister(FatalError)
 class NotImplementedYet(GumException):
     r"""Proxy of C++ gum::NotImplementedYet class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -1810,7 +1804,7 @@ _pyAgrum.NotImplementedYet_swigregister(NotImplementedYet)
 class UndefinedIteratorValue(GumException):
     r"""Proxy of C++ gum::UndefinedIteratorValue class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -1827,7 +1821,7 @@ _pyAgrum.UndefinedIteratorValue_swigregister(UndefinedIteratorValue)
 class UndefinedIteratorKey(GumException):
     r"""Proxy of C++ gum::UndefinedIteratorKey class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -1844,7 +1838,7 @@ _pyAgrum.UndefinedIteratorKey_swigregister(UndefinedIteratorKey)
 class NullElement(GumException):
     r"""Proxy of C++ gum::NullElement class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -1861,7 +1855,7 @@ _pyAgrum.NullElement_swigregister(NullElement)
 class UndefinedElement(GumException):
     r"""Proxy of C++ gum::UndefinedElement class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -1878,7 +1872,7 @@ _pyAgrum.UndefinedElement_swigregister(UndefinedElement)
 class SizeError(GumException):
     r"""Proxy of C++ gum::SizeError class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -1895,7 +1889,7 @@ _pyAgrum.SizeError_swigregister(SizeError)
 class EmptySet(GumException):
     r"""Proxy of C++ gum::EmptySet class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -1912,7 +1906,7 @@ _pyAgrum.EmptySet_swigregister(EmptySet)
 class InvalidArgumentsNumber(GumException):
     r"""Proxy of C++ gum::InvalidArgumentsNumber class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -1929,7 +1923,7 @@ _pyAgrum.InvalidArgumentsNumber_swigregister(InvalidArgumentsNumber)
 class InvalidArgument(GumException):
     r"""Proxy of C++ gum::InvalidArgument class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -1946,7 +1940,7 @@ _pyAgrum.InvalidArgument_swigregister(InvalidArgument)
 class IOError(GumException):
     r"""Proxy of C++ gum::IOError class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -1963,7 +1957,7 @@ _pyAgrum.IOError_swigregister(IOError)
 class FormatNotFound(IOError):
     r"""Proxy of C++ gum::FormatNotFound class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -1980,7 +1974,7 @@ _pyAgrum.FormatNotFound_swigregister(FormatNotFound)
 class OperationNotAllowed(GumException):
     r"""Proxy of C++ gum::OperationNotAllowed class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -1997,7 +1991,7 @@ _pyAgrum.OperationNotAllowed_swigregister(OperationNotAllowed)
 class NotFound(GumException):
     r"""Proxy of C++ gum::NotFound class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2014,7 +2008,7 @@ _pyAgrum.NotFound_swigregister(NotFound)
 class ReferenceError(GumException):
     r"""Proxy of C++ gum::ReferenceError class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2031,7 +2025,7 @@ _pyAgrum.ReferenceError_swigregister(ReferenceError)
 class OutOfBounds(ReferenceError):
     r"""Proxy of C++ gum::OutOfBounds class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2048,7 +2042,7 @@ _pyAgrum.OutOfBounds_swigregister(OutOfBounds)
 class OutOfLowerBound(OutOfBounds):
     r"""Proxy of C++ gum::OutOfLowerBound class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2065,7 +2059,7 @@ _pyAgrum.OutOfLowerBound_swigregister(OutOfLowerBound)
 class OutOfUpperBound(OutOfBounds):
     r"""Proxy of C++ gum::OutOfUpperBound class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2082,7 +2076,7 @@ _pyAgrum.OutOfUpperBound_swigregister(OutOfUpperBound)
 class DuplicateElement(ReferenceError):
     r"""Proxy of C++ gum::DuplicateElement class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2099,7 +2093,7 @@ _pyAgrum.DuplicateElement_swigregister(DuplicateElement)
 class DuplicateLabel(ReferenceError):
     r"""Proxy of C++ gum::DuplicateLabel class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2116,7 +2110,7 @@ _pyAgrum.DuplicateLabel_swigregister(DuplicateLabel)
 class GraphError(GumException):
     r"""Proxy of C++ gum::GraphError class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2133,7 +2127,7 @@ _pyAgrum.GraphError_swigregister(GraphError)
 class NoNeighbour(GraphError):
     r"""Proxy of C++ gum::NoNeighbour class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2150,7 +2144,7 @@ _pyAgrum.NoNeighbour_swigregister(NoNeighbour)
 class NoParent(GraphError):
     r"""Proxy of C++ gum::NoParent class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2167,7 +2161,7 @@ _pyAgrum.NoParent_swigregister(NoParent)
 class NoChild(GraphError):
     r"""Proxy of C++ gum::NoChild class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2184,7 +2178,7 @@ _pyAgrum.NoChild_swigregister(NoChild)
 class InvalidEdge(GraphError):
     r"""Proxy of C++ gum::InvalidEdge class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2201,7 +2195,7 @@ _pyAgrum.InvalidEdge_swigregister(InvalidEdge)
 class InvalidArc(GraphError):
     r"""Proxy of C++ gum::InvalidArc class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2218,7 +2212,7 @@ _pyAgrum.InvalidArc_swigregister(InvalidArc)
 class InvalidNode(GraphError):
     r"""Proxy of C++ gum::InvalidNode class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2235,7 +2229,7 @@ _pyAgrum.InvalidNode_swigregister(InvalidNode)
 class EmptyBSTree(GraphError):
     r"""Proxy of C++ gum::EmptyBSTree class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2252,7 +2246,7 @@ _pyAgrum.EmptyBSTree_swigregister(EmptyBSTree)
 class DefaultInLabel(GraphError):
     r"""Proxy of C++ gum::DefaultInLabel class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2269,7 +2263,7 @@ _pyAgrum.DefaultInLabel_swigregister(DefaultInLabel)
 class InvalidDirectedCycle(GraphError):
     r"""Proxy of C++ gum::InvalidDirectedCycle class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2286,7 +2280,7 @@ _pyAgrum.InvalidDirectedCycle_swigregister(InvalidDirectedCycle)
 class CPTError(GumException):
     r"""Proxy of C++ gum::CPTError class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2303,7 +2297,7 @@ _pyAgrum.CPTError_swigregister(CPTError)
 class CPTNoSumTo1(CPTError):
     r"""Proxy of C++ gum::CPTNoSumTo1 class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2320,7 +2314,7 @@ _pyAgrum.CPTNoSumTo1_swigregister(CPTNoSumTo1)
 class IncompatibleEvidence(GumException):
     r"""Proxy of C++ gum::IncompatibleEvidence class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2337,7 +2331,7 @@ _pyAgrum.IncompatibleEvidence_swigregister(IncompatibleEvidence)
 class FactoryError(GumException):
     r"""Proxy of C++ gum::FactoryError class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2354,7 +2348,7 @@ _pyAgrum.FactoryError_swigregister(FactoryError)
 class FactoryInvalidState(FactoryError):
     r"""Proxy of C++ gum::FactoryInvalidState class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2371,7 +2365,7 @@ _pyAgrum.FactoryInvalidState_swigregister(FactoryInvalidState)
 class WrongType(FactoryError):
     r"""Proxy of C++ gum::WrongType class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2388,7 +2382,7 @@ _pyAgrum.WrongType_swigregister(WrongType)
 class WrongClassElement(FactoryError):
     r"""Proxy of C++ gum::WrongClassElement class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2405,7 +2399,7 @@ _pyAgrum.WrongClassElement_swigregister(WrongClassElement)
 class TypeError(FactoryError):
     r"""Proxy of C++ gum::TypeError class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2422,7 +2416,7 @@ _pyAgrum.TypeError_swigregister(TypeError)
 class LearningError(GumException):
     r"""Proxy of C++ gum::LearningError class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2439,7 +2433,7 @@ _pyAgrum.LearningError_swigregister(LearningError)
 class IncompatibleScoreApriori(LearningError):
     r"""Proxy of C++ gum::IncompatibleScoreApriori class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2456,7 +2450,7 @@ _pyAgrum.IncompatibleScoreApriori_swigregister(IncompatibleScoreApriori)
 class PossiblyIncompatibleScoreApriori(LearningError):
     r"""Proxy of C++ gum::PossiblyIncompatibleScoreApriori class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2473,7 +2467,7 @@ _pyAgrum.PossiblyIncompatibleScoreApriori_swigregister(PossiblyIncompatibleScore
 class DatabaseError(LearningError):
     r"""Proxy of C++ gum::DatabaseError class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2490,7 +2484,7 @@ _pyAgrum.DatabaseError_swigregister(DatabaseError)
 class MissingVariableInDatabase(LearningError):
     r"""Proxy of C++ gum::MissingVariableInDatabase class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2507,7 +2501,7 @@ _pyAgrum.MissingVariableInDatabase_swigregister(MissingVariableInDatabase)
 class MissingValueInDatabase(LearningError):
     r"""Proxy of C++ gum::MissingValueInDatabase class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2524,7 +2518,7 @@ _pyAgrum.MissingValueInDatabase_swigregister(MissingValueInDatabase)
 class UnknownLabelInDatabase(LearningError):
     r"""Proxy of C++ gum::UnknownLabelInDatabase class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2541,7 +2535,7 @@ _pyAgrum.UnknownLabelInDatabase_swigregister(UnknownLabelInDatabase)
 class SyntaxError(IOError):
     r"""Proxy of C++ gum::SyntaxError class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2775,7 +2769,7 @@ class Variable(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
 
     def __init__(self, *args, **kwargs):
         raise AttributeError("No constructor defined - class is abstract")
@@ -2870,26 +2864,20 @@ _pyAgrum.Variable_swigregister(Variable)
 class DiscreteVariable(Variable):
     r"""
 
-    DiscreteVariable is the base class for discrete random variable.
+    DiscreteVariable is the base class for discrete random variables.
 
-    Available constructors:
+    DiscreteVariable(aName, aDesc='') -> DiscreteVariable
+        Parameters:
+            * **aName** (*str*) -- the name of the variable
+            * **aDesc** (*str*) -- the (optional) description of the variable
 
-        ``DiscreteVariable(aName, aDesc='') -> DiscreteVariable``
-
-        ``DiscreteVariable(aDRV) -> DiscreteVariable``
-
-    Parameters
-    ----------
-    aName: str
-      The name of the variable
-    aDesc: str
-      The (optional) description of the variable
-    aDRV: pyAgrum.DiscreteVariable
-      Another `DiscreteVariable` that will be copied
+    DiscreteVariable(aDRV) -> DiscreteVariable
+        Parameters:
+            * **aDRV** (*pyAgrum.DiscreteVariable*) -- the pyAgrum.DiscreteVariable that will be copied
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
 
     def __init__(self, *args, **kwargs):
         raise AttributeError("No constructor defined - class is abstract")
@@ -3116,24 +3104,15 @@ class LabelizedVariable(DiscreteVariable):
 
     LabelizedVariable is a discrete random variable with a customizable sequence of labels.
 
-    Available constructors:
+    LabelizedVariable(aName, aDesc='', nbrLabel=2) -> LabelizedVariable
+        Parameters:
+            * **aName** (*str*) -- the name of the variable
+            * **aDesc** (*str*) -- the (optional) description of the variable
+            * **nbrLabel** (*int*) -- the number of labels to create (2 by default)
 
-        ``LabelizedVariable(aName, aDesc='', nbrLabel=2) -> LabelizedVariable``
-
-        ``LabelizedVariable(aName, aDesc='') -> LabelizedVariable``
-
-        ``LabelizedVariable(aLDRV) -> LabelizedVariable``
-
-    Parameters
-    ----------
-    aName: str
-      The name of the variable
-    aDesc: str
-      The (optional) description of the variable
-    nbrLabel: int
-      The number of labels to create (2 by default)
-    aLDRV: pyAgrum.LabelizedVariable
-      Another `LabelizedVariable` that will be copied
+    LabelizedVariable(aLDRV) -> LabelizedVariable
+        Parameters:
+            * **aLDRV** (*pyAgrum.LabelizedVariable*) -- The pyAgrum.LabelizedVariable that will be copied
 
     Examples
     --------
@@ -3167,7 +3146,7 @@ class LabelizedVariable(DiscreteVariable):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
 
     def __init__(self, *args):
         r"""
@@ -3379,28 +3358,23 @@ class RangeVariable(DiscreteVariable):
 
     RangeVariable represents a variable with a range of integers as domain.
 
-    Available constructors:
+    RangeVariable(aName, aDesc,minVal, maxVal) -> RangeVariable
+        Parameters:
+            * **aName** (*str*) -- the name of the variable
+            * **aDesc** (*str*) -- the description of the variable
+            * **minVal** (*int*) -- the minimal integer of the interval
+            * **maxVal** (*int*) -- the maximal integer of the interval
 
-    	``RangeVariable(aName, aDesc='',minVal, maxVal) -> RangeVariable``
+    RangeVariable(aName, aDesc='') -> RangeVariable
+        Parameters:
+            * **aName** (*str*) -- the name of the variable
+            * **aDesc** (*str*) -- the description of the variable
 
-    	``RangeVariable(aName, aDesc='',minVal) -> RangeVariable``
+        By default ``minVal=0`` and ``maxVal=1``
 
-      ``RangeVariable(aName, aDesc='') -> RangeVariable``
-
-      ``RangeVariable(aRV) -> RangeVariable``
-
-    Parameters
-    ----------
-    aName: str
-      The name of the variable
-    aDesc: str
-      The (optional) description of the variable
-    minVal : int
-      The minimal integer of the interval
-    maxVal : int
-      The maximal integer of the interval
-    aDV: pyAgrum.RangeVariable
-      Another `RangeVariable` that will be copied
+    RangeVariable(aRV) -> RangeVariable
+        Parameters:
+            * **aDV** (*RangeVariable*) -- the pyAgrum.RangeVariable that will be copied
 
     Examples
     --------
@@ -3425,11 +3399,12 @@ class RangeVariable(DiscreteVariable):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
 
     def __init__(self, *args):
         r"""
-        __init__(RangeVariable self, std::string const & aName, std::string const & aDesc, long minVal=0, long maxVal=1) -> RangeVariable
+        __init__(RangeVariable self, std::string const & aName, std::string const & aDesc, long minVal, long maxVal) -> RangeVariable
+        __init__(RangeVariable self, std::string const & aName, std::string const & aDesc) -> RangeVariable
         __init__(RangeVariable self, RangeVariable aDRV) -> RangeVariable
         """
         _pyAgrum.RangeVariable_swiginit(self, _pyAgrum.new_RangeVariable(*args))
@@ -3632,7 +3607,7 @@ _pyAgrum.RangeVariable_swigregister(RangeVariable)
 class IDiscretizedVariable(DiscreteVariable):
     r"""Proxy of C++ gum::IDiscretizedVariable class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
 
     def __init__(self, *args, **kwargs):
         raise AttributeError("No constructor defined - class is abstract")
@@ -3659,23 +3634,18 @@ class Edge(object):
 
     pyAgrum.Edge is the representation of an arc between two nodes represented by int : the first and the second.
 
-    Available constructors :
-        ``Edge(aN1,aN2) -> Edge``
+    Edge(aN1,aN2) -> Edge
+        Parameters:
+            * **aN1** (*int*) -- the nodeId of the first node
+            * **aN2** (*int*) -- the nodeId of the secondnode
 
-        ``Edge(src) -> Edge``
-
-    Parameters
-    ----------
-    aN1 : int
-      the nodeId of the first node
-    aN2 : int
-      the nodeId of the secondnode
-    src: pyAgrum.Edge
-      the Edge to copy
+    Edge(src) -> Edge
+        Parameters:
+            * **src** (*yAgrum.Edge*) -- the Edge to copy
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -3744,24 +3714,18 @@ class Arc(object):
 
     pyAgrum.Arc is the representation of an arc between two nodes represented by int : the head and the tail.
 
-    Available constructors:
-        ``Arc(tail, head) -> Arc``
+    Arc(tail, head) -> Arc
+        Parameters:
+            * **tail** (*int*) -- the tail
+            * **head** (*int*) -- the head
 
-        ``Arc(src) -> Arc``
-
-    Parameters
-    ----------
-    tail : int
-      the tail
-    head : int
-      the head
-    src : :class: Arc
-      the Arc to copy
-
+    Arc(src) -> Arc
+        Parameters:
+            * **src** (*Arc*) -- the gum.Arc to copy
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -3854,20 +3818,16 @@ class UndiGraph(object):
 
     UndiGraph represents an Undirected Graph.
 
-    Available constructors:
-        ``UndiGraph() -> UndiGraph``
+    UndiGraph() -> UndiGraph
 
-        ``UndiGraph(src) -> UndiGraph``
-
-    Parameters
-    ----------
-    src : :class: UndiGraph
-      the UndiGraph to copy
+    UndiGraph(src) -> UndiGraph
+        Parameters!
+            * **src** (*UndiGraph*) -- the pyAgrum.UndiGraph to copy
 
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
 
     def __init__(self, *args):
         r"""
@@ -4201,20 +4161,15 @@ class DiGraph(object):
 
     DiGraph represents a Directed Graph.
 
-    Available constructors:
-        ``DiGraph() -> DiGraph``
+    DiGraph() -> DiGraph
 
-        ``DiGraph(src) -> DiGraph``
-
-    Parameters
-    ----------
-    src : pyAgrum.DiGraph
-      the digraph to copy
-
+    DiGraph(src) -> DiGraph
+        Parameters:
+            * **src** (*pyAgrum.DiGraph*) -- the digraph to copy
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
 
     def __init__(self, *args):
         r"""
@@ -4570,19 +4525,16 @@ class DAG(DiGraph):
 
     DAG represents a Directed Acyclic Graph.
 
-    Available constructors:
-        ``DAG() -> DAG``
+    DAG() -> DAG
+        default constructor
 
-        ``DAG(src) -> DAG``
-
-    Parameters
-    ----------
-    src : :class: DAG
-      the DAG to copy
+    DAG(src) -> DAG
+        Parameters:
+            * **src** (*DAG*) -- the DAG to copy
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -4625,6 +4577,30 @@ class DAG(DiGraph):
         """
         return _pyAgrum.DAG_addArc(self, *args)
 
+    def eraseArc(self, n1, n2):
+        r"""eraseArc(DAG self, gum::NodeId const n1, gum::NodeId const n2)"""
+        return _pyAgrum.DAG_eraseArc(self, n1, n2)
+
+    def existsArc(self, n1, n2):
+        r"""existsArc(DAG self, gum::NodeId const n1, gum::NodeId const n2) -> bool"""
+        return _pyAgrum.DAG_existsArc(self, n1, n2)
+
+    def eraseParents(self, n):
+        r"""eraseParents(DAG self, gum::NodeId const n)"""
+        return _pyAgrum.DAG_eraseParents(self, n)
+
+    def eraseChildren(self, n):
+        r"""eraseChildren(DAG self, gum::NodeId const n)"""
+        return _pyAgrum.DAG_eraseChildren(self, n)
+
+    def sizeArcs(self):
+        r"""sizeArcs(DAG self) -> gum::Size"""
+        return _pyAgrum.DAG_sizeArcs(self)
+
+    def emptyArcs(self):
+        r"""emptyArcs(DAG self) -> bool"""
+        return _pyAgrum.DAG_emptyArcs(self)
+
 # Register DAG in _pyAgrum:
 _pyAgrum.DAG_swigregister(DAG)
 
@@ -4633,19 +4609,15 @@ class MixedGraph(UndiGraph, DiGraph):
 
     MixedGraph represents a Clique Graph.
 
-    Available constructors:
-        ``MixedGraph() -> MixedGraph``
+    MixedGraph() -> MixedGraph
 
-        ``MixedGraph(src) -> MixedGraph``
-
-    Parameters
-    ----------
-    src : pyAgrum.MixedGraph
-      the MixedGraph to copy
+    MixedGraph(src) -> MixedGraph
+        Parameters:
+            * **src** (*pyAgrum.MixedGraph*) --the MixedGraph to copy
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
 
     def __init__(self, *args):
         r"""
@@ -4754,6 +4726,82 @@ class MixedGraph(UndiGraph, DiGraph):
         r"""__str__(MixedGraph self) -> std::string"""
         return _pyAgrum.MixedGraph___str__(self)
 
+    def addNodes(self, n):
+        r"""addNodes(MixedGraph self, gum::Size n) -> PyObject *"""
+        return _pyAgrum.MixedGraph_addNodes(self, n)
+
+    def addNode(self):
+        r"""addNode(MixedGraph self) -> gum::NodeId"""
+        return _pyAgrum.MixedGraph_addNode(self)
+
+    def addNodeWithId(self, id):
+        r"""addNodeWithId(MixedGraph self, gum::NodeId const id)"""
+        return _pyAgrum.MixedGraph_addNodeWithId(self, id)
+
+    def existsNode(self, id):
+        r"""existsNode(MixedGraph self, gum::NodeId const id) -> bool"""
+        return _pyAgrum.MixedGraph_existsNode(self, id)
+
+    def size(self):
+        r"""size(MixedGraph self) -> gum::Size"""
+        return _pyAgrum.MixedGraph_size(self)
+
+    def empty(self):
+        r"""empty(MixedGraph self) -> bool"""
+        return _pyAgrum.MixedGraph_empty(self)
+
+    def addEdge(self, n1, n2):
+        r"""addEdge(MixedGraph self, gum::NodeId const n1, gum::NodeId const n2)"""
+        return _pyAgrum.MixedGraph_addEdge(self, n1, n2)
+
+    def eraseEdge(self, n1, n2):
+        r"""eraseEdge(MixedGraph self, gum::NodeId const n1, gum::NodeId const n2)"""
+        return _pyAgrum.MixedGraph_eraseEdge(self, n1, n2)
+
+    def existsEdge(self, n1, n2):
+        r"""existsEdge(MixedGraph self, gum::NodeId const n1, gum::NodeId const n2) -> bool"""
+        return _pyAgrum.MixedGraph_existsEdge(self, n1, n2)
+
+    def sizeEdges(self):
+        r"""sizeEdges(MixedGraph self) -> gum::Size"""
+        return _pyAgrum.MixedGraph_sizeEdges(self)
+
+    def emptyEdges(self):
+        r"""emptyEdges(MixedGraph self) -> bool"""
+        return _pyAgrum.MixedGraph_emptyEdges(self)
+
+    def eraseNeighbours(self, n):
+        r"""eraseNeighbours(MixedGraph self, gum::NodeId const n)"""
+        return _pyAgrum.MixedGraph_eraseNeighbours(self, n)
+
+    def addArc(self, n1, n2):
+        r"""addArc(MixedGraph self, gum::NodeId const n1, gum::NodeId const n2)"""
+        return _pyAgrum.MixedGraph_addArc(self, n1, n2)
+
+    def eraseArc(self, n1, n2):
+        r"""eraseArc(MixedGraph self, gum::NodeId const n1, gum::NodeId const n2)"""
+        return _pyAgrum.MixedGraph_eraseArc(self, n1, n2)
+
+    def existsArc(self, n1, n2):
+        r"""existsArc(MixedGraph self, gum::NodeId const n1, gum::NodeId const n2) -> bool"""
+        return _pyAgrum.MixedGraph_existsArc(self, n1, n2)
+
+    def eraseParents(self, n):
+        r"""eraseParents(MixedGraph self, gum::NodeId const n)"""
+        return _pyAgrum.MixedGraph_eraseParents(self, n)
+
+    def eraseChildren(self, n):
+        r"""eraseChildren(MixedGraph self, gum::NodeId const n)"""
+        return _pyAgrum.MixedGraph_eraseChildren(self, n)
+
+    def sizeArcs(self):
+        r"""sizeArcs(MixedGraph self) -> gum::Size"""
+        return _pyAgrum.MixedGraph_sizeArcs(self)
+
+    def emptyArcs(self):
+        r"""emptyArcs(MixedGraph self) -> bool"""
+        return _pyAgrum.MixedGraph_emptyArcs(self)
+
 # Register MixedGraph in _pyAgrum:
 _pyAgrum.MixedGraph_swigregister(MixedGraph)
 
@@ -4762,19 +4810,16 @@ class CliqueGraph(UndiGraph):
 
     CliqueGraph represents a Clique Graph.
 
-    Available constructors:
-        ``CliqueGraph() -> CliqueGraph``
+    CliqueGraph() -> CliqueGraph
+        default constructor
 
-        ``CliqueGraph(src) -> CliqueGraph``
-
-    Parameters
-    ----------
-    src : pyAgrum.CliqueGraph
-      the CliqueGraph to copy
+    CliqueGraph(src) -> CliqueGraph
+        Parameter
+            * **src** (*pyAgrum.CliqueGraph*) -- the CliqueGraph to copy
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -5102,16 +5147,11 @@ class Instantiation(object):
 
     Instantiation is designed to assign values to tuples of variables and to efficiently loop over values of subsets of variables.
 
-    Available constructors:
+    Instantiation() -> Instantiation
 
-    	``Instantiation() -> Instantiation``
-
-    	``Instantiation(aI) -> Instantiation``
-
-    Parameters
-    ----------
-    aI: pyAgrum.Instantiation
-      The Instantiation we copy
+    Instantiation(aI) -> Instantiation
+        Parameters:
+          * **aI** (*pyAgrum.Instantiation*) -- the Instantiation we copy
 
     Returns
     -------
@@ -5129,7 +5169,7 @@ class Instantiation(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
 
     def __init__(self, *args):
         r"""
@@ -5806,7 +5846,7 @@ class DAGmodel(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
 
     def __init__(self, *args, **kwargs):
         raise AttributeError("No constructor defined - class is abstract")
@@ -6125,7 +6165,7 @@ __list_end = cvar.__list_end
 class EssentialGraph(object):
     r"""Proxy of C++ gum::EssentialGraph class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -6299,7 +6339,7 @@ _pyAgrum.EssentialGraph_swigregister(EssentialGraph)
 class MarkovBlanket(object):
     r"""Proxy of C++ gum::MarkovBlanket class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -6451,7 +6491,7 @@ _pyAgrum.MarkovBlanket_swigregister(MarkovBlanket)
 class StructuralComparator(object):
     r"""Proxy of C++ gum::StructuralComparator class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self):
@@ -6571,23 +6611,18 @@ class ApproximationScheme(object):
 
     Used to parametrize stopping criteria in approximate inference or learning algorithm.
 
-    Available constructors:
-    	``ApproximationScheme() -> ApproximationScheme``
-
-    	``ApproximationScheme(v) -> ApproximationScheme``
-
-    Parameters
-    ----------
-    v : bool
+    ApproximationScheme(verbosity=False) -> ApproximationScheme
+        Parameters:
+          * **verbosity** (*bool*) -- to keep (or not) tracks of the learning process (history of epsilons)
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
-    def __init__(self, v=False):
-        r"""__init__(ApproximationScheme self, bool v=False) -> ApproximationScheme"""
-        _pyAgrum.ApproximationScheme_swiginit(self, _pyAgrum.new_ApproximationScheme(v))
+    def __init__(self, verbosity=False):
+        r"""__init__(ApproximationScheme self, bool verbosity=False) -> ApproximationScheme"""
+        _pyAgrum.ApproximationScheme_swiginit(self, _pyAgrum.new_ApproximationScheme(verbosity))
     __swig_destroy__ = _pyAgrum.delete_ApproximationScheme
 
     def setEpsilon(self, eps):
@@ -7026,20 +7061,14 @@ class DiscretizedVariable(IDiscretizedVariable):
 
     DiscretizedVariable is a discrete random variable with a set of ``ticks`` defining intervalls.
 
-    Available constructors:
+    DiscretizedVariable(aName, aDesc='') -> DiscretizedVariable`
+        Parameters:
+            * **aName** (*str*) -- the name of the variable
+            * **aDesc** (*str*) -- the (optional) description of the variable
 
-        ``DiscretizedVariable(aName, aDesc='') -> DiscretizedVariable``
-
-        ``DiscretizedVariable(aDDRV) -> DiscretizedVariable``
-
-    Parameters
-    ----------
-    aName: str
-      The name of the variable
-    aDesc: str
-      The (optional) description of the variable
-    aDDRV: pyAgrum.DiscretizedVariable
-      Another `DiscretizedVariable` that will be copied
+    DiscretizedVariable(aDDRV) -> DiscretizedVariable
+        Parameters:
+            * **aDDRV** (*pyAgrum.DiscretizedVariable*) -- the pyAgrum.DiscretizedVariable that will be copied
 
     Examples
     --------
@@ -7063,7 +7092,7 @@ class DiscretizedVariable(IDiscretizedVariable):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
 
     def __init__(self, *args):
         r"""
@@ -7281,7 +7310,7 @@ class MultiDimContainer(object):
     Proxy of C++ gum::MultiDimContainer< double > class.
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
 
     def __init__(self, *args, **kwargs):
         raise AttributeError("No constructor defined - class is abstract")
@@ -7384,26 +7413,15 @@ class Potential(object):
 
     Class representing a potential.
 
-    Available constructors:
+    Potential() -> Potential
 
-      ``Potential() -> Potential``
-
-      ``Potential(src) -> Potential``
-
-    Parameters
-    ----------
-    src: pyAgrum.Potential
-      The Potential to copy
-
-    Returns
-    -------
-    pyAgrum.Potential
-      The new Potential
-
+    Potential(src) -> Potential
+        Parameters:
+            * **src** (*pyAgrum.Potential*) -- the Potential to copy
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
 
     def __init__(self, *args):
         r"""
@@ -8418,7 +8436,7 @@ class IBayesNet(DAGmodel):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
 
     def __init__(self, *args, **kwargs):
         raise AttributeError("No constructor defined - class is abstract")
@@ -8804,22 +8822,17 @@ class BayesNet(IBayesNet):
 
     BayesNet represents a Bayesian Network.
 
-    Available constructors:
-    	``BayesNet(name='') -> BayesNet``
+    BayesNet(name='') -> BayesNet
+        Parameters:
+          * **name** (*str*) -- the name of the Bayes Net
 
-    	``BayesNet(source) -> BayesNet``
-
-
-    Parameters
-    ----------
-    name: str
-    	the name of the Bayes Net (optional)
-    source : pyAgrum.BayesNet
-    	the Bayesian network to copy
+    BayesNet(source) -> BayesNet
+        Parameters:
+          * **source** (*pyAgrum.BayesNet*) -- the Bayesian network to copy
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
 
     @staticmethod
     def fastPrototype(dotlike, domainSize=2):
@@ -10004,7 +10017,7 @@ class BayesNetInference(object):
     Proxy of C++ gum::BayesNetInference< double > class.
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
 
     def __init__(self, *args, **kwargs):
         raise AttributeError("No constructor defined - class is abstract")
@@ -10171,17 +10184,13 @@ class LazyPropagation(object):
 
     Class used for Lazy Propagation
 
-    Available constructors:
-    	``LazyPropagation(bn) -> LazyPropagation``
-
-    Parameters
-    ----------
-    bn : pyAgrum.BayesNet
-    	a Bayesian network
+    LazyPropagation(bn) -> LazyPropagation
+        Parameters:
+            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -11046,17 +11055,13 @@ class ShaferShenoyInference(object):
 
     Class used for Shafer-Shenoy inferences.
 
-    Available constructors:
-    	``ShaferShenoyInference(bn) -> ShaferShenoyInference``
-
-    Parameters
-    ----------
-    bn : pyAgrum.BayesNet
-    	a Bayesian network
+    ShaferShenoyInference(bn) -> ShaferShenoyInference
+        Parameters:
+            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -11895,17 +11900,13 @@ class VariableElimination(object):
 
     Class used for Variable Elimination inference algorithm.
 
-    Available constructors:
-    	``VariableElimination(bn) -> VariableElimination``
-
-    Parameters
-    ----------
-    bn : pyAgrum.BayesNet
-    	a Bayesian network
+    VariableElimination(bn) -> VariableElimination
+        Parameters:
+            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -12677,17 +12678,13 @@ class GibbsSampling(object):
 
     Class for making Gibbs sampling inference in bayesian networks.
 
-    Available constructors:
-    	``GibbsSampling(bn) -> GibbsSampling``
-
-    Parameters
-    ----------
-    bn : pyAgrum.BayesNet
-    	a Bayesian network
+    GibbsSampling(bn) -> GibbsSampling
+        Parameters:
+          * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, bn):
@@ -13581,17 +13578,13 @@ class ImportanceSampling(object):
 
     Class used for inferences using the Importance Sampling algorithm.
 
-    Available constructors:
-    	``ImportanceSampling(bn) -> ImportanceSampling``
-
-    Parameters
-    ----------
-    bn : pyAgrum.BayesNet
-    	a Bayesian network
+    ImportanceSampling(bn) -> ImportanceSampling
+        Parameters:
+            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, bn):
@@ -14413,17 +14406,13 @@ class WeightedSampling(object):
 
     Class used for Weighted sampling inference algorithm.
 
-    Available constructors:
-    	``WeightedSampling(bn) -> WeightedSampling``
-
-    Parameters
-    ----------
-    bn : pyAgrum.BayesNet
-    	a Bayesian network
+    WeightedSampling(bn) -> WeightedSampling
+        Parameters:
+            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, bn):
@@ -15245,17 +15234,13 @@ class MonteCarloSampling(object):
 
     Class used for Monte Carlo sampling inference algorithm.
 
-    Available constructors:
-    	``MonteCarloSampling(bn) -> MonteCarloSampling``
-
-    Parameters
-    ----------
-    bn : pyAgrum.BayesNet
-    	a Bayesian network
+    MonteCarloSampling(bn) -> MonteCarloSampling
+        Parameters:
+            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, bn):
@@ -16075,17 +16060,13 @@ class LoopyImportanceSampling(object):
 
     Class used for inferences using a loopy version of importance sampling.
 
-    Available constructors:
-    	``LoopyImportanceSampling(bn) -> LoopyImportanceSampling``
-
-    Parameters
-    ----------
-    bn : pyAgrum.BayesNet
-    	a Bayesian network
+    LoopyImportanceSampling(bn) -> LoopyImportanceSampling
+        Parameters:
+            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, bn):
@@ -16921,17 +16902,13 @@ class LoopyWeightedSampling(object):
 
     Class used for inferences using a loopy version of weighted sampling.
 
-    Available constructors:
-    	``LoopyWeightedSampling(bn) -> LoopyWeightedSampling``
-
-    Parameters
-    ----------
-    bn : pyAgrum.BayesNet
-    	a Bayesian network
+    LoopyWeightedSampling(bn) -> LoopyWeightedSampling
+        Parameters:
+            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, bn):
@@ -17767,17 +17744,13 @@ class LoopyGibbsSampling(object):
 
     Class used for inferences using a loopy version of Gibbs sampling.
 
-    Available constructors:
-    	``LoopyGibbsSampling(bn) -> LoopyGibbsSampling``
-
-    Parameters
-    ----------
-    bn : pyAgrum.BayesNet
-    	a Bayesian network
+    LoopyGibbsSampling(bn) -> LoopyGibbsSampling
+        Parameters:
+            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, bn):
@@ -18681,9 +18654,17 @@ class LoopyGibbsSampling(object):
 _pyAgrum.LoopyGibbsSampling_swigregister(LoopyGibbsSampling)
 
 class LoopyMonteCarloSampling(object):
-    r"""Proxy of C++ gum::LoopySamplingInference< double,gum::MonteCarloSampling > class."""
+    r"""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    Class used for inferences using a loopy version of Monte Carlo sampling.
+
+    LoopyMonteCarloSampling(bn) -> LoopyMonteCarloSampling
+        Parameters:
+            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
+
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, bn):
@@ -19521,17 +19502,13 @@ class LoopyBeliefPropagation(object):
 
     Class used for inferences using loopy belief propagation algorithm.
 
-    Available constructors:
-    	``LoopyBeliefPropagation(bn) -> LoopyBeliefPropagation``
-
-    Parameters
-    ----------
-    bn : pyAgrum.BayesNet
-    	a Bayesian network
+    LoopyBeliefPropagation(bn) -> LoopyBeliefPropagation
+        Parameters:
+            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, bn):
@@ -20326,20 +20303,17 @@ class ExactBNdistance(object):
 
     Class representing exacte computation of divergence and distance between BNs
 
-    Available constructors :
+    ExactBNdistance(P,Q) -> ExactBNdistance
+        Parameters:
+            * **P** (*pyAgrum.BayesNet*)
+              a Bayesian network
+            * **Q** (*pyAgrum.BayesNet*)
+              another Bayesian network to compare with the first one
 
-    	``ExactBNdistance(P,Q) -> ExactBNdistance``
-
-    	``ExactBNdistance(ebnd) -> ExactBNdistance``
-
-    Parameters
-    ----------
-    P : pyAgrum.IBayesNet
-    	a Bayesian network
-    Q : pyAgrum.IBayesNet
-    	anotre Bayesian network
-    ebnd : pyAgrum.ExactBNdistance
-    	the exact BNdistance to copy
+    ExactBNdistance(ebnd) -> ExactBNdistance
+        Parameters:
+            * **ebnd** (*pyAgrum.ExactBNdistance*)
+              the exact BNdistance to copy
 
     Raises
     ------
@@ -20348,7 +20322,7 @@ class ExactBNdistance(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -20381,20 +20355,15 @@ class GibbsBNdistance(ApproximationScheme):
 
     Class representing a Gibbs-Approximated computation of divergence and distance between BNs
 
-    Available constructors :
 
-    	``GibbsBNdistance(P,Q) -> GibbsBNdistance``
+    GibbsBNdistance(P,Q) -> GibbsBNdistance
+        Parameters:
+            * **P** (*pyAgrum.BayesNet*) -- a Bayesian network
+            * **Q** (*pyAgrum.BayesNet*) -- another Bayesian network to compare with the first one
 
-    	``GibbsBNdistance(gbnd) -> GibbsBNdistance``
-
-    Parameters
-    ----------
-    P : pyAgrum.IBayesNet
-    	a Bayesian network
-    Q : pyAgrum.IBayesNet
-    	anotre Bayesian network
-    gbnd : pyAgrum.GibbsBNdistance
-    	the Gibbs BNdistance to copy
+    GibbsBNdistance(gbnd) -> GibbsBNdistance
+        Parameters:
+            * **gbnd** (*pyAgrum.GibbsBNdistance*) -- the Gibbs BNdistance to copy
 
     Raises
     ------
@@ -20403,7 +20372,7 @@ class GibbsBNdistance(ApproximationScheme):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -20734,27 +20703,22 @@ class CredalNet(object):
 
     Constructor used to create a CredalNet (step by step or with two BayesNet)
 
-    Available constructors:
-        ``CredalNet() -> CredalNet``
+    CredalNet() -> CredalNet
+        default constructor
 
-        ``CredalNet(src_min_num,src_max_den) -> CredalNet``
+    CredalNet(src_min_num,src_max_den) -> CredalNet
+        Parameters:
+            * **src_min_num** (*str*) -- the path to a BayesNet which contains lower probabilities.
+            * **src_max_den** (*str*) -- the (optional) path to a BayesNet which contains upper probabilities.
 
-        ``CredalNet(src_min_num,src_max_den) -> CredalNet``
-
-    Parameters
-    ----------
-    src_min_num
-    	(str) the path to a BayesNet which contains lower probabilities.
-    src_max_den
-    	(str) the (optional) path to a BayesNet which contains upper probabilities.
-    src_min_num
-    	(pyAgrum.BayesNet) the BayesNet which contains lower probabilities.
-    src_max_den
-    	(pyAgrum.BayesNet) the (optional) BayesNet which contains upper probabilities. 
+    CredalNet(src_min_num,src_max_den) -> CredalNet
+        Parameters:
+            * **src_min_num (*pyAgrum.BayesNet*) -- the BayesNet which contains lower probabilities.
+            * **src_max_den (*pyAgrum.BayesNet*) -- the (optional) BayesNet which contains upper probabilities. 
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     NodeType_Precise = _pyAgrum.CredalNet_NodeType_Precise
     
     NodeType_Credal = _pyAgrum.CredalNet_NodeType_Credal
@@ -21287,18 +21251,13 @@ class CNMonteCarloSampling(object):
 
     Class used for inferences in credal networks with Monte Carlo sampling algorithm.
 
-    Available constructors:
-
-        ``CNMonteCarloSampling(cn) -> CNMonteCarloSampling``
-
-    Parameters
-    ----------
-    cn: pyAgrum.CredalNet
-      a Credal network
+    CNMonteCarloSampling(cn) -> CNMonteCarloSampling
+        Parameters:
+            * **cn** (*pyAgrum.CredalNet*) -- a credal network
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, credalNet):
@@ -21683,18 +21642,13 @@ class CNLoopyPropagation(object):
 
     Class used for inferences in credal networks with Loopy Propagation algorithm.
 
-    Available constructors:
-
-        ``CNLoopyPropagation(cn) -> CNLoopyPropagation``
-
-    Parameters
-    ----------
-    cn: pyAgrum.CredalNet
-      a Credal network
+    CNLoopyPropagation(cn) -> CNLoopyPropagation
+        Parameters:
+          * **cn** (*pyAgrum.CredalNet*) -- a Credal network
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     InferenceType_nodeToNeighbours = _pyAgrum.CNLoopyPropagation_InferenceType_nodeToNeighbours
     
@@ -22123,19 +22077,15 @@ class InfluenceDiagram(DAGmodel):
 
     InfluenceDiagram represents an Influence Diagram.
 
-    Available constructors:
-        ``InfluenceDiagram() -> InfluenceDiagram``
+    InfluenceDiagram() -> InfluenceDiagram
 
-        ``InfluenceDiagram(source) -> InfluenceDiagram``
-
-    Parameters
-    ----------
-    source : pyAgrum.InfluenceDiagram
-      the InfluenceDiagram to copy
+    InfluenceDiagram(source) -> InfluenceDiagram
+        Parameters:
+            * **source** (*pyAgrum.InfluenceDiagram*) -- the InfluenceDiagram to copy
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __swig_destroy__ = _pyAgrum.delete_InfluenceDiagram
 
     def __init__(self, *args):
@@ -22781,7 +22731,7 @@ class InfluenceDiagramInference(object):
     Proxy of C++ gum::InfluenceDiagramInference< double > class.
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, infDiag):
@@ -23025,27 +22975,23 @@ class BNLearner(object):
 
 
 
-    Available constructors:
-    	``BNLearner(filename) -> BNLearner``
+    BNLearner(filename) -> BNLearner
+        Parameters:
+            * **filename** (*str*) -- the file to learn from
 
-    	``BNLearner(filename,src,parse_database=false) -> BNLearner``
+    BNLearner(filename,src,parse_database=False) -> BNLearner
+        Parameters:
+            * **filename** (*str*) -- the file to learn from
+            * **src** (*pyAgrum.BayesNet*) -- the Bayesian network used to find those modalities
+            * **parse_database** (*bool*) -- if True, the modalities specified by the user will be considered as a superset of the modalities of the variables.
 
-    	``BNLearner(learner) -> BNLearner``
-
-    Parameters
-    ----------
-    filename: str
-    	the file to learn from
-    src : pyAgrum.BayesNet
-    	the Bayesian network used to find those modalities
-    parse_database : bool
-    	if true, the modalities specified by the user will be considered as a superset of the modalities of the variables.
-    learner : pyAgrum.BNLearner
-    	the BNLearner to copy
+    BNLearner(learner) -> BNLearner
+        Parameters:
+            * **learner** (*pyAgrum.BNLearner*) -- the BNLearner to copy
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -23918,36 +23864,26 @@ class BNDatabaseGenerator(object):
 
 
 
-    BNGenerator is used to easily generate databases from a gum.BayesNet.
+    BNDatabaseGenerator is used to easily generate databases from a gum.BayesNet.
 
-    Available constructors:
-
-        ``BNDatabaseGenerator(bn) -> BNDatabaseGenerator``
-
-    Parameters
-    ----------
-    bn: gum.BayesNet
-        the Bayesian network used to generate data.
+    BNDatabaseGenerator(bn) -> BNDatabaseGenerator
+        Parameters:
+            * **bn** (*gum.BayesNet*) -- the Bayesian network used to generate data.
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, bn):
         r"""
         __init__(BNDatabaseGenerator self, BayesNet bn) -> BNDatabaseGenerator
 
-        BNGenerator is used to easily generate databases from a gum.BayesNet.
+        BNDatabaseGenerator is used to easily generate databases from a gum.BayesNet.
 
-        Available constructors:
-
-            ``BNDatabaseGenerator(bn) -> BNDatabaseGenerator``
-
-        Parameters
-        ----------
-        bn: gum.BayesNet
-            the Bayesian network used to generate data.
+        BNDatabaseGenerator(bn) -> BNDatabaseGenerator
+            Parameters:
+                * **bn** (*gum.BayesNet*) -- the Bayesian network used to generate data.
 
         """
         _pyAgrum.BNDatabaseGenerator_swiginit(self, _pyAgrum.new_BNDatabaseGenerator(bn))

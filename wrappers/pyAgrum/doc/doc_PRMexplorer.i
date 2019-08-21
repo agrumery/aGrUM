@@ -2,8 +2,8 @@
 "
 PRMexplorer helps navigate through probabilistic relational models.
 
-Available constructors:
-	``PRMexplorer() -> PRMexplorer``
+PRMexplorer() -> PRMexplorer
+    default constructor
 "
 
 %feature("docstring") PRMexplorer::classAggregates

@@ -2,9 +2,8 @@
 "
 BNGenerator is used to easily generate Bayesian networks.
 
-Available constructors:
-
-    ``BNGenerator() -> BNGenerator``
+BNGenerator() -> BNGenerator
+    default constructor
 "
 
 %feature("docstring") BNGenerator::generate

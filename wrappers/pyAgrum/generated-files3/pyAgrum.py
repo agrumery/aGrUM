@@ -155,8 +155,8 @@ class JunctionTreeGenerator(object):
 
     JunctionTreeGenerator is use to generate junction tree or binary junction tree from bayesian networks.
 
-    Available constructors:
-    	``JunctionTreeGenerator() -> JunctionTreeGenerator``
+    JunctionTreeGenerator() -> JunctionTreeGenerator
+        Constructor
 
     """
 
@@ -259,8 +259,8 @@ class JunctionTreeGenerator(object):
 
         JunctionTreeGenerator is use to generate junction tree or binary junction tree from bayesian networks.
 
-        Available constructors:
-        	``JunctionTreeGenerator() -> JunctionTreeGenerator``
+        JunctionTreeGenerator() -> JunctionTreeGenerator
+            Constructor
 
         """
         _pyAgrum.JunctionTreeGenerator_swiginit(self, _pyAgrum.new_JunctionTreeGenerator())
@@ -462,9 +462,8 @@ class BNGenerator(object):
 
     BNGenerator is used to easily generate Bayesian networks.
 
-    Available constructors:
-
-        ``BNGenerator() -> BNGenerator``
+    BNGenerator() -> BNGenerator
+        default constructor
 
     """
 
@@ -507,9 +506,8 @@ class BNGenerator(object):
 
         BNGenerator is used to easily generate Bayesian networks.
 
-        Available constructors:
-
-            ``BNGenerator() -> BNGenerator``
+        BNGenerator() -> BNGenerator
+            default constructor
 
         """
         _pyAgrum.BNGenerator_swiginit(self, _pyAgrum.new_BNGenerator())
@@ -523,9 +521,7 @@ class IDGenerator(object):
 
     IDGenerator is used to easily generate influence diagrams.
 
-    Available constructors:
-
-        ``IDGenerator() -> IDGenerator``
+    IDGenerator() -> IDGenerator
 
     """
 
@@ -565,9 +561,7 @@ class IDGenerator(object):
 
         IDGenerator is used to easily generate influence diagrams.
 
-        Available constructors:
-
-            ``IDGenerator() -> IDGenerator``
+        IDGenerator() -> IDGenerator
 
         """
         _pyAgrum.IDGenerator_swiginit(self, _pyAgrum.new_IDGenerator())
@@ -581,8 +575,8 @@ class PRMexplorer(object):
 
     PRMexplorer helps navigate through probabilistic relational models.
 
-    Available constructors:
-    	``PRMexplorer() -> PRMexplorer``
+    PRMexplorer() -> PRMexplorer
+        default constructor
 
     """
 
@@ -595,8 +589,8 @@ class PRMexplorer(object):
 
         PRMexplorer helps navigate through probabilistic relational models.
 
-        Available constructors:
-        	``PRMexplorer() -> PRMexplorer``
+        PRMexplorer() -> PRMexplorer
+            default constructor
 
         """
         _pyAgrum.PRMexplorer_swiginit(self, _pyAgrum.new_PRMexplorer())
@@ -2870,22 +2864,16 @@ _pyAgrum.Variable_swigregister(Variable)
 class DiscreteVariable(Variable):
     r"""
 
-    DiscreteVariable is the base class for discrete random variable.
+    DiscreteVariable is the base class for discrete random variables.
 
-    Available constructors:
+    DiscreteVariable(aName, aDesc='') -> DiscreteVariable
+        Parameters:
+            * **aName** (*str*) -- the name of the variable
+            * **aDesc** (*str*) -- the (optional) description of the variable
 
-        ``DiscreteVariable(aName, aDesc='') -> DiscreteVariable``
-
-        ``DiscreteVariable(aDRV) -> DiscreteVariable``
-
-    Parameters
-    ----------
-    aName: str
-      The name of the variable
-    aDesc: str
-      The (optional) description of the variable
-    aDRV: pyAgrum.DiscreteVariable
-      Another `DiscreteVariable` that will be copied
+    DiscreteVariable(aDRV) -> DiscreteVariable
+        Parameters:
+            * **aDRV** (*pyAgrum.DiscreteVariable*) -- the pyAgrum.DiscreteVariable that will be copied
 
     """
 
@@ -3116,24 +3104,15 @@ class LabelizedVariable(DiscreteVariable):
 
     LabelizedVariable is a discrete random variable with a customizable sequence of labels.
 
-    Available constructors:
+    LabelizedVariable(aName, aDesc='', nbrLabel=2) -> LabelizedVariable
+        Parameters:
+            * **aName** (*str*) -- the name of the variable
+            * **aDesc** (*str*) -- the (optional) description of the variable
+            * **nbrLabel** (*int*) -- the number of labels to create (2 by default)
 
-        ``LabelizedVariable(aName, aDesc='', nbrLabel=2) -> LabelizedVariable``
-
-        ``LabelizedVariable(aName, aDesc='') -> LabelizedVariable``
-
-        ``LabelizedVariable(aLDRV) -> LabelizedVariable``
-
-    Parameters
-    ----------
-    aName: str
-      The name of the variable
-    aDesc: str
-      The (optional) description of the variable
-    nbrLabel: int
-      The number of labels to create (2 by default)
-    aLDRV: pyAgrum.LabelizedVariable
-      Another `LabelizedVariable` that will be copied
+    LabelizedVariable(aLDRV) -> LabelizedVariable
+        Parameters:
+            * **aLDRV** (*pyAgrum.LabelizedVariable*) -- The pyAgrum.LabelizedVariable that will be copied
 
     Examples
     --------
@@ -3379,28 +3358,23 @@ class RangeVariable(DiscreteVariable):
 
     RangeVariable represents a variable with a range of integers as domain.
 
-    Available constructors:
+    RangeVariable(aName, aDesc,minVal, maxVal) -> RangeVariable
+        Parameters:
+            * **aName** (*str*) -- the name of the variable
+            * **aDesc** (*str*) -- the description of the variable
+            * **minVal** (*int*) -- the minimal integer of the interval
+            * **maxVal** (*int*) -- the maximal integer of the interval
 
-    	``RangeVariable(aName, aDesc='',minVal, maxVal) -> RangeVariable``
+    RangeVariable(aName, aDesc='') -> RangeVariable
+        Parameters:
+            * **aName** (*str*) -- the name of the variable
+            * **aDesc** (*str*) -- the description of the variable
 
-    	``RangeVariable(aName, aDesc='',minVal) -> RangeVariable``
+        By default ``minVal=0`` and ``maxVal=1``
 
-      ``RangeVariable(aName, aDesc='') -> RangeVariable``
-
-      ``RangeVariable(aRV) -> RangeVariable``
-
-    Parameters
-    ----------
-    aName: str
-      The name of the variable
-    aDesc: str
-      The (optional) description of the variable
-    minVal : int
-      The minimal integer of the interval
-    maxVal : int
-      The maximal integer of the interval
-    aDV: pyAgrum.RangeVariable
-      Another `RangeVariable` that will be copied
+    RangeVariable(aRV) -> RangeVariable
+        Parameters:
+            * **aDV** (*RangeVariable*) -- the pyAgrum.RangeVariable that will be copied
 
     Examples
     --------
@@ -3429,7 +3403,8 @@ class RangeVariable(DiscreteVariable):
 
     def __init__(self, *args):
         r"""
-        __init__(RangeVariable self, std::string const & aName, std::string const & aDesc, long minVal=0, long maxVal=1) -> RangeVariable
+        __init__(RangeVariable self, std::string const & aName, std::string const & aDesc, long minVal, long maxVal) -> RangeVariable
+        __init__(RangeVariable self, std::string const & aName, std::string const & aDesc) -> RangeVariable
         __init__(RangeVariable self, RangeVariable aDRV) -> RangeVariable
         """
         _pyAgrum.RangeVariable_swiginit(self, _pyAgrum.new_RangeVariable(*args))
@@ -3659,19 +3634,14 @@ class Edge(object):
 
     pyAgrum.Edge is the representation of an arc between two nodes represented by int : the first and the second.
 
-    Available constructors :
-        ``Edge(aN1,aN2) -> Edge``
+    Edge(aN1,aN2) -> Edge
+        Parameters:
+            * **aN1** (*int*) -- the nodeId of the first node
+            * **aN2** (*int*) -- the nodeId of the secondnode
 
-        ``Edge(src) -> Edge``
-
-    Parameters
-    ----------
-    aN1 : int
-      the nodeId of the first node
-    aN2 : int
-      the nodeId of the secondnode
-    src: pyAgrum.Edge
-      the Edge to copy
+    Edge(src) -> Edge
+        Parameters:
+            * **src** (*yAgrum.Edge*) -- the Edge to copy
 
     """
 
@@ -3744,20 +3714,14 @@ class Arc(object):
 
     pyAgrum.Arc is the representation of an arc between two nodes represented by int : the head and the tail.
 
-    Available constructors:
-        ``Arc(tail, head) -> Arc``
+    Arc(tail, head) -> Arc
+        Parameters:
+            * **tail** (*int*) -- the tail
+            * **head** (*int*) -- the head
 
-        ``Arc(src) -> Arc``
-
-    Parameters
-    ----------
-    tail : int
-      the tail
-    head : int
-      the head
-    src : :class: Arc
-      the Arc to copy
-
+    Arc(src) -> Arc
+        Parameters:
+            * **src** (*Arc*) -- the gum.Arc to copy
 
     """
 
@@ -3854,15 +3818,11 @@ class UndiGraph(object):
 
     UndiGraph represents an Undirected Graph.
 
-    Available constructors:
-        ``UndiGraph() -> UndiGraph``
+    UndiGraph() -> UndiGraph
 
-        ``UndiGraph(src) -> UndiGraph``
-
-    Parameters
-    ----------
-    src : :class: UndiGraph
-      the UndiGraph to copy
+    UndiGraph(src) -> UndiGraph
+        Parameters!
+            * **src** (*UndiGraph*) -- the pyAgrum.UndiGraph to copy
 
 
     """
@@ -4201,16 +4161,11 @@ class DiGraph(object):
 
     DiGraph represents a Directed Graph.
 
-    Available constructors:
-        ``DiGraph() -> DiGraph``
+    DiGraph() -> DiGraph
 
-        ``DiGraph(src) -> DiGraph``
-
-    Parameters
-    ----------
-    src : pyAgrum.DiGraph
-      the digraph to copy
-
+    DiGraph(src) -> DiGraph
+        Parameters:
+            * **src** (*pyAgrum.DiGraph*) -- the digraph to copy
 
     """
 
@@ -4570,15 +4525,12 @@ class DAG(DiGraph):
 
     DAG represents a Directed Acyclic Graph.
 
-    Available constructors:
-        ``DAG() -> DAG``
+    DAG() -> DAG
+        default constructor
 
-        ``DAG(src) -> DAG``
-
-    Parameters
-    ----------
-    src : :class: DAG
-      the DAG to copy
+    DAG(src) -> DAG
+        Parameters:
+            * **src** (*DAG*) -- the DAG to copy
 
     """
 
@@ -4625,6 +4577,30 @@ class DAG(DiGraph):
         """
         return _pyAgrum.DAG_addArc(self, *args)
 
+    def eraseArc(self, n1: "gum::NodeId const", n2: "gum::NodeId const") -> "void":
+        r"""eraseArc(DAG self, gum::NodeId const n1, gum::NodeId const n2)"""
+        return _pyAgrum.DAG_eraseArc(self, n1, n2)
+
+    def existsArc(self, n1: "gum::NodeId const", n2: "gum::NodeId const") -> "bool":
+        r"""existsArc(DAG self, gum::NodeId const n1, gum::NodeId const n2) -> bool"""
+        return _pyAgrum.DAG_existsArc(self, n1, n2)
+
+    def eraseParents(self, n: "gum::NodeId const") -> "void":
+        r"""eraseParents(DAG self, gum::NodeId const n)"""
+        return _pyAgrum.DAG_eraseParents(self, n)
+
+    def eraseChildren(self, n: "gum::NodeId const") -> "void":
+        r"""eraseChildren(DAG self, gum::NodeId const n)"""
+        return _pyAgrum.DAG_eraseChildren(self, n)
+
+    def sizeArcs(self) -> "gum::Size":
+        r"""sizeArcs(DAG self) -> gum::Size"""
+        return _pyAgrum.DAG_sizeArcs(self)
+
+    def emptyArcs(self) -> "bool":
+        r"""emptyArcs(DAG self) -> bool"""
+        return _pyAgrum.DAG_emptyArcs(self)
+
 # Register DAG in _pyAgrum:
 _pyAgrum.DAG_swigregister(DAG)
 
@@ -4633,15 +4609,11 @@ class MixedGraph(UndiGraph, DiGraph):
 
     MixedGraph represents a Clique Graph.
 
-    Available constructors:
-        ``MixedGraph() -> MixedGraph``
+    MixedGraph() -> MixedGraph
 
-        ``MixedGraph(src) -> MixedGraph``
-
-    Parameters
-    ----------
-    src : pyAgrum.MixedGraph
-      the MixedGraph to copy
+    MixedGraph(src) -> MixedGraph
+        Parameters:
+            * **src** (*pyAgrum.MixedGraph*) --the MixedGraph to copy
 
     """
 
@@ -4754,6 +4726,82 @@ class MixedGraph(UndiGraph, DiGraph):
         r"""__str__(MixedGraph self) -> std::string"""
         return _pyAgrum.MixedGraph___str__(self)
 
+    def addNodes(self, n: "gum::Size") -> "PyObject *":
+        r"""addNodes(MixedGraph self, gum::Size n) -> PyObject *"""
+        return _pyAgrum.MixedGraph_addNodes(self, n)
+
+    def addNode(self) -> "gum::NodeId":
+        r"""addNode(MixedGraph self) -> gum::NodeId"""
+        return _pyAgrum.MixedGraph_addNode(self)
+
+    def addNodeWithId(self, id: "gum::NodeId const") -> "void":
+        r"""addNodeWithId(MixedGraph self, gum::NodeId const id)"""
+        return _pyAgrum.MixedGraph_addNodeWithId(self, id)
+
+    def existsNode(self, id: "gum::NodeId const") -> "bool":
+        r"""existsNode(MixedGraph self, gum::NodeId const id) -> bool"""
+        return _pyAgrum.MixedGraph_existsNode(self, id)
+
+    def size(self) -> "gum::Size":
+        r"""size(MixedGraph self) -> gum::Size"""
+        return _pyAgrum.MixedGraph_size(self)
+
+    def empty(self) -> "bool":
+        r"""empty(MixedGraph self) -> bool"""
+        return _pyAgrum.MixedGraph_empty(self)
+
+    def addEdge(self, n1: "gum::NodeId const", n2: "gum::NodeId const") -> "void":
+        r"""addEdge(MixedGraph self, gum::NodeId const n1, gum::NodeId const n2)"""
+        return _pyAgrum.MixedGraph_addEdge(self, n1, n2)
+
+    def eraseEdge(self, n1: "gum::NodeId const", n2: "gum::NodeId const") -> "void":
+        r"""eraseEdge(MixedGraph self, gum::NodeId const n1, gum::NodeId const n2)"""
+        return _pyAgrum.MixedGraph_eraseEdge(self, n1, n2)
+
+    def existsEdge(self, n1: "gum::NodeId const", n2: "gum::NodeId const") -> "bool":
+        r"""existsEdge(MixedGraph self, gum::NodeId const n1, gum::NodeId const n2) -> bool"""
+        return _pyAgrum.MixedGraph_existsEdge(self, n1, n2)
+
+    def sizeEdges(self) -> "gum::Size":
+        r"""sizeEdges(MixedGraph self) -> gum::Size"""
+        return _pyAgrum.MixedGraph_sizeEdges(self)
+
+    def emptyEdges(self) -> "bool":
+        r"""emptyEdges(MixedGraph self) -> bool"""
+        return _pyAgrum.MixedGraph_emptyEdges(self)
+
+    def eraseNeighbours(self, n: "gum::NodeId const") -> "void":
+        r"""eraseNeighbours(MixedGraph self, gum::NodeId const n)"""
+        return _pyAgrum.MixedGraph_eraseNeighbours(self, n)
+
+    def addArc(self, n1: "gum::NodeId const", n2: "gum::NodeId const") -> "void":
+        r"""addArc(MixedGraph self, gum::NodeId const n1, gum::NodeId const n2)"""
+        return _pyAgrum.MixedGraph_addArc(self, n1, n2)
+
+    def eraseArc(self, n1: "gum::NodeId const", n2: "gum::NodeId const") -> "void":
+        r"""eraseArc(MixedGraph self, gum::NodeId const n1, gum::NodeId const n2)"""
+        return _pyAgrum.MixedGraph_eraseArc(self, n1, n2)
+
+    def existsArc(self, n1: "gum::NodeId const", n2: "gum::NodeId const") -> "bool":
+        r"""existsArc(MixedGraph self, gum::NodeId const n1, gum::NodeId const n2) -> bool"""
+        return _pyAgrum.MixedGraph_existsArc(self, n1, n2)
+
+    def eraseParents(self, n: "gum::NodeId const") -> "void":
+        r"""eraseParents(MixedGraph self, gum::NodeId const n)"""
+        return _pyAgrum.MixedGraph_eraseParents(self, n)
+
+    def eraseChildren(self, n: "gum::NodeId const") -> "void":
+        r"""eraseChildren(MixedGraph self, gum::NodeId const n)"""
+        return _pyAgrum.MixedGraph_eraseChildren(self, n)
+
+    def sizeArcs(self) -> "gum::Size":
+        r"""sizeArcs(MixedGraph self) -> gum::Size"""
+        return _pyAgrum.MixedGraph_sizeArcs(self)
+
+    def emptyArcs(self) -> "bool":
+        r"""emptyArcs(MixedGraph self) -> bool"""
+        return _pyAgrum.MixedGraph_emptyArcs(self)
+
 # Register MixedGraph in _pyAgrum:
 _pyAgrum.MixedGraph_swigregister(MixedGraph)
 
@@ -4762,15 +4810,12 @@ class CliqueGraph(UndiGraph):
 
     CliqueGraph represents a Clique Graph.
 
-    Available constructors:
-        ``CliqueGraph() -> CliqueGraph``
+    CliqueGraph() -> CliqueGraph
+        default constructor
 
-        ``CliqueGraph(src) -> CliqueGraph``
-
-    Parameters
-    ----------
-    src : pyAgrum.CliqueGraph
-      the CliqueGraph to copy
+    CliqueGraph(src) -> CliqueGraph
+        Parameter
+            * **src** (*pyAgrum.CliqueGraph*) -- the CliqueGraph to copy
 
     """
 
@@ -5102,16 +5147,11 @@ class Instantiation(object):
 
     Instantiation is designed to assign values to tuples of variables and to efficiently loop over values of subsets of variables.
 
-    Available constructors:
+    Instantiation() -> Instantiation
 
-    	``Instantiation() -> Instantiation``
-
-    	``Instantiation(aI) -> Instantiation``
-
-    Parameters
-    ----------
-    aI: pyAgrum.Instantiation
-      The Instantiation we copy
+    Instantiation(aI) -> Instantiation
+        Parameters:
+          * **aI** (*pyAgrum.Instantiation*) -- the Instantiation we copy
 
     Returns
     -------
@@ -6571,23 +6611,18 @@ class ApproximationScheme(object):
 
     Used to parametrize stopping criteria in approximate inference or learning algorithm.
 
-    Available constructors:
-    	``ApproximationScheme() -> ApproximationScheme``
-
-    	``ApproximationScheme(v) -> ApproximationScheme``
-
-    Parameters
-    ----------
-    v : bool
+    ApproximationScheme(verbosity=False) -> ApproximationScheme
+        Parameters:
+          * **verbosity** (*bool*) -- to keep (or not) tracks of the learning process (history of epsilons)
 
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
-    def __init__(self, v: "bool"=False):
-        r"""__init__(ApproximationScheme self, bool v=False) -> ApproximationScheme"""
-        _pyAgrum.ApproximationScheme_swiginit(self, _pyAgrum.new_ApproximationScheme(v))
+    def __init__(self, verbosity: "bool"=False):
+        r"""__init__(ApproximationScheme self, bool verbosity=False) -> ApproximationScheme"""
+        _pyAgrum.ApproximationScheme_swiginit(self, _pyAgrum.new_ApproximationScheme(verbosity))
     __swig_destroy__ = _pyAgrum.delete_ApproximationScheme
 
     def setEpsilon(self, eps: "double") -> "void":
@@ -7026,20 +7061,14 @@ class DiscretizedVariable(IDiscretizedVariable):
 
     DiscretizedVariable is a discrete random variable with a set of ``ticks`` defining intervalls.
 
-    Available constructors:
+    DiscretizedVariable(aName, aDesc='') -> DiscretizedVariable`
+        Parameters:
+            * **aName** (*str*) -- the name of the variable
+            * **aDesc** (*str*) -- the (optional) description of the variable
 
-        ``DiscretizedVariable(aName, aDesc='') -> DiscretizedVariable``
-
-        ``DiscretizedVariable(aDDRV) -> DiscretizedVariable``
-
-    Parameters
-    ----------
-    aName: str
-      The name of the variable
-    aDesc: str
-      The (optional) description of the variable
-    aDDRV: pyAgrum.DiscretizedVariable
-      Another `DiscretizedVariable` that will be copied
+    DiscretizedVariable(aDDRV) -> DiscretizedVariable
+        Parameters:
+            * **aDDRV** (*pyAgrum.DiscretizedVariable*) -- the pyAgrum.DiscretizedVariable that will be copied
 
     Examples
     --------
@@ -7384,22 +7413,11 @@ class Potential(object):
 
     Class representing a potential.
 
-    Available constructors:
+    Potential() -> Potential
 
-      ``Potential() -> Potential``
-
-      ``Potential(src) -> Potential``
-
-    Parameters
-    ----------
-    src: pyAgrum.Potential
-      The Potential to copy
-
-    Returns
-    -------
-    pyAgrum.Potential
-      The new Potential
-
+    Potential(src) -> Potential
+        Parameters:
+            * **src** (*pyAgrum.Potential*) -- the Potential to copy
 
     """
 
@@ -8804,18 +8822,13 @@ class BayesNet(IBayesNet):
 
     BayesNet represents a Bayesian Network.
 
-    Available constructors:
-    	``BayesNet(name='') -> BayesNet``
+    BayesNet(name='') -> BayesNet
+        Parameters:
+          * **name** (*str*) -- the name of the Bayes Net
 
-    	``BayesNet(source) -> BayesNet``
-
-
-    Parameters
-    ----------
-    name: str
-    	the name of the Bayes Net (optional)
-    source : pyAgrum.BayesNet
-    	the Bayesian network to copy
+    BayesNet(source) -> BayesNet
+        Parameters:
+          * **source** (*pyAgrum.BayesNet*) -- the Bayesian network to copy
 
     """
 
@@ -10171,13 +10184,9 @@ class LazyPropagation(object):
 
     Class used for Lazy Propagation
 
-    Available constructors:
-    	``LazyPropagation(bn) -> LazyPropagation``
-
-    Parameters
-    ----------
-    bn : pyAgrum.BayesNet
-    	a Bayesian network
+    LazyPropagation(bn) -> LazyPropagation
+        Parameters:
+            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
@@ -11046,13 +11055,9 @@ class ShaferShenoyInference(object):
 
     Class used for Shafer-Shenoy inferences.
 
-    Available constructors:
-    	``ShaferShenoyInference(bn) -> ShaferShenoyInference``
-
-    Parameters
-    ----------
-    bn : pyAgrum.BayesNet
-    	a Bayesian network
+    ShaferShenoyInference(bn) -> ShaferShenoyInference
+        Parameters:
+            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
@@ -11895,13 +11900,9 @@ class VariableElimination(object):
 
     Class used for Variable Elimination inference algorithm.
 
-    Available constructors:
-    	``VariableElimination(bn) -> VariableElimination``
-
-    Parameters
-    ----------
-    bn : pyAgrum.BayesNet
-    	a Bayesian network
+    VariableElimination(bn) -> VariableElimination
+        Parameters:
+            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
@@ -12677,13 +12678,9 @@ class GibbsSampling(object):
 
     Class for making Gibbs sampling inference in bayesian networks.
 
-    Available constructors:
-    	``GibbsSampling(bn) -> GibbsSampling``
-
-    Parameters
-    ----------
-    bn : pyAgrum.BayesNet
-    	a Bayesian network
+    GibbsSampling(bn) -> GibbsSampling
+        Parameters:
+          * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
@@ -13581,13 +13578,9 @@ class ImportanceSampling(object):
 
     Class used for inferences using the Importance Sampling algorithm.
 
-    Available constructors:
-    	``ImportanceSampling(bn) -> ImportanceSampling``
-
-    Parameters
-    ----------
-    bn : pyAgrum.BayesNet
-    	a Bayesian network
+    ImportanceSampling(bn) -> ImportanceSampling
+        Parameters:
+            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
@@ -14413,13 +14406,9 @@ class WeightedSampling(object):
 
     Class used for Weighted sampling inference algorithm.
 
-    Available constructors:
-    	``WeightedSampling(bn) -> WeightedSampling``
-
-    Parameters
-    ----------
-    bn : pyAgrum.BayesNet
-    	a Bayesian network
+    WeightedSampling(bn) -> WeightedSampling
+        Parameters:
+            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
@@ -15245,13 +15234,9 @@ class MonteCarloSampling(object):
 
     Class used for Monte Carlo sampling inference algorithm.
 
-    Available constructors:
-    	``MonteCarloSampling(bn) -> MonteCarloSampling``
-
-    Parameters
-    ----------
-    bn : pyAgrum.BayesNet
-    	a Bayesian network
+    MonteCarloSampling(bn) -> MonteCarloSampling
+        Parameters:
+            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
@@ -16075,13 +16060,9 @@ class LoopyImportanceSampling(object):
 
     Class used for inferences using a loopy version of importance sampling.
 
-    Available constructors:
-    	``LoopyImportanceSampling(bn) -> LoopyImportanceSampling``
-
-    Parameters
-    ----------
-    bn : pyAgrum.BayesNet
-    	a Bayesian network
+    LoopyImportanceSampling(bn) -> LoopyImportanceSampling
+        Parameters:
+            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
@@ -16921,13 +16902,9 @@ class LoopyWeightedSampling(object):
 
     Class used for inferences using a loopy version of weighted sampling.
 
-    Available constructors:
-    	``LoopyWeightedSampling(bn) -> LoopyWeightedSampling``
-
-    Parameters
-    ----------
-    bn : pyAgrum.BayesNet
-    	a Bayesian network
+    LoopyWeightedSampling(bn) -> LoopyWeightedSampling
+        Parameters:
+            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
@@ -17767,13 +17744,9 @@ class LoopyGibbsSampling(object):
 
     Class used for inferences using a loopy version of Gibbs sampling.
 
-    Available constructors:
-    	``LoopyGibbsSampling(bn) -> LoopyGibbsSampling``
-
-    Parameters
-    ----------
-    bn : pyAgrum.BayesNet
-    	a Bayesian network
+    LoopyGibbsSampling(bn) -> LoopyGibbsSampling
+        Parameters:
+            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
@@ -18681,7 +18654,15 @@ class LoopyGibbsSampling(object):
 _pyAgrum.LoopyGibbsSampling_swigregister(LoopyGibbsSampling)
 
 class LoopyMonteCarloSampling(object):
-    r"""Proxy of C++ gum::LoopySamplingInference< double,gum::MonteCarloSampling > class."""
+    r"""
+
+    Class used for inferences using a loopy version of Monte Carlo sampling.
+
+    LoopyMonteCarloSampling(bn) -> LoopyMonteCarloSampling
+        Parameters:
+            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
+
+    """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
@@ -19521,13 +19502,9 @@ class LoopyBeliefPropagation(object):
 
     Class used for inferences using loopy belief propagation algorithm.
 
-    Available constructors:
-    	``LoopyBeliefPropagation(bn) -> LoopyBeliefPropagation``
-
-    Parameters
-    ----------
-    bn : pyAgrum.BayesNet
-    	a Bayesian network
+    LoopyBeliefPropagation(bn) -> LoopyBeliefPropagation
+        Parameters:
+            * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 
     """
 
@@ -20326,20 +20303,17 @@ class ExactBNdistance(object):
 
     Class representing exacte computation of divergence and distance between BNs
 
-    Available constructors :
+    ExactBNdistance(P,Q) -> ExactBNdistance
+        Parameters:
+            * **P** (*pyAgrum.BayesNet*)
+              a Bayesian network
+            * **Q** (*pyAgrum.BayesNet*)
+              another Bayesian network to compare with the first one
 
-    	``ExactBNdistance(P,Q) -> ExactBNdistance``
-
-    	``ExactBNdistance(ebnd) -> ExactBNdistance``
-
-    Parameters
-    ----------
-    P : pyAgrum.IBayesNet
-    	a Bayesian network
-    Q : pyAgrum.IBayesNet
-    	anotre Bayesian network
-    ebnd : pyAgrum.ExactBNdistance
-    	the exact BNdistance to copy
+    ExactBNdistance(ebnd) -> ExactBNdistance
+        Parameters:
+            * **ebnd** (*pyAgrum.ExactBNdistance*)
+              the exact BNdistance to copy
 
     Raises
     ------
@@ -20381,20 +20355,15 @@ class GibbsBNdistance(ApproximationScheme):
 
     Class representing a Gibbs-Approximated computation of divergence and distance between BNs
 
-    Available constructors :
 
-    	``GibbsBNdistance(P,Q) -> GibbsBNdistance``
+    GibbsBNdistance(P,Q) -> GibbsBNdistance
+        Parameters:
+            * **P** (*pyAgrum.BayesNet*) -- a Bayesian network
+            * **Q** (*pyAgrum.BayesNet*) -- another Bayesian network to compare with the first one
 
-    	``GibbsBNdistance(gbnd) -> GibbsBNdistance``
-
-    Parameters
-    ----------
-    P : pyAgrum.IBayesNet
-    	a Bayesian network
-    Q : pyAgrum.IBayesNet
-    	anotre Bayesian network
-    gbnd : pyAgrum.GibbsBNdistance
-    	the Gibbs BNdistance to copy
+    GibbsBNdistance(gbnd) -> GibbsBNdistance
+        Parameters:
+            * **gbnd** (*pyAgrum.GibbsBNdistance*) -- the Gibbs BNdistance to copy
 
     Raises
     ------
@@ -20734,23 +20703,18 @@ class CredalNet(object):
 
     Constructor used to create a CredalNet (step by step or with two BayesNet)
 
-    Available constructors:
-        ``CredalNet() -> CredalNet``
+    CredalNet() -> CredalNet
+        default constructor
 
-        ``CredalNet(src_min_num,src_max_den) -> CredalNet``
+    CredalNet(src_min_num,src_max_den) -> CredalNet
+        Parameters:
+            * **src_min_num** (*str*) -- the path to a BayesNet which contains lower probabilities.
+            * **src_max_den** (*str*) -- the (optional) path to a BayesNet which contains upper probabilities.
 
-        ``CredalNet(src_min_num,src_max_den) -> CredalNet``
-
-    Parameters
-    ----------
-    src_min_num
-    	(str) the path to a BayesNet which contains lower probabilities.
-    src_max_den
-    	(str) the (optional) path to a BayesNet which contains upper probabilities.
-    src_min_num
-    	(pyAgrum.BayesNet) the BayesNet which contains lower probabilities.
-    src_max_den
-    	(pyAgrum.BayesNet) the (optional) BayesNet which contains upper probabilities. 
+    CredalNet(src_min_num,src_max_den) -> CredalNet
+        Parameters:
+            * **src_min_num (*pyAgrum.BayesNet*) -- the BayesNet which contains lower probabilities.
+            * **src_max_den (*pyAgrum.BayesNet*) -- the (optional) BayesNet which contains upper probabilities. 
 
     """
 
@@ -21287,14 +21251,9 @@ class CNMonteCarloSampling(object):
 
     Class used for inferences in credal networks with Monte Carlo sampling algorithm.
 
-    Available constructors:
-
-        ``CNMonteCarloSampling(cn) -> CNMonteCarloSampling``
-
-    Parameters
-    ----------
-    cn: pyAgrum.CredalNet
-      a Credal network
+    CNMonteCarloSampling(cn) -> CNMonteCarloSampling
+        Parameters:
+            * **cn** (*pyAgrum.CredalNet*) -- a credal network
 
     """
 
@@ -21683,14 +21642,9 @@ class CNLoopyPropagation(object):
 
     Class used for inferences in credal networks with Loopy Propagation algorithm.
 
-    Available constructors:
-
-        ``CNLoopyPropagation(cn) -> CNLoopyPropagation``
-
-    Parameters
-    ----------
-    cn: pyAgrum.CredalNet
-      a Credal network
+    CNLoopyPropagation(cn) -> CNLoopyPropagation
+        Parameters:
+          * **cn** (*pyAgrum.CredalNet*) -- a Credal network
 
     """
 
@@ -22123,15 +22077,11 @@ class InfluenceDiagram(DAGmodel):
 
     InfluenceDiagram represents an Influence Diagram.
 
-    Available constructors:
-        ``InfluenceDiagram() -> InfluenceDiagram``
+    InfluenceDiagram() -> InfluenceDiagram
 
-        ``InfluenceDiagram(source) -> InfluenceDiagram``
-
-    Parameters
-    ----------
-    source : pyAgrum.InfluenceDiagram
-      the InfluenceDiagram to copy
+    InfluenceDiagram(source) -> InfluenceDiagram
+        Parameters:
+            * **source** (*pyAgrum.InfluenceDiagram*) -- the InfluenceDiagram to copy
 
     """
 
@@ -23025,23 +22975,19 @@ class BNLearner(object):
 
 
 
-    Available constructors:
-    	``BNLearner(filename) -> BNLearner``
+    BNLearner(filename) -> BNLearner
+        Parameters:
+            * **filename** (*str*) -- the file to learn from
 
-    	``BNLearner(filename,src,parse_database=false) -> BNLearner``
+    BNLearner(filename,src,parse_database=False) -> BNLearner
+        Parameters:
+            * **filename** (*str*) -- the file to learn from
+            * **src** (*pyAgrum.BayesNet*) -- the Bayesian network used to find those modalities
+            * **parse_database** (*bool*) -- if True, the modalities specified by the user will be considered as a superset of the modalities of the variables.
 
-    	``BNLearner(learner) -> BNLearner``
-
-    Parameters
-    ----------
-    filename: str
-    	the file to learn from
-    src : pyAgrum.BayesNet
-    	the Bayesian network used to find those modalities
-    parse_database : bool
-    	if true, the modalities specified by the user will be considered as a superset of the modalities of the variables.
-    learner : pyAgrum.BNLearner
-    	the BNLearner to copy
+    BNLearner(learner) -> BNLearner
+        Parameters:
+            * **learner** (*pyAgrum.BNLearner*) -- the BNLearner to copy
 
     """
 
@@ -23918,16 +23864,11 @@ class BNDatabaseGenerator(object):
 
 
 
-    BNGenerator is used to easily generate databases from a gum.BayesNet.
+    BNDatabaseGenerator is used to easily generate databases from a gum.BayesNet.
 
-    Available constructors:
-
-        ``BNDatabaseGenerator(bn) -> BNDatabaseGenerator``
-
-    Parameters
-    ----------
-    bn: gum.BayesNet
-        the Bayesian network used to generate data.
+    BNDatabaseGenerator(bn) -> BNDatabaseGenerator
+        Parameters:
+            * **bn** (*gum.BayesNet*) -- the Bayesian network used to generate data.
 
     """
 
@@ -23938,16 +23879,11 @@ class BNDatabaseGenerator(object):
         r"""
         __init__(BNDatabaseGenerator self, BayesNet bn) -> BNDatabaseGenerator
 
-        BNGenerator is used to easily generate databases from a gum.BayesNet.
+        BNDatabaseGenerator is used to easily generate databases from a gum.BayesNet.
 
-        Available constructors:
-
-            ``BNDatabaseGenerator(bn) -> BNDatabaseGenerator``
-
-        Parameters
-        ----------
-        bn: gum.BayesNet
-            the Bayesian network used to generate data.
+        BNDatabaseGenerator(bn) -> BNDatabaseGenerator
+            Parameters:
+                * **bn** (*gum.BayesNet*) -- the Bayesian network used to generate data.
 
         """
         _pyAgrum.BNDatabaseGenerator_swiginit(self, _pyAgrum.new_BNDatabaseGenerator(bn))

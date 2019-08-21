@@ -2,20 +2,17 @@
 "
 Class representing exacte computation of divergence and distance between BNs
 
-Available constructors :
+ExactBNdistance(P,Q) -> ExactBNdistance
+    Parameters:
+        * **P** (*pyAgrum.BayesNet*)
+          a Bayesian network
+        * **Q** (*pyAgrum.BayesNet*)
+          another Bayesian network to compare with the first one
 
-	``ExactBNdistance(P,Q) -> ExactBNdistance``
-
-	``ExactBNdistance(ebnd) -> ExactBNdistance``
-
-Parameters
-----------
-P : pyAgrum.IBayesNet
-	a Bayesian network
-Q : pyAgrum.IBayesNet
-	anotre Bayesian network
-ebnd : pyAgrum.ExactBNdistance
-	the exact BNdistance to copy
+ExactBNdistance(ebnd) -> ExactBNdistance
+    Parameters:
+        * **ebnd** (*pyAgrum.ExactBNdistance*)
+          the exact BNdistance to copy
 
 Raises
 ------

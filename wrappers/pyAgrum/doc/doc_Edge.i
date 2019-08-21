@@ -2,19 +2,14 @@
 "
 pyAgrum.Edge is the representation of an arc between two nodes represented by int : the first and the second.
 
-Available constructors :
-    ``Edge(aN1,aN2) -> Edge``
+Edge(aN1,aN2) -> Edge
+    Parameters:
+        * **aN1** (*int*) -- the nodeId of the first node
+        * **aN2** (*int*) -- the nodeId of the secondnode
 
-    ``Edge(src) -> Edge``
-
-Parameters
-----------
-aN1 : int
-  the nodeId of the first node
-aN2 : int
-  the nodeId of the secondnode
-src: pyAgrum.Edge
-  the Edge to copy
+Edge(src) -> Edge
+    Parameters:
+        * **src** (*yAgrum.Edge*) -- the Edge to copy
 "
 
 %feature("docstring") gum::Edge::other

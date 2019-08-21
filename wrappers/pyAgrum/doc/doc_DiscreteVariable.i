@@ -1,23 +1,15 @@
-%ignore gum::DisceteVariable::clone;
-
 %feature("docstring") gum::DiscreteVariable
 "
-DiscreteVariable is the base class for discrete random variable.
+DiscreteVariable is the base class for discrete random variables.
 
-Available constructors:
-
-    ``DiscreteVariable(aName, aDesc='') -> DiscreteVariable``
-
-    ``DiscreteVariable(aDRV) -> DiscreteVariable``
-
-Parameters
-----------
-aName: str
-  The name of the variable
-aDesc: str
-  The (optional) description of the variable
-aDRV: pyAgrum.DiscreteVariable
-  Another `DiscreteVariable` that will be copied
+DiscreteVariable(aName, aDesc='') -> DiscreteVariable
+    Parameters:
+        * **aName** (*str*) -- the name of the variable
+        * **aDesc** (*str*) -- the (optional) description of the variable
+              
+DiscreteVariable(aDRV) -> DiscreteVariable
+    Parameters:
+        * **aDRV** (*pyAgrum.DiscreteVariable*) -- the pyAgrum.DiscreteVariable that will be copied
 "
 
 %feature("docstring") gum::DiscreteVariable::clone

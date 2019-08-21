@@ -1,36 +1,12 @@
-%ignore gum::MixedGraph::addArc;
-%ignore gum::MixedGraph::addEdge;
-%ignore gum::MixedGraph::addNode;
-%ignore gum::MixedGraph::addNodes;
-%ignore gum::MixedGraph::addNodeWithId;
-%ignore gum::MixedGraph::empty;
-%ignore gum::MixedGraph::emptyArcs;
-%ignore gum::MixedGraph::emptyEdges;
-%ignore gum::MixedGraph::eraseArc;
-%ignore gum::MixedGraph::eraseChildren;
-%ignore gum::MixedGraph::eraseEdge;
-%ignore gum::MixedGraph::eraseNeighbours;
-%ignore gum::MixedGraph::eraseParents;
-%ignore gum::MixedGraph::existsArc;
-%ignore gum::MixedGraph::existsEdge;
-%ignore gum::MixedGraph::existsNode;
-%ignore gum::MixedGraph::size;
-%ignore gum::MixedGraph::sizeArcs;
-%ignore gum::MixedGraph::sizeEdges;
-
 %feature("docstring") gum::MixedGraph
 "
 MixedGraph represents a Clique Graph.
 
-Available constructors:
-    ``MixedGraph() -> MixedGraph``
+MixedGraph() -> MixedGraph
 
-    ``MixedGraph(src) -> MixedGraph``
-
-Parameters
-----------
-src : pyAgrum.MixedGraph
-  the MixedGraph to copy
+MixedGraph(src) -> MixedGraph
+    Parameters:
+        * **src** (*pyAgrum.MixedGraph*) --the MixedGraph to copy
 "
 
 %feature("docstring") gum::MixedGraph::mixedOrientedPath

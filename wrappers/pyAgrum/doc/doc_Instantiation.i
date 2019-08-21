@@ -1,28 +1,14 @@
-%ignore gum::Instantiation::actAsSlave;
-%ignore gum::Instantiation::addWithMaster;
-%ignore gum::Instantiation::eraseWithMaster;
-%ignore gum::Instantiation::forgetMaster;
-%ignore gum::Instantiation::isMaster;
-%ignore gum::Instantiation::isSlave;
-%ignore gum::Instantiation::synchronizeWithMaster;
-%ignore gum::Instantiation::valFromPtr;
-
 %feature("docstring") gum::Instantiation
 "
 Class for assigning/browsing values to tuples of discrete variables.
 
 Instantiation is designed to assign values to tuples of variables and to efficiently loop over values of subsets of variables.
 
-Available constructors:
+Instantiation() -> Instantiation
 
-	``Instantiation() -> Instantiation``
-
-	``Instantiation(aI) -> Instantiation``
-
-Parameters
-----------
-aI: pyAgrum.Instantiation
-  The Instantiation we copy
+Instantiation(aI) -> Instantiation
+    Parameters:
+      * **aI** (*pyAgrum.Instantiation*) -- the Instantiation we copy
 
 Returns
 -------

@@ -2,18 +2,13 @@
 "
 BayesNet represents a Bayesian Network.
 
-Available constructors:
-	``BayesNet(name='') -> BayesNet``
+BayesNet(name='') -> BayesNet
+    Parameters:
+      * **name** (*str*) -- the name of the Bayes Net
 
-	``BayesNet(source) -> BayesNet``
-
-
-Parameters
-----------
-name: str
-	the name of the Bayes Net (optional)
-source : pyAgrum.BayesNet
-	the Bayesian network to copy
+BayesNet(source) -> BayesNet
+    Parameters:
+      * **source** (*pyAgrum.BayesNet*) -- the Bayesian network to copy
 "
 
 %feature("docstring") gum::BayesNet::add

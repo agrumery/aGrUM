@@ -4,13 +4,9 @@ Class building the essential graph from a BN.
 
 Essential graph is a mixed graph (Chain Graph) that represents the class of markov equivalent Bayesian Networks (with the same independency model).
 
-Available constructors:
-    ``EssentialGraph(m) -> EssentialGraph``
-
-Parameters
-----------
-src : pyAgrum.DAGmodel
-  a DAGmodel
+EssentialGraph(m) -> EssentialGraph
+    Parameters:
+      * **m** (*pyAgrum.DAGmodel*) -- a DAGmodel
 "
 
 %feature("docstring") gum::EssentialGraph::arcs

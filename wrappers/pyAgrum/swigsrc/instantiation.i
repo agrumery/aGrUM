@@ -17,6 +17,15 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+%ignore gum::Instantiation::actAsSlave;
+%ignore gum::Instantiation::addWithMaster;
+%ignore gum::Instantiation::eraseWithMaster;
+%ignore gum::Instantiation::forgetMaster;
+%ignore gum::Instantiation::isMaster;
+%ignore gum::Instantiation::isSlave;
+%ignore gum::Instantiation::synchronizeWithMaster;
+%ignore gum::Instantiation::valFromPtr;
+
 %extend gum::Instantiation {
   PyObject* todict(bool withLabels=false) const {
     auto res=PyDict_New();

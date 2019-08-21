@@ -1,23 +1,15 @@
-%ignore gum::DisceteVariable::clone;
-
 %feature("docstring") gum::DiscretizedVariable
 "
 DiscretizedVariable is a discrete random variable with a set of ``ticks`` defining intervalls.
 
-Available constructors:
+DiscretizedVariable(aName, aDesc='') -> DiscretizedVariable`
+    Parameters:
+        * **aName** (*str*) -- the name of the variable
+        * **aDesc** (*str*) -- the (optional) description of the variable
 
-    ``DiscretizedVariable(aName, aDesc='') -> DiscretizedVariable``
-
-    ``DiscretizedVariable(aDDRV) -> DiscretizedVariable``
-
-Parameters
-----------
-aName: str
-  The name of the variable
-aDesc: str
-  The (optional) description of the variable
-aDDRV: pyAgrum.DiscretizedVariable
-  Another `DiscretizedVariable` that will be copied
+DiscretizedVariable(aDDRV) -> DiscretizedVariable
+    Parameters:
+        * **aDDRV** (*pyAgrum.DiscretizedVariable*) -- the pyAgrum.DiscretizedVariable that will be copied
 
 Examples
 --------

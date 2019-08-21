@@ -28,38 +28,18 @@ pyAgrum contains
   * a `gitlab repository <https://gitlab.com/agrumery/aGrUM>`_,
   * and a `website <http://agrum.org>`_.
 
-pyAgrum library
-===============
-
 .. toctree::
-  :maxdepth: 5
+  :caption: Main classes
+  :maxdepth: 2
 
-  functions
+  bayesianNetwork
+
   graph
   randomVariables
   potential
-  bayesianNetwork
-  PRM
-  credalNetwork
-  influenceDiagram
-  miscellaneous
-  exceptions
-
-Causality in pyAgrum
-====================
 
 .. toctree::
-  :maxdepth: 2
-  :titlesonly:
-
-  Causal
-
-pyAgrum.lib
-===========
-
-pyAgrum.lib is a set of python tools.
-
-.. toctree::
+  :caption: pyAgrum.lib modules
   :maxdepth: 2
   :titlesonly:
 
@@ -68,6 +48,28 @@ pyAgrum.lib is a set of python tools.
   lib.dBN
   pyAgrum.lib
 
+.. toctree::
+  :caption: Causality in pyAgrum
+  :maxdepth: 2
+  :titlesonly:
+
+  Causal
+
+.. toctree::
+  :caption: Other graphical models
+  :maxdepth: 2
+
+  PRM
+  credalNetwork
+  influenceDiagram
+
+.. toctree::
+  :caption: Miscellaneous
+  :maxdepth: 2
+  
+  functions
+  miscellaneous
+  exceptions
 
 Indices and tables
 ==================
@@ -75,17 +77,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
-Documentation tools
-===================
-
-.. toctree::
-  :maxdepth: 1
-  
-  readme
-
-.. Exhaustif but not usable
-.. =====================
-.. .. toctree::
-..     pyAgrum
-..     pyAgrum.lib

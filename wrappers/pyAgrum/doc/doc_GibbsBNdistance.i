@@ -2,20 +2,15 @@
 "
 Class representing a Gibbs-Approximated computation of divergence and distance between BNs
 
-Available constructors :
 
-	``GibbsBNdistance(P,Q) -> GibbsBNdistance``
+GibbsBNdistance(P,Q) -> GibbsBNdistance
+    Parameters:
+        * **P** (*pyAgrum.BayesNet*) -- a Bayesian network
+        * **Q** (*pyAgrum.BayesNet*) -- another Bayesian network to compare with the first one
 
-	``GibbsBNdistance(gbnd) -> GibbsBNdistance``
-
-Parameters
-----------
-P : pyAgrum.IBayesNet
-	a Bayesian network
-Q : pyAgrum.IBayesNet
-	anotre Bayesian network
-gbnd : pyAgrum.GibbsBNdistance
-	the Gibbs BNdistance to copy
+GibbsBNdistance(gbnd) -> GibbsBNdistance
+    Parameters:
+        * **gbnd** (*pyAgrum.GibbsBNdistance*) -- the Gibbs BNdistance to copy
 
 Raises
 ------
@@ -53,11 +48,4 @@ Parameters
 ----------
 _nbr : int
   the number of variables to be drawn at each iteration
-"
-
-%feature("docstring") gum::GibbsBNdistance::asIApproximationSchemeConfiguration
-"
-Returns
--------
-asIApproximationSchemeConfiguration
 "

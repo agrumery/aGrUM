@@ -1,29 +1,16 @@
-%ignore gum::DisceteVariable::clone;
-%ignore gum::DisceteVariable::label;
-%ignore gum::DisceteVariable::index;
-
 %feature("docstring") gum::LabelizedVariable
 "
 LabelizedVariable is a discrete random variable with a customizable sequence of labels.
 
-Available constructors:
+LabelizedVariable(aName, aDesc='', nbrLabel=2) -> LabelizedVariable
+    Parameters:
+        * **aName** (*str*) -- the name of the variable
+        * **aDesc** (*str*) -- the (optional) description of the variable
+        * **nbrLabel** (*int*) -- the number of labels to create (2 by default)
 
-    ``LabelizedVariable(aName, aDesc='', nbrLabel=2) -> LabelizedVariable``
-
-    ``LabelizedVariable(aName, aDesc='') -> LabelizedVariable``
-
-    ``LabelizedVariable(aLDRV) -> LabelizedVariable``
-
-Parameters
-----------
-aName: str
-  The name of the variable
-aDesc: str
-  The (optional) description of the variable
-nbrLabel: int
-  The number of labels to create (2 by default)
-aLDRV: pyAgrum.LabelizedVariable
-  Another `LabelizedVariable` that will be copied
+LabelizedVariable(aLDRV) -> LabelizedVariable
+    Parameters:
+        * **aLDRV** (*pyAgrum.LabelizedVariable*) -- The pyAgrum.LabelizedVariable that will be copied
 
 Examples
 --------

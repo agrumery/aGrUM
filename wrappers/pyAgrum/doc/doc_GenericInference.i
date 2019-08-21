@@ -607,13 +607,6 @@ vlbpsize : double
   the size of the virtual LBP
 "
 
-%feature("docstring") gum::classname::asIApproximationSchemeConfiguration
-"
-Returns
--------
-asIApproximationSchemeConfiguration
-"
-
 %feature("docstring") gum::classname::setRelevantPotentialsFinderType
 "
 sets how we determine the relevant potentials to combine

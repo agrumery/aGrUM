@@ -2,11 +2,7 @@
 "
 Class used for inferences using a loopy version of importance sampling.
 
-Available constructors:
-	``LoopyImportanceSampling(bn) -> LoopyImportanceSampling``
-
-Parameters
-----------
-bn : pyAgrum.BayesNet
-	a Bayesian network
+LoopyImportanceSampling(bn) -> LoopyImportanceSampling
+    Parameters:
+        * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 "

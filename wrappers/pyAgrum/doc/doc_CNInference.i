@@ -123,13 +123,6 @@ flag : bool
 	True if repetitive independence is to be used, false otherwise. Only usefull with dynamic networks. 
 "
 
-%feature("docstring") gum::credal::classname::asIApproximationSchemeConfiguration
-"
-Returns
--------
-asIApproximationSchemeConfiguration
-"
-
 %feature("docstring") gum::credal::classname::inferenceType
 "
 Returns

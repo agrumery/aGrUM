@@ -2,8 +2,8 @@
 "
 JunctionTreeGenerator is use to generate junction tree or binary junction tree from bayesian networks.
 
-Available constructors:
-	``JunctionTreeGenerator() -> JunctionTreeGenerator``
+JunctionTreeGenerator() -> JunctionTreeGenerator
+    Constructor
 "
 
 %feature("docstring") JunctionTreeGenerator::junctionTree

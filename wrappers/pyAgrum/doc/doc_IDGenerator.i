@@ -2,9 +2,7 @@
 "
 IDGenerator is used to easily generate influence diagrams.
 
-Available constructors:
-
-    ``IDGenerator() -> IDGenerator``
+IDGenerator() -> IDGenerator
 "
 
 %feature("docstring") IDGenerator::generate

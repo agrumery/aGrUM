@@ -1,25 +1,13 @@
-%ignore gum::DAG::emptyArcs;
-%ignore gum::DAG::eraseArc;
-%ignore gum::DAG::eraseChildren;
-%ignore gum::DAG::eraseParents;
-%ignore gum::DAG::existsArc;
-%ignore gum::DAG::ids;
-%ignore gum::DAG::nodes;
-%ignore gum::DAG::sizeArcs;
-
 %feature("docstring") gum::DAG
 "
 DAG represents a Directed Acyclic Graph.
 
-Available constructors:
-    ``DAG() -> DAG``
+DAG() -> DAG
+    default constructor
 
-    ``DAG(src) -> DAG``
-
-Parameters
-----------
-src : :class: DAG
-  the DAG to copy
+DAG(src) -> DAG
+    Parameters:
+        * **src** (*DAG*) -- the DAG to copy
 "
 
 %feature("docstring") gum::DAG::addArc

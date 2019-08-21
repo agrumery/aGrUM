@@ -2,15 +2,11 @@
 "
 UndiGraph represents an Undirected Graph.
 
-Available constructors:
-    ``UndiGraph() -> UndiGraph``
+UndiGraph() -> UndiGraph
 
-    ``UndiGraph(src) -> UndiGraph``
-
-Parameters
-----------
-src : :class: UndiGraph
-  the UndiGraph to copy
+UndiGraph(src) -> UndiGraph
+    Parameters!
+        * **src** (*UndiGraph*) -- the pyAgrum.UndiGraph to copy
 
 "
 

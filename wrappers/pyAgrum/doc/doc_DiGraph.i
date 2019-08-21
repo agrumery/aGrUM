@@ -2,16 +2,11 @@
 "
 DiGraph represents a Directed Graph.
 
-Available constructors:
-    ``DiGraph() -> DiGraph``
+DiGraph() -> DiGraph
 
-    ``DiGraph(src) -> DiGraph``
-
-Parameters
-----------
-src : pyAgrum.DiGraph
-  the digraph to copy
-
+DiGraph(src) -> DiGraph
+    Parameters:
+        * **src** (*pyAgrum.DiGraph*) -- the digraph to copy
 "
 
 %feature("docstring") gum::DiGraph::addArc

@@ -2,14 +2,9 @@
 "
 Used to parametrize stopping criteria in approximate inference or learning algorithm.
 
-Available constructors:
-	``ApproximationScheme() -> ApproximationScheme``
-
-	``ApproximationScheme(v) -> ApproximationScheme``
-
-Parameters
-----------
-v : bool
+ApproximationScheme(verbosity=False) -> ApproximationScheme
+    Parameters:
+      * **verbosity** (*bool*) -- to keep (or not) tracks of the learning process (history of epsilons)
 "
 
 %feature("docstring") gum::ApproximationScheme::disableEpsilon

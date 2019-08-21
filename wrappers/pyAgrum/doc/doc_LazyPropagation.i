@@ -2,11 +2,7 @@
 "
 Class used for Lazy Propagation
 
-Available constructors:
-	``LazyPropagation(bn) -> LazyPropagation``
-
-Parameters
-----------
-bn : pyAgrum.BayesNet
-	a Bayesian network
+LazyPropagation(bn) -> LazyPropagation
+    Parameters:
+        * **bn** (*pyAgrum.BayesNet*) -- a Bayesian network
 "

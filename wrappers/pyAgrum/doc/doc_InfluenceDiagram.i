@@ -2,15 +2,11 @@
 "
 InfluenceDiagram represents an Influence Diagram.
 
-Available constructors:
-    ``InfluenceDiagram() -> InfluenceDiagram``
+InfluenceDiagram() -> InfluenceDiagram
 
-    ``InfluenceDiagram(source) -> InfluenceDiagram``
-
-Parameters
-----------
-source : pyAgrum.InfluenceDiagram
-  the InfluenceDiagram to copy
+InfluenceDiagram(source) -> InfluenceDiagram
+    Parameters:
+        * **source** (*pyAgrum.InfluenceDiagram*) -- the InfluenceDiagram to copy
 "
 
 %feature("docstring") gum::InfluenceDiagram::add

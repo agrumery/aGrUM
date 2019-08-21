@@ -2,22 +2,11 @@
 "
 Class representing a potential.
 
-Available constructors:
+Potential() -> Potential
 
-  ``Potential() -> Potential``
-
-  ``Potential(src) -> Potential``
-
-Parameters
-----------
-src: pyAgrum.Potential
-  The Potential to copy
-
-Returns
--------
-pyAgrum.Potential
-  The new Potential
-
+Potential(src) -> Potential
+    Parameters:
+        * **src** (*pyAgrum.Potential*) -- the Potential to copy
 "
 
 %feature("docstring") gum::Potential::KL
