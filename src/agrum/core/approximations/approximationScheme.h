@@ -111,7 +111,7 @@ namespace gum {
     // ========================================================================
     /// @{
 
-    ApproximationScheme(bool v = false);
+    ApproximationScheme(bool verbosity = false);
 
     virtual ~ApproximationScheme();
 

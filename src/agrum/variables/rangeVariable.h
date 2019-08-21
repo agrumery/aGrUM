@@ -56,11 +56,14 @@ namespace gum {
     /// @name Constructors / Destructors
 
     /// @{
-    /// Default constructor
+    ///  constructors
     RangeVariable(const std::string& aName,
                   const std::string& aDesc,
-                  long               minVal = 0,
-                  long               maxVal = 1);
+                  long               minVal,
+                  long               maxVal);
+
+    /// by de default min=0, max=1
+    RangeVariable(const std::string& aName, const std::string& aDesc);
 
     /** Copy Constructor.
      *
