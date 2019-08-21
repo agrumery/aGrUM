@@ -20,7 +20,7 @@
 
 # General information about the project.
 project = 'pyAgrum'
-copyright = '2018, aGrUM/pyAgrum Team'
+copyright = '2018-19, aGrUM/pyAgrum Team'
 author = 'Pierre-henri Wuillemin'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -34,8 +34,6 @@ import matplotlib
 matplotlib.use('agg') # work around for tkinter.file_dialog not found
 
 sys.path.insert(0,os.path.abspath('../../../../build/release/wrappers/'))
-
-#sys.path.append('../../../../build/release/wrappers/pyAgrum')
 
 import pyAgrum as gum
 
@@ -63,7 +61,7 @@ extensions = [
   'sphinx.ext.autodoc',
   'sphinx.ext.mathjax',
   'sphinx.ext.inheritance_diagram',
-  'sphinx.ext.napoleon',
+  'sphinx.ext.napoleon'
   # todo 'sphinx_autodoc_typehints', # may be error prone (with python<3.7)
   #'sphinx.ext.todo',
   #'sphinx.ext.viewcode',
@@ -160,13 +158,30 @@ todo_include_todos = True
 # html_theme = 'alabaster'
 
 
-html_theme = 'classic'
+#html_theme = 'classic'
+#html_theme_options = {
+#    "rightsidebar": "false",
+#    "stickysidebar" :"true",
+#    "relbarbgcolor": "black"
+#}
+html_theme = 'sphinx_rtd_theme'
 html_theme_options = {
-    "rightsidebar": "false",
-    "stickysidebar" :"true",
-    "relbarbgcolor": "black"
+    'canonical_url': '',
+    'analytics_id': 'UA-97418814-4',  #  Provided by Google in your dashboard
+    'logo_only': True,
+    'display_version': True,
+    'prev_next_buttons_location': 'bottom',
+    'style_external_links': False,
+ #   'vcs_pageview_mode': '',
+    #'style_nav_header_background': '#8888CC',
+    # Toc options
+    'collapse_navigation': False,
+    'sticky_navigation': True,
+    'navigation_depth': 4,
+    'includehidden': True,
+    'titles_only': False,
+#    'gitlab_url': "https://gitlab.com/agrumery/aGrUM"
 }
-
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -501,7 +516,6 @@ gumReplaceList = [
   ('< double > *', ' '),
   ('< double >', ' '),
   (' const ', ' '),
-  ('const',''),
   ('&',''),
   ('std::', ''),
   ('const &', ' '),
