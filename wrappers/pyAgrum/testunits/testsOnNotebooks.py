@@ -18,11 +18,7 @@ if sys.version_info >= (3, 0):
 
 
 def processeNotebook(notebook_filename):
-  # creating some randomness
-  #time.sleep(random.randint(5, 10) / 10.0)
-
   err = 0
-  print(os.path.basename(notebook_filename) + " ... ")
   res = "ok"
 
   try:
@@ -46,35 +42,51 @@ def processeNotebook(notebook_filename):
         }))
         ep.preprocess(nb, {'metadata': {'path': '../pyLibs/notebooks/'}})
         break
-      except RuntimeError:
+      except RuntimeError as e:
         #print("zmq error on "+os.path.basename(notebook_filename)+"... restarting")
-        time.sleep(random.randint(5, 10) / 10.0)
-  except:
+        if str(e)=="Kernel died before replying to kernel_info":
+          time.sleep(random.randint(5, 10) / 10.0)
+        else:
+          raise CellExecutionError(e.__traceback__)
+  except CellExecutionError:
     err = 1
     errorfilename = "../../../" + \
         time.strftime("%Y%m%d_%H%M_") + \
         os.path.basename(notebook_filename) + ".log"
-    with open(errorfilename, 'w') as err:
-      traceback.print_exc(file=err)
-    res = "error (see " + os.path.basename(errorfilename) + ")"
+    with open(errorfilename, 'w') as errfn:
+      traceback.print_exc(file=errfn)
     
-  duration = time.time()-starttime
-  res = f"[ {duration:8.2f}s ] {os.path.basename(notebook_filename):50} {res}"
-  
-  return err,res
+    res = os.path.basename(errorfilename).split("-")[0]+"-...ipynb.log"
 
-futures=[]
+  duration = time.time()-starttime
+  res = f"[ {duration:8.2f}s ] {os.path.basename(notebook_filename)[0:40]:40} {res}"
+
+  return err, res, duration
+
+
+futures = []
+
+
 def done(fn):
   global futures
-  for i in range(5):
-    print(" ")
-  print("=================================================")
+
+  if done.firstTime:
+    done.firstTime = False
+  else:
+    print(f"\033[{3+len(futures)}A")
+  print("="*58)
   for f in futures:
     if (f.running()):
-      print(f"[ ......... ] {os.path.basename(f.filename):50} ...")
+      print(f"[ ......... ] {os.path.basename(f.filename)[0:40]:40} ...")
+      allok = False
     else:
-      e, res = f.result()
+      e, res, _ = f.result()
       print(res)
+  print("=" * 58)
+
+
+done.firstTime = True
+
 
 def runNotebooks():
   global futures
@@ -86,11 +98,19 @@ def runNotebooks():
   errs = 0
 
   list = []
+  # slow notebooks
+  excludes = {"11-structuralLearning.ipynb",
+              "12-parametersLearningWithPandas.ipynb",
+              "14-LearningAndEssentialGraphs.ipynb",
+              "17-Chi2AndScoresFromBNLearner.ipynb",
+              "23-ApproximateInference.ipynb",
+              "26-klForBns.ipynb",
+              "25-samplingInference.ipynb",
+              "31-o3prm.ipynb"}
+
   excludes = {}
-  #{"23-ApproximateInference.ipynb", "11-structuralLearning.ipynb",
-  #            "learningClassifier.ipynb", "17-Chi2AndScoresFromBNLearner.ipynb", "25-samplingInference.ipynb"}
   for filename in glob.glob("../pyLibs/notebooks/*.ipynb"):
-    if not filename in excludes:
+    if not os.path.basename(filename) in excludes:
       list.append(filename)
 
   startTime = time.time()
@@ -103,23 +123,24 @@ def runNotebooks():
   futures = []
   executor = concurrent.futures.ProcessPoolExecutor(None)
   for notebook_filename in sorted(list):
-    fut=executor.submit(processeNotebook, notebook_filename)
+    fut = executor.submit(processeNotebook, notebook_filename)
     fut.add_done_callback(done)
     fut.filename = notebook_filename
-    futures.append(fut)    
+    futures.append(fut)
   concurrent.futures.wait(futures)
-  
+
+  time.sleep(1)
+
   errs = 0
+  totaltime = 0
   for f in futures:
-    e, r = f.result()
-    errs+=e
-  #errs = sum([f.result() for f in futures])
-
+    e, r, d = f.result()
+    totaltime += d
+    errs += e
   elapsedTime = time.time() - startTime
-
   print()
-  print("----------------------------------------------------------------------")
-  print("## Profiling : {} ms ##".format(int(elapsedTime * 1000)))
+  print("## Profiling : {} ms ##".format(int(totaltime * 1000)))
+  print("## Duration  : {} ms ##".format(int(elapsedTime * 1000)))
   print("Failed {} of {} tests".format(errs, len(list)))
   print("Success rate: {}%".format(int(100 * (1 - errs / len(list)))))
 
