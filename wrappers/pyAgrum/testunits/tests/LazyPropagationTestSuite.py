@@ -64,7 +64,7 @@ class LazyPropagationTestCase(pyAgrumTestCase):
     self.assertAlmostEqual(ie.I(0, 1), ie.jointMutualInformation([0, 1]))
 
     ie = gum.LazyPropagation(bn)
-    ie.addJointTarget([1, 4, 3])
+    ie.addJointTarget({1, 4, 3})
     ie.addAllTargets()
     ie.makeInference()
 

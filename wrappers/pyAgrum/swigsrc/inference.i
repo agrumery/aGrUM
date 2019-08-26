@@ -155,27 +155,39 @@ IMPROVE_INFERENCE_API(LoopySamplingInference<double,gum::MonteCarloSampling>)
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soe,evs,self->BN());
       return self->evidenceJointImpact(sot,soe);
     }
-    Potential<double> jointPosterior(PyObject *list) {
+    Potential<double> jointPosterior(PyObject *targets) {
+      if (! PyAnySet_Check(targets)) {
+        GUM_ERROR(gum::InvalidArgument,"The argument must be a set");
+      }
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BN());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->BN());
       return self->jointPosterior(nodeset);
     };
 
-    void addJointTarget( PyObject* list ) {
+    void addJointTarget( PyObject* targets ) {
+      if (! PyAnySet_Check(targets)) {
+        GUM_ERROR(gum::InvalidArgument,"The argument must be a set");
+      }
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BN());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->BN());
+
       self->gum::JointTargetedInference<double>::addJointTarget(nodeset);
     }
-
-    void eraseJointTarget( PyObject* list ) {
+    void eraseJointTarget( PyObject* targets ) {
+      if (! PyAnySet_Check(targets)) {
+        GUM_ERROR(gum::InvalidArgument,"The argument must be a set");
+      }
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BN());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->BN());
       self->gum::JointTargetedInference<double>::eraseJointTarget(nodeset);
     }
 
-    bool isJointTarget( PyObject* list ) {
+    bool isJointTarget( PyObject* targets ) {
+      if (! PyAnySet_Check(targets)) {
+        GUM_ERROR(gum::InvalidArgument,"The argument must be a set");
+      }
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BN());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->BN());
       return self->gum::JointTargetedInference<double>::isJointTarget(nodeset);
     }
 
@@ -183,7 +195,7 @@ IMPROVE_INFERENCE_API(LoopySamplingInference<double,gum::MonteCarloSampling>)
       PyObject* q = PyList_New( 0 );
 
       for ( auto ns : self->JointTargetedInference<double>::jointTargets()) {
-        PyList_Append( q,PyAgrumHelper::PyListFromNodeSet(ns));
+        PyList_Append( q,PyAgrumHelper::PySetFromNodeSet(ns));
       }
       return q;
     }

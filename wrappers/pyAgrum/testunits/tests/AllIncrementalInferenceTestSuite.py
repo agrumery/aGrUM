@@ -355,14 +355,14 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
 
   def testJointTarget(self):
     self.ie.eraseAllTargets()
-    self.ie.addJointTarget(["A", "D"])
+    self.ie.addJointTarget({"A", "D"})
     self.ie.addEvidence("A", [0.3, 0.7])
 
     pjoint = self.joint * gum.Potential().add(self.bn.variable("A")).fillWith([0.3, 0.7])
-    self.assertEqual(self.ie.jointPosterior(['A', 'D']), pjoint.margSumIn(["A", "D"]).normalize())
+    self.assertEqual(self.ie.jointPosterior({'A', 'D'}), pjoint.margSumIn(["A", "D"]).normalize())
 
     with self.assertRaises(gum.UndefinedElement):
-      self.ie.jointPosterior(['A', 'C'])
+      self.ie.jointPosterior({'A', 'C'})
 
 
 class IncrementalLazyPropagationTestCase(IncrementalLazyPropagationTestCase):

@@ -195,7 +195,7 @@ namespace PyAgrumHelper {
       }
     } else {
       GUM_ERROR(gum::InvalidArgument,
-                "Argument <list> is not a sequence nor a set");
+                "Argument <seq> is not a list nor a set");
     }
   }
 
