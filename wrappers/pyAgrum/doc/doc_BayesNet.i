@@ -97,6 +97,8 @@ Raises
 ------
 gum.InvalidEdge
     If arc.tail and/or arc.head are not in the BN.
+gum.DuplicateElement
+    If the arc already exists.
 "
 
 %feature("docstring") gum::BayesNet::addCOUNT

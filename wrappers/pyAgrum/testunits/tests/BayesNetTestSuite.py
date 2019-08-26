@@ -109,6 +109,9 @@ class TestInsertions(BayesNetTestCase):
     bn.addArc(idList[3], idList[4])
     bn.addArc(idList[1], idList[4])
 
+    with self.assertRaises(gum.DuplicateElement):
+      bn.addArc(idList[1], idList[4])
+
     self.assertRaises(gum.InvalidDirectedCycle, bn.addArc, idList[4], idList[0])
     self.assertRaises(gum.InvalidNode, bn.addArc, 42, 666)
 
@@ -166,6 +169,9 @@ class TestFeatures(BayesNetTestCase):
       bn.add(gum.LabelizedVariable(s, "", 2))
     for arc in [("A", "C"), ("B", "C")]:
       bn.addArc(*arc)
+
+    with self.assertRaises(gum.DuplicateElement):
+      bn.addArc("A","C")
 
     self.assertEqual(str(bn), "BN{nodes: 3, arcs: 2, domainSize: 8, parameters: 12, compression ratio: -50% }")
 

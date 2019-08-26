@@ -382,15 +382,16 @@ namespace gum {
      * @param head and
      * @param tail as NodeId
      * @throw InvalidEdge If arc.tail and/or arc.head are not in the BN.
+     * @throw DuplicateElement if the arc already exists
      */
     void addArc(NodeId tail, NodeId head);
 
     /**
-     * Add an arc in the BN, and update arc.head's CPT.
+     * Add an arc in the BN, and update arc.head's CPT
+     *
+     * @throw gum::DuplicateElement if the arc already exists
      */
-    void addArc(const std::string& tail, const std::string& head) {
-      addArc(idFromName(tail), idFromName(head));
-    }
+    void addArc(const std::string& tail, const std::string& head);
 
     /**
      * Removes an arc in the BN, and update head's CTP.
