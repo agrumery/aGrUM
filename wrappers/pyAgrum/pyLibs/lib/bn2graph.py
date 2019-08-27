@@ -265,8 +265,7 @@ def _saveFigProba(p, filename, format="svg"):
   plt.close(fig)
 
 
-def BNinference2dot(bn, size="4", engine=None, evs={}, targets={}, format='png', nodeColor=None, arcWidth=None,
-                    cmap=None):
+def BNinference2dot(bn, size="4", engine=None, evs={}, targets={}, format='png', nodeColor=None, arcWidth=None, arcColor=None,cmapNode=None, cmapArc=None):
   """
   create a pydotplus representation of an inference in a BN
 
@@ -278,17 +277,21 @@ def BNinference2dot(bn, size="4", engine=None, evs={}, targets={}, format='png',
   :param string format: render as "png" or "svg"
   :param nodeColor: a nodeMap of values to be shown as color nodes (with special color for 0 and 1)
   :param arcWidth: a arcMap of values to be shown as bold arcs
-  :param cmap: color map to show the vals
+  :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
+  :param cmapNode: color map to show the vals of Nodes
+  :param cmapArc: color map to show the vals of Arcs
+  
   :return: the desired representation of the inference
   """
-  if nodeColor is None:
-    nodeColor = dict()
+  if cmapNode is None:
+    cmapNode = plt.get_cmap('summer')
 
-  if arcWidth is None:
-    arcWidth = dict()
+  if cmapArc is None:
+    cmapArc = plt.get_cmap('BuGn')
 
-  if cmap is None:
-    cmap = plt.get_cmap('summer')
+  if arcWidth is not None:
+    minarcs = min(arcWidth.values())
+    maxarcs = max(arcWidth.values())
 
   startTime = time.time()
   if engine is None:
@@ -302,7 +305,7 @@ def BNinference2dot(bn, size="4", engine=None, evs={}, targets={}, format='png',
   from tempfile import mkdtemp
   temp_dir = mkdtemp("", "tmp", None)  # with TemporaryDirectory() as temp_dir:
 
-  dotstr = "digraph structs {\n  bgcolor=\"transparent\";"
+  dotstr = "digraph structs {\n  fontcolor=\"" +  getBlackInTheme()+"\";bgcolor=\"transparent\";"
   dotstr += "  label=\"Inference in {:6.2f}ms\";\n".format(1000 * (stopTime - startTime))
   dotstr += "  node [fillcolor=floralwhite, style=filled,color=grey];\n"
   dotstr += '  edge [color="'+getBlackInTheme()+'"];'+"\n"
@@ -310,13 +313,21 @@ def BNinference2dot(bn, size="4", engine=None, evs={}, targets={}, format='png',
   for nid in bn.nodes():
     name = bn.variable(nid).name()
 
-    fgcol = "#000000"
-    bgcol = "#F8F8F8"
+    # defaults
+    bgcol = "#404040"
+    fgcol = "#FFFFFF"
+    if len(targets) == 0 or name in targets or nid in targets:
+      bgcol = "white"
+
+    if nodeColor is not None:
+      if name in nodeColor or nid in nodeColor:
+        bgcol = _proba2bgcolor(nodeColor[name], cmapNode)
+        fgcol = _proba2fgcolor(nodeColor[name], cmapNode)
+        
+    # 'hard' colour for evidence (?)
     if name in evs or nid in evs:
       bgcol = "sandybrown"
-    elif name in nodeColor or nid in nodeColor:
-      bgcol = _proba2bgcolor(nodeColor[name], cmap)
-      fgcol = _proba2fgcolor(nodeColor[name], cmap)
+      fgcol = "black"    
 
     colorattribute = 'fillcolor="{}", fontcolor="{}", color="#000000"'.format(bgcol, fgcol)
     if len(targets) == 0 or name in targets or nid in targets:
@@ -326,21 +337,31 @@ def BNinference2dot(bn, size="4", engine=None, evs={}, targets={}, format='png',
     else:
       dotstr += ' "{0}" [{1}]'.format(name, colorattribute)
 
-  if len(arcWidth) > 0:
-    minarcs = min(arcWidth.values())
-    maxarcs = max(arcWidth.values())
-
   for a in bn.arcs():
     (n, j) = a
-    if (n, j) in arcWidth:
-      pw = 0.1 + 5 * (arcWidth[a] - minarcs) / (maxarcs - minarcs)
-      av = arcWidth[a]
-    else:
+    if arcWidth is None:
       pw = 1
       av = ""
+    else:
+      if (n, j) in arcWidth:
+        if maxarcs == minarcs:
+          pw = 1
+        else:
+          pw = 0.1 + 5 * (arcWidth[a] - minarcs) / (maxarcs - minarcs)
+        av = arcWidth[a]
+      else:
+        pw = 1
+        av = ""
 
-    dotstr += ' "{0}"->"{1}" [penwidth={2},tooltip="{3}:{4}"];'.format(bn.variable(n).name(), bn.variable(j).name(),
-                                                                       pw, a, av)
+    if arcColor is None:
+      col = getBlackInTheme()
+    else:
+      if a in arcColor:
+        col = _proba2color(arcColor[a], cmapArc)
+      else:
+        col = getBlackInTheme()
+
+    dotstr += ' "{0}"->"{1}" [penwidth="{2}",tooltip="{3}:{4}",color="{5}"];'.format(bn.variable(n).name(), bn.variable(j).name(), pw, a, av,col)
   dotstr += '}'
 
   g = dot.graph_from_dot_data(dotstr)

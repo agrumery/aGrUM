@@ -9152,6 +9152,8 @@ class BayesNet(IBayesNet):
         ------
         gum.InvalidEdge
             If arc.tail and/or arc.head are not in the BN.
+        gum.DuplicateElement
+            If the arc already exists.
 
         """
         return _pyAgrum.BayesNet_addArc(self, *args)
@@ -10422,9 +10424,9 @@ class LazyPropagation(object):
         r"""jointMutualInformation(LazyPropagation self, PyObject * targets) -> double"""
         return _pyAgrum.LazyPropagation_jointMutualInformation(self, targets)
 
-    def jointPosterior(self, list):
+    def jointPosterior(self, targets):
         r"""
-        jointPosterior(LazyPropagation self, PyObject * list) -> Potential
+        jointPosterior(LazyPropagation self, PyObject * targets) -> Potential
 
         Compute the joint posterior of a set of nodes.
 
@@ -10449,11 +10451,11 @@ class LazyPropagation(object):
           If an element of nodes is not in targets
 
         """
-        return _pyAgrum.LazyPropagation_jointPosterior(self, list)
+        return _pyAgrum.LazyPropagation_jointPosterior(self, targets)
 
-    def addJointTarget(self, list):
+    def addJointTarget(self, targets):
         r"""
-        addJointTarget(LazyPropagation self, PyObject * list)
+        addJointTarget(LazyPropagation self, PyObject * targets)
 
         Add a list of nodes as a new joint target. As a collateral effect, every node is added as a marginal target.
 
@@ -10468,11 +10470,11 @@ class LazyPropagation(object):
           If some node(s) do not belong to the Bayesian network
 
         """
-        return _pyAgrum.LazyPropagation_addJointTarget(self, list)
+        return _pyAgrum.LazyPropagation_addJointTarget(self, targets)
 
-    def eraseJointTarget(self, list):
+    def eraseJointTarget(self, targets):
         r"""
-        eraseJointTarget(LazyPropagation self, PyObject * list)
+        eraseJointTarget(LazyPropagation self, PyObject * targets)
 
         Remove, if existing, the joint target.
 
@@ -10489,11 +10491,11 @@ class LazyPropagation(object):
           If node Id is not in the Bayesian network
 
         """
-        return _pyAgrum.LazyPropagation_eraseJointTarget(self, list)
+        return _pyAgrum.LazyPropagation_eraseJointTarget(self, targets)
 
-    def isJointTarget(self, list):
+    def isJointTarget(self, targets):
         r"""
-        isJointTarget(LazyPropagation self, PyObject * list) -> bool
+        isJointTarget(LazyPropagation self, PyObject * targets) -> bool
 
         Parameters
         ----------
@@ -10513,7 +10515,7 @@ class LazyPropagation(object):
           If node Id is not in the Bayesian network
 
         """
-        return _pyAgrum.LazyPropagation_isJointTarget(self, list)
+        return _pyAgrum.LazyPropagation_isJointTarget(self, targets)
 
     def jointTargets(self):
         r"""
@@ -11267,9 +11269,9 @@ class ShaferShenoyInference(object):
         r"""jointMutualInformation(ShaferShenoyInference self, PyObject * targets) -> double"""
         return _pyAgrum.ShaferShenoyInference_jointMutualInformation(self, targets)
 
-    def jointPosterior(self, list):
+    def jointPosterior(self, targets):
         r"""
-        jointPosterior(ShaferShenoyInference self, PyObject * list) -> Potential
+        jointPosterior(ShaferShenoyInference self, PyObject * targets) -> Potential
 
         Compute the joint posterior of a set of nodes.
 
@@ -11294,11 +11296,11 @@ class ShaferShenoyInference(object):
           If an element of nodes is not in targets
 
         """
-        return _pyAgrum.ShaferShenoyInference_jointPosterior(self, list)
+        return _pyAgrum.ShaferShenoyInference_jointPosterior(self, targets)
 
-    def addJointTarget(self, list):
+    def addJointTarget(self, targets):
         r"""
-        addJointTarget(ShaferShenoyInference self, PyObject * list)
+        addJointTarget(ShaferShenoyInference self, PyObject * targets)
 
         Add a list of nodes as a new joint target. As a collateral effect, every node is added as a marginal target.
 
@@ -11313,11 +11315,11 @@ class ShaferShenoyInference(object):
           If some node(s) do not belong to the Bayesian network
 
         """
-        return _pyAgrum.ShaferShenoyInference_addJointTarget(self, list)
+        return _pyAgrum.ShaferShenoyInference_addJointTarget(self, targets)
 
-    def eraseJointTarget(self, list):
+    def eraseJointTarget(self, targets):
         r"""
-        eraseJointTarget(ShaferShenoyInference self, PyObject * list)
+        eraseJointTarget(ShaferShenoyInference self, PyObject * targets)
 
         Remove, if existing, the joint target.
 
@@ -11334,11 +11336,11 @@ class ShaferShenoyInference(object):
           If node Id is not in the Bayesian network
 
         """
-        return _pyAgrum.ShaferShenoyInference_eraseJointTarget(self, list)
+        return _pyAgrum.ShaferShenoyInference_eraseJointTarget(self, targets)
 
-    def isJointTarget(self, list):
+    def isJointTarget(self, targets):
         r"""
-        isJointTarget(ShaferShenoyInference self, PyObject * list) -> bool
+        isJointTarget(ShaferShenoyInference self, PyObject * targets) -> bool
 
         Parameters
         ----------
@@ -11358,7 +11360,7 @@ class ShaferShenoyInference(object):
           If node Id is not in the Bayesian network
 
         """
-        return _pyAgrum.ShaferShenoyInference_isJointTarget(self, list)
+        return _pyAgrum.ShaferShenoyInference_isJointTarget(self, targets)
 
     def jointTargets(self):
         r"""
@@ -12142,9 +12144,9 @@ class VariableElimination(object):
         """
         return _pyAgrum.VariableElimination_evidenceJointImpact(self, targets, evs)
 
-    def jointPosterior(self, list):
+    def jointPosterior(self, targets):
         r"""
-        jointPosterior(VariableElimination self, PyObject * list) -> Potential
+        jointPosterior(VariableElimination self, PyObject * targets) -> Potential
 
         Compute the joint posterior of a set of nodes.
 
@@ -12169,11 +12171,11 @@ class VariableElimination(object):
           If an element of nodes is not in targets
 
         """
-        return _pyAgrum.VariableElimination_jointPosterior(self, list)
+        return _pyAgrum.VariableElimination_jointPosterior(self, targets)
 
-    def addJointTarget(self, list):
+    def addJointTarget(self, targets):
         r"""
-        addJointTarget(VariableElimination self, PyObject * list)
+        addJointTarget(VariableElimination self, PyObject * targets)
 
         Add a list of nodes as a new joint target. As a collateral effect, every node is added as a marginal target.
 
@@ -12188,11 +12190,11 @@ class VariableElimination(object):
           If some node(s) do not belong to the Bayesian network
 
         """
-        return _pyAgrum.VariableElimination_addJointTarget(self, list)
+        return _pyAgrum.VariableElimination_addJointTarget(self, targets)
 
-    def eraseJointTarget(self, list):
+    def eraseJointTarget(self, targets):
         r"""
-        eraseJointTarget(VariableElimination self, PyObject * list)
+        eraseJointTarget(VariableElimination self, PyObject * targets)
 
         Remove, if existing, the joint target.
 
@@ -12209,11 +12211,11 @@ class VariableElimination(object):
           If node Id is not in the Bayesian network
 
         """
-        return _pyAgrum.VariableElimination_eraseJointTarget(self, list)
+        return _pyAgrum.VariableElimination_eraseJointTarget(self, targets)
 
-    def isJointTarget(self, list):
+    def isJointTarget(self, targets):
         r"""
-        isJointTarget(VariableElimination self, PyObject * list) -> bool
+        isJointTarget(VariableElimination self, PyObject * targets) -> bool
 
         Parameters
         ----------
@@ -12233,7 +12235,7 @@ class VariableElimination(object):
           If node Id is not in the Bayesian network
 
         """
-        return _pyAgrum.VariableElimination_isJointTarget(self, list)
+        return _pyAgrum.VariableElimination_isJointTarget(self, targets)
 
     def jointTargets(self):
         r"""

@@ -41,7 +41,7 @@ from IPython.core.pylabtools import print_figure
 from IPython.display import display, HTML, SVG
 
 import pyAgrum as gum
-from pyAgrum.lib.bn2graph import BN2dot, proba2histo, BNinference2dot, _proba2bgcolor, forDarkTheme, forLightTheme,getBlackInTheme
+from pyAgrum.lib.bn2graph import BN2dot, proba2histo, BNinference2dot, _proba2bgcolor, forDarkTheme, forLightTheme, getBlackInTheme
 from pyAgrum.lib.bn_vs_bn import GraphicalBNComparator
 
 _cdict = {
@@ -83,7 +83,7 @@ def configuration():
 
 
 def __insertLinkedSVGs(mainSvg):
-  re_buggwhitespace=re.compile(r"(<image [^>]*>)")
+  re_buggwhitespace = re.compile(r"(<image [^>]*>)")
   re_images = re.compile(r"(<image [^>]*>)")
   re_xlink = re.compile(r"xlink:href=\"([^\"]*)")
   re_viewbox = re.compile(r"(viewBox=\"[^\"]*\")")
@@ -114,8 +114,8 @@ def __insertLinkedSVGs(mainSvg):
       vb, code = __fragments[matchObj.group(1)]
       return vb+matchObj.group(2)+code
 
-    mainSvg=re.sub(r'xlink:href="([^"]*)"(.*>)', ___insertSecondarySvgs, img2svg)
-
+    mainSvg = re.sub(r'xlink:href="([^"]*)"(.*>)',
+                     ___insertSecondarySvgs, img2svg)
 
   # remove buggy white-space (for notebooks)
   mainSvg = mainSvg.replace("white-space:pre;", "")
@@ -132,7 +132,7 @@ def _reprGraph(gr, size, format, asString):
   """
   gr.set_size(size)
   if format == "svg":
-    gsvg = SVG(__insertLinkedSVGs(gr.create_svg().decode('utf-8')))    
+    gsvg = SVG(__insertLinkedSVGs(gr.create_svg().decode('utf-8')))
     if asString:
       return gsvg.data
     else:
@@ -168,6 +168,7 @@ def getGraph(gr, size="4", format='svg'):
   """
   return _reprGraph(gr, size, format, asString=True)
 
+
 def _from_dotstring(dotstring):
   g = dot.graph_from_dot_data(dotstring)
   g.set_bgcolor("transparent")
@@ -177,6 +178,7 @@ def _from_dotstring(dotstring):
   for e in g.get_edges():
     e.set_color(getBlackInTheme())
   return g
+
 
 def showDot(dotstring, size="4", format='svg'):
   """
@@ -540,8 +542,7 @@ def showInformation(bn, evs=None, size="4", cmap=_INFOcmap):
   return _reprInformation(bn, evs, size, cmap, asString=False)
 
 
-def showInference(bn, engine=None, evs=None, targets=None, size="7", format='svg', nodeColor=None, arcWidth=None,
-                  cmap=None):
+def showInference(bn, engine=None, evs=None, targets=None, size="7", format='svg', nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None):
   """
   show pydot graph for an inference in a notebook
 
@@ -551,7 +552,12 @@ def showInference(bn, engine=None, evs=None, targets=None, size="7", format='svg
   :param set targets: set of targets
   :param string size: size of the rendered graph
   :param string format: render as "png" or "svg"
-  :param boolean asString: display the graph or return a string containing the corresponding HTML fragment
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
+  :param arcWidth: a arcMap of values to be shown as width of arcs
+  :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
+  :param cmap: color map to show the color of nodes and arcs
+  :param cmapArc: color map to show the vals of Arcs.
+
   :return: the desired representation of the inference
   """
   if evs is None:
@@ -560,11 +566,10 @@ def showInference(bn, engine=None, evs=None, targets=None, size="7", format='svg
   if targets is None:
     targets = {}
 
-  return showGraph(BNinference2dot(bn, size, engine, evs, targets, format, nodeColor, arcWidth, cmap), size, format)
+  return showGraph(BNinference2dot(bn, size, engine, evs, targets, format, nodeColor, arcWidth, arcColor, cmap, cmapArc), size, format)
 
 
-def getInference(bn, engine=None, evs=None, targets=None, size="7", format='svg', nodeColor=None, arcWidth=None,
-                 cmap=None):
+def getInference(bn, engine=None, evs=None, targets=None, size="7", format='svg', nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None):
   """
   get a HTML string for an inference in a notebook
 
@@ -576,7 +581,9 @@ def getInference(bn, engine=None, evs=None, targets=None, size="7", format='svg'
   :param string format: render as "png" or "svg"
   :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
   :param arcWidth: a arcMap of values to be shown as width of arcs
+  :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
   :param cmap: color map to show the color of nodes and arcs
+  :param cmapArc: color map to show the vals of Arcs.
   :return: the desired representation of the inference
   """
   if evs is None:
@@ -585,7 +592,7 @@ def getInference(bn, engine=None, evs=None, targets=None, size="7", format='svg'
   if targets is None:
     targets = {}
 
-  return getGraph(BNinference2dot(bn, size, engine, evs, targets, format, nodeColor, arcWidth, cmap), size, format)
+  return getGraph(BNinference2dot(bn, size, engine, evs, targets, format, nodeColor, arcWidth, arcColor, cmap, cmapArc), size, format)
 
 
 def _reprPotential(pot, digits=4, withColors=True, varnames=None, asString=False):
@@ -619,7 +626,8 @@ def _reprPotential(pot, digits=4, withColors=True, varnames=None, asString=False
   html = list()
   html.append("<table>")
   if pot.empty():
-    html.append("<tr><th style='color:black;background-color:#AAAAAA'>&nbsp;</th></tr>")
+    html.append(
+        "<tr><th style='color:black;background-color:#AAAAAA'>&nbsp;</th></tr>")
     html.append("<tr>" + _mkCell(pot.get(gum.Instantiation())) + "</tr>")
   else:
     if varnames is not None and len(varnames) != pot.nbrDim():
@@ -674,7 +682,7 @@ def _reprPotential(pot, digits=4, withColors=True, varnames=None, asString=False
         else:
           if sum([inst.val(i) for i in range(1, par)]) == 0:
             s += "<th style='color:black;background-color:#BBBBBB;' rowspan = '{}'><center>{}</center></th>".format(offset[par],
-                                                                                                        label)
+                                                                                                                    label)
       for j in range(pot.variable(0).domainSize()):
         s += _mkCell(pot.get(inst))
         inst.inc()
