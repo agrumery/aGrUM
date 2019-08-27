@@ -228,7 +228,8 @@ namespace gum {
 
     if (set.empty()) {
       GUM_ERROR(UndefinedElement,
-                " no joint target containing " << nodes << " could be found among "<<__joint_targets);
+                " no joint target containing " << nodes << " could be found among "
+                                               << __joint_targets);
     }
 
     if (!this->isDone()) { this->makeInference(); }

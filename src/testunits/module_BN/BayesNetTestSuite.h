@@ -382,7 +382,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(bn.addArc(idList[3], idList[4]));
       TS_GUM_ASSERT_THROWS_NOTHING(bn.addArc(idList[1], idList[4]));
 
-      TS_ASSERT_THROWS(bn.addArc(idList[3], idList[4]),gum::DuplicateElement);
+      TS_ASSERT_THROWS(bn.addArc(idList[3], idList[4]), gum::DuplicateElement);
 
       TS_ASSERT_EQUALS(bn.dag().sizeArcs(), (gum::Size)6);
     }
@@ -465,7 +465,7 @@ namespace gum_tests {
              {std::make_pair("A", "C"), std::make_pair("B", "C")}) {
           bn.addArc(a.first, a.second);
         }
-        TS_ASSERT_THROWS(bn.addArc("A", "C"),gum::DuplicateElement);
+        TS_ASSERT_THROWS(bn.addArc("A", "C"), gum::DuplicateElement);
 
         TS_ASSERT_EQUALS(bn.toString(),
                          "BN{nodes: 3, arcs: 2, domainSize: 8, "
