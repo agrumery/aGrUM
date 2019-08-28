@@ -125,7 +125,8 @@ def BN2dot(bn, size="4", nodeColor=None, arcWidth=None, arcColor=None, cmapNode=
     else:
       bgcol = _proba2bgcolor(nodeColor[n], cmapNode)
       fgcol = _proba2fgcolor(nodeColor[n], cmapNode)
-      res = " : {0:2.5f}".format(nodeColor[n] if showMsg is None else showMsg[n])
+      res = " : {0:2.5f}".format(
+          nodeColor[n] if showMsg is None else showMsg[n])
 
     node = dot.Node('"' + n + '"', style="filled",
                     fillcolor=bgcol,
@@ -202,9 +203,12 @@ def _getProbaV(p, scale=1.0):
   ax = fig.add_subplot(111)
 
   bars = ax.bar(ra, p.tolist(), align='center')
-  ax.set_ylim(bottom=0)
+  labels = ["{:.1%}".format(bar.get_height()) if bar.get_height() != 0 else ""
+            for bar in bars]
+  
+  ax.set_ylim(bottom=0,top=p.max())
   ax.set_xticks(ra)
-  ax.set_xticklabels(["{:.1%}".format(bar.get_height()) for bar in bars], rotation='vertical')
+  ax.set_xticklabels(labels, rotation='vertical')
   ax.set_title(_getTitleHisto(p))
   ax.get_yaxis().grid(True)
   return fig
@@ -233,8 +237,9 @@ def _getProbaH(p, scale=1.0):
   bars = ax.barh(ra, vals, align='center')
 
   for bar in bars:
-    txt = "{:.1%}".format(bar.get_width())
-    ax.text(1, bar.get_y(), txt, ha='right', va='bottom')
+    if bar.get_width() != 0:
+      txt = "{:.1%}".format(bar.get_width())
+      ax.text(1, bar.get_y(), txt, ha='right', va='bottom')
 
   ax.set_xlim(0, 1)
   ax.set_yticks(np.arange(var.domainSize()))
@@ -261,11 +266,12 @@ def proba2histo(p, scale=1.0):
 
 def _saveFigProba(p, filename, format="svg"):
   fig = proba2histo(p)
-  fig.savefig(filename, bbox_inches='tight', transparent=True, pad_inches=0.05, dpi=fig.dpi, format=format)
+  fig.savefig(filename, bbox_inches='tight', transparent=True,
+              pad_inches=0.05, dpi=fig.dpi, format=format)
   plt.close(fig)
 
 
-def BNinference2dot(bn, size="4", engine=None, evs={}, targets={}, format='png', nodeColor=None, arcWidth=None, arcColor=None,cmapNode=None, cmapArc=None):
+def BNinference2dot(bn, size="4", engine=None, evs={}, targets={}, format='png', nodeColor=None, arcWidth=None, arcColor=None, cmapNode=None, cmapArc=None):
   """
   create a pydotplus representation of an inference in a BN
 
@@ -280,7 +286,7 @@ def BNinference2dot(bn, size="4", engine=None, evs={}, targets={}, format='png',
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
   :param cmapNode: color map to show the vals of Nodes
   :param cmapArc: color map to show the vals of Arcs
-  
+
   :return: the desired representation of the inference
   """
   if cmapNode is None:
@@ -305,8 +311,10 @@ def BNinference2dot(bn, size="4", engine=None, evs={}, targets={}, format='png',
   from tempfile import mkdtemp
   temp_dir = mkdtemp("", "tmp", None)  # with TemporaryDirectory() as temp_dir:
 
-  dotstr = "digraph structs {\n  fontcolor=\"" +  getBlackInTheme()+"\";bgcolor=\"transparent\";"
-  dotstr += "  label=\"Inference in {:6.2f}ms\";\n".format(1000 * (stopTime - startTime))
+  dotstr = "digraph structs {\n  fontcolor=\"" + \
+      getBlackInTheme()+"\";bgcolor=\"transparent\";"
+  dotstr += "  label=\"Inference in {:6.2f}ms\";\n".format(
+      1000 * (stopTime - startTime))
   dotstr += "  node [fillcolor=floralwhite, style=filled,color=grey];\n"
   dotstr += '  edge [color="'+getBlackInTheme()+'"];'+"\n"
 
@@ -323,17 +331,20 @@ def BNinference2dot(bn, size="4", engine=None, evs={}, targets={}, format='png',
       if name in nodeColor or nid in nodeColor:
         bgcol = _proba2bgcolor(nodeColor[name], cmapNode)
         fgcol = _proba2fgcolor(nodeColor[name], cmapNode)
-        
+
     # 'hard' colour for evidence (?)
     if name in evs or nid in evs:
       bgcol = "sandybrown"
-      fgcol = "black"    
+      fgcol = "black"
 
-    colorattribute = 'fillcolor="{}", fontcolor="{}", color="#000000"'.format(bgcol, fgcol)
+    colorattribute = 'fillcolor="{}", fontcolor="{}", color="#000000"'.format(
+        bgcol, fgcol)
     if len(targets) == 0 or name in targets or nid in targets:
-      filename = temp_dir + hashlib.md5(name.encode()).hexdigest() + "." + format
+      filename = temp_dir + \
+          hashlib.md5(name.encode()).hexdigest() + "." + format
       _saveFigProba(ie.posterior(name), filename, format=format)
-      dotstr += ' "{0}" [shape=rectangle,image="{1}",label="", {2}];\n'.format(name, filename, colorattribute)
+      dotstr += ' "{0}" [shape=rectangle,image="{1}",label="", {2}];\n'.format(
+          name, filename, colorattribute)
     else:
       dotstr += ' "{0}" [{1}]'.format(name, colorattribute)
 
@@ -361,7 +372,8 @@ def BNinference2dot(bn, size="4", engine=None, evs={}, targets={}, format='png',
       else:
         col = getBlackInTheme()
 
-    dotstr += ' "{0}"->"{1}" [penwidth="{2}",tooltip="{3}:{4}",color="{5}"];'.format(bn.variable(n).name(), bn.variable(j).name(), pw, a, av,col)
+    dotstr += ' "{0}"->"{1}" [penwidth="{2}",tooltip="{3}:{4}",color="{5}"];'.format(
+        bn.variable(n).name(), bn.variable(j).name(), pw, a, av, col)
   dotstr += '}'
 
   g = dot.graph_from_dot_data(dotstr)
@@ -379,7 +391,8 @@ def dotize(aBN, name, format='pdf'):
   :param string format: format in ['pdf','png','fig','jpg','svg']
   """
   if format not in ['pdf', 'png', 'fig', 'jpg', 'svg']:
-    raise Exception("<%s> in not a correct style ([pdf,png,fig,jpg,svg])" % style)
+    raise Exception(
+        "<%s> in not a correct style ([pdf,png,fig,jpg,svg])" % style)
 
   if isinstance(aBN, str):
     bn = gum.loadBN(aBN)
@@ -413,8 +426,8 @@ def pdfize(aBN, name):
 if __name__ == "__main__":
   pyAgrum_header("2011-19")
   if len(sys.argv) < 2:
-    print(os.path.basename(sys.argv[0]), "file.{" + gum.availableBNExts() + "}")
+    print(os.path.basename(sys.argv[0]),
+          "file.{" + gum.availableBNExts() + "}")
   else:
     base, ext = os.path.splitext(sys.argv[1])
     pdfize(sys.argv[1], base)
-
