@@ -94,10 +94,11 @@ class CausalFormula:
 
     latexOn = ",".join(on)
 
+    doOp="\\hookrightarrow\mkern-4.5mu "
     latexDo = ""
     if len(doing) > 0:
-      latexDo = "\\hookrightarrow "
-      latexDo += ", \\hookrightarrow ".join(doing)
+      latexDo = doOp
+      latexDo += f", {doOp} ".join(doing)
 
     latexKnw = ""
     if len(knowing) > 0:

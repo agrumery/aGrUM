@@ -27,12 +27,10 @@ from ._types import *
 import IPython
 import pyAgrum.lib.notebook as gnb
 import pydotplus as dot
-
-from ._CausalModel import CausalModel
-from ._causalImpact import causalImpact
+import pyAgrum.causal as csl
 
 
-def getCausalModel(cm: CausalModel, size: str = "4") -> str:
+def getCausalModel(cm: csl.CausalModel, size: str = "4") -> str:
   """
   return a HTML representing the causal model
   :param cm: the causal model
@@ -68,7 +66,7 @@ def getCausalModel(cm: CausalModel, size: str = "4") -> str:
   return IPython.display.SVG(graph.create_svg()).data
 
 
-def showCausalModel(cm: CausalModel, size: str = "4"):
+def showCausalModel(cm: csl.CausalModel, size: str = "4"):
   """
   Shows a graphviz svg representation of the causal DAG ``d``
   """
@@ -76,7 +74,7 @@ def showCausalModel(cm: CausalModel, size: str = "4"):
   IPython.display.display(IPython.display.HTML("<div align='center'>" + html + "</div>"))
 
 
-def getCausalImpact(model: CausalModel, on: Union[str, NameSet], doing: Union[str, NameSet],
+def getCausalImpact(model: csl.CausalModel, on: Union[str, NameSet], doing: Union[str, NameSet],
                     knowing: Optional[NameSet] = None, values: Optional[Dict[str, int]] = None) -> Tuple[
   str, gum.Potential, str]:
   """
@@ -89,7 +87,7 @@ def getCausalImpact(model: CausalModel, on: Union[str, NameSet], doing: Union[st
 
   :return: a triplet (CausalFormula, gum.Potential, explanation)
   """
-  formula, impact, explanation = causalImpact(model, on, doing, knowing, values)
+  formula, impact, explanation = csl.causalImpact(model, on, doing, knowing, values)
   return gnb.getSideBySide(getCausalModel(model),
                            "?" if formula is None else (
                                '$$\\begin{equation}' + formula.toLatex() + '\\end{equation}$$'),
@@ -98,7 +96,7 @@ def getCausalImpact(model: CausalModel, on: Union[str, NameSet], doing: Union[st
                                      "Impact : $" + ("?" if formula is None else formula.latexQuery(values)) + "$"])
 
 
-def showCausalImpact(model: CausalModel, on: Union[str, NameSet], doing: Union[str, NameSet],
+def showCausalImpact(model: csl.CausalModel, on: Union[str, NameSet], doing: Union[str, NameSet],
                      knowing: Optional[NameSet] = None, values: Optional[Dict[str, int]] = None):
   """
   display a HTML representing of the three values defining a causal impact :  formula, value, explanation
@@ -112,4 +110,5 @@ def showCausalImpact(model: CausalModel, on: Union[str, NameSet], doing: Union[s
   IPython.display.display(IPython.display.HTML(html))
 
 
-CausalModel._repr_html_ = lambda self: getCausalModel(self, size="10")
+csl.CausalModel._repr_html_ = lambda self: getCausalModel(self, size="10")
+csl.CausalFormula._repr_html_ = lambda self: f"$${self.toLatex()}$$"
