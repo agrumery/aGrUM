@@ -122,16 +122,15 @@ def __insertLinkedSVGs(mainSvg):
   return mainSvg
 
 
-def _reprGraph(gr, size, format, asString):
+def _reprGraph(gr, size, asString):
   """
   repr a pydot graph in a notebook
 
-  :param string format : render as png or create_svg
   :param string size : size of the rendered graph
   :param boolean asString : display the graph or return a string containing the corresponding HTML fragment
   """
   gr.set_size(size)
-  if format == "svg":
+  if gum.config.get("notebook","graph_format") == "svg":
     gsvg = SVG(__insertLinkedSVGs(gr.create_svg().decode('utf-8')))
     if asString:
       return gsvg.data
@@ -145,19 +144,21 @@ def _reprGraph(gr, size, format, asString):
       display_png(i)
 
 
-def showGraph(gr, size="4", format='svg'):
+def showGraph(gr, size=None):
   """
   show a pydot graph in a notebook
 
   :param gr: pydot graph
   :param size:  size of the rendered graph
-  :param format: render as "png" or "svg"
   :return: the representation of the graph
   """
-  return _reprGraph(gr, size, format, asString=False)
+  if size is None:
+    size = gum.config.get("notebook","graph_default_size")
+
+  return _reprGraph(gr, size, asString=False)
 
 
-def getGraph(gr, size="4", format='svg'):
+def getGraph(gr, size=None):
   """
   get a HTML string representation of pydot graph
 
@@ -166,7 +167,9 @@ def getGraph(gr, size="4", format='svg'):
   :param format: render as "png" or "svg"
   :return: the HTML representation of the graph as a string
   """
-  return _reprGraph(gr, size, format, asString=True)
+  if size is None:
+    size = gum.config.get("notebook","graph_default_size")
+  return _reprGraph(gr, size, asString=True)
 
 
 def _from_dotstring(dotstring):
@@ -180,19 +183,20 @@ def _from_dotstring(dotstring):
   return g
 
 
-def showDot(dotstring, size="4", format='svg'):
+def showDot(dotstring, size=None):
   """
   show a dot string as a graph
 
   :param dotstring: dot string
   :param size: size of the rendered graph
-  :param format: render as "png" or "svg"
   :return: the representation of the graph
   """
-  return showGraph(_from_dotstring(dotstring), size, format)
+  if size is None:
+    size = gum.config.get("notebook","graph_default_size")
+  return showGraph(_from_dotstring(dotstring), size)
 
 
-def getDot(dotstring, size="4", format='svg'):
+def getDot(dotstring, size=None):
   """
   get a dot string as a HTML string
 
@@ -202,10 +206,13 @@ def getDot(dotstring, size="4", format='svg'):
   :param bg: color for background
   :return: the HTML representation of the graph
   """
-  return getGraph(_from_dotstring(dotstring), size, format)
+  if size is None:
+    size = gum.config.get("notebook","graph_default_size")
+
+  return getGraph(_from_dotstring(dotstring), size)
 
 
-def getBNDiff(bn1, bn2, size="4", format='svg'):
+def getBNDiff(bn1, bn2, size=None):
   """ get a HTML string representation of a graphical diff between the arcs of _bn1 (reference) with those of _bn2.
 
   * full black line: the arc is common for both
@@ -216,13 +223,14 @@ def getBNDiff(bn1, bn2, size="4", format='svg'):
   :param BayesNet bn1: referent model for the comparison
   :param BayesNet bn2: bn compared to the referent model
   :param size: size of the rendered graph
-  :param format: render as "png" or "svg"
   """
+  if size is None:
+    size = gum.config.get("notebook","graph_default_size")
   cmp = GraphicalBNComparator(bn1, bn2)
   return getGraph(cmp.dotDiff(), size, format)
 
 
-def showBNDiff(bn1, bn2, size="4", format='svg'):
+def showBNDiff(bn1, bn2, size=None):
   """ show a graphical diff between the arcs of _bn1 (reference) with those of _bn2.
 
   * full black line: the arc is common for both
@@ -233,22 +241,25 @@ def showBNDiff(bn1, bn2, size="4", format='svg'):
   :param BayesNet bn1: referent model for the comparison
   :param BayesNet bn2: bn compared to the referent model
   :param size: size of the rendered graph
-  :param format: render as "png" or "svg"
   """
+  if size is None:
+    size = gum.config.get("notebook","graph_default_size")
   cmp = GraphicalBNComparator(bn1, bn2)
-  showGraph(cmp.dotDiff(), size, format)
+  showGraph(cmp.dotDiff(), size, gum.config.get("notebook","graph_format"))
 
 
-def showJunctionTree(bn, withNames=True, size="4", format='svg'):
+def showJunctionTree(bn, withNames=True, size=None):
   """
   Show a junction tree
 
   :param bn: the bayesian network
   :param boolean withNames: display the variable names or the node id in the clique
   :param size: size of the rendered graph
-  :param format: render as "png" or "svg"
   :return: the representation of the graph
   """
+  if size is None:
+    size = gum.config.get("notebook","graph_default_size")
+
   jtg = gum.JunctionTreeGenerator()
   jt = jtg.junctionTree(bn)
   if withNames:
@@ -257,16 +268,18 @@ def showJunctionTree(bn, withNames=True, size="4", format='svg'):
     return showDot(jt.toDot(), size, format)
 
 
-def getJunctionTree(bn, withNames=True, size="4", format='svg'):
+def getJunctionTree(bn, withNames=True):
   """
   get a HTML string for a junction tree (more specifically a join tree)
 
   :param bn: the bayesian network
   :param boolean withNames: display the variable names or the node id in the clique
   :param size: size of the rendered graph
-  :param format: render as "png" or "svg"
   :return: the HTML representation of the graph
   """
+  if size is None:
+    size = gum.config.get("notebook","graph_default_size")
+
   jtg = gum.JunctionTreeGenerator()
   jt = jtg.junctionTree(bn)
   if withNames:
@@ -275,27 +288,31 @@ def getJunctionTree(bn, withNames=True, size="4", format='svg'):
     return getDot(jt.toDot(), size, format)
 
 
-def showInfluenceDiagram(diag, size="4", format='svg'):
+def showInfluenceDiagram(diag, size=None):
   """
   show an influence diagram as a graph
 
   :param diag: the influence diagram
   :param size: size of the rendered graph
-  :param format: render as "png" or "svg"
   :return: the representation of the influence diagram
   """
+  if size is None:
+    size = gum.config.get("notebook","graph_default_size")
+
   return showDot(diag.toDot(), size, format)
 
 
-def getInfluenceDiagram(diag, size="4", format='svg'):
+def getInfluenceDiagram(diag, size=None):
   """
   get a HTML string for an influence diagram as a graph
 
   :param diag: the influence diagram
   :param size: size of the rendered graph
-  :param format: render as "png" or "svg"
   :return: the HTML representation of the influence diagram
   """
+  if size is None:
+    size = gum.config.get("notebook","graph_default_size")
+
   return getDot(diag.toDot(), size, format)
 
 
@@ -310,10 +327,10 @@ def showProba(p, scale=1.0):
   plt.show()
 
 
-def _saveFigProba(p, filename, format="svg"):
+def _saveFigProba(p, filename):
   fig = proba2histo(p)
   fig.savefig(filename, bbox_inches='tight', transparent=True,
-              pad_inches=0, dpi=fig.dpi, format=format)
+              pad_inches=0, dpi=fig.dpi, format=gum.config.get("notebook","graph_format"))
   plt.close(fig)
 
 
@@ -391,13 +408,12 @@ def showApproximationScheme(apsc, scale=np.log10):
     ie2.messageApproximationScheme()
 
 
-def showBN(bn, size="4", format="svg", nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None):
+def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None):
   """
   show a Bayesian network
 
   :param bn: the bayesian network
   :param size: size of the rendered graph
-  :param format: render as "png" or "svg"
   :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
   :param arcWidth: a arcMap of values to be shown as width of arcs
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
@@ -405,19 +421,21 @@ def showBN(bn, size="4", format="svg", nodeColor=None, arcWidth=None, arcColor=N
   :param cmapArc: color map to show the arc color if distinction is needed
   :return: the graph
   """
+  if size is None:
+    size = gum.config.get("notebook","graph_default_size")
+
   if cmapArc is None:
     cmapArc = cmap
 
   return showGraph(BN2dot(bn, size, nodeColor, arcWidth, arcColor, cmap, cmapArc), size, format)
 
 
-def getBN(bn, size="4", format="svg", nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None):
+def getBN(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None):
   """
   get a HTML string for a Bayesian network
 
   :param bn: the bayesian network
   :param size: size of the rendered graph
-  :param format: render as "png" or "svg"
   :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
   :param arcWidth: a arcMap of values to be shown as width of arcs
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
@@ -426,10 +444,13 @@ def getBN(bn, size="4", format="svg", nodeColor=None, arcWidth=None, arcColor=No
 
   :return: the graph
   """
+  if size is None:
+    size = gum.config.get("notebook","graph_default_size")
+
   if cmapArc is None:
     cmapArc = cmap
 
-  return getGraph(BN2dot(bn, size, nodeColor, arcWidth, arcColor, cmap, cmapArc), size, format)
+  return getGraph(BN2dot(bn, size, nodeColor, arcWidth, arcColor, cmap, cmapArc), size)
 
 
 def _normalizeVals(vals, hilightExtrema=False):
@@ -510,7 +531,7 @@ def _reprInformation(bn, evs, size, cmap, asString):
     return display(HTML(sss))
 
 
-def getInformation(bn, evs=None, size="4", cmap=_INFOcmap):
+def getInformation(bn, evs=None, size=None, cmap=_INFOcmap):
   """
   get a HTML string for a bn annoted with results from inference : entropy and mutual informations
 
@@ -520,13 +541,16 @@ def getInformation(bn, evs=None, size="4", cmap=_INFOcmap):
   :param cmap: colour map used
   :return: the HTML string
   """
+  if size is None:
+    size = gum.config.get("notebook","graph_default_size")
+
   if evs is None:
     evs = {}
 
   return _reprInformation(bn, evs, size, cmap, asString=True)
 
 
-def showInformation(bn, evs=None, size="4", cmap=_INFOcmap):
+def showInformation(bn, evs=None, size=None, cmap=_INFOcmap):
   """
   show a bn annoted with results from inference : entropy and mutual informations
 
@@ -542,7 +566,7 @@ def showInformation(bn, evs=None, size="4", cmap=_INFOcmap):
   return _reprInformation(bn, evs, size, cmap, asString=False)
 
 
-def showInference(bn, engine=None, evs=None, targets=None, size="7", format='svg', nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None):
+def showInference(bn, engine=None, evs=None, targets=None, size="7",  nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None):
   """
   show pydot graph for an inference in a notebook
 
@@ -551,7 +575,6 @@ def showInference(bn, engine=None, evs=None, targets=None, size="7", format='svg
   :param dictionnary evs: map of evidence
   :param set targets: set of targets
   :param string size: size of the rendered graph
-  :param string format: render as "png" or "svg"
   :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
   :param arcWidth: a arcMap of values to be shown as width of arcs
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
@@ -566,10 +589,10 @@ def showInference(bn, engine=None, evs=None, targets=None, size="7", format='svg
   if targets is None:
     targets = {}
 
-  return showGraph(BNinference2dot(bn, size, engine, evs, targets, format, nodeColor, arcWidth, arcColor, cmap, cmapArc), size, format)
+  return showGraph(BNinference2dot(bn, size, engine, evs, targets, nodeColor, arcWidth, arcColor, cmap, cmapArc), size)
 
 
-def getInference(bn, engine=None, evs=None, targets=None, size="7", format='svg', nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None):
+def getInference(bn, engine=None, evs=None, targets=None, size="7",  nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None):
   """
   get a HTML string for an inference in a notebook
 
@@ -578,7 +601,6 @@ def getInference(bn, engine=None, evs=None, targets=None, size="7", format='svg'
   :param dictionnary evs: map of evidence
   :param set targets: set of targets
   :param string size: size of the rendered graph
-  :param string format: render as "png" or "svg"
   :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
   :param arcWidth: a arcMap of values to be shown as width of arcs
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
@@ -592,7 +614,7 @@ def getInference(bn, engine=None, evs=None, targets=None, size="7", format='svg'
   if targets is None:
     targets = {}
 
-  return getGraph(BNinference2dot(bn, size, engine, evs, targets, format, nodeColor, arcWidth, arcColor, cmap, cmapArc), size, format)
+  return getGraph(BNinference2dot(bn, size, engine, evs, targets,  nodeColor, arcWidth, arcColor, cmap, cmapArc), size)
 
 
 def _reprPotential(pot, digits=4, withColors=True, varnames=None, asString=False):
@@ -620,7 +642,8 @@ def _reprPotential(pot, digits=4, withColors=True, varnames=None, asString=False
       g = int(127 + val * 128)
       b = 100
       s += "color:black;background-color:" + _rgb(r, g, b) + ";"
-    s += "text-align:right;'>{:." + str(digits) + "f}</td>"
+    s += "text-align:right;'>{:." + \
+        gum.config.get('notebook','digits_in_potential') + "f}</td>"
     return s.format(val)
 
   html = list()
@@ -681,8 +704,8 @@ def _reprPotential(pot, digits=4, withColors=True, varnames=None, asString=False
               label)
         else:
           if sum([inst.val(i) for i in range(1, par)]) == 0:
-            s += "<th style='color:black;background-color:#BBBBBB;' rowspan = '{}'><center>{}</center></th>".format(offset[par],
-                                                                                                                    label)
+            s += "<th style='color:black;background-color:#BBBBBB;' rowspan = '{}'><center>{}</center></th>".format(
+                offset[par], label)
       for j in range(pot.variable(0).domainSize()):
         s += _mkCell(pot.get(inst))
         inst.inc()
@@ -728,7 +751,8 @@ def showPotential(pot, digits=4, withColors=None, varnames=None):
   if withColors is None:
     withColors = __isKindOfProba
 
-  display(_reprPotential(pot, digits, withColors, varnames, asString=False))
+  display(_reprPotential(
+      pot, digits, withColors, varnames, asString=False))
 
 
 def getPotential(pot, digits=4, withColors=None, varnames=None):

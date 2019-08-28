@@ -34,28 +34,23 @@ import pyAgrum as gum
 import pydotplus as dot
 import shutil
 
-__GRAPHBLACK = "#4A4A4A"
-
 
 def forDarkTheme():
   """ change the color for arcs and text in graphs to be more visible in dark theme
   """
-  global __GRAPHBLACK
-  __GRAPHBLACK = "#AAAAAA"
+  gum.config.set("theme", "default_arc_color", "#AAAAAA")
 
 
 def forLightTheme():
   """ change the color for arcs and text in graphs to be more visible in light theme
   """
-  global __GRAPHBLACK
-  __GRAPHBLACK = "#202020"
+  gum.config.set("theme", "default_arc_color", "#202020")
 
 
 def getBlackInTheme():
   """ return the color used for arc and text in graphs
   """
-  global __GRAPHBLACK
-  return __GRAPHBLACK
+  return gum.config.get("theme","default_arc_color")
 
 
 def _proba2rgb(p, cmap, withSpecialColor):
@@ -106,10 +101,10 @@ def BN2dot(bn, size="4", nodeColor=None, arcWidth=None, arcColor=None, cmapNode=
   :return: the desired representation of the BN as a dot graph
   """
   if cmapNode is None:
-    cmapNode = plt.get_cmap('summer')
+    cmapNode = plt.get_cmap(gum.config.get("theme", "default_node_cmap"))
 
   if cmapArc is None:
-    cmapArc = plt.get_cmap('BuGn')
+    cmapArc = plt.get_cmap(gum.config.get("theme", "default_arc_cmap"))
 
   if arcWidth is not None:
     minarcs = min(arcWidth.values())
@@ -119,8 +114,8 @@ def BN2dot(bn, size="4", nodeColor=None, arcWidth=None, arcColor=None, cmapNode=
 
   for n in bn.names():
     if nodeColor is None or n not in nodeColor:
-      bgcol = "#404040"
-      fgcol = "#FFFFFF"
+      bgcol = gum.config.get("theme", "default_node_bgcolor")
+      fgcol = gum.config.get("theme", "default_node_fgcolor")
       res = ""
     else:
       bgcol = _proba2bgcolor(nodeColor[n], cmapNode)
@@ -205,8 +200,8 @@ def _getProbaV(p, scale=1.0):
   bars = ax.bar(ra, p.tolist(), align='center')
   labels = ["{:.1%}".format(bar.get_height()) if bar.get_height() != 0 else ""
             for bar in bars]
-  
-  ax.set_ylim(bottom=0,top=p.max())
+
+  ax.set_ylim(bottom=0, top=p.max())
   ax.set_xticks(ra)
   ax.set_xticklabels(labels, rotation='vertical')
   ax.set_title(_getTitleHisto(p))
@@ -264,14 +259,14 @@ def proba2histo(p, scale=1.0):
     return _getProbaH(p, scale)
 
 
-def _saveFigProba(p, filename, format="svg"):
+def _saveFigProba(p, filename):
   fig = proba2histo(p)
   fig.savefig(filename, bbox_inches='tight', transparent=True,
-              pad_inches=0.05, dpi=fig.dpi, format=format)
+              pad_inches=0.05, dpi=fig.dpi, format=gum.config.get("notebook","graph_format"))
   plt.close(fig)
 
 
-def BNinference2dot(bn, size="4", engine=None, evs={}, targets={}, format='png', nodeColor=None, arcWidth=None, arcColor=None, cmapNode=None, cmapArc=None):
+def BNinference2dot(bn, size="4", engine=None, evs={}, targets={}, nodeColor=None, arcWidth=None, arcColor=None, cmapNode=None, cmapArc=None):
   """
   create a pydotplus representation of an inference in a BN
 
@@ -280,7 +275,6 @@ def BNinference2dot(bn, size="4", engine=None, evs={}, targets={}, format='png',
   :param pyAgrum Inference engine: inference algorithm used. If None, LazyPropagation will be used
   :param dictionnary evs: map of evidence
   :param set targets: set of targets. If targets={} then each node is a target
-  :param string format: render as "png" or "svg"
   :param nodeColor: a nodeMap of values to be shown as color nodes (with special color for 0 and 1)
   :param arcWidth: a arcMap of values to be shown as bold arcs
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
@@ -315,15 +309,17 @@ def BNinference2dot(bn, size="4", engine=None, evs={}, targets={}, format='png',
       getBlackInTheme()+"\";bgcolor=\"transparent\";"
   dotstr += "  label=\"Inference in {:6.2f}ms\";\n".format(
       1000 * (stopTime - startTime))
-  dotstr += "  node [fillcolor=floralwhite, style=filled,color=grey];\n"
+  dotstr += '  node [fillcolor="'+gum.config.get("theme", "default_node_bgcolor") + \
+      '", style=filled,color="' + \
+      gum.config.get("theme", "default_node_fgcolor")+'"];'+"\n"
   dotstr += '  edge [color="'+getBlackInTheme()+'"];'+"\n"
 
   for nid in bn.nodes():
     name = bn.variable(nid).name()
 
     # defaults
-    bgcol = "#404040"
-    fgcol = "#FFFFFF"
+    bgcol = gum.config.get("theme", "default_node_bgcolor")
+    fgcol = gum.config.get("theme", "default_node_fgcolor")
     if len(targets) == 0 or name in targets or nid in targets:
       bgcol = "white"
 
@@ -334,15 +330,16 @@ def BNinference2dot(bn, size="4", engine=None, evs={}, targets={}, format='png',
 
     # 'hard' colour for evidence (?)
     if name in evs or nid in evs:
-      bgcol = "sandybrown"
-      fgcol = "black"
+      bgcol = gum.config.get("theme", "evidence_bgcolor")
+      fgcol = gum.config.get("theme", "evidence_fgcolor")
 
     colorattribute = 'fillcolor="{}", fontcolor="{}", color="#000000"'.format(
         bgcol, fgcol)
     if len(targets) == 0 or name in targets or nid in targets:
       filename = temp_dir + \
-          hashlib.md5(name.encode()).hexdigest() + "." + format
-      _saveFigProba(ie.posterior(name), filename, format=format)
+          hashlib.md5(name.encode()).hexdigest() + "." + \
+          gum.config.get("notebook","graph_format")
+      _saveFigProba(ie.posterior(name), filename)
       dotstr += ' "{0}" [shape=rectangle,image="{1}",label="", {2}];\n'.format(
           name, filename, colorattribute)
     else:
@@ -375,7 +372,7 @@ def BNinference2dot(bn, size="4", engine=None, evs={}, targets={}, format='png',
     dotstr += ' "{0}"->"{1}" [penwidth="{2}",tooltip="{3}:{4}",color="{5}"];'.format(
         bn.variable(n).name(), bn.variable(j).name(), pw, a, av, col)
   dotstr += '}'
-
+  
   g = dot.graph_from_dot_data(dotstr)
 
   g.set_size(size)

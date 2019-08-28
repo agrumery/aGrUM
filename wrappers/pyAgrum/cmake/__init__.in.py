@@ -94,8 +94,31 @@ __all__=[
 
   'getNestedParallelism', 'setNestedParallelism',
 
-  'DefaultInLabel','DuplicateElement','DuplicateLabel','EmptyBSTree','EmptySet','GumException','FatalError','FormatNotFound','GraphError','IOError','IdError','InvalidArc','InvalidArgument','InvalidArgumentsNumber','InvalidDirectedCycle','InvalidEdge','InvalidNode','MissingValueInDatabase','MissingVariableInDatabase', 'NoChild','NoNeighbour','NoParent','NotFound','NullElement','OperationNotAllowed','OutOfBounds','OutOfLowerBound','OutOfUpperBound','ReferenceError','SizeError','SyntaxError','UndefinedElement','UndefinedIteratorKey','UndefinedIteratorValue','UnknownLabelInDatabase'
+  'DefaultInLabel', 'DuplicateElement', 'DuplicateLabel', 'EmptyBSTree', 'EmptySet', 'GumException', 'FatalError', 'FormatNotFound', 'GraphError', 'IOError', 'IdError', 'InvalidArc', 'InvalidArgument', 'InvalidArgumentsNumber', 'InvalidDirectedCycle', 'InvalidEdge', 'InvalidNode', 'MissingValueInDatabase', 'MissingVariableInDatabase', 'NoChild', 'NoNeighbour', 'NoParent', 'NotFound', 'NullElement', 'OperationNotAllowed', 'OutOfBounds', 'OutOfLowerBound', 'OutOfUpperBound', 'ReferenceError', 'SizeError', 'SyntaxError', 'UndefinedElement', 'UndefinedIteratorKey', 'UndefinedIteratorValue', 'UnknownLabelInDatabase',
+  
+  "config"
   ]
 
 # seed is chosen randomly :)
 initRandom(0)
+from .config import PyAgrumConfiguration
+config = PyAgrumConfiguration("""
+[notebook]
+  digits_in_potential = 4
+  graph_format = svg
+  graph_default_size = 4
+
+[theme]
+  default_arc_color = #4A4A4A
+  default_node_cmap = summer
+  default_arc_cmap = BuGn
+  default_node_bgcolor = #404040
+  default_node_fgcolor = #FFFFFF
+  evidence_bgcolor = sandybrown
+  evidence_fgcolor = black
+""")
+try:
+  # load custom configuration if any
+  config.load()
+except FileNotFoundError:
+  pass
