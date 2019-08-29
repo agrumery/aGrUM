@@ -22,6 +22,7 @@ from tests import BayesNetTestSuite
 from tests import BNDatabaseGeneratorTestSuite
 from tests import BNLearnerTestSuite
 from tests import BNListenerTestSuite
+from tests import ConfigTestSuite
 from tests import EssentialGraphTestSuite
 from tests import GraphTestSuite
 from tests import ICIModelsForBNTestSuite
@@ -53,6 +54,7 @@ tests.append(BayesNetTestSuite.ts)
 tests.append(BNDatabaseGeneratorTestSuite.ts)
 tests.append(BNLearnerTestSuite.ts)
 tests.append(BNListenerTestSuite.ts)
+tests.append(ConfigTestSuite.ts)
 tests.append(EssentialGraphTestSuite.ts)
 tests.append(GraphTestSuite.ts)
 tests.append(ICIModelsForBNTestSuite.ts)

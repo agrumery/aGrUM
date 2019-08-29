@@ -106,16 +106,37 @@ config = PyAgrumConfiguration("""
 [notebook]
   digits_in_potential = 4
   graph_format = svg
-  graph_default_size = 4
-
-[theme]
+  default_graph_size = 5
   default_arc_color = #4A4A4A
   default_node_cmap = summer
   default_arc_cmap = BuGn
   default_node_bgcolor = #404040
-  default_node_fgcolor = #FFFFFF
+  default_node_fgcolor = white
   evidence_bgcolor = sandybrown
   evidence_fgcolor = black
+
+[dynamicBN]
+  default_graph_size = 6
+
+[influenceDiagram]
+  default_graph_size = 6
+  default_chance_bgcolor = #504A50
+  default_chance_fgcolor = white
+  default_chance_shape = ellipse
+  default_utility_bgcolor = #4A5050
+  default_utility_fgcolor = white
+  default_utility_shape = diamond
+  default_decision_bgcolor = #50504A
+  default_decision_fgcolor = white
+  default_decision_shape = box
+
+[causal]
+  default_graph_size = 2.5
+  show_latent_names = False
+  default_node_bgcolor = #404040
+  default_node_fgcolor = white
+  default_latent_bgcolor = #A08080
+  default_latent_fgcolor = black
 """)
 try:
   # load custom configuration if any

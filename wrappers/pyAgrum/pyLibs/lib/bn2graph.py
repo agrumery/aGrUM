@@ -38,19 +38,19 @@ import shutil
 def forDarkTheme():
   """ change the color for arcs and text in graphs to be more visible in dark theme
   """
-  gum.config.set("theme", "default_arc_color", "#AAAAAA")
+  gum.config["notebook", "default_arc_color"]="#AAAAAA"
 
 
 def forLightTheme():
   """ change the color for arcs and text in graphs to be more visible in light theme
   """
-  gum.config.set("theme", "default_arc_color", "#202020")
+  gum.config["notebook", "default_arc_color"]="#202020"
 
 
 def getBlackInTheme():
   """ return the color used for arc and text in graphs
   """
-  return gum.config.get("theme","default_arc_color")
+  return gum.config["notebook","default_arc_color"]
 
 
 def _proba2rgb(p, cmap, withSpecialColor):
@@ -101,10 +101,10 @@ def BN2dot(bn, size="4", nodeColor=None, arcWidth=None, arcColor=None, cmapNode=
   :return: the desired representation of the BN as a dot graph
   """
   if cmapNode is None:
-    cmapNode = plt.get_cmap(gum.config.get("theme", "default_node_cmap"))
+    cmapNode = plt.get_cmap(gum.config["notebook", "default_node_cmap"])
 
   if cmapArc is None:
-    cmapArc = plt.get_cmap(gum.config.get("theme", "default_arc_cmap"))
+    cmapArc = plt.get_cmap(gum.config["notebook", "default_arc_cmap"])
 
   if arcWidth is not None:
     minarcs = min(arcWidth.values())
@@ -114,8 +114,8 @@ def BN2dot(bn, size="4", nodeColor=None, arcWidth=None, arcColor=None, cmapNode=
 
   for n in bn.names():
     if nodeColor is None or n not in nodeColor:
-      bgcol = gum.config.get("theme", "default_node_bgcolor")
-      fgcol = gum.config.get("theme", "default_node_fgcolor")
+      bgcol = gum.config["notebook", "default_node_bgcolor"]
+      fgcol = gum.config["notebook", "default_node_fgcolor"]
       res = ""
     else:
       bgcol = _proba2bgcolor(nodeColor[n], cmapNode)
@@ -262,7 +262,7 @@ def proba2histo(p, scale=1.0):
 def _saveFigProba(p, filename):
   fig = proba2histo(p)
   fig.savefig(filename, bbox_inches='tight', transparent=True,
-              pad_inches=0.05, dpi=fig.dpi, format=gum.config.get("notebook","graph_format"))
+              pad_inches=0.05, dpi=fig.dpi, format=gum.config["notebook","graph_format"])
   plt.close(fig)
 
 
@@ -309,17 +309,17 @@ def BNinference2dot(bn, size="4", engine=None, evs={}, targets={}, nodeColor=Non
       getBlackInTheme()+"\";bgcolor=\"transparent\";"
   dotstr += "  label=\"Inference in {:6.2f}ms\";\n".format(
       1000 * (stopTime - startTime))
-  dotstr += '  node [fillcolor="'+gum.config.get("theme", "default_node_bgcolor") + \
+  dotstr += '  node [fillcolor="'+gum.config["notebook", "default_node_bgcolor"] + \
       '", style=filled,color="' + \
-      gum.config.get("theme", "default_node_fgcolor")+'"];'+"\n"
+      gum.config["notebook", "default_node_fgcolor"]+'"];'+"\n"
   dotstr += '  edge [color="'+getBlackInTheme()+'"];'+"\n"
 
   for nid in bn.nodes():
     name = bn.variable(nid).name()
 
     # defaults
-    bgcol = gum.config.get("theme", "default_node_bgcolor")
-    fgcol = gum.config.get("theme", "default_node_fgcolor")
+    bgcol = gum.config["notebook", "default_node_bgcolor"]
+    fgcol = gum.config["notebook", "default_node_fgcolor"]
     if len(targets) == 0 or name in targets or nid in targets:
       bgcol = "white"
 
@@ -330,15 +330,15 @@ def BNinference2dot(bn, size="4", engine=None, evs={}, targets={}, nodeColor=Non
 
     # 'hard' colour for evidence (?)
     if name in evs or nid in evs:
-      bgcol = gum.config.get("theme", "evidence_bgcolor")
-      fgcol = gum.config.get("theme", "evidence_fgcolor")
+      bgcol = gum.config["notebook", "evidence_bgcolor"]
+      fgcol = gum.config["notebook", "evidence_fgcolor"]
 
     colorattribute = 'fillcolor="{}", fontcolor="{}", color="#000000"'.format(
         bgcol, fgcol)
     if len(targets) == 0 or name in targets or nid in targets:
       filename = temp_dir + \
           hashlib.md5(name.encode()).hexdigest() + "." + \
-          gum.config.get("notebook","graph_format")
+          gum.config["notebook","graph_format"]
       _saveFigProba(ie.posterior(name), filename)
       dotstr += ' "{0}" [shape=rectangle,image="{1}",label="", {2}];\n'.format(
           name, filename, colorattribute)

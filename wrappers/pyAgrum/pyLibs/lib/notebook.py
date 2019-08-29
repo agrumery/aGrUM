@@ -130,7 +130,7 @@ def _reprGraph(gr, size, asString):
   :param boolean asString : display the graph or return a string containing the corresponding HTML fragment
   """
   gr.set_size(size)
-  if gum.config.get("notebook","graph_format") == "svg":
+  if gum.config["notebook", "graph_format"] == "svg":
     gsvg = SVG(__insertLinkedSVGs(gr.create_svg().decode('utf-8')))
     if asString:
       return gsvg.data
@@ -153,7 +153,7 @@ def showGraph(gr, size=None):
   :return: the representation of the graph
   """
   if size is None:
-    size = gum.config.get("notebook","graph_default_size")
+    size = gum.config["notebook", "default_graph_size"]
 
   return _reprGraph(gr, size, asString=False)
 
@@ -168,16 +168,13 @@ def getGraph(gr, size=None):
   :return: the HTML representation of the graph as a string
   """
   if size is None:
-    size = gum.config.get("notebook","graph_default_size")
+    size = gum.config["notebook", "default_graph_size"]
   return _reprGraph(gr, size, asString=True)
 
 
 def _from_dotstring(dotstring):
   g = dot.graph_from_dot_data(dotstring)
   g.set_bgcolor("transparent")
-  for n in g.get_nodes():
-    n.set_color(getBlackInTheme())
-    n.set_fontcolor(getBlackInTheme())
   for e in g.get_edges():
     e.set_color(getBlackInTheme())
   return g
@@ -192,7 +189,7 @@ def showDot(dotstring, size=None):
   :return: the representation of the graph
   """
   if size is None:
-    size = gum.config.get("notebook","graph_default_size")
+    size = gum.config["notebook", "default_graph_size"]
   return showGraph(_from_dotstring(dotstring), size)
 
 
@@ -207,7 +204,7 @@ def getDot(dotstring, size=None):
   :return: the HTML representation of the graph
   """
   if size is None:
-    size = gum.config.get("notebook","graph_default_size")
+    size = gum.config["notebook", "default_graph_size"]
 
   return getGraph(_from_dotstring(dotstring), size)
 
@@ -225,9 +222,9 @@ def getBNDiff(bn1, bn2, size=None):
   :param size: size of the rendered graph
   """
   if size is None:
-    size = gum.config.get("notebook","graph_default_size")
+    size = gum.config["notebook", "default_graph_size"]
   cmp = GraphicalBNComparator(bn1, bn2)
-  return getGraph(cmp.dotDiff(), size, format)
+  return getGraph(cmp.dotDiff(), size)
 
 
 def showBNDiff(bn1, bn2, size=None):
@@ -243,9 +240,9 @@ def showBNDiff(bn1, bn2, size=None):
   :param size: size of the rendered graph
   """
   if size is None:
-    size = gum.config.get("notebook","graph_default_size")
+    size = gum.config["notebook", "default_graph_size"]
   cmp = GraphicalBNComparator(bn1, bn2)
-  showGraph(cmp.dotDiff(), size, gum.config.get("notebook","graph_format"))
+  showGraph(cmp.dotDiff(), size, gum.config["notebook", "graph_format"])
 
 
 def showJunctionTree(bn, withNames=True, size=None):
@@ -258,17 +255,17 @@ def showJunctionTree(bn, withNames=True, size=None):
   :return: the representation of the graph
   """
   if size is None:
-    size = gum.config.get("notebook","graph_default_size")
+    size = gum.config["notebook", "default_graph_size"]
 
   jtg = gum.JunctionTreeGenerator()
   jt = jtg.junctionTree(bn)
   if withNames:
-    return showDot(jt.toDotWithNames(bn), size, format)
+    return showDot(jt.toDotWithNames(bn), size)
   else:
-    return showDot(jt.toDot(), size, format)
+    return showDot(jt.toDot(), size)
 
 
-def getJunctionTree(bn, withNames=True):
+def getJunctionTree(bn, withNames=True,size=None):
   """
   get a HTML string for a junction tree (more specifically a join tree)
 
@@ -278,15 +275,55 @@ def getJunctionTree(bn, withNames=True):
   :return: the HTML representation of the graph
   """
   if size is None:
-    size = gum.config.get("notebook","graph_default_size")
+    size = gum.config["notebook", "default_graph_size"]
 
   jtg = gum.JunctionTreeGenerator()
   jt = jtg.junctionTree(bn)
   if withNames:
-    return getDot(jt.toDotWithNames(bn), size, format)
+    return getDot(jt.toDotWithNames(bn), size)
   else:
-    return getDot(jt.toDot(), size, format)
+    return getDot(jt.toDot(), size)
 
+def _infdiag_todot(diag):
+  res="digraph {"
+
+  #chance node
+  res+=f'''
+    node [fillcolor="{gum.config["influenceDiagram","default_chance_bgcolor"]}",
+          fontcolor="{gum.config["influenceDiagram","default_chance_fgcolor"]}",
+          style=filled,shape={gum.config["influenceDiagram","default_chance_shape"]}];
+  '''
+  for node in diag.ids():
+      if diag.isChanceNode(node):
+          res+=f'   "{diag.variable(node).name()}";'+"\n"
+          
+  #decision node
+  res+=f'''
+    node [fillcolor="{gum.config["influenceDiagram","default_decision_bgcolor"]}",
+          fontcolor="{gum.config["influenceDiagram","default_decision_fgcolor"]}",
+          style=filled,shape={gum.config["influenceDiagram","default_decision_shape"]}];
+  '''
+  for node in diag.ids():
+      if diag.isDecisionNode(node):
+          res+=f'   "{diag.variable(node).name()}";'+"\n"
+          
+  #utility node
+  res+=f'''
+    node [fillcolor="{gum.config["influenceDiagram","default_utility_bgcolor"]}",
+          fontcolor="{gum.config["influenceDiagram","default_utility_fgcolor"]}",
+          style=filled,shape={gum.config["influenceDiagram","default_utility_shape"]}];
+  '''
+  for node in diag.ids():
+      if diag.isUtilityNode(node):
+          res+=f'   "{diag.variable(node).name()}";'+"\n"
+          
+  #arcs
+  res+="\n"
+  for node in diag.ids():
+      for chi in diag.children(node):
+          res+=f'  "{diag.variable(node).name()}"->"{diag.variable(chi).name()}";'+"\n"
+  res += "}"
+  return res
 
 def showInfluenceDiagram(diag, size=None):
   """
@@ -297,9 +334,9 @@ def showInfluenceDiagram(diag, size=None):
   :return: the representation of the influence diagram
   """
   if size is None:
-    size = gum.config.get("notebook","graph_default_size")
+    size = gum.config["notebook", "default_graph_size"]
 
-  return showDot(diag.toDot(), size, format)
+  return showDot(_infdiag_todot(diag), size)
 
 
 def getInfluenceDiagram(diag, size=None):
@@ -311,9 +348,9 @@ def getInfluenceDiagram(diag, size=None):
   :return: the HTML representation of the influence diagram
   """
   if size is None:
-    size = gum.config.get("notebook","graph_default_size")
+    size = gum.config["notebook", "default_graph_size"]
 
-  return getDot(diag.toDot(), size, format)
+  return getDot(_infdiag_todot(diag), size)
 
 
 def showProba(p, scale=1.0):
@@ -330,7 +367,7 @@ def showProba(p, scale=1.0):
 def _saveFigProba(p, filename):
   fig = proba2histo(p)
   fig.savefig(filename, bbox_inches='tight', transparent=True,
-              pad_inches=0, dpi=fig.dpi, format=gum.config.get("notebook","graph_format"))
+              pad_inches=0, dpi=fig.dpi, format=gum.config["notebook", "graph_format"])
   plt.close(fig)
 
 
@@ -422,12 +459,12 @@ def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=Non
   :return: the graph
   """
   if size is None:
-    size = gum.config.get("notebook","graph_default_size")
+    size = gum.config["notebook", "default_graph_size"]
 
   if cmapArc is None:
     cmapArc = cmap
 
-  return showGraph(BN2dot(bn, size, nodeColor, arcWidth, arcColor, cmap, cmapArc), size, format)
+  return showGraph(BN2dot(bn, size, nodeColor, arcWidth, arcColor, cmap, cmapArc), size)
 
 
 def getBN(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None):
@@ -445,7 +482,7 @@ def getBN(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=None
   :return: the graph
   """
   if size is None:
-    size = gum.config.get("notebook","graph_default_size")
+    size = gum.config["notebook", "default_graph_size"]
 
   if cmapArc is None:
     cmapArc = cmap
@@ -542,7 +579,7 @@ def getInformation(bn, evs=None, size=None, cmap=_INFOcmap):
   :return: the HTML string
   """
   if size is None:
-    size = gum.config.get("notebook","graph_default_size")
+    size = gum.config["notebook", "default_graph_size"]
 
   if evs is None:
     evs = {}
@@ -566,7 +603,7 @@ def showInformation(bn, evs=None, size=None, cmap=_INFOcmap):
   return _reprInformation(bn, evs, size, cmap, asString=False)
 
 
-def showInference(bn, engine=None, evs=None, targets=None, size="7",  nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None):
+def showInference(bn, engine=None, evs=None, targets=None, size=None,  nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None):
   """
   show pydot graph for an inference in a notebook
 
@@ -583,6 +620,9 @@ def showInference(bn, engine=None, evs=None, targets=None, size="7",  nodeColor=
 
   :return: the desired representation of the inference
   """
+  if size is None:
+    size = gum.config["notebook", "default_graph_size"]
+
   if evs is None:
     evs = {}
 
@@ -592,7 +632,7 @@ def showInference(bn, engine=None, evs=None, targets=None, size="7",  nodeColor=
   return showGraph(BNinference2dot(bn, size, engine, evs, targets, nodeColor, arcWidth, arcColor, cmap, cmapArc), size)
 
 
-def getInference(bn, engine=None, evs=None, targets=None, size="7",  nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None):
+def getInference(bn, engine=None, evs=None, targets=None, size=None,  nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None):
   """
   get a HTML string for an inference in a notebook
 
@@ -608,6 +648,9 @@ def getInference(bn, engine=None, evs=None, targets=None, size="7",  nodeColor=N
   :param cmapArc: color map to show the vals of Arcs.
   :return: the desired representation of the inference
   """
+  if size is None:
+    size = gum.config["notebook", "default_graph_size"]
+
   if evs is None:
     evs = {}
 
@@ -643,7 +686,7 @@ def _reprPotential(pot, digits=4, withColors=True, varnames=None, asString=False
       b = 100
       s += "color:black;background-color:" + _rgb(r, g, b) + ";"
     s += "text-align:right;'>{:." + \
-        gum.config.get('notebook','digits_in_potential') + "f}</td>"
+        gum.config['notebook', 'digits_in_potential'] + "f}</td>"
     return s.format(val)
 
   html = list()

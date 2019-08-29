@@ -142,12 +142,14 @@ def _TimeSlicesToDot(dbn):
 
   for k in sorted(timeslices.keys(), key=lambda x: -1 if x == noTimeCluster else 1e8 if x == 't' else int(x)):
     if k != noTimeCluster:
-      cluster = dot.Cluster(k, label="Time slice {}".format(k), bgcolor="#DDDDDD", rankdir="TD")
+      cluster = dot.Cluster(k, label="Time slice {}".format(
+          k), bgcolor="#DDDDDD", rankdir="TD")
       g.add_subgraph(cluster)
     else:
       cluster = g  # small trick to add in graph variable in no timeslice
     for (n, label) in sorted(timeslices[k]):
-      cluster.add_node(dot.Node(n, label=label, style='filled', color='#000000', fillcolor='white'))
+      cluster.add_node(dot.Node(n, label=label, style='filled',
+                                color='#000000', fillcolor='white'))
 
   for tail, head in dbn.arcs():
     g.add_edge(dot.Edge(dbn.variable(tail).name(),
@@ -167,7 +169,7 @@ def _TimeSlicesToDot(dbn):
   return g
 
 
-def showTimeSlices(dbn, size="6", format="svg"):
+def showTimeSlices(dbn, size=None):
   """
   Try to correctly display dBN and 2TBN
 
@@ -175,11 +177,13 @@ def showTimeSlices(dbn, size="6", format="svg"):
   :param size: size of the figue
   :param format: png/svg
   """
+  if size is None:
+    size = gum.config["dynamicBN", "default_graph_size"]
 
-  showGraph(_TimeSlicesToDot(dbn), size, format)
+  showGraph(_TimeSlicesToDot(dbn), size)
 
 
-def getTimeSlices(dbn, size="6", format="svg"):
+def getTimeSlices(dbn, size=None):
   """
   Try to correctly represent dBN and 2TBN as an HTML string
 
@@ -187,8 +191,10 @@ def getTimeSlices(dbn, size="6", format="svg"):
   :param size: size of the figue
   :param format: png/svg
   """
+  if size is None:
+    size = gum.config["dynamicBN", "default_graph_size"]
 
-  return getGraph(_TimeSlicesToDot(dbn), size, format)
+  return getGraph(_TimeSlicesToDot(dbn), size)
 
 
 def unroll2TBN(dbn, nbr):
@@ -213,11 +219,14 @@ def unroll2TBN(dbn, nbr):
     if _isInNoTimeSlice(name):
       bn.add(dbn.variable(dbn_id))
     elif _isInFirstTimeSlice(name):
-      bn.add(dbn.variable(dbn_id))  # create a clone of the variable in the new bn
+      # create a clone of the variable in the new bn
+      bn.add(dbn.variable(dbn_id))
     else:
       for ts in range(1, nbr):
-        nid = bn.add(dbn.variable(dbn_id))  # create a clone of the variable in the new bn
-        bn.changeVariableName(nid, realNameFrom2TBNname(name, ts))  # create the true name
+        # create a clone of the variable in the new bn
+        nid = bn.add(dbn.variable(dbn_id))
+        bn.changeVariableName(nid, realNameFrom2TBNname(
+            name, ts))  # create the true name
 
   # add parents
   # the main pb : to have the same order for parents w.r.t the order in 2TBN
@@ -234,18 +243,23 @@ def unroll2TBN(dbn, nbr):
           bn.addArc(bn.idFromName(name_parent), bn.idFromName(name))
         else:
           if _isInFirstTimeSlice(name):
-            raise TypeError("An arc from timeslice t to timeslice is impossible in dBN")
+            raise TypeError(
+                "An arc from timeslice t to timeslice is impossible in dBN")
           else:
             for ts in range(1, nbr):
-              new_name_parent = realNameFrom2TBNname(name_parent, ts)  # current TimeSlice
+              new_name_parent = realNameFrom2TBNname(
+                  name_parent, ts)  # current TimeSlice
               bn.addArc(bn.idFromName(new_name_parent), bn.idFromName(name))
       else:
         for ts in range(1, nbr):
           if _isInFirstTimeSlice(name_parent):
-            new_name_parent = realNameFrom2TBNname(name_parent, ts - 1)  # last TimeSlice
+            new_name_parent = realNameFrom2TBNname(
+                name_parent, ts - 1)  # last TimeSlice
           else:
-            new_name_parent = realNameFrom2TBNname(name_parent, ts)  # current TimeSlice
-          new_name = realNameFrom2TBNname(name, ts)  # necessary current TimeSlice
+            new_name_parent = realNameFrom2TBNname(
+                name_parent, ts)  # current TimeSlice
+          new_name = realNameFrom2TBNname(
+              name, ts)  # necessary current TimeSlice
           bn.addArc(bn.idFromName(new_name_parent), bn.idFromName(new_name))
 
   # potential creation
@@ -255,7 +269,8 @@ def unroll2TBN(dbn, nbr):
       bn.cpt(bn.idFromName(name))[:] = dbn.cpt(dbn_id)[:]
     else:
       for ts in range(1, nbr):
-        bn.cpt(bn.idFromName(realNameFrom2TBNname(name, ts)))[:] = dbn.cpt(dbn_id)[:]
+        bn.cpt(bn.idFromName(realNameFrom2TBNname(name, ts)))[
+            :] = dbn.cpt(dbn_id)[:]
 
   return bn
 
@@ -292,9 +307,11 @@ def plotFollowUnrolled(lovars, dbn, T, evs):
 
     stack = ax.stackplot(x, l)
 
-    proxy_rects = [Rectangle((0, 0), 1, 1, fc=pc.get_facecolor()[0]) for pc in stack]
+    proxy_rects = [Rectangle((0, 0), 1, 1, fc=pc.get_facecolor()[0])
+                   for pc in stack]
     labels = [v0.label(i) for i in range(v0.domainSize())]
-    plt.legend(proxy_rects, labels, loc='center left', bbox_to_anchor=(1, 0.5), ncol=1, fancybox=True, shadow=True)
+    plt.legend(proxy_rects, labels, loc='center left',
+               bbox_to_anchor=(1, 0.5), ncol=1, fancybox=True, shadow=True)
 
     plt.show()
 
@@ -340,4 +357,5 @@ if __name__ == '__main__':
   # bn=unroll2TBN(dbn,T)
   # showTimeSlices(bn)
 
-  plotFollow(["a", "b", "c", "d"], dbn, T=51, evs={'a15': 2, 'a30': 0, 'c14': 0, 'b40': 0})
+  plotFollow(["a", "b", "c", "d"], dbn, T=51, evs={
+             'a15': 2, 'a30': 0, 'c14': 0, 'b40': 0})
