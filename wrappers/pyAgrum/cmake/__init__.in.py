@@ -137,6 +137,8 @@ config = PyAgrumConfiguration("""
   default_node_fgcolor = white
   default_latent_bgcolor = #A08080
   default_latent_fgcolor = black
+  latex_do_prefix = \hookrightarrow\mkern-4.5mu
+  latex_do_suffix = 
 """)
 try:
   # load custom configuration if any

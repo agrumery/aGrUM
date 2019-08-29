@@ -1,23 +1,23 @@
 # -*- coding: utf-8 -*-
-#(c) Copyright by Pierre-Henri Wuillemin, UPMC, 2011  (pierre-henri.wuillemin@lip6.fr)
+# (c) Copyright by Pierre-Henri Wuillemin, UPMC, 2011  (pierre-henri.wuillemin@lip6.fr)
 
-#Permission to use, copy, modify, and distribute this
-#software and its documentation for any purpose and
-#without fee or royalty is hereby granted, provided
-#that the above copyright notice appear in all copies
-#and that both that copyright notice and this permission
-#notice appear in supporting documentation or portions
-#thereof, including modifications, that you make.
+# Permission to use, copy, modify, and distribute this
+# software and its documentation for any purpose and
+# without fee or royalty is hereby granted, provided
+# that the above copyright notice appear in all copies
+# and that both that copyright notice and this permission
+# notice appear in supporting documentation or portions
+# thereof, including modifications, that you make.
 
-#THE AUTHOR P.H. WUILLEMIN  DISCLAIMS ALL WARRANTIES
-#WITH REGARD TO THIS SOFTWARE, INCLUDING ALL IMPLIED
-#WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT
-#SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, INDIRECT
-#OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER
-#RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER
-#IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
-#ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
-#OR PERFORMANCE OF THIS SOFTWARE!
+# THE AUTHOR P.H. WUILLEMIN  DISCLAIMS ALL WARRANTIES
+# WITH REGARD TO THIS SOFTWARE, INCLUDING ALL IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT
+# SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, INDIRECT
+# OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER
+# RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER
+# IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
+# ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
+# OR PERFORMANCE OF THIS SOFTWARE!
 
 """
 This file defines a represenatation of a causal query in a causal model
@@ -84,7 +84,8 @@ class CausalFormula:
         return v
       else:
         bn = self.cm.observationalBN()
-        label = bn.variable(self.cm.idFromName(v)).label(_getLabelIdx(bn, v, values[v]))
+        label = bn.variable(self.cm.idFromName(v)).label(
+            _getLabelIdx(bn, v, values[v]))
         return v + "=" + label
 
     # adding values when necessary
@@ -94,11 +95,11 @@ class CausalFormula:
 
     latexOn = ",".join(on)
 
-    doOp="\\hookrightarrow\mkern-4.5mu "
+    doOpPref = gum.config["causal", "latex_do_prefix"]
+    doOpSuff = gum.config["causal", "latex_do_suffix"]
     latexDo = ""
     if len(doing) > 0:
-      latexDo = doOp
-      latexDo += f", {doOp} ".join(doing)
+      latexDo = ",".join([doOpPref+d+doOpSuff for d in doing])
 
     latexKnw = ""
     if len(knowing) > 0:
@@ -172,4 +173,3 @@ def _getLabelIdx(bn: gum.BayesNet, varname: str, val: Union[int, str]) -> int:
     return val
   else:
     return bn.variableFromName(varname).index(val)
-
