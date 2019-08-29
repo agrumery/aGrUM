@@ -8,6 +8,8 @@ wrappers/pyAgrum/sphinx/_build
 CMakeCache.txt
 CMakeFiles
 build
+cmake-build-debug
+cmake-build-release
 .options.act2.py.db
 aGrUM-dev.kdev
 *.kdev4
