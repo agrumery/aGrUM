@@ -39,10 +39,12 @@ class PyAgrumConfiguration(metaclass=Singleton):
   """ PyAgrumConfiguration is a the pyAgrum configuration singleton
   """
 
-  def __init__(self, defaults):
+  def __init__(self):
     self.__parser = ConfigParser(allow_no_value=False)
-    self.__defaults = defaults
-    self.__parser.read_string(defaults)
+
+    defaultsfn = os.path.dirname(__file__) + "/defaults.ini"
+    self.__parser.read(defaultsfn)
+    self.__defaults = self.__str__()
 
   def set(self, section, option, value):
     """set a property in a section
@@ -87,7 +89,7 @@ class PyAgrumConfiguration(metaclass=Singleton):
     return "\n".join([aff_sec(section) for section in mine.sections()])
 
   def save(self):
-    """Save the diff with the defaults in 'pyagrum.ini' in current directory
+    """Save the diff with the defaults in 'pyagrum.ini' in the current directory
     """
     with open("pyagrum.ini", "w") as configfile:
       print(self.__diff(), file=configfile)
@@ -98,7 +100,7 @@ class PyAgrumConfiguration(metaclass=Singleton):
     self.__parser.read_string(self.__defaults)
 
   def load(self):
-    """load pyagrum.ini and change the properties if needed
+    """load pyagrum.ini in the current directory, and change the properties if needed
 
     Raises:
         FileNotFoundError: if there is no pyagrum.ini in the current directory
@@ -109,12 +111,12 @@ class PyAgrumConfiguration(metaclass=Singleton):
       c.read("pyagrum.ini")
       for section in c.sections():
         if section not in self.__parser.sections():
-          print(f"[pyagrum.ini] Section '{section}' does not exist.")
+          print("[pyagrum.ini] Section '{}' does not exist.".format(section))
         for option in c[section]:
           try:
             self.set(section, option, c[section][option])
           except SyntaxError:
-            print(f"[pyagrum.ini] Option '{section}.{option}' does not exist.")
+            print("[pyagrum.ini] Option '{}.{}' does not exist.".format(section,option))
     else:
       raise FileNotFoundError("No file 'pyagrum.ini' in current directory.")
 
