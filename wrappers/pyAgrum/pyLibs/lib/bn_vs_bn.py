@@ -28,7 +28,7 @@ import os
 import math
 
 import pyAgrum as gum
-from itertools import product
+from itertools import product, combinations
 
 from ._utils.pyAgrum_header import pyAgrum_header
 
@@ -306,6 +306,66 @@ class GraphicalBNComparator:
       'fscore'   : Fscore,
       'dist2opt' : math.sqrt((1 - precision) ** 2 + (1 - recall) ** 2)
     }
+	
+  def hamming(self):
+    """
+    Compute hamming and structural hamming distance
+    Hamming distance is the difference of edges comparing the 2 skeletons,
+    and Structural Hamming difference is the difference comparing the cpdags,
+	including the arcs' orientation.   
+
+    Returns
+    -------
+    dict[double,double]
+      A dictionnary containing 'hamming','shd' 
+    """
+    #convert graphs to cpdags
+    
+    cpdag1=gum.EssentialGraph(self._bn1).mixedGraph()
+    cpdag2=gum.EssentialGraph(self._bn2).mixedGraph()   
+
+    # We look at all combinations
+    listVariables = self._bn1.names()
+    hamming_dico={'hamming':0,'shd':0}
+    
+    
+    for head, tail in combinations(listVariables, 2):
+        idHead_1 = self._bn1.idFromName(head)
+        idTail_1 = self._bn1.idFromName(tail)
+    
+        idHead_2 = self._bn2.idFromName(head)
+        idTail_2 = self._bn2.idFromName(tail)
+        
+        if cpdag1.existsArc(idHead_1,idTail_1):  # Check arcs head->tail   
+          if cpdag2.existsArc(idTail_2,idHead_2) or cpdag2.existsEdge(idTail_2,idHead_2):
+              hamming_dico["shd"]+=1
+          elif not cpdag2.existsArc(idTail_2,idHead_2) and not cpdag2.existsArc(idHead_2,idTail_2) and not cpdag2.existsEdge(idTail_2,idHead_2):
+                
+                  hamming_dico["shd"]+=1
+                  hamming_dico["hamming"]+=1
+        
+        elif cpdag1.existsArc(idTail_1,idHead_1):  # Check arcs tail->head   
+          if cpdag2.existsArc(idHead_2,idTail_2) or cpdag2.existsEdge(idTail_2,idHead_2):
+              hamming_dico["shd"]+=1
+          elif not cpdag2.existsArc(idTail_2,idHead_2) and not cpdag2.existsArc(idHead_2,idTail_2) and not cpdag2.existsEdge(idTail_2,idHead_2):
+               
+                  hamming_dico["shd"]+=1
+                  hamming_dico["hamming"]+=1
+        
+        elif cpdag1.existsEdge(idTail_1,idHead_1):  # Check edge
+          if cpdag2.existsArc(idHead_2,idTail_2) or cpdag2.existsArc(idTail_2,idHead_2):
+              hamming_dico["shd"]+=1
+          elif not cpdag2.existsArc(idTail_2,idHead_2) and not cpdag2.existsArc(idHead_2,idTail_2) and not cpdag2.existsEdge(idTail_2,idHead_2):
+                  
+                
+                  hamming_dico["shd"]+=1
+                  hamming_dico["hamming"]+=1        
+        #check no edge or arc on the ref graph, and yes on the other graph        
+        elif cpdag2.existsArc(idHead_2,idTail_2) or cpdag2.existsEdge(idHead_2,idTail_2) or cpdag2.existsArc(idTail_2,idHead_2):
+   
+              hamming_dico["shd"]+=1
+              hamming_dico["hamming"]+=1
+    return (hamming_dico)
 
 
 def _nodeId(bn, n):
