@@ -86,7 +86,7 @@ class PyAgrumConfiguration(metaclass=Singleton):
     c.read_string(self.__defaults)
     def aff_sec(section): return "["+section+"]\n"+"\n".join(
         ["  {} = {}".format(key, mine[section][key]) for key in mine[section].keys() if mine.get(section, key) != c.get(section, key)])
-    return "\n".join([aff_sec(section) for section in mine.sections()])
+    return "\n".join([sec for sec in [aff_sec(section) for section in mine.sections()] if "=" in sec])
 
   def save(self):
     """Save the diff with the defaults in 'pyagrum.ini' in the current directory
@@ -130,8 +130,8 @@ class PyAgrumConfiguration(metaclass=Singleton):
     lowsearch = search.lower()
     def aff_sec(section, all): return "["+section+"]\n"+"\n".join(
         ["  {} = {}".format(key, mine[section][key]) for key in mine[section].keys() if all or lowsearch in key])
-    print("\n".join([aff_sec(section, lowsearch in section)
-                     for section in mine.sections()]))
+    print("\n".join([sec for sec in [aff_sec(section, lowsearch in section)
+                     for section in mine.sections()] if "=" in sec]))
 
   def diff(self):
     """ print the diff between actual configuration and the defaults. This is what is saved in the file 'pyagrum.ini' by the method `PyAgrumConfiguration.save()`
