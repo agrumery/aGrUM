@@ -174,6 +174,39 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
 
 
   %pythoncode {
+    def fillWithFunction(self,s,noise=None):
+      if noise==None:
+        mid=0
+      else:
+        if len(noise)%2==0:
+          raise SyntaxError("len(noise) must not be even")
+        mid=int((len(noise)-1)/2)
+
+      self.fillWith(0)
+      mi=self.variable(0).numerical(0)
+      ma=self.variable(0).numerical(self.variable(0).domainSize()-1)
+
+      I=Instantiation(self)
+
+      I.setFirst()
+      while not I.end():
+        vars={self.variable(i).name():self.variable(i).numerical(I.val(i)) for i in range(1,self.nbrDim())}
+        res=eval(s,None,vars)
+        if res<mi:
+          res=mi
+        if res>ma:
+          res=ma
+        pos=self.variable(0).index(str(res))
+        if mid==0:
+          I.chgVal(0,pos)
+          self.set(I,1)
+        else:
+          for i,v in enumerate(noise):
+            if 0<=pos+i-mid<self.variable(0).domainSize():
+              I.chgVal(0,pos+i-mid)
+              self.set(I,v)
+        I.incNotVar(self.variable(0))
+      self.normalizeAsCPT()
 
     def variablesSequence(self):
         """
