@@ -74,8 +74,8 @@ namespace gum_tests {
 
       std::stringstream s;
       s << v;
-      TS_ASSERT_EQUALS(s.str(), "var1[3-9]");
-      TS_ASSERT_EQUALS(v.toString(), "var1[3-9]");
+      TS_ASSERT_EQUALS(s.str(), "var1[3,9]");
+      TS_ASSERT_EQUALS(v.toString(), "var1[3,9]");
     }
 
     void testNumerical() {

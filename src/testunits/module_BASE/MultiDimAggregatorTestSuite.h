@@ -247,7 +247,7 @@ namespace gum_tests {
          d("d", "", 0, 3);
       gum::aggregator::Min< double > p;
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
-      TS_ASSERT_EQUALS(p.toString(), "a[0-3]=min(b[0-3],c[0-3],d[0-3])");
+      TS_ASSERT_EQUALS(p.toString(), "a[0,3]=min(b[0,3],c[0,3],d[0,3])");
 
       gum::Instantiation i(p);
 
@@ -261,7 +261,7 @@ namespace gum_tests {
          d("d", "", 0, 3);
       gum::aggregator::Max< double > p;
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
-      TS_ASSERT_EQUALS(p.toString(), "a[0-3]=max(b[0-3],c[0-3],d[0-3])");
+      TS_ASSERT_EQUALS(p.toString(), "a[0,3]=max(b[0,3],c[0,3],d[0,3])");
 
       gum::Instantiation i(p);
 
@@ -275,7 +275,7 @@ namespace gum_tests {
          d("d", "", 0, 3);
       gum::aggregator::Count< double > p((gum::Idx)2);
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
-      TS_ASSERT_EQUALS(p.toString(), "a[0-3]=count[2](b[0-3],c[0-3],d[0-3])");
+      TS_ASSERT_EQUALS(p.toString(), "a[0,3]=count[2](b[0,3],c[0,3],d[0,3])");
 
       gum::Instantiation i(p);
 
@@ -290,7 +290,7 @@ namespace gum_tests {
          d("d", "", 0, 3);
       gum::aggregator::Forall< double > p((gum::Idx)2);
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
-      TS_ASSERT_EQUALS(p.toString(), "a[0-3]=forall[2](b[0-3],c[0-3],d[0-3])");
+      TS_ASSERT_EQUALS(p.toString(), "a[0,3]=forall[2](b[0,3],c[0,3],d[0,3])");
 
       gum::Instantiation i(p);
 
@@ -305,7 +305,7 @@ namespace gum_tests {
          d("d", "", 0, 3);
       gum::aggregator::Exists< double > p((gum::Idx)2);
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
-      TS_ASSERT_EQUALS(p.toString(), "a[0-3]=exists[2](b[0-3],c[0-3],d[0-3])");
+      TS_ASSERT_EQUALS(p.toString(), "a[0,3]=exists[2](b[0,3],c[0,3],d[0,3])");
 
       gum::Instantiation i(p);
 

@@ -407,7 +407,7 @@ namespace gum_tests {
         TS_ASSERT(new_order[3] == 5);
         TS_ASSERT(new_order[4] == 0);
         TS_ASSERT(new_order[5] == 1);
-        TS_ASSERT(translator.variable()->toString() == "X1[0-5]");
+        TS_ASSERT(translator.variable()->toString() == "X1[0,5]");
 
         gum::learning::DBTranslator4RangeVariable< MyAlloc > translator2(
            var, missing, true);
@@ -442,7 +442,7 @@ namespace gum_tests {
         TS_ASSERT(new_order2[3] == 5);
         TS_ASSERT(new_order2[4] == 0);
         TS_ASSERT(new_order2[5] == 1);
-        TS_ASSERT(translator2.variable()->toString() == "X1[0-5]");
+        TS_ASSERT(translator2.variable()->toString() == "X1[0,5]");
 
         gum::learning::DBTranslator4RangeVariable<> translator3(
            translator, std::allocator< gum::learning::DBTranslatedValue >());

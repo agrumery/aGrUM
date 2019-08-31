@@ -72,7 +72,7 @@ namespace gum {
 
   const std::string RangeVariable::domain() const {
     std::stringstream s;
-    s << "[" << minVal() << "-" << maxVal() << "]";
+    s << "[" << minVal() << "," << maxVal() << "]";
     return s.str();
   }
 } /* namespace gum */
