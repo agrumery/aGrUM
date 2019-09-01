@@ -1000,28 +1000,27 @@ namespace gum_tests {
     }
 
     void testFastPrototypeVarType() {
-      try {
-        auto bn = gum::BayesNet<float>::fastPrototype("a");
-        TS_ASSERT_EQUALS(bn.variable("a").toString(),"a[0,1]");
+      auto bn = gum::BayesNet<float>::fastPrototype("a");
+      TS_ASSERT_EQUALS(bn.variable("a").toString(), "a[0,1]");
 
-        bn = gum::BayesNet<float>::fastPrototype("a[0,1]");
-        TS_ASSERT_EQUALS(bn.variable("a").toString(),"a[0,1]");
+      bn = gum::BayesNet<float>::fastPrototype("a[0,1]");
+      TS_ASSERT_EQUALS(bn.variable("a").toString(), "a[0,1]");
 
-        TS_ASSERT_THROWS(gum::BayesNet<float>::fastPrototype("a[0,0]"),gum::InvalidArgument);
-        TS_ASSERT_THROWS(gum::BayesNet<float>::fastPrototype("a[1,0]"),gum::InvalidArgument);
-        TS_ASSERT_THROWS(gum::BayesNet<float>::fastPrototype("a[1,1]"),gum::InvalidArgument);
+      TS_ASSERT_THROWS(gum::BayesNet<float>::fastPrototype("a[0,0]"), gum::InvalidArgument);
+      TS_ASSERT_THROWS(gum::BayesNet<float>::fastPrototype("a[1,0]"), gum::InvalidArgument);
+      TS_ASSERT_THROWS(gum::BayesNet<float>::fastPrototype("a[1,1]"), gum::InvalidArgument);
 
-        bn = gum::BayesNet<float>::fastPrototype("a[5]");
-        TS_ASSERT_EQUALS(bn.variable("a").toString(),"a[0,4]");
+      bn = gum::BayesNet<float>::fastPrototype("a[5]");
+      TS_ASSERT_EQUALS(bn.variable("a").toString(), "a[0,4]");
 
-        bn = gum::BayesNet<float>::fastPrototype("a[2,5]");
-        TS_ASSERT_EQUALS(bn.variable("a").toString(),"a[2,5]");
+      bn = gum::BayesNet<float>::fastPrototype("a[2,5]");
+      TS_ASSERT_EQUALS(bn.variable("a").toString(), "a[2,5]");
 
-        bn = gum::BayesNet<float>::fastPrototype("a[-2,2]");
-        TS_ASSERT_EQUALS(bn.variable("a").toString(),"a[-2,2]");
+      bn = gum::BayesNet<float>::fastPrototype("a[-2,2]");
+      TS_ASSERT_EQUALS(bn.variable("a").toString(), "a[-2,2]");
 
-        GUM_TRACE_VAR(gum::DiscretizedVariable<float>("a","a",{-0.4,0.1,0.5,3.14,10}));
-      } catch (gum::Exception &e) {GUM_SHOWERROR(e); }
+      bn = gum::BayesNet<float>::fastPrototype("a[-0.4,0.1,0.5,3.14,10]");
+      TS_ASSERT_EQUALS(bn.variable("a").toString(), "a<[-0.4;0.1[,[0.1;0.5[,[0.5;3.14[,[3.14;10]>");
     }
 
     void testNonRegressionCPTinReverseArc() {

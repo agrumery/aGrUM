@@ -36,6 +36,7 @@
 
 #include <agrum/variables/rangeVariable.h>
 #include <agrum/variables/labelizedVariable.h>
+#include <agrum/variables/discretizedVariable.h>
 
 #include <agrum/multidim/aggregators/amplitude.h>
 #include <agrum/multidim/aggregators/and.h>
@@ -66,33 +67,37 @@ namespace gum {
     long range_min = 0;
     long range_max = long(ds) - 1;
     std::vector<std::string> labels;
+    std::vector<GUM_SCALAR> ticks;
 
-    // node like "n[-3,5]" or "n[4]"
-    auto posBrack = node.find('[');
-    if (posBrack != std::string::npos) {
-      if (*(node.rbegin()) == ']') {
+    if (*(node.rbegin()) == ']') {
+      auto posBrack = node.find('[');
+      if (posBrack != std::string::npos) {
         name = node.substr(0, posBrack);
         const auto &s_args = node.substr(posBrack + 1, node.size() - posBrack - 2);
         const auto &args = split(s_args, ",");
-        if (args.size() == 1) {
+        if (args.size() == 0) { // n[]
+          GUM_ERROR(InvalidArgument, "Empty range for variable " << node)
+        } else if (args.size() == 1) { //n[4]
           ds = static_cast< Size >(std::stoi(args[0]));
           range_min = 0;
           range_max = long(ds) - 1;
-        } else if (args.size() == 2) {
+        } else if (args.size() == 2) { // n[5,10]
           range_min = std::stol(args[0]);
           range_max = std::stol(args[1]);
-          if (1+range_max - range_min < 2) {
-            GUM_ERROR(InvalidArgument, "Invalid range in node " << node);
+          if (1 + range_max - range_min < 2) {
+            GUM_ERROR(InvalidArgument, "Invalid range for variable " << node);
           }
-          ds = static_cast<Size>(1+range_max - range_min);
+          ds = static_cast<Size>(1 + range_max - range_min);
+        } else {// n[3.14,5,10,12]
+          for (const auto &tick: args) {
+            ticks.push_back(static_cast<GUM_SCALAR>(std::atof(tick.c_str())));
+          }
+          ds =  static_cast< Size >(args.size() - 2);
         }
       }
-    }
-
-    // node like "n{one|two|three}"
-    posBrack = node.find('{');
-    if (posBrack != std::string::npos) {
-      if (*(node.rbegin()) == '}') {
+    } else if (*(node.rbegin()) == '}') { // node like "n{one|two|three}"
+      auto posBrack = node.find('{');
+      if (posBrack != std::string::npos) {
         name = node.substr(0, posBrack);
         labels = split(node.substr(posBrack + 1, node.size() - posBrack - 2), "|");
         if (labels.size() < 2) {
@@ -118,14 +123,12 @@ namespace gum {
     try {
       idVar = bn.idFromName(name);
     } catch (gum::NotFound &) {
-      if (labels.empty()) {
-        idVar = bn.add(RangeVariable(name, name, range_min, range_max));
+      if (!labels.empty()) {
+        idVar = bn.add(LabelizedVariable(name, name, labels));
+      } else if (!ticks.empty()) {
+        idVar = bn.add(DiscretizedVariable<GUM_SCALAR>(name, name, ticks));
       } else {
-        auto l = LabelizedVariable(name, name, 0);
-        for (const auto &label : labels) {
-          l.addLabel(label);
-        }
-        idVar = bn.add(l);
+        idVar = bn.add(RangeVariable(name, name, range_min, range_max));
       }
     }
 
