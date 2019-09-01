@@ -17,18 +17,18 @@ class BayesNetTestCase(pyAgrumTestCase):
     self.bufferecoute = ""
 
   def fillTopo(self, bn, idList):
-    idList.append(bn.add(self.var1));
-    idList.append(bn.add(self.var2));
-    idList.append(bn.add(self.var3));
-    idList.append(bn.add(self.var4));
-    idList.append(bn.add(self.var5));
+    idList.append(bn.add(self.var1))
+    idList.append(bn.add(self.var2))
+    idList.append(bn.add(self.var3))
+    idList.append(bn.add(self.var4))
+    idList.append(bn.add(self.var5))
 
-    bn.addArc(idList[0], idList[2]);
-    bn.addArc(idList[2], idList[4]);
-    bn.addArc(idList[1], idList[3]);
-    bn.addArc(idList[0], idList[3]);
-    bn.addArc(idList[3], idList[4]);
-    bn.addArc(idList[1], idList[4]);
+    bn.addArc(idList[0], idList[2])
+    bn.addArc(idList[2], idList[4])
+    bn.addArc(idList[1], idList[3])
+    bn.addArc(idList[0], idList[3])
+    bn.addArc(idList[3], idList[4])
+    bn.addArc(idList[1], idList[4])
 
   def fillBN(self, bn, idList):
     self.fillTopo(bn, idList)
@@ -254,11 +254,11 @@ class TestFeatures(BayesNetTestCase):
     with self.assertRaises(gum.InvalidDirectedCycle):
       bn = gum.fastBN("a->b->c->a")
 
-    bn = gum.fastBN("a{yes|maybe|no}->b->c;a->c");
-    self.assertEquals(bn.size(), 3);
-    self.assertEquals(bn.sizeArcs(), 3);
+    bn = gum.fastBN("a{yes|maybe|no}->b->c;a->c")
+    self.assertEquals(bn.size(), 3)
+    self.assertEquals(bn.sizeArcs(), 3)
     self.assertEquals(bn.dim(),
-                      (3 - 1) + (3 * (2 - 1)) + (3 * 2 * (2 - 1)));
+                      (3 - 1) + (3 * (2 - 1)) + (3 * 2 * (2 - 1)))
 
     with self.assertRaises(gum.InvalidArgument):
       bn = gum.fastBN("a{yes}->b->c;a->c")
@@ -266,48 +266,74 @@ class TestFeatures(BayesNetTestCase):
     with self.assertRaises(gum.InvalidArgument):
       bn = gum.fastBN("a{yes|no|yes}->b->c;a->c")
 
-    bn = gum.fastBN("a->b->c->d->e->f");
-    self.assertEquals(bn.size(), 6);
-    self.assertEquals(bn.sizeArcs(), 5);
+    bn = gum.fastBN("a->b->c->d->e->f")
+    self.assertEquals(bn.size(), 6)
+    self.assertEquals(bn.sizeArcs(), 5)
     self.assertEquals(bn.dim(),
-                      1 + 5 * 2);
+                      1 + 5 * 2)
 
-    bn = gum.fastBN("a<-b<-c<-d<-e<-f");
-    self.assertEquals(bn.size(), 6);
-    self.assertEquals(bn.sizeArcs(), 5);
+    bn = gum.fastBN("a<-b<-c<-d<-e<-f")
+    self.assertEquals(bn.size(), 6)
+    self.assertEquals(bn.sizeArcs(), 5)
     self.assertEquals(bn.dim(),
-                      1 + 5 * 2);
+                      1 + 5 * 2)
 
-    bn = gum.fastBN("a<-b->c<-d->e<-f");
-    self.assertEquals(bn.size(), 6);
-    self.assertEquals(bn.sizeArcs(), 5);
+    bn = gum.fastBN("a<-b->c<-d->e<-f")
+    self.assertEquals(bn.size(), 6)
+    self.assertEquals(bn.sizeArcs(), 5)
     self.assertEquals(bn.dim(),
-                      3 * 1 + 2 + 2 * 4);
+                      3 * 1 + 2 + 2 * 4)
 
-    bn = gum.fastBN("a->b<-c->d<-e->f");
-    self.assertEquals(bn.size(), 6);
-    self.assertEquals(bn.sizeArcs(), 5);
+    bn = gum.fastBN("a->b<-c->d<-e->f")
+    self.assertEquals(bn.size(), 6)
+    self.assertEquals(bn.sizeArcs(), 5)
     self.assertEquals(bn.dim(),
-                      3 * 1 + 2 + 2 * 4);
+                      3 * 1 + 2 + 2 * 4)
 
-    bn = gum.fastBN("a->b<-c;c->d<-e->f");
-    self.assertEquals(bn.size(), 6);
-    self.assertEquals(bn.sizeArcs(), 5);
+    bn = gum.fastBN("a->b<-c;c->d<-e->f")
+    self.assertEquals(bn.size(), 6)
+    self.assertEquals(bn.sizeArcs(), 5)
     self.assertEquals(bn.dim(),
-                      3 * 1 + 2 + 2 * 4);
+                      3 * 1 + 2 + 2 * 4)
 
-    bn = gum.fastBN("a->b<-c->d;d<-e->f");
-    self.assertEquals(bn.size(), 6);
-    self.assertEquals(bn.sizeArcs(), 5);
+    bn = gum.fastBN("a->b<-c->d;d<-e->f")
+    self.assertEquals(bn.size(), 6)
+    self.assertEquals(bn.sizeArcs(), 5)
     self.assertEquals(bn.dim(),
-                      3 * 1 + 2 + 2 * 4);
+                      3 * 1 + 2 + 2 * 4)
 
-    bn = gum.fastBN("a->b;b<-c;c->d;d<-e;e->f");
-    self.assertEquals(bn.size(), 6);
-    self.assertEquals(bn.sizeArcs(), 5);
+    bn = gum.fastBN("a->b;b<-c;c->d;d<-e;e->f")
+    self.assertEquals(bn.size(), 6)
+    self.assertEquals(bn.sizeArcs(), 5)
     self.assertEquals(bn.dim(),
-                      3 * 1 + 2 + 2 * 4);
+                      3 * 1 + 2 + 2 * 4)
+    
+  def testFastPrototypeVarType(self):
+    bn = gum.fastBN("a")
+    self.assertEquals(bn.variable("a").__str__(), "a[0,1]")
 
+    bn = gum.fastBN("a[0,1]")
+    self.assertEquals(bn.variable("a").__str__(), "a[0,1]")
+
+    with self.assertRaises(gum.InvalidArgument):
+      bn=gum.fastBN("a[0,0]")
+    with self.assertRaises(gum.InvalidArgument):
+      bn=gum.fastBN("a[1,0]")
+    with self.assertRaises(gum.InvalidArgument):
+      bn=gum.fastBN("a[1,1]")
+
+    bn = gum.fastBN("a[5]")
+    self.assertEquals(bn.variable("a").__str__(), "a[0,4]")
+
+    bn = gum.fastBN("a[2,5]")
+    self.assertEquals(bn.variable("a").__str__(), "a[2,5]")
+
+    bn = gum.fastBN("a[-2,2]")
+    self.assertEquals(bn.variable("a").__str__(), "a[-2,2]")
+
+    bn = gum.fastBN("a[-0.4,0.1,0.5,3.14,10]")
+    self.assertEquals(bn.variable("a").__str__(), "a<[-0.4;0.1[,[0.1;0.5[,[0.5;3.14[,[3.14;10]>")
+    
   def test_minimalCondSet(self):
     bn = gum.fastBN("A->C->E->F->G;B->C;B->D->F;H->E")
     iA, iB, iC, iD, iE, iF, iG, iH = [bn.idFromName(s) for s in
