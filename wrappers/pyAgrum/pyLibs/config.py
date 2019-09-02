@@ -21,6 +21,15 @@
 """
 configuration tool for pyAgrum
 """
+# for python2's compatibility
+# for metaclass both in python2 and 3
+from __future__ import print_function
+from six import with_metaclass
+try:
+    FileNotFoundError
+except NameError:
+    FileNotFoundError = IOError
+## end for python2's compatibility
 
 from configparser import ConfigParser
 import os
@@ -35,7 +44,7 @@ class Singleton(type):
     return cls._instances[cls]
 
 
-class PyAgrumConfiguration(metaclass=Singleton):
+class PyAgrumConfiguration(with_metaclass(Singleton)):
   """ PyAgrumConfiguration is a the pyAgrum configuration singleton
   """
 

@@ -32,6 +32,13 @@ __version__ = '@PYAGRUM_VERSION@'
 __license__ = __doc__
 __project_url__ = 'http://agrum.org'
 
+# for python2's compatibility
+try:
+    FileNotFoundError
+except NameError:
+    FileNotFoundError = IOError
+## end for python2's compatibility
+
 import numpy as np
 from .functions import *
 from .deprecated import *
