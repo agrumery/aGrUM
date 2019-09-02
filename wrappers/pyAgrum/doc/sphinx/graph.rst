@@ -46,5 +46,6 @@ Clique Graph
 
 Mixed Graph
 -----------
- 
+
 .. autoclass:: pyAgrum.MixedGraph
+

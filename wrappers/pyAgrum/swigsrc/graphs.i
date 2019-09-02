@@ -58,7 +58,8 @@ ADD_CST_NODES_METHOD_TO_GRAPHCLASS(gum::IBayesNet);
 ADD_NODES_METHOD_TO_GRAPHCLASS(gum::DiGraph);
 ADD_NODES_METHOD_TO_GRAPHCLASS(gum::UndiGraph);
 ADD_NODES_METHOD_TO_GRAPHCLASS(gum::MixedGraph);
-ADD_NODES_METHOD_TO_GRAPHCLASS(gum::DAG);
+// automatically done for subclass
+//ADD_NODES_METHOD_TO_GRAPHCLASS(gum::DAG);
 
 %define ADD_DI_METHOD_TO_GRAPHCLASS(classname)
 %extend classname {
