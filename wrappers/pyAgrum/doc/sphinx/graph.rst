@@ -48,4 +48,3 @@ Mixed Graph
 -----------
 
 .. autoclass:: pyAgrum.MixedGraph
-

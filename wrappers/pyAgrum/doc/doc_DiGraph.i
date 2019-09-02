@@ -247,3 +247,20 @@ Raises
 gum.InvalidDirectedCycle
   If this graph contains cycles
 "
+
+%feature("docstring") gum::DiGraph::hasDirectedPath
+"
+Check if a directedpath exists bewteen from and to.
+
+Parameters
+----------
+from : int
+	the id of the first node of the (possible) path
+to : int
+	the id of the last node of the (possible) path
+
+Returns
+-------
+bool
+    True if the directed path exists
+"
