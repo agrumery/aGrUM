@@ -68,7 +68,8 @@ def causalImpact(cm: CausalModel, on: Union[str, NameSet],
   if len(sk) == 0:
     sk = set()
 
-  total = {cm.observationalBN().variable(cm.observationalBN().idFromName(i)).name() for i in son | sdoing | sk}
+  total = {cm.observationalBN().variable(cm.observationalBN().idFromName(i)).name()
+           for i in son | sdoing | sk}
 
   if values is not None:
     for k in values.keys():
@@ -85,7 +86,8 @@ def causalImpact(cm: CausalModel, on: Union[str, NameSet],
     return formula, potential, explanation
 
   sv = set(potential.var_names)
-  extract_values = {k: _getLabelIdx(cm.observationalBN(), k, v) for k, v in values.items() if k in sv}
+  extract_values = {k: _getLabelIdx(cm.observationalBN(), k, v)
+                    for k, v in values.items() if k in sv}
   potextract = potential.extract(extract_values)
   return formula, potextract, explanation
 
@@ -127,7 +129,8 @@ def _causalImpact(cm: CausalModel, on: NameSet,
   if isDSep(cm, set(iDo), set(iY), sK | cm.latentVariablesIds()):
     explain = "No causal effect of X on Y, because they are d-separated "
     explain += "(conditioning on the observed variables if any)."
-    ar = CausalFormula(cm, ASTposteriorProba(cm.causalBN(), set(nY), set(nK)), on, doing, knowing)
+    ar = CausalFormula(cm, ASTposteriorProba(
+        cm.causalBN(), set(nY), set(nK)), on, doing, knowing)
     adj = ar.eval()
     return ar, adj.reorganize([v for v in nY + nDo + nK if v in adj.var_names]), explain
 
@@ -137,17 +140,21 @@ def _causalImpact(cm: CausalModel, on: NameSet,
     # for bd in backdoor_generator(cm, iDo[0], iY[0], cm.latentVariablesIds()):
     bd = cm.backDoor(iDo[0], iY[0], withNames=False)
     if bd is not None:
-      ar = CausalFormula(cm, getBackDoorTree(cm, nDo[0], nY[0], bd), on, doing, knowing)
+      ar = CausalFormula(cm, getBackDoorTree(
+          cm, nDo[0], nY[0], bd), on, doing, knowing)
       adj = ar.eval()
-      explain = "backdoor " + str([cm.causalBN().variable(i).name() for i in bd]) + " found."
+      explain = "backdoor " + \
+          str([cm.causalBN().variable(i).name() for i in bd]) + " found."
       return ar, adj.reorganize([v for v in nY + nDo + nK if v in adj.var_names]), explain
 
     # for fd in frontdoor_generator(cm, iDo[0], iY[0], cm.latentVariablesIds()):
     fd = cm.frontDoor(iDo[0], iY[0], withNames=False)
     if fd is not None:
-      ar = CausalFormula(cm, getFrontDoorTree(cm, nDo[0], nY[0], fd), on, doing, knowing)
+      ar = CausalFormula(cm, getFrontDoorTree(
+          cm, nDo[0], nY[0], fd), on, doing, knowing)
       adj = ar.eval()
-      explain = "frontdoor " + str([cm.causalBN().variable(i).name() for i in fd]) + " found."
+      explain = "frontdoor " + \
+          str([cm.causalBN().variable(i).name() for i in fd]) + " found."
       return ar, adj.reorganize([v for v in nY + nDo + nK if v in adj.var_names]), explain
 
   # Go for do-calculus
@@ -160,21 +167,22 @@ def _causalImpact(cm: CausalModel, on: NameSet,
     return None, None, h.message
 
   adj = ar.eval()
-  lsum=nY + nDo + nK
+  lsum = nY + nDo + nK
   lv = [v for v in lsum if v in adj.var_names]
 
   # todo : check why it is possible that some variables are in var_names and
   # not in lsum ...  (see for instance p213, book of why and
   # https://twitter.com/analisereal/status/1022277416205475841 : should
   # really z be in the last formula ?)
-  ssum=set(lsum)
+  ssum = set(lsum)
   lv += [v for v in adj._var_names if v not in ssum]
 
-  adj = adj.reorganize(lv) #margSumIn(lv).reorganize(lv)
+  adj = adj.reorganize(lv)  # margSumIn(lv).reorganize(lv)
   explain = "Do-calculus computations"
   return ar, adj, explain
 
-def counterfactual(bnModel: pyAgrum.causal.CausalModel, profile: Union[Dict[str, int], type(None)], on:  Union[str, Set[str]], doing:  Union[str, Set[str]], values: Union[Dict[str, int], type(None)] = None) -> pyAgrum.Potential:
+
+def counterfactual(cm: CausalModel, profile: Union[Dict[str, int], type(None)], on:  Union[str, Set[str]], doing:  Union[str, Set[str]], values: Union[Dict[str, int], type(None)] = None) -> gum.Potential:
   """Determines the estimation of a counterfactual query following the the three steps algorithm from "The Book Of Why" (Pearl 2018) chapter 8 page 253.
 
   Determines the estimation of the counterfactual query: Given the "profile" (dictionary <variable name>:<value>),what would variables in "on" (single or list of variables) be if variables in "doing" (single or list of variables) had been as specified in "values" (dictionary <variable name>:<value>)(optional).
@@ -186,18 +194,18 @@ def counterfactual(bnModel: pyAgrum.causal.CausalModel, profile: Union[Dict[str,
 
   This function returns the potential calculated in step 3, representing the probability distribution of  "on" given the interventions  "doing", if it had been as specified in "values" (if "values" is omitted, every possible value of "doing")
 
-  :param bnModel: causal model
+  :param cm: CausalModel
   :param profile: Dictionary
   :param on: variable name or variable names set
   :param doing: variable name or variable names set
   :param values: Dictionary
-  :type bnModel: pyAgrum.causal.CausalModel
+  :type cm: pyAgrum.causal.CausalModel
   :type profile: Union[Dict[str, int], type(None)]
   :type on: Union[str, Set[str]]
   :type doing: Union[str, Set[str]]
   :type values: Union[Dict[str, int], type(None)]
   :return: the computation
-  :rtype: pyAgrum.Potential
+  :rtype: gum.Potential
   """
 
   # Step 1 : calculate the posterior probabilities of idiosynatric nodes knowing the profil
@@ -207,27 +215,27 @@ def counterfactual(bnModel: pyAgrum.causal.CausalModel, profile: Union[Dict[str,
     idDoing = {doing}
   else:
     idDoing = doing
-  idDoing = set(map(bnModel.idFromName,idDoing))
+  idDoing = set(map(cm.idFromName, idDoing))
 
   # get nodes without parents in the causal model
   parentless = set()
   # nodes of the causal model
-  nodes = bnModel.names().keys()
+  nodes = cm.names().keys()
   for node in nodes:
     # if nb parents is equal to zero => parentless node
-    if len(bnModel.parents(node)) == 0 :
+    if len(cm.parents(node)) == 0:
       parentless.add(node)
 
   # idiosynatric factors (specific to and representative of the profile) are parentless - (doing+latent variables)
   idiosyncratic = parentless.difference(idDoing)
-  idiosyncratic = idiosyncratic.difference(bnModel.latentVariablesIds())
+  idiosyncratic = idiosyncratic.difference(cm.latentVariablesIds())
 
   # The original BN
-  bn = bnModel.observationalBN()
+  bn = cm.observationalBN()
   # calculate the posterior probability of each idiosynatric factor knowing the profil in the original BN
   # posteriors will be a dict {factor : posterior probability knowing the profil}
   posteriors = dict.fromkeys(idiosyncratic)
-  ie=gum.LazyPropagation(bn)
+  ie = gum.LazyPropagation(bn)
   ie.setEvidence(profile)
   ie.makeInference()
   for factor in idiosyncratic:
@@ -238,13 +246,14 @@ def counterfactual(bnModel: pyAgrum.causal.CausalModel, profile: Union[Dict[str,
   # the actual one so that th changes propagate to the causal model
   saveBn = gum.BayesNet(bn)
   for factor in idiosyncratic:
-    #twinBn.cpt(factor).fillWith(posteriors[factor])
-    bn.cpt(factor).fillWith(posteriors[factor].translate(0.00001).normalizeAsCPT())
-
+    # twinBn.cpt(factor).fillWith(posteriors[factor])
+    bn.cpt(factor).fillWith(
+        posteriors[factor].translate(0.00001).normalizeAsCPT())
 
   # Step 3 : operate the intervention in the causal model
-  formula, adj, exp = csl.causalImpact(bnModel,on = on,doing = doing,values = values)
-  #cslnb.showCausalImpact(bnModel,on = on,doing=doing,values=values)
+  formula, adj, exp = causalImpact(
+      cm, on=on, doing=doing, values=values)
+  #cslnb.showCausalImpact(cm,on = on,doing=doing,values=values)
 
   # We bring back the old CPTs
   noeuds = saveBn.nodes()
