@@ -4244,7 +4244,24 @@ class DiGraph(object):
         return _pyAgrum.DiGraph_topologicalOrder(self, clear)
 
     def hasDirectedPath(self, _from: "gum::NodeId const", to: "gum::NodeId const") -> "bool":
-        r"""hasDirectedPath(DiGraph self, gum::NodeId const _from, gum::NodeId const to) -> bool"""
+        r"""
+        hasDirectedPath(DiGraph self, gum::NodeId const _from, gum::NodeId const to) -> bool
+
+        Check if a directedpath exists bewteen from and to.
+
+        Parameters
+        ----------
+        from : int
+        	the id of the first node of the (possible) path
+        to : int
+        	the id of the last node of the (possible) path
+
+        Returns
+        -------
+        bool
+            True if the directed path exists
+
+        """
         return _pyAgrum.DiGraph_hasDirectedPath(self, _from, to)
 
     def __repr__(self) -> "std::string":

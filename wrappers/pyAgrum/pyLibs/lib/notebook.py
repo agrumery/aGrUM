@@ -242,7 +242,7 @@ def showBNDiff(bn1, bn2, size=None):
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
   cmp = GraphicalBNComparator(bn1, bn2)
-  showGraph(cmp.dotDiff(), size, gum.config["notebook", "graph_format"])
+  showGraph(cmp.dotDiff(), size)
 
 
 def showJunctionTree(bn, withNames=True, size=None):
@@ -265,7 +265,7 @@ def showJunctionTree(bn, withNames=True, size=None):
     return showDot(jt.toDot(), size)
 
 
-def getJunctionTree(bn, withNames=True,size=None):
+def getJunctionTree(bn, withNames=True, size=None):
   """
   get a HTML string for a junction tree (more specifically a join tree)
 
@@ -284,46 +284,48 @@ def getJunctionTree(bn, withNames=True,size=None):
   else:
     return getDot(jt.toDot(), size)
 
-def _infdiag_todot(diag):
-  res="digraph {"
 
-  #chance node
-  res+=f'''
+def _infdiag_todot(diag):
+  res = "digraph {"
+
+  # chance node
+  res += f'''
     node [fillcolor="{gum.config["influenceDiagram","default_chance_bgcolor"]}",
           fontcolor="{gum.config["influenceDiagram","default_chance_fgcolor"]}",
           style=filled,shape={gum.config["influenceDiagram","default_chance_shape"]}];
   '''
   for node in diag.ids():
-      if diag.isChanceNode(node):
-          res+=f'   "{diag.variable(node).name()}";'+"\n"
-          
-  #decision node
-  res+=f'''
+    if diag.isChanceNode(node):
+      res += f'   "{diag.variable(node).name()}";'+"\n"
+
+  # decision node
+  res += f'''
     node [fillcolor="{gum.config["influenceDiagram","default_decision_bgcolor"]}",
           fontcolor="{gum.config["influenceDiagram","default_decision_fgcolor"]}",
           style=filled,shape={gum.config["influenceDiagram","default_decision_shape"]}];
   '''
   for node in diag.ids():
-      if diag.isDecisionNode(node):
-          res+=f'   "{diag.variable(node).name()}";'+"\n"
-          
-  #utility node
-  res+=f'''
+    if diag.isDecisionNode(node):
+      res += f'   "{diag.variable(node).name()}";'+"\n"
+
+  # utility node
+  res += f'''
     node [fillcolor="{gum.config["influenceDiagram","default_utility_bgcolor"]}",
           fontcolor="{gum.config["influenceDiagram","default_utility_fgcolor"]}",
           style=filled,shape={gum.config["influenceDiagram","default_utility_shape"]}];
   '''
   for node in diag.ids():
-      if diag.isUtilityNode(node):
-          res+=f'   "{diag.variable(node).name()}";'+"\n"
-          
-  #arcs
-  res+="\n"
+    if diag.isUtilityNode(node):
+      res += f'   "{diag.variable(node).name()}";'+"\n"
+
+  # arcs
+  res += "\n"
   for node in diag.ids():
-      for chi in diag.children(node):
-          res+=f'  "{diag.variable(node).name()}"->"{diag.variable(chi).name()}";'+"\n"
+    for chi in diag.children(node):
+      res += f'  "{diag.variable(node).name()}"->"{diag.variable(chi).name()}";'+"\n"
   res += "}"
   return res
+
 
 def showInfluenceDiagram(diag, size=None):
   """
@@ -719,11 +721,11 @@ def _reprPotential(pot, digits=4, withColors=True, varnames=None, asString=False
     s = "<tr>"
     if nparents > 0:
       # parents order
-      if gum.config["notebook","potential_parent_values"]=="revmerge":
-        pmin,pmax,pinc=nparents - 1, 0 - 1, -1
+      if gum.config["notebook", "potential_parent_values"] == "revmerge":
+        pmin, pmax, pinc = nparents - 1, 0 - 1, -1
       else:
-        pmin,pmax,pinc=0,nparents,1
-      for par in range(pmin,pmax,pinc):
+        pmin, pmax, pinc = 0, nparents, 1
+      for par in range(pmin, pmax, pinc):
         parent = pot.var_names[par] if varnames is None else varnames[par]
         s += "<th style='border:1px solid black;color:black;background-color:#808080'><center>{}</center></th>".format(
             parent)
@@ -745,13 +747,13 @@ def _reprPotential(pot, digits=4, withColors=True, varnames=None, asString=False
     while not inst.end():
       s = "<tr>"
       # parents order
-      if gum.config["notebook","potential_parent_values"]=="revmerge":
-        pmin,pmax,pinc=1, nparents + 1,1
+      if gum.config["notebook", "potential_parent_values"] == "revmerge":
+        pmin, pmax, pinc = 1, nparents + 1, 1
       else:
-        pmin,pmax,pinc=nparents ,0,-1
-      for par in range(pmin,pmax,pinc):
-        label = inst.variable(par).label(inst.val(par))   
-        if par == 1 or gum.config["notebook","potential_parent_values"]=="nomerge":
+        pmin, pmax, pinc = nparents, 0, -1
+      for par in range(pmin, pmax, pinc):
+        label = inst.variable(par).label(inst.val(par))
+        if par == 1 or gum.config["notebook", "potential_parent_values"] == "nomerge":
           s += "<th style='border:1px solid black;color:black;background-color:#BBBBBB'><center>{}</center></th>".format(
               label)
         else:
@@ -778,7 +780,7 @@ def __isKindOfProba(pot):
   :param pot: the potential
   :return: True or False
   """
-  epsilon=1e-5
+  epsilon = 1e-5
   if pot.min() < -epsilon:
     return False
   if pot.max() > 1 + epsilon:
@@ -787,6 +789,10 @@ def __isKindOfProba(pot):
   # is it a joint proba ?
   if abs(pot.sum() - 1) < epsilon:
     return True
+
+  # marginal and then not proba (because of the test just above)
+  if pot.nbrDim() < 2:
+    return False
 
   # is is a CPT ?
   q = pot.margSumOut([pot.variable(0).name()])

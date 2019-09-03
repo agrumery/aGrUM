@@ -4244,7 +4244,24 @@ class DiGraph(object):
         return _pyAgrum.DiGraph_topologicalOrder(self, clear)
 
     def hasDirectedPath(self, _from, to):
-        r"""hasDirectedPath(DiGraph self, gum::NodeId const _from, gum::NodeId const to) -> bool"""
+        r"""
+        hasDirectedPath(DiGraph self, gum::NodeId const _from, gum::NodeId const to) -> bool
+
+        Check if a directedpath exists bewteen from and to.
+
+        Parameters
+        ----------
+        from : int
+        	the id of the first node of the (possible) path
+        to : int
+        	the id of the last node of the (possible) path
+
+        Returns
+        -------
+        bool
+            True if the directed path exists
+
+        """
         return _pyAgrum.DiGraph_hasDirectedPath(self, _from, to)
 
     def __repr__(self):
@@ -4553,10 +4570,6 @@ class DAG(DiGraph):
         r"""moralGraph(DAG self) -> UndiGraph"""
         return _pyAgrum.DAG_moralGraph(self)
 
-    def addNodes(self, n):
-        r"""addNodes(DAG self, gum::Size n) -> PyObject *"""
-        return _pyAgrum.DAG_addNodes(self, n)
-
     def addArc(self, *args):
         r"""
         addArc(DAG self, gum::NodeId const tail, gum::NodeId const head)
@@ -4611,7 +4624,7 @@ _pyAgrum.DAG_swigregister(DAG)
 class MixedGraph(UndiGraph, DiGraph):
     r"""
 
-    MixedGraph represents a Clique Graph.
+    MixedGraph represents a graph with both arcs and edges.
 
     MixedGraph() -> MixedGraph
         default constructor
@@ -4644,12 +4657,12 @@ class MixedGraph(UndiGraph, DiGraph):
         r"""
         eraseNode(MixedGraph self, gum::NodeId const id)
 
-        Erase the node and all the adjacent edges.
+        Erase the node and all the related arcs and edges.
 
         Parameters
         ----------
         id : int
-          the id of the node
+        	the id of the node
 
         """
         return _pyAgrum.MixedGraph_eraseNode(self, id)
@@ -4732,79 +4745,308 @@ class MixedGraph(UndiGraph, DiGraph):
         return _pyAgrum.MixedGraph___str__(self)
 
     def addNodes(self, n):
-        r"""addNodes(MixedGraph self, gum::Size n) -> PyObject *"""
+        r"""
+        addNodes(MixedGraph self, gum::Size n) -> PyObject *
+
+        Add n nodes.
+
+        Parameters
+        ----------
+        n : int
+          the number of nodes to add.
+
+        Returns
+        -------
+        Set of int
+          the new ids
+
+        """
         return _pyAgrum.MixedGraph_addNodes(self, n)
 
     def addNode(self):
-        r"""addNode(MixedGraph self) -> gum::NodeId"""
+        r"""
+        addNode(MixedGraph self) -> gum::NodeId
+
+        Returns
+        -------
+        int
+          the new NodeId
+
+        """
         return _pyAgrum.MixedGraph_addNode(self)
 
     def addNodeWithId(self, id):
-        r"""addNodeWithId(MixedGraph self, gum::NodeId const id)"""
+        r"""
+        addNodeWithId(MixedGraph self, gum::NodeId const id)
+
+        Add a node by choosing a new NodeId.
+
+        Parameters
+        ----------
+        id : int
+          The id of the new node
+
+        Raises
+        ------
+        gum.DuplicateElement
+          If the given id is already used
+
+        """
         return _pyAgrum.MixedGraph_addNodeWithId(self, id)
 
     def existsNode(self, id):
-        r"""existsNode(MixedGraph self, gum::NodeId const id) -> bool"""
+        r"""
+        existsNode(MixedGraph self, gum::NodeId const id) -> bool
+
+        Check if a node with a certain id exists in the graph.
+
+        Parameters
+        ----------
+        id : int
+            the checked id
+
+        Returns
+        -------
+        bool
+            True if the node exists
+
+        """
         return _pyAgrum.MixedGraph_existsNode(self, id)
 
     def size(self):
-        r"""size(MixedGraph self) -> gum::Size"""
+        r"""
+        size(MixedGraph self) -> gum::Size
+
+        Returns
+        -------
+        int
+            the number of nodes in the graph
+
+        """
         return _pyAgrum.MixedGraph_size(self)
 
     def empty(self):
-        r"""empty(MixedGraph self) -> bool"""
+        r"""
+        empty(MixedGraph self) -> bool
+
+        Check if the graph is empty.
+
+        Returns
+        -------
+        bool
+            True if the graph is empty
+
+        """
         return _pyAgrum.MixedGraph_empty(self)
 
     def addEdge(self, n1, n2):
-        r"""addEdge(MixedGraph self, gum::NodeId const n1, gum::NodeId const n2)"""
+        r"""
+        addEdge(MixedGraph self, gum::NodeId const n1, gum::NodeId const n2)
+
+        Insert a new edge into the graph.
+
+        Parameters
+        ----------
+        n1 : int
+          the id of one node of the new inserted edge
+        n2 : int
+          the id of the other node of the new inserted edge
+
+        Raises
+        ------
+        gum.InvalidNode
+          If n1 or n2 does not belong to the graph nodes.
+
+        """
         return _pyAgrum.MixedGraph_addEdge(self, n1, n2)
 
     def eraseEdge(self, n1, n2):
-        r"""eraseEdge(MixedGraph self, gum::NodeId const n1, gum::NodeId const n2)"""
+        r"""
+        eraseEdge(MixedGraph self, gum::NodeId const n1, gum::NodeId const n2)
+
+        Erase the edge between n1 and n2.
+
+        Parameters
+        ----------
+        n1 : int
+          the id of the tail node
+        n2 : int
+          the id of the head node
+
+        """
         return _pyAgrum.MixedGraph_eraseEdge(self, n1, n2)
 
     def existsEdge(self, n1, n2):
-        r"""existsEdge(MixedGraph self, gum::NodeId const n1, gum::NodeId const n2) -> bool"""
+        r"""
+        existsEdge(MixedGraph self, gum::NodeId const n1, gum::NodeId const n2) -> bool
+
+        Check if an edge exists bewteen n1 and n2.
+
+        Parameters
+        ----------
+        n1 : int
+          the id of one extremity of the edge
+        n2 : int
+          the id of the other extremity if tge edge
+
+        Returns
+        -------
+        bool
+            True if the arc exists
+
+        """
         return _pyAgrum.MixedGraph_existsEdge(self, n1, n2)
 
     def sizeEdges(self):
-        r"""sizeEdges(MixedGraph self) -> gum::Size"""
+        r"""
+        sizeEdges(MixedGraph self) -> gum::Size
+
+        Returns
+        -------
+        int
+            the number of edges in the graph
+
+        """
         return _pyAgrum.MixedGraph_sizeEdges(self)
 
     def emptyEdges(self):
-        r"""emptyEdges(MixedGraph self) -> bool"""
+        r"""
+        emptyEdges(MixedGraph self) -> bool
+
+        Check if the graph doesn't contains edges.
+
+        Returns
+        -------
+        bool
+            True if the graph doesn't contains edges
+
+        """
         return _pyAgrum.MixedGraph_emptyEdges(self)
 
     def eraseNeighbours(self, n):
-        r"""eraseNeighbours(MixedGraph self, gum::NodeId const n)"""
+        r"""
+        eraseNeighbours(MixedGraph self, gum::NodeId const n)
+
+        Erase all the edges adjacent to a given node.
+
+        Parameters
+        ----------
+        n : int
+          the id of the node
+
+        """
         return _pyAgrum.MixedGraph_eraseNeighbours(self, n)
 
     def addArc(self, n1, n2):
-        r"""addArc(MixedGraph self, gum::NodeId const n1, gum::NodeId const n2)"""
+        r"""
+        addArc(MixedGraph self, gum::NodeId const n1, gum::NodeId const n2)
+
+        Add an arc from tail to head.
+
+        Parameters
+        ----------
+        tail : int
+          the id of the tail node
+        head : int
+          the id of the head node
+
+        Raises
+        ------
+        gum.InvalidNode
+          If head or tail does not belong to the graph nodes.
+
+        """
         return _pyAgrum.MixedGraph_addArc(self, n1, n2)
 
     def eraseArc(self, n1, n2):
-        r"""eraseArc(MixedGraph self, gum::NodeId const n1, gum::NodeId const n2)"""
+        r"""
+        eraseArc(MixedGraph self, gum::NodeId const n1, gum::NodeId const n2)
+
+        Erase the arc between n1 and n2.
+
+        Parameters
+        ----------
+        n1 : int
+        	the id of the tail node
+        n2 : int
+        	the id of the head node
+
+        """
         return _pyAgrum.MixedGraph_eraseArc(self, n1, n2)
 
     def existsArc(self, n1, n2):
-        r"""existsArc(MixedGraph self, gum::NodeId const n1, gum::NodeId const n2) -> bool"""
+        r"""
+        existsArc(MixedGraph self, gum::NodeId const n1, gum::NodeId const n2) -> bool
+
+        Check if an arc exists bewteen n1 and n2.
+
+        Parameters
+        ----------
+        n1 : int
+        	the id of the tail node
+        n2 : int
+        	the id of the head node
+
+        Returns
+        -------
+        bool
+            True if the arc exists
+
+        """
         return _pyAgrum.MixedGraph_existsArc(self, n1, n2)
 
     def eraseParents(self, n):
-        r"""eraseParents(MixedGraph self, gum::NodeId const n)"""
+        r"""
+        eraseParents(MixedGraph self, gum::NodeId const n)
+
+        Erase the arcs coming to the node.
+
+        Parameters
+        ----------
+        n : int
+        	the id of the child node
+
+        """
         return _pyAgrum.MixedGraph_eraseParents(self, n)
 
     def eraseChildren(self, n):
-        r"""eraseChildren(MixedGraph self, gum::NodeId const n)"""
+        r"""
+        eraseChildren(MixedGraph self, gum::NodeId const n)
+
+        Erase the arcs heading through the node's children.
+
+        Parameters
+        ----------
+        n : int
+        	the id of the parent node
+
+        """
         return _pyAgrum.MixedGraph_eraseChildren(self, n)
 
     def sizeArcs(self):
-        r"""sizeArcs(MixedGraph self) -> gum::Size"""
+        r"""
+        sizeArcs(MixedGraph self) -> gum::Size
+
+        Returns
+        -------
+        int
+            the number of arcs in the graph
+
+        """
         return _pyAgrum.MixedGraph_sizeArcs(self)
 
     def emptyArcs(self):
-        r"""emptyArcs(MixedGraph self) -> bool"""
+        r"""
+        emptyArcs(MixedGraph self) -> bool
+
+        Check if the graph doesn't contains arcs.
+
+        Returns
+        -------
+        bool
+            True if the graph doesn't contains arcs
+
+        """
         return _pyAgrum.MixedGraph_emptyArcs(self)
 
 # Register MixedGraph in _pyAgrum:

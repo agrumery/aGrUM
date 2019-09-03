@@ -198,7 +198,9 @@ def _getProbaV(p, scale=1.0):
   ax = fig.add_subplot(111)
 
   bars = ax.bar(ra, p.tolist(), align='center')
-  labels = ["{:.1%}".format(bar.get_height()) if bar.get_height() != 0 else ""
+  # ".2%" for instance
+  label_format="{:."+str(int(gum.config['notebook','vertical_histogram_visible_digits']))+"%}"
+  labels = [label_format.format(bar.get_height()) if bar.get_height() != 0 else ""
             for bar in bars]
 
   ax.set_ylim(bottom=0, top=p.max())
@@ -233,8 +235,10 @@ def _getProbaH(p, scale=1.0):
 
   for bar in bars:
     if bar.get_width() != 0:
-      txt = "{:.1%}".format(bar.get_width())
-      ax.text(1, bar.get_y(), txt, ha='right', va='bottom')
+      # ".2%" for instance
+      label_format="{:."+str(int(gum.config['notebook','horizontal_histogram_visible_digits']))+"%}"
+      label = label_format.format(bar.get_width())
+      ax.text(1, bar.get_y(), label, ha='right', va='bottom')
 
   ax.set_xlim(0, 1)
   ax.set_yticks(np.arange(var.domainSize()))
