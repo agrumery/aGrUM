@@ -173,3 +173,81 @@ def _causalImpact(cm: CausalModel, on: NameSet,
   adj = adj.reorganize(lv) #margSumIn(lv).reorganize(lv)
   explain = "Do-calculus computations"
   return ar, adj, explain
+
+def counterfactual(bnModel: pyAgrum.causal.CausalModel, profile: Union[Dict[str, int], type(None)], on:  Union[str, Set[str]], doing:  Union[str, Set[str]], values: Union[Dict[str, int], type(None)] = None) -> pyAgrum.Potential:
+  """Determines the estimation of a counterfactual query following the the three steps algorithm from "The Book Of Why" (Pearl 2018) chapter 8 page 253.
+
+  Determines the estimation of the counterfactual query: Given the "profile" (dictionary <variable name>:<value>),what would variables in "on" (single or list of variables) be if variables in "doing" (single or list of variables) had been as specified in "values" (dictionary <variable name>:<value>)(optional).
+
+  This is done according to the following algorithm:
+      -Step 1: calculate the posterior probabilities of idiosyncratic nodes (parentless nodes - doing-latent variables) in the BN with which we created the causal model with  "profile" as evidence.
+      -Step 2 : We replace in the original BN the prior probabilities of idiosyncratic nodes with potentials calculated in step 1 (it will spread to the causal model)
+      -Step 3 : determine the causal impact of the interventions specified in  "doing" on the single or list of variables "on" in the causal model.
+
+  This function returns the potential calculated in step 3, representing the probability distribution of  "on" given the interventions  "doing", if it had been as specified in "values" (if "values" is omitted, every possible value of "doing")
+
+  :param bnModel: causal model
+  :param profile: Dictionary
+  :param on: variable name or variable names set
+  :param doing: variable name or variable names set
+  :param values: Dictionary
+  :type bnModel: pyAgrum.causal.CausalModel
+  :type profile: Union[Dict[str, int], type(None)]
+  :type on: Union[str, Set[str]]
+  :type doing: Union[str, Set[str]]
+  :type values: Union[Dict[str, int], type(None)]
+  :return: the computation
+  :rtype: pyAgrum.Potential
+  """
+
+  # Step 1 : calculate the posterior probabilities of idiosynatric nodes knowing the profil
+
+  # doing can be a string or a set of strings
+  if isinstance(doing, str):
+    idDoing = {doing}
+  else:
+    idDoing = doing
+  idDoing = set(map(bnModel.idFromName,idDoing))
+
+  # get nodes without parents in the causal model
+  parentless = set()
+  # nodes of the causal model
+  nodes = bnModel.names().keys()
+  for node in nodes:
+    # if nb parents is equal to zero => parentless node
+    if len(bnModel.parents(node)) == 0 :
+      parentless.add(node)
+
+  # idiosynatric factors (specific to and representative of the profile) are parentless - (doing+latent variables)
+  idiosyncratic = parentless.difference(idDoing)
+  idiosyncratic = idiosyncratic.difference(bnModel.latentVariablesIds())
+
+  # The original BN
+  bn = bnModel.observationalBN()
+  # calculate the posterior probability of each idiosynatric factor knowing the profil in the original BN
+  # posteriors will be a dict {factor : posterior probability knowing the profil}
+  posteriors = dict.fromkeys(idiosyncratic)
+  ie=gum.LazyPropagation(bn)
+  ie.setEvidence(profile)
+  ie.makeInference()
+  for factor in idiosyncratic:
+    posteriors[factor] = ie.posterior(factor)
+
+  # Step 2 : We replace the prior probabilities of idiosynatric nodes with potentials calculated in step 1 in the BN
+  # We create a safeguard of the bayesian network because we are going to modify
+  # the actual one so that th changes propagate to the causal model
+  saveBn = gum.BayesNet(bn)
+  for factor in idiosyncratic:
+    #twinBn.cpt(factor).fillWith(posteriors[factor])
+    bn.cpt(factor).fillWith(posteriors[factor].translate(0.00001).normalizeAsCPT())
+
+
+  # Step 3 : operate the intervention in the causal model
+  formula, adj, exp = csl.causalImpact(bnModel,on = on,doing = doing,values = values)
+  #cslnb.showCausalImpact(bnModel,on = on,doing=doing,values=values)
+
+  # We bring back the old CPTs
+  noeuds = saveBn.nodes()
+  for node in noeuds:
+    bn.cpt(node).fillWith(saveBn.cpt(node))
+  return(adj)
