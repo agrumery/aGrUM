@@ -521,10 +521,10 @@ class ASTjointProba(ASTtree):
       print(f"EVAL ${self._toLatex(defaultdict(int))}$ in context {context}", flush=True)
     ie = gum.LazyPropagation(contextual_bn)
     if len(self.varNames) > 1:
-      lvars = [name for name in self.varNames]
-      ie.addJointTarget(lvars)
+      svars = {name for name in self.varNames}
+      ie.addJointTarget(svars)
       ie.makeInference()
-      res = ie.jointPosterior(lvars)
+      res = ie.jointPosterior(svars)
     else:
       for name in self.varNames:
         break  # take the first and only one name in varNames
