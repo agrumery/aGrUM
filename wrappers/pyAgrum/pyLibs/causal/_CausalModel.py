@@ -46,6 +46,8 @@ class CausalModel:
                latentVarsDescriptor: LatentDescriptorList = None,
                keepArcs: bool = False):
     self.__observationalBN = bn
+    self.__latentVarsDescriptor = latentVarsDescriptor
+    self.__keepArcs = keepArcs
 
     if latentVarsDescriptor is None:
       latentVarsDescriptor = []
@@ -67,14 +69,22 @@ class CausalModel:
     for n, ls in latentVarsDescriptor:
       self.addLatentVariable(n, ls, keepArcs)
 
-    self.__names = {nId: self.__causalBN.variable(nId).name() for nId in self.__causalBN.nodes()}
+    self.__names = {nId: self.__causalBN.variable(
+        nId).name() for nId in self.__causalBN.nodes()}
+
+  def clone(self):
+    return CausalModel(gum.BayesNet(self.__observationalBN),
+                       self.__latentVarsDescriptor,
+                       self.__keepArcs)
 
   def addLatentVariable(self, name: str, ls: Tuple[str, str], keepArcs: bool):
-    id_latent = self.__causalBN.add(name, 2)  # simplest variable to add : only 2 modalities for latent variables
+    # simplest variable to add : only 2 modalities for latent variables
+    id_latent = self.__causalBN.add(name, 2)
     self.__lat.add(id_latent)
 
     for item in ls:
-      j = self.__observationalBN.idFromName(item) if isinstance(item, str) else item
+      j = self.__observationalBN.idFromName(
+          item) if isinstance(item, str) else item
       self.addCausalArc(id_latent, j)
 
     if not keepArcs:
