@@ -198,16 +198,25 @@ def _getProbaV(p, scale=1.0):
   ax = fig.add_subplot(111)
 
   bars = ax.bar(ra, p.tolist(), align='center')
-  # ".2%" for instance
-  label_format="{:."+str(int(gum.config['notebook','vertical_histogram_visible_digits']))+"%}"
-  labels = [label_format.format(bar.get_height()) if bar.get_height() != 0 else ""
-            for bar in bars]
+  ma = p.max()
+  
+  for bar in bars:
+    if bar.get_height() != 0:
+      # ".2%" for instance
+      txt_format="{:."+str(int(gum.config['notebook','vertical_histogram_visible_digits']))+"%}"
+      txt = txt_format.format(bar.get_height())
+      ax.text( bar.get_x(),ma,txt, ha='left', va='top', rotation='vertical')
+  
+  labels=[var.label(int(i)) for i in np.arange(var.domainSize())]
 
   ax.set_ylim(bottom=0, top=p.max())
   ax.set_xticks(ra)
   ax.set_xticklabels(labels, rotation='vertical')
   ax.set_title(_getTitleHisto(p))
   ax.get_yaxis().grid(True)
+  ax.margins(0)
+
+
   return fig
 
 
@@ -236,9 +245,9 @@ def _getProbaH(p, scale=1.0):
   for bar in bars:
     if bar.get_width() != 0:
       # ".2%" for instance
-      label_format="{:."+str(int(gum.config['notebook','horizontal_histogram_visible_digits']))+"%}"
-      label = label_format.format(bar.get_width())
-      ax.text(1, bar.get_y(), label, ha='right', va='bottom')
+      txt_format="{:."+str(int(gum.config['notebook','horizontal_histogram_visible_digits']))+"%}"
+      txt = txt_format.format(bar.get_width())
+      ax.text(1, bar.get_y(), txt, ha='right', va='bottom')
 
   ax.set_xlim(0, 1)
   ax.set_yticks(np.arange(var.domainSize()))
@@ -247,6 +256,8 @@ def _getProbaH(p, scale=1.0):
   # ax.set_xlabel('Probability')
   ax.set_title(_getTitleHisto(p))
   ax.get_xaxis().grid(True)
+  ax.margins(0)
+
   return fig
 
 
