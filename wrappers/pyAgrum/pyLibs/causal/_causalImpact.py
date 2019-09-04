@@ -182,40 +182,36 @@ def _causalImpact(cm: CausalModel, on: NameSet,
   return ar, adj, explain
 
 
-def counterfactual(cm: CausalModel, profile: Union[Dict[str, int], type(None)], on:  Union[str, Set[str]], doing:  Union[str, Set[str]], values: Union[Dict[str, int], type(None)] = None) -> gum.Potential:
-  """Determines the estimation of a counterfactual query following the the three steps algorithm from "The Book Of Why" (Pearl 2018) chapter 8 page 253.
-
-  Determines the estimation of the counterfactual query: Given the "profile" (dictionary <variable name>:<value>),what would variables in "on" (single or list of variables) be if variables in "doing" (single or list of variables) had been as specified in "values" (dictionary <variable name>:<value>)(optional).
+def counterfactualModel(cm: CausalModel, profile: Union[Dict[str, int], type(None)], on: Union[str, Set[str]], whatif: Union[str, Set[str]]) -> CausalModel:
+  """Determines the estimation of the twin model following the the three steps algorithm from "The Book Of Why" (Pearl 2018) chapter 8 page 253.
 
   This is done according to the following algorithm:
-      -Step 1: calculate the posterior probabilities of idiosyncratic nodes (parentless nodes - doing-latent variables) in the BN with which we created the causal model with  "profile" as evidence.
+      -Step 1: calculate the posterior probabilities of idiosyncratic nodes (parentless nodes - whatif-latent variables) in the BN with which we created the causal model with  "profile" as evidence.
       -Step 2 : We replace in the original BN the prior probabilities of idiosyncratic nodes with potentials calculated in step 1 (it will spread to the causal model)
-      -Step 3 : determine the causal impact of the interventions specified in  "doing" on the single or list of variables "on" in the causal model.
 
-  This function returns the potential calculated in step 3, representing the probability distribution of  "on" given the interventions  "doing", if it had been as specified in "values" (if "values" is omitted, every possible value of "doing")
+  This function returns the twin CausalModel
 
   :param cm: CausalModel
   :param profile: Dictionary
   :param on: variable name or variable names set
-  :param doing: variable name or variable names set
+  :param whatif: variable name or variable names set
   :param values: Dictionary
   :type cm: pyAgrum.causal.CausalModel
   :type profile: Union[Dict[str, int], type(None)]
   :type on: Union[str, Set[str]]
-  :type doing: Union[str, Set[str]]
-  :type values: Union[Dict[str, int], type(None)]
-  :return: the computation
-  :rtype: gum.Potential
+  :type whatif: Union[str, Set[str]]
+  :return: the 'twin' causalModel
+  :rtype: CausalModel
   """
 
-  # Step 1 : calculate the posterior probabilities of idiosynatric nodes knowing the profil
+  # Step 1 : calculate the posterior probabilities of idiosyncratic nodes knowing the profil
 
-  # doing can be a string or a set of strings
-  if isinstance(doing, str):
-    idDoing = {doing}
+  # whatif can be a string or a set of strings
+  if isinstance(whatif, str):
+    idWhatif = {whatif}
   else:
-    idDoing = doing
-  idDoing = set(map(cm.idFromName, idDoing))
+    idWhatif = whatif
+  idWhatif = set(map(cm.idFromName, idWhatif))
 
   # get nodes without parents in the causal model
   parentless = set()
@@ -226,13 +222,15 @@ def counterfactual(cm: CausalModel, profile: Union[Dict[str, int], type(None)], 
     if len(cm.parents(node)) == 0:
       parentless.add(node)
 
-  # idiosynatric factors (specific to and representative of the profile) are parentless - (doing+latent variables)
-  idiosyncratic = parentless.difference(idDoing)
+  # idiosyncratic factors (specific to and representative of the profile) are parentless - (whatif+latent variables)
+  idiosyncratic = parentless.difference(idWhatif)
   idiosyncratic = idiosyncratic.difference(cm.latentVariablesIds())
 
-  # The original BN
-  bn = cm.observationalBN()
-  # calculate the posterior probability of each idiosynatric factor knowing the profil in the original BN
+  # copying the causal model
+  twincm = cm.clone()
+  bn = twincm.observationalBN()
+
+  # calculate the posterior probability of each idiosyncratic factor knowing the profil in the original BN
   # posteriors will be a dict {factor : posterior probability knowing the profil}
   posteriors = dict.fromkeys(idiosyncratic)
   ie = gum.LazyPropagation(bn)
@@ -241,22 +239,52 @@ def counterfactual(cm: CausalModel, profile: Union[Dict[str, int], type(None)], 
   for factor in idiosyncratic:
     posteriors[factor] = ie.posterior(factor)
 
-  # Step 2 : We replace the prior probabilities of idiosynatric nodes with potentials calculated in step 1 in the BN
-  # We create a safeguard of the bayesian network because we are going to modify
-  # the actual one so that th changes propagate to the causal model
-  saveBn = gum.BayesNet(bn)
+  # Step 2 : We replace the prior probabilities of idiosyncratic nodes with potentials calculated in step 1 in the BN
+  # Saving the original CPTs of idiosyncratic variables
+  savers = dict.fromkeys(idiosyncratic)
   for factor in idiosyncratic:
-    # twinBn.cpt(factor).fillWith(posteriors[factor])
-    bn.cpt(factor).fillWith(
-        posteriors[factor].translate(0.00001).normalizeAsCPT())
+    bn.cpt(factor).fillWith(posteriors[factor])
+    # bn.cpt(factor).fillWith(
+    #    posteriors[factor].translate(0.00001).normalizeAsCPT())
 
-  # Step 3 : operate the intervention in the causal model
+  return twincm
+
+
+def counterfactual(cm: CausalModel, profile: Union[Dict[str, int], type(None)], on:  Union[str, Set[str]], whatif:  Union[str, Set[str]], values: Union[Dict[str, int], type(None)] = None) -> gum.Potential:
+  """Determines the estimation of a counterfactual query following the the three steps algorithm from "The Book Of Why" (Pearl 2018) chapter 8 page 253.
+
+  Determines the estimation of the counterfactual query: Given the "profile" (dictionary <variable name>:<value>),what would variables in "on" (single or list of variables) be if variables in "whatif" (single or list of variables) had been as specified in "values" (dictionary <variable name>:<value>)(optional).
+
+  This is done according to the following algorithm:
+      -Step 1-2: compute the twin causal model
+      -Step 3 : determine the causal impact of the interventions specified in  "whatif" on the single or list of variables "on" in the causal model.
+
+  This function returns the potential calculated in step 3, representing the probability distribution of  "on" given the interventions  "whatif", if it had been as specified in "values" (if "values" is omitted, every possible value of "whatif")
+
+  :param cm: CausalModel
+  :param profile: Dictionary
+  :param on: variable name or variable names set
+  :param whatif: variable name or variable names set
+  :param values: Dictionary
+  :type cm: pyAgrum.causal.CausalModel
+  :type profile: Union[Dict[str, int], type(None)]
+  :type on: Union[str, Set[str]]
+  :type whatif: Union[str, Set[str]]
+  :type values: Union[Dict[str, int], type(None)]
+  :return: the computation
+  :rtype: gum.Potential
+  """
+  # Step 1 and 2 : create the twin causal model
+  twincm = counterfactualModel(cm, profile, on, whatif)
+
+  # Step 3 : operate the intervention in the causal model based on bn
   formula, adj, exp = causalImpact(
-      cm, on=on, doing=doing, values=values)
-  #cslnb.showCausalImpact(cm,on = on,doing=doing,values=values)
+      twincm, on=on, doing=whatif, values=values)
+  #cslnb.showCausalImpact(cm,on = on,whatif=whatif,values=values)
 
-  # We bring back the old CPTs
-  noeuds = saveBn.nodes()
-  for node in noeuds:
-    bn.cpt(node).fillWith(saveBn.cpt(node))
-  return(adj)
+  # adj is using variables from twincm. We copy it in a Potential using variables of cm
+  res = gum.Potential()
+  for v in adj.var_names:
+    res.add(cm.observationalBN().variableFromName(v))
+  res.fillWith(adj)
+  return res

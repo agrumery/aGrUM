@@ -27,21 +27,22 @@ do-calculus the causal impact in such a model.
 
 __author__ = "Pierre-Henri Wuillemin, Paul Alam, Ibrahim Merad"
 __copyright__ = "(c) 2019 PARIS"
+from ._causalImpact import causalImpact, counterfactualModel, counterfactual
+from ._doAST import ASTtree, ASTjointProba, ASTmult, ASTdiv, ASTsum, ASTposteriorProba, ASTminus, ASTplus, ASTBinaryOp
+from ._doCalculus import doCalculusWithObservation, identifyingIntervention
+from ._CausalFormula import CausalFormula
+from ._CausalModel import CausalModel
+from ._exceptions import HedgeException, UnidentifiableException
 import sys
 
 if sys.version_info < (3, 7):
   print("[pyAgrum] python 3.7 is needed for pyAgrum's causality package.")
   sys.exit(1)
 
-from ._exceptions import HedgeException, UnidentifiableException
-from ._CausalModel import CausalModel
-from ._CausalFormula import CausalFormula
-from ._doCalculus import doCalculusWithObservation, identifyingIntervention
-from ._causalImpact import causalImpact,counterfactual
-from ._doAST import ASTtree, ASTjointProba, ASTmult, ASTdiv, ASTsum, ASTposteriorProba, ASTminus, ASTplus, ASTBinaryOp
 
 __all__ = ['CausalModel', 'CausalFormula',
-           'causalImpact', 'counterfactual', 'doCalculusWithObservation', 'identifyingIntervention',
+           'causalImpact', 'counterfactualModel', 'counterfactual',
+           'doCalculusWithObservation', 'identifyingIntervention',
            'HedgeException', 'UnidentifiableException',
            'ASTtree', 'ASTjointProba', 'ASTmult', 'ASTdiv', 'ASTsum', 'ASTposteriorProba', 'ASTminus', 'ASTplus',
            'ASTBinaryOp']
