@@ -3,3 +3,4 @@ pydotplus
 numpy
 pandas
 tqdm
+configparser
