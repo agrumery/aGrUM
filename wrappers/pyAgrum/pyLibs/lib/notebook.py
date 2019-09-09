@@ -623,7 +623,7 @@ def showInference(bn, engine=None, evs=None, targets=None, size=None,  nodeColor
   :return: the desired representation of the inference
   """
   if size is None:
-    size = gum.config["notebook", "default_graph_size"]
+    size = gum.config["notebook", "default_graph_inference_size"]
 
   if evs is None:
     evs = {}
@@ -651,7 +651,7 @@ def getInference(bn, engine=None, evs=None, targets=None, size=None,  nodeColor=
   :return: the desired representation of the inference
   """
   if size is None:
-    size = gum.config["notebook", "default_graph_size"]
+    size = gum.config["notebook", "default_graph_inference_size"]
 
   if evs is None:
     evs = {}
