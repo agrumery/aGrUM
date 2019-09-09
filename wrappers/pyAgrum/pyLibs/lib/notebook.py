@@ -363,6 +363,8 @@ def showProba(p, scale=1.0):
   :return:
   """
   fig = proba2histo(p, scale)
+  fig.patch.set_facecolor('white')
+  IPython.display.set_matplotlib_formats(gum.config["notebook", "graph_format"])
   plt.show()
 
 
