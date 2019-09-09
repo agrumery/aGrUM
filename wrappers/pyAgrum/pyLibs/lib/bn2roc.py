@@ -35,7 +35,7 @@ try:
   from ._utils.progress_bar import ProgressBar
 except ModuleNotFoundError:
   from _utils.progress_bar import ProgressBar
-   
+
 try:
   from ._utils.pyAgrum_header import pyAgrum_header
 except ModuleNotFoundError:
@@ -55,7 +55,8 @@ def _lines_count(filename):
     the number of lines in the file
   """
   numlines = 0
-  for line in open(filename): numlines += 1
+  for line in open(filename):
+    numlines += 1
 
   return numlines
 
@@ -116,7 +117,7 @@ def _computeAUC(points):
   return somme
 
 
-def __computeROCpoints(bn, csv_name, target, label, visible=False,with_labels=True):
+def __computeROCpoints(bn, csv_name, target, label, visible=False, with_labels=True):
   """
   Compute the ROC curve points.
 
@@ -140,15 +141,15 @@ def __computeROCpoints(bn, csv_name, target, label, visible=False,with_labels=Tr
 
   """
   idTarget = bn.idFromName(target)
-  label=str(label)
+  label = str(label)
 
   if not with_labels:
-      idLabel = -1
-      for i in range(bn.variable(idTarget).domainSize()):
-        if bn.variable(idTarget).label(i) == label:
-          idLabel = i
-          break;
-      assert (idLabel >= 0)
+    idLabel = -1
+    for i in range(bn.variable(idTarget).domainSize()):
+      if bn.variable(idTarget).label(i) == label:
+        idLabel = i
+        break
+    assert (idLabel >= 0)
 
   engine = gum.LazyPropagation(bn)
 
@@ -176,7 +177,8 @@ def __computeROCpoints(bn, csv_name, target, label, visible=False,with_labels=Tr
     sys.exit(1)
 
   if visible:
-    prog = ProgressBar(csv_name + ' : ', 0, nbr_lines, 77, mode='static', char='#')
+    prog = ProgressBar(csv_name + ' : ', 0, nbr_lines,
+                       77, mode='static', char='#')
     prog.display()
 
   totalP = 0
@@ -184,7 +186,7 @@ def __computeROCpoints(bn, csv_name, target, label, visible=False,with_labels=Tr
   res = []
   for data in batchReader:
     if with_labels:
-      if str(data[positions[idTarget]])==label:
+      if str(data[positions[idTarget]]) == label:
         totalP += 1
       else:
         totalN += 1
@@ -200,9 +202,10 @@ def __computeROCpoints(bn, csv_name, target, label, visible=False,with_labels=Tr
     for var in bn.names():
       if not var.__eq__(target):
         if with_labels:
-            e[var] = str(data[positions[bn.idFromName(var)]])
+          e[var] = str(data[positions[bn.idFromName(var)]])
         else:
-            e[var] = bn.variableFromName(var).label(int(data[positions[bn.idFromName(var)]]))
+          e[var] = bn.variableFromName(var).label(
+              int(data[positions[bn.idFromName(var)]]))
 
     try:
       engine.setEvidence(e)
@@ -224,7 +227,7 @@ def __computeROCpoints(bn, csv_name, target, label, visible=False,with_labels=Tr
     print
 
   if with_labels:
-    return (res,totalP,totalN,label)
+    return (res, totalP, totalN, label)
   else:
     return (res, totalP, totalN, idLabel)
 
@@ -291,7 +294,8 @@ def module_help(exit_value=1, message=""):
   """
   defines help viewed if args are not OK on command line, and exit with exit_value
   """
-  print(os.path.basename(sys.argv[0]), "src.{" + gum.availableBNExts() + "} data[.csv] variable label")
+  print(os.path.basename(
+      sys.argv[0]), "src.{" + gum.availableBNExts() + "} data[.csv] variable label")
   print()
   print(message)
   print()
@@ -299,7 +303,7 @@ def module_help(exit_value=1, message=""):
 
 
 def _drawROC(points, zeTitle, zeFilename, visible, show_fig, save_fig=True,
-            special_point=None, special_value=None, special_label=None):
+             special_point=None, special_value=None, special_label=None):
   """
   Draw the ROC curve and save (or not) the curve into zeFilename as a png
 
@@ -329,8 +333,10 @@ def _drawROC(points, zeTitle, zeFilename, visible, show_fig, save_fig=True,
   pylab.clf()
   pylab.grid(color='#aaaaaa', linestyle='-', linewidth=1, alpha=0.5)
 
-  pylab.plot([x[0] for x in points], [y[1] for y in points], '-', linewidth=3, color="#000088", zorder=3)
-  pylab.fill_between([x[0] for x in points], [y[1] for y in points], 0, color='0.9')
+  pylab.plot([x[0] for x in points], [y[1] for y in points], '-',
+             linewidth=3, color=gum.config["ROC", "draw_color"], zorder=3)
+  pylab.fill_between([x[0] for x in points],
+                     [y[1] for y in points], 0, color=gum.config["ROC", "fill_color"])
   pylab.plot([0.0, 1.0], [0.0, 1.0], '-', color="#AAAAAA")
 
   pylab.ylim((-0.01, 1.01))
@@ -340,7 +346,8 @@ def _drawROC(points, zeTitle, zeFilename, visible, show_fig, save_fig=True,
   pylab.grid(True)
 
   ax = pylab.gca()
-  r = pylab.Rectangle((0, 0), 1, 1, edgecolor='#444444', facecolor='none', zorder=1)
+  r = pylab.Rectangle((0, 0), 1, 1, edgecolor='#444444',
+                      facecolor='none', zorder=1)
   ax.add_patch(r)
   [spine.set_visible(False) for spine in ax.spines.values()]
 
@@ -352,7 +359,8 @@ def _drawROC(points, zeTitle, zeFilename, visible, show_fig, save_fig=True,
   pylab.ylabel('True positive rate')
 
   if special_point is not None:
-    pylab.plot(special_point[0], special_point[1], 'o', color="#DD9999", zorder=6)
+    pylab.plot(special_point[0], special_point[1],
+               'o', color="#DD9999", zorder=6)
     if special_value is not None:
       pylab.text(special_point[0] + 0.01, special_point[1] - 0.01, special_value,
                  {'color': '#DD5555', 'fontsize': 10},
@@ -383,7 +391,7 @@ def _drawROC(points, zeTitle, zeFilename, visible, show_fig, save_fig=True,
     pylab.show()
 
 
-def showROC(bn, csv_name, variable, label, visible=True, show_fig=False,with_labels=True):
+def showROC(bn, csv_name, variable, label, visible=True, show_fig=False, with_labels=True):
   """
   Compute the ROC curve and save the result in the folder of the csv file.
 
@@ -401,7 +409,8 @@ def showROC(bn, csv_name, variable, label, visible=True, show_fig=False,with_lab
     indicates if the resulting curve must be printed
 
   """
-  (res, totalP, totalN, idTarget) = __computeROCpoints(bn, csv_name, variable, label, visible,with_labels)
+  (res, totalP, totalN, idTarget) = __computeROCpoints(
+      bn, csv_name, variable, label, visible, with_labels)
   points, opt, seuil = _computeROC(bn, res, totalP, totalN, idTarget, label)
 
   try:
@@ -411,9 +420,11 @@ def showROC(bn, csv_name, variable, label, visible=True, show_fig=False,with_lab
 
   title = shortname + " vs " + csv_name + " - " + variable + "=" + str(label)
 
-  figname = csv_name + "-" +'ROC_' + shortname + "-" +  variable + "-" + str(label) + '.png'
+  figname = csv_name + "-" + 'ROC_' + shortname + \
+      "-" + variable + "-" + str(label) + '.png'
 
-  _drawROC(points, title, figname, not visible, show_fig, special_point=opt, special_value=seuil)
+  _drawROC(points, title, figname, not visible, show_fig,
+           special_point=opt, special_value=seuil)
 
 
 def _checkROCargs():
@@ -436,7 +447,8 @@ def _checkROCargs():
     module_help(message=" Variables : " + str(bn.names()))
   else:
     if variable not in bn.names():
-      module_help(message=" Variable '" + variable + "'not found.\n Variables : " + str(bn.names()))
+      module_help(message=" Variable '" + variable +
+                  "'not found.\n Variables : " + str(bn.names()))
 
     if label.__eq__(""):
       module_help(message=" Labels : " + str(bn.variableFromName(variable)))
@@ -444,7 +456,8 @@ def _checkROCargs():
       try:
         bn.variableFromName(variable)[label]
       except gum.OutOfBounds:
-        module_help(message=" Label '" + label + "' not found.\n Labels : " + str(bn.variableFromName(variable)))
+        module_help(message=" Label '" + label +
+                    "' not found.\n Labels : " + str(bn.variableFromName(variable)))
 
   return (bn, csv_name, variable, label)
 

@@ -363,7 +363,7 @@ def showProba(p, scale=1.0):
   :return:
   """
   fig = proba2histo(p, scale)
-  fig.patch.set_facecolor('white')
+  fig.patch.set_facecolor(gum.config["notebook", "figure_facecolor"])
   IPython.display.set_matplotlib_formats(gum.config["notebook", "graph_format"])
   plt.show()
 
@@ -956,4 +956,5 @@ gum.EssentialGraph._repr_html_ = lambda self: getDot(self.toDot())
 gum.MarkovBlanket._repr_html_ = lambda self: getDot(self.toDot())
 
 
-IPython.display.set_matplotlib_formats('svg')
+mpl.rcParams['figure.facecolor'] = gum.config["notebook", "figure_facecolor"]
+IPython.display.set_matplotlib_formats(gum.config["notebook", "graph_format"])
