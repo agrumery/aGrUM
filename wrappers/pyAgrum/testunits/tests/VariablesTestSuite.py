@@ -29,7 +29,8 @@ class TestDiscreteVariable(VariablesTestCase):
     self.assertEqual(v.labels(), ("0", "1"))
     self.assertNotEqual(v.labels(), ("1", "0"))
 
-    v = gum.LabelizedVariable("b", "b", 0).addLabel("toto").addLabel("titi").addLabel("yes")
+    v = gum.LabelizedVariable("b", "b", 0).addLabel(
+        "toto").addLabel("titi").addLabel("yes")
     self.assertEqual(v.labels(), ("toto", "titi", "yes"))
 
     v = gum.RangeVariable("c", "c", 0, 5)
@@ -38,7 +39,8 @@ class TestDiscreteVariable(VariablesTestCase):
     v = gum.RangeVariable("d", "d", 3, 5)
     self.assertEqual(v.labels(), ("3", "4", "5"))
 
-    v = gum.DiscretizedVariable("e", "e").addTick(1).addTick(2).addTick(3).addTick(4)
+    v = gum.DiscretizedVariable("e", "e").addTick(
+        1).addTick(2).addTick(3).addTick(4)
     self.assertEqual(v.labels(), ("[1;2[", "[2;3[", "[3;4]"))
 
     v = gum.DiscretizedVariable("f", "f", [1, 5, 2, 4])
@@ -50,17 +52,18 @@ class TestLabelizedVariable(VariablesTestCase):
     var = gum.LabelizedVariable(self.varL1)
 
   def testPythonListComprehension(self):
-    c, s, r, w = [gum.LabelizedVariable(name, name, 2) \
+    c, s, r, w = [gum.LabelizedVariable(name, name, 2)
                   for name in 'c s r w'.split()]
     for var, name in zip([c, s, r, w], 'c s r w'.split()):
       self.assertEqual(var.name(), name)
       self.assertEqual(var.description(), name)
       self.assertEqual(var.domainSize(), 2)
+    self.assertEqual(var.varType(), gum.VarType_Labelized)
 
   def testLabels(self):
     gum.LabelizedVariable('a', '', 0).addLabel('a1').addLabel('a2') \
-      .addLabel('a3').addLabel('a4') \
-      .addLabel('a5').addLabel('a6')
+        .addLabel('a3').addLabel('a4') \
+        .addLabel('a5').addLabel('a6')
     self.assertEqual(self.varL2.domainSize(), 5)
     self.varL1.addLabel("coucou")
     self.varL1.addLabel("super")
@@ -77,6 +80,8 @@ class TestLabelizedVariable(VariablesTestCase):
 class TestRangeVariable(VariablesTestCase):
   def testCopyConstructor(self):
     var1 = gum.RangeVariable("var 1", "this is var 1")
+    self.assertEqual(var1.varType(), gum.VarType_Range)
+
     var2 = gum.RangeVariable("var 2", "this is var 2", 1, 4)
 
     var3 = gum.RangeVariable(var1)
@@ -110,7 +115,9 @@ class TestRangeVariable(VariablesTestCase):
 
 class TestDiscretizedVariable(VariablesTestCase):
   def testAddTicks(self):
-    gum.DiscretizedVariable('a', '').addTick(0.5).addTick(5.9).addTick(5.99).addTick(0.1).addTick(0.23).addTick(12)
+    v = gum.DiscretizedVariable('a', '').addTick(0.5).addTick(
+        5.9).addTick(5.99).addTick(0.1).addTick(0.23).addTick(12)
+    self.assertEqual(v.varType(), gum.VarType_Discretized)
 
     var = gum.DiscretizedVariable("var", "test var")
 
@@ -152,7 +159,7 @@ class TestDiscretizedVariable(VariablesTestCase):
     def _testOrderTicks(i, j, k, l, m, n):
       var = gum.DiscretizedVariable("var", "test var")
       var.addTick(i).addTick(j).addTick(k).addTick(l).addTick(m).addTick(n)
-      self.assertEqual(var.domainSize(), 5);
+      self.assertEqual(var.domainSize(), 5)
       self.assertEqual(str(var), "var<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>")
 
     for i in range(1, 7):

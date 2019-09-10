@@ -8381,6 +8381,7 @@ class Potential(object):
               self.set(I,v)
         I.incNotVar(self.variable(0))
       self.normalizeAsCPT()
+      return self
 
     def variablesSequence(self):
         """
