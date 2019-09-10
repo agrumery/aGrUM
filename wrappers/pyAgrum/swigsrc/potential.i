@@ -175,11 +175,48 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
 
   %pythoncode {
     def fillWithFunction(self,s,noise=None):
+      """
+      Automatically fills the potential as a (quasi) deterministic CPT with the evaluation of the expression s.
+
+      The expression s gives a value for the first variable using the names of the last variables.
+      The computed CPT is deterministic unless noise is used to add a 'probabilistic' noise around the exact value given by the expression.
+
+
+      Examples
+      --------
+      >>> import pyAgrum as gum
+      >>> bn=gum.fastBN("A[3]->B[3]<-C[3]")
+      >>> bn.cpt("B").fillWithFunction("(A+C)/2")
+
+      Parameters
+      ----------
+      s : str
+          an expression using the name of the last variables of the Potential and giving a value to the first variable of the Potential
+      noise : list
+          an (odd) list of numerics giving a pattern of 'probabilistic noise' around the value.
+
+      Warning
+      -------
+          The expression may have any numerical values, but will be then transformed to the closest correct value for the range of the variable.
+
+      Returns
+      -------
+      pyAgrum.Potential
+            a reference to the modified potential
+
+      Raises
+      ------
+      gum.InvalidArgument
+        If the first variable is Labelized or if the len of the noise is not odd.
+      """
+      if self.variable(0).varType()==VarType_Labelized:
+        raise InvalidArgument("[pyAgrum] The variable "+self.variable(0).name()+" is a LabelizedVariable")
+
       if noise==None:
         mid=0
       else:
         if len(noise)%2==0:
-          raise SyntaxError("len(noise) must not be even")
+          raise InvalidArgument("[pyAgrum] len(noise) must not be even")
         mid=int((len(noise)-1)/2)
 
       self.fillWith(0)
@@ -207,6 +244,7 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
               self.set(I,v)
         I.incNotVar(self.variable(0))
       self.normalizeAsCPT()
+      return self
 
     def variablesSequence(self):
         """
