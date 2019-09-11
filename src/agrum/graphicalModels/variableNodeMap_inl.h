@@ -79,7 +79,8 @@ namespace gum {
   INLINE
   NodeId VariableNodeMap::insert(NodeId id, const DiscreteVariable& var) {
     if (__names2nodes.existsFirst(var.name())) {
-      GUM_ERROR(DuplicateLabel, "Unable to insert var with this name.");
+      GUM_ERROR(DuplicateLabel,
+                "Unable to insert var with the name '" << var.name() << "'.");
     }
 
     if (exists(id)) {
@@ -126,7 +127,8 @@ namespace gum {
   INLINE
   void VariableNodeMap::changeName(NodeId id, const std::string& new_name) {
     if (__names2nodes.existsFirst(new_name)) {
-      GUM_ERROR(DuplicateLabel, "Unable to insert var with this name.");
+      GUM_ERROR(DuplicateLabel,
+                "Unable to insert var with the name '" << new_name << "'.");
     }
 
     DiscreteVariable* var =

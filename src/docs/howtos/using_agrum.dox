@@ -11,12 +11,26 @@
  * \code{.cmake}
 project(FOO)
 cmake_minimum_required(VERSION 2.8)
+# classical options 
+# -DCMAKE_BUILD_TYPE=Debug|Release 
+# -G "MinGW Makefiles" 
+
+# cmake -DCMAKE_BUILD_TYPE=Debug
+# or
+# cmake -DCMAKE_BUILD_TYPE=Release
+#     Release is the default option (thanks to the next lines)
 
 set (CMAKE_CXX_STANDARD 14)
 
+find_package(OpenMP)
+if (OPENMP_FOUND)
+  set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+  set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+endif()
+
 # do not forget to change this line if needed ("act install -d/folder/install/agrum.")
 set(AGRUM_INSTALLATION_DIRECTORY "/folder/install/agrum")
-
 
 set(aGrUM_DIR "${AGRUM_INSTALLATION_DIRECTORY}/lib/cmake/aGrUM/")
 find_package(aGrUM)

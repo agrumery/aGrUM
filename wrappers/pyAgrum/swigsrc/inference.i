@@ -17,8 +17,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
- 
- %define IMPROVE_INFERENCE_API(classname...)
+
+%define IMPROVE_INFERENCE_API(classname...)
 %feature("shadow") gum::classname::setEvidence %{
 def setEvidence(self, evidces):
     """

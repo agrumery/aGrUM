@@ -42,19 +42,15 @@ def about():
     """)
 
 def availableBNExts():
-    """
+    """ Give the list of all formats known by pyAgrum to save a Bayesian network.
+    
     :return: a string which lists all suffixes for supported BN file formats.
     """
     return "bif|dsl|net|bifxml|o3prm|uai"
 
-def availableWriteBNExts():
-    """
-    :return: a string which lists all suffixes for supported output BN file formats.
-    """
-    return "bif|dsl|net|bifxml|o3prm|uai"
-
 def loadBN(filename,listeners=None,verbose=False,**opts):
-    """
+    """load a file with optional listeners and arguments
+    
     :param filename: the name of the input file
     :param listeners: list of functions to execute
     :param verbose: whether to print or not warning messages
@@ -117,6 +113,9 @@ def loadBN(filename,listeners=None,verbose=False,**opts):
 def saveBN(bn,filename):
     """
     save a BN into a file using the format corresponding to one of the availableWriteBNExts() suffixes.
+
+    :parma bn(gum.BayesNet): the BN to save
+    :param filename(str): the name of the output file
     """
     extension=filename.split('.')[-1].upper()
     if extension=="BIF":
@@ -132,7 +131,7 @@ def saveBN(bn,filename):
     elif extension=="O3PRM":
         bn.saveO3PRM(filename)
     else:
-        raise Exception("extension "+filename.split('.')[-1]+" unknown. Please use "+availableWriteBNExts())
+        raise gum.InvalidArgument("[pyAgrum] extension "+filename.split('.')[-1]+" unknown. Please use "+availableWriteBNExts())
 
 
 
