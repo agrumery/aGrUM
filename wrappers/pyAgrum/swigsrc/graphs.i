@@ -18,7 +18,8 @@
  *
  */
  
- %define ADD_CST_NODES_METHOD_TO_GRAPHCLASS(classname)
+
+%define ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(classname)
 %extend classname {
   PyObject *nodes() const {
     return PyAgrumHelper::PySetFromNodeSet(self->nodes());
@@ -30,16 +31,70 @@
 
     return q;
   };
-};
-%enddef
 
-ADD_CST_NODES_METHOD_TO_GRAPHCLASS(gum::DiGraph); // add for the sub-classes (including MixedGraph)
-ADD_CST_NODES_METHOD_TO_GRAPHCLASS(gum::UndiGraph);
-ADD_CST_NODES_METHOD_TO_GRAPHCLASS(gum::EssentialGraph);
+%pythoncode {
+  def connexComponents(graph):
+    """ Connex components from a graph/BN
+    
+    Compute the connex components of a pyAgrum's graph or Bayesian Network
+    (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
+
+    The firstly visited node for each component is called a 'root' and is used as a key for the component.
+    This root has been arbitrarily chosen during the algorithm.
+    
+    Parameters
+    ----------
+    graph : pyAgrum's graph 
+        A graph, a Bayesian network, more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods in which the search will take place
+        
+    Returns
+    -------
+    dict(int,Set[int])
+      dict of connex compoents (as set of nodeIds (int)) with a nodeId (root) of each component as key.
+      
+    """
+    nodes=graph.nodes()
+    connex_components=dict()
+
+    def parcours(node,orig):
+        cc={node}
+        nodes.discard(node)
+        if hasattr(graph,'children'):
+            for chi in graph.children(node):
+                if chi!=orig:
+                    if chi in nodes:
+                        cc|=parcours(chi,node)
+                        
+        if hasattr(graph,'parents'):
+            for par in graph.parents(node):
+                if par!=orig:
+                    if par in nodes:
+                        cc|=parcours(par,node)
+                                    
+        if hasattr(graph,'neighbours'):
+            for nei in graph.neighbours(node):
+                if nei!=orig:
+                    if nei in nodes:
+                        cc|=parcours(nei,node)
+        return cc       
+
+    while (len(nodes)>0):
+        root=nodes.pop()
+        connex_components[root]=parcours(root,None)
+    return connex_components
+}
+
+};
+%enddef // ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS
+
+ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::DiGraph); // add for the sub-classes (including MixedGraph)
+ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::UndiGraph);
+ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::EssentialGraph);
+ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::MarkovBlanket);
+ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::IBayesNet);
+
 %ignore gum::EssentialGraph::nodes const;
-ADD_CST_NODES_METHOD_TO_GRAPHCLASS(gum::MarkovBlanket);
 %ignore gum::MarkovBlanket::nodes const;
-ADD_CST_NODES_METHOD_TO_GRAPHCLASS(gum::IBayesNet);
 
 %define ADD_NODES_METHOD_TO_GRAPHCLASS(classname)
 %ignore classname::addNodes(gum::Size n);

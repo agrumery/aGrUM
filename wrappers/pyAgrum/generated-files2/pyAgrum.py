@@ -3934,6 +3934,57 @@ class UndiGraph(object):
         """
         return _pyAgrum.UndiGraph_nodes(self)
 
+    def connexComponents(graph):
+      """ Connex components from a graph/BN
+
+      Compute the connex components of a pyAgrum's graph or Bayesian Network
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
+
+      The firstly visited node for each component is called a 'root' and is used as a key for the component.
+      This root has been arbitrarily chosen during the algorithm.
+
+      Parameters
+      ----------
+      graph : pyAgrum's graph 
+          A graph, a Bayesian network, more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods in which the search will take place
+
+      Returns
+      -------
+      dict(int,Set[int])
+        dict of connex compoents (as set of nodeIds (int)) with a nodeId (root) of each component as key.
+
+      """
+      nodes=graph.nodes()
+      connex_components=dict()
+
+      def parcours(node,orig):
+          cc={node}
+          nodes.discard(node)
+          if hasattr(graph,'children'):
+              for chi in graph.children(node):
+                  if chi!=orig:
+                      if chi in nodes:
+                          cc|=parcours(chi,node)
+
+          if hasattr(graph,'parents'):
+              for par in graph.parents(node):
+                  if par!=orig:
+                      if par in nodes:
+                          cc|=parcours(par,node)
+
+          if hasattr(graph,'neighbours'):
+              for nei in graph.neighbours(node):
+                  if nei!=orig:
+                      if nei in nodes:
+                          cc|=parcours(nei,node)
+          return cc       
+
+      while (len(nodes)>0):
+          root=nodes.pop()
+          connex_components[root]=parcours(root,None)
+      return connex_components
+
+
     def addNodes(self, n):
         r"""
         addNodes(UndiGraph self, gum::Size n) -> PyObject *
@@ -4283,6 +4334,57 @@ class DiGraph(object):
 
         """
         return _pyAgrum.DiGraph_nodes(self)
+
+    def connexComponents(graph):
+      """ Connex components from a graph/BN
+
+      Compute the connex components of a pyAgrum's graph or Bayesian Network
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
+
+      The firstly visited node for each component is called a 'root' and is used as a key for the component.
+      This root has been arbitrarily chosen during the algorithm.
+
+      Parameters
+      ----------
+      graph : pyAgrum's graph 
+          A graph, a Bayesian network, more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods in which the search will take place
+
+      Returns
+      -------
+      dict(int,Set[int])
+        dict of connex compoents (as set of nodeIds (int)) with a nodeId (root) of each component as key.
+
+      """
+      nodes=graph.nodes()
+      connex_components=dict()
+
+      def parcours(node,orig):
+          cc={node}
+          nodes.discard(node)
+          if hasattr(graph,'children'):
+              for chi in graph.children(node):
+                  if chi!=orig:
+                      if chi in nodes:
+                          cc|=parcours(chi,node)
+
+          if hasattr(graph,'parents'):
+              for par in graph.parents(node):
+                  if par!=orig:
+                      if par in nodes:
+                          cc|=parcours(par,node)
+
+          if hasattr(graph,'neighbours'):
+              for nei in graph.neighbours(node):
+                  if nei!=orig:
+                      if nei in nodes:
+                          cc|=parcours(nei,node)
+          return cc       
+
+      while (len(nodes)>0):
+          root=nodes.pop()
+          connex_components[root]=parcours(root,None)
+      return connex_components
+
 
     def addNodes(self, n):
         r"""
@@ -6506,6 +6608,57 @@ class EssentialGraph(object):
         r"""nodes(EssentialGraph self) -> PyObject *"""
         return _pyAgrum.EssentialGraph_nodes(self)
 
+    def connexComponents(graph):
+      """ Connex components from a graph/BN
+
+      Compute the connex components of a pyAgrum's graph or Bayesian Network
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
+
+      The firstly visited node for each component is called a 'root' and is used as a key for the component.
+      This root has been arbitrarily chosen during the algorithm.
+
+      Parameters
+      ----------
+      graph : pyAgrum's graph 
+          A graph, a Bayesian network, more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods in which the search will take place
+
+      Returns
+      -------
+      dict(int,Set[int])
+        dict of connex compoents (as set of nodeIds (int)) with a nodeId (root) of each component as key.
+
+      """
+      nodes=graph.nodes()
+      connex_components=dict()
+
+      def parcours(node,orig):
+          cc={node}
+          nodes.discard(node)
+          if hasattr(graph,'children'):
+              for chi in graph.children(node):
+                  if chi!=orig:
+                      if chi in nodes:
+                          cc|=parcours(chi,node)
+
+          if hasattr(graph,'parents'):
+              for par in graph.parents(node):
+                  if par!=orig:
+                      if par in nodes:
+                          cc|=parcours(par,node)
+
+          if hasattr(graph,'neighbours'):
+              for nei in graph.neighbours(node):
+                  if nei!=orig:
+                      if nei in nodes:
+                          cc|=parcours(nei,node)
+          return cc       
+
+      while (len(nodes)>0):
+          root=nodes.pop()
+          connex_components[root]=parcours(root,None)
+      return connex_components
+
+
     def arcs(self):
         r"""
         arcs(EssentialGraph self) -> PyObject *
@@ -6686,6 +6839,57 @@ class MarkovBlanket(object):
 
         """
         return _pyAgrum.MarkovBlanket_nodes(self)
+
+    def connexComponents(graph):
+      """ Connex components from a graph/BN
+
+      Compute the connex components of a pyAgrum's graph or Bayesian Network
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
+
+      The firstly visited node for each component is called a 'root' and is used as a key for the component.
+      This root has been arbitrarily chosen during the algorithm.
+
+      Parameters
+      ----------
+      graph : pyAgrum's graph 
+          A graph, a Bayesian network, more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods in which the search will take place
+
+      Returns
+      -------
+      dict(int,Set[int])
+        dict of connex compoents (as set of nodeIds (int)) with a nodeId (root) of each component as key.
+
+      """
+      nodes=graph.nodes()
+      connex_components=dict()
+
+      def parcours(node,orig):
+          cc={node}
+          nodes.discard(node)
+          if hasattr(graph,'children'):
+              for chi in graph.children(node):
+                  if chi!=orig:
+                      if chi in nodes:
+                          cc|=parcours(chi,node)
+
+          if hasattr(graph,'parents'):
+              for par in graph.parents(node):
+                  if par!=orig:
+                      if par in nodes:
+                          cc|=parcours(par,node)
+
+          if hasattr(graph,'neighbours'):
+              for nei in graph.neighbours(node):
+                  if nei!=orig:
+                      if nei in nodes:
+                          cc|=parcours(nei,node)
+          return cc       
+
+      while (len(nodes)>0):
+          root=nodes.pop()
+          connex_components[root]=parcours(root,None)
+      return connex_components
+
 
     def arcs(self):
         r"""
@@ -9039,6 +9243,57 @@ class IBayesNet(DAGmodel):
 
         """
         return _pyAgrum.IBayesNet_nodes(self)
+
+    def connexComponents(graph):
+      """ Connex components from a graph/BN
+
+      Compute the connex components of a pyAgrum's graph or Bayesian Network
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
+
+      The firstly visited node for each component is called a 'root' and is used as a key for the component.
+      This root has been arbitrarily chosen during the algorithm.
+
+      Parameters
+      ----------
+      graph : pyAgrum's graph 
+          A graph, a Bayesian network, more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods in which the search will take place
+
+      Returns
+      -------
+      dict(int,Set[int])
+        dict of connex compoents (as set of nodeIds (int)) with a nodeId (root) of each component as key.
+
+      """
+      nodes=graph.nodes()
+      connex_components=dict()
+
+      def parcours(node,orig):
+          cc={node}
+          nodes.discard(node)
+          if hasattr(graph,'children'):
+              for chi in graph.children(node):
+                  if chi!=orig:
+                      if chi in nodes:
+                          cc|=parcours(chi,node)
+
+          if hasattr(graph,'parents'):
+              for par in graph.parents(node):
+                  if par!=orig:
+                      if par in nodes:
+                          cc|=parcours(par,node)
+
+          if hasattr(graph,'neighbours'):
+              for nei in graph.neighbours(node):
+                  if nei!=orig:
+                      if nei in nodes:
+                          cc|=parcours(nei,node)
+          return cc       
+
+      while (len(nodes)>0):
+          root=nodes.pop()
+          connex_components[root]=parcours(root,None)
+      return connex_components
+
 
     def names(self):
         r"""
