@@ -62,7 +62,18 @@
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,*self);
     return PyAgrumHelper::PySetFromNodeSet(self->minimalCondSet(sotargets, soids));
   };
+
+  PyObject *parents(PyObject* n) {
+    gum::NodeId nid=PyAgrumHelper::nodeIdFromNameOrIndex(n,*self);
+    return PyAgrumHelper::PySetFromNodeSet(self->parents(nid));
+  };
+  PyObject *childrens(PyObject* n) {
+    gum::NodeId nid=PyAgrumHelper::nodeIdFromNameOrIndex(n,*self);
+    return PyAgrumHelper::PySetFromNodeSet(self->children(nid));
+  };
 }
+%ignore gum::classname::children(gum::NodeId) const;
+%ignore gum::classname::parents(gum::NodeId) const;
 %enddef
 IMPROVE_BAYESNET_API(gum::IBayesNet);
 

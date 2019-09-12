@@ -106,10 +106,15 @@ namespace gum {
   INLINE const NodeSet& DAGmodel::parents(const NodeId id) const {
     return _dag.parents(id);
   }
-
+  INLINE const NodeSet& DAGmodel::parents(const std::string& name) const {
+    return parents(idFromName(name));
+  }
 
   INLINE const NodeSet& DAGmodel::children(const NodeId id) const {
     return _dag.children(id);
+  }
+  INLINE const NodeSet& DAGmodel::children(const std::string& name) const {
+    return _dag.children(idFromName(name));
   }
 
   INLINE const NodeGraphPart& DAGmodel::nodes() const {

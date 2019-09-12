@@ -9333,6 +9333,10 @@ class IBayesNet(DAGmodel):
         """
         return _pyAgrum.IBayesNet_minimalCondSet(self, *args)
 
+    def childrens(self, n):
+        r"""childrens(IBayesNet self, PyObject * n) -> PyObject *"""
+        return _pyAgrum.IBayesNet_childrens(self, n)
+
     def __repr__(self):
         r"""__repr__(IBayesNet self) -> std::string"""
         return _pyAgrum.IBayesNet___repr__(self)
