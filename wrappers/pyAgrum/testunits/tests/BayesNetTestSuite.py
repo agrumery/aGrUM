@@ -194,6 +194,8 @@ class TestFeatures(BayesNetTestCase):
     bn.erase("A")
     self.assertEqual(str(bn), "BN{nodes: 2, arcs: 1, domainSize: 4, parameters: 6, compression ratio: -50% }")
 
+    self.assertEqual(bn.parents(bn.idFromName("C")),bn.parents("C"))
+
     with self.assertRaises(gum.NotFound):
       bn.erase("A")
 

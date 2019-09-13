@@ -9333,10 +9333,6 @@ class IBayesNet(DAGmodel):
         """
         return _pyAgrum.IBayesNet_minimalCondSet(self, *args)
 
-    def childrens(self, n):
-        r"""childrens(IBayesNet self, PyObject * n) -> PyObject *"""
-        return _pyAgrum.IBayesNet_childrens(self, n)
-
     def __repr__(self):
         r"""__repr__(IBayesNet self) -> std::string"""
         return _pyAgrum.IBayesNet___repr__(self)
@@ -9344,52 +9340,6 @@ class IBayesNet(DAGmodel):
     def __str__(self):
         r"""__str__(IBayesNet self) -> std::string"""
         return _pyAgrum.IBayesNet___str__(self)
-
-    def arcs(self):
-        r"""
-        arcs(IBayesNet self) -> PyObject *
-
-        Returns
-        -------
-        list
-        	The lisf of arcs in the IBayesNet
-
-        """
-        return _pyAgrum.IBayesNet_arcs(self)
-
-    def parents(self, id):
-        r"""
-        parents(IBayesNet self, gum::NodeId id) -> PyObject *
-
-        Parameters
-        ----------
-        id :
-        	The id of the child node
-
-        Returns
-        -------
-        Set
-            the set of the parents ids.
-
-        """
-        return _pyAgrum.IBayesNet_parents(self, id)
-
-    def children(self, id):
-        r"""
-        children(IBayesNet self, gum::NodeId id) -> PyObject *
-
-        Parameters
-        ----------
-        id : int
-          the id of the parent
-
-        Returns
-        -------
-        Set
-        	the set of all the children
-
-        """
-        return _pyAgrum.IBayesNet_children(self, id)
 
 # Register IBayesNet in _pyAgrum:
 _pyAgrum.IBayesNet_swigregister(IBayesNet)
@@ -10287,6 +10237,88 @@ class BayesNet(IBayesNet):
 
         """
         return _pyAgrum.BayesNet_log10DomainSize(self)
+
+    def names(self):
+        r"""
+        names(BayesNet self) -> PyObject *
+
+        Returns
+        -------
+        list
+        	The names of the graph variables
+
+        """
+        return _pyAgrum.BayesNet_names(self)
+
+    def minimalCondSet(self, *args):
+        r"""
+        minimalCondSet(BayesNet self, gum::NodeId target, PyObject * list) -> PyObject
+        minimalCondSet(BayesNet self, PyObject * targets, PyObject * list) -> PyObject *
+
+        Returns, given one or many targets and a list of variables, the minimal set of those needed to calculate the target/targets.
+
+        Parameters
+        ----------
+        target : int
+        	The id of the target
+        targets : list
+        	The ids of the targets
+        list : list
+        	The list of available variables
+
+        Returns
+        -------
+        Set
+        	The minimal set of variables
+
+        """
+        return _pyAgrum.BayesNet_minimalCondSet(self, *args)
+
+    def parents(self, norid):
+        r"""
+        parents(BayesNet self, PyObject * norid) -> PyObject *
+
+        Parameters
+        ----------
+        id :
+        	The id of the child node
+
+        Returns
+        -------
+        Set
+            the set of the parents ids.
+
+        """
+        return _pyAgrum.BayesNet_parents(self, norid)
+
+    def children(self, norid):
+        r"""
+        children(BayesNet self, PyObject * norid) -> PyObject *
+
+        Parameters
+        ----------
+        id : int
+          the id of the parent
+
+        Returns
+        -------
+        Set
+        	the set of all the children
+
+        """
+        return _pyAgrum.BayesNet_children(self, norid)
+
+    def arcs(self):
+        r"""
+        arcs(BayesNet self) -> PyObject *
+
+        Returns
+        -------
+        list
+        	The lisf of arcs in the IBayesNet
+
+        """
+        return _pyAgrum.BayesNet_arcs(self)
 
     def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdded=None,whenArcDeleted=None):
         """

@@ -63,19 +63,22 @@
     return PyAgrumHelper::PySetFromNodeSet(self->minimalCondSet(sotargets, soids));
   };
 
-  PyObject *parents(PyObject* n) {
-    gum::NodeId nid=PyAgrumHelper::nodeIdFromNameOrIndex(n,*self);
-    return PyAgrumHelper::PySetFromNodeSet(self->parents(nid));
+  PyObject *parents(PyObject* norid) const {
+    return PyAgrumHelper::PySetFromNodeSet(self->parents(PyAgrumHelper::nodeIdFromNameOrIndex(norid,*self)));
   };
-  PyObject *childrens(PyObject* n) {
-    gum::NodeId nid=PyAgrumHelper::nodeIdFromNameOrIndex(n,*self);
-    return PyAgrumHelper::PySetFromNodeSet(self->children(nid));
+  PyObject *children(PyObject* norid) const {
+    return PyAgrumHelper::PySetFromNodeSet(self->children(PyAgrumHelper::nodeIdFromNameOrIndex(norid,*self)));
+  };
+  PyObject *arcs() const { 
+    return PyAgrumHelper::PySetFromArcSet(self->arcs());
   };
 }
-%ignore gum::classname::children(gum::NodeId) const;
-%ignore gum::classname::parents(gum::NodeId) const;
 %enddef
 IMPROVE_BAYESNET_API(gum::IBayesNet);
+IMPROVE_BAYESNET_API(gum::BayesNet);
+%ignore gum::IBayesNet<double>::arcs const;
+%ignore gum::IBayesNet<double>::parents const;
+%ignore gum::IBayesNet<double>::children const;
 
 
 %extend gum::BayesNet {

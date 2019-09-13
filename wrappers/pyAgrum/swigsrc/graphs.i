@@ -121,10 +121,10 @@ ADD_NODES_METHOD_TO_GRAPHCLASS(gum::MixedGraph);
   PyObject *arcs() const { // add for the sub-classes (including MixedGraph)
     return PyAgrumHelper::PySetFromArcSet(self->arcs());
   };
-  PyObject *parents(gum::NodeId id) {
+  PyObject *parents(gum::NodeId id) const {
     return PyAgrumHelper::PySetFromNodeSet(self->parents(id));
   };
-  PyObject *children(gum::NodeId id) {
+  PyObject *children(gum::NodeId id) const {
     return PyAgrumHelper::PySetFromNodeSet(self->children(id));
   };
 };
@@ -138,18 +138,14 @@ ADD_DI_METHOD_TO_GRAPHCLASS(gum::MarkovBlanket);
 %ignore gum::MarkovBlanket::arcs const;
 %ignore gum::MarkovBlanket::parents const;
 %ignore gum::MarkovBlanket::children const;
-ADD_DI_METHOD_TO_GRAPHCLASS(gum::IBayesNet<double>);
-%ignore gum::IBayesNet<double>::arcs const;
-%ignore gum::IBayesNet<double>::parents const;
-%ignore gum::IBayesNet<double>::children const;
 
 %define ADD_UNDI_METHOD_TO_GRAPHCLASS(classname)
 %extend classname {
-  PyObject *edges() { // add for the sub-classes (including MixedGraph)
+  PyObject *edges() const { // add for the sub-classes (including MixedGraph)
     return PyAgrumHelper::PySetFromEdgeSet(self->edges());
   };
 
-  PyObject *neighbours(gum::NodeId id) {
+  PyObject *neighbours(gum::NodeId id) const {
     return PyAgrumHelper::PySetFromNodeSet(self->neighbours(id));
   };
 };
