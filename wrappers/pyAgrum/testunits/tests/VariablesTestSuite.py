@@ -60,6 +60,9 @@ class TestLabelizedVariable(VariablesTestCase):
       self.assertEqual(var.domainSize(), 2)
     self.assertEqual(var.varType(), gum.VarType_Labelized)
 
+    c.setDescription("this is a test")
+    self.assertEqual(c.description(),"this is a test")
+
   def testLabels(self):
     gum.LabelizedVariable('a', '', 0).addLabel('a1').addLabel('a2') \
         .addLabel('a3').addLabel('a4') \

@@ -176,7 +176,13 @@ def _from_dotstring(dotstring):
   g = dot.graph_from_dot_data(dotstring)
   g.set_bgcolor("transparent")
   for e in g.get_edges():
-    e.set_color(getBlackInTheme())
+    if e.get_color() is None:
+      e.set_color(getBlackInTheme())
+  for n in g.get_nodes():
+    if n.get_color() is None:
+      n.set_color(getBlackInTheme())
+    if n.get_fontcolor() is None:
+      n.set_fontcolor(getBlackInTheme())
   return g
 
 
