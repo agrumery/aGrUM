@@ -9333,6 +9333,52 @@ class IBayesNet(DAGmodel):
         """
         return _pyAgrum.IBayesNet_minimalCondSet(self, *args)
 
+    def parents(self, norid):
+        r"""
+        parents(IBayesNet self, PyObject * norid) -> PyObject *
+
+        Parameters
+        ----------
+        id :
+        	The id of the child node
+
+        Returns
+        -------
+        Set
+            the set of the parents ids.
+
+        """
+        return _pyAgrum.IBayesNet_parents(self, norid)
+
+    def children(self, norid):
+        r"""
+        children(IBayesNet self, PyObject * norid) -> PyObject *
+
+        Parameters
+        ----------
+        id : int
+          the id of the parent
+
+        Returns
+        -------
+        Set
+        	the set of all the children
+
+        """
+        return _pyAgrum.IBayesNet_children(self, norid)
+
+    def arcs(self):
+        r"""
+        arcs(IBayesNet self) -> PyObject *
+
+        Returns
+        -------
+        list
+        	The lisf of arcs in the IBayesNet
+
+        """
+        return _pyAgrum.IBayesNet_arcs(self)
+
     def __repr__(self):
         r"""__repr__(IBayesNet self) -> std::string"""
         return _pyAgrum.IBayesNet___repr__(self)
