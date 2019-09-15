@@ -153,7 +153,7 @@ def stringify(s):
 
 
 if __name__ == "__main__":
-  pyAgrum_header("2011-17")
+  pyAgrum_header("2011-19")
 
   if len(sys.argv) < 2:
     # module_help()

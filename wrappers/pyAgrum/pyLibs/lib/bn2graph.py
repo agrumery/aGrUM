@@ -352,10 +352,10 @@ def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=No
     size = gum.config["notebook", "default_graph_inference_size"]
     
   if cmapNode is None:
-    cmapNode = plt.get_cmap('summer')
+    cmapNode = plt.get_cmap(gum.config["notebook", "default_node_cmap"])
 
   if cmapArc is None:
-    cmapArc = plt.get_cmap('BuGn')
+    cmapArc = plt.get_cmap(gum.config["notebook", "default_arc_cmap"])
 
   if arcWidth is not None:
     minarcs = min(arcWidth.values())

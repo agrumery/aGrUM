@@ -286,7 +286,7 @@ def module_help(exit_value=1):
 print("** The library 'gum.lib.bn2csv' is deprecated in pyAgrum>0.12.0. Please use gum.generateCSV instead.")
 
 if __name__ == "__main__":
-  pyAgrum_header("2011-2017")
+  pyAgrum_header("2011-2019")
 
   if len(sys.argv) < 3:
     module_help()
