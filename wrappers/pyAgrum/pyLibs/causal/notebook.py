@@ -40,7 +40,7 @@ def getCausalModel(cm: csl.CausalModel, size=None) -> str:
   """
   if size is None:
     size = gum.config['causal', "default_graph_size"]
-    
+
   graph = dot.Dot(graph_type='digraph')
   for n in cm.nodes():
     if n not in cm.latentVariablesIds():
@@ -62,8 +62,10 @@ def getCausalModel(cm: csl.CausalModel, size=None) -> str:
                             fontcolor=fgcol))
 
   for a, b in cm.arcs():
-    graph.add_edge(dot.Edge(cm.names()[a], cm.names()[b],
-                            style="dashed" if a in cm.latentVariablesIds() else "filled"))
+    if a in cm.latentVariablesIds():
+      graph.add_edge(dot.Edge(cm.names()[a], cm.names()[b],style="dashed"))
+    else:
+      graph.add_edge(dot.Edge(cm.names()[a], cm.names()[b], color='"black:black"'))
 
   graph.set_size(size)
 
