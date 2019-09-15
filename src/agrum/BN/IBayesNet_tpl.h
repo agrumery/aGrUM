@@ -149,8 +149,6 @@ namespace gum {
     for (auto node : nodes())
       param += cpt(node).content()->realSize();
 
-    double compressionRatio = log10(1.0 * param) - dSize;
-
     std::stringstream s;
     s << "BN{nodes: " << size() << ", arcs: " << dag().sizeArcs() << ", ";
 
@@ -159,14 +157,7 @@ namespace gum {
     else
       s << "domainSize: " << std::round(std::pow(10.0, dSize));
 
-    s << ", parameters: " << param << ", compression ratio: ";
-
-    if (compressionRatio > -3)
-      s << trunc(100.0 - std::pow(10.0, compressionRatio + 2.0));
-    else
-      s << "100-10^" << compressionRatio + 2.0;
-
-    s << "% }";
+    s << ", dim: " << param << "}";
 
     return s.str();
   }

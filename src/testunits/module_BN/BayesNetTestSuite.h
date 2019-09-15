@@ -152,8 +152,7 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(topology->toString(),
                        "BN{nodes: 5, arcs: 6, domainSize: 48, "
-                       "parameters: 40, compression ratio: "
-                       "16% }");
+                       "dim: 40}");
       TS_ASSERT_EQUALS(topology->size(), (gum::Idx)5);
       TS_ASSERT_EQUALS(topology->sizeArcs(), (gum::Idx)6);
       TS_ASSERT_EQUALS(topology->dim(), (gum::Idx)24);
@@ -468,8 +467,7 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS(bn.toString(),
                          "BN{nodes: 3, arcs: 2, domainSize: 8, "
-                         "parameters: 12, compression ratio: "
-                         "-50% }");
+                         "dim: 12}");
 
         bn.cpt("A").fillWith(1.0f).normalize();
         bn.generateCPT("B");
@@ -479,8 +477,7 @@ namespace gum_tests {
         bn.reverseArc("A", "C");
         TS_ASSERT_EQUALS(bn.toString(),
                          "BN{nodes: 3, arcs: 3, domainSize: 8, "
-                         "parameters: 14, compression ratio: "
-                         "-75% }");
+                         "dim: 14}");
 
         TS_ASSERT_THROWS(bn.reverseArc("A", "C"), gum::InvalidArc);
         TS_ASSERT_THROWS(bn.reverseArc("A", "C"), gum::GraphError);
@@ -489,16 +486,14 @@ namespace gum_tests {
         bn.erase("A");
         TS_ASSERT_EQUALS(bn.toString(),
                          "BN{nodes: 2, arcs: 1, domainSize: 4, "
-                         "parameters: 6, compression ratio: -50% "
-                         "}");
+                         "dim: 6}");
 
         TS_ASSERT_THROWS(bn.erase("A"), gum::NotFound);
 
         bn.eraseArc("B", "C");
         TS_ASSERT_EQUALS(bn.toString(),
                          "BN{nodes: 2, arcs: 0, domainSize: 4, "
-                         "parameters: 4, compression ratio: 0% "
-                         "}");
+                         "dim: 4}");
 
         TS_ASSERT_THROWS(bn.eraseArc("B", "C"), gum::NotFound);
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
