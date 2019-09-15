@@ -236,6 +236,7 @@ class TestFeatures(BayesNetTestCase):
     bn = gum.fastBN("a->b->c;a->c")
     self.assertEquals(bn.size(), 3)
     self.assertEquals(bn.sizeArcs(), 3)
+    self.assertEquals(len(bn.arcs()),3)
     self.assertEquals(bn.dim(), (2 - 1) + (2 * (2 - 1)) + (2 * 2 * (2 - 1)))
 
     bn = gum.fastBN("a->b->c;a->c", 3)

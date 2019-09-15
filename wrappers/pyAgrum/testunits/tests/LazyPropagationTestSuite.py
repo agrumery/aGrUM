@@ -11,6 +11,9 @@ class LazyPropagationTestCase(pyAgrumTestCase):
                     verbose=False)  # verbose=False : don't want to see the warnings
 
     ie = gum.LazyPropagation(bn)
+
+    self.assertEqual(len(ie.BN().arcs()),8)
+
     with self.assertRaises(gum.InvalidArgument):
       res = ie.evidenceImpact(0, [0, 1, 2])
 

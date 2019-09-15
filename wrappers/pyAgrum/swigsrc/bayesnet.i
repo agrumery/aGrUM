@@ -76,9 +76,6 @@
 %enddef
 IMPROVE_BAYESNET_API(gum::IBayesNet);
 IMPROVE_BAYESNET_API(gum::BayesNet);
-%ignore gum::IBayesNet<double>::arcs const;
-%ignore gum::IBayesNet<double>::parents const;
-%ignore gum::IBayesNet<double>::children const;
 
 
 %extend gum::BayesNet {
