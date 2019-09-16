@@ -6745,8 +6745,8 @@ class MarkovBlanket(object):
 
     def __init__(self, *args):
         r"""
-        __init__(MarkovBlanket self, DAGmodel m, gum::NodeId n) -> MarkovBlanket
-        __init__(MarkovBlanket self, DAGmodel m, std::string const & name) -> MarkovBlanket
+        __init__(MarkovBlanket self, DAGmodel m, gum::NodeId n, int level=1) -> MarkovBlanket
+        __init__(MarkovBlanket self, DAGmodel m, std::string const & name, int level=1) -> MarkovBlanket
         """
         _pyAgrum.MarkovBlanket_swiginit(self, _pyAgrum.new_MarkovBlanket(*args))
     __swig_destroy__ = _pyAgrum.delete_MarkovBlanket

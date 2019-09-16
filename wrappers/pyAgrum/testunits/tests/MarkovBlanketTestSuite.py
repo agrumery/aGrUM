@@ -1,4 +1,4 @@
-# -*- encoding: UTF-8 -*-
+    # -*- encoding: UTF-8 -*-
 import unittest
 
 import pyAgrum as gum
@@ -39,6 +39,14 @@ class TestMarkovBlanket(pyAgrumTestCase):
         gum.fastBN("h->i;")))
     self.assertTrue(gum.MarkovBlanket(bn, "i").hasSameStructure(
         gum.fastBN("d->g;h->i->g;;")))
+
+  def testMarkovBlanketMultiLevel(self):
+    bn=gum.fastBN("Z<-A->B->C->D->E<-Y;X->G<-F<-C<-I<-H->W")
+    self.assertEquals(gum.MarkovBlanket(bn, "C", 1).size(),5)
+    self.assertEquals(gum.MarkovBlanket(bn, "C", 2).size(),11)
+    self.assertEquals(gum.MarkovBlanket(bn, "C", 3).size(),13)
+    with self.assertRaises(gum.InvalidArgument):
+      err=gum.MarkovBlanket(bn, "C", 0)
 
 
 ts = unittest.TestSuite()

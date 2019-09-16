@@ -48,8 +48,8 @@ namespace gum {
    */
   class MarkovBlanket {
     public:
-    MarkovBlanket(const DAGmodel& m, NodeId n);
-    MarkovBlanket(const DAGmodel& m, const std::string& name);
+    MarkovBlanket(const DAGmodel& m, NodeId n,int level=1);
+    MarkovBlanket(const DAGmodel& m, const std::string& name,int level=1);
 
     ~MarkovBlanket();
 
@@ -88,7 +88,7 @@ namespace gum {
     bool hasSameStructure(const DAGmodel& other);
 
     private:
-    void __buildMarkovBlanket();
+    bool __buildMarkovBlanket(const NodeId id);
 
     const DAGmodel& __model;
     DiGraph         __mb;

@@ -34,35 +34,24 @@
 #endif   // GUM_NOINLINE
 
 namespace gum {
-  MarkovBlanket::MarkovBlanket(const DAGmodel& m, NodeId id) :
+  MarkovBlanket::MarkovBlanket(const DAGmodel& m, NodeId id, int level) :
       __model(m), __node(id) {
-    __buildMarkovBlanket();
-  }
+    if (level < 1)
+      GUM_ERROR(InvalidArgument, "Argument level(=" << level << ") must be >0.")
 
-  MarkovBlanket::MarkovBlanket(const DAGmodel& m, const std::string& name) :
-      MarkovBlanket(m, m.idFromName(name)) {}
+    NodeSet done;
+    __buildMarkovBlanket(__node);
+    done.insert(__node);
 
-  MarkovBlanket::~MarkovBlanket() {}
-
-  void MarkovBlanket::__buildMarkovBlanket() {
-    if (!__model.nodes().exists(__node))
-      GUM_ERROR(InvalidArgument, "Node " << __node << " does not exist.");
-
-    __mb.addNodeWithId(__node);
-    for (const auto& parent : __model.parents(__node)) {
-      __mb.addNodeWithId(parent);
-      __mb.addArc(parent, __node);
-    }
-
-    for (const auto& child : __model.children(__node)) {
-      if (!__mb.nodes().exists(child)) __mb.addNodeWithId(child);
-      __mb.addArc(__node, child);
-      for (const auto& opar : __model.parents(child)) {
-        if (opar != __node) {
-          if (!__mb.nodes().exists(opar)) __mb.addNodeWithId(opar);
-          __mb.addArc(opar, child);
-        }
+    while (level > 1) {
+      level--;
+      auto todo = __mb.nodes().asNodeSet() - done;
+      bool anythingnew = false;
+      for (NodeId n : todo) {
+        done.insert(n);
+        if (__buildMarkovBlanket(n)) anythingnew = true;
       }
+      if (!anythingnew) break;
     }
 
     // we add now some arcs that are between the nodes in __mb but are not part of
@@ -76,6 +65,51 @@ namespace gum {
         }
       }
     }
+  }
+
+  MarkovBlanket::MarkovBlanket(const DAGmodel&    m,
+                               const std::string& name,
+                               int                level) :
+      MarkovBlanket(m, m.idFromName(name), level) {}
+
+  MarkovBlanket::~MarkovBlanket() {}
+
+  bool MarkovBlanket::__buildMarkovBlanket(const NodeId node) {
+    bool change = false;
+    if (!__model.nodes().exists(node))
+      GUM_ERROR(InvalidArgument, "Node " << node << " does not exist.");
+
+    if (!__mb.nodes().exists(node)) {
+      __mb.addNodeWithId(node);
+      change = true;
+    }
+
+    for (const auto& parent : __model.parents(node)) {
+      if (!__mb.nodes().exists(parent)) {
+        __mb.addNodeWithId(parent);
+        change = true;
+      }
+      __mb.addArc(parent, node);
+    }
+
+    for (const auto& child : __model.children(node)) {
+      if (!__mb.nodes().exists(child)) {
+        __mb.addNodeWithId(child);
+        change = true;
+      }
+      __mb.addArc(node, child);
+      for (const auto& opar : __model.parents(child)) {
+        if (opar != node) {
+          if (!__mb.nodes().exists(opar)) {
+            __mb.addNodeWithId(opar);
+            change = true;
+          }
+          __mb.addArc(opar, child);
+        }
+      }
+    }
+
+    return change;
   }
 
   bool MarkovBlanket::hasSameStructure(const DAGmodel& other) {
