@@ -6,7 +6,7 @@ stages:
 # Linux / gcc
 ################################################################################
 linux_agrum:
-  image: malichief/ubuntu
+  image: agrumery/ubuntu
   tags:
     - docker
     - linux
@@ -21,7 +21,7 @@ linux_agrum:
   retry: 2
 
 linux_pyagrum:
-  image: malichief/ubuntu
+  image: agrumery/ubuntu
   tags:
     - docker
     - linux
@@ -39,7 +39,7 @@ linux_pyagrum:
 # Linux / gcc merge requests
 ################################################################################
 linux_agrum_merge_requests:
-  image: malichief/ubuntu
+  image: agrumery/ubuntu
   only:
     - merge_requests
   tags:
@@ -58,7 +58,7 @@ linux_agrum_merge_requests:
 linux_pyagrum_merge_requests:
   only:
     - merge_requests
-  image: malichief/ubuntu
+  image: agrumery/ubuntu
   tags:
     - docker
     - linux
@@ -230,7 +230,7 @@ windows_pyagrum_2017:
 # Deploy  wheels
 ################################################################################
 linux_build:
-  image: malichief/ubuntu
+  image: agrumery/ubuntu
   only:
     - tags@agrumery/aGrUM
   tags:
