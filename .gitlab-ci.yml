@@ -34,6 +34,21 @@ linux_pyagrum:
     - python3 act clean
     - python3 act --no-fun test release pyAgrum --python=3 -j halfexcept1 -t quick
   retry: 2
+
+linux_pyagrum_2:
+  image: agrumery/ubuntu
+  tags:
+    - docker
+    - linux
+  cache:
+    key: linux
+    paths:
+      - build/
+  stage: build
+  script:
+    - python act clean
+    - python act --no-fun test release pyAgrum --python=2 -j halfexcept1 -t quick
+  retry: 2
   
 ################################################################################
 # Linux / gcc merge requests
@@ -70,6 +85,23 @@ linux_pyagrum_merge_requests:
   script:
     - python3 act clean
     - python3 act --no-fun test release pyAgrum --python=3 -j halfexcept1 -t quick
+  retry: 2
+  
+linux_pyagrum_merge_requests_2:
+  only:
+    - merge_requests
+  image: agrumery/ubuntu
+  tags:
+    - docker
+    - linux
+  cache:
+    key: linux
+    paths:
+      - build/
+  stage: build
+  script:
+    - python act clean
+    - python act --no-fun test release pyAgrum --python=2 -j halfexcept1 -t quick
   retry: 2
 
 ################################################################################
