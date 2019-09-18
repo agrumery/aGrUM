@@ -26,6 +26,7 @@ from .pyAgrum import InfluenceDiagram
 from .pyAgrum import VariableElimination
 from .pyAgrum import BNDatabaseGenerator
 from .pyAgrum import PythonDatabaseGeneratorListener
+from .pyAgrum import InvalidArgument
 
 def about():
   """
@@ -102,7 +103,7 @@ def loadBN(filename,listeners=None,verbose=False,**opts):
     elif extension=="UAI":
         warns=bn.loadUAI(filename,listeners)
     else:
-        raise Exception("extension "+filename.split('.')[-1]+" unknown. Please use among "+availableBNExts())
+        raise InvalidArgument("extension "+filename.split('.')[-1]+" unknown. Please use among "+availableBNExts())
 
     if verbose:
       print(warns)
@@ -131,7 +132,7 @@ def saveBN(bn,filename):
     elif extension=="O3PRM":
         bn.saveO3PRM(filename)
     else:
-        raise gum.InvalidArgument("[pyAgrum] extension "+filename.split('.')[-1]+" unknown. Please use "+availableWriteBNExts())
+        raise InvalidArgument("[pyAgrum] extension "+filename.split('.')[-1]+" unknown. Please use among "+availableBNExts())
 
 
 
@@ -145,7 +146,7 @@ def loadID(filename):
 
   extension=filename.split('.')[-1].upper()
   if extension!="BIFXML":
-    raise Exception("extension "+extension+" unknown. Please use bifxml.")
+    raise InvalidArgument("extension "+extension+" unknown. Please use bifxml.")
 
   diag=InfluenceDiagram()
   res=diag.loadBIFXML(filename)
