@@ -32,7 +32,7 @@
 
 namespace gum {
 
-  INLINE DiGraph MarkovBlanket::mb() { return __mb; }
+  INLINE DAG MarkovBlanket::dag() { return __mb; }
 
   INLINE const NodeSet& MarkovBlanket::parents(const NodeId id) const {
     return __mb.parents(id);

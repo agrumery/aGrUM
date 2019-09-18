@@ -331,7 +331,7 @@ def _saveFigProba(p, filename):
   plt.close(fig)
 
 
-def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=None, arcWidth=None, arcColor=None, cmapNode=None, cmapArc=None):
+def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=None, arcWidth=None, arcColor=None, cmapNode=None, cmapArc=None,dag=None):
   """
   create a pydotplus representation of an inference in a BN
 
@@ -345,6 +345,7 @@ def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=No
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
   :param cmapNode: color map to show the vals of Nodes
   :param cmapArc: color map to show the vals of Arcs
+  :param dag : only shows nodes that have their id in the dag (and not in the whole BN)
 
   :return: the desired representation of the inference
   """
@@ -381,8 +382,9 @@ def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=No
       '", style=filled,color="' + \
       gum.config["notebook", "default_node_fgcolor"]+'"];'+"\n"
   dotstr += '  edge [color="'+getBlackInTheme()+'"];'+"\n"
-
-  for nid in bn.nodes():
+  
+  showdag = bn.dag() if dag is None else dag
+  for nid in showdag.nodes():
     name = bn.variable(nid).name()
 
     # defaults
@@ -413,7 +415,7 @@ def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=No
     else:
       dotstr += ' "{0}" [{1}]'.format(name, colorattribute)
 
-  for a in bn.arcs():
+  for a in showdag.arcs():
     (n, j) = a
     if arcWidth is None:
       pw = 1

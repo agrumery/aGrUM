@@ -48,13 +48,13 @@ namespace gum {
    */
   class MarkovBlanket {
     public:
-    MarkovBlanket(const DAGmodel& m, NodeId n,int level=1);
-    MarkovBlanket(const DAGmodel& m, const std::string& name,int level=1);
+    MarkovBlanket(const DAGmodel& m, NodeId n, int level = 1);
+    MarkovBlanket(const DAGmodel& m, const std::string& name, int level = 1);
 
     ~MarkovBlanket();
 
-    /// @return a copy of the mixed graph
-    DiGraph mb();
+    /// @return a copy of the graph
+    DAG dag();
 
     // @return a dot representation of this MarkovBlanket
     // node of interest is in red
@@ -62,25 +62,25 @@ namespace gum {
     // grey
     std::string toDot() const;
 
-    /// wrapping @ref DiGraph::parents(id)
+    /// wrapping @ref DAG::parents(id)
     const NodeSet& parents(const NodeId id) const;
 
-    /// wrapping @ref DiGraph::parents(id)
+    /// wrapping @ref DAG::parents(id)
     const NodeSet& children(const NodeId id) const;
 
-    /// wrapping @ref DiGraph::sizeArcs()
+    /// wrapping @ref DAG::sizeArcs()
     Size sizeArcs() const;
 
-    /// wrapping @ref DiGraph::arcs()
+    /// wrapping @ref DAG::arcs()
     const ArcSet& arcs() const;
 
-    /// wrapping @ref DiGraph::sizeNodes()
+    /// wrapping @ref DAG::sizeNodes()
     Size sizeNodes() const;
 
-    /// wrapping @ref DiGraph::size()
+    /// wrapping @ref DAG::size()
     Size size() const;
 
-    /// wrapping @ref DiGraph::nodes()
+    /// wrapping @ref DAG::nodes()
     const NodeGraphPart& nodes() const;
 
     /// @return true if all the named node are the same and all the named arcs are
@@ -91,7 +91,7 @@ namespace gum {
     bool __buildMarkovBlanket(const NodeId id);
 
     const DAGmodel& __model;
-    DiGraph         __mb;
+    DAG             __mb;
     const NodeId    __node;
     ArcSet          __specialArcs;
   };

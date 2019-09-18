@@ -13,12 +13,12 @@ MarkovBlanket(m,name) -> MarkovBlanket
         * **name** (*str*) -- a node name
 "
 
-%feature("docstring") gum::MarkovBlanket::mb 
+%feature("docstring") gum::MarkovBlanket::dag 
 "
 Returns
 -------
-pyAgrum.DiGraph
-  a copy of the directed graph
+pyAgrum.DAG
+  a copy of the DAG
 "
 
 %feature("docstring") gum::MarkovBlanket::toDot

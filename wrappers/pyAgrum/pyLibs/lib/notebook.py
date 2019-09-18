@@ -613,7 +613,7 @@ def showInformation(bn, evs=None, size=None, cmap=_INFOcmap):
   return _reprInformation(bn, evs, size, cmap, asString=False)
 
 
-def showInference(bn, engine=None, evs=None, targets=None, size=None,  nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None):
+def showInference(bn, engine=None, evs=None, targets=None, size=None,  nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None, dag=None):
   """
   show pydot graph for an inference in a notebook
 
@@ -627,6 +627,7 @@ def showInference(bn, engine=None, evs=None, targets=None, size=None,  nodeColor
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
   :param cmap: color map to show the color of nodes and arcs
   :param cmapArc: color map to show the vals of Arcs.
+  :param dag : only shows nodes that have their id in the dag (and not in the whole BN)
 
   :return: the desired representation of the inference
   """
@@ -639,10 +640,10 @@ def showInference(bn, engine=None, evs=None, targets=None, size=None,  nodeColor
   if targets is None:
     targets = {}
 
-  return showGraph(BNinference2dot(bn, size, engine, evs, targets, nodeColor, arcWidth, arcColor, cmap, cmapArc), size)
+  return showGraph(BNinference2dot(bn, size, engine, evs, targets, nodeColor, arcWidth, arcColor, cmap, cmapArc,dag), size)
 
 
-def getInference(bn, engine=None, evs=None, targets=None, size=None,  nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None):
+def getInference(bn, engine=None, evs=None, targets=None, size=None,  nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None, dag=None):
   """
   get a HTML string for an inference in a notebook
 
@@ -656,6 +657,8 @@ def getInference(bn, engine=None, evs=None, targets=None, size=None,  nodeColor=
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
   :param cmap: color map to show the color of nodes and arcs
   :param cmapArc: color map to show the vals of Arcs.
+  :param dag : only shows nodes that have their id in the dag (and not in the whole BN)
+  
   :return: the desired representation of the inference
   """
   if size is None:

@@ -6751,17 +6751,17 @@ class MarkovBlanket(object):
         _pyAgrum.MarkovBlanket_swiginit(self, _pyAgrum.new_MarkovBlanket(*args))
     __swig_destroy__ = _pyAgrum.delete_MarkovBlanket
 
-    def mb(self):
+    def dag(self):
         r"""
-        mb(MarkovBlanket self) -> DiGraph
+        dag(MarkovBlanket self) -> DAG
 
         Returns
         -------
-        pyAgrum.DiGraph
-          a copy of the directed graph
+        pyAgrum.DAG
+          a copy of the DAG
 
         """
-        return _pyAgrum.MarkovBlanket_mb(self)
+        return _pyAgrum.MarkovBlanket_dag(self)
 
     def toDot(self):
         r"""
