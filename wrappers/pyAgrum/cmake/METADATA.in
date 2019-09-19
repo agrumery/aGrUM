@@ -2,7 +2,7 @@ Metadata-Version: 2.0
 Name: pyagrum
 Version: @PYAGRUM_VERSION@
 Summary: pyAgrum is a Python wrapper for the C++ aGrUM library
-Home-page: https://pyagrum.lip6.fr
+Home-page: https://agrum.gitlab.io/
 Author: Pierre-Henri Wuillemin and Christophe Gonzales
 Author-email: info@agrum.org
 License: LGPL

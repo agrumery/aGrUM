@@ -1,6 +1,6 @@
 """pyAgrum setup file
 See:
-https://pyagrum.lip6.fr
+https://agrum.gitlab.io/
 """
 # Always prefer setuptools over distutils
 try:
@@ -47,7 +47,7 @@ setup(
     name='pyAgrum',
     version='@PYAGRUM_VERSION@',
     description='pyAgrum is a Python wrapper for the C++ aGrUM library',
-    url='https://pyagrum.lip6.fr',
+    url='https://agrum.gitlab.io/',
     maintainer='Pierre-Henri Wuillemin, Christophe Gonzales, Lionel Torti and Gaspard Ducamp',
     maintainer_email='info@agrum.org',
     platforms=['any'],
