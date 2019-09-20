@@ -582,7 +582,7 @@ class TestScore(BayesNetTestCase):
     def testStructuralHamming(self):
         true_bn = gum.fastBN("A->B->C;B->D")
         bn = gum.fastBN("A->B;C->B;D->C")
-        shd = bvb.GraphicalBNComparator(true_bn, bn).hamming()['shd']
+        shd = bvb.GraphicalBNComparator(true_bn, bn).hamming()['structural hamming']
         self.assertEquals(4, shd)
 
 

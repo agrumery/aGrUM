@@ -67,8 +67,8 @@ class GraphicalBNComparator:
 
     if s1 != s2:
       raise ValueError(
-          "The 2 BNs are not comparable! There are names not present in the 2 BNs : " + str(
-              s1.symmetric_difference(s2)))
+        "The 2 BNs are not comparable! There are names not present in the 2 BNs : " + str(
+          s1.symmetric_difference(s2)))
 
   def _compareBNVariables(self):
     """
@@ -104,7 +104,7 @@ class GraphicalBNComparator:
       p2 = _parents_name(self._bn2, id2)
       if p1 != p2:
         return self._bn1.variable(id1).name() + " has different parents in the two bns whose names are in " + str(
-            p1.symmetric_difference(p2))
+          p1.symmetric_difference(p2))
 
     return "OK"
 
@@ -300,13 +300,13 @@ class GraphicalBNComparator:
       Fscore = 0.0
 
     return {
-      'count'    : count,
-      'recall'   : recall,
+      'count': count,
+      'recall': recall,
       'precision': precision,
-      'fscore'   : Fscore,
-      'dist2opt' : math.sqrt((1 - precision) ** 2 + (1 - recall) ** 2)
+      'fscore': Fscore,
+      'dist2opt': math.sqrt((1 - precision) ** 2 + (1 - recall) ** 2)
     }
-	
+
   def hamming(self):
     """
     Compute hamming and structural hamming distance
@@ -317,54 +317,58 @@ class GraphicalBNComparator:
     Returns
     -------
     dict[double,double]
-      A dictionnary containing 'hamming','shd' 
+      A dictionnary containing 'hamming','structural hamming'
     """
-    #convert graphs to cpdags
-    
-    cpdag1=gum.EssentialGraph(self._bn1).mixedGraph()
-    cpdag2=gum.EssentialGraph(self._bn2).mixedGraph()   
+    # convert graphs to cpdags
+
+    cpdag1 = gum.EssentialGraph(self._bn1).mixedGraph()
+    cpdag2 = gum.EssentialGraph(self._bn2).mixedGraph()
 
     # We look at all combinations
     listVariables = self._bn1.names()
-    hamming_dico={'hamming':0,'shd':0}
-    
-    
+    hamming_dico = {'hamming': 0, 'structural hamming': 0}
+
     for head, tail in combinations(listVariables, 2):
-        idHead_1 = self._bn1.idFromName(head)
-        idTail_1 = self._bn1.idFromName(tail)
-    
-        idHead_2 = self._bn2.idFromName(head)
-        idTail_2 = self._bn2.idFromName(tail)
-        
-        if cpdag1.existsArc(idHead_1,idTail_1):  # Check arcs head->tail   
-          if cpdag2.existsArc(idTail_2,idHead_2) or cpdag2.existsEdge(idTail_2,idHead_2):
-              hamming_dico["shd"]+=1
-          elif not cpdag2.existsArc(idTail_2,idHead_2) and not cpdag2.existsArc(idHead_2,idTail_2) and not cpdag2.existsEdge(idTail_2,idHead_2):
-                
-                  hamming_dico["shd"]+=1
-                  hamming_dico["hamming"]+=1
-        
-        elif cpdag1.existsArc(idTail_1,idHead_1):  # Check arcs tail->head   
-          if cpdag2.existsArc(idHead_2,idTail_2) or cpdag2.existsEdge(idTail_2,idHead_2):
-              hamming_dico["shd"]+=1
-          elif not cpdag2.existsArc(idTail_2,idHead_2) and not cpdag2.existsArc(idHead_2,idTail_2) and not cpdag2.existsEdge(idTail_2,idHead_2):
-               
-                  hamming_dico["shd"]+=1
-                  hamming_dico["hamming"]+=1
-        
-        elif cpdag1.existsEdge(idTail_1,idHead_1):  # Check edge
-          if cpdag2.existsArc(idHead_2,idTail_2) or cpdag2.existsArc(idTail_2,idHead_2):
-              hamming_dico["shd"]+=1
-          elif not cpdag2.existsArc(idTail_2,idHead_2) and not cpdag2.existsArc(idHead_2,idTail_2) and not cpdag2.existsEdge(idTail_2,idHead_2):
-                  
-                
-                  hamming_dico["shd"]+=1
-                  hamming_dico["hamming"]+=1        
-        #check no edge or arc on the ref graph, and yes on the other graph        
-        elif cpdag2.existsArc(idHead_2,idTail_2) or cpdag2.existsEdge(idHead_2,idTail_2) or cpdag2.existsArc(idTail_2,idHead_2):
-   
-              hamming_dico["shd"]+=1
-              hamming_dico["hamming"]+=1
+      idHead_1 = self._bn1.idFromName(head)
+      idTail_1 = self._bn1.idFromName(tail)
+
+      idHead_2 = self._bn2.idFromName(head)
+      idTail_2 = self._bn2.idFromName(tail)
+
+      if cpdag1.existsArc(idHead_1, idTail_1):  # Check arcs head->tail
+        if cpdag2.existsArc(idTail_2, idHead_2) or cpdag2.existsEdge(idTail_2, idHead_2):
+          hamming_dico["structural hamming"] += 1
+        elif not cpdag2.existsArc(idTail_2, idHead_2) and not cpdag2.existsArc(idHead_2,
+                                                                               idTail_2) and not cpdag2.existsEdge(
+          idTail_2, idHead_2):
+
+          hamming_dico["structural hamming"] += 1
+          hamming_dico["hamming"] += 1
+
+      elif cpdag1.existsArc(idTail_1, idHead_1):  # Check arcs tail->head
+        if cpdag2.existsArc(idHead_2, idTail_2) or cpdag2.existsEdge(idTail_2, idHead_2):
+          hamming_dico["structural hamming"] += 1
+        elif not cpdag2.existsArc(idTail_2, idHead_2) and \
+            not cpdag2.existsArc(idHead_2, idTail_2) and \
+            not cpdag2.existsEdge(idTail_2, idHead_2):
+          hamming_dico["structural hamming"] += 1
+          hamming_dico["hamming"] += 1
+
+      elif cpdag1.existsEdge(idTail_1, idHead_1):  # Check edge
+        if cpdag2.existsArc(idHead_2, idTail_2) or cpdag2.existsArc(idTail_2, idHead_2):
+          hamming_dico["structural hamming"] += 1
+        elif not cpdag2.existsArc(idTail_2, idHead_2) and \
+            not cpdag2.existsArc(idHead_2, idTail_2) and \
+            not cpdag2.existsEdge(idTail_2, idHead_2):
+          hamming_dico["structural hamming"] += 1
+          hamming_dico["hamming"] += 1
+          # check no edge or arc on the ref graph, and yes on the other graph
+
+      elif cpdag2.existsArc(idHead_2, idTail_2) or \
+          cpdag2.existsEdge(idHead_2, idTail_2) or \
+          cpdag2.existsArc(idTail_2, idHead_2):
+        hamming_dico["structural hamming"] += 1
+        hamming_dico["hamming"] += 1
     return (hamming_dico)
 
 
