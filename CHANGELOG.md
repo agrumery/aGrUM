@@ -3,8 +3,11 @@
 ## Changelog for 0.16.1
 
 * aGrUM
-  * improving the syntax for BN specification using `gum::fastPrototype`
+  * improve the syntax for BN specification using `gum::fastPrototype`
   * improve several CMakeFiles.txt and doxygen documentation
+  * add CI for python 2.7
+  * refresh `gum::BayesNet::toString()`
+  * API change : `gum::MarkovBlanket()::{mb()`->`gum::MarkovBlanket::dag()}`
 
 * pyAgrum
   * `pyAgrum.config` object for customization (see notebook 08-configForPyAgrum)
@@ -17,7 +20,8 @@
   * add `pyAgrum.BayesNet.parents()` and `pyAgrum.BayesNet.children()` with the name of node.
   * `pyAgrum.MarkovBlanket(bn,var,level)` build now a level-th order Markov Blanket (by default level=1)
   * add access to constants `pyAgrum.VarType_{Discretized|Labelized|Range}` when testing `pyAgrmu.{any discrete variable}.varType()`
-
+  * API change : `pyAgrum.MarkovBlanket().{mb()`->`dag()}`
+  * add  `pyAgrum.lib.bn_vs_bn.GraphicalBNComparator.hammin()`
 
 ## Changelog for 0.16.0
 
