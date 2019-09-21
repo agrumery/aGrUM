@@ -2,6 +2,11 @@
 
 ## Changelog for 0.16.1
 
+* pyAgrum
+  *  remove the use of 'f-strings' in `pyAgrum.lib.notebook.py` 
+
+## Changelog for 0.16.1
+
 * aGrUM
   * improve the syntax for BN specification using `gum::fastPrototype`
   * improve several CMakeFiles.txt and doxygen documentation
