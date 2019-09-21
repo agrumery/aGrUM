@@ -26,6 +26,7 @@ from tests import ConfigTestSuite
 from tests import EssentialGraphTestSuite
 from tests import GraphTestSuite
 from tests import ICIModelsForBNTestSuite
+from tests import ImportTestSuite
 from tests import InstantiationTestSuite
 from tests import JTInferenceTestSuite
 from tests import JunctionTreeTestSuite
@@ -58,6 +59,7 @@ tests.append(ConfigTestSuite.ts)
 tests.append(EssentialGraphTestSuite.ts)
 tests.append(GraphTestSuite.ts)
 tests.append(ICIModelsForBNTestSuite.ts)
+tests.append(ImportTestSuite.ts)
 tests.append(InstantiationTestSuite.ts)
 tests.append(JTInferenceTestSuite.ts)
 tests.append(JunctionTreeTestSuite.ts)
