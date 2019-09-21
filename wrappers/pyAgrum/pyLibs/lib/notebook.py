@@ -295,40 +295,46 @@ def _infdiag_todot(diag):
   res = "digraph {"
 
   # chance node
-  res += f'''
-    node [fillcolor="{gum.config["influenceDiagram","default_chance_bgcolor"]}",
-          fontcolor="{gum.config["influenceDiagram","default_chance_fgcolor"]}",
-          style=filled,shape={gum.config["influenceDiagram","default_chance_shape"]}];
-  '''
+  res += '''
+    node [fillcolor="{}",
+          fontcolor="{}",
+          style=filled,shape={}];
+  ''' .format(gum.config["influenceDiagram", "default_chance_bgcolor"],
+              gum.config["influenceDiagram", "default_chance_fgcolor"],
+              gum.config["influenceDiagram", "default_chance_shape"])
   for node in diag.ids():
     if diag.isChanceNode(node):
-      res += f'   "{diag.variable(node).name()}";'+"\n"
+      res += '   "'+diag.variable(node).name()+'";'+"\n"
 
   # decision node
-  res += f'''
-    node [fillcolor="{gum.config["influenceDiagram","default_decision_bgcolor"]}",
-          fontcolor="{gum.config["influenceDiagram","default_decision_fgcolor"]}",
-          style=filled,shape={gum.config["influenceDiagram","default_decision_shape"]}];
-  '''
+  res += '''
+    node [fillcolor="{}",
+          fontcolor="{}",
+          style=filled,shape={}];
+  ''' .format(gum.config["influenceDiagram", "default_decision_bgcolor"],
+              gum.config["influenceDiagram", "default_decision_fgcolor"],
+              gum.config["influenceDiagram", "default_decision_shape"])
   for node in diag.ids():
     if diag.isDecisionNode(node):
-      res += f'   "{diag.variable(node).name()}";'+"\n"
+      res += '   "'+diag.variable(node).name()+'";'+"\n"
 
   # utility node
-  res += f'''
-    node [fillcolor="{gum.config["influenceDiagram","default_utility_bgcolor"]}",
-          fontcolor="{gum.config["influenceDiagram","default_utility_fgcolor"]}",
-          style=filled,shape={gum.config["influenceDiagram","default_utility_shape"]}];
-  '''
+  res += '''
+    node [fillcolor="{}",
+          fontcolor="{}",
+          style=filled,shape={}];
+  ''' .format(gum.config["influenceDiagram", "default_utility_bgcolor"],
+              gum.config["influenceDiagram", "default_utility_fgcolor"],
+              gum.config["influenceDiagram", "default_utility_shape"])
   for node in diag.ids():
     if diag.isUtilityNode(node):
-      res += f'   "{diag.variable(node).name()}";'+"\n"
+      res += '   "'+diag.variable(node).name()+'";'+"\n"
 
   # arcs
   res += "\n"
   for node in diag.ids():
     for chi in diag.children(node):
-      res += f'  "{diag.variable(node).name()}"->"{diag.variable(chi).name()}";'+"\n"
+      res += '  "'+diag.variable(node).name()+'"->"'+diag.variable(chi).name()+';'+"\n"
   res += "}"
   return res
 
@@ -370,7 +376,8 @@ def showProba(p, scale=1.0):
   """
   fig = proba2histo(p, scale)
   fig.patch.set_facecolor(gum.config["notebook", "figure_facecolor"])
-  IPython.display.set_matplotlib_formats(gum.config["notebook", "graph_format"])
+  IPython.display.set_matplotlib_formats(
+      gum.config["notebook", "graph_format"])
   plt.show()
 
 
@@ -448,11 +455,10 @@ def showApproximationScheme(apsc, scale=np.log10):
     else:
       plt.xlim(1, len(apsc.history()))
     plt.title(
-        "{0} \n Time : {1} s | Iterations : {2} | Espilon : {3}".format(x, apsc.currentTime(), apsc.nbrIterations(),
-                                                                        apsc.epsilon()))
+        "Time : {} s | Iterations : {} | Espilon : {}".format(apsc.currentTime(),
+                                                              apsc.nbrIterations(),
+                                                              apsc.epsilon()))
     plt.plot(scale(apsc.history()), 'g')
-  else:
-    ie2.messageApproximationScheme()
 
 
 def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None):
@@ -640,7 +646,7 @@ def showInference(bn, engine=None, evs=None, targets=None, size=None,  nodeColor
   if targets is None:
     targets = {}
 
-  return showGraph(BNinference2dot(bn, size, engine, evs, targets, nodeColor, arcWidth, arcColor, cmap, cmapArc,dag), size)
+  return showGraph(BNinference2dot(bn, size, engine, evs, targets, nodeColor, arcWidth, arcColor, cmap, cmapArc, dag), size)
 
 
 def getInference(bn, engine=None, evs=None, targets=None, size=None,  nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None, dag=None):
@@ -658,7 +664,7 @@ def getInference(bn, engine=None, evs=None, targets=None, size=None,  nodeColor=
   :param cmap: color map to show the color of nodes and arcs
   :param cmapArc: color map to show the vals of Arcs.
   :param dag : only shows nodes that have their id in the dag (and not in the whole BN)
-  
+
   :return: the desired representation of the inference
   """
   if size is None:
