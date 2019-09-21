@@ -16,8 +16,9 @@ class TestImport(pyAgrumTestCase):
       import pyAgrum.lib.dynamicBN
       import pyAgrum.lib.ipython
       import pyAgrum.lib.notebook
-    except ImportError:
-      self.assertFalse("Import error")
+    except Exception as e:
+      print(e)
+      self.assertFalse("Import error : "+e.message)
       
 ts = unittest.TestSuite()
 addTests(ts, TestImport)
