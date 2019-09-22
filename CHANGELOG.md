@@ -1,6 +1,6 @@
 # aGrUM Changelog
 
-## Changelog for 0.16.1
+## Changelog for 0.16.2
 
 * pyAgrum
   *  remove the use of 'f-strings' in `pyAgrum.lib.notebook.py` 
@@ -26,7 +26,7 @@
   * `pyAgrum.MarkovBlanket(bn,var,level)` build now a level-th order Markov Blanket (by default level=1)
   * add access to constants `pyAgrum.VarType_{Discretized|Labelized|Range}` when testing `pyAgrmu.{any discrete variable}.varType()`
   * API change : `pyAgrum.MarkovBlanket().{mb()`->`dag()}`
-  * add  `pyAgrum.lib.bn_vs_bn.GraphicalBNComparator.hammin()`
+  * add  `pyAgrum.lib.bn_vs_bn.GraphicalBNComparator.hamming()`
 
 ## Changelog for 0.16.0
 
