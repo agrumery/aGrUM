@@ -79,6 +79,7 @@
 
 #include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/BayesNet.h>
+#include <agrum/BN/BayesNetFragment.h>
 
 #include <agrum/BN/algorithms/essentialGraph.h>
 #include <agrum/BN/algorithms/MarkovBlanket.h>
@@ -265,6 +266,7 @@ namespace std {
 %include <agrum/graphicalModels/DAGmodel.h>
 %include <agrum/BN/IBayesNet.h>
 %include <agrum/BN/BayesNet.h>
+%include <agrum/BN/BayesNetFragment.h>
 
 %include <agrum/BN/algorithms/essentialGraph.h>
 %include <agrum/BN/algorithms/MarkovBlanket.h>
@@ -327,6 +329,7 @@ namespace std {
 
 %template (IBayesNet ) gum::IBayesNet<double>;
 %template ( BayesNet ) gum::BayesNet<double>;
+%template ( BayesNetFragment ) gum::BayesNetFragment<double>;
 
 %template ( BayesNetInference ) gum::BayesNetInference<double>;
 %template ( LazyPropagation ) gum::LazyPropagation<double>;

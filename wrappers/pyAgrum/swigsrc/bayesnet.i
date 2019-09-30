@@ -76,9 +76,10 @@
 %enddef
 IMPROVE_BAYESNET_API(gum::IBayesNet);
 IMPROVE_BAYESNET_API(gum::BayesNet);
+IMPROVE_BAYESNET_API(gum::BayesNetFragment);
 
-
-%extend gum::BayesNet {
+%define IMPROVE_CONCRETEBAYESNET_API(classname)
+%extend classname {
 %pythoncode {
 def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdded=None,whenArcDeleted=None):
     """
@@ -114,6 +115,9 @@ def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdd
     self._listeners.append(nl)
 }
 }
+%enddef
+IMPROVE_CONCRETEBAYESNET_API(gum::BayesNet);
+IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
 
 %extend gum::BayesNet {
   std::string loadBIF(std::string name, PyObject *l=(PyObject*)0)

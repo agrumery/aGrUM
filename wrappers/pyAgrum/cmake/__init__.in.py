@@ -46,7 +46,7 @@ from .deprecated import *
 # selection of imports extracted from dir(.pyAgrum)
 from .pyAgrum import statsObj
 from .pyAgrum import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, CliqueGraph
-from .pyAgrum import BayesNet, EssentialGraph, MarkovBlanket
+from .pyAgrum import BayesNet, BayesNetFragment, EssentialGraph, MarkovBlanket
 from .pyAgrum import DiscretizedVariable, LabelizedVariable, RangeVariable, DiscreteVariable
 from .pyAgrum import Potential, Instantiation, Potential
 from .pyAgrum import ExactBNdistance, GibbsBNdistance, StructuralComparator
@@ -78,7 +78,7 @@ __all__=[
   'statsObj',
 
   'Arc','Edge','DiGraph','UndiGraph','MixedGraph','DAG','CliqueGraph',
-  'BayesNet','EssentialGraph'
+  'BayesNet','BayesNetFragment','EssentialGraph', 'MarkovBlanket',
   'DiscretizedVariable','LabelizedVariable','RangeVariable','DiscreteVariable',
   'Potential','Instantiation','Potential',
   'ExactBNdistance','GibbsBNdistance','StructuralComparator',

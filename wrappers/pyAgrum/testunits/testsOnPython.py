@@ -19,6 +19,7 @@ import unittest
 from tests import AggregatorsForBNTestSuite
 from tests import AllIncrementalInferenceTestSuite
 from tests import BayesNetTestSuite
+from tests import BayesNetFragmentTestSuite
 from tests import BNDatabaseGeneratorTestSuite
 from tests import BNLearnerTestSuite
 from tests import BNListenerTestSuite
@@ -52,6 +53,7 @@ tests = list()
 tests.append(AggregatorsForBNTestSuite.ts)
 tests.append(AllIncrementalInferenceTestSuite.ts)
 tests.append(BayesNetTestSuite.ts)
+tests.append(BayesNetFragmentTestSuite.ts)
 tests.append(BNDatabaseGeneratorTestSuite.ts)
 tests.append(BNLearnerTestSuite.ts)
 tests.append(BNListenerTestSuite.ts)

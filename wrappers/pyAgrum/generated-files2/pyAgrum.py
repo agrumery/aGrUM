@@ -10670,6 +10670,386 @@ def BayesNet_fastPrototype(dotlike, domainSize=2):
     """
     return _pyAgrum.BayesNet_fastPrototype(dotlike, domainSize)
 
+class BayesNetFragment(IBayesNet, ):
+    r"""
+    Proxy of C++ gum::BayesNetFragment< double > class.
+    Proxy of C++ gum::BayesNetFragment< double > class.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, bn):
+        r"""__init__(BayesNetFragment self, IBayesNet bn) -> BayesNetFragment"""
+        _pyAgrum.BayesNetFragment_swiginit(self, _pyAgrum.new_BayesNetFragment(bn))
+    __swig_destroy__ = _pyAgrum.delete_BayesNetFragment
+
+    def whenNodeAdded(self, src, id):
+        r"""whenNodeAdded(BayesNetFragment self, void const * src, gum::NodeId id)"""
+        return _pyAgrum.BayesNetFragment_whenNodeAdded(self, src, id)
+
+    def whenNodeDeleted(self, src, id):
+        r"""whenNodeDeleted(BayesNetFragment self, void const * src, gum::NodeId id)"""
+        return _pyAgrum.BayesNetFragment_whenNodeDeleted(self, src, id)
+
+    def whenArcAdded(self, src, _from, to):
+        r"""whenArcAdded(BayesNetFragment self, void const * src, gum::NodeId _from, gum::NodeId to)"""
+        return _pyAgrum.BayesNetFragment_whenArcAdded(self, src, _from, to)
+
+    def whenArcDeleted(self, src, _from, to):
+        r"""whenArcDeleted(BayesNetFragment self, void const * src, gum::NodeId _from, gum::NodeId to)"""
+        return _pyAgrum.BayesNetFragment_whenArcDeleted(self, src, _from, to)
+
+    def cpt(self, *args):
+        r"""
+        cpt(BayesNetFragment self, gum::NodeId varId) -> Potential
+        cpt(BayesNetFragment self, std::string const & name) -> Potential
+
+        Returns the CPT of a variable.
+
+        Parameters
+        ----------
+        VarId : int
+        	A variable's id in the pyAgrum.IBayesNet.
+        name : str
+        	A variable's name in the pyAgrum.IBayesNet.
+
+        Returns
+        -------
+        pyAgrum.Potential
+        	The variable's CPT. 
+
+        Raises
+        ------
+        gum.NotFound 
+        	If no variable's id matches varId. 
+
+        """
+        return _pyAgrum.BayesNetFragment_cpt(self, *args)
+
+    def variableNodeMap(self):
+        r"""
+        variableNodeMap(BayesNetFragment self) -> VariableNodeMap
+
+        Returns
+        -------
+        pyAgrum.variableNodeMap
+        	the variable node map
+
+        """
+        return _pyAgrum.BayesNetFragment_variableNodeMap(self)
+
+    def variable(self, *args):
+        r"""
+        variable(BayesNetFragment self, gum::NodeId id) -> DiscreteVariable
+        variable(BayesNetFragment self, std::string const & name) -> DiscreteVariable
+
+        Parameters
+        ----------
+        id : int
+        	a variable's id
+        name : str
+        	a variable's name
+
+        Returns
+        -------
+        pyAgrum.DiscreteVariable
+        	the variable
+
+        Raises
+        ------
+        gum.IndexError
+        	If the graph does not contain the variable
+
+        """
+        return _pyAgrum.BayesNetFragment_variable(self, *args)
+
+    def nodeId(self, var):
+        r"""
+        nodeId(BayesNetFragment self, DiscreteVariable var) -> gum::NodeId
+
+        Parameters
+        ----------
+        var : pyAgrum.DiscreteVariable
+        	a variable
+
+        Returns
+        -------
+        int
+        	the id of the variable
+
+        Raises
+        ------
+        gum.IndexError
+        	If the graph does not contain the variable
+
+        """
+        return _pyAgrum.BayesNetFragment_nodeId(self, var)
+
+    def idFromName(self, name):
+        r"""
+        idFromName(BayesNetFragment self, std::string const & name) -> gum::NodeId
+
+        Returns a variable's id given its name in the graph.
+
+        Parameters
+        ----------
+        name : str
+        	The variable's name from which the id is returned.
+
+        Returns
+        -------
+        int :
+        	The variable's node id.
+
+        Raises
+        ------
+        gum.NotFound
+        	If name does not match a variable in the graph
+
+        """
+        return _pyAgrum.BayesNetFragment_idFromName(self, name)
+
+    def variableFromName(self, name):
+        r"""
+        variableFromName(BayesNetFragment self, std::string const & name) -> DiscreteVariable
+
+        Parameters
+        ----------
+        name : str
+        	a variable's name
+
+        Returns
+        -------
+        pyAgrum.DiscreteVariable
+        	the variable
+
+        Raises
+        ------
+        gum.IndexError
+        	If the graph does not contain the variable
+
+        """
+        return _pyAgrum.BayesNetFragment_variableFromName(self, name)
+
+    def toDot(self):
+        r"""
+        toDot(BayesNetFragment self) -> std::string
+
+        Returns
+        -------
+        str
+            a friendly display of the graph in DOT format
+
+        """
+        return _pyAgrum.BayesNetFragment_toDot(self)
+
+    def isInstalledNode(self, *args):
+        r"""
+        isInstalledNode(BayesNetFragment self, gum::NodeId id) -> bool
+        isInstalledNode(BayesNetFragment self, std::string const & name) -> bool
+        """
+        return _pyAgrum.BayesNetFragment_isInstalledNode(self, *args)
+
+    def installNode(self, *args):
+        r"""
+        installNode(BayesNetFragment self, gum::NodeId id)
+        installNode(BayesNetFragment self, std::string const & name)
+        """
+        return _pyAgrum.BayesNetFragment_installNode(self, *args)
+
+    def installAscendants(self, *args):
+        r"""
+        installAscendants(BayesNetFragment self, gum::NodeId id)
+        installAscendants(BayesNetFragment self, std::string const & name)
+        """
+        return _pyAgrum.BayesNetFragment_installAscendants(self, *args)
+
+    def uninstallNode(self, *args):
+        r"""
+        uninstallNode(BayesNetFragment self, gum::NodeId id)
+        uninstallNode(BayesNetFragment self, std::string const & name)
+        """
+        return _pyAgrum.BayesNetFragment_uninstallNode(self, *args)
+
+    def installMarginal(self, *args):
+        r"""
+        installMarginal(BayesNetFragment self, gum::NodeId id, Potential pot)
+        installMarginal(BayesNetFragment self, std::string const & name, Potential pot)
+        """
+        return _pyAgrum.BayesNetFragment_installMarginal(self, *args)
+
+    def installCPT(self, *args):
+        r"""
+        installCPT(BayesNetFragment self, gum::NodeId id, Potential pot)
+        installCPT(BayesNetFragment self, std::string const & name, Potential pot)
+        """
+        return _pyAgrum.BayesNetFragment_installCPT(self, *args)
+
+    def uninstallCPT(self, *args):
+        r"""
+        uninstallCPT(BayesNetFragment self, gum::NodeId id)
+        uninstallCPT(BayesNetFragment self, std::string const & name)
+        """
+        return _pyAgrum.BayesNetFragment_uninstallCPT(self, *args)
+
+    def checkConsistency(self, *args):
+        r"""
+        checkConsistency(BayesNetFragment self, gum::NodeId id) -> bool
+        checkConsistency(BayesNetFragment self, std::string const & name) -> bool
+        checkConsistency(BayesNetFragment self) -> bool
+        """
+        return _pyAgrum.BayesNetFragment_checkConsistency(self, *args)
+
+    def nodes(self):
+        r"""
+        nodes(BayesNetFragment self) -> PyObject *
+
+        Returns
+        -------
+        set
+            the set of ids
+
+        """
+        return _pyAgrum.BayesNetFragment_nodes(self)
+
+    def dag(self):
+        r"""
+        dag(BayesNetFragment self) -> DAG
+
+        Returns
+        -------
+        pyAgrum.DAG
+        	a constant reference to the dag of this BayesNet.
+
+        """
+        val = _pyAgrum.BayesNetFragment_dag(self)
+
+        val = DAG(val) # copying the DAG
+
+
+        return val
+
+
+    def names(self):
+        r"""
+        names(BayesNetFragment self) -> PyObject *
+
+        Returns
+        -------
+        list
+        	The names of the graph variables
+
+        """
+        return _pyAgrum.BayesNetFragment_names(self)
+
+    def minimalCondSet(self, *args):
+        r"""
+        minimalCondSet(BayesNetFragment self, gum::NodeId target, PyObject * list) -> PyObject
+        minimalCondSet(BayesNetFragment self, PyObject * targets, PyObject * list) -> PyObject *
+
+        Returns, given one or many targets and a list of variables, the minimal set of those needed to calculate the target/targets.
+
+        Parameters
+        ----------
+        target : int
+        	The id of the target
+        targets : list
+        	The ids of the targets
+        list : list
+        	The list of available variables
+
+        Returns
+        -------
+        Set
+        	The minimal set of variables
+
+        """
+        return _pyAgrum.BayesNetFragment_minimalCondSet(self, *args)
+
+    def parents(self, norid):
+        r"""
+        parents(BayesNetFragment self, PyObject * norid) -> PyObject *
+
+        Parameters
+        ----------
+        id :
+        	The id of the child node
+
+        Returns
+        -------
+        Set
+            the set of the parents ids.
+
+        """
+        return _pyAgrum.BayesNetFragment_parents(self, norid)
+
+    def children(self, norid):
+        r"""
+        children(BayesNetFragment self, PyObject * norid) -> PyObject *
+
+        Parameters
+        ----------
+        id : int
+          the id of the parent
+
+        Returns
+        -------
+        Set
+        	the set of all the children
+
+        """
+        return _pyAgrum.BayesNetFragment_children(self, norid)
+
+    def arcs(self):
+        r"""
+        arcs(BayesNetFragment self) -> PyObject *
+
+        Returns
+        -------
+        list
+        	The lisf of arcs in the IBayesNet
+
+        """
+        return _pyAgrum.BayesNetFragment_arcs(self)
+
+    def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdded=None,whenArcDeleted=None):
+        """
+        Add the listeners in parameters to the list of existing ones.
+
+        Parameters
+        ----------
+        whenNodeAdded : lambda expression
+          a function for when a node is added
+        whenNodeDeleted : lambda expression
+          a function for when a node is removed
+        whenArcAdded : lambda expression
+          a function for when an arc is added
+        whenArcDeleted : lambda expression
+          a function for when an arc is removed
+        """
+        if [whenNodeAdded,whenNodeDeleted,whenArcAdded,whenArcDeleted]==[None,None,None,None]:
+          return
+
+        if not hasattr(self,"_listeners"):
+          self._listeners=[]
+
+        nl = PythonBNListener(self, self.variableNodeMap())
+        if whenNodeAdded is not None:
+          nl.setWhenNodeAdded(whenNodeAdded)
+        if whenNodeDeleted is not None:
+          nl.setWhenNodeDeleted(whenNodeDeleted)
+        if whenArcAdded is not None:
+          nl.setWhenArcAdded(whenArcAdded)
+        if whenArcDeleted is not None:
+          nl.setWhenArcDeleted(whenArcDeleted)
+
+        self._listeners.append(nl)
+
+
+# Register BayesNetFragment in _pyAgrum:
+_pyAgrum.BayesNetFragment_swigregister(BayesNetFragment)
+
 class BayesNetInference(object):
     r"""
     Proxy of C++ gum::BayesNetInference< double > class.
