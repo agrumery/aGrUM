@@ -9506,7 +9506,7 @@ class BayesNet(IBayesNet):
         name : str 
         	the variable name
         nbrmod : int
-        	the numbre of modalities for the new variable
+        	the number of modalities for the new variable
         id : int
         	the variable forced id in the pyAgrum.BayesNet
 
@@ -9520,7 +9520,7 @@ class BayesNet(IBayesNet):
         gum.DuplicateLabel
             If variable.name() is already used in this pyAgrum.BayesNet.
         gum.NotAllowed
-            If nbrmod<2
+            If nbrmod is less than 2
         gum.DuplicateElement
             If id is already used.
 
@@ -10672,8 +10672,15 @@ def BayesNet_fastPrototype(dotlike: "std::string const &", domainSize: "gum::Siz
 
 class BayesNetFragment(IBayesNet, ):
     r"""
-    Proxy of C++ gum::BayesNetFragment< double > class.
-    Proxy of C++ gum::BayesNetFragment< double > class.
+
+
+
+    BayesNetFragment represents a part of a Bayesian Network (subset of nodes). By default, the arcs and the CPTs are the same as the BN but local CPTs can be build to express different local dependencies. All the non local CPTs are not copied. Therefore a BayesNetFragment is a light object. 
+
+    BayesNetFragment(BayesNet bn) -> BayesNetFragment
+        Parameters:
+          * **bn** (*pyAgrum.BayesNet*) -- the bn refered by the fragment
+
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
@@ -10848,6 +10855,14 @@ class BayesNetFragment(IBayesNet, ):
         r"""
         isInstalledNode(BayesNetFragment self, gum::NodeId id) -> bool
         isInstalledNode(BayesNetFragment self, std::string const & name) -> bool
+
+        Check if a node is in the fragment
+
+        Parameters
+        ----------
+        n : int, str
+        	the id or the name of the variable.
+
         """
         return _pyAgrum.BayesNetFragment_isInstalledNode(self, *args)
 
@@ -10855,6 +10870,21 @@ class BayesNetFragment(IBayesNet, ):
         r"""
         installNode(BayesNetFragment self, gum::NodeId id)
         installNode(BayesNetFragment self, std::string const & name)
+
+        Add a node to the fragment. The arcs that can be added between installed nodes are created.
+        No specific CPT are created. Then either the parents of the node are already in the fragment 
+        and the node is consistant, or the parents are not in the fragment and the node is not consistant.
+
+        Parameters
+        ----------
+        n : int, str
+        	the id or the name of the variable.
+
+        Raises
+        ------
+        gum.NotFound
+          if the node is not found.
+
         """
         return _pyAgrum.BayesNetFragment_installNode(self, *args)
 
@@ -10862,6 +10892,19 @@ class BayesNetFragment(IBayesNet, ):
         r"""
         installAscendants(BayesNetFragment self, gum::NodeId id)
         installAscendants(BayesNetFragment self, std::string const & name)
+
+        Add the variable and all its ascendants in the fragment. No inconsistant node are created.
+
+        Parameters
+        ----------
+        n : int, str
+        	the id or the name of the variable.
+
+        Raises
+        ------
+        gum.NotFound
+          if the node is not found.
+
         """
         return _pyAgrum.BayesNetFragment_installAscendants(self, *args)
 
@@ -10869,6 +10912,19 @@ class BayesNetFragment(IBayesNet, ):
         r"""
         uninstallNode(BayesNetFragment self, gum::NodeId id)
         uninstallNode(BayesNetFragment self, std::string const & name)
+
+        Remove a node from the fragment. The fragment can become inconsistant.
+
+        Parameters
+        ----------
+        n : int, str
+        	the id or the name of the variable.
+
+        Raises
+        ------
+        gum.NotFound
+          if the node is not found.
+
         """
         return _pyAgrum.BayesNetFragment_uninstallNode(self, *args)
 
@@ -10876,6 +10932,21 @@ class BayesNetFragment(IBayesNet, ):
         r"""
         installMarginal(BayesNetFragment self, gum::NodeId id, Potential pot)
         installMarginal(BayesNetFragment self, std::string const & name, Potential pot)
+
+        Install a local marginal for a node. Doing so, it removes the parents of the node in the fragment.
+
+        Parameters
+        ----------
+        n : int, str
+        	the id or the name of the variable.
+        pot : Potential
+          the Potential (marginal) to install
+
+        Raises
+        ------
+        gum.NotFound
+          if the node is not found.
+
         """
         return _pyAgrum.BayesNetFragment_installMarginal(self, *args)
 
@@ -10883,6 +10954,21 @@ class BayesNetFragment(IBayesNet, ):
         r"""
         installCPT(BayesNetFragment self, gum::NodeId id, Potential pot)
         installCPT(BayesNetFragment self, std::string const & name, Potential pot)
+
+        Install a local CPT for a node. Doing so, it changes the parents of the node in the fragment.
+
+        Parameters
+        ----------
+        n : int, str
+        	the id or the name of the variable.
+        pot : Potential
+          the Potential to install
+
+        Raises
+        ------
+        gum.NotFound
+          if the node is not found.
+
         """
         return _pyAgrum.BayesNetFragment_installCPT(self, *args)
 
@@ -10890,6 +10976,19 @@ class BayesNetFragment(IBayesNet, ):
         r"""
         uninstallCPT(BayesNetFragment self, gum::NodeId id)
         uninstallCPT(BayesNetFragment self, std::string const & name)
+
+        Remove a local CPT. The fragment can become inconsistant.
+
+        Parameters
+        ----------
+        n : int, str
+        	the id or the name of the variable.
+
+        Raises
+        ------
+        gum.NotFound
+          if the node is not found.
+
         """
         return _pyAgrum.BayesNetFragment_uninstallCPT(self, *args)
 
@@ -10898,6 +10997,25 @@ class BayesNetFragment(IBayesNet, ):
         checkConsistency(BayesNetFragment self, gum::NodeId id) -> bool
         checkConsistency(BayesNetFragment self, std::string const & name) -> bool
         checkConsistency(BayesNetFragment self) -> bool
+
+        If a variable is added to the fragment but not its parents, there is no CPT consistant for this variable. This function checks the consistency for a variable of for all.
+
+        Parameters
+        ----------
+
+        n : int, str (optional)
+        	the id or the name of the variable. If no argument, the function checks all the variables.
+
+        Returns
+        -------
+        boolean
+        	True if the variable(s) is consistant.
+
+        Raises
+        ------
+        gum.NotFound
+          if the node is not found.
+
         """
         return _pyAgrum.BayesNetFragment_checkConsistency(self, *args)
 

@@ -22,7 +22,7 @@ variable : pyAgrum.DiscreteVariable
 name : str 
 	the variable name
 nbrmod : int
-	the numbre of modalities for the new variable
+	the number of modalities for the new variable
 id : int
 	the variable forced id in the pyAgrum.BayesNet
 
@@ -36,7 +36,7 @@ Raises
 gum.DuplicateLabel
     If variable.name() is already used in this pyAgrum.BayesNet.
 gum.NotAllowed
-    If nbrmod<2
+    If nbrmod is less than 2
 gum.DuplicateElement
     If id is already used.
 "
