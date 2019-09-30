@@ -78,7 +78,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >&
                BayesNetFragment< GUM_SCALAR >::cpt(NodeId id) const {
-    if (!isInstalledNode(id)) GUM_ERROR(NotFound, id << " is not installed");
+    if (!isInstalledNode(id))
+      GUM_ERROR(NotFound, "NodeId " << id << " is not installed");
 
     if (__localCPTs.exists(id))
       return *__localCPTs[id];
@@ -96,7 +97,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const DiscreteVariable&
                BayesNetFragment< GUM_SCALAR >::variable(NodeId id) const {
-    if (!isInstalledNode(id)) GUM_ERROR(NotFound, id << " is not installed");
+    if (!isInstalledNode(id))
+      GUM_ERROR(NotFound, "NodeId " << id << " is not installed");
 
     return __bn.variable(id);
   }
@@ -126,7 +128,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const DiscreteVariable& BayesNetFragment< GUM_SCALAR >::variableFromName(
      const std::string& name) const {
-    NodeId id = __bn.idFromName(name);
+    NodeId id = idFromName(name);
 
     if (!isInstalledNode(id))
       GUM_ERROR(NotFound, "variable " << name << " is not installed");
@@ -172,8 +174,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void BayesNetFragment< GUM_SCALAR >::uninstallNode(NodeId id) {
     if (isInstalledNode(id)) {
-      this->_dag.eraseNode(id);
       uninstallCPT(id);
+      this->_dag.eraseNode(id);
     }
   }
 
@@ -190,15 +192,15 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void BayesNetFragment< GUM_SCALAR >::_installCPT(
-     NodeId id, const Potential< GUM_SCALAR >* pot) {
+     NodeId id, const Potential< GUM_SCALAR >& pot) {
     // topology
     const auto& parents = this->parents(id);
     for (auto node_it = parents.beginSafe(); node_it != parents.endSafe();
          ++node_it)   // safe iterator needed here
       _uninstallArc(*node_it, id);
 
-    for (Idx i = 1; i < pot->nbrDim(); i++) {
-      NodeId parent = __bn.idFromName(pot->variable(i).name());
+    for (Idx i = 1; i < pot.nbrDim(); i++) {
+      NodeId parent = __bn.idFromName(pot.variable(i).name());
 
       if (isInstalledNode(parent)) _installArc(parent, id);
     }
@@ -206,16 +208,16 @@ namespace gum {
     // local cpt
     if (__localCPTs.exists(id)) _uninstallCPT(id);
 
-    __localCPTs.insert(id, pot);
+    __localCPTs.insert(id, new gum::Potential< GUM_SCALAR >(pot));
   }
 
   template < typename GUM_SCALAR >
   void BayesNetFragment< GUM_SCALAR >::installCPT(
-     NodeId id, const Potential< GUM_SCALAR >* pot) {
+     NodeId id, const Potential< GUM_SCALAR >& pot) {
     if (!dag().existsNode(id))
       GUM_ERROR(NotFound, "Node " << id << " is not installed in the fragment");
 
-    if (&(pot->variable(0)) != &(variable(id))) {
+    if (&(pot.variable(0)) != &(variable(id))) {
       GUM_ERROR(OperationNotAllowed,
                 "The potential is not a marginal for __bn.variable <"
                    << variable(id).name() << ">");
@@ -223,10 +225,10 @@ namespace gum {
 
     const NodeSet& parents = __bn.parents(id);
 
-    for (Idx i = 1; i < pot->nbrDim(); i++) {
-      if (!parents.contains(__bn.idFromName(pot->variable(i).name())))
+    for (Idx i = 1; i < pot.nbrDim(); i++) {
+      if (!parents.contains(__bn.idFromName(pot.variable(i).name())))
         GUM_ERROR(OperationNotAllowed,
-                  "Variable <" << pot->variable(i).name()
+                  "Variable <" << pot.variable(i).name()
                                << "> is not in the parents of node " << id);
     }
 
@@ -257,16 +259,16 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void BayesNetFragment< GUM_SCALAR >::installMarginal(
-     NodeId id, const Potential< GUM_SCALAR >* pot) {
+     NodeId id, const Potential< GUM_SCALAR >& pot) {
     if (!isInstalledNode(id)) {
       GUM_ERROR(NotFound, "The node " << id << " is not part of this fragment");
     }
 
-    if (pot->nbrDim() > 1) {
+    if (pot.nbrDim() > 1) {
       GUM_ERROR(OperationNotAllowed, "The potential is not a marginal :" << pot);
     }
 
-    if (&(pot->variable(0)) != &(__bn.variable(id))) {
+    if (&(pot.variable(0)) != &(__bn.variable(id))) {
       GUM_ERROR(OperationNotAllowed,
                 "The potential is not a marginal for __bn.variable <"
                    << __bn.variable(id).name() << ">");

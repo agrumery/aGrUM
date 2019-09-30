@@ -221,7 +221,7 @@ namespace gum {
     }
 
     /**
-     * install a local marginal for a node into the fragment.
+     * install a local marginal BY COPY for a node into the fragment.
      * This function will remove all the arcs from the parents to the node.
      * @param id the nodeId
      * @param pot the potential
@@ -230,26 +230,26 @@ namespace gum {
      *variable
      *(or is not a marginal)
      **/
-    void installMarginal(NodeId id, const Potential< GUM_SCALAR >* pot);
+    void installMarginal(NodeId id, const Potential< GUM_SCALAR >& pot);
     void installMarginal(const std::string&             name,
-                         const Potential< GUM_SCALAR >* pot) {
+                         const Potential< GUM_SCALAR >& pot) {
       installMarginal(__bn.idFromName(name), pot);
     }
 
     /**
-     * install a local cpt for a node into the fragment.
+     * install a local cpt BY COPYfor a node into the fragment.
      * This function will change the arcs from the parents to the node in order
      *to be
      * consistent with the new local potential.
      * @param id the nodeId
-     * @param pot the potential<
+     * @param pot the potential to be copied
      *
      * @throw NotFound if the id is not in the fragment
      * @throw OperationNotAllowed if the potential is not compliant with the
      *variable or if  a variable in the CPT is not a parent in the referred bn.
      **/
-    void installCPT(NodeId id, const Potential< GUM_SCALAR >* pot);
-    void installCPT(const std::string& name, const Potential< GUM_SCALAR >* pot) {
+    void installCPT(NodeId id, const Potential< GUM_SCALAR >& pot);
+    void installCPT(const std::string& name, const Potential< GUM_SCALAR >& pot) {
       installCPT(__bn.idFromName(name), pot);
     };
 
@@ -291,10 +291,10 @@ namespace gum {
     // add an arc
     void _installArc(NodeId from, NodeId to);
 
-    // install a CPT, create or delete arcs. Checks are made in public methods
+    // install a CPT BY COPY, create or delete arcs. Checks are made in public methods
     // In particular, it is assumed that all the variables in the pot are in the
     // fragment
-    void _installCPT(NodeId id, const Potential< GUM_SCALAR >* pot);
+    void _installCPT(NodeId id, const Potential< GUM_SCALAR >& pot);
 
     /**
      * uninstall a local CPT. Does nothing if no local CPT for this nodeId

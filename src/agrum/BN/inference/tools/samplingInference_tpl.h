@@ -146,9 +146,7 @@ namespace gum {
       I.chgVal(this->BN().variable(hard), this->hardEvidence()[hard]);
 
       for (const auto& child : this->BN().children(hard)) {
-        auto p = new gum::Potential< GUM_SCALAR >();
-        *p = this->BN().cpt(child).extract(I);
-        __samplingBN->installCPT(child, p);
+        __samplingBN->installCPT(child, this->BN().cpt(child).extract(I));
       }
     }
 

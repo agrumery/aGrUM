@@ -490,9 +490,9 @@ namespace gum_tests {
       gum::BayesNetFragment< double > frag(bn);
       frag.installAscendants(bn.idFromName("v6"));   // 1->3->6
 
-      gum::Potential< double >* newV3 = new gum::Potential< double >();
-      (*newV3) << bn.variable(bn.idFromName("v3"));
-      newV3->fillWith({0.0, 1.0});
+      gum::Potential< double > newV3;
+      newV3 << bn.variable(bn.idFromName("v3"));
+      newV3.fillWith({0.0, 1.0});
       frag.installMarginal(frag.idFromName("v3"), newV3);   // 1   3->6
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)3);
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)1);
@@ -533,9 +533,9 @@ namespace gum_tests {
 
       TS_ASSERT(!frag.checkConsistency());
 
-      gum::Potential< double >* newV5 = new gum::Potential< double >();
-      (*newV5) << bn.variable(bn.idFromName("v5"));
-      newV5->fillWith({0.0, 0.0, 1.0});
+      gum::Potential< double > newV5;
+      newV5 << bn.variable(bn.idFromName("v5"));
+      newV5.fillWith({0.0, 0.0, 1.0});
       frag.installMarginal(frag.idFromName("v5"), newV5);   // 1-->3-->6 5
       TS_ASSERT(frag.checkConsistency());
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)4);
@@ -559,10 +559,10 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)5);
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)4);
 
-      gum::Potential< double >* newV5bis = new gum::Potential< double >();
-      (*newV5bis) << bn.variable(bn.idFromName("v5"))
-                  << bn.variable(bn.idFromName("v2"))
-                  << bn.variable(bn.idFromName("v3"));
+      gum::Potential< double > newV5bis;
+      newV5bis << bn.variable(bn.idFromName("v5"))
+               << bn.variable(bn.idFromName("v2"))
+               << bn.variable(bn.idFromName("v3"));
       frag.installCPT(frag.idFromName("v5"), newV5bis);
       TS_ASSERT(frag.checkConsistency());
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)5);
@@ -584,17 +584,16 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)6);
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)7);
 
-      gum::Potential< double >* newV5 = new gum::Potential< double >();
-      (*newV5) << bn.variable(bn.idFromName("v5"))
-               << bn.variable(bn.idFromName("v2"))
-               << bn.variable(bn.idFromName("v3"));
+      gum::Potential< double > newV5;
+      newV5 << bn.variable(bn.idFromName("v5")) << bn.variable(bn.idFromName("v2"))
+            << bn.variable(bn.idFromName("v3"));
 
       const gum::Potential< double >& pot2 = bn2.cpt(bn2.idFromName("v5"));
       gum::Instantiation              I(pot2);
-      gum::Instantiation              J(*newV5);
+      gum::Instantiation              J(newV5);
 
       for (I.setFirst(), J.setFirst(); !I.end(); ++I, ++J)
-        newV5->set(J, pot2[I]);
+        newV5.set(J, pot2[I]);
 
       frag.installCPT(frag.idFromName("v5"), newV5);
       TS_ASSERT(frag.checkConsistency());

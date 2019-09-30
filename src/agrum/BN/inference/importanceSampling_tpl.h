@@ -94,9 +94,8 @@ namespace gum {
   void ImportanceSampling< GUM_SCALAR >::_unsharpenBN(
      BayesNetFragment< GUM_SCALAR >* bn, float epsilon) {
     for (const auto nod : bn->nodes().asNodeSet()) {
-      auto p = new Potential< GUM_SCALAR >();
-      *p = bn->cpt(nod).isNonZeroMap().scale(epsilon) + bn->cpt(nod);
-      p->normalizeAsCPT();
+      auto p = bn->cpt(nod).isNonZeroMap().scale(epsilon) + bn->cpt(nod);
+      p.normalizeAsCPT();
       bn->installCPT(nod, p);
     }
   }
@@ -106,7 +105,7 @@ namespace gum {
      BayesNetFragment< GUM_SCALAR >* bn) {
     for (const auto ev : this->hardEvidenceNodes()) {
       bn->uninstallCPT(ev);
-      bn->installCPT(ev, new Potential< GUM_SCALAR >(*this->evidence()[ev]));
+      bn->installCPT(ev, *(this->evidence()[ev]));
       // we keep the variables with hard evidence but alone
       // bn->uninstallNode( sid[i] );
     }
