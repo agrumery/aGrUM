@@ -186,6 +186,54 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag2.sizeArcs(), (gum::Size)6);
     }
 
+    void testInstallNodesWithVar() {
+      gum::BayesNet< double > bn;
+      fill(bn);
+
+      gum::BayesNetFragment< double > frag(bn);
+
+      // install a node
+      TS_ASSERT_EQUALS(frag.size(), (gum::Size)0);
+      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode("v1"));
+      TS_ASSERT_EQUALS(frag.size(), (gum::Size)1);
+
+      // install twice the same node
+      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode("v1"));
+      TS_ASSERT_EQUALS(frag.size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)0);
+
+      // install a non-existing node
+      TS_ASSERT_THROWS(frag.installNode("v100"), gum::NotFound);
+      TS_ASSERT_EQUALS(frag.size(), (gum::Size)1);
+      TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)0);
+
+      // install a second node (without arc)
+      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode("v6"));
+      TS_ASSERT_EQUALS(frag.size(), (gum::Size)2);
+      TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)0);
+
+      // install a third node (and 2 arcs)
+      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode("v3"));
+      TS_ASSERT_EQUALS(frag.size(), (gum::Size)3);
+      TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)2);
+
+      // install ascendants (nothing should happen)
+      TS_GUM_ASSERT_THROWS_NOTHING(frag.installAscendants("v6"));
+      TS_ASSERT_EQUALS(frag.size(), (gum::Size)3);
+      TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)2);
+
+      // install ascendants (nothing should happen)
+      TS_GUM_ASSERT_THROWS_NOTHING(frag.installAscendants("v5"));
+      TS_ASSERT_EQUALS(frag.size(), (gum::Size)6);
+      TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)7);
+
+      // another test for ascendants
+      gum::BayesNetFragment< double > frag2(bn);
+      TS_GUM_ASSERT_THROWS_NOTHING(frag2.installAscendants("v5"));
+      TS_ASSERT_EQUALS(frag2.size(), (gum::Size)5);
+      TS_ASSERT_EQUALS(frag2.sizeArcs(), (gum::Size)6);
+    }
+
     void testUninstallNode() {
       gum::BayesNet< double > bn;
       fill(bn);
@@ -199,6 +247,23 @@ namespace gum_tests {
 
       // uninstall node 3 (in the middle)
       TS_GUM_ASSERT_THROWS_NOTHING(frag.uninstallNode(bn.idFromName("v3")));
+      TS_ASSERT_EQUALS(frag.size(), (gum::Size)2);
+      TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)0);
+    }
+
+    void testUninstallNodeWithNames() {
+      gum::BayesNet< double > bn;
+      fill(bn);
+
+      gum::BayesNetFragment< double > frag(bn);
+
+      // install ascendants (nothing should happen)
+      TS_GUM_ASSERT_THROWS_NOTHING(frag.installAscendants("v6"));
+      TS_ASSERT_EQUALS(frag.size(), (gum::Size)3);
+      TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)2);
+
+      // uninstall node 3 (in the middle)
+      TS_GUM_ASSERT_THROWS_NOTHING(frag.uninstallNode("v3"));
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)2);
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)0);
     }
@@ -237,6 +302,69 @@ namespace gum_tests {
       while (!I.end()) {
         float p = bn.cpt(bn.idFromName("v1"))[I] * bn.cpt(bn.idFromName("v3"))[I]
                   * bn.cpt(bn.idFromName("v6"))[I];
+        TS_ASSERT_DELTA(frag.jointProbability(I), p, 1e-5);
+        TS_ASSERT_DELTA(frag.log2JointProbability(I), log2(p), 1e-5);
+        ++I;
+      }
+
+      gum::Size count = 0;
+
+      for (const auto node : frag.nodes()) {
+        GUM_UNUSED(node);
+        count++;
+      }
+
+      TS_ASSERT_EQUALS(count, frag.size());
+
+      count = 0;
+
+      for (const auto arc : frag.arcs()) {
+        GUM_UNUSED(arc);
+        count++;
+      }
+
+      TS_ASSERT_EQUALS(count, frag.sizeArcs());
+
+      const auto& order = frag.topologicalOrder();
+      TS_ASSERT_EQUALS(order.size(), gum::Size(3));
+      TS_ASSERT_EQUALS(frag.variable(order.atPos(0)).name(), "v1");
+      TS_ASSERT_EQUALS(frag.variable(order.atPos(1)).name(), "v3");
+      TS_ASSERT_EQUALS(frag.variable(order.atPos(2)).name(), "v6");
+    }
+
+    void testIBayetNetMethodsWithoutLocalCPTsWithNames() {
+      gum::BayesNet< double > bn;
+      fill(bn);
+
+      gum::BayesNetFragment< double > frag(bn);
+
+      TS_ASSERT(frag.empty());
+      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode("v1"));
+      TS_ASSERT(!frag.empty());
+
+      TS_GUM_ASSERT_THROWS_NOTHING(frag.installNode("v6"));
+
+      TS_ASSERT_EQUALS(frag.dag().sizeNodes(), gum::Size(2));
+      TS_ASSERT_EQUALS(frag.dag().sizeArcs(), gum::Size(0));
+      TS_ASSERT_EQUALS(frag.size(), gum::Size(2));
+      TS_ASSERT_EQUALS(frag.dim(), gum::Size((3 - 1) + (2 - 1)));
+      TS_ASSERT_EQUALS(pow(10, frag.log10DomainSize()), 2 * 3);
+
+      TS_GUM_ASSERT_THROWS_NOTHING(frag.installAscendants("v6"));
+
+      TS_ASSERT_EQUALS(frag.dag().sizeNodes(), gum::Size(3));
+      TS_ASSERT_EQUALS(frag.dag().sizeArcs(), gum::Size(2));
+      TS_ASSERT_EQUALS(frag.size(), gum::Size(3));
+      TS_ASSERT_EQUALS(frag.dim(),
+                       gum::Size((2 * (3 - 1)) + (2 * (2 - 1)) + (2 - 1)));
+      TS_ASSERT_DELTA(pow(10, frag.log10DomainSize()), 2 * 2 * 3, 1e-5);
+
+      auto I = frag.completeInstantiation();
+      I.setFirst();
+      TS_ASSERT_EQUALS(I.toString(), "<v1:0|v3:0|v6:0>");
+
+      while (!I.end()) {
+        float p = bn.cpt("v1")[I] * bn.cpt("v3")[I] * bn.cpt("v6")[I];
         TS_ASSERT_DELTA(frag.jointProbability(I), p, 1e-5);
         TS_ASSERT_DELTA(frag.log2JointProbability(I), log2(p), 1e-5);
         ++I;

@@ -51,24 +51,24 @@ namespace gum {
   // signals to keep consistency with the referred BayesNet
   template < typename GUM_SCALAR >
   INLINE void BayesNetFragment< GUM_SCALAR >::whenNodeAdded(const void* src,
-                                                            NodeId id) noexcept {
+                                                            NodeId      id) {
     // nothing to do
   }
   template < typename GUM_SCALAR >
   INLINE void BayesNetFragment< GUM_SCALAR >::whenNodeDeleted(const void* src,
-                                                              NodeId id) noexcept {
+                                                              NodeId      id) {
     uninstallNode(id);
   }
   template < typename GUM_SCALAR >
   INLINE void BayesNetFragment< GUM_SCALAR >::whenArcAdded(const void* src,
                                                            NodeId      from,
-                                                           NodeId to) noexcept {
+                                                           NodeId      to) {
     // nothing to do
   }
   template < typename GUM_SCALAR >
   INLINE void BayesNetFragment< GUM_SCALAR >::whenArcDeleted(const void* src,
                                                              NodeId      from,
-                                                             NodeId to) noexcept {
+                                                             NodeId      to) {
     if (dag().existsArc(from, to)) _uninstallArc(from, to);
   }
 
@@ -137,8 +137,7 @@ namespace gum {
   //============================================================
   // specific API for BayesNetFragment
   template < typename GUM_SCALAR >
-  INLINE bool BayesNetFragment< GUM_SCALAR >::isInstalledNode(NodeId id) const
-     noexcept {
+  INLINE bool BayesNetFragment< GUM_SCALAR >::isInstalledNode(NodeId id) const {
     return dag().existsNode(id);
   }
 
@@ -171,7 +170,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE void BayesNetFragment< GUM_SCALAR >::uninstallNode(NodeId id) noexcept {
+  INLINE void BayesNetFragment< GUM_SCALAR >::uninstallNode(NodeId id) {
     if (isInstalledNode(id)) {
       this->_dag.eraseNode(id);
       uninstallCPT(id);
@@ -180,19 +179,18 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void BayesNetFragment< GUM_SCALAR >::_uninstallArc(NodeId from,
-                                                            NodeId to) noexcept {
+                                                            NodeId to) {
     this->_dag.eraseArc(Arc(from, to));
   }
 
   template < typename GUM_SCALAR >
-  INLINE void BayesNetFragment< GUM_SCALAR >::_installArc(NodeId from,
-                                                          NodeId to) noexcept {
+  INLINE void BayesNetFragment< GUM_SCALAR >::_installArc(NodeId from, NodeId to) {
     this->_dag.addArc(from, to);
   }
 
   template < typename GUM_SCALAR >
   void BayesNetFragment< GUM_SCALAR >::_installCPT(
-     NodeId id, const Potential< GUM_SCALAR >* pot) noexcept {
+     NodeId id, const Potential< GUM_SCALAR >* pot) {
     // topology
     const auto& parents = this->parents(id);
     for (auto node_it = parents.beginSafe(); node_it != parents.endSafe();
@@ -236,13 +234,13 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE void BayesNetFragment< GUM_SCALAR >::_uninstallCPT(NodeId id) noexcept {
+  INLINE void BayesNetFragment< GUM_SCALAR >::_uninstallCPT(NodeId id) {
     delete __localCPTs[id];
     __localCPTs.erase(id);
   }
 
   template < typename GUM_SCALAR >
-  INLINE void BayesNetFragment< GUM_SCALAR >::uninstallCPT(NodeId id) noexcept {
+  INLINE void BayesNetFragment< GUM_SCALAR >::uninstallCPT(NodeId id) {
     if (__localCPTs.exists(id)) {
       _uninstallCPT(id);
 
@@ -293,7 +291,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE bool BayesNetFragment< GUM_SCALAR >::checkConsistency() const noexcept {
+  INLINE bool BayesNetFragment< GUM_SCALAR >::checkConsistency() const {
     for (auto node : nodes())
       if (!checkConsistency(node)) return false;
 
