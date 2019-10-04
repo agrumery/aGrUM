@@ -70,8 +70,8 @@ namespace gum {
    * Copy Operator
    */
   template < typename GUM_SCALAR >
-  InfluenceDiagram< GUM_SCALAR >& InfluenceDiagram< GUM_SCALAR >::
-                                  operator=(const InfluenceDiagram< GUM_SCALAR >& source) {
+  InfluenceDiagram< GUM_SCALAR >& InfluenceDiagram< GUM_SCALAR >::operator=(
+     const InfluenceDiagram< GUM_SCALAR >& source) {
     if (this != &source) {
       DAGmodel::operator=(source);
       // Removing previous potentials
@@ -199,8 +199,7 @@ namespace gum {
         for (const auto chi : _dag.children(node))
           arcstream << tab << "\"" << variable(node).name() << "\""
                     << " -> "
-                    << "\"" << variable(chi).name() << "\""
-                    << ";" << std::endl;
+                    << "\"" << variable(chi).name() << "\";" << std::endl;
     }
 
     output << decisionNode.str() << std::endl

@@ -36,18 +36,13 @@
 
 namespace gum {
 
-  /* ===========================================================================
-   */
-  /* ===========================================================================
-   */
-  /* ===                  IMPLEMENTATION OF GUM_CLIQUE_GRAPH                 ===
-   */
-  /* ===========================================================================
-   */
-  /* ===========================================================================
-   */
+  /* =================================================================== */
+  /* =================================================================== */
+  /* ===                  IMPLEMENTATION OF GUM_CLIQUE_GRAPH         === */
+  /* =================================================================== */
+  /* =================================================================== */
 
-  /// basic constructor: creates an empty xsclique graph
+  /// basic constructor: creates an empty clique graph
 
   CliqueGraph::CliqueGraph(Size nodes_size,
                            bool nodes_resize_policy,
@@ -314,12 +309,13 @@ namespace gum {
   const std::string CliqueGraph::toDot() const {
     std::stringstream stream;
     stream << "graph {" << std::endl;
+    stream << "  node [style=\"filled\", fontcolor=\"black\"];" << std::endl;
 
     // cliques as nodes
     for (auto node : nodes()) {
       std::string nom = '"' + expandClique(node, clique(node)) + '"';
       stream << "  " << nom << " [label=\"" << expandCliqueContent(clique(node))
-             << "\",fillcolor =\"burlywood\",style=\"filled\"];" << std::endl;
+             << "\",fillcolor =\"burlywood\"];" << std::endl;
     }
 
     stream << std::endl;
@@ -332,7 +328,7 @@ namespace gum {
                                 edge.second(),
                                 clique(edge.second()))
              << "\" [label=\"" << expandCliqueContent(separator(edge)) << "\""
-             << ",shape=box,fillcolor=\"palegreen\",style=\"filled\",fontsize=8,"
+             << ",shape=box,fillcolor=\"palegreen\",fontsize=8,"
                 "width=0,height=0];"
              << std::endl;
     }

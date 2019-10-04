@@ -958,6 +958,8 @@ def getInferenceEngine(ie, inferenceCaption):
 
 # adding _repr_html_ to some pyAgrum classes !
 gum.BayesNet._repr_html_ = lambda self: getBN(self)
+gum.BayesNetFragment._repr_html_ = lambda self: getBN(self)
+
 gum.Potential._repr_html_ = lambda self: getPotential(self)
 gum.LazyPropagation._repr_html_ = lambda self: getInferenceEngine(
     self, "Lazy Propagation on this BN")
