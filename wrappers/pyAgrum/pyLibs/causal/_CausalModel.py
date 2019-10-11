@@ -95,6 +95,50 @@ class CausalModel:
         elif iy in self.__causalBN.parents(ix):
           self.eraseCausalArc(iy, ix)
 
+  def toDot(self):
+    res = "digraph {"
+
+    # latent variables
+    if gum.config['causal', 'show_latent_names'] == 'True':
+      shap = "ellipse"
+    else:
+      shap = "point"
+    res += '''
+    node [fillcolor="{}",
+          fontcolor="{}",
+          style=filled,shape={}];
+      ''' .format(gum.config['causal', "default_node_bgcolor"],
+                  gum.config['causal', "default_node_fgcolor"], shap)
+    res += "\n"
+
+    for n in self.nodes():
+      if n in self.latentVariablesIds():
+        res += '   "' + self.names()[n] + '";' + "\n"
+
+    # not latent variables
+    res += '''
+    node [fillcolor="{}",
+          fontcolor="{}",
+          style=filled,shape="ellipse"];
+      ''' .format(gum.config['causal', "default_node_bgcolor"],
+                  gum.config['causal', "default_node_fgcolor"])
+    res += "\n"
+
+    for n in self.nodes():
+      if n not in self.latentVariablesIds():
+        res += '   "' + self.names()[n] + '";' + "\n"
+
+    for a, b in self.arcs():
+      res += "    "+self.names()[a] + "->" + self.names()[b]
+      if a in self.latentVariablesIds() or b in self.latentVariablesIds():
+        res += ' [style="dashed"];'
+      else:
+        res += ' [color="black:black"];'
+      res+="\n"
+    
+    res += "\n};"
+    return res
+
   def causalBN(self) -> gum.BayesNet:
     """
     :return: the causal Bayesian network
