@@ -334,7 +334,7 @@ def _infdiag_todot(diag):
   res += "\n"
   for node in diag.ids():
     for chi in diag.children(node):
-      res += '  "'+diag.variable(node).name()+'"->"'+diag.variable(chi).name()+';'+"\n"
+      res += '  "'+diag.variable(node).name()+'"->"'+diag.variable(chi).name()+'";'+"\n"
   res += "}"
   return res
 
