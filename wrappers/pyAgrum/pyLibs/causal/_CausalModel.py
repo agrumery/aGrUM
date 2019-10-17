@@ -114,7 +114,6 @@ class CausalModel:
     for n in self.nodes():
       if n in self.latentVariablesIds():
         res += '   "' + self.names()[n] + '";' + "\n"
-
     # not latent variables
     res += '''
     node [fillcolor="{}",
@@ -129,11 +128,12 @@ class CausalModel:
         res += '   "' + self.names()[n] + '";' + "\n"
 
     for a, b in self.arcs():
-      res += "    "+self.names()[a] + "->" + self.names()[b]
+      res += '   "'+self.names()[a] + '"->"' + self.names()[b]+'" '
       if a in self.latentVariablesIds() or b in self.latentVariablesIds():
         res += ' [style="dashed"];'
       else:
-        res += ' [color="black:black"];'
+        black_color=gum.config['notebook','default_arc_color']
+        res += ' [color="'+black_color+':'+black_color+'"];'
       res+="\n"
     
     res += "\n};"
