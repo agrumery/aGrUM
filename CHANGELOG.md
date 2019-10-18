@@ -3,6 +3,12 @@
 ## Changelog for 0.16.2
 
 * pyAgrum
+  * wrapper for the class `gum::BayesNetFragment` 
+  * typos in dot methods for Influence Diagrams and Causal Models
+
+## Changelog for 0.16.2
+
+* pyAgrum
   *  remove the use of 'f-strings' in `pyAgrum.lib.notebook.py` 
 
 ## Changelog for 0.16.1
