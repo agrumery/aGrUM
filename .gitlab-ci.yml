@@ -167,20 +167,20 @@ windows_agrum_2015:
     - windows
     - conda
   variables:
-    PATH: "C:\\ProgramData\\Anaconda3\\Scripts;C:\\ProgramData\\Anaconda3;C:\\Program Files (x86)\\MSBuild\\14.0\\Bin;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Git\\cmd;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Program Files\\dotnet\\;C:\\Users\\aGrUM\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Program Files (x86)\\Windows Kits\\8.1\\bin\\x64;"
+    PATH: "C:\\ProgramData\\Anaconda3\\Scripts;C:\\ProgramData\\Anaconda3;C:\\ProgramData\\Anaconda3\\Library\\bin;C:\\ProgramData\\Anaconda3;C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\MSBuild\\15.0\\Bin;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Git\\cmd;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Program Files\\dotnet\\;C:\\Users\\aGrUM\\AppData\\Local\\Microsoft\\WindowsApps;"
   cache:
     key: mvsc
     paths:
       - build/
   stage: build
   script:
-    - conda create -n "gitlab-ci-%CI_JOB_ID%" python=3.7
-    - call activate "gitlab-ci-%CI_JOB_ID%"
-    - conda install -y numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
+    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" python=3.7
+    - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
+    - call conda.bat install -y numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
     - python act clean
     - python act --no-fun --mvsc -d build -j halfexcept1 test release aGrUM 
-    - call activate py37
-    - conda remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
+    - call conda.bat deactivate
+    - call conda.bat remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
   retry: 2
 
 windows_pyagrum_2015:
@@ -192,20 +192,20 @@ windows_pyagrum_2015:
     - windows
     - conda
   variables:
-    PATH: "C:\\ProgramData\\Anaconda3\\Scripts;C:\\ProgramData\\Anaconda3;C:\\Program Files (x86)\\MSBuild\\14.0\\Bin;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Git\\cmd;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Program Files\\dotnet\\;C:\\Users\\aGrUM\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Program Files (x86)\\Windows Kits\\8.1\\bin\\x64;"
+    PATH: "C:\\ProgramData\\Anaconda3\\Scripts;C:\\ProgramData\\Anaconda3;C:\\ProgramData\\Anaconda3\\Library\\bin;C:\\ProgramData\\Anaconda3;C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\MSBuild\\15.0\\Bin;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Git\\cmd;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Program Files\\dotnet\\;C:\\Users\\aGrUM\\AppData\\Local\\Microsoft\\WindowsApps;"
   cache:
     key: mvsc
     paths:
       - build/
   stage: build
   script:
-    - conda create -n "gitlab-ci-%CI_JOB_ID%" python=3.7
-    - call activate "gitlab-ci-%CI_JOB_ID%"
-    - conda install -y numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
+    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" python=3.7
+    - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
+    - call conda.bat install -y numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
     - python act clean
     - python act --no-fun test release pyAgrum --no-fun --mvsc -d build -j halfexcept1 -t quick
-    - call activate py37
-    - conda remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
+    - call conda.bat deactivate
+    - call conda.bat remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
   retry: 2
 
 windows_agrum_2017:
@@ -217,20 +217,20 @@ windows_agrum_2017:
     - windows
     - conda
   variables:
-    PATH: "C:\\ProgramData\\Anaconda3\\Scripts;C:\\ProgramData\\Anaconda3;C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\MSBuild\\15.0\\Bin;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Git\\cmd;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Program Files\\dotnet\\;C:\\Users\\aGrUM\\AppData\\Local\\Microsoft\\WindowsApps;"
+    PATH: "C:\\ProgramData\\Anaconda3\\Scripts;C:\\ProgramData\\Anaconda3;C:\\ProgramData\\Anaconda3\\Library\\bin;C:\\ProgramData\\Anaconda3;C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\MSBuild\\15.0\\Bin;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Git\\cmd;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Program Files\\dotnet\\;C:\\Users\\aGrUM\\AppData\\Local\\Microsoft\\WindowsApps;"
   cache:
     key: mvsc17
     paths:
       - build/
   stage: build
   script:
-    - conda create -n "gitlab-ci-%CI_JOB_ID%" python=3.7
-    - call activate "gitlab-ci-%CI_JOB_ID%"
-    - conda install -y numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
+    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" python=3.7
+    - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
+    - call conda.bat install -y numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
     - python act clean
     - python act --no-fun test release aGrUM --no-fun --mvsc17 -d build -j halfexcept1
-    - call activate py37
-    - conda remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
+    - call conda.bat deactivate
+    - call conda.bat remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
   retry: 2
 
 windows_pyagrum_2017:
@@ -242,20 +242,20 @@ windows_pyagrum_2017:
     - windows
     - conda
   variables:
-    PATH: "C:\\ProgramData\\Anaconda3\\Scripts;C:\\ProgramData\\Anaconda3;C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\MSBuild\\15.0\\Bin;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Git\\cmd;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Program Files\\dotnet\\;C:\\Users\\aGrUM\\AppData\\Local\\Microsoft\\WindowsApps;"
+    PATH: "C:\\ProgramData\\Anaconda3\\Scripts;C:\\ProgramData\\Anaconda3;C:\\ProgramData\\Anaconda3\\Library\\bin;C:\\ProgramData\\Anaconda3;C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\MSBuild\\15.0\\Bin;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Git\\cmd;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Program Files\\dotnet\\;C:\\Users\\aGrUM\\AppData\\Local\\Microsoft\\WindowsApps;"
   cache:
     key: mvsc17
     paths:
       - build/
   stage: build
   script:
-    - conda create -n "gitlab-ci-%CI_JOB_ID%" python=3.7
-    - call activate "gitlab-ci-%CI_JOB_ID%"
-    - conda install -y numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
+    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" python=3.7
+    - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
+    - call conda.bat install -y numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
     - python act clean
     - python act --no-fun test release pyAgrum --no-fun --mvsc17 -d build -j halfexcept1 -t quick
-    - call activate py37
-    - conda remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
+    - call conda.bat deactivate
+    - call conda.bat remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
   retry: 2
 
 ################################################################################
