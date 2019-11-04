@@ -328,38 +328,56 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/asia3.csv'))
     learner.addPossibleEdge("smoking?", "lung_cancer?")
     learner.addPossibleEdge("bronchitis?", "smoking?")
+    possiblearcs = {(bn.idFromName("lung_cancer?"),bn.idFromName("smoking?")),
+                    (bn.idFromName("smoking?"),bn.idFromName("lung_cancer?")),
+                    (bn.idFromName("bronchitis?"),bn.idFromName("smoking?")),
+                    (bn.idFromName("smoking?"),bn.idFromName("bronchitis?"))}
+
     bn = learner.learnBN()
     self.assertEqual(bn.sizeArcs(), 2)
-    self.assertEqual(bn.parents(bn.idFromName("lung_cancer?")), {bn.idFromName("smoking?")})
-    self.assertEqual(bn.parents(bn.idFromName("bronchitis?")), {bn.idFromName("smoking?")})
+    self.assertTrue(possiblearcs.issuperset(bn.arcs()))
 
     # mixed with a forbidden arc
     learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/asia3.csv'))
     learner.addPossibleEdge("smoking?", "lung_cancer?")
     learner.addPossibleEdge("bronchitis?", "smoking?")
     learner.addForbiddenArc("smoking?", "bronchitis?")
+
+    possiblearcs = {(bn.idFromName("lung_cancer?"),bn.idFromName("smoking?")),
+                    (bn.idFromName("smoking?"),bn.idFromName("lung_cancer?")),
+                    (bn.idFromName("bronchitis?"),bn.idFromName("smoking?")),
+                    (bn.idFromName("smoking?"),bn.idFromName("bronchitis?"))}
+
+    forbiddenarcs = {(bn.idFromName("smoking?"),bn.idFromName("bronchitis?"))}
+
     bn = learner.learnBN()
     self.assertEqual(bn.sizeArcs(), 2)
-    self.assertEqual(bn.parents(bn.idFromName("lung_cancer?")), {bn.idFromName("smoking?")})
-    self.assertEqual(bn.parents(bn.idFromName("smoking?")), {bn.idFromName("bronchitis?")})
+    self.assertTrue(possiblearcs.issuperset(bn.arcs()))
+    self.assertTrue(forbiddenarcs.isdisjoint(bn.arcs()));
 
     # mixed with a mandatory arc
     learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/asia3.csv'))
     learner.addPossibleEdge("smoking?", "lung_cancer?")
     learner.addPossibleEdge("bronchitis?", "smoking?")
     learner.addMandatoryArc("visit_to_Asia?", "bronchitis?")
+
+    testedarcs = {(bn.idFromName("lung_cancer?"),bn.idFromName("smoking?")),
+                  (bn.idFromName("smoking?"),bn.idFromName("lung_cancer?")),
+                  (bn.idFromName("bronchitis?"),bn.idFromName("smoking?")),
+                  (bn.idFromName("smoking?"),bn.idFromName("bronchitis?")),
+                  (bn.idFromName("visit_to_Asia?"),bn.idFromName("bronchitis?"))}
+
     bn = learner.learnBN()
     self.assertEqual(bn.sizeArcs(), 3)
-    self.assertEqual(bn.parents(bn.idFromName("lung_cancer?")), {bn.idFromName("smoking?")})
-    self.assertEqual(bn.parents(bn.idFromName("smoking?")), {bn.idFromName("bronchitis?")})
-    self.assertEqual(bn.parents(bn.idFromName("bronchitis?")), {bn.idFromName("visit_to_Asia?")})
+    self.assertTrue(testedarcs.issuperset(bn.arcs()))
 
-  def testPossibleEdge(self):
+  def testPossibleEdgeWithTabuList(self):
     # possible edges are not relevant
     learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/asia3.csv'))
     learner.useLocalSearchWithTabuList()
     learner.addPossibleEdge("visit_to_Asia?", "lung_cancer?")
     learner.addPossibleEdge("visit_to_Asia?", "smoking?")
+
     bn = learner.learnBN()
     self.assertEqual(bn.sizeArcs(), 0)
 
@@ -368,10 +386,14 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     learner.useLocalSearchWithTabuList()
     learner.addPossibleEdge("smoking?", "lung_cancer?")
     learner.addPossibleEdge("bronchitis?", "smoking?")
+    possiblearcs = {(bn.idFromName("lung_cancer?"),bn.idFromName("smoking?")),
+                    (bn.idFromName("smoking?"),bn.idFromName("lung_cancer?")),
+                    (bn.idFromName("bronchitis?"),bn.idFromName("smoking?")),
+                    (bn.idFromName("smoking?"),bn.idFromName("bronchitis?"))}
+
     bn = learner.learnBN()
     self.assertEqual(bn.sizeArcs(), 2)
-    self.assertEqual(bn.parents(bn.idFromName("lung_cancer?")), {bn.idFromName("smoking?")})
-    self.assertEqual(bn.parents(bn.idFromName("bronchitis?")), {bn.idFromName("smoking?")})
+    self.assertTrue(possiblearcs.issuperset(bn.arcs()))
 
     # mixed with a forbidden arc
     learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/asia3.csv'))
@@ -379,10 +401,17 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     learner.addPossibleEdge("smoking?", "lung_cancer?")
     learner.addPossibleEdge("bronchitis?", "smoking?")
     learner.addForbiddenArc("smoking?", "bronchitis?")
+
+    possiblearcs = {(bn.idFromName("lung_cancer?"),bn.idFromName("smoking?")),
+                    (bn.idFromName("smoking?"),bn.idFromName("lung_cancer?")),
+                    (bn.idFromName("bronchitis?"),bn.idFromName("smoking?")),
+                    (bn.idFromName("smoking?"),bn.idFromName("bronchitis?"))}
+
+    forbiddenarcs = {(bn.idFromName("smoking?"),bn.idFromName("bronchitis?"))}
     bn = learner.learnBN()
     self.assertEqual(bn.sizeArcs(), 2)
-    self.assertEqual(bn.parents(bn.idFromName("lung_cancer?")), {bn.idFromName("smoking?")})
-    self.assertEqual(bn.parents(bn.idFromName("smoking?")), {bn.idFromName("bronchitis?")})
+    self.assertTrue(possiblearcs.issuperset(bn.arcs()))
+    self.assertTrue(forbiddenarcs.isdisjoint(bn.arcs()));
 
     # mixed with a mandatory arc
     learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/asia3.csv'))
@@ -390,11 +419,16 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     learner.addPossibleEdge("smoking?", "lung_cancer?")
     learner.addPossibleEdge("bronchitis?", "smoking?")
     learner.addMandatoryArc("visit_to_Asia?", "bronchitis?")
+
+    testedarcs = {(bn.idFromName("lung_cancer?"),bn.idFromName("smoking?")),
+                    (bn.idFromName("smoking?"),bn.idFromName("lung_cancer?")),
+                    (bn.idFromName("bronchitis?"),bn.idFromName("smoking?")),
+                    (bn.idFromName("smoking?"),bn.idFromName("bronchitis?")),
+                    (bn.idFromName("visit_to_Asia?"),bn.idFromName("bronchitis?"))}
+
     bn = learner.learnBN()
     self.assertEqual(bn.sizeArcs(), 3)
-    self.assertEqual(bn.parents(bn.idFromName("lung_cancer?")), {bn.idFromName("smoking?")})
-    self.assertEqual(bn.parents(bn.idFromName("bronchitis?")),
-                     {bn.idFromName("smoking?"), bn.idFromName("visit_to_Asia?")})
+    self.assertTrue(testedarcs.issuperset(bn.arcs()))
 
   def testHybridLearning(self):
     learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/data1.csv'))
