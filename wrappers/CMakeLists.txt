@@ -15,6 +15,11 @@ if (USE_SWIG)
       cmake_policy (SET CMP0078 NEW)
     endif ()
 
+    if (POLICY CMP0086)
+      # UseSWIG honors SWIG_MODULE_NAME via -module
+      cmake_policy (SET CMP0086 NEW)
+    endif ()
+
     include (${SWIG_USE_FILE})
 
   else ()
