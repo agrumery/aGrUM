@@ -78,14 +78,14 @@ IGNORE '\r' + eol + '\t'
 PRODUCTIONS
 
 //==============
-STRING<std::string& str> = string (. str=narrow(t->val); .).
+STRING<std::string& str> = string (. str=narrow(t->val);str.erase(std::remove(str.begin(),str.end(),'\"'),str.end()); .).
 
 //==============
 IDENT<std::string& name> = ident  (. name=narrow(t->val); .).
 
 //==============
 ELT_LIST<std::string& val> =
-    (string | number | integer | ident)  (.val=narrow(t->val); .)
+    (string | number | integer | ident)  (.val=narrow(t->val);val.erase(std::remove(val.begin(),val.end(),'\"'),val.end()); .)
 .
 
 //==============

@@ -110,7 +110,7 @@ bool Parser::WeakSeparator( int n, int syFol, int repFol ) {
 
 void Parser::STRING(std::string& str) {
 		Expect(_string);
-		str=narrow(t->val); 
+		str=narrow(t->val);str.erase(std::remove(str.begin(),str.end(),'\"'),str.end()); 
 }
 
 void Parser::IDENT(std::string& name) {
@@ -128,7 +128,7 @@ void Parser::ELT_LIST(std::string& val) {
 		} else if (la->kind == _ident) {
 			Get();
 		} else SynErr(18);
-		val=narrow(t->val); 
+		val=narrow(t->val);val.erase(std::remove(val.begin(),val.end(),'\"'),val.end()); 
 }
 
 void Parser::PURE_LIST(std::vector<std::string>& vals ) {
