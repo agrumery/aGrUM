@@ -679,7 +679,7 @@ def getInference(bn, engine=None, evs=None, targets=None, size=None,  nodeColor=
   return getGraph(BNinference2dot(bn, size, engine, evs, targets,  nodeColor, arcWidth, arcColor, cmap, cmapArc), size)
 
 
-def _reprPotential(pot, digits=4, withColors=True, varnames=None, asString=False):
+def _reprPotential(pot, digits=None, withColors=True, varnames=None, asString=False):
   """
   return a representation of a gum.Potential as a HTML table.
   The first dimension is special (horizontal) due to the representation of conditional probability table
@@ -705,8 +705,14 @@ def _reprPotential(pot, digits=4, withColors=True, varnames=None, asString=False
       b = 100
       s += "color:black;background-color:" + _rgb(r, g, b) + ";"
     s += "text-align:right;'>{:." + \
-        gum.config['notebook', 'potential_visible_digits'] + "f}</td>"
+        digits + "f}</td>"
     return s.format(val)
+
+  if digits is None:
+    digits=gum.config['notebook', 'potential_visible_digits']
+
+  if gum.config["notebook", "potential_with_colors"] == "False":
+    withColors = False
 
   html = list()
   html.append('<table style="border:1px solid black;">')
@@ -820,7 +826,7 @@ def __isKindOfProba(pot):
   return True
 
 
-def showPotential(pot, digits=4, withColors=None, varnames=None):
+def showPotential(pot, digits=None, withColors=None, varnames=None):
   """
   show a gum.Potential as a HTML table.
   The first dimension is special (horizontal) due to the representation of conditional probability table
@@ -832,13 +838,16 @@ def showPotential(pot, digits=4, withColors=None, varnames=None):
   :return: the display of the potential
   """
   if withColors is None:
-    withColors = __isKindOfProba
+    if gum.config["notebook", "potential_with_colors"] == "False":
+      withColors = False
+    else:
+      withColors = __isKindOfProba(pot)
 
   display(_reprPotential(
       pot, digits, withColors, varnames, asString=False))
 
 
-def getPotential(pot, digits=4, withColors=None, varnames=None):
+def getPotential(pot, digits=None, withColors=None, varnames=None):
   """
   return a HTML string of a gum.Potential as a HTML table.
   The first dimension is special (horizontal) due to the representation of conditional probability table
@@ -850,7 +859,10 @@ def getPotential(pot, digits=4, withColors=None, varnames=None):
   :return: the HTML string
   """
   if withColors is None:
-    withColors = __isKindOfProba(pot)
+    if gum.config["notebook", "potential_with_colors"] == "False":
+      withColors = False
+    else:
+      withColors = __isKindOfProba(pot)
 
   return _reprPotential(pot, digits, withColors, varnames, asString=True)
 
