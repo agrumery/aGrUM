@@ -704,8 +704,7 @@ def _reprPotential(pot, digits=None, withColors=True, varnames=None, asString=Fa
       g = int(127 + val * 128)
       b = 100
       s += "color:black;background-color:" + _rgb(r, g, b) + ";"
-    s += "text-align:right;'>{:." + \
-        digits + "f}</td>"
+    s += "text-align:right;'>{:." + str(digits) + "f}</td>"
     return s.format(val)
 
   if digits is None:
