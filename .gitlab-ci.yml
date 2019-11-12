@@ -178,7 +178,7 @@ windows_agrum_2015:
     - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
     - call conda.bat install -y numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
     - python act clean
-    - python act --no-fun --mvsc -d build -j halfexcept1 test release aGrUM 
+    - python act --no-fun --mvsc -d build -j except1 test release aGrUM 
     - call conda.bat deactivate
     - call conda.bat remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
   retry: 2
@@ -203,7 +203,7 @@ windows_pyagrum_2015:
     - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
     - call conda.bat install -y numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
     - python act clean
-    - python act --no-fun test release pyAgrum --no-fun --mvsc -d build -j halfexcept1 -t quick
+    - python act --no-fun test release pyAgrum --no-fun --mvsc -d build -j except1 -t quick
     - call conda.bat deactivate
     - call conda.bat remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
   retry: 2
@@ -228,7 +228,7 @@ windows_agrum_2017:
     - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
     - call conda.bat install -y numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
     - python act clean
-    - python act --no-fun test release aGrUM --no-fun --mvsc17 -d build -j halfexcept1
+    - python act --no-fun test release aGrUM --no-fun --mvsc17 -d build -j except1
     - call conda.bat deactivate
     - call conda.bat remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
   retry: 2
@@ -253,7 +253,7 @@ windows_pyagrum_2017:
     - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
     - call conda.bat install -y numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
     - python act clean
-    - python act --no-fun test release pyAgrum --no-fun --mvsc17 -d build -j halfexcept1 -t quick
+    - python act --no-fun test release pyAgrum --no-fun --mvsc17 -d build -j except1 -t quick
     - call conda.bat deactivate
     - call conda.bat remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
   retry: 2
