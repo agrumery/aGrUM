@@ -9,7 +9,7 @@ from pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 
 class SamplingTestCase(pyAgrumTestCase):
-  def iterTest(self, goalPotential, inferenceEngine, target, evs, seuil=0.1, nbr=10):
+  def iterTest(self, goalPotential, inferenceEngine, target, evs, seuil=0.1, nbr=20):
     min = 1000
 
     for i in range(nbr):
