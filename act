@@ -36,7 +36,7 @@ def main():
   (options, args)=parseCommandLine(current)
 
   msvcForced=False
-  if options.mvsc or options.mvsc32 or options.mvsc17 or options.mvsc17_32:
+  if options.mvsc or options.mvsc32 or options.mvsc17 or options.mvsc17_32 or options.mvsc19 or options.mvsc19_32:
     options.static_lib=True
     options.no_fun=True
     msvcForced=True
@@ -57,7 +57,7 @@ def main():
   about()
 
   if msvcForced:
-    notif("Options [static] and [no-fun] forced by option [mvsc], [mvsc32] or [mvsc17] or [mvsc17_32]")
+    notif("Options [static] and [no-fun] forced by option [mvsc], [mvsc32] or [mvsc17] or [mvsc17_32] or [mvsc19] or [mvsc19_32]")
     print()
 
   if mingwForced:
