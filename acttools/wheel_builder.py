@@ -129,6 +129,10 @@ def install_pyAgrum(current, tmp, nightly=False):
       options = "{0} --mvsc17".format(options)
     elif current['mvsc17_32']:
       options = "{0} --mvsc17_32".format(options)
+    elif current['mvsc19']:
+      options = "{0} --mvsc19".format(options)
+    elif current['mvsc19_32']:
+      options = "{0} --mvsc19_32".format(options)
     elif current['mingw64']:
       options = "{0} --mingw64".format(options)
   else:
