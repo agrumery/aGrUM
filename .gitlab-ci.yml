@@ -259,6 +259,60 @@ windows_pyagrum_2017:
     - call conda.bat remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
   retry: 1
 
+# TO-DO : rewrie vs2019 jobs
+
+windows_agrum_2019:
+  only:
+    - master@agrumery/aGrUM
+    - web@agrumery/aGrUM
+    - merge_requests
+    - vs2019
+  tags:
+    - windows
+    - conda
+  variables:
+    PATH: "C:\\ProgramData\\Anaconda3-64;C:\\ProgramData\\Anaconda3-64\\Scripts;C:\\ProgramData\\Anaconda3-64\\Library\\bin;C:\\Windows;C:\\Windows\\system32;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\OpenSSH\\;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Users\\aGrUM\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\MSBuild\\current\\Bin;"
+  cache:
+    key: mvsc19
+    paths:
+      - build/
+  stage: build
+  script:
+    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" python=3.7
+    - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
+    - call conda.bat install -y numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
+    - python act clean
+    - python act --no-fun test release aGrUM --no-fun --mvsc19 -d build -j halfexcept1
+    - call conda.bat deactivate
+    - call conda.bat remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
+  retry: 2
+
+windows_pyagrum_2019:
+  only:
+   - master@agrumery/aGrUM
+   - web@agrumery/aGrUM
+   - merge_requests
+  tags:
+    - windows
+    - conda
+    - vs2019
+  variables:
+    PATH: "C:\\ProgramData\\Anaconda3-64;C:\\ProgramData\\Anaconda3-64\\Scripts;C:\\ProgramData\\Anaconda3-64\\Library\\bin;C:\\Windows;C:\\Windows\\system32;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\OpenSSH\\;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Users\\aGrUM\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\MSBuild\\current\\Bin;"
+  cache:
+    key: mvsc19
+    paths:
+      - build/
+  stage: build
+  script:
+    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" python=3.7
+    - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
+    - call conda.bat install -y numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
+    - python act clean
+    - python act --no-fun test release pyAgrum --no-fun --mvsc19 -d build -j halfexcept1 -t quick
+    - call conda.bat deactivate
+    - call conda.bat remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
+  retry: 2
+
 ################################################################################
 # Deploy  wheels
 ################################################################################
