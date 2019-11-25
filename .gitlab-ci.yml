@@ -271,7 +271,7 @@ windows_agrum_2019:
     - windows
     - conda
   variables:
-    PATH: "C:\\ProgramData\\Anaconda3-64;C:\\ProgramData\\Anaconda3-64\\Scripts;C:\\ProgramData\\Anaconda3-64\\Library\\bin;C:\\Windows;C:\\Windows\\system32;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\OpenSSH\\;C:\\Program Files\\Git\\cmd;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Users\\aGrUM\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\MSBuild\\current\\Bin;"
+    PATH: $PATH_64_MVSC19_AGRUMERIE2
   cache:
     key: mvsc19
     paths:
@@ -297,7 +297,7 @@ windows_pyagrum_2019:
     - conda
     - vs2019
   variables:
-    PATH: "C:\\ProgramData\\Anaconda3-64;C:\\ProgramData\\Anaconda3-64\\Scripts;C:\\ProgramData\\Anaconda3-64\\Library\\bin;C:\\Program Files\\Git\\cmd;C:\\Windows;C:\\Windows\\system32;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\OpenSSH\\;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Users\\aGrUM\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\MSBuild\\current\\Bin;"
+    PATH: $PATH_64_MVSC19_AGRUMERIE2
   cache:
     key: mvsc19
     paths:
