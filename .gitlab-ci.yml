@@ -168,7 +168,7 @@ windows_agrum_2015:
     - conda
     - vs2015
   variables:
-    PATH: "C:\\ProgramData\\Anaconda3;C:\\ProgramData\\Anaconda3\\Scripts;C:\\ProgramData\\Anaconda3\\Library\\bin;C:\\Program Files (x86)\\MSBuild\\14.0\\Bin;C:\\WINDOWS;C:\\WINDOWS\\system32;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Git\\cmd;C:\\Program Files\\dotnet\\;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Program Files (x86)\\Windows Kits\\8.1\\bin\\x64;C:\\Users\\aGrUM\\AppData\\Local\\Microsoft\\WindowsApps;"
+    PATH: $PATH_64_MVSC15_AGRUMERIE
   cache:
     key: mvsc
     paths:
@@ -194,7 +194,7 @@ windows_pyagrum_2015:
     - conda
     - vs2015
   variables:
-    PATH: "C:\\ProgramData\\Anaconda3;C:\\ProgramData\\Anaconda3\\Scripts;C:\\ProgramData\\Anaconda3\\Library\\bin;C:\\Program Files (x86)\\MSBuild\\14.0\\Bin;C:\\WINDOWS;C:\\WINDOWS\\system32;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Git\\cmd;C:\\Program Files\\dotnet\\;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Program Files (x86)\\Windows Kits\\8.1\\bin\\x64;C:\\Users\\aGrUM\\AppData\\Local\\Microsoft\\WindowsApps;"
+    PATH: $PATH_64_MVSC15_AGRUMERIE
   cache:
     key: mvsc
     paths:
@@ -220,7 +220,7 @@ windows_agrum_2017:
     - conda
     - vs2017
   variables:
-    PATH: "C:\\ProgramData\\Anaconda3;C:\\ProgramData\\Anaconda3\\Scripts;C:\\ProgramData\\Anaconda3\\Library\\bin;C:\\WINDOWS;C:\\WINDOWS\\system32;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Git\\cmd;C:\\Program Files\\dotnet\\;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Users\\aGrUM\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\MSBuild\\15.0\\Bin;"
+    PATH: $PATH_64_MVSC17_AGRUMERIE
   cache:
     key: mvsc17
     paths:
@@ -246,7 +246,7 @@ windows_pyagrum_2017:
     - conda
     - vs2017
   variables:
-    PATH: "C:\\ProgramData\\Anaconda3;C:\\ProgramData\\Anaconda3\\Scripts;C:\\ProgramData\\Anaconda3\\Library\\bin;C:\\WINDOWS;C:\\WINDOWS\\system32;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Git\\cmd;C:\\Program Files\\dotnet\\;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Users\\aGrUM\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\MSBuild\\15.0\\Bin;"
+    PATH: $PATH_64_MVSC17_AGRUMERIE
   cache:
     key: mvsc17
     paths:
@@ -272,7 +272,7 @@ windows_agrum_2019:
     - windows
     - conda
   variables:
-    PATH: "C:\\ProgramData\\Anaconda3-64;C:\\ProgramData\\Anaconda3-64\\Scripts;C:\\ProgramData\\Anaconda3-64\\Library\\bin;C:\\Windows;C:\\Windows\\system32;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\OpenSSH\\;C:\\Program Files\\Git\\cmd;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Users\\aGrUM\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\MSBuild\\current\\Bin;"
+    PATH: $PATH_64_MVSC19_AGRUMERIE2
   cache:
     key: mvsc19
     paths:
@@ -298,7 +298,7 @@ windows_pyagrum_2019:
     - conda
     - vs2019
   variables:
-    PATH: "C:\\ProgramData\\Anaconda3-64;C:\\ProgramData\\Anaconda3-64\\Scripts;C:\\ProgramData\\Anaconda3-64\\Library\\bin;C:\\Program Files\\Git\\cmd;C:\\Windows;C:\\Windows\\system32;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\OpenSSH\\;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Users\\aGrUM\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\MSBuild\\current\\Bin;"
+    PATH: $PATH_64_MVSC19_AGRUMERIE2
   cache:
     key: mvsc19
     paths:
