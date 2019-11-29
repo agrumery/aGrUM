@@ -1,6 +1,7 @@
 # -*- encoding: UTF-8 -*-
 
 import math
+import random
 
 import numpy as np
 import pyAgrum as gum
@@ -872,6 +873,33 @@ class TestOperators(pyAgrumTestCase):
         self.assertTrue(min <= p.get(I) <= max)
         I.inc()
       alpha += 0.1
+
+  def testLoopIn(self):
+    u = gum.LabelizedVariable("u", "u", 4)
+    v = gum.RangeVariable("v", "v", 1,5)
+    w = gum.DiscretizedVariable("w", "w", [-2, -0.5, 1, 2.5])
+
+    p = gum.Potential().fillWith(0)
+    s = 0
+    for i in p.loopIn():
+      s+=p.get(i)
+    self.assertEqual(s, 0)
+    
+    p = gum.Potential().fillWith(42)
+    s = 0
+    for i in p.loopIn():
+      s+=p.get(i)
+    self.assertEqual(s,42)
+
+    p.add(u).add(v).add(w)    
+    for i in p.loopIn():
+      p.set(i,random.choice([1,2,3]))
+    
+    s = 0
+    for i in p.loopIn():
+      s+=p.get(i)
+    self.assertEqual(s,p.sum())
+
 
 
 ts = unittest.TestSuite()

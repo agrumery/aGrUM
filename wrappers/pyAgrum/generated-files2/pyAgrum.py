@@ -8552,6 +8552,29 @@ class Potential(object):
         """
         return _pyAgrum.Potential___ne__(self, *args)
 
+
+    def loopIn(self):
+      """
+      Generator to iterate inside a Potential. 
+
+      Yield an gum.Instantiation that iterates over all the possible values for the gum.Potential
+
+      Examples
+      --------
+      >>> import pyAgrum as gum
+      >>> bn=gum.fastBN("A[3]->B[3]<-C[3]")
+      >>> for i in bn.cpt("B").loopIn():
+            print(i)
+            print(bn.cpt("B").get(i))
+            bn.cpt("B").set(i,0.3) 
+      """
+      i=Instantiation(self)
+      i.setFirst()
+      while not i.end():
+        yield i
+        i.inc()
+      return
+
     def fillWithFunction(self,s,noise=None):
       """
       Automatically fills the potential as a (quasi) deterministic CPT with the evaluation of the expression s.
