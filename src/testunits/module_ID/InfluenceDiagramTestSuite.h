@@ -18,24 +18,6 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-
-
-/***************************************************************************
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- *   This program is distributed in the hope that it wil be useful,        *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   (gumSize) 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.   *
- ***************************************************************************/
 #include <cstdio>
 #include <fstream>
 #include <iostream>
@@ -111,68 +93,15 @@ namespace gum_tests {
       fillTopo(id, idList);
 
       try {
-        const gum::Potential< double >& p1 = id.cpt(idList[4]);
-        {
-          // FILLING PARAMS
-          const float                 t[4] = {0.2f, 0.8f, 0.5f, 0.5f};
-          int                         n = 4;
-          const std::vector< double > v(t, t + n);
-          p1.populate(v);
-        }
+        id.cpt(idList[4]).populate({0.2f, 0.8f, 0.5f, 0.5f});       // C1
+        id.cpt(idList[5]).populate({0.1f, 0.9f, 0.9f, 0.1f});       // C2
+        id.cpt(idList[6]).populate({0.35f, 0.65f, 0.19f, 0.81f});   // C3
+        id.cpt(idList[7]).populate({0.4f, 0.6f, 0.5f, 0.5f});       // C4
+        id.cpt(idList[8]).populate(
+           {0.4f, 0.6f, 0.8f, 0.2f, 0.4f, 0.6f, 0.3f, 0.7f});   // C5
 
-        const gum::Potential< double >& p2 = id.cpt(idList[5]);
-        {
-          // FILLING PARAMS
-          const float                 t[4] = {0.1f, 0.9f, 0.9f, 0.1f};
-          int                         n = 4;
-          const std::vector< double > v(t, t + n);
-          p2.populate(v);
-        }
-
-        const gum::Potential< double >& p3 = id.cpt(idList[6]);
-        {
-          // FILLING PARAMS
-          const float                 t[4] = {0.35f, 0.65f, 0.19f, 0.81f};
-          int                         n = 4;
-          const std::vector< double > v(t, t + n);
-          p3.populate(v);
-        }
-
-        const gum::Potential< double >& p4 = id.cpt(idList[7]);
-        {
-          // FILLING PARAMS
-          const float                 t[4] = {0.4f, 0.6f, 0.5f, 0.5f};
-          int                         n = 4;
-          const std::vector< double > v(t, t + n);
-          p4.populate(v);
-        }
-
-        const gum::Potential< double >& p5 = id.cpt(idList[8]);
-        {
-          // FILLING PARAMS
-          const float t[8] = {0.4f, 0.6f, 0.8f, 0.2f, 0.4f, 0.6f, 0.3f, 0.7f};
-          int         n = 8;
-          const std::vector< double > v(t, t + n);
-          p5.populate(v);
-        }
-
-        const gum::Potential< double >& u1 = id.utility(idList[9]);
-        {
-          // FILLING PARAMS
-          const float                 t[4] = {42.0f, 69.0f, 666.0f, 84.0f};
-          int                         n = 4;
-          const std::vector< double > v(t, t + n);
-          u1.populate(v);
-        }
-
-        const gum::Potential< double >& u2 = id.utility(idList[10]);
-        {
-          // FILLING PARAMS
-          const float                 t[4] = {42.0f, -69.0f, 666.0f, 84.0f};
-          int                         n = 4;
-          const std::vector< double > v(t, t + n);
-          u2.populate(v);
-        }
+        id.utility(idList[9]).populate({42.0f, 69.0f, 666.0f, 84.0f});     // U1
+        id.utility(idList[10]).populate({42.0f, -69.0f, 666.0f, 84.0f});   // U2
       } catch (gum::Exception& e) {
         std::cerr << std::endl << e.errorContent() << std::endl;
         throw;

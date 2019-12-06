@@ -4,7 +4,7 @@ Deprecated for older pyAgrum
 """
 from .pyAgrum import GibbsSampling, Potential
 from .pyAgrum import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, CliqueGraph
-from .pyAgrum import BayesNet, EssentialGraph, MarkovBlanket
+from .pyAgrum import BayesNet, EssentialGraph, MarkovBlanket,InfluenceDiagram
 from .pyAgrum import ExactBNdistance,GibbsBNdistance
 from .pyAgrum import BNLearner
 
@@ -70,7 +70,8 @@ def _addDeprecatedMethods():
   DiGraph.ids=deprecated_ids # and subclasses
   UndiGraph.ids=deprecated_ids # and subclasses
   EssentialGraph.ids=deprecated_ids
-  BayesNet.ids=deprecated_ids
+  BayesNet.ids = deprecated_ids
+  InfluenceDiagram.ids = deprecated_ids
 
   def deprecated_setAprioriWeight(learner,weight):
     """

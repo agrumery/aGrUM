@@ -116,17 +116,18 @@ namespace gum {
      * Returns true if node is a utility one
      */
     bool isUtilityNode(NodeId varId) const;
-
+    bool isUtilityNode(const std::string& name) const {return isUtilityNode(idFromName(name));};
     /**
      * Returns true if node is a decision one
      */
     bool isDecisionNode(NodeId varId) const;
+    bool isDecisionNode(const std::string& name) const {return isDecisionNode(idFromName(name));};
 
     /**
      * Returns true if node is a chance one
      */
     bool isChanceNode(NodeId varId) const;
-
+    bool isChanceNode(const std::string& name) const {return isChanceNode(idFromName(name));};
     /**
      * Returns the number of utility nodes
      */
@@ -197,8 +198,7 @@ namespace gum {
 
     /**
      * Add a utility variable, it's associate node and it's UT. The id of the
-     *new
-     * variable is automatically generated.
+     *new variable is automatically generated.
      *
      * The implementation of the Utility is by default a MultiDimArray.
      *
@@ -207,7 +207,7 @@ namespace gum {
      * @warning give an id (not 0) should be reserved for rare and specific
      *situations !!!
      * @return the id of the added variable.
-     * @throw InvalidAgrument If variable has more than one label
+     * @throw InvalidArgument If variable has more than one label
      * @throws DuplicateElement if id(<>0) is already used
      */
     NodeId addUtilityNode(const DiscreteVariable& variable, NodeId id = 0);
@@ -252,7 +252,7 @@ namespace gum {
      * @param id The chosen id. If 0, the NodeGraphPart will choose.
      * @warning give an id (not 0) should be reserved for rare and specific
      *situations !!!
-     * @throw InvalidAgrument If variable has more than one label
+     * @throw InvalidArgument If variable has more than one label
      * @throws DuplicateElement if id(<>0) is already used
      */
     NodeId addUtilityNode(const DiscreteVariable&               variable,
@@ -267,6 +267,7 @@ namespace gum {
      * @param id The id of the variable to erase.
      */
     void erase(NodeId id);
+    void erase(const std::string& name) { erase(variableFromName(name)); };
 
     /**
      * Erase a Variable from the network and remove the variable from
@@ -282,6 +283,9 @@ namespace gum {
      * @throws NotFound Raised if no nodes matches id.
      */
     void changeVariableName(NodeId id, const std::string& new_name);
+    void changeVariableName(const std::string& name, const std::string& new_name) {
+      changeVariableName(idFromName(name), new_name);
+    }
 
     /// @}
     // ===========================================================================
@@ -299,6 +303,9 @@ namespace gum {
      * @throw InvalidEdge if tail is a utility node
      */
     void addArc(NodeId tail, NodeId head);
+    void addArc(const std::string& tail, const std::string& head) {
+      addArc(idFromName(tail), idFromName(head));
+    }
 
     /**
      * Removes an arc in the ID, and update diagram's potential nodes cpt if
@@ -310,7 +317,7 @@ namespace gum {
     void eraseArc(const Arc& arc);
 
     /**
-     * RRemoves an arc in the ID, and update diagram's potential nodes cpt if
+     * Removes an arc in the ID, and update diagram's potential nodes cpt if
      *necessary.
      *
      * If (tail, head) doesn't exist, the nothing happens.
@@ -318,6 +325,9 @@ namespace gum {
      * @param tail as NodeId
      */
     void eraseArc(NodeId tail, NodeId head);
+    void eraseArc(const std::string& tail, const std::string& head) {
+      eraseArc(idFromName(tail), idFromName(head));
+    }
 
     /// @}
 
@@ -346,6 +356,9 @@ namespace gum {
      * Returns true if a path exists between two nodes
      */
     bool existsPathBetween(NodeId src, NodeId dest) const;
+    bool existsPathBetween(const std::string& src, const std::string& dest) const {
+      return existsPathBetween(idFromName(src), idFromName(dest));
+    }
 
     /**
      * Returns partial temporal ordering

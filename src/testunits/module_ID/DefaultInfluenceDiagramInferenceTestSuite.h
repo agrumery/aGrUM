@@ -19,23 +19,6 @@
  *
  */
 
-
-/***************************************************************************
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- *   This program is distributed in the hope that it wil be useful,        *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   (gumSize) 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.   *
- ***************************************************************************/
 #include <cstdio>
 #include <fstream>
 #include <iostream>
@@ -464,6 +447,34 @@ namespace gum_tests {
       delete topology;
       delete evidence1;
       delete evidence2;
+    }
+
+    void testWithNames() {
+      gum::InfluenceDiagram<double> diag;
+      diag.add(gum::LabelizedVariable("A","A",2));
+      diag.addDecisionNode(gum::LabelizedVariable("D","D",2));
+      diag.addUtilityNode(gum::LabelizedVariable("U","U",1));
+
+      diag.changeVariableName(0,"O");
+      TS_ASSERT_EQUALS(diag.variable(0).name(),"O");
+      diag.changeVariableName("O","I");
+      TS_ASSERT_EQUALS(diag.variable(0).name(),"I");
+
+      diag.addArc(0,1);
+      TS_ASSERT(diag.existsPathBetween(0,1));
+      TS_ASSERT(diag.existsPathBetween("I","D"));
+      diag.eraseArc(0,1);
+      TS_ASSERT(!diag.existsPathBetween(0,1));
+      TS_ASSERT(!diag.existsPathBetween("I","D"));
+
+      diag.addArc("I","D");
+      TS_ASSERT(diag.existsPathBetween(0,1));
+      TS_ASSERT(diag.existsPathBetween("I","D"));
+      diag.eraseArc("I","D");
+      TS_ASSERT(!diag.existsPathBetween(0,1));
+      TS_ASSERT(!diag.existsPathBetween("I","D"));
+
+      TS_ASSERT_THROWS(diag.addArc("titi","toto"),gum::NotFound);
     }
   };
 }

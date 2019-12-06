@@ -302,7 +302,7 @@ def _infdiag_todot(diag):
   ''' .format(gum.config["influenceDiagram", "default_chance_bgcolor"],
               gum.config["influenceDiagram", "default_chance_fgcolor"],
               gum.config["influenceDiagram", "default_chance_shape"])
-  for node in diag.ids():
+  for node in diag.nodes():
     if diag.isChanceNode(node):
       res += '   "'+diag.variable(node).name()+'";'+"\n"
 
@@ -314,7 +314,7 @@ def _infdiag_todot(diag):
   ''' .format(gum.config["influenceDiagram", "default_decision_bgcolor"],
               gum.config["influenceDiagram", "default_decision_fgcolor"],
               gum.config["influenceDiagram", "default_decision_shape"])
-  for node in diag.ids():
+  for node in diag.nodes():
     if diag.isDecisionNode(node):
       res += '   "'+diag.variable(node).name()+'";'+"\n"
 
@@ -326,13 +326,13 @@ def _infdiag_todot(diag):
   ''' .format(gum.config["influenceDiagram", "default_utility_bgcolor"],
               gum.config["influenceDiagram", "default_utility_fgcolor"],
               gum.config["influenceDiagram", "default_utility_shape"])
-  for node in diag.ids():
+  for node in diag.nodes():
     if diag.isUtilityNode(node):
       res += '   "'+diag.variable(node).name()+'";'+"\n"
 
   # arcs
   res += "\n"
-  for node in diag.ids():
+  for node in diag.nodes():
     for chi in diag.children(node):
       res += '  "'+diag.variable(node).name()+'"->"'+diag.variable(chi).name()+'";'+"\n"
   res += "}"
@@ -982,7 +982,7 @@ gum.DAG._repr_html_ = lambda self: getDot(self.toDot())
 gum.CliqueGraph._repr_html_ = lambda self: getDot(self.toDot())
 gum.EssentialGraph._repr_html_ = lambda self: getDot(self.toDot())
 gum.MarkovBlanket._repr_html_ = lambda self: getDot(self.toDot())
-
+gum.InfluenceDiagram._repr_html_ = lambda self: getDot(_infdiag_todot(self))
 
 mpl.rcParams['figure.facecolor'] = gum.config["notebook", "figure_facecolor"]
 IPython.display.set_matplotlib_formats(gum.config["notebook", "graph_format"])

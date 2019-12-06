@@ -58,7 +58,7 @@
       return q;
     };
 
-    PyObject *ids() {
+    PyObject *nodes() {
       PyObject* q=PyList_New(0);
 
       const gum::DAG& dag=self->dag();

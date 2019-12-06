@@ -23346,9 +23346,10 @@ class InfluenceDiagram(DAGmodel):
         return val
 
 
-    def isUtilityNode(self, varId: "gum::NodeId") -> "bool":
+    def isUtilityNode(self, *args) -> "bool":
         r"""
         isUtilityNode(InfluenceDiagram self, gum::NodeId varId) -> bool
+        isUtilityNode(InfluenceDiagram self, std::string const & name) -> bool
 
         Parameters
         ----------
@@ -23361,11 +23362,12 @@ class InfluenceDiagram(DAGmodel):
         	true if node is an utility node
 
         """
-        return _pyAgrum.InfluenceDiagram_isUtilityNode(self, varId)
+        return _pyAgrum.InfluenceDiagram_isUtilityNode(self, *args)
 
-    def isDecisionNode(self, varId: "gum::NodeId") -> "bool":
+    def isDecisionNode(self, *args) -> "bool":
         r"""
         isDecisionNode(InfluenceDiagram self, gum::NodeId varId) -> bool
+        isDecisionNode(InfluenceDiagram self, std::string const & name) -> bool
 
         Parameters
         ----------
@@ -23378,11 +23380,12 @@ class InfluenceDiagram(DAGmodel):
         	true if node is a decision node
 
         """
-        return _pyAgrum.InfluenceDiagram_isDecisionNode(self, varId)
+        return _pyAgrum.InfluenceDiagram_isDecisionNode(self, *args)
 
-    def isChanceNode(self, varId: "gum::NodeId") -> "bool":
+    def isChanceNode(self, *args) -> "bool":
         r"""
         isChanceNode(InfluenceDiagram self, gum::NodeId varId) -> bool
+        isChanceNode(InfluenceDiagram self, std::string const & name) -> bool
 
         Parameters
         ----------
@@ -23395,7 +23398,7 @@ class InfluenceDiagram(DAGmodel):
         	true if node is a chance node
 
         """
-        return _pyAgrum.InfluenceDiagram_isChanceNode(self, varId)
+        return _pyAgrum.InfluenceDiagram_isChanceNode(self, *args)
 
     def utilityNodeSize(self) -> "gum::Size":
         r"""
@@ -23658,6 +23661,7 @@ class InfluenceDiagram(DAGmodel):
     def erase(self, *args) -> "void":
         r"""
         erase(InfluenceDiagram self, gum::NodeId id)
+        erase(InfluenceDiagram self, std::string const & name)
         erase(InfluenceDiagram self, DiscreteVariable var)
 
         Erase a Variable from the network and remove the variable from all his childs.
@@ -23674,9 +23678,10 @@ class InfluenceDiagram(DAGmodel):
         """
         return _pyAgrum.InfluenceDiagram_erase(self, *args)
 
-    def changeVariableName(self, id: "gum::NodeId", new_name: "std::string const &") -> "void":
+    def changeVariableName(self, *args) -> "void":
         r"""
         changeVariableName(InfluenceDiagram self, gum::NodeId id, std::string const & new_name)
+        changeVariableName(InfluenceDiagram self, std::string const & name, std::string const & new_name)
 
         Parameters
         ----------
@@ -23693,11 +23698,12 @@ class InfluenceDiagram(DAGmodel):
         	If no nodes matches id. 
 
         """
-        return _pyAgrum.InfluenceDiagram_changeVariableName(self, id, new_name)
+        return _pyAgrum.InfluenceDiagram_changeVariableName(self, *args)
 
-    def addArc(self, tail: "gum::NodeId", head: "gum::NodeId") -> "void":
+    def addArc(self, *args) -> "void":
         r"""
         addArc(InfluenceDiagram self, gum::NodeId tail, gum::NodeId head)
+        addArc(InfluenceDiagram self, std::string const & tail, std::string const & head)
 
         Add an arc in the ID, and update diagram's potential nodes cpt if necessary.
 
@@ -23716,12 +23722,13 @@ class InfluenceDiagram(DAGmodel):
         	If tail is a utility node 
 
         """
-        return _pyAgrum.InfluenceDiagram_addArc(self, tail, head)
+        return _pyAgrum.InfluenceDiagram_addArc(self, *args)
 
     def eraseArc(self, *args) -> "void":
         r"""
         eraseArc(InfluenceDiagram self, Arc arc)
         eraseArc(InfluenceDiagram self, gum::NodeId tail, gum::NodeId head)
+        eraseArc(InfluenceDiagram self, std::string const & tail, std::string const & head)
 
         Removes an arc in the ID, and update diagram's potential nodes cpt if necessary.
 
@@ -23780,9 +23787,10 @@ class InfluenceDiagram(DAGmodel):
         """
         return _pyAgrum.InfluenceDiagram_getDecisionOrder(self)
 
-    def existsPathBetween(self, src: "gum::NodeId", dest: "gum::NodeId") -> "bool":
+    def existsPathBetween(self, *args) -> "bool":
         r"""
         existsPathBetween(InfluenceDiagram self, gum::NodeId src, gum::NodeId dest) -> bool
+        existsPathBetween(InfluenceDiagram self, std::string const & src, std::string const & dest) -> bool
 
         Returns
         -------
@@ -23790,7 +23798,7 @@ class InfluenceDiagram(DAGmodel):
         	true if a path exists between two nodes. 
 
         """
-        return _pyAgrum.InfluenceDiagram_existsPathBetween(self, src, dest)
+        return _pyAgrum.InfluenceDiagram_existsPathBetween(self, *args)
 
     def names(self) -> "PyObject *":
         r"""
@@ -23804,15 +23812,17 @@ class InfluenceDiagram(DAGmodel):
         """
         return _pyAgrum.InfluenceDiagram_names(self)
 
-    def ids(self) -> "PyObject *":
+    def nodes(self) -> "PyObject *":
         r"""
-        ids(InfluenceDiagram self) -> PyObject *
+        nodes(InfluenceDiagram self) -> PyObject *
 
-        .. note:: Deprecated in pyAgrum>0.13.0
-            Please use nodes() instead
+        Returns
+        -------
+        set
+            the set of ids
 
         """
-        return _pyAgrum.InfluenceDiagram_ids(self)
+        return _pyAgrum.InfluenceDiagram_nodes(self)
 
     def arcs(self) -> "PyObject *":
         r"""
