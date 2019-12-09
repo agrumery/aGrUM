@@ -18,7 +18,6 @@ linux_agrum:
   script:
     - python3 act clean
     - python3 act --no-fun test release aGrUM --python=3 -j halfexcept1
-  retry: 2
 
 linux_pyagrum:
   image: agrumery/ubuntu
@@ -33,7 +32,6 @@ linux_pyagrum:
   script:
     - python3 act clean
     - python3 act --no-fun test release pyAgrum --python=3 -j halfexcept1 -t quick
-  retry: 2
 
 linux_pyagrum_2:
   image: agrumery/ubuntu
@@ -48,8 +46,7 @@ linux_pyagrum_2:
   script:
     - python act clean
     - python act --no-fun test release pyAgrum --python=2 -j halfexcept1 -t quick
-  retry: 2
-  
+
 ################################################################################
 # Linux / gcc merge requests
 ################################################################################
@@ -68,7 +65,6 @@ linux_agrum_merge_requests:
   script:
     - python3 act clean
     - python3 act --no-fun test release aGrUM --python=3 -j halfexcept1
-  retry: 2
 
 linux_pyagrum_merge_requests:
   only:
@@ -85,7 +81,6 @@ linux_pyagrum_merge_requests:
   script:
     - python3 act clean
     - python3 act --no-fun test release pyAgrum --python=3 -j halfexcept1 -t quick
-  retry: 2
   
 linux_pyagrum_merge_requests_2:
   only:
@@ -102,7 +97,6 @@ linux_pyagrum_merge_requests_2:
   script:
     - python act clean
     - python act --no-fun test release pyAgrum --python=2 -j halfexcept1 -t quick
-  retry: 2
 
 ################################################################################
 # MacOS / clang
@@ -129,7 +123,6 @@ macos_agrum:
     - python act clean
     - python act --no-fun test release aGrUM --python=3 -j halfexcept1
     - conda deactivate
-  retry: 2
 
 macos_pyagrum:
   only:
@@ -153,7 +146,6 @@ macos_pyagrum:
     - python act clean
     - python act --no-fun test release pyAgrum --python=3 -t quick -j halfexcept1
     - conda deactivate
-  retry: 2
 
 ################################################################################
 # Windows / MVSC
@@ -183,7 +175,6 @@ windows_agrum_2015:
     - python act --no-fun --mvsc -d build -j except1 test release aGrUM 
     - call conda.bat deactivate
     - call conda.bat remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
-  retry: 2
 
 windows_pyagrum_2015:
   only:
@@ -209,7 +200,6 @@ windows_pyagrum_2015:
     - python act --no-fun test release pyAgrum --no-fun --mvsc -d build -j except1 -t quick
     - call conda.bat deactivate
     - call conda.bat remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
-  retry: 2
 
 windows_agrum_2017:
   only:
@@ -235,7 +225,6 @@ windows_agrum_2017:
     - python act --no-fun test release aGrUM --no-fun --mvsc17 -d build -j except1
     - call conda.bat deactivate
     - call conda.bat remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
-  retry: 2
 
 windows_pyagrum_2017:
   only:
@@ -261,7 +250,6 @@ windows_pyagrum_2017:
     - python act --no-fun test release pyAgrum --no-fun --mvsc17 -d build -j except1 -t quick
     - call conda.bat deactivate
     - call conda.bat remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
-  retry: 2
 
 ################################################################################
 # Deploy  wheels
