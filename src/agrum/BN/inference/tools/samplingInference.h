@@ -41,7 +41,7 @@
 
 namespace gum {
   /**
-   * @class SAmplingInference samplingInference.h
+   * @class SamplingInference samplingInference.h
    * <agrum/BN/inference/samplingInference.h>
    * @brief A generic class for making sampling inference in bayesian networks
    * adapted
