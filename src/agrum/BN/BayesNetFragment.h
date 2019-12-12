@@ -276,10 +276,19 @@ namespace gum {
 
     /**
      * returns true if all nodes in the fragment are consistent
+     *
+     * @throws gum::OperatioNotAllowed if the fragment is not consistent.
      */
     bool checkConsistency() const;
 
     /// @}
+
+
+    /** create a brand new BayesNet from a fragment.
+     *
+     * @return the new BayesNet<GUM_SCALAR>
+     */
+    gum::BayesNet< GUM_SCALAR > toBN() const;
 
     using IBayesNet< GUM_SCALAR >::nodes;
     using IBayesNet< GUM_SCALAR >::dag;
@@ -291,9 +300,9 @@ namespace gum {
     // add an arc
     void _installArc(NodeId from, NodeId to);
 
-    // install a CPT BY COPY, create or delete arcs. Checks are made in public methods
-    // In particular, it is assumed that all the variables in the pot are in the
-    // fragment
+    // install a CPT BY COPY, create or delete arcs. Checks are made in public
+    // methods In particular, it is assumed that all the variables in the pot are
+    // in the fragment
     void _installCPT(NodeId id, const Potential< GUM_SCALAR >& pot);
 
     /**

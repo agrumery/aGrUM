@@ -105,7 +105,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE NodeId
-         BayesNetFragment< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
+     BayesNetFragment< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
     NodeId id = __bn.nodeId(var);
 
     if (!isInstalledNode(id))
@@ -116,7 +116,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE NodeId
-         BayesNetFragment< GUM_SCALAR >::idFromName(const std::string& name) const {
+     BayesNetFragment< GUM_SCALAR >::idFromName(const std::string& name) const {
     NodeId id = __bn.idFromName(name);
 
     if (!isInstalledNode(id))
@@ -371,5 +371,24 @@ namespace gum {
     output << "}" << std::endl;
 
     return output.str();
+  }
+
+  template < typename GUM_SCALAR >
+  gum::BayesNet< GUM_SCALAR > BayesNetFragment< GUM_SCALAR >::toBN() const {
+    if (!checkConsistency()) {
+      GUM_ERROR(OperationNotAllowed, "The fragment contains un-consistent node(s)")
+    }
+    gum::BayesNet< GUM_SCALAR > res;
+    for (const auto nod : nodes()) {
+      res.add(variable(nod), nod);
+    }
+    for (const auto arc : dag().arcs()) {
+      res.addArc(arc.tail(), arc.head());
+    }
+    for (const auto nod : nodes()) {
+      res.cpt(nod).fillWith(cpt(nod));
+    }
+
+    return res;
   }
 }   // namespace gum

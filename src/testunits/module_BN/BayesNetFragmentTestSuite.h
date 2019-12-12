@@ -618,5 +618,38 @@ namespace gum_tests {
       for (II.setFirst(), JJ.setFirst(); !II.end(); ++II, ++JJ)
         TS_ASSERT_DELTA(p1[II], p2[JJ], 1e-6);
     }
+
+
+    void testCopyToBN() {
+      auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D;E<-C<-F;");
+      TS_ASSERT_EQUALS(&bn.cpt("B").variable(1), &bn.variable("A"));
+
+      gum::BayesNetFragment< double > frag(bn);
+
+      frag.installNode("B");
+      TS_ASSERT(!frag.checkConsistency());
+      TS_ASSERT_THROWS(frag.toBN(), gum::OperationNotAllowed);
+
+      // checking if the nodes are well copied and referenced in frag and then in
+      // minibn checking if the potential are well copied
+      frag.installNode("A");
+      TS_ASSERT(frag.checkConsistency());
+      TS_ASSERT_EQUALS(&bn.variable("A"), &frag.variable("A"));
+      TS_ASSERT_EQUALS(&bn.variable("B"), &frag.variable("B"));
+      TS_ASSERT_EQUALS(bn.cpt("A").toString(), frag.cpt("A").toString());
+      TS_ASSERT_EQUALS(bn.cpt("B").toString(), frag.cpt("B").toString());
+      TS_ASSERT_EQUALS(&frag.cpt("B").variable(1), &bn.variable("A"));
+      TS_ASSERT_EQUALS(&frag.cpt("B").variable(1), &frag.variable("A"));
+
+      const auto& minibn = frag.toBN();
+      TS_ASSERT_EQUALS(minibn.size(), 2u);
+      TS_ASSERT_EQUALS(minibn.sizeArcs(), 1u);
+      TS_ASSERT_DIFFERS(&bn.variable("A"), &minibn.variable("A"));
+      TS_ASSERT_DIFFERS(&bn.variable("B"), &minibn.variable("B"));
+      TS_ASSERT_EQUALS(bn.cpt("A").toString(), minibn.cpt("A").toString());
+      TS_ASSERT_EQUALS(bn.cpt("B").toString(), minibn.cpt("B").toString());
+      TS_ASSERT_EQUALS(&minibn.cpt("B").variable(1), &minibn.variable("A"));
+      TS_ASSERT_DIFFERS(&minibn.cpt("B").variable(1), &frag.variable("A"));
+    }
   };
 }   // namespace gum_tests

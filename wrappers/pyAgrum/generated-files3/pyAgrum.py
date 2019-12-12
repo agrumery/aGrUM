@@ -11042,6 +11042,20 @@ class BayesNetFragment(IBayesNet, ):
         """
         return _pyAgrum.BayesNetFragment_checkConsistency(self, *args)
 
+    def toBN(self) -> "gum::BayesNet< double >":
+        r"""
+        toBN(BayesNetFragment self) -> BayesNet
+
+        Create a BayesNet from a fragment.
+
+        Raises
+        ------
+        gum.OperationNotAllowed
+          if the fragment is not consistent.
+
+        """
+        return _pyAgrum.BayesNetFragment_toBN(self)
+
     def nodes(self) -> "PyObject *":
         r"""
         nodes(BayesNetFragment self) -> PyObject *

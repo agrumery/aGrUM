@@ -133,3 +133,13 @@ Raises
 gum.NotFound
   if the node is not found.
 "
+
+%feature("docstring") gum::BayesNetFragment::toBN
+"
+Create a BayesNet from a fragment.
+
+Raises
+------
+gum.OperationNotAllowed
+  if the fragment is not consistent.
+"

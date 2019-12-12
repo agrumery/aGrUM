@@ -88,7 +88,7 @@ class BayesNetFragmentTestCase(pyAgrumTestCase):
     self.assertEquals(frag.size(), 3)
     self.assertEquals(frag.dim(), (2 * (3 - 1)) + (2 * (2 - 1)) + (2 - 1))
     self.assertAlmostEquals(
-        pow(10, frag.log10DomainSize()), 2 * 2 * 3, delta=1e-5)
+      pow(10, frag.log10DomainSize()), 2 * 2 * 3, delta=1e-5)
 
     I = frag.completeInstantiation()
     I.setFirst()
@@ -175,7 +175,7 @@ class BayesNetFragmentTestCase(pyAgrumTestCase):
     self.assertEqual(frag.sizeArcs(), 4)
 
     newV5bis = gum.Potential().add(frag.variable("v5")).add(
-        frag.variable("v2")).add(frag.variable("v3"))
+      frag.variable("v2")).add(frag.variable("v3"))
     frag.installCPT("v5", newV5bis)
     self.assertTrue(frag.checkConsistency())
     self.assertEqual(frag.size(), 5)
@@ -192,7 +192,7 @@ class BayesNetFragmentTestCase(pyAgrumTestCase):
     self.assertEqual(frag.sizeArcs(), 7)
 
     newV5 = gum.Potential().add(frag.variable("v5")).add(
-        frag.variable("v2")).add(frag.variable("v3"))
+      frag.variable("v2")).add(frag.variable("v3"))
     newV5.fillWith(bn2.cpt("v5"))
     frag.installCPT("v5", newV5)
     self.assertTrue(frag.checkConsistency())
@@ -207,7 +207,39 @@ class BayesNetFragmentTestCase(pyAgrumTestCase):
     for n in frag.names():
       for x1, x2 in zip(ie2.posterior(n).tolist(), ie.posterior(n).tolist()):
         self.assertAlmostEqual(
-            x1, x2, delta=1e-5, msg="For variable '{}'".format(n))
+          x1, x2, delta=1e-5, msg="For variable '{}'".format(n))
+
+  def testCopyToBN(self):
+    bn = gum.fastBN("A->B->C->D;E<-C<-F")
+    self.assertEqual(repr(bn.cpt("B").variable(1)), repr(bn.variable("A")))
+
+    frag = gum.BayesNetFragment(bn)
+
+    frag.installNode("B")
+    self.assertFalse(frag.checkConsistency())
+    with self.assertRaises(gum.OperationNotAllowed):
+      minibn = frag.toBN()
+
+    # checking if the nodes are well copied and referenced in frag and then in
+    # minibn checking if the potential are well copied
+    frag.installNode("A")
+    self.assertTrue(frag.checkConsistency())
+    self.assertEqual(repr(bn.variable("A")), repr(frag.variable("A")))
+    self.assertEqual(repr(bn.variable("B")), repr(frag.variable("B")))
+    self.assertEqual(str(bn.cpt("A")), str(frag.cpt("A")))
+    self.assertEqual(str(bn.cpt("B")), str(frag.cpt("B")))
+    self.assertEqual(repr(frag.cpt("B").variable(1)), repr(bn.variable("A")))
+    self.assertEqual(repr(frag.cpt("B").variable(1)), repr(frag.variable("A")))
+
+    minibn = frag.toBN()
+    self.assertEqual(minibn.size(), 2)
+    self.assertEqual(minibn.sizeArcs(), 1)
+    self.assertNotEqual(repr(bn.variable("A")), repr(minibn.variable("A")))
+    self.assertNotEqual(repr(bn.variable("B")), repr(minibn.variable("B")))
+    self.assertEqual(str(bn.cpt("A")), str(minibn.cpt("A")))
+    self.assertEqual(str(bn.cpt("B")), str(minibn.cpt("B")))
+    self.assertEqual(repr(minibn.cpt("B").variable(1)), repr(minibn.variable("A")))
+    self.assertNotEqual(repr(minibn.cpt("B").variable(1)), repr(frag.variable("A")))
 
 
 ts = unittest.TestSuite()
