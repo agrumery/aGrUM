@@ -1,6 +1,19 @@
 # aGrUM Changelog
 
-## Changelog for 0.16.2
+## Changelog for 0.16.4 (WIP)
+
+* pyAgrum
+  * Fix bug in `gum.lib.notebook.showPotential` with explicit digit param
+  * Add a `gum.Potential.loopIn()` to iterate inside a Potential
+  * Enhanced API for `gum.InfluenceDiagram`
+  * Documentation improvements
+  * remove package for python 3.4 and 3.5 (following [NEP29](https://numpy.org/neps/nep-0029-deprecation_policy.html)). But 2.7 is still maintaned.
+
+* aGrUM
+  * still working on CI
+  * Enhanced API for `gum::InfluenceDiagram`
+  
+## Changelog for 0.16.3
 
 * pyAgrum
   * wrapper for the class `gum::BayesNetFragment` 
