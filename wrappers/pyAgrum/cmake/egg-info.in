@@ -1,46 +1,37 @@
-Metadata-Version: 1.1
+Metadata-Version: 1.2
 Name: pyAgrum
 Version: @PYAGRUM_VERSION@
-Summary: Bayesian Networks in python
-Home-page: http://agrum.org
-Author: Pierre-Henri WUILLEMIN
-Author-email: pierre-henri.wuillemin@lip6.fr
-License: LGPL3
-Download-URL: http://agrum.org
-Description:pyAgrum is a Python wrapper for the C++ aGrUM library.
-It provides a high-level interface to the C++ part of aGrUM allowing to create, manage and perform efficient computations with Bayesian Networks.
-
-The module is a straightforward application of the SWIG interface generator. Custom-written code was added to make the interface more similar to OpenBayes, a free Bayesian Network library for Python.
-
+Summary: pyAgrum is a Python wrapper for the C++ aGrUM library
+Home-page: https://agrum.gitlab.io/
+Author: Pierre-Henri Wuillemin and Christophe Gonzales
+Author-email: info@agrum.org
+License: LGPLv3
+Keywords: probabilities probabilistic-graphical-models inference diagnosis
 Platform: any
-
-Classifier: License :: OSI Approved :: LGPL3 License
-Classifier: Operating System :: MacOS
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)
 Classifier: Operating System :: Microsoft :: Windows
-Classifier: Operating System :: OS Independent
-Classifier: Operating System :: POSIX
-Classifier: Operating System :: Unix
-Classifier: Programming Language :: Python :: @PYTHON_VERSION@
-Classifier: Development Status :: 4 - Beta
-Classifier: Intended Audience :: Developers and Researchers
-Classifier: Topic :: Scientific/Engineering
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: C++
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Financial and Insurance Industry
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: Science/Research
+Requires-Dist: numpy (>=1.8.1)
+Requires-Dist: six
+Requires-Dist: configparser
 
-Natural Language :: English
-Intended Audience :: Science/Research
-
-Framework :: IPython
-Framework :: Jupyter
-
-Programming Language :: C++
-Programming Language :: Python :: 2
-Programming Language :: Python :: 2.7
-Programming Language :: Python :: 3
-Programming Language :: Python :: 3.4
-Programming Language :: Python :: 3.5
-Programming Language :: Python :: 3.6
-Programming Language :: Python :: 3.7
-
-Topic :: Scientific/Engineering
-Topic :: Scientific/Engineering :: Artificial Intelligence
-
-Requires: numpy
+Description: pyAgrum is a Python wrapper for the C++ aGrUM library. It provides a high-level interface to the part of aGrUM allowing to create, model, learn, use, calculate with and embed Bayesian Networks and other graphical models. Some specific (python and C++) codes are added in order to simplify and extend the aGrUM API.
