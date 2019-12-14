@@ -8,10 +8,10 @@
 
 from sys import version_info as _swig_python_version_info
 if _swig_python_version_info < (2, 7, 0):
-    raise RuntimeError("Python 2.7 or later required")
+    raise RuntimeError('Python 2.7 or later required')
 
 # Import the low-level C/C++ module
-if __package__ or "." in __name__:
+if __package__ or '.' in __name__:
     from . import _pyAgrum
 else:
     import _pyAgrum
@@ -68,7 +68,7 @@ import weakref
 class SwigPyIterator(object):
     r"""Proxy of C++ swig::SwigPyIterator class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
 
     def __init__(self, *args, **kwargs):
         raise AttributeError("No constructor defined - class is abstract")
@@ -160,7 +160,7 @@ class JunctionTreeGenerator(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def junctionTree(self, *args):
@@ -272,7 +272,7 @@ _pyAgrum.JunctionTreeGenerator_swigregister(JunctionTreeGenerator)
 class PythonBNListener(object):
     r"""Proxy of C++ PythonBNListener class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, bn, vnm):
@@ -338,7 +338,7 @@ _pyAgrum.PythonBNListener_swigregister(PythonBNListener)
 class PythonLoadListener(object):
     r"""Proxy of C++ PythonLoadListener class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def whenLoading(self, buffer, percent):
@@ -376,7 +376,7 @@ class PythonApproximationListener(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, algo):
@@ -430,7 +430,7 @@ _pyAgrum.PythonApproximationListener_swigregister(PythonApproximationListener)
 class PythonDatabaseGeneratorListener(object):
     r"""Proxy of C++ PythonDatabaseGeneratorListener class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, notif):
@@ -467,7 +467,7 @@ class BNGenerator(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def generate(self, n_nodes=10, n_arcs=15, n_modmax=4):
@@ -526,7 +526,7 @@ class IDGenerator(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def generate(self, nbrNodes=10, arcDensity=0.2, chanceNodeDensity=0.8, utilityNodeDensity=0.1, max_modality=2):
@@ -582,7 +582,7 @@ class PRMexplorer(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self):
@@ -1179,7 +1179,7 @@ _pyAgrum.PRMexplorer_swigregister(PRMexplorer)
 class Vector(object):
     r"""Proxy of C++ std::vector< double > class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def iterator(self):
@@ -1346,7 +1346,7 @@ _pyAgrum.Vector_swigregister(Vector)
 class Vector_int(object):
     r"""Proxy of C++ std::vector< unsigned int > class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def iterator(self):
@@ -1513,7 +1513,7 @@ _pyAgrum.Vector_int_swigregister(Vector_int)
 class Vector_string(object):
     r"""Proxy of C++ std::vector< std::string > class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def iterator(self):
@@ -1680,7 +1680,7 @@ _pyAgrum.Vector_string_swigregister(Vector_string)
 class SetIteratorStaticEnd(object):
     r"""Proxy of C++ gum::SetIteratorStaticEnd class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self):
@@ -1694,7 +1694,7 @@ _pyAgrum.SetIteratorStaticEnd_swigregister(SetIteratorStaticEnd)
 class GumException(Exception):
     r"""Proxy of C++ gum::Exception class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -1755,7 +1755,7 @@ def __createMsg(filename, function, line, msg):
 class IdError(GumException):
     r"""Proxy of C++ gum::IdError class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -1772,7 +1772,7 @@ _pyAgrum.IdError_swigregister(IdError)
 class FatalError(GumException):
     r"""Proxy of C++ gum::FatalError class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -1789,7 +1789,7 @@ _pyAgrum.FatalError_swigregister(FatalError)
 class NotImplementedYet(GumException):
     r"""Proxy of C++ gum::NotImplementedYet class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -1806,7 +1806,7 @@ _pyAgrum.NotImplementedYet_swigregister(NotImplementedYet)
 class UndefinedIteratorValue(GumException):
     r"""Proxy of C++ gum::UndefinedIteratorValue class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -1823,7 +1823,7 @@ _pyAgrum.UndefinedIteratorValue_swigregister(UndefinedIteratorValue)
 class UndefinedIteratorKey(GumException):
     r"""Proxy of C++ gum::UndefinedIteratorKey class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -1840,7 +1840,7 @@ _pyAgrum.UndefinedIteratorKey_swigregister(UndefinedIteratorKey)
 class NullElement(GumException):
     r"""Proxy of C++ gum::NullElement class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -1857,7 +1857,7 @@ _pyAgrum.NullElement_swigregister(NullElement)
 class UndefinedElement(GumException):
     r"""Proxy of C++ gum::UndefinedElement class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -1874,7 +1874,7 @@ _pyAgrum.UndefinedElement_swigregister(UndefinedElement)
 class SizeError(GumException):
     r"""Proxy of C++ gum::SizeError class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -1891,7 +1891,7 @@ _pyAgrum.SizeError_swigregister(SizeError)
 class EmptySet(GumException):
     r"""Proxy of C++ gum::EmptySet class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -1908,7 +1908,7 @@ _pyAgrum.EmptySet_swigregister(EmptySet)
 class InvalidArgumentsNumber(GumException):
     r"""Proxy of C++ gum::InvalidArgumentsNumber class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -1925,7 +1925,7 @@ _pyAgrum.InvalidArgumentsNumber_swigregister(InvalidArgumentsNumber)
 class InvalidArgument(GumException):
     r"""Proxy of C++ gum::InvalidArgument class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -1942,7 +1942,7 @@ _pyAgrum.InvalidArgument_swigregister(InvalidArgument)
 class IOError(GumException):
     r"""Proxy of C++ gum::IOError class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -1959,7 +1959,7 @@ _pyAgrum.IOError_swigregister(IOError)
 class FormatNotFound(IOError):
     r"""Proxy of C++ gum::FormatNotFound class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -1976,7 +1976,7 @@ _pyAgrum.FormatNotFound_swigregister(FormatNotFound)
 class OperationNotAllowed(GumException):
     r"""Proxy of C++ gum::OperationNotAllowed class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -1993,7 +1993,7 @@ _pyAgrum.OperationNotAllowed_swigregister(OperationNotAllowed)
 class NotFound(GumException):
     r"""Proxy of C++ gum::NotFound class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2010,7 +2010,7 @@ _pyAgrum.NotFound_swigregister(NotFound)
 class ReferenceError(GumException):
     r"""Proxy of C++ gum::ReferenceError class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2027,7 +2027,7 @@ _pyAgrum.ReferenceError_swigregister(ReferenceError)
 class OutOfBounds(ReferenceError):
     r"""Proxy of C++ gum::OutOfBounds class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2044,7 +2044,7 @@ _pyAgrum.OutOfBounds_swigregister(OutOfBounds)
 class OutOfLowerBound(OutOfBounds):
     r"""Proxy of C++ gum::OutOfLowerBound class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2061,7 +2061,7 @@ _pyAgrum.OutOfLowerBound_swigregister(OutOfLowerBound)
 class OutOfUpperBound(OutOfBounds):
     r"""Proxy of C++ gum::OutOfUpperBound class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2078,7 +2078,7 @@ _pyAgrum.OutOfUpperBound_swigregister(OutOfUpperBound)
 class DuplicateElement(ReferenceError):
     r"""Proxy of C++ gum::DuplicateElement class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2095,7 +2095,7 @@ _pyAgrum.DuplicateElement_swigregister(DuplicateElement)
 class DuplicateLabel(ReferenceError):
     r"""Proxy of C++ gum::DuplicateLabel class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2112,7 +2112,7 @@ _pyAgrum.DuplicateLabel_swigregister(DuplicateLabel)
 class GraphError(GumException):
     r"""Proxy of C++ gum::GraphError class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2129,7 +2129,7 @@ _pyAgrum.GraphError_swigregister(GraphError)
 class NoNeighbour(GraphError):
     r"""Proxy of C++ gum::NoNeighbour class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2146,7 +2146,7 @@ _pyAgrum.NoNeighbour_swigregister(NoNeighbour)
 class NoParent(GraphError):
     r"""Proxy of C++ gum::NoParent class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2163,7 +2163,7 @@ _pyAgrum.NoParent_swigregister(NoParent)
 class NoChild(GraphError):
     r"""Proxy of C++ gum::NoChild class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2180,7 +2180,7 @@ _pyAgrum.NoChild_swigregister(NoChild)
 class InvalidEdge(GraphError):
     r"""Proxy of C++ gum::InvalidEdge class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2197,7 +2197,7 @@ _pyAgrum.InvalidEdge_swigregister(InvalidEdge)
 class InvalidArc(GraphError):
     r"""Proxy of C++ gum::InvalidArc class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2214,7 +2214,7 @@ _pyAgrum.InvalidArc_swigregister(InvalidArc)
 class InvalidNode(GraphError):
     r"""Proxy of C++ gum::InvalidNode class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2231,7 +2231,7 @@ _pyAgrum.InvalidNode_swigregister(InvalidNode)
 class EmptyBSTree(GraphError):
     r"""Proxy of C++ gum::EmptyBSTree class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2248,7 +2248,7 @@ _pyAgrum.EmptyBSTree_swigregister(EmptyBSTree)
 class DefaultInLabel(GraphError):
     r"""Proxy of C++ gum::DefaultInLabel class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2265,7 +2265,7 @@ _pyAgrum.DefaultInLabel_swigregister(DefaultInLabel)
 class InvalidDirectedCycle(GraphError):
     r"""Proxy of C++ gum::InvalidDirectedCycle class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2282,7 +2282,7 @@ _pyAgrum.InvalidDirectedCycle_swigregister(InvalidDirectedCycle)
 class CPTError(GumException):
     r"""Proxy of C++ gum::CPTError class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2299,7 +2299,7 @@ _pyAgrum.CPTError_swigregister(CPTError)
 class CPTNoSumTo1(CPTError):
     r"""Proxy of C++ gum::CPTNoSumTo1 class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2316,7 +2316,7 @@ _pyAgrum.CPTNoSumTo1_swigregister(CPTNoSumTo1)
 class IncompatibleEvidence(GumException):
     r"""Proxy of C++ gum::IncompatibleEvidence class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2333,7 +2333,7 @@ _pyAgrum.IncompatibleEvidence_swigregister(IncompatibleEvidence)
 class FactoryError(GumException):
     r"""Proxy of C++ gum::FactoryError class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2350,7 +2350,7 @@ _pyAgrum.FactoryError_swigregister(FactoryError)
 class FactoryInvalidState(FactoryError):
     r"""Proxy of C++ gum::FactoryInvalidState class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2367,7 +2367,7 @@ _pyAgrum.FactoryInvalidState_swigregister(FactoryInvalidState)
 class WrongType(FactoryError):
     r"""Proxy of C++ gum::WrongType class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2384,7 +2384,7 @@ _pyAgrum.WrongType_swigregister(WrongType)
 class WrongClassElement(FactoryError):
     r"""Proxy of C++ gum::WrongClassElement class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2401,7 +2401,7 @@ _pyAgrum.WrongClassElement_swigregister(WrongClassElement)
 class TypeError(FactoryError):
     r"""Proxy of C++ gum::TypeError class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2418,7 +2418,7 @@ _pyAgrum.TypeError_swigregister(TypeError)
 class LearningError(GumException):
     r"""Proxy of C++ gum::LearningError class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2435,7 +2435,7 @@ _pyAgrum.LearningError_swigregister(LearningError)
 class IncompatibleScoreApriori(LearningError):
     r"""Proxy of C++ gum::IncompatibleScoreApriori class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2452,7 +2452,7 @@ _pyAgrum.IncompatibleScoreApriori_swigregister(IncompatibleScoreApriori)
 class PossiblyIncompatibleScoreApriori(LearningError):
     r"""Proxy of C++ gum::PossiblyIncompatibleScoreApriori class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2469,7 +2469,7 @@ _pyAgrum.PossiblyIncompatibleScoreApriori_swigregister(PossiblyIncompatibleScore
 class DatabaseError(LearningError):
     r"""Proxy of C++ gum::DatabaseError class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2486,7 +2486,7 @@ _pyAgrum.DatabaseError_swigregister(DatabaseError)
 class MissingVariableInDatabase(LearningError):
     r"""Proxy of C++ gum::MissingVariableInDatabase class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2503,7 +2503,7 @@ _pyAgrum.MissingVariableInDatabase_swigregister(MissingVariableInDatabase)
 class MissingValueInDatabase(LearningError):
     r"""Proxy of C++ gum::MissingValueInDatabase class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2520,7 +2520,7 @@ _pyAgrum.MissingValueInDatabase_swigregister(MissingValueInDatabase)
 class UnknownLabelInDatabase(LearningError):
     r"""Proxy of C++ gum::UnknownLabelInDatabase class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2537,7 +2537,7 @@ _pyAgrum.UnknownLabelInDatabase_swigregister(UnknownLabelInDatabase)
 class SyntaxError(IOError):
     r"""Proxy of C++ gum::SyntaxError class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -2771,7 +2771,7 @@ class Variable(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
 
     def __init__(self, *args, **kwargs):
         raise AttributeError("No constructor defined - class is abstract")
@@ -2879,7 +2879,7 @@ class DiscreteVariable(Variable):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
 
     def __init__(self, *args, **kwargs):
         raise AttributeError("No constructor defined - class is abstract")
@@ -3148,7 +3148,7 @@ class LabelizedVariable(DiscreteVariable):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
 
     def __init__(self, *args):
         r"""
@@ -3401,7 +3401,7 @@ class RangeVariable(DiscreteVariable):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
 
     def __init__(self, *args):
         r"""
@@ -3609,7 +3609,7 @@ _pyAgrum.RangeVariable_swigregister(RangeVariable)
 class IDiscretizedVariable(DiscreteVariable):
     r"""Proxy of C++ gum::IDiscretizedVariable class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
 
     def __init__(self, *args, **kwargs):
         raise AttributeError("No constructor defined - class is abstract")
@@ -3647,7 +3647,7 @@ class Edge(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -3727,7 +3727,7 @@ class Arc(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -3830,7 +3830,7 @@ class UndiGraph(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
 
     def __init__(self, *args):
         r"""
@@ -4224,7 +4224,7 @@ class DiGraph(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
 
     def __init__(self, *args):
         r"""
@@ -4657,7 +4657,7 @@ class DAG(DiGraph):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -4737,7 +4737,7 @@ class MixedGraph(UndiGraph, DiGraph):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
 
     def __init__(self, *args):
         r"""
@@ -5168,7 +5168,7 @@ class CliqueGraph(UndiGraph):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -5519,7 +5519,7 @@ class Instantiation(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
 
     def __init__(self, *args):
         r"""
@@ -6196,7 +6196,7 @@ class DAGmodel(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
 
     def __init__(self, *args, **kwargs):
         raise AttributeError("No constructor defined - class is abstract")
@@ -6515,7 +6515,7 @@ __list_end = cvar.__list_end
 class EssentialGraph(object):
     r"""Proxy of C++ gum::EssentialGraph class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -6740,7 +6740,7 @@ _pyAgrum.EssentialGraph_swigregister(EssentialGraph)
 class MarkovBlanket(object):
     r"""Proxy of C++ gum::MarkovBlanket class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -6943,7 +6943,7 @@ _pyAgrum.MarkovBlanket_swigregister(MarkovBlanket)
 class StructuralComparator(object):
     r"""Proxy of C++ gum::StructuralComparator class."""
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self):
@@ -7069,7 +7069,7 @@ class ApproximationScheme(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, verbosity=False):
@@ -7544,7 +7544,7 @@ class DiscretizedVariable(IDiscretizedVariable):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
 
     def __init__(self, *args):
         r"""
@@ -7762,7 +7762,7 @@ class MultiDimContainer(object):
     Proxy of C++ gum::MultiDimContainer< double > class.
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
 
     def __init__(self, *args, **kwargs):
         raise AttributeError("No constructor defined - class is abstract")
@@ -7874,7 +7874,7 @@ class Potential(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
 
     def __init__(self, *args):
         r"""
@@ -8983,7 +8983,7 @@ class IBayesNet(DAGmodel):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
 
     def __init__(self, *args, **kwargs):
         raise AttributeError("No constructor defined - class is abstract")
@@ -9430,7 +9430,7 @@ class BayesNet(IBayesNet):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
 
     @staticmethod
     def fastPrototype(dotlike, domainSize=2):
@@ -10706,7 +10706,7 @@ class BayesNetFragment(IBayesNet, ):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, bn):
@@ -11211,7 +11211,7 @@ class BayesNetInference(object):
     Proxy of C++ gum::BayesNetInference< double > class.
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
 
     def __init__(self, *args, **kwargs):
         raise AttributeError("No constructor defined - class is abstract")
@@ -11384,7 +11384,7 @@ class LazyPropagation(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -12255,7 +12255,7 @@ class ShaferShenoyInference(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -13100,7 +13100,7 @@ class VariableElimination(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -13878,7 +13878,7 @@ class GibbsSampling(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, bn):
@@ -14778,7 +14778,7 @@ class ImportanceSampling(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, bn):
@@ -15606,7 +15606,7 @@ class WeightedSampling(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, bn):
@@ -16434,7 +16434,7 @@ class MonteCarloSampling(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, bn):
@@ -17260,7 +17260,7 @@ class LoopyImportanceSampling(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, bn):
@@ -18102,7 +18102,7 @@ class LoopyWeightedSampling(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, bn):
@@ -18944,7 +18944,7 @@ class LoopyGibbsSampling(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, bn):
@@ -19858,7 +19858,7 @@ class LoopyMonteCarloSampling(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, bn):
@@ -20702,7 +20702,7 @@ class LoopyBeliefPropagation(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, bn):
@@ -21516,7 +21516,7 @@ class ExactBNdistance(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -21566,7 +21566,7 @@ class GibbsBNdistance(ApproximationScheme):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -21912,7 +21912,7 @@ class CredalNet(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     NodeType_Precise = _pyAgrum.CredalNet_NodeType_Precise
     
     NodeType_Credal = _pyAgrum.CredalNet_NodeType_Credal
@@ -22451,7 +22451,7 @@ class CNMonteCarloSampling(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, credalNet):
@@ -22842,7 +22842,7 @@ class CNLoopyPropagation(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
     InferenceType_nodeToNeighbours = _pyAgrum.CNLoopyPropagation_InferenceType_nodeToNeighbours
     
@@ -23280,7 +23280,7 @@ class InfluenceDiagram(DAGmodel):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __swig_destroy__ = _pyAgrum.delete_InfluenceDiagram
 
     def __init__(self, *args):
@@ -23936,7 +23936,7 @@ class InfluenceDiagramInference(object):
     Proxy of C++ gum::InfluenceDiagramInference< double > class.
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, infDiag):
@@ -24196,7 +24196,7 @@ class BNLearner(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, *args):
@@ -25077,7 +25077,7 @@ class BNDatabaseGenerator(object):
 
     """
 
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc='The membership flag')
     __repr__ = _swig_repr
 
     def __init__(self, bn):

@@ -29,7 +29,7 @@ import pyAgrum.lib.notebook as gnb
 import numpy as np
 
 
-def get_seuil(bn, csv_name, target, label):
+def get_threshold(bn, csv_name, target, label):
   """
   Get seuil by computing ROC
 
@@ -54,13 +54,54 @@ def get_seuil(bn, csv_name, target, label):
 
 class BNClassifier:
   """
-  'scikit-learn-like' API for classification using BayesNet in pyAgrum
+    'scikit-learn-like' methods for BN classification in jupyter notebook
+    bi_classe classification only
+    label of the target must be True or 1
   """
 
   def __init__(self, learning_method='greedy', prior='laplace'):
     self._bn = gum.BayesNet()
     self.learning_method = learning_method
     self.prior = prior
+    self.class_name = None
+    self.positif_label = None
+    self.threshold=None
+    self.nb_classes = 2
+
+  def fit_from_csv(self, csv_name, variable):
+    """
+    Fit the Bayesian Network model according to the given training data from a csv file.
+
+    :param csv_name: filename of the training data
+    :type csv_name: str
+    :param variable: name of the target variable
+    :type variable: str
+
+    :return: self
+
+    """
+    df = pd.read_csv(csv_name)
+
+    if 'int' in str(df[variable].dtype):
+      self.positif_label = 1
+    elif 'bool' in str(df[variable].dtype):
+      self.positif_label = True
+    else:
+      self.positif_label = 'true'
+
+    self.class_name = variable
+    self.nb_classes = 2
+
+    learner = gum.BNLearner(csv_name)
+
+    if self.learning_method == 'greedy':
+      learner.useGreedyHillClimbing()
+
+    self._bn = learner.learnBN()
+
+    self.threshold = get_threshold(self._bn, csv_name, self.class_name, self.positif_label)
+
+    return self
 
   def fit(self, Xtrain, Ytrain):
     """
@@ -72,20 +113,15 @@ class BNClassifier:
     :return: self
 
     """
-    self.nom_classe = Ytrain.name
-    self.nb_classe = 2
+    self.class_name = Ytrain.name
+    self.nb_classes = 2
 
-    trainFile = pd.concat([Xtrain, Ytrain], axis=1)
-    trainFile.to_csv('trainFile.csv', index=False)
+    train_file = pd.concat([Xtrain, Ytrain], axis=1)
+    train_file.to_csv('temp_trainFile.csv', index=False)
 
-    learner = gum.BNLearner('trainFile.csv')
+    self.fit_from_csv('temp_trainFile.csv', self.class_name)
 
-    if self.learning_method == 'greedy':
-      learner.useGreedyHillClimbing()
-
-    self._bn = learner.learnBN()
-
-    self.seuil = get_seuil(self._bn, 'trainFile.csv', self.nom_classe, True)
+    os.remove("temp_trainFile.csv")
 
     return self
 
@@ -100,18 +136,20 @@ class BNClassifier:
 
     """
 
-    Yscores = np.empty([Xtest.shape[0], self.nb_classe])
+    Yscores = np.empty([Xtest.shape[0], self.nb_classes])
     Yscores[:] = np.nan
 
     ie = gum.LazyPropagation(self._bn)
     for var in ie.BN().names():  # ici que var de mb
-      if var != self.nom_classe:
+      if var != self.class_name:
         ie.addEvidence(var, 0)
-    ie.addTarget(self.nom_classe)
+    ie.addTarget(self.class_name)
+
+    Xtest = Xtest.reset_index(drop=True)
 
     for i in range(len(Xtest)):
       for var in ie.BN().names():
-        if var != self.nom_classe:
+        if var != self.class_name:
 
           try:
             idx = self._bn.variable(var).index(str(Xtest.loc[[i]].to_dict('index')[i][var]))
@@ -122,7 +160,7 @@ class BNClassifier:
             pass
       ie.makeInference()
 
-      marginal = ie.posterior(self.nom_classe)
+      marginal = ie.posterior(self.class_name)
       Yscores[i] = marginal.toarray()
 
     return Yscores
@@ -138,7 +176,7 @@ class BNClassifier:
     """
 
     Yscores = self.predict_proba(Xtest)
-    Ypred = np.where(Yscores[:, 1] >= self.seuil, True, False)
+    Ypred = np.where(Yscores[:, 1] >= self.threshold, 1, 0)
 
     return Ypred
 
@@ -156,4 +194,4 @@ class BNClassifier:
 
     :return: the Markov Blanket of the model
     """
-    return gum.MarkovBlanket(self._bn, self.nom_classe)
+    return gum.MarkovBlanket(self._bn, self.class_name)
