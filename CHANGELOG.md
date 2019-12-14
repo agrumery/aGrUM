@@ -7,7 +7,8 @@
   * Add a `gum.Potential.loopIn()` to iterate inside a Potential
   * Enhanced API for `gum.InfluenceDiagram`
   * Documentation improvements
-  * remove package for python 3.4 and 3.5 (following [NEP29](https://numpy.org/neps/nep-0029-deprecation_policy.html)). But 2.7 is still maintaned.
+  * remove package for python 3.4 and 3.5 (following [NEP29](https://numpy.org/neps/nep-0029-deprecation_policy.html)). But 2.7 is still maintained.
+  * add package for python 3.8
 
 * aGrUM
   * still working on CI
@@ -16,13 +17,13 @@
 ## Changelog for 0.16.3
 
 * pyAgrum
-  * wrapper for the class `gum::BayesNetFragment` 
+  * wrapper for the class `gum::BayesNetFragment`
   * typos in dot methods for Influence Diagrams and Causal Models
 
 ## Changelog for 0.16.2
 
 * pyAgrum
-  *  remove the use of 'f-strings' in `pyAgrum.lib.notebook.py` 
+  * remove the use of 'f-strings' in `pyAgrum.lib.notebook.py`
 
 ## Changelog for 0.16.1
 
@@ -156,7 +157,7 @@
   * bug fix in `pyAgrum.lib.notebook`
   * bug fix in `KL[...]::bhattacharya`
   * add `KL[...]::jsd` (Jensen-Shannon divergence)
-  * renaming `pyAgrum.[...]]KL` classes into `pyAgrum::[...]distance` because they provide acces to KL but also to Hellinger, Bhattacharya distances and Jensen-Shanon divergence. 
+  * renaming `pyAgrum.[...]]KL` classes into `pyAgrum::[...]distance` because they provide acces to KL but also to Hellinger, Bhattacharya distances and Jensen-Shanon divergence.
   * fix some scratches in pyAgrum documentation
 
 ## Changelog for 0.13.6
@@ -261,7 +262,7 @@
   * o3prm : still in progress (see <https://o3prm.lip6.fr>, <https://o3prm.readthedocs.io>)
 * act
   * new command guideline for a few easy checks
-* many bug fixes 
+* many bug fixes
 
 ## Changelog for 0.12.0
 
@@ -333,7 +334,6 @@
 * Add some project files (including this CHANGELOG.md)
 * Refresh pyAgrum notebooks with matplotlib2
 
-
 ## Changelog for 0.10.3
 
 * Only bug fixes in tests
@@ -363,7 +363,7 @@
 ## Changelog for 0.10.0
 
 * aGrUM
-  * Improvements in inference : New target/evidence-driven incremental inference scheme using relevant reasoning used by Lazy/Shafer-Shenoy/Variable Elimination algorithms. Relevant reasoning leads to a major improvement of the inference (see http://www-desir.lip6.fr/~phw/aGrUM/officiel/notebooks/RelevanceReasoning.html).
+  * Improvements in inference : New target/evidence-driven incremental inference scheme using relevant reasoning used by Lazy/Shafer-Shenoy/Variable Elimination algorithms. Relevant reasoning leads to a major improvement of the inference (see [RelevanceReasoning.html](http://www-desir.lip6.fr/~phw/aGrUM/officiel/notebooks/RelevanceReasoning.html)).
 * pyAgrum
   * LazyPropagation API follow the new inference scheme (add/removeTarget, add/remove/chgEvidence)
 * Installers using pip or anaconda.
@@ -412,7 +412,7 @@ Tag 0.9.3 has not been properly announced. Still, many changes in this release :
 * pyAgrum
   * small bugs fixed and reorganisation
 
-##Changelog for 0.9.1
+## Changelog for 0.9.1
 
 * aGrUM
   * Improvement in learning algorithms
