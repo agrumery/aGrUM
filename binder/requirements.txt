@@ -4,3 +4,5 @@ pyAgrum
 pydotplus
 numpy
 scipy
+configparser
+six
