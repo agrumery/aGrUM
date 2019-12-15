@@ -22,11 +22,12 @@
 # OR PERFORMANCE OF THIS SOFTWARE!
 
 # @authors Clara CHARON and Pierre-henri WUILLEMIN
-import pyAgrum as gum
-import pandas as pd
-from pyAgrum.lib.bn2roc import __computeROCpoints, _computeROC
-import pyAgrum.lib.notebook as gnb
+import os
 import numpy as np
+import pandas as pd
+
+import pyAgrum as gum
+from pyAgrum.lib.bn2roc import __computeROCpoints, _computeROC
 
 
 def get_threshold(bn, csv_name, target, label):
@@ -65,7 +66,7 @@ class BNClassifier:
     self.prior = prior
     self.class_name = None
     self.positif_label = None
-    self.threshold=None
+    self.threshold = None
     self.nb_classes = 2
 
   def fit_from_csv(self, csv_name, variable):
