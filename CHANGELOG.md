@@ -1,6 +1,6 @@
 # aGrUM Changelog
 
-## Changelog for 0.16.4 (WIP)
+## Changelog for 0.16.4
 
 * pyAgrum
   * first version of `gum.lib.classifier` providing a class `gum.BNClassifier` wrapping a BN as a classifier with a scikitlearn-like API.
