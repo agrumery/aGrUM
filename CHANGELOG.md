@@ -3,6 +3,7 @@
 ## Changelog for 0.16.4 (WIP)
 
 * pyAgrum
+  * first version of `gum.lib.classifier` providing a class `gum.BNClassifier` wrapping a BN as a classifier with a scikitlean-like API.
   * Fix bug in `gum.lib.notebook.showPotential` with explicit digit param
   * Add a `gum.Potential.loopIn()` to iterate inside a Potential
   * Enhanced API for `gum.InfluenceDiagram`
