@@ -168,9 +168,9 @@ windows_agrum_2015:
       - build/
   stage: build
   script:
-    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" python=3.7
+    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.7
     - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
-    - call conda.bat install -y numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
+    - call conda.bat install -y -c conda-forge numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
     - python act clean
     - python act --no-fun --mvsc -d build -j except1 test release aGrUM 
     - call conda.bat deactivate
@@ -193,9 +193,9 @@ windows_pyagrum_2015:
       - build/
   stage: build
   script:
-    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" python=3.7
+    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.7
     - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
-    - call conda.bat install -y numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
+    - call conda.bat install -y -c conda-forge numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
     - python act clean
     - python act --no-fun test release pyAgrum --no-fun --mvsc -d build -j except1 -t quick
     - call conda.bat deactivate
@@ -218,9 +218,9 @@ windows_agrum_2017:
       - build/
   stage: build
   script:
-    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" python=3.7
+    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.7
     - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
-    - call conda.bat install -y numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
+    - call conda.bat install -y -c conda-forge numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
     - python act clean
     - python act --no-fun test release aGrUM --no-fun --mvsc17 -d build -j except1
     - call conda.bat deactivate
@@ -243,9 +243,9 @@ windows_pyagrum_2017:
       - build/
   stage: build
   script:
-    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" python=3.7
+    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" -c conda-forge python=3.7
     - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
-    - call conda.bat install -y numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
+    - call conda.bat install -y -c conda-forge numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
     - python act clean
     - python act --no-fun test release pyAgrum --no-fun --mvsc17 -d build -j except1 -t quick
     - call conda.bat deactivate
