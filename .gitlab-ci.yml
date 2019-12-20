@@ -175,6 +175,7 @@ windows_agrum_2015:
     - python act --no-fun --mvsc -d build -j except1 test release aGrUM 
     - call conda.bat deactivate
     - call conda.bat remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
+  retry: 1
 
 windows_pyagrum_2015:
   only:
@@ -200,6 +201,7 @@ windows_pyagrum_2015:
     - python act --no-fun test release pyAgrum --no-fun --mvsc -d build -j except1 -t quick
     - call conda.bat deactivate
     - call conda.bat remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
+  retry: 1
 
 windows_agrum_2017:
   only:
@@ -225,6 +227,7 @@ windows_agrum_2017:
     - python act --no-fun test release aGrUM --no-fun --mvsc17 -d build -j except1
     - call conda.bat deactivate
     - call conda.bat remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
+  retry: 1
 
 windows_pyagrum_2017:
   only:
@@ -250,6 +253,7 @@ windows_pyagrum_2017:
     - python act --no-fun test release pyAgrum --no-fun --mvsc17 -d build -j except1 -t quick
     - call conda.bat deactivate
     - call conda.bat remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
+  retry: 1
 
 ################################################################################
 # Deploy  wheels
