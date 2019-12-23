@@ -37,8 +37,6 @@ bn_vs_bn
     :show-inheritance:
     :noindex:
 
-
-
 pretty_print
 -------------------------------
 

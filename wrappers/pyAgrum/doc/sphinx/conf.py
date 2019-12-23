@@ -29,13 +29,13 @@ author = 'Pierre-henri Wuillemin'
 #
 import os
 import sys
+sys.path.insert(0,os.path.abspath('../../../../build/release/wrappers/'))
+
+import pyAgrum as gum
 
 import matplotlib
 matplotlib.use('agg') # work around for tkinter.file_dialog not found
 
-sys.path.insert(0,os.path.abspath('../../../../build/release/wrappers/'))
-
-import pyAgrum as gum
 
 print(gum.__file__)
 print("GUM VERSION =" + gum.__version__)

@@ -46,6 +46,7 @@ pyAgrum contains
   lib.notebook
   lib.bn2graph
   lib.dBN
+  lib.classifier
   pyAgrum.lib
 
 .. toctree::
