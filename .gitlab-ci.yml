@@ -159,9 +159,9 @@ windows_agrum_2015:
   tags:
     - windows
     - conda
-    - agrumerie
+    - agrumerie2
   variables:
-    PATH: $PATH_64_MVSC15_AGRUMERIE
+    PATH: $PATH_64_MVSC15_AGRUMERIE2
   cache:
     key: mvsc
     paths:
@@ -185,9 +185,9 @@ windows_pyagrum_2015:
   tags:
     - windows
     - conda
-    - agrumerie
+    - agrumerie2
   variables:
-    PATH: $PATH_64_MVSC15_AGRUMERIE
+    PATH: $PATH_64_MVSC15_AGRUMERIE2
   cache:
     key: mvsc
     paths:
