@@ -14,13 +14,30 @@ if len(sys.argv) > 1:
 
 import pyAgrum as gum
 
+try:
+  import sklearn
+  sklearnFound = True
+except ImportError:
+  sklearnFound = False
+
+try:
+  import pandas
+  pandasFound = True
+except ImportError:
+  pandasFound = False
+  
 import unittest
 
 from tests import AggregatorsForBNTestSuite
 from tests import AllIncrementalInferenceTestSuite
 from tests import BayesNetTestSuite
 from tests import BayesNetFragmentTestSuite
-from tests import BNClassifierTestSuite
+
+if pandasFound and sklearnFound:
+  from tests import BNClassifierTestSuite
+else:
+  print("[pyAgrum] pyAgrum.lib.classifier needs pandas and sklearn")
+
 from tests import BNDatabaseGeneratorTestSuite
 from tests import BNLearnerTestSuite
 from tests import BNListenerTestSuite
@@ -56,7 +73,10 @@ tests.append(AggregatorsForBNTestSuite.ts)
 tests.append(AllIncrementalInferenceTestSuite.ts)
 tests.append(BayesNetTestSuite.ts)
 tests.append(BayesNetFragmentTestSuite.ts)
-tests.append(BNClassifierTestSuite.ts)
+
+if pandasFound and sklearnFound:
+  tests.append(BNClassifierTestSuite.ts)
+
 tests.append(BNDatabaseGeneratorTestSuite.ts)
 tests.append(BNLearnerTestSuite.ts)
 tests.append(BNListenerTestSuite.ts)

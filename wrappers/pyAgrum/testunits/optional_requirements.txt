@@ -1,0 +1,8 @@
+nbformat
+nbconvert
+jupyter
+matplotlib
+pydotplus
+pandas
+scipy
+sklearn

@@ -1,6 +1,20 @@
 # -*- encoding: UTF-8 -*-
 import unittest
 
+from pyAgrumTestSuite import pyAgrumTestCase, addTests
+
+try:
+  import sklearn
+  sklearnFound = True
+except ImportError:
+  sklearnFound = False
+
+try:
+  import pandas
+  pandasFound = True
+except ImportError:
+  pandasFound = False
+  
 try:
   import matplotlib
   matplotlibFound=True
@@ -11,13 +25,8 @@ try:
   import IPython
   ipythonFound=True
 except ImportError:
-  ipythonFound=False
-
-
-
-from pyAgrumTestSuite import pyAgrumTestCase, addTests
-
-
+  ipythonFound = False
+  
 class TestImport(pyAgrumTestCase):
   def testImport(self):
     try:
@@ -33,6 +42,9 @@ class TestImport(pyAgrumTestCase):
         import pyAgrum.lib.bn2graph
         import pyAgrum.lib.bn2roc
         import pyAgrum.lib.dynamicBN
+
+      if sklearnFound:
+        import pyAgrum.lib.classifier
 
     except Exception as e:
       self.assertFalse("Import error : "+str(e))
