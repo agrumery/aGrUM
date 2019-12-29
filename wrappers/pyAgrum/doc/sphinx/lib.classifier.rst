@@ -1,10 +1,8 @@
 Bayesian network as classifier
 ===============================
 
-.. image:: _static/dBN.png
+.. image:: _static/classifiers.png
 
 .. automodule:: pyAgrum.lib.classifier
     :members:
-    :undoc-members:
-    :show-inheritance:
     :noindex:

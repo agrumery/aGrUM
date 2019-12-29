@@ -28,6 +28,7 @@ import pandas as pd
 
 import pyAgrum as gum
 from pyAgrum.lib.bn2roc import __computeROCpoints, _computeROC
+from sklearn.metrics import accuracy_score
 
 
 def get_threshold(bn, csv_name, target, label):
@@ -47,7 +48,8 @@ def get_threshold(bn, csv_name, target, label):
 
   """
 
-  (res, totalP, totalN, idTarget) = __computeROCpoints(bn, csv_name, target, label, visible=False, with_labels=True)
+  (res, totalP, totalN, idTarget) = __computeROCpoints(
+      bn, csv_name, target, label, visible=False, with_labels=True)
   points, opt, seuil = _computeROC(bn, res, totalP, totalN, idTarget, label)
 
   return seuil
@@ -60,14 +62,30 @@ class BNClassifier:
     label of the target must be True or 1
   """
 
-  def __init__(self, learning_method='greedy', prior='laplace'):
+  def __init__(self, learning_method='greedy', prior='likelihood', prior_weight=1, bins=7):
+    """
+    :param learning_method: greedy|miic
+    :type learning_method: str
+    :param prior: likelihood|laplace
+    :type variable: str
+    :param prior_weight: weight of prior
+    :type prior_weight: float
+    :param bins: nb of bins when discretization
+    :type bins: int
+
+    :return: self
+
+    """
+
     self._bn = gum.BayesNet()
     self.learning_method = learning_method
     self.prior = prior
+    self.prior_weight = 1
     self.class_name = None
     self.positif_label = None
     self.threshold = None
     self.nb_classes = 2
+    self.bins = bins
 
   def fit_from_csv(self, csv_name, variable):
     """
@@ -83,6 +101,7 @@ class BNClassifier:
     """
     df = pd.read_csv(csv_name)
 
+    template = gum.BayesNet()
     if 'int' in str(df[variable].dtype):
       self.positif_label = 1
     elif 'bool' in str(df[variable].dtype):
@@ -90,21 +109,46 @@ class BNClassifier:
     else:
       self.positif_label = 'true'
 
+    # template creation (with discretization if needed)
+    for varname in df:
+      if varname != variable:
+        if 'float' in str(df[varname].dtype):
+          nb = min(len(df[varname]), self.bins)
+          _, bins = pd.qcut(df[varname], nb, retbins=True)
+          amplitude = bins[-1]-bins[0]
+          bins[0] -= 100*amplitude
+          bins[-1] += 100*amplitude
+          template.add(gum.DiscretizedVariable(varname, varname, bins))
+        else:
+          template.add(gum.LabelizedVariable(varname, varname,
+                                             [str(k) for k in df[varname].unique()]))
+
+    template.add(gum.LabelizedVariable(variable, variable,
+                                       sorted([str(k) for k in df[variable].unique()])))
+
     self.class_name = variable
     self.nb_classes = 2
 
-    learner = gum.BNLearner(csv_name)
+    learner = gum.BNLearner(csv_name, template)
 
     if self.learning_method == 'greedy':
       learner.useGreedyHillClimbing()
+    else:  # miic for now
+      learner.useMIIC()
+
+    if self.prior == "laplace":
+      learner.useAprioriSmoothing(self.prior_weight)
+    else:
+      learner.useNoApriori()
 
     self._bn = learner.learnBN()
 
-    self.threshold = get_threshold(self._bn, csv_name, self.class_name, self.positif_label)
+    self.threshold = get_threshold(
+        self._bn, csv_name, self.class_name, self.positif_label)
 
     return self
 
-  def fit(self, Xtrain, Ytrain):
+  def fit(self, Xtrain, Ytrain, nb_bins=10):
     """
     Fit the Bayesian Network model according to the given training data.
 
@@ -112,9 +156,16 @@ class BNClassifier:
     :param Ytrain: dataframe, shape (n_samples,) - target values/class labels
 
     :return: self
-
     """
-    self.class_name = Ytrain.name
+    if type(Ytrain) is np.ndarray:
+      Ytrain = pd.DataFrame(Ytrain, columns=["Y"])
+      Xtrain = pd.DataFrame(
+          Xtrain, columns=[f"X{i}" for i in range(Xtrain.shape[1])])
+    if hasattr(Ytrain, "name"):
+      self.class_name = Ytrain.name
+    else:
+      self.class_name = "Y"
+
     self.nb_classes = 2
 
     train_file = pd.concat([Xtrain, Ytrain], axis=1)
@@ -127,7 +178,6 @@ class BNClassifier:
     return self
 
   def predict_proba(self, Xtest):
-
     """
     Compute probabilities of possible outcomes for samples in Xtest.
 
@@ -136,6 +186,9 @@ class BNClassifier:
     :return: Yscores - array, shape (n_samples, n_classes) - returns the probability of the sample for each class in the model.
 
     """
+    if type(Xtest) is np.ndarray:
+      Xtest = pd.DataFrame(
+          Xtest, columns=[f"X{i}" for i in range(Xtest.shape[1])])
 
     Yscores = np.empty([Xtest.shape[0], self.nb_classes])
     Yscores[:] = np.nan
@@ -148,17 +201,16 @@ class BNClassifier:
 
     Xtest = Xtest.reset_index(drop=True)
 
-    for i in range(len(Xtest)):
+    for i, line in Xtest.iterrows():
       for var in ie.BN().names():
         if var != self.class_name:
-
           try:
-            idx = self._bn.variable(var).index(str(Xtest.loc[[i]].to_dict('index')[i][var]))
+            idx = self._bn.variable(var).index(str(line[var]))
             ie.chgEvidence(var, idx)
           except gum.GumException:
             # this can happend when value is missing is the test base.
-            print('The value ' + str(idx) + ' for the variable ' + str(var) + ' is missing in the training set.')
-            pass
+            raise(
+                OverflowError, f'The value {line[var]} for the variable {var} is missing in the training set.')
       ie.makeInference()
 
       marginal = ie.posterior(self.class_name)
@@ -175,6 +227,9 @@ class BNClassifier:
     :return: Ypred - array, shape (n_samples,) - class labels for samples in Xtest.
 
     """
+    if type(Xtest) is np.ndarray:
+      Xtest = pd.DataFrame(
+          X_test, columns=[f"X{i}" for i in range(Xtest.shape[1])])
 
     Yscores = self.predict_proba(Xtest)
     Ypred = np.where(Yscores[:, 1] >= self.threshold, 1, 0)
@@ -196,3 +251,11 @@ class BNClassifier:
     :return: the Markov Blanket of the model
     """
     return gum.MarkovBlanket(self._bn, self.class_name)
+
+  def score(self, X_test, Y_test):
+    if type(Y_test) is np.ndarray:
+      Y_test = pd.DataFrame(Y_test, columns=["Y"])
+      X_test = pd.DataFrame(
+          X_test, columns=[f"X{i}" for i in range(X_test.shape[1])])
+
+    return accuracy_score(Y_test, self.predict(X_test))
