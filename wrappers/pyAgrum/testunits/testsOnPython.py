@@ -25,7 +25,14 @@ try:
   pandasFound = True
 except ImportError:
   pandasFound = False
-  
+
+import logging
+FORMAT = '%(asctime)s | %(levelname)s | %(filename)s:%(lineno)d | %(funcName)s | %(message)s'
+logging.basicConfig(filename='pyAgrumTests.log',
+                    filemode='w', format=FORMAT, level=logging.DEBUG)
+logging.info("[pyAgrum]                       log messages")
+logging.info("[pyAgrum]")
+
 import unittest
 
 from tests import AggregatorsForBNTestSuite
@@ -36,7 +43,7 @@ from tests import BayesNetFragmentTestSuite
 if pandasFound and sklearnFound:
   from tests import BNClassifierTestSuite
 else:
-  print("[pyAgrum] pyAgrum.lib.classifier needs pandas and sklearn")
+  logging.warning("[pyAgrum] pyAgrum.lib.classifier needs pandas and sklearn")
 
 from tests import BNDatabaseGeneratorTestSuite
 from tests import BNLearnerTestSuite
@@ -64,7 +71,7 @@ if sys.version_info >= (3, 7):
   from tests import CausalModelTestSuite
   from tests import CausalNonRegressionTestSuite
 else:
-  print("[pyAgrum] Causality needs python>=3.7")
+  logging.warning("[pyAgrum] Causality needs python>=3.7")
 
 import time
 
@@ -136,6 +143,13 @@ import gc
 
 gc.collect()
 gum.statsObj()  # reporting on objects in debug mode
+
+logging.shutdown()
+with open("pyAgrumTests.log", "r") as logfile:
+  for f in logfile.readlines():
+    if "[pyAgrum]" in f:
+      print(f,end='')
+print("-"*70)
 
 print("## Profiling : %5.0f ms ##" % (1000.0 * duration), end='\n', file=sys.stdout)
 print("Failed %d of %d tests" % (errs, result.testsRun), end='\n', file=sys.stdout)

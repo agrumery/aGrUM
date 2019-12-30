@@ -1,8 +1,1 @@
 numpy
-nbformat
-nbconvert
-jupyter
-matplotlib
-pydotplus
-pandas
-scipy

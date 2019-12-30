@@ -7,9 +7,6 @@ import unittest
 
 from numpy import ndarray
 
-FORMAT = '%(asctime)-15s %(message)s'
-logging.basicConfig(format=FORMAT)
-
 
 def addTests(ts, cl):
   """
@@ -29,11 +26,7 @@ class pyAgrumTestCase(unittest.TestCase):
   def __init__(self, *args, **kwargs):
     super(pyAgrumTestCase, self).__init__(*args, **kwargs)
 
-    self.nbLoopForApproximatedTest=10
-
-    if pyAgrumTestCase.log is None:
-      pyAgrumTestCase.log = logging.getLogger("pyAgrumTestSuite")
-      pyAgrumTestCase.log.warning("Initializing logger")
+    self.nbLoopForApproximatedTest = 10
 
   def warn(self, s):
     pyAgrumTestCase.log.warning(s)

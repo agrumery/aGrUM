@@ -1,5 +1,6 @@
 # -*- encoding: UTF-8 -*-
 import unittest
+import logging
 
 from pyAgrumTestSuite import pyAgrumTestCase, addTests
 
@@ -14,30 +15,34 @@ try:
   pandasFound = True
 except ImportError:
   pandasFound = False
-  
+
 try:
   import matplotlib
-  matplotlibFound=True
+  matplotlibFound = True
 except ImportError:
-  matplotlibFound=False
+  matplotlibFound = False
 
 try:
   import IPython
-  ipythonFound=True
+  ipythonFound = True
 except ImportError:
   ipythonFound = False
-  
+
+
 class TestImport(pyAgrumTestCase):
   def testImport(self):
     try:
       import pyAgrum
       import pyAgrum.lib.bn2scores
       import pyAgrum.lib.bn_vs_bn
-      
+
       if matplotlibFound:
         if ipythonFound:
           import pyAgrum.lib.ipython
           import pyAgrum.lib.notebook
+        else:
+          logging.warning(
+              "[pyAgrum] ipython is needed for modules lib.ipython and lib.notebook")
 
         import pyAgrum.lib.bn2graph
         import pyAgrum.lib.bn2roc
@@ -45,10 +50,13 @@ class TestImport(pyAgrumTestCase):
 
       if sklearnFound:
         import pyAgrum.lib.classifier
+      else:
+        logging.warning(
+            "[pyAgrum] sklearn is needed for modules lib.classifier")
 
     except Exception as e:
       self.assertFalse("Import error : "+str(e))
-    pass
-      
+
+
 ts = unittest.TestSuite()
 addTests(ts, TestImport)
