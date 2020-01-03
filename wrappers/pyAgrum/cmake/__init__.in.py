@@ -6,7 +6,7 @@ It provides a high-level interface to the C++ part of aGrUM allowing to create, 
 The module is generated using the `SWIG <https://www.swig.org>`_ interface generator. Custom-written code was added to make the interface more friendly.
 
 pyAgrum includes :
-  * API documentation <http://www-desir.lip6.fr/~phw/aGrUM/docs/last/pyAgrum/>,
+  * API documentation <https://pyagrum.readthedocs.io>,
   * examples as `notebooks <http://www-desir.lip6.fr/~phw/aGrUM/docs/last/notebooks/01-tutorial.ipynb.html>`_,
   * a `website <http://agrum.org>`_.
 """
