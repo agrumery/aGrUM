@@ -25,6 +25,7 @@
 import os
 import numpy as np
 import pandas as pd
+import logging
 
 import pyAgrum as gum
 from pyAgrum.lib.bn2roc import __computeROCpoints, _computeROC
@@ -33,7 +34,7 @@ from sklearn.metrics import accuracy_score
 
 def get_threshold(bn, csv_name, target, label):
   """
-  Get seuil by computing ROC
+  Get threshold by computing ROC
 
   :param bn: a bayesian network
   :type bn: gum.BayesNet
@@ -44,22 +45,23 @@ def get_threshold(bn, csv_name, target, label):
   :param label: the target label
   :type label: str
 
-  :return: the seuil
+  :return: the threshold
 
   """
+  (res, totalP, totalN, idTarget) = __computeROCpoints(bn, csv_name, target,
+                                                       label, visible=False, with_labels=True)
 
-  (res, totalP, totalN, idTarget) = __computeROCpoints(
-      bn, csv_name, target, label, visible=False, with_labels=True)
-  points, opt, seuil = _computeROC(bn, res, totalP, totalN, idTarget, label)
+  points, opt, threshold = _computeROC(
+      bn, res, totalP, totalN, idTarget, label)
 
-  return seuil
+  return threshold
 
 
 class BNClassifier:
   """
-    'scikit-learn-like' methods for BN classification in jupyter notebook
-    bi_classe classification only
-    label of the target must be True or 1
+  'scikit-learn-like' methods for BN classification in jupyter notebook
+  bi_classe classification only
+  label of the target must be True or 1
   """
 
   def __init__(self, learning_method='greedy', prior='likelihood', prior_weight=1, bins=7):
@@ -112,19 +114,34 @@ class BNClassifier:
     # template creation (with discretization if needed)
     for varname in df:
       if varname != variable:
-        if 'float' in str(df[varname].dtype):
+        if 'float' in str(df[varname].dtype) and len(df[varname].unique()) / len(df[varname]) > 0.95:
+                                                                              # less than 5% duplicate
           nb = min(len(df[varname]), self.bins)
+          # , duplicates = 'drop')
           _, bins = pd.qcut(df[varname], nb, retbins=True)
           amplitude = bins[-1]-bins[0]
           bins[0] -= 100*amplitude
           bins[-1] += 100*amplitude
           template.add(gum.DiscretizedVariable(varname, varname, bins))
         else:
-          template.add(gum.LabelizedVariable(varname, varname,
-                                             [str(k) for k in df[varname].unique()]))
+          varname_values = []
+          for k in df[varname].unique():
+            if pd.isna(k):
+              varname_values.append('')
+            else:
+              varname_values.append(str(k))
 
-    template.add(gum.LabelizedVariable(variable, variable,
-                                       sorted([str(k) for k in df[variable].unique()])))
+          template.add(gum.LabelizedVariable(varname, varname, varname_values))
+
+    variable_values = []
+    for k in df[variable].unique():
+      if pd.isna(k):
+        variable_values.append('')
+      else:
+        variable_values.append(str(k))
+
+    template.add(gum.LabelizedVariable(
+        variable, variable, sorted(variable_values)))
 
     self.class_name = variable
     self.nb_classes = 2
@@ -201,20 +218,23 @@ class BNClassifier:
 
     Xtest = Xtest.reset_index(drop=True)
 
-    for i, line in Xtest.iterrows():
+    for line in Xtest.itertuples():
       for var in ie.BN().names():
         if var != self.class_name:
           try:
-            idx = self._bn.variable(var).index(str(line[var]))
+            idx = self._bn.variable(var).index(str(getattr(line, var)))
             ie.chgEvidence(var, idx)
+
           except gum.GumException:
             # this can happend when value is missing is the test base.
-            raise(
-                OverflowError, f'The value {line[var]} for the variable {var} is missing in the training set.')
+            logging.warning(
+                f"** pyAgrum.lib.classifier : The value {getattr(line, var)} for the variable {var} is missing in the training set.")
+            pass
+
       ie.makeInference()
 
       marginal = ie.posterior(self.class_name)
-      Yscores[i] = marginal.toarray()
+      Yscores[line[0]] = marginal.toarray()
 
     return Yscores
 
@@ -232,7 +252,13 @@ class BNClassifier:
           X_test, columns=[f"X{i}" for i in range(Xtest.shape[1])])
 
     Yscores = self.predict_proba(Xtest)
-    Ypred = np.where(Yscores[:, 1] >= self.threshold, 1, 0)
+
+    if self.positif_label == True:
+      Ypred = np.where(Yscores[:, 1] >= self.threshold, True, False)
+    if self.positif_label == 'true':
+      Ypred = np.where(Yscores[:, 1] >= self.threshold, 'true', 'false')
+    else:
+      Ypred = np.where(Yscores[:, 1] >= self.threshold, 1, 0)
 
     return Ypred
 

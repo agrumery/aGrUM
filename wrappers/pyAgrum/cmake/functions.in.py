@@ -34,8 +34,7 @@ def about():
 
   """
   print("pyAgrum version {0}".format('@PYAGRUM_VERSION@'))
-  print("(c) Pierre-Henri Wuillemin, Christophe Gonzales, Lionel Torti")
-  print("    UPMC 2015")
+  print("(c) 2015-2020 Pierre-Henri Wuillemin, Christophe Gonzales, Lionel Torti")
   print("""
     This is free software; see the source code for copying conditions.
     There is ABSOLUTELY NO WARRANTY; not even for MERCHANTABILITY or
