@@ -17,14 +17,14 @@ class BNCLassifierTestCase(pyAgrumTestCase):
     learner = gum.BNLearner(csvfile)
     learner.useGreedyHillClimbing()
     bn = learner.learnBN()
-    seuil = bnc.get_threshold(bn, csvfile, 'lung_cancer?', 1)
+    seuil = bnc.get_threshold(bn, csvfile, 'lung_cancer', 1)
 
     self.assertTrue(seuil <= 1)
 
   def testFitFromCsv(self):
     csvfile = self.agrumSrcDir('src/testunits/ressources/miniasia.csv')
 
-    asia_targetColumn = 'lung_cancer?'
+    asia_targetColumn = 'lung_cancer'
 
     bn1 = bnc.BNClassifier()
     bn1.fit_from_csv(csvfile, asia_targetColumn)
@@ -39,7 +39,7 @@ class BNCLassifierTestCase(pyAgrumTestCase):
     csvfile = self.agrumSrcDir('src/testunits/ressources/miniasia.csv')
 
     df_asia = pd.read_csv(csvfile)
-    asia_targetColumn = 'lung_cancer?'
+    asia_targetColumn = 'lung_cancer'
 
     x_train_asia = df_asia[:9000].drop(asia_targetColumn, axis=1)
     y_train_asia = df_asia[:9000][asia_targetColumn]
