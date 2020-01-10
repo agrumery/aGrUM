@@ -75,16 +75,27 @@ namespace gum {
    * gum::operator<<(std::ostream&, const BayesNet<GUM_SCALAR>&).
    */
   template < typename GUM_SCALAR >
-  class BayesNet : public IBayesNet< GUM_SCALAR > {
+  class BayesNet: public IBayesNet< GUM_SCALAR > {
     friend class BayesNetFactory< GUM_SCALAR >;
 
     public:
     /**
-     * Create a bn with a dotlike syntax : 'a->b->c;b->d;'. The domain size maybe
-     * specified using 'a[10]' or using 'a{yes|maybe|no}'. Note that if the dotlike
-     * string contains such a
-     * specification  for an already defined variable, the first specification will
-     * be used.
+     * Create a Bayesian network with a dot-like syntax which specifies:
+     *   - the structure "a->b->c;b->d<-e;".
+     *   - the type of the variables with different syntax:
+     *     + by default, a variable is a gum::RangeVariable using the default
+     * domainSize (second argument)
+     *     + with "a[10]", the variable is a gum::RangeVariable using 10 as
+     * domainSize (from 0 to 9)
+     *     + with "a[3,7]", the variable is a gum::RangeVariable using a domainSize
+     * from 3 to 7
+     *     + with "a[1,3.14,5,6.2]", the variable is a gum::DiscretizedVariable
+     * using the given ticks (at least 3 values)
+     *     + with "a{top|middle|bottom}", the variable is a gum::LabelizedVariable
+     * using the given labels.
+     *
+     * Note that if the dot-like string contains such a specification more than
+     * once for a variable, the first specification will be used.
      *
      * @param dotlike the string containing the specification
      * @param domainSize the default domain size for variables
@@ -248,6 +259,11 @@ namespace gum {
     NodeId add(const DiscreteVariable&               var,
                MultiDimImplementation< GUM_SCALAR >* aContent,
                NodeId                                id);
+
+    /**
+     * @brief clear the whole Bayesnet     *
+     */
+    void clear();
 
     /**
      * @brief Remove a variable from the gum::BayesNet.

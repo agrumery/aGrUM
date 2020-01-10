@@ -45,7 +45,7 @@
 //                          2 -> 5
 
 namespace gum_tests {
-  class BayesNetTestSuite : public CxxTest::TestSuite {
+  class BayesNetTestSuite: public CxxTest::TestSuite {
     private:
     void fillTopo(gum::BayesNet< double >& bn, gum::List< gum::NodeId >& idList) {
       try {
@@ -173,7 +173,7 @@ namespace gum_tests {
       // const gum::NodeSet& nodes=source.nodes();
       const gum::DAG dag = source.dag();
 
-      for (const auto node : dag.nodes()) {
+      for (const auto node: dag.nodes()) {
         TS_ASSERT(copy->dag().exists(node));
 
         const gum::DiscreteVariable& srcVar = source.variable(node);
@@ -189,7 +189,7 @@ namespace gum_tests {
           TS_ASSERT(false);
         }
 
-        for (const auto parent : source.dag().parents(node)) {
+        for (const auto parent: source.dag().parents(node)) {
           TS_ASSERT(copy->dag().existsArc(gum::Arc(parent, node)));
         }
 
@@ -225,7 +225,7 @@ namespace gum_tests {
       // const gum::NodeSet& nodes=source.nodes();
       const gum::DAG dag = source.dag();
 
-      for (const auto node : dag.nodes()) {
+      for (const auto node: dag.nodes()) {
         TS_ASSERT(copy.dag().exists(node));
 
         const gum::DiscreteVariable& srcVar = source.variable(node);
@@ -241,7 +241,7 @@ namespace gum_tests {
           TS_ASSERT(false);
         }
 
-        for (const auto parent : source.dag().parents(node)) {
+        for (const auto parent: source.dag().parents(node)) {
           TS_ASSERT(copy.dag().existsArc(gum::Arc(parent, node)));
         }
 
@@ -260,15 +260,15 @@ namespace gum_tests {
         }
       }
 
-      for (const auto node : copy.nodes()) {
+      for (const auto node: copy.nodes()) {
         std::stringstream c_str;
         std::stringstream s_str;
 
-        for (const auto var : source.cpt(node).variablesSequence()) {
+        for (const auto var: source.cpt(node).variablesSequence()) {
           s_str << *var << ",";
         }
 
-        for (const auto var : copy.cpt(node).variablesSequence()) {
+        for (const auto var: copy.cpt(node).variablesSequence()) {
           c_str << *var << ",";
         }
 
@@ -347,7 +347,7 @@ namespace gum_tests {
 
       gum::Size cpt = (gum::Size)0;
 
-      for (const auto node : bn.nodes()) {
+      for (const auto node: bn.nodes()) {
         GUM_UNUSED(node);
         cpt++;
       }
@@ -356,7 +356,7 @@ namespace gum_tests {
 
       cpt = (gum::Size)0;
 
-      for (const auto arc : bn.arcs()) {
+      for (const auto arc: bn.arcs()) {
         cpt++;
       }
 
@@ -403,7 +403,7 @@ namespace gum_tests {
 
       bn.erase(idList[0]);
 
-      for (const auto i : idList) {
+      for (const auto i: idList) {
         bn.erase(i);
       }
 
@@ -456,11 +456,10 @@ namespace gum_tests {
     void testStringAccessors() {
       try {
         gum::BayesNet< double > bn;
-        for (const auto& x : {"A", "B", "C"}) {
+        for (const auto& x: {"A", "B", "C"}) {
           bn.add(gum::LabelizedVariable(x, x, 2));
         }
-        for (const auto& a :
-             {std::make_pair("A", "C"), std::make_pair("B", "C")}) {
+        for (const auto& a: {std::make_pair("A", "C"), std::make_pair("B", "C")}) {
           bn.addArc(a.first, a.second);
         }
         TS_ASSERT_THROWS(bn.addArc("A", "C"), gum::DuplicateElement);
@@ -504,7 +503,7 @@ namespace gum_tests {
       gum::BayesNet< double >  bn;
       gum::List< gum::NodeId > idList;
 
-      for (const auto node : bn.nodes()) {
+      for (const auto node: bn.nodes()) {
         TS_ASSERT(idList.exists(node));
       }
     }
@@ -515,7 +514,7 @@ namespace gum_tests {
 
       fill(bn, idList);
 
-      for (const auto node : bn.nodes()) {
+      for (const auto node: bn.nodes()) {
         std::stringstream s1, s2;
         s1 << bn.cpt(node);
 
@@ -644,7 +643,7 @@ namespace gum_tests {
 
       fill(bn, idList);
 
-      for (const auto node : bn.nodes()) {
+      for (const auto node: bn.nodes()) {
         TS_ASSERT_EQUALS(bn.idFromName(bn.variable(node).name()), node);
         TS_ASSERT_EQUALS(&bn.variableFromName(bn.variable(node).name()),
                          &bn.variable(node));
@@ -754,7 +753,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(a, 0.00072, 1e-4);
 
       gum::Instantiation j;
-      for (auto n : bn.nodes()) {
+      for (auto n: bn.nodes()) {
         TS_ASSERT_THROWS(bn.jointProbability(j), gum::InvalidArgument);
         j.add(bn.variable(n));
       }
@@ -895,7 +894,7 @@ namespace gum_tests {
       */
       gum::BayesNet< int > bn;
       //                         0    1    2    3    4    5    6
-      for (const auto& item : {"A", "B", "C", "D", "E", "F", "H"})
+      for (const auto& item: {"A", "B", "C", "D", "E", "F", "H"})
         bn.add(item, 2);
       bn.addArc("A", "B");
       bn.addArc("A", "E");
@@ -1031,6 +1030,24 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn1.cpt("B").variable(0).name(), "B");
       TS_ASSERT_EQUALS(bn2.cpt("B").variable(0).name(), "B");
     }
-  };
 
+    void testClearBN() {
+      auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D->E<-A<-G->F");
+      {   // by hand
+        auto _bn_instance = gum::BayesNet< double >(bn);
+        if (!_bn_instance.empty()) {
+          auto l = _bn_instance.nodes();
+          for (const auto no: l) {
+            _bn_instance.erase(no);
+          }
+        }
+        TS_ASSERT(_bn_instance.empty());
+      }
+      {   // with clear method
+        auto _bn_instance = gum::BayesNet< double >(bn);
+        _bn_instance.clear();
+        TS_ASSERT(_bn_instance.empty());
+      }
+    }
+  };
 }   // namespace gum_tests

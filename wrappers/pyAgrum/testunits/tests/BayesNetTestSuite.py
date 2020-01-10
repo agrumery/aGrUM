@@ -385,6 +385,11 @@ class TestFeatures(BayesNetTestCase):
     r = bn.minimalCondSet([iE, iD], tous - set([iE, iD]))
     self.assertEqual(r, set([iB, iC, iH, iF]))
 
+  def testClearBN(self):
+    bn = gum.fastBN("A->B->C->D;E<-C<-F")
+    bn.clear()
+    self.assertTrue(bn.empty())
+
 
 class TestLoadBN(BayesNetTestCase):
   def listen(self, percent):

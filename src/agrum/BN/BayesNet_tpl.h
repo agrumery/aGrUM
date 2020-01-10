@@ -89,10 +89,10 @@ namespace gum {
           }
           ds = static_cast< Size >(1 + range_max - range_min);
         } else {   // n[3.14,5,10,12]
-          for (const auto& tick : args) {
+          for (const auto& tick: args) {
             ticks.push_back(static_cast< GUM_SCALAR >(std::atof(tick.c_str())));
           }
-          ds = static_cast< Size >(args.size() - 2);
+          ds = static_cast< Size >(args.size() - 1);
         }
       }
     } else if (*(node.rbegin()) == '}') {   // node like "n{one|two|three}"
@@ -142,12 +142,12 @@ namespace gum {
     gum::BayesNet< GUM_SCALAR > bn;
 
 
-    for (const auto& chaine : split(dotlike, ";")) {
+    for (const auto& chaine: split(dotlike, ";")) {
       NodeId lastId = 0;
       bool   notfirst = false;
-      for (const auto& souschaine : split(chaine, "->")) {
+      for (const auto& souschaine: split(chaine, "->")) {
         bool forward = true;
-        for (const auto& node : split(souschaine, "<-")) {
+        for (const auto& node: split(souschaine, "<-")) {
           auto idVar = build_node(bn, node, domainSize);
           if (notfirst) {
             if (forward) {
@@ -189,8 +189,8 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  BayesNet< GUM_SCALAR >& BayesNet< GUM_SCALAR >::
-                          operator=(const BayesNet< GUM_SCALAR >& source) {
+  BayesNet< GUM_SCALAR >&
+     BayesNet< GUM_SCALAR >::operator=(const BayesNet< GUM_SCALAR >& source) {
     if (this != &source) {
       IBayesNet< GUM_SCALAR >::operator=(source);
       __varMap = source.__varMap;
@@ -205,7 +205,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   BayesNet< GUM_SCALAR >::~BayesNet() {
     GUM_DESTRUCTOR(BayesNet);
-    for (const auto p : __probaMap) {
+    for (const auto p: __probaMap) {
       delete p.second;
     }
   }
@@ -345,7 +345,7 @@ namespace gum {
       // Reduce the variable child's CPT
       const NodeSet& children = this->children(varId);
 
-      for (const auto c : children) {
+      for (const auto c: children) {
         __probaMap[c]->erase(variable(varId));
       }
 
@@ -354,6 +354,16 @@ namespace gum {
       __probaMap.erase(varId);
       __varMap.erase(varId);
       this->_dag.eraseNode(varId);
+    }
+  }
+
+  template < typename GUM_SCALAR >
+  void BayesNet< GUM_SCALAR >::clear() {
+    if (!this->empty()) {
+      auto l = this->nodes();
+      for (const auto no: l) {
+        this->erase(no);
+      }
     }
   }
 
@@ -424,15 +434,15 @@ namespace gum {
     // and add to head all the parents of tail
     beginTopologyTransformation();
     NodeSet new_parents;
-    for (const auto node : this->parents(tail))
+    for (const auto node: this->parents(tail))
       new_parents.insert(node);
-    for (const auto node : this->parents(head))
+    for (const auto node: this->parents(head))
       new_parents.insert(node);
     // remove arc (head, tail)
     eraseArc(arc);
 
     // add the necessary arcs to the tail
-    for (const auto p : new_parents) {
+    for (const auto p: new_parents) {
       if ((p != tail) && !dag().existsArc(p, tail)) { addArc(p, tail); }
     }
 
@@ -440,7 +450,7 @@ namespace gum {
     // add the necessary arcs to the head
     new_parents.erase(tail);
 
-    for (const auto p : new_parents) {
+    for (const auto p: new_parents) {
       if ((p != head) && !dag().existsArc(p, head)) { addArc(p, head); }
     }
 
@@ -624,14 +634,14 @@ namespace gum {
   /// begin Multiple Change for all CPTs
   template < typename GUM_SCALAR >
   void BayesNet< GUM_SCALAR >::beginTopologyTransformation() {
-    for (const auto node : nodes())
+    for (const auto node: nodes())
       __probaMap[node]->beginMultipleChanges();
   }
 
   /// end Multiple Change for all CPTs
   template < typename GUM_SCALAR >
   void BayesNet< GUM_SCALAR >::endTopologyTransformation() {
-    for (const auto node : nodes())
+    for (const auto node: nodes())
       __probaMap[node]->endMultipleChanges();
   }
 
@@ -639,7 +649,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   void BayesNet< GUM_SCALAR >::__clearPotentials() {
     // Removing previous potentials
-    for (const auto& elt : __probaMap) {
+    for (const auto& elt: __probaMap) {
       delete elt.second;
     }
 
@@ -652,7 +662,7 @@ namespace gum {
      const BayesNet< GUM_SCALAR >& source) {
     // Copying potentials
 
-    for (const auto src : source.__probaMap) {
+    for (const auto src: source.__probaMap) {
       // First we build the node's CPT
       Potential< GUM_SCALAR >* copy_array = new Potential< GUM_SCALAR >();
       copy_array->beginMultipleChanges();
@@ -669,7 +679,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void BayesNet< GUM_SCALAR >::generateCPTs() const {
-    for (const auto node : nodes())
+    for (const auto node: nodes())
       generateCPT(node);
   }
 
