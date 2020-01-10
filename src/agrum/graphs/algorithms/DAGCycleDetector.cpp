@@ -51,7 +51,7 @@ namespace gum {
     List< NodeId >       roots, leaves;
     NodeProperty< Size > nb_parents, nb_children;
 
-    for (const auto node : dag) {
+    for (const auto node: dag) {
       Size nb_ch = dag.children(node).size();
       nb_children.insert(node, nb_ch);
 
@@ -67,7 +67,7 @@ namespace gum {
     NodeProperty< Size > empty_set;
     __ancestors.clear();
 
-    for (NodeId node : dag) {
+    for (NodeId node: dag) {
       __ancestors.insert(node, empty_set);
     }
 
@@ -79,7 +79,7 @@ namespace gum {
       const NodeSet& node_children = dag.children(node);
       roots.popFront();
 
-      for (const auto ch : node_children) {
+      for (const auto ch: node_children) {
         __addWeightedSet(__ancestors[ch], node_ancestors, 1);
         --nb_parents[ch];
 
@@ -90,7 +90,7 @@ namespace gum {
     // recompute the set of descendants
     __descendants.clear();
 
-    for (const auto node : dag) {
+    for (const auto node: dag) {
       __descendants.insert(node, empty_set);
     }
 
@@ -102,7 +102,7 @@ namespace gum {
       const NodeSet& node_parents = dag.parents(node);
       leaves.popFront();
 
-      for (const auto pa : node_parents) {
+      for (const auto pa: node_parents) {
         __addWeightedSet(__descendants[pa], node_descendants, 1);
         --nb_children[pa];
 
@@ -121,7 +121,7 @@ namespace gum {
     HashTable< Arc, Size > deletions(Size(modifs.size()));
     HashTable< Arc, Size > additions(Size(modifs.size()));
 
-    for (const auto& modif : modifs) {
+    for (const auto& modif: modifs) {
       Arc arc(modif.tail(), modif.head());
 
       switch (modif.type()) {
@@ -185,7 +185,7 @@ namespace gum {
     // get the set of nodes involved in the modifications
     NodeSet extremities;
 
-    for (const auto& modif : modifs) {
+    for (const auto& modif: modifs) {
       extremities.insert(modif.tail());
       extremities.insert(modif.head());
     }
@@ -195,7 +195,7 @@ namespace gum {
     // keep track of all the children and parents of these nodes
     NodeProperty< NodeProperty< Size > > ancestors, descendants;
 
-    for (const auto& modif : modifs) {
+    for (const auto& modif: modifs) {
       if (!ancestors.exists(modif.tail())) {
         NodeProperty< Size >& anc =
            ancestors.insert(modif.tail(), NodeProperty< Size >()).second;

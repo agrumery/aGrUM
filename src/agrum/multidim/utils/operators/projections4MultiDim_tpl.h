@@ -132,7 +132,7 @@
 
 #  define GUM_MULTI_DIM_PROJECTION_NAME projectSumMultiDimArray
 #  define GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
-#  define GUM_MULTI_DIM_PROJECTION(x, y) x += y
+#  define GUM_MULTI_DIM_PROJECTION(x, y)   x += y
 #  define GUM_MULTI_DIM_PROJECTION_NEUTRAL (GUM_SCALAR)0
 #  include <agrum/multidim/utils/patterns/projectionPattern4MultiDimArray.h>
 #  undef GUM_MULTI_DIM_PROJECTION_NAME
@@ -142,7 +142,7 @@
 
 #  define GUM_MULTI_DIM_PROJECTION_IMPL2ARRAY_NAME projectSumMultiDimArray
 #  define GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
-#  define GUM_MULTI_DIM_PROJECTION(x, y) x += y
+#  define GUM_MULTI_DIM_PROJECTION(x, y)   x += y
 #  define GUM_MULTI_DIM_PROJECTION_NEUTRAL (GUM_SCALAR)0
 #  include <agrum/multidim/utils/patterns/projectionPattern4MultiDimArray.h>
 #  undef GUM_MULTI_DIM_PROJECTION_IMPL2ARRAY_NAME
@@ -152,7 +152,7 @@
 
 #  define GUM_MULTI_DIM_PROJECTION_POINTER_NAME projectSumMultiDimArray4Pointers
 #  define GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
-#  define GUM_MULTI_DIM_PROJECTION(x, y) *(x) += *(y)
+#  define GUM_MULTI_DIM_PROJECTION(x, y)   *(x) += *(y)
 #  define GUM_MULTI_DIM_PROJECTION_NEUTRAL (GUM_SCALAR)0
 #  include <agrum/multidim/utils/patterns/projectionPattern4MultiDimArray.h>
 #  undef GUM_MULTI_DIM_PROJECTION_POINTER_NAME
@@ -163,7 +163,7 @@
 #  define GUM_MULTI_DIM_PROJECTION_POINTER_IMPL2ARRAY_NAME \
     projectSumMultiDimArray4Pointers
 #  define GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
-#  define GUM_MULTI_DIM_PROJECTION(x, y) *(x) += *(y)
+#  define GUM_MULTI_DIM_PROJECTION(x, y)   *(x) += *(y)
 #  define GUM_MULTI_DIM_PROJECTION_NEUTRAL (GUM_SCALAR)0
 #  include <agrum/multidim/utils/patterns/projectionPattern4MultiDimArray.h>
 #  undef GUM_MULTI_DIM_PROJECTION_POINTER_IMPL2ARRAY_NAME
@@ -175,7 +175,7 @@
 
 #  define GUM_MULTI_DIM_PROJECTION_NAME projectProductMultiDimArray
 #  define GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
-#  define GUM_MULTI_DIM_PROJECTION(x, y) (x) *= (y)
+#  define GUM_MULTI_DIM_PROJECTION(x, y)   (x) *= (y)
 #  define GUM_MULTI_DIM_PROJECTION_NEUTRAL (GUM_SCALAR)1
 #  include <agrum/multidim/utils/patterns/projectionPattern4MultiDimArray.h>
 #  undef GUM_MULTI_DIM_PROJECTION_NAME
@@ -185,7 +185,7 @@
 
 #  define GUM_MULTI_DIM_PROJECTION_IMPL2ARRAY_NAME projectProductMultiDimArray
 #  define GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
-#  define GUM_MULTI_DIM_PROJECTION(x, y) (x) *= (y)
+#  define GUM_MULTI_DIM_PROJECTION(x, y)   (x) *= (y)
 #  define GUM_MULTI_DIM_PROJECTION_NEUTRAL (GUM_SCALAR)1
 #  include <agrum/multidim/utils/patterns/projectionPattern4MultiDimArray.h>
 #  undef GUM_MULTI_DIM_PROJECTION_IMPL2ARRAY_NAME
@@ -196,7 +196,7 @@
 #  define GUM_MULTI_DIM_PROJECTION_POINTER_NAME \
     projectProductMultiDimArray4Pointers
 #  define GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
-#  define GUM_MULTI_DIM_PROJECTION(x, y) (*x) *= (*y)
+#  define GUM_MULTI_DIM_PROJECTION(x, y)   (*x) *= (*y)
 #  define GUM_MULTI_DIM_PROJECTION_NEUTRAL (GUM_SCALAR)1
 #  include <agrum/multidim/utils/patterns/projectionPattern4MultiDimArray.h>
 #  undef GUM_MULTI_DIM_PROJECTION_POINTER_NAME
@@ -207,7 +207,7 @@
 #  define GUM_MULTI_DIM_PROJECTION_POINTER_IMPL2ARRAY_NAME \
     projectProductMultiDimArray4Pointers
 #  define GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
-#  define GUM_MULTI_DIM_PROJECTION(x, y) (*x) *= (*y)
+#  define GUM_MULTI_DIM_PROJECTION(x, y)   (*x) *= (*y)
 #  define GUM_MULTI_DIM_PROJECTION_NEUTRAL (GUM_SCALAR)1
 #  include <agrum/multidim/utils/patterns/projectionPattern4MultiDimArray.h>
 #  undef GUM_MULTI_DIM_PROJECTION_POINTER_IMPL2ARRAY_NAME
@@ -236,7 +236,7 @@
 // a specialized min projection function for multiDimFunctionGraphs
 
 #  define GUM_MULTI_DIM_PROJECTION_OPERATOR Minimizes
-#  define GUM_MULTI_DIM_PROJECTION_NEUTRAL std::numeric_limits< GUM_SCALAR >::max()
+#  define GUM_MULTI_DIM_PROJECTION_NEUTRAL  std::numeric_limits< GUM_SCALAR >::max()
 
 #  define GUM_MULTI_DIM_PROJECTION_NAME projectMinMultiDimFunctionGraph
 #  include <agrum/multidim/utils/patterns/projectionPattern4MultiDimFunctionGraph.h>
@@ -253,7 +253,7 @@
 // a specialized sum projection function for multiDimFunctionGraphs
 
 #  define GUM_MULTI_DIM_PROJECTION_OPERATOR std::plus
-#  define GUM_MULTI_DIM_PROJECTION_NEUTRAL (GUM_SCALAR)0
+#  define GUM_MULTI_DIM_PROJECTION_NEUTRAL  (GUM_SCALAR)0
 
 #  define GUM_MULTI_DIM_PROJECTION_NAME projectSumMultiDimFunctionGraph
 #  include <agrum/multidim/utils/patterns/projectionPattern4MultiDimFunctionGraph.h>
@@ -270,7 +270,7 @@
 // a specialized product projection function for multiDimFunctionGraphs
 
 #  define GUM_MULTI_DIM_PROJECTION_OPERATOR std::multiplies
-#  define GUM_MULTI_DIM_PROJECTION_NEUTRAL (GUM_SCALAR)1
+#  define GUM_MULTI_DIM_PROJECTION_NEUTRAL  (GUM_SCALAR)1
 
 #  define GUM_MULTI_DIM_PROJECTION_NAME projectProductMultiDimFunctionGraph
 #  include <agrum/multidim/utils/patterns/projectionPattern4MultiDimFunctionGraph.h>
@@ -299,7 +299,7 @@
 // to project multiDims
 
 // the function to be used to project a MultiDimImplementation using a Max
-#  define GUM_MULTI_DIM_PROJECTION_NAME projectMax
+#  define GUM_MULTI_DIM_PROJECTION_NAME      projectMax
 #  define GUM_MULTI_DIM_PROJECTION_FUNC_NAME "max"
 #  define GUM_MULTI_DIM_SYMMETRIC_PROJECTION
 #  include <agrum/multidim/utils/patterns/projectionPattern4MultiDimImplementation.h>
@@ -308,7 +308,7 @@
 #  undef GUM_MULTI_DIM_SYMMETRIC_PROJECTION
 
 // the function to be used to project a MultiDimImplementation using a Min
-#  define GUM_MULTI_DIM_PROJECTION_NAME projectMin
+#  define GUM_MULTI_DIM_PROJECTION_NAME      projectMin
 #  define GUM_MULTI_DIM_PROJECTION_FUNC_NAME "min"
 #  define GUM_MULTI_DIM_SYMMETRIC_PROJECTION
 #  include <agrum/multidim/utils/patterns/projectionPattern4MultiDimImplementation.h>
@@ -317,7 +317,7 @@
 #  undef GUM_MULTI_DIM_SYMMETRIC_PROJECTION
 
 // the function to be used to project a MultiDimImplementation using a Sum
-#  define GUM_MULTI_DIM_PROJECTION_NAME projectSum
+#  define GUM_MULTI_DIM_PROJECTION_NAME      projectSum
 #  define GUM_MULTI_DIM_PROJECTION_FUNC_NAME "sum"
 #  define GUM_MULTI_DIM_SYMMETRIC_PROJECTION
 #  include <agrum/multidim/utils/patterns/projectionPattern4MultiDimImplementation.h>
@@ -326,7 +326,7 @@
 #  undef GUM_MULTI_DIM_SYMMETRIC_PROJECTION
 
 // the function to be used to project a MultiDimImplementation using a Product
-#  define GUM_MULTI_DIM_PROJECTION_NAME projectProduct
+#  define GUM_MULTI_DIM_PROJECTION_NAME      projectProduct
 #  define GUM_MULTI_DIM_PROJECTION_FUNC_NAME "product"
 #  define GUM_MULTI_DIM_SYMMETRIC_PROJECTION
 #  include <agrum/multidim/utils/patterns/projectionPattern4MultiDimImplementation.h>
@@ -336,32 +336,32 @@
 
 // default "basename" functions for projecting MultiDimImplementations
 
-#  define GUM_MULTI_DIM_PROJECTION_NAME projectMaxMultiDimImplementation
-#  define GUM_MULTI_DIM_PROJECTION(x, y) ((x) > (y) ? (x) : (y))
+#  define GUM_MULTI_DIM_PROJECTION_NAME    projectMaxMultiDimImplementation
+#  define GUM_MULTI_DIM_PROJECTION(x, y)   ((x) > (y) ? (x) : (y))
 #  define GUM_MULTI_DIM_PROJECTION_NEUTRAL std::numeric_limits< GUM_SCALAR >::min()
 #  include <agrum/multidim/utils/patterns/projectionPattern4BaseName.h>
 #  undef GUM_MULTI_DIM_PROJECTION_NAME
 #  undef GUM_MULTI_DIM_PROJECTION
 #  undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
 
-#  define GUM_MULTI_DIM_PROJECTION_NAME projectMinMultiDimImplementation
-#  define GUM_MULTI_DIM_PROJECTION(x, y) ((x) > (y) ? (y) : (x))
+#  define GUM_MULTI_DIM_PROJECTION_NAME    projectMinMultiDimImplementation
+#  define GUM_MULTI_DIM_PROJECTION(x, y)   ((x) > (y) ? (y) : (x))
 #  define GUM_MULTI_DIM_PROJECTION_NEUTRAL std::numeric_limits< GUM_SCALAR >::max()
 #  include <agrum/multidim/utils/patterns/projectionPattern4BaseName.h>
 #  undef GUM_MULTI_DIM_PROJECTION_NAME
 #  undef GUM_MULTI_DIM_PROJECTION
 #  undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
 
-#  define GUM_MULTI_DIM_PROJECTION_NAME projectSumMultiDimImplementation
-#  define GUM_MULTI_DIM_PROJECTION(x, y) ((x) + (y))
+#  define GUM_MULTI_DIM_PROJECTION_NAME    projectSumMultiDimImplementation
+#  define GUM_MULTI_DIM_PROJECTION(x, y)   ((x) + (y))
 #  define GUM_MULTI_DIM_PROJECTION_NEUTRAL (GUM_SCALAR)0
 #  include <agrum/multidim/utils/patterns/projectionPattern4BaseName.h>
 #  undef GUM_MULTI_DIM_PROJECTION_NAME
 #  undef GUM_MULTI_DIM_PROJECTION
 #  undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
 
-#  define GUM_MULTI_DIM_PROJECTION_NAME projectProductMultiDimImplementation
-#  define GUM_MULTI_DIM_PROJECTION(x, y) ((x) * (y))
+#  define GUM_MULTI_DIM_PROJECTION_NAME    projectProductMultiDimImplementation
+#  define GUM_MULTI_DIM_PROJECTION(x, y)   ((x) * (y))
 #  define GUM_MULTI_DIM_PROJECTION_NEUTRAL (GUM_SCALAR)1
 #  include <agrum/multidim/utils/patterns/projectionPattern4BaseName.h>
 #  undef GUM_MULTI_DIM_PROJECTION_NAME

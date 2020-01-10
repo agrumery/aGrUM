@@ -137,8 +137,8 @@ namespace gum {
       }
 
       template < typename GUM_SCALAR >
-      O3prmrContext< GUM_SCALAR >& O3prmrContext< GUM_SCALAR >::
-                                   operator+=(const O3prmrContext& c) {
+      O3prmrContext< GUM_SCALAR >&
+         O3prmrContext< GUM_SCALAR >::operator+=(const O3prmrContext& c) {
         const std::vector< ImportCommand* >& imports = c.imports();
 
         for (std::vector< ImportCommand* >::const_iterator i = imports.begin();
@@ -272,8 +272,8 @@ namespace gum {
       }
 
       template < typename GUM_SCALAR >
-      O3prmrSession< GUM_SCALAR >& O3prmrSession< GUM_SCALAR >::
-                                   operator+=(const O3prmrSession< GUM_SCALAR >& c) {
+      O3prmrSession< GUM_SCALAR >& O3prmrSession< GUM_SCALAR >::operator+=(
+         const O3prmrSession< GUM_SCALAR >& c) {
         for (std::vector< O3prmrCommand* >::const_iterator i =
                 c.m_commands.begin();
              i < c.m_commands.end();

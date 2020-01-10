@@ -99,7 +99,7 @@ namespace gum {
       delete __cpf;
       __cpf = new Potential< GUM_SCALAR >();
 
-      for (auto var : source.cpf().variablesSequence()) {
+      for (auto var: source.cpf().variablesSequence()) {
         __cpf->add(*(bij.second(var)));
       }
 
@@ -116,8 +116,8 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    PRMScalarAttribute< GUM_SCALAR >& PRMScalarAttribute< GUM_SCALAR >::
-                                      operator=(const PRMScalarAttribute< GUM_SCALAR >& from) {
+    PRMScalarAttribute< GUM_SCALAR >& PRMScalarAttribute< GUM_SCALAR >::operator=(
+       const PRMScalarAttribute< GUM_SCALAR >& from) {
       GUM_ERROR(FatalError,
                 "Illegal call to the copy operator of gum::ScalarAttribute");
     }
@@ -245,7 +245,7 @@ namespace gum {
 
       __cpf = new Potential< GUM_SCALAR >();
 
-      for (auto var : old->variablesSequence()) {
+      for (auto var: old->variablesSequence()) {
         if (var != &(old_type.variable())) {
           __cpf->add(*var);
         } else {
@@ -283,7 +283,7 @@ namespace gum {
 
       __cpf = new Potential< GUM_SCALAR >();
 
-      for (auto var : old->variablesSequence()) {
+      for (auto var: old->variablesSequence()) {
         if (var != &(__type->variable())) {
           __cpf->add(*var);
         } else {

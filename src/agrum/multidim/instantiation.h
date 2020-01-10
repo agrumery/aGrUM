@@ -80,7 +80,7 @@ namespace gum {
    * @see operator<<(std::ostream&, const Instantiation&).
    */
 
-  class Instantiation : public MultiDimInterface {
+  class Instantiation: public MultiDimInterface {
     public:
     // =========================================================================
     /// @name Constructors / Destructors
@@ -1245,7 +1245,7 @@ namespace gum {
    */
   template <>
   // class HashFunc< Instantiation > : public HashFuncBase< Instantiation > {
-  class HashFunc< Instantiation > : public HashFuncBase< Instantiation > {
+  class HashFunc< Instantiation >: public HashFuncBase< Instantiation > {
     public:
     /**
      * @brief Returns the value of a key as a Size.

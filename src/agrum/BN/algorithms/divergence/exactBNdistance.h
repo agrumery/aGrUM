@@ -67,7 +67,7 @@ namespace gum {
    */
 
   template < typename GUM_SCALAR >
-  class ExactBNdistance : public BNdistance< GUM_SCALAR > {
+  class ExactBNdistance: public BNdistance< GUM_SCALAR > {
     public:
     /** constructor must give 2 BNs
      * @throw gum::OperationNotAllowed if the 2 BNs have not the same domainSize

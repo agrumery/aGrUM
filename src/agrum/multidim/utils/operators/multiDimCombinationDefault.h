@@ -99,8 +99,8 @@ namespace gum {
    */
   // clang-format on
   template < typename GUM_SCALAR, template < typename > class TABLE >
-  class MultiDimCombinationDefault
-      : public MultiDimCombination< GUM_SCALAR, TABLE > {
+  class MultiDimCombinationDefault:
+      public MultiDimCombination< GUM_SCALAR, TABLE > {
     public:
     // ========================================================================
     /// @name Constructors / Destructors

@@ -147,8 +147,8 @@ namespace gum {
 
     // copy operator
     template < template < typename > class ALLOC >
-    RawDatabaseTable< ALLOC >& RawDatabaseTable< ALLOC >::
-                               operator=(const RawDatabaseTable< ALLOC >& from) {
+    RawDatabaseTable< ALLOC >& RawDatabaseTable< ALLOC >::operator=(
+       const RawDatabaseTable< ALLOC >& from) {
       if (this != &from) {
         IDatabaseTable< DBCell, ALLOC >::operator=(from);
         __ignored_cols = from.__ignored_cols;
@@ -159,8 +159,8 @@ namespace gum {
 
     // move constructor
     template < template < typename > class ALLOC >
-    RawDatabaseTable< ALLOC >& RawDatabaseTable< ALLOC >::
-                               operator=(RawDatabaseTable< ALLOC >&& from) {
+    RawDatabaseTable< ALLOC >&
+       RawDatabaseTable< ALLOC >::operator=(RawDatabaseTable< ALLOC >&& from) {
       if (this != &from) {
         IDatabaseTable< DBCell, ALLOC >::operator=(std::move(from));
         __ignored_cols = std::move(from.__ignored_cols);
@@ -348,7 +348,7 @@ namespace gum {
     // translates a string into a DBCell and returns it
     template < template < typename > class ALLOC >
     INLINE DBCell
-           RawDatabaseTable< ALLOC >::__convert(const std::string& elt) const {
+       RawDatabaseTable< ALLOC >::__convert(const std::string& elt) const {
       return DBCell::bestDBCell(elt, this->_missing_symbols);
     }
 
@@ -387,7 +387,7 @@ namespace gum {
 
       // translate the row into T_data and put them into the newly created dbrow
       if (ignored_size == 0) {
-        for (const auto& elt : new_row) {
+        for (const auto& elt: new_row) {
           const DBCell new_cell(this->__convert(elt));
           if (new_cell.isMissing()) has_missing_val = true;
           dbrow.pushBack(new_cell);

@@ -75,7 +75,7 @@ namespace gum {
   double DAGmodel::log10DomainSize() const {
     double dSize = 0.0;
 
-    for (const auto node : nodes()) {
+    for (const auto node: nodes()) {
       dSize += std::log10(variable(node).domainSize());
     }
 
@@ -86,7 +86,7 @@ namespace gum {
   Instantiation DAGmodel::completeInstantiation() const {
     Instantiation I;
 
-    for (const auto node : dag())
+    for (const auto node: dag())
       I << variable(node);
 
     return I;

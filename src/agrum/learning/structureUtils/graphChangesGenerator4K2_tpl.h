@@ -71,8 +71,8 @@ namespace gum {
     /// copy operator
     template < typename STRUCT_CONSTRAINT >
     GraphChangesGenerator4K2< STRUCT_CONSTRAINT >&
-          GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::
-          operator=(const GraphChangesGenerator4K2< STRUCT_CONSTRAINT >& from) {
+       GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::operator=(
+          const GraphChangesGenerator4K2< STRUCT_CONSTRAINT >& from) {
       if (this != &from) {
         _graph = from._graph;
         _constraint = from._constraint;
@@ -86,8 +86,8 @@ namespace gum {
     /// move operator
     template < typename STRUCT_CONSTRAINT >
     GraphChangesGenerator4K2< STRUCT_CONSTRAINT >&
-          GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::
-          operator=(GraphChangesGenerator4K2< STRUCT_CONSTRAINT >&& from) {
+       GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::operator=(
+          GraphChangesGenerator4K2< STRUCT_CONSTRAINT >&& from) {
       if (this != &from) {
         _graph = std::move(from._graph);
         _constraint = std::move(from._constraint);
@@ -133,8 +133,8 @@ namespace gum {
 
       // now store the changes into the protected vectors of the
       // GraphChangesGenerator4K2
-      for (const auto& changes : legal_changes) {
-        for (const auto& change : changes) {
+      for (const auto& changes: legal_changes) {
+        for (const auto& change: changes) {
           _legal_changes.insert(std::move(change));
         }
       }
@@ -153,7 +153,7 @@ namespace gum {
       for (auto node = _order.beginSafe(); node != _order.endSafe(); ++node) {
         if (!graph.exists(*node)) { _order.erase(node); }
       }
-      for (const auto node : graph) {
+      for (const auto node: graph) {
         if (!_order.exists(node)) { _order.insert(node); }
       }
 
@@ -173,7 +173,7 @@ namespace gum {
     INLINE void GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::setOrder(
        const std::vector< NodeId >& order) {
       _order.clear();
-      for (const auto node : order) {
+      for (const auto node: order) {
         _order.insert(node);
       }
     }

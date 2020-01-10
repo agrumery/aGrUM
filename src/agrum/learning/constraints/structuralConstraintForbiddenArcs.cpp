@@ -71,8 +71,9 @@ namespace gum {
     }
 
     /// copy operator
-    StructuralConstraintForbiddenArcs& StructuralConstraintForbiddenArcs::
-                                       operator=(const StructuralConstraintForbiddenArcs& from) {
+    StructuralConstraintForbiddenArcs&
+       StructuralConstraintForbiddenArcs::operator=(
+          const StructuralConstraintForbiddenArcs& from) {
       if (this != &from) {
         _ForbiddenArcs__forbidden_arcs = from._ForbiddenArcs__forbidden_arcs;
       }
@@ -80,8 +81,9 @@ namespace gum {
     }
 
     /// move operator
-    StructuralConstraintForbiddenArcs& StructuralConstraintForbiddenArcs::
-                                       operator=(StructuralConstraintForbiddenArcs&& from) {
+    StructuralConstraintForbiddenArcs&
+       StructuralConstraintForbiddenArcs::operator=(
+          StructuralConstraintForbiddenArcs&& from) {
       if (this != &from) {
         _ForbiddenArcs__forbidden_arcs =
            std::move(from._ForbiddenArcs__forbidden_arcs);

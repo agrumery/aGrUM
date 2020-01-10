@@ -59,8 +59,8 @@ namespace gum {
     }
 
     /// copy operator
-    GreedyHillClimbing& GreedyHillClimbing::
-                        operator=(const GreedyHillClimbing& from) {
+    GreedyHillClimbing&
+       GreedyHillClimbing::operator=(const GreedyHillClimbing& from) {
       ApproximationScheme::operator=(from);
       return *this;
     }

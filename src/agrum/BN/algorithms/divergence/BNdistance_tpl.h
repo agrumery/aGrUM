@@ -126,7 +126,7 @@ namespace gum {
   // check if the 2 BNs are compatible
   template < typename GUM_SCALAR >
   bool BNdistance< GUM_SCALAR >::__checkCompatibility() const {
-    for (auto node : _p.nodes()) {
+    for (auto node: _p.nodes()) {
       const DiscreteVariable& vp = _p.variable(node);
 
       try {

@@ -51,7 +51,7 @@ namespace gum {
      * the \f$ \exists \neq 0\f$ aggregator.
      */
     template < typename GUM_SCALAR >
-    class Max : public MultiDimAggregator< GUM_SCALAR > {
+    class Max: public MultiDimAggregator< GUM_SCALAR > {
       public:
       Max();
       Max(const Max< GUM_SCALAR >& from);

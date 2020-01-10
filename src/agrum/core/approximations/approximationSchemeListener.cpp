@@ -53,8 +53,8 @@ namespace gum {
     GUM_DESTRUCTOR(ApproximationSchemeListener);
   }
 
-  ApproximationSchemeListener& ApproximationSchemeListener::
-                               operator=(const ApproximationSchemeListener& other) {
+  ApproximationSchemeListener& ApproximationSchemeListener::operator=(
+     const ApproximationSchemeListener& other) {
     GUM_CONS_CPY(ApproximationSchemeListener);
     GUM_ERROR(OperationNotAllowed,
               "No copy constructor for ApproximationSchemeListener");

@@ -40,7 +40,7 @@ namespace gum {
     BasicSignaler0::BasicSignaler0(const BasicSignaler0& s) : ISignaler(s) {
       GUM_CONS_CPY(BasicSignaler0);
 
-      for (const auto el : _connectors) {
+      for (const auto el: _connectors) {
         el->target()->attachSignal__(this);
         _connectors.push_back(el->clone());
       }
@@ -49,7 +49,7 @@ namespace gum {
     BasicSignaler0::~BasicSignaler0() {
       GUM_DESTRUCTOR(BasicSignaler0);
 
-      for (const auto el : _connectors) {
+      for (const auto el: _connectors) {
         el->target()->detachSignal__(this);
         delete el;
       }

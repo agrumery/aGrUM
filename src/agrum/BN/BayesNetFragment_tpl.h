@@ -43,7 +43,7 @@ namespace gum {
   BayesNetFragment< GUM_SCALAR >::~BayesNetFragment() {
     GUM_DESTRUCTOR(BayesNetFragment);
 
-    for (auto node : nodes())
+    for (auto node: nodes())
       if (__localCPTs.exists(node)) _uninstallCPT(node);
   }
 
@@ -152,12 +152,12 @@ namespace gum {
       this->_dag.addNodeWithId(id);
 
       // adding arcs with id as a tail
-      for (auto pa : this->__bn.parents(id)) {
+      for (auto pa: this->__bn.parents(id)) {
         if (isInstalledNode(pa)) this->_dag.addArc(pa, id);
       }
 
       // addin arcs with id as a head
-      for (auto son : this->__bn.children(id))
+      for (auto son: this->__bn.children(id))
         if (isInstalledNode(son)) this->_dag.addArc(id, son);
     }
   }
@@ -167,7 +167,7 @@ namespace gum {
     installNode(id);
 
     // bn is a dag => this will have an end ...
-    for (auto pa : this->__bn.parents(id))
+    for (auto pa: this->__bn.parents(id))
       installAscendants(pa);
   }
 
@@ -294,7 +294,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE bool BayesNetFragment< GUM_SCALAR >::checkConsistency() const {
-    for (auto node : nodes())
+    for (auto node: nodes())
       if (!checkConsistency(node)) return false;
 
     return true;
@@ -331,7 +331,7 @@ namespace gum {
            << std::endl;
     output << "  node [style=filled];" << std::endl << std::endl;
 
-    for (auto node : __bn.nodes()) {
+    for (auto node: __bn.nodes()) {
       output << "\"" << __bn.variable(node).name() << "\" [comment=\"" << node
              << ":" << __bn.variable(node) << ", \"";
 
@@ -352,9 +352,9 @@ namespace gum {
 
     std::string tab = "  ";
 
-    for (auto node : __bn.nodes()) {
+    for (auto node: __bn.nodes()) {
       if (__bn.children(node).size() > 0) {
-        for (auto child : __bn.children(node)) {
+        for (auto child: __bn.children(node)) {
           output << tab << "\"" << __bn.variable(node).name() << "\" -> "
                  << "\"" << __bn.variable(child).name() << "\" [";
 
@@ -379,13 +379,13 @@ namespace gum {
       GUM_ERROR(OperationNotAllowed, "The fragment contains un-consistent node(s)")
     }
     gum::BayesNet< GUM_SCALAR > res;
-    for (const auto nod : nodes()) {
+    for (const auto nod: nodes()) {
       res.add(variable(nod), nod);
     }
-    for (const auto arc : dag().arcs()) {
+    for (const auto arc: dag().arcs()) {
       res.addArc(arc.tail(), arc.head());
     }
-    for (const auto nod : nodes()) {
+    for (const auto nod: nodes()) {
       res.cpt(nod).fillWith(cpt(nod));
     }
 

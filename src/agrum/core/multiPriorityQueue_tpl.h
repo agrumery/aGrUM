@@ -51,7 +51,7 @@ namespace gum {
       __indices(Size(list.size()) / 2, true, false) {
     // fill the queue
     __heap.reserve(list.size());
-    for (const auto& elt : list) {
+    for (const auto& elt: list) {
       insert(elt.first, elt.second);
     }
 
@@ -70,10 +70,10 @@ namespace gum {
     GUM_CONS_CPY(MultiPriorityQueue);
 
     // fill the heap structure
-    for (const auto& val_and_index : __indices) {
+    for (const auto& val_and_index: __indices) {
       const Val*                 val = &(val_and_index.first);
       const std::vector< Size >& vect = val_and_index.second;
-      for (auto index : vect) {
+      for (auto index: vect) {
         __heap[index].second = val;
       }
     }
@@ -92,13 +92,13 @@ namespace gum {
     // fill the heap structure
     if (__nb_elements) {
       __heap.reserve(from.__heap.size());
-      for (const auto& elt : from.__heap) {
+      for (const auto& elt: from.__heap) {
         __heap.push_back(elt);
       }
-      for (const auto& val_and_index : __indices) {
+      for (const auto& val_and_index: __indices) {
         const Val*                 val = &(val_and_index.first);
         const std::vector< Size >& vect = val_and_index.second;
-        for (auto index : vect) {
+        for (auto index: vect) {
           __heap[index].second = val;
         }
       }
@@ -126,8 +126,8 @@ namespace gum {
   // copy operator
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   MultiPriorityQueue< Val, Priority, Cmp, Alloc >&
-        MultiPriorityQueue< Val, Priority, Cmp, Alloc >::
-        operator=(const MultiPriorityQueue< Val, Priority, Cmp, Alloc >& from) {
+     MultiPriorityQueue< Val, Priority, Cmp, Alloc >::operator=(
+        const MultiPriorityQueue< Val, Priority, Cmp, Alloc >& from) {
     // for debugging purposes
     GUM_OP_CPY(MultiPriorityQueue);
 
@@ -141,10 +141,10 @@ namespace gum {
       __nb_elements = from.__nb_elements;
 
       // restore the link between __indices and __heap
-      for (const auto& val_and_index : __indices) {
+      for (const auto& val_and_index: __indices) {
         const Val*                 val = &(val_and_index.first);
         const std::vector< Size >& vect = val_and_index.second;
-        for (auto index : vect) {
+        for (auto index: vect) {
           __heap[index].second = val;
         }
       }
@@ -179,13 +179,13 @@ namespace gum {
       // restore the link between __indices and __heap
       __heap.clear();
       __heap.reserve(from.__heap.size());
-      for (const auto& elt : from.__heap) {
+      for (const auto& elt: from.__heap) {
         __heap.push_back(elt);
       }
-      for (const auto& val_and_index : __indices) {
+      for (const auto& val_and_index: __indices) {
         const Val*                 val = &(val_and_index.first);
         const std::vector< Size >& vect = val_and_index.second;
-        for (auto index : vect) {
+        for (auto index: vect) {
           __heap[index].second = val;
         }
       }
@@ -203,8 +203,8 @@ namespace gum {
   // move operator
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   MultiPriorityQueue< Val, Priority, Cmp, Alloc >&
-        MultiPriorityQueue< Val, Priority, Cmp, Alloc >::
-        operator=(MultiPriorityQueue< Val, Priority, Cmp, Alloc >&& from) {
+     MultiPriorityQueue< Val, Priority, Cmp, Alloc >::operator=(
+        MultiPriorityQueue< Val, Priority, Cmp, Alloc >&& from) {
     // avoid self assignment
     if (this != &from) {
       // for debugging purposes
@@ -279,7 +279,7 @@ namespace gum {
     if (vect_index.size() == 1)
       __indices.erase(del_val);
     else {
-      for (auto& v_index : vect_index) {
+      for (auto& v_index: vect_index) {
         if (v_index == index) {
           v_index = vect_index.back();
           vect_index.pop_back();
@@ -309,7 +309,7 @@ namespace gum {
       // else pull up the jth node
       __heap[i] = std::move(__heap[j]);
       std::vector< Size >& vect_index = __indices[*(__heap[i].second)];
-      for (auto& v_index : vect_index) {
+      for (auto& v_index: vect_index) {
         if (v_index == j) {
           v_index = i;
           break;
@@ -320,7 +320,7 @@ namespace gum {
     // put "last" back into the heap
     __heap[i] = std::move(last);
     std::vector< Size >& last_indices = __indices[*(__heap[i].second)];
-    for (auto& v_index : last_indices) {
+    for (auto& v_index: last_indices) {
       if (v_index == __nb_elements) {
         v_index = i;
         break;
@@ -403,7 +403,7 @@ namespace gum {
          i = j, j = (j - 1) >> 1) {
       __heap[i] = std::move(__heap[j]);
       std::vector< Size >& vect_index = __indices[*(__heap[i].second)];
-      for (auto& index : vect_index) {
+      for (auto& index: vect_index) {
         if (index == j) {
           index = i;
           break;
@@ -462,7 +462,7 @@ namespace gum {
          i = j, j = (j - 1) >> 1) {
       __heap[i] = std::move(__heap[j]);
       std::vector< Size >& vect_index = __indices[*(__heap[i].second)];
-      for (auto& index : vect_index) {
+      for (auto& index: vect_index) {
         if (index == j) {
           index = i;
           break;
@@ -482,7 +482,7 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
   template < typename... Args >
   INLINE Size
-         MultiPriorityQueue< Val, Priority, Cmp, Alloc >::emplace(Args&&... args) {
+     MultiPriorityQueue< Val, Priority, Cmp, Alloc >::emplace(Args&&... args) {
     std::pair< Val, Priority > new_elt =
        std::make_pair< Val, Priority >(std::forward< Args >(args)...);
     return insert(std::move(new_elt.first), std::move(new_elt.second));
@@ -504,8 +504,8 @@ namespace gum {
 
   // returns the element at position "index" in the priority queue
   template < typename Val, typename Priority, typename Cmp, typename Alloc >
-  INLINE const Val& MultiPriorityQueue< Val, Priority, Cmp, Alloc >::
-                    operator[](Size index) const {
+  INLINE const Val& MultiPriorityQueue< Val, Priority, Cmp, Alloc >::operator[](
+     Size index) const {
     if (index >= __nb_elements) {
       GUM_ERROR(NotFound, "not enough elements in the MultiPriorityQueue");
     }
@@ -551,7 +551,7 @@ namespace gum {
          i = j, j = (j - 1) >> 1) {
       __heap[i] = std::move(__heap[j]);
       std::vector< Size >& vect_index = __indices[*(__heap[i].second)];
-      for (auto& idx : vect_index) {
+      for (auto& idx: vect_index) {
         if (idx == j) {
           idx = i;
           break;
@@ -571,7 +571,7 @@ namespace gum {
       // else pull up the jth node
       __heap[i] = std::move(__heap[j]);
       std::vector< Size >& vect_index = __indices[*(__heap[i].second)];
-      for (auto& idx : vect_index) {
+      for (auto& idx: vect_index) {
         if (idx == j) {
           idx = i;
           break;
@@ -583,7 +583,7 @@ namespace gum {
     __heap[i].first = new_priority;
     __heap[i].second = val;
     std::vector< Size >& vect_index = __indices[*(__heap[i].second)];
-    for (auto& idx : vect_index) {
+    for (auto& idx: vect_index) {
       if (idx == index) {
         idx = i;
         break;
@@ -613,7 +613,7 @@ namespace gum {
          i = j, j = (j - 1) >> 1) {
       __heap[i] = std::move(__heap[j]);
       std::vector< Size >& vect_index = __indices[*(__heap[i].second)];
-      for (auto& idx : vect_index) {
+      for (auto& idx: vect_index) {
         if (idx == j) {
           idx = i;
           break;
@@ -633,7 +633,7 @@ namespace gum {
       // else pull up the jth node
       __heap[i] = std::move(__heap[j]);
       std::vector< Size >& vect_index = __indices[*(__heap[i].second)];
-      for (auto& idx : vect_index) {
+      for (auto& idx: vect_index) {
         if (idx == j) {
           idx = i;
           break;
@@ -645,7 +645,7 @@ namespace gum {
     __heap[i].first = std::move(new_priority);
     __heap[i].second = val;
     std::vector< Size >& vect_index = __indices[*(__heap[i].second)];
-    for (auto& idx : vect_index) {
+    for (auto& idx: vect_index) {
       if (idx == index) {
         idx = i;
         break;
@@ -661,7 +661,7 @@ namespace gum {
      const Val& elt, const Priority& new_priority) {
     std::vector< Size >& vect_index = __indices[elt];
 
-    for (auto index : vect_index) {
+    for (auto index: vect_index) {
       setPriorityByPos(index, new_priority);
     }
   }

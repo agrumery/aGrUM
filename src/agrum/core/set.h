@@ -1191,7 +1191,7 @@ namespace gum {
 
   /// the hash function for sets of int
   template < typename T, typename Alloc >
-  class HashFunc< Set< T, Alloc > > : public HashFuncBase< Set< T, Alloc > > {
+  class HashFunc< Set< T, Alloc > >: public HashFuncBase< Set< T, Alloc > > {
     public:
     /**
      * @brief Returns the value of a key as a Size.

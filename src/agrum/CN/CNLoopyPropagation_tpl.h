@@ -63,7 +63,7 @@ namespace gum {
       res << "[RESULTATS]"
           << "\n";
 
-      for (auto node : __bnet->nodes()) {
+      for (auto node: __bnet->nodes()) {
         // calcul distri posteriori
         GUM_SCALAR msg_p_min = 1.0;
         GUM_SCALAR msg_p_max = 0.0;
@@ -588,7 +588,7 @@ namespace gum {
       _InferenceUpToDate = false;
 
       if (_msg_l_sent.size() > 0) {
-        for (auto node : __bnet->nodes()) {
+        for (auto node: __bnet->nodes()) {
           delete _msg_l_sent[node];
         }
       }
@@ -606,7 +606,7 @@ namespace gum {
       const DAG& graphe = __bnet->dag();
 
       // use const iterators with cbegin when available
-      for (auto node : __bnet->topologicalOrder()) {
+      for (auto node: __bnet->topologicalOrder()) {
         _update_p.set(node, false);
         _update_l.set(node, false);
         NodeSet* _parents = new NodeSet();
@@ -718,7 +718,7 @@ namespace gum {
         _NodesL_min.set(node, (GUM_SCALAR)1.);
       }
 
-      for (auto arc : __bnet->arcs()) {
+      for (auto arc: __bnet->arcs()) {
         _ArcsP_min.set(arc, _NodesP_min[arc.tail()]);
 
         if (_NodesP_max.exists(arc.tail())) {
@@ -738,8 +738,8 @@ namespace gum {
       __infE::continueApproximationScheme(1.);
 
       do {
-        for (auto node : active_nodes_set) {
-          for (auto chil : graphe.children(node)) {
+        for (auto node: active_nodes_set) {
+          for (auto chil: graphe.children(node)) {
             if (__cn->currentNodeType(chil)
                 == CredalNet< GUM_SCALAR >::NodeType::Indic) {
               continue;
@@ -748,7 +748,7 @@ namespace gum {
             _msgP(node, chil);
           }
 
-          for (auto par : graphe.parents(node)) {
+          for (auto par: graphe.parents(node)) {
             if (__cn->currentNodeType(node)
                 == CredalNet< GUM_SCALAR >::NodeType::Indic) {
               continue;
@@ -781,7 +781,7 @@ namespace gum {
       std::vector< cArcP > seq;
       seq.reserve(nbrArcs);
 
-      for (const auto& arc : __bnet->arcs()) {
+      for (const auto& arc: __bnet->arcs()) {
         seq.push_back(&arc);
       }
 
@@ -798,7 +798,7 @@ namespace gum {
           std::swap(seq[w1], seq[w2]);
         }
 
-        for (const auto it : seq) {
+        for (const auto it: seq) {
           if (__cn->currentNodeType(it->tail())
                  == CredalNet< GUM_SCALAR >::NodeType::Indic
               || __cn->currentNodeType(it->head())
@@ -827,7 +827,7 @@ namespace gum {
       std::vector< cArcP > seq;
       seq.reserve(nbrArcs);
 
-      for (const auto& arc : __bnet->arcs()) {
+      for (const auto& arc: __bnet->arcs()) {
         seq.push_back(&arc);
       }
 
@@ -836,7 +836,7 @@ namespace gum {
       __infE::continueApproximationScheme(1.);
 
       do {
-        for (const auto it : seq) {
+        for (const auto it: seq) {
           if (__cn->currentNodeType(it->tail())
                  == CredalNet< GUM_SCALAR >::NodeType::Indic
               || __cn->currentNodeType(it->head())
@@ -886,7 +886,7 @@ namespace gum {
           GUM_SCALAR lmin = 1.;
           GUM_SCALAR lmax = 1.;
 
-          for (auto chil : children) {
+          for (auto chil: children) {
             lmin *= _ArcsL_min[Arc(Y, chil)];
 
             if (_ArcsL_max.exists(Arc(Y, chil))) {
@@ -1075,7 +1075,7 @@ namespace gum {
       GUM_SCALAR lmax = 1.;
 
       // use cbegin if available
-      for (auto chil : children) {
+      for (auto chil: children) {
         if (chil == demanding_child) { continue; }
 
         lmin *= _ArcsL_min[Arc(X, chil)];
@@ -1252,7 +1252,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void CNLoopyPropagation< GUM_SCALAR >::_refreshLMsPIs(bool refreshIndic) {
-      for (auto node : __bnet->nodes()) {
+      for (auto node: __bnet->nodes()) {
         if ((!refreshIndic)
             && __cn->currentNodeType(node)
                   == CredalNet< GUM_SCALAR >::NodeType::Indic) {
@@ -1268,7 +1268,7 @@ namespace gum {
           GUM_SCALAR lmax = 1.;
 
           if (!children.empty() && !__infE::_evidence.exists(node)) {
-            for (auto chil : children) {
+            for (auto chil: children) {
               lmin *= _ArcsL_min[Arc(node, chil)];
 
               if (_ArcsL_max.exists(Arc(node, chil))) {
@@ -1359,7 +1359,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void CNLoopyPropagation< GUM_SCALAR >::_updateMarginals() {
-      for (auto node : __bnet->nodes()) {
+      for (auto node: __bnet->nodes()) {
         GUM_SCALAR msg_p_min = 1.;
         GUM_SCALAR msg_p_max = 0.;
 
@@ -1463,13 +1463,13 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void CNLoopyPropagation< GUM_SCALAR >::_updateIndicatrices() {
-      for (auto node : __bnet->nodes()) {
+      for (auto node: __bnet->nodes()) {
         if (__cn->currentNodeType(node)
             != CredalNet< GUM_SCALAR >::NodeType::Indic) {
           continue;
         }
 
-        for (auto pare : __bnet->parents(node)) {
+        for (auto pare: __bnet->parents(node)) {
           _msgP(pare, node);
         }
       }
@@ -1485,7 +1485,7 @@ namespace gum {
       std::vector< std::vector< GUM_SCALAR > > vertices(
          2, std::vector< GUM_SCALAR >(2));
 
-      for (auto node : __bnet->nodes()) {
+      for (auto node: __bnet->nodes()) {
         vertices[0][0] = __infE::_marginalMin[node][0];
         vertices[0][1] = __infE::_marginalMax[node][1];
 
@@ -1515,7 +1515,7 @@ namespace gum {
       }
 
       // test for binary cn
-      for (auto node : cnet.current_bn().nodes())
+      for (auto node: cnet.current_bn().nodes())
         if (cnet.current_bn().variable(node).domainSize() != 2) {
           GUM_ERROR(OperationNotAllowed,
                     "CNLoopyPropagation is only available "
@@ -1544,7 +1544,7 @@ namespace gum {
       _InferenceUpToDate = false;
 
       if (_msg_l_sent.size() > 0) {
-        for (auto node : __bnet->nodes()) {
+        for (auto node: __bnet->nodes()) {
           delete _msg_l_sent[node];
         }
       }

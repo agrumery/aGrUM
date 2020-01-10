@@ -90,7 +90,7 @@ namespace gum {
    * matrix.
    */
   template < typename GUM_SCALAR >
-  class MultiDimContainer : public MultiDimAdressable {
+  class MultiDimContainer: public MultiDimAdressable {
     public:
     // =========================================================================
     /// @name Constructors / Destructors

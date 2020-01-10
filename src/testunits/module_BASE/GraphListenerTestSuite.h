@@ -45,8 +45,8 @@
 
 namespace gum_tests {
 
-  class GraphListenerTestSuite : public CxxTest::TestSuite {
-    class CountListener : public gum::Listener {
+  class GraphListenerTestSuite: public CxxTest::TestSuite {
+    class CountListener: public gum::Listener {
       private:
       int  __nbrNode, __nbrArcs, __nbrEdges;
       bool __isOn;
@@ -88,7 +88,7 @@ namespace gum_tests {
       void off() { __isOn = false; }
     };
 
-    class DiGraphCounter : public gum::DiGraphListener {
+    class DiGraphCounter: public gum::DiGraphListener {
       private:
       int __nbrNode, __nbrArcs;
 
@@ -110,7 +110,7 @@ namespace gum_tests {
       const int arcs() const { return __nbrArcs; }
     };
 
-    class UndiGraphCounter : public gum::UndiGraphListener {
+    class UndiGraphCounter: public gum::UndiGraphListener {
       private:
       int __nbrNode, __nbrEdges;
 
@@ -132,7 +132,7 @@ namespace gum_tests {
       const int edges() const { return __nbrEdges; }
     };
 
-    class MixedGraphCounter : public gum::MixedGraphListener {
+    class MixedGraphCounter: public gum::MixedGraphListener {
       private:
       int __nbrNode, __nbrArcs, __nbrEdges;
 

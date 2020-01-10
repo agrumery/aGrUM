@@ -54,7 +54,7 @@ namespace gum {
      *
      */
     template < typename GUM_SCALAR >
-    class InstanceBayesNet : public IBayesNet< GUM_SCALAR > {
+    class InstanceBayesNet: public IBayesNet< GUM_SCALAR > {
       public:
       // ========================================================================
       /// @name Constructors & destructor.

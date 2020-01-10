@@ -39,7 +39,7 @@
 
 namespace gum_tests {
 
-  class PRMInferenceTestSuite : public CxxTest::TestSuite {
+  class PRMInferenceTestSuite: public CxxTest::TestSuite {
     private:
     gum::prm::PRM< double >* prm;
     gum::prm::PRM< double >* small;
@@ -353,7 +353,7 @@ namespace gum_tests {
                                                           prm->getSystem("aSys")));
       TS_GUM_ASSERT_THROWS_NOTHING(g_ss->setBNInference(ss));
 
-      for (const auto node : bn.nodes()) {
+      for (const auto node: bn.nodes()) {
         gum::Potential< double > m_ve, m_ss, m_sve, m_sved, m_struct;
 
         try {

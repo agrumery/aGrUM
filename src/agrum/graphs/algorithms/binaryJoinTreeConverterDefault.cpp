@@ -72,7 +72,7 @@ namespace gum {
         mark[current_node] = true;
 
         // put the neighbors onto the stack
-        for (const auto neigh : JT.neighbours(current_node))
+        for (const auto neigh: JT.neighbours(current_node))
           if (!mark[neigh]) nodes_to_inspect.push_back(neigh);
       }
     }
@@ -85,10 +85,10 @@ namespace gum {
      const NodeProperty< Size >& domain_sizes) const {
     float result = 1;
 
-    for (const auto node : nodes1)
+    for (const auto node: nodes1)
       result *= domain_sizes[node];
 
-    for (const auto node : nodes2)
+    for (const auto node: nodes2)
       if (!nodes1.exists(node)) result *= domain_sizes[node];
 
     return result;
@@ -116,7 +116,7 @@ namespace gum {
     std::vector< NodeId > cliques;
     cliques.reserve(neighbors.size());
 
-    for (const auto nei : neighbors)
+    for (const auto nei: neighbors)
       if (nei != from) cliques.push_back(nei);
 
     // create a vector indicating wether the elements in cliques contain
@@ -230,7 +230,7 @@ namespace gum {
     mark[current_node] = true;
 
     // parse all the neighbors except nodes already converted and convert them
-    for (const auto neigh : JT.neighbours(current_node)) {
+    for (const auto neigh: JT.neighbours(current_node)) {
       if (!mark[neigh]) {
         __convertConnectedComponent(JT, neigh, current_node, domain_sizes, mark);
       }
@@ -257,7 +257,7 @@ namespace gum {
     NodeProperty< bool > mark = JT.nodesProperty(false, JT.sizeNodes());
 
     // for each specified root, populate its connected component
-    for (const auto root : specified_roots) {
+    for (const auto root: specified_roots) {
       // check that the root has not already been marked
       // in this case, this means that more than one root has been specified
       // for a given connected component
@@ -271,7 +271,7 @@ namespace gum {
 
     // check that all nodes have been marked. If this is not the case, then
     // this means that we need to add new roots
-    for (const auto& elt : mark)
+    for (const auto& elt: mark)
       if (!elt.second) {
         __roots << elt.first;
         __markConnectedComponent(JT, elt.first, mark);
@@ -283,7 +283,7 @@ namespace gum {
     // cliques having at most 3 neighbors.
     NodeProperty< bool > mark2 = JT.nodesProperty(false, JT.sizeNodes());
 
-    for (const auto root : __roots)
+    for (const auto root: __roots)
       __convertConnectedComponent(binJT, root, root, domain_sizes, mark2);
 
     // binJT is now a binary join tree, so we can return it

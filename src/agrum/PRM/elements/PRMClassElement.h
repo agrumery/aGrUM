@@ -58,7 +58,7 @@ namespace gum {
      * @ingroup prm_group
      */
     template < typename GUM_SCALAR >
-    class PRMClassElement : public PRMObject {
+    class PRMClassElement: public PRMObject {
       public:
       // ========================================================================
       /// @name Constructor & Destructor.

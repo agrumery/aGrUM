@@ -38,7 +38,7 @@
 
 namespace gum_tests {
 
-  class UndiGraphTestSuite : public CxxTest::TestSuite {
+  class UndiGraphTestSuite: public CxxTest::TestSuite {
     private:
     static gum::Size simpleDoubleFunction(const gum::NodeId& aNodeId) {
       return aNodeId * 2;
@@ -249,7 +249,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(nodeset.size(), graph.size());
       gum::Size nodeCount = graph.size();
 
-      for (const auto node : nodeset)
+      for (const auto node: nodeset)
         graph.eraseNode(node);
 
       TS_ASSERT(graph.empty());
@@ -264,7 +264,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(edgeset.size(), graph.sizeEdges());
       gum::Size edgeCount = graph.sizeEdges();
 
-      for (const auto edge : edgeset)
+      for (const auto edge: edgeset)
         graph.eraseEdge(edge);
 
       TS_ASSERT(graph.emptyEdges());
@@ -308,7 +308,7 @@ namespace gum_tests {
       gum::Size sk = 0;
       gum::Size sv = 0;
 
-      for (const auto& elt : hashmap) {
+      for (const auto& elt: hashmap) {
         sk += elt.first;
         sv += elt.second;
       }
@@ -354,7 +354,7 @@ namespace gum_tests {
       gum::Size sk = 0;
       gum::Size sv = 0;
 
-      for (const auto& elt : hashmap) {
+      for (const auto& elt: hashmap) {
         sv += elt.second;
         sk += elt.first.first() + elt.first.second();
       }

@@ -65,7 +65,7 @@ namespace gum {
    * Likelihood Criterion for Learning Bayesian Network Structures)"
    */
   template < template < typename > class ALLOC = std::allocator >
-  class VariableLog2ParamComplexity : private ALLOC< double > {
+  class VariableLog2ParamComplexity: private ALLOC< double > {
     public:
     /// type for the allocators passed in arguments of methods
     using allocator_type = ALLOC< double >;

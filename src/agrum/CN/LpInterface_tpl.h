@@ -247,7 +247,7 @@ namespace gum {
 
         if (!__imiddle) __imiddle = true;
 
-        for (const auto& elt : *rhs.__mCoeffs)
+        for (const auto& elt: *rhs.__mCoeffs)
           __mCoeffs->getWithDefault(elt.first, 0.) += elt.second;
 
         __mValue += rhs.__mValue;
@@ -271,7 +271,7 @@ namespace gum {
           return *this;
         }
 
-        for (const auto& elt : *rhs.__mCoeffs)
+        for (const auto& elt: *rhs.__mCoeffs)
           __mCoeffs->getWithDefault(elt.first, 0.) += elt.second;
 
         __mValue += rhs.__mValue;
@@ -312,7 +312,7 @@ namespace gum {
 
         if (!__imiddle) __imiddle = true;
 
-        for (const auto& elt : *rhs.__mCoeffs)
+        for (const auto& elt: *rhs.__mCoeffs)
           __mCoeffs->getWithDefault(elt.first, 0.) -= elt.second;
 
         __mValue -= rhs.__mValue;
@@ -561,19 +561,19 @@ namespace gum {
         s << std::endl << "left side : " << std::endl;
 
         if (__lCoeffs != nullptr)
-          for (const auto& elt : *__lCoeffs)
+          for (const auto& elt: *__lCoeffs)
             s << elt.first.toString() << " " << elt.second << " | ";
 
         s << std::endl << "middle side : " << std::endl;
 
         if (__mCoeffs != nullptr)
-          for (const auto& elt : *__mCoeffs)
+          for (const auto& elt: *__mCoeffs)
             s << elt.first.toString() << " " << elt.second << " | ";
 
         s << std::endl << "right side : " << std::endl;
 
         if (__rCoeffs != nullptr)
-          for (const auto& elt : *__rCoeffs)
+          for (const auto& elt: *__rCoeffs)
             s << elt.first.toString() << " " << elt.second << " | ";
 
         s << std::endl
@@ -596,7 +596,7 @@ namespace gum {
         if (expr.__ileft && !expr.__iright) {
           __coeffs = new HashTable< LpCol, double >(*expr.__mCoeffs);
 
-          for (const auto& col : cols) {
+          for (const auto& col: cols) {
             double col_coeff = 0.;
 
             // from left side to middle side : 0 <= middle - left
@@ -610,7 +610,7 @@ namespace gum {
         } else if (expr.__iright && !expr.__ileft) {
           __coeffs = new HashTable< LpCol, double >(*expr.__rCoeffs);
 
-          for (const auto& col : cols) {
+          for (const auto& col: cols) {
             double col_coeff = 0;
 
             // from middle side to right side : 0 <= right - middle
@@ -642,7 +642,7 @@ namespace gum {
         if (expr.__ileft && !expr.__iright) {
           swap(__coeffs, expr.__mCoeffs);
 
-          for (const auto& col : cols) {
+          for (const auto& col: cols) {
             double col_coeff = 0;
 
             if (expr.__lCoeffs->exists(col))
@@ -655,7 +655,7 @@ namespace gum {
         } else if (expr.__iright && !expr.__ileft) {
           swap(__coeffs, expr.__rCoeffs);
 
-          for (const auto& col : cols) {
+          for (const auto& col: cols) {
             double col_coeff = 0;
 
             if (expr.__mCoeffs->exists(col))
@@ -721,7 +721,7 @@ namespace gum {
         s << "0 <= " << __cste;
 
         if (__coeffs != nullptr) {
-          for (const auto& elt : *__coeffs) {
+          for (const auto& elt: *__coeffs) {
             if (elt.second > 0) {
               if (elt.second != 1) {
                 s << " +" << elt.second << "*" << elt.first.toString();
@@ -776,17 +776,17 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       LpInterface< GUM_SCALAR >::~LpInterface() {
-        for (const auto row : __rows)
+        for (const auto row: __rows)
           delete row;
 
         GUM_DESTRUCTOR(LpInterface);
       }
 
       template < typename GUM_SCALAR >
-      LpInterface< GUM_SCALAR >& LpInterface< GUM_SCALAR >::
-                                 operator=(const LpInterface< GUM_SCALAR >& from) {
+      LpInterface< GUM_SCALAR >& LpInterface< GUM_SCALAR >::operator=(
+         const LpInterface< GUM_SCALAR >& from) {
         /// faster than clear (), delete only rows
-        for (const auto& row : __rows)
+        for (const auto& row: __rows)
           delete row;
 
         __rows.clear();
@@ -805,8 +805,8 @@ namespace gum {
       }
 
       template < typename GUM_SCALAR >
-      LpInterface< GUM_SCALAR >& LpInterface< GUM_SCALAR >::
-                                 operator=(LpInterface< GUM_SCALAR >&& from) {
+      LpInterface< GUM_SCALAR >&
+         LpInterface< GUM_SCALAR >::operator=(LpInterface< GUM_SCALAR >&& from) {
         __rows.swap(from.__rows);
         __cols.swap(from.__cols);
 
@@ -903,7 +903,7 @@ namespace gum {
       void LpInterface< GUM_SCALAR >::addPositivity() {
         if (__positivity) return;
 
-        for (const auto& col : __cols)
+        for (const auto& col: __cols)
           addRow(0 <= col);
 
         __positivity = true;
@@ -915,7 +915,7 @@ namespace gum {
 
         LpExpr expr;
 
-        for (const auto& col : __cols)
+        for (const auto& col: __cols)
           expr += col;
 
         addRow(1 <= std::move(expr) <= 1);
@@ -940,7 +940,7 @@ namespace gum {
         // addSumIsOne();
         LpExpr expr;
 
-        for (const auto& col : __cols) {
+        for (const auto& col: __cols) {
           addRow(0 <= col);
           expr += col;
         }
@@ -959,12 +959,12 @@ namespace gum {
 
         std::vector< std::vector< GUM_SCALAR > > lrsMatrix;
 
-        for (const auto& row : __rows) {
+        for (const auto& row: __rows) {
           std::vector< GUM_SCALAR > expandedRow(__cols.size() + 1, 0);
 
           expandedRow[0] = row->__cste;
 
-          for (const auto& elt : *row->__coeffs)
+          for (const auto& elt: *row->__coeffs)
             expandedRow[elt.first.id() + 1] = elt.second;
 
           lrsMatrix.push_back(expandedRow);
@@ -988,12 +988,12 @@ namespace gum {
 
         s << std::endl << std::endl << "Variables : " << std::endl;
 
-        for (const auto& col : __cols)
+        for (const auto& col: __cols)
           s << " " << col.toString();
 
         s << std::endl;
 
-        for (const auto& row : __rows)
+        for (const auto& row: __rows)
           s << std::endl << row->toString();
 
         s << std::endl << std::endl;
@@ -1003,7 +1003,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       void LpInterface< GUM_SCALAR >::clear() {
-        for (const auto& row : __rows)
+        for (const auto& row: __rows)
           delete row;
 
         __rows.clear();
@@ -1021,7 +1021,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       void LpInterface< GUM_SCALAR >::clearRows() {
-        for (const auto& row : __rows)
+        for (const auto& row: __rows)
           delete row;
 
         __rows.clear();

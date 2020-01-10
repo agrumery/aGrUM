@@ -30,7 +30,7 @@
 
 namespace gum_tests {
 
-  class PRMGeneratorTestSuite : public CxxTest::TestSuite {
+  class PRMGeneratorTestSuite: public CxxTest::TestSuite {
     private:
     public:
     void setUp() {

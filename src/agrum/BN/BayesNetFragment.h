@@ -70,9 +70,9 @@ namespace gum {
    * defined.
    */
   template < typename GUM_SCALAR >
-  class BayesNetFragment
-      : public IBayesNet< GUM_SCALAR >
-      , public gum::DiGraphListener {
+  class BayesNetFragment:
+      public IBayesNet< GUM_SCALAR >,
+      public gum::DiGraphListener {
     private:
     /// The referred BayesNet
     const IBayesNet< GUM_SCALAR >& __bn;

@@ -135,8 +135,8 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    DBInitializerFromCSV< ALLOC >& DBInitializerFromCSV< ALLOC >::
-                                   operator=(const DBInitializerFromCSV< ALLOC >& from) {
+    DBInitializerFromCSV< ALLOC >& DBInitializerFromCSV< ALLOC >::operator=(
+       const DBInitializerFromCSV< ALLOC >& from) {
       if (this != &from) {
         IDBInitializer< ALLOC >::operator=(from);
         __filename = from.__filename;
@@ -171,8 +171,8 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    DBInitializerFromCSV< ALLOC >& DBInitializerFromCSV< ALLOC >::
-                                   operator=(DBInitializerFromCSV< ALLOC >&& from) {
+    DBInitializerFromCSV< ALLOC >& DBInitializerFromCSV< ALLOC >::operator=(
+       DBInitializerFromCSV< ALLOC >&& from) {
       return operator=(from);
     }
 

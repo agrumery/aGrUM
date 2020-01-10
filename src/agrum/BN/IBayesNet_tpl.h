@@ -63,8 +63,8 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  IBayesNet< GUM_SCALAR >& IBayesNet< GUM_SCALAR >::
-                           operator=(const IBayesNet< GUM_SCALAR >& source) {
+  IBayesNet< GUM_SCALAR >&
+     IBayesNet< GUM_SCALAR >::operator=(const IBayesNet< GUM_SCALAR >& source) {
     if (this != &source) { DAGmodel::operator=(source); }
 
     return *this;
@@ -79,10 +79,10 @@ namespace gum {
   Size IBayesNet< GUM_SCALAR >::dim() const {
     Size dim = 0;
 
-    for (auto node : nodes()) {
+    for (auto node: nodes()) {
       Size q = 1;
 
-      for (auto parent : parents(node))
+      for (auto parent: parents(node))
         q *= variable(parent).domainSize();
 
       dim += (variable(node).domainSize() - 1) * q;
@@ -94,7 +94,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   Size IBayesNet< GUM_SCALAR >::maxVarDomainSize() const {
     Size res = 0;
-    for (auto node : nodes()) {
+    for (auto node: nodes()) {
       auto v = variable(node).domainSize();
       if (v > res) { res = v; }
     }
@@ -104,7 +104,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   GUM_SCALAR IBayesNet< GUM_SCALAR >::minParam() const {
     GUM_SCALAR res = 1.0;
-    for (auto node : nodes()) {
+    for (auto node: nodes()) {
       auto v = cpt(node).min();
       if (v < res) { res = v; }
     }
@@ -114,7 +114,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   GUM_SCALAR IBayesNet< GUM_SCALAR >::maxParam() const {
     GUM_SCALAR res = 1.0;
-    for (auto node : nodes()) {
+    for (auto node: nodes()) {
       auto v = cpt(node).max();
       if (v > res) { res = v; }
     }
@@ -124,7 +124,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   GUM_SCALAR IBayesNet< GUM_SCALAR >::minNonZeroParam() const {
     GUM_SCALAR res = 1.0;
-    for (auto node : nodes()) {
+    for (auto node: nodes()) {
       auto v = cpt(node).minNonZero();
       if (v < res) { res = v; }
     }
@@ -134,7 +134,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   GUM_SCALAR IBayesNet< GUM_SCALAR >::maxNonOneParam() const {
     GUM_SCALAR res = 0.0;
-    for (auto node : nodes()) {
+    for (auto node: nodes()) {
       auto v = cpt(node).maxNonOne();
       if (v > res) { res = v; }
     }
@@ -146,7 +146,7 @@ namespace gum {
     Size   param = 0;
     double dSize = log10DomainSize();
 
-    for (auto node : nodes())
+    for (auto node: nodes())
       param += cpt(node).content()->realSize();
 
     std::stringstream s;
@@ -179,7 +179,7 @@ namespace gum {
     output << "  node [style=filled fillcolor=\"#ffffaa\"];" << std::endl
            << std::endl;
 
-    for (auto node : nodes())
+    for (auto node: nodes())
       output << "\"" << variable(node).name() << "\" [comment=\"" << node << ":"
              << variable(node).toStringWithDescription() << "\"];" << std::endl;
 
@@ -187,9 +187,9 @@ namespace gum {
 
     std::string tab = "  ";
 
-    for (auto node : nodes()) {
+    for (auto node: nodes()) {
       if (children(node).size() > 0) {
-        for (auto child : children(node)) {
+        for (auto child: children(node)) {
           output << tab << "\"" << variable(node).name() << "\" -> "
                  << "\"" << variable(child).name() << "\";" << std::endl;
         }
@@ -213,7 +213,7 @@ namespace gum {
 
     GUM_SCALAR tmp;
 
-    for (auto node : nodes()) {
+    for (auto node: nodes()) {
       if ((tmp = cpt(node)[i]) == (GUM_SCALAR)0) { return (GUM_SCALAR)0; }
 
       value *= tmp;
@@ -232,7 +232,7 @@ namespace gum {
 
     GUM_SCALAR tmp;
 
-    for (auto node : nodes()) {
+    for (auto node: nodes()) {
       if ((tmp = cpt(node)[i]) == (GUM_SCALAR)0) {
         return (GUM_SCALAR)(-std::numeric_limits< double >::infinity());
       }
@@ -252,7 +252,7 @@ namespace gum {
     // alignment of variables between the 2 BNs
     Bijection< const DiscreteVariable*, const DiscreteVariable* > alignment;
 
-    for (auto node : nodes()) {
+    for (auto node: nodes()) {
       try {
         alignment.insert(&variable(node),
                          &from.variableFromName(variable(node).name()));
@@ -262,7 +262,7 @@ namespace gum {
       }
     }
 
-    for (auto node : nodes()) {
+    for (auto node: nodes()) {
       NodeId fromnode = from.idFromName(variable(node).name());
 
       if (cpt(node).nbrDim() != from.cpt(fromnode).nbrDim()) { return false; }
@@ -309,10 +309,10 @@ namespace gum {
     if (soids.contains(node)) {
       minimal << node;
     } else {
-      for (auto fath : _dag.parents(node))
+      for (auto fath: _dag.parents(node))
         __minimalCondSetVisitUp(
            fath, soids, minimal, alreadyVisitedUp, alreadyVisitedDn);
-      for (auto chil : _dag.children(node))
+      for (auto chil: _dag.children(node))
         __minimalCondSetVisitDn(
            chil, soids, minimal, alreadyVisitedUp, alreadyVisitedDn);
     }
@@ -331,11 +331,11 @@ namespace gum {
 
     if (soids.contains(node)) {
       minimal << node;
-      for (auto fath : _dag.parents(node))
+      for (auto fath: _dag.parents(node))
         __minimalCondSetVisitUp(
            fath, soids, minimal, alreadyVisitedUp, alreadyVisitedDn);
     } else {
-      for (auto chil : _dag.children(node))
+      for (auto chil: _dag.children(node))
         __minimalCondSetVisitDn(
            chil, soids, minimal, alreadyVisitedUp, alreadyVisitedDn);
     }
@@ -353,10 +353,10 @@ namespace gum {
     alreadyVisitedDn << target;
     alreadyVisitedUp << target;
 
-    for (auto fath : _dag.parents(target))
+    for (auto fath: _dag.parents(target))
       __minimalCondSetVisitUp(
          fath, soids, res, alreadyVisitedUp, alreadyVisitedDn);
-    for (auto chil : _dag.children(target))
+    for (auto chil: _dag.children(target))
       __minimalCondSetVisitDn(
          chil, soids, res, alreadyVisitedUp, alreadyVisitedDn);
     return res;
@@ -366,7 +366,7 @@ namespace gum {
   NodeSet IBayesNet< GUM_SCALAR >::minimalCondSet(const NodeSet& targets,
                                                   const NodeSet& soids) const {
     NodeSet res;
-    for (auto node : targets) {
+    for (auto node: targets) {
       res += minimalCondSet(node, soids);
     }
     return res;

@@ -84,8 +84,8 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    PRMAggregate< GUM_SCALAR >& PRMAggregate< GUM_SCALAR >::
-                                operator=(const PRMAggregate< GUM_SCALAR >& source) {
+    PRMAggregate< GUM_SCALAR >& PRMAggregate< GUM_SCALAR >::operator=(
+       const PRMAggregate< GUM_SCALAR >& source) {
       GUM_ERROR(FatalError, "illegal call to gum::PRMAggregate copy operator.");
     }
 

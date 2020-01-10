@@ -121,7 +121,7 @@ namespace gum {
 
     // determine the set of nodes in the order that belong to the graph
     NodeSet nodes_found(_graph->size() / 2);
-    for (const auto node : *order) {
+    for (const auto node: *order) {
       if (_graph->existsNode(node)) { nodes_found.insert(node); }
     }
 

@@ -28,7 +28,7 @@
 #include <agrum/PRM/elements/PRMParameter.h>
 
 namespace gum_tests {
-  class PRMFactoryTestSuite : public CxxTest::TestSuite {
+  class PRMFactoryTestSuite: public CxxTest::TestSuite {
     public:
     void testInit() {
       gum::prm::PRMFactory< double > f;

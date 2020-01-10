@@ -59,7 +59,7 @@
 
 namespace gum_tests {
 
-  class DAGTestSuite : public CxxTest::TestSuite {
+  class DAGTestSuite: public CxxTest::TestSuite {
     private:
     static gum::Size simpleDoubleFunction(const gum::NodeId& aNodeId) {
       return aNodeId * 2;
@@ -255,7 +255,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(nodelist.size(), graph.size());
       gum::Size nodeCount = graph.size();
 
-      for (const auto node : nodelist)
+      for (const auto node: nodelist)
         graph.eraseNode(node);
 
       TS_ASSERT(graph.empty());
@@ -270,7 +270,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(arclist.size(), graph.sizeArcs());
       gum::Size arcCount = graph.sizeArcs();
 
-      for (const auto arc : arclist) {
+      for (const auto arc: arclist) {
         graph.eraseArc(arc);
       }
 
@@ -311,7 +311,7 @@ namespace gum_tests {
       gum::Size sk = 0;
       gum::Size sv = 0;
 
-      for (const auto& elt : hashmap) {
+      for (const auto& elt: hashmap) {
         sk += elt.first;
         sv += elt.second;
       }
@@ -353,7 +353,7 @@ namespace gum_tests {
       gum::Size sk = 0;
       gum::Size sv = 0;
 
-      for (const auto& elt : hashmap) {
+      for (const auto& elt: hashmap) {
         sk += elt.first.head() + elt.first.tail();
         sv += elt.second;
       }

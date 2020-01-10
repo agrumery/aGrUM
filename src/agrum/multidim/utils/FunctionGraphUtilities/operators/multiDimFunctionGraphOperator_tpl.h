@@ -219,7 +219,7 @@ namespace gum {
              template < typename >
              class TerminalNodePolicy >
   INLINE Idx
-         MultiDimFunctionGraphOperator< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
+     MultiDimFunctionGraphOperator< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
         __distance(
            const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* d,
            const DiscreteVariable*                                        from,
@@ -579,7 +579,7 @@ namespace gum {
              template < typename >
              class TerminalNodePolicy >
   INLINE Idx
-         MultiDimFunctionGraphOperator< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
+     MultiDimFunctionGraphOperator< GUM_SCALAR, FUNCTOR, TerminalNodePolicy >::
         sizeVarRetroDomain() {
     return __sizeVarRetro;
   }

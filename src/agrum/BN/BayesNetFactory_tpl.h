@@ -48,7 +48,7 @@ namespace gum {
     GUM_CONSTRUCTOR(BayesNetFactory);
     __states.push_back(factory_state::NONE);
 
-    for (auto node : bn->nodes()) {
+    for (auto node: bn->nodes()) {
       if (__varNameMap.exists(bn->variable(node).name()))
         GUM_ERROR(DuplicateElement,
                   "Name already used: " << bn->variable(node).name());
@@ -119,7 +119,7 @@ namespace gum {
   // @throw NotFound Raised if no variable matches the name.
   template < typename GUM_SCALAR >
   INLINE NodeId
-         BayesNetFactory< GUM_SCALAR >::variableId(const std::string& name) const {
+     BayesNetFactory< GUM_SCALAR >::variableId(const std::string& name) const {
     try {
       return __varNameMap[name];
     } catch (NotFound&) { GUM_ERROR(NotFound, name); }
@@ -636,7 +636,7 @@ namespace gum {
         Instantiation inst_default;
         inst_default << var;
 
-        for (auto node : __bn->parents(varId)) {
+        for (auto node: __bn->parents(varId)) {
           if (!__parents->contains(__bn->variable(node))) {
             inst_default << __bn->variable(node);
           }
@@ -764,7 +764,7 @@ namespace gum {
       if (redefineParents) {
         __setCPTAndParents(var, pot);
       } else if (pot->contains(var)) {
-        for (auto node : __bn->parents(varId)) {
+        for (auto node: __bn->parents(varId)) {
           if (!pot->contains(__bn->variable(node))) {
             GUM_ERROR(OperationNotAllowed,
                       "The CPT is not valid in the current BayesNet.");
@@ -779,8 +779,8 @@ namespace gum {
 
   // Copy operator is illegal, use only copy constructor.
   template < typename GUM_SCALAR >
-  INLINE BayesNetFactory< GUM_SCALAR >& BayesNetFactory< GUM_SCALAR >::
-                                        operator=(const BayesNetFactory< GUM_SCALAR >& source) {
+  INLINE BayesNetFactory< GUM_SCALAR >& BayesNetFactory< GUM_SCALAR >::operator=(
+     const BayesNetFactory< GUM_SCALAR >& source) {
     GUM_ERROR(OperationNotAllowed, "Illegal!");
     // For noisy compilers
     return *this;
@@ -880,7 +880,7 @@ namespace gum {
     NodeId varId = __varNameMap[var.name()];
     __bn->_dag.eraseParents(varId);
 
-    for (auto v : table->variablesSequence()) {
+    for (auto v: table->variablesSequence()) {
       if (v != (&var)) {
         __checkVariableName(v->name());
         __bn->_dag.addArc(__varNameMap[v->name()], varId);

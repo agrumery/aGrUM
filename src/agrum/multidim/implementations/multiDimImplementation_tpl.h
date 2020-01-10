@@ -81,7 +81,7 @@ namespace gum {
       GUM_ERROR(DuplicateElement,
                 "Var " << v.name() << " already exists in this instantiation");
     }
-    for (const auto& w : __vars) {
+    for (const auto& w: __vars) {
       if (w->name() == v.name())
         GUM_ERROR(DuplicateElement,
                   "A var with name '" << v.name()
@@ -190,7 +190,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const DiscreteVariable& MultiDimImplementation< GUM_SCALAR >::variable(
      const std::string& name) const {
-    for (const auto& v : __vars) {
+    for (const auto& v: __vars) {
       if (v->name() == name) return *v;
     }
 
@@ -200,7 +200,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE Idx
-         MultiDimImplementation< GUM_SCALAR >::pos(const DiscreteVariable& v) const {
+     MultiDimImplementation< GUM_SCALAR >::pos(const DiscreteVariable& v) const {
     return __vars.pos(&v);
   }
 

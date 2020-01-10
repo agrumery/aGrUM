@@ -91,8 +91,8 @@ namespace gum {
   }
 
   // returns a sample from the Dirichlet distribution
-  INLINE Dirichlet::result_type Dirichlet::
-                                operator()(const Dirichlet::param_type& parm) {
+  INLINE Dirichlet::result_type
+     Dirichlet::operator()(const Dirichlet::param_type& parm) {
     Size        size = Size(parm.size());
     result_type res(size);
     float       sum = 0.0f;

@@ -51,7 +51,7 @@ namespace gum {
    * or a file must be a subclass of UAIReader.
    */
   template < typename GUM_SCALAR >
-  class UAIReader : public BNReader< GUM_SCALAR > {
+  class UAIReader: public BNReader< GUM_SCALAR > {
     public:
     /**
      * Constructor

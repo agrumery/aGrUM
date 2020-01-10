@@ -49,7 +49,7 @@ namespace gum {
    * or a file must be a subclass of DSLReader.
    */
   template < typename GUM_SCALAR >
-  class DSLReader : public BNReader< GUM_SCALAR > {
+  class DSLReader: public BNReader< GUM_SCALAR > {
     public:
     /**
      * Constructor

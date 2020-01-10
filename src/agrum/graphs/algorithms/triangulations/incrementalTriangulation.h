@@ -48,7 +48,7 @@ namespace gum {
   /** @class IncrementalTriangulation
    * @brief Class that performs incremental triangulations
    */
-  class IncrementalTriangulation : public Triangulation {
+  class IncrementalTriangulation: public Triangulation {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

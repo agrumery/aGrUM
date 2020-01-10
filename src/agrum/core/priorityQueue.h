@@ -957,12 +957,12 @@ namespace gum {
              typename Priority = int,
              typename Cmp = std::less< Priority >,
              typename Alloc = std::allocator< Val > >
-  class PriorityQueue
-      : public PriorityQueueImplementation< Val,
-                                            Priority,
-                                            Cmp,
-                                            Alloc,
-                                            std::is_scalar< Val >::value > {
+  class PriorityQueue:
+      public PriorityQueueImplementation< Val,
+                                          Priority,
+                                          Cmp,
+                                          Alloc,
+                                          std::is_scalar< Val >::value > {
     public:
     /// Types for STL compliance.
     /// @{

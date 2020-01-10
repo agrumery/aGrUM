@@ -34,7 +34,7 @@
 namespace gum {
 
   template < typename GUM_SCALAR >
-  class SchedulerBasic : public Scheduler< GUM_SCALAR > {
+  class SchedulerBasic: public Scheduler< GUM_SCALAR > {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

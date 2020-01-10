@@ -56,7 +56,7 @@ namespace gum {
      * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
      */
     template < typename GUM_SCALAR >
-    class InferenceEngine : public ApproximationScheme {
+    class InferenceEngine: public ApproximationScheme {
       private:
       //@beforeMerging swapping from typedef to using
       using credalSet = NodeProperty< std::vector< std::vector< GUM_SCALAR > > >;

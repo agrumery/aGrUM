@@ -84,8 +84,9 @@ namespace gum {
 
 
   template < typename GUM_SCALAR >
-  INLINE MultiDimDecorator< GUM_SCALAR >& MultiDimDecorator< GUM_SCALAR >::
-                                          operator=(MultiDimDecorator< GUM_SCALAR >&& from) {
+  INLINE MultiDimDecorator< GUM_SCALAR >&
+     MultiDimDecorator< GUM_SCALAR >::operator=(
+        MultiDimDecorator< GUM_SCALAR >&& from) {
     MultiDimContainer< GUM_SCALAR >::operator=(
        std::forward< MultiDimContainer< GUM_SCALAR > >(from));
     GUM_OP_MOV(MultiDimDecorator);
@@ -115,8 +116,9 @@ namespace gum {
 
 
   template < typename GUM_SCALAR >
-  INLINE MultiDimDecorator< GUM_SCALAR >& MultiDimDecorator< GUM_SCALAR >::
-                                          operator=(const MultiDimDecorator< GUM_SCALAR >& from) noexcept {
+  INLINE MultiDimDecorator< GUM_SCALAR >&
+     MultiDimDecorator< GUM_SCALAR >::operator=(
+        const MultiDimDecorator< GUM_SCALAR >& from) noexcept {
     GUM_OP_CPY(MultiDimDecorator);
     ___initPotentialOperators< GUM_SCALAR >();
     MultiDimContainer< GUM_SCALAR >::operator=(from);
@@ -145,7 +147,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR
-         MultiDimDecorator< GUM_SCALAR >::get(const Instantiation& i) const {
+     MultiDimDecorator< GUM_SCALAR >::get(const Instantiation& i) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(_content)->empty()) {
       return _empty_value;
     } else {
@@ -266,7 +268,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE Idx
-         MultiDimDecorator< GUM_SCALAR >::pos(const DiscreteVariable& d) const {
+     MultiDimDecorator< GUM_SCALAR >::pos(const DiscreteVariable& d) const {
     return static_cast< MultiDimContainer< GUM_SCALAR >* >(_content)->pos(d);
   }
 

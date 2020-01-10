@@ -37,12 +37,12 @@
 #include <cxxtest/AgrumApproximationUtils.h>   // must be last include
 
 #define EPSILON_FOR_IMPORTANCE_SIMPLE_TEST 15e-2
-#define EPSILON_FOR_IMPORTANCE 7e-2
+#define EPSILON_FOR_IMPORTANCE             7e-2
 
 
 namespace gum_tests {
 
-  class aSimpleImportanceListener : public gum::ApproximationSchemeListener {
+  class aSimpleImportanceListener: public gum::ApproximationSchemeListener {
     private:
     int         __nbr;
     std::string __mess;
@@ -65,7 +65,7 @@ namespace gum_tests {
     std::string getMess() { return __mess; }
   };
 
-  class ImportanceSamplingTestSuite : public CxxTest::TestSuite {
+  class ImportanceSamplingTestSuite: public CxxTest::TestSuite {
     public:
     void testImportanceBinaryTreeWithoutEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype(

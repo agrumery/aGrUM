@@ -63,7 +63,7 @@ namespace gum {
    * matrix.
    */
   template < typename GUM_SCALAR >
-  class MultiDimImplementation : public MultiDimContainer< GUM_SCALAR > {
+  class MultiDimImplementation: public MultiDimContainer< GUM_SCALAR > {
     public:
     // =========================================================================
     /// @name Constructors / Destructors

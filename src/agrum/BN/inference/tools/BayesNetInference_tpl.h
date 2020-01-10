@@ -57,7 +57,7 @@ namespace gum {
     // to pure virtual method _onAllEvidenceErased which belongs to an inherited
     // instance and, therefore, does not exist anymore when ~BayesNetInference ()
     // is called
-    for (const auto& pair : __evidence) {
+    for (const auto& pair: __evidence) {
       if (pair.second != nullptr) { delete (pair.second); }
     }
 
@@ -161,7 +161,7 @@ namespace gum {
   void BayesNetInference< GUM_SCALAR >::__computeDomainSizes() {
     __domain_sizes.clear();
     if (__bn != nullptr) {
-      for (const auto node : __bn->dag()) {
+      for (const auto node: __bn->dag()) {
         __domain_sizes.insert(node, __bn->variable(node).domainSize());
       }
     }
@@ -362,7 +362,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void BayesNetInference< GUM_SCALAR >::addListOfEvidence(
      const List< const Potential< GUM_SCALAR >* >& potlist) {
-    for (const auto pot : potlist)
+    for (const auto pot: potlist)
       addEvidence(*pot);
   }
 
@@ -371,7 +371,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void BayesNetInference< GUM_SCALAR >::addSetOfEvidence(
      const Set< const Potential< GUM_SCALAR >* >& potset) {
-    for (const auto pot : potset)
+    for (const auto pot: potset)
       addEvidence(*pot);
   }
 
@@ -596,7 +596,7 @@ namespace gum {
     bool has_hard_evidence = !__hard_evidence.empty();
     this->_onAllEvidenceErased(has_hard_evidence);
 
-    for (const auto& pair : __evidence) {
+    for (const auto& pair: __evidence) {
       if (pair.second != nullptr) { delete (pair.second); }
     }
 

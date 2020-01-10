@@ -87,7 +87,7 @@ namespace gum {
   /// compute the spanning forest
   void SpanningForestPrim::__compute() {
     // compute a spanning tree in every connected component
-    for (const auto node : __graph.nodes()) {
+    for (const auto node: __graph.nodes()) {
       if (!__spanning_tree.existsNode(node)) { __computeInAComponent(node); }
     }
 
@@ -137,7 +137,7 @@ namespace gum {
   void SpanningForestPrim::__exploreNode(const NodeId id) {
     // add its neighbors __edgesToExplore to indicate that they are
     // potential next nodes to explore
-    for (const auto node : __graph.neighbours(id)) {
+    for (const auto node: __graph.neighbours(id)) {
       if (!__spanning_tree.existsNode(node)) {
         Edge edge(node, id);
         __edgesToExplore.insert(edge, __costTable[edge]);

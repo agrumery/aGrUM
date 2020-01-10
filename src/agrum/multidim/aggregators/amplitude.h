@@ -52,7 +52,7 @@ namespace gum {
      * its parents.
      */
     template < typename GUM_SCALAR >
-    class Amplitude : public MultiDimAggregator< GUM_SCALAR > {
+    class Amplitude: public MultiDimAggregator< GUM_SCALAR > {
       public:
       Amplitude();
 

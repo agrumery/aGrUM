@@ -179,7 +179,7 @@ namespace gum {
    * hashTable.
    */
   template <>
-  class HashFunc< credal::lp::LpCol > : public HashFuncBase< credal::lp::LpCol > {
+  class HashFunc< credal::lp::LpCol >: public HashFuncBase< credal::lp::LpCol > {
     public:
     /**
      * @brief Returns the value of a key as a Size.

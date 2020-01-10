@@ -60,7 +60,7 @@ namespace gum {
    * failure of most of the inference Methods.
    */
   template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
-  class IBayesNetGenerator : public ICPTGenerator< GUM_SCALAR > {
+  class IBayesNetGenerator: public ICPTGenerator< GUM_SCALAR > {
     public:
     // ############################################################################
     /// @name Constructors / Destructor

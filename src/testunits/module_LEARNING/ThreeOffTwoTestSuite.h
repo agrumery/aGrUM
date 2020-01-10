@@ -44,7 +44,7 @@
 
 namespace gum_tests {
 
-  class ThreeOffTwoTestSuite : public CxxTest::TestSuite {
+  class ThreeOffTwoTestSuite: public CxxTest::TestSuite {
     public:
     void test_3off2_asia_nocorr() {
       gum::learning::DBInitializerFromCSV<> initializer(

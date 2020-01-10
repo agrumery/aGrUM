@@ -64,7 +64,7 @@ namespace gum {
      * @see PRM Class<GUM_SCALAR> PRMClassElement<GUM_SCALAR>
      */
     template < typename GUM_SCALAR >
-    class PRMInterface : public PRMClassElementContainer< GUM_SCALAR > {
+    class PRMInterface: public PRMClassElementContainer< GUM_SCALAR > {
       // ========================================================================
       friend class PRMClass< GUM_SCALAR >;
       // ========================================================================

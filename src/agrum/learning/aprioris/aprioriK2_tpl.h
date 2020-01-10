@@ -109,8 +109,8 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    INLINE AprioriK2< ALLOC >& AprioriK2< ALLOC >::
-                               operator=(const AprioriK2< ALLOC >& from) {
+    INLINE AprioriK2< ALLOC >&
+       AprioriK2< ALLOC >::operator=(const AprioriK2< ALLOC >& from) {
       AprioriSmoothing< ALLOC >::operator=(from);
       return *this;
     }
@@ -118,8 +118,8 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    INLINE AprioriK2< ALLOC >& AprioriK2< ALLOC >::
-                               operator=(AprioriK2< ALLOC >&& from) {
+    INLINE AprioriK2< ALLOC >&
+       AprioriK2< ALLOC >::operator=(AprioriK2< ALLOC >&& from) {
       AprioriSmoothing< ALLOC >::operator=(std::move(from));
       return *this;
     }

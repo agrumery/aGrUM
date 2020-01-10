@@ -30,7 +30,7 @@
 
 namespace gum_tests {
 
-  class DBRowGeneratorEMTestSuite : public CxxTest::TestSuite {
+  class DBRowGeneratorEMTestSuite: public CxxTest::TestSuite {
     private:
     gum::Potential< double > __infer(
        const gum::BayesNet< double >&                                  bn,
@@ -39,7 +39,7 @@ namespace gum_tests {
       gum::LazyPropagation< double > ve(&bn);
 
       gum::NodeSet target_set;
-      for (auto target : targets)
+      for (auto target: targets)
         target_set.insert(gum::NodeId(target));
       ve.addJointTarget(target_set);
 

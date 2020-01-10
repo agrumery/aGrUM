@@ -100,7 +100,7 @@ namespace gum {
       __ticks_size((Size)0) {
     GUM_CONSTRUCTOR(DiscretizedVariable);
     __ticks.reserve(ticks.size());
-    for (const auto t : ticks)
+    for (const auto t: ticks)
       addTick(t);
   }
 
@@ -124,8 +124,8 @@ namespace gum {
   }
 
   template < typename T_TICKS >
-  INLINE DiscretizedVariable< T_TICKS >& DiscretizedVariable< T_TICKS >::
-                                         operator=(const DiscretizedVariable< T_TICKS >& aDRV) {
+  INLINE DiscretizedVariable< T_TICKS >& DiscretizedVariable< T_TICKS >::operator=(
+     const DiscretizedVariable< T_TICKS >& aDRV) {
     _copy(aDRV);
     return *this;
   }
@@ -225,7 +225,7 @@ namespace gum {
 
   template < typename T_TICKS >
   INLINE Idx
-         DiscretizedVariable< T_TICKS >::index(const std::string& label) const {
+     DiscretizedVariable< T_TICKS >::index(const std::string& label) const {
     if (empty()) { GUM_ERROR(OutOfBounds, "empty variable : " + toString()); }
 
     std::istringstream i(label);

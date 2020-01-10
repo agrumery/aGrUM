@@ -63,7 +63,7 @@ namespace gum {
      *
      */
     template < typename GUM_SCALAR >
-    class SVE : public PRMInference< GUM_SCALAR > {
+    class SVE: public PRMInference< GUM_SCALAR > {
       public:
       // ========================================================================
       /// @name Constructors & destructor.

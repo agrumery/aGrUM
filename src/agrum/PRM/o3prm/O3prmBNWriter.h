@@ -55,7 +55,7 @@ namespace gum {
    *
    */
   template < typename GUM_SCALAR >
-  class O3prmBNWriter : public BNWriter< GUM_SCALAR > {
+  class O3prmBNWriter: public BNWriter< GUM_SCALAR > {
     public:
     // ==========================================================================
     /// @name Constructor & destructor

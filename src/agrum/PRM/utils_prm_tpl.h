@@ -52,7 +52,7 @@ namespace gum {
                static_cast< MultiDimImplementation< GUM_SCALAR >* >(
                   impl->newFactory()));
 
-            for (auto var : impl->variablesSequence())
+            for (auto var: impl->variablesSequence())
               p->add(*(bij.second(var)));
           } else if (dynamic_cast< const MultiDimBucket< GUM_SCALAR >* >(impl)) {
             // This is necessary just to prevent non initialized arrays
@@ -118,7 +118,7 @@ namespace gum {
       var_set.insert(var);
       Set< const Potential< GUM_SCALAR >* > pots;
 
-      for (const auto p : pool)
+      for (const auto p: pool)
         if (p->contains(*var)) pots.insert(p);
 
       if (pots.size() == 0) {
@@ -133,7 +133,7 @@ namespace gum {
         delete tmp;
       }
 
-      for (const auto p : pots) {
+      for (const auto p: pots) {
         pool.erase(const_cast< Potential< GUM_SCALAR >* >(p));
 
         if (trash.exists(const_cast< Potential< GUM_SCALAR >* >(p))) {
@@ -150,7 +150,7 @@ namespace gum {
     void eliminateNodes(const std::vector< const DiscreteVariable* >& elim_order,
                         Set< Potential< GUM_SCALAR >* >&              pool,
                         Set< Potential< GUM_SCALAR >* >&              trash) {
-      for (auto var : elim_order) {
+      for (auto var: elim_order) {
         eliminateNode(var, pool, trash);
       }
     }

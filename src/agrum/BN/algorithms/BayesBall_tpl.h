@@ -47,9 +47,9 @@ namespace gum {
     /// for relevant potentials: indicate which tables contain a variable
     /// (nodeId)
     HashTable< NodeId, Set< const TABLE< GUM_SCALAR >* > > node2potentials;
-    for (const auto pot : potentials) {
+    for (const auto pot: potentials) {
       const Sequence< const DiscreteVariable* >& vars = pot->variablesSequence();
-      for (const auto var : vars) {
+      for (const auto var: vars) {
         const NodeId id = bn.nodeId(*var);
         if (!node2potentials.exists(id)) {
           node2potentials.insert(id, Set< const TABLE< GUM_SCALAR >* >());
@@ -63,7 +63,7 @@ namespace gum {
     // ball to and the Boolean indicates whether we shall reach it from one of
     // its children (true) or from one parent (false)
     List< std::pair< NodeId, bool > > nodes_to_visit;
-    for (const auto node : query) {
+    for (const auto node: query) {
       nodes_to_visit.insert(std::pair< NodeId, bool >(node, true));
     }
 
@@ -82,9 +82,9 @@ namespace gum {
       // the potentials containing the node
       if (node2potentials.exists(node)) {
         auto& pot_set = node2potentials[node];
-        for (const auto pot : pot_set) {
+        for (const auto pot: pot_set) {
           const auto& vars = pot->variablesSequence();
-          for (const auto var : vars) {
+          for (const auto var: vars) {
             const NodeId id = bn.nodeId(*var);
             if (id != node) {
               node2potentials[id].erase(pot);
@@ -108,14 +108,14 @@ namespace gum {
 
         if (!marks[node].first) {
           marks[node].first = true;   // top marked
-          for (const auto par : dag.parents(node)) {
+          for (const auto par: dag.parents(node)) {
             nodes_to_visit.insert(std::pair< NodeId, bool >(par, true));
           }
         }
 
         if (!marks[node].second) {
           marks[node].second = true;   // bottom marked
-          for (const auto chi : dag.children(node)) {
+          for (const auto chi: dag.children(node)) {
             nodes_to_visit.insert(std::pair< NodeId, bool >(chi, false));
           }
         }
@@ -128,7 +128,7 @@ namespace gum {
         if (is_evidence && !marks[node].first) {
           marks[node].first = true;
 
-          for (const auto par : dag.parents(node)) {
+          for (const auto par: dag.parents(node)) {
             nodes_to_visit.insert(std::pair< NodeId, bool >(par, true));
           }
         }
@@ -136,7 +136,7 @@ namespace gum {
         if (!is_hard_evidence && !marks[node].second) {
           marks[node].second = true;
 
-          for (const auto chi : dag.children(node)) {
+          for (const auto chi: dag.children(node)) {
             nodes_to_visit.insert(std::pair< NodeId, bool >(chi, false));
           }
         }
@@ -146,8 +146,8 @@ namespace gum {
 
     // here, all the potentials that belong to __node2potentials are d-separated
     // from the query
-    for (const auto elt : node2potentials) {
-      for (const auto pot : elt.second) {
+    for (const auto elt: node2potentials) {
+      for (const auto pot: elt.second) {
         potentials.erase(pot);
       }
     }

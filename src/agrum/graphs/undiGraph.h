@@ -106,9 +106,7 @@ namespace gum {
   /* ===========================================================================
    */
 
-  class UndiGraph
-      : public virtual NodeGraphPart
-      , public EdgeGraphPart {
+  class UndiGraph: public virtual NodeGraphPart, public EdgeGraphPart {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

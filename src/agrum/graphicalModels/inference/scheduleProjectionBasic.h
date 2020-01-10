@@ -70,7 +70,7 @@
 namespace gum {
 
   template < typename GUM_SCALAR >
-  class ScheduleProjectionBasic : public ScheduleProjection< GUM_SCALAR > {
+  class ScheduleProjectionBasic: public ScheduleProjection< GUM_SCALAR > {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

@@ -2217,7 +2217,7 @@ namespace gum {
    * @tparam Val The gum::HashTable Value.
    */
   template < typename Key, typename Val >
-  class HashTableIteratorSafe : public HashTableConstIteratorSafe< Key, Val > {
+  class HashTableIteratorSafe: public HashTableConstIteratorSafe< Key, Val > {
     public:
     /// Types for STL compliance.
     /// @{
@@ -2747,7 +2747,7 @@ namespace gum {
    * @tparam Val The gum::HashTable Value.
    */
   template < typename Key, typename Val >
-  class HashTableIterator : public HashTableConstIterator< Key, Val > {
+  class HashTableIterator: public HashTableConstIterator< Key, Val > {
     public:
     /// types for STL compliance
     /// @{

@@ -50,7 +50,7 @@ namespace gum {
      * @see MultiDimAggregator for more details of implementations
      */
     template < typename GUM_SCALAR >
-    class Min : public MultiDimAggregator< GUM_SCALAR > {
+    class Min: public MultiDimAggregator< GUM_SCALAR > {
       public:
       Min();
       Min(const Min< GUM_SCALAR >& from);

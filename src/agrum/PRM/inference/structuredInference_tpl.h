@@ -64,24 +64,25 @@ namespace gum {
       GUM_DESTRUCTOR(StructuredInference);
       delete this->__gspan;
 
-      for (const auto& elt : __elim_map)
+      for (const auto& elt: __elim_map)
         delete elt.second;
 
-      for (const auto& elt : __cdata_map)
+      for (const auto& elt: __cdata_map)
         delete elt.second;
 
-      for (const auto elt : __trash)
+      for (const auto elt: __trash)
         delete (elt);
 
-      for (const auto& elt : __outputs)
+      for (const auto& elt: __outputs)
         delete elt.second;
 
       if (__pdata) delete __pdata;
     }
 
     template < typename GUM_SCALAR >
-    StructuredInference< GUM_SCALAR >& StructuredInference< GUM_SCALAR >::
-                                       operator=(const StructuredInference< GUM_SCALAR >& source) {
+    StructuredInference< GUM_SCALAR >&
+       StructuredInference< GUM_SCALAR >::operator=(
+          const StructuredInference< GUM_SCALAR >& source) {
       this->_prm = source._prm;
       this->_sys = source._sys;
 
@@ -130,7 +131,7 @@ namespace gum {
       Set< const Potential< GUM_SCALAR >* > pots;
 
       if (data.pool.size() > 1) {
-        for (const auto pot : data.pool)
+        for (const auto pot: data.pool)
           if (pot->contains(__query.second->type().variable())) pots.insert(pot);
 
         if (pots.size() == 1) {
@@ -260,7 +261,7 @@ namespace gum {
       typename GSpan< GUM_SCALAR >::MatchedInstances::const_iterator iter =
          data.matches.begin();
 
-      for (const auto elt : **iter)
+      for (const auto elt: **iter)
         __reducedInstances.insert(elt);
 
       if (data.obs().size())
@@ -287,8 +288,8 @@ namespace gum {
         }
       }
 
-      for (const auto pat : fake_patterns) {
-        for (const auto elt : *pat)
+      for (const auto pat: fake_patterns) {
+        for (const auto elt: *pat)
           __reducedInstances.erase(elt);
 
         data.matches.erase(pat);
@@ -297,7 +298,7 @@ namespace gum {
       obs_time += plopTimer.step();
 
       if (data.queries().size())
-        for (const auto m : data.matches)
+        for (const auto m: data.matches)
           if (!(m->exists(
                  const_cast< PRMInstance< GUM_SCALAR >* >(__query.first))))
             eliminateNode(&(m->atPos(__query_data.first)
@@ -329,7 +330,7 @@ namespace gum {
       }
 
       if (!(data.outputs().size() && (data.outputs().exists(id)))) {
-        for (const auto m : data.matches) {
+        for (const auto m: data.matches) {
           if (this->hasEvidence(
                  std::make_pair((*m)[v.first], &((*m)[v.first]->get(v.second))))) {
             GUM_ASSERT(inst->type().name() == (*m)[v.first]->type().name());
@@ -353,8 +354,8 @@ namespace gum {
       std::pair< Idx, std::string > v;
       Potential< GUM_SCALAR >*      pot = 0;
 
-      for (const auto inst : match) {
-        for (const auto& elt : *inst) {
+      for (const auto inst: match) {
+        for (const auto& elt: *inst) {
           NodeId id = data.graph.addNode();
           v = std::make_pair(match.pos(inst), elt.second->safeName());
           data.map.insert(id, v);
@@ -366,7 +367,7 @@ namespace gum {
           pot =
              &(const_cast< Potential< GUM_SCALAR >& >(inst->get(v.second).cpf()));
 
-          for (const auto var : pot->variablesSequence()) {
+          for (const auto var: pot->variablesSequence()) {
             try {
               if (id != data.vars.first(var))
                 data.graph.addEdge(id, data.vars.first(var));
@@ -385,7 +386,7 @@ namespace gum {
       }
 
       if (!__found_query) {
-        for (const auto mat : data.matches) {
+        for (const auto mat: data.matches) {
           if (mat->exists(
                  const_cast< PRMInstance< GUM_SCALAR >* >(__query.first))) {
             Idx pos =
@@ -410,7 +411,7 @@ namespace gum {
     bool StructuredInference< GUM_SCALAR >::__allInstanceNoRefAttr(
        typename StructuredInference< GUM_SCALAR >::PData& data,
        std::pair< Idx, std::string >                      attr) {
-      for (const auto mat : data.matches)
+      for (const auto mat: data.matches)
         if (mat->atPos(attr.first)
                ->hasRefAttr(mat->atPos(attr.first)->get(attr.second).id()))
           return false;
@@ -424,14 +425,14 @@ namespace gum {
        Set< Potential< GUM_SCALAR >* >&                   pool) {
       Sequence< NodeId > candidates;
 
-      for (const auto node : data.barren) {
-        for (const auto pot : pool)
+      for (const auto node: data.barren) {
+        for (const auto pot: pool)
           if (pot->contains(*data.vars.second(node))) {
             pool.erase(pot);
             break;
           }
 
-        for (const auto nei : data.graph.neighbours(node))
+        for (const auto nei: data.graph.neighbours(node))
           if (data.inners().exists(nei)) {
             try {
               candidates.insert(nei);
@@ -448,7 +449,7 @@ namespace gum {
         candidates.erase(node);
         count = 0;
 
-        for (const auto pot : pool) {
+        for (const auto pot: pool) {
           if (pot->contains(*data.vars.second(node))) {
             ++count;
             my_pot = pot;
@@ -459,7 +460,7 @@ namespace gum {
           pool.erase(my_pot);
           data.barren.insert(node);
 
-          for (const auto nei : data.graph.neighbours(node)) {
+          for (const auto nei: data.graph.neighbours(node)) {
             if (data.inners().exists(nei)) {
               try {
                 candidates.insert(nei);
@@ -545,7 +546,7 @@ namespace gum {
         __reducedInstances.insert(match[idx]);
         const auto& chains = source[idx]->type().slotChains();
 
-        for (const auto sc : chains) {
+        for (const auto sc: chains) {
 #ifdef DEBUG
           GUM_ASSERT(!(sc->isMultiple()));
 #endif
@@ -584,8 +585,8 @@ namespace gum {
         }
       }
 
-      for (const auto p : pool) {
-        for (const auto v : p->variablesSequence()) {
+      for (const auto p: pool) {
+        for (const auto v: p->variablesSequence()) {
           try {
             target = data.map[data.vars.first(v)];
             bij.insert(
@@ -598,7 +599,7 @@ namespace gum {
         try {
           my_pool->insert(copyPotential(bij, *p));
         } catch (Exception&) {
-          for (const auto pot : *my_pool)
+          for (const auto pot: *my_pool)
             delete pot;
 
           delete my_pool;
@@ -616,7 +617,7 @@ namespace gum {
       Potential< GUM_SCALAR >*                  pot = nullptr;
       PRMInstance< GUM_SCALAR >*                inst = nullptr;
 
-      for (const auto& elt : *this->_sys) {
+      for (const auto& elt: *this->_sys) {
         inst = elt.second;
 
         if (!__reducedInstances.exists(inst)) {
@@ -638,7 +639,7 @@ namespace gum {
             if (data->inners().size()) partial_order.push_back(data->inners());
 
             if (data->aggregators().size())
-              for (const auto agg : data->aggregators())
+              for (const auto agg: data->aggregators())
                 partial_order[0].insert(agg);
 
             if (data->outputs().size()) partial_order.push_back(data->outputs());
@@ -666,7 +667,7 @@ namespace gum {
 
               // Adding evidences if any
               if (this->hasEvidence(inst))
-                for (const auto& elt : this->evidence(inst))
+                for (const auto& elt: this->evidence(inst))
                   pool.insert(const_cast< Potential< GUM_SCALAR >* >(elt.second));
 
               PartialOrderedTriangulation t(
@@ -680,12 +681,12 @@ namespace gum {
             } else if (this->hasEvidence(inst)) {
               // Second case, the instance has evidences
               // Adding the potentials
-              for (const auto elt : *inst)
+              for (const auto elt: *inst)
                 pool.insert(
                    &const_cast< Potential< GUM_SCALAR >& >(elt.second->cpf()));
 
               // Adding evidences
-              for (const auto& elt : this->evidence(inst))
+              for (const auto& elt: this->evidence(inst))
                 pool.insert(const_cast< Potential< GUM_SCALAR >* >(elt.second));
 
               PartialOrderedTriangulation t(
@@ -702,13 +703,13 @@ namespace gum {
               // We translate the class level potentials into the instance ones
               // and
               // proceed with elimination
-              for (const auto srcPot : data->pool) {
+              for (const auto srcPot: data->pool) {
                 pot = copyPotential(inst->bijection(), *srcPot);
                 pool.insert(pot);
                 __trash.insert(pot);
               }
 
-              for (const auto agg : data->c.aggregates())
+              for (const auto agg: data->c.aggregates())
                 pool.insert(&(const_cast< Potential< GUM_SCALAR >& >(
                    inst->get(agg->id()).cpf())));
 
@@ -724,7 +725,7 @@ namespace gum {
                    __trash);
             }
 
-            for (const auto pot : pool)
+            for (const auto pot: pool)
               rg_data.pool.insert(pot);
           }
         }
@@ -738,7 +739,7 @@ namespace gum {
       // reduced instances)
       NodeId id_1, id_2;
 
-      for (const auto pot : data.pool) {
+      for (const auto pot: data.pool) {
         const Sequence< const DiscreteVariable* >& vars = pot->variablesSequence();
 
         for (Size var_1 = 0; var_1 < vars.size(); ++var_1) {
@@ -769,9 +770,9 @@ namespace gum {
       }
 
       // Adding potentials obtained from reduced patterns
-      for (const auto& elt : __elim_map) {
+      for (const auto& elt: __elim_map) {
         // We add edges between variables in the same reduced patterns
-        for (const auto pot : *elt.second) {
+        for (const auto pot: *elt.second) {
           data.pool.insert(pot);
           const Sequence< const DiscreteVariable* >& vars =
              pot->variablesSequence();
@@ -840,7 +841,7 @@ namespace gum {
       if (!__real_order) {
         __real_order = new List< NodeSet >();
 
-        for (const auto set : __partial_order)
+        for (const auto set: __partial_order)
           if (set.size() > 0) __real_order->insert(set);
       }
 
@@ -855,7 +856,7 @@ namespace gum {
       GUM_CONSTRUCTOR(StructuredInference< GUM_SCALAR >::CData);
 
       // First step we add Attributes and Aggregators
-      for (const auto node : c.containerDag().nodes()) {
+      for (const auto node: c.containerDag().nodes()) {
         switch (c.get(node).elt_type()) {
           case PRMClassElement< GUM_SCALAR >::prm_attribute: {
             pool.insert(
@@ -876,7 +877,7 @@ namespace gum {
       }
 
       // Second, we add edges, moralise the graph and build the partial ordering
-      for (const auto node : moral_graph.nodes()) {
+      for (const auto node: moral_graph.nodes()) {
         const auto& parents = c.containerDag().parents(node);
 
         // Adding edges and marrying parents
@@ -908,7 +909,7 @@ namespace gum {
             // If the aggregators is not an output and have parents which are
             // not outputs, we must eliminate the parents after adding the
             // aggregator's CPT
-            for (const auto par : c.containerDag().parents(node)) {
+            for (const auto par: c.containerDag().parents(node)) {
               const auto& prnt = c.get(par);
 
               if ((!c.isOutputNode(prnt))
@@ -957,7 +958,7 @@ namespace gum {
     StructuredInference< GUM_SCALAR >::CData::~CData() {
       GUM_DESTRUCTOR(StructuredInference< GUM_SCALAR >::CData);
 
-      for (const auto pot : __trash)
+      for (const auto pot: __trash)
         delete pot;
     }
 

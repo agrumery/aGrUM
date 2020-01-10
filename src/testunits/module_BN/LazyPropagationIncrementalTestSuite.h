@@ -51,7 +51,7 @@
 namespace gum_tests {
 
 
-  class LazyPropagationIncrementalTestSuite : public CxxTest::TestSuite {
+  class LazyPropagationIncrementalTestSuite: public CxxTest::TestSuite {
     typedef std::unique_ptr< gum::Potential< double > > __Potential;
     typedef gum::Set< const gum::Potential< double >* > __PotentialSet;
 
@@ -205,7 +205,7 @@ namespace gum_tests {
                                         const gum::NodeSet& target_ids) {
       // get the set of variables to erase
       gum::Set< const gum::DiscreteVariable* > myset = *BN_variable_set;
-      for (auto target_id : target_ids)
+      for (auto target_id: target_ids)
         myset.erase(BN_variable[target_id]);
       return proj->project(*joint, myset);
     }

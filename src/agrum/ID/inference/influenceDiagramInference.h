@@ -61,8 +61,8 @@ namespace gum {
    * The class used for the triangulation is partialOrderedTriangulation.
    */
   template < typename GUM_SCALAR >
-  class InfluenceDiagramInference
-      : public IInfluenceDiagramInference< GUM_SCALAR > {
+  class InfluenceDiagramInference:
+      public IInfluenceDiagramInference< GUM_SCALAR > {
     public:
     // ====================================================================
     /// @name Constructor & destructor

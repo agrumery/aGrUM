@@ -72,7 +72,7 @@ namespace gum {
    */
 
   template < typename GUM_SCALAR >
-  class MultiDimBucket : public MultiDimReadOnly< GUM_SCALAR > {
+  class MultiDimBucket: public MultiDimReadOnly< GUM_SCALAR > {
     public:
     // ========================================================================
     /// @name Constructor & destructor.

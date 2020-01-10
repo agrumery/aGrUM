@@ -48,7 +48,7 @@ namespace gum {
    */
 
   template < typename GUM_SCALAR >
-  class WeightedSampling : public SamplingInference< GUM_SCALAR > {
+  class WeightedSampling: public SamplingInference< GUM_SCALAR > {
     public:
     /**
      * Default constructor

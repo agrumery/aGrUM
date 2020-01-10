@@ -44,7 +44,7 @@ namespace gum {
      *
      */
     template < typename GUM_SCALAR >
-    class GroundedInference : public PRMInference< GUM_SCALAR > {
+    class GroundedInference: public PRMInference< GUM_SCALAR > {
       public:
       // ========================================================================
       /// @name Constructor & destructor.

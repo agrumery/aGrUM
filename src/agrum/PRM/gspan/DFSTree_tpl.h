@@ -37,7 +37,7 @@ namespace gum {
       DFSTree< GUM_SCALAR >::~DFSTree() {
         GUM_DESTRUCTOR(DFSTree);
 
-        for (const auto& elt : __data) {
+        for (const auto& elt: __data) {
           delete elt.first;
           delete elt.second;
         }
@@ -50,14 +50,14 @@ namespace gum {
         HashTable< Pattern*, std::pair< Idx, Idx > >                roots;
         HashTable< Pattern*, Sequence< EdgeData< GUM_SCALAR >* >* > roots_edges;
 
-        for (const auto edge : __graph->edges(&label)) {
+        for (const auto edge: __graph->edges(&label)) {
           bool u_first = (edge->l_u->id < edge->l_v->id);
           Idx  u_idx = (u_first) ? edge->l_u->id : edge->l_v->id;
           Idx  v_idx = (!u_first) ? edge->l_u->id : edge->l_v->id;
 
           bool found = false;
 
-          for (const auto& elt : roots)
+          for (const auto& elt: roots)
             if ((elt.second.first == u_idx) && (elt.second.second == v_idx)) {
               roots_edges[elt.first]->insert(edge);
               found = true;
@@ -82,7 +82,7 @@ namespace gum {
         }
 
         // This is used to compute the max independent set of p->max_indep_set
-        for (const auto& elt : roots_edges) {
+        for (const auto& elt: roots_edges) {
           __initialiaze_root(elt.first, *elt.second);
           strategy().accept_root(elt.first);
           delete elt.second;
@@ -111,7 +111,7 @@ namespace gum {
 
           // Adding edges between two isomorphisms of p sharing at least one
           // instance
-          for (const auto& elt : data->iso_map)
+          for (const auto& elt: data->iso_map)
             if (elt.first != an_id)
               for (auto iter = elt.second->begin(); iter != elt.second->end();
                    ++iter)
@@ -126,11 +126,11 @@ namespace gum {
         std::sort(degree_list.begin(), degree_list.end(), my_operator);
         Set< NodeId > removed;
 
-        for (const auto node : degree_list) {
+        for (const auto node: degree_list) {
           if (!removed.exists(node)) {
             removed.insert(node);
 
-            for (const auto neighbor : data->iso_graph.neighbours(node))
+            for (const auto neighbor: data->iso_graph.neighbours(node))
               removed.insert(neighbor);
 
             data->max_indep_set.insert(node);
@@ -142,10 +142,10 @@ namespace gum {
       bool DFSTree< GUM_SCALAR >::__is_new_seq(
          Sequence< PRMInstance< GUM_SCALAR >* >&                  seq,
          NodeProperty< Sequence< PRMInstance< GUM_SCALAR >* >* >& iso_map) {
-        for (const auto& elt : iso_map) {
+        for (const auto& elt: iso_map) {
           bool found = false;
 
-          for (const auto& inst : seq)
+          for (const auto& inst: seq)
             if (!(elt.second->exists(inst))) {
               found = true;
               break;
@@ -248,7 +248,7 @@ namespace gum {
         // Using p information to build child's isomorphism graph
         NodeId id = 0;
 
-        for (const auto& elt : p_iso_map) {
+        for (const auto& elt: p_iso_map) {
           auto match = edge_growth.matches.begin();
 
           for (; match != edge_growth.matches.end(); ++match) {
@@ -290,9 +290,9 @@ namespace gum {
 
           if (match != edge_growth.matches.end()) {
             // Adding edges in the iso_graph
-            for (const auto node : data->iso_graph.nodes())
+            for (const auto node: data->iso_graph.nodes())
               if (node != id)
-                for (const auto m : *data->iso_map[id])
+                for (const auto m: *data->iso_map[id])
                   if (data->iso_map[node]->exists(m)) {
                     data->iso_graph.addEdge(node, id);
                     break;
@@ -314,11 +314,11 @@ namespace gum {
         std::sort(degree_list.begin(), degree_list.end(), my_operator);
         Set< NodeId > removed;
 
-        for (const auto node : degree_list) {
+        for (const auto node: degree_list) {
           if (!removed.exists(node)) {
             removed.insert(node);
 
-            for (const auto neighbor : data->iso_graph.neighbours(node))
+            for (const auto neighbor: data->iso_graph.neighbours(node))
               removed.insert(neighbor);
 
             data->max_indep_set.insert(node);
@@ -343,7 +343,7 @@ namespace gum {
          HashTable< PRMClassElement< GUM_SCALAR >*, Size >& x,
          HashTable< PRMClassElement< GUM_SCALAR >*, Size >& y) {
         try {
-          for (const auto& elt : x)
+          for (const auto& elt: x)
             if (y[elt.first] != elt.second) return false;
         } catch (NotFound&) { return false; }
 
@@ -358,7 +358,7 @@ namespace gum {
           cost(from.cost), gain(from.gain) {
         GUM_CONS_CPY(DFSTree< GUM_SCALAR >::PatternData);
 
-        for (const auto& elt : from.iso_map)
+        for (const auto& elt: from.iso_map)
           iso_map.insert(elt.first,
                          new Sequence< PRMInstance< GUM_SCALAR >* >(*elt.second));
       }
@@ -367,7 +367,7 @@ namespace gum {
       DFSTree< GUM_SCALAR >::PatternData::~PatternData() {
         GUM_DESTRUCTOR(DFSTree< GUM_SCALAR >::PatternData);
 
-        for (const auto& elt : iso_map)
+        for (const auto& elt: iso_map)
           delete elt.second;
       }
 

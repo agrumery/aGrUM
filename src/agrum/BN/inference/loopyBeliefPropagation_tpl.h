@@ -30,11 +30,11 @@
 #  include <sstream>
 #  include <string>
 
-#  define LBP_DEFAULT_MAXITER 100
-#  define LBP_DEFAULT_EPSILON 1e-8
+#  define LBP_DEFAULT_MAXITER          100
+#  define LBP_DEFAULT_EPSILON          1e-8
 #  define LBP_DEFAULT_MIN_EPSILON_RATE 1e-10
-#  define LBP_DEFAULT_PERIOD_SIZE 1
-#  define LBP_DEFAULT_VERBOSITY false
+#  define LBP_DEFAULT_PERIOD_SIZE      1
+#  define LBP_DEFAULT_VERBOSITY        false
 
 
 // to ease parsing for IDE
@@ -70,12 +70,12 @@ namespace gum {
   template < typename GUM_SCALAR >
   void LoopyBeliefPropagation< GUM_SCALAR >::__init_messages() {
     __messages.clear();
-    for (const auto& tail : this->BN().nodes()) {
+    for (const auto& tail: this->BN().nodes()) {
       Potential< GUM_SCALAR > p;
       p.add(this->BN().variable(tail));
       p.fill(static_cast< GUM_SCALAR >(1));
 
-      for (const auto& head : this->BN().children(tail)) {
+      for (const auto& head: this->BN().children(tail)) {
         __messages.insert(Arc(head, tail), p);
         __messages.insert(Arc(tail, head), p);
       }
@@ -94,7 +94,7 @@ namespace gum {
     const auto& varX = this->BN().variable(X);
 
     auto piX = this->BN().cpt(X);
-    for (const auto& U : this->BN().parents(X)) {
+    for (const auto& U: this->BN().parents(X)) {
       piX *= __messages[Arc(U, X)];
     }
     piX = piX.margSumIn({&varX});
@@ -109,7 +109,7 @@ namespace gum {
     const auto& varX = this->BN().variable(X);
     const auto& varExcept = this->BN().variable(except);
     auto        piXexcept = this->BN().cpt(X);
-    for (const auto& U : this->BN().parents(X)) {
+    for (const auto& U: this->BN().parents(X)) {
       if (U != except) { piXexcept *= __messages[Arc(U, X)]; }
     }
     piXexcept = piXexcept.margSumIn({&varX, &varExcept});
@@ -127,7 +127,7 @@ namespace gum {
       lamX.add(this->BN().variable(X));
       lamX.fill(1);
     }
-    for (const auto& Y : this->BN().children(X)) {
+    for (const auto& Y: this->BN().children(X)) {
       lamX *= __messages[Arc(Y, X)];
     }
 
@@ -145,7 +145,7 @@ namespace gum {
       lamXexcept.add(this->BN().variable(X));
       lamXexcept.fill(1);
     }
-    for (const auto& Y : this->BN().children(X)) {
+    for (const auto& Y: this->BN().children(X)) {
       if (Y != except) { lamXexcept *= __messages[Arc(Y, X)]; }
     }
 
@@ -162,7 +162,7 @@ namespace gum {
     Arc        argKL(0, 0);
 
     // update lambda_par (for arc U->x)
-    for (const auto& U : this->BN().parents(X)) {
+    for (const auto& U: this->BN().parents(X)) {
       auto newLambda =
          (__computeProdPi(X, U) * lamX).margSumIn({&this->BN().variable(U)});
       newLambda.normalize();
@@ -182,7 +182,7 @@ namespace gum {
     }
 
     // update pi_child (for arc x->child)
-    for (const auto& Y : this->BN().children(X)) {
+    for (const auto& Y: this->BN().children(X)) {
       auto newPi = (piX * __computeProdLambda(X, Y));
       newPi.normalize();
       GUM_SCALAR ekl = KL;
@@ -206,7 +206,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void LoopyBeliefPropagation< GUM_SCALAR >::__initStats() {
     __init_messages();
-    for (const auto& node : this->BN().topologicalOrder()) {
+    for (const auto& node: this->BN().topologicalOrder()) {
       __updateNodeMessage(node);
     }
   }
@@ -219,7 +219,7 @@ namespace gum {
     this->initApproximationScheme();
 
     std::vector< NodeId > shuffleIds;
-    for (const auto& node : this->BN().nodes())
+    for (const auto& node: this->BN().nodes())
       shuffleIds.push_back(node);
 
     auto engine = std::default_random_engine{};
@@ -228,7 +228,7 @@ namespace gum {
     do {
       std::shuffle(std::begin(shuffleIds), std::end(shuffleIds), engine);
       this->updateApproximationScheme();
-      for (const auto& node : shuffleIds) {
+      for (const auto& node: shuffleIds) {
         GUM_SCALAR e = __updateNodeMessage(node);
         if (e > error) error = e;
       }

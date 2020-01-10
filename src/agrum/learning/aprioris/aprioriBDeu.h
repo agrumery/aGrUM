@@ -51,7 +51,7 @@ namespace gum {
      * structure learning and parameter learning.
      */
     template < template < typename > class ALLOC = std::allocator >
-    class AprioriBDeu : public Apriori< ALLOC > {
+    class AprioriBDeu: public Apriori< ALLOC > {
       public:
       /// the type of the a priori
       using type = AprioriBDeuType;

@@ -71,8 +71,9 @@ namespace gum {
     }
 
     /// copy operator
-    StructuralConstraintPossibleEdges& StructuralConstraintPossibleEdges::
-                                       operator=(const StructuralConstraintPossibleEdges& from) {
+    StructuralConstraintPossibleEdges&
+       StructuralConstraintPossibleEdges::operator=(
+          const StructuralConstraintPossibleEdges& from) {
       if (this != &from) {
         _PossibleEdges__possible_edges = from._PossibleEdges__possible_edges;
       }
@@ -80,8 +81,9 @@ namespace gum {
     }
 
     /// move operator
-    StructuralConstraintPossibleEdges& StructuralConstraintPossibleEdges::
-                                       operator=(StructuralConstraintPossibleEdges&& from) {
+    StructuralConstraintPossibleEdges&
+       StructuralConstraintPossibleEdges::operator=(
+          StructuralConstraintPossibleEdges&& from) {
       if (this != &from) {
         _PossibleEdges__possible_edges =
            std::move(from._PossibleEdges__possible_edges);

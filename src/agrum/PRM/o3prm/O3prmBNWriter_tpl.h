@@ -60,7 +60,7 @@ namespace gum {
 
     output << "class BayesNet {" << std::endl;
 
-    for (auto node : bn.nodes()) {
+    for (auto node: bn.nodes()) {
       output << __extractAttribute(bn, node) << std::endl;
     }
 
@@ -92,7 +92,7 @@ namespace gum {
      const IBayesNet< GUM_SCALAR >& bn, NodeId node) {
     std::stringstream str;
     auto              var = &(bn.variable(node));
-    for (auto parent : bn.cpt(node).variablesSequence()) {
+    for (auto parent: bn.cpt(node).variablesSequence()) {
       if (var != parent) { str << parent->name() << ", "; }
     }
     return str.str().substr(0, str.str().size() - 2);
@@ -192,7 +192,7 @@ namespace gum {
      const IBayesNet< GUM_SCALAR >& bn, NodeId node) {
     std::stringstream str;
     str << "labels(";
-    for (auto l : bn.variable(node).labels()) {
+    for (auto l: bn.variable(node).labels()) {
       str << l << ", ";
     }
     return str.str().substr(0, str.str().size() - 2) + ")";

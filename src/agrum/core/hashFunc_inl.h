@@ -81,7 +81,7 @@ namespace gum {
 
   /// returns a hashed key for hash tables whose keys are vectors of Idx
   INLINE Size
-         HashFunc< std::vector< Idx > >::castToSize(const std::vector< Idx >& key) {
+     HashFunc< std::vector< Idx > >::castToSize(const std::vector< Idx >& key) {
     Size h = Size(0);
     Size size = Size(key.size());
     for (Size i = Size(0); i < size; ++i)
@@ -91,8 +91,8 @@ namespace gum {
   }
 
   // Returns the hashed value of a key.
-  INLINE Size HashFunc< std::vector< Idx > >::
-              operator()(const std::vector< Idx >& key) const {
+  INLINE Size HashFunc< std::vector< Idx > >::operator()(
+     const std::vector< Idx >& key) const {
     return (castToSize(key) * HashFuncConst::gold) & this->_hash_mask;
   }
 

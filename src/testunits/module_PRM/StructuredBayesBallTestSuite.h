@@ -31,7 +31,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 
 namespace gum_tests {
-  class StructuredBayesBallTestSuite : public CxxTest::TestSuite {
+  class StructuredBayesBallTestSuite: public CxxTest::TestSuite {
     private:
     gum::prm::PRM< double >*          prm;
     gum::prm::PRMInference< double >* prm_inf;

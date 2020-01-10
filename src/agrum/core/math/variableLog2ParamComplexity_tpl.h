@@ -128,8 +128,8 @@ namespace gum {
   /// copy operator
   template < template < typename > class ALLOC >
   INLINE VariableLog2ParamComplexity< ALLOC >&
-         VariableLog2ParamComplexity< ALLOC >::
-         operator=(const VariableLog2ParamComplexity< ALLOC >& from) {
+     VariableLog2ParamComplexity< ALLOC >::operator=(
+        const VariableLog2ParamComplexity< ALLOC >& from) {
     return *this;
   }
 
@@ -137,8 +137,8 @@ namespace gum {
   /// move operator
   template < template < typename > class ALLOC >
   INLINE VariableLog2ParamComplexity< ALLOC >&
-         VariableLog2ParamComplexity< ALLOC >::
-         operator=(VariableLog2ParamComplexity< ALLOC >&& from) {
+     VariableLog2ParamComplexity< ALLOC >::operator=(
+        VariableLog2ParamComplexity< ALLOC >&& from) {
     return *this;
   }
 
@@ -317,7 +317,7 @@ namespace gum {
     // write the values of Cn2:
     outfile << "      { ";
     bool first = true;
-    for (const auto cn2 : cn2_table) {
+    for (const auto cn2: cn2_table) {
       if (first)
         first = false;
       else

@@ -53,7 +53,7 @@ namespace gum {
      * variable since only 0 and 1 indexes are adressed...
      */
     template < typename GUM_SCALAR >
-    class Or : public MultiDimAggregator< GUM_SCALAR > {
+    class Or: public MultiDimAggregator< GUM_SCALAR > {
       public:
       Or();
       Or(const Or< GUM_SCALAR >& from);

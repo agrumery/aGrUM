@@ -125,8 +125,8 @@
 
 // a specialized sum projection function for multiDimArrays
 
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME projectSumMultiDimArray
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y) x += y
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME    projectSumMultiDimArray
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y)   x += y
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL (GUM_SCALAR)0
 #  include <agrum/multidim/utils/patterns/completeProjectionPattern4MultiDimArray.h>
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME
@@ -134,8 +134,8 @@
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL
 
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION_IMPL2ARRAY_NAME projectSumMultiDimArray
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y) x += y
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL (GUM_SCALAR)0
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y)           x += y
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL         (GUM_SCALAR)0
 #  include <agrum/multidim/utils/patterns/completeProjectionPattern4MultiDimArray.h>
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_IMPL2ARRAY_NAME
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION
@@ -143,7 +143,7 @@
 
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME \
     projectSumMultiDimArray4Pointers
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y) *(x) += *(y)
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y)   *(x) += *(y)
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL (GUM_SCALAR)0
 #  include <agrum/multidim/utils/patterns/completeProjectionPattern4MultiDimArray.h>
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME
@@ -152,7 +152,7 @@
 
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_IMPL2ARRAY_NAME \
     projectSumMultiDimArray4Pointers
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y) *(x) += *(y)
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y)   *(x) += *(y)
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL (GUM_SCALAR)0
 #  include <agrum/multidim/utils/patterns/completeProjectionPattern4MultiDimArray.h>
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_IMPL2ARRAY_NAME
@@ -161,8 +161,8 @@
 
 // a specialized product projection function for multiDimArrays
 
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME projectProductMultiDimArray
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y) (x) *= (y)
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME    projectProductMultiDimArray
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y)   (x) *= (y)
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL (GUM_SCALAR)1
 #  include <agrum/multidim/utils/patterns/completeProjectionPattern4MultiDimArray.h>
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME
@@ -171,7 +171,7 @@
 
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION_IMPL2ARRAY_NAME \
     projectProductMultiDimArray
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y) (x) *= (y)
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y)   (x) *= (y)
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL (GUM_SCALAR)1
 #  include <agrum/multidim/utils/patterns/completeProjectionPattern4MultiDimArray.h>
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_IMPL2ARRAY_NAME
@@ -180,7 +180,7 @@
 
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME \
     projectProductMultiDimArray4Pointers
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y) (*x) *= (*y)
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y)   (*x) *= (*y)
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL (GUM_SCALAR)1
 #  include <agrum/multidim/utils/patterns/completeProjectionPattern4MultiDimArray.h>
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_NAME
@@ -189,7 +189,7 @@
 
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_IMPL2ARRAY_NAME \
     projectProductMultiDimArray4Pointers
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y) (*x) *= (*y)
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y)   (*x) *= (*y)
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL (GUM_SCALAR)1
 #  include <agrum/multidim/utils/patterns/completeProjectionPattern4MultiDimArray.h>
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER_IMPL2ARRAY_NAME
@@ -200,28 +200,28 @@
 // to project multiDims
 
 // the function to be used to project a MultiDimImplementation using a Max
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME projectMax
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME      projectMax
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME "max"
 #  include <agrum/multidim/utils/patterns/completeProjectionPattern4MultiDimImplementation.h>
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME
 
 // the function to be used to project a MultiDimImplementation using a Min
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME projectMin
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME      projectMin
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME "min"
 #  include <agrum/multidim/utils/patterns/completeProjectionPattern4MultiDimImplementation.h>
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME
 
 // the function to be used to project a MultiDimImplementation using a Sum
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME projectSum
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME      projectSum
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME "sum"
 #  include <agrum/multidim/utils/patterns/completeProjectionPattern4MultiDimImplementation.h>
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME
 
 // the function to be used to project a MultiDimImplementation using a Product
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME projectProduct
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME      projectProduct
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME "product"
 #  include <agrum/multidim/utils/patterns/completeProjectionPattern4MultiDimImplementation.h>
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME
@@ -249,8 +249,8 @@
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL
 
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME projectSumMultiDimImplementation
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y) x += y
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME    projectSumMultiDimImplementation
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y)   x += y
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL (GUM_SCALAR)0
 #  include <agrum/multidim/utils/patterns/completeProjectionPattern4BaseName.h>
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME
@@ -259,7 +259,7 @@
 
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME \
     projectProductMultiDimImplementation
-#  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y) x *= y
+#  define GUM_MULTI_DIM_COMPLETE_PROJECTION(x, y)   x *= y
 #  define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL (GUM_SCALAR)1
 #  include <agrum/multidim/utils/patterns/completeProjectionPattern4BaseName.h>
 #  undef GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME

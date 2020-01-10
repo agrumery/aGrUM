@@ -40,7 +40,7 @@
  */
 namespace gum_tests {
 
-  class PRMAggregateTestSuite : public CxxTest::TestSuite {
+  class PRMAggregateTestSuite: public CxxTest::TestSuite {
     private:
     typedef gum::prm::PRMAggregate< double >                PRMAggregate;
     typedef gum::prm::PRMAggregate< double >::AggregateType AggType;
@@ -193,7 +193,7 @@ namespace gum_tests {
     void testFirstConstructor() {
       // Arrange
       PRMAggregate* agg = nullptr;
-      for (auto t : *__types) {
+      for (auto t: *__types) {
         // Act
         TS_ASSERT_THROWS_NOTHING(agg = new PRMAggregate("my_agg", t, *__boolean));
         // Assert
@@ -204,7 +204,7 @@ namespace gum_tests {
     void testSecondConstructor() {
       // Arrange
       PRMAggregate* agg = nullptr;
-      for (auto t : *__types) {
+      for (auto t: *__types) {
         // Act
         TS_ASSERT_THROWS_NOTHING(agg =
                                     new PRMAggregate("my_agg", t, *__boolean, 0));
@@ -218,7 +218,7 @@ namespace gum_tests {
     /// @{
     void testAggTypeNoLabel() {
       // Arrange
-      for (auto t : *__types) {
+      for (auto t: *__types) {
         // Act
         PRMAggregate agg("my_agg", t, *__boolean);
         // Assert

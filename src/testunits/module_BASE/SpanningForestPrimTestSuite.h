@@ -31,7 +31,7 @@
 
 namespace gum_tests {
 
-  class SpanningForesPrimTestSuite : public CxxTest::TestSuite {
+  class SpanningForesPrimTestSuite: public CxxTest::TestSuite {
     public:
     void test1() {
       gum::UndiGraph g;

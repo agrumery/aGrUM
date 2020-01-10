@@ -89,7 +89,7 @@ namespace gum {
   }
 
   INLINE void ArcGraphPart::_eraseSetOfArcs(const ArcSet& set) {
-    for (const auto arc : set)
+    for (const auto arc: set)
       eraseArc(arc);
   }
 
@@ -122,7 +122,7 @@ namespace gum {
   }
 
   INLINE void ArcGraphPart::_unvirtualizedEraseSetOfArcs(const ArcSet& set) {
-    for (const auto& arc : set)
+    for (const auto& arc: set)
       ArcGraphPart::eraseArc(arc);
   }
 

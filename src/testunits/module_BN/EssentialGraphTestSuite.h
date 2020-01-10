@@ -31,7 +31,7 @@
 #include <agrum/BN/algorithms/essentialGraph.h>
 
 namespace gum_tests {
-  class EssentialGraphTestSuite : public CxxTest::TestSuite {
+  class EssentialGraphTestSuite: public CxxTest::TestSuite {
     public:
     void testChain() {
       auto bn = gum::BayesNet< float >::fastPrototype("a->b->c");

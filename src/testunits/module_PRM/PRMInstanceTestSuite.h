@@ -35,7 +35,7 @@
  */
 namespace gum_tests {
 
-  class PRMInstanceTestSuite : public CxxTest::TestSuite {
+  class PRMInstanceTestSuite: public CxxTest::TestSuite {
     private:
     typedef gum::prm::PRMInstance< double >        PRMInstance;
     typedef gum::prm::PRMClass< double >           PRMClass;

@@ -45,7 +45,7 @@ namespace gum {
 
       // get the node names => they will serve as ids
       NodeId id = 0;
-      for (const auto& var : __bn.dag()) {
+      for (const auto& var: __bn.dag()) {
         auto name = __bn.variable(var).name();
         __names2ids.insert(name, var);
         ++id;
@@ -75,7 +75,7 @@ namespace gum {
       }
       __database.clear();
       __database.resize(nbSamples);
-      for (auto& row : __database) {
+      for (auto& row: __database) {
         row.resize(__nbVars);
       }
       // get the order in which the nodes will be sampled
@@ -109,7 +109,7 @@ namespace gum {
           const auto&       cpt = __bn.cpt(node);
 
           gum::Instantiation& inst = instantiations[node];
-          for (auto par : dag.parents(node))
+          for (auto par: dag.parents(node))
             inst.chgVal(__bn.variable(par), sample.at(par));
 
           const double nb = distro(gen);
@@ -178,7 +178,7 @@ namespace gum {
       std::ofstream os(csvFileURL, ofstreamFlag);
       bool          firstCol = true;
       if (includeHeader) {
-        for (const auto& i : __varOrder) {
+        for (const auto& i: __varOrder) {
           if (firstCol) {
             firstCol = false;
           } else {
@@ -190,14 +190,14 @@ namespace gum {
       os << std::endl;
 
       bool firstRow = true;
-      for (const auto& row : __database) {
+      for (const auto& row: __database) {
         if (firstRow) {
           firstRow = false;
         } else {
           os << std::endl;
         }
         firstCol = true;
-        for (const auto& i : __varOrder) {
+        for (const auto& i: __varOrder) {
           if (firstCol) {
             firstCol = false;
           } else {
@@ -224,7 +224,7 @@ namespace gum {
       DatabaseTable<>            db;
       std::vector< std::string > varNames;
       varNames.reserve(__nbVars);
-      for (const auto& i : __varOrder) {
+      for (const auto& i: __varOrder) {
         varNames.push_back(__names2ids.first(i));
       }
 
@@ -240,7 +240,7 @@ namespace gum {
 
       if (useLabels) {
         std::vector< std::string > xrow(__nbVars);
-        for (const auto& row : __database) {
+        for (const auto& row: __database) {
           for (Idx i = 0; i < __nbVars; ++i) {
             Idx j = __varOrder.at(i);
             xrow[i] = __bn.variable(j).label(row.at(j));
@@ -254,7 +254,7 @@ namespace gum {
         }
         DBRow< DBTranslatedValue > xrow(__nbVars);
         const auto xmiss = gum::learning::DatabaseTable<>::IsMissing::False;
-        for (const auto& row : __database) {
+        for (const auto& row: __database) {
           for (Idx i = 0; i < __nbVars; ++i) {
             Idx j = __varOrder.at(i);
 
@@ -296,7 +296,7 @@ namespace gum {
                   "varOrder's size must be equal to the number of variables");
       }
       std::vector< bool > usedVars(__nbVars, false);
-      for (const auto& i : varOrder) {
+      for (const auto& i: varOrder) {
         if (i >= __nbVars) {
           GUM_ERROR(FatalError, "varOrder contains invalid variables");
         }
@@ -318,7 +318,7 @@ namespace gum {
        const std::vector< std::string >& varOrder) {
       std::vector< Idx > varOrderIdx;
       varOrderIdx.reserve(varOrder.size());
-      for (const auto& vname : varOrder) {
+      for (const auto& vname: varOrder) {
         varOrderIdx.push_back(__names2ids.second(vname));
       }
       setVarOrder(varOrderIdx);
@@ -336,7 +336,7 @@ namespace gum {
     void BNDatabaseGenerator< GUM_SCALAR >::setTopologicalVarOrder() {
       std::vector< Idx > varOrder;
       varOrder.reserve(__nbVars);
-      for (const auto& v : __bn.topologicalOrder()) {
+      for (const auto& v: __bn.topologicalOrder()) {
         varOrder.push_back(v);
       }
       setVarOrder(varOrder);
@@ -347,7 +347,7 @@ namespace gum {
     void BNDatabaseGenerator< GUM_SCALAR >::setAntiTopologicalVarOrder() {
       std::vector< Idx > varOrder;
       varOrder.reserve(__nbVars);
-      for (const auto& v : __bn.topologicalOrder()) {
+      for (const auto& v: __bn.topologicalOrder()) {
         varOrder.push_back(v);
       }
       std::reverse(varOrder.begin(), varOrder.end());
@@ -359,7 +359,7 @@ namespace gum {
     void BNDatabaseGenerator< GUM_SCALAR >::setRandomVarOrder() {
       std::vector< std::string > varOrder;
       varOrder.reserve(__bn.size());
-      for (const auto& var : __bn.dag()) {
+      for (const auto& var: __bn.dag()) {
         varOrder.push_back(__bn.variable(var).name());
       }
       std::random_device rd;
@@ -381,7 +381,7 @@ namespace gum {
        BNDatabaseGenerator< GUM_SCALAR >::varOrderNames() const {
       std::vector< std::string > varNames;
       varNames.reserve(__nbVars);
-      for (const auto& i : __varOrder) {
+      for (const auto& i: __varOrder) {
         varNames.push_back(__names2ids.first(i));
       }
 
@@ -438,7 +438,7 @@ namespace gum {
       std::vector< Size > varOrder;
       varOrder.reserve(__nbVars);
 
-      for (const auto& hf : header_found) {
+      for (const auto& hf: header_found) {
         varOrder.push_back(__names2ids.second(hf));
       }
 

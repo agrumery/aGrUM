@@ -117,7 +117,7 @@ namespace gum {
       const Sequence< const DiscreteVariable* >& table_vars =
          table->variablesSequence();
 
-      for (const auto var : table_vars)
+      for (const auto var: table_vars)
         instantiation->add(*var);
 
       // return the result

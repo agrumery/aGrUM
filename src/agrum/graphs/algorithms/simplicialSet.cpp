@@ -201,7 +201,7 @@ namespace gum {
       Size   nb_almost = ((nb_adj - 1) * (nb_adj - 2)) / 2;
       NodeId node1 = 0;
 
-      for (const auto current_node : nei) {
+      for (const auto current_node: nei) {
         if (nb_almost == nb - __nb_triangles[Edge(current_node, id)]) {
           // we found the neighbor we were looking for: nb = the number of
           // pairs of neighbors of id that are adjacent. In other words, this
@@ -230,7 +230,7 @@ namespace gum {
 
       // update the number of triangles of the edges and keep track of the
       // nodes involved.
-      for (const auto node2 : nei) {
+      for (const auto node2: nei) {
         if ((node2 != node1) && !__graph->existsEdge(node1, node2)) {
           // add the edge
           const Edge e1_2(node1, node2);
@@ -253,7 +253,7 @@ namespace gum {
           // triangles as well as the number of adjacent neighbors
           if (__graph->neighbours(node1).size()
               <= __graph->neighbours(node2).size()) {
-            for (const auto neighbor : __graph->neighbours(node1)) {
+            for (const auto neighbor: __graph->neighbours(node1)) {
               if (__graph->existsEdge(neighbor, node2)) {
                 // here iter->other (node1) is a neighbor of node1 and node2
                 // hence there is a new triangle to be taken into account:
@@ -269,7 +269,7 @@ namespace gum {
               }
             }
           } else {
-            for (const auto neighbor : __graph->neighbours(node2)) {
+            for (const auto neighbor: __graph->neighbours(node2)) {
               if (__graph->existsEdge(neighbor, node1)) {
                 // here iter->other (node2) is a neighbor of node1 and node2
                 // hence there is a new triangle to be taken into account:
@@ -333,7 +333,7 @@ namespace gum {
 
             if (__graph->neighbours(node1).size()
                 <= __graph->neighbours(node2).size()) {
-              for (const auto neighbor : __graph->neighbours(node1))
+              for (const auto neighbor: __graph->neighbours(node1))
                 if (__graph->existsEdge(neighbor, node2)) {
                   // here iterEdge->other (node1) is a neighbor of
                   // both node1 and node2
@@ -347,7 +347,7 @@ namespace gum {
                     __changed_status.insert(neighbor);
                 }
             } else {
-              for (const auto neighbor : __graph->neighbours(node2)) {
+              for (const auto neighbor: __graph->neighbours(node2)) {
                 if (__graph->existsEdge(neighbor, node1)) {
                   // here iterEdge->other (node2) is a neighbor of
                   // both node1 and node2
@@ -498,7 +498,7 @@ namespace gum {
 
     // update the number of triangles and the adjacent neighbors
     unsigned int nb_neigh_n1_n2 = 0;
-    for (const auto othernode : __graph->neighbours(node1)) {
+    for (const auto othernode: __graph->neighbours(node1)) {
       if (__graph->existsEdge(node2, othernode)) {
         // udate the number of triangles passing through the egdes of the
         // __graph
@@ -534,7 +534,7 @@ namespace gum {
     unsigned int nb_triangle_in_new_edge = 0;
     unsigned int nb_neigh_n1_n2 = 0;
 
-    for (const auto othernode : __graph->neighbours(node1)) {
+    for (const auto othernode: __graph->neighbours(node1)) {
       if (__graph->existsEdge(node2, othernode)) {
         // udate the number of triangles passing through the egdes of the
         // __graph
@@ -598,7 +598,7 @@ namespace gum {
     Size nb_almost = ((nb_adj - 1) * (nb_adj - 2)) / 2;
     Size nb = __nb_adjacent_neighbours[id];
 
-    for (const auto cur : nei) {
+    for (const auto cur: nei) {
       if (nb_almost == nb - __nb_triangles[Edge(cur, id)]) {
         // the node is an almost simplicial node
         if (belong != __Belong::ALMOST_SIMPLICIAL) {
@@ -748,9 +748,9 @@ namespace gum {
     __log_tree_width = std::numeric_limits< double >::max();
     __log_weights->clear();
 
-    for (const auto nodeX : *__graph) {
+    for (const auto nodeX: *__graph) {
       double log_weight = (*__log_domain_sizes)[nodeX];
-      for (const auto& nei : __graph->neighbours(nodeX))
+      for (const auto& nei: __graph->neighbours(nodeX))
         log_weight += (*__log_domain_sizes)[nei];
 
       __log_weights->insert(nodeX, log_weight);
@@ -768,7 +768,7 @@ namespace gum {
     // triangle, update the __nb_triangles. To count the triangles only once,
     // parse for each node X the set of its neighbors Y,Z that are adjacent to
     // each other and such that the Id of Y and Z are greater than X.
-    for (const auto nodeX : *__graph) {
+    for (const auto nodeX: *__graph) {
       Size&          nb_adjacent_neighbors_idX = __nb_adjacent_neighbours[nodeX];
       const NodeSet& nei = __graph->neighbours(nodeX);
 

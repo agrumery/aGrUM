@@ -37,7 +37,7 @@ namespace gum_tests {
     return f1 + f2;
   }
 
-  class ScheduleTestSuite : public CxxTest::TestSuite {
+  class ScheduleTestSuite: public CxxTest::TestSuite {
     public:
     void test_construct1() {
       std::vector< gum::LabelizedVariable* > vars(10);

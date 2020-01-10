@@ -33,7 +33,7 @@
 
 namespace gum {
   template <>
-  class HashFunc< gum::Set< int > > : public HashFuncBase< gum::Set< int > > {
+  class HashFunc< gum::Set< int > >: public HashFuncBase< gum::Set< int > > {
     public:
     /// computes the hashed value of a key
     Size operator()(const gum::Set< int >& key) const {
@@ -44,7 +44,7 @@ namespace gum {
 
 namespace gum_tests {
 
-  class PriorityQueueTestSuite : public CxxTest::TestSuite {
+  class PriorityQueueTestSuite: public CxxTest::TestSuite {
     public:
     void testConstruct() {
       gum::PriorityQueue< std::string > queue1;

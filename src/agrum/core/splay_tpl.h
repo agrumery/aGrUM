@@ -392,8 +392,8 @@ namespace gum {
   // Assignment operator
 
   template < class Element >
-  INLINE SplayTree< Element >& SplayTree< Element >::
-                               operator=(const SplayTree< Element >& from) {
+  INLINE SplayTree< Element >&
+     SplayTree< Element >::operator=(const SplayTree< Element >& from) {
     // avoid self assignment
     if (this != &from) {
       // for debugging purposes

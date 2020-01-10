@@ -43,8 +43,8 @@ namespace gum {
      * during structure learning
      * @ingroup learning_group
      */
-    class StructuralConstraintForbiddenArcs
-        : public virtual StructuralConstraintEmpty {
+    class StructuralConstraintForbiddenArcs:
+        public virtual StructuralConstraintEmpty {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

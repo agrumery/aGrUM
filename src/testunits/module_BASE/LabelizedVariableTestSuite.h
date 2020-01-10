@@ -31,7 +31,7 @@
 
 namespace gum_tests {
 
-  class LabelizedVariableTestSuite : public CxxTest::TestSuite {
+  class LabelizedVariableTestSuite: public CxxTest::TestSuite {
     public:
     void testCopy() {
       gum::LabelizedVariable var1("var1", "this is var1", 2);

@@ -157,8 +157,9 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    CorrectedMutualInformation< ALLOC >& CorrectedMutualInformation< ALLOC >::
-                                         operator=(const CorrectedMutualInformation< ALLOC >& from) {
+    CorrectedMutualInformation< ALLOC >&
+       CorrectedMutualInformation< ALLOC >::operator=(
+          const CorrectedMutualInformation< ALLOC >& from) {
       if (this != &from) {
         __NH = from.__NH;
         __k_NML = from.__k_NML;
@@ -177,8 +178,9 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    CorrectedMutualInformation< ALLOC >& CorrectedMutualInformation< ALLOC >::
-                                         operator=(CorrectedMutualInformation< ALLOC >&& from) {
+    CorrectedMutualInformation< ALLOC >&
+       CorrectedMutualInformation< ALLOC >::operator=(
+          CorrectedMutualInformation< ALLOC >&& from) {
       if (this != &from) {
         __NH = std::move(from.__NH);
         __k_NML = std::move(from.__k_NML);
@@ -578,13 +580,13 @@ namespace gum {
           if (!node2cols.empty()) {
             rx = database.domainSize(node2cols.second(var1));
             ry = database.domainSize(node2cols.second(var2));
-            for (const NodeId i : conditioning_ids) {
+            for (const NodeId i: conditioning_ids) {
               rui *= database.domainSize(node2cols.second(i));
             }
           } else {
             rx = database.domainSize(var1);
             ry = database.domainSize(var2);
-            for (const NodeId i : conditioning_ids) {
+            for (const NodeId i: conditioning_ids) {
               rui *= database.domainSize(i);
             }
           }

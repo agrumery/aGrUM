@@ -58,7 +58,7 @@ namespace gum {
      * the sum of the two aprioris into the score.
      */
     template < template < typename > class ALLOC = std::allocator >
-    class ScoreK2 : public Score< ALLOC > {
+    class ScoreK2: public Score< ALLOC > {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;

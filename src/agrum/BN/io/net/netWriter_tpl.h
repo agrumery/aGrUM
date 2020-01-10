@@ -55,10 +55,10 @@ namespace gum {
 
     output << __header(bn) << std::endl;
 
-    for (auto node : bn.nodes())
+    for (auto node: bn.nodes())
       output << __variableBloc(bn.variable(node)) << std::endl;
 
-    for (auto node : bn.nodes())
+    for (auto node: bn.nodes())
       output << __variableCPT(bn.cpt(node));
 
     output << std::endl;
@@ -86,10 +86,10 @@ namespace gum {
 
     output << __header(bn) << std::endl;
 
-    for (auto node : bn.nodes())
+    for (auto node: bn.nodes())
       output << __variableBloc(bn.variable(node)) << std::endl;
 
-    for (auto node : bn.nodes())
+    for (auto node: bn.nodes())
       output << __variableCPT(bn.cpt(node));
 
     output << std::endl;

@@ -37,7 +37,7 @@
 
 namespace gum_tests {
 
-  class aSimpleBNLeanerListener : public gum::ApproximationSchemeListener {
+  class aSimpleBNLeanerListener: public gum::ApproximationSchemeListener {
     private:
     gum::Size   __nbr;
     std::string __mess;
@@ -60,7 +60,7 @@ namespace gum_tests {
     std::string getMess() { return __mess; }
   };
 
-  class BNLearnerTestSuite : public CxxTest::TestSuite {
+  class BNLearnerTestSuite: public CxxTest::TestSuite {
     public:
     void test_asia() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("asia3.csv"));
@@ -106,7 +106,7 @@ namespace gum_tests {
       learner.setDatabaseWeight(10.0);
       const auto&  db = learner.database();
       const double weight = 10.0 / double(db.nbRows());
-      for (const auto& row : db) {
+      for (const auto& row: db) {
         TS_ASSERT(row.weight() == weight);
       }
       TS_ASSERT_DELTA(learner.databaseWeight(), 10.0, 1e-4);
@@ -117,7 +117,7 @@ namespace gum_tests {
       }
 
       std::size_t index = std::size_t(0);
-      for (const auto& row : db) {
+      for (const auto& row: db) {
         if (index % 2) {
           TS_ASSERT(row.weight() == 2.0);
           TS_ASSERT(learner.recordWeight(index) == 2.0);
@@ -202,7 +202,7 @@ namespace gum_tests {
 
         gum::Instantiation I1, I2;
 
-        for (auto& name : database.variableNames()) {
+        for (auto& name: database.variableNames()) {
           I1.add(bn1.variableFromName(name));
           I2.add(bn2.variableFromName(name));
         }
@@ -324,7 +324,7 @@ namespace gum_tests {
       const auto&                        database = learn.database();
 
       gum::BayesNet< double > bn;
-      for (auto& name : database.variableNames()) {
+      for (auto& name: database.variableNames()) {
         gum::LabelizedVariable var(name, name, {"false", "true", "big"});
         bn.add(var);
       }
@@ -335,7 +335,7 @@ namespace gum_tests {
       learner.useAprioriSmoothing();
 
       gum::BayesNet< double > bn2 = learner.learnBN();
-      for (auto& name : database.variableNames()) {
+      for (auto& name: database.variableNames()) {
         TS_ASSERT(bn2.variableFromName(name).domainSize() == 3);
       }
     }
@@ -622,7 +622,7 @@ namespace gum_tests {
         gum::BayesNet< double > bn2 = learner.learnParameters(bn.dag());
         TS_ASSERT(bn2.dim() == bn.dim());
 
-        for (gum::NodeId node : bn.nodes()) {
+        for (gum::NodeId node: bn.nodes()) {
           gum::NodeId node2 = bn2.idFromName(bn.variable(node).name());
           TS_ASSERT_EQUALS(bn.variable(node).toString(),
                            bn2.variable(node2).toString());
@@ -808,7 +808,7 @@ namespace gum_tests {
       gum::NodeId wl_0 = dbn.add(gum::LabelizedVariable("wl_0", "wl_0", 4));
       gum::NodeId wl_t = dbn.add(gum::LabelizedVariable("wl_t", "wl_t", 4));
 
-      for (auto n : {c_t, h_t, wl_t}) {
+      for (auto n: {c_t, h_t, wl_t}) {
         dbn.addArc(tf_0, n);
         dbn.addArc(bf_0, n);
       }
@@ -926,13 +926,13 @@ namespace gum_tests {
 
       std::vector< gum::NodeId > nodeList;   // Liste des noeuds du RB
 
-      for (auto var : varBool)
+      for (auto var: varBool)
         nodeList.push_back(templ.add(gum::LabelizedVariable(
            var,
            var,
            2)));   // Ajout des variables booléennes à la liste des noeuds
 
-      for (auto var : varTer)
+      for (auto var: varTer)
         nodeList.push_back(templ.add(gum::LabelizedVariable(
            var, var, 3)));   // Ajout des variables ternaires à la liste des noeuds
 
@@ -956,7 +956,7 @@ namespace gum_tests {
       auto iNRC = templ.add(NRC);
 
       // Création des arcs partant du noeud NRC vers les autres noeuds
-      for (auto node : nodeList) {
+      for (auto node: nodeList) {
         templ.addArc(iNRC, node);
       }
 
@@ -999,13 +999,13 @@ namespace gum_tests {
 
       std::vector< gum::NodeId > nodeList;   // Liste des noeuds du RB
 
-      for (auto var : varBool)
+      for (auto var: varBool)
         nodeList.push_back(templ.add(gum::LabelizedVariable(
            var,
            var,
            2)));   // Ajout des variables booléennes à la liste des noeuds
 
-      for (auto var : varTer)
+      for (auto var: varTer)
         nodeList.push_back(templ.add(gum::LabelizedVariable(
            var, var, 3)));   // Ajout des variables ternaires à la liste des noeuds
 
@@ -1028,7 +1028,7 @@ namespace gum_tests {
       auto iNRC = templ.add(NRC);
 
       // Création des arcs partant du noeud NRC vers les autres noeuds
-      for (auto node : nodeList) {
+      for (auto node: nodeList) {
         templ.addArc(iNRC, node);
       }
 
@@ -1152,7 +1152,7 @@ namespace gum_tests {
          GET_RESSOURCES_PATH("db_dirichlet_learning.csv"));
       learner.useScoreBIC();
 
-      for (const auto weight : weights) {
+      for (const auto weight: weights) {
         apriori.setWeight(weight);
         gum::learning::ScoreBIC<> score(parser, apriori);
 

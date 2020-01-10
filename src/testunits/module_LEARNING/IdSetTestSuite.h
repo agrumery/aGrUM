@@ -28,7 +28,7 @@
 
 namespace gum_tests {
 
-  class IdSetTestSuite : public CxxTest::TestSuite {
+  class IdSetTestSuite: public CxxTest::TestSuite {
     public:
     void test1() {
       gum::learning::IdSet<> set;
@@ -78,7 +78,7 @@ namespace gum_tests {
       TS_ASSERT(cond_set1[2] == node5);
       TS_ASSERT(cond_set1[3] == node6);
       std::size_t cs1 = 0;
-      for (const auto node : cond_set1)
+      for (const auto node: cond_set1)
         cs1 += node;
       TS_ASSERT(cs1 == std::size_t(18));
 
@@ -303,7 +303,7 @@ namespace gum_tests {
         TS_ASSERT(*iter == xnb);
       }
       xnb = 0;
-      for (auto nb : set4) {
+      for (auto nb: set4) {
         TS_ASSERT(nb == xnb);
         ++xnb;
       }
@@ -346,7 +346,7 @@ namespace gum_tests {
       gum::learning::IdSet<> set28(0, std::vector< gum::NodeId >{2, 1}, true);
       xnb = 0;
       TS_ASSERT(set28.nbLHSIds() == 1);
-      for (auto id : set28) {
+      for (auto id: set28) {
         id++;
         xnb++;
       }

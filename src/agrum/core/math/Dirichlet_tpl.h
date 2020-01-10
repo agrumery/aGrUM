@@ -31,8 +31,8 @@ namespace gum {
 
   // returns a sample from the Dirichlet distribution
   template < class URNG >
-  INLINE Dirichlet::result_type Dirichlet::
-                                operator()(URNG& generator, const Dirichlet::param_type& parm) {
+  INLINE Dirichlet::result_type
+     Dirichlet::operator()(URNG& generator, const Dirichlet::param_type& parm) {
     Size        size = Size(parm.size());
     result_type res(size);
     float       sum = 0.0f;

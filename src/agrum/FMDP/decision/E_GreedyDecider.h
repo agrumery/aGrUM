@@ -53,7 +53,7 @@ namespace gum {
    *
    *
    */
-  class E_GreedyDecider : public IDecisionStrategy {
+  class E_GreedyDecider: public IDecisionStrategy {
     // ###################################################################
     /// @name Constructor & destructor.
     // ###################################################################

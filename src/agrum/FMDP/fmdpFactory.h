@@ -68,7 +68,7 @@ namespace gum {
    */
 
   template < typename GUM_SCALAR >
-  class FMDPFactory : public AbstractFMDPFactory {
+  class FMDPFactory: public AbstractFMDPFactory {
     public:
     // ==========================================================================
     /// @name Constructor & destructor.

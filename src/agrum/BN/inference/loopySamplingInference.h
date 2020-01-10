@@ -56,7 +56,7 @@ namespace gum {
    */
 
   template < typename GUM_SCALAR, template < typename > class APPROX >
-  class LoopySamplingInference : public APPROX< GUM_SCALAR > {
+  class LoopySamplingInference: public APPROX< GUM_SCALAR > {
     public:
     /**
      * Default constructor

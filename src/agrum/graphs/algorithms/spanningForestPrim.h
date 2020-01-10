@@ -41,7 +41,7 @@ namespace gum {
    * Binary heap implementation : O(E log(V)) */
   /* ===========================================================================
    */
-  class SpanningForestPrim : public SpanningForest {
+  class SpanningForestPrim: public SpanningForest {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

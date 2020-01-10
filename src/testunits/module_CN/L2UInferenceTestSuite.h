@@ -45,7 +45,7 @@
 namespace gum_tests {
 
   ////////////////////////////////////////////////////////////////////
-  class L2UListener : public gum::ApproximationSchemeListener {
+  class L2UListener: public gum::ApproximationSchemeListener {
     private:
     int         __nbr;
     std::string __msg;
@@ -70,7 +70,7 @@ namespace gum_tests {
   };   // end of : class l2uListener
 
   ////////////////////////////////////////////////////////////////
-  class L2UInferenceTestSuite : public CxxTest::TestSuite {
+  class L2UInferenceTestSuite: public CxxTest::TestSuite {
     private:
     protected:
     public:
@@ -160,7 +160,7 @@ namespace gum_tests {
       // modalities from map
       // from file with dynamic network, not 2U
       try {
-        for (const auto node : cn->current_bn().nodes())
+        for (const auto node: cn->current_bn().nodes())
           modals[cn->current_bn().variable(node).name()] = binaryModal;
       } catch (gum::Exception&) { TS_ASSERT(false); }
 
@@ -175,7 +175,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false); }
 
       try {
-        for (const auto node : cn->current_bn().nodes()) {
+        for (const auto node: cn->current_bn().nodes()) {
           std::vector< double > inf(lp.marginalMin(node));
           std::vector< double > sup(lp.marginalMax(node));
           // double e_inf = lp.expectationMin ( node_idIt );
@@ -218,7 +218,7 @@ namespace gum_tests {
       } catch (gum::Exception&) { TS_ASSERT(false); }
 
       try {
-        for (const auto node : cn->current_bn().nodes()) {
+        for (const auto node: cn->current_bn().nodes()) {
           std::vector< double > inf(lp.marginalMin(node));
           std::vector< double > sup(lp.marginalMax(node));
           // double e_inf = lp.expectationMin ( node_idIt );

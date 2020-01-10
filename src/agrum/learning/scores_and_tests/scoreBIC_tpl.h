@@ -132,8 +132,8 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    ScoreBIC< ALLOC >& ScoreBIC< ALLOC >::
-                       operator=(const ScoreBIC< ALLOC >& from) {
+    ScoreBIC< ALLOC >&
+       ScoreBIC< ALLOC >::operator=(const ScoreBIC< ALLOC >& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(from);
         __internal_apriori = from.__internal_apriori;
@@ -225,11 +225,11 @@ namespace gum {
         // equivalent to:
         // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - sum_j=1^q_i N_ij log N_ij
         double score = 0.0;
-        for (const auto n_ijk : N_ijk) {
+        for (const auto n_ijk: N_ijk) {
           if (n_ijk) { score += n_ijk * std::log(n_ijk); }
         }
         double N = 0;
-        for (const auto n_ij : N_ij) {
+        for (const auto n_ij: N_ij) {
           if (n_ij) {
             score -= n_ij * std::log(n_ij);
             N += n_ij;
@@ -256,7 +256,7 @@ namespace gum {
         // sum_j=1^q_i sum_k=1^r_i N_ijk log N_ijk - N log N
         double N = 0.0;
         double score = 0.0;
-        for (const auto n_ijk : N_ijk) {
+        for (const auto n_ijk: N_ijk) {
           if (n_ijk) {
             score += n_ijk * std::log(n_ijk);
             N += n_ijk;
@@ -285,7 +285,7 @@ namespace gum {
         this->_apriori->addAllApriori(idset, N_ijk);
 
       double N = 0;
-      for (const auto n_ijk : N_ijk) {
+      for (const auto n_ijk: N_ijk) {
         N += n_ijk;
       }
 

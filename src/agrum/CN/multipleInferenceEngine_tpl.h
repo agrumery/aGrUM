@@ -261,7 +261,7 @@ namespace gum {
       LRSWrapper< GUM_SCALAR > lrsWrapper;
       lrsWrapper.setUpV(dsize, setSize);
 
-      for (const auto& vtx : nodeCredalSet)
+      for (const auto& vtx: nodeCredalSet)
         lrsWrapper.fillV(vtx);
 
       lrsWrapper.elimRedundVrep();
@@ -392,7 +392,7 @@ namespace gum {
             auto& nodeThreadCredalSet = _l_marginalSets[tId][i];
 
             // for each vertex, if we are at any opt marginal, add it to the set
-            for (const auto& vtx : nodeThreadCredalSet) {
+            for (const auto& vtx: nodeThreadCredalSet) {
               // we run redundancy elimination at each step
               // because there could be 100000 threads and the set will be so
               // huge
@@ -431,7 +431,7 @@ namespace gum {
 
               if (!_l_modal[threadId].exists(var_name)) continue;
 
-              for (const auto& vertex : __infE::_marginalSets[i]) {
+              for (const auto& vertex: __infE::_marginalSets[i]) {
                 GUM_SCALAR exp = 0;
                 Size       vsize = Size(vertex.size());
 
@@ -544,7 +544,7 @@ namespace gum {
           if (_l_inferenceEngine[bn] != nullptr) delete _l_optimalNet[bn];
 
         if (this->_workingSetE[bn] != nullptr) {
-          for (const auto ev : *_workingSetE[bn])
+          for (const auto ev: *_workingSetE[bn])
             delete ev;
 
           delete _workingSetE[bn];

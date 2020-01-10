@@ -77,7 +77,7 @@ namespace gum {
 
   namespace learning {
     template < typename GUM_SCALAR >
-    class BNDatabaseGenerator : public ProgressNotifier {
+    class BNDatabaseGenerator: public ProgressNotifier {
       public:
       // #######################################################################
       /// @name Constructors / Destructors

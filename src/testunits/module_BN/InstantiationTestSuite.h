@@ -31,7 +31,7 @@
 
 namespace gum_tests {
 
-  class InstantiationTestSuite : public CxxTest::TestSuite {
+  class InstantiationTestSuite: public CxxTest::TestSuite {
     gum::BayesNet< double >* bn;
     gum::NodeId              i1, i2, i3, i4, i5;
 
@@ -190,7 +190,7 @@ namespace gum_tests {
     void testReordering_cpt() {
       gum::Instantiation Order;
 
-      for (const auto node : bn->topologicalOrder())
+      for (const auto node: bn->topologicalOrder())
         Order.add(bn->variable(node));
 
       const gum::Potential< double >& pot = bn->cpt(i5);

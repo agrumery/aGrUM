@@ -43,7 +43,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     void DBTranslatorSet< ALLOC >::clear() {
       ALLOC< DBTranslator< ALLOC > > allocator(this->getAllocator());
-      for (auto translator : __translators) {
+      for (auto translator: __translators) {
         allocator.destroy(translator);
         allocator.deallocate(translator, 1);
       }
@@ -168,8 +168,8 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    DBTranslatorSet< ALLOC >& DBTranslatorSet< ALLOC >::
-                              operator=(const DBTranslatorSet< ALLOC >& from) {
+    DBTranslatorSet< ALLOC >&
+       DBTranslatorSet< ALLOC >::operator=(const DBTranslatorSet< ALLOC >& from) {
       if (this != &from) {
         clear();
         __copy(from, this->getAllocator());
@@ -181,8 +181,8 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    INLINE DBTranslatorSet< ALLOC >& DBTranslatorSet< ALLOC >::
-                                     operator=(DBTranslatorSet< ALLOC >&& from) {
+    INLINE DBTranslatorSet< ALLOC >&
+       DBTranslatorSet< ALLOC >::operator=(DBTranslatorSet< ALLOC >&& from) {
       if (this != &from) {
         clear();
         __translators = std::move(from.__translators);
@@ -196,16 +196,16 @@ namespace gum {
 
     /// returns the ith translator
     template < template < typename > class ALLOC >
-    INLINE DBTranslator< ALLOC >& DBTranslatorSet< ALLOC >::
-                                  operator[](const std::size_t k) {
+    INLINE DBTranslator< ALLOC >&
+       DBTranslatorSet< ALLOC >::operator[](const std::size_t k) {
       return *(__translators[k]);
     }
 
 
     /// returns the ith translator
     template < template < typename > class ALLOC >
-    INLINE const DBTranslator< ALLOC >& DBTranslatorSet< ALLOC >::
-                                        operator[](const std::size_t k) const {
+    INLINE const DBTranslator< ALLOC >&
+       DBTranslatorSet< ALLOC >::operator[](const std::size_t k) const {
       return *(__translators[k]);
     }
 
@@ -331,7 +331,7 @@ namespace gum {
         // we must recomput it
         if (__highest_column == colk) {
           __highest_column = std::size_t(0);
-          for (const auto col : __columns)
+          for (const auto col: __columns)
             if (__highest_column < col) __highest_column = col;
         }
       } else {
@@ -355,7 +355,7 @@ namespace gum {
         // removed, we must recompute it
         if (translator_found && (k == __highest_column)) {
           __highest_column = std::size_t(0);
-          for (const auto col : __columns)
+          for (const auto col: __columns)
             if (__highest_column < col) __highest_column = col;
         }
       }

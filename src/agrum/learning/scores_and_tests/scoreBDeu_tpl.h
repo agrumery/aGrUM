@@ -134,8 +134,8 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    ScoreBDeu< ALLOC >& ScoreBDeu< ALLOC >::
-                        operator=(const ScoreBDeu< ALLOC >& from) {
+    ScoreBDeu< ALLOC >&
+       ScoreBDeu< ALLOC >::operator=(const ScoreBDeu< ALLOC >& from) {
       if (this != &from) {
         Score< ALLOC >::operator=(from);
         __internal_apriori = from.__internal_apriori;
@@ -273,10 +273,10 @@ namespace gum {
           score = conditioning_size * __gammalog2(ess_qi)
                   - all_size * __gammalog2(ess_riqi);
 
-          for (const auto n_ij : N_ij) {
+          for (const auto n_ij: N_ij) {
             score -= __gammalog2(n_ij + ess_qi);
           }
-          for (const auto n_ijk : N_ijk) {
+          for (const auto n_ijk: N_ijk) {
             score += __gammalog2(n_ijk + ess_riqi);
           }
         }
@@ -313,7 +313,7 @@ namespace gum {
 
           score = __gammalog2(ess) - all_size * __gammalog2(ess_ri);
           double N = 0;
-          for (const auto n_ijk : N_ijk) {
+          for (const auto n_ijk: N_ijk) {
             score += __gammalog2(n_ijk + ess_ri);
             N += n_ijk;
           }

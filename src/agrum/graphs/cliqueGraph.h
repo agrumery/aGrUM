@@ -55,7 +55,7 @@ namespace gum {
   /* ===========================================================================
    */
 
-  class CliqueGraph : public UndiGraph {
+  class CliqueGraph: public UndiGraph {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

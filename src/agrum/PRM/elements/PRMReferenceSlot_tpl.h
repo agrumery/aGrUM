@@ -61,8 +61,8 @@ namespace gum {
 
     // Copy operator. Raise a FatalError.
     template < typename GUM_SCALAR >
-    PRMReferenceSlot< GUM_SCALAR >& PRMReferenceSlot< GUM_SCALAR >::
-                                    operator=(const PRMReferenceSlot< GUM_SCALAR >& from) {
+    PRMReferenceSlot< GUM_SCALAR >& PRMReferenceSlot< GUM_SCALAR >::operator=(
+       const PRMReferenceSlot< GUM_SCALAR >& from) {
       GUM_ERROR(FatalError, "illegal call to gum::ReferenceSlot copy operator.");
     }
 

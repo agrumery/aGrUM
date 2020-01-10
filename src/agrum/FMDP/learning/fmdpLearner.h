@@ -57,7 +57,7 @@ namespace gum {
   template < TESTNAME    VariableAttributeSelection,
              TESTNAME    RewardAttributeSelection,
              LEARNERNAME LearnerSelection >
-  class FMDPLearner : public ILearningStrategy {
+  class FMDPLearner: public ILearningStrategy {
     typedef
        typename LearnerSelect< LearnerSelection,
                                IMDDI< VariableAttributeSelection, false >,

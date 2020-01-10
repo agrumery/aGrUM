@@ -277,8 +277,8 @@ namespace gum {
     }
 
     /// copy constructor
-    INLINE EdgeAddition& EdgeAddition::
-                         operator=(const EdgeAddition& from) noexcept {
+    INLINE EdgeAddition&
+       EdgeAddition::operator=(const EdgeAddition& from) noexcept {
       GraphChange::operator=(from);
       return *this;
     }
@@ -330,8 +330,8 @@ namespace gum {
     }
 
     /// copy constructor
-    INLINE EdgeDeletion& EdgeDeletion::
-                         operator=(const EdgeDeletion& from) noexcept {
+    INLINE EdgeDeletion&
+       EdgeDeletion::operator=(const EdgeDeletion& from) noexcept {
       GraphChange::operator=(from);
       return *this;
     }
@@ -367,8 +367,8 @@ namespace gum {
   }
 
   /// computes the hashed value of a key
-  INLINE Size HashFunc< learning::GraphChange >::
-              operator()(const learning::GraphChange& key) const {
+  INLINE Size HashFunc< learning::GraphChange >::operator()(
+     const learning::GraphChange& key) const {
     return castToSize(key) >> this->_right_shift;
   }
 
@@ -381,8 +381,8 @@ namespace gum {
   }
 
   /// computes the hashed value of a key
-  INLINE Size HashFunc< learning::ArcAddition >::
-              operator()(const learning::ArcAddition& key) const {
+  INLINE Size HashFunc< learning::ArcAddition >::operator()(
+     const learning::ArcAddition& key) const {
     return castToSize(key) >> this->_right_shift;
   }
 
@@ -395,8 +395,8 @@ namespace gum {
   }
 
   /// computes the hashed value of a key
-  INLINE Size HashFunc< learning::ArcDeletion >::
-              operator()(const learning::ArcDeletion& key) const {
+  INLINE Size HashFunc< learning::ArcDeletion >::operator()(
+     const learning::ArcDeletion& key) const {
     return castToSize(key) >> this->_right_shift;
   }
 
@@ -409,8 +409,8 @@ namespace gum {
   }
 
   /// computes the hashed value of a key
-  INLINE Size HashFunc< learning::ArcReversal >::
-              operator()(const learning::ArcReversal& key) const {
+  INLINE Size HashFunc< learning::ArcReversal >::operator()(
+     const learning::ArcReversal& key) const {
     return castToSize(key) >> this->_right_shift;
   }
 
@@ -423,8 +423,8 @@ namespace gum {
   }
 
   /// computes the hashed value of a key
-  INLINE Size HashFunc< learning::EdgeAddition >::
-              operator()(const learning::EdgeAddition& key) const {
+  INLINE Size HashFunc< learning::EdgeAddition >::operator()(
+     const learning::EdgeAddition& key) const {
     return castToSize(key) >> this->_right_shift;
   }
 
@@ -437,8 +437,8 @@ namespace gum {
   }
 
   /// computes the hashed value of a key
-  INLINE Size HashFunc< learning::EdgeDeletion >::
-              operator()(const learning::EdgeDeletion& key) const {
+  INLINE Size HashFunc< learning::EdgeDeletion >::operator()(
+     const learning::EdgeDeletion& key) const {
     return castToSize(key) >> this->_right_shift;
   }
 

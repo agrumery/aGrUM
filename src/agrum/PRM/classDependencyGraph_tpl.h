@@ -36,10 +36,10 @@ namespace gum {
     ClassDependencyGraph< GUM_SCALAR >::~ClassDependencyGraph() {
       GUM_DESTRUCTOR(ClassDependencyGraph);
 
-      for (const auto& elt : __node_map)
+      for (const auto& elt: __node_map)
         delete elt.second;
 
-      for (const auto& elt : __elt_map)
+      for (const auto& elt: __elt_map)
         delete elt.second;
     }
 
@@ -48,26 +48,26 @@ namespace gum {
     void ClassDependencyGraph< GUM_SCALAR >::__buildGraph(
        const PRM< GUM_SCALAR >& prm) {
       // First we add all nodes
-      for (const auto ci : prm.classes()) {
+      for (const auto ci: prm.classes()) {
         __node_map.insert(
            ci, new HashTable< const PRMClassElement< GUM_SCALAR >*, NodeId >());
 
-        for (const auto node : ci->containerDag().nodes())
+        for (const auto node: ci->containerDag().nodes())
           __addNode(ci, ci->get(node));
       }
 
-      for (const auto ii : prm.interfaces()) {
+      for (const auto ii: prm.interfaces()) {
         __node_map.insert(
            ii, new HashTable< const PRMClassElement< GUM_SCALAR >*, NodeId >());
 
-        for (const auto node : ii->containerDag().nodes()) {
+        for (const auto node: ii->containerDag().nodes()) {
           __addNode(ii, ii->get(node));
         }
       }
 
       // Then we add the arcs
-      for (const auto cc : prm.classes())
-        for (const auto node : cc->containerDag().nodes())
+      for (const auto cc: prm.classes())
+        for (const auto node: cc->containerDag().nodes())
           __addArcs(*cc, node, *(__node_map[cc]));
     }
 
@@ -82,7 +82,7 @@ namespace gum {
           const PRMSlotChain< GUM_SCALAR >& sc =
              static_cast< const PRMSlotChain< GUM_SCALAR >& >(c.get(node));
 
-          for (const auto chi : c.containerDag().children(node))
+          for (const auto chi: c.containerDag().children(node))
             __graph.addArc((*(__node_map[&(sc.end())]))[&(
                               sc.end().get(sc.lastElt().safeName()))],
                            map[&(c.get(chi))]);
@@ -92,7 +92,7 @@ namespace gum {
 
         case PRMClassElement< GUM_SCALAR >::prm_aggregate:
         case PRMClassElement< GUM_SCALAR >::prm_attribute: {
-          for (const auto chi : c.containerDag().children(node))
+          for (const auto chi: c.containerDag().children(node))
             __graph.addArc(map[&(c.get(node))], map[&(c.get(chi))]);
 
           break;
@@ -117,7 +117,7 @@ namespace gum {
         __modalitites(source.__modalitites), __elt_map(source.__elt_map) {
       GUM_CONS_CPY(ClassDependencyGraph);
 
-      for (const auto elt : source.__node_map) {
+      for (const auto elt: source.__node_map) {
         __node_map.insert(
            elt.first,
            new HashTable< const PRMClassElement< GUM_SCALAR >*, NodeId >(

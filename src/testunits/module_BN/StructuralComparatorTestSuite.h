@@ -33,7 +33,7 @@
 
 namespace gum_tests {
 
-  class StructuralComparatorTestSuite : public CxxTest::TestSuite {
+  class StructuralComparatorTestSuite: public CxxTest::TestSuite {
     public:
     void test_graph() {
       gum::StructuralComparator comp;

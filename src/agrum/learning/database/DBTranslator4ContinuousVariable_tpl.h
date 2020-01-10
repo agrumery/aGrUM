@@ -338,8 +338,8 @@ namespace gum {
     /// copy operator
     template < template < typename > class ALLOC >
     DBTranslator4ContinuousVariable< ALLOC >&
-          DBTranslator4ContinuousVariable< ALLOC >::
-          operator=(const DBTranslator4ContinuousVariable< ALLOC >& from) {
+       DBTranslator4ContinuousVariable< ALLOC >::operator=(
+          const DBTranslator4ContinuousVariable< ALLOC >& from) {
       if (this != &from) {
         DBTranslator< ALLOC >::operator=(from);
         __variable = from.__variable;
@@ -358,8 +358,8 @@ namespace gum {
     /// move operator
     template < template < typename > class ALLOC >
     DBTranslator4ContinuousVariable< ALLOC >&
-          DBTranslator4ContinuousVariable< ALLOC >::
-          operator=(DBTranslator4ContinuousVariable< ALLOC >&& from) {
+       DBTranslator4ContinuousVariable< ALLOC >::operator=(
+          DBTranslator4ContinuousVariable< ALLOC >&& from) {
       if (this != &from) {
         DBTranslator< ALLOC >::operator=(std::move(from));
         __variable = std::move(from.__variable);
@@ -436,7 +436,7 @@ namespace gum {
       if (number < lower_bound) {
         // check that there does not already exist a translated missing
         // value within the new bounds of the variable
-        for (const auto& missing : __status_float_missing_symbols) {
+        for (const auto& missing: __status_float_missing_symbols) {
           if (missing.second) {
             const float miss_val = std::stof(missing.first);
             if ((miss_val >= number) && (miss_val <= upper_bound)) {
@@ -470,7 +470,7 @@ namespace gum {
       } else {
         // check that there does not already exist a translated missing
         // value within the new bounds of the variable
-        for (const auto& missing : __status_float_missing_symbols) {
+        for (const auto& missing: __status_float_missing_symbols) {
           if (missing.second) {
             const float miss_val = std::stof(missing.first);
             if ((miss_val >= lower_bound) && (miss_val <= number)) {
@@ -570,7 +570,7 @@ namespace gum {
     /// returns the translation of a missing value
     template < template < typename > class ALLOC >
     INLINE DBTranslatedValue
-           DBTranslator4ContinuousVariable< ALLOC >::missingValue() const {
+       DBTranslator4ContinuousVariable< ALLOC >::missingValue() const {
       return DBTranslatedValue{std::numeric_limits< float >::max()};
     }
 

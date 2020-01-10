@@ -37,7 +37,7 @@
 
 namespace gum_tests {
 
-  class ASimpleDBGeneratorListener : public gum::ProgressListener {
+  class ASimpleDBGeneratorListener: public gum::ProgressListener {
     private:
     gum::Size   __nbr;
     std::string __mess;
@@ -56,7 +56,7 @@ namespace gum_tests {
   };
 
 
-  class BNDatabaseGeneratorTestSuite : public CxxTest::TestSuite {
+  class BNDatabaseGeneratorTestSuite: public CxxTest::TestSuite {
     public:
     gum::BayesNet< double >* bn;
 
@@ -170,7 +170,7 @@ namespace gum_tests {
       std::vector< std::vector< gum::Idx > > database;
       TS_GUM_ASSERT_THROWS_NOTHING(database = dbgen->database());
 
-      for (const auto& row : database) {
+      for (const auto& row: database) {
         TS_ASSERT_LESS_THAN(row.at(0), domSizeA);
         TS_ASSERT_LESS_THAN(row.at(1), domSizeS);
         TS_ASSERT_LESS_THAN(row.at(2), domSizeE);
@@ -182,7 +182,7 @@ namespace gum_tests {
       std::vector< std::string > vOrder1 = {"S", "E", "T", "R", "A", "O"};
       TS_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(vOrder1));
       TS_GUM_ASSERT_THROWS_NOTHING(database = dbgen->database());
-      for (const auto& row : database) {
+      for (const auto& row: database) {
         TS_ASSERT_LESS_THAN(row.at(0), domSizeS);
         TS_ASSERT_LESS_THAN(row.at(1), domSizeE);
         TS_ASSERT_LESS_THAN(row.at(2), domSizeT);
@@ -195,7 +195,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(vOrder2));
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
       TS_GUM_ASSERT_THROWS_NOTHING(database = dbgen->database());
-      for (const auto& row : database) {
+      for (const auto& row: database) {
         TS_ASSERT_LESS_THAN(row.at(0), domSizeS);
         TS_ASSERT_LESS_THAN(row.at(1), domSizeT);
         TS_ASSERT_LESS_THAN(row.at(2), domSizeE);

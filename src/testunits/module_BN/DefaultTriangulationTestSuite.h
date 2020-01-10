@@ -43,7 +43,7 @@
 
 namespace gum_tests {
 
-  class DefaultTriangulationTestSuite : public CxxTest::TestSuite {
+  class DefaultTriangulationTestSuite: public CxxTest::TestSuite {
     public:
     gum::LabelizedVariable *var1, *var2, *var3, *var4, *var5;
 
@@ -74,7 +74,7 @@ namespace gum_tests {
       // Builds a hashTable where the keys are the id of the variable,
       // and the values the variable's domain size.
 
-      for (const auto node : topo.nodes())
+      for (const auto node: topo.nodes())
         modalities.insert(node, topo.variable(node).domainSize());
 
       gum::DefaultTriangulation* triangle = nullptr;
@@ -103,7 +103,7 @@ namespace gum_tests {
 
       // Builds a hashTable where the keys are the id of the variable,
       // and the values the variable's domain size.
-      for (const auto node : topo.nodes())
+      for (const auto node: topo.nodes())
         modalities.insert(node, topo.variable(node).domainSize());
 
       gum::DefaultTriangulation* triangle = nullptr;

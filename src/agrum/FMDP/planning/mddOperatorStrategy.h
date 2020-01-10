@@ -47,7 +47,7 @@ namespace gum {
    *
    */
   template < typename GUM_SCALAR >
-  class MDDOperatorStrategy : public IOperatorStrategy< GUM_SCALAR > {
+  class MDDOperatorStrategy: public IOperatorStrategy< GUM_SCALAR > {
     public:
     // ###################################################################
     /// @name Constructor & destructor.

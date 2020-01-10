@@ -48,7 +48,7 @@ namespace gum {
    * @ingroup fmdp_group
    */
   template < typename GUM_SCALAR >
-  class Chi2TestPolicy : public ITestPolicy< GUM_SCALAR > {
+  class Chi2TestPolicy: public ITestPolicy< GUM_SCALAR > {
     public:
     Chi2TestPolicy() : ITestPolicy< GUM_SCALAR >(), __conTab(), __chi2Score(0) {
       GUM_CONSTRUCTOR(Chi2TestPolicy);

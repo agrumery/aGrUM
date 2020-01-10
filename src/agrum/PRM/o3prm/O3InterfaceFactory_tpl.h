@@ -68,8 +68,9 @@ namespace gum {
       }
 
       template < typename GUM_SCALAR >
-      INLINE O3InterfaceFactory< GUM_SCALAR >& O3InterfaceFactory< GUM_SCALAR >::
-                                               operator=(const O3InterfaceFactory< GUM_SCALAR >& src) {
+      INLINE O3InterfaceFactory< GUM_SCALAR >&
+         O3InterfaceFactory< GUM_SCALAR >::operator=(
+            const O3InterfaceFactory< GUM_SCALAR >& src) {
         if (this == &src) { return *this; }
         __prm = src.__prm;
         __o3_prm = src.__o3_prm;
@@ -79,8 +80,9 @@ namespace gum {
       }
 
       template < typename GUM_SCALAR >
-      INLINE O3InterfaceFactory< GUM_SCALAR >& O3InterfaceFactory< GUM_SCALAR >::
-                                               operator=(O3InterfaceFactory< GUM_SCALAR >&& src) {
+      INLINE O3InterfaceFactory< GUM_SCALAR >&
+         O3InterfaceFactory< GUM_SCALAR >::operator=(
+            O3InterfaceFactory< GUM_SCALAR >&& src) {
         if (this == &src) { return *this; }
         __prm = std::move(src.__prm);
         __o3_prm = std::move(src.__o3_prm);
@@ -95,7 +97,7 @@ namespace gum {
         if (__checkO3Interfaces()) {
           __setO3InterfaceCreationOrder();
 
-          for (auto i : __o3Interface) {
+          for (auto i: __o3Interface) {
             if (__solver->resolveInterface(i->superLabel())) {
               factory.startInterface(
                  i->name().label(), i->superLabel().label(), true);
@@ -113,7 +115,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE bool O3InterfaceFactory< GUM_SCALAR >::__addInterface2Dag() {
         // Adding nodes to the type inheritance graph
-        for (auto& i : __o3_prm->interfaces()) {
+        for (auto& i: __o3_prm->interfaces()) {
           auto id = __dag.addNode();
           try {
             __nameMap.insert(i->name().label(), id);
@@ -132,7 +134,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE bool O3InterfaceFactory< GUM_SCALAR >::__addArcs2Dag() {
         // Adding arcs to the graph inheritance graph
-        for (auto& i : __o3_prm->interfaces()) {
+        for (auto& i: __o3_prm->interfaces()) {
           if (i->superLabel().label() != "") {
             if (!__solver->resolveInterface(i->superLabel())) { return false; }
 
@@ -166,12 +168,12 @@ namespace gum {
       INLINE void O3InterfaceFactory< GUM_SCALAR >::buildElements() {
         PRMFactory< GUM_SCALAR > factory(__prm);
 
-        for (auto i : __o3Interface) {
+        for (auto i: __o3Interface) {
           __prm->getInterface(i->name().label()).inheritInterface();
 
           factory.continueInterface(i->name().label());
 
-          for (auto& elt : i->elements()) {
+          for (auto& elt: i->elements()) {
             if (__checkInterfaceElement(*i, elt)) {
               try {
                 if (__prm->isType(elt.type().label())) {

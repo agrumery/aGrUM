@@ -73,8 +73,8 @@ namespace gum {
    * \ingroup graph_group
    *
    */
-  class DefaultEliminationSequenceStrategy
-      : public UnconstrainedEliminationSequenceStrategy {
+  class DefaultEliminationSequenceStrategy:
+      public UnconstrainedEliminationSequenceStrategy {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

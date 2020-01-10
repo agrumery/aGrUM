@@ -61,7 +61,7 @@ namespace gum {
     Size num = 0;
     Size numparam = 0;
 
-    for (auto node : bn.nodes())
+    for (auto node: bn.nodes())
       numparam += bn.variable(node).domainSize();
 
     Idx                                clause = 0;
@@ -69,7 +69,7 @@ namespace gum {
     gum::HashTable< std::string, Idx > vartable;   // key name::label val num;
     gum::HashTable< std::string, Idx > protable;
 
-    for (auto node : bn.nodes()) {
+    for (auto node: bn.nodes()) {
       const auto& var = bn.variable(node);
 
       for (Idx i = 0; i < var.domainSize(); i++) {
@@ -93,7 +93,7 @@ namespace gum {
       }
     }
 
-    for (auto node : bn.nodes()) {
+    for (auto node: bn.nodes()) {
       const auto&       var = bn.variable(node);
       std::stringstream str0, str1, str2, str3;
 
@@ -164,7 +164,7 @@ namespace gum {
     Idx num = 0;
     Idx numparam = 0;
 
-    for (auto node : bn.nodes())
+    for (auto node: bn.nodes())
       numparam += bn.variable(node).domainSize();
 
     Idx                                clause = 0;
@@ -172,7 +172,7 @@ namespace gum {
     gum::HashTable< std::string, Idx > vartable;   // key name::label val num;
     gum::HashTable< std::string, Idx > protable;
 
-    for (auto node : bn.nodes()) {
+    for (auto node: bn.nodes()) {
       const auto& var = bn.variable(node);
 
       for (Idx i = 0; i < var.domainSize(); i++) {
@@ -196,7 +196,7 @@ namespace gum {
       }
     }
 
-    for (auto node : bn.nodes()) {
+    for (auto node: bn.nodes()) {
       const auto&       var = bn.variable(node);
       std::stringstream str0, str1, str2, str3;
 

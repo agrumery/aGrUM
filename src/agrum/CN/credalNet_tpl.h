@@ -76,14 +76,14 @@ namespace gum {
                   "setCPTs : entry sizes of cpts does not match for node id : "
                      << id << " : " << cpt.size() << " != " << entry_size);
 
-      for (const auto& cset : cpt) {
+      for (const auto& cset: cpt) {
         if (cset.size() == 0)
           GUM_ERROR(
              SizeError,
              "setCPTs : vertices in credal set does not match for node id : "
                 << id << " with 0 vertices");
 
-        for (const auto& vertex : cset) {
+        for (const auto& vertex: cset) {
           if (vertex.size() != var_dSize)
             GUM_ERROR(SizeError,
                       "setCPTs : variable modalities in cpts does "
@@ -93,7 +93,7 @@ namespace gum {
 
           GUM_SCALAR sum = 0;
 
-          for (const auto& prob : vertex) {
+          for (const auto& prob: vertex) {
             sum += prob;
           }
 
@@ -127,7 +127,7 @@ namespace gum {
       if (cpt.size() == 0)
         GUM_ERROR(SizeError, "setCPT : empty credal set for entry : " << entry);
 
-      for (const auto& vertex : cpt) {
+      for (const auto& vertex: cpt) {
         if (vertex.size() != var_dSize)
           GUM_ERROR(SizeError,
                     "setCPT : variable modalities in cpts does not "
@@ -137,7 +137,7 @@ namespace gum {
 
         GUM_SCALAR sum = 0;
 
-        for (const auto& prob : vertex) {
+        for (const auto& prob: vertex) {
           sum += prob;
         }
 
@@ -218,7 +218,7 @@ namespace gum {
       if (cpt.size() == 0)
         GUM_ERROR(SizeError, "setCPT : empty credal set for entry : " << entry);
 
-      for (const auto& vertex : cpt) {
+      for (const auto& vertex: cpt) {
         if (vertex.size() != var_dSize)
           GUM_ERROR(SizeError,
                     "setCPT : variable modalities in cpts does not "
@@ -228,7 +228,7 @@ namespace gum {
 
         GUM_SCALAR sum = 0;
 
-        for (const auto& prob : vertex) {
+        for (const auto& prob: vertex) {
           sum += prob;
         }
 
@@ -447,7 +447,7 @@ namespace gum {
       GUM_SCALAR epsi_moy = 0.;
       GUM_SCALAR epsi_den = 0.;
 
-      for (auto node : src_bn().nodes()) {
+      for (auto node: src_bn().nodes()) {
         const Potential< GUM_SCALAR >* const potential(&__src_bn.cpt(node));
 
         Potential< GUM_SCALAR >* const potential_min(
@@ -573,7 +573,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::lagrangeNormalization() {
-      for (auto node : __src_bn.nodes()) {
+      for (auto node: __src_bn.nodes()) {
         const Potential< GUM_SCALAR >* const potential(&__src_bn.cpt(node));
 
         auto var_dSize = __src_bn.variable(node).domainSize();
@@ -622,7 +622,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::idmLearning(const Idx s, const bool keepZeroes) {
-      for (auto node : __src_bn.nodes()) {
+      for (auto node: __src_bn.nodes()) {
         const Potential< GUM_SCALAR >* const potential(&__src_bn.cpt(node));
 
         Potential< GUM_SCALAR >* const potential_min(
@@ -699,7 +699,7 @@ namespace gum {
 
       __credalNet_src_cpt.resize(__src_bn.size());
 
-      for (auto node : __src_bn.nodes()) {
+      for (auto node: __src_bn.nodes()) {
         const Potential< GUM_SCALAR >* const potential_min(
            &__src_bn_min.cpt(node));
         const Potential< GUM_SCALAR >* const potential_max(
@@ -798,7 +798,7 @@ namespace gum {
 
       LRSWrapper< GUM_SCALAR > lrsWrapper;
 
-      for (auto node : __src_bn.nodes()) {
+      for (auto node: __src_bn.nodes()) {
         const Potential< GUM_SCALAR >* const potential_min(
            &__src_bn_min.cpt(node));
         const Potential< GUM_SCALAR >* const potential_max(
@@ -847,7 +847,7 @@ namespace gum {
 
       __credalNet_src_cpt.resize(__src_bn.size());
 
-      for (auto node : __src_bn.nodes()) {
+      for (auto node: __src_bn.nodes()) {
         const Potential< GUM_SCALAR >* const potential_min(
            &__src_bn_min.cpt(node));
         const Potential< GUM_SCALAR >* const potential_max(
@@ -1013,7 +1013,7 @@ namespace gum {
 
       __bin_bn->beginTopologyTransformation();
 
-      for (auto node : __current_bn->nodes()) {
+      for (auto node: __current_bn->nodes()) {
         auto var_dSize = __current_bn->variable(node).domainSize();
 
         if (var_dSize != 2) {
@@ -1049,11 +1049,11 @@ namespace gum {
 
       }   // end of : for each original variable
 
-      for (auto node : __current_bn->nodes()) {
+      for (auto node: __current_bn->nodes()) {
         NodeSet parents = __current_bn->parents(node);
 
         if (!parents.empty()) {
-          for (auto par : __current_bn->parents(node)) {
+          for (auto par: __current_bn->parents(node)) {
             for (Size parent_bit = 0, spbits = Size(__var_bits[par].size());
                  parent_bit < spbits;
                  parent_bit++)
@@ -1306,7 +1306,7 @@ namespace gum {
       __binCptMin.resize(current_bn().size());
       __binCptMax.resize(current_bn().size());
 
-      for (auto node : current_bn().nodes()) {
+      for (auto node: current_bn().nodes()) {
         auto                      pConf = credalNet_currentCpt()[node].size();
         std::vector< GUM_SCALAR > min(pConf);
         std::vector< GUM_SCALAR > max(pConf);
@@ -1377,7 +1377,7 @@ namespace gum {
       else
         __credalNet_current_cpt = this->__credalNet_current_cpt;
 
-      for (auto node : __current_bn->nodes()) {
+      for (auto node: __current_bn->nodes()) {
         const Potential< GUM_SCALAR >* potential(&__current_bn->cpt(node));
         auto                           pconfs =
            potential->domainSize() / __current_bn->variable(node).domainSize();
@@ -1517,13 +1517,13 @@ namespace gum {
       else
         __current_bn = this->__current_bn;
 
-      for (auto node : __current_bn->nodes())
+      for (auto node: __current_bn->nodes())
         dest.add(__current_bn->variable(node));
 
       dest.beginTopologyTransformation();
 
-      for (auto node : __current_bn->nodes()) {
-        for (auto parent_idIt : __current_bn->cpt(node).variablesSequence()) {
+      for (auto node: __current_bn->nodes()) {
+        for (auto parent_idIt: __current_bn->cpt(node).variablesSequence()) {
           if (__current_bn->nodeId(*parent_idIt) != node)
             dest.addArc(__current_bn->nodeId(*parent_idIt), node);
         }   // end of : for each parent in order of appearence
@@ -1801,7 +1801,7 @@ namespace gum {
       /*if ( ! __current_nodeType->empty() )
         __current_nodeType->clear();*/
 
-      for (auto node : __current_bn->nodes()) {
+      for (auto node: __current_bn->nodes()) {
         // indicatrices are already present
         if (__current_nodeType->exists(node)) continue;
 

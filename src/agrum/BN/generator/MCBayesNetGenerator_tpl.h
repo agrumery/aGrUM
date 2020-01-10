@@ -41,7 +41,7 @@ namespace gum {
   gum::Size getMaxModality(gum::BayesNet< GUM_SCALAR >& bayesNet) {
     gum::Size maxMod = 0;
 
-    for (auto node : bayesNet.nodes())
+    for (auto node: bayesNet.nodes())
       if (maxMod < bayesNet.variable(node).domainSize())
         maxMod = bayesNet.variable(node).domainSize();
 
@@ -148,7 +148,7 @@ namespace gum {
       LazyPropagation< GUM_SCALAR > inf(&bayesNetinit);
       inf.makeInference();
 
-      for (auto node : bayesNetinit.nodes()) {
+      for (auto node: bayesNetinit.nodes()) {
         auto pottemp = new Potential< GUM_SCALAR >();
         pottemp->copy(inf.posterior(node));
         _hashMarginal.insert(node, pottemp);
@@ -328,7 +328,7 @@ namespace gum {
         tail = i;
       }
 
-      for (auto node : __dag.parents(j)) {
+      for (auto node: __dag.parents(j)) {
         NodeSet excluded;
         excluded.insert(j);
 
@@ -339,7 +339,7 @@ namespace gum {
         }
       }
 
-      for (auto node : __dag.children(j)) {
+      for (auto node: __dag.children(j)) {
         NodeSet excluded;
         excluded.insert(j);
 
@@ -570,11 +570,11 @@ namespace gum {
       NodeSet excluded;
       excluded.insert(i);
 
-      for (auto par : __dag.parents(i)) {
+      for (auto par: __dag.parents(i)) {
         if (!excluded.exists(par) && __connect(par, j, excluded)) return true;
       }
 
-      for (auto chi : __dag.children(i)) {
+      for (auto chi: __dag.children(i)) {
         if (!excluded.exists(chi) && __connect(chi, j, excluded)) return true;
       }
 
@@ -596,11 +596,11 @@ namespace gum {
     else {
       excluded.insert(i);
 
-      for (auto par : __dag.parents(i)) {
+      for (auto par: __dag.parents(i)) {
         if (!excluded.exists(par) && __connect(par, j, excluded)) return true;
       }
 
-      for (auto chi : __dag.children(i)) {
+      for (auto chi: __dag.children(i)) {
         if (!excluded.exists(chi) && __connect(chi, j, excluded)) return true;
       }
 
@@ -623,7 +623,7 @@ namespace gum {
       NodeSet excluded;
       excluded.insert(tail);
 
-      for (auto node : __dag.children(tail)) {
+      for (auto node: __dag.children(tail)) {
         if (__directedPath(node, head, excluded)) return true;
       }
 
@@ -645,7 +645,7 @@ namespace gum {
     else {
       excluded.insert(tail);
 
-      for (auto node : __dag.children(tail)) {
+      for (auto node: __dag.children(tail)) {
         if (!excluded.exists(node) && __directedPath(node, head, excluded))
           return true;
       }
@@ -660,7 +660,7 @@ namespace gum {
              template < typename >
              class ICPTDisturber >
   INLINE Size
-         MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::iteration()
+     MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::iteration()
         const {
     return _iteration;
   }
@@ -671,7 +671,7 @@ namespace gum {
              template < typename >
              class ICPTDisturber >
   INLINE Idx
-         MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::p() const {
+     MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::p() const {
     return _p;
   }
 
@@ -681,7 +681,7 @@ namespace gum {
              template < typename >
              class ICPTDisturber >
   INLINE Idx
-         MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::q() const {
+     MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::q() const {
     return _q;
   }
 

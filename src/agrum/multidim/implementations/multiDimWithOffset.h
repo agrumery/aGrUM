@@ -49,7 +49,7 @@ namespace gum {
    * table.
    */
   template < typename GUM_SCALAR >
-  class MultiDimWithOffset : public MultiDimImplementation< GUM_SCALAR > {
+  class MultiDimWithOffset: public MultiDimImplementation< GUM_SCALAR > {
     public:
     // =========================================================================
     /// @name Constructors, destructor and copy.

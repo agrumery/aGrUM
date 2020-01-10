@@ -41,7 +41,7 @@ namespace gum {
         out << "[ ";
         bool first = true;
 
-        for (const auto item : code.codes) {
+        for (const auto item: code.codes) {
           if (!first) out << ", ";
           out << *item;
           first = false;

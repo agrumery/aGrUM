@@ -210,7 +210,7 @@ namespace gum {
         }
       }
 
-      for (const auto iter : res) {
+      for (const auto iter: res) {
         std::cout << iter.second << std::endl;
       }
 

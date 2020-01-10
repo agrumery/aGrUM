@@ -115,8 +115,8 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    INLINE ScoringCache< ALLOC >& ScoringCache< ALLOC >::
-                                  operator=(const ScoringCache< ALLOC >& from) {
+    INLINE ScoringCache< ALLOC >&
+       ScoringCache< ALLOC >::operator=(const ScoringCache< ALLOC >& from) {
       if (&from != this) { __scores = from.__scores; }
       return *this;
     }
@@ -124,8 +124,8 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    INLINE ScoringCache< ALLOC >& ScoringCache< ALLOC >::
-                                  operator=(ScoringCache< ALLOC >&& from) {
+    INLINE ScoringCache< ALLOC >&
+       ScoringCache< ALLOC >::operator=(ScoringCache< ALLOC >&& from) {
       if (&from != this) { __scores = std::move(from.__scores); }
       return *this;
     }

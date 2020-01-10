@@ -57,7 +57,7 @@ namespace gum {
      * @ingroup learning_group
      */
     template < typename GUM_SCALAR >
-    class BNLearner : public genericBNLearner {
+    class BNLearner: public genericBNLearner {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

@@ -87,7 +87,7 @@ namespace gum {
       nodeFIFO.popFront();
 
       // check the neighbours
-      for (const auto new_one : neighbours(current)) {
+      for (const auto new_one: neighbours(current)) {
         if (mark.exists(new_one))   // if the node has already been visited
           continue;                 // do not check it again
 
@@ -108,7 +108,7 @@ namespace gum {
       }
 
       // check the parents
-      for (const auto new_one : parents(current)) {
+      for (const auto new_one: parents(current)) {
         if (mark.exists(new_one))   // if this node is already marked, do not
           continue;                 // check it again
 
@@ -149,7 +149,7 @@ namespace gum {
       nodeFIFO.popFront();
 
       // check the neighbours
-      for (const auto new_one : neighbours(current)) {
+      for (const auto new_one: neighbours(current)) {
         if (mark.exists(new_one))   // if the node has already been visited
           continue;                 // do not check it again
 
@@ -170,7 +170,7 @@ namespace gum {
       }
 
       // check the parents
-      for (const auto new_one : parents(current)) {
+      for (const auto new_one: parents(current)) {
         if (mark.exists(new_one))   // the node has already been visited
           continue;
 
@@ -191,7 +191,7 @@ namespace gum {
       }
 
       // check the children
-      for (const auto new_one : children(current)) {
+      for (const auto new_one: children(current)) {
         if (mark.exists(new_one))   // the node has already been visited
           continue;
 
@@ -224,15 +224,15 @@ namespace gum {
     nodeStream << "node [shape = ellipse];" << std::endl;
     std::string tab = "  ";
 
-    for (const auto node : nodes()) {
+    for (const auto node: nodes()) {
       nodeStream << tab << node << ";";
 
-      for (const auto nei : neighbours(node))
+      for (const auto nei: neighbours(node))
         if (!treatedNodes.exists(nei))
           edgeStream << tab << node << " -> " << nei << " [dir=none];"
                      << std::endl;
 
-      for (const auto chi : children(node))
+      for (const auto chi: children(node))
         edgeStream << tab << node << " -> " << chi << ";" << std::endl;
 
       treatedNodes.insert(node);

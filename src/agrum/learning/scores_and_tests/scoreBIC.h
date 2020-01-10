@@ -49,7 +49,7 @@ namespace gum {
      * into the log-likelihood part of the score.
      */
     template < template < typename > class ALLOC = std::allocator >
-    class ScoreBIC : public Score< ALLOC > {
+    class ScoreBIC: public Score< ALLOC > {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;

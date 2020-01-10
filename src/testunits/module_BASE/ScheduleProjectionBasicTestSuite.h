@@ -45,7 +45,7 @@ namespace gum_tests {
     return projectMinMultiDimArray(&t, del_vars);
   }
 
-  class ScheduleProjectionBasicTestSuite : public CxxTest::TestSuite {
+  class ScheduleProjectionBasicTestSuite: public CxxTest::TestSuite {
     public:
     void test_construct1() {
       std::vector< gum::LabelizedVariable* > vars(10);

@@ -36,14 +36,14 @@
 
 // constants used by Gary Perlman for his code for computing chi2 critical
 // values
-#  define GUM_Z_MAX 6.0              // maximum meaningful z value
+#  define GUM_Z_MAX       6.0        // maximum meaningful z value
 #  define GUM_CHI_EPSILON 0.000001   // accuracy of critchi approximation
-#  define GUM_CHI_MAX 99999.0        // maximum chi square value
+#  define GUM_CHI_MAX     99999.0    // maximum chi square value
 #  define GUM_LOG_SQRT_PI \
     0.5723649429247000870717135                       // std::log (std::sqrt (pi))
 #  define GUM_I_SQRT_PI 0.5641895835477562869480795   // 1 / std::sqrt (pi)
-#  define GUM_BIGX 20.0   // max value to represent exp (x)
-#  define gum__ex(x) (((x) < -GUM_BIGX) ? 0.0 : std::exp(x))
+#  define GUM_BIGX      20.0   // max value to represent exp (x)
+#  define gum__ex(x)    (((x) < -GUM_BIGX) ? 0.0 : std::exp(x))
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 

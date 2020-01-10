@@ -57,7 +57,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
 
-  class BIFXMLIDWriter : public IDWriter< GUM_SCALAR > {
+  class BIFXMLIDWriter: public IDWriter< GUM_SCALAR > {
     public:
     // ==========================================================================
     /// @name Constructor & destructor

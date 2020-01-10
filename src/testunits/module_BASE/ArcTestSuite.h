@@ -27,7 +27,7 @@
 
 namespace gum_tests {
 
-  class ArcTestSuite : public CxxTest::TestSuite {
+  class ArcTestSuite: public CxxTest::TestSuite {
     public:
     void testConstructor1() {
       TS_GUM_ASSERT_THROWS_NOTHING(gum::Arc arc1(1, 2));

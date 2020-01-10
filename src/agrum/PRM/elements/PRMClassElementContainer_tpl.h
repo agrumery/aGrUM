@@ -36,7 +36,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     void PRMClassElementContainer< GUM_SCALAR >::_copyIOFlags(
        const PRMClassElementContainer< GUM_SCALAR >& c) {
-      for (const auto& flag : c.__IOFlags)
+      for (const auto& flag: c.__IOFlags)
         _setIOFlag(get(flag.first), flag.second);
     }
 
@@ -54,8 +54,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE PRMClassElementContainer< GUM_SCALAR >&
-           PRMClassElementContainer< GUM_SCALAR >::
-           operator=(const PRMClassElementContainer< GUM_SCALAR >& source) {
+       PRMClassElementContainer< GUM_SCALAR >::operator=(
+          const PRMClassElementContainer< GUM_SCALAR >& source) {
       GUM_ERROR(FatalError, "illegal call to ClassElementContainer copy operator");
     }
 
@@ -197,9 +197,9 @@ std::ostream&
   std::string tab = "  ";
   output << "digraph \"" << container.name() << "\" {" << std::endl;
 
-  for (const auto node : container.containerDag().nodes()) {
+  for (const auto node: container.containerDag().nodes()) {
     if (container.containerDag().children(node).size() > 0) {
-      for (const auto chi : container.containerDag().children(node)) {
+      for (const auto chi: container.containerDag().children(node)) {
         output << tab << "\"" << container.get(node).name() << "\" -> "
                << "\"" << container.get(chi).name() << "\";" << std::endl;
       }

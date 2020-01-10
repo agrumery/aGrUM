@@ -67,7 +67,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   class BNdistance {
 // difficulty is chosen w.r.t the log10DomainSize of the BN
-#define GAP_COMPLEXITY_KL_HEAVY_DIFFICULT double(12.0)
+#define GAP_COMPLEXITY_KL_HEAVY_DIFFICULT   double(12.0)
 #define GAP_COMPLEXITY_KL_DIFFICULT_CORRECT double(7.0)
     public:
     /** constructor must give 2 BNs

@@ -121,12 +121,12 @@
 #  else   // GUM_DEBUG_MODE
 /////////////////////////////////////////////////////////////
 #    define GUM_ASSERT(condition) ((void)0)
-#    define GUM_CONSTRUCTOR(x) ((void)0)
-#    define GUM_DESTRUCTOR(x) ((void)0)
-#    define GUM_CONS_CPY(x) ((void)0)
-#    define GUM_CONS_MOV(x) ((void)0)
-#    define GUM_OP_CPY(x) ((void)0)
-#    define GUM_OP_MOV(x) ((void)0)
+#    define GUM_CONSTRUCTOR(x)    ((void)0)
+#    define GUM_DESTRUCTOR(x)     ((void)0)
+#    define GUM_CONS_CPY(x)       ((void)0)
+#    define GUM_CONS_MOV(x)       ((void)0)
+#    define GUM_OP_CPY(x)         ((void)0)
+#    define GUM_OP_MOV(x)         ((void)0)
 
 #    define GUM_DEBUG_ONLY(x)
 /////////////////////////////////////////////////////////////
@@ -195,7 +195,7 @@ namespace gum {
   // ===         A CLASS USED FOR MAKING VALGRIND HAPPY IN DEBUG MODE        ===
   // ===========================================================================
 
-  class Debug : public std::string {
+  class Debug: public std::string {
     public:
     Debug(const std::string& str) : std::string(str) {}
 

@@ -44,7 +44,7 @@ namespace gum {
      * @brief The K2 algorithm
      * @ingroup learning_group
      */
-    class K2 : private GreedyHillClimbing {
+    class K2: private GreedyHillClimbing {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

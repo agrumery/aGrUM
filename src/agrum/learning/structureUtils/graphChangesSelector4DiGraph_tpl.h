@@ -171,12 +171,12 @@ namespace gum {
     GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
                                   GRAPH_CHANGES_GENERATOR,
                                   ALLOC >&
-          GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                        GRAPH_CHANGES_GENERATOR,
-                                        ALLOC >::
-          operator=(GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                                  GRAPH_CHANGES_GENERATOR,
-                                                  ALLOC >&& from) {
+                   GraphChangesSelector4DiGraph<
+                      STRUCTURAL_CONSTRAINT,
+                      GRAPH_CHANGES_GENERATOR,
+                      ALLOC >::operator=(GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
+                                                           GRAPH_CHANGES_GENERATOR,
+                                                           ALLOC >&& from) {
       if (this != &from) {
         __score = from.__score;
         from.__score = nullptr;
@@ -256,11 +256,11 @@ namespace gum {
       // nor to nodeId2Columns
       if (nodeId2Columns.empty()) {
         const NodeId nb_nodes = NodeId(database.nbVariables());
-        for (auto node : graph) {
+        for (auto node: graph) {
           if (node >= nb_nodes) { graph.eraseNode(node); }
         }
       } else {
-        for (auto node : graph) {
+        for (auto node: graph) {
           if (!nodeId2Columns.existsFirst(node)) { graph.eraseNode(node); }
         }
       }
@@ -291,13 +291,13 @@ namespace gum {
         const std::vector< NodeId, ALLOC< NodeId > > empty_pars;
         __parents.clear();
         __parents.resize(nb_nodes);
-        for (const auto node : graph) {
+        for (const auto node: graph) {
           auto&          node_parents = __parents.insert(node, empty_pars).second;
           const NodeSet& dag_parents = graph.parents(node);
           if (!dag_parents.empty()) {
             node_parents.resize(dag_parents.size());
             std::size_t j = std::size_t(0);
-            for (const auto par : dag_parents) {
+            for (const auto par: dag_parents) {
               node_parents[j] = par;
               ++j;
             }
@@ -308,14 +308,14 @@ namespace gum {
       // assign a score to each node given its parents in the current graph
       __node_current_scores.clear();
       __node_current_scores.resize(nb_nodes);
-      for (const auto node : graph) {
+      for (const auto node: graph) {
         __node_current_scores.insert(node, __score->score(node, __parents[node]));
       }
 
       // compute all the possible changes
       __changes.clear();
       __changes.resize(nb_nodes);
-      for (const auto& change : *__changes_generator) {
+      for (const auto& change: *__changes_generator) {
         __changes << change;
       }
       __changes_generator->notifyGetCompleted();
@@ -335,7 +335,7 @@ namespace gum {
       {
         const PriorityQueue< std::size_t, double, std::greater< double > >
            empty_prio;
-        for (const auto node : graph) {
+        for (const auto node: graph) {
           __change_queue_per_node.insert(node, empty_prio);
         }
       }
@@ -360,7 +360,7 @@ namespace gum {
 
             case GraphChangeType::ARC_DELETION: {
               auto& parents = __parents[change.node2()];
-              for (auto& par : parents) {
+              for (auto& par: parents) {
                 if (par == change.node1()) {
                   par = *(parents.rbegin());
                   parents.pop_back();
@@ -378,7 +378,7 @@ namespace gum {
             case GraphChangeType::ARC_REVERSAL: {
               // remove arc ( node1 -> node2 )
               auto& parents2 = __parents[change.node2()];
-              for (auto& par : parents2) {
+              for (auto& par: parents2) {
                 if (par == change.node1()) {
                   par = *(parents2.rbegin());
                   parents2.pop_back();
@@ -418,7 +418,7 @@ namespace gum {
 
       // update the global queue
       __node_queue.clear();
-      for (const auto node : graph) {
+      for (const auto node: graph) {
         __node_queue.insert(node,
                             __change_queue_per_node[node].empty()
                                ? std::numeric_limits< double >::min()
@@ -480,7 +480,7 @@ namespace gum {
       // put into the illegal change set all the top elements of the different
       // queues that are not valid anymore
       if (!__queues_valid) {
-        for (auto& queue_pair : __change_queue_per_node) {
+        for (auto& queue_pair: __change_queue_per_node) {
           auto& queue = queue_pair.second;
           while (!queue.empty() && !__isChangeValid(queue.top())) {
             __invalidateChange(queue.top());
@@ -505,7 +505,7 @@ namespace gum {
       // put into the illegal change set all the top elements of the different
       // queues that are not valid anymore
       if (!__queues_valid) {
-        for (auto& queue_pair : __change_queue_per_node) {
+        for (auto& queue_pair: __change_queue_per_node) {
           auto& queue = queue_pair.second;
           while (!queue.empty() && !__isChangeValid(queue.top())) {
             __invalidateChange(queue.top());
@@ -644,7 +644,7 @@ namespace gum {
        ALLOC >::__updateScores(const Set< std::size_t >& changes_to_recompute) {
       Set< NodeId > modified_nodes(changes_to_recompute.size());
 
-      for (const auto change_index : changes_to_recompute) {
+      for (const auto change_index: changes_to_recompute) {
         const GraphChange& change = __changes[change_index];
 
         switch (change.type()) {
@@ -669,7 +669,7 @@ namespace gum {
           case GraphChangeType::ARC_DELETION: {
             // remove the arc
             auto& parents = __parents[change.node2()];
-            for (auto& par : parents) {
+            for (auto& par: parents) {
               if (par == change.node1()) {
                 par = *(parents.rbegin());
                 parents.pop_back();
@@ -693,7 +693,7 @@ namespace gum {
           case GraphChangeType::ARC_REVERSAL: {
             // remove arc ( node1 -> node2 )
             auto& parents2 = __parents[change.node2()];
-            for (auto& par : parents2) {
+            for (auto& par: parents2) {
               if (par == change.node1()) {
                 par = *(parents2.rbegin());
                 parents2.pop_back();
@@ -738,7 +738,7 @@ namespace gum {
       }
 
       // update the node queue
-      for (const auto node : modified_nodes) {
+      for (const auto node: modified_nodes) {
         __node_queue.setPriority(node,
                                  __change_queue_per_node[node].empty()
                                     ? std::numeric_limits< double >::min()
@@ -756,7 +756,7 @@ namespace gum {
                                        GRAPH_CHANGES_GENERATOR,
                                        ALLOC >::__getNewChanges() {
       // ask the graph change generator for all its available changes
-      for (const auto& change : *__changes_generator) {
+      for (const auto& change: *__changes_generator) {
         // check that the change does not already exist
         if (!__changes.exists(change)) {
           // add the new change. To make the addition simple, we put the new
@@ -823,7 +823,7 @@ namespace gum {
           __node_current_scores[change.node2()] +=
              __change_scores[change_index].second;
           auto& parents = __parents[change.node2()];
-          for (auto& par : parents) {
+          for (auto& par: parents) {
             if (par == change.node1()) {
               par = *(parents.rbegin());
               parents.pop_back();
@@ -861,7 +861,7 @@ namespace gum {
              __change_scores[change_index].second;
           __parents[change.node1()].push_back(change.node2());
           auto& parents = __parents[change.node2()];
-          for (auto& par : parents) {
+          for (auto& par: parents) {
             if (par == change.node1()) {
               par = *(parents.rbegin());
               parents.pop_back();
@@ -951,7 +951,7 @@ namespace gum {
           __node_current_scores[change.node2()] +=
              __change_scores[change_index].second;
           auto& parents = __parents[change.node2()];
-          for (auto& par : parents) {
+          for (auto& par: parents) {
             if (par == change.node1()) {
               par = *(parents.rbegin());
               parents.pop_back();
@@ -990,7 +990,7 @@ namespace gum {
              __change_scores[change_index].second;
           __parents[change.node1()].push_back(change.node2());
           auto& parents = __parents[change.node2()];
-          for (auto& par : parents) {
+          for (auto& par: parents) {
             if (par == change.node1()) {
               par = *(parents.rbegin());
               parents.pop_back();
@@ -1053,13 +1053,13 @@ namespace gum {
 
       // update the scores that need be updated
       Set< std::size_t > changes_to_recompute;
-      for (const auto& node : __queues_to_update) {
+      for (const auto& node: __queues_to_update) {
         __findLegalChangesNeedingUpdate(changes_to_recompute, node);
       }
       __queues_to_update.clear();
 
       // put the previously illegal changes that are now legal into their queues
-      for (const auto change_index : new_legal_changes) {
+      for (const auto change_index: new_legal_changes) {
         const GraphChange& change = __changes[change_index];
         if (change.type() == GraphChangeType::ARC_REVERSAL) {
           __change_queue_per_node[change.node1()].insert(

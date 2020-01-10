@@ -93,7 +93,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   void InfluenceDiagram< GUM_SCALAR >::_removeTables() {
-    for (const auto node : _dag.nodes()) {
+    for (const auto node: _dag.nodes()) {
       if (isChanceNode(node))
         delete &cpt(node);
       else if (isUtilityNode(node))
@@ -108,13 +108,13 @@ namespace gum {
   void InfluenceDiagram< GUM_SCALAR >::_copyTables(
      const InfluenceDiagram< GUM_SCALAR >& IDsource) {
     // Copying potentials
-    for (const auto& pot : IDsource.__potentialMap) {
+    for (const auto& pot: IDsource.__potentialMap) {
       // Instanciation of the node's CPT
       auto potentialCpy = new Potential< GUM_SCALAR >;
       (*potentialCpy) << variable(pot.first);
 
       // Addition of the parents
-      for (const auto par : _dag.parents(pot.first))
+      for (const auto par: _dag.parents(pot.first))
         (*potentialCpy) << variable(par);
 
       // Filling up of the table
@@ -135,13 +135,13 @@ namespace gum {
     }
 
     // Copying Utilities
-    for (const auto& uti : IDsource.__utilityMap) {
+    for (const auto& uti: IDsource.__utilityMap) {
       // Instanciation of the node's CPT
       auto utilityCpy = new Potential< GUM_SCALAR >;
       (*utilityCpy) << variable(uti.first);
 
       // Addition of the parents
-      for (const auto par : _dag.parents(uti.first))
+      for (const auto par: _dag.parents(uti.first))
         (*utilityCpy) << variable(par);
 
       // Filling up of the table
@@ -184,7 +184,7 @@ namespace gum {
     chanceNode << "node [shape = ellipse];" << std::endl;
     std::string tab = "  ";
 
-    for (const auto node : _dag.nodes()) {
+    for (const auto node: _dag.nodes()) {
       if (isChanceNode(node))
         chanceNode << tab << "\"" << variable(node).name() << "\""
                    << ";";
@@ -196,7 +196,7 @@ namespace gum {
                      << ";";
 
       if (_dag.children(node).size() > 0)
-        for (const auto chi : _dag.children(node))
+        for (const auto chi: _dag.children(node))
           arcstream << tab << "\"" << variable(node).name() << "\""
                     << " -> "
                     << "\"" << variable(chi).name() << "\";" << std::endl;
@@ -331,14 +331,14 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE NodeId
-         InfluenceDiagram< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
+     InfluenceDiagram< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
     return __variableMap.get(var);
   }
 
   // Getter by name
   template < typename GUM_SCALAR >
   INLINE NodeId
-         InfluenceDiagram< GUM_SCALAR >::idFromName(const std::string& name) const {
+     InfluenceDiagram< GUM_SCALAR >::idFromName(const std::string& name) const {
     return __variableMap.idFromName(name);
   }
 
@@ -489,7 +489,7 @@ namespace gum {
   void InfluenceDiagram< GUM_SCALAR >::erase(NodeId varId) {
     if (__variableMap.exists(varId)) {
       // Reduce the variable child's CPT or Utility Table if necessary
-      for (const auto chi : _dag.children(varId))
+      for (const auto chi: _dag.children(varId))
         if (isChanceNode(chi))
           __potentialMap[chi]->erase(variable(varId));
         else if (isUtilityNode(chi))
@@ -587,15 +587,15 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   void InfluenceDiagram< GUM_SCALAR >::_moralGraph(UndiGraph& graph) const {
-    for (const auto node : _dag.nodes())
+    for (const auto node: _dag.nodes())
       if (!isUtilityNode(node)) graph.addNodeWithId(node);
 
-    for (const auto node : _dag.nodes()) {
+    for (const auto node: _dag.nodes()) {
       if (!isDecisionNode(node))
-        for (const auto par : _dag.parents(node)) {
+        for (const auto par: _dag.parents(node)) {
           if (isChanceNode(node)) graph.addEdge(node, par);
 
-          for (const auto par2 : _dag.parents(node))
+          for (const auto par2: _dag.parents(node))
             if (par != par2) graph.addEdge(par, par2);
         }
     }
@@ -652,7 +652,7 @@ namespace gum {
       current = nodeFIFO.front();
       nodeFIFO.popFront();
 
-      for (const auto new_one : _dag.children(current)) {
+      for (const auto new_one: _dag.children(current)) {
         if (mark[new_one] != -1)
           continue;   // if this node is already marked, continue
 
@@ -676,11 +676,11 @@ namespace gum {
   gum::DAG* InfluenceDiagram< GUM_SCALAR >::getDecisionGraph() const {
     gum::DAG* temporalGraph = new gum::DAG();
 
-    for (const auto node : _dag.nodes()) {
+    for (const auto node: _dag.nodes()) {
       if (isDecisionNode(node)) {
         if (!temporalGraph->existsNode(node)) temporalGraph->addNodeWithId(node);
 
-        for (const auto chi : _getChildrenDecision(node)) {
+        for (const auto chi: _getChildrenDecision(node)) {
           if (!temporalGraph->existsNode(chi)) temporalGraph->addNodeWithId(chi);
 
           temporalGraph->addArc(node, chi);
@@ -714,7 +714,7 @@ namespace gum {
       current = nodeFIFO.front();
       nodeFIFO.popFront();
 
-      for (const auto new_one : _dag.children(current)) {
+      for (const auto new_one: _dag.children(current)) {
         if (mark[new_one]) continue;   // if this node is already marked, continue
 
         mark[new_one] = true;
@@ -739,7 +739,7 @@ namespace gum {
 
     std::vector< NodeId >* decisionSequence = new std::vector< NodeId >();
 
-    for (const auto elt : topologicalOrder(false))
+    for (const auto elt: topologicalOrder(false))
       if (isDecisionNode(elt)) decisionSequence->push_back(elt);
 
     return decisionSequence;
@@ -761,7 +761,7 @@ namespace gum {
       for (Idx i = 0; i < decisionOrder->size(); i++) {
         NodeSet partialOrderedSet;
 
-        for (const auto par : _dag.parents(decisionOrder->at(i))) {
+        for (const auto par: _dag.parents(decisionOrder->at(i))) {
           if (nodeList.contains(par) && isChanceNode(par)) {
             partialOrderedSet.insert(par);
             nodeList.erase(par);
@@ -780,7 +780,7 @@ namespace gum {
 
       NodeSet lastSet;   //= new gum::NodeSet();
 
-      for (const auto node : nodeList)
+      for (const auto node: nodeList)
         if (isChanceNode(node)) lastSet.insert(node);
 
       if (!lastSet.empty()) __temporalOrder.pushFront(lastSet);

@@ -99,10 +99,10 @@ namespace gum {
 
     Size size = 1;
 
-    for (const auto var : seq1)
+    for (const auto var: seq1)
       size *= var->domainSize();
 
-    for (const auto var : seq2)
+    for (const auto var: seq2)
       if (!seq1.exists(var)) size *= var->domainSize();
 
     return size;
@@ -126,7 +126,7 @@ namespace gum {
     {
       Idx i = 0;
 
-      for (const auto sched : set) {
+      for (const auto sched: set) {
         tables[i] = sched;
         i += 1;
       }
@@ -287,7 +287,7 @@ namespace gum {
     {
       Idx i = 0;
 
-      for (const auto sched : set) {
+      for (const auto sched: set) {
         tables[i] = &(sched->variablesSequence());
         i += 1;
       }
@@ -334,12 +334,12 @@ namespace gum {
 
       Size new_size = 1;
 
-      for (const auto var : seq1) {
+      for (const auto var: seq1) {
         new_size *= var->domainSize();
         new_seq->insert(var);
       }
 
-      for (const auto var : seq2)
+      for (const auto var: seq2)
         if (!seq1.exists(var)) {
           new_size *= var->domainSize();
           new_seq->insert(var);
@@ -448,11 +448,11 @@ namespace gum {
     {
       Idx i = 0;
 
-      for (const auto tab : set) {
+      for (const auto tab: set) {
         tables[i] = &(tab->variablesSequence());
         Size size = 0;
 
-        for (const auto var : tab->variablesSequence())
+        for (const auto var: tab->variablesSequence())
           size *= var->domainSize();
 
         table_size[i] = size;
@@ -502,7 +502,7 @@ namespace gum {
 
       long new_size = 1;
 
-      for (const auto var : seq1) {
+      for (const auto var: seq1) {
         if (std::numeric_limits< long >::max() / (long)var->domainSize()
             < new_size)
           GUM_ERROR(OutOfBounds, "memory usage out of long int range");
@@ -511,7 +511,7 @@ namespace gum {
         new_seq->insert(var);
       }
 
-      for (const auto var : seq2) {
+      for (const auto var: seq2) {
         if (!seq1.exists(var)) {
           if (std::numeric_limits< long >::max() / (long)var->domainSize()
               < new_size)

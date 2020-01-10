@@ -56,8 +56,8 @@ namespace gum {
    */
   template < typename GUM_SCALAR,
              template < typename > class ICPTGenerator = SimpleCPTGenerator >
-  class SimpleBayesNetGenerator
-      : public IBayesNetGenerator< GUM_SCALAR, ICPTGenerator > {
+  class SimpleBayesNetGenerator:
+      public IBayesNetGenerator< GUM_SCALAR, ICPTGenerator > {
     public:
     // ############################################################################
     /// @name Constructors / Destructor

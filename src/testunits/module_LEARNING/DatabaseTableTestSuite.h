@@ -39,7 +39,7 @@
 
 namespace gum_tests {
 
-  class DatabaseTableTestSuite : public CxxTest::TestSuite {
+  class DatabaseTableTestSuite: public CxxTest::TestSuite {
     public:
     void test_db1() {
       {
@@ -136,12 +136,12 @@ namespace gum_tests {
 
         delete db6;
 
-        for (const auto& row : db) {
+        for (const auto& row: db) {
           TS_ASSERT(row.weight() == 1);
         }
 
         db.setAllRowsWeight(10.0);
-        for (const auto& row : db) {
+        for (const auto& row: db) {
           TS_ASSERT(row.weight() == 10.0);
         }
 
@@ -153,7 +153,7 @@ namespace gum_tests {
         }
 
         std::size_t index = std::size_t(0);
-        for (const auto& row : db) {
+        for (const auto& row: db) {
           if (index % 2) {
             TS_ASSERT(row.weight() == 2.0);
             TS_ASSERT(db.weight(index) == 2.0);
@@ -532,7 +532,7 @@ namespace gum_tests {
         typename gum::learning::DatabaseTable<>::Handler handler(database);
 
         int x = 0;
-        for (const auto& row : handler) {
+        for (const auto& row: handler) {
           x++;
           TS_ASSERT(row.size() == 3);
         }
@@ -540,7 +540,7 @@ namespace gum_tests {
 
         handler.setRange(1, 3);
         x = 0;
-        for (const auto& row : handler) {
+        for (const auto& row: handler) {
           x++;
           TS_ASSERT(row.size() == 3);
         }
@@ -797,7 +797,7 @@ namespace gum_tests {
         TS_ASSERT(database.content().size() == 4);
 
         int nb_col1 = 0, nb_col2 = 0;
-        for (const auto row : database) {
+        for (const auto row: database) {
           const auto& r = row.row();
           nb_col1 += (int)r[0].cont_val;
           nb_col2 += (int)r[1].cont_val;
@@ -847,7 +847,7 @@ namespace gum_tests {
 
         nb_col1 = 0;
         nb_col2 = 0;
-        for (const auto row : database) {
+        for (const auto row: database) {
           const auto& r = row.row();
           nb_col1 += (int)r[0].cont_val;
           nb_col2 += (int)r[1].cont_val;
@@ -1304,7 +1304,7 @@ namespace gum_tests {
       *handler = new gum::learning::DatabaseTable<>::Handler(*database);
 
       int x = 0;
-      for (const auto& row : **handler) {
+      for (const auto& row: **handler) {
         TS_ASSERT(row.size() == 3);
         x++;
       }
@@ -1319,7 +1319,7 @@ namespace gum_tests {
       *handler = new gum::learning::DatabaseTable<>::HandlerSafe(*database);
 
       int x = 0;
-      for (const auto& row : **handler) {
+      for (const auto& row: **handler) {
         TS_ASSERT(row.size() == 3);
         x++;
       }

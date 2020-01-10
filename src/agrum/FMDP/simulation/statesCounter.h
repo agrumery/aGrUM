@@ -48,7 +48,7 @@ namespace gum {
    * already visited.
    * @ingroup fmdp_group
    */
-  class StatesCounter : public IVisitableGraphLearner {
+  class StatesCounter: public IVisitableGraphLearner {
     public:
     // ==========================================================================
     /// @name Constructor & destructor.

@@ -83,7 +83,7 @@ namespace gum {
     __multiDims.insert(impl, new Instantiation(*impl));
 
     if (!MultiDimImplementation< GUM_SCALAR >::_isInMultipleChangeMethod()) {
-      for (const auto var : impl->variablesSequence()) {
+      for (const auto var: impl->variablesSequence()) {
         __addVariable(var);
       }
     }
@@ -105,7 +105,7 @@ namespace gum {
       __multiDims.erase(impl);
 
       if (!MultiDimImplementation< GUM_SCALAR >::_isInMultipleChangeMethod()) {
-        for (auto var : impl->variablesSequence()) {
+        for (auto var: impl->variablesSequence()) {
           __eraseVariable(var);
         }
       }
@@ -223,7 +223,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR
-         MultiDimBucket< GUM_SCALAR >::get(const Instantiation& i) const {
+     MultiDimBucket< GUM_SCALAR >::get(const Instantiation& i) const {
     compute();
 
     if (__bucket) {
@@ -416,7 +416,7 @@ namespace gum {
             // Instantiation*>
        auto iter = __multiDims.beginSafe(); iter != __multiDims.endSafe();
        ++iter) {
-      for (auto var : iter.key()->variablesSequence()) {
+      for (auto var: iter.key()->variablesSequence()) {
         __addVariable(var);
       }
     }
@@ -481,7 +481,7 @@ namespace gum {
     // Creating the table.
     __bucket = new MultiDimArray< GUM_SCALAR >();
 
-    for (auto var : this->variablesSequence()) {
+    for (auto var: this->variablesSequence()) {
       __bucket->add(*var);
     }
 

@@ -63,16 +63,16 @@ namespace gum {
     }
 
     /// copy operator
-    INLINE LocalSearchWithTabuList& LocalSearchWithTabuList::
-                                    operator=(const LocalSearchWithTabuList& from) {
+    INLINE LocalSearchWithTabuList&
+       LocalSearchWithTabuList::operator=(const LocalSearchWithTabuList& from) {
       ApproximationScheme::operator=(from);
       __MaxNbDecreasing = from.__MaxNbDecreasing;
       return *this;
     }
 
     /// move operator
-    INLINE LocalSearchWithTabuList& LocalSearchWithTabuList::
-                                    operator=(LocalSearchWithTabuList&& from) {
+    INLINE LocalSearchWithTabuList&
+       LocalSearchWithTabuList::operator=(LocalSearchWithTabuList&& from) {
       ApproximationScheme::operator=(std::move(from));
       __MaxNbDecreasing = std::move(from.__MaxNbDecreasing);
       return *this;

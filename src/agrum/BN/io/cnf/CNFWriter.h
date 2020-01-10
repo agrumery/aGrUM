@@ -65,9 +65,9 @@ namespace gum {
    */
   template < typename GUM_SCALAR,
              template < typename > class IApproximationPolicy = ExactPolicy >
-  class CNFWriter
-      : public BNWriter< GUM_SCALAR >
-      , public IApproximationPolicy< GUM_SCALAR > {
+  class CNFWriter:
+      public BNWriter< GUM_SCALAR >,
+      public IApproximationPolicy< GUM_SCALAR > {
     public:
     // ==========================================================================
     /// @name Constructor & destructor

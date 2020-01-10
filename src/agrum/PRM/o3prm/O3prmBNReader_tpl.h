@@ -125,7 +125,7 @@ namespace gum {
       // renaming variables in th BN
 
       gum::Set< std::string > names;
-      for (auto node : __bn->nodes()) {
+      for (auto node: __bn->nodes()) {
         // keeping the complete name in description
         const std::string& nn = __bn->variable(node).name();
         __bn->variable(node).setDescription(nn);

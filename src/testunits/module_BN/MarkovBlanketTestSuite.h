@@ -31,7 +31,7 @@
 #include <agrum/BN/algorithms/MarkovBlanket.h>
 
 namespace gum_tests {
-  class MarkovBlanketTestSuite : public CxxTest::TestSuite {
+  class MarkovBlanketTestSuite: public CxxTest::TestSuite {
     public:
     void testChain() {
       auto bn = gum::BayesNet< float >::fastPrototype("a->b->c");

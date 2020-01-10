@@ -333,8 +333,8 @@ namespace gum {
    * @tparam TerminalNodePolicy The terminal node policy to use.
    */
   template < typename GUM_SCALAR, template < typename > class TerminalNodePolicy >
-  class MultiDimFunctionGraphTreeManager
-      : public MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy > {
+  class MultiDimFunctionGraphTreeManager:
+      public MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy > {
     /// This friend methods from is the only way to get an instance of a
     /// manager.
     friend MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >*
@@ -387,8 +387,8 @@ namespace gum {
    * @tparam TerminalNodePolicy The terminal node policy to use.
    */
   template < typename GUM_SCALAR, template < typename > class TerminalNodePolicy >
-  class MultiDimFunctionGraphROManager
-      : public MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy > {
+  class MultiDimFunctionGraphROManager:
+      public MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy > {
     /// This friend methods from is the only way to get an instance of a
     /// manager.
     friend MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >*

@@ -1791,7 +1791,7 @@ namespace gum {
    * @tparam Val The gum::List values type.
    */
   template < typename Val >
-  class ListIterator : public ListConstIterator< Val > {
+  class ListIterator: public ListConstIterator< Val > {
     public:
     /// Types for STL compliance.
     /// @{
@@ -2339,7 +2339,7 @@ namespace gum {
    * @tparam Val The gum::List values type.
    */
   template < typename Val >
-  class ListIteratorSafe : public ListConstIteratorSafe< Val > {
+  class ListIteratorSafe: public ListConstIteratorSafe< Val > {
     public:
     /// Types for STL compliance.
     /// @{

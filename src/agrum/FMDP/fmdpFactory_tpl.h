@@ -111,7 +111,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const DiscreteVariable*
                FMDPFactory< GUM_SCALAR >::variable(const std::string& name) const {
-    for (const auto& elt : __varNameMap)
+    for (const auto& elt: __varNameMap)
       if (elt.first.compare(name) == 0) return elt.second;
 
     GUM_ERROR(NotFound, name);
@@ -540,7 +540,7 @@ namespace gum {
         MultiDimImplementation< GUM_SCALAR >* res = nullptr;
         MultiDimImplementation< GUM_SCALAR >* temp;
 
-        for (const auto elt : __ddBag) {
+        for (const auto elt: __ddBag) {
           temp = res;
 
           switch (__stringBag[0][0]) {
@@ -632,7 +632,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE NodeId
-         FMDPFactory< GUM_SCALAR >::addInternalNode(std::string name_of_var) {
+     FMDPFactory< GUM_SCALAR >::addInternalNode(std::string name_of_var) {
     return __FunctionGraph->manager()->addInternalNode(variable(name_of_var));
   }
 
@@ -757,8 +757,8 @@ namespace gum {
   // Copy operator is illegal, use only copy constructor.
 
   template < typename GUM_SCALAR >
-  INLINE FMDPFactory< GUM_SCALAR >& FMDPFactory< GUM_SCALAR >::
-                                    operator=(const FMDPFactory< GUM_SCALAR >& source) {
+  INLINE FMDPFactory< GUM_SCALAR >& FMDPFactory< GUM_SCALAR >::operator=(
+     const FMDPFactory< GUM_SCALAR >& source) {
     GUM_ERROR(FatalError, "Illegal!");
     // For noisy compilers
     return *this;

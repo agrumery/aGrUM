@@ -263,7 +263,7 @@ namespace gum {
     // 1/ create an undirected graph containing only the nodes and no edge
     const auto& bn = this->BN();
     __graph.clear();
-    for (auto node : bn.dag())
+    for (auto node: bn.dag())
       __graph.addNodeWithId(node);
 
     // 2/ if we wish to exploit barren nodes, we shall remove them from the BN
@@ -279,7 +279,7 @@ namespace gum {
         finder.setTargets(&targets);
 
         NodeSet evidence_nodes;
-        for (const auto& pair : this->evidence()) {
+        for (const auto& pair: this->evidence()) {
           evidence_nodes.insert(pair.first);
         }
         finder.setEvidence(&evidence_nodes);
@@ -287,7 +287,7 @@ namespace gum {
         NodeSet barren_nodes = finder.barrenNodes();
 
         // remove the barren nodes from the moral graph
-        for (const auto node : barren_nodes) {
+        for (const auto node: barren_nodes) {
           __graph.eraseNode(node);
         }
       }
@@ -336,7 +336,7 @@ namespace gum {
     }
 
     // 4/ add edges so that each node and its parents in the BN form a clique
-    for (const auto node : __graph) {
+    for (const auto node: __graph) {
       const NodeSet& parents = bn.parents(node);
       for (auto iter1 = parents.cbegin(); iter1 != parents.cend(); ++iter1) {
         // before adding an edge between node and its parent, check that the
@@ -368,7 +368,7 @@ namespace gum {
     }
 
     // 6/ remove all the nodes that received hard evidence
-    for (const auto node : this->hardEvidenceNodes()) {
+    for (const auto node: this->hardEvidenceNodes()) {
       __graph.eraseNode(node);
     }
 
@@ -384,7 +384,7 @@ namespace gum {
     __node_to_clique.clear();
     __clique_potentials.clear();
     NodeSet emptyset;
-    for (auto clique : *__JT)
+    for (auto clique: *__JT)
       __clique_potentials.insert(clique, emptyset);
     const std::vector< NodeId >& JT_elim_order =
        __triangulation->eliminationOrder();
@@ -393,12 +393,12 @@ namespace gum {
          ++i)
       elim_order.insert(JT_elim_order[i], NodeId(i));
     const DAG& dag = bn.dag();
-    for (const auto node : __graph) {
+    for (const auto node: __graph) {
       // get the variables in the potential of node (and its parents)
       NodeId first_eliminated_node = node;
       Size   elim_number = elim_order[first_eliminated_node];
 
-      for (const auto parent : dag.parents(node)) {
+      for (const auto parent: dag.parents(node)) {
         if (__graph.existsNode(parent) && (elim_order[parent] < elim_number)) {
           elim_number = elim_order[parent];
           first_eliminated_node = parent;
@@ -418,17 +418,17 @@ namespace gum {
     // do the same for the nodes that received evidence. Here, we only store
     // the nodes whose at least one parent belongs to __graph (otherwise
     // their CPT is just a constant real number).
-    for (const auto node : this->hardEvidenceNodes()) {
+    for (const auto node: this->hardEvidenceNodes()) {
       // get the set of parents of the node that belong to __graph
       NodeSet pars(dag.parents(node).size());
-      for (const auto par : dag.parents(node))
+      for (const auto par: dag.parents(node))
         if (__graph.exists(par)) pars.insert(par);
 
       if (!pars.empty()) {
         NodeId first_eliminated_node = *(pars.begin());
         Size   elim_number = elim_order[first_eliminated_node];
 
-        for (const auto parent : pars) {
+        for (const auto parent: pars) {
           if (elim_order[parent] < elim_number) {
             elim_number = elim_order[parent];
             first_eliminated_node = parent;
@@ -453,13 +453,13 @@ namespace gum {
       // remove from set all the nodes that received hard evidence (since they
       // do not belong to the join tree)
       NodeSet nodeset = targets;
-      for (const auto node : this->hardEvidenceNodes())
+      for (const auto node: this->hardEvidenceNodes())
         if (nodeset.contains(node)) nodeset.erase(node);
 
       if (!nodeset.empty()) {
         NodeId first_eliminated_node = *(nodeset.begin());
         Size   elim_number = elim_order[first_eliminated_node];
-        for (const auto node : nodeset) {
+        for (const auto node: nodeset) {
           if (elim_order[node] < elim_number) {
             elim_number = elim_order[node];
             first_eliminated_node = node;
@@ -498,7 +498,7 @@ namespace gum {
     // find the node ids of the kept variables
     NodeSet     kept_ids;
     const auto& bn = this->BN();
-    for (const auto var : kept_vars) {
+    for (const auto var: kept_vars) {
       kept_ids.insert(bn.nodeId(*var));
     }
 
@@ -513,7 +513,7 @@ namespace gum {
       const Sequence< const DiscreteVariable* >& vars =
          (**iter).variablesSequence();
       bool found = false;
-      for (auto var : vars) {
+      for (auto var: vars) {
         if (requisite_nodes.exists(bn.nodeId(*var))) {
           found = true;
           break;
@@ -533,7 +533,7 @@ namespace gum {
     // find the node ids of the kept variables
     NodeSet     kept_ids;
     const auto& bn = this->BN();
-    for (const auto var : kept_vars) {
+    for (const auto var: kept_vars) {
       kept_ids.insert(bn.nodeId(*var));
     }
 
@@ -554,7 +554,7 @@ namespace gum {
     // find the node ids of the kept variables
     NodeSet     kept_ids;
     const auto& bn = this->BN();
-    for (const auto var : kept_vars) {
+    for (const auto var: kept_vars) {
       kept_ids.insert(bn.nodeId(*var));
     }
 
@@ -615,9 +615,9 @@ namespace gum {
     // assign to each random variable the set of potentials that contain it
     HashTable< const DiscreteVariable*, __PotentialSet > var2pots;
     __PotentialSet                                       empty_pot_set;
-    for (const auto pot : pot_list) {
+    for (const auto pot: pot_list) {
       const Sequence< const DiscreteVariable* >& vars = pot->variablesSequence();
-      for (const auto var : vars) {
+      for (const auto var: vars) {
         if (the_del_vars.exists(var)) {
           if (!var2pots.exists(var)) { var2pots.insert(var, empty_pot_set); }
           var2pots[var].insert(pot);
@@ -630,7 +630,7 @@ namespace gum {
     HashTable< const Potential< GUM_SCALAR >*, Set< const DiscreteVariable* > >
                                    pot2barren_var;
     Set< const DiscreteVariable* > empty_var_set;
-    for (auto elt : var2pots) {
+    for (auto elt: var2pots) {
       if (elt.second.size() == 1) {   // here we have a barren variable
         const Potential< GUM_SCALAR >* pot = *(elt.second.begin());
         if (!pot2barren_var.exists(pot)) {
@@ -645,7 +645,7 @@ namespace gum {
     // set of potentials, else just project the potential
     MultiDimProjection< GUM_SCALAR, Potential > projector(VENewprojPotential);
     __PotentialSet                              projected_pots;
-    for (auto elt : pot2barren_var) {
+    for (auto elt: pot2barren_var) {
       // remove the current potential from pot_list as, anyway, we will change
       // it
       const Potential< GUM_SCALAR >* pot = elt.first;
@@ -671,7 +671,7 @@ namespace gum {
      VariableElimination< GUM_SCALAR >::__collectMessage(NodeId id, NodeId from) {
     // collect messages from all the neighbors
     std::pair< __PotentialSet, __PotentialSet > collect_messages;
-    for (const auto other : __JT->neighbours(id)) {
+    for (const auto other: __JT->neighbours(id)) {
       if (other != from) {
         std::pair< __PotentialSet, __PotentialSet > message(
            __collectMessage(other, id));
@@ -712,7 +712,7 @@ namespace gum {
       // and are not themselves hard evidence, discard the CPT, it is useless
       // for inference
       if (this->hardEvidenceNodes().contains(node)) {
-        for (const auto var : variables) {
+        for (const auto var: variables) {
           NodeId xnode = bn.nodeId(*var);
           if (!this->hardEvidenceNodes().contains(xnode)
               && !__graph.existsNode(xnode))
@@ -722,7 +722,7 @@ namespace gum {
 
       // get the list of nodes with hard evidence in cpt
       NodeSet hard_nodes;
-      for (const auto var : variables) {
+      for (const auto var: variables) {
         NodeId xnode = bn.nodeId(*var);
         if (this->hardEvidenceNodes().contains(xnode)) hard_nodes.insert(xnode);
       }
@@ -740,7 +740,7 @@ namespace gum {
           // perform the projection with a combine and project instance
           Set< const DiscreteVariable* > hard_variables;
           __PotentialSet                 marg_cpt_set{&cpt};
-          for (const auto xnode : hard_nodes) {
+          for (const auto xnode: hard_nodes) {
             marg_cpt_set.insert(evidence[xnode]);
             hard_variables.insert(&(bn.variable(xnode)));
           }
@@ -753,7 +753,7 @@ namespace gum {
           // there should be only one potential in new_cpt_list
           if (new_cpt_list.size() != 1) {
             // remove the CPT created to avoid memory leaks
-            for (auto pot : new_cpt_list) {
+            for (auto pot: new_cpt_list) {
               if (!marg_cpt_set.contains(pot)) delete pot;
             }
             GUM_ERROR(FatalError,
@@ -791,7 +791,7 @@ namespace gum {
        pot_list(std::move(incoming_messages));
 
     // get the potentials of the clique
-    for (const auto node : __clique_potentials[from_id]) {
+    for (const auto node: __clique_potentials[from_id]) {
       auto new_pots = __NodePotentials(node);
       pot_list.first += new_pots.first;
       pot_list.second += new_pots.second;
@@ -808,7 +808,7 @@ namespace gum {
       Set< const DiscreteVariable* > kept_vars(separator.size());
       const auto&                    bn = this->BN();
 
-      for (const auto node : from_clique) {
+      for (const auto node: from_clique) {
         if (!separator.contains(node)) {
           del_vars.insert(&(bn.variable(node)));
         } else {
@@ -853,7 +853,7 @@ namespace gum {
       }
 
       // keep track of all the newly created potentials
-      for (const auto pot : new_pot_list) {
+      for (const auto pot: new_pot_list) {
         if (!pot_list.first.contains(pot)) { pot_list.second.insert(pot); }
       }
 
@@ -942,7 +942,7 @@ namespace gum {
     const NodeSet&                 nodes = __JT->clique(clique_of_id);
     Set< const DiscreteVariable* > kept_vars{&(bn.variable(id))};
     Set< const DiscreteVariable* > del_vars(nodes.size());
-    for (const auto node : nodes) {
+    for (const auto node: nodes) {
       if (node != id) del_vars.insert(&(bn.variable(node)));
     }
 
@@ -970,11 +970,11 @@ namespace gum {
     }
 
     // remove the potentials that were created in new_pot_list
-    for (auto pot : new_pot_list)
+    for (auto pot: new_pot_list)
       if (!pot_list.first.exists(pot)) delete pot;
 
     // remove all the temporary potentials created in pot_list
-    for (auto pot : pot_list.second)
+    for (auto pot: pot_list.second)
       delete pot;
 
     // check that the joint posterior is different from a 0 vector: this would
@@ -1022,7 +1022,7 @@ namespace gum {
     // hard evidence do not belong to the join tree, so extract the nodes
     // from targets that are not hard evidence
     NodeSet targets = set, hard_ev_nodes;
-    for (const auto node : this->hardEvidenceNodes()) {
+    for (const auto node: this->hardEvidenceNodes()) {
       if (targets.contains(node)) {
         targets.erase(node);
         hard_ev_nodes.insert(node);
@@ -1034,7 +1034,7 @@ namespace gum {
     const auto& evidence = this->evidence();
     if (targets.empty()) {
       __PotentialSet pot_list;
-      for (const auto node : set) {
+      for (const auto node: set) {
         pot_list.insert(evidence[node]);
       }
       if (pot_list.size() == 1) {
@@ -1055,7 +1055,7 @@ namespace gum {
     Set< const DiscreteVariable* > del_vars(nodes.size());
     Set< const DiscreteVariable* > kept_vars(targets.size());
     const auto&                    bn = this->BN();
-    for (const auto node : nodes) {
+    for (const auto node: nodes) {
       if (!targets.contains(node)) {
         del_vars.insert(&(bn.variable(node)));
       } else {
@@ -1084,7 +1084,7 @@ namespace gum {
       // combine all the potentials in new_pot_list with all the hard evidence
       // of the nodes in set
       __PotentialSet new_new_pot_list = new_pot_list;
-      for (const auto node : hard_ev_nodes) {
+      for (const auto node: hard_ev_nodes) {
         new_new_pot_list.insert(evidence[node]);
       }
       MultiDimCombinationDefault< GUM_SCALAR, Potential > fast_combination(
@@ -1093,11 +1093,11 @@ namespace gum {
     }
 
     // remove the potentials that were created in new_pot_list
-    for (auto pot : new_pot_list)
+    for (auto pot: new_pot_list)
       if (!pot_list.first.exists(pot)) delete pot;
 
     // remove all the temporary potentials created in pot_list
-    for (auto pot : pot_list.second)
+    for (auto pot: pot_list.second)
       delete pot;
 
     // check that the joint posterior is different from a 0 vector: this would

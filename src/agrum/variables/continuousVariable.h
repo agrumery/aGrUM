@@ -44,7 +44,7 @@ namespace gum {
    * @brief Defines a continuous random variable.
    */
   template < typename GUM_SCALAR = float >
-  class ContinuousVariable : public IContinuousVariable {
+  class ContinuousVariable: public IContinuousVariable {
     public:
     // ##########################################################################
     /// @name Constructors / Destructors

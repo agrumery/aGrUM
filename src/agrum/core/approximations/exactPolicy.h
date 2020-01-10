@@ -45,7 +45,7 @@ namespace gum {
    * @tparam GUM_SCALAR The type used for computations.
    */
   template < typename GUM_SCALAR >
-  class ExactPolicy : public virtual ApproximationPolicy< GUM_SCALAR > {
+  class ExactPolicy: public virtual ApproximationPolicy< GUM_SCALAR > {
     public:
     // ===========================================================================
     /// @name Constructors / Destructors

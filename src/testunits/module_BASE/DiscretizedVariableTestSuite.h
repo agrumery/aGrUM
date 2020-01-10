@@ -32,7 +32,7 @@
 
 namespace gum_tests {
 
-  class DiscretizedVariableTestSuite : public CxxTest::TestSuite {
+  class DiscretizedVariableTestSuite: public CxxTest::TestSuite {
     public:
     void testCreation() {
       TS_GUM_ASSERT_THROWS_NOTHING(
@@ -161,7 +161,7 @@ namespace gum_tests {
                     TS_ASSERT_EQUALS(d.toString(),
                                      "d<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>");
                     int s = 1;
-                    for (auto tick : d.ticks()) {
+                    for (auto tick: d.ticks()) {
                       TS_ASSERT_EQUALS(tick, s++);
                     }
                   }

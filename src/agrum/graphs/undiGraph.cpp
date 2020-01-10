@@ -58,7 +58,7 @@ namespace gum {
     std::pair< NodeId, NodeId >         thePair;
     NodeId                              current, from_current;
 
-    for (const auto node : nodes()) {
+    for (const auto node: nodes()) {
       // check if the node has already been examined (if this is not the case,
       // this means that we are on a new connected component)
       if (!examined_nodes[node]) {
@@ -79,7 +79,7 @@ namespace gum {
           from_current = thePair.second;
 
           // check the neighbours
-          for (const auto new_node : neighbours(current))
+          for (const auto new_node: neighbours(current))
 
             // avoid to check the node we are coming from
             if (new_node != from_current) {
@@ -117,11 +117,11 @@ namespace gum {
     nodeStream << "node [shape = ellipse];" << std::endl;
     std::string tab = "  ";
 
-    for (const auto node : nodes()) {
+    for (const auto node: nodes()) {
       nodeStream << tab << node << ";";
 
       if (neighbours(node).size() > 0)
-        for (const auto nei : neighbours(node))
+        for (const auto nei: neighbours(node))
           if (!treatedNodes.exists(nei))
             edgeStream << tab << node << " -> " << nei << ";" << std::endl;
 
@@ -139,10 +139,10 @@ namespace gum {
   UndiGraph UndiGraph::partialUndiGraph(NodeSet nodesSet) {
     UndiGraph partialGraph;
 
-    for (const auto node : nodesSet) {
+    for (const auto node: nodesSet) {
       partialGraph.addNodeWithId(node);
 
-      for (const auto nei : neighbours(node))
+      for (const auto nei: neighbours(node))
         if (nodesSet.contains(nei) && partialGraph.existsNode(nei))
           partialGraph.addEdge(node, nei);
     }

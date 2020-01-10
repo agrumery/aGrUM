@@ -43,7 +43,7 @@ namespace gum {
      * @ingroup learning_apriori
      */
     template < template < typename > class ALLOC = std::allocator >
-    class AprioriNoApriori : public Apriori< ALLOC > {
+    class AprioriNoApriori: public Apriori< ALLOC > {
       public:
       /// the type of the a priori
       using type = AprioriNoAprioriType;

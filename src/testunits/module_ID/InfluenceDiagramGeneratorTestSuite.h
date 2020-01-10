@@ -34,7 +34,7 @@
 
 namespace gum_tests {
 
-  class InfluenceDiagramGeneratorTestSuite : public CxxTest::TestSuite {
+  class InfluenceDiagramGeneratorTestSuite: public CxxTest::TestSuite {
     public:
     void setUp() {}
 
@@ -99,7 +99,7 @@ namespace gum_tests {
       gum::Set< gum::NodeId >    passed;
       const gum::DAG&            dag = id->dag();
 
-      for (const auto node : dag.nodes()) {
+      for (const auto node: dag.nodes()) {
         TS_ASSERT_THROWS(dag.directedPath(node, node), gum::NotFound);
       }
 
@@ -127,7 +127,7 @@ namespace gum_tests {
       gum::Set< gum::NodeId >    passed;
       const gum::DAG&            dag = id->dag();
 
-      for (const auto node : dag.nodes()) {
+      for (const auto node: dag.nodes()) {
         TS_ASSERT_THROWS(dag.directedPath(node, node), gum::NotFound);
       }
 

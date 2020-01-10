@@ -36,7 +36,7 @@ namespace gum {
     /// sets a new graph from which we will perform checkings
     INLINE void StructuralConstraintIndegree::setGraphAlone(const DiGraph& graph) {
       // check that the max_indegree corresponds to the graph
-      for (const auto id : graph) {
+      for (const auto id: graph) {
         if (!_Indegree__max_parents.exists(id)) {
           _Indegree__max_parents.insert(id, _Indegree__max_indegree);
         }
@@ -135,7 +135,7 @@ namespace gum {
     /// sets the indegree for a given set of nodes
     INLINE void StructuralConstraintIndegree::setIndegree(
        const NodeProperty< Size >& max_indegree) {
-      for (const auto& degree : max_indegree) {
+      for (const auto& degree: max_indegree) {
         _Indegree__max_parents.set(degree.first, degree.second);
       }
     }
@@ -144,7 +144,7 @@ namespace gum {
     INLINE void StructuralConstraintIndegree::setMaxIndegree(Size max_indegree,
                                                              bool update_all) {
       if (update_all) {
-        for (auto& degree : _Indegree__max_parents) {
+        for (auto& degree: _Indegree__max_parents) {
           degree.second = max_indegree;
         }
       }

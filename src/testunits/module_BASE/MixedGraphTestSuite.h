@@ -39,7 +39,7 @@
 
 namespace gum_tests {
 
-  class MixedGraphTestSuite : public CxxTest::TestSuite {
+  class MixedGraphTestSuite: public CxxTest::TestSuite {
     private:
     gum::MixedGraph buildGraph() {
       gum::MixedGraph g;
@@ -272,7 +272,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(nodeset.size(), graph.size());
       gum::Size nodeCount = graph.size();
 
-      for (const auto node : nodeset)
+      for (const auto node: nodeset)
         graph.eraseNode(node);
 
       TS_ASSERT(graph.empty());
@@ -287,7 +287,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(arclist.size(), graph.sizeArcs());
       gum::Size arcCount = graph.sizeArcs();
 
-      for (const auto arc : arclist)
+      for (const auto arc: arclist)
         graph.eraseArc(arc);
 
       TS_ASSERT(graph.emptyArcs());
@@ -302,7 +302,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(edgeset.size(), graph.sizeEdges());
       gum::Size edgeCount = graph.sizeEdges();
 
-      for (const auto edge : edgeset)
+      for (const auto edge: edgeset)
         graph.eraseEdge(edge);
 
       TS_ASSERT(graph.emptyEdges());
@@ -346,7 +346,7 @@ namespace gum_tests {
       gum::Size sk = 0;
       gum::Size sv = 0;
 
-      for (const auto& elt : hashmap) {
+      for (const auto& elt: hashmap) {
         sk += elt.first;
         sv += elt.second;
       }
@@ -398,7 +398,7 @@ namespace gum_tests {
       gum::Size sk = 0;
       gum::Size sv = 0;
 
-      for (const auto& elt : hashmap) {
+      for (const auto& elt: hashmap) {
         sv += elt.second;
         sk += elt.first.first() + elt.first.second();
       }
@@ -440,7 +440,7 @@ namespace gum_tests {
       gum::Size sk = 0;
       gum::Size sv = 0;
 
-      for (const auto& elt : hashmap) {
+      for (const auto& elt: hashmap) {
         sv += elt.second;
         sk += elt.first.head() + elt.first.tail();
       }

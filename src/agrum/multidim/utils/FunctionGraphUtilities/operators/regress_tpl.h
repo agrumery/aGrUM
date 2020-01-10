@@ -31,7 +31,7 @@
 #include <agrum/multidim/utils/FunctionGraphUtilities/internalNode.h>
 #include <agrum/multidim/utils/FunctionGraphUtilities/operators/regress.h>
 
-#define ALLOCATE(x) SmallObjectAllocator::instance().allocate(x)
+#define ALLOCATE(x)      SmallObjectAllocator::instance().allocate(x)
 #define DEALLOCATE(x, y) SmallObjectAllocator::instance().deallocate(x, y)
 
 namespace gum {
@@ -324,7 +324,7 @@ namespace gum {
              template < typename >
              class TerminalNodePolicy >
   INLINE NodeId
-         Regress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::
+     Regress< GUM_SCALAR, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::
         __compute(O4DGContext& currentSituation, Idx lastInstVarPos) {
     NodeId newNode = 0;
 

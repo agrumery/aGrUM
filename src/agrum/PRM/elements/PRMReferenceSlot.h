@@ -58,7 +58,7 @@ namespace gum {
      */
     // ==========================================================================
     template < typename GUM_SCALAR >
-    class PRMReferenceSlot : public PRMClassElement< GUM_SCALAR > {
+    class PRMReferenceSlot: public PRMClassElement< GUM_SCALAR > {
       public:
       // ========================================================================
       /// @name Protected constructors & destructor.

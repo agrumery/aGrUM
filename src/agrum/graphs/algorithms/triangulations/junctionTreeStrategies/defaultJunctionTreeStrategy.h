@@ -41,7 +41,7 @@ namespace gum {
    * \ingroup graph_group
    *
    */
-  class DefaultJunctionTreeStrategy : public JunctionTreeStrategy {
+  class DefaultJunctionTreeStrategy: public JunctionTreeStrategy {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

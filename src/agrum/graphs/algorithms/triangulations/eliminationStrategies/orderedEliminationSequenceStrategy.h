@@ -42,7 +42,7 @@ namespace gum {
    * \ingroup graph_group
    *
    */
-  class OrderedEliminationSequenceStrategy : public EliminationSequenceStrategy {
+  class OrderedEliminationSequenceStrategy: public EliminationSequenceStrategy {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

@@ -103,7 +103,7 @@ namespace gum {
     // of the following class is to transform S' into S'' = <Z,T,Y,X>, i.e., the
     // set S' without any duplicates.
     template < typename FIRST_CONSTRAINT, typename... OTHER_CONSTRAINTS >
-    struct __ConstraintSet : public __ConstraintSet< OTHER_CONSTRAINTS... > {
+    struct __ConstraintSet: public __ConstraintSet< OTHER_CONSTRAINTS... > {
       using minset = typename std::conditional<
          __IsInConstraintSet< FIRST_CONSTRAINT,
                               __ConstraintSet< OTHER_CONSTRAINTS... > >::value,
@@ -177,9 +177,9 @@ namespace gum {
     // methods actually used on all these constraints. This is a helper for
     // the class that the user should use, i.e., StructuralConstraintSetStatic
     template < typename CONSTRAINT1, typename... OTHER_CONSTRAINTS >
-    class __StructuralConstraintSetStatic
-        : public virtual CONSTRAINT1
-        , public virtual __StructuralConstraintSetStatic< OTHER_CONSTRAINTS... > {
+    class __StructuralConstraintSetStatic:
+        public virtual CONSTRAINT1,
+        public virtual __StructuralConstraintSetStatic< OTHER_CONSTRAINTS... > {
       public:
       /// the type of the first constraint
       using first_constraint = CONSTRAINT1;
@@ -287,9 +287,9 @@ namespace gum {
     };
 
     template < typename CONSTRAINT >
-    class __StructuralConstraintSetStatic< CONSTRAINT >
-        : public virtual CONSTRAINT
-        , public virtual __StructuralRoot {
+    class __StructuralConstraintSetStatic< CONSTRAINT >:
+        public virtual CONSTRAINT,
+        public virtual __StructuralRoot {
       public:
       /// the type of the first constraint
       using first_constraint = CONSTRAINT;
@@ -423,10 +423,10 @@ namespace gum {
      * to all the constraints, the class will apply the methods once on each
      * distinct constraint, hence avoiding duplicates. */
     template < typename CONSTRAINT1, typename... OTHER_CONSTRAINTS >
-    class StructuralConstraintSetStatic
-        : public virtual __StructuralConstraintSetStatic<
-             CONSTRAINT1,
-             OTHER_CONSTRAINTS... >::minConstraints {
+    class StructuralConstraintSetStatic:
+        public virtual __StructuralConstraintSetStatic<
+           CONSTRAINT1,
+           OTHER_CONSTRAINTS... >::minConstraints {
       public:
       using constraints = typename __StructuralConstraintSetStatic<
          CONSTRAINT1,
@@ -512,9 +512,9 @@ namespace gum {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
     template < typename CONSTRAINT >
-    class StructuralConstraintSetStatic< CONSTRAINT >
-        : public virtual __StructuralConstraintSetStatic<
-             CONSTRAINT >::minConstraints {
+    class StructuralConstraintSetStatic< CONSTRAINT >:
+        public virtual __StructuralConstraintSetStatic<
+           CONSTRAINT >::minConstraints {
       public:
       using constraints =
          typename __StructuralConstraintSetStatic< CONSTRAINT >::minConstraints;

@@ -31,7 +31,7 @@
 
 namespace gum_tests {
 
-  class DBRowTestSuite : public CxxTest::TestSuite {
+  class DBRowTestSuite: public CxxTest::TestSuite {
     public:
     void test_row1() {
       {

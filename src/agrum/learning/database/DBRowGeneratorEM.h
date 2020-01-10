@@ -78,7 +78,7 @@ namespace gum {
      */
     template < typename GUM_SCALAR = double,
                template < typename > class ALLOC = std::allocator >
-    class DBRowGeneratorEM : public DBRowGeneratorWithBN< GUM_SCALAR, ALLOC > {
+    class DBRowGeneratorEM: public DBRowGeneratorWithBN< GUM_SCALAR, ALLOC > {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< DBTranslatedValue >;

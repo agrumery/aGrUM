@@ -118,9 +118,9 @@ namespace gum {
      * @ingroup learning_group
      */
     template < typename STRUCT_CONSTRAINT >
-    class GraphChangesGenerator4K2
-        : public IGraphChangesGenerator4DiGraph
-        , __GraphChangesGenerator4K2 {
+    class GraphChangesGenerator4K2:
+        public IGraphChangesGenerator4DiGraph,
+        __GraphChangesGenerator4K2 {
       public:
       /// the iterator for parsing the list of possible graph change operators
       using iterator = typename Set< GraphChange >::const_iterator;

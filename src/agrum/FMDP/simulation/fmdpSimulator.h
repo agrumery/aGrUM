@@ -45,7 +45,7 @@ namespace gum {
    *
    *
    */
-  class FMDPSimulator : public AbstractSimulator {
+  class FMDPSimulator: public AbstractSimulator {
     public:
     // ===========================================================================
     /// @name Constructors, Destructors.

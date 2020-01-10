@@ -114,7 +114,7 @@ namespace gum {
      * @ingroup learning_database
      */
     template < template < typename > class ALLOC = std::allocator >
-    class DBTranslator : private ALLOC< DBTranslatedValue > {
+    class DBTranslator: private ALLOC< DBTranslatedValue > {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< DBTranslatedValue >;

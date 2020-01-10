@@ -113,7 +113,7 @@ namespace gum {
      * @endcode
      */
     template < template < typename > class ALLOC = std::allocator >
-    class RawDatabaseTable : public IDatabaseTable< DBCell, ALLOC > {
+    class RawDatabaseTable: public IDatabaseTable< DBCell, ALLOC > {
       public:
       /// the type for the vectors used in the RawDatabaseTable
       template < typename TX_DATA >

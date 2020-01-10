@@ -35,7 +35,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     void
        InstanceBayesNet< GUM_SCALAR >::__init(const PRMInstance< GUM_SCALAR >& i) {
-      for (const auto node : i.type().containerDag().nodes()) {
+      for (const auto node: i.type().containerDag().nodes()) {
         try {
           // Adding the attribute
           const PRMAttribute< GUM_SCALAR >& attr = i.get(node);
@@ -46,7 +46,7 @@ namespace gum {
         }
       }
 
-      for (const auto& arc : i.type().containerDag().arcs()) {
+      for (const auto& arc: i.type().containerDag().arcs()) {
         try {
           this->_dag.addArc(arc.tail(), arc.head());
         } catch (InvalidNode&) {
@@ -78,8 +78,8 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE InstanceBayesNet< GUM_SCALAR >& InstanceBayesNet< GUM_SCALAR >::
-                                           operator=(const InstanceBayesNet& from) {
+    INLINE InstanceBayesNet< GUM_SCALAR >&
+       InstanceBayesNet< GUM_SCALAR >::operator=(const InstanceBayesNet& from) {
       if (this != &from) {
         IBayesNet< GUM_SCALAR >::operator=(from);
 
@@ -109,13 +109,13 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE NodeId
-           InstanceBayesNet< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
+       InstanceBayesNet< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
       return __varNodeMap[&var]->id();
     }
 
     template < typename GUM_SCALAR >
     INLINE NodeId
-           InstanceBayesNet< GUM_SCALAR >::idFromName(const std::string& name) const {
+       InstanceBayesNet< GUM_SCALAR >::idFromName(const std::string& name) const {
       return __get(name).id();
     }
 
@@ -146,7 +146,7 @@ namespace gum {
     INLINE const NodeProperty< Size >&
                  InstanceBayesNet< GUM_SCALAR >::modalities() const {
       if (__modalities.empty()) {
-        for (const auto node : this->nodes()) {
+        for (const auto node: this->nodes()) {
           __modalities.insert(node, variable(node).domainSize());
         }
       }
@@ -161,11 +161,11 @@ namespace gum {
       output << "digraph \"";
       output << __inst->name() << "\" {" << std::endl;
 
-      for (const auto node : this->nodes()) {
+      for (const auto node: this->nodes()) {
         if (this->children(node).size() > 0) {
           const NodeSet& children = this->children(node);
 
-          for (const auto chi : children) {
+          for (const auto chi: children) {
             output << tab << "\"" << variable(node).name() << "\" -> ";
             output << "\"" << variable(chi).name() << "\";" << std::endl;
           }

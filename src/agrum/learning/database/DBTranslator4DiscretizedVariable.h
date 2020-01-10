@@ -118,7 +118,7 @@ namespace gum {
      * @ingroup learning_database
      */
     template < template < typename > class ALLOC = std::allocator >
-    class DBTranslator4DiscretizedVariable : public DBTranslator< ALLOC > {
+    class DBTranslator4DiscretizedVariable: public DBTranslator< ALLOC > {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = typename DBTranslator< ALLOC >::allocator_type;

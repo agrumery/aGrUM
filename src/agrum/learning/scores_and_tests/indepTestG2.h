@@ -45,7 +45,7 @@ namespace gum {
      */
     // clang-format on
     template < template < typename > class ALLOC = std::allocator >
-    class IndepTestG2 : public IndependenceTest< ALLOC > {
+    class IndepTestG2: public IndependenceTest< ALLOC > {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;

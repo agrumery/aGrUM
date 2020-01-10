@@ -49,7 +49,7 @@ namespace gum {
    */
   /* =========================================================================*/
 
-  class LabelizedVariable : public DiscreteVariable {
+  class LabelizedVariable: public DiscreteVariable {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

@@ -49,11 +49,11 @@ namespace gum {
     GUM_CONS_CPY(Schedule);
 
     // we must now copy the operations of "from" into "this"
-    for (const auto& elt : from.__node2operation)
+    for (const auto& elt: from.__node2operation)
       __node2operation.insert(elt.first, elt.second->newFactory());
 
     // update the set of operations involved with each multidim table
-    for (const auto& elt : from.__multidim2operations)
+    for (const auto& elt: from.__multidim2operations)
       __multidim2operations.insert(elt.first, new NodeSet(*elt.second));
   }
 
@@ -65,11 +65,11 @@ namespace gum {
 
     // remove all the operations that were stored
 
-    for (const auto& elt : __node2operation)
+    for (const auto& elt: __node2operation)
       delete elt.second;
 
     // remove the sets of operations involved with each multidim table
-    for (const auto& elt : __multidim2operations)
+    for (const auto& elt: __multidim2operations)
       delete elt.second;
   }
 
@@ -79,11 +79,11 @@ namespace gum {
     // avoid self assignment
     if (this != &from) {
       // remove all the operations that were stored
-      for (const auto& elt : __node2operation)
+      for (const auto& elt: __node2operation)
         delete elt.second;
 
       // remove the sets of operations involved with each multidim table
-      for (const auto& elt : __multidim2operations)
+      for (const auto& elt: __multidim2operations)
         delete elt.second;
 
       // fill all the data structures with the elements of from
@@ -95,13 +95,13 @@ namespace gum {
 
       __node2operation.clear();
 
-      for (const auto& elt : from.__node2operation)
+      for (const auto& elt: from.__node2operation)
         __node2operation.insert(elt.first, elt.second->newFactory());
 
       // update the set of operations involved with each multidim table
       __multidim2operations.clear();
 
-      for (const auto& elt : from.__multidim2operations)
+      for (const auto& elt: from.__multidim2operations)
         __multidim2operations.insert(elt.first, new NodeSet(*elt.second));
     }
 
@@ -129,7 +129,7 @@ namespace gum {
     // __operations_with_wrong_parents list
     bool operation_available = true;
 
-    for (const auto par : operation->multiDimArgs()) {
+    for (const auto par: operation->multiDimArgs()) {
       if (par->isAbstract()) {
         // here we shall have a parent in the graph
         operation_available = false;
@@ -151,7 +151,7 @@ namespace gum {
     // tables are created
     NodeSet* involved_ops;
 
-    for (const auto tab : operation->multiDimResults()) {
+    for (const auto tab: operation->multiDimResults()) {
       MultiDimId table_id = tab->id();
 
       if (tab->isAbstract()) __created_multidims.insert(table_id, node_id);
@@ -167,7 +167,7 @@ namespace gum {
 
     // update __multidim2operations with the arguments passed to the newly
     // added operation
-    for (const auto& par : operation->multiDimArgs()) {
+    for (const auto& par: operation->multiDimArgs()) {
       MultiDimId table_id = par->id();
 
       if (!__multidim2operations.exists(table_id)) {
@@ -191,7 +191,7 @@ namespace gum {
     auto localWrongs =
        __operations_with_wrong_parents;   // complete copy of NodeSet
 
-    for (const auto wrong : localWrongs) {
+    for (const auto wrong: localWrongs) {
       // get the arguments passed to wrong and check that those that are
       // abstract
       // multidims belong to the schedule
@@ -199,7 +199,7 @@ namespace gum {
          __node2operation[wrong]->multiDimArgs();
       bool still_wrong = false;
 
-      for (const auto arg : args) {
+      for (const auto arg: args) {
         if (arg->isAbstract() && !__created_multidims.exists(arg->id())) {
           still_wrong = true;
           break;
@@ -213,7 +213,7 @@ namespace gum {
       if (!still_wrong) {
         Size nb_parents = 0;
 
-        for (const auto arg : args)
+        for (const auto arg: args)
           if (arg->isAbstract()) {
             __dag.addArc(__created_multidims[arg->id()], wrong);
             ++nb_parents;
@@ -254,7 +254,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   void Schedule< GUM_SCALAR >::forceAfter(NodeId         op_to_force,
                                           const NodeSet& ops_before) {
-    for (const auto op : ops_before)
+    for (const auto op: ops_before)
       if (op != op_to_force) forceAfter(op_to_force, op);
   }
 
@@ -264,7 +264,7 @@ namespace gum {
   void Schedule< GUM_SCALAR >::forceAfter(
      const ScheduleOperation< GUM_SCALAR >&               op_to_force,
      const Set< const ScheduleOperation< GUM_SCALAR >* >& ops_before) {
-    for (const auto op : ops_before)
+    for (const auto op: ops_before)
       if (*op != op_to_force) forceAfter(op_to_force, *op);
   }
 
@@ -295,7 +295,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   void Schedule< GUM_SCALAR >::forceBefore(NodeId         op_to_force,
                                            const NodeSet& ops_after) {
-    for (const auto op : ops_after)
+    for (const auto op: ops_after)
       if (op != op_to_force) forceBefore(op_to_force, op);
   }
 
@@ -388,7 +388,7 @@ namespace gum {
     // if and only if it has only one parent
     const NodeSet& children = __dag.children(id);
 
-    for (const auto child : children)
+    for (const auto child: children)
       if (__dag.parents(child).size() == 1) __operations_available.insert(child);
 
     // remove the operation's node and its adjacent arcs

@@ -57,7 +57,7 @@ namespace gum {
    */
 
   template < typename GUM_SCALAR >
-  class SamplingInference : public ApproximateInference< GUM_SCALAR > {
+  class SamplingInference: public ApproximateInference< GUM_SCALAR > {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

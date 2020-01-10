@@ -32,7 +32,7 @@
 
 namespace gum_tests {
 
-  class IncrementalTriangulationTestSuite : public CxxTest::TestSuite {
+  class IncrementalTriangulationTestSuite: public CxxTest::TestSuite {
     public:
     void test1() {
       gum::DefaultTriangulation     tr;

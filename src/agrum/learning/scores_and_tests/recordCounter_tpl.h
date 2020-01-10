@@ -79,7 +79,7 @@ namespace gum {
       // save them
       __checkRanges(ranges);
       __ranges.reserve(ranges.size());
-      for (const auto& range : ranges)
+      for (const auto& range: ranges)
         __ranges.push_back(range);
 
       // dispatch the ranges for the threads
@@ -187,8 +187,8 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    RecordCounter< ALLOC >& RecordCounter< ALLOC >::
-                            operator=(const RecordCounter< ALLOC >& from) {
+    RecordCounter< ALLOC >&
+       RecordCounter< ALLOC >::operator=(const RecordCounter< ALLOC >& from) {
       if (this != &from) {
         __parsers = from.__parsers;
         __ranges = from.__ranges;
@@ -207,8 +207,8 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    RecordCounter< ALLOC >& RecordCounter< ALLOC >::
-                            operator=(RecordCounter< ALLOC >&& from) {
+    RecordCounter< ALLOC >&
+       RecordCounter< ALLOC >::operator=(RecordCounter< ALLOC >&& from) {
       if (this != &from) {
         __parsers = std::move(from.__parsers);
         __ranges = std::move(from.__ranges);
@@ -284,7 +284,7 @@ namespace gum {
       else {
         msg << "s are continuous: ";
         bool deja = false;
-        for (const auto& name : bad_vars) {
+        for (const auto& name: bad_vars) {
           if (deja)
             msg << ", ";
           else
@@ -391,11 +391,11 @@ namespace gum {
        const IdSet< ALLOC >& ids) const {
       HashTable< NodeId, std::size_t > res(ids.size());
       if (__nodeId2columns.empty()) {
-        for (const auto id : ids) {
+        for (const auto id: ids) {
           res.insert(id, std::size_t(id));
         }
       } else {
-        for (const auto id : ids) {
+        for (const auto id: ids) {
           res.insert(id, __nodeId2columns.second(id));
         }
       }
@@ -419,7 +419,7 @@ namespace gum {
       // each of its variables and their offsets in the output vector
       const auto& database = __parsers[0].data.database();
       std::size_t result_vect_size = std::size_t(1);
-      for (const auto id : subset_ids) {
+      for (const auto id: subset_ids) {
         result_vect_size *= database.domainSize(nodeId2columns[id]);
       }
 
@@ -643,7 +643,7 @@ namespace gum {
          cols_offsets(ids_size);
       {
         std::size_t i = std::size_t(0);
-        for (const auto id : ids) {
+        for (const auto id: ids) {
           const std::size_t domain_size = database.domainSize(nodeId2columns[id]);
           domain_sizes[i] = domain_size;
           cols_offsets[i].first = nodeId2columns[id];
@@ -678,7 +678,7 @@ namespace gum {
       for (std::size_t i = std::size_t(0); i < ids_size; ++i) {
         cols_of_interest[i] = cols_offsets[i].first;
       }
-      for (auto& parser : __parsers) {
+      for (auto& parser: __parsers) {
         parser.data.setColumnsOfInterest(cols_of_interest);
       }
 
@@ -792,7 +792,7 @@ namespace gum {
       std::vector< std::pair< std::size_t, std::size_t >,
                    ALLOC< std::pair< std::size_t, std::size_t > > >
          incorrect_ranges;
-      for (const auto& range : new_ranges) {
+      for (const auto& range: new_ranges) {
         if ((range.first >= range.second) || (range.second > dbsize)) {
           incorrect_ranges.push_back(range);
         }
@@ -805,7 +805,7 @@ namespace gum {
         else
           str << " is incorrect: ";
         bool deja = false;
-        for (const auto& range : incorrect_ranges) {
+        for (const auto& range: incorrect_ranges) {
           if (deja)
             str << ", ";
           else
@@ -833,7 +833,7 @@ namespace gum {
       }
 
       // dispatch the ranges
-      for (const auto& range : __ranges) {
+      for (const auto& range: __ranges) {
         if (range.second > range.first) {
           const std::size_t range_size = range.second - range.first;
           std::size_t       nb_threads = range_size / __min_nb_rows_per_thread;
@@ -928,7 +928,7 @@ namespace gum {
       clear();
 
       // assign the new BN
-      for (auto& xparser : __parsers) {
+      for (auto& xparser: __parsers) {
         xparser.data.setBayesNet(new_bn);
       }
     }

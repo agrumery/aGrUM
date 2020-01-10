@@ -39,7 +39,7 @@ namespace gum {
       if (__inf != nullptr) delete __inf;
 
       if (!__obs.empty())
-        for (const auto pot : __obs)
+        for (const auto pot: __obs)
           // We used const ptrs only because of
           // MarginalTargetedInference::addEvidence()
           // requires it
@@ -103,8 +103,9 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE GroundedInference< GUM_SCALAR >& GroundedInference< GUM_SCALAR >::
-                                            operator=(const GroundedInference< GUM_SCALAR >& source) {
+    INLINE GroundedInference< GUM_SCALAR >&
+       GroundedInference< GUM_SCALAR >::operator=(
+          const GroundedInference< GUM_SCALAR >& source) {
       GUM_ERROR(FatalError, "illegal call to copy operator");
     }
 
@@ -137,7 +138,7 @@ namespace gum {
       std::stringstream sBuff;
 
       if (!__obs.empty()) {
-        for (auto e : __obs) {
+        for (auto e: __obs) {
           try {
             __inf->addEvidence(*e);
           } catch (InvalidArgument&) { __inf->chgEvidence(*e); }

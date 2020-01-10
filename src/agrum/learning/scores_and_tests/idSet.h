@@ -194,7 +194,7 @@ namespace gum {
      * hash values quite difficult. IdSets fix this issue.
      */
     template < template < typename > class ALLOC = std::allocator >
-    class IdSet : private ALLOC< NodeId > {
+    class IdSet: private ALLOC< NodeId > {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;
@@ -431,8 +431,8 @@ namespace gum {
 
   /// the hash function for idSets
   template < template < typename > class ALLOC >
-  class HashFunc< learning::IdSet< ALLOC > >
-      : public HashFuncBase< learning::IdSet< ALLOC > > {
+  class HashFunc< learning::IdSet< ALLOC > >:
+      public HashFuncBase< learning::IdSet< ALLOC > > {
     public:
     /**
      * @brief Returns the value of a key as a Size.

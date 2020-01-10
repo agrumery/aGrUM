@@ -39,7 +39,7 @@ namespace gum {
       __array(from.__array), __name(from.__name) {
     GUM_CONS_CPY(MultiDimBijArray);
 
-    for (auto var : from.variablesSequence()) {
+    for (auto var: from.variablesSequence()) {
       MultiDimWithOffset< GUM_SCALAR >::add(*var);
     }
   }
@@ -51,7 +51,7 @@ namespace gum {
       __array(array), __name("MultiDimBijArray") {
     GUM_CONSTRUCTOR(MultiDimBijArray);
 
-    for (auto var : array.variablesSequence()) {
+    for (auto var: array.variablesSequence()) {
       MultiDimWithOffset< GUM_SCALAR >::add(*(bijection.second(var)));
     }
   }
@@ -63,7 +63,7 @@ namespace gum {
       __array(array.__array), __name("MultiDimBijArray") {
     GUM_CONSTRUCTOR(MultiDimBijArray);
 
-    for (auto var : array.variablesSequence()) {
+    for (auto var: array.variablesSequence()) {
       MultiDimWithOffset< GUM_SCALAR >::add(*(bijection.second(var)));
     }
   }
@@ -74,8 +74,8 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  MultiDimBijArray< GUM_SCALAR >& MultiDimBijArray< GUM_SCALAR >::
-                                  operator=(const MultiDimBijArray< GUM_SCALAR >& from) {
+  MultiDimBijArray< GUM_SCALAR >& MultiDimBijArray< GUM_SCALAR >::operator=(
+     const MultiDimBijArray< GUM_SCALAR >& from) {
     GUM_ERROR(OperationNotAllowed, "MultiDimBijArray are readonly.");
   }
 
@@ -117,7 +117,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR
-         MultiDimBijArray< GUM_SCALAR >::get(const Instantiation& i) const {
+     MultiDimBijArray< GUM_SCALAR >::get(const Instantiation& i) const {
     if (i.isMaster(this)) {
       return __array._values[this->_offsets[&i]];
     } else {

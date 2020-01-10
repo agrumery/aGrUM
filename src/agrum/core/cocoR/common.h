@@ -85,10 +85,10 @@ Coco/R itself) does not fall under the GNU General Public License.
 #    error unknown compiler!
 #  endif
 
-#  define COCO_WCHAR_MAX 65535
-#  define MIN_BUFFER_LENGTH 1024
-#  define MAX_BUFFER_LENGTH (64 * MIN_BUFFER_LENGTH)
-#  define HEAP_BLOCK_SIZE (64 * 1024)
+#  define COCO_WCHAR_MAX               65535
+#  define MIN_BUFFER_LENGTH            1024
+#  define MAX_BUFFER_LENGTH            (64 * MIN_BUFFER_LENGTH)
+#  define HEAP_BLOCK_SIZE              (64 * 1024)
 #  define COCO_CPP_NAMESPACE_SEPARATOR L':'
 
 

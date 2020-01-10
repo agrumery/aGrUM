@@ -104,7 +104,7 @@ namespace gum {
     Idx                                       offset = 1;
     HashTable< const DiscreteVariable*, Idx > var1offset(table_vars.size());
 
-    for (const auto var : table_vars) {
+    for (const auto var: table_vars) {
       if (inst_vars.exists(var)) table_alone_offset += inst_vars[var] * offset;
 
       var1offset.insert(var, offset);
@@ -125,7 +125,7 @@ namespace gum {
     bool                                has_before_incr = true;
     bool                                found_inst_var = false;
 
-    for (const auto var : table_vars) {
+    for (const auto var: table_vars) {
       if (!inst_vars.exists(var)) {
         table_and_result_domain.push_back(var->domainSize());
         table_and_result_offset.push_back(var1offset[var]);
@@ -162,7 +162,7 @@ namespace gum {
        new MultiDimArray< GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE >;
     result->beginMultipleChanges();
 
-    for (const auto var : result_varSeq)
+    for (const auto var: result_varSeq)
       *result << *var;
 
     result->endMultipleChanges();

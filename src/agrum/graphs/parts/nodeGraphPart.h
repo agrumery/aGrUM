@@ -137,9 +137,7 @@ namespace gum {
    * @class NodeGraphPartIteratorSafe
    * @brief Safe iterator on the node set of a graph.
    */
-  class NodeGraphPartIteratorSafe
-      : public NodeGraphPartIterator
-      , public Listener {
+  class NodeGraphPartIteratorSafe: public NodeGraphPartIterator, public Listener {
     friend class NodeGraphPart;
 
     public:

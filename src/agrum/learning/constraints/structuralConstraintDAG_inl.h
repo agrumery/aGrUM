@@ -40,10 +40,10 @@ namespace gum {
       // check that the digraph has no cycle
       DAG g;
 
-      for (auto node : graph)
+      for (auto node: graph)
         g.addNodeWithId(node);
 
-      for (auto& arc : graph.arcs())
+      for (auto& arc: graph.arcs())
         g.addArc(arc.tail(), arc.head());
 
       _DAG__cycle_detector.setDAG(g);

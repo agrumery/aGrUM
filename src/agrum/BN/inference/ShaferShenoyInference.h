@@ -65,9 +65,9 @@ namespace gum {
    * @ingroup bn_inference
    */
   template < typename GUM_SCALAR >
-  class ShaferShenoyInference
-      : public JointTargetedInference< GUM_SCALAR >
-      , public EvidenceInference< GUM_SCALAR > {
+  class ShaferShenoyInference:
+      public JointTargetedInference< GUM_SCALAR >,
+      public EvidenceInference< GUM_SCALAR > {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

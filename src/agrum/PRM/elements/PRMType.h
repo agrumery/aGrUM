@@ -60,7 +60,7 @@ namespace gum {
      * Since MultiDim use pointers to handle DiscreteVariables, it is necessary
      * to create a new instance of a type for each PRMAttribute.
      */
-    class PRMType : public PRMObject {
+    class PRMType: public PRMObject {
       public:
       // ==========================================================================
       /// @name Friends of PRMType

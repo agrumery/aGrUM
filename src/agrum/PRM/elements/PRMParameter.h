@@ -49,7 +49,7 @@ namespace gum {
      * @ingroup prm_group
      */
     template < typename GUM_SCALAR >
-    class PRMParameter : public PRMClassElement< GUM_SCALAR > {
+    class PRMParameter: public PRMClassElement< GUM_SCALAR > {
       public:
       enum ParameterType { INT, REAL };
 

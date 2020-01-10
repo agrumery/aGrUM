@@ -37,7 +37,7 @@
  */
 namespace gum_tests {
 
-  class SlotChainTestSuite : public CxxTest::TestSuite {
+  class SlotChainTestSuite: public CxxTest::TestSuite {
     private:
     typedef gum::prm::PRMSlotChain< double >               PRMSlotChain;
     ClassElementTestSuiteAbstract*                         __classEltTestSuite;

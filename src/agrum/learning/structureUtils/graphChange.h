@@ -147,7 +147,7 @@ namespace gum {
      * using a switch on GraphChanges to determine which change corresponds to
      * this class.
      */
-    class ArcAddition : public GraphChange {
+    class ArcAddition: public GraphChange {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -213,7 +213,7 @@ namespace gum {
      * using a switch on GraphChanges to determine which change corresponds to
      * this class.
      */
-    class ArcDeletion : public GraphChange {
+    class ArcDeletion: public GraphChange {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -279,7 +279,7 @@ namespace gum {
      * using a switch on GraphChanges to determine which change corresponds to
      * this class.
      */
-    class ArcReversal : public GraphChange {
+    class ArcReversal: public GraphChange {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -345,7 +345,7 @@ namespace gum {
      * using a switch on GraphChanges to determine which change corresponds to
      * this class.
      */
-    class EdgeAddition : public GraphChange {
+    class EdgeAddition: public GraphChange {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -411,7 +411,7 @@ namespace gum {
      * using a switch on GraphChanges to determine which change corresponds to
      * this class.
      */
-    class EdgeDeletion : public GraphChange {
+    class EdgeDeletion: public GraphChange {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -484,8 +484,8 @@ namespace gum {
 
   /// the hash function for Graph Changes
   template <>
-  class HashFunc< learning::GraphChange >
-      : public HashFuncBase< learning::GraphChange > {
+  class HashFunc< learning::GraphChange >:
+      public HashFuncBase< learning::GraphChange > {
     public:
     /**
      * @brief Returns the value of a key as a Size.
@@ -500,8 +500,8 @@ namespace gum {
 
   /// the hash function for Arc Additions
   template <>
-  class HashFunc< learning::ArcAddition >
-      : public HashFuncBase< learning::ArcAddition > {
+  class HashFunc< learning::ArcAddition >:
+      public HashFuncBase< learning::ArcAddition > {
     public:
     /**
      * @brief Returns the value of a key as a Size.
@@ -516,8 +516,8 @@ namespace gum {
 
   /// the hash function for Arc Deletions
   template <>
-  class HashFunc< learning::ArcDeletion >
-      : public HashFuncBase< learning::ArcDeletion > {
+  class HashFunc< learning::ArcDeletion >:
+      public HashFuncBase< learning::ArcDeletion > {
     public:
     /**
      * @brief Returns the value of a key as a Size.
@@ -532,8 +532,8 @@ namespace gum {
 
   /// the hash function for Arc Reversals
   template <>
-  class HashFunc< learning::ArcReversal >
-      : public HashFuncBase< learning::ArcReversal > {
+  class HashFunc< learning::ArcReversal >:
+      public HashFuncBase< learning::ArcReversal > {
     public:
     /**
      * @brief Returns the value of a key as a Size.
@@ -548,8 +548,8 @@ namespace gum {
 
   /// the hash function for Edge Additions
   template <>
-  class HashFunc< learning::EdgeAddition >
-      : public HashFuncBase< learning::EdgeAddition > {
+  class HashFunc< learning::EdgeAddition >:
+      public HashFuncBase< learning::EdgeAddition > {
     /**
      * @brief Returns the value of a key as a Size.
      * @param key The value to return as a Size.
@@ -564,8 +564,8 @@ namespace gum {
 
   /// the hash function for Edge Deletions
   template <>
-  class HashFunc< learning::EdgeDeletion >
-      : public HashFuncBase< learning::EdgeDeletion > {
+  class HashFunc< learning::EdgeDeletion >:
+      public HashFuncBase< learning::EdgeDeletion > {
     public:
     /**
      * @brief Returns the value of a key as a Size.

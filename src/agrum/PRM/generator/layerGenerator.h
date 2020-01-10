@@ -53,7 +53,7 @@ namespace gum {
      * @ingroup prm_group
      */
     template < typename GUM_SCALAR >
-    class LayerGenerator : public PRMGenerator< GUM_SCALAR > {
+    class LayerGenerator: public PRMGenerator< GUM_SCALAR > {
       public:
       // ========================================================================
       /// @name Constructors and destructor.

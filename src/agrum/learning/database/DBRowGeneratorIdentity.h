@@ -73,7 +73,7 @@ namespace gum {
      * @endcode
      */
     template < template < typename > class ALLOC = std::allocator >
-    class DBRowGeneratorIdentity : public DBRowGenerator< ALLOC > {
+    class DBRowGeneratorIdentity: public DBRowGenerator< ALLOC > {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< DBTranslatedValue >;

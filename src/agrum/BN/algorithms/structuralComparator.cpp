@@ -39,7 +39,7 @@ namespace gum {
     if (ref.size() != test.size()) {
       GUM_ERROR(OperationNotAllowed, "Graphs of different sizes");
     }
-    for (const NodeId node : ref.asNodeSet()) {
+    for (const NodeId node: ref.asNodeSet()) {
       if (!test.existsNode(node)) {
         GUM_ERROR(InvalidNode, "Test doesn't contain all nodes from ref");
       }
@@ -58,7 +58,7 @@ namespace gum {
     __wrong_arc_none = 0;
     __wrong_none_arc = 0;
 
-    for (const Arc& arc : ref.arcs()) {
+    for (const Arc& arc: ref.arcs()) {
       if (test.existsArc(arc)) {
         ++__true_arc;
       } else if (test.existsArc(arc.head(), arc.tail())) {
@@ -67,7 +67,7 @@ namespace gum {
         ++__wrong_none_arc;
       }
     }
-    for (const Arc& arc : test.arcs()) {
+    for (const Arc& arc: test.arcs()) {
       if (!ref.existsArc(arc) && !ref.existsArc(arc.head(), arc.tail())) {
         ++__wrong_arc_none;
       }
@@ -81,7 +81,7 @@ namespace gum {
     if (ref.size() != test.size()) {
       GUM_ERROR(OperationNotAllowed, "Graphs of different sizes");
     }
-    for (const NodeId node : ref.asNodeSet()) {
+    for (const NodeId node: ref.asNodeSet()) {
       if (!test.existsNode(node)) {
         GUM_ERROR(InvalidNode, "Test doesn't contain all nodes from ref");
       }
@@ -100,14 +100,14 @@ namespace gum {
     __wrong_edge_none = 0;
     __wrong_none_edge = 0;
 
-    for (const Edge& edge : ref.edges()) {
+    for (const Edge& edge: ref.edges()) {
       if (test.existsEdge(edge)) {
         ++__true_edge;
       } else {
         ++__wrong_none_edge;
       }
     }
-    for (const Edge& edge : test.edges()) {
+    for (const Edge& edge: test.edges()) {
       if (!ref.existsEdge(edge)) { ++__wrong_edge_none; }
     }
     // TN = #possible edges - #existing edges
@@ -120,7 +120,7 @@ namespace gum {
     if (ref.size() != test.size()) {
       GUM_ERROR(OperationNotAllowed, "Graphs of different sizes");
     }
-    for (const NodeId node : ref.asNodeSet()) {
+    for (const NodeId node: ref.asNodeSet()) {
       if (!test.existsNode(node)) {
         GUM_ERROR(InvalidNode, "Test doesn't contain all nodes from ref");
       }
@@ -138,7 +138,7 @@ namespace gum {
     __wrong_none_arc = 0;
     __wrong_none_edge = 0;
 
-    for (const Arc& arc : ref.arcs()) {
+    for (const Arc& arc: ref.arcs()) {
       if (test.existsArc(arc)) {
         ++__true_arc;
       } else if (test.existsArc(arc.head(), arc.tail())) {
@@ -149,7 +149,7 @@ namespace gum {
         ++__wrong_none_arc;
       }
     }
-    for (const Edge& edge : ref.edges()) {
+    for (const Edge& edge: ref.edges()) {
       if (test.existsEdge(edge)) {
         ++__true_edge;
       } else if (test.existsArc(edge.first(), edge.second())
@@ -159,13 +159,13 @@ namespace gum {
         ++__wrong_none_edge;
       }
     }
-    for (const Arc& arc : test.arcs()) {
+    for (const Arc& arc: test.arcs()) {
       if (!ref.existsArc(arc) && !ref.existsArc(arc.head(), arc.tail())
           && !ref.existsEdge(arc.tail(), arc.head())) {
         ++__wrong_arc_none;
       }
     }
-    for (const Edge& edge : test.edges()) {
+    for (const Edge& edge: test.edges()) {
       if (!ref.existsEdge(edge) && !ref.existsArc(edge.first(), edge.second())
           && !ref.existsArc(edge.second(), edge.first())) {
         ++__wrong_edge_none;

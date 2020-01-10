@@ -89,7 +89,7 @@ namespace gum {
     {
       Idx current_offset = 1;
 
-      for (const auto var : t1_vars) {
+      for (const auto var: t1_vars) {
         t1_offsets.insert(var, current_offset);
         current_offset *= var->domainSize();
       }
@@ -98,7 +98,7 @@ namespace gum {
     {
       Idx current_offset = 1;
 
-      for (const auto var : t2_vars) {
+      for (const auto var: t2_vars) {
         t2_offsets.insert(var, current_offset);
         current_offset *= var->domainSize();
       }
@@ -125,7 +125,7 @@ namespace gum {
     Idx                                    t1_and_t2_domain_size = 1;
 
     {
-      for (const auto var : t1_vars)
+      for (const auto var: t1_vars)
         if (t2_vars.exists(var)) {
           t1_and_t2_domain.push_back(var->domainSize());
           t1_and_t2_var.push_back(var);
@@ -136,7 +136,7 @@ namespace gum {
           t1_alone_domain_size *= var->domainSize();
         }
 
-      for (const auto var : t2_vars)
+      for (const auto var: t2_vars)
         if (!t1_vars.exists(var)) {
           t2_alone_domain.push_back(var->domainSize());
           t2_alone_var.push_back(var);
@@ -152,7 +152,7 @@ namespace gum {
     if (t1_and_t2_var.size()) {
       unsigned int nb_t1_t2_vars = 0;
 
-      for (const auto var : t1_vars) {
+      for (const auto var: t1_vars) {
         if (var != t1_and_t2_var[nb_t1_t2_vars]) break;
         nb_t1_t2_vars += 1;
       }
@@ -189,13 +189,13 @@ namespace gum {
        new MultiDimArray< GUM_MULTI_DIM_OPERATOR_TYPE >;
     result->beginMultipleChanges();
 
-    for (const auto var : t1_vars)
+    for (const auto var: t1_vars)
       if (t2_vars.exists(var)) *result << *var;
 
-    for (const auto var : t2_vars)
+    for (const auto var: t2_vars)
       if (!t1_vars.exists(var)) *result << *var;
 
-    for (const auto var : t1_vars)
+    for (const auto var: t1_vars)
       if (!t2_vars.exists(var)) *result << *var;
 
     result->endMultipleChanges();

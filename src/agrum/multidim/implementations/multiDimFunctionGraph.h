@@ -78,9 +78,9 @@ namespace gum {
   template < typename GUM_SCALAR,
              template < typename > class TerminalNodePolicy =
                 ExactTerminalNodePolicy >
-  class MultiDimFunctionGraph
-      : public MultiDimImplementation< GUM_SCALAR >
-      , public TerminalNodePolicy< GUM_SCALAR > {
+  class MultiDimFunctionGraph:
+      public MultiDimImplementation< GUM_SCALAR >,
+      public TerminalNodePolicy< GUM_SCALAR > {
     public:
     /// Only for proper initialization of a certain returned value
     const static GUM_SCALAR defaultValue;

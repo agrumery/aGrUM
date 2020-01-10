@@ -64,9 +64,9 @@ namespace gum {
      *
      * @ingroup learning_group
      */
-    class StructuralConstraintSliceOrder
-        : protected virtual StructuralConstraintSetStatic<
-             StructuralConstraintDiGraph > {
+    class StructuralConstraintSliceOrder:
+        protected virtual StructuralConstraintSetStatic<
+           StructuralConstraintDiGraph > {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

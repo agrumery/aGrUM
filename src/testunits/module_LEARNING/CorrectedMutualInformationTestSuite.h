@@ -34,12 +34,12 @@
 
 namespace gum_tests {
 
-  class CorrectedMutualInformationTestSuite : public CxxTest::TestSuite {
+  class CorrectedMutualInformationTestSuite: public CxxTest::TestSuite {
     private:
     double __entropy(const std::vector< double >& vect) {
       double res = 0.0;
       double sum = 0.0;
-      for (auto nb : vect) {
+      for (auto nb: vect) {
         if (nb) {
           res -= nb * std::log2(nb);
           sum += nb;

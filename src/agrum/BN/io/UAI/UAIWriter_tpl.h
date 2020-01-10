@@ -58,7 +58,7 @@ namespace gum {
 
     output << __preambule(bn) << std::endl;
 
-    for (auto node : bn.nodes())
+    for (auto node: bn.nodes())
       output << __cptBloc(bn, node) << std::endl;
 
     output << std::endl;
@@ -98,20 +98,20 @@ namespace gum {
 
     str << bn.size() << std::endl;
 
-    for (auto node : bn.nodes())
+    for (auto node: bn.nodes())
       str << bn.variable(node).domainSize() << " ";
     str << std::endl;
 
     str << bn.size() << std::endl;   // number of potentials
 
-    for (auto node : bn.nodes()) {
+    for (auto node: bn.nodes()) {
       const auto& p = bn.cpt(node);
       str << p.nbrDim() << " ";
       // P(X|Y,Z) has to be written "Y Z X". So we need to keep the first var (X)
       // in order to print it at last
       NodeId first = 0;
       bool   isFirst = true;
-      for (auto k : p.variablesSequence()) {
+      for (auto k: p.variablesSequence()) {
         if (isFirst) {
           isFirst = false;
           first = bn.idFromName(k->name());

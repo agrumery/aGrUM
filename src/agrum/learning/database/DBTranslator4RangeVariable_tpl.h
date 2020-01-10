@@ -59,7 +59,7 @@ namespace gum {
       // symbol, we record it because it cannot be compomised by updating the
       // domain of the range variable
       bool non_int_symbol_found = false;
-      for (const auto& symbol : this->_missing_symbols) {
+      for (const auto& symbol: this->_missing_symbols) {
         if (DBCell::isInteger(symbol)) {
           __status_int_missing_symbols.insert(symbol, false);
         } else if (!non_int_symbol_found) {
@@ -129,7 +129,7 @@ namespace gum {
 
       // add the content of the variable into the back dictionary
       std::size_t size = 0;
-      for (const auto& label : var.labels()) {
+      for (const auto& label: var.labels()) {
         // insert the label into the back_dictionary
         this->_back_dico.insert(size, label);
         ++size;
@@ -140,7 +140,7 @@ namespace gum {
       // we record it because it cannot be compomised by updating the domain
       // of the range variable. This will be useful for back translations
       bool non_int_symbol_found = false;
-      for (const auto& symbol : this->_missing_symbols) {
+      for (const auto& symbol: this->_missing_symbols) {
         if (DBCell::isInteger(symbol)) {
           __status_int_missing_symbols.insert(symbol, false);
         } else if (!non_int_symbol_found) {
@@ -179,7 +179,7 @@ namespace gum {
 
       // add the content of the variable into the back dictionary
       std::size_t size = 0;
-      for (const auto& label : var.labels()) {
+      for (const auto& label: var.labels()) {
         // insert the label into the back_dictionary
         this->_back_dico.insert(size, label);
         ++size;
@@ -268,8 +268,9 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    DBTranslator4RangeVariable< ALLOC >& DBTranslator4RangeVariable< ALLOC >::
-                                         operator=(const DBTranslator4RangeVariable< ALLOC >& from) {
+    DBTranslator4RangeVariable< ALLOC >&
+       DBTranslator4RangeVariable< ALLOC >::operator=(
+          const DBTranslator4RangeVariable< ALLOC >& from) {
       if (this != &from) {
         DBTranslator< ALLOC >::operator=(from);
         __variable = from.__variable;
@@ -284,8 +285,9 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    DBTranslator4RangeVariable< ALLOC >& DBTranslator4RangeVariable< ALLOC >::
-                                         operator=(DBTranslator4RangeVariable< ALLOC >&& from) {
+    DBTranslator4RangeVariable< ALLOC >&
+       DBTranslator4RangeVariable< ALLOC >::operator=(
+          DBTranslator4RangeVariable< ALLOC >&& from) {
       if (this != &from) {
         DBTranslator< ALLOC >::operator=(std::move(from));
         __variable = std::move(from.__variable);
@@ -384,7 +386,7 @@ namespace gum {
 
           // check that there does not already exist a translated missing
           // value within the new bounds of the range variable
-          for (const auto& missing : __translated_int_missing_symbols) {
+          for (const auto& missing: __translated_int_missing_symbols) {
             if ((missing >= new_value) && (missing <= upper_bound)) {
               GUM_ERROR(OperationNotAllowed,
                         "String \""
@@ -425,7 +427,7 @@ namespace gum {
 
           // check that there does not already exist a translated missing
           // value within the new bounds of the range variable
-          for (const auto& missing : __translated_int_missing_symbols) {
+          for (const auto& missing: __translated_int_missing_symbols) {
             if ((missing <= new_value) && (missing >= lower_bound)) {
               GUM_ERROR(OperationNotAllowed,
                         "String \""
@@ -491,7 +493,7 @@ namespace gum {
       const auto& labels = __variable.labels();
       std::size_t last_number = std::numeric_limits< std::size_t >::lowest();
       std::size_t number;
-      for (const auto& label : labels) {
+      for (const auto& label: labels) {
         number = this->_back_dico.first(label);
         if (number < last_number) return true;
         last_number = number;
@@ -563,7 +565,7 @@ namespace gum {
     /// returns the translation of a missing value
     template < template < typename > class ALLOC >
     INLINE DBTranslatedValue
-           DBTranslator4RangeVariable< ALLOC >::missingValue() const {
+       DBTranslator4RangeVariable< ALLOC >::missingValue() const {
       return DBTranslatedValue{std::numeric_limits< std::size_t >::max()};
     }
 

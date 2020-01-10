@@ -34,7 +34,7 @@
 
 namespace gum_tests {
 
-  class O3SystemTestSuite : public CxxTest::TestSuite {
+  class O3SystemTestSuite: public CxxTest::TestSuite {
     public:
     gum::prm::PRM< double >* simple_printers;
     gum::prm::PRM< double >* complex_printers;

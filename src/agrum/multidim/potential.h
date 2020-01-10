@@ -57,7 +57,7 @@ namespace gum {
    * matrix.
    */
   template < typename GUM_SCALAR >
-  class Potential : public MultiDimDecorator< GUM_SCALAR > {
+  class Potential: public MultiDimDecorator< GUM_SCALAR > {
     public:
     // =========================================================================
     /// @name Constructors, Destructors and Copy

@@ -40,7 +40,7 @@
 
 namespace gum_tests {
 
-  class DSLWriterTestSuite : public CxxTest::TestSuite {
+  class DSLWriterTestSuite: public CxxTest::TestSuite {
     public:
     gum::BayesNet< double >* bn;
     gum::NodeId              i1, i2, i3, i4, i5;

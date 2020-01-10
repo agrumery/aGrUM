@@ -59,7 +59,7 @@
 
 namespace gum_tests {
 
-  class simpleListenerForGHC : public gum::ApproximationSchemeListener {
+  class simpleListenerForGHC: public gum::ApproximationSchemeListener {
     private:
     int         __nbr;
     std::string __mess;
@@ -84,13 +84,13 @@ namespace gum_tests {
   };
 
 
-  class GreedyHillClimbingTestSuite : public CxxTest::TestSuite {
+  class GreedyHillClimbingTestSuite: public CxxTest::TestSuite {
     private:
     double __score(gum::learning::ScoreBIC<>& score,
                    const gum::NodeId&         node,
                    const gum::DAG&            dag) {
       std::vector< gum::NodeId > cond_set;
-      for (const auto par : dag.parents(node)) {
+      for (const auto par: dag.parents(node)) {
         cond_set.push_back(par);
       }
       return score.score(node, cond_set);
@@ -499,7 +499,7 @@ namespace gum_tests {
       const std::string    s1 = "1";
       const std::string    s2 = "2";
       gum::Set< gum::Idx > seq{1, 10, 11, 14};
-      for (auto i : seq) {
+      for (auto i: seq) {
         const gum::DiscreteVariable& var = bn.variable(i);
         TS_ASSERT(var.label(0) == s0);
         TS_ASSERT(var.label(1) == s1);
@@ -554,7 +554,7 @@ namespace gum_tests {
 
       std::vector< double > weights{0, 1.0, 5.0, 10.0, 1000.0, 7000.0, 100000.0};
 
-      for (const auto weight : weights) {
+      for (const auto weight: weights) {
         apriori.setWeight(weight);
         gum::learning::ScoreBIC<> score(parser, apriori);
 
@@ -580,11 +580,11 @@ namespace gum_tests {
         // std::cout << dag << std::endl;
 
         gum::DAG xdag;
-        for (auto node : dag)
+        for (auto node: dag)
           xdag.addNodeWithId(node);
 
         std::vector< double > scores(nb_vars);
-        for (auto node : xdag)
+        for (auto node: xdag)
           scores[std::size_t(node)] = __score(score, node, xdag);
 
         while (__applyNextChange(score, scores, xdag)) {}

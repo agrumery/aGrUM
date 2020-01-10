@@ -218,8 +218,8 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    DBInitializerFromSQL< ALLOC >& DBInitializerFromSQL< ALLOC >::
-                                   operator=(const DBInitializerFromSQL< ALLOC >& from) {
+    DBInitializerFromSQL< ALLOC >& DBInitializerFromSQL< ALLOC >::operator=(
+       const DBInitializerFromSQL< ALLOC >& from) {
       if (this != &from) {
         IDBInitializer< ALLOC >::operator=(from);
         // check if the connection parameters have changed
@@ -254,8 +254,8 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    DBInitializerFromSQL< ALLOC >& DBInitializerFromSQL< ALLOC >::
-                                   operator=(DBInitializerFromSQL< ALLOC >&& from) {
+    DBInitializerFromSQL< ALLOC >& DBInitializerFromSQL< ALLOC >::operator=(
+       DBInitializerFromSQL< ALLOC >&& from) {
       return operator=(from);
     }
 

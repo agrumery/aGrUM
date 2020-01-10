@@ -37,7 +37,7 @@
 
 namespace gum_tests {
 
-  class MCBayesNetGeneratorTestSuite : public CxxTest::TestSuite {
+  class MCBayesNetGeneratorTestSuite: public CxxTest::TestSuite {
     public:
     void setUp() {}
 

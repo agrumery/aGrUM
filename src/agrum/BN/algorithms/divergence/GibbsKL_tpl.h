@@ -34,16 +34,16 @@
 #include <agrum/core/approximations/approximationScheme.h>
 #include <agrum/core/hashTable.h>
 
-#define GIBBSKL_DEFAULT_MAXITER 10000000
-#define GIBBSKL_DEFAULT_EPSILON 1e-10
+#define GIBBSKL_DEFAULT_MAXITER          10000000
+#define GIBBSKL_DEFAULT_EPSILON          1e-10
 #define GIBBSKL_DEFAULT_MIN_EPSILON_RATE 1e-10
-#define GIBBSKL_DEFAULT_PERIOD_SIZE 200
-#define GIBBSKL_DEFAULT_VERBOSITY false
-#define GIBBSKL_DEFAULT_BURNIN 2000
-#define GIBBSKL_DEFAULT_TIMEOUT 6000
+#define GIBBSKL_DEFAULT_PERIOD_SIZE      200
+#define GIBBSKL_DEFAULT_VERBOSITY        false
+#define GIBBSKL_DEFAULT_BURNIN           2000
+#define GIBBSKL_DEFAULT_TIMEOUT          6000
 
 #define GIBBSKL_POURCENT_DRAWN_SAMPLE 10   // percent drawn
-#define GIBBSKL_DRAWN_AT_RANDOM false
+#define GIBBSKL_DRAWN_AT_RANDOM       false
 
 namespace gum {
 

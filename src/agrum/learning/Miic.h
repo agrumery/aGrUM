@@ -103,7 +103,7 @@ namespace gum {
      *
      * @ingroup learning_group
      */
-    class Miic : public ApproximationScheme {
+    class Miic: public ApproximationScheme {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

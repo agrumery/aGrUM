@@ -95,8 +95,8 @@ namespace gum {
   // copy operator
 
   template < typename Key, typename Data >
-  IndexedTree< Key, Data >& IndexedTree< Key, Data >::
-                            operator=(const IndexedTree< Key, Data >& from) {
+  IndexedTree< Key, Data >&
+     IndexedTree< Key, Data >::operator=(const IndexedTree< Key, Data >& from) {
     // avoid self assignment
     if (this != &from) {
       // for debugging purposes

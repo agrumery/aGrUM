@@ -47,7 +47,7 @@ namespace gum {
       level--;
       auto todo = __mb.nodes().asNodeSet() - done;
       bool anythingnew = false;
-      for (NodeId n : todo) {
+      for (NodeId n: todo) {
         done.insert(n);
         if (__buildMarkovBlanket(n)) anythingnew = true;
       }
@@ -57,8 +57,8 @@ namespace gum {
     // we add now some arcs that are between the nodes in __mb but are not part of
     // the last ones.
     // For instance, an arc between a parent and a parent of children
-    for (const auto node : __mb.nodes()) {
-      for (const auto child : __model.children(node)) {
+    for (const auto node: __mb.nodes()) {
+      for (const auto child: __model.children(node)) {
         if (__mb.existsNode(child) && !__mb.existsArc(Arc(node, child))) {
           __mb.addArc(node, child);
           __specialArcs.insert(Arc(node, child));
@@ -84,7 +84,7 @@ namespace gum {
       change = true;
     }
 
-    for (const auto& parent : __model.parents(node)) {
+    for (const auto& parent: __model.parents(node)) {
       if (!__mb.nodes().exists(parent)) {
         __mb.addNodeWithId(parent);
         change = true;
@@ -92,13 +92,13 @@ namespace gum {
       __mb.addArc(parent, node);
     }
 
-    for (const auto& child : __model.children(node)) {
+    for (const auto& child: __model.children(node)) {
       if (!__mb.nodes().exists(child)) {
         __mb.addNodeWithId(child);
         change = true;
       }
       __mb.addArc(node, child);
-      for (const auto& opar : __model.parents(child)) {
+      for (const auto& opar: __model.parents(child)) {
         if (opar != node) {
           if (!__mb.nodes().exists(opar)) {
             __mb.addNodeWithId(opar);
@@ -117,13 +117,13 @@ namespace gum {
 
     if (sizeArcs() != other.sizeArcs()) return false;
 
-    for (const auto& nid : nodes()) {
+    for (const auto& nid: nodes()) {
       try {
         other.idFromName(__model.variable(nid).name());
       } catch (NotFound) { return false; }
     }
 
-    for (const auto& arc : arcs()) {
+    for (const auto& arc: arcs()) {
       if (!other.arcs().exists(
              Arc(other.idFromName(__model.variable(arc.tail()).name()),
                  other.idFromName(__model.variable(arc.head()).name()))))
@@ -143,13 +143,13 @@ namespace gum {
     nodeStream << "node [shape = ellipse];" << std::endl;
     std::string tab = "  ";
 
-    for (const auto node : __mb.nodes()) {
+    for (const auto node: __mb.nodes()) {
       nodeStream << tab << node << "[label=\"" << __model.variable(node).name()
                  << "\"";
       if (node == __node) { nodeStream << ", color=red"; }
       nodeStream << "];" << std::endl;
 
-      for (const auto chi : __mb.children(node)) {
+      for (const auto chi: __mb.children(node)) {
         arcStream << tab << node << " -> " << chi;
         if (__specialArcs.exists(Arc(node, chi))) { arcStream << " [color=grey]"; }
         arcStream << ";" << std::endl;

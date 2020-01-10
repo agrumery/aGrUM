@@ -38,14 +38,14 @@
 #include <cxxtest/AgrumApproximationUtils.h>   // must be last include
 
 #define EPSILON_FOR_HYBRID_SIMPLE_TEST 2e-1
-#define EPSILON_FOR_HYBRID 1e-1
+#define EPSILON_FOR_HYBRID             1e-1
 
 #define EPSILON_FOR_HYBRID_HARD_TEST 2e-1
-#define EPSILON_FOR_HARD_HYBRID 6e-2
+#define EPSILON_FOR_HARD_HYBRID      6e-2
 
 namespace gum_tests {
 
-  class aSimpleHybridListener : public gum::ApproximationSchemeListener {
+  class aSimpleHybridListener: public gum::ApproximationSchemeListener {
     private:
     int         __nbr;
     std::string __mess;
@@ -66,7 +66,7 @@ namespace gum_tests {
     std::string getMess() { return __mess; }
   };
 
-  class loopySamplingInferenceTestSuite : public CxxTest::TestSuite {
+  class loopySamplingInferenceTestSuite: public CxxTest::TestSuite {
     public:
     void testHybridBinaryTreeWithoutEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype(

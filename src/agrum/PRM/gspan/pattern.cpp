@@ -46,7 +46,7 @@ namespace gum {
              node, addNodeWithLabel(const_cast< LabelData& >(source.label(node))));
         }
 
-        for (const auto edge : source.code().codes)
+        for (const auto edge: source.code().codes)
           addArc(node_map[edge->i],
                  node_map[edge->j],
                  const_cast< LabelData& >(
@@ -54,8 +54,8 @@ namespace gum {
       }
 
       bool Pattern::isMinimal() {
-        for (const auto node : nodes()) {
-          for (const auto next : parents(node)) {
+        for (const auto node: nodes()) {
+          for (const auto next: parents(node)) {
             Size     u = label(node).id;
             Size     v = label(next).id;
             EdgeCode edge_code(1, 2, u, label(next, node).id, v);
@@ -67,7 +67,7 @@ namespace gum {
             }
           }
 
-          for (const auto next : children(node)) {
+          for (const auto next: children(node)) {
             Size     u = label(node).id;
             Size     v = label(next).id;
             EdgeCode edge_code(1, 2, u, label(node, next).id, v);
@@ -87,7 +87,7 @@ namespace gum {
         std::stringstream sBuff;
         sBuff << "digraph " << name << " {\n";
 
-        for (const auto arc : arcs()) {
+        for (const auto arc: arcs()) {
           sBuff << label(arc.tail()).id << " -> ";
           sBuff << label(arc.head()).id << ";\n";
         }
@@ -106,19 +106,19 @@ namespace gum {
           p.addArc(1, 2, label(u, v));
         } catch (NotFound&) { p.addArc(1, 2, label(v, u)); }
 
-        for (const auto nei : children(u))
+        for (const auto nei: children(u))
           if (nei != v)
             if (__rec(p, node_map, u, nei)) return true;
 
-        for (const auto nei : parents(u))
+        for (const auto nei: parents(u))
           if (nei != v)
             if (__rec(p, node_map, u, nei)) return true;
 
-        for (const auto nei : children(v))
+        for (const auto nei: children(v))
           if (nei != u)
             if (__rec(p, node_map, v, nei)) return true;
 
-        for (const auto nei : parents(v))
+        for (const auto nei: parents(v))
           if (nei != u)
             if (__rec(p, node_map, v, nei)) return true;
 
@@ -171,11 +171,11 @@ namespace gum {
           std::list< NodeId > r_path;
           p.rightmostPath(r_path);
 
-          for (const auto node : r_path) {
-            for (const auto nei : children(node_map.first(node)))
+          for (const auto node: r_path) {
+            for (const auto nei: children(node_map.first(node)))
               if (__rec(p, node_map, node_map.first(node), nei)) return true;
 
-            for (const auto nei : parents(node_map.first(node)))
+            for (const auto nei: parents(node_map.first(node)))
               if (__rec(p, node_map, node_map.first(node), nei)) return true;
           }
         }
@@ -251,13 +251,13 @@ namespace gum {
                   p.rightmostPath(r_path);
                   stack.push_back(std::make_pair((NodeId)0, (NodeId)0));
 
-                  for (const auto node : r_path) {
-                    for (const auto nei : children(node)) {
+                  for (const auto node: r_path) {
+                    for (const auto nei: children(node)) {
                       stack.push_back(std::make_pair(node_map.first(node), nei));
                       ++(rec_call.back());
                     }
 
-                    for (const auto nei : parents(node)) {
+                    for (const auto nei: parents(node)) {
                       stack.push_back(std::make_pair(node_map.first(node), nei));
                       ++(rec_call.back());
                     }

@@ -99,7 +99,7 @@ namespace gum {
    * @endcode
    */
   /* ====================================================================== */
-  class DAG : public DiGraph {
+  class DAG: public DiGraph {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

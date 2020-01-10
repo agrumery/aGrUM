@@ -43,8 +43,8 @@ namespace gum {
      * except those defined in the class during structure learning
      * @ingroup learning_group
      */
-    class StructuralConstraintPossibleEdges
-        : public virtual StructuralConstraintEmpty {
+    class StructuralConstraintPossibleEdges:
+        public virtual StructuralConstraintEmpty {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

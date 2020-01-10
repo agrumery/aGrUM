@@ -46,7 +46,7 @@
 
 namespace gum_tests {
   ////////////////////////////////////////////////////////////////////
-  class CNMonteCarloSamplingListener : public gum::ApproximationSchemeListener {
+  class CNMonteCarloSamplingListener: public gum::ApproximationSchemeListener {
     private:
     int         __nbr;
     std::string __msg;
@@ -71,7 +71,7 @@ namespace gum_tests {
   };   // end of : class mcSamplingListener
 
   ////////////////////////////////////////////////////////////////
-  class CNMonteCarloSamplingInferenceTestSuite : public CxxTest::TestSuite {
+  class CNMonteCarloSamplingInferenceTestSuite: public CxxTest::TestSuite {
     private:
     protected:
     public:
@@ -160,7 +160,7 @@ namespace gum_tests {
       // modalities from map
       // from file with dynamic network, not 2U
       try {
-        for (const auto node : cn->current_bn().nodes())
+        for (const auto node: cn->current_bn().nodes())
           modals[cn->current_bn().variable(node).name()] = binaryModal;
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
@@ -178,7 +178,7 @@ namespace gum_tests {
 
 
       try {
-        for (const auto node : cn->current_bn().nodes()) {
+        for (const auto node: cn->current_bn().nodes()) {
           std::vector< double > inf(mcs.marginalMin(node));
           std::vector< double > sup(mcs.marginalMax(node));
           double                e_inf = mcs.expectationMin(node);
@@ -224,7 +224,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(mcs.makeInference(););
 
       try {
-        for (const auto node : cn->current_bn().nodes()) {
+        for (const auto node: cn->current_bn().nodes()) {
           exp    inf(mcs.marginalMin(node));
           exp    sup(mcs.marginalMax(node));
           double e_inf = mcs.expectationMin(node);
@@ -280,7 +280,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(mcs.makeInference(););
 
       try {
-        for (const auto node : cn->current_bn().nodes()) {
+        for (const auto node: cn->current_bn().nodes()) {
           exp    inf(mcs.marginalMin(node));
           exp    sup(mcs.marginalMax(node));
           double e_inf = mcs.expectationMin(node);

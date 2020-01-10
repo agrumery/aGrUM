@@ -38,7 +38,7 @@
 
 namespace gum_tests {
 
-  class FMDPDatReaderTestSuite : public CxxTest::TestSuite {
+  class FMDPDatReaderTestSuite: public CxxTest::TestSuite {
     private:
     std::string file;
 

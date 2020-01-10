@@ -73,10 +73,10 @@ namespace gum {
     const JunctionTree& jt = junctionTree();   // here, the fact that we get
     // a junction tree ensures that _domain_sizes is different from nullptr
 
-    for (const NodeId cl : jt) {
+    for (const NodeId cl: jt) {
       dSize = 0.0;
 
-      for (const auto node : jt.clique(cl))
+      for (const auto node: jt.clique(cl))
         dSize += std::log10((*_domain_sizes)[node]);
 
       if (res < dSize) res = dSize;

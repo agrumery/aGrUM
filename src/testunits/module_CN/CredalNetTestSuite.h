@@ -43,7 +43,7 @@
 
 namespace gum_tests {
 
-  class CredalNetTestSuite : public CxxTest::TestSuite {
+  class CredalNetTestSuite: public CxxTest::TestSuite {
     private:
     protected:
     public:
@@ -259,7 +259,7 @@ namespace gum_tests {
                         {0, 3. / 5, 2. / 5}};   // C lp solution A:2 B:2
 
       /// compute solutions, check bijection
-      for (const auto& id : ids) {
+      for (const auto& id: ids) {
         gum::Instantiation ins(cn->instantiation(id));
         ins.setFirst();
 
@@ -274,7 +274,7 @@ namespace gum_tests {
 
           std::vector< bool > checked(sols_size, false);
 
-          for (const auto& vertex : vertices) {
+          for (const auto& vertex: vertices) {
             for (gum::Size sol = 0; sol < sols_size; sol++) {
               bool eq = true;
 
@@ -295,7 +295,7 @@ namespace gum_tests {
 
           bool r = true;
 
-          for (const auto b : checked) {
+          for (const auto b: checked) {
             r = r && b;
           }
 

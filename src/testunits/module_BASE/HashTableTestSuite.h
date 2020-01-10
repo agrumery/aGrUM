@@ -32,7 +32,7 @@
 
 namespace gum_tests {
 
-  class HashTableTestSuite : public CxxTest::TestSuite {
+  class HashTableTestSuite: public CxxTest::TestSuite {
     public:
     void testConstructor() {
       gum::HashTable< int, int >* table = nullptr;
@@ -509,7 +509,7 @@ namespace gum_tests {
         expected.insert(t1[i]);
       }
 
-      for (const auto& elt : t1)
+      for (const auto& elt: t1)
         obtained.insert(elt.second);
 
       TS_ASSERT_EQUALS(expected.size(), obtained.size());
@@ -529,7 +529,7 @@ namespace gum_tests {
         expected.insert(t1[i]);
       }
 
-      for (const auto& elt : t1)
+      for (const auto& elt: t1)
         obtained.insert(elt.second);
 
       TS_ASSERT_EQUALS(expected.size(), obtained.size());
@@ -706,7 +706,7 @@ namespace gum_tests {
 
         k = 0;
 
-        for (const auto& elt : table) {
+        for (const auto& elt: table) {
           s = elt.second;
           k += elt.first;
         }

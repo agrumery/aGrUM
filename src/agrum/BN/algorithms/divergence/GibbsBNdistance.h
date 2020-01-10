@@ -76,10 +76,10 @@ namespace gum {
    */
 
   template < typename GUM_SCALAR >
-  class GibbsBNdistance
-      : public BNdistance< GUM_SCALAR >
-      , public ApproximationScheme
-      , public GibbsOperator< GUM_SCALAR > {
+  class GibbsBNdistance:
+      public BNdistance< GUM_SCALAR >,
+      public ApproximationScheme,
+      public GibbsOperator< GUM_SCALAR > {
     public:
     /* no default constructor */
 

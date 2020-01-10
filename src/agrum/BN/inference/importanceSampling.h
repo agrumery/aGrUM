@@ -49,7 +49,7 @@ namespace gum {
 
 
   template < typename GUM_SCALAR >
-  class ImportanceSampling : public SamplingInference< GUM_SCALAR > {
+  class ImportanceSampling: public SamplingInference< GUM_SCALAR > {
     public:
     /**
      * Default constructor

@@ -197,8 +197,8 @@ namespace gum {
 
     /// copy operator
     template < typename T_DATA, template < typename > class ALLOC >
-    INLINE DBRow< T_DATA, ALLOC >& DBRow< T_DATA, ALLOC >::
-                                   operator=(const DBRow< T_DATA, ALLOC >& from) {
+    INLINE DBRow< T_DATA, ALLOC >&
+       DBRow< T_DATA, ALLOC >::operator=(const DBRow< T_DATA, ALLOC >& from) {
       if (this != &from) {
         _row = from._row;
         _weight = from._weight;
@@ -209,8 +209,8 @@ namespace gum {
 
     /// move operator
     template < typename T_DATA, template < typename > class ALLOC >
-    INLINE DBRow< T_DATA, ALLOC >& DBRow< T_DATA, ALLOC >::
-                                   operator=(DBRow< T_DATA, ALLOC >&& from) {
+    INLINE DBRow< T_DATA, ALLOC >&
+       DBRow< T_DATA, ALLOC >::operator=(DBRow< T_DATA, ALLOC >&& from) {
       if (this != &from) {
         _row = std::move(from._row);
         _weight = from._weight;
@@ -226,8 +226,8 @@ namespace gum {
 
     /// returns the ith T_DATA of the row
     template < typename T_DATA, template < typename > class ALLOC >
-    INLINE const T_DATA& DBRow< T_DATA, ALLOC >::
-                         operator[](const std::size_t i) const {
+    INLINE const T_DATA&
+       DBRow< T_DATA, ALLOC >::operator[](const std::size_t i) const {
       return _row[i];
     }
 

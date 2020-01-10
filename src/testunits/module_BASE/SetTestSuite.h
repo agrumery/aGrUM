@@ -32,7 +32,7 @@
 
 namespace gum_tests {
 
-  class SetTestSuite : public CxxTest::TestSuite {
+  class SetTestSuite: public CxxTest::TestSuite {
     public:
     void testConstructor() {
       gum::Set< int >* set = nullptr;
@@ -509,7 +509,7 @@ namespace gum_tests {
 
       gum::Set< int > obtained;
 
-      for (const auto i : t1)
+      for (const auto i: t1)
         obtained.insert(i);
 
       TS_ASSERT(t1 == obtained);

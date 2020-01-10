@@ -52,7 +52,7 @@ namespace gum {
    */
   // clang-format on
   template < typename GUM_SCALAR >
-  class MultiDimNoisyORNet : public MultiDimICIModel< GUM_SCALAR > {
+  class MultiDimNoisyORNet: public MultiDimICIModel< GUM_SCALAR > {
     public:
     // ============================================================================
     /// @name Constructors / Destructors

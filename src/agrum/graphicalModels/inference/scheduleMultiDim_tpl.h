@@ -244,7 +244,7 @@ namespace gum {
     // compute and store the domain size
     Size size = 1;
 
-    for (const auto var : *new_vars)
+    for (const auto var: *new_vars)
       size *= var->domainSize();
 
     __id2size().insert(__id, size);
@@ -291,8 +291,8 @@ namespace gum {
 
   /// copy operator
   template < typename GUM_SCALAR >
-  ScheduleMultiDim< GUM_SCALAR >& ScheduleMultiDim< GUM_SCALAR >::
-                                  operator=(const ScheduleMultiDim< GUM_SCALAR >& from) {
+  ScheduleMultiDim< GUM_SCALAR >& ScheduleMultiDim< GUM_SCALAR >::operator=(
+     const ScheduleMultiDim< GUM_SCALAR >& from) {
     // avoid self assignment
     if (__id != from.__id) {
       // remove the old id
@@ -324,15 +324,15 @@ namespace gum {
 
   /// checks whether two ScheduleMultiDim are related to the same table
   template < typename GUM_SCALAR >
-  INLINE bool ScheduleMultiDim< GUM_SCALAR >::
-              operator==(const ScheduleMultiDim< GUM_SCALAR >& m) const {
+  INLINE bool ScheduleMultiDim< GUM_SCALAR >::operator==(
+     const ScheduleMultiDim< GUM_SCALAR >& m) const {
     return (__id == m.__id);
   }
 
   /// checks whether two ScheduleMultiDim are related to different tables
   template < typename GUM_SCALAR >
-  INLINE bool ScheduleMultiDim< GUM_SCALAR >::
-              operator!=(const ScheduleMultiDim< GUM_SCALAR >& m) const {
+  INLINE bool ScheduleMultiDim< GUM_SCALAR >::operator!=(
+     const ScheduleMultiDim< GUM_SCALAR >& m) const {
     return (__id != m.__id);
   }
 

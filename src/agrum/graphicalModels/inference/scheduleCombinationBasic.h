@@ -87,7 +87,7 @@
 namespace gum {
 
   template < typename GUM_SCALAR >
-  class ScheduleCombinationBasic : public ScheduleCombination< GUM_SCALAR > {
+  class ScheduleCombinationBasic: public ScheduleCombination< GUM_SCALAR > {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

@@ -44,7 +44,7 @@
 
 namespace gum_tests {
 
-  class aSimpleLBPListener : public gum::ApproximationSchemeListener {
+  class aSimpleLBPListener: public gum::ApproximationSchemeListener {
     private:
     int         __nbr;
     std::string __mess;
@@ -69,7 +69,7 @@ namespace gum_tests {
 
 #define MAX_ITER 10
 
-  class LoopyBeliefPropagationTestSuite : public CxxTest::TestSuite {
+  class LoopyBeliefPropagationTestSuite: public CxxTest::TestSuite {
     public:
     void testLBPBinaryTreeWithoutEvidence() {
       for (int i = 0; i < MAX_ITER; i++) {
@@ -582,7 +582,7 @@ namespace gum_tests {
 
     void testAggregatorsInLBP() {
       gum::BayesNet< double > bn;
-      for (const auto& e : {"a", "b", "c", "d"})
+      for (const auto& e: {"a", "b", "c", "d"})
         bn.add(e, 2);
       bn.addOR(gum::LabelizedVariable("O", "", 2));
       bn.addAND(gum::LabelizedVariable("A", "", 2));
@@ -607,7 +607,7 @@ namespace gum_tests {
 
     void testLogitInLBP() {
       gum::BayesNet< double > bn;
-      for (const auto& item : {"Cold", "Flu", "Malaria", "X", "Y", "Z"})
+      for (const auto& item: {"Cold", "Flu", "Malaria", "X", "Y", "Z"})
         bn.add(item, 2);
 
       gum::LabelizedVariable fever("Fever", "", 2);
@@ -636,7 +636,7 @@ namespace gum_tests {
                             double errmax = 1e-2) {
       GUM_SCALAR  err = static_cast< GUM_SCALAR >(0);
       std::string argstr = "";
-      for (const auto& node : bn.nodes()) {
+      for (const auto& node: bn.nodes()) {
         GUM_SCALAR e = lazy.posterior(node).KL(inf.posterior(node));
         if (e > err) {
           err = e;

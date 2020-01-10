@@ -40,7 +40,7 @@
 
 namespace gum_tests {
 
-  class UAIReaderTestSuite : public CxxTest::TestSuite {
+  class UAIReaderTestSuite: public CxxTest::TestSuite {
     public:
     void testConstuctor() {
       std::string file = GET_RESSOURCES_PATH("uai/BNUAIReader_file1.uai");
@@ -152,7 +152,7 @@ namespace gum_tests {
       if (net != nullptr) {
         gum::HashTable< std::string, gum::NodeId > idMap;
 
-        for (const auto node : net->nodes())
+        for (const auto node: net->nodes())
           idMap.insert(net->variable(node).name(), node);
 
         const gum::DiscreteVariable& var_1 = net->variable(idMap["4"]);

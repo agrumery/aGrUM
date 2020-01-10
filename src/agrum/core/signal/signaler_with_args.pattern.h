@@ -65,7 +65,7 @@ namespace gum {
       (const MAKE_NAME(BasicSignaler) & s) : ISignaler(s) {
         GUM_CONS_CPY(MAKE_NAME(BasicSignaler));
 
-        for (const auto& connector : _connectors) {
+        for (const auto& connector: _connectors) {
           connector->target()->attachSignal__(this);
           _connectors.pushBack(connector->clone());
         }
@@ -75,7 +75,7 @@ namespace gum {
       virtual ~MAKE_NAME(BasicSignaler)() {
         GUM_DESTRUCTOR(MAKE_NAME(BasicSignaler));
 
-        for (const auto& connector : _connectors) {
+        for (const auto& connector: _connectors) {
           connector->target()->detachSignal__(this);
           delete connector;
         }
@@ -103,7 +103,7 @@ namespace gum {
       friend class Listener;
 
       void duplicateTarget(const Listener* oldtarget, Listener* newtarget) {
-        for (const auto& connector : _connectors)
+        for (const auto& connector: _connectors)
           if (connector->target() == oldtarget) {
             _connectors.pushBack(connector->duplicate(newtarget));
           }
@@ -206,7 +206,7 @@ namespace gum {
     }
 
     INLINE void operator()(const void* src, LIST_DECL_ARGS) {
-      for (const auto& connector : this->_connectors) {
+      for (const auto& connector: this->_connectors) {
         connector->notify(src, LIST_ARGS);
       }
     }

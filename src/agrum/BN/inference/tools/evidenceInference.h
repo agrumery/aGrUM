@@ -49,7 +49,7 @@ namespace gum {
    * of the probability of evidence entered in Bayesian networks
    */
   template < typename GUM_SCALAR >
-  class EvidenceInference : public virtual BayesNetInference< GUM_SCALAR > {
+  class EvidenceInference: public virtual BayesNetInference< GUM_SCALAR > {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

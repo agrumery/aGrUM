@@ -136,7 +136,7 @@ namespace gum {
             f.startAttribute(type, *a, true);
             size = getDomainSize();
 
-            for (const auto par : dag.parents(names.second(*a))) {
+            for (const auto par: dag.parents(names.second(*a))) {
               f.addParent(names.first(par));
               size *= f.retrieveClass(l[lvl].c.back())
                          .get(names.first(par))
@@ -180,18 +180,18 @@ namespace gum {
       NodeId                id = 0;
 
       if (lvl) {
-        for (const auto agg : l[lvl].g) {
+        for (const auto agg: l[lvl].g) {
           id = dag.addNode();
           names.insert(agg, id);
           nodes.push_back(id);
         }
       }
 
-      for (const auto attr : l[lvl].a) {
+      for (const auto attr: l[lvl].a) {
         id = dag.addNode();
         names.insert(attr, id);
 
-        for (const auto node : nodes)
+        for (const auto node: nodes)
           if (std::rand() < density) dag.addArc(node, names.second(attr));
 
         nodes.push_back(id);
@@ -200,11 +200,11 @@ namespace gum {
       // For each nodes with #parents > __max_parents we randomly remove parents
       // until
       // #parents <= __max_parents
-      for (const auto node : dag.nodes()) {
+      for (const auto node: dag.nodes()) {
         if (dag.parents(node).size() > getMaxParents()) {
           std::vector< NodeId > v;
 
-          for (const auto par : dag.parents(node))
+          for (const auto par: dag.parents(node))
             v.push_back(par);
 
           while (dag.parents(node).size() > getMaxParents()) {
@@ -287,8 +287,8 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE LayerGenerator< GUM_SCALAR >& LayerGenerator< GUM_SCALAR >::
-                                         operator=(const LayerGenerator< GUM_SCALAR >& source) {
+    INLINE LayerGenerator< GUM_SCALAR >& LayerGenerator< GUM_SCALAR >::operator=(
+       const LayerGenerator< GUM_SCALAR >& source) {
       __layers = source.__layers;
       __domain_size = source.__domain_size;
       __max_parents = source.__max_parents;

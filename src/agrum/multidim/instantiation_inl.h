@@ -133,7 +133,7 @@ namespace gum {
                 "Var <" << v.name() << "> already exists in this instantiation");
     }
 
-    for (const auto& vv : __vars) {
+    for (const auto& vv: __vars) {
       if (vv->name() == v.name()) {
         GUM_ERROR(InvalidArgument,
                   "Var with name <" << v.name()
@@ -173,7 +173,7 @@ namespace gum {
     // @todo enhance the cplxity with a member domainSize ?
     Size s = 1;
 
-    for (const auto var : __vars)
+    for (const auto var: __vars)
       s *= var->domainSize();
 
     return s;
@@ -213,7 +213,7 @@ namespace gum {
   // returns the variable with name in the tuple
   INLINE const DiscreteVariable&
                Instantiation::variable(const std::string& name) const {
-    for (const auto& v : __vars) {
+    for (const auto& v: __vars) {
       if (v->name() == name) return *v;
     }
 
@@ -810,7 +810,7 @@ namespace gum {
   /// by vectors of Idx
   INLINE Size HashFunc< Instantiation >::castToSize(const Instantiation& key) {
     Size h = Size(0);
-    for (const DiscreteVariable* k :
+    for (const DiscreteVariable* k:
          key.variablesSequence())   // k are unique only by address (not by name)
       h += HashFunc< const DiscreteVariable* >::castToSize(k) * Size(key.val(*k));
 
@@ -819,15 +819,15 @@ namespace gum {
 
   /// returns a hashed key for hash tables the keys of which are represented
   /// by vectors of Idx
-  INLINE Size HashFunc< Instantiation >::
-              operator()(const Instantiation& key) const {
+  INLINE Size
+     HashFunc< Instantiation >::operator()(const Instantiation& key) const {
     return castToSize(key) & this->_hash_mask;
   }
 
   INLINE bool Instantiation::operator==(const Instantiation& other) const {
     if (inOverflow() && other.inOverflow()) return true;
     if (other.nbrDim() != nbrDim()) return false;
-    for (const auto& k : variablesSequence()) {
+    for (const auto& k: variablesSequence()) {
       if (!other.contains(k)) return false;
       if (val(*k) != other.val(*k)) return false;
     }

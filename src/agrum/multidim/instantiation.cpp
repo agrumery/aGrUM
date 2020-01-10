@@ -58,7 +58,7 @@ namespace gum {
     __vals.reserve(v.size());
     // fill the instantiation
 
-    for (const auto var : v)
+    for (const auto var: v)
       __add(*var);
 
     actAsSlave(master->getMasterRef());
@@ -151,7 +151,7 @@ namespace gum {
 
     bool first = true;
 
-    for (const auto var : __vars) {
+    for (const auto var: __vars) {
       if (!first) sstr << "|";
 
       first = false;
@@ -167,7 +167,7 @@ namespace gum {
   Idx Instantiation::hamming() const {
     Idx res = 0;
 
-    for (const auto var : __vars)
+    for (const auto var: __vars)
       res += val(*var);
 
     return res;
@@ -176,7 +176,7 @@ namespace gum {
   void Instantiation::setValsFrom(
      const HashTable< const DiscreteVariable*, const DiscreteVariable* >& map,
      const Instantiation& external) {
-    for (const auto& elt : map) {
+    for (const auto& elt: map) {
       const DiscreteVariable& var = *elt.second;
 
       try {

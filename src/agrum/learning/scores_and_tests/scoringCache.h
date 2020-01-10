@@ -57,7 +57,7 @@ namespace gum {
      * learning computational burden.
      */
     template < template < typename > class ALLOC = std::allocator >
-    class ScoringCache : private ALLOC< NodeId > {
+    class ScoringCache: private ALLOC< NodeId > {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;

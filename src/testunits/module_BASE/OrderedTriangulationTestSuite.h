@@ -30,7 +30,7 @@
 
 namespace gum_tests {
 
-  class OrderedTriangulationTestSuite : public CxxTest::TestSuite {
+  class OrderedTriangulationTestSuite: public CxxTest::TestSuite {
     public:
     void testTriangulatedGraph1() {
       gum::NodeSet c1, c2, c3, c4, c5;

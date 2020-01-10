@@ -41,7 +41,7 @@
 
 namespace gum_tests {
 
-  class MultiDimFunctionGraphTestSuite : public CxxTest::TestSuite {
+  class MultiDimFunctionGraphTestSuite: public CxxTest::TestSuite {
     private:
     void __fillFactory(gum::MultiDimFunctionGraph< double >* factory,
                        gum::List< gum::NodeId >*             idList) {

@@ -58,7 +58,7 @@ namespace gum {
      *
      * @ingroup learning_group
      */
-    class LocalSearchWithTabuList : public ApproximationScheme {
+    class LocalSearchWithTabuList: public ApproximationScheme {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

@@ -49,9 +49,7 @@ namespace gum {
      * @ingroup learning_param_utils
      */
     template < template < typename > class ALLOC = std::allocator >
-    class DAG2BNLearner
-        : public ApproximationScheme
-        , private ALLOC< NodeId > {
+    class DAG2BNLearner: public ApproximationScheme, private ALLOC< NodeId > {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;

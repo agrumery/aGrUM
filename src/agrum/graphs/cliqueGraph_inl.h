@@ -119,7 +119,7 @@ namespace gum {
   /// argument
 
   INLINE NodeId CliqueGraph::container(const NodeId id) const {
-    for (const auto& elt : __cliques)
+    for (const auto& elt: __cliques)
       if (elt.second.contains(id)) return elt.first;
 
     GUM_ERROR(NotFound, "This node belongs to no clique");
@@ -128,7 +128,7 @@ namespace gum {
   /// function used to update the __separators when __clique/edges are modified
 
   INLINE void CliqueGraph::__updateSeparators(const NodeId id1) {
-    for (const auto nei : neighbours(id1))
+    for (const auto nei: neighbours(id1))
       __separators[Edge(nei, id1)] = __cliques[id1] * __cliques[nei];
   }
 

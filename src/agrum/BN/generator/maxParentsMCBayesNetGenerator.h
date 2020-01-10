@@ -87,8 +87,8 @@ namespace gum {
   template < typename GUM_SCALAR,
              template < typename > class ICPTGenerator = SimpleCPTGenerator,
              template < typename > class ICPTDisturber = SimpleCPTDisturber >
-  class MaxParentsMCBayesNetGenerator
-      : public MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber > {
+  class MaxParentsMCBayesNetGenerator:
+      public MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber > {
     public:
     // ############################################################################
     /// @name Constructors / Destructor

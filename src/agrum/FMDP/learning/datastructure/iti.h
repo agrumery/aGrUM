@@ -59,7 +59,7 @@ namespace gum {
    */
 
   template < TESTNAME AttributeSelection, bool isScalar = false >
-  class ITI : public IncrementalGraphLearner< AttributeSelection, isScalar > {
+  class ITI: public IncrementalGraphLearner< AttributeSelection, isScalar > {
     public:
     // ###################################################################
     /// @name Constructor & destructor.

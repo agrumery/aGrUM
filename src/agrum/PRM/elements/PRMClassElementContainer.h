@@ -64,7 +64,7 @@ namespace gum {
      * @ingroup prm_group
      */
     template < typename GUM_SCALAR >
-    class PRMClassElementContainer : public PRMObject {
+    class PRMClassElementContainer: public PRMObject {
       friend class PRMClassElementContainterIterator;
       friend class PRMClassElementContainterConstIterator;
 

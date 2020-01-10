@@ -56,7 +56,7 @@ namespace gum {
    * adressable. Its purpose is to deal with slave Instantiation and
    * notification.
    */
-  class MultiDimAdressable : public MultiDimInterface {
+  class MultiDimAdressable: public MultiDimInterface {
     public:
     // =======================================================================
     /// @name Constructors / Destructors

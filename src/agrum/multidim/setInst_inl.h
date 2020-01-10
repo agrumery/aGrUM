@@ -544,7 +544,7 @@ namespace gum {
     // @todo enhance the cplxity with a member domainSize ?
     Size s = 1;
 
-    for (const auto var : __vars)
+    for (const auto var: __vars)
       s *= var->domainSize();
 
     return s;

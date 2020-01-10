@@ -36,7 +36,7 @@
  */
 namespace gum_tests {
 
-  class ReferenceSlotTestSuite : public CxxTest::TestSuite {
+  class ReferenceSlotTestSuite: public CxxTest::TestSuite {
     private:
     typedef gum::prm::PRMReferenceSlot< double > PRMReferenceSlot;
     ClassElementTestSuiteAbstract*               __classEltTestSuite;

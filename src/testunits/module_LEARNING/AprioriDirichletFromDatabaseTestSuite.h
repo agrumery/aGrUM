@@ -30,7 +30,7 @@
 
 namespace gum_tests {
 
-  class AprioriDirichletFromDatabaseTestSuite : public CxxTest::TestSuite {
+  class AprioriDirichletFromDatabaseTestSuite: public CxxTest::TestSuite {
     public:
     void test1() {
       // create the translator set

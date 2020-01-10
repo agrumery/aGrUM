@@ -45,7 +45,7 @@ namespace gum {
    * \ingroup graph_group
    *
    */
-  class OrderedTriangulation : public StaticTriangulation {
+  class OrderedTriangulation: public StaticTriangulation {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

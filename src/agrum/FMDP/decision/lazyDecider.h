@@ -46,7 +46,7 @@ namespace gum {
    * Does nothing more than the interface for DecisionStrategy does
    *
    */
-  class LazyDecider : public IDecisionStrategy {
+  class LazyDecider: public IDecisionStrategy {
     // ###################################################################
     /// @name Constructor & destructor.
     // ###################################################################

@@ -72,13 +72,13 @@ namespace gum {
     }
 
 
-    bool GreaterPairOn2nd::
-         operator()(const std::pair<
-                     std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
-                     double >& e1,
-                  const std::pair<
-                     std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
-                     double >& e2) const {
+    bool GreaterPairOn2nd::operator()(
+       const std::pair<
+          std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
+          double >& e1,
+       const std::pair<
+          std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >*,
+          double >& e2) const {
       return e1.second > e2.second;
     }
 
@@ -160,7 +160,7 @@ namespace gum {
       EdgeSet edges = graph.edges();
       Size    steps_init = edges.size();
 
-      for (const Edge& edge : edges) {
+      for (const Edge& edge: edges) {
         x = edge.first();
         y = edge.second();
         double Ixy = I.score(x, y);
@@ -425,7 +425,7 @@ namespace gum {
       }   // while
 
       // erasing the the double headed arcs
-      for (const Arc& arc : __latent_couples) {
+      for (const Arc& arc: __latent_couples) {
         graph.eraseArc(Arc(arc.head(), arc.tail()));
       }
     }
@@ -576,7 +576,7 @@ namespace gum {
       }   // while
 
       // erasing the the double headed arcs
-      for (const Arc& arc : __latent_couples) {
+      for (const Arc& arc: __latent_couples) {
         graph.eraseArc(Arc(arc.head(), arc.tail()));
       }
     }
@@ -779,7 +779,7 @@ namespace gum {
       //__N = I.N();
       const double Ixy_ui = I.score(x, y, ui);
 
-      for (const NodeId z : graph) {
+      for (const NodeId z: graph) {
         // if z!=x and z!=y and z not in ui
         if (z != x && z != y && std::find(ui.begin(), ui.end(), z) == ui.end()) {
           double Pnv;
@@ -853,9 +853,9 @@ namespace gum {
              sep_set) {
       std::vector< std::pair< std::tuple< NodeId, NodeId, NodeId >*, double > >
          triples;
-      for (NodeId z : graph) {
-        for (NodeId x : graph.neighbours(z)) {
-          for (NodeId y : graph.neighbours(z)) {
+      for (NodeId z: graph) {
+        for (NodeId x: graph.neighbours(z)) {
+          for (NodeId y: graph.neighbours(z)) {
             if (y < x && !graph.existsEdge(x, y)) {
               std::vector< NodeId >       ui;
               std::pair< NodeId, NodeId > key = {x, y};
@@ -899,9 +899,9 @@ namespace gum {
                                double,
                                double > >
          triples;
-      for (NodeId z : graph) {
-        for (NodeId x : graph.neighbours(z)) {
-          for (NodeId y : graph.neighbours(z)) {
+      for (NodeId z: graph) {
+        for (NodeId x: graph.neighbours(z)) {
+          for (NodeId y: graph.neighbours(z)) {
             if (y < x && !graph.existsEdge(x, y)) {
               std::vector< NodeId >       ui;
               std::pair< NodeId, NodeId > key = {x, y};
@@ -946,7 +946,7 @@ namespace gum {
                                    double,
                                    double,
                                    double > > proba_triples) {
-      for (auto& triple : proba_triples) {
+      for (auto& triple: proba_triples) {
         NodeId x, y, z;
         x = std::get< 0 >(*std::get< 0 >(triple));
         y = std::get< 1 >(*std::get< 0 >(triple));
@@ -991,13 +991,13 @@ namespace gum {
       // Second, orientate remaining edges
       const Sequence< NodeId > order = essentialGraph.topologicalOrder();
       // first, propagate existing orientations
-      for (NodeId x : order) {
+      for (NodeId x: order) {
         if (!essentialGraph.parents(x).empty()) {
           _propagatesHead(essentialGraph, x);
         }
       }
       // then decide the orientation by the topological order and propagate them
-      for (NodeId x : order) {
+      for (NodeId x: order) {
         if (!essentialGraph.neighbours(x).empty()) {
           _propagatesHead(essentialGraph, x);
         }
@@ -1005,10 +1005,10 @@ namespace gum {
 
       // turn the mixed graph into a dag
       DAG dag;
-      for (auto node : essentialGraph) {
+      for (auto node: essentialGraph) {
         dag.addNodeWithId(node);
       }
-      for (const Arc& arc : essentialGraph.arcs()) {
+      for (const Arc& arc: essentialGraph.arcs()) {
         dag.addArc(arc.tail(), arc.head());
       }
 
@@ -1018,7 +1018,7 @@ namespace gum {
     /// Propagates the orientation from a node to its neighbours
     void Miic::_propagatesHead(MixedGraph& graph, NodeId node) {
       const auto neighbours = graph.neighbours(node);
-      for (auto& neighbour : neighbours) {
+      for (auto& neighbour: neighbours) {
         // only propagate if it doesn't create a circle and isn't forbidden
         // and doesn't create a new v-structure
         if (!__existsDirectedPath(graph, neighbour, node)
@@ -1089,7 +1089,7 @@ namespace gum {
 
         // check the parents
 
-        for (const auto new_one : graph.parents(current)) {
+        for (const auto new_one: graph.parents(current)) {
           if (mark.exists(new_one))   // if this node is already marked, do not
             continue;                 // check it again
 

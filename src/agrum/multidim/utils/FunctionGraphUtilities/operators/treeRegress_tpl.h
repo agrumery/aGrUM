@@ -32,7 +32,7 @@
 #include <agrum/multidim/utils/FunctionGraphUtilities/operators/treeOperator.h>
 #include <agrum/multidim/utils/FunctionGraphUtilities/operators/treeRegress.h>
 
-#define ALLOCATE(x) SmallObjectAllocator::instance().allocate(x)
+#define ALLOCATE(x)      SmallObjectAllocator::instance().allocate(x)
 #define DEALLOCATE(x, y) SmallObjectAllocator::instance().deallocate(x, y)
 
 namespace gum {

@@ -62,7 +62,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR
-         MultiDimSparse< GUM_SCALAR >::get(const Instantiation& i) const {
+     MultiDimSparse< GUM_SCALAR >::get(const Instantiation& i) const {
     Size key;
 
     if (i.isMaster(this)) {

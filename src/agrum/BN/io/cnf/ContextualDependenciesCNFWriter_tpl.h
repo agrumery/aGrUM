@@ -55,7 +55,7 @@ namespace gum {
         std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) {
     Instantiation Order;
 
-    for (auto node : bn.topologicalOrder())
+    for (auto node: bn.topologicalOrder())
       Order.add(bn.variable(node));
 
     if (!output.good())
@@ -75,7 +75,7 @@ namespace gum {
                        gum::Sequence< gum::Sequence< gum::Instantiation* >* >* >* >
        cptparamval;
 
-    for (auto node : bn.nodes()) {
+    for (auto node: bn.nodes()) {
       std::stringstream       str0;
       const DiscreteVariable* var = &bn.variable(node);
 
@@ -149,7 +149,7 @@ namespace gum {
                         gum::Sequence< gum::Sequence< gum::Instantiation* >* >* >::
            iterator itpvall = (itvar.val())->begin();   // needed here
 
-        for (auto pv : *itpvall.val()) {
+        for (auto pv: *itpvall.val()) {
           gum::Idx linecount = 0;
           gum::HashTable< std::string,
                           gum::HashTable< const gum::DiscreteVariable*,
@@ -157,7 +157,7 @@ namespace gum {
                                                      gum::Set< Idx >* >* >* >
              orderStruct;   // set sizeof Hashtable
 
-          for (auto seqv : *pv) {
+          for (auto seqv: *pv) {
             if (seqv->nbrDim() > 1) {
               for (Idx iInst = 0; iInst < seqv->nbrDim(); iInst++) {
                 gum::Instantiation instpro(*seqv, false);
@@ -198,10 +198,10 @@ namespace gum {
           gum::Set< gum::Idx >                  elimination;
           gum::Sequence< gum::Instantiation* >* newSeq = nullptr;
 
-          for (auto& elt : orderStruct) {
+          for (auto& elt: orderStruct) {
             bool added = false;
 
-            for (auto& elt2 : *elt.second) {
+            for (auto& elt2: *elt.second) {
               if (elt2.second->second->size() == elt2.first->domainSize()) {
                 if (!newSeq) newSeq = new gum::Sequence< gum::Instantiation* >();
 
@@ -329,10 +329,10 @@ namespace gum {
 
     Instantiation Order;
 
-    for (auto node : bn.topologicalOrder())
+    for (auto node: bn.topologicalOrder())
       Order.add(bn.variable(node));
 
-    for (auto node : bn.nodes()) {
+    for (auto node: bn.nodes()) {
       std::stringstream       str0;
       const DiscreteVariable* var = &bn.variable(node);
 
@@ -411,7 +411,7 @@ namespace gum {
                         gum::Sequence< gum::Sequence< gum::Instantiation* >* >* >::
            iterator itpvall = (itvar.val())->begin();
 
-        for (auto pv : *itpvall.val()) {
+        for (auto pv: *itpvall.val()) {
           gum::Idx linecount = 0;
           gum::HashTable< std::string,
                           gum::HashTable< const gum::DiscreteVariable*,
@@ -422,7 +422,7 @@ namespace gum {
           gum::Set< gum::Idx >                               elimination;
           gum::HashTable< std::string, gum::Instantiation* > newSeqpre;
 
-          for (auto seqv : *pv) {
+          for (auto seqv: *pv) {
             if (seqv->nbrDim() > 1) {
               for (Idx iInst = 0; iInst < seqv->nbrDim(); iInst++) {
                 auto instpro = new gum::Instantiation(*seqv, false);
@@ -462,7 +462,7 @@ namespace gum {
                   if ((*orderStruct2)[var]->second->size() == var->domainSize()) {
                     newSeqpre.insert(instpro->toString(), instpro);
 
-                    for (auto& elt : *orderStruct2) {
+                    for (auto& elt: *orderStruct2) {
                       elimination = elimination + *(elt.second->first);
                       delete (elt.second->first);
                       delete (elt.second->second);
@@ -490,7 +490,7 @@ namespace gum {
           if (!newSeqpre.empty()) {
             newSeq = new gum::Sequence< gum::Instantiation* >();
 
-            for (auto& elt : newSeqpre)
+            for (auto& elt: newSeqpre)
               newSeq->insert(elt.second);
 
             (itpvall.val())->insert(newSeq);

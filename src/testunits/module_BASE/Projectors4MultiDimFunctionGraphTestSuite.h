@@ -38,7 +38,7 @@
 
 namespace gum_tests {
 
-  class MultiDimProjectors4FunctionGraphTestSuite : public CxxTest::TestSuite {
+  class MultiDimProjectors4FunctionGraphTestSuite: public CxxTest::TestSuite {
     private:
     // ************************************************************************************************
     /// Génération fixe d'une liste de variable

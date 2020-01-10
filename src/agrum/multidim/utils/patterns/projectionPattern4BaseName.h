@@ -116,7 +116,7 @@ namespace gum {
         Idx  tmp_before_incr = 1;
         bool has_before_incr = false;
 
-        for (const auto var : table_vars) {
+        for (const auto var: table_vars) {
           table_domain_size *= var->domainSize();
 
           if (!del_vars.exists(var)) {
@@ -159,7 +159,7 @@ namespace gum {
 
       result->beginMultipleChanges();
 
-      for (const auto var : result_varSeq)
+      for (const auto var: result_varSeq)
         *result << *var;
 
       result->endMultipleChanges();
@@ -273,7 +273,7 @@ namespace gum {
       Idx                                       table_alone_domain_size = 1;
       HashTable< const DiscreteVariable*, Idx > var1offset(table_vars.size());
 
-      for (const auto var : table_vars) {
+      for (const auto var: table_vars) {
         if (del_vars.exists(var)) {
           table_alone_domain.push_back(var->domainSize());
           table_alone_offset.push_back(offset);
@@ -306,7 +306,7 @@ namespace gum {
       bool                                has_before_incr = false;
       bool                                found_proj_var = false;
 
-      for (const auto var : table_vars) {
+      for (const auto var: table_vars) {
         if (!del_vars.exists(var)) {
           table_and_result_domain.push_back(var->domainSize());
           table_and_result_offset.push_back(var1offset[var]);
@@ -333,7 +333,7 @@ namespace gum {
          new MultiDimArray< GUM_MULTI_DIM_PROJECTION_TYPE >;
       result->beginMultipleChanges();
 
-      for (const auto var : result_varSeq)
+      for (const auto var: result_varSeq)
         *result << *var;
 
       result->endMultipleChanges();

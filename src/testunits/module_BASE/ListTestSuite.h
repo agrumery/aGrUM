@@ -33,7 +33,7 @@
 
 namespace gum_tests {
 
-  class ListTestSuite : public CxxTest::TestSuite {
+  class ListTestSuite: public CxxTest::TestSuite {
     public:
     void testPrivateMethods() {
       TS_GUM_ASSERT_THROWS_NOTHING(initializeList(7));

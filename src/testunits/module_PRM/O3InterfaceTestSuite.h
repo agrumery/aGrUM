@@ -33,7 +33,7 @@
 
 namespace gum_tests {
 
-  class O3InterfaceTestSuite : public CxxTest::TestSuite {
+  class O3InterfaceTestSuite: public CxxTest::TestSuite {
     public:
     void setUp() {}
 

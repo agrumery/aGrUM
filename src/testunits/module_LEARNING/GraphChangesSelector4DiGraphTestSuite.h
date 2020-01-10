@@ -37,7 +37,7 @@
 
 namespace gum_tests {
 
-  class GraphChangesSelector4DiGraphTestSuite : public CxxTest::TestSuite {
+  class GraphChangesSelector4DiGraphTestSuite: public CxxTest::TestSuite {
     private:
     void __order_nodes(
        const std::vector< std::vector< double > >&      all_scores,
@@ -69,7 +69,7 @@ namespace gum_tests {
           const auto& parents = graph.parents(i);
           if (i != j) {
             std::vector< gum::NodeId > pars;
-            for (const auto par : parents)
+            for (const auto par: parents)
               pars.push_back(par);
             all_scores[i][j] = -score.score(i, pars);
 
@@ -77,7 +77,7 @@ namespace gum_tests {
               pars.push_back(gum::NodeId(j));
               all_scores[i][j] += score.score(i, pars);
             } else {
-              for (auto& par : pars) {
+              for (auto& par: pars) {
                 if (par == gum::NodeId(j)) {
                   par = *(pars.rbegin());
                   pars.pop_back();
@@ -170,14 +170,14 @@ namespace gum_tests {
       selector.setGraph(graph);
 
       TS_ASSERT(!selector.empty());
-      for (const auto node : graph) {
+      for (const auto node: graph) {
         TS_ASSERT(!selector.empty(node));
       }
 
       selector.setGraph(graph);
 
       TS_ASSERT(!selector.empty());
-      for (const auto node : graph) {
+      for (const auto node: graph) {
         TS_ASSERT(!selector.empty(node));
       }
 
@@ -185,7 +185,7 @@ namespace gum_tests {
          gum::learning::GraphChangeType::ARC_DELETION, 0, 1);
       TS_ASSERT(!selector.isChangeValid(change));
 
-      for (const auto node : graph) {
+      for (const auto node: graph) {
         const auto& change = selector.bestChange(node);
         TS_ASSERT(change.type() == gum::learning::GraphChangeType::ARC_ADDITION);
       }
@@ -197,7 +197,7 @@ namespace gum_tests {
       gum::NodeId                          best_node;
       __compute_scores(score, graph, all_scores, best_nodes, best_node);
 
-      for (const auto node : graph) {
+      for (const auto node: graph) {
         const auto& change = selector.bestChange(node);
         TS_ASSERT(change.type() == gum::learning::GraphChangeType::ARC_ADDITION);
         if (change.node1() == node) {
@@ -209,7 +209,7 @@ namespace gum_tests {
 
       const double                best_score = selector.bestScore();
       gum::NodeProperty< double > scores;
-      for (const auto node : graph) {
+      for (const auto node: graph) {
         const double sc = selector.bestScore(node);
         scores.insert(node, sc);
         TS_ASSERT(sc <= best_score);
@@ -225,7 +225,7 @@ namespace gum_tests {
 
       __compute_scores(score, graph, all_scores, best_nodes, best_node);
 
-      for (const auto node : graph) {
+      for (const auto node: graph) {
         const double sc = selector.bestScore(node);
         TS_ASSERT(sc == all_scores[node][best_nodes[node]]);
         if (node != 1) {
@@ -244,7 +244,7 @@ namespace gum_tests {
 
       __compute_scores(score, graph, all_scores, best_nodes, best_node);
 
-      for (const auto node : graph) {
+      for (const auto node: graph) {
         const double sc = selector.bestScore(node);
         TS_ASSERT(sc == all_scores[node][best_nodes[node]]);
         if ((node != 2)) {
@@ -263,7 +263,7 @@ namespace gum_tests {
 
       __compute_scores(score, graph, all_scores, best_nodes, best_node);
 
-      for (const auto node : graph) {
+      for (const auto node: graph) {
         const double sc = selector.bestScore(node);
         TS_ASSERT(sc == all_scores[node][best_nodes[node]]);
         if ((node != 1)) {

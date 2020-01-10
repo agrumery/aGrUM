@@ -163,7 +163,7 @@ namespace gum {
       if (s.contains(nodePot)) __addError(lig(), col(), "Parents already defined");
       s.insert(nodePot);
 
-      for (const auto papa : papas) {
+      for (const auto papa: papas) {
         __bn->addArc(papa, nodePot);
       }
     }

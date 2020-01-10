@@ -31,7 +31,7 @@
 
 namespace gum_tests {
 
-  class SetInstTestSuite : public CxxTest::TestSuite {
+  class SetInstTestSuite: public CxxTest::TestSuite {
     void setUp() {}
 
     void tearDown() {}

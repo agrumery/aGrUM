@@ -40,7 +40,7 @@
 
 namespace gum_tests {
 
-  class MultiDimPartialInstantiationTestSuite : public CxxTest::TestSuite {
+  class MultiDimPartialInstantiationTestSuite: public CxxTest::TestSuite {
     private:
     // ==========================================================================
     /// initialize randomly a table
@@ -127,7 +127,7 @@ namespace gum_tests {
     bool equal(const gum::MultiDimImplementation< T* >& t1,
                const gum::MultiDimImplementation< T* >& t2) {
       if ((t1.nbrDim() == t2.nbrDim()) && (t1.domainSize() == t2.domainSize())) {
-        for (const auto var : t1.variablesSequence())
+        for (const auto var: t1.variablesSequence())
           if (!t2.variablesSequence().exists(var)) return false;
 
         gum::Instantiation i(t1);
@@ -147,7 +147,7 @@ namespace gum_tests {
     template < typename T >
     bool equal(const gum::Potential< T* >& t1, const gum::Potential< T* >& t2) {
       if ((t1.nbrDim() == t2.nbrDim()) && (t1.domainSize() == t2.domainSize())) {
-        for (const auto var : t1.variablesSequence())
+        for (const auto var: t1.variablesSequence())
           if (!t2.variablesSequence().exists(var)) return false;
 
         gum::Instantiation i(t1);
@@ -175,7 +175,7 @@ namespace gum_tests {
          t_in.variablesSequence();
       t_out->beginMultipleChanges();
 
-      for (const auto var : tin_vars)
+      for (const auto var: tin_vars)
         if (!inst_vars.exists(var))
           t_out->add(*var);
         else
@@ -183,7 +183,7 @@ namespace gum_tests {
 
       t_out->endMultipleChanges();
 
-      for (const auto& elt : inst_vars)
+      for (const auto& elt: inst_vars)
         partial_inst.chgVal(elt.first, elt.second);
 
       // fill the table
@@ -215,7 +215,7 @@ namespace gum_tests {
          t_in.variablesSequence();
       t_out->beginMultipleChanges();
 
-      for (const auto var : tin_vars)
+      for (const auto var: tin_vars)
         if (!inst_vars.exists(var))
           t_out->add(*var);
         else
@@ -223,7 +223,7 @@ namespace gum_tests {
 
       t_out->endMultipleChanges();
 
-      for (const auto& elt : inst_vars)
+      for (const auto& elt: inst_vars)
         partial_inst.chgVal(elt.first, elt.second);
 
       // fill the table
@@ -255,7 +255,7 @@ namespace gum_tests {
          t_in.variablesSequence();
       t_out->beginMultipleChanges();
 
-      for (const auto var : tin_vars)
+      for (const auto var: tin_vars)
         if (!inst_vars.exists(var))
           t_out->add(*var);
         else
@@ -263,7 +263,7 @@ namespace gum_tests {
 
       t_out->endMultipleChanges();
 
-      for (const auto& elt : inst_vars)
+      for (const auto& elt: inst_vars)
         partial_inst.chgVal(elt.first, elt.second);
 
       // fill the table
@@ -295,7 +295,7 @@ namespace gum_tests {
          t_in.variablesSequence();
       t_out->beginMultipleChanges();
 
-      for (const auto var : tin_vars)
+      for (const auto var: tin_vars)
         if (!inst_vars.exists(var))
           t_out->add(*var);
         else
@@ -303,7 +303,7 @@ namespace gum_tests {
 
       t_out->endMultipleChanges();
 
-      for (const auto& elt : inst_vars)
+      for (const auto& elt: inst_vars)
         partial_inst.chgVal(elt.first, elt.second);
 
       // fill the table

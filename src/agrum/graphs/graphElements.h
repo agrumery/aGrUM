@@ -330,7 +330,7 @@ namespace gum {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
   template <>
-  class HashFunc< Edge > : public HashFuncBase< Edge > {
+  class HashFunc< Edge >: public HashFuncBase< Edge > {
     public:
     /**
      * @brief Returns the value of a key as a Size.
@@ -349,7 +349,7 @@ namespace gum {
 
 
   template <>
-  class HashFunc< Arc > : public HashFuncBase< Arc > {
+  class HashFunc< Arc >: public HashFuncBase< Arc > {
     public:
     /**
      * @brief Returns the value of a key as a Size.

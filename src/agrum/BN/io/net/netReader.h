@@ -50,7 +50,7 @@ namespace gum {
    * or a file must be a subclass of NetReader.
    */
   template < typename GUM_SCALAR >
-  class NetReader : public BNReader< GUM_SCALAR > {
+  class NetReader: public BNReader< GUM_SCALAR > {
     public:
     /**
      * Constructor

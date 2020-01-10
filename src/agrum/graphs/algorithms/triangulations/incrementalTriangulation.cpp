@@ -60,12 +60,12 @@ namespace gum {
     // copy the graph passed in argument and update the structures
     // containing the informations useful for the triangulation
 
-    for (const auto node : *theGraph)
+    for (const auto node: *theGraph)
       addNode(node, (*domsizes)[node]);
 
     // insert all the edges of the graph into the structure. This will
     // implicitly update the "require_update" field
-    for (const auto& edge : theGraph->edges())
+    for (const auto& edge: theGraph->edges())
       addEdge(edge.first(), edge.second());
   }
 
@@ -121,8 +121,8 @@ namespace gum {
   }
 
   /// copy operator
-  IncrementalTriangulation& IncrementalTriangulation::
-                            operator=(const IncrementalTriangulation& from) {
+  IncrementalTriangulation&
+     IncrementalTriangulation::operator=(const IncrementalTriangulation& from) {
     // avoid self assignment
     if (this != &from) {
       // for debugging purposes
@@ -203,7 +203,7 @@ namespace gum {
     __mps_affected[My] = true;
 
     // mark all the neighbour MPS that contain edge
-    for (const auto nei : __T_mpd.neighbours(My))
+    for (const auto nei: __T_mpd.neighbours(My))
       if (nei != Mz) {
         const NodeSet& Syk = __T_mpd.separator(Edge(nei, My));
 
@@ -228,13 +228,13 @@ namespace gum {
     NodeId Mx = mps1[0];
 
     if (mps1.size() <= mps2.size()) {
-      for (const auto node : mps1)
+      for (const auto node: mps1)
         if (__T_mpd.clique(node).contains(Y)) {
           Mx = node;
           break;
         }
     } else {
-      for (const auto node : mps2)
+      for (const auto node: mps2)
         if (__T_mpd.clique(node).contains(X)) {
           Mx = node;
           break;
@@ -276,7 +276,7 @@ namespace gum {
     auto& MPS_of_X = __mps_of_node[X];
 
     // remove X from the MPS containing X
-    for (const auto node : MPS_of_X) {
+    for (const auto node: MPS_of_X) {
       __T_mpd.eraseFromClique(node, X);
 
       // if the intersection between *iter and one of its neighbour is empty,
@@ -293,7 +293,7 @@ namespace gum {
     }
 
     // remove X from the cliques containing X
-    for (const auto clique : MPS_of_X) {
+    for (const auto clique: MPS_of_X) {
       const std::vector< NodeId >& cliques_of_X = __cliques_of_mps[clique];
 
       for (unsigned int i = 0; i < cliques_of_X.size(); ++i) {
@@ -314,8 +314,8 @@ namespace gum {
             // of *neighbour and those of the other extremity
             bool hasCommonEdge = false;
 
-            for (const auto node1 : __junction_tree.clique(neigh.first()))
-              for (const auto node2 : __junction_tree.clique(neigh.second()))
+            for (const auto node1: __junction_tree.clique(neigh.first()))
+              for (const auto node2: __junction_tree.clique(neigh.second()))
                 if (__graph.existsEdge(node1, node2)) {
                   hasCommonEdge = true;
                   break;
@@ -382,7 +382,7 @@ namespace gum {
     }
 
     // parse Mx's neighbours until we find Y
-    for (const auto other_node : __T_mpd.neighbours(Mx))
+    for (const auto other_node: __T_mpd.neighbours(Mx))
       if (other_node != Mz) {
         int neighbourStatus = __markAffectedMPSsByAddLink(other_node, Mx, X, Y);
 
@@ -516,11 +516,11 @@ namespace gum {
     {
       NodeProperty< bool > nodesProp = __graph.nodesProperty< bool >(false);
 
-      for (const auto cliq : __junction_tree.nodes())
-        for (const auto node : __junction_tree.clique(cliq))
+      for (const auto cliq: __junction_tree.nodes())
+        for (const auto node: __junction_tree.clique(cliq))
           nodesProp[node] = true;
 
-      for (const auto& elt : nodesProp)
+      for (const auto& elt: nodesProp)
         if (!elt.second) {
           std::cerr << "check nodes" << std::endl
                     << __graph << std::endl
@@ -536,7 +536,7 @@ namespace gum {
       std::pair< NodeId, NodeId > thePair;
       EdgeProperty< bool >        edgesProp = __graph.edgesProperty(false);
 
-      for (const auto cliq : __junction_tree.nodes()) {
+      for (const auto cliq: __junction_tree.nodes()) {
         const NodeSet& clique = __junction_tree.clique(cliq);
 
         for (auto iter2 = clique.begin(); iter2 != clique.end(); ++iter2) {
@@ -552,7 +552,7 @@ namespace gum {
         }
       }
 
-      for (const auto& elt : edgesProp)
+      for (const auto& elt: edgesProp)
         if (!elt.second) {
           std::cerr << "check edges" << std::endl
                     << __graph << std::endl
@@ -567,11 +567,11 @@ namespace gum {
     {
       NodeProperty< bool > nodesProp = __graph.nodesProperty< bool >(false);
 
-      for (const auto cliq : __T_mpd.nodes())
-        for (const auto node : __T_mpd.clique(cliq))
+      for (const auto cliq: __T_mpd.nodes())
+        for (const auto node: __T_mpd.clique(cliq))
           nodesProp[node] = true;
 
-      for (const auto& elt : nodesProp)
+      for (const auto& elt: nodesProp)
         if (!elt.second) {
           std::cerr << "check nodes" << std::endl
                     << __graph << std::endl
@@ -587,7 +587,7 @@ namespace gum {
       std::pair< NodeId, NodeId > thePair;
       EdgeProperty< bool >        edgesProp = __graph.edgesProperty(false);
 
-      for (const auto cliq : __T_mpd.nodes()) {
+      for (const auto cliq: __T_mpd.nodes()) {
         const NodeSet& clique = __T_mpd.clique(cliq);
 
         for (auto iter2 = clique.begin(); iter2 != clique.end(); ++iter2) {
@@ -603,7 +603,7 @@ namespace gum {
         }
       }
 
-      for (const auto& elt : edgesProp)
+      for (const auto& elt: edgesProp)
         if (!elt.second) {
           std::cerr << "check edges" << std::endl
                     << __graph << std::endl
@@ -618,17 +618,17 @@ namespace gum {
     {
       NodeProperty< NodeProperty< bool > > chk;
 
-      for (const auto node : __graph.nodes())
+      for (const auto node: __graph.nodes())
         chk.insert(node, HashTable< NodeId, bool >());
 
-      for (const auto cliq : __T_mpd.nodes())
-        for (auto node : __T_mpd.clique(cliq))
+      for (const auto cliq: __T_mpd.nodes())
+        for (auto node: __T_mpd.clique(cliq))
           chk[node].insert(cliq, false);
 
-      for (const auto& elt : __mps_of_node) {
+      for (const auto& elt: __mps_of_node) {
         HashTable< NodeId, bool >& hash = chk[elt.first];
 
-        for (const auto cell : elt.second) {
+        for (const auto cell: elt.second) {
           if (!hash.exists(cell)) {
             std::cerr << "check mps of nodes" << std::endl
                       << __T_mpd << std::endl
@@ -640,8 +640,8 @@ namespace gum {
         }
       }
 
-      for (const auto& elt : chk)
-        for (const auto& elt2 : elt.second)
+      for (const auto& elt: chk)
+        for (const auto& elt2: elt.second)
           if (!elt2.second) {
             std::cerr << "check mps of nodes2" << std::endl
                       << __T_mpd << std::endl
@@ -679,7 +679,7 @@ namespace gum {
 
       NodeSet nodes;
 
-      for (const auto node : __graph.nodes()) {
+      for (const auto node: __graph.nodes()) {
         if (nodes.exists(node)) {
           std::cerr << "check elimination order" << std::endl
                     << __elimination_order << std::endl;
@@ -700,7 +700,7 @@ namespace gum {
         return false;
       }
 
-      for (const auto node : __graph.nodes()) {
+      for (const auto node: __graph.nodes()) {
         if (!__reverse_elimination_order.exists(node)) {
           std::cerr << "check reverse elimination order" << std::endl
                     << __reverse_elimination_order << std::endl;
@@ -719,7 +719,7 @@ namespace gum {
         return false;
       }
 
-      for (const auto node : __graph.nodes()) {
+      for (const auto node: __graph.nodes()) {
         if (!__created_JT_cliques.exists(node)
             || !__junction_tree.existsNode(__created_JT_cliques[node])) {
           std::cerr << "check created JT cliques" << std::endl
@@ -744,11 +744,11 @@ namespace gum {
     cliques_affected[Mx] = false;
 
     // get the nodes that are concerned by the triangulation update
-    for (const auto node : __junction_tree.clique(Mx))
+    for (const auto node: __junction_tree.clique(Mx))
       if (!theGraph.exists(node)) theGraph.addNodeWithId(node);
 
     // go on with the neighbour cliques in the junction tree
-    for (const auto othernode : __junction_tree.neighbours(Mx))
+    for (const auto othernode: __junction_tree.neighbours(Mx))
       if (othernode != Mfrom) {
         if (cliques_affected.exists(othernode)) {
           __setUpConnectedTriangulation(othernode,
@@ -780,7 +780,7 @@ namespace gum {
 
     // parse all the affected MPS and get the corresponding cliques
 
-    for (const auto& elt : __mps_affected)
+    for (const auto& elt: __mps_affected)
       if (elt.second) {
         // get the cliques contained in this MPS
         const std::vector< NodeId >& cliques = __cliques_of_mps[elt.first];
@@ -791,7 +791,7 @@ namespace gum {
 
     // for each connected set of cliques involved in the triangulations
     // perform a new triangulation and update the max prime subgraph tree
-    for (const auto& elt : all_cliques_affected) {
+    for (const auto& elt: all_cliques_affected) {
       if (elt.second) {
         // set up the connected subgraph that need be retriangulated and the
         // cliques that are affected by this triangulation
@@ -804,7 +804,7 @@ namespace gum {
                                       all_cliques_affected);
 
         // insert the edges in tmp_graph
-        for (auto edge : __graph.edges()) {
+        for (auto edge: __graph.edges()) {
           try {
             tmp_graph.addEdge(edge.first(), edge.second());
           } catch (Exception&) {}   // both extremities must be in tmp_graph
@@ -815,7 +815,7 @@ namespace gum {
         // for ( UndiGraph::NodeIterator iter_node =
         // tmp_graph.beginNodes();iter_node
         // != tmp_graph.endNodes(); ++iter_node ) {
-        for (const auto node : tmp_graph.nodes()) {
+        for (const auto node: tmp_graph.nodes()) {
           List< NodeId >& mps = __mps_of_node[node];
 
           for (HashTableConstIteratorSafe< NodeId, bool > iter_mps =
@@ -838,7 +838,7 @@ namespace gum {
         // into the node ids of __junction_tree
         NodeProperty< NodeId > tmp2global_junction_tree(tmp_junction_tree.size());
 
-        for (const auto cliq : tmp_junction_tree.nodes()) {
+        for (const auto cliq: tmp_junction_tree.nodes()) {
           // get new ids for the nodes of tmp_junction_tree. These should be
           // greater than or equal to __junction_tree.bound () so that we can
           // use the max_old_id defined at the beginning of the method.
@@ -849,7 +849,7 @@ namespace gum {
         }
 
         // and add the edges of tmp_junction_tree to __junction_tree
-        for (const auto edge : tmp_junction_tree.edges())
+        for (const auto edge: tmp_junction_tree.edges())
           __junction_tree.addEdge(tmp2global_junction_tree[edge.first()],
                                   tmp2global_junction_tree[edge.second()]);
 
@@ -874,7 +874,7 @@ namespace gum {
             Size   __elim_order = tmp_graph.bound() + 1;
             NodeId elim_node = 0;
 
-            for (const auto id : sep) {
+            for (const auto id: sep) {
               Size new_order = __triangulation->eliminationOrder(id);
 
               if (new_order < __elim_order) {
@@ -911,7 +911,7 @@ namespace gum {
                 == __junction_tree.clique(to_connect).size()) {
               __junction_tree.eraseEdge(Edge(not_affected, to_connect));
 
-              for (const auto neighbour : __junction_tree.neighbours(to_connect)) {
+              for (const auto neighbour: __junction_tree.neighbours(to_connect)) {
                 __junction_tree.addEdge(neighbour, not_affected);
 
                 if (!new_nodes_in_junction_tree.contains(neighbour))
@@ -929,12 +929,12 @@ namespace gum {
     }
 
     // remove the mps that were affected and update the cliques_of_mps table
-    for (const auto& elt : all_cliques_affected) {
+    for (const auto& elt: all_cliques_affected) {
       __mps_of_clique.erase(elt.first);
       __junction_tree.eraseNode(elt.first);
     }
 
-    for (const auto& elt : __mps_affected)
+    for (const auto& elt: __mps_affected)
       if (elt.second) {
         __cliques_of_mps.erase(elt.first);
         __T_mpd.eraseNode(elt.first);
@@ -952,7 +952,7 @@ namespace gum {
     mark[node] = true;
 
     // check the separators on all the adjacent edges of Mx
-    for (const auto other_node : __junction_tree.neighbours(node))
+    for (const auto other_node: __junction_tree.neighbours(node))
       if (other_node != from) {
         const NodeSet& separator =
            __junction_tree.separator(Edge(other_node, node));
@@ -998,7 +998,7 @@ namespace gum {
     // absorb them.
     HashTable< NodeId, NodeId > T_mpd_cliques(all_cliques_affected.size());
 
-    for (const auto clik : __junction_tree.nodes())
+    for (const auto clik: __junction_tree.nodes())
       if (new_nodes_in_junction_tree.contains(clik))
         T_mpd_cliques.insert(clik, clik);
 
@@ -1008,7 +1008,7 @@ namespace gum {
 
     HashTable< NodeId, bool > mark = T_mpd_cliques.map(false);
 
-    for (const auto& elt : mark)
+    for (const auto& elt: mark)
       if (!elt.second)
         __computeMaxPrimeMergings(
            elt.first, elt.first, merged_cliques, mark, new_nodes_in_junction_tree);
@@ -1033,7 +1033,7 @@ namespace gum {
 
     // First, create the new cliques and create the corresponding
     // cliques_of_mps entries
-    for (const auto& elt : T_mpd_cliques)
+    for (const auto& elt: T_mpd_cliques)
       if (elt.first == elt.second) {
         NodeId newId = __T_mpd.addNode(__junction_tree.clique(elt.second));
         clique2MPS.insert(elt.second, newId);
@@ -1044,12 +1044,12 @@ namespace gum {
 
     // add to the cliques previously created the nodes of the cliques that were
     // merged into them and update the cliques_of_mps
-    for (const auto& elt : T_mpd_cliques)
+    for (const auto& elt: T_mpd_cliques)
       if ((elt.first != elt.second)
           && (new_nodes_in_junction_tree.contains(elt.second))) {
         const NodeId idMPS = clique2MPS[elt.second];
 
-        for (const auto node : __junction_tree.clique(elt.first)) {
+        for (const auto node: __junction_tree.clique(elt.first)) {
           try {
             __T_mpd.addToClique(idMPS, node);
           } catch (DuplicateElement&) {}
@@ -1059,20 +1059,20 @@ namespace gum {
       }
 
     // update the mps_of_node and the mps_of_clique
-    for (const auto& elt : T_mpd_cliques) {
+    for (const auto& elt: T_mpd_cliques) {
       const NodeId idMPS = clique2MPS[elt.second];
       __mps_of_clique.insert(elt.first, idMPS);
 
       if (elt.first == elt.second)
-        for (const auto node : __T_mpd.clique(idMPS))
+        for (const auto node: __T_mpd.clique(idMPS))
           __mps_of_node[node].insert(idMPS);
     }
 
     // add the edges to the max prime subgraph tree
-    for (const auto& elt : T_mpd_cliques) {
+    for (const auto& elt: T_mpd_cliques) {
       NodeId clique = clique2MPS[elt.second];
 
-      for (const auto othernode : __junction_tree.neighbours(elt.first))
+      for (const auto othernode: __junction_tree.neighbours(elt.first))
         if (T_mpd_cliques.exists(othernode)) {
           // here iter is linked to another node that has been created during
           // the triangulation
@@ -1110,7 +1110,7 @@ namespace gum {
     // reset the MPS that are affected
     __mps_affected.clear();
 
-    for (const auto node : __T_mpd.nodes())
+    for (const auto node: __T_mpd.nodes())
       __mps_affected.insert(node, false);
 
     // remove all the structures used by the triangulation algorithm
@@ -1144,7 +1144,7 @@ namespace gum {
   void IncrementalTriangulation::__collectJTCliques(
      const NodeId clique, const NodeId from, NodeProperty< bool >& examined) {
     // apply collect to all the neighbours except from
-    for (const auto otherclique : __junction_tree.neighbours(clique))
+    for (const auto otherclique: __junction_tree.neighbours(clique))
       if (otherclique != from) __collectJTCliques(otherclique, clique, examined);
 
     // get the nodes that belong to clique and not to from
@@ -1155,10 +1155,10 @@ namespace gum {
     if (from != clique) {
       const NodeSet& separator = __junction_tree.separator(clique, from);
 
-      for (const auto cli : cliquenodes)
+      for (const auto cli: cliquenodes)
         if (!separator.contains(cli)) __created_JT_cliques.insert(cli, clique);
     } else {
-      for (const auto cli : cliquenodes)
+      for (const auto cli: cliquenodes)
         __created_JT_cliques.insert(cli, clique);
     }
   }
@@ -1183,7 +1183,7 @@ namespace gum {
     // now we can use a collect algorithm to get the containing cliques
     NodeProperty< bool > examined = __junction_tree.nodesProperty< bool >(false);
 
-    for (const auto& elt : examined)
+    for (const auto& elt: examined)
       if (!elt.second) __collectJTCliques(elt.first, elt.first, examined);
 
     return __created_JT_cliques;
@@ -1223,10 +1223,10 @@ namespace gum {
     // copy the graph passed in arent and update the structures
     // containing the informations useful for the triangulation
     if (graph != nullptr) {
-      for (const auto node : *graph)
+      for (const auto node: *graph)
         addNode(node, (*dom_sizes)[node]);
 
-      for (const auto& edge : graph->edges())
+      for (const auto& edge: graph->edges())
         addEdge(edge.first(), edge.second());
     }
   }
@@ -1239,7 +1239,7 @@ namespace gum {
      NodeProperty< bool >& examined,
      Idx&                  index) {
     // apply collect to all the neighbours except from
-    for (const auto othernode : __junction_tree.neighbours(node))
+    for (const auto othernode: __junction_tree.neighbours(node))
       if (othernode != from)
         __collectEliminationOrder(othernode, node, examined, index);
 
@@ -1251,7 +1251,7 @@ namespace gum {
     if (from != node) {
       const NodeSet& separator = __junction_tree.separator(node, from);
 
-      for (const auto cli : clique) {
+      for (const auto cli: clique) {
         if (!separator.contains(cli)) {
           __elimination_order[index] = cli;
           __reverse_elimination_order.insert(cli, index);
@@ -1259,7 +1259,7 @@ namespace gum {
         }
       }
     } else {
-      for (const auto cli : clique) {
+      for (const auto cli: clique) {
         __elimination_order[index] = cli;
         __reverse_elimination_order.insert(cli, index);
         ++index;
@@ -1289,7 +1289,7 @@ namespace gum {
 
     NodeProperty< bool > examined = __junction_tree.nodesProperty< bool >(false);
 
-    for (const auto& elt : examined)
+    for (const auto& elt: examined)
       if (!elt.second)
         __collectEliminationOrder(elt.first, elt.first, examined, index);
 

@@ -50,14 +50,14 @@ namespace gum {
       }
 
       template < typename GUM_SCALAR >
-      INLINE bool NodeData< GUM_SCALAR >::
-                  operator==(const NodeData< GUM_SCALAR >& from) const {
+      INLINE bool NodeData< GUM_SCALAR >::operator==(
+         const NodeData< GUM_SCALAR >& from) const {
         return (n == from.n) && (l == from.l);
       }
 
       template < typename GUM_SCALAR >
-      INLINE bool NodeData< GUM_SCALAR >::
-                  operator!=(const NodeData< GUM_SCALAR >& from) const {
+      INLINE bool NodeData< GUM_SCALAR >::operator!=(
+         const NodeData< GUM_SCALAR >& from) const {
         return (n != from.n) && (l != from.l);
       }
 
@@ -80,15 +80,15 @@ namespace gum {
       }
 
       template < typename GUM_SCALAR >
-      INLINE bool EdgeData< GUM_SCALAR >::
-                  operator==(const EdgeData< GUM_SCALAR >& from) const {
+      INLINE bool EdgeData< GUM_SCALAR >::operator==(
+         const EdgeData< GUM_SCALAR >& from) const {
         return (u == from.u) && (l_u == from.l_u) && (v == from.v)
                && (l_v == from.l_v) && (l == from.l);
       }
 
       template < typename GUM_SCALAR >
-      INLINE bool EdgeData< GUM_SCALAR >::
-                  operator!=(const EdgeData< GUM_SCALAR >& from) const {
+      INLINE bool EdgeData< GUM_SCALAR >::operator!=(
+         const EdgeData< GUM_SCALAR >& from) const {
         return (u != from.u) && (l_u != from.l_u) && (v != from.v)
                && (l_v != from.l_v) && (l != from.l);
       }
@@ -117,11 +117,11 @@ namespace gum {
         NodeData< GUM_SCALAR >* u = nullptr;
         NodeData< GUM_SCALAR >* v = nullptr;
 
-        for (const auto& elt : __nodes) {
+        for (const auto& elt: __nodes) {
           NodeData< GUM_SCALAR >* data = elt.second;
 
-          for (const auto chain : data->n->type().slotChains()) {
-            for (const auto inst : data->n->getInstances(chain->id())) {
+          for (const auto chain: data->n->type().slotChains()) {
+            for (const auto inst: data->n->getInstances(chain->id())) {
               u = (__nodes[__idMap[inst]]->l < data->l) ? __nodes[__idMap[inst]]
                                                         : data;
               v = (u != data) ? data : __nodes[__idMap[inst]];
@@ -158,18 +158,18 @@ namespace gum {
         GUM_DESTRUCTOR(InterfaceGraph);
 
         if (__erase_flag) {
-          for (const auto& elt : __nodes)
+          for (const auto& elt: __nodes)
             delete elt.second;
 
-          for (const auto& elt : __edges)
+          for (const auto& elt: __edges)
             delete elt.second;
 
-          for (const auto& elt : __nodeMap) {
+          for (const auto& elt: __nodeMap) {
             delete elt.first;
             delete elt.second;
           }
 
-          for (const auto& elt : __edgeMap) {
+          for (const auto& elt: __edgeMap) {
             delete elt.first;
             delete elt.second;
           }
@@ -179,8 +179,8 @@ namespace gum {
       }
 
       template < typename GUM_SCALAR >
-      InterfaceGraph< GUM_SCALAR >& InterfaceGraph< GUM_SCALAR >::
-                                    operator=(const InterfaceGraph< GUM_SCALAR >& source) {
+      InterfaceGraph< GUM_SCALAR >& InterfaceGraph< GUM_SCALAR >::operator=(
+         const InterfaceGraph< GUM_SCALAR >& source) {
         GUM_ERROR(FatalError, "not implemented");
       }
 
@@ -193,7 +193,7 @@ namespace gum {
         sBuff << node->n->type().name();
 
         // First we search for multiple inputs
-        for (const auto chain : node->n->type().slotChains()) {
+        for (const auto chain: node->n->type().slotChains()) {
           if (chain->isMultiple()) {
             sBuff << "-" << node->n->getInstances(chain->id()).size();
             sBuff << chain->name();
@@ -205,7 +205,7 @@ namespace gum {
         }
 
         // Second we search for active outputs
-        for (const auto nn : node->n->type().containerDag().nodes()) {
+        for (const auto nn: node->n->type().containerDag().nodes()) {
           if (node->n->type().isOutputNode(node->n->type().get(nn))) {
             try {
               sBuff << "-" << node->n->getRefAttr(nn).size()
@@ -241,7 +241,7 @@ namespace gum {
         sBuff << edge->u->type().name() << "-" << edge->v->type().name();
 
         // First looking for edge->u output nodes in v
-        for (const auto chain : edge->u->type().slotChains()) {
+        for (const auto chain: edge->u->type().slotChains()) {
           if (edge->u->getInstances(chain->id()).exists(edge->v)) {
             sBuff << "-" << edge->v->type().name() << "."
                   << chain->lastElt().name();
@@ -250,7 +250,7 @@ namespace gum {
         }
 
         // Second looking for edge->v output nodes in u
-        for (const auto chain : edge->v->type().slotChains())
+        for (const auto chain: edge->v->type().slotChains())
           if (edge->v->getInstances(chain->id()).exists(edge->u)) {
             sBuff << "-" << edge->u->type().name() << "."
                   << chain->lastElt().name();

@@ -254,11 +254,11 @@ namespace gum {
      */
     template < typename T_DATA,
                template < typename > class ALLOC = std::allocator >
-    class IDatabaseTable
-        : public IDatabaseTableInsert4DBCell<
-             ALLOC,
-             !std::is_same< T_DATA, DBCell >::value >
-        , private ALLOC< T_DATA > {
+    class IDatabaseTable:
+        public IDatabaseTableInsert4DBCell<
+           ALLOC,
+           !std::is_same< T_DATA, DBCell >::value >,
+        private ALLOC< T_DATA > {
       public:
       /// the type for the vectors used in the IDatabaseTable
       template < typename TX_DATA >
@@ -371,7 +371,7 @@ namespace gum {
        *
        * @ingroup learning_database
        */
-      class Handler : public DBHandler< T_DATA, ALLOC > {
+      class Handler: public DBHandler< T_DATA, ALLOC > {
         public:
         /// Types for STL compliance.
         /// @{
@@ -690,7 +690,7 @@ namespace gum {
        *
        * @ingroup learning_database
        */
-      class HandlerSafe : public Handler {
+      class HandlerSafe: public Handler {
         public:
         /// Types for STL compliance.
         /// @{

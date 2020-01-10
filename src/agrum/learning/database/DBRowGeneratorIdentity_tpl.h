@@ -126,8 +126,8 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    DBRowGeneratorIdentity< ALLOC >& DBRowGeneratorIdentity< ALLOC >::
-                                     operator=(const DBRowGeneratorIdentity< ALLOC >& from) {
+    DBRowGeneratorIdentity< ALLOC >& DBRowGeneratorIdentity< ALLOC >::operator=(
+       const DBRowGeneratorIdentity< ALLOC >& from) {
       DBRowGenerator< ALLOC >::operator=(from);
       __input_row = from.__input_row;
       return *this;
@@ -136,8 +136,8 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    DBRowGeneratorIdentity< ALLOC >& DBRowGeneratorIdentity< ALLOC >::
-                                     operator=(DBRowGeneratorIdentity< ALLOC >&& from) {
+    DBRowGeneratorIdentity< ALLOC >& DBRowGeneratorIdentity< ALLOC >::operator=(
+       DBRowGeneratorIdentity< ALLOC >&& from) {
       DBRowGenerator< ALLOC >::operator=(std::move(from));
       __input_row = from.__input_row;
       return *this;

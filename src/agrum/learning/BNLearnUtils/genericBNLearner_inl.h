@@ -64,7 +64,7 @@ namespace gum {
 
     // returns the node id corresponding to a variable name
     INLINE NodeId
-           genericBNLearner::Database::idFromName(const std::string& var_name) const {
+       genericBNLearner::Database::idFromName(const std::string& var_name) const {
       try {
         const auto cols = __database.columnsFromVariableName(var_name);
         return __nodeId2cols.first(cols[0]);
@@ -438,8 +438,8 @@ namespace gum {
        const std::vector< std::vector< std::string > >& slices) {
       NodeProperty< NodeId > slice_order;
       NodeId                 rank = 0;
-      for (const auto& slice : slices) {
-        for (const auto& name : slice) {
+      for (const auto& slice: slices) {
+        for (const auto& name: slice) {
           slice_order.insert(idFromName(name), rank);
         }
         rank++;

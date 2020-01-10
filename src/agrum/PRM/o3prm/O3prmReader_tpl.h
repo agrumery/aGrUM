@@ -174,8 +174,8 @@ namespace gum {
       }
 
       template < typename GUM_SCALAR >
-      INLINE O3prmReader< GUM_SCALAR >& O3prmReader< GUM_SCALAR >::
-                                        operator=(const O3prmReader& src) {
+      INLINE O3prmReader< GUM_SCALAR >&
+         O3prmReader< GUM_SCALAR >::operator=(const O3prmReader& src) {
         if (this == &src) { return *this; }
         __prm = src.__prm;
         __o3_prm = std::unique_ptr< O3PRM >(new O3PRM(*(src.__o3_prm)));
@@ -186,8 +186,8 @@ namespace gum {
       }
 
       template < typename GUM_SCALAR >
-      INLINE O3prmReader< GUM_SCALAR >& O3prmReader< GUM_SCALAR >::
-                                        operator=(O3prmReader&& src) {
+      INLINE O3prmReader< GUM_SCALAR >&
+         O3prmReader< GUM_SCALAR >::operator=(O3prmReader&& src) {
         if (this == &src) { return *this; }
         __prm = std::move(src.__prm);
         __o3_prm = std::move(src.__o3_prm);
@@ -379,7 +379,7 @@ namespace gum {
           std::replace(path.begin(), path.end(), '.', '/');
 
           auto imported = false;
-          for (const auto& cp : __class_path) {
+          for (const auto& cp: __class_path) {
             auto          file_path = cp + path + ".o3prm";
             std::ifstream file(file_path);
 
@@ -412,7 +412,7 @@ namespace gum {
       INLINE std::vector< const O3Import* >
              O3prmReader< GUM_SCALAR >::__copyImports() {
         auto copy = std::vector< const O3Import* >();
-        for (const auto& i : __o3_prm->imports()) {
+        for (const auto& i: __o3_prm->imports()) {
           if (!__imported.exists(i->import().label())) { copy.push_back(i.get()); }
         }
         return copy;
@@ -428,7 +428,7 @@ namespace gum {
 
         auto imports = __copyImports();
         do {
-          for (auto i : imports) {
+          for (auto i: imports) {
             __parseImport(*i, module);
           }
           imports = __copyImports();

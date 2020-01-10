@@ -55,13 +55,13 @@ namespace gum {
     __mutableMoralGraph->populateNodes(dag());
     // transform the arcs into edges
 
-    for (const auto arc : arcs())
+    for (const auto arc: arcs())
       __mutableMoralGraph->addEdge(arc.first(), arc.second());
 
     //}
 
     // marry the parents
-    for (const auto node : nodes()) {
+    for (const auto node: nodes()) {
       const auto& par = parents(node);
 
       for (auto it1 = par.begin(); it1 != par.end(); ++it1) {
@@ -125,13 +125,13 @@ namespace gum {
 
     if (sizeArcs() != other.sizeArcs()) return false;
 
-    for (const auto& nid : nodes()) {
+    for (const auto& nid: nodes()) {
       try {
         other.idFromName(variable(nid).name());
       } catch (NotFound) { return false; }
     }
 
-    for (const auto& arc : arcs()) {
+    for (const auto& arc: arcs()) {
       if (!other.arcs().exists(Arc(other.idFromName(variable(arc.tail()).name()),
                                    other.idFromName(variable(arc.head()).name()))))
         return false;

@@ -36,7 +36,7 @@
 
 namespace gum_tests {
 
-  class MultiDimOperatorsTestSuite : public CxxTest::TestSuite {
+  class MultiDimOperatorsTestSuite: public CxxTest::TestSuite {
     public:
     void test_op_multidimArray() {
       std::vector< gum::LabelizedVariable* > vars(10);
@@ -779,7 +779,7 @@ namespace gum_tests {
     bool equal(const gum::MultiDimImplementation< T* >& t1,
                const gum::MultiDimImplementation< T* >& t2) {
       if ((t1.nbrDim() == t2.nbrDim()) && (t1.domainSize() == t2.domainSize())) {
-        for (const auto var : t1.variablesSequence())
+        for (const auto var: t1.variablesSequence())
           if (!t2.variablesSequence().exists(var)) return false;
 
         gum::Instantiation i(t1);
@@ -836,7 +836,7 @@ namespace gum_tests {
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
          t2->variablesSequence();
 
-      for (const auto var : seq2)
+      for (const auto var: seq2)
         if (!seq.exists(var)) seq << var;
 
       // creation of the resulting table
@@ -844,7 +844,7 @@ namespace gum_tests {
 
       result->beginMultipleChanges();
 
-      for (const auto var : seq)
+      for (const auto var: seq)
         *result << *var;
 
       result->endMultipleChanges();
@@ -870,14 +870,14 @@ namespace gum_tests {
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
          t2->variablesSequence();
 
-      for (const auto var : seq2)
+      for (const auto var: seq2)
         if (!seq.exists(var)) seq << var;
 
       // creation of the resulting table
       gum::MultiDimArray< double >* result = new gum::MultiDimArray< double >;
 
       result->beginMultipleChanges();
-      for (const auto var : seq)
+      for (const auto var: seq)
         *result << *var;
       result->endMultipleChanges();
 
@@ -901,14 +901,14 @@ namespace gum_tests {
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
          t2->variablesSequence();
 
-      for (const auto var : seq2)
+      for (const auto var: seq2)
         if (!seq.exists(var)) seq << var;
 
       // creation of the resulting table
       gum::MultiDimArray< double >* result = new gum::MultiDimArray< double >;
 
       result->beginMultipleChanges();
-      for (const auto var : seq)
+      for (const auto var: seq)
         *result << *var;
       result->endMultipleChanges();
 
@@ -932,7 +932,7 @@ namespace gum_tests {
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
          t2->variablesSequence();
 
-      for (const auto var : seq2)
+      for (const auto var: seq2)
         if (!seq.exists(var)) seq << var;
 
       // creation of the resulting table
@@ -940,7 +940,7 @@ namespace gum_tests {
 
 
       result->beginMultipleChanges();
-      for (const auto var : seq)
+      for (const auto var: seq)
         *result << *var;
       result->endMultipleChanges();
 
@@ -964,7 +964,7 @@ namespace gum_tests {
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
          t2->variablesSequence();
 
-      for (const auto var : seq2)
+      for (const auto var: seq2)
         if (!seq.exists(var)) seq << var;
 
       // creation of the resulting table
@@ -972,7 +972,7 @@ namespace gum_tests {
 
       result->beginMultipleChanges();
 
-      for (const auto var : seq)
+      for (const auto var: seq)
         *result << *var;
 
       result->endMultipleChanges();
@@ -998,7 +998,7 @@ namespace gum_tests {
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
          t2->variablesSequence();
 
-      for (const auto var : seq2)
+      for (const auto var: seq2)
         if (!seq.exists(var)) seq << var;
 
       // creation of the resulting table
@@ -1006,7 +1006,7 @@ namespace gum_tests {
 
       result->beginMultipleChanges();
 
-      for (const auto var : seq)
+      for (const auto var: seq)
         *result << *var;
 
       result->endMultipleChanges();
@@ -1032,7 +1032,7 @@ namespace gum_tests {
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
          t2->variablesSequence();
 
-      for (const auto var : seq2)
+      for (const auto var: seq2)
         if (!seq.exists(var)) seq << var;
 
       // creation of the resulting table
@@ -1040,7 +1040,7 @@ namespace gum_tests {
 
       result->beginMultipleChanges();
 
-      for (const auto var : seq)
+      for (const auto var: seq)
         *result << *var;
 
       result->endMultipleChanges();
@@ -1066,7 +1066,7 @@ namespace gum_tests {
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
          t2->variablesSequence();
 
-      for (const auto var : seq2)
+      for (const auto var: seq2)
         if (!seq.exists(var)) seq << var;
 
       // creation of the resulting table
@@ -1074,7 +1074,7 @@ namespace gum_tests {
 
       result->beginMultipleChanges();
 
-      for (const auto var : seq)
+      for (const auto var: seq)
         *result << *var;
 
       result->endMultipleChanges();
@@ -1100,7 +1100,7 @@ namespace gum_tests {
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
          t2.variablesSequence();
 
-      for (const auto var : seq2)
+      for (const auto var: seq2)
         if (!seq.exists(var)) seq << var;
 
       // creation of the resulting table
@@ -1108,7 +1108,7 @@ namespace gum_tests {
 
       result->beginMultipleChanges();
 
-      for (const auto var : seq)
+      for (const auto var: seq)
         *result << *var;
 
       result->endMultipleChanges();
@@ -1134,7 +1134,7 @@ namespace gum_tests {
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
          t2.variablesSequence();
 
-      for (const auto var : seq2)
+      for (const auto var: seq2)
         if (!seq.exists(var)) seq << var;
 
       // creation of the resulting table
@@ -1142,7 +1142,7 @@ namespace gum_tests {
 
       result->beginMultipleChanges();
 
-      for (const auto var : seq)
+      for (const auto var: seq)
         *result << *var;
 
       result->endMultipleChanges();
@@ -1168,7 +1168,7 @@ namespace gum_tests {
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
          t2.variablesSequence();
 
-      for (const auto var : seq2)
+      for (const auto var: seq2)
         if (!seq.exists(var)) seq << var;
 
       // creation of the resulting table
@@ -1176,7 +1176,7 @@ namespace gum_tests {
 
       result->beginMultipleChanges();
 
-      for (const auto var : seq)
+      for (const auto var: seq)
         *result << *var;
 
       result->endMultipleChanges();
@@ -1202,7 +1202,7 @@ namespace gum_tests {
       const gum::Sequence< const gum::DiscreteVariable* >& seq2 =
          t2.variablesSequence();
 
-      for (const auto var : seq2)
+      for (const auto var: seq2)
         if (!seq.exists(var)) seq << var;
 
       // creation of the resulting table
@@ -1210,7 +1210,7 @@ namespace gum_tests {
 
       result->beginMultipleChanges();
 
-      for (const auto var : seq)
+      for (const auto var: seq)
         *result << *var;
 
       result->endMultipleChanges();

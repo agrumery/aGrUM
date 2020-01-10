@@ -74,7 +74,7 @@ namespace gum {
     /// sets the order on the variables
     INLINE void K2::setOrder(const std::vector< NodeId >& order) {
       __order.clear();
-      for (const auto node : order) {
+      for (const auto node: order) {
         __order.insert(node);
       }
     }
@@ -91,7 +91,7 @@ namespace gum {
                   "to K2 is not the same as the number of nodes");
       }
       bool order_ok = true;
-      for (const auto node : __order) {
+      for (const auto node: __order) {
         if (node >= __order.size()) {
           order_ok = false;
           break;

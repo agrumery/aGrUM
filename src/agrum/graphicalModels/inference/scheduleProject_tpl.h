@@ -51,7 +51,7 @@ namespace gum {
     // compute the variables that shall belong to the result of the projection
     Sequence< const DiscreteVariable* > vars = __table.variablesSequence();
 
-    for (const auto var : del_vars)
+    for (const auto var: del_vars)
       vars.erase(var);
 
     // create the scheduleMultiDim that should result from the combination of
@@ -92,8 +92,8 @@ namespace gum {
 
   /// copy operator
   template < typename GUM_SCALAR >
-  ScheduleProject< GUM_SCALAR >& ScheduleProject< GUM_SCALAR >::
-                                 operator=(const ScheduleProject< GUM_SCALAR >& from) {
+  ScheduleProject< GUM_SCALAR >& ScheduleProject< GUM_SCALAR >::operator=(
+     const ScheduleProject< GUM_SCALAR >& from) {
     // avoid self assignment
     if (this != &from) {
       ScheduleOperation< GUM_SCALAR >::operator=(from);
@@ -119,8 +119,8 @@ namespace gum {
 
   /// operator ==
   template < typename GUM_SCALAR >
-  bool ScheduleProject< GUM_SCALAR >::
-       operator==(const ScheduleOperation< GUM_SCALAR >& op) const {
+  bool ScheduleProject< GUM_SCALAR >::operator==(
+     const ScheduleOperation< GUM_SCALAR >& op) const {
     if (this->type() != op.type()) return false;
 
     const ScheduleProject< GUM_SCALAR >& real_op =
@@ -131,8 +131,8 @@ namespace gum {
 
   /// operator !=
   template < typename GUM_SCALAR >
-  bool ScheduleProject< GUM_SCALAR >::
-       operator!=(const ScheduleOperation< GUM_SCALAR >& op) const {
+  bool ScheduleProject< GUM_SCALAR >::operator!=(
+     const ScheduleOperation< GUM_SCALAR >& op) const {
     if (this->type() != op.type()) return true;
 
     const ScheduleProject< GUM_SCALAR >& real_op =
@@ -164,7 +164,7 @@ namespace gum {
     long                                       size = 1;
     const Sequence< const DiscreteVariable* >& seq = __table.variablesSequence();
 
-    for (const auto var : seq)
+    for (const auto var: seq)
       if (!__del_vars.contains(var)) {
         if (std::numeric_limits< long >::max() / (long)var->domainSize() < size) {
           GUM_ERROR(OutOfBounds, "memory usage out of long int range");

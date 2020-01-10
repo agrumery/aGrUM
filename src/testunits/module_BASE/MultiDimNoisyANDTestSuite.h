@@ -34,7 +34,7 @@
 
 namespace gum_tests {
 
-  class MultiDimNoisyANDTestSuite : public CxxTest::TestSuite {
+  class MultiDimNoisyANDTestSuite: public CxxTest::TestSuite {
     public:
     void testCreationNoisyOr() {
       gum::LabelizedVariable a("a", "", 2), b("b", "", 2), c("c", "", 2),

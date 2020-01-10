@@ -108,8 +108,8 @@ namespace gum {
     /// copy operator
     template < typename GUM_SCALAR, template < typename > class ALLOC >
     DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >&
-          DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::
-          operator=(const DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >& from) {
+       DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::operator=(
+          const DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >& from) {
       if (this != &from) {
         DBRowGenerator< ALLOC >::operator=(from);
         _bn = from._bn;
@@ -123,8 +123,8 @@ namespace gum {
     /// move operator
     template < typename GUM_SCALAR, template < typename > class ALLOC >
     DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >&
-          DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::
-          operator=(DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >&& from) {
+       DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::operator=(
+          DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >&& from) {
       if (this != &from) {
         DBRowGenerator< ALLOC >::operator=(std::move(from));
         _bn = from._bn;

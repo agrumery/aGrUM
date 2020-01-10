@@ -1,6 +1,6 @@
 #
-# aGrUM clang-format specification (version clang-format-3.8)
-# Pierre-Henri Wuillemin - 2016-2018
+# aGrUM clang-format specification (version clang-format-9)
+# Pierre-Henri Wuillemin - 2016-2020
 #
 BasedOnStyle: LLVM
 
@@ -23,6 +23,10 @@ BreakStringLiterals: true
 BreakConstructorInitializers: AfterColon
 AlwaysBreakBeforeMultilineStrings: false
 AlwaysBreakTemplateDeclarations: true
+BreakInheritanceList: AfterColon
+
+CompactNamespaces: false
+FixNamespaceComments: true
 
 IndentWidth: 2
 ContinuationIndentWidth: 3
@@ -46,16 +50,23 @@ SpaceBeforeParens: ControlStatements
 SpaceInEmptyParentheses: false
 SpacesBeforeTrailingComments: 3
 SpacesInContainerLiterals: false
+SpaceBeforeRangeBasedForLoopColon: false
+SpaceBeforeInheritanceColon: false
+SpaceBeforeCtorInitializerColon: true
+SpaceBeforeCpp11BracedList: false
+SpaceAfterLogicalNot: false
 
 
 PointerAlignment: Left
 AlignAfterOpenBracket: Align
 AlignConsecutiveAssignments: false
+AlignConsecutiveMacros: true
+AlignConsecutiveDeclarations: true
 AlignOperands: true
 AlignEscapedNewlinesLeft: true
 AlignTrailingComments: true
-AlignConsecutiveDeclarations: true
 AllowAllParametersOfDeclarationOnNextLine: true
+AllowAllConstructorInitializersOnNextLine: true
 
 BinPackArguments: false
 BinPackParameters: false
@@ -65,6 +76,17 @@ AllowShortIfStatementsOnASingleLine: true
 AllowShortLoopsOnASingleLine: false
 AllowShortBlocksOnASingleLine: true
 AllowShortCaseLabelsOnASingleLine: true
+AllowShortLambdasOnASingleLine: All
 
-SortIncludes: false
+
 SortUsingDeclarations: false
+SortIncludes: false
+IncludeBlocks: Regroup
+# see https://www.regextester.com/
+IncludeCategories:
+  - Regex:           '<agrum\/[[:alnum:]|\/]+\.h>'
+    Priority:        1
+  - Regex:           '<[[:alnum:].]+>'
+    Priority:        2
+  - Regex:           '"[^.]+\.h"'
+    Priority:        3

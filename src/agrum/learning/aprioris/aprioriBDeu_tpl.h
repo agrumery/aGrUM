@@ -109,8 +109,8 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    INLINE AprioriBDeu< ALLOC >& AprioriBDeu< ALLOC >::
-                                 operator=(const AprioriBDeu< ALLOC >& from) {
+    INLINE AprioriBDeu< ALLOC >&
+       AprioriBDeu< ALLOC >::operator=(const AprioriBDeu< ALLOC >& from) {
       Apriori< ALLOC >::operator=(from);
       return *this;
     }
@@ -118,8 +118,8 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    INLINE AprioriBDeu< ALLOC >& AprioriBDeu< ALLOC >::
-                                 operator=(AprioriBDeu< ALLOC >&& from) {
+    INLINE AprioriBDeu< ALLOC >&
+       AprioriBDeu< ALLOC >::operator=(AprioriBDeu< ALLOC >&& from) {
       Apriori< ALLOC >::operator=(std::move(from));
       return *this;
     }
@@ -175,7 +175,7 @@ namespace gum {
 
       // otherwise, add the weight to all the cells in the counting vector
       const double weight = this->_weight / counts.size();
-      for (auto& count : counts)
+      for (auto& count: counts)
         count += weight;
     }
 
@@ -193,7 +193,7 @@ namespace gum {
 
       // add the weight to the counting vector
       const double weight = this->_weight / counts.size();
-      for (auto& count : counts)
+      for (auto& count: counts)
         count += weight;
     }
 

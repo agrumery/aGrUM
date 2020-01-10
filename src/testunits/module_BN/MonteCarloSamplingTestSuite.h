@@ -37,11 +37,11 @@
 #include <cxxtest/AgrumApproximationUtils.h>   // must be last include
 
 #define EPSILON_FOR_MONTECARLO_SIMPLE_TEST 15e-2
-#define EPSILON_FOR_MONTECARLO 2e-1
+#define EPSILON_FOR_MONTECARLO             2e-1
 
 namespace gum_tests {
 
-  class aSimpleMCListener : public gum::ApproximationSchemeListener {
+  class aSimpleMCListener: public gum::ApproximationSchemeListener {
     private:
     int         __nbr;
     std::string __mess;
@@ -64,7 +64,7 @@ namespace gum_tests {
     std::string getMess() { return __mess; }
   };
 
-  class MonteCarloSamplingTestSuite : public CxxTest::TestSuite {
+  class MonteCarloSamplingTestSuite: public CxxTest::TestSuite {
     public:
     void testMCbasic() {
       auto bn = gum::BayesNet< double >::fastPrototype("a->h->c");

@@ -53,11 +53,11 @@ namespace gum {
     UndiGraph moralgraph;
     moralgraph.populateNodes(*this);
     // transform the arcs into edges
-    for (const auto arc : arcs())
+    for (const auto arc: arcs())
       moralgraph.addEdge(arc.first(), arc.second());
 
     // marry the parents
-    for (const auto node : nodes()) {
+    for (const auto node: nodes()) {
       const auto& par = parents(node);
 
       for (auto it1 = par.begin(); it1 != par.end(); ++it1) {

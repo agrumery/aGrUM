@@ -56,7 +56,7 @@ namespace gum {
    * @brief The ProgressListener class.
    *
    */
-  class ProgressListener : public Listener {
+  class ProgressListener: public Listener {
     public:
     /**
      * @brief Class constructor.

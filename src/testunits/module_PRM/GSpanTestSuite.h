@@ -29,7 +29,7 @@
 
 namespace gum_tests {
 
-  class GSpanTestSuite : public CxxTest::TestSuite {
+  class GSpanTestSuite: public CxxTest::TestSuite {
     private:
     gum::prm::o3prm::O3prmReader< double >*    __driver;
     std::string                                dot_dir;

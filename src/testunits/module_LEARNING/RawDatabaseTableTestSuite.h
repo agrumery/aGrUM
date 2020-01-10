@@ -30,7 +30,7 @@
 
 namespace gum_tests {
 
-  class RawDatabaseTableTestSuite : public CxxTest::TestSuite {
+  class RawDatabaseTableTestSuite: public CxxTest::TestSuite {
     public:
     void test_db1() {
       gum::learning::RawDatabaseTable<> database;
@@ -441,7 +441,7 @@ namespace gum_tests {
       typename gum::learning::RawDatabaseTable<>::Handler handler(database);
 
       int x = 0;
-      for (const auto& row : handler) {
+      for (const auto& row: handler) {
         x++;
         TS_ASSERT(row.size() == 3);
       }
@@ -449,7 +449,7 @@ namespace gum_tests {
 
       handler.setRange(1, 3);
       x = 0;
-      for (const auto& row : handler) {
+      for (const auto& row: handler) {
         x++;
         TS_ASSERT(row.size() == 3);
       }
@@ -469,8 +469,8 @@ namespace gum_tests {
       std::vector< std::string > row(3, "2");
       database.insertRow(row);
       TS_ASSERT(database.content().size() == 1);
-      for (const auto& xrow : database) {
-        for (const auto& xxx : xrow.row()) {
+      for (const auto& xrow: database) {
+        for (const auto& xxx: xrow.row()) {
           TS_ASSERT(xxx == gum::learning::DBCell(2));
         }
       }
@@ -478,8 +478,8 @@ namespace gum_tests {
       std::vector< std::string, MyAlloc< std::string > > row2(3, "2");
       database.insertRow(row2);
       TS_ASSERT(database.content().size() == 2);
-      for (const auto& xrow : database) {
-        for (const auto& xxx : xrow.row()) {
+      for (const auto& xrow: database) {
+        for (const auto& xxx: xrow.row()) {
           TS_ASSERT(xxx == gum::learning::DBCell(2));
         }
       }
@@ -636,7 +636,7 @@ namespace gum_tests {
       TS_ASSERT(database.content().size() == 4);
 
       int nb_col1 = 0, nb_col2 = 0;
-      for (const auto row : database) {
+      for (const auto row: database) {
         const auto& r = row.row();
         nb_col1 += r[0].integer();
         nb_col2 += r[1].integer();
@@ -684,7 +684,7 @@ namespace gum_tests {
 
       nb_col1 = 0;
       nb_col2 = 0;
-      for (const auto row : database) {
+      for (const auto row: database) {
         const auto& r = row.row();
         nb_col1 += r[0].integer();
         nb_col2 += r[1].integer();
@@ -901,7 +901,7 @@ namespace gum_tests {
       *handler = new gum::learning::RawDatabaseTable<>::Handler(*database);
 
       int x = 0;
-      for (const auto& row : **handler) {
+      for (const auto& row: **handler) {
         TS_ASSERT(row.size() == 3);
         x++;
       }
@@ -916,7 +916,7 @@ namespace gum_tests {
       *handler = new gum::learning::RawDatabaseTable<>::HandlerSafe(*database);
 
       int x = 0;
-      for (const auto& row : **handler) {
+      for (const auto& row: **handler) {
         TS_ASSERT(row.size() == 3);
         x++;
       }

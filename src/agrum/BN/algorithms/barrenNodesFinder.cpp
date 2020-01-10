@@ -41,7 +41,7 @@ namespace gum {
     // and mark all the observed nodes and their ancestors as non-barren
     NodeProperty< Size > mark(__dag->size());
     {
-      for (const auto node : *__dag)
+      for (const auto node: *__dag)
         mark.insert(node, 0);   // for the moment, 0 = possibly barren
 
       // mark all the observed nodes and their ancestors as non barren
@@ -50,13 +50,13 @@ namespace gum {
       // later on
       Sequence< NodeId > observed_anc(__dag->size());
       const Size         non_barren = std::numeric_limits< Size >::max();
-      for (const auto node : *__observed_nodes)
+      for (const auto node: *__observed_nodes)
         observed_anc.insert(node);
       for (Idx i = 0; i < observed_anc.size(); ++i) {
         const NodeId node = observed_anc[i];
         if (!mark[node]) {
           mark[node] = non_barren;
-          for (const auto par : __dag->parents(node)) {
+          for (const auto par: __dag->parents(node)) {
             if (!mark[par] && !observed_anc.exists(par)) {
               observed_anc.insert(par);
             }
@@ -73,7 +73,7 @@ namespace gum {
     // above as non-barren. Structure result will assign to each (ordered) pair
     // of adjacent cliques its set of barren nodes.
     ArcProperty< NodeSet > result;
-    for (const auto& edge : junction_tree.edges()) {
+    for (const auto& edge: junction_tree.edges()) {
       const NodeSet& separator = junction_tree.separator(edge);
 
       NodeSet non_barren1 = junction_tree.clique(edge.first());
@@ -95,15 +95,15 @@ namespace gum {
     // structure whose separator contain it: the separators are actually the
     // targets of the queries.
     NodeProperty< ArcSet > node2arc;
-    for (const auto node : *__dag)
+    for (const auto node: *__dag)
       node2arc.insert(node, ArcSet());
-    for (const auto& elt : result) {
+    for (const auto& elt: result) {
       const Arc& arc = elt.first;
       if (!result[arc].empty()) {    // no need to further process cliques
         const NodeSet& separator =   // with no barren nodes
            junction_tree.separator(Edge(arc.tail(), arc.head()));
 
-        for (const auto node : separator) {
+        for (const auto node: separator) {
           node2arc[node].insert(arc);
         }
       }
@@ -147,7 +147,7 @@ namespace gum {
     NodeSet path_roots;
     {
       List< NodeId > nodes_to_mark;
-      for (const auto& elt : node2arc) {
+      for (const auto& elt: node2arc) {
         if (!elt.second.empty()) {   // only process nodes with assigned arcs
           nodes_to_mark.insert(elt.first);
         }
@@ -159,7 +159,7 @@ namespace gum {
         if (!mark[node]) {   // mark the node and all its ancestors
           mark[node] = 1;
           Size nb_par = 0;
-          for (auto par : __dag->parents(node)) {
+          for (auto par: __dag->parents(node)) {
             Size parent_mark = mark[par];
             if (parent_mark != std::numeric_limits< Size >::max()) {
               ++nb_par;
@@ -174,10 +174,10 @@ namespace gum {
 
     // perform step 2/
     DAG sweep_dag = *__dag;
-    for (const auto node : *__dag) {   // keep only nodes marked with 1
+    for (const auto node: *__dag) {   // keep only nodes marked with 1
       if (mark[node] != 1) { sweep_dag.eraseNode(node); }
     }
-    for (const auto node : sweep_dag) {
+    for (const auto node: sweep_dag) {
       const Size nb_parents = sweep_dag.parents(node).size();
       const Size nb_children = sweep_dag.children(node).size();
       if ((nb_parents > 1) || (nb_children > 1)) {
@@ -195,7 +195,7 @@ namespace gum {
           const auto& children = sweep_dag.children(node);
           NodeId      smallest_child = 0;
           Size        smallest_nb_par = std::numeric_limits< Size >::max();
-          for (const auto child : children) {
+          for (const auto child: children) {
             const auto new_nb = sweep_dag.parents(child).size();
             if (new_nb < smallest_nb_par) {
               smallest_nb_par = new_nb;
@@ -249,7 +249,7 @@ namespace gum {
     // to path. Hence, for a given path, all the nodes that are marked with a
     // number at least as high as N are non-barren, the others being barren.
     Idx mark_id = 2;
-    for (NodeId path : path_roots) {
+    for (NodeId path: path_roots) {
       // perform the sweeping from the path
       while (true) {
         // mark all the ancestors of the node
@@ -259,7 +259,7 @@ namespace gum {
           to_mark.popFront();
           if (mark[node] < mark_id) {
             mark[node] = mark_id;
-            for (const auto par : __dag->parents(node)) {
+            for (const auto par: __dag->parents(node)) {
               if (mark[par] < mark_id) { to_mark.insert(par); }
             }
           }
@@ -269,7 +269,7 @@ namespace gum {
         // this node acts as a query target and, therefore, its ancestors
         // shall be non-barren.
         const ArcSet& arcs = node2arc[path];
-        for (const auto& arc : arcs) {
+        for (const auto& arc: arcs) {
           NodeSet& barren = result[arc];
           for (auto iter = barren.beginSafe(); iter != barren.endSafe(); ++iter) {
             if (mark[*iter] >= mark_id) {
@@ -302,9 +302,9 @@ namespace gum {
     // mark all the ancestors of the evidence and targets as non-barren
     List< NodeId > nodes_to_examine;
     int            nb_non_barren = 0;
-    for (const auto node : *__observed_nodes)
+    for (const auto node: *__observed_nodes)
       nodes_to_examine.insert(node);
-    for (const auto node : *__target_nodes)
+    for (const auto node: *__target_nodes)
       nodes_to_examine.insert(node);
 
     while (!nodes_to_examine.empty()) {
@@ -313,14 +313,14 @@ namespace gum {
       if (barren_mark[node]) {
         barren_mark[node] = false;
         ++nb_non_barren;
-        for (const auto par : __dag->parents(node))
+        for (const auto par: __dag->parents(node))
           nodes_to_examine.insert(par);
       }
     }
 
     // here, all the nodes marked true are barren
     NodeSet barren_nodes(__dag->sizeNodes() - nb_non_barren);
-    for (const auto& marked_pair : barren_mark)
+    for (const auto& marked_pair: barren_mark)
       if (marked_pair.second) barren_nodes.insert(marked_pair.first);
 
     return barren_nodes;

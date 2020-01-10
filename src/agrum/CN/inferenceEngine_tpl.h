@@ -253,7 +253,7 @@ namespace gum {
       if (!_evidence.empty()) _evidence.clear();
 
       // use cbegin() to get const_iterator when available in aGrUM hashtables
-      for (const auto& elt : evidence) {
+      for (const auto& elt: evidence) {
         try {
           _credalNet->current_bn().variable(elt.first);
         } catch (NotFound& err) {
@@ -332,7 +332,7 @@ namespace gum {
        const NodeProperty< std::vector< bool > >& query) {
       if (!_query.empty()) _query.clear();
 
-      for (const auto& elt : query) {
+      for (const auto& elt: query) {
         try {
           _credalNet->current_bn().variable(elt.first);
         } catch (NotFound& err) {
@@ -537,7 +537,7 @@ namespace gum {
                      << path);
       }
 
-      for (const auto& elt : _marginalMin) {
+      for (const auto& elt: _marginalMin) {
         Size esize = Size(elt.second.size());
 
         for (Size mod = 0; mod < esize; mod++) {
@@ -570,22 +570,22 @@ namespace gum {
                      << path);
       }
 
-      for (const auto& elt : _dynamicExpMin) {
+      for (const auto& elt: _dynamicExpMin) {
         m_stream << elt.first;   // it->first;
 
         // iterates over a vector
-        for (const auto& elt2 : elt.second) {
+        for (const auto& elt2: elt.second) {
           m_stream << " " << elt2;
         }
 
         m_stream << std::endl;
       }
 
-      for (const auto& elt : _dynamicExpMax) {
+      for (const auto& elt: _dynamicExpMax) {
         m_stream << elt.first;
 
         // iterates over a vector
-        for (const auto& elt2 : elt.second) {
+        for (const auto& elt2: elt.second) {
           m_stream << " " << elt2;
         }
 
@@ -601,7 +601,7 @@ namespace gum {
       output << std::endl;
 
       // use cbegin() when available
-      for (const auto& elt : _marginalMin) {
+      for (const auto& elt: _marginalMin) {
         Size esize = Size(elt.second.size());
 
         for (Size mod = 0; mod < esize; mod++) {
@@ -635,15 +635,15 @@ namespace gum {
                      << path);
       }
 
-      for (const auto& elt : _marginalSets) {
+      for (const auto& elt: _marginalSets) {
         m_stream << _credalNet->current_bn().variable(elt.first).name()
                  << std::endl;
 
-        for (const auto& elt2 : elt.second) {
+        for (const auto& elt2: elt.second) {
           m_stream << "[";
           bool first = true;
 
-          for (const auto& elt3 : elt2) {
+          for (const auto& elt3: elt2) {
             if (!first) {
               m_stream << ",";
               first = false;
@@ -666,7 +666,7 @@ namespace gum {
       _oldMarginalMin.clear();
       _oldMarginalMax.clear();
 
-      for (auto node : _credalNet->current_bn().nodes()) {
+      for (auto node: _credalNet->current_bn().nodes()) {
         auto dSize = _credalNet->current_bn().variable(node).domainSize();
         _marginalMin.insert(node, std::vector< GUM_SCALAR >(dSize, 1));
         _oldMarginalMin.insert(node, std::vector< GUM_SCALAR >(dSize, 1));
@@ -682,7 +682,7 @@ namespace gum {
 
       if (!_storeVertices) return;
 
-      for (auto node : _credalNet->current_bn().nodes())
+      for (auto node: _credalNet->current_bn().nodes())
         _marginalSets.insert(node, std::vector< std::vector< GUM_SCALAR > >());
     }
 
@@ -698,7 +698,7 @@ namespace gum {
 
       if (_modal.empty()) return;
 
-      for (auto node : _credalNet->current_bn().nodes()) {
+      for (auto node: _credalNet->current_bn().nodes()) {
         std::string var_name, time_step;
 
         var_name = _credalNet->current_bn().variable(node).name();
@@ -739,7 +739,7 @@ namespace gum {
       // mais plus rapide)
       outerMap expectationsMin, expectationsMax;
 
-      for (const auto& elt : _expectationMin) {
+      for (const auto& elt: _expectationMin) {
         std::string var_name, time_step;
 
         var_name = _credalNet->current_bn().variable(elt.first).name();
@@ -760,19 +760,19 @@ namespace gum {
            _expectationMax[elt.first];
       }
 
-      for (const auto& elt : expectationsMin) {
+      for (const auto& elt: expectationsMin) {
         typename std::vector< GUM_SCALAR > dynExp(elt.second.size());
 
-        for (const auto& elt2 : elt.second)
+        for (const auto& elt2: elt.second)
           dynExp[elt2.first] = elt2.second;
 
         _dynamicExpMin.insert(elt.first, dynExp);
       }
 
-      for (const auto& elt : expectationsMax) {
+      for (const auto& elt: expectationsMax) {
         typename std::vector< GUM_SCALAR > dynExp(elt.second.size());
 
-        for (const auto& elt2 : elt.second) {
+        for (const auto& elt2: elt.second) {
           dynExp[elt2.first] = elt2.second;
         }
 
@@ -787,7 +787,7 @@ namespace gum {
       _t1.clear();
 
       // t = 0 vars belongs to _t0 as keys
-      for (auto node : _credalNet->current_bn().dag().nodes()) {
+      for (auto node: _credalNet->current_bn().dag().nodes()) {
         std::string var_name = _credalNet->current_bn().variable(node).name();
         auto        delim = var_name.find_first_of("_");
 
@@ -804,7 +804,7 @@ namespace gum {
       }
 
       // t = 1 vars belongs to either _t0 as member value or _t1 as keys
-      for (const auto& node : _credalNet->current_bn().dag().nodes()) {
+      for (const auto& node: _credalNet->current_bn().dag().nodes()) {
         std::string var_name = _credalNet->current_bn().variable(node).name();
         auto        delim = var_name.find_first_of("_");
         std::string time_step = var_name.substr(delim + 1, var_name.size());
@@ -815,7 +815,7 @@ namespace gum {
         if (time_step.compare("1") == 0) {
           bool found = false;
 
-          for (const auto& elt : _t0) {
+          for (const auto& elt: _t0) {
             std::string var_0_name =
                _credalNet->current_bn().variable(elt.first).name();
             delim = var_0_name.find_first_of("_");
@@ -843,7 +843,7 @@ namespace gum {
 
       // t > 1 vars belongs to either _t0 or _t1 as member value
       // remember _timeSteps
-      for (auto node : _credalNet->current_bn().dag().nodes()) {
+      for (auto node: _credalNet->current_bn().dag().nodes()) {
         std::string var_name = _credalNet->current_bn().variable(node).name();
         auto        delim = var_name.find_first_of("_");
         std::string time_step = var_name.substr(delim + 1, var_name.size());
@@ -859,7 +859,7 @@ namespace gum {
           std::string var_0_name;
           bool        found = false;
 
-          for (const auto& elt : _t0) {
+          for (const auto& elt: _t0) {
             std::string var_0_name =
                _credalNet->current_bn().variable(elt.first).name();
             delim = var_0_name.find_first_of("_");
@@ -880,7 +880,7 @@ namespace gum {
           }
 
           if (!found) {
-            for (const auto& elt : _t1) {
+            for (const auto& elt: _t1) {
               std::string var_0_name =
                  _credalNet->current_bn().variable(elt.first).name();
               auto delim = var_0_name.find_first_of("_");
@@ -992,7 +992,7 @@ namespace gum {
       LRSWrapper< GUM_SCALAR > lrsWrapper;
       lrsWrapper.setUpV((unsigned int)dsize, (unsigned int)(nodeCredalSet.size()));
 
-      for (const auto& vtx : nodeCredalSet)
+      for (const auto& vtx: nodeCredalSet)
         lrsWrapper.fillV(vtx);
 
       lrsWrapper.elimRedundVrep();

@@ -91,7 +91,7 @@ namespace gum {
    * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
    */
   template < typename GUM_SCALAR >
-  class FMDPDatReader : public FMDPReader< GUM_SCALAR > {
+  class FMDPDatReader: public FMDPReader< GUM_SCALAR > {
     public:
     FMDPDatReader(FMDP< GUM_SCALAR >* fmdp, const std::string& filename);
     ~FMDPDatReader();

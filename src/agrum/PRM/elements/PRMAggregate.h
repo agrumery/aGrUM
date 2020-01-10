@@ -67,7 +67,7 @@ namespace gum {
      * @ingroup prm_group
      */
     template < typename GUM_SCALAR >
-    class PRMAggregate : public PRMClassElement< GUM_SCALAR > {
+    class PRMAggregate: public PRMClassElement< GUM_SCALAR > {
       friend class PRMClass< GUM_SCALAR >;
 
       public:

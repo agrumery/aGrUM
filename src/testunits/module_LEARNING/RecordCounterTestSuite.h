@@ -32,7 +32,7 @@
 
 namespace gum_tests {
 
-  class RecordCounterTestSuite : public CxxTest::TestSuite {
+  class RecordCounterTestSuite: public CxxTest::TestSuite {
     private:
     gum::Potential< double > __infer(
        const gum::BayesNet< double >&                                  bn,
@@ -41,7 +41,7 @@ namespace gum_tests {
       gum::LazyPropagation< double > ve(&bn);
 
       gum::NodeSet target_set;
-      for (auto target : targets)
+      for (auto target: targets)
         target_set.insert(gum::NodeId(target));
       ve.addJointTarget(target_set);
 
@@ -1088,7 +1088,7 @@ namespace gum_tests {
 
       // bugfix for parallel exceution of VariableElimination
       const gum::DAG& dag = bn.dag();
-      for (const auto node : dag) {
+      for (const auto node: dag) {
         dag.parents(node);
         dag.children(node);
       }
@@ -1099,7 +1099,7 @@ namespace gum_tests {
 
       std::vector< double > xcounts(4, 0.0);
       int                   nb_row = 0;
-      for (const auto& row : database) {
+      for (const auto& row: database) {
         gum::Potential< double > proba =
            __infer(bn, {std::size_t(0), std::size_t(1)}, row);
 

@@ -141,8 +141,8 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    ParamEstimatorML< ALLOC >& ParamEstimatorML< ALLOC >::
-                               operator=(const ParamEstimatorML< ALLOC >& from) {
+    ParamEstimatorML< ALLOC >& ParamEstimatorML< ALLOC >::operator=(
+       const ParamEstimatorML< ALLOC >& from) {
       ParamEstimator< ALLOC >::operator=(from);
       return *this;
     }
@@ -150,8 +150,8 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    ParamEstimatorML< ALLOC >& ParamEstimatorML< ALLOC >::
-                               operator=(ParamEstimatorML< ALLOC >&& from) {
+    ParamEstimatorML< ALLOC >&
+       ParamEstimatorML< ALLOC >::operator=(ParamEstimatorML< ALLOC >&& from) {
       ParamEstimator< ALLOC >::operator=(std::move(from));
       return *this;
     }
@@ -283,11 +283,11 @@ namespace gum {
         // probability distribution over the target node. To normalize it, it
         // is sufficient to divide each cell by the sum over all the cells
         double sum = 0;
-        for (const double n_ijk : N_ijk)
+        for (const double n_ijk: N_ijk)
           sum += n_ijk;
 
         if (sum != 0) {
-          for (double& n_ijk : N_ijk)
+          for (double& n_ijk: N_ijk)
             n_ijk /= sum;
         } else {
 #  ifdef GUM_PARAMESTIMATOR_ERROR_WHEN_NIJ_IS_NULL
@@ -303,7 +303,7 @@ namespace gum {
                  "likelihood";
           GUM_ERROR(DatabaseError, str.str());
 #  else    // GUM_PARAMESTIMATOR_ERROR_WHEN_NIJ_IS_NULL
-          for (double& n_ijk : N_ijk)
+          for (double& n_ijk: N_ijk)
             n_ijk = 1.0 / N_ijk.size();
 #  endif   // GUM_PARAMESTIMATOR_ERROR_WHEN_NIJ_IS_NULL
         }

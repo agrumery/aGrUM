@@ -37,7 +37,7 @@ namespace gum {
    * @ingroup multidim_group
    * @brief A base class for discretized variables, independent of the ticks type
    */
-  class IDiscretizedVariable : public DiscreteVariable {
+  class IDiscretizedVariable: public DiscreteVariable {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

@@ -32,7 +32,7 @@
 
 namespace gum_tests {
 
-  class CrossMultiDimTestSuite : public CxxTest::TestSuite {
+  class CrossMultiDimTestSuite: public CxxTest::TestSuite {
     public:
     void testComparaisonMin() {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3),

@@ -60,7 +60,7 @@ namespace gum {
      * @ingroup prm_group
      */
     template < typename GUM_SCALAR >
-    class PRMInstance : public PRMObject {
+    class PRMInstance: public PRMObject {
       public:
       // ========================================================================
       /// @name Constructors & private operators.

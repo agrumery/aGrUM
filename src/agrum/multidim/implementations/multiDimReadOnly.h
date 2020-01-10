@@ -44,7 +44,7 @@ namespace gum {
    * table.
    */
   template < typename GUM_SCALAR >
-  class MultiDimReadOnly : public MultiDimImplementation< GUM_SCALAR > {
+  class MultiDimReadOnly: public MultiDimImplementation< GUM_SCALAR > {
     public:
     // =========================================================================
     /// @name Constructors / Destructors

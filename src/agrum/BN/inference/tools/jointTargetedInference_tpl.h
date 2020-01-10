@@ -75,7 +75,7 @@ namespace gum {
                 "inference algorithm");
 
     const auto& dag = this->__bn->dag();
-    for (const auto var : vars) {
+    for (const auto var: vars) {
       if (!dag.exists(var)) {
         GUM_ERROR(UndefinedElement, var << " is not a NodeId in the bn");
       }
@@ -124,7 +124,7 @@ namespace gum {
                 "inference algorithm");
 
     const auto& dag = this->__bn->dag();
-    for (const auto node : joint_target) {
+    for (const auto node: joint_target) {
       if (!dag.exists(node)) {
         GUM_ERROR(UndefinedElement,
                   "at least one one in " << joint_target
@@ -136,7 +136,7 @@ namespace gum {
     if (__joint_targets.contains(joint_target)) return;
 
     // check if joint_target is a subset of an already existing target
-    for (const auto& target : __joint_targets) {
+    for (const auto& target: __joint_targets) {
       if (target.isSupersetOf(joint_target)) return;
     }
 
@@ -167,7 +167,7 @@ namespace gum {
                 "inference algorithm");
 
     const auto& dag = this->__bn->dag();
-    for (const auto node : joint_target) {
+    for (const auto node: joint_target) {
       if (!dag.exists(node)) {
         GUM_ERROR(UndefinedElement,
                   "at least one one in " << joint_target
@@ -218,7 +218,7 @@ namespace gum {
       set = nodes;
       found_exact_target = true;
     } else {
-      for (const auto& target : __joint_targets) {
+      for (const auto& target: __joint_targets) {
         if (nodes.isSubsetOf(target)) {
           set = target;
           break;
@@ -342,13 +342,13 @@ namespace gum {
 
     Instantiation           iTarget;
     Potential< GUM_SCALAR > res;
-    for (const auto& target : targets) {
+    for (const auto& target: targets) {
       res.add(this->BN().variable(target));
       iTarget.add(this->BN().variable(target));
     }
     this->addJointTarget(targets);
 
-    for (const auto& n : condset) {
+    for (const auto& n: condset) {
       res.add(this->BN().variable(n));
       this->addEvidence(n, 0);
     }
@@ -356,7 +356,7 @@ namespace gum {
     Instantiation inst(res);
     for (inst.setFirstOut(iTarget); !inst.end(); inst.incOut(iTarget)) {
       // inferring
-      for (const auto& n : condset)
+      for (const auto& n: condset)
         this->chgEvidence(n, inst.val(this->BN().variable(n)));
       this->makeInference();
       // populate res
@@ -377,12 +377,12 @@ namespace gum {
     const auto& bn = this->BN();
 
     gum::NodeSet targetsId;
-    for (const auto& targetname : targets) {
+    for (const auto& targetname: targets) {
       targetsId.insert(bn.idFromName(targetname));
     }
 
     gum::NodeSet evsId;
-    for (const auto& evname : evs) {
+    for (const auto& evname: evs) {
       evsId.insert(bn.idFromName(evname));
     }
 
@@ -409,7 +409,7 @@ namespace gum {
 
     gum::Instantiation caracteristic;
     gum::Instantiation variables;
-    for (const auto nod : targets) {
+    for (const auto nod: targets) {
       const auto& var = bn.variable(nod);
       auto        pv = new gum::RangeVariable(var.name(), "", 0, 1);
       caracteristic.add(*pv);
@@ -448,7 +448,7 @@ namespace gum {
     const auto& bn = this->BN();
 
     gum::NodeSet targetsId;
-    for (const auto& targetname : targets) {
+    for (const auto& targetname: targets) {
       targetsId.insert(bn.idFromName(targetname));
     }
 

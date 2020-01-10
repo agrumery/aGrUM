@@ -47,7 +47,7 @@ namespace gum {
      *
      */
     template < template < typename > class ALLOC = std::allocator >
-    class KNML : private IndependenceTest< ALLOC > {
+    class KNML: private IndependenceTest< ALLOC > {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;

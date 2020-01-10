@@ -92,7 +92,7 @@ namespace gum {
      Estimator< GUM_SCALAR >::setFromLBP(LoopyBeliefPropagation< GUM_SCALAR >* lbp,
                                          const NodeSet& hardEvidence,
                                          GUM_SCALAR     virtualLBPSize) {
-    for (const auto& node : lbp->BN().nodes()) {
+    for (const auto& node: lbp->BN().nodes()) {
       if (!hardEvidence.contains(node)) {
         std::vector< GUM_SCALAR > v;
         auto                      p = lbp->posterior(node);
@@ -187,7 +187,7 @@ namespace gum {
     _estimator.clear();
     _wtotal = (GUM_SCALAR)0;
     _ntotal = Size(0);
-    for (const auto& pot : __target_posteriors)
+    for (const auto& pot: __target_posteriors)
       delete pot.second;
     __target_posteriors.clear();
   }

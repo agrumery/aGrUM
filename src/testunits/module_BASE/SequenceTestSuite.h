@@ -28,7 +28,7 @@
 #include <string>
 
 namespace gum_tests {
-  class SequenceTestSuite : public CxxTest::TestSuite {
+  class SequenceTestSuite: public CxxTest::TestSuite {
     private:
     void fill(gum::Sequence< int >& seq) { seq << 1 << 3 << 5 << 2 << 4; }
 
@@ -285,7 +285,7 @@ namespace gum_tests {
 
       n = 0;
 
-      for (const auto i : seq) {
+      for (const auto i: seq) {
         GUM_UNUSED(i);
         n++;
       }
@@ -305,7 +305,7 @@ namespace gum_tests {
 
       n = 0;
 
-      for (const auto i : seq) {
+      for (const auto i: seq) {
         n *= 10;
         n += i;
       }
@@ -377,7 +377,7 @@ namespace gum_tests {
 
       int n = 0;
 
-      for (const auto str : seq)
+      for (const auto str: seq)
         n++;
 
       TS_ASSERT_EQUALS(n, 0);
@@ -418,7 +418,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(n, 0);
       n = 0;
 
-      for (const auto i : seq)
+      for (const auto i: seq)
         n++;
 
       TS_ASSERT_EQUALS(n, 0);
@@ -428,7 +428,7 @@ namespace gum_tests {
       n = 0;
       std::string str;
 
-      for (const auto& s : seq)
+      for (const auto& s: seq)
         str += s;
 
       TS_ASSERT(str == "bbddffccee");
@@ -687,7 +687,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(n, (gum::Size)13524);
       n = 0;
 
-      for (const auto i : seq) {
+      for (const auto i: seq) {
         n *= 10;
         n += i;
       }

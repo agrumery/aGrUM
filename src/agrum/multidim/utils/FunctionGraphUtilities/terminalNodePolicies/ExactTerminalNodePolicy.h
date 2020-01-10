@@ -47,7 +47,7 @@ namespace gum {
    */
   // clang-format on
   template < typename GUM_SCALAR >
-  class ExactTerminalNodePolicy : public ITerminalNodePolicy< GUM_SCALAR > {
+  class ExactTerminalNodePolicy: public ITerminalNodePolicy< GUM_SCALAR > {
     public:
     // ============================================================================
     /// @name Terminal Node Creation and Destruction

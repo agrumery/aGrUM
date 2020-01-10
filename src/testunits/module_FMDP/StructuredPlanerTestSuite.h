@@ -34,7 +34,7 @@
 
 namespace gum_tests {
 
-  class StructuredPlanerTestSuite : public CxxTest::TestSuite {
+  class StructuredPlanerTestSuite: public CxxTest::TestSuite {
     private:
     std::string file;
 

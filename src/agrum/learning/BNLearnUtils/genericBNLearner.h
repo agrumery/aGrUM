@@ -104,7 +104,7 @@ namespace gum {
      * LocalSearchWithTabuList also 3off2/miic
      * @ingroup learning_group
      */
-    class genericBNLearner : public gum::IApproximationSchemeConfiguration {
+    class genericBNLearner: public gum::IApproximationSchemeConfiguration {
       // private:
       public:
       /// an enumeration enabling to select easily the score we wish to use

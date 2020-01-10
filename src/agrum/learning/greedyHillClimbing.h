@@ -56,7 +56,7 @@ namespace gum {
      * single change can increase the score anymore.
      * @ingroup learning_group
      */
-    class GreedyHillClimbing : public ApproximationScheme {
+    class GreedyHillClimbing: public ApproximationScheme {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

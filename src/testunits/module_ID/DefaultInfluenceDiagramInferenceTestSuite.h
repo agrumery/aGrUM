@@ -53,7 +53,7 @@
 
 namespace gum_tests {
 
-  class InfluenceDiagramInferenceTestSuite : public CxxTest::TestSuite {
+  class InfluenceDiagramInferenceTestSuite: public CxxTest::TestSuite {
     private:
     void fillTopoOilWildcater(gum::InfluenceDiagram< double >& id,
                               gum::List< gum::NodeId >&        idList) {

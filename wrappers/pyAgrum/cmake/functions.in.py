@@ -1,24 +1,24 @@
-#- * - coding : utf - 8 - * -
+# - * - coding : utf - 8 - * -
 """
 Helping functions and consts for pyAgrum
 """
 
-#aGrum Licence(GPL)
-#-- -- -- -- -- -- -- -- -- -
-#* This program is free software; you can redistribute it and / or modify *
-#* it under the terms of the GNU General Public License as published by *
-#* the Free Software Foundation; either version 2 of the License, or *
-#*(at your option) any later version.*
-#* *
-#* This program is distributed in the hope that it will be useful, *
-#* but WITHOUT ANY WARRANTY; without even the implied warranty of *
-#* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the *
-#* GNU General Public License for more details.*
-#* *
-#* You should have received a copy of the GNU General Public License *
-#* along with this program; if not, write to the *
-#* Free Software Foundation, Inc., *
-#* 59 Temple Place - Suite 330, Boston, MA 02111 - 1307, USA.
+# aGrum Licence(GPL)
+# -- -- -- -- -- -- -- -- -- -
+# * This program is free software; you can redistribute it and / or modify *
+# * it under the terms of the GNU General Public License as published by *
+# * the Free Software Foundation; either version 2 of the License, or *
+# *(at your option) any later version.*
+# * *
+# * This program is distributed in the hope that it will be useful, *
+# * but WITHOUT ANY WARRANTY; without even the implied warranty of *
+# * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the *
+# * GNU General Public License for more details.*
+# * *
+# * You should have received a copy of the GNU General Public License *
+# * along with this program; if not, write to the *
+# * Free Software Foundation, Inc., *
+# * 59 Temple Place - Suite 330, Boston, MA 02111 - 1307, USA.
 
 from .pyAgrum import BayesNet
 from .pyAgrum import Potential
@@ -27,6 +27,7 @@ from .pyAgrum import VariableElimination
 from .pyAgrum import BNDatabaseGenerator
 from .pyAgrum import PythonDatabaseGeneratorListener
 from .pyAgrum import InvalidArgument
+
 
 def about():
   """
@@ -41,98 +42,103 @@ def about():
     FITNESS FOR A PARTICULAR PURPOSE.  For details, see 'pyAgrum.warranty'.
     """)
 
+
 def availableBNExts():
-    """ Give the list of all formats known by pyAgrum to save a Bayesian network.
-    
-    :return: a string which lists all suffixes for supported BN file formats.
-    """
-    return "bif|dsl|net|bifxml|o3prm|uai"
+  """ Give the list of all formats known by pyAgrum to save a Bayesian network.
 
-def loadBN(filename,listeners=None,verbose=False,**opts):
-    """load a file with optional listeners and arguments
-    
-    :param filename: the name of the input file
-    :param listeners: list of functions to execute
-    :param verbose: whether to print or not warning messages
-    :param system: (for O3PRM) name of the system to flatten in a BN
-    :param classpath: (for O3PRM) list of folders containing classes
-    :return: a BN from a file using one of the availableBNExts() suffixes.
+  :return: a string which lists all suffixes for supported BN file formats.
+  """
+  return "bif|dsl|net|bifxml|o3prm|uai"
 
-    Listeners could be added in order to monitor its loading.
 
-    Examples
-    --------
-    >>> import pyAgrum as gum
-    >>>
-    >>> # creating listeners
-    >>> def foo_listener(progress):
-    >>>    if progress==200:
-    >>>        print(' BN loaded ')
-    >>>        return
-    >>>    elif progress==100:
-    >>>        car='%'
-    >>>    elif progress%10==0:
-    >>>        car='#'
-    >>>    else:
-    >>>        car='.'
-    >>>    print(car,end='',flush=True)
-    >>>
-    >>> def bar_listener(progress):
-    >>>    if progress==50:
-    >>>        print('50%')
-    >>>
-    >>> # loadBN with list of listeners
-    >>> gum.loadBN('./bn.bif',listeners=[foo_listener,bar_listener])
-    >>> # .........#.........#.........#.........#..50%
-    >>> # .......#.........#.........#.........#.........#.........% | bn loaded
-    """
-    bn=BayesNet()
+def loadBN(filename, listeners=None, verbose=False, **opts):
+  """load a file with optional listeners and arguments
 
-    extension=filename.split('.')[-1].upper()
-    if extension=="BIF":
-        warns=bn.loadBIF(filename,listeners)
-    elif extension=="BIFXML":
-        warns=bn.loadBIFXML(filename,listeners)
-    elif extension=="DSL":
-        warns=bn.loadDSL(filename,listeners)
-    elif extension=="NET":
-        warns=bn.loadNET(filename,listeners)
-    elif extension=="O3PRM":
-        warns=bn.loadO3PRM(filename,opts.get('system',''),opts.get('classpath',''),listeners)
-    elif extension=="UAI":
-        warns=bn.loadUAI(filename,listeners)
-    else:
-        raise InvalidArgument("extension "+filename.split('.')[-1]+" unknown. Please use among "+availableBNExts())
+  :param filename: the name of the input file
+  :param listeners: list of functions to execute
+  :param verbose: whether to print or not warning messages
+  :param system: (for O3PRM) name of the system to flatten in a BN
+  :param classpath: (for O3PRM) list of folders containing classes
+  :return: a BN from a file using one of the availableBNExts() suffixes.
 
-    if verbose:
-      print(warns)
+  Listeners could be added in order to monitor its loading.
 
-    bn.setProperty("name",filename)
-    return bn
+  Examples
+  --------
+  >>> import pyAgrum as gum
+  >>>
+  >>> # creating listeners
+  >>> def foo_listener(progress):
+  >>>    if progress==200:
+  >>>        print(' BN loaded ')
+  >>>        return
+  >>>    elif progress==100:
+  >>>        car='%'
+  >>>    elif progress%10==0:
+  >>>        car='#'
+  >>>    else:
+  >>>        car='.'
+  >>>    print(car,end='',flush=True)
+  >>>
+  >>> def bar_listener(progress):
+  >>>    if progress==50:
+  >>>        print('50%')
+  >>>
+  >>> # loadBN with list of listeners
+  >>> gum.loadBN('./bn.bif',listeners=[foo_listener,bar_listener])
+  >>> # .........#.........#.........#.........#..50%
+  >>> # .......#.........#.........#.........#.........#.........% | bn loaded
+  """
+  bn = BayesNet()
 
-def saveBN(bn,filename):
-    """
-    save a BN into a file using the format corresponding to one of the availableWriteBNExts() suffixes.
+  extension = filename.split('.')[-1].upper()
+  if extension == "BIF":
+    warns = bn.loadBIF(filename, listeners)
+  elif extension == "BIFXML":
+    warns = bn.loadBIFXML(filename, listeners)
+  elif extension == "DSL":
+    warns = bn.loadDSL(filename, listeners)
+  elif extension == "NET":
+    warns = bn.loadNET(filename, listeners)
+  elif extension == "O3PRM":
+    warns = bn.loadO3PRM(filename, opts.get('system', ''),
+                         opts.get('classpath', ''), listeners)
+  elif extension == "UAI":
+    warns = bn.loadUAI(filename, listeners)
+  else:
+    raise InvalidArgument("extension "+filename.split('.')
+                          [-1]+" unknown. Please use among "+availableBNExts())
 
-    :parma bn(gum.BayesNet): the BN to save
-    :param filename(str): the name of the output file
-    """
-    extension=filename.split('.')[-1].upper()
-    if extension=="BIF":
-        bn.saveBIF(filename)
-    elif extension=="BIFXML":
-        bn.saveBIFXML(filename)
-    elif extension=="DSL":
-        bn.saveDSL(filename)
-    elif extension=="NET":
-        bn.saveNET(filename)
-    elif extension=="UAI":
-        bn.saveUAI(filename)
-    elif extension=="O3PRM":
-        bn.saveO3PRM(filename)
-    else:
-        raise InvalidArgument("[pyAgrum] extension "+filename.split('.')[-1]+" unknown. Please use among "+availableBNExts())
+  if verbose:
+    print(warns)
 
+  bn.setProperty("name", filename)
+  return bn
+
+
+def saveBN(bn, filename):
+  """
+  save a BN into a file using the format corresponding to one of the availableWriteBNExts() suffixes.
+
+  :parma bn(gum.BayesNet): the BN to save
+  :param filename(str): the name of the output file
+  """
+  extension = filename.split('.')[-1].upper()
+  if extension == "BIF":
+    bn.saveBIF(filename)
+  elif extension == "BIFXML":
+    bn.saveBIFXML(filename)
+  elif extension == "DSL":
+    bn.saveDSL(filename)
+  elif extension == "NET":
+    bn.saveNET(filename)
+  elif extension == "UAI":
+    bn.saveUAI(filename)
+  elif extension == "O3PRM":
+    bn.saveO3PRM(filename)
+  else:
+    raise InvalidArgument("[pyAgrum] extension "+filename.split('.')
+                          [-1]+" unknown. Please use among "+availableBNExts())
 
 
 def loadID(filename):
@@ -143,31 +149,57 @@ def loadID(filename):
   :return: an InfluenceDiagram
   """
 
-  extension=filename.split('.')[-1].upper()
-  if extension!="BIFXML":
-    raise InvalidArgument("extension "+extension+" unknown. Please use bifxml.")
+  extension = filename.split('.')[-1].upper()
+  if extension != "BIFXML":
+    raise InvalidArgument("extension "+extension +
+                          " unknown. Please use bifxml.")
 
-  diag=InfluenceDiagram()
-  res=diag.loadBIFXML(filename)
+  diag = InfluenceDiagram()
+  res = diag.loadBIFXML(filename)
 
   if not res:
     raise Exception("Error(s) in "+filename)
 
-  diag.setProperty("name",filename)
+  diag.setProperty("name", filename)
   return diag
 
 
-def fastBN(arcs,domain_size=2):
+def fastBN(arcs, domain_size=2):
   """
-  rapid prototyping of BN.
+Create a Bayesian network with a dot-like syntax which specifies:
+    - the structure 'a->b->c;b->d<-e;'.
+    - the type of the variables with different syntax:
 
-  :param arcs: dot-like simple list of arcs ("a->b->c;a->c->d" for instance). The first apparition of a node name can be
-   enhanced with a "[domain_size]" extension. For instance "a[5]->b->c;a[2]->c->d" will create a BN with a variable "a"
-   whos domain size is a.nbrDim()==5 (the second "a[2]" is not taken into account since the variable has already been created).
-  :param domain_size: the domain size of each created variable.
-  :return: the created pyAgrum.BayesNet
+      - by default, a variable is a gum.RangeVariable using the default domain size (second argument)
+      - with `'a[10]'`, the variable is a gum.RangeVariable using 10 as domain size (from 0 to 9)
+      - with 'a[3,7]', the variable is a gum.RangeVariable using a domainSize from 3 to 7
+      - with 'a[1,3.14,5,6.2]', the variable is a gum.DiscretizedVariable using the given ticks (at least 3 values)
+      - with 'a{top|middle|bottom}', the variable is a gum.LabelizedVariable using the given labels.
+
+Note 
+----
+  - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
+  - the CPTs are randomly generated.
+    
+Examples
+--------
+>>> import pyAgrum as gum
+>>> bn=gum.fastBN('A->B[1,3]<-C{yes|No}->D[2,4]<-E[1,2.5,3.9]',6)
+
+Parameters
+----------
+dotlike : str
+        the string containing the specification
+domainSize : int
+        the default domain size for variables
+
+Returns
+-------
+pyAgrum.BayesNet
+        the resulting bayesian network 
   """
-  return BayesNet.fastPrototype(arcs,domain_size)
+  return BayesNet.fastPrototype(arcs, domain_size)
+
 
 def getPosterior(bn, evs, target):
   """
@@ -190,7 +222,7 @@ def getPosterior(bn, evs, target):
   inf.setEvidence(evs)
   inf.addTarget(target)
   inf.makeInference()
-#creating a new Potential from posterior(will disappear with ie)
+# creating a new Potential from posterior(will disappear with ie)
   return Potential(inf.posterior(target))
 
 
@@ -234,9 +266,9 @@ def generateCSV(bn, name_out, n, visible=False, with_labels=False, random_order=
 
   if random_order:
     genere.setRandomVarOrder()
-  ll=genere.drawSamples(n)
+  ll = genere.drawSamples(n)
 
-  genere.toCSV(name_out,with_labels)
+  genere.toCSV(name_out, with_labels)
 
   if visible:
     print("Log2-Likelihood : {}".format(ll))

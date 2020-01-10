@@ -46,9 +46,9 @@ namespace gum {
      * class
      * @ingroup learning_group
      */
-    class StructuralConstraintDAG
-        : public virtual StructuralConstraintSetStatic<
-             StructuralConstraintDiGraph > {
+    class StructuralConstraintDAG:
+        public virtual StructuralConstraintSetStatic<
+           StructuralConstraintDiGraph > {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

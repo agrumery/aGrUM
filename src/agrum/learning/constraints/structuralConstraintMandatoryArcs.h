@@ -43,8 +43,8 @@ namespace gum {
      * removed or reversed
      * @ingroup learning_group
      */
-    class StructuralConstraintMandatoryArcs
-        : public virtual StructuralConstraintEmpty {
+    class StructuralConstraintMandatoryArcs:
+        public virtual StructuralConstraintEmpty {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

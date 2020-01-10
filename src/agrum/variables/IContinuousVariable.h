@@ -43,7 +43,7 @@ namespace gum {
    * @brief A base class for continuous variables, independent of the
    * GUM_SCALAR type
    */
-  class IContinuousVariable : public Variable {
+  class IContinuousVariable: public Variable {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

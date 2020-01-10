@@ -207,8 +207,8 @@ namespace gum {
     /// copy operator
     template < typename CONSTRAINT >
     INLINE __StructuralConstraintSetStatic< CONSTRAINT >&
-           __StructuralConstraintSetStatic< CONSTRAINT >::
-           operator=(const __StructuralConstraintSetStatic< CONSTRAINT >& from) {
+       __StructuralConstraintSetStatic< CONSTRAINT >::operator=(
+          const __StructuralConstraintSetStatic< CONSTRAINT >& from) {
       if (this != &from) { CONSTRAINT::operator=(from); }
 
       return *this;
@@ -510,8 +510,8 @@ namespace gum {
     /// copy operator
     template < typename CONSTRAINT >
     INLINE StructuralConstraintSetStatic< CONSTRAINT >&
-           StructuralConstraintSetStatic< CONSTRAINT >::
-           operator=(const StructuralConstraintSetStatic< CONSTRAINT >& from) {
+       StructuralConstraintSetStatic< CONSTRAINT >::operator=(
+          const StructuralConstraintSetStatic< CONSTRAINT >& from) {
       if (this != &from) { constraints::operator=(from); }
 
       return *this;

@@ -99,8 +99,8 @@ namespace gum {
 
   /// copy operator
   template < typename GUM_SCALAR >
-  ScheduleCombine< GUM_SCALAR >& ScheduleCombine< GUM_SCALAR >::
-                                 operator=(const ScheduleCombine< GUM_SCALAR >& from) {
+  ScheduleCombine< GUM_SCALAR >& ScheduleCombine< GUM_SCALAR >::operator=(
+     const ScheduleCombine< GUM_SCALAR >& from) {
     // avoid self assignment
     if (this != &from) {
       ScheduleOperation< GUM_SCALAR >::operator=(from);
@@ -127,8 +127,8 @@ namespace gum {
 
   /// operator ==
   template < typename GUM_SCALAR >
-  INLINE bool ScheduleCombine< GUM_SCALAR >::
-              operator==(const ScheduleOperation< GUM_SCALAR >& op) const {
+  INLINE bool ScheduleCombine< GUM_SCALAR >::operator==(
+     const ScheduleOperation< GUM_SCALAR >& op) const {
     if (this->type() != op.type()) return false;
 
     const ScheduleCombine< GUM_SCALAR >& real_op =
@@ -140,8 +140,8 @@ namespace gum {
 
   /// operator !=
   template < typename GUM_SCALAR >
-  INLINE bool ScheduleCombine< GUM_SCALAR >::
-              operator!=(const ScheduleOperation< GUM_SCALAR >& op) const {
+  INLINE bool ScheduleCombine< GUM_SCALAR >::operator!=(
+     const ScheduleOperation< GUM_SCALAR >& op) const {
     return !operator==(op);
   }
 
@@ -170,10 +170,10 @@ namespace gum {
 
     float size = 1;
 
-    for (const auto var : seq1)
+    for (const auto var: seq1)
       size *= var->domainSize();
 
-    for (const auto var : seq2)
+    for (const auto var: seq2)
       if (!seq1.exists(var)) size *= var->domainSize();
 
     return size;
@@ -189,7 +189,7 @@ namespace gum {
 
     long size = 1;
 
-    for (const auto var : seq1) {
+    for (const auto var: seq1) {
       if (std::numeric_limits< long >::max() / (long)var->domainSize() < size) {
         GUM_ERROR(OutOfBounds, "memory usage out of long int range");
       }
@@ -197,7 +197,7 @@ namespace gum {
       size *= long(var->domainSize());
     }
 
-    for (const auto var : seq2)
+    for (const auto var: seq2)
       if (!seq1.exists(var)) {
         if (std::numeric_limits< long >::max() / (long)var->domainSize() < size) {
           GUM_ERROR(OutOfBounds, "memory usage out of long int range");

@@ -51,7 +51,7 @@ namespace gum {
    * table.
    */
   template < typename GUM_SCALAR >
-  class MultiDimArray : public MultiDimWithOffset< GUM_SCALAR > {
+  class MultiDimArray: public MultiDimWithOffset< GUM_SCALAR > {
     public:
     template < typename GUM_SCALARBIS >
     friend class MultiDimBijArray;

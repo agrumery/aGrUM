@@ -287,7 +287,7 @@ namespace gum {
   // Convert approximation representation to value
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR
-         LinearApproximationPolicy< GUM_SCALAR >::decode(Idx representation) const {
+     LinearApproximationPolicy< GUM_SCALAR >::decode(Idx representation) const {
     if (representation > _nbInterval) {
       GUM_ERROR(OutOfUpperBound,
                 "Interval Number asked is higher than total number of interval");

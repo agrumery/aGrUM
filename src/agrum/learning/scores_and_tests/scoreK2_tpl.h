@@ -250,10 +250,10 @@ namespace gum {
           //                                   sum_k=1^ri log { N_ijk! } ]
           score = conditioning_size * __gammalog2(ri);
 
-          for (const auto n_ij : N_ij) {
+          for (const auto n_ij: N_ij) {
             score -= __gammalog2(n_ij + ri);
           }
-          for (const auto n_ijk : N_ijk) {
+          for (const auto n_ijk: N_ijk) {
             score += __gammalog2(n_ijk + 1);
           }
         }
@@ -287,7 +287,7 @@ namespace gum {
           // log {(ri - 1)!} - log {(N + ri-1)!} + sum_k=1^ri log { N_ijk! } ]
           score = __gammalog2(ri);
           double N = 0;
-          for (const auto n_ijk : N_ijk) {
+          for (const auto n_ijk: N_ijk) {
             score += __gammalog2(n_ijk + 1);
             N += n_ijk;
           }

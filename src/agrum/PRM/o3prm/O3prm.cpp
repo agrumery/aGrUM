@@ -412,25 +412,25 @@ namespace gum {
 
       O3PRM::O3PRM(const O3PRM& src) {
         GUM_CONS_CPY(O3PRM);
-        for (const auto& t : src.__types) {
+        for (const auto& t: src.__types) {
           __types.emplace_back(new O3Type(*t));
         }
-        for (const auto& t : src.__int_types) {
+        for (const auto& t: src.__int_types) {
           __int_types.emplace_back(new O3IntType(*t));
         }
-        for (const auto& t : src.__real_types) {
+        for (const auto& t: src.__real_types) {
           __real_types.emplace_back(new O3RealType(*t));
         }
-        for (const auto& i : src.__interfaces) {
+        for (const auto& i: src.__interfaces) {
           __interfaces.emplace_back(new O3Interface(*i));
         }
-        for (const auto& c : src.__classes) {
+        for (const auto& c: src.__classes) {
           __classes.emplace_back(new O3Class(*c));
         }
-        for (const auto& s : src.__systems) {
+        for (const auto& s: src.__systems) {
           __systems.emplace_back(new O3System(*s));
         }
-        for (const auto& i : src.__imports) {
+        for (const auto& i: src.__imports) {
           __imports.emplace_back(new O3Import(*i));
         }
       }
@@ -448,25 +448,25 @@ namespace gum {
 
       O3PRM& O3PRM::operator=(const O3PRM& src) {
         if (this == &src) { return *this; }
-        for (const auto& t : src.__types) {
+        for (const auto& t: src.__types) {
           __types.emplace_back(new O3Type(*t));
         }
-        for (const auto& t : src.__int_types) {
+        for (const auto& t: src.__int_types) {
           __int_types.emplace_back(new O3IntType(*t));
         }
-        for (const auto& t : src.__real_types) {
+        for (const auto& t: src.__real_types) {
           __real_types.emplace_back(new O3RealType(*t));
         }
-        for (const auto& i : src.__interfaces) {
+        for (const auto& i: src.__interfaces) {
           __interfaces.emplace_back(new O3Interface(*i));
         }
-        for (const auto& c : src.__classes) {
+        for (const auto& c: src.__classes) {
           __classes.emplace_back(new O3Class(*c));
         }
-        for (const auto& s : src.__systems) {
+        for (const auto& s: src.__systems) {
           __systems.emplace_back(new O3System(*s));
         }
-        for (const auto& i : src.__imports) {
+        for (const auto& i: src.__imports) {
           __imports.emplace_back(new O3Import(*i));
         }
         return *this;
@@ -539,8 +539,8 @@ namespace gum {
         GUM_DESTRUCTOR(O3InterfaceElement);
       }
 
-      O3InterfaceElement& O3InterfaceElement::
-                          operator=(const O3InterfaceElement& src) {
+      O3InterfaceElement&
+         O3InterfaceElement::operator=(const O3InterfaceElement& src) {
         if (this == &src) { return *this; }
         __type = src.__type;
         __name = src.__name;
@@ -804,7 +804,7 @@ namespace gum {
 
         auto e = new O3AttributeList();
         __attrs = std::unique_ptr< O3AttributeList >(e);
-        for (const auto& elt : src.attributes()) {
+        for (const auto& elt: src.attributes()) {
           __attrs->push_back(elt->copy());
         }
 
@@ -840,7 +840,7 @@ namespace gum {
 
         auto e = new O3AttributeList();
         __attrs = std::unique_ptr< O3AttributeList >(e);
-        for (const auto& elt : src.attributes()) {
+        for (const auto& elt: src.attributes()) {
           __attrs->push_back(elt->copy());
         }
 
@@ -1336,8 +1336,8 @@ namespace gum {
         GUM_DESTRUCTOR(O3InstanceParameter);
       }
 
-      O3InstanceParameter& O3InstanceParameter::
-                           operator=(const O3InstanceParameter& src) {
+      O3InstanceParameter&
+         O3InstanceParameter::operator=(const O3InstanceParameter& src) {
         if (this == &src) { return *this; }
         __name = src.__name;
         __value = src.__value;
@@ -1345,8 +1345,8 @@ namespace gum {
         return *this;
       }
 
-      O3InstanceParameter& O3InstanceParameter::
-                           operator=(O3InstanceParameter&& src) {
+      O3InstanceParameter&
+         O3InstanceParameter::operator=(O3InstanceParameter&& src) {
         if (this == &src) { return *this; }
         __name = std::move(src.__name);
         __value = std::move(src.__value);

@@ -47,7 +47,7 @@
 
 namespace gum_tests {
 
-  class BIFXMLIDWriterTestSuite : public CxxTest::TestSuite {
+  class BIFXMLIDWriterTestSuite: public CxxTest::TestSuite {
     private:
     void fillTopo(gum::InfluenceDiagram< double >& infDiag,
                   gum::List< gum::NodeId >&        idList) {

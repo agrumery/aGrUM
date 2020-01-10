@@ -62,14 +62,14 @@ namespace gum {
     // first wrap the multidimimplementations into ScheduleMultiDims
     Set< const ScheduleMultiDim< GUM_SCALAR >* > sched_set;
 
-    for (const auto pot : set)
+    for (const auto pot: set)
       sched_set.insert(new ScheduleMultiDim< GUM_SCALAR >(*pot));
 
     // perform the combination
     const ScheduleMultiDim< GUM_SCALAR >& res = combine(sched_set, schedule);
 
     // deallocate the wrappers we just constructed
-    for (const auto sched : sched_set)
+    for (const auto sched: sched_set)
       delete sched;
 
     return res;
@@ -84,14 +84,14 @@ namespace gum {
     // first wrap the TABLES into ScheduleMultiDims
     Set< const ScheduleMultiDim< GUM_SCALAR >* > sched_set;
 
-    for (const auto tab : set)
+    for (const auto tab: set)
       sched_set.insert(new ScheduleMultiDim< GUM_SCALAR >(*tab->content()));
 
     // perform the combination
     const ScheduleMultiDim< GUM_SCALAR >& res = combine(sched_set, schedule);
 
     // deallocate the wrappers we just constructed
-    for (const auto sched : sched_set)
+    for (const auto sched: sched_set)
       delete sched;
 
     return res;
@@ -106,14 +106,14 @@ namespace gum {
     // first wrap the multidimimplementations into ScheduleMultiDims
     Set< const ScheduleMultiDim< GUM_SCALAR >* > sched_set;
 
-    for (const auto pot : set)
+    for (const auto pot: set)
       sched_set.insert(new ScheduleMultiDim< GUM_SCALAR >(*pot));
 
     // perform the combination
     float res = nbOperations(sched_set, schedule);
 
     // deallocate the wrappers we just constructed
-    for (const auto sched : sched_set)
+    for (const auto sched: sched_set)
       delete sched;
 
     return res;
@@ -129,14 +129,14 @@ namespace gum {
     // first wrap the TABLES into ScheduleMultiDims
     Set< const ScheduleMultiDim< GUM_SCALAR >* > sched_set;
 
-    for (const auto tab : set)
+    for (const auto tab: set)
       sched_set.insert(new ScheduleMultiDim< GUM_SCALAR >(*tab->content()));
 
     // perform the combination
     float res = nbOperations(sched_set, schedule);
 
     // deallocate the wrappers we just constructed
-    for (const auto sched : sched_set)
+    for (const auto sched: sched_set)
       delete sched;
 
     return res;
@@ -150,14 +150,14 @@ namespace gum {
     // first wrap the multidimimplementations into ScheduleMultiDims
     Set< const ScheduleMultiDim< GUM_SCALAR >* > sched_set;
 
-    for (const auto pot : set)
+    for (const auto pot: set)
       sched_set.insert(new ScheduleMultiDim< GUM_SCALAR >(*pot));
 
     // compute the memory consumption of the combination
     std::pair< long, long > res = memoryUsage(sched_set, schedule);
 
     // deallocate the wrappers we just constructed
-    for (const auto sched : sched_set)
+    for (const auto sched: sched_set)
       delete sched;
 
     return res;
@@ -173,14 +173,14 @@ namespace gum {
     // first wrap the TABLES into ScheduleMultiDims
     Set< const ScheduleMultiDim< GUM_SCALAR >* > sched_set;
 
-    for (const auto tab : set)
+    for (const auto tab: set)
       sched_set.insert(new ScheduleMultiDim< GUM_SCALAR >(*tab->content()));
 
     // compute the memory consumption of the combination
     std::pair< long, long > res = memoryUsage(sched_set, schedule);
 
     // deallocate the wrappers we just constructed
-    for (const auto sched : sched_set)
+    for (const auto sched: sched_set)
       delete sched;
 
     return res;

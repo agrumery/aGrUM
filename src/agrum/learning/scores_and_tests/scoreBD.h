@@ -62,7 +62,7 @@ namespace gum {
      *
      */
     template < template < typename > class ALLOC = std::allocator >
-    class ScoreBD : public Score< ALLOC > {
+    class ScoreBD: public Score< ALLOC > {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;

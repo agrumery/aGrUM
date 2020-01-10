@@ -47,14 +47,14 @@ namespace gum {
     // copy the set of neighbours
     __neighbours.resize(s.__neighbours.capacity());
 
-    for (const auto& elt : s.__neighbours) {
+    for (const auto& elt: s.__neighbours) {
       NodeSet* newneigh = new NodeSet(*elt.second);
       __neighbours.insert(elt.first, newneigh);
     }
 
     // send signals to indicate that there are new edges
     if (onEdgeAdded.hasListener())
-      for (const auto& edge : __edges)
+      for (const auto& edge: __edges)
         GUM_EMIT2(onEdgeAdded, edge.first(), edge.second());
   }
 
@@ -65,7 +65,7 @@ namespace gum {
   }
 
   void EdgeGraphPart::clearEdges() {
-    for (const auto& elt : __neighbours)
+    for (const auto& elt: __neighbours)
       delete elt.second;
 
     __neighbours.clear();
@@ -74,7 +74,7 @@ namespace gum {
       EdgeSet tmp = __edges;
       __edges.clear();
 
-      for (const auto& edge : tmp)
+      for (const auto& edge: tmp)
         GUM_EMIT2(onEdgeDeleted, edge.first(), edge.second());
     } else {
       __edges.clear();
@@ -91,13 +91,13 @@ namespace gum {
       // copy the set of neighbours
       __neighbours.resize(s.__neighbours.capacity());
 
-      for (const auto& elt : s.__neighbours) {
+      for (const auto& elt: s.__neighbours) {
         NodeSet* newneigh = new NodeSet(*elt.second);
         __neighbours.insert(elt.first, newneigh);
       }
 
       if (onEdgeAdded.hasListener())
-        for (const auto& edge : __edges)
+        for (const auto& edge: __edges)
           GUM_EMIT2(onEdgeAdded, edge.first(), edge.second());
     }
 
@@ -109,7 +109,7 @@ namespace gum {
     bool              first = true;
     s << "{";
 
-    for (const auto edge : __edges) {
+    for (const auto edge: __edges) {
       if (first)
         first = false;
       else
@@ -140,7 +140,7 @@ namespace gum {
       nodeFIFO.popFront();
 
       // check the neighbour
-      for (const auto new_one : neighbours(current)) {
+      for (const auto new_one: neighbours(current)) {
         if (mark.exists(new_one))   // if this node is already marked, stop
           continue;
 

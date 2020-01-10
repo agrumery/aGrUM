@@ -59,7 +59,7 @@ namespace gum {
    * latter. The identification of sub-cliques is very fast (comparison
    * of 2 ints).
    */
-  class DefaultTriangulation : public UnconstrainedTriangulation {
+  class DefaultTriangulation: public UnconstrainedTriangulation {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

@@ -36,7 +36,7 @@
  */
 namespace gum_tests {
 
-  class PRMSystemTestSuite : public CxxTest::TestSuite {
+  class PRMSystemTestSuite: public CxxTest::TestSuite {
     private:
     typedef gum::prm::PRMSystem< double >          PRMSystem;
     typedef gum::prm::PRMInstance< double >        PRMInstance;
@@ -223,7 +223,7 @@ namespace gum_tests {
       // Assert
       TS_ASSERT_EQUALS(bn->size(), (gum::Size)8);
       TS_ASSERT_EQUALS(bn->sizeArcs(), (gum::Size)8);
-      for (auto node : bn->dag()) {
+      for (auto node: bn->dag()) {
         const gum::Potential< double >* cpt = nullptr;
         TS_GUM_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(node)));
         gum::Instantiation inst(*cpt);

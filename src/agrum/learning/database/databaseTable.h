@@ -184,7 +184,7 @@ namespace gum {
      * @endcode
      */
     template < template < typename > class ALLOC = std::allocator >
-    class DatabaseTable : public IDatabaseTable< DBTranslatedValue, ALLOC > {
+    class DatabaseTable: public IDatabaseTable< DBTranslatedValue, ALLOC > {
       public:
       /// the type for the vectors used in the DatabaseTable
       template < typename TX_DATA >

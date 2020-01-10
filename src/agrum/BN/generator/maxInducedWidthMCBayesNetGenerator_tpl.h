@@ -120,7 +120,7 @@ namespace gum {
                                            ICPTDisturber >::__checkConditions() {
     NodeProperty< Size > __modalitiesMap;
 
-    for (auto node : this->_bayesNet.nodes())
+    for (auto node: this->_bayesNet.nodes())
       __modalitiesMap.insert(node, this->_bayesNet.variable(node).domainSize());
 
     DefaultTriangulation tri(&(this->_bayesNet.moralGraph()), &__modalitiesMap);
@@ -136,9 +136,9 @@ namespace gum {
              template < typename >
              class ICPTDisturber >
   INLINE Size
-         MaxInducedWidthMCBayesNetGenerator< GUM_SCALAR,
-                                             ICPTGenerator,
-                                             ICPTDisturber >::maxlog10InducedWidth()
+     MaxInducedWidthMCBayesNetGenerator< GUM_SCALAR,
+                                         ICPTGenerator,
+                                         ICPTDisturber >::maxlog10InducedWidth()
         const {
     return _maxlog10InducedWidth;
   }

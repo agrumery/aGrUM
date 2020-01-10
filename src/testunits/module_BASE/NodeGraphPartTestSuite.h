@@ -27,7 +27,7 @@
 
 namespace gum_tests {
 
-  class NodeGraphPartTestSuite : public CxxTest::TestSuite {
+  class NodeGraphPartTestSuite: public CxxTest::TestSuite {
     public:
     void testConstructor() {
       TS_GUM_ASSERT_THROWS_NOTHING(gum::NodeGraphPart ngp);
@@ -221,7 +221,7 @@ namespace gum_tests {
 
       gum::Size nb = 0, nb2 = 0;
 
-      for (auto x : ngp) {
+      for (auto x: ngp) {
         ++nb;
         nb2 += x;
       }
@@ -294,7 +294,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(nodeset.size(), gum::Size(100));
 
       gum::NodeId i = 0;
-      for (auto n : nodeset.nodes())
+      for (auto n: nodeset.nodes())
         TS_ASSERT_EQUALS(n, i++);
 
       gum::NodeGraphPart nodeset2;
@@ -311,7 +311,7 @@ namespace gum_tests {
       auto v2 = nodeset2.addNodes(4);
       futureIds.addNodeWithId(10);   // the 4th added node as 10 for id
 
-      for (auto n : v2) {
+      for (auto n: v2) {
         TS_GUM_ASSERT_THROWS_NOTHING(futureIds.eraseNode(n));
       }
       TS_ASSERT(futureIds.empty());

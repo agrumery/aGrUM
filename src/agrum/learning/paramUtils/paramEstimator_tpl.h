@@ -152,8 +152,8 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    ParamEstimator< ALLOC >& ParamEstimator< ALLOC >::
-                             operator=(const ParamEstimator< ALLOC >& from) {
+    ParamEstimator< ALLOC >&
+       ParamEstimator< ALLOC >::operator=(const ParamEstimator< ALLOC >& from) {
       if (this != &from) {
         ALLOC< Apriori< ALLOC > > allocator(this->getAllocator());
         if (_external_apriori != nullptr) {
@@ -179,8 +179,8 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    ParamEstimator< ALLOC >& ParamEstimator< ALLOC >::
-                             operator=(ParamEstimator< ALLOC >&& from) {
+    ParamEstimator< ALLOC >&
+       ParamEstimator< ALLOC >::operator=(ParamEstimator< ALLOC >&& from) {
       if (this != &from) {
         _external_apriori = from._external_apriori;
         _score_internal_apriori = from._score_internal_apriori;

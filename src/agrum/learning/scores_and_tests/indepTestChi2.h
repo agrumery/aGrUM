@@ -45,7 +45,7 @@ namespace gum {
      * @ingroup learning_scores
      */
     template < template < typename > class ALLOC = std::allocator >
-    class IndepTestChi2 : public IndependenceTest< ALLOC > {
+    class IndepTestChi2: public IndependenceTest< ALLOC > {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;

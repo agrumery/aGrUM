@@ -51,7 +51,7 @@ namespace gum {
    *
    */
   template < typename GUM_SCALAR >
-  class InfluenceDiagram : public DAGmodel {
+  class InfluenceDiagram: public DAGmodel {
     // friend class InfluenceDiagramFactory<GUM_SCALAR>;
 
     public:
@@ -116,18 +116,24 @@ namespace gum {
      * Returns true if node is a utility one
      */
     bool isUtilityNode(NodeId varId) const;
-    bool isUtilityNode(const std::string& name) const {return isUtilityNode(idFromName(name));};
+    bool isUtilityNode(const std::string& name) const {
+      return isUtilityNode(idFromName(name));
+    };
     /**
      * Returns true if node is a decision one
      */
     bool isDecisionNode(NodeId varId) const;
-    bool isDecisionNode(const std::string& name) const {return isDecisionNode(idFromName(name));};
+    bool isDecisionNode(const std::string& name) const {
+      return isDecisionNode(idFromName(name));
+    };
 
     /**
      * Returns true if node is a chance one
      */
     bool isChanceNode(NodeId varId) const;
-    bool isChanceNode(const std::string& name) const {return isChanceNode(idFromName(name));};
+    bool isChanceNode(const std::string& name) const {
+      return isChanceNode(idFromName(name));
+    };
     /**
      * Returns the number of utility nodes
      */

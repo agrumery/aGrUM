@@ -62,20 +62,20 @@ extern "C" {
 /* *** from lrs, we need to know BASE to read multiple precision integers *** */
 #ifdef B32
 /*32 bit machines */
-#  define FORMAT "%4.4lu"
-#  define MAXD 2147483647L
-#  define BASE 10000L
+#  define FORMAT   "%4.4lu"
+#  define MAXD     2147483647L
+#  define BASE     10000L
 #  define BASE_DIG 4
-#  define INTSIZE 8L
-#  define BIT "32bit"
+#  define INTSIZE  8L
+#  define BIT      "32bit"
 #else
 /* 64 bit machines */
-#  define MAXD 9223372036854775807L
-#  define BASE 1000000000L
-#  define FORMAT "%9.9lu"
+#  define MAXD     9223372036854775807L
+#  define BASE     1000000000L
+#  define FORMAT   "%9.9lu"
 #  define BASE_DIG 9
-#  define INTSIZE 16L
-#  define BIT "64bit"
+#  define INTSIZE  16L
+#  define BIT      "64bit"
 #endif
 
 // 64 bits for windows (long is 32 bits)

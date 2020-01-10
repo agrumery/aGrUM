@@ -87,7 +87,7 @@ namespace gum {
       };
 
       ///
-      class SetEngineCommand : public O3prmrCommand {
+      class SetEngineCommand: public O3prmrCommand {
         public:
         SetEngineCommand(int line, const std::string& value) :
             O3prmrCommand(line), value(value) {}
@@ -101,7 +101,7 @@ namespace gum {
       };
 
       ///
-      class SetGndEngineCommand : public O3prmrCommand {
+      class SetGndEngineCommand: public O3prmrCommand {
         public:
         SetGndEngineCommand(int line, const std::string& value) :
             O3prmrCommand(line), value(value) {}
@@ -116,7 +116,7 @@ namespace gum {
 
       ///
       template < typename GUM_SCALAR >
-      class ObserveCommand : public O3prmrCommand {
+      class ObserveCommand: public O3prmrCommand {
         public:
         ObserveCommand(int                line,
                        const std::string& leftValue,
@@ -141,7 +141,7 @@ namespace gum {
 
       ///
       template < typename GUM_SCALAR >
-      class UnobserveCommand : public O3prmrCommand {
+      class UnobserveCommand: public O3prmrCommand {
         public:
         std::string                                value;
         const PRMSystem< GUM_SCALAR >*             system;
@@ -158,7 +158,7 @@ namespace gum {
 
       ///
       template < typename GUM_SCALAR >
-      class QueryCommand : public O3prmrCommand {
+      class QueryCommand: public O3prmrCommand {
         public:
         QueryCommand(int line, const std::string& val) :
             O3prmrCommand(line), value(val), system(nullptr) {}

@@ -50,9 +50,9 @@ namespace gum {
    * process
    *
    */
-  class AdaptiveRMaxPlaner
-      : public StructuredPlaner< double >
-      , public IDecisionStrategy {
+  class AdaptiveRMaxPlaner:
+      public StructuredPlaner< double >,
+      public IDecisionStrategy {
     // ###################################################################
     /// @name
     // ###################################################################

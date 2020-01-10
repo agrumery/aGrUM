@@ -68,7 +68,7 @@ namespace gum {
        * discovered in an interface graph.
        */
       template < typename GUM_SCALAR >
-      class DFSTree : private DiGraph {
+      class DFSTree: private DiGraph {
         public:
         // =========================================================================
         /// @name Constructor and destructor.

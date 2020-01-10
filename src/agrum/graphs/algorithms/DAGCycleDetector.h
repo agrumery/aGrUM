@@ -110,7 +110,7 @@ namespace gum {
      * @brief the class to indicate that we wish to add a new arc
      * @ingroup graph_group
      */
-    class ArcAdd : public Change {
+    class ArcAdd: public Change {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -150,7 +150,7 @@ namespace gum {
      * @brief the class to indicate that we wish to remove an arc
      * @ingroup graph_group
      */
-    class ArcDel : public Change {
+    class ArcDel: public Change {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -189,7 +189,7 @@ namespace gum {
      * @brief the class to indicate that we wish to reverse an arc
      * @ingroup graph_group
      */
-    class ArcReverse : public Change {
+    class ArcReverse: public Change {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

@@ -27,7 +27,7 @@
 
 namespace gum_tests {
 
-  class RefPtrTestSuite : public CxxTest::TestSuite {
+  class RefPtrTestSuite: public CxxTest::TestSuite {
     public:
     void testConstructors() {
       gum::RefPtr< int > ptr1(new int(4));
@@ -76,7 +76,7 @@ namespace gum_tests {
       int getY() { return xxx; }
     };
 
-    struct titi : public toto {
+    struct titi: public toto {
       int yyy;
       titi() : yyy(3){};
 

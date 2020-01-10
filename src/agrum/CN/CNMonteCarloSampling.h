@@ -59,8 +59,8 @@ namespace gum {
      */
     template < typename GUM_SCALAR,
                class BNInferenceEngine = LazyPropagation< GUM_SCALAR > >
-    class CNMonteCarloSampling
-        : public MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine > {
+    class CNMonteCarloSampling:
+        public MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine > {
       private:
       /** To easily acces MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine
        * >

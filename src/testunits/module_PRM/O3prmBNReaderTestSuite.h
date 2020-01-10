@@ -28,7 +28,7 @@
 
 namespace gum_tests {
 
-  class O3prmBNReaderTestSuite : public CxxTest::TestSuite {
+  class O3prmBNReaderTestSuite: public CxxTest::TestSuite {
     public:
     void testClassWithoutSystem() {
       gum::BayesNet< double >      bn;
@@ -144,7 +144,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed());
         TS_ASSERT_EQUALS(res, (gum::Size)0);
         TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)1);   // no system
-        for (auto n : bn.nodes()) {
+        for (auto n: bn.nodes()) {
           TS_ASSERT(bn.variable(n).name().find(".") == std::string::npos);
         }
       }
@@ -158,7 +158,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed());
         TS_ASSERT_EQUALS(res, (gum::Size)0);
         TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
-        for (auto n : bn.nodes()) {
+        for (auto n: bn.nodes()) {
           TS_ASSERT(bn.variable(n).name().find(".") != std::string::npos);
         }
       }

@@ -27,7 +27,7 @@
 
 namespace gum_tests {
 
-  class binSearchTreeTestSuite : public CxxTest::TestSuite {
+  class binSearchTreeTestSuite: public CxxTest::TestSuite {
     public:
     void testConstructors() {
       gum::BinSearchTree< int >* tree = 0;

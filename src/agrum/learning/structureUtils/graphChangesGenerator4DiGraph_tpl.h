@@ -85,8 +85,8 @@ namespace gum {
     /// move operator
     template < typename STRUCT_CONSTRAINT >
     GraphChangesGenerator4DiGraph< STRUCT_CONSTRAINT >&
-          GraphChangesGenerator4DiGraph< STRUCT_CONSTRAINT >::
-          operator=(GraphChangesGenerator4DiGraph< STRUCT_CONSTRAINT >&& from) {
+       GraphChangesGenerator4DiGraph< STRUCT_CONSTRAINT >::operator=(
+          GraphChangesGenerator4DiGraph< STRUCT_CONSTRAINT >&& from) {
       if (this != &from) {
         _graph = std::move(from._graph);
         _constraint = std::move(from._constraint);
@@ -117,9 +117,9 @@ namespace gum {
         const Size this_thread = getThreadNumber();
 
         Idx i = 0;
-        for (const auto node1 : _graph) {
+        for (const auto node1: _graph) {
           if (i == this_thread) {
-            for (const auto node2 : _graph) {
+            for (const auto node2: _graph) {
               if (node1 != node2) {
                 // try arc additions
                 ArcAddition arc_add(node1, node2);
@@ -148,8 +148,8 @@ namespace gum {
 
       // now store the changes into the protected vectors of the
       // GraphChangesGenerator4DiGraph
-      for (const auto& changes : legal_changes) {
-        for (const auto& change : changes) {
+      for (const auto& changes: legal_changes) {
+        for (const auto& change: changes) {
           _legal_changes.insert(std::move(change));
         }
       }

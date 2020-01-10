@@ -31,7 +31,7 @@
 
 namespace gum_tests {
 
-  class ScheduleProjectTestSuite : public CxxTest::TestSuite {
+  class ScheduleProjectTestSuite: public CxxTest::TestSuite {
     public:
     void test_construct() {
       std::vector< gum::LabelizedVariable* > vars(10);
@@ -119,7 +119,7 @@ namespace gum_tests {
          table.variablesSequence();
       result->beginMultipleChanges();
 
-      for (const auto var : vars)
+      for (const auto var: vars)
         if (!del_vars.exists(var)) *result << *var;
 
       result->endMultipleChanges();

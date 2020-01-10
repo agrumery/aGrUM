@@ -66,7 +66,7 @@ namespace gum {
       if (size) {
         // save the set of symbols representing the missing values
         _missing_symbols.resize((Size)missing_symbols.size());
-        for (const auto& symbol : missing_symbols) {
+        for (const auto& symbol: missing_symbols) {
           _missing_symbols.insert(symbol);
         }
       }
@@ -138,8 +138,8 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    INLINE DBTranslator< ALLOC >& DBTranslator< ALLOC >::
-                                  operator=(const DBTranslator< ALLOC >& from) {
+    INLINE DBTranslator< ALLOC >&
+       DBTranslator< ALLOC >::operator=(const DBTranslator< ALLOC >& from) {
       if (this != &from) {
         _is_dictionary_dynamic = from._is_dictionary_dynamic;
         _max_dico_entries = from._max_dico_entries;
@@ -153,8 +153,8 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    INLINE DBTranslator< ALLOC >& DBTranslator< ALLOC >::
-                                  operator=(DBTranslator< ALLOC >&& from) {
+    INLINE DBTranslator< ALLOC >&
+       DBTranslator< ALLOC >::operator=(DBTranslator< ALLOC >&& from) {
       _is_dictionary_dynamic = from._is_dictionary_dynamic;
       _max_dico_entries = from._max_dico_entries;
       _missing_symbols = std::move(from._missing_symbols);
@@ -167,16 +167,16 @@ namespace gum {
 
     /// alias for method translate
     template < template < typename > class ALLOC >
-    INLINE DBTranslatedValue DBTranslator< ALLOC >::
-                             operator<<(const std::string& str) {
+    INLINE DBTranslatedValue
+       DBTranslator< ALLOC >::operator<<(const std::string& str) {
       return translate(str);
     }
 
 
     /// alias for method translateBack
     template < template < typename > class ALLOC >
-    INLINE std::string DBTranslator< ALLOC >::
-                       operator>>(const DBTranslatedValue translated_val) {
+    INLINE std::string
+       DBTranslator< ALLOC >::operator>>(const DBTranslatedValue translated_val) {
       return translateBack(translated_val);
     }
 

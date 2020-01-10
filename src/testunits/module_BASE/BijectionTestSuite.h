@@ -33,7 +33,7 @@
 
 namespace gum_tests {
 
-  class BijectionTestSuite : public CxxTest::TestSuite {
+  class BijectionTestSuite: public CxxTest::TestSuite {
     public:
     void test_constructors1() {
       gum::Bijection< int, int > bijection;

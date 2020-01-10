@@ -85,7 +85,7 @@
 #endif     // SWIG
 
 #define GUM_MAKE_ERROR(TYPE, SUPERCLASS, MSG)                                    \
-  class TYPE : public SUPERCLASS {                                               \
+  class TYPE: public SUPERCLASS {                                                \
     public:                                                                      \
     TYPE(std::string aMsg, std::string aType = MSG) : SUPERCLASS(aMsg, aType){}; \
     TYPE(const TYPE& src) : SUPERCLASS(src){};                                   \
@@ -547,7 +547,7 @@ namespace gum {
                  LearningError,
                  "Unknown label found in database")
 
-  class SyntaxError : public IOError {
+  class SyntaxError: public IOError {
     protected:
     Size _noLine;
     Size _noCol;

@@ -34,7 +34,7 @@
 
 namespace gum_tests {
 
-  class SmallObjectAllocatorTestSuite : public CxxTest::TestSuite {
+  class SmallObjectAllocatorTestSuite: public CxxTest::TestSuite {
     private:
     public:
     // ==============================================================================

@@ -54,7 +54,7 @@ namespace gum {
    * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
    */
   template < typename T_TICKS >
-  class DiscretizedVariable : public IDiscretizedVariable {
+  class DiscretizedVariable: public IDiscretizedVariable {
     private:
     std::vector< T_TICKS > __ticks;   // Array from 0 to domainSize-2
     Size                   __ticks_size;

@@ -52,8 +52,8 @@ namespace gum {
    * \ingroup graph_group
    *
    */
-  class PartialOrderedEliminationSequenceStrategy
-      : public EliminationSequenceStrategy {
+  class PartialOrderedEliminationSequenceStrategy:
+      public EliminationSequenceStrategy {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

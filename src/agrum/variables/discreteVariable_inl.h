@@ -51,8 +51,8 @@ namespace gum {
   }
 
   // Copy operator
-  INLINE DiscreteVariable& DiscreteVariable::
-                           operator=(const DiscreteVariable& aRV) {
+  INLINE DiscreteVariable&
+     DiscreteVariable::operator=(const DiscreteVariable& aRV) {
     if (&aRV != this) { Variable::operator=(aRV); }
 
     return *this;

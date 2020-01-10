@@ -50,9 +50,9 @@ namespace gum {
     NodeSet ev_ancestors(dag.size());
     {
       List< NodeId > anc_to_visit;
-      for (const auto node : hardEvidence)
+      for (const auto node: hardEvidence)
         anc_to_visit.insert(node);
-      for (const auto node : softEvidence)
+      for (const auto node: softEvidence)
         anc_to_visit.insert(node);
       while (!anc_to_visit.empty()) {
         const NodeId node = anc_to_visit.front();
@@ -60,7 +60,7 @@ namespace gum {
 
         if (!ev_ancestors.exists(node)) {
           ev_ancestors.insert(node);
-          for (const auto par : dag.parents(node)) {
+          for (const auto par: dag.parents(node)) {
             anc_to_visit.insert(par);
           }
         }
@@ -76,7 +76,7 @@ namespace gum {
     // ball to and the Boolean indicates whether we shall reach it from one of
     // its children (true) or from one parent (false)
     List< std::pair< NodeId, bool > > nodes_to_visit;
-    for (const auto node : query) {
+    for (const auto node: query) {
       nodes_to_visit.insert(std::pair< NodeId, bool >(node, true));
     }
 
@@ -107,24 +107,24 @@ namespace gum {
         // bounce the ball toward the neighbors
         if (direction && !is_hard_evidence) {   // visit from a child
           // visit the parents
-          for (const auto par : dag.parents(node)) {
+          for (const auto par: dag.parents(node)) {
             nodes_to_visit.insert(std::pair< NodeId, bool >(par, true));
           }
 
           // visit the children
-          for (const auto chi : dag.children(node)) {
+          for (const auto chi: dag.children(node)) {
             nodes_to_visit.insert(std::pair< NodeId, bool >(chi, false));
           }
         } else {   // visit from a parent
           if (!hardEvidence.exists(node)) {
             // visit the children
-            for (const auto chi : dag.children(node)) {
+            for (const auto chi: dag.children(node)) {
               nodes_to_visit.insert(std::pair< NodeId, bool >(chi, false));
             }
           }
           if (ev_ancestors.exists(node)) {
             // visit the parents
-            for (const auto par : dag.parents(node)) {
+            for (const auto par: dag.parents(node)) {
               nodes_to_visit.insert(std::pair< NodeId, bool >(par, true));
             }
           }

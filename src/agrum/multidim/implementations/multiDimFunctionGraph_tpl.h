@@ -160,7 +160,7 @@ namespace gum {
 
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE Size
-         MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::realSize() const {
+     MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::realSize() const {
     return __internalNodeMap.size();   // + __valueMap.size();
   }
 

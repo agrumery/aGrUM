@@ -37,7 +37,7 @@
 
 namespace gum_tests {
 
-  class MultiDimCompleteProjectionTestSuite : public CxxTest::TestSuite {
+  class MultiDimCompleteProjectionTestSuite: public CxxTest::TestSuite {
     private:
     // ==========================================================================
     /// initialize randomly a table
@@ -185,7 +185,7 @@ namespace gum_tests {
       const gum::Sequence< const gum::DiscreteVariable* >& vars =
          inst1.variablesSequence();
 
-      for (const auto var : vars)
+      for (const auto var: vars)
         if (inst1.val(*var) != inst2.val(*var)) return false;
 
       return true;

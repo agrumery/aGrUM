@@ -59,7 +59,7 @@ namespace gum {
       Set< PRMInterface< GUM_SCALAR >* > impl;
 
       if (implements != 0) {
-        for (const auto& imp : *implements) {
+        for (const auto& imp: *implements) {
           impl.insert(__retrieveInterface(imp));
         }
       }
@@ -106,9 +106,9 @@ namespace gum {
     INLINE void PRMFactory< GUM_SCALAR >::__checkInterfaceImplementation(
        PRMClass< GUM_SCALAR >* c) {
       try {
-        for (const auto& i : c->implements()) {
+        for (const auto& i: c->implements()) {
           try {
-            for (const auto& node : i->containerDag().nodes()) {
+            for (const auto& node: i->containerDag().nodes()) {
               std::string name = i->get(node).name();
 
               switch (i->get(node).elt_type()) {
@@ -230,7 +230,7 @@ namespace gum {
       const Sequence< const DiscreteVariable* >& vars =
          attr->cpf().variablesSequence();
 
-      for (const auto& node : c->containerDag().nodes()) {
+      for (const auto& node: c->containerDag().nodes()) {
         try {
           if (vars.exists(&(c->get(node).type().variable()))) {
             ++count;
@@ -841,7 +841,7 @@ namespace gum {
         throw;
       }
 
-      for (const auto& elt : inputs) {
+      for (const auto& elt: inputs) {
         c->addArc(elt->safeName(), safe_name);
       }
     }
@@ -926,7 +926,7 @@ namespace gum {
       if (model->isInstance(l_i)) {
         lefts.push_back(&(model->get(l_i)));
       } else if (model->isArray(l_i)) {
-        for (const auto& elt : model->getArray(l_i))
+        for (const auto& elt: model->getArray(l_i))
           lefts.push_back(elt);
       } else {
         GUM_ERROR(NotFound, "left value does not name an instance or an array");
@@ -935,14 +935,14 @@ namespace gum {
       if (model->isInstance(r_i)) {
         rights.push_back(&(model->get(r_i)));
       } else if (model->isArray(r_i)) {
-        for (const auto& elt : model->getArray(r_i))
+        for (const auto& elt: model->getArray(r_i))
           rights.push_back(elt);
       } else {
         GUM_ERROR(NotFound, "left value does not name an instance or an array");
       }
 
-      for (const auto l : lefts) {
-        for (const auto r : rights) {
+      for (const auto l: lefts) {
+        for (const auto r: rights) {
           auto& elt = l->type().get(l_ref);
           if (PRMClassElement< GUM_SCALAR >::isReferenceSlot(elt)) {
             l->add(elt.id(), *r);
@@ -1028,7 +1028,7 @@ namespace gum {
                               PRMClassElement< GUM_SCALAR >* > >
          toAdd;
 
-      for (const auto& elt : inputs) {
+      for (const auto& elt: inputs) {
         if ((*elt).type() != (*t)) {
           if (PRMClassElement< GUM_SCALAR >::isSlotChain(*elt)) {
             PRMSlotChain< GUM_SCALAR >* sc =
@@ -1065,7 +1065,7 @@ namespace gum {
       HashTable< std::string, Size > counters;
       // Finding all types and super types
 
-      for (const auto& elt : elts) {
+      for (const auto& elt: elts) {
         try {
           current = &((*elt).type());
 
@@ -1097,7 +1097,7 @@ namespace gum {
 
       int current_depth = 0;
 
-      for (const auto& elt : counters) {
+      for (const auto& elt: counters) {
         if ((elt.second) == elts.size()) {
           current_depth = __typeDepth(__retrieveType(elt.first));
 
@@ -1129,7 +1129,7 @@ namespace gum {
 
       std::vector< PRMClassElement< GUM_SCALAR >* > parents;
 
-      for (const auto& elt : chains)
+      for (const auto& elt: chains)
         parents.push_back(&(c->get(elt)));
 
       PRMType* common_type = __retrieveCommonType(parents);
@@ -1696,7 +1696,7 @@ namespace gum {
       } else {
         auto my_params = params;
         // Adding all parameters to my_params
-        for (const auto& p : c->parameters()) {
+        for (const auto& p: c->parameters()) {
           if (!my_params.exists(p->name())) {
             my_params.insert(p->name(), p->value());
           }
@@ -1706,7 +1706,7 @@ namespace gum {
         std::stringstream sBuff;
         sBuff << c->name() << "<";
 
-        for (const auto& p : my_params) {
+        for (const auto& p: my_params) {
           sBuff << p.first << "=" << p.second << ",";
         }
 
@@ -1721,7 +1721,7 @@ namespace gum {
           startClass(sub_c, c->name());
 
           // Update inherited parameters
-          for (auto p : my_params) {
+          for (auto p: my_params) {
             auto type = static_cast< PRMParameter< GUM_SCALAR >& >(c->get(p.first))
                            .valueType();
             if (type == PRMParameter< GUM_SCALAR >::ParameterType::INT) {

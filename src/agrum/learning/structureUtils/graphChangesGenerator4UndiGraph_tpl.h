@@ -86,8 +86,8 @@ namespace gum {
     /// move operator
     template < typename STRUCT_CONSTRAINT >
     GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >&
-          GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::
-          operator=(GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >&& from) {
+       GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::operator=(
+          GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >&& from) {
       if (this != &from) {
         _graph = std::move(from._graph);
         _constraint = std::move(from._constraint);
@@ -118,9 +118,9 @@ namespace gum {
         const Idx this_thread = getThreadNumber();
 
         Idx i = 0;
-        for (const auto node1 : _graph) {
+        for (const auto node1: _graph) {
           if (i == this_thread) {
-            for (const auto node2 : _graph) {
+            for (const auto node2: _graph) {
               if (node1 != node2) {
                 // try edge additions
                 EdgeAddition edge_add(node1, node2);
@@ -143,8 +143,8 @@ namespace gum {
 
       // now store the changes into the protected vectors of the
       // GraphChangesGenerator4UndiGraph
-      for (const auto& changes : legal_changes) {
-        for (const auto& change : changes) {
+      for (const auto& changes: legal_changes) {
+        for (const auto& change: changes) {
           _legal_changes.insert(std::move(change));
         }
       }

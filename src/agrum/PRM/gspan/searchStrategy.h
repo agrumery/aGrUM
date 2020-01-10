@@ -123,7 +123,7 @@ namespace gum {
        *value.
        */
       template < typename GUM_SCALAR >
-      class FrequenceSearch : public SearchStrategy< GUM_SCALAR > {
+      class FrequenceSearch: public SearchStrategy< GUM_SCALAR > {
         public:
         // =========================================================================
         /// @name Constructor and destructor.
@@ -173,7 +173,7 @@ namespace gum {
        * A new growth is accepted if it is at least better than its predecessor.
        */
       template < typename GUM_SCALAR >
-      class StrictSearch : public SearchStrategy< GUM_SCALAR > {
+      class StrictSearch: public SearchStrategy< GUM_SCALAR > {
         public:
         // =========================================================================
         /// @name Constructor and destructor.
@@ -260,7 +260,7 @@ namespace gum {
        * or equal than its father.
        */
       template < typename GUM_SCALAR >
-      class TreeWidthSearch : public SearchStrategy< GUM_SCALAR > {
+      class TreeWidthSearch: public SearchStrategy< GUM_SCALAR > {
         public:
         // =========================================================================
         /// @name Constructor and destructor.

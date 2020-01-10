@@ -108,7 +108,7 @@ namespace gum {
     clique.insert(node_id);
 
     // update the __separators adjacent to clique 'id'
-    for (const auto nei : neighbours(clique_id))
+    for (const auto nei: neighbours(clique_id))
       if (__cliques[nei].contains(node_id))
         __separators[Edge(nei, clique_id)].insert(node_id);
   }
@@ -124,7 +124,7 @@ namespace gum {
       clique.erase(node_id);
 
       // update the __separators adjacent to __clique 'id'
-      for (const auto nei : neighbours(clique_id)) {
+      for (const auto nei: neighbours(clique_id)) {
         Edge edge(nei, clique_id);
 
         if (__separators[edge].contains(node_id))
@@ -143,12 +143,12 @@ namespace gum {
     // other connected components of the cliqueGraph
     const NodeSet& nodes_clique = __cliques[clique];
 
-    for (const auto node : nodes_clique)
+    for (const auto node: nodes_clique)
       if (infos_DFS.nodes_other_components.contains(node)) return false;
 
     // update the structure that keeps track of the cliques that still require
     // chains to access some of their nodes
-    for (const auto node : nodes_clique)
+    for (const auto node: nodes_clique)
       if (!infos_DFS.nodes_DFS_forbidden.contains(node))
         infos_DFS.cliques_DFS_chain[clique].erase(node);
 
@@ -157,7 +157,7 @@ namespace gum {
     if (infos_DFS.visited_cliques.contains(clique)) return true;
 
     // update the list of nodes visited during the DFS
-    for (const auto node : nodes_clique)
+    for (const auto node: nodes_clique)
       if (!infos_DFS.nodes_DFS_seen.contains(node))
         infos_DFS.nodes_DFS_seen.insert(node);
 
@@ -167,14 +167,14 @@ namespace gum {
     // check the neighbours that are different from "from" and that have not
     // been visited yet
 
-    for (const auto otherID : neighbours(clique))
+    for (const auto otherID: neighbours(clique))
       if (otherID != from) {
         // update the list of forbidden nodes in the DFS, i.e., the nodes that
         // belong to the clique but not to the separator
         const Edge     edge(otherID, clique);
         const NodeSet& from_separ = __separators[edge];
 
-        for (const auto node : nodes_clique) {
+        for (const auto node: nodes_clique) {
           if (!from_separ.contains(node))
             infos_DFS.nodes_DFS_forbidden.insert(node);
         }
@@ -183,13 +183,13 @@ namespace gum {
         if (!__runningIntersectionDFS(otherID, clique, infos_DFS)) return false;
 
         // remove from the forbidden list the nodes that belong to clique
-        for (const auto node : nodes_clique)
+        for (const auto node: nodes_clique)
           infos_DFS.nodes_DFS_forbidden.erase(node);
 
         // check again the structure that keeps track of the cliques that still
         // require chains to access some of their nodes: the chain may be
         // the neighbour we just encountered
-        for (const auto node : nodes_clique) {
+        for (const auto node: nodes_clique) {
           if (!infos_DFS.nodes_DFS_forbidden.contains(node))
             infos_DFS.cliques_DFS_chain[clique].erase(node);
         }
@@ -201,7 +201,7 @@ namespace gum {
     // cliques to contain the same node while this one does not belong to any
     // separator
     if (neighbours(clique).size() <= 1)
-      for (const auto node : nodes_clique)
+      for (const auto node: nodes_clique)
         if (!infos_DFS.nodes_DFS_forbidden.contains(node))
           infos_DFS.nodes_DFS_forbidden.insert(node);
 
@@ -217,7 +217,7 @@ namespace gum {
     infos_DFS.cliques_DFS_chain = __cliques;
 
     // while there exist unvisited cliques, perform a DFS on them
-    for (const auto DFSnode : nodes())
+    for (const auto DFSnode: nodes())
       if (!infos_DFS.visited_cliques.contains(DFSnode)) {
         // no nodes are forbidden a priori in the DFS
         infos_DFS.nodes_DFS_forbidden.clear();
@@ -232,14 +232,14 @@ namespace gum {
         // the nodes that were seen during the DFS belong to a connected
         // component
         // that is different from the connected components of the subsequent DFS
-        for (const auto node : infos_DFS.nodes_DFS_seen)
+        for (const auto node: infos_DFS.nodes_DFS_seen)
           if (!infos_DFS.nodes_other_components.contains(node))
             infos_DFS.nodes_other_components.insert(node);
       }
 
     // check that no clique requires an additional chain to guarantee the
     // running intersection property
-    for (const auto& elt : infos_DFS.cliques_DFS_chain)
+    for (const auto& elt: infos_DFS.cliques_DFS_chain)
       if (!elt.second.empty()) return false;
 
     return true;
@@ -252,7 +252,7 @@ namespace gum {
     if (UndiGraph::operator!=(from)) return false;
 
     // check if the __cliques are identical
-    for (const auto& elt : __cliques)
+    for (const auto& elt: __cliques)
       if (elt.second != from.__cliques[elt.first]) return false;
 
     return true;
@@ -262,10 +262,10 @@ namespace gum {
     std::stringstream stream;
     stream << "list of nodes:" << std::endl;
 
-    for (const auto node : nodes()) {
+    for (const auto node: nodes()) {
       stream << " -- node: " << node << std::endl << "    clique:";
 
-      for (const auto cliq : clique(node))
+      for (const auto cliq: clique(node))
         stream << "  " << cliq;
 
       stream << std::endl;
@@ -273,7 +273,7 @@ namespace gum {
 
     stream << "\n\nlist of edges:\n";
 
-    for (const auto edge : edges())
+    for (const auto edge: edges())
       stream << edge << "  ";
 
     return stream.str();
@@ -283,7 +283,7 @@ namespace gum {
     std::stringstream stream;
     bool              first = true;
 
-    for (auto node : clique) {
+    for (auto node: clique) {
       if (!first) { stream << "-"; }
 
       stream << node;
@@ -312,7 +312,7 @@ namespace gum {
     stream << "  node [style=\"filled\", fontcolor=\"black\"];" << std::endl;
 
     // cliques as nodes
-    for (auto node : nodes()) {
+    for (auto node: nodes()) {
       std::string nom = '"' + expandClique(node, clique(node)) + '"';
       stream << "  " << nom << " [label=\"" << expandCliqueContent(clique(node))
              << "\",fillcolor =\"burlywood\"];" << std::endl;
@@ -321,7 +321,7 @@ namespace gum {
     stream << std::endl;
 
     // separator as nodes
-    for (auto edge : edges()) {
+    for (auto edge: edges()) {
       stream << "  \""
              << expandSeparator(edge.first(),
                                 clique(edge.first()),
@@ -336,7 +336,7 @@ namespace gum {
     stream << std::endl;
 
     // edges now as c1--sep--c2
-    for (auto edge : edges())
+    for (auto edge: edges())
       stream << "  \"" << expandClique(edge.first(), clique(edge.first()))
              << "\"--\""
              << expandSeparator(edge.first(),

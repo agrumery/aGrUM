@@ -28,7 +28,7 @@
 
 namespace gum_tests {
 
-  class ScoringCacheTestSuite : public CxxTest::TestSuite {
+  class ScoringCacheTestSuite: public CxxTest::TestSuite {
     public:
     void test1() {
       gum::learning::IdSet<>        set1;

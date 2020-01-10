@@ -41,7 +41,7 @@
 
 namespace gum_tests {
 
-  class VariableNodeMapTestSuite : public CxxTest::TestSuite {
+  class VariableNodeMapTestSuite: public CxxTest::TestSuite {
     public:
     gum::LabelizedVariable *var1, *var2, *var3, *var4, *var5;
 
@@ -137,7 +137,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(topo.dag().size(), (gum::Size)5);
       TS_ASSERT_EQUALS(topo.dag().sizeArcs(), (gum::Size)6);
 
-      for (const auto i : idList)
+      for (const auto i: idList)
         topo.erase(i);
 
       TS_ASSERT(topo.empty());
@@ -184,7 +184,7 @@ namespace gum_tests {
       gum::BayesNet< double >  topo;
       gum::List< gum::NodeId > idList;
 
-      for (const auto node : topo.nodes())
+      for (const auto node: topo.nodes())
         TS_ASSERT(idList.exists(node));
     }
 

@@ -39,7 +39,7 @@ namespace gum {
    *
    */
   template < typename GUM_SCALAR >
-  class LoopyBeliefPropagation : public ApproximateInference< GUM_SCALAR > {
+  class LoopyBeliefPropagation: public ApproximateInference< GUM_SCALAR > {
     public:
     /**
      * Default constructor

@@ -157,8 +157,8 @@ namespace gum {
 
     // copy operator
     template < template < typename > class ALLOC >
-    DatabaseTable< ALLOC >& DatabaseTable< ALLOC >::
-                            operator=(const DatabaseTable< ALLOC >& from) {
+    DatabaseTable< ALLOC >&
+       DatabaseTable< ALLOC >::operator=(const DatabaseTable< ALLOC >& from) {
       if (this != &from) {
         IDatabaseTable< DBTranslatedValue, ALLOC >::operator=(from);
         __translators = from.__translators;
@@ -171,8 +171,8 @@ namespace gum {
 
     // move constructor
     template < template < typename > class ALLOC >
-    DatabaseTable< ALLOC >& DatabaseTable< ALLOC >::
-                            operator=(DatabaseTable< ALLOC >&& from) {
+    DatabaseTable< ALLOC >&
+       DatabaseTable< ALLOC >::operator=(DatabaseTable< ALLOC >&& from) {
       if (this != &from) {
         IDatabaseTable< DBTranslatedValue, ALLOC >::operator=(std::move(from));
         __translators = std::move(from.__translators);
@@ -245,7 +245,7 @@ namespace gum {
 
       // now, check if one exception has been raised
       bool exception_raised = false;
-      for (const auto& exc : func_exceptions) {
+      for (const auto& exc: func_exceptions) {
         if (exc != nullptr) {
           exception_raised = true;
           break;
@@ -288,7 +288,7 @@ namespace gum {
            threads.begin(), threads.end(), std::mem_fn(&std::thread::join));
 
         // rethrow the exception
-        for (const auto& exc : func_exceptions) {
+        for (const auto& exc: func_exceptions) {
           if (exc != nullptr) { std::rethrow_exception(exc); }
         }
       }
@@ -542,7 +542,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     void DatabaseTable< ALLOC >::eraseTranslators(const std::size_t k,
                                                   const bool k_is_input_col) {
-      for (const auto kk : __getKthIndices(k, k_is_input_col)) {
+      for (const auto kk: __getKthIndices(k, k_is_input_col)) {
         // erase the translator of index kk and the corresponding variable
         // name. If there remains no more translator in the translator set,
         // _rows should become empty
@@ -897,7 +897,7 @@ namespace gum {
 
       std::size_t                                      size = updates.size();
       std::vector< std::size_t, ALLOC< std::size_t > > new_values(size);
-      for (const auto& update : updates) {
+      for (const auto& update: updates) {
         if (update.first >= size) {
           size = update.first + 1;
           new_values.resize(size);
@@ -1081,7 +1081,7 @@ namespace gum {
           rows_have_missing_vals) {
       // check that the new rows values are compatible with the values of
       // the variables stored within the translators
-      for (const auto& new_row : rows) {
+      for (const auto& new_row: rows) {
         if (!__isRowCompatible(new_row)) {
           if (new_row.size() != __translators.size()) {
             GUM_ERROR(SizeError,
@@ -1111,7 +1111,7 @@ namespace gum {
           rows_have_missing_vals) {
       // check that the new rows values are compatible with the values of
       // the variables stored within the translators
-      for (const auto& new_row : new_rows) {
+      for (const auto& new_row: new_rows) {
         if (!__isRowCompatible(new_row)) {
           if (new_row.size() != __translators.size()) {
             GUM_ERROR(SizeError,

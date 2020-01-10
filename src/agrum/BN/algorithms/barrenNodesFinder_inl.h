@@ -56,8 +56,8 @@ namespace gum {
 
 
   /// copy operator
-  INLINE BarrenNodesFinder& BarrenNodesFinder::
-                            operator=(const BarrenNodesFinder& from) {
+  INLINE BarrenNodesFinder&
+     BarrenNodesFinder::operator=(const BarrenNodesFinder& from) {
     if (this != &from) {
       __dag = from.__dag;
       __observed_nodes = from.__observed_nodes;
@@ -68,8 +68,8 @@ namespace gum {
 
 
   /// move operator
-  INLINE BarrenNodesFinder& BarrenNodesFinder::
-                            operator=(BarrenNodesFinder&& from) {
+  INLINE BarrenNodesFinder&
+     BarrenNodesFinder::operator=(BarrenNodesFinder&& from) {
     if (this != &from) {
       __dag = from.__dag;
       __observed_nodes = from.__observed_nodes;

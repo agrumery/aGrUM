@@ -42,7 +42,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
 
-  class ScheduleDeleteMultiDim : public ScheduleOperation< GUM_SCALAR > {
+  class ScheduleDeleteMultiDim: public ScheduleOperation< GUM_SCALAR > {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

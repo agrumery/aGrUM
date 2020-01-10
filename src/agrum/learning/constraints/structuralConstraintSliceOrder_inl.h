@@ -159,7 +159,7 @@ namespace gum {
 
     /// sets the default time slice
     INLINE void StructuralConstraintSliceOrder::setDefaultSlice(NodeId slice) {
-      for (auto& node : _SliceOrder__order) {
+      for (auto& node: _SliceOrder__order) {
         node.second = slice;
       }
     }

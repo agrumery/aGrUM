@@ -155,7 +155,7 @@ namespace gum {
     double min_score = 0;
     NodeId best_node = 0;
 
-    for (const auto node : _nodeset) {
+    for (const auto node: _nodeset) {
       try {
         double score = possibleNodes.priority(node);
 
@@ -253,7 +253,7 @@ namespace gum {
         if (_nodeset.empty()) {
           // go to the next non-empty subset
           for (++_subset_iter; _subset_iter != _subsets->cend(); ++_subset_iter) {
-            for (const auto node : *_subset_iter) {
+            for (const auto node: *_subset_iter) {
               if (_graph->existsNode(node)) { _nodeset.insert(node); }
             }
             if (!_nodeset.empty()) break;

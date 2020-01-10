@@ -61,7 +61,7 @@ namespace gum {
       O3prmrInterpreter::~O3prmrInterpreter() {
         delete m_context;
         if (m_bn) { delete m_bn; }
-        for (auto p : m_inf_map) {
+        for (auto p: m_inf_map) {
           delete p.second;
         }
         delete m_reader->prm();
@@ -244,8 +244,8 @@ namespace gum {
         // For each session
         std::vector< O3prmrSession< double >* > sessions = c->sessions();
 
-        for (const auto session : sessions)
-          for (auto command : session->commands()) {
+        for (const auto session: sessions)
+          for (auto command: session->commands()) {
             // We process it.
             bool result = true;
 
@@ -313,7 +313,7 @@ namespace gum {
         if (errors() > 0) return false;
 
         // On importe tous les systèmes.
-        for (const auto command : context->imports()) {
+        for (const auto command: context->imports()) {
           m_current_line = command->line;
           // if import doen't succed stop here unless syntax mode is activated.
           bool succeed = import(context, command->value);
@@ -329,7 +329,7 @@ namespace gum {
                 << " sessions" << std::endl;
 
         // On vérifie chaque session
-        for (const auto session : context->sessions()) {
+        for (const auto session: context->sessions()) {
           std::string              sessionName = session->name();
           O3prmrSession< double >* new_session =
              new O3prmrSession< double >(sessionName);
@@ -338,7 +338,7 @@ namespace gum {
             m_log << "## Start session '" << sessionName << "'..." << std::endl
                   << std::endl;
 
-          for (const auto command : session->commands()) {
+          for (const auto command: session->commands()) {
             if (m_verbose)
               m_log << "# * Going to check command : " << command->toString()
                     << std::endl;
@@ -623,7 +623,7 @@ namespace gum {
           }
 
           // Search import in all paths.
-          for (const auto& path : m_paths) {
+          for (const auto& path: m_paths) {
             import_abs_filename = path + import_name;
 
             if (m_verbose) {

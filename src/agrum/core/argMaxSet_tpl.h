@@ -70,8 +70,8 @@ namespace gum {
 
   template < typename GUM_SCALAR_VAL, typename GUM_SCALAR_SEQ >
   ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >&
-        ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >::
-        operator=(const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& src) {
+     ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >::operator=(
+        const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& src) {
     this->__argMaxSeq->clear();
     this->operator+=(src);
     __val = src.value();
@@ -96,8 +96,8 @@ namespace gum {
   // ============================================================================
   template < typename GUM_SCALAR_VAL, typename GUM_SCALAR_SEQ >
   ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >&
-        ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >::
-        operator+=(const GUM_SCALAR_SEQ& elem) {
+     ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >::operator+=(
+        const GUM_SCALAR_SEQ& elem) {
     __argMaxSeq->insert(elem);
     return *this;
   }
@@ -107,8 +107,8 @@ namespace gum {
   // ============================================================================
   template < typename GUM_SCALAR_VAL, typename GUM_SCALAR_SEQ >
   ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >&
-        ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >::
-        operator+=(const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& src) {
+     ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >::operator+=(
+        const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& src) {
     for (auto iter = src.beginSafe(); iter != src.endSafe(); ++iter)
       if (!__argMaxSeq->exists(*iter)) __argMaxSeq->insert(*iter);
     return *this;

@@ -27,7 +27,7 @@
 #include <agrum/core/set.h>
 namespace gum_tests {
 
-  class HeapTestSuite : public CxxTest::TestSuite {
+  class HeapTestSuite: public CxxTest::TestSuite {
     public:
     void testConstructor() {
       gum::Heap< int > heap1;

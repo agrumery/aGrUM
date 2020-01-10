@@ -40,7 +40,7 @@
 
 namespace gum_tests {
 
-  class BIFXMLBNReaderTestSuite : public CxxTest::TestSuite {
+  class BIFXMLBNReaderTestSuite: public CxxTest::TestSuite {
     public:
     void testConstuctor() {
       std::string file = GET_RESSOURCES_PATH("BNBIFXMLReader_file1.bifxml");
@@ -83,7 +83,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(net->size(), (gum::Size)2);
         gum::NodeId node_1 = 0, node_2 = 0;
 
-        for (const auto node : net->nodes())
+        for (const auto node: net->nodes())
           if (net->variable(node).name() == "n1")
             node_1 = node;
           else
@@ -158,7 +158,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(net->size(), (gum::Size)2);
         gum::NodeId node_1 = 0, node_2 = 0;
 
-        for (const auto node : net->nodes())
+        for (const auto node: net->nodes())
           if (net->variable(node).name() == "n1")
             node_1 = node;
           else
@@ -221,7 +221,7 @@ namespace gum_tests {
       if (net != nullptr) {
         gum::HashTable< std::string, gum::NodeId > idMap;
 
-        for (const auto node : net->nodes())
+        for (const auto node: net->nodes())
           idMap.insert(net->variable(node).name(), node);
 
         const gum::DiscreteVariable& var_1 = net->variable(idMap["n1"]);
@@ -559,7 +559,7 @@ namespace gum_tests {
 
       gum::HashTable< std::string, gum::NodeId > idMap;
 
-      for (const auto node : net->nodes())
+      for (const auto node: net->nodes())
         idMap.insert(net->variable(node).name(), node);
 
       // The node wich we'll test

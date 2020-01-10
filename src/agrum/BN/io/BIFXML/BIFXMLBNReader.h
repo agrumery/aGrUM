@@ -99,7 +99,7 @@ namespace gum {
    *
    */
   template < typename GUM_SCALAR >
-  class BIFXMLBNReader : BNReader< GUM_SCALAR > {
+  class BIFXMLBNReader: BNReader< GUM_SCALAR > {
     public:
     /**
      * Constructor

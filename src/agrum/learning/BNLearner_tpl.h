@@ -92,16 +92,16 @@ namespace gum {
 
     /// copy operator
     template < typename GUM_SCALAR >
-    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::
-                             operator=(const BNLearner< GUM_SCALAR >& src) {
+    BNLearner< GUM_SCALAR >&
+       BNLearner< GUM_SCALAR >::operator=(const BNLearner< GUM_SCALAR >& src) {
       genericBNLearner::operator=(src);
       return *this;
     }
 
     /// move operator
     template < typename GUM_SCALAR >
-    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::
-                             operator=(BNLearner< GUM_SCALAR >&& src) {
+    BNLearner< GUM_SCALAR >&
+       BNLearner< GUM_SCALAR >::operator=(BNLearner< GUM_SCALAR >&& src) {
       genericBNLearner::operator=(std::move(src));
       return *this;
     }
@@ -135,7 +135,7 @@ namespace gum {
       // check that the dag corresponds to the database
       std::vector< NodeId > ids;
       ids.reserve(dag.sizeNodes());
-      for (const auto node : dag)
+      for (const auto node: dag)
         ids.push_back(node);
       std::sort(ids.begin(), ids.end());
 
@@ -144,13 +144,13 @@ namespace gum {
         str << "Learning parameters corresponding to the dag is impossible "
             << "because the database does not contain the following nodeID";
         std::vector< NodeId > bad_ids;
-        for (const auto node : ids) {
+        for (const auto node: ids) {
           if (node >= __score_database.names().size()) bad_ids.push_back(node);
         }
         if (bad_ids.size() > 1) str << 's';
         str << ": ";
         bool deja = false;
-        for (const auto node : bad_ids) {
+        for (const auto node: bad_ids) {
           if (deja)
             str << ", ";
           else

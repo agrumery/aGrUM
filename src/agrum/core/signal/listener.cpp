@@ -37,7 +37,7 @@ namespace gum {
   Listener::Listener(const Listener& l) {
     GUM_CONS_CPY(Listener);
 
-    for (const auto el : __senders) {
+    for (const auto el: __senders) {
       el->duplicateTarget(&l, this);
     };
   }
@@ -45,7 +45,7 @@ namespace gum {
   Listener::~Listener() {
     GUM_DESTRUCTOR(Listener);
 
-    for (const auto el : __senders) {
+    for (const auto el: __senders) {
       el->detachFromTarget(this);
     }
 

@@ -123,9 +123,9 @@ namespace gum {
         const Size this_thread = getThreadNumber();
 
         Idx i = 0;
-        for (const auto node1 : _tail_nodes) {
+        for (const auto node1: _tail_nodes) {
           if (i == this_thread) {
-            for (const auto node2 : _target_nodes) {
+            for (const auto node2: _target_nodes) {
               if (node1 != node2) {
                 // try arc additions
                 ArcAddition arc_add(node1, node2);
@@ -154,8 +154,8 @@ namespace gum {
 
       // now store the changes into the protected vectors of the
       // GraphChangesGeneratorOnSubDiGraph
-      for (const auto& changes : legal_changes) {
-        for (const auto& change : changes) {
+      for (const auto& changes: legal_changes) {
+        for (const auto& change: changes) {
           _legal_changes.insert(std::move(change));
         }
       }

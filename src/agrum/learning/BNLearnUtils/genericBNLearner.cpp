@@ -53,7 +53,7 @@ namespace gum {
       // get the variables names
       const auto&       var_names = __database.variableNames();
       const std::size_t nb_vars = var_names.size();
-      for (auto dom : __database.domainSizes())
+      for (auto dom: __database.domainSizes())
         __domain_sizes.push_back(dom);
       for (std::size_t i = 0; i < nb_vars; ++i) {
         __nodeId2cols.insert(NodeId(i), i);
@@ -120,7 +120,7 @@ namespace gum {
       initializer.fillDatabase(__database);
 
       // get the domain sizes of the variables
-      for (auto dom : __database.domainSizes())
+      for (auto dom: __database.domainSizes())
         __domain_sizes.push_back(dom);
 
       // compute the mapping from node ids to column indices
@@ -153,8 +153,8 @@ namespace gum {
 
     genericBNLearner::Database::~Database() { delete __parser; }
 
-    genericBNLearner::Database& genericBNLearner::Database::
-                                operator=(const Database& from) {
+    genericBNLearner::Database&
+       genericBNLearner::Database::operator=(const Database& from) {
       if (this != &from) {
         delete __parser;
         __database = from.__database;
@@ -169,8 +169,8 @@ namespace gum {
       return *this;
     }
 
-    genericBNLearner::Database& genericBNLearner::Database::
-                                operator=(Database&& from) {
+    genericBNLearner::Database&
+       genericBNLearner::Database::operator=(Database&& from) {
       if (this != &from) {
         delete __parser;
         __database = std::move(from.__database);
@@ -615,12 +615,12 @@ namespace gum {
       // translating the constraints for 3off2 or miic
       HashTable< std::pair< NodeId, NodeId >, char > initial_marks;
       const ArcSet& mandatory_arcs = __constraint_MandatoryArcs.arcs();
-      for (const auto& arc : mandatory_arcs) {
+      for (const auto& arc: mandatory_arcs) {
         initial_marks.insert({arc.tail(), arc.head()}, '>');
       }
 
       const ArcSet& forbidden_arcs = __constraint_ForbiddenArcs.arcs();
-      for (const auto& arc : forbidden_arcs) {
+      for (const auto& arc: forbidden_arcs) {
         initial_marks.insert({arc.tail(), arc.head()}, '-');
       }
       __miic_3off2.addConstraints(initial_marks);
@@ -702,7 +702,7 @@ namespace gum {
 
       const ArcSet& mandatory_arcs = __constraint_MandatoryArcs.arcs();
 
-      for (const auto& arc : mandatory_arcs) {
+      for (const auto& arc: mandatory_arcs) {
         if (!init_graph.exists(arc.tail())) init_graph.addNodeWithId(arc.tail());
 
         if (!init_graph.exists(arc.head())) init_graph.addNodeWithId(arc.head());
@@ -712,7 +712,7 @@ namespace gum {
 
       const ArcSet& forbidden_arcs = __constraint_ForbiddenArcs.arcs();
 
-      for (const auto& arc : forbidden_arcs) {
+      for (const auto& arc: forbidden_arcs) {
         init_graph.eraseArc(arc);
       }
 
@@ -821,7 +821,7 @@ namespace gum {
           const Sequence< NodeId >& order = __K2.order();
           bool                      order_compatible = true;
 
-          for (const auto& arc : mandatory_arcs) {
+          for (const auto& arc: mandatory_arcs) {
             if (order.pos(arc.tail()) >= order.pos(arc.head())) {
               order_compatible = false;
               break;

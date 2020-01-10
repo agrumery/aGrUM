@@ -38,7 +38,7 @@
  */
 namespace gum_tests {
 
-  class PRMTypeTestSuite : public CxxTest::TestSuite {
+  class PRMTypeTestSuite: public CxxTest::TestSuite {
     typedef gum::prm::PRMType PRMType;
 
     gum::LabelizedVariable* __boolean;

@@ -50,7 +50,7 @@ namespace gum {
    * But count how many times every visited states have been visited
    *
    */
-  class StatisticalLazyDecider : public IDecisionStrategy {
+  class StatisticalLazyDecider: public IDecisionStrategy {
     // ###################################################################
     /// @name Constructor & destructor.
     // ###################################################################

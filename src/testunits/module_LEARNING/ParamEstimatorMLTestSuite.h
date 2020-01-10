@@ -34,14 +34,14 @@
 
 namespace gum_tests {
 
-  class ParamEstimatorMLTestSuite : public CxxTest::TestSuite {
+  class ParamEstimatorMLTestSuite: public CxxTest::TestSuite {
     private:
     std::vector< double > __normalize(const std::vector< double >& vin) {
       double sum = 0;
-      for (const auto& val : vin)
+      for (const auto& val: vin)
         sum += val;
       std::vector< double > vout(vin);
-      for (auto& val : vout)
+      for (auto& val: vout)
         val /= sum;
       return vout;
     }
@@ -65,7 +65,7 @@ namespace gum_tests {
       gum::LazyPropagation< double > ve(&bn);
 
       gum::NodeSet target_set;
-      for (auto target : targets)
+      for (auto target: targets)
         target_set.insert(gum::NodeId(target));
       ve.addJointTarget(target_set);
 
@@ -940,7 +940,7 @@ namespace gum_tests {
 
       // bugfix for parallel exceution of VariableElimination
       const gum::DAG& dag = bn.dag();
-      for (const auto node : dag) {
+      for (const auto node: dag) {
         dag.parents(node);
         dag.children(node);
       }
@@ -955,7 +955,7 @@ namespace gum_tests {
       std::vector< double > xcounts(4, 0.0);
       std::vector< double > sum(4, 0.0);
       int                   nb_row = 0;
-      for (const auto& row : database) {
+      for (const auto& row: database) {
         gum::Potential< double > proba =
            __infer(bn, {std::size_t(0), std::size_t(1)}, row);
 

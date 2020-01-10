@@ -51,7 +51,7 @@ namespace gum {
    * If maxVal - minVal < 0, then domainsize() = 0.
    */
 
-  class RangeVariable : public DiscreteVariable {
+  class RangeVariable: public DiscreteVariable {
     public:
     /// @name Constructors / Destructors
 

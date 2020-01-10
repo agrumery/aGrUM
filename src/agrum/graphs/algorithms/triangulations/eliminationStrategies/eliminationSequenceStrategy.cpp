@@ -124,7 +124,7 @@ namespace gum {
 
     // check that each node has a domain size
     if (graph != nullptr) {
-      for (const auto node : *graph)
+      for (const auto node: *graph)
         if (!dom_sizes->exists(node))
           GUM_ERROR(GraphError,
                     "EliminationSequenceStrategy needs a domain size "
@@ -144,7 +144,7 @@ namespace gum {
         // compute the log of the modalities
         _log_domain_sizes.resize(_graph->sizeNodes() / 2);
 
-        for (const auto node : *_graph)
+        for (const auto node: *_graph)
           _log_domain_sizes.insert(node, std::log((*_domain_sizes)[node]));
       }
 

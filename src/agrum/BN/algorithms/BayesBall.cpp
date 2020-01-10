@@ -50,7 +50,7 @@ namespace gum {
     // ball to and the Boolean indicates whether we shall reach it from one of
     // its children (true) or from one parent (false)
     List< std::pair< NodeId, bool > > nodes_to_visit;
-    for (const auto node : query) {
+    for (const auto node: query) {
       nodes_to_visit.insert(std::pair< NodeId, bool >(node, true));
     }
 
@@ -72,14 +72,14 @@ namespace gum {
 
         if (!marks[node].first) {
           marks[node].first = true;   // top marked
-          for (const auto par : dag.parents(node)) {
+          for (const auto par: dag.parents(node)) {
             nodes_to_visit.insert(std::pair< NodeId, bool >(par, true));
           }
         }
 
         if (!marks[node].second) {
           marks[node].second = true;   // bottom marked
-          for (const auto chi : dag.children(node)) {
+          for (const auto chi: dag.children(node)) {
             nodes_to_visit.insert(std::pair< NodeId, bool >(chi, false));
           }
         }
@@ -93,7 +93,7 @@ namespace gum {
           marks[node].first = true;
           requisite.insert(node);
 
-          for (const auto par : dag.parents(node)) {
+          for (const auto par: dag.parents(node)) {
             nodes_to_visit.insert(std::pair< NodeId, bool >(par, true));
           }
         }
@@ -101,7 +101,7 @@ namespace gum {
         if (!is_hard_evidence && !marks[node].second) {
           marks[node].second = true;
 
-          for (const auto chi : dag.children(node)) {
+          for (const auto chi: dag.children(node)) {
             nodes_to_visit.insert(std::pair< NodeId, bool >(chi, false));
           }
         }

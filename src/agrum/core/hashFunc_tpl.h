@@ -157,8 +157,8 @@ namespace gum {
 
   // Returns the hashed value of a key.
   template < typename Key1, typename Key2 >
-  INLINE Size HashFunc< std::pair< Key1, Key2 > >::
-              operator()(const std::pair< Key1, Key2 >& key) const {
+  INLINE Size HashFunc< std::pair< Key1, Key2 > >::operator()(
+     const std::pair< Key1, Key2 >& key) const {
     return (castToSize(key) * HashFuncConst::gold) >> this->_right_shift;
   }
 
@@ -172,8 +172,8 @@ namespace gum {
 
   // Returns the hashed value of a key.
   template < typename Type >
-  INLINE Size HashFunc< RefPtr< Type > >::
-              operator()(const RefPtr< Type >& key) const {
+  INLINE Size
+     HashFunc< RefPtr< Type > >::operator()(const RefPtr< Type >& key) const {
     return (castToSize(key) * HashFuncConst::gold) & this->_hash_mask;
   }
 

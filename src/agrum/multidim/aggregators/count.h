@@ -54,7 +54,7 @@ namespace gum {
      * \exists \f$ at least \f$ n\ times\ i \f$ aggregator.
      */
     template < typename GUM_SCALAR >
-    class Count : public MultiDimAggregator< GUM_SCALAR > {
+    class Count: public MultiDimAggregator< GUM_SCALAR > {
       public:
       Count(Idx value);
       Count(const Count< GUM_SCALAR >& from);

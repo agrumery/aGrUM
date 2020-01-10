@@ -38,8 +38,8 @@ namespace gum {
 
   /// returns the GUM_SCALAR corresponding to a string, specialized for floats
   template <>
-  INLINE float ContinuousVariable< float >::
-               operator[](const std::string& str) const {
+  INLINE float
+     ContinuousVariable< float >::operator[](const std::string& str) const {
     float       value;
     std::size_t pos;
     try {
@@ -66,8 +66,8 @@ namespace gum {
 
   /// returns the GUM_SCALAR corresponding to a string, specialized for doubles
   template <>
-  INLINE double ContinuousVariable< double >::
-                operator[](const std::string& str) const {
+  INLINE double
+     ContinuousVariable< double >::operator[](const std::string& str) const {
     double      value;
     std::size_t pos;
     try {

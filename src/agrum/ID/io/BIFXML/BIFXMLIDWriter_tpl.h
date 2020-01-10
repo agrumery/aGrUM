@@ -59,7 +59,7 @@ namespace gum {
     output << __heading() << std::endl;
     output << "<!-- Variables -->" << std::endl;
 
-    for (const auto node : infdiag.nodes()) {
+    for (const auto node: infdiag.nodes()) {
       int nodeType = 1;
 
       if (infdiag.isChanceNode(node))
@@ -72,7 +72,7 @@ namespace gum {
 
     output << "<!-- Probability distributions -->" << std::endl;
 
-    for (const auto node : infdiag.nodes())
+    for (const auto node: infdiag.nodes())
       output << __variableDefinition(node, infdiag);
 
     output << std::endl;
@@ -216,7 +216,7 @@ namespace gum {
       // Conditional Parents
       List< std::string > parentList;
 
-      for (const auto par : infdiag.parents(varNodeId))
+      for (const auto par: infdiag.parents(varNodeId))
         parentList.pushBack(infdiag.variable(par).name());
 
       for (List< std::string >::iterator parentListIte = parentList.rbegin();

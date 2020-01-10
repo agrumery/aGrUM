@@ -44,7 +44,7 @@
 
 namespace gum_tests {
 
-  class BIFWriterTestSuite : public CxxTest::TestSuite {
+  class BIFWriterTestSuite: public CxxTest::TestSuite {
     private:
     bool __compareFile(std::string f1, std::string f2) {
       std::ifstream file1, file2;

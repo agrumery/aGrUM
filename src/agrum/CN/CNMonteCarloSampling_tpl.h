@@ -160,7 +160,7 @@ namespace gum {
       if (this->_l_inferenceEngine[tId]->evidenceProbability() > 0) {
         const DAG& tDag = this->_workingSet[tId]->dag();
 
-        for (auto node : tDag.nodes()) {
+        for (auto node: tDag.nodes()) {
           const Potential< GUM_SCALAR >& potential(
              this->_l_inferenceEngine[tId]->posterior(node));
           Instantiation             ins(potential);
@@ -314,7 +314,7 @@ namespace gum {
         const auto& t0 = __infEs::_l_clusters[this_thread][0];
         const auto& t1 = __infEs::_l_clusters[this_thread][1];
 
-        for (const auto& elt : t0) {
+        for (const auto& elt: t0) {
           auto dSize = working_bn->variable(elt.first).domainSize();
           Potential< GUM_SCALAR >* potential(
              const_cast< Potential< GUM_SCALAR >* >(&working_bn->cpt(elt.first)));
@@ -351,7 +351,7 @@ namespace gum {
           }
         }
 
-        for (const auto& elt : t1) {
+        for (const auto& elt: t1) {
           auto dSize = working_bn->variable(elt.first).domainSize();
           Potential< GUM_SCALAR >* potential(
              const_cast< Potential< GUM_SCALAR >* >(&working_bn->cpt(elt.first)));
@@ -390,7 +390,7 @@ namespace gum {
           this->_l_optimalNet[this_thread]->setCurrentSample(sample);
         }
       } else {
-        for (auto node : working_bn->nodes()) {
+        for (auto node: working_bn->nodes()) {
           auto                     dSize = working_bn->variable(node).domainSize();
           Potential< GUM_SCALAR >* potential(
              const_cast< Potential< GUM_SCALAR >* >(&working_bn->cpt(node)));
@@ -436,12 +436,12 @@ namespace gum {
          this->_workingSetE[this_thread];
 
       if (evi_list->size() > 0) {
-        for (const auto pot : *evi_list)
+        for (const auto pot: *evi_list)
           inference_engine->addEvidence(*pot);
         return;
       }
 
-      for (const auto& elt : this->_evidence) {
+      for (const auto& elt: this->_evidence) {
         Potential< GUM_SCALAR >* p = new Potential< GUM_SCALAR >;
         (*p) << working_bn->variable(elt.first);
 
@@ -456,7 +456,7 @@ namespace gum {
       }
 
       if (evi_list->size() > 0) {
-        for (const auto pot : *evi_list)
+        for (const auto pot: *evi_list)
           inference_engine->addEvidence(*pot);
       }
     }

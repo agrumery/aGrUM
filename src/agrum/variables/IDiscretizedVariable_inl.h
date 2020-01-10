@@ -46,8 +46,8 @@ namespace gum {
 
   /// copy assignment
   INLINE
-  IDiscretizedVariable& IDiscretizedVariable::
-                        operator=(const IDiscretizedVariable& from) {
+  IDiscretizedVariable&
+     IDiscretizedVariable::operator=(const IDiscretizedVariable& from) {
     DiscreteVariable::operator=(from);
     return *this;
   }

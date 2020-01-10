@@ -44,11 +44,11 @@ namespace gum {
       // we use the bn to insert the translators into the database table
       std::vector< NodeId > nodes;
       nodes.reserve(bn.dag().sizeNodes());
-      for (const auto node : bn.dag())
+      for (const auto node: bn.dag())
         nodes.push_back(node);
       std::sort(nodes.begin(), nodes.end());
       std::size_t i = std::size_t(0);
-      for (auto node : nodes) {
+      for (auto node: nodes) {
         const Variable& var = bn.variable(node);
         try {
           __database.insertTranslator(var, var_names[var.name()], missing_symbols);
@@ -63,7 +63,7 @@ namespace gum {
       initializer.fillDatabase(__database);
 
       // get the domain sizes of the variables
-      for (auto dom : __database.domainSizes())
+      for (auto dom: __database.domainSizes())
         __domain_sizes.push_back(dom);
 
       // create the parser

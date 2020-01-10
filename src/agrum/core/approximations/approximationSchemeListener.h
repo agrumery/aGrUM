@@ -48,7 +48,7 @@ namespace gum {
    * #include <agrum/core/approximations/approximationSchemeListener.h>
    * @endcode
    */
-  class ApproximationSchemeListener : public Listener {
+  class ApproximationSchemeListener: public Listener {
     public:
     /**
      * @brief Class constructor.

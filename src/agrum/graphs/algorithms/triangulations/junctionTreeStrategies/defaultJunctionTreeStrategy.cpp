@@ -184,7 +184,7 @@ namespace gum {
         // search for C_j such that |C_j| = [C_i| + 1
         NodeId C_j = C_i;
 
-        for (const auto C_jj : __junction_tree.neighbours(C_i))
+        for (const auto C_jj: __junction_tree.neighbours(C_i))
           if ((C_i > C_jj) && !mark[Edge(C_jj, C_i)]
               && (__junction_tree.clique(C_jj).size() == card_C_i_plus_1)) {
             // ok, here we found a parent such that |C_jj| = [C_i| + 1
@@ -195,7 +195,7 @@ namespace gum {
 
         // if we found a C_j, link the neighbors of C_i to C_j
         if (C_j != C_i) {
-          for (const auto nei : __junction_tree.neighbours(C_i)) {
+          for (const auto nei: __junction_tree.neighbours(C_i)) {
             __junction_tree.addEdge(C_j, nei);
             mark.insert(Edge(C_j, nei), true);
           }

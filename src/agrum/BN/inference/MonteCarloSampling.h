@@ -50,7 +50,7 @@ namespace gum {
 
 
   template < typename GUM_SCALAR >
-  class MonteCarloSampling : public SamplingInference< GUM_SCALAR > {
+  class MonteCarloSampling: public SamplingInference< GUM_SCALAR > {
     public:
     /**
      * Default constructor

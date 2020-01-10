@@ -124,9 +124,7 @@ namespace gum {
   /* ===========================================================================
    */
 
-  class MixedGraph
-      : public virtual UndiGraph
-      , public virtual DiGraph {
+  class MixedGraph: public virtual UndiGraph, public virtual DiGraph {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

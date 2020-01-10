@@ -72,7 +72,7 @@ namespace gum {
      */
     // ==========================================================================
     template < typename GUM_SCALAR >
-    class PRMFactory : public IPRMFactory {
+    class PRMFactory: public IPRMFactory {
       public:
       // ======================================================================
       /// @name Constructors & destructor

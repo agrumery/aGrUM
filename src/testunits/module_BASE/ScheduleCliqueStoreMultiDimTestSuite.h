@@ -32,7 +32,7 @@
 
 namespace gum_tests {
 
-  class ScheduleCliqueStoreMultiDimTestSuite : public CxxTest::TestSuite {
+  class ScheduleCliqueStoreMultiDimTestSuite: public CxxTest::TestSuite {
     public:
     void test_construct() {
       std::vector< gum::LabelizedVariable* > vars(10);

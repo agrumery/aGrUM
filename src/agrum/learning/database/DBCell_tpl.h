@@ -37,7 +37,7 @@ namespace gum {
     INLINE bool DBCell::isMissing(
        const std::string&                                      str,
        const std::vector< std::string, ALLOC< std::string > >& missingVals) {
-      for (auto missing : missingVals) {
+      for (auto missing: missingVals) {
         if (str == missing) return true;
       }
       return false;

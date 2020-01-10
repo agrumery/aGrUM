@@ -40,7 +40,7 @@ namespace gum {
   // @brief Convert value to approximation representation.
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR
-         ExactPolicy< GUM_SCALAR >::fromExact(const GUM_SCALAR& value) const {
+     ExactPolicy< GUM_SCALAR >::fromExact(const GUM_SCALAR& value) const {
     return value;
   }
 

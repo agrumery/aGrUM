@@ -39,7 +39,7 @@ namespace gum {
     __vals.reserve(v.size());
     // fill the SetInst
 
-    for (const auto var : v)
+    for (const auto var: v)
       __add(*var);
 
     // if ( master ) actAsSlave( master->getMasterRef() );
@@ -104,7 +104,7 @@ namespace gum {
     //__vals.reserve( v.size() );
     // fill the SetInst
 
-    for (const auto var : v) {
+    for (const auto var: v) {
       __add(*var);
       __vals[__vars.pos(var)] = (Size(1) << (aI.val(*var)));
     }
@@ -195,7 +195,7 @@ namespace gum {
      const gum::SetInst& i,
      gum::SetInst&       j) {
     try {
-      for (const auto var : i.variablesSequence())
+      for (const auto var: i.variablesSequence())
         j.chgVal(bij.second(var), i.val(var));
     } catch (gum::NotFound&) {
       GUM_ERROR(gum::NotFound, "missing variable in bijection or SetInst");

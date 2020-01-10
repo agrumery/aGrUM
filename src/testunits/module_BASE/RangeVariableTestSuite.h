@@ -31,7 +31,7 @@
 
 namespace gum_tests {
 
-  class RangeVariableTestSuite : public CxxTest::TestSuite {
+  class RangeVariableTestSuite: public CxxTest::TestSuite {
     public:
     void testCopy() {
       gum::RangeVariable var1("var1", "this is var1");

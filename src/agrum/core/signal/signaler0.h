@@ -52,7 +52,7 @@ namespace gum {
       virtual IConnector0* duplicate(Listener* target) = 0;
     };
 
-    class BasicSignaler0 : public ISignaler {
+    class BasicSignaler0: public ISignaler {
       protected:
       typedef std::vector< IConnector0* > ConnectorList;
 
@@ -81,7 +81,7 @@ namespace gum {
     };
 
     template < class TargetClass >
-    class Connector0 : public IConnector0 {
+    class Connector0: public IConnector0 {
       public:
       Connector0();
 
@@ -115,7 +115,7 @@ namespace gum {
    * @warning Due to the too-smart-way-for-DOXYGEN of building classes
    * Signaler1,...,Signaler_n, these classes are not documented.
    */
-  class Signaler0 : public __sig__::BasicSignaler0 {
+  class Signaler0: public __sig__::BasicSignaler0 {
     public:
     Signaler0() { GUM_CONSTRUCTOR(Signaler0); }
 
@@ -134,7 +134,7 @@ namespace gum {
     }
 
     INLINE void operator()(const void* src) {
-      for (const auto el : _connectors) {
+      for (const auto el: _connectors) {
         el->notify(src);
       }
     }

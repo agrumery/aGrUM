@@ -78,7 +78,7 @@ namespace gum {
         NodeId id = iso_graph.addNode();
         degree_list->push_back(id);
 
-        for (const auto& elt : matches) {
+        for (const auto& elt: matches) {
           if ((elt.second.first == u) || (elt.second.second == u)
               || (elt.second.first == v) || (elt.second.second == v)) {
             iso_graph.addEdge(elt.first, id);

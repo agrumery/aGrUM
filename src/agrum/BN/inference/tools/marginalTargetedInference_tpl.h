@@ -142,7 +142,7 @@ namespace gum {
 
 
     _setTargetedMode();   // does nothing if already in targeted mode
-    for (const auto target : this->__bn->dag()) {
+    for (const auto target: this->__bn->dag()) {
       if (!__targets.contains(target)) {
         __targets.insert(target);
         _onMarginalTargetAdded(target);
@@ -275,7 +275,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR
-         MarginalTargetedInference< GUM_SCALAR >::H(const std::string& nodeName) {
+     MarginalTargetedInference< GUM_SCALAR >::H(const std::string& nodeName) {
     return H(this->BN().idFromName(nodeName));
   }
 
@@ -298,7 +298,7 @@ namespace gum {
     this->eraseAllEvidence();
     res.add(this->BN().variable(target));
     this->addTarget(target);
-    for (const auto& n : condset) {
+    for (const auto& n: condset) {
       res.add(this->BN().variable(n));
       this->addEvidence(n, 0);
     }
@@ -306,7 +306,7 @@ namespace gum {
     Instantiation inst(res);
     for (inst.setFirst(); !inst.end(); inst.incNotVar(vtarget)) {
       // inferring
-      for (const auto& n : condset)
+      for (const auto& n: condset)
         this->chgEvidence(n, inst.val(this->BN().variable(n)));
       this->makeInference();
       // populate res
@@ -326,7 +326,7 @@ namespace gum {
     const auto& bn = this->BN();
 
     gum::NodeSet evsId;
-    for (const auto& evname : evs) {
+    for (const auto& evname: evs) {
       evsId.insert(bn.idFromName(evname));
     }
 

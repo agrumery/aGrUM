@@ -224,11 +224,11 @@ namespace gum {
         // 0.5 * sum_Z ( sum_X( log( C^(r_y)_#ZX ) ) - log( C^(r_y)_#Z ) +
         // 		 sum_Y( log( C^(r_x)_#ZY ) ) - log( C^(r_x)_#Z ) )
         double score = 0.0;
-        for (auto n_xui : N_xui)
+        for (auto n_xui: N_xui)
           score += __param_complexity.log2Cnr(r_y, n_xui);
-        for (auto n_yui : N_yui)
+        for (auto n_yui: N_yui)
           score += __param_complexity.log2Cnr(r_x, n_yui);
-        for (auto n_ui : N_ui) {
+        for (auto n_ui: N_ui) {
           score -= __param_complexity.log2Cnr(r_y, n_ui);
           score -= __param_complexity.log2Cnr(r_x, n_ui);
         }
@@ -258,11 +258,11 @@ namespace gum {
         //         sum_Y( log( C^(r_x)_#Y ) ) - log( C^(r_x)_N ) )
         double N = 0.0;
         double score = 0.0;
-        for (auto n_xui : N_xui) {
+        for (auto n_xui: N_xui) {
           score += __param_complexity.log2Cnr(r_y, n_xui);
           N += n_xui;
         }
-        for (auto n_yui : N_yui)
+        for (auto n_yui: N_yui)
           score += __param_complexity.log2Cnr(r_x, n_yui);
         score -= __param_complexity.log2Cnr(r_y, N);
         score -= __param_complexity.log2Cnr(r_x, N);

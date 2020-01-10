@@ -31,14 +31,14 @@
 
 namespace gum_tests {
 
-  class ScorefNMLTestSuite : public CxxTest::TestSuite {
+  class ScorefNMLTestSuite: public CxxTest::TestSuite {
     private:
     double __score(const std::vector< double >& N_ijk,
                    const std::vector< double >& N_ij) const {
       double score = 0;
       double N = 0;
       double penalty = 0;
-      for (const auto n_ijk : N_ijk) {
+      for (const auto n_ijk: N_ijk) {
         if (n_ijk) {
           score += n_ijk * std::log2(n_ijk);
           N += n_ijk;
@@ -48,7 +48,7 @@ namespace gum_tests {
       gum::GammaLog2 gamma_log2;
       if (!N_ij.empty()) {
         const std::size_t r = N_ijk.size() / N_ij.size();
-        for (const auto n_ij : N_ij) {
+        for (const auto n_ij: N_ij) {
           if (n_ij) {
             score -= n_ij * std::log2(n_ij);
 

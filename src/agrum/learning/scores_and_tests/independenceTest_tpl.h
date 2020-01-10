@@ -122,8 +122,8 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    IndependenceTest< ALLOC >& IndependenceTest< ALLOC >::
-                               operator=(const IndependenceTest< ALLOC >& from) {
+    IndependenceTest< ALLOC >& IndependenceTest< ALLOC >::operator=(
+       const IndependenceTest< ALLOC >& from) {
       if (this != &from) {
         Apriori< ALLOC >*      new_apriori = from._apriori->clone();
         RecordCounter< ALLOC > new_counter = from._counter;
@@ -147,8 +147,8 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    IndependenceTest< ALLOC >& IndependenceTest< ALLOC >::
-                               operator=(IndependenceTest< ALLOC >&& from) {
+    IndependenceTest< ALLOC >&
+       IndependenceTest< ALLOC >::operator=(IndependenceTest< ALLOC >&& from) {
       if (this != &from) {
         std::swap(_apriori, from._apriori);
 

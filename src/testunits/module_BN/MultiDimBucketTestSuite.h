@@ -35,7 +35,7 @@
 
 namespace gum_tests {
 
-  class MultiDimBucketTestSuite : public CxxTest::TestSuite {
+  class MultiDimBucketTestSuite: public CxxTest::TestSuite {
     private:
     std::vector< gum::LabelizedVariable* >*   __variables;
     std::vector< gum::Potential< double >* >* __potentials;
@@ -61,7 +61,7 @@ namespace gum_tests {
       }
 
       auto del_vars = gum::Set< const gum::DiscreteVariable* >();
-      for (auto var : result.variablesSequence()) {
+      for (auto var: result.variablesSequence()) {
         if (!product.contains(*var)) { del_vars.insert(var); }
       }
       product = result.margSumOut(del_vars);
@@ -402,7 +402,7 @@ namespace gum_tests {
         gum::Size outBucket = 0;
 
         try {
-          for (const auto var : bucket->allVariables())
+          for (const auto var: bucket->allVariables())
             if (bucket->contains(*var))
               inBucket++;
             else
@@ -484,7 +484,7 @@ namespace gum_tests {
       bucket_sr.add(bn->variable(r));
 
       auto del_vars = gum::Set< const gum::DiscreteVariable* >();
-      for (auto var : clique_csr.variablesSequence()) {
+      for (auto var: clique_csr.variablesSequence()) {
         if (!sep_sr.contains(*var)) { del_vars.insert(var); }
       }
       sep_sr = clique_csr.margSumOut(del_vars);
@@ -538,7 +538,7 @@ namespace gum_tests {
       marg_w.add(bn->variable(w));
 
       del_vars = gum::Set< const gum::DiscreteVariable* >();
-      for (auto var : tmp.variablesSequence()) {
+      for (auto var: tmp.variablesSequence()) {
         if (!marg_w.contains(*var)) { del_vars.insert(var); }
       }
       marg_w = gum::Potential< double >(tmp.margSumOut(del_vars));

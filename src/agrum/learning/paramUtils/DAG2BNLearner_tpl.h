@@ -120,8 +120,8 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    DAG2BNLearner< ALLOC >& DAG2BNLearner< ALLOC >::
-                            operator=(const DAG2BNLearner< ALLOC >& from) {
+    DAG2BNLearner< ALLOC >&
+       DAG2BNLearner< ALLOC >::operator=(const DAG2BNLearner< ALLOC >& from) {
       ApproximationScheme::operator=(from);
       return *this;
     }
@@ -129,8 +129,8 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    DAG2BNLearner< ALLOC >& DAG2BNLearner< ALLOC >::
-                            operator=(DAG2BNLearner< ALLOC >&& from) {
+    DAG2BNLearner< ALLOC >&
+       DAG2BNLearner< ALLOC >::operator=(DAG2BNLearner< ALLOC >&& from) {
       ApproximationScheme::operator=(std::move(from));
       return *this;
     }
@@ -170,12 +170,12 @@ namespace gum {
       const auto& node2cols = estimator.nodeId2Columns();
       const auto& database = estimator.database();
       if (node2cols.empty()) {
-        for (const auto id : dag) {
+        for (const auto id: dag) {
           bn.add(dynamic_cast< const DiscreteVariable& >(database.variable(id)),
                  id);
         }
       } else {
-        for (const auto id : dag) {
+        for (const auto id: dag) {
           const std::size_t col = node2cols.second(id);
           bn.add(dynamic_cast< const DiscreteVariable& >(database.variable(col)),
                  id);
@@ -184,14 +184,14 @@ namespace gum {
 
       // add the arcs
       bn.beginTopologyTransformation();
-      for (const auto& arc : dag.arcs()) {
+      for (const auto& arc: dag.arcs()) {
         bn.addArc(arc.tail(), arc.head());
       }
       bn.endTopologyTransformation();
 
       // estimate the parameters
       const VariableNodeMap& varmap = bn.variableNodeMap();
-      for (const auto id : dag) {
+      for (const auto id: dag) {
         // get the sequence of variables and make the targets be the last
         auto& pot = const_cast< Potential< GUM_SCALAR >& >(bn.cpt(id));
 
@@ -218,7 +218,7 @@ namespace gum {
        const DAG&               dag) {
       // bootstrap EM by learning an initial model
       BayesNet< GUM_SCALAR > bn = createBN< GUM_SCALAR >(bootstrap_estimator, dag);
-      for (const auto& nod : bn.nodes()) {
+      for (const auto& nod: bn.nodes()) {
         bn.cpt(nod).noising(0.1);
       }
       general_estimator.setBayesNet(bn);
@@ -230,7 +230,7 @@ namespace gum {
       do {
         // bugfix for parallel execution of VariableElimination
         const auto& xdag = bn.dag();
-        for (const auto node : xdag) {
+        for (const auto node: xdag) {
           xdag.parents(node);
           xdag.children(node);
         }
@@ -240,7 +240,7 @@ namespace gum {
         updateApproximationScheme();
 
         delta = GUM_SCALAR(0.0);
-        for (const auto node : dag) {
+        for (const auto node: dag) {
           const auto& old_cpt = bn.cpt(node);
           const auto& new_cpt = new_bn.cpt(node);
 

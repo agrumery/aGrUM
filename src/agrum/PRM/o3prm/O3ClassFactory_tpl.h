@@ -74,8 +74,8 @@ namespace gum {
       }
 
       template < typename GUM_SCALAR >
-      INLINE O3ClassFactory< GUM_SCALAR >& O3ClassFactory< GUM_SCALAR >::
-                                           operator=(const O3ClassFactory< GUM_SCALAR >& src) {
+      INLINE O3ClassFactory< GUM_SCALAR >& O3ClassFactory< GUM_SCALAR >::operator=(
+         const O3ClassFactory< GUM_SCALAR >& src) {
         if (this == &src) { return *this; }
         __prm = src.__prm;
         __o3_prm = src.__o3_prm;
@@ -90,8 +90,8 @@ namespace gum {
       }
 
       template < typename GUM_SCALAR >
-      INLINE O3ClassFactory< GUM_SCALAR >& O3ClassFactory< GUM_SCALAR >::
-                                           operator=(O3ClassFactory< GUM_SCALAR >&& src) {
+      INLINE O3ClassFactory< GUM_SCALAR >& O3ClassFactory< GUM_SCALAR >::operator=(
+         O3ClassFactory< GUM_SCALAR >&& src) {
         if (this == &src) { return *this; }
         __prm = std::move(src.__prm);
         __o3_prm = std::move(src.__o3_prm);
@@ -113,10 +113,10 @@ namespace gum {
         if (__checkO3Classes()) {
           __setO3ClassCreationOrder();
 
-          for (auto c : __o3Classes) {
+          for (auto c: __o3Classes) {
             // Soving interfaces
             auto implements = Set< std::string >();
-            for (auto& i : c->interfaces()) {
+            for (auto& i: c->interfaces()) {
               if (__solver->resolveInterface(i)) { implements.insert(i.label()); }
             }
 
@@ -146,7 +146,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE bool O3ClassFactory< GUM_SCALAR >::__checkAndAddNodesToDag() {
-        for (auto& c : __o3_prm->classes()) {
+        for (auto& c: __o3_prm->classes()) {
           auto id = __dag.addNode();
 
           try {
@@ -165,7 +165,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE bool O3ClassFactory< GUM_SCALAR >::__checkAndAddArcsToDag() {
-        for (auto& c : __o3_prm->classes()) {
+        for (auto& c: __o3_prm->classes()) {
           if (c->superLabel().label() != "") {
             if (!__solver->resolveClass(c->superLabel())) { return false; }
 
@@ -187,7 +187,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE void O3ClassFactory< GUM_SCALAR >::buildImplementations() {
-        for (auto& c : __o3_prm->classes()) {
+        for (auto& c: __o3_prm->classes()) {
           if (__checkImplementation(*c)) {
             __prm->getClass(c->name().label()).initializeInheritance();
           }
@@ -202,23 +202,23 @@ namespace gum {
       INLINE bool O3ClassFactory< GUM_SCALAR >::__checkImplementation(O3Class& c) {
         // Saving attributes names for fast lookup
         auto attr_map = AttrMap();
-        for (auto& a : c.attributes()) {
+        for (auto& a: c.attributes()) {
           attr_map.insert(a->name().label(), a.get());
         }
 
         // Saving aggregates names for fast lookup
         auto agg_map = AggMap();
-        for (auto& agg : c.aggregates()) {
+        for (auto& agg: c.aggregates()) {
           agg_map.insert(agg.name().label(), &agg);
         }
 
         auto ref_map = RefMap();
-        for (auto& ref : c.referenceSlots()) {
+        for (auto& ref: c.referenceSlots()) {
           ref_map.insert(ref.name().label(), &ref);
         }
 
         // Cheking interface implementation
-        for (auto& i : c.interfaces()) {
+        for (auto& i: c.interfaces()) {
           if (__solver->resolveInterface(i)) {
             if (!__checkImplementation(c, i, attr_map, agg_map, ref_map)) {
               return false;
@@ -239,7 +239,7 @@ namespace gum {
         const auto& real_i = __prm->getInterface(i.label());
 
         auto counter = (Size)0;
-        for (const auto& a : real_i.attributes()) {
+        for (const auto& a: real_i.attributes()) {
           if (attr_map.exists(a->name())) {
             ++counter;
 
@@ -268,7 +268,7 @@ namespace gum {
         }
 
         counter = 0;
-        for (const auto& r : real_i.referenceSlots()) {
+        for (const auto& r: real_i.referenceSlots()) {
           if (ref_map.exists(r->name())) {
             ++counter;
 
@@ -308,7 +308,7 @@ namespace gum {
       INLINE void O3ClassFactory< GUM_SCALAR >::buildParameters() {
         PRMFactory< GUM_SCALAR > factory(__prm);
         // Class with a super class must be declared after
-        for (auto c : __o3Classes) {
+        for (auto c: __o3Classes) {
           __prm->getClass(c->name().label()).inheritParameters();
 
           factory.continueClass(c->name().label());
@@ -322,7 +322,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE void O3ClassFactory< GUM_SCALAR >::__addParameters(
          PRMFactory< GUM_SCALAR >& factory, O3Class& c) {
-        for (auto& p : c.parameters()) {
+        for (auto& p: c.parameters()) {
           switch (p.type()) {
             case O3Parameter::PRMType::INT: {
               factory.addParameter("int", p.name().label(), p.value().value());
@@ -344,7 +344,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE void O3ClassFactory< GUM_SCALAR >::buildReferenceSlots() {
         // Class with a super class must be declared after
-        for (auto c : __o3Classes) {
+        for (auto c: __o3Classes) {
           __prm->getClass(c->name().label()).inheritReferenceSlots();
           __addReferenceSlots(*c);
         }
@@ -357,7 +357,7 @@ namespace gum {
         factory.continueClass(c.name().label());
 
         // References
-        for (auto& ref : c.referenceSlots()) {
+        for (auto& ref: c.referenceSlots()) {
           if (__checkReferenceSlot(c, ref)) {
             factory.addReferenceSlot(
                ref.type().label(), ref.name().label(), ref.isArray());
@@ -430,7 +430,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE void O3ClassFactory< GUM_SCALAR >::declareAttributes() {
         // Class with a super class must be declared after
-        for (auto c : __o3Classes) {
+        for (auto c: __o3Classes) {
           __prm->getClass(c->name().label()).inheritAttributes();
           __declareAttribute(*c);
         }
@@ -439,7 +439,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE void O3ClassFactory< GUM_SCALAR >::declareAggregates() {
         // Class with a super class must be declared after
-        for (auto c : __o3Classes) {
+        for (auto c: __o3Classes) {
           __prm->getClass(c->name().label()).inheritAggregates();
           __declareAggregates(*c);
         }
@@ -450,7 +450,7 @@ namespace gum {
         PRMFactory< GUM_SCALAR > factory(__prm);
         factory.continueClass(c.name().label());
 
-        for (auto& attr : c.attributes()) {
+        for (auto& attr: c.attributes()) {
           if (__checkAttributeForDeclaration(c, *attr)) {
             factory.startAttribute(attr->type().label(), attr->name().label());
             factory.endAttribute();
@@ -488,7 +488,7 @@ namespace gum {
         PRMFactory< GUM_SCALAR > factory(__prm);
 
         // Class with a super class must be declared in order
-        for (auto c : __o3Classes) {
+        for (auto c: __o3Classes) {
           __prm->getClass(c->name().label()).inheritSlotChains();
           factory.continueClass(c->name().label());
 
@@ -498,27 +498,27 @@ namespace gum {
             auto& super = __prm->getClass(c->superLabel().label());
             auto  to_complete = Set< std::string >();
 
-            for (auto a : super.attributes()) {
+            for (auto a: super.attributes()) {
               to_complete.insert(a->safeName());
             }
 
-            for (auto a : super.aggregates()) {
+            for (auto a: super.aggregates()) {
               to_complete.insert(a->safeName());
             }
 
-            for (auto& a : c->attributes()) {
+            for (auto& a: c->attributes()) {
               to_complete.erase(__prm->getClass(c->name().label())
                                    .get(a->name().label())
                                    .safeName());
             }
 
-            for (auto& a : c->aggregates()) {
+            for (auto& a: c->aggregates()) {
               to_complete.erase(__prm->getClass(c->name().label())
                                    .get(a.name().label())
                                    .safeName());
             }
 
-            for (auto a : to_complete) {
+            for (auto a: to_complete) {
               __prm->getClass(c->name().label()).completeInheritance(a);
             }
           }
@@ -532,7 +532,7 @@ namespace gum {
         PRMFactory< GUM_SCALAR > factory(__prm);
 
         // Class with a super class must be declared in order
-        for (auto c : __o3Classes) {
+        for (auto c: __o3Classes) {
           factory.continueClass(c->name().label());
 
           __completeAggregates(factory, *c);
@@ -545,11 +545,11 @@ namespace gum {
       INLINE void O3ClassFactory< GUM_SCALAR >::__completeAggregates(
          PRMFactory< GUM_SCALAR >& factory, O3Class& c) {
         // Attributes
-        for (auto& agg : c.aggregates()) {
+        for (auto& agg: c.aggregates()) {
           if (__checkAggregateForCompletion(c, agg)) {
             factory.continueAggregator(agg.name().label());
 
-            for (const auto& parent : agg.parents()) {
+            for (const auto& parent: agg.parents()) {
               factory.addParent(parent.label());
             }
 
@@ -575,11 +575,11 @@ namespace gum {
       INLINE void O3ClassFactory< GUM_SCALAR >::__completeAttribute(
          PRMFactory< GUM_SCALAR >& factory, O3Class& c) {
         // Attributes
-        for (auto& attr : c.attributes()) {
+        for (auto& attr: c.attributes()) {
           if (__checkAttributeForCompletion(c, *attr)) {
             factory.continueAttribute(attr->name().label());
 
-            for (const auto& parent : attr->parents()) {
+            for (const auto& parent: attr->parents()) {
               factory.addParent(parent.label());
             }
 
@@ -587,7 +587,7 @@ namespace gum {
 
             if (raw) {
               auto values = std::vector< std::string >();
-              for (const auto& val : raw->values()) {
+              for (const auto& val: raw->values()) {
                 values.push_back(val.formula().formula());
               }
               factory.setRawCPFByColumns(values);
@@ -595,15 +595,15 @@ namespace gum {
 
             auto rule_cpt = dynamic_cast< const O3RuleCPT* >(attr.get());
             if (rule_cpt) {
-              for (const auto& rule : rule_cpt->rules()) {
+              for (const auto& rule: rule_cpt->rules()) {
                 auto labels = std::vector< std::string >();
                 auto values = std::vector< std::string >();
 
-                for (const auto& lbl : rule.first) {
+                for (const auto& lbl: rule.first) {
                   labels.push_back(lbl.label());
                 }
 
-                for (const auto& form : rule.second) {
+                for (const auto& form: rule.second) {
                   values.push_back(form.formula().formula());
                 }
 
@@ -621,7 +621,7 @@ namespace gum {
          const O3Class& o3_c, O3Attribute& attr) {
         // Check for parents existence
         const auto& c = __prm->getClass(o3_c.name().label());
-        for (auto& prnt : attr.parents()) {
+        for (auto& prnt: attr.parents()) {
           if (!__checkParent(c, prnt)) { return false; }
         }
 
@@ -714,9 +714,9 @@ namespace gum {
          const HashTable< std::string, const PRMParameter< GUM_SCALAR >* >& scope,
          O3RuleCPT::O3Rule&                                                 rule) {
         // Add parameters to formulas
-        for (auto& f : rule.second) {
+        for (auto& f: rule.second) {
           f.formula().variables().clear();
-          for (const auto& values : scope) {
+          for (const auto& values: scope) {
             f.formula().variables().insert(values.first, values.second->value());
           }
         }
@@ -731,7 +731,7 @@ namespace gum {
         bool errors = false;
         // Check that formulas are valid and sums to 1
         GUM_SCALAR sum = 0.0;
-        for (const auto& f : rule.second) {
+        for (const auto& f: rule.second) {
           try {
             auto value = GUM_SCALAR(f.formula().result());
             sum += value;
@@ -762,7 +762,7 @@ namespace gum {
          const PRMClass< GUM_SCALAR >& c, O3RuleCPT& attr) {
         const auto& scope = c.scope();
         bool        errors = false;
-        for (auto& rule : attr.rules()) {
+        for (auto& rule: attr.rules()) {
           try {
             if (!__checkLabelsNumber(attr, rule)) { errors = true; }
             if (!__checkLabelsValues(c, attr, rule)) { errors = true; }
@@ -783,7 +783,7 @@ namespace gum {
         const auto& type = __prm->type(attr.type().label());
 
         auto domainSize = type->domainSize();
-        for (auto& prnt : attr.parents()) {
+        for (auto& prnt: attr.parents()) {
           try {
             domainSize *= c.get(prnt.label()).type()->domainSize();
           } catch (NotFound&) {
@@ -805,10 +805,10 @@ namespace gum {
 
         // Add parameters to formulas
         const auto& scope = c.scope();
-        for (auto& f : attr.values()) {
+        for (auto& f: attr.values()) {
           f.formula().variables().clear();
 
-          for (const auto& values : scope) {
+          for (const auto& values: scope) {
             f.formula().variables().insert(values.first, values.second->value());
           }
         }
@@ -835,7 +835,7 @@ namespace gum {
           }
         }
 
-        for (auto f : values) {
+        for (auto f: values) {
           if (std::abs(f - GUM_SCALAR(1.0)) > 1.0e-3) {
             O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1(
                c.name(), attr.name(), float(f), *__errors);
@@ -904,10 +904,10 @@ namespace gum {
         PRMFactory< GUM_SCALAR > factory(__prm);
         factory.continueClass(c.name().label());
 
-        for (auto& agg : c.aggregates()) {
+        for (auto& agg: c.aggregates()) {
           if (__checkAggregateForDeclaration(c, agg)) {
             auto params = std::vector< std::string >();
-            for (auto& p : agg.parameters()) {
+            for (auto& p: agg.parameters()) {
               params.push_back(p.label());
             }
 
@@ -940,7 +940,7 @@ namespace gum {
         const auto& c = __prm->getClass(o3class.name().label());
         auto        t = (const PRMType*)nullptr;
 
-        for (const auto& prnt : agg.parents()) {
+        for (const auto& prnt: agg.parents()) {
           auto elt = __resolveSlotChain(c, prnt);
 
           if (elt == nullptr) {

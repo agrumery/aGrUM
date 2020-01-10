@@ -65,7 +65,7 @@ namespace gum {
     output << "// property softwar aGrUM " << GUM_VERSION << std::endl
            << std::endl;
 
-    for (auto node : bn.topologicalOrder()) {
+    for (auto node: bn.topologicalOrder()) {
       output << __variableBloc(bn, bn.variable(node));
     }
 

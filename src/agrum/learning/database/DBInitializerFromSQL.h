@@ -134,7 +134,7 @@ namespace gum {
      * @endcode
      */
     template < template < typename > class ALLOC = std::allocator >
-    class DBInitializerFromSQL : public IDBInitializer< ALLOC > {
+    class DBInitializerFromSQL: public IDBInitializer< ALLOC > {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< std::string >;

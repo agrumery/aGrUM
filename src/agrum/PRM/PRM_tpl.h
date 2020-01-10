@@ -46,16 +46,16 @@ namespace gum {
       __typeMap.clear();
       __systemMap.clear();
 
-      for (const auto sys : __systems)
+      for (const auto sys: __systems)
         delete sys;
 
-      for (const auto cla : __classes)
+      for (const auto cla: __classes)
         delete cla;
 
-      for (const auto inter : __interfaces)
+      for (const auto inter: __interfaces)
         delete inter;
 
-      for (const auto typ : __types)
+      for (const auto typ: __types)
         delete typ;
     }
 

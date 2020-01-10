@@ -43,7 +43,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
 
-  class ScheduleCliqueStoreMultiDim : public ScheduleOperation< GUM_SCALAR > {
+  class ScheduleCliqueStoreMultiDim: public ScheduleOperation< GUM_SCALAR > {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

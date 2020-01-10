@@ -132,8 +132,8 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    IndepTestChi2< ALLOC >& IndepTestChi2< ALLOC >::
-                            operator=(const IndepTestChi2< ALLOC >& from) {
+    IndepTestChi2< ALLOC >&
+       IndepTestChi2< ALLOC >::operator=(const IndepTestChi2< ALLOC >& from) {
       if (this != &from) {
         IndependenceTest< ALLOC >::operator=(from);
         //__chi2 = from.__chi2;
@@ -144,8 +144,8 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    IndepTestChi2< ALLOC >& IndepTestChi2< ALLOC >::
-                            operator=(IndepTestChi2< ALLOC >&& from) {
+    IndepTestChi2< ALLOC >&
+       IndepTestChi2< ALLOC >::operator=(IndepTestChi2< ALLOC >&& from) {
       if (this != &from) {
         IndependenceTest< ALLOC >::operator=(std::move(from));
         //__chi2 = std::move(from.__chi2);
@@ -210,10 +210,10 @@ namespace gum {
         {
           const auto cond_idset = idset.conditionalIdSet().ids();
           if (nodeId2cols.empty()) {
-            for (const auto node : cond_idset)
+            for (const auto node: cond_idset)
               cond_nodes.push_back(node);
           } else {
-            for (const auto node : cond_idset)
+            for (const auto node: cond_idset)
               cond_nodes.push_back(nodeId2cols.second(node));
           }
         }
@@ -260,7 +260,7 @@ namespace gum {
 
         // count N
         double N = 0.0;
-        for (const auto n_x : N_x)
+        for (const auto n_x: N_x)
           N += n_x;
 
         for (std::size_t y = std::size_t(0), xy = 0; y < Y_size; ++y) {

@@ -34,7 +34,7 @@
 
 namespace gum_tests {
 
-  class O3prmTestSuite : public CxxTest::TestSuite {
+  class O3prmTestSuite: public CxxTest::TestSuite {
     public:
     void setUp() {
       // std::cerr << std::endl;
@@ -1039,7 +1039,7 @@ namespace gum_tests {
         set.insert(&(SafeComputer.get("can_print").type().variable()));
         set.insert(&(SafeComputer.get("working_printer").type().variable()));
         set.insert(&(SafeComputer.get("equipState").type().variable()));
-        for (auto var : cpf.variablesSequence()) {
+        for (auto var: cpf.variablesSequence()) {
           if (set.contains(var)) { set.erase(var); }
         }
         TS_ASSERT_EQUALS(set.size(), gum::Size(0));
@@ -1063,7 +1063,7 @@ namespace gum_tests {
         auto        set = gum::Set< const gum::DiscreteVariable* >();
         set.insert(&(SafeComputer.get("equipState").type().variable()));
         set.insert(&(SafeComputer.get("room.power.state").type().variable()));
-        for (auto var : cpf.variablesSequence()) {
+        for (auto var: cpf.variablesSequence()) {
           if (set.contains(var)) { set.erase(var); }
         }
         TS_ASSERT_EQUALS(set.size(), gum::Size(0));
@@ -1089,7 +1089,7 @@ namespace gum_tests {
         set.insert(&(SafeComputer.get("room.power.(fr.lip6.printers.t_state)state")
                         .type()
                         .variable()));
-        for (auto var : cpf.variablesSequence()) {
+        for (auto var: cpf.variablesSequence()) {
           if (set.contains(var)) { set.erase(var); }
         }
         TS_ASSERT_EQUALS(set.size(), gum::Size(0));
@@ -1220,36 +1220,36 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(sys->size(), (gum::Size)16);
 
         // Checking that all class DAG are generated
-        for (auto c : prm->classes()) {
+        for (auto c: prm->classes()) {
           for (auto node = c->containerDag().begin();
                node != c->containerDag().end();
                ++node) {
             TS_ASSERT(c->exists(*node));
             TS_ASSERT_THROWS_NOTHING(c->get(*node));
-            for (auto prnt : c->containerDag().parents(*node)) {
+            for (auto prnt: c->containerDag().parents(*node)) {
               TS_ASSERT(c->exists(prnt));
               TS_ASSERT_THROWS_NOTHING(c->get(prnt));
             }
 
-            for (auto child : c->containerDag().children(*node)) {
+            for (auto child: c->containerDag().children(*node)) {
               TS_ASSERT(c->exists(child));
               TS_ASSERT_THROWS_NOTHING(c->get(child));
             }
           }
           // checking parameters
-          for (auto elt : c->parameters()) {
+          for (auto elt: c->parameters()) {
             c->containerDag().exists(elt->id());
           }
-          for (auto elt : c->referenceSlots()) {
+          for (auto elt: c->referenceSlots()) {
             c->containerDag().exists(elt->id());
           }
-          for (auto elt : c->attributes()) {
+          for (auto elt: c->attributes()) {
             c->containerDag().exists(elt->id());
           }
-          for (auto elt : c->aggregates()) {
+          for (auto elt: c->aggregates()) {
             c->containerDag().exists(elt->id());
           }
-          for (auto elt : c->slotChains()) {
+          for (auto elt: c->slotChains()) {
             c->containerDag().exists(elt->id());
           }
         }
@@ -1264,7 +1264,7 @@ namespace gum_tests {
                 sum += attr.val()->cpf()[inst];
               }
               gum::Size card = 1;
-              for (auto var : attr.val()->cpf().variablesSequence()) {
+              for (auto var: attr.val()->cpf().variablesSequence()) {
                 card *= var->domainSize();
               }
               card /= attr.val()->type()->domainSize();
@@ -1591,9 +1591,9 @@ namespace gum_tests {
         TS_ASSERT_DIFFERS(reader.prm(), nullptr);
 
         auto sys = &(reader.prm()->getSystem("fr.base.Work"));
-        for (auto iter : *sys) {
+        for (auto iter: *sys) {
           auto inst = iter.second;
-          for (auto node : inst->type().containerDag()) {
+          for (auto node: inst->type().containerDag()) {
             // TS_ASSERT( inst->exists( node ) );
             if ((!inst->exists(node)) && inst->type().exists(node)) {
               auto elt = &(inst->type().get(node));
@@ -1624,15 +1624,15 @@ namespace gum_tests {
         TS_ASSERT_DIFFERS(reader.prm(), nullptr);
 
         auto prm = reader.prm();
-        for (auto c : prm->classes()) {
+        for (auto c: prm->classes()) {
           try {
-            for (auto i : c->implements()) {
-              for (auto r : i->referenceSlots()) {
+            for (auto i: c->implements()) {
+              for (auto r: i->referenceSlots()) {
                 TS_ASSERT_EQUALS(r->name(), c->get(r->id()).name());
                 TS_ASSERT_EQUALS(r->safeName(), c->get(r->id()).safeName());
                 TS_ASSERT_EQUALS(r->id(), c->get(r->name()).id());
               }
-              for (auto r : c->referenceSlots()) {
+              for (auto r: c->referenceSlots()) {
                 if (i->exists(r->name())) {
                   TS_ASSERT_EQUALS(r->name(), i->get(r->id()).name());
                   TS_ASSERT_EQUALS(r->safeName(), i->get(r->id()).safeName());
@@ -1664,10 +1664,10 @@ namespace gum_tests {
         TS_ASSERT_DIFFERS(reader.prm(), nullptr);
 
         auto prm = reader.prm();
-        for (auto c : prm->classes()) {
+        for (auto c: prm->classes()) {
           try {
-            for (auto i : c->implements()) {
-              for (auto a : i->attributes()) {
+            for (auto i: c->implements()) {
+              for (auto a: i->attributes()) {
                 TS_ASSERT(c->exists(a->name()));
                 TS_ASSERT(c->exists(a->safeName()));
                 TS_ASSERT(c->exists(a->id()));

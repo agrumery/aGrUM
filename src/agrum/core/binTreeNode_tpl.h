@@ -78,8 +78,8 @@ namespace gum {
    * does not change the current connections (parents and children) of this. */
 
   template < typename Val >
-  INLINE BinTreeNode< Val >& BinTreeNode< Val >::
-                             operator=(const BinTreeNode< Val >& from) {
+  INLINE BinTreeNode< Val >&
+     BinTreeNode< Val >::operator=(const BinTreeNode< Val >& from) {
     // avoid self assignment
     if (this != &from) {
       GUM_OP_CPY(BinTreeNode);

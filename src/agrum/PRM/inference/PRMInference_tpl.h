@@ -34,8 +34,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void PRMInference< GUM_SCALAR >::clearEvidence() {
-      for (const auto& elt : __evidences) {
-        for (const auto& elt2 : *elt.second)
+      for (const auto& elt: __evidences) {
+        for (const auto& elt2: *elt.second)
           delete elt2.second;
 
         delete elt.second;
@@ -51,10 +51,10 @@ namespace gum {
         _sys(source._sys) {
       GUM_CONS_CPY(PRMInference);
 
-      for (const auto& elt : source.__evidences) {
+      for (const auto& elt: source.__evidences) {
         __evidences.insert(elt.first, new PRMInference< GUM_SCALAR >::EMap());
 
-        for (const auto& elt2 : *elt.second) {
+        for (const auto& elt2: *elt.second) {
           Potential< GUM_SCALAR >* e = new Potential< GUM_SCALAR >();
           e->add(*(elt2.second->variablesSequence().front()));
           Instantiation i(*e);
@@ -68,16 +68,16 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    PRMInference< GUM_SCALAR >& PRMInference< GUM_SCALAR >::
-                                operator=(const PRMInference< GUM_SCALAR >& source) {
+    PRMInference< GUM_SCALAR >& PRMInference< GUM_SCALAR >::operator=(
+       const PRMInference< GUM_SCALAR >& source) {
       clearEvidence();
       _prm = source._prm;
       _sys = source._sys;
 
-      for (const auto& elt : source.__evidences) {
+      for (const auto& elt: source.__evidences) {
         __evidences.insert(elt.first, new PRMInference< GUM_SCALAR >::EMap());
 
-        for (const auto& elt2 : *elt.second) {
+        for (const auto& elt2: *elt.second) {
           Potential< GUM_SCALAR >* e = new Potential< GUM_SCALAR >();
           e->add(*(elt2.second->variablesSequence().front()));
           Instantiation i(*e);

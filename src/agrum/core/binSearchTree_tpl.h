@@ -126,8 +126,8 @@ namespace gum {
 
   template < typename Val, class Cmp, class Node >
   INLINE BinSearchTreeIterator< Val, Cmp, Node >&
-         BinSearchTreeIterator< Val, Cmp, Node >::
-         operator=(const BinSearchTreeIterator< Val, Cmp, Node >& from) {
+     BinSearchTreeIterator< Val, Cmp, Node >::operator=(
+        const BinSearchTreeIterator< Val, Cmp, Node >& from) {
     // avoid self assignment
     if (this != &from) {
       GUM_OP_CPY(BinSearchTreeIterator);
@@ -255,8 +255,8 @@ namespace gum {
   }
 
   template < typename Val, class Cmp, class Node >
-  INLINE bool BinSearchTreeIterator< Val, Cmp, Node >::
-              operator==(const BinSearchTreeIterator< Val, Cmp, Node >& from) const {
+  INLINE bool BinSearchTreeIterator< Val, Cmp, Node >::operator==(
+     const BinSearchTreeIterator< Val, Cmp, Node >& from) const {
     if (_node)
       return (_node == from._node);
     else
@@ -267,8 +267,8 @@ namespace gum {
   }
 
   template < typename Val, class Cmp, class Node >
-  INLINE bool BinSearchTreeIterator< Val, Cmp, Node >::
-              operator!=(const BinSearchTreeIterator< Val, Cmp, Node >& from) const {
+  INLINE bool BinSearchTreeIterator< Val, Cmp, Node >::operator!=(
+     const BinSearchTreeIterator< Val, Cmp, Node >& from) const {
     if (_node)
       return (_node != from._node);
     else
@@ -383,8 +383,8 @@ namespace gum {
   }
 
   template < typename Val, class Cmp, class Node >
-  BinSearchTree< Val, Cmp, Node >& BinSearchTree< Val, Cmp, Node >::
-                                   operator=(const BinSearchTree< Val, Cmp, Node >& from) {
+  BinSearchTree< Val, Cmp, Node >& BinSearchTree< Val, Cmp, Node >::operator=(
+     const BinSearchTree< Val, Cmp, Node >& from) {
     // avoid self assignment
     if (this != &from) {
       // for debugging purposes

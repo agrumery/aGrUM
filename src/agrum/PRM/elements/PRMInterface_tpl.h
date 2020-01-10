@@ -62,7 +62,7 @@ namespace gum {
     PRMInterface< GUM_SCALAR >::~PRMInterface() {
       GUM_DESTRUCTOR(PRMInterface);
 
-      for (const auto& elt : __nodeIdMap) {
+      for (const auto& elt: __nodeIdMap) {
         delete elt.second;
       }
     }
@@ -76,7 +76,7 @@ namespace gum {
     void PRMInterface< GUM_SCALAR >::__inheritInterface(
        const PRMInterface< GUM_SCALAR >& i) {
       // Copying attributes
-      for (const auto i_attr : i.__attributes) {
+      for (const auto i_attr: i.__attributes) {
         auto attr =
            new PRMScalarAttribute< GUM_SCALAR >(i_attr->name(), i_attr->type());
         attr->setId(i_attr->id());
@@ -92,7 +92,7 @@ namespace gum {
       }
 
       // Copying reference slots
-      for (const auto i_ref : i.__referenceSlots) {
+      for (const auto i_ref: i.__referenceSlots) {
         auto ref = new PRMReferenceSlot< GUM_SCALAR >(
            i_ref->name(),
            const_cast< PRMClassElementContainer< GUM_SCALAR >& >(
@@ -399,26 +399,26 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE PRMClassElement< GUM_SCALAR >& PRMInterface< GUM_SCALAR >::
-                                          operator[](NodeId id) {
+    INLINE PRMClassElement< GUM_SCALAR >&
+       PRMInterface< GUM_SCALAR >::operator[](NodeId id) {
       return get(id);
     }
 
     template < typename GUM_SCALAR >
-    INLINE const PRMClassElement< GUM_SCALAR >& PRMInterface< GUM_SCALAR >::
-                                                operator[](NodeId id) const {
+    INLINE const PRMClassElement< GUM_SCALAR >&
+       PRMInterface< GUM_SCALAR >::operator[](NodeId id) const {
       return get(id);
     }
 
     template < typename GUM_SCALAR >
-    INLINE PRMClassElement< GUM_SCALAR >& PRMInterface< GUM_SCALAR >::
-                                          operator[](const std::string& name) {
+    INLINE PRMClassElement< GUM_SCALAR >&
+       PRMInterface< GUM_SCALAR >::operator[](const std::string& name) {
       return get(name);
     }
 
     template < typename GUM_SCALAR >
-    INLINE const PRMClassElement< GUM_SCALAR >& PRMInterface< GUM_SCALAR >::
-                                                operator[](const std::string& name) const {
+    INLINE const PRMClassElement< GUM_SCALAR >&
+       PRMInterface< GUM_SCALAR >::operator[](const std::string& name) const {
       return get(name);
     }
 
@@ -505,12 +505,12 @@ namespace gum {
     template < typename GUM_SCALAR >
     void PRMInterface< GUM_SCALAR >::_findAllSubtypes(
        Set< PRMClassElementContainer< GUM_SCALAR >* >& set) {
-      for (const auto impl : __implementations) {
+      for (const auto impl: __implementations) {
         set.insert(impl);
         impl->_findAllSubtypes(set);
       }
 
-      for (const auto ext : __extensions) {
+      for (const auto ext: __extensions) {
         set.insert(ext);
         ext->_findAllSubtypes(set);
       }
@@ -521,7 +521,7 @@ namespace gum {
        const PRMClassElement< GUM_SCALAR >& elt) const {
       try {
         if (!this->_getIOFlag(elt).second) {
-          for (auto i : __implementations) {
+          for (auto i: __implementations) {
             if (i->isOutputNode(elt)) { return true; }
           }
 

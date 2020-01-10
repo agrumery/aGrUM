@@ -30,7 +30,7 @@
 
 namespace gum_tests {
 
-  class AprioriBDeuTestSuite : public CxxTest::TestSuite {
+  class AprioriBDeuTestSuite: public CxxTest::TestSuite {
     public:
     void test1() {
       // create the translator set
@@ -89,7 +89,7 @@ namespace gum_tests {
 
       std::vector< double > vect(3, 1.0);
       apriori.addAllApriori(idset1, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 4.0 / 3));
       }
       vect.clear();
@@ -98,7 +98,7 @@ namespace gum_tests {
       vect.clear();
       vect.resize(12, 1.0);
       apriori.addAllApriori(idset2, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 4.0 / 12));
       }
       vect.clear();
@@ -107,14 +107,14 @@ namespace gum_tests {
       vect.clear();
       vect.resize(576, 1.0);
       apriori.addAllApriori(idset3, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 4.0 / 576));
       }
 
       vect.clear();
       vect.resize(48, 1.0);
       apriori.addConditioningApriori(idset3, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 4.0 / 48));
       }
 
@@ -131,7 +131,7 @@ namespace gum_tests {
       vect.clear();
       vect.resize(3, 1.0);
       apriori2.addAllApriori(idset1, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 2.0 / 3));
       }
       vect.clear();
@@ -140,7 +140,7 @@ namespace gum_tests {
       vect.clear();
       vect.resize(12, 1.0);
       apriori2.addAllApriori(idset2, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 2.0 / 12));
       }
       vect.clear();
@@ -149,13 +149,13 @@ namespace gum_tests {
       vect.clear();
       vect.resize(576, 1.0);
       apriori2.addAllApriori(idset3, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 2.0 / 576));
       }
       vect.clear();
       vect.resize(48, 1.0);
       apriori2.addConditioningApriori(idset3, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 2.0 / 48));
       }
 
@@ -172,7 +172,7 @@ namespace gum_tests {
       vect.clear();
       vect.resize(3, 1.0);
       apriori3.addAllApriori(idset1, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 4.0 / 3));
       }
       vect.clear();
@@ -181,7 +181,7 @@ namespace gum_tests {
       vect.clear();
       vect.resize(12, 1.0);
       apriori3.addAllApriori(idset2, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 4.0 / 12));
       }
       vect.clear();
@@ -190,13 +190,13 @@ namespace gum_tests {
       vect.clear();
       vect.resize(576, 1.0);
       apriori3.addAllApriori(idset3, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 4.0 / 576));
       }
       vect.clear();
       vect.resize(48, 1.0);
       apriori3.addConditioningApriori(idset3, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 4.0 / 48));
       }
 
@@ -213,7 +213,7 @@ namespace gum_tests {
       vect.clear();
       vect.resize(3, 1.0);
       apriori4->addAllApriori(idset1, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 2.0 / 3));
       }
       vect.clear();
@@ -222,7 +222,7 @@ namespace gum_tests {
       vect.clear();
       vect.resize(12, 1.0);
       apriori4->addAllApriori(idset2, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 2.0 / 12));
       }
       vect.clear();
@@ -231,13 +231,13 @@ namespace gum_tests {
       vect.clear();
       vect.resize(576, 1.0);
       apriori4->addAllApriori(idset3, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 2.0 / 576));
       }
       vect.clear();
       vect.resize(48, 1.0);
       apriori4->addConditioningApriori(idset3, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 2.0 / 48));
       }
 
@@ -258,7 +258,7 @@ namespace gum_tests {
       vect.clear();
       vect.resize(3, 1.0);
       apriori5.addAllApriori(idset1, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 2.0 / 3));
       }
       vect.clear();
@@ -267,7 +267,7 @@ namespace gum_tests {
       vect.clear();
       vect.resize(12, 1.0);
       apriori5.addAllApriori(idset2, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 2.0 / 12));
       }
       vect.clear();
@@ -276,13 +276,13 @@ namespace gum_tests {
       vect.clear();
       vect.resize(576, 1.0);
       apriori5.addAllApriori(idset3, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 2.0 / 576));
       }
       vect.clear();
       vect.resize(48, 1.0);
       apriori5.addConditioningApriori(idset3, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 2.0 / 48));
       }
 
@@ -298,7 +298,7 @@ namespace gum_tests {
       vect.clear();
       vect.resize(3, 1.0);
       apriori5.addAllApriori(idset1, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 1.0 / 3));
       }
       vect.clear();
@@ -307,7 +307,7 @@ namespace gum_tests {
       vect.clear();
       vect.resize(12, 1.0);
       apriori5.addAllApriori(idset2, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 1.0 / 12));
       }
       vect.clear();
@@ -316,13 +316,13 @@ namespace gum_tests {
       vect.clear();
       vect.resize(576, 1.0);
       apriori5.addAllApriori(idset3, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 1.0 / 576));
       }
       vect.clear();
       vect.resize(48, 1.0);
       apriori5.addConditioningApriori(idset3, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 1.0 / 48));
       }
     }
@@ -393,7 +393,7 @@ namespace gum_tests {
 
       std::vector< double > vect(4, 1.0);
       apriori.addAllApriori(idset1, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 4.0 / 4));
       }
       vect.clear();
@@ -402,7 +402,7 @@ namespace gum_tests {
       vect.clear();
       vect.resize(16, 1.0);
       apriori.addAllApriori(idset2, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 4.0 / 16));
       }
       vect.clear();
@@ -411,13 +411,13 @@ namespace gum_tests {
       vect.clear();
       vect.resize(576, 1.0);
       apriori.addAllApriori(idset3, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 4.0 / 576));
       }
       vect.clear();
       vect.resize(36, 1.0);
       apriori.addConditioningApriori(idset3, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 4.0 / 36));
       }
 
@@ -434,7 +434,7 @@ namespace gum_tests {
       vect.clear();
       vect.resize(4, 1.0);
       apriori2.addAllApriori(idset1, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 2.0 / 4));
       }
       vect.clear();
@@ -443,7 +443,7 @@ namespace gum_tests {
       vect.clear();
       vect.resize(16, 1.0);
       apriori2.addAllApriori(idset2, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 2.0 / 16));
       }
       vect.clear();
@@ -452,13 +452,13 @@ namespace gum_tests {
       vect.clear();
       vect.resize(576, 1.0);
       apriori2.addAllApriori(idset3, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 2.0 / 576));
       }
       vect.clear();
       vect.resize(36, 1.0);
       apriori2.addConditioningApriori(idset3, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 2.0 / 36));
       }
 
@@ -474,7 +474,7 @@ namespace gum_tests {
       vect.clear();
       vect.resize(4, 1.0);
       apriori3.addAllApriori(idset1, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 4.0 / 4));
       }
       vect.clear();
@@ -483,7 +483,7 @@ namespace gum_tests {
       vect.clear();
       vect.resize(16, 1.0);
       apriori3.addAllApriori(idset2, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 4.0 / 16));
       }
       vect.clear();
@@ -492,13 +492,13 @@ namespace gum_tests {
       vect.clear();
       vect.resize(576, 1.0);
       apriori3.addAllApriori(idset3, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 4.0 / 576));
       }
       vect.clear();
       vect.resize(36, 1.0);
       apriori3.addConditioningApriori(idset3, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 4.0 / 36));
       }
 
@@ -515,7 +515,7 @@ namespace gum_tests {
       vect.clear();
       vect.resize(4, 1.0);
       apriori4->addAllApriori(idset1, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 2.0 / 4));
       }
       vect.clear();
@@ -524,7 +524,7 @@ namespace gum_tests {
       vect.clear();
       vect.resize(16, 1.0);
       apriori4->addAllApriori(idset2, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 2.0 / 16));
       }
       vect.clear();
@@ -533,13 +533,13 @@ namespace gum_tests {
       vect.clear();
       vect.resize(576, 1.0);
       apriori4->addAllApriori(idset3, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 2.0 / 576));
       }
       vect.clear();
       vect.resize(36, 1.0);
       apriori4->addConditioningApriori(idset3, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 2.0 / 36));
       }
 
@@ -559,7 +559,7 @@ namespace gum_tests {
       vect.clear();
       vect.resize(4, 1.0);
       apriori5.addAllApriori(idset1, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 2.0 / 4));
       }
       vect.clear();
@@ -568,7 +568,7 @@ namespace gum_tests {
       vect.clear();
       vect.resize(16, 1.0);
       apriori5.addAllApriori(idset2, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 2.0 / 16));
       }
       vect.clear();
@@ -577,13 +577,13 @@ namespace gum_tests {
       vect.clear();
       vect.resize(576, 1.0);
       apriori5.addAllApriori(idset3, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 2.0 / 576));
       }
       vect.clear();
       vect.resize(36, 1.0);
       apriori5.addConditioningApriori(idset3, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 2.0 / 36));
       }
 
@@ -600,7 +600,7 @@ namespace gum_tests {
       vect.clear();
       vect.resize(4, 1.0);
       apriori5.addAllApriori(idset1, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 1.0 / 4));
       }
       vect.clear();
@@ -609,7 +609,7 @@ namespace gum_tests {
       vect.clear();
       vect.resize(16, 1.0);
       apriori5.addAllApriori(idset2, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 1.0 / 16));
       }
       vect.clear();
@@ -618,13 +618,13 @@ namespace gum_tests {
       vect.clear();
       vect.resize(576, 1.0);
       apriori5.addAllApriori(idset3, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 1.0 / 576));
       }
       vect.clear();
       vect.resize(36, 1.0);
       apriori5.addConditioningApriori(idset3, vect);
-      for (const auto val : vect) {
+      for (const auto val: vect) {
         TS_ASSERT(val == (1.0 + 1.0 / 36));
       }
     }

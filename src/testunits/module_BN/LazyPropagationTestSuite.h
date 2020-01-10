@@ -47,7 +47,7 @@
 
 namespace gum_tests {
 
-  class LazyInferenceNewTestSuite : public CxxTest::TestSuite {
+  class LazyInferenceNewTestSuite: public CxxTest::TestSuite {
     public:
     gum::BayesNet< double >* bn;
     gum::NodeId              i1, i2, i3, i4, i5;
@@ -154,7 +154,7 @@ namespace gum_tests {
       gum::LazyPropagation< double >       inf(bn);
       gum::ShaferShenoyInference< double > infX(bn);
 
-      for (auto pot : e_list) {
+      for (auto pot: e_list) {
         TS_ASSERT_THROWS_NOTHING(inf.addEvidence(*pot));
         TS_ASSERT_THROWS_NOTHING(infX.addEvidence(*pot));
       }
@@ -259,8 +259,8 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(inf.VI((gum::NodeId)2, (gum::NodeId)4));
       TS_GUM_ASSERT_THROWS_NOTHING(inf.I((gum::NodeId)0, (gum::NodeId)4));
 
-      for (const auto node : bn->dag()) {
-        for (const auto par : bn->dag().parents(node)) {
+      for (const auto node: bn->dag()) {
+        for (const auto par: bn->dag().parents(node)) {
           TS_GUM_ASSERT_THROWS_NOTHING(inf.I(node, par));
           TS_GUM_ASSERT_THROWS_NOTHING(inf.I(par, node));
         }
@@ -354,7 +354,7 @@ namespace gum_tests {
       TS_ASSERT(nbrErr == gum::Size(0));
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
 
-      for (auto node : bn.dag()) {
+      for (auto node: bn.dag()) {
         const auto&              variable = bn.variable(node);
         gum::Potential< double > ev_pot;
         ev_pot << variable;
@@ -367,13 +367,13 @@ namespace gum_tests {
           ev_pot.set(inst, 1.0f);
           gum::LazyPropagation< double >       inf1(&bn);
           gum::ShaferShenoyInference< double > inf2(&bn);
-          for (auto pot : evidences) {
+          for (auto pot: evidences) {
             TS_ASSERT_THROWS_NOTHING(inf1.addEvidence(*pot));
             TS_ASSERT_THROWS_NOTHING(inf2.addEvidence(*pot));
           }
           TS_ASSERT_THROWS_NOTHING(inf1.makeInference());
           TS_ASSERT_THROWS_NOTHING(inf2.makeInference());
-          for (auto node : bn.dag()) {
+          for (auto node: bn.dag()) {
             TS_ASSERT(equalPotentials(inf1.posterior(node), inf2.posterior(node)));
           }
           ev_pot.set(inst, (float)0);
@@ -396,7 +396,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING(inf1.makeInference());
       TS_ASSERT_THROWS_NOTHING(inf2.makeInference());
 
-      for (auto node : bn.dag()) {
+      for (auto node: bn.dag()) {
         TS_ASSERT_THROWS_NOTHING(inf1.posterior(node));
         TS_ASSERT_THROWS_NOTHING(inf2.posterior(node));
         TS_ASSERT(equalPotentials(inf1.posterior(node), inf2.posterior(node)));
@@ -404,7 +404,7 @@ namespace gum_tests {
 
       std::vector< gum::NodeId > ev_nodes{2, 6, 7, 10, 12, 14, 16};
       gum::List< const gum::Potential< double >* > evidences;
-      for (const auto node : ev_nodes) {
+      for (const auto node: ev_nodes) {
         gum::Potential< double >* ev_pot = new gum::Potential< double >;
 
         (*ev_pot) << bn.variable(node);
@@ -424,7 +424,7 @@ namespace gum_tests {
 
       gum::LazyPropagation< double >       inf3(&bn);
       gum::ShaferShenoyInference< double > inf4(&bn);
-      for (auto pot : evidences) {
+      for (auto pot: evidences) {
         TS_ASSERT_THROWS_NOTHING(inf1.addEvidence(*pot));
         TS_ASSERT_THROWS_NOTHING(inf2.addEvidence(*pot));
         TS_ASSERT_THROWS_NOTHING(inf3.addEvidence(*pot));
@@ -436,7 +436,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING(inf3.makeInference());
       TS_ASSERT_THROWS_NOTHING(inf4.makeInference());
 
-      for (auto node : bn.dag()) {
+      for (auto node: bn.dag()) {
         TS_ASSERT_THROWS_NOTHING(inf1.posterior(node));
         TS_ASSERT_THROWS_NOTHING(inf2.posterior(node));
         TS_ASSERT_THROWS_NOTHING(inf3.posterior(node));
@@ -449,16 +449,16 @@ namespace gum_tests {
       gum::LazyPropagation< double > inf5(&bn);
       inf5.setRelevantPotentialsFinderType(
          gum::RelevantPotentialsFinderType::DSEP_BAYESBALL_NODES);
-      for (auto pot : evidences) {
+      for (auto pot: evidences) {
         TS_ASSERT_THROWS_NOTHING(inf5.addEvidence(*pot));
       }
       TS_ASSERT_THROWS_NOTHING(inf5.makeInference());
-      for (auto node : bn.dag()) {
+      for (auto node: bn.dag()) {
         TS_ASSERT_THROWS_NOTHING(inf5.posterior(node));
         TS_ASSERT(equalPotentials(inf1.posterior(node), inf5.posterior(node)));
       }
 
-      for (auto pot : evidences)
+      for (auto pot: evidences)
         delete pot;
     }
 
@@ -471,7 +471,7 @@ namespace gum_tests {
       TS_ASSERT(nbrErr == gum::Size(0));
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
 
-      for (auto node : bn.dag()) {
+      for (auto node: bn.dag()) {
         const auto&              variable = bn.variable(node);
         gum::Potential< double > ev_pot;
         ev_pot << variable;
@@ -481,7 +481,7 @@ namespace gum_tests {
         for (inst.setFirst(); !inst.end(); ++inst) {
           ev_pot.set(inst, 1.0f);
 
-          for (auto node2 : bn.dag()) {
+          for (auto node2: bn.dag()) {
             if (node2 > node) {
               const auto&              variable2 = bn.variable(node2);
               gum::Potential< double > ev_pot2;
@@ -498,14 +498,14 @@ namespace gum_tests {
 
                 gum::LazyPropagation< double >       inf1(&bn);
                 gum::ShaferShenoyInference< double > inf2(&bn);
-                for (auto pot : evidences) {
+                for (auto pot: evidences) {
                   TS_ASSERT_THROWS_NOTHING(inf1.addEvidence(*pot));
                   TS_ASSERT_THROWS_NOTHING(inf2.addEvidence(*pot));
                 }
                 TS_ASSERT_THROWS_NOTHING(inf1.makeInference());
                 TS_ASSERT_THROWS_NOTHING(inf2.makeInference());
 
-                for (auto xnode : bn.dag()) {
+                for (auto xnode: bn.dag()) {
                   TS_ASSERT(equalPotentials(inf1.posterior(xnode),
                                             inf2.posterior(xnode)));
                 }
@@ -528,7 +528,7 @@ namespace gum_tests {
       TS_ASSERT(nbrErr == gum::Size(0));
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
 
-      for (auto node : bn.dag()) {
+      for (auto node: bn.dag()) {
         const auto&              variable = bn.variable(node);
         gum::Potential< double > ev_pot;
         ev_pot << variable;
@@ -538,7 +538,7 @@ namespace gum_tests {
         for (inst.setFirst(); !inst.end(); ++inst) {
           ev_pot.set(inst, 1.0f);
 
-          for (auto node2 : bn.dag()) {
+          for (auto node2: bn.dag()) {
             if (node2 > node) {
               const auto&              variable2 = bn.variable(node2);
               gum::Potential< double > ev_pot2;
@@ -557,14 +557,14 @@ namespace gum_tests {
                 inf1.setRelevantPotentialsFinderType(
                    gum::RelevantPotentialsFinderType::DSEP_BAYESBALL_NODES);
                 gum::ShaferShenoyInference< double > inf2(&bn);
-                for (auto pot : evidences) {
+                for (auto pot: evidences) {
                   TS_ASSERT_THROWS_NOTHING(inf1.addEvidence(*pot));
                   TS_ASSERT_THROWS_NOTHING(inf2.addEvidence(*pot));
                 }
                 TS_ASSERT_THROWS_NOTHING(inf1.makeInference());
                 TS_ASSERT_THROWS_NOTHING(inf2.makeInference());
 
-                for (auto xnode : bn.dag()) {
+                for (auto xnode: bn.dag()) {
                   TS_ASSERT(equalPotentials(inf1.posterior(xnode),
                                             inf2.posterior(xnode)));
                 }
@@ -587,7 +587,7 @@ namespace gum_tests {
       TS_ASSERT(nbrErr == gum::Size(0));
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
 
-      for (auto node : bn.dag()) {
+      for (auto node: bn.dag()) {
         const auto&              variable = bn.variable(node);
         gum::Potential< double > ev_pot;
         ev_pot << variable;
@@ -598,7 +598,7 @@ namespace gum_tests {
         for (inst.setFirst(); !inst.end(); ++inst, ++inst_index) {
           ev_pot.set(inst, 1.0f);
 
-          for (auto node2 : bn.dag()) {
+          for (auto node2: bn.dag()) {
             if (node2 > node) {
               const auto&              variable2 = bn.variable(node2);
               gum::Potential< double > ev_pot2;
@@ -618,14 +618,14 @@ namespace gum_tests {
                 inf1.setRelevantPotentialsFinderType(
                    gum::RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS);
                 gum::LazyPropagation< double > inf2(&bn);
-                for (auto pot : evidences) {
+                for (auto pot: evidences) {
                   TS_ASSERT_THROWS_NOTHING(inf1.addEvidence(*pot));
                   TS_ASSERT_THROWS_NOTHING(inf2.addEvidence(*pot));
                 }
                 TS_ASSERT_THROWS_NOTHING(inf1.makeInference());
                 TS_ASSERT_THROWS_NOTHING(inf2.makeInference());
 
-                for (auto xnode : bn.dag()) {
+                for (auto xnode: bn.dag()) {
                   try {
                     equalPotentials(inf1.posterior(xnode), inf2.posterior(xnode));
                   } catch (gum::IncompatibleEvidence&) {
@@ -1028,7 +1028,7 @@ namespace gum_tests {
       gum::LazyPropagation< double > ie(&bn);
 
       try {
-        for (const auto& a : bn.arcs()) {
+        for (const auto& a: bn.arcs()) {
           ie.eraseAllTargets();
           ie.eraseAllEvidence();
           // GUM_TRACE_VAR(a);

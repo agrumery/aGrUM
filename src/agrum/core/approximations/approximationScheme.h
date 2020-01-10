@@ -104,7 +104,7 @@ namespace gum {
    * }
    * @endcode
    */
-  class ApproximationScheme : public IApproximationSchemeConfiguration {
+  class ApproximationScheme: public IApproximationSchemeConfiguration {
     public:
     // ========================================================================
     /// @name Constructors and Destructors

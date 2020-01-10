@@ -75,7 +75,7 @@ namespace gum {
        Bijection< const DiscreteVariable*, const DiscreteVariable* > bij) const {
       auto copy =
          new PRMFormAttribute< GUM_SCALAR >(*__class, this->name(), this->type());
-      for (auto var : __formulas->variablesSequence()) {
+      for (auto var: __formulas->variablesSequence()) {
         if (var != &(__type->variable())) { copy->__formulas->add(*var); }
       }
 
@@ -96,7 +96,7 @@ namespace gum {
       delete __formulas;
       __formulas = new MultiDimArray< std::string >();
 
-      for (const auto& var : source.cpf().variablesSequence()) {
+      for (const auto& var: source.cpf().variablesSequence()) {
         __formulas->add(*(bij.second(var)));
       }
 
@@ -262,8 +262,8 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    PRMFormAttribute< GUM_SCALAR >& PRMFormAttribute< GUM_SCALAR >::
-                                    operator=(const PRMFormAttribute< GUM_SCALAR >& source) {
+    PRMFormAttribute< GUM_SCALAR >& PRMFormAttribute< GUM_SCALAR >::operator=(
+       const PRMFormAttribute< GUM_SCALAR >& source) {
       GUM_ERROR(OperationNotAllowed, "Cannot copy FormAttribute");
     }
 
@@ -274,7 +274,7 @@ namespace gum {
 
         __cpf = new Potential< GUM_SCALAR >();
 
-        for (auto var : __formulas->variablesSequence()) {
+        for (auto var: __formulas->variablesSequence()) {
           __cpf->add(*var);
         }
 
@@ -291,7 +291,7 @@ namespace gum {
 
           Formula f(val);
 
-          for (auto item : params) {
+          for (auto item: params) {
             f.variables().insert(item.first, item.second->value());
           }
 
@@ -338,7 +338,7 @@ namespace gum {
 
       __formulas = new MultiDimArray< std::string >();
 
-      for (auto var : old->variablesSequence()) {
+      for (auto var: old->variablesSequence()) {
         if (var != &(old_type.variable())) {
           __formulas->add(*var);
         } else {
@@ -381,7 +381,7 @@ namespace gum {
 
       __formulas = new MultiDimArray< std::string >();
 
-      for (auto var : old->variablesSequence()) {
+      for (auto var: old->variablesSequence()) {
         if (var != &(__type->variable())) {
           __formulas->add(*var);
         } else {

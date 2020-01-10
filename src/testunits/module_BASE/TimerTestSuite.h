@@ -27,7 +27,7 @@
 
 namespace gum_tests {
 
-  class TimerTestSuite : public CxxTest::TestSuite {
+  class TimerTestSuite: public CxxTest::TestSuite {
     public:
     void testConstructors() {
       TS_GUM_ASSERT_THROWS_NOTHING(gum::Timer t1);

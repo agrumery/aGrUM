@@ -44,7 +44,7 @@
 
 namespace gum_tests {
 
-  class O3prmBNWriterTestSuite : public CxxTest::TestSuite {
+  class O3prmBNWriterTestSuite: public CxxTest::TestSuite {
     public:
     gum::BayesNet< double >* bn;
     gum::NodeId              i1, i2, i3, i4, i5;
@@ -99,7 +99,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed());
       TS_ASSERT_EQUALS(res, (gum::Size)0);
 
-      for (auto node : bn->dag()) {
+      for (auto node: bn->dag()) {
         auto        name = bn->variable(node).name();
         const auto& cpt_1 = bn->cpt(node);
         auto        i = gum::Instantiation(cpt_1);
@@ -109,7 +109,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(i.domainSize(), j.domainSize());
         if (i.domainSize() == j.domainSize()) {
           for (i.setFirst(); !i.end(); i.inc()) {
-            for (auto i_var : i.variablesSequence()) {
+            for (auto i_var: i.variablesSequence()) {
               const auto& j_var = bn2.variable(i_var->name());
               j.chgVal(j_var, i.val(*i_var));
             }

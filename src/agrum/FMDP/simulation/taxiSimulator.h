@@ -80,7 +80,7 @@ namespace gum {
    * @ingroup fmdp_group
    */
   // clang-format on
-  class TaxiSimulator : public AbstractSimulator {
+  class TaxiSimulator: public AbstractSimulator {
     public:
     // ===========================================================================
     /// @name Constructors, Destructors.

@@ -129,7 +129,7 @@ namespace gum {
   /**
    * @brief Implements a stream with the same behaviour as /dev/null.
    */
-  struct NullStream : std::ostream {
+  struct NullStream: std::ostream {
     NullStream() : std::ios(0), std::ostream(0) {}
   };
 

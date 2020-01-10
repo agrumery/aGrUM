@@ -32,7 +32,7 @@
 
 namespace gum_tests {
 
-  class ScoreK2TestSuite : public CxxTest::TestSuite {
+  class ScoreK2TestSuite: public CxxTest::TestSuite {
     private:
     gum::GammaLog2 __gammalog2;
     bool           __gum_destructor_increased{false};
@@ -54,17 +54,17 @@ namespace gum_tests {
         const double ri = double(N_ijk.size() / N_ij.size());
         score = N_ij.size() * __gammalog2(ri);
 
-        for (const auto n_ij : N_ij) {
+        for (const auto n_ij: N_ij) {
           score -= __gammalog2(n_ij + ri);
         }
-        for (const auto n_ijk : N_ijk) {
+        for (const auto n_ijk: N_ijk) {
           score += __gammalog2(n_ijk + 1);
         }
       } else {
         const double ri = double(N_ijk.size());
         score = __gammalog2(ri);
         double N = 0;
-        for (const auto n_ijk : N_ijk) {
+        for (const auto n_ijk: N_ijk) {
           score += __gammalog2(n_ijk + 1);
           N += n_ijk;
         }

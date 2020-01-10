@@ -29,12 +29,12 @@
 
 #include <agrum/BN/inference/GibbsSampling.h>
 
-#define GIBBS_SAMPLING_DEFAULT_EPSILON std::exp(-1.6)
+#define GIBBS_SAMPLING_DEFAULT_EPSILON          std::exp(-1.6)
 #define GIBBS_SAMPLING_DEFAULT_MIN_EPSILON_RATE std::exp(-5)
-#define GIBBS_SAMPLING_DEFAULT_BURNIN 300
+#define GIBBS_SAMPLING_DEFAULT_BURNIN           300
 
 #define GIBBS_SAMPLING_POURCENT_DRAWN_SAMPLE 50   // percent drawn
-#define GIBBS_SAMPLING_DRAWN_AT_RANDOM true
+#define GIBBS_SAMPLING_DRAWN_AT_RANDOM       true
 
 namespace gum {
 

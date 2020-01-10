@@ -37,7 +37,7 @@
 
 namespace gum_tests {
 
-  class DBTranslatorSetTestSuite : public CxxTest::TestSuite {
+  class DBTranslatorSetTestSuite: public CxxTest::TestSuite {
     public:
     void test_trans1() {
       gum::learning::DBTranslatorSet<> set;

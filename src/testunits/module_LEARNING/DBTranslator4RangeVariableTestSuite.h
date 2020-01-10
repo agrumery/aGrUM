@@ -31,7 +31,7 @@
 
 namespace gum_tests {
 
-  class DBTranslator4RangeVariableTestSuite : public CxxTest::TestSuite {
+  class DBTranslator4RangeVariableTestSuite: public CxxTest::TestSuite {
     public:
     void test_trans1() {
       gum::learning::DBTranslator4RangeVariable<> translator;

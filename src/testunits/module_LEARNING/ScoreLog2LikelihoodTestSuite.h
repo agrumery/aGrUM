@@ -31,19 +31,19 @@
 
 namespace gum_tests {
 
-  class ScoreLog2LikelihoodTestSuite : public CxxTest::TestSuite {
+  class ScoreLog2LikelihoodTestSuite: public CxxTest::TestSuite {
     private:
     double __score(const std::vector< double >& N_ijk,
                    const std::vector< double >& N_ij) const {
       double score = 0.0;
       double N = 0;
-      for (const auto n_ijk : N_ijk)
+      for (const auto n_ijk: N_ijk)
         if (n_ijk) {
           score += n_ijk * std::log2(n_ijk);
           N += n_ijk;
         }
       if (!N_ij.empty()) {
-        for (const auto n_ij : N_ij)
+        for (const auto n_ij: N_ij)
           if (n_ij) score -= n_ij * std::log2(n_ij);
       } else
         score -= N * std::log2(N);

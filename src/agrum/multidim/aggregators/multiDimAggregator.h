@@ -61,7 +61,7 @@ namespace gum {
      *  truncated in order to fit in domain(aggregator variable).
      */
     template < typename GUM_SCALAR >
-    class MultiDimAggregator : public MultiDimReadOnly< GUM_SCALAR > {
+    class MultiDimAggregator: public MultiDimReadOnly< GUM_SCALAR > {
       public:
       // =======================================================================
       /// @name Constructors / Destructors

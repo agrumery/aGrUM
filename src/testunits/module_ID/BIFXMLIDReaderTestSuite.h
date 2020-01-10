@@ -52,7 +52,7 @@
 
 namespace gum_tests {
 
-  class aSimpleListener : public gum::Listener {
+  class aSimpleListener: public gum::Listener {
     private:
     int __nbr;
 
@@ -67,7 +67,7 @@ namespace gum_tests {
     int getNbr() { return __nbr; };
   };
 
-  class BIFXMLIDReaderTestSuite : public CxxTest::TestSuite {
+  class BIFXMLIDReaderTestSuite: public CxxTest::TestSuite {
     public:
     void testConstuctor() {
       std::string file = GET_RESSOURCES_PATH("IDBIFXMLIO_file.xml");
@@ -130,7 +130,7 @@ namespace gum_tests {
       if (net != 0) {
         gum::HashTable< std::string, gum::NodeId > idMap;
 
-        for (const auto node : net->nodes())
+        for (const auto node: net->nodes())
           idMap.insert(net->variable(node).name(), node);
 
         gum::NodeId decisionVar1Id = idMap["decisionVar1"];

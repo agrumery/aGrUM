@@ -92,8 +92,8 @@ namespace gum {
 
   // operator = copy
   template < typename GUM_SCALAR >
-  Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::
-                           operator=(const Potential< GUM_SCALAR >& src) {
+  Potential< GUM_SCALAR >&
+     Potential< GUM_SCALAR >::operator=(const Potential< GUM_SCALAR >& src) {
     GUM_OP_CPY(Potential);
     if (&src == this) return *this;
     MultiDimDecorator< GUM_SCALAR >::operator=(src);
@@ -102,8 +102,8 @@ namespace gum {
 
   // operator = move
   template < typename GUM_SCALAR >
-  Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::
-                           operator=(Potential< GUM_SCALAR >&& src) {
+  Potential< GUM_SCALAR >&
+     Potential< GUM_SCALAR >::operator=(Potential< GUM_SCALAR >&& src) {
     GUM_OP_MOV(Potential);
     if (&src == this) return *this;
     MultiDimDecorator< GUM_SCALAR >::operator=(
@@ -240,10 +240,10 @@ namespace gum {
       GUM_ERROR(InvalidArgument, "Potential to copy has not the same dimension.");
     }
     gum::Set< std::string > son;   // set of names
-    for (const auto& v : src.variablesSequence()) {
+    for (const auto& v: src.variablesSequence()) {
       son.insert(v->name());
     }
-    for (const auto& v : this->variablesSequence()) {
+    for (const auto& v: this->variablesSequence()) {
       if (!son.contains(v->name())) {
         GUM_ERROR(InvalidArgument,
                   "Variable <" << v->name() << "> not present in src.");
@@ -305,17 +305,17 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR
-         Potential< GUM_SCALAR >::KL(const Potential< GUM_SCALAR >& p) const {
+     Potential< GUM_SCALAR >::KL(const Potential< GUM_SCALAR >& p) const {
     if (this->nbrDim() != p.nbrDim())
       GUM_ERROR(
          InvalidArgument,
          "BNdistance between potentials with different numbers of dimensions");
-    for (const auto var : p.variablesSequence()) {
+    for (const auto var: p.variablesSequence()) {
       if (!this->contains(*var))
         GUM_ERROR(InvalidArgument,
                   "A variable in the argument does not belong to the potential.");
     }
-    for (const auto var : this->variablesSequence()) {
+    for (const auto var: this->variablesSequence()) {
       if (!p.contains(*var))
         GUM_ERROR(InvalidArgument, "A variable does not belong to the argument.");
     }
@@ -507,7 +507,7 @@ namespace gum {
      const Set< const DiscreteVariable* >& vars) const {
     Set< const DiscreteVariable* > cplt;
 
-    for (const auto x : this->variablesSequence())
+    for (const auto x: this->variablesSequence())
       if (!vars.contains(x)) cplt.insert(x);
 
     return cplt;
@@ -520,7 +520,7 @@ namespace gum {
       GUM_ERROR(InvalidArgument,
                 "The vector contains " << vars.size() << " variables instead of "
                                        << this->nbrDim() << ".");
-    for (const auto var : vars) {
+    for (const auto var: vars) {
       if (!this->contains(*var))
         GUM_ERROR(InvalidArgument,
                   "A variable in the vector does not belong to the potential.");
@@ -528,7 +528,7 @@ namespace gum {
 
     Potential< GUM_SCALAR > p;
     p.beginMultipleChanges();
-    for (const auto var : vars)
+    for (const auto var: vars)
       p.add(*var);
     p.endMultipleChanges();
     p.copyFrom(*this, nullptr);   // copy *this in p using the same order

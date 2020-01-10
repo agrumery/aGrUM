@@ -70,12 +70,12 @@ namespace gum {
     std::string       tab = "     ";
     strBuff << "digraph {" << std::endl;
 
-    for (const auto node : nodes())
+    for (const auto node: nodes())
       strBuff << tab << node << ";" << std::endl;
 
     strBuff << std::endl;
 
-    for (const auto& arc : arcs())
+    for (const auto& arc: arcs())
       strBuff << tab << arc.tail() << " -> " << arc.head() << ";" << std::endl;
 
     strBuff << "}" << std::endl << std::endl;
@@ -109,7 +109,7 @@ namespace gum {
     auto dag = *this;
     auto roots = std::vector< NodeId >();
 
-    for (const auto node : dag.nodes()) {
+    for (const auto node: dag.nodes()) {
       if (dag.parents(node).empty()) { roots.push_back(node); }
     }
 
@@ -151,7 +151,7 @@ namespace gum {
       // std::cout<<new_one<<std::endl;
       nodeFIFO.popFront();
 
-      for (const auto chi : children(new_one)) {
+      for (const auto chi: children(new_one)) {
         if (chi == to) return true;
 
         if (!marked.contains(chi)) {

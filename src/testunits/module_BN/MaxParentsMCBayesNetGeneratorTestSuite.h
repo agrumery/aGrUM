@@ -37,7 +37,7 @@
 
 namespace gum_tests {
 
-  class MaxParentsMCBayesNetGeneratorTestSuite : public CxxTest::TestSuite {
+  class MaxParentsMCBayesNetGeneratorTestSuite: public CxxTest::TestSuite {
     public:
     void setUp() {}
 

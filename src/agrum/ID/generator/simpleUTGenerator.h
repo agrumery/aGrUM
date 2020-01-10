@@ -40,7 +40,7 @@ namespace gum {
    *
    * This class implements a CPTGenerator UT generation algorithm.
    */
-  class SimpleUTGenerator : public UTGenerator {
+  class SimpleUTGenerator: public UTGenerator {
     public:
     // ############################################################################
     /// @name Constructors / Destructor

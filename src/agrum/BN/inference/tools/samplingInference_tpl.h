@@ -34,11 +34,11 @@
 #include <agrum/BN/inference/tools/samplingInference.h>
 
 
-#define DEFAULT_MAXITER 10000000
-#define DEFAULT_PERIOD_SIZE 100
-#define DEFAULT_VERBOSITY false
-#define DEFAULT_TIMEOUT 6000
-#define DEFAULT_EPSILON 1e-2
+#define DEFAULT_MAXITER          10000000
+#define DEFAULT_PERIOD_SIZE      100
+#define DEFAULT_VERBOSITY        false
+#define DEFAULT_TIMEOUT          6000
+#define DEFAULT_EPSILON          1e-2
 #define DEFAULT_MIN_EPSILON_RATE 1e-5
 
 
@@ -121,7 +121,7 @@ namespace gum {
 
     // creating BN fragment
     __samplingBN = new BayesNetFragment< GUM_SCALAR >(this->BN());
-    for (const auto elmt : this->BN().dag().asNodeSet() - barren)
+    for (const auto elmt: this->BN().dag().asNodeSet() - barren)
       __samplingBN->installNode(elmt);
 
     // D-separated nodes
@@ -138,14 +138,14 @@ namespace gum {
 
     auto nonRequisite = this->BN().dag().asNodeSet() - requisite;
 
-    for (const auto elmt : nonRequisite)
+    for (const auto elmt: nonRequisite)
       __samplingBN->uninstallNode(elmt);
-    for (const auto hard : this->hardEvidenceNodes()) {
+    for (const auto hard: this->hardEvidenceNodes()) {
       gum::Instantiation I;
       I.add(this->BN().variable(hard));
       I.chgVal(this->BN().variable(hard), this->hardEvidence()[hard]);
 
-      for (const auto& child : this->BN().children(hard)) {
+      for (const auto& child: this->BN().children(hard)) {
         __samplingBN->installCPT(child, this->BN().cpt(child).extract(I));
       }
     }

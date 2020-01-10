@@ -39,7 +39,7 @@
 
 namespace gum_tests {
 
-  class DBInitializerFromCSVTestSuite : public CxxTest::TestSuite {
+  class DBInitializerFromCSVTestSuite: public CxxTest::TestSuite {
     public:
     void test_init1() {
       gum::learning::DBInitializerFromCSV<> initializer(

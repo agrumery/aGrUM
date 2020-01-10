@@ -44,7 +44,7 @@ namespace gum {
      * @ingroup learning_apriori
      */
     template < template < typename > class ALLOC = std::allocator >
-    class AprioriDirichletFromDatabase : public Apriori< ALLOC > {
+    class AprioriDirichletFromDatabase: public Apriori< ALLOC > {
       public:
       /// the type of the a priori
       using type = AprioriDirichletType;

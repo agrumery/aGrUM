@@ -33,7 +33,7 @@
 
 namespace gum_tests {
 
-  class ScheduleDeleteMultiDimTestSuite : public CxxTest::TestSuite {
+  class ScheduleDeleteMultiDimTestSuite: public CxxTest::TestSuite {
     public:
     void test_construct() {
       std::vector< gum::LabelizedVariable* > vars(10);

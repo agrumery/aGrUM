@@ -86,8 +86,8 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    INLINE IdSetIterator< ALLOC >& IdSetIterator< ALLOC >::
-                                   operator=(const IdSetIterator< ALLOC >& from) {
+    INLINE IdSetIterator< ALLOC >&
+       IdSetIterator< ALLOC >::operator=(const IdSetIterator< ALLOC >& from) {
       __seq = from.__seq;
       __index = from.__index;
       return *this;
@@ -96,8 +96,8 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    INLINE IdSetIterator< ALLOC >& IdSetIterator< ALLOC >::
-                                   operator=(IdSetIterator< ALLOC >&& from) {
+    INLINE IdSetIterator< ALLOC >&
+       IdSetIterator< ALLOC >::operator=(IdSetIterator< ALLOC >&& from) {
       __seq = from.__seq;
       __index = from.__index;
       return *this;
@@ -113,16 +113,16 @@ namespace gum {
 
     /// Checks whether two iterators point toward different elements.
     template < template < typename > class ALLOC >
-    INLINE bool IdSetIterator< ALLOC >::
-                operator!=(const IdSetIterator< ALLOC >& from) const {
+    INLINE bool IdSetIterator< ALLOC >::operator!=(
+       const IdSetIterator< ALLOC >& from) const {
       return (__index != from.__index) || (__seq != from.__seq);
     }
 
 
     /// Checks whether two iterators point toward the same elements.
     template < template < typename > class ALLOC >
-    INLINE bool IdSetIterator< ALLOC >::
-                operator==(const IdSetIterator< ALLOC >& from) const {
+    INLINE bool IdSetIterator< ALLOC >::operator==(
+       const IdSetIterator< ALLOC >& from) const {
       return !operator!=(from);
     }
 
@@ -137,8 +137,8 @@ namespace gum {
 
     /// Makes the iterator point to i elements further in the IdSet
     template < template < typename > class ALLOC >
-    INLINE IdSetIterator< ALLOC >& IdSetIterator< ALLOC >::
-                                   operator+=(const std::size_t i) {
+    INLINE IdSetIterator< ALLOC >&
+       IdSetIterator< ALLOC >::operator+=(const std::size_t i) {
       __index += i;
       return *this;
     }
@@ -205,10 +205,10 @@ namespace gum {
       if (!ordered_ids) {
         std::vector< NodeId, ALLOC< NodeId > > vect(ids);
         std::sort(vect.begin(), vect.end());
-        for (const auto id : vect)
+        for (const auto id: vect)
           __ids << id;
       } else {
-        for (const auto id : ids)
+        for (const auto id: ids)
           __ids << id;
       }
 
@@ -238,10 +238,10 @@ namespace gum {
       if (!ordered_rhs_ids) {
         std::vector< NodeId, ALLOC< NodeId > > vect(rhs_ids);
         std::sort(vect.begin(), vect.end());
-        for (const auto id : vect)
+        for (const auto id: vect)
           __ids << id;
       } else {
-        for (const auto id : rhs_ids)
+        for (const auto id: rhs_ids)
           __ids << id;
       }
 
@@ -276,10 +276,10 @@ namespace gum {
       if (!ordered_rhs_ids) {
         std::vector< NodeId, ALLOC< NodeId > > vect(rhs_ids);
         std::sort(vect.begin(), vect.end());
-        for (const auto id : vect)
+        for (const auto id: vect)
           __ids << id;
       } else {
-        for (const auto id : rhs_ids)
+        for (const auto id: rhs_ids)
           __ids << id;
       }
 
@@ -320,10 +320,10 @@ namespace gum {
       if (!ordered_rhs_ids) {
         std::vector< NodeId, ALLOC< NodeId > > vect(rhs_ids);
         std::sort(vect.begin(), vect.end());
-        for (const auto id : vect)
+        for (const auto id: vect)
           __ids << id;
       } else {
-        for (const auto id : rhs_ids)
+        for (const auto id: rhs_ids)
           __ids << id;
       }
 
@@ -576,7 +576,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     bool IdSet< ALLOC >::contains(const IdSet< ALLOC >& set) const {
       if (set.__ids.size() > __ids.size()) return false;
-      for (const auto node : set.__ids) {
+      for (const auto node: set.__ids) {
         if (!__ids.exists(node)) return false;
       }
       return true;
@@ -657,8 +657,8 @@ namespace gum {
 
   // the hash function for idSets
   template < template < typename > class ALLOC >
-  INLINE Size HashFunc< learning::IdSet< ALLOC > >::
-              operator()(const learning::IdSet< ALLOC >& key) const {
+  INLINE Size HashFunc< learning::IdSet< ALLOC > >::operator()(
+     const learning::IdSet< ALLOC >& key) const {
     return (castToSize(key) * HashFuncConst::gold) & this->_hash_mask;
   }
 

@@ -38,7 +38,7 @@
 
 namespace gum_tests {
 
-  class MultiDimCombineAndProjectTestSuite : public CxxTest::TestSuite {
+  class MultiDimCombineAndProjectTestSuite: public CxxTest::TestSuite {
     public:
     void testDouble() {
       std::vector< gum::LabelizedVariable* > vars(11);
@@ -134,7 +134,7 @@ namespace gum_tests {
 
         delete projcomb3;
 
-        for (const auto pot : res)
+        for (const auto pot: res)
           delete pot;
 
         for (gum::Idx i = 0; i < vars.size(); ++i)
@@ -242,7 +242,7 @@ namespace gum_tests {
 
         delete projcomb3;
 
-        for (const auto pot : res)
+        for (const auto pot: res)
           delete pot;
 
         for (gum::Idx i = 0; i < vars.size(); ++i)

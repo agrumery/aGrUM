@@ -38,7 +38,7 @@
 
 namespace gum_tests {
 
-  class MultiDimProjectionTestSuite : public CxxTest::TestSuite {
+  class MultiDimProjectionTestSuite: public CxxTest::TestSuite {
     private:
     // ==========================================================================
     /// initialize randomly a table
@@ -125,7 +125,7 @@ namespace gum_tests {
     bool equal(const gum::MultiDimImplementation< T* >& t1,
                const gum::MultiDimImplementation< T* >& t2) {
       if ((t1.nbrDim() == t2.nbrDim()) && (t1.domainSize() == t2.domainSize())) {
-        for (const auto var : t1.variablesSequence())
+        for (const auto var: t1.variablesSequence())
           if (!t2.variablesSequence().exists(var)) return false;
 
         gum::Instantiation i(t1);
@@ -145,7 +145,7 @@ namespace gum_tests {
     template < typename T >
     bool equal(const gum::Potential< T* >& t1, const gum::Potential< T* >& t2) {
       if ((t1.nbrDim() == t2.nbrDim()) && (t1.domainSize() == t2.domainSize())) {
-        for (const auto var : t1.variablesSequence())
+        for (const auto var: t1.variablesSequence())
           if (!t2.variablesSequence().exists(var)) return false;
 
         gum::Instantiation i(t1);
@@ -185,7 +185,7 @@ namespace gum_tests {
          table.variablesSequence();
       result->beginMultipleChanges();
 
-      for (const auto var : vars)
+      for (const auto var: vars)
         if (!del_vars.exists(var)) *result << *var;
 
       result->endMultipleChanges();
@@ -213,7 +213,7 @@ namespace gum_tests {
          table.variablesSequence();
       result->beginMultipleChanges();
 
-      for (const auto var : vars)
+      for (const auto var: vars)
         if (!del_vars.exists(var)) *result << *var;
 
       result->endMultipleChanges();
@@ -246,7 +246,7 @@ namespace gum_tests {
          table.variablesSequence();
       result->beginMultipleChanges();
 
-      for (const auto var : vars)
+      for (const auto var: vars)
         if (!del_vars.exists(var)) *result << *var;
 
       result->endMultipleChanges();
@@ -274,7 +274,7 @@ namespace gum_tests {
          table.variablesSequence();
       result->beginMultipleChanges();
 
-      for (const auto var : vars)
+      for (const auto var: vars)
         if (!del_vars.exists(var)) *result << *var;
 
       result->endMultipleChanges();

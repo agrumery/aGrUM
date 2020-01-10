@@ -201,7 +201,7 @@ namespace gum {
     EdgeSet                      T_prime;
     NodeProperty< unsigned int > R(__triangulated_graph.size());
 
-    for (const auto node : __triangulated_graph)
+    for (const auto node: __triangulated_graph)
       R.insert(node, 0);
 
     // the FMINT loop
@@ -230,7 +230,7 @@ namespace gum {
             // the intersection of adj(v,G) and adj(w,G) is complete and such
             // that
             // v and/or w belongs to an extremal node in R
-            for (const auto& edge : T) {
+            for (const auto& edge: T) {
               node1 = edge.first();
               node2 = edge.second();
 
@@ -250,7 +250,7 @@ namespace gum {
 
               // find the nodes belonging to the intersection of adj(v,G)
               // and adj(w,G)
-              for (const auto adjnode : __triangulated_graph.neighbours(node1))
+              for (const auto adjnode: __triangulated_graph.neighbours(node1))
                 if (__triangulated_graph.existsEdge(node2, adjnode))
                   adj.push_back(adjnode);
 
@@ -275,7 +275,7 @@ namespace gum {
 
             // compute the new value of T (i.e. T\T') and update the
             // triangulated graph
-            for (const auto& edge : T_prime) {
+            for (const auto& edge: T_prime) {
               T.erase(edge);
               __triangulated_graph.eraseEdge(edge);
 
@@ -313,7 +313,7 @@ namespace gum {
         __elim_order[ni] = node;
         __reverse_elim_order[node] = ni;
 
-        for (const auto neighbour : __triangulated_graph.neighbours(node)) {
+        for (const auto neighbour: __triangulated_graph.neighbours(node)) {
           try {
             numbered_neighbours.setPriority(
                neighbour, 1 + numbered_neighbours.priority(neighbour));
@@ -328,7 +328,7 @@ namespace gum {
       NodeSet& cliques = __elim_cliques.insert(__elim_order[i], NodeSet()).second;
       cliques << __elim_order[i];
 
-      for (const auto neighbour : __triangulated_graph.neighbours(__elim_order[i]))
+      for (const auto neighbour: __triangulated_graph.neighbours(__elim_order[i]))
         if (__reverse_elim_order[neighbour] > i) cliques << neighbour;
     }
   }
@@ -355,7 +355,7 @@ namespace gum {
       const NodeSet& list_of_nodes = __elim_cliques[clique_i_creator];
       Idx            child = __original_graph->bound() + 1;
 
-      for (const auto node : list_of_nodes) {
+      for (const auto node: list_of_nodes) {
         Idx it_elim_step = __reverse_elim_order[node];
 
         if ((node != clique_i_creator) && (child > it_elim_step))
@@ -380,7 +380,7 @@ namespace gum {
      NodeSet&            mark) const {
     mark << node;
 
-    for (const auto other_node : __junction_tree->neighbours(node))
+    for (const auto other_node: __junction_tree->neighbours(node))
       if (other_node != from) {
         const NodeSet& separator = __junction_tree->separator(node, other_node);
         // check that the separator between node and other_node is complete
@@ -423,7 +423,7 @@ namespace gum {
     // clique.
     NodeProperty< NodeId > T_mpd_cliques(__junction_tree->size());
 
-    for (const auto clik : __junction_tree->nodes())
+    for (const auto clik: __junction_tree->nodes())
       T_mpd_cliques.insert(clik, clik);
 
     // parse all the separators of the junction tree and test those that are not
@@ -432,7 +432,7 @@ namespace gum {
 
     NodeSet mark;
 
-    for (const auto clik : __junction_tree->nodes())
+    for (const auto clik: __junction_tree->nodes())
       if (!mark.contains(clik))
         __computeMaxPrimeMergings(clik, clik, merged_cliques, mark);
 
@@ -445,23 +445,23 @@ namespace gum {
     }
 
     // now we can create the max prime junction tree. First, create the cliques
-    for (const auto& elt : T_mpd_cliques)
+    for (const auto& elt: T_mpd_cliques)
       if (elt.first == elt.second)
         __max_prime_junction_tree.addNode(elt.second,
                                           __junction_tree->clique(elt.second));
 
     // add to the cliques previously created the nodes of the cliques that were
     // merged into them
-    for (const auto& elt : T_mpd_cliques)
+    for (const auto& elt: T_mpd_cliques)
       if (elt.first != elt.second)
-        for (const auto node : __junction_tree->clique(elt.first)) {
+        for (const auto node: __junction_tree->clique(elt.first)) {
           try {
             __max_prime_junction_tree.addToClique(elt.second, node);
           } catch (DuplicateElement&) {}
         }
 
     // add the edges to the graph
-    for (const auto& edge : __junction_tree->edges()) {
+    for (const auto& edge: __junction_tree->edges()) {
       NodeId node1 = T_mpd_cliques[edge.first()];
       NodeId node2 = T_mpd_cliques[edge.second()];
 
@@ -477,7 +477,7 @@ namespace gum {
     const NodeProperty< NodeId >& node_2_junction_clique =
        _junction_tree_strategy->createdCliques();
 
-    for (const auto& elt : node_2_junction_clique)
+    for (const auto& elt: node_2_junction_clique)
       __node_2_max_prime_clique.insert(elt.first, T_mpd_cliques[elt.second]);
 
     __has_max_prime_junction_tree = true;
@@ -496,13 +496,13 @@ namespace gum {
       // copy the original graph
       __triangulated_graph = *__original_graph;
 
-      for (const auto clik_id : *__junction_tree) {
+      for (const auto clik_id: *__junction_tree) {
         // for each clique, add the edges necessary to make it complete
         const NodeSet&        clique = __junction_tree->clique(clik_id);
         std::vector< NodeId > clique_nodes(clique.size());
         unsigned int          i = 0;
 
-        for (const auto node : clique) {
+        for (const auto node: clique) {
           clique_nodes[i] = node;
           i += 1;
         }
@@ -581,7 +581,7 @@ namespace gum {
         NodeSet& cliques = __elim_cliques.insert(removable_node, NodeSet()).second;
         cliques.resize(tmp_graph.neighbours(removable_node).size() / 2);
         cliques << removable_node;
-        for (const auto clik : tmp_graph.neighbours(removable_node))
+        for (const auto clik: tmp_graph.neighbours(removable_node))
           cliques << clik;
       } else {
         // here recursive thinning will be applied, hence we need store the
@@ -701,13 +701,13 @@ namespace gum {
       // just in case, be sure that the junction tree has been constructed
       if (!__has_junction_tree) junctionTree();
 
-      for (const auto clik_id : __junction_tree->nodes()) {
+      for (const auto clik_id: __junction_tree->nodes()) {
         // for each clique, add the edges necessary to make it complete
         const NodeSet&        clique = __junction_tree->clique(clik_id);
         std::vector< NodeId > clique_nodes(clique.size());
         unsigned int          i = 0;
 
-        for (const auto node : clique) {
+        for (const auto node: clique) {
           clique_nodes[i] = node;
           i += 1;
         }

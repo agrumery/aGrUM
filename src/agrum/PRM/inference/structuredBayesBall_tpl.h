@@ -36,13 +36,13 @@ namespace gum {
     StructuredBayesBall< GUM_SCALAR >::~StructuredBayesBall() {
       GUM_DESTRUCTOR(StructuredBayesBall);
 
-      for (const auto& elt : __reqMap)
+      for (const auto& elt: __reqMap)
         delete elt.second.first;
     }
 
     template < typename GUM_SCALAR >
     void StructuredBayesBall< GUM_SCALAR >::__clean() {
-      for (const auto& elt : __reqMap)
+      for (const auto& elt: __reqMap)
         delete elt.second.first;
 
       __keyMap.clear();
@@ -85,7 +85,7 @@ namespace gum {
       __fromChild(i, n, marks);
       __fillMaps(marks);
 
-      for (const auto& elt : marks)
+      for (const auto& elt: marks)
         delete elt.second;
     }
 
@@ -106,7 +106,7 @@ namespace gum {
           if (!__getMark(marks, i, n).first) {
             __getMark(marks, i, n).first = true;
 
-            for (const auto inst : i->getInstances(n))
+            for (const auto inst: i->getInstances(n))
               __fromChild(
                  inst, inst->get(__getSC(i, n).lastElt().safeName()).id(), marks);
           }
@@ -114,7 +114,7 @@ namespace gum {
           if (!__getMark(marks, i, n).second) {
             __getMark(marks, i, n).second = true;
 
-            for (const auto chi : i->type().containerDag().children(n))
+            for (const auto chi: i->type().containerDag().children(n))
               __fromParent(i, chi, marks);
           }
 
@@ -127,7 +127,7 @@ namespace gum {
             __getMark(marks, i, n).first = true;
 
             if (!__isHardEvidence(i, n))
-              for (const auto par : i->type().containerDag().parents(n))
+              for (const auto par: i->type().containerDag().parents(n))
                 __fromChild(i, par, marks);
           }
 
@@ -135,7 +135,7 @@ namespace gum {
             __getMark(marks, i, n).second = true;
 
             // In i.
-            for (const auto chi : i->type().containerDag().children(n))
+            for (const auto chi: i->type().containerDag().children(n))
               __fromParent(i, chi, marks);
 
             // Out of i.
@@ -178,13 +178,13 @@ namespace gum {
       if ((__isHardEvidence(i, n)) && (!__getMark(marks, i, n).first)) {
         __getMark(marks, i, n).first = true;
 
-        for (const auto par : i->type().containerDag().parents(n))
+        for (const auto par: i->type().containerDag().parents(n))
           __fromChild(i, par, marks);
       } else if (!__getMark(marks, i, n).second) {
         __getMark(marks, i, n).second = true;
 
         // In i.
-        for (const auto chi : i->type().containerDag().children(n))
+        for (const auto chi: i->type().containerDag().children(n))
           __fromParent(i, chi, marks);
 
         // Out of i.
@@ -205,10 +205,10 @@ namespace gum {
       // First find for each instance it's requisite nodes
       HashTable< const PRMInstance< GUM_SCALAR >*, Set< NodeId >* > req_map;
 
-      for (const auto& elt : marks) {
+      for (const auto& elt: marks) {
         Set< NodeId >* req_set = new Set< NodeId >();
 
-        for (const auto& elt2 : *elt.second)
+        for (const auto& elt2: *elt.second)
           if (elt2.second.first) req_set->insert(elt2.first);
 
         req_map.insert(elt.first, req_set);
@@ -217,16 +217,16 @@ namespace gum {
       // Remove all instances with 0 requisite nodes
       Set< const PRMInstance< GUM_SCALAR >* > to_remove;
 
-      for (const auto& elt : req_map)
+      for (const auto& elt: req_map)
         if (elt.second->size() == 0) to_remove.insert(elt.first);
 
-      for (const auto remo : to_remove) {
+      for (const auto remo: to_remove) {
         delete req_map[remo];
         req_map.erase(remo);
       }
 
       // Fill __reqMap and __keyMap
-      for (const auto& elt : req_map) {
+      for (const auto& elt: req_map) {
         std::string key = __buildHashKey(elt.first, *elt.second);
 
         if (__reqMap.exists(key)) {
@@ -250,7 +250,7 @@ namespace gum {
       std::stringstream sBuff;
       sBuff << i->type().name();
 
-      for (const auto node : i->type().containerDag().nodes())
+      for (const auto node: i->type().containerDag().nodes())
         if (req_nodes.exists(node)) sBuff << "-" << node;
 
       return sBuff.str();
@@ -272,8 +272,9 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE StructuredBayesBall< GUM_SCALAR >& StructuredBayesBall< GUM_SCALAR >::
-                                              operator=(const StructuredBayesBall< GUM_SCALAR >& source) {
+    INLINE StructuredBayesBall< GUM_SCALAR >&
+       StructuredBayesBall< GUM_SCALAR >::operator=(
+          const StructuredBayesBall< GUM_SCALAR >& source) {
       GUM_ERROR(FatalError, "Not allowed.");
     }
 

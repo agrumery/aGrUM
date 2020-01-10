@@ -106,8 +106,8 @@ namespace gum {
 
     // copy operator
     template < template < typename > class ALLOC >
-    IDBInitializer< ALLOC >& IDBInitializer< ALLOC >::
-                             operator=(const IDBInitializer< ALLOC >& from) {
+    IDBInitializer< ALLOC >&
+       IDBInitializer< ALLOC >::operator=(const IDBInitializer< ALLOC >& from) {
       if (this != &from) {
         __var_names = from.__var_names;
         __input_type = from.__input_type;
@@ -119,8 +119,8 @@ namespace gum {
 
     // move constructor
     template < template < typename > class ALLOC >
-    IDBInitializer< ALLOC >& IDBInitializer< ALLOC >::
-                             operator=(IDBInitializer< ALLOC >&& from) {
+    IDBInitializer< ALLOC >&
+       IDBInitializer< ALLOC >::operator=(IDBInitializer< ALLOC >&& from) {
       if (this != &from) {
         __var_names = std::move(from.__var_names);
         __input_type = from.__input_type;

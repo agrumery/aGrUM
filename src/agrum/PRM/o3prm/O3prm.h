@@ -507,7 +507,7 @@ namespace gum {
        *
        * @brief The O3RawCPT is part of the AST of the O3PRM language.
        */
-      class O3RawCPT : public O3Attribute {
+      class O3RawCPT: public O3Attribute {
         public:
         using O3FormulaList = std::vector< O3Formula >;
 
@@ -539,7 +539,7 @@ namespace gum {
        *
        * @brief The O3RuleCPT is part of the AST of the O3PRM language.
        */
-      class O3RuleCPT : public O3Attribute {
+      class O3RuleCPT: public O3Attribute {
         public:
         using O3LabelList = std::vector< O3Label >;
         using O3FormulaList = std::vector< O3Formula >;

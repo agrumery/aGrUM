@@ -27,7 +27,7 @@
 
 namespace gum_tests {
 
-  class EdgeTestSuite : public CxxTest::TestSuite {
+  class EdgeTestSuite: public CxxTest::TestSuite {
     public:
     void testConstructor1() {
       TS_GUM_ASSERT_THROWS_NOTHING(gum::Edge edge1(1, 2));

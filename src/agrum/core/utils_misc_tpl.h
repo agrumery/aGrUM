@@ -42,7 +42,7 @@ namespace std {
     bool deja = false;
     stream << "[";
 
-    for (const auto& v : val) {
+    for (const auto& v: val) {
       if (deja)
         stream << " , ";
       else

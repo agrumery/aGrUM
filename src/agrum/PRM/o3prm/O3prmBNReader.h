@@ -54,7 +54,7 @@ namespace gum {
    * gum::BayesNet.
    */
   template < typename GUM_SCALAR >
-  class O3prmBNReader : public BNReader< GUM_SCALAR > {
+  class O3prmBNReader: public BNReader< GUM_SCALAR > {
     public:
     O3prmBNReader(BayesNet< GUM_SCALAR >* bn,
                   const std::string&      filename,

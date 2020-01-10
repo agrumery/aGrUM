@@ -34,12 +34,12 @@
 namespace gum {
 
   INLINE Size
-         HashFunc< credal::lp::LpCol >::castToSize(const credal::lp::LpCol& key) {
+     HashFunc< credal::lp::LpCol >::castToSize(const credal::lp::LpCol& key) {
     return Size(key.id());
   }
 
-  INLINE Size HashFunc< credal::lp::LpCol >::
-              operator()(const credal::lp::LpCol& key) const {
+  INLINE Size HashFunc< credal::lp::LpCol >::operator()(
+     const credal::lp::LpCol& key) const {
     return (castToSize(key) * gum::HashFuncConst::gold) & this->_hash_mask;
   }
 

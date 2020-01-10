@@ -30,7 +30,7 @@
 
 namespace gum_tests {
 
-  class BinaryJoinTreeConverterTestSuite : public CxxTest::TestSuite {
+  class BinaryJoinTreeConverterTestSuite: public CxxTest::TestSuite {
     public:
     void test1() {
       gum::CliqueGraph            graph;

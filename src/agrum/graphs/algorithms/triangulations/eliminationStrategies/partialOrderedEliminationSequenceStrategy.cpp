@@ -108,8 +108,8 @@ namespace gum {
 
     // determine the set of nodes in the subsets that belong to the graph
     NodeSet nodes_found(_graph->size() / 2);
-    for (const auto& nodes : *subsets) {
-      for (const auto node : nodes) {
+    for (const auto& nodes: *subsets) {
+      for (const auto node: nodes) {
         if (_graph->existsNode(node)) { nodes_found.insert(node); }
       }
     }
@@ -132,7 +132,7 @@ namespace gum {
       _nodeset.clear();
       for (_subset_iter = _subsets->cbegin(); _subset_iter != _subsets->cend();
            ++_subset_iter) {
-        for (const auto node : *_subset_iter) {
+        for (const auto node: *_subset_iter) {
           if (_graph->existsNode(node)) { _nodeset.insert(node); }
         }
         if (!_nodeset.empty()) return true;

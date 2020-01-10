@@ -94,7 +94,7 @@ namespace gum {
 
       // add the content of the variable into the back dictionary
       std::size_t size = 0;
-      for (const auto& label : var.labels()) {
+      for (const auto& label: var.labels()) {
         // if the label corresponds to a missing value, then remove it from
         // the set of missing symbols.
         if (this->_missing_symbols.exists(label)) {
@@ -131,7 +131,7 @@ namespace gum {
 
       // add the content of the variable into the back dictionary
       std::size_t size = 0;
-      for (const auto& label : var.labels()) {
+      for (const auto& label: var.labels()) {
         // insert the label into the back_dictionary
         this->_back_dico.insert(size, label);
         ++size;
@@ -217,8 +217,8 @@ namespace gum {
     /// copy operator
     template < template < typename > class ALLOC >
     DBTranslator4LabelizedVariable< ALLOC >&
-          DBTranslator4LabelizedVariable< ALLOC >::
-          operator=(const DBTranslator4LabelizedVariable< ALLOC >& from) {
+       DBTranslator4LabelizedVariable< ALLOC >::operator=(
+          const DBTranslator4LabelizedVariable< ALLOC >& from) {
       if (this != &from) {
         DBTranslator< ALLOC >::operator=(from);
         __variable = from.__variable;
@@ -231,8 +231,8 @@ namespace gum {
     /// move operator
     template < template < typename > class ALLOC >
     DBTranslator4LabelizedVariable< ALLOC >&
-          DBTranslator4LabelizedVariable< ALLOC >::
-          operator=(DBTranslator4LabelizedVariable< ALLOC >&& from) {
+       DBTranslator4LabelizedVariable< ALLOC >::operator=(
+          DBTranslator4LabelizedVariable< ALLOC >&& from) {
       if (this != &from) {
         DBTranslator< ALLOC >::operator=(std::move(from));
         __variable = std::move(from.__variable);
@@ -302,7 +302,7 @@ namespace gum {
       float       last_number = std::numeric_limits< float >::lowest();
       float       number;
       bool        only_numbers = true;
-      for (const auto& label : labels) {
+      for (const auto& label: labels) {
         if (!DBCell::isReal(label)) {
           only_numbers = false;
           break;
@@ -337,7 +337,7 @@ namespace gum {
       const std::size_t size = labels.size();
 
       bool only_numbers = true;
-      for (const auto& label : labels) {
+      for (const auto& label: labels) {
         if (!DBCell::isReal(label)) {
           only_numbers = false;
           break;
@@ -387,7 +387,7 @@ namespace gum {
       // recreate the variable so that the labels correspond to the
       // new ordering
       __variable.eraseLabels();
-      for (auto& label : xlabels)
+      for (auto& label: xlabels)
         __variable.addLabel(label.second);
 
       // create the hashTable corresponding to the mapping from the old
@@ -425,7 +425,7 @@ namespace gum {
     /// returns the translation of a missing value
     template < template < typename > class ALLOC >
     INLINE DBTranslatedValue
-           DBTranslator4LabelizedVariable< ALLOC >::missingValue() const {
+       DBTranslator4LabelizedVariable< ALLOC >::missingValue() const {
       return DBTranslatedValue{std::numeric_limits< std::size_t >::max()};
     }
 

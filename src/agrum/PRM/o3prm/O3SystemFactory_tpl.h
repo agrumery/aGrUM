@@ -69,8 +69,9 @@ namespace gum {
       }
 
       template < typename GUM_SCALAR >
-      INLINE O3SystemFactory< GUM_SCALAR >& O3SystemFactory< GUM_SCALAR >::
-                                            operator=(const O3SystemFactory< GUM_SCALAR >& src) {
+      INLINE O3SystemFactory< GUM_SCALAR >&
+         O3SystemFactory< GUM_SCALAR >::operator=(
+            const O3SystemFactory< GUM_SCALAR >& src) {
         if (this == &src) { return *this; }
         __prm = src.__prm;
         __o3_prm = src.__o3_prm;
@@ -80,8 +81,9 @@ namespace gum {
       }
 
       template < typename GUM_SCALAR >
-      INLINE O3SystemFactory< GUM_SCALAR >& O3SystemFactory< GUM_SCALAR >::
-                                            operator=(O3SystemFactory< GUM_SCALAR >&& src) {
+      INLINE O3SystemFactory< GUM_SCALAR >&
+         O3SystemFactory< GUM_SCALAR >::operator=(
+            O3SystemFactory< GUM_SCALAR >&& src) {
         if (this == &src) { return *this; }
         __prm = std::move(src.__prm);
         __o3_prm = std::move(src.__o3_prm);
@@ -94,7 +96,7 @@ namespace gum {
       INLINE void O3SystemFactory< GUM_SCALAR >::build() {
         PRMFactory< GUM_SCALAR > factory(__prm);
 
-        for (auto& sys : __o3_prm->systems()) {
+        for (auto& sys: __o3_prm->systems()) {
           // Reseting name map for each system
           __nameMap = HashTable< std::string, O3Instance* >();
 
@@ -117,10 +119,10 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE void O3SystemFactory< GUM_SCALAR >::__addInstances(
          PRMFactory< GUM_SCALAR >& factory, O3System& sys) {
-        for (auto& i : sys.instances()) {
+        for (auto& i: sys.instances()) {
           if (i.parameters().size() > 0) {
             auto params = HashTable< std::string, double >();
-            for (auto& p : i.parameters()) {
+            for (auto& p: i.parameters()) {
               params.insert(p.name().label(), (double)p.value().value());
             }
             factory.addInstance(i.type().label(), i.name().label(), params);
@@ -141,7 +143,7 @@ namespace gum {
          PRMFactory< GUM_SCALAR >& factory, O3System& sys) {
         const auto& real_sys = __prm->getSystem(sys.name().label());
 
-        for (auto& ass : sys.assignments()) {
+        for (auto& ass: sys.assignments()) {
           auto leftInstance = ass.leftInstance().label();
           auto leftReference = ass.leftReference().label();
           auto rightInstance = ass.rightInstance().label();
@@ -166,7 +168,7 @@ namespace gum {
       INLINE void O3SystemFactory< GUM_SCALAR >::__addIncrements(
          PRMFactory< GUM_SCALAR >& factory, O3System& sys) {
         const auto& real_sys = __prm->getSystem(sys.name().label());
-        for (auto& inc : sys.increments()) {
+        for (auto& inc: sys.increments()) {
           auto leftInstance = inc.leftInstance().label();
           auto leftReference = inc.leftReference().label();
           auto rightInstance = inc.rightInstance().label();
@@ -199,7 +201,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE bool O3SystemFactory< GUM_SCALAR >::__checkInstance(O3System& sys) {
-        for (auto& i : sys.instances()) {
+        for (auto& i: sys.instances()) {
           if (!__solver->resolveClass(i.type())) { return false; }
 
           const auto& type = __prm->getClass(i.type().label());
@@ -221,7 +223,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE bool O3SystemFactory< GUM_SCALAR >::__checkParameters(
          const PRMClass< GUM_SCALAR >& type, const O3Instance& inst) {
-        for (const auto& param : inst.parameters()) {
+        for (const auto& param: inst.parameters()) {
           if (!type.exists(param.name().label())) {
             O3PRM_SYSTEM_PARAMETER_NOT_FOUND(param, *__errors);
             return false;
@@ -265,7 +267,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE bool
          O3SystemFactory< GUM_SCALAR >::__checkAssignments(O3System& sys) {
-        for (auto& ass : sys.assignments()) {
+        for (auto& ass: sys.assignments()) {
           // if ( ass.leftInstance().label() == ass.leftReference().label() ) {
           //  O3PRM_SYSTEM_INVALID_LEFT_VALUE( ass.leftInstance(), *__errors );
           //  return false;
@@ -314,7 +316,7 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE bool O3SystemFactory< GUM_SCALAR >::__checkIncrements(O3System& sys) {
-        for (auto& inc : sys.increments()) {
+        for (auto& inc: sys.increments()) {
           // if ( inc.leftInstance().label() == inc.leftReference().label() ) {
           //  O3PRM_SYSTEM_INVALID_LEFT_VALUE( inc.leftInstance(), *__errors );
           //  return false;

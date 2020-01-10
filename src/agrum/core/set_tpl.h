@@ -81,24 +81,24 @@ namespace gum {
 
   // assignment operator
   template < typename Key >
-  INLINE SetIteratorSafe< Key >& SetIteratorSafe< Key >::
-                                 operator=(const SetIteratorSafe< Key >& from) {
+  INLINE SetIteratorSafe< Key >&
+     SetIteratorSafe< Key >::operator=(const SetIteratorSafe< Key >& from) {
     __ht_iter = from.__ht_iter;
     return *this;
   }
 
   // assignment operator
   template < typename Key >
-  INLINE SetIteratorSafe< Key >& SetIteratorSafe< Key >::
-                                 operator=(const SetIterator< Key >& from) {
+  INLINE SetIteratorSafe< Key >&
+     SetIteratorSafe< Key >::operator=(const SetIterator< Key >& from) {
     __ht_iter = from.__ht_iter;
     return *this;
   }
 
   // move operator
   template < typename Key >
-  INLINE SetIteratorSafe< Key >& SetIteratorSafe< Key >::
-                                 operator=(SetIteratorSafe< Key >&& from) noexcept {
+  INLINE SetIteratorSafe< Key >&
+     SetIteratorSafe< Key >::operator=(SetIteratorSafe< Key >&& from) noexcept {
     __ht_iter = std::move(from.__ht_iter);
     return *this;
   }
@@ -115,8 +115,8 @@ namespace gum {
 
   // makes the iterator point to i elements further in the set
   template < typename Key >
-  INLINE SetIteratorSafe< Key >& SetIteratorSafe< Key >::
-                                 operator+=(Size nb) noexcept {
+  INLINE SetIteratorSafe< Key >&
+     SetIteratorSafe< Key >::operator+=(Size nb) noexcept {
     __ht_iter += nb;
     return *this;
   }
@@ -129,16 +129,18 @@ namespace gum {
 
   // indicates whether two iterators point to different elements or sets
   template < typename Key >
-  INLINE bool SetIteratorSafe< Key >::
-              operator!=(const SetIteratorSafe< Key >& from) const noexcept {
+  INLINE bool
+     SetIteratorSafe< Key >::operator!=(const SetIteratorSafe< Key >& from) const
+     noexcept {
     return __ht_iter != from.__ht_iter;
   }
 
   // indicates whether two iterators point toward the same element of a same
   // set
   template < typename Key >
-  INLINE bool SetIteratorSafe< Key >::
-              operator==(const SetIteratorSafe< Key >& from) const noexcept {
+  INLINE bool
+     SetIteratorSafe< Key >::operator==(const SetIteratorSafe< Key >& from) const
+     noexcept {
     return __ht_iter == from.__ht_iter;
   }
 
@@ -207,16 +209,16 @@ namespace gum {
 
   // assignment operator
   template < typename Key >
-  INLINE SetIterator< Key >& SetIterator< Key >::
-                             operator=(const SetIterator< Key >& from) noexcept {
+  INLINE SetIterator< Key >&
+     SetIterator< Key >::operator=(const SetIterator< Key >& from) noexcept {
     __ht_iter = from.__ht_iter;
     return *this;
   }
 
   // move operator
   template < typename Key >
-  INLINE SetIterator< Key >& SetIterator< Key >::
-                             operator=(SetIterator< Key >&& from) noexcept {
+  INLINE SetIterator< Key >&
+     SetIterator< Key >::operator=(SetIterator< Key >&& from) noexcept {
     __ht_iter = std::move(from.__ht_iter);
     return *this;
   }
@@ -333,7 +335,7 @@ namespace gum {
   INLINE Set< Key, Alloc >::Set(std::initializer_list< Key > list) :
       __inside(Size(list.size()) / 2, true, false) {
     GUM_CONSTRUCTOR(Set);
-    for (const auto& elt : list) {
+    for (const auto& elt: list) {
       insert(elt);
     }
 
@@ -419,8 +421,8 @@ namespace gum {
   // generalized copy operator
   template < typename Key, typename Alloc >
   template < typename OtherAlloc >
-  Set< Key, Alloc >& Set< Key, Alloc >::
-                     operator=(const Set< Key, OtherAlloc >& s) {
+  Set< Key, Alloc >&
+     Set< Key, Alloc >::operator=(const Set< Key, OtherAlloc >& s) {
     // avoid self assignment
     if (this != reinterpret_cast< const Set< Key, Alloc >* >(&s)) {
       // remove the old content of the set. Actually, we remove all the elements
@@ -477,8 +479,8 @@ namespace gum {
   // mathematical inequality between two sets
   template < typename Key, typename Alloc >
   template < typename OtherAlloc >
-  INLINE bool Set< Key, Alloc >::
-              operator!=(const Set< Key, OtherAlloc >& s2) const {
+  INLINE bool
+     Set< Key, Alloc >::operator!=(const Set< Key, OtherAlloc >& s2) const {
     return !(operator==(s2));
   }
 
@@ -589,7 +591,7 @@ namespace gum {
      Set< Key, Alloc >::isSubsetOf(const Set< Key, OtherAlloc >& s) const {
     if (this->size() >= s.size()) { return false; }
 
-    for (const auto& elt : *this) {
+    for (const auto& elt: *this) {
       if (!s.contains(elt)) { return false; }
     }
     return true;
@@ -711,8 +713,8 @@ namespace gum {
   // Intersection operator
   template < typename Key, typename Alloc >
   template < typename OtherAlloc >
-  Set< Key, Alloc > Set< Key, Alloc >::
-                    operator*(const Set< Key, OtherAlloc >& s2) const {
+  Set< Key, Alloc >
+     Set< Key, Alloc >::operator*(const Set< Key, OtherAlloc >& s2) const {
     Set< Key, Alloc >                         res;
     const HashTable< Key, bool, OtherAlloc >& h2 = s2.__inside;
     HashTable< Key, bool, Alloc >&            h_r = res.__inside;
@@ -738,8 +740,8 @@ namespace gum {
   // Intersection update operator
   template < typename Key, typename Alloc >
   template < typename OtherAlloc >
-  const Set< Key, Alloc >& Set< Key, Alloc >::
-                           operator*=(const Set< Key, OtherAlloc >& s2) {
+  const Set< Key, Alloc >&
+     Set< Key, Alloc >::operator*=(const Set< Key, OtherAlloc >& s2) {
     if (&s2 != this) {
       const HashTable< Key, bool, OtherAlloc >& h2 = s2.__inside;
       for (auto iter = __inside.beginSafe(); iter != __inside.endSafe(); ++iter) {
@@ -754,10 +756,10 @@ namespace gum {
   // Union update operator
   template < typename Key, typename Alloc >
   template < typename OtherAlloc >
-  const Set< Key, Alloc >& Set< Key, Alloc >::
-                           operator+=(const Set< Key, OtherAlloc >& s2) {
+  const Set< Key, Alloc >&
+     Set< Key, Alloc >::operator+=(const Set< Key, OtherAlloc >& s2) {
     if (&s2 != this) {
-      for (auto pair : s2.__inside) {
+      for (auto pair: s2.__inside) {
         if (!__inside.exists(pair.first)) __inside.insert(pair.first, true);
       }
     }
@@ -769,8 +771,8 @@ namespace gum {
   // Union operator
   template < typename Key, typename Alloc >
   template < typename OtherAlloc >
-  Set< Key, Alloc > Set< Key, Alloc >::
-                    operator+(const Set< Key, OtherAlloc >& s2) const {
+  Set< Key, Alloc >
+     Set< Key, Alloc >::operator+(const Set< Key, OtherAlloc >& s2) const {
     Set< Key, Alloc >                         res = *this;
     const HashTable< Key, bool, OtherAlloc >& h2 = s2.__inside;
     HashTable< Key, bool, Alloc >&            h_r = res.__inside;
@@ -787,8 +789,8 @@ namespace gum {
   // Disjunction operator
   template < typename Key, typename Alloc >
   template < typename OtherAlloc >
-  Set< Key, Alloc > Set< Key, Alloc >::
-                    operator-(const Set< Key, OtherAlloc >& s2) const {
+  Set< Key, Alloc >
+     Set< Key, Alloc >::operator-(const Set< Key, OtherAlloc >& s2) const {
     Set< Key, Alloc >                         res;
     const HashTable< Key, bool, OtherAlloc >& h2 = s2.__inside;
     HashTable< Key, bool, Alloc >&            h_r = res.__inside;
@@ -901,7 +903,7 @@ namespace gum {
   INLINE Size HashFunc< Set< T, Alloc > >::castToSize(const Set< T, Alloc >& key) {
     Size h = Size(0);
     Size i = Size(0);
-    for (const auto& k : key) {
+    for (const auto& k: key) {
       h += ++i * HashFunc< T >::castToSize(k);
     }
 
@@ -911,8 +913,8 @@ namespace gum {
 
   // Returns the hashed value of a key.
   template < typename T, typename Alloc >
-  INLINE Size HashFunc< Set< T, Alloc > >::
-              operator()(const Set< T, Alloc >& key) const {
+  INLINE Size
+     HashFunc< Set< T, Alloc > >::operator()(const Set< T, Alloc >& key) const {
     return (castToSize(key) * HashFuncConst::gold) & this->_hash_mask;
   }
 

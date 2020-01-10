@@ -80,7 +80,7 @@ namespace gum {
      */
     // ==========================================================================
     template < typename GUM_SCALAR >
-    class PRMSlotChain : public PRMClassElement< GUM_SCALAR > {
+    class PRMSlotChain: public PRMClassElement< GUM_SCALAR > {
       public:
       // ========================================================================
       /// @name Constructors & destructor

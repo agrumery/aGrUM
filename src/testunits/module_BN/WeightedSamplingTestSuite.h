@@ -38,12 +38,12 @@
 
 
 #define EPSILON_FOR_WEIGHTED_SIMPLE_TEST 15e-2
-#define EPSILON_FOR_WEIGHTED 2e-1
+#define EPSILON_FOR_WEIGHTED             2e-1
 
 
 namespace gum_tests {
 
-  class aSimpleWeightedListener : public gum::ApproximationSchemeListener {
+  class aSimpleWeightedListener: public gum::ApproximationSchemeListener {
     private:
     int         __nbr;
     std::string __mess;
@@ -66,7 +66,7 @@ namespace gum_tests {
     std::string getMess() { return __mess; }
   };
 
-  class WeightedSamplingTestSuite : public CxxTest::TestSuite {
+  class WeightedSamplingTestSuite: public CxxTest::TestSuite {
     public:
     void testWeightedBinaryTreeWithoutEvidence() {
       auto bn = gum::BayesNet< double >::fastPrototype(

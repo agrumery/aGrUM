@@ -40,7 +40,7 @@
 
 namespace gum_tests {
 
-  class MarginalTargetedInferenceTestSuite : public CxxTest::TestSuite {
+  class MarginalTargetedInferenceTestSuite: public CxxTest::TestSuite {
     public:
     void testAddTarget() {
       auto bn =

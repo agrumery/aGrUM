@@ -31,7 +31,7 @@
 #include <agrum/multidim/utils/FunctionGraphUtilities/internalNode.h>
 #include <agrum/multidim/utils/FunctionGraphUtilities/operators/treeOperator.h>
 
-#define ALLOCATE(x) SmallObjectAllocator::instance().allocate(x)
+#define ALLOCATE(x)      SmallObjectAllocator::instance().allocate(x)
 #define DEALLOCATE(x, y) SmallObjectAllocator::instance().deallocate(x, y)
 
 namespace gum {
@@ -103,7 +103,7 @@ namespace gum {
              template < typename >
              class TerminalNodePolicy >
   INLINE NodeId
-         TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::__xPloreDT1(
+     TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::__xPloreDT1(
         NodeId currentNodeId) {
     if (__dt1->isTerminalNode(currentNodeId)) {
       __curDT1Leaf = currentNodeId;
@@ -131,7 +131,7 @@ namespace gum {
              template < typename >
              class TerminalNodePolicy >
   INLINE NodeId
-         TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::__xPloreDT2(
+     TreeOperator< GUM_SCALAR, COMBINEOPERATOR, TerminalNodePolicy >::__xPloreDT2(
         NodeId currentNodeId) {
     if (__dt2->isTerminalNode(currentNodeId))
       return __rd->manager()->addTerminalNode(__combine(

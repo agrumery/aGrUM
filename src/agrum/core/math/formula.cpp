@@ -42,7 +42,7 @@ namespace gum {
     }
 
     std::cout << "Stack: ";
-    for (const auto& elt : l) {
+    for (const auto& elt: l) {
       std::cout << elt.str() << " ";
     }
     std::cout << std::endl;
@@ -51,7 +51,7 @@ namespace gum {
   // Helper function for debuging
   void print_output(std::vector< FormulaPart > v) {
     std::cout << "Output: ";
-    for (const auto& elt : v) {
+    for (const auto& elt: v) {
       std::cout << elt.str() << " ";
     }
     std::cout << std::endl;
@@ -304,7 +304,7 @@ namespace gum {
     std::stack< FormulaPart > stack;
     if (__output.empty()) { GUM_ERROR(OperationNotAllowed, "no output found"); }
 
-    for (auto item : __output) {
+    for (auto item: __output) {
       switch (item.type) {
         case FormulaPart::token_type::NUMBER: {
           stack.push(item);

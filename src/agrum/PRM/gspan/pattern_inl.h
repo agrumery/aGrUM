@@ -154,7 +154,7 @@ namespace gum {
         r_path.push_back(NodeId(size()));
 
         while (r_path.front() != 1) {
-          for (const auto par : parents(r_path.front())) {
+          for (const auto par: parents(r_path.front())) {
             if (par < r_path.front()) {
               r_path.push_front(par);
               break;

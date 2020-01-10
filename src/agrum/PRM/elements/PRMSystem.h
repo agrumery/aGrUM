@@ -56,7 +56,7 @@ namespace gum {
      *        skeleton.
      */
     template < typename GUM_SCALAR >
-    class PRMSystem : public PRMObject {
+    class PRMSystem: public PRMObject {
       public:
       // ========================================================================
       /// @name Constructors & destructor.

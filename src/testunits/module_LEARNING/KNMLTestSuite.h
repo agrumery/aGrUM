@@ -34,7 +34,7 @@
 
 namespace gum_tests {
 
-  class KNMLTestSuite : public CxxTest::TestSuite {
+  class KNMLTestSuite: public CxxTest::TestSuite {
     public:
     void test1() {
       gum::learning::DBInitializerFromCSV<> initializer(

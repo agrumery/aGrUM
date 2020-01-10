@@ -129,8 +129,9 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    DBRowGenerator4CompleteRows< ALLOC >& DBRowGenerator4CompleteRows< ALLOC >::
-                                          operator=(const DBRowGenerator4CompleteRows< ALLOC >& from) {
+    DBRowGenerator4CompleteRows< ALLOC >&
+       DBRowGenerator4CompleteRows< ALLOC >::operator=(
+          const DBRowGenerator4CompleteRows< ALLOC >& from) {
       DBRowGenerator< ALLOC >::operator=(from);
       __input_row = from.__input_row;
       return *this;
@@ -139,8 +140,9 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    DBRowGenerator4CompleteRows< ALLOC >& DBRowGenerator4CompleteRows< ALLOC >::
-                                          operator=(DBRowGenerator4CompleteRows< ALLOC >&& from) {
+    DBRowGenerator4CompleteRows< ALLOC >&
+       DBRowGenerator4CompleteRows< ALLOC >::operator=(
+          DBRowGenerator4CompleteRows< ALLOC >&& from) {
       DBRowGenerator< ALLOC >::operator=(std::move(from));
       __input_row = from.__input_row;
       return *this;
@@ -162,7 +164,7 @@ namespace gum {
        const DBRow< DBTranslatedValue, ALLOC >& row) {
       // check that all the values are observed
       const auto& xrow = row.row();
-      for (const auto col : this->_columns_of_interest) {
+      for (const auto col: this->_columns_of_interest) {
         switch (this->_column_types[col]) {
           case DBTranslatedValueType::DISCRETE:
             if (xrow[col].discr_val == std::numeric_limits< std::size_t >::max()) {

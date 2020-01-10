@@ -45,13 +45,13 @@ namespace gum {
     PRMSystem< GUM_SCALAR >::~PRMSystem() {
       GUM_DESTRUCTOR(PRMSystem);
 
-      for (const auto& elt : *this)
+      for (const auto& elt: *this)
         delete elt.second;
 
-      for (const auto& elt : __instanceMap)
+      for (const auto& elt: __instanceMap)
         delete elt.second;
 
-      for (const auto& elt : __arrayMap)
+      for (const auto& elt: __arrayMap)
         delete elt.second.second;
     }
 
@@ -102,7 +102,7 @@ namespace gum {
     void PRMSystem< GUM_SCALAR >::__groundAttr(
        const PRMInstance< GUM_SCALAR >& instance,
        BayesNetFactory< GUM_SCALAR >&   factory) const {
-      for (const auto node : instance.type().containerDag()) {
+      for (const auto node: instance.type().containerDag()) {
         // Working a Class<GUM_SCALAR> level because PRMAggregate<GUM_SCALAR>
         // are
         // instantiated as PRMAttribute<GUM_SCALAR> in an
@@ -218,12 +218,12 @@ namespace gum {
     void PRMSystem< GUM_SCALAR >::__groundRef(
        const PRMInstance< GUM_SCALAR >& instance,
        BayesNetFactory< GUM_SCALAR >&   factory) const {
-      for (const auto& elt : instance) {
+      for (const auto& elt: instance) {
         std::stringstream elt_name;
         elt_name << instance.name() << "." << elt.second->safeName();
         factory.startParentsDeclaration(elt_name.str());
 
-        for (const auto par :
+        for (const auto par:
              instance.type().containerDag().parents(elt.second->id())) {
           switch (instance.type().get(par).elt_type()) {
             case PRMClassElement< GUM_SCALAR >::prm_aggregate:
@@ -242,7 +242,7 @@ namespace gum {
                     .lastElt()
                     .safeName();
 
-              for (const auto ref : instance.getInstances(par)) {
+              for (const auto ref: instance.getInstances(par)) {
                 std::stringstream sBuff;
                 sBuff << ref->name() << "." << parent_name;
                 factory.addParent(sBuff.str());
@@ -279,7 +279,7 @@ namespace gum {
       bijection.insert(&(attr.type().variable()),
                        &(factory.variable(var_name.str())));
 
-      for (const auto parent : instance.type().containerDag().parents(attr.id())) {
+      for (const auto parent: instance.type().containerDag().parents(attr.id())) {
         switch (instance.type().get(parent).elt_type()) {
           case PRMClassElement< GUM_SCALAR >::prm_aggregate:
           case PRMClassElement< GUM_SCALAR >::prm_attribute: {
@@ -318,7 +318,7 @@ namespace gum {
       // DO NOT USE MultiDimBijArray as they will wreck havok if you delete
       // the prm befor its grounded BN (happens a lot in pyAgrum)
       Potential< GUM_SCALAR >* p = new Potential< GUM_SCALAR >();
-      for (auto var : attr.cpf().variablesSequence()) {
+      for (auto var: attr.cpf().variablesSequence()) {
         p->add(*(bijection.second(var)));
       }
       Instantiation inst(attr.cpf()), jnst(*p);
@@ -362,7 +362,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE NodeId
-           PRMSystem< GUM_SCALAR >::get(const PRMInstance< GUM_SCALAR >& i) const {
+       PRMSystem< GUM_SCALAR >::get(const PRMInstance< GUM_SCALAR >& i) const {
       try {
         return __nodeIdMap.keyByVal(const_cast< PRMInstance< GUM_SCALAR >* >(&i));
       } catch (NotFound&) {

@@ -76,15 +76,15 @@ namespace gum {
     }
 
     /// copy operator
-    StructuralConstraintUndiGraph& StructuralConstraintUndiGraph::
-                                   operator=(const StructuralConstraintUndiGraph& from) {
+    StructuralConstraintUndiGraph& StructuralConstraintUndiGraph::operator=(
+       const StructuralConstraintUndiGraph& from) {
       if (this != &from) { _UndiGraph__graph = from._UndiGraph__graph; }
       return *this;
     }
 
     /// move operator
-    StructuralConstraintUndiGraph& StructuralConstraintUndiGraph::
-                                   operator=(StructuralConstraintUndiGraph&& from) {
+    StructuralConstraintUndiGraph& StructuralConstraintUndiGraph::operator=(
+       StructuralConstraintUndiGraph&& from) {
       if (this != &from) { _UndiGraph__graph = std::move(from._UndiGraph__graph); }
       return *this;
     }

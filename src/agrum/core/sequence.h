@@ -1019,8 +1019,8 @@ namespace gum {
    * @tparam Alloc The values allocator.
    */
   template < typename Key, typename Alloc = std::allocator< Key > >
-  class Sequence
-      : public SequenceImplementation< Key, Alloc, std::is_scalar< Key >::value > {
+  class Sequence:
+      public SequenceImplementation< Key, Alloc, std::is_scalar< Key >::value > {
     public:
     /// Types for STL compliance.
     /// @{

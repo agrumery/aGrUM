@@ -202,7 +202,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE Size
-         MultiDimWithOffset< GUM_SCALAR >::_getOffs(const Instantiation& i) const {
+     MultiDimWithOffset< GUM_SCALAR >::_getOffs(const Instantiation& i) const {
     Idx off = 0;
 
     for (HashTableConstIteratorSafe< const DiscreteVariable*, Size > iter =
@@ -259,7 +259,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE Size
-         MultiDimWithOffset< GUM_SCALAR >::toOffset(const Instantiation& i) const {
+     MultiDimWithOffset< GUM_SCALAR >::toOffset(const Instantiation& i) const {
     return _getOffs(i);
   }
 

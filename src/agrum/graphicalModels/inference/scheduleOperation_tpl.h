@@ -60,8 +60,9 @@ namespace gum {
 
   /// copy operator
   template < typename GUM_SCALAR >
-  INLINE ScheduleOperation< GUM_SCALAR >& ScheduleOperation< GUM_SCALAR >::
-                                          operator=(const ScheduleOperation< GUM_SCALAR >& from) {
+  INLINE ScheduleOperation< GUM_SCALAR >&
+     ScheduleOperation< GUM_SCALAR >::operator=(
+        const ScheduleOperation< GUM_SCALAR >& from) {
     __type = from.__type;
     __id = from.__id;
     return *this;

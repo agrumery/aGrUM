@@ -34,7 +34,7 @@
 
 namespace gum_tests {
 
-  class MultiDimCombinationTestSuite : public CxxTest::TestSuite {
+  class MultiDimCombinationTestSuite: public CxxTest::TestSuite {
     private:
     // ==========================================================================
     /// initialize randomly a table

@@ -212,8 +212,8 @@ namespace gum {
     /// copy operator
     template < template < typename > class ALLOC >
     INLINE AprioriDirichletFromDatabase< ALLOC >&
-           AprioriDirichletFromDatabase< ALLOC >::
-           operator=(const AprioriDirichletFromDatabase< ALLOC >& from) {
+       AprioriDirichletFromDatabase< ALLOC >::operator=(
+          const AprioriDirichletFromDatabase< ALLOC >& from) {
       if (this != &from) {
         Apriori< ALLOC >::operator=(from);
         __counter = from.__counter;
@@ -226,8 +226,8 @@ namespace gum {
     /// move operator
     template < template < typename > class ALLOC >
     INLINE AprioriDirichletFromDatabase< ALLOC >&
-           AprioriDirichletFromDatabase< ALLOC >::
-           operator=(AprioriDirichletFromDatabase< ALLOC >&& from) {
+       AprioriDirichletFromDatabase< ALLOC >::operator=(
+          AprioriDirichletFromDatabase< ALLOC >&& from) {
       if (this != &from) {
         Apriori< ALLOC >::operator=(std::move(from));
         __counter = std::move(from.__counter);

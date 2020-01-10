@@ -47,7 +47,7 @@ namespace gum {
   template < typename Val, typename Cmp, typename Alloc >
   Heap< Val, Cmp, Alloc >::Heap(std::initializer_list< Val > list) {
     __heap.reserve(list.size());
-    for (const auto& elt : list) {
+    for (const auto& elt: list) {
       insert(elt);
     }
 
@@ -96,8 +96,8 @@ namespace gum {
 
   // copy operator
   template < typename Val, typename Cmp, typename Alloc >
-  Heap< Val, Cmp, Alloc >& Heap< Val, Cmp, Alloc >::
-                           operator=(const Heap< Val, Cmp, Alloc >& from) {
+  Heap< Val, Cmp, Alloc >&
+     Heap< Val, Cmp, Alloc >::operator=(const Heap< Val, Cmp, Alloc >& from) {
     // avoid self assignment
     if (this != &from) {
       try {
@@ -123,8 +123,8 @@ namespace gum {
   // generalized copy operator
   template < typename Val, typename Cmp, typename Alloc >
   template < typename OtherAlloc >
-  Heap< Val, Cmp, Alloc >& Heap< Val, Cmp, Alloc >::
-                           operator=(const Heap< Val, Cmp, OtherAlloc >& from) {
+  Heap< Val, Cmp, Alloc >&
+     Heap< Val, Cmp, Alloc >::operator=(const Heap< Val, Cmp, OtherAlloc >& from) {
     // avoid self assignment
     if (this != &from) {
       try {
@@ -154,8 +154,8 @@ namespace gum {
 
   // move operator
   template < typename Val, typename Cmp, typename Alloc >
-  Heap< Val, Cmp, Alloc >& Heap< Val, Cmp, Alloc >::
-                           operator=(Heap< Val, Cmp, Alloc >&& from) noexcept {
+  Heap< Val, Cmp, Alloc >&
+     Heap< Val, Cmp, Alloc >::operator=(Heap< Val, Cmp, Alloc >&& from) noexcept {
     // avoid self assignment
     if (this != &from) {
       __heap = std::move(from.__heap);

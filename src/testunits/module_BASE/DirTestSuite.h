@@ -35,7 +35,7 @@
 #include <agrum/core/utils_misc.h>
 namespace gum_tests {
 
-  class DirTestSuite : public CxxTest::TestSuite {
+  class DirTestSuite: public CxxTest::TestSuite {
     std::string oldWorkingDir;
 
     public:

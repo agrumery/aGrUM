@@ -45,7 +45,7 @@
 
 namespace gum_tests {
 
-  class BayesNetFragmentTestSuite : public CxxTest::TestSuite {
+  class BayesNetFragmentTestSuite: public CxxTest::TestSuite {
     private:
     void fill(gum::BayesNet< double >& bn) {
       try {
@@ -106,7 +106,7 @@ namespace gum_tests {
         // bn.addArc ( bn.idFromName ( "v4" ), bn.idFromName ( "v5" ) );
 
         // copy the cpt except for var5
-        for (const auto node : bn.nodes())
+        for (const auto node: bn.nodes())
           if (node != bn.idFromName("v5")) {
             const gum::Potential< double >& pot = bn.cpt(node);
             const gum::Potential< double >& src =
@@ -309,7 +309,7 @@ namespace gum_tests {
 
       gum::Size count = 0;
 
-      for (const auto node : frag.nodes()) {
+      for (const auto node: frag.nodes()) {
         GUM_UNUSED(node);
         count++;
       }
@@ -318,7 +318,7 @@ namespace gum_tests {
 
       count = 0;
 
-      for (const auto arc : frag.arcs()) {
+      for (const auto arc: frag.arcs()) {
         GUM_UNUSED(arc);
         count++;
       }
@@ -372,7 +372,7 @@ namespace gum_tests {
 
       gum::Size count = 0;
 
-      for (const auto node : frag.nodes()) {
+      for (const auto node: frag.nodes()) {
         GUM_UNUSED(node);
         count++;
       }
@@ -381,7 +381,7 @@ namespace gum_tests {
 
       count = 0;
 
-      for (const auto arc : frag.arcs()) {
+      for (const auto arc: frag.arcs()) {
         GUM_UNUSED(arc);
         count++;
       }
@@ -518,7 +518,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)3);
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)2);
 
-      for (const auto node : frag.nodes())
+      for (const auto node: frag.nodes())
         TS_ASSERT(frag.checkConsistency(node));
 
       TS_ASSERT(frag.checkConsistency());
@@ -528,7 +528,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)4);
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)3);
 
-      for (const auto node : frag.nodes())
+      for (const auto node: frag.nodes())
         TS_ASSERT(node == frag.idFromName("v5") || frag.checkConsistency(node));
 
       TS_ASSERT(!frag.checkConsistency());
@@ -577,7 +577,7 @@ namespace gum_tests {
 
       gum::BayesNetFragment< double > frag(bn);
 
-      for (const auto node : bn.nodes())
+      for (const auto node: bn.nodes())
         frag.installNode(node);
 
       TS_ASSERT(frag.checkConsistency());

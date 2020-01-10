@@ -160,7 +160,7 @@ namespace gum {
             f.startAttribute(type, *a, true);
             size = getDomainSize();
 
-            for (const auto par : dag.parents(names.second(*a))) {
+            for (const auto par: dag.parents(names.second(*a))) {
               f.addParent(names.first(par));
               size *= f.retrieveClass(l[lvl].c.back())
                          .get(names.first(par))
@@ -224,7 +224,7 @@ namespace gum {
               f.startAttribute(type, *a, true);
               size = getDomainSize();
 
-              for (const auto par : dag.parents(names.second(*a))) {
+              for (const auto par: dag.parents(names.second(*a))) {
                 f.addParent(names.first(par));
                 size *= f.retrieveClass(l[lvl].c.back())
                            .get(names.first(par))
@@ -279,7 +279,7 @@ namespace gum {
               f.startAttribute(type, *a, true);
               size = getDomainSize();
 
-              for (const auto par : dag.parents(names.second(*a))) {
+              for (const auto par: dag.parents(names.second(*a))) {
                 f.addParent(names.first(par));
                 size *= f.retrieveClass(l[lvl].c.back())
                            .get(names.first(par))
@@ -338,7 +338,7 @@ namespace gum {
 
       // Adding aggregates
       if (lvl) {
-        for (const auto agg : l[lvl].g) {
+        for (const auto agg: l[lvl].g) {
           std::stringstream s;
           s << l[lvl].r << "." << l[lvl - 1].a[std::rand() % l[lvl - 1].a.size()];
           std::vector< std::string > chain(1, s.str()), param(1, "1");
@@ -347,11 +347,11 @@ namespace gum {
       }
 
       // Adding attributes
-      for (const auto attr : l[lvl].a) {
+      for (const auto attr: l[lvl].a) {
         f.startAttribute(type, attr, true);
         size = getDomainSize();
 
-        for (const auto par : dag.parents(names.second(attr))) {
+        for (const auto par: dag.parents(names.second(attr))) {
           f.addParent(names.first(par));
           size *= f.retrieveClass(l[lvl].c.back())
                      .get(names.first(par))
@@ -417,11 +417,11 @@ namespace gum {
       // For each nodes with #parents > __max_parents we randomly remove parents
       // until
       // #parents <= __max_parents
-      for (const auto node : dag.nodes()) {
+      for (const auto node: dag.nodes()) {
         if (dag.parents(node).size() > getMaxParents()) {
           std::vector< NodeId > v;
 
-          for (const auto par : dag.parents(node))
+          for (const auto par: dag.parents(node))
             v.push_back(par);
 
           while (dag.parents(node).size() > getMaxParents()) {
@@ -557,8 +557,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE ClusteredLayerGenerator< GUM_SCALAR >&
-           ClusteredLayerGenerator< GUM_SCALAR >::
-           operator=(const ClusteredLayerGenerator< GUM_SCALAR >& source) {
+       ClusteredLayerGenerator< GUM_SCALAR >::operator=(
+          const ClusteredLayerGenerator< GUM_SCALAR >& source) {
       __layers = source.__layers;
       __domain_size = source.__domain_size;
       __max_parents = source.__max_parents;

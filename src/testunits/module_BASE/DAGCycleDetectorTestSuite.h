@@ -31,7 +31,7 @@
 
 namespace gum_tests {
 
-  class DAGCycleDetectorTestSuite : public CxxTest::TestSuite {
+  class DAGCycleDetectorTestSuite: public CxxTest::TestSuite {
     gum::DAG __createDAG(gum::Size nb_nodes, gum::Size nb_arcs) {
       std::default_random_engine generator = gum::getRandomGenerator();
       gum::DAG                   dag;
@@ -132,7 +132,7 @@ namespace gum_tests {
 
       gum::HashTable< gum::Arc, gum::Idx > deletions(gum::Size(changes.size()));
       gum::HashTable< gum::Arc, gum::Idx > additions(gum::Size(changes.size()));
-      for (const auto& modif : changes) {
+      for (const auto& modif: changes) {
         gum::Arc arc(modif.tail(), modif.head());
 
         switch (modif.type()) {
@@ -288,7 +288,7 @@ namespace gum_tests {
           bool hasCycle = false;
           {
             gum::DiGraph gg = g;
-            for (auto& chgt : del_add_changes) {
+            for (auto& chgt: del_add_changes) {
               switch (chgt.type()) {
                 case gum::DAGCycleDetector::ChangeType::ARC_DELETION:
                   gg.eraseArc(gum::Arc(chgt.tail(), chgt.head()));
@@ -339,7 +339,7 @@ namespace gum_tests {
             continue;
           }
 
-          for (auto& chgt : changes) {
+          for (auto& chgt: changes) {
             switch (chgt.type()) {
               case gum::DAGCycleDetector::ChangeType::ARC_DELETION:
                 g.eraseArc(gum::Arc(chgt.tail(), chgt.head()));
@@ -383,7 +383,7 @@ namespace gum_tests {
           __createChanges(g, changes, del_add_changes, 1);
           TS_ASSERT(changes.size() == 1);
 
-          for (auto& chgt : changes) {
+          for (auto& chgt: changes) {
             switch (chgt.type()) {
               case gum::DAGCycleDetector::ChangeType::ARC_DELETION:
                 TS_ASSERT(detector1.hasCycleFromDeletion(chgt.tail(), chgt.head())

@@ -43,7 +43,7 @@ namespace gum {
      * @ingroup learning_param_utils
      */
     template < template < typename > class ALLOC = std::allocator >
-    class ParamEstimatorML : public ParamEstimator< ALLOC > {
+    class ParamEstimatorML: public ParamEstimator< ALLOC > {
       public:
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC< NodeId >;

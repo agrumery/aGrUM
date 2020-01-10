@@ -43,7 +43,7 @@
 
 namespace gum_tests {
 
-  class NetWriterTestSuite : public CxxTest::TestSuite {
+  class NetWriterTestSuite: public CxxTest::TestSuite {
     public:
     gum::BayesNet< double >* bn;
     gum::NodeId              i1, i2, i3, i4, i5;

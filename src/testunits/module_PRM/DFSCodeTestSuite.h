@@ -35,7 +35,7 @@
 
 namespace gum_tests {
 
-  class DFSCodeTestSuite : public CxxTest::TestSuite {
+  class DFSCodeTestSuite: public CxxTest::TestSuite {
     private:
     gum::prm::gspan::DFSCode* alpha;
     gum::prm::gspan::DFSCode* beta;

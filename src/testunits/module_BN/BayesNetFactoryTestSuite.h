@@ -43,7 +43,7 @@
 
 namespace gum_tests {
 
-  class BayesNetFactoryTestSuite : public CxxTest::TestSuite {
+  class BayesNetFactoryTestSuite: public CxxTest::TestSuite {
     private:
     gum::BayesNet< double >* __bn_d;
     // gum::BayesNet<float>*  __bn_f;

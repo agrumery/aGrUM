@@ -59,7 +59,7 @@ namespace gum {
    *
    */
   template < typename GUM_SCALAR >
-  class BayesNetFactory : public IBayesNetFactory {
+  class BayesNetFactory: public IBayesNetFactory {
     public:
     // ==========================================================================
     /// @name Constructor & destructor.

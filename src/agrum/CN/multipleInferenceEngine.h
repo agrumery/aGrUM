@@ -52,7 +52,7 @@ namespace gum {
      * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
      */
     template < typename GUM_SCALAR, class BNInferenceEngine >
-    class MultipleInferenceEngine : public InferenceEngine< GUM_SCALAR > {
+    class MultipleInferenceEngine: public InferenceEngine< GUM_SCALAR > {
       private:
       /** To easily access InferenceEngine< GUM_SCALAR > methods. */
       typedef InferenceEngine< GUM_SCALAR > __infE;

@@ -38,14 +38,14 @@
 
 
 #define EPSILON_FOR_GIBBS_SIMPLE_TEST 2e-1
-#define EPSILON_FOR_GIBBS 1e-1
+#define EPSILON_FOR_GIBBS             1e-1
 
 #define EPSILON_FOR_GIBBS_HARD_TEST 2e-1
-#define EPSILON_FOR_HARD_GIBBS 1e-1
+#define EPSILON_FOR_HARD_GIBBS      1e-1
 
 namespace gum_tests {
 
-  class aSimpleGibbsApproxListener : public gum::ApproximationSchemeListener {
+  class aSimpleGibbsApproxListener: public gum::ApproximationSchemeListener {
     private:
     int         __nbr;
     std::string __mess;
@@ -65,7 +65,7 @@ namespace gum_tests {
     int         getNbr() { return __nbr; }
     std::string getMess() { return __mess; }
   };
-  class GibbsSamplingTestSuite : public CxxTest::TestSuite {
+  class GibbsSamplingTestSuite: public CxxTest::TestSuite {
     public:
     void testGibbsSimpleBN() {
       auto bn =

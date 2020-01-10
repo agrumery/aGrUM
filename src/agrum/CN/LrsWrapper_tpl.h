@@ -251,7 +251,7 @@ namespace gum {
 
       bool eq = true;
 
-      for (const auto& v : __insertedVertices) {
+      for (const auto& v: __insertedVertices) {
         eq = true;
 
         for (decltype(__card) mod = 0; mod < __card; mod++)
@@ -292,7 +292,7 @@ namespace gum {
       // sum of vertex elements is close to one ( floating type precision )
       GUM_SCALAR sum = 0;
 
-      for (const auto elem : __vertex)
+      for (const auto elem: __vertex)
         sum += elem;
 
       if (std::fabs(sum - 1) < 1e-6) {

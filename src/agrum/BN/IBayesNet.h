@@ -59,7 +59,7 @@ namespace gum {
    * class when a simple BN is needed.
    */
   template < typename GUM_SCALAR >
-  class IBayesNet : public DAGmodel {
+  class IBayesNet: public DAGmodel {
     public:
     // ===========================================================================
     /// @name Constructors / Destructors

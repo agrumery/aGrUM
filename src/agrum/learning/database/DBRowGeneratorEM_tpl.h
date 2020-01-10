@@ -168,8 +168,9 @@ namespace gum {
 
     /// copy operator
     template < typename GUM_SCALAR, template < typename > class ALLOC >
-    DBRowGeneratorEM< GUM_SCALAR, ALLOC >& DBRowGeneratorEM< GUM_SCALAR, ALLOC >::
-                                           operator=(const DBRowGeneratorEM< GUM_SCALAR, ALLOC >& from) {
+    DBRowGeneratorEM< GUM_SCALAR, ALLOC >&
+       DBRowGeneratorEM< GUM_SCALAR, ALLOC >::operator=(
+          const DBRowGeneratorEM< GUM_SCALAR, ALLOC >& from) {
       if (this != &from) {
         DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::operator=(from);
         __input_row = from.__input_row;
@@ -202,8 +203,9 @@ namespace gum {
 
     /// move operator
     template < typename GUM_SCALAR, template < typename > class ALLOC >
-    DBRowGeneratorEM< GUM_SCALAR, ALLOC >& DBRowGeneratorEM< GUM_SCALAR, ALLOC >::
-                                           operator=(DBRowGeneratorEM< GUM_SCALAR, ALLOC >&& from) {
+    DBRowGeneratorEM< GUM_SCALAR, ALLOC >&
+       DBRowGeneratorEM< GUM_SCALAR, ALLOC >::operator=(
+          DBRowGeneratorEM< GUM_SCALAR, ALLOC >&& from) {
       if (this != &from) {
         DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >::operator=(std::move(from));
         __input_row = from.__input_row;
@@ -281,7 +283,7 @@ namespace gum {
       // If this is the case, set them as targets
       bool        found_unobserved = false;
       const auto& xrow = row.row();
-      for (const auto col : this->_columns_of_interest) {
+      for (const auto col: this->_columns_of_interest) {
         switch (this->_column_types[col]) {
           case DBTranslatedValueType::DISCRETE:
             if (xrow[col].discr_val == std::numeric_limits< std::size_t >::max()) {
@@ -326,7 +328,7 @@ namespace gum {
       if (this->_nodeId2columns.empty()) {
         std::size_t i = std::size_t(0);
         bool        end_miss = false;
-        for (const auto col : this->_columns_of_interest) {
+        for (const auto col: this->_columns_of_interest) {
           if (!end_miss && (col == __missing_cols[i])) {
             target_set.insert(NodeId(col));
             ++i;
@@ -339,7 +341,7 @@ namespace gum {
       } else {
         std::size_t i = std::size_t(0);
         bool        end_miss = false;
-        for (const auto col : this->_columns_of_interest) {
+        for (const auto col: this->_columns_of_interest) {
           if (!end_miss && (col == __missing_cols[i])) {
             target_set.insert(this->_nodeId2columns.first(col));
             ++i;
@@ -458,7 +460,7 @@ namespace gum {
       // we determine the size of the filled rows
       std::size_t size = std::size_t(0);
       if (this->_nodeId2columns.empty()) {
-        for (auto node : new_bn.dag())
+        for (auto node: new_bn.dag())
           if (std::size_t(node) > size) size = std::size_t(node);
       } else {
         for (auto iter = this->_nodeId2columns.begin();

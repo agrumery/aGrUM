@@ -44,7 +44,7 @@ namespace gum {
           gspan::Pattern& p = __tree.pattern(*root);
           __subgraph_mining(graph, p);
 
-          for (const auto node : __tree.iso_graph(p).nodes()) {
+          for (const auto node: __tree.iso_graph(p).nodes()) {
             PRMInstance< GUM_SCALAR >* u = __tree.iso_map(p, node).atPos(0);
             PRMInstance< GUM_SCALAR >* v = __tree.iso_map(p, node).atPos(1);
             graph.graph().eraseEdge(Edge(graph.id(u), graph.id(v)));
@@ -148,18 +148,18 @@ namespace gum {
           // For each subgraph represented by p, we look for a valid edge growth
           // for
           // each instance match of p in its isomorphism graph.
-          for (const auto iso_node : __tree.iso_graph(*p).nodes()) {
+          for (const auto iso_node: __tree.iso_graph(*p).nodes()) {
             seq = &(__tree.iso_map(*p, iso_node));
             idx = 0;
 
-            for (const auto node : r_path) {
+            for (const auto node: r_path) {
               edge_count = count_vector[idx];
               // Retrieving the equivalent instance in the current match
               current = seq->atPos((Idx)(node - 1));
               current_id = ig.id(current);
               // Checking for edges not in p
 
-              for (const auto neighbor_id : ig.graph().neighbours(current_id)) {
+              for (const auto neighbor_id: ig.graph().neighbours(current_id)) {
                 neighbor = ig.node(neighbor_id).n;
 
                 // We want a forward edge in any case or a backward edge if
@@ -196,7 +196,7 @@ namespace gum {
           for (size_t node = 0; node < count_vector.size(); ++node) {
             edge_count = count_vector[node];
 
-            for (const auto& elt : *edge_count) {
+            for (const auto& elt: *edge_count) {
               try {
                 __tree.growPattern(*p, *elt.second, 2);
               } catch (OperationNotAllowed&) {
@@ -257,10 +257,10 @@ namespace gum {
            new GSpan< GUM_SCALAR >::MatchedInstances();
         Sequence< PRMInstance< GUM_SCALAR >* >* match = nullptr;
 
-        for (const auto node : tree().max_indep_set(*(__patterns.front()))) {
+        for (const auto node: tree().max_indep_set(*(__patterns.front()))) {
           match = &(tree().iso_map(*(__patterns.front()), node));
 
-          for (const auto i : *match)
+          for (const auto i: *match)
             __chosen.insert(i);
 
           matches->insert(match);
@@ -277,11 +277,11 @@ namespace gum {
           std::vector< NodeId > degree_list;
           iso_graph = &(tree().iso_graph(**patt));
 
-          for (const auto node : iso_graph->nodes()) {
+          for (const auto node: iso_graph->nodes()) {
             found = false;
             match = &(tree().iso_map(**patt, node));
 
-            for (const auto i : *match)
+            for (const auto i: *match)
               if (__chosen.exists(i)) {
                 found = true;
                 break;
@@ -294,7 +294,7 @@ namespace gum {
               // over the remaining matches
               reduced_iso_graph.addNodeWithId(node);
 
-              for (const auto iso : reduced_iso_graph.nodes())
+              for (const auto iso: reduced_iso_graph.nodes())
                 if (iso_graph->existsEdge(node, iso))
                   reduced_iso_graph.addEdge(node, iso);
 
@@ -311,13 +311,13 @@ namespace gum {
           std::sort(degree_list.begin(), degree_list.end(), my_sort);
           Set< NodeId > removed;
 
-          for (const auto node : degree_list)
+          for (const auto node: degree_list)
             if (!removed.exists(node)) {
               // First we update removed to follow the max independent set
               // algorithm
               removed.insert(node);
 
-              for (const auto neighbor : reduced_iso_graph.neighbours(node))
+              for (const auto neighbor: reduced_iso_graph.neighbours(node))
                 removed.insert(neighbor);
 
               // Second we update match and matches to keep track of the current
@@ -325,7 +325,7 @@ namespace gum {
               match = &(tree().iso_map(**patt, node));
               matches->insert(match);
 
-              for (const auto elt : *match)
+              for (const auto elt: *match)
                 __chosen.insert(elt);
             }
 
@@ -364,7 +364,7 @@ namespace gum {
     INLINE GSpan< GUM_SCALAR >::~GSpan() {
       GUM_DESTRUCTOR(GSpan);
 
-      for (const auto& elt : __matched_instances)
+      for (const auto& elt: __matched_instances)
         delete elt.second;
 
       delete __graph;

@@ -112,7 +112,7 @@ namespace gum {
     void DBRowGeneratorSet< ALLOC >::clear() {
       // delete all the generators
       ALLOC< DBRowGenerator< ALLOC > > allocator(this->getAllocator());
-      for (auto gen : __generators) {
+      for (auto gen: __generators) {
         allocator.destroy(gen);
         allocator.deallocate(gen, 1);
       }
@@ -135,8 +135,8 @@ namespace gum {
 
     /// copy operator
     template < template < typename > class ALLOC >
-    DBRowGeneratorSet< ALLOC >& DBRowGeneratorSet< ALLOC >::
-                                operator=(const DBRowGeneratorSet< ALLOC >& from) {
+    DBRowGeneratorSet< ALLOC >& DBRowGeneratorSet< ALLOC >::operator=(
+       const DBRowGeneratorSet< ALLOC >& from) {
       if (this != &from) {
         // produce the new generators
         ALLOC< DBRowGenerator< ALLOC > > allocator(this->getAllocator());
@@ -172,8 +172,8 @@ namespace gum {
 
     /// move operator
     template < template < typename > class ALLOC >
-    DBRowGeneratorSet< ALLOC >& DBRowGeneratorSet< ALLOC >::
-                                operator=(DBRowGeneratorSet< ALLOC >&& from) {
+    DBRowGeneratorSet< ALLOC >&
+       DBRowGeneratorSet< ALLOC >::operator=(DBRowGeneratorSet< ALLOC >&& from) {
       if (this != &from) {
         // remove the old generators and move the new ones
         clear();
@@ -188,16 +188,16 @@ namespace gum {
 
     /// returns the ith generator
     template < template < typename > class ALLOC >
-    INLINE DBRowGenerator< ALLOC >& DBRowGeneratorSet< ALLOC >::
-                                    operator[](const std::size_t i) {
+    INLINE DBRowGenerator< ALLOC >&
+       DBRowGeneratorSet< ALLOC >::operator[](const std::size_t i) {
       return *(__generators[i]);
     }
 
 
     /// returns the ith generator
     template < template < typename > class ALLOC >
-    INLINE const DBRowGenerator< ALLOC >& DBRowGeneratorSet< ALLOC >::
-                                          operator[](const std::size_t i) const {
+    INLINE const DBRowGenerator< ALLOC >&
+       DBRowGeneratorSet< ALLOC >::operator[](const std::size_t i) const {
       return *(__generators[i]);
     }
 
@@ -272,7 +272,7 @@ namespace gum {
                  const BayesNet< GUM_SCALAR >* >
          old_bns;
 
-      for (auto xgen : __generators) {
+      for (auto xgen: __generators) {
         // check if the generator relies on a Bayes net
         DBRowGeneratorWithBN< GUM_SCALAR, ALLOC >* gen = nullptr;
         try {
@@ -289,7 +289,7 @@ namespace gum {
             // if we could not assign the new BN to the generator, then
             // make all the generators that were successfully assigned this
             // BN revert to the old BN they had
-            for (auto& generator : old_bns) {
+            for (auto& generator: old_bns) {
               generator.first->setBayesNet(*(generator.second));
             }
             throw;
@@ -404,7 +404,7 @@ namespace gum {
        const DBRow< DBTranslatedValue, ALLOC >& input_row) {
       // reset all the generators: ask them to use method setInputDBRow
       if (hasRows())
-        for (auto& performed : __setInputRow_performed)
+        for (auto& performed: __setInputRow_performed)
           performed = 0;
 
       // now, parse the row generation tree
@@ -429,9 +429,9 @@ namespace gum {
     /// resets the filter
     template < template < typename > class ALLOC >
     INLINE void DBRowGeneratorSet< ALLOC >::reset() {
-      for (auto gen : __generators)
+      for (auto gen: __generators)
         gen->reset();
-      for (auto& performed : __setInputRow_performed)
+      for (auto& performed: __setInputRow_performed)
         performed = 0;
       __output_row = nullptr;
     }
@@ -447,7 +447,7 @@ namespace gum {
         GUM_ERROR(OperationNotAllowed,
                   "you cannot change the columns of interest while a "
                   "generation is still being processed");
-      for (auto gen : __generators)
+      for (auto gen: __generators)
         gen->setColumnsOfInterest(cols_of_interest);
     }
 
@@ -461,7 +461,7 @@ namespace gum {
         GUM_ERROR(OperationNotAllowed,
                   "you cannot change the columns of interest while a "
                   "generation is still being processed");
-      for (auto gen : __generators)
+      for (auto gen: __generators)
         gen->setColumnsOfInterest(cols_of_interest);
     }
 

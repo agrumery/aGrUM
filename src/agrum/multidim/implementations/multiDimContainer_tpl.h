@@ -55,14 +55,16 @@ namespace gum {
     GUM_CONS_CPY(MultiDimContainer);
   }
   template < typename GUM_SCALAR >
-  INLINE MultiDimContainer< GUM_SCALAR >& MultiDimContainer< GUM_SCALAR >::
-                                          operator=(const MultiDimContainer< GUM_SCALAR >& from) {
+  INLINE MultiDimContainer< GUM_SCALAR >&
+     MultiDimContainer< GUM_SCALAR >::operator=(
+        const MultiDimContainer< GUM_SCALAR >& from) {
     MultiDimAdressable::operator=(from);
     return *this;
   }
   template < typename GUM_SCALAR >
-  INLINE MultiDimContainer< GUM_SCALAR >& MultiDimContainer< GUM_SCALAR >::
-                                          operator=(MultiDimContainer< GUM_SCALAR >&& from) {
+  INLINE MultiDimContainer< GUM_SCALAR >&
+     MultiDimContainer< GUM_SCALAR >::operator=(
+        MultiDimContainer< GUM_SCALAR >&& from) {
     GUM_OP_MOV(MultiDimContainer);
     MultiDimAdressable::operator=(std::forward< MultiDimAdressable >(from));
     return *this;
@@ -78,8 +80,8 @@ namespace gum {
   // an [] operator using a Instantiation as argument
 
   template < typename GUM_SCALAR >
-  INLINE GUM_SCALAR MultiDimContainer< GUM_SCALAR >::
-                    operator[](const Instantiation& i) const {
+  INLINE GUM_SCALAR
+     MultiDimContainer< GUM_SCALAR >::operator[](const Instantiation& i) const {
     return get(i);
   }
 
@@ -95,7 +97,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR
-         MultiDimContainer< GUM_SCALAR >::get(const Instantiation& i) const {
+     MultiDimContainer< GUM_SCALAR >::get(const Instantiation& i) const {
     return _get(i);
   }
 
@@ -125,8 +127,8 @@ namespace gum {
   // Test if this potential is equal to p.
 
   template < typename GUM_SCALAR >
-  bool MultiDimContainer< GUM_SCALAR >::
-       operator==(const MultiDimContainer< GUM_SCALAR >& p) const {
+  bool MultiDimContainer< GUM_SCALAR >::operator==(
+     const MultiDimContainer< GUM_SCALAR >& p) const {
     if ((nbrDim() == p.nbrDim()) && (domainSize() == p.domainSize())) {
       if (nbrDim() == 0) return true;
 
@@ -156,8 +158,8 @@ namespace gum {
   // Test if this potential is different of p.
 
   template < typename GUM_SCALAR >
-  INLINE bool MultiDimContainer< GUM_SCALAR >::
-              operator!=(const MultiDimContainer< GUM_SCALAR >& p) const {
+  INLINE bool MultiDimContainer< GUM_SCALAR >::operator!=(
+     const MultiDimContainer< GUM_SCALAR >& p) const {
     return !operator==(p);
   }
 
@@ -186,7 +188,7 @@ namespace gum {
 
     Instantiation i(*this);
     // insert all the elements
-    for (const auto& elt : l) {
+    for (const auto& elt: l) {
       set(i, elt);
       ++i;
     }

@@ -58,16 +58,16 @@ namespace gum {
 
 
   /// copy operator
-  INLINE IContinuousVariable& IContinuousVariable::
-                              operator=(const IContinuousVariable& from) {
+  INLINE IContinuousVariable&
+     IContinuousVariable::operator=(const IContinuousVariable& from) {
     Variable::operator=(from);
     return *this;
   }
 
 
   /// move operator
-  INLINE IContinuousVariable& IContinuousVariable::
-                              operator=(IContinuousVariable&& from) {
+  INLINE IContinuousVariable&
+     IContinuousVariable::operator=(IContinuousVariable&& from) {
     Variable::operator=(std::move(from));
     return *this;
   }

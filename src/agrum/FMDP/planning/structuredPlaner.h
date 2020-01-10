@@ -67,7 +67,7 @@ namespace gum {
    *
    */
   template < typename GUM_SCALAR >
-  class StructuredPlaner : public IPlanningStrategy< GUM_SCALAR > {
+  class StructuredPlaner: public IPlanningStrategy< GUM_SCALAR > {
     // ###################################################################
     /// @name
     // ###################################################################

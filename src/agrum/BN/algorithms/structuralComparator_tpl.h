@@ -33,7 +33,7 @@ namespace gum {
     if (ref.size() != test.size()) {
       GUM_ERROR(OperationNotAllowed, "Graphs of different sizes");
     }
-    for (const NodeId node : ref.dag().asNodeSet()) {
+    for (const NodeId node: ref.dag().asNodeSet()) {
       if (!test.dag().existsNode(node)) {
         GUM_ERROR(InvalidNode,
                   "Test doesn't contain node " << node << " from ref");

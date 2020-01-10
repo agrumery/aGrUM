@@ -36,7 +36,7 @@
 #include <agrum/variables/labelizedVariable.h>
 
 namespace gum_tests {
-  class DocumentationTestSuite : public CxxTest::TestSuite {
+  class DocumentationTestSuite: public CxxTest::TestSuite {
     public:
     void testBayesNet() {
       try {

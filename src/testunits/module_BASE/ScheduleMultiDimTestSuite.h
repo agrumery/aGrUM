@@ -30,7 +30,7 @@
 #include <agrum/variables/labelizedVariable.h>
 namespace gum_tests {
 
-  class ScheduleMultiDimTestSuite : public CxxTest::TestSuite {
+  class ScheduleMultiDimTestSuite: public CxxTest::TestSuite {
     public:
     void test_construct() {
       std::vector< gum::LabelizedVariable* > vars(10);

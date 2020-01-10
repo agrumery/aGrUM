@@ -124,8 +124,8 @@ namespace gum {
   }
 
   // copy operator
-  INLINE LabelizedVariable& LabelizedVariable::
-                            operator=(const LabelizedVariable& aLDRV) {
+  INLINE LabelizedVariable&
+     LabelizedVariable::operator=(const LabelizedVariable& aLDRV) {
     // avoid self assignment
     if (&aLDRV != this) { _copy(aLDRV); }
 

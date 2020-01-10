@@ -37,7 +37,7 @@
 #include <agrum/core/priorityQueue.h>
 #include <agrum/graphs/cliqueGraph.h>
 
-#define GUM_QUASI_RATIO 0.99
+#define GUM_QUASI_RATIO      0.99
 #define GUM_WEIGHT_THRESHOLD 0.0
 
 namespace gum {

@@ -38,7 +38,7 @@ namespace gum {
       DFSCode::DFSCode(const DFSCode& source) {
         GUM_CONS_CPY(DFSCode);
 
-        for (const auto code : source.codes)
+        for (const auto code: source.codes)
           codes.push_back(new EdgeCode(*code));
       }
 
@@ -46,16 +46,16 @@ namespace gum {
       DFSCode::~DFSCode() {
         GUM_DESTRUCTOR(DFSCode);
 
-        for (const auto item : codes)
+        for (const auto item: codes)
           delete item;
       }
 
       INLINE
       DFSCode& DFSCode::operator=(const DFSCode& source) {
-        for (const auto item : codes)
+        for (const auto item: codes)
           delete item;
 
-        for (const auto srcitem : source.codes)
+        for (const auto srcitem: source.codes)
           codes.push_back(new EdgeCode(*srcitem));
 
         return *this;

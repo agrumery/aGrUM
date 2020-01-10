@@ -31,7 +31,7 @@
 
 namespace gum_tests {
 
-  class SimpleCPTGeneratorTestSuite : public CxxTest::TestSuite {
+  class SimpleCPTGeneratorTestSuite: public CxxTest::TestSuite {
     public:
     // Binary variables
     gum::LabelizedVariable* binVar1;

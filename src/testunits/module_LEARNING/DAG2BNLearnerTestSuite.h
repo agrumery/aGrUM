@@ -35,14 +35,14 @@
 
 namespace gum_tests {
 
-  class DAG2BNLearnerTestSuite : public CxxTest::TestSuite {
+  class DAG2BNLearnerTestSuite: public CxxTest::TestSuite {
     private:
     std::vector< double > __normalize(const std::vector< double >& vin) {
       double sum = 0;
-      for (const auto& val : vin)
+      for (const auto& val: vin)
         sum += val;
       std::vector< double > vout(vin);
-      for (auto& val : vout)
+      for (auto& val: vout)
         val /= sum;
       return vout;
     }
@@ -182,7 +182,7 @@ namespace gum_tests {
       // bugfix for parallel exceution of VariableElimination
       {
         const gum::DAG& dag = bn.dag();
-        for (const auto node : dag) {
+        for (const auto node: dag) {
           dag.parents(node);
           dag.children(node);
         }

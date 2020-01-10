@@ -63,7 +63,7 @@ namespace gum {
 
       // copy the ticks of var into our internal variable
       const auto& ticks = var.ticks();
-      for (const auto tick : ticks) {
+      for (const auto tick: ticks) {
         __variable.addTick((float)tick);
       }
 
@@ -86,7 +86,7 @@ namespace gum {
 
       // add the content of the variable into the back dictionary
       std::size_t size = 0;
-      for (const auto& label : var.labels()) {
+      for (const auto& label: var.labels()) {
         // if the label corresponds to a missing value, then remove it from
         // the set of missing symbols. If, in addition, it has already
         // been entered into the back_dictionary, then, this has been done
@@ -130,7 +130,7 @@ namespace gum {
 
       // copy the ticks of var into our internal variable
       const auto ticks = var.ticksAsDoubles();
-      for (const auto tick : ticks) {
+      for (const auto tick: ticks) {
         __variable.addTick((float)tick);
       }
 
@@ -153,7 +153,7 @@ namespace gum {
 
       // add the content of the variable into the back dictionary
       std::size_t size = 0;
-      for (const auto& label : var.labels()) {
+      for (const auto& label: var.labels()) {
         // if the label corresponds to a missing value, then remove it from
         // the set of missing symbols. If, in addition, it has already
         // been entered into the back_dictionary, then, this has been done
@@ -193,13 +193,13 @@ namespace gum {
 
       // copy the ticks of var into our internal variable
       const auto& ticks = var.ticks();
-      for (const auto tick : ticks) {
+      for (const auto tick: ticks) {
         __variable.addTick((float)tick);
       }
 
       // add the content of the variable into the back dictionary
       std::size_t size = 0;
-      for (const auto& label : var.labels()) {
+      for (const auto& label: var.labels()) {
         this->_back_dico.insert(size, label);
         ++size;
       }
@@ -229,13 +229,13 @@ namespace gum {
 
       // copy the ticks of var into our internal variable
       const auto ticks = var.ticksAsDoubles();
-      for (const auto tick : ticks) {
+      for (const auto tick: ticks) {
         __variable.addTick((float)tick);
       }
 
       // add the content of the variable into the back dictionary
       std::size_t size = 0;
-      for (const auto& label : var.labels()) {
+      for (const auto& label: var.labels()) {
         this->_back_dico.insert(size, label);
         ++size;
       }
@@ -333,8 +333,8 @@ namespace gum {
     /// copy operator
     template < template < typename > class ALLOC >
     DBTranslator4DiscretizedVariable< ALLOC >&
-          DBTranslator4DiscretizedVariable< ALLOC >::
-          operator=(const DBTranslator4DiscretizedVariable< ALLOC >& from) {
+       DBTranslator4DiscretizedVariable< ALLOC >::operator=(
+          const DBTranslator4DiscretizedVariable< ALLOC >& from) {
       if (this != &from) {
         DBTranslator< ALLOC >::operator=(from);
         __variable = from.__variable;
@@ -350,8 +350,8 @@ namespace gum {
     /// move operator
     template < template < typename > class ALLOC >
     DBTranslator4DiscretizedVariable< ALLOC >&
-          DBTranslator4DiscretizedVariable< ALLOC >::
-          operator=(DBTranslator4DiscretizedVariable< ALLOC >&& from) {
+       DBTranslator4DiscretizedVariable< ALLOC >::operator=(
+          DBTranslator4DiscretizedVariable< ALLOC >&& from) {
       if (this != &from) {
         DBTranslator< ALLOC >::operator=(std::move(from));
         __variable = std::move(from.__variable);
@@ -469,7 +469,7 @@ namespace gum {
     /// returns the translation of a missing value
     template < template < typename > class ALLOC >
     INLINE DBTranslatedValue
-           DBTranslator4DiscretizedVariable< ALLOC >::missingValue() const {
+       DBTranslator4DiscretizedVariable< ALLOC >::missingValue() const {
       return DBTranslatedValue{std::numeric_limits< std::size_t >::max()};
     }
 

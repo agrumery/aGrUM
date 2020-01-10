@@ -57,7 +57,7 @@ namespace gum {
    */
   // clang-format on
   template < typename GUM_SCALAR >
-  class MultiDimICIModel : public MultiDimReadOnly< GUM_SCALAR > {
+  class MultiDimICIModel: public MultiDimReadOnly< GUM_SCALAR > {
     public:
     // ============================================================================
     /// @name Constructors / Destructors

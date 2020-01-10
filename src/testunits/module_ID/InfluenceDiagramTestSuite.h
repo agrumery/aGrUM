@@ -52,7 +52,7 @@
 
 namespace gum_tests {
 
-  class InfluenceDiagramTestSuite : public CxxTest::TestSuite {
+  class InfluenceDiagramTestSuite: public CxxTest::TestSuite {
     private:
     void fillTopo(gum::InfluenceDiagram< double >& id,
                   gum::List< gum::NodeId >&        idList) {
@@ -239,7 +239,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(source.dag().size(), copy->dag().size());
       TS_ASSERT_EQUALS(source.dag().sizeArcs(), copy->dag().sizeArcs());
 
-      for (const auto node : source.dag().nodes()) {
+      for (const auto node: source.dag().nodes()) {
         TS_ASSERT(copy->dag().exists(node));
 
         const gum::DiscreteVariable& srcVar = source.variable(node);
@@ -252,7 +252,7 @@ namespace gum_tests {
         } else
           TS_ASSERT(false);
 
-        for (const auto parent : source.dag().parents(node)) {
+        for (const auto parent: source.dag().parents(node)) {
           TS_ASSERT(copy->dag().existsArc(parent, node));
         }
 
@@ -420,7 +420,7 @@ namespace gum_tests {
 
       id.erase(idList[0]);
 
-      for (const auto node : idList)
+      for (const auto node: idList)
         id.erase(node);
 
       TS_ASSERT(id.empty());
@@ -489,7 +489,7 @@ namespace gum_tests {
       gum::InfluenceDiagram< double > id;
       gum::List< gum::NodeId >        idList;
 
-      for (const auto node : id.nodes()) {
+      for (const auto node: id.nodes()) {
         TS_ASSERT(idList.exists(node));
       }
     }
@@ -653,7 +653,7 @@ namespace gum_tests {
 
       fill(id, idList);
 
-      for (const auto node : id.nodes()) {
+      for (const auto node: id.nodes()) {
         TS_ASSERT_EQUALS(id.idFromName(id.variable(node).name()), node);
         TS_ASSERT_EQUALS(&id.variableFromName(id.variable(node).name()),
                          &id.variable(node));
@@ -687,10 +687,10 @@ namespace gum_tests {
       gum::Size resultat[7][3] = {{8, 6, 4}, {3}, {7}, {1}, {2}, {5}, {0}};
       int       i = 0;
 
-      for (const auto nodeset : partialTemporalOrder) {
+      for (const auto nodeset: partialTemporalOrder) {
         int j = 0;
 
-        for (const auto node : nodeset) {
+        for (const auto node: nodeset) {
           TS_ASSERT_EQUALS(node, resultat[i][j]);
           j += 1;
         }

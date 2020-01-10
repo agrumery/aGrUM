@@ -108,9 +108,7 @@ namespace gum {
    */
   /* ===========================================================================
    */
-  class DiGraph
-      : public virtual NodeGraphPart
-      , public ArcGraphPart {
+  class DiGraph: public virtual NodeGraphPart, public ArcGraphPart {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

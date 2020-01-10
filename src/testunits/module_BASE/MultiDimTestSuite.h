@@ -31,7 +31,7 @@
 
 namespace gum_tests {
 
-  class MultidimTestSuite : public CxxTest::TestSuite {
+  class MultidimTestSuite: public CxxTest::TestSuite {
     public:
     void testCreation() {
       gum::MultiDimArray< double > m;

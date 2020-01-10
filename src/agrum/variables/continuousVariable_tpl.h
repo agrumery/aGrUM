@@ -100,8 +100,9 @@ namespace gum {
 
   /// copy operator
   template < typename GUM_SCALAR >
-  INLINE ContinuousVariable< GUM_SCALAR >& ContinuousVariable< GUM_SCALAR >::
-                                           operator=(const ContinuousVariable< GUM_SCALAR >& from) {
+  INLINE ContinuousVariable< GUM_SCALAR >&
+     ContinuousVariable< GUM_SCALAR >::operator=(
+        const ContinuousVariable< GUM_SCALAR >& from) {
     IContinuousVariable::operator=(from);
     __lower_bound = from.__lower_bound;
     __upper_bound = from.__upper_bound;
@@ -112,8 +113,9 @@ namespace gum {
   /// generalized copy operator
   template < typename GUM_SCALAR >
   template < typename TX_VAL >
-  INLINE ContinuousVariable< GUM_SCALAR >& ContinuousVariable< GUM_SCALAR >::
-                                           operator=(const ContinuousVariable< TX_VAL >& from) {
+  INLINE ContinuousVariable< GUM_SCALAR >&
+     ContinuousVariable< GUM_SCALAR >::operator=(
+        const ContinuousVariable< TX_VAL >& from) {
     IContinuousVariable::operator=(from);
     __lower_bound = GUM_SCALAR(from.__lower_bound);
     __upper_bound = GUM_SCALAR(from.__upper_bound);
@@ -123,8 +125,9 @@ namespace gum {
 
   /// move operator
   template < typename GUM_SCALAR >
-  INLINE ContinuousVariable< GUM_SCALAR >& ContinuousVariable< GUM_SCALAR >::
-                                           operator=(ContinuousVariable< GUM_SCALAR >&& from) {
+  INLINE ContinuousVariable< GUM_SCALAR >&
+     ContinuousVariable< GUM_SCALAR >::operator=(
+        ContinuousVariable< GUM_SCALAR >&& from) {
     IContinuousVariable::operator=(std::move(from));
     __lower_bound = from.__lower_bound;
     __upper_bound = from.__upper_bound;
@@ -134,8 +137,8 @@ namespace gum {
 
   /// returns the GUM_SCALAR corresponding to a string (unspecialized version)
   template < typename GUM_SCALAR >
-  INLINE GUM_SCALAR ContinuousVariable< GUM_SCALAR >::
-                    operator[](const std::string& str) const {
+  INLINE GUM_SCALAR
+     ContinuousVariable< GUM_SCALAR >::operator[](const std::string& str) const {
     std::istringstream stream(str);
     GUM_SCALAR         value;
     stream >> value;

@@ -69,8 +69,8 @@ namespace gum {
       }
 
       template < typename GUM_SCALAR >
-      INLINE O3TypeFactory< GUM_SCALAR >& O3TypeFactory< GUM_SCALAR >::
-                                          operator=(const O3TypeFactory< GUM_SCALAR >& src) {
+      INLINE O3TypeFactory< GUM_SCALAR >& O3TypeFactory< GUM_SCALAR >::operator=(
+         const O3TypeFactory< GUM_SCALAR >& src) {
         if (this == &src) { return *this; }
         __prm = src.__prm;
         __o3_prm = src.__o3_prm;
@@ -81,8 +81,8 @@ namespace gum {
       }
 
       template < typename GUM_SCALAR >
-      INLINE O3TypeFactory< GUM_SCALAR >& O3TypeFactory< GUM_SCALAR >::
-                                          operator=(O3TypeFactory< GUM_SCALAR >&& src) {
+      INLINE O3TypeFactory< GUM_SCALAR >& O3TypeFactory< GUM_SCALAR >::operator=(
+         O3TypeFactory< GUM_SCALAR >&& src) {
         if (this == &src) { return *this; }
         __prm = std::move(src.__prm);
         __o3_prm = std::move(src.__o3_prm);
@@ -119,13 +119,13 @@ namespace gum {
           __setO3TypeCreationOrder();
 
           PRMFactory< GUM_SCALAR > factory(__prm);
-          for (auto type : __o3Types) {
+          for (auto type: __o3Types) {
             if (!__isPrimitiveType(*type)) {
               if (__solver->resolveType(type->superLabel())) {
                 factory.startDiscreteType(type->name().label(),
                                           type->superLabel().label());
 
-                for (auto& label : type->labels()) {
+                for (auto& label: type->labels()) {
                   factory.addLabel(label.first.label(), label.second.label());
                 }
 
@@ -138,19 +138,19 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE void O3TypeFactory< GUM_SCALAR >::__checkDepreactedO3Types() {
-        for (auto& t : __o3_prm->types()) {
+        for (auto& t: __o3_prm->types()) {
           if (t->deprecated()) {
             O3PRM_DEPRECATED_TYPE_WARNING(t->name(), *__errors);
           }
         }
 
-        for (auto& t : __o3_prm->int_types()) {
+        for (auto& t: __o3_prm->int_types()) {
           if (t->deprecated()) {
             O3PRM_DEPRECATED_TYPE_WARNING(t->name(), *__errors);
           }
         }
 
-        for (auto& t : __o3_prm->real_types()) {
+        for (auto& t: __o3_prm->real_types()) {
           if (t->deprecated()) {
             O3PRM_DEPRECATED_TYPE_WARNING(t->name(), *__errors);
           }
@@ -161,7 +161,7 @@ namespace gum {
       INLINE void O3TypeFactory< GUM_SCALAR >::__buildIntTypes() {
         if (__checkO3IntTypes()) {
           PRMFactory< GUM_SCALAR > factory(__prm);
-          for (auto type : __o3IntTypes) {
+          for (auto type: __o3IntTypes) {
             factory.addRangeType(
                type->name().label(), type->start().value(), type->end().value());
           }
@@ -172,10 +172,10 @@ namespace gum {
       INLINE void O3TypeFactory< GUM_SCALAR >::__buildRealTypes() {
         if (__checkO3RealTypes()) {
           PRMFactory< GUM_SCALAR > factory(__prm);
-          for (auto type : __o3RealTypes) {
+          for (auto type: __o3RealTypes) {
             factory.startDiscretizedType(type->name().label());
 
-            for (auto value : type->values()) {
+            for (auto value: type->values()) {
               factory.addTick(value.value());
             }
             factory.endDiscretizedType();
@@ -186,14 +186,14 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE bool O3TypeFactory< GUM_SCALAR >::__checkO3RealTypes() {
         auto names = gum::Set< std::string >();
-        for (auto& type : __o3_prm->types()) {
+        for (auto& type: __o3_prm->types()) {
           names.insert(type->name().label());
         }
-        for (auto& type : __o3_prm->int_types()) {
+        for (auto& type: __o3_prm->int_types()) {
           names.insert(type->name().label());
         }
 
-        for (const auto& type : __o3_prm->real_types()) {
+        for (const auto& type: __o3_prm->real_types()) {
           if (names.contains(type->name().label())) {
             // Raised if duplicate type names
             O3PRM_TYPE_DUPPLICATE(type->name(), *__errors);
@@ -227,7 +227,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE bool O3TypeFactory< GUM_SCALAR >::__addTypes2Dag() {
         // Adding nodes to the type inheritance graph
-        for (auto& type : __o3_prm->types()) {
+        for (auto& type: __o3_prm->types()) {
           auto id = __dag.addNode();
           try {
             __nameMap.insert(type->name().label(), id);
@@ -246,7 +246,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE bool O3TypeFactory< GUM_SCALAR >::__addArcs2Dag() {
         // Adding arcs to the graph inheritance graph
-        for (auto& type : __o3_prm->types()) {
+        for (auto& type: __o3_prm->types()) {
           if (type->superLabel().label() != "") {
             if (!__solver->resolveType(type->superLabel())) { return false; }
 
@@ -273,11 +273,11 @@ namespace gum {
 
       template < typename GUM_SCALAR >
       INLINE bool O3TypeFactory< GUM_SCALAR >::__checkLabels(O3Type& type) {
-        for (auto& pair : type.labels()) {
+        for (auto& pair: type.labels()) {
           auto super_labels = Set< std::string >();
           auto super = __typeMap[type.superLabel().label()];
 
-          for (auto& label : super->labels()) {
+          for (auto& label: super->labels()) {
             super_labels.insert(label.first.label());
           }
 
@@ -303,11 +303,11 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE bool O3TypeFactory< GUM_SCALAR >::__checkO3IntTypes() {
         auto names = gum::Set< std::string >();
-        for (auto& type : __o3_prm->types()) {
+        for (auto& type: __o3_prm->types()) {
           names.insert(type->name().label());
         }
 
-        for (const auto& type : __o3_prm->int_types()) {
+        for (const auto& type: __o3_prm->int_types()) {
           if (names.contains(type->name().label())) {
             // Raised if duplicate type names
             O3PRM_TYPE_DUPPLICATE(type->name(), *__errors);

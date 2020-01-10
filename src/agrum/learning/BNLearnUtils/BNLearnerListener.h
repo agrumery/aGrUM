@@ -62,7 +62,7 @@ namespace gum {
      *
      * @ingroup learning_group
      */
-    class BNLearnerListener : public ApproximationSchemeListener {
+    class BNLearnerListener: public ApproximationSchemeListener {
       public:
       BNLearnerListener(genericBNLearner* bnl, ApproximationScheme& sch);
       virtual ~BNLearnerListener();

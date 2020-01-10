@@ -34,7 +34,7 @@
 
 namespace gum_tests {
 
-  class MultiDimLogitTestSuite : public CxxTest::TestSuite {
+  class MultiDimLogitTestSuite: public CxxTest::TestSuite {
     public:
     void testCreationLogit() {
       gum::LabelizedVariable a("a", "", 2), b("b", "", 2), c("c", "", 2),

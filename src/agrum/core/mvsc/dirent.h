@@ -170,13 +170,13 @@
 
 /* File type flags for d_type */
 #  define DT_UNKNOWN 0
-#  define DT_REG S_IFREG
-#  define DT_DIR S_IFDIR
-#  define DT_FIFO S_IFIFO
-#  define DT_SOCK S_IFSOCK
-#  define DT_CHR S_IFCHR
-#  define DT_BLK S_IFBLK
-#  define DT_LNK S_IFLNK
+#  define DT_REG     S_IFREG
+#  define DT_DIR     S_IFDIR
+#  define DT_FIFO    S_IFIFO
+#  define DT_SOCK    S_IFSOCK
+#  define DT_CHR     S_IFCHR
+#  define DT_BLK     S_IFBLK
+#  define DT_LNK     S_IFLNK
 
 /* Macros for converting between st_mode and d_type */
 #  define IFTODT(mode) ((mode)&S_IFMT)
@@ -266,11 +266,11 @@ static void             _wrewinddir(_WDIR* dirp);
 
 
 /* For compatibility with Symbian */
-#  define wdirent _wdirent
-#  define WDIR _WDIR
-#  define wopendir _wopendir
-#  define wreaddir _wreaddir
-#  define wclosedir _wclosedir
+#  define wdirent    _wdirent
+#  define WDIR       _WDIR
+#  define wopendir   _wopendir
+#  define wreaddir   _wreaddir
+#  define wclosedir  _wclosedir
 #  define wrewinddir _wrewinddir
 
 

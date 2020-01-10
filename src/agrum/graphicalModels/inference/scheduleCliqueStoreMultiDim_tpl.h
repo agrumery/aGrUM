@@ -77,8 +77,8 @@ namespace gum {
   /// copy operator
   template < typename GUM_SCALAR >
   ScheduleCliqueStoreMultiDim< GUM_SCALAR >&
-        ScheduleCliqueStoreMultiDim< GUM_SCALAR >::
-        operator=(const ScheduleCliqueStoreMultiDim< GUM_SCALAR >& from) {
+     ScheduleCliqueStoreMultiDim< GUM_SCALAR >::operator=(
+        const ScheduleCliqueStoreMultiDim< GUM_SCALAR >& from) {
     // avoid self assignment
     if (&from != this) {
       ScheduleOperation< GUM_SCALAR >::operator=(from);
@@ -97,8 +97,8 @@ namespace gum {
 
   /// operator ==
   template < typename GUM_SCALAR >
-  bool ScheduleCliqueStoreMultiDim< GUM_SCALAR >::
-       operator==(const ScheduleOperation< GUM_SCALAR >& op) const {
+  bool ScheduleCliqueStoreMultiDim< GUM_SCALAR >::operator==(
+     const ScheduleOperation< GUM_SCALAR >& op) const {
     if (this->type() != op.type()) return false;
 
     const ScheduleCliqueStoreMultiDim< GUM_SCALAR >& real_op =
@@ -109,8 +109,8 @@ namespace gum {
 
   /// operator !=
   template < typename GUM_SCALAR >
-  bool ScheduleCliqueStoreMultiDim< GUM_SCALAR >::
-       operator!=(const ScheduleOperation< GUM_SCALAR >& op) const {
+  bool ScheduleCliqueStoreMultiDim< GUM_SCALAR >::operator!=(
+     const ScheduleOperation< GUM_SCALAR >& op) const {
     if (this->type() != op.type()) return true;
 
     const ScheduleCliqueStoreMultiDim< GUM_SCALAR >& real_op =
