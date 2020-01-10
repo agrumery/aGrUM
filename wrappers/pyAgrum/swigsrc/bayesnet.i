@@ -26,9 +26,11 @@
 %ignore *::beginArcs;
 %ignore *::endArcs;
 
+/* EXPERIMENTAL
 %pythonappend gum::BayesNet::cpt %{
         val.__fill_distrib__()
 %}
+*/
 
 %include "extensions/BNGenerator.h"
 

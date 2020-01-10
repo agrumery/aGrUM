@@ -291,8 +291,6 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
 
       if self._notSync:
         self._notSync=False
-        self._var_names = []
-        self._var_dims = []
         if self.empty():
             i = Instantiation(self)
             content = [self.get(i)]
@@ -306,25 +304,28 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
             content.append(self.get(i))
             i.inc()
         self.__distrib__ = numpy.array(content, dtype=numpy.float64) #M
+
+        shape = []
         for var in self.variablesSequence():
-            self._var_names.append(var.name())
-            self._var_dims.append(var.domainSize())
-        self._var_names.reverse()
-        self._var_dims.reverse()
-        self.__distrib__.shape = tuple(self._var_dims)
+            shape.append(var.domainSize())
+        shape.reverse()
+
+        self.__distrib__.shape = tuple(shape)
 %}
 
 
 %feature("shadow") gum::Potential::__indexfromdict__ %{
     def __indexfromdict__(self, id_dict):
         index = []
-        for name, dim in zip(self._var_names, self._var_dims):
+        vn=self.var_names
+        vd=self.var_dims
+        for name, dim in zip(vn, self.var_dims):
             if name in id_dict:
                 id_value = id_dict[name]
                 if isinstance(id_value, str):
                     # id_value is a label of a LabelizedVar
-                    i = self._var_names.index(name)
-                    var = self.variable(len(self._var_names) - 1 - i)
+                    i = vn.index(name)
+                    var = self.variable(len(vn) - 1 - i)
                     id_value = var[id_value]
                 if id_value >= dim:
                     raise IndexError("\"%s\" size is %d !"%(name, dim))
@@ -402,8 +403,11 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
         --------
             Listed in reverse from the variable enumeration order
         """
-        self.__fill_distrib__()
-        return self._var_names
+        var_names = []
+        for var in self.variablesSequence():
+            var_names.append(var.name())
+        var_names.reverse()
+        return var_names
 %}
 
 
@@ -416,8 +420,11 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
         list
             a list containing the dimensions of each variables in the potential
         """
-        self.__fill_distrib__()
-        return self._var_dims
+        var_dims = []
+        for var in self.variablesSequence():
+            var_dims.append(var.domainSize())
+        var_dims.reverse()
+        return var_dims
 %}
 
 

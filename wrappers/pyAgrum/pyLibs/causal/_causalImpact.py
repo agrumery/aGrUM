@@ -175,7 +175,7 @@ def _causalImpact(cm: CausalModel, on: NameSet,
   # https://twitter.com/analisereal/status/1022277416205475841 : should
   # really z be in the last formula ?)
   ssum = set(lsum)
-  lv += [v for v in adj._var_names if v not in ssum]
+  lv += [v for v in adj.var_names if v not in ssum]
 
   adj = adj.reorganize(lv)  # margSumIn(lv).reorganize(lv)
   explain = "Do-calculus computations"
