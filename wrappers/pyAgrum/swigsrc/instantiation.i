@@ -27,6 +27,14 @@
 %ignore gum::Instantiation::valFromPtr;
 
 %extend gum::Instantiation {
+  void setMutable() {
+    self->forgetMaster();
+  }
+
+  bool isMutable() {
+    return self->isSlave();
+  }
+  
   PyObject* todict(bool withLabels=false) const {
     auto res=PyDict_New();
     for(gum::Idx i=0;i<self->nbrDim();i++) {

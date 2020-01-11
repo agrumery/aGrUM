@@ -253,6 +253,7 @@ namespace gum {
      * @throw OperationNotAllowed Raised if the instantiation is a slave.
      */
     void erase(const DiscreteVariable& v) final;
+    void erase(const std::string& name);
 
     /**
      * @brief Erase all variables from an Instantiation
@@ -493,6 +494,7 @@ namespace gum {
      * @return Returns true if v is in the Instantiation.
      */
     bool contains(const DiscreteVariable& v) const final;
+    bool contains(const std::string& name) const;
 
     /**
      * Indicates whether a given variable belongs to the Instantiation.

@@ -36,6 +36,10 @@ namespace gum {
     return __vars.exists(&v);
   }
 
+  INLINE bool Instantiation::contains(const std::string& name) const {
+    return contains(variable(name));
+  }
+
   // indicates whether a given variable belongs to the Instantiation
   INLINE bool Instantiation::contains(const DiscreteVariable* v) const {
     return __vars.exists(v);
@@ -158,6 +162,10 @@ namespace gum {
     // actually delete the dimension
     __erase(v);
   }
+  
+   INLINE void Instantiation::erase(const std::string&  name){
+      erase(variable(name));
+    }
 
   // removes everything
   INLINE void Instantiation::clear() {
@@ -709,7 +717,7 @@ namespace gum {
   }
 
   // indicates whether the Instantiation has a master MultiDimAdressable
-  INLINE bool Instantiation::isSlave() const { return (__master != 0); }
+  INLINE bool Instantiation::isSlave() const { return (__master != nullptr); }
 
   // indicates wether the MultiDimAdressable* m is the master
   INLINE bool Instantiation::isMaster(const MultiDimAdressable* m) const {
