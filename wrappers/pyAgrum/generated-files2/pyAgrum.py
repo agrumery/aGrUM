@@ -149,6 +149,7 @@ _pyAgrum.SwigPyIterator_swigregister(SwigPyIterator)
 
 
 import numpy
+from numbers import Number
 
 class JunctionTreeGenerator(object):
     r"""
@@ -5565,9 +5566,10 @@ class Instantiation(object):
         """
         return _pyAgrum.Instantiation_add(self, v)
 
-    def erase(self, v):
+    def erase(self, *args):
         r"""
         erase(Instantiation self, DiscreteVariable v)
+        erase(Instantiation self, std::string const & name)
 
         Parameters
         ----------
@@ -5580,7 +5582,7 @@ class Instantiation(object):
           If v does not belong to this Instantiation.
 
         """
-        return _pyAgrum.Instantiation_erase(self, v)
+        return _pyAgrum.Instantiation_erase(self, *args)
 
     def clear(self):
         r"""
@@ -5629,6 +5631,7 @@ class Instantiation(object):
         r"""
         val(Instantiation self, gum::Idx i) -> gum::Idx
         val(Instantiation self, DiscreteVariable var) -> gum::Idx
+        val(Instantiation self, std::string const & name) -> gum::Idx
 
         Parameters
         ----------
@@ -5729,6 +5732,7 @@ class Instantiation(object):
     def contains(self, *args):
         r"""
         contains(Instantiation self, DiscreteVariable v) -> bool
+        contains(Instantiation self, std::string const & name) -> bool
         contains(Instantiation self, DiscreteVariable v) -> bool
 
         Indicates whether a given variable belongs to the Instantiation.
@@ -6142,6 +6146,14 @@ class Instantiation(object):
     def __str__(self):
         r"""__str__(Instantiation self) -> std::string"""
         return _pyAgrum.Instantiation___str__(self)
+
+    def setMutable(self):
+        r"""setMutable(Instantiation self)"""
+        return _pyAgrum.Instantiation_setMutable(self)
+
+    def isMutable(self):
+        r"""isMutable(Instantiation self) -> bool"""
+        return _pyAgrum.Instantiation_isMutable(self)
 
     def todict(self, withLabels=False):
         r"""
@@ -7886,7 +7898,6 @@ class Potential(object):
         """
         _pyAgrum.Potential_swiginit(self, _pyAgrum.new_Potential(*args))
 
-        self._notSync=True
         self._list_vars=list()
 
 
@@ -8073,7 +8084,6 @@ class Potential(object):
         """
         val = _pyAgrum.Potential_fillWith(self, *args)
 
-        self._notSync=True
         return self
 
 
@@ -8094,7 +8104,6 @@ class Potential(object):
         """
         val = _pyAgrum.Potential_abs(self)
 
-        self._notSync=True
         return self
 
 
@@ -8115,7 +8124,6 @@ class Potential(object):
         """
         val = _pyAgrum.Potential_normalize(self)
 
-        self._notSync=True
         return self
 
 
@@ -8131,7 +8139,6 @@ class Potential(object):
         """
         val = _pyAgrum.Potential_sq(self)
 
-        self._notSync=True
         return self
 
 
@@ -8183,7 +8190,6 @@ class Potential(object):
         """
         val = _pyAgrum.Potential_normalizeAsCPT(self)
 
-        self._notSync=True
         return self
 
 
@@ -8208,7 +8214,6 @@ class Potential(object):
         """
         val = _pyAgrum.Potential_scale(self, v)
 
-        self._notSync=True
         return self
 
 
@@ -8233,7 +8238,6 @@ class Potential(object):
         """
         val = _pyAgrum.Potential_translate(self, v)
 
-        self._notSync=True
         return self
 
 
@@ -8659,55 +8663,38 @@ class Potential(object):
             varlist.append(self.variable(i))
         return varlist
 
+    def __prepareIndices__(self,ind):
+      """
+      From an indice (dict or tuple), returns a pair of gum.Instantiation to loop in a part of the Potential.
+      """
+      loopvars=Instantiation(self)
+      loopvars.setMutable()
 
-    def __fill_distrib__(self):
-      if not hasattr(self,'_notSync'):
-        self._notSync=True
+      inst=Instantiation(self)
+      inst.setFirst()
 
-      if self._notSync:
-        self._notSync=False
-        if self.empty():
-            i = Instantiation(self)
-            content = [self.get(i)]
-            self.__distrib__ = numpy.array(content, dtype=numpy.float64) #M
-            return
+      if isinstance(ind, (Number,slice)):
+        i = tuple([ind])
+      else:
+        i = ind
 
-        content = []
-        i = Instantiation(self)
-        i.setFirst()
-        while not i.end():
-            content.append(self.get(i))
-            i.inc()
-        self.__distrib__ = numpy.array(content, dtype=numpy.float64) #M
-
-        shape = []
-        for var in self.variablesSequence():
-            shape.append(var.domainSize())
-        shape.reverse()
-
-        self.__distrib__.shape = tuple(shape)
-
-
-
-    def __indexfromdict__(self, id_dict):
-        index = []
-        vn=self.var_names
-        vd=self.var_dims
-        for name, dim in zip(vn, self.var_dims):
-            if name in id_dict:
-                id_value = id_dict[name]
-                if isinstance(id_value, str):
-    # id_value is a label of a LabelizedVar
-                    i = vn.index(name)
-                    var = self.variable(len(vn) - 1 - i)
-                    id_value = var[id_value]
-                if id_value >= dim:
-                    raise IndexError("\"%s\" size is %d !"%(name, dim))
-                index.append(id_value)
-            else:
-                index.append(slice(None, None, None)) # equivalent to ':'
-        return tuple(index)
-
+      vn=self.var_names
+      if isinstance(i,dict):
+          for nam in vn:        
+              if nam in i:
+                  inst.chgVal(nam,i[nam])
+                  loopvars.erase(nam)
+      elif isinstance(i,tuple):
+          if len(i)>self.nbrDim():
+              raise KeyError("Too many values in '"+str(i)+"' for '"+str(self)+"'")
+          for k,v in enumerate(i):
+              if not isinstance(v,slice):
+                  nam=vn[k]
+                  inst.chgVal(nam,v)
+                  loopvars.erase(nam)
+      else:
+          raise ValueError("No subscript using '"+str(i)+"'")
+      return inst,loopvars
 
 
     def tolist(self):
@@ -8717,8 +8704,7 @@ class Potential(object):
         list
             the potential as a list
         """
-        self.__fill_distrib__()
-        return self.__distrib__.tolist()
+        return self.__getitem__({}).tolist()
 
 
 
@@ -8729,36 +8715,57 @@ class Potential(object):
         array
             the potential as an array
         """
-        return numpy.array(self.tolist())
+        return self.__getitem__({})
 
 
 
     def __getitem__(self, id):
-        self.__fill_distrib__()
-        if self.empty():
-            return self.__distrib__[0]
+      if isinstance(id,Instantiation):
+          return self.get(id)
 
-        if isinstance(id, dict):
-            id_slice = self.__indexfromdict__(id)
-        else:
-            id_slice = id
-        return self.__distrib__[id_slice]
+      inst,loopvars=self.__prepareIndices__(id)
+
+      if loopvars.nbrDim()==0:
+          return self.get(inst)
+
+      names=[loopvars.variable(i-1).name() for i in range(loopvars.nbrDim(),0,-1)]
+      tab=numpy.zeros(tuple([loopvars.variable(i-1).domainSize() for i in range(loopvars.nbrDim(),0,-1)]))
+      while not inst.end():
+          indice=[inst.val(name) for name in names]
+          tab[tuple(indice)]=self.get(inst)
+          inst.incIn(loopvars)
+      return tab
 
 
 
     def __setitem__(self, id, value):
-        self.__fill_distrib__()
-        if self.empty():
-            self.fill(value)
-            self.__distrib__= numpy.array([value], dtype=numpy.float64) #M
-            return
+      if isinstance(id,Instantiation):
+          self.set(id,value)
+          return
 
-        if isinstance(id, dict):
-            id_slice = self.__indexfromdict__(id)
-        else:
-            id_slice = id
-        self.__distrib__[id_slice] = value
-        self.fillWith(self.__distrib__.reshape(self.__distrib__.size).tolist())
+      inst,loopvars=self.__prepareIndices__(id)
+
+      if loopvars.nbrDim()==0:
+          self.set(inst,value)
+          return
+
+      if isinstance(value,Number):
+        while not inst.end():
+            self.set(inst,value)
+            inst.incIn(loopvars)
+      else:
+        if isinstance(value,list):
+            value=numpy.array(value)
+
+        shape=tuple([loopvars.variable(i-1).domainSize() for i in range(loopvars.nbrDim(),0,-1)])
+        if value.shape!=shape:
+          raise ArgumentError("Shape of '"+str(value)+"' is not '"+str(shape)+"'")
+
+        names = [loopvars.variable(i - 1).name() for i in range(loopvars.nbrDim(), 0, -1)]
+        while not inst.end():
+            indice = tuple([inst.val(name) for name in names])
+            self.set(inst,float(value[indice]))
+            inst.incIn(loopvars)
 
 
 
@@ -8774,11 +8781,7 @@ class Potential(object):
         --------
             Listed in reverse from the variable enumeration order
         """
-        var_names = []
-        for var in self.variablesSequence():
-            var_names.append(var.name())
-        var_names.reverse()
-        return var_names
+        return [self.variable(i-1).name() for i in range(self.nbrDim(),0,-1)]
 
 
 
@@ -8790,11 +8793,7 @@ class Potential(object):
         list
             a list containing the dimensions of each variables in the potential
         """
-        var_dims = []
-        for var in self.variablesSequence():
-            var_dims.append(var.domainSize())
-        var_dims.reverse()
-        return var_dims
+        return [self.variable(i-1).domainSize() for i in range(self.nbrDim(),0,-1)]
 
 
 
@@ -8829,13 +8828,7 @@ class Potential(object):
           The new value of the Instantiation
 
         """
-        val = _pyAgrum.Potential_set(self, i, value)
-
-        self._notSync=True
-
-
-        return val
-
+        return _pyAgrum.Potential_set(self, i, value)
 
     def empty(self):
         r"""
@@ -8943,7 +8936,6 @@ class Potential(object):
         val = _pyAgrum.Potential_remove(self, var)
 
         self._list_vars.remove(var)
-        self._notSync=True
 
 
         return val
@@ -8971,7 +8963,6 @@ class Potential(object):
         val = _pyAgrum.Potential_add(self, v)
 
         self._list_vars.append(v)
-        self._notSync=True
         return self
 
 
