@@ -297,14 +297,14 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
                   loopvars.erase(nam)
       elif isinstance(i,tuple):
           if len(i)>self.nbrDim():
-              raise KeyError(f"Too many values in '{i}' for '{self}'")
+              raise KeyError("Too many values in '"+str(i)+"' for '"+str(self)+"'")
           for k,v in enumerate(i):
               if not isinstance(v,slice):
                   nam=vn[k]
                   inst.chgVal(nam,v)
                   loopvars.erase(nam)
       else:
-          raise ValueError(f"No subscript using '{i}'")
+          raise ValueError("No subscript using '"+str(i)+"'")
       return inst,loopvars
   }
 }
@@ -352,7 +352,7 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
 
         shape=tuple([loopvars.variable(i-1).domainSize() for i in range(loopvars.nbrDim(),0,-1)])
         if value.shape!=shape:
-          raise ArgumentError(f"Shape of '{value}' is not '{shape}'")
+          raise ArgumentError("Shape of '"+str(value)+"' is not '"+str(shape)+"'")
 
         names = [loopvars.variable(i - 1).name() for i in range(loopvars.nbrDim(), 0, -1)]
         while not inst.end():
