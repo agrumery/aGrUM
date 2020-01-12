@@ -204,7 +204,7 @@ class TestIndexs(PotentialTestCase):
     self.assertListsAlmostEqual(
       list2[{'r': 1, 'existepas': 'et non'}].tolist(), [0.6, 0.4])
 
-    self.assertRaises(IndexError, list2.__getitem__, {'r': 99})
+    self.assertRaises(gum.OutOfBounds, list2.__getitem__, {'r': 99})
 
     self.assertListsAlmostEqual(
       list2.toarray(), np.array([[0.1, 0.6], [0.9, 0.4]]))

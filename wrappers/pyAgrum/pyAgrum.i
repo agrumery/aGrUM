@@ -1,6 +1,6 @@
 /**
  *
- *  Copyright 2005-2019 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
  *   {prenom.nom}_at_lip6.fr
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -48,6 +48,7 @@
 
 %pythoncode %{
   import numpy
+  from numbers import Number
 %}
 
 //////////////////////////////////////////////////////////////////

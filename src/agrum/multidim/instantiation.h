@@ -307,6 +307,7 @@ namespace gum {
      * @throw NotFound Raised it var does not belong to the instantiation.
      */
     Idx val(const DiscreteVariable& var) const;
+    Idx val(const std::string& name) const;
 
     /**
      * @brief Returns the current value of a given variable.

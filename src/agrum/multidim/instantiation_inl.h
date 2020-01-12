@@ -208,6 +208,11 @@ namespace gum {
   INLINE Idx Instantiation::val(const DiscreteVariable& var) const {
     return __vals[__vars.pos(&var)];
   }
+  // returns the current value of a given variable
+  INLINE Idx Instantiation::val(const std::string& name) const {
+    return val(variable(name));
+  }
+
 
   // returns the current value of a given variable
   INLINE Idx Instantiation::valFromPtr(const DiscreteVariable* pvar) const {

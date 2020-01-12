@@ -23,29 +23,22 @@
 %ignore gum::MultiDimDecorator;
 %ignore gum::MultiDimArray;
 
-/* Synchronisation between gum::Potential and numpy array */
+/* keep traccks of variables to trick with  garbage collector */
 %pythonappend gum::Potential<double>::Potential %{
-        self._notSync=True
         self._list_vars=list()
 %}
 %pythonappend gum::Potential<double>::remove %{
         self._list_vars.remove(var)
-        self._notSync=True
-%}
-%pythonappend gum::Potential<double>::set %{
-        self._notSync=True
 %}
 
 %pythonappend gum::Potential<double>::add %{
         self._list_vars.append(v)
-        self._notSync=True
         return self
 %}
 
 
 %define CHANGE_THEN_RETURN_SELF(methodname)
 %pythonappend gum::Potential<double>::methodname %{
-        self._notSync=True
         return self
 %}
 %enddef
@@ -280,60 +273,94 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
         for i in range(0, self.nbrDim()):
             varlist.append(self.variable(i))
         return varlist
+
+    def __prepareIndices__(self,ind):
+      """
+      From an indice (dict or tuple), returns a pair of gum.Instantiation to loop in a part of the Potential.
+      """
+      loopvars=Instantiation(self)
+      loopvars.setMutable()
+      
+      inst=Instantiation(self)
+      inst.setFirst()
+
+      if isinstance(ind, (Number,slice)):
+        i = tuple([ind])
+      else:
+        i = ind
+                      
+      vn=self.var_names
+      if isinstance(i,dict):
+          for nam in vn:        
+              if nam in i:
+                  inst.chgVal(nam,i[nam])
+                  loopvars.erase(nam)
+      elif isinstance(i,tuple):
+          if len(i)>self.nbrDim():
+              raise KeyError(f"Too many values in '{i}' for '{self}'")
+          for k,v in enumerate(i):
+              if not isinstance(v,slice):
+                  nam=vn[k]
+                  inst.chgVal(nam,v)
+                  loopvars.erase(nam)
+      else:
+          raise ValueError(f"No subscript using '{i}'")
+      return inst,loopvars
   }
 }
 
-// copy: M indicates the modifications
-%feature("shadow") gum::Potential<double>::__fill_distrib__ %{
-    def __fill_distrib__(self):
-      if not hasattr(self,'_notSync'):
-        self._notSync=True
 
-      if self._notSync:
-        self._notSync=False
-        if self.empty():
-            i = Instantiation(self)
-            content = [self.get(i)]
-            self.__distrib__ = numpy.array(content, dtype=numpy.float64) #M
-            return
-
-        content = []
-        i = Instantiation(self)
-        i.setFirst()
-        while not i.end():
-            content.append(self.get(i))
-            i.inc()
-        self.__distrib__ = numpy.array(content, dtype=numpy.float64) #M
-
-        shape = []
-        for var in self.variablesSequence():
-            shape.append(var.domainSize())
-        shape.reverse()
-
-        self.__distrib__.shape = tuple(shape)
+%feature("shadow") gum::Potential::__getitem__ %{
+    def __getitem__(self, id):
+      if isinstance(id,Instantiation):
+          return self.get(id)
+      
+      inst,loopvars=self.__prepareIndices__(id)
+      
+      if loopvars.nbrDim()==0:
+          return self.get(inst)
+      
+      names=[loopvars.variable(i-1).name() for i in range(loopvars.nbrDim(),0,-1)]
+      tab=numpy.zeros(tuple([loopvars.variable(i-1).domainSize() for i in range(loopvars.nbrDim(),0,-1)]))
+      while not inst.end():
+          indice=[inst.val(name) for name in names]
+          tab[tuple(indice)]=self.get(inst)
+          inst.incIn(loopvars)
+      return tab
 %}
 
 
-%feature("shadow") gum::Potential::__indexfromdict__ %{
-    def __indexfromdict__(self, id_dict):
-        index = []
-        vn=self.var_names
-        vd=self.var_dims
-        for name, dim in zip(vn, self.var_dims):
-            if name in id_dict:
-                id_value = id_dict[name]
-                if isinstance(id_value, str):
-                    # id_value is a label of a LabelizedVar
-                    i = vn.index(name)
-                    var = self.variable(len(vn) - 1 - i)
-                    id_value = var[id_value]
-                if id_value >= dim:
-                    raise IndexError("\"%s\" size is %d !"%(name, dim))
-                index.append(id_value)
-            else:
-                index.append(slice(None, None, None)) # equivalent to ':'
-        return tuple(index)
+%feature("shadow") gum::Potential::__setitem__ %{
+    def __setitem__(self, id, value):
+      if isinstance(id,Instantiation):
+          self.set(id,value)
+          return
+      
+      inst,loopvars=self.__prepareIndices__(id)
+      
+      if loopvars.nbrDim()==0:
+          self.set(inst,value)
+          return
+          
+      if isinstance(value,Number):
+        while not inst.end():
+            self.set(inst,value)
+            inst.incIn(loopvars)
+      else:
+        if isinstance(value,list):
+            value=numpy.array(value)
+
+        shape=tuple([loopvars.variable(i-1).domainSize() for i in range(loopvars.nbrDim(),0,-1)])
+        if value.shape!=shape:
+          raise ArgumentError(f"Shape of '{value}' is not '{shape}'")
+
+        names = [loopvars.variable(i - 1).name() for i in range(loopvars.nbrDim(), 0, -1)]
+        while not inst.end():
+            indice = tuple([inst.val(name) for name in names])
+            self.set(inst,float(value[indice]))
+            inst.incIn(loopvars)
 %}
+
 
 %feature("shadow") gum::Potential::tolist %{
     def tolist(self):
@@ -343,8 +370,7 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
         list
             the potential as a list
         """
-        self.__fill_distrib__()
-        return self.__distrib__.tolist()
+        return self.__getitem__({}).tolist()
 %}
 
 %feature("shadow") gum::Potential::toarray %{
@@ -355,40 +381,8 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
         array
             the potential as an array
         """
-        return numpy.array(self.tolist())
+        return self.__getitem__({})
 %}
-
-
-%feature("shadow") gum::Potential::__getitem__ %{
-    def __getitem__(self, id):
-        self.__fill_distrib__()
-        if self.empty():
-            return self.__distrib__[0]
-
-        if isinstance(id, dict):
-            id_slice = self.__indexfromdict__(id)
-        else:
-            id_slice = id
-        return self.__distrib__[id_slice]
-%}
-
-
-%feature("shadow") gum::Potential::__setitem__ %{
-    def __setitem__(self, id, value):
-        self.__fill_distrib__()
-        if self.empty():
-            self.fill(value)
-            self.__distrib__= numpy.array([value], dtype=numpy.float64) #M
-            return
-
-        if isinstance(id, dict):
-            id_slice = self.__indexfromdict__(id)
-        else:
-            id_slice = id
-        self.__distrib__[id_slice] = value
-        self.fillWith(self.__distrib__.reshape(self.__distrib__.size).tolist())
-%}
-
 
 %feature("shadow") gum::Potential::var_names %{
     @property
@@ -403,11 +397,7 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
         --------
             Listed in reverse from the variable enumeration order
         """
-        var_names = []
-        for var in self.variablesSequence():
-            var_names.append(var.name())
-        var_names.reverse()
-        return var_names
+        return [self.variable(i-1).name() for i in range(self.nbrDim(),0,-1)]
 %}
 
 
@@ -420,18 +410,12 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
         list
             a list containing the dimensions of each variables in the potential
         """
-        var_dims = []
-        for var in self.variablesSequence():
-            var_dims.append(var.domainSize())
-        var_dims.reverse()
-        return var_dims
+        return [self.variable(i-1).domainSize() for i in range(self.nbrDim(),0,-1)]
 %}
 
 
 // these void class extensions are rewritten by "shadow" declarations
 %extend gum::Potential<double> {
-    void __fill_distrib__() {}
-    PyObject * __indexfromdict__(PyObject *id_dict) { return NULL; }
     PyObject *tolist() { return NULL; }
     PyObject *toarray() { return NULL; }
     void __getitem__(PyObject *id) {}

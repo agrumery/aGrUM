@@ -94,14 +94,14 @@ class TestCausalModel(pyAgrumTestCase):
 
     bn.cpt("w")[:] = [0.5, 0.5]
 
-    bn.cpt("x")[:] = [0.4, 0.6], [0.3, 0.7]
+    bn.cpt("x")[:] = [[0.4, 0.6], [0.3, 0.7]]
 
     bn.cpt("z")[{'w': 0, 'x': 0}] = [0.2, 0.8]
     bn.cpt("z")[{'w': 0, 'x': 1}] = [0.1, 0.9]
     bn.cpt("z")[{'w': 1, 'x': 0}] = [0.4, 0.6]
     bn.cpt("z")[{'w': 1, 'x': 1}] = [0.5, 0.5]
 
-    bn.cpt("y")[:] = [0.1, 0.9], [0.2, 0.8]
+    bn.cpt("y")[:] = [[0.1, 0.9], [0.2, 0.8]]
 
     d = csl.CausalModel(bn, [("lat1", ["x", "y"])])
 
@@ -134,15 +134,15 @@ class TestCausalModel(pyAgrumTestCase):
 
     bn.cpt("w")[:] = [0.7, 0.3]
 
-    bn.cpt("x")[:] = [0.4, 0.6], [0.3, 0.7]
+    bn.cpt("x")[:] = [[0.4, 0.6], [0.3, 0.7]]
 
     bn.cpt("z")[{'w': 0, 'x': 0}] = [0.2, 0.8]
     bn.cpt("z")[{'w': 0, 'x': 1}] = [0.1, 0.9]
     bn.cpt("z")[{'w': 1, 'x': 0}] = [0.9, 0.1]
     bn.cpt("z")[{'w': 1, 'x': 1}] = [0.5, 0.5]
 
-    bn.cpt("y")[:] = [0.1, 0.9], [0.8, 0.2]
-
+    bn.cpt("y")[:] = [[0.1, 0.9], [0.8, 0.2]]
+    
     d = csl.CausalModel(bn, [("lat1", ["x", "y"])])
 
     _, pot, _ = csl.causalImpact(d, on="y", doing="x")
