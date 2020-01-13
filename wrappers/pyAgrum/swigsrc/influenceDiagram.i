@@ -23,15 +23,6 @@
 %ignore gum::InfluenceDiagram::getPartialTemporalOrder;
 %ignore gum::InfluenceDiagram:: addUtilityNode ( const gum::DiscreteVariable& variable,gum::MultiDimImplementation<GUM_SCALAR>* aContent, NodeId id = 0 );
 
-
-%pythonappend gum::InfluenceDiagram::cpt %{
-        val.__fill_distrib__()
-%}
-
-%pythonappend gum::InfluenceDiagram::utility %{
-        val.__fill_distrib__()
-%}
-
 %typemap(out) const gum::Sequence<gum::NodeId>& {
   PyObject *q=PyList_New(0);
   for(auto i : *$1) {

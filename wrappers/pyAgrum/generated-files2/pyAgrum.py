@@ -8728,6 +8728,17 @@ class Potential(object):
       if loopvars.nbrDim()==0:
           return self.get(inst)
 
+      if loopvars.nbrDim()==self.nbrDim():
+        content=[]
+
+        inst=Instantiation(self)
+        while not inst.end():
+            content.append(self.get(inst)) 
+            inst.inc()
+        tab=numpy.array(content,dtype=numpy.float64)
+        tab.shape=tuple(self.var_dims)
+        return tab
+
       names=[loopvars.variable(i-1).name() for i in range(loopvars.nbrDim(),0,-1)]
       tab=numpy.zeros(tuple([loopvars.variable(i-1).domainSize() for i in range(loopvars.nbrDim(),0,-1)]))
       while not inst.end():
@@ -8759,7 +8770,7 @@ class Potential(object):
 
         shape=tuple([loopvars.variable(i-1).domainSize() for i in range(loopvars.nbrDim(),0,-1)])
         if value.shape!=shape:
-          raise ArgumentError("Shape of '"+str(value)+"' is not '"+str(shape)+"'")
+          raise IndexError("Shape of '"+str(value)+"' is not '"+str(shape)+"'")
 
         names = [loopvars.variable(i - 1).name() for i in range(loopvars.nbrDim(), 0, -1)]
         while not inst.end():
@@ -23355,13 +23366,7 @@ class InfluenceDiagram(DAGmodel):
         	If no variable's id matches varId. 
 
         """
-        val = _pyAgrum.InfluenceDiagram_cpt(self, varId)
-
-        val.__fill_distrib__()
-
-
-        return val
-
+        return _pyAgrum.InfluenceDiagram_cpt(self, varId)
 
     def utility(self, varId):
         r"""
@@ -23383,13 +23388,7 @@ class InfluenceDiagram(DAGmodel):
         	If the InfluenceDiagram does not contain the variable
 
         """
-        val = _pyAgrum.InfluenceDiagram_utility(self, varId)
-
-        val.__fill_distrib__()
-
-
-        return val
-
+        return _pyAgrum.InfluenceDiagram_utility(self, varId)
 
     def isUtilityNode(self, *args):
         r"""
