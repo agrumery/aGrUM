@@ -312,6 +312,11 @@ namespace gum {
     const Potential< GUM_SCALAR >& sq() const;
 
     /**
+     * @brief apply $log_2(x)$ on every element of the container
+     */
+    const Potential< GUM_SCALAR >& log2() const;
+
+    /**
      * @brief compute KL divergence between this and p
      * Checks the compatibility and then compute KL divergence
      * @throws gum::InvalidArgument if p is not compatible with $this (dimension,

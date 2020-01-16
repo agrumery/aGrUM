@@ -214,7 +214,7 @@ namespace gum {
 
     return this->reduce(
        [](GUM_SCALAR z, GUM_SCALAR p) {
-         return (p == 0.0) ? z : (z - p * log2(p));
+         return (p == 0.0) ? z : (z - p * std::log2(p));
        },
        0.0);
   }
@@ -304,6 +304,12 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
+  INLINE const Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::log2() const {
+    this->apply([](GUM_SCALAR x) { return std::log2(x); });
+    return *this;
+  }
+
+  template < typename GUM_SCALAR >
   INLINE GUM_SCALAR
      Potential< GUM_SCALAR >::KL(const Potential< GUM_SCALAR >& p) const {
     if (this->nbrDim() != p.nbrDim())
@@ -334,7 +340,7 @@ namespace gum {
                   "The argument has a 0 at " << inst
                                              << " while the potential has not.")
 
-      res += x * log2(x / y);
+      res += x * std::log2(x / y);
     }
     return res;
   }
