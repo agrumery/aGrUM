@@ -8145,6 +8145,25 @@ class Potential(object):
         return val
 
 
+    def log2(self) -> "gum::Potential< double > const &":
+        r"""
+        log2(Potential self) -> Potential
+
+        log2 all the values in the Potential
+
+        Warning
+        -------
+        When the Potential contains 0 or negative values, no exception are raised but `-inf` or `nan` values are assigned.
+
+        """
+        val = _pyAgrum.Potential_log2(self)
+
+        return self
+
+
+        return val
+
+
     def KL(self, p: "Potential") -> "double":
         r"""
         KL(Potential self, Potential p) -> double

@@ -455,6 +455,16 @@ class TestOperators(pyAgrumTestCase):
     self.assertEquals((q - p).abs().max(), 2)
     self.assertEquals((q - p).abs().min(), 0)
 
+  def testLog2Potential(self):
+    a, b = [gum.LabelizedVariable(s, s, 2) for s in "ab"]
+
+    p = gum.Potential().add(a).add(b)
+    p.random()
+    pp = gum.Potential(p)
+    pp[:] = np.log2(pp[:])
+    self.assertTrue((p.log2()-pp).abs().max()<1e-8)
+
+
   def testSqPotential(self):
     a, b = [gum.LabelizedVariable(s, s, 2) for s in "ab"]
 
@@ -465,6 +475,7 @@ class TestOperators(pyAgrumTestCase):
     self.assertEquals((q - p).sq().tolist(), [[0, 4], [4, 0]])
     self.assertEquals((q - p).sq().max(), 4)
     self.assertEquals((q - p).sq().min(), 0)
+    
 
   def testEntropyPotential(self):
     a = gum.LabelizedVariable("a", "a", 2)

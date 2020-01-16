@@ -513,6 +513,15 @@ value : double
 Square all the values in the Potential
 "
 
+%feature("docstring") gum::Potential::log2
+"
+log2 all the values in the Potential
+
+Warning
+-------
+When the Potential contains 0 or negative values, no exception are raised but `-inf` or `nan` values are assigned.
+"
+
 %feature("docstring") gum::Potential::sum
 "
 Returns

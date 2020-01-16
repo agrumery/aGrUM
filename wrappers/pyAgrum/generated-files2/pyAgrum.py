@@ -8145,6 +8145,16 @@ class Potential(object):
         return val
 
 
+    def log2(self):
+        r"""log2(Potential self) -> Potential"""
+        val = _pyAgrum.Potential_log2(self)
+
+        return self
+
+
+        return val
+
+
     def KL(self, p):
         r"""
         KL(Potential self, Potential p) -> double
