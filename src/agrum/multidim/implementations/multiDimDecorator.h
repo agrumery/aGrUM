@@ -109,6 +109,7 @@ namespace gum {
     virtual void add(const DiscreteVariable& v) final;
 
     virtual void erase(const DiscreteVariable& var) final;
+    virtual void erase(const std::string& name) final;
 
     virtual const Sequence< const DiscreteVariable* >&
                                     variablesSequence() const final;

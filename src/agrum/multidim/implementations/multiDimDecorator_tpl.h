@@ -254,6 +254,11 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
+  INLINE void MultiDimDecorator< GUM_SCALAR >::erase(const std::string& name) {
+    erase(variable(name));
+  }
+
+  template < typename GUM_SCALAR >
   INLINE const DiscreteVariable&
                MultiDimDecorator< GUM_SCALAR >::variable(Idx i) const {
     return static_cast< MultiDimContainer< GUM_SCALAR >* >(_content)->variable(i);
