@@ -333,14 +333,19 @@ namespace gum {
     const Potential< GUM_SCALAR >& normalizeAsCPT() const;
 
     /**
-     * @brief create a new potential multiplied by v from *this
+     * @brief multiply (each value of) *this by v
      */
     const Potential< GUM_SCALAR >& scale(GUM_SCALAR v) const;
 
     /**
-     * @brief create a new potential added with v from *this
+     * @brief add v to (each value of) *this
      */
     const Potential< GUM_SCALAR >& translate(GUM_SCALAR v) const;
+
+    /**
+     * @brief the function to inverse (each value of) *this
+     */
+    const Potential<GUM_SCALAR>& inverse(void) const;
 
     /**
      * @brief get a value at random from a 1-D distribution
@@ -365,6 +370,11 @@ namespace gum {
       return Potential< GUM_SCALAR >(*this->content() + *p2.content());
     }
 
+    /// the function to be used to add a GUM_SCALAR to a Potential
+    Potential< GUM_SCALAR > operator+(const GUM_SCALAR& v) const {
+      return Potential< GUM_SCALAR >(*this).translate(v);
+    }
+
     /// the function to be used to subtract two Potentials
     Potential< GUM_SCALAR > operator-(const Potential< GUM_SCALAR >& p2) const {
       if (p2.empty())
@@ -377,6 +387,11 @@ namespace gum {
       return Potential< GUM_SCALAR >(*this->content() - *p2.content());
     }
 
+    /// the function to be used to substract a GUM_SCALAR from a Potential
+    Potential< GUM_SCALAR > operator-(const GUM_SCALAR& v) const {
+      return Potential< GUM_SCALAR >(*this).translate(-v);
+    }
+
     /// the function to be used to multiply two Potentials
     Potential< GUM_SCALAR > operator*(const Potential< GUM_SCALAR >& p2) const {
       if (p2.empty()) return Potential< GUM_SCALAR >(*this).scale(p2._empty_value);
@@ -384,6 +399,11 @@ namespace gum {
         return Potential< GUM_SCALAR >(p2).scale(this->_empty_value);
 
       return Potential< GUM_SCALAR >(*this->content() * *p2.content());
+    }
+
+    /// the function to be used to multiply a Potential and a scalar
+    Potential< GUM_SCALAR > operator*(const GUM_SCALAR& v) const {
+      return Potential< GUM_SCALAR >(*this).scale(v);
     }
 
     /// the function to be used to divide two Potentials
@@ -397,9 +417,17 @@ namespace gum {
       }
       return Potential< GUM_SCALAR >(*this->content() / *p2.content());
     }
+    /// the function to be used to divide a Potential by a scalar
+    Potential< GUM_SCALAR > operator/(const GUM_SCALAR& v) const {
+      return Potential< GUM_SCALAR >(*this).scale(1 / v);
+    }
 
     Potential< GUM_SCALAR >& operator+=(const Potential< GUM_SCALAR >& r) {
       *this = *this + r;
+      return *this;
+    }
+    Potential< GUM_SCALAR >& operator+=(const GUM_SCALAR& v) {
+      this->translate(v);
       return *this;
     }
 
@@ -407,14 +435,26 @@ namespace gum {
       *this = *this * r;
       return *this;
     }
+    Potential< GUM_SCALAR >& operator*=(const GUM_SCALAR& v) {
+      this->scale(v);
+      return *this;
+    }
 
     Potential< GUM_SCALAR >& operator-=(const Potential< GUM_SCALAR >& r) {
       *this = *this - r;
       return *this;
     }
+    Potential< GUM_SCALAR >& operator-=(const GUM_SCALAR& v) {
+      this->translate(-v);
+      return *this;
+    }
 
     Potential< GUM_SCALAR >& operator/=(const Potential< GUM_SCALAR >& r) {
       *this = *this / r;
+      return *this;
+    }
+    Potential< GUM_SCALAR >& operator/=(const GUM_SCALAR& v) {
+      this->scale(1/v);
       return *this;
     }
 

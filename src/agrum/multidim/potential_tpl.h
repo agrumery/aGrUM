@@ -421,6 +421,12 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
+  INLINE const Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::inverse() const {
+    this->apply([](GUM_SCALAR x) { return 1 / x; });
+    return *this;
+  }
+
+  template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR > Potential< GUM_SCALAR >::margSumOut(
      const Set< const DiscreteVariable* >& del_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->_content)->empty()) {

@@ -1161,5 +1161,105 @@ namespace gum_tests {
         }
       }
     }
+
+    void testEqualities() {
+      gum::LabelizedVariable   u("u", "u", 4), v("v", "v", 2), w("w", "w", 3);
+      gum::Potential< double > p;
+      p.add(u);
+      p.add(v);
+      p.add(w);
+      p.random();
+      gum::Potential< double > q(p);
+      TS_ASSERT_EQUALS(p, q);
+      gum::Instantiation i(q);
+      i.setLast();
+      q.set(i, 0);
+      TS_ASSERT_DIFFERS(p, q);
+      q.fillWith(p);
+      TS_ASSERT_EQUALS(p, q);
+      q.fillWith(1);
+      TS_ASSERT_DIFFERS(p, q);
+      q.fillWith(p);
+      TS_ASSERT_EQUALS(p, q);
+      gum::LabelizedVariable x("x", "Unknown", 5);
+      q.add(x);
+      TS_ASSERT_DIFFERS(p, q);
+      q.erase("x");
+      q.fillWith(p);
+      TS_ASSERT_EQUALS(p, q);
+      q.erase("u");
+      TS_ASSERT_DIFFERS(p, q);
+    }
+
+
+    void testInverse() {
+      gum::LabelizedVariable   u("u", "u", 4), v("v", "v", 2), w("w", "w", 3);
+      gum::Potential< double > p;
+      p.add(u);
+      p.add(v);
+      p.add(w);
+      p.random();
+      gum::Potential< double > q(p);
+      q.inverse();
+      TS_ASSERT_DELTA((p * q).min(), 1.0, 1e-7);
+      TS_ASSERT_DELTA((p * q).max(), 1.0, 1e-7);
+    }
+    
+    void testOperatorWithScalars() {
+      gum::LabelizedVariable   u("u", "u", 4), v("v", "v", 2), w("w", "w", 3);
+      gum::Potential< double > p;
+      p.add(u);
+      p.add(v);
+      p.add(w);
+      p.random();
+      {
+        gum::Potential< double > q(p);
+        q.scale(2);
+        TS_ASSERT_EQUALS(p * 2, q);
+      }
+      {
+        gum::Potential< double > q(p);
+        q.scale(0.5);
+        TS_ASSERT_EQUALS(p / 2, q);
+      }
+      {
+        gum::Potential< double > q(p);
+        q.translate(1.5);
+        TS_ASSERT_EQUALS(p + 1.5, q);
+      }
+      {
+        gum::Potential< double > q(p);
+        q.translate(3.2);
+        TS_ASSERT_EQUALS(p - 3.2, q);
+      }
+      {
+        gum::Potential< double > q(p);
+        gum::Potential< double > r(p);
+        q.translate(4.33);
+        r += 4.33;
+        TS_ASSERT_EQUALS(r, q);
+      }
+      {
+        gum::Potential< double > q(p);
+        gum::Potential< double > r(p);
+        q.translate(-4.33);
+        r -= 4.33;
+        TS_ASSERT_EQUALS(r, q);
+      }
+      {
+        gum::Potential< double > q(p);
+        gum::Potential< double > r(p);
+        q.scale(4.33);
+        r *= 4.33;
+        TS_ASSERT_EQUALS(r, q);
+      }
+      {
+        gum::Potential< double > q(p);
+        gum::Potential< double > r(p);
+        q.scale(1 / 4.33);
+        r /= 4.33;
+        TS_ASSERT_EQUALS(r, q);
+      }
+    }
   };
 }   // namespace gum_tests
