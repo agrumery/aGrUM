@@ -211,12 +211,18 @@ def getPosterior(bn, evs, target):
   target is needed with more than one set of evidence, this function is not
   relevant since it creates a new inference engine every time it is called.
 
-  :param bn:
-  :type bn: pyAgrum.BayesNet
-  :param evs: events map {name/id:val, name/id : [ val1, val2 ], ...}
-  :type evs: dictionary
-  :param target: variable name or id
-  :return: posterior Potential
+  Parameters
+  ----------
+  bn : pyAgrum.BayesNet
+    The Bayesian network    
+  evs:  dictionaryDict
+    {name/id:val, name/id : [ val1, val2 ], ...}
+  target: string or int
+    variable name or id
+
+  Returns
+  -------
+    posterior (gum::Potential)
   """
   inf = VariableElimination(bn)
   inf.setEvidence(evs)
@@ -274,3 +280,17 @@ def generateCSV(bn, name_out, n, visible=False, with_labels=False, random_order=
     print("Log2-Likelihood : {}".format(ll))
 
   return ll
+
+def log2(p):
+  """Compute p.log2() in a new Potential without modifying p
+  
+  Parameters
+  ----------
+  p : pyAgrum.Potential 
+    The potential on which to apply log2 function
+
+  Returns
+  -------
+    a gpyAgrumum.Potential
+  """
+  return Potential(p).log2()

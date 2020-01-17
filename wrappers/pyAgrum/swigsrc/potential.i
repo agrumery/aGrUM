@@ -23,7 +23,7 @@
 %ignore gum::MultiDimDecorator;
 %ignore gum::MultiDimArray;
 
-/* keep traccks of variables to trick with  garbage collector */
+/* keep tracks of variables to trick with  garbage collector */
 %pythonappend gum::Potential<double>::Potential %{
         self._list_vars=list()
 %}
@@ -44,13 +44,15 @@
 %enddef
 
 CHANGE_THEN_RETURN_SELF(abs)
-CHANGE_THEN_RETURN_SELF(normalize)
-CHANGE_THEN_RETURN_SELF(fillWith)
 CHANGE_THEN_RETURN_SELF(sq)
 CHANGE_THEN_RETURN_SELF(log2)
-CHANGE_THEN_RETURN_SELF(scale)
-CHANGE_THEN_RETURN_SELF(translate)
+CHANGE_THEN_RETURN_SELF(normalize)
 CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
+CHANGE_THEN_RETURN_SELF(scale)
+CHANGE_THEN_RETURN_SELF(inverse)
+CHANGE_THEN_RETURN_SELF(translate)
+
+CHANGE_THEN_RETURN_SELF(fillWith)
 
 %rename ("$ignore", fullname=1) gum::Potential<double>::margSumOut(const Set<const DiscreteVariable*>& del_vars) const;
 %rename ("$ignore", fullname=1) gum::Potential<double>::margProdOut(const Set<const DiscreteVariable*>& del_vars) const;
@@ -146,16 +148,6 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
       return self->margMinIn(s);
     }
 
-    // division for python3
-    gum::Potential<double> __truediv__(const gum::Potential<double>& b) {
-      return *self /b;
-    }
-
-    // division for python2
-    gum::Potential<double> __div__(const gum::Potential<double>& b) {
-      return *self/b;
-    }
-
     // equality
     bool __eq__(const gum::Potential<double>& b) {
       return *self==b;
@@ -168,7 +160,30 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
 
 
   %pythoncode {
+    def __radd__(self,other):
+      return self.__add__(other)
+
+    def __rmul__(self,other):
+      return self.__mul__(other)
+
+    def __rsub__(self,other):
+      return (self*-1)+other
+
+    def __rfloordiv__(self,other):
+      return Potential(self).inverse().scale(other)
+
+    def __rtruediv__(self,other):
+      return Potential(self).inverse().scale(other)
+
+    def __rdiv__(self,other):
+      return Potential(self).inverse().scale(other)
+ 
+    def __neg__(self):
+      return -1*self
     
+    def __abs__(self):
+      return Potential(self).abs()
+      
     def loopIn(self):
       """
       Generator to iterate inside a Potential. 

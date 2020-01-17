@@ -1204,7 +1204,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA((p * q).min(), 1.0, 1e-7);
       TS_ASSERT_DELTA((p * q).max(), 1.0, 1e-7);
     }
-    
+
     void testOperatorWithScalars() {
       gum::LabelizedVariable   u("u", "u", 4), v("v", "v", 2), w("w", "w", 3);
       gum::Potential< double > p;

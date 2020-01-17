@@ -8146,7 +8146,16 @@ class Potential(object):
 
 
     def log2(self):
-        r"""log2(Potential self) -> Potential"""
+        r"""
+        log2(Potential self) -> Potential
+
+        log2 all the values in the Potential
+
+        Warning
+        -------
+        When the Potential contains 0 or negative values, no exception are raised but `-inf` or `nan` values are assigned.
+
+        """
         val = _pyAgrum.Potential_log2(self)
 
         return self
@@ -8254,6 +8263,16 @@ class Potential(object):
         return val
 
 
+    def inverse(self):
+        r"""inverse(Potential self) -> Potential"""
+        val = _pyAgrum.Potential_inverse(self)
+
+        return self
+
+
+        return val
+
+
     def draw(self):
         r"""
         draw(Potential self) -> gum::Idx
@@ -8268,29 +8287,53 @@ class Potential(object):
         """
         return _pyAgrum.Potential_draw(self)
 
-    def __add__(self, p2):
-        r"""__add__(Potential self, Potential p2) -> Potential"""
-        return _pyAgrum.Potential___add__(self, p2)
+    def __add__(self, *args):
+        r"""
+        __add__(Potential self, Potential p2) -> Potential
+        __add__(Potential self, double const & v) -> Potential
+        """
+        return _pyAgrum.Potential___add__(self, *args)
 
-    def __sub__(self, p2):
-        r"""__sub__(Potential self, Potential p2) -> Potential"""
-        return _pyAgrum.Potential___sub__(self, p2)
+    def __sub__(self, *args):
+        r"""
+        __sub__(Potential self, Potential p2) -> Potential
+        __sub__(Potential self, double const & v) -> Potential
+        """
+        return _pyAgrum.Potential___sub__(self, *args)
 
-    def __mul__(self, p2):
-        r"""__mul__(Potential self, Potential p2) -> Potential"""
-        return _pyAgrum.Potential___mul__(self, p2)
+    def __mul__(self, *args):
+        r"""
+        __mul__(Potential self, Potential p2) -> Potential
+        __mul__(Potential self, double const & v) -> Potential
+        """
+        return _pyAgrum.Potential___mul__(self, *args)
 
-    def __iadd__(self, r):
-        r"""__iadd__(Potential self, Potential r) -> Potential"""
-        return _pyAgrum.Potential___iadd__(self, r)
+    def __truediv__(self, *args):
+        return _pyAgrum.Potential___truediv__(self, *args)
+    __div__ = __truediv__
 
-    def __imul__(self, r):
-        r"""__imul__(Potential self, Potential r) -> Potential"""
-        return _pyAgrum.Potential___imul__(self, r)
 
-    def __isub__(self, r):
-        r"""__isub__(Potential self, Potential r) -> Potential"""
-        return _pyAgrum.Potential___isub__(self, r)
+
+    def __iadd__(self, *args):
+        r"""
+        __iadd__(Potential self, Potential r) -> Potential
+        __iadd__(Potential self, double const & v) -> Potential
+        """
+        return _pyAgrum.Potential___iadd__(self, *args)
+
+    def __imul__(self, *args):
+        r"""
+        __imul__(Potential self, Potential r) -> Potential
+        __imul__(Potential self, double const & v) -> Potential
+        """
+        return _pyAgrum.Potential___imul__(self, *args)
+
+    def __isub__(self, *args):
+        r"""
+        __isub__(Potential self, Potential r) -> Potential
+        __isub__(Potential self, double const & v) -> Potential
+        """
+        return _pyAgrum.Potential___isub__(self, *args)
 
     def __itruediv__(self, *args):
         return _pyAgrum.Potential___itruediv__(self, *args)
@@ -8541,17 +8584,6 @@ class Potential(object):
         """
         return _pyAgrum.Potential_margMinIn(self, varnames)
 
-    def __truediv__(self, *args):
-        r"""
-        __truediv__(Potential self, Potential p2) -> Potential
-        __truediv__(Potential self, Potential b) -> Potential
-        """
-        return _pyAgrum.Potential___truediv__(self, *args)
-
-    def __div__(self, b):
-        r"""__div__(Potential self, Potential b) -> Potential"""
-        return _pyAgrum.Potential___div__(self, b)
-
     def __eq__(self, *args):
         r"""
         __eq__(Potential self, Potential r) -> bool
@@ -8566,6 +8598,29 @@ class Potential(object):
         """
         return _pyAgrum.Potential___ne__(self, *args)
 
+    def __radd__(self,other):
+      return self.__add__(other)
+
+    def __rmul__(self,other):
+      return self.__mul__(other)
+
+    def __rsub__(self,other):
+      return (self*-1)+other
+
+    def __rfloordiv__(self,other):
+      return Potential(self).inverse().scale(other)
+
+    def __rtruediv__(self,other):
+      return Potential(self).inverse().scale(other)
+
+    def __rdiv__(self,other):
+      return Potential(self).inverse().scale(other)
+
+    def __neg__(self):
+      return -1*self
+
+    def __abs__(self):
+      return Potential(self).abs()
 
     def loopIn(self):
       """
