@@ -162,10 +162,10 @@ namespace gum {
     // actually delete the dimension
     __erase(v);
   }
-  
-   INLINE void Instantiation::erase(const std::string&  name){
-      erase(variable(name));
-    }
+
+  INLINE void Instantiation::erase(const std::string& name) {
+    erase(variable(name));
+  }
 
   // removes everything
   INLINE void Instantiation::clear() {

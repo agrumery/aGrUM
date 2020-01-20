@@ -89,33 +89,72 @@ namespace gum_tests {
     }
 
     void testReadAfterWrite() {
-      gum::O3prmBNWriter< double > writer;
-      std::string file = GET_RESSOURCES_PATH("o3prm/BNO3PRMIO_file.o3prm");
-      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
-      file = GET_RESSOURCES_PATH("o3prm/BNO3PRMIO_file.o3prm");
-      gum::BayesNet< double >      bn2;
-      gum::O3prmBNReader< double > reader(&bn2, file, "BayesNet");
+      std::string                  rfile = GET_RESSOURCES_PATH("alarm.o3prm");
+      gum::BayesNet< double >      bn;
+      gum::O3prmBNReader< double > reader(&bn, rfile);
       gum::Size                    res = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed());
       TS_ASSERT_EQUALS(res, (gum::Size)0);
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)7);   // no system
+      TS_ASSERT_EQUALS(bn.size(), (gum::Size)37);
+      TS_ASSERT_EQUALS(bn.property("name"), "alarm");
 
-      for (auto node: bn->dag()) {
-        auto        name = bn->variable(node).name();
-        const auto& cpt_1 = bn->cpt(node);
-        auto        i = gum::Instantiation(cpt_1);
 
-        const auto& cpt_2 = bn2.cpt(name);
-        auto        j = gum::Instantiation(cpt_2);
-        TS_ASSERT_EQUALS(i.domainSize(), j.domainSize());
-        if (i.domainSize() == j.domainSize()) {
-          for (i.setFirst(); !i.end(); i.inc()) {
-            for (auto i_var: i.variablesSequence()) {
-              const auto& j_var = bn2.variable(i_var->name());
-              j.chgVal(j_var, i.val(*i_var));
-            }
-            TS_ASSERT_DELTA(cpt_1[i], cpt_2[j], 1e-6);
-          }
-        }
+      gum::O3prmBNWriter< double > writer;
+      std::string wfile = GET_RESSOURCES_PATH("alarm_written.o3prm");
+      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(wfile, bn));
+
+
+      gum::BayesNet< double >      bn2;
+      gum::O3prmBNReader< double > reader2(&bn2, wfile, "alarm");
+      gum::Size                    res2 = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(res2 = reader2.proceed());
+      TS_ASSERT_EQUALS(res2, (gum::Size)0);
+      TS_ASSERT_EQUALS(reader2.warnings(), (gum::Size)7);   // no system
+      TS_ASSERT_EQUALS(bn2.size(), (gum::Size)37);
+
+      std::string nam;
+      for (const auto& nod: bn.nodes()) {
+        nam = bn.variable(nod).name();
+        TS_ASSERT_EQUALS(bn.variable(nam).toString(),
+                         bn2.variable(nam).toString());
+        const gum::Potential< double > p(bn.cpt(nam));
+        std::vector< std::string >     varmap;
+        for (gum::Idx i = 0; i < p.nbrDim(); i++)
+          varmap.push_back(p.variable(i).name());
+        p.fillWith(bn2.cpt(nam), varmap);
+        TS_ASSERT_LESS_THAN((p - bn.cpt(nam)).abs().max(), 1e-5);
+      }
+    }
+
+    void testReadAfterWriteRandom() {
+      gum::BayesNet< double > bn = gum::BayesNet< double >::fastPrototype(
+         "A[5]->B{yes|maybe|no}<-C[4];D[3,6]->E[1,2,3,4,5,6,7]->F<-G;F<-H");
+      bn.setProperty("name", "random_written");
+
+      gum::O3prmBNWriter< double > writer;
+      std::string wfile = GET_RESSOURCES_PATH("random_written.o3prm");
+      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(wfile, bn));
+
+
+      gum::BayesNet< double >      bn2;
+      gum::O3prmBNReader< double > reader2(&bn2, wfile);
+      gum::Size                    res2 = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(res2 = reader2.proceed());
+      TS_ASSERT_EQUALS(res2, (gum::Size)0);
+      TS_ASSERT_EQUALS(bn2.size(), (gum::Size)8);
+
+      std::string nam;
+      for (const auto& nod: bn.nodes()) {
+        nam = bn.variable(nod).name();
+        TS_ASSERT_EQUALS(bn.variable(nam).toString(),
+                         bn2.variable(nam).toString());
+        const gum::Potential< double > p(bn.cpt(nam));
+        std::vector< std::string >     varmap;
+        for (gum::Idx i = 0; i < p.nbrDim(); i++)
+          varmap.push_back(p.variable(i).name());
+        p.fillWith(bn2.cpt(nam), varmap);
+        TS_ASSERT_LESS_THAN((p - bn.cpt(nam)).abs().max(), 1e-5);
       }
     }
 

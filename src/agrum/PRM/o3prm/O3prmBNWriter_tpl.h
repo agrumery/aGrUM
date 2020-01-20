@@ -57,8 +57,10 @@ namespace gum {
     if (!output.good()) {
       GUM_ERROR(IOError, "Stream states flags are not all unset.");
     }
+    std::string bnName = bn.propertyWithDefault("name","");
+    if (bnName == "") bnName = "bayesnet";
 
-    output << "class BayesNet {" << std::endl;
+    output << "class " << bnName << " {" << std::endl;
 
     for (auto node: bn.nodes()) {
       output << __extractAttribute(bn, node) << std::endl;

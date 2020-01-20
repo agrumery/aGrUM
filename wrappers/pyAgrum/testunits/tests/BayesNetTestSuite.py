@@ -548,7 +548,7 @@ class TestSaveBN(BayesNetTestCase):
 
     gum.saveBN(bn, self.agrumSrcDir("src/testunits/ressources/o3prm/BNO3PRMIO_file.o3prm"))
 
-    bn2 = gum.loadBN(self.agrumSrcDir("src/testunits/ressources/o3prm/BNO3PRMIO_file.o3prm"), system="BayesNet")
+    bn2 = gum.loadBN(self.agrumSrcDir("src/testunits/ressources/o3prm/BNO3PRMIO_file.o3prm"), system="bayesnet")
 
     self.assertEquals(bn.dim(), bn2.dim())
     self.assertEquals(bn.log10DomainSize(), bn2.log10DomainSize())

@@ -34,8 +34,9 @@ namespace gum_tests {
       gum::BayesNet< double >      bn;
       gum::O3prmBNReader< double > reader(&bn,
                                           GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
-      gum::Size                    res = 0;
+      gum::Size res = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed());
+      TS_ASSERT_EQUALS(bn.property("name"), "Asia");
       TS_ASSERT_EQUALS(res, (gum::Size)0);
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)1);   // no system
       TS_ASSERT_EQUALS(bn.size(), (gum::Size)8);
@@ -83,6 +84,7 @@ namespace gum_tests {
          "Asia");
       gum::Size res = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed());
+      TS_ASSERT_EQUALS(bn.property("name"), "Asia");
       TS_ASSERT_EQUALS(res, (gum::Size)0);
       TS_ASSERT_EQUALS(bn.size(), (gum::Size)8);
     }
@@ -162,6 +164,17 @@ namespace gum_tests {
           TS_ASSERT(bn.variable(n).name().find(".") != std::string::npos);
         }
       }
+    }
+
+    void testReadAndWriteAndRead() {
+      gum::BayesNet< double >      bn;
+      gum::O3prmBNReader< double > reader(&bn,
+                                          GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
+      gum::Size                    res = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed());
+      TS_ASSERT_EQUALS(res, (gum::Size)0);
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)1);   // no system
+      TS_ASSERT_EQUALS(bn.size(), (gum::Size)8);
     }
   };
 }   // namespace gum_tests

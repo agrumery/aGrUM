@@ -165,7 +165,7 @@ namespace gum {
       }
     }
     bn.generateCPTs();
-    bn.setProperty("name", dotlike);
+    bn.setProperty("name", "fastPrototype");
     return bn;
   }
 

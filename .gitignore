@@ -70,6 +70,8 @@ src/testunits/ressources/IDBeforeMoralisation.dot
 src/testunits/ressources/IDToDotReader.dot
 src/testunits/ressources/IDToDotWriter.dot
 src/testunits/ressources/test.dot
+src/testunits/ressources/alarm_written.o3prm
+src/testunits/ressources/random_written.o3prm
 src/testunits/ressources/survey_tmp1.csv
 src/testunits/ressources/survey_tmp2.csv
 src/testunits/testList.cmake
