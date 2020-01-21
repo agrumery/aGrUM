@@ -1,4 +1,4 @@
-smoking?,lung_cancer?,bronchitis?,visit_to_Asia?,tuberculosis?,tuberculos_or_cancer?,dyspnoea?,positive_XraY?
+smoking,lung_cancer,bronchitis,visit_to_Asia,tuberculosis,tuberculos_or_cancer,dyspnoea,positive_XraY
 true,true,true,true,false,true,true,true
 BEURK,false,true,false,false,false,true,false
 false,false,false,false,false,false,false,false

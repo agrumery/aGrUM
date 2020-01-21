@@ -80,11 +80,11 @@ namespace gum_tests {
       // learner.addForbiddenArc ( gum::Arc (5,1) );
       // learner.addForbiddenArc ( gum::Arc (5,7) );
 
-      // learner.addMandatoryArc ( gum::Arc ( learner.nodeId ( "bronchitis?" ),
-      //                                      learner.nodeId ( "lung_cancer?" )
+      // learner.addMandatoryArc ( gum::Arc ( learner.nodeId ( "bronchitis" ),
+      //                                      learner.nodeId ( "lung_cancer" )
       //                                      ) );
 
-      learner.addMandatoryArc("bronchitis?", "lung_cancer?");
+      learner.addMandatoryArc("bronchitis", "lung_cancer");
 
       learner.useAprioriSmoothing();
       // learner.useAprioriDirichlet (  GET_RESSOURCES_PATH( "asia.csv" ) );
@@ -247,7 +247,7 @@ namespace gum_tests {
         i_dag.addNodeWithId(i);
       }
       learner.setInitialDAG(i_dag);
-      // learner.addMandatoryArc( "bronchitis?", "lung_cancer?" );
+      // learner.addMandatoryArc( "bronchitis", "lung_cancer" );
 
       const std::vector< std::string >& names = learner.names();
       TS_ASSERT(!names.empty());
@@ -370,11 +370,11 @@ namespace gum_tests {
       // learner.addForbiddenArc ( gum::Arc (5,1) );
       // learner.addForbiddenArc ( gum::Arc (5,7) );
 
-      // learner.addMandatoryArc ( gum::Arc ( learner.nodeId ( "bronchitis?" ),
-      //                                      learner.nodeId ( "lung_cancer?" )
+      // learner.addMandatoryArc ( gum::Arc ( learner.nodeId ( "bronchitis" ),
+      //                                      learner.nodeId ( "lung_cancer" )
       //                                      ) );
 
-      learner.addMandatoryArc("bronchitis?", "lung_cancer?");
+      learner.addMandatoryArc("bronchitis", "lung_cancer");
 
       learner.useAprioriSmoothing();
       // learner.useAprioriDirichlet (  GET_RESSOURCES_PATH( "asia.csv" ) );
@@ -452,7 +452,7 @@ namespace gum_tests {
       learner.addForbiddenArc(gum::Arc(5, 1));
       learner.addForbiddenArc(gum::Arc(5, 7));
 
-      learner.addMandatoryArc("bronchitis?", "lung_cancer?");
+      learner.addMandatoryArc("bronchitis", "lung_cancer");
 
       learner.useAprioriSmoothing();
       // learner.useAprioriDirichlet (  GET_RESSOURCES_PATH( "asia.csv" ) );
@@ -582,15 +582,15 @@ namespace gum_tests {
     void test_asia_param_bn() {
 #define createBoolVar(s) \
   gum::LabelizedVariable(s, s, 0).addLabel("false").addLabel("true");
-      // smoking?,lung_cancer?,bronchitis?,visit_to_Asia?,tuberculosis?,tuberculos_or_cancer?,dyspnoea?,positive_XraY?
-      auto s = createBoolVar("smoking?");
-      auto l = createBoolVar("lung_cancer?");
-      auto b = createBoolVar("bronchitis?");
-      auto v = createBoolVar("visit_to_Asia?");
-      auto t = createBoolVar("tuberculosis?");
-      auto o = createBoolVar("tuberculos_or_cancer?");
-      auto d = createBoolVar("dyspnoea?");
-      auto p = createBoolVar("positive_XraY?");
+      // smoking,lung_cancer,bronchitis,visit_to_Asia,tuberculosis,tuberculos_or_cancer,dyspnoea,positive_XraY
+      auto s = createBoolVar("smoking");
+      auto l = createBoolVar("lung_cancer");
+      auto b = createBoolVar("bronchitis");
+      auto v = createBoolVar("visit_to_Asia");
+      auto t = createBoolVar("tuberculosis");
+      auto o = createBoolVar("tuberculos_or_cancer");
+      auto d = createBoolVar("dyspnoea");
+      auto p = createBoolVar("positive_XraY");
 #undef createBoolVar
 
       gum::BayesNet< double > bn;
@@ -634,15 +634,15 @@ namespace gum_tests {
     void test_asia_param_bn_with_not_matching_variable() {
 #define createBoolVar(s) \
   gum::LabelizedVariable(s, s, 0).addLabel("false").addLabel("true");
-      auto s = createBoolVar("smoking?");
-      auto l = createBoolVar("lung_cancer?");
-      auto b = createBoolVar("bronchitis?");
-      auto v = createBoolVar("visit_to_Asia?");
-      auto t = createBoolVar("tuberculosis?");
-      auto o = createBoolVar("tuberculos_or_cancer?");
-      auto d = createBoolVar("dyspnoea?");
+      auto s = createBoolVar("smoking");
+      auto l = createBoolVar("lung_cancer");
+      auto b = createBoolVar("bronchitis");
+      auto v = createBoolVar("visit_to_Asia");
+      auto t = createBoolVar("tuberculosis");
+      auto o = createBoolVar("tuberculos_or_cancer");
+      auto d = createBoolVar("dyspnoea");
 
-      // uncorrect name is : will it be correctly handled ?
+      // uncorrect name is : will it be correctly handled
       auto p = createBoolVar("ZORBLOBO");
 #undef createBoolVar
 
@@ -672,10 +672,10 @@ namespace gum_tests {
     void test_asia_param_bn_with_subset_of_variables_in_base() {
 #define createBoolVar(s) \
   gum::LabelizedVariable(s, s, 0).addLabel("false").addLabel("true");
-      auto s = createBoolVar("smoking?");
-      auto t = createBoolVar("tuberculosis?");
-      auto o = createBoolVar("tuberculos_or_cancer?");
-      auto d = createBoolVar("dyspnoea?");
+      auto s = createBoolVar("smoking");
+      auto t = createBoolVar("tuberculosis");
+      auto o = createBoolVar("tuberculos_or_cancer");
+      auto d = createBoolVar("dyspnoea");
 #undef createBoolVar
 
       gum::BayesNet< double > bn;
@@ -701,10 +701,10 @@ namespace gum_tests {
     void test_asia_param_bn_with_unknow_modality() {
 #define createBoolVar(s) \
   gum::LabelizedVariable(s, s, 0).addLabel("false").addLabel("true");
-      auto s = createBoolVar("smoking?");
-      auto t = createBoolVar("tuberculosis?");
-      auto o = createBoolVar("tuberculos_or_cancer?");
-      auto d = createBoolVar("dyspnoea?");
+      auto s = createBoolVar("smoking");
+      auto t = createBoolVar("tuberculosis");
+      auto o = createBoolVar("tuberculos_or_cancer");
+      auto d = createBoolVar("dyspnoea");
 #undef createBoolVar
 
       gum::BayesNet< double > bn;
@@ -717,7 +717,7 @@ namespace gum_tests {
       bn.addArc(nt, no);
       bn.addArc(no, nd);
 
-      // asia3-faulty contains a label "beurk" for variable "smoking?"
+      // asia3-faulty contains a label "beurk" for variable "smoking"
       // std::cout << "error test";
 
       TS_ASSERT_THROWS(gum::learning::BNLearner< double > learner(
@@ -772,7 +772,7 @@ namespace gum_tests {
         gum::BayesNet< double > bn = learner.learnBN();
         // std::cout << bn.dag () << std::endl;
 
-        TS_ASSERT_DELTA(listen.getNbr(), gum::Size(15), 1);   // 75 ?
+        TS_ASSERT_DELTA(listen.getNbr(), gum::Size(15), 1);   // 75
         TS_ASSERT_EQUALS(listen.getMess(), "stopped on request");
         TS_ASSERT_EQUALS(learner.messageApproximationScheme(),
                          "stopped on request");
@@ -1055,23 +1055,23 @@ namespace gum_tests {
 
     void test_setSliceOrderWithNames() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("asia3.csv"));
-      learner.setSliceOrder({{"smoking?", "lung_cancer?"},
-                             {"bronchitis?", "visit_to_Asia?"},
-                             {"tuberculosis?"}});
+      learner.setSliceOrder({{"smoking", "lung_cancer"},
+                             {"bronchitis", "visit_to_Asia"},
+                             {"tuberculosis"}});
 
 
       gum::learning::BNLearner< double > learner2(
          GET_RESSOURCES_PATH("asia3.csv"));
       TS_ASSERT_THROWS(
-         learner2.setSliceOrder({{"smoking?", "lung_cancer?"},
-                                 {"bronchitis?", "visit_to_Asia?"},
-                                 {"smoking?", "tuberculosis?", "lung_cancer?"}}),
+         learner2.setSliceOrder({{"smoking", "lung_cancer"},
+                                 {"bronchitis", "visit_to_Asia"},
+                                 {"smoking", "tuberculosis", "lung_cancer"}}),
          gum::DuplicateElement);
 
       gum::learning::BNLearner< double > learner3(
          GET_RESSOURCES_PATH("asia3.csv"));
-      TS_ASSERT_THROWS(learner3.setSliceOrder({{"smoking?", "lung_cancer?"},
-                                               {"bronchitis?", "visit_to_Asia?"},
+      TS_ASSERT_THROWS(learner3.setSliceOrder({{"smoking", "lung_cancer"},
+                                               {"bronchitis", "visit_to_Asia"},
                                                {"CRUCRU"}}),
                        gum::MissingVariableInDatabase);
     }
@@ -1213,20 +1213,20 @@ namespace gum_tests {
     void test_chi2() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("asia3.csv"));
 
-      auto reschi2 = learner.chi2("smoking?", "lung_cancer?");
+      auto reschi2 = learner.chi2("smoking", "lung_cancer");
       TS_ASSERT_DELTA(reschi2.first, 36.2256, 1e-4);
       TS_ASSERT_DELTA(reschi2.second, 0, 1e-4);
 
-      reschi2 = learner.chi2("smoking?", "visit_to_Asia?");
+      reschi2 = learner.chi2("smoking", "visit_to_Asia");
       TS_ASSERT_DELTA(reschi2.first, 1.1257, 1e-4);
       TS_ASSERT_DELTA(reschi2.second, 0.2886, 1e-4);
 
-      reschi2 = learner.chi2("lung_cancer?", "tuberculosis?");
+      reschi2 = learner.chi2("lung_cancer", "tuberculosis");
       TS_ASSERT_DELTA(reschi2.first, 0.6297, 1e-4);
       TS_ASSERT_DELTA(reschi2.second, 0.4274, 1e-4);
 
       reschi2 =
-         learner.chi2("lung_cancer?", "tuberculosis?", {"tuberculos_or_cancer?"});
+         learner.chi2("lung_cancer", "tuberculosis", {"tuberculos_or_cancer"});
       TS_ASSERT_DELTA(reschi2.first, 58.0, 1e-4);
       TS_ASSERT_DELTA(reschi2.second, 0.0, 1e-4);
 
@@ -1256,20 +1256,20 @@ namespace gum_tests {
 
     void test_G2() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("asia3.csv"));
-      auto resg2 = learner.G2("smoking?", "lung_cancer?");
+      auto resg2 = learner.G2("smoking", "lung_cancer");
       TS_ASSERT_DELTA(resg2.first, 43.0321, 1e-4);
       TS_ASSERT_DELTA(resg2.second, 0, 1e-4);
 
-      resg2 = learner.G2("smoking?", "visit_to_Asia?");
+      resg2 = learner.G2("smoking", "visit_to_Asia");
       TS_ASSERT_DELTA(resg2.first, 1.1418, 1e-4);
       TS_ASSERT_DELTA(resg2.second, 0.2852, 1e-4);
 
-      resg2 = learner.G2("lung_cancer?", "tuberculosis?");
+      resg2 = learner.G2("lung_cancer", "tuberculosis");
       TS_ASSERT_DELTA(resg2.first, 1.2201, 1e-4);
       TS_ASSERT_DELTA(resg2.second, 0.2693, 1e-4);
 
       resg2 =
-         learner.G2("lung_cancer?", "tuberculosis?", {"tuberculos_or_cancer?"});
+         learner.G2("lung_cancer", "tuberculosis", {"tuberculos_or_cancer"});
       TS_ASSERT_DELTA(resg2.first, 59.1386, 1e-4);
       TS_ASSERT_DELTA(resg2.second, 0.0, 1e-4);
 
@@ -1346,14 +1346,14 @@ namespace gum_tests {
     }
 
     void test_PossibleEdges() {
-      //[smoking? , lung_cancer? , bronchitis? , visit_to_Asia? , tuberculosis? ,
-      // tuberculos_or_cancer? , dyspnoea? , positive_XraY?]
+      //[smoking , lung_cancer , bronchitis , visit_to_Asia , tuberculosis ,
+      // tuberculos_or_cancer , dyspnoea , positive_XraY]
       {
         // possible edges are not relevant
         gum::learning::BNLearner< double > learner(
            GET_RESSOURCES_PATH("asia3.csv"));
-        learner.addPossibleEdge("visit_to_Asia?", "lung_cancer?");
-        learner.addPossibleEdge("visit_to_Asia?", "smoking?");
+        learner.addPossibleEdge("visit_to_Asia", "lung_cancer");
+        learner.addPossibleEdge("visit_to_Asia", "smoking");
 
         gum::BayesNet< double > bn = learner.learnBN();
         TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(0));
@@ -1363,13 +1363,13 @@ namespace gum_tests {
         // possible edges are relevant
         gum::learning::BNLearner< double > learner(
            GET_RESSOURCES_PATH("asia3.csv"));
-        learner.addPossibleEdge("smoking?", "lung_cancer?");
-        learner.addPossibleEdge("bronchitis?", "smoking?");
+        learner.addPossibleEdge("smoking", "lung_cancer");
+        learner.addPossibleEdge("bronchitis", "smoking");
 
         gum::BayesNet< double > bn = learner.learnBN();
         TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(2));
-        TS_ASSERT(bn.parents("lung_cancer?").contains(bn.idFromName("smoking?")));
-        TS_ASSERT(bn.parents("bronchitis?").contains(bn.idFromName("smoking?")));
+        TS_ASSERT(bn.parents("lung_cancer").contains(bn.idFromName("smoking")));
+        TS_ASSERT(bn.parents("bronchitis").contains(bn.idFromName("smoking")));
       }
 
       {
@@ -1377,14 +1377,14 @@ namespace gum_tests {
         // mixed with a forbidden arcs
         gum::learning::BNLearner< double > learner(
            GET_RESSOURCES_PATH("asia3.csv"));
-        learner.addPossibleEdge("smoking?", "lung_cancer?");
-        learner.addPossibleEdge("bronchitis?", "smoking?");
-        learner.addForbiddenArc("smoking?", "bronchitis?");
+        learner.addPossibleEdge("smoking", "lung_cancer");
+        learner.addPossibleEdge("bronchitis", "smoking");
+        learner.addForbiddenArc("smoking", "bronchitis");
 
         gum::BayesNet< double > bn = learner.learnBN();
         TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(2));
-        TS_ASSERT(bn.parents("lung_cancer?").contains(bn.idFromName("smoking?")));
-        TS_ASSERT(bn.parents("smoking?").contains(bn.idFromName("bronchitis?")));
+        TS_ASSERT(bn.parents("lung_cancer").contains(bn.idFromName("smoking")));
+        TS_ASSERT(bn.parents("smoking").contains(bn.idFromName("bronchitis")));
       }
 
       {
@@ -1392,29 +1392,29 @@ namespace gum_tests {
         // mixed with a mandatory arcs
         gum::learning::BNLearner< double > learner(
            GET_RESSOURCES_PATH("asia3.csv"));
-        learner.addPossibleEdge("smoking?", "lung_cancer?");
-        learner.addPossibleEdge("bronchitis?", "smoking?");
-        learner.addMandatoryArc("visit_to_Asia?", "bronchitis?");
+        learner.addPossibleEdge("smoking", "lung_cancer");
+        learner.addPossibleEdge("bronchitis", "smoking");
+        learner.addMandatoryArc("visit_to_Asia", "bronchitis");
 
         gum::BayesNet< double > bn = learner.learnBN();
         TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(3));
-        TS_ASSERT(bn.parents("lung_cancer?").contains(bn.idFromName("smoking?")));
-        TS_ASSERT(bn.parents("smoking?").contains(bn.idFromName("bronchitis?")));
+        TS_ASSERT(bn.parents("lung_cancer").contains(bn.idFromName("smoking")));
+        TS_ASSERT(bn.parents("smoking").contains(bn.idFromName("bronchitis")));
         TS_ASSERT(
-           bn.parents("bronchitis?").contains(bn.idFromName("visit_to_Asia?")));
+           bn.parents("bronchitis").contains(bn.idFromName("visit_to_Asia")));
       }
     }
 
     void test_PossibleEdgesTabu() {
-      //[smoking? , lung_cancer? , bronchitis? , visit_to_Asia? , tuberculosis? ,
-      // tuberculos_or_cancer? , dyspnoea? , positive_XraY?]
+      //[smoking , lung_cancer , bronchitis , visit_to_Asia , tuberculosis ,
+      // tuberculos_or_cancer , dyspnoea , positive_XraY]
       {
         // possible edges are not relevant
         gum::learning::BNLearner< double > learner(
            GET_RESSOURCES_PATH("asia3.csv"));
         learner.useLocalSearchWithTabuList();
-        learner.addPossibleEdge("visit_to_Asia?", "lung_cancer?");
-        learner.addPossibleEdge("visit_to_Asia?", "smoking?");
+        learner.addPossibleEdge("visit_to_Asia", "lung_cancer");
+        learner.addPossibleEdge("visit_to_Asia", "smoking");
 
         gum::BayesNet< double > bn = learner.learnBN();
         TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(0));
@@ -1425,13 +1425,13 @@ namespace gum_tests {
         gum::learning::BNLearner< double > learner(
            GET_RESSOURCES_PATH("asia3.csv"));
         learner.useLocalSearchWithTabuList();
-        learner.addPossibleEdge("smoking?", "lung_cancer?");
-        learner.addPossibleEdge("bronchitis?", "smoking?");
+        learner.addPossibleEdge("smoking", "lung_cancer");
+        learner.addPossibleEdge("bronchitis", "smoking");
 
         gum::BayesNet< double > bn = learner.learnBN();
         TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(2));
-        TS_ASSERT(bn.parents("lung_cancer?").contains(bn.idFromName("smoking?")));
-        TS_ASSERT(bn.parents("bronchitis?").contains(bn.idFromName("smoking?")));
+        TS_ASSERT(bn.parents("lung_cancer").contains(bn.idFromName("smoking")));
+        TS_ASSERT(bn.parents("bronchitis").contains(bn.idFromName("smoking")));
       }
 
       {
@@ -1440,14 +1440,14 @@ namespace gum_tests {
         gum::learning::BNLearner< double > learner(
            GET_RESSOURCES_PATH("asia3.csv"));
         learner.useLocalSearchWithTabuList();
-        learner.addPossibleEdge("smoking?", "lung_cancer?");
-        learner.addPossibleEdge("bronchitis?", "smoking?");
-        learner.addForbiddenArc("smoking?", "bronchitis?");
+        learner.addPossibleEdge("smoking", "lung_cancer");
+        learner.addPossibleEdge("bronchitis", "smoking");
+        learner.addForbiddenArc("smoking", "bronchitis");
 
         gum::BayesNet< double > bn = learner.learnBN();
         TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(2));
-        TS_ASSERT(bn.parents("lung_cancer?").contains(bn.idFromName("smoking?")));
-        TS_ASSERT(bn.parents("smoking?").contains(bn.idFromName("bronchitis?")));
+        TS_ASSERT(bn.parents("lung_cancer").contains(bn.idFromName("smoking")));
+        TS_ASSERT(bn.parents("smoking").contains(bn.idFromName("bronchitis")));
       }
 
       {
@@ -1456,16 +1456,16 @@ namespace gum_tests {
         gum::learning::BNLearner< double > learner(
            GET_RESSOURCES_PATH("asia3.csv"));
         learner.useLocalSearchWithTabuList();
-        learner.addPossibleEdge("smoking?", "lung_cancer?");
-        learner.addPossibleEdge("bronchitis?", "smoking?");
-        learner.addMandatoryArc("visit_to_Asia?", "bronchitis?");
+        learner.addPossibleEdge("smoking", "lung_cancer");
+        learner.addPossibleEdge("bronchitis", "smoking");
+        learner.addMandatoryArc("visit_to_Asia", "bronchitis");
 
         gum::BayesNet< double > bn = learner.learnBN();
         TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(3));
-        TS_ASSERT(bn.parents("lung_cancer?").contains(bn.idFromName("smoking?")));
-        TS_ASSERT(bn.parents("bronchitis?").contains(bn.idFromName("smoking?")));
+        TS_ASSERT(bn.parents("lung_cancer").contains(bn.idFromName("smoking")));
+        TS_ASSERT(bn.parents("bronchitis").contains(bn.idFromName("smoking")));
         TS_ASSERT(
-           bn.parents("bronchitis?").contains(bn.idFromName("visit_to_Asia?")));
+           bn.parents("bronchitis").contains(bn.idFromName("visit_to_Asia")));
       }
     }
 
@@ -1474,7 +1474,7 @@ namespace gum_tests {
         //////////////////////////
         // without specific score
         auto templ12 =
-           gum::BayesNet< double >::fastPrototype("smoking?->lung_cancer?");
+           gum::BayesNet< double >::fastPrototype("smoking->lung_cancer");
         gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("asia.csv"),
                                                    templ12);
         auto bn = learner.learnParameters(templ12.dag());
@@ -1482,13 +1482,13 @@ namespace gum_tests {
         gum::learning::BNLearner< double > learner2(
            GET_RESSOURCES_PATH("asia.csv"), templ12);
         auto bn2 = learner2.learnParameters(templ12.dag());
-        TS_ASSERT_EQUALS(bn.cpt("lung_cancer?").toString(),
-                         bn2.cpt("lung_cancer?").toString());
+        TS_ASSERT_EQUALS(bn.cpt("lung_cancer").toString(),
+                         bn2.cpt("lung_cancer").toString());
 
         //////////////////////////
         // with score AIC
         auto templ34 =
-           gum::BayesNet< double >::fastPrototype("smoking?[3]->lung_cancer?[3]");
+           gum::BayesNet< double >::fastPrototype("smoking[3]->lung_cancer[3]");
         gum::learning::BNLearner< double > learner3(
            GET_RESSOURCES_PATH("asia.csv"), templ34);
         learner3.useScoreAIC();
@@ -1499,8 +1499,8 @@ namespace gum_tests {
 #else   // GUM_PARAMESTIMATOR_ERROR_WHEN_NIJ_IS_NULL
         auto bn3 = learner3.learnParameters(templ34.dag());
         {
-          const gum::Potential< double >& p = bn.cpt("lung_cancer?");
-          const gum::Potential< double >& q = bn3.cpt("lung_cancer?");
+          const gum::Potential< double >& p = bn.cpt("lung_cancer");
+          const gum::Potential< double >& q = bn3.cpt("lung_cancer");
 
           auto I = gum::Instantiation(p);
           auto J = gum::Instantiation(q);
@@ -1538,8 +1538,8 @@ namespace gum_tests {
 #else   // GUM_PARAMESTIMATOR_ERROR_WHEN_NIJ_IS_NULL
         auto bn4 = learner4.learnParameters(templ34.dag());
         {
-          const gum::Potential< double >& p = bn.cpt("lung_cancer?");
-          const gum::Potential< double >& q = bn4.cpt("lung_cancer?");
+          const gum::Potential< double >& p = bn.cpt("lung_cancer");
+          const gum::Potential< double >& q = bn4.cpt("lung_cancer");
 
           auto I = gum::Instantiation(p);
           auto J = gum::Instantiation(q);

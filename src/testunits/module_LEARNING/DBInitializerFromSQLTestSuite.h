@@ -52,8 +52,8 @@ namespace gum_tests {
         const std::string query = "SELECT * FROM testunit.asia";
 
         // the database contains the following rows:
-        // smoking? lung_cancer? bronchitis? visit_to_Asia? tuberculosis?
-        // tuberculos_or_cancer? dyspnoea? positive_XraY?
+        // smoking? lung_cancer? bronchitis? visit_to_Asia? tuberculosis
+        // tuberculos_or_cancer dyspnoea positive_XraY
         //
         // Their types are:
         // boolean  boolean  boolean  boolean  boolean  character varying
@@ -267,8 +267,8 @@ namespace gum_tests {
         const std::string query = "select * from asia";
 
         // the database contains the following rows:
-        // smoking? lung_cancer? bronchitis? visit_to_Asia? tuberculosis?
-        // tuberculos_or_cancer? dyspnoea? positive_XraY?
+        // smoking lung_cancer bronchitis visit_to_Asia tuberculosis
+        // tuberculos_or_cancer dyspnoea positive_XraY
         //
         // Their types are:
         // boolean  boolean  boolean  boolean  boolean  character varying

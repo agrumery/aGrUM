@@ -327,7 +327,7 @@ namespace gum_tests {
       TS_ASSERT(nbrErr == gum::Size(0));
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
 
-      auto id = bn.idFromName("lung_cancer?");
+      auto id = bn.idFromName("lung_cancer");
 
       gum::LazyPropagation< double > inf(&bn);
       inf.setRelevantPotentialsFinderType(
@@ -631,11 +631,11 @@ namespace gum_tests {
                   } catch (gum::IncompatibleEvidence&) {
                     // check evidence incompatibility:
                     if (node2 == gum::NodeId(2)) {
-                      // node2 = tuberculos_or_cancer?, then node =
-                      // tuberculosis?
+                      // node2 = tuberculos_or_cancer, then node =
+                      // tuberculosis
                       TS_ASSERT((inst2_index == 1) && (inst_index == 0));
-                    } else {   // node2 = lung_cancer? & node =
-                      // tuberculos_or_cancer?
+                    } else {   // node2 = lung_cancer & node =
+                      // tuberculos_or_cancer
                       TS_ASSERT((inst2_index == 0) && (inst_index == 1));
                     }
                   }
@@ -777,11 +777,11 @@ namespace gum_tests {
          gum::InvalidArgument);
 
       TS_ASSERT_THROWS(
-         ie_all.evidenceImpact("visit_to_asia?", {"tuberculoisis?", "toto"}),
+         ie_all.evidenceImpact("visit_to_asia", {"tuberculosis", "toto"}),
          gum::NotFound);
 
-      auto res = ie_all.evidenceImpact("visit_to_Asia?",
-                                       {"tuberculosis?", "tuberculos_or_cancer?"});
+      auto res = ie_all.evidenceImpact("visit_to_Asia",
+                                       {"tuberculosis", "tuberculos_or_cancer"});
 
       TS_ASSERT_EQUALS(res.nbrDim(), gum::Size(2));   // 2 indep 0 given 1
 
@@ -916,7 +916,7 @@ namespace gum_tests {
       byHandJMI -= ie.posterior(1).entropy() + ie.posterior(4).entropy()
                    + ie.posterior(3).entropy();
 
-      //@todo why do I need to create a new LazyPropagation ?
+      //@todo why do I need to create a new LazyPropagation
       gum::LazyPropagation< double > ie2(&bn);
       JMI = ie2.jointMutualInformation({1, 3, 4});
 
@@ -939,7 +939,7 @@ namespace gum_tests {
       byHandJMI += ie.posterior(0).entropy() + ie.posterior(1).entropy()
                    + ie.posterior(2).entropy() + ie.posterior(3).entropy();
 
-      //@todo why do I need to create a new LazyPropagation ?
+      //@todo why do I need to create a new LazyPropagation
       gum::LazyPropagation< double > ie3(&bn);
       JMI = ie3.jointMutualInformation({0, 1, 2, 3});
 

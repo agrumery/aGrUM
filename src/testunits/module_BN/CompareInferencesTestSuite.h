@@ -529,7 +529,7 @@ namespace gum_tests {
     gum::ShaferShenoyInference< double > ss(&bn);
     gum::LazyPropagation< double >       lazy(&bn);
     gum::Potential< double >             p_ve, p_ss, p_lazy;
-    auto                                 e_id = bn.idFromName("bronchitis?");
+    auto                                 e_id = bn.idFromName("bronchitis");
     auto                                 inf_list =
       std::vector< gum::BayesNetInference< double >* >{&ve, &lazy, &ss};
     for (auto inf : inf_list) {
@@ -562,7 +562,7 @@ namespace gum_tests {
     gum::ShaferShenoyInference< double > ss(&bn);
     gum::LazyPropagation< double >       lazy(&bn);
     gum::Potential< double >             p_ve, p_ss, p_lazy;
-    auto                                 e_id = bn.idFromName("bronchitis?");
+    auto                                 e_id = bn.idFromName("bronchitis");
     auto                                 e_p = gum::Potential< double >();
     e_p.add(bn.variable(e_id));
     e_p.fillWith(std::vector< double >{0.1, 0.9});

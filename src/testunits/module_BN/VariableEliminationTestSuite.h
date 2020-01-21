@@ -605,11 +605,11 @@ namespace gum_tests {
                   } catch (gum::IncompatibleEvidence&) {
                     // check evidence incompatibility:
                     if (node2 == gum::NodeId(2)) {
-                      // node2 = tuberculos_or_cancer?, then node =
-                      // tuberculosis?
+                      // node2 = tuberculos_or_cancer, then node =
+                      // tuberculosis
                       TS_ASSERT((inst2_index == 1) && (inst_index == 0));
-                    } else {   // node2 = lung_cancer? & node =
-                      // tuberculos_or_cancer?
+                    } else {   // node2 = lung_cancer & node =
+                      // tuberculos_or_cancer
                       TS_ASSERT((inst2_index == 0) && (inst_index == 1));
                     }
                   }
@@ -751,11 +751,11 @@ namespace gum_tests {
          gum::InvalidArgument);
 
       TS_ASSERT_THROWS(
-         ie_all.evidenceImpact("visit_to_asia?", {"tuberculoisis?", "toto"}),
+         ie_all.evidenceImpact("visit_to_asia", {"tuberculoisis", "toto"}),
          gum::NotFound);
 
-      auto res = ie_all.evidenceImpact("visit_to_Asia?",
-                                       {"tuberculosis?", "tuberculos_or_cancer?"});
+      auto res = ie_all.evidenceImpact("visit_to_Asia",
+                                       {"tuberculosis", "tuberculos_or_cancer"});
 
       TS_ASSERT_EQUALS(res.nbrDim(), gum::Size(2));   // 2 indep 0 given 1
 

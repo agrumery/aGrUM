@@ -42,8 +42,8 @@ namespace gum_tests {
         const std::string query = "SELECT * FROM testunit.asia";
 
         // the database contains the following rows:
-        // smoking? lung_cancer? bronchitis? visit_to_Asia? tuberculosis?
-        // tuberculos_or_cancer? dyspnoea? positive_XraY?
+        // smoking lung_cancer bronchitis visit_to_Asia tuberculosis
+        // tuberculos_or_cancer dyspnoea positive_XraY
         //
         // Their types are:
         // boolean  boolean  boolean  boolean  boolean  character varying
@@ -97,15 +97,15 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(row3[6], "toto titi");
         TS_ASSERT_EQUALS(row3[7], "4");
 
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(0)), "smoking?");
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(1)), "lung_cancer?");
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(2)), "bronchitis?");
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(3)), "visit_to_Asia?");
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(4)), "tuberculosis?");
+        TS_ASSERT_EQUALS(parser.columnName(std::size_t(0)), "smoking");
+        TS_ASSERT_EQUALS(parser.columnName(std::size_t(1)), "lung_cancer");
+        TS_ASSERT_EQUALS(parser.columnName(std::size_t(2)), "bronchitis");
+        TS_ASSERT_EQUALS(parser.columnName(std::size_t(3)), "visit_to_Asia");
+        TS_ASSERT_EQUALS(parser.columnName(std::size_t(4)), "tuberculosis");
         TS_ASSERT_EQUALS(parser.columnName(std::size_t(5)),
-                         "tuberculos_or_cancer?");
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(6)), "dyspnoea?");
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(7)), "positive_XraY?");
+                         "tuberculos_or_cancer");
+        TS_ASSERT_EQUALS(parser.columnName(std::size_t(6)), "dyspnoea");
+        TS_ASSERT_EQUALS(parser.columnName(std::size_t(7)), "positive_XraY");
 
         TS_ASSERT_EQUALS(parser.next(), false);
 
@@ -146,15 +146,15 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xrow3[6], "toto titi");
         TS_ASSERT_EQUALS(xrow3[7], "4");
 
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(0)), "smoking?");
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(1)), "lung_cancer?");
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(2)), "bronchitis?");
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(3)), "visit_to_Asia?");
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(4)), "tuberculosis?");
+        TS_ASSERT_EQUALS(parser.columnName(std::size_t(0)), "smoking");
+        TS_ASSERT_EQUALS(parser.columnName(std::size_t(1)), "lung_cancer");
+        TS_ASSERT_EQUALS(parser.columnName(std::size_t(2)), "bronchitis");
+        TS_ASSERT_EQUALS(parser.columnName(std::size_t(3)), "visit_to_Asia");
+        TS_ASSERT_EQUALS(parser.columnName(std::size_t(4)), "tuberculosis");
         TS_ASSERT_EQUALS(parser.columnName(std::size_t(5)),
-                         "tuberculos_or_cancer?");
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(6)), "dyspnoea?");
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(7)), "positive_XraY?");
+                         "tuberculos_or_cancer");
+        TS_ASSERT_EQUALS(parser.columnName(std::size_t(6)), "dyspnoea");
+        TS_ASSERT_EQUALS(parser.columnName(std::size_t(7)), "positive_XraY");
 
         TS_ASSERT_EQUALS(parser.next(), false);
 
@@ -204,8 +204,8 @@ namespace gum_tests {
           GET_RESSOURCES_PATH("asia.sqlite") + ";";
 
         // the database contains the following rows:
-        // smoking? lung_cancer? bronchitis? visit_to_Asia? tuberculosis?
-        // tuberculos_or_cancer? dyspnoea? positive_XraY?
+        // smoking lung_cancer bronchitis visit_to_Asia tuberculosis
+        // tuberculos_or_cancer dyspnoea positive_XraY
         //
         // Their types are:
         // boolean  boolean  boolean  boolean  boolean  character varying
@@ -231,7 +231,7 @@ namespace gum_tests {
   
         auto row = nanodbc::execute(connection, query);
         row.next();
-        TS_ASSERT_EQUALS(row.column_name(0), "smoking?");
+        TS_ASSERT_EQUALS(row.column_name(0), "smoking");
         TS_ASSERT_EQUALS(row.columns(), 8);
         
         TS_ASSERT_EQUALS(row.get< int >(0, 5), 1);
@@ -277,14 +277,14 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(row3[6], "toto titi");
         TS_ASSERT_EQUALS(row3[7], "4");
 
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(0)), "smoking?");
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(1)), "lung_cancer?");
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(2)), "bronchitis?");
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(3)), "visit_to_Asia?");
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(4)), "tuberculosis?");
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(5)), "tuberculos_or_cancer?");
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(6)), "dyspnoea?");
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(7)), "positive_XraY?");
+        TS_ASSERT_EQUALS(parser.columnName(std::size_t(0)), "smoking");
+        TS_ASSERT_EQUALS(parser.columnName(std::size_t(1)), "lung_cancer");
+        TS_ASSERT_EQUALS(parser.columnName(std::size_t(2)), "bronchitis");
+        TS_ASSERT_EQUALS(parser.columnName(std::size_t(3)), "visit_to_Asia");
+        TS_ASSERT_EQUALS(parser.columnName(std::size_t(4)), "tuberculosis");
+        TS_ASSERT_EQUALS(parser.columnName(std::size_t(5)), "tuberculos_or_cancer");
+        TS_ASSERT_EQUALS(parser.columnName(std::size_t(6)), "dyspnoea");
+        TS_ASSERT_EQUALS(parser.columnName(std::size_t(7)), "positive_XraY");
 
         TS_ASSERT_EQUALS(parser.next(), false);
 
@@ -325,14 +325,14 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(xrow3[6], "toto titi");
         TS_ASSERT_EQUALS(xrow3[7], "4");
 
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(0)), "smoking?");
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(1)), "lung_cancer?");
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(2)), "bronchitis?");
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(3)), "visit_to_Asia?");
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(4)), "tuberculosis?");
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(5)), "tuberculos_or_cancer?");
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(6)), "dyspnoea?");
-        TS_ASSERT_EQUALS(parser.columnName(std::size_t(7)), "positive_XraY?");
+        TS_ASSERT_EQUALS(parser.columnName(std::size_t(0)), "smoking");
+        TS_ASSERT_EQUALS(parser.columnName(std::size_t(1)), "lung_cancer");
+        TS_ASSERT_EQUALS(parser.columnName(std::size_t(2)), "bronchitis");
+        TS_ASSERT_EQUALS(parser.columnName(std::size_t(3)), "visit_to_Asia");
+        TS_ASSERT_EQUALS(parser.columnName(std::size_t(4)), "tuberculosis");
+        TS_ASSERT_EQUALS(parser.columnName(std::size_t(5)), "tuberculos_or_cancer");
+        TS_ASSERT_EQUALS(parser.columnName(std::size_t(6)), "dyspnoea");
+        TS_ASSERT_EQUALS(parser.columnName(std::size_t(7)), "positive_XraY");
 
         TS_ASSERT_EQUALS(parser.next(), false);
         
