@@ -38,7 +38,7 @@ noTimeCluster = "void"
 
 def _splitName(name):
   """
-  By convention, name of dyna:ic variable "X" in dBN may be
+  By convention, name of dynamic variable "X" in dBN may be
     - "X0" for timeslice 0 both in unrolled BN and in 2TBN
     - "Xt" for timeslice t in a 2TBN
     - "X"+str(i) for timelice i with integer i>0 in unrolled BN

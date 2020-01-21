@@ -156,7 +156,9 @@ def BN2dot(bn, size="4", nodeColor=None, arcWidth=None, arcColor=None, cmapNode=
                     tooltip="{} : {}".format(a, av))
     graph.add_edge(edge)
 
-  graph.set_size(size)
+  if size is None:
+    size = gum.config["notebook", "default_graph_size"]
+  graph.set_size(size)  
   return graph
 
 
@@ -348,10 +350,7 @@ def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=No
   :param dag : only shows nodes that have their id in the dag (and not in the whole BN)
 
   :return: the desired representation of the inference
-  """
-  if size is None:
-    size = gum.config["notebook", "default_graph_inference_size"]
-    
+  """    
   if cmapNode is None:
     cmapNode = plt.get_cmap(gum.config["notebook", "default_node_cmap"])
 
@@ -445,6 +444,9 @@ def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=No
 
   g = dot.graph_from_dot_data(dotstr)
 
+  
+  if size is None:
+    size = gum.config["notebook", "default_graph_inference_size"]
   g.set_size(size)
   return g
 

@@ -616,6 +616,8 @@ def showInformation(bn, evs=None, size=None, cmap=_INFOcmap):
   if evs is None:
     evs = {}
 
+  if size is None:
+    size = gum.config["notebook", "default_graph_size"]
   return _reprInformation(bn, evs, size, cmap, asString=False)
 
 
