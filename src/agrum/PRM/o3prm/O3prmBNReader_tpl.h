@@ -170,6 +170,6 @@ namespace gum {
     system.instantiate();
     BayesNetFactory< GUM_SCALAR > factory(__bn);
     system.groundedBN(factory);
-    __bn->setProperty("name",__entityName);
+    __bn->setProperty("name", __entityName);
   }
 }   // namespace gum

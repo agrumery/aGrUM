@@ -1,12 +1,34 @@
 # aGrUM Changelog
 
+## Changelog for 0.16.5
+* pyAgrum
+  * Update requirements
+  * Improve `classifier.py`
+  * Documentation improvements
+  * Remove '?' from names in some resources files concerning Asia
+  * Updating API for `pyAgrum.Instantiation` (accessor using name of variables)
+  * Important internal updates for the relation between `numpy.array` and `pyAgrum.Potential` (with a significant speed-up)
+  * Add operators between `pyAgrum.Potential` and numbers
+  * Fix a bug when using `pydotplus` with `size=None`
+  * Fix minor bugs in `pyAgrum.fastBN` and in `pyAgrum.O3prmBNWriter/Reader`
+  * Add `pyAgrum.Potential.log2()` method and `pyAgrum.log2(pyAgrum.Potential)` function
+  * Add `pyAgrum.BayesNet.clear()` method
+
+* aGrUM
+  * Updating API for `gum::Instantiation` (accessor using name of variables)
+  * Add 
+  * Add operators between `gum::Potential<GUM_SCALAR>` and `GUM_SCALAR`
+  * Fix minor bugs in `gum::fastPrototype` and in `gum::O3prmBNWriter/Reader`
+  * Add `gum::multiDimDecorator::erase(std::string& name)` (mainly used as `gum::Potential::erase(std::string& name)`)
+  * Add `gum::BayesNet<GUM_SCALAR>::clear()` method
+  
 ## Changelog for 0.16.4
 
 * pyAgrum
-  * first version of `gum.lib.classifier` providing a class `gum.BNClassifier` wrapping a BN as a classifier with a scikitlearn-like API.
-  * Fix bug in `gum.lib.notebook.showPotential` with explicit digit param
-  * Add a `gum.Potential.loopIn()` to iterate inside a Potential
-  * Enhanced API for `gum.InfluenceDiagram`
+  * first version of `pyAgrum.lib.classifier` providing a class `pyAgrum.BNClassifier` wrapping a BN as a classifier with a scikitlearn-like API.
+  * Fix bug in `pyAgrum.lib.notebook.showPotential` with explicit digit param
+  * Add a `pyAgrum.Potential.loopIn()` to iterate inside a Potential
+  * Enhanced API for `pyAgrum.InfluenceDiagram`
   * Documentation improvements
   * remove package for python 3.4 and 3.5 (following [NEP29](https://numpy.org/neps/nep-0029-deprecation_policy.html)). But 2.7 is still maintained.
   * add package for python 3.8

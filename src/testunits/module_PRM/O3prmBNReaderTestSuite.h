@@ -34,7 +34,7 @@ namespace gum_tests {
       gum::BayesNet< double >      bn;
       gum::O3prmBNReader< double > reader(&bn,
                                           GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
-      gum::Size res = 0;
+      gum::Size                    res = 0;
       TS_GUM_ASSERT_THROWS_NOTHING(res = reader.proceed());
       TS_ASSERT_EQUALS(bn.property("name"), "Asia");
       TS_ASSERT_EQUALS(res, (gum::Size)0);

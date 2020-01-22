@@ -1268,8 +1268,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(resg2.first, 1.2201, 1e-4);
       TS_ASSERT_DELTA(resg2.second, 0.2693, 1e-4);
 
-      resg2 =
-         learner.G2("lung_cancer", "tuberculosis", {"tuberculos_or_cancer"});
+      resg2 = learner.G2("lung_cancer", "tuberculosis", {"tuberculos_or_cancer"});
       TS_ASSERT_DELTA(resg2.first, 59.1386, 1e-4);
       TS_ASSERT_DELTA(resg2.second, 0.0, 1e-4);
 
