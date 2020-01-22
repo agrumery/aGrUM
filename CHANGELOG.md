@@ -1,6 +1,7 @@
 # aGrUM Changelog
 
-## Changelog for 0.16.5
+## Changelog for 0.17.0
+
 * pyAgrum
   * Update requirements
   * Improve `classifier.py`
@@ -16,7 +17,6 @@
 
 * aGrUM
   * Updating API for `gum::Instantiation` (accessor using name of variables)
-  * Add 
   * Add operators between `gum::Potential<GUM_SCALAR>` and `GUM_SCALAR`
   * Fix minor bugs in `gum::fastPrototype` and in `gum::O3prmBNWriter/Reader`
   * Add `gum::multiDimDecorator::erase(std::string& name)` (mainly used as `gum::Potential::erase(std::string& name)`)
