@@ -230,7 +230,7 @@ def get_tags():
   """Get proper tags using wheel's package implementation of PEP427."""
   impl = pep425.get_abbr_impl() + pep425.get_impl_ver()
   abi = pep425.get_abi_tag()
-  arch = pep425.get_platform()
+  arch = pep425.get_platform(None)
   if arch == "linux_x86_64":
     arch = 'manylinux1_x86_64'
   elif arch == "linux_i686":
