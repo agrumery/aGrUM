@@ -46,7 +46,7 @@ my_ext = Extension( name='_pyAgrum',
 setup(
     name='pyAgrum',
     version='@PYAGRUM_VERSION@',
-    description='pyAgrum is a Python wrapper for the C++ aGrUM library',
+    description='Bayesian networks and other Probabilistic Graphical Models',
     url='https://agrum.gitlab.io/',
     maintainer='Lionel Torti and Gaspard Ducamp',
     maintainer_email='info@agrum.org',
