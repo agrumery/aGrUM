@@ -1,6 +1,7 @@
 # -*- encoding: UTF-8 -*-
 import unittest
 import logging
+import sys
 
 from pyAgrumTestSuite import pyAgrumTestCase, addTests
 
@@ -48,11 +49,11 @@ class TestImport(pyAgrumTestCase):
         import pyAgrum.lib.bn2roc
         import pyAgrum.lib.dynamicBN
 
-      if sklearnFound:
+      if sklearnFound and sys.version_info >= (3,6):
         import pyAgrum.lib.classifier
       else:
         logging.warning(
-            "[pyAgrum] sklearn is needed for modules lib.classifier")
+            "[pyAgrum] python>=3.6 and sklearn is needed for modules lib.classifier")
 
     except Exception as e:
       self.assertFalse("Import error : "+str(e))

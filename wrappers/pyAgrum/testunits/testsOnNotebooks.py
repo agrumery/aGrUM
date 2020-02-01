@@ -13,10 +13,6 @@ import glob
 import sys
 import zmq
 
-if sys.version_info >= (3, 0):
-  import concurrent
-
-
 def processeNotebook(notebook_filename):
   err = 0
   res = "ok"
@@ -90,10 +86,6 @@ done.firstTime = True
 
 def runNotebooks():
   global futures
-
-  if sys.version_info < (3, 0):
-    print("No notebook tests in python2")
-    return 0
 
   errs = 0
 

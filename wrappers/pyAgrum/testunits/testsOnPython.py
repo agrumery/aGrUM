@@ -7,8 +7,18 @@ import os
 import platform
 import sys
 from sys import platform as os_platform
+import logging
+
+if __name__ == "__main__":
+  print("On testsOPython")
+  FORMAT = '%(asctime)s | %(levelname)s | %(filename)s:%(lineno)d | %(funcName)s | %(message)s'
+  logging.basicConfig(filename='pyAgrumTests.log',
+                      filemode='w', format=FORMAT, level=logging.DEBUG)
+  logging.info("[pyAgrum]                       log messages")
+  logging.info("[pyAgrum]")
 
 if len(sys.argv) > 1:
+  logging.info("Adding local pyAgrum's path")
   p = os.getcwd() + "\\" + sys.argv[1]
   sys.path.insert(1, p)  # to force to use local pyAgrum for the tests (and not installed one)
 
@@ -26,13 +36,6 @@ try:
 except ImportError:
   pandasFound = False
 
-import logging
-FORMAT = '%(asctime)s | %(levelname)s | %(filename)s:%(lineno)d | %(funcName)s | %(message)s'
-logging.basicConfig(filename='pyAgrumTests.log',
-                    filemode='w', format=FORMAT, level=logging.DEBUG)
-logging.info("[pyAgrum]                       log messages")
-logging.info("[pyAgrum]")
-
 import unittest
 
 from tests import AggregatorsForBNTestSuite
@@ -40,10 +43,10 @@ from tests import AllIncrementalInferenceTestSuite
 from tests import BayesNetTestSuite
 from tests import BayesNetFragmentTestSuite
 
-if pandasFound and sklearnFound:
+if sys.version_info >= (3,6) and pandasFound and sklearnFound:
   from tests import BNClassifierTestSuite
 else:
-  logging.warning("[pyAgrum] pyAgrum.lib.classifier needs pandas and sklearn")
+  logging.warning("[pyAgrum] pyAgrum.lib.classifier needs python>=3.6, pandas and sklearn")
 
 from tests import BNDatabaseGeneratorTestSuite
 from tests import BNLearnerTestSuite
