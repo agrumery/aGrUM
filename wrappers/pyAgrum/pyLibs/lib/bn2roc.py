@@ -152,8 +152,18 @@ def __computeROCpoints(bn, csv_name, target, label, visible=False, with_labels=T
     assert (idLabel >= 0)
 
   engine = gum.LazyPropagation(bn)
-
-  nbr_lines = _lines_count(csv_name) - 1
+  engine.eraseAllEvidence()
+  mbvars = [bn.variable(i).name() for i in gum.MarkovBlanket(bn, target).nodes()]
+  e = {}
+  for var in bn.names():
+    if not var.__eq__(target):
+      e[var] =0
+  engine.setEvidence(e)
+  engine.addTarget(idTarget)
+    
+  
+  if visible:
+    nbr_lines = _lines_count(csv_name) - 1
 
   if (sys.version_info >= (3, 0)):  # python 3
     csvfile = open(csv_name, "r")
@@ -197,18 +207,14 @@ def __computeROCpoints(bn, csv_name, target, label, visible=False, with_labels=T
       else:
         totalN += 1
 
-    engine.eraseAllEvidence()
-    e = {}
-    for var in bn.names():
+    for var in mbvars:
       if not var.__eq__(target):
         if with_labels:
-          e[var] = str(data[positions[bn.idFromName(var)]])
+          engine.chgEvidence(var,str(data[positions[bn.idFromName(var)]]))
         else:
-          e[var] = bn.variableFromName(var).label(
-              int(data[positions[bn.idFromName(var)]]))
+          engine.chgEvidence(var,int(data[positions[bn.idFromName(var)]]))
 
     try:
-      engine.setEvidence(e)
       engine.makeInference()
       px = engine.posterior(idTarget)[{target: label}]
       if with_labels:
