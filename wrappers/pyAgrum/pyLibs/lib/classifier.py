@@ -64,8 +64,10 @@ class BNClassifier:
   label of the target must be True or 1
   """
 
-  def __init__(self, learning_method='greedy', prior='likelihood', prior_weight=1, bins=7):
+  def __init__(self, bn=None, learning_method='greedy', prior='likelihood', prior_weight=1, bins=7):
     """
+    :param bn: using a BN as classifier 
+    :type bn: gum.BayesNet
     :param learning_method: greedy|miic
     :type learning_method: str
     :param prior: likelihood|laplace
@@ -78,8 +80,7 @@ class BNClassifier:
     :return: self
 
     """
-
-    self._bn = gum.BayesNet()
+    self._bn = gum.BayesNet() if bn is None else bn
     self.learning_method = learning_method
     self.prior = prior
     self.prior_weight = 1
@@ -115,7 +116,7 @@ class BNClassifier:
     for varname in df:
       if varname != variable:
         if 'float' in str(df[varname].dtype) and len(df[varname].unique()) / len(df[varname]) > 0.95:
-                                                                              # less than 5% duplicate
+            # less than 5% duplicate
           nb = min(len(df[varname]), self.bins)
           # , duplicates = 'drop')
           _, bins = pd.qcut(df[varname], nb, retbins=True)
@@ -210,6 +211,9 @@ class BNClassifier:
     Yscores = np.empty([Xtest.shape[0], self.nb_classes])
     Yscores[:] = np.nan
 
+    mbnames = [self._bn.variable(i).name()
+               for i in gum.MarkovBlanket(self._bn, self.class_name).nodes()
+               if self._bn.variable(i).name() != self.class_name]
     ie = gum.LazyPropagation(self._bn)
     for var in ie.BN().names():  # ici que var de mb
       if var != self.class_name:
@@ -219,17 +223,16 @@ class BNClassifier:
     Xtest = Xtest.reset_index(drop=True)
 
     for line in Xtest.itertuples():
-      for var in ie.BN().names():
-        if var != self.class_name:
-          try:
-            idx = self._bn.variable(var).index(str(getattr(line, var)))
-            ie.chgEvidence(var, idx)
+      for var in mbnames:
+        try:
+          idx = self._bn.variable(var).index(str(getattr(line, var)))
+          ie.chgEvidence(var, idx)
 
-          except gum.GumException:
-            # this can happend when value is missing is the test base.
-            logging.warning(
-                f"** pyAgrum.lib.classifier : The value {getattr(line, var)} for the variable {var} is missing in the training set.")
-            pass
+        except gum.GumException:
+          # this can happend when value is missing is the test base.
+          logging.warning(
+              f"** pyAgrum.lib.classifier : The value {getattr(line, var)} for the variable {var} is missing in the training set.")
+          pass
 
       ie.makeInference()
 
