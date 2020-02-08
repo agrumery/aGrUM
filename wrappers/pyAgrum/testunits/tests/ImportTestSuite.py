@@ -42,8 +42,8 @@ class TestImport(pyAgrumTestCase):
           import pyAgrum.lib.ipython
           import pyAgrum.lib.notebook
         else:
-          logging.warning(
-              "[pyAgrum] ipython is needed for modules lib.ipython and lib.notebook")
+          self.warn(
+              "ipython is needed for modules lib.ipython and lib.notebook")
 
         import pyAgrum.lib.bn2graph
         import pyAgrum.lib.bn2roc
@@ -52,8 +52,8 @@ class TestImport(pyAgrumTestCase):
       if sklearnFound and sys.version_info >= (3,6):
         import pyAgrum.lib.classifier
       else:
-        logging.warning(
-            "[pyAgrum] python>=3.6 and sklearn is needed for modules lib.classifier")
+        self.warn(
+            "python>=3.6 and sklearn is needed for modules lib.classifier")
 
     except Exception as e:
       self.assertFalse("Import error : "+str(e))

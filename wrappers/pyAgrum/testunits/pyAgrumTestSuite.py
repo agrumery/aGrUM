@@ -21,15 +21,13 @@ def addTests(ts, cl):
 
 
 class pyAgrumTestCase(unittest.TestCase):
-  log = None
-
   def __init__(self, *args, **kwargs):
     super(pyAgrumTestCase, self).__init__(*args, **kwargs)
 
     self.nbLoopForApproximatedTest = 10
 
   def warn(self, s):
-    pyAgrumTestCase.log.warning(s)
+    pyAgrumTestCase.log.warning("[pyAgrum] "+s)
 
   def agrumSrcDir(self, s):
     t = s.split("ressources/")

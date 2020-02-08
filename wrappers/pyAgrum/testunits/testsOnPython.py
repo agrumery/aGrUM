@@ -10,15 +10,11 @@ from sys import platform as os_platform
 import logging
 
 if __name__ == "__main__":
-  print("On testsOPython")
-  FORMAT = '%(asctime)s | %(levelname)s | %(filename)s:%(lineno)d | %(funcName)s | %(message)s'
-  logging.basicConfig(filename='pyAgrumTests.log',
-                      filemode='w', format=FORMAT, level=logging.DEBUG)
-  logging.info("[pyAgrum]                       log messages")
-  logging.info("[pyAgrum]")
+  print("Please use 'act test -t quick|all pyAgrum release'.")
+  sys.exit(0)
 
 if len(sys.argv) > 1:
-  logging.info("Adding local pyAgrum's path")
+  logging.info("[pyAgrum] Adding local pyAgrum's path")
   p = os.getcwd() + "\\" + sys.argv[1]
   sys.path.insert(1, p)  # to force to use local pyAgrum for the tests (and not installed one)
 
@@ -146,13 +142,6 @@ import gc
 
 gc.collect()
 gum.statsObj()  # reporting on objects in debug mode
-
-logging.shutdown()
-with open("pyAgrumTests.log", "r") as logfile:
-  for f in logfile.readlines():
-    if "[pyAgrum]" in f:
-      print(f,end='')
-print("-"*70)
 
 print("## Profiling : %5.0f ms ##" % (1000.0 * duration), end='\n', file=sys.stdout)
 print("Failed %d of %d tests" % (errs, result.testsRun), end='\n', file=sys.stdout)

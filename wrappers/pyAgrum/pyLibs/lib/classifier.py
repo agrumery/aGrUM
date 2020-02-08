@@ -116,7 +116,7 @@ class BNClassifier:
     for varname in df:
       if varname != variable:
         if 'float' in str(df[varname].dtype) and len(df[varname].unique()) / len(df[varname]) > 0.95:
-            # less than 5% duplicate
+                                                                              # less than 5% duplicate
           nb = min(len(df[varname]), self.bins)
           # , duplicates = 'drop')
           _, bins = pd.qcut(df[varname], nb, retbins=True)
@@ -224,15 +224,15 @@ class BNClassifier:
 
     for line in Xtest.itertuples():
       for var in mbnames:
-        try:
-          idx = self._bn.variable(var).index(str(getattr(line, var)))
-          ie.chgEvidence(var, idx)
+          try:
+            idx = self._bn.variable(var).index(str(getattr(line, var)))
+            ie.chgEvidence(var, idx)
 
-        except gum.GumException:
-          # this can happend when value is missing is the test base.
-          logging.warning(
-              f"** pyAgrum.lib.classifier : The value {getattr(line, var)} for the variable {var} is missing in the training set.")
-          pass
+          except gum.GumException:
+            # this can happend when value is missing is the test base.
+            logging.warning(
+                f"[pyAgrum] ** pyAgrum.lib.classifier : The value {getattr(line, var)} for the variable {var} is missing in the training set.")
+            pass
 
       ie.makeInference()
 

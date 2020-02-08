@@ -13,6 +13,10 @@ import glob
 import sys
 import zmq
 
+if __name__ == "__main__":
+  print("Please use 'act test -t quick|all pyAgrum release'.")
+  sys.exit(0)
+  
 def processeNotebook(notebook_filename):
   err = 0
   res = "ok"
