@@ -97,33 +97,51 @@ namespace gum {
       std::string instanceName = "";
       if (prm->isSystem(__entityName)) {
         __generateBN(prm->getSystem(__entityName));
+      } else if (prm->isClass(__entityName)) {
+        ParseError warn(
+           false,
+           "No system '" + __entityName
+              + "' found but class found. Generating unnamed instance.",
+           __filename,
+           0);
+        __errors.add(warn);
+        gum::prm::PRMSystem< GUM_SCALAR > s("S_" + __entityName);
+        instanceName = __getInstanceName(__entityName);
+        auto i = new gum::prm::PRMInstance< GUM_SCALAR >(
+           instanceName, prm->getClass(__entityName));
+        s.add(i);
+        __generateBN(s);
+        instanceName += ".";   // to be removed in __getVariableName
+      } else if (prm->classes().size() == 1) {
+        const std::string& entityName = (*prm->classes().begin())->name();
+        ParseError         warn(false,
+                        "Unique class '" + entityName
+                           + "' found. Generating unnamed instance.",
+                        __filename,
+                        0);
+        __errors.add(warn);
+
+        gum::prm::PRMSystem< GUM_SCALAR > s("S_" + entityName);
+        instanceName = __getInstanceName(entityName);
+        auto i = new gum::prm::PRMInstance< GUM_SCALAR >(
+           instanceName, prm->getClass(entityName));
+        s.add(i);
+        __generateBN(s);
+
+        // force the name of the BN to be the name of the class instead of the name
+        // of the file
+        __bn->setProperty("name", entityName);
+        instanceName += ".";   // to be removed in __getVariableName
       } else {
-        if (prm->isClass(__entityName)) {
-          ParseError warn(
-             false,
-             "No system '" + __entityName
-                + "' found but class found. Generating unnamed instance.",
-             __filename,
-             0);
-          __errors.add(warn);
-          gum::prm::PRMSystem< GUM_SCALAR > s("S_" + __entityName);
-          instanceName = __getInstanceName(__entityName);
-          auto i = new gum::prm::PRMInstance< GUM_SCALAR >(
-             instanceName, prm->getClass(__entityName));
-          s.add(i);
-          __generateBN(s);
-          instanceName += ".";   // to be removed in __getVariableName
-        } else {
-          ParseError err(true,
-                         "Neither system nor class '" + __entityName + "'.",
-                         __filename,
-                         0);
-          __errors.add(err);
-        }
+        ParseError err(true,
+                       "Neither system nor class '" + __entityName
+                          + "' and more than one class.",
+                       __filename,
+                       0);
+        __errors.add(err);
       }
 
       // renaming variables in th BN
-
       gum::Set< std::string > names;
       for (auto node: __bn->nodes()) {
         // keeping the complete name in description
