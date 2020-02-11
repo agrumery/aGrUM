@@ -1,5 +1,17 @@
 # aGrUM Changelog
 
+## Changelog for 0.17.1
+(really) minor patch
+
+* aGrUM
+  * O3PRMBNReader can now read a BN from an o3prm file with a unique class even it the name of the class is not the name of the file
+
+* pyAgrum
+  * internal changes for wheel generations
+  * updating description for packages
+  * optimizing loops and inference for ROC and classifiers
+  * minor improvements for pyAgrum's tests (logging and restrictions for python2)
+
 ## Changelog for 0.17.0
 
 * pyAgrum
