@@ -1,8 +1,10 @@
 pyAgrum
 =======
 
-``pyAgrum`` is a Python wrapper for the Agrum library, to make flexible and
-scalable probabilistic graphical models for inference and diagnosis.
+``pyAgrum`` is a scientific C++ and Python library dedicated to Bayesian 
+Networks and other Probabilistic Graphical Models. Based on the C++ Agrum 
+library, it provides  a high-level interface to the C++ part of aGrUM allowing 
+to create, manage and perform efficient computations with Bayesian Networks.
 
 Sample code:
 
