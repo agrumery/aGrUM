@@ -1,16 +1,16 @@
 Simple K-Cross-Validation with aGrUM
 
-Please call 'example K' for a K-fold cross validation
+Please type 'example K' for a K-fold cross validation
 ...using K=3 by default
 
   K=3 on ../asia.csv (size:10000)
 
-+ LEARNING on [0,3332] : 0.107717s 11 arcs
-  TESTING on [3333,9999] : LL=-21656.8
++ LEARNING on [(3333,10000)] : 0.0539254s 8 arcs
+  TESTING on [0,3333) : LL=-10903.9
 
-+ LEARNING on [3333,6665] : 0.0877568s 11 arcs
-  TESTING on [0,3332] U [6666,9999] : LL=-21795.6
++ LEARNING on [(0,3333) , (6666,10000)] : 0.0498764s 9 arcs
+  TESTING on [3333,6666) : LL=-10750.7
 
-+ LEARNING on [6666,9998] : 0.0881687s 11 arcs
-  TESTING on [0,6665] : LL=-21617.2
++ LEARNING on [(0,6666)] : 0.1389s 8 arcs
+  TESTING on [6666,9999) : LL=-10938.1
 

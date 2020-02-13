@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
     k = atoi(argv[1]);
   }
 
-  std::string                           csvfilename("asia.csv");
+  std::string                           csvfilename("../asia.csv");
   gum::learning::DBInitializerFromCSV<> initializer(csvfilename);
   const auto&       var_names = initializer.variableNames();
   const std::size_t nb_vars = var_names.size();
