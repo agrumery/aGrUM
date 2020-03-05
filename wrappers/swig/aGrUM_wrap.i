@@ -64,6 +64,8 @@
 #include <agrum/multidim/implementations/multiDimReadOnly.h>
 #include <agrum/multidim/ICIModels/multiDimNoisyORCompound.h>
 #include <agrum/multidim/ICIModels/multiDimNoisyAND.h>
+#include <agrum/graphicalModels/graphicalModel.h>
+#include <agrum/graphicalModels/DAGModel.h>
 #include <agrum/graphicalModels/variableNodeMap.h>
 
 #include <agrum/core/sequence.h>
@@ -263,6 +265,7 @@ namespace std {
 %include <agrum/core/list.h>
 
 %import <agrum/graphicalModels/variableNodeMap.h>
+%include <agrum/graphicalModels/graphicalModel.h>
 %include <agrum/graphicalModels/DAGmodel.h>
 %include <agrum/BN/IBayesNet.h>
 %include <agrum/BN/BayesNet.h>

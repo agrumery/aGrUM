@@ -1,4 +1,3 @@
-
 /**
  *
  *  Copyright 2005-2019 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
@@ -29,13 +28,13 @@
  */
 #ifndef GUM_DAGMODEL_H
 #define GUM_DAGMODEL_H
+
 #include <agrum/agrum.h>
 #include <agrum/multidim/instantiation.h>
+#include <agrum/graphicalModels/graphicalModel.h>
 
 #include <agrum/graphs/DAG.h>
 #include <agrum/graphs/undiGraph.h>
-
-#include <agrum/graphicalModels/variableNodeMap.h>
 
 namespace gum {
 
@@ -45,7 +44,7 @@ namespace gum {
    * Virtual base class for PGMs using a DAG
    *
    */
-  class DAGmodel {
+  class DAGmodel : public GraphicalModel {
     public:
     /// @name Constructors / Destructors
     /// @{
@@ -69,24 +68,6 @@ namespace gum {
     /// @name Getter and setters
     /// @{
 
-    /**
-     * Return the value of the property name of this DAGModel.
-     * @throw NotFound Raised if no name property is found.
-     */
-    const std::string& property(const std::string& name) const;
-
-    /**
-     * Return the value of the property name of this DAGModel.
-     * return byDefault if the property name is not found
-     */
-    const std::string& propertyWithDefault(const std::string& name,
-                                           const std::string& byDefault) const;
-
-    /**
-     * Add or change a property of this DAGModel.
-     */
-    void setProperty(const std::string& name, const std::string& value);
-
     /// @}
     /// @name Variable manipulation methods.
     /// @{
@@ -96,26 +77,14 @@ namespace gum {
     const DAG& dag() const;
 
     /**
-     * Returns a constant reference to the VariableNodeMap of this Directed
-     * Graphical
-     * Model
-     */
-    virtual const VariableNodeMap& variableNodeMap() const = 0;
-
-    /**
      * Returns the number of variables in this Directed Graphical Model.
      */
-    Size size() const;
+    virtual Size size() const final;
 
     /**
      * Returns the number of arcs in this Directed Graphical Model.
      */
     Size sizeArcs() const;
-
-    /**
-     * Retursn true if this Directed Graphical Model is empty.
-     */
-    bool empty() const;
 
     const NodeGraphPart& nodes() const;
 
@@ -140,8 +109,6 @@ namespace gum {
     virtual const DiscreteVariable&
        variableFromName(const std::string& name) const = 0;
 
-    /// Get an instantiation over all the variables of the model
-    virtual Instantiation completeInstantiation() const final;
     /// @}
 
     /// @name Arc manipulation methods.
@@ -181,10 +148,6 @@ namespace gum {
 
     /// @}
 
-    /// @return Returns the log10 domain size of the joint probabilty for the
-    /// Directed Graphical Model
-    double log10DomainSize() const;
-
     /// @return true if all the named node are the same and all the named arcs are
     /// the same
     bool hasSameStructure(const DAGmodel& other);
@@ -205,16 +168,6 @@ namespace gum {
 
     /// The moral graph of this Directed Graphical Model.
     mutable UndiGraph* __mutableMoralGraph;
-
-    /// The properties of this Directed Graphical Model.
-    /// Initialized using a lazy instantiation.
-    mutable HashTable< std::string, std::string >* __propertiesMap;
-
-    /// Return the properties of this Directed Graphical Model and initialize
-    /// the
-    /// hash table is
-    /// necessary.
-    HashTable< std::string, std::string >& __properties() const;
   };
 }   // namespace gum
 

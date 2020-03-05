@@ -27,26 +27,17 @@
 #endif /* GUM_NO_INLINE */
 
 namespace gum {
-  DAGmodel::DAGmodel() : __mutableMoralGraph(nullptr), __propertiesMap(nullptr) {
+  DAGmodel::DAGmodel() : __mutableMoralGraph(nullptr){
     GUM_CONSTRUCTOR(DAGmodel);
   }
 
   DAGmodel::DAGmodel(const DAGmodel& from) :
-      _dag(from._dag), __mutableMoralGraph(nullptr), __propertiesMap(nullptr) {
+      _dag(from._dag), __mutableMoralGraph(nullptr) {
     GUM_CONS_CPY(DAGmodel);
-
-    if (from.__propertiesMap) {
-      __propertiesMap =
-         new HashTable< std::string, std::string >(*(from.__propertiesMap));
-    }
   }
 
   DAGmodel::~DAGmodel() {
     GUM_DESTRUCTOR(DAGmodel);
-    // Removing previous properties
-
-    if (__propertiesMap) { delete __propertiesMap; }
-
     if (__mutableMoralGraph) { delete __mutableMoralGraph; }
   }
 
@@ -77,21 +68,12 @@ namespace gum {
 
   DAGmodel& DAGmodel::operator=(const DAGmodel& source) {
     if (this != &source) {
-      if (__propertiesMap) {
-        delete __propertiesMap;
-        __propertiesMap = nullptr;
-      }
+      GraphicalModel::operator=(source);
 
       if (__mutableMoralGraph) {
         delete __mutableMoralGraph;
         __mutableMoralGraph = nullptr;
       }
-
-      if (source.__propertiesMap != 0) {
-        __propertiesMap =
-           new HashTable< std::string, std::string >(*(source.__propertiesMap));
-      }
-
       _dag = source._dag;
     }
 

@@ -84,6 +84,6 @@ with open("../../pyAgrumTests.log", "r") as logfile:
       print(f,end='')
 print("-" * 70)
 
-print("\n\nErrors : " + str(total_errs))
+print("\n\n\nErrors : " + str(total_errs))
 
 sys.exit(total_errs)
