@@ -148,12 +148,12 @@ def _TimeSlicesToDot(dbn):
     else:
       cluster = g  # small trick to add in graph variable in no timeslice
     for (n, label) in sorted(timeslices[k]):
-      cluster.add_node(dot.Node(n, label=label, style='filled',
+      cluster.add_node(dot.Node('"'+n+'"', label='"'+label+'"', style='filled',
                                 color='#000000', fillcolor='white'))
 
   for tail, head in dbn.arcs():
-    g.add_edge(dot.Edge(dbn.variable(tail).name(),
-                        dbn.variable(head).name(),
+    g.add_edge(dot.Edge('"'+dbn.variable(tail).name()+'"',
+                        '"'+dbn.variable(head).name()+'"',
                         constraint=False, color="blue"))
 
   for k in sorted(timeslices.keys(), key=lambda x: -1 if x == noTimeCluster else 1e8 if x == 't' else int(x)):
@@ -161,8 +161,8 @@ def _TimeSlicesToDot(dbn):
       prec = None
       for (n, label) in sorted(timeslices[k]):
         if prec is not None:
-          g.add_edge(dot.Edge(prec,
-                              n,
+          g.add_edge(dot.Edge('"'+prec+'"',
+                              '"'+n+'"',
                               style="invis"))
         prec = n
 
