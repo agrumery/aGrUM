@@ -116,9 +116,9 @@ namespace gum {
     const ArcSet& arcs() const;
 
     /// returns the set of nodes with arc ingoing to a given node
-    /** Note that the set of arcs returned may be empty if no arc within the
+    /** Note that the set of nodes returned may be empty if no arc within the
      * ArcGraphPart is ingoing into the given node.
-     * @param id the node toward which the arcs returned are pointing */
+     * @param id the node toward which the nodes returned share an arc*/
     const NodeSet& parents(const NodeId id) const;
     const NodeSet& parents(const std::string& name) const;
 

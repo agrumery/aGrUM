@@ -65,7 +65,7 @@
 #include <agrum/multidim/ICIModels/multiDimNoisyORCompound.h>
 #include <agrum/multidim/ICIModels/multiDimNoisyAND.h>
 #include <agrum/graphicalModels/graphicalModel.h>
-#include <agrum/graphicalModels/DAGModel.h>
+#include <agrum/graphicalModels/DAGmodel.h>
 #include <agrum/graphicalModels/variableNodeMap.h>
 
 #include <agrum/core/sequence.h>

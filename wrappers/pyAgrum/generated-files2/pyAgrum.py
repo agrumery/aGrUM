@@ -6201,7 +6201,75 @@ _pyAgrum.Instantiation_swigregister(Instantiation)
 
 GUM_DEFAULT_ITERATOR_NUMBER = _pyAgrum.GUM_DEFAULT_ITERATOR_NUMBER
 
-class DAGmodel(object):
+class GraphicalModel(object):
+    r"""Proxy of C++ gum::GraphicalModel class."""
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+
+    def __init__(self, *args, **kwargs):
+        raise AttributeError("No constructor defined - class is abstract")
+    __repr__ = _swig_repr
+    __swig_destroy__ = _pyAgrum.delete_GraphicalModel
+
+    def property(self, name):
+        r"""property(GraphicalModel self, std::string const & name) -> std::string const &"""
+        return _pyAgrum.GraphicalModel_property(self, name)
+
+    def propertyWithDefault(self, name, byDefault):
+        r"""propertyWithDefault(GraphicalModel self, std::string const & name, std::string const & byDefault) -> std::string const &"""
+        return _pyAgrum.GraphicalModel_propertyWithDefault(self, name, byDefault)
+
+    def setProperty(self, name, value):
+        r"""setProperty(GraphicalModel self, std::string const & name, std::string const & value)"""
+        return _pyAgrum.GraphicalModel_setProperty(self, name, value)
+
+    def variableNodeMap(self):
+        r"""variableNodeMap(GraphicalModel self) -> VariableNodeMap"""
+        return _pyAgrum.GraphicalModel_variableNodeMap(self)
+
+    def size(self):
+        r"""size(GraphicalModel self) -> gum::Size"""
+        return _pyAgrum.GraphicalModel_size(self)
+
+    def empty(self):
+        r"""empty(GraphicalModel self) -> bool"""
+        return _pyAgrum.GraphicalModel_empty(self)
+
+    def nodes(self):
+        r"""nodes(GraphicalModel self) -> NodeGraphPart"""
+        return _pyAgrum.GraphicalModel_nodes(self)
+
+    def completeInstantiation(self):
+        r"""completeInstantiation(GraphicalModel self) -> Instantiation"""
+        return _pyAgrum.GraphicalModel_completeInstantiation(self)
+
+    def variable(self, id):
+        r"""variable(GraphicalModel self, gum::NodeId id) -> DiscreteVariable"""
+        return _pyAgrum.GraphicalModel_variable(self, id)
+
+    def nodeId(self, var):
+        r"""nodeId(GraphicalModel self, DiscreteVariable var) -> gum::NodeId"""
+        return _pyAgrum.GraphicalModel_nodeId(self, var)
+
+    def idFromName(self, name):
+        r"""idFromName(GraphicalModel self, std::string const & name) -> gum::NodeId"""
+        return _pyAgrum.GraphicalModel_idFromName(self, name)
+
+    def variableFromName(self, name):
+        r"""variableFromName(GraphicalModel self, std::string const & name) -> DiscreteVariable"""
+        return _pyAgrum.GraphicalModel_variableFromName(self, name)
+
+    def log10DomainSize(self):
+        r"""log10DomainSize(GraphicalModel self) -> double"""
+        return _pyAgrum.GraphicalModel_log10DomainSize(self)
+
+# Register GraphicalModel in _pyAgrum:
+_pyAgrum.GraphicalModel_swigregister(GraphicalModel)
+cvar = _pyAgrum.cvar
+__list_end_safe = cvar.__list_end_safe
+__list_end = cvar.__list_end
+
+class DAGmodel(GraphicalModel):
     r"""
 
     Abstract class used by IBayesNet and InfluenceDiagram.
@@ -6214,39 +6282,6 @@ class DAGmodel(object):
         raise AttributeError("No constructor defined - class is abstract")
     __repr__ = _swig_repr
     __swig_destroy__ = _pyAgrum.delete_DAGmodel
-
-    def property(self, name):
-        r"""
-        property(DAGmodel self, std::string const & name) -> std::string const &
-
-        Warnings
-        --------
-        Unreferenced function
-
-        """
-        return _pyAgrum.DAGmodel_property(self, name)
-
-    def propertyWithDefault(self, name, byDefault):
-        r"""
-        propertyWithDefault(DAGmodel self, std::string const & name, std::string const & byDefault) -> std::string const &
-
-        Warnings
-        --------
-        Unreferenced function
-
-        """
-        return _pyAgrum.DAGmodel_propertyWithDefault(self, name, byDefault)
-
-    def setProperty(self, name, value):
-        r"""
-        setProperty(DAGmodel self, std::string const & name, std::string const & value)
-
-        Warnings
-        --------
-        Unreferenced function
-
-        """
-        return _pyAgrum.DAGmodel_setProperty(self, name, value)
 
     def dag(self):
         r"""
@@ -6265,18 +6300,6 @@ class DAGmodel(object):
 
         return val
 
-
-    def variableNodeMap(self):
-        r"""
-        variableNodeMap(DAGmodel self) -> VariableNodeMap
-
-        Returns
-        -------
-        pyAgrum.variableNodeMap
-        	the variable node map
-
-        """
-        return _pyAgrum.DAGmodel_variableNodeMap(self)
 
     def size(self):
         r"""
@@ -6301,18 +6324,6 @@ class DAGmodel(object):
 
         """
         return _pyAgrum.DAGmodel_sizeArcs(self)
-
-    def empty(self):
-        r"""
-        empty(DAGmodel self) -> bool
-
-        Returns
-        -------
-        bool
-        	True if the model is empty
-
-        """
-        return _pyAgrum.DAGmodel_empty(self)
 
     def nodes(self):
         r"""
@@ -6418,20 +6429,6 @@ class DAGmodel(object):
         """
         return _pyAgrum.DAGmodel_variableFromName(self, name)
 
-    def completeInstantiation(self):
-        r"""
-        completeInstantiation(DAGmodel self) -> Instantiation
-
-        Get an instantiation over all the variables of the model.
-
-        Returns
-        ----------
-        pyAgrum.instantiation
-        	the complete instantiation
-
-        """
-        return _pyAgrum.DAGmodel_completeInstantiation(self)
-
     def arcs(self):
         r"""
         arcs(DAGmodel self) -> gum::ArcSet const &
@@ -6489,18 +6486,6 @@ class DAGmodel(object):
         """
         return _pyAgrum.DAGmodel_topologicalOrder(self, clear)
 
-    def log10DomainSize(self):
-        r"""
-        log10DomainSize(DAGmodel self) -> double
-
-        Returns
-        -------
-        double
-        	The log10 domain size of the joint probability for the model.
-
-        """
-        return _pyAgrum.DAGmodel_log10DomainSize(self)
-
     def hasSameStructure(self, other):
         r"""
         hasSameStructure(DAGmodel self, DAGmodel other) -> bool
@@ -6520,9 +6505,6 @@ class DAGmodel(object):
 
 # Register DAGmodel in _pyAgrum:
 _pyAgrum.DAGmodel_swigregister(DAGmodel)
-cvar = _pyAgrum.cvar
-__list_end_safe = cvar.__list_end_safe
-__list_end = cvar.__list_end
 
 class EssentialGraph(object):
     r"""Proxy of C++ gum::EssentialGraph class."""
@@ -10388,15 +10370,7 @@ class BayesNet(IBayesNet):
         return _pyAgrum.BayesNet_nodes(self)
 
     def log10DomainSize(self):
-        r"""
-        log10DomainSize(BayesNet self) -> double
-
-        Returns
-        -------
-        double
-        	The log10 domain size of the joint probability for the model.
-
-        """
+        r"""log10DomainSize(BayesNet self) -> double"""
         return _pyAgrum.BayesNet_log10DomainSize(self)
 
     def names(self):
