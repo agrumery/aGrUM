@@ -5,6 +5,7 @@
 set(MODULES)
 list(APPEND MODULES "BASE") # Core
 list(APPEND MODULES "BN") # Bayesian networks
+list(APPEND MODULES "MN") # Markov Networks
 list(APPEND MODULES "CN") # Credal networks
 list(APPEND MODULES "FMDP") # Factored Markov Decision Process
 list(APPEND MODULES "ID") # Influence diagram
@@ -23,6 +24,7 @@ set(LEARNING_DEPS "BN")
 # list of all folders by module
 set(BASE_DIRS "core" "graphicalModels" "graphs" "multidim" "variables" "external")
 set(BN_DIRS "BN")
+set(MN_DIRS "MN")
 set(CN_DIRS "CN")
 set(FMDP_DIRS "FMDP")
 set(ID_DIRS "ID")

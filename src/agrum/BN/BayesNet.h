@@ -54,7 +54,7 @@ namespace gum {
    * random variables and the probability distribution is defined by the
    * product:
    *
-   * <center>\f$P(X_1, \ldots, X_2) = \prod_{i=1}^{n} P(X_i |
+   * <center>\f$P(X_1, \ldots, X_n) = \prod_{i=1}^{n} P(X_i |
    * \pi(X_i))\f$,</center>
    *
    * where \f$\pi(X_i)\f$ is the parent of \f$X_i\f$.
@@ -65,8 +65,8 @@ namespace gum {
    *  - An arc A -> B represent a dependency between variables A and B, i.e. B
    *    conditional probability distribution is defined as \f$P(B| \pi(B)\f$.
    *
-   * After a variable is added to the BN, if it's domain size changes, then the
-   * data in it's CPT is lost.
+   * After a variable is added to the BN, it's domain cannot change. But it arcs are added,
+   * the data in its CPT are lost.
    *
    * You should look a the gum::BayesNetFactory class which can help build
    * Bayesian Networks.
@@ -124,7 +124,7 @@ namespace gum {
     /**
      * @brief Destructor.
      */
-    ~BayesNet() final;
+    virtual ~BayesNet() final;
 
     /**
      * @brief Copy constructor.
@@ -261,7 +261,7 @@ namespace gum {
                NodeId                                id);
 
     /**
-     * @brief clear the whole Bayesnet     *
+     * @brief clear the whole Bayes net     *
      */
     void clear();
 
