@@ -98,7 +98,7 @@ namespace gum {
     *
     * @throw NotFound If no variable's id matches varId.
     */
-    virtual const Potential< GUM_SCALAR >& factor(NodeSet varIds) const = 0;
+    virtual const Potential< GUM_SCALAR >& factor(const NodeSet& varIds) const = 0;
 
     /**
      * Returns a constant reference to the VariableNodeMap of thisBN

@@ -31,8 +31,6 @@
 #include <set>
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/IBayesNet.h>
-#include <agrum/BN/IBayesNet.h>
 
 #include <agrum/variables/rangeVariable.h>
 #include <agrum/variables/labelizedVariable.h>
@@ -266,7 +264,7 @@ namespace gum {
                             << " modalities");
     }
 
-    LabelizedVariable v(name, name, nbrmod);
+    RangeVariable v(name, name, 0,nbrmod-1);
     return add(v);
   }
 

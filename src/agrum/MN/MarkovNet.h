@@ -149,14 +149,14 @@ namespace gum {
      * @return The variable's CPT.
      * @throw NotFound If no variable's id matches varId.
      */
-    const Potential< GUM_SCALAR >& factor(const NodeSet& varIds) const final;
+    virtual const Potential< GUM_SCALAR >& factor(const NodeSet& varIds) const final;
 
     /**
      * @brief Returns a map between variables and nodes of this gum::MarkovNet.
      *
      * @return Returns a constant reference to the gum::VariableNodeMap.
      */
-    const VariableNodeMap& variableNodeMap() const final;
+    virtual const VariableNodeMap& variableNodeMap() const final;
 
     /**
      * @brief Add a variable to the gum::MarkovNet.
@@ -381,32 +381,32 @@ namespace gum {
     void generateFactors() const;
 
     /// randomly generate factor for a given node in a given structure
-    void generateCPT(const NodeSet& vars) const;
+    void generateFactor(const NodeSet& vars) const;
 
     /// change the factor associated to vars to newPot
     /// delete the old factor associated to nodeId.
     /// @throw NotAllowed if newPot has not the same signature as
     /// __factorMap[NodeId]
-    void changePotential(const NodeSet& vars, Potential< GUM_SCALAR >* newPot);
+    void changeFactor(const NodeSet& vars, Potential< GUM_SCALAR >* newPot);
 
     private:
     /// clear all potentials
-    void __clearPotentials();
+    void __clearFactors();
 
     /// copy of potentials from a MN to another, using names of vars as ref.
-    void __copyPotentials(const MarkovNet< GUM_SCALAR >& source);
+    void __copyFactors(const MarkovNet< GUM_SCALAR >& source);
 
     /// the map between variable and id
     VariableNodeMap __varMap;
 
     /// Mapping between the variable's id and their CPT.
-    HashTable< const NodeSet,Potential< GUM_SCALAR >* > __factorMap;
+    //HashTable< const NodeSet,Potential< GUM_SCALAR >* > __factorMap;
 
     /// change the CPT associated to nodeId to newPot
     /// delete the old CPT associated to nodeId.
     /// @warning no verification of dimensions are performer
     /// @see changePotential
-    void _unsafeChangePotential(constNodeSet& vars, Potential< GUM_SCALAR >* newPot);
+    void _unsafeChangePotential(const NodeSet& vars, Potential< GUM_SCALAR >* newPot);
 
     public:
     using IMarkovNet< GUM_SCALAR >::graph;

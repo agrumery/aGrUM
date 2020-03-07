@@ -20,7 +20,7 @@
  */
 
 
-#include <agrum/BN/MarkovNet.h>
+#include <agrum/MN/MarkovNet.h>
 #include <agrum/agrum.h>
 
 
