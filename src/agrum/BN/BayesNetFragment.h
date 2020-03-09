@@ -33,7 +33,7 @@
 #include <agrum/agrum.h>
 
 #include <agrum/BN/IBayesNet.h>
-#include <agrum/graphs/parts/listeners/diGraphListener.h>
+#include <agrum/tools/graphs/parts/listeners/diGraphListener.h>
 
 #include <agrum/BN/BayesNet.h>
 

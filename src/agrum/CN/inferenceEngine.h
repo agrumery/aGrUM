@@ -36,10 +36,10 @@
 
 #include <agrum/CN/LrsWrapper.h>
 #include <agrum/CN/varMod2BNsMap.h>
-#include <agrum/core/approximations/approximationScheme.h>
-#include <agrum/core/exceptions.h>
-#include <agrum/core/math/pow.h>
-#include <agrum/core/math/rational.h>
+#include <agrum/tools/core/approximations/approximationScheme.h>
+#include <agrum/tools/core/exceptions.h>
+#include <agrum/tools/core/math/pow.h>
+#include <agrum/tools/core/math/rational.h>
 
 namespace gum {
   namespace credal {

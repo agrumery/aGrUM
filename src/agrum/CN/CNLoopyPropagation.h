@@ -36,9 +36,9 @@
 
 #include <agrum/CN/credalNet.h>
 #include <agrum/CN/inferenceEngine.h>
-#include <agrum/core/approximations/approximationScheme.h>
-#include <agrum/core/math/pow.h>
-#include <agrum/core/sequence.h>
+#include <agrum/tools/core/approximations/approximationScheme.h>
+#include <agrum/tools/core/math/pow.h>
+#include <agrum/tools/core/sequence.h>
 
 #define _INF std::numeric_limits< GUM_SCALAR >::infinity()
 

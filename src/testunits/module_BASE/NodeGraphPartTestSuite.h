@@ -23,7 +23,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/graphs/parts/nodeGraphPart.h>
+#include <agrum/tools/graphs/parts/nodeGraphPart.h>
 
 namespace gum_tests {
 

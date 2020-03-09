@@ -29,10 +29,10 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/loopyBeliefPropagation.h>
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 
 #include <agrum/BN/io/BIF/BIFReader.h>
-#include <agrum/core/approximations/approximationSchemeListener.h>
+#include <agrum/tools/core/approximations/approximationSchemeListener.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3

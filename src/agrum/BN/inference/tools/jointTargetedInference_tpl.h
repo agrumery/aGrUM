@@ -26,7 +26,7 @@
  * JointTargetedInference.
  */
 #include <agrum/BN/inference/tools/jointTargetedInference.h>
-#include <agrum/variables/rangeVariable.h>
+#include <agrum/tools/variables/rangeVariable.h>
 
 namespace gum {
 

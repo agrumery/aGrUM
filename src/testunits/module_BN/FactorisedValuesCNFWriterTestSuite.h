@@ -28,8 +28,8 @@
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/cnf/FactorisedValuesCNFWriter.h>
-#include <agrum/core/approximations/linearApproximationPolicy.h>
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/tools/core/approximations/linearApproximationPolicy.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3

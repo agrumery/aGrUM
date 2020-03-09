@@ -27,7 +27,7 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN
  */
 #include <agrum/PRM/classBayesNet.h>   // to ease IDE parser
-#include <agrum/core/inline.h>
+#include <agrum/tools/core/inline.h>
 
 namespace gum {
   namespace prm {

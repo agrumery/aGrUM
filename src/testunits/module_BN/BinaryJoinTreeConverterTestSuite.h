@@ -26,7 +26,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/graphs/algorithms/binaryJoinTreeConverterDefault.h>
+#include <agrum/tools/graphs/algorithms/binaryJoinTreeConverterDefault.h>
 
 namespace gum_tests {
 

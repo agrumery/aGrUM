@@ -30,12 +30,12 @@
 
 #include <utility>
 
-#include <agrum/core/math/math.h>
+#include <agrum/tools/core/math/math.h>
 #include <agrum/BN/algorithms/barrenNodesFinder.h>
 #include <agrum/BN/inference/tools/evidenceInference.h>
 #include <agrum/BN/inference/tools/jointTargetedInference.h>
 #include <agrum/agrum.h>
-#include <agrum/graphs/algorithms/triangulations/defaultTriangulation.h>
+#include <agrum/tools/graphs/algorithms/triangulations/defaultTriangulation.h>
 
 namespace gum {
 

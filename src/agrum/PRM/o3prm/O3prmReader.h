@@ -48,8 +48,8 @@
 #include <agrum/PRM/o3prm/cocoR/Parser.h>
 #include <agrum/PRM/o3prm/cocoR/Scanner.h>
 #include <agrum/agrum.h>
-#include <agrum/core/errorsContainer.h>
-#include <agrum/core/utils_string.h>
+#include <agrum/tools/core/errorsContainer.h>
+#include <agrum/tools/core/utils_string.h>
 
 namespace gum {
   namespace prm {

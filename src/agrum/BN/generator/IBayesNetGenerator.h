@@ -39,7 +39,7 @@
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/agrum.h>
 
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 
 #include <agrum/BN/algorithms/divergence/BNdistance.h>
 

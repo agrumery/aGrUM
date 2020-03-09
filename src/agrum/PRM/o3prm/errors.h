@@ -33,7 +33,7 @@
 #include <vector>
 
 #include <agrum/PRM/o3prm/O3prm.h>
-#include <agrum/core/errorsContainer.h>
+#include <agrum/tools/core/errorsContainer.h>
 
 #ifndef GUM_PRM_O3PRM_ERRORS_H
 #  define GUM_PRM_O3PRM_ERRORS_H

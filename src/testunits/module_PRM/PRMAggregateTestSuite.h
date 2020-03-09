@@ -23,10 +23,10 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/multidim/aggregators/and.h>
-#include <agrum/multidim/aggregators/count.h>
-#include <agrum/multidim/aggregators/or.h>
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/tools/multidim/aggregators/and.h>
+#include <agrum/tools/multidim/aggregators/count.h>
+#include <agrum/tools/multidim/aggregators/or.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 
 #include <agrum/PRM/elements/PRMAggregate.h>
 #include <agrum/PRM/elements/PRMFormAttribute.h>

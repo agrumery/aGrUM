@@ -5,7 +5,7 @@
 #include <sstream>
 
 #include <agrum/config.h>
-#include <agrum/core/exceptions.h>
+#include <agrum/tools/core/exceptions.h>
 #include <agrum/FMDP/fmdp.h>
 #include <agrum/FMDP/io/dat/fmdpDatReader.h>
 

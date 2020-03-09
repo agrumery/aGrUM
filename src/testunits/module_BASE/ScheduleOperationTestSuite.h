@@ -25,9 +25,9 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/graphicalModels/inference/scheduleProject.h>
-#include <agrum/multidim/potential.h>
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/tools/graphicalModels/inference/scheduleProject.h>
+#include <agrum/tools/multidim/potential.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 
 namespace gum_tests {
 

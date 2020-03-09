@@ -19,8 +19,8 @@
  ***************************************************************************/
 #include <Python.h>
 
-#include <agrum/core/progressNotification.h>
-#include <agrum/learning/database/BNDatabaseGenerator.h>
+#include <agrum/tools/core/progressNotification.h>
+#include <agrum/BN/database/BNDatabaseGenerator.h>
 
 class PythonDatabaseGeneratorListener : public gum::ProgressListener {
   private:

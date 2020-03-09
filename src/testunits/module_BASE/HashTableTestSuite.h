@@ -27,8 +27,8 @@
 #include <cxxtest/testsuite_utils.h>
 #include <ressources/myalloc.h>
 
-#include <agrum/core/hashTable.h>
-#include <agrum/core/list.h>
+#include <agrum/tools/core/hashTable.h>
+#include <agrum/tools/core/list.h>
 
 namespace gum_tests {
 

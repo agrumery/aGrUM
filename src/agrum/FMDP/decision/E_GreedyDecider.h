@@ -32,7 +32,7 @@
 #ifndef GUM_E_GREEDY_DECIDER_H
 #define GUM_E_GREEDY_DECIDER_H
 // =========================================================================
-#include <agrum/core/types.h>
+#include <agrum/tools/core/types.h>
 // =========================================================================
 #include <agrum/FMDP/SDyna/Strategies/IDecisionStrategy.h>
 #include <agrum/FMDP/SDyna/Strategies/IPlanningStrategy.h>
@@ -40,7 +40,7 @@
 #include <agrum/FMDP/planning/actionSet.h>
 #include <agrum/FMDP/simulation/statesChecker.h>
 // =========================================================================
-#include <agrum/variables/discreteVariable.h>
+#include <agrum/tools/variables/discreteVariable.h>
 // =========================================================================
 
 namespace gum {

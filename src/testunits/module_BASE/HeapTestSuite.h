@@ -23,8 +23,8 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/core/heap.h>
-#include <agrum/core/set.h>
+#include <agrum/tools/core/heap.h>
+#include <agrum/tools/core/set.h>
 namespace gum_tests {
 
   class HeapTestSuite: public CxxTest::TestSuite {

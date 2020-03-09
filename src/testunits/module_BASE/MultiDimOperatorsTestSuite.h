@@ -25,14 +25,14 @@
 #include <sstream>
 #include <string>
 
-#include <agrum/core/sequence.h>
-#include <agrum/core/utils_random.h>
+#include <agrum/tools/core/sequence.h>
+#include <agrum/tools/core/utils_random.h>
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/multidim/potential.h>
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/tools/multidim/potential.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 
 namespace gum_tests {
 

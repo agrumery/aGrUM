@@ -27,9 +27,9 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 // =====================================================================
-#include <agrum/core/set.h>
+#include <agrum/tools/core/set.h>
 // =====================================================================
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 // =====================================================================
 #include <agrum/FMDP/fmdp.h>
 #include <agrum/FMDP/io/dat/fmdpDatReader.h>

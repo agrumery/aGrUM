@@ -32,47 +32,47 @@
 
 #include <agrum/MN/MarkovNet.h>
 
-#include <agrum/variables/rangeVariable.h>
-#include <agrum/variables/labelizedVariable.h>
-#include <agrum/variables/discretizedVariable.h>
+#include <agrum/tools/variables/rangeVariable.h>
+#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/tools/variables/discretizedVariable.h>
 
-#include <agrum/multidim/aggregators/amplitude.h>
-#include <agrum/multidim/aggregators/and.h>
-#include <agrum/multidim/aggregators/count.h>
-#include <agrum/multidim/aggregators/exists.h>
-#include <agrum/multidim/aggregators/forall.h>
-#include <agrum/multidim/aggregators/max.h>
-#include <agrum/multidim/aggregators/median.h>
-#include <agrum/multidim/aggregators/min.h>
-#include <agrum/multidim/aggregators/or.h>
+#include <agrum/tools/multidim/aggregators/amplitude.h>
+#include <agrum/tools/multidim/aggregators/and.h>
+#include <agrum/tools/multidim/aggregators/count.h>
+#include <agrum/tools/multidim/aggregators/exists.h>
+#include <agrum/tools/multidim/aggregators/forall.h>
+#include <agrum/tools/multidim/aggregators/max.h>
+#include <agrum/tools/multidim/aggregators/median.h>
+#include <agrum/tools/multidim/aggregators/min.h>
+#include <agrum/tools/multidim/aggregators/or.h>
 
-#include <agrum/multidim/ICIModels/multiDimNoisyAND.h>
-#include <agrum/multidim/ICIModels/multiDimNoisyORCompound.h>
-#include <agrum/multidim/ICIModels/multiDimNoisyORNet.h>
+#include <agrum/tools/multidim/ICIModels/multiDimNoisyAND.h>
+#include <agrum/tools/multidim/ICIModels/multiDimNoisyORCompound.h>
+#include <agrum/tools/multidim/ICIModels/multiDimNoisyORNet.h>
 
-#include <agrum/multidim/ICIModels/multiDimLogit.h>
+#include <agrum/tools/multidim/ICIModels/multiDimLogit.h>
 
 #include <agrum/BN/generator/simpleCPTGenerator.h>
-#include <agrum/core/utils_string.h>
+#include <agrum/tools/core/utils_string.h>
 
 namespace gum {
-  template<typename GUM_SCALAR>
-  NodeId build_node(gum::MarkovNet<GUM_SCALAR> &bn,
-                    std::string node,
-                    gum::Size default_domain_size) {
-    std::string name = node;
-    auto ds = default_domain_size;
-    long range_min = 0;
-    long range_max = long(ds) - 1;
-    std::vector<std::string> labels;
-    std::vector<GUM_SCALAR> ticks;
+  template < typename GUM_SCALAR >
+  NodeId build_node(gum::MarkovNet< GUM_SCALAR >& bn,
+                    std::string                   node,
+                    gum::Size                     default_domain_size) {
+    std::string                name = node;
+    auto                       ds = default_domain_size;
+    long                       range_min = 0;
+    long                       range_max = long(ds) - 1;
+    std::vector< std::string > labels;
+    std::vector< GUM_SCALAR >  ticks;
 
     if (*(node.rbegin()) == ']') {
       auto posBrack = node.find('[');
       if (posBrack != std::string::npos) {
         name = node.substr(0, posBrack);
-        const auto &s_args = node.substr(posBrack + 1, node.size() - posBrack - 2);
-        const auto &args = split(s_args, ",");
+        const auto& s_args = node.substr(posBrack + 1, node.size() - posBrack - 2);
+        const auto& args = split(s_args, ",");
         if (args.size() == 0) {   // n[]
           GUM_ERROR(InvalidArgument, "Empty range for variable " << node)
         } else if (args.size() == 1) {   // n[4]
@@ -87,7 +87,7 @@ namespace gum {
           }
           ds = static_cast< Size >(1 + range_max - range_min);
         } else {   // n[3.14,5,10,12]
-          for (const auto &tick: args) {
+          for (const auto& tick: args) {
             ticks.push_back(static_cast< GUM_SCALAR >(std::atof(tick.c_str())));
           }
           ds = static_cast< Size >(args.size() - 1);
@@ -120,11 +120,11 @@ namespace gum {
     NodeId idVar;
     try {
       idVar = bn.idFromName(name);
-    } catch (gum::NotFound &) {
+    } catch (gum::NotFound&) {
       if (!labels.empty()) {
         idVar = bn.add(LabelizedVariable(name, name, labels));
       } else if (!ticks.empty()) {
-        idVar = bn.add(DiscretizedVariable<GUM_SCALAR>(name, name, ticks));
+        idVar = bn.add(DiscretizedVariable< GUM_SCALAR >(name, name, ticks));
       } else {
         idVar = bn.add(RangeVariable(name, name, range_min, range_max));
       }
@@ -133,10 +133,10 @@ namespace gum {
     return idVar;
   }
 
-  template<typename GUM_SCALAR>
-  MarkovNet<GUM_SCALAR>
-  MarkovNet<GUM_SCALAR>::fastPrototype(const std::string &dotlike,
-                                       Size domainSize) {
+  template < typename GUM_SCALAR >
+  MarkovNet< GUM_SCALAR >
+     MarkovNet< GUM_SCALAR >::fastPrototype(const std::string& dotlike,
+                                            Size               domainSize) {
     GUM_ERROR(FatalError, "Not Implemented Yet");
     /*
     gum::MarkovNet< GUM_SCALAR > mn;
@@ -170,30 +170,30 @@ namespace gum {
      */
   }
 
-  template<typename GUM_SCALAR>
-  INLINE MarkovNet<GUM_SCALAR>::MarkovNet() : IMarkovNet<GUM_SCALAR>() {
+  template < typename GUM_SCALAR >
+  INLINE MarkovNet< GUM_SCALAR >::MarkovNet() : IMarkovNet< GUM_SCALAR >() {
     GUM_CONSTRUCTOR(MarkovNet);
   }
 
-  template<typename GUM_SCALAR>
-  INLINE MarkovNet<GUM_SCALAR>::MarkovNet(std::string name) :
-      IMarkovNet<GUM_SCALAR>(name) {
+  template < typename GUM_SCALAR >
+  INLINE MarkovNet< GUM_SCALAR >::MarkovNet(std::string name) :
+      IMarkovNet< GUM_SCALAR >(name) {
     GUM_CONSTRUCTOR(MarkovNet);
   }
 
-  template<typename GUM_SCALAR>
-  MarkovNet<GUM_SCALAR>::MarkovNet(const MarkovNet<GUM_SCALAR> &source) :
-      IMarkovNet<GUM_SCALAR>(source), __varMap(source.__varMap) {
+  template < typename GUM_SCALAR >
+  MarkovNet< GUM_SCALAR >::MarkovNet(const MarkovNet< GUM_SCALAR >& source) :
+      IMarkovNet< GUM_SCALAR >(source), __varMap(source.__varMap) {
     GUM_CONS_CPY(MarkovNet);
 
     __copyFactors(source);
   }
 
-  template<typename GUM_SCALAR>
-  MarkovNet<GUM_SCALAR> &
-  MarkovNet<GUM_SCALAR>::operator=(const MarkovNet<GUM_SCALAR> &source) {
+  template < typename GUM_SCALAR >
+  MarkovNet< GUM_SCALAR >&
+     MarkovNet< GUM_SCALAR >::operator=(const MarkovNet< GUM_SCALAR >& source) {
     if (this != &source) {
-      IMarkovNet<GUM_SCALAR>::operator=(source);
+      IMarkovNet< GUM_SCALAR >::operator=(source);
       __varMap = source.__varMap;
 
       __clearFactors();
@@ -203,50 +203,52 @@ namespace gum {
     return *this;
   }
 
-  template<typename GUM_SCALAR>
-  MarkovNet<GUM_SCALAR>::~MarkovNet() {
+  template < typename GUM_SCALAR >
+  MarkovNet< GUM_SCALAR >::~MarkovNet() {
     GUM_DESTRUCTOR(MarkovNet);
   }
 
-  template<typename GUM_SCALAR>
-  INLINE const DiscreteVariable &
-  MarkovNet<GUM_SCALAR>::variable(NodeId id) const {
+  template < typename GUM_SCALAR >
+  INLINE const DiscreteVariable&
+               MarkovNet< GUM_SCALAR >::variable(NodeId id) const {
     return __varMap.get(id);
   }
 
-  template<typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   INLINE void
-  MarkovNet<GUM_SCALAR>::changeVariableName(NodeId id,
-                                            const std::string &new_name) {
+     MarkovNet< GUM_SCALAR >::changeVariableName(NodeId             id,
+                                                 const std::string& new_name) {
     __varMap.changeName(id, new_name);
   }
 
-  template<typename GUM_SCALAR>
-  INLINE void MarkovNet<GUM_SCALAR>::changeVariableLabel(
-      NodeId id, const std::string &old_label, const std::string &new_label) {
+  template < typename GUM_SCALAR >
+  INLINE void MarkovNet< GUM_SCALAR >::changeVariableLabel(
+     NodeId id, const std::string& old_label, const std::string& new_label) {
     if (variable(id).varType() != VarType::Labelized) {
       GUM_ERROR(NotFound, "Variable " << id << " is not a LabelizedVariable.");
     }
-    LabelizedVariable *var = dynamic_cast< LabelizedVariable * >(
-        const_cast< DiscreteVariable * >(&variable(id)));
+    LabelizedVariable* var = dynamic_cast< LabelizedVariable* >(
+       const_cast< DiscreteVariable* >(&variable(id)));
 
     var->changeLabel(var->posLabel(old_label), new_label);
   }
 
-  template<typename GUM_SCALAR>
-  INLINE NodeId MarkovNet<GUM_SCALAR>::nodeId(const DiscreteVariable &var) const {
+  template < typename GUM_SCALAR >
+  INLINE NodeId
+     MarkovNet< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
     return __varMap.get(var);
   }
 
-  template<typename GUM_SCALAR>
-  const Potential<GUM_SCALAR> &MarkovNet<GUM_SCALAR>::factor(const NodeSet &varIds) const {
+  template < typename GUM_SCALAR >
+  const Potential< GUM_SCALAR >&
+     MarkovNet< GUM_SCALAR >::factor(const NodeSet& varIds) const {
     GUM_ERROR(FatalError, "Not Implemented Yet");
   }
 
 
-  template<typename GUM_SCALAR>
-  INLINE NodeId MarkovNet<GUM_SCALAR>::add(const std::string &name,
-                                           unsigned int nbrmod) {
+  template < typename GUM_SCALAR >
+  INLINE NodeId MarkovNet< GUM_SCALAR >::add(const std::string& name,
+                                             unsigned int       nbrmod) {
     if (nbrmod < 2) {
       GUM_ERROR(OperationNotAllowed,
                 "Variable " << name << "needs more than " << nbrmod
@@ -257,42 +259,43 @@ namespace gum {
     return add(v);
   }
 
-  template<typename GUM_SCALAR>
-  INLINE NodeId MarkovNet<GUM_SCALAR>::add(const DiscreteVariable &var) {
+  template < typename GUM_SCALAR >
+  INLINE NodeId MarkovNet< GUM_SCALAR >::add(const DiscreteVariable& var) {
     return add(var, graph().nextNodeId());
   }
 
-  template<typename GUM_SCALAR>
-  INLINE NodeId MarkovNet<GUM_SCALAR>::add(const DiscreteVariable &var,
-                                           NodeId id) {
+  template < typename GUM_SCALAR >
+  INLINE NodeId MarkovNet< GUM_SCALAR >::add(const DiscreteVariable& var,
+                                             NodeId                  id) {
     __varMap.insert(id, var);
     this->_graph.addNodeWithId(id);
     return id;
   }
 
-  template<typename GUM_SCALAR>
-  INLINE NodeId MarkovNet<GUM_SCALAR>::idFromName(const std::string &name) const {
+  template < typename GUM_SCALAR >
+  INLINE NodeId
+     MarkovNet< GUM_SCALAR >::idFromName(const std::string& name) const {
     return __varMap.idFromName(name);
   }
 
-  template<typename GUM_SCALAR>
-  INLINE const DiscreteVariable &
-  MarkovNet<GUM_SCALAR>::variableFromName(const std::string &name) const {
+  template < typename GUM_SCALAR >
+  INLINE const DiscreteVariable&
+               MarkovNet< GUM_SCALAR >::variableFromName(const std::string& name) const {
     return __varMap.variableFromName(name);
   }
 
-  template<typename GUM_SCALAR>
-  INLINE const VariableNodeMap &MarkovNet<GUM_SCALAR>::variableNodeMap() const {
+  template < typename GUM_SCALAR >
+  INLINE const VariableNodeMap& MarkovNet< GUM_SCALAR >::variableNodeMap() const {
     return __varMap;
   }
 
-  template<typename GUM_SCALAR>
-  INLINE void MarkovNet<GUM_SCALAR>::erase(const DiscreteVariable &var) {
+  template < typename GUM_SCALAR >
+  INLINE void MarkovNet< GUM_SCALAR >::erase(const DiscreteVariable& var) {
     erase(__varMap.get(var));
   }
 
-  template<typename GUM_SCALAR>
-  void MarkovNet<GUM_SCALAR>::erase(NodeId varId) {
+  template < typename GUM_SCALAR >
+  void MarkovNet< GUM_SCALAR >::erase(NodeId varId) {
     GUM_ERROR(FatalError, "Not implemented yet");
     /*
     if (__varMap.exists(varId)) {
@@ -311,8 +314,8 @@ namespace gum {
     }*/
   }
 
-  template<typename GUM_SCALAR>
-  void MarkovNet<GUM_SCALAR>::clear() {
+  template < typename GUM_SCALAR >
+  void MarkovNet< GUM_SCALAR >::clear() {
     if (!this->empty()) {
       auto l = this->nodes();
       for (const auto no: l) {
@@ -322,21 +325,21 @@ namespace gum {
   }
 
 
-  template<typename GUM_SCALAR>
-  INLINE std::ostream &operator<<(std::ostream &output,
-                                  const MarkovNet<GUM_SCALAR> &bn) {
+  template < typename GUM_SCALAR >
+  INLINE std::ostream& operator<<(std::ostream&                  output,
+                                  const MarkovNet< GUM_SCALAR >& bn) {
     output << bn.toString();
     return output;
   }
 
 
-  template<typename GUM_SCALAR>
-  INLINE void MarkovNet<GUM_SCALAR>::generateFactors() const {
+  template < typename GUM_SCALAR >
+  INLINE void MarkovNet< GUM_SCALAR >::generateFactors() const {
     GUM_ERROR(FatalError, "Not implemented yet");
   }
 
-  template<typename GUM_SCALAR>
-  INLINE void MarkovNet<GUM_SCALAR>::generateFactor(const NodeSet &vars) const {
+  template < typename GUM_SCALAR >
+  INLINE void MarkovNet< GUM_SCALAR >::generateFactor(const NodeSet& vars) const {
     GUM_ERROR(FatalError, "Not implemented yet");
     /*
     SimpleCPTGenerator< GUM_SCALAR > generator;
@@ -344,9 +347,9 @@ namespace gum {
     generator.generateCPT(cpt(node).pos(variable(node)), cpt(node));*/
   }
 
-  template<typename GUM_SCALAR>
-  void MarkovNet<GUM_SCALAR>::changeFactor(const NodeSet &vars,
-                                           Potential<GUM_SCALAR> *newPot) {
+  template < typename GUM_SCALAR >
+  void MarkovNet< GUM_SCALAR >::changeFactor(const NodeSet&           vars,
+                                             Potential< GUM_SCALAR >* newPot) {
     GUM_ERROR(FatalError, "Not implemented yet");
     /*
     if (cpt(id).nbrDim() != newPot->nbrDim()) {
@@ -368,13 +371,14 @@ namespace gum {
      */
   }
 
-  template<typename GUM_SCALAR>
-  void MarkovNet<GUM_SCALAR>::__clearFactors() {
+  template < typename GUM_SCALAR >
+  void MarkovNet< GUM_SCALAR >::__clearFactors() {
     GUM_ERROR(FatalError, "Not implemented yet");
   }
 
-  template<typename GUM_SCALAR>
-  void MarkovNet<GUM_SCALAR>::__copyFactors(const MarkovNet<GUM_SCALAR> &source) {
+  template < typename GUM_SCALAR >
+  void MarkovNet< GUM_SCALAR >::__copyFactors(
+     const MarkovNet< GUM_SCALAR >& source) {
     GUM_ERROR(FatalError, "Not implemented yet");
   }
 } /* namespace gum */

@@ -23,7 +23,7 @@
 #include <iostream>
 #include <string>
 
-#include <agrum/core/math/math.h>
+#include <agrum/tools/core/math/math.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/variableElimination.h>

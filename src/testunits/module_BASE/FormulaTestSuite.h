@@ -25,8 +25,8 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/core/exceptions.h>
-#include <agrum/core/math/formula.h>
+#include <agrum/tools/core/exceptions.h>
+#include <agrum/tools/core/math/formula.h>
 
 namespace gum_tests {
 

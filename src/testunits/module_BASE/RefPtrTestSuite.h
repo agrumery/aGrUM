@@ -23,7 +23,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/core/refPtr.h>
+#include <agrum/tools/core/refPtr.h>
 
 namespace gum_tests {
 

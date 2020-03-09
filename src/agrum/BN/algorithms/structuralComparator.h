@@ -32,9 +32,9 @@
 #define GUM_LEARNING_STRUCTURAL_COMPARATOR_H
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/graphs/diGraph.h>
-#include <agrum/graphs/mixedGraph.h>
-#include <agrum/graphs/undiGraph.h>
+#include <agrum/tools/graphs/diGraph.h>
+#include <agrum/tools/graphs/mixedGraph.h>
+#include <agrum/tools/graphs/undiGraph.h>
 
 
 namespace gum {

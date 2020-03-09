@@ -31,7 +31,7 @@
 #ifndef GUM_LEAF_PAIR_H
 #define GUM_LEAF_PAIR_H
 // =========================================================================
-#include <agrum/graphs/graphElements.h>
+#include <agrum/tools/graphs/graphElements.h>
 // =========================================================================
 #include <agrum/FMDP/learning/datastructure/leaves/abstractLeaf.h>
 #include <agrum/FMDP/learning/datastructure/leaves/composedLeaf.h>

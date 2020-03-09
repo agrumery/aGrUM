@@ -34,9 +34,9 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/graphs/graphElements.h>
+#include <agrum/tools/graphs/graphElements.h>
 
-#include <agrum/multidim/potential.h>
+#include <agrum/tools/multidim/potential.h>
 
 #include <agrum/PRM/elements/PRMObject.h>
 #include <agrum/PRM/utils_prm.h>

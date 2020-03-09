@@ -30,11 +30,11 @@
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/loopyBeliefPropagation.h>
 #include <agrum/BN/inference/loopySamplingInference.h>
-#include <agrum/multidim/implementations/multiDimArray.h>
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/tools/multidim/implementations/multiDimArray.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 
 #include <agrum/BN/io/BIF/BIFReader.h>
-#include <agrum/core/approximations/approximationSchemeListener.h>
+#include <agrum/tools/core/approximations/approximationSchemeListener.h>
 #include <cxxtest/AgrumApproximationUtils.h>   // must be last include
 
 #define EPSILON_FOR_HYBRID_SIMPLE_TEST 2e-1

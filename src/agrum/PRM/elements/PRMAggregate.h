@@ -33,9 +33,9 @@
 #include <memory>
 #include <string>
 
-#include <agrum/multidim/aggregators/multiDimAggregator.h>
-#include <agrum/multidim/implementations/multiDimImplementation.h>
-#include <agrum/multidim/potential.h>
+#include <agrum/tools/multidim/aggregators/multiDimAggregator.h>
+#include <agrum/tools/multidim/implementations/multiDimImplementation.h>
+#include <agrum/tools/multidim/potential.h>
 
 #include <agrum/PRM/elements/PRMType.h>
 #include <agrum/PRM/elements/PRMClassElement.h>

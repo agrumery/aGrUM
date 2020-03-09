@@ -31,16 +31,16 @@
 
 #include <vector>
 
-#include <agrum/core/set.h>
+#include <agrum/tools/core/set.h>
 
-#include <agrum/graphs/algorithms/triangulations/defaultTriangulation.h>
-#include <agrum/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
+#include <agrum/tools/graphs/algorithms/triangulations/defaultTriangulation.h>
+#include <agrum/tools/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
 
 #include <agrum/BN/inference/variableElimination.h>
 
-#include <agrum/multidim/implementations/multiDimArray.h>
-#include <agrum/multidim/implementations/multiDimBucket.h>
-#include <agrum/multidim/potential.h>
+#include <agrum/tools/multidim/implementations/multiDimArray.h>
+#include <agrum/tools/multidim/implementations/multiDimBucket.h>
+#include <agrum/tools/multidim/potential.h>
 
 #include <agrum/PRM/inference/PRMInference.h>
 #include <agrum/PRM/inference/structuredBayesBall.h>

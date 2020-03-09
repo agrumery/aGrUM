@@ -33,11 +33,11 @@
 #include <utility>
 #include <string>
 
-#include <agrum/core/hashTable.h>
-#include <agrum/core/sequence.h>
-#include <agrum/core/set.h>
+#include <agrum/tools/core/hashTable.h>
+#include <agrum/tools/core/sequence.h>
+#include <agrum/tools/core/set.h>
 
-#include <agrum/graphs/diGraph.h>
+#include <agrum/tools/graphs/diGraph.h>
 
 #include <agrum/BN/BayesNetFactory.h>
 

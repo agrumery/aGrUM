@@ -31,12 +31,12 @@
 #ifndef GUM_ABSTRACT_LEAF_H
 #define GUM_ABSTRACT_LEAF_H
 // =========================================================================
-#include <agrum/core/hashTable.h>
-#include <agrum/core/multiPriorityQueue.h>
-#include <agrum/core/sequence.h>
-#include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
+#include <agrum/tools/core/hashTable.h>
+#include <agrum/tools/core/multiPriorityQueue.h>
+#include <agrum/tools/core/sequence.h>
+#include <agrum/tools/core/smallobjectallocator/smallObjectAllocator.h>
 // =========================================================================
-#include <agrum/graphs/graphElements.h>
+#include <agrum/tools/graphs/graphElements.h>
 // =========================================================================
 
 namespace gum {

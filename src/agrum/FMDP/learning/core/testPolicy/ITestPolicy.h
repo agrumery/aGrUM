@@ -31,16 +31,16 @@
 #define GUM_MULTI_DIM_FUNCTION_GRAPH_INTERFACE_TEST_POLICY_H
 
 // ============================================================================
-#include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
+#include <agrum/tools/core/smallobjectallocator/smallObjectAllocator.h>
 // ============================================================================
-#include <agrum/graphs/parts/nodeGraphPart.h>
+#include <agrum/tools/graphs/parts/nodeGraphPart.h>
 // ============================================================================
 
 namespace gum {
 
   /**
    * @class ITestPolicy ITestPolicy.h
-   * <agrum/multidim/core/testPolicies/ITestPolicy.h>
+   * <agrum/tools/multidim/core/testPolicies/ITestPolicy.h>
    *
    * @brief Interface specifying the methods to be implemented by any TestPolicy
    *

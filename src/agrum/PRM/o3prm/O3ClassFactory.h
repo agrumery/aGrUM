@@ -36,8 +36,8 @@
 #include <agrum/PRM/PRMFactory.h>
 #include <agrum/PRM/o3prm/O3NameSolver.h>
 #include <agrum/PRM/o3prm/O3prm.h>
-#include <agrum/core/hashTable.h>
-#include <agrum/core/set.h>
+#include <agrum/tools/core/hashTable.h>
+#include <agrum/tools/core/set.h>
 
 #ifndef GUM_PRM_O3PRM_O3CLASS_FACTORY_H
 #  define GUM_PRM_O3PRM_O3CLASS_FACTORY_H

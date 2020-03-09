@@ -28,7 +28,7 @@
 
 #include <agrum/ID/influenceDiagram.h>
 #include <agrum/ID/io/BIFXML/BIFXMLIDWriter.h>
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 
 // The graph used for the tests:
 //           D1

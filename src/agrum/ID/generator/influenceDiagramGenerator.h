@@ -37,7 +37,7 @@
 #include <agrum/ID/generator/UTGenerator.h>
 #include <agrum/ID/generator/simpleUTGenerator.h>
 #include <agrum/ID/influenceDiagram.h>
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 
 namespace gum {
 

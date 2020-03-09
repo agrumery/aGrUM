@@ -32,8 +32,8 @@
 
 #include <string>
 
-#include <agrum/core/hashTable.h>
-#include <agrum/core/sequence.h>
+#include <agrum/tools/core/hashTable.h>
+#include <agrum/tools/core/sequence.h>
 
 #include <agrum/PRM/elements/PRMAggregate.h>
 #include <agrum/PRM/elements/PRMAttribute.h>

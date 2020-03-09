@@ -25,12 +25,12 @@
  */
 #include <agrum/config.h>
 
-#include <agrum/graphs/undiGraph.h>
-#include <agrum/graphs/graphElements.h>
-#include <agrum/graphs/algorithms/triangulations/junctionTreeStrategies/defaultJunctionTreeStrategy.h>
-#include <agrum/graphs/algorithms/triangulations/defaultTriangulation.h>
-#include <agrum/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
-#include <agrum/graphs/algorithms/binaryJoinTreeConverterDefault.h>
+#include <agrum/tools/graphs/undiGraph.h>
+#include <agrum/tools/graphs/graphElements.h>
+#include <agrum/tools/graphs/algorithms/triangulations/junctionTreeStrategies/defaultJunctionTreeStrategy.h>
+#include <agrum/tools/graphs/algorithms/triangulations/defaultTriangulation.h>
+#include <agrum/tools/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
+#include <agrum/tools/graphs/algorithms/binaryJoinTreeConverterDefault.h>
 #include <agrum/BN/BayesNet.h>
 
 class JunctionTreeGenerator {

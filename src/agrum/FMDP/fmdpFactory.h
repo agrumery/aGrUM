@@ -33,9 +33,9 @@
 #include <string>
 #include <vector>
 //======================================================================
-#include <agrum/core/sequence.h>
+#include <agrum/tools/core/sequence.h>
 
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 
 #include <agrum/FMDP/IfmdpFactory.h>
 #include <agrum/FMDP/fmdp.h>

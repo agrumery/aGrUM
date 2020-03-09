@@ -35,8 +35,8 @@
 #include <string>
 
 #include <agrum/agrum.h>
-#include <agrum/core/sequence.h>
-#include <agrum/core/set.h>
+#include <agrum/tools/core/sequence.h>
+#include <agrum/tools/core/set.h>
 
 #include <agrum/PRM/elements/PRMClassElement.h>
 #include <agrum/PRM/elements/PRMClassElementContainer.h>

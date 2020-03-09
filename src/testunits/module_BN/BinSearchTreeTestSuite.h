@@ -23,7 +23,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/core/binSearchTree.h>
+#include <agrum/tools/core/binSearchTree.h>
 
 namespace gum_tests {
 

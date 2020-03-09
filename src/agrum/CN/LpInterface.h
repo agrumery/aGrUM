@@ -35,9 +35,9 @@
 #include <string>
 
 #include <agrum/CN/LrsWrapper.h>
-#include <agrum/core/hashFunc.h>
-#include <agrum/core/hashTable.h>
-#include <agrum/core/utils_misc.h>
+#include <agrum/tools/core/hashFunc.h>
+#include <agrum/tools/core/hashTable.h>
+#include <agrum/tools/core/utils_misc.h>
 
 namespace gum {
   namespace credal {

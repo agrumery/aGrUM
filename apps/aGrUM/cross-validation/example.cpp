@@ -1,25 +1,25 @@
 #include <agrum/BN/BayesNet.h>
 #include <iostream>
 
-#include <agrum/learning/database/DBTranslator4LabelizedVariable.h>
-#include <agrum/learning/database/DBRowGeneratorParser.h>
-#include <agrum/learning/database/DBInitializerFromCSV.h>
-#include <agrum/learning/database/databaseTable.h>
-#include <agrum/learning/database/DBTranslatorSet.h>
+#include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
+#include <agrum/tools/database/DBRowGeneratorParser.h>
+#include <agrum/tools/database/DBInitializerFromCSV.h>
+#include <agrum/tools/database/databaseTable.h>
+#include <agrum/tools/database/DBTranslatorSet.h>
 
-#include <agrum/learning/scores_and_tests/scoreBDeu.h>
-#include <agrum/learning/scores_and_tests/scoreBIC.h>
+#include <agrum/BN/learning/scores_and_tests/scoreBDeu.h>
+#include <agrum/BN/learning/scores_and_tests/scoreBIC.h>
 
-#include <agrum/learning/aprioris/aprioriSmoothing.h>
+#include <agrum/BN/learning/aprioris/aprioriSmoothing.h>
 
-#include <agrum/learning/constraints/structuralConstraintDAG.h>
-#include <agrum/learning/constraints/structuralConstraintDiGraph.h>
+#include <agrum/BN/learning/constraints/structuralConstraintDAG.h>
+#include <agrum/BN/learning/constraints/structuralConstraintDiGraph.h>
 
-#include <agrum/learning/structureUtils/graphChangesGenerator4DiGraph.h>
-#include <agrum/learning/structureUtils/graphChangesSelector4DiGraph.h>
+#include <agrum/BN/learning/structureUtils/graphChangesGenerator4DiGraph.h>
+#include <agrum/BN/learning/structureUtils/graphChangesSelector4DiGraph.h>
 
-#include <agrum/learning/greedyHillClimbing.h>
-#include <agrum/learning/paramUtils/paramEstimatorML.h>
+#include <agrum/BN/learning/greedyHillClimbing.h>
+#include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
 
 
 int main(int argc, char* argv[]) {

@@ -30,11 +30,11 @@
 #ifndef GUM_CLASS_ELEMENT_CONTAINER_H
 #define GUM_CLASS_ELEMENT_CONTAINER_H
 
-#include <agrum/core/hashTable.h>
-#include <agrum/core/set.h>
+#include <agrum/tools/core/hashTable.h>
+#include <agrum/tools/core/set.h>
 
-#include <agrum/graphs/DAG.h>
-#include <agrum/graphs/graphElements.h>
+#include <agrum/tools/graphs/DAG.h>
+#include <agrum/tools/graphs/graphElements.h>
 
 #include <agrum/PRM/utils_prm.h>
 

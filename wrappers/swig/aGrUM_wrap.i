@@ -31,53 +31,53 @@
 #include <exception>
 #include <typeinfo>
 
-#include <agrum/core/types.h>
-#include <agrum/core/utils_misc.h>
-#include <agrum/core/hashFunc.h>
-#include <agrum/core/bijection.h>
-#include <agrum/core/set.h>
-#include <agrum/core/debug.h>
-#include <agrum/core/exceptions.h>
-#include <agrum/core/hashTable.h>
-#include <agrum/core/refPtr.h>
-#include <agrum/core/list.h>
-#include <agrum/core/OMPThreads.h>
+#include <agrum/tools/core/types.h>
+#include <agrum/tools/core/utils_misc.h>
+#include <agrum/tools/core/hashFunc.h>
+#include <agrum/tools/core/bijection.h>
+#include <agrum/tools/core/set.h>
+#include <agrum/tools/core/debug.h>
+#include <agrum/tools/core/exceptions.h>
+#include <agrum/tools/core/hashTable.h>
+#include <agrum/tools/core/refPtr.h>
+#include <agrum/tools/core/list.h>
+#include <agrum/tools/core/OMPThreads.h>
 
-#include <agrum/graphs/parts/edgeGraphPart.h>
-#include <agrum/graphs/parts/arcGraphPart.h>
-#include <agrum/graphs/parts/nodeGraphPart.h>
+#include <agrum/tools/graphs/parts/edgeGraphPart.h>
+#include <agrum/tools/graphs/parts/arcGraphPart.h>
+#include <agrum/tools/graphs/parts/nodeGraphPart.h>
 
-#include <agrum/graphs/diGraph.h>
-#include <agrum/graphs/DAG.h>
-#include <agrum/graphs/undiGraph.h>
-#include <agrum/graphs/mixedGraph.h>
-#include <agrum/graphs/cliqueGraph.h>
-#include <agrum/graphs/algorithms/triangulations/defaultTriangulation.h>
-#include <agrum/variables/discreteVariable.h>
-#include <agrum/multidim/implementations/multiDimInterface.h>
-#include <agrum/multidim/implementations/multiDimAdressable.h>
-#include <agrum/multidim/instantiation.h>
-#include <agrum/multidim/implementations/multiDimContainer.h>
-#include <agrum/multidim/implementations/multiDimDecorator.h>
-#include <agrum/multidim/implementations/multiDimImplementation.h>
-#include <agrum/multidim/implementations/multiDimWithOffset.h>
-#include <agrum/multidim/implementations/multiDimReadOnly.h>
-#include <agrum/multidim/ICIModels/multiDimNoisyORCompound.h>
-#include <agrum/multidim/ICIModels/multiDimNoisyAND.h>
-#include <agrum/graphicalModels/graphicalModel.h>
-#include <agrum/graphicalModels/DAGmodel.h>
-#include <agrum/graphicalModels/variableNodeMap.h>
+#include <agrum/tools/graphs/diGraph.h>
+#include <agrum/tools/graphs/DAG.h>
+#include <agrum/tools/graphs/undiGraph.h>
+#include <agrum/tools/graphs/mixedGraph.h>
+#include <agrum/tools/graphs/cliqueGraph.h>
+#include <agrum/tools/graphs/algorithms/triangulations/defaultTriangulation.h>
+#include <agrum/tools/variables/discreteVariable.h>
+#include <agrum/tools/multidim/implementations/multiDimInterface.h>
+#include <agrum/tools/multidim/implementations/multiDimAdressable.h>
+#include <agrum/tools/multidim/instantiation.h>
+#include <agrum/tools/multidim/implementations/multiDimContainer.h>
+#include <agrum/tools/multidim/implementations/multiDimDecorator.h>
+#include <agrum/tools/multidim/implementations/multiDimImplementation.h>
+#include <agrum/tools/multidim/implementations/multiDimWithOffset.h>
+#include <agrum/tools/multidim/implementations/multiDimReadOnly.h>
+#include <agrum/tools/multidim/ICIModels/multiDimNoisyORCompound.h>
+#include <agrum/tools/multidim/ICIModels/multiDimNoisyAND.h>
+#include <agrum/tools/graphicalModels/graphicalModel.h>
+#include <agrum/tools/graphicalModels/DAGmodel.h>
+#include <agrum/tools/graphicalModels/variableNodeMap.h>
 
-#include <agrum/core/sequence.h>
-#include <agrum/variables/variable.h>
-#include <agrum/variables/discreteVariable.h>
-#include <agrum/variables/labelizedVariable.h>
-#include <agrum/variables/rangeVariable.h>
-#include <agrum/variables/IDiscretizedVariable.h>
-#include <agrum/variables/discretizedVariable.h>
-#include <agrum/graphs/graphElements.h>
-#include <agrum/multidim/potential.h>
-#include <agrum/multidim/implementations/multiDimArray.h>
+#include <agrum/tools/core/sequence.h>
+#include <agrum/tools/variables/variable.h>
+#include <agrum/tools/variables/discreteVariable.h>
+#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/tools/variables/rangeVariable.h>
+#include <agrum/tools/variables/IDiscretizedVariable.h>
+#include <agrum/tools/variables/discretizedVariable.h>
+#include <agrum/tools/graphs/graphElements.h>
+#include <agrum/tools/multidim/potential.h>
+#include <agrum/tools/multidim/implementations/multiDimArray.h>
 
 #include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/BayesNet.h>
@@ -100,8 +100,8 @@
 #include <agrum/BN/io/UAI/UAIReader.h>
 #include <agrum/BN/io/UAI/UAIWriter.h>
 
-#include <agrum/core/approximations/IApproximationSchemeConfiguration.h>
-#include <agrum/core/approximations/approximationScheme.h>
+#include <agrum/tools/core/approximations/IApproximationSchemeConfiguration.h>
+#include <agrum/tools/core/approximations/approximationScheme.h>
 
 #include <agrum/BN/inference/tools/BayesNetInference.h>
 
@@ -121,8 +121,8 @@
 #include <agrum/BN/algorithms/divergence/exactBNdistance.h>
 #include <agrum/BN/algorithms/divergence/GibbsBNdistance.h>
 
-#include <agrum/core/signal/listener.h>
-#include <agrum/graphs/parts/listeners/diGraphListener.h>
+#include <agrum/tools/core/signal/listener.h>
+#include <agrum/tools/graphs/parts/listeners/diGraphListener.h>
 
 #include <agrum/CN/credalNet.h>
 #include <agrum/CN/varMod2BNsMap.h>
@@ -131,9 +131,9 @@
 #include <agrum/CN/CNMonteCarloSampling.h>
 #include <agrum/CN/CNLoopyPropagation.h>
 
-#include <agrum/learning/database/databaseTable.h>
-#include <agrum/learning/BNLearner.h>
-#include <agrum/learning/database/BNDatabaseGenerator.h>
+#include <agrum/tools/database/databaseTable.h>
+#include <agrum/BN/learning/BNLearner.h>
+#include <agrum/BN/database/BNDatabaseGenerator.h>
 
 #include <agrum/ID/influenceDiagram.h>
 #include <agrum/ID/inference/IInfluenceDiagramInference.h>
@@ -215,58 +215,58 @@ namespace std {
 
 /* WRAPPED HEADERS (pyAgrum API) */
 %import <agrum/config.h>
-%import <agrum/core/inline.h>
+%import <agrum/tools/core/inline.h>
 
-%import <agrum/core/types.h>
-%include <agrum/core/set.h>
-%include <agrum/core/exceptions.h>
-%include <agrum/core/sequence.h>
-%include <agrum/core/utils_random.h>
+%import <agrum/tools/core/types.h>
+%include <agrum/tools/core/set.h>
+%include <agrum/tools/core/exceptions.h>
+%include <agrum/tools/core/sequence.h>
+%include <agrum/tools/core/utils_random.h>
 
-%include <agrum/core/OMPThreads.h>
+%include <agrum/tools/core/OMPThreads.h>
 
-%include <agrum/variables/variable.h>
-%include <agrum/variables/discreteVariable.h>
-%include <agrum/variables/labelizedVariable.h>
-%include <agrum/variables/rangeVariable.h>
-%include <agrum/variables/IDiscretizedVariable.h>
-%include <agrum/variables/discretizedVariable.h>
+%include <agrum/tools/variables/variable.h>
+%include <agrum/tools/variables/discreteVariable.h>
+%include <agrum/tools/variables/labelizedVariable.h>
+%include <agrum/tools/variables/rangeVariable.h>
+%include <agrum/tools/variables/IDiscretizedVariable.h>
+%include <agrum/tools/variables/discretizedVariable.h>
 
-%include <agrum/graphs/graphElements.h>
+%include <agrum/tools/graphs/graphElements.h>
 
-%import <agrum/graphs/parts/edgeGraphPart.h>
-%import <agrum/graphs/parts/arcGraphPart.h>
-%import <agrum/graphs/parts/nodeGraphPart.h>
+%import <agrum/tools/graphs/parts/edgeGraphPart.h>
+%import <agrum/tools/graphs/parts/arcGraphPart.h>
+%import <agrum/tools/graphs/parts/nodeGraphPart.h>
 
-%include <agrum/graphs/undiGraph.h>
-%include <agrum/graphs/diGraph.h>
-%include <agrum/graphs/DAG.h>
-%include <agrum/graphs/mixedGraph.h>
-%include <agrum/graphs/cliqueGraph.h>
-%import <agrum/graphs/algorithms/triangulations/defaultTriangulation.h>
-%import <agrum/graphs/algorithms/triangulations/triangulation.h>
+%include <agrum/tools/graphs/undiGraph.h>
+%include <agrum/tools/graphs/diGraph.h>
+%include <agrum/tools/graphs/DAG.h>
+%include <agrum/tools/graphs/mixedGraph.h>
+%include <agrum/tools/graphs/cliqueGraph.h>
+%import <agrum/tools/graphs/algorithms/triangulations/defaultTriangulation.h>
+%import <agrum/tools/graphs/algorithms/triangulations/triangulation.h>
 
-%import <agrum/multidim/implementations/multiDimInterface.h>
-%import <agrum/multidim/implementations/multiDimAdressable.h>
-%import <agrum/multidim/implementations/multiDimContainer.h>
-%import <agrum/multidim/implementations/multiDimDecorator.h>
-%import <agrum/multidim/implementations/multiDimImplementation.h>
-%import <agrum/multidim/implementations/multiDimWithOffset.h>
-%import <agrum/multidim/implementations/multiDimReadOnly.h>
-%import <agrum/multidim/implementations/multiDimArray.h>
+%import <agrum/tools/multidim/implementations/multiDimInterface.h>
+%import <agrum/tools/multidim/implementations/multiDimAdressable.h>
+%import <agrum/tools/multidim/implementations/multiDimContainer.h>
+%import <agrum/tools/multidim/implementations/multiDimDecorator.h>
+%import <agrum/tools/multidim/implementations/multiDimImplementation.h>
+%import <agrum/tools/multidim/implementations/multiDimWithOffset.h>
+%import <agrum/tools/multidim/implementations/multiDimReadOnly.h>
+%import <agrum/tools/multidim/implementations/multiDimArray.h>
 
-%include <agrum/multidim/ICIModels/multiDimNoisyORCompound.h>
-%include <agrum/multidim/ICIModels/multiDimNoisyAND.h>
+%include <agrum/tools/multidim/ICIModels/multiDimNoisyORCompound.h>
+%include <agrum/tools/multidim/ICIModels/multiDimNoisyAND.h>
 
-%include <agrum/multidim/instantiation.h>
-%include <agrum/multidim/potential.h>
+%include <agrum/tools/multidim/instantiation.h>
+%include <agrum/tools/multidim/potential.h>
 
-%import <agrum/core/refPtr.h>
-%include <agrum/core/list.h>
+%import <agrum/tools/core/refPtr.h>
+%include <agrum/tools/core/list.h>
 
-%import <agrum/graphicalModels/variableNodeMap.h>
-%include <agrum/graphicalModels/graphicalModel.h>
-%include <agrum/graphicalModels/DAGmodel.h>
+%import <agrum/tools/graphicalModels/variableNodeMap.h>
+%include <agrum/tools/graphicalModels/graphicalModel.h>
+%include <agrum/tools/graphicalModels/DAGmodel.h>
 %include <agrum/BN/IBayesNet.h>
 %include <agrum/BN/BayesNet.h>
 %include <agrum/BN/BayesNetFragment.h>
@@ -275,8 +275,8 @@ namespace std {
 %include <agrum/BN/algorithms/MarkovBlanket.h>
 %include <agrum/BN/algorithms/structuralComparator.h>
 
-%import <agrum/core/approximations/IApproximationSchemeConfiguration.h>
-%include <agrum/core/approximations/approximationScheme.h>
+%import <agrum/tools/core/approximations/IApproximationSchemeConfiguration.h>
+%include <agrum/tools/core/approximations/approximationScheme.h>
 
 %import <agrum/BN/inference/tools/relevantPotentialsFinderType.h>
 %include <agrum/BN/inference/tools/BayesNetInference.h>
@@ -296,14 +296,14 @@ namespace std {
 %include <agrum/BN/algorithms/divergence/exactBNdistance.h>
 %include <agrum/BN/algorithms/divergence/GibbsBNdistance.h>
 
-%import <agrum/core/signal/listener.h>
-%import <agrum/graphs/parts/listeners/diGraphListener.h>
+%import <agrum/tools/core/signal/listener.h>
+%import <agrum/tools/graphs/parts/listeners/diGraphListener.h>
 %import <agrum/BN/io/BIF/BIFReader.h>
 
-%import <agrum/learning/database/databaseTable.h>
-%import <agrum/learning/BNLearnUtils/genericBNLearner.h>
-%include <agrum/learning/BNLearner.h>
-%include <agrum/learning/database/BNDatabaseGenerator.h>
+%import <agrum/tools/database/databaseTable.h>
+%import <agrum/BN/learning/BNLearnUtils/genericBNLearner.h>
+%include <agrum/BN/learning/BNLearner.h>
+%include <agrum/BN/database/BNDatabaseGenerator.h>
 
 %include <agrum/CN/credalNet.h>
 %include <agrum/CN/varMod2BNsMap.h>

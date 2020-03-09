@@ -31,14 +31,14 @@
 #ifndef GUM_CONTINGENCY_TABLE_H
 #define GUM_CONTINGENCY_TABLE_H
 
-#include <agrum/core/math/math.h>
-#include <agrum/core/hashTable.h>
-#include <agrum/core/set.h>
-#include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
+#include <agrum/tools/core/math/math.h>
+#include <agrum/tools/core/hashTable.h>
+#include <agrum/tools/core/set.h>
+#include <agrum/tools/core/smallobjectallocator/smallObjectAllocator.h>
 
 #include <agrum/FMDP/learning/observation.h>
 
-#include <agrum/variables/discreteVariable.h>
+#include <agrum/tools/variables/discreteVariable.h>
 
 
 namespace gum {

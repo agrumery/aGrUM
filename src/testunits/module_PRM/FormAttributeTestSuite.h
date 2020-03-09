@@ -25,7 +25,7 @@
 
 #include <agrum/PRM/elements/PRMClass.h>
 #include <agrum/PRM/elements/PRMFormAttribute.h>
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 
 #include <module_PRM/ClassElementTestSuiteAbstract.h>
 

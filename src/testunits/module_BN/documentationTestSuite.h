@@ -33,7 +33,7 @@
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/BN/io/BIF/BIFWriter.h>
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 
 namespace gum_tests {
   class DocumentationTestSuite: public CxxTest::TestSuite {

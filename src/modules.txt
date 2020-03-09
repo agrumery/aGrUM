@@ -3,14 +3,14 @@
 
 # list all of modules
 set(MODULES)
-list(APPEND MODULES "BASE") # Core
+list(APPEND MODULES "BASE") # tools
 list(APPEND MODULES "BN") # Bayesian networks
 list(APPEND MODULES "MN") # Markov Networks
 list(APPEND MODULES "CN") # Credal networks
 list(APPEND MODULES "FMDP") # Factored Markov Decision Process
 list(APPEND MODULES "ID") # Influence diagram
 list(APPEND MODULES "PRM") # Probabilistic Relational Model
-list(APPEND MODULES "LEARNING") # Learning
+list(APPEND MODULES "BNLEARNING") # Learning
 
 # list of required modules
 set(BASE_DEPS)
@@ -19,14 +19,14 @@ set(CN_DEPS "BN")
 set(FMDP_DEPS)
 set(ID_DEPS "BN")
 set(PRM_DEPS "BN")
-set(LEARNING_DEPS "BN")
+set(BNLEARNING_DEPS "BN")
 
 # list of all folders by module
-set(BASE_DIRS "core" "graphicalModels" "graphs" "multidim" "variables" "external")
+set(BASE_DIRS "tools")
 set(BN_DIRS "BN")
 set(MN_DIRS "MN")
 set(CN_DIRS "CN")
 set(FMDP_DIRS "FMDP")
 set(ID_DIRS "ID")
 set(PRM_DIRS "PRM")
-set(LEARNING_DIRS "learning")
+set(BNLEARNING_DIRS "BN/learning")

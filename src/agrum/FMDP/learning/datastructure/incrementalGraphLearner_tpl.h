@@ -29,14 +29,14 @@
 // =======================================================
 #include <queue>
 // =======================================================
-#include <agrum/core/math/math.h>
-#include <agrum/core/multiPriorityQueue.h>
-#include <agrum/core/types.h>
+#include <agrum/tools/core/math/math.h>
+#include <agrum/tools/core/multiPriorityQueue.h>
+#include <agrum/tools/core/types.h>
 // =======================================================
 #include <agrum/FMDP/learning/core/chiSquare.h>
 #include <agrum/FMDP/learning/datastructure/incrementalGraphLearner.h>
 // =======================================================
-#include <agrum/variables/discreteVariable.h>
+#include <agrum/tools/variables/discreteVariable.h>
 // =======================================================
 
 namespace gum {

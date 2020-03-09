@@ -26,10 +26,10 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/graphicalModels/inference/scheduleProjectionBasic.h>
-#include <agrum/multidim/potential.h>
-#include <agrum/multidim/utils/operators/multiDimProjection.h>
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/tools/graphicalModels/inference/scheduleProjectionBasic.h>
+#include <agrum/tools/multidim/potential.h>
+#include <agrum/tools/multidim/utils/operators/multiDimProjection.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 
 namespace gum_tests {
 

@@ -32,8 +32,8 @@
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/agrum.h>
-#include <agrum/graphs/DAG.h>
-#include <agrum/graphs/cliqueGraph.h>
+#include <agrum/tools/graphs/DAG.h>
+#include <agrum/tools/graphs/cliqueGraph.h>
 
 
 namespace gum {

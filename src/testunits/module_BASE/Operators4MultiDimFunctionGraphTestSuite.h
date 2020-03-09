@@ -31,12 +31,12 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <testsuite_utils.h>
 // =============================================================================
-#include <agrum/multidim/implementations/multiDimFunctionGraph.h>
-#include <agrum/multidim/implementations/multiDimFunctionGraphGenerator.h>
-#include <agrum/multidim/instantiation.h>
-#include <agrum/multidim/potential.h>
+#include <agrum/tools/multidim/implementations/multiDimFunctionGraph.h>
+#include <agrum/tools/multidim/implementations/multiDimFunctionGraphGenerator.h>
+#include <agrum/tools/multidim/instantiation.h>
+#include <agrum/tools/multidim/potential.h>
 // =============================================================================
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 // =============================================================================
 
 namespace gum_tests {

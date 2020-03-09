@@ -33,12 +33,12 @@
 //#include <algorithm>
 //#include <utility>
 // =========================================================================
-#include <agrum/core/math/math.h>
-#include <agrum/core/functors.h>
+#include <agrum/tools/core/math/math.h>
+#include <agrum/tools/core/functors.h>
 // =========================================================================
-#include <agrum/multidim/implementations/multiDimFunctionGraph.h>
-#include <agrum/multidim/instantiation.h>
-#include <agrum/multidim/potential.h>
+#include <agrum/tools/multidim/implementations/multiDimFunctionGraph.h>
+#include <agrum/tools/multidim/instantiation.h>
+#include <agrum/tools/multidim/potential.h>
 // =========================================================================
 #include <agrum/FMDP/planning/structuredPlaner.h>
 // =========================================================================

@@ -21,7 +21,7 @@
 
 
 #include "CNMonteCarloSampling.h"
-#include <agrum/core/exceptions.h>
+#include <agrum/tools/core/exceptions.h>
 
 namespace gum {
   namespace credal {

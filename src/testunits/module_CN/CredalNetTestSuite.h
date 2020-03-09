@@ -31,7 +31,7 @@
 #include <agrum/CN/LpInterface.h>
 #include <agrum/CN/credalNet.h>
 
-#include <agrum/core/OMPThreads.h>
+#include <agrum/tools/core/OMPThreads.h>
 
 /**
  * @file

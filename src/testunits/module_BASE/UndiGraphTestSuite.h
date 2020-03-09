@@ -25,8 +25,8 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/graphs/graphElements.h>
-#include <agrum/graphs/undiGraph.h>
+#include <agrum/tools/graphs/graphElements.h>
+#include <agrum/tools/graphs/undiGraph.h>
 
 // The graph used for the tests:
 //          0   1_          0 -- 2

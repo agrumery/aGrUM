@@ -14,12 +14,12 @@ endif(COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
 macro(CocoRTarget DIRNAME ARG_PREFIX ARG_NAMESPACE MODULE)
   ADD_CUSTOM_COMMAND(
     OUTPUT ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Parser.cpp ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Parser.h ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Scanner.cpp ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Scanner.h
-    COMMAND ${COCOR_EXECUTABLE} -namespace ${ARG_NAMESPACE} -frames ${AGRUM_SOURCE_DIR}/agrum/core/cocoR ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/${ARG_PREFIX}.atg -o ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/
+    COMMAND ${COCOR_EXECUTABLE} -namespace ${ARG_NAMESPACE} -frames ${AGRUM_SOURCE_DIR}/agrum/tools/core/cocoR ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/${ARG_PREFIX}.atg -o ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/
     COMMAND ${RM} -f ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Scanner.h.old
     COMMAND ${RM} -f ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Scanner.cpp.old
     COMMAND ${RM} -f ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Parser.h.old
     COMMAND ${RM} -f ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Parser.cpp.old
-    DEPENDS ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/${ARG_PREFIX}.atg ${AGRUM_SOURCE_DIR}/agrum/core/cocoR/Scanner.frame ${AGRUM_SOURCE_DIR}/agrum/core/cocoR/Parser.frame ${AGRUM_SOURCE_DIR}/agrum/core/cocoR/Copyright.frame
+    DEPENDS ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/${ARG_PREFIX}.atg ${AGRUM_SOURCE_DIR}/agrum/tools/core/cocoR/Scanner.frame ${AGRUM_SOURCE_DIR}/agrum/tools/core/cocoR/Parser.frame ${AGRUM_SOURCE_DIR}/agrum/tools/core/cocoR/Copyright.frame
   )
   set(AGRUM_${MODULE}_SOURCES  ${AGRUM_${MODULE}_SOURCES}  ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Parser.cpp ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Scanner.cpp)
   set(AGRUM_${MODULE}_INCLUDES ${AGRUM_${MODULE}_INCLUDES} ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Parser.h   ${AGRUM_SOURCE_DIR}/agrum/${DIRNAME}/Scanner.h)

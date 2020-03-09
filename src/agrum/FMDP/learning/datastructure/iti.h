@@ -31,14 +31,14 @@
 #ifndef GUM_ITI_H
 #define GUM_ITI_H
 // =========================================================================
-#include <agrum/core/multiPriorityQueue.h>
+#include <agrum/tools/core/multiPriorityQueue.h>
 // =========================================================================
-#include <agrum/multidim/implementations/multiDimFunctionGraph.h>
+#include <agrum/tools/multidim/implementations/multiDimFunctionGraph.h>
 // =========================================================================
 #include <agrum/FMDP/learning/core/templateStrategy.h>
 #include <agrum/FMDP/learning/datastructure/incrementalGraphLearner.h>
 // =========================================================================
-#include <agrum/variables/discreteVariable.h>
+#include <agrum/tools/variables/discreteVariable.h>
 // =========================================================================
 
 namespace gum {

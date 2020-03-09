@@ -40,8 +40,8 @@
 
 #include <agrum/BN/io/cnf/CNFWriter.h>
 #include <agrum/agrum.h>
-#include <agrum/core/approximations/approximationPolicy.h>
-#include <agrum/core/hashTable.h>
+#include <agrum/tools/core/approximations/approximationPolicy.h>
+#include <agrum/tools/core/hashTable.h>
 
 namespace gum {
 

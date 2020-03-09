@@ -37,10 +37,10 @@
 #include <vector>
 
 #include <agrum/agrum.h>
-#include <agrum/core/list.h>
+#include <agrum/tools/core/list.h>
 
-#include <agrum/multidim/implementations/multiDimSparse.h>
-#include <agrum/variables/discreteVariable.h>
+#include <agrum/tools/multidim/implementations/multiDimSparse.h>
+#include <agrum/tools/variables/discreteVariable.h>
 
 #include <agrum/PRM/IPRMFactory.h>
 #include <agrum/PRM/PRM.h>

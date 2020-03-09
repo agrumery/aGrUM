@@ -30,11 +30,11 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/generator/maxParentsMCBayesNetGenerator.h>
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
-#include <agrum/graphs/graphElements.h>
-#include <agrum/variables/discreteVariable.h>
-#include <agrum/variables/labelizedVariable.h>
-#include <agrum/variables/rangeVariable.h>
-#include <agrum/variables/discretizedVariable.h>
+#include <agrum/tools/graphs/graphElements.h>
+#include <agrum/tools/variables/discreteVariable.h>
+#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/tools/variables/rangeVariable.h>
+#include <agrum/tools/variables/discretizedVariable.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3

@@ -28,7 +28,7 @@
  */
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/BayesNetFragment.h>
-#include <agrum/multidim/potential.h>
+#include <agrum/tools/multidim/potential.h>
 
 namespace gum {
   template < typename GUM_SCALAR >

@@ -31,7 +31,7 @@
 
 #include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/inference/loopyBeliefPropagation.h>
-#include <agrum/core/hashTable.h>
+#include <agrum/tools/core/hashTable.h>
 #include <vector>
 
 namespace gum {

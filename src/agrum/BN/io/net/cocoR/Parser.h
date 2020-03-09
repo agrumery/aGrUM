@@ -35,7 +35,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #if !defined(gum_net_COCO_PARSER_H__)
 #define gum_net_COCO_PARSER_H__
 
-#include <agrum/core/cast_unicode.h>
+#include <agrum/tools/core/cast_unicode.h>
 
 #include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/BayesNetFactory.h>

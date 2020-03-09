@@ -32,7 +32,7 @@
 
 #include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/inference/tools/marginalTargetedInference.h>
-#include <agrum/core/approximations/approximationScheme.h>
+#include <agrum/tools/core/approximations/approximationScheme.h>
 
 namespace gum {
 

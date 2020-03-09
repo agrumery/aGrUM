@@ -25,15 +25,15 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/graphs/graphElements.h>
+#include <agrum/tools/graphs/graphElements.h>
 
-#include <agrum/graphs/DAG.h>
-#include <agrum/graphs/mixedGraph.h>
-#include <agrum/graphs/undiGraph.h>
+#include <agrum/tools/graphs/DAG.h>
+#include <agrum/tools/graphs/mixedGraph.h>
+#include <agrum/tools/graphs/undiGraph.h>
 
-#include <agrum/graphs/parts/listeners/diGraphListener.h>
-#include <agrum/graphs/parts/listeners/mixedGraphListener.h>
-#include <agrum/graphs/parts/listeners/undiGraphListener.h>
+#include <agrum/tools/graphs/parts/listeners/diGraphListener.h>
+#include <agrum/tools/graphs/parts/listeners/mixedGraphListener.h>
+#include <agrum/tools/graphs/parts/listeners/undiGraphListener.h>
 
 // The graph used for the tests:
 //          0   1_          0 -> 2

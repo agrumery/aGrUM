@@ -18,7 +18,7 @@
 * 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. *
 ***************************************************************************/
 #include <iostream>
-#include <agrum/core/hashTable.h>
+#include <agrum/tools/core/hashTable.h>
 
 int main ( void ) {
   gum::HashTable<std::string, int> h;

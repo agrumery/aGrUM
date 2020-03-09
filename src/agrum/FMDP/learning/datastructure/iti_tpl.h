@@ -27,14 +27,14 @@
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 // =======================================================
-#include <agrum/core/math/math.h>
-#include <agrum/core/priorityQueue.h>
-#include <agrum/core/types.h>
+#include <agrum/tools/core/math/math.h>
+#include <agrum/tools/core/priorityQueue.h>
+#include <agrum/tools/core/types.h>
 // =======================================================
 #include <agrum/FMDP/learning/core/chiSquare.h>
 #include <agrum/FMDP/learning/datastructure/iti.h>
 // =======================================================
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 // =======================================================
 
 

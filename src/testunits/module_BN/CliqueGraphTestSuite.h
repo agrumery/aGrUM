@@ -26,8 +26,8 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/graphs/cliqueGraph.h>
-#include <agrum/graphs/graphElements.h>
+#include <agrum/tools/graphs/cliqueGraph.h>
+#include <agrum/tools/graphs/graphElements.h>
 
 /* The graphs used for the tests:
  * G1:          G2:       G3:

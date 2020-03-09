@@ -29,13 +29,13 @@
 #ifndef GUM_TAXI_SIMULATOR_H
 #define GUM_TAXI_SIMULATOR_H
 //======================================================================
-#include <agrum/multidim/instantiation.h>
+#include <agrum/tools/multidim/instantiation.h>
 //======================================================================
 #include <agrum/FMDP/fmdp.h>
 //======================================================================
 #include <agrum/FMDP/simulation/abstractSimulator.h>
 //======================================================================
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 //======================================================================
 
 namespace gum {

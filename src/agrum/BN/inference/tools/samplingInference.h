@@ -36,8 +36,8 @@
 #include <agrum/BN/inference/tools/estimator.h>
 #include <agrum/BN/inference/tools/gibbsOperator.h>
 #include <agrum/BN/inference/tools/marginalTargetedInference.h>
-#include <agrum/core/approximations/approximationScheme.h>
-#include <agrum/multidim/instantiation.h>
+#include <agrum/tools/core/approximations/approximationScheme.h>
+#include <agrum/tools/multidim/instantiation.h>
 
 namespace gum {
   /**

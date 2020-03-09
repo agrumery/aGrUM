@@ -38,9 +38,9 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/core/hashTable.h>
-#include <agrum/multidim/implementations/multiDimSparse.h>
-#include <agrum/variables/discreteVariable.h>
+#include <agrum/tools/core/hashTable.h>
+#include <agrum/tools/multidim/implementations/multiDimSparse.h>
+#include <agrum/tools/variables/discreteVariable.h>
 
 #include <agrum/PRM/PRM.h>
 #include <agrum/PRM/utils_prm.h>

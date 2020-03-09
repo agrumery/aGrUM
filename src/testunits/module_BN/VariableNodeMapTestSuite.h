@@ -27,9 +27,9 @@
 #include <cxxtest/testsuite_utils.h>
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/graphs/algorithms/triangulations/defaultTriangulation.h>
-#include <agrum/graphs/graphElements.h>
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/tools/graphs/algorithms/triangulations/defaultTriangulation.h>
+#include <agrum/tools/graphs/graphElements.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3

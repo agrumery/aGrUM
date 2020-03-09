@@ -24,7 +24,7 @@
 #include <cxxtest/testsuite_utils.h>
 #include <iostream>
 
-#include <agrum/core/math/Dirichlet.h>
+#include <agrum/tools/core/math/Dirichlet.h>
 
 namespace gum_tests {
 

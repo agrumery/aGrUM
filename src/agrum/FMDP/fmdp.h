@@ -32,13 +32,13 @@
 #include <string>
 #include <vector>
 //======================================================================
-#include <agrum/core/bijection.h>
-#include <agrum/core/hashTable.h>
-#include <agrum/core/set.h>
+#include <agrum/tools/core/bijection.h>
+#include <agrum/tools/core/hashTable.h>
+#include <agrum/tools/core/set.h>
 //======================================================================
-#include <agrum/multidim/implementations/multiDimFunctionGraph.h>
-#include <agrum/multidim/implementations/multiDimImplementation.h>
-#include <agrum/variables/discreteVariable.h>
+#include <agrum/tools/multidim/implementations/multiDimFunctionGraph.h>
+#include <agrum/tools/multidim/implementations/multiDimImplementation.h>
+#include <agrum/tools/variables/discreteVariable.h>
 //======================================================================
 
 namespace gum {

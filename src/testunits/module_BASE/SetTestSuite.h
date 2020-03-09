@@ -27,8 +27,8 @@
 #include <cxxtest/testsuite_utils.h>
 #include <ressources/myalloc.h>
 
-#include <agrum/core/list.h>
-#include <agrum/core/set.h>
+#include <agrum/tools/core/list.h>
+#include <agrum/tools/core/set.h>
 
 namespace gum_tests {
 

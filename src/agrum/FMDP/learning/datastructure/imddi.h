@@ -31,7 +31,7 @@
 #ifndef GUM_IMDDI_H
 #define GUM_IMDDI_H
 // =========================================================================
-#include <agrum/multidim/implementations/multiDimFunctionGraph.h>
+#include <agrum/tools/multidim/implementations/multiDimFunctionGraph.h>
 // =========================================================================
 #include <agrum/FMDP/learning/datastructure/incrementalGraphLearner.h>
 #include <agrum/FMDP/learning/datastructure/leaves/abstractLeaf.h>
@@ -39,7 +39,7 @@
 #include <agrum/FMDP/learning/datastructure/leaves/leafAggregator.h>
 #include <agrum/FMDP/learning/datastructure/variableselector.h>
 // =========================================================================
-#include <agrum/variables/discreteVariable.h>
+#include <agrum/tools/variables/discreteVariable.h>
 // =========================================================================
 
 namespace gum {

@@ -25,10 +25,10 @@
  * @author Pierre-Henri WUILLEMIN
  */
 #include <agrum/BN/IBayesNet.h>
-#include <agrum/core/set.h>
-#include <agrum/graphs/graphElements.h>
-#include <agrum/graphs/parts/nodeGraphPart.h>
-#include <agrum/multidim/potential.h>
+#include <agrum/tools/core/set.h>
+#include <agrum/tools/graphs/graphElements.h>
+#include <agrum/tools/graphs/parts/nodeGraphPart.h>
+#include <agrum/tools/multidim/potential.h>
 
 namespace PyAgrumHelper {
 

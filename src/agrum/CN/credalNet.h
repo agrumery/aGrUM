@@ -37,7 +37,7 @@
 #ifdef HAVE_UNISTD_H
 #  include <unistd.h>
 #else
-#  include <agrum/core/mvsc/unistd.h>
+#  include <agrum/tools/core/mvsc/unistd.h>
 #endif
 
 //#include <sys/wait.h>
@@ -52,18 +52,18 @@
 
 #include <utility>   /// c++11 stuff, like declval ( decltype from prototype without a default constructor )
 
-#include <agrum/core/math/math.h>
+#include <agrum/tools/core/math/math.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/BN/io/BIF/BIFWriter.h>
-#include <agrum/core/exceptions.h>
+#include <agrum/tools/core/exceptions.h>
 
-#include <agrum/core/math/pow.h>   // custom pow functions with integers, faster implementation
-#include <agrum/core/math/rational.h>   // custom decimal to rational
+#include <agrum/tools/core/math/pow.h>   // custom pow functions with integers, faster implementation
+#include <agrum/tools/core/math/rational.h>   // custom decimal to rational
 
 #include <agrum/CN/LrsWrapper.h>
 
-#include <agrum/core/OMPThreads.h>
+#include <agrum/tools/core/OMPThreads.h>
 
 // 64 bits for windows (long is 32 bits)
 #ifdef _MSC_VER

@@ -27,7 +27,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/graphs/algorithms/spanningForestPrim.h>
+#include <agrum/tools/graphs/algorithms/spanningForestPrim.h>
 
 namespace gum_tests {
 

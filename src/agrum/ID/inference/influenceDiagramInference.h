@@ -36,12 +36,12 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/core/list.h>
+#include <agrum/tools/core/list.h>
 
-#include <agrum/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
+#include <agrum/tools/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
 
-#include <agrum/multidim/implementations/multiDimBucket.h>
-#include <agrum/multidim/implementations/multiDimSparse.h>
+#include <agrum/tools/multidim/implementations/multiDimBucket.h>
+#include <agrum/tools/multidim/implementations/multiDimSparse.h>
 
 #include <agrum/ID/inference/IInfluenceDiagramInference.h>
 

@@ -30,9 +30,9 @@
 #include <agrum/CN/credalNet.h>
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/core/approximations/approximationSchemeListener.h>
+#include <agrum/tools/core/approximations/approximationSchemeListener.h>
 
-#include <agrum/core/OMPThreads.h>
+#include <agrum/tools/core/OMPThreads.h>
 
 /**
  * @file

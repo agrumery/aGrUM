@@ -32,9 +32,9 @@
 #include <agrum/ID/inference/influenceDiagramInference.h>
 #include <agrum/ID/influenceDiagram.h>
 #include <agrum/ID/io/BIFXML/BIFXMLIDWriter.h>
-#include <agrum/graphs/graphElements.h>
-#include <agrum/variables/discreteVariable.h>
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/tools/graphs/graphElements.h>
+#include <agrum/tools/variables/discreteVariable.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 
 // The graph used for the tests:
 //           D1

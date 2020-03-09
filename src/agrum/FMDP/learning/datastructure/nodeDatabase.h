@@ -31,8 +31,8 @@
 #ifndef GUM_NODE_DATABASE_H
 #define GUM_NODE_DATABASE_H
 // =========================================================================
-#include <agrum/core/hashTable.h>
-#include <agrum/core/sequence.h>
+#include <agrum/tools/core/hashTable.h>
+#include <agrum/tools/core/sequence.h>
 // =========================================================================
 #include <agrum/FMDP/learning/core/templateStrategy.h>
 #include <agrum/FMDP/learning/core/testPolicy/Chi2TestPolicy.h>
@@ -40,7 +40,7 @@
 #include <agrum/FMDP/learning/core/testPolicy/leastSquareTestPolicy.h>
 #include <agrum/FMDP/learning/observation.h>
 // =========================================================================
-#include <agrum/variables/discreteVariable.h>
+#include <agrum/tools/variables/discreteVariable.h>
 // =========================================================================
 
 namespace gum {

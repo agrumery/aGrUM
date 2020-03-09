@@ -31,7 +31,7 @@
 #ifndef GUM_FMDP_LEARNER_H
 #define GUM_FMDP_LEARNER_H
 // =========================================================================
-#include <agrum/core/hashTable.h>
+#include <agrum/tools/core/hashTable.h>
 // =========================================================================
 #include <agrum/FMDP/SDyna/Strategies/ILearningStrategy.h>
 #include <agrum/FMDP/fmdp.h>
@@ -39,7 +39,7 @@
 #include <agrum/FMDP/learning/datastructure/iti.h>
 #include <agrum/FMDP/learning/observation.h>
 // =========================================================================
-#include <agrum/variables/discreteVariable.h>
+#include <agrum/tools/variables/discreteVariable.h>
 // =========================================================================
 
 namespace gum {

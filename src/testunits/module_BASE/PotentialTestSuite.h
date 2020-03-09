@@ -23,14 +23,14 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/variables/discretizedVariable.h>
-#include <agrum/variables/labelizedVariable.h>
-#include <agrum/variables/rangeVariable.h>
+#include <agrum/tools/variables/discretizedVariable.h>
+#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/tools/variables/rangeVariable.h>
 
-#include <agrum/multidim/ICIModels/multiDimLogit.h>
-#include <agrum/multidim/implementations/multiDimArray.h>
-#include <agrum/multidim/instantiation.h>
-#include <agrum/multidim/potential.h>
+#include <agrum/tools/multidim/ICIModels/multiDimLogit.h>
+#include <agrum/tools/multidim/implementations/multiDimArray.h>
+#include <agrum/tools/multidim/instantiation.h>
+#include <agrum/tools/multidim/potential.h>
 
 namespace gum_tests {
 

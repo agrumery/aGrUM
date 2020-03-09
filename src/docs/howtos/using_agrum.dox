@@ -53,7 +53,7 @@ target_link_libraries(foo agrum)
  * \code{.cpp}
 #include <iostream>
 
-#include <agrum/core/hashTable.h>
+#include <agrum/tools/core/hashTable.h>
 
 int main() {
   gum::HashTable<std::string,int> h;

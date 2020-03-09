@@ -35,11 +35,11 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/core/hashTable.h>
+#include <agrum/tools/core/hashTable.h>
 
-#include <agrum/graphicalModels/DAGmodel.h>
+#include <agrum/tools/graphicalModels/DAGmodel.h>
 
-#include <agrum/multidim/potential.h>
+#include <agrum/tools/multidim/potential.h>
 
 namespace gum {
 

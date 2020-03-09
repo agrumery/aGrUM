@@ -27,7 +27,7 @@
  * @author Jean-Christophe MAGNAN
  */
 // =========================================================================
-#include <agrum/core/math/math.h>
+#include <agrum/tools/core/math/math.h>
 #include <agrum/FMDP/learning/core/chiSquare.h>
 // =========================================================================
 

@@ -25,10 +25,10 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/multidim/ICIModels/multiDimNoisyORNet.h>
-#include <agrum/multidim/potential.h>
-#include <agrum/variables/labelizedVariable.h>
-#include <agrum/variables/rangeVariable.h>
+#include <agrum/tools/multidim/ICIModels/multiDimNoisyORNet.h>
+#include <agrum/tools/multidim/potential.h>
+#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/tools/variables/rangeVariable.h>
 
 namespace gum_tests {
 

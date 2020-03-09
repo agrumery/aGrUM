@@ -36,9 +36,9 @@
 
 #include <agrum/BN/algorithms/divergence/BNdistance.h>
 #include <agrum/BN/inference/tools/gibbsOperator.h>
-#include <agrum/core/approximations/approximationScheme.h>
+#include <agrum/tools/core/approximations/approximationScheme.h>
 
-#include <agrum/core/signal/signaler.h>
+#include <agrum/tools/core/signal/signaler.h>
 
 namespace gum {
 

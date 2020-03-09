@@ -34,9 +34,9 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/core/hashTable.h>
-#include <agrum/core/list.h>
-#include <agrum/core/sequence.h>
+#include <agrum/tools/core/hashTable.h>
+#include <agrum/tools/core/list.h>
+#include <agrum/tools/core/sequence.h>
 
 #include <agrum/BN/IBayesNet.h>
 

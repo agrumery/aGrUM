@@ -32,9 +32,9 @@
 #include <string>
 #include <vector>
 
-#include <agrum/graphicalModels/variableNodeMap.h>
-#include <agrum/multidim/implementations/multiDimAdressable.h>
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/tools/graphicalModels/variableNodeMap.h>
+#include <agrum/tools/multidim/implementations/multiDimAdressable.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 
 namespace gum {
   /**

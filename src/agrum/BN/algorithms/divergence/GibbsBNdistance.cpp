@@ -20,7 +20,7 @@
  */
 
 
-#include <agrum/core/math/math.h>
+#include <agrum/tools/core/math/math.h>
 #include <agrum/BN/algorithms/divergence/GibbsBNdistance.h>
 
 

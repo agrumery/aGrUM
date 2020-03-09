@@ -29,10 +29,10 @@
  */
 #include <agrum/PRM/elements/PRMSystem.h>
 
-#include <agrum/multidim/aggregators/exists.h>
-#include <agrum/multidim/aggregators/forall.h>
-#include <agrum/multidim/aggregators/max.h>
-#include <agrum/multidim/aggregators/min.h>
+#include <agrum/tools/multidim/aggregators/exists.h>
+#include <agrum/tools/multidim/aggregators/forall.h>
+#include <agrum/tools/multidim/aggregators/max.h>
+#include <agrum/tools/multidim/aggregators/min.h>
 
 namespace gum {
   namespace prm {

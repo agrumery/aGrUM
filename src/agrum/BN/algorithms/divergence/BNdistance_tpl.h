@@ -29,7 +29,7 @@
 
 #include <complex>
 
-#include <agrum/core/math/math.h>
+#include <agrum/tools/core/math/math.h>
 #include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/algorithms/divergence/BNdistance.h>
 

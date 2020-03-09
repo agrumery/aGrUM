@@ -40,14 +40,14 @@
 
 #include <agrum/BN/io/BNWriter.h>
 #include <agrum/agrum.h>
-#include <agrum/core/approximations/approximationPolicy.h>
-#include <agrum/core/hashTable.h>
+#include <agrum/tools/core/approximations/approximationPolicy.h>
+#include <agrum/tools/core/hashTable.h>
 
 // Ajout sur branche DDE pour pouvoir compiler (à retirer très probablement)
 // problème sur template <typename> class IApproximationPolicy = ExactPolicy
 // sinon
 // (reconnaissance de ExactPolicy?)
-#include <agrum/core/approximations/exactPolicy.h>
+#include <agrum/tools/core/approximations/exactPolicy.h>
 
 namespace gum {
 

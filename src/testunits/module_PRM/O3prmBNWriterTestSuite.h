@@ -31,8 +31,8 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/PRM/o3prm/O3prmBNReader.h>
 #include <agrum/PRM/o3prm/O3prmBNWriter.h>
-#include <agrum/multidim/instantiation.h>
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/tools/multidim/instantiation.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3

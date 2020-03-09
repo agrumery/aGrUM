@@ -32,8 +32,8 @@
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/core/exceptions.h>
-#include <agrum/core/set.h>
+#include <agrum/tools/core/exceptions.h>
+#include <agrum/tools/core/set.h>
 
 namespace gum_tests {
 

@@ -26,8 +26,8 @@
 #include <sstream>
 
 #include <agrum/PRM/elements/PRMSystem.h>
-#include <agrum/core/hashTable.h>
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/tools/core/hashTable.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 
 /**
  * This class is used to test gum::prm::PRMClassElement, since it is an abstrac

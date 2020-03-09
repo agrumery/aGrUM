@@ -27,7 +27,7 @@
 #include <cxxtest/testsuite_utils.h>
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 
 #include <agrum/BN/io/net/netReader.h>
 

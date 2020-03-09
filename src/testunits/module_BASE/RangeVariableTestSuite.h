@@ -27,7 +27,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/variables/rangeVariable.h>
+#include <agrum/tools/variables/rangeVariable.h>
 
 namespace gum_tests {
 

@@ -30,7 +30,7 @@
 #include <limits>
 
 #include <agrum/MN/IMarkovNet.h>
-#include <agrum/multidim/potential.h>
+#include <agrum/tools/multidim/potential.h>
 
 namespace gum {
 

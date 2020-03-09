@@ -28,7 +28,7 @@
  */
 #include <iostream>
 
-#include <agrum/core/math/formula.h>
+#include <agrum/tools/core/math/formula.h>
 
 #include <agrum/PRM/elements/PRMScalarAttribute.h>
 #include <agrum/PRM/elements/PRMType.h>

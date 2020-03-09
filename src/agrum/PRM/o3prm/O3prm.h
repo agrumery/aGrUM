@@ -33,8 +33,8 @@
 #include <vector>
 
 #include <agrum/agrum.h>
-#include <agrum/core/hashTable.h>
-#include <agrum/core/math/formula.h>
+#include <agrum/tools/core/hashTable.h>
+#include <agrum/tools/core/math/formula.h>
 
 #ifndef GUM_PRM_O3PRM_PRM_H
 #  define GUM_PRM_O3PRM_PRM_H

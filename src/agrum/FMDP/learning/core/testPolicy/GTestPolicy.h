@@ -43,7 +43,7 @@ namespace gum {
 
   /**
    * @class GTestPolicy GTestPolicy.h
-   * <agrum/multidim/core/testPolicies/GTestPolicy.h>
+   * <agrum/tools/multidim/core/testPolicies/GTestPolicy.h>
    *
    * @brief G implements a test policy that follows the G statistic
    *

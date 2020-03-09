@@ -32,7 +32,7 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/graphs/diGraph.h>
+#include <agrum/tools/graphs/diGraph.h>
 
 #include <agrum/PRM/gspan/DFSCode.h>
 #include <agrum/PRM/gspan/interfaceGraph.h>

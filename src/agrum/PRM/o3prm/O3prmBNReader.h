@@ -36,7 +36,7 @@
 #include <string>
 
 #include <agrum/BN/io/BNReader.h>
-#include <agrum/core/errorsContainer.h>
+#include <agrum/tools/core/errorsContainer.h>
 
 #include <agrum/PRM/PRM.h>
 #include <agrum/PRM/o3prm/O3prmReader.h>

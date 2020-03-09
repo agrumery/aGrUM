@@ -867,7 +867,7 @@ RECURSIVE              = YES
 # Note that relative paths are relative to the directory from which doxygen is
 # run.
 
-EXCLUDE                = @AGRUM_SOURCE_DIR@/agrum/core/tinyxml \
+EXCLUDE                = @AGRUM_SOURCE_DIR@/agrum/tools/core/tinyxml \
                          @AGRUM_SOURCE_DIR@/agrum/CN/lrslib \
                          @AGRUM_SOURCE_DIR@/agrum/prm/bridges
 

@@ -20,8 +20,8 @@
  */
 
 
-#include <agrum/graphs/diGraph.h>
-#include <agrum/graphs/graphElements.h>
+#include <agrum/tools/graphs/diGraph.h>
+#include <agrum/tools/graphs/graphElements.h>
 #include <cxxtest/AgrumTestSuite.h>
 #include <iostream>
 

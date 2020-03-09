@@ -28,7 +28,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/variables/continuousVariable.h>
+#include <agrum/tools/variables/continuousVariable.h>
 
 namespace gum_tests {
 

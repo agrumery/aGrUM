@@ -31,15 +31,15 @@
 
 #include <agrum/BN/IBayesNet.h>
 
-#include <agrum/multidim/aggregators/and.h>
-#include <agrum/multidim/aggregators/or.h>
+#include <agrum/tools/multidim/aggregators/and.h>
+#include <agrum/tools/multidim/aggregators/or.h>
 
-#include <agrum/multidim/ICIModels/multiDimNoisyAND.h>
-#include <agrum/multidim/ICIModels/multiDimNoisyORCompound.h>
-#include <agrum/multidim/ICIModels/multiDimNoisyORNet.h>
+#include <agrum/tools/multidim/ICIModels/multiDimNoisyAND.h>
+#include <agrum/tools/multidim/ICIModels/multiDimNoisyORCompound.h>
+#include <agrum/tools/multidim/ICIModels/multiDimNoisyORNet.h>
 
 #include <agrum/BN/generator/simpleCPTGenerator.h>
-#include <agrum/multidim/potential.h>
+#include <agrum/tools/multidim/potential.h>
 
 namespace gum {
 

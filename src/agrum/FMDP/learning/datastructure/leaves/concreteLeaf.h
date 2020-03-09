@@ -32,11 +32,11 @@
 #define GUM_CONCRETE_LEAF_H
 // =========================================================================
 #include <agrum/agrum.h>
-#include <agrum/core/hashTable.h>
-#include <agrum/core/multiPriorityQueue.h>
-#include <agrum/core/sequence.h>
+#include <agrum/tools/core/hashTable.h>
+#include <agrum/tools/core/multiPriorityQueue.h>
+#include <agrum/tools/core/sequence.h>
 // =========================================================================
-#include <agrum/graphs/graphElements.h>
+#include <agrum/tools/graphs/graphElements.h>
 // =========================================================================
 #include <agrum/FMDP/learning/core/templateStrategy.h>
 #include <agrum/FMDP/learning/datastructure/leaves/abstractLeaf.h>

@@ -27,7 +27,7 @@
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 // =======================================================
-#include <agrum/core/math/math.h>
+#include <agrum/tools/core/math/math.h>
 #include <agrum/FMDP/learning/datastructure/leaves/leafAggregator.h>
 // =======================================================
 

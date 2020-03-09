@@ -31,9 +31,9 @@
 #ifndef GUM_FUSION_CONTEXT_H
 #define GUM_FUSION_CONTEXT_H
 // =========================================================================
-#include <agrum/core/multiPriorityQueue.h>
+#include <agrum/tools/core/multiPriorityQueue.h>
 // =========================================================================
-#include <agrum/graphs/graphElements.h>
+#include <agrum/tools/graphs/graphElements.h>
 // =========================================================================
 #include <agrum/FMDP/learning/core/templateStrategy.h>
 #include <agrum/FMDP/learning/datastructure/leaves/abstractLeaf.h>

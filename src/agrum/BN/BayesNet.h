@@ -34,10 +34,10 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/core/hashTable.h>
+#include <agrum/tools/core/hashTable.h>
 
 #include <agrum/BN/IBayesNet.h>
-#include <agrum/multidim/potential.h>
+#include <agrum/tools/multidim/potential.h>
 
 namespace gum {
 
@@ -65,8 +65,8 @@ namespace gum {
    *  - An arc A -> B represent a dependency between variables A and B, i.e. B
    *    conditional probability distribution is defined as \f$P(B| \pi(B)\f$.
    *
-   * After a variable is added to the BN, it's domain cannot change. But it arcs are added,
-   * the data in its CPT are lost.
+   * After a variable is added to the BN, it's domain cannot change. But it arcs
+   * are added, the data in its CPT are lost.
    *
    * You should look a the gum::BayesNetFactory class which can help build
    * Bayesian Networks.

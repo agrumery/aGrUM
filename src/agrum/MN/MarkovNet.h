@@ -34,10 +34,10 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/core/hashTable.h>
+#include <agrum/tools/core/hashTable.h>
 
 #include <agrum/MN/IMarkovNet.h>
-#include <agrum/multidim/potential.h>
+#include <agrum/tools/multidim/potential.h>
 
 namespace gum {
 
@@ -149,7 +149,8 @@ namespace gum {
      * @return The variable's CPT.
      * @throw NotFound If no variable's id matches varId.
      */
-    virtual const Potential< GUM_SCALAR >& factor(const NodeSet& varIds) const final;
+    virtual const Potential< GUM_SCALAR >&
+       factor(const NodeSet& varIds) const final;
 
     /**
      * @brief Returns a map between variables and nodes of this gum::MarkovNet.
@@ -186,7 +187,7 @@ namespace gum {
      * @throws NotAllowed if nbrmod<2
      */
     NodeId add(const std::string& name, unsigned int nbrmod);
-    
+
     /**
      * @brief Add a variable to the gum::MarkovNet.
      *
@@ -224,9 +225,9 @@ namespace gum {
     NodeId add(const DiscreteVariable&               var,
                MultiDimImplementation< GUM_SCALAR >* aContent,
                NodeId                                id);
-    
+
     /**
-     * @brief clear the whole Markov net 
+     * @brief clear the whole Markov net
      */
     void clear();
 
@@ -366,8 +367,9 @@ namespace gum {
      * @param aContent The gum::MultiDimImplementation to use for this
      *                 variable's gum::Potential implementation.
      */
-    NodeId addFactor(const NodeSet& vars, MultiDimImplementation< GUM_SCALAR >* aContent);
-    
+    NodeId addFactor(const NodeSet&                        vars,
+                     MultiDimImplementation< GUM_SCALAR >* aContent);
+
     /**
      * Removes a factor in the MN, and update head's CTP.
      *
@@ -375,7 +377,7 @@ namespace gum {
      */
     void eraseFactor(const NodeSet& vars);
     /// @}
-   
+
 
     /// randomly generates factors for a given structure
     void generateFactors() const;
@@ -400,13 +402,14 @@ namespace gum {
     VariableNodeMap __varMap;
 
     /// Mapping between the variable's id and their CPT.
-    //HashTable< const NodeSet,Potential< GUM_SCALAR >* > __factorMap;
+    // HashTable< const NodeSet,Potential< GUM_SCALAR >* > __factorMap;
 
     /// change the CPT associated to nodeId to newPot
     /// delete the old CPT associated to nodeId.
     /// @warning no verification of dimensions are performer
     /// @see changePotential
-    void _unsafeChangePotential(const NodeSet& vars, Potential< GUM_SCALAR >* newPot);
+    void _unsafeChangePotential(const NodeSet&           vars,
+                                Potential< GUM_SCALAR >* newPot);
 
     public:
     using IMarkovNet< GUM_SCALAR >::graph;

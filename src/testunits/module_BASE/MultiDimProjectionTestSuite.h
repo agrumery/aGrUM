@@ -28,13 +28,13 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/core/set.h>
-#include <agrum/core/utils_random.h>
-#include <agrum/multidim/implementations/multiDimArray.h>
-#include <agrum/multidim/potential.h>
-#include <agrum/multidim/utils/operators/multiDimProjection.h>
-#include <agrum/multidim/utils/operators/projections4MultiDim.h>
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/tools/core/set.h>
+#include <agrum/tools/core/utils_random.h>
+#include <agrum/tools/multidim/implementations/multiDimArray.h>
+#include <agrum/tools/multidim/potential.h>
+#include <agrum/tools/multidim/utils/operators/multiDimProjection.h>
+#include <agrum/tools/multidim/utils/operators/projections4MultiDim.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 
 namespace gum_tests {
 

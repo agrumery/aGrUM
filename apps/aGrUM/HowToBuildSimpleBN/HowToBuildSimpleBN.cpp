@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include <agrum/variables/labelizedVariable.h>
-#include <agrum/multidim/potential.h>
+#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/tools/multidim/potential.h>
 #include <agrum/BN/BayesNet.h>
 
 #include <agrum/BN/BayesNetFactory.h>

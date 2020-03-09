@@ -32,12 +32,12 @@
 
 #include <string>
 
-#include <agrum/core/sequence.h>
+#include <agrum/tools/core/sequence.h>
 
-#include <agrum/multidim/ICIModels/multiDimNoisyORCompound.h>
-#include <agrum/multidim/ICIModels/multiDimNoisyORNet.h>
-#include <agrum/multidim/implementations/multiDimBijArray.h>
-#include <agrum/multidim/potential.h>
+#include <agrum/tools/multidim/ICIModels/multiDimNoisyORCompound.h>
+#include <agrum/tools/multidim/ICIModels/multiDimNoisyORNet.h>
+#include <agrum/tools/multidim/implementations/multiDimBijArray.h>
+#include <agrum/tools/multidim/potential.h>
 
 #include <agrum/PRM/elements/PRMType.h>
 #include <agrum/PRM/elements/PRMClassElement.h>

@@ -35,9 +35,9 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <memory.h>
 #include <string.h>
 #include "Scanner.h"
-#include <agrum/core/cocoR/common.h>
+#include <agrum/tools/core/cocoR/common.h>
 
-namespace gum {
+   namespace gum {
 namespace prm {
 namespace o3prm {
 

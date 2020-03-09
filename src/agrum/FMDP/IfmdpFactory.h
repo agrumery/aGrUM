@@ -33,8 +33,8 @@
 #include <string>
 #include <vector>
 
-#include <agrum/graphs/graphElements.h>
-#include <agrum/variables/discreteVariable.h>
+#include <agrum/tools/graphs/graphElements.h>
+#include <agrum/tools/variables/discreteVariable.h>
 
 #include <agrum/FMDP/fmdp.h>
 

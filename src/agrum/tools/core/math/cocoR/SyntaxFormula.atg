@@ -1,0 +1,106 @@
+/**
+ *
+ *  Copyright 2005-2019 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
+ *   {prenom.nom}_at_lip6.fr
+ *
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public License
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+// =============================================================================
+//                               HEADERS
+// =============================================================================
+
+#include <algorithm>
+#include <fstream>
+#include <list>
+#include <memory>
+#include <sstream>
+#include <stack>
+#include <string>
+#include <vector>
+
+#include <agrum/tools/core/math/math.h>
+#include <agrum/tools/core/utils_dir.h>
+#include <agrum/tools/core/math/formula.h>
+
+// =============================================================================
+//                             PARSER
+// =============================================================================
+
+COMPILER EVAL
+
+private:
+  gum::Formula* __formula;
+
+public:
+  void formula( gum::Formula* f ) {
+    __formula = f;
+  }
+
+  gum::Formula& formula() {
+    return *__formula;
+  }
+
+  const gum::Formula& formula() const {
+    return *__formula;
+  }
+
+// =============================================================================
+//                              SCANNER RULES
+// =============================================================================
+
+//________________________
+CHARACTERS
+letter = 'A'..'Z' + 'a'..'z'+ '_' .
+digit  = '0'..'9'.
+eol    = '\n'.
+
+//________________________
+TOKENS
+integer    =  digit {digit}.
+float      = ['+'|'-'] digit {digit} '.' digit {digit}.
+scifloat   = ['+'|'-'] digit {digit} [ '.' digit {digit} ] ('E'|'e') ['+'|'-'] digit {digit} .
+operator   = '+'|'-'|'*'|'/'|'^'|'<'|'>'.
+eol        = '\n'.
+ident      = letter {letter | digit | '_' | '.'}.
+
+//________________________
+IGNORE '\r' + eol + '\t'
+
+$checkEOF=false // disable the end of file check
+
+// =============================================================================
+//                              PARSER RULES
+// =============================================================================
+
+PRODUCTIONS
+
+//________________________
+EVAL =
+  (expression { expression }) (. __formula->__finalize(); .)
+  .
+
+expression =
+    integer    (. __formula->__push_number((double)coco_atoi(t->val)); .)
+    | float    (. __formula->__push_number((double)coco_atof(t->val)); .)
+    | scifloat (. __formula->__push_number((double)coco_atof(t->val)); .)
+    | operator (. __formula->__push_operator(narrow(t->val)[0]); .)
+    | '('      (. __formula->__push_leftParenthesis(); .)
+    | ')'      (. __formula->__push_rightParenthesis(); .)
+    | ident    (. __formula->__push_identifier(narrow(t->val)); .)
+    | ','      (. __formula->__push_comma(); .)
+  .
+
+END EVAL.

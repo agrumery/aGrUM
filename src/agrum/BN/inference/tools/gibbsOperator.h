@@ -32,8 +32,8 @@
 #define GUM_GIBBS_OPERATOR_H
 
 #include <agrum/BN/IBayesNet.h>
-#include <agrum/multidim/instantiation.h>
-#include <agrum/multidim/potential.h>
+#include <agrum/tools/multidim/instantiation.h>
+#include <agrum/tools/multidim/potential.h>
 
 namespace gum {
 

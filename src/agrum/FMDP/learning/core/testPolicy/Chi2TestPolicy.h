@@ -40,7 +40,7 @@ namespace gum {
 
   /**
    * @class Chi2TestPolicy Chi2TestPolicy.h
-   * <agrum/multidim/core/testPolicy/Chi2TestPolicy.h>
+   * <agrum/tools/multidim/core/testPolicy/Chi2TestPolicy.h>
    *
    * @brief Chi2TestPolicy implements a test policy that follows the Chi2
    * statistic

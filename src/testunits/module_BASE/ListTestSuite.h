@@ -29,7 +29,7 @@
 #include <list>
 #include <vector>
 
-#include <agrum/core/list.h>
+#include <agrum/tools/core/list.h>
 
 namespace gum_tests {
 

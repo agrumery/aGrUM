@@ -29,9 +29,9 @@
 
 #include <agrum/ID/generator/influenceDiagramGenerator.h>
 #include <agrum/ID/influenceDiagram.h>
-#include <agrum/graphs/graphElements.h>
-#include <agrum/variables/discreteVariable.h>
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/tools/graphs/graphElements.h>
+#include <agrum/tools/variables/discreteVariable.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 
 #include <cxxtest/testsuite_utils.h>
 

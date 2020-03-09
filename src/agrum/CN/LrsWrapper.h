@@ -32,13 +32,13 @@
 #define __LRSWrapper_WRAPPER__H__
 
 #include <agrum/agrum.h>
-#include <agrum/core/math/math.h>
+#include <agrum/tools/core/math/math.h>
 
 
 #ifdef HAVE_UNISTD_H
 #  include <unistd.h>
 #else
-#  include <agrum/core/mvsc/unistd.h>
+#  include <agrum/tools/core/mvsc/unistd.h>
 #endif
 
 #include <chrono>
@@ -48,7 +48,7 @@
 #include <unordered_set>
 #include <vector>
 
-#include <agrum/core/math/rational.h>
+#include <agrum/tools/core/math/rational.h>
 
 // we force MP (not long or GMP)
 #undef LONG
@@ -57,7 +57,7 @@
 #define MP
 // lrs stuff
 extern "C" {
-#include <agrum/external/lrslib/lrslib.h>
+#include <agrum/tools/external/lrslib/lrslib.h>
 }
 /* *** from lrs, we need to know BASE to read multiple precision integers *** */
 #ifdef B32

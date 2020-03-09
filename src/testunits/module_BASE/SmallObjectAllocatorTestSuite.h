@@ -27,9 +27,9 @@
 #include "testsuite_utils.h"
 #include <cxxtest/AgrumTestSuite.h>
 
-#include <agrum/core/smallobjectallocator/fixedAllocator.h>
-#include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
-#include <agrum/core/timer.h>
+#include <agrum/tools/core/smallobjectallocator/fixedAllocator.h>
+#include <agrum/tools/core/smallobjectallocator/smallObjectAllocator.h>
+#include <agrum/tools/core/timer.h>
 
 
 namespace gum_tests {

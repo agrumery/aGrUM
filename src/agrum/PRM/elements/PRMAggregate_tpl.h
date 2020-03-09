@@ -29,15 +29,15 @@
 
 #include <climits>
 
-#include <agrum/multidim/aggregators/amplitude.h>
-#include <agrum/multidim/aggregators/and.h>
-#include <agrum/multidim/aggregators/count.h>
-#include <agrum/multidim/aggregators/exists.h>
-#include <agrum/multidim/aggregators/forall.h>
-#include <agrum/multidim/aggregators/max.h>
-#include <agrum/multidim/aggregators/median.h>
-#include <agrum/multidim/aggregators/min.h>
-#include <agrum/multidim/aggregators/or.h>
+#include <agrum/tools/multidim/aggregators/amplitude.h>
+#include <agrum/tools/multidim/aggregators/and.h>
+#include <agrum/tools/multidim/aggregators/count.h>
+#include <agrum/tools/multidim/aggregators/exists.h>
+#include <agrum/tools/multidim/aggregators/forall.h>
+#include <agrum/tools/multidim/aggregators/max.h>
+#include <agrum/tools/multidim/aggregators/median.h>
+#include <agrum/tools/multidim/aggregators/min.h>
+#include <agrum/tools/multidim/aggregators/or.h>
 
 namespace gum {
   namespace prm {

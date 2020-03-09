@@ -23,7 +23,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/core/timer.h>
+#include <agrum/tools/core/timer.h>
 
 namespace gum_tests {
 

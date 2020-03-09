@@ -27,7 +27,7 @@
 #define GUM_LEARNING_MY_GENERATOR_H
 
 #include <agrum/agrum.h>
-#include <agrum/learning/database/DBRowGenerator.h>
+#include <agrum/tools/database/DBRowGenerator.h>
 
 namespace gum {
 

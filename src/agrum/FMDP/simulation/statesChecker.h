@@ -32,8 +32,8 @@
 #define GUM_STATES_CHECKER_H
 // =========================================================================
 // =========================================================================
-#include <agrum/core/sequence.h>
-#include <agrum/multidim/implementations/multiDimFunctionGraph.h>
+#include <agrum/tools/core/sequence.h>
+#include <agrum/tools/multidim/implementations/multiDimFunctionGraph.h>
 // =========================================================================
 
 namespace gum {

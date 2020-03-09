@@ -32,9 +32,9 @@
 #define GUM_SDYNA_H
 // =========================================================================
 #include <agrum/agrum.h>
-#include <agrum/multidim/instantiation.h>
+#include <agrum/tools/multidim/instantiation.h>
 // =========================================================================
-#include <agrum/variables/discreteVariable.h>
+#include <agrum/tools/variables/discreteVariable.h>
 // =========================================================================
 #include <agrum/FMDP/SDyna/Strategies/IDecisionStrategy.h>
 #include <agrum/FMDP/SDyna/Strategies/ILearningStrategy.h>

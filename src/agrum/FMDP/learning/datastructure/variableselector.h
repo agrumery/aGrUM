@@ -31,10 +31,10 @@
 #ifndef GUM_VARIABLE_SELECTOR_H
 #define GUM_VARIABLE_SELECTOR_H
 // =========================================================================
-#include <agrum/core/multiPriorityQueue.h>
-#include <agrum/core/set.h>
+#include <agrum/tools/core/multiPriorityQueue.h>
+#include <agrum/tools/core/set.h>
 // =========================================================================
-#include <agrum/variables/discreteVariable.h>
+#include <agrum/tools/variables/discreteVariable.h>
 // =========================================================================
 
 namespace gum {

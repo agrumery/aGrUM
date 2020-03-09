@@ -27,12 +27,12 @@
 // ==============================================================================
 //#include <agrum/agrum.h>
 // ==============================================================================
-#include<agrum/core/smallobjectallocator/smallObjectAllocator.h>
+#include<agrum/tools/core/smallobjectallocator/smallObjectAllocator.h>
 // ==============================================================================
-#include <agrum/multidim/implementations/multiDimFunctionGraphGenerator.h>
-#include <agrum/multidim/utils/FunctionGraphUtilities/operators/multiDimFunctionGraphOperator.h>
+#include <agrum/tools/multidim/implementations/multiDimFunctionGraphGenerator.h>
+#include <agrum/tools/multidim/utils/FunctionGraphUtilities/operators/multiDimFunctionGraphOperator.h>
 // ==============================================================================
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 // ==============================================================================
 #include <run/functionGraphBinarizer.h>
 #include <run/globalFunctionGraphMinimizer.h>

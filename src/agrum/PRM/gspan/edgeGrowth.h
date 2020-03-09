@@ -35,14 +35,14 @@
 #include <utility>
 #include <vector>
 
-#include <agrum/core/math/math.h>
-#include <agrum/core/bijection.h>
-#include <agrum/core/sequence.h>
-#include <agrum/core/set.h>
+#include <agrum/tools/core/math/math.h>
+#include <agrum/tools/core/bijection.h>
+#include <agrum/tools/core/sequence.h>
+#include <agrum/tools/core/set.h>
 
-#include <agrum/graphs/diGraph.h>
+#include <agrum/tools/graphs/diGraph.h>
 
-#include <agrum/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
+#include <agrum/tools/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
 
 #include <agrum/PRM/gspan/interfaceGraph.h>
 #include <agrum/PRM/gspan/pattern.h>

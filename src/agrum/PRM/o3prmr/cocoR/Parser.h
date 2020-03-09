@@ -47,7 +47,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #ifdef HAVE_DIRENT_H
 #include <dirent.h>
 #else
-#include <agrum/core/mvsc/dirent.h>
+#include <agrum/tools/core/mvsc/dirent.h>
 #endif
 
 #include <iostream>

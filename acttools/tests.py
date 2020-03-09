@@ -33,7 +33,7 @@ def checkTests(current):
   if cde == "quick":
     if 'aGrUM' in current['targets']:
       current['tests']='all'
-      current['modules']='BASE+BN+LEARNING'
+      current['modules']='BASE+BN+BNLEARNING'
       cde='all'
 
   alltests = allTests(setifyString(current['modules']))

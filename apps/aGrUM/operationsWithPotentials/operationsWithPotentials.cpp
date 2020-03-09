@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include <agrum/variables/labelizedVariable.h>
-#include <agrum/multidim/potential.h>
+#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/tools/multidim/potential.h>
 
 void simplePotentials() {
   auto a=gum::LabelizedVariable("a","afoo");

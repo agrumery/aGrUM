@@ -26,10 +26,10 @@
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/algorithms/structuralComparator.h>
-#include <agrum/graphs/DAG.h>
-#include <agrum/graphs/diGraph.h>
-#include <agrum/graphs/mixedGraph.h>
-#include <agrum/graphs/undiGraph.h>
+#include <agrum/tools/graphs/DAG.h>
+#include <agrum/tools/graphs/diGraph.h>
+#include <agrum/tools/graphs/mixedGraph.h>
+#include <agrum/tools/graphs/undiGraph.h>
 
 namespace gum_tests {
 

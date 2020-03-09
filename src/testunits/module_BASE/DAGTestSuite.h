@@ -45,9 +45,9 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/graphs/DAG.h>
-#include <agrum/graphs/graphElements.h>
-#include <agrum/graphs/graphElements.h>
+#include <agrum/tools/graphs/DAG.h>
+#include <agrum/tools/graphs/graphElements.h>
+#include <agrum/tools/graphs/graphElements.h>
 
 // The graph used for the tests:
 //          0   1_          0 -> 2

@@ -32,10 +32,10 @@
 #ifndef GUM_OBSERVATION_H
 #define GUM_OBSERVATION_H
 // =========================================================================
-#include <agrum/core/hashTable.h>
-#include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
+#include <agrum/tools/core/hashTable.h>
+#include <agrum/tools/core/smallobjectallocator/smallObjectAllocator.h>
 // =========================================================================
-#include <agrum/variables/discreteVariable.h>
+#include <agrum/tools/variables/discreteVariable.h>
 // =========================================================================
 
 namespace gum {

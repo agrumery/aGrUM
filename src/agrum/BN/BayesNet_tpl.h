@@ -32,28 +32,28 @@
 
 #include <agrum/BN/BayesNet.h>
 
-#include <agrum/variables/rangeVariable.h>
-#include <agrum/variables/labelizedVariable.h>
-#include <agrum/variables/discretizedVariable.h>
+#include <agrum/tools/variables/rangeVariable.h>
+#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/tools/variables/discretizedVariable.h>
 
-#include <agrum/multidim/aggregators/amplitude.h>
-#include <agrum/multidim/aggregators/and.h>
-#include <agrum/multidim/aggregators/count.h>
-#include <agrum/multidim/aggregators/exists.h>
-#include <agrum/multidim/aggregators/forall.h>
-#include <agrum/multidim/aggregators/max.h>
-#include <agrum/multidim/aggregators/median.h>
-#include <agrum/multidim/aggregators/min.h>
-#include <agrum/multidim/aggregators/or.h>
+#include <agrum/tools/multidim/aggregators/amplitude.h>
+#include <agrum/tools/multidim/aggregators/and.h>
+#include <agrum/tools/multidim/aggregators/count.h>
+#include <agrum/tools/multidim/aggregators/exists.h>
+#include <agrum/tools/multidim/aggregators/forall.h>
+#include <agrum/tools/multidim/aggregators/max.h>
+#include <agrum/tools/multidim/aggregators/median.h>
+#include <agrum/tools/multidim/aggregators/min.h>
+#include <agrum/tools/multidim/aggregators/or.h>
 
-#include <agrum/multidim/ICIModels/multiDimNoisyAND.h>
-#include <agrum/multidim/ICIModels/multiDimNoisyORCompound.h>
-#include <agrum/multidim/ICIModels/multiDimNoisyORNet.h>
+#include <agrum/tools/multidim/ICIModels/multiDimNoisyAND.h>
+#include <agrum/tools/multidim/ICIModels/multiDimNoisyORCompound.h>
+#include <agrum/tools/multidim/ICIModels/multiDimNoisyORNet.h>
 
-#include <agrum/multidim/ICIModels/multiDimLogit.h>
+#include <agrum/tools/multidim/ICIModels/multiDimLogit.h>
 
 #include <agrum/BN/generator/simpleCPTGenerator.h>
-#include <agrum/core/utils_string.h>
+#include <agrum/tools/core/utils_string.h>
 
 namespace gum {
   template < typename GUM_SCALAR >
@@ -264,7 +264,7 @@ namespace gum {
                             << " modalities");
     }
 
-    RangeVariable v(name, name, 0,nbrmod-1);
+    RangeVariable v(name, name, 0, nbrmod - 1);
     return add(v);
   }
 

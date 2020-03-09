@@ -42,7 +42,7 @@
 #ifdef HAVE_DIRENT_H
 #  include <dirent.h>
 #else
-#  include <agrum/core/mvsc/dirent.h>
+#  include <agrum/tools/core/mvsc/dirent.h>
 #endif
 
 #include <agrum/BN/BayesNet.h>
@@ -50,9 +50,9 @@
 #include <agrum/BN/generator/simpleCPTDisturber.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/core/hashTable.h>
-#include <agrum/multidim/potential.h>
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/tools/core/hashTable.h>
+#include <agrum/tools/multidim/potential.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 
 namespace gum {
   /**

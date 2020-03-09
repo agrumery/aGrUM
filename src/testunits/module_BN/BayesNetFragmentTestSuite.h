@@ -29,9 +29,9 @@
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/config.h>
-#include <agrum/multidim/instantiation.h>
-#include <agrum/multidim/potential.h>
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/tools/multidim/instantiation.h>
+#include <agrum/tools/multidim/potential.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3

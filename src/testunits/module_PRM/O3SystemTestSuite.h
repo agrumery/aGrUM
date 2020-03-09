@@ -26,11 +26,11 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/core/math/math.h>
+#include <agrum/tools/core/math/math.h>
 #include <agrum/PRM/PRM.h>
 #include <agrum/PRM/o3prm/O3prm.h>
 #include <agrum/PRM/o3prm/O3prmReader.h>
-#include <agrum/core/exceptions.h>
+#include <agrum/tools/core/exceptions.h>
 
 namespace gum_tests {
 

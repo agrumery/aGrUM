@@ -26,8 +26,8 @@
 #include <cxxtest/testsuite_utils.h>
 #include <ressources/myalloc.h>
 
-#include <agrum/core/math/math.h>
-#include <agrum/core/math/gammaLog2.h>
+#include <agrum/tools/core/math/math.h>
+#include <agrum/tools/core/math/gammaLog2.h>
 
 namespace gum_tests {
 

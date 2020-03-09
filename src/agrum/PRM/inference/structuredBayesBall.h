@@ -31,8 +31,8 @@
 #include <string>
 #include <utility>
 
-#include <agrum/core/hashTable.h>
-#include <agrum/core/set.h>
+#include <agrum/tools/core/hashTable.h>
+#include <agrum/tools/core/set.h>
 
 #include <agrum/PRM/PRM.h>
 #include <agrum/PRM/inference/PRMInference.h>

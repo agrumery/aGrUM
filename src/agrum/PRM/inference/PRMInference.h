@@ -32,8 +32,8 @@
 
 #include <string>
 
-#include <agrum/core/hashTable.h>
-#include <agrum/multidim/potential.h>
+#include <agrum/tools/core/hashTable.h>
+#include <agrum/tools/multidim/potential.h>
 
 #include <agrum/PRM/PRM.h>
 

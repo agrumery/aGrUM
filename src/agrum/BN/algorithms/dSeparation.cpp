@@ -28,7 +28,7 @@
  */
 
 #include <agrum/BN/algorithms/dSeparation.h>
-#include <agrum/core/list.h>
+#include <agrum/tools/core/list.h>
 
 #ifdef GUM_NO_INLINE
 #  include <agrum/BN/algorithms/dSeparation_inl.h>

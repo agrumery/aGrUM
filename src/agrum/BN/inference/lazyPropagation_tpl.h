@@ -34,10 +34,10 @@
 #  include <agrum/BN/algorithms/BayesBall.h>
 #  include <agrum/BN/algorithms/barrenNodesFinder.h>
 #  include <agrum/BN/algorithms/dSeparation.h>
-#  include <agrum/graphs/algorithms/binaryJoinTreeConverterDefault.h>
-#  include <agrum/multidim/instantiation.h>
-#  include <agrum/multidim/utils/operators/multiDimCombineAndProjectDefault.h>
-#  include <agrum/multidim/utils/operators/multiDimProjection.h>
+#  include <agrum/tools/graphs/algorithms/binaryJoinTreeConverterDefault.h>
+#  include <agrum/tools/multidim/instantiation.h>
+#  include <agrum/tools/multidim/utils/operators/multiDimCombineAndProjectDefault.h>
+#  include <agrum/tools/multidim/utils/operators/multiDimProjection.h>
 
 
 namespace gum {

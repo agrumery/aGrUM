@@ -23,11 +23,11 @@
 #include <iostream>
 #include <string>
 
-#include <agrum/core/math/math.h>
+#include <agrum/tools/core/math/math.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/DSL/DSLReader.h>
 #include <agrum/BN/io/DSL/DSLWriter.h>
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 // The graph used for the tests:

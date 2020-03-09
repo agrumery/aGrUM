@@ -23,7 +23,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 #  include <agrum/BN/algorithms/essentialGraph.h>
-#  include <agrum/graphs/mixedGraph.h>
+#  include <agrum/tools/graphs/mixedGraph.h>
 
 namespace gum {
 

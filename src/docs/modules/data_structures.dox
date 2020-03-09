@@ -128,21 +128,21 @@
  *   table1.eraseByVal ( *iter );
  * @endcode
  *
- * @warning @b agrum/core/set_tpl.h To speed-up accessors in sets, we rely on the
+ * @warning @b agrum/tools/core/set_tpl.h To speed-up accessors in sets, we rely on the
  * fact (which holds currently) that hashTable's iterators end are never
  * modified by insertions or deletions of elements in hash tables. If this
  * property were to be changed, set_tpl.h should be updated accordingly.
  *
- * @warning @b agrum/core/bijection_tpl.h Same as set_tpl.h but, in addition,
+ * @warning @b agrum/tools/core/bijection_tpl.h Same as set_tpl.h but, in addition,
  * bijections assume that once a pair (key,val) has been created in the
  * hashtable, its location in memory will never change, even if the hashtable
  * is resized.
  *
- * @warning @b agrum/core/sequence_tpl.h Same as bijection_tpl.h.
+ * @warning @b agrum/tools/core/sequence_tpl.h Same as bijection_tpl.h.
  *
- * @warning @b agrum/core/priorityQueue_tpl.h Same as bijection_tpl.h.
+ * @warning @b agrum/tools/core/priorityQueue_tpl.h Same as bijection_tpl.h.
  *
- * @warning @b agrum/core/heap_tpl.h Same as bijection_tpl.h.
+ * @warning @b agrum/tools/core/heap_tpl.h Same as bijection_tpl.h.
  *
  * @}
  *

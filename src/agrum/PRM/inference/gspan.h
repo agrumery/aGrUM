@@ -36,7 +36,7 @@
 #include <string>
 #include <vector>
 
-#include <agrum/core/timer.h>
+#include <agrum/tools/core/timer.h>
 
 #include <agrum/BN/inference/variableElimination.h>
 

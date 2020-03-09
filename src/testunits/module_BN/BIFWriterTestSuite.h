@@ -32,7 +32,7 @@
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFWriter.h>
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3

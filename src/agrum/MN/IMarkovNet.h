@@ -34,10 +34,10 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/core/hashTable.h>
+#include <agrum/tools/core/hashTable.h>
 
-#include <agrum/graphicalModels/UGmodel.h>
-#include <agrum/multidim/potential.h>
+#include <agrum/tools/graphicalModels/UGmodel.h>
+#include <agrum/tools/multidim/potential.h>
 
 namespace gum {
 
@@ -94,10 +94,10 @@ namespace gum {
     /// @{
 
     /**
-    * Returns the factor of a set of variable.
-    *
-    * @throw NotFound If no variable's id matches varId.
-    */
+     * Returns the factor of a set of variable.
+     *
+     * @throw NotFound If no variable's id matches varId.
+     */
     virtual const Potential< GUM_SCALAR >& factor(const NodeSet& varIds) const = 0;
 
     /**
@@ -160,7 +160,7 @@ namespace gum {
      *
      * @return the biggest domainSize among the variables of *this
      */
-     
+
     Size maxVarDomainSize() const;
 
     /**

@@ -29,10 +29,10 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/MonteCarloSampling.h>
 #include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/variables/labelizedVariable.h>
+#include <agrum/tools/variables/labelizedVariable.h>
 
 #include <agrum/BN/io/BIF/BIFReader.h>
-#include <agrum/core/approximations/approximationSchemeListener.h>
+#include <agrum/tools/core/approximations/approximationSchemeListener.h>
 
 #include <cxxtest/AgrumApproximationUtils.h>   // must be last include
 

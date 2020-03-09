@@ -30,10 +30,10 @@
 #ifndef GUM_ESSENTIALGRAPH_H
 #define GUM_ESSENTIALGRAPH_H
 
-#include <agrum/graphicalModels/DAGmodel.h>
-#include <agrum/graphs/graphElements.h>
-#include <agrum/graphs/mixedGraph.h>
-#include <agrum/graphs/undiGraph.h>
+#include <agrum/tools/graphicalModels/DAGmodel.h>
+#include <agrum/tools/graphs/graphElements.h>
+#include <agrum/tools/graphs/mixedGraph.h>
+#include <agrum/tools/graphs/undiGraph.h>
 
 namespace gum {
 
