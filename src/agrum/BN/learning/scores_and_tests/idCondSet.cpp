@@ -27,4 +27,4 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/BN/learning/scores_and_tests/idSet.h>
+#include <agrum/BN/learning/scores_and_tests/idCondSet.h>

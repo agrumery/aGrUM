@@ -150,19 +150,19 @@ namespace gum {
       return *this;
     }
 
-    /// returns the pair <statistics,pvalue> corresponding to a given IdSet
+    /// returns the pair <statistics,pvalue> corresponding to a given IdCondSet
     template < template < typename > class ALLOC >
     std::pair< double, double > IndepTestG2< ALLOC >::statistics(
        NodeId                                        var1,
        NodeId                                        var2,
        const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids) {
-      return _statistics(IdSet< ALLOC >(var1, var2, rhs_ids, false));
+      return _statistics(IdCondSet< ALLOC >(var1, var2, rhs_ids, false));
     }
 
     /// returns the score corresponding to a given nodeset
     template < template < typename > class ALLOC >
     std::pair< double, double >
-       IndepTestG2< ALLOC >::_statistics(const IdSet< ALLOC >& idset) {
+       IndepTestG2< ALLOC >::_statistics(const IdCondSet< ALLOC >& idset) {
       // get the countings
       std::vector< double, ALLOC< double > > N_xyz(
          this->_counter.counts(idset, true));
@@ -205,7 +205,7 @@ namespace gum {
         std::vector< Idx > cond_nodes;
         cond_nodes.reserve(idset.nbRHSIds());
         {
-          const auto cond_idset = idset.conditionalIdSet().ids();
+          const auto cond_idset = idset.conditionalIdCondSet().ids();
           if (nodeId2cols.empty()) {
             for (const auto node: cond_idset)
               cond_nodes.push_back(node);
@@ -282,7 +282,7 @@ namespace gum {
 
     /// returns the score corresponding to a given nodeset
     template < template < typename > class ALLOC >
-    double IndepTestG2< ALLOC >::_score(const IdSet< ALLOC >& idset) {
+    double IndepTestG2< ALLOC >::_score(const IdCondSet< ALLOC >& idset) {
       // compute the domain sizes of X and Y
       const auto& nodeId2cols = this->_counter.nodeId2Columns();
       Idx         var_x, var_y;

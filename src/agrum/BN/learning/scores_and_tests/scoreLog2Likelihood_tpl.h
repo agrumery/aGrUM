@@ -201,7 +201,7 @@ namespace gum {
 
     /// returns the score corresponding to a given nodeset
     template < template < typename > class ALLOC >
-    double ScoreLog2Likelihood< ALLOC >::_score(const IdSet< ALLOC >& idset) {
+    double ScoreLog2Likelihood< ALLOC >::_score(const IdCondSet< ALLOC >& idset) {
       // get the counts for all the nodes in the idset and add the apriori
       std::vector< double, ALLOC< double > > N_ijk(
          this->_counter.counts(idset, true));
@@ -260,7 +260,7 @@ namespace gum {
     /// returns the score corresponding to a given nodeset
     template < template < typename > class ALLOC >
     INLINE double
-       ScoreLog2Likelihood< ALLOC >::score(const IdSet< ALLOC >& idset) {
+       ScoreLog2Likelihood< ALLOC >::score(const IdCondSet< ALLOC >& idset) {
       return _score(idset);
     }
 

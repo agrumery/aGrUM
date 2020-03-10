@@ -947,8 +947,8 @@ namespace gum_tests {
 
       param_estimator.setBayesNet(bn);
 
-      gum::learning::IdSet<> ids(0, std::vector< gum::NodeId >{1}, true);
-      // gum::learning::IdSet<> ids(0, {}, true);
+      gum::learning::IdCondSet<> ids(0, std::vector< gum::NodeId >{1}, true);
+      // gum::learning::IdCondSet<> ids(0, {}, true);
       std::vector< double > counts =
          param_estimator.parameters(gum::NodeId(0), {gum::NodeId(1)});
 

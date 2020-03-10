@@ -52,14 +52,14 @@ namespace gum_tests {
     double __H(const gum::learning::DBRowGeneratorParser<>& parser,
                const gum::NodeId                            id) {
       gum::learning::RecordCounter<> counter(parser);
-      return __entropy(counter.counts(gum::learning::IdSet<>(id, {})));
+      return __entropy(counter.counts(gum::learning::IdCondSet<>(id, {})));
     }
 
     double __H(const gum::learning::DBRowGeneratorParser<>& parser,
                const gum::NodeId                            id1,
                const gum::NodeId                            id2) {
       gum::learning::RecordCounter<> counter(parser);
-      return __entropy(counter.counts(gum::learning::IdSet<>(id1, id2, {}, true)));
+      return __entropy(counter.counts(gum::learning::IdCondSet<>(id1, id2, {}, true)));
     }
 
     double __I(const gum::learning::DBRowGeneratorParser<>& parser,
@@ -71,16 +71,16 @@ namespace gum_tests {
     double __H(const gum::learning::DBRowGeneratorParser<>& parser,
                const std::vector< gum::NodeId >&            cond) {
       gum::learning::RecordCounter<> counter(parser);
-      return __entropy(counter.counts(gum::learning::IdSet<>(cond, true, true)));
+      return __entropy(counter.counts(gum::learning::IdCondSet<>(cond, true, true)));
     }
 
     double __H(const gum::learning::DBRowGeneratorParser<>& parser,
                const gum::NodeId                            id,
                const std::vector< gum::NodeId >&            cond) {
       gum::learning::RecordCounter<> counter(parser);
-      return __entropy(counter.counts(gum::learning::IdSet<>(id, cond, true)))
+      return __entropy(counter.counts(gum::learning::IdCondSet<>(id, cond, true)))
              - __entropy(
-                counter.counts(gum::learning::IdSet<>(cond, false, true)));
+                counter.counts(gum::learning::IdCondSet<>(cond, false, true)));
     }
 
     double __H(const gum::learning::DBRowGeneratorParser<>& parser,
@@ -89,9 +89,9 @@ namespace gum_tests {
                const std::vector< gum::NodeId >&            cond) {
       gum::learning::RecordCounter<> counter(parser);
       return __entropy(
-                counter.counts(gum::learning::IdSet<>(id1, id2, cond, true, true)))
+                counter.counts(gum::learning::IdCondSet<>(id1, id2, cond, true, true)))
              - __entropy(
-                counter.counts(gum::learning::IdSet<>(cond, false, true)));
+                counter.counts(gum::learning::IdCondSet<>(cond, false, true)));
     }
 
     double __I(const gum::learning::DBRowGeneratorParser<>& parser,

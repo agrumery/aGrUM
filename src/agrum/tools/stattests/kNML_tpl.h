@@ -176,7 +176,7 @@ namespace gum {
 
     /// returns the score corresponding to a given nodeset
     template < template < typename > class ALLOC >
-    double KNML< ALLOC >::_score(const IdSet< ALLOC >& idset) {
+    double KNML< ALLOC >::_score(const IdCondSet< ALLOC >& idset) {
       // perform the countings on the database for all the nodes in the idset
       // This will help optimizing the computations of the Nxui, Nyui and Nui
       // that we will be needed subsequently
@@ -201,13 +201,13 @@ namespace gum {
       // without conditioning nodes
       if (idset.hasConditioningSet()) {
         // now get the Nxui, Nyui and Nui
-        IdSet< ALLOC > idset_xui = idset;
+        IdCondSet< ALLOC > idset_xui = idset;
         idset_xui.erase(idset[1]);
-        IdSet< ALLOC > idset_yui = idset;
+        IdCondSet< ALLOC > idset_yui = idset;
         idset_yui.erase(idset[0]);
 
         std::vector< double, ALLOC< double > > N_ui =
-           this->_counter.counts(idset.conditionalIdSet(), false);
+           this->_counter.counts(idset.conditionalIdCondSet(), false);
         std::vector< double, ALLOC< double > > N_xui =
            this->_counter.counts(idset_xui, false);
         std::vector< double, ALLOC< double > > N_yui =
@@ -239,8 +239,8 @@ namespace gum {
       } else {
         // here, there is no conditioning set
         // now get the Nxui, Nyui and Nui
-        IdSet< ALLOC > idset_xui(idset[0], this->_empty_ids, true);
-        IdSet< ALLOC > idset_yui(idset[1], this->_empty_ids, true);
+        IdCondSet< ALLOC > idset_xui(idset[0], this->_empty_ids, true);
+        IdCondSet< ALLOC > idset_yui(idset[1], this->_empty_ids, true);
 
         std::vector< double, ALLOC< double > > N_xui =
            this->_counter.counts(idset_xui, false);

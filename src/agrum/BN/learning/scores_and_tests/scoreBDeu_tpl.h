@@ -220,7 +220,7 @@ namespace gum {
 
     /// returns the score corresponding to a given nodeset
     template < template < typename > class ALLOC >
-    double ScoreBDeu< ALLOC >::_score(const IdSet< ALLOC >& idset) {
+    double ScoreBDeu< ALLOC >::_score(const IdCondSet< ALLOC >& idset) {
       // get the counts for all the nodes in the idset and add the apriori
       std::vector< double, ALLOC< double > > N_ijk(
          this->_counter.counts(idset, true));

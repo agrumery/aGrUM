@@ -119,9 +119,9 @@ namespace gum_tests {
       std::vector< gum::NodeId > cond2{node1};
       std::vector< gum::NodeId > cond3{node3};
 
-      gum::learning::IdSet<> idset1(node0, cond_empty);    // #3,#0
-      gum::learning::IdSet<> idset2(node0, cond2, true);   // #9,#3
-      gum::learning::IdSet<> idset3(node0, cond3, true);   // #9,#3
+      gum::learning::IdCondSet<> idset1(node0, cond_empty);    // #3,#0
+      gum::learning::IdCondSet<> idset2(node0, cond2, true);   // #9,#3
+      gum::learning::IdCondSet<> idset3(node0, cond3, true);   // #9,#3
 
       // idset1: node0 | emptyset
       std::vector< double > N_ijk_1{1201.0, 126.0, 76.0};
@@ -262,9 +262,9 @@ namespace gum_tests {
       std::vector< gum::NodeId > cond2{node5};
       std::vector< gum::NodeId > cond3{node1};
 
-      gum::learning::IdSet<> idset1(node2, cond_empty);    // #3,#0
-      gum::learning::IdSet<> idset2(node2, cond2, true);   // #9,#3
-      gum::learning::IdSet<> idset3(node2, cond3, true);   // #9,#3
+      gum::learning::IdCondSet<> idset1(node2, cond_empty);    // #3,#0
+      gum::learning::IdCondSet<> idset2(node2, cond2, true);   // #9,#3
+      gum::learning::IdCondSet<> idset3(node2, cond3, true);   // #9,#3
 
       // idset1: node2 | emptyset
       std::vector< double > N_ijk_1{1201.0, 126.0, 76.0};
@@ -398,9 +398,9 @@ namespace gum_tests {
       std::vector< gum::NodeId > cond2{node1};
       std::vector< gum::NodeId > cond3{node3};
 
-      gum::learning::IdSet<> idset1(node0, cond_empty);    // #3,#0
-      gum::learning::IdSet<> idset2(node0, cond2, true);   // #9,#3
-      gum::learning::IdSet<> idset3(node0, cond3, true);   // #9,#3
+      gum::learning::IdCondSet<> idset1(node0, cond_empty);    // #3,#0
+      gum::learning::IdCondSet<> idset2(node0, cond2, true);   // #9,#3
+      gum::learning::IdCondSet<> idset3(node0, cond3, true);   // #9,#3
 
       // idset1: node0 | emptyset
       std::vector< double > N_ijk_1{401.0, 76.0, 76.0};
@@ -545,9 +545,9 @@ namespace gum_tests {
       std::vector< gum::NodeId > cond2{node5};
       std::vector< gum::NodeId > cond3{node1};
 
-      gum::learning::IdSet<> idset1(node2, cond_empty);    // #3,#0
-      gum::learning::IdSet<> idset2(node2, cond2, true);   // #9,#3
-      gum::learning::IdSet<> idset3(node2, cond3, true);   // #9,#3
+      gum::learning::IdCondSet<> idset1(node2, cond_empty);    // #3,#0
+      gum::learning::IdCondSet<> idset2(node2, cond2, true);   // #9,#3
+      gum::learning::IdCondSet<> idset3(node2, cond3, true);   // #9,#3
 
       // idset1: node2 | emptyset
       std::vector< double > N_ijk_1{401.0, 76.0, 76.0};
@@ -683,9 +683,9 @@ namespace gum_tests {
         std::vector< gum::NodeId > cond2{node1};
         std::vector< gum::NodeId > cond3{node3};
 
-        gum::learning::IdSet<> idset1(node0, cond_empty);    // #3,#0
-        gum::learning::IdSet<> idset2(node0, cond2, true);   // #9,#3
-        gum::learning::IdSet<> idset3(node0, cond3, true);   // #9,#3
+        gum::learning::IdCondSet<> idset1(node0, cond_empty);    // #3,#0
+        gum::learning::IdCondSet<> idset2(node0, cond2, true);   // #9,#3
+        gum::learning::IdCondSet<> idset3(node0, cond3, true);   // #9,#3
 
         // idset1: node0 | emptyset
         std::vector< double > N_ijk_1{401.0, 76.0, 76.0};

@@ -222,11 +222,11 @@ namespace gum {
 
 
       protected:
-      /// returns the score for a given IdSet
+      /// returns the score for a given IdCondSet
       /** @throws OperationNotAllowed is raised if the score does not support
        * calling method score such an idset (due to too many/too few variables
        * in the left hand side or the right hand side of the idset). */
-      virtual double _score(const IdSet< ALLOC >& idset) final;
+      virtual double _score(const IdCondSet< ALLOC >& idset) final;
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

@@ -168,7 +168,7 @@ namespace gum {
     /// returns the apriori vector all the variables in the idset
     template < template < typename > class ALLOC >
     INLINE void AprioriBDeu< ALLOC >::addAllApriori(
-       const IdSet< ALLOC >&                   idset,
+       const IdCondSet< ALLOC >&                   idset,
        std::vector< double, ALLOC< double > >& counts) {
       // if the idset is empty or the weight is zero, the apriori is also empty
       if (idset.empty() || (this->_weight == 0.0)) return;
@@ -183,7 +183,7 @@ namespace gum {
     /// returns the apriori vector over only the conditioning set of an idset
     template < template < typename > class ALLOC >
     void AprioriBDeu< ALLOC >::addConditioningApriori(
-       const IdSet< ALLOC >&                   idset,
+       const IdCondSet< ALLOC >&                   idset,
        std::vector< double, ALLOC< double > >& counts) {
       // if the conditioning set is empty or the weight is equal to zero,
       // the apriori is also empty

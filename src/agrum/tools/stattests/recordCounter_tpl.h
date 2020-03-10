@@ -299,7 +299,7 @@ namespace gum {
     /// check that all the variables in an idset are discrete
     template < template < typename > class ALLOC >
     void RecordCounter< ALLOC >::__checkDiscreteVariables(
-       const IdSet< ALLOC >& ids) const {
+       const IdCondSet< ALLOC >& ids) const {
       const std::size_t             size = ids.size();
       const DatabaseTable< ALLOC >& database = __parsers[0].data.database();
 
@@ -361,7 +361,7 @@ namespace gum {
     /// returns the counts for a given set of nodes
     template < template < typename > class ALLOC >
     INLINE const std::vector< double, ALLOC< double > >&
-                 RecordCounter< ALLOC >::counts(const IdSet< ALLOC >& ids,
+                 RecordCounter< ALLOC >::counts(const IdCondSet< ALLOC >& ids,
                                       const bool            check_discrete_vars) {
       // if the idset is empty, return an empty vector
       if (ids.empty()) {
@@ -388,7 +388,7 @@ namespace gum {
     // for a given sequence of ids
     template < template < typename > class ALLOC >
     HashTable< NodeId, std::size_t > RecordCounter< ALLOC >::__getNodeIds2Columns(
-       const IdSet< ALLOC >& ids) const {
+       const IdCondSet< ALLOC >& ids) const {
       HashTable< NodeId, std::size_t > res(ids.size());
       if (__nodeId2columns.empty()) {
         for (const auto id: ids) {
@@ -407,8 +407,8 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE std::vector< double, ALLOC< double > >&
            RecordCounter< ALLOC >::__extractFromCountings(
-          const IdSet< ALLOC >&                         subset_ids,
-          const IdSet< ALLOC >&                         superset_ids,
+          const IdCondSet< ALLOC >&                         subset_ids,
+          const IdCondSet< ALLOC >&                         superset_ids,
           const std::vector< double, ALLOC< double > >& superset_vect) {
       // get a mapping between the node Ids and their columns in the database.
       // This should be stored into __nodeId2columns, except if the latter is
@@ -619,7 +619,7 @@ namespace gum {
     /// parse the database to produce new countings
     template < template < typename > class ALLOC >
     std::vector< double, ALLOC< double > >&
-       RecordCounter< ALLOC >::__countFromDatabase(const IdSet< ALLOC >& ids) {
+       RecordCounter< ALLOC >::__countFromDatabase(const IdCondSet< ALLOC >& ids) {
       // if the ids vector is empty or the database is empty, return an
       // empty vector
       const auto& database = __parsers[0].data.database();

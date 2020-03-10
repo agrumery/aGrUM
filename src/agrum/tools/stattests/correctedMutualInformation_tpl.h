@@ -458,7 +458,7 @@ namespace gum {
        */
 
       // if the score has already been computed, get its value
-      const IdSet< ALLOC > idset_xyz(var_x, var_y, vars_z, false, false);
+      const IdCondSet< ALLOC > idset_xyz(var_x, var_y, vars_z, false, false);
       if (__use_ICache) {
         try {
           return __ICache.score(idset_xyz);
@@ -475,17 +475,17 @@ namespace gum {
         // std::sort(vars.begin(), vars.end());
         vars.push_back(var_x);
         vars.push_back(var_y);
-        const double NHxyz = -__NH.score(IdSet< ALLOC >(vars, false, true));
+        const double NHxyz = -__NH.score(IdCondSet< ALLOC >(vars, false, true));
 
         vars.pop_back();
-        const double NHxz = -__NH.score(IdSet< ALLOC >(vars, false, true));
+        const double NHxz = -__NH.score(IdCondSet< ALLOC >(vars, false, true));
 
         vars.pop_back();
         vars.push_back(var_y);
-        const double NHyz = -__NH.score(IdSet< ALLOC >(vars, false, true));
+        const double NHyz = -__NH.score(IdCondSet< ALLOC >(vars, false, true));
 
         vars.pop_back();
-        const double NHz = -__NH.score(IdSet< ALLOC >(vars, false, true));
+        const double NHz = -__NH.score(IdCondSet< ALLOC >(vars, false, true));
 
         const double NHxz_NHyz = NHxz + NHyz;
         double       NHz_NHxyz = NHz + NHxyz;
@@ -504,8 +504,7 @@ namespace gum {
 
         score = NHxz_NHyz - NHz_NHxyz;
       } else {
-        const double NHxy = -__NH.score(
-           IdSet< ALLOC >(var_x, var_y, __empty_conditioning_set, true, false));
+        const double NHxy = -__NH.score(IdCondSet< ALLOC >(var_x, var_y, __empty_conditioning_set, true, false));
         const double NHx = -__NH.score(var_x);
         const double NHy = -__NH.score(var_y);
 
@@ -560,9 +559,9 @@ namespace gum {
 
 
       // If using the K cache, verify whether the set isn't already known
-      IdSet< ALLOC > idset;
+      IdCondSet< ALLOC > idset;
       if (__use_KCache) {
-        idset = std::move(IdSet< ALLOC >(var1, var2, conditioning_ids, false));
+        idset = std::move(IdCondSet< ALLOC >(var1, var2, conditioning_ids, false));
         try {
           return __KCache.score(idset);
         } catch (const NotFound&) {}
@@ -593,7 +592,7 @@ namespace gum {
 
           // compute the size of the database, including the a priori
           if (!__use_KCache) {
-            idset = std::move(IdSet< ALLOC >(var1, var2, conditioning_ids, false));
+            idset = std::move(IdCondSet< ALLOC >(var1, var2, conditioning_ids, false));
           }
           const double N = __score_MDL.N(idset);
 

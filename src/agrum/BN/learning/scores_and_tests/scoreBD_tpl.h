@@ -200,7 +200,7 @@ namespace gum {
 
     /// returns the score corresponding to a given nodeset
     template < template < typename > class ALLOC >
-    double ScoreBD< ALLOC >::_score(const IdSet< ALLOC >& idset) {
+    double ScoreBD< ALLOC >::_score(const IdCondSet< ALLOC >& idset) {
       // if the weight of the apriori is 0, then gammaLog2 will fail
       if (!this->_apriori->isInformative()) {
         GUM_ERROR(OutOfBounds,

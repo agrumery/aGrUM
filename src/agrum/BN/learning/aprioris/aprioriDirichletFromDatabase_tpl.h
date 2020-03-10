@@ -275,7 +275,7 @@ namespace gum {
     /// returns the apriori vector all the variables in the idset
     template < template < typename > class ALLOC >
     INLINE void AprioriDirichletFromDatabase< ALLOC >::addAllApriori(
-       const IdSet< ALLOC >&                   idset,
+       const IdCondSet< ALLOC >&                   idset,
        std::vector< double, ALLOC< double > >& counts) {
       if (this->_weight == 0.0) return;
 
@@ -296,11 +296,11 @@ namespace gum {
     /// returns the apriori vector over only the conditioning set of an idset
     template < template < typename > class ALLOC >
     void AprioriDirichletFromDatabase< ALLOC >::addConditioningApriori(
-       const IdSet< ALLOC >&                   idset,
+       const IdCondSet< ALLOC >&                   idset,
        std::vector< double, ALLOC< double > >& counts) {
       if (__internal_weight == 0.0) return;
 
-      const auto&       apriori = __counter.counts(idset.conditionalIdSet());
+      const auto&       apriori = __counter.counts(idset.conditionalIdCondSet());
       const std::size_t size = apriori.size();
       if (__internal_weight != 1.0) {
         for (std::size_t i = std::size_t(0); i < size; ++i) {

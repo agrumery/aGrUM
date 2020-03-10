@@ -989,11 +989,11 @@ namespace gum {
 
       std::vector< NodeId > total(vars);
       total.insert(total.end(), knowing.begin(), knowing.end());
-      double LLtotal = ll2score.score(IdSet<>(total, false, true));
+      double LLtotal = ll2score.score(IdCondSet<>(total, false, true));
       if (knowing.size() == (Size)0) {
         return LLtotal;
       } else {
-        double LLknw = ll2score.score(IdSet<>(knowing, false, true));
+        double LLknw = ll2score.score(IdCondSet<>(knowing, false, true));
         return LLtotal - LLknw;
       }
     }

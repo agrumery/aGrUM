@@ -43,7 +43,7 @@
 #include <agrum/tools/core/threadData.h>
 #include <agrum/tools/graphs/DAG.h>
 #include <agrum/tools/database/DBRowGeneratorParser.h>
-#include <agrum/BN/learning/scores_and_tests/idSet.h>
+#include <agrum/BN/learning/scores_and_tests/idCondSet.h>
 
 
 namespace gum {
@@ -96,7 +96,7 @@ namespace gum {
      * gum::learning::RecordCounter<> counter(parser);
      *
      * // get the counts:
-     * gum::learning::IdSet<> ids ( 0, gum::vector<gum::NodeId> {2,1} );
+     * gum::learning::IdCondSet<> ids ( 0, gum::vector<gum::NodeId> {2,1} );
      * const std::vector< double >& counts1 = counter.counts ( ids );
      *
      * // change the rows from which we compute the counts:
@@ -239,21 +239,21 @@ namespace gum {
       /// returns the minimum of rows that each thread should process
       std::size_t minNbRowsPerThread() const;
 
-      /// returns the counts over all the variables in an IdSet
+      /// returns the counts over all the variables in an IdCondSet
       /** @param ids the idset of the variables over which we perform countings.
        * @param check_discrete_vars The record counter can only produce correct
        * results on sets of discrete variables. By default, the method does not
-       * check whether the variables corresponding to the IdSet are actually
+       * check whether the variables corresponding to the IdCondSet are actually
        * discrete. If check_discrete_vars is set to true, then this check is
        * performed before computing the counting vector. In this case, if a
        * variable is not discrete, a TypeError exception is raised.
        * @return a vector containing the multidimensional contingency table
        * over all the variables corresponding to the ids passed in argument
        * (both at the left hand side and right hand side of the conditioning
-       * bar of the IdSet). The first dimension is that of the first variable in
-       * the IdSet, i.e., when its value increases by 1, the offset in the
+       * bar of the IdCondSet). The first dimension is that of the first variable in
+       * the IdCondSet, i.e., when its value increases by 1, the offset in the
        * output vector also increases by 1. The second dimension is that of the
-       * second variable in the IdSet, i.e., when its value increases by 1, the
+       * second variable in the IdCondSet, i.e., when its value increases by 1, the
        * offset in the ouput vector increases by the domain size of the first
        * variable. For the third variable, the offset corresponds to the product
        * of the domain sizes of the first two variables, and so on.
@@ -274,11 +274,11 @@ namespace gum {
        *   counter.counts(other_ids);
        * @endcode
        * @throw TypeError is raised if check_discrete_vars is set to true (i.e.,
-       * we check that all variables in the IdSet are discrete) and if at least
+       * we check that all variables in the IdCondSet are discrete) and if at least
        * one variable is not of a discrete nature.
        */
       const std::vector< double, ALLOC< double > >&
-         counts(const IdSet< ALLOC >& ids, const bool check_discrete_vars = false);
+         counts(const IdCondSet< ALLOC >& ids, const bool check_discrete_vars = false);
 
       /// sets new ranges to perform the countings
       /** @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
@@ -355,13 +355,13 @@ namespace gum {
       std::vector< double, ALLOC< double > > __last_DB_countings;
 
       // the ids of the nodes for the last database-parsed countings
-      IdSet< ALLOC > __last_DB_ids;
+      IdCondSet< ALLOC > __last_DB_ids;
 
       // the last countings deduced from __last_DB_countings
       std::vector< double, ALLOC< double > > __last_nonDB_countings;
 
       // the ids of the nodes of last countings deduced from __last_DB_countings
-      IdSet< ALLOC > __last_nonDB_ids;
+      IdCondSet< ALLOC > __last_nonDB_ids;
 
       // the maximal number of threads that the record counter can use
       mutable std::size_t __max_nb_threads{
@@ -375,17 +375,17 @@ namespace gum {
       // for a given sequence of ids. This is especially convenient when
       // __nodeId2columns is empty (which means that there is an identity mapping)
       HashTable< NodeId, std::size_t >
-         __getNodeIds2Columns(const IdSet< ALLOC >& ids) const;
+         __getNodeIds2Columns(const IdCondSet< ALLOC >& ids) const;
 
       /// extracts some new countings from previously computed ones
       std::vector< double, ALLOC< double > >& __extractFromCountings(
-         const IdSet< ALLOC >&                         subset_ids,
-         const IdSet< ALLOC >&                         superset_ids,
+         const IdCondSet< ALLOC >&                         subset_ids,
+         const IdCondSet< ALLOC >&                         superset_ids,
          const std::vector< double, ALLOC< double > >& superset_vect);
 
       /// parse the database to produce new countings
       std::vector< double, ALLOC< double > >&
-         __countFromDatabase(const IdSet< ALLOC >& ids);
+         __countFromDatabase(const IdCondSet< ALLOC >& ids);
 
       /// the method used by threads to produce countings by parsing the database
       void __threadedCount(
@@ -410,7 +410,7 @@ namespace gum {
       /// check that the variables at indices [beg,end) of an idset are discrete
       /** @throw TypeError is raised if at least one variable in ids is
        * of a continuous nature. */
-      void __checkDiscreteVariables(const IdSet< ALLOC >& ids) const;
+      void __checkDiscreteVariables(const IdCondSet< ALLOC >& ids) const;
 
       /// compute and raise the exception when some variables are continuous
       /** This method is used by __checkDiscreteVariables to determine the

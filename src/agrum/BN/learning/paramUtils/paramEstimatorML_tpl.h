@@ -164,7 +164,7 @@ namespace gum {
        const std::vector< NodeId, ALLOC< NodeId > >& conditioning_nodes) {
       // create an idset that contains all the nodes in the following order:
       // first, the target node, then all the conditioning nodes
-      IdSet< ALLOC > idset(target_node, conditioning_nodes, true);
+      IdCondSet< ALLOC > idset(target_node, conditioning_nodes, true);
 
       // get the counts for all the nodes in the idset and add the external and
       // score internal aprioris
@@ -188,7 +188,7 @@ namespace gum {
         // get the counts for all the conditioning nodes, and add them the
         // external and score internal aprioris
         std::vector< double, ALLOC< double > > N_ij(
-           this->_counter.counts(idset.conditionalIdSet(), false));
+           this->_counter.counts(idset.conditionalIdCondSet(), false));
         if (informative_external_apriori)
           this->_external_apriori->addConditioningApriori(idset, N_ij);
         if (informative_score_internal_apriori)

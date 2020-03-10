@@ -229,7 +229,7 @@ namespace gum {
     /// returns the score of a single node
     template < template < typename > class ALLOC >
     INLINE double Score< ALLOC >::score(const NodeId var) {
-      IdSet< ALLOC > idset(var, _empty_ids, true, this->getAllocator());
+      IdCondSet< ALLOC > idset(var, _empty_ids, true, this->getAllocator());
       if (_use_cache) {
         try {
           return _cache.score(idset);
@@ -250,7 +250,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE double Score< ALLOC >::score(
        const NodeId var, const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids) {
-      IdSet< ALLOC > idset(var, rhs_ids, false, this->getAllocator());
+      IdCondSet< ALLOC > idset(var, rhs_ids, false, this->getAllocator());
       if (_use_cache) {
         try {
           return _cache.score(idset);

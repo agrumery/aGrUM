@@ -256,11 +256,11 @@ namespace gum {
       /// move operator
       IndependenceTest< ALLOC >& operator=(IndependenceTest< ALLOC >&& from);
 
-      /// returns the score for a given IdSet
+      /// returns the score for a given IdCondSet
       /** @throws OperationNotAllowed is raised if the score does not support
        * calling method score such an idset (due to too many/too few variables
        * in the left hand side or the right hand side of the idset). */
-      virtual double _score(const IdSet< ALLOC >& idset) = 0;
+      virtual double _score(const IdCondSet< ALLOC >& idset) = 0;
 
       /// returns a counting vector where variables are marginalized from N_xyz
       /** @param node_2_marginalize indicates which node(s) shall be marginalized:

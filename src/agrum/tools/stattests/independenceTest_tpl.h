@@ -235,7 +235,7 @@ namespace gum {
     template < template < typename > class ALLOC >
     INLINE double IndependenceTest< ALLOC >::score(const NodeId var1,
                                                    const NodeId var2) {
-      IdSet< ALLOC > idset(
+      IdCondSet< ALLOC > idset(
          var1, var2, _empty_ids, false, true, this->getAllocator());
       if (_use_cache) {
         try {
@@ -256,7 +256,7 @@ namespace gum {
        const NodeId                                  var1,
        const NodeId                                  var2,
        const std::vector< NodeId, ALLOC< NodeId > >& rhs_ids) {
-      IdSet< ALLOC > idset(
+      IdCondSet< ALLOC > idset(
          var1, var2, rhs_ids, false, false, this->getAllocator());
       if (_use_cache) {
         try {
