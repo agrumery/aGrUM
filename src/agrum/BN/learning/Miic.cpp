@@ -1,4 +1,3 @@
-
 /**
  *
  *  Copyright 2005-2019 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
@@ -970,7 +969,7 @@ namespace gum {
             }
           }
         } else {
-          const double expo = std::exp(-Ixyz * __N);
+          const double expo = std::exp(-Ixyz);
           if (graph.existsArc(x, z) && Pxz >= 0.5) {
             std::get< 3 >(triple) = Pxz * (1 / (1 + expo) - 0.5) + 0.5;
           } else if (graph.existsArc(y, z) && Pyz >= 0.5) {
