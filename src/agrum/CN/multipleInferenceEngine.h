@@ -1,8 +1,8 @@
 
 /**
  *
- *  Copyright 2005-2019 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
- *   {prenom.nom}_at_lip6.fr
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -26,7 +26,7 @@
 /**
  * @file
  * @brief Abstract class representing CredalNet inference engines
- * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
+ * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN (@LIP6)
  */
 
 /// @todo virtual for all functions that MAY be one day redefined in any derived
@@ -49,7 +49,7 @@ namespace gum {
      * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
      * @tparam BNInferenceEngine A IBayesNet inference engine such as
      * LazyPropagation.
-     * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
+     * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN (@LIP6)
      */
     template < typename GUM_SCALAR, class BNInferenceEngine >
     class MultipleInferenceEngine: public InferenceEngine< GUM_SCALAR > {

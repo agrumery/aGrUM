@@ -1,8 +1,8 @@
 
 /**
  *
- *  Copyright 2005-2019 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
- *   {prenom.nom}_at_lip6.fr
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,7 +24,7 @@
  * @brief Base class for DBRowGenerator classes that use a BN for computing
  * their outputs
  *
- * @author Christophe GONZALES and Pierre-Henri WUILLWithBNIN
+ * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLWithBNIN
  */
 #ifndef GUM_LEARNING_DBROW_GENERATOR_WITH_BN_H
 #define GUM_LEARNING_DBROW_GENERATOR_WITH_BN_H

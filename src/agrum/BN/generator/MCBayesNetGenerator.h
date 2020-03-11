@@ -1,8 +1,8 @@
 
 /**
  *
- *  Copyright 2005-2019 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
- *   {prenom.nom}_at_lip6.fr
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,7 +24,7 @@
  * @brief Class for generating bayesian networks.using MC algorithm
  * cf. [Ide and Cozman, 2002]
  *
- * @author Pierre-Henri WUILLEMIN and Ariele-Paolo MAESANO
+ * @author Pierre-Henri WUILLEMIN (@LIP6) and Ariele-Paolo MAESANO
  */
 
 #ifndef GUM_MC_BAYES_NET_GENERATOR

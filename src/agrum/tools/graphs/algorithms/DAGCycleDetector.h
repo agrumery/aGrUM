@@ -1,8 +1,8 @@
 
 /**
  *
- *  Copyright 2005-2019 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
- *   {prenom.nom}_at_lip6.fr
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -30,7 +30,7 @@
  * the class is designed to be fast for such modifications. However, the number
  * of modifications checked should be higher than at least 3 for this class to
  * be competitive.
- * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
  */
 #ifndef GUM_DAG_CYCLE_DETECTOR_H
 #define GUM_DAG_CYCLE_DETECTOR_H

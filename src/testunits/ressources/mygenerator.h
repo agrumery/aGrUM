@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
- *   {prenom.nom}_at_lip6.fr                                               *
+ *   Copyright (C) 2005-2020 by Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)  *
+ *   info_at_agrum_dot_org                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -21,7 +21,7 @@
  * @brief A DBRowGenerator class that returns exactly k times the rows it gets
  * in input
  *
- * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
  */
 #ifndef GUM_LEARNING_MY_GENERATOR_H
 #define GUM_LEARNING_MY_GENERATOR_H

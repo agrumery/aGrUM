@@ -1,8 +1,8 @@
 
 /**
  *
- *  Copyright 2005-2019 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
- *   {prenom.nom}_at_lip6.fr
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -51,7 +51,7 @@ namespace gum {
    * @warning If a variable contains less than 3 ticks, it is considered as
    * empty(). A variable with 3 ticks is binary and contains 2 ranges :
    * [T1,T2[ (modality 0) and [T2,T3] (modality 1).
-   * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
+   * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
    */
   template < typename T_TICKS >
   class DiscretizedVariable: public IDiscretizedVariable {

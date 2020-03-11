@@ -1,6 +1,6 @@
 /**************************************************************************
-*   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES  *
-*   {prenom.nom}_at_lip6.fr                                               *
+*   Copyright (C) 2017 by Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)  *
+*   info_at_agrum_dot_org                                               *
 *                                                                         *
 *   This program is free software; you can redistribute it and/or modify  *
 *   it under the terms of the GNU General Public License as published by  *

@@ -1,8 +1,8 @@
 
 /**
  *
- *  Copyright 2005-2019 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
- *   {prenom.nom}_at_lip6.fr
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -34,7 +34,7 @@
  * https://doi.org/10.1371/journal.pcbi.1005662. Only the orientation phase differs
  * from 3off2, with a diffferent ranking method and different propagation rules.
  *
- * @author Quentin FALCAND and Pierre-Henri WUILLEMIN and Maria Virginia RUIZ
+ * @author Quentin FALCAND and Pierre-Henri WUILLEMIN (@LIP6) and Maria Virginia RUIZ
  * CUEVAS
  */
 #ifndef GUM_LEARNING_3_OFF_2_H

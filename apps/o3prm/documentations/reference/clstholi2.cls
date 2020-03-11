@@ -75,7 +75,7 @@
 
 % Customise for foreign languages.
 
-\def\supervisorname{Directeur de thèse~: Christophe GONZALES}
+\def\supervisorname{Directeur de thèse~: Christophe GONZALES (@AMU)}
 \def\assessorname{JURY\\ [1ex]}
 %\def\abstractname{Abstr}
 

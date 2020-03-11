@@ -1,8 +1,8 @@
 
 /**
  *
- *  Copyright 2005-2019 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
- *   {prenom.nom}_at_lip6.fr
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -21,8 +21,8 @@
 
 
 /***************************************************************************
- *   (C) 2007-2013 by Christophe GONZALES and Pierre-Henri WUILLEMIN       *
- *   {prenom.nom}@lip6.fr                                                  *
+ *   (C) 2007-2013 by Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)       *
+ *   info_at_agrum_dot_org                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *

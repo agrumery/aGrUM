@@ -1,8 +1,8 @@
 
 /**
  *
- *  Copyright 2005-2019 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
- *   {prenom.nom}_at_lip6.fr
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,7 +24,7 @@
  * @file
  * @brief Class representing Bayesian networks
  *
- * @author Pierre-Henri WUILLEMIN and Lionel TORTI
+ * @author Pierre-Henri WUILLEMIN (@LIP6) and Lionel TORTI
  *
  */
 #ifndef GUM_SIMPLE_MARKOV_NET_H
@@ -40,6 +40,8 @@
 #include <agrum/tools/multidim/potential.h>
 
 namespace gum {
+  template < typename GUM_SCALAR >
+  using FactorTable = HashTable< NodeSet, const Potential< GUM_SCALAR >* >;
 
   // template < typename GUM_SCALAR >
   // class MarkovNetFactory;
@@ -88,6 +90,8 @@ namespace gum {
     IMarkovNet< GUM_SCALAR >& operator=(const IMarkovNet< GUM_SCALAR >& source);
 
     /// @}
+
+
     // ===========================================================================
     /// @name Pure Virtual methods
     // ===========================================================================
@@ -99,6 +103,11 @@ namespace gum {
      * @throw NotFound If no variable's id matches varId.
      */
     virtual const Potential< GUM_SCALAR >& factor(const NodeSet& varIds) const = 0;
+    /**
+     * Returns the set of factors as a IMarkovNet::FactorTable
+     *
+     */
+    virtual const FactorTable< GUM_SCALAR >& factors() const = 0;
 
     /**
      * Returns a constant reference to the VariableNodeMap of thisBN

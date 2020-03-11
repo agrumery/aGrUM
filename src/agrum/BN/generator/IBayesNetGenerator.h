@@ -1,8 +1,8 @@
 
 /**
  *
- *  Copyright 2005-2019 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
- *   {prenom.nom}_at_lip6.fr
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -23,7 +23,7 @@
 /** @file
  * @brief Interface-like class for generating bayesian networks.
  *
- * @author Christophe GONZALES, Pierre-Henri WUILLEMIN, Lionel TORTI and
+ * @author Christophe GONZALES (@AMU), Pierre-Henri WUILLEMIN (@LIP6), Lionel TORTI and
  * Ariele-Paolo MAESANO
  */
 #ifndef GUM_I_BAYES_NET_GENERATOR_H

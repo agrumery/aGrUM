@@ -1,8 +1,8 @@
 
 /**
  *
- *  Copyright 2005-2019 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
- *   {prenom.nom}_at_lip6.fr
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,7 +24,7 @@
  * @file
  * @brief Template implementation of BN/MarkovNet.h class.
  *
- * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
+ * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
  */
 
 #include <limits>
@@ -57,7 +57,7 @@
 
 namespace gum {
   template < typename GUM_SCALAR >
-  NodeId build_node(gum::MarkovNet< GUM_SCALAR >& bn,
+  NodeId build_node(gum::MarkovNet< GUM_SCALAR >& mn,
                     std::string                   node,
                     gum::Size                     default_domain_size) {
     std::string                name = node;
@@ -119,14 +119,14 @@ namespace gum {
     // now we add the node in the BN
     NodeId idVar;
     try {
-      idVar = bn.idFromName(name);
+      idVar = mn.idFromName(name);
     } catch (gum::NotFound&) {
       if (!labels.empty()) {
-        idVar = bn.add(LabelizedVariable(name, name, labels));
+        idVar = mn.add(LabelizedVariable(name, name, labels));
       } else if (!ticks.empty()) {
-        idVar = bn.add(DiscretizedVariable< GUM_SCALAR >(name, name, ticks));
+        idVar = mn.add(DiscretizedVariable< GUM_SCALAR >(name, name, ticks));
       } else {
-        idVar = bn.add(RangeVariable(name, name, range_min, range_max));
+        idVar = mn.add(RangeVariable(name, name, range_min, range_max));
       }
     }
 
@@ -205,6 +205,9 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   MarkovNet< GUM_SCALAR >::~MarkovNet() {
+    for (const auto& c: __factors) {
+      delete c.second;
+    }
     GUM_DESTRUCTOR(MarkovNet);
   }
 
@@ -242,9 +245,13 @@ namespace gum {
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
      MarkovNet< GUM_SCALAR >::factor(const NodeSet& varIds) const {
-    GUM_ERROR(FatalError, "Not Implemented Yet");
+    return *__factors[varIds];
   }
 
+  template < typename GUM_SCALAR >
+  const FactorTable< GUM_SCALAR >& MarkovNet< GUM_SCALAR >::factors() const {
+    return __factors;
+  }
 
   template < typename GUM_SCALAR >
   INLINE NodeId MarkovNet< GUM_SCALAR >::add(const std::string& name,
@@ -327,9 +334,44 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE std::ostream& operator<<(std::ostream&                  output,
-                                  const MarkovNet< GUM_SCALAR >& bn) {
-    output << bn.toString();
+                                  const MarkovNet< GUM_SCALAR >& mn) {
+    output << mn.toString();
     return output;
+  }
+
+  template < typename GUM_SCALAR >
+  INLINE const Potential< GUM_SCALAR >&
+               MarkovNet< GUM_SCALAR >::addFactor(const gum::NodeSet& vars) {
+    if (__factors.exists(vars)) {
+      GUM_ERROR(InvalidArgument, "A factor for (" << vars << ") already exists.")
+    }
+    auto factor = new Potential< GUM_SCALAR >();
+    for (const auto v: vars) {
+      factor->add(variable(v));
+    }
+    __factors.insert(vars, factor);
+
+    for (const auto var1: vars)
+      for (const auto var2: vars)
+        if (var1 != var2) this->_graph.addEdge(var1, var2);
+
+    return *factor;
+  }
+
+  template < typename GUM_SCALAR >
+  INLINE const Potential< GUM_SCALAR >& MarkovNet< GUM_SCALAR >::addFactor(
+     const std::vector< std::string >& varnames) {
+    NodeSet vars;
+    for (const auto name: varnames) {
+      vars.insert(idFromName(name));
+    }
+    return addFactor(vars);
+  }
+
+  template < typename GUM_SCALAR >
+  INLINE const Potential< GUM_SCALAR >& MarkovNet< GUM_SCALAR >::addFactor(
+     const MultiDimImplementation< GUM_SCALAR >& aContent) {
+    GUM_ERROR(FatalError, "Not implemented yet");
   }
 
 

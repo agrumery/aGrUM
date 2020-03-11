@@ -1,8 +1,8 @@
 
 /**
  *
- *  Copyright 2005-2019 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
- *   {prenom.nom}_at_lip6.fr
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,7 +24,7 @@
  * @file
  * @brief Inline implementation of O3prmReader.
  *
- * @author Pierre-Henri WUILLEMIN and Lionel TORTI
+ * @author Pierre-Henri WUILLEMIN (@LIP6) and Lionel TORTI
  */
 
 // to ease Parser

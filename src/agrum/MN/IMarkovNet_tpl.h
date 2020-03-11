@@ -1,8 +1,8 @@
 
 /**
  *
- *  Copyright 2005-2019 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
- *   {prenom.nom}_at_lip6.fr
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,7 +24,7 @@
  * @file
  * @brief Template implementation of bns/bayesNet.h classes.
  *
- * @author Pierre-Henri WUILLEMIN and Lionel TORTI
+ * @author Pierre-Henri WUILLEMIN (@LIP6) and Lionel TORTI
  */
 
 #include <limits>
@@ -139,16 +139,14 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE std::string IMarkovNet< GUM_SCALAR >::toString() const {
-    return "Not Implemented Yet";
-    /*
     Size   param = 0;
     double dSize = log10DomainSize();
 
-    for (auto node: nodes())
-      param += factor(node).content()->realSize();
+    for (auto factor: factors())
+      param += factor.second->content()->realSize();
 
     std::stringstream s;
-    s << "BN{nodes: " << size() << ", arcs: " << dag().sizeEdges() << ", ";
+    s << "MN{nodes: " << size() << ", arcs: " << graph().sizeEdges() << ", ";
 
     if (dSize > 6)
       s << "domainSize: 10^" << dSize;
@@ -158,7 +156,6 @@ namespace gum {
     s << ", dim: " << param << "}";
 
     return s.str();
-     */
   }
 
   template < typename GUM_SCALAR >

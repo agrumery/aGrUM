@@ -15,6 +15,7 @@ list(APPEND MODULES "BNLEARNING") # Learning
 # list of required modules
 set(BASE_DEPS)
 set(BN_DEPS)
+set(MN_DEPS)
 set(CN_DEPS "BN")
 set(FMDP_DEPS)
 set(ID_DEPS "BN")

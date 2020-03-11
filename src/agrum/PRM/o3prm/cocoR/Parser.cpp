@@ -1,7 +1,7 @@
 /***************************************************************************
  *  aGrUM modified frames and atg files for cocoR
- *   Copyright (c) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
- *   {prenom.nom}_at_lip6.fr
+ *   Copyright (c) 2005 by Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)  *
+ *   info_at_agrum_dot_org
 ***************************************************************************/
 /*----------------------------------------------------------------------
 Compiler Generator Coco/R,

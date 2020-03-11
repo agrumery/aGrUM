@@ -1,8 +1,8 @@
 
 /**
  *
- *  Copyright 2005-2019 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
- *   {prenom.nom}_at_lip6.fr
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -24,7 +24,7 @@
  * @file
  * @brief Class representing Markov networks
  *
- * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
+ * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
  *
  */
 #ifndef GUM_MARKOV_NET_H
@@ -151,6 +151,12 @@ namespace gum {
      */
     virtual const Potential< GUM_SCALAR >&
        factor(const NodeSet& varIds) const final;
+
+    /**
+     * Returns the set of factors as a IMarkovNet::FactorTable
+     *
+     */
+    virtual const FactorTable<GUM_SCALAR>& factors() const final;
 
     /**
      * @brief Returns a map between variables and nodes of this gum::MarkovNet.
@@ -364,11 +370,17 @@ namespace gum {
      * @brief Add a factor (a clique) to the gum::MarkovNet.
      *
      * @param vars the scope of the factor
+     * @param varnames the scope of the factor as vector of variable names
      * @param aContent The gum::MultiDimImplementation to use for this
-     *                 variable's gum::Potential implementation.
+     *                 variable's gum::Potential implementation (will be copied).
+     *
+     * @return a const ref to the factor in the Markov Network
      */
-    NodeId addFactor(const NodeSet&                        vars,
-                     MultiDimImplementation< GUM_SCALAR >* aContent);
+    const Potential< GUM_SCALAR >& addFactor(const NodeSet& vars);
+    const Potential< GUM_SCALAR >&
+       addFactor(const std::vector< std::string >& varnames);
+    const Potential< GUM_SCALAR >&
+       addFactor(const MultiDimImplementation< GUM_SCALAR >& aContent);
 
     /**
      * Removes a factor in the MN, and update head's CTP.
@@ -400,6 +412,9 @@ namespace gum {
 
     /// the map between variable and id
     VariableNodeMap __varMap;
+
+    /// the factors
+    FactorTable<GUM_SCALAR> __factors;
 
     /// Mapping between the variable's id and their CPT.
     // HashTable< const NodeSet,Potential< GUM_SCALAR >* > __factorMap;
