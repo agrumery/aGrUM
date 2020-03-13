@@ -44,15 +44,17 @@ namespace gum_tests {
   class MarkovNetTestSuite: public CxxTest::TestSuite {
     private:
     void _fill(gum::MarkovNet< double >& mn) {
-      try {
-        for (const auto i: {1, 2, 3, 4, 5}) {
-          mn.add(std::to_string(i), 3);
-        }
-        mn.addFactor({"1", "3"});
-        mn.addFactor({"1", "4"});
-        mn.addFactor({"3", "5"});
-        mn.addFactor({"2", "4", "5"});
-      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
+      for (const auto i: {1, 2, 3, 4}) {
+        mn.add(std::to_string(i), 3);
+      }
+      mn.add(std::to_string(5), 7);
+
+      mn.addFactor({"1", "3"})
+         .fillWith({0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8});
+      mn.addFactor({"1", "4"})
+         .fillWith({0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0});
+      mn.addFactor({"3", "5"}).fillWith(0.97);
+      mn.addFactor({"2", "4", "5"}).fillWith(0.03);
     }
 
     public:
@@ -63,41 +65,59 @@ namespace gum_tests {
     void testConstructor() {
       gum::MarkovNet< double > mn;
       _fill(mn);
+      TS_ASSERT_EQUALS(mn.size(), (gum::Idx)5);
+      TS_ASSERT_EQUALS(mn.sizeEdges(), (gum::Idx)6);
+      TS_ASSERT_EQUALS(mn.dim(), (gum::Idx)(3 * 3 + 3 * 3 + 3 * 7 + 3 * 3 * 7));
+      TS_ASSERT_EQUALS(mn.toString(),
+                       "MN{nodes: 5, edges: 6, domainSize: 567, dim: 102}");
+
+      TS_ASSERT_EQUALS(mn.variable(1).name(), "2");
+      TS_ASSERT_EQUALS(mn.nodeId(mn.variable(2)), gum::NodeId(2));
+      TS_ASSERT_EQUALS(mn.idFromName("3"), gum::NodeId(2));
+      TS_ASSERT_EQUALS(mn.variableFromName("4").name(), "4");
+
       try {
-        TS_ASSERT_EQUALS(mn.size(), (gum::Idx)5);
-        TS_ASSERT_EQUALS(mn.sizeEdges(), (gum::Idx)6);
-        TS_ASSERT_EQUALS(mn.dim(), (gum::Idx)(3 * 3 + 3 * 3 + 3 * 3 + 3 * 3 * 3));
-        TS_ASSERT_EQUALS(mn.toString(),
-                         "MN{nodes: 5, edges: 6, domainSize: 243, dim: 54}");
+        TS_ASSERT_EQUALS(mn.maxVarDomainSize(), gum::Size(7));
+        TS_ASSERT_EQUALS(mn.minParam(), 0.0);
+        TS_ASSERT_EQUALS(mn.minNonZeroParam(), 0.03);
+        TS_ASSERT_EQUALS(mn.maxParam(), 1.0);
+        TS_ASSERT_EQUALS(mn.maxNonOneParam(), 0.97);
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
     void testCopyConstructor() {
-      try {
-        gum::MarkovNet< double > mn;
-        _fill(mn);
-        gum::MarkovNet< double > mn2(mn);
-        TS_ASSERT_EQUALS(mn2.toString(),
-                         "MN{nodes: 5, edges: 6, domainSize: 243, dim: 54}");
-        for (const auto n: mn.nodes()) {
-          TS_ASSERT_EQUALS(mn.variable(n).name(), mn2.variable(n).name());
-        }
-      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
+      gum::MarkovNet< double > mn;
+      _fill(mn);
+      gum::MarkovNet< double > mn2(mn);
+      TS_ASSERT_EQUALS(mn2.toString(),
+                       "MN{nodes: 5, edges: 6, domainSize: 567, dim: 102}");
+      for (const auto n: mn.nodes()) {
+        TS_ASSERT_EQUALS(mn.variable(n).name(), mn2.variable(n).name());
+      }
     }
 
     void testCopyOperator() {
-      try {
-        gum::MarkovNet< double > mn;
-        _fill(mn);
-        gum::MarkovNet< double > mn2 = mn;
-        TS_ASSERT_EQUALS(mn2.toString(),
-                         "MN{nodes: 5, edges: 6, domainSize: 243, dim: 54}");
-        for (const auto n: mn.nodes()) {
-          TS_ASSERT_EQUALS(mn.variable(n).name(), mn2.variable(n).name());
-        }
-      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
+      gum::MarkovNet< double > mn;
+      gum::MarkovNet< double > mn2;
+      _fill(mn);
+      mn2 = mn;
+      TS_ASSERT_EQUALS(mn2.toString(),
+                       "MN{nodes: 5, edges: 6, domainSize: 567, dim: 102}");
+      for (const auto n: mn.nodes()) {
+        TS_ASSERT_EQUALS(mn.variable(n).name(), mn2.variable(n).name());
+      }
     }
 
+    void testEqualityOperators() {
+      gum::MarkovNet< double > mn1;
+      _fill(mn1);
+      gum::MarkovNet< double > mn2;
+      TS_ASSERT(mn1 != mn2);
+      _fill(mn2);
+      TS_ASSERT(mn1 == mn2);
+      mn2.generateFactors();
+      TS_ASSERT(mn1 != mn2);
+    }
     void testInsertion() {
       gum::MarkovNet< double > mn;
       _fill(mn);

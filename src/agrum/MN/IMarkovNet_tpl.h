@@ -32,6 +32,7 @@
 #include <agrum/MN/IMarkovNet.h>
 #include <agrum/tools/multidim/potential.h>
 
+#define EF get
 namespace gum {
 
   // IMarkovNet
@@ -77,68 +78,52 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Size IMarkovNet< GUM_SCALAR >::maxVarDomainSize() const {
-    /*
     Size res = 0;
     for (auto node: nodes()) {
       auto v = variable(node).domainSize();
       if (v > res) { res = v; }
     }
-    return res;*/
-
-    GUM_ERROR(FatalError, "Not Implemented Yet")
+    return res;
   }
 
   template < typename GUM_SCALAR >
   GUM_SCALAR IMarkovNet< GUM_SCALAR >::minParam() const {
-    /*
     GUM_SCALAR res = 1.0;
-    for (auto node: nodes()) {
-      auto v = factor(node).min();
+    for (auto elt: factors()) {
+      auto v = elt.second->min();
       if (v < res) { res = v; }
     }
-    return res;*/
-
-    GUM_ERROR(FatalError, "Not Implemented Yet")
+    return res;
   }
 
   template < typename GUM_SCALAR >
   GUM_SCALAR IMarkovNet< GUM_SCALAR >::maxParam() const {
-    /*
     GUM_SCALAR res = 1.0;
-    for (auto node: nodes()) {
-      auto v = factor(node).max();
+    for (auto elt: factors()) {
+      auto v = elt.second->max();
       if (v > res) { res = v; }
     }
-    return res;*/
-
-    GUM_ERROR(FatalError, "Not Implemented Yet")
+    return res;
   }
 
   template < typename GUM_SCALAR >
   GUM_SCALAR IMarkovNet< GUM_SCALAR >::minNonZeroParam() const {
-    /*
     GUM_SCALAR res = 1.0;
-    for (auto node: nodes()) {
-      auto v = factor(node).minNonZero();
+    for (auto elt: factors()) {
+      auto v = elt.second->minNonZero();
       if (v < res) { res = v; }
     }
     return res;
-     */
-
-    GUM_ERROR(FatalError, "Not Implemented Yet")
   }
 
   template < typename GUM_SCALAR >
   GUM_SCALAR IMarkovNet< GUM_SCALAR >::maxNonOneParam() const {
-    /*
     GUM_SCALAR res = 0.0;
-    for (auto node: nodes()) {
-      auto v = factor(node).maxNonOne();
+    for (auto elt: factors()) {
+      auto v = elt.second->maxNonOne();
       if (v > res) { res = v; }
     }
     return res;
-     */
-    GUM_ERROR(FatalError, "Not Implemented Yet")
   }
 
   template < typename GUM_SCALAR >
@@ -206,8 +191,6 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   bool IMarkovNet< GUM_SCALAR >::operator==(const IMarkovNet& from) const {
-    return "Not Implemented Yet";
-    /*
     if (size() != from.size()) { return false; }
 
     if (sizeEdges() != from.sizeEdges()) { return false; }
@@ -225,29 +208,35 @@ namespace gum {
       }
     }
 
-    for (auto node: nodes()) {
-      NodeId fromnode = from.idFromName(variable(node).name());
+    for (const auto& elt: factors()) {
+      const auto& key = elt.first;
+      const auto& factor = *elt.second;
 
-      if (factor(node).nbrDim() != from.factor(fromnode).nbrDim()) { return
-    false; }
+      NodeSet fromkey;
+      for (const auto n: key)
+        fromkey.insert(from.idFromName(variable(n).name()));
 
-      Instantiation i(factor(node));
-      Instantiation j(from.factor(fromnode));
+      if (!from.factors().exists(fromkey)) { return false; }
+
+      const auto& fromfactor = from.factor(fromkey);
+
+      Instantiation i(factor);
+      Instantiation j(fromfactor);
 
       for (i.setFirst(); !i.end(); i.inc()) {
-        for (Idx indice = 0; indice < factor(node).nbrDim(); ++indice) {
+        for (Idx indice = 0; indice < factor.nbrDim(); ++indice) {
           const DiscreteVariable* p = &(i.variable(indice));
           j.chgVal(*(alignment.second(p)), i.val(*p));
         }
 
-        if (std::pow(factor(node).get(i) - from.factor(fromnode).get(j),
-    (GUM_SCALAR)2) > (GUM_SCALAR)1e-6) { return false;
+        if (std::pow(factor.get(i) - fromfactor.get(j), (GUM_SCALAR)2)
+            > (GUM_SCALAR)1e-6) {
+          return false;
         }
       }
     }
 
     return true;
-     */
   }
 
   template < typename GUM_SCALAR >

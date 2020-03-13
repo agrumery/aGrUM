@@ -401,7 +401,7 @@ namespace gum {
     /// delete the old factor associated to nodeId.
     /// @throw NotAllowed if newPot has not the same signature as
     /// __factorMap[NodeId]
-    void changeFactor(const NodeSet& vars, Potential< GUM_SCALAR >* newPot);
+    void changeFactor(const NodeSet& vars, const Potential< GUM_SCALAR >& newPot);
 
     private:
     /// clear all potentials

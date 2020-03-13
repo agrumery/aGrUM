@@ -52,24 +52,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   void SimpleCPTGenerator< GUM_SCALAR >::generateCPT(
      const Idx& varId, const Potential< GUM_SCALAR >& cpt) {
-    cpt.random();
-
-    const auto&   var = cpt.variable(varId);
-    Instantiation cptInst(cpt);
-
-    for (cptInst.setFirstNotVar(var); !cptInst.end(); cptInst.incNotVar(var)) {
-      GUM_SCALAR sum = (GUM_SCALAR)0;
-
-      for (cptInst.setFirstVar(var); !cptInst.end(); cptInst.incVar(var)) {
-        sum += cpt[cptInst];
-      }
-
-      for (cptInst.setFirstVar(var); !cptInst.end(); cptInst.incVar(var)) {
-        cpt.set(cptInst, cpt[cptInst] / sum);
-      }
-
-      cptInst.unsetEnd();
-    }
+    cpt.random().normalizeAsCPT();
   }
 
 } /* namespace gum */

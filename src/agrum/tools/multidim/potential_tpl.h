@@ -1,8 +1,8 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
- *   info_at_agrum_dot_org
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES
+ * (@AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -200,7 +200,7 @@ namespace gum {
     }
 
     if (res == static_cast< GUM_SCALAR >(0))
-      GUM_ERROR(NotFound, "No other value than 1");
+      GUM_ERROR(NotFound, "No other value than 0");
 
     return res;
   }
@@ -623,18 +623,19 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::random() const {
-    std::vector< GUM_SCALAR > v;
+    if (this->domainSize() == 0) return *this;
 
-    GUM_SCALAR sum;
+    std::vector< GUM_SCALAR > v;
+    GUM_SCALAR                sum;
     v.reserve(this->domainSize());
-    do {
-      sum = 0.0;
-      for (Size i = 0; i < this->domainSize(); ++i) {
-        auto r = (GUM_SCALAR)randomProba();
-        v.push_back(r);
-        sum += r;
-      }
-    } while (sum == 0.0);
+    sum = 0.0;
+    for (Size i = 0; i < this->domainSize(); ++i) {
+      auto r = (GUM_SCALAR)randomProba();
+      v.push_back(r);
+      sum += r;
+    }
+    if (sum == 0.0)
+      v[gum::randomValue(this->domainSize())] = 1.0;   // a 1 somewhere
 
     this->fillWith(v);
     return *this;

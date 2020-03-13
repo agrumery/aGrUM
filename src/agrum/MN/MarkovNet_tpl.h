@@ -379,51 +379,33 @@ namespace gum {
     for (Idx i = 0; i < factor.nbrDim(); i++) {
       key.insert(idFromName(factor.variable(i).name()));
     }
+
     if (__factors.exists(key)) {
       GUM_ERROR(InvalidArgument, "A factor for (" << key << ") already exists.");
     }
+
     auto* p = new Potential< GUM_SCALAR >(factor);
     __factors.insert(key, p);
+
+    for (const auto var1: key)
+      for (const auto var2: key)
+        if (var1 != var2) {
+          this->_graph.addEdge(var1, var2);
+        }
     return *p;
   }
 
 
   template < typename GUM_SCALAR >
   INLINE void MarkovNet< GUM_SCALAR >::generateFactors() const {
-    GUM_ERROR(FatalError, "Not implemented yet");
+    for (const auto& elt: __factors) {
+      elt.second->random();
+    }
   }
 
   template < typename GUM_SCALAR >
   INLINE void MarkovNet< GUM_SCALAR >::generateFactor(const NodeSet& vars) const {
-    GUM_ERROR(FatalError, "Not implemented yet");
-    /*
-    SimpleCPTGenerator< GUM_SCALAR > generator;
-
-    generator.generateCPT(cpt(node).pos(variable(node)), cpt(node));*/
-  }
-
-  template < typename GUM_SCALAR >
-  void MarkovNet< GUM_SCALAR >::changeFactor(const NodeSet&           vars,
-                                             Potential< GUM_SCALAR >* newPot) {
-    GUM_ERROR(FatalError, "Not implemented yet");
-    /*
-    if (cpt(id).nbrDim() != newPot->nbrDim()) {
-      GUM_ERROR(OperationNotAllowed,
-                "cannot exchange potentials with different "
-                "dimensions for variable with id "
-                   << id);
-    }
-
-    for (Idx i = 0; i < cpt(id).nbrDim(); i++) {
-      if (&cpt(id).variable(i) != &(newPot->variable(i))) {
-        GUM_ERROR(OperationNotAllowed,
-                  "cannot exchange potentials because, for variable with id "
-                     << id << ", dimension " << i << " differs. ");
-      }
-    }
-
-    _unsafeChangePotential(id, newPot);
-     */
+    __factors[vars]->random();
   }
 
   template < typename GUM_SCALAR >
@@ -431,6 +413,7 @@ namespace gum {
     for (const auto& c: __factors) {
       delete c.second;
     }
+    this->_graph.clearEdges();
     __factors.clear();
   }
 
