@@ -380,7 +380,7 @@ namespace gum {
     const Potential< GUM_SCALAR >&
        addFactor(const std::vector< std::string >& varnames);
     const Potential< GUM_SCALAR >&
-       addFactor(const MultiDimImplementation< GUM_SCALAR >& aContent);
+       addFactor(const Potential<GUM_SCALAR>& factor);
 
     /**
      * Removes a factor in the MN, and update head's CTP.

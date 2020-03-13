@@ -25,7 +25,7 @@ cmake_minimum_required (VERSION 3.1)
 
 # options
 option(BUILD_SHARED_LIBS "build shared|static libs" ON)
-option (BUILD_PYTHON "build python bindings" ON)
+option (BUILD_PYTHON "build python bindings" OFF)
 option (BUILD_JAVA "build java bindings (experimental)" OFF) ## Very experimental for now.
 option (USE_OPENMP "use openmp" ON)
 

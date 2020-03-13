@@ -1,8 +1,8 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
- *   info_at_agrum_dot_org
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES
+ * (@AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -68,7 +68,11 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   Size IMarkovNet< GUM_SCALAR >::dim() const {
-    GUM_ERROR(FatalError, "Not Implemented Yet");
+    Size res = 0;
+    for (auto f: factors()) {
+      res += f.second->domainSize();
+    }
+    return res;
   }
 
   template < typename GUM_SCALAR >
@@ -146,7 +150,7 @@ namespace gum {
       param += factor.second->content()->realSize();
 
     std::stringstream s;
-    s << "MN{nodes: " << size() << ", arcs: " << graph().sizeEdges() << ", ";
+    s << "MN{nodes: " << size() << ", edges: " << graph().sizeEdges() << ", ";
 
     if (dSize > 6)
       s << "domainSize: 10^" << dSize;

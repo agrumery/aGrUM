@@ -1,8 +1,8 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
- *   info_at_agrum_dot_org
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES
+ * (@AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -60,7 +60,7 @@ namespace gum_tests {
 
     void tearDown() {}
 
-    void /*test*/Constructor() {
+    void testConstructor() {
       gum::MarkovNet< double > mn;
       _fill(mn);
       try {
@@ -68,18 +68,46 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(mn.sizeEdges(), (gum::Idx)6);
         TS_ASSERT_EQUALS(mn.dim(), (gum::Idx)(3 * 3 + 3 * 3 + 3 * 3 + 3 * 3 * 3));
         TS_ASSERT_EQUALS(mn.toString(),
-                         "MN{nodes: 5, edges: 6, domainSize: 243, "
-                         "dim: 54}");
+                         "MN{nodes: 5, edges: 6, domainSize: 243, dim: 54}");
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
-    void /*test*/CopyConstructor() {}
+    void testCopyConstructor() {
+      try {
+        gum::MarkovNet< double > mn;
+        _fill(mn);
+        gum::MarkovNet< double > mn2(mn);
+        TS_ASSERT_EQUALS(mn2.toString(),
+                         "MN{nodes: 5, edges: 6, domainSize: 243, dim: 54}");
+        for (const auto n: mn.nodes()) {
+          TS_ASSERT_EQUALS(mn.variable(n).name(), mn2.variable(n).name());
+        }
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
+    }
 
-    void /*test*/CopyOperator() {}
+    void testCopyOperator() {
+      try {
+        gum::MarkovNet< double > mn;
+        _fill(mn);
+        gum::MarkovNet< double > mn2 = mn;
+        TS_ASSERT_EQUALS(mn2.toString(),
+                         "MN{nodes: 5, edges: 6, domainSize: 243, dim: 54}");
+        for (const auto n: mn.nodes()) {
+          TS_ASSERT_EQUALS(mn.variable(n).name(), mn2.variable(n).name());
+        }
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
+    }
 
-    void /*test*/Insertion() {}
+    void testInsertion() {
+      gum::MarkovNet< double > mn;
+      _fill(mn);
+      TS_ASSERT_THROWS(mn.addFactor(gum::Potential< double >()),
+                       gum::InvalidArgument);   // no empty factor
+      TS_ASSERT_THROWS(mn.addFactor({"1", "3"}),
+                       gum::InvalidArgument);   // already exists
+    }
 
-    void /*test*/Iterations() {
+    void testIterations() {
       gum::MarkovNet< double > mn;
       _fill(mn);
       gum::Size cpt = (gum::Size)0;
@@ -99,5 +127,5 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(cpt, mn.sizeEdges());
     }
-  };
+  };   // namespace gum_tests
 }   // namespace gum_tests

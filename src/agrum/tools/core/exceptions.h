@@ -38,7 +38,7 @@
 
 #define GUM_ERROR_IN_EXPR(type, msg) throw(type(msg))
 
-#ifdef SWIG
+#ifdef GUM_FOR_SWIG
 #  define GUM_ERROR(type, msg)         \
     {                                  \
       std::ostringstream __error__str; \
@@ -65,7 +65,7 @@
                   << " from " << std::endl                                 \
                   << (e).errorContent() << std::endl;                      \
       }
-#  else
+#  else // GUM_FOR_SWIG
 #    define GUM_ERROR(type, msg)                                    \
       {                                                             \
         std::ostringstream __error__str;                            \
@@ -82,7 +82,7 @@
         std::cout << (e).errorCallStack() << std::endl;                    \
       }
 #  endif   // GUM_DEBUG_MODE
-#endif     // SWIG
+#endif     //  GUM_FOR_SWIG
 
 #define GUM_MAKE_ERROR(TYPE, SUPERCLASS, MSG)                                    \
   class TYPE: public SUPERCLASS {                                                \
@@ -122,11 +122,11 @@ namespace gum {
     ~Exception() {}
 
 /// @}
-#ifdef SWIG
+#ifdef GUM_FOR_SWIG
     const std::string what() const { return "[pyAgrum] " + _type + ": " + _msg; }
-#else
-    const std::string what() const { return "[pyAgrum] " + _type + " : " + _msg; }
-#endif
+#else // GUM_FOR_SWIG
+    const std::string what() const { return _type + " : " + _msg; }
+#endif  // GUM_FOR_SWIG
 
     /**
      * @brief Returns the message content.

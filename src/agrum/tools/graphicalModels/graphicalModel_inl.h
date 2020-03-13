@@ -22,8 +22,8 @@
 
 /**
  * @file
- * @brief  Interface-like class encapsulating basic functionalities for a
- *IBayesNet.
+ * @brief  Interface-like class encapsulating basic functionalities for both a
+ *IBayesNet and IMarkovNet
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN (@LIP6)
  */

@@ -1,8 +1,8 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
- *   info_at_agrum_dot_org
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES
+ * (@AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -195,8 +195,6 @@ namespace gum {
     if (this != &source) {
       IMarkovNet< GUM_SCALAR >::operator=(source);
       __varMap = source.__varMap;
-
-      __clearFactors();
       __copyFactors(source);
     }
 
@@ -205,9 +203,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   MarkovNet< GUM_SCALAR >::~MarkovNet() {
-    for (const auto& c: __factors) {
-      delete c.second;
-    }
+    __clearFactors();
     GUM_DESTRUCTOR(MarkovNet);
   }
 
@@ -342,6 +338,10 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >&
                MarkovNet< GUM_SCALAR >::addFactor(const gum::NodeSet& vars) {
+    if (vars.size() == 0) {
+      GUM_ERROR(InvalidArgument, "Empty factor cannot be added.")
+    }
+
     if (__factors.exists(vars)) {
       GUM_ERROR(InvalidArgument, "A factor for (" << vars << ") already exists.")
     }
@@ -369,9 +369,22 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE const Potential< GUM_SCALAR >& MarkovNet< GUM_SCALAR >::addFactor(
-     const MultiDimImplementation< GUM_SCALAR >& aContent) {
-    GUM_ERROR(FatalError, "Not implemented yet");
+  INLINE const Potential< GUM_SCALAR >&
+               MarkovNet< GUM_SCALAR >::addFactor(const Potential< GUM_SCALAR >& factor) {
+    if (factor.nbrDim() == 0) {
+      GUM_ERROR(InvalidArgument, "Empty factor cannot be added.");
+    }
+
+    NodeSet key;
+    for (Idx i = 0; i < factor.nbrDim(); i++) {
+      key.insert(idFromName(factor.variable(i).name()));
+    }
+    if (__factors.exists(key)) {
+      GUM_ERROR(InvalidArgument, "A factor for (" << key << ") already exists.");
+    }
+    auto* p = new Potential< GUM_SCALAR >(factor);
+    __factors.insert(key, p);
+    return *p;
   }
 
 
@@ -415,12 +428,18 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void MarkovNet< GUM_SCALAR >::__clearFactors() {
-    GUM_ERROR(FatalError, "Not implemented yet");
+    for (const auto& c: __factors) {
+      delete c.second;
+    }
+    __factors.clear();
   }
 
   template < typename GUM_SCALAR >
   void MarkovNet< GUM_SCALAR >::__copyFactors(
      const MarkovNet< GUM_SCALAR >& source) {
-    GUM_ERROR(FatalError, "Not implemented yet");
+    __clearFactors();
+    for (const auto& factor: source.factors()) {
+      addFactor(*factor.second);
+    }
   }
 } /* namespace gum */
