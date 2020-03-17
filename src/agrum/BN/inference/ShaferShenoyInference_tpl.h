@@ -1229,6 +1229,10 @@ namespace gum {
     // => combine the messages
     __PotentialSet new_pot_list = __marginalizeOut(pot_list, del_vars, kept_vars);
 
+    /*
+      for the moment, remove this test: due to some optimizations, some
+      potentials might have all their cells greater than 1.
+        
     // remove all the potentials that are equal to ones (as probability
     // matrix multiplications are tensorial, such potentials are useless)
     for (auto iter = new_pot_list.beginSafe(); iter != new_pot_list.endSafe();
@@ -1249,6 +1253,7 @@ namespace gum {
         }
       }
     }
+    */
 
     // if there are still potentials in new_pot_list, combine them to
     // produce the message on the separator
