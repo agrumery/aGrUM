@@ -99,19 +99,11 @@ namespace gum {
 
     Size size = 1;
 
-    for (Sequence< const DiscreteVariable* >::const_iterator_safe iter =
-            seq1.beginSafe();
-         iter != seq1.endSafe();
-         ++iter) {
-      size *= (*iter)->domainSize();
-    }
-
-    for (Sequence< const DiscreteVariable* >::const_iterator_safe iter =
-            seq2.beginSafe();
-         iter != seq2.endSafe();
-         ++iter) {
-      if (!seq1.exists(*iter)) size *= (*iter)->domainSize();
-    }
+    for (const auto ptrVar : seq1)
+      size *= ptrVar->domainSize();
+   
+    for (const auto ptrVar : seq2)
+      if (!seq1.exists(ptrVar)) size *= ptrVar->domainSize();
 
     return size;
   }
@@ -122,7 +114,7 @@ namespace gum {
      TABLE< GUM_SCALAR >&                     container,
      const Set< const TABLE< GUM_SCALAR >* >& set) {
     TABLE< GUM_SCALAR >* res = combine(set);
-    container = *res;
+    container = std::move(*res);
     delete (res);
   }
 
@@ -139,37 +131,32 @@ namespace gum {
 
     // create a vector with all the tables to combine
     std::vector< const TABLE< GUM_SCALAR >* > tables(set.size());
+    const Size tabsize = tables.size();
 
     {
-      unsigned int i = 0;
-
-      for (typename Set< const TABLE< GUM_SCALAR >* >::const_iterator_safe iter =
-              set.beginSafe();
-           iter != set.endSafe();
-           ++iter, ++i) {
+      Size i = Size(0);
+      for (auto iter = set.cbegin(); iter != set.cend(); ++iter, ++i) {
         tables[i] = *iter;
       }
     }
 
     // create a vector indicating wether the elements in tables are freshly
     // created TABLE<GUM_SCALAR>* due to the combination of some TABLEs or if
-    // they
-    // were added by the user into the combination container
-    std::vector< bool > is_t_new(tables.size(), false);
+    // they were added by the user into the combination container
+    std::vector< bool > is_t_new(tabsize, false);
 
     // for each pair of tables (i,j), compute the size of the table that would
     // result from the addition of tables i and j and store the result into a
     // priorityQueue
-    std::pair< unsigned int, unsigned int > pair;
-
-    PriorityQueue< std::pair< unsigned int, unsigned int >, Size > queue;
-
-    for (unsigned int i = 0; i < tables.size(); ++i) {
+    std::pair< Size, Size > pair;
+    PriorityQueue< std::pair< Size, Size >, Size > queue;
+    
+    for (Size i = Size(0); i < tabsize; ++i) {
       pair.first = i;
       const Sequence< const DiscreteVariable* >& seq1 =
-         tables[i]->variablesSequence();
-
-      for (unsigned int j = i + 1; j < tables.size(); ++j) {
+        tables[i]->variablesSequence();
+      
+      for (Size j = i + 1; j < tabsize; ++j) {
         pair.second = j;
         queue.insert(pair, _combinedSize(seq1, tables[j]->variablesSequence()));
       }
@@ -177,41 +164,36 @@ namespace gum {
 
     // now parse the priority queue: the top element (i,j) gives the combination
     // to perform. When the result R has been computed, substitute i by R,
-    // remove
-    // table j and recompute all the priorities of all the pairs (R,k) still
-    // available.
-    for (unsigned int k = 1; k < tables.size(); ++k) {
+    // remove table j and recompute all the priorities of all the pairs (R,k)
+    // still available.
+    for (Size k = 1; k < tabsize; ++k) {
       // get the combination to perform and do it
       pair = queue.pop();
-      unsigned int ti = pair.first;
-      unsigned int tj = pair.second;
+      const Size ti = pair.first;
+      const Size tj = pair.second;
 
       TABLE< GUM_SCALAR >* result = _combine(*(tables[ti]), *(tables[tj]));
 
       // substitute tables[pair.first] by the result
-
       if (tables[ti] && is_t_new[ti]) delete tables[ti];
-
       if (tables[tj] && is_t_new[tj]) delete tables[tj];
 
       tables[ti] = result;
-
       is_t_new[ti] = true;
 
-      tables[tj] = 0;
+      tables[tj] = nullptr;
 
       // remove all the pairs involving tj in the priority queue
-      for (unsigned int ind = 0; ind < tj; ++ind) {
-        if (tables[ind]) {
+      for (Size ind = 0; ind < tj; ++ind) {
+        if (tables[ind] != nullptr) {
           pair.first = ind;
           queue.erase(pair);
         }
       }
 
       pair.first = tj;
-
-      for (unsigned int ind = tj + 1; ind < tables.size(); ++ind) {
-        if (tables[ind]) {
+      for (Size ind = tj + 1; ind < tabsize; ++ind) {
+        if (tables[ind] != nullptr) {
           pair.second = ind;
           queue.erase(pair);
         }
@@ -224,8 +206,8 @@ namespace gum {
         pair.second = ti;
         Size newsize;
 
-        for (unsigned int ind = 0; ind < ti; ++ind) {
-          if (tables[ind]) {
+        for (Size ind = 0; ind < ti; ++ind) {
+          if (tables[ind] != nullptr) {
             pair.first = ind;
             newsize = _combinedSize(seq1, tables[ind]->variablesSequence());
             queue.setPriority(pair, newsize);
@@ -234,8 +216,8 @@ namespace gum {
 
         pair.first = ti;
 
-        for (unsigned int ind = ti + 1; ind < tables.size(); ++ind) {
-          if (tables[ind]) {
+        for (Size ind = ti + 1; ind < tabsize; ++ind) {
+          if (tables[ind] != nullptr) {
             pair.second = ind;
             newsize = _combinedSize(seq1, tables[ind]->variablesSequence());
             queue.setPriority(pair, newsize);
@@ -246,9 +228,8 @@ namespace gum {
 
     // here, there remains only one nonzero pointer in tables:
     // the result of our combination
-    unsigned int k = 0;
-
-    while (!tables[k])
+    Size k = 0;
+    while (tables[k] == nullptr)
       ++k;
 
     return const_cast< TABLE< GUM_SCALAR >* >(tables[k]);
@@ -265,35 +246,31 @@ namespace gum {
 
     // create a vector with all the tables to combine
     std::vector< const Sequence< const DiscreteVariable* >* > tables(set.size());
-
+    const Size tabsize = tables.size();
+    
     {
-      unsigned int i = 0;
-
-      for (typename Set< const Sequence< const DiscreteVariable* >* >::
-              const_iterator_safe iter = set.beginSafe();
-           iter != set.endSafe();
-           ++iter, ++i) {
+      Size i = Size(0);
+      for (auto iter = set.cbegin(); iter != set.cend(); ++iter, ++i) {
         tables[i] = *iter;
       }
     }
 
     // create a vector indicating wether the elements in tables are freshly
     // created Sequence<const DiscreteVariable *>* due to the combination of
-    // some
-    // TABLEs or if they were added by the user into the combination container
-    std::vector< bool > is_t_new(tables.size(), false);
+    // some TABLEs or if they were added by the user into the combination
+    // container
+    std::vector< bool > is_t_new(tabsize, false);
 
     // for each pair of tables (i,j), compute the size of the table that would
     // result from the addition of tables i and j and store the result into a
     // priorityQueue
-    std::pair< unsigned int, unsigned int > pair;
+    std::pair< Size, Size > pair;
+    PriorityQueue< std::pair< Size, Size >, Size > queue;
 
-    PriorityQueue< std::pair< unsigned int, unsigned int >, Size > queue;
-
-    for (unsigned int i = 0; i < tables.size(); ++i) {
+    for (Size i = Size(0); i < tabsize; ++i) {
       pair.first = i;
 
-      for (unsigned int j = i + 1; j < tables.size(); ++j) {
+      for (Size j = i + 1; j < tabsize; ++j) {
         pair.second = j;
         queue.insert(pair, _combinedSize(*(tables[i]), *(tables[j])));
       }
@@ -301,14 +278,13 @@ namespace gum {
 
     // now parse the priority queue: the top element (i,j) gives the combination
     // to perform. When the result R has been computed, substitute i by R,
-    // remove
-    // table j and recompute all the priorities of all the pairs (R,k) still
-    // available.
-    for (unsigned int k = 1; k < tables.size(); ++k) {
+    // remove table j and recompute all the priorities of all the pairs (R,k)
+    // still available.
+    for (Size k = 1; k < tabsize; ++k) {
       // get the combination to perform and do it
       pair = queue.pop();
-      unsigned int ti = pair.first;
-      unsigned int tj = pair.second;
+      const Size ti = pair.first;
+      const Size tj = pair.second;
 
       // compute the result
       Sequence< const DiscreteVariable* >* new_seq =
@@ -318,41 +294,32 @@ namespace gum {
 
       Size new_size = 1;
 
-      for (Sequence< const DiscreteVariable* >::const_iterator_safe iter =
-              seq1.beginSafe();
-           iter != seq1.endSafe();
-           ++iter) {
-        new_size *= (*iter)->domainSize();
-        new_seq->insert(*iter);
+      for (const auto ptrVar : seq1) {
+        new_size *= ptrVar->domainSize();
+        new_seq->insert(ptrVar);
       }
 
-      for (Sequence< const DiscreteVariable* >::const_iterator_safe iter =
-              seq2.beginSafe();
-           iter != seq2.endSafe();
-           ++iter) {
-        if (!seq1.exists(*iter)) {
-          new_size *= (*iter)->domainSize();
-          new_seq->insert(*iter);
+      for (const auto ptrVar : seq2) {
+        if (!seq1.exists(ptrVar)) {
+          new_size *= ptrVar->domainSize();
+          new_seq->insert(ptrVar);
         }
       }
 
       result += new_size;
 
       // substitute tables[pair.first] by the result
-
       if (tables[ti] && is_t_new[ti]) delete tables[ti];
-
       if (tables[tj] && is_t_new[tj]) delete tables[tj];
-
+      
       tables[ti] = new_seq;
-
       is_t_new[ti] = true;
 
-      tables[tj] = 0;
+      tables[tj] = nullptr;
 
       // remove all the pairs involving tj in the priority queue
-      for (unsigned int ind = 0; ind < tj; ++ind) {
-        if (tables[ind]) {
+      for (Size ind = 0; ind < tj; ++ind) {
+        if (tables[ind] != nullptr) {
           pair.first = ind;
           queue.erase(pair);
         }
@@ -360,8 +327,8 @@ namespace gum {
 
       pair.first = tj;
 
-      for (unsigned int ind = tj + 1; ind < tables.size(); ++ind) {
-        if (tables[ind]) {
+      for (Size ind = tj + 1; ind < tabsize; ++ind) {
+        if (tables[ind] != nullptr) {
           pair.second = ind;
           queue.erase(pair);
         }
@@ -372,8 +339,8 @@ namespace gum {
         pair.second = ti;
         Size newsize;
 
-        for (unsigned int ind = 0; ind < ti; ++ind) {
-          if (tables[ind]) {
+        for (Size ind = 0; ind < ti; ++ind) {
+          if (tables[ind] != nullptr) {
             pair.first = ind;
             newsize = _combinedSize(*new_seq, *(tables[ind]));
             queue.setPriority(pair, newsize);
@@ -382,8 +349,8 @@ namespace gum {
 
         pair.first = ti;
 
-        for (unsigned int ind = ti + 1; ind < tables.size(); ++ind) {
-          if (tables[ind]) {
+        for (Size ind = ti + 1; ind < tabsize; ++ind) {
+          if (tables[ind] != nullptr) {
             pair.second = ind;
             newsize = _combinedSize(*new_seq, *(tables[ind]));
             queue.setPriority(pair, newsize);
@@ -394,9 +361,8 @@ namespace gum {
 
     // here, there remains only one nonzero pointer in tables:
     // the result of our combination
-    unsigned int k = 0;
-
-    while (!tables[k])
+    Size k = 0;
+    while (tables[k] == nullptr)
       ++k;
 
     delete tables[k];
@@ -414,11 +380,8 @@ namespace gum {
     // create the set of sets of discrete variables involved in the tables
     Set< const Sequence< const DiscreteVariable* >* > var_set(set.size());
 
-    for (typename Set< const TABLE< GUM_SCALAR >* >::const_iterator_safe iter =
-            set.beginSafe();
-         iter != set.endSafe();
-         ++iter) {
-      var_set << &((*iter)->variablesSequence());
+    for (const auto ptrTab : set) {
+      var_set << &(ptrTab->variablesSequence());
     }
 
     return nbOperations(var_set);
@@ -433,31 +396,24 @@ namespace gum {
     if (set.size() < 2) return std::pair< long, long >(0, 0);
 
     Size max_memory = 0;
-
     Size current_memory = 0;
 
     // create a vector with all the tables to combine
     std::vector< const Sequence< const DiscreteVariable* >* > tables(set.size());
-
+    const Size tabsize = tables.size();
+    
     std::vector< Size > table_size(set.size());
 
     {
-      std::size_t i = std::size_t(0);
+      Size i = Size(0);
 
-      for (typename Set< const Sequence< const DiscreteVariable* >* >::
-              const_iterator_safe iter = set.beginSafe();
-           iter != set.endSafe();
-           ++iter, ++i) {
+      for (auto iter = set.cbegin(); iter != set.cend(); ++iter, ++i) {
         const Sequence< const DiscreteVariable* >* vars = *iter;
         tables[i] = vars;
 
-        Size size = 0;
-
-        for (typename Sequence< const DiscreteVariable* >::const_iterator_safe
-                iter2 = vars->beginSafe();
-             iter2 != vars->endSafe();
-             ++iter2) {
-          size *= (*iter2)->domainSize();
+        Size size = Size(1);
+        for (const auto ptrVar : *vars) {
+          size *= ptrVar->domainSize();
         }
 
         table_size[i] = size;
@@ -466,21 +422,21 @@ namespace gum {
 
     // create a vector indicating wether the elements in tables are freshly
     // created Sequence<const DiscreteVariable *>* due to the combination of
-    // some
-    // TABLEs or if they were added by the user into the combination container
+    // some TABLEs or if they were added by the user into the combination
+    // container
     std::vector< bool > is_t_new(tables.size(), false);
 
     // for each pair of tables (i,j), compute the size of the table that would
     // result from the addition of tables i and j and store the result into a
     // priorityQueue
-    std::pair< unsigned int, unsigned int > pair;
+    std::pair< Size, Size > pair;
 
-    PriorityQueue< std::pair< unsigned int, unsigned int >, Size > queue;
+    PriorityQueue< std::pair< Size, Size >, Size > queue;
 
-    for (unsigned int i = 0; i < tables.size(); ++i) {
+    for (Size i = Size(0); i < tabsize; ++i) {
       pair.first = i;
 
-      for (unsigned int j = i + 1; j < tables.size(); ++j) {
+      for (Size j = i + 1; j < tabsize; ++j) {
         pair.second = j;
         queue.insert(pair, _combinedSize(*(tables[i]), *(tables[j])));
       }
@@ -488,50 +444,43 @@ namespace gum {
 
     // now parse the priority queue: the top element (i,j) gives the combination
     // to perform. When the result R has been computed, substitute i by R,
-    // remove
-    // table j and recompute all the priorities of all the pairs (R,k) still
-    // available.
-    for (unsigned int k = 1; k < tables.size(); ++k) {
+    // remove table j and recompute all the priorities of all the pairs (R,k)
+    // still available.
+    for (Size k = 1; k < tabsize; ++k) {
       // get the combination to perform and do it
       pair = queue.pop();
-      unsigned int ti = pair.first;
-      unsigned int tj = pair.second;
+      const Size ti = pair.first;
+      const Size tj = pair.second;
 
       // compute the result
       Sequence< const DiscreteVariable* >* new_seq =
-         new Sequence< const DiscreteVariable* >;
+        new Sequence< const DiscreteVariable* >;
       const Sequence< const DiscreteVariable* >& seq1 = *(tables[ti]);
       const Sequence< const DiscreteVariable* >& seq2 = *(tables[tj]);
 
-      Size new_size = 1;
-
-      for (Sequence< const DiscreteVariable* >::const_iterator_safe iter =
-              seq1.beginSafe();
-           iter != seq1.endSafe();
-           ++iter) {
-        if (std::numeric_limits< Size >::max() / (*iter)->domainSize()
+      Size new_size = Size(1);
+    
+      for (const auto ptrVar : seq1) {
+        if (std::numeric_limits< Size >::max() / ptrVar->domainSize()
             < new_size) {
           GUM_ERROR(OutOfBounds, "memory usage out of long int range");
         }
 
-        new_size *= (*iter)->domainSize();
+        new_size *= ptrVar->domainSize();
 
-        new_seq->insert(*iter);
+        new_seq->insert(ptrVar);
       }
 
-      for (Sequence< const DiscreteVariable* >::const_iterator_safe iter =
-              seq2.beginSafe();
-           iter != seq2.endSafe();
-           ++iter) {
-        if (!seq1.exists(*iter)) {
-          if (std::numeric_limits< Size >::max() / (*iter)->domainSize()
+      for (const auto ptrVar : seq2) {
+        if (!seq1.exists(ptrVar)) {
+          if (std::numeric_limits< Size >::max() / ptrVar->domainSize()
               < new_size) {
             GUM_ERROR(OutOfBounds, "memory usage out of long int range");
           }
 
-          new_size *= (*iter)->domainSize();
+          new_size *= ptrVar->domainSize();
 
-          new_seq->insert(*iter);
+          new_seq->insert(ptrVar);
         }
       }
 
@@ -555,15 +504,14 @@ namespace gum {
       }
 
       tables[ti] = new_seq;
-
       table_size[ti] = new_size;
       is_t_new[ti] = true;
-      tables[tj] = 0;
+      
+      tables[tj] = nullptr;
 
       // remove all the pairs involving tj in the priority queue
-
-      for (unsigned int ind = 0; ind < tj; ++ind) {
-        if (tables[ind]) {
+      for (Size ind = 0; ind < tj; ++ind) {
+        if (tables[ind] != nullptr) {
           pair.first = ind;
           queue.erase(pair);
         }
@@ -571,8 +519,8 @@ namespace gum {
 
       pair.first = tj;
 
-      for (unsigned int ind = tj + 1; ind < tables.size(); ++ind) {
-        if (tables[ind]) {
+      for (Size ind = tj + 1; ind < tabsize; ++ind) {
+        if (tables[ind] != nullptr) {
           pair.second = ind;
           queue.erase(pair);
         }
@@ -583,8 +531,8 @@ namespace gum {
         pair.second = ti;
         Size newsize;
 
-        for (unsigned int ind = 0; ind < ti; ++ind) {
-          if (tables[ind]) {
+        for (Size ind = Size(0); ind < ti; ++ind) {
+          if (tables[ind] != nullptr) {
             pair.first = ind;
             newsize = _combinedSize(*new_seq, *(tables[ind]));
             queue.setPriority(pair, newsize);
@@ -593,8 +541,8 @@ namespace gum {
 
         pair.first = ti;
 
-        for (unsigned int ind = ti + 1; ind < tables.size(); ++ind) {
-          if (tables[ind]) {
+        for (Size ind = ti + 1; ind < tabsize; ++ind) {
+          if (tables[ind] != nullptr) {
             pair.second = ind;
             newsize = _combinedSize(*new_seq, *(tables[ind]));
             queue.setPriority(pair, newsize);
@@ -605,8 +553,7 @@ namespace gum {
 
     // here, there remains only one nonzero pointer in tables:
     // the result of our combination
-    unsigned int k = 0;
-
+    Size k = Size(0);
     while (!tables[k])
       ++k;
 
@@ -626,11 +573,8 @@ namespace gum {
     // create the set of sets of discrete variables involved in the tables
     Set< const Sequence< const DiscreteVariable* >* > var_set(set.size());
 
-    for (typename Set< const TABLE< GUM_SCALAR >* >::const_iterator_safe iter =
-            set.beginSafe();
-         iter != set.endSafe();
-         ++iter) {
-      var_set << &((*iter)->variablesSequence());
+    for (const auto ptrTab : set) {
+      var_set << &(ptrTab->variablesSequence());
     }
 
     return memoryUsage(var_set);

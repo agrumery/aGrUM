@@ -969,6 +969,78 @@ namespace gum_tests {
       for (gum::Idx i = 0; i < vars.size(); ++i)
         delete vars[i];
     }
+
+
+    static gum::Potential< double >*
+       mySum(const gum::Potential< double >&                 table,
+             const gum::Set< const gum::DiscreteVariable* >& del_vars) {
+      return new gum::Potential< double >(table.margSumOut(del_vars));
+    }
+
+    void test_MultiDimSumProjection() {
+      std::vector< gum::LabelizedVariable* > vars(10);
+
+      for (gum::Idx i = 0; i < 10; ++i) {
+        std::stringstream str;
+        str << "x" << i;
+        std::string s = str.str();
+        vars[i] = new gum::LabelizedVariable(s, s, 3);
+      }
+
+      gum::Potential< double > t1;
+
+      t1 << *(vars[0]) << *(vars[1]) << *(vars[2]) << *(vars[3]) << *(vars[4])
+         << *(vars[5]) << *(vars[6]) << *(vars[7]) << *(vars[8]) << *(vars[9]);
+      randomInitP(t1);
+      gum::Set< const gum::DiscreteVariable* > proj_set;
+      proj_set.insert(vars[2]);
+      proj_set.insert(vars[3]);
+      proj_set.insert(vars[6]);
+      proj_set.insert(vars[7]);
+      proj_set.insert(vars[4]);
+      proj_set.insert(vars[5]);
+      proj_set.insert(vars[8]);
+      gum::Set< const gum::DiscreteVariable* > del_vars;
+      del_vars.insert(vars[0]);
+      del_vars.insert(vars[9]);
+      del_vars.insert(vars[1]);
+      gum::MultiDimProjection< double, gum::Potential > Proj(mySum);
+      {
+        auto t2 = t1.margSumOut(del_vars);
+        auto t3 = Proj.project(t1, del_vars);
+        TS_ASSERT(t2 == *t3);
+        delete t3;
+      }
+      {
+        auto t2 = t1.margSumOut(proj_set);
+        auto t3 = Proj.project(t1, proj_set);
+        TS_ASSERT(t2 == *t3);
+        delete (t3);
+      }
+
+      proj_set.insert(vars[0]);
+      proj_set.insert(vars[9]);
+      proj_set.insert(vars[1]);
+      gum::Potential< double >* t5 = Proj.project(t1, proj_set);
+      {
+        auto t2 = t1.margSumOut(proj_set);
+        TS_ASSERT(t2 == *t5);
+       
+         gum::Instantiation I5(*t5);
+         TS_ASSERT(1.0 == (*t5)[I5]);
+      }
+      delete t5;
+
+      TS_ASSERT(Proj.nbOperations(t1, proj_set) == 59049);
+      TS_ASSERT(Proj.nbOperations(t1.variablesSequence(), proj_set) == 59049);
+
+      std::pair< long, long > yyy = Proj.memoryUsage(t1, del_vars);
+      TS_ASSERT(yyy.first == 2187);
+      yyy = Proj.memoryUsage(t1.variablesSequence(), del_vars);
+
+      for (gum::Idx i = 0; i < vars.size(); ++i)
+        delete vars[i];
+    }
   };
 
 } /* namespace gum_tests */

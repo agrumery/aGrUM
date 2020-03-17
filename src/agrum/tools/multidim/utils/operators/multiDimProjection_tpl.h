@@ -83,7 +83,7 @@ namespace gum {
      const TABLE< GUM_SCALAR >&               table,
      const Set< const TABLE< GUM_SCALAR >* >& del_vars) {
     TABLE< GUM_SCALAR >* res = project(table, del_vars);
-    container = *res;
+    container = std::move(*res);
     delete res;
   }
 
