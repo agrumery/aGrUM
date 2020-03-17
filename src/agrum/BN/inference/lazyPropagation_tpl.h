@@ -1315,7 +1315,11 @@ namespace gum {
     const Arc arc(from_id, to_id);
     for (auto iter = new_pot_list.beginSafe(); iter != new_pot_list.endSafe();
          ++iter) {
-      const auto pot = *iter;
+      const auto pot = *iter; 
+      /*
+        for the moment, remove this test: due to some optimizations, some
+        potentials might have all their cells greater than 1.
+        
       if (pot->variablesSequence().size() == 1) {
         bool is_all_ones = true;
         for (Instantiation inst(*pot); !inst.end(); ++inst) {
@@ -1330,6 +1334,7 @@ namespace gum {
           continue;
         }
       }
+      */
 
       if (!pot_list.exists(pot)) {
         if (!__created_potentials.exists(arc))
