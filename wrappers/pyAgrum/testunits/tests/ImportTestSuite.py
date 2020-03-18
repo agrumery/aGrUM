@@ -37,17 +37,20 @@ class TestImport(pyAgrumTestCase):
       import pyAgrum.lib.bn2scores
       import pyAgrum.lib.bn_vs_bn
 
-      if matplotlibFound:
-        if ipythonFound:
-          import pyAgrum.lib.ipython
-          import pyAgrum.lib.notebook
-        else:
-          self.warn(
-              "ipython is needed for modules lib.ipython and lib.notebook")
+      if matplotlibFound and ipythonFound:
+        import pyAgrum.lib.ipython
+        import pyAgrum.lib.notebook
+      else:
+        self.warn(
+            "ipython and matplotlib are needed for modules lib.ipython and lib.notebook")
 
+      if matplotlibFound:
         import pyAgrum.lib.bn2graph
         import pyAgrum.lib.bn2roc
         import pyAgrum.lib.dynamicBN
+      else:
+        self.warn(
+            "matplotlib is needed for modules lib.ipython and lib.notebook")
 
       if sklearnFound and sys.version_info >= (3,6):
         import pyAgrum.lib.classifier
