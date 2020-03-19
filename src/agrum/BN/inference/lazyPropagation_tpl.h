@@ -1309,36 +1309,51 @@ namespace gum {
     // => combine the messages
     __PotentialSet new_pot_list = __marginalizeOut(pot_list, del_vars, kept_vars);
 
-    // keep track of the newly created potentials but remove first all the
-    // potentials that are equal to ones (as probability matrix multiplications
-    // are tensorial, such potentials are useless)
+    // keep track of the newly created potentials but first replace all the
+    // potentials whose values are all equal by constant potentials (nbrDim=0)
+    // with this very value (as probability matrix multiplications
+    // are tensorial, replacing the former potential by constants provides the
+    // same computation results but speeds-up these computations)
     const Arc arc(from_id, to_id);
+
+    if (!__created_potentials.exists(arc))
+      __created_potentials.insert(arc, __PotentialSet());
+    
     for (auto iter = new_pot_list.beginSafe(); iter != new_pot_list.endSafe();
          ++iter) {
-      const auto pot = *iter; 
+      const auto pot = *iter;
+
       /*
-        for the moment, remove this test: due to some optimizations, some
-        potentials might have all their cells greater than 1.
-        
       if (pot->variablesSequence().size() == 1) {
-        bool is_all_ones = true;
-        for (Instantiation inst(*pot); !inst.end(); ++inst) {
-          if (pot->get(inst) < __1_minus_epsilon) {
-            is_all_ones = false;
+        bool is_constant = true;
+        Instantiation inst(*pot);
+        GUM_SCALAR first_val = pot->get(inst);
+        
+        for (++inst; !inst.end(); ++inst) {
+          if (pot->get(inst) != first_val) {
+            is_constant = false;
             break;
           }
         }
-        if (is_all_ones) {
+        
+        if (is_constant) {
+          // if pot is not a message sent by a separator or a potential stored
+          // into the clique, we can remove it since it is now useless
           if (!pot_list.exists(pot)) delete pot;
           new_pot_list.erase(iter);
+
+          // add the new constant potential to new_pot_list
+          const auto new_pot = new Potential<GUM_SCALAR>;
+          Instantiation new_inst(new_pot);
+          new_pot->set(new_inst, first_val);
+          new_pot_list.insert (new_pot);
+          __created_potentials[arc].insert(new_pot);
           continue;
         }
       }
       */
 
       if (!pot_list.exists(pot)) {
-        if (!__created_potentials.exists(arc))
-          __created_potentials.insert(arc, __PotentialSet());
         __created_potentials[arc].insert(pot);
       }
     }
@@ -1714,6 +1729,7 @@ namespace gum {
       GUM_SCALAR               sum = 0;
       for (Instantiation iter(*tmp); !iter.end(); ++iter)
         sum += tmp->get(iter);
+
       prob_ev *= sum;
       delete tmp;
     }

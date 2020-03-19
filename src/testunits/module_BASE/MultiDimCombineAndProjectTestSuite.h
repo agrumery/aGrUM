@@ -254,6 +254,98 @@ namespace gum_tests {
       }
     }
 
+
+    void testConstants () {
+      std::vector< gum::LabelizedVariable* > vars(3);
+
+      for (gum::Idx i = 0; i < 3; ++i) {
+        std::stringstream str;
+        str << "x" << i;
+        std::string s = str.str();
+        vars[i] = new gum::LabelizedVariable(s, s, 4);
+      }
+
+      gum::Potential< float > t1, t2, t3;
+      t1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
+      randomInitP(t1);
+
+      gum::Instantiation I2(t2), I3(t3);
+      t2.set(I2, 3.0);
+      t3.set(I3, 5.0);
+
+      gum::MultiDimCombineAndProjectDefault< float, gum::Potential > projcomb(
+         multPot, mySum);
+
+      gum::Set< const gum::Potential< float >* > to_comb;
+      to_comb << &t1 << &t2 << &t3;
+      gum::Set< const gum::DiscreteVariable* > del_vars;
+      del_vars << vars[0] << vars[2];
+
+      {
+        gum::Set< const gum::Potential< float >* > res =
+          projcomb.combineAndProject(to_comb, del_vars);
+        TS_ASSERT(res.size() == 3);
+        
+        int nb_empty = 0;
+        float prod = 1;
+        for (const auto ptrPot : res) {
+          if (ptrPot->nbrDim() == 0) {
+            gum::Instantiation I(*ptrPot);
+            prod *= (*ptrPot)[I];
+            nb_empty ++;
+          }
+        }
+
+        TS_ASSERT(nb_empty == 2);
+        TS_ASSERT(prod = 15.0);
+      }
+
+      del_vars << vars[1];
+      {
+        gum::Set< const gum::Potential< float >* > res =
+          projcomb.combineAndProject(to_comb, del_vars);
+        TS_ASSERT(res.size() == 3);
+        
+        int nb_empty = 0;
+        float prod = 1;
+        for (const auto ptrPot : res) {
+          if (ptrPot->nbrDim() == 0) {
+            gum::Instantiation I(*ptrPot);
+            prod *= (*ptrPot)[I];
+            nb_empty ++;
+          }
+        }
+
+        TS_ASSERT(nb_empty == 3);
+        TS_ASSERT_DELTA(prod, 15.0, 1e-6);
+      }
+
+
+      to_comb.clear ();
+      to_comb << &t2 << &t3;
+      {
+        gum::Set< const gum::Potential< float >* > res =
+          projcomb.combineAndProject(to_comb, del_vars);
+        TS_ASSERT(res.size() == 2);
+        
+        int nb_empty = 0;
+        float prod = 1;
+        for (const auto ptrPot : res) {
+          if (ptrPot->nbrDim() == 0) {
+            gum::Instantiation I(*ptrPot);
+            prod *= (*ptrPot)[I];
+            nb_empty ++;
+          }
+        }
+
+        TS_ASSERT(nb_empty == 2);
+        TS_ASSERT_DELTA(prod, 15.0, 1e-6);
+      }
+
+    }
+
+
+    
     private:
     // =========================================================================
     /// initialize randomly a table
