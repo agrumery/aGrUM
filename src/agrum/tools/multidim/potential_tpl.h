@@ -376,7 +376,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >&
-               Potential< GUM_SCALAR >::normalizeAsCPT() const {
+               Potential< GUM_SCALAR >::normalizeAsCPT(const Idx& varId) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->_content)->empty()) {
       if (this->_empty_value != static_cast< GUM_SCALAR >(0)) {
         this->_empty_value = static_cast< GUM_SCALAR >(1.0);
@@ -385,8 +385,12 @@ namespace gum {
                   "Normalization for a potential that sum to 0 in " << *this);
       }
     } else {
+      if (varId>=this->nbrDim()) {
+        GUM_ERROR(FatalError,
+                  varId <<" is not a position for " << *this);
+      }
       Instantiation inst(*this);
-      const auto&   v = this->variable(0);
+      const auto&   v = this->variable(varId);
 
       for (inst.setFirst(); !inst.end(); inst.incNotVar(v)) {
         GUM_SCALAR s = (GUM_SCALAR)0.0;

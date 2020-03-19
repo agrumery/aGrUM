@@ -327,10 +327,13 @@ namespace gum {
     GUM_SCALAR KL(const Potential< GUM_SCALAR >& p) const;
 
     /**
-     * @brief normalisation of this as a CPT
-     * @throw FatalError it some distribution sums to 0
+     * @brief normalisation of this as a CPT for the variable varId
+     *
+     * If the Potential is empty, the argument is not used.
+     *
+     * @throw FatalError it some distribution sums to 0, or if varId>=nbrDim()
      */
-    const Potential< GUM_SCALAR >& normalizeAsCPT() const;
+    const Potential< GUM_SCALAR >& normalizeAsCPT(const Idx& varId=0) const;
 
     /**
      * @brief multiply (each value of) *this by v
