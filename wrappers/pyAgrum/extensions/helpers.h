@@ -241,7 +241,7 @@ namespace PyAgrumHelper {
 
   PyObject* PyListFromArcVect(const std::vector< gum::Arc >& arcseq) {
     PyObject* q = PyList_New(0);
-    for (auto arc : arcseq) {
+    for (const auto& arc : arcseq) {
       PyList_Append(q, Py_BuildValue("(i,i)", arc.tail(), arc.head()));
     }
     return q;
@@ -249,7 +249,7 @@ namespace PyAgrumHelper {
 
   PyObject* PySetFromArcSet(const gum::ArcSet& arcset) {
     PyObject* q = PySet_New(0);
-    for (auto arc : arcset) {
+    for (const auto& arc : arcset) {
       PySet_Add(q, Py_BuildValue("(i,i)", arc.tail(), arc.head()));
     }
     return q;
@@ -257,7 +257,7 @@ namespace PyAgrumHelper {
 
   PyObject* PySetFromEdgeSet(const gum::EdgeSet& edgeset) {
     PyObject* q = PySet_New(0);
-    for (auto edg : edgeset) {
+    for (const auto& edg : edgeset) {
       PySet_Add(q, Py_BuildValue("(i,i)", edg.first(), edg.second()));
     }
     return q;

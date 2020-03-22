@@ -46,7 +46,7 @@ namespace gum {
     __mutableMoralGraph->populateNodes(dag());
     // transform the arcs into edges
 
-    for (const auto arc: arcs())
+    for (const auto& arc: arcs())
       __mutableMoralGraph->addEdge(arc.first(), arc.second());
 
     //}

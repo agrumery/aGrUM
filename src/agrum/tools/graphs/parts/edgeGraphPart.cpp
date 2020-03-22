@@ -109,7 +109,7 @@ namespace gum {
     bool              first = true;
     s << "{";
 
-    for (const auto edge: __edges) {
+    for (const auto& edge: __edges) {
       if (first)
         first = false;
       else

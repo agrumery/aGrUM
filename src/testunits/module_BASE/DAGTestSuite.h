@@ -270,7 +270,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(arclist.size(), graph.sizeArcs());
       gum::Size arcCount = graph.sizeArcs();
 
-      for (const auto arc: arclist) {
+      for (const auto& arc: arclist) {
         graph.eraseArc(arc);
       }
 

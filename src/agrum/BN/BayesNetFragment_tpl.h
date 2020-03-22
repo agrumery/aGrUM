@@ -382,7 +382,7 @@ namespace gum {
     for (const auto nod: nodes()) {
       res.add(variable(nod), nod);
     }
-    for (const auto arc: dag().arcs()) {
+    for (const auto& arc: dag().arcs()) {
       res.addArc(arc.tail(), arc.head());
     }
     for (const auto nod: nodes()) {

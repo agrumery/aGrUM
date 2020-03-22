@@ -264,7 +264,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(edgeset.size(), graph.sizeEdges());
       gum::Size edgeCount = graph.sizeEdges();
 
-      for (const auto edge: edgeset)
+      for (const auto& edge: edgeset)
         graph.eraseEdge(edge);
 
       TS_ASSERT(graph.emptyEdges());

@@ -849,7 +849,7 @@ namespace gum {
         }
 
         // and add the edges of tmp_junction_tree to __junction_tree
-        for (const auto edge: tmp_junction_tree.edges())
+        for (const auto& edge: tmp_junction_tree.edges())
           __junction_tree.addEdge(tmp2global_junction_tree[edge.first()],
                                   tmp2global_junction_tree[edge.second()]);
 

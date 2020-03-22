@@ -287,7 +287,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(arclist.size(), graph.sizeArcs());
       gum::Size arcCount = graph.sizeArcs();
 
-      for (const auto arc: arclist)
+      for (const auto& arc: arclist)
         graph.eraseArc(arc);
 
       TS_ASSERT(graph.emptyArcs());
@@ -302,7 +302,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(edgeset.size(), graph.sizeEdges());
       gum::Size edgeCount = graph.sizeEdges();
 
-      for (const auto edge: edgeset)
+      for (const auto& edge: edgeset)
         graph.eraseEdge(edge);
 
       TS_ASSERT(graph.emptyEdges());

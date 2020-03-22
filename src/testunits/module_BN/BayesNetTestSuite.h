@@ -356,7 +356,7 @@ namespace gum_tests {
 
       cpt = (gum::Size)0;
 
-      for (const auto arc: bn.arcs()) {
+      for (const auto& arc: bn.arcs()) {
         cpt++;
       }
 

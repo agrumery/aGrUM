@@ -318,7 +318,7 @@ namespace gum_tests {
 
       count = 0;
 
-      for (const auto arc: frag.arcs()) {
+      for (const auto& arc: frag.arcs()) {
         GUM_UNUSED(arc);
         count++;
       }
@@ -381,7 +381,7 @@ namespace gum_tests {
 
       count = 0;
 
-      for (const auto arc: frag.arcs()) {
+      for (const auto& arc: frag.arcs()) {
         GUM_UNUSED(arc);
         count++;
       }

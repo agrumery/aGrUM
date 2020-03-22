@@ -46,7 +46,7 @@ namespace gum {
              node, addNodeWithLabel(const_cast< LabelData& >(source.label(node))));
         }
 
-        for (const auto edge: source.code().codes)
+        for (const auto& edge: source.code().codes)
           addArc(node_map[edge->i],
                  node_map[edge->j],
                  const_cast< LabelData& >(
@@ -87,7 +87,7 @@ namespace gum {
         std::stringstream sBuff;
         sBuff << "digraph " << name << " {\n";
 
-        for (const auto arc: arcs()) {
+        for (const auto& arc: arcs()) {
           sBuff << label(arc.tail()).id << " -> ";
           sBuff << label(arc.head()).id << ";\n";
         }

@@ -273,7 +273,7 @@ namespace gum {
 
     stream << "\n\nlist of edges:\n";
 
-    for (const auto edge: edges())
+    for (const auto& edge: edges())
       stream << edge << "  ";
 
     return stream.str();
@@ -321,7 +321,7 @@ namespace gum {
     stream << std::endl;
 
     // separator as nodes
-    for (auto edge: edges()) {
+    for (const auto& edge: edges()) {
       stream << "  \""
              << expandSeparator(edge.first(),
                                 clique(edge.first()),
@@ -336,7 +336,7 @@ namespace gum {
     stream << std::endl;
 
     // edges now as c1--sep--c2
-    for (auto edge: edges())
+    for (const auto& edge: edges())
       stream << "  \"" << expandClique(edge.first(), clique(edge.first()))
              << "\"--\""
              << expandSeparator(edge.first(),

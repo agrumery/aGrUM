@@ -141,7 +141,7 @@ namespace gum_tests {
 
       cpt = (gum::Size)0;
 
-      for (const auto arc: mn.edges()) {
+      for (const auto& arc: mn.edges()) {
         cpt++;
       }
 
