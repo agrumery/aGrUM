@@ -1,5 +1,20 @@
 # aGrUM Changelog
 
+## Changelog for 0.17.2
+
+* aGrUM
+  * fix a bug in graphChangeGeneratorOnSubDiGraph (thanks @yurivict for the issue)
+  * fix a bug in LazyPropagation due to a (rare) improper optimization
+  * improve projection and combination codes for `MultiDim` hierarchy
+  * reorganization of source codes and internal structure
+  * refreshing a bit the c++ examples
+  * preliminary works on undirected graphical models
+
+* pyAgrum
+  * forgotten description for pip packages
+  * typo for special char (':' for instance) with pydotplus
+
+
 ## Changelog for 0.17.1
 (really) minor patch
 
