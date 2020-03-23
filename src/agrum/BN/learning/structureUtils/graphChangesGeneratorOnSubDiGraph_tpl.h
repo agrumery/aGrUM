@@ -212,7 +212,7 @@ namespace gum {
     template < typename STRUCT_CONSTRAINT >
     INLINE void GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::addTail(
        NodeId node) {
-      _tail_nodes = node;
+      _tail_nodes.insert(node);
     }
 
     /// removes a tail node
