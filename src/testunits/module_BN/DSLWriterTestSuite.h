@@ -85,13 +85,6 @@ namespace gum_tests {
       gum::DSLWriter< double > writer;
       std::string file = GET_RESSOURCES_PATH("outputs/DSLWriter_TestFile.txt");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
-
-      file = GET_RESSOURCES_PATH("outputs/DSLWriter_RO_TestFile.txt");
-
-      try {
-        writer.write(file, *bn);
-        // TS_ASSERT(false);
-      } catch (gum::IOError&) { TS_ASSERT(true); }
     }
 
     private:

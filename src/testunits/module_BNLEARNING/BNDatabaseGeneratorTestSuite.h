@@ -257,7 +257,7 @@ namespace gum_tests {
 
       std::vector< std::string > vOrder1 = {"S", "E", "T", "R", "A", "O"};
       TS_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(vOrder1));
-      std::string csvFileURL = GET_RESSOURCES_PATH("csv/survey_tmp1.csv");
+      std::string csvFileURL = GET_RESSOURCES_PATH("outputs/survey_tmp1.csv");
       bool        useLabels = true;
       bool        append = false;
       std::string csvSeparator = " ";
@@ -332,7 +332,7 @@ namespace gum_tests {
 
       std::vector< std::string > vOrder1 = {"S", "E", "T", "R", "A", "O"};
       TS_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(vOrder1));
-      std::string csvFileURL = GET_RESSOURCES_PATH("csv/survey_tmp2.csv");
+      std::string csvFileURL = GET_RESSOURCES_PATH("outputs/survey_tmp2.csv");
       bool        useLabels = false;
       bool        append = false;
       std::string csvSeparator = " ";

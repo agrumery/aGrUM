@@ -390,12 +390,12 @@ def retrieveAllDependence():
     fileList = []
     for filename in _DEFAULT_HEADERS:
         for object in retrieveDependence(filename).split(' '):
-            if (fileList.count(object) == 0):
+            if fileList.count(object) == 0:
                 fileList.append(object)
 
     for filename in _HEADERS:
         for object in retrieveDependence(filename).split(' '):
-            if (fileList.count(object) == 0):
+            if fileList.count(object) == 0:
                 fileList.append(object)
 
     finalList = ""
@@ -415,7 +415,7 @@ def retrieveDefaultDependence():
     fileList = []
     for filename in _DEFAULT_HEADERS:
         for object in retrieveDependence(filename).split(' '):
-            if (fileList.count(object) == 0):
+            if fileList.count(object) == 0:
                 fileList.append(object)
 
     finalList = ""
@@ -433,7 +433,8 @@ checkConf()
 checkHeaders()
 makefile = file(os.getcwd() + "/Makefile", 'w')
 dumpMakefile(makefile)
-print "Makefile generated."
+print("Makefile generated.")
+
 
 ################################################################################
 #                           Tests functions                                    #
@@ -443,34 +444,35 @@ def testMakefilOutput():
     s = ""
     for i in range(80):
         s += "#"
-    print s
-    print "Testing makefileOutput"
+    print(s)
+    print("Testing makefileOutput")
     try:
-        print makefileOutput("MyHeader.h")
-        print "Test 1: succes"
-    except Exception, e:
-        print "Test 1: failure  - %s" % e
+        print(makefileOutput("MyHeader.h"))
+        print("Test 1: succes")
+    except Exception as e:
+        print("Test 1: failure  - %s" % e)
 
     try:
-        print makefileOutput(123456)
-        print "Test 2: failure"
-    except:
-        print "Test 2: succes"
+        print(makefileOutput(123456))
+        print("Test 2: failure")
+    except Exception as e:
+        print("Test 2: succes")
     s = ""
     for i in range(80):
         s += "#"
-    print s
+    print(s)
+
 
 def testGetObjectFile():
-    print getObjectFileName('#include "plop.h"')
-    print checkBeginClassDef('#incklude aplzpeale')
-    print checkBeginClassDef(" class Plop : public CxxTest::TestSuite  ")
-    print retrieveDependence("MixedGraphTestSuite.h")
+    print(getObjectFileName('#include "plop.h"'))
+    print(checkBeginClassDef('#incklude aplzpeale'))
+    print(checkBeginClassDef(" class Plop : public CxxTest::TestSuite  "))
+    print(retrieveDependence("MixedGraphTestSuite.h"))
+
 
 def testDependeceretrieval():
-    print retrieveAllDependence()
-    print retrieveDefaultDependence()
-
+    print(retrieveAllDependence())
+    print(retrieveDefaultDependence())
 
 ################################################################################
 #                        Script execution in test mode                         #

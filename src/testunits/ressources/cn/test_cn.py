@@ -26,5 +26,5 @@ ie.setIterStop(1000)
 
 ie.makeInference_v3()
 
-print ie.dynamicExpMax("temp")
-print ie.dynamicExpMin("temp")
+print(ie.dynamicExpMax("temp"))
+print(ie.dynamicExpMin("temp"))

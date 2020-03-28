@@ -1082,16 +1082,16 @@ namespace gum_tests {
       gum::learning::BNDatabaseGenerator< double > genere(bn);
       genere.setRandomVarOrder();
       genere.drawSamples(2000);
-      genere.toCSV(GET_RESSOURCES_PATH("csv/bnlearner_dirichlet.csv"));
+      genere.toCSV(GET_RESSOURCES_PATH("outputs/bnlearner_dirichlet.csv"));
 
       auto bn2 = gum::BayesNet< double >::fastPrototype("A->B->C->D->E");
       gum::learning::BNDatabaseGenerator< double > genere2(bn2);
       genere2.drawSamples(100);
-      genere2.toCSV(GET_RESSOURCES_PATH("csv/bnlearner_database.csv"));
+      genere2.toCSV(GET_RESSOURCES_PATH("outputs/bnlearner_database.csv"));
 
       gum::learning::BNLearner< double > learner(
-         GET_RESSOURCES_PATH("csv/bnlearner_database.csv"), bn);
-      learner.useAprioriDirichlet(GET_RESSOURCES_PATH("csv/bnlearner_dirichlet.csv"),
+         GET_RESSOURCES_PATH("outputs/bnlearner_database.csv"), bn);
+      learner.useAprioriDirichlet(GET_RESSOURCES_PATH("outputs/bnlearner_dirichlet.csv"),
                                   10);
       learner.useScoreAIC();
 

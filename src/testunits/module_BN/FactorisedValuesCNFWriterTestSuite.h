@@ -98,13 +98,6 @@ namespace gum_tests {
       std::string                              file =
          GET_RESSOURCES_PATH("outputs/FactorisedValuesCNFWriter_TestFile.cnf");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
-
-      file = GET_RESSOURCES_PATH("outputs/FactorisedValuesCNFWriter_RO_TestFile.cnf");
-
-      try {
-        writer.write(file, *bn);
-        // TS_ASSERT(false);
-      } catch (gum::IOError&) { TS_ASSERT(true); }
     }
 
     void testWriter_string_With_Approximation() {

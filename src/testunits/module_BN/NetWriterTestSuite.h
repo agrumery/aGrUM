@@ -86,15 +86,8 @@ namespace gum_tests {
 
     void testWriter_string() {
       gum::NetWriter< double > writer;
-      std::string file = GET_RESSOURCES_PATH("net/NetWriter_TestFile.net");
+      std::string file = GET_RESSOURCES_PATH("outputs/NetWriter_TestFile.net");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
-
-      file = GET_RESSOURCES_PATH("net/NetWriter_RO_TestFile.net");
-
-      try {
-        writer.write(file, *bn);
-        // TS_ASSERT(false);
-      } catch (gum::IOError&) { TS_ASSERT(true); }
     }
 
     void test_isreadable() {
