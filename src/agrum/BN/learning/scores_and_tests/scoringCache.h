@@ -37,7 +37,7 @@
 #include <utility>
 
 #include <agrum/agrum.h>
-#include <agrum/BN/learning/scores_and_tests/idCondSet.h>
+#include <agrum/tools/stattests/idCondSet.h>
 
 namespace gum {
 

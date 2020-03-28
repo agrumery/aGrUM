@@ -24,7 +24,7 @@
 #include <cxxtest/testsuite_utils.h>
 #include <iostream>
 
-#include <agrum/BN/learning/scores_and_tests/idCondSet.h>
+#include <agrum/tools/stattests/idCondSet.h>
 
 namespace gum_tests {
 

@@ -28,7 +28,7 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#  include <agrum/BN/learning/scores_and_tests/idCondSet.h>
+#  include <agrum/tools/stattests/idCondSet.h>
 
 namespace gum {
 

@@ -43,7 +43,7 @@
 #include <agrum/tools/core/threadData.h>
 #include <agrum/tools/graphs/DAG.h>
 #include <agrum/tools/database/DBRowGeneratorParser.h>
-#include <agrum/BN/learning/scores_and_tests/idCondSet.h>
+#include <agrum/tools/stattests/idCondSet.h>
 
 
 namespace gum {

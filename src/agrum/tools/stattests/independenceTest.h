@@ -220,7 +220,7 @@ namespace gum {
       /// 1 / log(2)
       const double _1log2{M_LOG2E};
 
-      /// the expert knowledge a priori we add to the contongency tables
+      /// the expert knowledge a priori we add to the contingency tables
       Apriori< ALLOC >* _apriori{nullptr};
 
       /// the record counter used for the countings over discrete variables

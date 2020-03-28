@@ -35,7 +35,7 @@
 #include <agrum/tools/core/bijection.h>
 #include <agrum/BN/learning/aprioris/aprioriTypes.h>
 #include <agrum/tools/database/databaseTable.h>
-#include <agrum/BN/learning/scores_and_tests/idCondSet.h>
+#include <agrum/tools/stattests/idCondSet.h>
 
 namespace gum {
 
