@@ -180,7 +180,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(net->size(), (gum::Size)6);
       TS_ASSERT(net != nullptr);
       gum::DSLWriter< double > writer;
-      std::string file2 = GET_RESSOURCES_PATH("DSL/DSLWriter_TestFile3.txt");
+      std::string file2 = GET_RESSOURCES_PATH("outputs/DSLWriter_TestFile3.txt");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file2, *net));
 
       if (net) delete net;
@@ -199,7 +199,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(net->size(), (gum::Size)13);
       TS_ASSERT(net != nullptr);
       gum::DSLWriter< double > writer;
-      std::string file2 = GET_RESSOURCES_PATH("DSL/DSLWriter_Ling.txt");
+      std::string file2 = GET_RESSOURCES_PATH("outputs/DSLWriter_Ling.txt");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file2, *net));
 
       if (net) delete net;

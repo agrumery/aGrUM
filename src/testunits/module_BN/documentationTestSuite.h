@@ -336,7 +336,7 @@ namespace gum_tests {
       try {
         auto asia = gum::BayesNet< double >("Asia");
         // One implementation of the gum::BNReader class
-        std::string file = GET_RESSOURCES_PATH("asia.bif");
+        std::string file = GET_RESSOURCES_PATH("bif/asia.bif");
         auto        reader = gum::BIFReader< double >(&asia, file);
         try {
           reader.proceed();

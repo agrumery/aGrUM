@@ -599,7 +599,7 @@ namespace gum_tests {
       TS_ASSERT(frag.checkConsistency());
       TS_ASSERT_EQUALS(frag.size(), (gum::Size)6);
       TS_ASSERT_EQUALS(frag.sizeArcs(), (gum::Size)6);
-      str2file("test.dot", bn2.toDot());
+      str2file("outputs/test.dot", bn2.toDot());
 
       TS_ASSERT(bn2 == frag);
 

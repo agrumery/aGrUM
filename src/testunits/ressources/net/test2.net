@@ -1,0 +1,528 @@
+net
+{
+    node_size = (80 40);
+    HR_Desc = "";
+    HR_OOBN_CheckConsistency = "1";
+    HR_OOBN_FitExpand = "1";
+    HR_Zoom_ZoomFactor = "100";
+    HR_Groups_GroupColors = "";
+    HR_Groups_GroupNames = "";
+    HR_Groups_UserGroupsNo = "0";
+    HR_Color_Interface = "21";
+    HR_Color_Instance = "0";
+    HR_Color_Function = "4";
+    HR_Color_Utility = "36";
+    HR_Color_Decision = "17";
+    HR_Color_ContinuousChance = "48";
+    HR_Color_DiscreteChance = "16";
+    HR_Monitor_InitSD = "2";
+    HR_Monitor_Utility_Arrange = "0";
+    HR_Monitor_Mean_Variance = "1";
+    HR_Monitor_Chance_Utility = "1";
+    HR_Monitor_InitStates = "5";
+    HR_Monitor_OpenGraph = "0";
+    HR_Monitor_GraphPrecision = "100";
+    HR_Monitor_AutoUpdGraph = "0";
+    HR_Compile_MaxMinimalSeparators = "100000";
+    HR_Compile_ApproxEpsilon = "1.0E-5";
+    HR_Compile_Approximate = "0";
+    HR_Compile_SaveToMemory = "0";
+    HR_Compile_Compress = "0";
+    HR_Compile_TriangMethod = "0";
+    HR_Propagate_AutoNormal = "1";
+    HR_Propagate_AutoSum = "1";
+    HR_Propagate_Auto = "1";
+    HR_Font_Italic = "0";
+    HR_Font_Weight = "400";
+    HR_Font_Size = "-12";
+    HR_Font_Name = "Arial";
+    HR_Grid_GridShow = "0";
+    HR_Grid_GridSnap = "0";
+    HR_Grid_Y = "40";
+    HR_Grid_X = "40";
+}
+
+node Date_2
+{
+    label = "Date_2";
+    position = (991 151);
+    states = ("1.0" "2.0" "3.0" "4.0" "5.0" "6.0" "7.0" "8.0" "9.0" "10.0" "11.0" "12.0");
+    subtype = number;
+    state_values = (1 2 3 4 5 6 7 8 9 10 11 12);
+    HR_LinkMode = "[Systeme_7:0][Date_1:0][Contexte_3:0][Contexte_15:0][Contexte_6:0][Contexte_4:0][Contexte_1:0][Cause_3:0]";
+}
+
+node Variable_a_expliquer
+{
+    label = "Variable_a_expliquer";
+    position = (480 385);
+    states = ("B" "A");
+    HR_NodeSize = "(146, 46)";
+    HR_LinkMode = "[Systeme_8:0][Systeme_9:0][Environnement_3:0][Systeme_7:0][Systeme_17:0][Systeme_16:0][Systeme_14:0][Systeme_13:0][Systeme_11:0][Systeme_1:0][Date_2:0][Date_1:0][Contexte_6:0][Contexte_4:0][Contexte_3:0][Contexte_15:0][Contexte_1:0][Cause_3:0]";
+}
+
+node Systeme_9
+{
+    label = "Systeme_9";
+    position = (414 174);
+    states = ("A" "C" "D" "B" "E" "G" "F" "I");
+    HR_LinkMode = "[Cause_3:0][Contexte_1:0][Contexte_15:0][Contexte_6:0][Environnement_3:0][Systeme_1:0][Systeme_11:0][Systeme_13:0][Systeme_16:0][Systeme_17:0][Systeme_7:0][Systeme_8:0][Systeme_14:0][Date_2:0][Date_1:0][Contexte_4:0][Contexte_3:0]";
+}
+
+node Systeme_8
+{
+    label = "Systeme_8";
+    position = (289 180);
+    states = ("A" "B" "C" "D" "E" "G" "F" "I");
+    HR_LinkMode = "[Systeme_9:0][Cause_3:0][Contexte_1:0][Contexte_15:0][Contexte_6:0][Environnement_3:0][Systeme_1:0][Systeme_11:0][Systeme_13:0][Systeme_16:0][Systeme_17:0][Systeme_7:0][Systeme_14:0][Date_2:0][Date_1:0][Contexte_4:0][Contexte_3:0]";
+}
+
+node Systeme_7
+{
+    label = "Systeme_7";
+    position = (661 154);
+    states = ("B" "C" "A" "D" "E" "G" "F" "H" "J" "I" "L" "K" "M" "N" "O");
+    HR_LinkMode = "[Contexte_15:0][Date_1:0][Systeme_17:0][Systeme_16:0][Systeme_14:0][Systeme_13:0][Systeme_11:0][Systeme_1:0][Environnement_3:0][Date_2:0][Contexte_6:0][Contexte_4:0][Contexte_3:0][Contexte_1:0][Cause_3:0]";
+}
+
+node Systeme_17
+{
+    label = "Systeme_17";
+    position = (498 205);
+    states = ("B" "A" "C" "E");
+    HR_LinkMode = "[Systeme_7:0][Systeme_1:0][Systeme_11:0][Systeme_13:0][Systeme_9:0][Systeme_16:0][Systeme_14:0][Environnement_3:0][Date_2:0][Date_1:0][Contexte_6:0][Contexte_4:0][Contexte_3:0][Contexte_15:0][Contexte_1:0][Cause_3:0]";
+}
+
+node Systeme_16
+{
+    label = "Systeme_16";
+    position = (347 347);
+    states = ("A" "B" "C");
+    HR_LinkMode = "[Systeme_17:0][Environnement_3:0][Contexte_15:0][Contexte_1:0][Systeme_14:0][Systeme_13:0][Systeme_11:0][Systeme_1:0][Date_2:0][Date_1:0][Contexte_6:0][Contexte_4:0][Contexte_3:0][Cause_3:0]";
+}
+
+node Systeme_14
+{
+    label = "Systeme_14";
+    position = (237 103);
+    states = ("A" "B" "E");
+    HR_LinkMode = "[Systeme_17:0][Contexte_15:0][Contexte_1:0][Systeme_8:0][Systeme_13:0][Systeme_11:0][Systeme_1:0][Environnement_3:0][Date_2:0][Date_1:0][Contexte_6:0][Contexte_4:0][Contexte_3:0][Cause_3:0]";
+}
+
+node Systeme_13
+{
+    label = "Systeme_13";
+    position = (612 204);
+    states = ("A" "B");
+    HR_LinkMode = "[Systeme_17:0][Systeme_14:0][Contexte_15:0][Contexte_1:0][Systeme_11:0][Systeme_1:0][Environnement_3:0][Date_2:0][Date_1:0][Contexte_6:0][Contexte_4:0][Contexte_3:0][Cause_3:0]";
+}
+
+node Systeme_11
+{
+    label = "Systeme_11";
+    position = (500 95);
+    states = ("A" "B");
+    HR_LinkMode = "[Systeme_7:0][Systeme_17:0][Systeme_16:0][Environnement_3:0][Contexte_1:0][Systeme_1:0][Date_2:0][Date_1:0][Contexte_6:0][Contexte_4:0][Contexte_3:0][Contexte_15:0][Cause_3:0]";
+}
+
+node Systeme_1
+{
+    label = "Systeme_1";
+    position = (623 93);
+    states = ("A" "C" "D" "B" "O" "F" "X" "N");
+    HR_LinkMode = "[Systeme_17:0][Systeme_16:0][Environnement_3:0][Date_2:0][Date_1:0][Contexte_6:0][Contexte_4:0][Contexte_3:0][Contexte_15:0][Contexte_1:0][Cause_3:0]";
+}
+
+node Environnement_3
+{
+    label = "Environnement_3";
+    position = (502 303);
+    states = ("A" "B" "C" "D" "E" "F" "I" "G");
+    HR_LinkMode = "[Systeme_17:0][Systeme_14:0][Contexte_15:0][Cause_3:0][Contexte_4:0][Contexte_6:0][Systeme_16:0][Date_2:0][Date_1:0][Contexte_3:0][Contexte_1:0]";
+}
+
+node Date_1
+{
+    label = "Date_1";
+    position = (773 151);
+    states = ("C" "A" "B");
+    HR_LinkMode = "[Systeme_7:0][Systeme_16:0][Contexte_3:0][Contexte_15:0][Contexte_6:0][Contexte_4:0][Contexte_1:0][Cause_3:0]";
+}
+
+node Contexte_6
+{
+    label = "Contexte_6";
+    position = (682 244);
+    states = ("A" "C");
+    HR_LinkMode = "[Systeme_7:0][Systeme_17:0][Systeme_16:0][Environnement_3:0][Date_1:0][Contexte_15:0][Contexte_1:0][Contexte_4:0][Contexte_3:0][Cause_3:0]";
+}
+
+node Contexte_4
+{
+    label = "Contexte_4";
+    position = (681 298);
+    states = ("A" "B");
+    HR_LinkMode = "[Environnement_3:0][Contexte_3:0][Contexte_15:0][Contexte_1:0][Cause_3:0]";
+}
+
+node Contexte_3
+{
+    label = "Contexte_3";
+    position = (879 147);
+    states = ("B" "A");
+    HR_LinkMode = "[Systeme_7:0][Date_2:0][Contexte_15:0][Contexte_1:0][Cause_3:0]";
+}
+
+node Contexte_15
+{
+    label = "Contexte_15";
+    position = (797 240);
+    states = ("B" "C" "A" "D" "E" "F" "H" "G" "I" "K");
+    HR_LinkMode = "[Systeme_17:0][Contexte_1:0][Cause_3:0]";
+}
+
+node Contexte_1
+{
+    label = "Contexte_1";
+    position = (379 88);
+    states = ("A" "C" "D" "E" "F" "G");
+    HR_LinkMode = "[Systeme_17:0][Cause_3:0]";
+}
+
+node Cause_3
+{
+    label = "Cause_3";
+    position = (689 350);
+    states = ("B" "C" "D" "E" "F" "A" "G" "H" "I" "J");
+    HR_LinkMode = "[Systeme_17:0][Systeme_16:0][Environnement_3:0][Date_1:0][Contexte_3:0][Contexte_15:0][Contexte_6:0]";
+}
+
+potential (Date_2 | Contexte_3)
+{
+    data
+     = (( 0.0614364 0.0696396 0.0708613 0.0827297 0.095209 0.117113 0.0937255 0.0576839 0.104372 0.109608 0.0856096 0.0520115 )	%  Contexte_3=B
+	( 0.00165289 0.00330579 0.00495868 0.00578512 0.00909091 0.0413223 0.233058 0.110744 0.171074 0.180992 0.14876 0.0892562 ));	%  Contexte_3=A
+    experience
+     = ( 11459	%  Contexte_3=B
+	 1210 );	%  Contexte_3=A
+}
+
+potential (Variable_a_expliquer)
+{
+    data = ( 0.0110506 0.988949 );
+    experience = 12669;
+}
+
+potential (Systeme_9 | Systeme_17)
+{
+    data
+     = (( 0.628623 0.00697535 0.00132291 0.0304269 0.0993385 0.00156344 0.23163 0.000120265 )	%  Systeme_17=B
+	( 0.759439 0.00835282 0.00801871 0.0968927 0.0935516 0.0160374 0.0123622 0.00534581 )	%  Systeme_17=A
+	( 0.488615 0.00948767 0.0028463 0.0332068 0.141366 0.000948767 0.322581 0.000948767 )	%  Systeme_17=C
+	( 0.0325733 0.0390879 0.0130293 0.0162866 0.260586 0 0.638436 0 ));	%  Systeme_17=E
+    experience
+     = ( 8315	%  Systeme_17=B
+	 2993	%  Systeme_17=A
+	 1054	%  Systeme_17=C
+	 307 );	%  Systeme_17=E
+}
+
+potential (Systeme_8 | Systeme_9)
+{
+    data
+     = (( 0.994019 0.00311526 0 0.000872274 0.0011215 0.000498442 0.000373832 0 )	%  Systeme_9=A
+	( 0.0380952 0.104762 0 0.00952381 0.838095 0.00952381 0 0 )	%  Systeme_9=C
+	( 0 0 0.952381 0 0 0 0.047619 0 )	%  Systeme_9=D
+	( 0.00343053 0.982847 0 0.00343053 0.0051458 0.00171527 0.00343053 0 )	%  Systeme_9=B
+	( 0.011236 0.0104869 0 0.968539 0.000749064 0.00149813 0.00749064 0 )	%  Systeme_9=E
+	( 0 0 0 0 0.016129 0.903226 0.0806452 0 )	%  Systeme_9=G
+	( 0.0128051 0.00280112 0.00040016 0.00160064 0.00040016 0.0040016 0.977991 0 )	%  Systeme_9=F
+	( 0 0 0 0 0 0 0 1 ));	%  Systeme_9=I
+    experience
+     = ( 8025	%  Systeme_9=A
+	 105	%  Systeme_9=C
+	 42	%  Systeme_9=D
+	 583	%  Systeme_9=B
+	 1335	%  Systeme_9=E
+	 62	%  Systeme_9=G
+	 2499	%  Systeme_9=F
+	 18 );	%  Systeme_9=I
+}
+
+potential (Systeme_7 | Systeme_17)
+{
+    data
+     = (( 0.280818 0.570054 0.0277811 0.0214071 0.0235719 0.0218882 0.00228503 0.00300661 0.0236921 0.0123873 0.000240529 0.0121467 0.000120265 0.000481058 0.000120265 )	%  Systeme_17=B
+	( 0.499499 0.431674 0.0140327 0.0140327 0.0230538 0.00300702 0.00167056 0.000334113 0.00567992 0.00334113 0 0.00334113 0 0.000334113 0 )	%  Systeme_17=A
+	( 0.313093 0.500949 0.0502846 0.0256167 0.0189753 0.0218216 0.00379507 0.00474383 0.0265655 0.0227704 0 0.0104364 0.000948767 0 0 )	%  Systeme_17=C
+	( 0.345277 0.130293 0.110749 0 0.00651466 0.0260586 0 0.0456026 0.143322 0.18241 0 0.00977199 0 0 0 ));	%  Systeme_17=E
+    experience
+     = ( 8315	%  Systeme_17=B
+	 2993	%  Systeme_17=A
+	 1054	%  Systeme_17=C
+	 307 );	%  Systeme_17=E
+}
+
+potential (Systeme_17 | Environnement_3)
+{
+    data
+     = (( 0.659218 0.252759 0.0814185 0.00660394 )	%  Environnement_3=A
+	( 0.879808 0 0.100962 0.0192308 )	%  Environnement_3=B
+	( 1 0 0 0 )	%  Environnement_3=C
+	( 0.63495 0.182068 0.121683 0.0612992 )	%  Environnement_3=D
+	( 0 0 0 1 )	%  Environnement_3=E
+	( 0 0 0 1 )	%  Environnement_3=F
+	( 0 0 0 1 )	%  Environnement_3=I
+	( 0 0 0 1 ));	%  Environnement_3=G
+    experience
+     = ( 11054	%  Environnement_3=A
+	 208	%  Environnement_3=B
+	 151	%  Environnement_3=C
+	 1093	%  Environnement_3=D
+	 39	%  Environnement_3=E
+	 58	%  Environnement_3=F
+	 65	%  Environnement_3=I
+	 1 );	%  Environnement_3=G
+}
+
+potential (Systeme_16 | Environnement_3)
+{
+    data
+     = (( 0.857789 0.0226162 0.119595 )	%  Environnement_3=A
+	( 0.274038 0.692308 0.0336538 )	%  Environnement_3=B
+	( 0.344371 0.649007 0.00662252 )	%  Environnement_3=C
+	( 0.651418 0.287283 0.0612992 )	%  Environnement_3=D
+	( 0.205128 0.794872 0 )	%  Environnement_3=E
+	( 0.189655 0.810345 0 )	%  Environnement_3=F
+	( 0.107692 0.876923 0.0153846 )	%  Environnement_3=I
+	( 0 1 0 ));	%  Environnement_3=G
+    experience
+     = ( 11054	%  Environnement_3=A
+	 208	%  Environnement_3=B
+	 151	%  Environnement_3=C
+	 1093	%  Environnement_3=D
+	 39	%  Environnement_3=E
+	 58	%  Environnement_3=F
+	 65	%  Environnement_3=I
+	 1 );	%  Environnement_3=G
+}
+
+potential (Systeme_14 | Systeme_8)
+{
+    data
+     = (( 0.936986 0.0628892 0.000124533 )	%  Systeme_8=A
+	( 0.850794 0.122222 0.0269841 )	%  Systeme_8=B
+	( 0 1 0 )	%  Systeme_8=C
+	( 0.745983 0.254017 0 )	%  Systeme_8=D
+	( 0.553398 0.446602 0 )	%  Systeme_8=E
+	( 0 1 0 )	%  Systeme_8=G
+	( 0.000405515 0.999594 0 )	%  Systeme_8=F
+	( 0 1 0 ));	%  Systeme_8=I
+    experience
+     = ( 8030	%  Systeme_8=A
+	 630	%  Systeme_8=B
+	 41	%  Systeme_8=C
+	 1307	%  Systeme_8=D
+	 103	%  Systeme_8=E
+	 74	%  Systeme_8=G
+	 2466	%  Systeme_8=F
+	 18 );	%  Systeme_8=I
+}
+
+potential (Systeme_13 | Systeme_17)
+{
+    data
+     = (( 0.866987 0.133013 )	%  Systeme_17=B
+	( 0.990979 0.00902105 )	%  Systeme_17=A
+	( 0.893738 0.106262 )	%  Systeme_17=C
+	( 0.850163 0.149837 ));	%  Systeme_17=E
+    experience
+     = ( 8315	%  Systeme_17=B
+	 2993	%  Systeme_17=A
+	 1054	%  Systeme_17=C
+	 307 );	%  Systeme_17=E
+}
+
+potential (Systeme_11 | Systeme_17)
+{
+    data
+     = (( 0.846061 0.153939 )	%  Systeme_17=B
+	( 0.970264 0.0297361 )	%  Systeme_17=A
+	( 0.919355 0.0806452 )	%  Systeme_17=C
+	( 0.95114 0.0488599 ));	%  Systeme_17=E
+    experience
+     = ( 8315	%  Systeme_17=B
+	 2993	%  Systeme_17=A
+	 1054	%  Systeme_17=C
+	 307 );	%  Systeme_17=E
+}
+
+potential (Systeme_1 | Systeme_17)
+{
+    data
+     = (( 0.942153 0.0121467 0.0438966 0 0.000601323 0.000360794 0 0.000841852 )	%  Systeme_17=B
+	( 0.92449 0.0461076 0 0.0290678 0.000334113 0 0 0 )	%  Systeme_17=A
+	( 0.955408 0.0142315 0.028463 0 0 0 0.000948767 0.000948767 )	%  Systeme_17=C
+	( 0.986971 0.0130293 0 0 0 0 0 0 ));	%  Systeme_17=E
+    experience
+     = ( 8315	%  Systeme_17=B
+	 2993	%  Systeme_17=A
+	 1054	%  Systeme_17=C
+	 307 );	%  Systeme_17=E
+}
+
+potential (Environnement_3 | Variable_a_expliquer)
+{
+    data
+     = (( 0.721429 0.00714286 0.1 0.128571 0 0.0428571 0 0 )	%  Variable_a_expliquer=B
+	( 0.874212 0.0165217 0.0109346 0.0858009 0.00311278 0.00415037 0.00518796 7.98148E-005 ));	%  Variable_a_expliquer=A
+    experience
+     = ( 140	%  Variable_a_expliquer=B
+	 12529 );	%  Variable_a_expliquer=A
+}
+
+potential (Date_1 | Systeme_7)
+{
+    data
+     = (( 0.285045 0.344116 0.370839 )	%  Systeme_7=B
+	( 0.293939 0.368333 0.337727 )	%  Systeme_7=C
+	( 1 0 0 )	%  Systeme_7=A
+	( 1 0 0 )	%  Systeme_7=D
+	( 0.160279 0.400697 0.439024 )	%  Systeme_7=E
+	( 1 0 0 )	%  Systeme_7=G
+	( 0.178571 0.428571 0.392857 )	%  Systeme_7=F
+	( 1 0 0 )	%  Systeme_7=H
+	( 0.255245 0.339161 0.405594 )	%  Systeme_7=J
+	( 0.336788 0.274611 0.388601 )	%  Systeme_7=I
+	( 1 0 0 )	%  Systeme_7=L
+	( 0.176 0.472 0.352 )	%  Systeme_7=K
+	( 1 0 0 )	%  Systeme_7=M
+	( 1 0 0 )	%  Systeme_7=N
+	( 1 0 0 ));	%  Systeme_7=O
+    experience
+     = ( 4266	%  Systeme_7=B
+	 6600	%  Systeme_7=C
+	 360	%  Systeme_7=A
+	 247	%  Systeme_7=D
+	 287	%  Systeme_7=E
+	 222	%  Systeme_7=G
+	 28	%  Systeme_7=F
+	 45	%  Systeme_7=H
+	 286	%  Systeme_7=J
+	 193	%  Systeme_7=I
+	 2	%  Systeme_7=L
+	 125	%  Systeme_7=K
+	 2	%  Systeme_7=M
+	 5	%  Systeme_7=N
+	 1 );	%  Systeme_7=O
+}
+
+potential (Contexte_6 | Environnement_3)
+{
+    data
+     = (( 0.698028 0.301972 )	%  Environnement_3=A
+	( 0.245192 0.754808 )	%  Environnement_3=B
+	( 0.145695 0.854305 )	%  Environnement_3=C
+	( 0.403477 0.596523 )	%  Environnement_3=D
+	( 0.102564 0.897436 )	%  Environnement_3=E
+	( 0.0689655 0.931034 )	%  Environnement_3=F
+	( 0.0769231 0.923077 )	%  Environnement_3=I
+	( 0 1 ));	%  Environnement_3=G
+    experience
+     = ( 11054	%  Environnement_3=A
+	 208	%  Environnement_3=B
+	 151	%  Environnement_3=C
+	 1093	%  Environnement_3=D
+	 39	%  Environnement_3=E
+	 58	%  Environnement_3=F
+	 65	%  Environnement_3=I
+	 1 );	%  Environnement_3=G
+}
+
+potential (Contexte_4 | Environnement_3)
+{
+    data
+     = (( 0.995386 0.00461371 )	%  Environnement_3=A
+	( 0.980769 0.0192308 )	%  Environnement_3=B
+	( 0.980132 0.0198675 )	%  Environnement_3=C
+	( 0.969808 0.0301921 )	%  Environnement_3=D
+	( 1 0 )	%  Environnement_3=E
+	( 0.948276 0.0517241 )	%  Environnement_3=F
+	( 1 0 )	%  Environnement_3=I
+	( 1 0 ));	%  Environnement_3=G
+    experience
+     = ( 11054	%  Environnement_3=A
+	 208	%  Environnement_3=B
+	 151	%  Environnement_3=C
+	 1093	%  Environnement_3=D
+	 39	%  Environnement_3=E
+	 58	%  Environnement_3=F
+	 65	%  Environnement_3=I
+	 1 );	%  Environnement_3=G
+}
+
+potential (Contexte_3 | Date_1)
+{
+    data
+     = (( 0.715832 0.284168 )	%  Date_1=C
+	( 1 0 )	%  Date_1=A
+	( 0.999522 0.000478126 ));	%  Date_1=B
+    experience
+     = ( 4251	%  Date_1=C
+	 4235	%  Date_1=A
+	 4183 );	%  Date_1=B
+}
+
+potential (Contexte_15 | Contexte_6)
+{
+    data
+     = (( 0.0103118 0.178212 0.302924 0.192042 0.00291156 0.0652675 0.0770351 0.147762 0.0122528 0.0112823 )	%  Contexte_6=A
+	( 0.00632625 0.445775 0.204474 0.143244 0.0311794 0.0447357 0.0395391 0.0666516 0.00813376 0.00994126 ));	%  Contexte_6=C
+    experience
+     = ( 8243	%  Contexte_6=A
+	 4426 );	%  Contexte_6=C
+}
+
+potential (Contexte_1 | Systeme_9)
+{
+    data
+     = (( 0.615576 0.0213084 0.281121 0.08 0.00137072 0.000623053 )	%  Systeme_9=A
+	( 0.685714 0.0190476 0.133333 0.161905 0 0 )	%  Systeme_9=C
+	( 0.571429 0.0238095 0.166667 0.238095 0 0 )	%  Systeme_9=D
+	( 0.696398 0.0377358 0.135506 0.125214 0 0.0051458 )	%  Systeme_9=B
+	( 0.66367 0.0314607 0.180524 0.120599 0.00224719 0.00149813 )	%  Systeme_9=E
+	( 0.564516 0 0.112903 0.306452 0.016129 0 )	%  Systeme_9=G
+	( 0.511805 0.0264106 0.107643 0.34974 0.0040016 0.00040016 )	%  Systeme_9=F
+	( 0.555556 0 0.166667 0.277778 0 0 ));	%  Systeme_9=I
+    experience
+     = ( 8025	%  Systeme_9=A
+	 105	%  Systeme_9=C
+	 42	%  Systeme_9=D
+	 583	%  Systeme_9=B
+	 1335	%  Systeme_9=E
+	 62	%  Systeme_9=G
+	 2499	%  Systeme_9=F
+	 18 );	%  Systeme_9=I
+}
+
+potential (Cause_3 | Environnement_3)
+{
+    data
+     = (( 0.852452 0.133074 0.00135697 0.00144744 0.000452325 0.00814185 0.00171883 0.000452325 0.000814185 9.0465E-005 )	%  Environnement_3=A
+	( 0.4375 0.533654 0 0.00480769 0.00961538 0.0144231 0 0 0 0 )	%  Environnement_3=B
+	( 0.0529801 0.913907 0.013245 0 0.013245 0.00662252 0 0 0 0 )	%  Environnement_3=C
+	( 0.46935 0.487649 0.00457457 0.00823422 0.00914913 0.0146386 0.00457457 0.000914913 0.000914913 0 )	%  Environnement_3=D
+	( 0.128205 0.769231 0.025641 0 0.0512821 0.025641 0 0 0 0 )	%  Environnement_3=E
+	( 0.0689655 0.896552 0.0172414 0 0 0.0172414 0 0 0 0 )	%  Environnement_3=F
+	( 0.0923077 0.815385 0.0307692 0.0153846 0.0153846 0.0153846 0 0.0153846 0 0 )	%  Environnement_3=I
+	( 0 1 0 0 0 0 0 0 0 0 ));	%  Environnement_3=G
+    experience
+     = ( 11054	%  Environnement_3=A
+	 208	%  Environnement_3=B
+	 151	%  Environnement_3=C
+	 1093	%  Environnement_3=D
+	 39	%  Environnement_3=E
+	 58	%  Environnement_3=F
+	 65	%  Environnement_3=I
+	 1 );	%  Environnement_3=G
+}

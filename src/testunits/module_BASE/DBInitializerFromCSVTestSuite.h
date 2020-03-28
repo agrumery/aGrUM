@@ -22,13 +22,12 @@
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
-#include <ressources/myalloc.h>
 #include <iostream>
 #include <vector>
 #include <string>
 #include <algorithm>
-#include <ressources/myalloc.h>
-#include <ressources/learningAlloc.h>
+#include <ressources/include/myalloc.h>
+#include <ressources/include/learningAlloc.h>
 
 #include <agrum/tools/database/DBInitializerFromCSV.h>
 #include <agrum/tools/database/databaseTable.h>
@@ -43,7 +42,7 @@ namespace gum_tests {
     public:
     void test_init1() {
       gum::learning::DBInitializerFromCSV<> initializer(
-         GET_RESSOURCES_PATH("asia.csv"));
+         GET_RESSOURCES_PATH("csv/asia.csv"));
 
       const auto&       var_names = initializer.variableNames();
       const std::size_t nb_vars = var_names.size();

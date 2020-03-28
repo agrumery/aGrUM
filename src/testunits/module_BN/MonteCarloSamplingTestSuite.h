@@ -355,7 +355,7 @@ namespace gum_tests {
 
     void testMCAsia() {
       gum::BayesNet< double >  bn;
-      gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("asia.bif"));
+      gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/asia.bif"));
       gum::Size                nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
       TS_ASSERT(nbrErr == gum::Size(0));
@@ -380,7 +380,7 @@ namespace gum_tests {
 
     void testMCAlarm() {
       gum::BayesNet< double >  bn;
-      gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("alarm.bif"));
+      gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
       TS_ASSERT(nbrErr == gum::Size(0));
@@ -405,7 +405,7 @@ namespace gum_tests {
 
     void testMCInfListener() {
       gum::BayesNet< double >  bn;
-      gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("alarm.bif"));
+      gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
       TS_ASSERT(nbrErr == 0);
@@ -431,7 +431,7 @@ namespace gum_tests {
 
     void testConstructor() {
       gum::BayesNet< double >  bn;
-      gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("alarm.bif"));
+      gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
       TS_ASSERT(nbrErr == 0);

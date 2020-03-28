@@ -22,8 +22,8 @@
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
-#include <ressources/mygenerator.h>
-#include <ressources/mygenerator2.h>
+#include <ressources/include/mygenerator.h>
+#include <ressources/include/mygenerator2.h>
 #include <iostream>
 
 #include <agrum/BN/inference/lazyPropagation.h>

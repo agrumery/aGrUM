@@ -22,8 +22,8 @@
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
-#include <ressources/myalloc.h>
-#include <ressources/learningAlloc.h>
+#include <ressources/include/myalloc.h>
+#include <ressources/include/learningAlloc.h>
 #include <iostream>
 
 #include <agrum/tools/core/thread.h>

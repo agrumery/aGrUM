@@ -205,7 +205,7 @@ namespace gum_tests {
     public:
     void test_k2_asia() {
       gum::learning::DBInitializerFromCSV<> initializer(
-         GET_RESSOURCES_PATH("asia.csv"));
+         GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&       var_names = initializer.variableNames();
       const std::size_t nb_vars = var_names.size();
 
@@ -277,7 +277,7 @@ namespace gum_tests {
 
     void test_asia_with_ordered_values() {
       gum::learning::DBInitializerFromCSV<> initializer(
-         GET_RESSOURCES_PATH("asia.csv"));
+         GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&       var_names = initializer.variableNames();
       const std::size_t nb_vars = var_names.size();
 
@@ -352,7 +352,7 @@ namespace gum_tests {
 
     void test_alarm_with_ordered_values() {
       gum::learning::DBInitializerFromCSV<> initializer(
-         GET_RESSOURCES_PATH("alarm.csv"));
+         GET_RESSOURCES_PATH("csv/alarm.csv"));
       const auto&       var_names = initializer.variableNames();
       const std::size_t nb_vars = var_names.size();
 
@@ -429,7 +429,7 @@ namespace gum_tests {
 
     void test_alarm_with_ordered_values2() {
       gum::learning::DBInitializerFromCSV<> initializer(
-         GET_RESSOURCES_PATH("alarm.csv"));
+         GET_RESSOURCES_PATH("csv/alarm.csv"));
       const auto&       var_names = initializer.variableNames();
       const std::size_t nb_vars = var_names.size();
 
@@ -511,7 +511,7 @@ namespace gum_tests {
     void test_dirichlet() {
       // read the learning database
       gum::learning::DBInitializerFromCSV<> initializer(
-         GET_RESSOURCES_PATH("db_dirichlet_learning.csv"));
+         GET_RESSOURCES_PATH("csv/db_dirichlet_learning.csv"));
       const auto&       var_names = initializer.variableNames();
       const std::size_t nb_vars = var_names.size();
 
@@ -528,7 +528,7 @@ namespace gum_tests {
 
       // read the apriori database
       gum::learning::DBInitializerFromCSV<> dirichlet_initializer(
-         GET_RESSOURCES_PATH("db_dirichlet_apriori.csv"));
+         GET_RESSOURCES_PATH("csv/db_dirichlet_apriori.csv"));
       const auto&       dirichlet_var_names = initializer.variableNames();
       const std::size_t dirichlet_nb_vars = dirichlet_var_names.size();
 
@@ -596,7 +596,7 @@ namespace gum_tests {
 
     void xtest_alarm1() {
       /*
-      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("alarm.csv"));
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("csv/alarm.csv"));
 
       gum::learning::DBRowTranslatorSet<
         gum::learning::CellTranslatorCompactIntId >
@@ -645,7 +645,7 @@ namespace gum_tests {
 
     void xtest_alarm1bis() {
       /*
-      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("alarm.csv"));
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("csv/alarm.csv"));
 
       gum::learning::DBRowTranslatorSet<
         gum::learning::CellTranslatorCompactIntId >
@@ -694,7 +694,7 @@ namespace gum_tests {
 
     void xtest_alarm1ter() {
       /*
-      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("alarm.csv"));
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("csv/alarm.csv"));
 
       gum::learning::DBRowTranslatorSet<
         gum::learning::CellTranslatorCompactIntId >
@@ -743,7 +743,7 @@ namespace gum_tests {
 
     void xtest_alarm2() {
       /*
-      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("alarm.csv"));
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("csv/alarm.csv"));
 
       gum::learning::DBRowTranslatorSet<
         gum::learning::CellTranslatorCompactIntId >
@@ -793,7 +793,7 @@ namespace gum_tests {
 
     void xtest_alarm3() {
       /*
-      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("alarm.csv"));
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("csv/alarm.csv"));
 
       gum::learning::DBRowTranslatorSet< gum::learning::DBCellTranslator< 1, 1 > >
         translators;
@@ -843,7 +843,7 @@ namespace gum_tests {
 
     void xtest_alarm4() {
       /*
-      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("alarm.csv"));
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("csv/alarm.csv"));
 
       gum::learning::DBRowTranslatorSet< gum::learning::DBCellTranslator< 1, 1 > >
         translators;

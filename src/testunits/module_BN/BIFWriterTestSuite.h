@@ -158,7 +158,7 @@ namespace gum_tests {
 
     void testWriter_string() {
       gum::BIFWriter< double > writer;
-      std::string file = GET_RESSOURCES_PATH("BIFWriter_TestFile.txt");
+      std::string file = GET_RESSOURCES_PATH("outputs/BIFWriter_TestFile.txt");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
 
       try {
@@ -166,7 +166,7 @@ namespace gum_tests {
         TS_ASSERT(true);
       } catch (gum::IOError&) { TS_ASSERT(false); }
 
-      TS_ASSERT(__compareFile(file, GET_RESSOURCES_PATH("BIFWriter_Model.txt")))
+      TS_ASSERT(__compareFile(file, GET_RESSOURCES_PATH("txt/BIFWriter_Model.txt")))
     }
 
     private:

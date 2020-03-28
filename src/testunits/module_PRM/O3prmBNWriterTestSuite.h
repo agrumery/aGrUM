@@ -89,7 +89,7 @@ namespace gum_tests {
     }
 
     void testReadAfterWrite() {
-      std::string                  rfile = GET_RESSOURCES_PATH("alarm.o3prm");
+      std::string                  rfile = GET_RESSOURCES_PATH("o3prm/alarm.o3prm");
       gum::BayesNet< double >      bn;
       gum::O3prmBNReader< double > reader(&bn, rfile);
       gum::Size                    res = 0;
@@ -101,7 +101,7 @@ namespace gum_tests {
 
 
       gum::O3prmBNWriter< double > writer;
-      std::string wfile = GET_RESSOURCES_PATH("alarm_written.o3prm");
+      std::string wfile = GET_RESSOURCES_PATH("outputs/alarm_written.o3prm");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(wfile, bn));
 
 
@@ -133,7 +133,7 @@ namespace gum_tests {
       bn.setProperty("name", "random_written");
 
       gum::O3prmBNWriter< double > writer;
-      std::string wfile = GET_RESSOURCES_PATH("random_written.o3prm");
+      std::string wfile = GET_RESSOURCES_PATH("outputs/random_written.o3prm");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(wfile, bn));
 
 

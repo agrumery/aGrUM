@@ -22,8 +22,8 @@
 #include <cxxtest/testsuite_utils.h>
 #include <iostream>
 #include <vector>
-#include <ressources/mygenerator.h>
-#include <ressources/mygenerator2.h>
+#include <ressources/include/mygenerator.h>
+#include <ressources/include/mygenerator2.h>
 
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/tools/database/DBTranslator4LabelizedVariable.h>

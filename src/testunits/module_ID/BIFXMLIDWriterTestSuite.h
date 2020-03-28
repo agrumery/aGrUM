@@ -162,11 +162,11 @@ namespace gum_tests {
 
     void testWriter_file() {
       gum::BIFXMLIDWriter< double > writer;
-      std::string file = GET_RESSOURCES_PATH("IDBIFXMLIO_file.xml");
+      std::string file = GET_RESSOURCES_PATH("outputs/IDBIFXMLIO_file.xml");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *id));
 
       // For comparison with what readers will return
-      std::string   dotfile = GET_RESSOURCES_PATH("IDToDotWriter.dot");
+      std::string   dotfile = GET_RESSOURCES_PATH("outputs/IDToDotWriter.dot");
       std::ofstream output(dotfile.c_str(), std::ios::out | std::ios::trunc);
 
       if (!output.good()) {

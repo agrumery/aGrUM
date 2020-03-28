@@ -253,7 +253,7 @@ namespace gum_tests {
         __fillFactory(functionGraph, &idList);
 
         // For comparison with what readers will return
-        std::string   dotfile = GET_RESSOURCES_PATH("FMDP/FunctionGraph.dot");
+        std::string   dotfile = GET_RESSOURCES_PATH("outputs/FunctionGraph.dot");
         std::ofstream output(dotfile.c_str(), std::ios::out | std::ios::trunc);
 
         if (!output.good()) {
@@ -788,7 +788,7 @@ namespace gum_tests {
            Cprimevar, functionGraph->variablesSequence().pos(BOvar));
 
         // For comparison with what readers will return
-        std::string dotfile = GET_RESSOURCES_PATH("FMDP/FunctionGraphMVBOvar.dot");
+        std::string dotfile = GET_RESSOURCES_PATH("outputs/FunctionGraphMVBOvar.dot");
         std::ofstream output(dotfile.c_str(), std::ios::out | std::ios::trunc);
         if (!output.good()) {
           GUM_ERROR(gum::IOError, "Stream states flags are not all unset.");

@@ -63,7 +63,7 @@ namespace gum_tests {
     void setUp() {
       try {
         bn = new gum::BayesNet< double >("Asia");
-        std::string file = GET_RESSOURCES_PATH("survey.bif");
+        std::string file = GET_RESSOURCES_PATH("bif/survey.bif");
         auto        reader = gum::BIFReader< double >(bn, file);
         try {
           reader.proceed();
@@ -130,7 +130,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(varOrder.at(4), (gum::Idx)1);
       TS_ASSERT_EQUALS(varOrder.at(5), (gum::Idx)5);
 
-      std::string csvFile = GET_RESSOURCES_PATH("survey1.csv");
+      std::string csvFile = GET_RESSOURCES_PATH("csv/survey1.csv");
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->setVarOrderFromCSV(csvFile));
       varOrderNames = dbgen->varOrderNames();
       TS_ASSERT_EQUALS(varOrderNames.size(), (gum::Size)6);
@@ -257,7 +257,7 @@ namespace gum_tests {
 
       std::vector< std::string > vOrder1 = {"S", "E", "T", "R", "A", "O"};
       TS_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(vOrder1));
-      std::string csvFileURL = GET_RESSOURCES_PATH("survey_tmp1.csv");
+      std::string csvFileURL = GET_RESSOURCES_PATH("csv/survey_tmp1.csv");
       bool        useLabels = true;
       bool        append = false;
       std::string csvSeparator = " ";
@@ -332,7 +332,7 @@ namespace gum_tests {
 
       std::vector< std::string > vOrder1 = {"S", "E", "T", "R", "A", "O"};
       TS_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(vOrder1));
-      std::string csvFileURL = GET_RESSOURCES_PATH("survey_tmp2.csv");
+      std::string csvFileURL = GET_RESSOURCES_PATH("csv/survey_tmp2.csv");
       bool        useLabels = false;
       bool        append = false;
       std::string csvSeparator = " ";

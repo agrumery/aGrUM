@@ -38,7 +38,7 @@ namespace gum_tests {
     public:
     void test_chi2() {
       gum::learning::DBInitializerFromCSV<> initializer(
-         GET_RESSOURCES_PATH("asia.csv"));
+         GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&       var_names = initializer.variableNames();
       const std::size_t nb_vars = var_names.size();
 
@@ -83,7 +83,7 @@ namespace gum_tests {
 
     void test_cache() {
       gum::learning::DBInitializerFromCSV<> initializer(
-         GET_RESSOURCES_PATH("asia.csv"));
+         GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&       var_names = initializer.variableNames();
       const std::size_t nb_vars = var_names.size();
 
@@ -121,7 +121,7 @@ namespace gum_tests {
 
     void test_clearcache() {
       gum::learning::DBInitializerFromCSV<> initializer(
-         GET_RESSOURCES_PATH("asia.csv"));
+         GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&       var_names = initializer.variableNames();
       const std::size_t nb_vars = var_names.size();
 
@@ -158,7 +158,7 @@ namespace gum_tests {
 
     void test_statistics() {
       gum::learning::DBInitializerFromCSV<> initializer(
-         GET_RESSOURCES_PATH("chi2.csv"));
+         GET_RESSOURCES_PATH("csv/chi2.csv"));
       const auto&       var_names = initializer.variableNames();
       const std::size_t nb_vars = var_names.size();
 
@@ -201,7 +201,7 @@ namespace gum_tests {
 
     void test_statistics_2() {
       gum::learning::DBInitializerFromCSV<> initializer(
-         GET_RESSOURCES_PATH("testXYbase.csv"));
+         GET_RESSOURCES_PATH("csv/testXYbase.csv"));
       const auto&       var_names = initializer.variableNames();
       const std::size_t nb_vars = var_names.size();
 
@@ -227,7 +227,7 @@ namespace gum_tests {
 
     void test_statistics_3() {
       gum::learning::DBInitializerFromCSV<> initializer(
-         GET_RESSOURCES_PATH("indepXYZ1Z2.csv"));
+         GET_RESSOURCES_PATH("csv/indepXYZ1Z2.csv"));
       const auto&       var_names = initializer.variableNames();
       const std::size_t nb_vars = var_names.size();
 
@@ -252,7 +252,7 @@ namespace gum_tests {
     }
     void test_statistics_4() {
       gum::learning::DBInitializerFromCSV<> initializer(
-         GET_RESSOURCES_PATH("indepXYZ.csv"));
+         GET_RESSOURCES_PATH("csv/indepXYZ.csv"));
       const auto&       var_names = initializer.variableNames();
       const std::size_t nb_vars = var_names.size();
 

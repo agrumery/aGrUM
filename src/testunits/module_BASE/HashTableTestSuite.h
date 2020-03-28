@@ -25,7 +25,7 @@
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
-#include <ressources/myalloc.h>
+#include <ressources/include/myalloc.h>
 
 #include <agrum/tools/core/hashTable.h>
 #include <agrum/tools/core/list.h>

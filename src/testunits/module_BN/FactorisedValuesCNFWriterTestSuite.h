@@ -96,10 +96,10 @@ namespace gum_tests {
     void testWriter_string() {
       gum::FactorisedValuesCNFWriter< double > writer;
       std::string                              file =
-         GET_RESSOURCES_PATH("FactorisedValuesCNFWriter_TestFile.cnf");
+         GET_RESSOURCES_PATH("outputs/FactorisedValuesCNFWriter_TestFile.cnf");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
 
-      file = GET_RESSOURCES_PATH("FactorisedValuesCNFWriter_RO_TestFile.cnf");
+      file = GET_RESSOURCES_PATH("outputs/FactorisedValuesCNFWriter_RO_TestFile.cnf");
 
       try {
         writer.write(file, *bn);
@@ -114,15 +114,8 @@ namespace gum_tests {
       writer.setLowLimit(0);
       writer.setHighLimit(1);
       std::string file = GET_RESSOURCES_PATH(
-         "FactorisedValuesCNFWriter_TestFile_Approximation.cnf");
+         "outputs/FactorisedValuesCNFWriter_TestFile_Approximation.cnf");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
-      file = GET_RESSOURCES_PATH(
-         "FactorisedValuesCNFWriter_RO_TestFile_Approximation.cnf");
-
-      try {
-        writer.write(file, *bn);
-        // TS_ASSERT(false);
-      } catch (gum::IOError&) { TS_ASSERT(true); }
     }
 
     private:

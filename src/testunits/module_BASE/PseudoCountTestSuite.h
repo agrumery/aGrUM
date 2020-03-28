@@ -39,7 +39,7 @@ namespace gum_tests {
   public:
     void test_simple_counts() {
       gum::learning::DBInitializerFromCSV<> initializer(
-          GET_RESSOURCES_PATH("minimal.csv"));
+          GET_RESSOURCES_PATH("csv/minimal.csv"));
       const auto &var_names = initializer.variableNames();
       const std::size_t nb_vars = var_names.size();
 

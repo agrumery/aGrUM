@@ -284,7 +284,7 @@ namespace gum_tests {
     }
 
     void testAlarm() {
-      std::string              file = GET_RESSOURCES_PATH("alarm.bif");
+      std::string              file = GET_RESSOURCES_PATH("bif/alarm.bif");
       gum::BayesNet< double >  alarm;
       gum::BIFReader< double > reader(&alarm, file);
       reader.proceed();
@@ -320,7 +320,7 @@ namespace gum_tests {
 
 
     void testAsia() {
-      std::string              file = GET_RESSOURCES_PATH("asia.bif");
+      std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = gum::Size(0);
@@ -356,7 +356,7 @@ namespace gum_tests {
     }
 
     void testAlarm2() {
-      std::string              file = GET_RESSOURCES_PATH("alarm.bif");
+      std::string              file = GET_RESSOURCES_PATH("bif/alarm.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = gum::Size(0);
@@ -437,7 +437,7 @@ namespace gum_tests {
     }
 
     void testAsia2() {
-      std::string              file = GET_RESSOURCES_PATH("asia3.bif");
+      std::string              file = GET_RESSOURCES_PATH("bif/asia3.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = gum::Size(0);
@@ -494,7 +494,7 @@ namespace gum_tests {
     }
 
     void testAsia3() {
-      std::string              file = GET_RESSOURCES_PATH("asia3.bif");
+      std::string              file = GET_RESSOURCES_PATH("bif/asia3.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = gum::Size(0);
@@ -553,7 +553,7 @@ namespace gum_tests {
     }
 
     void testAsia4() {
-      std::string              file = GET_RESSOURCES_PATH("asia.bif");
+      std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
       gum::Size                nbrErr = gum::Size(0);
@@ -625,7 +625,7 @@ namespace gum_tests {
     }
 
     void testChgEvidence() {
-      std::string              file = GET_RESSOURCES_PATH("asia.bif");
+      std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
 
@@ -660,7 +660,7 @@ namespace gum_tests {
     }
 
     void testChgEvidence2() {
-      std::string              file = GET_RESSOURCES_PATH("asia.bif");
+      std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
 
@@ -696,7 +696,7 @@ namespace gum_tests {
     }
 
     void testStaticEvidenceImpact() {
-      std::string              file = GET_RESSOURCES_PATH("asia.bif");
+      std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
 
@@ -735,7 +735,7 @@ namespace gum_tests {
     }
 
     void testEvidenceImpactWithNames() {
-      std::string              file = GET_RESSOURCES_PATH("asia.bif");
+      std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
       gum::BayesNet< double >  bn;
       gum::BIFReader< double > reader(&bn, file);
 

@@ -86,10 +86,10 @@ namespace gum_tests {
 
     void testWriter_string() {
       gum::NetWriter< double > writer;
-      std::string file = GET_RESSOURCES_PATH("NetWriter_TestFile.net");
+      std::string file = GET_RESSOURCES_PATH("net/NetWriter_TestFile.net");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
 
-      file = GET_RESSOURCES_PATH("NetWriter_RO_TestFile.net");
+      file = GET_RESSOURCES_PATH("net/NetWriter_RO_TestFile.net");
 
       try {
         writer.write(file, *bn);
@@ -98,7 +98,7 @@ namespace gum_tests {
     }
 
     void test_isreadable() {
-      std::string file = GET_RESSOURCES_PATH("NetWriter_RO_TestFile.net");
+      std::string file = GET_RESSOURCES_PATH("net/NetWriter_RO_TestFile.net");
       gum::BayesNet< double >* net = new gum::BayesNet< double >();
 
       gum::NetReader< double > reader(net, file);

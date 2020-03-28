@@ -44,7 +44,7 @@ namespace gum_tests {
   class NetReaderTestSuite: public CxxTest::TestSuite {
     public:
     void testConstuctor() {
-      std::string file = GET_RESSOURCES_PATH("test1.net");
+      std::string file = GET_RESSOURCES_PATH("net/test1.net");
 
       gum::BayesNet< double > net;
 
@@ -57,7 +57,7 @@ namespace gum_tests {
     }
 
     void testRead_not_existing_file() {
-      std::string file = GET_RESSOURCES_PATH("test.net");
+      std::string file = GET_RESSOURCES_PATH("net/test.net");
 
       gum::BayesNet< double >* net = new gum::BayesNet< double >();
 
@@ -84,7 +84,7 @@ namespace gum_tests {
     }
 
     void testRead_file1() {
-      std::string file = GET_RESSOURCES_PATH("test1.net");
+      std::string file = GET_RESSOURCES_PATH("net/test1.net");
 
       gum::BayesNet< double >* net = new gum::BayesNet< double >();
 
@@ -111,7 +111,7 @@ namespace gum_tests {
     }
 
     void testRead_file2() {
-      std::string file = GET_RESSOURCES_PATH("test2.net");
+      std::string file = GET_RESSOURCES_PATH("net/test2.net");
 
       gum::BayesNet< double >* net = new gum::BayesNet< double >();
 
@@ -138,7 +138,7 @@ namespace gum_tests {
     }
 
     void testRead_file3() {
-      std::string file = GET_RESSOURCES_PATH("test3.net");
+      std::string file = GET_RESSOURCES_PATH("net/test3.net");
 
       gum::BayesNet< double >* net = new gum::BayesNet< double >();
 
@@ -165,7 +165,7 @@ namespace gum_tests {
     }
 
     void testRead_file_with_xp() {
-      std::string file = GET_RESSOURCES_PATH("bn_with_xp.net");
+      std::string file = GET_RESSOURCES_PATH("net/bn_with_xp.net");
 
       gum::BayesNet< double >* net = new gum::BayesNet< double >();
 

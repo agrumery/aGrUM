@@ -398,7 +398,7 @@ namespace gum_tests {
   void
   testAlarm() {
     // Arrange
-    std::string              file = GET_RESSOURCES_PATH("alarm.bif");
+    std::string              file = GET_RESSOURCES_PATH("bif/alarm.bif");
     gum::BayesNet< double >  bn;
     gum::BIFReader< double > reader(&bn, file);
     TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());
@@ -423,7 +423,7 @@ namespace gum_tests {
 
   void testAlarmWithHardEvidence() {
     // Arrange
-    std::string              file = GET_RESSOURCES_PATH("alarm.bif");
+    std::string              file = GET_RESSOURCES_PATH("bif/alarm.bif");
     gum::BayesNet< double >  bn;
     gum::BIFReader< double > reader(&bn, file);
     TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());
@@ -453,7 +453,7 @@ namespace gum_tests {
 
   void testAlarmWithSoftEvidence() {
     // Arrange
-    std::string              file = GET_RESSOURCES_PATH("alarm.bif");
+    std::string              file = GET_RESSOURCES_PATH("bif/alarm.bif");
     gum::BayesNet< double >  bn;
     gum::BIFReader< double > reader(&bn, file);
     TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());
@@ -494,7 +494,7 @@ namespace gum_tests {
 
   void testAsia() {
     // Arrange
-    std::string              file = GET_RESSOURCES_PATH("asia.bif");
+    std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
     gum::BayesNet< double >  bn;
     gum::BIFReader< double > reader(&bn, file);
     TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());
@@ -521,7 +521,7 @@ namespace gum_tests {
 
   void testAsiaWithHardEvidence() {
     // Arrange
-    std::string              file = GET_RESSOURCES_PATH("asia.bif");
+    std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
     gum::BayesNet< double >  bn;
     gum::BIFReader< double > reader(&bn, file);
     TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());
@@ -554,7 +554,7 @@ namespace gum_tests {
 
   void testAsiaWithSoftEvidence() {
     // Arrange
-    std::string              file = GET_RESSOURCES_PATH("asia.bif");
+    std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
     gum::BayesNet< double >  bn;
     gum::BIFReader< double > reader(&bn, file);
     TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());

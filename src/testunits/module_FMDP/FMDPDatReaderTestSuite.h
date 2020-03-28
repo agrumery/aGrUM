@@ -57,13 +57,13 @@ namespace gum_tests {
 
 
       std::ofstream __traceAlgoSaveFile;
-      __traceAlgoSaveFile.open(GET_RESSOURCES_PATH("FMDP/FMDPDatRead.dot"),
+      __traceAlgoSaveFile.open(GET_RESSOURCES_PATH("outputs/FMDPDatRead.dot"),
                                std::ios::out | std::ios::trunc);
       if (!__traceAlgoSaveFile) return;
       TS_GUM_ASSERT_THROWS_NOTHING(__traceAlgoSaveFile << fmdp.toString());
       __traceAlgoSaveFile.close();
 
-      int deletedFile = std::remove(GET_RESSOURCES_PATH("FMDP/FMDPDatRead.dot"));
+      int deletedFile = std::remove(GET_RESSOURCES_PATH("outputs/FMDPDatRead.dot"));
       if (deletedFile != 0)
         std::cout << "Couldn't delete output file." << std::endl;
 

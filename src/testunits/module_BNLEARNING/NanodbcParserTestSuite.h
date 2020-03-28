@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include <iostream>
-#include <ressources/myalloc.h>
+#include <ressources/include/myalloc.h>
 #include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
@@ -176,7 +176,7 @@ namespace gum_tests {
       try {
         const std::string connection_string =
           "Driver=" + driver_name + ";Database=" +
-          GET_RESSOURCES_PATH("alarm.sqlite") + ";";
+          GET_RESSOURCES_PATH("sqlite/alarm.sqlite") + ";";
 
         const std::string current_locale = std::setlocale(LC_NUMERIC, NULL);
         nanodbc::connection connection(connection_string, 0);
@@ -201,7 +201,7 @@ namespace gum_tests {
       try {
         const std::string connection_string =
           "Driver=" + driver_name + ";Database=" +
-          GET_RESSOURCES_PATH("asia.sqlite") + ";";
+          GET_RESSOURCES_PATH("sqlite/asia.sqlite") + ";";
 
         // the database contains the following rows:
         // smoking lung_cancer bronchitis visit_to_Asia tuberculosis

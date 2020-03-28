@@ -108,10 +108,10 @@ namespace gum_tests {
 
     void testWriter_string() {
       gum::GeneralizedCNFWriter< double > writer;
-      std::string file = GET_RESSOURCES_PATH("O2CNFWriter_TestFile.cnf");
+      std::string file = GET_RESSOURCES_PATH("outputs/O2CNFWriter_TestFile.cnf");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
 
-      file = GET_RESSOURCES_PATH("O2CNFWriter_RO_TestFile.cnf");
+      file = GET_RESSOURCES_PATH("outputs/O2CNFWriter_RO_TestFile.cnf");
 
       try {
         writer.write(file, *bn);
@@ -125,9 +125,9 @@ namespace gum_tests {
       writer.setLowLimit(0);
       writer.setHighLimit(1);
       std::string file =
-         GET_RESSOURCES_PATH("O2CNFWriter_TestFile_Approximation.cnf");
+         GET_RESSOURCES_PATH("outputs/O2CNFWriter_TestFile_Approximation.cnf");
       TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
-      file = GET_RESSOURCES_PATH("O2CNFWriter_RO_TestFile_Approximation.cnf");
+      file = GET_RESSOURCES_PATH("outputs/O2CNFWriter_RO_TestFile_Approximation.cnf");
 
       try {
         writer.write(file, *bn);

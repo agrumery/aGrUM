@@ -24,7 +24,7 @@
 
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
-#include <ressources/myalloc.h>
+#include <ressources/include/myalloc.h>
 
 #include <agrum/tools/core/math/math.h>
 #include <agrum/tools/core/math/gammaLog2.h>

@@ -124,7 +124,7 @@ namespace gum_tests {
     public:
     void test_Ixy_NoCorr() {
       gum::learning::DBInitializerFromCSV<> initializer(
-         GET_RESSOURCES_PATH("asia.csv"));
+         GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&       var_names = initializer.variableNames();
       const std::size_t nb_vars = var_names.size();
 
@@ -184,7 +184,7 @@ namespace gum_tests {
 
     void test_Ixy_Kmdl() {
       gum::learning::DBInitializerFromCSV<> initializer(
-         GET_RESSOURCES_PATH("asia.csv"));
+         GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&       var_names = initializer.variableNames();
       const std::size_t nb_vars = var_names.size();
 

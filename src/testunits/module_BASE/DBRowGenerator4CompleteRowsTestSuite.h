@@ -23,7 +23,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 #include <iostream>
-#include <ressources/mygenerator.h>
+#include <ressources/include/mygenerator.h>
 
 #include <agrum/tools/database/DBRowGenerator4CompleteRows.h>
 

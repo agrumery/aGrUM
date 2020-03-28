@@ -350,7 +350,7 @@ namespace gum_tests {
 
     void testGibbsApproxAsia() {
       gum::BayesNet< double >  bn;
-      gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("asia.bif"));
+      gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/asia.bif"));
       gum::Size                nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
       TS_ASSERT(nbrErr == gum::Size(0));
@@ -374,7 +374,7 @@ namespace gum_tests {
 
     void testGibbsApproxInfListener() {
       gum::BayesNet< double >  bn;
-      gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("alarm.bif"));
+      gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = gum::Size(0);
       TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
       TS_ASSERT(nbrErr == gum::Size(0));

@@ -58,7 +58,7 @@ namespace gum_tests {
     public:
     void test_asia() {
       gum::learning::DBInitializerFromCSV<> initializer(
-         GET_RESSOURCES_PATH("asia.csv"));
+         GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&       var_names = initializer.variableNames();
       const std::size_t nb_vars = var_names.size();
 
@@ -116,7 +116,7 @@ namespace gum_tests {
 
     /*
     void xtest_alarm1() {
-      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("alarm.csv"));
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("csv/alarm.csv"));
 
       gum::learning::DBRowTranslatorSet<
         gum::learning::CellTranslatorCompactIntId >
@@ -174,7 +174,7 @@ namespace gum_tests {
     }
 
     void xtest_alarm2() {
-      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("alarm.csv"));
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("csv/alarm.csv"));
 
       gum::learning::DBRowTranslatorSet<
         gum::learning::CellTranslatorCompactIntId >
@@ -233,7 +233,7 @@ namespace gum_tests {
     }
 
     void xtest_alarm3() {
-      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("alarm.csv"));
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("csv/alarm.csv"));
 
       gum::learning::DBRowTranslatorSet< gum::learning::DBCellTranslator< 1, 1 > >
         translators;

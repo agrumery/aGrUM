@@ -70,7 +70,7 @@ namespace gum_tests {
   class BIFXMLIDReaderTestSuite: public CxxTest::TestSuite {
     public:
     void testConstuctor() {
-      std::string file = GET_RESSOURCES_PATH("IDBIFXMLIO_file.xml");
+      std::string file = GET_RESSOURCES_PATH("ID/IDBIFXMLIO_file.xml");
 
       gum::InfluenceDiagram< double > net;
 
@@ -85,7 +85,7 @@ namespace gum_tests {
     }
 
     void testRead_file1() {
-      std::string file = GET_RESSOURCES_PATH("IDBIFXMLIO_file.xml");
+      std::string file = GET_RESSOURCES_PATH("ID/IDBIFXMLIO_file.xml");
 
       gum::InfluenceDiagram< double >* net = new gum::InfluenceDiagram< double >();
 
@@ -96,7 +96,7 @@ namespace gum_tests {
       TS_ASSERT(net != 0);
 
       // For comparison with what have wrote Writer
-      std::string   dotfile = GET_RESSOURCES_PATH("IDToDotReader.dot");
+      std::string   dotfile = GET_RESSOURCES_PATH("outputs/IDToDotReader.dot");
       std::ofstream output(dotfile.c_str(), std::ios::out | std::ios::trunc);
 
       if (!output.good()) {
@@ -117,7 +117,7 @@ namespace gum_tests {
     }
 
     void testRead_file2_float() {
-      std::string file = GET_RESSOURCES_PATH("IDBIFXMLIO_file.xml");
+      std::string file = GET_RESSOURCES_PATH("ID/IDBIFXMLIO_file.xml");
 
       gum::InfluenceDiagram< double >* net = new gum::InfluenceDiagram< double >();
 
@@ -365,7 +365,7 @@ namespace gum_tests {
     }
 
     void testRead_file3_float() {
-      std::string file = GET_RESSOURCES_PATH("IDBIFXMLIO_file.xml");
+      std::string file = GET_RESSOURCES_PATH("ID/IDBIFXMLIO_file.xml");
 
       gum::InfluenceDiagram< double >* net = new gum::InfluenceDiagram< double >();
 

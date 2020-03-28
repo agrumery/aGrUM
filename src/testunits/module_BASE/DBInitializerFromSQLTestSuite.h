@@ -25,9 +25,8 @@
 #include <cxxtest/testsuite_utils.h>
 #include <iostream>
 #include <locale>
-#include <ressources/learningAlloc.h>
-#include <ressources/myalloc.h>
-#include <ressources/myalloc.h>
+#include <ressources/include/learningAlloc.h>
+#include <ressources/include/myalloc.h>
 #include <string>
 #include <vector>
 
@@ -263,7 +262,7 @@ namespace gum_tests {
       try {
         const std::string connection_string =
            "Driver=" + driver_name
-           + ";Database=" + GET_RESSOURCES_PATH("asia.sqlite") + ";";
+           + ";Database=" + GET_RESSOURCES_PATH("sqlite/asia.sqlite") + ";";
         const std::string query = "select * from asia";
 
         // the database contains the following rows:

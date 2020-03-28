@@ -25,8 +25,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <ressources/myalloc.h>
-#include <ressources/learningAlloc.h>
+#include <ressources/include/myalloc.h>
+#include <ressources/include/learningAlloc.h>
 
 #include <agrum/tools/database/DBTranslatorSet.h>
 #include <agrum/tools/database/DBTranslator4LabelizedVariable.h>
