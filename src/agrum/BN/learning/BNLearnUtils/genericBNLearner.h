@@ -519,7 +519,19 @@ namespace gum {
       double logLikelihood(const std::vector< std::string >& vars,
                            const std::vector< std::string >& knowing = {});
 
+      /**
+       * Return the pseudoconts ofNodeIds vars in the base
+       * @param vars a vector of
+       * @return a Potential containing the contingency table
+       */
+      std::vector<double> pseudoCount(const std::vector<NodeId> &vars);
 
+      /**
+       * Return the pseudoconts of vars in the base
+       * @param vars a vector of name
+       * @return a Potential containing the contingency table
+       */
+      std::vector<double> pseudoCount(const std::vector<std::string> &vars);
       /**
        *
        * @return the number of cols in the database

@@ -37,6 +37,7 @@
 #include <agrum/tools/stattests/indepTestChi2.h>
 #include <agrum/tools/stattests/indepTestG2.h>
 #include <agrum/BN/learning/scores_and_tests/scoreLog2Likelihood.h>
+#include <agrum/tools/stattests/pseudoCount.h>
 
 // include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
@@ -1015,6 +1016,28 @@ namespace gum {
       return logLikelihood(ids, knowingIds);
     }
 
+    std::vector<double> genericBNLearner::pseudoCount(const std::vector<NodeId> &vars) {
+      Potential<double> res;
+
+      __createApriori();
+      gum::learning::PseudoCount<> count(
+          __score_database.parser(), *__apriori, databaseRanges());
+      return count.get(vars);
+    }
+
+
+
+    std::vector<double> genericBNLearner::pseudoCount(const std::vector<std::string> &vars) {
+      std::vector<NodeId> ids;
+
+      auto mapper = [this](const std::string &c) -> NodeId {
+        return this->idFromName(c);
+      };
+
+      std::transform(vars.begin(), vars.end(), std::back_inserter(ids), mapper);
+
+      return pseudoCount(ids);
+    }
 
   } /* namespace learning */
 
