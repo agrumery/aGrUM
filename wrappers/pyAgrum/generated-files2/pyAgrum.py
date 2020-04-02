@@ -24374,6 +24374,31 @@ class BNLearner(object):
         """
         return _pyAgrum.BNLearner_G2(self, *args)
 
+    def pseudoCount(self,vars):
+        """ access to pseudo-count (priors taken into account)
+
+        Parameters
+        ----------
+        vars : list[str]
+          a list of name of vars to add in the pseudo_count
+
+        Returns
+        -------
+        a Potential containing this pseudo-counts
+        """
+        p=Potential()
+        lv=list()
+        for i in vars:
+            if type(i) is str:
+                name=i
+            else:
+                name=self.nameFromId(i)
+            p.add(RangeVariable(name,name,0,self.domainSize(i)-1))
+            lv.append(name)
+        p.fillWith(self.rawPseudoCount(lv))
+        return p
+
+
     def setVerbosity(self, v):
         r"""
         setVerbosity(BNLearner self, bool v)
@@ -24999,6 +25024,13 @@ class BNLearner(object):
         """
         return _pyAgrum.BNLearner_logLikelihood(self, *args)
 
+    def rawPseudoCount(self, *args):
+        r"""
+        rawPseudoCount(BNLearner self, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const & vars) -> Vector
+        rawPseudoCount(BNLearner self, Vector_string vars) -> Vector
+        """
+        return _pyAgrum.BNLearner_rawPseudoCount(self, *args)
+
     def nbRows(self):
         r"""
         nbRows(BNLearner self) -> gum::Size
@@ -25028,6 +25060,13 @@ class BNLearner(object):
 
         """
         return _pyAgrum.BNLearner_nbCols(self)
+
+    def domainSize(self, *args):
+        r"""
+        domainSize(BNLearner self, gum::NodeId var) -> gum::Size
+        domainSize(BNLearner self, std::string const & var) -> gum::Size
+        """
+        return _pyAgrum.BNLearner_domainSize(self, *args)
 
     def setInitialDAG(self, g):
         r"""
