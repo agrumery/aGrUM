@@ -1016,7 +1016,7 @@ namespace gum {
       return logLikelihood(ids, knowingIds);
     }
 
-    std::vector<double> genericBNLearner::pseudoCount(const std::vector<NodeId> &vars) {
+    std::vector<double> genericBNLearner::rawPseudoCount(const std::vector<NodeId> &vars) {
       Potential<double> res;
 
       __createApriori();
@@ -1027,7 +1027,7 @@ namespace gum {
 
 
 
-    std::vector<double> genericBNLearner::pseudoCount(const std::vector<std::string> &vars) {
+    std::vector<double> genericBNLearner::rawPseudoCount(const std::vector<std::string> &vars) {
       std::vector<NodeId> ids;
 
       auto mapper = [this](const std::string &c) -> NodeId {
@@ -1036,7 +1036,7 @@ namespace gum {
 
       std::transform(vars.begin(), vars.end(), std::back_inserter(ids), mapper);
 
-      return pseudoCount(ids);
+      return rawPseudoCount(ids);
     }
 
   } /* namespace learning */

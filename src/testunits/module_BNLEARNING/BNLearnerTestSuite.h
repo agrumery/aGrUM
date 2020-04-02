@@ -1470,16 +1470,22 @@ namespace gum_tests {
 
     void testPseudoCount() {
       gum::learning::BNLearner<double> learner(GET_RESSOURCES_PATH("csv/minimal.csv"));
+      TS_ASSERT_EQUALS(learner.domainSize(0),2u);
+      TS_ASSERT_EQUALS(learner.domainSize("X"),2u);
+      TS_ASSERT_EQUALS(learner.domainSize(1),2u);
+      TS_ASSERT_EQUALS(learner.domainSize("Y"),2u);
+      TS_ASSERT_EQUALS(learner.domainSize(2),3u);
+      TS_ASSERT_EQUALS(learner.domainSize("Z"),3u);
       learner.useNoApriori();
 
-      TS_ASSERT_EQUALS(learner.pseudoCount(std::vector<gum::NodeId>({0})), std::vector<double>({3, 4}));
-      TS_ASSERT_EQUALS(learner.pseudoCount(std::vector<gum::NodeId>({0, 2})), std::vector<double>({2, 1, 1, 1, 0, 2}));
-      TS_ASSERT_EQUALS(learner.pseudoCount(std::vector<gum::NodeId>({2, 0})), std::vector<double>({2, 1, 0, 1, 1, 2}));
+      TS_ASSERT_EQUALS(learner.rawPseudoCount(std::vector<gum::NodeId>({0})), std::vector<double>({3, 4}));
+      TS_ASSERT_EQUALS(learner.rawPseudoCount(std::vector<gum::NodeId>({0, 2})), std::vector<double>({2, 1, 1, 1, 0, 2}));
+      TS_ASSERT_EQUALS(learner.rawPseudoCount(std::vector<gum::NodeId>({2, 0})), std::vector<double>({2, 1, 0, 1, 1, 2}));
 
-      TS_ASSERT_EQUALS(learner.pseudoCount(std::vector<std::string>({"X"})), std::vector<double>({3, 4}));
-      TS_ASSERT_EQUALS(learner.pseudoCount(std::vector<std::string>({"X", "Z"})),
+      TS_ASSERT_EQUALS(learner.rawPseudoCount(std::vector<std::string>({"X"})), std::vector<double>({3, 4}));
+      TS_ASSERT_EQUALS(learner.rawPseudoCount(std::vector<std::string>({"X", "Z"})),
                        std::vector<double>({2, 1, 1, 1, 0, 2}));
-      TS_ASSERT_EQUALS(learner.pseudoCount(std::vector<std::string>({"Z", "X"})),
+      TS_ASSERT_EQUALS(learner.rawPseudoCount(std::vector<std::string>({"Z", "X"})),
                        std::vector<double>({2, 1, 0, 1, 1, 2}));
     }
 

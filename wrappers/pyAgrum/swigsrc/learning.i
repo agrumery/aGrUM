@@ -103,7 +103,33 @@
   PyObject* latentVariables() {
     return PyAgrumHelper::PyListFromArcVect(self->latentVariables());
   }
-}
+
+%pythoncode {
+def pseudoCount(self,vars):
+    """ access to pseudo-count (priors taken into account)
+
+    Parameters
+    ----------
+    vars : list[str]
+      a list of name of vars to add in the pseudo_count
+
+    Returns
+    -------
+    a Potential containing this pseudo-counts
+    """
+    p=Potential()
+    lv=list()
+    for i in vars:
+        if type(i) is str:
+            name=i
+        else:
+            name=self.nameFromId(i)
+        p.add(RangeVariable(name,name,0,self.domainSize(i)-1))
+        lv.append(name)
+    p.fillWith(self.rawPseudoCount(lv))
+    return p
+  }
+};
 
 
 %pythonappend gum::learning::BNLearner< double >::learnMixedStructure %{

@@ -446,70 +446,109 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertEqual(bn.parents(bn.idFromName("Z")), {bn.idFromName("Y")})
 
 
-def test_RecordWeight(self):
-  filename = self.agrumSrcDir('src/testunits/ressources/dataW.csv')
-  bn = gum.fastBN("X->Y")
-  with open("dataW.csv", "w") as src:
-    src.write("""X,Y
-1,0
-0,1
-0,1
-0,0
-1,0
-0,1
-1,1
-0,1
+  def test_RecordWeight(self):
+    filename = self.agrumSrcDir('src/testunits/ressources/dataW.csv')
+    bn = gum.fastBN("X->Y")
+    with open(filename, "w") as src:
+      src.write("""X,Y
+  1,0
+  0,1
+  0,1
+  0,0
+  1,0
+  0,1
+  1,1
+  0,1
+  """)
+    learner = gum.BNLearner(filename)
+    bn1 = learner.learnParameters(bn.dag())
+
+    with open(filename, "w") as src:
+      src.write("""X,Y
+  0,0
+  1,0
+  0,1
+  1,1
+  """)
+    learner = gum.BNLearner(filename)
+
+    learner.setRecordWeight(1, 2.0)
+    learner.setRecordWeight(2, 4.0)
+
+    self.assertEquals(learner.recordWeight(0), 1.0)
+    self.assertEquals(learner.recordWeight(1), 2.0)
+    self.assertEquals(learner.recordWeight(2), 4.0)
+    self.assertEquals(learner.recordWeight(3), 1.0)
+
+    self.assertEquals(learner.databaseWeight(), 8)
+
+    learner.setDatabaseWeight(3.0 * learner.nbRows())
+
+    self.assertEquals(learner.recordWeight(0), 3.0)
+    self.assertEquals(learner.recordWeight(1), 3.0)
+    self.assertEquals(learner.recordWeight(2), 3.0)
+    self.assertEquals(learner.recordWeight(3), 3.0)
+
+    self.assertEquals(learner.databaseWeight(), 3.0 * learner.nbRows())
+
+    learner.setRecordWeight(1, 1.0)
+    learner.setRecordWeight(2, 1.0)
+
+    self.assertEquals(learner.recordWeight(0), 3.0)
+    self.assertEquals(learner.recordWeight(1), 1.0)
+    self.assertEquals(learner.recordWeight(2), 1.0)
+    self.assertEquals(learner.recordWeight(3), 3.0)
+
+    self.assertEquals(learner.databaseWeight(), 8)
+
+    learner = gum.BNLearner(filename)
+
+    learner.setRecordWeight(1, 2.0)
+    learner.setRecordWeight(2, 4.0)
+
+    bn2 = learner.learnParameters(bn.dag())
+    self.assertTrue(np.array_equal(bn1.cpt("X").toarray(), bn2.cpt("X").toarray()))
+    self.assertTrue(np.array_equal(bn1.cpt("Y").toarray(), bn2.cpt("Y").toarray()))
+
+  def testPseudoCount(self):
+    filename = self.agrumSrcDir('src/testunits/ressources/dataW.csv')
+    with open(filename, "w") as src:
+      src.write("""X,Y,Z
+0,1,2
+0,1,0
+0,0,2
+1,0,2
+0,1,1
+1,1,1
+0,1,1
 """)
-  learner = gum.BNLearner("dataW.csv")
-  bn1 = learner.learnParameters(bn.dag())
+    learner = gum.BNLearner(filename)
+    self.assertEqual(learner.nbRows(), 7)
+    self.assertEqual(learner.nbCols(), 3)
 
-  with open("dataW.csv", "w") as src:
-    src.write("""X,Y
-0,0
-1,0
-0,1
-1,1
-""")
-  learner = gum.BNLearner("dataW.csv")
+    self.assertEqual(learner.rawPseudoCount(["X"]),(5,2))
+    self.assertEqual(learner.rawPseudoCount(["X","Z"]),(1,0,2,1,2,1))
+    self.assertEqual(learner.rawPseudoCount(["Y","Z"]),(0,1,0,3,2,1))
 
-  learner.setRecordWeight(1, 2.0)
-  learner.setRecordWeight(2, 4.0)
+    learner.useAprioriSmoothing(0.1)
 
-  self.assertEquals(learner.recordWeight(0), 1.0)
-  self.assertEquals(learner.recordWeight(1), 2.0)
-  self.assertEquals(learner.recordWeight(2), 4.0)
-  self.assertEquals(learner.recordWeight(3), 1.0)
+    self.assertEqual(learner.rawPseudoCount(["X"]),(5.1,2.1))
+    self.assertEqual(learner.rawPseudoCount(["X","Z"]),(1.1,0.1,2.1,1.1,2.1,1.1))
+    self.assertEqual(learner.rawPseudoCount(["Y","Z"]),(0.1,1.1,0.1,3.1,2.1,1.1))
 
-  self.assertEquals(learner.databaseWeight(), 8)
 
-  learner.setDatabaseWeight(3.0 * learner.nbRows())
+    learner = gum.BNLearner(filename)
+    self.assertEqual(learner.pseudoCount(["X"]).tolist(),[5,2])
+    self.assertEqual(learner.pseudoCount(["X","Z"]).tolist(),[[1,0],[2,1],[2,1]])
+    self.assertEqual(learner.pseudoCount(["Y","Z"]).tolist(),[[0,1],[0,3],[2,1]])
+    self.assertEqual(learner.pseudoCount(["Z","Y"]).tolist(),[[0,0,2],[1,3,1]])
 
-  self.assertEquals(learner.recordWeight(0), 3.0)
-  self.assertEquals(learner.recordWeight(1), 3.0)
-  self.assertEquals(learner.recordWeight(2), 3.0)
-  self.assertEquals(learner.recordWeight(3), 3.0)
+    learner.useAprioriSmoothing(0.1)
 
-  self.assertEquals(learner.databaseWeight(), 3.0 * learner.nbRows())
-
-  learner.setRecordWeight(1, 1.0)
-  learner.setRecordWeight(2, 1.0)
-
-  self.assertEquals(learner.recordWeight(0), 3.0)
-  self.assertEquals(learner.recordWeight(1), 1.0)
-  self.assertEquals(learner.recordWeight(2), 1.0)
-  self.assertEquals(learner.recordWeight(3), 3.0)
-
-  self.assertEquals(learner.databaseWeight(), 8)
-
-  learner = gum.BNLearner("dataW.csv")
-
-  learner.setRecordWeight(1, 2.0)
-  learner.setRecordWeight(2, 4.0)
-
-  bn2 = learner.learnParameters(bn.dag())
-  self.assertTrue(np.array_equal(bn1.cpt("X").toarray(), bn2.cpt("X").toarray()))
-  self.assertTrue(np.array_equal(bn1.cpt("Y").toarray(), bn2.cpt("Y").toarray()))
-
+    self.assertEqual(learner.pseudoCount(["X"]).tolist(),[5.1,2.1])
+    self.assertEqual(learner.pseudoCount(["X","Z"]).tolist(),[[1.1,0.1],[2.1,1.1],[2.1,1.1]])
+    self.assertEqual(learner.pseudoCount(["Y","Z"]).tolist(),[[0.1,1.1],[0.1,3.1],[2.1,1.1]])
+    self.assertEqual(learner.pseudoCount(["Z","Y"]).tolist(),[[0.1,0.1,2.1],[1.1,3.1,1.1]])
 
 ts = unittest.TestSuite()
 addTests(ts, BNLearnerCSVTestCase)

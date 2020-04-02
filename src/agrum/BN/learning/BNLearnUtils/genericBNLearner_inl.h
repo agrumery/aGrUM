@@ -533,6 +533,17 @@ namespace gum {
       return __score_database.domainSizes();
     }
 
+    // returns the modalities  of a variable in the database
+    INLINE Size
+    genericBNLearner::domainSize(NodeId var ) const {
+      return __score_database.domainSizes()[var];
+    }
+    // returns the modalities  of a variables in the database
+    INLINE Size
+    genericBNLearner::domainSize(const std::string& var) const {
+      return __score_database.domainSizes()[idFromName(var)];
+    }
+
     /// returns the current database rows' ranges used for learning
     INLINE const std::vector< std::pair< std::size_t, std::size_t > >&
                  genericBNLearner::databaseRanges() const {

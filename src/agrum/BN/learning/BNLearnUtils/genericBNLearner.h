@@ -374,6 +374,8 @@ namespace gum {
 
       /// returns the domain sizes of the variables in the database
       const std::vector< std::size_t >& domainSizes() const;
+      Size domainSize(NodeId var) const;
+      Size domainSize(const std::string& var) const;
 
       /// returns the node id corresponding to a variable name
       /**
@@ -520,18 +522,18 @@ namespace gum {
                            const std::vector< std::string >& knowing = {});
 
       /**
-       * Return the pseudoconts ofNodeIds vars in the base
+       * Return the pseudoconts ofNodeIds vars in the base in a raw array
        * @param vars a vector of
-       * @return a Potential containing the contingency table
+       * @return a a std::vector<double> containing the contingency table
        */
-      std::vector<double> pseudoCount(const std::vector<NodeId> &vars);
+      std::vector<double> rawPseudoCount(const std::vector<NodeId> &vars);
 
       /**
-       * Return the pseudoconts of vars in the base
+       * Return the pseudoconts of vars in the base in a raw array
        * @param vars a vector of name
-       * @return a Potential containing the contingency table
+       * @return a std::vector<double> containing the contingency table
        */
-      std::vector<double> pseudoCount(const std::vector<std::string> &vars);
+      std::vector<double> rawPseudoCount(const std::vector<std::string> &vars);
       /**
        *
        * @return the number of cols in the database
