@@ -38,8 +38,6 @@ wrappers/pyAgrum/pyLibs/notebooks/data2.csv
 wrappers/pyAgrum/pyLibs/notebooks/database.csv
 wrappers/pyAgrum/pyLibs/notebooks/dirichlet.csv
 wrappers/pyAgrum/pyLibs/notebooks/res/EM.csv
-wrappers/pyAgrum/testunits/database.csv
-wrappers/pyAgrum/testunits/dirichlet.csv
 
 
 #other resources
@@ -53,7 +51,10 @@ wrappers/pyAgrum/pyLibs/notebooks/out/*.png
 wrappers/pyAgrum/pyLibs/notebooks/out/WaterSprinkler.*
 wrappers/pyAgrum/pyLibs/notebooks/out/*.csv
 wrappers/pyAgrum/pyLibs/notebooks/out/*.html
+wrappers/pyAgrum/testunits/resources/database.csv
+wrappers/pyAgrum/testunits/resources/dirichlet.csv
 wrappers/pyAgrum/testunits/resources/genere.csv
+wrappers/pyAgrum/testunits/resources/dataW.csv
 wrappers/pyAgrum/testunits/resources/o3prm/BNO3PRMIO_file.o3prm
 wrappers/pyAgrum/pyLibs/notebooks/res/titanic/*.png
 apps/pyAgrum/pyLibs/notebooks/*.png

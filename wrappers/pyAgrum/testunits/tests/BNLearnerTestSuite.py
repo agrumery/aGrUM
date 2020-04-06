@@ -215,13 +215,13 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
   def test_dirichlet(self):
     bn = gum.fastBN("A->B<-C->D->E<-B")
-    gum.generateCSV(bn, "dirichlet.csv", 2000, with_labels=True)
+    gum.generateCSV(bn, "resources/dirichlet.csv", 2000, with_labels=True)
 
     bn2 = gum.fastBN("A->B->C->D->E")
-    gum.generateCSV(bn2, "database.csv", 2000, with_labels=True)
+    gum.generateCSV(bn2, "resources/database.csv", 2000, with_labels=True)
 
-    learner = gum.BNLearner("database.csv", bn)  # bn is used to give the variables and their domains
-    learner.useAprioriDirichlet("dirichlet.csv", 10)
+    learner = gum.BNLearner("resources/database.csv", bn)  # bn is used to give the variables and their domains
+    learner.useAprioriDirichlet("resources/dirichlet.csv", 10)
     learner.useScoreAIC()  # or another score with no included prior such as BDeu
 
     bn3 = learner.learnBN()
