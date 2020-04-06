@@ -121,7 +121,10 @@ namespace gum {
       GUM_ERROR(OperationNotAllowed, "No inference have yet been made");
 
     Instantiation res(__inferenceUtility);
-    return __inferenceUtility->get(res);
+    auto poe=__inferencePotential->get(res);
+    if (poe==GUM_SCALAR(0))
+    GUM_ERROR(OperationNotAllowed, "Probability of evidence is null !");
+    return __inferenceUtility->get(res)/poe;
   }
 
   // getBestDecisionChoice : Returns for given decision node the best decision
@@ -485,13 +488,11 @@ namespace gum {
   // __reduceClique : Performs a clique reduction
 
   // This operations consists in eliminating each variable of the clique wich
-  // are not
-  // in the separtor between this clique and its parent clique.
+  // are not in the separator between this clique and its parent clique.
   // Variable elimination is done by performing the correct marging operation on
   // clique potential. That operation is determined by the nature
-  // of currently eleminated variable : if its a chance variable, we sum over
-  // its
-  // modalities, if its a decision node we maximise over its modalities.
+  // of currently eliminated variable : if its a chance variable, we sum over
+  // its modalities, if its a decision node we maximise over its modalities.
   template < typename GUM_SCALAR >
   INLINE void InfluenceDiagramInference< GUM_SCALAR >::__reduceClique(
      CliqueProperties< GUM_SCALAR >* absorbedClique,
@@ -504,7 +505,7 @@ namespace gum {
 
     // So for each variable of that clique ...
     for (const auto node: absorbedClique->cliqueEliminationOrder()) {
-      // if it's not on separtor with its parent
+      // if it's not on separator with its parent
       if (!separator.contains(node)) {
         // Initialisation Operations
 
@@ -513,8 +514,7 @@ namespace gum {
         Potential< GUM_SCALAR >* newUtility = new Potential< GUM_SCALAR >();
 
         // Then we need to add all not yet eliminated variables of the clique in
-        // ours
-        // new table
+        // our new table
         cliqueRemainVarList.erase(&(this->influenceDiagram().variable(node)));
 
         for (const auto remain: cliqueRemainVarList) {
@@ -615,11 +615,11 @@ namespace gum {
 
         //=====================================================================================
         // Updates of tables
-        if (potentialMarginal != 0) delete potentialMarginal;
+        if (potentialMarginal != nullptr) delete potentialMarginal;
 
         potentialMarginal = newPotential;
 
-        if (utilityMarginal != 0) delete utilityMarginal;
+        if (utilityMarginal != nullptr) delete utilityMarginal;
 
         utilityMarginal = newUtility;
 
@@ -636,14 +636,14 @@ namespace gum {
   INLINE Potential< GUM_SCALAR >*
          InfluenceDiagramInference< GUM_SCALAR >::__makeDummyPotential(
         NodeId cliqueId) {
-    Potential< GUM_SCALAR >* pot = new Potential< GUM_SCALAR >(
-       new MultiDimSparse< GUM_SCALAR >((GUM_SCALAR)1));
-    __potentialDummies.insert(pot);
+    Potential< GUM_SCALAR >* pot = new Potential< GUM_SCALAR >();
 
     for (const auto cliqueNode: __triangulation->junctionTree().clique(cliqueId))
       pot->add(this->influenceDiagram().variable(cliqueNode));
-
+    pot->fill(GUM_SCALAR(1));
     pot->normalize();
+
+    __potentialDummies.insert(pot);
     return pot;
   }
 
@@ -652,13 +652,13 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR >*
          InfluenceDiagramInference< GUM_SCALAR >::__makeDummyUtility(NodeId cliqueId) {
-    Potential< GUM_SCALAR >* ut = new Potential< GUM_SCALAR >(
-       new MultiDimSparse< GUM_SCALAR >((GUM_SCALAR)0));
-    __utilityDummies.insert(ut);
+    Potential< GUM_SCALAR >* ut = new Potential< GUM_SCALAR >();
 
     for (const auto cliqueNode: __triangulation->junctionTree().clique(cliqueId))
       ut->add(this->influenceDiagram().variable(cliqueNode));
 
+    ut->fill(GUM_SCALAR(0));
+    __utilityDummies.insert(ut);
     return ut;
   }
 

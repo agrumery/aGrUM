@@ -476,5 +476,40 @@ namespace gum_tests {
 
       TS_ASSERT_THROWS(diag.addArc("titi","toto"),gum::NotFound);
     }
+
+    void testFromBug() {
+      gum::InfluenceDiagram<double> tst_id;
+
+      auto c = tst_id.add(gum::LabelizedVariable("c", "chance variable", 2));
+      auto c1 = tst_id.add(gum::LabelizedVariable("c1", "chance variable 1", 2));
+      auto d = tst_id.addDecisionNode(gum::LabelizedVariable("d", "decision variable", 2));
+      auto u = tst_id.addUtilityNode(gum::LabelizedVariable("u", "decision variable", 1));
+
+      tst_id.addArc(c, u);
+      tst_id.addArc(c, c1);
+      tst_id.addArc(d, u);
+
+      tst_id.cpt(c).populate({0.5f, 0.5f});
+      tst_id.cpt(c1).populate({1, 0,0, 1});
+      tst_id.utility(u).populate({10,100,21,200});
+      {
+        gum::InfluenceDiagramInference<double> inf(tst_id);
+        inf.makeInference();
+        TS_ASSERT_EQUALS(inf.getBestDecisionChoice(d), 1u);
+        TS_ASSERT_EQUALS(inf.getMEU(), 110.5);
+      }
+      {
+        gum::InfluenceDiagramInference<double> inf(tst_id);
+        gum::Potential<double> evidence;
+        evidence.add(tst_id.variableFromName("c"));
+        evidence.populate({1, 0});
+        gum::List<const gum::Potential<double> *> l;
+        l.insert(&evidence);
+        inf.insertEvidence(l);
+        inf.makeInference();
+        TS_ASSERT_EQUALS(inf.getBestDecisionChoice(d),1u);
+        TS_ASSERT_EQUALS(inf.getMEU(),21);
+      }
+    }
   };
 }
