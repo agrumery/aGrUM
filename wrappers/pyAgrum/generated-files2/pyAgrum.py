@@ -23383,9 +23383,10 @@ class InfluenceDiagram(DAGmodel):
         """
         return _pyAgrum.InfluenceDiagram_toDot(self)
 
-    def cpt(self, varId):
+    def cpt(self, *args):
         r"""
         cpt(InfluenceDiagram self, gum::NodeId varId) -> Potential
+        cpt(InfluenceDiagram self, std::string name) -> Potential
 
         Returns the CPT of a variable.
 
@@ -23405,11 +23406,12 @@ class InfluenceDiagram(DAGmodel):
         	If no variable's id matches varId. 
 
         """
-        return _pyAgrum.InfluenceDiagram_cpt(self, varId)
+        return _pyAgrum.InfluenceDiagram_cpt(self, *args)
 
-    def utility(self, varId):
+    def utility(self, *args):
         r"""
         utility(InfluenceDiagram self, gum::NodeId varId) -> Potential
+        utility(InfluenceDiagram self, std::string name) -> Potential
 
         Parameters
         ----------
@@ -23427,7 +23429,7 @@ class InfluenceDiagram(DAGmodel):
         	If the InfluenceDiagram does not contain the variable
 
         """
-        return _pyAgrum.InfluenceDiagram_utility(self, varId)
+        return _pyAgrum.InfluenceDiagram_utility(self, *args)
 
     def isUtilityNode(self, *args):
         r"""
@@ -24036,9 +24038,10 @@ class InfluenceDiagramInference(object):
         """
         return _pyAgrum.InfluenceDiagramInference_getMEU(self)
 
-    def getBestDecisionChoice(self, decisionId):
+    def getBestDecisionChoice(self, *args):
         r"""
         getBestDecisionChoice(InfluenceDiagramInference self, gum::NodeId decisionId) -> gum::Idx
+        getBestDecisionChoice(InfluenceDiagramInference self, std::string decisionName) -> gum::Idx
 
         Returns best choice for decision variable given in parameter ( based upon MEU criteria )
 
@@ -24055,7 +24058,7 @@ class InfluenceDiagramInference(object):
         	If node given in parmaeter is not a decision node 
 
         """
-        return _pyAgrum.InfluenceDiagramInference_getBestDecisionChoice(self, decisionId)
+        return _pyAgrum.InfluenceDiagramInference_getBestDecisionChoice(self, *args)
 
     def displayResult(self):
         r"""
