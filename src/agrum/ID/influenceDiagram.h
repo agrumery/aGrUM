@@ -99,12 +99,18 @@ namespace gum {
      * @throw NotFound If no variable's id matches varId.
      */
     virtual const Potential< GUM_SCALAR >& cpt(NodeId varId) const;
+    virtual const Potential< GUM_SCALAR >& cpt(std::string name) const final{
+      return cpt(idFromName(name));
+    };
 
     /**
      * Returns the utility table of a utility node.
      * @throw NotFound If no variable's id matches varId.
      */
     virtual const Potential< GUM_SCALAR >& utility(NodeId varId) const;
+    virtual const Potential< GUM_SCALAR >& utility(std::string name) const final {
+      return utility(idFromName(name));
+    };
 
     /**
      * Returns a constant reference to the VariableNodeMap of this Influence
@@ -273,7 +279,7 @@ namespace gum {
      * @param id The id of the variable to erase.
      */
     void erase(NodeId id);
-    void erase(const std::string& name) { erase(variableFromName(name)); };
+    void erase(const std::string& name) { erase(idFromName(name)); };
 
     /**
      * Erase a Variable from the network and remove the variable from

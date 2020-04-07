@@ -96,6 +96,9 @@ namespace gum {
     /// @see gum::IInfluenceDiagramInference::getBestDecisionChoice( NodeId
     /// decisionId )
     Idx getBestDecisionChoice(NodeId decisionId);
+    Idx getBestDecisionChoice(std::string decisionName) {
+      return getBestDecisionChoice(this->influenceDiagram().idFromName(decisionName));
+    };
 
     /// displays the result of an inference
     std::string displayResult();
