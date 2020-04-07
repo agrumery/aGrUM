@@ -150,8 +150,7 @@ namespace gum {
     if (!__inferenceMade)
       GUM_ERROR(OperationNotAllowed, "No inference have yet been made");
 
-    stream << "max EU : " << std::endl;
-    stream << *__inferenceUtility << std::endl;
+    stream << "max EU : " << getMEU() << std::endl;
 
     stream << "Best choices : " << std::endl;
 
