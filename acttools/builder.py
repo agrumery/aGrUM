@@ -132,7 +132,8 @@ def getNbrOfJobs(jobrequest):
         else:
           return str(nbrJob)
       except ValueError:
-        return 1
+        notif("Option '-j "+jobrequest+"' is invalid. Using '-j halfexcept1'.")
+        return getNbrOfJobs("halfexcept1")
 
 
 def getForMsBuildSystem(current, target):
@@ -161,7 +162,7 @@ def getForMsBuildSystem(current, target):
 def getForMakeSystem(current, target):
   line = cfg.make
 
-  nbrJobs=getNbrOfJobs(current['jobs'])
+  nbrJobs=str(getNbrOfJobs(current['jobs']))
   notif("Compilation using  ["+nbrJobs+"] jobs.")
 
   if current["action"] == "test":
