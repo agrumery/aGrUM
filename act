@@ -57,7 +57,7 @@ def main():
   about()
 
   if msvcForced:
-    notif("Options [static] and [no-fun] forced by option [mvsc], [mvsc32] or [mvsc17] or [mvsc17_32] or [mvsc19] or [mvsc19_32]")
+    notif("Options [static] and [no-fun] forced by option [mvsc*]")
     print()
 
   if mingwForced:
