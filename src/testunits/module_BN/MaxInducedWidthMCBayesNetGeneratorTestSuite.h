@@ -1,8 +1,8 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
- *   info_at_agrum_dot_org
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES
+ * (@AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -123,15 +123,23 @@ namespace gum_tests {
 
     void testDisturbBNFloatCPT() {
       int nbrtests = 0;
-      try {
-        gum::MaxInducedWidthMCBayesNetGenerator< double > gen(
-           30, 100, 8, 30, 40, 50);
-        gum::BayesNet< double > bn;
-        gen.generateBN(bn);
-        gen.disturbBN(bn);
-      } catch (gum::Exception& e) {
-        nbrtests++;
-        if (nbrtests > 10) { TS_ASSERT(false); }
+      while (true) {
+        try {
+          gum::MaxInducedWidthMCBayesNetGenerator< double > gen(
+             30, 100, 8, 30, 40, 50);
+          gum::BayesNet< double > bn;
+          gen.generateBN(bn);
+          gen.disturbBN(bn);
+          GUM_UNUSED(bn);
+          return;
+        } catch (gum::Exception& e) {
+          GUM_UNUSED(e);
+          nbrtests++;
+          if (nbrtests > 10) {
+            TS_ASSERT(false);
+            return;
+          }
+        }
       }
     }
 

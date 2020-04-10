@@ -1,8 +1,8 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
- *   info_at_agrum_dot_org
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES
+ * (@AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -98,7 +98,7 @@ namespace gum_tests {
     gum::Potential< double >*
        proj(const gum::Potential< double >&                 table,
             const gum::Set< const gum::DiscreteVariable* >& del_vars,
-            float                                           neutral_elt) {
+            double                                          neutral_elt) {
       gum::Potential< double >* result = new gum::Potential< double >;
 
       const gum::Sequence< const gum::DiscreteVariable* >& vars =
@@ -114,8 +114,8 @@ namespace gum_tests {
       gum::Instantiation inst(table);
 
       for (inst.setFirst(); !inst.end(); ++inst) {
-        float xxx = result->get(inst);
-        float yyy = table[inst];
+        double xxx = result->get(inst);
+        double yyy = table[inst];
         result->set(inst, xxx > yyy ? xxx : yyy);
       }
 

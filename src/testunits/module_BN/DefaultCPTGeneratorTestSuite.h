@@ -1,8 +1,8 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
- *   info_at_agrum_dot_org
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES
+ * (@AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -150,7 +150,7 @@ namespace gum_tests {
          aCPTGen.generateCPT(rootPot1F->pos(*binVar1), *rootPot1F));
 
       gum::Instantiation inst(*rootPot1F);
-      float              sum = (float)0;
+      double             sum = (float)0;
 
       for (inst.setFirst(); !inst.end(); inst.inc()) {
         TS_ASSERT(((*rootPot1F)[inst] >= (float)0)
@@ -194,7 +194,7 @@ namespace gum_tests {
       // for (int i = 0; i < 80; ++i) std::cout << "#";
 
       for (inst.setFirstOut(instVar1); !inst.end(); inst.incOut(instVar1)) {
-        float sum = (float)0;
+        double sum = (double)0;
 
         for (inst.setFirstIn(instVar1); !inst.end(); inst.incIn(instVar1)) {
           TS_ASSERT(((*pot1F)[inst] >= (float)0) && ((*pot1F)[inst] <= (float)1));
@@ -223,7 +223,7 @@ namespace gum_tests {
       // for (int i = 0; i < 80; ++i) std::cout << "#";
 
       for (inst.setFirstOut(instVar1); !inst.end(); inst.incOut(instVar1)) {
-        float sum = (float)0;
+        double sum = (double)0;
 
         for (inst.setFirstIn(instVar1); !inst.end(); inst.incIn(instVar1)) {
           TS_ASSERT(((*pot2F)[inst] >= (float)0) && ((*pot2F)[inst] <= (float)1));
@@ -295,7 +295,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(cptGen.generateCPT(aPot.pos(aVar), aPot));
 
         gum::Instantiation inst(aPot);
-        float              sum = (float)0;
+        double              sum = (double)0;
 
         for (inst.setFirst(); !inst.end(); inst.inc()) {
           sum += aPot[inst];
@@ -314,13 +314,13 @@ namespace gum_tests {
       gum::Instantiation inst(*pot3F);
 
       for (inst.setFirstOut(instVar3); !inst.end(); inst.incOut(instVar3)) {
-        float sum = (float)0;
+        double sum = (double)0;
 
         for (inst.setFirstIn(instVar3); !inst.end(); inst.incIn(instVar3)) {
           sum += (*pot3F)[inst];
         }
 
-        TS_ASSERT_DELTA((float)1, sum, 0.0001);
+        TS_ASSERT_DELTA((double)1, sum, 0.0001);
 
         inst.unsetEnd();
       }

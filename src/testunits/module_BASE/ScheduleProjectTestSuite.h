@@ -113,7 +113,7 @@ namespace gum_tests {
     gum::Potential< double >*
        proj(const gum::Potential< double >&                 table,
             const gum::Set< const gum::DiscreteVariable* >& del_vars,
-            float                                           neutral_elt) {
+            double                                           neutral_elt) {
       gum::Potential< double >* result = new gum::Potential< double >;
       const gum::Sequence< const gum::DiscreteVariable* >& vars =
          table.variablesSequence();
@@ -128,8 +128,8 @@ namespace gum_tests {
       gum::Instantiation inst(table);
 
       for (inst.setFirst(); !inst.end(); ++inst) {
-        float xxx = result->get(inst);
-        float yyy = table[inst];
+        double xxx = result->get(inst);
+        double yyy = table[inst];
         result->set(inst, xxx > yyy ? xxx : yyy);
       }
 

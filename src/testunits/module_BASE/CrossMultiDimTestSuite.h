@@ -47,7 +47,7 @@ namespace gum_tests {
       gum::Instantiation i(agg);
 
       for (i.setFirst(); !i.end(); ++i) {
-        float res = agg[i];
+        double res = agg[i];
         full.set(i, res);
         sparse.set(i, res);
       }

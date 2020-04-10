@@ -300,7 +300,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(I.toString(), "<v1:0|v3:0|v6:0>");
 
       while (!I.end()) {
-        float p = bn.cpt(bn.idFromName("v1"))[I] * bn.cpt(bn.idFromName("v3"))[I]
+        double p = bn.cpt(bn.idFromName("v1"))[I] * bn.cpt(bn.idFromName("v3"))[I]
                   * bn.cpt(bn.idFromName("v6"))[I];
         TS_ASSERT_DELTA(frag.jointProbability(I), p, 1e-5);
         TS_ASSERT_DELTA(frag.log2JointProbability(I), log2(p), 1e-5);
@@ -364,7 +364,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(I.toString(), "<v1:0|v3:0|v6:0>");
 
       while (!I.end()) {
-        float p = bn.cpt("v1")[I] * bn.cpt("v3")[I] * bn.cpt("v6")[I];
+        double p = bn.cpt("v1")[I] * bn.cpt("v3")[I] * bn.cpt("v6")[I];
         TS_ASSERT_DELTA(frag.jointProbability(I), p, 1e-5);
         TS_ASSERT_DELTA(frag.log2JointProbability(I), log2(p), 1e-5);
         ++I;

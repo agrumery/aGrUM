@@ -1,8 +1,8 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
- *   info_at_agrum_dot_org
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES
+ * (@AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -97,28 +97,47 @@ namespace gum_tests {
 
     void testGenerationfromBNDouble() {
       int nbrtests = 0;
-      try {
-        gum::MCBayesNetGenerator< double > gen(30, 100, 5, 30, 40, 50);
+      while (true) {
+        try {
+          gum::MCBayesNetGenerator< double > gen(30, 100, 5, 30, 40, 50);
 
-        gum::BayesNet< double > bn;
-        gen.generateBN(bn);
-        gum::MCBayesNetGenerator< double > gen2(bn, 30, 40, 50);
-      } catch (gum::Exception& e) {
-        nbrtests++;
-        if (nbrtests > 10) { TS_ASSERT(false); }
+          gum::BayesNet< double > bn;
+          gen.generateBN(bn);
+
+          gum::MCBayesNetGenerator< double > gen2(30, 40, 50, 30);
+          gen2.generateBN(bn);
+          GUM_UNUSED(bn);
+          return;
+        } catch (gum::Exception& e) {
+          GUM_UNUSED(e);
+          nbrtests++;
+          if (nbrtests > 10) {
+            TS_ASSERT(false);
+            return;
+          }
+        }
+        GUM_UNUSED(nbrtests);
       }
     }
 
     void testDisturbBNFloatCPT() {
       int nbrtests = 0;
-      try {
-        gum::MCBayesNetGenerator< float > gen(30, 60, 3, 30, 40, 50);
-        gum::BayesNet< float >            bn;
-        gen.generateBN(bn);
-        gen.disturbBN(bn);
-      } catch (gum::Exception& e) {
-        nbrtests++;
-        if (nbrtests > 10) { TS_ASSERT(false); }
+      while (true) {
+        try {
+          gum::MCBayesNetGenerator< float > gen(30, 60, 3, 30, 40, 50);
+          gum::BayesNet< float >            bn;
+          gen.generateBN(bn);
+          gen.disturbBN(bn);
+          GUM_UNUSED(bn);
+          return;   // first OK : go
+        } catch (gum::Exception& e) {
+          GUM_UNUSED(e);
+          nbrtests++;
+          if (nbrtests > 10) {
+            TS_ASSERT(false);
+            return;
+          }
+        }
       }
     }
 
