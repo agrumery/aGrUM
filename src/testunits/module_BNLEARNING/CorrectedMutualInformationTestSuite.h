@@ -42,10 +42,10 @@ namespace gum_tests {
       for (auto nb: vect) {
         if (nb) {
           res -= nb * std::log2(nb);
-          sum += nb;
+          sum+=nb;
         }
       }
-      res += sum * std::log2(sum);
+      res+=sum*std::log2(sum);
       return res;
     }
 
@@ -78,9 +78,10 @@ namespace gum_tests {
                const gum::NodeId                            id,
                const std::vector< gum::NodeId >&            cond) {
       gum::learning::RecordCounter<> counter(parser);
-      return __entropy(counter.counts(gum::learning::IdCondSet<>(id, cond, true)))
-             - __entropy(
-                counter.counts(gum::learning::IdCondSet<>(cond, false, true)));
+      const auto h1=__entropy(counter.counts(gum::learning::IdCondSet<>(id, cond, true)));
+      gum::learning::RecordCounter<> counter2(parser);
+      const auto h2=__entropy(counter2.counts(gum::learning::IdCondSet<>(cond, false, true)));
+      return h1-h2 ;
     }
 
     double __H(const gum::learning::DBRowGeneratorParser<>& parser,
@@ -88,18 +89,22 @@ namespace gum_tests {
                const gum::NodeId                            id2,
                const std::vector< gum::NodeId >&            cond) {
       gum::learning::RecordCounter<> counter(parser);
-      return __entropy(
-                counter.counts(gum::learning::IdCondSet<>(id1, id2, cond, true, true)))
-             - __entropy(
-                counter.counts(gum::learning::IdCondSet<>(cond, false, true)));
+      const auto hh1=__entropy(counter.counts(gum::learning::IdCondSet<>(id1, id2, cond, true, true)));
+
+      gum::learning::RecordCounter<> counter2(parser);
+      const auto hh2=__entropy(counter2.counts(gum::learning::IdCondSet<>(cond, false, true)));
+
+      return hh1-hh2;
     }
 
     double __I(const gum::learning::DBRowGeneratorParser<>& parser,
                const gum::NodeId                            id1,
                const gum::NodeId                            id2,
                const std::vector< gum::NodeId >&            cond) {
-      return __H(parser, id1, cond) + __H(parser, id2, cond)
-             - __H(parser, id1, id2, cond);
+      const auto h1=__H(parser, id1, cond);
+      const auto h2=__H(parser, id2, cond);
+      const auto h12=__H(parser, id1, id2, cond);
+      return  h1+h2-h12;
     }
 
     double __I(const gum::learning::DBRowGeneratorParser<>& parser,
@@ -145,14 +150,15 @@ namespace gum_tests {
       gum::learning::CorrectedMutualInformation<> score(parser, apriori);
       score.useNoCorr();
 
-      TS_ASSERT_DELTA(score.score(2, 6), __I(parser, 2, 6), 0.001);
-      TS_ASSERT_DELTA(score.score(4, 7), __I(parser, 4, 7), 0.001);
       TS_ASSERT_DELTA(score.score(1, 6, std::vector< gum::NodeId >{0}),
                       __I(parser, 1, 6, std::vector< gum::NodeId >{0}),
                       0.001);
+
       TS_ASSERT_DELTA(score.score(2, 6, std::vector< gum::NodeId >{}),
                       __I(parser, 2, 6),
                       0.001);
+      TS_ASSERT_DELTA(score.score(2, 6), __I(parser, 2, 6), 0.001);
+      TS_ASSERT_DELTA(score.score(4, 7), __I(parser, 4, 7), 0.001);
 
       score.clear();
       TS_ASSERT_DELTA(score.score(6, 2), __I(parser, 6, 2), 0.001);
