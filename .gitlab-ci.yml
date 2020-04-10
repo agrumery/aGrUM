@@ -266,10 +266,10 @@ windows_agrum_2019:
     - master@agrumery/aGrUM
     - web@agrumery/aGrUM
     - merge_requests
-    - vs2019
   tags:
     - windows
     - conda
+    - agrumerie2
   variables:
     PATH: $PATH_64_MVSC19_AGRUMERIE2
   cache:
@@ -295,7 +295,7 @@ windows_pyagrum_2019:
   tags:
     - windows
     - conda
-    - vs2019
+    - agrumerie2
   variables:
     PATH: $PATH_64_MVSC19_AGRUMERIE2
   cache:
@@ -312,58 +312,6 @@ windows_pyagrum_2019:
     - call conda.bat deactivate
     - call conda.bat remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
   retry: 2
-
-#windows_agrum_2019:
-#  only:
-#    - master@agrumery/aGrUM
-#    - web@agrumery/aGrUM
-#    - merge_requests
-#    - vs2019
-#  tags:
-#    - windows
-#    - conda
-#  variables:
-#    PATH: $PATH_64_MVSC19_AGRUMERIE2
-#  cache:
-#    key: mvsc19
-#    paths:
-#      - build/
-#  stage: build
-#  script:
-#    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" python=3.7
-#    - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
-#    - call conda.bat install -y numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
-#    - python act clean
-#    - python act --no-fun test release aGrUM --no-fun --mvsc19 -d build -j halfexcept1
-#    - call conda.bat deactivate
-#    - call conda.bat remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
-#  retry: 2
-
-#windows_pyagrum_2019:
-#  only:
-#   - master@agrumery/aGrUM
-#   - web@agrumery/aGrUM
-#   - merge_requests
-#  tags:
-#    - windows
-#    - conda
-#    - vs2019
-#  variables:
-#    PATH: $PATH_64_MVSC19_AGRUMERIE2
-#  cache:
-#    key: mvsc19
-#    paths:
-#      - build/
-#  stage: build
-#  script:
-#    - call conda.bat create -n "gitlab-ci-%CI_JOB_ID%" python=3.7
-#    - call conda.bat activate "gitlab-ci-%CI_JOB_ID%"
-#    - call conda.bat install -y numpy nbformat nbconvert jupyter matplotlib pydotplus pandas scipy cmake
-#    - python act clean
-#    - python act --no-fun test release pyAgrum --no-fun --mvsc19 -d build -j halfexcept1 -t quick
-#    - call conda.bat deactivate
-#    - call conda.bat remove -n "gitlab-ci-%CI_JOB_ID%" --all --force -y
-#  retry: 2
 
 ################################################################################
 # Deploy  wheels
