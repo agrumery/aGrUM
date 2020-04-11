@@ -160,6 +160,7 @@ namespace gum {
   }
 
   // max of all non one elements in this
+  // warning can return 1 if no other value than 1 ...
   template < typename GUM_SCALAR >
   GUM_SCALAR Potential< GUM_SCALAR >::maxNonOne() const {
     GUM_SCALAR res;
@@ -176,13 +177,11 @@ namespace gum {
          static_cast< GUM_SCALAR >(1));
     }
 
-    if (res == static_cast< GUM_SCALAR >(1))
-      GUM_ERROR(NotFound, "No other value than 1");
-
     return res;
   }
 
   // min of all non zero elements in this
+  // warning can return 0 if no other value than 0 ...
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR Potential< GUM_SCALAR >::minNonZero() const {
     GUM_SCALAR res;
@@ -198,10 +197,6 @@ namespace gum {
          },
          static_cast< GUM_SCALAR >(0));
     }
-
-    if (res == static_cast< GUM_SCALAR >(0))
-      GUM_ERROR(NotFound, "No other value than 0");
-
     return res;
   }
 

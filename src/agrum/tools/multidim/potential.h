@@ -213,10 +213,10 @@ namespace gum {
     /// min of all elements in the Potential
     GUM_SCALAR min() const;
     /// max of all non one elements in the Potential
-    /// @throw NotFound if all value == 1.0
+    /// @warning can return 1 if no other value than 1 ...
     GUM_SCALAR maxNonOne() const;
     /// min of all non zero elements in the Potential
-    /// @throw NotFound if all value == 0.0
+    /// @warning can return 0 if no other value than 0 ...
     GUM_SCALAR minNonZero() const;
 
     /// set of instantiation corresponding to the parameter v in the Potential

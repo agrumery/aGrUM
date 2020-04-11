@@ -200,10 +200,10 @@ namespace gum_tests {
             TS_ASSERT_EQUALS(p.maxNonOne(), 9.0 / 13.0);
 
             p.fillWith({1, 1, 1, 1, 1, 1, 1, 1, 1});
-            TS_ASSERT_THROWS(p.maxNonOne(), gum::NotFound);
+            TS_ASSERT_EQUALS(p.maxNonOne(), 1);
 
             p.fillWith({0, 0, 0, 0, 0, 0, 0, 0, 0});
-            TS_ASSERT_THROWS(p.minNonZero(), gum::NotFound);
+            TS_ASSERT_EQUALS(p.minNonZero(), 0);
         }
 
         void testIsNonZeroMap() {
@@ -657,10 +657,10 @@ namespace gum_tests {
             TS_ASSERT_EQUALS(p.maxNonOne(), 3.0f);
 
             TS_GUM_ASSERT_THROWS_NOTHING(p.set(inst, (double) 0.0f););
-            TS_ASSERT_THROWS(p.minNonZero(), gum::NotFound);
+            TS_ASSERT_EQUALS(p.minNonZero(), 0);
 
             TS_GUM_ASSERT_THROWS_NOTHING(p.set(inst, (double) 1.0f););
-            TS_ASSERT_THROWS(p.maxNonOne(), gum::NotFound);
+            TS_ASSERT_EQUALS(p.maxNonOne(), 1.0f);
 
             TS_GUM_ASSERT_THROWS_NOTHING(p.fill(2.0f););
             TS_ASSERT_EQUALS(p[inst], 2.0f);
