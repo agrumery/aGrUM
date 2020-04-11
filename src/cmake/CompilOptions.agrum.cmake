@@ -43,6 +43,8 @@ if (CMAKE_BUILD_TYPE MATCHES "^(DEBUG|Debug|debug)$")
     set(CMAKE_SHARED_LINKER_FLAGS " -ggdb ${CMAKE_SHARED_LINKER_FLAGS}") # add -pg for profiling
     set(CMAKE_MODULE_LINKER_FLAGS " -ggdb ${CMAKE_MODULE_LINKER_FLAGS}") # add -pg for profiling
   endif ()
+else()
+  message(STATUS "** aGrUM Notification : mode ${CMAKE_BUILD_TYPE}")
 endif ()
 
 if(WIN32)

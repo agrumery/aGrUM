@@ -1,8 +1,8 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
- *   info_at_agrum_dot_org
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES
+ * (@AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -156,7 +156,7 @@ namespace gum {
      * Returns the set of factors as a IMarkovNet::FactorTable
      *
      */
-    virtual const FactorTable<GUM_SCALAR>& factors() const final;
+    virtual const FactorTable< GUM_SCALAR >& factors() const final;
 
     /**
      * @brief Returns a map between variables and nodes of this gum::MarkovNet.
@@ -212,25 +212,6 @@ namespace gum {
      *                        gum::MarkovNet.
      */
     NodeId add(const DiscreteVariable& var, NodeId id);
-
-    /**
-     * @brief Add a variable to the gum::MarkovNet.
-     *
-     * Add a gum::DiscreteVariable, it's associated gum::NodeId and it's
-     * gum::Potential.
-     *
-     * @param var The variable added by copy.
-     * @param aContent The gum::MultiDimImplementation to use for this
-     *                 variable's gum::Potential implementation.
-     * @param id The variable's forced gum::NodeId in the gum::MarkovNet.
-     * @return Returns the variable's id in the gum::MarkovNet.
-     * @throws DuplicateElement Raised id is already used.
-     * @throws DuplicateLabel Raised if variable.name() is already used in this
-     *                        gum::MarkovNet.
-     */
-    NodeId add(const DiscreteVariable&               var,
-               MultiDimImplementation< GUM_SCALAR >* aContent,
-               NodeId                                id);
 
     /**
      * @brief clear the whole Markov net
@@ -376,11 +357,11 @@ namespace gum {
      *
      * @return a const ref to the factor in the Markov Network
      */
+    const Potential< GUM_SCALAR >&
+                                   addFactor(const std::vector< std::string >& varnames);
     const Potential< GUM_SCALAR >& addFactor(const NodeSet& vars);
     const Potential< GUM_SCALAR >&
-       addFactor(const std::vector< std::string >& varnames);
-    const Potential< GUM_SCALAR >&
-       addFactor(const Potential<GUM_SCALAR>& factor);
+       addFactor(const Potential< GUM_SCALAR >& factor);
 
     /**
      * Removes a factor in the MN, and update head's CTP.
@@ -397,34 +378,30 @@ namespace gum {
     /// randomly generate factor for a given node in a given structure
     void generateFactor(const NodeSet& vars) const;
 
-    /// change the factor associated to vars to newPot
-    /// delete the old factor associated to nodeId.
-    /// @throw NotAllowed if newPot has not the same signature as
-    /// __factorMap[NodeId]
-    void changeFactor(const NodeSet& vars, const Potential< GUM_SCALAR >& newPot);
+    /// when multiple change in factors/node, no need to update internal structure
+    /// many times during the process but only once at the end.
+    void beginTopologyTransformation();
+    void endTopologyTransformation();
 
     private:
+    bool __topologyTransformationInProgress;
     /// clear all potentials
     void __clearFactors();
 
     /// copy of potentials from a MN to another, using names of vars as ref.
     void __copyFactors(const MarkovNet< GUM_SCALAR >& source);
 
+    /// rebuild the graph after strucural changes in the factors
+    void __rebuildGraph();
+
     /// the map between variable and id
     VariableNodeMap __varMap;
 
     /// the factors
-    FactorTable<GUM_SCALAR> __factors;
+    FactorTable< GUM_SCALAR > __factors;
 
-    /// Mapping between the variable's id and their CPT.
-    // HashTable< const NodeSet,Potential< GUM_SCALAR >* > __factorMap;
-
-    /// change the CPT associated to nodeId to newPot
-    /// delete the old CPT associated to nodeId.
-    /// @warning no verification of dimensions are performer
-    /// @see changePotential
-    void _unsafeChangePotential(const NodeSet&           vars,
-                                Potential< GUM_SCALAR >* newPot);
+    const Potential< GUM_SCALAR >*
+       __addFactor(const NodeSet& vars, const Potential< GUM_SCALAR >* src=nullptr);
 
     public:
     using IMarkovNet< GUM_SCALAR >::graph;

@@ -143,7 +143,7 @@
       GUM__PRINT(__FILE__,   \
                  __LINE__,   \
                  std::endl   \
-                    << "   --> GUMtrace of <" << #x << ">: " << x)
+                    << "   --> <" << #x << ">: " << x)
 
 #    define GUM_TRACE_NEWLINE \
       { std::cout << std::endl; }

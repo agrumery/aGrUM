@@ -197,12 +197,14 @@ namespace gum {
     /**
      *
      * @return the smallest value (not equal to 0) in the CPTs of *this
+     * @warning can return 0 if no other value in the CPTs than 0...
      */
     GUM_SCALAR minNonZeroParam() const;
 
     /**
      *
      * @return the biggest value (not equal to 1) in the CPTs of *this
+     * @warning can return one if no other value in the CPTs than one....
      */
     GUM_SCALAR maxNonOneParam() const;
 

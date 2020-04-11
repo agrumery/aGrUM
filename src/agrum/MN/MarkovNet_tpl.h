@@ -57,9 +57,9 @@
 
 namespace gum {
   template < typename GUM_SCALAR >
-  NodeId build_node(gum::MarkovNet< GUM_SCALAR >& mn,
-                    std::string                   node,
-                    gum::Size                     default_domain_size) {
+  NodeId build_node(MarkovNet< GUM_SCALAR >& mn,
+                    std::string              node,
+                    Size                     default_domain_size) {
     std::string                name = node;
     auto                       ds = default_domain_size;
     long                       range_min = 0;
@@ -120,7 +120,7 @@ namespace gum {
     NodeId idVar;
     try {
       idVar = mn.idFromName(name);
-    } catch (gum::NotFound&) {
+    } catch (NotFound&) {
       if (!labels.empty()) {
         idVar = mn.add(LabelizedVariable(name, name, labels));
       } else if (!ticks.empty()) {
@@ -171,21 +171,22 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE MarkovNet< GUM_SCALAR >::MarkovNet() : IMarkovNet< GUM_SCALAR >() {
+  INLINE MarkovNet< GUM_SCALAR >::MarkovNet() :
+      IMarkovNet< GUM_SCALAR >(), __topologyTransformationInProgress(false) {
     GUM_CONSTRUCTOR(MarkovNet);
   }
 
   template < typename GUM_SCALAR >
   INLINE MarkovNet< GUM_SCALAR >::MarkovNet(std::string name) :
-      IMarkovNet< GUM_SCALAR >(name) {
+      IMarkovNet< GUM_SCALAR >(name), __topologyTransformationInProgress(false) {
     GUM_CONSTRUCTOR(MarkovNet);
   }
 
   template < typename GUM_SCALAR >
   MarkovNet< GUM_SCALAR >::MarkovNet(const MarkovNet< GUM_SCALAR >& source) :
-      IMarkovNet< GUM_SCALAR >(source), __varMap(source.__varMap) {
+      IMarkovNet< GUM_SCALAR >(source), __varMap(source.__varMap),
+      __topologyTransformationInProgress(false) {
     GUM_CONS_CPY(MarkovNet);
-
     __copyFactors(source);
   }
 
@@ -195,6 +196,7 @@ namespace gum {
     if (this != &source) {
       IMarkovNet< GUM_SCALAR >::operator=(source);
       __varMap = source.__varMap;
+      __topologyTransformationInProgress = false;
       __copyFactors(source);
     }
 
@@ -263,6 +265,22 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
+  INLINE void MarkovNet< GUM_SCALAR >::__rebuildGraph() {
+    if (__topologyTransformationInProgress) return;
+
+    this->_graph.clearEdges();
+
+    for (const auto& kv: __factors) {
+      const Potential< double >& c = *kv.second;
+      for (Idx i = 0; i < c.nbrDim(); i++)
+        for (Idx j = i + 1; j < c.nbrDim(); j++)
+          this->_graph.addEdge(__varMap.get(c.variable(i)),
+                               __varMap.get(c.variable(j)));
+    }
+  }
+
+
+  template < typename GUM_SCALAR >
   INLINE NodeId MarkovNet< GUM_SCALAR >::add(const DiscreteVariable& var) {
     return add(var, graph().nextNodeId());
   }
@@ -325,6 +343,7 @@ namespace gum {
         this->erase(no);
       }
     }
+    __rebuildGraph();
   }
 
 
@@ -337,7 +356,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >&
-               MarkovNet< GUM_SCALAR >::addFactor(const gum::NodeSet& vars) {
+               MarkovNet< GUM_SCALAR >::addFactor(const NodeSet& vars) {
     if (vars.size() == 0) {
       GUM_ERROR(InvalidArgument, "Empty factor cannot be added.")
     }
@@ -345,17 +364,11 @@ namespace gum {
     if (__factors.exists(vars)) {
       GUM_ERROR(InvalidArgument, "A factor for (" << vars << ") already exists.")
     }
-    auto factor = new Potential< GUM_SCALAR >();
-    for (const auto v: vars) {
-      factor->add(variable(v));
-    }
-    __factors.insert(vars, factor);
 
-    for (const auto var1: vars)
-      for (const auto var2: vars)
-        if (var1 != var2) this->_graph.addEdge(var1, var2);
+    auto res = __addFactor(vars);
+    __rebuildGraph();
 
-    return *factor;
+    return *res;
   }
 
   template < typename GUM_SCALAR >
@@ -384,15 +397,24 @@ namespace gum {
       GUM_ERROR(InvalidArgument, "A factor for (" << key << ") already exists.");
     }
 
-    auto* p = new Potential< GUM_SCALAR >(factor);
-    __factors.insert(key, p);
+    auto res = __addFactor(key, &factor);
+    __rebuildGraph();
 
-    for (const auto var1: key)
-      for (const auto var2: key)
-        if (var1 != var2) {
-          this->_graph.addEdge(var1, var2);
-        }
-    return *p;
+    return *res;
+  }
+
+  template < typename GUM_SCALAR >
+  INLINE const Potential< GUM_SCALAR >*
+               MarkovNet< GUM_SCALAR >::__addFactor(const NodeSet& vars,
+                                          const Potential< GUM_SCALAR >* src) {
+    Potential< GUM_SCALAR >* factor = new Potential< GUM_SCALAR >();
+    for (auto node: vars) {
+      factor->add(variable(node));
+    }
+    if (src != nullptr) { factor->fillWith(*src); }
+    __factors.insert(vars, factor);
+
+    return factor;
   }
 
 
@@ -409,20 +431,42 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
+  INLINE void MarkovNet< GUM_SCALAR >::eraseFactor(const NodeSet& vars) {
+    if (__factors.exists(vars)) {
+      __factors.erase(vars);
+      __rebuildGraph();
+    }
+  }
+
+  template < typename GUM_SCALAR >
   void MarkovNet< GUM_SCALAR >::__clearFactors() {
     for (const auto& c: __factors) {
       delete c.second;
     }
-    this->_graph.clearEdges();
     __factors.clear();
+    __rebuildGraph();
   }
 
   template < typename GUM_SCALAR >
   void MarkovNet< GUM_SCALAR >::__copyFactors(
      const MarkovNet< GUM_SCALAR >& source) {
     __clearFactors();
-    for (const auto& factor: source.factors()) {
-      addFactor(*factor.second);
+    for (const auto& pf: source.factors()) {
+      __addFactor(pf.first, pf.second);
+    }
+    __rebuildGraph();
+  }
+
+  template < typename GUM_SCALAR >
+  INLINE void MarkovNet< GUM_SCALAR >::beginTopologyTransformation() {
+    __topologyTransformationInProgress = true;
+  }
+  template < typename GUM_SCALAR >
+  INLINE void MarkovNet< GUM_SCALAR >::endTopologyTransformation() {
+    if (__topologyTransformationInProgress) {
+      __topologyTransformationInProgress =
+         false;   // before rebuildGraph of course
+      __rebuildGraph();
     }
   }
 } /* namespace gum */
