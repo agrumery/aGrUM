@@ -83,6 +83,9 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/BayesNetFragment.h>
 
+#include <agrum/MN/IMarkovNet.h>
+#include <agrum/MN/MarkovNet.h>
+
 #include <agrum/BN/algorithms/essentialGraph.h>
 #include <agrum/BN/algorithms/MarkovBlanket.h>
 #include <agrum/BN/algorithms/structuralComparator.h>
@@ -267,9 +270,14 @@ namespace std {
 %import <agrum/tools/graphicalModels/variableNodeMap.h>
 %include <agrum/tools/graphicalModels/graphicalModel.h>
 %include <agrum/tools/graphicalModels/DAGmodel.h>
+
 %include <agrum/BN/IBayesNet.h>
 %include <agrum/BN/BayesNet.h>
 %include <agrum/BN/BayesNetFragment.h>
+
+%include <agrum/MN/IMarkovNet.h>
+%include <agrum/MN/MarkovNet.h>
+
 
 %include <agrum/BN/algorithms/essentialGraph.h>
 %include <agrum/BN/algorithms/MarkovBlanket.h>
@@ -333,6 +341,9 @@ namespace std {
 %template (IBayesNet ) gum::IBayesNet<double>;
 %template ( BayesNet ) gum::BayesNet<double>;
 %template ( BayesNetFragment ) gum::BayesNetFragment<double>;
+
+%template (IMarkovNet ) gum::IMarkovNet<double>;
+%template ( MarkovNet ) gum::MarkovNet<double>;
 
 %template ( BayesNetInference ) gum::BayesNetInference<double>;
 %template ( LazyPropagation ) gum::LazyPropagation<double>;

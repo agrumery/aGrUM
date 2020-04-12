@@ -21,6 +21,7 @@ Helping functions and consts for pyAgrum
 # * 59 Temple Place - Suite 330, Boston, MA 02111 - 1307, USA.
 
 from .pyAgrum import BayesNet
+from .pyAgrum import MarkovNet
 from .pyAgrum import Potential
 from .pyAgrum import InfluenceDiagram
 from .pyAgrum import VariableElimination
@@ -163,8 +164,7 @@ def loadID(filename):
   diag.setProperty("name", filename)
   return diag
 
-
-def fastBN(arcs, domain_size=2):
+def fastBN(structure, domain_size=2):
   """
 Create a Bayesian network with a dot-like syntax which specifies:
     - the structure 'a->b->c;b->d<-e;'.
@@ -188,7 +188,7 @@ Examples
 
 Parameters
 ----------
-dotlike : str
+structure : str
         the string containing the specification
 domainSize : int
         the default domain size for variables
@@ -198,7 +198,43 @@ Returns
 pyAgrum.BayesNet
         the resulting bayesian network 
   """
-  return BayesNet.fastPrototype(arcs, domain_size)
+  return BayesNet.fastPrototype(structure, domain_size)
+
+def fastMN(structure, domain_size=2):
+  """
+Create a Markov network with a dot-like syntax which specifies:
+    - the structure 'a-b-c;b-d;c-e;'.
+    - the type of the variables with different syntax:
+
+      - by default, a variable is a gum.RangeVariable using the default domain size (second argument)
+      - with `'a[10]'`, the variable is a gum.RangeVariable using 10 as domain size (from 0 to 9)
+      - with 'a[3,7]', the variable is a gum.RangeVariable using a domainSize from 3 to 7
+      - with 'a[1,3.14,5,6.2]', the variable is a gum.DiscretizedVariable using the given ticks (at least 3 values)
+      - with 'a{top|middle|bottom}', the variable is a gum.LabelizedVariable using the given labels.
+
+Note 
+----
+  - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
+  - the potentials are randomly generated.
+    
+Examples
+--------
+>>> import pyAgrum as gum
+>>> bn=gum.fastMN('A-B[1,3]-C{yes|No};C-D[2,4]-E[1,2.5,3.9]',6)
+
+Parameters
+----------
+dotlike : str
+        the string containing the specification
+domainSize : int
+        the default domain size for variables
+
+Returns
+-------
+pyAgrum.MARKOVNet
+        the resulting Markov network 
+  """
+  return MarkovNet.fastPrototype(structure, domain_size)
 
 
 def getPosterior(bn, evs, target):

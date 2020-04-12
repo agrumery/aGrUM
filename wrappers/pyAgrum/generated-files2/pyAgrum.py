@@ -8172,9 +8172,9 @@ class Potential(object):
         """
         return _pyAgrum.Potential_KL(self, p)
 
-    def normalizeAsCPT(self):
+    def normalizeAsCPT(self, varId=0):
         r"""
-        normalizeAsCPT(Potential self) -> Potential
+        normalizeAsCPT(Potential self, gum::Idx const & varId=0) -> Potential
 
         Normalize the Potential as a CPT
 
@@ -8189,7 +8189,7 @@ class Potential(object):
           If some distribution sums to 0
 
         """
-        val = _pyAgrum.Potential_normalizeAsCPT(self)
+        val = _pyAgrum.Potential_normalizeAsCPT(self, varId)
 
         return self
 
@@ -11285,6 +11285,220 @@ class BayesNetFragment(IBayesNet, ):
 
 # Register BayesNetFragment in _pyAgrum:
 _pyAgrum.BayesNetFragment_swigregister(BayesNetFragment)
+
+class IMarkovNet(object):
+    r"""
+    Proxy of C++ gum::IMarkovNet< double > class.
+    Proxy of C++ gum::IMarkovNet< double > class.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+
+    def __init__(self, *args, **kwargs):
+        raise AttributeError("No constructor defined - class is abstract")
+    __repr__ = _swig_repr
+    __swig_destroy__ = _pyAgrum.delete_IMarkovNet
+
+    def factor(self, varIds):
+        r"""factor(IMarkovNet self, gum::NodeSet const & varIds) -> Potential"""
+        return _pyAgrum.IMarkovNet_factor(self, varIds)
+
+    def factors(self):
+        r"""factors(IMarkovNet self) -> gum::FactorTable< double > const &"""
+        return _pyAgrum.IMarkovNet_factors(self)
+
+    def variableNodeMap(self):
+        r"""variableNodeMap(IMarkovNet self) -> VariableNodeMap"""
+        return _pyAgrum.IMarkovNet_variableNodeMap(self)
+
+    def variable(self, id):
+        r"""variable(IMarkovNet self, gum::NodeId id) -> DiscreteVariable"""
+        return _pyAgrum.IMarkovNet_variable(self, id)
+
+    def nodeId(self, var):
+        r"""nodeId(IMarkovNet self, DiscreteVariable var) -> gum::NodeId"""
+        return _pyAgrum.IMarkovNet_nodeId(self, var)
+
+    def idFromName(self, name):
+        r"""idFromName(IMarkovNet self, std::string const & name) -> gum::NodeId"""
+        return _pyAgrum.IMarkovNet_idFromName(self, name)
+
+    def variableFromName(self, name):
+        r"""variableFromName(IMarkovNet self, std::string const & name) -> DiscreteVariable"""
+        return _pyAgrum.IMarkovNet_variableFromName(self, name)
+
+    def __eq__(self, _from):
+        r"""__eq__(IMarkovNet self, IMarkovNet _from) -> bool"""
+        return _pyAgrum.IMarkovNet___eq__(self, _from)
+
+    def __ne__(self, _from):
+        r"""__ne__(IMarkovNet self, IMarkovNet _from) -> bool"""
+        return _pyAgrum.IMarkovNet___ne__(self, _from)
+
+    def dim(self):
+        r"""dim(IMarkovNet self) -> gum::Size"""
+        return _pyAgrum.IMarkovNet_dim(self)
+
+    def maxVarDomainSize(self):
+        r"""maxVarDomainSize(IMarkovNet self) -> gum::Size"""
+        return _pyAgrum.IMarkovNet_maxVarDomainSize(self)
+
+    def minParam(self):
+        r"""minParam(IMarkovNet self) -> double"""
+        return _pyAgrum.IMarkovNet_minParam(self)
+
+    def maxParam(self):
+        r"""maxParam(IMarkovNet self) -> double"""
+        return _pyAgrum.IMarkovNet_maxParam(self)
+
+    def minNonZeroParam(self):
+        r"""minNonZeroParam(IMarkovNet self) -> double"""
+        return _pyAgrum.IMarkovNet_minNonZeroParam(self)
+
+    def maxNonOneParam(self):
+        r"""maxNonOneParam(IMarkovNet self) -> double"""
+        return _pyAgrum.IMarkovNet_maxNonOneParam(self)
+
+    def toDot(self):
+        r"""toDot(IMarkovNet self) -> std::string"""
+        return _pyAgrum.IMarkovNet_toDot(self)
+
+    def toDotAsFactorGraph(self):
+        r"""toDotAsFactorGraph(IMarkovNet self) -> std::string"""
+        return _pyAgrum.IMarkovNet_toDotAsFactorGraph(self)
+
+    def toString(self):
+        r"""toString(IMarkovNet self) -> std::string"""
+        return _pyAgrum.IMarkovNet_toString(self)
+
+# Register IMarkovNet in _pyAgrum:
+_pyAgrum.IMarkovNet_swigregister(IMarkovNet)
+
+class MarkovNet(IMarkovNet):
+    r"""
+    Proxy of C++ gum::MarkovNet< double > class.
+    Proxy of C++ gum::MarkovNet< double > class.
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    @staticmethod
+    def fastPrototype(dotlike, domainSize=2):
+        r"""fastPrototype(std::string const & dotlike, gum::Size domainSize=2) -> MarkovNet"""
+        return _pyAgrum.MarkovNet_fastPrototype(dotlike, domainSize)
+    __swig_destroy__ = _pyAgrum.delete_MarkovNet
+
+    def __init__(self, *args):
+        r"""
+        __init__(MarkovNet self) -> MarkovNet
+        __init__(MarkovNet self, std::string name) -> MarkovNet
+        __init__(MarkovNet self, MarkovNet source) -> MarkovNet
+        """
+        _pyAgrum.MarkovNet_swiginit(self, _pyAgrum.new_MarkovNet(*args))
+
+    def factor(self, varIds):
+        r"""factor(MarkovNet self, gum::NodeSet const & varIds) -> Potential"""
+        return _pyAgrum.MarkovNet_factor(self, varIds)
+
+    def factors(self):
+        r"""factors(MarkovNet self) -> gum::FactorTable< double > const &"""
+        return _pyAgrum.MarkovNet_factors(self)
+
+    def variableNodeMap(self):
+        r"""variableNodeMap(MarkovNet self) -> VariableNodeMap"""
+        return _pyAgrum.MarkovNet_variableNodeMap(self)
+
+    def add(self, *args):
+        r"""
+        add(MarkovNet self, DiscreteVariable var) -> gum::NodeId
+        add(MarkovNet self, std::string const & name, unsigned int nbrmod) -> gum::NodeId
+        add(MarkovNet self, DiscreteVariable var, gum::NodeId id) -> gum::NodeId
+        """
+        return _pyAgrum.MarkovNet_add(self, *args)
+
+    def clear(self):
+        r"""clear(MarkovNet self)"""
+        return _pyAgrum.MarkovNet_clear(self)
+
+    def erase(self, *args):
+        r"""
+        erase(MarkovNet self, gum::NodeId varId)
+        erase(MarkovNet self, std::string const & name)
+        erase(MarkovNet self, DiscreteVariable var)
+        """
+        return _pyAgrum.MarkovNet_erase(self, *args)
+
+    def variable(self, *args):
+        r"""
+        variable(MarkovNet self, gum::NodeId id) -> DiscreteVariable
+        variable(MarkovNet self, std::string const & name) -> DiscreteVariable
+        """
+        return _pyAgrum.MarkovNet_variable(self, *args)
+
+    def changeVariableName(self, *args):
+        r"""
+        changeVariableName(MarkovNet self, gum::NodeId id, std::string const & new_name)
+        changeVariableName(MarkovNet self, std::string const & name, std::string const & new_name)
+        """
+        return _pyAgrum.MarkovNet_changeVariableName(self, *args)
+
+    def changeVariableLabel(self, *args):
+        r"""
+        changeVariableLabel(MarkovNet self, gum::NodeId id, std::string const & old_label, std::string const & new_label)
+        changeVariableLabel(MarkovNet self, std::string const & name, std::string const & old_label, std::string const & new_label)
+        """
+        return _pyAgrum.MarkovNet_changeVariableLabel(self, *args)
+
+    def nodeId(self, var):
+        r"""nodeId(MarkovNet self, DiscreteVariable var) -> gum::NodeId"""
+        return _pyAgrum.MarkovNet_nodeId(self, var)
+
+    def idFromName(self, name):
+        r"""idFromName(MarkovNet self, std::string const & name) -> gum::NodeId"""
+        return _pyAgrum.MarkovNet_idFromName(self, name)
+
+    def variableFromName(self, name):
+        r"""variableFromName(MarkovNet self, std::string const & name) -> DiscreteVariable"""
+        return _pyAgrum.MarkovNet_variableFromName(self, name)
+
+    def addFactor(self, *args):
+        r"""
+        addFactor(MarkovNet self, Vector_string varnames) -> Potential
+        addFactor(MarkovNet self, gum::NodeSet const & vars) -> Potential
+        addFactor(MarkovNet self, Potential factor) -> Potential
+        """
+        return _pyAgrum.MarkovNet_addFactor(self, *args)
+
+    def eraseFactor(self, *args):
+        r"""
+        eraseFactor(MarkovNet self, gum::NodeSet const & vars)
+        eraseFactor(MarkovNet self, Vector_string varnames)
+        """
+        return _pyAgrum.MarkovNet_eraseFactor(self, *args)
+
+    def generateFactors(self):
+        r"""generateFactors(MarkovNet self)"""
+        return _pyAgrum.MarkovNet_generateFactors(self)
+
+    def generateFactor(self, vars):
+        r"""generateFactor(MarkovNet self, gum::NodeSet const & vars)"""
+        return _pyAgrum.MarkovNet_generateFactor(self, vars)
+
+    def beginTopologyTransformation(self):
+        r"""beginTopologyTransformation(MarkovNet self)"""
+        return _pyAgrum.MarkovNet_beginTopologyTransformation(self)
+
+    def endTopologyTransformation(self):
+        r"""endTopologyTransformation(MarkovNet self)"""
+        return _pyAgrum.MarkovNet_endTopologyTransformation(self)
+
+# Register MarkovNet in _pyAgrum:
+_pyAgrum.MarkovNet_swigregister(MarkovNet)
+
+def MarkovNet_fastPrototype(dotlike, domainSize=2):
+    r"""MarkovNet_fastPrototype(std::string const & dotlike, gum::Size domainSize=2) -> MarkovNet"""
+    return _pyAgrum.MarkovNet_fastPrototype(dotlike, domainSize)
 
 class BayesNetInference(object):
     r"""

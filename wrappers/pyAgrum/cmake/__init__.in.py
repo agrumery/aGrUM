@@ -10,7 +10,7 @@ pyAgrum includes :
   * a `website <http://agrum.org>`_.
 """
 
-# aGrum Licence (GPL)
+# aGrum Licence (LGPL)
 # -------------------
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU General Public License as published by  *
@@ -46,6 +46,7 @@ from .deprecated import *
 from .pyAgrum import statsObj
 from .pyAgrum import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, CliqueGraph
 from .pyAgrum import BayesNet, BayesNetFragment, EssentialGraph, MarkovBlanket
+from .pyAgrum import MarkovNet
 from .pyAgrum import DiscretizedVariable, LabelizedVariable, RangeVariable, DiscreteVariable
 from .pyAgrum import Potential, Instantiation, Potential
 from .pyAgrum import ExactBNdistance, GibbsBNdistance, StructuralComparator
