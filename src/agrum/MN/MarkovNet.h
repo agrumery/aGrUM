@@ -233,7 +233,7 @@ namespace gum {
     /**
      * @brief Removes a variable from the gum::MarkovNet.
      */
-    void erase(const std::string& name) { erase(idFromName(name)); };
+    void erase(const std::string& name);
 
     /**
      * @brief Remove a variable from the gum::MarkovNet.
@@ -367,8 +367,10 @@ namespace gum {
      * Removes a factor in the MN, and update head's CTP.
      *
      * @param vars the NodeSet
+     * @throw
      */
     void eraseFactor(const NodeSet& vars);
+    void eraseFactor(const std::vector< std::string >& varnames);
     /// @}
 
 
@@ -401,7 +403,9 @@ namespace gum {
     FactorTable< GUM_SCALAR > __factors;
 
     const Potential< GUM_SCALAR >*
-       __addFactor(const NodeSet& vars, const Potential< GUM_SCALAR >* src=nullptr);
+         __addFactor(const NodeSet&                 vars,
+                     const Potential< GUM_SCALAR >* src = nullptr);
+    void __eraseFactor(const NodeSet& vars);
 
     public:
     using IMarkovNet< GUM_SCALAR >::graph;
