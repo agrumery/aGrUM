@@ -199,6 +199,9 @@ namespace gum {
     /// @return Returns a dot representation of this IMarkovNet.
     virtual std::string toDot() const;
 
+    /// @return Returns a dot representation of this IMarkovNet.
+    virtual std::string toDotAsFactorGraph() const;
+
     /// @return Returns a string representation of this IMarkovNet.
     std::string toString() const;
   };

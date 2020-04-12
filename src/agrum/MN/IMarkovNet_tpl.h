@@ -180,13 +180,65 @@ namespace gum {
                    << "\"" << variable(nei).name() << "\";" << std::endl;
           }
         }
-      }
-      else {
+      } else {
         output << tab << "\"" << variable(node).name() << "\";" << std::endl;
       }
     }
 
     output << "}" << std::endl;
+
+    return output.str();
+  }
+
+
+  template < typename GUM_SCALAR >
+  std::string IMarkovNet< GUM_SCALAR >::toDotAsFactorGraph() const {
+    std::stringstream output;
+    std::string       mn_name;
+    try {
+      mn_name = this->property("name");
+    } catch (NotFound&) { mn_name = "no_name"; }
+
+    output << "graph FG_" << mn_name << " {" << std::endl;
+    output << "  layout=neato;" << std::endl;
+    output << "  graph [bgcolor=transparent,label=\"factor graph for " << mn_name << "\"];"
+           << std::endl;
+
+    // the variables
+    output << "  node [shape=rectangle,margin=0.04,width=0,height=0, "
+              "style=filled,color=\"coral\"];"
+           << std::endl;
+    for (auto nod: nodes()) {
+      output << "\"" << variable(nod).name() << "\";" << std::endl;
+    }
+    output << std::endl;
+
+    // the factor
+    output << "node[shape = point,width = 0.1,height = 0.1,style = filled,color = "
+              "\"burlywood\"];"
+           << std::endl;
+    for (const auto& kv: factors()) {
+      output << "  \"f";
+      for (NodeId nod: kv.first) {
+        output << "#" << variable(nod).name();
+      }
+      output << "\";" << std::endl;
+    }
+
+    // the link variable--factors
+    output << "  edge[len = 0.7];" << std::endl;
+    for (const auto& kv: factors()) {
+      std::string clicname = "\"f";
+      for (NodeId nod: kv.first) {
+        clicname += "#";
+        clicname += variable(nod).name();
+      }
+      clicname += "\"";
+
+      for (NodeId nod: kv.first)
+        output<<"  "<<clicname<<" -- \""<<variable(nod).name()<<"\";"<<std::endl;
+    }
+    output<<"}"<<std::endl;
 
     return output.str();
   }

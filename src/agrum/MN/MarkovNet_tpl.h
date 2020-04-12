@@ -137,37 +137,20 @@ namespace gum {
   MarkovNet< GUM_SCALAR >
      MarkovNet< GUM_SCALAR >::fastPrototype(const std::string& dotlike,
                                             Size               domainSize) {
-    GUM_ERROR(FatalError, "Not Implemented Yet");
-    /*
     gum::MarkovNet< GUM_SCALAR > mn;
 
 
-    for (const auto& chaine: split(dotlike, ";")) {
-      NodeId lastId = 0;
-      bool   notfirst = false;
-      for (const auto& souschaine: split(chaine, "->")) {
-        bool forward = true;
-        for (const auto& node: split(souschaine, "<-")) {
-          auto idVar = build_node(mn, node, domainSize);
-          if (notfirst) {
-            if (forward) {
-              mn.addArc(lastId, idVar);
-              forward = false;
-            } else {
-              mn.addArc(idVar, lastId);
-            }
-          } else {
-            notfirst = true;
-            forward = false;
-          }
-          lastId = idVar;
-        }
+    for (const auto& clikchain: split(dotlike, ";")) {
+      NodeSet cliq;
+      for (const auto& node: split(clikchain, "-")) {
+        auto idVar = build_node(mn, node, domainSize);
+        cliq.insert(idVar);
       }
+      mn.addFactor(cliq);
     }
     mn.generateFactors();
     mn.setProperty("name", "fastPrototype");
     return mn;
-     */
   }
 
   template < typename GUM_SCALAR >

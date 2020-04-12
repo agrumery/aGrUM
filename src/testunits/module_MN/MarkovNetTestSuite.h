@@ -75,8 +75,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(mn.dim(), (gum::Idx)(3 * 3 + 3 * 3 + 3 * 7 + 3 * 3 * 7));
       TS_ASSERT_EQUALS(mn.toString(),
                        "MN{nodes: 5, edges: 6, domainSize: 567, dim: 102}");
-      TS_ASSERT_EQUALS(mn.neighbours("41"),gum::NodeSet({0,1,4}));
-      TS_ASSERT_EQUALS(mn.neighbours(3),gum::NodeSet({0,1,4}));
+      TS_ASSERT_EQUALS(mn.neighbours("41"), gum::NodeSet({0, 1, 4}));
+      TS_ASSERT_EQUALS(mn.neighbours(3), gum::NodeSet({0, 1, 4}));
 
       TS_ASSERT_EQUALS(mn.variable(1).name(), "21");
       TS_ASSERT_EQUALS(mn.nodeId(mn.variable(2)), gum::NodeId(2));
@@ -100,7 +100,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING({
         for (const auto n: mn.nodes()) {
           TS_ASSERT_EQUALS(mn.variable(n).name(), mn2.variable(n).name());
-          TS_ASSERT_EQUALS(mn.neighbours(n),mn2.neighbours(n));
+          TS_ASSERT_EQUALS(mn.neighbours(n), mn2.neighbours(n));
         }
       });
     }
@@ -114,7 +114,7 @@ namespace gum_tests {
                        "MN{nodes: 5, edges: 6, domainSize: 567, dim: 102}");
       for (const auto n: mn.nodes()) {
         TS_ASSERT_EQUALS(mn.variable(n).name(), mn2.variable(n).name());
-        TS_ASSERT_EQUALS(mn.neighbours(n),mn2.neighbours(n));
+        TS_ASSERT_EQUALS(mn.neighbours(n), mn2.neighbours(n));
       }
     }
 
@@ -158,63 +158,66 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(cpt, mn.sizeEdges());
     }
 
-    void testEraseFactor(){
+    void testEraseFactor() {
       gum::MarkovNet< double > mn;
       _fill(mn);
-      TS_ASSERT_THROWS(mn.eraseFactor({12,14}),gum::InvalidArgument);
-      TS_GUM_ASSERT_THROWS_NOTHING(mn.eraseFactor({2,4}));
+      TS_ASSERT_THROWS(mn.eraseFactor({12, 14}), gum::InvalidArgument);
+      TS_GUM_ASSERT_THROWS_NOTHING(mn.eraseFactor({2, 4}));
 
       TS_ASSERT_EQUALS(mn.size(), (gum::Idx)5);
       TS_ASSERT_EQUALS(mn.sizeEdges(), (gum::Idx)5);
-      TS_ASSERT_EQUALS(mn.dim(), (gum::Idx)(3 * 3 + 3 * 3 +  3 * 3 * 7));
+      TS_ASSERT_EQUALS(mn.dim(), (gum::Idx)(3 * 3 + 3 * 3 + 3 * 3 * 7));
       TS_ASSERT_EQUALS(mn.toString(),
                        "MN{nodes: 5, edges: 5, domainSize: 567, dim: 81}");
     }
 
-    void testEraseFactorWithNames(){
+    void testEraseFactorWithNames() {
       gum::MarkovNet< double > mn;
       _fill(mn);
-      TS_ASSERT_THROWS(mn.eraseFactor({"31","21"}),gum::InvalidArgument);
-      TS_GUM_ASSERT_THROWS_NOTHING(mn.eraseFactor({"31","51"}));
+      TS_ASSERT_THROWS(mn.eraseFactor({"31", "21"}), gum::InvalidArgument);
+      TS_GUM_ASSERT_THROWS_NOTHING(mn.eraseFactor({"31", "51"}));
 
       TS_ASSERT_EQUALS(mn.size(), (gum::Idx)5);
       TS_ASSERT_EQUALS(mn.sizeEdges(), (gum::Idx)5);
-      TS_ASSERT_EQUALS(mn.dim(), (gum::Idx)(3 * 3 + 3 * 3 +  3 * 3 * 7));
+      TS_ASSERT_EQUALS(mn.dim(), (gum::Idx)(3 * 3 + 3 * 3 + 3 * 3 * 7));
       TS_ASSERT_EQUALS(mn.toString(),
                        "MN{nodes: 5, edges: 5, domainSize: 567, dim: 81}");
     }
 
-    void testErase(){
+    void testErase() {
       gum::MarkovNet< double > mn;
       _fill(mn);
-      TS_ASSERT_THROWS(mn.erase(36),gum::InvalidArgument);
+      TS_ASSERT_THROWS(mn.erase(36), gum::InvalidArgument);
       TS_GUM_ASSERT_THROWS_NOTHING(mn.erase(3));
 
       TS_ASSERT_EQUALS(mn.size(), (gum::Idx)4);
       TS_ASSERT_EQUALS(mn.sizeEdges(), (gum::Idx)3);
-      TS_ASSERT_EQUALS(mn.dim(), (gum::Idx)(3 * 3 + 3 * 7 +   3 * 7));
+      TS_ASSERT_EQUALS(mn.dim(), (gum::Idx)(3 * 3 + 3 * 7 + 3 * 7));
       TS_ASSERT_EQUALS(mn.toString(),
                        "MN{nodes: 4, edges: 3, domainSize: 189, dim: 51}");
     }
 
-    void testEraseWithNames(){
+    void testEraseWithNames() {
       gum::MarkovNet< double > mn;
       _fill(mn);
-      TS_ASSERT_THROWS(mn.erase("36"),gum::NotFound);
+      TS_ASSERT_THROWS(mn.erase("36"), gum::NotFound);
       TS_GUM_ASSERT_THROWS_NOTHING(mn.erase("41"));
 
       TS_ASSERT_EQUALS(mn.size(), (gum::Idx)4);
       TS_ASSERT_EQUALS(mn.sizeEdges(), (gum::Idx)3);
-      TS_ASSERT_EQUALS(mn.dim(), (gum::Idx)(3 * 3 + 3 * 7 +   3 * 7));
+      TS_ASSERT_EQUALS(mn.dim(), (gum::Idx)(3 * 3 + 3 * 7 + 3 * 7));
       TS_ASSERT_EQUALS(mn.toString(),
                        "MN{nodes: 4, edges: 3, domainSize: 189, dim: 51}");
     }
 
     void testToDot() {
-      gum::MarkovNet< double > mn;
-      _fill(mn);
-      const auto s=mn.toDot();
-      GUM_UNUSED(s);
+      gum::MarkovNet< double > mn =
+         gum::MarkovNet< double >::fastPrototype("A-B-C;B-D;C-E;D-E-F");
+      const auto s1 = mn.toDot();
+      const auto s2 = mn.toDotAsFactorGraph();
+      GUM_UNUSED(s1);
+      GUM_UNUSED(s2);
     }
-  };   // namespace gum_tests
-}   // namespace gum_tests
+  };
+
+};   // namespace gum_tests
