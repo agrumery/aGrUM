@@ -149,44 +149,46 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   std::string IMarkovNet< GUM_SCALAR >::toDot() const {
-    return "Not Implemented Yet"; /*
-     std::stringstream output;
-     output << "digraph \"";
+    std::stringstream output;
+    output << "graph \"";
 
-     std::string bn_name;
+    std::string mn_name;
 
-     try {
-       bn_name = this->property("name");
-     } catch (NotFound&) { bn_name = "no_name"; }
+    try {
+      mn_name = this->property("name");
+    } catch (NotFound&) { mn_name = "no_name"; }
 
-     output << bn_name << "\" {" << std::endl;
-     output << "  graph [bgcolor=transparent,label=\"" << bn_name << "\"];"
-            << std::endl;
-     output << "  node [style=filled fillcolor=\"#ffffaa\"];" << std::endl
-            << std::endl;
+    output << mn_name << "\" {" << std::endl;
+    output << "  graph [bgcolor=transparent,label=\"" << mn_name << "\"];"
+           << std::endl;
+    output << "  node [style=filled fillcolor=\"#ffffaa\"];" << std::endl
+           << std::endl;
 
-     for (auto node: nodes())
-       output << "\"" << variable(node).name() << "\" [comment=\"" << node << ":"
-              << variable(node).toStringWithDescription() << "\"];" << std::endl;
+    for (auto node: nodes())
+      output << "  \"" << variable(node).name() << "\" [comment=\"" << node << ":"
+             << variable(node).toStringWithDescription() << "\"];" << std::endl;
 
-     output << std::endl;
+    output << std::endl;
 
-     std::string tab = "  ";
+    std::string tab = "  ";
 
-     for (auto node: nodes()) {
-       if (children(node).size() > 0) {
-         for (auto child: children(node)) {
-           output << tab << "\"" << variable(node).name() << "\" -> "
-                  << "\"" << variable(child).name() << "\";" << std::endl;
-         }
-       } else if (parents(node).size() == 0) {
-         output << tab << "\"" << variable(node).name() << "\";" << std::endl;
-       }
-     }
+    for (auto node: nodes()) {
+      if (neighbours(node).size() > 0) {
+        for (auto nei: neighbours(node)) {
+          if (variable(node).name() < variable(nei).name()) {
+            output << tab << "\"" << variable(node).name() << "\" -- "
+                   << "\"" << variable(nei).name() << "\";" << std::endl;
+          }
+        }
+      }
+      else {
+        output << tab << "\"" << variable(node).name() << "\";" << std::endl;
+      }
+    }
 
-     output << "}" << std::endl;
+    output << "}" << std::endl;
 
-     return output.str();*/
+    return output.str();
   }
 
   template < typename GUM_SCALAR >

@@ -85,8 +85,6 @@ namespace gum_tests {
 
       TS_ASSERT_EQUALS(mn.maxVarDomainSize(), gum::Size(7));
       TS_ASSERT_EQUALS(mn.minParam(), 0.0);
-      for (auto elt: mn.factors())
-        if (elt.second->minNonZero() == 0) GUM_TRACE_VAR(*elt.second);
       TS_ASSERT_EQUALS(mn.minNonZeroParam(), 0.03);
       TS_ASSERT_EQUALS(mn.maxParam(), 1.0);
       TS_ASSERT_EQUALS(mn.maxNonOneParam(), 0.97);
@@ -210,6 +208,13 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(mn.dim(), (gum::Idx)(3 * 3 + 3 * 7 +   3 * 7));
       TS_ASSERT_EQUALS(mn.toString(),
                        "MN{nodes: 4, edges: 3, domainSize: 189, dim: 51}");
+    }
+
+    void testToDot() {
+      gum::MarkovNet< double > mn;
+      _fill(mn);
+      const auto s=mn.toDot();
+      GUM_UNUSED(s);
     }
   };   // namespace gum_tests
 }   // namespace gum_tests
