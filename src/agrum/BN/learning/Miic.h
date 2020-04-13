@@ -368,10 +368,12 @@ namespace gum {
       /*@param graph MixedGraph in which to search the path
        *@param n1 tail of the path
        *@param n2 head of the path
+       *@param countArc bool to know if we consider arc as a directed path
        */
       const bool __existsDirectedPath(const MixedGraph& graph,
                                       const NodeId      n1,
-                                      const NodeId      n2) const;
+                                      const NodeId      n2,
+                                      const bool        countArc = true) const;
     };
 
   } /* namespace learning */
