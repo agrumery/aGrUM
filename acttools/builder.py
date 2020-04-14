@@ -78,6 +78,18 @@ def getCmake(current, target):
 
   line += " -DPYTHON_TARGET=" + cfg.python
 
+  if current["python3lib"] != "":
+    line += " -DPYTHON_LIBRARY=" + current["python3lib"]
+
+  if current["python3include"] != "":
+    line += " -DPYTHON_INCLUDE_DIR=" + current["python3include"]
+    
+  if current["python2lib"] != "":
+    line += " -DPYTHON_LIBRARY=" + current["python2lib"]
+
+  if current["python2lib"] != "":
+    line += " -DPYTHON_INCLUDE_DIR=" + current["python2include"]
+
   if platform.system() == "Windows":
     if current["mvsc"]:
       line += ' -G "Visual Studio 14 2015 Win64"'

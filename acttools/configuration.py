@@ -41,7 +41,7 @@ except:
     pass
 
 cfg.__version_major="2"
-cfg.__version_minor="1"
+cfg.__version_minor="2"
 cfg.__version = cfg.__version_major+"."+cfg.__version_minor
 
 cfg.modulesFile = "src/modules.txt"  # the file to parse to find the modules
@@ -64,7 +64,7 @@ def initParams():
   cfg.default['modules'] = 'ALL'
   cfg.default['mode'] = "release"
   cfg.default['verbose'] = False
-  cfg.default['destination'] = "/usr"
+  cfg.default['destination'] = "/usr/local"
   cfg.default['jobs'] = "except1"
   cfg.default['static_lib'] = False
   cfg.default['fixed_seed'] = False
@@ -73,6 +73,10 @@ def initParams():
   cfg.default['oneByOne'] = False
   cfg.default['tests'] = 'all'
   cfg.default['python'] = "3"
+  cfg.default['python3lib'] = ""
+  cfg.default['python2lib'] = ""
+  cfg.default['python3include'] = ""
+  cfg.default['python2include'] = ""
   cfg.default['dry_run'] = False
   cfg.default['coverage'] = False
   cfg.default['withSQL'] = True
@@ -184,6 +188,26 @@ def configureOptions(current):
                         choices=["2", "3"],
                         dest="python",
                         default="3")
+  cfg.parser.add_option("", "--python2lib",
+                        help="root folder for lib python2.",
+                        metavar="FOLDER",
+                        dest="python2lib",
+                        default=current['python2lib'])
+  cfg.parser.add_option("", "--python3lib",
+                        help="root folder for lib python3.",
+                        metavar="FOLDER",
+                        dest="python3lib",
+                        default=current['python3lib'])
+  cfg.parser.add_option("", "--python2include",
+                        help="root folder for include python2.",
+                        metavar="FOLDER",
+                        dest="python2include",
+                        default=current['python2include'])
+  cfg.parser.add_option("", "--python3include",
+                        help="root folder for include python3.",
+                        metavar="FOLDER",
+                        dest="python3include",
+                        default=current['python3include'])
   cfg.parser.add_option("", "--dry-run",
                         help="dry run and prints cmake invocation with the current options.",
                         action="store_true",
