@@ -42,7 +42,6 @@ namespace gum {
   }
 
   void DAGmodel::__moralGraph() const {
-    // @todo : this is a copy of DAG::moralGraph ... we should do better
     __mutableMoralGraph->populateNodes(dag());
     // transform the arcs into edges
 

@@ -1,8 +1,8 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
- *   info_at_agrum_dot_org
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES
+ * (@AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -168,7 +168,8 @@ namespace gum {
   void MultiDimContainer< GUM_SCALAR >::populate(
      const std::vector< GUM_SCALAR >& v) const {
     if (domainSize() != v.size()) {
-      GUM_ERROR(SizeError, "Sizes do not match in populate");
+      GUM_ERROR(SizeError,
+                "Sizes do not match : " << domainSize() << "!=" << v.size());
     }
 
     Size cpt = 0;
@@ -183,7 +184,8 @@ namespace gum {
   void MultiDimContainer< GUM_SCALAR >::populate(
      std::initializer_list< GUM_SCALAR > l) const {
     if (domainSize() != l.size()) {
-      GUM_ERROR(SizeError, "Sizes do not match in populate");
+      GUM_ERROR(SizeError,
+                "Sizes do not match : " << domainSize() << "!=" << l.size());
     }
 
     Instantiation i(*this);
@@ -220,7 +222,9 @@ namespace gum {
   void MultiDimContainer< GUM_SCALAR >::copyFrom(
      const MultiDimContainer< GUM_SCALAR >& src, Instantiation* p_i) const {
     if (src.domainSize() != domainSize()) {
-      GUM_ERROR(OperationNotAllowed, "Domain sizes do not fit");
+      GUM_ERROR(OperationNotAllowed,
+                "Domain sizes do not fit : " << src.domainSize()
+                                             << "!=" << domainSize());
     }
 
     if (p_i == nullptr) {   // if null, we just follow the same order
@@ -267,7 +271,9 @@ namespace gum {
   void MultiDimContainer< GUM_SCALAR >::copyFrom(
      const MultiDimContainer< GUM_SCALAR >& src) const {
     if (src.domainSize() != domainSize()) {
-      GUM_ERROR(OperationNotAllowed, "Domain sizes do not fit");
+      GUM_ERROR(OperationNotAllowed,
+                "Domain sizes do not fit : " << src.domainSize()
+                                             << "!=" << domainSize());
     }
 
     Instantiation i_dest(*this);

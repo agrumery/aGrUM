@@ -51,8 +51,7 @@ namespace gum {
    * To get the data wrapped, use wrapped_data.data;
    */
   template < typename T_DATA >
-  // #TODO: replace by alignas(std::hardware_destructive_interference_size)
-  // when pyAgrum will be compiled in C++17
+  // @TODO: for C++17, replace by alignas(std::hardware_destructive_interference_size)
   struct alignas(128) ThreadData {
     // ##########################################################################
     /// @name Constructors / Destructors

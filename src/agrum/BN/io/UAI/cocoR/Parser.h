@@ -32,8 +32,8 @@ Coco/R itself) does not fall under the GNU General Public License.
 -----------------------------------------------------------------------*/
 
 
-#if !defined(gum_UAI_COCO_PARSER_H__)
-#define gum_UAI_COCO_PARSER_H__
+#if !defined(gum_UAIBN_COCO_PARSER_H__)
+#define gum_UAIBN_COCO_PARSER_H__
 
 #include <iostream>
 #include <tuple>
@@ -49,7 +49,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include "Scanner.h"
 
 namespace gum {
-namespace UAI {
+namespace UAIBN {
 
 
 class Parser {
@@ -107,7 +107,7 @@ decltype(quartets) getQuartets() {
 
     	void NUMBER();
 	void LISTE();
-	void UAI();
+	void UAIBN();
 
     void Parse();
 

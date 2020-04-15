@@ -178,7 +178,6 @@ namespace gum {
   // @brief returns the product of the size of the domains of the variables
   // belonging to the matrix
   INLINE Size Instantiation::domainSize() const {
-    // @todo enhance the cplxity with a member domainSize ?
     Size s = 1;
 
     for (const auto var: __vars)
@@ -329,7 +328,6 @@ namespace gum {
 
   // operator +=
   INLINE Instantiation& Instantiation::operator+=(Size depl) {
-    //@todo : this code should be improved !!!
     for (Idx i = 0; i < depl; i++)
       inc();
 
@@ -338,7 +336,6 @@ namespace gum {
 
   // operator -=
   INLINE Instantiation& Instantiation::operator-=(Size depl) {
-    //@todo : this code should be improved !!!
     for (Idx i = 0; i < depl; i++)
       dec();
 

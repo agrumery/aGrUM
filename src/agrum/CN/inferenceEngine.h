@@ -28,10 +28,6 @@
  * @brief Abstract class representing CredalNet inference engines
  * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN (@LIP6)
  */
-
-/// @todo virtual for all functions that MAY be one day redefined in any derived
-/// class
-
 #include <map>
 
 #include <agrum/CN/LrsWrapper.h>

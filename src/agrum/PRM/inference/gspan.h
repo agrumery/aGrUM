@@ -256,7 +256,6 @@ namespace gum {
                              gspan::Pattern&                      p);
 
       /// Returns the cost with respect to an interface size and its frequency.
-      /// TODO replace this by a class to enable different cost policies.
       /// @param interface_size The size of all output nodes of a pattern.
       /// @param frequency The frequency of the pattern in the current interface
       ///        graph.

@@ -949,7 +949,7 @@ public:
 
     string_type database_name() const
     {
-        // FIXME: Allocate buffer of dynamic size as drivers do not agree on universal size
+        // Allocate buffer of dynamic size as drivers do not agree on universal size
         // MySQL driver limits MAX_NAME_LEN=255
         // PostgreSQL driver MAX_INFO_STIRNG=128
         // MFC CDatabase allocates buffer dynamically.

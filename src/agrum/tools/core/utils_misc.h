@@ -94,8 +94,6 @@ namespace std {
    * @tparam T The vector's elements type.
    * @param x the vector
    * @return Returns true if the vector has no duplicate.
-   *
-   * @todo WHY IN STD namespace ??
    */
   template < typename T >
   bool hasUniqueElts(std::vector< T > const& x);

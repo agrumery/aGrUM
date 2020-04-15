@@ -59,13 +59,13 @@ namespace gum {
 
     // this static hashtable only on debug mode.
     static DEBUG_MAP& __creation() {
-      // @todo This function is not thread-safe ! (but only in debug mode)
+      // @warning This function is not thread-safe ! (but only in debug mode)
       static DEBUG_MAP* creation = new DEBUG_MAP();
       return *creation;
     }
 
     static DEBUG_MAP& __deletion() {
-      // @todo This function is not thread-safe ! (but only in debug mode)
+      // @warning This function is not thread-safe ! (but only in debug mode)
       static DEBUG_MAP* deletion = new DEBUG_MAP();
       return *deletion;
     }

@@ -94,11 +94,6 @@ namespace gum {
 
       NodeId get(const PRMInstance< GUM_SCALAR >& i) const;
 
-      /* @todo should be removed ?
-      void addArc( const std::string& u,
-                   const std::string& v,
-                   const std::string& ref );*/
-
       /// @}
       // ========================================================================
       /// @name Getters & setters over PRMInstance and array of PRMInstance.

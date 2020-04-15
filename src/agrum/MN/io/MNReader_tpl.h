@@ -21,13 +21,28 @@
 
 
 /** @file
- * @brief Outlined implementation of UAIBNReader
+ * @brief Templates implementation of bns/io/gumMNReader.h classes.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES
  */
-#include <agrum/BN/io/UAI/UAIWriter.h>
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+namespace gum {
 
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::UAIWriter< double >;
-#endif
+  /* =========================================================================*/
+  /* ===                           GUM_BN_WRITER === */
+  /* =========================================================================*/
+  template < typename GUM_SCALAR >
+  INLINE MNReader< GUM_SCALAR >::MNReader(MarkovNet< GUM_SCALAR >* MN,
+                                          const std::string&      filename) {
+    GUM_CONSTRUCTOR(MNReader);
+  }
+
+  template < typename GUM_SCALAR >
+  INLINE MNReader< GUM_SCALAR >::~MNReader() {
+    GUM_DESTRUCTOR(MNReader);
+  }
+
+} /* namespace gum */
+
+#endif   // DOXYGEN_SHOULD_SKIP_THIS

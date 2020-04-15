@@ -30,7 +30,7 @@
 namespace gum {
 
   /* =========================================================================*/
-  /* ===                           GUM_BN_WRITTER === */
+  /* ===                           GUM_BN_WRITER === */
   /* =========================================================================*/
   template < typename GUM_SCALAR >
   INLINE BNReader< GUM_SCALAR >::BNReader(BayesNet< GUM_SCALAR >* bn,

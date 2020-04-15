@@ -541,7 +541,6 @@ namespace gum {
    * belonging to the matrix */
 
   INLINE Size SetInst::domainSize() const {
-    // @todo enhance the cplxity with a member domainSize ?
     Size s = 1;
 
     for (const auto var: __vars)
@@ -583,14 +582,9 @@ namespace gum {
     return __vals[i];
   }
 
-  // returns the current value of a given variable
-  // need to create functions TODO
-
   INLINE Size SetInst::vals(const DiscreteVariable& var) const {
     return __vals[__vars.pos(&var)];
   }
-
-  // returns the current value of a given variable
 
   INLINE Size SetInst::vals(const DiscreteVariable* var) const {
     return __vals[__vars.pos(var)];

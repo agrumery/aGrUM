@@ -11387,6 +11387,11 @@ class MarkovNet(IMarkovNet):
     def fastPrototype(dotlike, domainSize=2):
         r"""fastPrototype(std::string const & dotlike, gum::Size domainSize=2) -> MarkovNet"""
         return _pyAgrum.MarkovNet_fastPrototype(dotlike, domainSize)
+
+    @staticmethod
+    def fromBN(bn):
+        r"""fromBN(BayesNet bn) -> MarkovNet"""
+        return _pyAgrum.MarkovNet_fromBN(bn)
     __swig_destroy__ = _pyAgrum.delete_MarkovNet
 
     def __init__(self, *args):
@@ -11499,6 +11504,10 @@ _pyAgrum.MarkovNet_swigregister(MarkovNet)
 def MarkovNet_fastPrototype(dotlike, domainSize=2):
     r"""MarkovNet_fastPrototype(std::string const & dotlike, gum::Size domainSize=2) -> MarkovNet"""
     return _pyAgrum.MarkovNet_fastPrototype(dotlike, domainSize)
+
+def MarkovNet_fromBN(bn):
+    r"""MarkovNet_fromBN(BayesNet bn) -> MarkovNet"""
+    return _pyAgrum.MarkovNet_fromBN(bn)
 
 class BayesNetInference(object):
     r"""

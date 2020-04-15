@@ -22,15 +22,15 @@
 
 /**
  * @file
- * @brief Definition file for BIF XML exportation class
+ * @brief Definition file for UAI exportation class
  *
- * Writes an bayes net in XML files with BIF format
+ * Writes a bayes net in UAI format
  *
- * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES
  */
 
-#ifndef GUM_UAIWRITER_H
-#define GUM_UAIWRITER_H
+#ifndef UAI_BN_WRITER_H
+#define UAI_BN_WRITER_H
 
 
 #include <fstream>
@@ -43,8 +43,8 @@
 
 namespace gum {
   /**
-   * @class UAIWriter UAIWriter.h
-   *<agrum/BN/io/UAI/UAIWriter.h>
+   * @class UAIBNWriter UAIBNWriter.h
+   *<agrum/BN/io/UAI/UAIBNWriter.h>
    * @ingroup bn_io
    * @brief Writes an bayes net in a text file with UAI format
    *
@@ -54,7 +54,7 @@ namespace gum {
    *
    */
   template < typename GUM_SCALAR >
-  class UAIWriter: public BNWriter< GUM_SCALAR > {
+  class UAIBNWriter: public BNWriter< GUM_SCALAR > {
     public:
     // ==========================================================================
     /// @name Constructor & destructor
@@ -64,12 +64,12 @@ namespace gum {
     /**
      * Default constructor.
      */
-    UAIWriter();
+    UAIBNWriter();
 
     /**
      * Destructor.
      */
-    ~UAIWriter() final;
+    ~UAIBNWriter() final;
 
     /// @}
 
@@ -105,10 +105,10 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class UAIWriter< double >;
+  extern template class UAIBNWriter< double >;
 #endif
 
 } /* namespace gum */
 
-#include <agrum/BN/io/UAI/UAIWriter_tpl.h>
-#endif   // GUM_UAIWRITER_H
+#include <agrum/BN/io/UAI/UAIBNWriter_tpl.h>
+#endif   // UAI_BN_WRITER_H

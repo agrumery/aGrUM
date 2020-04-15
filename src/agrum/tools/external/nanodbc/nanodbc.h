@@ -1223,8 +1223,6 @@ public:
         //! Returns ORDINAL_POSITION column value in result set returned by SQLColumns.
         long ordinal_position() const;
 
-        //! \brief
-        //! TODO: Translate "YES","NO", <empty> strings to IsNullable enum?
         string_type is_nullable() const;
 
     private:

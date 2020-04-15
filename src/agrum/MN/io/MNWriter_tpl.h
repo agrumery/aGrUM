@@ -20,9 +20,28 @@
  */
 
 
-#include <agrum/BN/io/UAI/UAIReader.h>
+/** @file
+ * @brief Templates implementation of bns/io/gumMNWriter.h classes.
+ *
+ * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES
+ */
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+namespace gum {
 
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::UAIReader< double >;
-#endif
+  /* =========================================================================*/
+  /* ===                           GUM_BN_WRITER                         === */
+  /* =========================================================================*/
+  template < typename GUM_SCALAR >
+  INLINE MNWriter< GUM_SCALAR >::MNWriter() {
+    GUM_CONSTRUCTOR(MNWriter);
+  }
+
+  template < typename GUM_SCALAR >
+  INLINE MNWriter< GUM_SCALAR >::~MNWriter() {
+    GUM_DESTRUCTOR(MNWriter);
+  }
+
+} /* namespace gum */
+
+#endif   // DOXYGEN_SHOULD_SKIP_THIS

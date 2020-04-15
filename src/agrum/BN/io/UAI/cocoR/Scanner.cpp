@@ -38,7 +38,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <agrum/tools/core/cocoR/common.h>
 
    namespace gum {
-namespace UAI {
+namespace UAIBN {
 
 
 Token::Token() {

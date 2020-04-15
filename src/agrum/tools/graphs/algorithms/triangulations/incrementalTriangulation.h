@@ -105,8 +105,6 @@ namespace gum {
     };
 
     /// returns an elimination ordering compatible with the triangulated graph
-    /** @todo : why not a Sequence? because we need its content to be
-     * non-constant */
     const std::vector< NodeId >& eliminationOrder();
 
     /** @brief returns the number of a given node in the elimination order

@@ -56,7 +56,6 @@ namespace gum {
                                  src.content()->newFactory()),
                               *(src.content())) {
     this->_empty_value = src._empty_value;
-    // todo how to optimize copy of content ?
     // GUM_CONS_CPY not here because in called Potential
     // GUM_CONS_CPY( Potential );
   }

@@ -62,8 +62,6 @@ namespace gum {
     protected:
     /**
      * make a copy
-     * TODO since we removed T_OtherData maybe some changes are
-     * needed in this method?
      * @param aDRV  the copied object
      */
     void _copy(const DiscretizedVariable< T_TICKS >& aDRV);

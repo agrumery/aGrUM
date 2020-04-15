@@ -40,7 +40,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 
 
 namespace gum {
-namespace UAI {
+namespace UAIBN {
 
 
 void Parser::SynErr( int n ) {
@@ -125,7 +125,7 @@ void Parser::LISTE() {
 		}
 }
 
-void Parser::UAI() {
+void Parser::UAIBN() {
 		Expect(4 /* "BAYES" */);
 		LISTE();
 }
@@ -224,7 +224,7 @@ void Parser::Parse() {
   la = dummyToken = new Token();
   la->val = coco_string_create( L"Dummy Token" );
   Get();
-  	UAI();
+  	UAIBN();
 	Expect(0);
 }
 

@@ -32,8 +32,8 @@ Coco/R itself) does not fall under the GNU General Public License.
 -----------------------------------------------------------------------*/
 
 
-#if !defined(gum_UAI_COCO_SCANNER_H__)
-#define gum_UAI_COCO_SCANNER_H__
+#if !defined(gum_UAIBN_COCO_SCANNER_H__)
+#define gum_UAIBN_COCO_SCANNER_H__
 
 #include <limits.h>
 #include <stdio.h>
@@ -47,7 +47,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <agrum/tools/core/errorsContainer.h>
 
 namespace gum {
-namespace UAI {
+namespace UAIBN {
 
 
 class Token {

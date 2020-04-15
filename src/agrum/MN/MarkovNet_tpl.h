@@ -137,7 +137,7 @@ namespace gum {
   MarkovNet< GUM_SCALAR >
      MarkovNet< GUM_SCALAR >::fastPrototype(const std::string& dotlike,
                                             Size               domainSize) {
-    gum::MarkovNet< GUM_SCALAR > mn;
+    MarkovNet< GUM_SCALAR > mn;
 
 
     for (const auto& clikchain: split(dotlike, ";")) {
@@ -150,6 +150,22 @@ namespace gum {
     }
     mn.generateFactors();
     mn.setProperty("name", "fastPrototype");
+    return mn;
+  }
+
+  template < typename GUM_SCALAR >
+  MarkovNet< GUM_SCALAR >
+     MarkovNet< GUM_SCALAR >::fromBN(const BayesNet< GUM_SCALAR >& bn) {
+    MarkovNet< GUM_SCALAR > mn;
+    for (NodeId nod: bn.nodes()) {
+      mn.add(bn.variable(nod), nod);
+    }
+    mn.beginTopologyTransformation();
+    for (NodeId nod: bn.nodes()) {
+      mn.addFactor(bn.cpt(nod));
+    }
+    mn.endTopologyTransformation();
+    mn.setProperty("name", bn.propertyWithDefault("name", "noname"));
     return mn;
   }
 
@@ -167,8 +183,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   MarkovNet< GUM_SCALAR >::MarkovNet(const MarkovNet< GUM_SCALAR >& source) :
-      IMarkovNet< GUM_SCALAR >(source), __varMap(source.__varMap),
-      __topologyTransformationInProgress(false) {
+      IMarkovNet< GUM_SCALAR >(source), __topologyTransformationInProgress(false),
+      __varMap(source.__varMap) {
     GUM_CONS_CPY(MarkovNet);
     __copyFactors(source);
   }
@@ -227,6 +243,16 @@ namespace gum {
   const Potential< GUM_SCALAR >&
      MarkovNet< GUM_SCALAR >::factor(const NodeSet& varIds) const {
     return *__factors[varIds];
+  }
+
+  template < typename GUM_SCALAR >
+  const Potential< GUM_SCALAR >& MarkovNet< GUM_SCALAR >::factor(
+     const std::vector< std::string >& varnames) const {
+    NodeSet vars;
+    for (const auto name: varnames) {
+      vars.insert(idFromName(name));
+    }
+    return factor(vars);
   }
 
   template < typename GUM_SCALAR >
@@ -405,9 +431,18 @@ namespace gum {
                MarkovNet< GUM_SCALAR >::__addFactor(const NodeSet&                 vars,
                                           const Potential< GUM_SCALAR >* src) {
     Potential< GUM_SCALAR >* factor = new Potential< GUM_SCALAR >();
+
+    // in order to be deterministic, the Potential contains all the vars, sorted by
+    // id.
+    std::vector< NodeId > sorted_nodes;
     for (auto node: vars) {
+      sorted_nodes.push_back(node);
+    }
+    std::sort(sorted_nodes.begin(), sorted_nodes.end());
+    for (auto node: sorted_nodes) {
       factor->add(variable(node));
     }
+
     if (src != nullptr) { factor->fillWith(*src); }
     __factors.insert(vars, factor);
 
@@ -481,6 +516,7 @@ namespace gum {
   INLINE void MarkovNet< GUM_SCALAR >::beginTopologyTransformation() {
     __topologyTransformationInProgress = true;
   }
+
   template < typename GUM_SCALAR >
   INLINE void MarkovNet< GUM_SCALAR >::endTopologyTransformation() {
     if (__topologyTransformationInProgress) {

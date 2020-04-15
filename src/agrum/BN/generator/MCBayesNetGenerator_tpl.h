@@ -278,7 +278,7 @@ namespace gum {
         if (__isPolytree())
           __PMMx_poly();
         else
-          __PMMx_multi();   // TODO verification required
+          __PMMx_multi();
 
       } else {
         this->_bayesNet = _bayesNettemp;
@@ -333,7 +333,7 @@ namespace gum {
         excluded.insert(j);
 
         if (__connect(node, i, excluded)) {
-          this->_bayesNet.eraseArc(node, j);   // TODO reflect
+          this->_bayesNet.eraseArc(node, j);
           this->_bayesNet.addArc(head, tail);
           return;
         }

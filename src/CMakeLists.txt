@@ -17,13 +17,14 @@ include(CocoR.agrum)
 if(NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
      message(STATUS "** aGrUM notification: Coco/R targets")
      CocoRTarget(tools/core/math/cocoR SyntaxFormula gum:formula BASE)
-     CocoRTarget(BN/io/UAI/cocoR SyntaxUAI gum:UAI BN)
+     CocoRTarget(BN/io/UAI/cocoR SyntaxUAIBN gum:UAIBN BN)
      CocoRTarget(BN/io/BIF/cocoR SyntaxBIF gum:BIF BN)
      CocoRTarget(BN/io/DSL/cocoR SyntaxDSL gum:DSL BN)
      CocoRTarget(BN/io/net/cocoR SyntaxNet gum:net BN)
      CocoRTarget(PRM/o3prmr/cocoR SyntaxO3PRMR gum:prm:o3prmr PRM)
      CocoRTarget(PRM/o3prm/cocoR SyntaxO3PRM gum:prm:o3prm PRM)
      CocoRTarget(FMDP/io/dat/cocoR SyntaxDat gum:MDPDAT FMDP)
+     CocoRTarget(MN/io/UAI/cocoR SyntaxUAIMN gum:UAIMN MN)
 endif(NOT COCOR_EXECUTABLE STREQUAL "COCOR_EXECUTABLE-NOTFOUND")
 ####################################################################
 
@@ -33,7 +34,7 @@ buildFileListsWithModules()
 include_directories(BEFORE ${AGRUM_BINARY_DIR})
 include_directories(BEFORE ${AGRUM_SOURCE_DIR})
 link_directories(${AGRUM_BINARY_DIR}/lib)
-set(AGRUM_FILES ${AGRUM_SOURCES} ${AGRUM_C_SOURCES} ${AGRUM_INLINES} ${AGRUM_INCLUDES} ${AGRUM_TEMPLATES})
+set(AGRUM_FILES ${AGRUM_SOURCES} ${AGRUM_C_SOURCES} ${AGRUM_INLINES} ${AGRUM_INCLUDES} ${AGRUM_TEMPLATES} testunits/module_MN/UAIMNReaderTestSuite.h testunits/module_MN/UAIMNWriterTestSuite.h)
 
 ####################################################################
 ## TARGET library

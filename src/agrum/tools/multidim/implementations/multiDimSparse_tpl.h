@@ -97,8 +97,6 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void MultiDimSparse< GUM_SCALAR >::add(const DiscreteVariable& v) {
     MultiDimWithOffset< GUM_SCALAR >::add(v);
-
-    //@todo : anything better than that !
     fill(_default);
   }
 
@@ -107,15 +105,12 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE void MultiDimSparse< GUM_SCALAR >::erase(const DiscreteVariable& v) {
     MultiDimWithOffset< GUM_SCALAR >::erase(v);
-
-    //@todo : anything better than that !
     fill(_default);
   }
 
   // synchronise content after MultipleChanges
   template < typename GUM_SCALAR >
   INLINE void MultiDimSparse< GUM_SCALAR >::_commitMultipleChanges() {
-    //@todo : anything better than that !
     fill(_default);
   }
 

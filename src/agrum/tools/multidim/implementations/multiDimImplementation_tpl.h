@@ -130,8 +130,6 @@ namespace gum {
   }
 
   // adds a new var to the sequence of __vars
-  // @todo this function should be declared somewhere?
-
   template < typename GUM_SCALAR >
   INLINE MultiDimImplementation< GUM_SCALAR >&
          operator<<(MultiDimImplementation< GUM_SCALAR >& array,
@@ -167,7 +165,6 @@ namespace gum {
   INLINE bool
      MultiDimImplementation< GUM_SCALAR >::unregisterSlave(Instantiation& slave) {
     __slaveInstantiations.eraseByVal(&slave);
-    // TODO This method should return true? Why not use a void instead?
     return true;
   }
 

@@ -201,8 +201,8 @@ namespace gum {
 
     output << "graph FG_" << mn_name << " {" << std::endl;
     output << "  layout=neato;" << std::endl;
-    output << "  graph [bgcolor=transparent,label=\"factor graph for " << mn_name << "\"];"
-           << std::endl;
+    output << "  graph [bgcolor=transparent,label=\"factor graph for " << mn_name
+           << "\"];" << std::endl;
 
     // the variables
     output << "  node [shape=rectangle,margin=0.04,width=0,height=0, "
@@ -236,9 +236,10 @@ namespace gum {
       clicname += "\"";
 
       for (NodeId nod: kv.first)
-        output<<"  "<<clicname<<" -- \""<<variable(nod).name()<<"\";"<<std::endl;
+        output << "  " << clicname << " -- \"" << variable(nod).name() << "\";"
+               << std::endl;
     }
-    output<<"}"<<std::endl;
+    output << "}" << std::endl;
 
     return output.str();
   }
@@ -276,7 +277,6 @@ namespace gum {
 
       Instantiation i(factor);
       Instantiation j(fromfactor);
-
       for (i.setFirst(); !i.end(); i.inc()) {
         for (Idx indice = 0; indice < factor.nbrDim(); ++indice) {
           const DiscreteVariable* p = &(i.variable(indice));
@@ -289,7 +289,6 @@ namespace gum {
         }
       }
     }
-
     return true;
   }
 

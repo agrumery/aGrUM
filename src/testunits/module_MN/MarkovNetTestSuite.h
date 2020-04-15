@@ -28,6 +28,7 @@
 #include <cxxtest/testsuite_utils.h>
 
 #include <agrum/MN/MarkovNet.h>
+#include <agrum/tools/multidim/potential.h>
 #include <agrum/tools/variables/labelizedVariable.h>
 #include <agrum/tools/variables/rangeVariable.h>
 #include <agrum/tools/variables/discretizedVariable.h>
@@ -128,6 +129,7 @@ namespace gum_tests {
       mn2.generateFactors();
       TS_ASSERT(mn1 != mn2);
     }
+
     void testInsertion() {
       gum::MarkovNet< double > mn;
       _fill(mn);
@@ -135,6 +137,36 @@ namespace gum_tests {
                        gum::InvalidArgument);   // no empty factor
       TS_ASSERT_THROWS(mn.addFactor({"11", "31"}),
                        gum::InvalidArgument);   // already exists
+
+      {
+        gum::MarkovNet< double > mn1;
+        _fill(mn1);
+        gum::Potential< double > pot;
+        pot.add(mn1.variable("11"));
+        pot.add(mn1.variable("21"));
+        pot.randomDistribution();
+        TS_GUM_ASSERT_THROWS_NOTHING(mn1.addFactor(pot));
+        TS_ASSERT_EQUALS(pot.toString(), mn1.factor({"11", "21"}).toString());
+      }
+      {
+        gum::MarkovNet< double > mn1;
+        _fill(mn1);
+        gum::Potential< double > pot;
+        pot.add(mn1.variable("21"));
+        pot.add(mn1.variable("11"));
+        pot.randomDistribution();
+        TS_GUM_ASSERT_THROWS_NOTHING(mn1.addFactor(pot));
+
+        // should be different because of the sorting by order of the vars in pot.
+        TS_ASSERT_DIFFERS(pot.toString(), mn1.factor({"11", "21"}).toString());
+
+        // but the data should be the same
+        gum::Instantiation I(pot);
+        const auto&        factor = mn1.factor({"21", "11"});
+        for (I.setFirst(); !I.end(); I.inc()) {
+          TS_ASSERT_DELTA(pot.get(I), factor.get(I), 1e-10);
+        }
+      }
     }
 
     void testIterations() {
@@ -151,7 +183,8 @@ namespace gum_tests {
 
       cpt = (gum::Size)0;
 
-      for (const auto& arc: mn.edges()) {
+      for (const auto& edg: mn.edges()) {
+        GUM_UNUSED(edg);
         cpt++;
       }
 
@@ -218,6 +251,35 @@ namespace gum_tests {
       GUM_UNUSED(s1);
       GUM_UNUSED(s2);
     }
+
+    void testFromBN() {
+      auto bn =
+         gum::BayesNet< double >::fastPrototype("A->B->C<-D;C<-E->F<-G;F<-A");
+      auto mn = gum::MarkovNet< double >::fromBN(bn);
+
+      gum::Potential< double > pbn;
+      pbn.fill(1);
+      for (gum::NodeId nod: bn.nodes()) {
+        TS_ASSERT_EQUALS(bn.variable(nod).toString(), mn.variable(nod).toString());
+
+        pbn *= bn.cpt(nod);
+      }
+
+      gum::Potential< double > pmn;
+      pmn.fill(1);
+      for (const auto& key: mn.factors()) {
+        pmn *= *key.second;
+      }
+      pmn.normalize();
+
+      gum::Potential< double > ppmn(pbn);
+      ppmn.fillWith(pmn);   // copy of pmn using pbn's variables
+      auto diff = (pbn - ppmn).abs();
+      TS_ASSERT_EQUALS(pbn.domainSize(), diff.domainSize());
+      TS_ASSERT_LESS_THAN(diff.max(), 1e-10);
+
+      TS_ASSERT_EQUALS(mn.graph(), bn.moralGraph())
+    }
   };
 
-}  // namespace gum_tests
+}   // namespace gum_tests

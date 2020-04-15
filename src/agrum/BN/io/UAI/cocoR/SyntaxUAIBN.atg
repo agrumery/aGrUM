@@ -1,0 +1,68 @@
+#include <iostream>
+#include <tuple>
+
+#include <agrum/tools/core/cast_unicode.h>
+
+#undef TRY
+#define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.errorType());}
+
+$checkEOF=true
+
+COMPILER UAIBN
+
+void SemErr(std::string s) {
+  SemErr(widen(s).c_str());
+}
+
+void Warning(std::string s) {
+  Warning(widen("Warning : "+s).c_str());
+}
+
+std::vector<std::tuple<float,int,int,int>> quartets;
+
+decltype(quartets) getQuartets() {
+  return quartets;
+}
+
+//=====================
+CHARACTERS
+  digit  = '0'..'9'.
+
+//=====================
+TOKENS
+  eol    = '\n'.
+  integer = digit { digit }.              /* integer part */
+  float = (
+            [ "+" | "-" ] digit { digit }"." digit { digit }              /* digits after the mandatory point */
+            [ ( "E" | "e" ) [ "+" | "-" ] digit { digit } ]                 /* optional exponent part */
+           |
+            [ "+" | "-" ] digit { digit }                 /* integer part */
+            ( "E" | "e" ) [ "+" | "-" ] digit { digit }   /* mandatory exponent part */
+            )
+.
+
+
+//=====================
+COMMENTS FROM "#" TO '\n'
+
+IGNORE '\t'+'\r'+'\n'
+
+//=====================
+PRODUCTIONS
+
+NUMBER =
+  float  (. quartets.push_back(std::make_tuple(coco_atof(t->val),-1               ,t->line,t->col)); .)
+  |
+  integer (. quartets.push_back(std::make_tuple(-1.0             ,coco_atoi(t->val),t->line,t->col)); .)
+.
+
+LISTE = 
+  NUMBER
+  [LISTE]
+  .
+  
+UAIBN = "BAYES" LISTE.
+  
+
+END UAIBN.
+

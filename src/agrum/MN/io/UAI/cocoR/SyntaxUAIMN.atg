@@ -8,7 +8,7 @@
 
 $checkEOF=true
 
-COMPILER UAI
+COMPILER UAIMN
 
 void SemErr(std::string s) {
   SemErr(widen(s).c_str());
@@ -61,8 +61,8 @@ LISTE =
   [LISTE]
   .
   
-UAI = "BAYES" LISTE.
+UAIMN = "MARKOV" LISTE.
   
 
-END UAI.
+END UAIMN.
 

@@ -22,7 +22,7 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#  include <agrum/BN/io/UAI/UAIWriter.h>
+#  include <agrum/BN/io/UAI/UAIBNWriter.h>
 
 namespace gum {
 
@@ -30,16 +30,16 @@ namespace gum {
    * Default constructor.
    */
   template < typename GUM_SCALAR >
-  INLINE UAIWriter< GUM_SCALAR >::UAIWriter() {
-    GUM_CONSTRUCTOR(UAIWriter);
+  INLINE UAIBNWriter< GUM_SCALAR >::UAIBNWriter() {
+    GUM_CONSTRUCTOR(UAIBNWriter);
   }
 
   /*
    * Destructor.
    */
   template < typename GUM_SCALAR >
-  INLINE UAIWriter< GUM_SCALAR >::~UAIWriter() {
-    GUM_DESTRUCTOR(UAIWriter);
+  INLINE UAIBNWriter< GUM_SCALAR >::~UAIBNWriter() {
+    GUM_DESTRUCTOR(UAIBNWriter);
   }
 
   /*
@@ -50,7 +50,7 @@ namespace gum {
    * @throws IOError Raised if an I/O error occurs.
    */
   template < typename GUM_SCALAR >
-  INLINE void UAIWriter< GUM_SCALAR >::write(std::ostream&                  output,
+  INLINE void UAIBNWriter< GUM_SCALAR >::write(std::ostream&                  output,
                                              const IBayesNet< GUM_SCALAR >& bn) {
     if (!output.good()) {
       GUM_ERROR(IOError, "Stream states flags are not all unset.");
@@ -78,7 +78,7 @@ namespace gum {
    * @throw IOError Raised if an I/O error occurs.
    */
   template < typename GUM_SCALAR >
-  INLINE void UAIWriter< GUM_SCALAR >::write(const std::string& filePath,
+  INLINE void UAIBNWriter< GUM_SCALAR >::write(const std::string& filePath,
                                              const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
 
@@ -91,7 +91,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE std::string
-         UAIWriter< GUM_SCALAR >::__preambule(const IBayesNet< GUM_SCALAR >& bn) {
+         UAIBNWriter< GUM_SCALAR >::__preambule(const IBayesNet< GUM_SCALAR >& bn) {
     std::stringstream str;
 
     str << "BAYES" << std::endl;
@@ -127,7 +127,7 @@ namespace gum {
   }
   template < typename GUM_SCALAR >
   INLINE std::string
-         UAIWriter< GUM_SCALAR >::__cptBloc(const IBayesNet< GUM_SCALAR >& bn,
+         UAIBNWriter< GUM_SCALAR >::__cptBloc(const IBayesNet< GUM_SCALAR >& bn,
                                         NodeId                         node) {
     std::stringstream str;
 

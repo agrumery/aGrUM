@@ -1,8 +1,8 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
- *   info_at_agrum_dot_org
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES
+ * (@AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -19,13 +19,20 @@
  *
  */
 
+/**
+ * @file
+ * @brief Definition file for UAI exportation class
+ *
+ * Reads a markov net in UAI format
+ *
+ * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES
+ */
 
-#ifndef UAIREADER_H
-#define UAIREADER_H
+#ifndef UAI_MN_READER_H
+#define UAI_MN_READER_H
 
-#include <agrum/BN/BayesNet.h>
-#include <agrum/BN/BayesNetFactory.h>
-#include <agrum/BN/io/BNReader.h>
+#include <agrum/MN/MarkovNet.h>
+#include <agrum/MN/io/MNReader.h>
 #include <agrum/agrum.h>
 #include <iostream>
 #include <string>
@@ -34,7 +41,7 @@
 // including coco-generated PARSER and SCANNER
 #  undef COCO_PARSER_H__
 #  undef COCO_SCANNER_H__
-#  include <agrum/BN/io/UAI/cocoR/Parser.h>
+#  include <agrum/MN/io/UAI/cocoR/Parser.h>
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
@@ -42,38 +49,38 @@ namespace gum {
   /* ===                               READERS === */
   /* =========================================================================*/
   /**
-   * @class UAIReader
-   * @headerfile UAIReader.h <agrum/BN/io/UAI/UAIReader.h>
+   * @class UAIMNReader
+   * @headerfile UAIMNReader.h <agrum/MN/io/UAI/UAIMNReader.h>
    * @ingroup bn_io
-   * @brief Pure virtual class for reading a BN from a file.
+   * @brief Pure virtual class for reading a MN from a file.
    *
-   * Every class used to read the content of a Bayesian Network from a stream,
-   * or a file must be a subclass of UAIReader.
+   * Every class used to read the content of a Markov Network from a stream,
+   * or a file must be a subclass of UAIMNReader.
    */
   template < typename GUM_SCALAR >
-  class UAIReader: public BNReader< GUM_SCALAR > {
+  class UAIMNReader: public MNReader< GUM_SCALAR > {
     public:
     /**
      * Constructor
      * A reader is defined for reading a defined file. Hence the 2 args of the
      * constructor.
-     * Note that the BN has to be built outside the reader. There is no
+     * Note that the MN has to be built outside the reader. There is no
      * delegation to
      * create/destroy
-     * the BN from inside the reader.
+     * the MN from inside the reader.
      */
-    UAIReader(BayesNet< GUM_SCALAR >* bn, const std::string& filename);
+    UAIMNReader(MarkovNet< GUM_SCALAR >* MN, const std::string& filename);
 
     /**
      * Default destructor.
      */
-    ~UAIReader() final;
+    ~UAIMNReader() final;
 
     /// Direct access to DSL scanner (mandatory for listener connection)
     /// @throws IOError if file not exists
-    UAI::Scanner& scanner();
+    UAIMN::Scanner& scanner();
 
-    /// name of readen file
+    /// name of read file
     const std::string& streamName() const;
 
     /// accessor to trace function (just write the number of parser line)
@@ -119,10 +126,9 @@ namespace gum {
     /// @}
 
     protected:
-    BayesNet< GUM_SCALAR >*        __bn;
-    BayesNetFactory< GUM_SCALAR >* __factory;
-    UAI::Scanner*                  __scanner;
-    UAI::Parser*                   __parser;
+    MarkovNet< GUM_SCALAR >* __mn;
+    UAIMN::Scanner*          __scanner;
+    UAIMN::Parser*           __parser;
 
     std::string __streamName;
     bool        __traceScanning;
@@ -141,11 +147,11 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class UAIReader< double >;
+  extern template class UAIMNReader< double >;
 #endif
 
 } /* namespace gum */
 
-#include "UAIReader_tpl.h"
+#include "UAIMNReader_tpl.h"
 
-#endif   // UAIREADER_H
+#endif   // UAI_MN_READER_H

@@ -140,9 +140,6 @@ namespace gum {
   // @throw OperationNotAllowed if there is no bayesian networks.
   template < typename GUM_SCALAR >
   INLINE Size BayesNetFactory< GUM_SCALAR >::cptDomainSize(const NodeId n) const {
-    // (from PH) nowhere in the code, I see a check type if (__bn) __bn->. I
-    // assume
-    // __bn is forced not to be nullptr ...
     return __bn->cpt(n).domainSize();
   }
 
@@ -431,7 +428,7 @@ namespace gum {
       varList.pushBack(&(__bn->variable(__varNameMap[variables[i]])));
     }
 
-    // varList.pushFront(&(__bn->variable(__varNameMap[__stringBag[0]])));
+    // varList.pushFront(&(__mn->variable(__varNameMap[__stringBag[0]])));
 
     Idx nbrVar = varList.size();
 
