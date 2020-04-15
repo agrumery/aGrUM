@@ -139,6 +139,9 @@ namespace gum {
 
       _iteration(I, graph, sep_set, _rank);
 
+      //std::cout << "Le graphe contient: " << graph.sizeEdges() << " edges." << std::endl;
+      //std::cout << "En voici la liste: " << graph.edges() << std::endl;
+
       if (__usemiic) {
         _orientation_miic(I, graph, sep_set);
       } else {
@@ -628,6 +631,7 @@ namespace gum {
         x = std::get< 0 >(*std::get< 0 >(best));
         y = std::get< 1 >(*std::get< 0 >(best));
         z = std::get< 2 >(*std::get< 0 >(best));
+        //std::cout << "Triple: (" << x << "," << y << "," << z << ")" << std::endl;
 
         const double i3 = std::get< 1 >(best);
 
@@ -637,6 +641,8 @@ namespace gum {
             if (!__existsDirectedPath(graph, z, x, false)) {
               graph.eraseEdge(Edge(x, z));
               graph.addArc(x, z);
+              //std::cout << "1.a Removing edge (" << x << "," << z << ")" << std::endl;
+              //std::cout << "1.a Adding arc (" << x << "," << z << ")" << std::endl;
               marks[{x, z}] = '>';
               if (graph.existsArc(z, x)
                   && std::find(
@@ -645,6 +651,7 @@ namespace gum {
                   && std::find(
                         __latent_couples.begin(), __latent_couples.end(), Arc(x, z))
                         == __latent_couples.end()) {
+                //std::cout << "Adding latent couple (" << z << "," << x << ")" << std::endl;
                 __latent_couples.push_back(Arc(z, x));
               }
               if (!__arc_probas.exists(Arc(x, z)))
@@ -652,8 +659,10 @@ namespace gum {
             }
             else {
               graph.eraseEdge(Edge(x, z));
+              //std::cout << "1.b Adding arc (" << x << "," << z << ")" << std::endl;
               if (!__existsDirectedPath(graph, x, z, false)){
                 graph.addArc(z, x);
+                //std::cout << "1.b Removing edge (" << x << "," << z << ")" << std::endl;
                 marks[{z,x}] = '>';
               }
             }
@@ -661,6 +670,8 @@ namespace gum {
             if (!__existsDirectedPath(graph, z, y, false)){
               graph.eraseEdge(Edge(y, z));
               graph.addArc(y, z);
+              //std::cout << "1.c Removing edge (" << y << "," << z << ")" << std::endl;
+              //std::cout << "1.c Adding arc (" << y << "," << z << ")" << std::endl;
               marks[{y, z}] = '>';
               if (graph.existsArc(z, y)
                   && std::find(
@@ -676,8 +687,10 @@ namespace gum {
             }
             else {
               graph.eraseEdge(Edge(y, z));
+              //std::cout << "1.d Removing edge (" << y << "," << z << ")" << std::endl;
               if (!__existsDirectedPath(graph, y, z, false)){
                 graph.addArc(z, y);
+                //std::cout << "1.d Adding arc (" << z << "," << y << ")" << std::endl;
                 marks[{z,y}] = '>';
               }
             }
@@ -685,6 +698,8 @@ namespace gum {
             if (!__existsDirectedPath(graph, z, y, false)){
               graph.eraseEdge(Edge(y, z));
               graph.addArc(y, z);
+              //std::cout << "2.a Removing edge (" << y << "," << z << ")" << std::endl;
+              //std::cout << "2.a Adding arc (" << y << "," << z << ")" << std::endl;
               marks[{y, z}] = '>';
               if (graph.existsArc(z, y)
                   && std::find(
@@ -700,8 +715,10 @@ namespace gum {
             }
             else {
                 graph.eraseEdge(Edge(y,z));
+                //std::cout << "2.b Removing edge (" << y << "," << z << ")" << std::endl;
                 if (!__existsDirectedPath(graph, y, z, false)){
                     graph.addArc(z,y);
+                    //std::cout << "2.b Adding arc (" << y << "," << z << ")" << std::endl;
                     marks[{z,y}] = '>';
                 }
             }
@@ -709,6 +726,8 @@ namespace gum {
             if (!__existsDirectedPath(graph, z, x, false)){
               graph.eraseEdge(Edge(x, z));
               graph.addArc(x, z);
+              //std::cout << "3.a Removing edge (" << x << "," << z << ")" << std::endl;
+              //std::cout << "3.a Adding arc (" << x << "," << z << ")" << std::endl;
               marks[{x, z}] = '>';
               if (graph.existsArc(z, x)
                   && std::find(
@@ -724,8 +743,10 @@ namespace gum {
             }
             else {
                 graph.eraseEdge(Edge(x,z));
+                //std::cout << "3.b Removing edge (" << x << "," << z << ")" << std::endl;
                 if (!__existsDirectedPath(graph, x, z, false)){
                     graph.addArc(z,x);
+                    //std::cout << "3.b Adding arc (" << x << "," << z << ")" << std::endl;
                     marks[{z,x}] = '>';
                 }
             }
@@ -736,8 +757,10 @@ namespace gum {
           if (marks[{x, z}] == '>' && marks[{y, z}] == 'o'
               && marks[{z, y}] != '-') {
             graph.eraseEdge(Edge(z, y));
+            //std::cout << "4. Removing edge (" << z << "," << y << ")" << std::endl;
             if (!__existsDirectedPath(graph, y, z) && graph.parents(y).empty()) {
               graph.addArc(z, y);
+              //std::cout << "4.a Adding arc (" << z << "," << y << ")" << std::endl;
               marks[{z, y}] = '>';
               marks[{y, z}] = '-';
               if (!__arc_probas.exists(Arc(z, y)))
@@ -745,21 +768,25 @@ namespace gum {
             } else if (!__existsDirectedPath(graph, z, y)
                        && graph.parents(z).empty()) {
               graph.addArc(y, z);
+              //std::cout << "4.b Adding arc (" << y << "," << z << ")" << std::endl;
               marks[{z, y}] = '-';
               marks[{y, z}] = '>';
               __latent_couples.push_back(Arc(y, z));
               if (!__arc_probas.exists(Arc(y, z)))
                 __arc_probas.insert(Arc(y, z), std::get< 3 >(best));
             }
-            else if (!__existsDirectedPath(graph, z, y)){
+            else if (!__existsDirectedPath(graph, y, z)){
               graph.addArc(z,y);
+              //std::cout << "4.c Adding arc (" << z << "," << y << ")" << std::endl;
               marks[{z,y}] = '>';
               marks[{y,z}] = '-';
               if (!__arc_probas.exists(Arc(z,y)))
                 __arc_probas.insert(Arc(z, y), std::get< 3 >(best));
             }
-            else if (!__existsDirectedPath(graph, y, z)){
+            else if (!__existsDirectedPath(graph, z, y)){
               graph.addArc(y,z);
+              //std::cout << "4.d Adding arc (" << y << "," << z << ")" << std::endl;
+              __latent_couples.push_back(Arc(y, z));
               marks[{z,y}] = '-';
               marks[{y,z}] = '>';
               if (!__arc_probas.exists(Arc(y,z)))
@@ -769,8 +796,10 @@ namespace gum {
           } else if (marks[{y, z}] == '>' && marks[{x, z}] == 'o'
                      && marks[{z, x}] != '-') {
             graph.eraseEdge(Edge(z, x));
+            //std::cout << "5. Removing edge (" << z << "," << x << ")" << std::endl;
             if (!__existsDirectedPath(graph, x, z) && graph.parents(x).empty()) {
               graph.addArc(z, x);
+              //std::cout << "5.a Adding arc (" << z << "," << x << ")" << std::endl;
               marks[{z, x}] = '>';
               marks[{x, z}] = '-';
               if (!__arc_probas.exists(Arc(z, x)))
@@ -778,23 +807,27 @@ namespace gum {
             } else if (!__existsDirectedPath(graph, z, x)
                        && graph.parents(z).empty()) {
               graph.addArc(x, z);
+              //std::cout << "5.b Adding arc (" << x << "," << z << ")" << std::endl;
               marks[{z, x}] = '-';
               marks[{x, z}] = '>';
               __latent_couples.push_back(Arc(x, z));
               if (!__arc_probas.exists(Arc(x, z)))
                 __arc_probas.insert(Arc(x, z), std::get< 2 >(best));
             }
-            else if (!__existsDirectedPath(graph, z, x)){
+            else if (!__existsDirectedPath(graph, x, z)){
               graph.addArc(z,x);
+              //std::cout << "5.c Adding arc (" << z << "," << x << ")" << std::endl;
               marks[{z,x}] = '>';
               marks[{x,z}] = '-';
               if (!__arc_probas.exists(Arc(z,x)))
                 __arc_probas.insert(Arc(z, x), std::get< 2 >(best));
             }
-            else if (!__existsDirectedPath(graph, x, z)){
+            else if (!__existsDirectedPath(graph, z, x)){
               graph.addArc(x,z);
+              //std::cout << "5.d Adding arc (" << x << "," << z << ")" << std::endl;
               marks[{z,x}] = '-';
               marks[{x,z}] = '>';
+              __latent_couples.push_back(Arc(x, z));
               if (!__arc_probas.exists(Arc(x,z)))
                 __arc_probas.insert(Arc(x, z), std::get< 2 >(best));
             }
@@ -1060,6 +1093,8 @@ namespace gum {
     DAG Miic::learnStructure(CorrectedMutualInformation<>& I,
                              MixedGraph                    initialGraph) {
       MixedGraph essentialGraph = learnMixedStructure(I, initialGraph);
+      //std::cout << "Le mixed graph mesdames et messieurs: "
+                //<< essentialGraph.toDot() << std::endl;
 
       // Second, orientate remaining edges
       const Sequence< NodeId > order = essentialGraph.topologicalOrder();
@@ -1069,6 +1104,8 @@ namespace gum {
           _propagatesHead(essentialGraph, x);
         }
       }
+      //std::cout << "Le mixed graph après une première propagation mesdames et messieurs: "
+                //<< essentialGraph.toDot() << std::endl;
       // then decide the orientation by the topological order and propagate them
       for (NodeId x: order) {
         if (!essentialGraph.neighbours(x).empty()) {
@@ -1076,6 +1113,11 @@ namespace gum {
         }
       }
 
+      //std::cout << "Le mixed graph après une deuxième propagation mesdames et messieurs: "
+                //<< essentialGraph.toDot() << std::endl;
+      //std::cout << "Le graphe contient maintenant : " << essentialGraph.sizeArcs() << " arcs." 
+                //<< std::endl;
+      //std::cout << "Que voici: " << essentialGraph.arcs() << std::endl;
       // turn the mixed graph into a dag
       DAG dag;
       for (auto node: essentialGraph) {
@@ -1092,6 +1134,7 @@ namespace gum {
     void Miic::_propagatesHead(MixedGraph& graph, NodeId node) {
       const auto neighbours = graph.neighbours(node);
       for (auto& neighbour: neighbours) {
+        //std::cout << "Orientation de l'edge (" << node << "," << neighbour << ")" << std::endl;
         if (graph.neighbours(neighbour).contains(node)) {
           if (!__existsDirectedPath(graph, neighbour, node)
               && !(__initial_marks.exists({node, neighbour})
@@ -1099,6 +1142,8 @@ namespace gum {
               && graph.parents(neighbour).empty()) {
             graph.eraseEdge(Edge(neighbour, node));
             graph.addArc(node, neighbour);
+            //std::cout << "1. Removing edge (" << neighbour << "," << node << ")" << std::endl;
+            //std::cout << "1. Adding arc (" << node << "," << neighbour << ")" << std::endl;
             _propagatesHead(graph, neighbour);
           } else if (!__existsDirectedPath(graph, node, neighbour)
                      && !(__initial_marks.exists({neighbour, node})
@@ -1106,14 +1151,20 @@ namespace gum {
                      && graph.parents(node).empty()) {
             graph.eraseEdge(Edge(neighbour, node));
             graph.addArc(neighbour, node);
-          }
-          else if (!__existsDirectedPath(graph, neighbour, node)){
-              graph.eraseEdge(Edge(neighbour,node));
-              graph.addArc(neighbour, node);
+            //std::cout << "2. Removing edge (" << neighbour << "," << node << ")" << std::endl;
+            //std::cout << "2. Adding arc (" << neighbour << "," << node << ")" << std::endl;
           }
           else if (!__existsDirectedPath(graph, node, neighbour)){
+              graph.eraseEdge(Edge(neighbour,node));
+              graph.addArc(neighbour, node);
+              //std::cout << "3. Removing edge (" << neighbour << "," << node << ")" << std::endl;
+              //std::cout << "3. Adding arc (" << neighbour << "," << node << ")" << std::endl;
+          }
+          else if (!__existsDirectedPath(graph, neighbour, node)){
               graph.eraseEdge(Edge(node, neighbour));
               graph.addArc(node, neighbour);
+              //std::cout << "4. Removing edge (" << neighbour << "," << node << ")" << std::endl;
+              //std::cout << "4. Adding arc (" << node << "," << neighbour << ")" << std::endl;
           }
           //else if (!graph.parents(neighbour).empty()
                      //&& !graph.parents(node).empty()) {
@@ -1123,6 +1174,7 @@ namespace gum {
           //}
           else {
             graph.eraseEdge(Edge(neighbour, node));
+            //std::cout << "5. Removing edge (" << neighbour << "," << node << ")" << std::endl;
           }
         }
       }
