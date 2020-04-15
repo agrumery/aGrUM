@@ -1154,13 +1154,19 @@ namespace gum {
             //std::cout << "2. Removing edge (" << neighbour << "," << node << ")" << std::endl;
             //std::cout << "2. Adding arc (" << neighbour << "," << node << ")" << std::endl;
           }
-          else if (!__existsDirectedPath(graph, node, neighbour)){
+          else if (!__existsDirectedPath(graph, node, neighbour)
+                   && !(__initial_marks.exists({neighbour, node})
+                        && __initial_marks[{neighbour, node}] == '-')
+                   && graph.parents(node).empty()) {
               graph.eraseEdge(Edge(neighbour,node));
               graph.addArc(neighbour, node);
               //std::cout << "3. Removing edge (" << neighbour << "," << node << ")" << std::endl;
               //std::cout << "3. Adding arc (" << neighbour << "," << node << ")" << std::endl;
           }
-          else if (!__existsDirectedPath(graph, neighbour, node)){
+          else if (!__existsDirectedPath(graph, neighbour, node)
+                   && !(__initial_marks.exists({node, neighbour})
+                        && __initial_marks[{node, neighbour}] == '-')
+                   && graph.parents(neighbour).empty()) {
               graph.eraseEdge(Edge(node, neighbour));
               graph.addArc(node, neighbour);
               //std::cout << "4. Removing edge (" << neighbour << "," << node << ")" << std::endl;
