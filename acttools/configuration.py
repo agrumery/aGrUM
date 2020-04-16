@@ -80,6 +80,8 @@ def initParams():
   cfg.default['mvsc32'] = False
   cfg.default['mvsc17'] = False
   cfg.default['mvsc17_32'] = False
+  cfg.default['mvsc19'] = False
+  cfg.default['mvsc19_32'] = False
   cfg.default['mingw64'] = False
   cfg.default['build'] = "all"
   cfg.default['noSaveParams'] = False
@@ -211,6 +213,16 @@ def configureOptions(current):
                         help="use Microsoft Visual Studio17 C++ compiler 32bits (Windows only).",
                         action="store_true",
                         dest="mvsc17_32",
+                        default=False)
+  cfg.parser.add_option("", "--mvsc19",
+                        help="use Microsoft Visual Studio19 C++ compiler 64bits (Windows only).",
+                        action="store_true",
+                        dest="mvsc19",
+                        default=False)
+  cfg.parser.add_option("", "--mvsc19_32",
+                        help="use Microsoft Visual Studio19 C++ compiler 32bits (Windows only).",
+                        action="store_true",
+                        dest="mvsc19_32",
                         default=False)
   cfg.parser.add_option("", "--mingw64",
                         help="use minGW64 C++ Compiler (Windows only).",
