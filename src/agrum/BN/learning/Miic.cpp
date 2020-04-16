@@ -1156,8 +1156,7 @@ namespace gum {
           }
           else if (!__existsDirectedPath(graph, node, neighbour)
                    && !(__initial_marks.exists({neighbour, node})
-                        && __initial_marks[{neighbour, node}] == '-')
-                   && graph.parents(node).empty()) {
+                        && __initial_marks[{neighbour, node}] == '-')) {
               graph.eraseEdge(Edge(neighbour,node));
               graph.addArc(neighbour, node);
               //std::cout << "3. Removing edge (" << neighbour << "," << node << ")" << std::endl;
@@ -1165,8 +1164,7 @@ namespace gum {
           }
           else if (!__existsDirectedPath(graph, neighbour, node)
                    && !(__initial_marks.exists({node, neighbour})
-                        && __initial_marks[{node, neighbour}] == '-')
-                   && graph.parents(neighbour).empty()) {
+                        && __initial_marks[{node, neighbour}] == '-')) {
               graph.eraseEdge(Edge(node, neighbour));
               graph.addArc(node, neighbour);
               //std::cout << "4. Removing edge (" << neighbour << "," << node << ")" << std::endl;
