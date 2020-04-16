@@ -1159,6 +1159,11 @@ namespace gum {
                         && __initial_marks[{neighbour, node}] == '-')) {
               graph.eraseEdge(Edge(neighbour,node));
               graph.addArc(neighbour, node);
+              if (!graph.parents(neighbour).empty()
+                  && !graph.parents(node).empty()) {
+                __latent_couples.push_back(Arc(node, neighbour));
+              }
+
               //std::cout << "3. Removing edge (" << neighbour << "," << node << ")" << std::endl;
               //std::cout << "3. Adding arc (" << neighbour << "," << node << ")" << std::endl;
           }
@@ -1167,6 +1172,10 @@ namespace gum {
                         && __initial_marks[{node, neighbour}] == '-')) {
               graph.eraseEdge(Edge(node, neighbour));
               graph.addArc(node, neighbour);
+              if (!graph.parents(neighbour).empty()
+                  && !graph.parents(node).empty()) {
+                __latent_couples.push_back(Arc(node, neighbour));
+              }
               //std::cout << "4. Removing edge (" << neighbour << "," << node << ")" << std::endl;
               //std::cout << "4. Adding arc (" << node << "," << neighbour << ")" << std::endl;
           }
