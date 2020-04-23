@@ -17,6 +17,10 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
+// macro from graphs.i
+ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::IBayesNet);
+
  %ignore gum::BayesNet<GUM_SCALAR>::add(const gum::DiscreteVariable& variable, gum::MultiDimImplementation<GUM_SCALAR> * aContent);
 
 %ignore *::beginNodes;
@@ -25,12 +29,8 @@
 %ignore *::endNodesSafe;
 %ignore *::beginArcs;
 %ignore *::endArcs;
-
-/* EXPERIMENTAL
-%pythonappend gum::BayesNet::cpt %{
-        val.__fill_distrib__()
-%}
-*/
+%ignore *::beginEdges;
+%ignore *::endEdges;
 
 %include "extensions/BNGenerator.h"
 
@@ -51,27 +51,27 @@
 
   PyObject *minimalCondSet(gum::NodeId target,PyObject* list) const {
     gum::NodeSet soids;
-    PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,*self);
+    PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,self->variableNodeMap());
     return PyAgrumHelper::PySetFromNodeSet(self->minimalCondSet(target, soids));
   };
 
 
   PyObject *minimalCondSet(PyObject* targets,PyObject* list) const {
     gum::NodeSet sotargets;
-    PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sotargets,targets,*self);
+    PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sotargets,targets,self->variableNodeMap());
 
     gum::NodeSet soids;
-    PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,*self);
+    PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,self->variableNodeMap());
     return PyAgrumHelper::PySetFromNodeSet(self->minimalCondSet(sotargets, soids));
   };
 
   PyObject *parents(PyObject* norid) const {
-    return PyAgrumHelper::PySetFromNodeSet(self->parents(PyAgrumHelper::nodeIdFromNameOrIndex(norid,*self)));
+    return PyAgrumHelper::PySetFromNodeSet(self->parents(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
   };
   PyObject *children(PyObject* norid) const {
-    return PyAgrumHelper::PySetFromNodeSet(self->children(PyAgrumHelper::nodeIdFromNameOrIndex(norid,*self)));
+    return PyAgrumHelper::PySetFromNodeSet(self->children(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
   };
-  PyObject *arcs() const { 
+  PyObject *arcs() const {
     return PyAgrumHelper::PySetFromArcSet(self->arcs());
   };
 }
@@ -273,7 +273,7 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
       std::vector<PythonLoadListener> py_listener;
 
       try {
-          gum::UAIReader<GUM_SCALAR> reader(self,name);
+          gum::UAIBNReader<GUM_SCALAR> reader(self,name);
           int l_size=__fillLoadListeners(py_listener,l);
           for(int i=0 ; i<l_size ; i++) {
               GUM_CONNECT(reader.scanner(), onLoad, py_listener[i], PythonLoadListener::whenLoading);
@@ -294,7 +294,7 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
   };
 
   void saveUAI(std::string name) {
-      gum::UAIWriter<GUM_SCALAR> writer;
+      gum::UAIBNWriter<GUM_SCALAR> writer;
       writer.write( name, *self );
   };
 }

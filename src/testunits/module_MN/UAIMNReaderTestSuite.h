@@ -94,7 +94,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(var_2.name(), "2");
         TS_ASSERT_EQUALS(var_2.domainSize(), (gum::Size)3);
 
-        TS_ASSERT_EQUALS(net->factors().size(),2);
+        TS_ASSERT_EQUALS(net->factors().size(),(gum::Size)2);
 
         const auto& factor_01 = net->factor({node_0,node_1});
         TS_ASSERT_EQUALS(factor_01.domainSize(), (gum::Size)4);

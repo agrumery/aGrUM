@@ -33,7 +33,7 @@
   };
 
 %pythoncode {
-  def connectedComponents(graph):
+  def connectedComponents(self):
     """ connected components from a graph/BN
     
     Compute the connected components of a pyAgrum's graph or Bayesian Network
@@ -42,37 +42,32 @@
     The firstly visited node for each component is called a 'root' and is used as a key for the component.
     This root has been arbitrarily chosen during the algorithm.
     
-    Parameters
-    ----------
-    graph : pyAgrum's graph 
-        A graph, a Bayesian network, more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods in which the search will take place
-        
     Returns
     -------
     dict(int,Set[int])
       dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
       
     """
-    nodes=graph.nodes()
+    nodes=self.nodes()
     connected_components=dict()
 
     def parcours(node,orig):
         cc={node}
         nodes.discard(node)
-        if hasattr(graph,'children'):
-            for chi in graph.children(node):
+        if hasattr(self,'children'):
+            for chi in self.children(node):
                 if chi!=orig:
                     if chi in nodes:
                         cc|=parcours(chi,node)
                         
-        if hasattr(graph,'parents'):
-            for par in graph.parents(node):
+        if hasattr(self,'parents'):
+            for par in self.parents(node):
                 if par!=orig:
                     if par in nodes:
                         cc|=parcours(par,node)
                                     
-        if hasattr(graph,'neighbours'):
-            for nei in graph.neighbours(node):
+        if hasattr(self,'neighbours'):
+            for nei in self.neighbours(node):
                 if nei!=orig:
                     if nei in nodes:
                         cc|=parcours(nei,node)
@@ -91,7 +86,6 @@ ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::DiGraph); // add for the sub-classes (in
 ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::UndiGraph);
 ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::EssentialGraph);
 ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::MarkovBlanket);
-ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::IBayesNet);
 
 %ignore gum::EssentialGraph::nodes const;
 %ignore gum::MarkovBlanket::nodes const;

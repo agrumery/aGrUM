@@ -11296,7 +11296,6 @@ class IMarkovNet(object):
 
     def __init__(self, *args, **kwargs):
         raise AttributeError("No constructor defined - class is abstract")
-    __repr__ = _swig_repr
     __swig_destroy__ = _pyAgrum.delete_IMarkovNet
 
     def factor(self, varIds):
@@ -11367,9 +11366,68 @@ class IMarkovNet(object):
         r"""toDotAsFactorGraph(IMarkovNet self) -> std::string"""
         return _pyAgrum.IMarkovNet_toDotAsFactorGraph(self)
 
-    def toString(self):
-        r"""toString(IMarkovNet self) -> std::string"""
-        return _pyAgrum.IMarkovNet_toString(self)
+    def nodes(self):
+        r"""nodes(IMarkovNet self) -> PyObject *"""
+        return _pyAgrum.IMarkovNet_nodes(self)
+
+    def connectedComponents(graph):
+      """ connected components from a graph/BN
+
+      Compute the connected components of a pyAgrum's graph or Bayesian Network
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
+
+      The firstly visited node for each component is called a 'root' and is used as a key for the component.
+      This root has been arbitrarily chosen during the algorithm.
+
+      Parameters
+      ----------
+      graph : pyAgrum's graph 
+          A graph, a Bayesian network, more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods in which the search will take place
+
+      Returns
+      -------
+      dict(int,Set[int])
+        dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
+
+      """
+      nodes=graph.nodes()
+      connected_components=dict()
+
+      def parcours(node,orig):
+          cc={node}
+          nodes.discard(node)
+          if hasattr(graph,'children'):
+              for chi in graph.children(node):
+                  if chi!=orig:
+                      if chi in nodes:
+                          cc|=parcours(chi,node)
+
+          if hasattr(graph,'parents'):
+              for par in graph.parents(node):
+                  if par!=orig:
+                      if par in nodes:
+                          cc|=parcours(par,node)
+
+          if hasattr(graph,'neighbours'):
+              for nei in graph.neighbours(node):
+                  if nei!=orig:
+                      if nei in nodes:
+                          cc|=parcours(nei,node)
+          return cc       
+
+      while (len(nodes)>0):
+          root=nodes.pop()
+          connected_components[root]=parcours(root,None)
+      return connected_components
+
+
+    def __repr__(self):
+        r"""__repr__(IMarkovNet self) -> std::string"""
+        return _pyAgrum.IMarkovNet___repr__(self)
+
+    def __str__(self):
+        r"""__str__(IMarkovNet self) -> std::string"""
+        return _pyAgrum.IMarkovNet___str__(self)
 
 # Register IMarkovNet in _pyAgrum:
 _pyAgrum.IMarkovNet_swigregister(IMarkovNet)
@@ -11381,7 +11439,6 @@ class MarkovNet(IMarkovNet):
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
 
     @staticmethod
     def fastPrototype(dotlike, domainSize=2):
@@ -11402,9 +11459,12 @@ class MarkovNet(IMarkovNet):
         """
         _pyAgrum.MarkovNet_swiginit(self, _pyAgrum.new_MarkovNet(*args))
 
-    def factor(self, varIds):
-        r"""factor(MarkovNet self, gum::NodeSet const & varIds) -> Potential"""
-        return _pyAgrum.MarkovNet_factor(self, varIds)
+    def factor(self, *args):
+        r"""
+        factor(MarkovNet self, gum::NodeSet const & varIds) -> Potential
+        factor(MarkovNet self, Vector_string varnames) -> Potential
+        """
+        return _pyAgrum.MarkovNet_factor(self, *args)
 
     def factors(self):
         r"""factors(MarkovNet self) -> gum::FactorTable< double > const &"""
@@ -11497,6 +11557,18 @@ class MarkovNet(IMarkovNet):
     def endTopologyTransformation(self):
         r"""endTopologyTransformation(MarkovNet self)"""
         return _pyAgrum.MarkovNet_endTopologyTransformation(self)
+
+    def nodes(self):
+        r"""nodes(MarkovNet self) -> PyObject *"""
+        return _pyAgrum.MarkovNet_nodes(self)
+
+    def __repr__(self):
+        r"""__repr__(MarkovNet self) -> std::string"""
+        return _pyAgrum.MarkovNet___repr__(self)
+
+    def __str__(self):
+        r"""__str__(MarkovNet self) -> std::string"""
+        return _pyAgrum.MarkovNet___str__(self)
 
 # Register MarkovNet in _pyAgrum:
 _pyAgrum.MarkovNet_swigregister(MarkovNet)

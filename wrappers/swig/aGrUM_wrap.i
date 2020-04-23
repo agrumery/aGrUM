@@ -66,6 +66,7 @@
 #include <agrum/tools/multidim/ICIModels/multiDimNoisyAND.h>
 #include <agrum/tools/graphicalModels/graphicalModel.h>
 #include <agrum/tools/graphicalModels/DAGmodel.h>
+#include <agrum/tools/graphicalModels/UGmodel.h>
 #include <agrum/tools/graphicalModels/variableNodeMap.h>
 
 #include <agrum/tools/core/sequence.h>
@@ -85,6 +86,8 @@
 
 #include <agrum/MN/IMarkovNet.h>
 #include <agrum/MN/MarkovNet.h>
+#include <agrum/MN/io/UAI/UAIMNReader.h>
+#include <agrum/MN/io/UAI/UAIMNWriter.h>
 
 #include <agrum/BN/algorithms/essentialGraph.h>
 #include <agrum/BN/algorithms/MarkovBlanket.h>
@@ -100,8 +103,8 @@
 #include <agrum/BN/io/BIFXML/BIFXMLBNWriter.h>
 #include <agrum/PRM/o3prm/O3prmBNReader.h>
 #include <agrum/PRM/o3prm/O3prmBNWriter.h>
-#include <agrum/BN/io/UAI/UAIReader.h>
-#include <agrum/BN/io/UAI/UAIWriter.h>
+#include <agrum/BN/io/UAI/UAIBNReader.h>
+#include <agrum/BN/io/UAI/UAIBNWriter.h>
 
 #include <agrum/tools/core/approximations/IApproximationSchemeConfiguration.h>
 #include <agrum/tools/core/approximations/approximationScheme.h>
@@ -270,6 +273,7 @@ namespace std {
 %import <agrum/tools/graphicalModels/variableNodeMap.h>
 %include <agrum/tools/graphicalModels/graphicalModel.h>
 %include <agrum/tools/graphicalModels/DAGmodel.h>
+%include <agrum/tools/graphicalModels/UGmodel.h>
 
 %include <agrum/BN/IBayesNet.h>
 %include <agrum/BN/BayesNet.h>

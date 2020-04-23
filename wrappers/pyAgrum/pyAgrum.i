@@ -77,6 +77,8 @@
 %include "learning.i"
 %include "bndistance.i"
 
+%include "markovnet.i"
+
 %include "credalnet.i"
 
 %include "influenceDiagram.i"

@@ -43,7 +43,7 @@ namespace gum_tests {
   class UAIBNReaderTestSuite: public CxxTest::TestSuite {
     public:
     void testConstuctor() {
-      std::string file = GET_RESSOURCES_PATH("uai/BNUAIBNReader_file1.uai");
+      std::string file = GET_RESSOURCES_PATH("uai/BNUAIReader_file1.uai");
       gum::BayesNet< double > net;
 
       gum::UAIBNReader< double >* reader = 0;
@@ -53,7 +53,7 @@ namespace gum_tests {
     }
 
     void testRead_file1() {
-      std::string file = GET_RESSOURCES_PATH("uai/BNUAIBNReader_file1.uai");
+      std::string file = GET_RESSOURCES_PATH("uai/BNUAIReader_file1.uai");
       gum::BayesNet< double >* net = new gum::BayesNet< double >();
 
       TS_ASSERT(net != nullptr);
@@ -68,7 +68,7 @@ namespace gum_tests {
     }
 
     void testRead_file2_float() {
-      std::string file = GET_RESSOURCES_PATH("uai/BNUAIBNReader_file2.uai");
+      std::string file = GET_RESSOURCES_PATH("uai/BNUAIReader_file2.uai");
       gum::BayesNet< double >* net = new gum::BayesNet< double >();
       gum::UAIBNReader< double > reader(net, file);
 
@@ -140,7 +140,7 @@ namespace gum_tests {
     }
 
     void testRead_file3() {
-      std::string file = GET_RESSOURCES_PATH("uai/BNUAIBNReader_file3.uai");
+      std::string file = GET_RESSOURCES_PATH("uai/BNUAIReader_file3.uai");
       gum::BayesNet< double >* net = new gum::BayesNet< double >();
       gum::UAIBNReader< double > reader(net, file);
 

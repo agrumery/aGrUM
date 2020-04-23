@@ -41,7 +41,7 @@ from IPython.core.pylabtools import print_figure
 from IPython.display import display, HTML, SVG
 
 import pyAgrum as gum
-from pyAgrum.lib.bn2graph import BN2dot, proba2histo, BNinference2dot, _proba2bgcolor, forDarkTheme, forLightTheme, getBlackInTheme
+from pyAgrum.lib.bn2graph import BN2dot
 from pyAgrum.lib.bn_vs_bn import GraphicalBNComparator
 
 _cdict = {
@@ -177,12 +177,12 @@ def _from_dotstring(dotstring):
   g.set_bgcolor("transparent")
   for e in g.get_edges():
     if e.get_color() is None:
-      e.set_color(getBlackInTheme())
+      e.set_color(gum.getBlackInTheme())
   for n in g.get_nodes():
     if n.get_color() is None:
-      n.set_color(getBlackInTheme())
+      n.set_color(gum.getBlackInTheme())
     if n.get_fontcolor() is None:
-      n.set_fontcolor(getBlackInTheme())
+      n.set_fontcolor(gum.getBlackInTheme())
   return g
 
 

@@ -38,10 +38,6 @@ sed 's/@PYAGRUM_VERSION@/'${PYAGRUM_VERSION}'/' \
   > ${WHEELHOUSE_DIR}/pyAgrum/setup.py
 
 sed 's/@PYAGRUM_VERSION@/'${PYAGRUM_VERSION}'/' \
-  < ${WHEELHOUSE_DIR}/pyAgrum/pyAgrum/cmake/functions.in.py \
-  > ${WHEELHOUSE_DIR}/pyAgrum/pyAgrum/functions.py
-
-sed 's/@PYAGRUM_VERSION@/'${PYAGRUM_VERSION}'/' \
   < ${WHEELHOUSE_DIR}/pyAgrum/pyAgrum/cmake/__init__.in.py \
   > ${WHEELHOUSE_DIR}/pyAgrum/pyAgrum/__init__.py
 

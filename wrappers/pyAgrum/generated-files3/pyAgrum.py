@@ -3935,7 +3935,7 @@ class UndiGraph(object):
         """
         return _pyAgrum.UndiGraph_nodes(self)
 
-    def connectedComponents(graph):
+    def connectedComponents(self):
       """ connected components from a graph/BN
 
       Compute the connected components of a pyAgrum's graph or Bayesian Network
@@ -3944,37 +3944,32 @@ class UndiGraph(object):
       The firstly visited node for each component is called a 'root' and is used as a key for the component.
       This root has been arbitrarily chosen during the algorithm.
 
-      Parameters
-      ----------
-      graph : pyAgrum's graph 
-          A graph, a Bayesian network, more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods in which the search will take place
-
       Returns
       -------
       dict(int,Set[int])
         dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
 
       """
-      nodes=graph.nodes()
+      nodes=self.nodes()
       connected_components=dict()
 
       def parcours(node,orig):
           cc={node}
           nodes.discard(node)
-          if hasattr(graph,'children'):
-              for chi in graph.children(node):
+          if hasattr(self,'children'):
+              for chi in self.children(node):
                   if chi!=orig:
                       if chi in nodes:
                           cc|=parcours(chi,node)
 
-          if hasattr(graph,'parents'):
-              for par in graph.parents(node):
+          if hasattr(self,'parents'):
+              for par in self.parents(node):
                   if par!=orig:
                       if par in nodes:
                           cc|=parcours(par,node)
 
-          if hasattr(graph,'neighbours'):
-              for nei in graph.neighbours(node):
+          if hasattr(self,'neighbours'):
+              for nei in self.neighbours(node):
                   if nei!=orig:
                       if nei in nodes:
                           cc|=parcours(nei,node)
@@ -4336,7 +4331,7 @@ class DiGraph(object):
         """
         return _pyAgrum.DiGraph_nodes(self)
 
-    def connectedComponents(graph):
+    def connectedComponents(self):
       """ connected components from a graph/BN
 
       Compute the connected components of a pyAgrum's graph or Bayesian Network
@@ -4345,37 +4340,32 @@ class DiGraph(object):
       The firstly visited node for each component is called a 'root' and is used as a key for the component.
       This root has been arbitrarily chosen during the algorithm.
 
-      Parameters
-      ----------
-      graph : pyAgrum's graph 
-          A graph, a Bayesian network, more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods in which the search will take place
-
       Returns
       -------
       dict(int,Set[int])
         dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
 
       """
-      nodes=graph.nodes()
+      nodes=self.nodes()
       connected_components=dict()
 
       def parcours(node,orig):
           cc={node}
           nodes.discard(node)
-          if hasattr(graph,'children'):
-              for chi in graph.children(node):
+          if hasattr(self,'children'):
+              for chi in self.children(node):
                   if chi!=orig:
                       if chi in nodes:
                           cc|=parcours(chi,node)
 
-          if hasattr(graph,'parents'):
-              for par in graph.parents(node):
+          if hasattr(self,'parents'):
+              for par in self.parents(node):
                   if par!=orig:
                       if par in nodes:
                           cc|=parcours(par,node)
 
-          if hasattr(graph,'neighbours'):
-              for nei in graph.neighbours(node):
+          if hasattr(self,'neighbours'):
+              for nei in self.neighbours(node):
                   if nei!=orig:
                       if nei in nodes:
                           cc|=parcours(nei,node)
@@ -6506,6 +6496,66 @@ class DAGmodel(GraphicalModel):
 # Register DAGmodel in _pyAgrum:
 _pyAgrum.DAGmodel_swigregister(DAGmodel)
 
+class UGmodel(GraphicalModel):
+    r"""Proxy of C++ gum::UGmodel class."""
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+
+    def __init__(self, *args, **kwargs):
+        raise AttributeError("No constructor defined - class is abstract")
+    __repr__ = _swig_repr
+    __swig_destroy__ = _pyAgrum.delete_UGmodel
+
+    def graph(self) -> "gum::UndiGraph const &":
+        r"""graph(UGmodel self) -> UndiGraph"""
+        return _pyAgrum.UGmodel_graph(self)
+
+    def size(self) -> "gum::Size":
+        r"""size(UGmodel self) -> gum::Size"""
+        return _pyAgrum.UGmodel_size(self)
+
+    def sizeEdges(self) -> "gum::Size":
+        r"""sizeEdges(UGmodel self) -> gum::Size"""
+        return _pyAgrum.UGmodel_sizeEdges(self)
+
+    def nodes(self) -> "gum::NodeGraphPart const &":
+        r"""nodes(UGmodel self) -> NodeGraphPart"""
+        return _pyAgrum.UGmodel_nodes(self)
+
+    def variable(self, id: "gum::NodeId") -> "gum::DiscreteVariable const &":
+        r"""variable(UGmodel self, gum::NodeId id) -> DiscreteVariable"""
+        return _pyAgrum.UGmodel_variable(self, id)
+
+    def nodeId(self, var: "DiscreteVariable") -> "gum::NodeId":
+        r"""nodeId(UGmodel self, DiscreteVariable var) -> gum::NodeId"""
+        return _pyAgrum.UGmodel_nodeId(self, var)
+
+    def idFromName(self, name: "std::string const &") -> "gum::NodeId":
+        r"""idFromName(UGmodel self, std::string const & name) -> gum::NodeId"""
+        return _pyAgrum.UGmodel_idFromName(self, name)
+
+    def variableFromName(self, name: "std::string const &") -> "gum::DiscreteVariable const &":
+        r"""variableFromName(UGmodel self, std::string const & name) -> DiscreteVariable"""
+        return _pyAgrum.UGmodel_variableFromName(self, name)
+
+    def edges(self) -> "gum::EdgeSet const &":
+        r"""edges(UGmodel self) -> gum::EdgeSet const &"""
+        return _pyAgrum.UGmodel_edges(self)
+
+    def neighbours(self, *args) -> "gum::NodeSet const &":
+        r"""
+        neighbours(UGmodel self, gum::NodeId const id) -> gum::NodeSet const
+        neighbours(UGmodel self, std::string const & name) -> gum::NodeSet const &
+        """
+        return _pyAgrum.UGmodel_neighbours(self, *args)
+
+    def hasSameStructure(self, other: "UGmodel") -> "bool":
+        r"""hasSameStructure(UGmodel self, UGmodel other) -> bool"""
+        return _pyAgrum.UGmodel_hasSameStructure(self, other)
+
+# Register UGmodel in _pyAgrum:
+_pyAgrum.UGmodel_swigregister(UGmodel)
+
 class EssentialGraph(object):
     r"""Proxy of C++ gum::EssentialGraph class."""
 
@@ -6602,7 +6652,7 @@ class EssentialGraph(object):
         r"""nodes(EssentialGraph self) -> PyObject *"""
         return _pyAgrum.EssentialGraph_nodes(self)
 
-    def connectedComponents(graph):
+    def connectedComponents(self):
       """ connected components from a graph/BN
 
       Compute the connected components of a pyAgrum's graph or Bayesian Network
@@ -6611,37 +6661,32 @@ class EssentialGraph(object):
       The firstly visited node for each component is called a 'root' and is used as a key for the component.
       This root has been arbitrarily chosen during the algorithm.
 
-      Parameters
-      ----------
-      graph : pyAgrum's graph 
-          A graph, a Bayesian network, more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods in which the search will take place
-
       Returns
       -------
       dict(int,Set[int])
         dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
 
       """
-      nodes=graph.nodes()
+      nodes=self.nodes()
       connected_components=dict()
 
       def parcours(node,orig):
           cc={node}
           nodes.discard(node)
-          if hasattr(graph,'children'):
-              for chi in graph.children(node):
+          if hasattr(self,'children'):
+              for chi in self.children(node):
                   if chi!=orig:
                       if chi in nodes:
                           cc|=parcours(chi,node)
 
-          if hasattr(graph,'parents'):
-              for par in graph.parents(node):
+          if hasattr(self,'parents'):
+              for par in self.parents(node):
                   if par!=orig:
                       if par in nodes:
                           cc|=parcours(par,node)
 
-          if hasattr(graph,'neighbours'):
-              for nei in graph.neighbours(node):
+          if hasattr(self,'neighbours'):
+              for nei in self.neighbours(node):
                   if nei!=orig:
                       if nei in nodes:
                           cc|=parcours(nei,node)
@@ -6834,7 +6879,7 @@ class MarkovBlanket(object):
         """
         return _pyAgrum.MarkovBlanket_nodes(self)
 
-    def connectedComponents(graph):
+    def connectedComponents(self):
       """ connected components from a graph/BN
 
       Compute the connected components of a pyAgrum's graph or Bayesian Network
@@ -6843,37 +6888,32 @@ class MarkovBlanket(object):
       The firstly visited node for each component is called a 'root' and is used as a key for the component.
       This root has been arbitrarily chosen during the algorithm.
 
-      Parameters
-      ----------
-      graph : pyAgrum's graph 
-          A graph, a Bayesian network, more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods in which the search will take place
-
       Returns
       -------
       dict(int,Set[int])
         dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
 
       """
-      nodes=graph.nodes()
+      nodes=self.nodes()
       connected_components=dict()
 
       def parcours(node,orig):
           cc={node}
           nodes.discard(node)
-          if hasattr(graph,'children'):
-              for chi in graph.children(node):
+          if hasattr(self,'children'):
+              for chi in self.children(node):
                   if chi!=orig:
                       if chi in nodes:
                           cc|=parcours(chi,node)
 
-          if hasattr(graph,'parents'):
-              for par in graph.parents(node):
+          if hasattr(self,'parents'):
+              for par in self.parents(node):
                   if par!=orig:
                       if par in nodes:
                           cc|=parcours(par,node)
 
-          if hasattr(graph,'neighbours'):
-              for nei in graph.neighbours(node):
+          if hasattr(self,'neighbours'):
+              for nei in self.neighbours(node):
                   if nei!=orig:
                       if nei in nodes:
                           cc|=parcours(nei,node)
@@ -9323,7 +9363,7 @@ class IBayesNet(DAGmodel):
         """
         return _pyAgrum.IBayesNet_nodes(self)
 
-    def connectedComponents(graph):
+    def connectedComponents(self):
       """ connected components from a graph/BN
 
       Compute the connected components of a pyAgrum's graph or Bayesian Network
@@ -9332,37 +9372,32 @@ class IBayesNet(DAGmodel):
       The firstly visited node for each component is called a 'root' and is used as a key for the component.
       This root has been arbitrarily chosen during the algorithm.
 
-      Parameters
-      ----------
-      graph : pyAgrum's graph 
-          A graph, a Bayesian network, more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods in which the search will take place
-
       Returns
       -------
       dict(int,Set[int])
         dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
 
       """
-      nodes=graph.nodes()
+      nodes=self.nodes()
       connected_components=dict()
 
       def parcours(node,orig):
           cc={node}
           nodes.discard(node)
-          if hasattr(graph,'children'):
-              for chi in graph.children(node):
+          if hasattr(self,'children'):
+              for chi in self.children(node):
                   if chi!=orig:
                       if chi in nodes:
                           cc|=parcours(chi,node)
 
-          if hasattr(graph,'parents'):
-              for par in graph.parents(node):
+          if hasattr(self,'parents'):
+              for par in self.parents(node):
                   if par!=orig:
                       if par in nodes:
                           cc|=parcours(par,node)
 
-          if hasattr(graph,'neighbours'):
-              for nei in graph.neighbours(node):
+          if hasattr(self,'neighbours'):
+              for nei in self.neighbours(node):
                   if nei!=orig:
                       if nei in nodes:
                           cc|=parcours(nei,node)
@@ -11286,7 +11321,7 @@ class BayesNetFragment(IBayesNet, ):
 # Register BayesNetFragment in _pyAgrum:
 _pyAgrum.BayesNetFragment_swigregister(BayesNetFragment)
 
-class IMarkovNet(object):
+class IMarkovNet(UGmodel):
     r"""
     Proxy of C++ gum::IMarkovNet< double > class.
     Proxy of C++ gum::IMarkovNet< double > class.
@@ -11296,12 +11331,7 @@ class IMarkovNet(object):
 
     def __init__(self, *args, **kwargs):
         raise AttributeError("No constructor defined - class is abstract")
-    __repr__ = _swig_repr
     __swig_destroy__ = _pyAgrum.delete_IMarkovNet
-
-    def factor(self, varIds: "gum::NodeSet const &") -> "gum::Potential< double > const &":
-        r"""factor(IMarkovNet self, gum::NodeSet const & varIds) -> Potential"""
-        return _pyAgrum.IMarkovNet_factor(self, varIds)
 
     def factors(self) -> "gum::FactorTable< double > const &":
         r"""factors(IMarkovNet self) -> gum::FactorTable< double > const &"""
@@ -11367,9 +11397,82 @@ class IMarkovNet(object):
         r"""toDotAsFactorGraph(IMarkovNet self) -> std::string"""
         return _pyAgrum.IMarkovNet_toDotAsFactorGraph(self)
 
-    def toString(self) -> "std::string":
-        r"""toString(IMarkovNet self) -> std::string"""
-        return _pyAgrum.IMarkovNet_toString(self)
+    def nodes(self) -> "PyObject *":
+        r"""nodes(IMarkovNet self) -> PyObject *"""
+        return _pyAgrum.IMarkovNet_nodes(self)
+
+    def connectedComponents(self):
+      """ connected components from a graph/BN
+
+      Compute the connected components of a pyAgrum's graph or Bayesian Network
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
+
+      The firstly visited node for each component is called a 'root' and is used as a key for the component.
+      This root has been arbitrarily chosen during the algorithm.
+
+      Returns
+      -------
+      dict(int,Set[int])
+        dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
+
+      """
+      nodes=self.nodes()
+      connected_components=dict()
+
+      def parcours(node,orig):
+          cc={node}
+          nodes.discard(node)
+          if hasattr(self,'children'):
+              for chi in self.children(node):
+                  if chi!=orig:
+                      if chi in nodes:
+                          cc|=parcours(chi,node)
+
+          if hasattr(self,'parents'):
+              for par in self.parents(node):
+                  if par!=orig:
+                      if par in nodes:
+                          cc|=parcours(par,node)
+
+          if hasattr(self,'neighbours'):
+              for nei in self.neighbours(node):
+                  if nei!=orig:
+                      if nei in nodes:
+                          cc|=parcours(nei,node)
+          return cc       
+
+      while (len(nodes)>0):
+          root=nodes.pop()
+          connected_components[root]=parcours(root,None)
+      return connected_components
+
+
+    def names(self) -> "PyObject *":
+        r"""names(IMarkovNet self) -> PyObject *"""
+        return _pyAgrum.IMarkovNet_names(self)
+
+    def neighbours(self, norid: "PyObject *") -> "PyObject *":
+        r"""neighbours(IMarkovNet self, PyObject * norid) -> PyObject *"""
+        return _pyAgrum.IMarkovNet_neighbours(self, norid)
+
+    def edges(self) -> "PyObject *":
+        r"""edges(IMarkovNet self) -> PyObject *"""
+        return _pyAgrum.IMarkovNet_edges(self)
+
+    def factor(self, *args) -> "gum::Potential< double > const &":
+        r"""
+        factor(IMarkovNet self, gum::NodeSet const & varIds) -> Potential
+        factor(IMarkovNet self, PyObject * nodeseq) -> Potential
+        """
+        return _pyAgrum.IMarkovNet_factor(self, *args)
+
+    def __repr__(self) -> "std::string":
+        r"""__repr__(IMarkovNet self) -> std::string"""
+        return _pyAgrum.IMarkovNet___repr__(self)
+
+    def __str__(self) -> "std::string":
+        r"""__str__(IMarkovNet self) -> std::string"""
+        return _pyAgrum.IMarkovNet___str__(self)
 
 # Register IMarkovNet in _pyAgrum:
 _pyAgrum.IMarkovNet_swigregister(IMarkovNet)
@@ -11381,7 +11484,6 @@ class MarkovNet(IMarkovNet):
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
 
     @staticmethod
     def fastPrototype(dotlike: "std::string const &", domainSize: "gum::Size"=2) -> "gum::MarkovNet< double >":
@@ -11401,10 +11503,6 @@ class MarkovNet(IMarkovNet):
         __init__(MarkovNet self, MarkovNet source) -> MarkovNet
         """
         _pyAgrum.MarkovNet_swiginit(self, _pyAgrum.new_MarkovNet(*args))
-
-    def factor(self, varIds: "gum::NodeSet const &") -> "gum::Potential< double > const &":
-        r"""factor(MarkovNet self, gum::NodeSet const & varIds) -> Potential"""
-        return _pyAgrum.MarkovNet_factor(self, varIds)
 
     def factors(self) -> "gum::FactorTable< double > const &":
         r"""factors(MarkovNet self) -> gum::FactorTable< double > const &"""
@@ -11497,6 +11595,92 @@ class MarkovNet(IMarkovNet):
     def endTopologyTransformation(self) -> "void":
         r"""endTopologyTransformation(MarkovNet self)"""
         return _pyAgrum.MarkovNet_endTopologyTransformation(self)
+
+    def graph(self) -> "gum::UndiGraph const &":
+        r"""graph(MarkovNet self) -> UndiGraph"""
+        return _pyAgrum.MarkovNet_graph(self)
+
+    def size(self) -> "gum::Size":
+        r"""size(MarkovNet self) -> gum::Size"""
+        return _pyAgrum.MarkovNet_size(self)
+
+    def nodes(self) -> "PyObject *":
+        r"""nodes(MarkovNet self) -> PyObject *"""
+        return _pyAgrum.MarkovNet_nodes(self)
+
+    def log10DomainSize(self) -> "double":
+        r"""log10DomainSize(MarkovNet self) -> double"""
+        return _pyAgrum.MarkovNet_log10DomainSize(self)
+
+    def names(self) -> "PyObject *":
+        r"""names(MarkovNet self) -> PyObject *"""
+        return _pyAgrum.MarkovNet_names(self)
+
+    def neighbours(self, norid: "PyObject *") -> "PyObject *":
+        r"""neighbours(MarkovNet self, PyObject * norid) -> PyObject *"""
+        return _pyAgrum.MarkovNet_neighbours(self, norid)
+
+    def edges(self) -> "PyObject *":
+        r"""edges(MarkovNet self) -> PyObject *"""
+        return _pyAgrum.MarkovNet_edges(self)
+
+    def factor(self, *args) -> "gum::Potential< double > const &":
+        r"""
+        factor(MarkovNet self, gum::NodeSet const & varIds) -> Potential
+        factor(MarkovNet self, Vector_string varnames) -> Potential
+        factor(MarkovNet self, PyObject * nodeseq) -> Potential
+        """
+        return _pyAgrum.MarkovNet_factor(self, *args)
+
+    def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdded=None,whenArcDeleted=None):
+        """
+        Add the listeners in parameters to the list of existing ones.
+
+        Parameters
+        ----------
+        whenNodeAdded : lambda expression
+          a function for when a node is added
+        whenNodeDeleted : lambda expression
+          a function for when a node is removed
+        whenArcAdded : lambda expression
+          a function for when an arc is added
+        whenArcDeleted : lambda expression
+          a function for when an arc is removed
+        """
+        if [whenNodeAdded,whenNodeDeleted,whenArcAdded,whenArcDeleted]==[None,None,None,None]:
+          return
+
+        if not hasattr(self,"_listeners"):
+          self._listeners=[]
+
+        nl = PythonBNListener(self, self.variableNodeMap())
+        if whenNodeAdded is not None:
+          nl.setWhenNodeAdded(whenNodeAdded)
+        if whenNodeDeleted is not None:
+          nl.setWhenNodeDeleted(whenNodeDeleted)
+        if whenArcAdded is not None:
+          nl.setWhenArcAdded(whenArcAdded)
+        if whenArcDeleted is not None:
+          nl.setWhenArcDeleted(whenArcDeleted)
+
+        self._listeners.append(nl)
+
+
+    def loadUAI(self, *args) -> "std::string":
+        r"""loadUAI(MarkovNet self, std::string name, PyObject * l=(PyObject *) 0) -> std::string"""
+        return _pyAgrum.MarkovNet_loadUAI(self, *args)
+
+    def saveUAI(self, name: "std::string") -> "void":
+        r"""saveUAI(MarkovNet self, std::string name)"""
+        return _pyAgrum.MarkovNet_saveUAI(self, name)
+
+    def __repr__(self) -> "std::string":
+        r"""__repr__(MarkovNet self) -> std::string"""
+        return _pyAgrum.MarkovNet___repr__(self)
+
+    def __str__(self) -> "std::string":
+        r"""__str__(MarkovNet self) -> std::string"""
+        return _pyAgrum.MarkovNet___str__(self)
 
 # Register MarkovNet in _pyAgrum:
 _pyAgrum.MarkovNet_swigregister(MarkovNet)

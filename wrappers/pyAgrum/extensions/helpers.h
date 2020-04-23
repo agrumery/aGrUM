@@ -169,10 +169,10 @@ namespace PyAgrumHelper {
   }
 
   gum::NodeId nodeIdFromNameOrIndex(PyObject*                       n,
-                                    const gum::IBayesNet< double >& bn) {
+                                    const gum::VariableNodeMap& map) {
     const std::string name = PyAgrumHelper::stringFromPyObject(n);
     if (name != "") {
-      return bn.idFromName(name);
+      return map.idFromName(name);
     } else {
       if (!PyInt_Check(n)) {
         GUM_ERROR(gum::InvalidArgument,
@@ -186,12 +186,12 @@ namespace PyAgrumHelper {
   void populateNodeSetFromPySequenceOfIntOrString(
     gum::NodeSet&                   nodeset,
     PyObject*                       seq,
-    const gum::IBayesNet< double >& bn) {
+    const gum::VariableNodeMap& map) {
     PyObject* iter = PyObject_GetIter(seq);
     if (iter != NULL) {
       PyObject* item;
       while ((item = PyIter_Next(iter))) {
-        nodeset.insert(nodeIdFromNameOrIndex(item, bn));
+        nodeset.insert(nodeIdFromNameOrIndex(item, map));
       }
     } else {
       GUM_ERROR(gum::InvalidArgument,

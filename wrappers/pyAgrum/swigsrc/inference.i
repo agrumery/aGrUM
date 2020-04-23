@@ -120,7 +120,7 @@ def setTargets(self, targets):
     }
     Potential<double> evidenceImpact(NodeId target,PyObject *evs) {
       gum::NodeSet soe;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soe,evs,self->BN());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soe,evs,self->BN().variableNodeMap());
       return self->evidenceImpact(target,soe);
     }
 }
@@ -145,14 +145,14 @@ IMPROVE_INFERENCE_API(LoopySamplingInference<double,gum::MonteCarloSampling>)
 %extend classname {
     double jointMutualInformation(PyObject* targets) {
       gum::NodeSet sot;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sot,targets,self->BN());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sot,targets,self->BN().variableNodeMap());
       return self->jointMutualInformation(sot);
     }
     Potential<double> evidenceJointImpact(PyObject* targets,PyObject *evs) {
       gum::NodeSet sot;
       gum::NodeSet soe;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sot,targets,self->BN());
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soe,evs,self->BN());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sot,targets,self->BN().variableNodeMap());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soe,evs,self->BN().variableNodeMap());
       return self->evidenceJointImpact(sot,soe);
     }
     Potential<double> jointPosterior(PyObject *targets) {
@@ -160,7 +160,7 @@ IMPROVE_INFERENCE_API(LoopySamplingInference<double,gum::MonteCarloSampling>)
         GUM_ERROR(gum::InvalidArgument,"The argument must be a set");
       }
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->BN());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->BN().variableNodeMap());
       return self->jointPosterior(nodeset);
     };
 
@@ -169,7 +169,7 @@ IMPROVE_INFERENCE_API(LoopySamplingInference<double,gum::MonteCarloSampling>)
         GUM_ERROR(gum::InvalidArgument,"The argument must be a set");
       }
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->BN());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->BN().variableNodeMap());
 
       self->gum::JointTargetedInference<double>::addJointTarget(nodeset);
     }
@@ -178,7 +178,7 @@ IMPROVE_INFERENCE_API(LoopySamplingInference<double,gum::MonteCarloSampling>)
         GUM_ERROR(gum::InvalidArgument,"The argument must be a set");
       }
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->BN());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->BN().variableNodeMap());
       self->gum::JointTargetedInference<double>::eraseJointTarget(nodeset);
     }
 
@@ -187,7 +187,7 @@ IMPROVE_INFERENCE_API(LoopySamplingInference<double,gum::MonteCarloSampling>)
         GUM_ERROR(gum::InvalidArgument,"The argument must be a set");
       }
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->BN());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->BN().variableNodeMap());
       return self->gum::JointTargetedInference<double>::isJointTarget(nodeset);
     }
 

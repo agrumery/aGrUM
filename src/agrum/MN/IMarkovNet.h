@@ -49,16 +49,12 @@ namespace gum {
   /**
    * @class IMarkovNet
    * @headerfile IMarkovNet.h <agrum/BN/IMarkovNet.h>
-   * @brief Class representing the minimal interface for Bayesian Network.
+   * @brief Class representing the minimal interface for Markov Network.
    * @ingroup mn_group
    *
-   * This class is used as a base class for different versions of Bayesian
-   *Networks.
-   *No data (except the dag
-   * herited from DAGmodel are included in this class. Many algorithms
-   *(inference for
-   *instance) may use this
-   * class when a simple BN is needed.
+   * This class is used as a base class for different versions of Markov Networks.
+   *No data (except the graph herited from UGModel are included in this class. Many algorithms
+   *(inference for instance) may use this class when a simple MN is needed.
    */
   template < typename GUM_SCALAR >
   class IMarkovNet: public UGmodel {

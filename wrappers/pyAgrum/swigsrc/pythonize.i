@@ -74,3 +74,6 @@ ADD_REPR_STR_API(gum::BayesNet<double>)
 ADD_REPR_STR_API(gum::InfluenceDiagram<double>)
 
 ADD_REPR_STR_API(gum::credal::CredalNet<double>)
+
+ADD_REPR_STR_API(gum::IMarkovNet<double>)
+ADD_REPR_STR_API(gum::MarkovNet<double>)

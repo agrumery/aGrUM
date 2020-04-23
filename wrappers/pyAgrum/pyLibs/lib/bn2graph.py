@@ -34,56 +34,7 @@ import pyAgrum as gum
 import pydotplus as dot
 import shutil
 
-
-def forDarkTheme():
-  """ change the color for arcs and text in graphs to be more visible in dark theme
-  """
-  gum.config["notebook", "default_arc_color"] = "#AAAAAA"
-
-
-def forLightTheme():
-  """ change the color for arcs and text in graphs to be more visible in light theme
-  """
-  gum.config["notebook", "default_arc_color"] = "#202020"
-
-
-def getBlackInTheme():
-  """ return the color used for arc and text in graphs
-  """
-  return gum.config["notebook", "default_arc_color"]
-
-
-def _proba2rgb(p, cmap, withSpecialColor):
-  (r, g, b, _) = cmap(p)
-  r = "%02x" % int(r * 256)
-  g = "%02x" % int(g * 256)
-  b = "%02x" % int(b * 256)
-
-  if withSpecialColor:  # add special color for p=0 or p=1
-    if p == 0.0:
-      r, g, b = "FF", "33", "33"
-    elif p == 1.0:
-      r, g, b = "AA", "FF", "FF"
-
-  return r, g, b
-
-
-def _proba2color(p, cmap):
-  r, g, b = _proba2rgb(p, cmap, withSpecialColor=False)
-  return "#" + r + g + b
-
-
-def _proba2bgcolor(p, cmap):
-  r, g, b = _proba2rgb(p, cmap, withSpecialColor=True)
-  return "#" + r + g + b
-
-
-def _proba2fgcolor(p, cmap):
-  if max([eval("0x" + s[0]) for s in _proba2rgb(p, cmap, withSpecialColor=True)]) <= 12:
-    return "#FFFFFF"
-  else:
-    return "#000000"
-
+from .proba_histogram import proba2histo
 
 def BN2dot(bn, size="4", nodeColor=None, arcWidth=None, arcColor=None, cmapNode=None, cmapArc=None, showMsg=None):
   """
@@ -118,8 +69,8 @@ def BN2dot(bn, size="4", nodeColor=None, arcWidth=None, arcColor=None, cmapNode=
       fgcol = gum.config["notebook", "default_node_fgcolor"]
       res = ""
     else:
-      bgcol = _proba2bgcolor(nodeColor[n], cmapNode)
-      fgcol = _proba2fgcolor(nodeColor[n], cmapNode)
+      bgcol = gum._proba2bgcolor(nodeColor[n], cmapNode)
+      fgcol = gum._proba2fgcolor(nodeColor[n], cmapNode)
       res = " : {0:2.5f}".format(
           nodeColor[n] if showMsg is None else showMsg[n])
 
@@ -144,12 +95,12 @@ def BN2dot(bn, size="4", nodeColor=None, arcWidth=None, arcColor=None, cmapNode=
         pw = 1
         av = 1
     if arcColor is None:
-      col = getBlackInTheme()
+      col = gum.getBlackInTheme()
     else:
       if a in arcColor:
-        col = _proba2color(arcColor[a], cmapArc)
+        col = gum._proba2color(arcColor[a], cmapArc)
       else:
-        col = getBlackInTheme()
+        col = gum.getBlackInTheme()
 
     edge = dot.Edge('"' + bn.variable(a[0]).name() + '"', '"' + bn.variable(a[1]).name() + '"',
                     penwidth=pw, color=col,
@@ -161,177 +112,11 @@ def BN2dot(bn, size="4", nodeColor=None, arcWidth=None, arcColor=None, cmapNode=
   graph.set_size(size)  
   return graph
 
-
-def _stats(p):
-  mu = 0.0
-  mu2 = 0.0
-  v = p.variable(0)
-  for i, p in enumerate(p.tolist()):
-    x = v.numerical(i)
-    mu += p * x
-    mu2 += p * x * x
-  return (mu, math.sqrt(mu2 - mu * mu))
-
-
-def _getTitleHisto(p):
-  var = p.variable(0)
-  if var.varType() == 1:  # Labelized
-    return "{}".format(var.name())
-
-  (mu, std) = _stats(p)
-  return "{}\n$\mu={:.2f}$; $\sigma={:.2f}$".format(var.name(), mu, std)
-
-
-def __limits(p):
-  """return vals and labs to show in the histograme
-
-  Arguments:
-      p {gum.Potential} -- the marginal to analyze
-  """
-  var = p.variable(0)
-  la = [var.label(int(i)) for i in np.arange(var.domainSize())]
-  v = p.tolist()
-  nzmin = None
-  nzmax = None
-  l = len(v)-1
-  for i in range(l+1):
-    if v[i] != 0:
-      if nzmin is None:
-        if i > 0:
-          nzmin = i-1
-        else:
-          nzmin = -1
-    if v[l-i] != 0:
-      if nzmax is None:
-        if i > 0:
-          nzmax = l-i+1
-        else:
-          nzmax = -1
-
-  mi = 0 if nzmin in [-1, None] else nzmin
-  ma = l if nzmax in [-1, None] else nzmax
-
-  res = range(mi, ma+1)
-  lres = la[mi:ma+1]
-  if nzmin not in [-1, None]:
-    lres[0] = "..."
-  if nzmax not in [-1, None]:
-    lres[-1] = "..."
-
-  return res, [v[i] for i in res], lres
-
-
-def _getProbaV(p, scale=1.0):
-  """
-  compute the representation of an histogram for a mono-dim Potential
-
-  :param p: the mono-dim Potential
-  :return: a matplotlib bar (vertical histogram) for a Potential p.
-
-  """
-  if gum.config['notebook', 'histogram_mode'] == "compact":
-    ra, v, lv = __limits(p)
-  else:
-    var = p.variable(0)
-    lv = [var.label(int(i)) for i in np.arange(var.domainSize())]
-    v = p.tolist()
-    ra = range(len(v))
-
-  fig = plt.figure()
-  fig.set_figwidth(scale * len(v) / 4.0)
-  fig.set_figheight(scale * 2)
-
-  ax = fig.add_subplot(111)
-
-  bars = ax.bar(ra, v,
-                align='center',
-                color=gum.config['notebook', 'histogram_color'])
-  ma = p.max()
-
-  for bar in bars:
-    if bar.get_height() != 0:
-      # ".2%" for instance
-      txt_format = "{:." + \
-          str(
-              int(gum.config['notebook', 'vertical_histogram_visible_digits']))+"%}"
-      txt = txt_format.format(bar.get_height())
-      ax.text(bar.get_x(), ma, txt, ha='left', va='top', rotation='vertical')
-
-  ax.set_ylim(bottom=0, top=p.max())
-  ax.set_xticks(ra)
-  ax.set_xticklabels(lv, rotation='vertical')
-  ax.set_title(_getTitleHisto(p))
-  ax.get_yaxis().grid(True)
-  ax.margins(0)
-
-  return fig
-
-
-def _getProbaH(p, scale=1.0):
-  """
-  compute the representation of an histogram for a mono-dim Potential
-
-  :param p: the mono-dim Potential
-  :return: a matplotlib barh (horizontal histogram) for a Potential p.
-  """
-  var = p.variable(0)
-  ra = np.arange(var.domainSize())
-
-  ra_reverse = np.arange(var.domainSize() - 1, -1, -1)  # reverse order
-  vx = ["{0}".format(var.label(int(i))) for i in ra_reverse]
-
-  fig = plt.figure()
-  fig.set_figheight(scale * var.domainSize() / 4.0)
-  fig.set_figwidth(scale * 2)
-
-  ax = fig.add_subplot(111)
-
-  vals = p.tolist()
-  vals.reverse()
-  bars = ax.barh(ra, vals,
-                 align='center',
-                 color=gum.config['notebook', 'histogram_color'])
-
-  for bar in bars:
-    if bar.get_width() != 0:
-      # ".2%" for instance
-      txt_format = "{:." + \
-          str(
-              int(gum.config['notebook', 'horizontal_histogram_visible_digits']))+"%}"
-      txt = txt_format.format(bar.get_width())
-      ax.text(1, bar.get_y(), txt, ha='right', va='bottom')
-
-  ax.set_xlim(0, 1)
-  ax.set_yticks(np.arange(var.domainSize()))
-  ax.set_yticklabels(vx)
-  ax.set_xticklabels([])
-  # ax.set_xlabel('Probability')
-  ax.set_title(_getTitleHisto(p))
-  ax.get_xaxis().grid(True)
-  ax.margins(0)
-
-  return fig
-
-
-def proba2histo(p, scale=1.0):
-  """
-  compute the representation of an histogram for a mono-dim Potential
-
-  :param pyAgrum.Potential p: the mono-dim Potential
-  :return: a matplotlib histogram for a Potential p.
-  """
-  if p.variable(0).domainSize() > 8:
-    return _getProbaV(p, scale)
-  else:
-    return _getProbaH(p, scale)
-
-
 def _saveFigProba(p, filename):
   fig = proba2histo(p)
   fig.savefig(filename, bbox_inches='tight', transparent=True,
               pad_inches=0.05, dpi=fig.dpi, format=gum.config["notebook", "graph_format"])
   plt.close(fig)
-
 
 def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=None, arcWidth=None, arcColor=None, cmapNode=None, cmapArc=None,dag=None):
   """
@@ -374,13 +159,13 @@ def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=No
   temp_dir = mkdtemp("", "tmp", None)  # with TemporaryDirectory() as temp_dir:
 
   dotstr = "digraph structs {\n  fontcolor=\"" + \
-      getBlackInTheme()+"\";bgcolor=\"transparent\";"
+      gum.getBlackInTheme()+"\";bgcolor=\"transparent\";"
   dotstr += "  label=\"Inference in {:6.2f}ms\";\n".format(
       1000 * (stopTime - startTime))
   dotstr += '  node [fillcolor="'+gum.config["notebook", "default_node_bgcolor"] + \
       '", style=filled,color="' + \
       gum.config["notebook", "default_node_fgcolor"]+'"];'+"\n"
-  dotstr += '  edge [color="'+getBlackInTheme()+'"];'+"\n"
+  dotstr += '  edge [color="'+gum.getBlackInTheme()+'"];'+"\n"
   
   showdag = bn.dag() if dag is None else dag
   for nid in showdag.nodes():
@@ -394,8 +179,8 @@ def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=No
 
     if nodeColor is not None:
       if name in nodeColor or nid in nodeColor:
-        bgcol = _proba2bgcolor(nodeColor[name], cmapNode)
-        fgcol = _proba2fgcolor(nodeColor[name], cmapNode)
+        bgcol = gum._proba2bgcolor(nodeColor[name], cmapNode)
+        fgcol = gum._proba2fgcolor(nodeColor[name], cmapNode)
 
     # 'hard' colour for evidence (?)
     if name in evs or nid in evs:
@@ -431,12 +216,12 @@ def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=No
         av = ""
 
     if arcColor is None:
-      col = getBlackInTheme()
+      col = gum.getBlackInTheme()
     else:
       if a in arcColor:
-        col = _proba2color(arcColor[a], cmapArc)
+        col = gum._proba2color(arcColor[a], cmapArc)
       else:
-        col = getBlackInTheme()
+        col = gum.getBlackInTheme()
 
     dotstr += ' "{0}"->"{1}" [penwidth="{2}",tooltip="{3}:{4}",color="{5}"];'.format(
         bn.variable(n).name(), bn.variable(j).name(), pw, a, av, col)

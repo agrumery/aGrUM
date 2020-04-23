@@ -18,27 +18,46 @@
  *
  */
 
+// macro from graphs.i
+ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::IMarkovNet);
+
 %define IMPROVE_MARKOVNET_API(classname)
 %extend classname {
   PyObject *names() const {
     PyObject* q=PyList_New(0);
 
-    for ( auto node : self->dag().nodes()) {
+    for ( auto node : self->graph().nodes()) {
       PyList_Append(q,PyString_FromString(self->variable(node).name().c_str()));
     }
     return q;
   };
 
   PyObject *neighbours(PyObject* norid) const {
-    return PyAgrumHelper::PySetFromNodeSet(self->neighbours(PyAgrumHelper::nodeIdFromNameOrIndex(norid,*self)));
+    return PyAgrumHelper::PySetFromNodeSet(self->neighbours(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
   };
-  PyObject *edges() const { 
-    return PyAgrumHelper::PySetFromArcSet(self->graph()->edges());
+  PyObject *edges() const {
+    return PyAgrumHelper::PySetFromEdgeSet(self->graph().edges());
+  };
+
+  const gum::Potential<double>& factor(PyObject* nodeseq) const {
+    gum::NodeSet idx;
+    PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(idx,nodeseq,self->variableNodeMap());
+
+    return self->factor(idx);
   };
 }
 %enddef
-IMPROVE_MARKOVNET_API(gum::IBayesNet);
-IMPROVE_MARKOVNET_API(gum::BayesNet);
+IMPROVE_MARKOVNET_API(gum::IMarkovNet);
+IMPROVE_MARKOVNET_API(gum::MarkovNet);
+
+// for gum::IMarkovNet::factors
+%typemap(out) const gum::FactorTable<double> & {
+  $result = PyList_New(0);
+
+  for (auto kv : *$1) {
+    PyList_Append($result, PyAgrumHelper::PySetFromNodeSet(kv.first));
+  }
+}
 
 %define IMPROVE_CONCRETEMARKOVNET_API(classname)
 %extend classname {
@@ -78,10 +97,40 @@ def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenEdgeAd
 }
 }
 %enddef
-IMPROVE_CONCRETEBAYESNET_API(gum::BayesNet);
-IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
+IMPROVE_CONCRETEBAYESNET_API(gum::MarkovNet);
 
 %extend gum::MarkovNet {
+   std::string loadUAI(std::string name, PyObject *l=(PyObject*)0)
+   {
+     std::stringstream stream;
+     std::vector<PythonLoadListener> py_listener;
+
+     try {
+       gum::UAIMNReader<GUM_SCALAR> reader(self,name);
+       int l_size=__fillLoadListeners(py_listener,l);
+       for(int i=0 ; i<l_size ; i++) {
+         GUM_CONNECT(reader.scanner(), onLoad, py_listener[i], PythonLoadListener::whenLoading);
+       }
+
+       auto nbErr=reader.proceed();
+       reader.showElegantErrorsAndWarnings(stream);
+       if (nbErr>0) {
+         reader.showErrorCounts(stream);
+         GUM_ERROR(gum::FatalError,stream.str());
+       } else {
+         return stream.str();
+       }
+     } catch (gum::IOError& e) {
+       throw(e);
+     }
+     return "";
+   };
+
+   void saveUAI(std::string name) {
+     gum::UAIMNWriter<GUM_SCALAR> writer;
+     writer.write( name, *self );
+   };
+
 %pythonappend gum::UGmodel::graph %{
     val = UndiGraph(val) # copying the graph
 %}
