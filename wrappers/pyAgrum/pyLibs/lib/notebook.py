@@ -41,7 +41,8 @@ from IPython.core.pylabtools import print_figure
 from IPython.display import display, HTML, SVG
 
 import pyAgrum as gum
-from pyAgrum.lib.bn2graph import BN2dot
+from pyAgrum.lib.bn2graph import BN2dot, BNinference2dot
+from pyAgrum.lib.mn2graph import MN2UGdot, MN2FactorGraphdot
 from pyAgrum.lib.bn_vs_bn import GraphicalBNComparator
 
 _cdict = {
@@ -334,7 +335,8 @@ def _infdiag_todot(diag):
   res += "\n"
   for node in diag.nodes():
     for chi in diag.children(node):
-      res += '  "'+diag.variable(node).name()+'"->"'+diag.variable(chi).name()+'";'+"\n"
+      res += '  "'+diag.variable(node).name()+'"->"' + \
+          diag.variable(chi).name()+'";'+"\n"
   res += "}"
   return res
 
@@ -461,6 +463,39 @@ def showApproximationScheme(apsc, scale=np.log10):
     plt.plot(scale(apsc.history()), 'g')
 
 
+def showMN(mn, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth=None, edgeColor=None, cmap=None, cmapEdge=None):
+  """
+  show a Markov network
+
+  :param mn: the markov network
+  :param view: 'graph' | 'factorgraph’ | None (default)
+  :param size: size of the rendered graph
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
+  :param factorColor: a function returning a value (beeween 0 and 1) to be shown as a color of factor. (used when view='factorgraph')
+  :param edgeWidth: a edgeMap of values to be shown as width of edges  (used when view='graph')
+  :param edgeColor: a edgeMap of values (between 0 and 1) to be shown as color of edges (used when view='graph')
+  :param cmap: color map to show the colors
+  :param cmapEdge: color map to show the edge color if distinction is needed
+  :return: the graph
+  """
+  if view is None:
+    view = gum.config["notebook", "default_markovnetwork_view"]
+
+  if size is None:
+    size = gum.config["notebook", "default_graph_size"]
+
+  if cmapEdge is None:
+    cmapEdge = cmap
+
+  if view == "graph":
+    dottxt = MN2UGdot(mn, size, nodeColor, edgeWidth,
+                      edgeColor, cmap, cmapEdge)
+  else:
+    dottxt = MN2FactorGraphdot(mn, size, nodeColor, factorColor, cmapNode=cmap)
+
+  return showGraph(dottxt, size)
+
+
 def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None):
   """
   show a Bayesian network
@@ -481,6 +516,39 @@ def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=Non
     cmapArc = cmap
 
   return showGraph(BN2dot(bn, size, nodeColor, arcWidth, arcColor, cmap, cmapArc), size)
+
+
+def getMN(mn, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth=None, edgeColor=None, cmap=None, cmapEdge=None):
+  """
+  get an HTML string for a Markov network
+
+  :param mn: the markov network
+  :param view: 'graph' | 'factorgraph’ | None (default)
+  :param size: size of the rendered graph
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
+  :param factorColor: a function returning a value (beeween 0 and 1) to be shown as a color of factor. (used when view='factorgraph')
+  :param edgeWidth: a edgeMap of values to be shown as width of edges  (used when view='graph')
+  :param edgeColor: a edgeMap of values (between 0 and 1) to be shown as color of edges (used when view='graph')
+  :param cmap: color map to show the colors
+  :param cmapEdge: color map to show the edge color if distinction is needed
+  :return: the graph
+  """
+  if view is None:
+    view = gum.config["notebook", "default_markovnetwork_view"]
+
+  if size is None:
+    size = gum.config["notebook", "default_graph_size"]
+
+  if cmapEdge is None:
+    cmapEdge = cmap
+
+  if view == "graph":
+    dottxt = MN2UGdot(mn, size, nodeColor, edgeWidth,
+                      edgeColor, cmap, cmapEdge)
+  else:
+    dottxt = MN2FactorGraphdot(mn, size, nodeColor, factorColor, cmapNode=cmap)
+
+  return getGraph(dottxt, size)
 
 
 def getBN(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None):
@@ -710,7 +778,7 @@ def _reprPotential(pot, digits=None, withColors=True, varnames=None, asString=Fa
     return s.format(val)
 
   if digits is None:
-    digits=gum.config['notebook', 'potential_visible_digits']
+    digits = gum.config['notebook', 'potential_visible_digits']
 
   if gum.config["notebook", "potential_with_colors"] == "False":
     withColors = False
@@ -971,6 +1039,7 @@ def getInferenceEngine(ie, inferenceCaption):
 
 # adding _repr_html_ to some pyAgrum classes !
 gum.BayesNet._repr_html_ = lambda self: getBN(self)
+gum.MarkovNet._repr_html_ = lambda self: getMN(self)
 gum.BayesNetFragment._repr_html_ = lambda self: getBN(self)
 
 gum.Potential._repr_html_ = lambda self: getPotential(self)

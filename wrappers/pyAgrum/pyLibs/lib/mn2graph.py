@@ -34,36 +34,37 @@ import pyAgrum as gum
 import pydotplus as dot
 import shutil
 
-from .proba_histogram import proba2histo,saveFigProba
+from .proba_histogram import proba2histo, saveFigProba
 
-def BN2dot(bn, size="4", nodeColor=None, arcWidth=None, arcColor=None, cmapNode=None, cmapArc=None, showMsg=None):
+
+def MN2UGdot(mn, size="4", nodeColor=None, edgeWidth=None, edgeColor=None, cmapNode=None, cmapEdge=None, showMsg=None):
   """
-  create a pydotplus representation of the BN
+  create a pydotplus representation of the Markov Network as an undirected graph
 
-  :param pyAgrum.BayesNet bn:
+  :param pyAgrum.MarkovNet mn:
   :param string size: size of the rendered graph
   :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
-  :param arcWidth: a arcMap of values to be shown as width of arcs
-  :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
+  :param edgeWidth: a arcMap of values to be shown as width of arcs
+  :param edgeColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
   :param cmapNode: color map to show the vals of Nodes
-  :param cmapArc: color map to show the vals of Arcs.
+  :param cmapEdge: color map to show the vals of Edges.
   :param showMsg: a nodeMap of values to be shown as tooltip
 
-  :return: the desired representation of the BN as a dot graph
+  :return: the desired representation of the MN as a dot graph
   """
   if cmapNode is None:
     cmapNode = plt.get_cmap(gum.config["notebook", "default_node_cmap"])
 
-  if cmapArc is None:
-    cmapArc = plt.get_cmap(gum.config["notebook", "default_arc_cmap"])
+  if cmapEdge is None:
+    cmapEdge = plt.get_cmap(gum.config["notebook", "default_edge_cmap"])
 
-  if arcWidth is not None:
-    minarcs = min(arcWidth.values())
-    maxarcs = max(arcWidth.values())
+  if edgeWidth is not None:
+    minedges = min(edgeWidth.values())
+    maxedges = max(edgeWidth.values())
 
-  graph = dot.Dot(graph_type='digraph', bgcolor="transparent")
+  graph = dot.Dot(graph_type='graph', bgcolor="transparent")
 
-  for n in bn.names():
+  for n in mn.names():
     if nodeColor is None or n not in nodeColor:
       bgcol = gum.config["notebook", "default_node_bgcolor"]
       fgcol = gum.config["notebook", "default_node_fgcolor"]
@@ -77,42 +78,111 @@ def BN2dot(bn, size="4", nodeColor=None, arcWidth=None, arcColor=None, cmapNode=
     node = dot.Node('"' + n + '"', style="filled",
                     fillcolor=bgcol,
                     fontcolor=fgcol,
-                    tooltip='"({0}) {1}{2}"'.format(bn.idFromName(n), n, res))
+                    tooltip='"({0}) {1}{2}"'.format(mn.idFromName(n), n, res))
     graph.add_node(node)
 
-  for a in bn.arcs():
-    if arcWidth is None:
+  for a in mn.edges():
+    if edgeWidth is None:
       pw = 1
       av = ""
     else:
-      if a in arcWidth:
-        if maxarcs == minarcs:
+      if a in edgeWidth:
+        if maxedges == minedges:
           pw = 1
         else:
-          pw = 0.1 + 5 * (arcWidth[a] - minarcs) / (maxarcs - minarcs)
-        av = arcWidth[a]
+          pw = 0.1 + 5 * (edgeWidth[a] - minedges) / (maxedges - minedges)
+        av = edgeWidth[a]
       else:
         pw = 1
         av = 1
-    if arcColor is None:
+    if edgeColor is None:
       col = gum.getBlackInTheme()
     else:
-      if a in arcColor:
-        col = gum._proba2color(arcColor[a], cmapArc)
+      if a in edgeColor:
+        col = gum._proba2color(edgeColor[a], cmapEdge)
       else:
         col = gum.getBlackInTheme()
 
-    edge = dot.Edge('"' + bn.variable(a[0]).name() + '"', '"' + bn.variable(a[1]).name() + '"',
+    edge = dot.Edge('"' + mn.variable(a[0]).name() + '"',
+                    '"' + mn.variable(a[1]).name() + '"',
                     penwidth=pw, color=col,
                     tooltip="{} : {}".format(a, av))
     graph.add_edge(edge)
 
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
-  graph.set_size(size)  
+  graph.set_size(size)
   return graph
 
-def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=None, arcWidth=None, arcColor=None, cmapNode=None, cmapArc=None,dag=None):
+
+def MN2FactorGraphdot(mn, size="4", nodeColor=None, factorColor=None, cmapNode=None, showMsg=None):
+  """
+  create a pydotplus representation of the Markov Network as a factor graph
+
+  :param pyAgrum.MarkovNet mn:
+  :param string size: size of the rendered graph
+  :param nodeColor: a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
+  :param factorColor: a function returning a value (beeween 0 and 1) to be shown as a color of factor.
+  :param cmapNode: color map to show the vals of Nodes
+  :param showMsg: a nodeMap of values to be shown as tooltip
+
+  :return: the desired representation of the MN as a dot graph
+  """
+  if cmapNode is None:
+    cmapNode = plt.get_cmap(gum.config["notebook", "default_node_cmap"])
+
+  graph = dot.Dot(graph_type='graph', bgcolor="transparent", layout="neato")
+
+  for n in mn.names():
+    if nodeColor is None or n not in nodeColor:
+      bgcol = gum.config["factorgraph", "default_node_bgcolor"]
+      fgcol = gum.config["factorgraph", "default_node_fgcolor"]
+      res = ""
+    else:
+      bgcol = gum._proba2bgcolor(nodeColor[n], cmapNode)
+      fgcol = gum._proba2fgcolor(nodeColor[n], cmapNode)
+      res = " : {0:2.5f}".format(
+          nodeColor[n] if showMsg is None else showMsg[n])
+
+    node = dot.Node('"' + n + '"',
+                    style="filled",
+                    fillcolor=bgcol,
+                    fontcolor=fgcol,
+                    shape="rectangle",
+                    margin=0.04, width=0, height=0,
+                    tooltip='"({0}) {1}{2}"'.format(mn.idFromName(n), n, res))
+    graph.add_node(node)
+
+  def factorname(f): return '"f' + "#".join(map(str, sorted(list(f)))) + '"'
+
+  for f in mn.factors():
+    if factorColor is None:
+      bgcol = gum.config["factorgraph", "default_factor_bgcolor"]
+    else:
+      bgcol = gum._proba2bgcolor(factorColor(f), cmapNode)
+    node = dot.Node(factorname(f),
+                    style="filled",
+                    fillcolor=bgcol,
+                    shape="point",
+                    width=0.1,
+                    height=0.1)
+    graph.add_node(node)
+
+  for f in mn.factors():
+    for n in f:
+      edge = dot.Edge(factorname(f),
+                      '"' + mn.variable(n).name() + '"',
+                      color=gum.getBlackInTheme(),
+                      len=gum.config["factorgraph", "edge_length"])
+      graph.add_edge(edge)
+
+  if size is None:
+    size = gum.config["notebook", "default_graph_size"]
+  graph.set_size(size)
+  return graph
+
+
+def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=None, arcWidth=None, arcColor=None, cmapNode=None, cmapArc=None, dag=None):
   """
   create a pydotplus representation of an inference in a BN
 
@@ -129,7 +199,7 @@ def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=No
   :param dag : only shows nodes that have their id in the dag (and not in the whole BN)
 
   :return: the desired representation of the inference
-  """    
+  """
   if cmapNode is None:
     cmapNode = plt.get_cmap(gum.config["notebook", "default_node_cmap"])
 
@@ -160,7 +230,7 @@ def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=No
       '", style=filled,color="' + \
       gum.config["notebook", "default_node_fgcolor"]+'"];'+"\n"
   dotstr += '  edge [color="'+gum.getBlackInTheme()+'"];'+"\n"
-  
+
   showdag = bn.dag() if dag is None else dag
   for nid in showdag.nodes():
     name = bn.variable(nid).name()
@@ -187,7 +257,7 @@ def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=No
       filename = temp_dir + \
           hashlib.md5(name.encode()).hexdigest() + "." + \
           gum.config["notebook", "graph_format"]
-      _saveFigProba(ie.posterior(name), filename)
+      saveFigProba(ie.posterior(name), filename)
       dotstr += ' "{0}" [shape=rectangle,image="{1}",label="", {2}];\n'.format(
           name, filename, colorattribute)
     else:
@@ -223,7 +293,6 @@ def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=No
 
   g = dot.graph_from_dot_data(dotstr)
 
-  
   if size is None:
     size = gum.config["notebook", "default_graph_inference_size"]
   g.set_size(size)
