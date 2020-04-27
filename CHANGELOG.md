@@ -1,5 +1,21 @@
 # aGrUM Changelog
 
+## Changelog for 0.17.3
+
+* aGrUM
+  * improved version of MIIC's learning algorithm.
+  * add access to pseudo count with `gum::BNLearner::pseudoCount`
+  * fix a bug in inference with `gum::InfluenceDiagram`
+  * improved API for Influence Diagram : accessor with variable names (instead of only NodeId)
+  * VS2019's compiler is now supported by `act/CMakeListst.txt`
+  * reorganizing ressources for testsuite
+
+* pyAgrum
+  * improved version of MIIC's learning algorithm.
+  * add access to pseudo count with `gum.BNLearner.pseudoCount`
+  * fix a bug in inference with `gum.InfluenceDiagram`
+  * improved API for Influence Diagram : accessor with variable names (instead of only NodeId)
+
 ## Changelog for 0.17.2
 
 * aGrUM
