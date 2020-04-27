@@ -7,7 +7,7 @@
   * add access to pseudo count with `gum::BNLearner::pseudoCount`
   * fix a bug in inference with `gum::InfluenceDiagram`
   * improved API for Influence Diagram : accessor with variable names (instead of only NodeId)
-  * VS2019's compiler is now supported by `act/CMakeListst.txt`
+  * VS2019's compiler is now supported by `act/CMakeLists.txt`
   * reorganizing ressources for testsuite
 
 * pyAgrum
