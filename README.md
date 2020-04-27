@@ -178,7 +178,7 @@ regularly basis.
 ## Testing aGrUM
 Testing aGrUM is done using action `test` on target `aGrUM`. Important options are:
 - `-m MODULES`: executes tests for modules specified by `MODULES`
-- `-t TETS`: executes tests for tests suites specified by `TESTS`
+- `-t TESTS`: executes tests for tests suites specified by `TESTS`
 
 The `-t` option supersedes `-m` options, but act will raise an error if you ask
 for test suites not in the modules list set by `-m`.
@@ -199,4 +199,4 @@ useful to make our tests fails when a given cell in a notebooks fails to keep
 them up-to-date.
 
 # Bibliography
-See [aGrUM's reference](agrum.gitlab.io/pages/reference.html) and
+See [aGrUM's reference](https://agrum.gitlab.io/pages/reference.html).
