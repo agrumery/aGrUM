@@ -34,7 +34,7 @@ buildFileListsWithModules()
 include_directories(BEFORE ${AGRUM_BINARY_DIR})
 include_directories(BEFORE ${AGRUM_SOURCE_DIR})
 link_directories(${AGRUM_BINARY_DIR}/lib)
-set(AGRUM_FILES ${AGRUM_SOURCES} ${AGRUM_C_SOURCES} ${AGRUM_INLINES} ${AGRUM_INCLUDES} ${AGRUM_TEMPLATES} testunits/module_MN/UAIMNReaderTestSuite.h testunits/module_MN/UAIMNWriterTestSuite.h)
+set(AGRUM_FILES ${AGRUM_SOURCES} ${AGRUM_C_SOURCES} ${AGRUM_INLINES} ${AGRUM_INCLUDES} ${AGRUM_TEMPLATES})
 
 ####################################################################
 ## TARGET library

@@ -122,7 +122,7 @@ namespace gum {
 
       Instantiation conds;
       for (Idx i = 1; i < varsSeq.size(); i++)
-        conds.add(*varsSeq[i]);
+        conds.add(*varsSeq[varsSeq.size()-i]);
 
       str << "potential ( " << (varsSeq[(Idx)0])->name() << " | ";
       for (Idx i = 1; i < varsSeq.size(); i++)
