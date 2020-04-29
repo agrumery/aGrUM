@@ -29,7 +29,7 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/tools/variables/labelizedVariable.h>
 
-#include <agrum/BN/io/bif/bifReader.h>
+#include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/BN/io/net/netReader.h>
 #include <agrum/BN/io/net/netWriter.h>
 #include <agrum/tools/variables/labelizedVariable.h>
