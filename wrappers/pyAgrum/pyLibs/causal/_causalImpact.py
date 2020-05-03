@@ -32,7 +32,8 @@ from ._CausalFormula import CausalFormula, _getLabelIdx
 from ._doCalculus import doCalculusWithObservation, doCalculus, getFrontDoorTree, getBackDoorTree
 
 
-def causalImpact(cm: CausalModel, on: Union[str, NameSet],
+def causalImpact(cm: CausalModel,
+                 on: Union[str, NameSet],
                  doing: Union[str, NameSet],
                  knowing: Optional[NameSet] = None,
                  values: Optional[Dict[str, int]] = None) -> Tuple[CausalFormula, gum.Potential, str]:

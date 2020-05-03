@@ -1,23 +1,23 @@
 # -*- coding: utf-8 -*-
-#(c) Copyright by Pierre-Henri Wuillemin, UPMC, 2011  (pierre-henri.wuillemin@lip6.fr)
+# (c) Copyright by Pierre-Henri Wuillemin, UPMC, 2011  (pierre-henri.wuillemin@lip6.fr)
 
-#Permission to use, copy, modify, and distribute this
-#software and its documentation for any purpose and
-#without fee or royalty is hereby granted, provided
-#that the above copyright notice appear in all copies
-#and that both that copyright notice and this permission
-#notice appear in supporting documentation or portions
-#thereof, including modifications, that you make.
+# Permission to use, copy, modify, and distribute this
+# software and its documentation for any purpose and
+# without fee or royalty is hereby granted, provided
+# that the above copyright notice appear in all copies
+# and that both that copyright notice and this permission
+# notice appear in supporting documentation or portions
+# thereof, including modifications, that you make.
 
-#THE AUTHOR P.H. WUILLEMIN  DISCLAIMS ALL WARRANTIES
-#WITH REGARD TO THIS SOFTWARE, INCLUDING ALL IMPLIED
-#WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT
-#SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, INDIRECT
-#OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER
-#RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER
-#IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
-#ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
-#OR PERFORMANCE OF THIS SOFTWARE!
+# THE AUTHOR P.H. WUILLEMIN  DISCLAIMS ALL WARRANTIES
+# WITH REGARD TO THIS SOFTWARE, INCLUDING ALL IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT
+# SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, INDIRECT
+# OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER
+# RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER
+# IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
+# ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
+# OR PERFORMANCE OF THIS SOFTWARE!
 
 """
 This files define some routines for front and back door
@@ -28,7 +28,6 @@ from typing import Iterator
 
 import itertools as it
 import pyAgrum as gum
-
 
 from ._dSeparation import isParent, dSep_reduce, descendants, isDSep_parents
 
@@ -156,7 +155,7 @@ def nodes_on_dipath(bn: gum.BayesNet, x: NodeId, y: NodeId) -> Optional[NodeSet]
   :return:
   """
 
-  def inner_nod(g: gum.BayesNet, a: NodeId, b: NodeId)->Optional[NodeSet]:
+  def inner_nod(g: gum.BayesNet, a: NodeId, b: NodeId) -> Optional[NodeSet]:
     if b == a:
       return set()
 
@@ -184,26 +183,44 @@ def nodes_on_dipath(bn: gum.BayesNet, x: NodeId, y: NodeId) -> Optional[NodeSet]
   return r
 
 
-def backdoor_generator(bn: gum.BayesNet, x: NodeId, y: NodeId, not_bd: NodeSet = None) -> Iterator[NodeList]:
+def backdoor_generator(bn: gum.BayesNet, cause: NodeId, effect: NodeId, not_bd: NodeSet = None) -> Iterator[NodeList]:
   """
   Generates backdoor sets for the pair of nodes ``(x, y)`` in the graph ``bn`` excluding the nodes in the set
   ``not_bd`` (optional)
 
   :param bn:
-  :param x:
-  :param y:
+  :param cause:
+  :param effect:
   :param not_bd:
   :return:
   """
-  if isParent(y, x, bn):  # causalDagFromBN(bn)):
+  if len(bn.parents(cause)) == 0:  # no parent of cause, no backdoor
+    return
+  if isParent(effect, cause, bn):  # causalDagFromBN(bn)):
     return
 
   if not_bd is None:
     not_bd = set()
 
-  G = dSep_reduce(bn, {x, y})
+  # simplifying the graph
+  interest = {cause, effect}
+  G = dSep_reduce(bn, interest)
 
-  possible = set(G.nodes()) - (descendants(bn, x, set()) | {x, y} | not_bd)
+  # removing the non connected in G without descendants
+  # GG is a trash graph just to find the disjointed nodes in G
+  GG=gum.DiGraph(G)
+  for i in descendants(bn, cause, set()):
+    GG.eraseNode(i)
+
+  # we only keep interesting connex components
+  for nodes in GG.connectedComponents().values():
+    if nodes.isdisjoint(interest):
+      for n in nodes:
+        G.eraseNode(n)
+
+  possible = set(G.nodes()) - (descendants(bn, cause, set()) | interest | not_bd)
+  if len(possible) == 0:
+    return
 
   backdoors = set()
 
@@ -214,7 +231,7 @@ def backdoor_generator(bn: gum.BayesNet, x: NodeId, y: NodeId, not_bd: NodeSet =
       for s in backdoors:
         if s <= sub:
           worth_testing = False
-      if worth_testing and isDSep_parents(G, {x}, {y}, sub):
+      if worth_testing and isDSep_parents(G, {cause}, {effect}, sub):
         backdoors.add(sub)
         yield list(subset)
 

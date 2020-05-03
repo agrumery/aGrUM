@@ -187,6 +187,14 @@ namespace PyAgrumHelper {
     gum::NodeSet&                   nodeset,
     PyObject*                       seq,
     const gum::VariableNodeMap& map) {
+    // if seq is just a string
+    const std::string name = PyAgrumHelper::stringFromPyObject(seq);
+    if (name != "") {
+      nodeset.insert(map.idFromName(name));
+      return;
+    }
+
+    // seq really is a sequence
     PyObject* iter = PyObject_GetIter(seq);
     if (iter != NULL) {
       PyObject* item;

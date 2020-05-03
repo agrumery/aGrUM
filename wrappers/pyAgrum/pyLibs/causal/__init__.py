@@ -28,6 +28,7 @@ do-calculus the causal impact in such a model.
 __author__ = "Pierre-Henri Wuillemin, Paul Alam, Ibrahim Merad"
 __copyright__ = "(c) 2019 PARIS"
 from ._causalImpact import causalImpact, counterfactualModel, counterfactual
+from ._doorCriteria import backdoor_generator,frontdoor_generator
 from ._doAST import ASTtree, ASTjointProba, ASTmult, ASTdiv, ASTsum, ASTposteriorProba, ASTminus, ASTplus, ASTBinaryOp
 from ._doCalculus import doCalculusWithObservation, identifyingIntervention
 from ._CausalFormula import CausalFormula
@@ -43,6 +44,7 @@ if sys.version_info < (3, 7):
 __all__ = ['CausalModel', 'CausalFormula',
            'causalImpact', 'counterfactualModel', 'counterfactual',
            'doCalculusWithObservation', 'identifyingIntervention',
+           'backdoor_generator',
            'HedgeException', 'UnidentifiableException',
            'ASTtree', 'ASTjointProba', 'ASTmult', 'ASTdiv', 'ASTsum', 'ASTposteriorProba', 'ASTminus', 'ASTplus',
            'ASTBinaryOp']

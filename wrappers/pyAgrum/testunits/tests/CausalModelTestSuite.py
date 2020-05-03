@@ -16,20 +16,20 @@ class TestCausalModel(pyAgrumTestCase):
 
     modele1 = csl.CausalModel(obs1)
     lat, pot, expl = csl.causalImpact(
-        modele1, "Cancer", "Smoking")  # when doing is 1
+      modele1, "Cancer", "Smoking")  # when doing is 1
     self.assertEqual(pot, obs1.cpt("Cancer"))
 
     modele2 = csl.CausalModel(obs1, [("Genotype", ["Smoking", "Cancer"])])
     lat, pot, expl = csl.causalImpact(
-        modele2, "Cancer", {"Smoking"}, values={"Smoking": 1})
+      modele2, "Cancer", {"Smoking"}, values={"Smoking": 1})
     margCancer = (obs1.cpt("Smoking") * obs1.cpt("Cancer")
                   ).margSumOut(["Smoking"])
     self.assertEqual(pot, margCancer)
 
     modele3 = csl.CausalModel(
-        obs1, [("Genotype", ["Smoking", "Cancer"])], True)
+      obs1, [("Genotype", ["Smoking", "Cancer"])], True)
     lat, pot, expl = csl.causalImpact(
-        modele3, "Cancer", {"Smoking"}, values={"Smoking": 1})
+      modele3, "Cancer", {"Smoking"}, values={"Smoking": 1})
     self.assertIsNone(pot)
 
   def test_tobacco2(self):
@@ -52,7 +52,7 @@ class TestCausalModel(pyAgrumTestCase):
     margCancer = (margCancer * obs2.cpt("Tar")).margSumOut(['Tar'])
 
     lat, pot, _ = csl.causalImpact(
-        modele4, "Cancer", "Smoking")  # when smoking=1
+      modele4, "Cancer", "Smoking")  # when smoking=1
     self.assertEqual(pot, margCancer)
 
   def test_simpson(self):
@@ -72,13 +72,13 @@ class TestCausalModel(pyAgrumTestCase):
                          [0.75, 0.25]]  # Gender=1
 
     m1.cpt("Patient")[{'Drug': 0, 'Gender': 0}] = [
-        0.2, 0.8]  # No Drug, Male -> healed in 0.8 of cases
+      0.2, 0.8]  # No Drug, Male -> healed in 0.8 of cases
     # No Drug, Female -> healed in 0.4 of cases
     m1.cpt("Patient")[{'Drug': 0, 'Gender': 1}] = [0.6, 0.4]
     m1.cpt("Patient")[{'Drug': 1, 'Gender': 0}] = [
-        0.3, 0.7]  # Drug, Male -> healed 0.7 of cases
+      0.3, 0.7]  # Drug, Male -> healed 0.7 of cases
     m1.cpt("Patient")[{'Drug': 1, 'Gender': 1}] = [
-        0.8, 0.2]  # Drug, Female -> healed in 0.2 of cases
+      0.8, 0.2]  # Drug, Female -> healed in 0.2 of cases
 
     d1 = csl.CausalModel(m1)
 
@@ -86,7 +86,7 @@ class TestCausalModel(pyAgrumTestCase):
     margPatient = (m1.cpt("Patient") * m1.cpt("Gender")).margSumOut(["Gender"])
 
     lat, pot, expl = csl.causalImpact(
-        d1, on="Patient", doing={"Drug"})  # when drug=1
+      d1, on="Patient", doing={"Drug"})  # when drug=1
     self.assertEqual(pot, margPatient)
 
   def test_CRAN1(self):
@@ -142,7 +142,7 @@ class TestCausalModel(pyAgrumTestCase):
     bn.cpt("z")[{'w': 1, 'x': 1}] = [0.5, 0.5]
 
     bn.cpt("y")[:] = [[0.1, 0.9], [0.8, 0.2]]
-    
+
     d = csl.CausalModel(bn, [("lat1", ["x", "y"])])
 
     _, pot, _ = csl.causalImpact(d, on="y", doing="x")
@@ -162,31 +162,31 @@ class TestCausalModel(pyAgrumTestCase):
     self.assertEquals(explanation, "Do-calculus computations")
 
   def testCounterfactual(self):
-    """
-    experience=10-4*education+Ux
-    salaire=65+2.5*experience+5*education+Us
+    # experience=10-4*education+Ux
+    # salaire=65+2.5*experience+5*education+Us
+    #
+    # Ux : [-2,10], sans a priori
+    # Us : [0,25], sans a priori
+    # education : 0,1,2 (low, medium, high), a priori [0.4,0.40.2]
+    # experience : [0,20]
+    # salaire : [65,150]
 
-    Ux : [-2,10], sans a priori
-    Us : [0,25], sans a priori
-    education : 0,1,2 (low, medium, high), a priori [0.4,0.40.2]
-    experience : [0,20]
-    salaire : [65,150]
-    """
     edex = gum.fastBN(
-        "Ux[-2,10]->experience[0,20]<-education{low|medium|high}->salary[65,150]<-Us[0,25];experience->salary")
+      "Ux[-2,10]->experience[0,20]<-education{low|medium|high}->salary[65,150]<-Us[0,25];experience->salary")
     edex.cpt("Us").fillWith(1).normalize()
     edex.cpt("Ux").fillWith(1).normalize()
     edex.cpt("education")[:] = [0.4, 0.4, 0.2]
     edex.cpt("experience").fillWithFunction("10-4*education+Ux")
     edex.cpt("salary").fillWithFunction("round(65+2.5*experience+5*education+Us)")
 
-    pot=csl.counterfactual(cm = csl.CausalModel(edex),
-                          profile = {'experience':8, 'education': 'low', 'salary' : '86'},
-                          whatif={"education"},
-                          on={"salary"}, 
-                          values = {"education" : "medium"})
+    pot = csl.counterfactual(cm=csl.CausalModel(edex),
+                             profile={'experience': 8, 'education': 'low', 'salary': '86'},
+                             whatif={"education"},
+                             on={"salary"},
+                             values={"education": "medium"})
 
-    self.assertEqual(pot[81-65],1.0)
+    self.assertEqual(pot[81 - 65], 1.0)
+
 
 ts = unittest.TestSuite()
 addTests(ts, TestCausalModel)

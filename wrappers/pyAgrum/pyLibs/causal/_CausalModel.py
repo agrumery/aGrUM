@@ -209,22 +209,22 @@ class CausalModel:
   def arcs(self) -> ArcSet:
     return self.__causalBN.arcs()
 
-  def backDoor(self, do, y, withNames=True):
-    ido = self.__observationalBN.idFromName(do) if isinstance(do, str) else do
-    iy = self.__observationalBN.idFromName(y) if isinstance(y, str) else y
+  def backDoor(self, cause, effect, withNames=True):
+    icause = self.__observationalBN.idFromName(cause) if isinstance(cause, str) else cause
+    ieffect = self.__observationalBN.idFromName(effect) if isinstance(effect, str) else effect
 
-    for bd in backdoor_generator(self, ido, iy, self.latentVariablesIds()):
+    for bd in backdoor_generator(self, icause, ieffect, self.latentVariablesIds()):
       if withNames:
         return [self.__observationalBN.variable(i).name() for i in bd]
       else:
         return bd
     return None
 
-  def frontDoor(self, do, y, withNames=True):
-    ido = self.__observationalBN.idFromName(do) if isinstance(do, str) else do
-    iy = self.__observationalBN.idFromName(y) if isinstance(y, str) else y
+  def frontDoor(self, cause, effect, withNames=True):
+    icause = self.__observationalBN.idFromName(cause) if isinstance(cause, str) else cause
+    ieffect = self.__observationalBN.idFromName(effect) if isinstance(effect, str) else effect
 
-    for fd in frontdoor_generator(self, ido, iy, self.latentVariablesIds()):
+    for fd in frontdoor_generator(self, icause, ieffect, self.latentVariablesIds()):
       if withNames:
         return [self.__observationalBN.variable(i).name() for i in fd]
       else:
