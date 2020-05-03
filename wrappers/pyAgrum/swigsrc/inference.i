@@ -102,6 +102,7 @@ def setTargets(self, targets):
 %}
 
 %ignore gum::classname::evidenceImpact(NodeId target, const NodeSet& evs);
+%ignore gum::classname::evidenceImpact(const std::string& target, const std::vector<std::string>& evs);
 
 // these void class extensions are rewritten by "shadow" declarations
 %extend gum::classname {
@@ -118,10 +119,11 @@ def setTargets(self, targets):
     PyObject* targets() {
       return PyAgrumHelper::PySetFromNodeSet(self->targets() );
     }
-    Potential<double> evidenceImpact(NodeId target,PyObject *evs) {
+    Potential<double> evidenceImpact(PyObject* target,PyObject *evs) {
+      gum::NodeId itarget=PyAgrumHelper::nodeIdFromNameOrIndex(target,self->BN().variableNodeMap());
       gum::NodeSet soe;
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soe,evs,self->BN().variableNodeMap());
-      return self->evidenceImpact(target,soe);
+      return self->evidenceImpact(itarget,soe);
     }
 }
 %enddef
