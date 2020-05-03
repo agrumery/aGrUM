@@ -1,6 +1,4 @@
 # -*- encoding: UTF-8 -*-
-from __future__ import print_function
-
 import time
 import unittest
 
@@ -13,17 +11,15 @@ class SamplingTestCase(pyAgrumTestCase):
     min = 1000
 
     for i in range(nbr):
-      deb = time.time()
       inferenceEngine.eraseAllEvidence()
       inferenceEngine.setEvidence(evs)
       inferenceEngine.makeInference()
       result = inferenceEngine.posterior(target)
-      fin = time.time()
       diff = (goalPotential - result).abs().max()
+
       if diff <= seuil:
         return None
-      else:
-        print("{:1.4f}[{:2.3f}]!".format(diff, fin - deb), end="")
+
       if min > diff:
         min = diff
 

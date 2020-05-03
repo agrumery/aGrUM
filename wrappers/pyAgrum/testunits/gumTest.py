@@ -5,17 +5,21 @@ import platform
 import sys
 from sys import platform as os_platform
 
-
 import logging
 
-cwd=os.getcwd()
-FORMAT = '%(asctime)s | %(levelname)s | %(filename)s:%(lineno)d | %(funcName)s | %(message)s'
-logging.basicConfig(filename='../../pyAgrumTests.log',
-                    filemode='w', format=FORMAT, level=logging.DEBUG)
-    
+cwd = os.getcwd()
+FORMAT = '[pyAgrum] %(asctime)s | %(levelname)s | %(filename)s:%(lineno)d | %(funcName)s | %(message)s'
+
+log = logging.getLogger("gumTestLog")
+log.setLevel(logging.DEBUG)  # better to have too much log than not enough
+fh = logging.FileHandler('../../pyAgrumTests.log', mode='w', encoding=None, delay=False)
+fh.setFormatter(logging.Formatter(FORMAT))
+log.addHandler(fh)
+log.propagate = False
+
 os.chdir(os.path.dirname(__file__ if __file__[0] == '/' else "./" + __file__))
 
-mod = "standalone"
+mod = "standAlone"
 testNotebooks = False
 
 for cde in sys.argv:
@@ -24,12 +28,12 @@ for cde in sys.argv:
   elif cde in ["all"]:
     testNotebooks = (cde == "all")
 
-logging.info("[pyAgrum] + Mode detected : " + mod)
-logging.info("[pyAgrum] + Testing notebooks : " + str(testNotebooks))
+log.info("Mode detected : " + mod)
+log.info("Testing notebooks : " + str(testNotebooks))
 
 if sys.version_info < (3, 0):
   if testNotebooks:
-    logging.warning("[pyAgrum] No notebook tests in python2")
+    log.warning("+ No notebook tests in python2")
     testNotebooks = False
 
 if mod != "standalone":
@@ -43,8 +47,8 @@ import pyAgrum as gum
 
 total_errs = 0
 
-logging.info("[pyAgrum] on Python {0} - {1}".format(platform.python_version(), os_platform))
-logging.info("[pyAgrum] path : {}".format(gum.__file__))
+log.info("on Python {0} - {1}".format(platform.python_version(), os_platform))
+log.info("path : {}".format(gum.__file__))
 
 print("*****************")
 print("Python Test Suite")
@@ -81,7 +85,7 @@ print("-" * 70)
 with open("../../pyAgrumTests.log", "r") as logfile:
   for f in logfile.readlines():
     if "[pyAgrum]" in f:
-      print(f,end='')
+      print(f, end='')
 print("-" * 70)
 
 print("\n\n\nErrors : " + str(total_errs))
