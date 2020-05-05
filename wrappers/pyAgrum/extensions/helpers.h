@@ -154,8 +154,8 @@ namespace PyAgrumHelper {
         GUM_ERROR(gum::InvalidArgument,
                   "The key "
                     << name << " is a not a name of a variable in this potential");
-      }
-      if (!PyInt_Check(value)) {
+      } 
+      if (!(PyInt_Check(value))) {
         GUM_ERROR(gum::InvalidArgument, "A value is not an int");
       }
       gum::Idx v = gum::Idx(PyInt_AsLong(value));
@@ -173,13 +173,13 @@ namespace PyAgrumHelper {
     const std::string name = PyAgrumHelper::stringFromPyObject(n);
     if (name != "") {
       return map.idFromName(name);
+    } else if (PyInt_Check(n)) {
+        return gum::NodeId(PyInt_AsLong(n));
+    } else if (PyLong_Check(n)) {
+      return gum::NodeId(PyLong_AsLong(n));
     } else {
-      if (!PyInt_Check(n)) {
         GUM_ERROR(gum::InvalidArgument,
                   "A value is neither a node name nor an node id");
-      } else {
-        return gum::NodeId(PyInt_AsLong(n));
-      }
     }
   }
 

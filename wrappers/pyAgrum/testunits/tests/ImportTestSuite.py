@@ -59,7 +59,7 @@ class TestImport(pyAgrumTestCase):
             "python>=3.6 and sklearn is needed for modules lib.classifier")
 
     except Exception as e:
-      self.assertFalse("Import error : "+str(e))
+      self.assertFalse(False,"Import error : "+str(e))
 
 
 ts = unittest.TestSuite()
