@@ -41,7 +41,7 @@ class TestImport(pyAgrumTestCase):
         import pyAgrum.lib.ipython
         import pyAgrum.lib.notebook
       else:
-        self.warn(
+        self.log.warning(
             "ipython and matplotlib are needed for modules lib.ipython and lib.notebook")
 
       if matplotlibFound:
@@ -49,13 +49,13 @@ class TestImport(pyAgrumTestCase):
         import pyAgrum.lib.bn2roc
         import pyAgrum.lib.dynamicBN
       else:
-        self.warn(
+        self.log.warning(
             "matplotlib is needed for modules lib.ipython and lib.notebook")
 
       if sklearnFound and sys.version_info >= (3,6):
         import pyAgrum.lib.classifier
       else:
-        self.warn(
+        self.log.warning(
             "python>=3.6 and sklearn is needed for modules lib.classifier")
 
     except Exception as e:

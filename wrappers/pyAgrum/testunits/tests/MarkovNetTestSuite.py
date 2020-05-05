@@ -184,17 +184,15 @@ class MarkovNetTestCase(pyAgrumTestCase):
       pbn *= bn.cpt(nod)
 
     pmn = gum.Potential()
-    pmn.fill(1)
-    print(mn.factors())
+    pmn.fillWith(1)
     for f in mn.factors():
-      print(f)
       pmn *= mn.factor(f)
     pmn.normalize()
 
     ppmn = gum.Potential(pbn)
     ppmn.fillWith(pmn)  # copy of pmn using pbn's variables
     diff = (pbn - ppmn).abs()
-    self.assertEquals(pbn.domainSize(), diff.domainSize())
+    self.assertEfquals(pbn.domainSize(), diff.domainSize())
     self.assertLessEqual(diff.max(), 1e-10)
     self.assertEquals(mn.graph(), bn.moralGraph())
 
