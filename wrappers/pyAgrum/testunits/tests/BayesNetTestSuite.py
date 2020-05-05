@@ -390,6 +390,16 @@ class TestFeatures(BayesNetTestCase):
     bn.clear()
     self.assertTrue(bn.empty())
 
+  def testExistsArc(self):
+    bn = gum.fastBN("A->B->C<-D->E<-A<-G->F")
+
+    self.assertTrue(bn.existsArc(0,1))
+    self.assertTrue(bn.existsArc("A","B"))
+    self.assertFalse(bn.existsArc(1,0))
+    self.assertFalse(bn.existsArc("B","A"))
+    self.assertFalse(bn.existsArc(0,2))
+    self.assertFalse(bn.existsArc("A","C"))
+
 
 class TestLoadBN(BayesNetTestCase):
   def listen(self, percent):

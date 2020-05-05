@@ -59,6 +59,7 @@ from tests import JunctionTreeTestSuite
 from tests import LazyPropagationTestSuite
 from tests import LoopyBeliefPropagationTestSuite
 from tests import MarkovBlanketTestSuite
+from tests import MarkovNetTestSuite
 from tests import PotentialTestSuite
 from tests import PRMexplorerTestSuite
 from tests import SamplingTestSuite
@@ -98,6 +99,7 @@ tests.append(JunctionTreeTestSuite.ts)
 tests.append(LazyPropagationTestSuite.ts)
 tests.append(LoopyBeliefPropagationTestSuite.ts)
 tests.append(MarkovBlanketTestSuite.ts)
+tests.append(MarkovNetTestSuite.ts)
 tests.append(PotentialTestSuite.ts)
 tests.append(PRMexplorerTestSuite.ts)
 tests.append(SamplingTestSuite.ts)

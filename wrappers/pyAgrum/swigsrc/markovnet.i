@@ -21,6 +21,16 @@
 // macro from graphs.i
 ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::IMarkovNet);
 
+
+// for gum::IMarkovNet::factors
+%typemap(out) const gum::FactorTable<double> & {
+  $result = PyList_New(0);
+
+  for (auto kv : *$1) {
+    PyList_Append($result, PyAgrumHelper::PySetFromNodeSet(kv.first));
+  }
+}
+
 %define IMPROVE_MARKOVNET_API(classname)
 %extend classname {
   PyObject *names() const {
@@ -50,17 +60,26 @@ ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::IMarkovNet);
 IMPROVE_MARKOVNET_API(gum::IMarkovNet);
 IMPROVE_MARKOVNET_API(gum::MarkovNet);
 
-// for gum::IMarkovNet::factors
-%typemap(out) const gum::FactorTable<double> & {
-  $result = PyList_New(0);
-
-  for (auto kv : *$1) {
-    PyList_Append($result, PyAgrumHelper::PySetFromNodeSet(kv.first));
-  }
-}
-
 %define IMPROVE_CONCRETEMARKOVNET_API(classname)
-%extend classname {
+
+%ignore gum::classname::addFactor(const std::vector<std::string,std::allocator< std::string > > const &);
+%ignore gum::classname::addFactor(const gum::NodeSet &);
+%ignore gum::classname::addFactor(const gum::Potential<double> &);
+%ignore gum::classname::eraseFactor(const std::vector<std::string,std::allocator< std::string > > const &);
+%ignore gum::classname::eraseFactor(const gum::NodeSet &);
+
+%extend gum::classname {
+    const Potential<double>& addFactor(PyObject *seq) {
+      gum::NodeSet son;
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(son,seq,self->variableNodeMap());
+      return self->addFactor(son);
+    };
+    void eraseFactor(PyObject *seq) {
+      gum::NodeSet son;
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(son,seq,self->variableNodeMap());
+      self->eraseFactor(son);
+    };
+
 %pythoncode {
 def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenEdgeAdded=None,whenedgeDeleted=None):
     """
@@ -97,7 +116,7 @@ def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenEdgeAd
 }
 }
 %enddef
-IMPROVE_CONCRETEBAYESNET_API(gum::MarkovNet);
+IMPROVE_CONCRETEMARKOVNET_API(MarkovNet<double>);
 
 %extend gum::MarkovNet {
    std::string loadUAI(std::string name, PyObject *l=(PyObject*)0)

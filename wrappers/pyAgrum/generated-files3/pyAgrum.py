@@ -6431,6 +6431,13 @@ class DAGmodel(GraphicalModel):
         """
         return _pyAgrum.DAGmodel_arcs(self)
 
+    def existsArc(self, *args) -> "bool":
+        r"""
+        existsArc(DAGmodel self, gum::NodeId const tail, gum::NodeId const head) -> bool
+        existsArc(DAGmodel self, std::string const & nametail, std::string const & namehead) -> bool
+        """
+        return _pyAgrum.DAGmodel_existsArc(self, *args)
+
     def parents(self, *args) -> "gum::NodeSet const &":
         r"""
         parents(DAGmodel self, gum::NodeId const id) -> gum::NodeSet const
@@ -6541,6 +6548,13 @@ class UGmodel(GraphicalModel):
     def edges(self) -> "gum::EdgeSet const &":
         r"""edges(UGmodel self) -> gum::EdgeSet const &"""
         return _pyAgrum.UGmodel_edges(self)
+
+    def existsEdge(self, *args) -> "bool":
+        r"""
+        existsEdge(UGmodel self, gum::NodeId const node1, gum::NodeId const node2) -> bool
+        existsEdge(UGmodel self, std::string const & name1, std::string const & name2) -> bool
+        """
+        return _pyAgrum.UGmodel_existsEdge(self, *args)
 
     def neighbours(self, *args) -> "gum::NodeSet const &":
         r"""
@@ -8978,18 +8992,6 @@ class Potential(object):
         """
         return _pyAgrum.Potential_contains(self, v)
 
-    def nbrDim(self) -> "gum::Idx":
-        r"""
-        nbrDim(Potential self) -> gum::Idx
-
-        Returns
-        -------
-        int
-          the number of vars in the multidimensional container. 
-
-        """
-        return _pyAgrum.Potential_nbrDim(self)
-
     def variable(self, *args) -> "gum::DiscreteVariable const &":
         r"""
         variable(Potential self, gum::Idx i) -> DiscreteVariable
@@ -9066,6 +9068,23 @@ class Potential(object):
 
         return val
 
+
+    def domainSize(self) -> "gum::Size":
+        r"""domainSize(Potential self) -> gum::Size"""
+        return _pyAgrum.Potential_domainSize(self)
+
+    def nbrDim(self, *args) -> "gum::Size":
+        r"""
+        nbrDim(Potential self) -> gum::Idx
+        nbrDim(Potential self) -> gum::Size
+
+        Returns
+        -------
+        int
+          the number of vars in the multidimensional container. 
+
+        """
+        return _pyAgrum.Potential_nbrDim(self, *args)
 
 # Register Potential in _pyAgrum:
 _pyAgrum.Potential_swigregister(Potential)
@@ -11565,21 +11584,6 @@ class MarkovNet(IMarkovNet):
         r"""variableFromName(MarkovNet self, std::string const & name) -> DiscreteVariable"""
         return _pyAgrum.MarkovNet_variableFromName(self, name)
 
-    def addFactor(self, *args) -> "gum::Potential< double > const &":
-        r"""
-        addFactor(MarkovNet self, Vector_string varnames) -> Potential
-        addFactor(MarkovNet self, gum::NodeSet const & vars) -> Potential
-        addFactor(MarkovNet self, Potential factor) -> Potential
-        """
-        return _pyAgrum.MarkovNet_addFactor(self, *args)
-
-    def eraseFactor(self, *args) -> "void":
-        r"""
-        eraseFactor(MarkovNet self, gum::NodeSet const & vars)
-        eraseFactor(MarkovNet self, Vector_string varnames)
-        """
-        return _pyAgrum.MarkovNet_eraseFactor(self, *args)
-
     def generateFactors(self) -> "void":
         r"""generateFactors(MarkovNet self)"""
         return _pyAgrum.MarkovNet_generateFactors(self)
@@ -11632,40 +11636,6 @@ class MarkovNet(IMarkovNet):
         """
         return _pyAgrum.MarkovNet_factor(self, *args)
 
-    def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdded=None,whenArcDeleted=None):
-        """
-        Add the listeners in parameters to the list of existing ones.
-
-        Parameters
-        ----------
-        whenNodeAdded : lambda expression
-          a function for when a node is added
-        whenNodeDeleted : lambda expression
-          a function for when a node is removed
-        whenArcAdded : lambda expression
-          a function for when an arc is added
-        whenArcDeleted : lambda expression
-          a function for when an arc is removed
-        """
-        if [whenNodeAdded,whenNodeDeleted,whenArcAdded,whenArcDeleted]==[None,None,None,None]:
-          return
-
-        if not hasattr(self,"_listeners"):
-          self._listeners=[]
-
-        nl = PythonBNListener(self, self.variableNodeMap())
-        if whenNodeAdded is not None:
-          nl.setWhenNodeAdded(whenNodeAdded)
-        if whenNodeDeleted is not None:
-          nl.setWhenNodeDeleted(whenNodeDeleted)
-        if whenArcAdded is not None:
-          nl.setWhenArcAdded(whenArcAdded)
-        if whenArcDeleted is not None:
-          nl.setWhenArcDeleted(whenArcDeleted)
-
-        self._listeners.append(nl)
-
-
     def loadUAI(self, *args) -> "std::string":
         r"""loadUAI(MarkovNet self, std::string name, PyObject * l=(PyObject *) 0) -> std::string"""
         return _pyAgrum.MarkovNet_loadUAI(self, *args)
@@ -11681,6 +11651,57 @@ class MarkovNet(IMarkovNet):
     def __str__(self) -> "std::string":
         r"""__str__(MarkovNet self) -> std::string"""
         return _pyAgrum.MarkovNet___str__(self)
+
+    def addFactor(self, *args) -> "gum::Potential< double > const &":
+        r"""
+        addFactor(MarkovNet self, Vector_string varnames) -> Potential
+        addFactor(MarkovNet self, gum::NodeSet const & vars) -> Potential
+        addFactor(MarkovNet self, Potential factor) -> Potential
+        addFactor(MarkovNet self, PyObject * seq) -> Potential
+        """
+        return _pyAgrum.MarkovNet_addFactor(self, *args)
+
+    def eraseFactor(self, *args) -> "void":
+        r"""
+        eraseFactor(MarkovNet self, gum::NodeSet const & vars)
+        eraseFactor(MarkovNet self, Vector_string varnames)
+        eraseFactor(MarkovNet self, PyObject * seq)
+        """
+        return _pyAgrum.MarkovNet_eraseFactor(self, *args)
+
+    def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenEdgeAdded=None,whenedgeDeleted=None):
+        """
+        Add the listeners in parameters to the list of existing ones.
+
+        Parameters
+        ----------
+        whenNodeAdded : lambda expression
+          a function for when a node is added
+        whenNodeDeleted : lambda expression
+          a function for when a node is removed
+        whenEdgeAdded : lambda expression
+          a function for when an edge is added
+        whenEdgeDeleted : lambda expression
+          a function for when an edge is removed
+        """
+        if [whenNodeAdded,whenNodeDeleted,whenEdgeAdded,whenEdgeDeleted]==[None,None,None,None]:
+          return
+
+        if not hasattr(self,"_listeners"):
+          self._listeners=[]
+
+        nl = PythonMNListener(self, self.variableNodeMap())
+        if whenNodeAdded is not None:
+          nl.setWhenNodeAdded(whenNodeAdded)
+        if whenNodeDeleted is not None:
+          nl.setWhenNodeDeleted(whenNodeDeleted)
+        if whenEdgeAdded is not None:
+          nl.setWhenEdgeAdded(whenEdgeAdded)
+        if whenEdgeDeleted is not None:
+          nl.setWhenArcDeleted(whenEdgeDeleted)
+
+        self._listeners.append(nl)
+
 
 # Register MarkovNet in _pyAgrum:
 _pyAgrum.MarkovNet_swigregister(MarkovNet)
@@ -12092,6 +12113,31 @@ class LazyPropagation(object):
 
         """
         return _pyAgrum.LazyPropagation_targets(self)
+
+    def evidenceImpact(self, target: "PyObject *", evs: "PyObject *") -> "gum::Potential< double >":
+        r"""
+        evidenceImpact(LazyPropagation self, PyObject * target, PyObject * evs) -> Potential
+
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
+
+        Parameters
+        ----------
+        target : set
+          a set of targets ids or names.
+        evs : set
+          a set of nodes ids or names.
+
+        Warnings
+        --------
+        if some evs are d-separated, they are not included in the Potential.
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a Potential for P(targets|evs)
+
+        """
+        return _pyAgrum.LazyPropagation_evidenceImpact(self, target, evs)
 
     def jointMutualInformation(self, targets: "PyObject *") -> "double":
         r"""jointMutualInformation(LazyPropagation self, PyObject * targets) -> double"""
@@ -12604,32 +12650,6 @@ class LazyPropagation(object):
         """
         return _pyAgrum.LazyPropagation_H(self, *args)
 
-    def evidenceImpact(self, *args) -> "gum::Potential< double >":
-        r"""
-        evidenceImpact(LazyPropagation self, gum::NodeId target, PyObject * evs) -> Potential
-        evidenceImpact(LazyPropagation self, std::string const & target, Vector_string evs) -> Potential
-
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
-
-        Parameters
-        ----------
-        target : set
-          a set of targets ids or names.
-        evs : set
-          a set of nodes ids or names.
-
-        Warnings
-        --------
-        if some evs are d-separated, they are not included in the Potential.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
-
-        """
-        return _pyAgrum.LazyPropagation_evidenceImpact(self, *args)
-
     def eraseAllJointTargets(self) -> "void":
         r"""
         eraseAllJointTargets(LazyPropagation self)
@@ -12937,6 +12957,31 @@ class ShaferShenoyInference(object):
 
         """
         return _pyAgrum.ShaferShenoyInference_targets(self)
+
+    def evidenceImpact(self, target: "PyObject *", evs: "PyObject *") -> "gum::Potential< double >":
+        r"""
+        evidenceImpact(ShaferShenoyInference self, PyObject * target, PyObject * evs) -> Potential
+
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
+
+        Parameters
+        ----------
+        target : set
+          a set of targets ids or names.
+        evs : set
+          a set of nodes ids or names.
+
+        Warnings
+        --------
+        if some evs are d-separated, they are not included in the Potential.
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a Potential for P(targets|evs)
+
+        """
+        return _pyAgrum.ShaferShenoyInference_evidenceImpact(self, target, evs)
 
     def jointMutualInformation(self, targets: "PyObject *") -> "double":
         r"""jointMutualInformation(ShaferShenoyInference self, PyObject * targets) -> double"""
@@ -13449,32 +13494,6 @@ class ShaferShenoyInference(object):
         """
         return _pyAgrum.ShaferShenoyInference_H(self, *args)
 
-    def evidenceImpact(self, *args) -> "gum::Potential< double >":
-        r"""
-        evidenceImpact(ShaferShenoyInference self, gum::NodeId target, PyObject * evs) -> Potential
-        evidenceImpact(ShaferShenoyInference self, std::string const & target, Vector_string evs) -> Potential
-
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
-
-        Parameters
-        ----------
-        target : set
-          a set of targets ids or names.
-        evs : set
-          a set of nodes ids or names.
-
-        Warnings
-        --------
-        if some evs are d-separated, they are not included in the Potential.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
-
-        """
-        return _pyAgrum.ShaferShenoyInference_evidenceImpact(self, *args)
-
     def eraseAllJointTargets(self) -> "void":
         r"""
         eraseAllJointTargets(ShaferShenoyInference self)
@@ -13784,6 +13803,31 @@ class VariableElimination(object):
 
         """
         return _pyAgrum.VariableElimination_targets(self)
+
+    def evidenceImpact(self, target: "PyObject *", evs: "PyObject *") -> "gum::Potential< double >":
+        r"""
+        evidenceImpact(VariableElimination self, PyObject * target, PyObject * evs) -> Potential
+
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
+
+        Parameters
+        ----------
+        target : set
+          a set of targets ids or names.
+        evs : set
+          a set of nodes ids or names.
+
+        Warnings
+        --------
+        if some evs are d-separated, they are not included in the Potential.
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a Potential for P(targets|evs)
+
+        """
+        return _pyAgrum.VariableElimination_evidenceImpact(self, target, evs)
 
     def jointMutualInformation(self, targets: "PyObject *") -> "double":
         r"""jointMutualInformation(VariableElimination self, PyObject * targets) -> double"""
@@ -14324,32 +14368,6 @@ class VariableElimination(object):
         """
         return _pyAgrum.VariableElimination_H(self, *args)
 
-    def evidenceImpact(self, *args) -> "gum::Potential< double >":
-        r"""
-        evidenceImpact(VariableElimination self, gum::NodeId target, PyObject * evs) -> Potential
-        evidenceImpact(VariableElimination self, std::string const & target, Vector_string evs) -> Potential
-
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
-
-        Parameters
-        ----------
-        target : set
-          a set of targets ids or names.
-        evs : set
-          a set of nodes ids or names.
-
-        Warnings
-        --------
-        if some evs are d-separated, they are not included in the Potential.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
-
-        """
-        return _pyAgrum.VariableElimination_evidenceImpact(self, *args)
-
 # Register VariableElimination in _pyAgrum:
 _pyAgrum.VariableElimination_swigregister(VariableElimination)
 
@@ -14520,6 +14538,31 @@ class GibbsSampling(object):
 
         """
         return _pyAgrum.GibbsSampling_targets(self)
+
+    def evidenceImpact(self, target: "PyObject *", evs: "PyObject *") -> "gum::Potential< double >":
+        r"""
+        evidenceImpact(GibbsSampling self, PyObject * target, PyObject * evs) -> Potential
+
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
+
+        Parameters
+        ----------
+        target : set
+          a set of targets ids or names.
+        evs : set
+          a set of nodes ids or names.
+
+        Warnings
+        --------
+        if some evs are d-separated, they are not included in the Potential.
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a Potential for P(targets|evs)
+
+        """
+        return _pyAgrum.GibbsSampling_evidenceImpact(self, target, evs)
 
     def setVerbosity(self, v: "bool") -> "void":
         r"""
@@ -15149,32 +15192,6 @@ class GibbsSampling(object):
         """
         return _pyAgrum.GibbsSampling_H(self, *args)
 
-    def evidenceImpact(self, *args) -> "gum::Potential< double >":
-        r"""
-        evidenceImpact(GibbsSampling self, gum::NodeId target, PyObject * evs) -> Potential
-        evidenceImpact(GibbsSampling self, std::string const & target, Vector_string evs) -> Potential
-
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
-
-        Parameters
-        ----------
-        target : set
-          a set of targets ids or names.
-        evs : set
-          a set of nodes ids or names.
-
-        Warnings
-        --------
-        if some evs are d-separated, they are not included in the Potential.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
-
-        """
-        return _pyAgrum.GibbsSampling_evidenceImpact(self, *args)
-
     def currentPosterior(self, *args) -> "gum::Potential< double > const &":
         r"""
         currentPosterior(GibbsSampling self, gum::NodeId const id) -> Potential
@@ -15396,6 +15413,31 @@ class ImportanceSampling(object):
 
         """
         return _pyAgrum.ImportanceSampling_targets(self)
+
+    def evidenceImpact(self, target: "PyObject *", evs: "PyObject *") -> "gum::Potential< double >":
+        r"""
+        evidenceImpact(ImportanceSampling self, PyObject * target, PyObject * evs) -> Potential
+
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
+
+        Parameters
+        ----------
+        target : set
+          a set of targets ids or names.
+        evs : set
+          a set of nodes ids or names.
+
+        Warnings
+        --------
+        if some evs are d-separated, they are not included in the Potential.
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a Potential for P(targets|evs)
+
+        """
+        return _pyAgrum.ImportanceSampling_evidenceImpact(self, target, evs)
 
     def setVerbosity(self, v: "bool") -> "void":
         r"""
@@ -16025,32 +16067,6 @@ class ImportanceSampling(object):
         """
         return _pyAgrum.ImportanceSampling_H(self, *args)
 
-    def evidenceImpact(self, *args) -> "gum::Potential< double >":
-        r"""
-        evidenceImpact(ImportanceSampling self, gum::NodeId target, PyObject * evs) -> Potential
-        evidenceImpact(ImportanceSampling self, std::string const & target, Vector_string evs) -> Potential
-
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
-
-        Parameters
-        ----------
-        target : set
-          a set of targets ids or names.
-        evs : set
-          a set of nodes ids or names.
-
-        Warnings
-        --------
-        if some evs are d-separated, they are not included in the Potential.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
-
-        """
-        return _pyAgrum.ImportanceSampling_evidenceImpact(self, *args)
-
     def currentPosterior(self, *args) -> "gum::Potential< double > const &":
         r"""
         currentPosterior(ImportanceSampling self, gum::NodeId const id) -> Potential
@@ -16224,6 +16240,31 @@ class WeightedSampling(object):
 
         """
         return _pyAgrum.WeightedSampling_targets(self)
+
+    def evidenceImpact(self, target: "PyObject *", evs: "PyObject *") -> "gum::Potential< double >":
+        r"""
+        evidenceImpact(WeightedSampling self, PyObject * target, PyObject * evs) -> Potential
+
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
+
+        Parameters
+        ----------
+        target : set
+          a set of targets ids or names.
+        evs : set
+          a set of nodes ids or names.
+
+        Warnings
+        --------
+        if some evs are d-separated, they are not included in the Potential.
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a Potential for P(targets|evs)
+
+        """
+        return _pyAgrum.WeightedSampling_evidenceImpact(self, target, evs)
 
     def setVerbosity(self, v: "bool") -> "void":
         r"""
@@ -16853,32 +16894,6 @@ class WeightedSampling(object):
         """
         return _pyAgrum.WeightedSampling_H(self, *args)
 
-    def evidenceImpact(self, *args) -> "gum::Potential< double >":
-        r"""
-        evidenceImpact(WeightedSampling self, gum::NodeId target, PyObject * evs) -> Potential
-        evidenceImpact(WeightedSampling self, std::string const & target, Vector_string evs) -> Potential
-
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
-
-        Parameters
-        ----------
-        target : set
-          a set of targets ids or names.
-        evs : set
-          a set of nodes ids or names.
-
-        Warnings
-        --------
-        if some evs are d-separated, they are not included in the Potential.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
-
-        """
-        return _pyAgrum.WeightedSampling_evidenceImpact(self, *args)
-
     def currentPosterior(self, *args) -> "gum::Potential< double > const &":
         r"""
         currentPosterior(WeightedSampling self, gum::NodeId const id) -> Potential
@@ -17052,6 +17067,31 @@ class MonteCarloSampling(object):
 
         """
         return _pyAgrum.MonteCarloSampling_targets(self)
+
+    def evidenceImpact(self, target: "PyObject *", evs: "PyObject *") -> "gum::Potential< double >":
+        r"""
+        evidenceImpact(MonteCarloSampling self, PyObject * target, PyObject * evs) -> Potential
+
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
+
+        Parameters
+        ----------
+        target : set
+          a set of targets ids or names.
+        evs : set
+          a set of nodes ids or names.
+
+        Warnings
+        --------
+        if some evs are d-separated, they are not included in the Potential.
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a Potential for P(targets|evs)
+
+        """
+        return _pyAgrum.MonteCarloSampling_evidenceImpact(self, target, evs)
 
     def setVerbosity(self, v: "bool") -> "void":
         r"""
@@ -17681,32 +17721,6 @@ class MonteCarloSampling(object):
         """
         return _pyAgrum.MonteCarloSampling_H(self, *args)
 
-    def evidenceImpact(self, *args) -> "gum::Potential< double >":
-        r"""
-        evidenceImpact(MonteCarloSampling self, gum::NodeId target, PyObject * evs) -> Potential
-        evidenceImpact(MonteCarloSampling self, std::string const & target, Vector_string evs) -> Potential
-
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
-
-        Parameters
-        ----------
-        target : set
-          a set of targets ids or names.
-        evs : set
-          a set of nodes ids or names.
-
-        Warnings
-        --------
-        if some evs are d-separated, they are not included in the Potential.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
-
-        """
-        return _pyAgrum.MonteCarloSampling_evidenceImpact(self, *args)
-
     def currentPosterior(self, *args) -> "gum::Potential< double > const &":
         r"""
         currentPosterior(MonteCarloSampling self, gum::NodeId const id) -> Potential
@@ -17894,6 +17908,31 @@ class LoopyImportanceSampling(object):
 
         """
         return _pyAgrum.LoopyImportanceSampling_targets(self)
+
+    def evidenceImpact(self, target: "PyObject *", evs: "PyObject *") -> "gum::Potential< double >":
+        r"""
+        evidenceImpact(LoopyImportanceSampling self, PyObject * target, PyObject * evs) -> Potential
+
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
+
+        Parameters
+        ----------
+        target : set
+          a set of targets ids or names.
+        evs : set
+          a set of nodes ids or names.
+
+        Warnings
+        --------
+        if some evs are d-separated, they are not included in the Potential.
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a Potential for P(targets|evs)
+
+        """
+        return _pyAgrum.LoopyImportanceSampling_evidenceImpact(self, target, evs)
 
     def setVerbosity(self, v: "bool") -> "void":
         r"""
@@ -18523,32 +18562,6 @@ class LoopyImportanceSampling(object):
         """
         return _pyAgrum.LoopyImportanceSampling_H(self, *args)
 
-    def evidenceImpact(self, *args) -> "gum::Potential< double >":
-        r"""
-        evidenceImpact(LoopyImportanceSampling self, gum::NodeId target, PyObject * evs) -> Potential
-        evidenceImpact(LoopyImportanceSampling self, std::string const & target, Vector_string evs) -> Potential
-
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
-
-        Parameters
-        ----------
-        target : set
-          a set of targets ids or names.
-        evs : set
-          a set of nodes ids or names.
-
-        Warnings
-        --------
-        if some evs are d-separated, they are not included in the Potential.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
-
-        """
-        return _pyAgrum.LoopyImportanceSampling_evidenceImpact(self, *args)
-
     def currentPosterior(self, *args) -> "gum::Potential< double > const &":
         r"""
         currentPosterior(LoopyImportanceSampling self, gum::NodeId const id) -> Potential
@@ -18736,6 +18749,31 @@ class LoopyWeightedSampling(object):
 
         """
         return _pyAgrum.LoopyWeightedSampling_targets(self)
+
+    def evidenceImpact(self, target: "PyObject *", evs: "PyObject *") -> "gum::Potential< double >":
+        r"""
+        evidenceImpact(LoopyWeightedSampling self, PyObject * target, PyObject * evs) -> Potential
+
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
+
+        Parameters
+        ----------
+        target : set
+          a set of targets ids or names.
+        evs : set
+          a set of nodes ids or names.
+
+        Warnings
+        --------
+        if some evs are d-separated, they are not included in the Potential.
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a Potential for P(targets|evs)
+
+        """
+        return _pyAgrum.LoopyWeightedSampling_evidenceImpact(self, target, evs)
 
     def setVerbosity(self, v: "bool") -> "void":
         r"""
@@ -19365,32 +19403,6 @@ class LoopyWeightedSampling(object):
         """
         return _pyAgrum.LoopyWeightedSampling_H(self, *args)
 
-    def evidenceImpact(self, *args) -> "gum::Potential< double >":
-        r"""
-        evidenceImpact(LoopyWeightedSampling self, gum::NodeId target, PyObject * evs) -> Potential
-        evidenceImpact(LoopyWeightedSampling self, std::string const & target, Vector_string evs) -> Potential
-
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
-
-        Parameters
-        ----------
-        target : set
-          a set of targets ids or names.
-        evs : set
-          a set of nodes ids or names.
-
-        Warnings
-        --------
-        if some evs are d-separated, they are not included in the Potential.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
-
-        """
-        return _pyAgrum.LoopyWeightedSampling_evidenceImpact(self, *args)
-
     def currentPosterior(self, *args) -> "gum::Potential< double > const &":
         r"""
         currentPosterior(LoopyWeightedSampling self, gum::NodeId const id) -> Potential
@@ -19578,6 +19590,31 @@ class LoopyGibbsSampling(object):
 
         """
         return _pyAgrum.LoopyGibbsSampling_targets(self)
+
+    def evidenceImpact(self, target: "PyObject *", evs: "PyObject *") -> "gum::Potential< double >":
+        r"""
+        evidenceImpact(LoopyGibbsSampling self, PyObject * target, PyObject * evs) -> Potential
+
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
+
+        Parameters
+        ----------
+        target : set
+          a set of targets ids or names.
+        evs : set
+          a set of nodes ids or names.
+
+        Warnings
+        --------
+        if some evs are d-separated, they are not included in the Potential.
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a Potential for P(targets|evs)
+
+        """
+        return _pyAgrum.LoopyGibbsSampling_evidenceImpact(self, target, evs)
 
     def setVerbosity(self, v: "bool") -> "void":
         r"""
@@ -20207,32 +20244,6 @@ class LoopyGibbsSampling(object):
         """
         return _pyAgrum.LoopyGibbsSampling_H(self, *args)
 
-    def evidenceImpact(self, *args) -> "gum::Potential< double >":
-        r"""
-        evidenceImpact(LoopyGibbsSampling self, gum::NodeId target, PyObject * evs) -> Potential
-        evidenceImpact(LoopyGibbsSampling self, std::string const & target, Vector_string evs) -> Potential
-
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
-
-        Parameters
-        ----------
-        target : set
-          a set of targets ids or names.
-        evs : set
-          a set of nodes ids or names.
-
-        Warnings
-        --------
-        if some evs are d-separated, they are not included in the Potential.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
-
-        """
-        return _pyAgrum.LoopyGibbsSampling_evidenceImpact(self, *args)
-
     def currentPosterior(self, *args) -> "gum::Potential< double > const &":
         r"""
         currentPosterior(LoopyGibbsSampling self, gum::NodeId const id) -> Potential
@@ -20492,6 +20503,31 @@ class LoopyMonteCarloSampling(object):
 
         """
         return _pyAgrum.LoopyMonteCarloSampling_targets(self)
+
+    def evidenceImpact(self, target: "PyObject *", evs: "PyObject *") -> "gum::Potential< double >":
+        r"""
+        evidenceImpact(LoopyMonteCarloSampling self, PyObject * target, PyObject * evs) -> Potential
+
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
+
+        Parameters
+        ----------
+        target : set
+          a set of targets ids or names.
+        evs : set
+          a set of nodes ids or names.
+
+        Warnings
+        --------
+        if some evs are d-separated, they are not included in the Potential.
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a Potential for P(targets|evs)
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_evidenceImpact(self, target, evs)
 
     def setVerbosity(self, v: "bool") -> "void":
         r"""
@@ -21121,32 +21157,6 @@ class LoopyMonteCarloSampling(object):
         """
         return _pyAgrum.LoopyMonteCarloSampling_H(self, *args)
 
-    def evidenceImpact(self, *args) -> "gum::Potential< double >":
-        r"""
-        evidenceImpact(LoopyMonteCarloSampling self, gum::NodeId target, PyObject * evs) -> Potential
-        evidenceImpact(LoopyMonteCarloSampling self, std::string const & target, Vector_string evs) -> Potential
-
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
-
-        Parameters
-        ----------
-        target : set
-          a set of targets ids or names.
-        evs : set
-          a set of nodes ids or names.
-
-        Warnings
-        --------
-        if some evs are d-separated, they are not included in the Potential.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
-
-        """
-        return _pyAgrum.LoopyMonteCarloSampling_evidenceImpact(self, *args)
-
     def currentPosterior(self, *args) -> "gum::Potential< double > const &":
         r"""
         currentPosterior(LoopyMonteCarloSampling self, gum::NodeId const id) -> Potential
@@ -21320,6 +21330,31 @@ class LoopyBeliefPropagation(object):
 
         """
         return _pyAgrum.LoopyBeliefPropagation_targets(self)
+
+    def evidenceImpact(self, target: "PyObject *", evs: "PyObject *") -> "gum::Potential< double >":
+        r"""
+        evidenceImpact(LoopyBeliefPropagation self, PyObject * target, PyObject * evs) -> Potential
+
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
+
+        Parameters
+        ----------
+        target : set
+          a set of targets ids or names.
+        evs : set
+          a set of nodes ids or names.
+
+        Warnings
+        --------
+        if some evs are d-separated, they are not included in the Potential.
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a Potential for P(targets|evs)
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_evidenceImpact(self, target, evs)
 
     def setVerbosity(self, v: "bool") -> "void":
         r"""
@@ -21948,32 +21983,6 @@ class LoopyBeliefPropagation(object):
 
         """
         return _pyAgrum.LoopyBeliefPropagation_H(self, *args)
-
-    def evidenceImpact(self, *args) -> "gum::Potential< double >":
-        r"""
-        evidenceImpact(LoopyBeliefPropagation self, gum::NodeId target, PyObject * evs) -> Potential
-        evidenceImpact(LoopyBeliefPropagation self, std::string const & target, Vector_string evs) -> Potential
-
-        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
-
-        Parameters
-        ----------
-        target : set
-          a set of targets ids or names.
-        evs : set
-          a set of nodes ids or names.
-
-        Warnings
-        --------
-        if some evs are d-separated, they are not included in the Potential.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a Potential for P(targets|evs)
-
-        """
-        return _pyAgrum.LoopyBeliefPropagation_evidenceImpact(self, *args)
 
 # Register LoopyBeliefPropagation in _pyAgrum:
 _pyAgrum.LoopyBeliefPropagation_swigregister(LoopyBeliefPropagation)

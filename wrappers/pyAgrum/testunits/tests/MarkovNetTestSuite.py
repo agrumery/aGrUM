@@ -5,255 +5,211 @@ import numpy
 import pyAgrum as gum
 from pyAgrumTestSuite import pyAgrumTestCase, addTests
 
-class BayesNetTestCase(pyAgrumTestCase):
 
+class MarkovNetTestCase(pyAgrumTestCase):
   def _fill(self, mn):
-    for i in [11,21,31,41]:
-      mn.add(str(i),3)
-    mn.add(str(51),7)
-    mn.addFactor({"11", "31"})
-       .fillWith({0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8});
-    mn.addFactor({"11", "41"})
-       .fillWith({0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0});
-    mn.addFactor({"31", "51"}).fillWith(0.97);
-    mn.addFactor({"21", "41", "51"}).fillWith(0.03);
+    for i in [11, 21, 31, 41]:
+      mn.add(str(i), 3)
+    mn.add(str(51), 7)
+    mn.addFactor({"11", "31"}).fillWith([0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8])
+    mn.addFactor({"11", "41"}).fillWith([0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0])
+    mn.addFactor({"31", "51"}).fillWith(0.97)
+    mn.addFactor({"21", "41", "51"}).fillWith(0.03)
 
-    public:
-    void setUp() {}
+  def testConstructor(self):
+    mn = gum.MarkovNet()
+    self._fill(mn)
 
-    void tearDown() {}
+    self.assertEquals(mn.size(), 5)
+    self.assertEquals(mn.sizeEdges(), 6)
+    self.assertEquals(mn.dim(), (3 * 3 + 3 * 3 + 3 * 7 + 3 * 3 * 7))
+    self.assertEquals(mn.__str__(),
+                      "MN{nodes: 5, edges: 6, domainSize: 567, dim: 102}")
+    self.assertEquals(mn.neighbours("41"), {0, 1, 4})
+    self.assertEquals(mn.neighbours(3), {0, 1, 4})
 
-    void testSimpleConstructor(){TS_GUM_ASSERT_THROWS_NOTHING({
-      gum::MarkovNet< double > mn;
-      GUM_UNUSED(mn);
-    })};
+    self.assertEquals(mn.variable(1).name(), "21")
+    self.assertEquals(mn.nodeId(mn.variable(2)), 2)
+    self.assertEquals(mn.idFromName("31"), 2)
+    self.assertEquals(mn.variableFromName("41").name(), "41")
 
-    void testConstructor() {
-      gum::MarkovNet< double > mn;
-      _fill(mn);
+    self.assertEquals(mn.maxVarDomainSize(), 7)
+    self.assertEquals(mn.minParam(), 0.0)
+    self.assertEquals(mn.minNonZeroParam(), 0.03)
+    self.assertEquals(mn.maxParam(), 1.0)
+    self.assertEquals(mn.maxNonOneParam(), 0.97)
 
-      TS_ASSERT_EQUALS(mn.size(), (gum::Idx)5);
-      TS_ASSERT_EQUALS(mn.sizeEdges(), (gum::Idx)6);
-      TS_ASSERT_EQUALS(mn.dim(), (gum::Idx)(3 * 3 + 3 * 3 + 3 * 7 + 3 * 3 * 7));
-      TS_ASSERT_EQUALS(mn.toString(),
-                       "MN{nodes: 5, edges: 6, domainSize: 567, dim: 102}");
-      TS_ASSERT_EQUALS(mn.neighbours("41"), gum::NodeSet({0, 1, 4}));
-      TS_ASSERT_EQUALS(mn.neighbours(3), gum::NodeSet({0, 1, 4}));
+  def testCopyConstructor(self):
+    mn = gum.MarkovNet()
+    self._fill(mn)
+    mn2 = gum.MarkovNet(mn)
+    self.assertEquals(mn2.__str__(), "MN{nodes: 5, edges: 6, domainSize: 567, dim: 102}")
 
-      TS_ASSERT_EQUALS(mn.variable(1).name(), "21");
-      TS_ASSERT_EQUALS(mn.nodeId(mn.variable(2)), gum::NodeId(2));
-      TS_ASSERT_EQUALS(mn.idFromName("31"), gum::NodeId(2));
-      TS_ASSERT_EQUALS(mn.variableFromName("41").name(), "41");
+    for n in mn.nodes():
+      self.assertEquals(mn.variable(n).name(), mn2.variable(n).name())
+      self.assertEquals(mn.neighbours(n), mn2.neighbours(n))
 
-      TS_ASSERT_EQUALS(mn.maxVarDomainSize(), gum::Size(7));
-      TS_ASSERT_EQUALS(mn.minParam(), 0.0);
-      TS_ASSERT_EQUALS(mn.minNonZeroParam(), 0.03);
-      TS_ASSERT_EQUALS(mn.maxParam(), 1.0);
-      TS_ASSERT_EQUALS(mn.maxNonOneParam(), 0.97);
-    }
+  def testCopyOperator(self):
+    mn = gum.MarkovNet()
+    mn2 = gum.MarkovNet()
+    self._fill(mn)
+    mn2 = mn
+    self.assertEquals(mn2.__str__(),
+                      "MN{nodes: 5, edges: 6, domainSize: 567, dim: 102}")
+    for n in mn.nodes():
+      self.assertEquals(mn.variable(n).name(), mn2.variable(n).name())
+      self.assertEquals(mn.neighbours(n), mn2.neighbours(n))
 
-    void testCopyConstructor() {
-      gum::MarkovNet< double > mn;
-      _fill(mn);
-      gum::MarkovNet< double > mn2(mn);
-      TS_ASSERT_EQUALS(mn2.toString(),
-                       "MN{nodes: 5, edges: 6, domainSize: 567, dim: 102}");
+  def testEqualityOperators(self):
+    mn1 = gum.MarkovNet()
+    self._fill(mn1)
+    mn2 = gum.MarkovNet()
+    self.assertNotEqual(mn1, mn2)
+    self._fill(mn2)
+    self.assertEquals(mn1, mn2)
+    mn2.generateFactors()
+    self.assertNotEqual(mn1, mn2)
 
-      TS_GUM_ASSERT_THROWS_NOTHING({
-        for (const auto n: mn.nodes()) {
-          TS_ASSERT_EQUALS(mn.variable(n).name(), mn2.variable(n).name());
-          TS_ASSERT_EQUALS(mn.neighbours(n), mn2.neighbours(n));
-        }
-      });
-    }
+  def testInsertion(self):
+    mn = gum.MarkovNet()
+    self._fill(mn)
 
-    void testCopyOperator() {
-      gum::MarkovNet< double > mn;
-      gum::MarkovNet< double > mn2;
-      _fill(mn);
-      mn2 = mn;
-      TS_ASSERT_EQUALS(mn2.toString(),
-                       "MN{nodes: 5, edges: 6, domainSize: 567, dim: 102}");
-      for (const auto n: mn.nodes()) {
-        TS_ASSERT_EQUALS(mn.variable(n).name(), mn2.variable(n).name());
-        TS_ASSERT_EQUALS(mn.neighbours(n), mn2.neighbours(n));
-      }
-    }
+    with self.assertRaises(gum.InvalidArgument):
+      mn.addFactor(gum.Potential())  # no empty factor
 
-    void testEqualityOperators() {
-      gum::MarkovNet< double > mn1;
-      _fill(mn1);
-      gum::MarkovNet< double > mn2;
-      TS_ASSERT(mn1 != mn2);
-      _fill(mn2);
-      TS_ASSERT(mn1 == mn2);
-      mn2.generateFactors();
-      TS_ASSERT(mn1 != mn2);
-    }
+    with self.assertRaises(gum.InvalidArgument):
+      mn.addFactor({"11", "31"})  # already exist
 
-    void testInsertion() {
-      gum::MarkovNet< double > mn;
-      _fill(mn);
-      TS_ASSERT_THROWS(mn.addFactor(gum::Potential< double >()),
-                       gum::InvalidArgument);   // no empty factor
-      TS_ASSERT_THROWS(mn.addFactor({"11", "31"}),
-                       gum::InvalidArgument);   // already exists
+    mn1 = gum.MarkovNet()
+    self._fill(mn1)
+    pot = gum.Potential().add(mn1.variable("11")).add(mn1.variable("21"))
+    pot.randomDistribution()
+    mn1.addFactor(pot)
+    self.assertEquals(pot.__str__(), mn1.factor({"11", "21"}).__str__())
 
-      {
-        gum::MarkovNet< double > mn1;
-        _fill(mn1);
-        gum::Potential< double > pot;
-        pot.add(mn1.variable("11"));
-        pot.add(mn1.variable("21"));
-        pot.randomDistribution();
-        TS_GUM_ASSERT_THROWS_NOTHING(mn1.addFactor(pot));
-        TS_ASSERT_EQUALS(pot.toString(), mn1.factor({"11", "21"}).toString());
-      }
-      {
-        gum::MarkovNet< double > mn1;
-        _fill(mn1);
-        gum::Potential< double > pot;
-        pot.add(mn1.variable("21"));
-        pot.add(mn1.variable("11"));
-        pot.randomDistribution();
-        TS_GUM_ASSERT_THROWS_NOTHING(mn1.addFactor(pot));
+    mn1 = gum.MarkovNet()
+    self._fill(mn1)
+    pot = gum.Potential().add(mn1.variable("21")).add(mn1.variable("11"))
+    pot.randomDistribution()
+    mn1.addFactor(pot)
 
-        // should be different because of the sorting by order of the vars in pot.
-        TS_ASSERT_DIFFERS(pot.toString(), mn1.factor({"11", "21"}).toString());
+    # should be different because of the sorting by order of the vars in pot.
+    self.assertNotEqual(pot.__str__(), mn1.factor({"11", "21"}).__str__())
 
-        // but the data should be the same
-        gum::Instantiation I(pot);
-        const auto&        factor = mn1.factor({"21", "11"});
-        for (I.setFirst(); !I.end(); I.inc()) {
-          TS_ASSERT_DELTA(pot.get(I), factor.get(I), 1e-10);
-        }
-      }
-    }
+    # but the data should be the same
+    I = gum.Instantiation(pot)
+    factor = mn1.factor({"21", "11"})
+    I.setFirst()
+    while not I.end():
+      self.assertAlmostEqual(pot.get(I), factor.get(I), places=7)
+      I.inc()
 
-    void testIterations() {
-      gum::MarkovNet< double > mn;
-      _fill(mn);
-      gum::Size cpt = (gum::Size)0;
+  def testIterations(self):
+    mn = gum.MarkovNet()
+    self._fill(mn)
 
-      for (const auto node: mn.nodes()) {
-        GUM_UNUSED(node);
-        cpt++;
-      }
+    cpt = 0
+    for node in mn.nodes():
+      cpt += 1
+    self.assertEquals(cpt, mn.size())
 
-      TS_ASSERT_EQUALS(cpt, mn.size());
+    cpt = 0
+    for edg in mn.edges():
+      cpt += 1
+    self.assertEquals(cpt, mn.sizeEdges())
 
-      cpt = (gum::Size)0;
+  def testEraseFactor(self):
+    mn = gum.MarkovNet()
+    self._fill(mn)
+    with self.assertRaises(gum.InvalidArgument):
+      mn.eraseFactor({12, 14})
+    mn.eraseFactor({2, 4})
 
-      for (const auto& edg: mn.edges()) {
-        GUM_UNUSED(edg);
-        cpt++;
-      }
+    self.assertEquals(mn.size(), 5)
+    self.assertEquals(mn.sizeEdges(), 5)
+    self.assertEquals(mn.dim(), (3 * 3 + 3 * 3 + 3 * 3 * 7))
+    self.assertEquals(mn.__str__(),
+                      "MN{nodes: 5, edges: 5, domainSize: 567, dim: 81}")
 
-      TS_ASSERT_EQUALS(cpt, mn.sizeEdges());
-    }
+  def testEraseFactorWithNames(self):
+    mn = gum.MarkovNet()
+    self._fill(mn)
+    with self.assertRaises(gum.InvalidArgument):
+      mn.eraseFactor({"31", "21"})
+    mn.eraseFactor({"31", "51"})
 
-    void testEraseFactor() {
-      gum::MarkovNet< double > mn;
-      _fill(mn);
-      TS_ASSERT_THROWS(mn.eraseFactor({12, 14}), gum::InvalidArgument);
-      TS_GUM_ASSERT_THROWS_NOTHING(mn.eraseFactor({2, 4}));
+    self.assertEquals(mn.size(), 5)
+    self.assertEquals(mn.sizeEdges(), 5)
+    self.assertEquals(mn.dim(), (3 * 3 + 3 * 3 + 3 * 3 * 7))
+    self.assertEquals(mn.__str__(),
+                      "MN{nodes: 5, edges: 5, domainSize: 567, dim: 81}")
 
-      TS_ASSERT_EQUALS(mn.size(), (gum::Idx)5);
-      TS_ASSERT_EQUALS(mn.sizeEdges(), (gum::Idx)5);
-      TS_ASSERT_EQUALS(mn.dim(), (gum::Idx)(3 * 3 + 3 * 3 + 3 * 3 * 7));
-      TS_ASSERT_EQUALS(mn.toString(),
-                       "MN{nodes: 5, edges: 5, domainSize: 567, dim: 81}");
-    }
+  def testErase(self):
+    mn = gum.MarkovNet()
+    self._fill(mn)
+    with self.assertRaises(gum.InvalidArgument):
+      mn.erase(36)
+    mn.erase(3)
+    self.assertEquals(mn.size(), 4)
+    self.assertEquals(mn.sizeEdges(), 3)
+    self.assertEquals(mn.dim(), (3 * 3 + 3 * 7 + 3 * 7))
+    self.assertEquals(mn.__str__(),
+                      "MN{nodes: 4, edges: 3, domainSize: 189, dim: 51}")
 
-    void testEraseFactorWithNames() {
-      gum::MarkovNet< double > mn;
-      _fill(mn);
-      TS_ASSERT_THROWS(mn.eraseFactor({"31", "21"}), gum::InvalidArgument);
-      TS_GUM_ASSERT_THROWS_NOTHING(mn.eraseFactor({"31", "51"}));
+  def testEraseWithNames(self):
+    mn = gum.MarkovNet()
+    self._fill(mn)
+    with self.assertRaises(gum.NotFound):
+      mn.erase("36")
+    mn.erase("41")
+    self.assertEquals(mn.size(), 4)
+    self.assertEquals(mn.sizeEdges(), 3)
+    self.assertEquals(mn.dim(), (3 * 3 + 3 * 7 + 3 * 7))
+    self.assertEquals(mn.__str__(),
+                      "MN{nodes: 4, edges: 3, domainSize: 189, dim: 51}")
 
-      TS_ASSERT_EQUALS(mn.size(), (gum::Idx)5);
-      TS_ASSERT_EQUALS(mn.sizeEdges(), (gum::Idx)5);
-      TS_ASSERT_EQUALS(mn.dim(), (gum::Idx)(3 * 3 + 3 * 3 + 3 * 3 * 7));
-      TS_ASSERT_EQUALS(mn.toString(),
-                       "MN{nodes: 5, edges: 5, domainSize: 567, dim: 81}");
-    }
+  def testToDot(self):
+    mn = gum.fastMN("A-B-C;B-D;C-E;D-E-F")
+    s1 = mn.toDot()
+    s2 = mn.toDotAsFactorGraph()
 
-    void testErase() {
-      gum::MarkovNet< double > mn;
-      _fill(mn);
-      TS_ASSERT_THROWS(mn.erase(36), gum::InvalidArgument);
-      TS_GUM_ASSERT_THROWS_NOTHING(mn.erase(3));
+  def testFromBN(self):
+    bn = gum.fastBN("A->B->C<-D;C<-E->F<-G;F<-A")
+    mn = gum.MarkovNet.fromBN(bn)
 
-      TS_ASSERT_EQUALS(mn.size(), (gum::Idx)4);
-      TS_ASSERT_EQUALS(mn.sizeEdges(), (gum::Idx)3);
-      TS_ASSERT_EQUALS(mn.dim(), (gum::Idx)(3 * 3 + 3 * 7 + 3 * 7));
-      TS_ASSERT_EQUALS(mn.toString(),
-                       "MN{nodes: 4, edges: 3, domainSize: 189, dim: 51}");
-    }
+    pbn = gum.Potential()
+    pbn.fillWith(1)
+    for nod in bn.nodes():
+      self.assertEquals(bn.variable(nod).__str__(), mn.variable(nod).__str__())
+      pbn *= bn.cpt(nod)
 
-    void testEraseWithNames() {
-      gum::MarkovNet< double > mn;
-      _fill(mn);
-      TS_ASSERT_THROWS(mn.erase("36"), gum::NotFound);
-      TS_GUM_ASSERT_THROWS_NOTHING(mn.erase("41"));
+    pmn = gum.Potential()
+    pmn.fill(1)
+    print(mn.factors())
+    for f in mn.factors():
+      print(f)
+      pmn *= mn.factor(f)
+    pmn.normalize()
 
-      TS_ASSERT_EQUALS(mn.size(), (gum::Idx)4);
-      TS_ASSERT_EQUALS(mn.sizeEdges(), (gum::Idx)3);
-      TS_ASSERT_EQUALS(mn.dim(), (gum::Idx)(3 * 3 + 3 * 7 + 3 * 7));
-      TS_ASSERT_EQUALS(mn.toString(),
-                       "MN{nodes: 4, edges: 3, domainSize: 189, dim: 51}");
-    }
+    ppmn = gum.Potential(pbn)
+    ppmn.fillWith(pmn)  # copy of pmn using pbn's variables
+    diff = (pbn - ppmn).abs()
+    self.assertEquals(pbn.domainSize(), diff.domainSize())
+    self.assertLessEqual(diff.max(), 1e-10)
+    self.assertEquals(mn.graph(), bn.moralGraph())
 
-    void testToDot() {
-      gum::MarkovNet< double > mn =
-         gum::MarkovNet< double >::fastPrototype("A-B-C;B-D;C-E;D-E-F");
-      const auto s1 = mn.toDot();
-      const auto s2 = mn.toDotAsFactorGraph();
-      GUM_UNUSED(s1);
-      GUM_UNUSED(s2);
-    }
+  def testExistsEdge(self):
+    mn = gum.fastMN("A-B-C;C-D;E-F-G")
 
-    void testFromBN() {
-      auto bn =
-         gum::BayesNet< double >::fastPrototype("A->B->C<-D;C<-E->F<-G;F<-A");
-      auto mn = gum::MarkovNet< double >::fromBN(bn);
+    self.assertTrue(mn.existsEdge(0, 1))
+    self.assertTrue(mn.existsEdge("A", "B"))
+    self.assertTrue(mn.existsEdge(1, 0))
+    self.assertTrue(mn.existsEdge("B", "A"))
+    self.assertTrue(mn.existsEdge(0, 2))
+    self.assertTrue(mn.existsEdge("A", "C"))
+    self.assertFalse(mn.existsEdge(3, 7))
+    self.assertFalse(mn.existsEdge("C", "G"))
 
-      gum::Potential< double > pbn;
-      pbn.fill(1);
-      for (gum::NodeId nod: bn.nodes()) {
-        TS_ASSERT_EQUALS(bn.variable(nod).toString(), mn.variable(nod).toString());
 
-        pbn *= bn.cpt(nod);
-      }
-
-      gum::Potential< double > pmn;
-      pmn.fill(1);
-      for (const auto& key: mn.factors()) {
-        pmn *= *key.second;
-      }
-      pmn.normalize();
-
-      gum::Potential< double > ppmn(pbn);
-      ppmn.fillWith(pmn);   // copy of pmn using pbn's variables
-      auto diff = (pbn - ppmn).abs();
-      TS_ASSERT_EQUALS(pbn.domainSize(), diff.domainSize());
-      TS_ASSERT_LESS_THAN(diff.max(), 1e-10);
-
-      TS_ASSERT_EQUALS(mn.graph(), bn.moralGraph())
-    }
-
-    void testExistsEdge() {
-      auto mn = gum::MarkovNet< double >::fastPrototype("A-B-C;C-D;E-F-G");
-
-      TS_ASSERT(mn.existsEdge(0,1));
-      TS_ASSERT(mn.existsEdge("A","B"));
-      TS_ASSERT(mn.existsEdge(1,0));
-      TS_ASSERT(mn.existsEdge("B","A"));
-      TS_ASSERT(mn.existsEdge(0,2));
-      TS_ASSERT(mn.existsEdge("A","C"));
-      TS_ASSERT(mn.existsEdge(3,7));
-      TS_ASSERT(mn.existsEdge("C","G"));
-    }
-  };
-
-}   // namespace gum_tests
+ts = unittest.TestSuite()
+addTests(ts, MarkovNetTestCase)

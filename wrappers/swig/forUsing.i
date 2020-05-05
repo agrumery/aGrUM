@@ -558,3 +558,7 @@ ADD_GIBBS_OPERATOR_API(gum::GibbsBNdistance<double>)
   void setBurnIn(gum::Size b) { self->gum::GibbsSampling<double>::setBurnIn(b);}
 }
 
+%extend gum::Potential<double> {
+  gum::Size domainSize() {return self->gum::MultiDimDecorator<double>::domainSize();}
+  gum::Size nbrDim() {return self->gum::MultiDimDecorator<double>::nbrDim();}
+}

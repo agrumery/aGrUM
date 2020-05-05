@@ -24,13 +24,6 @@ class pyAgrumTestCase(unittest.TestCase):
   def __init__(self, *args, **kwargs):
     super(pyAgrumTestCase, self).__init__(*args, **kwargs)
     self.log = logging.getLogger('gumTestLog')
-    #FORMAT = '%(asctime)s | %(levelname)s | %(filename)s:%(lineno)d | %(funcName)s | [pyAgrum] %(message)s'
-    #self.log.setLevel(logging.DEBUG)  # better to have too much log than not enough
-    #fh = logging.FileHandler('../../pyAgrumTests.log', mode='a', encoding=None, delay=False)
-    #fh.setFormatter(logging.Formatter(FORMAT))
-    #self.log.addHandler(fh)
-    #self.log.info("plop")
-
     self.nbLoopForApproximatedTest = 10
 
   def agrumSrcDir(self, s):
