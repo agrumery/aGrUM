@@ -115,6 +115,16 @@ namespace gum {
     /// @{
     const ArcSet& arcs() const;
 
+    /// return true if the arc tail->head exists in the DAGmodel
+    /**
+     *
+     * @param tail the nodeId (or the name) of the tail in tail->head
+     * @param head the nodeId (or the name) of the head in tail->head
+     * @return true if the arc exists
+     */
+    bool existsArc(const NodeId tail,const NodeId head) const;
+    bool existsArc(const std::string& nametail,const std::string& namehead) const;
+
     /// returns the set of nodes with arc ingoing to a given node
     /** Note that the set of nodes returned may be empty if no arc within the
      * ArcGraphPart is ingoing into the given node.

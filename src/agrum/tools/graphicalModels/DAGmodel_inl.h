@@ -1,8 +1,8 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
- *   info_at_agrum_dot_org
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES
+ * (@AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -43,9 +43,19 @@ namespace gum {
 
   INLINE const ArcSet& DAGmodel::arcs() const { return _dag.arcs(); }
 
+  INLINE bool DAGmodel::existsArc(const NodeId tail, const NodeId head) const {
+    return _dag.existsArc(tail, head);
+  }
+
+  INLINE bool DAGmodel::existsArc(const std::string& nametail,
+                                  const std::string& namehead) const {
+    return existsArc(idFromName(nametail), idFromName(namehead));
+  }
+
   INLINE const NodeSet& DAGmodel::parents(const NodeId id) const {
     return _dag.parents(id);
   }
+
   INLINE const NodeSet& DAGmodel::parents(const std::string& name) const {
     return parents(idFromName(name));
   }

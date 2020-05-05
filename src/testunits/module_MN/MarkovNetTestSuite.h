@@ -268,9 +268,14 @@ namespace gum_tests {
       gum::Potential< double > pmn;
       pmn.fill(1);
       for (const auto& key: mn.factors()) {
+        TS_ASSERT_EQUALS(mn.factor(key.first), *key.second);
         pmn *= *key.second;
       }
       pmn.normalize();
+
+      gum::NodeSet s;
+      s.clear();s<<0<<4<<5<<6;TS_GUM_ASSERT_THROWS_NOTHING(mn.factor(s));
+      s.clear();s<<4<<0<<6<<5;TS_GUM_ASSERT_THROWS_NOTHING(mn.factor(s));
 
       gum::Potential< double > ppmn(pbn);
       ppmn.fillWith(pmn);   // copy of pmn using pbn's variables
@@ -279,6 +284,19 @@ namespace gum_tests {
       TS_ASSERT_LESS_THAN(diff.max(), 1e-10);
 
       TS_ASSERT_EQUALS(mn.graph(), bn.moralGraph())
+    }
+
+    void testExistsEdge() {
+      auto mn = gum::MarkovNet< double >::fastPrototype("A-B-C;C-D;E-F-G");
+
+      TS_ASSERT(mn.existsEdge(0,1));
+      TS_ASSERT(mn.existsEdge("A","B"));
+      TS_ASSERT(mn.existsEdge(1,0));
+      TS_ASSERT(mn.existsEdge("B","A"));
+      TS_ASSERT(mn.existsEdge(0,2));
+      TS_ASSERT(mn.existsEdge("A","C"));
+      TS_ASSERT(! mn.existsEdge(3,7));
+      TS_ASSERT(! mn.existsEdge("C","G"));
     }
   };
 

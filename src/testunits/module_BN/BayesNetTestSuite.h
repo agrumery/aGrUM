@@ -1049,5 +1049,16 @@ namespace gum_tests {
         TS_ASSERT(_bn_instance.empty());
       }
     }
+
+    void testExistsArc() {
+      auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D->E<-A<-G->F");
+
+      TS_ASSERT(bn.existsArc(0,1));
+      TS_ASSERT(bn.existsArc("A","B"));
+      TS_ASSERT(! bn.existsArc(1,0));
+      TS_ASSERT(! bn.existsArc("B","A"));
+      TS_ASSERT(! bn.existsArc(0,2));
+      TS_ASSERT(! bn.existsArc("A","C"));
+    }
   };
 }   // namespace gum_tests

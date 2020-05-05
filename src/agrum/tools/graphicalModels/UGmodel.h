@@ -114,6 +114,16 @@ namespace gum {
     /// @{
     const EdgeSet& edges() const;
 
+    /// return true if the edge node1-node2 exists in the UGModel
+    /**
+     *
+     * @param node1 the nodeId (or the name) of the node1
+     * @param node2 the nodeId (or the name) of the node2
+     * @return true if the edge exists
+     */
+    bool existsEdge(const NodeId node1,const NodeId node2) const;
+    bool existsEdge(const std::string& name1,const std::string& name2) const;
+
     /// returns the neighbours of a node as set of nodes
     /** Note that the set of nodes returned may be empty if no edge within the
      * EdgeGraphPart contains the given node.

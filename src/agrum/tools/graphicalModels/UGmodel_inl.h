@@ -43,6 +43,14 @@ namespace gum {
 
   INLINE const EdgeSet& UGmodel::edges() const { return _graph.edges(); }
 
+  INLINE bool UGmodel::existsEdge(const NodeId node1,const NodeId node2) const {
+    return _graph.existsEdge(node1,node2);
+  }
+
+  INLINE bool UGmodel::existsEdge(const std::string& name1,const std::string& name2) const {
+    return existsEdge(idFromName(name1),idFromName(name2));
+  }
+
   INLINE const NodeSet& UGmodel::neighbours(const NodeId id) const {
     return _graph.neighbours(id);
   }
