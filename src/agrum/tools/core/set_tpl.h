@@ -897,14 +897,13 @@ namespace gum {
     return list;
   }
 
-
   // Returns the value of a key as a Size
   template < typename T, typename Alloc >
   INLINE Size HashFunc< Set< T, Alloc > >::castToSize(const Set< T, Alloc >& key) {
     Size h = Size(0);
-    Size i = Size(0);
     for (const auto& k: key) {
-      h += ++i * HashFunc< T >::castToSize(k);
+      const auto hs=HashFunc< T >::castToSize(k);
+      h +=  hs * (hs ^ HashFuncConst::gold) ;
     }
 
     return h;
