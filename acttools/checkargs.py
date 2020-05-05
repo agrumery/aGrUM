@@ -44,9 +44,6 @@ def getCurrent():
   except:
     shlv = {}
 
-  print("*" * 50)
-  print(cfg.configFile)
-  print(shlv)
   for key in cfg.default:  # .iterkeys():
     current[key] = cfg.default[key]
     if key not in cfg.non_persistent:
@@ -57,15 +54,11 @@ def getCurrent():
 
 
 def setCurrent(current):
-  print(current)
-  print(cfg.non_persistent)
   shlv = {}
   for key in current.keys():
     if key not in cfg.non_persistent:
       shlv[key] = current[key]
 
-  print("=" * 50)
-  print(shlv)
   with open(cfg.configFile, "wb") as fp:
     pickle.dump(shlv, fp)
 
