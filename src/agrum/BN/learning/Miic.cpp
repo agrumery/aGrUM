@@ -839,7 +839,8 @@ namespace gum {
         // actualisation of the list of triples
         proba_triples = _updateProbaTriples(graph, proba_triples);
 
-        best = proba_triples[0];
+        if (!proba_triples.empty())
+          best = proba_triples[0];
 
         ++_current_step;
         if (onProgress.hasListener()) {
