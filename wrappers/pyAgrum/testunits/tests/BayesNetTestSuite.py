@@ -570,6 +570,24 @@ class TestSaveBN(BayesNetTestCase):
 import pyAgrum.lib.bn_vs_bn as bvb
 
 class TestScore(BayesNetTestCase):
+    def testSkeletonPrecision(self):
+        true_bn = gum.fastBN("A->B->C")
+        bn = gum.fastBN("A->B;C->B;A->C")
+        precision = bvb.GraphicalBNComparator(true_bn, bn).skeletonScores()['precision']
+        self.assertEquals(2./3., precision)
+
+    def testSkeletonRecall(self):
+        true_bn = gum.fastBN("A->B->C")
+        bn = gum.fastBN("A->B;C->B;A->C")
+        recall = bvb.GraphicalBNComparator(true_bn, bn).skeletonScores()['recall']
+        self.assertEquals(1., recall)
+
+    def testSkeletonFscore(self):
+        true_bn = gum.fastBN("A->B->C")
+        bn = gum.fastBN("A->B;C->B;A->C")
+        fscore = bvb.GraphicalBNComparator(true_bn, bn).skeletonScores()['fscore']
+        self.assertEquals(4./5., fscore)
+
     def testPrecision(self):
         true_bn = gum.fastBN("A->B->C")
         bn = gum.fastBN("A->B;C->B;A->C")
