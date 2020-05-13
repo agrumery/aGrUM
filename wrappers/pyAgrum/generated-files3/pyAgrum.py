@@ -4733,6 +4733,8 @@ class MixedGraph(UndiGraph, DiGraph):
     def __init__(self, *args):
         r"""
         __init__(MixedGraph self, gum::Size nodes_size=HashTableConst::default_size, bool nodes_resize_policy=True, gum::Size arcs_size=HashTableConst::default_size, bool arcs_resize_policy=True, gum::Size edges_size=HashTableConst::default_size, bool edges_resize_policy=True) -> MixedGraph
+        __init__(MixedGraph self, UndiGraph g) -> MixedGraph
+        __init__(MixedGraph self, DiGraph g) -> MixedGraph
         __init__(MixedGraph self, MixedGraph g) -> MixedGraph
         """
         _pyAgrum.MixedGraph_swiginit(self, _pyAgrum.new_MixedGraph(*args))
