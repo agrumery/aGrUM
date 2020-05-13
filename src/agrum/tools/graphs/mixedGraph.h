@@ -144,6 +144,10 @@ namespace gum {
                         bool arcs_resize_policy = true,
                         Size edges_size = HashTableConst::default_size,
                         bool edges_resize_policy = true);
+    
+    explicit MixedGraph(const UndiGraph& g);
+
+    explicit MixedGraph(const DiGraph& g);
 
     /// copy constructor
     /** @param g the MixedGraph to copy */

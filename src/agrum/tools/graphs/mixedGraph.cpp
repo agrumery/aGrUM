@@ -50,6 +50,16 @@ namespace gum {
     GUM_CONSTRUCTOR(MixedGraph);
   }
 
+  MixedGraph::MixedGraph(const UndiGraph& g) :
+      NodeGraphPart(g), UndiGraph(g), DiGraph() {
+    GUM_CONSTRUCTOR(MixedGraph);
+  }
+
+  MixedGraph::MixedGraph(const DiGraph& g) :
+      NodeGraphPart(g), UndiGraph(), DiGraph(g) {
+    GUM_CONSTRUCTOR(MixedGraph);
+  }
+
   MixedGraph::MixedGraph(const MixedGraph& g) :
       NodeGraphPart(g), UndiGraph(g), DiGraph(g) {
     // for debugging purposes
