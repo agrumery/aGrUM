@@ -246,6 +246,25 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
+  const NodeSet& MarkovNet< GUM_SCALAR >::smallestFactorFromNode(NodeId node) const {
+    NodeSet* res=nullptr;
+    Size    smallest = size();
+    for (const auto& kv: factors()) {
+      const auto& fact = kv.first;
+      if (fact.contains(node))
+        if (smallest > fact.size()) {
+          res = &fact;
+          smallest = res.size();
+        }
+    }
+    if (res==nullptr) {
+      GUM_ERROR(NotFound, "No factor containing node " << node)
+    } else {
+      return *res;
+    }
+  }
+
+  template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >& MarkovNet< GUM_SCALAR >::factor(
      const std::vector< std::string >& varnames) const {
     NodeSet vars;

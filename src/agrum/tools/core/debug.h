@@ -134,16 +134,15 @@
 
 #  ifdef GUM_TRACE_ON
 #    define GUM__PRINT(file, line, x) \
-      { std::cout << std::endl << file << ":" << line << x << std::endl; }
+      { std::string ff(file);std::cout << "[GUM]" << file << ":" << line << x << std::endl; }
 
-#    define GUM_CHECKPOINT GUM__PRINT(__FILE__, __LINE__, " GUMcheckpoint")
+#    define GUM_CHECKPOINT GUM__PRINT(__FILE__, __LINE__, "checkpoint")
 #    define GUM_TRACE(x) \
-      GUM__PRINT(__FILE__, __LINE__, std::endl << "   --> GUMtrace: " << x)
+      GUM__PRINT(__FILE__, __LINE__, "--> " << x)
 #    define GUM_TRACE_VAR(x) \
       GUM__PRINT(__FILE__,   \
                  __LINE__,   \
-                 std::endl   \
-                    << "   --> <" << #x << ">: " << x)
+                 "--> <" << #x << ">: " << x)
 
 #    define GUM_TRACE_NEWLINE \
       { std::cout << std::endl; }

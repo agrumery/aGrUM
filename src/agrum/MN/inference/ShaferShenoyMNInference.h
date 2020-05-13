@@ -31,9 +31,9 @@
 #include <utility>
 
 #include <agrum/agrum.h>
-
 #include <agrum/tools/core/math/math.h>
-#include <agrum/MN/inference/tools/MarkovNetInference.h>
+#include <agrum/MN/inference/tools/evidenceMNInference.h>
+#include <agrum/MN/inference/tools/jointTargetedMNInference.h>
 #include <agrum/tools/graphs/algorithms/triangulations/defaultTriangulation.h>
 
 namespace gum {
@@ -42,7 +42,7 @@ namespace gum {
   // the function used to combine two tables
   template < typename GUM_SCALAR >
   INLINE static Potential< GUM_SCALAR >*
-     SSNewmultiPotential(const Potential< GUM_SCALAR >& t1,
+     SSNewMNmultiPotential(const Potential< GUM_SCALAR >& t1,
                          const Potential< GUM_SCALAR >& t2) {
     return new Potential< GUM_SCALAR >(t1 * t2);
   }
@@ -50,7 +50,7 @@ namespace gum {
   // the function used to combine two tables
   template < typename GUM_SCALAR >
   INLINE static Potential< GUM_SCALAR >*
-     SSNewprojPotential(const Potential< GUM_SCALAR >&        t1,
+     SSNewMNprojPotential(const Potential< GUM_SCALAR >&        t1,
                         const Set< const DiscreteVariable* >& del_vars) {
     return new Potential< GUM_SCALAR >(t1.margSumOut(del_vars));
   }
@@ -61,11 +61,12 @@ namespace gum {
    * <agrum/MN/inference/ShaferShenoyMNInference.h>
    * @brief Implementation of Shafer-Shenoy's propagation algorithm
    * for inference in Markov Networks
-   * @ingroup bn_inference
+   * @ingroup mn_inference
    */
   template < typename GUM_SCALAR >
   class ShaferShenoyMNInference:
-      public MarkovNetInference< GUM_SCALAR > {
+      public JointTargetedMNInference< GUM_SCALAR >,
+      public EvidenceMNInference< GUM_SCALAR > {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -91,25 +92,10 @@ namespace gum {
     /// use a new triangulation algorithm
     void setTriangulation(const Triangulation& new_triangulation);
 
-    /// sets how we determine barren nodes
-    /** Barren nodes are unnecessary for probability inference, so they can
-     * be safely discarded in this case (type = FIND_BARREN_NODES). This
-     * speeds-up inference. However, there are some cases in which we do not
-     * want to remove barren nodes, typically when we want to answer queries
-     * such as Most Probable Explanations (MPE). */
-    void setFindBarrenNodesType(FindBarrenNodesType type);
-
     /// returns the current join tree used
-    /** Lazy Propagation does not use a junction tree but a binary join tree
-     * because this may enable faster inferences. So do not be surprised to
-     * see that somes cliques are contained into others in this tree. */
     const JoinTree* joinTree();
 
     /// returns the current junction tree
-    /** Lazy Propagation does not use a junction tree but a binary join tree
-     * because this may enable faster inferences. This method return the junction
-     * tree, before optimizations
-     **/
     const JunctionTree* junctionTree();
 
     /// returns the probability of evidence
@@ -174,13 +160,13 @@ namespace gum {
     /// prepares inference when the latter is in OutdatedMNStructure state
     /** Note that the values of evidence are not necessarily
      * known and can be changed between _updateOutdatedMNStructure and
-     * _makeInference. */
+     * _makeMNInference. */
     void _updateOutdatedMNStructure() final;
 
     /// prepares inference when the latter is in OutdatedMNPotentials state
     /** Note that the values of evidence are not necessarily
      * known and can be changed between _updateOutdatedMNStructure and
-     * _makeInference. */
+     * _makeMNInference. */
     void _updateOutdatedMNPotentials() final;
 
     /// called when the inference has to be performed effectively
@@ -220,19 +206,15 @@ namespace gum {
     typedef SetIteratorSafe< const Potential< GUM_SCALAR >* >
        __PotentialSetIterator;
 
-
-    /// the type of barren nodes computation we wish
-    FindBarrenNodesType __barren_nodes_type;
-
     /// the operator for performing the projections
     Potential< GUM_SCALAR >* (*__projection_op)(
        const Potential< GUM_SCALAR >&,
-       const Set< const DiscreteVariable* >&){SSNewprojPotential};
+       const Set< const DiscreteVariable* >&){SSNewMNprojPotential};
 
     /// the operator for performing the combinations
     Potential< GUM_SCALAR >* (*__combination_op)(const Potential< GUM_SCALAR >&,
                                                  const Potential< GUM_SCALAR >&){
-       SSNewmultiPotential};
+       SSNewMNmultiPotential};
 
     /// the triangulation class creating the junction tree used for inference
     Triangulation* __triangulation;
@@ -242,15 +224,12 @@ namespace gum {
     bool __use_binary_join_tree{true};
 
     /// the undigraph extracted from the MN and used to construct the join tree
-    /** If all nodes are targets, this graph corresponds to the moral graph
-     * of the MN. Otherwise, it may be a subgraph of this moral graph. For
-     * instance if the MN is A->B->C and only B is a target, __graph will be
-     * equal to A-B if we exploit barren nodes (C is a barren node and,
-     * therefore, can be removed for inference). */
-    UndiGraph __graph;
+    /** If all nodes are targets, this graph corresponds to the graph
+     * of the MN. Otherwise, it may be a subgraph of this moral graph. */
+    UndiGraph __reduced_graph;
 
     /// the join (or junction) tree used to answer the last inference query
-    JoinTree* __JT{nullptr};
+    JoinTree* __propagator{nullptr};
 
     /// the junction tree to answer the last inference query
     JunctionTree* __junctionTree{nullptr};
@@ -261,7 +240,7 @@ namespace gum {
      * enables us to keep track of this. */
     bool __is_new_jt_needed{true};
 
-    /// a clique node used as a root in each connected component of __JT
+    /// a clique node used as a root in each connected component of __propagator
     /** For usual probabilistic inference, roots is useless. This is useful
      * when computing the probability of evidence. In this case, we need to
      * compute this probability in every connected component and multiply
@@ -270,8 +249,10 @@ namespace gum {
      * is called. */
     NodeSet __roots;
 
-    /// for each node of __graph (~ in the Markov net), associate an ID in the JT
-    HashTable< NodeId, NodeId > __node_to_clique;
+    /// for each node of __reduced_graph (~ in the Markov net), associate an ID in the JT
+    HashTable< NodeSet, NodeId > __factor_to_clique;
+
+    NodeProperty<NodeSet> __factor_from_node;
 
     /// for each set target, assign a clique in the JT that contains it
     HashTable< NodeSet, NodeId > __joint_target_to_clique;
@@ -303,7 +284,7 @@ namespace gum {
      * been created.
      * @warning Note that the CPTs that were projected due to hard
      * evidence do not belong to this structure, they are kept in
-     * __hard_ev_projected_CPTs. */
+     * __hard_ev_projected_factors. */
     ArcProperty< __PotentialSet > __created_potentials;
 
     /// the set of single posteriors computed during the last inference
@@ -318,7 +299,7 @@ namespace gum {
      * over only hard evidence nodes
      * @TODO remove this constant and insert the notion of a constant into
      * potentials/multidim arrays */
-    NodeProperty< GUM_SCALAR > __constants;
+    // NodeProperty< GUM_SCALAR > __constants;
 
     /// indicates whether a message (from one clique to another) has been
     /// computed
@@ -336,12 +317,12 @@ namespace gum {
      * are filled in this structure. */
     NodeProperty< const Potential< GUM_SCALAR >* > __node_to_soft_evidence;
 
-    /// the CPTs that were projected due to hard evidence nodes
-    /** For each node whose CPT is defined over some nodes that contain some
-     * hard evidence, assigns a new projected CPT that does not contain
+    /// the factors that were projected due to hard evidence nodes
+    /** For each factor containing the nodes that contain some
+     * hard evidence, assigns a new projected factor that does not contain
      * these nodes anymore.
      * @warning These potentials are owned by LayPropagation. */
-    NodeProperty< const Potential< GUM_SCALAR >* > __hard_ev_projected_CPTs;
+    HashTable< NodeSet,const Potential< GUM_SCALAR >* > __hard_ev_projected_factors;
 
     /// the hard evidence nodes which were projected in CPTs
     NodeSet __hard_ev_nodes;
@@ -378,13 +359,8 @@ namespace gum {
     /// invalidate all messages, posteriors and created potentials
     void __invalidateAllMessages();
 
-    /// compute a root for each connected component of __JT
+    /// compute a root for each connected component of __propagator
     void __computeJoinTreeRoots();
-
-    // remove barren variables and return the newly created projected potentials
-    __PotentialSet
-       __removeBarrenVariables(__PotentialSet&                 pot_list,
-                               Set< const DiscreteVariable* >& del_vars);
 
     /** @brief removes variables del_vars from a list of potentials and
      * returns the resulting list */

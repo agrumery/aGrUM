@@ -45,7 +45,7 @@ namespace gum {
   /**
    * @class MNReader
    * @headerfile MNReader.h <agrum/MN/io/MNReader.h>
-   * @ingroup bn_io
+   * @ingroup mn_io
    * @brief Pure virtual class for reading a MN from a file.
    *
    * Every class used to read the content of a Markov Network from a stream,

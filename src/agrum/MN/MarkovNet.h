@@ -165,6 +165,13 @@ namespace gum {
     factor(const std::vector<std::string>& varnames) const final;
 
     /**
+     * Returns a factor that contains this variable
+     *
+     * @throw NotFound If no variable's id matches varId.
+     */
+    virtual const NodeSet& smallestFactorFromNode(NodeId node) const final;
+
+    /**
      * Returns the set of factors as a IMarkovNet::FactorTable
      *
      */

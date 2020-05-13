@@ -47,7 +47,7 @@ namespace gum {
    * @class MNWriter
    * @headerfile MNWriter.h <agrum/MN/io/MNWriter.h>
    * @brief Pure virtual class for writting a MN to a file.
-   * @ingroup bn_io
+   * @ingroup mn_io
    *
    * Every class used to write the content of a Markov Network in a stream, or
    * a file must be a subclass of MNWriter.

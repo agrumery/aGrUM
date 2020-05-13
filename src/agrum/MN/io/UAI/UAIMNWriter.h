@@ -45,7 +45,7 @@ namespace gum {
   /**
    * @class UAIMNWriter UAIMNWriter.h
    *<agrum/MN/io/UAI/UAIMNWriter.h>
-   * @ingroup bn_io
+   * @ingroup mn_io
    * @brief Writes an Markov net in a text file with UAI format
    *
    * This class export a Markov net into an text file, using UAI format

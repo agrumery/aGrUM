@@ -68,7 +68,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  Size IMarkovNet< GUM_SCALAR >::dim() const {
+  INLINE Size IMarkovNet< GUM_SCALAR >::dim() const {
     Size res = 0;
     for (auto f: factors()) {
       res += f.second->domainSize();
@@ -77,7 +77,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  Size IMarkovNet< GUM_SCALAR >::maxVarDomainSize() const {
+  INLINE Size IMarkovNet< GUM_SCALAR >::maxVarDomainSize() const {
     Size res = 0;
     for (auto node: nodes()) {
       auto v = variable(node).domainSize();
@@ -87,7 +87,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  GUM_SCALAR IMarkovNet< GUM_SCALAR >::minParam() const {
+  INLINE GUM_SCALAR IMarkovNet< GUM_SCALAR >::minParam() const {
     GUM_SCALAR res = 1.0;
     for (auto elt: factors()) {
       auto v = elt.second->min();
@@ -97,7 +97,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  GUM_SCALAR IMarkovNet< GUM_SCALAR >::maxParam() const {
+  INLINE GUM_SCALAR IMarkovNet< GUM_SCALAR >::maxParam() const {
     GUM_SCALAR res = 1.0;
     for (auto elt: factors()) {
       auto v = elt.second->max();
@@ -107,7 +107,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  GUM_SCALAR IMarkovNet< GUM_SCALAR >::minNonZeroParam() const {
+  INLINE GUM_SCALAR IMarkovNet< GUM_SCALAR >::minNonZeroParam() const {
     GUM_SCALAR res = 1.0;
     for (auto elt: factors()) {
       auto v = elt.second->minNonZero();
@@ -117,7 +117,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  GUM_SCALAR IMarkovNet< GUM_SCALAR >::maxNonOneParam() const {
+  INLINE GUM_SCALAR IMarkovNet< GUM_SCALAR >::maxNonOneParam() const {
     GUM_SCALAR res = 0.0;
     for (auto elt: factors()) {
       auto v = elt.second->maxNonOne();
@@ -293,7 +293,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  bool IMarkovNet< GUM_SCALAR >::operator!=(const IMarkovNet& from) const {
+  INLINE bool IMarkovNet< GUM_SCALAR >::operator!=(const IMarkovNet& from) const {
     return !this->operator==(from);
   }
 
@@ -304,4 +304,13 @@ namespace gum {
     return output;
   }
 
+  template < typename GUM_SCALAR >
+  INLINE const NodeSet&
+               IMarkovNet< GUM_SCALAR >::smallestFactorFromNode(const std::string& name) const {
+    try {
+      return smallestFactorFromNode(idFromName(name));
+    } catch (NotFound) {
+      GUM_ERROR(NotFound, "No factor containing the variable <" << name << ">");
+    }
+  }
 } /* namespace gum */

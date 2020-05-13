@@ -29,9 +29,17 @@
 /**
  * \defgroup bn_group Bayesian Networks
  * @{
- * \defgroup bn_inference Inference Algorithms
- * \defgroup bn_io Serialization
+ * \defgroup bn_inference Inference Algorithms for Bayesian Networks
+ * \defgroup bn_io Serialization of Bayesian Networks
  * \defgroup bn_generator Generators
  * \defgroup bn_particles Particles Algorithms
+ * @}
+ */
+
+/**
+ * \defgroup bn_group Markov Network
+ * @{
+ * \defgroup mn_inference Inference Algorithms for Markov Networks
+ * \defgroup mn_io Serialization of Markov Networks
  * @}
  */

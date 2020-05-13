@@ -99,6 +99,21 @@ namespace gum {
      * @throw NotFound If no variable's id matches varId.
      */
     virtual const Potential< GUM_SCALAR >& factor(const NodeSet& varIds) const = 0;
+
+    /**
+     * Returns the smallest factor that contains this variable
+     *
+     * @throw NotFound If no variable's id matches varId.
+     */
+    virtual const NodeSet& smallestFactorFromNode(NodeId node) const = 0;
+
+    /**
+     * Returns the smallest factor that contains this variable
+     *
+     * @throw NotFound If no variable's id matches varId.
+     */
+    virtual const NodeSet& smallestFactorFromNode(const std::string &name) const;
+
     /**
      * Returns the set of factors as a IMarkovNet::FactorTable
      *

@@ -1,8 +1,8 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES
- * (@AMU) info_at_agrum_dot_org
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ *   info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,20 +22,38 @@
 
 /**
  * @file
- * @brief This file contains abstract class definitions for Markov Networks
+ * @brief This file contains abstract class definitions for Markov networks
  *        inference classes.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) and Christophe GONZALES (@AMU)
+ * @author Christophe GONZALES (@AMU) and Pierre-Henri WUILLEMIN (@LIP6)
  */
 
 #ifndef GUM_MARKOV_NET_INFERENCE_H
 #define GUM_MARKOV_NET_INFERENCE_H
 
 
-#include <agrum/MN/IMarkovNet.h>
 #include <agrum/agrum.h>
+#include <agrum/MN/IMarkovNet.h>
 
 namespace gum {
+
+  // JointTargetedMNInference, the class for computing joint posteriors, should
+  // have access to the states of Inference and change them when needed: this
+  // will be a friend of Inference
+  template < typename GUM_SCALAR >
+  class JointTargetedMNInference;
+
+  // MarginalTargetedMNInference, the class for computing marginal posteriors,
+  // should have access to the states of Inference and change them when needed:
+  // this should be a friend of Inference
+  template < typename GUM_SCALAR >
+  class MarginalTargetedMNInference;
+
+  // EvidenceMNInference, the class for computing the probability of evidence,
+  // should have access to the states of Inference and change them when needed:
+  // this will be a friend of Inference
+  template < typename GUM_SCALAR >
+  class EvidenceMNInference;
 
 
   /**
@@ -43,7 +61,7 @@ namespace gum {
    * <agrum/MN/inference/MarkovNetInference.h>
    * @brief A generic class for Markov net inference: handles evidence and the
    * current state of the (incremental) inference
-   * @ingroup bn_group
+   * @ingroup mn_group
    *
    * The goal of the MarkovNetInference class is twofold:
    * i) handling the common resources of MN inference (mn, soft/hard evidence);
@@ -56,7 +74,7 @@ namespace gum {
    *
    * 1- ie=SpecificInference(mn);              // state <- OutdatedMNStructure
    * 2- set targets and evidence in ie
-   * 3- ie.prepareInference();                 // state <- Ready4Inference
+   * 3- ie.prepareInference();                 // state <- ReadyForMNInference
    * 4.a- change values of evidence in ie      // state <- OutdatedMNPotentials
    * 4.b- change some hard evidence or targets // state <- OutdatedMNStructure
    * 5- ie.makeInference();                    // state <- Done
@@ -69,28 +87,20 @@ namespace gum {
    *   MN: for instance a node received a hard evidence, which implies that
    *   its outgoing arcs can be removed from the MN, hence involving a
    *   structural change in the MN. As a consequence, the (incremental)
-   *   inference
-   *   (probably) needs a significant amount of preparation to be ready for the
-   *   next inference. In a Lazy propagation, for instance, this step amounts to
-   *   compute a new join tree, hence a new structure in which inference
+   *   inference (probably) needs a significant amount of preparation to be ready
+   *   for the next inference. In a Lazy propagation, for instance, this step
+   *   amounts to compute a new join tree, hence a new structure in which inference
    *   will be applied. Note that classes that inherit from MarkovNetInference
    *   may be smarter than MarkovNetInference and may, in some situations,
-   *   find out that their
-   *   data structures are still ok for inference and, therefore, only resort to
-   *   perform the actions related to the OutdatedMNPotentials state. As an
-   *   example, consider a LazyPropagation inference in Markov net A->B->C->D->E
-   *   in which C has received hard evidence e_C and E is the only target. In
-   *   this case, A and B are not needed for inference, the only potentials that
-   *   matter are P(D|e_C) and P(E|D). So the smallest join tree needed for
-   *   inference contains only one clique DE. Now, adding new evidence e_A on A
-   *   has no impact on E given hard evidence e_C. In this case, LazyPropagation
-   *   can be smart and not update its join tree.
+   *   find out that their data structures are still ok for inference and,
+   *   therefore, only resort to perform the actions related to the
+   *   OutdatedMNPotentials state.
    * - OutdatedMNPotentials: in this state, the structure of the MN remains
    *   unchanged, only some potentials stored in it have changed. Therefore,
    *   the inference probably just needs to invalidate some already computed
    *   potentials to be ready. Only a light amount of preparation is needed to
    *   be able to perform inference.
-   * - Ready4Inference: in this state, all the data structures are ready for
+   * - ReadyForMNInference: in this state, all the data structures are ready for
    *   inference. There just remains to perform the inference computations.
    * - Done: the heavy computations of inference have been done. There might
    *   still remain a few light computations to perform to get the posterior
@@ -120,20 +130,13 @@ namespace gum {
      *   from MarkovNetInference may be smarter than MarkovNetInference and may,
      *   in some situations, find out that their data structures are still ok for
      *   inference and, therefore, only resort to perform the actions related
-     *   to the OutdatedMNPotentials state. As an example, consider a
-     *   LazyPropagation inference in Markov net A->B->C->D->E
-     *   in which C has received hard evidence e_C and E is the only target. In
-     *   this case, A and B are not needed for inference, the only potentials
-     *   that matter are P(D|e_C) and P(E|D). So the smallest join tree needed
-     *   for inference contains only one clique DE. Now, adding new evidence
-     *   e_A on A has no impact on E given hard evidence e_C. In this case,
-     *   LazyPropagation can be smart and not update its join tree.
+     *   to the OutdatedMNPotentials state.
      * - OutdatedMNPotentials: in this state, the structure of the MN remains
      *   unchanged, only some potentials stored in it have changed. Therefore,
      *   the inference probably just needs to invalidate some already computed
      *   potentials to be ready. Only a light amount of preparation is needed to
      *   be able to perform inference.
-     * - Ready4Inference: in this state, all the data structures are ready for
+     * - ReadyForMNInference: in this state, all the data structures are ready for
      *   inference. There just remains to perform the inference computations.
      * - Done: the heavy computations of inference have been done. There might
      *   still remain a few light computations to perform to get the posterior
@@ -146,7 +149,7 @@ namespace gum {
     enum class StateOfMNInference {
       OutdatedMNStructure,
       OutdatedMNPotentials,
-      ReadyForInference,
+      ReadyForMNInference,
       Done
     };
 
@@ -163,12 +166,12 @@ namespace gum {
 
     /// default constructor with a null MN (useful for virtual inheritance)
     /** @warning MarkovNetInference is virtually inherited by
-     * MarginalTargetedInference. As a result, the lowest descendant of
+     * MarginalTargetedMNInference. As a result, the lowest descendant of
      * MarkovNetInference will create the latter. To avoid requiring developpers
      * to add in the constructors of their inference algorithms a call to
      * MarkovNetInference( mn ), we added constructor MarkovNetInference(),
      * which will be called automatically by the lowest descendant.
-     * Then, MarginalTargetedInference and JointTargetedInference will take care
+     * Then, MarginalTargetedMNInference and JointTargetedMNInference will take care
      * of setting the appropriate mn into MarkovNetInference. */
     MarkovNetInference();
 
@@ -201,10 +204,13 @@ namespace gum {
 
     /// returns whether the inference object is in a ready state
     virtual bool isInferenceReady() const noexcept final;
+
     /// returns whether the inference object is in a OutdatedMNStructure state
     virtual bool isInferenceOutdatedMNStructure() const noexcept final;
+
     /// returns whether the inference object is in a OutdatedMNPotential state
     virtual bool isInferenceOutdatedMNPotentials() const noexcept final;
+
     /// returns whether the inference object is in a InferenceDone state
     virtual bool isInferenceDone() const noexcept final;
 
@@ -242,7 +248,7 @@ namespace gum {
 
     /// adds a new hard evidence on node id
     /**
-     * @throw UndefinedElement if id does not belong to the Markov Network
+     * @throw UndefinedElement if id does not belong to the Markov network
      * @throw InvalidArgument if val is not a value for id
      * @throw InvalidArgument if id already has an evidence
      */
@@ -250,7 +256,7 @@ namespace gum {
 
     /// adds a new hard evidence on node named nodeName
     /**
-     * @throw UndefinedElement if nodeName does not belong to the Markov Network
+     * @throw UndefinedElement if nodeName does not belong to the Markov network
      * @throw InvalidArgument if val is not a value for id
      * @throw InvalidArgument if nodeName already has an evidence
      */
@@ -258,7 +264,7 @@ namespace gum {
 
     /// adds a new hard evidence on node id
     /**
-     * @throw UndefinedElement if id does not belong to the Markov Network
+     * @throw UndefinedElement if id does not belong to the Markov network
      * @throw InvalidArgument if val is not a value for id
      * @throw InvalidArgument if id already has an evidence
      */
@@ -266,7 +272,7 @@ namespace gum {
 
     /// adds a new hard evidence on node named nodeName
     /**
-     * @throw UndefinedElement if nodeName does not belong to the Markov Network
+     * @throw UndefinedElement if nodeName does not belong to the Markov network
      * @throw InvalidArgument if val is not a value for id
      * @throw InvalidArgument if nodeName already has an evidence
      */
@@ -275,7 +281,7 @@ namespace gum {
 
     /// adds a new evidence on node id (might be soft or hard)
     /**
-     * @throw UndefinedElement if id does not belong to the Markov Network
+     * @throw UndefinedElement if id does not belong to the Markov network
      * @throw InvalidArgument if id already has an evidence
      * @throw FatalError if vals=[0,0,...,0]
      * @throw InvalidArgument if the size of vals is different from the domain
@@ -286,7 +292,7 @@ namespace gum {
 
     /// adds a new evidence on node named nodeName (might be soft or hard)
     /**
-     * @throw UndefinedElement if id does not belong to the Markov Network
+     * @throw UndefinedElement if id does not belong to the Markov network
      * @throw InvalidArgument if nodeName already has an evidence
      * @throw FatalError if vals=[0,0,...,0]
      * @throw InvalidArgument if the size of vals is different from the domain
@@ -299,7 +305,7 @@ namespace gum {
     /**
      * @throw UndefinedElement if the potential is defined over several nodes
      * @throw UndefinedElement if the node on which the potential is defined
-     * does not belong to the Markov Network
+     * does not belong to the Markov network
      * @throw InvalidArgument if the node of the potential already has an
      * evidence
      * @throw FatalError if pot=[0,0,...,0]
@@ -310,7 +316,7 @@ namespace gum {
     /**
      * @throw UndefinedElement if the potential is defined over several nodes
      * @throw UndefinedElement if the node on which the potential is defined
-     * does not belong to the Markov Network
+     * does not belong to the Markov network
      * @throw InvalidArgument if the node of the potential already has an
      * evidence
      * @throw FatalError if pot=[0,0,...,0]
@@ -321,7 +327,7 @@ namespace gum {
     /**
      * @throw UndefinedElement if some potential is defined over several nodes
      * @throw UndefinedElement if the node on which some potential is defined
-     * does not belong to the Markov Network
+     * does not belong to the Markov network
      * @throw InvalidArgument if the node of some potential already has an
      * evidence
      * @throw FatalError if pot=[0,0,...,0]
@@ -333,7 +339,7 @@ namespace gum {
     /**
      * @throw UndefinedElement if some potential is defined over several nodes
      * @throw UndefinedElement if the node on which some potential is defined
-     * does not belong to the Markov Network
+     * does not belong to the Markov network
      * @throw InvalidArgument if the node of some potential already has an
      * evidence
      * @throw FatalError if pot=[0,0,...,0]
@@ -343,7 +349,7 @@ namespace gum {
 
     /// change the value of an already existing hard evidence
     /**
-     * @throw UndefinedElement if id does not belong to the Markov Network
+     * @throw UndefinedElement if id does not belong to the Markov network
      * @throw InvalidArgument if val is not a value for id
      * @throw InvalidArgument if id does not already have an evidence
      */
@@ -351,7 +357,7 @@ namespace gum {
 
     /// change the value of an already existing hard evidence
     /**
-     * @throw UndefinedElement if nodeName does not belong to the Markov Network
+     * @throw UndefinedElement if nodeName does not belong to the Markov network
      * @throw InvalidArgument if val is not a value for id
      * @throw InvalidArgument if id does not already have an evidence
      */
@@ -359,7 +365,7 @@ namespace gum {
 
     /// change the value of an already existing hard evidence
     /**
-     * @throw UndefinedElement if id does not belong to the Markov Network
+     * @throw UndefinedElement if id does not belong to the Markov network
      * @throw InvalidArgument if val is not a value for id
      * @throw InvalidArgument if id does not already have an evidence
      */
@@ -367,7 +373,7 @@ namespace gum {
 
     /// change the value of an already existing hard evidence
     /**
-     * @throw UndefinedElement if nodeName does not belong to the Markov Network
+     * @throw UndefinedElement if nodeName does not belong to the Markov network
      * @throw InvalidArgument if val is not a value for id
      * @throw InvalidArgument if id does not already have an evidence
      */
@@ -376,7 +382,7 @@ namespace gum {
 
     /// change the value of an already existing evidence (might be soft or hard)
     /**
-     * @throw UndefinedElement if id does not belong to the Markov Network
+     * @throw UndefinedElement if id does not belong to the Markov network
      * @throw InvalidArgument if the node does not already have an evidence
      * @throw FatalError if vals=[0,0,...,0]
      * @throw InvalidArgument if the size of vals is different from the domain
@@ -387,7 +393,7 @@ namespace gum {
 
     /// change the value of an already existing evidence (might be soft or hard)
     /**
-     * @throw UndefinedElement if nodeName does not belong to the Markov Network
+     * @throw UndefinedElement if nodeName does not belong to the Markov network
      * @throw InvalidArgument if the node does not already have an evidence
      * @throw FatalError if vals=[0,0,...,0]
      * @throw InvalidArgument if the size of vals is different from the domain
@@ -400,7 +406,7 @@ namespace gum {
     /**
      * @throw UndefinedElement if the potential is defined over several nodes
      * @throw UndefinedElement if the node on which the potential is defined
-     *        does not belong to the Markov Network
+     *        does not belong to the Markov network
      * @throw InvalidArgument if the node of the potential does not already
      *        have an evidence
      * @throw FatalError if pot=[0,0,...,0]
@@ -437,13 +443,13 @@ namespace gum {
     /// indicates whether node id has received a soft evidence
     virtual bool hasSoftEvidence(const std::string& nodeName) const final;
 
-    /// returns the number of evidence entered into the Markov Network
+    /// returns the number of evidence entered into the Markov network
     virtual Size nbrEvidence() const final;
 
-    /// returns the number of hard evidence entered into the Markov Network
+    /// returns the number of hard evidence entered into the Markov network
     virtual Size nbrHardEvidence() const final;
 
-    /// returns the number of soft evidence entered into the Markov Network
+    /// returns the number of soft evidence entered into the Markov network
     virtual Size nbrSoftEvidence() const final;
 
     /// returns the set of evidence
@@ -460,298 +466,6 @@ namespace gum {
 
     /// @}
 
-    /// returns the probability P(e) of the evidence enterred into the MN
-    virtual GUM_SCALAR evidenceProbability() = 0;
-
-    // ############################################################################
-    /// @name Probability computations
-    // ############################################################################
-    /// @{
-
-    /// Compute the joint posterior of a set of nodes.
-    /**
-     * @returns a const ref to the posterior joint probability of the set of
-     * nodes.
-     * @param nodes the set of nodes whose posterior joint probability is wanted
-     *
-     * @warning for efficiency reasons, the potential is stored into the
-     * inference engine and is returned by reference. In order to ensure
-     * that the potential may still exist even if the Inference object is
-     * destroyed, the user has to copy it explicitly.
-     *
-     * @warning prepareInference and makeInference may be applied if needed.
-     *
-     * @throw UndefinedElement if nodes is not in the targets
-     */
-    virtual const Potential< GUM_SCALAR >&
-       jointPosterior(const NodeSet& nodes) final;
-
-    /// Computes and returns the posterior of a node.
-    /**
-     * @returns a const ref to the posterior probability of the node.
-     * @param node the node for which we need a posterior probability
-     *
-     * @warning for efficiency reasons, the potential is stored into the
-     * inference engine and is returned by reference. In order to ensure
-     * that the potential may still exist even if the Inference object is
-     * destroyed, the user has to copy it explicitly.
-     *
-     * @warning prepareInference and makeInference may be applied if needed by
-     * the posterior method.
-     *
-     * @throw UndefinedElement if node is not in the set of targets
-     */
-    virtual const Potential< GUM_SCALAR >&
-       posterior(const std::string& nodeName) final;
-    /// @}
-
-
-    // ############################################################################
-    /// @name Targets
-    // ############################################################################
-    /// @{
-
-    /// Clear all previously defined targets (marginal and joint targets)
-    /**
-     * Clear all previously defined targets. As a result, no posterior can be
-     * computed (since we can only compute the posteriors of the marginal or
-     * joint
-     * targets that have been added by the user).
-     */
-    virtual void eraseAllTargets();
-
-    /// Clear all previously defined joint targets
-    virtual void eraseAllJointTargets() final;
-
-    /// Clear all the previously defined marginal targets
-    virtual void eraseAllMarginalTargets() final;
-
-    /// Add a set of nodes as a new joint target. As a collateral effect, every
-    /// node is added as a marginal target.
-    /**
-     * @throw UndefinedElement if some node(s) do not belong to the Markov net
-     */
-    virtual void addJointTarget(const NodeSet& joint_target) final;
-
-    /// removes an existing joint target
-    /** @warning If the joint target does not already exist, the method does
-     * nothing. In particular, it does not raise any exception. */
-    virtual void eraseJointTarget(const NodeSet& joint_target) final;
-
-    /// return true if target is a joint target.
-    virtual bool isJointTarget(const NodeSet& vars) const final;
-
-    /// returns the list of joint targets
-    virtual const Set< NodeSet >& jointTargets() const noexcept final;
-
-    /// returns the number of joint targets
-    virtual Size nbrJointTargets() const noexcept final;
-    /// @}
-
-    /**
-     * Create a gum::Potential for P(joint targets|evs) (for all instanciation of
-     * targets
-     * and evs)
-     *
-     * @warning If some evs are d-separated, they are not included in the Potential
-     *
-     * @param targets  the NodeSet of the targeted variables
-     * @param evs the NodeSet of observed variables
-     * @return a Potential
-     */
-    Potential< GUM_SCALAR > evidenceJointImpact(const NodeSet& targets,
-                                                const NodeSet& evs);
-
-    /**
-     * Create a gum::Potential for P(joint targets|evs) (for all instanciation of
-     * targets
-     * and evs)
-     *
-     * @warning If some evs are d-separated, they are not included in the Potential
-     *
-     * @param targets  the vector of std::string of the targeted variables
-     * @param evs the vector of std::string of observed variables
-     * @return a Potential
-     */
-    Potential< GUM_SCALAR >
-       evidenceJointImpact(const std::vector< std::string >& targets,
-                           const std::vector< std::string >& evs);
-
-    // ############################################################################
-    /// @name Information Theory related functions
-    // ############################################################################
-    /// @{
-
-    /** Mutual information between X and Y
-     * @see http://en.wikipedia.org/wiki/Mutual_information
-     *
-     * @warning Due to limitation of @ref joint, may not be able to compute
-     * this value
-     * @throw OperationNotAllowed in these cases
-     */
-    GUM_SCALAR I(NodeId X, NodeId Y);
-
-    /** Variation of information between X and Y
-     * @see http://en.wikipedia.org/wiki/Variation_of_information
-     *
-     * @warning Due to limitation of @ref joint, may not be able to compute
-     * this value
-     * @throw OperationNotAllowed in these cases
-     */
-    GUM_SCALAR VI(NodeId X, NodeId Y);
-
-    /** Mutual information between targets
-     * @see https://en.wikipedia.org/wiki/Interaction_information
-     * @param targets  the NodeSet of the targeted variables
-     */
-    GUM_SCALAR jointMutualInformation(const NodeSet& targets);
-
-    /** Mutual information between targets
-     * @see https://en.wikipedia.org/wiki/Interaction_information
-     * @param targets the vector of std::string of the targeted variables
-     */
-    GUM_SCALAR jointMutualInformation(const std::vector< std::string >& targets);
-
-    /// @}
-
-
-    // ############################################################################
-    /// @name Probability computations
-    // ############################################################################
-    /// @{
-
-    /// Computes and returns the posterior of a node.
-    /**
-     * @returns a const ref to the posterior probability of the node.
-     * @param node the node for which we need a posterior probability
-     *
-     * @warning for efficiency reasons, the potential is stored into the
-     * inference engine and is returned by reference. In order to ensure
-     * that the potential may still exist even if the Inference object is
-     * destroyed, the user has to copy it explicitly.
-     *
-     * @warning prepareInference and makeInference may be applied if needed by
-     * the posterior method.
-     *
-     * @throw UndefinedElement if node is not in the set of targets
-     */
-    virtual const Potential< GUM_SCALAR >& posterior(NodeId node);
-
-
-    /// @}
-
-
-    // ############################################################################
-    /// @name Targets
-    // ############################################################################
-    /// @{
-
-    /// adds all nodes as targets
-    virtual void addAllTargets() final;
-
-    /// Add a marginal target to the list of targets
-    /**
-     * @throw UndefinedElement if target is not a NodeId in the Markov net
-     */
-    virtual void addTarget(NodeId target) final;
-
-    /// Add a marginal target to the list of targets
-    /**
-     * @throw UndefinedElement if target is not a NodeId in the Markov net
-     */
-    virtual void addTarget(const std::string& nodeName) final;
-
-    /// removes an existing (marginal) target
-    /** @warning If the target does not already exist, the method does nothing.
-     * In particular, it does not raise any exception. */
-    virtual void eraseTarget(NodeId target) final;
-
-    /// removes an existing (marginal) target
-    /** @warning If the target does not already exist, the method does nothing.
-     * In particular, it does not raise any exception. */
-    virtual void eraseTarget(const std::string& nodeName) final;
-
-    /// return true if variable is a (marginal) target
-    virtual bool isTarget(NodeId node) const final;
-
-    /// return true if variable is a (marginal) target
-    virtual bool isTarget(const std::string& nodeName) const final;
-
-    /// returns the number of marginal targets
-    virtual const Size nbrTargets() const noexcept final;
-
-    /// returns the list of marginal targets
-    virtual const NodeSet& targets() const noexcept final;
-
-    /// @}
-
-    // ############################################################################
-    /// @name Information Theory related functions
-    // ############################################################################
-    /// @{
-
-    /** Entropy
-     * Compute Shanon's entropy of a node given the observation
-     * @see http://en.wikipedia.org/wiki/Information_entropy
-     */
-    virtual GUM_SCALAR H(NodeId X) final;
-
-    /** Entropy
-     * Compute Shanon's entropy of a node given the observation
-     * @see http://en.wikipedia.org/wiki/Information_entropy
-     */
-    virtual GUM_SCALAR H(const std::string& nodeName) final;
-
-    ///@}
-
-
-    /**
-     * Create a gum::Potential for P(target|evs) (for all instanciation of target
-     * and evs)
-     *
-     * @warning If some evs are d-separated, they are not included in the Potential
-     *
-     * @param mn the MarkovNet
-     * @param target  the nodeId of the targetted variable
-     * @param evs the vector of nodeId of the observed variables
-     * @return a Potential
-     */
-    Potential< GUM_SCALAR > evidenceImpact(NodeId target, const NodeSet& evs);
-
-    /**
-     * Create a gum::Potential for P(target|evs) (for all instanciation of target
-     * and evs)
-     *
-     * @warning If some evs are d-separated, they are not included in the Potential
-     *
-     * @param target  the nodeId of the target variable
-     * @param evs the nodeId of the observed variable
-     * @return a Potential
-     */
-    Potential< GUM_SCALAR > evidenceImpact(const std::string& target,
-                                           const std::vector< std::string >& evs);
-
-    protected:
-    /// fired after a new marginal target is inserted
-    /** @param id The target variable's id. */
-    virtual void _onMarginalTargetAdded(const NodeId id) = 0;
-
-    /// fired before a marginal target is removed
-    /** @param id The target variable's id. */
-    virtual void _onMarginalTargetErased(const NodeId id) = 0;
-
-    /// fired after all the nodes of the MN are added as marginal targets
-    virtual void _onAllMarginalTargetsAdded() = 0;
-
-    /// fired before a all marginal targets are removed
-    virtual void _onAllMarginalTargetsErased() = 0;
-
-    /// asks derived classes for the posterior of a given variable
-    /** @param id The variable's id. */
-    virtual const Potential< GUM_SCALAR >& _posterior(NodeId id) = 0;
-
-    void _setTargetedMode();
-    bool _isTargetedMode() const;
 
     protected:
     /// fired when the stage is changed
@@ -776,17 +490,19 @@ namespace gum {
      */
     virtual void _onEvidenceChanged(const NodeId id, bool hasChangedSoftHard) = 0;
 
+    /// fired after a new Markov net has been assigned to the engine
+    virtual void _onMarkovNetChanged(const IMarkovNet< GUM_SCALAR >* mn) = 0;
 
     /// prepares inference when the latter is in OutdatedMNStructure state
     /** Note that the values of evidence are not necessarily
      * known and can be changed between _updateOutdatedMNStructure and
-     * _makeInference. */
+     * _makeMNInference. */
     virtual void _updateOutdatedMNStructure() = 0;
 
     /// prepares inference when the latter is in OutdatedMNPotentials state
     /** Note that the values of evidence are not necessarily
      * known and can be changed between _updateOutdatedMNPotentials and
-     * _makeInference. */
+     * _makeMNInference. */
     virtual void _updateOutdatedMNPotentials() = 0;
 
     /// called when the inference has to be performed effectively
@@ -800,20 +516,7 @@ namespace gum {
      * its outgoing arcs can be removed from the MN, hence involving a
      * structural change in the MN. As a consequence, the (incremental)
      * inference (probably) needs a significant amount of preparation to be
-     * ready for the next inference. In a Lazy propagation, for instance, this
-     * step amounts to compute a new join tree, hence a new structure in which
-     * inference will be applied. Note that classes that inherit from
-     * MarkovNetInference may be smarter than MarkovNetInference and may, in some
-     * situations, find out that their
-     * data structures are still ok for inference and, therefore, only resort to
-     * perform the actions related to the OutdatedMNPotentials state. As an
-     * example, consider a LazyPropagation inference in Markov net A->B->C->D->E
-     * in which C has received hard evidence e_C and E is the only target. In
-     * this case, A and B are not needed for inference, the only potentials that
-     * matter are P(D|e_C) and P(E|D). So the smallest join tree needed for
-     * inference contains only one clique DE. Now, adding new evidence e_A on A
-     * has no impact on E given hard evidence e_C. In this case, LazyPropagation
-     * can be smart and not update its join tree.*/
+     * ready for the next inference.*/
     void _setOutdatedMNStructureState();
 
     /** @brief puts the inference into an OutdatedMNPotentials state if it is
@@ -827,51 +530,8 @@ namespace gum {
      */
     void _setOutdatedMNPotentialsState();
 
-    /// fired after a new joint target is inserted
-    /** @param set The set of target variable's ids. */
-    virtual void _onJointTargetAdded(const NodeSet& set) = 0;
-
-    /// fired before a joint target is removed
-    /** @param set The set of target variable's ids. */
-    virtual void _onJointTargetErased(const NodeSet& set) = 0;
-
-    /// fired before a all the marginal and joint targets are removed
-    virtual void _onAllTargetsErased() = 0;
-
-    ///  fired before a all the joint targets are removed
-    virtual void _onAllJointTargetsErased() = 0;
-
-
-    /// asks derived classes for the joint posterior of a declared target set
-    /** @param set The set of ids of the variables whose joint posterior is
-     * looked for. */
-    virtual const Potential< GUM_SCALAR >& _jointPosterior(const NodeSet& set) = 0;
-
-    /** @brief asks derived classes for the joint posterior of a set of
-     * variables not declared as a joint target
-     *
-     * @param wanted_target The set of ids of the variables whose joint
-     * posterior is looked for.
-     * @param declared_target the joint target declared by the user that
-     * contains set */
-    virtual const Potential< GUM_SCALAR >&
-       _jointPosterior(const NodeSet& wanted_target,
-                       const NodeSet& declared_target) = 0;
-
-    /** @brief returns a fresh unnormalized joint posterior of
-     * a given set of variables
-     * @param set The set of ids of the variables whose joint posterior is
-     * looked for. */
-    virtual Potential< GUM_SCALAR >*
-       _unnormalizedJointPosterior(const NodeSet& set) = 0;
-
-    /// returns a fresh potential equal to P(argument,evidence)
-    virtual Potential< GUM_SCALAR >* _unnormalizedJointPosterior(NodeId id) = 0;
-
 
     private:
-    /// the set of joint targets
-    Set< NodeSet > __joint_targets;
     /// the current state of the inference (outdated/ready/done)
     StateOfMNInference __state{StateOfMNInference::OutdatedMNStructure};
 
@@ -910,15 +570,11 @@ namespace gum {
     /// assigns a MN during the inference engine construction
     void __setMarkovNetDuringConstruction(const IMarkovNet< GUM_SCALAR >* mn);
 
-    private:
-    /// whether the actual targets are default
-    bool __targeted_mode;
 
-    /// the set of marginal targets
-    NodeSet __targets;
-
-    /// sets all the nodes of the Markov net as targets
-    void __setAllMarginalTargets();
+    /// allow JointInference to access the single targets and inference states
+    friend MarginalTargetedMNInference< GUM_SCALAR >;
+    friend JointTargetedMNInference< GUM_SCALAR >;
+    friend EvidenceMNInference< GUM_SCALAR >;
   };
 
 
