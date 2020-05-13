@@ -27,6 +27,8 @@
 #include <cxxtest/testsuite_utils.h>
 
 #include <agrum/tools/graphs/graphElements.h>
+#include <agrum/tools/graphs/undiGraph.h>
+#include <agrum/tools/graphs/diGraph.h>
 #include <agrum/tools/graphs/mixedGraph.h>
 
 // The graph used for the tests:
@@ -80,6 +82,60 @@ namespace gum_tests {
       gum::MixedGraph* graph = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING((graph = new gum::MixedGraph()));
       TS_GUM_ASSERT_THROWS_NOTHING(delete (graph));
+    }
+
+    void testConstructorFromUG() {
+      gum::UndiGraph ug;
+      ug.addNode();
+      ug.addNode();
+      ug.addNode();
+      ug.addNode();
+
+      ug.addEdge(0, 2);
+      ug.addEdge(1, 2);
+      ug.addEdge(2, 3);
+
+      gum::MixedGraph mg;
+      mg.addNode();
+      mg.addNode();
+      mg.addNode();
+      mg.addNode();
+
+      mg.addEdge(0, 2);
+      mg.addEdge(1, 2);
+      mg.addEdge(2, 3);
+
+      gum::MixedGraph* mixed_graph = nullptr;
+      TS_GUM_ASSERT_THROWS_NOTHING((mixed_graph = new gum::MixedGraph(ug)));
+      TS_GUM_ASSERT_THROWS_NOTHING((*mixed_graph == mg));
+      TS_GUM_ASSERT_THROWS_NOTHING(delete (mixed_graph));
+    }
+
+    void testConstructorFromDG() {
+      gum::DiGraph dg;
+      dg.addNode();
+      dg.addNode();
+      dg.addNode();
+      dg.addNode();
+
+      dg.addArc(0, 2);
+      dg.addArc(1, 2);
+      dg.addArc(2, 3);
+
+      gum::MixedGraph mg;
+      mg.addNode();
+      mg.addNode();
+      mg.addNode();
+      mg.addNode();
+
+      mg.addArc(0, 2);
+      mg.addArc(1, 2);
+      mg.addArc(2, 3);
+
+      gum::MixedGraph* mixed_graph = nullptr;
+      TS_GUM_ASSERT_THROWS_NOTHING((mixed_graph = new gum::MixedGraph(dg)));
+      TS_GUM_ASSERT_THROWS_NOTHING((*mixed_graph == mg));
+      TS_GUM_ASSERT_THROWS_NOTHING(delete (mixed_graph));
     }
 
     void testInsert1() {
