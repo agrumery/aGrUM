@@ -21,6 +21,75 @@ class TestGraph(pyAgrumTestCase):
     self._testAddNodes(gum.MixedGraph())
     self._testAddNodes(gum.DAG())
 
+  def testConstructorFromUG(self):
+    ug = gum.UndiGraph()
+
+    ug.addNode()
+    ug.addNode()
+    ug.addNode()
+    ug.addNode()
+
+    ug.addEdge(0,2)
+    ug.addEdge(1,2)
+    ug.addEdge(2,3)
+    
+    mixed_graph = gum.MixedGraph()
+
+    mixed_graph.addNode()
+    mixed_graph.addNode()
+    mixed_graph.addNode()
+    mixed_graph.addNode()
+
+    mixed_graph.addEdge(0,2)
+    mixed_graph.addEdge(1,2)
+    mixed_graph.addEdge(2,3)
+
+    mg = gum.MixedGraph(ug)
+
+    self.assertEqual(mixed_graph, mg)
+
+  def testConstructorFromDG(self):
+    dg = gum.DiGraph()
+
+    dg.addNode()
+    dg.addNode()
+    dg.addNode()
+    dg.addNode()
+
+    dg.addArc(0,2)
+    dg.addArc(1,2)
+    dg.addArc(2,3)
+    
+    mixed_graph = gum.MixedGraph()
+
+    mixed_graph.addNode()
+    mixed_graph.addNode()
+    mixed_graph.addNode()
+    mixed_graph.addNode()
+
+    mixed_graph.addArc(0,2)
+    mixed_graph.addArc(1,2)
+    mixed_graph.addArc(2,3)
+
+    mg = gum.MixedGraph(dg)
+
+    self.assertEqual(mixed_graph, mg)
+
+  def testCopyConstructor(self):
+    mixed_graph = gum.MixedGraph()
+
+    mixed_graph.addNode()
+    mixed_graph.addNode()
+    mixed_graph.addNode()
+    mixed_graph.addNode()
+
+    mixed_graph.addEdge(0,2)
+    mixed_graph.addEdge(1,2)
+    mixed_graph.addEdge(2,3)
+
+    copy = mixed_graph
+
+    self.assertEqual(mixed_graph, copy)
 
 ts = unittest.TestSuite()
 addTests(ts, TestGraph)
