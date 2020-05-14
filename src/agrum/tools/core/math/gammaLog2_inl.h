@@ -36,14 +36,21 @@ namespace gum {
 
     // if x is small, use precomputed values
     if (x < 50) {
-      if (__requires_precision) {
-        Idx index = int(x * 100);
-        return __small_values[index]
-               + (__small_values[index + 1] - __small_values[index])
-                    * double(x * 100 - index);
-      } else {
-        Idx index = int(x * 100 + 0.5);
-        return __small_values[index];
+      if (x >= 0.01) {
+        if (__requires_precision) {
+          const Idx index = int(x * 100);
+          return __small_values[index]
+            + (__small_values[index + 1] - __small_values[index])
+            * double(x * 100 - index);
+        } else {
+          const Idx index = int(x * 100 + 0.5);
+          return __small_values[index];
+        }
+      }
+      else {
+        // for very small values of x, Gamma(x) is approximately equal to
+        // 1/x. Hence gammaLog2(x) is approximately equal to log2(1/x)
+        return std::log2(1.0 / x);
       }
     }
 
