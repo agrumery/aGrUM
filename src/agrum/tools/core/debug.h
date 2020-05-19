@@ -1,8 +1,8 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
- *   info_at_agrum_dot_org
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES
+ * (@AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -133,24 +133,25 @@
 #  endif   // GUM_DEBUG_MODE
 
 #  ifdef GUM_TRACE_ON
-#    define GUM__PRINT(file, line, x) \
-      { std::string ff(file);std::cout << "[GUM]" << file << ":" << line << x << std::endl; }
+#    define GUM__PRINT(file, line, msg)                                          \
+      {                                                                          \
+        std::string ff(file);                                                    \
+        std::cout << "[GUM]" << file << ":" << std::setfill('0') << std::setw(6) \
+                  << line << msg << std::endl;                                   \
+      }
 
 #    define GUM_CHECKPOINT GUM__PRINT(__FILE__, __LINE__, "checkpoint")
-#    define GUM_TRACE(x) \
-      GUM__PRINT(__FILE__, __LINE__, "--> " << x)
-#    define GUM_TRACE_VAR(x) \
-      GUM__PRINT(__FILE__,   \
-                 __LINE__,   \
-                 "--> <" << #x << ">: " << x)
+#    define GUM_TRACE(msg) GUM__PRINT(__FILE__, __LINE__, "-> " << msg)
+#    define GUM_TRACE_VAR(var) \
+      GUM__PRINT(__FILE__, __LINE__, "-> <" << #var << ">: " << var)
 
 #    define GUM_TRACE_NEWLINE \
       { std::cout << std::endl; }
 #  else   // GUM_TRACE_ON
 #    define GUM__PRINT(line, file, x)
 #    define GUM_CHECKPOINT
-#    define GUM_TRACE(x)
-#    define GUM_TRACE_VAR(x)
+#    define GUM_TRACE(msg)
+#    define GUM_TRACE_VAR(var)
 #    define GUM_TRACE_NEWLINE
 #  endif   // GUM_TRACE_ON
 
