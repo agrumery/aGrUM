@@ -30,12 +30,6 @@ testall:
 testalldebug:
 	$(ACT) test debug -t all -m all 
 
-run:
-	$(ACT) run release 
-
-rundebug:
-	$(ACT) run debug 
-
 pyAgrum:
 	$(ACT) install release pyAgrum 
 

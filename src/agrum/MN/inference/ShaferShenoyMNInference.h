@@ -252,27 +252,27 @@ namespace gum {
     /// for each node of __reduced_graph (~ in the Markov net), associate an ID in the JT
     HashTable< NodeSet, NodeId > __factor_to_clique;
 
-    NodeProperty<NodeSet> __factor_from_node;
+    NodeProperty<NodeId> __node_to_clique;
 
-    /// for each set target, assign a clique in the JT that contains it
+    /// for each joint target, assign a clique in the JT that contains it
     HashTable< NodeSet, NodeId > __joint_target_to_clique;
 
     /// the list of all potentials stored in the cliques
     /** This structure contains a list for each clique in the join tree. If
      * a clique did not received any potential, then its list is empty but
      * the entry for the clique does exist. Note that clique potentials
-     * contain also soft evidence and the CPTs that were projected to
+     * contain also soft evidence and the factors that were projected to
      * remove their variables that received hard evidence. The product of all
      * these potentials is precisely the potential stored into
-     * __clique_ss_potential */
-    NodeProperty< __PotentialSet > __clique_potentials;
+     * __clique_potentials */
+    NodeProperty< __PotentialSet > __clique_potentials_list;
 
     /// the potentials stored into the cliques by Shafer-Shenoy
-    /** For a given clique, there is an entry in __clique_ss_potential if and
+    /** For a given clique, there is an entry in __clique_potentials if and
      * only if the clique received some potential(s). In this case, the
      * potential stored is the combination of all the corresponding list of
-     * potentials in __clique_potentials. */
-    NodeProperty< const Potential< GUM_SCALAR >* > __clique_ss_potential;
+     * potentials in __clique_potentials_list. */
+    NodeProperty< const Potential< GUM_SCALAR >* > __clique_potentials;
 
     /// the list of all potentials stored in the separators after inferences
     /** This structure contains all the arcs of the join tree (edges in both
@@ -282,10 +282,10 @@ namespace gum {
     /// the set of potentials created for the last inference messages
     /** This structure contains only the arcs on which potentials have
      * been created.
-     * @warning Note that the CPTs that were projected due to hard
+     * @warning Note that the factors that were projected due to hard
      * evidence do not belong to this structure, they are kept in
      * __hard_ev_projected_factors. */
-    ArcProperty< __PotentialSet > __created_potentials;
+    ArcProperty< __PotentialSet > __created_messages;
 
     /// the set of single posteriors computed during the last inference
     /** the posteriors are owned by ShaferShenoyMNInference. */
@@ -321,10 +321,10 @@ namespace gum {
     /** For each factor containing the nodes that contain some
      * hard evidence, assigns a new projected factor that does not contain
      * these nodes anymore.
-     * @warning These potentials are owned by LayPropagation. */
+     * @warning These potentials are owned by the inference class. */
     HashTable< NodeSet,const Potential< GUM_SCALAR >* > __hard_ev_projected_factors;
 
-    /// the hard evidence nodes which were projected in CPTs
+    /// the hard evidence nodes which were projected in factors
     NodeSet __hard_ev_nodes;
 
     /// the possible types of evidence changes
@@ -343,6 +343,7 @@ namespace gum {
 
     /// create a new junction tree as well as its related data structures
     void __createNewJT();
+
     /// sets the operator for performing the projections
     void __setProjectionFunction(Potential< GUM_SCALAR >* (*proj)(
        const Potential< GUM_SCALAR >&, const Set< const DiscreteVariable* >&));
@@ -386,7 +387,6 @@ namespace gum {
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
   extern template class ShaferShenoyMNInference< double >;
 #endif
-
 
 } /* namespace gum */
 

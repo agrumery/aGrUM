@@ -48,7 +48,7 @@ aGrUM's team tries its best to not introduce external dependencies with aGrUM (u
 
 The project's root is composed of the following folders:
 - [acttools](/acttools): implementation of ACT, the aGrUM Compiler Tool
-- [apps](/apps): Applications using aGrUM or pyAgrum
+- [apps](/apps): Examples using aGrUM or pyAgrum
 - [src](/src): aGrUM's C++ source code
 - [wrappers](/wrappers): aGrUM's wrappers
 
@@ -56,7 +56,6 @@ In [src](/src) you can find the following folders:
 - [agrum](/src/agrum): aGrUM's C++ source code
 - [cmake](/src/cmake): CMake files used to compile aGrUM
 - [docs](/src/docs): aGrUM's documentation
-- [run](/src/run): minmial code to run aGrUM
 - [testunits](/src/testunits): aGrUM's tests
 
 In [wrappers](/wrappers) you can find the following folders:

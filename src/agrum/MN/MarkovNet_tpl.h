@@ -247,14 +247,14 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   const NodeSet& MarkovNet< GUM_SCALAR >::smallestFactorFromNode(NodeId node) const {
-    NodeSet* res=nullptr;
+    const NodeSet* res=nullptr;
     Size    smallest = size();
     for (const auto& kv: factors()) {
       const auto& fact = kv.first;
       if (fact.contains(node))
         if (smallest > fact.size()) {
           res = &fact;
-          smallest = res.size();
+          smallest = fact.size();
         }
     }
     if (res==nullptr) {

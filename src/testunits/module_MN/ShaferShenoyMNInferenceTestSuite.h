@@ -139,6 +139,29 @@ namespace gum_tests {
       }
     }
 
+    void testCompareInferenceDAGWithSoftEvidence() {
+      auto bn = gum::BayesNet< double >::fastPrototype("A->B<-C->D<-E;B->F;D->F;");
+      gum::LazyPropagation< double > iebn(&bn);
+      iebn.addEvidence("B", std::vector<double>{0.8,0.5});
+      iebn.makeInference();
+
+      auto mn = gum::MarkovNet< double >::fromBN(bn);
+      gum::ShaferShenoyMNInference< double > iemn(&mn);
+      iemn.addEvidence("B", std::vector<double>{0.8,0.5});
+      iemn.makeInference();
+
+      for (const auto n: bn.nodes()) {
+        const std::string&              name = bn.variable(n).name();
+        const gum::Potential< double >& postbn = iebn.posterior(name);
+
+        gum::Potential< double > postmn;
+        postmn.add(bn.variable(n));
+        postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
+
+        TS_ASSERT_LESS_THAN((postbn - postmn).abs().max(), 1e-8);
+      }
+    }
+
     void testClassicalInference() {
       auto mn = gum::MarkovNet< double >::fastPrototype("A-B-C;C-D;D-E-F;F-A");
       gum::ShaferShenoyMNInference< double > iemn(&mn);
@@ -146,7 +169,7 @@ namespace gum_tests {
       iemn.makeInference();
 
       for (const auto n: mn.nodes()) {
-        TS_ASSERT_DELTA(iemn.posterior(n).sum(),1.0,1e-8);
+        TS_ASSERT_DELTA(iemn.posterior(n).sum(), 1.0, 1e-8);
       }
     }
 
@@ -183,36 +206,92 @@ namespace gum_tests {
       TS_ASSERT_LESS_THAN((Ewithout_evB - Ewith_evB1).abs().max(), 1e-8);
       TS_ASSERT_LESS_THAN((Ewith_evB1 - Ewith_evB0).abs().max(), 1e-8);
     }
-    void testWeirdInference() {
+
+    void testIndependencyInference() {
       auto mn = gum::MarkovNet< double >::fastPrototype("A;B;C;D;E;F");
       gum::ShaferShenoyMNInference< double > iemn(&mn);
       iemn.addEvidence("B", 1);
       iemn.makeInference();
 
       for (const auto n: mn.nodes()) {
-        TS_ASSERT_DELTA(iemn.posterior(n).sum(),1.0,1e-8);
+        TS_ASSERT_DELTA(iemn.posterior(n).sum(), 1.0, 1e-8);
       }
     }
 
     void testIncrementalInference() {
       auto mn = gum::MarkovNet< double >::fastPrototype("A-B-C;C-D;D-E-F;F-A");
-      gum::ShaferShenoyMNInference<double> ie(&mn);
-      ie.addEvidence("A", 0);
-      ie.addEvidence("D", 1);
-      ie.addEvidence("B", 0);
-      ie.makeInference();
 
-      gum::ShaferShenoyMNInference<double> ie2(&mn);
-      ie2.addEvidence("A", 1);
-      ie2.addEvidence("D", 1);
-      ie2.addEvidence("B", 1);
-      ie2.makeInference();
-      ie2.chgEvidence("A", 0);
-      ie2.chgEvidence("B", 0);
-      ie2.makeInference();
+      {
+        gum::ShaferShenoyMNInference< double > ie(&mn);
+        ie.addEvidence("A", 0);
+        ie.addEvidence("D", 1);
+        ie.addEvidence("B", 0);
+        ie.makeInference();
 
-      for(const auto n:mn.nodes()) {
-        TS_ASSERT_LESS_THAN((ie2.posterior(n)-ie.posterior(n)).abs().max(),1e-8);
+        gum::ShaferShenoyMNInference< double > ie2(&mn);
+        ie2.addEvidence("A", 1);
+        ie2.addEvidence("D", 1);
+        ie2.addEvidence("B", 1);
+        ie2.makeInference();
+
+        ie2.chgEvidence("A", 0);
+        ie2.chgEvidence("B", 0);
+        ie2.makeInference();
+
+        for (const auto n: mn.nodes()) {
+          TS_ASSERT_LESS_THAN((ie2.posterior(n) - ie.posterior(n)).abs().max(),
+                              1e-8);
+        }
+      }
+
+      {
+        gum::ShaferShenoyMNInference< double > ie(&mn);
+        ie.addEvidence("A", 0);
+        ie.addEvidence("D", 1);
+        ie.addEvidence("B", 0);
+        ie.makeInference();
+
+        gum::ShaferShenoyMNInference< double > ie2(&mn);
+        ie2.addEvidence("A", 0);
+        ie2.addEvidence("D", 0);
+        ie2.addEvidence("B", 0);
+        ie2.makeInference();
+
+        ie2.chgEvidence("D", 1);
+        ie2.makeInference();
+
+        for (const auto n: mn.nodes()) {
+          TS_ASSERT_LESS_THAN((ie2.posterior(n) - ie.posterior(n)).abs().max(),
+                              1e-8);
+        }
+      }
+    }
+
+
+    void testIncrementalInferenceWithSoftEvidence() {
+      auto mn = gum::MarkovNet< double >::fastPrototype("A-B-C;C-D;D-E-F;F-A");
+
+      {
+        gum::ShaferShenoyMNInference< double > ie(&mn);
+        ie.addEvidence("A", std::vector<double>{0.3,0.9});
+        ie.addEvidence("D", std::vector<double>{0.5,0.2});
+        ie.addEvidence("B", 0);
+        ie.makeInference();
+
+        gum::ShaferShenoyMNInference< double > ie2(&mn);
+        ie2.addEvidence("A", std::vector<double>{0.5,0.2});
+        ie2.addEvidence("D", std::vector<double>{0.5,0.2});
+        ie2.addEvidence("B", std::vector<double>{0.5,0.2});
+        ie2.makeInference();
+
+        ie2.chgEvidence("A", std::vector<double>{0.3,0.9});
+        ie2.chgEvidence("B", 0);
+        ie2.makeInference();
+
+        for (const auto n: mn.nodes()) {
+          TS_ASSERT_LESS_THAN((ie2.posterior(n) - ie.posterior(n)).abs().max(),
+                              1e-8);
+        }
       }
     }
   };
