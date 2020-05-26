@@ -11,8 +11,10 @@ class MarkovNetTestCase(pyAgrumTestCase):
     for i in [11, 21, 31, 41]:
       mn.add(str(i), 3)
     mn.add(str(51), 7)
-    mn.addFactor({"11", "31"}).fillWith([0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8])
-    mn.addFactor({"11", "41"}).fillWith([0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0])
+    mn.addFactor({"11", "31"}).fillWith(
+        [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8])
+    mn.addFactor({"11", "41"}).fillWith(
+        [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0])
     mn.addFactor({"31", "51"}).fillWith(0.97)
     mn.addFactor({"21", "41", "51"}).fillWith(0.03)
 
@@ -43,7 +45,8 @@ class MarkovNetTestCase(pyAgrumTestCase):
     mn = gum.MarkovNet()
     self._fill(mn)
     mn2 = gum.MarkovNet(mn)
-    self.assertEquals(mn2.__str__(), "MN{nodes: 5, edges: 6, domainSize: 567, dim: 102}")
+    self.assertEquals(
+        mn2.__str__(), "MN{nodes: 5, edges: 6, domainSize: 567, dim: 102}")
 
     for n in mn.nodes():
       self.assertEquals(mn.variable(n).name(), mn2.variable(n).name())
@@ -207,6 +210,20 @@ class MarkovNetTestCase(pyAgrumTestCase):
     self.assertTrue(mn.existsEdge("A", "C"))
     self.assertFalse(mn.existsEdge(3, 7))
     self.assertFalse(mn.existsEdge("C", "G"))
+
+  def testMinimalCondSet(self):
+    mn = gum.fastMN("A-B-C;C-D;E-F-G;B-E")
+
+    self.assertEqual(mn.minimalCondSet(0, {1, 2, 3, 4, 5, 6}), {1, 2})
+    self.assertEqual(mn.minimalCondSet({0, 6}, {1, 2, 3, 4, 5}), {1, 2, 4, 5})
+    self.assertEqual(mn.minimalCondSet(3, {0, 4, 5, 6}), {0, 4})
+
+    print(mn.minimalCondSet("A", {"B", "C", "D", "E", "F", "G"}))
+    self.assertEqual(mn.minimalCondSet(
+        "A", {"B", "C", "D", "E", "F", "G"}), {1, 2})
+    self.assertEqual(mn.minimalCondSet(
+        {"A", "G"}, {"B", "C", "D", "E", "F"}), {1, 2, 4, 5})
+    self.assertEqual(mn.minimalCondSet("D", {"A", "E", "F", "G"}), {0, 4})
 
 
 ts = unittest.TestSuite()

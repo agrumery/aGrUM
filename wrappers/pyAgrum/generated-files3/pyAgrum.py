@@ -11479,6 +11479,15 @@ class IMarkovNet(UGmodel):
         r"""names(IMarkovNet self) -> PyObject *"""
         return _pyAgrum.IMarkovNet_names(self)
 
+    def minimalCondSet(self, *args) -> "PyObject *":
+        r"""
+        minimalCondSet(IMarkovNet self, gum::NodeId target, gum::NodeSet const & soids) -> gum::NodeSet
+        minimalCondSet(IMarkovNet self, gum::NodeSet const & targets, gum::NodeSet const & soids) -> gum::NodeSet
+        minimalCondSet(IMarkovNet self, gum::NodeId target, PyObject * list) -> PyObject
+        minimalCondSet(IMarkovNet self, PyObject * targets, PyObject * list) -> PyObject *
+        """
+        return _pyAgrum.IMarkovNet_minimalCondSet(self, *args)
+
     def neighbours(self, norid: "PyObject *") -> "PyObject *":
         r"""neighbours(IMarkovNet self, PyObject * norid) -> PyObject *"""
         return _pyAgrum.IMarkovNet_neighbours(self, norid)
@@ -11802,6 +11811,13 @@ class MarkovNet(IMarkovNet):
     def names(self) -> "PyObject *":
         r"""names(MarkovNet self) -> PyObject *"""
         return _pyAgrum.MarkovNet_names(self)
+
+    def minimalCondSet(self, *args) -> "PyObject *":
+        r"""
+        minimalCondSet(MarkovNet self, gum::NodeId target, PyObject * list) -> PyObject
+        minimalCondSet(MarkovNet self, PyObject * targets, PyObject * list) -> PyObject *
+        """
+        return _pyAgrum.MarkovNet_minimalCondSet(self, *args)
 
     def neighbours(self, norid: "PyObject *") -> "PyObject *":
         r"""neighbours(MarkovNet self, PyObject * norid) -> PyObject *"""

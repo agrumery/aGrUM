@@ -42,6 +42,22 @@ ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::IMarkovNet);
     return q;
   };
 
+  PyObject *minimalCondSet(gum::NodeId target,PyObject* list) const {
+    gum::NodeSet soids;
+    PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,self->variableNodeMap());
+    return PyAgrumHelper::PySetFromNodeSet(self->minimalCondSet(target, soids));
+  };
+
+
+  PyObject *minimalCondSet(PyObject* targets,PyObject* list) const {
+    gum::NodeSet sotargets;
+    PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sotargets,targets,self->variableNodeMap());
+
+    gum::NodeSet soids;
+    PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,self->variableNodeMap());
+    return PyAgrumHelper::PySetFromNodeSet(self->minimalCondSet(sotargets, soids));
+  };
+
   PyObject *neighbours(PyObject* norid) const {
     return PyAgrumHelper::PySetFromNodeSet(self->neighbours(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
   };
