@@ -305,12 +305,55 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE const NodeSet&
-               IMarkovNet< GUM_SCALAR >::smallestFactorFromNode(const std::string& name) const {
+  INLINE const NodeSet& IMarkovNet< GUM_SCALAR >::smallestFactorFromNode(
+     const std::string& name) const {
     try {
       return smallestFactorFromNode(idFromName(name));
     } catch (NotFound) {
       GUM_ERROR(NotFound, "No factor containing the variable <" << name << ">");
     }
+  }
+
+  // visit the nodes and add some of node from soids in minimal
+  template < typename GUM_SCALAR >
+  void IMarkovNet< GUM_SCALAR >::__minimalCondSetVisit(
+     NodeId         node,
+     const NodeSet& soids,
+     NodeSet&       minimal,
+     NodeSet&       alreadyVisited) const {
+    if (alreadyVisited.contains(node)) return;
+    alreadyVisited << node;
+
+    if (soids.contains(node)) {
+      minimal << node;
+    } else {
+      for (auto neig: _graph.neighbours(node))
+        __minimalCondSetVisit(neig, soids, minimal, alreadyVisited);
+    }
+  }
+
+
+  template < typename GUM_SCALAR >
+  NodeSet IMarkovNet< GUM_SCALAR >::minimalCondSet(NodeId         target,
+                                                   const NodeSet& soids) const {
+    if (soids.contains(target)) return NodeSet({target});
+
+    NodeSet res;
+    NodeSet alreadyVisited;
+    alreadyVisited << target;
+
+    for (auto neig: _graph.neighbours(target))
+      __minimalCondSetVisit(neig, soids, res, alreadyVisited);
+    return res;
+  }
+
+  template < typename GUM_SCALAR >
+  NodeSet IMarkovNet< GUM_SCALAR >::minimalCondSet(const NodeSet& targets,
+                                                   const NodeSet& soids) const {
+    NodeSet res;
+    for (auto node: targets) {
+      res += minimalCondSet(node, soids);
+    }
+    return res;
   }
 } /* namespace gum */

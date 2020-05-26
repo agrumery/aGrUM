@@ -298,6 +298,14 @@ namespace gum_tests {
       TS_ASSERT(! mn.existsEdge(3,7));
       TS_ASSERT(! mn.existsEdge("C","G"));
     }
+
+    void testMinimalCondSet() {
+      auto mn = gum::MarkovNet< double >::fastPrototype("A-B-C;C-D;E-F-G;B-E");
+
+      TS_ASSERT_EQUALS(mn.minimalCondSet(0,{1,2,3,4,5,6}),gum::NodeSet({1,2}));
+      TS_ASSERT_EQUALS(mn.minimalCondSet({0,6},{1,2,3,4,5}),gum::NodeSet({1,2,4,5}));
+      TS_ASSERT_EQUALS(mn.minimalCondSet(3,{0,4,5,6}),gum::NodeSet({0,4}));
+    }
   };
 
 }   // namespace gum_tests

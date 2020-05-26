@@ -1,8 +1,8 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
- *   info_at_agrum_dot_org
+ *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES
+ * (@AMU) info_at_agrum_dot_org
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -53,8 +53,9 @@ namespace gum {
    * @ingroup mn_group
    *
    * This class is used as a base class for different versions of Markov Networks.
-   *No data (except the graph herited from UGModel are included in this class. Many algorithms
-   *(inference for instance) may use this class when a simple MN is needed.
+   *No data (except the graph herited from UGModel are included in this class. Many
+   *algorithms (inference for instance) may use this class when a simple MN is
+   *needed.
    */
   template < typename GUM_SCALAR >
   class IMarkovNet: public UGmodel {
@@ -112,7 +113,7 @@ namespace gum {
      *
      * @throw NotFound If no variable's id matches varId.
      */
-    virtual const NodeSet& smallestFactorFromNode(const std::string &name) const;
+    virtual const NodeSet& smallestFactorFromNode(const std::string& name) const;
 
     /**
      * Returns the set of factors as a IMarkovNet::FactorTable
@@ -215,6 +216,27 @@ namespace gum {
 
     /// @return Returns a string representation of this IMarkovNet.
     std::string toString() const;
+
+    /***
+     * @return the minimal subset of soids that conditions the target
+     *
+     * i.e. P(target| soids)=P(target|@return)
+     */
+    NodeSet minimalCondSet(NodeId target, const NodeSet& soids) const;
+
+
+    /***
+     * @return the minimal subset of soids that conditions the targets
+     *
+     * i.e. P(targets| soids)=P(targets|@return)
+     */
+    NodeSet minimalCondSet(const NodeSet& targets, const NodeSet& soids) const;
+
+    private:
+    void __minimalCondSetVisit(NodeId         node,
+                               const NodeSet& soids,
+                               NodeSet&       minimal,
+                               NodeSet&       alreadyVisited) const;
   };
 
 
