@@ -87,6 +87,7 @@
 
 #include <agrum/MN/IMarkovNet.h>
 #include <agrum/MN/MarkovNet.h>
+#include <agrum/MN/inference/ShaferShenoyMNInference.h>
 #include <agrum/MN/io/UAI/UAIMNReader.h>
 #include <agrum/MN/io/UAI/UAIMNWriter.h>
 
@@ -284,6 +285,7 @@ namespace std {
 
 %include <agrum/MN/IMarkovNet.h>
 %include <agrum/MN/MarkovNet.h>
+%include <agrum/MN/inference/ShaferShenoyMNInference.h>
 
 
 %include <agrum/BN/algorithms/essentialGraph.h>
@@ -350,6 +352,7 @@ namespace std {
 
 %template (IMarkovNet ) gum::IMarkovNet<double>;
 %template ( MarkovNet ) gum::MarkovNet<double>;
+%template ( ShaferShenoyMNInference ) gum::ShaferShenoyMNInference<double>;
 
 %template ( BayesNetInference ) gum::BayesNetInference<double>;
 %template ( LazyPropagation ) gum::LazyPropagation<double>;

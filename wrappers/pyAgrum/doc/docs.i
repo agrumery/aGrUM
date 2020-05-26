@@ -49,6 +49,10 @@
 %include "doc_BNDatabaseGenerator.i"
 %include "doc_BNLearner.i"
 
+%include "doc_MarkovNet.i"
+%include "doc_GenericMNInference.i"
+%include "doc_ShaferShenoyMNInference.i"
+
 %include "doc_PRMexplorer.i"
 
 %include "doc_CredalNet.i"

@@ -1,4 +1,4 @@
-%define ADD_DOC(classname...)
+%define ADD_GENERIC_INFERENCE_DOC(classname...)
 %feature("docstring") gum::classname::BN
 "
 Returns
@@ -651,15 +651,15 @@ gum.InvalidArgument
 
 %enddef
 
-ADD_DOC(LazyPropagation<double>)
-ADD_DOC(ShaferShenoyInference<double>)
-ADD_DOC(VariableElimination<double>)
-ADD_DOC(GibbsSampling<double>)
-ADD_DOC(ImportanceSampling<double>)
-ADD_DOC(WeightedSampling<double>)
-ADD_DOC(MonteCarloSampling<double>)
-ADD_DOC(LoopyBeliefPropagation<double>)
-ADD_DOC(LoopySamplingInference<double,gum::GibbsSampling>)
-ADD_DOC(LoopySamplingInference<double,gum::ImportanceSampling>)
-ADD_DOC(LoopySamplingInference<double,gum::WeightedSampling>)
-ADD_DOC(LoopySamplingInference<double,gum::MonteCarloSampling>)
+ADD_GENERIC_INFERENCE_DOC(LazyPropagation<double>)
+ADD_GENERIC_INFERENCE_DOC(ShaferShenoyInference<double>)
+ADD_GENERIC_INFERENCE_DOC(VariableElimination<double>)
+ADD_GENERIC_INFERENCE_DOC(GibbsSampling<double>)
+ADD_GENERIC_INFERENCE_DOC(ImportanceSampling<double>)
+ADD_GENERIC_INFERENCE_DOC(WeightedSampling<double>)
+ADD_GENERIC_INFERENCE_DOC(MonteCarloSampling<double>)
+ADD_GENERIC_INFERENCE_DOC(LoopyBeliefPropagation<double>)
+ADD_GENERIC_INFERENCE_DOC(LoopySamplingInference<double,gum::GibbsSampling>)
+ADD_GENERIC_INFERENCE_DOC(LoopySamplingInference<double,gum::ImportanceSampling>)
+ADD_GENERIC_INFERENCE_DOC(LoopySamplingInference<double,gum::WeightedSampling>)
+ADD_GENERIC_INFERENCE_DOC(LoopySamplingInference<double,gum::MonteCarloSampling>)

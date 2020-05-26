@@ -78,6 +78,7 @@
 %include "bndistance.i"
 
 %include "markovnet.i"
+%include "MNinference.i"
 
 %include "credalnet.i"
 

@@ -562,3 +562,6 @@ ADD_GIBBS_OPERATOR_API(gum::GibbsBNdistance<double>)
   gum::Size domainSize() {return self->gum::MultiDimDecorator<double>::domainSize();}
   gum::Size nbrDim() {return self->gum::MultiDimDecorator<double>::nbrDim();}
 }
+
+#################
+

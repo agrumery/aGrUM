@@ -6,8 +6,7 @@ Bayesian Network
     :alt: a Bayesian network (alarm)
 
 The Bayesian Network is the main object of pyAgrum. A Bayesian network is a
-probabilistic graphical model. It represents a joint distribution over a set of
-random variables. In pyAgrum, the variables are (for now) only discrete.
+directed probabilistic graphical model based on a DAG. It represents a joint distribution over a set of random variables. In pyAgrum, the variables are (for now) only discrete.
 
 A Bayesian network uses a directed acyclic graph (DAG) to represent conditional
 indepencies in the joint distribution. These conditional indepencies allow to

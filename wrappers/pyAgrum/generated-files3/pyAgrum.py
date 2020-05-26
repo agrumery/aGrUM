@@ -11354,6 +11354,13 @@ class IMarkovNet(UGmodel):
         raise AttributeError("No constructor defined - class is abstract")
     __swig_destroy__ = _pyAgrum.delete_IMarkovNet
 
+    def smallestFactorFromNode(self, *args) -> "gum::NodeSet const &":
+        r"""
+        smallestFactorFromNode(IMarkovNet self, gum::NodeId node) -> gum::NodeSet const
+        smallestFactorFromNode(IMarkovNet self, std::string const & name) -> gum::NodeSet const &
+        """
+        return _pyAgrum.IMarkovNet_smallestFactorFromNode(self, *args)
+
     def factors(self) -> "gum::FactorTable< double > const &":
         r"""factors(IMarkovNet self) -> gum::FactorTable< double > const &"""
         return _pyAgrum.IMarkovNet_factors(self)
@@ -11500,15 +11507,62 @@ _pyAgrum.IMarkovNet_swigregister(IMarkovNet)
 
 class MarkovNet(IMarkovNet):
     r"""
-    Proxy of C++ gum::MarkovNet< double > class.
-    Proxy of C++ gum::MarkovNet< double > class.
+
+
+
+    MarkovNet represents a Markov Network.
+
+    MarkovNet(name='') -> MarkovNet
+        Parameters:
+          * **name** (*str*) -- the name of the Bayes Net
+
+    MarkovNet(source) -> MarkovNet
+        Parameters:
+          * **source** (*pyAgrum.MarkovNet*) -- the Markov network to copy
+
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
 
     @staticmethod
     def fastPrototype(dotlike: "std::string const &", domainSize: "gum::Size"=2) -> "gum::MarkovNet< double >":
-        r"""fastPrototype(std::string const & dotlike, gum::Size domainSize=2) -> MarkovNet"""
+        r"""
+        fastPrototype(std::string const & dotlike, gum::Size domainSize=2) -> MarkovNet
+
+        Create a Markov network with a dot-like syntax which specifies:
+            - the structure 'a-b-c;b-d-e;'. The substring 'a-b-c' indicates a factor with the scope (a,b,c).
+            - the type of the variables with different syntax:
+
+              - by default, a variable is a gum.RangeVariable using the default domain size (second argument)
+              - with 'a[10]', the variable is a gum.RangeVariable using 10 as domain size (from 0 to 9)
+              - with 'a[3,7]', the variable is a gum.RangeVariable using a domainSize from 3 to 7
+              - with 'a[1,3.14,5,6.2]', the variable is a gum.DiscretizedVariable using the given ticks (at least 3 values)
+              - with 'a{top|middle|bottom}', the variable is a gum.LabelizedVariable using the given labels.
+
+        Note 
+        ----
+          - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
+          - the CPTs are randomly generated.
+          - see also pyAgrum.fastBN.
+
+        Examples
+        --------
+        >>> import pyAgrum as gum
+        >>> bn=gum.MarkovNet.fastPrototype('A-B[1,3]-C{yes|No}-D[2,4]-E[1,2.5,3.9]',6)
+
+        Parameters
+        ----------
+        dotlike : str
+                the string containing the specification
+        domainSize : int
+                the default domain size for variables
+
+        Returns
+        -------
+        pyAgrum.MarkovNet
+                the resulting Markov network 
+
+        """
         return _pyAgrum.MarkovNet_fastPrototype(dotlike, domainSize)
 
     @staticmethod
@@ -11525,6 +11579,10 @@ class MarkovNet(IMarkovNet):
         """
         _pyAgrum.MarkovNet_swiginit(self, _pyAgrum.new_MarkovNet(*args))
 
+    def smallestFactorFromNode(self, node: "gum::NodeId") -> "gum::NodeSet const &":
+        r"""smallestFactorFromNode(MarkovNet self, gum::NodeId node) -> gum::NodeSet const &"""
+        return _pyAgrum.MarkovNet_smallestFactorFromNode(self, node)
+
     def factors(self) -> "gum::FactorTable< double > const &":
         r"""factors(MarkovNet self) -> gum::FactorTable< double > const &"""
         return _pyAgrum.MarkovNet_factors(self)
@@ -11538,11 +11596,44 @@ class MarkovNet(IMarkovNet):
         add(MarkovNet self, DiscreteVariable var) -> gum::NodeId
         add(MarkovNet self, std::string const & name, unsigned int nbrmod) -> gum::NodeId
         add(MarkovNet self, DiscreteVariable var, gum::NodeId id) -> gum::NodeId
+
+        Add a variable to the pyAgrum.MarkovNet. 
+
+        Parameters
+        ----------
+        variable : pyAgrum.DiscreteVariable
+        	the variable added
+        name : str 
+        	the variable name
+        nbrmod : int
+        	the number of modalities for the new variable
+        id : int
+        	the variable forced id in the pyAgrum.MarkovNet
+
+        Returns
+        -------
+        int 
+        	the id of the new node
+
+        Raises
+        ------
+        gum.DuplicateLabel
+            If variable.name() is already used in this pyAgrum.MarkovNet.
+        gum.NotAllowed
+            If nbrmod is less than 2
+        gum.DuplicateElement
+            If id is already used.
+
         """
         return _pyAgrum.MarkovNet_add(self, *args)
 
     def clear(self) -> "void":
-        r"""clear(MarkovNet self)"""
+        r"""
+        clear(MarkovNet self)
+
+        Clear the whole MarkovNet  
+
+        """
         return _pyAgrum.MarkovNet_clear(self)
 
     def erase(self, *args) -> "void":
@@ -11550,6 +11641,22 @@ class MarkovNet(IMarkovNet):
         erase(MarkovNet self, gum::NodeId varId)
         erase(MarkovNet self, std::string const & name)
         erase(MarkovNet self, DiscreteVariable var)
+
+        Remove a variable from the gum::MarkovNet.
+
+        Removes the corresponding variable from the gum::MarkovNet and from all of it's children gum::Potential.
+
+        If no variable matches the given id, then nothing is done.
+
+        Parameters
+        ----------
+        id : int
+        	The variable's id to remove. 
+        name : str
+        	The variable's name to remove.
+        var : pyAgrum.DiscreteVariable
+        	A reference on the variable to remove. 
+
         """
         return _pyAgrum.MarkovNet_erase(self, *args)
 
@@ -11564,6 +11671,27 @@ class MarkovNet(IMarkovNet):
         r"""
         changeVariableName(MarkovNet self, gum::NodeId id, std::string const & new_name)
         changeVariableName(MarkovNet self, std::string const & name, std::string const & new_name)
+
+        Changes a variable's name in the gum::MarkovNet.
+
+        This will change the gum::DiscreteVariable names in the gum::MarkovNet.
+
+        Parameters
+        ----------
+        new_name : str
+        	the new name of the variable
+        NodeId : int
+        	the id of the node
+        name : str
+        	the name of the variable
+
+        Raises
+        ------
+        gum.DuplicateLabel
+            If new_name is already used in this MarkovNet.
+        gum.NotFound
+            If no variable matches id.
+
         """
         return _pyAgrum.MarkovNet_changeVariableName(self, *args)
 
@@ -11571,6 +11699,25 @@ class MarkovNet(IMarkovNet):
         r"""
         changeVariableLabel(MarkovNet self, gum::NodeId id, std::string const & old_label, std::string const & new_label)
         changeVariableLabel(MarkovNet self, std::string const & name, std::string const & old_label, std::string const & new_label)
+
+        change the label of the variable associated to nodeId to the new value.
+
+        Parameters
+        ----------
+        id : int
+        	the id of the node
+        name : str
+        	the name of the variable
+        old_label : str
+        	the new label
+        new_label : str
+        	the new label
+
+        Raises
+        ------
+        gum.NotFound
+            if id/name is not a variable or if old_label does not exist.
+
         """
         return _pyAgrum.MarkovNet_changeVariableLabel(self, *args)
 
@@ -11587,19 +11734,53 @@ class MarkovNet(IMarkovNet):
         return _pyAgrum.MarkovNet_variableFromName(self, name)
 
     def generateFactors(self) -> "void":
-        r"""generateFactors(MarkovNet self)"""
+        r"""
+        generateFactors(MarkovNet self)
+
+        Randomly generates factors parameters for a given structure.
+
+        """
         return _pyAgrum.MarkovNet_generateFactors(self)
 
     def generateFactor(self, vars: "gum::NodeSet const &") -> "void":
-        r"""generateFactor(MarkovNet self, gum::NodeSet const & vars)"""
+        r"""
+        generateFactor(MarkovNet self, gum::NodeSet const & vars)
+
+        Randomly generate factor parameters for a given factor in a given structure.
+
+        Parameters
+        ----------
+        node : int
+        	The variable's id.
+        name : str 
+        	The variable's name.
+
+        """
         return _pyAgrum.MarkovNet_generateFactor(self, vars)
 
     def beginTopologyTransformation(self) -> "void":
-        r"""beginTopologyTransformation(MarkovNet self)"""
+        r"""
+        beginTopologyTransformation(MarkovNet self)
+
+        When inserting/removing arcs, node CPTs change their dimension with a cost in time.
+        begin Multiple Change for all CPTs
+        These functions delay the CPTs change to be done just once at the end of a sequence of topology modification, begins a sequence of insertions/deletions of arcs without changing the dimensions of the CPTs.
+
+        """
         return _pyAgrum.MarkovNet_beginTopologyTransformation(self)
 
     def endTopologyTransformation(self) -> "void":
-        r"""endTopologyTransformation(MarkovNet self)"""
+        r"""
+        endTopologyTransformation(MarkovNet self)
+
+        Terminates a sequence of insertions/deletions of arcs by adjusting all CPTs dimensions.
+        End Multiple Change for all CPTs.
+
+        Returns
+        -------
+        pyAgrum.MarkovNet
+
+        """
         return _pyAgrum.MarkovNet_endTopologyTransformation(self)
 
     def graph(self) -> "gum::UndiGraph const &":
@@ -11635,15 +11816,64 @@ class MarkovNet(IMarkovNet):
         factor(MarkovNet self, gum::NodeSet const & varIds) -> Potential
         factor(MarkovNet self, Vector_string varnames) -> Potential
         factor(MarkovNet self, PyObject * nodeseq) -> Potential
+
+        Returns the factor of a set of variables (if existing).
+
+        Parameters
+        ----------
+        VarId : Set[int]
+        	A variable's id in the pyAgrum.MarkovNet.
+        name : Set[str]
+        	A variable's name in the pyAgrum.MarkovNet.
+
+        Returns
+        -------
+        pyAgrum.Potential
+        	The factor of the set of nodes. 
+
+        Raises
+        ------
+        gum.NotFound
+            If no variable's id matches varId.
+
         """
         return _pyAgrum.MarkovNet_factor(self, *args)
 
     def loadUAI(self, *args) -> "std::string":
-        r"""loadUAI(MarkovNet self, std::string name, PyObject * l=(PyObject *) 0) -> std::string"""
+        r"""
+        loadUAI(MarkovNet self, std::string name, PyObject * l=(PyObject *) 0) -> std::string
+
+        Load an UAI file.
+
+        Parameters
+        ----------
+        name : str
+        	the name's file
+        l : list
+        	list of functions to execute
+
+        Raises
+        ------
+        gum.IOError
+            If file not found
+        gum.FatalError
+            If file is not valid
+
+        """
         return _pyAgrum.MarkovNet_loadUAI(self, *args)
 
     def saveUAI(self, name: "std::string") -> "void":
-        r"""saveUAI(MarkovNet self, std::string name)"""
+        r"""
+        saveUAI(MarkovNet self, std::string name)
+
+        Save the MarkovNet in an UAI file.
+
+        Parameters
+        ----------
+        name : str
+        	the file's name
+
+        """
         return _pyAgrum.MarkovNet_saveUAI(self, name)
 
     def __repr__(self) -> "std::string":
@@ -11709,12 +11939,397 @@ class MarkovNet(IMarkovNet):
 _pyAgrum.MarkovNet_swigregister(MarkovNet)
 
 def MarkovNet_fastPrototype(dotlike: "std::string const &", domainSize: "gum::Size"=2) -> "gum::MarkovNet< double >":
-    r"""MarkovNet_fastPrototype(std::string const & dotlike, gum::Size domainSize=2) -> MarkovNet"""
+    r"""
+    MarkovNet_fastPrototype(std::string const & dotlike, gum::Size domainSize=2) -> MarkovNet
+
+    Create a Markov network with a dot-like syntax which specifies:
+        - the structure 'a-b-c;b-d-e;'. The substring 'a-b-c' indicates a factor with the scope (a,b,c).
+        - the type of the variables with different syntax:
+
+          - by default, a variable is a gum.RangeVariable using the default domain size (second argument)
+          - with 'a[10]', the variable is a gum.RangeVariable using 10 as domain size (from 0 to 9)
+          - with 'a[3,7]', the variable is a gum.RangeVariable using a domainSize from 3 to 7
+          - with 'a[1,3.14,5,6.2]', the variable is a gum.DiscretizedVariable using the given ticks (at least 3 values)
+          - with 'a{top|middle|bottom}', the variable is a gum.LabelizedVariable using the given labels.
+
+    Note 
+    ----
+      - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
+      - the CPTs are randomly generated.
+      - see also pyAgrum.fastBN.
+
+    Examples
+    --------
+    >>> import pyAgrum as gum
+    >>> bn=gum.MarkovNet.fastPrototype('A-B[1,3]-C{yes|No}-D[2,4]-E[1,2.5,3.9]',6)
+
+    Parameters
+    ----------
+    dotlike : str
+            the string containing the specification
+    domainSize : int
+            the default domain size for variables
+
+    Returns
+    -------
+    pyAgrum.MarkovNet
+            the resulting Markov network 
+
+    """
     return _pyAgrum.MarkovNet_fastPrototype(dotlike, domainSize)
 
 def MarkovNet_fromBN(bn: "BayesNet") -> "gum::MarkovNet< double >":
     r"""MarkovNet_fromBN(BayesNet bn) -> MarkovNet"""
     return _pyAgrum.MarkovNet_fromBN(bn)
+
+class ShaferShenoyMNInference(object):
+    r"""
+
+
+
+    Class used for Shafer-Shenoy inferences for Markov network.
+
+    ShaferShenoyInference(bn) -> ShaferShenoyInference
+        Parameters:
+            * **mn** (*pyAgrum.MarkovNet*) -- a Markov network
+
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, MN: "IMarkovNet", use_binary_join_tree: "bool"=True):
+        r"""__init__(ShaferShenoyMNInference self, IMarkovNet MN, bool use_binary_join_tree=True) -> ShaferShenoyMNInference"""
+        _pyAgrum.ShaferShenoyMNInference_swiginit(self, _pyAgrum.new_ShaferShenoyMNInference(MN, use_binary_join_tree))
+
+        self._mn=args[0]
+
+
+
+    __swig_destroy__ = _pyAgrum.delete_ShaferShenoyMNInference
+
+    def setTriangulation(self, new_triangulation: "Triangulation") -> "void":
+        r"""setTriangulation(ShaferShenoyMNInference self, Triangulation new_triangulation)"""
+        return _pyAgrum.ShaferShenoyMNInference_setTriangulation(self, new_triangulation)
+
+    def joinTree(self) -> "gum::JoinTree const *":
+        r"""
+        joinTree(ShaferShenoyMNInference self) -> CliqueGraph
+
+        Returns
+        -------
+        pyAgrum.CliqueGraph
+          the current join tree used
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_joinTree(self)
+
+    def junctionTree(self) -> "gum::JunctionTree const *":
+        r"""
+        junctionTree(ShaferShenoyMNInference self) -> CliqueGraph
+
+        Returns
+        -------
+        pyAgrum.CliqueGraph
+          the current junction tree
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_junctionTree(self)
+
+    def evidenceProbability(self) -> "double":
+        r"""
+        evidenceProbability(ShaferShenoyMNInference self) -> double
+
+        Returns
+        -------
+        double
+          the probability of evidence
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_evidenceProbability(self)
+
+    def setEvidence(self, evidces):
+        """
+        Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
+
+        Parameters
+        ----------
+        evidces : dict
+          a dict of evidences
+
+        Raises
+        ------
+        gum.InvalidArgument
+            If one value is not a value for the node
+        gum.InvalidArgument
+            If the size of a value is different from the domain side of the node
+        gum.FatalError
+            If one value is a vector of 0s
+        gum.UndefinedElement
+            If one node does not belong to the Bayesian network
+        """
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+        self.eraseAllEvidence()
+        for k,v in evidces.items():
+            self.addEvidence(k,v)
+
+
+
+    def updateEvidence(self, evidces):
+        """
+        Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
+
+        Parameters
+        ----------
+        evidces : dict
+          a dict of evidences
+
+        Raises
+        ------
+        gum.InvalidArgument
+            If one value is not a value for the node
+        gum.InvalidArgument
+            If the size of a value is different from the domain side of the node
+        gum.FatalError
+            If one value is a vector of 0s
+        gum.UndefinedElement
+            If one node does not belong to the Bayesian network
+        """
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+
+        for k,v in evidces.items():
+            if self.hasEvidence(k):
+                self.chgEvidence(k,v)
+            else:
+                self.addEvidence(k,v)
+
+
+
+    def setTargets(self, targets):
+        """
+        Remove all the targets and add the ones in parameter.
+
+        Parameters
+        ----------
+        targets : set
+          a set of targets
+
+        Raises
+        ------
+        gum.UndefinedElement
+            If one target is not in the Bayes net
+        """
+        if not isinstance(targets, set):
+            raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
+
+        self.eraseAllTargets()
+        for k in targets:
+            self.addTarget(k)
+
+
+
+    def hardEvidenceNodes(self) -> "PyObject *":
+        r"""
+        hardEvidenceNodes(ShaferShenoyMNInference self) -> PyObject *
+
+        Returns
+        -------
+        set
+          the set of nodes with hard evidence
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_hardEvidenceNodes(self)
+
+    def softEvidenceNodes(self) -> "PyObject *":
+        r"""
+        softEvidenceNodes(ShaferShenoyMNInference self) -> PyObject *
+
+        Returns
+        -------
+        set
+          the set of nodes with soft evidence
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_softEvidenceNodes(self)
+
+    def targets(self) -> "PyObject *":
+        r"""
+        targets(ShaferShenoyMNInference self) -> PyObject *
+
+        Returns
+        -------
+        list
+          the list of marginal targets
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_targets(self)
+
+    def evidenceImpact(self, target: "PyObject *", evs: "PyObject *") -> "gum::Potential< double >":
+        r"""
+        evidenceImpact(ShaferShenoyMNInference self, PyObject * target, PyObject * evs) -> Potential
+
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs)
+
+        Parameters
+        ----------
+        target : set
+          a set of targets ids or names.
+        evs : set
+          a set of nodes ids or names.
+
+        Warnings
+        --------
+        if some evs are d-separated, they are not included in the Potential.
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a Potential for P(targets|evs)
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_evidenceImpact(self, target, evs)
+
+    def jointMutualInformation(self, targets: "PyObject *") -> "double":
+        r"""jointMutualInformation(ShaferShenoyMNInference self, PyObject * targets) -> double"""
+        return _pyAgrum.ShaferShenoyMNInference_jointMutualInformation(self, targets)
+
+    def evidenceJointImpact(self, targets: "PyObject *", evs: "PyObject *") -> "gum::Potential< double >":
+        r"""
+        evidenceJointImpact(ShaferShenoyMNInference self, PyObject * targets, PyObject * evs) -> Potential
+
+        Create a pyAgrum.Potential for P(joint targets|evs) (for all instanciation of targets and evs)
+
+        Parameters
+        ----------
+        targets :
+          (int) a node Id
+        targets :
+          (str) a node name
+        evs : set
+          a set of nodes ids or names.
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a Potential for P(target|evs)
+
+        Raises
+        ------
+        gum.Exception
+          If some evidene entered into the Bayes net are incompatible (their joint proba = 0)
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_evidenceJointImpact(self, targets, evs)
+
+    def jointPosterior(self, targets: "PyObject *") -> "gum::Potential< double >":
+        r"""
+        jointPosterior(ShaferShenoyMNInference self, PyObject * targets) -> Potential
+
+        Compute the joint posterior of a set of nodes.
+
+        Parameters
+        ----------
+        list :
+          the list of nodes whose posterior joint probability is wanted
+
+
+        Warnings
+        --------
+        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used bu the Potential.
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a const ref to the posterior joint probability of the set of nodes.
+
+        Raises
+        ------
+        gum.UndefinedElement
+          If an element of nodes is not in targets
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_jointPosterior(self, targets)
+
+    def addJointTarget(self, targets: "PyObject *") -> "void":
+        r"""
+        addJointTarget(ShaferShenoyMNInference self, PyObject * targets)
+
+        Add a list of nodes as a new joint target. As a collateral effect, every node is added as a marginal target.
+
+        Parameters
+        ----------
+        list
+          a list of names of nodes
+
+        Raises
+        ------
+        gum.UndefinedElement
+          If some node(s) do not belong to the Bayesian network
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_addJointTarget(self, targets)
+
+    def eraseJointTarget(self, targets: "PyObject *") -> "void":
+        r"""
+        eraseJointTarget(ShaferShenoyMNInference self, PyObject * targets)
+
+        Remove, if existing, the joint target.
+
+        Parameters
+        ----------
+        list
+          a list of names or Ids of nodes
+
+        Raises
+        ------
+        gum.IndexError
+          If one of the node does not belong to the Bayesian network
+        gum.UndefinedElement
+          If node Id is not in the Bayesian network
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_eraseJointTarget(self, targets)
+
+    def isJointTarget(self, targets: "PyObject *") -> "bool":
+        r"""
+        isJointTarget(ShaferShenoyMNInference self, PyObject * targets) -> bool
+
+        Parameters
+        ----------
+        list
+          a list of nodes ids or names.
+
+        Returns
+        -------
+        bool
+          True if target is a joint target.
+
+        Raises
+        ------
+        gum.IndexError
+          If the node does not belong to the Bayesian network
+        gum.UndefinedElement
+          If node Id is not in the Bayesian network
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_isJointTarget(self, targets)
+
+    def jointTargets(self) -> "PyObject *":
+        r"""
+        jointTargets(ShaferShenoyMNInference self) -> PyObject *
+
+        Returns
+        -------
+        list
+          the list of target sets
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_jointTargets(self)
+
+# Register ShaferShenoyMNInference in _pyAgrum:
+_pyAgrum.ShaferShenoyMNInference_swigregister(ShaferShenoyMNInference)
 
 class BayesNetInference(object):
     r"""
@@ -11902,7 +12517,7 @@ class LazyPropagation(object):
         r"""__init__(LazyPropagation self, IBayesNet BN, gum::RelevantPotentialsFinderType arg3=DSEP_BAYESBALL_POTENTIALS, gum::FindBarrenNodesType arg4=FIND_BARREN_NODES, bool use_binary_join_tree=True) -> LazyPropagation"""
         _pyAgrum.LazyPropagation_swiginit(self, _pyAgrum.new_LazyPropagation(*args))
 
-        self._bn=args[0]#BN
+        self._bn=args[0]
 
 
 
@@ -12772,7 +13387,7 @@ class ShaferShenoyInference(object):
         r"""__init__(ShaferShenoyInference self, IBayesNet BN, gum::FindBarrenNodesType barren_type=FIND_BARREN_NODES, bool use_binary_join_tree=True) -> ShaferShenoyInference"""
         _pyAgrum.ShaferShenoyInference_swiginit(self, _pyAgrum.new_ShaferShenoyInference(*args))
 
-        self._bn=args[0]#BN
+        self._bn=args[0]
 
 
 
@@ -13616,7 +14231,7 @@ class VariableElimination(object):
         r"""__init__(VariableElimination self, IBayesNet BN, gum::RelevantPotentialsFinderType relevant_type=DSEP_BAYESBALL_POTENTIALS, gum::FindBarrenNodesType arg4=FIND_BARREN_NODES) -> VariableElimination"""
         _pyAgrum.VariableElimination_swiginit(self, _pyAgrum.new_VariableElimination(*args))
 
-        self._bn=args[0]#BN
+        self._bn=args[0]
 
 
 
