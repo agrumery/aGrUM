@@ -112,12 +112,12 @@ def _computeAUC(points):
   # computes the integral from 0 to 1
   somme = 0
   for i in range(1, len(points)):
-    somme += (points[i][0] - points[i-1][0]) * (points[i-1][1]+points[i][1])/2
+    somme += (points[i][0] - points[i-1][0]) * (points[i-1][1]+points[i][1])
 
-  return somme
+  return somme/2
 
 
-def __computeROCpoints(bn, csv_name, target, label, visible=False, with_labels=True):
+def __computepoints(bn, csv_name, target, label, visible=False, with_labels=True):
   """
   Compute the ROC curve points.
 
@@ -239,7 +239,7 @@ def __computeROCpoints(bn, csv_name, target, label, visible=False, with_labels=T
     return (res, totalP, totalN, idLabel)
 
 
-def _computeROC(bn, values, totalP, totalN, idLabel, modalite):
+def _computeROC_PR(bn, values, totalP, totalN, idLabel, modalite):
   """
   Parameters
   ----------
@@ -262,28 +262,49 @@ def _computeROC(bn, values, totalP, totalN, idLabel, modalite):
     (points, opt, seuil)
   """
 
-  res = sorted(values, key=lambda x: x[0])
-
-  vp = 0.0
-  fp = 0.0
-  xopt = 0.0
-  yopt = 0.0
-  opt = 100.0
-  seuilopt = 0
-  points = [(0, 0)]  # first one
+  res = sorted(values, key=lambda x: x[0], reverse = True)
+  
+  vp = 0.0      # Number of True Positives
+  fp = 0.0      # Number of False Positives
+  
+  xopt = 0.0    # True Postives Rate value for the best threshold
+  yopt = 0.0    # False Postives Rate value for the best threshold
+  seuilopt = 100.0   # temporal value for knowing the best threshold
+  seuil = 0  # best threshold (euclidian distance)
+  
+  zf1 = 0.0     # Recall value of f1 max
+  yf1 = 0.0     # Precision value of f1 max
+  f1opt = 0.0   # temporal value for knowing f1 max
+  seuilf1 = 0   # threshold of f1 max 
+  
+  
+  pointsROC = [(0, 0)]  # first one
+  pointsPR = [(0,1)]
+  
   old_seuil = res[0][0]
   for i in range(len(res)):
     # we add a point only if the seuil has changed
-    if res[i][0] - old_seuil > 1e-6:  # the seuil allows to take computation variation into account
-      x = vp / totalP
-      y = fp / totalN
-      d = x * x + (1 - y) * (1 - y)
-      if d < opt:
-        opt = d
+    if res[i][0]<old_seuil:  # the seuil allows to take computation variation into account
+      x = fp / totalN   # false positives rate
+      y = vp / totalP   # true positives rate and recall
+      z = vp / (vp + fp)        # precision
+      
+      d = x * x + (1 - y) * (1 - y)     #euclidian distance to know the best threshold
+      if d < seuilopt:
+        seuilopt = d
         xopt = x
         yopt = y
-        seuilopt = old_seuil
-      points.append((x, y))
+        seuil = (res[i][0] + old_seuil) / 2
+        
+      f = 2 * z * y / (z + y)           # f1
+      if f > f1opt:
+        f1opt = f
+        zf1 = z
+        yf1 = y
+        seuilf1 = (res[i][0] + old_seuil) / 2
+        
+      pointsROC.append((x, y))
+      pointsPR.append((y, z))
       old_seuil = res[i][0]
 
     res_id = res[i][1]
@@ -292,10 +313,64 @@ def _computeROC(bn, values, totalP, totalN, idLabel, modalite):
     else:
       fp += 1.0
 
-  points.append((1, 1))  # last one
+  pointsROC.append((1, 1))  # last one
+  pointsPR.append((1,0))
+  
+  return pointsROC, (xopt, yopt), seuil, pointsPR, (yf1, zf1), seuilf1
 
-  return points, (xopt, yopt), seuilopt
+def _computeROC(bn, values, totalP, totalN, idLabel, modalite):
+  """
+  Parameters
+  ----------
+  bn : pyAgrum.BayesNet
+    a bayesian network
+  values :
+    the ROC curve values
+  totalP : int
+    the number of positive values
+  totalN : int
+    the number of negative values
+  idLabel : int
+    the id of the target
+  modalite :
+    the label of the target
 
+  Returns
+  -------
+  tuple
+    (points, opt, seuil)
+  """
+  
+  points, opt, seuil, _, _, _ = _computeROC_PR(bn, values, totalP, totalN, idLabel, modalite)
+  
+  return (points, opt, seuil)
+
+def _computePR(bn, values, totalP, totalN, idLabel, modalite):
+  """
+  Parameters
+  ----------
+  bn : pyAgrum.BayesNet
+    a bayesian network
+  values :
+    the ROC curve values
+  totalP : int
+    the number of positive values
+  totalN : int
+    the number of negative values
+  idLabel : int
+    the id of the target
+  modalite :
+    the label of the target
+
+  Returns
+  -------
+  tuple
+    (points, opt, seuil)
+  """
+  
+  _, _, _, points, opt, seuil = _computeROC_PR(bn, values, totalP, totalN, idLabel, modalite)
+  
+  return (points, opt, seuil)
 
 def module_help(exit_value=1, message=""):
   """
@@ -309,6 +384,123 @@ def module_help(exit_value=1, message=""):
   sys.exit(exit_value)
 
 
+def _drawROC_PR(points, zeTitle, zeFilename, visible, show_fig, save_fig=True,
+             special_point=None, special_value=None, special_label=None, 
+             rate = None, showROC = True, showPR = True, ax = None):
+  """
+  Draw the ROC curve and save (or not) the curve into zeFilename as a png
+
+  Parameters
+  ----------
+  points :
+    a set of points drawing a curve
+  zeTitle : str
+    the title of the curve
+  zeFilename : str
+    the name of the file
+  visible : bool
+    unnecessary ?
+  show_fig : bool
+    indicates if the resulting curve must be printed
+  save_fig : bool
+    indicates if the resulting curve must be saved
+  special_point :
+    a special point to be highlighted
+  special_value :
+    a special value to be highlighted
+  special_label :
+    a special label to be highlighted  
+  rate :
+    rate of Positives in the dataset (use only for Precision-Recall cruve)
+  showROC : bool
+    indicates if the curve is ROC
+  showPR : bool
+    indicates if the curve is Precision-Recall curve
+  axs :
+    where the curve will be plot (use only whe  both are shown)
+  """
+  ax = ax or pylab.gca()
+  
+  AUC = _computeAUC(points)
+  
+  ax.grid(color='#aaaaaa', linestyle='-', linewidth=1, alpha=0.5)
+
+  ax.plot([x[0] for x in points], [y[1] for y in points], '-',
+           linewidth=3, color=gum.config["ROC", "draw_color"], zorder=3)
+  ax.fill_between([x[0] for x in points],
+                   [y[1] for y in points], 0, color=gum.config["ROC", "fill_color"])
+  
+  if showROC :
+    ax.plot([0.0, 1.0], [0.0, 1.0], '-', color="#AAAAAA")
+  if showPR :
+    ax.plot([0.0, 1.0], [rate, rate], '-', color="#AAAAAA")
+  
+  ax.set_ylim((-0.01, 1.01))
+  ax.set_xlim((-0.01, 1.01))
+  ax.set_xticks(pylab.arange(0, 1.1, .1))
+  ax.set_yticks(pylab.arange(0, 1.1, .1))
+  ax.grid(True)
+
+  axs = pylab.gca()
+  r = pylab.Rectangle((0, 0), 1, 1, edgecolor='#444444',
+                      facecolor='none', zorder=1)
+  axs.add_patch(r)
+  [spine.set_visible(False) for spine in axs.spines.values()]
+
+  if len(points) < 10:
+    for i in range(1, len(points) - 1):
+      ax.plot(points[i][0], points[i][1], 'o', color="#000066", zorder=6)
+
+  if showPR :
+    ax.set_xlabel('Recall')
+    ax.set_ylabel('Precision')
+  if showROC :
+    ax.set_xlabel('False positive rate')
+    ax.set_ylabel('True positive rate')
+
+  if special_point is not None:
+    ax.plot(special_point[0], special_point[1],
+               'o', color="#DD9999", zorder=6)
+    if special_value is not None:
+      horadj = "left" if showROC else "right"
+      incadj = 0.01 if showROC else -0.01
+      ax.text(special_point[0] + incadj, special_point[1] - 0.01, special_value,
+                 {'color': '#DD5555', 'fontsize': 10},
+                 horizontalalignment=horadj,
+                 verticalalignment='top',
+                 rotation=0,
+                 clip_on=False)
+  if special_label is not None:
+    if special_label != "":
+      labels = [special_label]
+      colors = ['#DD9999']
+      circles = [ax.Circle((0, 0), 1, fc=colors[0])]
+      legend_location = 'lower right'
+      ax.legend(circles, labels, loc=legend_location)
+
+  if showPR and special_point is not None:
+    f1 = 2 * special_point[0] * special_point[1] / (special_point[0] + special_point[1])
+    ax.text(0.5, 0.2, 'AUC=%f\nf1=%f' % (AUC,f1),
+            horizontalalignment='center',
+            verticalalignment='center',
+            fontsize=18)
+  else : 
+    ax.text(0.5, 0.2, 'AUC=%f' % AUC,
+            horizontalalignment='center',
+            verticalalignment='center',
+            fontsize=18)
+
+  ax.set_title(zeTitle)
+
+  if save_fig:
+    pylab.savefig(zeFilename, dpi=300)
+
+  if show_fig:
+    pylab.show()
+    
+  if save_fig:   
+    return zeFilename
+
 def _drawROC(points, zeTitle, zeFilename, visible, show_fig, save_fig=True,
              special_point=None, special_value=None, special_label=None):
   """
@@ -317,7 +509,7 @@ def _drawROC(points, zeTitle, zeFilename, visible, show_fig, save_fig=True,
   Parameters
   ----------
   points :
-    a set of points drawing a ROC curve
+    a set of points drawing a curve
   zeTitle : str
     the title of the curve
   zeFilename : str
@@ -334,69 +526,117 @@ def _drawROC(points, zeTitle, zeFilename, visible, show_fig, save_fig=True,
     a special value to be highlighted
   special_label :
     a special label to be highlighted
+  """  
+  _drawROC_PR(points, zeTitle, zeFilename, visible, show_fig = show_fig, save_fig = save_fig, 
+              special_point = special_point, special_value = special_value, special_label = special_label, 
+              showROC = True, showPR = False)
+  
+def _drawPR(points, rate,zeTitle, zeFilename, visible, show_fig, save_fig=True,
+             special_point=None, special_value=None, special_label=None):
   """
-  AUC = _computeAUC(points)
+  Draw the ROC curve and save (or not) the curve into zeFilename as a png
 
-  pylab.clf()
-  pylab.grid(color='#aaaaaa', linestyle='-', linewidth=1, alpha=0.5)
+  Parameters
+  ----------
+  points :  
+    a set of points drawing a curve
+  rate :
+    rate of Positives in the dataset (use only for Precision-Recall cruve)
+  zeTitle : str
+    the title of the curve
+  zeFilename : str
+    the name of the file
+  visible : bool
+    unnecessary ?
+  show_fig : bool
+    indicates if the resulting curve must be printed
+  save_fig : bool
+    indicates if the resulting curve must be saved
+  special_point :s
+    a special point to be highlighted
+  special_value :
+    a special value to be highlighted
+  special_label :
+    a special label to be highlighted
+  """
+  _drawROC_PR(points, zeTitle, zeFilename, visible, show_fig, save_fig = save_fig, 
+              special_point = special_point, special_value = special_value, special_label = special_label, 
+              rate = rate, showROC = False, showPR = True)
 
-  pylab.plot([x[0] for x in points], [y[1] for y in points], '-',
-             linewidth=3, color=gum.config["ROC", "draw_color"], zorder=3)
-  pylab.fill_between([x[0] for x in points],
-                     [y[1] for y in points], 0, color=gum.config["ROC", "fill_color"])
-  pylab.plot([0.0, 1.0], [0.0, 1.0], '-', color="#AAAAAA")
+def showROC_PR(bn, csv_name, variable, label, visible=True, show_fig=False, with_labels=True, showROC = True, showPR = True ):
+  """
+  Compute the ROC curve and save the result in the folder of the csv file.
 
-  pylab.ylim((-0.01, 1.01))
-  pylab.xlim((-0.01, 1.01))
-  pylab.xticks(pylab.arange(0, 1.1, .1))
-  pylab.yticks(pylab.arange(0, 1.1, .1))
-  pylab.grid(True)
+  Parameters
+  ----------
+  bn : pyAgrum.BayesNet
+    a bayesian network
+  csv_name : str
+    a csv filename
+  target : str
+    the target
+  label : str
+    the target label
+  visible : bool
+    indicates if the resulting curve must be printed 
+  showROC : bool
+    indicates if the curve is ROC
+  showPR : bool
+    indicates if the curve is Precision-Recall curve
+    
+  Returns
+  -------
+  tuple
+    (pointsROC, seuilROC, pointsPR, seuilPR)
 
-  ax = pylab.gca()
-  r = pylab.Rectangle((0, 0), 1, 1, edgecolor='#444444',
-                      facecolor='none', zorder=1)
-  ax.add_patch(r)
-  [spine.set_visible(False) for spine in ax.spines.values()]
+  """
+  
+  (res, totalP, totalN, idTarget) = __computepoints(
+      bn, csv_name, variable, label, visible, with_labels)
+  pointsROC, optROC, seuilROC, pointsPR, optPR, seuilPR = _computeROC_PR(bn, res, totalP, totalN, idTarget, label)
+    
+  try:
+    shortname = os.path.basename(bn.property("name"))
+  except gum.NotFound:
+    shortname = "unnamed"
+  
+  title = shortname + " vs " + csv_name + " - " + variable + "=" + str(label)    
+  rate = totalP / (totalP + totalN)
+  
+  if showROC and showPR :  
+    figname = csv_name + "-" + 'ROCandPR_' + shortname + \
+        "-" + variable + "-" + str(label) + '.png'
+    fig = pylab.figure(figsize=(10,4))
+    fig.suptitle(title)
+    pylab.gcf().subplots_adjust(wspace = 0.1)
 
-  if len(points) < 10:
-    for i in range(1, len(points) - 1):
-      pylab.plot(points[i][0], points[i][1], 'o', color="#000066", zorder=6)
+    ax1 = fig.add_subplot(1,2,1)
+   
+    _drawROC_PR(pointsROC, "ROC", figname, not visible, False,
+                special_point=optROC, special_value=seuilROC, showROC=True, showPR=False, ax=ax1)
+    
+    
+    ax2 = fig.add_subplot(1,2,2)
+    ax2.yaxis.tick_right()
+    ax2.yaxis.set_label_position("right")
+    _drawROC_PR(pointsPR, "Precision-Recall", figname, not visible, show_fig, 
+                special_point=optPR, special_value=seuilPR, rate = rate, showROC = False, showPR = True, ax = ax2)
+        
+  elif showROC : 
+    figname = csv_name + "-" + 'ROC_' + shortname + \
+        "-" + variable + "-" + str(label) + '.png'
 
-  pylab.xlabel('False positive rate')
-  pylab.ylabel('True positive rate')
-
-  if special_point is not None:
-    pylab.plot(special_point[0], special_point[1],
-               'o', color="#DD9999", zorder=6)
-    if special_value is not None:
-      pylab.text(special_point[0] + 0.01, special_point[1] - 0.01, special_value,
-                 {'color': '#DD5555', 'fontsize': 10},
-                 horizontalalignment='left',
-                 verticalalignment='top',
-                 rotation=0,
-                 clip_on=False)
-  if special_label is not None:
-    if special_label != "":
-      labels = [special_label]
-      colors = ['#DD9999']
-      circles = [pylab.Circle((0, 0), 1, fc=colors[0])]
-      legend_location = 'lower right'
-      pylab.legend(circles, labels, loc=legend_location)
-
-  pylab.text(0.5, 0.2, 'AUC=%f' % AUC,
-             horizontalalignment='center',
-             verticalalignment='center',
-             fontsize=18)
-
-  pylab.title(zeTitle)
-
-  if save_fig:
-    pylab.savefig(zeFilename, dpi=300)
-    print("\n result in " + zeFilename)
-
-  if show_fig:
-    pylab.show()
-
+    _drawROC(pointsROC, title, figname, not visible, show_fig,
+             special_point=optROC, special_value=seuilROC)
+     
+  elif showPR :
+    figname = csv_name + "-" + 'PrecisionRecall_' + shortname + \
+        "-" + variable + "-" + str(label) + '.png'
+    _drawPR(pointsPR, rate, title, figname, not visible, show_fig,
+            special_point=optPR, special_value=seuilPR)
+    
+  return (_computeAUC(pointsROC), seuilROC, _computeAUC(pointsPR), seuilPR)
+    
 
 def showROC(bn, csv_name, variable, label, visible=True, show_fig=False, with_labels=True):
   """
@@ -416,23 +656,29 @@ def showROC(bn, csv_name, variable, label, visible=True, show_fig=False, with_la
     indicates if the resulting curve must be printed
 
   """
-  (res, totalP, totalN, idTarget) = __computeROCpoints(
-      bn, csv_name, variable, label, visible, with_labels)
-  points, opt, seuil = _computeROC(bn, res, totalP, totalN, idTarget, label)
+  
+  return showROC_PR(bn, csv_name, variable, label, visible, show_fig, with_labels, True, False)
+  
+def showPR(bn, csv_name, variable, label, visible=True, show_fig=False, with_labels=True):
+  """
+  Compute the ROC curve and save the result in the folder of the csv file.
 
-  try:
-    shortname = os.path.basename(bn.property("name"))
-  except gum.NotFound:
-    shortname = "unnamed"
+  Parameters
+  ----------
+  bn : pyAgrum.BayesNet
+    a bayesian network
+  csv_name : str
+    a csv filename
+  target : str
+    the target
+  label : str
+    the target label
+  visible : bool
+    indicates if the resulting curve must be printed
 
-  title = shortname + " vs " + csv_name + " - " + variable + "=" + str(label)
-
-  figname = csv_name + "-" + 'ROC_' + shortname + \
-      "-" + variable + "-" + str(label) + '.png'
-
-  _drawROC(points, title, figname, not visible, show_fig,
-           special_point=opt, special_value=seuil)
-
+  """
+  
+  return showROC_PR(bn, csv_name, variable, label, visible, show_fig, with_labels, False, True)  
 
 def _checkROCargs():
   pyAgrum_header("2011-13")
@@ -467,7 +713,7 @@ def _checkROCargs():
                     "' not found.\n Labels : " + str(bn.variableFromName(variable)))
 
   return (bn, csv_name, variable, label)
-
+  
 
 if __name__ == "__main__":
   pyAgrum_header("2011-19")
