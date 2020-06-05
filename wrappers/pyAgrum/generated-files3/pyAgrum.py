@@ -169,6 +169,7 @@ class JunctionTreeGenerator(object):
         junctionTree(JunctionTreeGenerator self, UndiGraph g, PyObject * partial_order=None) -> CliqueGraph
         junctionTree(JunctionTreeGenerator self, DAG dag, PyObject * partial_order=None) -> CliqueGraph
         junctionTree(JunctionTreeGenerator self, BayesNet bn, PyObject * partial_order=None) -> CliqueGraph
+        junctionTree(JunctionTreeGenerator self, MarkovNet mn, PyObject * partial_order=None) -> CliqueGraph
 
         Computes the junction tree for its parameters. If the first parameter is a graph, the heurisitcs assume that all the node have the same domain size (2). If given, the heuristic takes into account the partial order for its elimination order.
 
@@ -12018,7 +12019,7 @@ class ShaferShenoyMNInference(object):
         r"""__init__(ShaferShenoyMNInference self, IMarkovNet MN, bool use_binary_join_tree=True) -> ShaferShenoyMNInference"""
         _pyAgrum.ShaferShenoyMNInference_swiginit(self, _pyAgrum.new_ShaferShenoyMNInference(MN, use_binary_join_tree))
 
-        self._mn=args[0]
+        self._mn=MN#first arg of the constructor
 
 
 
@@ -12211,34 +12212,6 @@ class ShaferShenoyMNInference(object):
         r"""jointMutualInformation(ShaferShenoyMNInference self, PyObject * targets) -> double"""
         return _pyAgrum.ShaferShenoyMNInference_jointMutualInformation(self, targets)
 
-    def evidenceJointImpact(self, targets: "PyObject *", evs: "PyObject *") -> "gum::Potential< double >":
-        r"""
-        evidenceJointImpact(ShaferShenoyMNInference self, PyObject * targets, PyObject * evs) -> Potential
-
-        Create a pyAgrum.Potential for P(joint targets|evs) (for all instanciation of targets and evs)
-
-        Parameters
-        ----------
-        targets :
-          (int) a node Id
-        targets :
-          (str) a node name
-        evs : set
-          a set of nodes ids or names.
-
-        Returns
-        -------
-        pyAgrum.Potential
-          a Potential for P(target|evs)
-
-        Raises
-        ------
-        gum.Exception
-          If some evidene entered into the Bayes net are incompatible (their joint proba = 0)
-
-        """
-        return _pyAgrum.ShaferShenoyMNInference_evidenceJointImpact(self, targets, evs)
-
     def jointPosterior(self, targets: "PyObject *") -> "gum::Potential< double >":
         r"""
         jointPosterior(ShaferShenoyMNInference self, PyObject * targets) -> Potential
@@ -12343,6 +12316,492 @@ class ShaferShenoyMNInference(object):
 
         """
         return _pyAgrum.ShaferShenoyMNInference_jointTargets(self)
+
+    def makeInference(self) -> "void":
+        r"""
+        makeInference(ShaferShenoyMNInference self)
+
+        Perform the heavy computations needed to compute the targets' posteriors
+
+        In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
+        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages.
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_makeInference(self)
+
+    def posterior(self, *args) -> "gum::Potential< double > const":
+        r"""
+        posterior(ShaferShenoyMNInference self, gum::NodeId const var) -> Potential
+        posterior(ShaferShenoyMNInference self, std::string const nodeName) -> Potential
+
+        Computes and returns the posterior of a node.
+
+        Parameters
+        ----------
+        var : int
+          the node Id of the node for which we need a posterior probability
+        nodeName : str
+          the node name of the node for which we need a posterior probability
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a const ref to the posterior probability of the node
+
+        Raises
+        ------
+        gum.UndefinedElement
+          If an element of nodes is not in targets
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_posterior(self, *args)
+
+    def MN(self) -> "gum::IMarkovNet< double > const &":
+        r"""MN(ShaferShenoyMNInference self) -> IMarkovNet"""
+        return _pyAgrum.ShaferShenoyMNInference_MN(self)
+
+    def addEvidence(self, *args) -> "void":
+        r"""
+        addEvidence(ShaferShenoyMNInference self, gum::NodeId const id, gum::Idx const val)
+        addEvidence(ShaferShenoyMNInference self, std::string const & nodeName, gum::Idx const val)
+        addEvidence(ShaferShenoyMNInference self, gum::NodeId const id, std::string const & val)
+        addEvidence(ShaferShenoyMNInference self, std::string const & nodeName, std::string const & val)
+        addEvidence(ShaferShenoyMNInference self, gum::NodeId const id, Vector vals)
+        addEvidence(ShaferShenoyMNInference self, std::string const & nodeName, Vector vals)
+
+        Adds a new evidence on a node (might be soft or hard).
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+        val :
+          (int) a node value
+        val :
+          (str) the label of the node value
+        vals : list
+          a list of values
+
+        Raises
+        ------
+        gum.InvalidArgument
+          If the node already has an evidence
+        gum.InvalidArgument
+          If val is not a value for the node
+        gum.InvalidArgument
+          If the size of vals is different from the domain side of the node
+        gum.FatalError
+          If vals is a vector of 0s
+        gum.UndefinedElement
+          If the node does not belong to the Bayesian network
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_addEvidence(self, *args)
+
+    def chgEvidence(self, *args) -> "void":
+        r"""
+        chgEvidence(ShaferShenoyMNInference self, gum::NodeId const id, gum::Idx const val)
+        chgEvidence(ShaferShenoyMNInference self, std::string const & nodeName, gum::Idx const val)
+        chgEvidence(ShaferShenoyMNInference self, gum::NodeId const id, std::string const & val)
+        chgEvidence(ShaferShenoyMNInference self, std::string const & nodeName, std::string const & val)
+        chgEvidence(ShaferShenoyMNInference self, gum::NodeId const id, Vector vals)
+        chgEvidence(ShaferShenoyMNInference self, std::string const & nodeName, Vector vals)
+
+        Change the value of an already existing evidence on a node (might be soft or hard).
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+        val :
+          (int) a node value
+        val :
+          (str) the label of the node value
+        vals : list
+          a list of values
+
+        Raises
+        ------
+        gum.InvalidArgument
+          If the node does not already have an evidence
+        gum.InvalidArgument
+          If val is not a value for the node
+        gum.InvalidArgument
+          If the size of vals is different from the domain side of the node
+        gum.FatalError
+          If vals is a vector of 0s
+        gum.UndefinedElement
+          If the node does not belong to the Bayesian network
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_chgEvidence(self, *args)
+
+    def hasEvidence(self, *args) -> "bool":
+        r"""
+        hasEvidence(ShaferShenoyMNInference self, gum::NodeId const id) -> bool
+        hasEvidence(ShaferShenoyMNInference self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if some node(s) (or the one in parameters) have received evidence
+
+        Raises
+        ------
+        gum.IndexError
+          If the node does not belong to the Bayesian network
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_hasEvidence(self, *args)
+
+    def eraseAllEvidence(self) -> "void":
+        r"""
+        eraseAllEvidence(ShaferShenoyMNInference self)
+
+        Removes all the evidence entered into the network.
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_eraseAllEvidence(self)
+
+    def eraseEvidence(self, *args) -> "void":
+        r"""
+        eraseEvidence(ShaferShenoyMNInference self, gum::NodeId const id)
+        eraseEvidence(ShaferShenoyMNInference self, std::string const & nodeName)
+
+        Remove the evidence, if any, corresponding to the node Id or name.
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+
+        Raises
+        ------
+        gum.IndexError
+          If the node does not belong to the Bayesian network
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_eraseEvidence(self, *args)
+
+    def hasHardEvidence(self, nodeName: "std::string const &") -> "bool":
+        r"""
+        hasHardEvidence(ShaferShenoyMNInference self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if node has received a hard evidence
+
+        Raises
+        ------
+        gum.IndexError
+          If the node does not belong to the Bayesian network
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_hasHardEvidence(self, nodeName)
+
+    def hasSoftEvidence(self, *args) -> "bool":
+        r"""
+        hasSoftEvidence(ShaferShenoyMNInference self, gum::NodeId const id) -> bool
+        hasSoftEvidence(ShaferShenoyMNInference self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if node has received a soft evidence
+
+        Raises
+        ------
+        gum.IndexError
+          If the node does not belong to the Bayesian network
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_hasSoftEvidence(self, *args)
+
+    def nbrEvidence(self) -> "gum::Size":
+        r"""
+        nbrEvidence(ShaferShenoyMNInference self) -> gum::Size
+
+        Returns
+        -------
+        int
+          the number of evidence entered into the Bayesian network
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_nbrEvidence(self)
+
+    def nbrHardEvidence(self) -> "gum::Size":
+        r"""
+        nbrHardEvidence(ShaferShenoyMNInference self) -> gum::Size
+
+        Returns
+        -------
+        int
+          the number of hard evidence entered into the Bayesian network
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_nbrHardEvidence(self)
+
+    def nbrSoftEvidence(self) -> "gum::Size":
+        r"""
+        nbrSoftEvidence(ShaferShenoyMNInference self) -> gum::Size
+
+        Returns
+        -------
+        int
+          the number of soft evidence entered into the Bayesian network
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_nbrSoftEvidence(self)
+
+    def eraseAllTargets(self) -> "void":
+        r"""
+        eraseAllTargets(ShaferShenoyMNInference self)
+
+        Clear all previously defined targets (marginal and joint targets).
+
+        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user).
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_eraseAllTargets(self)
+
+    def addAllTargets(self) -> "void":
+        r"""
+        addAllTargets(ShaferShenoyMNInference self)
+
+        Add all the nodes as targets.
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_addAllTargets(self)
+
+    def addTarget(self, *args) -> "void":
+        r"""
+        addTarget(ShaferShenoyMNInference self, gum::NodeId const target)
+        addTarget(ShaferShenoyMNInference self, std::string const & nodeName)
+
+        Add a marginal target to the list of targets.
+
+        Parameters
+        ----------
+        target : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Raises
+        ------
+        gum.UndefinedElement
+          If target is not a NodeId in the Bayes net
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_addTarget(self, *args)
+
+    def eraseTarget(self, *args) -> "void":
+        r"""
+        eraseTarget(ShaferShenoyMNInference self, gum::NodeId const target)
+        eraseTarget(ShaferShenoyMNInference self, std::string const & nodeName)
+
+        Remove, if existing, the marginal target.
+
+        Parameters
+        ----------
+        target : int
+          a node Id
+        nodeName : int
+          a node name
+
+        Raises
+        ------
+        gum.IndexError
+          If one of the node does not belong to the Bayesian network
+        gum.UndefinedElement
+          If node Id is not in the Bayesian network
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_eraseTarget(self, *args)
+
+    def isTarget(self, *args) -> "bool":
+        r"""
+        isTarget(ShaferShenoyMNInference self, gum::NodeId const variable) -> bool
+        isTarget(ShaferShenoyMNInference self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        variable : int
+         a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if variable is a (marginal) target
+
+        Raises
+        ------
+        gum.IndexError
+          If the node does not belong to the Bayesian network
+        gum.UndefinedElement
+          If node Id is not in the Bayesian network
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_isTarget(self, *args)
+
+    def nbrTargets(self) -> "gum::Size":
+        r"""
+        nbrTargets(ShaferShenoyMNInference self) -> gum::Size
+
+        Returns
+        -------
+        int
+          the number of marginal targets
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_nbrTargets(self)
+
+    def H(self, *args) -> "double":
+        r"""
+        H(ShaferShenoyMNInference self, gum::NodeId const X) -> double
+        H(ShaferShenoyMNInference self, std::string const & nodeName) -> double
+
+        Parameters
+        ----------
+        X : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        double
+          the computed Shanon's entropy of a node given the observation
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_H(self, *args)
+
+    def eraseAllJointTargets(self) -> "void":
+        r"""
+        eraseAllJointTargets(ShaferShenoyMNInference self)
+
+        Clear all previously defined joint targets.
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_eraseAllJointTargets(self)
+
+    def eraseAllMarginalTargets(self) -> "void":
+        r"""
+        eraseAllMarginalTargets(ShaferShenoyMNInference self)
+
+        Clear all the previously defined marginal targets.
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_eraseAllMarginalTargets(self)
+
+    def nbrJointTargets(self) -> "gum::Size":
+        r"""
+        nbrJointTargets(ShaferShenoyMNInference self) -> gum::Size
+
+        Returns
+        -------
+        int
+          the number of joint targets
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_nbrJointTargets(self)
+
+    def I(self, X: "gum::NodeId const", Y: "gum::NodeId const") -> "double":
+        r"""
+        I(ShaferShenoyMNInference self, gum::NodeId const X, gum::NodeId const Y) -> double
+
+        Parameters
+        ----------
+        X : int
+          a node Id
+        Y : int
+          another node Id
+
+        Returns
+        -------
+        double
+          the computed Shanon's entropy of a node given the observation
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_I(self, X, Y)
+
+    def VI(self, X: "gum::NodeId const", Y: "gum::NodeId const") -> "double":
+        r"""
+        VI(ShaferShenoyMNInference self, gum::NodeId const X, gum::NodeId const Y) -> double
+
+        Parameters
+        ----------
+        X : int
+          a node Id
+        Y : int
+          another node Id
+
+        Returns
+        -------
+        double
+          variation of information between X and Y
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_VI(self, X, Y)
+
+    def evidenceJointImpact(self, *args) -> "gum::Potential< double >":
+        r"""
+        evidenceJointImpact(ShaferShenoyMNInference self, PyObject * targets, PyObject * evs) -> Potential
+        evidenceJointImpact(ShaferShenoyMNInference self, Vector_string targets, Vector_string evs) -> Potential
+
+        Create a pyAgrum.Potential for P(joint targets|evs) (for all instanciation of targets and evs)
+
+        Parameters
+        ----------
+        targets :
+          (int) a node Id
+        targets :
+          (str) a node name
+        evs : set
+          a set of nodes ids or names.
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a Potential for P(target|evs)
+
+        Raises
+        ------
+        gum.Exception
+          If some evidene entered into the Bayes net are incompatible (their joint proba = 0)
+
+        """
+        return _pyAgrum.ShaferShenoyMNInference_evidenceJointImpact(self, *args)
 
 # Register ShaferShenoyMNInference in _pyAgrum:
 _pyAgrum.ShaferShenoyMNInference_swigregister(ShaferShenoyMNInference)

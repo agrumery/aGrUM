@@ -81,7 +81,7 @@ tests.append(AllIncrementalInferenceTestSuite.ts)
 tests.append(BayesNetTestSuite.ts)
 tests.append(BayesNetFragmentTestSuite.ts)
 
-if pandasFound and sklearnFound:
+if  sys.version_info >= (3,6) and pandasFound and sklearnFound:
   tests.append(BNClassifierTestSuite.ts)
 
 tests.append(BNDatabaseGeneratorTestSuite.ts)

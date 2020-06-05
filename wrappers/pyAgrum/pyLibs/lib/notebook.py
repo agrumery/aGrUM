@@ -42,16 +42,18 @@ from IPython.display import display, HTML, SVG
 
 import pyAgrum as gum
 from pyAgrum.lib.bn2graph import BN2dot, BNinference2dot
-from pyAgrum.lib.mn2graph import MN2UGdot, MN2FactorGraphdot
+from pyAgrum.lib.mn2graph import MN2UGdot, MNinference2UGdot
+from pyAgrum.lib.mn2graph import MN2FactorGraphdot, MNinference2FactorGraphdot
 from pyAgrum.lib.bn_vs_bn import GraphicalBNComparator
+from pyAgrum.lib.proba_histogram import proba2histo
 
 _cdict = {
-    'red': ((0.0, 0.1, 0.3),
-            (1.0, 0.6, 1.0)),
-    'green': ((0.0, 0.0, 0.0),
-              (1.0, 0.6, 0.8)),
-    'blue': ((0.0, 0.0, 0.0),
-             (1.0, 1, 0.8))
+  'red': ((0.0, 0.1, 0.3),
+          (1.0, 0.6, 1.0)),
+  'green': ((0.0, 0.0, 0.0),
+            (1.0, 0.6, 0.8)),
+  'blue': ((0.0, 0.0, 0.0),
+           (1.0, 1, 0.8))
 }
 _INFOcmap = mpl.colors.LinearSegmentedColormap('my_colormap', _cdict, 256)
 
@@ -78,7 +80,7 @@ def configuration():
     res += "<tr><td>%s</td><td>%s</td></tr>" % (name, packages[name])
 
   res += "</table><div align='right'><small>%s</small></div>" % time.strftime(
-      '%a %b %d %H:%M:%S %Y %Z')
+    '%a %b %d %H:%M:%S %Y %Z')
 
   display(HTML(res))
 
@@ -101,7 +103,7 @@ def __insertLinkedSVGs(mainSvg):
         if line[0:4] == "<svg":
           inSvg = True
           viewBox = re.findall(re_viewbox, line)[0]
-          #print("VIEWBOX {}".format(viewBox))
+          # print("VIEWBOX {}".format(viewBox))
         elif inSvg:
           content += line
     __fragments[secondarySvg] = (viewBox, content)
@@ -113,7 +115,7 @@ def __insertLinkedSVGs(mainSvg):
     # insert secondaries into main
     def ___insertSecondarySvgs(matchObj):
       vb, code = __fragments[matchObj.group(1)]
-      return vb+matchObj.group(2)+code
+      return vb + matchObj.group(2) + code
 
     mainSvg = re.sub(r'xlink:href="([^"]*)"(.*>)',
                      ___insertSecondarySvgs, img2svg)
@@ -300,43 +302,43 @@ def _infdiag_todot(diag):
     node [fillcolor="{}",
           fontcolor="{}",
           style=filled,shape={}];
-  ''' .format(gum.config["influenceDiagram", "default_chance_bgcolor"],
-              gum.config["influenceDiagram", "default_chance_fgcolor"],
-              gum.config["influenceDiagram", "default_chance_shape"])
+  '''.format(gum.config["influenceDiagram", "default_chance_bgcolor"],
+             gum.config["influenceDiagram", "default_chance_fgcolor"],
+             gum.config["influenceDiagram", "default_chance_shape"])
   for node in diag.nodes():
     if diag.isChanceNode(node):
-      res += '   "'+diag.variable(node).name()+'";'+"\n"
+      res += '   "' + diag.variable(node).name() + '";' + "\n"
 
   # decision node
   res += '''
     node [fillcolor="{}",
           fontcolor="{}",
           style=filled,shape={}];
-  ''' .format(gum.config["influenceDiagram", "default_decision_bgcolor"],
-              gum.config["influenceDiagram", "default_decision_fgcolor"],
-              gum.config["influenceDiagram", "default_decision_shape"])
+  '''.format(gum.config["influenceDiagram", "default_decision_bgcolor"],
+             gum.config["influenceDiagram", "default_decision_fgcolor"],
+             gum.config["influenceDiagram", "default_decision_shape"])
   for node in diag.nodes():
     if diag.isDecisionNode(node):
-      res += '   "'+diag.variable(node).name()+'";'+"\n"
+      res += '   "' + diag.variable(node).name() + '";' + "\n"
 
   # utility node
   res += '''
     node [fillcolor="{}",
           fontcolor="{}",
           style=filled,shape={}];
-  ''' .format(gum.config["influenceDiagram", "default_utility_bgcolor"],
-              gum.config["influenceDiagram", "default_utility_fgcolor"],
-              gum.config["influenceDiagram", "default_utility_shape"])
+  '''.format(gum.config["influenceDiagram", "default_utility_bgcolor"],
+             gum.config["influenceDiagram", "default_utility_fgcolor"],
+             gum.config["influenceDiagram", "default_utility_shape"])
   for node in diag.nodes():
     if diag.isUtilityNode(node):
-      res += '   "'+diag.variable(node).name()+'";'+"\n"
+      res += '   "' + diag.variable(node).name() + '";' + "\n"
 
   # arcs
   res += "\n"
   for node in diag.nodes():
     for chi in diag.children(node):
-      res += '  "'+diag.variable(node).name()+'"->"' + \
-          diag.variable(chi).name()+'";'+"\n"
+      res += '  "' + diag.variable(node).name() + '"->"' + \
+             diag.variable(chi).name() + '";' + "\n"
   res += "}"
   return res
 
@@ -379,15 +381,8 @@ def showProba(p, scale=1.0):
   fig = proba2histo(p, scale)
   fig.patch.set_facecolor(gum.config["notebook", "figure_facecolor"])
   IPython.display.set_matplotlib_formats(
-      gum.config["notebook", "graph_format"])
+    gum.config["notebook", "graph_format"])
   plt.show()
-
-
-def _saveFigProba(p, filename):
-  fig = proba2histo(p)
-  fig.savefig(filename, bbox_inches='tight', transparent=True,
-              pad_inches=0, dpi=fig.dpi, format=gum.config["notebook", "graph_format"])
-  plt.close(fig)
 
 
 def getPosterior(bn, evs, target):
@@ -427,15 +422,15 @@ def animApproximationScheme(apsc, scale=np.log10):
   f = plt.gcf()
 
   h = gum.PythonApproximationListener(
-      apsc._asIApproximationSchemeConfiguration())
+    apsc._asIApproximationSchemeConfiguration())
   apsc.setVerbosity(True)
   apsc.listener = h
 
   def stopper(x):
     clear_output(True)
     plt.title(
-        "{0} \n Time : {1} s | Iterations : {2} | Espilon : {3}".format(x, apsc.currentTime(), apsc.nbrIterations(),
-                                                                        apsc.epsilon()))
+      "{0} \n Time : {1} s | Iterations : {2} | Espilon : {3}".format(x, apsc.currentTime(), apsc.nbrIterations(),
+                                                                      apsc.epsilon()))
 
   def progresser(x, y, z):
     if len(apsc.history()) < 10:
@@ -457,13 +452,14 @@ def showApproximationScheme(apsc, scale=np.log10):
     else:
       plt.xlim(1, len(apsc.history()))
     plt.title(
-        "Time : {} s | Iterations : {} | Espilon : {}".format(apsc.currentTime(),
-                                                              apsc.nbrIterations(),
-                                                              apsc.epsilon()))
+      "Time : {} s | Iterations : {} | Espilon : {}".format(apsc.currentTime(),
+                                                            apsc.nbrIterations(),
+                                                            apsc.epsilon()))
     plt.plot(scale(apsc.history()), 'g')
 
 
-def showMN(mn, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth=None, edgeColor=None, cmap=None, cmapEdge=None):
+def showMN(mn, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth=None, edgeColor=None, cmap=None,
+           cmapEdge=None):
   """
   show a Markov network
 
@@ -518,7 +514,8 @@ def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=Non
   return showGraph(BN2dot(bn, size, nodeColor, arcWidth, arcColor, cmap, cmapArc), size)
 
 
-def getMN(mn, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth=None, edgeColor=None, cmap=None, cmapEdge=None):
+def getMN(mn, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth=None, edgeColor=None, cmap=None,
+          cmapEdge=None):
   """
   get an HTML string for a Markov network
 
@@ -533,14 +530,14 @@ def getMN(mn, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth=
   :param cmapEdge: color map to show the edge color if distinction is needed
   :return: the graph
   """
-  if view is None:
-    view = gum.config["notebook", "default_markovnetwork_view"]
-
   if size is None:
     size = gum.config["notebook", "default_graph_size"]
 
   if cmapEdge is None:
     cmapEdge = cmap
+
+  if view is None:
+    view = gum.config["notebook", "default_markovnetwork_view"]
 
   if view == "graph":
     dottxt = MN2UGdot(mn, size, nodeColor, edgeWidth,
@@ -633,17 +630,17 @@ def _reprInformation(bn, evs, size, cmap, asString):
   cb1.set_label('Entropy')
   png = print_figure(canvas.figure, "png")  # from IPython.core.pylabtools
   png_legend = "<img style='vertical-align:middle' src='data:image/png;base64,%s'>" % base64.encodestring(png).decode(
-      'ascii')
+    'ascii')
 
   gsvg = SVG(gr.create_svg())
 
   sss = "<div align='center'>" + gsvg.data + "</div>"
   sss += "<div align='center'>"
   sss += "<font color='" + \
-      _proba2bgcolor(0.01, cmap) + "'>" + str(mi) + "</font>"
+         _proba2bgcolor(0.01, cmap) + "'>" + str(mi) + "</font>"
   sss += png_legend
   sss += "<font color='" + \
-      _proba2bgcolor(0.99, cmap) + "'>" + str(ma) + "</font>"
+         _proba2bgcolor(0.99, cmap) + "'>" + str(ma) + "</font>"
   sss += "</div>"
 
   if asString:
@@ -689,12 +686,46 @@ def showInformation(bn, evs=None, size=None, cmap=_INFOcmap):
   return _reprInformation(bn, evs, size, cmap, asString=False)
 
 
-def showInference(bn, engine=None, evs=None, targets=None, size=None,  nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None, dag=None):
+def _get_showInference(model, engine=None, evs=None, targets=None, size=None,
+                       nodeColor=None, factorColor=None, arcWidth=None,
+                       arcColor=None, cmap=None, cmapArc=None, graph=None, view=None):
+  if size is None:
+    size = gum.config["notebook", "default_graph_inference_size"]
+
+  if evs is None:
+    evs = {}
+
+  if targets is None:
+    targets = {}
+
+  if isinstance(model, gum.BayesNet):
+    if engine is None:
+      engine = gum.LazyPropagation(model)
+    return BNinference2dot(model, size, engine, evs, targets, nodeColor, arcWidth, arcColor, cmap, cmapArc, graph)
+  elif isinstance(model, gum.MarkovNet):
+    if view is None:
+      view = gum.config["notebook", "default_markovnetwork_view"]
+      if engine is None:
+        engine = gum.ShaferShenoyMNInference(model)
+
+      if view == "graph":
+        return MNinference2UGdot(model, size, engine, evs, targets, nodeColor, factorColor, arcWidth, arcColor, cmap,
+                                 cmapArc)
+      else:
+        return MNinference2FactorGraphdot(model, size, engine, evs, targets, nodeColor, factorColor, cmap)
+    else:
+      raise gum.InvalidArgument("Argument model should be a PGM (BayesNet or MarkovNet")
+
+
+def showInference(model, engine=None, evs=None, targets=None, size=None,
+                  nodeColor=None, factorColor=None,
+                  arcWidth=None, arcColor=None,
+                  cmap=None, cmapArc=None, graph=None, view=None):
   """
   show pydot graph for an inference in a notebook
 
-  :param gum.BayesNet bn:
-  :param gum.Inference engine: inference algorithm used. If None, LazyPropagation will be used
+  :param gum.{Bayes|Markov}Net model: the model in which to infer
+  :param gum.Inference engine: inference algorithm used. If None, LazyPropagation will be used for BayesNet and ShaferShenoy for Markov net
   :param dictionnary evs: map of evidence
   :param set targets: set of targets
   :param string size: size of the rendered graph
@@ -703,28 +734,25 @@ def showInference(bn, engine=None, evs=None, targets=None, size=None,  nodeColor
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
   :param cmap: color map to show the color of nodes and arcs
   :param cmapArc: color map to show the vals of Arcs.
-  :param dag : only shows nodes that have their id in the dag (and not in the whole BN)
+  :param graph : only shows nodes that have their id in the graph (and not in the whole BN)
+  :param view: 'graph' | 'factorgraph’ | None (default) for Markov network
 
   :return: the desired representation of the inference
   """
-  if size is None:
-    size = gum.config["notebook", "default_graph_inference_size"]
-
-  if evs is None:
-    evs = {}
-
-  if targets is None:
-    targets = {}
-
-  return showGraph(BNinference2dot(bn, size, engine, evs, targets, nodeColor, arcWidth, arcColor, cmap, cmapArc, dag), size)
+  grinf = _get_showInference(model, engine, evs, targets, size, nodeColor, arcWidth, arcColor, cmap, cmapArc, graph,
+                             view)
+  return showGraph(grinf, size)
 
 
-def getInference(bn, engine=None, evs=None, targets=None, size=None,  nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None, dag=None):
+def getInference(model, engine=None, evs=None, targets=None, size=None,
+                 nodeColor=None, factorColor=None,
+                 arcWidth=None, arcColor=None,
+                 cmap=None, cmapArc=None, graph=None, view=None):
   """
   get a HTML string for an inference in a notebook
 
-  :param gum.BayesNet bn:
-  :param gum.Inference engine: inference algorithm used. If None, LazyPropagation will be used
+  :param gum.{Bayes|Markov}Net model: the model in which to infer
+  :param gum.Inference engine: inference algorithm used. If None, LazyPropagation will be used for BayesNet and ShaferShenoy for Markov net
   :param dictionnary evs: map of evidence
   :param set targets: set of targets
   :param string size: size of the rendered graph
@@ -733,20 +761,14 @@ def getInference(bn, engine=None, evs=None, targets=None, size=None,  nodeColor=
   :param arcColor: a arcMap of values (between 0 and 1) to be shown as color of arcs
   :param cmap: color map to show the color of nodes and arcs
   :param cmapArc: color map to show the vals of Arcs.
-  :param dag : only shows nodes that have their id in the dag (and not in the whole BN)
+  :param graph : only shows nodes that have their id in the graph (and not in the whole BN)
+  :param view: 'graph' | 'factorgraph’ | None (default) for Markov network
 
   :return: the desired representation of the inference
   """
-  if size is None:
-    size = gum.config["notebook", "default_graph_inference_size"]
-
-  if evs is None:
-    evs = {}
-
-  if targets is None:
-    targets = {}
-
-  return getGraph(BNinference2dot(bn, size, engine, evs, targets,  nodeColor, arcWidth, arcColor, cmap, cmapArc), size)
+  grinf = _get_showInference(model, engine, evs, targets, size, nodeColor, arcWidth, arcColor, cmap, cmapArc, graph,
+                             view)
+  return getGraph(grinf, size)
 
 
 def _reprPotential(pot, digits=None, withColors=True, varnames=None, asString=False):
@@ -787,12 +809,12 @@ def _reprPotential(pot, digits=None, withColors=True, varnames=None, asString=Fa
   html.append('<table style="border:1px solid black;">')
   if pot.empty():
     html.append(
-        "<tr><th>&nbsp;</th></tr>")
+      "<tr><th>&nbsp;</th></tr>")
     html.append("<tr>" + _mkCell(pot.get(gum.Instantiation())) + "</tr>")
   else:
     if varnames is not None and len(varnames) != pot.nbrDim():
       raise ValueError(
-          "varnames contains {} values instead of the needed {} values.".format(len(varnames), pot.nbrDim()))
+        "varnames contains {} values instead of the needed {} values.".format(len(varnames), pot.nbrDim()))
 
     nparents = pot.nbrDim() - 1
     var = pot.variable(0)
@@ -801,14 +823,14 @@ def _reprPotential(pot, digits=None, withColors=True, varnames=None, asString=Fa
     # first line
     if nparents > 0:
       html.append(
-          "<tr><th colspan='{}'></th><th colspan='{}' style='border:1px solid black;color:black;background-color:#808080;'><center>{"
-          "}</center></th></tr>".format(
-              nparents, var.domainSize(), varname))
+        "<tr><th colspan='{}'></th><th colspan='{}' style='border:1px solid black;color:black;background-color:#808080;'><center>{"
+        "}</center></th></tr>".format(
+          nparents, var.domainSize(), varname))
     else:
       html.append(
-          "<tr style='border:1px solid black;color:black;background-color:#808080'><th colspan='{}'><center>{}</center></th></tr>".format(
-              var.domainSize(),
-              varname))
+        "<tr style='border:1px solid black;color:black;background-color:#808080'><th colspan='{}'><center>{}</center></th></tr>".format(
+          var.domainSize(),
+          varname))
     # second line
     s = "<tr>"
     if nparents > 0:
@@ -820,10 +842,10 @@ def _reprPotential(pot, digits=None, withColors=True, varnames=None, asString=Fa
       for par in range(pmin, pmax, pinc):
         parent = pot.var_names[par] if varnames is None else varnames[par]
         s += "<th style='border:1px solid black;color:black;background-color:#808080'><center>{}</center></th>".format(
-            parent)
+          parent)
     for label in var.labels():
       s += "<th style='border:1px solid black;border-bottom-style: double;color:black;background-color:#BBBBBB'><center>{}</center></th>".format(
-          label)
+        label)
     s += '</tr>'
 
     html.append(s)
@@ -847,11 +869,11 @@ def _reprPotential(pot, digits=None, withColors=True, varnames=None, asString=Fa
         label = inst.variable(par).label(inst.val(par))
         if par == 1 or gum.config["notebook", "potential_parent_values"] == "nomerge":
           s += "<th style='border:1px solid black;color:black;background-color:#BBBBBB'><center>{}</center></th>".format(
-              label)
+            label)
         else:
           if sum([inst.val(i) for i in range(1, par)]) == 0:
             s += "<th style='border:1px solid black;color:black;background-color:#BBBBBB;' rowspan = '{}'><center>{}</center></th>".format(
-                offset[par], label)
+              offset[par], label)
       for j in range(pot.variable(0).domainSize()):
         s += _mkCell(pot.get(inst))
         inst.inc()
@@ -913,7 +935,7 @@ def showPotential(pot, digits=None, withColors=None, varnames=None):
       withColors = __isKindOfProba(pot)
 
   display(_reprPotential(
-      pot, digits, withColors, varnames, asString=False))
+    pot, digits, withColors, varnames, asString=False))
 
 
 def getPotential(pot, digits=None, withColors=None, varnames=None):
@@ -947,7 +969,7 @@ def getSideBySide(*args, **kwargs):
 
   if not set(kwargs.keys()).issubset(set(['captions', 'valign'])):
     raise TypeError("sideBySide() got unexpected keyword argument(s) : '{}'".format(
-        set(kwargs.keys()).difference(set(['captions', 'valign']))))
+      set(kwargs.keys()).difference(set(['captions', 'valign']))))
 
   if 'captions' in kwargs:
     captions = kwargs['captions']
@@ -974,14 +996,14 @@ def getSideBySide(*args, **kwargs):
   s += (
       '</div></td><td style="border-top:hidden;border-bottom:hidden;' + v_align + '"><div align="center" style="' +
       v_align + '">').join(
-      [reprHTML(arg)
-       for arg in args])
+    [reprHTML(arg)
+     for arg in args])
   s += '</div></td></tr>'
 
   if captions is not None:
     s += '<tr><td style="border-top:hidden;border-bottom:hidden;"><div align="center"><small>'
     s += '</small></div></td><td style="border-top:hidden;border-bottom:hidden;"><div align="center"><small>'.join(
-        captions)
+      captions)
     s += '</small></div></td></tr>'
 
   s += '</table>'
@@ -1044,7 +1066,7 @@ gum.BayesNetFragment._repr_html_ = lambda self: getBN(self)
 
 gum.Potential._repr_html_ = lambda self: getPotential(self)
 gum.LazyPropagation._repr_html_ = lambda self: getInferenceEngine(
-    self, "Lazy Propagation on this BN")
+  self, "Lazy Propagation on this BN")
 
 gum.UndiGraph._repr_html_ = lambda self: getDot(self.toDot())
 gum.DiGraph._repr_html_ = lambda self: getDot(self.toDot())

@@ -331,7 +331,7 @@ pyAgrum.MARKOVNet
   return MarkovNet.fastPrototype(structure, domain_size)
 
 
-def getPosterior(bn, evs, target):
+def getPosterior(model, evs, target):
   """
   Compute the posterior of a single target (variable) in a BN given evidence
 
@@ -343,8 +343,8 @@ def getPosterior(bn, evs, target):
 
   Parameters
   ----------
-  bn : pyAgrum.BayesNet
-    The Bayesian network    
+  bn : pyAgrum.BayesNet or pyAgrum.MarkovNet
+    The probabilistic Graphical Model   
   evs:  dictionaryDict
     {name/id:val, name/id : [ val1, val2 ], ...}
   target: string or int
@@ -354,7 +354,13 @@ def getPosterior(bn, evs, target):
   -------
     posterior (gum::Potential)
   """
-  inf = VariableElimination(bn)
+  if isinstance(model,BayesNet):
+    inf = VariableElimination(model)
+  elif isinstance(model,MarkovNet):
+    inf = ShaferShenoyMNInference(model)
+  else:
+    raise InvalidArgument("Argument model should be a PGM (BayesNet or MarkovNet")
+
   inf.setEvidence(evs)
   inf.addTarget(target)
   inf.makeInference()

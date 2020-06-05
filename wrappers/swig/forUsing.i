@@ -565,3 +565,208 @@ ADD_GIBBS_OPERATOR_API(gum::GibbsBNdistance<double>)
 
 #################
 
+
+
+#####################################
+#####################################
+%define ADD_MN_INFERENCE_API(classname...)
+%extend classname  {
+  void makeInference(void) {
+    self->gum::MarkovNetInference<double>::makeInference();
+  }
+  const Potential<double> posterior( const NodeId var ) {
+    return self->MarginalTargetedMNInference<double>::posterior(var);
+  }
+  const Potential<double> posterior( const std::string nodeName ) {
+    return self->MarginalTargetedMNInference<double>::posterior(nodeName);
+  }
+  const IMarkovNet<double>& MN() const {
+    return self->MarkovNetInference<double>::MN();
+  }
+
+//######## EVIDENCE ##########
+//############################
+  void addEvidence( const NodeId id, const Idx val ) {
+    self->gum::MarkovNetInference<double>::addEvidence(id,val);
+  }
+  void addEvidence( const std::string& nodeName, const Idx val ) {
+    self->gum::MarkovNetInference<double>::addEvidence(nodeName,val);
+  }
+  void addEvidence( const NodeId id, const std::string& val ) {
+    self->gum::MarkovNetInference<double>::addEvidence(id,val);
+  }
+
+  void addEvidence( const std::string& nodeName, const std::string& val ) {
+    self->gum::MarkovNetInference<double>::addEvidence(nodeName,val);
+  }
+
+  void addEvidence( const NodeId id,const std::vector<double>& vals ) {
+   self->gum::MarkovNetInference<double>::addEvidence(id,vals);
+  }
+  void addEvidence( const std::string& nodeName,
+                                const std::vector<double>& vals ) {
+    self->gum::MarkovNetInference<double>::addEvidence(nodeName,vals);
+  }
+
+
+  void chgEvidence( const NodeId id, const Idx val ) {
+    self->gum::MarkovNetInference<double>::chgEvidence(id,val);
+  }
+  void chgEvidence( const std::string& nodeName, const Idx val ) {
+    self->gum::MarkovNetInference<double>::chgEvidence(nodeName,val);
+  }
+
+  void chgEvidence( const NodeId id, const std::string& val ) {
+    self->gum::MarkovNetInference<double>::chgEvidence(id,val);
+  }
+  void chgEvidence( const std::string& nodeName, const std::string& val ) {
+    self->gum::MarkovNetInference<double>::chgEvidence(nodeName,val);
+  }
+
+
+  void chgEvidence( const NodeId id,const std::vector<double>& vals ) {
+   self->gum::MarkovNetInference<double>::chgEvidence(id,vals);
+  }
+  void chgEvidence( const std::string& nodeName,
+                                const std::vector<double>& vals ) {
+    self->gum::MarkovNetInference<double>::chgEvidence(nodeName,vals);
+  }
+
+  bool hasEvidence( const NodeId id ) const {
+    return self->gum::MarkovNetInference<double>::hasEvidence(id);
+  }
+  bool hasEvidence( const std::string& nodeName) const {
+    return self->gum::MarkovNetInference<double>::hasEvidence(nodeName);
+  }
+
+  void eraseAllEvidence() {
+    self->gum::MarkovNetInference<double>::eraseAllEvidence();
+  }
+
+  void eraseEvidence( const NodeId id ) {
+    self->gum::MarkovNetInference<double>::eraseEvidence(id);
+  }
+  void eraseEvidence( const std::string& nodeName  ) {
+    self->gum::MarkovNetInference<double>::eraseEvidence(nodeName);
+  }
+
+  bool hasSoftEvidence( const NodeId id ) const {
+    return self->gum::MarkovNetInference<double>::hasSoftEvidence(id);
+  }
+
+  bool hasHardEvidence( const std::string& nodeName ) const {
+    return self->gum::MarkovNetInference<double>::hasHardEvidence(nodeName);
+  }
+
+  bool hasSoftEvidence( const std::string& nodeName ) const {
+    return self->gum::MarkovNetInference<double>::hasSoftEvidence(nodeName);
+  }
+
+  gum::Size nbrEvidence() const {
+    return self->gum::MarkovNetInference<double>::nbrEvidence();
+  }
+
+  gum::Size nbrHardEvidence() const {
+    return self->gum::MarkovNetInference<double>::nbrHardEvidence();
+  }
+
+  gum::Size nbrSoftEvidence() const {
+    return self->gum::MarkovNetInference<double>::nbrSoftEvidence();
+  }
+
+
+//######## TARGETS ##########
+//############################
+    void eraseAllTargets() {
+      self->gum::MarginalTargetedMNInference<double>::eraseAllTargets();
+    }
+
+    void addAllTargets() {
+      self->gum::MarginalTargetedMNInference<double>::addAllTargets();
+    }
+
+    void addTarget( const NodeId target ) {
+      self->gum::MarginalTargetedMNInference<double>::addTarget(target);
+    }
+
+    void addTarget( const std::string& nodeName ) {
+      self->gum::MarginalTargetedMNInference<double>::addTarget(nodeName);
+    }
+
+    void eraseTarget( const NodeId target ) {
+      self->gum::MarginalTargetedMNInference<double>::eraseTarget(target);
+    }
+
+    void eraseTarget( const std::string& nodeName ) {
+      self->gum::MarginalTargetedMNInference<double>::eraseTarget(nodeName);
+    }
+
+    bool isTarget( const NodeId variable ) const {
+      return self->gum::MarginalTargetedMNInference<double>::isTarget(variable);
+    }
+
+    bool isTarget( const std::string& nodeName ) const {
+      return self->gum::MarginalTargetedMNInference<double>::isTarget(nodeName);
+    }
+
+    gum::Size nbrTargets( ) const {
+      return self->gum::MarginalTargetedMNInference<double>::nbrTargets();
+    }
+
+   double H( const NodeId X ) {
+     return self->gum::MarginalTargetedMNInference<double>::H(X);
+   }
+   double H( const std::string& nodeName ) {
+     return self->gum::MarginalTargetedMNInference<double>::H(nodeName);
+   }
+
+  Potential<double> evidenceImpact(NodeId target,const NodeSet& evs){
+    return self->gum::MarginalTargetedMNInference<double>::evidenceImpact(target,evs);
+  }
+  Potential<double> evidenceImpact(const std::string& target,const std::vector<std::string>& evs){
+   return self->gum::MarginalTargetedMNInference<double>::evidenceImpact(target,evs);
+  }
+}
+%enddef
+ADD_MN_INFERENCE_API(gum::ShaferShenoyMNInference<double>)
+
+
+%define ADD_JOINT_MN_INFERENCE_API(classname)
+%extend classname {
+  const Potential<double> posterior( const NodeId var ) {
+    return self->JointTargetedMNInference<double>::posterior(var);
+  }
+  const Potential<double> posterior( const std::string nodeName ) {
+    return self->JointTargetedMNInference<double>::posterior(nodeName);
+  }
+  void eraseAllTargets() {
+    self->gum::JointTargetedMNInference<double>::eraseAllTargets();
+  }
+  void eraseAllJointTargets() {
+    self->gum::JointTargetedMNInference<double>::eraseAllJointTargets();
+  }
+  void eraseAllMarginalTargets() {
+    self->gum::JointTargetedMNInference<double>::eraseAllMarginalTargets();
+  }
+
+  gum::Size nbrJointTargets() {
+    return self->gum::JointTargetedMNInference<double>::nbrJointTargets();
+  }
+
+  double I( const NodeId X, const NodeId Y ) {
+    return self->gum::JointTargetedMNInference<double>::I(X,Y);
+  }
+  double VI( const NodeId X, const NodeId Y ) {
+    return self->gum::JointTargetedMNInference<double>::VI(X,Y);
+  }
+
+  Potential<double> evidenceJointImpact(const NodeSet& targets,const NodeSet& evs){
+    return self->gum::JointTargetedMNInference<double>::evidenceJointImpact(targets,evs);
+  }
+  Potential<double> evidenceJointImpact(const std::vector<std::string>& targets,const std::vector<std::string>& evs){
+   return self->gum::JointTargetedMNInference<double>::evidenceJointImpact(targets,evs);
+  }
+}
+%enddef
+ADD_JOINT_MN_INFERENCE_API(gum::ShaferShenoyMNInference<double>)
+

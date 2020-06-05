@@ -32,6 +32,7 @@
 #include <agrum/tools/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
 #include <agrum/tools/graphs/algorithms/binaryJoinTreeConverterDefault.h>
 #include <agrum/BN/BayesNet.h>
+#include <agrum/MN/MarkovNet.h>
 
 class JunctionTreeGenerator {
   public:
@@ -52,6 +53,15 @@ class JunctionTreeGenerator {
       mods.insert(node, bn.variable(node).domainSize());
     return _junctionTree(
        bn.moralGraph(), _translatePartialOrder(partial_order), mods);
+  }
+
+  gum::JunctionTree junctionTree(const gum::MarkovNet< double >& mn,
+                                 PyObject* partial_order = nullptr) const {
+    gum::NodeProperty< gum::Size > mods;
+    for (const auto node : mn.graph().nodes())
+      mods.insert(node, mn.variable(node).domainSize());
+    return _junctionTree(
+       mn.graph(), _translatePartialOrder(partial_order), mods);
   }
 
   PyObject* eliminationOrder(const gum::UndiGraph& g,

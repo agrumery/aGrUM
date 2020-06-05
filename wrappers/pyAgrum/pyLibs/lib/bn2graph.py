@@ -187,7 +187,7 @@ def BNinference2dot(bn, size=None, engine=None, evs={}, targets={}, nodeColor=No
       filename = temp_dir + \
           hashlib.md5(name.encode()).hexdigest() + "." + \
           gum.config["notebook", "graph_format"]
-      _saveFigProba(ie.posterior(name), filename)
+      saveFigProba(ie.posterior(name), filename)
       dotstr += ' "{0}" [shape=rectangle,image="{1}",label="", {2}];\n'.format(
           name, filename, colorattribute)
     else:
