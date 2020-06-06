@@ -36,6 +36,7 @@ namespace gum {
   namespace aggregator {
     template < typename GUM_SCALAR >
     INLINE Or< GUM_SCALAR >::Or() : MultiDimAggregator< GUM_SCALAR >() {
+      this->_decomposable=true;
       GUM_CONSTRUCTOR(Or);
     }
 

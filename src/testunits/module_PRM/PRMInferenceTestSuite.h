@@ -123,7 +123,7 @@ namespace gum_tests {
         gum::prm::PRMInference< double >::Chain chain =
            std::make_pair(&instance, &attribute);
         gum::Potential< double > m;
-        TS_GUM_ASSERT_THROWS_NOTHING(g_ve->marginal(chain, m));
+        TS_GUM_ASSERT_THROWS_NOTHING(g_ve->posterior(chain, m));
         gum::Instantiation i(m);
         i.setFirst();
         TS_ASSERT_DELTA(m.get(i), 0.600832, 1e-6);
@@ -138,7 +138,7 @@ namespace gum_tests {
         gum::prm::PRMInference< double >::Chain chain =
            std::make_pair(&instance, &attribute);
         gum::Potential< double > m;
-        TS_GUM_ASSERT_THROWS_NOTHING(g_ve->marginal(chain, m));
+        TS_GUM_ASSERT_THROWS_NOTHING(g_ve->posterior(chain, m));
         gum::Instantiation i(m);
         i.setFirst();
         TS_ASSERT_DELTA(m.get(i), 0.49896, 1e-6);
@@ -153,7 +153,7 @@ namespace gum_tests {
         gum::prm::PRMInference< double >::Chain chain =
            std::make_pair(&instance, &attribute);
         gum::Potential< double > m;
-        TS_GUM_ASSERT_THROWS_NOTHING(g_ve->marginal(chain, m));
+        TS_GUM_ASSERT_THROWS_NOTHING(g_ve->posterior(chain, m));
         gum::Instantiation i(m);
         i.setFirst();
         TS_ASSERT_DELTA(m.get(i), 0.99, 1e-6);
@@ -184,8 +184,8 @@ namespace gum_tests {
            std::make_pair(&instance, &attribute);
 
         gum::Potential< double > m, n;
-        TS_GUM_ASSERT_THROWS_NOTHING(sve->marginal(chain, m));
-        TS_GUM_ASSERT_THROWS_NOTHING(g_ve.marginal(chain, n));
+        TS_GUM_ASSERT_THROWS_NOTHING(sve->posterior(chain, m));
+        TS_GUM_ASSERT_THROWS_NOTHING(g_ve.posterior(chain, n));
         gum::Instantiation i(m), j(n);
         i.setFirst(), j.setFirst();
         TS_ASSERT_DELTA(m.get(i), 0.600832, 1e-6);
@@ -202,7 +202,7 @@ namespace gum_tests {
         gum::prm::PRMInference< double >::Chain chain =
            std::make_pair(&instance, &attribute);
         gum::Potential< double > m;
-        TS_GUM_ASSERT_THROWS_NOTHING(sve->marginal(chain, m));
+        TS_GUM_ASSERT_THROWS_NOTHING(sve->posterior(chain, m));
         gum::Instantiation i(m);
         i.setFirst();
         TS_ASSERT_DELTA(m.get(i), 0.49896, 1e-6);
@@ -217,7 +217,7 @@ namespace gum_tests {
         gum::prm::PRMInference< double >::Chain chain =
            std::make_pair(&instance, &attribute);
         gum::Potential< double > m;
-        TS_GUM_ASSERT_THROWS_NOTHING(sve->marginal(chain, m));
+        TS_GUM_ASSERT_THROWS_NOTHING(sve->posterior(chain, m));
         gum::Instantiation i(m);
         i.setFirst();
         TS_ASSERT_DELTA(m.get(i), 0.99, 1e-6);
@@ -239,7 +239,7 @@ namespace gum_tests {
         gum::prm::PRMInference< double >::Chain chain =
            std::make_pair(&instance, &attribute);
         gum::Potential< double > m;
-        TS_GUM_ASSERT_THROWS_NOTHING(sved->marginal(chain, m));
+        TS_GUM_ASSERT_THROWS_NOTHING(sved->posterior(chain, m));
         gum::Instantiation i(m);
         i.setFirst();
         TS_ASSERT_DELTA(m.get(i), 0.600832, 1e-6);
@@ -254,7 +254,7 @@ namespace gum_tests {
         gum::prm::PRMInference< double >::Chain chain =
            std::make_pair(&instance, &attribute);
         gum::Potential< double > m;
-        TS_GUM_ASSERT_THROWS_NOTHING(sved->marginal(chain, m));
+        TS_GUM_ASSERT_THROWS_NOTHING(sved->posterior(chain, m));
         gum::Instantiation i(m);
         i.setFirst();
         TS_ASSERT_DELTA(m.get(i), 0.49896, 1e-6);
@@ -269,7 +269,7 @@ namespace gum_tests {
         gum::prm::PRMInference< double >::Chain chain =
            std::make_pair(&instance, &attribute);
         gum::Potential< double > m;
-        TS_GUM_ASSERT_THROWS_NOTHING(sved->marginal(chain, m));
+        TS_GUM_ASSERT_THROWS_NOTHING(sved->posterior(chain, m));
         gum::Instantiation i(m);
         i.setFirst();
         TS_ASSERT_DELTA(m.get(i), 0.99, 1e-6);
@@ -292,7 +292,7 @@ namespace gum_tests {
         gum::prm::PRMInference< double >::Chain chain =
            std::make_pair(&instance, &attribute);
         gum::Potential< double > m;
-        TS_GUM_ASSERT_THROWS_NOTHING(inf->marginal(chain, m));
+        TS_GUM_ASSERT_THROWS_NOTHING(inf->posterior(chain, m));
         gum::Instantiation i(m);
         i.setFirst();
         TS_ASSERT_DELTA(m.get(i), 0.600832, 1e-6);
@@ -307,7 +307,7 @@ namespace gum_tests {
         gum::prm::PRMInference< double >::Chain chain =
            std::make_pair(&instance, &attribute);
         gum::Potential< double > m;
-        TS_GUM_ASSERT_THROWS_NOTHING(inf->marginal(chain, m));
+        TS_GUM_ASSERT_THROWS_NOTHING(inf->posterior(chain, m));
         gum::Instantiation i(m);
         i.setFirst();
         TS_ASSERT_DELTA(m.get(i), 0.49896, 1e-6);
@@ -322,7 +322,7 @@ namespace gum_tests {
         gum::prm::PRMInference< double >::Chain chain =
            std::make_pair(&instance, &attribute);
         gum::Potential< double > m;
-        TS_GUM_ASSERT_THROWS_NOTHING(inf->marginal(chain, m));
+        TS_GUM_ASSERT_THROWS_NOTHING(inf->posterior(chain, m));
         gum::Instantiation i(m);
         i.setFirst();
         TS_ASSERT_DELTA(m.get(i), 0.99, 1e-6);
@@ -366,15 +366,15 @@ namespace gum_tests {
           gum::prm::PRMInference< double >::Chain chain =
              std::make_pair(&instance, &attribute);
           std::string dot = ".";
-          g_ve->marginal(chain, m_ve);
-          g_ss->marginal(chain, m_ss);
+          g_ve->posterior(chain, m_ve);
+          g_ss->posterior(chain, m_ss);
           gum::prm::SVE< double > sve(*prm, prm->getSystem("aSys"));
-          sve.marginal(chain, m_sve);
+          sve.posterior(chain, m_sve);
           gum::prm::SVED< double > sved(*prm, prm->getSystem("aSys"));
-          sved.marginal(chain, m_sved);
+          sved.posterior(chain, m_sved);
           gum::prm::StructuredInference< double > structinf(
              *prm, prm->getSystem("aSys"));
-          structinf.marginal(chain, m_struct);
+          structinf.posterior(chain, m_struct);
           // We need two instantiations, one for the grounded potentials and one
           // for the PRM<double>-level ones
           gum::Instantiation inst(m_ve), jnst(m_sve);
@@ -476,7 +476,7 @@ namespace gum_tests {
         gum::prm::PRMInference< double >::Chain q_chain =
            std::make_pair(&q_i, &q_a);
         gum::Potential< double > m;
-        g_ve->marginal(q_chain, m);
+        g_ve->posterior(q_chain, m);
         gum::Instantiation inst(m);
         inst.setFirst();
         TS_ASSERT_DELTA(m.get(inst), 1.0, 1e-6);
@@ -510,7 +510,7 @@ namespace gum_tests {
         gum::prm::PRMInference< double >::Chain q_chain =
            std::make_pair(&q_i, &q_a);
         gum::Potential< double > m;
-        g_ve->marginal(q_chain, m);
+        g_ve->posterior(q_chain, m);
         gum::Instantiation inst(m);
         inst.setFirst();
         TS_ASSERT_DELTA(m.get(inst), 0.5, 1e-6);
@@ -567,7 +567,7 @@ namespace gum_tests {
         gum::prm::PRMInference< double >::Chain q_chain =
            std::make_pair(&q_i, &q_a);
         gum::Potential< double > m;
-        g_ve->marginal(q_chain, m);
+        g_ve->posterior(q_chain, m);
         TS_ASSERT_EQUALS(m.nbrDim(), (gum::Size)1);
         gum::Instantiation inst(m);
         inst.setFirst();
@@ -602,7 +602,7 @@ namespace gum_tests {
         gum::prm::PRMInference< double >::Chain q_chain =
            std::make_pair(&q_i, &q_a);
         gum::Potential< double > m;
-        g_ve->marginal(q_chain, m);
+        g_ve->posterior(q_chain, m);
         gum::Instantiation inst(m);
         inst.setFirst();
         TS_ASSERT_DELTA(m.get(inst), 0.5, 1e-6);
@@ -675,7 +675,7 @@ namespace gum_tests {
         gum::prm::PRMInference< double >::Chain q_chain =
            std::make_pair(&q_i, &q_a);
         gum::Potential< double > m;
-        TS_GUM_ASSERT_THROWS_NOTHING(g_ve->marginal(q_chain, m));
+        TS_GUM_ASSERT_THROWS_NOTHING(g_ve->posterior(q_chain, m));
         gum::Instantiation inst(m);
         inst.setFirst();
         TS_ASSERT_DELTA(m.get(inst), 1.0, 1e-6);
@@ -709,7 +709,7 @@ namespace gum_tests {
         gum::prm::PRMInference< double >::Chain q_chain =
            std::make_pair(&q_i, &q_a);
         gum::Potential< double > m;
-        g_ve->marginal(q_chain, m);
+        g_ve->posterior(q_chain, m);
         gum::Instantiation inst(m);
         inst.setFirst();
         TS_ASSERT_DELTA(m.get(inst), 0.5, 1e-6);

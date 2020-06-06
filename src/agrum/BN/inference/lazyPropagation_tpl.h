@@ -1475,7 +1475,8 @@ namespace gum {
 
     // compute the joint posterior and normalize
     auto joint = _unnormalizedJointPosterior(id);
-    joint->normalize();
+    if(joint->sum() != 1) // hard test for ReadOnly CPT (as aggregator)
+      joint->normalize();
     __target_posteriors.insert(id, joint);
 
     return *joint;

@@ -609,6 +609,7 @@ namespace gum {
     NodeId addMAX(const DiscreteVariable& var);
     NodeId addMEDIAN(const DiscreteVariable& var);
     NodeId addMIN(const DiscreteVariable& var);
+    NodeId addSUM(const DiscreteVariable& var);
     /**
      * @}
      */

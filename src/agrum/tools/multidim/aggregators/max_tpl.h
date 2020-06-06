@@ -35,6 +35,7 @@ namespace gum {
   namespace aggregator {
     template < typename GUM_SCALAR >
     INLINE Max< GUM_SCALAR >::Max() : MultiDimAggregator< GUM_SCALAR >() {
+      this->_decomposable=true;
       GUM_CONSTRUCTOR(Max);
     }
 

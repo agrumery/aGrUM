@@ -20,7 +20,7 @@
 
 # General information about the project.
 project = 'pyAgrum'
-copyright = '2018-19, aGrUM/pyAgrum Team'
+copyright = '2018-20, aGrUM/pyAgrum Team'
 author = 'Pierre-henri Wuillemin'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -62,6 +62,7 @@ extensions = [
   'sphinx.ext.mathjax',
   'sphinx.ext.inheritance_diagram',
   'sphinx.ext.napoleon'
+  #'sphinx_autodoc_typehints'
   # todo 'sphinx_autodoc_typehints', # may be error prone (with python<3.7)
   #'sphinx.ext.todo',
   #'sphinx.ext.viewcode',

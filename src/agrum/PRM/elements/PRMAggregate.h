@@ -86,7 +86,8 @@ namespace gum {
         OR,
         AND,
         AMPLITUDE,
-        MEDIAN
+        MEDIAN,
+        SUM
       };
 
       /**
@@ -116,6 +117,8 @@ namespace gum {
           return AggregateType::AMPLITUDE;
         } else if (toLower(str) == "median") {
           return AggregateType::MEDIAN;
+        } else if (toLower(str) == "sum") {
+            return AggregateType::SUM;
         } else {
           std::string msg = "Unknown aggregate: ";
           msg.append(str);
@@ -201,6 +204,11 @@ namespace gum {
        * @brief Returns true if the label is defined.
        */
       bool hasLabel() const;
+
+      /**
+        * @brief Returns true if the aggregator is decomposable.
+       */
+      bool isDecomposable() const;
 
       /// See gum::PRMClassElement::_addParent().
       virtual void addParent(const PRMClassElement< GUM_SCALAR >& elt);

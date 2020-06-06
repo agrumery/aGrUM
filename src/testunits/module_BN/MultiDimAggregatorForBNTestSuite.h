@@ -391,5 +391,48 @@ namespace gum_tests {
 
       inf_LazyProp.makeInference();
     }
+
+    void testBNwithMinNoParents() {
+      auto bn = gum::BayesNet< double >::fastPrototype("A->B->C");
+      gum::LabelizedVariable var("min", "min", 4);
+      bn.add(var, new gum::aggregator::Min< double >());
+      {
+        gum::LazyPropagation< double > ie(&bn);
+        ie.makeInference();
+        gum::Potential< double > p;
+        TS_GUM_ASSERT_THROWS_NOTHING(p = ie.posterior("min"));
+        gum::Instantiation I(p);
+        for (I.setFirst(); !I.end(); I.inc())
+          TS_ASSERT_EQUALS(p.get(I), I.val(0) == 3 ? 1 : 0);
+      }
+      {
+        gum::ShaferShenoyInference< double > ie(&bn);
+        ie.makeInference();
+        gum::Potential< double > p;
+        TS_GUM_ASSERT_THROWS_NOTHING(p = ie.posterior("min"));
+        gum::Instantiation I(p);
+        for (I.setFirst(); !I.end(); I.inc())
+          TS_ASSERT_EQUALS(p.get(I), I.val(0) == 3 ? 1 : 0);
+      }
+      {
+        gum::VariableElimination< double > ie(&bn);
+        ie.makeInference();
+        gum::Potential< double > p;
+        TS_GUM_ASSERT_THROWS_NOTHING(p = ie.posterior("min"));
+        gum::Instantiation I(p);
+        for (I.setFirst(); !I.end(); I.inc())
+          TS_ASSERT_EQUALS(p.get(I), I.val(0) == 3 ? 1 : 0);
+      }
+      {
+        gum::LoopyBeliefPropagation< double > ie(&bn);
+        ie.makeInference();
+        gum::Potential< double > p;
+        TS_GUM_ASSERT_THROWS_NOTHING(p = ie.posterior("min"));
+        gum::Instantiation I(p);
+        for (I.setFirst(); !I.end(); I.inc())
+          TS_ASSERT_EQUALS(p.get(I), I.val(0) == 3 ? 1 : 0);
+      }
+      // if (joint->sum()!=1)  // hard test for ReadOnly CPT (as aggregator)
+    }
   };
 }   // namespace gum_tests

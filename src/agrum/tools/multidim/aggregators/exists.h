@@ -22,7 +22,7 @@
 
 /**
  * @file
- * @brief forall aggregator
+ * @brief exists aggregator
  *
  * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
  */
@@ -36,7 +36,7 @@ namespace gum {
 
   namespace aggregator {
     // =========================================================================
-    // ===                     GUM_MAX_AGGREGATOR                            ===
+    // ===                     GUM_EXISTS_AGGREGATOR                         ===
     // =========================================================================
     /**
      * @class Exists

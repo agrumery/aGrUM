@@ -22,7 +22,7 @@
 
 /**
  * @file
- * @brief count aggregator
+ * @brief and aggregator
  *
  * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
  */
@@ -36,6 +36,7 @@ namespace gum {
   namespace aggregator {
     template < typename GUM_SCALAR >
     INLINE And< GUM_SCALAR >::And() : MultiDimAggregator< GUM_SCALAR >() {
+      this->_decomposable=true;
       GUM_CONSTRUCTOR(And);
     }
 

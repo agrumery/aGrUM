@@ -165,6 +165,11 @@ namespace gum {
        **/
       void copyFrom(const MultiDimContainer< GUM_SCALAR >& src) const override;
 
+      /**
+       * @return true if the aggregator is decomposable.
+       */
+      bool isDecomposable() const;
+
       /// @}
       protected:
       /// by default, _buildValue uses a "fold" scheme and the user has to
@@ -173,6 +178,8 @@ namespace gum {
       /// reimplemented.
       virtual Idx _buildValue(const gum::Instantiation& i) const;
 
+      /// _decomposable indicates if the aggregator can be decomposed
+      bool _decomposable;
 
       /// _neutralElt() is the result value for the first application of _fold
       virtual Idx _neutralElt() const = 0;

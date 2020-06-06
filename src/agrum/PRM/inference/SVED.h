@@ -98,8 +98,8 @@ namespace gum {
       /// See PRMInference::_evidenceRemoved().
       virtual void _evidenceRemoved(const Chain& chain);
 
-      /// See PRMInference::_marginal().
-      virtual void _marginal(const Chain& chain, Potential< GUM_SCALAR >& m);
+      /// See PRMInference::_posterior().
+      virtual void _posterior(const Chain& chain, Potential< GUM_SCALAR >& m);
 
       /// See PRMInference::_joint().
       virtual void _joint(const std::vector< Chain >& queries,

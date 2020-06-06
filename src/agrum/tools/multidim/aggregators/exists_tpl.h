@@ -22,7 +22,7 @@
 
 /**
  * @file
- * @brief forall aggregator
+ * @brief exists aggregator
  *
  * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
  */

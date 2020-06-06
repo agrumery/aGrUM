@@ -255,7 +255,7 @@ namespace gum {
       const const_array_iterator& end(const std::string& a) const;
 
       /// @}
-      private:
+      protected:
       /// Copy constructor. Don't use it.
       PRMSystem(const PRMSystem< GUM_SCALAR >& from);
 
@@ -268,18 +268,18 @@ namespace gum {
       /// @{
 
       /// The relational skeleton of this PRMSystem.
-      DiGraph __skeleton;
+      DiGraph _skeleton;
 
       /// The maping between PRMInstance and their NodeId in the relational
       /// skeleton of this PRMSystem.
-      NodeProperty< PRMInstance< GUM_SCALAR >* > __nodeIdMap;
+      NodeProperty< PRMInstance< GUM_SCALAR >* > _nodeIdMap;
 
       /// The mapping between PRMInstance and their names.
-      HashTable< std::string, PRMInstance< GUM_SCALAR >* > __nameMap;
+      HashTable< std::string, PRMInstance< GUM_SCALAR >* > _nameMap;
 
       /// Mapping between a class and all it's PRMInstance in this system
       HashTable< PRMClass< GUM_SCALAR >*, Set< PRMInstance< GUM_SCALAR >* >* >
-         __instanceMap;
+         _instanceMap;
 
       /// Typedef of the pair of a Class<GUM_SCALAR> and the sequence of it's
       /// instantiation.
@@ -289,7 +289,7 @@ namespace gum {
 
       /// Mapping between arrays and their name. The first element of the pair
       /// is the type of the array.
-      HashTable< std::string, model_pair > __arrayMap;
+      HashTable< std::string, model_pair > _arrayMap;
 
       /// @}
       // ========================================================================

@@ -35,7 +35,7 @@ namespace gum {
 
   // Copy Factory.
   // @return Returns a pointer on a new copy of this.
-  INLINE DiscreteVariable* RangeVariable::clone() const {
+  INLINE RangeVariable* RangeVariable::clone() const {
     return new RangeVariable(*this);
   }
 

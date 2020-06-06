@@ -136,6 +136,9 @@ namespace gum {
     /// Tells the factory that we're in a network declaration.
     void startNetworkDeclaration() final;
 
+    /// Tells the factory the current variable's type.
+    void variableType(const VarType& type);
+
     /// Tells the factory to add a property to the current network.
     void addNetworkProperty(const std::string& propName,
                             const std::string& propValue) final;
@@ -160,8 +163,17 @@ namespace gum {
     /// Tells the factory the current variable's description.
     void variableDescription(const std::string& desc) final;
 
-    /// Adds a modality to the current variable.
+    /// Adds a modality to the current labelized variable.
     void addModality(const std::string& name) final;
+
+    /// Adds the min value of the current range variable.
+    void addMin(const long& min);
+
+    /// Adds the max value of the current range variable.
+    void addMax(const long& max);
+
+    /// Adds a tick to the current Discretized variable.
+    void addTick(const GUM_SCALAR& tick);
 
     /**
      * @brief Defines the implementation to use for var's Potential.

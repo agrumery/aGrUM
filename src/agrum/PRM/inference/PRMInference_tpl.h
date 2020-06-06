@@ -231,7 +231,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE void PRMInference< GUM_SCALAR >::marginal(
+    INLINE void PRMInference< GUM_SCALAR >::posterior(
        const typename PRMInference< GUM_SCALAR >::Chain& chain,
        Potential< GUM_SCALAR >&                          m) {
       if (m.nbrDim() > 0) {
@@ -251,10 +251,10 @@ namespace gum {
           typename PRMInference< GUM_SCALAR >::Chain good_chain = std::make_pair(
              chain.first, &(chain.first->get(chain.second->safeName())));
           m.add(good_chain.second->type().variable());
-          _marginal(good_chain, m);
+          _posterior(good_chain, m);
         } else {
           m.add(chain.second->type().variable());
-          _marginal(chain, m);
+          _posterior(chain, m);
         }
       }
     }

@@ -282,7 +282,7 @@ void Parser::VARIABLE_DEFINITION(int& nbrMod, std::string& var, const std::vecto
 		Expect(26 /* "(" */);
 		TRY(factory().startVariableDeclaration());
 		TRY(factory().variableName(var));
-		
+		TRY(factory().variableType(VarType::Labelized));
 		MODALITY_LIST(nbrMod);
 		Expect(27 /* ")" */);
 		Expect(9 /* ";" */);
@@ -301,7 +301,7 @@ void Parser::VARIABLE_DEFINITION(int& nbrMod, std::string& var, const std::vecto
 		int nbr=0;
 		TRY(nbr=factory().varInBN(factory().variableId(var)).domainSize());
 		if (nbrMod<nbr) SemErr("Too much modalities for variable "+var);
-		if (nbrMod>nbr) SemErr("Too many modalities for variable "+var);
+		if (nbrMod>nbr) SemErr("ties for variable "+var);
 		
 		Expect(8 /* "}" */);
 		Expect(9 /* ";" */);
@@ -640,6 +640,3 @@ void Parser::SynErr( const std::wstring& filename,int line, int col, int n ) {
 
 } // namespace
 } // namespace
-
-
-

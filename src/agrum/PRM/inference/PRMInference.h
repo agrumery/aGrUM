@@ -103,17 +103,17 @@ namespace gum {
       /// @{
 
       /**
-       * Compute the marginal of the formal attribute pointed by chain and
+       * Compute the posterior of the formal attribute pointed by chain and
        * stores it in m.
        *
        * @param chain A string of the form instance.attribute.
-       * @param m An empty CPF which will be filed by the marginal of chain.
+       * @param m An empty CPF which will be filed by the posterior of chain.
        * @throw NotFound Raised if chain is invalid.
        * @throw WrongType Raised if chain does not point to an
        *PRMAttribute<GUM_SCALAR>.
        * @throw OperationNotAllowed Raise if m is not empty.
        */
-      void marginal(const Chain& chain, Potential< GUM_SCALAR >& m);
+      void posterior(const Chain& chain, Potential< GUM_SCALAR >& m);
 
       /**
        * Compute the joint probability of the formals attributes pointed by
@@ -195,13 +195,13 @@ namespace gum {
       /// any processing made by PRMInference.
       virtual void _evidenceRemoved(const Chain& chain) = 0;
 
-      /// @brief Generic method to compute the marginal of given element.
+      /// @brief Generic method to compute the posterior of given element.
       /// @param chain
-      /// @param m CPF filled with the marginal of elt. It is initialized
+      /// @param m CPF filled with the posterior of elt. It is initialized
       ///          properly.
-      virtual void _marginal(const Chain& chain, Potential< GUM_SCALAR >& m) = 0;
+      virtual void _posterior(const Chain& chain, Potential< GUM_SCALAR >& m) = 0;
 
-      /// @brief Generic method to compute the marginal of given element.
+      /// @brief Generic method to compute the posterior of given element.
       /// @param queries Set of pairs of PRMInstance<GUM_SCALAR> and
       /// PRMAttribute<GUM_SCALAR>.
       /// @param j CPF filled with the joint probability of queries. It is

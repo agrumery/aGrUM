@@ -833,7 +833,7 @@ namespace gum {
         timer.reset();
 
         Potential< double > m;
-        m_inf->marginal(command->chain, m);
+        m_inf->posterior(command->chain, m);
 
         // Compute spent time
         double t = timer.step();

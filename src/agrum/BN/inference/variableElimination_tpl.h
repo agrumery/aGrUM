@@ -1010,7 +1010,8 @@ namespace gum {
      VariableElimination< GUM_SCALAR >::_posterior(NodeId id) {
     // compute the joint posterior and normalize
     auto joint = _unnormalizedJointPosterior(id);
-    joint->normalize();
+    if(joint->sum() != 1) // hard test for ReadOnly CPT (as aggregator)
+      joint->normalize();
 
     if (__target_posterior != nullptr) delete __target_posterior;
     __target_posterior = joint;

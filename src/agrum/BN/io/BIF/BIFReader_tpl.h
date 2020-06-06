@@ -24,7 +24,7 @@
  * @file
  * @brief Definition of templatized reader of BIF files for Bayesian Networks.
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6)
+ * @author Pierre-Henri WUILLEMIN
  */
 
 
@@ -97,8 +97,8 @@ namespace gum {
 
     if (!__parseDone) {
       try {
-        __parser->Parse();
-        __parseDone = true;
+		  __parser->Parse();
+		  __parseDone = true;
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
         return 1 + __parser->errors().error_count;

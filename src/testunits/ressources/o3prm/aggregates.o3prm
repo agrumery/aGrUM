@@ -16,16 +16,27 @@ class HappyClass {
   t_color infrared = min( [ has_red, has_blue, has_green, has_yellow ]);  
   t_color ultra_violet = max( [ has_red, has_blue, has_green, has_yellow ]);  
   t_color median = median( [ has_red, has_blue, has_green, has_yellow ]);  
-  t_color amp = amplitude( [ has_red, has_blue, has_green, has_yellow ]);  
+  t_color amp = amplitude( [ has_red, has_blue, has_green, has_yellow ]);
+  t_color sum = sum( [ has_red, has_blue, has_green, has_yellow ]);
 
   boolean yolo dependson infrared, ultra_violet, median, amp {
     *, *, *, *: 0.99, 0.01;
     green, green, green, green : 0.01, 0.99;
   };
 
+  boolean yolo2 dependson infrared, ultra_violet, median, sum {
+      *, *, *, *: 0.99, 0.01;
+      green, green, green, green : 0.01, 0.99;
+  };
+
   boolean happy dependson all_colors, any_colors, yolo {
     *, *, *: 0.01, 0.99;
     false, false, false: 0.99, 0.01;
+  };
+
+  boolean happy2 dependson all_colors, any_colors, yolo2 {
+     *, *, *: 0.01, 0.99;
+     false, false, false: 0.99, 0.01;
   };
 
 }

@@ -999,6 +999,7 @@ namespace gum {
           case PRMAggregate< GUM_SCALAR >::AggregateType::AMPLITUDE:
           case PRMAggregate< GUM_SCALAR >::AggregateType::MEDIAN:
           case PRMAggregate< GUM_SCALAR >::AggregateType::OR:
+          case PRMAggregate< GUM_SCALAR >::AggregateType::SUM:
           case PRMAggregate< GUM_SCALAR >::AggregateType::AND: {
             ok = __checkParametersNumber(agg, 0);
             break;

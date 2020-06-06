@@ -101,7 +101,7 @@ namespace gum {
        const typename PRMInference< GUM_SCALAR >::Chain& chain) {}
 
     template < typename GUM_SCALAR >
-    void StructuredInference< GUM_SCALAR >::_marginal(
+    void StructuredInference< GUM_SCALAR >::_posterior(
        const typename PRMInference< GUM_SCALAR >::Chain& chain,
        Potential< GUM_SCALAR >&                          m) {
       timer.reset();

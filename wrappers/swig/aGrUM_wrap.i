@@ -64,6 +64,7 @@
 #include <agrum/tools/multidim/implementations/multiDimReadOnly.h>
 #include <agrum/tools/multidim/ICIModels/multiDimNoisyORCompound.h>
 #include <agrum/tools/multidim/ICIModels/multiDimNoisyAND.h>
+
 #include <agrum/tools/graphicalModels/graphicalModel.h>
 #include <agrum/tools/graphicalModels/DAGmodel.h>
 #include <agrum/tools/graphicalModels/UGmodel.h>
@@ -147,6 +148,7 @@
 #include <agrum/ID/io/BIFXML/BIFXMLIDReader.h>
 #include <agrum/ID/io/BIFXML/BIFXMLIDWriter.h>
 #include <agrum/ID/generator/influenceDiagramGenerator.h>
+
 %}
 
 
@@ -252,6 +254,7 @@ namespace std {
 %import <agrum/tools/graphs/algorithms/triangulations/defaultTriangulation.h>
 %import <agrum/tools/graphs/algorithms/triangulations/triangulation.h>
 
+
 %import <agrum/tools/multidim/implementations/multiDimInterface.h>
 %import <agrum/tools/multidim/implementations/multiDimAdressable.h>
 %import <agrum/tools/multidim/implementations/multiDimContainer.h>
@@ -326,7 +329,6 @@ namespace std {
 
 %include <agrum/ID/influenceDiagram.h>
 %include <agrum/ID/inference/influenceDiagramInference.h>
-
 
 /* TEMPLATES INSTANTIATIONS */
 

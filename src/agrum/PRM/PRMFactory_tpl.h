@@ -657,6 +657,7 @@ namespace gum {
           break;
         }
 
+        case PRMAggregate< GUM_SCALAR >::AggregateType::SUM:
         case PRMAggregate< GUM_SCALAR >::AggregateType::MEDIAN:
         case PRMAggregate< GUM_SCALAR >::AggregateType::AMPLITUDE:
         case PRMAggregate< GUM_SCALAR >::AggregateType::MIN:
@@ -764,7 +765,8 @@ namespace gum {
 
           break;
         }
-
+        
+        case PRMAggregate< GUM_SCALAR >::AggregateType::SUM:
         case PRMAggregate< GUM_SCALAR >::AggregateType::MEDIAN:
         case PRMAggregate< GUM_SCALAR >::AggregateType::AMPLITUDE:
         case PRMAggregate< GUM_SCALAR >::AggregateType::MIN:

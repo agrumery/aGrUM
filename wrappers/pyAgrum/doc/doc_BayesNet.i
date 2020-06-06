@@ -216,6 +216,21 @@ int
 	the id of the added value
 "
 
+%feature("docstring") gum::BayesNet::addSUM
+"
+Others aggregators
+
+Parameters
+----------
+variable : pyAgrum.DiscreteVariable
+        the variable to be added
+
+Returns
+-------
+int
+        the id of the added value
+"
+
 %feature("docstring") gum::BayesNet::addNoisyAND
 "
 Add a variable, its associate node and a noisyAND implementation.

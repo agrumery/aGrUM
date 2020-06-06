@@ -22,7 +22,7 @@
 
 /**
  * @file
- * @brief median aggregator
+ * @brief amplitude aggregator
  *
  * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
  */

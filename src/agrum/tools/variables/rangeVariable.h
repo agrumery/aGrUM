@@ -78,7 +78,7 @@ namespace gum {
 
     /// Copy Factory.
     /// @return Returns a pointer on a new copy of this.
-    virtual DiscreteVariable* clone() const;
+    virtual RangeVariable* clone() const;
 
     /// @}
 

@@ -128,7 +128,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE void GroundedInference< GUM_SCALAR >::_marginal(
+    INLINE void GroundedInference< GUM_SCALAR >::_posterior(
        const typename PRMInference< GUM_SCALAR >::Chain& chain,
        Potential< GUM_SCALAR >&                          m) {
       if (__inf == 0) {

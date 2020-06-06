@@ -1,4 +1,3 @@
-
 /**
  *
  *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
@@ -95,10 +94,15 @@ namespace gum {
           } catch (NotFound&) {
             auto        elt = &(type().get(node));
             auto        sc = static_cast< PRMSlotChain< GUM_SCALAR >* >(elt);
-            const auto& instances = getInstances(sc->id());
 
-            for (const auto inst: instances) {
-              attr.addParent(inst->get(sc->lastElt().safeName()));
+            try{
+              const auto& instances = getInstances(sc->id());
+
+              for (const auto inst : instances){
+                attr.addParent(inst->get(sc->lastElt().safeName()));
+              }
+            } catch (NotFound&) { //there is no parents for this agg
+
             }
           }
         }
@@ -109,6 +113,7 @@ namespace gum {
     void PRMInstance< GUM_SCALAR >::__instantiateSlotChain(
        PRMSlotChain< GUM_SCALAR >* sc) {
       auto first_id = sc->chain()[0]->id();
+      if (!__referenceMap.exists(first_id)) {return; }
       auto set =
          new Set< PRMInstance< GUM_SCALAR >* >(*(__referenceMap[first_id]));
       // We proceed with a width-first run of the slot chain

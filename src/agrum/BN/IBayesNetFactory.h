@@ -99,7 +99,10 @@ namespace gum {
     virtual void   startVariableDeclaration() = 0;
     virtual void   variableName(const std::string& name) = 0;
     virtual void   variableDescription(const std::string& desc) = 0;
+    virtual void   variableType(const VarType& type) = 0;
     virtual void   addModality(const std::string& name) = 0;
+    virtual void   addMin(const long& min) = 0;
+    virtual void   addMax(const long& max) = 0;
     virtual void   setVariableCPTImplementation(MultiDimAdressable* impl) = 0;
     virtual NodeId endVariableDeclaration() = 0;
     virtual void   startParentsDeclaration(const std::string& var) = 0;

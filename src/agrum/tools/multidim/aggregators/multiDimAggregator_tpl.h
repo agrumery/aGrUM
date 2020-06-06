@@ -36,7 +36,8 @@ namespace gum {
     // Default constructor
     template < typename GUM_SCALAR >
     INLINE MultiDimAggregator< GUM_SCALAR >::MultiDimAggregator() :
-        MultiDimReadOnly< GUM_SCALAR >() {
+        MultiDimReadOnly< GUM_SCALAR >(),
+        _decomposable(false) {
       GUM_CONSTRUCTOR(MultiDimAggregator);
     }
 
@@ -44,7 +45,8 @@ namespace gum {
     template < typename GUM_SCALAR >
     INLINE MultiDimAggregator< GUM_SCALAR >::MultiDimAggregator(
        const MultiDimAggregator< GUM_SCALAR >& from) :
-        MultiDimReadOnly< GUM_SCALAR >(from) {
+        MultiDimReadOnly< GUM_SCALAR >(from),
+        _decomposable(from._decomposable) {
       GUM_CONS_CPY(MultiDimAggregator);
     }
 
@@ -121,6 +123,12 @@ namespace gum {
       }
       // it the types aree consistant, nothing to do...
     }
+
+    template < typename GUM_SCALAR >
+    INLINE bool MultiDimAggregator< GUM_SCALAR >::isDecomposable() const {
+       return _decomposable;
+    }
+
 
     // returns the name of the implementation
     template < typename GUM_SCALAR >

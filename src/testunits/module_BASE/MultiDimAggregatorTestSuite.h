@@ -40,6 +40,7 @@
 #include <agrum/tools/multidim/aggregators/median.h>
 #include <agrum/tools/multidim/aggregators/min.h>
 #include <agrum/tools/multidim/aggregators/or.h>
+#include <agrum/tools/multidim/aggregators/sum.h>
 
 namespace gum_tests {
 
@@ -241,6 +242,14 @@ namespace gum_tests {
       return (tmp == a) ? (float)1 : (float)0;
     }
 
+    float __is_sum(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d, gum::Idx maxA) {
+      gum::Idx tmp = b + c + d;
+      if(tmp > maxA){
+        tmp = maxA;
+      }
+      return (tmp == a) ? (float)1 : (float)0;
+    }
+
     public:
     void testCreationMin() {
       gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3),
@@ -414,6 +423,24 @@ namespace gum_tests {
       TS_ASSERT_THROWS(p.set(i, 3), gum::OperationNotAllowed);
 
       TS_ASSERT_THROWS(p.fill(0), gum::OperationNotAllowed);
+    }
+
+    void testCreationSum() {
+      try {
+        gum::RangeVariable a("a", "", 0, 8), b("b", "", 0, 3), c("c", "", 0, 3),
+                d("d", "", 0, 3);
+        gum::aggregator::Sum<double> p;
+        TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
+        TS_ASSERT_EQUALS(p.toString(), "a[0,8]=sum(b[0,3],c[0,3],d[0,3])");
+
+        gum::Instantiation i(p);
+
+        for (i.setFirst(); !i.end(); ++i) {
+          TS_ASSERT_EQUALS(p[i], __is_sum(i.val(a), i.val(b), i.val(c), i.val(d),(gum::Idx)8));
+        }
+      }catch (gum::Exception &e){
+        GUM_SHOWERROR(e);
+      }
     }
 
     private:

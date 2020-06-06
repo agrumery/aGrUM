@@ -227,6 +227,7 @@ void Parser::NODE() {
 		
 		TRY( factory().startVariableDeclaration());
 		TRY( factory().variableName(var));
+		TRY( factory().variableType(VarType::Labelized));
 		
 		Expect(8 /* "{" */);
 		while (la->kind == _ident) {

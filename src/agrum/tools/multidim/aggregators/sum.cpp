@@ -1,8 +1,8 @@
 
 /**
  *
- *  Copyright 2005-2020 Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
- *   info_at_agrum_dot_org
+ *  Copyright 2005-2019 Pierre-Henri WUILLEMIN et Christophe GONZALES (LIP6)
+ *   {prenom.nom}_at_lip6.fr
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -22,14 +22,14 @@
 
 /**
  * @file
- * @brief and aggregator
+ * @brief sum aggregator
  *
- * @author Pierre-Henri WUILLEMIN (@LIP6) et Christophe GONZALES (@AMU)
+ * @author Gaspard DUCAMP
  */
 
-#include <agrum/tools/multidim/aggregators/and.h>
+#include <agrum/tools/multidim/aggregators/sum.h>
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::aggregator::And< double >;
+template class gum::aggregator::Sum< double >;
 #endif

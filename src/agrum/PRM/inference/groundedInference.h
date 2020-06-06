@@ -109,7 +109,7 @@ namespace gum {
       /// @param m CPF filled with the marginal of elt. It is initialized
       ///          properly.
       virtual void
-         _marginal(const typename PRMInference< GUM_SCALAR >::Chain& chain,
+         _posterior(const typename PRMInference< GUM_SCALAR >::Chain& chain,
                    Potential< GUM_SCALAR >&                          m);
 
       /// @brief Generic method to compute the marginal of given element.

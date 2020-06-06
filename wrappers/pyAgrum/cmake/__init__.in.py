@@ -71,6 +71,7 @@ from .pyAgrum import VarType_Discretized,VarType_Labelized,VarType_Range
 
 from .pyAgrum import DefaultInLabel, DuplicateElement, DuplicateLabel, EmptyBSTree, EmptySet, GumException, FatalError, FormatNotFound, GraphError, IOError, IdError, InvalidArc, InvalidArgument, InvalidArgumentsNumber, InvalidDirectedCycle, InvalidEdge, InvalidNode, MissingValueInDatabase, MissingVariableInDatabase, NoChild, NoNeighbour, NoParent, NotFound, NullElement, OperationNotAllowed, OutOfBounds, OutOfLowerBound, OutOfUpperBound, ReferenceError, SizeError, SyntaxError, UndefinedElement, UndefinedIteratorKey, UndefinedIteratorValue, UnknownLabelInDatabase
 
+
 # selection of imports extracted from dir(pyAgrum)
 __all__=[
   '__version__','__license__','__project_url__',        # here
@@ -107,7 +108,7 @@ __all__=[
   'VarType_Discretized', 'VarType_Labelized', 'VarType_Range',
 
   'DefaultInLabel', 'DuplicateElement', 'DuplicateLabel', 'EmptyBSTree', 'EmptySet', 'GumException', 'FatalError', 'FormatNotFound', 'GraphError', 'IOError', 'IdError', 'InvalidArc', 'InvalidArgument', 'InvalidArgumentsNumber', 'InvalidDirectedCycle', 'InvalidEdge', 'InvalidNode', 'MissingValueInDatabase', 'MissingVariableInDatabase', 'NoChild', 'NoNeighbour', 'NoParent', 'NotFound', 'NullElement', 'OperationNotAllowed', 'OutOfBounds', 'OutOfLowerBound', 'OutOfUpperBound', 'ReferenceError', 'SizeError', 'SyntaxError', 'UndefinedElement', 'UndefinedIteratorKey', 'UndefinedIteratorValue', 'UnknownLabelInDatabase',
-  
+
   "config"
   ]
 

@@ -405,7 +405,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    void SVED< GUM_SCALAR >::_marginal(const Chain&             chain,
+    void SVED< GUM_SCALAR >::_posterior(const Chain&             chain,
                                        Potential< GUM_SCALAR >& m) {
       const PRMInstance< GUM_SCALAR >*  i = chain.first;
       const PRMAttribute< GUM_SCALAR >* elt = chain.second;

@@ -117,9 +117,9 @@ namespace gum {
       virtual void
          _evidenceRemoved(const typename PRMInference< GUM_SCALAR >::Chain& chain);
 
-      /// See PRMInference::_marginal().
+      /// See PRMInference::_posterior().
       virtual void
-         _marginal(const typename PRMInference< GUM_SCALAR >::Chain& chain,
+         _posterior(const typename PRMInference< GUM_SCALAR >::Chain& chain,
                    Potential< GUM_SCALAR >&                          m);
 
       /// See PRMInference::_joint().

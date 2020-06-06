@@ -45,6 +45,7 @@
 #include <agrum/tools/multidim/aggregators/median.h>
 #include <agrum/tools/multidim/aggregators/min.h>
 #include <agrum/tools/multidim/aggregators/or.h>
+#include <agrum/tools/multidim/aggregators/sum.h>
 
 #include <agrum/tools/multidim/ICIModels/multiDimNoisyAND.h>
 #include <agrum/tools/multidim/ICIModels/multiDimNoisyORCompound.h>
@@ -534,6 +535,10 @@ namespace gum {
     return add(var, new aggregator::Or< GUM_SCALAR >());
   }
 
+  template < typename GUM_SCALAR >
+  INLINE NodeId BayesNet< GUM_SCALAR >::addSUM(const DiscreteVariable& var) {
+    return add(var, new aggregator::Sum< GUM_SCALAR >());
+  }
 
   //================================
   // ICIModels

@@ -314,6 +314,7 @@ namespace gum {
       /// @}
 
       protected:
+
       /// returns a constant reference over this interface's dag.
       virtual const DAG& _dag() const;
 
