@@ -34,14 +34,29 @@ pyAgrum contains
   * and a `website <http://agrum.org>`_.
 
 .. toctree::
-  :caption: Main classes
+  :caption: Fundamental components
   :maxdepth: 2
-
-  bayesianNetwork
 
   graph
   randomVariables
   potential
+
+.. toctree::
+  :caption: Graphical Models
+  :maxdepth: 2
+
+  bayesianNetwork
+  markovNetwork
+  PRM
+  credalNetwork
+  influenceDiagram
+
+.. toctree::
+  :caption: Causality in pyAgrum
+  :maxdepth: 2
+  :titlesonly:
+
+  Causal
 
 .. toctree::
   :caption: pyAgrum.lib modules
@@ -53,21 +68,6 @@ pyAgrum contains
   lib.dBN
   lib.classifier
   pyAgrum.lib
-
-.. toctree::
-  :caption: Causality in pyAgrum
-  :maxdepth: 2
-  :titlesonly:
-
-  Causal
-
-.. toctree::
-  :caption: Other graphical models
-  :maxdepth: 2
-
-  PRM
-  credalNetwork
-  influenceDiagram
 
 .. toctree::
   :caption: Miscellaneous

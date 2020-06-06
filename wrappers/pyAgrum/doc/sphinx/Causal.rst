@@ -9,6 +9,13 @@ Causality in pyAgrum mainly consists in the ability to build a causal model, i.e
 
 Causality is a set of pure python3 scripts based on pyAgrum's tools.
 
+**Tutorial**
+
+* `Notebooks on causality in pyAgrum <http://webia.lip6.fr/~phw/aGrUM/docs/last/notebooks/51-Causality_Tobacco.ipynb.html>`_
+* Some `implemented examples <https://webia.lip6.fr/~phw//aGrUM/BookOfWhy/>`_ from the `book of Why <http://bayes.cs.ucla.edu/WHY/>`_ from Judea Pearl and Dana Mackenzie. 
+
+**Reference**
+
 .. toctree::
    :maxdepth: 3
 
