@@ -217,7 +217,7 @@ def __computepoints(bn, csv_name, target, label, visible=False, with_labels=True
 
     try:
       engine.makeInference()
-      px = engine.posterior(idTarget)[{target: label}]
+      px = round(engine.posterior(idTarget)[{target: label}],14) # 14 significatifs digits (below is only noise)
       if with_labels:
         res.append((px, str(data[positions[idTarget]])))
       else:
@@ -296,12 +296,13 @@ def _computeROC_PR(bn, values, totalP, totalN, idLabel, modalite):
         yopt = y
         seuil = (res[i][0] + old_seuil) / 2
         
-      f = 2 * z * y / (z + y)           # f1
-      if f > f1opt:
-        f1opt = f
-        zf1 = z
-        yf1 = y
-        seuilf1 = (res[i][0] + old_seuil) / 2
+      if z + y > 0:
+        f = 2 * z * y / (z + y)           # f1
+        if f > f1opt:
+          f1opt = f
+          zf1 = z
+          yf1 = y
+          seuilf1 = (res[i][0] + old_seuil) / 2
         
       pointsROC.append((x, y))
       pointsPR.append((y, z))
