@@ -117,7 +117,7 @@ def _computeAUC(points):
   return somme/2
 
 
-def __computepoints(bn, csv_name, target, label, visible=False, with_labels=True):
+def __computepoints(bn, csv_name, target, label, visible=False, with_labels=True,significant_digits=10):
   """
   Compute the ROC curve points.
 
@@ -133,6 +133,8 @@ def __computepoints(bn, csv_name, target, label, visible=False, with_labels=True
     the target's label
   visible : bool
     indicates if the resulting curve must be printed
+  significant_digits:
+    number of significant digits when computing probabilities
 
   Returns
   -------
@@ -217,7 +219,7 @@ def __computepoints(bn, csv_name, target, label, visible=False, with_labels=True
 
     try:
       engine.makeInference()
-      px = round(engine.posterior(idTarget)[{target: label}],14) # 14 significatifs digits (below is only noise)
+      px = round(engine.posterior(idTarget)[{target: label}],significant_digits)
       if with_labels:
         res.append((px, str(data[positions[idTarget]])))
       else:
@@ -564,7 +566,7 @@ def _drawPR(points, rate,zeTitle, zeFilename, visible, show_fig, save_fig=True,
               special_point = special_point, special_value = special_value, special_label = special_label, 
               rate = rate, showROC = False, showPR = True)
 
-def showROC_PR(bn, csv_name, variable, label, visible=True, show_fig=False, with_labels=True, showROC = True, showPR = True ):
+def showROC_PR(bn, csv_name, variable, label, visible=True, show_fig=False, with_labels=True, showROC = True, showPR = True,significant_digits=10 ):
   """
   Compute the ROC curve and save the result in the folder of the csv file.
 
@@ -584,6 +586,8 @@ def showROC_PR(bn, csv_name, variable, label, visible=True, show_fig=False, with
     indicates if the curve is ROC
   showPR : bool
     indicates if the curve is Precision-Recall curve
+  significant_digits:
+    number of significant digits when computing probabilitie
     
   Returns
   -------
@@ -593,7 +597,7 @@ def showROC_PR(bn, csv_name, variable, label, visible=True, show_fig=False, with
   """
   
   (res, totalP, totalN, idTarget) = __computepoints(
-      bn, csv_name, variable, label, visible, with_labels)
+      bn, csv_name, variable, label, visible, with_labels,significant_digits)
   pointsROC, optROC, seuilROC, pointsPR, optPR, seuilPR = _computeROC_PR(bn, res, totalP, totalN, idTarget, label)
     
   try:
@@ -639,7 +643,7 @@ def showROC_PR(bn, csv_name, variable, label, visible=True, show_fig=False, with
   return (_computeAUC(pointsROC), seuilROC, _computeAUC(pointsPR), seuilPR)
     
 
-def showROC(bn, csv_name, variable, label, visible=True, show_fig=False, with_labels=True):
+def showROC(bn, csv_name, variable, label, visible=True, show_fig=False, with_labels=True,significant_digits=10):
   """
   Compute the ROC curve and save the result in the folder of the csv file.
 
@@ -655,12 +659,13 @@ def showROC(bn, csv_name, variable, label, visible=True, show_fig=False, with_la
     the target label
   visible : bool
     indicates if the resulting curve must be printed
-
+  significant_digits:
+    number of significant digits when computing probabilities
   """
   
-  return showROC_PR(bn, csv_name, variable, label, visible, show_fig, with_labels, True, False)
+  return showROC_PR(bn, csv_name, variable, label, visible, show_fig, with_labels, True, False,significant_digits)
   
-def showPR(bn, csv_name, variable, label, visible=True, show_fig=False, with_labels=True):
+def showPR(bn, csv_name, variable, label, visible=True, show_fig=False, with_labels=True,significant_digits=10):
   """
   Compute the ROC curve and save the result in the folder of the csv file.
 
@@ -676,10 +681,11 @@ def showPR(bn, csv_name, variable, label, visible=True, show_fig=False, with_lab
     the target label
   visible : bool
     indicates if the resulting curve must be printed
-
+  significant_digits:
+    number of significant digits when computing probabilities
   """
   
-  return showROC_PR(bn, csv_name, variable, label, visible, show_fig, with_labels, False, True)  
+  return showROC_PR(bn, csv_name, variable, label, visible, show_fig, with_labels, False, True,significant_digits)  
 
 def _checkROCargs():
   pyAgrum_header("2011-13")
